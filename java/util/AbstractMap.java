@@ -527,7 +527,7 @@ public abstract class AbstractMap implements Map
    * @author Jon Zeppieri
    * @author Eric Blake <ebb9@email.byu.edu>
    */
-  static class BasicMapEntry implements Entry
+  static class BasicMapEntry implements Map.Entry
   {
     /**
      * The key. Package visible for direct manipulation.

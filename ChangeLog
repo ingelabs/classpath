@@ -1,3 +1,14 @@
+2002-04-21  Mark Wielaard  <mark@klomp.org>
+
+	* java/awt/AWTKeyStroke.java (removeEldestEntry): Use fully qualified
+	Map.Entry as argument (gcj 3.1 workaround).
+	* java/awt/im/InputSubset.java: extends fully qualified
+	Character.Subset (likewise).
+	* java/util/AbstractMap.java (BasicMapEntry): implements fully
+	qualified Map.Entry (likewise).
+	* javax/swing/JList.java (setListData): Rename innerclass AL to ALData
+	to avoid name clash (likewise).
+
 2002-04-08  Sascha Brawer  <brawer@acm.org>
 
 	* java/util/logging/LogRecord.java (serialVersionUID): Added

@@ -46,7 +46,7 @@ package java.awt.im;
  * @since 1.2
  * @status updated to 1.4
  */
-public final class InputSubset extends Character.Subset
+public final class InputSubset extends java.lang.Character.Subset
 {
   /**
    * Constant for all Latin characters, including the characters in the

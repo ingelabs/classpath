@@ -106,13 +106,13 @@ public class JList extends JComponent implements Scrollable
     
     public void setListData(final Vector listData)
     {
-	class AL extends AbstractListModel 
+	class ALData extends AbstractListModel 
 	{
 	    public int getSize()              { return listData.size(); }
 	    public Object getElementAt(int i) { return listData.elementAt(i); }
 	};
 	
-        setModel (new AL());
+        setModel (new ALData());
     }
     
     

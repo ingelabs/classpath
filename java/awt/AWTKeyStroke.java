@@ -48,6 +48,7 @@ import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.StringTokenizer;
@@ -89,7 +90,7 @@ public class AWTKeyStroke implements Serializable
     private static final int MAX_CACHE_SIZE = 2048;
 
     /** Prune stale entries. */
-    protected boolean removeEldestEntry(Entry eldest)
+    protected boolean removeEldestEntry(Map.Entry eldest)
     {
       return size() > MAX_CACHE_SIZE;
     }
