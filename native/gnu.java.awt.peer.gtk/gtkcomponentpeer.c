@@ -31,23 +31,12 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetShowChildren (JNIEnv *env,
 {
   GtkWidget *widget;
   void *ptr;
-  GList *child;
 
   ptr=NSA_GET_PTR (env, obj);
   
   gdk_threads_enter ();
   widget=GTK_WIDGET (ptr);
   
-  /* Windows are the real reason we are here... to show the fixed and
-     everything in it. 
-  if (GTK_IS_WINDOW(GTK_OBJECT(ptr)))
-    {
-      child=gtk_container_children (GTK_CONTAINER(widget));
-      gtk_widget_show_all(GTK_WIDGET(child->data));
-      g_list_free(child);
-    }
-  */
-
   gtk_widget_show_all (GTK_WIDGET (widget));
   gtk_container_check_resize (GTK_CONTAINER (widget));
 
@@ -396,7 +385,6 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setBounds
 {
   GtkWidget *widget;
   void *ptr;
-  GtkAllocation alloc;
 
   ptr = NSA_GET_PTR (env, obj);
   
@@ -405,20 +393,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setBounds
   widget = GTK_WIDGET (ptr);
   gtk_widget_set_usize (widget, width, height);
 
-  /*
-  alloc.x = 0;
-  alloc.y = 0;
-  alloc.width = width;
-  alloc.height = height;
-
-  widget->requisition.width=width;
-  widget->requisition.height=height;
-    
-  gtk_widget_size_allocate (widget, &alloc);
-  */
   gtk_fixed_move (GTK_FIXED (widget->parent), widget, x, y);
-
-  printf ("native: setbounds: %i, %i  %ix%i\n", x, y, width, height);  
 
   gdk_threads_leave ();
 }
