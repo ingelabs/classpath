@@ -1,5 +1,6 @@
-/* GridLayout.java -- Layout components in columns and rows
-   Copyright (C) 1999 Free Software Foundation, Inc.
+// GridLayout.java - Grid-based layout engine
+
+/* Copyright (C) 1999, 2000, 2002  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -27,456 +28,309 @@ executable file might be covered by the GNU General Public License. */
 
 package java.awt;
 
-/**
-  * This class layouts out components in a grid patterns.  Either the
-  * number of columns or the number of rows may be specified.  If both
-  * are specified, then the number of columns is ignored and is derived
-  * from the number of rows and the total number of components.  (For
-  * example, three rows and twelve components would be laid out in a
-  * 3x4 grid).
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public class GridLayout implements LayoutManager, java.io.Serializable
-{
+import java.io.Serializable;
 
-/*
- * Instance Variables
+/** This class implements a grid-based layout scheme.  Components are
+ * all given the same size and are laid out from left to right and top
+ * to bottom.  A GridLayout is configured with a number of rows and a
+ * number of columns.  If both are specified, then the number of
+ * columns is ignored and is derived from the number of rows and the
+ * total number of components.  If either is zero then that dimension
+ * is computed based on the actual size of the container.  An
+ * exception is thrown if an attempt is made to set both the number of
+ * rows and the number of columns to 0.  This class also supports
+ * horizontal and vertical gaps; these are used as spacing between
+ * cells.
+ *
+ * @author Tom Tromey <tromey@redhat.com>
+ * @author Aaron M. Renn (arenn@urbanophile.com)
  */
-
-/**
-  * @serial The number of columns in the grid.
-  */
-private int cols;
-
-/**
-  * @serial The number of rows in the grid.
-  */
-private int rows;
-
-/**
-  * @serial The horizontal gap between columns
-  */
-private int hgap;
-
-/**
-  * @serial The vertical gap between rows
-  */
-private int vgap;
-
-/*************************************************************************/
-
-/*
- * Constructors
- */
-
-/**
-  * Initializes a new instance of <code>GridLayout</code> with one
-  * row and a horizontal gap of zero.
-  */
-public
-GridLayout()
+public class GridLayout implements LayoutManager, Serializable
 {
-  this(1, 0, 0, 0);
-}
+  /** Add a new component to the layout.  This particular implementation
+   * does nothing.
+   * @param name The name of the component to add.
+   * @param component The component to add.
+   */
+  public void addLayoutComponent (String name, Component comp)
+  {
+    // Nothing.
+  }
 
-/*************************************************************************/
+  /** Return the number of columns in this layout.  */
+  public int getColumns ()
+  {
+    return cols;
+  }
 
-/**
-  * Initializes a new instance of <code>GridLayout</code> with the specified
-  * row and column settings.  The horizontal and vertical gaps will be
-  * set to zero.  Note that the row and column settings cannot both be
-  * zero.  If both the row and column values are non-zero, the rows value
-  * takes precedence.
-  *
-  * @param rows The number of rows in the grid.
-  * @param cols The number of columns in the grid.
-  *
-  * @exception IllegalArgumentException If the row or column values are
-  * not valid.
-  */
-public
-GridLayout(int rows, int cols) throws IllegalArgumentException
-{
-  this(rows, cols, 0, 0);
-}
+  /** Return the horizontal gap.  */
+  public int getHgap ()
+  {
+    return hgap;
+  }
 
-/*************************************************************************/
+  /** Return the number of rows in this layout.  */
+  public int getRows ()
+  {
+    return rows;
+  }
 
-/**
-  * Initializes a new instance of <code>GridLayout</code> with the specified
-  * row, column, horizontal gap and vertical gap settings.  
-  * Note that the row and column settings cannot both be
-  * zero.  If both the row and column values are non-zero, the rows value
-  * takes precedence.
-  *
-  * @param rows The number of rows in the grid.
-  * @param cols The number of columns in the grid.
-  * @param hgap The horizontal gap between columns.
-  * @param vgap The vertical gap between rows.
-  *
-  * @exception IllegalArgumentException If the row or column values are
-  * not valid.
-  */
-public
-GridLayout(int rows, int cols, int hgap, int vgap) 
-           throws IllegalArgumentException
-{
-  if ((rows < 0) ||
-      (cols < 0) ||
-      (hgap < 0) ||
-      (vgap < 0) ||
-      ((rows == 0) && (cols == 0)))
-    throw new IllegalArgumentException("Bad parameters");
+  /** Return the vertical gap.  */
+  public int getVgap ()
+  {
+    return vgap;
+  }
 
-  this.rows = rows;
-  this.cols = cols;
-  this.hgap = hgap;
-  this.vgap = vgap;
-}
+  /** Create a new <code>GridLayout</code> with one row and any number
+   * of columns.  Both gaps are set to 0.
+   */
+  public GridLayout ()
+  {
+    this (1, 0, 0, 0);
+  }
 
-/*************************************************************************/
+  /** Create a new <code>GridLayout</code> with the specified number
+   * of rows and columns.  Both gaps are set to 0.  Note that the row
+   * and column settings cannot both be zero.  If both the row and
+   * column values are non-zero, the rows value takes precedence.
+   * @param rows Number of rows
+   * @param cols Number of columns
+   * @exception IllegalArgumentException If rows and columns are both
+   *        0, or if either are negative
+   */
+  public GridLayout (int rows, int cols)
+  {
+    this (rows, cols, 0, 0);
+  }
 
-/*
- * Instance Variables
- */
+  /** Create a new GridLayout with the specified number of rows and
+   * columns and the specified gaps.
+   * Note that the row and column settings cannot both be
+   * zero.  If both the row and column values are non-zero, the rows value
+   * takes precedence.
+   * @param rows Number of rows
+   * @param cols Number of columns
+   * @param hgap The horizontal gap
+   * @param vgap The vertical gap
+   * @exception IllegalArgumentException If rows and columns are both
+   *        0, if either are negative, or if either gap is negative
+   */
+  public GridLayout (int rows, int cols, int hgap, int vgap)
+  {
+    if (rows < 0)
+      throw new IllegalArgumentException ("number of rows cannot be negative");
+    if (cols < 0)
+      throw new IllegalArgumentException ("number of columns cannot be negative");
+    if (rows == 0 && cols == 0)
+      throw new IllegalArgumentException ("both rows and columns cannot be 0");
+    if (hgap < 0)
+      throw new IllegalArgumentException ("horizontal gap must be nonnegative");
+    if (vgap < 0)
+      throw new IllegalArgumentException ("vertical gap must be nonnegative");
+    this.rows = rows;
+    this.cols = cols;
+    this.hgap = hgap;
+    this.vgap = vgap;
+  }
 
-/**
-  * Returns the number of rows in the grid.
-  *
-  * @return The number of rows in the grid.
-  */
-public int
-getRows()
-{
-  return(rows);
-}
+  /** Lay out the container's components based on current settings.
+   * The free space in the container is divided evenly into the specified
+   * number of rows and columns in this object.
+   * @param parent The container to lay out
+   */
+  public void layoutContainer (Container parent)
+  {
+    int num = parent.ncomponents;
+    // This is more efficient than calling getComponents().
+    Component[] comps = parent.component;
 
-/*************************************************************************/
+    int real_rows = rows;
+    int real_cols = cols;
+    if (real_rows == 0)
+      real_rows = (num + real_cols - 1) / real_cols;
+    else
+      real_cols = (num + real_rows - 1) / real_rows;
 
-/**
-  * Sets the number of rows in the grid to the specified value.
-  *
-  * @param rows The new number of rows in the grid.
-  *
-  * @exception IllegalArgumentException If both the row and column setttings
-  * would be set to zero, or the specified value of the rows setting is
-  * less than zero.
-  */
-public void
-setRows(int rows)
-{
-  if ((rows < 0) ||
-      ((rows == 0) && (cols == 0)))
-    throw new IllegalArgumentException("Bad rows value");
+    // We might have less than a single row.  In this case we expand
+    // to fill.
+    if (num < real_cols)
+      real_cols = num;
 
-  this.rows = rows;
-}
+    Dimension d = parent.getSize ();
+    Insets ins = parent.getInsets ();
 
-/*************************************************************************/
+    // Compute width and height of each cell in the grid.
+    int tw = d.width - ins.left - ins.right;
+    tw = (tw - (real_rows - 1) * hgap) / real_rows;
+    int th = d.height - ins.top - ins.bottom;
+    th = (th - (real_cols - 1) * vgap) / real_cols;
 
-/**
-  * Returns the number of columns in the grid.
-  *
-  * @return The number of columns in the grid.
-  */
-public int
-getColumns()
-{
-  return(cols);
-}
+    // If the cells are too small, still try to do something.
+    if (tw < 0)
+      tw = 1;
+    if (th < 0)
+      th = 1;
 
-/*************************************************************************/
+    int x = ins.left;
+    int y = ins.top;
+    int i = 0;
+    int recount = 0;
 
-/**
-  * Sets the number of columns in the grid to the specified value.
-  *
-  * @param cols The new number of columns in the grid.
-  *
-  * @exception IllegalArgumentException If both the row and column setttings
-  * would be set to zero, or the specified value of the columns setting is
-  * less than zero.
-  */
-public void
-setColumns(int cols) throws IllegalArgumentException
-{
-  if ((cols < 0) ||
-      ((cols == 0) && (rows == 0)))
-    throw new IllegalArgumentException("Bad columns value");
-
-  this.cols = cols;
-}
-
-/*************************************************************************/
-
-/**
-  * Returns the horiztonal gap between columns.
-  *
-  * @return The horizontal gap between columns.
-  */
-public int
-getHgap()
-{
-  return(hgap);
-}
-
-/*************************************************************************/
-
-/**
-  * Sets the horiztonal gap between columns to the specified value.
-  *
-  * @param hgap The new horizontal gap value.
-  *
-  * @exception IllegalArgumentException If the hgap value is less than zero.
-  */
-public void
-setHgap(int hgap) throws IllegalArgumentException
-{
-  if (hgap < 0) 
-    throw new IllegalArgumentException("hgap is negative: " + hgap);
-
-  this.hgap = hgap;
-}
-
-/*************************************************************************/
-
-/**
-  * Returns the vertical gap between rows.
-  *
-  * @return The vertical gap between rows.
-  */
-public int
-getVgap()
-{
-  return(vgap);
-}
-
-/*************************************************************************/
-
-/**
-  * Sets the vertical gap between rows to the specified value.
-  *
-  * @param vgap The new vertical gap value.
-  *
-  * @exception IllegalArgumentException If the vgap value is less than zero.
-  */
-public void
-setVgap(int vgap) throws IllegalArgumentException
-{
-  if (vgap < 0)
-    throw new IllegalArgumentException("vgap is negative: " + vgap);
-
-  this.vgap = vgap;
-}
-
-/*************************************************************************/
-
-/**
-  * Adds the specified component to this layout with the given name.
-  *
-  * @param name The name of the component to add.
-  * @param component The component to add.
-  */
-public void
-addLayoutComponent(String name, Component component)
-{
-  // Not needed in this class.
-}
-
-/*************************************************************************/
-
-/**
-  * Removes the specified component from this layout.
-  *
-  * @param component The component to remove.
-  */
-public void
-removeLayoutComponent(Component component)
-{
-  // Not needed in this class.
-}
-
-/*************************************************************************/
-
-private Dimension
-calcLayoutSize(Container parent, boolean minimum)
-{
-  int row_height = 0, col_width = 0, nrows, ncols;
- 
-  Component[] clist = parent.getComponents();
-  if (clist.length > 0)
-    for(int i = 0; i < clist.length; i++)
+    while (i < num)
       {
-         Dimension dim;
-         if (minimum)
-           dim = clist[i].getMinimumSize();
-         else
-          dim = clist[i].getPreferredSize();
+	comps[i].setBounds (x, y, tw, th);
 
-         if (dim.width > col_width)
-           col_width = dim.width;
+	++i;
+	++recount;
+	if (recount == real_cols)
+	  {
+	    recount = 0;
+	    y += vgap + th;
+	    x = ins.left;
+	  }
+	else
+	  x += hgap + tw;
+      }
+  }
 
-         if (dim.height > row_height)
-           row_height = dim.height;
+  /** Get the minimum layout size of the container.
+   * @param cont The parent container
+   */
+  public Dimension minimumLayoutSize (Container cont)
+  {
+    return getSize (cont, true);
+  }
+
+  /** Get the preferred layout size of the container.
+   * @param cont The parent container
+   */
+  public Dimension preferredLayoutSize (Container cont)
+  {
+    return getSize (cont, false);
+  }
+
+  /** Remove the indicated component from this layout manager.
+   * This particular implementation does nothing.
+   * @param comp The component to remove
+   */
+  public void removeLayoutComponent (Component comp)
+  {
+    // Nothing.
+  }
+
+  /** Set the number of columns.
+   * @param newCols
+   * @exception IllegalArgumentException If the number of columns is
+   *     negative, or if the number of columns is zero and the number
+   *     of rows is already 0.
+   */
+  public void setColumns (int newCols)
+  {
+    if (cols < 0)
+      throw new IllegalArgumentException ("number of columns cannot be negative");
+    if (newCols == 0 && rows == 0)
+      throw new IllegalArgumentException ("number of rows is already 0");
+    this.cols = newCols;
+  }
+
+  /** Set the horizontal gap
+   * @param hgap The horizontal gap
+   * @exception IllegalArgumentException If the hgap value is less than zero.
+   */
+  public void setHgap (int hgap)
+  {
+    if (hgap < 0)
+      throw new IllegalArgumentException ("horizontal gap must be nonnegative");
+    this.hgap = hgap;
+  }
+
+  /** Set the number of rows
+   * @param newRows
+   * @exception IllegalArgumentException If the number of rows is
+   *     negative, or if the number of rows is zero and the number
+   *     of columns is already 0.
+   */
+  public void setRows (int newRows)
+  {
+    if (rows < 0)
+      throw new IllegalArgumentException ("number of rows cannot be negative");
+    if (newRows == 0 && cols == 0)
+      throw new IllegalArgumentException ("number of columns is already 0");
+    this.rows = newRows;
+  }
+
+  /** Set the vertical gap.
+   * @param vgap The vertical gap
+   * @exception IllegalArgumentException If the vgap value is less than zero.
+   */
+  public void setVgap (int vgap)
+  {
+    if (vgap < 0)
+      throw new IllegalArgumentException ("vertical gap must be nonnegative");
+    this.vgap = vgap;
+  }
+
+  /** Return String description of this object.  */
+  public String toString ()
+  {
+    return ("[" + getClass ().getName ()
+	    + ",hgap=" + hgap + ",vgap=" + vgap
+	    + ",rows=" + rows + ",cols=" + cols
+	    + "]");
+  }
+
+  // This method is used to compute the various sizes.
+  private Dimension getSize (Container parent, boolean is_min)
+  {
+    int w = 0, h = 0, num = parent.ncomponents;
+    // This is more efficient than calling getComponents().
+    Component[] comps = parent.component;
+
+    for (int i = 0; i < num; ++i)
+      {
+	Dimension d;
+
+	if (is_min)
+	  d = comps[i].getMinimumSize ();
+	else
+	  d = comps[i].getPreferredSize ();
+
+	w = Math.max (d.width, w);
+	h = Math.max (d.height, h);
       }
 
-  int cnum = parent.getComponentCount();
+    int real_rows = rows;
+    int real_cols = cols;
+    if (real_rows == 0)
+      real_rows = (num + real_cols - 1) / real_cols;
+    else
+      real_cols = (num + real_rows - 1) / real_rows;
 
-  if (rows > 0)
-    {
-      nrows = rows;
-      ncols = cnum / nrows;
-      if ((cnum % nrows) != 0)
-        ++ncols;
-    }
-  else
-    {
-      ncols = cols;
-      nrows = cnum / ncols;
-      if ((cnum % ncols) != 0)
-        ++nrows;
-    }
+    Insets ins = parent.getInsets ();
+    // We subtract out an extra gap here because the gaps are only
+    // between cells.
+    w = ins.left + ins.right + real_rows * (w + hgap) - hgap;
+    h = ins.top + ins.bottom + real_cols * (h + vgap) - vgap;
+    return new Dimension (w, h);
+  }
 
-  Insets ins = parent.getInsets();
+  /**
+   * @serial The number of columns in the grid.
+   */
+  private int cols;
 
-  int width = (ncols * col_width) + ((ncols + 1) * hgap) + ins.left +
-              ins.right;
-  int height = (nrows * row_height) + ((nrows + 1) * vgap) + ins.top +
-               ins.bottom;
+  /**
+   * @serial The number of rows in the grid.
+   */
+  private int rows;
 
-  return(new Dimension(width, height));
+  /**
+   * @serial The horizontal gap between columns
+   */
+  private int hgap;
+
+  /**
+   * @serial The vertical gap between rows
+   */
+  private int vgap;
 }
-
-/*************************************************************************/
-
-/**
-  * Calculates the minimum size of this layout for the specified container.
-  * This will calculate using the minimum size of the components in the
-  * container, the horizontal and vertical padding of this layout, and
-  * the container inset values.
-  *
-  * @param parent The container to calculate the minimum layout size for.
-  */
-public Dimension
-minimumLayoutSize(Container parent)
-{
-  return(calcLayoutSize(parent, true));
-}
-
-/*************************************************************************/
-
-/**
-  * Calculates the preferred size of this layout for the specified container.
-  * This will calculate using the preferred size of the components in the
-  * container, the horizontal and vertical padding of this layout, and
-  * the container inset values.
-  *
-  * @param parent The container to calculate the preferred layout size for.
-  */
-public Dimension
-preferredLayoutSize(Container parent)
-{
-  return(calcLayoutSize(parent, false));
-}
-
-/*************************************************************************/
-
-/**
-  * Lays out the specified container using the constraints in this object.
-  * The free space in the container is divided evenly into the specified
-  * number of rows and columns in this object.
-  *
-  * @param parent The container to layout.
-  */
-public void
-layoutContainer(Container parent)
-{
-  Insets ins = parent.getInsets();
-  Dimension psize = parent.getSize();
-  int cnum = parent.getComponentCount();
-  if (cnum == 0)
-    return;
-
-  int nrows, ncols;
-  if (rows > 0)
-    {
-      if (cnum < rows)
-        nrows = cnum;
-      else
-        nrows = rows;
-
-      ncols = cnum / nrows;
-      if ((cnum % nrows) != 0)
-        ++ncols;
-    }
-  else
-    {
-      if (cnum < cols)
-        ncols = cnum;
-      else
-        ncols = cols;
-
-      nrows = cnum / ncols;
-      if ((cnum % ncols) != 0)
-        ++nrows;
-    }
-
-  int freew = psize.width - (ins.left + ins.right + ((ncols + 1) * hgap));
-  int freeh = psize.height - (ins.top + ins.bottom + ((nrows + 1) * vgap));
-  if ((freew < 0) || (freeh < 0))
-    return; // Give up
-
-  int col_width = freew / ncols;
-  int row_height = freew / nrows;
-
-  Component[] clist = parent.getComponents();
-  int cur_row = 1;
-  int cur_col = 1;
-  for (int i = 0; i < clist.length; i++)
-    {
-      // FIXME: What do we do about components that would be smaller
-      // than their minimum size.
-      int new_width, new_height, new_x, new_y;
-     
-      Dimension maxsize = clist[i].getMaximumSize();
-      if (maxsize.width > col_width)
-        new_width = col_width;
-      else
-        new_width = maxsize.width;
-
-      if (maxsize.height > row_height)
-        new_height = row_height;
-      else
-        new_height = maxsize.height; 
-
-      new_x = ins.left + (cur_col * col_width) + ((cur_col + 1) * hgap);
-      new_y = ins.top + (cur_row * row_height) + ((cur_row + 1) * vgap);
-
-      clist[i].setLocation(new_x, new_y);
-      clist[i].setSize(new_width, new_height);
-
-      ++cur_col;
-      if (cur_col == ncols)
-        {
-          ++cur_row;
-          cur_col = 1;
-        }
-    }
-}
-
-/*************************************************************************/
-
-/**
-  * Returns a string representation of this object.
-  *
-  * @return A string representation of this object.
-  */
-public String
-toString()
-{
-  return(getClass().getName() + "(rows=" + getRows() + ",cols=" + getColumns() +
-         ",hgap=" + getHgap() + ",vgap=" + getVgap() + ")");
-}
-
-} // class GridLayout
-

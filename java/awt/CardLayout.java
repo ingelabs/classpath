@@ -1,5 +1,6 @@
-/* CardLayout.java -- Layout manager for a card stack
-   Copyright (C) 1999 Free Software Foundation, Inc.
+// CardLayout.java - Card-based layout engine
+
+/* Copyright (C) 1999, 2000, 2002  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -29,500 +30,361 @@ package java.awt;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.io.Serializable;
 
-/**
-  * This class is a layout manager that treats components as cards in
-  * a stack.  Only one is visible at a time.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public class CardLayout implements LayoutManager2, java.io.Serializable
-{
-
-/*
- * Static Variables
+/** This class implements a card-based layout scheme.  Each included
+ * component is treated as a card.  Only one card can be shown at a
+ * time.  This class includes methods for changing which card is
+ * shown.
+ *
+ * @author Tom Tromey <tromey@redhat.com>
+ * @author Aaron M. Renn (arenn@urbanophile.com)
  */
-
-// Layout size constants
-private static final int PREF = 0;
-private static final int MAX = 1;
-private static final int MIN = 2;
-
-// Serialization constant
-private static final long serialVersionUID = -4328196481005934313L;
-
-/*************************************************************************/
-
-/*
- * Instance Variables
- */
-
-/**
-  * @serial Horitzontal gap value.
-  */
-private int hgap;
-
-/**
-  * @serial Vertical gap value.
-  */
-private int vgap;
-
-/**
-  * @serial Table of named components.
-  */
-private Hashtable tab = new Hashtable();
-
-/*************************************************************************/
-
-/*
- * Constructors
- */
-
-/**
-  * Initializes a new instance of <code>CardLayout</code> with horizontal
-  * and vertical gaps of 0.
-  */
-public
-CardLayout()
+public class CardLayout implements LayoutManager2, Serializable
 {
-  this(0,0);
-}
+  /**
+   * Initializes a new instance of <code>CardLayout</code> with horizontal
+   * and vertical gaps of 0.
+   */
+  public CardLayout ()
+  {
+    this (0, 0);
+  }
 
-/*************************************************************************/
+  /**
+   * Create a new <code>CardLayout</code> object with the specified
+   * horizontal and vertical gaps.
+   * @param hgap The horizontal gap
+   * @param vgap The vertical gap
+   */
+  public CardLayout (int hgap, int vgap)
+  {
+    this.hgap = hgap;
+    this.vgap = vgap;
+    this.tab = new Hashtable ();
+  }
 
-/**
-  * Initializes a new instance of <code>CardLayout</code> with the specified
-  * horizontal and vertical gaps.
-  *
-  * @param hgap The horizontal gap.
-  * @param vgap The vertical gap.
-  */
-public
-CardLayout(int hgap, int vgap)
-{
-  this.hgap = hgap;
-  this.vgap = vgap;
-}
+  /** Add a new component to the layout.  The constraint must be a
+   * string which is used to name the component.  This string can
+   * later be used to refer to the particular component.
+   * @param comp The component to add
+   * @param constraints The name by which the component can later be called
+   * @exception IllegalArgumentException If `constraints' is not a
+   * <code>String</code>
+   */
+  public void addLayoutComponent (Component comp, Object constraints)
+  {
+    if (! (constraints instanceof String))
+      throw new IllegalArgumentException ("Object " + constraints
+					  + " is not a string");
+    tab.put (constraints, comp);
+  }
 
-/*************************************************************************/
+  /** Add a new component to the layout.  The name can be used later
+   * to refer to the component.
+   * @param name The name by which the component can later be called
+   * @param comp The component to add
+   * @deprecated This method is deprecated in favor of
+   * <code>addLayoutComponent(Component, Object)</code>.
+   */
+  public void addLayoutComponent (String name, Component comp)
+  {
+    addLayoutComponent (comp, name);
+  }
 
-/*
- * Instance Variables
- */
+  /** Cause the first component in the container to be displayed.
+   * @param parent The parent container
+   */
+  public void first (Container parent)
+  {
+    gotoComponent (parent, FIRST, null);
+  }
 
-/**
-  * Returns the horitzontal gap value.
-  *
-  * @return The horitzontal gap value.
-  */
-public int
-getHgap()
-{
-  return(hgap);
-}
+  /** Return this layout manager's horizontal gap.  */
+  public int getHgap ()
+  {
+    return hgap;
+  }
 
-/*************************************************************************/
+  /** Return this layout manager's x alignment.  This method always
+   * returns Component.CENTER_ALIGNMENT.
+   * @param parent Container using this layout manager instance
+   */
+  public float getLayoutAlignmentX (Container parent)
+  {
+    return Component.CENTER_ALIGNMENT;
+  }
 
-/**
-  * Sets the horizontal gap to the specified value.
-  *
-  * @param hgap The new horizontal gap.
-  */
-public void
-setHgap(int hgap)
-{
-  this.hgap = hgap;
-}
+  /** Returns this layout manager's y alignment.  This method always
+   * returns Component.CENTER_ALIGNMENT.
+   * @param parent Container using this layout manager instance
+   */
+  public float getLayoutAlignmentY (Container parent)
+  {
+    return Component.CENTER_ALIGNMENT;
+  }
 
-/*************************************************************************/
+  /** Return this layout manager's vertical gap.  */
+  public int getVgap ()
+  {
+    return vgap;
+  }
 
-/**
-  * Returns the vertical gap value.
-  *
-  * @return The vertical gap value.
-  */
-public int
-getVgap()
-{
-  return(vgap);
-}
+  /** Invalidate this layout manager's state.  */
+  public void invalidateLayout (Container target)
+  {
+    // Do nothing.
+  }
 
-/*************************************************************************/
+  /** Cause the last component in the container to be displayed.
+   * @param parent The parent container
+   */
+  public void last (Container parent)
+  {
+    gotoComponent (parent, LAST, null);
+  }
 
-/**
-  * Sets the vertical gap to the specified value.
-  *
-  * @param vgap The new vertical gap value.
-  */
-public void
-setVgap(int vgap)
-{
-  this.vgap = vgap;
-}
+  /**
+   * Lays out the container.  This is done by resizing the child components
+   * to be the same size as the parent, less insets and gaps.
+   *
+   * @param parent The parent container.
+   */ 
+  public void layoutContainer (Container parent)
+  {
+    int width = parent.width;
+    int height = parent.height;
 
-/*************************************************************************/
+    Insets ins = parent.getInsets ();
 
-/**
-  * Adds the specified component to this object's table of components.
-  * Doing this allows random access by name.
-  *
-  * @param component The component to add.
-  * @param name The name of the component, which must be a <code>String</code>.
-  *
-  * @exception IllegalArgumentException If the name object is not a
-  * <code>String</code>.
-  */
-public void
-addLayoutComponent(Component component, Object name)
-{
-  if (!(name instanceof String))
-    throw new IllegalArgumentException("Name must a string");
+    int num = parent.ncomponents;
+    Component[] comps = parent.component;
 
-  tab.put(name, component);
-}
+    int x = ins.left + hgap;
+    int y = ins.top + vgap;
+    width = width - 2 * hgap - ins.left - ins.right;
+    height = height - 2 * vgap - ins.top - ins.bottom;
 
-/*************************************************************************/
+    for (int i = 0; i < num; ++i)
+      comps[i].setBounds (x, y, width, height);
+  }
 
-/**
-  * Adds the specified component to this object's table of components.
-  * Doing this allows random access by name.
-  *
-  * @param name The name of the component.
-  * @param component The component to add.
-  *
-  * @deprecated This method is deprecated in favor of
-  * <code>addLayoutComponent(Component, Object)</code>.
-  */
-public void
-addLayoutComponent(String name, Component component)
-{
-  addLayoutComponent(component, name);
-}
+  /** Get the maximum layout size of the container.
+   * @param target The parent container
+   */
+  public Dimension maximumLayoutSize (Container target)
+  {
+    // The JCL says that this returns Integer.MAX_VALUE for both
+    // dimensions.  But that just seems wrong to me.
+    return getSize (target, MAX);
+  }
 
-/*************************************************************************/
+  /** Get the minimum layout size of the container.
+   * @param target The parent container
+   */
+  public Dimension minimumLayoutSize (Container target)
+  {
+    return getSize (target, MIN);
+  }
 
-/**
-  * Removes the specified component from the table of internal names.
-  *
-  * @param Component The component to remove.
-  */
-public void
-removeLayoutComponent(Component component)
-{
-  Enumeration keys = tab.keys();
-  while (keys.hasMoreElements())
-    {
-      String name = (String)keys.nextElement();
-      Object obj = tab.get(name);
+  /** Cause the next component in the container to be displayed.  If
+   * this current card is the  last one in the deck, the first
+   * component is displayed.
+   * @param parent The parent container
+   */
+  public void next (Container parent)
+  {
+    gotoComponent (parent, NEXT, null);
+  }
 
-      if (obj == component)
-        {
-          tab.remove(name);
-          return;
-        }
-    }
-}
+  /** Get the preferred layout size of the container.
+   * @param target The parent container
+   */
+  public Dimension preferredLayoutSize (Container parent)
+  {
+    return getSize (parent, PREF);
+  }
 
-/*************************************************************************/
+  /** Cause the previous component in the container to be displayed.
+   * If this current card is the first one in the deck, the last
+   * component is displayed.
+   * @param parent The parent container
+   */
+  public void previous (Container parent)
+  {
+    gotoComponent (parent, PREV, null);
+  }
 
-// Internal layout size calculator
-private Dimension
-layoutSize(Container parent, int type)
-{
-  int width = 0, height = 0;
-
-  Component[] clist = parent.getComponents();
-  if (clist.length > 0)
-    for (int i = 0; i < clist.length; i++)
+  /** Remove the indicated component from this layout manager.
+   * @param comp The component to remove
+   */
+  public void removeLayoutComponent (Component comp)
+  {
+    Enumeration e = tab.keys ();
+    while (e.hasMoreElements ())
       {
-        Component comp = clist[i];
-        Dimension dim = null;
+	Object key = e.nextElement ();
+	if (tab.get (key) == comp)
+	  {
+	    tab.remove (key);
+	    break;
+	  }
+      }
+  }
 
-        if (type == PREF)
-           dim = comp.getPreferredSize();
-        else if (type == MAX)
-           dim = comp.getMaximumSize();
-        else if (type == MIN)
-           dim = comp.getMinimumSize();
+  /** Set this layout manager's horizontal gap.
+   * @param hgap The new gap
+   */
+  public void setHgap (int hgap)
+  {
+    this.hgap = hgap;
+  }
 
-        if (dim.width > width)
-          width = dim.width;
-        if (dim.height > height)
-          width = dim.height;
+  /** Set this layout manager's vertical gap.
+   * @param vgap The new gap
+   */
+  public void setVgap (int vgap)
+  {
+    this.vgap = vgap;
+  }
+
+  /** Cause the named component to be shown.  If the component name is
+   * unknown, this method does nothing.
+   * @param parent The parent container
+   * @param name The name of the component to show
+   */
+  public void show (Container parent, String name)
+  {
+    Object target = tab.get (name);
+    if (target != null)
+      gotoComponent (parent, NONE, (Component) target);
+  }
+
+  /**
+   * Returns a string representation of this layout manager.
+   *
+   * @return A string representation of this object.
+   */
+  public String toString ()
+  {
+    return getClass ().getName () + "[" + hgap + "," + vgap + "]";
+  }
+
+  // This implements first(), last(), next(), and previous().
+  private void gotoComponent (Container parent, int what,
+			      Component target)
+  {
+    int num = parent.ncomponents;
+    // This is more efficient than calling getComponents().
+    Component[] comps = parent.component;
+    int choice = -1;
+
+    if (what == FIRST)
+      choice = 0;
+    else if (what == LAST)
+      choice = num - 1;
+    else if (what >= 0)
+      choice = what;
+
+    for (int i = 0; i < num; ++i)
+      {
+	// If TARGET is set then we are looking for a specific
+	// component.
+	if (target != null)
+	  {
+	    if (target == comps[i])
+	      choice = i;
+	  }
+
+	if (comps[i].isVisible ())
+	  {
+	    if (what == NEXT)
+	      {
+		choice = i + 1;
+		if (choice == num)
+		  choice = 0;
+	      }
+	    else if (what == PREV)
+	      {
+		choice = i - 1;
+		if (choice < 0)
+		  choice = num - 1;
+	      }
+	    else if (choice == i)
+	      {
+		// Do nothing if we're already looking at the right
+		// component.
+		return;
+	      }
+	    comps[i].setVisible (false);
+
+	    if (choice >= 0)
+	      break;
+	  }
       }
 
-  Insets ins = parent.getInsets();
+    if (choice >= 0 && choice < num)
+      comps[choice].setVisible (true);
+  }
 
-  width += (ins.left + ins.right);
-  height += (ins.top + ins.bottom);
+  // Compute the size according to WHAT.
+  private Dimension getSize (Container parent, int what)
+  {
+    int w = 0, h = 0, num = parent.ncomponents;
+    Component[] comps = parent.component;
 
-  return(new Dimension(width, height));
-}
-
-/*************************************************************************/
-
-/**
-  * Returns the preferred size of the container for supporting this 
-  * layout.
-  *
-  * @param parent The parent container.
-  */
-public Dimension
-preferredLayoutSize(Container parent)
-{
-  return(layoutSize(parent, PREF));
-}
-
-/*************************************************************************/
-
-/**
-  * Returns the minimum size of the container for supporting this 
-  * layout.
-  *
-  * @param parent The parent container.
-  */
-public Dimension
-minimumLayoutSize(Container parent)
-{
-  return(layoutSize(parent, MIN));
-}
-
-/*************************************************************************/
-
-/**
-  * Returns the maximum size of the container for supporting this 
-  * layout.
-  *
-  * @param parent The parent container.
-  */
-public Dimension
-maximumLayoutSize(Container parent)
-{
-  return(layoutSize(parent, MAX));
-}
-
-/*************************************************************************/
-
-/**
-  * Returns the X axis alignment, which is a <code>float</code> indicating
-  * where along the X axis this container wishs to position its layout.
-  * 0 indicates align to the left, 1 indicates align to the right, and 0.5
-  * indicates align to the center.
-  *
-  * @param parent The parent container.
-  *
-  * @return The X alignment value.
-  */
-public float
-getLayoutAlignmentX(Container parent)
-{
-  return(parent.getAlignmentX());
-}
-
-/*************************************************************************/
-
-/**
-  * Returns the Y axis alignment, which is a <code>float</code> indicating
-  * where along the Y axis this container wishs to position its layout.
-  * 0 indicates align to the top, 1 indicates align to the bottom, and 0.5
-  * indicates align to the center.
-  *
-  * @param parent The parent container.
-  *
-  * @return The Y alignment value.
-  */
-public float
-getLayoutAlignmentY(Container parent)
-{
-  return(parent.getAlignmentY());
-}
-
-/*************************************************************************/
-
-/**
-  * Instructs this object to discard any layout information it might
-  * have cached.
-  *
-  * @param parent The parent container.
-  */
-public void
-invalidateLayout(Container parent)
-{
-}
-
-/*************************************************************************/
-
-/**
-  * Goes to the first card in the container.
-  *
-  * @param parent The parent container.
-  */
-public void
-first(Container parent)
-{
-  Component[] clist = parent.getComponents();
-  if (clist.length > 0)
-    {
-      for (int i = 0; i < clist.length; i++)
-        clist[i].setVisible(false);
-
-      clist[0].setVisible(true);
-    }
-}
-
-/*************************************************************************/
-
-/**
-  * Goes to the last card in the container.
-  *
-  * @param parent The parent container.
-  */
-public void
-last(Container parent)
-{
-  Component[] clist = parent.getComponents();
-  if (clist.length > 0)
-    {
-      for (int i = 0; i < clist.length; i++)
-        clist[i].setVisible(false);
-
-      clist[clist.length-1].setVisible(true);
-    }
-}
-
-/*************************************************************************/
-
-/**
-  * Goes to the next card in the container.  If this current card is the
-  * last one in the deck, the first component is displayed.
-  *
-  * @param parent The parent container.
-  */
-public void
-next(Container parent)
-{
-  Component[] clist = parent.getComponents();
-  if (clist.length > 0)
-    {
-      for (int i = 0; i < clist.length; i++)
-        {
-          if (clist[i].isVisible())
-            {
-               clist[i].setVisible(false);
-
-               if ((i + 1) == clist.length)
-                 clist[0].setVisible(true);
-               else
-                 clist[i+1].setVisible(true);
-
-               break;
-            }
-        }
-    }
-}
-
-/*************************************************************************/
-
-/**
-  * Goes to the next card in the container.  If this current card is the
-  * first one in the deck, the last component is displayed.
-  *
-  * @param parent The parent container.
-  */
-public void
-previous(Container parent)
-{
-  Component[] clist = parent.getComponents();
-  if (clist.length > 0)
-    {
-      for (int i = 0; i < clist.length; i++)
-        {
-          if (clist[i].isVisible())
-            {
-               clist[i].setVisible(false);
-
-               if (i == 0)
-                 clist[clist.length-1].setVisible(true);
-               else
-                 clist[i-1].setVisible(true);
-
-               break;
-            }
-        }
-    }
-}
-
-/*************************************************************************/
-
-/**
-  * Displays the specified component that was previous added by name
-  * using the <code>addLayoutComponent()</code> method.  If the named
-  * component doesn't exist, this method returns silently.
-  *
-  * @param parent The parent container.
-  * @param name The name of the component to display.
-  */
-public void
-show(Container parent, String name)
-{
-  Component comp = (Component)tab.get(name);
-  if (comp == null)
-    return;
-
-  Component[] clist = parent.getComponents();
-  if (clist.length > 0)
-    {
-      for (int i = 0; i < clist.length; i++)
-        {
-          if (clist[i] == comp)
-            continue;
-
-          if (clist[i].isVisible())
-            clist[i].setVisible(false);
-        }
-    }
-}
-
-/*************************************************************************/
-
-/**
-  * Lays out the container.  This is done by resizing the child components
-  * to be the same size as the parent, less insets and gaps.
-  *
-  * @param parent The parent container.
-  */ 
-public void
-layoutContainer(Container parent)
-{
-  Insets ins = parent.getInsets();
-  Dimension dim = parent.getSize();
-  Component[] clist = parent.getComponents();
-
-  if (clist.length > 0)
-    for (int i = 0; i < clist.length; i++)
+    for (int i = 0; i < num; ++i)
       {
-        int x = ins.left + hgap;
-        int y = ins.top + vgap;
-        int width = dim.width - (ins.left + ins.right + hgap);
-        int height = dim.height - (ins.top + ins.bottom + vgap);
+	Dimension d;
 
-        clist[i].setLocation(x, y);
-        clist[i].setSize(width, height);
+	if (what == MIN)
+	  d = comps[i].getMinimumSize ();
+	else if (what == MAX)
+	  d = comps[i].getMaximumSize ();
+	else
+	  d = comps[i].getPreferredSize ();
+
+	w = Math.max (d.width, w);
+	h = Math.max (d.height, h);
       }
+
+    Insets i = parent.getInsets ();
+    w += 2 * hgap + i.right + i.left;
+    h += 2 * vgap + i.bottom + i.top;
+
+    // Handle overflow.
+    if (w < 0)
+      w = Integer.MAX_VALUE;
+    if (h < 0)
+      h = Integer.MAX_VALUE;
+
+    return new Dimension (w, h);
+  }
+
+  /**
+   * @serial Horizontal gap value.
+   */
+  private int hgap;
+
+  /**
+   * @serial Vertical gap value.
+   */
+  private int vgap;
+
+  /**
+   * @serial Table of named components.
+   */
+  private Hashtable tab;
+
+  // These constants are used by the private gotoComponent method.
+  private int FIRST = 0;
+  private int LAST = 1;
+  private int NEXT = 2;
+  private int PREV = 3;
+  private int NONE = 4;
+
+  // These constants are used by the private getSize method.
+  private int MIN = 0;
+  private int MAX = 1;
+  private int PREF = 2;
 }
-
-/*************************************************************************/
-
-/**
-  * Returns a string representation of this layout manager.
-  *
-  * @return A string representation of this object.
-  */
-public String
-toString()
-{
-  return(getClass().getName());
-}
-
-} // class CardLayout 
-
