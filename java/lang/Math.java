@@ -55,7 +55,7 @@ public final class Math
   {
     if (Configuration.INIT_LOAD_LIBRARY)
       {
-	System.loadLibrary ("javalangmath");
+	System.loadLibrary ("javalang");
       }
   }
 

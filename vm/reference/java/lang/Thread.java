@@ -171,7 +171,7 @@ public class Thread implements Runnable {
 		this(null,toRun,name);
 	}
 
-	private Thread(ThreadGroup group, String name) {
+	public Thread(ThreadGroup group, String name) {
 		this(group,null,name);
 	}
 

@@ -1,10 +1,10 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
 if CREATE_JNI_LIBRARIES
-SUBDIRS = jni lib vmi
+SUBDIRS = fdlibm jni 
 else
 if CREATE_CNI_LIBRARIES
-SUBDIRS = cni
+SUBDIRS = fdlibm cni
 else
 SUBDIRS =
 endif
