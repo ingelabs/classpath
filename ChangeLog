@@ -1,4 +1,9 @@
-2004-08-25 Sven de Marothy <sven@physto.se>
+2004-08-25  Mark Wielaard  <mark@klomp.org>
+
+	* java/awt/geom/Arc2D.java (ArcIterator): Make package private.
+
+2004-08-25  Sven de Marothy <sven@physto.se>
+
 	* java/awt/geom/Arc2D.java
 	Reformatted.
 	setArc(): Correct documentation to say 'upper left corner'.

@@ -692,7 +692,7 @@ public abstract class Arc2D extends RectangularShape
    *
    * @author Eric Blake (ebb9@email.byu.edu)
    */
-  private static final class ArcIterator implements PathIterator
+  static final class ArcIterator implements PathIterator
   {
     /** The current iteration. */
     private int current;
