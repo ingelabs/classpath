@@ -169,7 +169,7 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected DialogPeer createDialog (Dialog d)
     {
-      GtkDialogPeer dp = new GtkDialogPeer (d);
+      GtkDialogPeer dp = new GtkDialogPeer (d, d.getParent ().getPeer ());
       setComponentState (d, dp);
       return dp;
     }
