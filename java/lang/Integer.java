@@ -167,7 +167,14 @@ public final class Integer extends Number {
     int result = 0;
 
     while (i < s.length()) {
-      int c = Character.digit(s.charAt(i++), radix);
+    // Temporary code until Character is working
+    //  int c = Character.digit(s.charAt(i++), radix);
+    if ((s.charAt(i) < '0') || (s.charAt(i) > '9'))
+      throw new NumberFormatException("Not a valid digit");
+    int c = s.charAt(i) - '0';
+    ++i;
+    // End temp code
+    
       if (c == -1) 
 	throw new NumberFormatException("char at index " + i + 
 					" is not of specified radix");
