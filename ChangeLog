@@ -1,3 +1,7 @@
+2004-12-23  Mark Wielaard  <mark@klomp.org>
+
+	* include/java_lang_Double.h: Regenerated.
+
 2004-12-23  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/plaf/metal/MetalTheme.java

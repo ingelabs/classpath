@@ -13,6 +13,18 @@ extern "C"
 JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble (JNIEnv *env, jclass, jstring);
 JNIEXPORT jstring JNICALL Java_java_lang_Double_toString (JNIEnv *env, jclass, jdouble, jboolean);
 JNIEXPORT void JNICALL Java_java_lang_Double_initIDs (JNIEnv *env, jclass);
+#undef java_lang_Double_serialVersionUID
+#define java_lang_Double_serialVersionUID -9172774392245257468LL
+#undef java_lang_Double_MAX_VALUE
+#define java_lang_Double_MAX_VALUE 0x1.fffffffffffffp+1023
+#undef java_lang_Double_MIN_VALUE
+#define java_lang_Double_MIN_VALUE 0x0.0000000000001p-1022
+#undef java_lang_Double_NEGATIVE_INFINITY
+#define java_lang_Double_NEGATIVE_INFINITY
+#undef java_lang_Double_POSITIVE_INFINITY
+#define java_lang_Double_POSITIVE_INFINITY
+#undef java_lang_Double_NaN
+#define java_lang_Double_NaN
 
 #ifdef __cplusplus
 }
