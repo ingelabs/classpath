@@ -1,0 +1,105 @@
+GNU Classpath Unicode Attribute Database
+----------------------------------------
+java.lang.Character allows one to retrieve information on all 38,887
+characters of the Unicode character set.  This is a lot of data.  The
+database specification outlined here is meant to be fast, small, and
+upgradable to new versions of the Unicode 2 specification (minus
+Character.Subset information) by running a script on the data files
+that the Unicode Consortium distributes.
+
+The database consists of three files:
+1) character.uni (main database of character attributes)
+2) block.uni (mappings from each block to offset in char file)
+3) titlecase.uni (list of characters where titlecase differs from uppercase)
+
+File sizes for Unicode 2.1.2 spec
+---------------------------------
+character.uni: 16359 bytes
+block.uni    :  4995 bytes
+titlecase.uni:    16 bytes
+
+All quantities are unsigned unless otherwise specified.
+All quantities are stored in big endian format.
+
+character.uni
+-------------
+Some characters in the Unicode specification have an entry in the
+character.uni file (characters in compressed blocks do not).  Characters
+are stored sequentially, based on the Unicode character number, and
+there are no null entries.  Each entry consists of 7 bytes.
+
+C = Category
+N = Numerical Decimal Value
+    (0xFFFF if unused, 0xFFFE if not representable as nonnegative 
+     integer value.  If category is "Nd", then this is also the
+     decimal digit value.)
+S = No-break version of a space (1/0)
+U = Uppercase mapping (0 = no mapping)
+L = Lowercase mapping (0 = no mapping)
+x = Empty
+
+ xxSCCCCC   NNNNNNNN   NNNNNNNN   UUUUUUUU   UUUUUUUU
+\________/ \________/ \________/ \________/ \________/
+  byte 6     byte 5     byte 4     byte 3     byte 2
+
+ LLLLLLLL   LLLLLLLL
+\________/ \________/
+  byte 1     byte 0
+
+ranges of values in Unicode 2.1.2 spec
+
+C = 0..28 (Sun uses 0..28, and skips 17, so that's what we do too)
+B = 1..69
+N = 0..10000
+D = 0..9
+
+block.uni
+---------
+Characters within the Unicode specification tend to come in blocks --
+sets of sequential characters.  The Classpath Unicode database takes
+advantage of this property.  Each entry in the block.uni file consists
+of 9 bytes.  Entries are stored sequentially, based on the Unicode
+character number which starts a block.  If the compressed bit is set,
+then there is only one entry for this block in the character.uni file.
+That entry in the character.uni file represents the attributes of all
+the characters of that block.
+
+Note: For Unicode 2.1.2, compressed blocks are mandatory for:
+
+U+4E00 - U+9FFF: The CJK Ideographs Area
+U+AC00 - U+D7A3: The Hangul Syllables Area
+U+D800 - U+DFFF: The Surrogates Area
+U+E000 - U+F8FF: The Private Use Area
+U+F900 - U+FAFF: CJK Compatibility Ideographs
+
+S = Unicode character which represents start of block
+E = Unicode character which represents end of block
+O = Offset of this block within the character.uni file
+C = Compressed
+x = Empty
+
+ SSSSSSSS   SSSSSSSS   EEEEEEEE   EEEEEEEE   xxxxxxxC
+\________/ \________/ \________/ \________/ \________/
+  byte 8     byte 7     byte 6     byte 5     byte 4
+
+ OOOOOOOO   OOOOOOOO   OOOOOOOO   OOOOOOOO  
+\________/ \________/ \________/ \________/ 
+  byte 3     byte 2     byte 1     byte 0  
+
+titlecase.uni
+-------------
+Characters in which the titlecase differs from the uppercase are
+stored in titlecase.uni.  There are only four characters in the
+Unicode 2.1.2 specification which fit this description, and it's
+doubtful that any others will ever be added to the specification.
+However, we should be able to support more, without changing
+java.lang.Character, and this is why we have not hardcoded these
+values.  Each entry is 4 bytes.  Entries are stored sequentially,
+based on the Unicode character number.
+
+U = Unicode character which has a titlecase
+T = Unicode mapping to titlecase
+
+ UUUUUUUU   UUUUUUUU   TTTTTTTT   TTTTTTTT
+\________/ \________/ \________/ \________/
+  byte 3     byte 2     byte 1     byte 0
