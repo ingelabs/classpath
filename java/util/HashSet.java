@@ -45,8 +45,8 @@ import java.io.ObjectOutputStream;
  * HashSet is a part of the JDK1.2 Collections API.
  *
  * @author      Jon Zeppieri
- * @version     $Revision: 1.6 $
- * @modified    $Id: HashSet.java,v 1.6 2001-02-15 06:26:31 bryce Exp $
+ * @version     $Revision: 1.7 $
+ * @modified    $Id: HashSet.java,v 1.7 2001-02-16 04:51:24 bryce Exp $
  */
 public class HashSet extends AbstractSet
   implements Set, Cloneable, Serializable
@@ -128,7 +128,14 @@ public class HashSet extends AbstractSet
    */
   public Object clone()
   {
-    HashSet copy = new HashSet();
+    HashSet copy = null;
+    try
+      {
+	copy = (HashSet) super.clone();
+      }
+    catch (CloneNotSupportedException x)
+      {
+      }
     copy.map = (HashMap) map.clone();
     return copy;
   }
