@@ -30,8 +30,7 @@ public final class Integer extends Number {
   }
 
   public boolean equals(Object obj) {
-    if (obj == null || (!(obj instanceof Integer))) return false;
-    return (value == ((Integer)obj).intValue());
+    return (obj instanceof Integer && value == ((Integer)obj).value);
   }
 
   public static Integer getInteger(String nm) {
