@@ -1553,7 +1553,7 @@ Date formatting and parsing is handled by the
 @code{java.text.SimpleDateFormat} class in most locales.  This class is
 configured by attaching an instance of the @code{java.text.DateFormatSymbols}
 class.  That class simply reads properties from our locale specific
-resource bundle.  The following items are requiered (refer to the 
+resource bundle.  The following items are required (refer to the 
 documentation of the @code{java.text.DateFormatSymbols} class for details
 io what the actual values should be):
 
@@ -1577,18 +1577,14 @@ locale.
 @code{DateFormat.LONG}
 @item fullDateFormat - The format string for dates used by 
 @code{DateFormat.FULL}
-@item defaultDateFormat - The format string for dates used by 
-@code{DateFormat.DEFAULT}
-@item shortDateFormat - The format string for times used by 
+@item shortTimeFormat - The format string for times used by 
 @code{DateFormat.SHORT}
-@item mediumDateFormat - The format string for times used by 
+@item mediumTimeFormat - The format string for times used by 
 @code{DateFormat.MEDIUM}
-@item longDateFormat - The format string for times used by 
+@item longTimeFormat - The format string for times used by 
 @code{DateFormat.LONG}
-@item fullDateFormat - The format string for times used by 
+@item fullTimeFormat - The format string for times used by 
 @code{DateFormat.FULL}
-@item defaultDateFormat - The format string for times used by 
-@code{DateFormat.DEFAULT}
 @end itemize
 
 Note that it may not be possible to use this mechanism for all locales.
