@@ -164,7 +164,7 @@ _javaio_skip_bytes(JNIEnv *env, jint fd, jlong num_bytes)
   int   result;
 
 // fprintf(stderr,"call %s (line %d):\n",__FUNCTION__,__LINE__);
-  TARGET_NATIVE_FILE_SEEK_CURRENT(fd,JNI_JLONG_CONST_0,current_offset,result);
+  TARGET_NATIVE_FILE_SEEK_CURRENT(fd,TARGET_NATIVE_MATH_INT_INT64_CONST_0,current_offset,result);
   if (result != TARGET_NATIVE_OK)
     JCL_ThrowException(env,
                        "java/io/IOException",
@@ -178,7 +178,7 @@ _javaio_skip_bytes(JNIEnv *env, jint fd, jlong num_bytes)
 
   return(TARGET_NATIVE_MATH_INT_INT64_SUB(new_offset,current_offset));
 #else /* not WITHOUT_FILESYSTEM */
-  return(JNI_JLONG_CONST_0);
+  return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
@@ -207,7 +207,7 @@ _javaio_get_file_length(JNIEnv *env, jint fd)
 
   return(length);
 #else /* not WITHOUT_FILESYSTEM */
-  return(JNI_JLONG_CONST_0);
+  return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 

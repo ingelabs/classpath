@@ -341,27 +341,27 @@ Java_java_io_File_lengthInternal(JNIEnv *env, jobject obj, jstring name)
   filename = (*env)->GetStringUTFChars(env, name, 0);
   if (filename == NULL)
     {
-      return(JNI_JLONG_CONST_0);
+      return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
     }
  
   /* open file for reading, get size and close file */
   TARGET_NATIVE_FILE_OPEN_READ(filename,tmpfd,result);
   if (result != TARGET_NATIVE_OK)
     {
-      return(JNI_JLONG_CONST_0);
+      return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
     }
   TARGET_NATIVE_FILE_SIZE(tmpfd,length,result);  
   if (result != TARGET_NATIVE_OK)
     {
       TARGET_NATIVE_FILE_CLOSE(tmpfd,result);
-      return(JNI_JLONG_CONST_0);
+      return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
     }
   TARGET_NATIVE_FILE_CLOSE(tmpfd,result);
   (*env)->ReleaseStringUTFChars(env, name, filename);
 
-  return ((result == TARGET_NATIVE_OK)?length:JNI_JLONG_CONST_0);
+  return ((result == TARGET_NATIVE_OK)?length:TARGET_NATIVE_MATH_INT_INT64_CONST_0);
 #else /* not WITHOUT_FILESYSTEM */
-  return(JNI_JLONG_CONST_0);
+  return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
@@ -394,9 +394,9 @@ Java_java_io_File_lastModifiedInternal(JNIEnv *env, jobject obj, jstring name)
   TARGET_NATIVE_FILE_GET_LAST_MODIFIED(filename,mtime,result);
   (*env)->ReleaseStringUTFChars(env, name, filename);
 
-  return ((result == TARGET_NATIVE_OK)?mtime:JNI_JLONG_CONST_0);
+  return ((result == TARGET_NATIVE_OK)?mtime:TARGET_NATIVE_MATH_INT_INT64_CONST_0);
 #else /* not WITHOUT_FILESYSTEM */
-  return(JNI_JLONG_CONST_0);
+  return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
