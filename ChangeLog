@@ -1,3 +1,9 @@
+2001-02-16  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* java/io/BlockDataException.java: Removed.
+	* java/io/ObjectInputStream.java (readObject): Throw 
+	StreamCorruptedException, not BlockDataException.
+
 2001-02-15  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	* java/util/HashMap.java: Rewritten.
