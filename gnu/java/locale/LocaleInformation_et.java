@@ -357,7 +357,6 @@ public class LocaleInformation_et extends ListResourceBundle
   {
     { "decimalSeparator", "," },
     { "groupingSeparator", "\u00a0" },
-    { "localPatternChars", "GanjkHmsSEDFwWxhKzAeugXZ" },
     { "shortMonths", shortMonths },
     { "months", months },
     { "shortWeekdays", shortWeekdays },
