@@ -67,7 +67,7 @@ public class ZipFile implements ZipConstants
    *
    */
 
-  public static final int OPEN_DELETE = 0x2;
+  public static final int OPEN_DELETE = 0x4;
 
   private String name;
   RandomAccessFile raf;
