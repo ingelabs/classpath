@@ -65,7 +65,7 @@ public final class JobPrioritySupported extends IntegerSyntax
    *
    * @param obj the object to test
    *
-   * @returns true if both objects are equal, false otherwise.
+   * @return true if both objects are equal, false otherwise.
    */
   public boolean equals(Object obj)
   {

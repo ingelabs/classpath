@@ -1,3 +1,30 @@
+2004-04-27  Michael Koch  <konqueror@gmx.de>
+
+	* javax/print/attribute/standard/Copies.java,
+	javax/print/attribute/standard/DateTimeAtCompleted.java,
+	javax/print/attribute/standard/DateTimeAtCreation.java,
+	javax/print/attribute/standard/DateTimeAtProcessing.java,
+	javax/print/attribute/standard/DocumentName.java,
+	javax/print/attribute/standard/JobHoldUntil.java,
+	javax/print/attribute/standard/JobImpressions.java,
+	javax/print/attribute/standard/JobImpressionsCompleted.java,
+	javax/print/attribute/standard/JobKOctets.java,
+	javax/print/attribute/standard/JobKOctetsProcessed.java,
+	javax/print/attribute/standard/JobMediaSheets.java,
+	javax/print/attribute/standard/JobMediaSheetsCompleted.java,
+	javax/print/attribute/standard/JobMessageFromOperator.java,
+	javax/print/attribute/standard/JobName.java,
+	javax/print/attribute/standard/JobOriginatingUserName.java,
+	javax/print/attribute/standard/JobPriority.java,
+	javax/print/attribute/standard/JobPrioritySupported.java,
+	javax/print/attribute/standard/NumberOfDocuments.java,
+	javax/print/attribute/standard/NumberOfInterveningJobs.java,
+	javax/print/attribute/standard/NumberUp.java,
+	javax/print/attribute/standard/OutputDeviceAssigned.java,
+	javax/print/attribute/standard/PagesPerMinute.java,
+	javax/print/attribute/standard/PagesPerMinuteColor.java:
+	Fixed @return tag all over.
+
 2004-04-26  Michael Koch  <konqueror@gmx.de>
 
 	* javax/print/event/PrintEvent.java,
