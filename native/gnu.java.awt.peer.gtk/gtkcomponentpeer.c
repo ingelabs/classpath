@@ -146,6 +146,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setVisible
   else
     gtk_widget_hide (widget);
 
+  gdk_flush ();
   gdk_threads_leave ();
 }
 
