@@ -1131,8 +1131,8 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
          break;
 
       default:
-        JCL_ThrowException(env, SOCKET_EXCEPTION, strerror(errno)); 
-         return(0);
+        JCL_ThrowException(env, SOCKET_EXCEPTION, "No such option" ); 
+        return(0);
     }
 
   return(0);

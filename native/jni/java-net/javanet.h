@@ -48,9 +48,9 @@ executable file might be covered by the GNU General Public License. */
 #define SOCKOPT_SO_BINDADDR 15
 #define SOCKOPT_SO_LINGER 128
 #define SOCKOPT_SO_TIMEOUT 4102
-#define SOCKOPT_SO_SNDBUF 4
+#define SOCKOPT_SO_SNDBUF 4097
 #define SOCKOPT_SO_RCVBUF 4098
-#define SOCKOPT_SO_REUSEADDR 4097
+#define SOCKOPT_SO_REUSEADDR 4
 #define SOCKOPT_IP_MULTICAST_IF 16
 
 /* Internal option identifiers. Not needed for JDK compatibility */
