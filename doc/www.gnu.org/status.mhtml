@@ -4,9 +4,8 @@
 <header "GNU Classpath Status">
 
 <package java.applet>
-  <status <smith>>
-    Work has started on java.applet as well as a free implementation
-    of appletviewer.
+  <status <arenn>>
+    This package is done, but untested.  We still need an appletviewer.
   </status>
 </package>
 
@@ -89,11 +88,9 @@
 </package>
 
 <package java.security>
-  <status <arenn>>
-    The interface only packages (java.security.acl and
-    java.security.interfaces) are complete. Work has been suspended
-    here in order to concentrate on classes relevant to the first
-    development release.
+  <status <benvenuto>>
+    All done for 1.1, but not tested and not fully integrated with the
+    rest of Classpath and Japhar.
   </status>
 </package>
 
