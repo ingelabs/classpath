@@ -89,6 +89,21 @@ loadTable()
 
 /*************************************************************************/
 
+/*
+ * Constructors
+ */
+public
+EncoderEightBitLookup(OutputStream out)
+{
+  super(out);
+}
+
+/*************************************************************************/
+
+/*
+ * Instance Methods
+ */
+
 /**
   * This method returns the number of bytes that can be converted out of
   * the <code>len</code> chars in the specified array starting at
@@ -132,21 +147,6 @@ convertToBytes(char[] buf, int buf_offset, int len, byte[] bbuf,
 }
 
 /*************************************************************************/
-
-/*
- * Constructors
- */
-public
-EncoderEightBitLookup(OutputStream out)
-{
-  super(out);
-}
-
-/*************************************************************************/
-
-/*
- * Instance Methods
- */
 
 /**
   * Write the requested number of chars to the underlying stream

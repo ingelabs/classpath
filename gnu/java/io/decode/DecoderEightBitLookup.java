@@ -56,7 +56,18 @@ protected static char[] lookup_table;
 /*************************************************************************/
 
 /*
- * Class Methods
+ * Constructors
+ */
+public
+DecoderEightBitLookup(InputStream in)
+{
+  super(in);
+}
+
+/*************************************************************************/
+
+/*
+ * Instance Methods
  */
 
 /**
@@ -87,21 +98,6 @@ convertToChars(byte[] buf, int buf_offset, int len, char[] cbuf,
 }
 
 /*************************************************************************/
-
-/*
- * Constructors
- */
-public
-DecoderEightBitLookup(InputStream in)
-{
-  super(in);
-}
-
-/*************************************************************************/
-
-/*
- * Instance Methods
- */
 
 /**
   * Read the requested number of chars from the underlying stream
