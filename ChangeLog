@@ -1,3 +1,31 @@
+2003-06-18  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/plaf/basic/BasicGraphicsUtils.java: Re-written
+	from scratch.
+
+	* javax/swing/plaf/basic/doc-files/BasicGraphicsUtils-1.png,
+	javax/swing/plaf/basic/doc-files/BasicGraphicsUtils-2.png,
+	javax/swing/plaf/basic/doc-files/BasicGraphicsUtils-3.png,
+	javax/swing/plaf/basic/doc-files/BasicGraphicsUtils-4.png,
+	javax/swing/plaf/basic/doc-files/BasicGraphicsUtils-5.png,
+	javax/swing/plaf/basic/doc-files/BasicGraphicsUtils-6.png,
+	javax/swing/plaf/basic/doc-files/BasicGraphicsUtils-7.png:
+	New image.
+	
+	* javax/swing/plaf/basic/BasicButtonUI.java (paint, paintText):
+	Don't use methods that are not part of the official API.
+
+	* javax/swing/plaf/basic/BasicButtonUI.java (getPreferredSize),
+	javax/swing/plaf/basic/BasicCheckBoxUI.java (getPreferredSize),
+	javax/swing/plaf/basic/BasicRadioButtonUI.java (getPreferredSize),
+	javax/swing/plaf/basic/BasicToggleButtonUI.java (getPreferredSize):
+	Use BasicGraphicsUtils.getPreferredButtonSize instead of a method
+	that is not part of the official API.
+
+	* javax/swing/plaf/basic/BasicLabelUI.java (getPreferredSize):
+	Replace call to method that is not part of the official API
+	with a dummy value.
+	
 2003-06-18  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/security/x509/X509Certificate.java:
