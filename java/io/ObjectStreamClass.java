@@ -31,6 +31,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Hashtable;
+import java.util.Vector;
 
 import gnu.java.io.NullOutputStream;
 import gnu.java.lang.reflect.TypeSignature;
@@ -56,7 +57,7 @@ public class ObjectStreamClass implements Serializable
 
     if( osc != null )
       return osc;
-    else if( ! Serializable.class.isAssignableFrom( cl ) )
+    else if( ! (Serializable.class).isAssignableFrom( cl ) )
       return null;
     else
     {
@@ -121,7 +122,7 @@ public class ObjectStreamClass implements Serializable
 
 
   /**
-     <em>JCL specific</em>
+     <em>GNU $classpath specific</em>
 
      Returns true iff the class that this
      <code>ObjectStreamClass</code> represents has the following
@@ -140,7 +141,7 @@ public class ObjectStreamClass implements Serializable
   
 
   /**
-     <em>JCL specific</em>
+     <em>GNU $classpath specific</em>
 
      Returns true iff the class that this
      <code>ObjectStreamClass</code> represents implements
@@ -157,7 +158,7 @@ public class ObjectStreamClass implements Serializable
   
 
   /**
-     <em>JCL specific</em>
+     <em>GNU $classpath specific</em>
 
      Returns true iff the class that this
      <code>ObjectStreamClass</code> represents implements
@@ -181,10 +182,43 @@ public class ObjectStreamClass implements Serializable
   }
 
   
+  // returns an array of ObjectStreamClasses that represent the super
+  // classes of CLAZZ and CLAZZ itself in order from most super to
+  // CLAZZ.  ObjectStreamClass[0] is the highest superclass of CLAZZ
+  // that is serializable.
+  static ObjectStreamClass[] getObjectStreamClasses( Class clazz )
+  {
+    ObjectStreamClass osc = ObjectStreamClass.lookup( clazz );
+
+    ObjectStreamClass[] ret_val;
+
+    if( osc == null )
+      return new ObjectStreamClass[0];
+    else
+    {
+      Vector oscs = new Vector();
+
+      while( osc != null )
+      {
+	oscs.addElement( osc );
+	osc = osc.getSuper();
+      }
+
+      int count = oscs.size();
+      ObjectStreamClass[] sorted_oscs = new ObjectStreamClass[ count ];
+      
+      for( int i = count - 1; i >= 0; i-- )
+	sorted_oscs[ count - i - 1 ] = (ObjectStreamClass)oscs.elementAt( i );
+      
+      return sorted_oscs;
+    }
+  }
+
+
   // Returns an integer that consists of bit-flags that indicate
   // properties of the class represented by this ObjectStreamClass.
   // The bit-flags that could be present are those defined in
-  // ObjectStreamConstants that begin with SC_
+  // ObjectStreamConstants that begin with `SC_'
   int getFlags()
   {
     return myFlags;
@@ -194,21 +228,33 @@ public class ObjectStreamClass implements Serializable
   // Returns the serializable (non-static and non-transient) Field's
   // of the class represented by this ObjectStreamClass.  The Field's
   // are sorted by name.
-  Field[] getFields()
+  OSCField[] getFields()
   {
     return myFields;
   }
   
   
-  // Returns the distance from this represented class to the highest
-  // Serializable class in this represented class's inheritence
-  // hierarchy.
-  int getDistanceFromTop()
+  ObjectStreamClass( String name, long uid, byte flags, OSCField[] fields )
   {
-    return myDistanceFromTop;
+    myName = name;
+    myUID = uid;
+    myFlags = flags;
+    myFields = fields;
   }
+  
 
-
+  void setClass( Class clazz )
+  {
+    myClass = clazz;
+  }
+  
+  
+  void setSuperclass( ObjectStreamClass osc )
+  {
+    mySuper = osc;
+  }
+  
+  
   private ObjectStreamClass( Class cl )
   {
     myUID = 0;
@@ -220,20 +266,15 @@ public class ObjectStreamClass implements Serializable
     setFields( cl );
     setUID( cl );
     mySuper = lookup( cl.getSuperclass() );
-
-    if( mySuper == null )
-      myDistanceFromTop = 0;
-    else
-      myDistanceFromTop = mySuper.myDistanceFromTop + 1;
   }
 
 
   // Sets bits in myFlags according to features of CL.
   private void setFlags( Class cl )
   {
-    if( java.io.Externalizable.class.isAssignableFrom( cl ) )
+    if( (java.io.Externalizable.class).isAssignableFrom( cl ) )
       myFlags |= ObjectStreamConstants.SC_EXTERNALIZABLE;
-    else if( java.io.Serializable.class.isAssignableFrom( cl ) )
+    else if( (java.io.Serializable.class).isAssignableFrom( cl ) )
       // only set this bit if CL is NOT Externalizable
       myFlags |= ObjectStreamConstants.SC_SERIALIZABLE;
 
@@ -257,7 +298,7 @@ public class ObjectStreamClass implements Serializable
   // myClass.  Sorting is done using ourSerializableFieldComparator
   private void setFields( Class cl )
   {
-    if( ! isSerializable() )
+    if( ! isSerializable() || isExternalizable() )
     {
       myFields = ourEmptyFields;
       return;
@@ -279,11 +320,12 @@ public class ObjectStreamClass implements Serializable
     }
     
     // make a copy of serializable (non-null) fields
-    myFields = new Field[ num_good_fields ];
+    myFields = new OSCField[ num_good_fields ];
     for( int from=0, to=0; from < all_fields.length; from++ )
       if( all_fields[from] != null )
       {
-	myFields[to] = all_fields[from];
+	Field f = all_fields[from];
+	myFields[to] = new OSCField( f.getName(), f.getType() );
 	to++;
       }
 
@@ -439,7 +481,7 @@ public class ObjectStreamClass implements Serializable
   private static native boolean hasClassInitializer( Class clazz );
   
 
-  private void DEBUG( String s )
+  private static void DEBUGln( String s )
   {
     System.out.println( s );
   }
@@ -454,18 +496,17 @@ public class ObjectStreamClass implements Serializable
   private static final String ourWriteMethodName = "writeObject";
   private static final
   Class[] ourWriteMethodArgTypes = { java.io.ObjectOutputStream.class };
-  private static final Field[] ourEmptyFields = {};
+  private static final OSCField[] ourEmptyFields = {};
   private static final String ourClassInitializerName = "<clinit>";
   private static final String ourClassInitializerTypecode = "()V";
   private static final String ourConstructorName = "<init>";
 
   private ObjectStreamClass mySuper;
-  private int myDistanceFromTop;
   private Class myClass;
   private String myName;
   private long myUID;
   private byte myFlags;
-  private Field[] myFields;
+  private OSCField[] myFields;
 
   
   static
@@ -478,58 +519,60 @@ public class ObjectStreamClass implements Serializable
 
     ourClassLookupTable = new Hashtable();
     ourNullOutputStream = new NullOutputStream();
+    ourSerializableFieldComparator = new SerializableFieldComparator();    
+    ourInterfaceComparartor = new InterfaceComparator();
+    ourMemberComparator = new MemberComparator();
+  }
+}
 
-    // Field's are compared by name, but primitive Field's come before
-    // non-primitive Field's.
-    ourSerializableFieldComparator =
-      new Comparator()
-      {
-	public int compare( Object o1, Object o2 )
-        {
-	  Field a = (Field)o1;
-	  Field b = (Field)o2;
-	  boolean a_is_primitive = a.getType().isPrimitive();
-	  boolean b_is_primitive = b.getType().isPrimitive();
-	  
-	  if( a_is_primitive && !b_is_primitive )
-	    return -1;
 
-	  if( !a_is_primitive && b_is_primitive )
-	    return 1;
-
-	  return a.getName().compareTo( b.getName() );
-	}
-      };
-
-    // interfaces are compared only by name
-    ourInterfaceComparartor =
-      new Comparator()
-      {
-	public int compare( Object o1, Object o2 )
-        {
-	  return ((Class)o1).getName().compareTo( ((Class)o2).getName() );
-	}
-      };
+// OSCField's are compared by name, but primitive Field's come before
+// non-primitive Field's.
+class SerializableFieldComparator implements Comparator
+{
+  public int compare( Object o1, Object o2 )
+  {
+    OSCField a = (OSCField)o1;
+    OSCField b = (OSCField)o2;
+    boolean a_is_primitive = a.getType().isPrimitive();
+    boolean b_is_primitive = b.getType().isPrimitive();
     
+    if( a_is_primitive && !b_is_primitive )
+      return -1;
 
-    // Members (Methods and Constructors) are compared first by name,
-    // conflicts are resolved by comparing type signatures 
-    ourMemberComparator = 
-      new Comparator()
-      {
-	public int compare( Object o1, Object o2 )
-        {
-	  Member m1 = (Member)o1;
-	  Member m2 = (Member)o2;
+    if( !a_is_primitive && b_is_primitive )
+      return 1;
 
-	  int comp = m1.getName().compareTo( m2.getName() );
-	  
-	  if( comp == 0 )
-	    return TypeSignature.getEncodingOfMember( m1 ).
-	      compareTo( TypeSignature.getEncodingOfMember( m2 ) );
-	  else
-	    return comp;
-	}
-      };
+    return a.getName().compareTo( b.getName() );
+  }
+}
+
+
+// interfaces are compared only by name
+class InterfaceComparator implements Comparator
+{
+  public int compare( Object o1, Object o2 )
+  {
+    return ((Class)o1).getName().compareTo( ((Class)o2).getName() );
+  }
+}
+
+
+// Members (Methods and Constructors) are compared first by name,
+// conflicts are resolved by comparing type signatures 
+class MemberComparator implements Comparator
+{
+  public int compare( Object o1, Object o2 )
+  {
+    Member m1 = (Member)o1;
+    Member m2 = (Member)o2;
+    
+    int comp = m1.getName().compareTo( m2.getName() );
+    
+    if( comp == 0 )
+      return TypeSignature.getEncodingOfMember( m1 ).
+	compareTo( TypeSignature.getEncodingOfMember( m2 ) );
+    else
+      return comp;
   }
 }
