@@ -59,6 +59,63 @@
 <box>
 {#FAQINDEX#}
 
+<faq-section name="introduction">
+<faq question="What is GNU Classpath?">
+<p>GNU Classpath is a set of essential libraries for supporting
+the Java programming language.</p>
+
+<p>Classpath serves the same role that <a
+href="http://www.gnu.org/software/libc/libc.html">libc</a> has for C,
+but is much richer in functionality. The broadness of the standard
+library is an important reason why Java has been so successful. For
+example, the library includes frameworks to convert between character
+encodings, for accessing relational databases, for building Graphical
+User Interfaces, for encryption, for logging, and for numerous other
+tasks that are needed to build complex applications.</p>
+
+</faq>
+
+<faq question="Why Java?">
+<p>On the GNU operating system, we want to run software independent of
+the programming language in which it was written. Because Java is
+widespread, and because Java has some nice features, we want to
+support Java as well.</p>
+
+</faq>
+
+<faq question="But isn't Java free already?">
+<p>Sun Microsystems, the company who has created Java, currently
+distributes the &#x201c;Java Development Kit&#x201d; and &#x201c;Java
+Runtime Environment&#x201d; at no cost. The former even comes with the
+source code of the standard class library. However, the &#x201c;Sun
+Community Source License&#x201d; <a
+href="http://www.gnu.org/licenses/license-list.html#SunCommunitySourceLicense">does
+not grant essential freedoms</a>, for example the right to distribute
+a modified version of the code.</p>
+
+<p>Therefore, Sun&#x2019;s implementation does not qualify as Free
+Software.</p>
+
+
+</faq>
+
+<faq question="Is GNU Classpath all that is needed for running Java programs?">
+<p>GNU Classpath is a free implementation of Java&#x2019;s standard
+library.  To execute Java programs, it is also necessary to have a
+Java Virtual Machine (JVM). This component manages memory, enforces
+security restrictions, compiles Java bytecodes to the instruction set
+of your computer, and provides other runtime services.  There exist
+several projects for <createlink name="free JVMs" url="stories.html#jvm">. Most use GNU Classpath as the
+up-stream source for their library.</p>
+
+<p>Java programs can also be compiled &#x201c;ahead of time,&#x201d;
+like C++ or other compiled languages. The GNU Compiler Collection
+(GCC) does this, and its Java library is mostly derived from GNU
+Classpath.</p>
+</faq>
+
+</faq-section>
+
 <faq-section name="licensing">
 
 <faq question="Under which licence is GNU Classpath released?">
@@ -119,6 +176,18 @@ service, please write to <a href="mailto:compliance-lab@fsf.org">compliance-lab@
 </faq-section>
 
 <faq-section name="Classpath Development">
+
+<faq question="I would like to contribute, where shall I start?">
+<p>See the <a
+href="docs/">documentation page</a>, especially the <a
+href="docs/hacking.html">GNU
+Classpath Hacker&#x2019;s Guide</a>.
+</faq>
+
+<faq question="Can I look as Sun's sources to get inspiration?">
+No. In fact, if you read Sun's sources we can't accept any code from you.
+</faq>
+
 <faq question="Why do I have to give the copyright to the FSF?">
 Some contributors of Classpath might be annoyed if their work was being
 used under conditions that are not according to the terms of the license.
