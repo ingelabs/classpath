@@ -36,7 +36,7 @@ import java.util.Random;
 public final class Math {
 
   static {
-    System.loadLibrary("java_lang_Math");
+    System.loadLibrary("javalangmath");
   }
 
   static Random rand;
