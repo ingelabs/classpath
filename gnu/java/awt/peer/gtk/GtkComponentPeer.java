@@ -151,7 +151,7 @@ public class GtkComponentPeer extends GtkGenericPeer
   
   public boolean isFocusTraversable () 
     {
-      return false;
+      return true;
     }
 
   public Dimension minimumSize () 
@@ -182,9 +182,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   native public void repaint (long tm, int x, int y, int width, int height);
 
-  public void requestFocus () 
-    {
-    }
+  native public void requestFocus ();
 
   public void reshape (int x, int y, int width, int height) 
     {
