@@ -1,5 +1,13 @@
 2004-01-25  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/URLConnection.java
+	(fileNameMap): Don't initialize. Initialization should be lazy.
+	(guessContentTypeFromName): Get filename map from getFileNameMap().
+	(getFileNameMap): Made it synchronized. Initialize fileNameMapa if
+	needed.
+
+2004-01-25  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/FileDescriptor.java
 	(open): Javadoc added.
 	(close): Likewise.
