@@ -647,10 +647,15 @@ public class TitledBorder
   
   
   /**
-   * Determines the insets of this border.
+   * Measures the width of this border.
    *
    * @param c the component whose border is to be measured.
-   * @return the insets of this border.
+   *
+   * @return an Insets object whose <code>left</code>, <code>right</code>,
+   *         <code>top</code> and <code>bottom</code> fields indicate the
+   *         width of the border at the respective edge.
+   *
+   * @see #getBorderInsets(java.awt.Component, java.awt.Insets)
    */
   public Insets getBorderInsets(Component c)
   {
@@ -659,14 +664,18 @@ public class TitledBorder
   
 
   /**
-   * Determines the insets of this border, storing the result
-   * into the given Insets object.
+   * Measures the width of this border, storing the results into a
+   * pre-existing Insets object.
    *
-   * @param insets an Insets object for holding the insets of this
-   *        border.
+   * @param insets an Insets object for holding the result values.
+   *        After invoking this method, the <code>left</code>,
+   *        <code>right</code>, <code>top</code> and
+   *        <code>bottom</code> fields indicate the width of the
+   *        border at the respective edge.
    *
-   * @return the same object that was passed for <code>insets</code>,
-   *         but with changed field values.
+   * @return the same object that was passed for <code>insets</code>.
+   *
+   * @see #getBorderInsets()
    */
   public Insets getBorderInsets(Component c, Insets insets)
   {
