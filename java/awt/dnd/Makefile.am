@@ -4,6 +4,7 @@ SUBDIRS = peer
 EXTRA_DIST = \
 Autoscroll.java \
 DnDConstants.java \
+DnDEventMulticaster.java \
 DragGestureEvent.java \
 DragGestureListener.java \
 DragGestureRecognizer.java \
