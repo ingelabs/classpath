@@ -1,3 +1,8 @@
+2003-07-16  Mark Wielaard  <mark@klomp.org>
+
+	* java/util/logging/Handler.java (isLoggable): Check record level
+	smaller or equal.
+
 2003-07-16  Torsten Rupp  <rupp@lisa.aicas.com>
 
         * native/jni/classpath/jnilink.c:
