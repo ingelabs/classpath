@@ -4495,23 +4495,23 @@ p   * <li>the set of backward traversal keys
         int id = e.getID ();
 
         int oldMods = 0;
-        int mods = ie.getModifiers ();
+        int mods = ie.getModifiersEx ();
 
-        if ((mods & InputEvent.BUTTON2_MASK) != 0)
+        if ((mods & InputEvent.BUTTON2_DOWN_MASK) != 0)
           oldMods |= Event.META_MASK;
-        else if ((mods & InputEvent.BUTTON3_MASK) != 0)
+        else if ((mods & InputEvent.BUTTON3_DOWN_MASK) != 0)
           oldMods |= Event.ALT_MASK;
 
-        if ((mods & (InputEvent.SHIFT_MASK | InputEvent.SHIFT_DOWN_MASK)) != 0)
+        if ((mods & InputEvent.SHIFT_DOWN_MASK) != 0)
           oldMods |= Event.SHIFT_MASK;
 
-        if ((mods & (InputEvent.CTRL_MASK | InputEvent.CTRL_DOWN_MASK)) != 0)
+        if ((mods & InputEvent.CTRL_DOWN_MASK) != 0)
           oldMods |= Event.CTRL_MASK;
 
-        if ((mods & (InputEvent.META_MASK | InputEvent.META_DOWN_MASK)) != 0)
+        if ((mods & InputEvent.META_DOWN_MASK) != 0)
           oldMods |= Event.META_MASK;
 
-        if ((mods & (InputEvent.ALT_MASK | InputEvent.ALT_DOWN_MASK)) != 0)
+        if ((mods & InputEvent.ALT_DOWN_MASK) != 0)
           oldMods |= Event.ALT_MASK;
 
         if (e instanceof MouseEvent)

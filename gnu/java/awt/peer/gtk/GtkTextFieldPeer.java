@@ -162,7 +162,7 @@ public class GtkTextFieldPeer extends GtkTextComponentPeer
 
         if (!ke.isConsumed ()
             && ke.getKeyCode () == KeyEvent.VK_ENTER)
-          postActionEvent (getText (), ke.getModifiers ());
+          postActionEvent (getText (), ke.getModifiersEx ());
       }
 
     super.handleEvent (e);

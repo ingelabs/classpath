@@ -525,11 +525,11 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetDispatchKeyEvent
   event->key.send_event = 0;
   event->key.time = (guint32) when;
 
-  if (mods & AWT_SHIFT_MASK)
+  if (mods & AWT_SHIFT_DOWN_MASK)
     event->key.state |= GDK_SHIFT_MASK;
-  if (mods & AWT_CTRL_MASK)
+  if (mods & AWT_CTRL_DOWN_MASK)
     event->key.state |= GDK_CONTROL_MASK;
-  if (mods & AWT_ALT_MASK)
+  if (mods & AWT_ALT_DOWN_MASK)
     event->key.state |= GDK_MOD1_MASK;
 
   /* This hack is needed because the AWT has no notion of num lock.

@@ -285,10 +285,9 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager
     // Check if this event represents a menu shortcut.
 
     // MenuShortcuts are activated by Ctrl- KeyEvents, only on KEY_PRESSED.
-    int modifiers = e.getModifiers ();
+    int modifiers = e.getModifiersEx ();
     if (e.getID() == KeyEvent.KEY_PRESSED
-        && ((modifiers & KeyEvent.CTRL_MASK) != 0
-            || (modifiers & KeyEvent.CTRL_DOWN_MASK) != 0))
+        && (modifiers & KeyEvent.CTRL_DOWN_MASK) != 0)
       {
         Window focusedWindow = getGlobalFocusedWindow ();
         if (focusedWindow instanceof Frame)
@@ -324,10 +323,8 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager
                             //        modifier.
                             if (shortcut.getKey () == e.getKeyCode ()
                                 && ((shortcut.usesShiftModifier ()
-                                     && ((modifiers & KeyEvent.SHIFT_MASK) != 0
-                                         || (modifiers & KeyEvent.SHIFT_DOWN_MASK) != 0))
+                                     && (modifiers & KeyEvent.SHIFT_DOWN_MASK) != 0)
                                     || (! shortcut.usesShiftModifier ()
-                                        && (modifiers & KeyEvent.SHIFT_MASK) == 0
                                         && (modifiers & KeyEvent.SHIFT_DOWN_MASK) == 0)))
                               {
                                 item.dispatchEvent (new ActionEvent (item,
@@ -354,7 +351,7 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager
     // KEY_PRESSED TAB is a focus traversal keystroke, we also need to
     // consume KEY_RELEASED and KEY_TYPED TAB key events).
     AWTKeyStroke oppositeKeystroke = AWTKeyStroke.getAWTKeyStroke (e.getKeyCode (),
-                                                                   e.getModifiers (),
+                                                                   e.getModifiersEx (),
                                                                    !(e.id == KeyEvent.KEY_RELEASED));
 
     Set forwardKeystrokes = comp.getFocusTraversalKeys (KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS);

@@ -84,10 +84,10 @@ public class GtkButtonPeer extends GtkComponentPeer
 	p.translate(((Component) me.getSource()).getX(),
 	            ((Component) me.getSource()).getY());
 	if (!me.isConsumed ()
-	    && (me.getModifiers () & MouseEvent.BUTTON1_MASK) != 0
+	    && (me.getModifiersEx () & MouseEvent.BUTTON1_DOWN_MASK) != 0
 	    && awtComponent.getBounds().contains(p))
 	  postActionEvent (((Button)awtComponent).getActionCommand (), 
-			   me.getModifiers ());
+			   me.getModifiersEx ());
       }
 
     if (e.getID () == KeyEvent.KEY_PRESSED)
@@ -96,7 +96,7 @@ public class GtkButtonPeer extends GtkComponentPeer
 	if (!ke.isConsumed () && ke.getKeyCode () == KeyEvent.VK_SPACE)
           {
             postActionEvent (((Button) awtComponent).getActionCommand (),
-                             ke.getModifiers ());
+                             ke.getModifiersEx ());
             gtkActivate ();
           }
       }

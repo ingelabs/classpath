@@ -1,3 +1,30 @@
+2004-07-31  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	PR AWT/16040
+	* gnu/java/awt/peer/gtk/GtkButtonPeer.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c: Likewise.
+	* gnu/java/awt/peer/gtk/GtkListPeer.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkTextFieldPeer.java: Likewise.
+	* java/awt/AWTKeyStroke.java: Remove old modifier masks.
+	* java/awt/Component.java: Replace old modifier masks with new
+	ones.
+	* java/awt/Container.java: Call getModifiersEx, not
+	getModifiers.
+	* java/awt/DefaultKeyboardFocusManager.java: Likewise.  Remove
+	old modifier masks.
+	* javax/swing/JMenuItem.java: Replace old button masks with new
+	ones.
+	* javax/swing/KeyStroke.java: Call getModifiersEx, not
+	getModifiers.
+	* javax/swing/SwingUtilities.java: Likewise.
+	* javax/swing/plaf/basic/BasicButtonListener.java: Likewise.
+	* javax/swing/plaf/basic/BasicInternalFrameUI.java: Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEvents.c: Replace old
+	mask macros with new ones.
+	* native/jni/gtk-peer/gtkpeer.h: Replace old button and modifier mask
+	macros with new ones representing new masks.
+
 2004-07-31  David Jee  <djee@redhat.com>
 
 	* java/awt/DefaultKeyboardFocusManager.java

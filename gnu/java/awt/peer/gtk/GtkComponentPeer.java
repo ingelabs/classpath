@@ -283,12 +283,12 @@ public class GtkComponentPeer extends GtkGenericPeer
         break;
       case KeyEvent.KEY_PRESSED:
         ke = (KeyEvent) event;
-        gtkWidgetDispatchKeyEvent (ke.getID (), ke.getWhen (), ke.getModifiers (),
+        gtkWidgetDispatchKeyEvent (ke.getID (), ke.getWhen (), ke.getModifiersEx (),
                                    ke.getKeyCode (), ke.getKeyLocation ());
         break;
       case KeyEvent.KEY_RELEASED:
         ke = (KeyEvent) event;
-        gtkWidgetDispatchKeyEvent (ke.getID (), ke.getWhen (), ke.getModifiers (),
+        gtkWidgetDispatchKeyEvent (ke.getID (), ke.getWhen (), ke.getModifiersEx (),
                                    ke.getKeyCode (), ke.getKeyLocation ());
         break;
       }
