@@ -197,7 +197,7 @@ close() throws IOException
   *
   * @exception IOException If an error occurs
   */
-public synchronized void
+public void
 mark(int readlimit) throws IOException
 {
   synchronized (lock) {
@@ -277,7 +277,7 @@ markSupported()
   *
   * @exception IOException If an error occurs;
   */
-public synchronized void
+public void
 reset() throws IOException
 {
   if (markpos == -1)
@@ -286,14 +286,15 @@ reset() throws IOException
   synchronized (lock) {
 
   doing_reset = false;
-  markpos = -1;
 
   if (markbuf == null)
     {
       pos = markpos;  
+      markpos = -1;
     }
   else
     {
+      markpos = -1;
       if (in.markSupported())
         {
           in.reset();
