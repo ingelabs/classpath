@@ -1,3 +1,14 @@
+2001-04-20  Warren Levy  <warrenl@redhat.com>
+
+	* java/text/SimpleDateFormat.java
+	(indexInArray): Removed private method.
+	(processYear): Removed private method.
+	(parseLenient): Removed private method.
+	(parseLeadingZeros): Removed private method.
+	(parseStrict): Removed private method.
+	(expect): Added new private method from libgcj.
+	(parse): Merge with libgcj version with minor fixes.
+
 2001-04-18  Jochen Hoenicke  <jochen@gnu.org>
 
 	* java/util/Random.java (next): Fixed the calculation to make it 
