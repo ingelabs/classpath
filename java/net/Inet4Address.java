@@ -53,7 +53,7 @@ import java.io.ObjectStreamException;
  * Status: Believed complete and correct.
  */
 
-public final class Inet4Address extends InetAddress
+public class Inet4Address extends InetAddress
 {
   static final long serialVersionUID = 7615067291688066509L;
 
