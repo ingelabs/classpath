@@ -1,5 +1,5 @@
 /* EncoderEightBitLookup.java -- Encodes eight-bit encodings
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -63,19 +63,12 @@ public abstract class EncoderEightBitLookup extends Encoder
  * Class Variables
  */
  
-/**
-  * This is the lookup table.  Subclasses must allocate a 255 byte char
-  * array and put each Unicode character into the slot corresponding to
-  * where it is encoded.  For example, if \u3768 corresponds to 0xE3,
-  * put \3768 at index 277 (0xE3) in the lookup table.
-  */
-protected static char[] lookup_table;
 
 /**
   * This is the second generation lookup table that is loaded when the
   * class is loaded and is where the encoding actually takes place.
   */
-private static byte[] encoding_table; /* changed this from char[] to byte[] */
+private final byte[] encoding_table; /* changed this from char[] to byte[] */
 
 /*************************************************************************/
 
@@ -88,8 +81,8 @@ private static byte[] encoding_table; /* changed this from char[] to byte[] */
   * into a larger encoder table.  Yes, this is slow, but it is only done
   * the first time the class is accessed.
   */
-protected static void
-loadTable()
+private byte[]
+loadTable(char[] lookup_table)
 {
   /* determine required size of encoding_table: */
   int max = 0; 
@@ -99,16 +92,17 @@ loadTable()
       max = (c > max) ? c : max;
     }
 
-  encoding_table = new byte[max+1];
+  byte[] table = new byte[max+1];
 
   for (int i = 0; i < lookup_table.length; i++)
     {
       int c = lookup_table[i]; 
       if (c != 0) 
 	{
-	  encoding_table[c] = (byte)i;
+	  table[c] = (byte)i;
 	}
     }
+  return table;
 }
 
 /*************************************************************************/
@@ -116,10 +110,11 @@ loadTable()
 /*
  * Constructors
  */
-public
-EncoderEightBitLookup(OutputStream out)
+protected
+EncoderEightBitLookup(OutputStream out, String name, char[] table)
 {
-  super(out);
+  super(out, name);
+  encoding_table = loadTable(table);
 }
 
 /*************************************************************************/
@@ -195,5 +190,5 @@ write(char[] buf, int offset, int len) throws IOException
   out.write(bbuf);
 }
 
-} // class DecoderEightBitLookup
+} // class EncoderEightBitLookup
 

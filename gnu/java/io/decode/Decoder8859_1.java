@@ -1,5 +1,5 @@
 /* Decoder8859_1.java -- Decoder for ISO-Latin-1 Character set
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -50,13 +50,11 @@ import java.io.InputStream;
 public class Decoder8859_1 extends DecoderEightBitLookup
 {
 
-/*************************************************************************/
-
 /**
   * This is the lookup table for this encoding
   */
 
-protected static char[] lookup_table_8859_1 = { 
+private static final char[] lookup_table_8859_1 = { 
 0x0000,
 0x0001,
 0x0002,
@@ -315,22 +313,10 @@ protected static char[] lookup_table_8859_1 = {
 0x00FF
 };
 
-static
-{
-  scheme_name = "8859_1";
-  scheme_description = "ISO-8859-1 (Latin-1 character set)";
-  lookup_table = lookup_table_8859_1;
-}
-
-/*************************************************************************/
-
-/*
- * Constructors
- */
 public
 Decoder8859_1(InputStream in)
 {
-  super(in);
+  super(in, "8859_1", lookup_table_8859_1);
 }
 
 } // class Decoder8859_1

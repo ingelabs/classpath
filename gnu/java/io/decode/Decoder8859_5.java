@@ -1,5 +1,5 @@
 /* Decoder8859_5.java -- Decoder for ISO-Latin-5 Character set
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -41,7 +41,7 @@ package gnu.java.io.decode;
 import java.io.InputStream;
 
 /**
-  * This class decodes bytes in ISO-8859-3 (Latin-3) format to Unicode.
+  * This class decodes bytes in ISO-8859-5 (Latin-5) format to Unicode.
   *
   * @version 0.0
   *
@@ -50,13 +50,11 @@ import java.io.InputStream;
 public class Decoder8859_5 extends DecoderEightBitLookup
 {
 
-/*************************************************************************/
-
 /**
   * This is the lookup table for this encoding
   */
 
-protected static char[] lookup_table_8859_5 = { 
+private static final char[] lookup_table_8859_5 = { 
 // Begin range undefined in spec document I used
 0x0000,
 0x0001,
@@ -319,22 +317,10 @@ protected static char[] lookup_table_8859_5 = {
 0x045F
 };
 
-static
-{
-  scheme_name = "8859_5";
-  scheme_description = "ISO-8859-5 (Latin-5 character set)";
-  lookup_table = lookup_table_8859_5;
-}
-
-/*************************************************************************/
-
-/*
- * Constructors
- */
 public
 Decoder8859_5(InputStream in)
 {
-  super(in);
+  super(in, "8859_5", lookup_table_8859_5);
 }
 
 } // class Decoder8859_5

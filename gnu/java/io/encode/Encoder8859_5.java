@@ -1,5 +1,5 @@
 /* Encoder8859_5.java -- Encoder for ISO-Latin-5 Character set
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -41,7 +41,7 @@ package gnu.java.io.encode;
 import java.io.OutputStream;
 
 /**
-  * This class decodes bytes in ISO-8859-3 (Latin-3) format to Unicode.
+  * This class decodes bytes in ISO-8859-5 (Latin-5) format to Unicode.
   *
   * @version 0.0
   *
@@ -56,7 +56,7 @@ public class Encoder8859_5 extends EncoderEightBitLookup
   * This is the lookup table for this encoding
   */
 
-protected static char[] lookup_table_8859_5 = { 
+private static final char[] lookup_table_8859_5 = { 
 // Begin range undefined in spec document I used
 0x0000,
 0x0001,
@@ -319,22 +319,10 @@ protected static char[] lookup_table_8859_5 = {
 0x045F
 };
 
-static
-{
-  scheme_name = "8859_5";
-  scheme_description = "ISO-8859-5 (Latin-5 character set)";
-  lookup_table = lookup_table_8859_5;
-}
-
-/*************************************************************************/
-
-/*
- * Constructors
- */
 public
 Encoder8859_5(OutputStream out)
 {
-  super(out);
+  super(out, "8859_5", lookup_table_8859_5);
 }
 
 } // class Encoder8859_5

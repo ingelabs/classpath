@@ -1,5 +1,54 @@
 2004-04-23  Mark Wielaard  <mark@klomp.org>
 
+	* java/io/OutputStreamWriter.java (getEncoding): Return null when
+	out == null, otherwise call out.getSchemeName.
+	* gnu/java/io/decode/Decoder.java (scheme_name): Make non-static
+	private final.
+	(scheme_description): Removed.
+	(in): Make final.
+	(getSchemeName): Make non-static.
+	(getSchemeDescription): Removed.
+	(Decoder): Make protected and add name parameter.
+	gnu/java/io/decode/Decoder8859_1.java (lookup_table_8859_1): Make
+	private static final.
+	(static): Removed block.
+	(Decoder8859_1): Call super(in, name, table).
+	* gnu/java/io/decode/Decoder8859_2.java: Likewise.
+	* gnu/java/io/decode/Decoder8859_3.java: Likewise.
+	* gnu/java/io/decode/Decoder8859_4.java: Likewise.
+	* gnu/java/io/decode/Decoder8859_5.java: Likewise.
+	* gnu/java/io/decode/DecoderEightBitLookup.java (lookup_table): Make
+	private final.
+	(DecoderEightBitLookup): Make protected. Add name and table
+	parameters. Call super(in, name).
+	* gnu/java/io/decode/DecoderUTF8.java (static): Remove block.
+	(DecoderUTF8): Call super(in, name).
+	* gnu/java/io/encode/Encoder.java (scheme_description): Remove field.
+	(scheme_name): Make non-static private final.
+	(out): Make final.
+	(getSchemeName): Make non-static.
+	(getSchemeDescription): Removed.
+	(Encoder): Make protected and add parameter name to initialize
+	scheme_name.
+	* gnu/java/io/encode/Encoder8859_1.java (lookup_table_8859_1): Make
+	private and final.
+	(static): Remove block.
+	(Encoder8859_1): Call super(out, name, table).
+	gnu/java/io/encode/Encoder8859_2.java: Likewise.
+	gnu/java/io/encode/Encoder8859_3.java: Likewise.
+	gnu/java/io/encode/Encoder8859_4.java: Likewise.
+	gnu/java/io/encode/Encoder8859_5.java: Likewise.
+	* gnu/java/io/encode/EncoderEightBitLookup.java (lookup_table):
+	Removed field.
+	(encoding_table): Make non-static and final.
+	(loadTable): Make non-static private and return byte[] table.
+	(EncoderEightBitLookup): Add parameters name and table. Call
+	super(out, name) and initialize encoding_table with loadTable(table).
+	* gnu/java/io/encode/EncoderUTF8.java (static): Remove block.
+	(EncoderUTF8): Call super(out, name).
+
+2004-04-23  Mark Wielaard  <mark@klomp.org>
+
 	* configure.ac (AC_CHECK_HEADERS): Check for sys/filio.h.
 	* native/target/generic/target_generic_file.h
 	(TARGET_NATIVE_FILE_AVAILABLE): First include headers if they exist,

@@ -150,7 +150,7 @@ public class OutputStreamWriter extends Writer
    */
   public String getEncoding ()
   {
-    return out.getSchemeName ();
+    return out != null ? out.getSchemeName () : null;
   }
 
   /**

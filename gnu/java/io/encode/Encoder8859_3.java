@@ -1,5 +1,5 @@
 /* Encoder8859_3.java -- Encoder for ISO-Latin-3 Character set
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -56,7 +56,7 @@ public class Encoder8859_3 extends EncoderEightBitLookup
   * This is the lookup table for this encoding
   */
 
-protected static char[] lookup_table_8859_3 = { 
+private static final char[] lookup_table_8859_3 = { 
 // Begin range undefined in spec document I used
 0x0000,
 0x0001,
@@ -312,24 +312,13 @@ protected static char[] lookup_table_8859_3 = {
 0x02D9
 };
 
-static
-{
-  scheme_name = "8859_3";
-  scheme_description = "ISO-8859-3 (Latin-3 character set)";
-  lookup_table = lookup_table_8859_3;
-  EncoderEightBitLookup.loadTable();
-  // FIXME explicit super class is workaround for jikes1.15a and orp 1.0.9
-}
-
-/*************************************************************************/
-
 /*
  * Constructors
  */
 public
 Encoder8859_3(OutputStream out)
 {
-  super(out);
+  super(out, "8859_3", lookup_table_8859_3);
 }
 
 } // class Encoder8859_3

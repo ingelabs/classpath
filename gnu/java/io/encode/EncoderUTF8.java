@@ -1,5 +1,5 @@
 /* EncoderUTF8.java -- Encoding class for the UTF-8 scheme
-   Copyright (C) 1998, 2002, 2003 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002, 2003, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -53,12 +53,6 @@ import java.io.IOException;
 public class EncoderUTF8 extends Encoder
 {
 
-static
-{
-  scheme_name = "UTF8";
-  scheme_description = "UCS Transformation Format 8 (see RFC-2279)";
-}
-
 /*************************************************************************/
 
 /*
@@ -68,7 +62,7 @@ static
 public
 EncoderUTF8(OutputStream out)
 {
-  super(out);
+  super(out, "UTF8");
 }
 
 /*************************************************************************/

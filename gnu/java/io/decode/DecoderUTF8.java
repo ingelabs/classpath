@@ -1,5 +1,5 @@
 /* DecoderUTF8.java -- Decoder for the UTF-8 character encoding.
-   Copyright (C) 1998, 2003 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2003, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -55,12 +55,6 @@ import java.io.IOException;
 public class DecoderUTF8 extends Decoder
 {
 
-static
-{
-  scheme_name = "UTF8";
-  scheme_description = "UCS Transformation Format 8 (see RFC-2279)";
-}
-
 /*************************************************************************/
 
 /*
@@ -70,7 +64,7 @@ static
 public
 DecoderUTF8(InputStream in)
 {
-  super(in);
+  super(in, "UTF8");
 }
 
 /*************************************************************************/

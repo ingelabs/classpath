@@ -1,5 +1,5 @@
 /* DecoderEightBitLookup.java -- Decodes eight-bit encodings
-   Copyright (C) 1998, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -68,17 +68,18 @@ public abstract class DecoderEightBitLookup extends Decoder
   * byte in the appropriate index slot.  For example, to convert 0xE3 to
   * \u3768, put \u3768 at index 227 (0xE3) in the lookup table.
   */
-protected static char[] lookup_table;
+private final char[] lookup_table;
 
 /*************************************************************************/
 
 /*
  * Constructors
  */
-public
-DecoderEightBitLookup(InputStream in)
+protected
+DecoderEightBitLookup(InputStream in, String name, char[] table)
 {
-  super(in);
+  super(in, name);
+  this.lookup_table = table;
 }
 
 /*************************************************************************/
