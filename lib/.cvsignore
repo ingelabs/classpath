@@ -19,3 +19,5 @@ compile-classes
 mkcollections.pl
 gen_nio.sh
 classes.1
+resources
+org
