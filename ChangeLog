@@ -1,5 +1,11 @@
 2004-09-25  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JScrollPane.java
+	(getUI): New method.
+	(setUI): Likewise.
+
+2004-09-25  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JMenu.java
 	(getMenuListeners): New method.
 	(fireMenuSelected): Simplified.
