@@ -1,5 +1,10 @@
 2003-12-02  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/protocol/jar/Handler.java:
+	Reformated.
+
+2003-12-02  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/net/protocol/file/Handler.java:
 	Reformated.
 
