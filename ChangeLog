@@ -1,3 +1,8 @@
+2004-09-27  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/JTextArea.java
+	(insert): Renaming of method local variables.
+
 2004-09-27  Per Bothner  <per@bothner.com>
 
 	* java/util/Collections.java (sort):  Copy from array in forwards

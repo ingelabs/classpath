@@ -436,25 +436,25 @@ public class JTextArea extends JTextComponent
    */
   public void insert(String string, int position)
   {
-      // Retrieve the document model.
-      Document document = getDocument();
+    // Retrieve the document model.
+    Document doc = getDocument();
       
-      // Check the model and string for validity.
-      if (document == null
-	  || string == null
-	  || string.length() == 0)
-	return;
-      
-      // Insert the text into the model.
-      try
-	{
-	  document.insertString(position, string, null);
-	}
-      catch (BadLocationException exception)
-	{
-	  throw new IllegalArgumentException("The supplied position, "
-					     + position + ", was invalid.");
-	}
+    // Check the model and string for validity.
+    if (doc == null
+	|| string == null
+	|| string.length() == 0)
+      return;
+
+    // Insert the text into the model.
+    try
+      {
+	doc.insertString(position, string, null);
+      }
+    catch (BadLocationException e)
+      {
+	throw new IllegalArgumentException("The supplied position, "
+					   + position + ", was invalid.");
+      }
   }
 
   public void replaceRange(String text, int start, int end)
