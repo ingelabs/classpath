@@ -7,6 +7,7 @@ have the following installed:
         - Kaffe 1.0.5+
         - GTK+ 1.2.x
         - IBM jikes 1.0.9+
+	- libart_lgpl 2.1.0
 
 If you start from the current CVS version, you will have to run the
 following from the toplevel directory.
