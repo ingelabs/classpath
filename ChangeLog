@@ -1,5 +1,7 @@
 2003-03-29  Tom Tromey  <tromey@redhat.com>
 
+	* vm/reference/java/lang/VMClassLoader.java: Reindented.
+
 	* java/lang/ClassLoader.java (getSystemClassLoader): Fixed
 	formatting.
 	(loadClass(String,boolean)): Likewise.
