@@ -1,3 +1,8 @@
+2004-08-14  Mark Wielaard  <mark@klomp.org>
+
+	* java/lang/Rectangle.java (intersects): Check r.width and r.height
+	first.
+
 2004-08-13  Tom Tromey  <tromey@redhat.com>
 
 	* java/nio/CharBuffer.java (put): Fix typo.
