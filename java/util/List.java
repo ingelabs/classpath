@@ -311,7 +311,7 @@ public interface List extends Collection
    * @returns an array of type Object[] and length equal to the length of this
    *   list, containing the elements currently in this list, in order.
    */
-  Object[]toArray();
+  Object[] toArray();
 
   /**
    * Copy the current contents of this list into an array. If the array passed
@@ -329,5 +329,5 @@ public interface List extends Collection
    * @exception ArrayStoreException if the type of any element of the
    *   collection is not a subtype of the element type of a.
    */
-  Object[]toArray(Object[]a);
+  Object[] toArray(Object[] a);
 }
