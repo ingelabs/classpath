@@ -268,7 +268,8 @@ public final class URL implements Serializable
   {
     if (protocol == null)
       throw new MalformedURLException("null protocol");
-    this.protocol = protocol.toLowerCase();
+    protocol = protocol.toLowerCase();
+    this.protocol = protocol;
 
     if (ph != null)
       {
