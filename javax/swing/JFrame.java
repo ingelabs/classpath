@@ -66,7 +66,7 @@ public class JFrame extends Frame
 
     protected  AccessibleContext accessibleContext;
 
-    private int close_action = EXIT_ON_CLOSE;    
+    private int close_action = HIDE_ON_CLOSE;    
     
 
     /***************************************************
@@ -192,7 +192,7 @@ public class JFrame extends Frame
     return accessibleContext;
   }
   
-    int getDefaultCloseOperation()
+    public int getDefaultCloseOperation()
     {    return close_action;   }
 
     
@@ -212,7 +212,7 @@ public class JFrame extends Frame
 			{
 			case EXIT_ON_CLOSE:
 			    {
-				System.exit(1);
+				System.exit(0);
 				break;
 			    }
 			case DISPOSE_ON_CLOSE:
@@ -241,8 +241,30 @@ public class JFrame extends Frame
 	    }
     }   
  
+    /**
+     * Defines what happens when this frame is closed. Can be one off
+     * <code>EXIT_ON_CLOSE</code>,
+     * <code>DISPOSE_ON_CLOSE</code>,
+     * <code>HIDE_ON_CLOSE</code> or
+     * <code>DO_NOTHING_ON_CLOSE</code>.
+     * The default is <code>HIDE_ON_CLOSE</code>.
+     * When <code>EXIT_ON_CLOSE</code> is specified this method calls
+     * <code>SecurityManager.checkExit(0)</code> which might throw a
+     * <code>SecurityException</code>. When the specified operation is
+     * not one of the above a <code>IllegalArgumentException</code> is
+     * thrown.
+     */
+    public void setDefaultCloseOperation(int operation)
+    {
+      SecurityManager sm = System.getSecurityManager();
+      if (sm != null && operation == EXIT_ON_CLOSE)
+	sm.checkExit(0);
 
-    void setDefaultCloseOperation(int operation)
-    {  close_action = operation;   }
+      if (operation != EXIT_ON_CLOSE && operation != DISPOSE_ON_CLOSE
+	  && operation != HIDE_ON_CLOSE && operation != DO_NOTHING_ON_CLOSE)
+	throw new IllegalArgumentException("operation = " + operation);
+	  
+      close_action = operation;
+    }
 
 }

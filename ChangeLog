@@ -1,3 +1,10 @@
+2004-04-15  Mark Wielaard  <mark@klomp.org>
+
+	* javax/awt/JFrame.java (close_action): Default to HIDE_ON_CLOSE.
+	(getDefaultCloseOperation): Make public.
+	(processWindowEvent): Call System.exit(0) when HIDE_ON_CLOSE set.
+	(setDefaultCloseOperation): Make public. Check argument. Add API doc.
+
 2004-04-15  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/imageio/package.html, javax/imageio/spi/package.html,
