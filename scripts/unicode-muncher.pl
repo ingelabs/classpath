@@ -85,7 +85,7 @@ my $range = 0;
 die "Usage: $0 <UnicodeData.txt> <SpecialCasing.txt> <CharData.java>"
     unless @ARGV == 3;
 $| = 1;
-print "GNU Classpath Unicode Attribute Database Generator 2.0\n";
+print "GNU Classpath Unicode Attribute Database Generator 2.1\n";
 print "Copyright (C) 1998, 2002 Free Software Foundation, Inc.\n";
 
 # Stage 0: Parse the special casing file
@@ -398,6 +398,11 @@ package gnu.java.lang;
 public interface CharData
 {
   /**
+   * The Unicode definition file that was parsed to build this database.
+   */
+  String SOURCE = \"$ARGV[0]\";
+
+  /**
    * The character shift amount to look up the block offset. In other words,
    * <code>(char) (BLOCKS.value[ch >> SHIFT] + ch)</code> is the index where
    * <code>ch</code> is described in <code>DATA</code>.
@@ -552,7 +557,7 @@ EOF
 ;
 
   /**
-   * This is the listing of titlecase special cases (all other character
+   * This is the listing of titlecase special cases (all other characters
    * can use <code>UPPER</code> to determine their titlecase).  The listing
    * is a sorted sequence of character pairs; converting the first character
    * of the pair to titlecase produces the second character.

@@ -568,12 +568,9 @@ public final class StringBuffer implements Serializable, CharSequence
     if (len == 0)
       return "";
     // Share the char[] unless 3/4 empty.
-    if (beginIndex != 0 || (endIndex << 2) < value.length)
-      return new String(value, beginIndex, len);
-    // XXX Todo: share even when beginIndex != 0.
-    shared = true;
+    shared = (len << 2) >= value.length;
     // Package constructor avoids an array copy.
-    return new String(value, len);
+    return new String(value, beginIndex, len, shared);
   }
 
   /**
@@ -896,7 +893,7 @@ public final class StringBuffer implements Serializable, CharSequence
    * indexOf on.
    *
    * @param toffset index to start comparison at for this String
-   * @param other String to compare region to this String
+   * @param other non-null String to compare to region of this
    * @return true if regions match, false otherwise
    * @see #indexOf(String, int)
    * @see #lastIndexOf(String, int)
@@ -904,9 +901,10 @@ public final class StringBuffer implements Serializable, CharSequence
    */
   private boolean regionMatches(int toffset, String other)
   {
-    for (int index = 0, len = other.count; --len >= 0; toffset++, index++)
-      // Note that libgcj requires other.charAt() instead of other.value[].
-      if (value[toffset] != other.value[index])
+    int len = other.count;
+    int index = other.offset;
+    while (--len >= 0)
+      if (value[toffset++] != other.value[index++])
         return false;
     return true;
   }

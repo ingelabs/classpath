@@ -58,11 +58,13 @@ import gnu.java.lang.CharData;
  * <p>See <a href="http://www.unicode.org">http://www.unicode.org</a>
  * for more information on the Unicode Standard.
  *
+ * @author Tom Tromey <tromey@cygnus.com>
  * @author Paul N. Fisher
  * @author Jochen Hoenicke
  * @author Eric Blake <ebb9@email.byu.edu>
- * @since 1.0
  * @see CharData
+ * @since 1.0
+ * @status updated to 1.4
  */
 public final class Character implements Serializable, Comparable
 {
@@ -1459,6 +1461,9 @@ public final class Character implements Serializable, Comparable
    *
    * @param ch the character to look up
    * @return the character's attribute offset and type
+   * @see #TYPE_MASK
+   * @see #NO_BREAK_MASK
+   * @see #MIRROR_MASK
    * @see CharData#DATA
    * @see CharData#SHIFT
    */
@@ -1521,7 +1526,7 @@ public final class Character implements Serializable, Comparable
   public String toString()
   {
     // Package constructor avoids an array copy.
-    return new String(new char[] { value }, 1);
+    return new String(new char[] { value }, 0, 1, true);
   }
 
   /**
@@ -1534,7 +1539,7 @@ public final class Character implements Serializable, Comparable
   public String toString(char ch)
   {
     // Package constructor avoids an array copy.
-    return new String(new char[] { value }, 1);
+    return new String(new char[] { value }, 0, 1, true);
   }
 
   /**
@@ -2243,4 +2248,4 @@ public final class Character implements Serializable, Comparable
   {
     return compareTo((Character) o);
   }
-} //class Character
+} // class Character

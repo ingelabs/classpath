@@ -151,7 +151,8 @@ public final class Integer extends Number implements Comparable
     if (isNeg)
       buffer[--i] = '-';
 
-    return String.valueOf(buffer, i, 33 - i);
+    // Package constructor avoids an array copy.
+    return new String(buffer, i, 33 - i, true);
   }
 
   /**
@@ -508,7 +509,8 @@ public final class Integer extends Number implements Comparable
    * @param num the number
    * @param exp log2(digit) (ie. 1, 3, or 4 for binary, oct, hex)
    */
-  private static String toUnsignedString(int num, int exp)
+  // Package visible for use by Long.
+  static String toUnsignedString(int num, int exp)
   {
     // Use an array large enough for a binary number.
     int mask = (1 << exp) - 1;
@@ -521,7 +523,8 @@ public final class Integer extends Number implements Comparable
       }
     while (num != 0);
 
-    return String.valueOf(buffer, i, 32 - i);
+    // Package constructor avoids an array copy.
+    return new String(buffer, i, 32 - i, true);
   }
 
   /**

@@ -1,3 +1,18 @@
+2002-03-09  Eric Blake  <ebb9@email.byu.edu>
+
+	* scripts/unicode-muncher.pl: Bump the version, minor tweaks.
+	* gnu/java/lang/CharData.java: Regenerate.
+	* java/lang/Character.java: Remerge with gcj.
+	* java/lang/Integer.java (toString, toUnsignedString): Use package
+	String constructor.
+	* java/lang/Long.java (toString, toUnsignedString): Ditto.
+	* java/lang/String.java: Fix some off-by-one errors and typos.
+	(offset): Implement, to match gcj.
+	(String(char[], int, int, boolean)): Change signature of package
+	constructor to be more flexible, and match gcj.
+	* java/lang/StringBuffer.java (substring, regionMatches): Use
+	offset improvements in String.	
+
 2002-03-08  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/regex/Pattern.java (split): Add missing stubs.

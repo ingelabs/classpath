@@ -41,8 +41,8 @@ package gnu.java.lang;
 /**
  * This contains the info about the unicode characters, that
  * java.lang.Character needs.  It is generated automatically from
- * <code>../doc/unicode/UnicodeData-3.0.0.txt</code> and
- * <code>../doc/unicode/SpecialCasing-2.txt</code>, by some
+ * <code>doc/unicode/UnicodeData-3.0.0.txt</code> and
+ * <code>doc/unicode/SpecialCasing-2.txt</code>, by some
  * perl scripts. These Unicode definition file can be found on the
  * <a href="http://www.unicode.org">http://www.unicode.org</a> website.
  * JDK 1.4 uses Unicode version 3.0.0.
@@ -70,6 +70,11 @@ package gnu.java.lang;
  */
 public interface CharData
 {
+  /**
+   * The Unicode definition file that was parsed to build this database.
+   */
+  String SOURCE = "doc/unicode/UnicodeData-3.0.0.txt";
+
   /**
    * The character shift amount to look up the block offset. In other words,
    * <code>(char) (BLOCKS.value[ch >> SHIFT] + ch)</code> is the index where
@@ -922,7 +927,7 @@ public interface CharData
     + "\000\000\000";
 
   /**
-   * This is the listing of titlecase special cases (all other character
+   * This is the listing of titlecase special cases (all other characters
    * can use <code>UPPER</code> to determine their titlecase).  The listing
    * is a sorted sequence of character pairs; converting the first character
    * of the pair to titlecase produces the second character.

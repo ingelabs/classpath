@@ -110,27 +110,24 @@ public final class String implements Serializable, Comparable, CharSequence
   final char[] value;
 
   /**
-   * Holds the number of characters in str[].  This number is generally
-   * the same as str.length, but if a StringBuffer is sharing memory
-   * with this String, then len will be equal to StringBuffer.length().
-   * Package access is granted for use by StringBuffer.
+   * Holds the number of characters in value.  This number is generally
+   * the same as value.length, but can be smaller because substrings and
+   * StringBuffers can share arrays. Package visible for use by trusted code.
    */
   final int count;
-
-  /**
-   * Holds the starting position for characters in str[].  Since
-   * substring()'s are common, the use of offset allows the operation
-   * to perform in O(1). Package access is granted for use by StringBuffer.
-   *
-   * @XXX The use of offset has not been implemented.
-   */
-  final int offset = 0;
 
   /**
    * Caches the result of hashCode().  If this value is zero, the hashcode
    * is considered uncached (even if 0 is the correct hash value).
    */
   private int cachedHashCode;
+
+  /**
+   * Holds the starting position for characters in str[].  Since
+   * substring()'s are common, the use of offset allows the operation
+   * to perform in O(1). Package access is granted for use by StringBuffer.
+   */
+  final int offset;
 
   /**
    * An implementation for {@link CASE_INSENSITIVE_ORDER}.
@@ -183,8 +180,10 @@ public final class String implements Serializable, Comparable, CharSequence
    * Creates an empty String (length 0). Unless you really need a new object,
    * consider using <code>""</code> instead.
    */
-  public String() {
-    value = new char[0];
+  public String()
+  {
+    value = "".value;
+    offset = 0;
     count = 0;
   }
 
@@ -197,8 +196,8 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public String(String str)
   {
-    // Since Strings are immutable, don't copy value.
     value = str.value;
+    offset = str.offset;
     count = str.count;
     cachedHashCode = str.cachedHashCode;
   }
@@ -212,8 +211,7 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public String(char[] data)
   {
-    count = data.length;
-    value = (char[]) data.clone();
+    this(data, 0, data.length, false);
   }
 
   /**
@@ -231,11 +229,7 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public String(char[] data, int offset, int count)
   {
-    if (offset < 0 || count < 0 || offset + count > data.length)
-      throw new StringIndexOutOfBoundsException();
-    this.count = count;
-    value = new char[count];
-    System.arraycopy(data, offset, value, 0, count);
+    this(data, offset, count, false);
   }
 
   /**
@@ -266,12 +260,13 @@ public final class String implements Serializable, Comparable, CharSequence
   {
     if (offset < 0 || count < 0 || offset + count > ascii.length)
       throw new StringIndexOutOfBoundsException();
-    this.count = count;
     value = new char[count];
+    this.offset = 0;
+    this.count = count;
     hibyte <<= 8;
     offset += count;
-    while (count > 0)
-      value[--count] = (char) (hibyte | (ascii[--offset] & 0xff));
+    while (--count >= 0)
+      value[count] = (char) (hibyte | (ascii[--offset] & 0xff));
   }
 
   /**
@@ -315,6 +310,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * @param encoding the name of the encoding to use
    * @throws NullPointerException if data or encoding is null
    * @throws IndexOutOfBoundsException if offset or count is incorrect
+   *         (while unspecified, this is a StringIndexOutOfBoundsException)
    * @throws UnsupportedEncodingException if encoding is not found
    * @throws Error if the decoding fails
    * @since 1.1
@@ -334,6 +330,7 @@ public final class String implements Serializable, Comparable, CharSequence
       {
         throw new Error(cce);
       }
+    this.offset = 0;
     this.count = value.length;
   }
 
@@ -392,6 +389,7 @@ public final class String implements Serializable, Comparable, CharSequence
       {
         throw new Error(cce);
       }
+    this.offset = 0;
     this.count = value.length;
   }
 
@@ -419,39 +417,55 @@ public final class String implements Serializable, Comparable, CharSequence
    * Creates a new String using the character sequence represented by
    * the StringBuffer. Subsequent changes to buf do not affect the String.
    *
-   * @param buf StringBuffer to copy
-   * @throws NullPointerException if buf is null
+   * @param buffer StringBuffer to copy
+   * @throws NullPointerException if buffer is null
    */
-  public String(StringBuffer buf)
+  public String(StringBuffer buffer)
   {
-    synchronized (buf)
+    synchronized (buffer)
       {
-        count = buf.count;
-        // Share unless buf is 3/4 empty.
-        if ((count << 2) < buf.value.length)
+        offset = 0;
+        count = buffer.count;
+        // Share unless buffer is 3/4 empty.
+        if ((count << 2) < buffer.value.length)
           {
             value = new char[count];
-            System.arraycopy(buf.value, 0, value, 0, count);
+            System.arraycopy(buffer.value, 0, value, 0, count);
           }
         else
           {
-            buf.shared = true;
-            value = buf.value;
+            buffer.shared = true;
+            value = buffer.value;
           }
       }
   }
 
   /**
-   * Special constructor used when data can safely be shared, rather than
-   * cloning it.
+   * Special constructor which can share an array when safe to do so.
    *
-   * @param data the characters, not modifiable by users, non-null
-   * @param length number of characters in data
+   * @param data the characters to copy
+   * @param offset the location to start from
+   * @param count the number of characters to use
+   * @param dont_copy true if the array is trusted, and need not be copied
+   * @throws NullPointerException if chars is null
+   * @throws StringIndexOutOfBoundsException if bounds check fails
    */
-  String(char[] data, int length)
+  String(char[] data, int offset, int count, boolean dont_copy)
   {
-    value = data;
-    count = length;
+    if (offset < 0 || count < 0 || offset + count > data.length)
+      throw new StringIndexOutOfBoundsException();
+    if (dont_copy)
+      {
+        value = data;
+        this.offset = offset;
+      }
+    else
+      {
+        value = new char[count];
+        System.arraycopy(data, offset, value, 0, count);
+        this.offset = 0;
+      }
+    this.count = count;
   }
 
   /**
@@ -476,7 +490,7 @@ public final class String implements Serializable, Comparable, CharSequence
   {
     if (index < 0 || index >= count)
       throw new StringIndexOutOfBoundsException(index);
-    return value[index];
+    return value[offset + index];
   }
 
   /**
@@ -498,7 +512,8 @@ public final class String implements Serializable, Comparable, CharSequence
   {
     if (srcBegin < 0 || srcBegin > srcEnd || srcEnd > count)
       throw new StringIndexOutOfBoundsException();
-    System.arraycopy(value, srcBegin, dst, dstBegin, srcEnd - srcBegin);
+    System.arraycopy(value, srcBegin + offset,
+                     dst, dstBegin, srcEnd - srcBegin);
   }
 
   /**
@@ -523,8 +538,9 @@ public final class String implements Serializable, Comparable, CharSequence
   {
     if (srcBegin < 0 || srcBegin > srcEnd || srcEnd > count)
       throw new StringIndexOutOfBoundsException();
-    dstBegin -= srcBegin;
-    while (srcBegin < srcEnd)
+    int i = srcEnd - srcBegin;
+    srcBegin += offset;
+    while (--i >= 0)
       dst[dstBegin++] = (byte) value[srcBegin++];
   }
 
@@ -599,8 +615,10 @@ public final class String implements Serializable, Comparable, CharSequence
     if (value == str2.value)
       return true;
     int i = count;
+    int x = offset;
+    int y = str2.offset;
     while (--i >= 0)
-      if (value[i] != str2.value[i])
+      if (value[x++] != str2.value[y++])
         return false;
     return true;
   }
@@ -623,8 +641,9 @@ public final class String implements Serializable, Comparable, CharSequence
         if (value == buffer.value)
           return true; // Possible if shared.
         int i = count;
+        int x = offset + count;
         while (--i >= 0)
-          if (value[i] != buffer.value[i])
+          if (value[--x] != buffer.value[i])
             return false;
         return true;
       }
@@ -652,10 +671,12 @@ public final class String implements Serializable, Comparable, CharSequence
     if (anotherString == null || count != anotherString.count)
       return false;
     int i = count;
+    int x = offset;
+    int y = anotherString.offset;
     while (--i >= 0)
       {
-        char c1 = value[i];
-        char c2 = anotherString.value[i];
+        char c1 = value[x++];
+        char c2 = anotherString.value[y++];
         // Note that checking c1 != c2 is redundant, but avoids method calls.
         if (c1 != c2
             && Character.toUpperCase(c1) != Character.toUpperCase(c2)
@@ -682,9 +703,11 @@ public final class String implements Serializable, Comparable, CharSequence
   public int compareTo(String anotherString)
   {
     int i = Math.min(count, anotherString.count);
+    int x = offset;
+    int y = anotherString.offset;
     while (--i >= 0)
       {
-        int result = value[i] - anotherString.value[i];
+        int result = value[x++] - anotherString.value[y++];
         if (result != 0)
           return result;
       }
@@ -696,10 +719,10 @@ public final class String implements Serializable, Comparable, CharSequence
    * is not a <code>String</code>.  Then it throws a
    * <code>ClassCastException</code>.
    *
-   * @param anotherString the object to compare against
+   * @param o the object to compare against
    * @return the comparison
-   * @throws NullPointerException if anotherString is null
-   * @throws ClassCastException if the argument is not a <code>String</code>
+   * @throws NullPointerException if o is null
+   * @throws ClassCastException if o is not a <code>String</code>
    * @since 1.2
    */
   public int compareTo(Object o)
@@ -765,9 +788,11 @@ public final class String implements Serializable, Comparable, CharSequence
   public boolean regionMatches(boolean ignoreCase, int toffset,
                                String other, int ooffset, int len)
   {
-    if (toffset < 0 || ooffset < 0 || toffset + len > count ||
-        ooffset + len > other.count)
+    if (toffset < 0 || ooffset < 0 || toffset + len > count
+        || ooffset + len > other.count)
       return false;
+    toffset += offset;
+    ooffset += other.offset;
     while (--len >= 0)
       {
         char c1 = value[toffset++];
@@ -843,7 +868,8 @@ public final class String implements Serializable, Comparable, CharSequence
 
     // Compute the hash code using a local variable to be reentrant.
     int hashCode = 0;
-    for (int i = 0; i < count; i++)
+    int limit = count + offset;
+    for (int i = offset; i < limit; i++)
       hashCode = hashCode * 31 + value[i];
     return cachedHashCode = hashCode;
   }
@@ -871,10 +897,13 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public int indexOf(int ch, int fromIndex)
   {
+    if ((char) ch != ch)
+      return -1;
     if (fromIndex < 0)
       fromIndex = 0;
+    int i = fromIndex + offset;
     for ( ; fromIndex < count; fromIndex++)
-      if (value[fromIndex] == ch)
+      if (value[i++] == ch)
         return fromIndex;
     return -1;
   }
@@ -902,10 +931,13 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public int lastIndexOf(int ch, int fromIndex)
   {
+    if ((char) ch != ch)
+      return -1;
     if (fromIndex >= count)
       fromIndex = count - 1;
+    int i = fromIndex + offset;
     for ( ; fromIndex >= 0; fromIndex--)
-      if (value[fromIndex] == ch)
+      if (value[i--] == ch)
         return fromIndex;
     return -1;
   }
@@ -1005,14 +1037,12 @@ public final class String implements Serializable, Comparable, CharSequence
   {
     if (beginIndex < 0 || endIndex > count || beginIndex > endIndex)
       throw new StringIndexOutOfBoundsException();
-    if (beginIndex == 0)
-      // Package constructor avoids an array copy.
-      return endIndex == count ? this : new String(value, endIndex);
+    if (beginIndex == 0 && endIndex == count)
+      return this;
     int len = endIndex - beginIndex;
-    char[] newStr = new char[len];
-    System.arraycopy(value, beginIndex, newStr, 0, len);
     // Package constructor avoids an array copy.
-    return new String(newStr, len);
+    return new String(value, beginIndex + offset, len,
+                      (len << 2) >= value.length);
   }
 
   /**
@@ -1047,10 +1077,10 @@ public final class String implements Serializable, Comparable, CharSequence
     if (count == 0)
       return str;
     char[] newStr = new char[count + str.count];
-    System.arraycopy(value, 0, newStr, 0, count);
-    System.arraycopy(str.value, 0, newStr, count, str.count);
+    System.arraycopy(value, offset, newStr, 0, count);
+    System.arraycopy(str.value, offset, newStr, count, str.count);
     // Package constructor avoids an array copy.
-    return new String(newStr, newStr.length);
+    return new String(newStr, 0, newStr.length, true);
   }
 
   /**
@@ -1065,19 +1095,20 @@ public final class String implements Serializable, Comparable, CharSequence
   {
     if (oldChar == newChar)
       return this;
-    int index = count;
-    while (--index >= 0)
-      if (value[index] == oldChar)
+    int i = count;
+    int x = offset;
+    while (--i >= 0)
+      if (value[x++] == oldChar)
         break;
-    if (index < 0)
+    if (i < 0)
       return this;
     char[] newStr = (char[]) value.clone();
-    do
-      if (value[index] == oldChar)
-        value[index] = newChar;
-    while (--index >= 0);
+    newStr[x] = newChar;
+    while (--i >= 0)
+      if (value[++x] == oldChar)
+        newStr[x] = newChar;
     // Package constructor avoids an array copy.
-    return new String(newStr, count);
+    return new String(newStr, 0, count, true);
   }
 
   /**
@@ -1214,9 +1245,10 @@ public final class String implements Serializable, Comparable, CharSequence
     // First, see if the current string is already lower case.
     boolean turkish = "tr".equals(loc.getLanguage());
     int i = count;
+    int x = offset;
     while (--i >= 0)
       {
-        char ch = value[i];
+        char ch = value[x++];
         if ((turkish && ch == '\u0049')
             || ch != Character.toLowerCase(ch))
           break;
@@ -1229,14 +1261,15 @@ public final class String implements Serializable, Comparable, CharSequence
     char[] newStr = (char[]) value.clone();
     do
       {
-        char ch = value[i];
+        char ch = value[x];
         // Hardcoded special case.
-        newStr[i] = (turkish && ch == '\u0049') ? '\u0131'
+        newStr[x] = (turkish && ch == '\u0049') ? '\u0131'
           : Character.toLowerCase(ch);
+        x++;
       }
     while (--i >= 0);
     // Package constructor avoids an array copy.
-    return new String(newStr, count);
+    return new String(newStr, 0, count, true);
   }
 
   /**
@@ -1271,9 +1304,10 @@ public final class String implements Serializable, Comparable, CharSequence
     boolean turkish = "tr".equals(loc.getLanguage());
     int expand = 0;
     boolean unchanged = true;
+    int x = count + offset;
     for (int i = count; --i >= 0; )
       {
-        char ch = value[i];
+        char ch = value[--x];
         expand += upperCaseExpansion(ch);
         unchanged = (unchanged && expand == 0
                      && ! (turkish && ch == '\u0069')
@@ -1286,22 +1320,23 @@ public final class String implements Serializable, Comparable, CharSequence
     if (expand == 0)
       {
         char[] newStr = (char[]) value.clone();
-        for (int i = count; --i >= 0; )
+        int i = count;
+        while (--i >= 0)
           {
-            char ch = value[i];
+            char ch = value[x];
             // Hardcoded special case.
-            newStr[i] = (turkish && ch == '\u0069') ? '\u0130'
+            newStr[x++] = (turkish && ch == '\u0069') ? '\u0130'
               : Character.toUpperCase(ch);
           }
         // Package constructor avoids an array copy.
-        return new String(newStr, count);
+        return new String(newStr, 0, count, true);
       }
 
     // Expansion is necessary.
     char[] newStr = new char[count + expand];
-    for (int i = 0, j = 0; i < count; )
+    for (int i = 0, j = 0; i++ < count; )
       {
-        char ch = value[i++];
+        char ch = value[x++];
         // Hardcoded special case.
         if (turkish && ch == '\u0069')
           {
@@ -1311,15 +1346,15 @@ public final class String implements Serializable, Comparable, CharSequence
         expand = upperCaseExpansion(ch);
         if (expand > 0)
           {
-            int offset = upperCaseIndex(ch);
+            int index = upperCaseIndex(ch);
             while (expand-- >= 0)
-              newStr[j++] = upperExpand[offset++];
+              newStr[j++] = upperExpand[index++];
           }
         else
           newStr[j++] = Character.toUpperCase(ch);
       }
     // Package constructor avoids an array copy.
-    return new String(newStr, newStr.length);
+    return new String(newStr, 0, newStr.length, true);
   }
 
   /**
@@ -1346,14 +1381,16 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public String trim()
   {
-    if (count == 0 || (value[0] > '\u0020' && value[count - 1] > '\u0020'))
+    int limit = count + offset;
+    if (count == 0 || (value[offset] > '\u0020'
+                       && value[limit - 1] > '\u0020'))
       return this;
-    int begin = 0;
+    int begin = offset;
     do
-      if (begin == count)
+      if (begin == limit)
         return "";
     while (value[begin++] <= '\u0020');
-    int end = count;
+    int end = limit;
     while (value[--end] <= '\u0020');
 
     return substring(begin, end + 1);
@@ -1380,7 +1417,7 @@ public final class String implements Serializable, Comparable, CharSequence
     if (count == value.length)
       return (char[]) value.clone();
     char[] copy = new char[count];
-    System.arraycopy(value, 0, copy, 0, count);
+    System.arraycopy(value, offset, copy, 0, count);
     return copy;
   }
 
@@ -1409,7 +1446,7 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public static String valueOf(char[] data)
   {
-    return new String(data);
+    return new String(data, 0, data.length, false);
   }
 
   /**
@@ -1429,7 +1466,7 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public static String valueOf(char[] data, int offset, int count)
   {
-    return new String(data, offset, count);
+    return new String(data, offset, count, false);
   }
 
   /**
@@ -1449,7 +1486,7 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public static String copyValueOf(char[] data, int offset, int count)
   {
-    return new String(data, offset, count);
+    return new String(data, offset, count, false);
   }
 
   /**
@@ -1464,7 +1501,7 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public static String copyValueOf(char[] data)
   {
-    return new String(data);
+    return new String(data, 0, data.length, false);
   }
 
   /**
@@ -1487,7 +1524,7 @@ public final class String implements Serializable, Comparable, CharSequence
   public static String valueOf(char c)
   {
     // Package constructor avoids an array copy.
-    return new String(new char[] { c }, 1);
+    return new String(new char[] { c }, 0, 1, true);
   }
 
   /**
@@ -1506,7 +1543,7 @@ public final class String implements Serializable, Comparable, CharSequence
   /**
    * Returns a String representing a long.
    *
-   * @param i the long
+   * @param l the long
    * @return String containing the long in base 10
    * @see Long#toString(long)
    */
@@ -1518,7 +1555,7 @@ public final class String implements Serializable, Comparable, CharSequence
   /**
    * Returns a String representing a float.
    *
-   * @param i the float
+   * @param f the float
    * @return String containing the float
    * @see Float#toString(float)
    */
@@ -1530,7 +1567,7 @@ public final class String implements Serializable, Comparable, CharSequence
   /**
    * Returns a String representing a double.
    *
-   * @param i the double
+   * @param d the double
    * @return String containing the double
    * @see Double#toString(double)
    */
