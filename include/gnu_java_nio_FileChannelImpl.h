@@ -10,15 +10,10 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT jlong JNICALL Java_gnu_java_nio_FileChannelImpl_implPosition__ (JNIEnv *env, jobject);
-extern JNIEXPORT jobject JNICALL Java_gnu_java_nio_FileChannelImpl_implPosition__J (JNIEnv *env, jobject, jlong);
-extern JNIEXPORT jobject JNICALL Java_gnu_java_nio_FileChannelImpl_implTruncate (JNIEnv *env, jobject, jlong);
-extern JNIEXPORT jobject JNICALL Java_gnu_java_nio_FileChannelImpl_nio_1mmap_1file (JNIEnv *env, jobject, jlong, jlong, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_nio_FileChannelImpl_nio_1unmmap_1file (JNIEnv *env, jobject, jobject, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_nio_FileChannelImpl_nio_1msync (JNIEnv *env, jobject, jobject, jint);
-extern JNIEXPORT jlong JNICALL Java_gnu_java_nio_FileChannelImpl_size (JNIEnv *env, jobject);
-extern JNIEXPORT jint JNICALL Java_gnu_java_nio_FileChannelImpl_implRead___3BII (JNIEnv *env, jobject, jbyteArray, jint, jint);
-extern JNIEXPORT jint JNICALL Java_gnu_java_nio_FileChannelImpl_implWrite___3BII (JNIEnv *env, jobject, jbyteArray, jint, jint);
+extern JNIEXPORT jlong JNICALL Java_gnu_java_nio_FileChannelImpl_lengthInternal (JNIEnv *env, jobject, jint);
+extern JNIEXPORT jlong JNICALL Java_gnu_java_nio_FileChannelImpl_nio_1mmap_1file (JNIEnv *env, jclass, jint, jlong, jint, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_nio_FileChannelImpl_nio_1unmmap_1file (JNIEnv *env, jclass, jint, jlong, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_nio_FileChannelImpl_nio_1msync (JNIEnv *env, jclass, jint, jlong, jint);
 
 #ifdef __cplusplus
 }
