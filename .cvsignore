@@ -5,7 +5,6 @@ config.cache
 config.status
 config.h.in
 config.h
-include
 libtool
 Makefile
 Makefile.in
