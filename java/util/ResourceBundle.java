@@ -19,7 +19,6 @@
  */
 
 package java.util;
-import gnu.vm.stack.StackTrace;
 
 /**
  * A resouce bundle contains locale-specific data.  If you need
@@ -118,34 +117,33 @@ public abstract class ResourceBundle {
      */
     public final Object getObject(String key) 
         throws MissingResourceException {
-        Object o;
-        try {
-            o = handleGetObject(key);
-        } catch (MissingResourceException ex) {
-            if (parent == null)
-                throw ex;
-            o = parent.handleGetObject(key);
-        }
-        return o;
+
+	for (ResourceBundle bundle = this; 
+	     bundle != null; bundle = bundle.parent) {
+	    try {
+		Object o = bundle.handleGetObject(key);
+		if (o != null)
+		    return o;
+	    } catch (MissingResourceException ex) {
+	    }
+	}
+	throw new MissingResourceException
+	    ("Key not found", getClass().getName(), key);
     }
 
     /**
-     * Gets the class loader of the calling class.  This must be
-     * called by a method, that was directly called by the calling
-     * class.
-     * @return the class loader of the calling class.
+     * This method returns an array with the classes of the calling
+     * methods.  The zeroth entry is the class that called this method
+     * (should always be ResourceBundle), the first contains the class
+     * that called the caller (i.e. the class that called getBundle).
+     *
+     * Implementation note: This depends on the fact, that getBundle
+     * doesn't get inlined, but since it calls a private method, it
+     * isn't inlineable.
+     *
+     * @return an array containing the classes for the callers.  
      */
-    private static ClassLoader getCallerClassLoader() {
-        StackTrace trace = StackTrace.copyCurrentStackTrace();
-        if (trace.numFrames() >= 3) {
-            // XXX - remove this when trace is implemented correctly ?
-            ClassLoader cl = trace.frameAt(2).getCalledObject()
-                .getClass().getClassLoader();
-            return cl;
-        }
-        // for 1.2:  return ClassLoader.getSystemClassLoader(); 
-        return null;
-    }
+    private static native Class[] getClassContext();
 
     /**
      * Get the appropriate ResourceBundle for the default locale.  
@@ -157,8 +155,8 @@ public abstract class ResourceBundle {
      *    if the resource bundle couldn't be found.  */
     public static final ResourceBundle getBundle(String baseName) 
         throws MissingResourceException {
-        return getBundle(baseName, Locale.getDefault(), 
-                         getCallerClassLoader());
+	return getBundle(baseName, Locale.getDefault(), 
+			 getClassContext()[1].getClassLoader());
     }
 
     /**
@@ -174,7 +172,8 @@ public abstract class ResourceBundle {
     public static final ResourceBundle getBundle(String baseName, 
                                                  Locale locale) 
         throws MissingResourceException {
-        return getBundle(baseName, locale, getCallerClassLoader());
+        return getBundle(baseName, locale, 
+                         getClassContext()[1].getClassLoader());
     }
 
     /**
@@ -245,6 +244,7 @@ public abstract class ResourceBundle {
         // Put the bundle in the cache
         if (bundle != null)
             resourceBundleCache.put(name, bundle);
+
         return bundle;
     }
 
@@ -341,11 +341,15 @@ public abstract class ResourceBundle {
 
     /**
      * Override this method to provide the resource for a keys.  This gets
-     * called by <code>getObject</code>.
+     * called by <code>getObject</code>.  If you don't have a resource
+     * for the given key, you should return null instead throwing a
+     * MissingResourceException.   You don't have to ask the parent, 
+     * getObject() already does this.
+     *
      * @param key The key of the resource.
      * @return The resource for the key.
      * @exception MissingResourceException
-     *   if that particular object could not be found in this bundle.
+     *   you shouldn't throw this.
      */
     protected abstract Object handleGetObject(String key)
         throws MissingResourceException;
