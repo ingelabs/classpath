@@ -44,6 +44,14 @@ package gnu.classpath;
 public interface Configuration
 {
   /**
+   * The value of CLASSPATH_HOME is the location that the classpath
+   * libraries and support files where installed in. It is set according to
+   * the argument for --prefix given to configure and used to set the
+   * System property gnu.classpath.home.
+   */
+  String CLASSPATH_HOME = "@prefix@";
+
+  /**
    * The value of DEBUG is substituted according to whether the
    * "--enable-debug" argument was passed to configure. Code
    * which is made conditional based on the value of this flag - typically 

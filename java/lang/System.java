@@ -73,6 +73,7 @@ public final class System
       loadLibrary("javalang");
 
     Properties defaultProperties = Runtime.defaultProperties;
+    defaultProperties.put("gnu.classpath.home", Configuration.CLASSPATH_HOME);
     defaultProperties.put("gnu.cpu.endian",
                           isWordsBigEndian() ? "big" : "little");
 
