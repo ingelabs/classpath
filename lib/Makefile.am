@@ -40,7 +40,7 @@ endif
 
 ## for JIKES
 if USER_SPECIFIED_JIKES
-JAVAC = @JIKES@ -classpath $(top_srcdir):$(top_srcdir)/vm/reference:$(top_srcdir)/lib:@USER_CLASSLIB@ -d $(top_srcdir)/lib @classes
+JAVAC = @JIKES@ -classpath $(top_srcdir):$(top_srcdir)/vm/current:$(top_srcdir)/lib:@USER_CLASSLIB@ -d $(top_srcdir)/lib @classes
 endif
 
 ## for JAVAH
@@ -117,9 +117,9 @@ dep: classes
 #.PHONY: compile-classes
 compile-classes: classes $(JAVA_DEPEND) $(JAVA_SRCS) Makefile
 if USER_SPECIFIED_CLASSLIB
-	$(SHELL) -c "@JIKES@ -nowarn -classpath ..:../vm/reference:.:@USER_CLASSLIB@ +CSO +M +F -d . @classes"
+	$(SHELL) -c "@JIKES@ -nowarn -classpath ..:../vm/current:.:@USER_CLASSLIB@ +CSO +M +F -d . @classes"
 else
-	$(SHELL) -c "@JIKES@ -nowarn -classpath ..:../vm/reference:. +CSO +M +F -d . @classes"
+	$(SHELL) -c "@JIKES@ -nowarn -classpath ..:../vm/current:. +CSO +M +F -d . @classes"
 endif
 	touch compile-classes
 

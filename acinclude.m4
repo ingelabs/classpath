@@ -1,5 +1,5 @@
 dnl
-dnl Add macros
+dnl Added macros
 dnl JAPHAR_GREP_CFLAGS
 dnl CLASSPATH_CHECK_JAPHAR
 dnl CLASSPATH_CHECK_KAFFE
@@ -33,10 +33,12 @@ AC_DEFUN(CLASSPATH_INTERNAL_CHECK_JAPHAR,
   JAPHAR_CFLAGS="`$JAPHAR_CONFIG compile`"
   JAPHAR_LIBS="`$JAPHAR_CONFIG link`"
   JVM="yes"
+  JVM_REFERENCE="reference"
   AC_SUBST(JAPHAR_PREFIX)
   AC_SUBST(JAPHAR_CFLAGS)
   AC_SUBST(JAPHAR_LIBS)
   AC_SUBST(JVM)
+  AC_SUBST(JVM_REFERENCE)
   conditional_with_japhar=true
   AC_MSG_RESULT(yes)
 
@@ -66,19 +68,81 @@ AC_DEFUN(CLASSPATH_INTERNAL_CHECK_JAPHAR,
     AC_MSG_ERROR(no)
   fi
   AC_MSG_RESULT(yes)
-dnl  if test -n "$CLASSLIB"; then
-    AC_SUBST(JAPHAR_CLASSLIB)
-dnl  fi
+  AC_SUBST(JAPHAR_CLASSLIB)
 ])
 
 dnl CLASSPATH_INTERNAL_CHECK_KAFFE
 AC_DEFUN(CLASSPATH_INTERNAL_CHECK_KAFFE,
 [
+  AC_PATH_PROG(KAFFE_CONFIG, kaffe-config, "", $PATH:/usr/local/kaffe/bin:/usr/kaffe/bin)
+  if test "$KAFFE_CONFIG" = ""; then
+    echo "configure: cannot find kaffe-config: is Kaffe installed?" 1>&2
+    exit 1
+  fi
   AC_MSG_CHECKING(for Kaffe)
-  JVM="no"
+
+  KAFFE_PREFIX="`$KAFFE_CONFIG --prefix`"
+  KAFFE_CFLAGS="`$KAFFE_CONFIG compile`"
+  KAFFE_LIBS="`$KAFFE_CONFIG link`"
+  JVM="yes"
+  JVM_REFERENCE="kaffe"
+  AC_SUBST(KAFFE_PREFIX)
+  AC_SUBST(KAFFE_CFLAGS)
+  AC_SUBST(KAFFE_LIBS)
   AC_SUBST(JVM)
-  AC_MSG_ERROR(Help GNU Classpath support Kaffe!)
-  dnl AC_DEFINE(WITH_KAFFE)
+  AC_SUBST(JVM_REFERENCE)
+
+  dnl conditional_with_kaffe
+  AC_MSG_RESULT(yes)
+
+  dnl define WITH_KAFFE for native compilation
+  AC_DEFINE(WITH_KAFFE)
+
+  dnl Reset prefix so that we install into the Kaffe directory
+  prefix=$KAFFE_PREFIX
+  AC_SUBST(prefix)
+
+  dnl programs we probably need somewhere
+  bindir=`$KAFFE_CONFIG info bindir`
+  datadir=`$KAFFE_CONFIG info datadir`
+  AC_PATH_PROG(KAFFE_JABBA, kaffe, "", $bindir:$PATH)
+  AC_PATH_PROG(KAFFE_JAVAC, kjc, "", $bindir:$PATH)
+  AC_PATH_PROG(KAFFE_JAVAH, kaffeh, "", $bindir:$PATH)
+
+  AC_MSG_CHECKING(for Kaffe classes)
+  KAFFE_CLASSLIB=""
+  if test -e $datadir/glibj.jar; then
+    KAFFE_CLASSLIB=$datadir/glibj.jar
+  elif test -e $datadir/kaffe/glibj.jar; then
+    KAFFE_CLASSLIB=$datadir/kaffe/glibj.jar
+  elif test -e $datadir/Klasses.jar; then
+    KAFFE_CLASSLIB=$datadir/Klasses.jar
+  elif test -e $datadir/kaffe/Klasses.jar; then
+    KAFFE_CLASSLIB=$datadir/kaffe/Klasses.jar
+  else
+    AC_MSG_ERROR(no)
+  fi
+  AC_MSG_RESULT(yes)
+  if test -e $datadir/kjc.jar; then
+    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$datadir/kjc.jar
+  fi
+  if test -e $datadir/kaffe/kjc.jar; then
+    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$datadir/kaffe/kjc.jar
+  fi
+  if test -e $datadir/rmi.jar; then
+    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$datadir/rmi.jar
+  fi
+  if test -e $datadir/kaffe/rmi.jar; then
+    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$datadir/kaffe/rmi.jar
+  fi
+  if test -e $datadir/tools.jar; then
+    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$datadir/tools.jar
+  fi
+  if test -e $datadir/kaffe/tools.jar; then
+    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$datadir/kaffe/tools.jar
+  fi
+
+  AC_SUBST(KAFFE_CLASSLIB)
 ])
 
 dnl CLASSPATH_CHECK_JAPHAR - checks for japhar
@@ -108,7 +172,10 @@ AC_DEFUN(CLASSPATH_CHECK_KAFFE,
       CLASSPATH_INTERNAL_CHECK_KAFFE
     fi
   ],
-  [ conditional_with_kaffe=false] )
+  [ conditional_with_kaffe=false
+    KAFFE_CFLAGS=""
+    AC_SUBST(KAFFE_CFLAGS)
+  ])
 ])
 
 dnl threads packages (mostly stolen from Japhar)
