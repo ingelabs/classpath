@@ -174,7 +174,7 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
   /**
    * This class handles PropertyChangeEvents fired from the JTabbedPane.
    */
-  protected class PropertyChangeHandler implements PropertyChangeListener
+  public class PropertyChangeHandler implements PropertyChangeListener
   {
     /**
      * This method is called whenever one of the properties of the JTabbedPane
@@ -1102,7 +1102,7 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
   /**
    * This class handles ChangeEvents from the JTabbedPane.
    */
-  protected class TabSelectionHandler implements ChangeListener
+  public class TabSelectionHandler implements ChangeListener
   {
     /**
      * This method is called whenever a ChangeEvent is fired from the

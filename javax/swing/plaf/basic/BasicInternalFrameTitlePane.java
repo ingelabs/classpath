@@ -78,7 +78,7 @@ public class BasicInternalFrameTitlePane extends JComponent
   /**
    * The Action responsible for closing the JInternalFrame.
    */
-  protected class CloseAction extends AbstractAction
+  public class CloseAction extends AbstractAction
   {
     /**
      * This method is called when something closes the JInternalFrame.
@@ -103,7 +103,7 @@ public class BasicInternalFrameTitlePane extends JComponent
   /**
    * This Action is responsible for iconifying the JInternalFrame.
    */
-  protected class IconifyAction extends AbstractAction
+  public class IconifyAction extends AbstractAction
   {
     /**
      * This method is called when the user wants to iconify the
@@ -129,7 +129,7 @@ public class BasicInternalFrameTitlePane extends JComponent
   /**
    * This Action is responsible for maximizing the JInternalFrame.
    */
-  protected class MaximizeAction extends AbstractAction
+  public class MaximizeAction extends AbstractAction
   {
     /**
      * This method is called when the user wants to maximize the
@@ -155,7 +155,7 @@ public class BasicInternalFrameTitlePane extends JComponent
   /**
    * This Action is responsible for dragging the JInternalFrame.
    */
-  protected class MoveAction extends AbstractAction
+  public class MoveAction extends AbstractAction
   {
     /**
      * This method is called when the user wants to drag the JInternalFrame.
@@ -172,7 +172,7 @@ public class BasicInternalFrameTitlePane extends JComponent
    * This Action is responsible for restoring the JInternalFrame. Restoring
    * the JInternalFrame is the same as setting the maximum property to false.
    */
-  protected class RestoreAction extends AbstractAction
+  public class RestoreAction extends AbstractAction
   {
     /**
      * This method is called when the user wants to restore the
@@ -198,7 +198,7 @@ public class BasicInternalFrameTitlePane extends JComponent
   /**
    * This action is responsible for sizing the JInternalFrame.
    */
-  protected class SizeAction extends AbstractAction
+  public class SizeAction extends AbstractAction
   {
     /**
      * This method is called when the user wants to resize the JInternalFrame.
@@ -237,7 +237,7 @@ public class BasicInternalFrameTitlePane extends JComponent
    * This class acts as the MenuBar for the TitlePane. Clicking on the Frame
    * Icon in the top left corner will activate it.
    */
-  protected class SystemMenuBar extends JMenuBar
+  public class SystemMenuBar extends JMenuBar
   {
     /**
      * This method returns true if it can receive focus.

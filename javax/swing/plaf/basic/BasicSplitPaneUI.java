@@ -681,7 +681,7 @@ public class BasicSplitPaneUI extends SplitPaneUI
    * This is a deprecated class. It is supposed to be used for handling down
    * and right key presses.
    */
-  protected class KeyboardDownRightHandler implements ActionListener
+  public class KeyboardDownRightHandler implements ActionListener
   {
     /**
      * This method is called when the down or right keys are pressed.
@@ -698,7 +698,7 @@ public class BasicSplitPaneUI extends SplitPaneUI
    * This is a deprecated class. It is supposed to be used for handling end
    * key presses.
    */
-  protected class KeyboardEndHandler implements ActionListener
+  public class KeyboardEndHandler implements ActionListener
   {
     /**
      * This method is called when the end key is pressed.
@@ -715,7 +715,7 @@ public class BasicSplitPaneUI extends SplitPaneUI
    * This is a deprecated class. It is supposed to be used for handling home
    * key presses.
    */
-  protected class KeyboardHomeHandler implements ActionListener
+  public class KeyboardHomeHandler implements ActionListener
   {
     /**
      * This method is called when the home key is pressed.
@@ -732,7 +732,7 @@ public class BasicSplitPaneUI extends SplitPaneUI
    * This is a deprecated class. It is supposed to be used for handling resize
    * toggles.
    */
-  protected class KeyboardResizeToggleHandler implements ActionListener
+  public class KeyboardResizeToggleHandler implements ActionListener
   {
     /**
      * This method is called when a resize is toggled.
@@ -749,7 +749,7 @@ public class BasicSplitPaneUI extends SplitPaneUI
    * This is a deprecated class. It is supposed to be used for handler up and
    * left key presses.
    */
-  protected class KeyboardUpLeftHandler implements ActionListener
+  public class KeyboardUpLeftHandler implements ActionListener
   {
     /**
      * This method is called when the left or up keys are pressed.
@@ -766,7 +766,7 @@ public class BasicSplitPaneUI extends SplitPaneUI
    * This helper class handles PropertyChangeEvents from the JSplitPane. When
    * a property changes, this will update the UI accordingly.
    */
-  protected class PropertyHandler implements PropertyChangeListener
+  public class PropertyHandler implements PropertyChangeListener
   {
     /**
      * This method is called whenever one of the JSplitPane's properties

@@ -405,10 +405,10 @@ public class BasicScrollBarUI extends ScrollBarUI implements LayoutManager,
   protected JButton incrButton;
 
   /** The dimensions of the maximum thumb size. */
-  protected static Dimension maximumThumbSize;
+  protected Dimension maximumThumbSize;
 
   /** The dimensions of the minimum thumb size. */
-  protected static Dimension minimumThumbSize;
+  protected Dimension minimumThumbSize;
 
   /** The color of the thumb. */
   protected Color thumbColor;

@@ -321,7 +321,7 @@ public class BasicSliderUI extends SliderUI
   /**
    * Helper class that listens for mouse events.
    */
-  protected class TrackListener extends MouseInputAdapter
+  public class TrackListener extends MouseInputAdapter
   {
     /** The current X position of the mouse. */
     protected int currentMouseX;
