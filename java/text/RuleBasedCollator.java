@@ -443,6 +443,8 @@ public class RuleBasedCollator extends Collator
     Vector vect = new Vector(25);
 
     int ord = cei.next();
+    cei.reset(); //set to start of string
+
     while (ord != CollationElementIterator.NULLORDER)
       {
         switch (getStrength())
@@ -459,18 +461,19 @@ public class RuleBasedCollator extends Collator
           }
 
         vect.add(new Integer(ord)); 
+	ord = cei.next(); //increment to next key
       }
 
     Object[] objarr = vect.toArray();
     byte[] key = new byte[objarr.length * 4];
 
-    for (int i = 0; i < key.length; i++)
+    for (int i = 0; i < objarr.length; i++)
       {
         int j = ((Integer)objarr[i]).intValue();
-        key[i++] = (byte)((j & 0xFF000000) >> 24);
-        key[i++] = (byte)((j & 0x00FF0000) >> 16);
-        key[i++] = (byte)((j & 0x0000FF00) >> 8);
-        key[i++] = (byte)(j & 0x000000FF);
+        key [i * 4] = (byte)((j & 0xFF000000) >> 24);
+        key [i * 4 + 1] = (byte)((j & 0x00FF0000) >> 16);
+        key [i * 4 + 2] = (byte)((j & 0x0000FF00) >> 8);
+        key [i * 4 + 3] = (byte)(j & 0x000000FF);
       }
 
     return(new CollationKey(this, str, key));
