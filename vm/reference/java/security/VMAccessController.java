@@ -169,9 +169,11 @@ final class VMAccessController
         Class clazz = classes[i];
         String method = methods[i];
 
-        if (DEBUG) debug (">>> checking " + clazz + "." + method);
-
-        if (DEBUG) debug (">>> loader = " + clazz.getClassLoader());
+        if (DEBUG)
+          {
+            debug (">>> checking " + clazz + "." + method);
+            debug (">>> loader = " + clazz.getClassLoader());
+          }
 
         if (clazz.equals (AccessController.class)
             && method.equals ("doPrivileged"))
@@ -226,11 +228,15 @@ final class VMAccessController
    * <i>i</i>. The arrays are clean; it will only contain Java methods,
    * and no element of the list should be null.
    *
-   * <p>XXX note: this interface (VMAccessController) would possibly be
-   * cleaner if we had a method similar to this, but returned an array
-   * of java.lang.reflect.Method objects. Then, instead of having this
-   * much logic in this class, we put everything in AccessController,
-   * and simply have this single getStack method for a VM to implement.
+   * <p>The default implementation returns an empty stack, which will be
+   * interpreted as having no permissions whatsoever.
+   *
+   * @return A pair of arrays describing the current call stack. The first
+   *    element is an array of Class objects, and the second is an array
+   *    of Strings comprising the method names.
    */
-  private static native Object[][] getStack();
+  private static Object[][] getStack()
+  {
+    return new Object[][] { new Class[0], new String[0] };
+  }
 }

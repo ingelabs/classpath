@@ -21,6 +21,16 @@ New in release 0.10 (in preparation)
   a default implementation written in java. For efficiency and to
   prevent spurious wakeups a real 'native' runtime version can be supplied.
 
+* There is a new java.security.VMAccessController class that runtimes need
+  to implement to properly support SecurityManagers. The default
+  implementation that comes with GNU Classpath makes sure that ANY attempt
+  to access a protected resource is denied when a SecurityManager is
+  installed. Which is pretty secure, but also no very useful.
+  Please see the documentation in
+  vm/reference/java/security/VMAccessController.java,
+  and please give feedback on the GNU Classpath mailinglist whether or not
+  the current AccessController framework is flexible enough.
+
 New in release 0.09 (2004/02/02)
 
 * Includes updated GNU JAXP version from 2004-02-01.

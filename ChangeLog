@@ -1,3 +1,13 @@
+2004-07-04  Casey Marshall <csm@gnu.org>
+
+	* java/security/AccessControlContext.java
+	(checkPermission): check for empty context.
+	* vm/reference/java/security/VMAccessController.java
+	(getContext): combine debugging statements.
+	(getStack): implemented.
+
+	* NEWS: Describe new platform dependent VMAccessController class.
+
 2004-07-04  Mark Wielaard  <mark@klomp.org>
 
 	* java/lang/System.java (static): Add (fake) ASCII support to
