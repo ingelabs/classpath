@@ -100,7 +100,7 @@ public final class FloatHolder
    */
   public void _read(InputStream input)
   {
-    input.read_float();
+    value = input.read_float();
   }
 
   /**

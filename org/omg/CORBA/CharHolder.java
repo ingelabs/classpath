@@ -99,7 +99,7 @@ public final class CharHolder
    */
   public void _read(InputStream input)
   {
-    input.read_char();
+    value = input.read_char();
   }
 
   /**

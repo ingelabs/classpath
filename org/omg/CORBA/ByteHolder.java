@@ -100,7 +100,7 @@ public final class ByteHolder
    */
   public void _read(InputStream input)
   {
-    input.read_octet();
+    value = input.read_octet();
   }
 
   /**

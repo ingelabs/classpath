@@ -100,7 +100,7 @@ public final class ShortHolder
    */
   public void _read(InputStream input)
   {
-    input.read_short();
+    value = input.read_short();
   }
 
   /**

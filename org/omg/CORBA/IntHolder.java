@@ -99,7 +99,7 @@ public final class IntHolder
    */
   public void _read(InputStream input)
   {
-    input.read_long();
+    value = input.read_long();
   }
 
   /**

@@ -102,7 +102,7 @@ public final class FixedHolder
    */
   public void _read(InputStream input)
   {
-    input.read_fixed();
+    value = input.read_fixed();
   }
 
   /**

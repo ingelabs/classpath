@@ -100,7 +100,7 @@ public final class LongHolder
    */
   public void _read(InputStream input)
   {
-    input.read_longlong();
+    value = input.read_longlong();
   }
 
   /**

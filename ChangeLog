@@ -1,5 +1,20 @@
 2005-03-08  Audrius Meskauskas  <audriusa@bluewin.ch>
 
+	* org/omg/CORBA/BooleanHolder.java,
+	org/omg/CORBA/ByteHolder.java,
+	org/omg/CORBA/CharHolder.java,
+	org/omg/CORBA/DoubleHolder.java,
+	org/omg/CORBA/FixedHolder.java,
+	org/omg/CORBA/FloatHolder.java,
+	org/omg/CORBA/IntHolder.java,
+	org/omg/CORBA/LongHolder.java,
+	org/omg/CORBA/ShortHolder.java,
+	org/omg/CORBA/StringHolder.java,
+	org/omg/CORBA/TypeCodeHolder.java:  
+	Fixing the _read method.
+
+2005-03-08  Audrius Meskauskas  <audriusa@bluewin.ch>
+
 	* org/omg/CORBA/NamedValue.java,
 	org/omg/CORBA/ARG_IN.java,
 	org/omg/CORBA/ARG_OUT.java,

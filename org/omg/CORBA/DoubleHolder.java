@@ -100,7 +100,7 @@ public final class DoubleHolder
    */
   public void _read(InputStream input)
   {
-    input.read_double();
+    value = input.read_double();
   }
 
   /**

@@ -100,7 +100,7 @@ public final class BooleanHolder
    */
   public void _read(InputStream input)
   {
-    input.read_boolean();
+    value = input.read_boolean();
   }
 
   /**

@@ -100,7 +100,7 @@ public final class StringHolder
    */
   public void _read(InputStream input)
   {
-    input.read_string();
+    value = input.read_string();
   }
 
   /**

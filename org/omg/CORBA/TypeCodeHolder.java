@@ -96,7 +96,7 @@ public class TypeCodeHolder
    */
   public void _read(InputStream input)
   {
-    input.read_TypeCode();
+    value = input.read_TypeCode();
   }
 
   /**
