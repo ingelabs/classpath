@@ -58,8 +58,8 @@ public final class AlphaComposite implements Composite
     private static final int MAX_CACHE_SIZE = 2048;
 
     /** Prune stale entries. */
-    protected boolean removeEldestEntry(Entry eldest)
-    {
+    protected boolean removeEldestEntry(Map.Entry eldest)
+    {	// XXX - FIXME Use Map.Entry, not just Entry as gcj 3.1 workaround.
       return size() > MAX_CACHE_SIZE;
     }
   };
