@@ -36,7 +36,7 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 /* do not move; needed here because of some macro definitions */
-#include "jamaica_config.h"
+#include "config.h"
 
 #include <stdlib.h>
 #include <stdio.h>
