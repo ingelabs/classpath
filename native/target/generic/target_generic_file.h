@@ -399,8 +399,8 @@ extern "C" {
       do { \
         ssize_t __n; \
         \
-        result=(ioctl(filedescriptor,FIONREAD,(char*)&n)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
-        length=TARGET_NATIVE_MATH_INT_INT32_TO_INT64(n); \
+        result=(ioctl(filedescriptor,FIONREAD,(char*)&__n)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
+        length=TARGET_NATIVE_MATH_INT_INT32_TO_INT64(__n); \
       } while (0)
   #elif defined(HAVE_FSTAT)
     #include <sys/types.h>
@@ -624,7 +624,13 @@ extern "C" {
   #include <sys/types.h>
   #include <sys/stat.h>
   #include <unistd.h>
-  #include <utime.h>
+  #ifdef HAVE_UTIME
+    #include <utime.h>
+  #elif HAVE_SYS_UTIME
+    #include <sys/utime.h>
+  #else
+    #error utime.h not found. Please check configuration.
+  #endif
   #define TARGET_NATIVE_FILE_SET_LAST_MODIFIED(filename,time,result) \
     do { \
       struct stat    __statBuffer; \
