@@ -1,3 +1,8 @@
+2004-11-18  Casey Marshall  <csm@gnu.org>
+
+	* gnu/java/nio/FileLock.java (isValid): locks are valid if the
+	channel is open.
+
 2004-11-17  Jeroen Frijters  <jeroen@frijters.net>
 
 	* gnu/java/io/decode/DecoderUTF8.java
