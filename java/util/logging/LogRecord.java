@@ -372,7 +372,8 @@ public class LogRecord
    * anymore.  Therefore, this method should only be called on
    * freshly constructed LogRecords.
    *
-   * @param level the new severity level, for example <code>Level.WARNING</code>.
+   * @param level the new severity level, for example
+   *              <code>Level.WARNING</code>.
    */
   public void setLevel(Level level)
   {
