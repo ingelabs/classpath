@@ -1,5 +1,16 @@
 2003-02-16  Tom Tromey  <tromey@redhat.com>
 
+	* javax/swing/undo/UndoableEditSupport.java (UndoableEditSupport):
+	Removed `TODO'.
+	(addUndoableEditListener, removeUndoableEditListener): Wrote.
+	(getUndoableEditListeners): New method.
+	(getUpdateLevel): Implemented.
+	(createCompoundEdit): Likewise.
+	(_postEdit): Likewise.
+	(beginUpdate): Likewise.
+	(endUpdate): Likewise.
+	(toString): Likewise.
+
 	* javax/swing/undo/UndoableEditSupport.java: Reindented.
 
 	* javax/swing/undo/StateEditable.java (RCSID): New field.

@@ -82,7 +82,6 @@ public class UndoableEditSupport
    */
   public UndoableEditSupport()
   {
-    // TODO
   }
 
   /**
@@ -105,43 +104,64 @@ public class UndoableEditSupport
    */
   public String toString()
   {
-    return null; // TODO
+    return (super.toString() + " realSource: " + realSource
+	    + " updateLevel: " + updateLevel);
   }
 
   /**
-   * addUndoableEditListener
-   * @param value0 TODO
+   * Add a listener.
+   * @param val the listener
    */
-  public synchronized void addUndoableEditListener(UndoableEditListener value0)
+  public synchronized void addUndoableEditListener(UndoableEditListener val)
   {
-    // TODO
+    listeners.add(val);
   }
 
   /**
-   * removeUndoableEditListener
-   * @param value0 TODO
+   * Remove a listener.
+   * @param val the listener
    */
-  public synchronized void removeUndoableEditListener(UndoableEditListener value0)
+  public synchronized void removeUndoableEditListener(UndoableEditListener val)
   {
-    // TODO
+    listeners.removeElement(val);
+  }
+
+  /**
+   * Return an array of all listeners.
+   * @returns all the listeners
+   */
+  public synchronized UndoableEditListener[] getUndoableEditListeners()
+  {
+    UndoableEditListener[] result = new UndoableEditListener[listeners.size()];
+    return (UndoableEditListener[]) listeners.toArray(result);
   }
 
   /**
    * _postEdit
    * @param value0 TODO
    */
-  protected void _postEdit(UndoableEdit value0)
+  protected void _postEdit(UndoableEdit edit)
   {
-    // TODO
+    UndoableEditEvent event = new UndoableEditEvent(realSource, edit);
+    int max = listeners.size();
+    for (int i = 0; i < max; ++i)
+      {
+	UndoableEditListener l
+	  = (UndoableEditListener) (listeners.elementAt(i));
+	l.undoableEditHappened(event);
+      }
   }
 
   /**
    * postEdit
    * @param value0 TODO
    */
-  public synchronized void postEdit(UndoableEdit value0)
+  public synchronized void postEdit(UndoableEdit edit)
   {
-    // TODO
+    if (compoundEdit == null)
+      compoundEdit.addEdit(edit);
+    else
+      _postEdit(edit);
   }
 
   /**
@@ -150,7 +170,7 @@ public class UndoableEditSupport
    */
   public int getUpdateLevel()
   {
-    return 0; // TODO
+    return updateLevel;
   }
 
   /**
@@ -158,7 +178,15 @@ public class UndoableEditSupport
    */
   public synchronized void beginUpdate()
   {
-    // TODO
+    if (compoundEdit != null)
+      {
+	// FIXME: what?  We can't push a new one.  This isn't even
+	// documented anyway.
+	endUpdate();
+      }
+
+    compoundEdit = createCompoundEdit();
+    ++updateLevel;
   }
 
   /**
@@ -167,7 +195,7 @@ public class UndoableEditSupport
    */
   protected CompoundEdit createCompoundEdit()
   {
-    return null; // TODO
+    return new CompoundEdit();
   }
 
   /**
@@ -175,6 +203,11 @@ public class UndoableEditSupport
    */
   public synchronized void endUpdate()
   {
-    // TODO
+    // FIXME: assert updateLevel == 1;
+    compoundEdit.end();
+    CompoundEdit c = compoundEdit;
+    compoundEdit = null;
+    --updateLevel;
+    _postEdit(c);
   }
 }
