@@ -1,3 +1,10 @@
+2003-02-16  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/NetPermission.java
+	(NetPermission): Make doucmentation match the method declaration.
+	* java/net/NetworkInterface.java
+	(equals): Reformated for GNU coding style.
+
 2003-02-16  Tom Tromey  <tromey@redhat.com>
 
 	* java/net/URLStreamHandler.java (toExternalForm): Fixed
