@@ -285,8 +285,6 @@ public class BigDecimal extends Number implements Comparable
     BigInteger dividend = intVal.multiply (BigInteger.valueOf (10).pow (power));
     
     BigInteger parts[] = dividend.divideAndRemainder (valIntVal);
-//      System.out.println("int: " + parts[0]);
-//      System.out.println("rem: " + parts[1]);
 
     BigInteger unrounded = parts[0];
     if (parts[1].signum () == 0) // no remainder, no rounding necessary
@@ -295,32 +293,34 @@ public class BigDecimal extends Number implements Comparable
     if (roundingMode == ROUND_UNNECESSARY)
       throw new ArithmeticException ("newScale is not large enough");
 
-    int sign = unrounded.signum ();
+    int sign = intVal.signum () * valIntVal.signum ();
 
     if (roundingMode == ROUND_CEILING)
-      roundingMode = (sign == 1) ? ROUND_UP : ROUND_DOWN;
+      roundingMode = (sign > 0) ? ROUND_UP : ROUND_DOWN;
     else if (roundingMode == ROUND_FLOOR)
-      roundingMode = (sign == 1) ? ROUND_DOWN : ROUND_UP;
+      roundingMode = (sign < 0) ? ROUND_UP : ROUND_DOWN;
     else
       {
 	// half is -1 if remainder*2 < positive intValue (*power), 0 if equal,
 	// 1 if >. This implies that the remainder to round is less than,
 	// equal to, or greater than half way to the next digit.
-	BigInteger posRemainder = sign == -1 ? parts[1].negate() : parts[1];
+	BigInteger posRemainder
+	  = parts[1].signum () < 0 ? parts[1].negate() : parts[1];
+	valIntVal = valIntVal.signum () < 0 ? valIntVal.negate () : valIntVal;
 	int half = posRemainder.shiftLeft(1).compareTo(valIntVal);
-	
+
 	switch(roundingMode)
 	  {
 	  case ROUND_HALF_UP:
-	    roundingMode = (half == -1) ? ROUND_DOWN : ROUND_UP;
+	    roundingMode = (half < 0) ? ROUND_DOWN : ROUND_UP;
 	    break;
 	  case ROUND_HALF_DOWN:
-	    roundingMode = (half == 1) ? ROUND_UP : ROUND_DOWN;
+	    roundingMode = (half > 0) ? ROUND_UP : ROUND_DOWN;
 	    break;
 	  case ROUND_HALF_EVEN:
-	    if (half == -1)
+	    if (half < 0)
 	      roundingMode = ROUND_DOWN;
-	    else if (half == 1)
+	    else if (half > 0)
 	      roundingMode = ROUND_UP;
 	    else if (unrounded.testBit(0)) // odd, then ROUND_HALF_UP
 	      roundingMode = ROUND_UP;
@@ -331,8 +331,7 @@ public class BigDecimal extends Number implements Comparable
       }
 
     if (roundingMode == ROUND_UP)
-      return new BigDecimal (unrounded.add (BigInteger.valueOf
-					    (sign != 0 ? sign : 1)), newScale);
+      unrounded = unrounded.add (BigInteger.valueOf (sign > 0 ? 1 : -1));
 
     // roundingMode == ROUND_DOWN
     return new BigDecimal (unrounded, newScale);

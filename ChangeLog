@@ -1,3 +1,8 @@
+2003-08-01  Mark Wielaard  <mark@klomp.org>
+
+	* java/math/BigDecimal.java (divide): Calculate sign correctly. And
+	optimize checks againsts sign and half values.
+
 2003-07-31  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/ObjectInputStream.java (processResolution): Use
