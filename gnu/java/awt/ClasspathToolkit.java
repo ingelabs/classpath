@@ -182,8 +182,7 @@ public abstract class ClasspathToolkit
 
   public Font getFont (String name, Map attrs) 
   {
-    // FIXME: name is ignored currently.
-    return new Font (attrs);
+    return new Font (name, attrs);
   }
 
 

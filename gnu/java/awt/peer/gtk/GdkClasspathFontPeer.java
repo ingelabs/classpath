@@ -70,7 +70,9 @@ public class GdkClasspathFontPeer extends ClasspathFontPeer
       {
         System.loadLibrary("gtkpeer");
       }
-    initStaticState ();
+
+    if (GtkToolkit.useGraphics2D ())
+      initStaticState ();
   }
   native static void initStaticState ();
   private final int native_state = GtkGenericPeer.getUniqueInteger ();
