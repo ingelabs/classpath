@@ -1,4 +1,4 @@
-lib_LTLIBRARIES = libgtkpeer.la
+pkglib_LTLIBRARIES = libgtkpeer.la
 
 libgtkpeer_la_SOURCES = \
 gdkfontmetrics.c	   gtkfiledialogpeer.c	gtkscrollpanepeer.c \
@@ -13,9 +13,9 @@ gtkclipboard.c		   gtkpanelpeer.c \
 gtkcomponentpeer.c	   gtkpopupmenupeer.c \
 gtkevents.c		   gtkscrollbarpeer.c
 
-libgtkpeer_la_LDFLAGS = -version-info 0:0:0 @GTK_LIBS@ @GLIB_LIBS@ @LIBART_LIBS@
+libgtkpeer_la_LDFLAGS = -version-info @LIBVERSION@ @GTK_LIBS@ @GLIB_LIBS@ @LIBART_LIBS@
 
-INCLUDES += @JAPHAR_CFLAGS@ \
+INCLUDES += @EXTRA_INCLUDES@ \
 	    @GTK_CFLAGS@ \
 	    @LIBART_CFLAGS@ \
 	    -I$(top_srcdir)/include
