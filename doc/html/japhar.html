@@ -62,25 +62,18 @@
     unless you use the configure option <code>--enable-classpath</code>.<p>
 
     <h2>2. Getting the Patch</h2>
-    The patch is a zipfile available <a href="japhar-patch.zip">here</a>.<p>
+    The patch is a tgz file available <a href="japhar-patch.tgz">here</a>.<p>
     You also need a compiled copy of the Classpath library to work with Japhar.
     Since our build procedure is not yet up to speed, I have the one I use
     <a href="classpath.zip">here</a>.<p>
-    Note that the new patch is not assured of working since I haven't tested
-    whether I got everything into the patch.  If you want something you're
-    assured works, get <a href="japhar-patch.tgz"> and untar it <i>while in the
-    Japhar directory</i> and skip step 3.  I think I did the patch right,
-    though, so there shouldn't be a problem.<p>
 
     <h2>3. Installing the Patch</h2>
     <b>A.</b> Change to the directory just above your Japhar directory and
-    unzip.  <i>This only works if your Japhar directory is named</i>
-    <code>japhar</code>.<p>
-    <b>B.</b> You need to use the unified diff patch <code>jcp.diff</code>
-    which will unzip into the directory above your Japhar directory when you
-    unzip everything else.  I haven't got the command line for this yet.  I
-    figure the people who really need it already know it, so I'm not too
-    worried.<p>
+    untar japhar-patch.tgz.  <i>This only works right if your Japhar directory
+    is named</i> <code>japhar</code>.<p>
+    <b>B.</b> Use the unified diff patch.  To do this, stay in the directory
+    just above your Japhar directory and type
+    "<code>patch &lt; japharcp.diff</code>".<p>
 
     <h2>4. Remake Japhar</h2>
     When the patch is installed, you will need to remake Japhar with Classpath
