@@ -1,5 +1,5 @@
 /* Scrollbar.java -- AWT Scrollbar widget
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -48,6 +48,7 @@ import java.awt.event.AdjustmentEvent;
   * This class implements a scrollbar widget.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Tom Tromey <tromey@cygnus.com>
   */
 public class Scrollbar extends Component implements Adjustable,
                                                     java.io.Serializable
@@ -149,7 +150,6 @@ Scrollbar()
 public
 Scrollbar(int orientation) throws IllegalArgumentException
 {
-  // FIXME: What are the appropriate default values here?
   this(orientation, 0, 10, 0, 100);
 }
 
@@ -175,15 +175,15 @@ Scrollbar(int orientation, int value, int visibleAmount, int minimum,
           int maximum) throws IllegalArgumentException
 {
   if ((orientation != HORIZONTAL) && (orientation != VERTICAL))
-    throw new IllegalArgumentException("Bad orientation value: " + orientation);
+    throw new IllegalArgumentException("Bad orientation value: "
+				       + orientation);
 
   this.orientation = orientation;
 
   setValues(value, visibleAmount, minimum, maximum);
 
-  lineIncrement = (maximum - minimum) / 20;
-  if (lineIncrement == 0)
-    lineIncrement = 1;
+  // Default is 1 according to online docs.
+  lineIncrement = 1;
 
   pageIncrement = (maximum - minimum) / 5;
   if (pageIncrement == 0)
@@ -222,7 +222,8 @@ public void
 setOrientation(int orientation)
 {
   if ((orientation != HORIZONTAL) && (orientation != VERTICAL))
-    throw new IllegalArgumentException("Bad orientation value: " + orientation);
+    throw new IllegalArgumentException("Bad orientation value: "
+				       + orientation);
 
   // FIXME: Communicate to peer?  Or must this be called before peer creation?
   this.orientation = orientation;
@@ -587,10 +588,9 @@ setPageIncrement(int pageIncrement)
 public synchronized void
 addNotify()
 {
-  if (getPeer() != null)
-    return;
-
-  setPeer((ComponentPeer)getToolkit().createScrollbar(this));
+  if (peer == null)
+    peer = getToolkit ().createScrollbar (this);
+  super.addNotify ();
 }
 
 /*************************************************************************/
@@ -670,9 +670,14 @@ processAdjustmentEvent(AdjustmentEvent event)
 protected String
 paramString()
 {
-  return(getClass().getName() + "(value=" + getValue() + ",visibleAmount=" +
-         getVisibleAmount() + ",minimum=" + getMinimum() + ",maximum=" +
-         getMaximum() + ")");
+  return("value=" + getValue() + ",visibleAmount=" +
+         getVisibleAmount() + ",minimum=" + getMinimum()
+	 + ",maximum=" + getMaximum()
+	 + ",pageIncrement=" + pageIncrement
+	 + ",lineIncrement=" + lineIncrement
+	 + ",orientation=" + (orientation == HORIZONTAL
+			      ? "HORIZONTAL" : "VERTICAL")
+	 + super.paramString());
 }
 
 } // class Scrollbar 

@@ -1,5 +1,13 @@
 2002-01-24  Tom Tromey  <tromey@redhat.com>
 
+	* java/awt/Scrollbar.java (Scrollbar(int)): Removed `FIXME'
+	comment.
+	(Scrollbar(int,int,int,int,int)): Default lineIncrement to 1.
+	(addNotify): Use libgcj implementation.
+	(paramString): Don't include class name or parens; do include
+	superclass paramString() result, page and line increment, and
+	orientation.
+
 	* java/awt/Container.java (addNotify): Unconditionally call
 	addNotifyContainerChildren and superclass addNotify.
 
