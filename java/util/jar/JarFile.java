@@ -449,7 +449,7 @@ public class JarFile extends ZipFile
       {
         if (DEBUG)
           debug("reading and verifying " + entry);
-        return new EntryInputStream(entry);
+        return new EntryInputStream(entry, super.getInputStream(entry));
       }
     else
       {
@@ -875,9 +875,10 @@ public class JarFile extends ZipFile
     private final MessageDigest[] md;
     private boolean checked;
 
-    EntryInputStream(final ZipEntry entry) throws IOException
+    EntryInputStream(final ZipEntry entry, final InputStream in)
+      throws IOException
     {
-      super(JarFile.super.getInputStream(entry));
+      super(in);
       this.entry = entry;
 
       length = entry.getSize();
