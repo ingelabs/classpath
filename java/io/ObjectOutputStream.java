@@ -201,21 +201,18 @@ public class ObjectOutputStream extends OutputStream
 	  
 	  myRealOutput.writeByte( flags );
 
-	  OSCField[] fields = osc.getFields();
+	  ObjectStreamField[] fields = osc.getFields();
 	  myRealOutput.writeShort( fields.length );
 
-	  OSCField field;
-	  Class clazz;
+	  ObjectStreamField field;
 	  for( int i=0; i < fields.length; i++ )
 	  {
 	    field = fields[i];
-	    myRealOutput.writeByte( TypeSignature.getEncodingOfClass( 
-	      field.getType() ).charAt( 0 ) );
+	    myRealOutput.writeByte( field.getTypeCode() );
 	    myRealOutput.writeUTF( field.getName() );
 	    
-	    clazz = field.getType();
-	    if( ! clazz.isPrimitive() )
-	      writeObject( TypeSignature.getEncodingOfClass( clazz ) );
+	    if( ! field.isPrimitive() )
+	      writeObject( field.getTypeString() );
 	  }
 
 	  setBlockDataMode( true );
@@ -892,7 +889,7 @@ public class ObjectOutputStream extends OutputStream
   // writes out FIELDS of OBJECT.  If CALL_WRITE_METHOD is true, use
   // object's writeObject(ObjectOutputStream), otherwise use default
   // serialization.  FIELDS are already in canonical order.
-  private void writeFields( Object obj, OSCField[] fields, boolean call_write_method )
+  private void writeFields( Object obj, ObjectStreamField[] fields, boolean call_write_method )
     throws IOException
   {
     if( call_write_method )

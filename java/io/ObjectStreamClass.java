@@ -228,13 +228,14 @@ public class ObjectStreamClass implements Serializable
   // Returns the serializable (non-static and non-transient) Field's
   // of the class represented by this ObjectStreamClass.  The Field's
   // are sorted by name.
-  OSCField[] getFields()
+  ObjectStreamField[] getFields()
   {
     return myFields;
   }
   
   
-  ObjectStreamClass( String name, long uid, byte flags, OSCField[] fields )
+  ObjectStreamClass( String name, long uid, byte flags,
+		     ObjectStreamField[] fields )
   {
     myName = name;
     myUID = uid;
@@ -295,7 +296,7 @@ public class ObjectStreamClass implements Serializable
   
 
   // Sets myFields to be a sorted array of the serializable fields of
-  // myClass.  Sorting is done using ourSerializableFieldComparator
+  // myClass.
   private void setFields( Class cl )
   {
     if( ! isSerializable() || isExternalizable() )
@@ -320,16 +321,16 @@ public class ObjectStreamClass implements Serializable
     }
     
     // make a copy of serializable (non-null) fields
-    myFields = new OSCField[ num_good_fields ];
+    myFields = new ObjectStreamField[ num_good_fields ];
     for( int from=0, to=0; from < all_fields.length; from++ )
       if( all_fields[from] != null )
       {
 	Field f = all_fields[from];
-	myFields[to] = new OSCField( f.getName(), f.getType() );
+	myFields[to] = new ObjectStreamField( f.getName(), f.getType() );
 	to++;
       }
 
-    Arrays.sort( myFields, ourSerializableFieldComparator );
+    Arrays.sort( myFields );
   }
   
 
@@ -489,14 +490,13 @@ public class ObjectStreamClass implements Serializable
 
   private static Hashtable ourClassLookupTable;  
   private static final NullOutputStream ourNullOutputStream;
-  private static final Comparator ourSerializableFieldComparator;
   private static final Comparator ourInterfaceComparartor;
   private static final Comparator ourMemberComparator;
   private static final String ourSUIDFieldName = "serialVersionUID";
   private static final String ourWriteMethodName = "writeObject";
   private static final
   Class[] ourWriteMethodArgTypes = { java.io.ObjectOutputStream.class };
-  private static final OSCField[] ourEmptyFields = {};
+  private static final ObjectStreamField[] ourEmptyFields = {};
   private static final String ourClassInitializerName = "<clinit>";
   private static final String ourClassInitializerTypecode = "()V";
   private static final String ourConstructorName = "<init>";
@@ -506,7 +506,7 @@ public class ObjectStreamClass implements Serializable
   private String myName;
   private long myUID;
   private byte myFlags;
-  private OSCField[] myFields;
+  private ObjectStreamField[] myFields;
 
   
   static
@@ -519,31 +519,8 @@ public class ObjectStreamClass implements Serializable
 
     ourClassLookupTable = new Hashtable();
     ourNullOutputStream = new NullOutputStream();
-    ourSerializableFieldComparator = new SerializableFieldComparator();    
     ourInterfaceComparartor = new InterfaceComparator();
     ourMemberComparator = new MemberComparator();
-  }
-}
-
-
-// OSCField's are compared by name, but primitive Field's come before
-// non-primitive Field's.
-class SerializableFieldComparator implements Comparator
-{
-  public int compare( Object o1, Object o2 )
-  {
-    OSCField a = (OSCField)o1;
-    OSCField b = (OSCField)o2;
-    boolean a_is_primitive = a.getType().isPrimitive();
-    boolean b_is_primitive = b.getType().isPrimitive();
-    
-    if( a_is_primitive && !b_is_primitive )
-      return -1;
-
-    if( !a_is_primitive && b_is_primitive )
-      return 1;
-
-    return a.getName().compareTo( b.getName() );
   }
 }
 

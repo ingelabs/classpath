@@ -1,5 +1,5 @@
 /*************************************************************************
-/* OSCField.java -- Class used to store name and class of fields
+/* ObjectStreamField.java -- Class used to store name and class of fields
 /*
 /* Copyright (c) 1998 by Geoffrey C. Berry (gcb@cs.duke.edu)
 /*
@@ -19,22 +19,59 @@
 
 package java.io;
 
-class OSCField
+import gnu.java.lang.reflect.TypeSignature;
+
+public class ObjectStreamField implements Comparable
 {
-  OSCField( String name, Class type )
+  public ObjectStreamField( String name, Class type )
   {
     this.name = name;
     this.type = type;
   }
   
-  String getName()
+  public int compareTo( Object o )
+  {
+    ObjectStreamField f = (ObjectStreamField)o;
+    boolean this_is_primitive = isPrimitive();
+    boolean f_is_primitive = f.isPrimitive();
+    
+    if( this_is_primitive && !f_is_primitive )
+      return -1;
+
+    if( !this_is_primitive && f_is_primitive )
+      return 1;
+
+    return getName().compareTo( f.getName() );
+  }
+
+  public String getName()
   {
     return name;
   }
   
-  Class getType()
+  public Class getType()
   {
     return type;
+  }
+
+  public char getTypeCode()
+  {
+    return TypeSignature.getEncodingOfClass( this.type ).charAt( 0 );
+  }
+  
+  public String getTypeString()
+  {
+    return TypeSignature.getEncodingOfClass( this.type );
+  }
+  
+  public boolean isPrimitive()
+  {
+    return this.type.isPrimitive();
+  }
+  
+  public String toString()
+  {
+    return "ObjectStreamField< " + this.type + " " + this.name + " >";
   }
 
   private String name;
