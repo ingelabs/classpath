@@ -45,6 +45,7 @@
 	ToggleButtonBorder): Re-written.
 	(getRadioButtonBorder, getToggleButtonBorder): New public method.
 	* javax/swing/plaf/basic/doc-files/
+	BasicBorders.MenuBarBorder-1.png,
 	BasicBorders.RadioButtonBorder-1.png,
 	BasicBorders.ToggleButtonBorder-1.png: New image.
 	
