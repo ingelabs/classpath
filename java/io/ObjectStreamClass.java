@@ -1,6 +1,6 @@
 /* ObjectStreamClass.java -- Class used to write class information
    about serialized objects.
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -48,7 +48,7 @@ public class ObjectStreamClass implements Serializable
   /**
      Returns the <code>ObjectStreamClass</code> for <code>cl</code>.
      If <code>cl</code> is null, or is not <code>Serializable</code>,
-     null is returned.  <code>ObjectStreamClass</code>'s are memoized;
+     null is returned.  <code>ObjectStreamClass</code>'s are memorized;
      later calls to this method with the same class will return the
      same <code>ObjectStreamClass</code> object and no recalculation
      will be done.
@@ -59,13 +59,13 @@ public class ObjectStreamClass implements Serializable
   {
     if (cl == null)
       return null;
+    if (! (Serializable.class).isAssignableFrom (cl))
+      return null;
 
     ObjectStreamClass osc = (ObjectStreamClass)classLookupTable.get (cl);
 
     if (osc != null)
       return osc;
-    else if (! (Serializable.class).isAssignableFrom (cl))
-      return null;
     else
     {
       osc = new ObjectStreamClass (cl);
@@ -158,7 +158,7 @@ public class ObjectStreamClass implements Serializable
   // private void writeObject (ObjectOutputStream)
   //
   // This method is used by the class to override default
-  // serialization behaivior.
+  // serialization behavior.
   boolean hasWriteMethod ()
   {
     return (flags & ObjectStreamConstants.SC_WRITE_METHOD) != 0;
@@ -393,7 +393,7 @@ public class ObjectStreamClass implements Serializable
     calculateOffsets ();
   }
 
-  // Sets uid be serial version UID defined by class, or if that
+  // Sets uid to be serial version UID defined by class, or if that
   // isn't present, calculates value of serial version UID.
   private void setUID (Class cl)
   {
@@ -530,18 +530,72 @@ public class ObjectStreamClass implements Serializable
 
   // Returns the value of CLAZZ's final static long field named
   // `serialVersionUID'.
-  private native long getDefinedSUID (Class clazz);
+  private long getDefinedSUID (Class clazz)
+  {
+    long l = 0;
+    try
+      {
+	// Use getDeclaredField rather than getField, since serialVersionUID
+	// may not be public AND we only want the serialVersionUID of this
+	// class, not a superclass or interface.
+	Field f = clazz.getDeclaredField ("serialVersionUID");
+	l = f.getLong (null);
+      }
+    catch (java.lang.NoSuchFieldException e)
+      {
+      }
+
+    catch (java.lang.IllegalAccessException e)
+      {
+      }
+
+    return l;
+  }
 
   // Returns the value of CLAZZ's private static final field named
   // `serialPersistantFields'.
-  private native ObjectStreamField[] getSerialPersistantFields (Class clazz);
+  private ObjectStreamField[] getSerialPersistantFields (Class clazz)
+  {
+    ObjectStreamField[] o = null;
+    try
+      {
+	// Use getDeclaredField rather than getField for the same reason
+	// as above in getDefinedSUID.
+	Field f = clazz.getDeclaredField ("getSerialPersistantFields");
+	o = (ObjectStreamField[])f.get (null);
+      }
+    catch (java.lang.NoSuchFieldException e)
+      {
+      }
+    catch (java.lang.IllegalAccessException e)
+      {
+      }
+
+    return o;
+  }
+
 
   // Returns true if CLAZZ has a static class initializer
   // (a.k.a. <clinit>).
   //
   // A NoSuchMethodError is raised if CLAZZ has no such method.
-  private static native boolean hasClassInitializer (Class clazz);
+  private static boolean hasClassInitializer (Class clazz)
+    throws java.lang.NoSuchMethodError
+  {
+    Method m = null;
 
+    try
+      {
+	Class classArgs[] = {};
+	m = clazz.getDeclaredMethod ("<clinit>", classArgs);
+      }
+    catch (java.lang.NoSuchMethodException e)
+      {
+	throw new java.lang.NoSuchMethodError ();
+      }
+
+    return m != null;
+  }
 
   public static final ObjectStreamField[] NO_FIELDS = {};
 

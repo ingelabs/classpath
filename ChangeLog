@@ -1,3 +1,8 @@
+2000-07-27  Warren Levy  <warrenl@cygnus.com>
+
+	* gnu/java/security/provider/SHA.java (munch): Reset buffer to 0 so
+	spurious bits don't cause discrepancies.
+
 2000-07-23  Oskar Liljeblad <osk@hem.passagen.se>
 
 	* java/io/StreamTokenizer.java: Merged with libgcj.

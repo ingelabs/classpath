@@ -1,3 +1,6 @@
+2000-07-27  Warren Levy  <warrenl@cygnus.com>
+
+	* Makefile.am: Removed reference to java_io_ObjectStreamClass.c.
 
 Fri Jul 17 21:18:10 1998  arenn's Development Account  <devel@larissa.foo.com>
 

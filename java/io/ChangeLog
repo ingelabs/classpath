@@ -1,3 +1,13 @@
+2000-07-27  Warren Levy  <warrenl@cygnus.com>
+
+	* ObjectOutputStream.java: Fixed typo in comment.
+	* ObjectStreamClass.java: Merged with libgcj.
+	Fixed typos in comments.
+	(lookup): Applied patch from Brian Jones <cbj@gnu.org> to optimize.
+	(getDefinedSUID): Removed native method.
+	(getSerialPersistantFields): Removed native method.
+	(hasClassInitializer): Removed native method.
+
 2000-05-19  Tom Tromey  <tromey@cygnus.com>
 
 	* BufferedWriter.java: Merged with libgcj.
