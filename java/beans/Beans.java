@@ -31,7 +31,7 @@ import gnu.java.io.*;
  * @since JDK1.1
  * @version 1.1.0, 29 Jul 1998
  *
-
+ */
 public class Beans {
 	static boolean designTime = false;
 	static boolean guiAvailable = true;
