@@ -19,30 +19,34 @@
 
 package java.util;
 import java.io.Serializable;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.IOException;
 
 // TO DO:
 // ~ Doc comment for the class.
-// ~ Serialization (which means trying to comprehend Sun's serialized form
-//   docs)
 // ~ Doc comments for the non-list methods.
 // ~ Some commenting on the Backing API and other general implementation notes.
 
 /**
  * Linked list implementation of the List interface.
  */
-public class LinkedList extends AbstractSequentialList implements Serializable{
+public class LinkedList extends AbstractSequentialList 
+  implements Serializable, Cloneable
+{
+  static final long serialVersionUID = 876323262645176354L;
 
   /**
    * An Entry containing the head (in the next field) and the tail (in the
    * previous field) of the list. The data field is null. If the list is empty,
    * both the head and the tail point to ends itself.
    */
-  Entry ends = new Entry();
+  transient Entry ends = new Entry();
 
   /**
    * The current length of the list.
    */
-  int size = 0;
+  transient int size = 0;
 
   /**
    * Class to represent an entry in the list. Holds a single element.
@@ -163,12 +167,13 @@ public class LinkedList extends AbstractSequentialList implements Serializable{
      * @param index the index to begin iteration.
      * @exception IndexOutOfBoundsException if index < 0 || index > size.
      */
-    Iter(Backing backing, Entry n, int index, int s) {
+    Iter(Backing backing, Entry n, int index, int s, int modCount) {
       b = backing;
       pos = index;
       size = s;
       next = n;
       previous = n.previous;
+      knownMod = modCount;
     }
 
     public int nextIndex() {
@@ -412,7 +417,8 @@ public class LinkedList extends AbstractSequentialList implements Serializable{
       throw new IndexOutOfBoundsException();
     }
 
-    return new Iter(back, getEntry(index, size, ends, ends), index, size);
+    return new Iter(back, getEntry(index, size, ends, ends), 
+		    index, size, modCount);
   }
 
   /**
@@ -487,7 +493,8 @@ public class LinkedList extends AbstractSequentialList implements Serializable{
 	throw new IndexOutOfBoundsException();
       }
 
-      return new Iter(back, getEntry(index, size, head, tail), index, size);
+      return new Iter(back, getEntry(index, size, head, tail), 
+		      index, size, modCount);
     }
 
     public void clear() {
@@ -514,5 +521,54 @@ public class LinkedList extends AbstractSequentialList implements Serializable{
 			       getEntry(toIndex, size, head, tail),
 			       toIndex - fromIndex);
     }
+  }
+
+  /**
+   * Create a shallow copy of this LinkedList.
+   * @return an object of the same class as this object, containing the
+   * same elements in the same order.
+   */
+  public Object clone() 
+  {
+    LinkedList copy;
+    try
+      {
+	copy = (LinkedList) super.clone();
+      }
+    catch (CloneNotSupportedException ex)
+      {
+	throw new InternalError(ex.getMessage());
+      }
+    copy.size = 0;
+    copy.ends = new Entry();
+    copy.addAll(this);
+    return copy;
+  }
+
+  /**
+   * Serialize an object to a stream.
+   * @serialdata the size of the list (int), followed by all the elements
+   * (Object) in proper order.
+   */
+  private void writeObject(ObjectOutputStream s)
+    throws IOException
+  {
+    s.writeInt(size);
+    for (Iterator i = iterator(); i.hasNext(); )
+      s.writeObject(i.next());
+  }
+
+  /**
+   * Deserialize an object from a stream.
+   * @serialdata the size of the list (int), followed by all the elements
+   * (Object) in proper order.
+   */
+  private void readObject(ObjectInputStream s)
+    throws IOException, ClassNotFoundException
+  {
+    int serialSize = s.readInt();
+    ends = new Entry();
+    for (int i=0; i< serialSize; i++)
+      addLast(s.readObject());
   }
 }
