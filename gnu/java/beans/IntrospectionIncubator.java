@@ -40,10 +40,6 @@ public class IntrospectionIncubator {
 	Hashtable listenerMethods = new Hashtable();
 	Vector otherMethods = new Vector();
 
-	public IntrospectionIncubator(Class beanClass) {
-		addMethods(beanClass.getDeclaredMethods());
-	}
-
 	public IntrospectionIncubator() {
 	}
 
@@ -77,14 +73,12 @@ public class IntrospectionIncubator {
 			} else if(name.startsWith("add")
 			          && isVoid
 			          && params.length == 1
-			          && java.util.EventListener.class.isAssignableFrom(params[0])
-		        	  && name.substring(3).equals(ClassHelper.getTruncatedClassName(params[0]))) {
+			          && java.util.EventListener.class.isAssignableFrom(params[0])) {
 				addToListenerHash(name,method,ADD);
 			} else if(name.startsWith("remove")
 			          && isVoid
 			          && params.length == 1
-			          && java.util.EventListener.class.isAssignableFrom(params[0])
-		        	  && name.substring(6).equals(ClassHelper.getTruncatedClassName(params[0]))) {
+			          && java.util.EventListener.class.isAssignableFrom(params[0])) {
 				addToListenerHash(name,method,REMOVE);
 			} else {
 				otherMethods.addElement(method);
@@ -98,7 +92,7 @@ public class IntrospectionIncubator {
 		}
 	}
 
-	public BeanInfoEmbryo getBeanInfoEmbryo() {
+	public BeanInfoEmbryo getBeanInfoEmbryo() throws IntrospectionException {
 		BeanInfoEmbryo b = new BeanInfoEmbryo();
 		findXXX(b,IS);
 		findXXXInt(b,GET_I);
@@ -106,21 +100,20 @@ public class IntrospectionIncubator {
 		findXXX(b,GET);
 		findXXX(b,SET);
 		findAddRemovePairs(b);
-		findRemainingMethods(b,propertyMethods);
-		findRemainingMethods(b,listenerMethods);
+		moveMethodsToOther(propertyMethods);
+		moveMethodsToOther(listenerMethods);
 		for(int i=0;i<otherMethods.size();i++) {
 			b.addMethod(new MethodDescriptor((Method)otherMethods.elementAt(i)));
 		}
 		return b;
 	}
 
-	public BeanInfo getBeanInfo() {
+	public BeanInfo getBeanInfo() throws IntrospectionException {
 		return getBeanInfoEmbryo().getBeanInfo();
 	}
 
 
-	void findAddRemovePairs(BeanInfoEmbryo b) {
-		try {
+	void findAddRemovePairs(BeanInfoEmbryo b) throws IntrospectionException {
 		Enumeration listenerEnum = listenerMethods.keys();
 		Vector toRemove = new Vector();
 		while(listenerEnum.hasMoreElements()) {
@@ -139,26 +132,21 @@ public class IntrospectionIncubator {
 		for(int i=0;i<toRemove.size();i++) {
 			listenerMethods.remove(toRemove.elementAt(i));
 		}
-
-		} catch(IntrospectionException e) {
-			System.err.println("Uhoh, Introspection failed in findAddRemovePairs(): " + e);
-		}
 	}
 
-	void findRemainingMethods(BeanInfoEmbryo b, Hashtable methodHash) {
+	void moveMethodsToOther(Hashtable methodHash) {
 		Enumeration enum = methodHash.elements();
 		while(enum.hasMoreElements()) {
 			Method[] m = (Method[])enum.nextElement();
 			for(int i=0;i<m.length;i++) {
 				if(m[i] != null) {
-					b.addMethod(new MethodDescriptor(m[i]));
+					otherMethods.addElement(m[i]);
 				}
 			}
 		}
 	}
 
-	void findXXX(BeanInfoEmbryo b, int funcType) {
-		try {
+	void findXXX(BeanInfoEmbryo b, int funcType) throws IntrospectionException {
 		Enumeration keys = propertyMethods.keys();
 		Vector toRemove = new Vector();
 		while(keys.hasMoreElements()) {
@@ -179,14 +167,9 @@ public class IntrospectionIncubator {
 		for(int i=0;i<toRemove.size();i++) {
 			propertyMethods.remove(toRemove.elementAt(i));
 		}
-
-		} catch(IntrospectionException e) {
-			System.err.println("Uhoh, Introspection failed in findXXX()");
-		}
 	}
 
-	void findXXXInt(BeanInfoEmbryo b, int funcType) {
-		try {
+	void findXXXInt(BeanInfoEmbryo b, int funcType) throws IntrospectionException {
 		Enumeration keys = propertyMethods.keys();
 		Vector toRemove = new Vector();
 		while(keys.hasMoreElements()) {
@@ -226,9 +209,6 @@ public class IntrospectionIncubator {
 
 		for(int i=0;i<toRemove.size();i++) {
 			propertyMethods.remove(toRemove.elementAt(i));
-		}
-		} catch(IntrospectionException e) {
-			System.err.println("Uhoh, reflection screwed up in findXXXInt");
 		}
 	}
 
