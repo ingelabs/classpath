@@ -1,5 +1,10 @@
 2003-01-10:  C. Brian Jones  <cbj@gnu.org>
 
+	* java/net/Socket.java: add missing @since tags, most of patch
+	from Sasha Brawer, includes a couple of javadoc typo fixes.
+
+2003-01-10:  C. Brian Jones  <cbj@gnu.org>
+
 	* mkinstalldirs: updated to automake 1.6
 	* missing: ditto
 	* install-sh: ditto
