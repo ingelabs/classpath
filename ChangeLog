@@ -1,3 +1,13 @@
+2002-11-08  Michael Koch <konqueror@gmx.de>
+
+	* java/nio/CharBuffer.java:
+	Reindented.
+	(wrap): New method.
+	(put): New method.
+	* java/nio/BufferOverflowException.java,
+	java/nio/BufferUnderflowException.java: New file.
+	* java/nio/Makefile.am: Added new files.
+	
 2002-11-07  Mark Wielaard  <mark@klomp.org>
 
 	* java/awt/ScrollPane.java (ScrollPane): Conditions should all be true.

@@ -2,6 +2,8 @@ SUBDIRS=channels charset
 
 EXTRA_DIST= \
 Buffer.java \
+BufferOverflowException.java \
+BufferUnderflowException.java \
 ByteBuffer.java \
 ByteOrder.java \
 CharBuffer.java \
