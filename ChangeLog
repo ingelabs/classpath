@@ -1,3 +1,11 @@
+2004-01-12  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/net/protocol/http/Connection.java
+	(connect): Dont initialize bufferedOutputStream.
+	(sendRequest): Handle case when bufferedOutputStream is null.
+	(getOutputStream): Throw exception if called after it got connected.
+	Initialize bufferedOutputStream.
+
 2004-01-11  Graydon Hoare  <graydon@redhat.com>
 
 	* javax/swing/JLayeredPane.java: Rewrite to accomodate
