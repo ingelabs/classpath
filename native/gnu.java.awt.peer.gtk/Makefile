@@ -1,0 +1,28 @@
+CC	 = gcc
+LFLAGS   = -shared -Wl,-soname -Wl,libgtkpeer.so.0
+objects  = native_state.o  gdkjnithreads.o     gtkwindowpeer.o \
+	   gtkbuttonpeer.o gtkcomponentpeer.o  gtkfiledialogpeer.o \
+	   gtkmainthread.o gtkscrollpanepeer.o
+CPPFLAGS = -I/usr/local/jdk1.1.6/include -I/usr/local/jdk1.1.6/include/genunix
+CFLAGS   = `gtk-config --cflags`
+LDFLAGS  = `gtk-config --libs`
+all: libgtkpeer.so.0.0.0 install
+
+libgtkpeer.so.0.0.0: $(objects)
+	$(CC) $(LFLAGS) $(LDFLAGS) -o libgtkpeer.so.0.0.0 $(objects) 
+
+.PHONY : clean
+clean : 
+	-rm libgtkpeer.so.0.0.0 $(objects) $(objects:.o=.d) *~
+	rm libgtkpeer.so.0 libgtkpeer.so Gtk*.h
+
+# Generate auto dependencies
+-include $(objects:.o=.d)
+ 
+%.d: %.c
+	$(SHELL) -ec '$(CC) -MM $(CFLAGS) $(CPPFLAGS) $< | sed '\''s/$*\\.o[ :]*/& $@/g'\'' > $@'
+
+install: libgtkpeer.so.0.0.0
+	ln -sf libgtkpeer.so.0.0.0 libgtkpeer.so.0
+	ln -sf libgtkpeer.so.0.0.0 libgtkpeer.so
+	cp libgtkpeer.so.0.0.0 /usr/local/lib
