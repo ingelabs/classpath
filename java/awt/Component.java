@@ -94,7 +94,7 @@ private Color background_color;
 private Color foreground_color;
 
 // The bounding rectangle of this component.
-private Rectangle bounding_rectangle;
+private Rectangle bounding_rectangle = new Rectangle(0, 0, 100, 100);
 
 // The cursor for this component
 private Cursor cursor;
@@ -777,6 +777,21 @@ setSize(Dimension dim)
 {
   Rectangle rect = getBounds();
   setBounds(rect.x, rect.y, dim.width, dim.height);
+}
+
+/*************************************************************************/
+
+/**
+  * Sets the size of this component to the specified width and height.
+  * 
+  * @param width The new width of this component.
+  * @param height The new height of this component.
+  */
+public void
+setSize(int width, int height)
+{
+  Rectangle rect = getBounds();
+  setBounds(rect.x, rect.y, width, height);
 }
 
 /*************************************************************************/

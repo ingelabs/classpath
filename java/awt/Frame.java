@@ -146,7 +146,8 @@ private boolean mbManagement;
 /**
   * @serial The menu bar for this frame.
   */
-private MenuBar menuBar = new MenuBar();
+//private MenuBar menuBar = new MenuBar();
+private MenuBar menuBar;
 
 /**
   * @serial A list of other top-level windows owned by this window.
@@ -197,7 +198,9 @@ public
 Frame(String title)
 {
   super(null);
+  System.err.println("returned");
   this.title = title;
+  System.err.println("end");
 }
 
 /*************************************************************************/

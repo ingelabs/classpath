@@ -46,6 +46,7 @@ private boolean stopped = false;
 public
 EventDispatcher(EventQueue queue)
 {
+  System.err.println("Dispatcher created");
   this.queue = queue;
 }
 
@@ -61,14 +62,16 @@ stop()
 public void
 run()
 {
+  System.err.println("Starting dispatchher run loop");
   while(!stopped)
     {
+      System.err.println("Looping....");
       try 
         {
           AWTEvent event = queue.getNextEvent();
           ((Component)event.getSource()).dispatchEvent(event);
         }
-      catch(InterruptedException e) { ; }
+      catch(Exception e) { ; }
     }
 }
 

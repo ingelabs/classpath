@@ -72,12 +72,15 @@ private WindowListener window_listeners;
 public
 Window(Frame parent)
 {
+  setParent(parent);
+
   // FIXME: SecurityManager check for toplevel window.
   // FIXME: How should we add to parent/create peer?  This is not really
   // a child component of the parent container.
-  parent.ownedWindows.addElement(this);
-  setParent(parent);
-  addNotify();
+  if (parent != null)
+    {
+      parent.ownedWindows.addElement(this);
+    }
 }
 
 /*************************************************************************/
@@ -228,6 +231,9 @@ setCursor(Cursor cursor)
 public void
 show()
 {
+  if (getPeer() == null)
+    addNotify();
+
   super.show();
   toFront();
 }
