@@ -1,3 +1,10 @@
+2003-11-12  Michael Koch  <konqueror@gmx.de>
+
+	* external/jaxp/source/gnu/xml/pipeline/XIncludeFilter.java
+	(Scrubber.Scrubber): Call methods of super class.
+	* external/jaxp/source/org/xml/sax/helpers/XMLReaderFactory.java
+	(createXMLReader): Catch RuntimeException not Exception.
+
 2003-11-11  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkLabelPeer.java (create()): Call new create.

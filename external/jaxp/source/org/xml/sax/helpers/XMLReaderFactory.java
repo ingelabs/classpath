@@ -3,7 +3,7 @@
 // Written by David Megginson
 // and by David Brownell
 // NO WARRANTY!  This class is in the Public Domain.
-// $Id: XMLReaderFactory.java,v 1.1 2003-02-01 02:10:48 cbj Exp $
+// $Id: XMLReaderFactory.java,v 1.2 2003-11-12 09:20:55 mkoch Exp $
 
 package org.xml.sax.helpers;
 import java.io.BufferedReader;
@@ -109,7 +109,7 @@ final public class XMLReaderFactory
 	
 	// 1. try the JVM-instance-wide system property
 	try { className = System.getProperty (property); }
-	catch (Exception e) { /* normally fails for applets */ }
+	catch (RuntimeException e) { /* normally fails for applets */ }
 
 	// 2. if that fails, try META-INF/services/
 	if (className == null) {
