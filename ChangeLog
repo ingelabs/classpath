@@ -1,3 +1,8 @@
+2005-02-26  Audrius Meskauskas  <audriusa@bluewin.ch>
+
+	* javax/swing/text/JTextArea.java (replaceRange): 
+        Fixing doc.remove(start, length) misinterpretation.
+	
 2005-02-26  Roman Kennke  <roman@ontographics.com>
 
 	* javax/swing/plaf/basic/BasicListUI
