@@ -44,36 +44,14 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_tr_TR extends ListResourceBundle
 {
-  static final String decimalSeparator = ".";
-  static final String groupingSeparator = "";
-  static final String numberFormat = "#,##############################################################################################################################0.###";
-  static final String percentFormat = "#,##############################################################################################################################0%";
-  static final String[] weekdays = { null, "Pazar", "Pazartesi", "Sal\u0131", "\u00C7ar\u015Famba", "Per\u015Fembe", "Cuma", "Cumartesi" };
-
-  static final String[] shortWeekdays = { null, "Paz", "Pzt", "Sal", "\u00C7r\u015F", "Pr\u015F", "Cum", "Cts" };
-
-  static final String[] shortMonths = { "Oca", "\u015Eub", "Mar", "Nis", "May", "Haz", "Tem", "A\u011Fu", "Eyl", "Eki", "Kas", "Ara", null };
-
-  static final String[] months = { "Ocak", "\u015Eubat", "Mart", "Nisan", "May\u0131s", "Haziran", "Temmuz", "A\u011Fustos", "Eyl\u00FCl", "Ekim", "Kas\u0131m", "Aral\u0131k", null };
-
-  static final String[] ampms = { "\u00D6\u00D6", "\u00D6S" };
   static final String currencySymbol = "TL";
   static final String intlCurrencySymbol = "TRL";
 
   private static final Object[][] contents =
   {
-    { "weekdays", weekdays },
-    { "shortWeekdays", shortWeekdays },
-    { "shortMonths", shortMonths },
-    { "months", months },
-    { "ampms", ampms },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "decimalSeparator", decimalSeparator },
-    { "groupingSeparator", groupingSeparator },
-    { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
-    { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" }
+    { "currencyFormat", "#,##0 TL;-#,##0 TL" }
   };
 
   public Object[][] getContents() { return contents; }

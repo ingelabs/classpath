@@ -1,3 +1,24 @@
+2004-12-17  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/locale/LocaleInformation_de.java,
+	gnu/java/locale/LocaleInformation_de_DE.java,
+	gnu/java/locale/LocaleInformation_el_GR.java,
+	gnu/java/locale/LocaleInformation_en_GB.java,
+	gnu/java/locale/LocaleInformation_fi_FI.java,
+	gnu/java/locale/LocaleInformation_fr_BE.java,
+	gnu/java/locale/LocaleInformation_fr_FR.java,
+	gnu/java/locale/LocaleInformation_oc_FR.java,
+	gnu/java/locale/LocaleInformation_sv_FI.java,
+	gnu/java/locale/LocaleInformation_sv_SE.java,
+	gnu/java/locale/LocaleInformation_tr_TR.java:
+	Updated.
+	* gnu/java/locale/LocaleInformation_el.java,
+	gnu/java/locale/LocaleInformation_fi.java,
+	gnu/java/locale/LocaleInformation_fr.java,
+	gnu/java/locale/LocaleInformation_sv.java,
+	gnu/java/locale/LocaleInformation_tr.java:
+	New files.
+
 2004-12-17  Mark Wielaard  <mark@klomp.org>
 
 	* INSTALL: We need jikes 1.19 or higher now.

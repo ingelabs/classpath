@@ -388,7 +388,6 @@ public class LocaleInformation_de extends ListResourceBundle
   {
     { "decimalSeparator", "," },
     { "groupingSeparator", "." },
-    { "localPatternChars", "GjMtkHmsSEDFwWahKzJeugAZ" },
     { "shortMonths", shortMonths },
     { "collation_rules", collation_rules },
     { "months", months },
