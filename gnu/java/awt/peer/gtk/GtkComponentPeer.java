@@ -30,6 +30,11 @@ public class GtkComponentPeer extends GtkGenericPeer
 {
   Component awtComponent;
 
+  /* this isEnabled differs from Component.isEnabled, in that it
+     knows if a parent is disabled, in which case Component.isEnabled 
+     will return true, but our isEnabled will return false */
+  native boolean isEnabled ();
+
   native int[] gtkWidgetGetForeground ();
   native int[] gtkWidgetGetBackground ();
   native void gtkWidgetSetVisible (boolean b);

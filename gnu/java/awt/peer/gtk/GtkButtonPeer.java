@@ -46,7 +46,7 @@ public class GtkButtonPeer extends GtkComponentPeer
 
   public void handleEvent (AWTEvent e)
   {
-    if (e.getID () == MouseEvent.MOUSE_CLICKED)
+    if (e.getID () == MouseEvent.MOUSE_CLICKED && isEnabled ())
       {
 	MouseEvent me = (MouseEvent) e;
 	if (!me.isConsumed()
