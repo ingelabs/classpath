@@ -1,3 +1,7 @@
+2005-01-27  Patrik Reali  <reali@acm.org>
+
+	* doc/www.gnu.org/faq/faq.wml: type in faq code corrected
+
 2005-01-27  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/dnd/DropTarget.java (addDropTargetListener):

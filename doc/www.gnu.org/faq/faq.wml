@@ -463,7 +463,7 @@ make && make install
 <br><li>Create a simple gjdoc script and put it in your PATH:<br>
 
 <code>
-  #!/bin/sh<br>
+  &#35;!/bin/sh<br>
   CLASSPATH=/home/mark/src/libxmlj:/home/mark/src/gjdoc/src/resources \<br>
   LD_LIBRARY_PATH=/usr/local/libxmlj/lib \<br>
   /home/mark/src/gjdoc/src/gjdoc $*
@@ -480,21 +480,23 @@ crashes then make sure that your java source files don't contain such
 entities.
 
 
-Alternatively, you may also try the following command (the one used to generate the doc on <createlink url="http://developer.classpath.org/doc/">):
+<p>Alternatively, you may also try the following command (the one used to generate the doc on <createlink url="http://developer.classpath.org/doc/">):<br>
+<ul>
 <code>
-$(GJDOC) -public -use \
-        -sourcepath "$(sourcepath)" \
-        -encoding UTF-8 \
-        -breakiterator \
-        -licensetext \
-        -linksource \
-        -splitindex \
-        -d html \
-        -doctitle "GNU Classpath $(VERSION)" \
-        -windowtitle "GNU Classpath $(VERSION) Documentation" \
-        -header $(classpathbox) -footer $(classpathbox) \
+&#36;(GJDOC) -public -use \<br>
+        -sourcepath "$(sourcepath)" \<br>
+        -encoding UTF-8 \<br>
+        -breakiterator \<br>
+        -licensetext \<br>
+        -linksource \<br>
+        -splitindex \<br>
+        -d html \<br>
+        -doctitle "GNU Classpath $(VERSION)" \<br>
+        -windowtitle "GNU Classpath $(VERSION) Documentation" \<br>
+        -header $(classpathbox) -footer $(classpathbox) \<br>
         -subpackages java:javax:org
 </code>
+</ul>
 
 </faq>
 </faq-section>
