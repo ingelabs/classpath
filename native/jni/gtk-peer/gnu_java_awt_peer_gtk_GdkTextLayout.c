@@ -65,6 +65,31 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkTextLayout_initState
   gdk_threads_leave ();
 }
 
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkTextLayout_setText
+  (JNIEnv *env, jobject self, jstring text)
+{
+  struct textlayout *tl;
+  gchar *str = NULL;
+  gint len = 0;
+
+  gdk_threads_enter ();
+  g_assert(self != NULL);
+  g_assert(text != NULL);
+
+  tl = (struct textlayout *)NSA_GET_TEXT_LAYOUT_PTR (env, self);
+  g_assert(tl != NULL);
+  g_assert(tl->pango_layout != NULL);
+  
+  len = (*env)->GetStringUTFLength (env, text);
+  str = (gchar *)(*env)->GetStringUTFChars (env, text, NULL);
+  g_assert (str != NULL);
+
+  pango_layout_set_text (tl->pango_layout, text, len);
+
+  (*env)->ReleaseStringUTFChars (env, text, str);
+  gdk_threads_leave ();  
+}
+
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkTextLayout_indexToPos
   (JNIEnv *env, jobject self, jint idx, jdoubleArray javaPos)
 {

@@ -1,3 +1,9 @@
+2004-10-27  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkTextLayout.c
+	(Java_gnu_java_awt_peer_gtk_GdkTextLayout_setText): Installed and
+	and renamed from Java_gnu_java_awt_peer_gtk_GdkGlyphVector_setText.
+
 2004-10-26  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/Makefile.am (AM_CFLAGS): Add ERROR_CFLAGS.
