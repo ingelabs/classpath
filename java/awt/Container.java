@@ -1,4 +1,5 @@
-/* Copyright (C) 1999, 2000, 2002  Free Software Foundation
+/* Container.java -- parent container class in AWT
+   Copyright (C) 1999, 2000, 2002  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -36,28 +37,50 @@ exception statement from your version. */
 
 package java.awt;
 
-import java.awt.event.*;
-import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.util.EventListener;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
 import java.awt.peer.ComponentPeer;
 import java.awt.peer.ContainerPeer;
 import java.awt.peer.LightweightPeer;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.util.EventListener;
+import javax.accessibility.Accessible;
 
-/* A somewhat incomplete class. */
-
+/**
+ * A generic window toolkit object that acts as a container for other objects.
+ * Components are tracked in a list, and new elements are at the end of the
+ * list or bottom of the stacking order.
+ *
+ * @author original author unknown
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @since 1.0
+ * @status still missing 1.4 support
+ */
 public class Container extends Component
 {
+  /**
+   * Compatible with JDK 1.0+.
+   */
+  private static final long serialVersionUID = 4613797578919906343L;
+
   /* Serialized fields from the serialization spec. */
   int ncomponents;
   Component[] component;
   LayoutManager layoutMgr;
-  /* LightweightDispatcher dispatcher; */ // wtf?
+
+  // XXX Implement package visible class java.awt.LightweightDispatcher.
+  /* LightweightDispatcher dispatcher; */
+
   Dimension maxSize;
+
+  /** @since 1.4 */
+  boolean focusCycleRoot;
+
   int containerSerializedDataVersion;
 
   /* Anything else is non-serializable, and should be declared "transient". */
-  transient ContainerListener containerListener;  
+  transient ContainerListener containerListener;
 
   /**
    * Default constructor for subclasses.
@@ -81,7 +104,7 @@ public class Container extends Component
    *
    * @return The number of components in this container.
    *
-   * @deprecated This method is deprecated in favor of 
+   * @deprecated This method is deprecated in favor of
    * <code>getComponentCount()</code>.
    */
   public int countComponents()
@@ -242,10 +265,10 @@ public class Container extends Component
   protected void addImpl (Component comp, Object constraints, int index)
   {
     if (index > ncomponents
-	|| (index < 0 && index != -1)
-	|| comp instanceof Window
-	|| (comp instanceof Container
-	    && ((Container) comp).isAncestorOf (this)))
+        || (index < 0 && index != -1)
+        || comp instanceof Window
+        || (comp instanceof Container
+            && ((Container) comp).isAncestorOf (this)))
       throw new IllegalArgumentException ();
 
     // Reparent component, and make sure component is instantiated if
@@ -255,10 +278,10 @@ public class Container extends Component
     comp.parent = this;
     if (peer != null)
       {
-	comp.addNotify ();
+        comp.addNotify ();
 
-	if (comp.isLightweight())
-	  enableEvents(comp.eventMask);
+        if (comp.isLightweight())
+          enableEvents(comp.eventMask);
       }
 
     invalidate ();
@@ -270,39 +293,39 @@ public class Container extends Component
     // copying when growing the array.  It probably doesn't matter.
     if (ncomponents >= component.length)
       {
-	int nl = component.length * 2;
-	Component[] c = new Component[nl];
-	System.arraycopy (component, 0, c, 0, ncomponents);
-	component = c;
+        int nl = component.length * 2;
+        Component[] c = new Component[nl];
+        System.arraycopy (component, 0, c, 0, ncomponents);
+        component = c;
       }
     if (index == -1)
       component[ncomponents++] = comp;
     else
       {
-	System.arraycopy (component, index, component, index + 1,
-			  ncomponents - index);
-	component[index] = comp;
-	++ncomponents;
+        System.arraycopy (component, index, component, index + 1,
+                          ncomponents - index);
+        component[index] = comp;
+        ++ncomponents;
       }
 
     // Notify the layout manager.
     if (layoutMgr != null)
       {
-	if (layoutMgr instanceof LayoutManager2)
-	  {
-	    LayoutManager2 lm2 = (LayoutManager2) layoutMgr;
-	    lm2.addLayoutComponent (comp, constraints);
-	  }
-	else if (constraints instanceof String)
-	  layoutMgr.addLayoutComponent ((String) constraints, comp);
-	else
-	  layoutMgr.addLayoutComponent (null, comp);
+        if (layoutMgr instanceof LayoutManager2)
+          {
+            LayoutManager2 lm2 = (LayoutManager2) layoutMgr;
+            lm2.addLayoutComponent (comp, constraints);
+          }
+        else if (constraints instanceof String)
+          layoutMgr.addLayoutComponent ((String) constraints, comp);
+        else
+          layoutMgr.addLayoutComponent (null, comp);
       }
 
     // Post event to notify of adding the container.
     ContainerEvent ce = new ContainerEvent (this,
-					    ContainerEvent.COMPONENT_ADDED,
-					    comp);
+                                            ContainerEvent.COMPONENT_ADDED,
+                                            comp);
     getToolkit().getSystemEventQueue().postEvent(ce);
   }
 
@@ -318,7 +341,7 @@ public class Container extends Component
     r.removeNotify ();
 
     System.arraycopy (component, index + 1, component, index,
-		      ncomponents - index - 1);
+                      ncomponents - index - 1);
     component[--ncomponents] = null;
 
     invalidate ();
@@ -328,8 +351,8 @@ public class Container extends Component
 
     // Post event to notify of adding the container.
     ContainerEvent ce = new ContainerEvent (this,
-					    ContainerEvent.COMPONENT_REMOVED,
-					    r);
+                                            ContainerEvent.COMPONENT_REMOVED,
+                                            r);
     getToolkit().getSystemEventQueue().postEvent(ce);
   }
 
@@ -342,11 +365,11 @@ public class Container extends Component
   {
     for (int i = 0; i < ncomponents; ++i)
       {
-	if (component[i] == comp)
-	  {
-	    remove (i);
-	    break;
-	  }
+        if (component[i] == comp)
+          {
+            remove (i);
+            break;
+          }
       }
   }
 
@@ -418,10 +441,10 @@ public class Container extends Component
     // FIXME: use the tree lock?
     synchronized (this)
       {
-	if (! isValid ())
-	  {
-	    validateTree ();
-	  }
+        if (! isValid ())
+          {
+            validateTree ();
+          }
       }
   }
 
@@ -432,30 +455,30 @@ public class Container extends Component
   protected void validateTree()
   {
     if (valid)
-      return; 
+      return;
 
     ContainerPeer cPeer = null;
     if ((peer != null) && !(peer instanceof LightweightPeer))
       {
-	cPeer = (ContainerPeer) peer;
-	cPeer.beginValidate();
+        cPeer = (ContainerPeer) peer;
+        cPeer.beginValidate();
       }
 
     doLayout ();
     for (int i = 0; i < ncomponents; ++i)
       {
-	Component comp = component[i];
-	if (! comp.isValid ())
-	  {
-	    if (comp instanceof Container)
-	      {
-		((Container) comp).validateTree();
-	      }
-	    else
-	      {
-		component[i].validate();
-	      }
-	  }
+        Component comp = component[i];
+        if (! comp.isValid ())
+          {
+            if (comp instanceof Container)
+              {
+                ((Container) comp).validateTree();
+              }
+            else
+              {
+                component[i].validate();
+              }
+          }
       }
 
     /* children will call invalidate() when they are layed out. It
@@ -490,8 +513,8 @@ public class Container extends Component
    * Returns the preferred size of this container.
    *
    * @return The preferred size of this container.
-   * 
-   * @deprecated This method is deprecated in favor of 
+   *
+   * @deprecated This method is deprecated in favor of
    * <code>getPreferredSize()</code>.
    */
   public Dimension preferredSize()
@@ -516,8 +539,8 @@ public class Container extends Component
    * Returns the minimum size of this container.
    *
    * @return The minimum size of this container.
-   * 
-   * @deprecated This method is deprecated in favor of 
+   *
+   * @deprecated This method is deprecated in favor of
    * <code>getMinimumSize()</code>.
    */
   public Dimension minimumSize()
@@ -534,8 +557,8 @@ public class Container extends Component
   {
     if (layoutMgr != null && layoutMgr instanceof LayoutManager2)
       {
-	LayoutManager2 lm2 = (LayoutManager2) layoutMgr;
-	return lm2.maximumLayoutSize (this);
+        LayoutManager2 lm2 = (LayoutManager2) layoutMgr;
+        return lm2.maximumLayoutSize (this);
       }
     else
       return super.getMaximumSize ();
@@ -552,8 +575,8 @@ public class Container extends Component
   {
     if (layoutMgr instanceof LayoutManager2)
       {
-	LayoutManager2 lm2 = (LayoutManager2) layoutMgr;
-	return lm2.getLayoutAlignmentX (this);
+        LayoutManager2 lm2 = (LayoutManager2) layoutMgr;
+        return lm2.getLayoutAlignmentX (this);
       }
     else
       return super.getAlignmentX();
@@ -570,8 +593,8 @@ public class Container extends Component
   {
     if (layoutMgr instanceof LayoutManager2)
       {
-	LayoutManager2 lm2 = (LayoutManager2) layoutMgr;
-	return lm2.getLayoutAlignmentY (this);
+        LayoutManager2 lm2 = (LayoutManager2) layoutMgr;
+        return lm2.getLayoutAlignmentY (this);
       }
     else
       return super.getAlignmentY();
@@ -594,7 +617,7 @@ public class Container extends Component
     visitChildren(g, GfxPaintVisitor.INSTANCE, true);
   }
 
-  /** 
+  /**
    * Perform a graphics operation on the children of this container.
    * For each applicable child, the visitChild() method will be called
    * to perform the graphics operation.
@@ -609,18 +632,18 @@ public class Container extends Component
    * be visited.
    */
   private void visitChildren(Graphics gfx, GfxVisitor visitor,
-			     boolean lightweightOnly)
+                             boolean lightweightOnly)
   {
     // FIXME: do locking
 
     for (int i = 0; i < ncomponents; ++i)
       {
-	Component comp = component[i];
-	boolean applicable = comp.isVisible()
-	  && (comp.isLightweight() || !lightweightOnly);
+        Component comp = component[i];
+        boolean applicable = comp.isVisible()
+          && (comp.isLightweight() || !lightweightOnly);
 
-	if (applicable)
-	  visitChild(gfx, visitor, comp);
+        if (applicable)
+          visitChild(gfx, visitor, comp);
       }
   }
 
@@ -638,17 +661,17 @@ public class Container extends Component
    * @param comp The child component that should be visited.
    */
   private void visitChild(Graphics gfx, GfxVisitor visitor,
-			  Component comp)
+                          Component comp)
   {
     Rectangle bounds = comp.getBounds();
     Rectangle clip = gfx.getClipBounds().intersection(bounds);
-    
+
     if (clip.isEmpty()) return;
 
     Graphics gfx2 = gfx.create();
     gfx2.setClip(clip.x, clip.y, clip.width, clip.height);
     gfx2.translate(bounds.x, bounds.y);
-    
+
     visitor.visit(comp, gfx2);
   }
 
@@ -707,12 +730,12 @@ public class Container extends Component
   {
     if ((e.id <= ContainerEvent.CONTAINER_LAST
              && e.id >= ContainerEvent.CONTAINER_FIRST)
-	&& (containerListener != null
-	    || (eventMask & AWTEvent.CONTAINER_EVENT_MASK) != 0))
-      processEvent(e); 
+        && (containerListener != null
+            || (eventMask & AWTEvent.CONTAINER_EVENT_MASK) != 0))
+      processEvent(e);
     else
       super.dispatchEventImpl(e);
-  }  
+  }
 
   /**
    * Adds the specified container listener to this object's list of
@@ -772,12 +795,12 @@ public class Container extends Component
     switch (e.id)
       {
       case ContainerEvent.COMPONENT_ADDED:
-	containerListener.componentAdded(e);
-	break;
+        containerListener.componentAdded(e);
+        break;
 
       case ContainerEvent.COMPONENT_REMOVED:
-	containerListener.componentRemoved(e);
-	break;    
+        containerListener.componentRemoved(e);
+        break;
       }
   }
 
@@ -786,7 +809,7 @@ public class Container extends Component
    *
    * @param event The event that occurred.
    *
-   * @deprecated This method is deprecated in favor of 
+   * @deprecated This method is deprecated in favor of
    * <code>dispatchEvent()</code>.
    */
   public void deliverEvent(Event e)
@@ -813,14 +836,14 @@ public class Container extends Component
       return null;
     for (int i = 0; i < ncomponents; ++i)
       {
-	// Ignore invisible children...
-	if (!component[i].isVisible())
-	  continue;
+        // Ignore invisible children...
+        if (!component[i].isVisible())
+          continue;
 
-	int x2 = x - component[i].x;
-	int y2 = y - component[i].y;
-	if (component[i].contains (x2, y2))
-	  return component[i];
+        int x2 = x - component[i].x;
+        int y2 = y - component[i].y;
+        if (component[i].contains (x2, y2))
+          return component[i];
       }
     return this;
   }
@@ -871,23 +894,23 @@ public class Container extends Component
 
     for (int i = 0; i < ncomponents; ++i)
       {
-	// Ignore invisible children...
-	if (!component[i].isVisible())
-	  continue;
+        // Ignore invisible children...
+        if (!component[i].isVisible())
+          continue;
 
-	int x2 = x - component[i].x;
-	int y2 = y - component[i].y;
-	// We don't do the contains() check right away because
-	// findComponentAt would redundantly do it first thing.
-	if (component[i] instanceof Container)
-	  {
-	    Container k = (Container) component[i];
-	    Component r = k.findComponentAt (x2, y2);
-	    if (r != null)
-	      return r;
-	  }
-	else if (component[i].contains (x2, y2))
-	  return component[i];
+        int x2 = x - component[i].x;
+        int y2 = y - component[i].y;
+        // We don't do the contains() check right away because
+        // findComponentAt would redundantly do it first thing.
+        if (component[i] instanceof Container)
+          {
+            Container k = (Container) component[i];
+            Component r = k.findComponentAt (x2, y2);
+            if (r != null)
+              return r;
+          }
+        else if (component[i].contains (x2, y2))
+          return component[i];
       }
 
     return this;
@@ -913,9 +936,9 @@ public class Container extends Component
   {
     for (int i = ncomponents;  --i >= 0; )
       {
-	component[i].addNotify();
-	if (component[i].isLightweight())
-	  enableEvents(component[i].eventMask);
+        component[i].addNotify();
+        if (component[i].isLightweight())
+          enableEvents(component[i].eventMask);
       }
   }
 
@@ -944,11 +967,11 @@ public class Container extends Component
   {
     for (;;)
       {
-	if (comp == null)
-	  return false;
-	if (comp == this)
-	  return true;
-	comp = comp.getParent();
+        if (comp == null)
+          return false;
+        if (comp == this)
+          return true;
+        comp = comp.getParent();
       }
   }
 
@@ -1035,46 +1058,152 @@ public class Container extends Component
     int start, end;
     if (child != null)
       {
-	for (start = 0; start < ncomponents; ++start)
-	  {
-	    if (component[start] == child)
-	      break;
-	  }
-	end = start;
-	// This special case lets us be sure to terminate.
-	if (end == 0)
-	  end = ncomponents;
-	++start;
+        for (start = 0; start < ncomponents; ++start)
+          {
+            if (component[start] == child)
+              break;
+          }
+        end = start;
+        // This special case lets us be sure to terminate.
+        if (end == 0)
+          end = ncomponents;
+        ++start;
       }
     else
       {
-	start = 0;
-	end = ncomponents;
+        start = 0;
+        end = ncomponents;
       }
 
     for (int j = start; j != end; ++j)
       {
-	if (j >= ncomponents)
-	  {
-	    // The JCL says that we should wrap here.  However, that
-	    // seems wrong.  To me it seems that focus order should be
-	    // global within in given window.  So instead if we reach
-	    // the end we try to look in our parent, if we have one.
-	    if (parent != null)
-	      return parent.findNextFocusComponent (this);
-	    j -= ncomponents;
-	  }
-	if (component[j] instanceof Container)
-	  {
-	    Component c = component[j];
-	    c = c.findNextFocusComponent (null);
-	    if (c != null)
-	      return c;
-	  }
-	else if (component[j].isFocusTraversable ())
-	  return component[j];
+        if (j >= ncomponents)
+          {
+            // The JCL says that we should wrap here.  However, that
+            // seems wrong.  To me it seems that focus order should be
+            // global within in given window.  So instead if we reach
+            // the end we try to look in our parent, if we have one.
+            if (parent != null)
+              return parent.findNextFocusComponent (this);
+            j -= ncomponents;
+          }
+        if (component[j] instanceof Container)
+          {
+            Component c = component[j];
+            c = c.findNextFocusComponent (null);
+            if (c != null)
+              return c;
+          }
+        else if (component[j].isFocusTraversable ())
+          return component[j];
       }
 
     return null;
   }
-}
+
+  /**
+   * This class provides accessibility support for subclasses of container.
+   *
+   * @author Eric Blake <ebb9@email.byu.edu>
+   * @since 1.3
+   */
+  protected class AccessibleAWTContainer extends AccessibleAWTComponent
+  {
+    /**
+     * Compatible with JDK 1.4+.
+     */
+    private static final long serialVersionUID = 5081320404842566097L;
+
+    /**
+     * The handler to fire PropertyChange when children are added or removed.
+     *
+     * @serial the handler for property changes
+     */
+    protected ContainerListener accessibleContainerHandler;
+
+    /**
+     * The default constructor.
+     */
+    protected AccessibleAWTContainer()
+    {
+    }
+
+    /**
+     * Return the number of accessible children of the containing accessible
+     * object (at most the total number of its children).
+     *
+     * @return the number of accessible children
+     */
+    public int getAccessibleChildrenCount()
+    {
+      // XXX
+      throw new Error("not implemented");
+    }
+
+    /**
+     * Return the nth accessible child of the containing accessible object.
+     *
+     * @param i the child to grab, zero-based
+     * @return the accessible child, or null
+     */
+    public Accessible getAccessibleChild(int i)
+    {
+      // XXX
+      throw new Error("not implemented");
+    }
+
+    /**
+     * Return the accessible child located at point (in the parent's
+     * coordinates), if one exists.
+     *
+     * @param p the point to look at
+     * @return an accessible object at that point, or null
+     */
+    public Accessible getAccessibleAt(Point p)
+    {
+      // XXX
+      throw new Error("not implemented");
+    }
+
+    /**
+     * This class fires a <code>PropertyChange</code> listener, if registered,
+     * when children are added or removed from the enclosing accessible object.
+     *
+     * @author Eric Blake <ebb9@email.byu.edu>
+     * @since 1.3
+     */
+    protected class AccessibleContainerHandler implements ContainerListener
+    {
+      /**
+       * Default constructor.
+       */
+      protected AccessibleContainerHandler()
+      {
+      }
+
+      /**
+       * Fired when a component is added; forwards to the PropertyChange
+       * listener.
+       *
+       * @param e the container event for adding
+       */
+      public void componentAdded(ContainerEvent e)
+      {
+        // XXX
+        throw new Error("not implemented");
+      }
+
+      /**
+       * Fired when a component is removed; forwards to the PropertyChange
+       * listener.
+       *
+       * @param e the container event for removing
+       */
+      public void componentRemoved(ContainerEvent e)
+      {
+        // XXX
+        throw new Error("not implemented");
+      }
+    } // class AccessibleContainerHandler
+  } // class AccessibleAWTPanel
+} // class Container

@@ -1,5 +1,25 @@
 2002-03-18  Eric Blake  <ebb9@email.byu.edu>
 
+	* java/applet/AppletContext.java (setStream, getStream),
+	(getStreamKeys): Add new methods.
+	* java/applet/AppletStub.java: Improve javadoc.
+	* java/applet/AudioClip.java: Ditto.
+	* java/applet/Applet.java: Updated to 1.4.
+	* java/awt/Makefile.am (EXTRA_DIST): Add DisplayMode.java,
+	GraphicsConfigTemplate.java, GraphicsDevice.java and
+	GraphicsEnvironment.java.
+	* java/awt/DisplayMode.java: New file.
+	* java/awt/GraphicsConfigTemplate.java: New file.
+	* java/awt/GraphicsDevice.java: New file.
+	* java/awt/GraphicsEnvironment.java: New file.
+	* java/awt/GraphicsConfiguration.java (getDevice): Add method.
+	* java/awt/Panel.java: Updated to 1.4.
+	* java/awt/AWTPermission.java: Updated to 1.4.
+	* java/awt/Container.java: Partial update to 1.4.
+	* java/awt/Component.java: Partial update to 1.4.
+
+2002-03-18  Eric Blake  <ebb9@email.byu.edu>
+
 	* javax/Makefile.am (SUBDIRS): Visit accessibility subdir.
 	* javax/accessibility/Makefile.am: New file.
 	* javax/accessibility/.cvsignore: New file.

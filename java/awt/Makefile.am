@@ -25,6 +25,7 @@ Container.java \
 Cursor.java \
 Dialog.java \
 Dimension.java \
+DisplayMode.java \
 EventDispatchThread.java \
 Event.java \
 EventQueue.java	\
@@ -35,7 +36,10 @@ FontFormatException.java \
 FontMetrics.java \
 Frame.java \
 Graphics2D.java \
+GraphicsConfigTemplate.java \
 GraphicsConfiguration.java \
+GraphicsDevice.java \
+GraphicsEnvironment.java \
 Graphics.java \
 GridBagConstraints.java \
 GridLayout.java	\

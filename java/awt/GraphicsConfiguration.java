@@ -51,9 +51,7 @@ public abstract class GraphicsConfiguration
   {
   }
 
-  /*
   public abstract GraphicsDevice getDevice();
-  */
 
   public abstract BufferedImage createCompatibleImage(int width, int height);
   public abstract BufferedImage createCompatibleImage(int width, int height,
