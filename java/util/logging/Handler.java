@@ -56,7 +56,8 @@ import java.security.AccessController;
  * the latter, should we enforce it? (Spec not clear). In any
  * case, it needs documentation.
  *
- * @author Sascha Brawer (brawer@acm.org) */
+ * @author Sascha Brawer (brawer@acm.org)
+ */
 public abstract class Handler
 {
   Formatter     formatter;
