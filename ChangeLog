@@ -1,5 +1,10 @@
 2004-12-21  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JLabel.java (setDisplayedMnemoic):
+	Make text upper case before searching mnemonic character.
+
+2004-12-21  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JLabel.java
 	(setDisplayedMnemonicIndex): Handle index == -1 and fire
 	PropertyChangeEvent after property got set to the new index.
