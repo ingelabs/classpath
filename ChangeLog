@@ -1,3 +1,8 @@
+2004-09-24  David Daney  <ddaney@avtrex.com>
+
+	* java/net/URL.java (URL): Copy userInfo from context.
+	(getUserInfo): Return cached userInfo if present.
+
 2004-09-23  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/table/DefaultTableModel.java: Whitespace cleanup.
