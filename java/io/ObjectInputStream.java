@@ -199,7 +199,7 @@ public class ObjectInputStream extends InputStream
 	byte flags = this.realInputStream.readByte();
 	DEBUG( "FIELD COUNT " );
 	short field_count = this.realInputStream.readShort();
-	OSCField[] fields = new OSCField[ field_count ];
+	ObjectStreamField[] fields = new ObjectStreamField[ field_count ];
 
 	ObjectStreamClass osc = new ObjectStreamClass( name, uid,
 						       flags, fields );
@@ -218,9 +218,10 @@ public class ObjectInputStream extends InputStream
 	  else
 	    class_name = String.valueOf( type_code );
 	
-	  fields[i] = new OSCField( field_name,
-				    TypeSignature.getClassForEncoding
-				    ( class_name ) );
+	  fields[i] =
+	    new ObjectStreamField( field_name,
+				   TypeSignature.getClassForEncoding
+				   ( class_name ) );
 	}
       
 	setBlockDataMode( true );
@@ -329,7 +330,7 @@ public class ObjectInputStream extends InputStream
 
 	DEBUGln( "Got class hierarchy of depth " + hierarchy.length );
 
-	// XXX: rewrite this loop natively??
+	// XXX: rewrite this loop natively?
 	boolean has_read;
 	for( int i=0; i < hierarchy.length; i++ )
 	{
@@ -350,6 +351,10 @@ public class ObjectInputStream extends InputStream
 	    has_read = false;
 	  }
 
+	  // XXX: should initialize fields in classes in the hierarchy
+	  // that aren't in the stream
+	  // should skip over classes in the stream that aren't in the
+	  // real classes hierarchy
 	  readFields( obj, this.currentObjectStreamClass.getFields(),
 		      has_read, this.currentObjectStreamClass );
 
@@ -845,46 +850,139 @@ public class ObjectInputStream extends InputStream
   }
   
 
-  private void readFields( Object obj, OSCField[] fields,
-			   boolean call_read_method, ObjectStreamClass osc )
+  private void readFields( Object obj, ObjectStreamField[] stream_fields,
+			   boolean call_read_method,
+			   ObjectStreamClass stream_osc )
     throws ClassNotFoundException, IOException
   {
     if( call_read_method )
     {
       setBlockDataMode( true );
-      callReadMethod( obj, osc.forClass() );
+      callReadMethod( obj, stream_osc.forClass() );
       setBlockDataMode( false );
       return;
     }
 
-    //XXX: handle different class versions
-    String field_name;
-    Class type;
-    for( int i=0; i < fields.length; i++ )
+    ObjectStreamField[] real_fields =
+      ObjectStreamClass.lookup( stream_osc.forClass() ).getFields();
+
+    boolean default_initialize, set_value;
+    String field_name = null;
+    Class type = null;
+    ObjectStreamField stream_field = null;
+    ObjectStreamField real_field = null;
+    int stream_idx = 0;
+    int real_idx = 0;
+
+    while( stream_idx < stream_fields.length
+	   && real_idx < real_fields.length )
     {
-      field_name = fields[i].getName();
-      type = fields[i].getType();
+      default_initialize = false;
+      set_value = true;
+
+      if( stream_idx == stream_fields.length )
+	default_initialize = true;
+      else
+      {
+	stream_field = stream_fields[ stream_idx ];
+	type = stream_field.getType();
+      }
+      
+      if( real_idx == real_fields.length )
+	set_value = false;
+      else
+      {
+	real_field = real_fields[ real_idx ];
+	type = real_field.getType();
+	field_name = real_field.getName();
+      }
+
+      if( set_value && !default_initialize )
+      {
+	int comp_val =
+	  real_field.compareTo( stream_field );
+
+	if( comp_val < 0 )
+	{
+	  default_initialize = true;
+	  real_idx++;
+	}
+	else if( comp_val > 0 )
+	{
+	  set_value = false;
+	  stream_idx++;
+	}
+	else
+	{
+	  real_idx++;
+	  stream_idx++;
+	}
+      }
 
       if( type == Boolean.TYPE )
-	setBooleanField( obj, field_name, this.realInputStream.readBoolean());
+      {
+	boolean value =
+	  default_initialize ? false : this.realInputStream.readBoolean();
+	if( set_value )
+	  setBooleanField( obj, field_name, value );
+      }
       else if( type == Byte.TYPE )
-	setByteField( obj, field_name, this.realInputStream.readByte() );
+      {
+	byte value =
+	  default_initialize ? 0 : this.realInputStream.readByte();
+	if( set_value )
+	  setByteField( obj, field_name, value );
+      }
       else if( type == Character.TYPE )
-	setCharField( obj, field_name, this.realInputStream.readChar() );
+      {
+	char value =
+	  default_initialize ? 0 : this.realInputStream.readChar();
+	if( set_value )
+	  setCharField( obj, field_name, value );
+      }
       else if( type == Double.TYPE )
-	setDoubleField( obj, field_name, this.realInputStream.readDouble() );
+      {
+	double value =
+	  default_initialize ? 0 : this.realInputStream.readDouble();
+	if( set_value )
+	  setDoubleField( obj, field_name, value );
+      }
       else if( type == Float.TYPE )
-	setFloatField( obj, field_name, this.realInputStream.readFloat() );
+      {
+	float value =
+	  default_initialize ? 0 : this.realInputStream.readFloat();
+	if( set_value )
+	  setFloatField( obj, field_name, value );
+      }
       else if( type == Integer.TYPE )
-	setIntField( obj, field_name, this.realInputStream.readInt() );
+      {
+	int value =
+	  default_initialize ? 0 : this.realInputStream.readInt();
+	if( set_value )
+	  setIntField( obj, field_name, value );
+      }
       else if( type == Long.TYPE )
-	setLongField( obj, field_name, this.realInputStream.readLong() );
+      {
+	long value =
+	  default_initialize ? 0 : this.realInputStream.readLong();
+	if( set_value )
+	  setLongField( obj, field_name, value );
+      }
       else if( type == Short.TYPE )
-	setShortField( obj, field_name, this.realInputStream.readShort() );
+      {
+	short value =
+	  default_initialize ? 0 : this.realInputStream.readShort();
+	if( set_value )
+	  setShortField( obj, field_name, value );
+      }
       else
-	setObjectField( obj, field_name,
-			TypeSignature.getEncodingOfClass(type),
-			readObject() );
+      {
+	Object value =
+	  default_initialize ? null : readObject();
+	if( set_value )
+	  setObjectField( obj, field_name,
+			  real_field.getTypeString(), value );
+      }
     }
   }
   
