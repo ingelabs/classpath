@@ -1,3 +1,10 @@
+2003-03-31  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/text/ComponentView.java:
+	Merged from libgcj.
+	* javax/swing/tree/DefaultTreeCellRenderer.java:
+	Merged from libgcj.
+
 2003-03-29  Tom Tromey  <tromey@redhat.com>
 
 	* vm/reference/java/lang/VMClassLoader.java: Reindented.
