@@ -1,3 +1,7 @@
+2004-08-22  Patrik Reali  <reali@acm.org>
+
+	* doc/www.gnu.org/newsitems.txt: news on JSpinner and java crypto
+
 2004-08-22  Casey Marshall  <csm@gnu.org>
 
 	* java/security/cert/X509CRLSelector.java

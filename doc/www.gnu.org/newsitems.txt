@@ -1,3 +1,11 @@
+<newsitem date="15 Aug 2004">
+<createlink url="http://lists.gnu.org/archive/html/classpath-patches/2004-08/msg00078.html" name="JSpinner"> added to classpath.
+</newsitem>
+
+<newsitem date="13 Aug 2004">
+<createlink url="http://lists.gnu.org/archive/html/classpath/2004-08/msg00076.html" name="javax.crypto and javax.security"> implementation added to classpath.
+</newsitem>
+
 <newsitem date="05 Aug 2004">
 CVS generics-branch started for java 1.5 related changes. [<createlink name="more..." url="http://lists.gnu.org/archive/html/classpath/2004-08/msg00030.html">]
 </newsitem>
