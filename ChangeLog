@@ -1,3 +1,12 @@
+2004-01-12  David Jee  <djee@redhat.com>
+
+	* gnu/java/net/protocol/http/Connection.java
+	(sendRequest): Fix a small typo.
+	* java/awt/Container.java
+	(update): Clear only the clipped region, instead of clearing the
+	entire Container.
+	(visitChildren): Visit children in descending order.
+
 2004-01-12  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/table/DefaultTableCellRenderer.java:

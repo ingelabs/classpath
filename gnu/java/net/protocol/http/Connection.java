@@ -225,7 +225,7 @@ public final class Connection extends HttpURLConnection
       setRequestProperty ("Content-type", "application/x-www-form-urlencoded");
 
     // Set correct content length.
-    if (bufferedOutoutStream != null)
+    if (bufferedOutputStream != null)
       setRequestProperty ("Content-length", String.valueOf (bufferedOutputStream.size()));
 
     // Write all req_props name-value pairs to the output writer.
