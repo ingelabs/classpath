@@ -217,11 +217,17 @@ public class UIManager implements Serializable
 	return look_and_feel;
     }
 
-    static  UIDefaults getLookAndFeelDefaults()
-    //      Returns the default values for this look and feel. 
-    {
-	return getLookAndFeel().getDefaults();
-    }
+
+  /**
+   * Returns the <code>UIDefaults</code> table of the currently active
+   * look and feel.
+   */
+  public static UIDefaults getLookAndFeelDefaults()
+  {
+    return getLookAndFeel().getDefaults();
+  }
+
+
     static  String getString(Object key)
     //      Returns a string from the defaults table. 
     {
