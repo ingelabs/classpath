@@ -71,3 +71,8 @@ Java_java_nio_DirectByteBufferImpl_putImpl (JNIEnv *env, jclass class, jint inde
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.putImpl(): not implemented");
 }
 
+JNIEXPORT void JNICALL
+Java_java_nio_DirectByteBufferImpl_shiftDown (JNIEnv *env, jobject obj, jint src_offset, jint dst_offset, jint count);
+{
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.shiftDown(): not implemented");
+}
