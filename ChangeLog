@@ -1,3 +1,12 @@
+2003-02-28  Michael Koch  <konqueror@gmx.de>
+
+	* java/beans/Beans.java,
+	java/beans/FeatureDescriptor.java
+	java/beans/PropertyEditorManager.java:
+	Reformated to GNU style.
+	* javax/accessibility/AccessibleContext.java
+	(ACCESSIBLE_DESCRIPTION_PROPERTY): Fixed typo.
+
 2003-02-27  C. Brian Jones  <cbj@gnu.org>
 
 	* java/lang/Math.java
