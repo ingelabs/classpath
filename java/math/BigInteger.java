@@ -1,3 +1,7 @@
+
+package java.math;
+
+
 public class BigInteger {
 
   final int native_state = System.identityHashCode(this);
