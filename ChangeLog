@@ -1,3 +1,11 @@
+2004-11-17  Sven de Marothy  <sven@physto.se>
+
+	* java/awt/geom/Arc2D.java,
+	(setAngleStart): Corrected (wrong sign on atan2 y parameter)
+	(setAngles): Likewise
+	(containsAngle): Return false on zero extent, don't include final angle
+	(contains): Treat OPEN-type arcs like CHORD ones, not as PIE ones.
+
 2004-11-16  Sven de Marothy  <sven@physto.se>
 
 	* java/awt/geom/AffineTransform.java,
