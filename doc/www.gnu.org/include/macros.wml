@@ -1,40 +1,3 @@
-<define-tag header>
-<preserve title>
-<set-var %attributes>
-<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
-<page bgcolor="#ffffff" text="#000000" link="#1F00FF" alink="#FF0000" vlink="#9900DD">
-<title><get-var title> - GNU Project - Free Software Foundation (FSF)</title>
-<head>
-<link rev="made" HREF="mailto:webmasters@www.gnu.org">
-<link rel="stylesheet" type="text/css" href="/software/classpath/savannah.css">
-</head>
-<table>
-<tr>
-<td>
-<applet code="Animation.class" CODEBASE="/graphics" WIDTH="130" HEIGHT="86">
-  <param name="base-name" value="drop">
-  <param name="extension" value="jpg">
-  <param name="num-images" value="15">
-  <param name="image-sequence" value="1..10,9,7,5,3,1">
-  <param name="frame-delay" value="30">
-  <param name="inner-loop-repeat" value="2">
-  <param name="loop-delay" value="10000">
-  <param name="outer-loop-repeat" value="0">
-  <a href="/graphics/drop-1.jpg">
-    <img src="/graphics/drop-1.jpg" alt=" [image of the evil water droplet] " 
-    width="130" height="86" border="0">&#32;(jpeg 3k)
-  </a>
-  <a href="/philosophy/gif.html">no gifs due to patent problems</a>
-</applet>
-</td>
-<td>
-<h1><en>GNU Classpath</en></h1>
-</td>
-</tr>
-</table>
-<restore title>
-</define-tag>
-
 <define-tag footer>
 <BR><BR>
 <HR>
@@ -55,7 +18,7 @@ Please send comments on these web pages to
 send other questions to
 <A HREF="mailto:gnu@gnu.org"><EM>gnu@gnu.org</EM></A>.
 <P>
-Copyright (C) 1999-2002 Free Software Foundation, Inc.,
+Copyright (C) 1999-2003 Free Software Foundation, Inc.,
 59 Temple Place - Suite 330, Boston, MA  02111,  USA
 <P>
 Verbatim copying and distribution of this entire article is
@@ -69,71 +32,3 @@ Updated:
 <HR>
 </define-tag>
 
-<define-tag createlink whitespace=delete>
-<preserve url name>
-<set-var %attributes>
-<a href="<get-var url>"><get-var name></a>
-<restore url name>
-</define-tag>
-
-<define-tag package-list endtag=required>
-<ul>
-%body
-</ul>
-</define-tag>
-
-<define-tag package-item whitespace=delete>
-<preserve section name>
-<set-var %attributes>
-  <li><createlink url="status.html#<if <get-var section>
-  <get-var section> <get-var name>>" name="<get-var name>">
-<restore section name>
-</define-tag>
-
-<define-tag package whitespace=delete endtag=required>
-<preserve name>
-<set-var %attributes>
-<h3><a name="<get-var name>"><get-var name></a></h3>
-%body
-<restore name>
-</define-tag>
-
-<define-tag status endtag=required>
-<preserve name component>
-<set-var %attributes>
-<blockquote>
-<p>
-  <en><b>Maintainer<if <match <get-var name> ","> "s"></b></en>: <get-var name><br>
-  <if <get-var component>
-    <group <en><b>Component</b></en>:&nbsp;<get-var component><br>>>
-  %body
-</p>
-</blockquote>
-<restore name component>
-</define-tag>
-
-<define-tag arenn>Aaron M. Renn</define-tag>
-
-<define-tag benvenuto>Mark Benvenuto</define-tag>
-
-<define-tag cbj>C. Brian Jones</define-tag>
-
-<define-tag corvus>James E. Blair</define-tag>
-
-<define-tag geoff>Geoff Berry</define-tag>
-
-<define-tag loren>Loren Peace</define-tag>
-
-<define-tag mdw>Matt Welsh</define-tag>
-
-<define-tag mjw>Mark Wielaard</define-tag>
-
-<define-tag stuart>Stuart Ballard</define-tag>
-
-<define-tag rao>Paul N. Fisher</define-tag>
-
-<define-tag shalom>John Keiser</define-tag>
-
-<define-tag smith>Greg Smith</define-tag>
-
-<define-tag wes>Wes Biggs</define-tag>

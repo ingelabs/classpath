@@ -1,0 +1,48 @@
+#include "include/layout.wml"
+
+<set-var last-modified-author="prk">
+<subject "GNU Classpath External Project References">
+
+<box>
+<boxtitle><a name="jvm">Classpath::External Project References</a></boxtitle>
+
+<boxitem>
+<en>
+<p>Below is a table of providers for free core packages not already available
+with GNU Classpath
+</p>
+<table border="1" width="100%">
+<th>Core Package</th><th>Provider</th>
+<tr><td>
+<ul>
+<li>javax.activation
+<li>javax.infobus
+<li>javax.xml
+<li>javax.mail
+<li>javax.servlet
+<li>javax.speech
+</td><td align="top"><createlink url="http://www.gnu.org/software/classpathx/" name="GNU ClasspathX"></td></tr>
+
+<tr>
+<td>javax.net.ssl</td>
+<td><createlink url="http://www.nongnu.org/jessie/" name="Jessie"></td>
+</tr>
+
+<tr><td>javax.crypto</td><td><createlink url="http://www.gnu.org/software/gnu-crypto/" name="GNU Crypto"></td></tr>
+
+<tr><td>javax.sound</td><td><createlink url="http://tritonus.org/" name="Tritonus"></td></tr>
+
+<!--
+<tr><td>org.ietf.jgss</td><td><createlink
+url="http://www.ietf.org/rfc/rfc2853.txt" name="IETF RFC 2853"></td></tr>
+
+<tr><td>org.omg</td><td><createlink url="http://www.omg.org"
+name="OMG"></td></tr>
+-->
+
+</table>
+</en>
+
+</boxitem>
+
+</box>

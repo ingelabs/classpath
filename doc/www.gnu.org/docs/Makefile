@@ -9,22 +9,24 @@ endif
 
 TEXI_SRC	:= $(wildcard ../../*.texinfo)
 VPATH = ../..
-WML_SRC = $(patsubst ../../%, %, $(TEXI_SRC:.texinfo=.wml)) $(wildcard *.wml)
-WML_EN_OBJS = $(patsubst %.wml,%.en.html,$(WML_SRC))
+WML_SRC = $(patsubst ../../%, %, $(TEXI_SRC:.texinfo=.html)) $(wildcard *.wml)
+WML_OBJS = $(patsubst %.wml,%.html,$(WML_SRC))
 
-%.wml : %.texinfo
-	texi2html -monolithic $<;
-	echo '#!wml --include=..' > $@
-	sed -e 's/<HTML>/\^\#use wml::std::lang\^\#use wml::fmt::isolatin\^\#use wml::std::case global=upper\^<lang:new id=en short>\^<lang:star:slice:>\^\#include <include\/macros.wml>\^<HTML>/' -e 's/<BODY>/<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#1F00FF" ALINK="#FF0000" VLINK="#9900DD">/' -e 's/<\/BODY>/<footer>\^<\/BODY>/' $(subst .wml,.html,$(@)) > $@.sed;
-	tr "\\^" "\n" < $@.sed >> $@
-	-rm -f $(subst .wml,.html,$(@)) $@.sed
+%.html : %.texinfo
+	texi2html -monolithic $<
+#	texi2html -monolithic $<;
+#	cp $< $@
+#	echo '#!wml --include=..' > $@
+#	sed -e 's/<HTML>/\^\#use wml::std::lang\^\#use wml::fmt::isolatin\^\#use wml::std::case global=upper\^<lang:new id=en short>\^<lang:star:slice:>\^\#include <include\/macros.wml>\^<HTML>/' -e 's/<BODY>/<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#1F00FF" ALINK="#FF0000" VLINK="#9900DD">/' -e 's/<\/BODY>/<footer>\^<\/BODY>/' $(subst .wml,.html,$(@)) > $@.sed;
+#	tr "\\^" "\n" < $@.sed >> $@
+#	-rm -f $(subst .wml,.html,$(@)) $@.sed
 
-%.en.html: %.wml ../include/macros.wml
+%.html: %.wml ../include/macros.wml  ../include/layout.wml
 	$(WML) -o $@ $<
 #	-rm -f $(patsubst %.wml,%.html,$<)
 
 .PHONY : all
-all : $(WML_EN_OBJS) subdirs
+all : $(WML_OBJS) subdirs
 
 .PHONY : clean
 clean :

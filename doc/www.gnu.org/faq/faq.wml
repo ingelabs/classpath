@@ -1,0 +1,69 @@
+#!wml --include=..
+
+#include "include/layout.wml"
+
+##
+#
+# Special Tags
+#
+
+
+
+#
+# <faq-section name="XYZ>
+#	<faq question="ABC">answer</faq>
+#	<faq question="ABC">answer</faq>
+# </faq-section>	
+#
+
+# the section counter
+#
+<set-var __SECCNT=1>
+
+<define-tag faq-section endtag=required>
+	<preserve name>
+	<set-var %attributes>
+{#FAQINDEX#:
+		<boxtitle><get-var __SECCNT>. <get-var name></boxtitle>
+		<boxitem>
+:#FAQINDEX#}
+	<boxtitle><get-var __SECCNT>. <get-var name></boxtitle>
+	<set-var __FAQCNT=1>
+	<boxitem>%body</boxitem>
+{#FAQINDEX#:
+		</boxitem>
+:#FAQINDEX#}
+	<increment __SECCNT>
+	<restore name>
+</define-tag>
+
+<define-tag faq endtag=required>
+<preserve question>
+<set-var %attributes>
+{#FAQINDEX#:
+	<h3><a href="faq/faq.html#faq<get-var __SECCNT>_<get-var __FAQCNT>"><get-var __SECCNT>.<get-var __FAQCNT> <get-var question></a></h3>
+:#FAQINDEX#}
+	<h3><a name="faq<get-var __SECCNT>_<get-var __FAQCNT>"><get-var __SECCNT>.<get-var __FAQCNT> <get-var question></a></h3>
+	%body
+	<br>
+<increment __FAQCNT>
+<restore question>
+</define-tag>
+
+
+<set-var last-modified-author="prk">
+
+<subject "GNU Classpath FAQ">
+
+<box>
+{#FAQINDEX#}
+
+<faq-section name="licensing">
+
+<faq question="Under which licence is GNU Classpath released?">
+GNU Classpath is licensed under the GPL plus a special exception. See <createlink name="license" url="../license.html">.
+</faq>
+
+</faq-section>
+
+</box>
