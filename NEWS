@@ -1,5 +1,10 @@
 New in release 0.14
 
+* Character encoders and decoders have been added for:
+  iso-8859-6 (arabic), iso-8859-7 (greek), iso-8859-8 (hebrew),
+  iso-8859-9 (latin-5), iso-8859-13, iso-8859-15 (latin-9), cp1047 (ebcdic),
+  ebcdic-xml-us,ascii, windows-1250, windows-1252, UTF-16BE (Big Endian),
+  UTF-16LE (Little Endian), UTF-32BE (Big Endian), UTF-32LE (Little Endian).
 * VMSecurityManager has been replaced by gnu.classpath.VMStackWalker.
   currentClassLoader() is no longer needed, and there are also two new
   methods with non-native implementations. VM implementors are encouraged
