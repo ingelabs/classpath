@@ -24,7 +24,7 @@
 	a possibly localized string, using appropriate information from
 	gnu.java.locale.LocaleInformation
 
-lga Rodimina  <rodimina@redhat.com>
+2004-12-30  Olga Rodimina  <rodimina@redhat.com>
 
 	(prepareRenderer): Get column's index in dataModel instead
 	of column's view index.
