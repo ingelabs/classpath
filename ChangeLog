@@ -1,3 +1,8 @@
+2004-05-28  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/RandomAccessFile.java
+	(setLength): Only extend file if new size is bigger.
+
 2004-05-28  Mark Wielaard <mark@klomp.org>
 
 	* include/Makefile.am: Add java_lang_VMDouble.h. Remove
