@@ -32,9 +32,25 @@ import javax.swing.plaf.basic.*;
  */
 public class GtkSliderUI extends BasicSliderUI
 {
+    private static Color bgcolor;
+    private static Color fgcolor;
+    private static Color focuscolor;
+    private static Color highlight;
+    private static Color shadow;
+
     public GtkSliderUI() 
     {
 	super(null);
+	bgcolor = UIManager.getColor("Slider.background");
+	fgcolor = UIManager.getColor("Slider.foreground");
+	focuscolor = UIManager.getColor("Slider.focus");
+	highlight = UIManager.getColor("Slider.highlight");
+	shadow = UIManager.getColor("Slider.shadow");
+	System.out.println("bgcolor: " + bgcolor);
+	System.out.println("fgcolor: " + fgcolor);
+	System.out.println("focuscolor: " + focuscolor);
+	System.out.println("highlight: " + highlight);
+	System.out.println("shadow: " + shadow);
     }
 
     public static ComponentUI createUI(JComponent c)
@@ -111,12 +127,20 @@ public class GtkSliderUI extends BasicSliderUI
 	System.err.println("focus " + focusRect);
     }
 
+    /**
+     * Must account for Unicode when drawing text.
+     */
     public void paintLabels(Graphics g)
     {
 	super.paintLabels(g);
 	System.err.println("label " + labelRect);
     }
 
+    /**
+     * A drawRect() generated slider has ghosting when moving left on 
+     * a horizontal slider and the bottom is not painted when moving 
+     * right.
+     */
     public void paintThumb(Graphics g)
     {
 	int x = thumbRect.x;
@@ -124,9 +148,29 @@ public class GtkSliderUI extends BasicSliderUI
 	int h = thumbRect.height;
 	int w = thumbRect.width;
 
-	g.setColor(Color.blue);
-	if (slider.getOrientation() == JSlider.HORIZONTAL)
+//  	    "Slider.background", "#888888",
+//  	    "Slider.focus", "#c3c3c3",
+//  	    "Slider.foreground", "#d6d6d6",
+//  	    "Slider.highlight", "#ffffff",
+//  	    "Slider.shadow", "#000000"
+
+//  	bgcolor = UIManager.getColor("Slider.background");
+//  	fgcolor = UIManager.getColor("Slider.foreground");
+//  	focuscolor = UIManager.getColor("Slider.focus");
+//  	highlight = UIManager.getColor("Slider.highlight");
+//  	shadow = UIManager.getColor("Slider.shadow");
+
+	g.setColor(bgcolor);
+	if (slider.getOrientation() == JSlider.HORIZONTAL) {
 	    g.drawRect(x, y, w, h);
+	    g.setColor(highlight);
+	    g.drawLine(x+1, y+14, x+33, y+14);
+	    g.setColor(focuscolor);
+	    g.drawLine(x+2, y+13, x+33, y+13);
+	    g.setColor(Color.black);
+	    g.drawLine(x+1, y+13, x+1, y+13);
+	    g.drawRect(x+1, y+1, 32, 12);	    
+	}	
 	else 
 	    g.drawRect(x, y, w, h);
 
