@@ -1,3 +1,8 @@
+2004-11-04  Torsten Rupp  rupp@aicas.com
+
+        * native/jni/java-net/gnu_java_net_PlainSocketImpl.c: Added missing
+	return values for WITHOUT_NETWORK code path.
+
 2004-11-03  Tom Tromey  <tromey@redhat.com>
 
 	* Makefile.am (EXTRA_DIST): Added ChangeLog-2003.

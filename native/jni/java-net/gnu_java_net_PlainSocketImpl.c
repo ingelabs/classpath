@@ -211,6 +211,7 @@ Java_gnu_java_net_PlainSocketImpl_available(JNIEnv *env, jobject this)
 
   return bytesAvailable;
 #else /* not WITHOUT_NETWORK */
+  return 0;
 #endif /* not WITHOUT_NETWORK */
 }
 
@@ -247,6 +248,7 @@ Java_gnu_java_net_PlainSocketImpl_getOption(JNIEnv *env, jobject this,
 
   return(_javanet_get_option(env, this, option_id));
 #else /* not WITHOUT_NETWORK */
+  return NULL;
 #endif /* not WITHOUT_NETWORK */
 }
 
@@ -265,6 +267,7 @@ Java_gnu_java_net_PlainSocketImpl_read(JNIEnv *env, jobject this, jarray buf,
 
   return(_javanet_recvfrom(env, this, buf, offset, len, 0, 0));
 #else /* not WITHOUT_NETWORK */
+  return 0;
 #endif /* not WITHOUT_NETWORK */
 }
 
