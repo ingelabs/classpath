@@ -3,23 +3,42 @@
 SUBDIRS = acl cert interfaces spec
 
 EXTRA_DIST = \
+AccessControlContext.java \
 AccessControlException.java \
+AlgorithmParameterGenerator.java \
+AlgorithmParameterGeneratorSpi.java \
+AlgorithmParameters.java \
+AlgorithmParametersSpi.java \
 AllPermission.java \
 BasicPermission.java \
 Certificate.java \
 CodeSource.java \
 DigestException.java \
+DigestInputStream.java \
 DigestOutputStream.java \
+DomainCombiner.java \
+DummyKeyPairGenerator.java \
+DummyMessageDigest.java \
+DummySignature.java \
 GeneralSecurityException.java \
 Guard.java \
 GuardedObject.java \
+Identity.java \
+IdentityScope.java \
 InvalidAlgorithmParameterException.java \
 InvalidKeyException.java \
 InvalidParameterException.java \
 Key.java \
 KeyException.java \
+KeyFactory.java \
+KeyFactorySpi.java \
 KeyManagementException.java \
+KeyPair.java \
+KeyPairGenerator.java \
+KeyPairGeneratorSpi.java \
+KeyStore.java \
 KeyStoreException.java \
+KeyStoreSpi.java \
 MessageDigest.java \
 MessageDigestSpi.java \
 NoSuchAlgorithmException.java \
@@ -27,6 +46,7 @@ NoSuchProviderException.java \
 Permission.java \
 PermissionCollection.java \
 Permissions.java \
+Policy.java \
 Principal.java \
 PrivateKey.java \
 PrivilegedAction.java \
@@ -36,8 +56,15 @@ ProtectionDomain.java \
 Provider.java \
 ProviderException.java \
 PublicKey.java \
+SecureClassLoader.java \
+SecureRandom.java \
+SecureRandomSpi.java \
 Security.java \
 SecurityPermission.java \
+Signature.java \
 SignatureException.java \
+SignatureSpi.java \
+SignedObject.java \
+Signer.java \
 UnrecoverableKeyException.java \
 UnresolvedPermission.java
