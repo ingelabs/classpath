@@ -30,7 +30,7 @@ package java.lang;
  */
 public class UnsupportedClassVersionError extends ClassFormatError
 {
-  static final long serialVersionUID = 0L;  /* FIXME */
+  static final long serialVersionUID = -7123279212883497373L;
 
   /**
    * Create an error without a message.
