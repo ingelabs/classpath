@@ -113,7 +113,7 @@
                 <footer>1</footer>
                 <header>1</header>
                 <interface>1</interface>
-                <lastImport>2</lastImport>
+                <lastImport>1</lastImport>
                 <method>1</method>
                 <package>1</package>
             </after>
@@ -130,6 +130,7 @@
                 <declaration>0</declaration>
                 <footer>0</footer>
                 <header>0</header>
+                <package>2</package>
             </before>
             <keepUpTo>1</keepUpTo>
         </blanklines>
@@ -228,8 +229,8 @@
         </history>
         <imports>
             <grouping>
-                <defaultDepth>0</defaultDepth>
-                <packages>*:0|gnu:2|java:2|javax:2</packages>
+                <defaultDepth>1</defaultDepth>
+                <packages>*:0|gnu:1|java:1|javax:1|org:1</packages>
             </grouping>
             <policy>disabled</policy>
             <sort>true</sort>

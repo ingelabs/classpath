@@ -1,5 +1,12 @@
 2004-09-21  Michael Koch  <konqueror@gmx.de>
 
+	* scripts/checkstyle-config.xml:
+	Enabled check for ordered import statements.
+	* scripts/jalopy-gnu.xml:
+	Fix grouping of import statements.
+
+2004-09-21  Michael Koch  <konqueror@gmx.de>
+
 	* scripts/jalopy-gnu.xml: Converted to use Unix-style EOL.
 
 2004-09-21  Michael Koch  <konqueror@gmx.de>
