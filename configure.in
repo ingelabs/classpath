@@ -32,7 +32,7 @@ AC_PROG_LN_S
 AC_HEADER_STDC
 AC_CHECK_HEADERS(unistd.h)
 AC_C_CONST
-AC_CHECK_FUNCS(gethostname socket strerror)
+AC_CHECK_FUNCS(gethostname socket strerror fork pipe execve)
 
 dnl guile checks
 GUILE_FLAGS
@@ -74,42 +74,16 @@ CLASSPATH_CHECK_JAPHAR
 dnl --with-kaffe
 CLASSPATH_CHECK_KAFFE
 
-dnl for historic reasons of the moment...
-VMINCLUDE=$JAPHAR_CFLAGS
-VMLIB=$JAPHAR_JNI_LIBS
-AC_SUBST(VMINCLUDE)
-AC_SUBST(VMLIB)
-
-if test -z "$VMINCLUDE"; then 
-  AC_MSG_ERROR(could not find include directory with jni.h.  Try using --with-jvm)
+dnl if no jvm yet defined, check for japhar
+if test -z "$JVM" || test "$JVM" = "no"; then
+  CLASSPATH_INTERNAL_CHECK_JAPHAR
 fi
-
-if test -z "$VMLIB"; then
-  AC_MSG_ERROR(could not find libjni.so.  Try using --with-jvm)
+AC_MSG_CHECKING(for defined vm)
+if test -z "$JVM" || test "$JVM" = "no"; then
+  AC_MSG_ERROR(no: try --with-japhar)
+else
+  AC_MSG_RESULT(yes)
 fi
-
-# This is the path to the chosen VM's include directory where jni.h
-# and others can be found
-dnl AC_SUBST(VMINCLUDE)
-dnl AC_SUBST(VMLIB)
-
-dnl AC_ARG_WITH(japhar, Install as class library for Japhar, 
-dnl             AC_PREFIX_PROGRAM(japhar))
-dnl AC_ARG_WITH(sunjdk, Install as class library for Sun's JDK,
-dnl             AC_PREFIX_PROGRAM(java))
-
-dnl if test prefix = ""
-dnl then
-dnl   AC_PREFIX_PROGRAM(japhar)
-dnl fi
-
-#if test prefix = ""
-#then
-#  AC_MSG_ERROR(Unable to locate Virtual Machine to configure for)
-#fi
-
-dnl this is temporary
-AM_CONDITIONAL(VMJAPHAR, test -n "$JAPHAR_CFLAGS")
 
 AC_ARG_WITH(javac,
   [  --with-javac		  specify the path to the javac-like program to use],
@@ -157,10 +131,10 @@ AC_ARG_WITH(javac,
 
 AC_SUBST(JAVAC)
 
-dnl Since most people won't have JavaDeps or Kiev to compute dependencies
+dnl Since most people won't have JavaDeps or Jikes to compute dependencies
 dnl on the Java source files.
 AC_ARG_ENABLE(maintainer-build,
-[  --enable-maintainer-build	Turn on java dependency computation],
+[  --enable-maintainer-build	java dependency computation [default=no]],
 [case "${enableval}" in 
   yes) maintainer_debug=true ;;
   no)  maintainer_debug=false ;;
