@@ -1,3 +1,7 @@
+2003-02-07  Stephen Crawley  <crawley@dstc.edu.au>
+
+	* java/beans/PropertyDescriptor.java: Reformat.
+
 2003-02-06  Mark Wielaard <mark@klomp.org>
 
 	* java/io/ObjectOutputStream.java (defaultProtocolVersion): Now
