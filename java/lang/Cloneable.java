@@ -41,4 +41,4 @@ package java.lang;
  * @see java.lang.Object#clone
  * @see java.lang.CloneNotSupportedException
  */
-public abstract interface Cloneable { }
+public interface Cloneable { }

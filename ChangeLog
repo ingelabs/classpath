@@ -1,3 +1,22 @@
+2001-07-13  John Leuner <jewel@debian.org>
+
+	* java/net/SocketOptions.java: changed 'abstract interface' to 'interface'
+	* java/net/URLStreamHandlerFactory.java: idem
+	* java/net/SocketImplFactory.java: idem
+	* java/net/ContentHandlerFactory.java: idem
+	* java/net/FileNameMap.java: idem
+	* java/lang/Runnable.java: idem
+	* java/lang/Cloneable.java: idem
+	* java/lang/Comparable.java: idem
+	* java/io/DataOutput.java: idem
+	* java/io/ObjectInput.java: idem
+	* java/io/ObjectInputValidation.java: idem
+	* java/io/ObjectOutput.java: idem
+	* java/io/DataInput.java: idem
+	* java/io/Externalizable.java: idem
+	* java/io/Serializable.java: idem
+	* java/io/FilenameFilter.java: idem
+
 2001-07-10  Mark Wielaard <mark@klomp.org>
 	* java/lang/CharSequence.java: new 1.4 interface
 	* java/lang/String.java: implements Serializable, CharSequence

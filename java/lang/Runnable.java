@@ -38,7 +38,7 @@ package java.lang;
  ** @since JDK1.0
  **/
 
-public abstract interface Runnable {
+public interface Runnable {
   /** This method will be called by whoever wishes to run your class
    ** implementing Runnable.
    ** @since JDK1.0

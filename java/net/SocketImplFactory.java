@@ -33,7 +33,7 @@ package java.net;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public abstract interface SocketImplFactory
+public interface SocketImplFactory
 {
 /**
   * This method returns an instance of the SocketImpl object

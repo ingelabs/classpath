@@ -35,7 +35,7 @@ package java.net;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public abstract interface SocketOptions
+public interface SocketOptions
 {
 
 /*************************************************************************/

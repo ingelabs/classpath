@@ -35,7 +35,7 @@ package java.io;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public abstract interface DataOutput
+public interface DataOutput
 {
 
 /**

@@ -42,7 +42,7 @@ package java.lang;
  ** @since JDK1.2
  ** @see java.util.Comparator
  **/
-public abstract interface Comparable
+public interface Comparable
 {
   /**
    ** @return a negative integer if this object is less than
