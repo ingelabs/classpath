@@ -1,3 +1,6 @@
+2005-03-08  Audrius Meskauskas  <audriusa@bluewin.ch>
+	* org/omg/CORBA/.java: New file.
+
 2005-03-08 David Gilbert <david.gilbert@object-refinery.com>
 
 	* java/awt/Font.java (decode): Handle null argument and allow
