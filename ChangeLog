@@ -1,5 +1,12 @@
 2004-08-16  Tom Tromey  <tromey@redhat.com>
 
+	Bug 9949.
+	* java/text/AttributedString.java (AttributedString): Use
+	ArrayList to build array of attribute ranges.  Don't use
+	`attribs' before it is set.
+
+2004-08-16  Tom Tromey  <tromey@redhat.com>
+
 	Bug 9948.
 	* javax/swing/JDesktopPane.java (LIVE_DRAG_MODE): Now final.
 	(OUTLINE_DRAG_MODE): LIVE_DRAG_MODE.
