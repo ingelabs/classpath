@@ -128,6 +128,24 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuPeer_create
   (*env)->ReleaseStringUTFChars (env, label, str);
 }
 
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuPeer_addTearOff
+  (JNIEnv *env, jobject obj)
+{
+  void *ptr1;
+  GtkWidget *menu, *item;
+
+  ptr1 = NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+
+  menu = gtk_menu_item_get_submenu (GTK_MENU_ITEM (ptr1));
+  item = gtk_tearoff_menu_item_new ();
+  gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+  gtk_widget_show (item);
+
+  gdk_threads_leave ();
+}
+
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuPeer_addItem
   (JNIEnv *env, jobject obj, jobject menuitempeer, jint key, jboolean shift)
 {

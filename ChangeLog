@@ -1,3 +1,11 @@
+2004-07-23  Craig Black  <craig.black@aonix.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuPeer.c,
+	include/gnu_java_awt_peer_gtk_GtkMenuPeer.h
+	(addTearOff): Add tear-off menu support.
+	* gnu/java/awt/peer/gtk/GtkMenuPeer.java
+	(init): Add tear-off menu support.
+
 2004-07-23  Mark Wielaard  <mark@klomp.org>
 
 	* java/lang/System.java (static): Set http.agent system property when
