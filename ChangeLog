@@ -1,3 +1,15 @@
+2005-03-05  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* native/fdlibm/dtoa.c (_dtoa_r): Initialize variables ilim, ilim1
+	and spec_case. Initialize pointer mlo.
+	* native/fdlibm/strtod.c (_strtod_r): Initialize pointers bb, bd,
+	ds and delta.
+	* native/fdlibm/e_asin.c (__ieee754_asin): Initialize variable t.
+	* native/fdlibm/e_exp.c (__ieee754_exp): Initialize variables hi,
+	lo and k.
+	* native/fdlibm/e_rem_pio2.c (__ieee754_rem_pio2): Initialize
+	uninitialized variable z.
+
 2005-03-05  Audrius Meskauskas  <audriusa@bluewin.ch>
 	* org/omg/CORBA/BAD_OPERATION.java: formatting change
 	(replacing CR CR LF by CR LF).
