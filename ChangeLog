@@ -1,3 +1,33 @@
+2002-11-14  Tom Tromey  <tromey@redhat.com>
+
+	* native/jni/classpath/native_state.c (add_node): Set `c_state'
+	field even when moving node.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer_dispose): New
+	function.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer_remove): New
+	function.
+	Include GtkComponentPeer header.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (dispose): Removed.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkGenericPeer_dispose): Renamed.
+	* gnu/java/awt/peer/gtk/Makefile.am (EXTRA_DIST): Added
+	GtkCheckboxGroupPeer.java.
+	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java (old_group): Now a
+	GtkCheckboxGroupPeer.
+	(nativeCreate): Argument now a GtkCheckboxGroupPeer.
+	(nativeSetCheckboxGroup): Likewise.  Removed `old_group'
+	argument.
+	(create): Find the GtkCheckboxGroupPeer.
+	(setCheckboxGroup): Likewise.
+	(dispose): New method.
+	* gnu/java/awt/peer/gtk/GtkCheckboxGroupPeer.java: New file.
+	* gnu/java/awt/peer/gtk/GtkGenericPeer.java (next_native_state):
+	New global.
+	(getUniqueInteger): New method.
+	(native_state): Use it.
+	(dispose): New native method.
+
 2002-11-13  Michael Koch <konqueror@gmx.de>
 
 	* java/nio/ByteBuffer.java: Reindented.

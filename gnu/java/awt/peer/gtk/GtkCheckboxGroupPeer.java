@@ -1,5 +1,5 @@
-/* GtkGenericPeer.java - Has a hashcode.  Yuck.
-   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
+/* GtkCheckboxGroupPeer.java - Wrap a CheckboxGroup
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,46 +39,48 @@ exception statement from your version. */
 package gnu.java.awt.peer.gtk;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.*;
 
-public class GtkGenericPeer
+// Note that there is no peer interface for a CheckboxGroup.  We
+// introduce our own in order to make it easier to keep a piece of
+// native state for each one.
+public class GtkCheckboxGroupPeer extends GtkGenericPeer
 {
-  final int native_state = getUniqueInteger ();
+  // This maps from a CheckboxGroup to the native peer.
+  private static WeakHashMap map = new WeakHashMap ();
 
-  // Next native state value we will assign.
-  private static int next_native_state = 0;
+  // Find the native peer corresponding to a CheckboxGroup.
+  public static synchronized GtkCheckboxGroupPeer
+      getCheckboxGroupPeer (CheckboxGroup group)
+  {
+    if (group == null)
+      return null;
+    GtkCheckboxGroupPeer nat = (GtkCheckboxGroupPeer) map.get (group);
+    if (nat == null)
+      {
+	nat = new GtkCheckboxGroupPeer ();
+	map.put (group, nat);
+      }
+    return nat;
+  }
 
-  // The widget or other java-side object we wrap.
-  protected Object awtWidget;
+  private GtkCheckboxGroupPeer ()
+  {
+    // We don't need any special state here.  Note that we can't store
+    // a reference to the java-side CheckboxGroup.  That would mean
+    // they could never be collected.
+    super (null);
+  }
 
-  // Global event queue.
-  protected static EventQueue q = null;
-
-  // Dispose of our native state.
+  // Dispose of our native resources.
   public native void dispose ();
 
-  protected GtkGenericPeer (Object awtWidget)
-  {
-    this.awtWidget = awtWidget;
-  }
+  // Remove a given checkbox from this group.
+  public native void remove (GtkCheckboxPeer box);
 
-  public static void enableQueue (EventQueue sq) 
+  // When collected, clean up the native state.
+  protected void finalize ()
   {
-    if (q == null)
-      q = sq;
-  }
-
-  protected void postActionEvent (String command, int mods) 
-  {
-    q.postEvent (new ActionEvent (awtWidget, ActionEvent.ACTION_PERFORMED, 
-				  command, mods));
-  }
-
-  // Return a unique integer for use in the native state mapping
-  // code.  We can't use a hash code since that is not guaranteed to
-  // be unique.
-  private static synchronized int getUniqueInteger ()
-  {
-    // Let's assume this will never wrap.
-    return next_native_state++;
+    dispose ();
   }
 }

@@ -38,8 +38,43 @@ exception statement from your version. */
 
 #include "gtkpeer.h"
 #include "gnu_java_awt_peer_gtk_GtkCheckboxPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkComponentPeer.h"
 
 static void item_toggled (GtkToggleButton *item, jobject peer);
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer_dispose
+  (JNIEnv *env, jobject obj)
+{
+  /* The actual underlying widget is owned by a different class.  So
+     we just clean up the hash table here.  */
+  NSA_DEL_PTR (env, obj);
+}
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer_remove
+  (JNIEnv *env, jobject obj, jobject checkbox)
+{
+  GtkRadioButton *button;
+  void *ptr;
+  GSList *list;
+
+  ptr = NSA_GET_PTR (env, checkbox);
+  gdk_threads_enter ();
+  button = GTK_RADIO_BUTTON (ptr);
+
+  /* Update the group to point to some other widget in the group.  We
+     have to do this because Gtk doesn't have a separate object to
+     represent a radio button's group.  */
+  for (list = gtk_radio_button_group (button); list != NULL;
+       list = list->next)
+    {
+      if (list->data != button)
+	break;
+    }
+
+  gdk_threads_leave ();
+
+  NSA_SET_PTR (env, obj, list ? list->data : NULL);
+}
 
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeCreate
@@ -92,7 +127,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_connectHooks
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeSetCheckboxGroup
-  (JNIEnv *env, jobject obj, jobject group, jobject old_group)
+  (JNIEnv *env, jobject obj, jobject group)
 {
   GtkRadioButton *button;
   void *native_group, *ptr;
@@ -107,23 +142,6 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeSetCheckboxGroup
 
   button = GTK_RADIO_BUTTON (ptr);
 
-  if (old_group != NULL)
-    {
-      /* First, update our old group, if one exists, to point to some
-	 other widget in the group.  We have to do this because Gtk
-	 doesn't have a separate object to represent a radio button's
-	 group.  */
-      GSList *list;
-      for (list = gtk_radio_button_group (button); list != NULL;
-	   list = list->next)
-	{
-	  if (list->data != button)
-	    break;
-	}
-
-      NSA_SET_PTR (env, old_group, list ? list->data : NULL);
-    }
-
   native_group = NSA_GET_PTR (env, group);
   if (native_group == NULL)
     gtk_radio_button_set_group (button, NULL);
@@ -136,7 +154,11 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeSetCheckboxGroup
 
   /* If the native group wasn't set on the new CheckboxGroup, then set
      it now so that the right thing will happen with the next
-     radiobutton.  */
+     radiobutton.  The native state for a CheckboxGroup is a pointer
+     to one of the widgets in the group.  We are careful to keep this
+     always pointing at a live widget; whenever a widget is destroyed
+     (or otherwise removed from the group), the CheckboxGroup peer is
+     notified.  */
   if (native_group == NULL)
     NSA_SET_PTR (env, group, native_group);
 }

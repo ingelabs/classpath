@@ -44,11 +44,10 @@ public class GtkCheckboxPeer extends GtkComponentPeer
   implements CheckboxPeer
 {
   // Group from last time it was set.
-  public CheckboxGroup old_group;
+  public GtkCheckboxGroupPeer old_group;
 
-  public native void nativeCreate (CheckboxGroup group);
-  public native void nativeSetCheckboxGroup (CheckboxGroup group,
-					     CheckboxGroup old_group);
+  public native void nativeCreate (GtkCheckboxGroupPeer group);
+  public native void nativeSetCheckboxGroup (GtkCheckboxGroupPeer group);
   public native void connectHooks ();
 
   public GtkCheckboxPeer (Checkbox c)
@@ -63,7 +62,8 @@ public class GtkCheckboxPeer extends GtkComponentPeer
   public void create ()
   {
     CheckboxGroup g = ((Checkbox) awtComponent).getCheckboxGroup ();
-    nativeCreate (g);
+    old_group = GtkCheckboxGroupPeer.getCheckboxGroupPeer (g);
+    nativeCreate (old_group);
   }
 
   public void setState (boolean state)
@@ -78,8 +78,15 @@ public class GtkCheckboxPeer extends GtkComponentPeer
 
   public void setCheckboxGroup (CheckboxGroup group)
   {
-    nativeSetCheckboxGroup (group, old_group);
-    old_group = group;
+    GtkCheckboxGroupPeer gp
+      = GtkCheckboxGroupPeer.getCheckboxGroupPeer (group);
+    if (gp != old_group)
+      {
+	if (old_group != null)
+	  old_group.remove (this);
+	nativeSetCheckboxGroup (gp);
+	old_group = gp;
+      }
   }
 
   public void getArgs (Component component, GtkArgList args)
@@ -94,5 +101,14 @@ public class GtkCheckboxPeer extends GtkComponentPeer
   public void postItemEvent (Object item, int stateChange)
   {
     super.postItemEvent (awtComponent, stateChange);
+  }
+
+  public void dispose ()
+  {
+    // Notify the group so that the native state can be cleaned up
+    // appropriately.
+    if (old_group != null)
+      old_group.remove (this);
+    super.dispose ();
   }
 }

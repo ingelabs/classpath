@@ -7,6 +7,7 @@ EXTRA_DIST = \
 	GtkArgList.java \
 	GtkButtonPeer.java \
 	GtkCanvasPeer.java \
+	GtkCheckboxGroupPeer.java \
 	GtkCheckboxMenuItemPeer.java \
 	GtkCheckboxPeer.java \
 	GtkChoicePeer.java \

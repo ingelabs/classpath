@@ -161,6 +161,7 @@ add_node (struct state_node **head, jint obj_id, void *state)
 
   /* Insert node at the beginning.  */
   new_node->next = *head;
+  new_node->c_state = state;
   *head = new_node;
 }
 

@@ -121,8 +121,6 @@ public class GtkComponentPeer extends GtkGenericPeer
     setEnabled (false);
   }
 
-  native public void dispose ();
-
   public void enable () 
   {
     setEnabled (true);

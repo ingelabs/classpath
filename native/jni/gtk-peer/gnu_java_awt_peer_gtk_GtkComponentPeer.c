@@ -56,6 +56,20 @@ exception statement from your version. */
   }                                              \
   gdk_threads_leave ();                          \
 
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkGenericPeer_dispose
+  (JNIEnv *env, jobject obj)
+{
+  void *ptr;
+
+  ptr = NSA_DEL_PTR (env, obj);
+
+  /* For now the native state for any object must be a widget.
+     However, a subclass could override dispose() if required.  */
+  gdk_threads_enter ();
+  gtk_widget_destroy (GTK_WIDGET (ptr));
+  gdk_threads_leave ();
+}
+
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursor 
   (JNIEnv *env, jobject obj, jint type) 
@@ -120,18 +134,6 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursor
   gdk_window_set_cursor (widget->window, gdk_cursor);
   gdk_cursor_destroy (gdk_cursor);
 
-  gdk_threads_leave ();
-}
-
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_dispose
-  (JNIEnv *env, jobject obj)
-{
-  void *ptr;
-
-  ptr = NSA_DEL_PTR (env, obj);
-
-  gdk_threads_enter ();
-  gtk_widget_destroy (GTK_WIDGET (ptr));
   gdk_threads_leave ();
 }
 
