@@ -11,7 +11,7 @@
 This file contains important information you will need to know if you
 are going to hack on the GNU Classpath project code.
 
-Copyright (C) 1998,1999,2000,2001,2002,2003, 2004 Free Software Foundation, Inc.
+Copyright (C) 1998,1999,2000,2001,2002,2003,2004 Free Software Foundation, Inc.
 
 @ifnotplaintext
 @dircategory GNU Libraries
@@ -88,6 +88,7 @@ Working on the code, Working with others
 Programming Goals
 
 * Portability::                 Writing Portable Software                
+* Utility Classes::             Reusing Software
 * Robustness::                  Writing Robust Software               
 * Java Efficiency::             Writing Efficient Java            
 * Native Efficiency::           Writing Efficient JNI          
@@ -140,10 +141,10 @@ code to the GNU Classpath project:
 
 @itemize @bullet
 @item
-@b{Never under any circumstances refer to proprietary code while
+@strong{Never under any circumstances refer to proprietary code while
 working on GNU Classpath.}  It is best if you have never looked at
 alternative proprietary core library code at all.  To reduce
-temptation, it would be best if you deleted the @samp{src.zip} file
+temptation, it would be best if you deleted the @file{src.zip} file
 from your proprietary JDK distribution (note that recent versions of
 GNU Classpath and the compilers and environments build on it are
 mature enough to not need any proprietary implementation at all when
@@ -157,7 +158,7 @@ developed in a clean room environment, we could be very embarrassed
 someday in court.  Please don't let that happen.
 
 @item
-@b{Never decompile proprietary class library implementations.}  While
+@strong{Never decompile proprietary class library implementations.}  While
 the wording of the license in Sun's Java 2 releases has changed, it is
 not acceptable, under any circumstances, for a person working on
 GNU Classpath to decompile Sun's class libraries.  Allowing the use of
@@ -256,7 +257,7 @@ Free operating systems.  This includes GNU/Linux, GNU/Hurd, and the free
 BSDs.
 
 @item
-Other UNIX-like operating systems.
+Other Unix-like operating systems.
 
 @item
 Platforms which currently have no Java support at all.
@@ -389,7 +390,7 @@ Handles all of the zillions of hairy platform specific options needed
 to build shared libraries.
 
 @item m4
-The free GNU replacement for the standard UNIX macro processor.
+The free GNU replacement for the standard Unix macro processor.
 Proprietary m4 programs are broken and so GNU m4 is required for
 autoconf to work though knowing a lot about GNU m4 is not required to
 work with autoconf.
@@ -765,8 +766,8 @@ as much things/files that are done at the same time which can
 logically be seen as part of the same change/cleanup etc.
 
 When the change fixes an important bug or adds nice new functionality
-please write a short entry for inclusion in the NEWS file.  If it
-changes the VM interface you must mention that in both the NEWS file
+please write a short entry for inclusion in the @file{NEWS} file.  If it
+changes the VM interface you must mention that in both the @file{NEWS} file
 and the VM Integration Guide.
 
 All the ``rules'' are really meant to make sure that GNU Classpath
@@ -887,13 +888,14 @@ following chapters will give some hints on how to do this.
 
 @menu
 * Portability::                 Writing Portable Software                
+* Utility Classes::             Reusing Software
 * Robustness::                  Writing Robust Software               
 * Java Efficiency::             Writing Efficient Java            
 * Native Efficiency::           Writing Efficient JNI          
 * Security::                    Writing Secure Software
 @end menu
 
-@node Portability, Robustness, Programming Goals, Programming Goals
+@node Portability, Utility Classes, Programming Goals, Programming Goals
 @comment node-name, next, previous, up
 @section Portability
 
@@ -916,9 +918,30 @@ Read the Virtual Machine Integration Guide for more information.
 
 Right now the only supported platform is Linux.  This will change as that
 version stabilizes and we begin the effort to port to many other
-platforms.
+platforms.  Jikes RVM runs Classpath on AIX, and generally the Jikes
+RVM team fixes Classpath to work on that platform. 
 
-@node Robustness, Java Efficiency, Portability, Programming Goals
+@node Utility Classes, Robustness, Portability, Programming Goals
+@comment  node-name,  next,  previous,  up
+@section Utility Classes
+
+At the moment, we are not very good at reuse of the JNI code.  There
+have been some attempts, called @dfn{libclasspath}, to
+create generally useful utility classes.  The utility classes are in
+the directory @file{native/jni/classpath} and they are mostly declared
+in @file{native/jni/classpath/jcl.h}.  These utility classes are
+currently only discussed in @ref{Robustness} and in @ref{Native
+Efficiency}.
+
+There are more utility classes available that could be factored out if
+a volunteer wants something nice to hack on.  The error reporting and
+exception throwing functions and macros in
+@file{native/jni/gtk-peer/gthread-jni.c} might be good
+candidates for reuse.  There are also some generally useful utility
+functions in @file{gnu_java_awt_peer_gtk_GtkMainThread.c} that could
+be split out and put into libclasspath.
+
+@node Robustness, Java Efficiency, Utility Classes, Programming Goals
 @comment node-name, next, previous, up
 @section Robustness
 
@@ -936,22 +959,22 @@ Always check the return values of JNI functions, or call
 do this after @emph{every} JNI call.  JNI does not work well when an
 exception has been raised, and can have unpredictable behavior.
 
-Throw exceptions using JCL_ThrowException.  This guarantees that if
+Throw exceptions using @code{JCL_ThrowException}.  This guarantees that if
 something is seriously wrong, the exception text will at least get out
 somewhere (even if it is stderr).
 
-Check for null values of jclasses before you send them to JNI functions.
+Check for null values of @code{jclass}es before you send them to JNI functions.
 JNI does not behave nicely when you pass a null class to it: it
 terminates Java with a "JNI Panic."
 
-In general, try to use functions in native/jni/classpath/jcl.h.  They
+In general, try to use functions in @file{native/jni/classpath/jcl.h}.  They
 check exceptions and return values and throw appropriate exceptions.
 
 @node Java Efficiency, Native Efficiency, Robustness, Programming Goals
 @comment node-name, next, previous, up
 @section Java Efficiency
 
-For methods which explicitly throw a NullPointerException when an
+For methods which explicitly throw a @code{NullPointerException} when an
 argument is passed which is null, per a Sun specification, do not write
 code like:
 
@@ -997,10 +1020,10 @@ A final problem is efficiency of native code when it comes to things
 like method calls, fields, finding classes, etc.  Generally you should
 cache things like that in static C variables if you're going to use them
 over and over again.  GetMethodID(), GetFieldID(), and FindClass() are
-*slow*.  Classpath provides utility libraries for caching methodIDs
-and fieldIDs in native/jni/classpath/jnilink.h.  Other native data can
+@emph{slow}.  Classpath provides utility libraries for caching methodIDs
+and fieldIDs in @file{native/jni/classpath/jnilink.h}.  Other native data can
 be cached between method calls using functions found in
-native/jni/classpath/native_state.h.
+@file{native/jni/classpath/native_state.h}.
 
 Here are a few tips on writing native code efficiently:
 
@@ -1012,13 +1035,15 @@ write the single native method.  You can even call the other two native
 methods directly from your native code and not incur the overhead of a
 method call from Java to C.
 
-Cache methodIDs and fieldIDs wherever you can.  String lookups are
-expensive.  The best way to do this is to use the native/jni/classpath/jnilink.h
-library.  It will ensure that jmethodIDs are always valid, even if the
+Cache @code{jmethodID}s and @code{jfieldID}s wherever you can.  String
+lookups are 
+expensive.  The best way to do this is to use the 
+@file{native/jni/classpath/jnilink.h}
+library.  It will ensure that @code{jmethodID}s are always valid, even if the
 class is unloaded at some point.  In 1.1, jnilink simply caches a
-NewGlobalRef() to the method's underlying class; however, when 1.2 comes
+@code{NewGlobalRef()} to the method's underlying class; however, when 1.2 comes
 along, it will use a weak reference to allow the class to be unloaded
-and then re-resolve the jmethodID the next time it is used.
+and then re-resolve the @code{jmethodID} the next time it is used.
 
 Cache classes that you need to access often.  jnilink will help with
 this as well.  The issue here is the same as the methodID and fieldID
@@ -1250,10 +1275,10 @@ the class java.util.zip would be in the directory java-util.
 
 @item gnu/java
 Internal classes (roughly analogous to Sun's sun.* classes) should go
-under the gnu/java directory.  Classes related to a particular public
+under the @file{gnu/java} directory.  Classes related to a particular public
 Java package should go in a directory named like that package.  For
 example, classes related to java.util.zip should go under a directory
-gnu/java/util/zip.  Sub-packages under the main package name are
+@file{gnu/java/util/zip}.  Sub-packages under the main package name are
 allowed.  For classes spanning multiple public Java packages, pick an
 appropriate name and see what everybody else thinks.
 
@@ -1261,7 +1286,7 @@ appropriate name and see what everybody else thinks.
 This directory holds native code needed by the public Java packages.
 Each package has its own subdirectory, which is the ``flattened'' name
 of the package.  For example, native method implementations for
-java.util.zip should go in native/classpath/java-util.  Classpath
+java.util.zip should go in @file{native/classpath/java-util}.  Classpath
 actually includes an all Java version of the zip classes, so no native
 code is required.
 
@@ -1286,7 +1311,7 @@ Each package has its own shared library for native code (if any).
 The main native method implementation for a given method in class should
 go in a file with the same name as the class with a ``.c'' extension.
 For example, the JNI implementation of the native methods in
-java.net.InetAddress would go in native/jni/java-net/InetAddress.c.
+java.net.InetAddress would go in @file{native/jni/java-net/InetAddress.c}.
 ``Internal'' native functions called from the main native method can
 reside in files of any name.
 @end itemize
@@ -1483,7 +1508,7 @@ The following sections define the functional areas that use resources
 for locale specific configuration in GNU Classpath.  Please refer to the 
 documentation for the classes mentioned for details on how these values 
 are used.  You may also wish to look at the source file for 
-@code{gnu/java/locale/LocaleInformation_en} as an example.
+@file{gnu/java/locale/LocaleInformation_en} as an example.
 
 @node String Collation, Break Iteration, Localization, Localization
 @comment node-name, next, previous, up
