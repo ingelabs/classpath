@@ -171,7 +171,7 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected ListPeer createList (List l) 
     {
-      return null;
+      return (new GtkListPeer (l, l.getParent().getPeer()));
     }
 
   protected MenuPeer createMenu (Menu m) 
