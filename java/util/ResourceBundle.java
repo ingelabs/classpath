@@ -1,5 +1,5 @@
 /* ResourceBundle -- aids in loading resource bundles
-   Copyright (C) 1998, 1999, 2001, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001, 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -108,12 +108,15 @@ public abstract class ResourceBundle
   private static Class resourceBundleClass;
   private static Class securityClass;
 
-  static {
-      try {
-	  resourceBundleClass = Class.forName("java.util.ResourceBundle");
-	  securityClass = Class.forName("java.util.ResourceBundle$Security");
-      } catch (ClassNotFoundException e) {
-
+  static
+  {
+    try
+      {
+	resourceBundleClass = Class.forName("java.util.ResourceBundle");
+	securityClass = Class.forName("java.util.ResourceBundle$Security");
+      }
+    catch (ClassNotFoundException e)
+      {
       }
   }
       
@@ -136,10 +139,11 @@ public abstract class ResourceBundle
     ClassLoader getCallingClassLoader()
     {
       Class[] stack = getClassContext();
-      for (int i = 0; i < stack.length; i++) {
-        if (stack[i] != securityClass && stack[i] != resourceBundleClass)
-          return stack[i].getClassLoader();
-      }
+      for (int i = 0; i < stack.length; i++)
+	{
+	  if (stack[i] != securityClass && stack[i] != resourceBundleClass)
+	    return stack[i].getClassLoader();
+	}
 
       return null;
     }
@@ -236,7 +240,8 @@ public abstract class ResourceBundle
         {
         }
  
-    throw new MissingResourceException("Key not found", getClass().getName(), key);
+    throw new MissingResourceException("Key not found", getClass().getName(),
+				       key);
   }
 
   /**
