@@ -1,5 +1,9 @@
 2003-03-22  Tom Tromey  <tromey@redhat.com>
 
+	* java/io/ObjectOutputStream.java (PutField.write): Deprecate.
+	(PutField.put): Don't declare any exceptions.
+	(putFields): Update.
+
 	* java/io/FileDescriptor.java (close): Simplify with `finally'.
 
 2003-03-20  John Leuner  <jewel@debian.org>

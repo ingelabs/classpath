@@ -843,24 +843,16 @@ public class ObjectOutputStream extends OutputStream
   */
   public static abstract class PutField
   {
-    public abstract void put (String name, boolean value)
-      throws IOException, IllegalArgumentException;
-    public abstract void put (String name, byte value)
-      throws IOException, IllegalArgumentException;
-    public abstract void put (String name, char value)
-      throws IOException, IllegalArgumentException;
-    public abstract void put (String name, double value)
-      throws IOException, IllegalArgumentException;
-    public abstract void put (String name, float value)
-      throws IOException, IllegalArgumentException;
-    public abstract void put (String name, int value)
-      throws IOException, IllegalArgumentException;
-    public abstract void put (String name, long value)
-      throws IOException, IllegalArgumentException;
-    public abstract void put (String name, short value)
-      throws IOException, IllegalArgumentException;
-    public abstract void put (String name, Object value)
-      throws IOException, IllegalArgumentException;
+    public abstract void put (String name, boolean value);
+    public abstract void put (String name, byte value);
+    public abstract void put (String name, char value);
+    public abstract void put (String name, double value);
+    public abstract void put (String name, float value);
+    public abstract void put (String name, int value);
+    public abstract void put (String name, long value);
+    public abstract void put (String name, short value);
+    public abstract void put (String name, Object value);
+    /** @deprecated */
     public abstract void write (ObjectOutput out) throws IOException;
   }
 
@@ -877,7 +869,6 @@ public class ObjectOutputStream extends OutputStream
 	= new Object[currentObjectStreamClass.objectFieldCount];
 
 	public void put (String name, boolean value)
-	  throws IOException, IllegalArgumentException
 	{
 	  ObjectStreamField field
 	    = currentObjectStreamClass.getField (name);
@@ -886,7 +877,6 @@ public class ObjectOutputStream extends OutputStream
 	}
 
 	public void put (String name, byte value)
-	  throws IOException, IllegalArgumentException
 	{
 	  ObjectStreamField field
 	    = currentObjectStreamClass.getField (name);
@@ -895,7 +885,6 @@ public class ObjectOutputStream extends OutputStream
 	}
 
 	public void put (String name, char value)
-	  throws IOException, IllegalArgumentException
 	{
 	  ObjectStreamField field
 	    = currentObjectStreamClass.getField (name);
@@ -906,7 +895,6 @@ public class ObjectOutputStream extends OutputStream
 	}
 
 	public void put (String name, double value)
-	  throws IOException, IllegalArgumentException
 	{
 	  ObjectStreamField field
 	    = currentObjectStreamClass.getField (name);
@@ -924,7 +912,6 @@ public class ObjectOutputStream extends OutputStream
 	}
 
 	public void put (String name, float value)
-	  throws IOException, IllegalArgumentException
 	{
 	  ObjectStreamField field
 	    = currentObjectStreamClass.getField (name);
@@ -938,7 +925,6 @@ public class ObjectOutputStream extends OutputStream
 	}
 
 	public void put (String name, int value)
-	  throws IOException, IllegalArgumentException
 	{
 	  ObjectStreamField field
 	    = currentObjectStreamClass.getField (name);
@@ -951,7 +937,6 @@ public class ObjectOutputStream extends OutputStream
 	}
 
 	public void put (String name, long value)
-	  throws IOException, IllegalArgumentException
 	{
 	  ObjectStreamField field
 	    = currentObjectStreamClass.getField (name);
@@ -968,7 +953,6 @@ public class ObjectOutputStream extends OutputStream
 	}
 
 	public void put (String name, short value)
-	  throws IOException, IllegalArgumentException
 	{
 	  ObjectStreamField field
 	    = currentObjectStreamClass.getField (name);
@@ -979,7 +963,6 @@ public class ObjectOutputStream extends OutputStream
 	}
 
 	public void put (String name, Object value)
-	  throws IOException, IllegalArgumentException
 	{
 	  ObjectStreamField field
 	    = currentObjectStreamClass.getField (name);
