@@ -1,5 +1,10 @@
 2003-08-18  Mark Wielaard  <mark@klomp.org>
 
+	* Makefile.am (DISTCHECK_CONFIGURE_FLAGS): Disable --enable-gjdoc.
+	* doc/api/Makefile.am (dist-hook): Removed.
+
+2003-08-18  Mark Wielaard  <mark@klomp.org>
+
 	* Makefile.am (dist-hook): Remove entries now handled by Makefile.am
 	in the external directory.
 

@@ -7,7 +7,7 @@ native: lib
 
 EXTRA_DIST = HACKING BUGS THANKYOU mauve-classpath LICENSE
 
-DISTCHECK_CONFIGURE_FLAGS = --enable-gjdoc
+#DISTCHECK_CONFIGURE_FLAGS = --enable-gjdoc
 
 dist-hook:
 	-$(mkinstalldirs) $(distdir)/include

@@ -4,19 +4,6 @@ endif
 
 EXTRA_DIST = classpath-copyright.xml
 
-dist-hook: 
-	-$(mkinstalldirs) $(distdir)
-	@if [ -d $(srcdir)/xslt ]; then \
-	  echo $(CP) -R $(srcdir)/xslt $(distdir); \
-	  $(CP) -R $(srcdir)/xslt $(distdir); \
-	fi
-	@if [ -d html ]; then \
-	  echo $(CP) -R html $(distdir); \
-	  $(CP) -R html $(distdir); \
-	else \
-	  echo "Error: did not configure --enable-gjdoc"; exit 1; \
-	fi
-
 htmllist := $(shell $(FIND) html | grep -v "^html$$")
 
 install-data-local:
