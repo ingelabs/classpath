@@ -10,4 +10,4 @@ dist-hook:
 	cp -R $(top_srcdir)/include $(top_distdir)
 
 ChangeLog:
-	cvs2cl.pl -b --gmt --log-opts "-d'1998-06-30< now'" --window 7200 --usermap ChangeLog.usermap --ignore ChangeLog
+	cvs2cl.pl -b --gmt --log-opts "-d'1998-06-30< now'" --window 7200 --usermap ChangeLog.usermap --ignore ChangeLog --fsf
