@@ -1,5 +1,10 @@
 2004-04-06  Patrik Reali  <reali@acm.org>
 
+	* doc/www.gnu.org/downloads/downloads.wml: removed download links
+	0.00 to 0.05 because they do not exist; link to 0.07 fixed
+
+2004-04-06  Patrik Reali  <reali@acm.org>
+
 	* doc/www.gnu.org/downloads/downloads.wml: link to 0.08 corrected
 
 2004-04-05  Patrik Reali  <reali@acm.org>

@@ -101,7 +101,7 @@ sub mylink {
 <download
 	date="05 Dec. 2003"
 	version="0.07"
-	url="ftp://alpha.gnu.org/gnu/classpath/classpath-0.07tar.gz"
+	url="ftp://alpha.gnu.org/gnu/classpath/classpath-0.07.tar.gz"
 >
 
 <download
@@ -114,42 +114,36 @@ sub mylink {
 <download
 	date="16 Feb. 2003"
 	version="0.05"
-	url="ftp://alpha.gnu.org/pub/gnu/classpath/classpath-0.05.tar.gz"
 	notes="http://mail.gnu.org/archive/html/classpath/2003-02/msg00043.html"
 >
 
 <download
 	date="06 May. 2002"
 	version="0.04"
-	url="ftp://alpha.gnu.org/pub/gnu/classpath/classpath-0.04.tar.gz"
 	notes="http://mail.gnu.org/archive/html/classpath/2002-05/msg00061.html"
 >
 
 <download
 	date="08 Feb. 2002"
 	version="0.03"
-	url="ftp://alpha.gnu.org/pub/gnu/classpath/classpath-0.03.tar.gz"
 	notes="downloads/20020208.html"
 >
 
 <download
 	date="06 Jan. 2001"
 	version="0.02"
-	url="ftp://alpha.gnu.org/pub/gnu/classpath/classpath-0.02.tar.gz"
 	notes="downloads/20010106.html"
 >
 
 <download
 	date="20 Nov. 2000"
 	version="0.01"
-	url="ftp://alpha.gnu.org/pub/gnu/classpath/classpath-0.01.tar.gz"
 	notes="downloads/20001120.html"
 >
 
 <download
 	date="06 Feb. 1999"
 	version="0.00"
-	url="ftp://alpha.gnu.org/pub/gnu/classpath/classpath-0.00.tar.gz"
 	notes="downloads/19990206.html"
 >
 
