@@ -1,3 +1,7 @@
+2003-11-27  Mark Wielaard  <mark@klomp.org>
+
+	* configure.in: Removed AC_CYGWIN and AC_MINGW32.
+
 2003-11-27  Dalibor Topic <robilad@kaffe.org>
 
 	* java/text/FieldPosition.java (equals): Fixed comment.

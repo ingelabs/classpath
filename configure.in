@@ -113,9 +113,6 @@ if test "x${COMPILE_JNI}" = xyes; then
   dnl FIXME - does not allow cross compiling
   AC_C_BIGENDIAN
 
-  AC_CYGWIN
-  AC_MINGW32
-
   dnl We want to avoid -O2 at the moment, gcc 2.96 from Red Hat 7
   dnl cannot compile some native functions (gcc errors) with this
   dnl flag.
