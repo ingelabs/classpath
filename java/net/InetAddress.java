@@ -649,15 +649,6 @@ getHostByAddr(int[] ip) throws UnknownHostException;
 private static native int[][]
 getHostByName(String hostname) throws UnknownHostException;
 
-/*************************************************************************/
-
-public static void
-main(String[] argv)
-{
-  System.out.println("The name of the local host is: " + 
-                     getLocalHostName());
-}
-
 } // class InetAddress
 
 
