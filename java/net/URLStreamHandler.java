@@ -422,7 +422,7 @@ public abstract class URLStreamHandler
   {
     String hostname = url.getHost ();
 
-    if (hostname == "")
+    if (hostname.equals(""))
       return null;
     
     try
@@ -498,15 +498,11 @@ public abstract class URLStreamHandler
 	if (user != null && !"".equals(user))
 	  sb.append(user).append('@');
 	sb.append(host);
+    
+	// Append port if port was in URL spec.
+	if (port >= 0)
+          sb.append(':').append(port);
       }
-
-    // Note that this produces different results from JDK 1.2 as JDK 1.2
-    // ignores a non-default port if host is null or "".  That is inconsistent
-    // with the spec since the result of this method is spec'ed so it can be
-    // used to construct a new URL that is equivalent to the original.
-    boolean port_needed = port > 0 && port != getDefaultPort();
-    if (port_needed)
-      sb.append(':').append(port);
 
     sb.append(file);
 

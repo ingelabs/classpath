@@ -1,3 +1,10 @@
+2003-11-26  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/URLStreamHandler.java
+	(getHostName): Fix empty hostname check.
+	(toExternalForm): Add port number only when host is present and port
+	was specified in spec.
+
 2003-11-25  David Belanger  <dbelan2@cs.mcgill.ca>
 
 	* java/util/zip/ZipFile (Zipfile(File)): Set file path as name.
