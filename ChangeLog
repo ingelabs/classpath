@@ -1,5 +1,15 @@
 2003-04-30  Michael Koch  <konqueror@gmx.de>
 
+	* java/security/cert/Certificate.java
+	(Certificate): Implements java.io.Serializable.
+	(serialVersionUID): Must be private.
+	* java/security/cert/PKIXCertPathBuilderResult.java
+	(PKIXCertPathBuilderResult): Implements CertPathBuilderResult.
+	* java/security/cert/X509Certificate.java
+	(serialVersionUID): New member variable.
+
+2003-04-30  Michael Koch  <konqueror@gmx.de>
+
 	* java/text/CollationElementIterator.java,
 	java/text/CollationKey.java,
 	java/text/RuleBasedCollator.java:
