@@ -1,4 +1,4 @@
 # used by automake to generate Makefile.in
 
-SUBDIRS = peer
+SUBDIRS = image peer
 
