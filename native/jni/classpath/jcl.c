@@ -139,7 +139,7 @@ JCL_jstring_to_cstring (JNIEnv * env, jstring s)
 }
 
 JNIEXPORT void JNICALL
-JCL_free_cstring (JNIEnv * env, jstring s, char *cstr)
+JCL_free_cstring (JNIEnv * env, jstring s, const char *cstr)
 {
   (*env)->ReleaseStringUTFChars (env, s, cstr);
 }
