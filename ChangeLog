@@ -1,3 +1,9 @@
+2003-12-26  Olga Rodimina <rodimina@redhat.com>
+
+	* java/awt/Polygon.java (translate):
+	Fixed error that caused polygon to move right/left
+	when up/down translation was required.
+
 2003-12-26  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/MenuComponent.java: Import java.io.Serialization.
