@@ -158,11 +158,32 @@ public abstract class ClassLoader {
 	 ** @return the URL to the resource.
 	 **/
 	public static final URL getSystemResource(String name) {
-		try {
-			return new URL("classpath:" + name);
-		} catch(MalformedURLException e) {
-			return null;
+		String cp = System.getProperty("java.class.path");
+		if (cp == null)
+			return(null);
+
+		StringTokenizer st = new StringTokenizer(cp, 
+							 File.pathSeparator);
+		while(st.hasMoreTokens()) {
+			String path = st.nextToken();
+			if (path.toLowerCase().endsWith(".zip") ||
+			    path.toLowerCase().endsWith(".jar"))
+				return(null); // Not implemented yet
+			File f;
+			if (path.endsWith(File.separator))
+				f = new File(path + name);
+			else
+				f = new File(path + File.separator + name);
+
+			if (f.exists())
+				try {
+					return new URL("file://" + 
+							f.getAbsolutePath());
+				} catch(MalformedURLException e) {
+					return null;
+				}
 		}
+		return(null);
 	}
 
 	/** Get a resource using the system classloader.
