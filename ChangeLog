@@ -1,5 +1,10 @@
 2004-01-27  Michael Koch  <konqueror@gmx.de>
 
+	* native/target/generic/target_generic_file.h:
+	Include fcntl.h
+
+2004-01-27  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/AbstractAction.java: Reformated.
 
 2004-01-27  Michael Koch  <konqueror@gmx.de>

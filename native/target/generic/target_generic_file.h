@@ -58,6 +58,7 @@ extern "C" {
 
 #include <stdlib.h>
 #include <assert.h>
+#include <fcntl.h>
 
 #include "target_native.h"
 #include "target_native_math_int.h"
