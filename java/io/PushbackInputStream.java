@@ -27,10 +27,10 @@ package java.io;
   * data that is supplied to the next read operation.  This is conceptually
   * similar to mark/reset functionality, except that in this case the 
   * position to reset the stream to does not need to be known in advance.
-  *
+  * <p>
   * The default pushback buffer size one byte, but this can be overridden
   * by the creator of the stream.
-  *
+  * <p>
   * @version 0.0
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
@@ -146,14 +146,14 @@ reset() throws IOException
   * This method returns the number of bytes that can be read from this
   * stream before a read can block.  A return of 0 indicates that blocking
   * might (or might not) occur on the very next read attempt.
-  *
+  * <p>
   * This method will return the number of bytes available from the
   * pushback buffer plus the number of bytes available from the 
   * underlying stream.
   *
   * @return The number of bytes that can be read before blocking could occur
   *
-  * @return IOException If an error occurs
+  * @exception IOException If an error occurs
   */
 public int
 available() throws IOException
@@ -167,7 +167,7 @@ available() throws IOException
   * This method skips the specified number of bytes in the stream.  It
   * returns the actual number of bytes skipped, which may be less than the
   * requested amount.
-  *
+  * <p>
   * This method first discards bytes from the buffer, then calls the
   * <code>skip</code> method on the underlying <code>InputStream</code> to 
   * skip additional bytes if necessary.
@@ -206,7 +206,7 @@ skip(long num_bytes) throws IOException
   * the end of the stream has been reached.  The byte returned will be read
   * from the pushback buffer, unless the buffer is empty, in which case
   * the byte will be read from the underlying stream.
-  *
+  * <p>
   * This method will block until the byte can be read.
   *
   * @return The byte read or -1 if end of stream
@@ -232,9 +232,9 @@ read() throws IOException
   * return before reading the number of bytes requested.  The actual number
   * of bytes read is returned as an int.  A -1 is returned to indicate the
   * end of the stream.
-  * 
+  *  <p>
   * This method will block until some data can be read.
-  *
+  * <p>
   * This method first reads bytes from the pushback buffer in order to 
   * satisfy the read request.  If the pushback buffer cannot provide all
   * of the bytes requested, the remaining bytes are read from the 
@@ -310,9 +310,9 @@ read(byte[] buf, int offset, int len) throws IOException
   * This method pushes a single byte of data into the pushback buffer.
   * The byte pushed back is the one that will be returned as the first byte
   * of the next read.
-  *
+  * <p>
   * If the pushback buffer is full, this method throws an exception.
-  *
+  * <p>
   * The argument to this method is an <code>int</code>.  Only the low eight bits
   * of this value are pushed back.
   *
@@ -337,7 +337,7 @@ unread(int b) throws IOException
   * the pushback buffer.  These bytes are pushed in reverse order so that
   * the next byte read from the stream after this operation will be
   * <code>buf[0]</code> followed by <code>buf[1]</code>, etc.
-  *
+  * <p>
   * If the pushback buffer cannot hold all of the requested bytes, an
   * exception is thrown.
   *
@@ -359,7 +359,7 @@ unread(byte[] buf) throws IOException
   * are pushed in reverse order so that the next byte read from the stream
   * after this operation will be <code>buf[offset]</code> followed by
   * <code>buf[offset + 1]</code>, etc.
-  *
+  * <p>
   * If the pushback buffer cannot hold all of the requested bytes, an
   * exception is thrown.
   *

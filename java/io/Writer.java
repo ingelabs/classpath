@@ -133,7 +133,7 @@ write(int b) throws IOException
   *
   * @param buf The array of char to write
   *
-  * @exception If an error occurs
+  * @exception IOException If an error occurs
   */
 public void
 write(char[] buf) throws IOException
@@ -153,7 +153,7 @@ write(char[] buf) throws IOException
   * @param offset The index into the array to start writing from
   * @param len The number of char to write
   * 
-  * @exception If an error occurs
+  * @exception IOException If an error occurs
   */
 public abstract void
 write(char[] buf, int offset, int len) throws IOException;

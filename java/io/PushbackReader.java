@@ -27,7 +27,7 @@ package java.io;
   * data that is supplied to the next read operation.  This is conceptually
   * similar to mark/reset functionality, except that in this case the 
   * position to reset the stream to does not need to be known in advance.
-  *
+  * <p>
   * The default pushback buffer size one char, but this can be overridden
   * by the creator of the stream.
   *
@@ -147,14 +147,14 @@ reset() throws IOException
   * If it returns <code>false</code> to indicate that the stream is not
   * ready, any attempt to read from the stream could (but is not
   * guaranteed to) block.
-  *
+  * <p>
   * This stream is ready to read if there are either chars waiting to be
   * read in the pushback buffer or if the underlying stream is ready to
   * be read.
   *
   * @return <code>true</code> if this stream is ready to be read, <code>false</code> otherwise
   *
-  * @return IOException If an error occurs
+  * @exception IOException If an error occurs
   */
 public boolean
 ready() throws IOException
@@ -171,7 +171,7 @@ ready() throws IOException
   * This method skips the specified number of chars in the stream.  It
   * returns the actual number of chars skipped, which may be less than the
   * requested amount.
-  *
+  * <p>
   * This method first discards chars from the buffer, then calls the
   * <code>skip</code> method on the underlying <code>Reader</code> to 
   * skip additional chars if necessary.
@@ -214,7 +214,7 @@ skip(long num_chars) throws IOException
   * the end of the stream has been reached.  The char returned will be read
   * from the pushback buffer, unless the buffer is empty, in which case
   * the char will be read from the underlying stream.
-  *
+  * <p>
   * This method will block until the char can be read.
   *
   * @return The char read or -1 if end of stream
@@ -244,9 +244,9 @@ read() throws IOException
   * return before reading the number of chars requested.  The actual number
   * of chars read is returned as an int.  A -1 is returned to indicate the
   * end of the stream.
-  * 
+  *  <p>
   * This method will block until some data can be read.
-  *
+  * <p>
   * This method first reads chars from the pushback buffer in order to 
   * satisfy the read request.  If the pushback buffer cannot provide all
   * of the chars requested, the remaining chars are read from the 
@@ -326,9 +326,9 @@ read(char[] buf, int offset, int len) throws IOException
   * This method pushes a single char of data into the pushback buffer.
   * The char pushed back is the one that will be returned as the first char
   * of the next read.
-  *
+  * <p>
   * If the pushback buffer is full, this method throws an exception.
-  *
+  * <p>
   * The argument to this method is an <code>int</code>.  Only the low eight bits
   * of this value are pushed back.
   *
@@ -357,7 +357,7 @@ unread(int b) throws IOException
   * the pushback buffer.  These chars are pushed in reverse order so that
   * the next char read from the stream after this operation will be
   * <code>buf[0]</code> followed by <code>buf[1]</code>, etc.
-  *
+  * <p>
   * If the pushback buffer cannot hold all of the requested chars, an
   * exception is thrown.
   *
@@ -379,7 +379,7 @@ unread(char[] buf) throws IOException
   * are pushed in reverse order so that the next char read from the stream
   * after this operation will be <code>buf[offset]</code> followed by
   * <code>buf[offset + 1]</code>, etc.
-  *
+  * <p>
   * If the pushback buffer cannot hold all of the requested chars, an
   * exception is thrown.
   *

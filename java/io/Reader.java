@@ -159,7 +159,7 @@ reset() throws IOException
   *
   * @return <code>true</code> if the stream is ready to be read, <code>false</code> otherwise.
   *
-  * @return IOException If an error occurs
+  * @exception IOException If an error occurs
   */
 public boolean
 ready() throws IOException
