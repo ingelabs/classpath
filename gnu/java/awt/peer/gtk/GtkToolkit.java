@@ -171,7 +171,7 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected CheckboxMenuItemPeer createCheckboxMenuItem (CheckboxMenuItem cmi)
   {
-    return null;
+    return new GtkCheckboxMenuItemPeer (cmi);
   }
 
   protected ChoicePeer createChoice (Choice c) 

@@ -95,13 +95,6 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setMenuBarPeer
   gdk_threads_enter ();
   box = GTK_BOX (GTK_BIN (wptr)->child);
   gtk_box_pack_start (box, GTK_WIDGET (mptr), 0, 0, 0);
-
-  mbar = GTK_MENU_BAR (mptr);
-  if (gtk_container_children (mbar))
-    printf ("we have a sub\n");
-  else
-    printf ("we DONT have a sub\n");
-  
   gdk_threads_leave ();
 }
 

@@ -1,5 +1,5 @@
 /*
- * gtkmenuitempeer.c -- Native implementation of GtkMenuItemPeer
+ * GtkCheckboxMenuItemPeer.java -- Implements CheckboxMenuItemPeer with GTK+
  *
  * Copyright (c) 1999 Free Software Foundation, Inc.
  *
@@ -18,23 +18,21 @@
  * Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
 
-#include "gtkpeer.h"
-#include "GtkMenuItemPeer.h"
+package gnu.java.awt.peer.gtk;
+import java.awt.*;
+import java.awt.peer.CheckboxMenuItemPeer;
+import java.awt.peer.MenuItemPeer;
 
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_create
-  (JNIEnv *env, jobject obj, jstring label)
+public class GtkCheckboxMenuItemPeer extends GtkMenuItemPeer
+  implements CheckboxMenuItemPeer
 {
-  GtkWidget *widget;
-  const char *str;
+  native void create (String label);
 
-  str = (*env)->GetStringUTFChars (env, label, NULL);
+  public GtkCheckboxMenuItemPeer (CheckboxMenuItem menu)
+  {
+    super (menu);
+    setState (menu.getState ());
+  }
 
-  gdk_threads_enter ();
-  widget = gtk_menu_item_new_with_label (str);
-  gtk_widget_show (widget);
-  gdk_threads_leave ();
-
-  (*env)->ReleaseStringUTFChars (env, label, str);
-
-  NSA_SET_PTR (env, obj, widget);
+  native public void setState (boolean t);
 }
