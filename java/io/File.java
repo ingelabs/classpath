@@ -180,7 +180,14 @@ public class File implements Serializable, Comparable
     else
       try
         {
-  	  File test = createTempFile ("tst", null, this);
+          /* If the separator is '\' a DOS-style-filesystem is assumed
+             and a short name is used, otherwise use a long name.
+             WARNGIN: some implementation of DOS-style-filesystems also
+             accept '/' as separator. In that case the following code
+             will fail.
+          */
+          String filename = (separatorChar!='\\')?"test-dir-write":"tst";
+  	  File test = createTempFile (filename, null, this);
   	  return (test != null && test.delete ());
         }
       catch (IOException ioe)
@@ -961,38 +968,58 @@ public class File implements Serializable, Comparable
                                  + " is not really a directory.");
       }
 
-    // Now process the prefix and suffix.
+    // Check if prefix is at least 3 characters long
     if (prefix.length () < 3)
-      throw new IllegalArgumentException ("Prefix too short: " + prefix + "(valid length 3..7)");
-    if (prefix.length() >= 8)
-      throw new IllegalArgumentException("Prefix too long: " + prefix + "(valid length 3..7)");
+      throw new IllegalArgumentException ("Prefix too short: " + prefix);
 
+    // Set default value of suffix
     if (suffix == null)
       suffix = ".tmp";
 
-    // Now identify a file name and make sure it doesn't exist (limit the name to 8 for DOS-compatibility)
-    File f;
-    int  mask = (int)(0x000000ffffFFFFL >> (long)(prefix.length() * 4));
-    for(;;)
+    /* Now identify a file name and make sure it doesn't exist.
+       If the separator is '\' a DOS-style-filesystem is assumed and
+       a 8+3-filename is used, otherwise use a long name.
+       WARNGIN: some implementation of DOS-style-filesystems also
+       accept '/' as separator. In that case the following code
+       will fail.
+    */
+    File file;
+    if (separatorChar!='\\')
+      {      
+        // probably a non-DOS-filesystem, use long names
+        do
+          {
+            String filename = prefix + System.currentTimeMillis () + suffix;
+            file = new File (directory, filename);
+          }
+        while (file.exists ());
+      }
+    else
       {
-        int n = (int)(System.currentTimeMillis() & mask);
-        String filename = prefix + java.lang.Integer.toHexString(n) + suffix;
-        f = new File(directory, filename);
+        // probably a DOS-filesystem, use short names (8+3)
 
-        if (f.exists())
-          continue;
-        else
-          break;
+        // make sure prefix is not longer than 7 characters
+        if (prefix.length() >= 8)
+          throw new IllegalArgumentException("Prefix too long: " + prefix + "(valid length 3..7)");
+
+        int  mask = (int)(0x000000ffffFFFFL >> (long)(prefix.length() * 4));
+        do
+          {
+            int n = (int)(System.currentTimeMillis() & mask);
+            String filename = prefix + java.lang.Integer.toHexString(n) + suffix;
+            file = new File(directory, filename);
+          }
+        while (file.exists ());
       }
 
     // Verify that we are allowed to create this file
     SecurityManager sm = System.getSecurityManager();
     if (sm != null)
-      sm.checkWrite(f.getAbsolutePath());
+      sm.checkWrite(file.getAbsolutePath());
 
     // Now create the file and return our file object
-    createInternal(f.getAbsolutePath()); 
-    return f;
+    createInternal(file.getAbsolutePath()); 
+    return file;
   }
 
   /*
