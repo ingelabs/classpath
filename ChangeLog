@@ -1,5 +1,11 @@
 2003-01-16  Mark Wielaard  <mark@klomp.org>
 
+	* java/awt/image/ColorModel.java (ColorModel): Call getNumComponents().
+	* java/awt/image/ImageFilter.java (getFilterInstance): Calling clone()
+	doesn't throw exception.
+
+2003-01-16  Mark Wielaard  <mark@klomp.org>
+
 	* java/net/SocketImpl.java (toString): Don't explicitly call
 	toString() on possible null address.
 
