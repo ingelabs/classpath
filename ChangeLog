@@ -1,3 +1,8 @@
+2000-11-17  Tom Tromey  <tromey@cygnus.com>
+
+	* java/util/PropertyPermission.java (actionStrings): Now `final'.
+	(equals): New method.
+
 2000-11-17  Mark Wielaard  <mark@klomp.org>
 
 	Merge with libgcj (fixes by Anthony Green and Mark Wielaard)

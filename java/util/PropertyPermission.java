@@ -1,5 +1,5 @@
 /* java.util.PropertyPermission
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -61,7 +61,8 @@ public final class PropertyPermission extends BasicPermission
    * @serialField action String
    *   The action string.
    */
-  private static final ObjectStreamField[] serialPersistentFields = {
+  private static final ObjectStreamField[] serialPersistentFields =
+  {
     new ObjectStreamField("action", String.class)
   };
 
@@ -71,7 +72,10 @@ public final class PropertyPermission extends BasicPermission
   private static final int WRITE = 2;
   private transient int actions;
 
-  private static String actionStrings[] = {"", "read", "write", "read,write"};
+  private static final String actionStrings[] =
+  {
+    "", "read", "write", "read,write"
+  };
 
   /**
    * Constructs a PropertyPermission witha he specified property.  Possible
@@ -144,6 +148,20 @@ public final class PropertyPermission extends BasicPermission
   public String getActions()
   {
     return actionStrings[actions];
+  }
+
+  /**
+   * Check to see whether this object is the same as another
+   * PropertyPermission object.
+   *
+   * @param obj The other object
+   */
+  public boolean equals (Object obj)
+  {
+    if (! (obj instanceof PropertyPermission))
+      return false;
+    PropertyPermission p = (PropertyPermission) obj;
+    return actions == p.actions && super.equals (p);
   }
 
   /**
