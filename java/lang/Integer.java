@@ -206,5 +206,4 @@ public final class Integer extends Number {
   public double doubleValue() {
     return value;
   }
-
 }
