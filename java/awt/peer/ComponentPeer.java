@@ -35,7 +35,7 @@ public abstract void disable();
 public abstract void dispose();
 public abstract void enable();
 public abstract ColorModel getColorModel();
-public abstract FontMetrics getFontMetrics(Font);
+public abstract FontMetrics getFontMetrics(Font f);
 public abstract Graphics getGraphics();
 public abstract Point getLocationOnScreen();
 public abstract Dimension getMinimumSize();
