@@ -1,3 +1,12 @@
+2001-10-19  Eric Blake  <ebb9@email.byu.edu>
+
+	* vm/reference/java/lang/reflect/Field.java: Reindent and comment,
+	extends AccessibleObject.
+	* vm/reference/java/lang/reflect/Method.java: ditto
+	(toString): Output throws clause.
+	* vm/reference/java/lang/reflect/Constructor.java: ditto
+	(toString): Output throws clause.
+
 2001-10-19  Mark Wielaard  <mark@klomp.org>
 
 	* java/lang/Double.java: More libgcj merging

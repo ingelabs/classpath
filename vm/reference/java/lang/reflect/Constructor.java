@@ -1,211 +1,240 @@
-/*
- * java.lang.reflect.Constructor: part of the Java Class Libraries project.
- * Copyright (C) 1998, 2001 Free Software Foundation
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
- *
- * You should have received a copy of the GNU Library General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA.
- */
+/* java.lang.reflect.Constructor - reflection of Java constructors
+   Copyright (C) 1998, 2001 Free Software Foundation, Inc.
+
+This file is part of GNU Classpath.
+
+GNU Classpath is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
+ 
+GNU Classpath is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with GNU Classpath; see the file COPYING.  If not, write to the
+Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+02111-1307 USA.
+
+As a special exception, if you link this library with other files to
+produce an executable, this library does not by itself cause the
+resulting executable to be covered by the GNU General Public License.
+This exception does not however invalidate any other reasons why the
+executable file might be covered by the GNU General Public License. */
+
 
 package java.lang.reflect;
 
 /**
- ** Constructor represents a constructor of a class.
- ** It will allow you to create a new instance of the class or get generic
- ** information about the constructor.<P>
- **
- ** <B>Note:</B> This class returns and accepts types as Classes, even
- ** primitive types; there are Class types defined that represent each
- ** different primitive type.  They are <code>java.lang.Boolean.TYPE,
- ** java.lang.Byte.TYPE, </code>etc.  These are not to be confused with
- ** the classes <code>java.lang.Boolean, java.lang.Byte</code>, etc.,
- ** which are real classes.<P>
- **
- ** <STRONG>Serialization:</STRONG>Note that this is not a serializable
- ** class.  It is entirely feasible to make it serializable, but this
- ** is on Sun, not me.<P>
- **
- ** <STRONG>Access and Security:</STRONG> Once this Constructor is created
- ** by java.lang.Class (which does its own security check), any object may
- ** query it for information like parameter types, exception types, etc.
- ** However, the Constructor may only be invoked using standard Java
- ** language access controls.  The JLS says that reflective access to all
- ** private, public and protected reflective members is granted to any
- ** class which can be linked against the reflected member.  Link-level
- ** enforcement is the enforcement of public, private, protected and
- ** default access rules, based on the caller's relationship to the class
- ** (same package, subclass, or unrelated).  Thus, if you couldn't
- ** normally invoke this constructor from the calling class, you can't do
- ** it using a Constructor object either.<P>
- **
- ** The relevant section of the VM spec on link-security is <A
- ** HREF='http://java.sun.com/docs/books/vmspec/html/Concepts.doc.html#22574'>2.16.3</A>, under Resolution.
- ** A summary of the appropriate rules follows.<P>
- **
- ** <STRONG>Summary of access rules</STRONG><BR>
- ** Two checks are done, and they are the same checks--on both the member's class and the member itself:
- ** <UL>
- ** <LI>If the caller is the same class as the member's class, then it can access the member no matter
- ** what.</LI>
- ** <LI>If the caller is in the same package as the member's class, then the member's class and the member
- ** itself must both be public, protected or default access.</LI>
- ** <LI>If the caller is a subclass of the member's class, then the member's class and the member itself must
- ** both be public or protected access.</LI>
- ** <LI>If the caller is unrelated member's class, then the member's class and the member must
- ** be public access.</LI>
- ** </UL>
- ** <P>
- **
- ** As far as I can tell from the fairly confusing <A
- ** HREF='http://java.sun.com/products/jdk/1.1/docs/guide/innerclasses/spec/innerclasses.doc.html'>Inner
- ** Classes Specification</A>, there should be no change to these rules from the addition of inner
- ** classes in 1.1.<P>
- **
- ** <STRONG>Version note:</STRONG> In 1.2, the security checks can be disabled in the AccessibleObject
- ** interface.  But this ain't 1.2. :)<P>
- **
- ** <STRONG>BUGS:</STRONG> The maximum size of a signature right now is 4096 characters because I'm using
- ** a static buffer when I calculate them.  While fine for most purposes, it is for pathological cases that
- ** specs are built.  I'm not sure how I'll handle this yet.
- **
- ** @author John Keiser
- ** @version 1.1.0, 31 May 1998
- ** @see Member
- ** @see java.lang.Class#getConstructor(Object[])
- ** @see java.lang.Class#getDeclaredConstructor(Object[])
- ** @see java.lang.Class#getConstructors()
- ** @see java.lang.Class#getDeclaredConstructors()
- **/
+ * The Constructor class represents a constructor of a class. It also allows
+ * dynamic creation of an object, via reflection. Invocation on Constructor
+ * objects knows how to do widening conversions, but throws
+ * {@link IllegalArgumentException} if a narrowing conversion would be
+ * necessary. You can query for information on this Constructor regardless
+ * of location, but construction access may be limited by Java language
+ * access controls. If you can't do it in the compiler, you can't normally
+ * do it here either.<p>
+ *
+ * <B>Note:</B> This class returns and accepts types as Classes, even
+ * primitive types; there are Class types defined that represent each
+ * different primitive type.  They are <code>java.lang.Boolean.TYPE,
+ * java.lang.Byte.TYPE,</code>, also available as <code>boolean.class,
+ * byte.class</code>, etc.  These are not to be confused with the
+ * classes <code>java.lang.Boolean, java.lang.Byte</code>, etc., which are
+ * real classes.<p>
+ *
+ * Also note that this is not a serializable class.  It is entirely feasible
+ * to make it serializable using the Externalizable interface, but this is
+ * on Sun, not me.
+ *
+ * @author John Keiser
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @see Member
+ * @see Class
+ * @see java.lang.Class#getConstructor(Object[])
+ * @see java.lang.Class#getDeclaredConstructor(Object[])
+ * @see java.lang.Class#getConstructors()
+ * @see java.lang.Class#getDeclaredConstructors()
+ * @since 1.1
+ * @status updated to 1.4
+ */
+public final class Constructor
+extends AccessibleObject implements Member
+{
+  private Class clazz;
+  private int slot;
+  private Class[] parameterTypes;
+  private Class[] exceptionTypes;
+  
+  /**
+   * This class is uninstantiable except from native code.
+   */
+  private Constructor(Class declaringClass,int slot)
+  {
+    this.clazz = declaringClass;
+    this.slot = slot;
+  }
 
-public final class Constructor implements Member {
-	private Class clazz;
-	private int slot;
-	private Class[] parameterTypes;
-	private Class[] exceptionTypes;
+  private Constructor()
+  {
+  }
 
-	/* This class is uninstantiable except from native code. */
-	private Constructor(Class declaringClass,int slot) {
-		this.clazz = declaringClass;
-		this.slot = slot;
-	}
+  /**
+   * Gets the class that declared this constructor.
+   * @return the class that declared this member
+   */
+  public Class getDeclaringClass()
+  {
+    return clazz;
+  }
 
-        private Constructor() {
-	}
+  /**
+   * Gets the name of this constructor (the non-qualified name of the class
+   * it was declared in).
+   * @return the name of this constructor
+   */
+  public String getName()
+  {
+    return getDeclaringClass().getName();
+  }
 
-	/** Gets the class that declared this constructor.
-	 ** @specnote It is unclear whether this returns the class that
-	 **           actually syntactically declared the member, or the
-	 **           class where the Constructor object was gotten from.
-	 ** @return the class that declared this member.
-	 **/
-	public Class getDeclaringClass() {
-		return clazz;
-	}
+  /**
+   * Gets the modifiers this constructor uses.  Use the <code>Modifier</code>
+   * class to interpret the values. A constructor can only have a subset of the
+   * following modifiers: public, private, protected.
+   *
+   * @return an integer representing the modifiers to this Member
+   * @see Modifier
+   */
+  public native int getModifiers();
 
-	/** Gets the modifiers this constructor uses.  Use the <code>Modifier</code>
-	 ** class to interpret the values.
-	 ** A Constructor may only have the modifiers public, private and protected.
-	 ** @see Modifier
-	 ** @return an integer representing the modifiers to this Member.
-	 **/
-	public native int getModifiers();
+  /**
+   * Get the parameter list for this constructor, in declaration order. If the
+   * constructor takes no parameters, returns a 0-length array (not null).
+   *
+   * @return a list of the types of the constructor's parameters
+   */
+  public Class[] getParameterTypes()
+  {
+    if (parameterTypes == null)
+      return new Class[0];
+    return parameterTypes;
+  }
 
-	/** Gets the name of this constructor (the non-qualified name of the class it was declared in).
-	 ** @return the name of this constructor.
-	 **/
-	public String getName() {
-		return getDeclaringClass().getName();
-	}
+  /**
+   * Get the exception types this constructor says it throws, in no particular
+   * order. If the constructor has no throws clause, returns a 0-length array
+   * (not null).
+   *
+   * @return a list of the types in the constructor's throws clause
+   */
+  public Class[] getExceptionTypes()
+  {
+    if (exceptionTypes == null)
+      return new Class[0];
+    return exceptionTypes;
+  }
 
-	/** Get the parameter list for this constructor.
-	 ** @return a list of classes representing the names of the constructor's parameters.
-	 **/
-	public Class[] getParameterTypes() {
-		if (parameterTypes == null)
-			return(new Class[0]);
-		return(parameterTypes);
-	}
+  /**
+   * Compare two objects to see if they are semantically equivalent.
+   * Two Constructors are semantically equivalent if they have the same
+   * declaring class and the same parameter list.  This ignores different
+   * exception clauses, but since you can't create a Method except through the
+   * VM, this is just the == relation.
+   *
+   * @param o the object to compare to
+   * @return <code>true</code> if they are equal; <code>false</code> if not.
+   */
+  public boolean equals(Object o)
+  {
+    return this == o;
+  }
 
-	/** Get the exception types this constructor says it throws.
-	 ** @return a list of classes representing the exception types.
-	 **/
-	public Class[] getExceptionTypes() {
-		if (exceptionTypes == null)
-			return(new Class[0]);
-		return(exceptionTypes);
-	}
+  /**
+   * Get the hash code for the Constructor. The Constructor hash code is the
+   * hash code of the declaring class's name.
+   *
+   * @return the hash code for the object
+   */
+  public int hashCode()
+  {
+    return getDeclaringClass().getName().hashCode();
+  }
 
-	/** Compare two objects to see if they are semantically equivalent.
-	 ** Two Constructors are semantically equivalent if they have the same declaring class and the
-	 ** same parameter list.  <B>Though I really don't see how two different Constructor objects with
-	 ** identical parameters could be created.</B>
-	 ** @param o the object to compare to.
-	 ** @return <code>true</code> if they are equal; <code>false</code> if not.
-	 **/
-	public boolean equals(Object o) {
-		return this == o;
-	}
-
-	/** Get the hash code for the Constructor.
-	 ** Constructor hash code is the hash code of the declaring class's name.
-	 ** @return the hash code for the object.
-	 **/
-	public int hashCode() {
-		return getDeclaringClass().getName().hashCode();
-	}
-
-	/** Get a String representation of the Constructor.
-	 ** A Constructor's String representation is &lt;modifiers&gt; &lt;classname&gt;(&lt;paramtypes&gt;).
-	 ** Example: <code>public java.lang.Thread(java.lang.Runnable,int)</code>
-	 ** @return the String representation of the Constructor.
-	 **/
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		sb.append(Modifier.toString(getModifiers()));
-		sb.append(' ');
-		sb.append(getDeclaringClass().getName());
-		sb.append('(');
-		Class[] c = getParameterTypes();
-		if(c.length > 0) {
-			sb.append(c[0].getName());
-			for(int i = 1; i < c.length; i++) {
-				sb.append(',');
-				sb.append(c[i].getName());
-			}
-		}
-		return sb.toString();
-	}
+  /**
+   * Get a String representation of the Constructor. A Constructor's String
+   * representation is "&lt;modifier&gt; &lt;classname&gt;(&lt;paramtypes&gt;)
+   * throws &lt;exceptions&gt;", where everything after ')' is omitted if
+   * there are no exceptions.<br> Example:
+   * <code>public java.io.FileInputStream(java.lang.Runnable)
+   * throws java.io.FileNotFoundException</code>
+   *
+   * @return the String representation of the Constructor
+   */
+  public String toString()
+  {
+    StringBuffer sb = new StringBuffer();
+    Modifier.toString(getModifiers(), sb).append(' ');
+    sb.append(getDeclaringClass().getName()).append('(');
+    Class[] c = getParameterTypes();
+    if (c.length > 0)
+      {
+        sb.append(c[0].getName());
+        for (int i = 1; i < c.length; i++)
+          sb.append(',').append(c[i].getName());
+      }
+    sb.append(')');
+    c = getExceptionTypes();
+    if (e.length > 0)
+      {
+        sb.append(" throws ").append(c[0].getName());
+        for (int i = 1; i < c.length; i++)
+          sb.append(',').append(c[i].getName());
+      }
+    return sb.toString();
+  }
  
-	/** Create a new instance of the object the constructor can construct.
-	 ** The constructor will permit widening argument conversions, but not narrowing conversions.
-	 ** @param args the arguments to the constructor.
-	 ** @return the newly created object.
-	 ** @exception InstantiationException		if the class is abstract.
-	 ** @exception IllegalAccessException		if the constructor could not normally be called
-	 **						by the Java code (i.e. it is not public).
-	 ** @exception IllegalArgumentException		if the number of arguments is incorrect, or if the
-	 **						arguments cannot be converted to the actual argument
-	 **						types, even with a widening conversion.
-	 ** @exception InvocationTargetException	if the constructor throws an exception.
-	 **/
-	public Object newInstance(Object args[])
-		throws InstantiationException,
-		       IllegalAccessException,
-		       IllegalArgumentException,
-		       InvocationTargetException {
-		return constructNative(args, clazz, slot);
-	}
+  /**
+   * Create a new instance by invoking the constructor. Arguments are
+   * automatically unwrapped and widened, if needed.<p>
+   *
+   * If this class is abstract, you will get an
+   * <code>InstantiationException</code>. If the constructor takes 0
+   * arguments, you may use null or a 0-length array for <code>args</code>.<p>
+   *
+   * If this Constructor enforces access control, your runtime context is
+   * evaluated, and you may have an <code>IllegalAccessException</code> if
+   * you could not create this object in similar compiled code. If the class
+   * is uninitialized, you trigger class initialization, which may end in a
+   * <code>ExceptionInInitializerError</code>.<p>
+   *
+   * Then, the constructor is invoked. If it completes normally, the return
+   * value will be the new object. If it completes abruptly, the exception is
+   * wrapped in an <code>InvocationTargetException</code>.
+   *
+   * @param args the arguments to the constructor
+   * @return the newly created object
+   * @throws IllegalAccessException if the constructor could not normally be
+   *         called by the Java code (i.e. it is not public)
+   * @throws IllegalArgumentException if the number of arguments is incorrect;
+   *         or if the arguments types are wrong even with a widening
+   *         conversion
+   * @throws InstantiationException if the class is abstract
+   * @throws InvocationTargetException if the constructor throws an exception
+   * @throws ExceptionInInitializerError if construction triggered class
+   *         initialization, which then failed
+   */
+  public Object newInstance(Object args[])
+    throws InstantiationException, IllegalAccessException,
+           InvocationTargetException
+  {
+    return constructNative(args, clazz, slot);
+  }
 
-	private native Object constructNative(Object[] args, Class declaringClass, int slot);
+  private native Object constructNative(Object[] args, Class declaringClass,
+                                        int slot)
+    throws InstantiationException, IllegalAccessException,
+           InvocationTargetException;
 }
