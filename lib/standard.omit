@@ -4,3 +4,4 @@
 ^../gnu/test/.*$
 ^../gnu/java/awt/peer/gtk/TestAWT.java$
 ^../gnu/java/awt/peer/gtk/Test.java$
+^../gnu/javax/swing/plaf/gtk/.*$
