@@ -59,6 +59,13 @@ public class BevelBorder
   extends AbstractBorder
 {
   /**
+   * Determined using the <code>serialver</code> tool
+   * of Apple/Sun JDK 1.3.1 on MacOS X 10.1.5.
+   */
+  static final long serialVersionUID = -1034942243356299676L;
+
+
+  /**
    * Indicates that the BevelBorder looks like if the enclosed area was
    * raising out of the screen.
    */
