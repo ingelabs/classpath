@@ -1,3 +1,10 @@
+2004-04-23  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac (AC_CHECK_HEADERS): Check for sys/filio.h.
+	* native/target/generic/target_generic_file.h
+	(TARGET_NATIVE_FILE_AVAILABLE): First include headers if they exist,
+	then check for FIONREAD.
+
 2004-04-23  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/java/lang/ClassLoaderHelper.java: Removed.

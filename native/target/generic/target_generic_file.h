@@ -413,14 +413,14 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_AVAILABLE
-  #if   defined(HAVE_FIONREAD)
-    #ifdef HAVE_SYS_IOCTL
-      #define BSD_COMP /* Get FIONREAD on Solaris2 */
-      #include <sys/ioctl.h>
-    #endif
-    #ifdef HAVE_SYS_FILIO /* Get FIONREAD on Solaris 2.5 */
-      #include <sys/filio.h>
-    #endif
+  #ifdef HAVE_SYS_IOCTL_H
+    #define BSD_COMP /* Get FIONREAD on Solaris2 */
+    #include <sys/ioctl.h>
+  #endif
+  #ifdef HAVE_SYS_FILIO_H /* Get FIONREAD on Solaris 2.5 */
+    #include <sys/filio.h>
+  #endif
+  #if defined (FIONREAD)
     #define TARGET_NATIVE_FILE_AVAILABLE(filedescriptor,length,result) \
       do { \
         ssize_t __n; \

@@ -97,7 +97,13 @@ AC_PROG_CPP
 
 if test "x${COMPILE_JNI}" = xyes; then
   AC_HEADER_STDC
-  AC_CHECK_HEADERS(unistd.h sys/types.h sys/config.h sys/ioctl.h asm/ioctls.h inttypes.h stdint.h utime.h sys/utime.h)
+
+  dnl We check for sys/filio.h because Solaris 2.5 defines FIONREAD there.
+  dnl On that system, sys/ioctl.h will not include sys/filio.h unless
+  dnl BSD_COMP is defined; just including sys/filio.h is simpler.
+  AC_CHECK_HEADERS(unistd.h sys/types.h sys/config.h sys/ioctl.h asm/ioctls.h)
+  AC_CHECK_HEADERS(inttypes.h stdint.h utime.h sys/utime.h sys/filio.h)
+
   AC_EGREP_HEADER(uint32_t, stdint.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))
   AC_EGREP_HEADER(uint32_t, inttypes.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))
   AC_EGREP_HEADER(u_int32_t, sys/types.h, AC_DEFINE(HAVE_BSD_INT32_DEFINED, 1, [Define to 1 if you have BSD u_int32_t]))
