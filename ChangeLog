@@ -1,3 +1,8 @@
+2002-10-25 Wu Gansha <gansha.wu@intel.com>:
+
+	* java/util/ArrayList.java (readObject, writeObject): Only read/write
+	size items.
+
 2002-10-25  Mark Wielaard  <mark@klomp.org>
 
 	* java/io/File.java: Remove all commented out security checks.
