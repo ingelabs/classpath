@@ -1,3 +1,16 @@
+2005-02-16  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/EventQueue.java: Reworked import statements.
+	* java/lang/StringBuilder.java
+	(DEFAULT_CAPACITY): Reordered modifiers.
+	* java/text/SimpleDateFormat.java: Reworked import statements.
+	Fixed one littel formatting issue.
+	(formatData): Removed a useless comment.
+	* javax/imageio/ImageIO.java: Reworked import statements.
+	* javax/swing/text/StringContent.java: Likewise.
+	* javax/swing/JTextField.java: Likewise.
+	(notifyAction): Added javadoc.
+
 2005-02-15  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/jar/Attributes.java (Name.CLASS_PATH): Document that
@@ -56,12 +69,11 @@
 
 2005-02-14  Sven de Marothy  <sven@physto.se>
 
-        * java/util/Calendar.java 
-        (clear): Dates should clear to local time.
-
-        * java/util/GregorianCalendar.java      
-        (computeTime): Fix priority problem with DAY_OF_WEEK,
-        Handle non-sunday-startig weeks and minimumDaysInFirstWeek.
+	* java/util/Calendar.java 
+	(clear): Dates should clear to local time.
+	* java/util/GregorianCalendar.java      
+	(computeTime): Fix priority problem with DAY_OF_WEEK,
+	Handle non-sunday-startig weeks and minimumDaysInFirstWeek.
 
 2005-02-13  Mark Wielaard  <mark@klomp.org>
 
