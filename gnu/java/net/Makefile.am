@@ -2,3 +2,6 @@
 
 SUBDIRS = content http
 
+EXTRA_DIST = \
+HeaderFieldHelper.java
+

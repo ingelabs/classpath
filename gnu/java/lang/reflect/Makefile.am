@@ -1,5 +1,6 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-gnujavalangreflectdir = $(datadir)/gnu/java/lang/reflect
+EXTRA_DIST = \
+ChangeLog \
+TypeSignature.java
 
-gnujavalangreflect_JAVA = TypeSignature.java
