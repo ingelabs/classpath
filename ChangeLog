@@ -1,3 +1,11 @@
+2003-11-13  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/undo/AbstractUndoableEdit.java: Re-format, document.
+	(AbstractUndoableEdit): Initialize hasBeenDone to true.
+	(canUndo, canRedo): Simplify.
+	(getUndoPresentationName, getRedoPresentationName): Support
+	localized message; call getPresentationName() only once.
+
 2003-11-14  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/UIManager.java (getDefaults, getDimension,
