@@ -34,8 +34,8 @@ AC_CHECK_HEADERS(unistd.h)
 AC_C_CONST
 AC_CHECK_FUNCS(gethostname socket strerror fork pipe execve)
 
-dnl guile checks
-GUILE_FLAGS
+dnl guile checks - shouldn't need now that mauve exists
+dnl GUILE_FLAGS
 
 dnl Initialize maintainer mode
 dnl AM_MAINTAINER_MODE
