@@ -1,3 +1,115 @@
+2003-03-04  Aaron M. Renn <arenn@urbanophile.com>
+
+	* Converted file based I/O mechanisms in java.io to new 
+	native provider interface.
+	* java/io/FileDescriptor.java
+	Re-indent code and fix word-wrapped comments.
+	native_fd Rename instance variable to nativeFd
+	Commence primary ignition....
+	getFileDescriptor(int)
+	Diked out.
+	(setNativeFD) Rename to setNativeFd, make private
+	(getNativeFD) Rename to getNativeFd
+	(syncInternal) Rename to nativeSync(long)
+	(validInternal) Rename to nativeValid (long)
+	New instance methods added:
+	open(String, String)
+	close()
+	write(byte)
+	write(byte[], long, long)
+	read()
+	read(byte[], long, long)
+	available()
+	seek()
+	getFilePointer()
+	getLength()
+	setLength()
+	nativeOpen()
+	nativeClose()
+	nativeWriteByte()
+	nativeWriteBuf()
+	nativeReadByte()
+	nativeReadBuf()
+	nativeAvailable()
+	nativeSeek()
+	nativeGetFilePointer()
+	nativeGetLength()
+	nativeSetLength()
+	Added new static methods
+	nativeInit()
+	* java/io/FileInputStream.java
+	Re-ident code and fix word-wrapped comments.
+	native_fd - Convert from int to FileDescriptor, rename fd
+	FileInputStream(String) - Use string directly, don't convert to File
+	and call overloaded constructor
+	FileInputStream(File) - Call getPath, then invoke overloaded 
+	constructor
+	(getFD) - Just return fd
+	(available) - Just call fd.available()
+	(skip) - Convert to use fd.seek()
+	(read) - Use fd.read()
+	(read(byte[])) - Use fd.read(byte[], long, long)
+	(close) - Use fd.close()
+	(getChannel) - Use fd.getNativeFd()
+	Commence primary ignition....
+	grand_total_read instance variable
+	skipInternal
+	readInternal
+	open
+	closeInternal
+	finalize
+	static initializer block
+	Diked out.
+	* java/io/FileOutputStream.java
+	native_fd - Convert to FileDescriptor and rename fd
+	(getFD) - Just return fd
+	(write) - Use fd.write()
+	(write(byte[], long, long) - Use fd.write(byte[], long, long)
+	(close) - Use fd.close()
+	(getChannel) - Use fd.getNativeFd()
+	Commence primary ignition....
+	writeInternal
+	open
+	closeInternal
+	finalize
+	static initializer block
+	Diked out.
+	* java/io/RandomAccessFile.java
+	native_fd - Convert to FileDescriptor and rename fd
+	(RandomAccessFile(File, String)) - Add modes "rws" and "rwd"
+	(getFD) - Just return fd
+	(getFilePointer) - Use fd.getFilePointer()
+	(length) - Use fd.length()
+	(seek) - Use fd.seek()
+	(setLength) - Use fd.setLength()
+	(read) - Use fd.read()
+	(write) - Use fd.write()
+	(skipBytes) - Use fd.getFilePointer() and fd.seek()
+	(getChannel) - Use fd.getNativeFd()
+	Commence primary ignition ....
+	closeInternal
+	getFilePointerInternal
+	lengthInternal
+	seekInternal
+	setLengthInternal
+	readInternal
+	skipInternal
+	writeInternal
+	static initializer block
+	Diked Out.
+	* native/jni/java-io/FileDescriptor.c
+	New C module implementing all native methods from FileDescriptor
+	* native/jni/java-io/Makefile.am
+	Use new FileDescriptor.c instead of old modules
+	* native/jni/java-io/java_io_FileDescriptor.c
+	No longer used
+	* native/jni/java-io/java_io_FileInputStream.c
+	No longer used
+	* native/jni/java-io/java_io_FileOutputStream.c
+	No longer used
+	* native/jni/java-io/java_io_RandomAccessFile.c
+	No longer used.
+	
 2003-03-04  Michael Koch  <konqueror@gmx.de>
 
 	* include/java_net_NetworkInterface.h: New file.

@@ -1,5 +1,5 @@
 /* FileDescriptor.java -- Opaque file handle class
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -45,181 +45,482 @@ import gnu.classpath.Configuration;
   * be used only to pass to other methods that expect an object of this
   * type.  No system specific information can be obtained from this object.
   *
-  * @version 0.1
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
 public final class FileDescriptor
 {
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/*
- * Class Variables and Initializers
- */
+  /*
+   * Class Variables and Initializers
+   */
 
-/**
-  * This is a <code>FileDescriptor</code> object representing the standard
-  * input stream.
-  */
-public static final FileDescriptor in = new FileDescriptor(0);
+    static
+    {
+      if (Configuration.INIT_LOAD_LIBRARY)
+        {
+          System.loadLibrary ("javaio");
+        }
 
-/**
-  * This is a <code>FileDescriptor</code> object representing the standard
-  * output stream.
-  */
-public static final FileDescriptor out = new FileDescriptor(1);
+      // nativeInit() should override these values if appropriate
+      in = new FileDescriptor(0);
+      out = new FileDescriptor(1);
+      err = new FileDescriptor(2);
 
-/**
-  * This is a <code>FileDescriptor</code> object representing the standard
-  * error stream.
-  */
-public static final FileDescriptor err = new FileDescriptor(2);
+      SET = 0;
+      CUR = 1;
+      END = 2;
 
-  static
+      nativeInit();
+    }
+
+  // Use for seeking
+  static final int SET;
+  static final int CUR;
+  static final int END;
+
+  /**
+    * A <code>FileDescriptor</code> representing the system standard input
+    * stream.  This will usually be accessed through the 
+    * <code>System.in</code>variable.
+    */
+  public static final FileDescriptor in;
+
+  /**
+    * A <code>FileDescriptor</code> representing the system standard output
+    * stream.  This will usually be accessed through the 
+    * <code>System.out</code>variable.
+    */
+  public static final FileDescriptor out;
+
+  /**
+    * A <code>FileDescriptor</code> representing the system standard error
+    * stream.  This will usually be accessed through the 
+    * <code>System.err</code>variable.
+    */
+  public static final FileDescriptor err;
+
+  /*************************************************************************/
+
+  /**
+    * Instance Variables
+    */
+
+  /**
+    * This is the actual native file descriptor value
+    */
+  private long nativeFd = -1L;
+
+  /*************************************************************************/
+
+  /*
+   * Constructors
+   */
+
+  /**
+    * This method is used to initialize an invalid FileDescriptor object.
+    */
+  public FileDescriptor()
   {
-    if (Configuration.INIT_LOAD_LIBRARY)
+  }
+
+  private FileDescriptor(int nativeFd)
+  {
+    this.nativeFd = nativeFd;
+  }
+
+  /*************************************************************************/
+
+  /*
+   * Instance Methods
+   */
+
+  /**
+    * This method forces all data that has not yet been physically written to
+    * the underlying storage medium associated with this 
+    * <code>FileDescriptor</code>
+    * to be written out.  This method will not return until all data has
+    * been fully written to the underlying device.  If the device does not
+    * support this functionality or if an error occurs, then an exception
+    * will be thrown.
+    */
+  public void sync() throws SyncFailedException
+  {
+    if (nativeFd == -1L)
+      throw new SyncFailedException("Invalid FileDescriptor");
+
+    nativeSync(nativeFd);
+  }
+
+  /**
+    * This methods tests whether or not this object represents a valid open
+    * native file handle.
+    *
+    * @return <code>true</code> if this object represents a valid 
+    * native file handle, <code>false</code> otherwise
+    */
+  public boolean valid()
+  {
+    if (nativeFd == -1L)
+      return(false);
+
+    try
       {
-        System.loadLibrary ("javaio");
+        return(nativeValid(nativeFd));
+      }
+    catch (IOException e)
+      {
+        return(false);
       }
   }
 
-/*************************************************************************/
+  void open(String path, String mode) throws IOException
+  {
+    // We don't want fd leakage.
+    if (nativeFd != -1L)
+      throw new IOException("FileDescriptor already open");
 
-/**
-  * Instance Variables
-  */
+    if ((path == null) || path.equals(""))
+      throw new IllegalArgumentException("Path cannot be null");
 
-/**
-  * This is the actual native file descriptor value
-  */
-private int native_fd;
+    if (!mode.equals("r") && !mode.equals("rw") && !mode.equals("rws") &&
+        !mode.equals("rwd") & !mode.equals("ra"))
+      throw new IllegalArgumentException("Invalid mode value: " + mode);
+    // Note above implicitly checks mode for null value
 
-/*************************************************************************/
+    nativeFd = nativeOpen(path, mode);
+  }
 
-/*
- * Class Methods
- */
-private static FileDescriptor
-getFileDescriptor(int native_fd)
-{
-  return(new FileDescriptor(native_fd));
-}
+  void close() throws IOException
+  {
+    if (nativeFd == -1L)
+      return;
 
-/*************************************************************************/
+    nativeClose(nativeFd);
+    nativeFd = -1L;
+  }
 
-/*
- * Constructors
- */
+  void write(int b) throws IOException
+  {
+    if (nativeFd == -1L)
+      throw new IOException("Invalid FileDescriptor");
 
-/**
-  * This method is used to initialize an invalid FileDescriptor object.
-  */
-public
-FileDescriptor()
-{
-  ;
-}
+    nativeWriteByte(nativeFd, (long)(b & 0xFF));
+  }
 
-/*************************************************************************/
+  void write(byte[] buf, long offset, long len) throws IOException
+  {
+    if (nativeFd == -1L)
+      throw new IOException("Invalid FileDescriptor");
 
-/**
-  * This method is used to initialize a <code>FileDescriptor</code> that will
-  * represent the specified native file handle. 
-  *
-  * @param native_fd The native file handle this object should represent
-  */
-FileDescriptor(int native_fd)
-{
-  this.native_fd = native_fd;
-}
+    if (len == 0)
+      return;
 
-/*************************************************************************/
+    if ((offset < 0) || (offset > buf.length))
+      throw new IllegalArgumentException("Offset invalid: " + offset);
 
-/*
- * Instance Methods
- */
+    if ((len < 0) || (len > (buf.length - offset)))
+      throw new IllegalArgumentException("Length invalid: " + len);
 
-/**
-  * This method forces all data that has not yet been physically written to
-  * the underlying storage medium associated with this <code>FileDescriptor</code>
-  * to be written out.  This method will not return until all data has
-  * been fully written to the underlying device.  If the device does not
-  * support this functionality or if an error occurs, then an exception
-  * will be thrown.
-  */
-public void
-sync() throws SyncFailedException
-{
-  syncInternal(native_fd);
-}
+    // Note that above ops implicitly bomb if buf == null
 
-/*************************************************************************/
+    nativeWriteBuf(nativeFd, buf, offset, len);
+  }
 
-/**
-  * This is the native method where the actual sync'ing of data to disk
-  * is performed.
-  *
-  * @param native_fd The native file handle
-  *
-  * @exception SyncFailedException If an error occurs or sync is not supported
-  */
-native void
-syncInternal(int native_fd);
+  int read() throws IOException
+  {
+    if (nativeFd == -1L)
+      throw new IOException("Invalid FileDescriptor");
 
-/*************************************************************************/
+    long byteRead = nativeReadByte(nativeFd);
+    if (byteRead == -1L)
+      return(-1);
 
-/**
-  * This methods tests whether or not this object represents a valid open
-  * native file handle.
-  *
-  * @return <code>true</code> if this object represents a valid native file handle, <code>false</code> otherwise
-  */
-public boolean
-valid()
-{
-  return(validInternal(native_fd));
-}
+    return((int)(byteRead & 0xFF));
+  }
 
-/*************************************************************************/
+  int read(byte[] buf, int offset, int len) throws IOException
+  {
+    if (nativeFd == -1L)
+      throw new IOException("Invalid FileDescriptor");
 
-/**
-  * This is the native method which actually tests whether or not this
-  * object represents a valid native file handle.
-  *
-  * @param native_fd The native file handle
-  *
-  * @return <code>true</code> if this object represents a valid native file handle, <code>false</code> otherwise
-  */
-native boolean
-validInternal(int native_fd);
+    if (len == 0)
+      return(0);
 
-/*************************************************************************/
+    if ((offset < 0) || (offset > buf.length))
+      throw new IllegalArgumentException("Offset invalid: " + offset);
 
-/**
-  * This method eturns the native file handle represented by this object
-  *
-  * @return The native file handle this object represents
-  */
-int
-getNativeFD()
-{
-  return(native_fd);
-}
+    if ((len < 0) || (len > (buf.length - offset)))
+      throw new IllegalArgumentException("Length invalid: " + len);
 
-/*************************************************************************/
+    // Note that above ops implicitly bomb if buf == null
 
-/**
-  * This method sets the native file descriptor this object represents to 
-  * the specified value.
-  * 
-  * @param The native file handle this object should represent.
-  */
-void
-setNativeFD(int native_fd)
-{
-  this.native_fd = native_fd;
-}
+    long bytesRead = nativeReadBuf(nativeFd, buf, offset, len);
+    if (bytesRead == -1L)
+      return(-1);
+
+    return((int)(bytesRead & 0xFFFF));
+  }
+
+  int available() throws IOException
+  {
+    if (nativeFd == -1L)
+      throw new IOException("Invalid FileDescriptor");
+    
+    long bytesAvail = nativeAvailable(nativeFd);
+
+    // FIXME:  Is this right?
+    if (bytesAvail > 0xFFFFL)
+      return(0xFFFF);
+    else
+      return((int)(bytesAvail & 0xFFFF));
+  }
+
+  long seek(long offset, int whence, boolean stopAtEof) throws IOException
+  {
+    if (nativeFd == -1L)
+      throw new IOException("Invalid FileDescriptor");
+
+    if ((whence != SET) && (whence != CUR) && (whence != END))
+      throw new IllegalArgumentException("Invalid whence value: " + whence);
+
+    return(nativeSeek(nativeFd, offset, whence, stopAtEof));
+  }
+
+  long getFilePointer() throws IOException
+  { 
+    if (nativeFd == -1L)
+      throw new IOException("Invalid FileDescriptor");
+
+    return(nativeGetFilePointer(nativeFd));
+  }
+
+  long getLength() throws IOException
+  {
+    if (nativeFd == -1L)
+      throw new IOException("Invalid FileDescriptor");
+
+    return(nativeGetLength(nativeFd));
+  }
+
+  void setLength(long len) throws IOException
+  {
+    if (nativeFd == -1L)
+      throw new IOException("Invalid FileDescriptor");
+
+    if (len < 0)
+      throw new IllegalArgumentException("Length cannot be less than zero " +
+                                         len);
+
+    nativeSetLength(nativeFd, len);
+  }
+
+  // Don't do anything crazy with this
+  long getNativeFd()
+  {
+    return(nativeFd);
+  }
+
+  private void setNativeFd(long nativeFd)
+  {
+    this.nativeFd = nativeFd;
+  }
+
+  protected void finalize() throws Throwable
+  {
+    close();
+  }
+
+  /*************************************************************************/
+
+  /*
+   * Native FileDescriptor provider interface
+   *
+   * Platform implementors must implement these methods.  Note that this
+   * class guarantees that valid data will be passed to these methods,
+   * so basic error checking on input values can be skipped.
+   */
+
+  /**
+    *  This method is called in the class initializer to do any require
+    * native library initialization.  It is also responsible for initializing
+    * the in, out, and err variables.
+    */
+  private static native void nativeInit();
+
+  /**
+    * Opens the specified file in the specified mode.  This can be done
+    * in one of the specified modes:
+    * <ul>
+    * <li>r - Read Only
+    * <li>rw - Read / Write
+    * <li>ra - Read / Write - append to end of file
+    * <li>rws - Read / Write - synchronous writes of data/metadata
+    * <li>rwd - Read / Write - synchronous writes of data.
+    *
+    * @param path Name of the file to open
+    * @param mode Mode to open
+    *
+    * @returns The resulting file descriptor for the opened file, or -1
+    * on failure (exception also signaled).
+    *
+    * @exception IOException If an error occurs.
+    */
+  private native long nativeOpen(String path, String mode) throws IOException;
+
+  /**
+    * Closes this specified file descriptor
+    * 
+    * @param fd The native file descriptor to close
+    *
+    * @returns The return code of the native close command.
+    *
+    * @exception IOException If an error occurs 
+    */    
+  private native long nativeClose(long fd) throws IOException;
+ 
+  /**
+    * Writes a single byte to the file
+    *
+    * @param fd The native file descriptor to write to
+    * @param b The byte to write, encoded in the low eight bits
+    *
+    * @return The return code of the native write command
+    *
+    * @exception IOException If an error occurs
+    */
+  private native long nativeWriteByte(long fd, long b) throws IOException;
+  // I hate name mangling.
+
+  /**
+    * Writes a byte buffer to the file
+    *
+    * @param fd The native file descriptor to write to
+    * @param buf The byte buffer to write from
+    * @param int The offset into the buffer to start writing from
+    * @param len The number of bytes to write.
+    *
+    * @return The return code of the native write command
+    *
+    * @exception IOException If an error occurs
+    */
+  private native long nativeWriteBuf(long fd, byte[] buf, long offset, long len)
+    throws IOException;
+  // I hate name mangling.
+
+  /**
+    * Reads a single byte from the file
+    *
+    * @param fd The native file descriptor to read from
+    *
+    * @return The byte read, in the low eight bits on a long, or -1
+    * if end of file
+    *
+    * @exception IOException If an error occurs
+    */
+  private native long nativeReadByte(long fd) throws IOException;
+  // I hate name mangling.
+
+  /**
+    * Reads a buffer of  bytes from the file
+    *
+    * @param fd The native file descriptor to read from
+    * @param buf The buffer to read bytes into
+    * @param offset The offset into the buffer to start storing bytes
+    * @param len The number of bytes to read.
+    *
+    * @return The number of bytes read, or -1 if end of file.
+    *
+    * @exception IOException If an error occurs
+    */
+  private native long nativeReadBuf(long fd, byte[] buf, long offset, long len) 
+    throws IOException;
+  // I hate name mangling.
+
+  /**
+    * Returns the number of bytes available for reading
+    *
+    * @param fd The native file descriptor
+    *
+    * @return The number of bytes available for reading
+    *
+    * @exception IOException If an error occurs
+    */
+  private native long nativeAvailable(long fd) throws IOException;
+
+  /**
+    * Method to do a "seek" operation on the file
+    * 
+    * @param fd The native file descriptor 
+    * @param offset The number of bytes to seek
+    * @param whence The position to seek from, either
+    *    SET (0) for the beginning of the file, CUR (1) for the 
+    *    current position or END (2) for the end position.
+    * @param stopAtEof <code>true</code> to ensure that there is no
+    *    seeking past the end of the file, <code>false</code> otherwise.
+    *
+    * @return The new file position, or -1 if end of file.
+    *
+    * @exception IOException If an error occurs
+    */
+  private native long nativeSeek(long fd, long offset, int whence, 
+                                 boolean stopAtEof)
+    throws IOException;
+
+  /**
+    * Returns the current position of the file pointer in the file
+    *
+    * @param fd The native file descriptor
+    *
+    * @exception IOException If an error occurs
+    */
+  private native long nativeGetFilePointer(long fd) throws IOException;
+  // Really could implement in terms of seek
+
+  /**
+    * Returns the length of the file in bytes
+    *
+    * @param fd The native file descriptor
+    *
+    * @return The length of the file in bytes
+    *
+    * @exception IOException If an error occurs
+    */
+  private native long nativeGetLength(long fd) throws IOException;
+
+  /**
+    * Sets the length of the file to the specified number of bytes
+    * This can result in truncation or extension.
+    *
+    * @param fd The native file descriptor  
+    *
+    * @param len The new length of the file
+    *
+    * @exception IOException If an error occurs
+    */
+  private native void nativeSetLength(long fd, long len) throws IOException;
+
+  /**
+    * Tests a file descriptor for validity
+    *
+    * @param fd The native file descriptor
+    *
+    * @return <code>true</code> if the fd is valid, <code>false</code> 
+    * otherwise
+    *
+    * @exception IOException If an error occurs
+    */
+  private native boolean nativeValid(long fd) throws IOException;
+
+  /**
+    * Flushes any buffered contents to disk
+    *
+    * @param fd The native file descriptor
+    *
+    * @exception IOException If an error occurs
+    */
+  private native void nativeSync(long fd) throws SyncFailedException;
 
 } // class FileDescriptor
 

@@ -55,29 +55,16 @@ import gnu.java.nio.FileChannelImpl;
 public class RandomAccessFile implements DataOutput, DataInput
 {
 
-  static
-  {
-    if (Configuration.INIT_LOAD_LIBRARY)
-      {
-        System.loadLibrary ("javaio");
-      }
-  }
-  
-  /*************************************************************************/
-  
   /*
    * Instance Variables
    */
   
-  /**
-    * The native file descriptor for this file
-    */
-  private int native_fd;
+  private FileDescriptor fd;
   
   /**
     * Whether or not this file is open in read only mode
     */
-  private boolean read_only;
+  private boolean readOnly;
   
   // Used for DataOutput methods writing values to the underlying file
   private byte[] buf = new byte[8];
@@ -107,10 +94,7 @@ public class RandomAccessFile implements DataOutput, DataInput
     * is not allowed
     * @exception IOException If any other error occurs
     */
-  public
-  RandomAccessFile(String name, String mode) throws IllegalArgumentException,
-                                                    SecurityException,
-                                                    IOException
+  public RandomAccessFile(String name, String mode) throws IOException
   {
     this(new File(name), mode);
   }
@@ -139,8 +123,11 @@ public class RandomAccessFile implements DataOutput, DataInput
   public RandomAccessFile(File file, String mode) 
      throws IllegalArgumentException, SecurityException, IOException
   {
+    String name = file.getPath();
+
     // Check the mode
-    if (!mode.equals("r") && !mode.equals("rw"))
+    if (!mode.equals("r") && !mode.equals("rw") && !mode.equals("rws") &&
+        !mode.equals("rwd"))
       throw new IllegalArgumentException("Bad mode value: " + mode);
   
     // The obligatory SecurityManager stuff
@@ -148,18 +135,16 @@ public class RandomAccessFile implements DataOutput, DataInput
     if (sm != null)
       {
         if (mode.equals("r"))
-          sm.checkRead(file.getPath());
-        else if (mode.equals("rw"))
-          sm.checkWrite(file.getPath());
+          sm.checkRead(name);
+        else
+          sm.checkWrite(name);
       }
   
     if (mode.equals("r"))
-      read_only = true;
+      readOnly = true;
   
-    if (read_only)
-      native_fd = open(file.getPath(), true);
-    else
-      native_fd = open(file.getPath(), false);
+    fd = new FileDescriptor();
+    fd.open(name, mode);
   }
   
   /*************************************************************************/
@@ -169,13 +154,6 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   
   /**
-    * This native method opens the file with the desired access mode
-    */
-  private native int open(String name, boolean read_only) throws IOException;
-  
-  /*************************************************************************/
-  
-  /**
     * This method closes the file and frees up all file related system
     * resources.  Since most operating systems put a limit on how many files
     * may be opened at any given time, it is a good idea to close all files
@@ -183,18 +161,8 @@ public class RandomAccessFile implements DataOutput, DataInput
     */
   public void close() throws IOException
   {
-    if (native_fd != -1)
-      closeInternal(native_fd);
-  
-    native_fd = -1;
+    fd.close();
   }
-  
-  /*************************************************************************/
-  
-  /**
-    * Native methods that actually closes the file
-    */
-  private native void closeInternal(int native_fd) throws IOException;
   
   /*************************************************************************/
   
@@ -208,7 +176,7 @@ public class RandomAccessFile implements DataOutput, DataInput
     */
   public final FileDescriptor getFD() throws IOException
   {
-    return(new FileDescriptor(native_fd));
+    return(fd);
   }
   
   /*************************************************************************/
@@ -223,15 +191,8 @@ public class RandomAccessFile implements DataOutput, DataInput
     */
   public long getFilePointer() throws IOException
   {
-    return(getFilePointerInternal(native_fd));
+    return(fd.getFilePointer());
   }
-  
-  /*************************************************************************/
-  
-  /** 
-    * This native method actually retrieves the file pointer
-    */
-  private native long getFilePointerInternal(int native_fd) throws IOException;
   
   /*************************************************************************/
   
@@ -244,15 +205,8 @@ public class RandomAccessFile implements DataOutput, DataInput
     */
   public long length() throws IOException
   {
-    return(lengthInternal(native_fd));
+    return(fd.getLength());
   }
-  
-  /*************************************************************************/
-  
-  /**
-    * This native method determines the actual file length
-    */
-  private native long lengthInternal(int native_fd) throws IOException;
   
   /*************************************************************************/
   
@@ -268,15 +222,8 @@ public class RandomAccessFile implements DataOutput, DataInput
     */
   public void seek(long pos) throws IOException
   {
-    seekInternal(native_fd, pos);
+    fd.seek(pos, fd.SET, false);
   }
-  
-  /*************************************************************************/
-  
-  /**
-    * This native method does the actual file offset seeking
-    */
-  private native void seekInternal(int native_fd, long pos) throws IOException;
   
   /*************************************************************************/
   
@@ -295,20 +242,12 @@ public class RandomAccessFile implements DataOutput, DataInput
     */
   public void setLength(long newlen) throws IOException
   {
-    if (read_only)
+    if (readOnly)
       throw new IOException("File is open read only");
   
-    setLengthInternal(native_fd, newlen);
+    fd.setLength(newlen);
   }
   
-  /*************************************************************************/
-  
-  /**
-    * This native method does the actual work of setting the file length
-    */
-  private native void setLengthInternal(int native_fd, long newlen) 
-    throws IOException;
-   
   /*************************************************************************/
   
   /**
@@ -319,13 +258,9 @@ public class RandomAccessFile implements DataOutput, DataInput
     *
     * @exception IOException If an error occurs
     */
-  public synchronized int read() throws IOException
+  public int read() throws IOException
   {
-    int rc = readInternal(native_fd, buf, 0, 1);
-    if (rc == 0)
-      return(-1);
-  
-    return(buf[0] & 0xFF);
+    return(fd.read());
   }
   
   /*************************************************************************/
@@ -343,11 +278,7 @@ public class RandomAccessFile implements DataOutput, DataInput
     */
   public int read(byte[] buf) throws IOException
   {
-    int rc = readInternal(native_fd, buf, 0, buf.length);
-    if (rc == 0)
-      return(-1);
-    else
-      return(rc);
+    return(read(buf, 0, buf.length));
   }
   
   /*************************************************************************/
@@ -366,20 +297,8 @@ public class RandomAccessFile implements DataOutput, DataInput
     */
   public int read(byte[] buf, int offset, int len) throws IOException
   {
-    int rc = readInternal(native_fd, buf, offset, len);
-    if (rc == 0)
-      return(-1);
-    else
-      return(rc);
+    return(fd.read(buf,offset, len));
   }
-  
-  /*************************************************************************/
-  
-  /**
-    * This native method actually reads the bytes from the file
-    */
-  private native int readInternal(int native_fd, byte[] buf, 
-                                  int offset, int len);
   
   /*************************************************************************/
   
@@ -919,31 +838,26 @@ public class RandomAccessFile implements DataOutput, DataInput
     * The actual number of bytes skipped is returned.  This method will not
     * skip any bytes if passed a negative number of bytes to skip.
     *
-    * @param num_bytes The requested number of bytes to skip.
+    * @param numBytes The requested number of bytes to skip.
     *
     * @return The number of bytes actually skipped.
     *
     * @exception IOException If an error occurs.
     */
-  public int skipBytes(int n) throws EOFException, IOException
+  public int skipBytes(int numBytes) throws EOFException, IOException
   {
-    if (n <= 0)
+    if (numBytes < 0)
+      throw new IllegalArgumentException("Can't skip negative bytes: " +
+                                         numBytes);
+
+    if (numBytes == 0)
       return(0);
-  
-    long file_length = this.length();
-    long file_position = this.getFilePointer();
-    int skip_length = (int) Math.min(n, file_length - file_position);
-    long total_skipped = skipInternal(native_fd, skip_length);
-  
-    return((int)total_skipped);
+
+    long curPos = fd.getFilePointer();
+    long newPos = fd.seek(numBytes, fd.CUR, true);
+
+    return((int)(newPos-curPos));
   }
-  
-  /*************************************************************************/
-  
-  /*
-   * Native method that does the actual byte skipping.
-   */
-  private native int skipInternal(int native_fd, int n);
   
   /*************************************************************************/
   
@@ -955,14 +869,12 @@ public class RandomAccessFile implements DataOutput, DataInput
     *
     * @exception IOException If an error occurs
     */
-  public synchronized void write(int b) throws IOException
+  public void write(int b) throws IOException
   {
-    if (read_only)
+    if (readOnly)
       throw new IOException("File is open read only");
   
-    buf[0] = (byte)b;
-    
-    writeInternal(native_fd, buf, 0, 1);
+    fd.write(b);
   }
   
   /*************************************************************************/
@@ -975,10 +887,7 @@ public class RandomAccessFile implements DataOutput, DataInput
     */
   public void write(byte[] buf) throws IOException
   {
-    if (read_only)
-      throw new IOException("File is open read only");
-  
-    writeInternal(native_fd, buf, 0, buf.length);
+    write(buf, 0, buf.length);
   }
     
   /*************************************************************************/
@@ -995,19 +904,11 @@ public class RandomAccessFile implements DataOutput, DataInput
     */
   public void write(byte[] buf, int offset, int len) throws IOException
   {
-    if (read_only)
+    if (readOnly)
       throw new IOException("File is open read only");
   
-    writeInternal(native_fd, buf, offset, len);
+    fd.write(buf, offset, len);
   }
-  
-  /*************************************************************************/
-  
-  /**
-    * This native method does the actual writing of the bytes
-    */
-  private native void writeInternal(int native_fd, byte[] buf, 
-                                    int offset, int len);
   
   /*************************************************************************/
   
@@ -1057,12 +958,14 @@ public class RandomAccessFile implements DataOutput, DataInput
     */
   public final void writeBytes(String s) throws IOException
   {
-    if (s.length() == 0)
+    int len = s.length();
+
+    if (len == 0)
       return;
   
-    byte[] buf = new byte[s.length()];
+    byte[] buf = new byte[len];
   
-    for (int i = 0; i < s.length(); i++)
+    for (int i = 0; i < len; i++)
       buf[i] = (byte)(s.charAt(i) & 0xFF);
   
     write(buf);
@@ -1278,9 +1181,10 @@ public class RandomAccessFile implements DataOutput, DataInput
   {
       synchronized (this) 
   	{
+            // FIXME:  Need to convert NIO to 64 bit
   	    if (ch == null)
-  		ch = new gnu.java.nio.FileChannelImpl(native_fd,
-  						      this);
+  		ch = new gnu.java.nio.FileChannelImpl(
+                   (int)(fd.getNativeFd() & 0xFFFF), this);
   	}
       return ch;
   }
