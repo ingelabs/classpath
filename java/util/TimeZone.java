@@ -39,6 +39,19 @@ package java.util;
  */
 public abstract class TimeZone implements java.io.Serializable, Cloneable {
 
+    // FIXME: Verify the values for these constants!
+    /**
+     * Constant used to indicate that a short timezone abbreviation should
+     * be returned, such as "EST"
+     */
+    public static final int SHORT = 0;
+
+    /**
+     * Constant used to indicate that a long timezone name should be
+     * returned, such as "Eastern Standard Time".
+     */
+    public static final int LONG = 1;
+
     /**
      * The time zone identifier, e.g. PST.
      */
@@ -189,7 +202,71 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
     public void setID(String id) {
         this.ID = id;
     }
+
+    /**
+     * This method returns a string name of the time zone suitable
+     * for displaying to the user.  The string returned will be the long
+     * description of the timezone in the current locale.  The name
+     * displayed will assume daylight savings time is not in effect.
+     *
+     * @return The name of the time zone.
+     */
+    public final String getDisplayName() {
+      return(getDisplayName(false, LONG, Locale.getDefault()));
+    }
     
+    /**
+     * This method returns a string name of the time zone suitable
+     * for displaying to the user.  The string returned will be the long
+     * description of the timezone in the specified locale. The name
+     * displayed will assume daylight savings time is not in effect.
+     *
+     * @param locale The locale for this timezone name.
+     *
+     * @return The name of the time zone.
+     */
+    public final String getDisplayName(Locale locale) {
+      return(getDisplayName(false, LONG, locale));
+    }
+
+    /**
+     * This method returns a string name of the time zone suitable
+     * for displaying to the user.  The string returned will be of the
+     * specified type in the current locale. 
+     *
+     * @param dst Whether or not daylight savings time is in effect.
+     * @param style <code>LONG</code> for a long name, <code>SHORT</code> for
+     * a short abbreviation.
+     *
+     * @return The name of the time zone.
+     */
+    public final String getDisplayName(boolean dst, int style) {
+      return(getDisplayName(dst, style, Locale.getDefault()));
+    }
+
+
+    /**
+     * This method returns a string name of the time zone suitable
+     * for displaying to the user.  The string returned will be of the
+     * specified type in the specified locale. 
+     *
+     * @param dst Whether or not daylight savings time is in effect.
+     * @param style <code>LONG</code> for a long name, <code>SHORT</code> for
+     * a short abbreviation.
+     * @param locale The locale for this timezone name.
+     *
+     * @return The name of the time zone.
+     */
+    public String getDisplayName(boolean dst, int style, Locale locale) {
+      int offset = getRawOffset();
+
+      int hours = offset / (1000*60*60);
+      int minutes = (offset / (1000 * 60)) % 60;
+
+      return("GMT" + ((hours > 9) ? "" + hours : "0" + hours) + 
+             ((minutes > 9) ?  "" + minutes : "0" + minutes));
+    }
+
     /** 
      * Returns true, if this time zone uses Daylight Savings Time.
      */
