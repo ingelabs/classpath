@@ -107,6 +107,9 @@ extern struct state_table *native_pixbufdecoder_state_table;
 
 #endif /* JVM_SUN */
 
+#define SWAPU32(w)                                                     \
+  (((w) << 24) | (((w) & 0xff00) << 8) | (((w) >> 8) & 0xff00) | ((w) >> 24))
+
 struct graphics
 {
   GdkDrawable *drawable;

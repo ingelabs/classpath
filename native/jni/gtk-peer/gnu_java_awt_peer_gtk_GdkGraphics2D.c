@@ -737,7 +737,7 @@ JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_getImagePix
   gint bits_per_sample = 8;
   gboolean has_alpha = TRUE;
   gint total_channels = 4;
-  jint i, px;
+  jint i;
 
   gdk_threads_enter();
   if (peer_is_disposed(env, obj)) { gdk_threads_leave(); return NULL; }
@@ -766,24 +766,13 @@ JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_getImagePix
  								      				      
   native_pixels= gdk_pixbuf_get_pixels (buf);
   
-     
-  /* NOTE: The pixels we got in the pixbuf are stored 
-     in reversed order. i.e 0xBBGGRRAA. 
-     We need to convert them to  0xAARRGGBB. */
-   
-  for (i=0; i<width * height; i++) 
-    {	     
-  	      
-        /* convert pixels from 0xBBGGRRAA to 0xAARRGGBB */
-        
-        px = native_pixels[i];
-        px = ((px >> 24) & 0xff) | ((px << 8) & 0xffffff00); 
-        px = ((px >>  8) & 0x00ff00ff) | ((px <<  8) & 0xff00ff00); 
-        px = ((px >> 16) & 0x0000ffff) | ((px << 16) & 0xffff0000); 
-        native_pixels[i] = px;
-      
+#ifndef WORDS_BIGENDIAN
+  /* convert pixels from 0xBBGGRRAA to 0xAARRGGBB */
+  for (i=0; i<width * height; i++)
+    {
+      native_pixels[i] = SWAPU32 ((unsigned)native_pixels[i]);
     }
-
+#endif
    java_pixels = (*env) -> NewIntArray (env, width * height);   
    
    (*env)->SetIntArrayRegion(env, java_pixels, 

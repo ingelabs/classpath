@@ -119,6 +119,10 @@ if test "x${COMPILE_JNI}" = xyes; then
   dnl Checking sizeof void * is needed for fdlibm to work properly on ppc64, 
   dnl at least. 
   AC_CHECK_SIZEOF(void *)
+
+  dnl Checking for endianess.
+  AC_C_BIGENDIAN_CROSS
+  
   dnl We check for sys/filio.h because Solaris 2.5 defines FIONREAD there.
   dnl On that system, sys/ioctl.h will not include sys/filio.h unless
   dnl BSD_COMP is defined; just including sys/filio.h is simpler.
