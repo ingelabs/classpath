@@ -307,6 +307,7 @@ gnu/java/security/Makefile
 gnu/java/security/der/Makefile
 gnu/java/security/provider/Makefile
 gnu/java/security/util/Makefile
+gnu/java/security/x509/Makefile
 gnu/java/text/Makefile
 gnu/java/util/Makefile
 gnu/java/util/prefs/Makefile
@@ -370,6 +371,9 @@ javax/naming/ldap/Makefile
 javax/naming/spi/Makefile
 javax/rmi/Makefile
 javax/rmi/CORBA/Makefile
+javax/security/Makefile
+javax/security/auth/Makefile
+javax/security/auth/x500/Makefile
 javax/sql/Makefile
 javax/swing/Makefile
 javax/swing/border/Makefile
