@@ -1,7 +1,14 @@
 EXTRA_DIST = \
 AreaAveragingScaleFilter.java \
-ColorModel.java \
+BufferedImage.java \
+ColorModel.java	\
+ComponentColorModel.java \
+ComponentSampleModel.java \
 CropImageFilter.java \
+DataBuffer.java	\
+DataBufferByte.java \
+DataBufferInt.java \
+DataBufferUShort.java \
 DirectColorModel.java \
 FilteredImageSource.java \
 ImageConsumer.java \
@@ -10,7 +17,12 @@ ImageObserver.java \
 ImageProducer.java \
 IndexColorModel.java \
 MemoryImageSource.java \
+PackedColorModel.java \
 PixelGrabber.java \
 RGBImageFilter.java \
-ReplicateScaleFilter.java
-
+Raster.java \
+RasterOp.java \
+ReplicateScaleFilter.java \
+SampleModel.java \
+SinglePixelPackedSampleModel.java \
+WritableRaster.java

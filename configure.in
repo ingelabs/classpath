@@ -266,8 +266,10 @@ include/jni.h
 java/Makefile
 java/applet/Makefile
 java/awt/Makefile
+java/awt/color/Makefile
 java/awt/datatransfer/Makefile
 java/awt/event/Makefile
+java/awt/geom/Makefile
 java/awt/image/Makefile
 java/awt/peer/Makefile
 java/awt/print/Makefile
