@@ -1,5 +1,15 @@
 2003-05-20  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/FileLockImpl.java
+	(fd): New member variable.
+	(released): New member variable.
+	(FileLockImpl): Added FileDescriptor object as argument.
+	(isValid): Implemented.
+	(release): Implemented.
+	(releaseImpl): New native method.
+
+2003-05-20  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/ByteBufferImpl.java,
 	gnu/java/nio/CharBufferImpl.java,
 	gnu/java/nio/DoubleBufferImpl.java,
