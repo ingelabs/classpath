@@ -49,6 +49,11 @@ import org.omg.CORBA.TypeCodePackage.BadKind;
 public abstract class TypeCode
   implements IDLEntity, Serializable
 {
+  /** 
+   * Use serialVersionUID for interoperability.
+   */
+  private static final long serialVersionUID = 1445247438437311252L;
+  
   /**
    * Returns the concrete base type for this TypeCode.
    * @return a TypeCode, defining the concrete base type for this

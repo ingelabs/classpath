@@ -48,6 +48,11 @@ public class UserException
   extends Exception
   implements IDLEntity, Serializable
 {
+  /** 
+   * Use serialVersionUID for interoperability. 
+   */
+  private static final long serialVersionUID =-6594940734566091244L;
+  
   /**
    * Constructs a the exception.
    */

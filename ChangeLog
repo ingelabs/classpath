@@ -1,3 +1,10 @@
+2005-03-06  Audrius Meskauskas  <audriusa@bluewin.ch>
+	* org/omg/CORBA/TypeCodePackage/BadKind.java: add serialVersionUID 
+	* org/omg/CORBA/SystemException.java: add serialVersionUID
+	* org/omg/CORBA/TypeCode.java: add serialVersionUID
+	* org/omg/CORBA/UserException.java: add serialVersionUID
+	* org/omg/CORBA/CompletionStatus.java: add serialVersionUID
+	
 2005-03-05  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* native/fdlibm/dtoa.c (_dtoa_r): Initialize variables ilim, ilim1

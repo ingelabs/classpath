@@ -53,6 +53,11 @@ public class BadKind
   extends UserException
   implements IDLEntity, Serializable
 {
+  /** 
+   * Use serialVersionUID for interoperability. 
+   */
+  private static final long serialVersionUID = 1030443154456771956L;
+  
   /**
    * Constructs a the exception.
    */

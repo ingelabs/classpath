@@ -47,6 +47,12 @@ import java.io.Serializable;
 public class SystemException
   extends RuntimeException implements Serializable
 {
+  
+ /** 
+  * Use serialVersionUID for interoperability. 
+  */
+  private static final long serialVersionUID =-8486391734674855519L;
+  
   /**
    * The status of the operation that have thrown this exception.
    */

@@ -47,6 +47,11 @@ import java.io.Serializable;
  */
 public class CompletionStatus implements Serializable
 {
+  /** 
+   * Use serialVersionUID for interoperability. 
+   */
+  private static final long serialVersionUID = -645279251430243097L;
+  
   /**
    * The method was completed when the exception was thrown.
    */
