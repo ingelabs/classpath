@@ -1,3 +1,12 @@
+2003-06-09  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/Robot.java
+	(screen): New member variable.
+	* javax/swing/BorderFactory.java
+	(create*Border): Implemented.
+	* javax/swing/plaf/BorderUIResource.java
+	(*BorderUIResource): Call correct parent constructor.
+
 2003-06-08  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/BorderFactory.java:

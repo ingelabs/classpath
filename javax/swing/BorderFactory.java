@@ -73,7 +73,7 @@ public class BorderFactory
    */ 
   public static Border createLineBorder (Color color, int thickness)
   {
-    return null;
+    return new LineBorder (color, thickness);
   }
 
   /**
@@ -83,7 +83,7 @@ public class BorderFactory
    */ 
   public static Border createRaisedBevelBorder ()
   {
-    return null;
+    return new BevelBorder (BevelBorder.RAISED);
   }
 
   /**
@@ -93,7 +93,7 @@ public class BorderFactory
    */ 
   public static Border createLoweredBevelBorder ()
   {
-    return null;
+    return new BevelBorder (BevelBorder.LOWERED);
   }
 
   /**
@@ -105,7 +105,7 @@ public class BorderFactory
    */ 
   public static Border createBevelBorder (int type)
   {
-    return null;
+    return new BevelBorder (type);
   }
 
   /**
@@ -120,7 +120,7 @@ public class BorderFactory
   public static Border createBevelBorder (int type, Color highlight,
                                           Color shadow)
   {
-    return null;
+    return new BevelBorder (type, highlight, shadow);
   }
 
   /**
@@ -138,7 +138,7 @@ public class BorderFactory
                                           Color highlightInner,
                                           Color shadowOuter, Color shadowInner)
   {
-    return null;
+    return new BevelBorder (type, highlightOuter, highlightInner, shadowOuter, shadowInner);
   }
 
   /**
@@ -148,7 +148,7 @@ public class BorderFactory
    */ 
   public static Border createEtchedBorder ()
   {
-    return null;
+    return new EtchedBorder ();
   }
 
   /**
@@ -161,7 +161,7 @@ public class BorderFactory
    */ 
   public static Border createEtchedBorder (Color highlight, Color shadow)
   {
-    return null;
+    return new EtchedBorder (highlight, shadow);
   }
 
   /**
@@ -173,7 +173,7 @@ public class BorderFactory
    */ 
   public static TitledBorder createTitledBorder (String title)
   {
-    return null;
+    return new TitledBorder (title);
   }
 
   /**
@@ -185,7 +185,7 @@ public class BorderFactory
    */ 
   public static TitledBorder createTitledBorder (Border border)
   {
-    return null;
+    return new TitledBorder (border);
   }
 
   /**
@@ -197,7 +197,7 @@ public class BorderFactory
    */ 
   public static TitledBorder createTitledBorder (Border border, String title)
   {
-    return null;
+    return new TitledBorder (border, title);
   }
 
   /**
@@ -220,7 +220,7 @@ public class BorderFactory
                                                 int titleJustification,
                                                 int titlePosition)
   {
-    return null;
+    return new TitledBorder (border, title, titleJustification, titlePosition);
   }
 
   /**
@@ -239,7 +239,7 @@ public class BorderFactory
                                                  int titlePosition,
                                                  Font titleFont)
   {
-    return null;
+    return new TitledBorder (border, title, titleJustification, titlePosition, titleFont);
   }
 
   /**
@@ -261,7 +261,7 @@ public class BorderFactory
                                                  Font titleFont,
                                                  Color titleColor)
   {
-    return null;
+    return new TitledBorder (border, title, titleJustification, titlePosition, titleFont, titleColor);
   }
 
   /**
@@ -271,7 +271,7 @@ public class BorderFactory
    */ 
   public static Border createEmptyBorder ()
   {
-    return null;
+    return new EmptyBorder (0, 0, 0, 0);
   }
 
   /**
@@ -286,7 +286,7 @@ public class BorderFactory
    */ 
   public static Border createEmptyBorder (int top, int left, int bottom,int right)
   {
-    return null;
+    return new EmptyBorder (top, left, bottom, right);
   }
 
   /**
@@ -296,7 +296,7 @@ public class BorderFactory
    */ 
   public static CompoundBorder createCompoundBorder ()
   {
-    return null;
+    return new CompoundBorder ();
   }
 
   /**
@@ -309,7 +309,7 @@ public class BorderFactory
    */ 
   public static CompoundBorder createCompoundBorder (Border outsideBorder, Border insideBorder)
   {
-    return null;
+    return new CompoundBorder (outsideBorder, insideBorder);
   }
 
   /**
@@ -324,7 +324,7 @@ public class BorderFactory
    */ 
   public static MatteBorder createMatteBorder (int top, int left, int bottom, int right, Color color)
   {
-    return null;
+    return new MatteBorder (top, left, bottom, right, color);
   }
 
   /**
@@ -343,6 +343,6 @@ public class BorderFactory
    */ 
   public static MatteBorder createMatteBorder (int top, int left, int bottom, int right, Icon tileIcon)
   {
-    return null;
+    return new MatteBorder (top, left, bottom, right, tileIcon);
   }
 }
