@@ -1,5 +1,9 @@
 2003-08-12  Ingo Proetel  <proetel@aicas.com>
 
+	* java/util/logging/SimpleFormatter.java:print souceClassName and sourceMethodName
+
+2003-08-12  Ingo Proetel  <proetel@aicas.com>
+
 	* java/rmi/server/RMIClassLoader.java: identify cached classloaders by 
 	codebase and contextclassloader 
 	* java/rmi/Naming.java: added comments, now accepts pseudo protocol "rmi" 
