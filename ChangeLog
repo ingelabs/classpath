@@ -1,3 +1,20 @@
+2002-12-03  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/nio/ByteBufferImpl.java
+	Reformated.
+	* gnu/java/nio/CharBufferImpl.java
+	Reformated.
+	* gnu/java/nio/DoubleBufferImpl.java
+	Reformated.
+	* gnu/java/nio/FloatBufferImpl.java
+	Reformated.
+	* gnu/java/nio/IntBufferImpl.java
+	Reformated.
+	* gnu/java/nio/LongBufferImpl.java
+	Reformated.
+	* gnu/java/nio/ShortBufferImpl.java
+	Reformated.
+	
 2002-12-03  Tom Tromey  <tromey@redhat.com>
 
 	* native/jni/classpath/native_state.c (add_node): Never create a

@@ -79,21 +79,124 @@ public final class ShortBufferImpl extends ShortBuffer
     position(position() + a);
   }
 
-  private static native short[] nio_cast(byte[]copy);
-  private static native short[] nio_cast(char[]copy);
-  private static native short[] nio_cast(short[]copy);
-  private static native short[] nio_cast(long[]copy);
-  private static native short[] nio_cast(int[]copy);
-  private static native short[] nio_cast(float[]copy);
-  private static native short[] nio_cast(double[]copy);
+  private static native short[] nio_cast (byte[] copy);
+  private static native short[] nio_cast (char[] copy);
+  private static native short[] nio_cast (short[] copy);
+  private static native short[] nio_cast (long[] copy);
+  private static native short[] nio_cast (int[] copy);
+  private static native short[] nio_cast (float[] copy);
+  private static native short[] nio_cast (double[] copy);
 
-  ShortBufferImpl(byte[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native byte nio_get_Byte(ShortBufferImpl b, int index, int limit); private static native void nio_put_Byte(ShortBufferImpl b, int index, int limit, byte value); public ByteBuffer asByteBuffer() { ByteBufferImpl res = new ByteBufferImpl(backing_buffer); res.limit((limit()*1)/2); return res; }
-  ShortBufferImpl(char[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native char nio_get_Char(ShortBufferImpl b, int index, int limit); private static native void nio_put_Char(ShortBufferImpl b, int index, int limit, char value); public CharBuffer asCharBuffer() { CharBufferImpl res = new CharBufferImpl(backing_buffer); res.limit((limit()*2)/2); return res; }
-  ShortBufferImpl(short[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native short nio_get_Short(ShortBufferImpl b, int index, int limit); private static native void nio_put_Short(ShortBufferImpl b, int index, int limit, short value); public ShortBuffer asShortBuffer() { ShortBufferImpl res = new ShortBufferImpl(backing_buffer); res.limit((limit()*2)/2); return res; }
-  ShortBufferImpl(int[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native int nio_get_Int(ShortBufferImpl b, int index, int limit); private static native void nio_put_Int(ShortBufferImpl b, int index, int limit, int value); public IntBuffer asIntBuffer() { IntBufferImpl res = new IntBufferImpl(backing_buffer); res.limit((limit()*4)/2); return res; }
-  ShortBufferImpl(long[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native long nio_get_Long(ShortBufferImpl b, int index, int limit); private static native void nio_put_Long(ShortBufferImpl b, int index, int limit, long value); public LongBuffer asLongBuffer() { LongBufferImpl res = new LongBufferImpl(backing_buffer); res.limit((limit()*8)/2); return res; }
-  ShortBufferImpl(float[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native float nio_get_Float(ShortBufferImpl b, int index, int limit); private static native void nio_put_Float(ShortBufferImpl b, int index, int limit, float value); public FloatBuffer asFloatBuffer() { FloatBufferImpl res = new FloatBufferImpl(backing_buffer); res.limit((limit()*4)/2); return res; }
-  ShortBufferImpl(double[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native double nio_get_Double(ShortBufferImpl b, int index, int limit); private static native void nio_put_Double(ShortBufferImpl b, int index, int limit, double value); public DoubleBuffer asDoubleBuffer() { DoubleBufferImpl res = new DoubleBufferImpl(backing_buffer); res.limit((limit()*8)/2); return res; }
+  ShortBufferImpl (byte[] copy)
+  {
+    this.backing_buffer = copy != null ? nio_cast (copy) : null;
+  }
+  
+  private static native byte nio_get_Byte (ShortBufferImpl b, int index, int limit);
+  
+  private static native void nio_put_Byte (ShortBufferImpl b, int index, int limit, byte value);
+  
+  public ByteBuffer asByteBuffer ()
+  {
+    ByteBufferImpl res = new ByteBufferImpl (backing_buffer);
+    res.limit ((limit () * 1) / 2);
+    return res;
+  }
+
+  ShortBufferImpl (char[] copy)
+  {
+    this.backing_buffer = copy != null ? nio_cast (copy) : null;
+  }
+  
+  private static native char nio_get_Char (ShortBufferImpl b, int index, int limit);
+  
+  private static native void nio_put_Char (ShortBufferImpl b, int index, int limit, char value);
+  
+  public CharBuffer asCharBuffer ()
+  {
+    CharBufferImpl res = new CharBufferImpl (backing_buffer);
+    res.limit ((limit () * 2) / 2);
+    return res;
+  }
+
+  ShortBufferImpl (short[] copy)
+  {
+    this.backing_buffer = copy != null ? nio_cast (copy) : null;
+  }
+
+  private static native short nio_get_Short (ShortBufferImpl b, int index, int limit);
+
+  private static native void nio_put_Short (ShortBufferImpl b, int index, int limit, short value);
+  
+  public ShortBuffer asShortBuffer ()
+  {
+    ShortBufferImpl res = new ShortBufferImpl (backing_buffer);
+    res.limit ((limit () * 2) / 2); return res;
+  }
+
+  ShortBufferImpl (int[] copy)
+  {
+    this.backing_buffer = copy != null ? nio_cast (copy) : null;
+  }
+
+  private static native int nio_get_Int (ShortBufferImpl b, int index, int limit);
+
+  private static native void nio_put_Int (ShortBufferImpl b, int index, int limit, int value);
+
+  public IntBuffer asIntBuffer ()
+  {
+    IntBufferImpl res = new IntBufferImpl (backing_buffer);
+    res.limit ((limit () * 4) / 2);
+    return res;
+  }
+
+  ShortBufferImpl (long[] copy)
+  {
+    this.backing_buffer = copy != null ? nio_cast (copy) : null;
+  }
+  
+  private static native long nio_get_Long (ShortBufferImpl b, int index, int limit);
+
+  private static native void nio_put_Long (ShortBufferImpl b, int index, int limit, long value);
+
+  public LongBuffer asLongBuffer ()
+  {
+    LongBufferImpl res = new LongBufferImpl (backing_buffer);
+    res.limit ((limit () * 8) / 2);
+    return res;
+  }
+
+  ShortBufferImpl (float[] copy)
+  {
+    this.backing_buffer = copy != null ? nio_cast (copy) : null;
+  }
+
+  private static native float nio_get_Float (ShortBufferImpl b, int index, int limit);
+
+  private static native void nio_put_Float (ShortBufferImpl b, int index, int limit, float value);
+
+  public FloatBuffer asFloatBuffer ()
+  {
+    FloatBufferImpl res = new FloatBufferImpl (backing_buffer);
+    res.limit ((limit () * 4) / 2);
+    return res;
+  }
+
+  ShortBufferImpl (double[] copy)
+  {
+    this.backing_buffer = copy != null ? nio_cast (copy) : null;
+  }
+  
+  private static native double nio_get_Double (ShortBufferImpl b, int index, int limit);
+  
+  private static native void nio_put_Double (ShortBufferImpl b, int index, int limit, double value);
+  
+  public DoubleBuffer asDoubleBuffer ()
+  {
+    DoubleBufferImpl res = new DoubleBufferImpl (backing_buffer);
+    res.limit ((limit () * 8) / 2);
+    return res;
+  }
 
   public boolean isReadOnly()
   {
@@ -102,9 +205,9 @@ public final class ShortBufferImpl extends ShortBuffer
 
   public ShortBuffer slice()
   {
-    ShortBufferImpl A = new ShortBufferImpl(this);
-    A.array_offset = position();
-    return A;
+    ShortBufferImpl a = new ShortBufferImpl(this);
+    a.array_offset = position();
+    return a;
   }
 
   public ShortBuffer duplicate()
