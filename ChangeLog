@@ -1,5 +1,10 @@
 2004-02-02  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/lang/Thread.java (setDaemon): Allow daemon state to be
+	changed for dead threads.
+
+2004-02-02  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/io/ObjectInputStream.java: Made all calls
 	to dumpElement[ln] conditional on dump flag. (readObject): Changed to
 	use cached info from ObjectStreamClass. (readClassDescriptor):

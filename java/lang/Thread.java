@@ -633,7 +633,7 @@ public class Thread implements Runnable
    */
   public final synchronized void setDaemon(boolean daemon)
   {
-    if (vmThread != null || group == null)
+    if (vmThread != null)
       throw new IllegalThreadStateException();
     checkAccess();
     this.daemon = daemon;
