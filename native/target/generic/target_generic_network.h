@@ -222,9 +222,11 @@ Systems    : all
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM
   #include <sys/types.h>
   #include <sys/socket.h>
+  #include <fcntl.h>
   #define TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM(socketDescriptor,result) \
     do { \
       socketDescriptor=socket(AF_INET,SOCK_STREAM,0); \
+      fcntl(socketDescriptor,F_SETFD,FD_CLOEXEC); \
       result=(socketDescriptor!=-1)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
     } while (0)
 #endif
@@ -244,9 +246,11 @@ Systems    : all
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_OPEN_DATAGRAM
   #include <sys/types.h>
   #include <sys/socket.h>
+  #include <fcntl.h>
   #define TARGET_NATIVE_NETWORK_SOCKET_OPEN_DATAGRAM(socketDescriptor,result) \
     do { \
       socketDescriptor=socket(AF_INET,SOCK_DGRAM,0); \
+      fcntl(socketDescriptor,F_SETFD,FD_CLOEXEC); \
       result=(socketDescriptor!=-1)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
     } while (0)
 #endif
