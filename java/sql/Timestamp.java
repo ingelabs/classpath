@@ -33,7 +33,7 @@ import java.text.SimpleDateFormat;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public class Timestamp extends java.util.Date
+public class Timestamp extends java.util.Date implements java.io.Serializable
 {
 
 /*

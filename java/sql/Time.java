@@ -29,7 +29,7 @@ import java.text.SimpleDateFormat;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public class Time extends java.util.Date
+public class Time extends java.util.Date implements java.io.Serializable
 {
 
 /*
