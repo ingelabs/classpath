@@ -151,6 +151,13 @@ public class UnicastRemoteCall implements RemoteCall
    */
   private class DummyObjectOutputStream implements ObjectOutput
   {
+    /**
+     * Non-private constructor to reduce bytecode emitted.
+     */
+    DummyObjectOutputStream()
+    {
+    }
+
     public void writeBoolean(boolean v) throws IOException
     {
       vec.addElement(new Boolean(v));
@@ -240,6 +247,13 @@ public class UnicastRemoteCall implements RemoteCall
    */
   private class DummyObjectInputStream implements ObjectInput
   {
+    /**
+     * Non-private constructor to reduce bytecode emitted.
+     */
+    DummyObjectInputStream()
+    {
+    }
+
     public boolean readBoolean() throws IOException
     {
       Object obj = vec.elementAt(ptr++);

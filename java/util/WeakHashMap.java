@@ -170,6 +170,13 @@ public class WeakHashMap extends AbstractMap implements Map
   private final class WeakEntrySet extends AbstractSet
   {
     /**
+     * Non-private constructor to reduce bytecode emitted.
+     */
+    WeakEntrySet()
+    {
+    }
+
+    /**
      * Returns the size of this set.
      *
      * @return the set size

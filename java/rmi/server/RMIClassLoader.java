@@ -49,6 +49,13 @@ public class RMIClassLoader
 
   static private class MyClassLoader extends ClassLoader
   {
+    /**
+     * Non-private constructor to reduce bytecode emitted.
+     */
+    MyClassLoader()
+    {
+    }
+
     Class defineClass(String name, byte[] data)
     {
       return defineClass(name, data, 0, data.length);
