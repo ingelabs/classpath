@@ -290,7 +290,7 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    *
    * @exception IOException If an error occurs
    *
-   * @see #writeInt(int)
+   * @see writeInt
    */
   public final void writeFloat(float f) throws IOException
   {
@@ -310,7 +310,7 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    *
    * @exception IOException If an error occurs
    *
-   * @see #writeLong(long)
+   * @see writeLong
    */
   public final void writeDouble(double d) throws IOException
   {

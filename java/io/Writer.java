@@ -137,7 +137,6 @@ public abstract class Writer
   }
 
   /**
-    * @exception IOException If an error occurs
    * This method writes <code>len</code> char from the specified array
    * <code>buf</code> starting at index <code>offset</code> into the array.
    * <p>

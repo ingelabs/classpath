@@ -1,5 +1,19 @@
 2003-03-23  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/DataOutputStream.java
+	(writeDouble): Fixed @see tag.
+	(writeFloat): Fixed @see tag.
+	* java/io/ObjectInputStream.java:
+	Reformated.
+	* java/io/ObjectOutputStream.java:
+	Reformated.
+	* java/io/ObjectStreamClass.java
+	(toString): Fixed @see tags, documentation reformated.
+	* java/io/Writer.java
+	(write): Fixed documentation.
+
+2003-03-23  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/BufferedOutputStream.java,
 	java/io/BufferedReader.java,
 	java/io/DataInput.java,
