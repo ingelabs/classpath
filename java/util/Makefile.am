@@ -29,6 +29,7 @@ GregorianCalendar.java \
 HashMap.java \
 HashSet.java \
 Hashtable.java \
+IdentityHashMap.java \
 Iterator.java \
 LinkedList.java \
 List.java \
