@@ -125,7 +125,7 @@ public class LinkedList extends AbstractSequentialList
    * entry in the list is obtained in constant time, which is a very desirable
    * property.
    * For speed and flexibility, range checking is not done in this method:
-   * Incorrect values will be returned if (n < 0) or (n >= size).
+   * Incorrect values will be returned if (n &lt; 0) or (n &gt;= size).
    *
    * @param n the number of the entry to get
    * @return the entry at position n
