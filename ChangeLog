@@ -1,3 +1,10 @@
+2003-06-08  Tom Tromey  <tromey@redhat.com>
+
+	* java/text/SimpleDateFormat.java (parse(String,ParsePosition)):
+	Limit number of characters in numeric field when required.
+	* java/text/DecimalFormat.java (parse(String,ParsePosition)):
+	Respect maximumIntegerDigits.
+
 2003-06-09  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/Robot.java
