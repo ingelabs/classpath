@@ -1,5 +1,10 @@
 2004-05-27  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/CharBuffer.java
+	(wrap): Fixed arguments, added javadocs.
+
+2004-05-27  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/Buffer.java
 	(limit): Fixed off by one error.
 
