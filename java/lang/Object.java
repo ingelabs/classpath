@@ -105,7 +105,7 @@ public class Object {
 	 **
 	 ** The Object implementation of finalize() does nothing.
 	 **/
-	protected void finalize() {
+	protected void finalize() throws Throwable {
 	}
 
 	/** This method may be called to create a new copy of the
