@@ -344,12 +344,8 @@ java/util/jar/Makefile
 java/util/zip/Makefile
 javax/Makefile
 native/Makefile
-native/gnu.java.awt.peer.gtk/Makefile
-native/java.io/Makefile
-native/java.lang.reflect/Makefile
-native/java.lang/Makefile
-native/java.net/Makefile
-native/java.util/Makefile
+native/jni/Makefile
+native/jni/awt/Makefile
 native/lib/Makefile
 native/vmi/Makefile
 resource/Makefile

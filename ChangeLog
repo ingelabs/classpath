@@ -1,3 +1,124 @@
+2001-01-23  Brian Jones <cbj@gnu.org>
+	* configure.in: generate Makefiles for proper native directories
+	* native/Makefile.am: modify SUBDIRS to build from jni directory
+	* native/jni/.cvsignore: new file
+	* native/jni/Makefile.am: new file; combines all previous Makefile.am's in 
+	a subdirectory
+	* native/jni/acos.c: renamed from native/java.lang/acos.c
+	* native/jni/asin.c: renamed from native/java.lang/asin.c
+	* native/jni/atan.c: renamed from native/java.lang/atan.c
+	* native/jni/atan2.c: renamed from native/java.lang/atan2.c
+	* native/jni/ceil.c: renamed from native/java.lang/ceil.c
+	* native/jni/cos.c: renamed from native/java.lang/cos.c
+	* native/jni/e_fmod.c: renamed from native/java.lang/e_fmod.c
+	* native/jni/exp.c: renamed from native/java.lang/exp.c
+	* native/jni/fdlibm.h: renamed from native/java.lang/fdlibm.h
+	* native/jni/floor.c: renamed from native/java.lang/floor.c
+	* native/jni/java_io_File.c: renamed from native/java.io/File.c
+	* native/jni/java_io_FileDescriptor.c: renamed from native/java.io/FileDescriptor.c
+	* native/jni/java_io_FileInputStream.c: renamed from native/java.io/FileInputStream.c
+	* native/jni/java_io_FileOutputStream.c: renamed from native/java.io/FileOutputStream.c
+	* native/jni/java_io_ObjectInputStream.c: renamed from native/java.io/ObjectInputStream.c
+	* native/jni/java_io_ObjectOutputStream.c: renamed from native/java.io/ObjectOutputStream.c
+	* native/jni/java_io_RandomAccessFile.c: renamed from native/java.io/RandomAccessFile.c
+	* native/jni/java_lang_Double.c: renamed from native/java.lang/Double.c
+	* native/jni/java_lang_Float.c: renamed from native/java.lang/Float.c
+	* native/jni/java_lang_Object.c: renamed from native/java.lang/Object.c
+	* native/jni/java_lang_System.c: renamed from native/java.lang/System.c
+	* native/jni/java_lang_reflect_Array.c: renamed from native/java.lang.reflect/Array.c
+	* native/jni/java_math_BigInteger.c: renamed from native/java.math/BigInteger.c
+	* native/jni/java_net_InetAddress.c: renamed from native/java.net/InetAddress.c
+	* native/jni/java_net_PlainDatagramSocketImpl.c: renamed from native/java.net/PlainDatagramSocketImpl.c
+	* native/jni/java_net_PlainSocketImpl.c: renamed from native/java.net/PlainSocketImpl.c
+	* native/jni/java_util_ResourceBundle.c: renamed from native/java.util/ResourceBundle.c
+	* native/jni/java_util_TimeZone.c: renamed from native/java.util/TimeZone.c
+	* native/jni/javaio.c: renamed from native/java.io/javaio.c
+	* native/jni/javaio.h: renamed from native/java.io/javaio.h
+	* native/jni/javalang.c: renamed from native/java.lang/javalang.c
+	* native/jni/javalang.h: renamed from native/java.lang/javalang.h
+	* native/jni/javanet.c: renamed from native/java.net/javanet.c
+	* native/jni/javanet.h: renamed from native/java.net/javanet.h
+	* native/jni/k_cos.c: renamed from native/java.lang/k_cos.c
+	* native/jni/k_rem_pio2.c: renamed from native/java.lang/k_rem_pio2.c
+	* native/jni/k_sin.c: renamed from native/java.lang/k_sin.c
+	* native/jni/k_tan.c: renamed from native/java.lang/k_tan.c
+	* native/jni/log.c: renamed from native/java.lang/log.c
+	* native/jni/pow.c: renamed from native/java.lang/pow.c
+	* native/jni/remainder.c: renamed from native/java.lang/remainder.c
+	* native/jni/rint.c: renamed from native/java.lang/rint.c
+	* native/jni/s_fabs.c: renamed from native/java.lang/s_fabs.c
+	* native/jni/sin.c: renamed from native/java.lang/sin.c
+	* native/jni/sqrt.c: renamed from native/java.lang/sqrt.c
+	* native/jni/tan.c: renamed from native/java.lang/tan.c
+	* native/jni/awt/.cvsignore: new file
+	* native/jni/awt/Makefile.am: renamed from native/gnu.java.awt.peer.gtk/Makefile.am
+	* native/jni/awt/gnu_java_awt_image_GdkPixbufDecoder.c: renamed
+	from native/gnu.java.awt.image/gdkpixbufdecoder.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GdkFontMetrics.c: renamed
+	from native/gnu.java.awt.peer.gtk/gdkfontmetrics.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GdkGraphics.c: renamed
+	from native/gnu.java.awt.peer.gtk/gdkgraphics.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkButtonPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkbuttonpeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkCanvasPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkcanvaspeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkcheckboxmenuitempeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkcheckboxpeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkChoicePeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkchoicepeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkClipboard.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkclipboard.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkComponentPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkcomponentpeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkEvents.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkevents.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkFileDialogPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkfiledialogpeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkImagePainter.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkimagepainter.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkLabelPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtklabelpeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkListPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtklistpeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkMainThread.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkmainthread.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkMenuBarPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkmenubarpeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkMenuItemPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkmenuitempeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkMenuPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkmenupeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkPanelPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkpanelpeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkPopupMenuPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkpopupmenupeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkScrollBarPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkscrollbarpeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkScrollPanePeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkscrollpanepeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkTextAreaPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtktextareapeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkTextComponentPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtktextcomponentpeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkTextFieldPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtktextfieldpeer.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkToolkit.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtktoolkit.c
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkWindowPeer.c: renamed
+	from native/gnu.java.awt.peer.gtk/gtkwindowpeer.c
+	* native/jni/awt/gthread-jni.c: renamed from 
+	native/gnu.java.awt.peer.gtk/gthread-jni.c
+	* native/jni/awt/gthread-jni.h: renamed from 
+	native/gnu.java.awt.peer.gtk/gthread-jni.h
+	* native/jni/awt/gtkpeer.h: renamed from 
+	native/gnu.java.awt.peer.gtk/gtkpeer.h
+	* native/jni/awt/native_state.c: renamed from 
+	native/gnu.java.awt.peer.gtk/native_state.c
+	* native/jni/awt/native_state.h: renamed from 
+	native/gnu.java.awt.peer.gtk/native_state.h
+	
 2001-01-19  Warren Levy  <warrenl@redhat.com>
 
 	* java/text/SimpleDateFormat.java (format): Compute hour for cases
