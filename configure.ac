@@ -120,8 +120,12 @@ if test "x${COMPILE_JNI}" = xyes; then
     JAPHAR_GREP_CFLAGS(-Wall, [ CFLAGS="$CFLAGS -Wall" ])
   fi
 
-  dnl Check for AWT related glib/gtk/libart_lgpl
+  dnl Check for AWT related gthread/gtk/libart_lgpl
   if test "x${COMPILE_GTK_PEER}" = xyes; then
+     PKG_CHECK_MODULES(GTHREAD, gthread-2.0 >= 2.2)
+     AC_SUBST(GTHREAD_CFLAGS)
+     AC_SUBST(GTHREAD_LIBS)
+
      PKG_CHECK_MODULES(GTK, gtk+-2.0 >= 2.2)
      AC_SUBST(GTK_CFLAGS)
      AC_SUBST(GTK_LIBS)

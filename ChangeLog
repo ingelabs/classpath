@@ -1,5 +1,12 @@
 2004-02-01  Mark Wielaard  <mark@klomp.org>
 
+	* configure.ac: Add PKG_CHECK_MODULES check for GTHREAD.
+	* native/jni/gtk-peer/Makefile.am (libgtkpeer_la_LDFLAGS): Remove
+	GLIB_LIBS, add GTHREAD_LIBS.
+	(INCLUDES): Add GTHREAD_CFLAGS.
+
+2004-02-01  Mark Wielaard  <mark@klomp.org>
+
 	* doc/hacking.texinfo (Programming Standards): Escape { and } with @
 	in examples.
 
