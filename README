@@ -1,10 +1,11 @@
 GNU Classpath, Essential Libraries for Java is the complete project
 name for a "clean room" implementation of the Java class libraries.
 
-It has become apparent through development that creating a classes.zip 
-which will work with the JVM shipped by Sun and ported to other 
-platforms like Linux will not be possible.  A file in this directory
-called NoJDK lists all the classes we know create problems with this.
+It has become apparent through development that creating a classes.zip
+which will work with the JVM shipped by Sun and ported to other
+platforms like GNU/Linux will not be possible.  A file in this
+directory called NoJDK lists all the classes we know create problems
+with this.
 
 Eventually, these essential libraries for Java will work with as many 
 free JVMs as possible, such as Japhar and Kaffe.
