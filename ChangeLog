@@ -1,5 +1,17 @@
 2000-06-29  Warren Levy  <warrenl@cygnus.com>
 
+	* java/beans/PropertyChangeEvent.java (oldVal): Renamed to oldValue.
+	(newVal): Renamed to newValue.
+	* java/beans/PropertyVetoException.java (changeEvent): Renamed to evt.
+	* java/beans/beancontext/BeanContextServiceRevokedEvent.java
+	(revokeNow): Renamed to invalidateRefs.
+	* java/io/ObjectOutputStream.java (writeObject): Use component type
+	when writing arrays.
+	Fixed typo.
+	* java/io/WriteAbortedException.java (message): Made transient.
+
+2000-06-29  Warren Levy  <warrenl@cygnus.com>
+
 	* java/math/BigDecimal.java (add): Reimplemented.
 	(subtract): Corrected method name from 'substract'.  Reimplemented.
 	* java/sql/Connection.java (TRANSACTION_SERIALIZABLE): Corrected
