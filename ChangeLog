@@ -1,3 +1,8 @@
+2004-11-14  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/ToolTipManager.java (mouseMoved): Set currentComponent
+	when not yet set.
+
 2004-11-13  Robert Schuster <thebohemian@gmx.net>
 
 	Complete 1.4 support
