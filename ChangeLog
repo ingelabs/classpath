@@ -1,4 +1,7 @@
-2004-12-01  Jeroen Frijters  <jeroen@frijters.net>
+2004-12-01  Chris Burdess  <dog@gnu.org>
+
+	* gnu/java/net/protocol/http/HTTPURLConnection.java:
+	HTTPURLConnection now returns Lists as getHeaderFields() values.
 
 	* java/io/ObjectOutputStream.java
 	(writeObject, callWriteMethod): Replaced reflection with accessing

@@ -49,6 +49,7 @@ import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Date;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -377,9 +378,16 @@ public class HTTPURLConnection
             return null;
           }
       }
+    Map headers = response.getHeaders();
     Map ret = new LinkedHashMap();
-    ret.put(null, getStatusLine(response));
-    ret.putAll(response.getHeaders());
+    ret.put("", Collections.singletonList(getStatusLine(response)));
+    for (Iterator i = headers.entrySet().iterator(); i.hasNext(); )
+      {
+        Map.Entry entry = (Map.Entry) i.next();
+        String key = (String) entry.getKey();
+        String value = (String) entry.getValue();
+        ret.put(key, Collections.singletonList(value));
+      }
     return ret;
   }
 
