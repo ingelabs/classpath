@@ -1,5 +1,10 @@
 2004-04-28  Ingo Proetel  <proetel@aicas.com>
 
+	* java/awt/image/ComponentSampleModel.java (setDataSamples):Do not reset
+	scanline stride.
+
+2004-04-28  Ingo Proetel  <proetel@aicas.com>
+
 	* java/awt/ColorPaintContext.java (<init>): Added ColorModel to signature.
 	(getColorModel): Return the actual color model.
 	(getRaster): Implemented.
