@@ -37,151 +37,308 @@ exception statement from your version. */
 
 package java.nio;
 
+import gnu.java.nio.ByteBufferImpl;
+
+/**
+ * @since 1.4
+ */
 public abstract class ByteBuffer extends Buffer
 {
   private ByteOrder endian = ByteOrder.BIG_ENDIAN;
   
+  /**
+   * Allocates a new direct byte buffer.
+   */ 
+  public static ByteBuffer allocateDirect (int capacity)
   protected byte [] backing_buffer;
   
-  public static ByteBuffer allocateDirect(int capacity)
   {
     ByteBuffer b = new gnu.java.nio. ByteBufferImpl(capacity, 0, capacity);
     return b;
   }
-  
-  public static ByteBuffer allocate(int capacity)
+
+  /**
+   * Allocates a new byte buffer.
+   */
+  public static ByteBuffer allocate (int capacity)
   {
-    ByteBuffer b = new gnu.java.nio. ByteBufferImpl(capacity, 0, capacity);
-    return b;
+    return new ByteBufferImpl (capacity, 0, capacity);
   }
-  
-  final public static ByteBuffer wrap(byte[] array, int offset, int length)
+ 
+  /**
+   * Wraps a byte array into a buffer.
+   * 
+   * @exception IndexOutOfBoundsException If the preconditions on the offset
+   * and length parameters do not hold
+   */
+  final public static ByteBuffer wrap (byte[] array, int offset, int length)
   {
-    gnu.java.nio.ByteBufferImpl b = new gnu.java.nio. ByteBufferImpl(array, offset, length);
-    return b;
+    return new ByteBufferImpl (array, offset, length);
   }
-  
-  final public static ByteBuffer wrap(String a)
+ 
+  /**
+   * Wraps a byte array into a buffer.
+   */
+  final public static ByteBuffer wrap (byte[] array)
   {
-    return wrap(a.getBytes(), 0, a.length());
+    return wrap (array, 0, array.length);
   }
-  
-  final public static ByteBuffer wrap(byte[] array)
+
+  /**
+   * This method transfers bytes from this buffer into
+   * the given destination array.
+   *
+   * @param dst The destination array
+   * @param offset The offset within the array of the first byte to be written;
+   * must be non-negative and no larger than dst.length.
+   * @param length The maximum number of bytes to be written to the given array;
+   * must be non-negative and no larger than dst.length - offset.
+   *
+   * @exception BufferUnderflowException If there are fewer than length bytes
+   * remaining in this buffer.
+   * @exception IndexOutOfBoundsException - If the preconditions on the offset
+   * and length parameters do not hold.
+   */
+  final public ByteBuffer get (byte[] dst, int offset, int length)
   {
-    return wrap(array, 0, array.length);
-  }
-  
-  final public ByteBuffer get(byte[] dst, int offset, int length)
-  {
+    if ((offset < 0) ||
+        (offset > dst.length) ||
+        (length < 0) ||
+        (length > (dst.length - offset)))
+      throw new IndexOutOfBoundsException ();
+
     for (int i = offset; i < offset + length; i++)
       {
-        dst[i] = get();
+        dst [i] = get();
+      }
+
+    return this;
+  }
+
+  /**
+   * This method transfers bytes from this buffer into the given
+   * destination array.
+   *
+   * @param dst The byte array to write into.
+   *
+   * @exception BufferUnderflowException If there are fewer than dst.length
+   * bytes remaining in this buffer.
+   */
+  final public ByteBuffer get (byte[] dst)
+  {
+    return get (dst, 0, dst.length);
+  }
+ 
+  /**
+   * Writes the content of src into the buffer.
+   *
+   * @param src The source data.
+   *
+   * @exception BufferOverflowException If there is insufficient space in this
+   * buffer for the remaining bytes in the source buffer.
+   * @exception IllegalArgumentException If the source buffer is this buffer.
+   * @exception ReadOnlyBufferException If this buffer is read only.
+   */
+  final public ByteBuffer put (ByteBuffer src)
+  {
+    if (src == this)
+      throw new IllegalArgumentException ();
+
+    while (src.hasRemaining ())
+      {
+        put (src.get ());
       }
     
     return this;
   }
-  
-  final public ByteBuffer get(byte[] dst)
+
+  /**
+   * Writes the content of the the array src into the buffer.
+   *
+   * @param src The array to copy into the buffer.
+   * @param offset The offset within the array of the first byte to be read;
+   * must be non-negative and no larger than src.length.
+   * @param length The number of bytes to be read from the given array;
+   * must be non-negative and no larger than src.length - offset.
+   *
+   * @exception BufferOverflowException If there is insufficient space in this
+   * buffer for the remaining bytes in the source buffer.
+   * @exception IndexOutOfBoundsException If the preconditions on the offset
+   * and length parameters do not hold.
+   * @exception ReadOnlyBufferException If this buffer is read only.
+   */
+  final public ByteBuffer put (byte[] src, int offset, int length)
   {
-    return get(dst, 0, dst.length);
-  }
-  
-  final public ByteBuffer put(ByteBuffer src)
-  {
-    while (src.hasRemaining())
-      put(src.get());
-  
-    return this;
-  }
-  
-  final public ByteBuffer put(byte[] src, int offset, int length)
-  {
+    if ((offset < 0) ||
+        (offset > src.length) ||
+        (length < 0) ||
+        (length > src.length - offset))
+      throw new IndexOutOfBoundsException ();
+
     for (int i = offset; i < offset + length; i++)
-      put(src[i]);
+      {
+        put (src [i]);
+      }
 
     return this;
   }
 
-  public final ByteBuffer put(byte[] src)
+  /**
+   * Writes the content of the the array src into the buffer.
+   *
+   * @param src The array to copy into the buffer.
+   *
+   * @exception BufferOverflowException If there is insufficient space in this
+   * buffer for the remaining bytes in the source buffer.
+   * @exception ReadOnlyBufferException If this buffer is read only.
+   */
+  public final ByteBuffer put (byte[] src)
   {
-    return put(src, 0, src.length);
+    return put (src, 0, src.length);
   }
 
+  /**
+   * Tells whether or not this buffer is backed by an accessible byte array.
+   */
   public final boolean hasArray()
   {
     return (backing_buffer != null);
   }
 
+  /**
+   * Returns the byte array that backs this buffer.
+   *
+   * @exception ReadOnlyBufferException If this buffer is backed by an array
+   * but is read-only.
+   * @exception UnsupportedOperationException If this buffer is not backed
+   * by an accessible array.
+   */
   public final byte[] array()
   {
+    if (backing_buffer == null)
+      throw new UnsupportedOperationException ();
+
+    if (isReadOnly ())
+      throw new ReadOnlyBufferException ();
+
     return backing_buffer;
   }
-  
+
+  /**
+   * Returns the offset within this buffer's backing array of the first element
+   * of the buffer  
+   *
+   * @exception ReadOnlyBufferException If this buffer is backed by an array
+   * but is read-only.
+   * @exception UnsupportedOperationException If this buffer is not backed
+   * by an accessible array.
+   */
   public final int arrayOffset()
   {
+    if (backing_buffer == null)
+      throw new UnsupportedOperationException ();
+
+    if (isReadOnly ())
+      throw new ReadOnlyBufferException ();
+
+    // FIXME: Return correct value
     return 0;
   }
   
+  /**
+   * Returns the current hash code of this buffer.
+   */
   public int hashCode()
   {
+    // FIXME: Check what SUN calcs here
     return super.hashCode();
   }
-  
-  public boolean equals(Object obj)
+
+  /**
+   * Tells whether or not this buffer is equal to another object.
+   */
+  public boolean equals (Object obj)
   {
-    if (obj instanceof ByteBuffer)
+    if (obj != null &&
+        obj instanceof ByteBuffer)
       {
-        return compareTo(obj) == 0;
+        return compareTo (obj) == 0;
       }
-  
+    
     return false;
   }
-  
-  public int compareTo(Object ob)
+ 
+  /**
+   * Compares this buffer to another object.
+   *
+   * @exception ClassCastException If the argument is not a byte buffer
+   */
+  public int compareTo (Object obj)
   {
-    ByteBuffer a = (ByteBuffer) ob;
+    ByteBuffer a = (ByteBuffer) obj;
+
     if (a.remaining() != remaining())
-      return 1;
+      {
+        return 1;
+      }
+   
     if (! hasArray() ||
         ! a.hasArray())
       {
         return 1;
       }
+   
     int r = remaining();
-    int i1 = pos;
-    int i2 = a.pos;
-    for (int i=0;i<r;i++)
+    int i1 = position ();
+    int i2 = a.position ();
+   
+    for (int i = 0; i < r; i++)
       {
-        int t = (int) (get(i1)- a.get(i2));
+        int t = (int) (get (i1) - a.get (i2));
+   
         if (t != 0)
           {
             return (int) t;
           }
       }
+  
     return 0;
   }
-  
+
+  /**
+   * Retrieves this buffer's byte order.
+   */  
   public final ByteOrder order()
   {
     return endian;
   }
   
-  public final ByteBuffer order(ByteOrder bo)
+  /**
+   * Modifies this buffer's byte order.
+   */
+  public final ByteBuffer order (ByteOrder endian)
   {
-    endian = bo;
+    this.endian = endian;
     return this;
   }
   
-  public abstract byte get();
+  /**
+   * Reads the byte at this buffer's current position,
+   * and then increments the position.
+   *
+   * @exception BufferUnderflowException If the buffer's current position
+   * is not smaller than its limit.
+   */
+  public abstract byte get ();
   
-  public abstract java.nio. ByteBuffer put(byte b);
+  public abstract ByteBuffer put (byte b);
   
-  public abstract byte get(int index);
+  public abstract byte get (int index);
   
-  public abstract java.nio. ByteBuffer put(int index, byte b);
+  public abstract ByteBuffer put (int index, byte b);
   
   public abstract ByteBuffer compact();
-  
+
   public abstract boolean isDirect();
   
   public abstract ByteBuffer slice();

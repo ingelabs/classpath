@@ -36,26 +36,26 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 package java.nio;
+
+import gnu.java.nio.FloatBufferImpl;
+
 public abstract class FloatBuffer extends Buffer
 {
     private ByteOrder endian = ByteOrder.BIG_ENDIAN;
    protected float [] backing_buffer;
     public static FloatBuffer allocateDirect(int capacity)
     {
-        FloatBuffer b = new gnu.java.nio. FloatBufferImpl(capacity, 0, capacity);
-        return b;
+      return new FloatBufferImpl (capacity, 0, capacity);
     }
     public static FloatBuffer allocate(int capacity)
     {
-        FloatBuffer b = new gnu.java.nio. FloatBufferImpl(capacity, 0, capacity);
-        return b;
+      return new FloatBufferImpl (capacity, 0, capacity);
     }
    final public static FloatBuffer wrap(float[] array,
                               int offset,
                               int length)
     {
-        gnu.java.nio.FloatBufferImpl b = new gnu.java.nio. FloatBufferImpl(array, offset, length);
-        return b;
+        return new FloatBufferImpl(array, offset, length);
     }
   final public static FloatBuffer wrap(String a)
     {
@@ -138,8 +138,8 @@ public final float[] array()
             return 1;
           }
         int r = remaining();
-        int i1 = pos;
-        int i2 = a.pos;
+        int i1 = position ();
+        int i2 = a.position ();
         for (int i=0;i<r;i++)
             {
                 int t = (int) (get(i1)- a.get(i2));

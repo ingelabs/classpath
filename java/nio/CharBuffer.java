@@ -37,137 +37,144 @@ exception statement from your version. */
 
 package java.nio;
 
+import gnu.java.nio.CharBufferImpl;
+
+/**
+ * @since 1.4
+ */
 public abstract class CharBuffer extends Buffer
 {
   private ByteOrder endian = ByteOrder.BIG_ENDIAN;
+
   protected char [] backing_buffer;
 
-  public static CharBuffer allocateDirect(int capacity)
+  public static CharBuffer allocateDirect (int capacity)
   {
-    CharBuffer b = new gnu.java.nio. CharBufferImpl(capacity, 0, capacity);
-    return b;
+    return new CharBufferImpl (capacity, 0, capacity);
   }
   
   public static CharBuffer allocate(int capacity)
   {
-    CharBuffer b = new gnu.java.nio. CharBufferImpl(capacity, 0, capacity);
-    return b;
+    return new CharBufferImpl (capacity, 0, capacity);
   }
   
-  final public static CharBuffer wrap(char[] array, int offset, int length)
+  final public static CharBuffer wrap (char[] array, int offset, int length)
   {
-    gnu.java.nio.CharBufferImpl b = new gnu.java.nio. CharBufferImpl(array, offset, length);
-    return b;
+    return new CharBufferImpl (array, offset, length);
   }
 
-  final public static CharBuffer wrap(String a)
+  final public static CharBuffer wrap (char[] array)
   {
-    int len = a.length();
-    char[] buffer = new char[len];
-    for (int i=0;i<len;i++)
-      {
-        buffer[i] = (char) a.charAt(i);
-      }
-    return wrap(buffer, 0, len);
-  }
-
-  final public static CharBuffer wrap(CharSequence cs)
-  {
-    return null;
+    return wrap (array, 0, array.length);
   }
   
-  final public static CharBuffer wrap(char[] array)
+  final public static CharBuffer wrap (CharSequence cs, int offset, int length)
   {
-    return wrap(array, 0, array.length);
+    return wrap (cs.toString ().toCharArray (), 0, length);
   }
   
-  final public CharBuffer get(char[] dst, int offset, int length)
+  final public static CharBuffer wrap (CharSequence cs)
+  {
+    return wrap (cs, 0, cs.length ());
+  }
+  
+  final public CharBuffer get (char[] dst, int offset, int length)
   {
     for (int i = offset; i < offset + length; i++)
-      {
-          dst[i] = get();
-      }
+      dst [i] = get ();
+    
     return this;
   }
 
-  final public CharBuffer get(char[] dst)
+  final public CharBuffer get (char[] dst)
   {
-    return get(dst, 0, dst.length);
+    return get (dst, 0, dst.length);
   }
   
-  final public CharBuffer put(CharBuffer src)
+  final public CharBuffer put (CharBuffer src)
   {
-    while (src.hasRemaining())
-      put(src.get());
+    while (src.hasRemaining ())
+      put (src.get ());
+
     return this;
   }
-  
-  final public CharBuffer put(char[] src, int offset, int length)
+ 
+  final public CharBuffer put (char[] src, int offset, int length)
   {
     for (int i = offset; i < offset + length; i++)
-      put(src[i]);
+      put (src[i]);
+    
     return this;
   }
 
   public final CharBuffer put(String src)
   {
-    return put(src.toCharArray (), 0, src.length ());
+    return put (src.toCharArray (), 0, src.length ());
   }
 
-  public final CharBuffer put(char[] src)
+  /**
+   * This method transfers the entire content of the given
+   * source character array into this buffer.
+   *
+   * @param src The source character array to transfer.
+   *
+   * @exception BufferOverflowException If there is insufficient space
+   * in this buffer.
+   * @exception ReadOnlyBufferException If this buffer is read-only.
+   */
+  public final CharBuffer put (char[] src)
   {
-    return put(src, 0, src.length);
+    return put (src, 0, src.length);
   }
 
-  public final boolean hasArray()
+  public final boolean hasArray ()
   {
-    return (backing_buffer != null);
+    return backing_buffer != null;
   }
 
-  public final char[] array()
+  public final char[] array ()
   {
     return backing_buffer;
   }
   
-  public final int arrayOffset()
+  public final int arrayOffset ()
   {
     return 0;
   }
   
-  public int hashCode()
+  public int hashCode ()
   {
-    return super.hashCode();
+    return super.hashCode ();
   }
   
-  public boolean equals(Object obj)
+  public boolean equals (Object obj)
   {
     if (obj instanceof CharBuffer)
-      {
-        return compareTo(obj) == 0;
-      }
+      return compareTo (obj) == 0;
+    
     return false;
   }
-  
-  public int compareTo(Object ob)
+ 
+  public int compareTo(Object obj)
   {
-    CharBuffer a = (CharBuffer) ob;
-    if (a.remaining() != remaining())
+    CharBuffer a = (CharBuffer) obj;
+    
+    if (a.remaining () != remaining ())
       return 1;
-    if (! hasArray() ||
-        ! a.hasArray())
+    
+    if (! hasArray () || ! a.hasArray ())
+      return 1;
+    
+    int r = remaining ();
+    int i1 = position ();
+    int i2 = a.position ();
+    
+    for (int i = 0; i < r; i++)
       {
-        return 1;
-      }
-    int r = remaining();
-    int i1 = pos;
-    int i2 = a.pos;
-    for (int i=0;i<r;i++)
-      {
-        int t = (int) (get(i1)- a.get(i2));
+        int t = (int) (get (i1)- a.get (i2));
+	
         if (t != 0)
-          {
-            return (int) t;
-          }
+          return (int) t;
       }
     return 0;
   }

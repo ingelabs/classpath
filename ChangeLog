@@ -1,5 +1,20 @@
 2002-11-16  Michael Koch <konqueror@gmx.de>
 
+	* java/nio/ByteBuffer.java, java/nio/CharBuffer.java:
+	Reindented.
+	* java/nio/DoubleBuffer.java
+	(compareTo): use Buffer.position() instead of Buffer.pos.
+	* java/nio/FloatBuffer.java
+	(compareTo): use Buffer.position() instead of Buffer.pos.
+	* java/nio/IntBuffer.java
+	(compareTo): use Buffer.position() instead of Buffer.pos.
+	* java/nio/LongBuffer.java
+	(compareTo): use Buffer.position() instead of Buffer.pos.
+	* java/nio/ShortBuffer.java
+	(compareTo): use Buffer.position() instead of Buffer.pos.
+	
+2002-11-16  Michael Koch <konqueror@gmx.de>
+
 	* gnu/java/nio/DatagramChannelImpl.java,
 	gnu/java/nio/FileChannelImpl.java,
 	gnu/java/nio/PipeImpl.java,

@@ -138,8 +138,8 @@ public final double[] array()
             return 1;
           }
         int r = remaining();
-        int i1 = pos;
-        int i2 = a.pos;
+        int i1 = position ();
+        int i2 = a.position ();
         for (int i=0;i<r;i++)
             {
                 int t = (int) (get(i1)- a.get(i2));
