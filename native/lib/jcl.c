@@ -1,10 +1,27 @@
 #include <jcl.h>
 #include <malloc.h>
 
+static char errstr[4098]; // this way the memory is pre-allocated, so that we do not have to worry if we are out of memory.
+
 JNIEXPORT void JNICALL JCL_ThrowException(JNIEnv * env, char * className, char * errMsg) {
-	jclass excClass = (*env)->FindClass(env, className);
+	jclass excClass;
 	if((*env)->ExceptionOccurred(env)) {
-		return;
+		(*env)->ExceptionClear(env);
+	}
+	excClass = (*env)->FindClass(env, className);
+	if(excClass == NULL) {
+		jclass errExcClass;
+		errExcClass = (*env)->FindClass(env, "java/lang/ClassNotFoundException");
+		if(errExcClass == NULL) {
+			errExcClass = (*env)->FindClass(env, "java/lang/InternalError");
+			if(errExcClass == NULL) {
+				sprintf(errstr,"JCL: Utterly failed to throw exeption %s with message %s.",className,errMsg);
+				fprintf(stderr, errstr);
+				return;
+			}
+		}
+		sprintf(errstr,"JCL: Failed to throw exception %s with message %s: could not find exception class.", className, errMsg);
+		(*env)->ThrowNew(env, errExcClass, errstr);
 	}
 	(*env)->ThrowNew(env, excClass, errMsg);
 }
