@@ -1,5 +1,10 @@
 2002-09-28  C. Brian Jones <cbj@gnu.org>
 
+	* doc/home.wml: add information on API testing with japitools and
+	jdiff.sh, maybe we can get this comparison automated eventually and
+	link it as well.
+
+2002-09-28  C. Brian Jones <cbj@gnu.org>
 	* doc/hacking.texinfo: Small updates to correct directory tree 
 	structure, added a note about serialVersionUID and verbatim copying
 	of Eric Blake's words on the mailing list.

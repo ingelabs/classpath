@@ -108,8 +108,25 @@ The test framework for GNU Classpath is called
 are instructions within the Mauve website on how to download and use Mauve.
 Writing Mauve tests is the most important thing GNU Classpath developers
 could do for the project at this time.
-</en>
 </p>
+<p>
+Java API compatibility testing can be performed using 
+<link url="http://rainbow.netreach.net/~sballard/japi/"
+name="japitools">.  Japitools already does
+full API comparisons but it doesn't have the capability to extract
+APIs from the documentation - instead, the "japize" tool uses the
+jode.bytecode library to identify the public members of a given set of
+packages from the binary jars or zips.  But japitools does separate the
+API-inspection phase ("japize") from the compatibility-testing phase
+("japicompat") so it would be easy to offer an alternative to japize
+that worked on API documentation.
+</p>
+<p>
+Another method of API compatibility testing is to use <link
+url="http://majestix.ucnet.uoc.gr/~jgeorgal/pub/jdiff.sh"
+name="jdiff.sh">, at least until this functionality is merged into
+japitools.
+</en>
 
 <H4>Virtual Machines</H4> 
 <en>
