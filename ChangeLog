@@ -1,5 +1,14 @@
 2004-02-10  David Jee  <djee@redhat.com>
 
+	* java/awt/GridBagLayout.java
+	(GridBagLayout): New private field, internalcomptable.
+	(lookupInternalConstraints): New method.
+	(ArrangeGrid): Use components' MINSIZE. Use internalcomptable.
+	(GetLayoutInfo): Reimplement.
+	(calcCellSizes): Ignore rows/columns with size 0.
+
+2004-02-10  David Jee  <djee@redhat.com>
+
 	* gnu/java/awt/peer/gtk/GtkButtonPeer.java
 	(gtkSetLabel): New native method definition.
 	(setLabel): Use gtkSetLabel.
