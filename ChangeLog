@@ -1,3 +1,12 @@
+2004-10-08  Paul Jenner  <psj.home@ntlworld.com>
+
+	* javax/swing/JTree.java
+	(isRootVisible): Fixed typo in method name.
+	* javax/swing/JScrollBar.java
+	(setValues): Likewise.
+	* javax/swing/JScrollPane.java
+	(createScrollListener): Call JScrollBar.setValues.
+
 2004-10-07  Jerry Quinn  <jlquinn@optonline.net>
 
 	* java/awt/image/BufferedImageFilter.java: Implement.
