@@ -1,4 +1,4 @@
-GNU Classpath README - Last updated: May 2, 2004
+GNU Classpath README - Last updated: May 21, 2004
 
 GNU Classpath, Essential Libraries for Java is a project to create
 a complete "clean room" implementation of the Java class libraries 
@@ -67,8 +67,9 @@ CVS Commit, Bugs and Patches List: commit-classpath@gnu.org
       only with a body and subject of "unsubscribe".  This is a
       smartlist managed mailing list.
 
-Anonymous CVSROOT: :pserver:anoncvs@savannah.gnu.org:/cvsroot/classpath 
-  --> First do "cvs login".  Hit <Return> when prompted for a password
+Anonymous CVS:
+  --> export CVS_RSH="ssh"
+  --> cvs -z3 -d:ext:anoncvs@savannah.gnu.org:/cvsroot/classpath co classpath
   --> More detailed instructions available on the Savannah project website.
       http://savannah.gnu.org/projects/classpath/
 
