@@ -106,19 +106,11 @@ JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
 		case '\t':
 		case '\r':
 		case '\n':
-		    myptr++;
-		    break;
 		case 'f':
 		case 'F':
 		case 'd':
 		case 'D':
-#if defined(WITH_JAPHAR)
-		    (*env)->ReleaseStringUTFChars(env, s, (const jbyte*)nptr);
-#else
-		    (*env)->ReleaseStringUTFChars(env, s, nptr);
-#endif		    
-		    _javalang_ThrowException(env, "java/lang/NumberFormatException", "cannot use suffixes 'f', 'F', 'd', or 'D' in string for conversion");
-		    return 0.0;
+		    myptr++;
 		    break;
 		default:
 #if defined(WITH_JAPHAR)
