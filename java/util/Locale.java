@@ -1,5 +1,5 @@
-/* java.util.Locale
-   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
+/* Locale.java -- i18n locales
+   Copyright (C) 1998, 1999, 2001, 2002 Free Software Foundation, Inc.
  
 This file is part of GNU Classpath.
  
@@ -72,63 +72,66 @@ package java.util;
  */
 public final class Locale implements java.io.Serializable, Cloneable
 {
+  // NOTE: These static finals must be initialized with the trusted
+  // constructor to avoid bootstrap cycles with String.toUpperCase.
+
   /**
    * Locale which represents the English language.
    */
-  public static final Locale ENGLISH = new Locale("en", "");
+  public static final Locale ENGLISH = new Locale("en", "", true);
   /**
    * Locale which represents the English language.
    */
-  public static final Locale FRENCH = new Locale("fr", "");
+  public static final Locale FRENCH = new Locale("fr", "", true);
   /**
    * Locale which represents the German language.
    */
-  public static final Locale GERMAN = new Locale("de", "");
+  public static final Locale GERMAN = new Locale("de", "", true);
   /**
    * Locale which represents the Italian language.
    */
-  public static final Locale ITALIAN = new Locale("it", "");
+  public static final Locale ITALIAN = new Locale("it", "", true);
   /**
    * Locale which represents the Japanese language.
    */
-  public static final Locale JAPANESE = new Locale("ja", "");
+  public static final Locale JAPANESE = new Locale("ja", "", true);
   /**
    * Locale which represents the Korean language.
    */
-  public static final Locale KOREAN = new Locale("ko", "");
+  public static final Locale KOREAN = new Locale("ko", "", true);
   /**
    * Locale which represents the Chinese language.
    */
-  public static final Locale CHINESE = new Locale("zh", "");
+  public static final Locale CHINESE = new Locale("zh", "", true);
   /**
    * Locale which represents the Chinese language as used in China.
    */
-  public static final Locale SIMPLIFIED_CHINESE = new Locale("zh", "CN");
+  public static final Locale SIMPLIFIED_CHINESE = new Locale("zh", "CN", true);
   /**
    * Locale which represents the Chinese language as used in Taiwan.
    * Same as TAIWAN Locale.
    */
-  public static final Locale TRADITIONAL_CHINESE = new Locale("zh", "TW");
+  public static final Locale TRADITIONAL_CHINESE = new Locale("zh", "TW", true);
   /**
    * Locale which represents France.
    */
-  public static final Locale FRANCE = new Locale("fr", "FR");
+  public static final Locale FRANCE = new Locale("fr", "FR", true);
   /**
    * Locale which represents Germany.
    */
-  public static final Locale GERMANY = new Locale("de", "DE");
+  public static final Locale GERMANY = new Locale("de", "DE", true);
   /**
    * Locale which represents Italy.
    */
-  public static final Locale ITALY = new Locale("it", "IT");
+  public static final Locale ITALY = new Locale("it", "IT", true);
   /**
    * Locale which represents Japan.
    */
-  public static final Locale JAPAN = new Locale("ja", "JP");
+  public static final Locale JAPAN = new Locale("ja", "JP", true);
   /**
    * Locale which represents Korea.
    */
-  public static final Locale KOREA = new Locale("ko", "KR");
+  public static final Locale KOREA = new Locale("ko", "KR", true);
   /**
    * Locale which represents China.
    * Same as SIMPLIFIED_CHINESE Locale.
@@ -147,24 +150,24 @@ public final class Locale implements java.io.Serializable, Cloneable
   /**
    * Locale which represents the United Kingdom.
    */
-  public static final Locale UK = new Locale("en", "GB");
+  public static final Locale UK = new Locale("en", "GB", true);
   /**
    * Locale which represents the United States.
    */
-  public static final Locale US = new Locale("en", "US");
+  public static final Locale US = new Locale("en", "US", true);
   /**
    * Locale which represents the English speaking portion of Canada.
    */
-  public static final Locale CANADA = new Locale("en", "CA");
+  public static final Locale CANADA = new Locale("en", "CA", true);
   /**
    * Locale which represents the French speaking portion of Canada.
    */
-  public static final Locale CANADA_FRENCH = new Locale("fr", "CA");
+  public static final Locale CANADA_FRENCH = new Locale("fr", "CA", true);
 
   /**
    * We are compatible to sun's Locale.
    */
-  static final long serialVersionUID = 9149081749638150636L;
+  private static final long serialVersionUID = 9149081749638150636L;
 
   /**
    * The language code, as returned by getLanguage().
@@ -227,10 +230,26 @@ public final class Locale implements java.io.Serializable, Cloneable
     this(language, country, "");
   }
 
+  /**
+   * Creates a new locale with trusted versions of the strings. This is
+   * necessary to avoid bootstrap cycles with String.toUpperCase.
+   *
+   * @param language lowercase two-letter ISO-639 A2 language code
+   * @param country uppercase two-letter ISO-3166 A2 contry code
+   * @param ignored just for the type signature
+   *
+   */
+  private Locale(String language, String country, boolean ignored)
+  {
+    this.language = language;
+    this.country = country;
+    variant = "";
+    hashcode = language.hashCode() ^ country.hashCode();
+  }
+
   private static Locale defaultLocale =
     new Locale(System.getProperty("user.language", ""),
-	       System.getProperty("user.region", ""),
-	       System.getProperty("user.variant", ""));
+	       System.getProperty("user.region", ""), true);
 
   /**
    * Returns the default Locale.  The default locale is generally

@@ -1,4 +1,9 @@
 2002-03-21  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/Locale.java (<clinit>): Attempt to resolve bootstrap
+	cycle with String.toUpperCase.
+
+2002-03-21  Eric Blake  <ebb9@email.byu.edu>
 	    Patrik Reali  <reali@acm.org>
 
 	* java/lang/String.java (replace, toLowerCase, toUpperCase): Fix
@@ -20,7 +25,7 @@
 	* java/awt/Rectangle.java: Update to 1.4.
 	* java/awt/geom/AffineTransform.java: Remove unused nested class.
 	* java/awt/geom/Dimension2D.java: Update to 1.4.
-	* java/awt/geom/FlatteningpathIterator.java: New file (stubbed).
+	* java/awt/geom/FlatteningPathIterator.java: New file (stubbed).
 	* java/awt/geom/Line2D.java: Update to 1.4.
 	* java/awt/geom/Makefile.am (EXTRA_DIST) Added
 	FlatteningPathIterator.java.
