@@ -53,8 +53,8 @@ import java.io.IOException;
  * always allowed.
  *
  * @author           Jon Zeppieri
- * @version          $Revision: 1.3 $
- * @modified         $Id: TreeMap.java,v 1.3 1999-06-25 13:17:03 jochen Exp $
+ * @version          $Revision: 1.4 $
+ * @modified         $Id: TreeMap.java,v 1.4 2000-03-03 11:24:12 jochen Exp $
  */ 
 public class TreeMap extends AbstractMap 
   implements SortedMap, Cloneable, Serializable
@@ -166,14 +166,12 @@ public class TreeMap extends AbstractMap
     try
     {
       oClone = (TreeMap) super.clone();
-      oClone._oRoot = _oRoot;
-      oClone._oComparator = _oComparator;
-      oClone._iSize = _iSize;
+      oClone._oRoot = (RBNode) _oRoot.clone();
       oClone._iModCount = 0;
     }
     catch(CloneNotSupportedException e)
     {
-      oClone = null;
+      throw new InternalError(e.toString());
     }
 
     return oClone;
@@ -696,10 +694,10 @@ public class TreeMap extends AbstractMap
       oNode._iColor = RED;
       while ((oNode != oTree._oRoot) && (oNode._oParent._iColor == RED))
       {
-        if (oNode._oParent == oNode._oParent._oParent._oRight)
+        if (oNode._oParent != oNode._oParent._oParent._oRight)
         {
           oUncle = oNode._oParent._oParent._oRight;
-          if (oUncle._iColor == RED)
+          if (oUncle != NIL && oUncle._iColor == RED)
           {
             oNode._oParent._iColor = BLACK;
             oUncle._iColor = BLACK;
@@ -721,7 +719,7 @@ public class TreeMap extends AbstractMap
         else
         {
           oUncle = oNode._oParent._oParent._oLeft;
-          if (oUncle._iColor == RED)
+          if (oUncle != NIL && oUncle._iColor == RED)
           {
             oNode._oParent._iColor = BLACK;
             oUncle._iColor = BLACK;
@@ -757,7 +755,8 @@ public class TreeMap extends AbstractMap
                ? oNode : treeSuccessor(oNode));
     oChild = (oSplice._oLeft != NIL) ? oSplice._oLeft : oSplice._oRight;
 
-    oChild._oParent = oSplice._oParent;
+    if (oChild != NIL)
+      oChild._oParent = oSplice._oParent;
 
     if (oSplice._oParent == NIL)
       oTree._oRoot = oChild;
@@ -773,7 +772,10 @@ public class TreeMap extends AbstractMap
       oNode.value = oSplice.value;
     }
 
-    if (oSplice._iColor == BLACK)
+    /* FIXME: I think we may need a fixup even if oChild is NIL;
+     * rbDeleteFixup won't work in that case, though.
+     */
+    if (oChild != NIL && oSplice._iColor == BLACK)
       rbDeleteFixup(oTree, oChild);
 
     return oResult;
@@ -854,7 +856,7 @@ public class TreeMap extends AbstractMap
     oNode._iColor = BLACK;
   }
 
-  private static class RBNode extends BasicMapEntry implements Map.Entry
+  private static class RBNode extends BasicMapEntry implements Map.Entry, Cloneable
   {
     int _iColor;
     RBNode _oLeft;
@@ -869,6 +871,23 @@ public class TreeMap extends AbstractMap
       _oParent = NIL;
       _iColor = BLACK;
     }
+
+    public Object clone()
+      {
+	try
+	  {
+	    RBNode node = (RBNode) super.clone();
+	    node._oLeft = (RBNode) _oLeft.clone();
+	    node._oLeft._oParent = node;
+	    node._oRight = (RBNode) _oRight.clone();
+	    node._oRight._oParent = node;
+	    return node;
+	  }
+	catch(CloneNotSupportedException e)
+	  {
+	    throw new InternalError(e.toString());
+	  }
+      }
   }
 
   private class TreeMapSet extends AbstractSet implements Set

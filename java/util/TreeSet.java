@@ -35,8 +35,8 @@ import java.io.ObjectOutputStream;
  * TreeSet is a part of the JDK1.2 Collections API.
  *
  * @author      Jon Zeppieri
- * @version     $Revision: 1.3 $
- * @modified    $Id: TreeSet.java,v 1.3 1999-06-25 13:17:04 jochen Exp $
+ * @version     $Revision: 1.4 $
+ * @modified    $Id: TreeSet.java,v 1.4 2000-03-03 11:24:14 jochen Exp $
  */
 
 public class TreeSet extends AbstractSet
@@ -96,9 +96,8 @@ public class TreeSet extends AbstractSet
    */
   public TreeSet(SortedSet oSortedSet)
   {
-    this(oSortedSet.comparator());
-
-    TreeMap oMap = (TreeMap) _oMap;
+    TreeMap oMap = new TreeMap(oSortedSet.comparator());
+    _oMap = oMap;
     int i = 0;
     Map.Entry[] arEntries = new Map.Entry[oSortedSet.size()];
     Iterator itEntries = oSortedSet.iterator();
@@ -150,7 +149,7 @@ public class TreeSet extends AbstractSet
     Iterator itElements = oCollection.iterator();
 
     while (itElements.hasNext())
-      boResult = (boResult || add(itElements.next()));
+      boResult |= add(itElements.next());
 
     return boResult;
   }
@@ -171,11 +170,11 @@ public class TreeSet extends AbstractSet
     try
     {
       oClone = (TreeSet) super.clone();
-      oClone._oMap = _oMap;
+      oClone._oMap = new TreeMap(_oMap);
     }
     catch(CloneNotSupportedException e)
     {
-      oClone = null;
+      throw new InternalError(e.toString());
     }
     return oClone;
   }
