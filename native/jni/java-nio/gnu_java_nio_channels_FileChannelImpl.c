@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -87,26 +87,13 @@ exception statement from your version. */
 #define CONVERT_SSIZE_T_TO_JINT(x) ((jint)(x & 0xFFFFFFFF))
 #define CONVERT_JINT_TO_SSIZE_T(x) (x)
 
-static jint get_native_fd(JNIEnv *env, jobject obj)
+/* cached fieldID of gnu.java.nio.channels.FileChannelImpl.fd */
+static jfieldID native_fd_fieldID;
+
+static jint
+get_native_fd (JNIEnv *env, jobject obj)
 {
-  jclass clazz_fc;
-  jfieldID field_fd;
-
-  clazz_fc = (*env)->FindClass (env, "gnu/java/nio/channels/FileChannelImpl");
-  if (!clazz_fc)
-    {
-      JCL_ThrowException(env, IO_EXCEPTION, "Internal error");
-      return -1;
-    }
-
-  field_fd = (*env)->GetFieldID (env, clazz_fc, "fd", "I");
-  if (!field_fd)							
-    {									
-      JCL_ThrowException(env, IO_EXCEPTION, "Internal error");		
-      return -1;							
-    }									
-
-  return (*env)->GetIntField (env, obj, field_fd);
+  return (*env)->GetIntField (env, obj, native_fd_fieldID);
 }
 
 /*
@@ -116,9 +103,27 @@ static jint get_native_fd(JNIEnv *env, jobject obj)
 JNIEXPORT void JNICALL
 Java_gnu_java_nio_channels_FileChannelImpl_init (JNIEnv *env, jclass clazz)
 {
+  jclass clazz_fc;
   jfieldID field;
   jmethodID constructor;
   jobject obj;
+
+  /* Initialize native_fd_fieldID so we only compute it once! */
+  clazz_fc = (*env)->FindClass (env, "gnu/java/nio/channels/FileChannelImpl");
+  if (!clazz_fc)
+    {
+      JCL_ThrowException(env, IO_EXCEPTION, "Internal error");
+      return;
+    }
+
+  field = (*env)->GetFieldID (env, clazz_fc, "fd", "I");
+  if (!field)
+    {
+      JCL_ThrowException(env, IO_EXCEPTION, "Internal error");		
+      return;
+    }
+
+  native_fd_fieldID = field;
 
   constructor = (*env)->GetMethodID (env, clazz, "<init>", "(II)V");
   if (! constructor)
@@ -226,7 +231,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_implCloseChannel (JNIEnv *env, jobjec
   int result;
 
   native_fd = get_native_fd(env, obj);
-  
+
   TARGET_NATIVE_FILE_CLOSE(native_fd,result);
   if (result != TARGET_NATIVE_OK)
     {
@@ -247,7 +252,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_available (JNIEnv *env, jobject obj)
   int   result;
 
   native_fd = get_native_fd(env, obj);
-  
+
   TARGET_NATIVE_FILE_AVAILABLE(native_fd,bytes_available,result);
   if (result != TARGET_NATIVE_OK)
     {
@@ -330,13 +335,13 @@ Java_gnu_java_nio_channels_FileChannelImpl_seek (JNIEnv *env, jobject obj, jlong
 
   /* FIXME: What do we do if offset > the max value of off_t on this 32bit
    * system?  How do we detect that and what do we do? */
-  if (CONVERT_OFF_T_TO_JLONG(native_offset) != offset)  
+  if (CONVERT_OFF_T_TO_JLONG(native_offset) != offset)
     {
       JCL_ThrowException(env, IO_EXCEPTION,
                          "Cannot represent position correctly on this system");
     }
 #endif /* 0 */
-    
+
   result = TARGET_NATIVE_ERROR;
   new_offset = TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1;
   TARGET_NATIVE_FILE_SEEK_BEGIN(native_fd, offset, new_offset, result);
@@ -377,7 +382,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_implTruncate (JNIEnv *env, jobject ob
 
   /* FIXME: What do we do if len > the max value of off_t on this 32bit
    * system?  How do we detect that and what do we do? */
-  if (CONVERT_OFF_T_TO_JLONG(native_len) != len)  
+  if (CONVERT_OFF_T_TO_JLONG(native_len) != len)
     {
       JCL_ThrowException(env, IO_EXCEPTION,
                          "Cannot represent position correctly on this system");
@@ -494,7 +499,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_read__ (JNIEnv *env, jobject obj)
   int     native_fd;
   char    data;
   ssize_t bytes_read;
-  int     result; 
+  int     result;
 
   native_fd = get_native_fd(env, obj);
 
@@ -530,7 +535,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_read___3BII (JNIEnv *env, jobject obj
   jbyte   *bufptr;
   ssize_t bytes_read;
   ssize_t n;
-  int     result; 
+  int     result;
 
   native_fd = get_native_fd(env, obj);
 
@@ -554,7 +559,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_read___3BII (JNIEnv *env, jobject obj
           (*env)->ReleaseByteArrayElements(env, buffer, bufptr, 0);
           if (bytes_read == 0)
             return -1; /* Signal end of file to Java */
-          else 
+          else
             return CONVERT_SSIZE_T_TO_JINT(bytes_read);
         }
       if ((result != TARGET_NATIVE_OK)
@@ -583,7 +588,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_write__I (JNIEnv *env, jobject obj, j
   int     native_fd;
   char    native_data;
   ssize_t bytes_written;
-  int     result; 
+  int     result;
 
   native_fd = get_native_fd(env, obj);
   native_data = (char)(CONVERT_JINT_TO_INT(b) & 0xFF);
@@ -612,10 +617,10 @@ Java_gnu_java_nio_channels_FileChannelImpl_write___3BII (JNIEnv *env, jobject ob
   jbyte   *bufptr;
   ssize_t bytes_written;
   ssize_t n;
-  int     result; 
+  int     result;
 
   native_fd = get_native_fd(env, obj);
-    
+
   bufptr = (*env)->GetByteArrayElements(env, buffer, 0);
   if (!bufptr)
     {
