@@ -29,7 +29,10 @@
 
 <package java.beans>
   <status <shalom>>
-    Package complete.
+    1.1-complete.  1.2 support waiting on java.security and java.lang.Package.
+    Introspection is about 1 1/2 - 2 times slower than Sun's JDK because it is
+    a bit too strict in how it figures things out.  It basically does two loops
+    where it is possible to do one.
   </status>
 </package>
 
@@ -45,14 +48,27 @@
 </package>
 
 <package java.lang>
+  <status <shalom> "VM Interface">
+     1.1-complete.  A little shuffling will commence now that the first
+     release is out.  Look for 1.2 support as soon as we have Security.
+  </status>
+
   <status "<rao>, <cbj>, <shalom>, <arenn>">
-    Mostly Java 1.2 complete.
+    Mostly 1.2-complete in most non-VM-specific areas, including
+    Character and String.
+  </status>
+</package>
+
+<package java.lang.ref>
+  <status "No Owner">
+    Work has not commenced on this--awaiting Japhar 1.2-readiness.
   </status>
 </package>
 
 <package java.lang.reflect>
   <status <shalom>>
-    Full Java 1.2 implementation complete.
+    Full Java 1.1 implementation complete.  1.2 awaits Security, since the bulk
+    bulk of the work is AccessibleObject and ReflectPermission.
   </status>
 </package>
 

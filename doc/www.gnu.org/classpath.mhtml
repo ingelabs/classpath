@@ -68,6 +68,7 @@ appropriate link below.
   <package-item java.beans>
   <package-item java.io>
   <package-item java.lang>
+  <package-item java.lang.ref>
   <package-item java.lang.reflect>
   <package-item java.math>
   <package-item java.net>
