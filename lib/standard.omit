@@ -6,3 +6,4 @@
 ^../java/io/FilePermission.java$
 ^../java/io/SerializablePermission.java$
 ^../gnu/java/security/DefaultPermissionCollection.java$
+^../java/lang/RuntimePermission.java$
