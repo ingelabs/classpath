@@ -775,7 +775,7 @@ _javanet_recvfrom(JNIEnv *env, jobject this, jarray buf, int offset, int len,
   for (;;)
     {
       if (addr == NULL)
-        rc = recvfrom(fd, p + offset, len, 0, 0, 0);
+        rc = recv(fd, p + offset, len, 0);
       else
         {
           memset(&si, 0, sizeof(struct sockaddr_in));
