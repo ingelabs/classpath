@@ -35,9 +35,12 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+/* do not move; needed here because of some macro definitions */
+#include "jamaica_config.h"
+
+#include <stdlib.h>
 #include <stdio.h>
 #include <jcl.h>
-#include <malloc.h>
 
 static char errstr[4098]; // this way the memory is pre-allocated, so that we do not have to worry if we are out of memory.
 
@@ -91,13 +94,13 @@ JNIEXPORT void JNICALL JCL_free(JNIEnv * env, void * p) {
 	}
 }
 
-JNIEXPORT char * JNICALL JCL_jstring_to_cstring(JNIEnv * env, jstring s) {
-	char* cstr;
+JNIEXPORT const char * JNICALL JCL_jstring_to_cstring(JNIEnv * env, jstring s) {
+	const char* cstr;
 	if(s == NULL) {
 		JCL_ThrowException(env, "java/lang/NullPointerException","Null string");
 		return NULL;
 	}
-	cstr = (char*)(*env)->GetStringUTFChars(env, s, NULL);
+	cstr = (const char*)(*env)->GetStringUTFChars(env, s, NULL);
 	if(cstr == NULL) {
 		JCL_ThrowException(env, "java/lang/InternalError", "GetStringUTFChars() failed.");
 		return NULL;
@@ -105,7 +108,7 @@ JNIEXPORT char * JNICALL JCL_jstring_to_cstring(JNIEnv * env, jstring s) {
 	return cstr;
 }
 
-JNIEXPORT void JNICALL JCL_free_cstring(JNIEnv * env, jstring s, char * cstr) {
+JNIEXPORT void JNICALL JCL_free_cstring(JNIEnv * env, jstring s, const char * cstr) {
 	(*env)->ReleaseStringUTFChars(env, s, cstr);
 }
 
