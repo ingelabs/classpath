@@ -131,6 +131,14 @@ public final class FileChannelImpl extends FileChannel
     
   protected native void implCloseChannel() throws IOException;
 
+  /**
+   * Makes sure the Channel is properly closed.
+   */
+  protected void finalize() throws IOException
+  {
+    this.close();
+  }
+
   public int read (ByteBuffer dst) throws IOException
   {
     int result;
