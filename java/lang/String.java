@@ -1415,8 +1415,10 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public char[] toCharArray()
   {
-    if (count == value.length)
-      return (char[]) value.clone();
+    // XXX ORP 1.0.9 crashes on (char[]) clone() during bootstrap, so we
+    // omit this optimization for now.
+    // if (count == value.length)
+    //   return (char[]) value.clone();
     char[] copy = new char[count];
     System.arraycopy(value, offset, copy, 0, count);
     return copy;

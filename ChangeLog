@@ -1,3 +1,8 @@
+2002-03-24  Fred Gray  <fegray@uiuc.edu>
+
+	* java/lang/String.java (toCharArray): Remove optimization that
+	crashes ORP 1.0.9.
+
 2002-03-24  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/lang/InheritableThreadLocal.java (newChildThread): Fix case
