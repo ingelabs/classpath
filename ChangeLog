@@ -1,3 +1,8 @@
+2001-04-18  Jochen Hoenicke  <jochen@gnu.org>
+
+	* java/util/Random.java (next): Fixed the calculation to make it 
+	fully Sun compatible.
+
 2001-04-15  Mark Wielaard  <mark@klomp.org>
 
 	* javax/accessibility/AccessibleText.java (getAfterIndex, getAtIndex,

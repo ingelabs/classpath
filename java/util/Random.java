@@ -131,7 +131,7 @@ public class Random implements java.io.Serializable
    * The implementation for java.util.Random is:
    * <pre>
    * synchronized protected int next(int bits) {
-   *     this.seed = (seed * 0x5DEECE66DL) & ((1L << 48) - 1);
+   *     seed = (seed * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1);
    *     return (int) (seed >>> (48 - bits));
    * }
    * </pre>
@@ -144,7 +144,7 @@ public class Random implements java.io.Serializable
     /*{ require { 1 <= bits && bits <=32 :: 
        "bits "+bits+" not in range [1..32]" } } */
   {
-    this.seed = (seed * 0x5DEECE66DL) & ((1L << 48) - 1);
+    seed = (seed * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1);
     return (int) (seed >>> (48 - bits));
   }
 
