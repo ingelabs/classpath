@@ -26,57 +26,17 @@ import java.awt.*;
 public class GtkTextComponentPeer extends GtkComponentPeer
   implements TextComponentPeer
 {
-  Object editable;
-
-  native int gtkEditableGetPosition (Object edit);
-  native void gtkEditableSetPosition (Object edit, int pos);
-  native int gtkEditableGetSelectionStart (Object edit);
-  native int gtkEditableGetSelectionEnd (Object edit);
-  native void gtkEditableSelectRegion (Object edit, int start, int end);
-  native void gtkEditableSetEditable (Object edit, int state);
-
   GtkTextComponentPeer (TextComponent tc)
-    {
-      super (tc);
-      editable=this;
-    }
+  {
+    super (tc);
+  }
   
-  public int getCaretPosition ()
-    {
-      return gtkEditableGetPosition (editable);
-    }
-  
-  public void setCaretPosition (int pos)
-    {
-      gtkEditableSetPosition (editable, pos);
-    }
-  
-  public int getSelectionStart ()
-    {
-      return gtkEditableGetSelectionStart (editable);
-    }
-  
-  public int getSelectionEnd ()
-    {
-      return gtkEditableGetSelectionEnd (editable);
-    }
-
-  public String getText ()
-    {
-      return null;
-    }
-
-  public void select (int start, int end)
-    {
-      gtkEditableSelectRegion (editable, start, end);
-    }
-
-  public void setEditable (boolean state)
-    {
-      gtkEditableSetEditable (editable, state? 1 : 0);
-    }
-
-  public void setText (String text)
-    {
-    }
+  public native int getCaretPosition ();
+  public native void setCaretPosition (int pos);
+  public native int getSelectionStart ();
+  public native int getSelectionEnd ();
+  public native String getText ();
+  public native void select (int start, int end);
+  public native void setEditable (boolean state);
+  public native void setText (String text);
 }

@@ -22,10 +22,12 @@
 #include "gtkpeer.h"
 #include "GtkTextAreaPeer.h"
 
+#define TEXT_FROM_SW(obj) (GTK_TEXT(GTK_SCROLLED_WINDOW (obj)->container.child))
+
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextNew
-  (JNIEnv *env, jobject obj, jobject parent_obj, jobject jedit, 
-   jstring contents, jint hscroll, jint vscroll)
+Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_create
+  (JNIEnv *env, jobject obj, jobject parent_obj, 
+   jstring contents, jint scroll)
 {
   GtkWidget *text, *sw;
   const char *str;
@@ -46,11 +48,18 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextNew
   sw = gtk_scrolled_window_new (NULL, NULL);
   gtk_container_add (GTK_CONTAINER (sw), text);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), 
-				  hscroll? GTK_POLICY_ALWAYS : 
-				  GTK_POLICY_NEVER,
-				  vscroll? GTK_POLICY_ALWAYS : 
-				  GTK_POLICY_NEVER);
 
+     /* horizontal scrollbar */
+     (scroll == AWT_TEXTAREA_SCROLLBARS_BOTH
+      || scroll == AWT_TEXTAREA_SCROLLBARS_HORIZONTAL_ONLY) ? 
+       GTK_POLICY_ALWAYS : GTK_POLICY_NEVER,
+
+     /* vertical scrollbar */
+     (scroll == AWT_TEXTAREA_SCROLLBARS_BOTH
+      || scroll == AWT_TEXTAREA_SCROLLBARS_VERTICAL_ONLY) ? 
+       GTK_POLICY_ALWAYS : GTK_POLICY_NEVER);
+
+  set_visible (text, TRUE);
   set_parent (sw, GTK_CONTAINER (parent));
 
   gdk_threads_leave ();
@@ -58,30 +67,27 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextNew
   (*env)->ReleaseStringUTFChars (env, contents, str);
 
   NSA_SET_PTR (env, obj, sw);
-  NSA_SET_PTR (env, jedit, text);
 }
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextGetSize
-  (JNIEnv *env, jobject obj, jobject jedit, jint rows, jint cols, 
-   jintArray jdims)
+  (JNIEnv *env, jobject obj, jint rows, jint cols, jintArray jdims)
 {
-  void *ptr1, *ptr2;
+  void *ptr;
   jint *dims;
   GtkWidget *text;
   GtkScrolledWindow *sw;
   GtkRequisition myreq;
 
-  ptr1 = NSA_GET_PTR (env, jedit);
-  ptr2 = NSA_GET_PTR (env, obj);
+  ptr = NSA_GET_PTR (env, obj);
 
   dims = (*env)->GetIntArrayElements (env, jdims, 0);  
   dims[0] = dims[1] = 0;
 
   gdk_threads_enter ();
 
-  text = GTK_WIDGET (ptr1);
-  sw = GTK_SCROLLED_WINDOW (ptr2);
+  text = GTK_WIDGET (TEXT_FROM_SW (ptr));
+  sw = GTK_SCROLLED_WINDOW (ptr);
 
   gtk_signal_emit_by_name (GTK_OBJECT (GTK_SCROLLED_WINDOW(sw)->hscrollbar), 
 			   "size_request", &myreq);
@@ -112,95 +118,40 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextGetSize
 }
 
 
-
-JNIEXPORT jstring JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextGetText
-  (JNIEnv *env, jobject obj, jobject jedit)
-{
-  void *ptr;
-  GtkEditable *text;
-  char *contents;
-  jstring jcontents;
-
-  ptr = NSA_GET_PTR (env, jedit);
-  
-  gdk_threads_enter ();
-  
-  text = GTK_EDITABLE (ptr);
-  contents = gtk_editable_get_chars (text, 0,
-				     gtk_text_get_length (GTK_TEXT(text)));
-
-  gdk_threads_leave ();
-
-  jcontents = (*env)->NewStringUTF (env, contents);
-  g_free (contents);
-
-  return jcontents;
-}
-
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextSetText
-  (JNIEnv *env, jobject obj, jobject jedit, jstring contents)
-{
-  void *ptr;
-  GtkEditable *text;
-  const char *str;
-  int pos=0;
-
-  ptr = NSA_GET_PTR (env, jedit);
-
-  str = (*env)->GetStringUTFChars (env, contents, NULL);
-  
-  gdk_threads_enter ();
-  
-  text = GTK_EDITABLE (ptr);
-  gtk_text_freeze (GTK_TEXT (text));
-
-  gtk_editable_delete_text (text, 0,
-			    gtk_text_get_length (GTK_TEXT (text)));
-  gtk_editable_insert_text (text, str,
-			    strlen (str), &pos);
-  gtk_text_thaw (GTK_TEXT (text));
-
-  gdk_threads_leave ();
-
-  (*env)->ReleaseStringUTFChars (env, contents, str);
-}
-
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextInsert
-  (JNIEnv *env, jobject obj, jobject jedit, jstring contents, jint position)
+Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_insert
+  (JNIEnv *env, jobject obj, jstring contents, jint position)
 {
   void *ptr;
   const char *str;
   int pos=position;
 
-  ptr = NSA_GET_PTR (env, jedit);
+  ptr = NSA_GET_PTR (env, obj);
   str = (*env)->GetStringUTFChars (env, contents, NULL);
   
   gdk_threads_enter ();
-  gtk_editable_insert_text (GTK_EDITABLE (ptr), str, strlen (str), &pos);
+  gtk_editable_insert_text (GTK_EDITABLE (TEXT_FROM_SW (ptr)), 
+			    str, strlen (str), &pos);
   gdk_threads_leave ();
 
   (*env)->ReleaseStringUTFChars (env, contents, str);
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextReplace
-  (JNIEnv *env, jobject obj, jobject jedit, jstring contents, jint start, 
-   jint end)
+Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_replaceRange
+  (JNIEnv *env, jobject obj, jstring contents, jint start, jint end)
 {
   void *ptr;
   GtkEditable *text;
   const char *str;
   int pos = start;
 
-  ptr = NSA_GET_PTR (env, jedit);
+  ptr = NSA_GET_PTR (env, obj);
   str = (*env)->GetStringUTFChars (env, contents, NULL);
   
   gdk_threads_enter ();
   
-  text = GTK_EDITABLE (ptr);
+  text = GTK_EDITABLE (TEXT_FROM_SW (ptr));
   gtk_text_freeze (GTK_TEXT (text));
   gtk_editable_delete_text (text, start, end);
   gtk_editable_insert_text (text, str, strlen (str), &pos);

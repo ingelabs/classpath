@@ -26,45 +26,23 @@ import java.awt.*;
 public class GtkTextAreaPeer extends GtkTextComponentPeer
   implements TextAreaPeer
 {
-
-  native void gtkTextNew (Object parent, Object edit, String text, 
-			  int hscroll, int vscroll);
-  native void gtkTextGetSize (Object edit, int rows, int cols, int dims[]);
-  native String gtkTextGetText (Object edit);
-  native void gtkTextSetText (Object edit, String text);
-  native void gtkTextInsert (Object edit, String text, int pos);
-  native void gtkTextReplace (Object edit, String text, int start, int end);
+  native void create (Object parent, String text, int scroll);
+  native void gtkTextGetSize (int rows, int cols, int dims[]);
 
   public GtkTextAreaPeer (TextArea ta, ComponentPeer cp)
   {
     super (ta);
-    String text = ta.getText();
-    int hscroll=0;
-    int vscroll=0;
-
-    switch (ta.getScrollbarVisibility())
-      {
-      case TextArea.SCROLLBARS_BOTH:
-	hscroll=vscroll=1;
-	break;
-      case TextArea.SCROLLBARS_HORIZONTAL_ONLY:
-	hscroll=1;
-	break;
-      case TextArea.SCROLLBARS_VERTICAL_ONLY:
-	vscroll=1;
-	break;
-      }
-
-    editable = new Object();
-
-    gtkTextNew (cp, editable, text, hscroll, vscroll);
+    create (cp, ta.getText (), ta.getScrollbarVisibility ());
   }
+
+  public native void insert (String str, int pos);
+  public native void replaceRange (String str, int start, int end);
 
   public Dimension getMinimumSize (int rows, int cols)
   {
     int dims[] = new int[2];
 
-    gtkTextGetSize (editable, rows, cols, dims);
+    gtkTextGetSize (rows, cols, dims);
 
     System.out.println ("TAP: getMinimumSize " + cols + " = " + dims[0] + 
 			" x " + dims[1]);
@@ -76,38 +54,15 @@ public class GtkTextAreaPeer extends GtkTextComponentPeer
   {
     int dims[] = new int[2];
 
-    gtkTextGetSize (editable, rows, cols, dims);
+    gtkTextGetSize (rows, cols, dims);
 
     System.out.println ("TAP: getPreferredSize " + cols + " = " + dims[0] + 
 			" x " + dims[1]);
       
     return (new Dimension (dims[0], dims[1]));
   }
-  
-  public String getText ()
-  {
-    System.out.println ("TAP: getText");
-    return (gtkTextGetText(editable));
-  }
-
-  public void setText (String text)
-  {
-    System.out.println ("TAP: setText");
-    gtkTextSetText (editable, text);
-  }
-
-  public void insert (String str, int pos)
-  {
-    gtkTextInsert (editable, str, pos);
-  }
-
-  public void replaceRange (String str, int start, int end)
-  {
-    gtkTextReplace (editable, str, start, end);
-  }
 
   /* Deprecated */
-
   public Dimension minimumSize (int rows, int cols)
   {
     return getMinimumSize (rows, cols);

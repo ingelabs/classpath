@@ -23,7 +23,7 @@
 #include "GtkTextFieldPeer.h"
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryNew
+Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_create
   (JNIEnv *env, jobject obj, jobject parent_obj, jstring text)
 {
   GtkWidget *entry;
@@ -44,11 +44,10 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryNew
   connect_awt_hook (env, obj, entry, 2, 
 		    entry->window, GTK_ENTRY (entry)->text_area);
 
-  gdk_threads_leave ();
-
-  (*env)->ReleaseStringUTFChars (env, text, str);
-
   NSA_SET_PTR (env, obj, entry);
+
+  gdk_threads_leave ();
+  (*env)->ReleaseStringUTFChars (env, text, str);
 }
 
 
@@ -82,7 +81,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryGetSize
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntrySetEchoChar
+Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_setEchoChar
   (JNIEnv *env, jobject obj, jchar c)
 {
   void *ptr;
@@ -103,47 +102,4 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntrySetEchoChar
     gtk_entry_set_visibility (entry, TRUE);
 
   gdk_threads_leave ();
-}
-
-JNIEXPORT jstring JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryGetText
-  (JNIEnv *env, jobject obj)
-{
-  void *ptr;
-  GtkEntry *entry;
-  gchar *text;
-  jstring jtext;
-
-  ptr = NSA_GET_PTR (env, obj);
-
-  gdk_threads_enter ();
-  
-  entry = GTK_ENTRY (ptr);
-  text = gtk_entry_get_text (entry);
-  jtext = (*env)->NewStringUTF (env, text);
-
-  gdk_threads_leave ();
-
-  return jtext;
-}
-
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntrySetText
-  (JNIEnv *env, jobject obj, jstring text)
-{
-  void *ptr;
-  GtkEntry *entry;
-  const char *str;
-
-  ptr = NSA_GET_PTR (env, obj);
-  str = (*env)->GetStringUTFChars (env, text, NULL);
-  
-  gdk_threads_enter ();
-  
-  entry = GTK_ENTRY (ptr);
-  gtk_entry_set_text (entry, str);
-  
-  gdk_threads_leave ();
-
-  (*env)->ReleaseStringUTFChars (env, text, str);
 }

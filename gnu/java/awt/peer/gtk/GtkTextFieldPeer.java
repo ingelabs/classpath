@@ -27,18 +27,13 @@ public class GtkTextFieldPeer extends GtkTextComponentPeer
   implements TextFieldPeer
 {
 
-  native void gtkEntryNew (ComponentPeer parent, String text);
+  native void create (ComponentPeer parent, String text);
   native void gtkEntryGetSize (int cols, int dims[]);
-  native void gtkEntrySetEchoChar (char c);
-  native String gtkEntryGetText ();
-  native void gtkEntrySetText (String text);
 
   public GtkTextFieldPeer (TextField tf, ComponentPeer cp)
   {
     super (tf);
-    String text = tf.getText();
-      
-    gtkEntryNew (cp, text);
+    create (cp, tf.getText ());
   }
 
   public Dimension getMinimumSize (int cols)
@@ -65,22 +60,7 @@ public class GtkTextFieldPeer extends GtkTextComponentPeer
     return (new Dimension (dims[0], dims[1]));
   }
   
-  public void setEchoChar (char c)
-  {
-    gtkEntrySetEchoChar (c);
-  }
-
-  public String getText ()
-  {
-    System.out.println ("TFP: getText");
-    return (gtkEntryGetText());
-  }
-
-  public void setText (String text)
-  {
-    System.out.println ("TFP: setText");
-    gtkEntrySetText (text);
-  }
+  public native void setEchoChar (char c);
 
   /* Deprecated */
 
