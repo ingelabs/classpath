@@ -1,5 +1,10 @@
 2003-03-09  Aaron M. Renn (arenn@urbanophile.com)
 
+	* native/jni/java-io/FileDescriptor.c
+	(nativeOpen) Apply code from patch #1239 specifying mode bits in open()
+
+2003-03-09  Aaron M. Renn (arenn@urbanophile.com)
+
 	* java/io/LineNumberReader.java
 	Merge with gcj by replacing all methods with the versions from
 	gcj with the exception of skip() This file is in essence

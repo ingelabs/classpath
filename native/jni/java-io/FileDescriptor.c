@@ -127,19 +127,24 @@ Java_java_io_FileDescriptor_nativeOpen(JNIEnv *env, jobject obj, jstring name,
   if (!cname || !cmode)
     return(-1); /* Exception will already have been thrown */
 
-  // FIXME: Should we manually set permission mode?
+  // FIXME: Do we have the right permission mode?
   if (!strcmp(cmode,"r"))
     rc = open(cname, O_RDONLY);
   else if (!strcmp(cmode,"w"))
-    rc = open(cname, O_WRONLY | O_CREAT);
+    rc = open(cname, O_WRONLY | O_CREAT,
+              S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
   else if (!strcmp(cmode,"a"))
-    rc = open(cname, O_WRONLY | O_CREAT | O_APPEND);
+    rc = open(cname, O_WRONLY | O_CREAT | O_APPEND,
+              S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
   else if (!strcmp(cmode, "rw"))
-    rc = open(cname, O_RDWR | O_CREAT);
+    rc = open(cname, O_RDWR | O_CREAT, 
+              S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
   else if (!strcmp(cmode, "rwa"))
-    rc = open(cname, O_RDWR | O_CREAT | O_APPEND);
+    rc = open(cname, O_RDWR | O_CREAT | O_APPEND,
+              S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
   else if (!strcmp(cmode, "rws") || !strcmp(cmode,"rwd"))
-    rc = open(cname, O_RDWR | O_CREAT | O_SYNC);
+    rc = open(cname, O_RDWR | O_CREAT | O_SYNC,
+              S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
   else
     rc = -1; /* Invalid mode */
 
