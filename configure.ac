@@ -14,8 +14,8 @@ dnl We will not track/change lib version until we reach version 1.0
 dnl at which time we'll have to be more anal about such things
 AC_SUBST(LIBVERSION, "0:0:0")
 
-AC_PREREQ(2.53)
-AM_INIT_AUTOMAKE(1.6.0)
+AC_PREREQ(2.59)
+AM_INIT_AUTOMAKE(1.7.0)
 AC_CONFIG_HEADERS([include/config.h])
 AC_PREFIX_DEFAULT(/usr/local/classpath)
 

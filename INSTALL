@@ -16,8 +16,8 @@ Suggested Software
         if changes are made that require rebuilding configure, Makefile.in,
         aclocal.m4, or config.h.in.
 
-        - GNU autoconf 2.53
-        - GNU automake 1.6
+        - GNU autoconf 2.59
+        - GNU automake 1.7
         - GNU libtool 1.4.2
 
 	For building the Java bytecode (.class files), one of these
@@ -27,8 +27,8 @@ Suggested Software
 	included in any of Sun's JDKs will not work, as it will not
 	compile java.lang.Object.
 
-        - GCJ 3.2+ (part of the GNU GCC package).  Note that GCC
-	  3.3 (from CVS) is currently unreleased.  
+        - GCJ 3.3+ (part of the GNU GCC package).  Note that GCC
+	  3.4 (from CVS) is currently unreleased.  
         - IBM jikes 1.18+.  
         - The kjc compiler is supported with configure but we have
           been unable to successfully compile with it.

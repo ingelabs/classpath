@@ -1,3 +1,9 @@
+2004-01-27  Michael Koch  <konqueror@gmx.de>
+
+	* HACKING, INSTALL, configure.ac, doc/hacking.texinfo:
+	Updated to depend on autoconf 2.59 and automake 1.7.
+	Also depend on GCJ 3.3 in all files.
+
 2004-01-27  David Jee  <djee@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c

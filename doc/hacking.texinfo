@@ -274,9 +274,9 @@ familiarize yourself with the following tools:
 @item
 CVS 1.11
 @item
-automake 1.6+
+automake 1.7+
 @item
-autoconf 2.53+
+autoconf 2.59+
 @item
 libtool 1.4.2+
 @item

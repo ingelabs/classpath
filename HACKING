@@ -11,10 +11,9 @@ have the following installed:
 For any build environment involving native libraries, these new versions of 
 autoconf, automake, and libtool are required.
 
-        - GNU autoconf 2.53
-	(2.59 also works)
-        - GNU automake 1.6
-	(1.7 and 1.8 also works)
+        - GNU autoconf 2.59
+        - GNU automake 1.7.x
+	(1.8.x also works)
         - GNU libtool 1.4.2
 	(1.4.3 and 1.5a also work)
 
