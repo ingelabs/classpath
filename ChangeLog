@@ -1,3 +1,8 @@
+2004-11-05  Sven de Marothy <sven@physto.se>
+	
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(createImage): Created bitmap should be filled with bg color
+
 2004-11-04  Torsten Rupp  rupp@aicas.com
 
 	* native/jni/java-net/gnu_java_net_PlainDatagramSocketImpl.c:
