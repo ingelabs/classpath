@@ -1,3 +1,9 @@
+2003-06-12  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/border/AbstractBorder.java (getBorderInsets): Revised Javadoc
+	better explains the purpose of the method.
+	* javax/swing/border/TitledBorder.java (getBorderInsets): Likewise.
+
 2003-06-11  Anthony Green  <green@redhat.com>
 
 	* java/util/Locale.java (Locale): Intern String fields.
