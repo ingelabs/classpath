@@ -1,5 +1,9 @@
 2000-11-27  Warren Levy <warrenl@cygnus.com>
 
+	* java/text/SimpleDateFormat.java: Minor formatting fixes.
+
+2000-11-27  Warren Levy <warrenl@cygnus.com>
+
 	* gnu/java/locale/LocaleInformation_en.java (localPatternChars):
 	Letters 'k' and 'h' were reversed from the spec.
 	* java/text/DateFormat.java: Minor formatting fixes.

@@ -218,10 +218,9 @@ public class SimpleDateFormat extends DateFormat
    *
    * @return The format string.
    */
-  public String
-  toPattern()
+  public String toPattern()
   {
-    return(pattern);
+    return pattern;
   }
 
   /**
@@ -242,8 +241,7 @@ public class SimpleDateFormat extends DateFormat
    *
    * @param pattern The new format pattern.
    */
-  public void
-  applyPattern(String pattern)
+  public void applyPattern(String pattern)
   {
     tokens = new Vector();
     compileFormat(pattern);
@@ -291,10 +289,9 @@ public class SimpleDateFormat extends DateFormat
    * @return A <code>Date</code> representing the start of the century
    * for two digit years.
    */
-  public Date
-  get2DigitYearStart()
+  public Date get2DigitYearStart()
   {
-    return(defaultCenturyStart);
+    return defaultCenturyStart;
   }
 
   /**
@@ -303,8 +300,7 @@ public class SimpleDateFormat extends DateFormat
    * @param date A <code>Date</code> representing the start of the century for
    * two digit years.
    */
-  public void
-  set2DigitYearStart(Date date)
+  public void set2DigitYearStart(Date date)
   {
     defaultCenturyStart = date;
   }
@@ -315,10 +311,9 @@ public class SimpleDateFormat extends DateFormat
    *
    * @return The date format symbols.
    */
-  public DateFormatSymbols
-  getDateFormatSymbols()
+  public DateFormatSymbols getDateFormatSymbols()
   {
-    return(formatData);
+    return formatData;
   }
 
   /**
@@ -327,8 +322,7 @@ public class SimpleDateFormat extends DateFormat
    *
    * @param formatData The date format symbols.
    */
-   public void
-   setDateFormatSymbols(DateFormatSymbols formatData)
+   public void setDateFormatSymbols(DateFormatSymbols formatData)
    {
      this.formatData = formatData;
    }
@@ -352,30 +346,29 @@ public class SimpleDateFormat extends DateFormat
    * @return <code>true</code> if the specified object is equal to this object,
    * <code>false</code> otherwise.
    */
-  public boolean
-  equals(Object o)
+  public boolean equals(Object o)
   {
     if (o == null)
-      return(false);
+      return false;
 
     if (!super.equals(o))
-      return(false);
+      return false;
 
     if (!(o instanceof SimpleDateFormat))
-      return(false);
+      return false;
 
     SimpleDateFormat sdf = (SimpleDateFormat)o;
 
     if (!toPattern().equals(sdf.toPattern()))
-      return(false);
+      return false;
 
     if (!get2DigitYearStart().equals(sdf.get2DigitYearStart()))
-      return(false);
+      return false;
 
     if (!getDateFormatSymbols().equals(sdf.getDateFormatSymbols()))
-      return(false);
+      return false;
 
-    return(true);
+    return true;
   }
 
 
@@ -507,14 +500,14 @@ public class SimpleDateFormat extends DateFormat
   private int processYear(int val)
   {
     if (val > 100)
-      return(val);
+      return val;
 
     Date d = get2DigitYearStart();
     Calendar c = Calendar.getInstance();
     c.setTime(d);
     int y = c.get(YEAR_FIELD);
 
-    return(((y / 100) * 100) + val);
+    return ((y / 100) * 100) + val;
   }
 
   /*
@@ -563,7 +556,7 @@ public class SimpleDateFormat extends DateFormat
             if ((month == -1) || (day == -1) || (year == -1))
               {
                 pos.setErrorIndex(index);
-                return(null);
+                return null;
               }
 
              if (tz != null)
@@ -614,7 +607,7 @@ public class SimpleDateFormat extends DateFormat
              else if (era == 1)
                cal.set(Calendar.ERA, GregorianCalendar.AD);
 
-             return(cal.getTime());
+             return cal.getTime();
           }
 
         // Skip over whitespace and expected punctuation
@@ -746,7 +739,7 @@ public class SimpleDateFormat extends DateFormat
           }
         catch(Exception e)
           {
-            return(null); // Shouldn't happen
+            return null; // Shouldn't happen
           }
 
         if (!buf.equals(""))
@@ -878,10 +871,10 @@ public class SimpleDateFormat extends DateFormat
       {
         pos.setIndex(index);
         pos.setErrorIndex(index);
-        return(-1);
+        return -1;
       } 
 
-    return(value);
+    return value;
   }
 
   /*
@@ -929,7 +922,7 @@ public class SimpleDateFormat extends DateFormat
           catch(NumberFormatException nfe)
             {
               pos.setErrorIndex(pos.getIndex());
-              return(null);
+              return null;
             }
 
 	  if (p.size < 4)
@@ -952,7 +945,7 @@ public class SimpleDateFormat extends DateFormat
 	      if (value == -1) 
                 {
 	          pos.setErrorIndex(pos.getIndex());
-	          return(null);
+	          return null;
 	        }
               if (p.size == 3)
                 pos.setIndex(index + formatData.shortMonths[value].length());
@@ -964,7 +957,7 @@ public class SimpleDateFormat extends DateFormat
 
           value = parseLeadingZeros(dateStr, pos, p);
           if (value == -1)
-            return(null);
+            return null;
 
           theCalendar.set(Calendar.MONTH, value);
           break;
@@ -972,7 +965,7 @@ public class SimpleDateFormat extends DateFormat
 	case DATE_FIELD:
           value = parseLeadingZeros(dateStr, pos, p);
           if (value == -1)
-            return(null);
+            return null;
 
           theCalendar.set(Calendar.DATE, value);
 	  break;
@@ -987,7 +980,7 @@ public class SimpleDateFormat extends DateFormat
             }
           catch(NumberFormatException nfe)
             {
-              return(null);
+              return null;
             }
           if (p.field == HOUR_OF_DAY0_FIELD)
            // theCalendar.set(Calendar.HOUR_OF_DAY, value);
@@ -1002,7 +995,7 @@ public class SimpleDateFormat extends DateFormat
 	case MINUTE_FIELD:
           value = parseLeadingZeros(dateStr, pos, p);
           if (value == -1)
-            return(null);
+            return null;
 
           theCalendar.set(Calendar.MINUTE, value);
 	  break;
@@ -1010,7 +1003,7 @@ public class SimpleDateFormat extends DateFormat
 	case SECOND_FIELD:
           value = parseLeadingZeros(dateStr, pos, p);
           if (value == -1)
-            return(null);
+            return null;
 
           theCalendar.set(Calendar.SECOND, value);
 	  break;
@@ -1018,7 +1011,7 @@ public class SimpleDateFormat extends DateFormat
 	case MILLISECOND_FIELD:
           value = parseLeadingZeros(dateStr, pos, p);
           if (value == -1)
-            return(null);
+            return null;
          
           theCalendar.set(Calendar.MILLISECOND, value);
 	  break;
@@ -1043,7 +1036,7 @@ public class SimpleDateFormat extends DateFormat
 	case DAY_OF_YEAR_FIELD:
           value = parseLeadingZeros(dateStr, pos, p);
           if (value == -1)
-            return(null);
+            return null;
          
 	  theCalendar.set(Calendar.DAY_OF_YEAR, value);
 	  break;
@@ -1052,7 +1045,7 @@ public class SimpleDateFormat extends DateFormat
 	case DAY_OF_WEEK_IN_MONTH_FIELD:
           value = parseLeadingZeros(dateStr, pos, p);
           if (value == -1)
-            return(null);
+            return null;
          
 	  break;
 
@@ -1060,7 +1053,7 @@ public class SimpleDateFormat extends DateFormat
 	case WEEK_OF_YEAR_FIELD:
           value = parseLeadingZeros(dateStr, pos, p);
           if (value == -1)
-            return(null);
+            return null;
          
 	  break;
 
@@ -1068,7 +1061,7 @@ public class SimpleDateFormat extends DateFormat
 	case WEEK_OF_MONTH_FIELD:
           value = parseLeadingZeros(dateStr, pos, p);
           if (value == -1)
-            return(null);
+            return null;
 
 	  break;
 
@@ -1086,7 +1079,7 @@ public class SimpleDateFormat extends DateFormat
 	case HOUR0_FIELD:
           value = parseLeadingZeros(dateStr, pos, p);
           if (value == -1)
-            return(null);
+            return null;
           if (p.field == HOUR1_FIELD)
             theCalendar.set(Calendar.HOUR, value);
           if (p.field == HOUR0_FIELD)
@@ -1154,9 +1147,9 @@ public class SimpleDateFormat extends DateFormat
    */
   public Date parse(String dateStr, ParsePosition pos) {
     if (isLenient())
-       return(parseLenient(dateStr, pos));
+       return parseLenient(dateStr, pos);
     else
-       return(parseStrict(dateStr, pos));
+       return parseStrict(dateStr, pos);
 
   }
 }
