@@ -548,7 +548,7 @@ public final class Character implements Serializable, Comparable
 
   static Block blocks[];	// block.uni
   static char tcs[][];		// titlecase.uni
-  static RandomAccessFile charFile; // character.uni
+  static byte[] unicodeData; // character.uni
 
   // open up the Unicode attribute database and read the index into memory
   static {
@@ -588,7 +588,9 @@ public final class Character implements Serializable, Comparable
     }
 
     try {
-      charFile = new RandomAccessFile(cFile, "r");
+      RandomAccessFile charFile = new RandomAccessFile(cFile, "r");
+      unicodeData = new byte[(int)charFile.length()];
+      charFile.readFully(unicodeData, 0, unicodeData.length);
     } catch (IOException e) {
       throw new Error("Unable to open Unicode character attribute file: " + e);
     }
@@ -602,23 +604,18 @@ public final class Character implements Serializable, Comparable
     if (i == -1) return null;
     Block b = blocks[i];
     int offset = (b.compressed) ? b.offset : (b.offset + (ch-b.start)*7);
-    synchronized (charFile) {
-      try {
-	charFile.seek(offset);
-	int byte7 = charFile.readUnsignedByte();
+	int byte7 = unicodeData[offset] & 0xFF;
 	boolean noBreakSpace = ((byte7 >> 5 & 0x1) == 1);
 	int category = byte7 & 0x1F;
-	int numericalDecimalValue = charFile.readUnsignedShort();
-	char uppercase = charFile.readChar();
-	char lowercase = charFile.readChar();
+        int numericalDecimalValue = (((unicodeData[offset+1] & 0xFF) << 8) + 
+                                (unicodeData[offset+2] & 0xFF));
+        char uppercase = (char)(((unicodeData[offset+3] & 0xFF) << 8) + 
+                                (unicodeData[offset+4] & 0xFF));
+        char lowercase = (char)(((unicodeData[offset+5] & 0xFF) << 8) + 
+                                (unicodeData[offset+6] & 0xFF));
 	
 	return new CharAttr(ch, noBreakSpace, category, numericalDecimalValue,
 			    uppercase, lowercase);
-      } catch (IOException e) {
-	throw new 
-	  Error("Error reading Unicode character attribute database: " + e);
-      }
-    }
   }
 
   /**
