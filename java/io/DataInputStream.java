@@ -95,7 +95,7 @@ DataInputStream(InputStream in)
   * @exception EOFException If end of file is reached before reading the boolean
   * @exception IOException If any other error occurs
   */
-public boolean
+public final boolean
 readBoolean() throws EOFException, IOException
 {
   int byte_read = in.read();
@@ -125,7 +125,7 @@ readBoolean() throws EOFException, IOException
   *
   * @see DataOutput
   */
-public byte
+public final byte
 readByte() throws EOFException, IOException
 {
   int byte_read = in.read();
@@ -152,7 +152,7 @@ readByte() throws EOFException, IOException
   *
   * @see DataOutput
   */
-public int
+public final int
 readUnsignedByte() throws EOFException, IOException
 {
   int byte_read = in.read();
@@ -188,7 +188,7 @@ readUnsignedByte() throws EOFException, IOException
   *
   * @see DataOutput
   */
-public char
+public final char
 readChar() throws EOFException, IOException
 {
   byte[] buf = new byte[2];
@@ -227,7 +227,7 @@ readChar() throws EOFException, IOException
   *
   * @see DataOutput
   */
-public short
+public final short
 readShort() throws EOFException, IOException
 {
   byte[] buf = new byte[2];
@@ -264,7 +264,7 @@ readShort() throws EOFException, IOException
   * @exception EOFException If end of file is reached before reading the value
   * @exception IOException If any other error occurs
   */
-public int
+public final int
 readUnsignedShort() throws EOFException, IOException
 {
   byte[] buf = new byte[2];
@@ -304,7 +304,7 @@ readUnsignedShort() throws EOFException, IOException
   *
   * @see DataOutput
   */
-public int
+public final int
 readInt() throws EOFException, IOException
 {
   byte[] buf = new byte[4];
@@ -347,7 +347,7 @@ readInt() throws EOFException, IOException
   *
   * @see DataOutput
   */
-public long
+public final long
 readLong() throws EOFException, IOException
 {
   byte[] buf = new byte[8];
@@ -382,7 +382,7 @@ readLong() throws EOFException, IOException
   * @see java.lang.Float
   * @see DataOutput
   */
-public float
+public final float
 readFloat() throws EOFException, IOException
 {
   int val = readInt();
@@ -410,7 +410,7 @@ readFloat() throws EOFException, IOException
   * @see java.lang.Double
   * @see DataOutput
   */
-public double
+public final double
 readDouble() throws EOFException, IOException
 {
   long val = readLong();
@@ -441,8 +441,10 @@ readDouble() throws EOFException, IOException
   * @exception IOException If an error occurs
   *
   * @see DataOutput
+  *
+  * @deprecated
   */
-public String
+public final String
 readLine() throws IOException
 {
   StringBuffer sb = new StringBuffer("");
@@ -540,7 +542,7 @@ readLine() throws IOException
   *
   * @see DataOutput
   */
-public String
+public final String
 readUTF() throws EOFException, UTFDataFormatException, IOException
 {
   StringBuffer sb = new StringBuffer("");
@@ -625,7 +627,7 @@ readUTF() throws EOFException, UTFDataFormatException, IOException
   * @exception EOFException If end of file is reached before filling the buffer
   * @exception IOException If any other error occurs
   */
-public void
+public final void
 readFully(byte[] buf) throws EOFException, IOException
 {
   readFully(buf, 0, buf.length);
@@ -647,7 +649,7 @@ readFully(byte[] buf) throws EOFException, IOException
   * @exception EOFException If end of file is reached before filling the buffer
   * @exception IOException If any other error occurs
   */
-public void
+public final void
 readFully(byte[] buf, int offset, int len) throws EOFException, IOException
 {
   int total_read = 0;
@@ -675,7 +677,7 @@ readFully(byte[] buf, int offset, int len) throws EOFException, IOException
   * @exception EOFException If end of file is reached before all bytes can be skipped
   * @exception IOException If any other error occurs
   */
-public int
+public final int
 skipBytes(int n) throws EOFException, IOException
 {
   long total_skipped = 0;
