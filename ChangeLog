@@ -1,3 +1,10 @@
+2004-04-18  Michael Koch  <konqueror@gmx.de>
+
+	* java/sql/Array.java,
+	java/sql/DatabaseMetaData.java,
+	java/sql/ResultSet.java:
+	Fixed HTML tags in javadocs.
+
 2004-04-17  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/plaf/basic/Makefile.am: Add BasicArrowButton.java,
