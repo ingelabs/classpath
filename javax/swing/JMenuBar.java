@@ -67,9 +67,6 @@ import javax.swing.plaf.MenuItemUI;
 
 /**
  * DOCUMENT ME!
- *
- * @author $author$
- * @version $Revision: 1.5 $
  */
 public class JMenuBar extends JComponent implements Accessible, MenuElement
 {

@@ -49,9 +49,6 @@ import javax.swing.plaf.ComponentUI;
 
 /**
  * DOCUMENT ME!
- *
- * @author $author$
- * @version $Revision: 1.3 $
  */
 public class BasicCheckBoxMenuItemUI extends BasicMenuItemUI
 {

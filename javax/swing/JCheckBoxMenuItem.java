@@ -46,9 +46,6 @@ import javax.accessibility.AccessibleRole;
 
 /**
  * DOCUMENT ME!
- *
- * @author $author$
- * @version $Revision: 1.5 $
  */
 public class JCheckBoxMenuItem extends JMenuItem implements SwingConstants,
                                                             Accessible
@@ -217,9 +214,6 @@ public class JCheckBoxMenuItem extends JMenuItem implements SwingConstants,
 
   /**
    * DOCUMENT ME!
-   *
-   * @author $author$
-   * @version $Revision: 1.5 $
    */
   protected class AccessibleJCheckBoxMenuItem extends AccessibleJMenuItem
   {

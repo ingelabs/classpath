@@ -46,9 +46,6 @@ import javax.accessibility.AccessibleRole;
 
 /**
  * DOCUMENT ME!
- *
- * @author $author$
- * @version $Revision: 1.5 $
  */
 public class JRadioButtonMenuItem extends JMenuItem implements Accessible
 {
@@ -195,9 +192,6 @@ public class JRadioButtonMenuItem extends JMenuItem implements Accessible
 
   /**
    * DOCUMENT ME!
-   *
-   * @author $author$
-   * @version $Revision: 1.5 $
    */
   protected class AccessibleJRadioButtonMenuItem extends AccessibleJMenuItem
   {
