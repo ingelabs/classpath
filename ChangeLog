@@ -1,3 +1,7 @@
+2002-07-12  Jesse Rosenstock  <jmr@fulcrummicro.com>
+
+	* java/lang/Character.java (toString(char)): Now static.
+
 2002-07-11  Mark Wielaard  <mark@klomp.org>
 
 	Thanks to Jeroen Frijters <jeroen@sumatra.nl>

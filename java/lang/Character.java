@@ -1536,7 +1536,7 @@ public final class Character implements Serializable, Comparable
    * @return a String containing the character
    * @since 1.4
    */
-  public String toString(char ch)
+  public static String toString(char ch)
   {
     // Package constructor avoids an array copy.
     return new String(new char[] { value }, 0, 1, true);
