@@ -24,6 +24,7 @@ import java.net.URLConnection;
 import java.net.Socket;
 import java.net.ProtocolException;
 import java.io.InputStream;
+import java.io.PushbackInputStream;
 import java.io.OutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -55,7 +56,7 @@ protected Socket socket;
 /**
   * The InputStream for this connection
   */
-protected InputStream in_stream;
+protected PushbackInputStream in_stream;
 
 /**
   * The OutputStream for this connection
@@ -66,11 +67,6 @@ protected OutputStream out_stream;
   * The PrintWriter for this connection (used internally)
   */
 protected PrintWriter out_writer;
-
-/**
-  * The InputStreamReader for this connection (used internally)
-  */
-protected InputStreamReader in_reader; 
 
 /*************************************************************************/
 
@@ -104,20 +100,53 @@ readLine() throws IOException
 {
   StringBuffer sb = new StringBuffer("");
 
-  byte[] buf = new byte[1];
+  byte[] buf = new byte[512];
+  boolean check_eol = false;
   for (;;)
     {
-      int read = in_stream.read(buf, 0, 1);
-      if (read == -1)
+      int bytes_read = in_stream.read(buf);
+      if (bytes_read == -1)
         throw new IOException("Premature end of input");
 
-      if (buf[0] == '\r')
-        continue;
-      if (buf[0] == '\n')
-        break;
-      sb.append((char)buf[0]);
+      // Check to see if we still have a possible end of header match
+      // from last time.
+      if (check_eol)
+        {
+          if (buf[0] == '\n')
+            {
+              in_stream.unread(buf, 1, bytes_read - 1);
+              return(sb.toString());
+            }
+          else
+            sb.append('\r');
+        }            
+
+      check_eol = false;
+      for (int i = 0; i < bytes_read; i++)
+        {
+          // Ok, we possibly have end of line
+          if (buf[i] == '\r')
+            {
+              if (i == (bytes_read - 1))
+                check_eol = true;
+              else if (buf[i+1] == '\n')
+                {
+                  if (i > 0)
+                    sb.append(new String(buf, 0, i));
+
+                  if (bytes_read > 2)
+                    in_stream.unread(buf, i + 2, ((bytes_read - i) - 2));
+
+                  return(sb.toString());
+                }
+            }
+        }
+
+      if (check_eol)
+        sb.append(new String(buf, 0, bytes_read - 1));
+      else
+        sb.append(new String(buf));
     }
-  return(sb.toString());
 }
 
 /*************************************************************************/
@@ -126,7 +155,7 @@ readLine() throws IOException
   * Connects to the remote host, sends the request, and parses the reply
   * code and header information returned
   */
-public void
+public synchronized void
 connect() throws IOException
 {
   // Connect up
@@ -136,9 +165,8 @@ connect() throws IOException
     socket = new Socket(url.getHost(), url.getPort());
 
   out_stream = socket.getOutputStream();
-  in_stream = socket.getInputStream();
+  in_stream = new PushbackInputStream(socket.getInputStream(),1024);
 
-  in_reader = new InputStreamReader(in_stream);
   out_writer = new PrintWriter(new OutputStreamWriter(out_stream)); 
 
   // Send the request
@@ -245,6 +273,8 @@ connect() throws IOException
       headerKeys.addElement(key.toLowerCase());
       headerValues.addElement(value);
     }
+
+  connected = true;
 }
 
 /*************************************************************************/
