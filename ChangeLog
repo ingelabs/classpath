@@ -1,3 +1,12 @@
+2004-06-04  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* java/text/RuleBasedCollator.java
+	(mergeRules): Use ArrayList instead of Vector.
+	(subParseString): likewise.
+	(parseString): likewise.
+	(buildCollationVector): likewise.
+	(getCollationKey): likewise.
+
 2004-06-04  Casey Marshall <csm@gnu.org>
 
 	* java/lang/SecurityManager.java
