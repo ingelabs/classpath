@@ -1,5 +1,11 @@
 2003-06-28  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/URL.java,
+	java/net/URLStreamHandler.java:
+	Renamd variable "handler" to "ph" to match libgcj more.
+
+2003-06-28  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/MappedByteBufferImpl.java:
 	Reverted.
 
