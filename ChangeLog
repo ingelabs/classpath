@@ -1,5 +1,11 @@
 2003-08-16  Mark Wielaard  <mark@klomp.org>
 
+	Reported by Julian Dolby
+	* java/lang/Package.java (getPackage): Use currentClassLoader() not
+	VMSecurityManager.getClassContext()[1].getClassLoader().
+
+2003-08-16  Mark Wielaard  <mark@klomp.org>
+
 	Reported by Guilhem Lavaux and Julian Dolby
 	* java/io/ObjectStreamClass.java (getSerialPersistentFields): Get the
 	field "serialPersistentFields", not "getSerialPersistentFields".
