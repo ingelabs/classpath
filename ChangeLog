@@ -1,3 +1,10 @@
+2005-01-15  Mark Wielaard  <mark@klomp.org>
+
+	Reported by Martin Platter <motse@complang.tuwien.ac.at>
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFileDialogPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_nativeSetFile):
+	Correct method signature of gtkSetFilename.
+
 2005-01-14  Sven de Marothy <sven@physto.se>
 
 	* java/util/GregorianCalendar.java
