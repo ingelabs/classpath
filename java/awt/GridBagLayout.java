@@ -55,7 +55,7 @@ public class GridBagLayout
 
   protected Hashtable comptable;
   protected GridBagLayoutInfo layoutInfo;
-  protected GridBagConstraints defaultConstraints = new GridBagConstraints();
+  protected GridBagConstraints defaultConstraints;
 
   public double[] colWeights;
   public int[] colWidths;
@@ -64,7 +64,8 @@ public class GridBagLayout
 
   public GridBagLayout ()
   {
-    // Do nothing here.
+    this.comptable = new Hashtable();
+    this.defaultConstraints= new GridBagConstraints();
   }
 
   /**
@@ -105,6 +106,9 @@ public class GridBagLayout
 
   public void addLayoutComponent (Component component, Object constraints)
   {
+    if (constraints == null)
+      return;
+
     if (!(constraints instanceof GridBagConstraints))
       throw new IllegalArgumentException();
 
@@ -157,17 +161,34 @@ public class GridBagLayout
   public void setConstraints (Component component,
 			      GridBagConstraints constraints)
   {
-    comptable.put (component, constraints);
+    GridBagConstraints clone = (GridBagConstraints) constraints.clone();
+
+    if (clone.gridx < 0)
+      clone.gridx = GridBagConstraints.RELATIVE;
+    
+    if (clone.gridy < 0)
+      clone.gridy = GridBagConstraints.RELATIVE;
+
+    if (clone.gridwidth == 0)
+      clone.gridwidth = GridBagConstraints.REMAINDER;
+    else if (clone.gridwidth < 0
+	     && clone.gridwidth != GridBagConstraints.REMAINDER
+	     && clone.gridwidth != GridBagConstraints.RELATIVE)
+      clone.gridwidth = 1;
+    
+    if (clone.gridheight == 0)
+      clone.gridheight = GridBagConstraints.REMAINDER;
+    else if (clone.gridheight < 0
+	     && clone.gridheight != GridBagConstraints.REMAINDER
+	     && clone.gridheight != GridBagConstraints.RELATIVE)
+      clone.gridheight = 1;
+    
+    comptable.put (component, clone);
   }
 
   public GridBagConstraints getConstraints (Component component)
   {
-    GridBagConstraints constraints = lookupConstraints (component);
-
-    if (constraints == null)
-      return null;
-
-    return (GridBagConstraints) constraints.clone();
+    return (GridBagConstraints) (lookupConstraints (component).clone());
   }
 
   protected GridBagConstraints lookupConstraints (Component component)
@@ -191,7 +212,7 @@ public class GridBagLayout
     if (layoutInfo == null)
       return new Point (0, 0);
     
-    return new Point (layoutInfo.x, layoutInfo.y);
+    return new Point (layoutInfo.pos_x, layoutInfo.pos_y);
   }
 
   /**
@@ -233,8 +254,8 @@ public class GridBagLayout
 
     int col;
     int row;
-    int pixel_x = layoutInfo.x;
-    int pixel_y = layoutInfo.y;
+    int pixel_x = layoutInfo.pos_x;
+    int pixel_y = layoutInfo.pos_y;
 
     for (col = 0; col < layoutInfo.cols; col++)
       {
@@ -367,11 +388,32 @@ public class GridBagLayout
     if (sizeflag != MINSIZE && sizeflag != PREFERREDSIZE)
       throw new IllegalArgumentException();
 
-    GridBagLayoutInfo info = new GridBagLayoutInfo (MAXGRIDSIZE, MAXGRIDSIZE);
-    Dimension dimension = sizeflag == MINSIZE ? parent.getMinimumSize()
-					      : parent.getPreferredSize();
+    GridBagLayoutInfo info = new GridBagLayoutInfo (0, 0);
     
+    Component[] components = parent.getComponents();
+    for (int i = 0; i < components.length; i++)
+      {
+	Component component = components [i];
+	
+	// If component is not visible we dont have to care about it.
+	if (!component.isVisible())
+	  continue;
+
+	GridBagConstraints constraints = lookupConstraints (component);
+	
+	int max_x = 1;
+	int max_y = 1;
+	int cur_x = 0;
+
+	
+	
+	// FIXME
+      }
+
     // FIXME
+    
+    // DEBUG
+    dumpLayoutInfo (info);
 
     return info;
   }

@@ -1,3 +1,13 @@
+2003-07-01  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/Component.java
+	(add): Revised documentation.
+	* java/awt/GridBagLayout.java:
+	Yippie, 90% are done. Now are comming the 10% work which take 90% of
+	time.
+	* java/awt/GridBagLayoutInfo.java
+	(x, y): Renamed to pos_x and pos_y.
+
 2003-07-01  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/plaf/basic/BasicBorders.java (SplitPaneBorder):
