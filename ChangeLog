@@ -1,3 +1,9 @@
+2002-03-19  Nic Ferrier  <nferrier@tapsellferrier.co.uk>
+
+	* gnu/java/net/protocol/file/FileURLConnection.java: Formatting
+	changes.
+	* gnu/java/net/protocol/file/Handle.java: Formatting changes.
+
 2002-03-18  Eric Blake  <ebb9@email.byu.edu>
 
 	* javax/accessibility/AccessibleExtendedComponent.java: Typos in
