@@ -74,7 +74,7 @@ JNIEXPORT jfloat JNICALL Java_java_lang_Float_parseFloat
 
     /* to catch non-white space characters after conversion */
     myptr = endptr;
-    while (myptr != NULL) 
+    while (*myptr != 0)  /* the null character */
 	{
 	    switch (*myptr)
 		{
