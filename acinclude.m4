@@ -201,4 +201,35 @@ AC_DEFUN(CLASSPATH_CHECK_GLIB,
   AC_MSG_RESULT(yes)
 ])
 
+dnl CLASSPATH_INTERNAL_CHECK_JIKES
+AC_DEFUN(CLASSPATH_INTERNAL_CHECK_JIKES,
+[
+  AC_PATH_PROG(JIKES, jikes, "", $PATH:/usr/local/bin)
+  if test "$JIKES" = ""; then
+    echo "configure: cannot find jikes: is jikes in your path?" 1>&2
+    exit 1
+  fi
+])
+
+
+dnl CLASSPATH_CHECK_JIKES - checks for jikes
+AC_DEFUN(CLASSPATH_CHECK_JIKES,
+[
+  AC_ARG_WITH(jikes, 
+  [  --with-jikes		  compile classes with jikes [default=no]],
+  [
+    if test ${withval} != "no"; then
+      if test ${withval} = "" || test ${withval} = "yes"; then
+        CLASSPATH_INTERNAL_CHECK_JIKES
+      else 
+        JIKES=${withval}
+	AC_SUBST(JIKES)
+      fi
+      conditional_with_jikes=true
+    fi
+  ],
+  [ 
+    conditional_with_jikes=false
+  ])
+])
 

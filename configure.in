@@ -109,6 +109,7 @@ AC_ARG_WITH(java,
     fi
   ],
   [ conditional_with_java=false])
+
 AM_CONDITIONAL(USER_SPECIFIED_JABBA, test x$conditional_with_java = xtrue)
 
 AC_ARG_WITH(javah,
@@ -126,8 +127,12 @@ AC_ARG_WITH(javah,
   [ conditional_with_javah=false ])
 AM_CONDITIONAL(USER_SPECIFIED_JAVAH, test x$conditional_with_javah = xtrue)
 
+dnl define JIKES for Makefile.am if --with-jikes specified to configure
+CLASSPATH_CHECK_JIKES
+AM_CONDITIONAL(USER_SPECIFIED_JIKES, test x$conditional_with_jikes = xtrue)
+
 AC_ARG_WITH(classlib,
-  [  --with-classlib		  specify path to a classes.zip like file ],
+  [  --with-classlib		specify path to a classes.zip like file ],
   [
     if test ${withval} != "" || test ${withval} != "yes" || test ${withval} != "no"; then
       # set javac to user input value

@@ -35,6 +35,11 @@ endif
 ## endif
 endif
 
+## for JIKES
+if USER_SPECIFIED_JIKES
+JAVAC = @JIKES@ -classpath $(top_srcdir):$(top_srcdir)/lib -d $(top_srcdir)
+endif
+
 ## for JAVAH
 ## if USER_SPECIFIED_JAVAH
 if USER_SPECIFIED_JAVAH
@@ -82,7 +87,7 @@ if DEVELOPER_BUILD
 default: all
 all: glibj.zip
 
-glibj.zip: .deps $(CLASSES) Makefile
+glibj.zip: .deps $(CLASSES)
 	-mkdir gnu
 	-mkdir gnu/java
 	-mkdir gnu/java/locale
@@ -107,8 +112,10 @@ glibj.zip: .deps $(CLASSES) Makefile
 	cp $(top_srcdir)/gnu/java/locale/*.uni gnu/java/locale/
 	zip -r -D glibj.zip gnu java
 
-.deps:	Makefile deps.sh gen-classlist.sh
+.deps:	deps.sh gen-classlist.sh
 	./deps.sh
+## probably should just recall make on ourselves here...
+        include .deps
 endif
 
 EXTRA_DIST = glibj.zip .deps standard.omit
