@@ -17,6 +17,14 @@ JNIEXPORT jlong JNICALL Java_java_io_ObjectStreamClass_getDefinedSUID
 
 /*
  * Class:     java_io_ObjectStreamClass
+ * Method:    getSerialPersistantFields
+ * Signature: (Ljava/lang/Class;)[Ljava/io/ObjectStreamField;
+ */
+JNIEXPORT jobjectArray JNICALL Java_java_io_ObjectStreamClass_getSerialPersistantFields
+  (JNIEnv *, jobject, jclass);
+
+/*
+ * Class:     java_io_ObjectStreamClass
  * Method:    hasClassInitializer
  * Signature: (Ljava/lang/Class;)Z
  */

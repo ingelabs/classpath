@@ -21,12 +21,6 @@
 #include "java_io_ObjectStreamClass.h"
 
 
-static const char * myLongTypeId = "J";
-static const char * serialVersionUID_str = "serialVersionUID";
-static const char * class_init_str = "<clinit>";
-static const char * class_init_sig = "()V";
-
-
 /*
   Returns the value of CLAZZ's static long field named `serialVersionUID'.
 
@@ -38,8 +32,8 @@ Java_java_io_ObjectStreamClass_getDefinedSUID( JNIEnv * env,
 					       jclass clazz )
 {
   jfieldID suid_fid = (*env)->GetStaticFieldID( env, clazz,
-						serialVersionUID_str,
-						myLongTypeId );
+						"serialVersionUID",
+						"J" );
 
   if( suid_fid == NULL )
     return 0;
@@ -47,6 +41,22 @@ Java_java_io_ObjectStreamClass_getDefinedSUID( JNIEnv * env,
   return (*env)->GetStaticLongField( env, clazz, suid_fid );
 }
 
+
+JNIEXPORT jobjectArray JNICALL
+Java_java_io_ObjectStreamClass_getSerialPersistantFields( JNIEnv * env, 
+							  jobject self, 
+							  jclass clazz )
+{
+  jfieldID spf_fid
+    = (*env)->GetStaticFieldID( env, clazz,
+				"serialPersistantFields",
+				"[Ljava/io/ObjectStreamField;" );
+  
+  if( spf_fid == NULL )
+    return 0;
+  
+  return (*env)->GetStaticObjectField( env, clazz, spf_fid );  
+}
 
 /* 
    Returns true if CLAZZ has a static class initializer
@@ -60,8 +70,8 @@ Java_java_io_ObjectStreamClass_hasClassInitializer( JNIEnv * env,
 						    jclass clazz )
 {
   jmethodID mid = (*env)->GetStaticMethodID( env, clazz,
-					     class_init_str,
-					     class_init_sig );
+					     "<clinit>",
+					     "()V" );
 
   return mid != NULL;
 }
