@@ -23,7 +23,7 @@
 #include "GtkChoicePeer.h"
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkChoicePeer_GtkOptionMenuNew (JNIEnv *env, 
+Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuNew (JNIEnv *env, 
     jobject obj, jobjectArray items)
 {
   GtkWidget *menu, *optionmenu;
@@ -61,7 +61,7 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_GtkOptionMenuNew (JNIEnv *env,
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkChoicePeer_GtkOptionMenuAdd (JNIEnv *env, 
+Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuAdd (JNIEnv *env, 
     jobject obj, jstring item, jint index)
 {
   void *ptr;
@@ -87,7 +87,7 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_GtkOptionMenuAdd (JNIEnv *env,
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkChoicePeer_GtkOptionMenuRemove (JNIEnv *env, 
+Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuRemove (JNIEnv *env, 
     jobject obj, jint index)
 {
   void *ptr;
@@ -113,7 +113,7 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_GtkOptionMenuRemove (JNIEnv *env,
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkChoicePeer_GtkOptionMenuSelect (JNIEnv *env, 
+Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuSelect (JNIEnv *env, 
     jobject obj, jint index)
 {
   void *ptr;

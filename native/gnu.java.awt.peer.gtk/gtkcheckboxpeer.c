@@ -23,7 +23,7 @@
 #include "GtkCheckboxPeer.h"
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_GtkRadioButtonSetGroup
+Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonSetGroup
   (JNIEnv *env, jobject obj, jobject group)
 {
   GtkRadioButton *button;
@@ -51,7 +51,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_GtkRadioButtonSetGroup
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_GtkRadioButtonNew
+Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonNew
   (JNIEnv *env, jobject obj, jobject group, jboolean checked, jstring label)
 {
   GtkWidget *button;
@@ -87,7 +87,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_GtkRadioButtonNew
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_GtkCheckButtonNew
+Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonNew
   (JNIEnv *env, jobject obj, jboolean checked, jstring label)
 {
   GtkWidget *button;
@@ -112,7 +112,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_GtkCheckButtonNew
 
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_GtkCheckButtonSetState
+Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonSetState
   (JNIEnv *env, jobject obj, jboolean checked)
 {
   void *ptr;
@@ -124,7 +124,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_GtkCheckButtonSetState
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_GtkCheckButtonSetLabel
+Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonSetLabel
   (JNIEnv *env, jobject obj, jstring label)
 {
   void *ptr;

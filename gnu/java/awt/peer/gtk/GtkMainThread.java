@@ -25,8 +25,8 @@ public class GtkMainThread extends GtkGenericPeer implements Runnable
   private static Thread mainThread = null;
   private static Object mainThreadLock = new Object();
 
-  static native void GtkInit();
-  native void GtkMain();
+  static native void gtkInit();
+  native void gtkMain();
   
   public GtkMainThread() {
     synchronized (mainThreadLock) {
@@ -45,10 +45,10 @@ public class GtkMainThread extends GtkGenericPeer implements Runnable
   
   public void run() {
     synchronized (this) {
-      GtkInit();
+      gtkInit();
       notify();
     }
-    GtkMain();
+    gtkMain();
   }
 }
 

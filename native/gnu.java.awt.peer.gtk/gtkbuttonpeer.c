@@ -26,7 +26,7 @@
  * Make a new button.
  */
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkButtonPeer_GtkButtonNewWithLabel
+Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkButtonNewWithLabel
     (JNIEnv *env, jobject obj, jstring label)
 {
   GtkWidget *button;
@@ -49,7 +49,7 @@ Java_gnu_java_awt_peer_gtk_GtkButtonPeer_GtkButtonNewWithLabel
  * Set the label of a button
  */
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkButtonPeer_GtkButtonLabelSet
+Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkButtonLabelSet
     (JNIEnv *env, jobject obj, jstring label)
 {
   void *ptr;

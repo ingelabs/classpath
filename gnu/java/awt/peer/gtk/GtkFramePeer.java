@@ -45,14 +45,14 @@ public class GtkFramePeer extends GtkWindowPeer
 
     public void setTitle(String title)
     {
-	GtkWindowSetTitle(title);
+	gtkWindowSetTitle(title);
     }
 
     public void setResizable(boolean resizable)
     {
 	int r=resizable?1:0;
 
-	GtkWindowSetPolicy(r,r,0); //shrink,grow,auto
+	gtkWindowSetPolicy(r,r,0); //shrink,grow,auto
     }
 }
 

@@ -48,7 +48,7 @@ public class GtkLabelPeer extends GtkComponentPeer
       gtkLabelNew (l.getText(), j);
       Point p=l.getLocation();
       
-      GtkFixedPut (cp,p.x,p.y);
+      gtkFixedPut (cp,p.x,p.y);
     }
     
     public void setText (String text) 

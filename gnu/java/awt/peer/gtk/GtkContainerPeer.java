@@ -47,7 +47,7 @@ public class GtkContainerPeer extends GtkComponentPeer
 	/* The way I am interpreting this is that now that the Container
 	   has validated its peers, we should cause the container widget
 	   to unfreeze and draw the container's children. -JB */
-	GtkWidgetShowChildren();
+	gtkWidgetShowChildren();
     }
 
   public Insets getInsets() 

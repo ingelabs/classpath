@@ -27,7 +27,7 @@
  */
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_GtkFileSelectionNew (JNIEnv *env, 
+Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_gtkFileSelectionNew (JNIEnv *env, 
     jobject obj)
 {
   GtkWidget *window;
@@ -44,7 +44,7 @@ Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_GtkFileSelectionNew (JNIEnv *env,
  */
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_GtkFileSelectionSetFilename 
+Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_gtkFileSelectionSetFilename 
     (JNIEnv *env, jobject obj, jstring filename)
 {
   void *ptr;

@@ -29,7 +29,7 @@
  */
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkMainThread_GtkInit (JNIEnv *env, jclass clazz)
+Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 {
   int argc=1;
   char **argv;
@@ -73,7 +73,7 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_GtkInit (JNIEnv *env, jclass clazz)
  * Run gtk_main and block.
  */ 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkMainThread_GtkMain (JNIEnv *env, jobject obj)
+Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkMain (JNIEnv *env, jobject obj)
 {
     (*env)->MonitorEnter (env,java_mutex);
     /* This won't return until GTK is _done_.

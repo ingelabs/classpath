@@ -26,7 +26,7 @@
  * Show all of a widget's children (possibly recursively)
  */
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkWidgetShowChildren (JNIEnv *env,
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetShowChildren (JNIEnv *env,
     jobject obj)
 {
   GtkWidget *widget;
@@ -56,7 +56,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkWidgetShowChildren (JNIEnv *env,
  * Show a widget
  */
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkWidgetShow (JNIEnv *env, 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetShow (JNIEnv *env, 
     jobject obj)
 {
   GtkWidget *widget;
@@ -86,7 +86,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkWidgetShow (JNIEnv *env,
  * Find the preferred size of a widget.
  */
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkWidgetGetDimensions
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetDimensions
     (JNIEnv *env, jobject obj, jintArray jdims)
 {
     void *ptr;
@@ -116,7 +116,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkWidgetGetDimensions
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkWidgetSetUsize (JNIEnv *env, 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetUsize (JNIEnv *env, 
     jobject obj, jint w, jint h)
 {
   GtkWidget *widget;
@@ -134,7 +134,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkWidgetSetUsize (JNIEnv *env,
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkFixedNew (JNIEnv *env, 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedNew (JNIEnv *env, 
     jobject obj, jint width, jint height)
 {
   GtkWidget *fix;
@@ -151,7 +151,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkFixedNew (JNIEnv *env,
  * Place a widget on the layout widget. 
  */
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkFixedPut 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedPut 
     (JNIEnv *env, jobject obj, jobject container, jint x, jint y)
 {
   GList *child;
@@ -224,7 +224,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkFixedPut
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_GtkFixedMove (JNIEnv *env, 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedMove (JNIEnv *env, 
     jobject obj, jint x, jint y)
 {
   GtkWidget *fix, *widget;

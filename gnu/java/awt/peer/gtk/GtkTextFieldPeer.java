@@ -42,7 +42,7 @@ public class GtkTextFieldPeer extends GtkTextComponentPeer
       gtkEntryNew (text);
 
       Point p=tf.getLocation();
-      GtkFixedPut (cp,p.x,p.y);
+      gtkFixedPut (cp,p.x,p.y);
     }
 
   public Dimension getMinimumSize (int cols)

@@ -27,7 +27,7 @@
  */
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkWindowPeer_GtkWindowNew (JNIEnv *env, jobject obj, jint type, jint width, jint height)
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env, jobject obj, jint type, jint width, jint height)
 {
   GtkWidget *window, *fix;
 
@@ -70,7 +70,7 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_GtkWindowNew (JNIEnv *env, jobject obj,
  */
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkWindowPeer_GtkWindowSetTitle (JNIEnv *env, 
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowSetTitle (JNIEnv *env, 
   jobject obj, jstring title)
 {
   void *ptr;
@@ -93,7 +93,7 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_GtkWindowSetTitle (JNIEnv *env,
  */
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkWindowPeer_GtkWindowSetPolicy (JNIEnv *env, 
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowSetPolicy (JNIEnv *env, 
     jobject obj, jint shrink, jint grow, jint autos)
 {
   void *ptr;
@@ -112,7 +112,7 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_GtkWindowSetPolicy (JNIEnv *env,
  */
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkWindowPeer_GdkWindowLower (JNIEnv *env, 
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gdkWindowLower (JNIEnv *env, 
     jobject obj)
 {
   void *ptr;
@@ -129,7 +129,7 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_GdkWindowLower (JNIEnv *env,
  */
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkWindowPeer_GdkWindowRaise (JNIEnv *env, 
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gdkWindowRaise (JNIEnv *env, 
     jobject obj)
 {
   void *ptr;

@@ -23,7 +23,7 @@
 #include "GtkScrollPanePeer.h"
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_GtkScrolledWindowNew 
+Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowNew 
     (JNIEnv *env, jobject obj, jint policy, jint width, jint height,
      jintArray jdims)
 {
@@ -79,7 +79,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_GtkScrolledWindowNew
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_GtkScrolledWindowSetScrollPosition
+Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetScrollPosition
   (JNIEnv *env, jobject obj, jint x, jint y)
 {
   GtkAdjustment *hadj, *vadj;
@@ -102,7 +102,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_GtkScrolledWindowSetScrollPosition
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_GtkScrolledWindowSetHScrollIncrement
+Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetHScrollIncrement
   (JNIEnv *env, jobject obj, jint u)
 {
   GtkAdjustment *hadj;
@@ -122,7 +122,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_GtkScrolledWindowSetHScrollIncremen
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_GtkScrolledWindowSetVScrollIncrement
+Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetVScrollIncrement
   (JNIEnv *env, jobject obj, jint u)
 {
   GtkAdjustment *vadj;
@@ -141,7 +141,8 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_GtkScrolledWindowSetVScrollIncremen
   (*env)->MonitorExit (env,java_mutex);
 }
 
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_GtkScrolledWindowSetSize
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetSize
   (JNIEnv *env, jobject obj, jint w, jint h)
 {
   GtkScrolledWindow *sw;

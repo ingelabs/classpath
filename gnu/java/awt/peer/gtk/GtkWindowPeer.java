@@ -30,11 +30,11 @@ public class GtkWindowPeer extends GtkContainerPeer
   static final int dialogType=2;
   static final int popupType=3;
 
-  native void GtkWindowNew(int type, int w, int h);    
-  native void GtkWindowSetTitle(String title);    
-  native void GtkWindowSetPolicy(int shrink, int grow, int autos);    
-  native void GdkWindowLower();
-  native void GdkWindowRaise();
+  native void gtkWindowNew(int type, int w, int h);    
+  native void gtkWindowSetTitle(String title);    
+  native void gtkWindowSetPolicy(int shrink, int grow, int autos);    
+  native void gdkWindowLower();
+  native void gdkWindowRaise();
   
   public GtkWindowPeer(int type, Window w)
     {
@@ -45,7 +45,7 @@ public class GtkWindowPeer extends GtkContainerPeer
       if(type!=bogusType)
 	{
 	  Dimension d=w.getSize();
-	  GtkWindowNew(type,d.width,d.height);
+	  gtkWindowNew(type,d.width,d.height);
 	}
     }
 
@@ -57,11 +57,11 @@ public class GtkWindowPeer extends GtkContainerPeer
   
     public void toBack()
     {
-	GdkWindowLower();
+      gdkWindowLower();
     }
 
     public void toFront()
     {
-	GdkWindowRaise();
+      gdkWindowRaise();
     }
 }

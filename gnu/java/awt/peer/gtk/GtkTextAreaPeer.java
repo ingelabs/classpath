@@ -60,7 +60,7 @@ public class GtkTextAreaPeer extends GtkTextComponentPeer
       gtkTextNew (editable, text, hscroll, vscroll);
 
       Point p=ta.getLocation();
-      GtkFixedPut (cp,p.x,p.y);
+      gtkFixedPut (cp,p.x,p.y);
     }
 
   public Dimension getMinimumSize (int rows, int cols)

@@ -28,24 +28,24 @@ public class GtkFileDialogPeer extends GtkDialogPeer
     implements FileDialogPeer
 {
   
-  native void GtkFileSelectionNew();
-  native void GtkFileSelectionSetFilename(String file);
+  native void gtkFileSelectionNew();
+  native void gtkFileSelectionSetFilename(String file);
   
     public GtkFileDialogPeer(FileDialog fd)
     {
 	super (bogusType, fd);
 	System.out.println("FileDialogPeer contructor");
-	GtkFileSelectionNew();
+	gtkFileSelectionNew();
     }
 
     public void setDirectory(String directory)
     {
-	GtkFileSelectionSetFilename(directory);
+	gtkFileSelectionSetFilename(directory);
     }
 
     public void setFile(String file)
     {
-	GtkFileSelectionSetFilename(file);
+	gtkFileSelectionSetFilename(file);
     }
 
     public void setFilenameFilter(FilenameFilter filter)

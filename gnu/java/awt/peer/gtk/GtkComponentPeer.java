@@ -27,14 +27,14 @@ import java.awt.peer.ComponentPeer;
 public class GtkComponentPeer extends GtkGenericPeer
   implements ComponentPeer
 {
-  native void GtkWidgetShow();
-  native void GtkWidgetShowChildren();
-  native void GtkWidgetGetDimensions(int[] dim);
-  native void GtkWidgetSetUsize(int width, int height);
+  native void gtkWidgetShow();
+  native void gtkWidgetShowChildren();
+  native void gtkWidgetGetDimensions(int[] dim);
+  native void gtkWidgetSetUsize(int width, int height);
 
-  native void GtkFixedNew (int w, int h);
-  native void GtkFixedPut (Object parent, int x, int y);
-  native void GtkFixedMove(int x, int y);
+  native void gtkFixedNew (int w, int h);
+  native void gtkFixedPut (Object parent, int x, int y);
+  native void gtkFixedMove(int x, int y);
     
   public int checkImage (Image image, int width, int height, 
 			 ImageObserver observer) 
@@ -94,7 +94,7 @@ public class GtkComponentPeer extends GtkGenericPeer
   public Dimension getMinimumSize () 
     {
       int dim[]=new int[2];
-      GtkWidgetGetDimensions (dim);
+      gtkWidgetGetDimensions (dim);
       System.out.println ("componentpeer: min: " + dim[0] + ", " + dim[1]);
       Dimension d = new Dimension (dim[0],dim[1]);
       return (d);
@@ -103,7 +103,7 @@ public class GtkComponentPeer extends GtkGenericPeer
   public Dimension getPreferredSize ()
     {
       int dim[]=new int[2];
-      GtkWidgetGetDimensions (dim);
+      gtkWidgetGetDimensions (dim);
       Dimension d = new Dimension (dim[0],dim[1]);
 
       System.out.println ("Cpeer.pref: " +this+":"+ dim[0] + ", " + dim[1]);
@@ -145,7 +145,7 @@ public class GtkComponentPeer extends GtkGenericPeer
   public void paint(Graphics g)
     {
       System.out.println("componentpeer: paint");
-      GtkWidgetShow();
+      gtkWidgetShow();
     }
 
   public Dimension preferredSize()
@@ -185,8 +185,8 @@ public class GtkComponentPeer extends GtkGenericPeer
   public void setBounds (int x, int y, int width, int height) 
     {
       System.out.println("Cpeer.setbounds: "+this+": "+x+","+y+","+width+","+height);
-      GtkWidgetSetUsize(width,height);
-      GtkFixedMove(x,y);
+      gtkWidgetSetUsize(width,height);
+      gtkFixedMove(x,y);
     }
 
   public void setCursor (Cursor cursor) 
@@ -211,7 +211,7 @@ public class GtkComponentPeer extends GtkGenericPeer
       if(b)
 	{
 	  System.out.println("componentpeer: setting visible: "+ this);
-	  GtkWidgetShow();
+	  gtkWidgetShow();
 	}
     }
   

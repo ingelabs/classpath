@@ -27,21 +27,21 @@ public class GtkButtonPeer extends GtkComponentPeer
     implements ButtonPeer
 {
 
-  native void GtkButtonNewWithLabel (String label);
-  native void GtkButtonLabelSet (String label);    
+  native void gtkButtonNewWithLabel (String label);
+  native void gtkButtonLabelSet (String label);    
 
     public GtkButtonPeer (Button b, ComponentPeer cp)
     {
-	GtkButtonNewWithLabel (b.getLabel());
+	gtkButtonNewWithLabel (b.getLabel());
 	Point p=b.getLocation();
 	System.out.println("buttonpeer: location: "+p.x+","+p.y);
 
-	GtkFixedPut (cp,p.x,p.y);
+	gtkFixedPut (cp,p.x,p.y);
     }
     
     public void setLabel (String label) 
     {
 	System.out.println("java setlabel");
-	GtkButtonLabelSet(label);
+	gtkButtonLabelSet(label);
     }    
 }

@@ -27,11 +27,11 @@ public class GtkCheckboxPeer extends GtkComponentPeer
   implements CheckboxPeer
 {
 
-  native void GtkRadioButtonSetGroup (Object group);
-  native void GtkRadioButtonNew (Object group, boolean checked, String label);
-  native void GtkCheckButtonNew (boolean checked, String label);
-  native void GtkCheckButtonSetState (boolean checked);
-  native void GtkCheckButtonSetLabel (String label);
+  native void gtkRadioButtonSetGroup (Object group);
+  native void gtkRadioButtonNew (Object group, boolean checked, String label);
+  native void gtkCheckButtonNew (boolean checked, String label);
+  native void gtkCheckButtonSetState (boolean checked);
+  native void gtkCheckButtonSetLabel (String label);
 
   public GtkCheckboxPeer (Checkbox c, ComponentPeer cp)
     {
@@ -42,25 +42,25 @@ public class GtkCheckboxPeer extends GtkComponentPeer
       CheckboxGroup group = c.getCheckboxGroup ();
       
       if (group == null)
-	GtkCheckButtonNew (c.getState (), c.getLabel ());
+	gtkCheckButtonNew (c.getState (), c.getLabel ());
       else
-	GtkRadioButtonNew (group, c.getState(), c.getLabel ());
+	gtkRadioButtonNew (group, c.getState(), c.getLabel ());
 
-      GtkFixedPut (cp, p.x, p.y);
+      gtkFixedPut (cp, p.x, p.y);
     }
 
   public void setCheckboxGroup (CheckboxGroup group)
     {
-      GtkRadioButtonSetGroup (group);
+      gtkRadioButtonSetGroup (group);
     }
   
   public void setLabel (String label)
     {
-      GtkCheckButtonSetLabel (label);
+      gtkCheckButtonSetLabel (label);
     }
   
   public void setState (boolean state)
     {
-      GtkCheckButtonSetState (state);
+      gtkCheckButtonSetState (state);
     }
 }
