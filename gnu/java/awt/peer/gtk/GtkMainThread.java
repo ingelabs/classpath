@@ -49,6 +49,9 @@ public class GtkMainThread extends GtkGenericPeer implements Runnable
       gtkInit();
       notify();
     }
+//      try {
+//      Thread.sleep (5000);
+//      } catch (InterruptedException e) {}
     gtkMain();
   }
 }

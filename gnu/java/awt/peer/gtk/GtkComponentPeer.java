@@ -79,10 +79,7 @@ public class GtkComponentPeer extends GtkGenericPeer
       setEnabled (false);
     }
 
-  public void dispose () 
-    {
-      System.out.println("componentpeer: dispose");
-    }
+  native public void dispose ();
 
   public void enable () 
     {

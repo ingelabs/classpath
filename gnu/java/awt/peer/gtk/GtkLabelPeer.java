@@ -51,7 +51,6 @@ public class GtkLabelPeer extends GtkComponentPeer
       Point p=l.getLocation();
       
       gtkFixedPut (cp,p.x,p.y);
-      syncAttrs ();
     }
     
     public void setText (String text) 

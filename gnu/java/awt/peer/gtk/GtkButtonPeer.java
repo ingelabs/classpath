@@ -34,15 +34,15 @@ public class GtkButtonPeer extends GtkComponentPeer
   {
     super (b);
     gtkButtonNewWithLabel (b.getLabel());
-    Point p=b.getLocation();
-    System.out.println("buttonpeer: location: "+p.x+","+p.y);
+    Point p = b.getLocation ();
+    System.out.println ("buttonpeer: location: "+p.x+","+p.y);
     
-    gtkFixedPut (cp,p.x,p.y);
+    gtkFixedPut (cp, p.x, p.y);
   }
     
   public void setLabel (String label) 
   {
-    System.out.println("java setlabel");
-    gtkButtonLabelSet(label);
+    System.out.println ("java setlabel");
+    gtkButtonLabelSet (label);
   }    
 }

@@ -37,12 +37,6 @@ public class GtkGenericPeer
       this.awtWidget = awtWidget;
     }
 
-  protected void postMouseEvent(int id, long when, int mods, int x, int y, 
-				int clickCount, boolean popupTrigger) {
-    q.postEvent(new MouseEvent((Component)awtWidget, id, when, mods, x, y, 
-			       clickCount, popupTrigger));
-  }
-
   public static void enableQueue(EventQueue sq) {
     if (q == null)
       q = sq;
