@@ -1,5 +1,5 @@
 /* EncoderUTF8.java -- Encoding class for the UTF-8 scheme
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -110,7 +110,7 @@ convertToBytes(char[] buf, int buf_offset, int len, byte[] bbuf,
 {
   for (int i = buf_offset; i < len; i++)
     {
-      if (buf[i] >= 0x0000 && buf[i] <= 0x007F)
+      if (buf[i] <= 0x007F)
         {
           bbuf[bbuf_offset] = (byte)(buf[i] & 0xFF);
           ++bbuf_offset;

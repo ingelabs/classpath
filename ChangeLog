@@ -1,3 +1,8 @@
+2002-11-27  Tom Tromey  <tromey@redhat.com>
+
+	* gnu/java/io/encode/EncoderUTF8.java (convertToBytes): Removed
+	redundant test.
+
 2002-11-23  Mark Wielaard  <mark@klomp.org>
 
 	* javax/transaction/HeuristicCommitException.java: New file from gcj,
