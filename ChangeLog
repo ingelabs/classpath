@@ -1,5 +1,10 @@
 2003-08-19  Torsten Rupp  <rupp@lisa.aicas.com>
 
+	* native/target/generic/target_generic_network.h:
+	Fixed TARGET_NATIVE_NETWORK_GET_HOSTNAME() macro
+
+2003-08-19  Torsten Rupp  <rupp@lisa.aicas.com>
+
 	* native/jni/java-nio/java_nio_FileChannelImpl.c:
 	Fixed return value of Java_java_nio_channels_FileChannelImpl_size(),
         Java_java_nio_channels_FileChannelImpl_implPosition__()
