@@ -1539,7 +1539,7 @@ public final class Character implements Serializable, Comparable
   public static String toString(char ch)
   {
     // Package constructor avoids an array copy.
-    return new String(new char[] { value }, 0, 1, true);
+    return new String(new char[] { ch }, 0, 1, true);
   }
 
   /**
