@@ -47,6 +47,8 @@ import javax.print.attribute.SupportedValuesAttribute;
 public final class JobKOctetsSupported extends SetOfIntegerSyntax
   implements SupportedValuesAttribute
 {
+  private static final long serialVersionUID = -2867871140549897443L;
+
   /**
    * Constructs a <code>JobKOctetsSupported</code> object.
    */

@@ -46,9 +46,11 @@ import javax.print.attribute.PrintRequestAttribute;
 /**
  * @author Michael Koch (konqueror@gmx.de)
  */
-public final class Finishings extends EnumSyntax
+public class Finishings extends EnumSyntax
   implements DocAttribute, PrintJobAttribute, PrintRequestAttribute
 {
+  private static final long serialVersionUID = -627840419548391754L;
+
   public static final Finishings NONE = new Finishings(0);
   public static final Finishings STAPLE = new Finishings(1);
   public static final Finishings COVER = new Finishings(2);

@@ -47,6 +47,8 @@ import javax.print.attribute.PrintServiceAttribute;
 public class PrinterIsAcceptingJobs extends EnumSyntax
   implements PrintServiceAttribute
 {
+  private static final long serialVersionUID = -5052010680537678061L;
+
   public static final PrinterIsAcceptingJobs NOT_ACCEPTING_JOBS =
     new PrinterIsAcceptingJobs(0);
   public static final PrinterIsAcceptingJobs ACCEPTING_JOBS =

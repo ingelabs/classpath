@@ -47,6 +47,8 @@ import javax.print.attribute.PrintServiceAttribute;
 public class PDLOverrideSupported extends EnumSyntax
   implements PrintServiceAttribute
 {
+  private static final long serialVersionUID = -4393264467928463934L;
+
   public static final PDLOverrideSupported NOT_ATTEMPTED =
     new PDLOverrideSupported(0);
   public static final PDLOverrideSupported ATTEMPTED =

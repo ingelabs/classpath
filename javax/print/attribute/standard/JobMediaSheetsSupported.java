@@ -47,6 +47,8 @@ import javax.print.attribute.SupportedValuesAttribute;
 public final class JobMediaSheetsSupported extends SetOfIntegerSyntax
   implements SupportedValuesAttribute
 {
+  private static final long serialVersionUID = 2953685470388672940L;
+
   /**
    * Constructs a <code>JobMediaSheetsSupported</code> object.
    */

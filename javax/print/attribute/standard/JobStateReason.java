@@ -47,6 +47,8 @@ import javax.print.attribute.EnumSyntax;
 public class JobStateReason extends EnumSyntax
   implements Attribute
 {
+  private static final long serialVersionUID = -8765894420449009168L;
+
   public static final JobStateReason ABORTED_BY_SYSTEM = new JobStateReason(1);
 
   /**

@@ -47,6 +47,8 @@ import javax.print.attribute.PrintServiceAttribute;
 public final class PrinterStateReasons extends HashMap
   implements PrintServiceAttribute
 {
+  private static final long serialVersionUID = -3731791085163619457L;
+
   /**
    * Returns category of this class.
    *

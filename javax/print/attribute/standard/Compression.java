@@ -47,6 +47,8 @@ import javax.print.attribute.EnumSyntax;
 public class Compression extends EnumSyntax
   implements DocAttribute
 {
+  private static final long serialVersionUID = -5716748913324997674L;
+
   public static final Compression NONE = new Compression(0);
   public static final Compression DEFLATE = new Compression(1);
   public static final Compression GZIP = new Compression(2);

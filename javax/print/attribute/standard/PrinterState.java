@@ -47,6 +47,8 @@ import javax.print.attribute.PrintServiceAttribute;
 public final class PrinterState extends EnumSyntax
   implements PrintServiceAttribute
 {
+  private static final long serialVersionUID = -649578618346507718L;
+
   public static final PrinterState UNKNOWN = new PrinterState(0);
   public static final PrinterState IDLE = new PrinterState(1);
   public static final PrinterState PROCESSING = new PrinterState(2);

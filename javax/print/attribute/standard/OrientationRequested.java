@@ -49,6 +49,8 @@ import javax.print.attribute.PrintRequestAttribute;
 public final class OrientationRequested extends EnumSyntax
   implements DocAttribute, PrintRequestAttribute, PrintJobAttribute
 {
+  private static final long serialVersionUID = -4447437289862822276L;
+
   public static final OrientationRequested PORTRAIT =
     new OrientationRequested(0);
   public static final OrientationRequested LANDSCAPE =

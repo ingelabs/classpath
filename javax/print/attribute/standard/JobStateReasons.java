@@ -47,11 +47,13 @@ import javax.print.attribute.PrintJobAttribute;
 public final class JobStateReasons extends HashSet
   implements PrintJobAttribute
 {
-	/**
-	 * Returns category of this class.
-	 *
-	 * @return the class <code>ColorSupported</code> itself
-	 */
+  private static final long serialVersionUID = 8849088261264331812L;
+
+  /**
+   * Returns category of this class.
+   *
+   * @return the class <code>ColorSupported</code> itself
+   */
   public final Class getCategory()
   {
     return JobStateReasons.class;

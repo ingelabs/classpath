@@ -47,6 +47,8 @@ import javax.print.attribute.SupportedValuesAttribute;
 public final class CopiesSupported extends SetOfIntegerSyntax
   implements SupportedValuesAttribute
 {
+  private static final long serialVersionUID = 6927711687034846001L;
+
   /**
    * Constructs a <code>CopiesSupported</code> object.
    */

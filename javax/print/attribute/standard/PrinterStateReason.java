@@ -47,6 +47,8 @@ import javax.print.attribute.EnumSyntax;
 public class PrinterStateReason extends EnumSyntax
   implements Attribute
 {
+  private static final long serialVersionUID = -1623720656201472593L;
+
   public static final PrinterStateReason OTHER = new PrinterStateReason(0);
   public static final PrinterStateReason MEDIA_NEEDED =
     new PrinterStateReason(1);

@@ -47,6 +47,8 @@ import javax.print.attribute.EnumSyntax;
 public class ReferenceUriSchemesSupported extends EnumSyntax
   implements Attribute
 {
+  private static final long serialVersionUID = -8989076942813442805L;
+
   public static final ReferenceUriSchemesSupported FTP =
     new ReferenceUriSchemesSupported(0);
   public static final ReferenceUriSchemesSupported HTTP =

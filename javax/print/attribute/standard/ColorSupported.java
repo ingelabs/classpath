@@ -47,6 +47,8 @@ import javax.print.attribute.PrintServiceAttribute;
 public final class ColorSupported extends EnumSyntax
   implements PrintServiceAttribute
 {
+  private static final long serialVersionUID = -2700555589688535545L;
+
   public static final ColorSupported NOT_SUPPORTED = new ColorSupported(0);
   public static final ColorSupported SUPPORTED = new ColorSupported(1);
 

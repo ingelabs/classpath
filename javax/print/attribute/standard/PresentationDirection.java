@@ -48,6 +48,8 @@ import javax.print.attribute.PrintRequestAttribute;
 public final class PresentationDirection extends EnumSyntax
   implements PrintRequestAttribute, PrintJobAttribute
 {
+  private static final long serialVersionUID = 8294728067230931780L;
+
   public static final PresentationDirection TOBOTTOM_TORIGHT =
     new PresentationDirection(0);
   public static final PresentationDirection TOBOTTOM_TOLEFT =

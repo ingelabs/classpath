@@ -45,9 +45,11 @@ import javax.print.attribute.PrintRequestAttribute;
 /**
  * @author Michael Koch (konqueror@gmx.de)
  */
-public final class JobSheets extends EnumSyntax
+public class JobSheets extends EnumSyntax
   implements PrintJobAttribute, PrintRequestAttribute
 {
+  private static final long serialVersionUID = -4735258056132519759L;
+
   public static final JobSheets NONE = new JobSheets(0);
   public static final JobSheets STANDARD = new JobSheets(1);
 

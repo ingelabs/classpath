@@ -42,6 +42,8 @@ package javax.print.attribute.standard;
  */
 public class MediaSizeName extends Media
 {
+  private static final long serialVersionUID = 2778798329756942747L;
+
   public static final MediaSizeName ISO_A0 = new MediaSizeName(0);
   public static final MediaSizeName ISO_A1 = new MediaSizeName(1);
   public static final MediaSizeName ISO_A2 = new MediaSizeName(2);

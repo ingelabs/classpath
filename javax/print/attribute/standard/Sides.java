@@ -49,6 +49,8 @@ import javax.print.attribute.PrintRequestAttribute;
 public final class Sides extends EnumSyntax
   implements DocAttribute, PrintRequestAttribute, PrintJobAttribute
 {
+  private static final long serialVersionUID = -6890309414893262822L;
+
   public static final Sides ONE_SIDED = new Sides(0);
   public static final Sides TWO_SIDED_LONG_EDGE = new Sides(1);
   public static final Sides TWO_SIDED_SHORT_EDGE = new Sides(2);

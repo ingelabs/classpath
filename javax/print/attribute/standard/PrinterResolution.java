@@ -49,6 +49,8 @@ import javax.print.attribute.ResolutionSyntax;
 public final class PrinterResolution extends ResolutionSyntax
   implements DocAttribute, PrintJobAttribute, PrintRequestAttribute
 {
+  private static final long serialVersionUID = 13090306561090558L;
+
   /**
    * Constructs a <code>PrinterResolution</code> object.
    */

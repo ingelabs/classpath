@@ -49,6 +49,8 @@ import javax.print.attribute.SetOfIntegerSyntax;
 public final class PageRanges extends SetOfIntegerSyntax
   implements DocAttribute, PrintRequestAttribute, PrintJobAttribute
 {
+  private static final long serialVersionUID = 8639895197656148392L;
+
   /**
    * Constructs a <code>PageRanges</code> object.
    */

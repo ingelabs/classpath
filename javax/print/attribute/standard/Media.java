@@ -49,9 +49,11 @@ import javax.print.attribute.PrintRequestAttribute;
 public abstract class Media extends EnumSyntax
   implements DocAttribute, PrintRequestAttribute, PrintJobAttribute
 {
-	/**
-	 * Constructs a <code>Media</code> object.
-	 */
+  private static final long serialVersionUID = -2823970704630722439L;
+
+  /**
+   * Constructs a <code>Media</code> object.
+   */
   protected Media(int value)
   {
     super(value);

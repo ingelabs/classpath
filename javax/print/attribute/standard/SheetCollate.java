@@ -49,6 +49,8 @@ import javax.print.attribute.PrintRequestAttribute;
 public final class SheetCollate extends EnumSyntax
   implements DocAttribute, PrintRequestAttribute, PrintJobAttribute
 {
+  private static final long serialVersionUID = 7080587914259873003L;
+
   public static final SheetCollate UNCOLLATED = new SheetCollate(0);
   public static final SheetCollate COLLATED = new SheetCollate(1);
 

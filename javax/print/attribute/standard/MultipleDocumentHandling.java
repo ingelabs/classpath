@@ -45,9 +45,11 @@ import javax.print.attribute.PrintRequestAttribute;
 /**
  * @author Michael Koch (konqueror@gmx.de)
  */
-public final class MultipleDocumentHandling extends EnumSyntax
+public class MultipleDocumentHandling extends EnumSyntax
   implements PrintJobAttribute, PrintRequestAttribute
 {
+  private static final long serialVersionUID = 8098326460746413466L;
+
   public static final MultipleDocumentHandling SEPARATE_DOCUMENTS_COLLATED_COPIES =
     new MultipleDocumentHandling(2);
 

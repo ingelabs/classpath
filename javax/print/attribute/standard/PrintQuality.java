@@ -49,6 +49,8 @@ import javax.print.attribute.PrintRequestAttribute;
 public class PrintQuality extends EnumSyntax
   implements DocAttribute, PrintJobAttribute, PrintRequestAttribute
 {
+  private static final long serialVersionUID = -3072341285225858365L;
+
   public static final PrintQuality DRAFT = new PrintQuality(0);
   public static final PrintQuality NORMAL = new PrintQuality(1);
   public static final PrintQuality HIGH = new PrintQuality(2);

@@ -44,9 +44,11 @@ import javax.print.attribute.PrintJobAttribute;
 /**
  * @author Michael Koch (konqueror@gmx.de)
  */
-public final class JobState extends EnumSyntax
+public class JobState extends EnumSyntax
   implements PrintJobAttribute
 {
+  private static final long serialVersionUID = 400465010094018920L;
+
   public static final JobState UNKNOWN = new JobState(0);
   public static final JobState PENDING = new JobState(1);
   public static final JobState PENDING_HELD = new JobState(2);

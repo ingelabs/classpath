@@ -86,6 +86,8 @@ public class DocFlavor implements Cloneable, Serializable
   public static class CHAR_ARRAY
     extends DocFlavor
   {
+    private static final long serialVersionUID = -8720590903724405128L;
+    
     public CHAR_ARRAY(String mimeType)
     {
       super(mimeType, "[C");
@@ -130,6 +132,8 @@ public class DocFlavor implements Cloneable, Serializable
   public static class READER
     extends DocFlavor
   {
+    private static final long serialVersionUID = 7100295812579351567L;
+    
     public READER(String mimeType)
     {
       super(mimeType, "java.io.Reader");
@@ -142,6 +146,8 @@ public class DocFlavor implements Cloneable, Serializable
   public static class SERVICE_FORMATTED
     extends DocFlavor
   {
+    private static final long serialVersionUID = 6181337766266637256L;
+    
     public SERVICE_FORMATTED(String className)
     {
       super("application/x-java-jvm-local-objectref", className);
@@ -154,6 +160,8 @@ public class DocFlavor implements Cloneable, Serializable
   public static class STRING
     extends DocFlavor
   {
+    private static final long serialVersionUID = 4414407504887034035L;
+    
     public STRING(String mimeType)
     {
       super(mimeType, "java.lang.String");
@@ -166,6 +174,8 @@ public class DocFlavor implements Cloneable, Serializable
   public static class URL
     extends DocFlavor
   {
+    private static final long serialVersionUID = 2936725788144902062L;
+    
     public URL(String mimeType)
     {
       super(mimeType, "java.net.URL");

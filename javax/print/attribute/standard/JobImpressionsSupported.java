@@ -47,6 +47,8 @@ import javax.print.attribute.SupportedValuesAttribute;
 public final class JobImpressionsSupported extends SetOfIntegerSyntax
   implements SupportedValuesAttribute
 {
+  private static final long serialVersionUID = -4887354803843173692L;
+
   /**
    * Constructs a <code>JobImpressionsSupported</code> object.
    */

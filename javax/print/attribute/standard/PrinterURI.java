@@ -48,6 +48,8 @@ import javax.print.attribute.URISyntax;
 public final class PrinterURI extends URISyntax
   implements PrintServiceAttribute
 {
+  private static final long serialVersionUID = 7923912792485606497L;
+
   /**
    * Constructs a <code>PrinterURI</code> object.
    */
