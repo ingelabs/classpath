@@ -1,3 +1,9 @@
+2001-10-30  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/Collections.java:
+	* java/util/Vector.java:
+	* java/util/WeakHashMap.java: Fix spelling errors.
+
 2001-10-27  C. Brian Jones <cbj@gnu.org>
 	* include/jni.h.in: added largely from gcj with edits based on 
 	published specification in ISBN 0-201-32557-2, sablepath-0.1.7,

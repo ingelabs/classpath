@@ -32,7 +32,7 @@ import java.io.Serializable;
 /**
  * The <code>Vector</code> classes implements growable arrays of Objects.
  * You can access elements in a Vector with an index, just as you
- * can in a built in array, but Vectors can grow and shrink to accomodate
+ * can in a built in array, but Vectors can grow and shrink to accommodate
  * more or fewer objects.<p>
  *
  * Vectors try to mantain efficiency in growing by having a
@@ -300,11 +300,11 @@ public class Vector extends AbstractList
   }
 
   /**
-   * Returns the first occurence of <code>elem</code> in the Vector, or -1 if
+   * Returns the first occurrence of <code>elem</code> in the Vector, or -1 if
    * <code>elem</code> is not found.
    *
    * @param elem the object to search for
-   * @return the index of the first occurence, or -1 if not found
+   * @return the index of the first occurrence, or -1 if not found
    */
   public int indexOf(Object elem)
   {
@@ -313,13 +313,13 @@ public class Vector extends AbstractList
 
   /**
    * Searches the vector starting at <code>index</code> for object
-   * <code>elem</code> and returns the index of the first occurence of this
+   * <code>elem</code> and returns the index of the first occurrence of this
    * Object.  If the object is not found, or index is larger than the size
    * of the vector, -1 is returned.
    *
    * @param e the Object to search for
    * @param index start searching at this index
-   * @return the index of the next occurence, or -1 if it is not found
+   * @return the index of the next occurrence, or -1 if it is not found
    * @throws IndexOutOfBoundsException if index &lt; 0
    */
   public synchronized int indexOf(Object e, int index)
@@ -343,7 +343,7 @@ public class Vector extends AbstractList
   }
 
   /**
-   * Returns the index of the first occurence of <code>elem</code>, when
+   * Returns the index of the first occurrence of <code>elem</code>, when
    * searching backwards from <code>index</code>.  If the object does not
    * occur in this Vector, or index is less than 0, -1 is returned.
    *
