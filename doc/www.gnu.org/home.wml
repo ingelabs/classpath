@@ -186,7 +186,7 @@ modules.
 </td>
 </tr>
 <tr>
-<td><createlink url="http://sources.redhat.com/java/" name="GCJ"></td>
+<td><createlink url="http://gcc.gnu.org/java/" name="GCJ"></td>
 <td>
 Although GNU Classpath cannot be directly compiled for use with
 GCJ at this time, a lot of work has been done to merge GCJ class
@@ -197,9 +197,10 @@ name="located here">.
 </td>
 </tr>
 <tr>
-<td><createlink url="http://sourceforge.net/projects/ikvm/" name="IKVM.NET">
+<td><createlink url="http://www.ikvm.net/" name="IKVM.NET">
 <td>
 A JVM for the .NET platform.
+Runs on top of <createlink url="http://www.go-mono.org/" name="Mono">.
 </td>
 </tr>
 <tr>
@@ -243,21 +244,30 @@ This VM provides a repackaged version of GNU Classpath that aims to
 be the easiest to install and use.
 </td>
 </tr>
+<tr>
+<td><createlink url="http://www.oberon.ethz.ch/jaos/" name="Jaos"></td>
+<td>
+The Jaos VM is a JVM using GNU Classpath implemented on top of the
+<createlink url="http://bluebottle.ethz.ch/" name="Aos/Bluebottle"> kernel.
+This kernel offers many useful features like garbage collected memory
+management, dynamic module loading, and object-oriented model. This makes the
+implementation of a JVM particularly attractive and simple.
+</td>
+</tr>
+<tr>
+<td><createlink url="http://sourceforge.net/projects/jamiga" name="JAmiga"></td>
+<td>
+A JRE implementation for the Amiga Platform.
+</td>
+</tr>
 </table>
 
-<H4>Projects or Commercial Products</H4> 
+<H4>Other projects using GNU classpath</H4> 
 <p>
 </p>
 
 <table border="1" width="100%">
 <tr><th>Project</th><th>Description</th></tr>
-<tr>
-<td><createlink url="http://www.e-leos.net/" name="E-LEOS"></td>
-<td>
-GNU Classpath is used as part of this project to create a Java operating
-system.
-</td>
-</tr>
 <tr>
 <td><createlink url="http://www.flex-compiler.lcs.mit.edu/" name="Flex Compiler"></td>
 <td>
@@ -266,22 +276,6 @@ include a program analysis and transformation framework for distributed
 and embedded systems. Native backends exist for the StrongARM and MIPS 
 processors; it can also generate portable C code that can run on any 
 platform with gcc.
-</td>
-</tr>
-<tr>
-<td><createlink url="http://www.svtehs.com/ipjv.htm" name="IPJV"></td>
-<td>
-The IPJVM virtual machine for Java is a clean room implementation, 
-that has been specially optimized to run on device with limited amount 
-of internal memory.  IPJV-ES evaluation board is available.
-</td>
-</tr>
-<tr>
-<td><createlink url="http://www.aicas.com/jamaica.html" name="JamaicaVM"></td>
-<td>
-JamaicaVM provides realtime execution, garbage collection, sophisticated
-static optimizations and targets many real-time operating systems and 
-processor architectures.
 </td>
 </tr>
 </table>

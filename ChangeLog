@@ -1,5 +1,10 @@
 2003-08-10  Mark Wielaard  <mark@klomp.org>
 
+	* doc/www.gnu.org/home.wml: Add Joas and JAmiga. Update links.
+	Remove links to proprietary projects.
+
+2003-08-10  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/classpath/Makefile.am (EXTRA_DIST): Add RawData.java.
 	* javax/swing/Makefile.am (EXTRA_DIST): Add Popup.java and
 	PopupFactory.java.
