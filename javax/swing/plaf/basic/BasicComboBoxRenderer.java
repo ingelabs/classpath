@@ -1,5 +1,5 @@
-/* DefaultListCellRenderer.java --
-   Copyright (C) 2002, 2004 Free Software Foundation, Inc.
+/* BasicComboBoxRenderer.java --
+   Copyright (C) 2004  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,51 +35,66 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package javax.swing;
+package javax.swing.plaf.basic;
 
+import java.awt.Color;
 import java.awt.Component;
-import java.awt.Rectangle;
+import java.awt.Dimension;
 import java.io.Serializable;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+import javax.swing.SwingConstants;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
+import javax.swing.plaf.UIResource;
 
 
 /**
- * DefaultListCellRenderer. This class is responsible for rendering  list
- * cells.
+ * This class is renderer for the combo box. 
  *
- * @author Andrew Selkirk
- * @version 1.0
+ * @author Olga Rodimina
  */
-public class DefaultListCellRenderer extends JLabel implements ListCellRenderer,
-                                                               Serializable
+public class BasicComboBoxRenderer extends JLabel implements ListCellRenderer,
+                                                             Serializable
 {
-  static final long serialVersionUID = 7708947179685189462L;
-
-  public static class UIResource extends DefaultListCellRenderer
-    implements javax.swing.plaf.UIResource
-  {
-    public UIResource()
-    {
-    }
-  }
-
   /**
    * This border is used whenever renderer doesn't have a focus.
    */
-  protected static Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
+  protected static Border noFocusBorder = new EmptyBorder(0, 0, 0, 0);
+
+  /**
+   * Creates a new BasicComboBoxRenderer object.
+   */
+  public BasicComboBoxRenderer()
+  {
+    setHorizontalAlignment(SwingConstants.LEFT);
+  }
+
+  /**
+   * Returns preferredSize of the renderer
+   *
+   * @return preferredSize of the renderer
+   */
+  public Dimension getPreferredSize()
+  {
+    return super.getPreferredSize();
+  }
 
   /**
    * getListCellRendererComponent
    *
-   * @param list JList list for the 'value'
+   * @param list List of items for which to the background and foreground
+   *        colors
    * @param value object that should be rendered in the cell
-   * @param index index of the cell
+   * @param index index of the cell in the list of items.
    * @param isSelected draw cell highlighted if isSelected is true
    * @param cellHasFocus draw focus rectangle around cell if the cell has
    *        focus
    *
-   * @return Component that will be painted to the desired cell.
+   * @return Component that will be used to draw the desired cell.
    */
   public Component getListCellRendererComponent(JList list, Object value,
                                                 int index, boolean isSelected,
@@ -88,6 +103,8 @@ public class DefaultListCellRenderer extends JLabel implements ListCellRenderer,
     String s = value.toString();
     setText(s);
     setOpaque(true);
+
+    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
 
     if (isSelected)
       {
@@ -105,7 +122,6 @@ public class DefaultListCellRenderer extends JLabel implements ListCellRenderer,
 
     // Use focusCellHighlightBorder when renderer has focus and 
     // noFocusBorder otherwise
-    
     if (cellHasFocus)
       setBorder(UIManager.getBorder("List.focusCellHighlightBorder"));
     else
@@ -114,64 +130,14 @@ public class DefaultListCellRenderer extends JLabel implements ListCellRenderer,
     return this;
   }
 
-  public void validate()
+  public static class UIResource extends BasicComboBoxRenderer
+    implements javax.swing.plaf.UIResource
   {
-  }
-
-  public void revalidate()
-  {
-  }
-
-  public void repaint(long tm, int x, int y, int w, int h)
-  {
-  }
-
-  public void repaint(Rectangle rect)
-  {
-  }
-
-  protected void firePropertyChange(String propertyName, Object oldValue,
-                                    Object newValue)
-  {
-  }
-
-  public void firePropertyChange(String propertyName, byte oldValue,
-                                 byte newValue)
-  {
-  }
-
-  public void firePropertyChange(String propertyName, char oldValue,
-                                 char newValue)
-  {
-  }
-
-  public void firePropertyChange(String propertyName, short oldValue,
-                                 short newValue)
-  {
-  }
-
-  public void firePropertyChange(String propertyName, int oldValue,
-                                 int newValue)
-  {
-  }
-
-  public void firePropertyChange(String propertyName, long oldValue,
-                                 long newValue)
-  {
-  }
-
-  public void firePropertyChange(String propertyName, float oldValue,
-                                 float newValue)
-  {
-  }
-
-  public void firePropertyChange(String propertyName, double oldValue,
-                                 double newValue)
-  {
-  }
-
-  public void firePropertyChange(String propertyName, boolean oldValue,
-                                 boolean newValue)
-  {
+    /**
+     * Creates a new UIResource object.
+     */
+    public UIResource()
+    {
+    }
   }
 }

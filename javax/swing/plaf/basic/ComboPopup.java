@@ -35,12 +35,69 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
 package javax.swing.plaf.basic;
+
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import javax.swing.JList;
+
 
 public interface ComboPopup
 {
-  void hide();
+  /**
+   * This method display popup menu containing list of JComboBox's items to
+   * the screen
+   */
   void show();
+
+  /**
+   * This method hides popup menu with list of JComboBox's item from the
+   * screen
+   */
+  void hide();
+
+  /**
+   * Retursn true if popup menu with JComboBOx's item is currently visible on
+   * the screen and false otherwise
+   *
+   * @return true if JComboBox's popup menu with list of items is currently
+   *         visible on the screen and false otherwise.
+   */
   boolean isVisible();
+
+  /**
+   * Return JList that is used to draw cells of the JComboBox.
+   *
+   * @return JList that is used to draw cells of the JcomboBox
+   */
+  JList getList();
+
+  /**
+   * This method returns MouseListener that listen's to mouse events occuring
+   * in the combo box
+   *
+   * @return MouseListenere
+   */
+  MouseListener getMouseListener();
+
+  /**
+   * This method returns MouseListener that listen's to mouse events occuring
+   * in the combo box.
+   *
+   * @return MouseMotionListener
+   */
+  MouseMotionListener getMouseMotionListener();
+
+  /**
+   * This method returns KeyListener that listen's to key events  occuring in
+   * the combo box.
+   *
+   * @return KeyListener
+   */
+  KeyListener getKeyListener();
+
+  /* This method removes any listeners that were installed */
+  void uninstallingUI();
 }

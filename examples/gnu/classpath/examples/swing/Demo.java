@@ -550,6 +550,12 @@ public class Demo
     return tabs;
   }
 
+  public static JComboBox mkComboBox(String[] names)
+  {
+    JComboBox box = new JComboBox(names);
+    return box;
+  }
+
   public static JSpinner mkSpinner()
   {
     JSpinner spinner = new JSpinner();
@@ -765,6 +771,14 @@ public class Demo
 
     new PopUpAction("ColorChooser",
 		    mkColorChooser(),
+		    panel);
+
+    new PopUpAction("ComboBox",
+		    mkComboBox(new String[] {"Stop",
+					     "Software",
+					     "Hoarders",
+					     "Support",
+					     "GNU!"}),
 		    panel);
 
     JButton exitDisposer = mkDisposerButton(frame);

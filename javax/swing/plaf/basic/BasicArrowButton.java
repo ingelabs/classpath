@@ -163,7 +163,7 @@ public class BasicArrowButton extends JButton implements SwingConstants
 
   /** The color the arrow is painted in if disabled and the bottom and
    * right edges of the button. */
-  private transient Color shadow = Color.BLACK;
+  private transient Color shadow = Color.gray;
 
   /** The color the arrow is painted in if enabled and the bottom and
    * right edges of the button. */
