@@ -1,5 +1,12 @@
 2003-02-15  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/awt/peer/gtk/GdkGraphics.java
+	(drawString): New method.
+	* java/awt/Graphics.java
+	(drawString): New abstract method.
+	
+2003-02-15  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/datatransfer/DataFlavor.java
 	(isRepresentationClassByteBuffer): Removed try-catch block.
 	(isRepresentationClassCharBuffer): Removed try-catch block.
