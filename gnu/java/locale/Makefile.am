@@ -8,9 +8,11 @@ character.uni \
 titlecase.uni \
 iso3166-a3.properties \
 iso3166.properties \
+iso3166_de.properties \
 iso639-a2-old.properties \
 iso639-a3.properties \
 iso639.properties \
 iso639_fr.properties \
-iso639_ga.properties
+iso639_ga.properties \
+iso639_de.properties
 
