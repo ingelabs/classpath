@@ -79,7 +79,7 @@ public class PrintStream extends FilterOutputStream
    * This boolean indicates whether or not an error has ever occured
    * on this stream.
    */
-  private boolean error_occurred;
+  private boolean error_occurred = false;
 
   /**
    * This is <code>true</code> if auto-flush is enabled, 
