@@ -1,3 +1,8 @@
+2003-11-17  Jeff Sturm  <jsturm@one-point.com>
+
+	* java/io/ByteArrayOutputStream.java (resize):
+	Fix off-by-one error.
+
 2003-11-17  Graydon Hoare  <graydon@redhat.com>
 
 	* javax/swing/plaf/basic/BasicDefaults.java: Rewrite to spec.
