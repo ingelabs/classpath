@@ -1,0 +1,9 @@
+Sat Jul 25 19:10:29 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* Decoder8859_1.java: Wrote this class and got a clean compile.
+
+	* DecoderEightBitLookup.java: Wrote this class and got a clean
+	compile.
+
+	* Decoder.java: Wrote this class and got a clean compile.
+
