@@ -1,3 +1,7 @@
+2004-01-25  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/Class.java (internalGetMethod): Now private.
+
 2004-01-25  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* java/awt/Component.java (show): Set visible to true before

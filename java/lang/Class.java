@@ -689,7 +689,7 @@ public final class Class implements Serializable
    * Like <code>getMethod(String,Class[])</code> but without the security
    * checks and returns null instead of throwing NoSuchMethodException.
    */
-  public Method internalGetMethod(String methodName, Class[] args)
+  private Method internalGetMethod(String methodName, Class[] args)
   {
     Method match = matchMethod(getDeclaredMethods(true), methodName, args);
     if (match != null)
