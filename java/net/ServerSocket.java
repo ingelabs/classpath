@@ -170,6 +170,40 @@ public class ServerSocket
   }
 
   /**
+   * Binds the server socket to a specified socket address
+   *
+   * @param endpoint The socket address to bind to
+   *
+   * @exception IOException If an error occurs
+   * @exception IllegalArgumentException If address type is not supported
+   * @exception SecurityException If a security manager exists and its
+   * checkListen method doesn't allow the operation
+   * 
+   * @since 1.4
+   */
+  public void bind (SocketAddress endpoint)
+    throws IOException
+  {
+  }
+ 
+  /**
+   * Binds the server socket to a specified socket address
+   *
+   * @param endpoint The socket address to bind to
+   * @param backlog The length of the pending connection queue
+   * 
+   * @exception IOException If an error occurs
+   * @exception IllegalArgumentException If address type is not supported
+   * @exception SecurityException If a security manager exists and its
+   * checkListen method doesn't allow the operation
+   *
+   * @since 1.4
+   */
+  public void bind (SocketAddress endpoint, int backlog) throws IOException
+  {
+  }
+  
+  /**
    * This method returns the local address to which this socket is bound
    *
    * @return The socket's local address
@@ -226,6 +260,13 @@ public class ServerSocket
    */
   public Socket accept () throws IOException
   {
+    if (impl == null)
+      throw new IOException ("Cannot initialize Socket implementation");
+
+    SecurityManager sm = System.getSecurityManager ();
+    if (sm != null)
+      sm.checkListen (impl.getLocalPort ());
+
     Socket s = new Socket();
     implAccept (s);
 

@@ -217,6 +217,19 @@ public abstract class SocketImpl implements SocketOptions
   protected int getPort() { return port; }
 
   /**
+   * Returns true or false when this socket supports sending urgent data
+   * or not.
+   *
+   * @since 1.4
+   */
+  protected boolean supportsUrgentData()
+  {
+    // This method has to be overwritten by socket classes that support
+    // sending urgend data.
+    return false;
+  }
+  
+  /**
    * Returns the local port this socket is bound to
    *
    * @return The local port

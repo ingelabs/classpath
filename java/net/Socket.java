@@ -80,6 +80,9 @@ public class Socket
    */
   SocketImpl impl;
 
+  private boolean inputShutdown;
+  private boolean outputShutdown;
+
   SocketChannel ch; // this field must have been set if created by SocketChannel
 
   // Constructors
@@ -97,6 +100,9 @@ public class Socket
       impl = factory.createSocketImpl();
     else
       impl = new PlainSocketImpl();
+
+    inputShutdown = false;
+    outputShutdown = false;
   }
 
   /**
@@ -118,6 +124,8 @@ public class Socket
   protected Socket (SocketImpl impl) throws SocketException
   {
     this.impl = impl;
+    this.inputShutdown = false;
+    this.outputShutdown = false;
   }
 
   /**
@@ -264,6 +272,9 @@ public class Socket
                  boolean stream) throws IOException
   {
     this();
+    this.inputShutdown = false;
+    this.outputShutdown = false;
+
     if (impl == null)
       throw new IOException("Cannot initialize Socket implementation");
 
@@ -281,6 +292,59 @@ public class Socket
 
     if (raddr != null)
       impl.connect(raddr, rport);
+  }
+
+  /**
+   * Binds the socket to the givent local address/port
+   *
+   * @param bindpoint The address/port to bind to
+   *
+   * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager exists and its
+   * checkConnect method doesn't allow the operation
+   * @exception IllegalArgumentException If the address type is not supported
+   * 
+   * @since 1.4
+   */
+  public void bind (SocketAddress bindpoint) throws IOException
+  {
+  }
+  
+  /**
+   * Connects the socket with a remote address.
+   *
+   * @param endpoint The address to connect to
+   *
+   * @exception IOException If an error occurs
+   * @exception IllegalArgumentException If the addess type is not supported
+   * @exception IllegalBlockingModeException If this socket has an associated
+   * channel, and the channel is in non-blocking mode
+   * 
+   * @since 1.4
+   */
+  public void connect (SocketAddress endpoint)
+    throws IOException
+  {
+  }
+
+  /**
+   * Connects the socket with a remote address. A timeout of zero is
+   * interpreted as an infinite timeout. The connection will then block
+   * until established or an error occurs.
+   *
+   * @param endpoint The address to connect to
+   *
+   * @exception IOException If an error occurs
+   * @exception IllegalArgumentException If the address type is not supported
+   * @exception IllegalBlockingModeException If this socket has an associated
+   * channel, and the channel is in non-blocking mode
+   * @exception SocketTimeoutException If the timeout is reached
+   * 
+   * @since 1.4
+   */
+  public void connect (SocketAddress endpoint, int timeout)
+    throws IOException
+  {
   }
 
   /**
@@ -519,6 +583,20 @@ public class Socket
       return(((Integer)linger).intValue());
     else
       return -1;
+  }
+
+  /**
+   * Sends urgent data through the socket
+   *
+   * @param data The data to send.
+   * Only the lowest eight bits of data are sent
+   *
+   * @exception IOException If an error occurs
+   *
+   * @since 1.4
+   */
+  public void sendUrgentData (int data) throws IOException
+  {
   }
 
   /**
@@ -804,7 +882,7 @@ public class Socket
    */
   public void shutdownInput() throws IOException
   {
-    // impl.shutdownInput();
+    inputShutdown = true;
   }
 
   /**
@@ -814,7 +892,7 @@ public class Socket
    */
   public void shutdownOutput() throws IOException
   {
-    // impl.shutdownOutput();
+    outputShutdown = true;
   }
 
   /**
@@ -921,5 +999,21 @@ public class Socket
   public boolean isBound ()
   {
     return getLocalAddress () != null;
+  }
+
+  /**
+   * Checks if the socket's input stream is shutdown
+   */
+  public boolean isInputShutdown ()
+  {
+    return inputShutdown;
+  }
+
+  /**
+   * Checks if the socket's output stream is shutdown
+   */
+  public boolean isOutputShutdown ()
+  {
+    return outputShutdown;
   }
 }
