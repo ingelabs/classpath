@@ -1,3 +1,12 @@
+2003-10-02  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/classpath/Configuration.java.in
+	(default_awt_peer_toolkit) :
+	New member variable for default AWT toolkit.
+	* java/awt/Toolkit.java
+	(default_toolkit_name): Initialize with
+	gnu.classpath.Configuration.default_awt_peer_toolkit.
+
 2003-09-29  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/table/AbstractTableModel.java

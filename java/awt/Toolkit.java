@@ -96,7 +96,7 @@ public abstract class Toolkit
 {
   /** The default toolkit name. */
   private static String default_toolkit_name
-    = "gnu.java.awt.peer.gtk.GtkToolkit";
+    = gnu.classpath.Configuration.default_awt_peer_toolkit;
 
   /**
    * The toolkit in use.  Once we load it, we don't ever change it
