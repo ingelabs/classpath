@@ -16,16 +16,15 @@ Copyright (C) 1998 Free Software Foundation, Inc.
 @end ifinfo
 
 @titlepage
+@title GNU Classpath Hacker's Guide
+@author Aaron M. Renn
+@author Paul N. Fisher
+@author John Keiser
 
-@title{GNU Classpath Hacker's Guide}
-@author{Aaron M. Renn}
-@author{Paul N. Fisher}
-@author{John Keiser}
 @page
 @vskip 0pt plus 1filll
 Copyright @copyright{} 1998 Free Software Foundation, Inc.
-
-@sp2 
+@sp 2
 Permission is granted to make and distribute verbatim copies of
 this document provided the copyright notice and this permission notice
 are preserved on all copies.
