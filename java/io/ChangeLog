@@ -1,3 +1,13 @@
+2000-04-21  Tom Tromey  <tromey@cygnus.com>
+
+	* PipedInputStream.java (try_not_to_block): Removed.
+	(read): Can return fewer than LEN bytes as long as at least one
+	byte was read.
+	* PipedReader.java (try_not_to_block): Removed.
+	(read): Can return fewer than LEN characters as long as at least
+	one character was read.
+	(connect, close, read, write): Fixed indentation.
+
 Wed Jul 29 21:18:58 1998  arenn's Development Account  <devel@larissa.foo.com>
 
 	* LineNumberReader.java: Fixed constructor which had infinite
