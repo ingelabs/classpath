@@ -2,6 +2,12 @@
 
 	* java/lang/ClassLoader.java
 	(defineClass(String,byte[],int,int,ProtectionDomain)):
+	Reverted previous commit.
+
+2004-10-11  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/ClassLoader.java
+	(defineClass(String,byte[],int,int,ProtectionDomain)):
 	Added call to SecurityManager.checkPackageDefinition().
 
 2004-10-11  Jeroen Frijters  <jeroen@frijters.net>

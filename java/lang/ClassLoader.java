@@ -435,13 +435,6 @@ public abstract class ClassLoader
       domain = defaultProtectionDomain;
     if (! initialized)
       throw new SecurityException("attempt to define class from uninitialized class loader");
-    SecurityManager sm = Runtime.securityManager;
-    if (sm != null)
-      {
-	int lastDot = name.lastIndexOf('.');
-	if (lastDot != -1)
-	    sm.checkPackageDefinition(name.substring(0, lastDot));
-      }
     Class retval = VMClassLoader.defineClass(this, name, data,
                                              offset, len, domain);
     loadedClasses.put(retval.getName(), retval);
