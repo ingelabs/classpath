@@ -56,7 +56,6 @@ package java.lang;
  * <li>native void nativeStop(Throwable t);
  * <li>native static Thread currentThread();
  * <li>static native void yield();
- * <li>static native void sleep(long ms, int ns) throws InterruptedException;
  * <li>static native boolean interrupted();
  * </ul>
  * All other methods may be implemented to make Thread handling more efficient
@@ -240,14 +239,17 @@ final class VMThread
      */
     synchronized void join(long ms, int ns) throws InterruptedException
     {
-	// round up
+	// Round up
 	ms += (ns != 0) ? 1 : 0;
 
-	long end = System.currentTimeMillis() + ms;
+	// Compute end time, but don't overflow
+	long now = System.currentTimeMillis();
+	long end = now + ms;
+	if (end < now)
+	    end = Long.MAX_VALUE;
 
-	// Apparently, some VMs will return from wait without notify having
-	// been called, so we loop and test the vmThread field in our
-	// corresponding Thread object.
+	// A VM is allowed to return from wait() without notify() having been
+	// called, so we loop to handle possible spurious wakeups.
 	while(thread.vmThread != null)
 	{
 	    // We use the VMThread object to wait on, because this is a private
@@ -255,7 +257,7 @@ final class VMThread
 	    wait(ms);
 	    if(ms != 0)
 	    {
-		long now = System.currentTimeMillis();
+		now = System.currentTimeMillis();
 		ms = end - now;
 		if(ms <= 0)
 		{
@@ -365,12 +367,51 @@ final class VMThread
      * because some other thread may be active.  So don't expect real-time
      * performance.
      *
-     * @param ms the number of milliseconds to sleep. Will be at least 1.
+     * <p>
+     * A zero length sleep is equivalent to <code>Thread.yield()</code>.
+     * This is simply for compatibility with Sun's JDK. See also
+     * <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6213203">JDK
+     * Bug #6213203</a>.
+     *
+     * @param ms the number of milliseconds to sleep.
      * @param ns the number of extra nanoseconds to sleep (0-999999)
      * @throws InterruptedException if the Thread is (or was) interrupted;
      *         it's <i>interrupted status</i> will be cleared
      */
-    static native void sleep(long ms, int ns) throws InterruptedException;
+    static void sleep(long ms, int ns) throws InterruptedException
+    {
+
+      // Round up
+      ms += (ns != 0) ? 1 : 0;
+
+      // JDK compatibility: sleep(0) is equivalent to Thread.yield()
+      if (ms == 0)
+	{
+	  Thread.yield();
+	  return;
+	}
+
+      // Compute end time, but don't overflow
+      long now = System.currentTimeMillis();
+      long end = now + ms;
+      if (end < now)
+	  end = Long.MAX_VALUE;
+
+      // A VM is allowed to return from wait() without notify() having been
+      // called, so we loop to handle possible spurious wakeups.
+      VMThread vt = Thread.currentThread().vmThread;
+      synchronized (vt)
+	{
+	  while (true)
+	    {
+	      vt.wait(ms);
+	      now = System.currentTimeMillis();
+	      if (now >= end)
+		break;
+	      ms = end - now;
+	    }
+	}
+    }
 
     /**
      * Determine whether the current Thread has been interrupted, and clear

@@ -1,3 +1,9 @@
+2004-12-31  Archie Cobbs  <archie@dellroad.org>
+
+	* NEWS, java/lang/Thread.java, vm/reference/java/lang/VMThread.java:
+	treat Thread.sleep(0) like Thread.yield() for JDK compatibility,
+	and add a non-native implementation of VMThread.sleep().
+
 2004-12-31  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/LookAndFeel.java
