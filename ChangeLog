@@ -1,3 +1,11 @@
+2003-10-07  Michael Koch  <konqueror@gmx.de>
+
+	* java/security/Security.java
+	(providersList): Renamed to "providers".
+	(providersInited): Removed.
+	(static): New static initializer.
+	(providers): Removed.
+
 2003-10-06  Michael Koch  <konqueror@gmx.de>
 
 	* java/rmi/server/RMIClassLoader.java: Reformated to match libgcj's
