@@ -1,3 +1,9 @@
+2004-04-10  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* java/text/FieldPosition.java
+	(FieldPosition) Constructor now behaves as it should according
+	to the java documentation.
+
 2004-04-10  Mark Wielaard  <mark@klomp.org>
 
 	* native/fdlibm/Makefile.am (libfdlibm_la_SOURCES): Add java-assert.h.
