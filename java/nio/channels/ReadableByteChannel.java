@@ -37,12 +37,23 @@ exception statement from your version. */
 
 package java.nio.channels;
 
-
-import java.io.*;
-import java.nio.*;
-
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
 public interface ReadableByteChannel extends Channel
 {
-    public int read(ByteBuffer dst) throws IOException;
+  /**
+   * Reads a sequence of bytes from this channel into the given buffer
+   *
+   * @exception AsynchronousCloseException If another thread closes this
+   * channel while the read operation is in progress
+   * @exception ClosedByInterruptException If another thread interrupts the
+   * current thread while the read operation is in progress, thereby closing
+   * the channel and setting the current thread's interrupt status
+   * @exception ClosedChannelException If this channel is closed
+   * @exception IOException If an error occurs
+   * @exception NonReadableChannelException If this channel was not opened for
+   * reading
+   */
+  public int read (ByteBuffer dst) throws IOException;
 }

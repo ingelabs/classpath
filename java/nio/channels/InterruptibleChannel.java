@@ -41,8 +41,10 @@ import java.io.IOException;
 
 public interface InterruptibleChannel extends Channel
 {
-    void close() throws IOException;
+  /**
+   * Closes this channel
+   *
+   * @exception IOException If an error occurs
+   */
+  void close() throws IOException;
 }
-
-    
-

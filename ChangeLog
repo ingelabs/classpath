@@ -1,3 +1,31 @@
+2002-11-11  Michael Koch <konqueror@gmx.de>
+
+	* java/nio/channels/AlreadyConnectedException.java:
+	Removed unneeded import.
+	(AlreadyConnectedException): Added documentation.
+	* java/nio/channels/ByteChannel.java: Wrapped.
+	* java/nio/channels/Channel.java: Documentation added.
+	* java/nio/channels/DatagramChannel.java: Reindented.
+	* java/nio/channels/FileChannel.java: Reindented.
+	* java/nio/channels/GatheringByteChannel.java: Documentation added.
+	* java/nio/channels/InterruptibleChannel.java: Documentation added.
+	* java/nio/channels/ReadableByteChannel.java: Documentation added.
+	* java/nio/channels/ScatteringByteChannel.java: Documentation added.
+	* java/nio/channels/WritableByteChannel.java: Documentation added.
+	* java/nio/channels/spi/AbstractChannel.java: Reindented.
+	* java/nio/channels/spi/AbstractSelectableChannel.java:
+	(blockingLock): Must be final.
+	(configureBlocking): Must be final.
+	(implCloseChannel): Must be final.
+	(isBlocking): Must be final.
+	(isRegistered): Must be final.
+	(provider): Must be final.
+	(register): Must be final.
+	* java/nio/channels/spi/AbstractSelectionKey.java:
+	Reindented.
+	(cancel): Must be final.
+	(isValid): Must be final.
+
 2002-11-11  Sascha Brawer  <brawer@acm.org>
 
 	* java/util/logging/XMLFormatter.java (getHead): Use UTF-8 as

@@ -37,12 +37,43 @@ exception statement from your version. */
 
 package java.nio.channels;
 
+import java.nio.ByteBuffer;
+import java.io.IOException;
 
-import java.nio.*;
-import java.io.*;
-
-public interface GatheringByteChannel extends WritableByteChannel
+public interface GatheringByteChannel
+  extends WritableByteChannel
 {
-    public long write(ByteBuffer[] srcs, int offset, int length) throws IOException;
-    public int write(ByteBuffer[] srcs) throws IOException;
+  /**
+   * Writes a sequence of bytes to this channel from a subsequence of
+   * the given buffers
+   *
+   * @exception AsynchronousCloseException If another thread closes this
+   * channel while the write operation is in progress
+   * @exception ClosedByInterruptException If another thread interrupts the
+   * current thread while the write operation is in progress, thereby closing
+   * the channel and setting the current thread's interrupt status
+   * @exception ClosedChannelException If this channel is closed
+   * @exception IndexOutOfBoundsException If the preconditions on the offset
+   * and length parameters do not hold
+   * @exception IOException If an error occurs
+   * @exception NonWritableChannelException If this channel was not opened for
+   * writing
+   */
+  public long write(ByteBuffer[] srcs, int offset, int length)
+    throws IOException;
+  
+  /**
+   * Writes a sequence of bytes to this channel from the given buffers
+   *
+   * @exception AsynchronousCloseException If another thread closes this
+   * channel while the write operation is in progress
+   * @exception ClosedByInterruptException If another thread interrupts the
+   * current thread while the write operation is in progress, thereby closing
+   * the channel and setting the current thread's interrupt status
+   * @exception ClosedChannelException If this channel is closed
+   * @exception IOException If an error occurs
+   * @exception NonWritableChannelException If this channel was not opened for
+   * writing
+   */
+  public long write(ByteBuffer[] srcs) throws IOException;
 }

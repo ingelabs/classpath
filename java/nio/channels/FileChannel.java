@@ -37,54 +37,48 @@ exception statement from your version. */
 
 package java.nio.channels;
 
-import java.io.*;
-import java.nio.*;
-import java.nio.channels.spi.*;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.spi.AbstractInterruptibleChannel;
 
-public abstract class FileChannel  extends AbstractInterruptibleChannel
-    implements ByteChannel, GatheringByteChannel, ScatteringByteChannel
+public abstract class FileChannel extends AbstractInterruptibleChannel
+  implements ByteChannel, GatheringByteChannel, ScatteringByteChannel
 {
+  public static class MapMode
+  {
+    public int m;
 
-    public int write(ByteBuffer[]  srcs) throws IOException
+    public static MapMode READ_ONLY  = new MapMode(0);
+    public static MapMode READ_WRITE = new MapMode(1);
+    public static MapMode PRIVATE    = new MapMode(2);
+
+    MapMode(int a)
     {
-	long p = write(srcs, 0, srcs.length);
-    	return (int) p;
+      m = a;
     }
 
-    public static class MapMode
+    public String toString() 
     {
-	public int m;
-
-	public static MapMode READ_ONLY  = new MapMode(0);
-	public static MapMode READ_WRITE = new MapMode(1);
-	public static MapMode PRIVATE    = new MapMode(2);
-
-	MapMode(int a)
-	{
-	    m = a;
-	}
-
-        public String toString() 
-	{
-            return ""+m;
-        }
+      return ""+m;
     }
+  }
 
-    public abstract MappedByteBuffer map(MapMode mode,
-					 long position,
-					 int size)
-        throws IOException;
+  protected FileChannel()
+  {
+  }
 
-    /**
-     * Return the size of the file thus far
-     */
-    public abstract long size() throws IOException;
-    public abstract long write(ByteBuffer[] srcs, int offset, int length) throws IOException;
-    public abstract int read(ByteBuffer dst) throws IOException;
-    public abstract int write(ByteBuffer src) throws IOException;
-    protected abstract  void implCloseChannel()  throws IOException;
+  public abstract MappedByteBuffer map(MapMode mode, long position, int size)
+    throws IOException;
 
-    /* msync with the disk */
-    public abstract  void force(boolean metaData);    
+  /**
+   * Return the size of the file thus far
+   */
+  public abstract long size() throws IOException;
+  public abstract long write(ByteBuffer[] srcs, int offset, int length)
+    throws IOException;
+  public abstract int read(ByteBuffer dst) throws IOException;
+  protected abstract  void implCloseChannel()  throws IOException;
+
+  /* msync with the disk */
+  public abstract void force(boolean metaData);    
 }
-

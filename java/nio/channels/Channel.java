@@ -41,6 +41,15 @@ import java.io.IOException;
 
 public interface Channel
 {
-    public boolean isOpen();
-    public void close() throws IOException;
+  /**
+   * Tells whether this channel is open or not
+   */
+  public boolean isOpen();
+
+  /**
+   * Closes this channel
+   *
+   * @exception IOException If an error occurs
+   */
+  public void close() throws IOException;
 }

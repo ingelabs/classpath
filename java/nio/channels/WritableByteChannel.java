@@ -37,12 +37,24 @@ exception statement from your version. */
 
 package java.nio.channels;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
-import java.io.*;
-import java.nio.*;
-
-
-public interface WritableByteChannel extends Channel
+public interface WritableByteChannel
+  extends Channel
 {
-    public int write(ByteBuffer src) throws IOException;
+  /**
+   * Writes a sequence of bytes to this channel from the given buffer
+   *
+   * @exception AsynchronousCloseException If another thread closes this
+   * channel while the write operation is in progress
+   * @exception ClosedByInterruptException If another thread interrupts the
+   * current thread while the write operation is in progress, thereby closing
+   * the channel and setting the current thread's interrupt status
+   * @exception ClosedChannelException If this channel is closed
+   * @exception IOException If an error occurs
+   * @exception NonWritableChannelException If this channel was not opened for
+   * writing
+   */
+  public int write(ByteBuffer src) throws IOException;
 }

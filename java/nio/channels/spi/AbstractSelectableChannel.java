@@ -35,16 +35,16 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
 package java.nio.channels.spi;
 
-import java.io.*;
-import java.util.*;
-import java.nio.channels.*;
+import java.io.IOException;
+import java.nio.channels.SelectableChannel;
+import java.nio.channels.ClosedChannelException;
+import java.util.List;
 
 public abstract class AbstractSelectableChannel extends SelectableChannel
 {
-    int registered;
+   int registered;
     boolean blocking = true;
     Object LOCK = new Object();
     SelectorProvider sprovider;
@@ -54,14 +54,13 @@ public abstract class AbstractSelectableChannel extends SelectableChannel
     protected abstract  void implCloseSelectableChannel();
     protected abstract  void implConfigureBlocking(boolean block);
 
-
-    public Object blockingLock()
+    public final Object blockingLock()
     {
 	return LOCK;
 	//Retrieves the object upon which the configureBlocking and register methods synchronize. 
     }
     
-    public SelectableChannel configureBlocking(boolean block)
+    public final SelectableChannel configureBlocking(boolean block)
     {
 	synchronized(LOCK)
 	    {
@@ -72,21 +71,21 @@ public abstract class AbstractSelectableChannel extends SelectableChannel
 	return this;
     }
 
-    protected  void implCloseChannel()
+    protected final void implCloseChannel()
     {
 	//     Closes this channel. 
 	implCloseSelectableChannel();
     }
 
 
-    public boolean isBlocking()
+    public final boolean isBlocking()
     {
 	return blocking;
 	//Tells whether or not every I/O operation on this channel will block until it completes.  
     }
 
 
-    public boolean isRegistered()
+    public final boolean isRegistered()
     {
 	//Tells whether or not this channel is currently registered with any selectors. 
 	return registered > 0;
@@ -102,7 +101,7 @@ public abstract class AbstractSelectableChannel extends SelectableChannel
 	}
     }
 
-    public SelectorProvider provider()
+    public final SelectorProvider provider()
     {
 	//     Returns the provider that created this channel.  
 	return sprovider;
@@ -133,11 +132,7 @@ public abstract class AbstractSelectableChannel extends SelectableChannel
 	keys.add(k);
     }
 
-    public SelectionKey register(Selector selin, 
-				 int ops,
-				 Object att) throws java.nio.channels.ClosedChannelException
-
-
+    public final SelectionKey register(Selector selin, int ops, Object att) throws ClosedChannelException
     {
         if (!isOpen())
 	    {
