@@ -53,7 +53,10 @@ package java.util.logging;
  */
 public class ErrorManager
 {
-  /* FIXME: Re-engineer the int values from Sun's implementation. */
+  /* The values have been taken from Sun's public J2SE 1.4 API
+   * documentation.
+   * See http://java.sun.com/j2se/1.4/docs/api/constant-values.html
+   */
 
   /**
    * Indicates that there was a failure that does not readily

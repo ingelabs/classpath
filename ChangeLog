@@ -1,5 +1,10 @@
 2002-09-17  Sascha Brawer  <brawer@acm.org>
 
+	* java/util/logging/ErrorManager.java: Verify correctness of
+	constant field values.
+
+2002-09-17  Sascha Brawer  <brawer@acm.org>
+
 	* resource/java/util/iso639_de.properties: Correct German language
 	names.  Most names verified using an encyclopedia of Linguistics.
 
