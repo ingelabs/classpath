@@ -49,9 +49,10 @@ import gnu.java.lang.*;
  **/
 
 public class Class {
-	Class superclass = null;
-	String name = null;
-	Object[] signers = null;
+	private Object[] signers = null;
+
+	private Class() {
+	}
 
 	/** Return the human-readable form of this Object.  For
 	 ** class, that means "interface " or "class " plus the
@@ -68,12 +69,7 @@ public class Class {
 	 ** @return the name of this class.
 	 ** @since JDK1.0
 	 **/ 
-	public String getName() {
-		if(name != null)
-			return name;
-		else
-			return nativeGetName();
-	}
+	public native String getName();
 
 	/** Get whether this class is an interface or not.  Array
 	 ** types are not interfaces.
@@ -87,12 +83,7 @@ public class Class {
 	 ** @return the direct superclass of this class.
 	 ** @since JDK1.0
 	 **/
-	public Class getSuperclass() {
-		if(superclass != null)
-			return superclass;
-		else
-			return nativeGetSuperclass();
-	}
+	public native Class getSuperclass();
 
 	/** Get the interfaces this class <EM>directly</EM>
 	 ** implements, in the order that they were declared.
@@ -196,7 +187,7 @@ public class Class {
 	public Class getComponentType() {
 		if(isArray()) {
 			try {
-				return Class.forName(name.substring(1));
+				return Class.forName(getName().substring(1));
 			} catch(ClassNotFoundException e) {
 				return null;
 			}
@@ -415,7 +406,5 @@ public class Class {
 	 **/
 	public native Field[] getDeclaredFields() throws SecurityException;
 
-	private native String nativeGetName();
-	private native Class nativeGetSuperclass();
 }
 
