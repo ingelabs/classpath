@@ -399,6 +399,14 @@ The file <code>lib/standard.omit</code> controls which files are omitted from th
 
 </faq>
 
+<faq question="Is it possible to use Classpath in a prorietary VM?">
+
+<p>Only the proprietary VM's vendor can make it work with GNU Classpath, by the nature of the VM being proprietary. GNU Classpath provides well documented and widely used interfaces for interfacing with runtimes. It's up to proprietary VM vendors to make their products work with GNU Classpath, if they wish to do so. If you, as a customer, want the runtime to use GNU Classpath, please talk to your proprietary software vendor. 
+
+<p>You can also try using a free runtime that supports GNU Classpath out-of-the-box instead.
+
+</faq>
+
 </faq-section>
 
 <faq-section name="Classpath Implementation">
