@@ -1,5 +1,6 @@
 New in release 0.05 [ no date yet ]
 * Runtime.execInternal contract changed to allow for null `env'
+  and to accept `dir' argument.
 
 New in release 0.04 (2002/05/05)
 * Additional configure options to disable zip creation and installation as

@@ -530,7 +530,6 @@ public class Runtime
    *         entries
    * @throws IndexOutOfBoundsException if cmd is length 0
    * @since 1.3
-   * @XXX Ignores dir, for now
    */
   public Process exec(String[] cmd, String[] env, File dir)
     throws IOException
@@ -538,8 +537,7 @@ public class Runtime
     SecurityManager sm = securityManager; // Be thread-safe!
     if (sm != null)
       sm.checkExec(cmd[0]);
-    //XXX Should be:    return execInternal(cmd, env, dir);
-    return execInternal(cmd, env);
+    return execInternal(cmd, env, dir);
   }
 
   /**
@@ -745,7 +743,6 @@ public class Runtime
    * use the current working directory; otherwise start the process in that
    * directory.  If env is null, then the new process should inherit
    * the environment of this process.
-   * XXX Add directory support.
    *
    * @param cmd the non-null command tokens
    * @param env the environment setup
@@ -753,8 +750,7 @@ public class Runtime
    * @return the newly created process
    * @throws NullPointerException if cmd or env have null elements
    */
-  //  native Process execInternal(String[] cmd, String[] env, File dir);
-  native Process execInternal(String[] cmd, String[] env);
+  native Process execInternal(String[] cmd, String[] env, File dir);
 
   /**
    * Get the system properties. This is done here, instead of in System,

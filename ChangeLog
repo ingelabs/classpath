@@ -1,3 +1,10 @@
+2002-08-20  Tom Tromey  <tromey@redhat.com>
+
+	* vm/reference/java/lang/Runtime.java (exec): Pass `dir' argument
+	to execInternal.
+	(execInternal): Accept `dir' argument.
+	* NEWS: Updated.
+
 2002-08-18  Mark Wielaard <mark@klomp.org>
 
 	* gnu/classpath/Configuration.java.in: Add CLASSPATH_HOME field.
