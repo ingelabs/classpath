@@ -188,6 +188,35 @@ public class LocaleInformation_fa_AF extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("ja", "\u062c\u0627\u067e\u0627\u0646\u06cc");
+        put("ko", "\u06a9\u0648\u0631\u06cc\u0627\u06cc\u06cc");
+        put("no", "\u0646\u0627\u0631\u0648\u06cc\u0698\u06cc");
+        put("nl", "\u0647\u0627\u0644\u0646\u062f\u06cc");
+        put("it", "\u0627\u06cc\u062a\u0627\u0644\u0648\u06cc");
+        put("tg", "\u062a\u0627\u062c\u06a9\u06cc");
+        put("ne", "\u0646\u06cc\u067e\u0627\u0644\u06cc");
+        put("is", "\u0622\u06cc\u0633\u0644\u0646\u062f\u06cc");
+        put("fi", "\u0641\u0646\u0644\u0646\u062f\u06cc");
+        put("id", "\u0627\u0646\u062f\u0648\u0646\u06cc\u0632\u06cc\u0627\u06cc\u06cc");
+        put("sv", "\u0633\u0648\u06cc\u062f\u0646\u06cc");
+        put("fa", "\u062f\u0631\u06cc");
+        put("pt", "\u067e\u0631\u062a\u06af\u0627\u0644\u06cc");
+        put("mn", "\u0645\u063a\u0644\u06cc");
+        put("pl", "\u067e\u0648\u0644\u0646\u062f\u06cc");
+        put("ky", "\u0642\u0631\u063a\u0632\u06cc");
+        put("es", "\u0647\u0633\u067e\u0627\u0646\u0648\u06cc");
+        put("hr", "\u06a9\u0631\u0648\u0634\u06cc\u0627\u06cc\u06cc");
+        put("ga", "\u0622\u06cc\u0631\u0644\u0646\u062f\u06cc");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "percent", "\u066a" },
@@ -201,6 +230,7 @@ public class LocaleInformation_fa_AF extends ListResourceBundle
     { "months", months },
     { "zoneStrings", zoneStrings },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

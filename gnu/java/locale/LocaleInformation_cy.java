@@ -109,6 +109,17 @@ public class LocaleInformation_cy extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("cy", "Cymraeg");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "shortMonths", shortMonths },
@@ -116,6 +127,7 @@ public class LocaleInformation_cy extends ListResourceBundle
     { "shortWeekdays", shortWeekdays },
     { "weekdays", weekdays },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

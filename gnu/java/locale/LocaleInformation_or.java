@@ -93,6 +93,17 @@ public class LocaleInformation_or extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("or", "\u0b13\u0b5c\u0b3f\u0b06");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "zeroDigit", "\u0b66" },
@@ -100,6 +111,7 @@ public class LocaleInformation_or extends ListResourceBundle
     { "shortWeekdays", shortWeekdays },
     { "weekdays", weekdays },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

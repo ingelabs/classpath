@@ -291,6 +291,158 @@ public class LocaleInformation_hi extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("es", "\u0938\u094d\u092a\u0947\u0928\u093f\u0936");
+        put("ku", "\u0915\u0941\u0930\u0926\u0940\u0936");
+        put("eo", "\u090f\u0938\u094d\u092a\u0947\u0930\u093e\u0928\u094d\u0924\u094b");
+        put("ks", "\u0915\u093e\u0936\u094d\u092e\u093f\u0930\u0940");
+        put("en", "\u0905\u0902\u0917\u094d\u0930\u0947\u091c\u0940");
+        put("el", "\u0917\u094d\u0930\u0940\u0915");
+        put("qu", "\u0915\u094d\u0935\u0947\u0936\u0941\u0906");
+        put("ko", "\u0915\u094b\u0930\u0940\u092f\u0928\u094d");
+        put("kn", "\u0915\u0928\u094d\u0928\u0921\u093c");
+        put("kok", "\u0915\u094b\u0902\u0915\u0923\u0940");
+        put("km", "\u0915\u0948\u092e\u094d\u092c\u094b\u0921\u093f\u092f\u0928\u094d");
+        put("kl", "\u0917\u094d\u0930\u0940\u0928\u0932\u0948\u0902\u0921\u093f\u0915");
+        put("kk", "\u0915\u095b\u093e\u0916");
+        put("wo", "\u0935\u094b\u0932\u094b\u092b");
+        put("raj", "\u0930\u093e\u091c\u0947\u0938\u094d\u0925\u093e\u0928\u0940");
+        put("ka", "\u091c\u0949\u0930\u094d\u091c\u0940\u092f\u0928\u094d");
+        put("dz", "\u092d\u0941\u091f\u093e\u0928\u0940");
+        put("jv", "\u091c\u093e\u0935\u093e\u0928\u0940\u0938");
+        put("pt", "\u092a\u0941\u0930\u094d\u0924\u0941\u0917\u0940");
+        put("ps", "\u092a\u0949\u0936\u0924\u094b (\u092a\u0941\u0936\u0924\u094b)");
+        put("de", "\u095b\u0930\u094d\u092e\u0928");
+        put("pl", "\u092a\u0949\u0932\u093f\u0936");
+        put("da", "\u0921\u0948\u0928\u0940\u0936");
+        put("vo", "\u0935\u094b\u0932\u093e\u092a\u0941\u0915");
+        put("ja", "\u091c\u093e\u092a\u093e\u0928\u0940");
+        put("vi", "\u0935\u093f\u092f\u0947\u0924\u0928\u093e\u092e\u0940");
+        put("cy", "\u0935\u0947\u0932\u094d\u0936");
+        put("pa", "\u092a\u0902\u091c\u093e\u092c\u0940");
+        put("cs", "\u091a\u0947\u0915");
+        put("iu", "\u0907\u0928\u0942\u0915\u0940\u091f\u0942\u0924\u094d");
+        put("it", "\u0908\u091f\u093e\u0932\u093f\u092f\u0928\u094d");
+        put("co", "\u0915\u094b\u0930\u094d\u0938\u0940\u0915\u0928");
+        put("is", "\u0906\u0908\u0938\u094d\u0932\u0948\u0902\u0921\u093f\u0915\u094d");
+        put("uz", "\u0909\u095b\u092c\u0947\u0915\u094d");
+        put("or", "\u0909\u0921\u093c\u093f\u092f\u093e");
+        put("ik", "\u0907\u0928\u0941\u092a\u093f\u092f\u093e\u0915\u094d");
+        put("ur", "\u090a\u0930\u094d\u0926\u0941");
+        put("om", "\u0913\u0930\u094b\u092e\u094b (\u0905\u092b\u093c\u093e\u0928)");
+        put("ca", "\u0915\u093e\u0924\u093e\u0932\u093e\u0928");
+        put("ie", "\u0908\u0928\u094d\u091f\u0930\u0932\u093f\u0902\u0917\u0941\u0907");
+        put("id", "\u0907\u0928\u094d\u0921\u094b\u0928\u0947\u0936\u093f\u092f\u0928\u094d");
+        put("uk", "\u092f\u0942\u0915\u094d\u0930\u0947\u0928\u093f\u092f\u0928\u094d");
+        put("ia", "\u0908\u0928\u094d\u091f\u0930\u0932\u093f\u0902\u0917\u0941\u0906");
+        put("oc", "\u0913\u0938\u0940\u091f\u093e\u0928");
+        put("ug", "\u0909\u0908\u0918\u0941\u0930");
+        put("hy", "\u0905\u0930\u092e\u0947\u0928\u093f\u092f\u0928\u094d");
+        put("br", "\u092c\u094d\u0930\u0947\u091f\u0928");
+        put("hu", "\u0939\u0902\u0917\u0947\u0930\u0940");
+        put("bo", "\u0924\u093f\u092c\u094d\u092c\u0924\u0940");
+        put("bn", "\u092c\u0901\u0917\u093e\u0932\u0940");
+        put("hr", "\u0915\u094d\u0930\u094b\u090f\u0936\u0928\u094d");
+        put("bi", "\u092c\u093f\u0938\u094d\u0932\u093e\u092e\u093e");
+        put("tw", "\u091f\u094d\u0935\u0940");
+        put("bh", "\u092c\u093f\u0939\u093e\u0930\u0940");
+        put("bg", "\u092c\u0932\u094d\u0917\u0947\u0930\u093f\u092f\u0928\u094d");
+        put("tt", "\u091f\u093e\u091f\u0930");
+        put("no", "\u0928\u093e\u0930\u094d\u0935\u0947\u091c\u0940\u092f\u0928\u094d");
+        put("be", "\u092c\u0948\u0932\u094b\u0930\u0942\u0936\u093f\u092f\u0928\u094d");
+        put("ts", "\u0938\u094b\u0902\u0917\u093e");
+        put("hi", "\u0939\u093f\u0902\u0926\u0940");
+        put("tr", "\u0924\u0941\u0915\u094d\u0930\u0940\u0936");
+        put("nl", "\u0921\u091a\u094d");
+        put("zu", "\u095b\u0941\u0932\u0942");
+        put("ba", "\u092c\u0936\u0959\u093f\u0930");
+        put("to", "\u091f\u094b\u0902\u0917\u093e");
+        put("he", "\u0939\u093f\u092c\u094d\u0930\u0940\u090a");
+        put("tn", "\u0938\u0947\u0924\u094d\u0938\u094d\u0935\u093e\u0928\u093e");
+        put("tl", "\u0924\u093e\u0917\u093e\u0932\u094b\u0917");
+        put("tk", "\u0924\u0941\u0915\u094d\u0930\u092e\u0947\u0928");
+        put("ha", "\u0939\u094b\u0909\u0938\u093e");
+        put("ne", "\u0928\u0947\u092a\u093e\u0932\u0940");
+        put("az", "\u0905\u095b\u0930\u092c\u0948\u0902\u091c\u093e\u0928\u0940");
+        put("ti", "\u0924\u093f\u0917\u094d\u0930\u0940\u0928\u094d\u092f\u093e");
+        put("ay", "\u0906\u092f\u092e\u093e\u0930\u093e");
+        put("th", "\u0925\u093e\u0908");
+        put("tg", "\u0924\u093e\u091c\u093f\u0915\u094d");
+        put("na", "\u0928\u093e\u092f\u0930\u0942");
+        put("te", "\u0924\u0947\u0932\u0947\u0917\u0941");
+        put("zh", "\u091a\u0940\u0928\u0940");
+        put("as", "\u0905\u0938\u093e\u092e\u0940");
+        put("ar", "\u0905\u0930\u092c\u0940");
+        put("ta", "\u0924\u092e\u093f\u0932");
+        put("gu", "\u0917\u0941\u095b\u0930\u093e\u0924\u0940");
+        put("my", "\u092c\u0930\u094d\u0932\u093f\u0938");
+        put("am", "\u0905\u092e\u094d\u0939\u093e\u0930\u093f\u0915\u094d");
+        put("za", "\u095b\u0941\u0906\u0902\u0917");
+        put("mt", "\u092e\u093e\u0932\u091f\u093f\u0938\u094d");
+        put("ms", "\u092e\u0932\u092f");
+        put("gn", "\u0917\u0941\u0906\u0930\u093e\u0928\u0940");
+        put("sw", "\u0938\u094d\u0935\u093e\u0939\u093f\u0932\u0940");
+        put("mr", "\u092e\u0930\u093e\u0920\u0940");
+        put("sv", "\u0938\u094d\u0935\u093f\u0921\u093f\u0936");
+        put("gl", "\u0917\u0948\u0932\u093f\u0936\u093f\u092f\u0928\u094d");
+        put("su", "\u0938\u0941\u0928\u094d\u0926\u093e\u0928\u0940\u0938");
+        put("af", "\u0905\u092b\u094d\u0930\u0940\u0915\u0940");
+        put("st", "\u0938\u0947\u0938\u094b\u0925\u094b");
+        put("mo", "\u092e\u094b\u0932\u0921\u093e\u0935\u093f\u092f\u0928\u094d");
+        put("ss", "\u0938\u0940\u0938\u094d\u0935\u093e\u091f\u093f");
+        put("mn", "\u092e\u094b\u0902\u0917\u094b\u0932\u093f\u092f\u0928");
+        put("sr", "\u0938\u0930\u094d\u092c\u093f\u092f\u0928\u094d");
+        put("sq", "\u0905\u0932\u094d\u092c\u0947\u0928\u093f\u092f\u0928\u094d");
+        put("ml", "\u092e\u0932\u092f\u093e\u0932\u092e");
+        put("ab", "\u0905\u092c\u094d\u0916\u093e\u095b\u093f\u092f\u0928\u094d");
+        put("mk", "\u092e\u0948\u0938\u0947\u0921\u094b\u0928\u093f\u092f\u0928\u094d");
+        put("aa", "\u0905\u092b\u093c\u093e\u0930");
+        put("so", "\u0938\u094b\u092e\u093e\u0932\u0940");
+        put("sn", "\u0938\u094b\u0923\u093e");
+        put("mi", "\u092e\u0947\u0913\u0930\u0940");
+        put("gd", "\u0938\u094d\u0915\u093e\u091f\u094d\u0938\u094d \u0917\u093e\u092f\u0947\u0932\u093f\u0915\u094d");
+        put("sm", "\u0938\u093e\u092e\u094b\u0928");
+        put("sl", "\u0938\u094d\u0932\u094b\u0935\u0947\u0928\u093f\u092f\u0928\u094d");
+        put("mg", "\u092e\u093e\u0932\u093e\u0917\u093e\u0938\u0940");
+        put("sk", "\u0938\u094d\u0932\u094b\u0935\u093e\u0915\u094d");
+        put("ga", "\u0906\u0908\u0930\u093f\u0936");
+        put("yo", "\u092f\u094b\u0930\u0942\u092c\u093e");
+        put("si", "\u0936\u093f\u0902\u0918\u093e\u0932\u0940\u0938\u094d");
+        put("sh", "\u0938\u0947\u0930\u094d\u092c\u094b-\u0915\u094d\u0930\u094b\u090f\u0936\u0928\u094d");
+        put("sg", "\u0938\u093e\u0901\u0917\u094d\u0930\u094b");
+        put("yi", "\u092f\u0947\u0939\u0941\u0926\u0940");
+        put("sd", "\u0938\u093f\u0928\u094d\u0927\u0940");
+        put("fy", "\u092b\u094d\u0930\u0940\u091c\u093c\u0928\u094d");
+        put("sa", "\u0938\u0902\u0938\u094d\u0915\u0943\u0924");
+        put("fr", "\u092b\u094d\u0930\u0947\u0902\u091a");
+        put("lv", "\u0932\u093e\u091f\u0935\u093f\u092f\u0928\u094d (\u0932\u0947\u091f\u094d\u091f\u0940\u0936)");
+        put("lt", "\u0932\u093f\u0925\u0941\u0928\u093f\u092f\u0928\u094d");
+        put("fo", "\u092b\u093f\u0930\u094b\u095b\u0940");
+        put("rw", "\u0915\u093f\u0928\u094d\u092f\u093e\u0930\u0935\u093e\u0923\u094d\u0921\u093e");
+        put("root", "\u0936\u093f\u0916\u0930");
+        put("ru", "\u0930\u0941\u0938\u0940");
+        put("lo", "\u0932\u093e\u0913\u0925\u0940\u092f\u0928\u094d");
+        put("fj", "\u095e\u0940\u091c\u0940");
+        put("ln", "\u0932\u093f\u0902\u0917\u093e\u0932\u093e");
+        put("fi", "\u092b\u093f\u0928\u093f\u0936");
+        put("ro", "\u0930\u0942\u092e\u093e\u0928\u0940\u092f\u0928\u094d");
+        put("rn", "\u0915\u093f\u0930\u0942\u0928\u094d\u0926\u0940");
+        put("rm", "\u0930\u0939\u0947\u092f\u094d\u091f\u094b-\u0930\u094b\u092e\u093e\u0928\u094d\u0938");
+        put("fa", "\u092a\u0930\u094d\u0936\u093f\u092f\u0928\u094d");
+        put("la", "\u0932\u0948\u091f\u0940\u0928");
+        put("xh", "\u0937\u094b\u0938\u093e");
+        put("eu", "\u092c\u093e\u0938\u094d\u0915\u094d");
+        put("ky", "\u0915\u093f\u0930\u0918\u093f\u095b");
+        put("et", "\u0910\u0938\u094d\u0924\u094b\u0928\u093f\u092f\u0928\u094d");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "zeroDigit", "\u0966" },
@@ -302,6 +454,7 @@ public class LocaleInformation_hi extends ListResourceBundle
     { "ampms", ampms },
     { "zoneStrings", zoneStrings },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

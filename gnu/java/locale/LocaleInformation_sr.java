@@ -351,6 +351,76 @@ public class LocaleInformation_sr extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("ka", "\u0413\u0440\u0443\u0437\u0438\u0458\u0441\u043a\u0438");
+        put("zh", "\u041a\u0438\u043d\u0435\u0441\u043a\u0438");
+        put("ar", "\u0410\u0440\u0430\u043f\u0441\u043a\u0438");
+        put("my", "\u0411\u0443\u0440\u043c\u0430\u043d\u0441\u043a\u0438");
+        put("sw", "\u0421\u0432\u0430\u0445\u0438\u043b\u0438");
+        put("sv", "\u0428\u0432\u0435\u0434\u0441\u043a\u0438");
+        put("pt", "\u041f\u043e\u0440\u0442\u0443\u0433\u0430\u043b\u0441\u043a\u0438");
+        put("mo", "\u041c\u043e\u043b\u0434\u0430\u0432\u0441\u043a\u0438");
+        put("sr", "\u0421\u0440\u043f\u0441\u043a\u0438");
+        put("mn", "\u041c\u043e\u043d\u0433\u043e\u043b\u0441\u043a\u0438");
+        put("af", "\u0410\u0444\u0440\u0438\u043a\u0430\u043d\u0435\u0440\u0441\u043a\u0438");
+        put("sq", "\u0410\u043b\u0431\u0430\u043d\u0441\u043a\u0438");
+        put("mk", "\u041c\u0430\u043a\u0435\u0434\u043e\u043d\u0441\u043a\u0438");
+        put("de", "\u041d\u0435\u043c\u0430\u0447\u043a\u0438");
+        put("pl", "\u041f\u043e\u0459\u0441\u043a\u0438");
+        put("sl", "\u0421\u043b\u043e\u0432\u0435\u043d\u0430\u0447\u043a\u0438");
+        put("sk", "\u0421\u043b\u043e\u0432\u0430\u0447\u043a\u0438");
+        put("da", "\u0414\u0430\u043d\u0441\u043a\u0438");
+        put("ga", "\u0418\u0440\u0441\u043a\u0438");
+        put("sh", "\u0421\u0440\u043f\u0441\u043a\u043e-\u0425\u0440\u0432\u0430\u0442\u0441\u043a\u0438");
+        put("vi", "\u0412\u0438\u0458\u0435\u0442\u043d\u0430\u043c\u0441\u043a\u0438");
+        put("ja", "\u0408\u0430\u043f\u0430\u043d\u0441\u043a\u0438");
+        put("yi", "\u0408\u0438\u0434\u0438\u0448");
+        put("sa", "\u0421\u0430\u043d\u0441\u043a\u0440\u0438\u0442");
+        put("cs", "\u0427\u0435\u0448\u043a\u0438");
+        put("lv", "\u041b\u0435\u0442\u043e\u043d\u0441\u043a\u0438");
+        put("it", "\u0418\u0442\u0430\u043b\u0438\u0458\u0430\u043d\u0441\u043a\u0438");
+        put("fr", "\u0424\u0440\u0430\u043d\u0446\u0443\u0441\u043a\u0438");
+        put("is", "\u0418\u0441\u043b\u0430\u043d\u0434\u0441\u043a\u0438");
+        put("co", "\u041a\u043e\u0440\u0437\u0438\u043a\u0430\u043d\u0441\u043a\u0438");
+        put("lt", "\u041b\u0438\u0442\u0432\u0430\u043d\u0441\u043a\u0438");
+        put("ru", "\u0420\u0443\u0441\u043a\u0438");
+        put("fi", "\u0424\u0438\u043d\u0441\u043a\u0438");
+        put("ro", "\u0420\u0443\u043c\u0443\u043d\u0441\u043a\u0438");
+        put("rm", "\u0420\u0435\u0442\u043e-\u0420\u043e\u043c\u0430\u043d\u0441\u043a\u0438");
+        put("ca", "\u041a\u0430\u0442\u0430\u043b\u043e\u043d\u0441\u043a\u0438");
+        put("id", "\u0418\u043d\u0434\u043e\u043d\u0435\u0437\u0438\u0458\u0441\u043a\u0438");
+        put("uk", "\u0423\u043a\u0440\u0430\u0458\u0438\u043d\u0441\u043a\u0438");
+        put("fa", "\u041f\u0435\u0440\u0441\u0438\u0458\u0441\u043a\u0438");
+        put("la", "\u041b\u0430\u0442\u0438\u043d\u0441\u043a\u0438");
+        put("hy", "\u0410\u0440\u043c\u0435\u043d\u0441\u043a\u0438");
+        put("ky", "\u041a\u0438\u0440\u0433\u0438\u0441\u043a\u0438");
+        put("eu", "\u0411\u0430\u0441\u043a\u0438\u0458\u0441\u043a\u0438");
+        put("et", "\u0415\u0441\u0442\u043e\u043d\u0441\u043a\u0438");
+        put("br", "\u0411\u0440\u0435\u0442\u043e\u043d\u0441\u043a\u0438");
+        put("hu", "\u041c\u0430\u0452\u0430\u0440\u0441\u043a\u0438");
+        put("es", "\u0428\u043f\u0430\u043d\u0441\u043a\u0438");
+        put("ku", "\u041a\u0443\u0440\u0434\u0441\u043a\u0438");
+        put("hr", "\u0425\u0440\u0432\u0430\u0442\u0441\u043a\u0438");
+        put("eo", "\u0415\u0441\u043f\u0435\u0440\u0430\u043d\u0442\u043e");
+        put("en", "\u0415\u043d\u0433\u043b\u0435\u0441\u043a\u0438");
+        put("el", "\u0413\u0440\u0447\u043a\u0438");
+        put("ko", "\u041a\u043e\u0440\u0435\u0458\u0441\u043a\u0438");
+        put("no", "\u041d\u043e\u0440\u0432\u0435\u0448\u043a\u0438");
+        put("km", "\u041a\u043c\u0435\u0440\u0441\u043a\u0438");
+        put("bg", "\u0411\u0443\u0433\u0430\u0440\u0441\u043a\u0438");
+        put("tr", "\u0422\u0443\u0440\u0441\u043a\u0438");
+        put("be", "\u0411\u0435\u043b\u043e\u0440\u0443\u0441\u043a\u0438");
+        put("nl", "\u0425\u043e\u043b\u0430\u043d\u0434\u0441\u043a\u0438");
+        put("he", "\u0425\u0435\u0431\u0440\u0435\u0458\u0441\u043a\u0438");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "decimalSeparator", "," },
@@ -371,6 +441,7 @@ public class LocaleInformation_sr extends ListResourceBundle
     { "fullTimeFormat", "HH.mm.ss z" },
     { "zoneStrings", zoneStrings },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

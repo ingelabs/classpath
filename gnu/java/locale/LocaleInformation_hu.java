@@ -358,6 +358,155 @@ public class LocaleInformation_hu extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("es", "spanyol");
+        put("ku", "kurd");
+        put("eo", "eszperant\u00f3");
+        put("ks", "kasm\u00edri");
+        put("en", "angol");
+        put("el", "g\u00f6r\u00f6g");
+        put("qu", "kecsua");
+        put("ko", "koreai");
+        put("kn", "kannada");
+        put("km", "kambodzsai");
+        put("kl", "gr\u00f6nlandi");
+        put("kk", "kazah");
+        put("wo", "volof");
+        put("ka", "gr\u00faz");
+        put("dz", "but\u00e1ni");
+        put("jv", "j\u00e1vai");
+        put("pt", "portug\u00e1l");
+        put("ps", "pastu (afg\u00e1n)");
+        put("de", "n\u00e9met");
+        put("pl", "lengyel");
+        put("da", "d\u00e1n");
+        put("vo", "volap\u00fck");
+        put("ja", "jap\u00e1n");
+        put("vi", "vietn\u00e1mi");
+        put("cy", "walesi");
+        put("pa", "pandzs\u00e1bi");
+        put("cs", "cseh");
+        put("iu", "inuktitut");
+        put("it", "olasz");
+        put("co", "korzikai");
+        put("is", "izlandi");
+        put("uz", "\u00fczb\u00e9g");
+        put("or", "orija");
+        put("ik", "inupiak");
+        put("ur", "urdu");
+        put("om", "orom\u00f3i");
+        put("ca", "katal\u00e1n");
+        put("ie", "interlingue");
+        put("id", "indon\u00e9z");
+        put("uk", "ukr\u00e1n");
+        put("ia", "interlingua");
+        put("oc", "okszit\u00e1n");
+        put("ug", "ujgur");
+        put("hy", "\u00f6rm\u00e9ny");
+        put("br", "breton");
+        put("hu", "magyar");
+        put("bo", "tibeti");
+        put("bn", "beng\u00e1li");
+        put("hr", "horv\u00e1t");
+        put("bi", "bislama");
+        put("tw", "tui");
+        put("bh", "bihari");
+        put("bg", "bolg\u00e1r");
+        put("tt", "tat\u00e1r");
+        put("no", "norv\u00e9g");
+        put("be", "belorusz");
+        put("ts", "conga");
+        put("hi", "hindi");
+        put("tr", "t\u00f6r\u00f6k");
+        put("nl", "holland");
+        put("zu", "zulu");
+        put("ba", "bask\u00edr");
+        put("to", "tonga");
+        put("he", "h\u00e9ber");
+        put("tn", "szecsu\u00e1ni");
+        put("tl", "tagalog");
+        put("tk", "t\u00fcrkm\u00e9n");
+        put("ha", "hausza");
+        put("ne", "nep\u00e1li");
+        put("az", "azerbajdzs\u00e1ni");
+        put("ti", "tigrinya");
+        put("ay", "ajmara");
+        put("th", "thai");
+        put("tg", "tadzsik");
+        put("na", "naurui");
+        put("te", "telugu");
+        put("zh", "k\u00ednai");
+        put("as", "assz\u00e1mi");
+        put("ar", "arab");
+        put("ta", "tamil");
+        put("gu", "gudzsar\u00e1ti");
+        put("my", "burmai");
+        put("am", "amhara");
+        put("za", "zsuang");
+        put("mt", "m\u00e1ltai");
+        put("ms", "mal\u00e1j");
+        put("gn", "guarani");
+        put("sw", "szuah\u00e9li");
+        put("mr", "marati");
+        put("sv", "sv\u00e9d");
+        put("gl", "gal\u00edciai");
+        put("su", "szundan\u00e9z");
+        put("af", "afrikai");
+        put("st", "szeszot\u00f3");
+        put("mo", "moldvai");
+        put("ss", "sziszuati");
+        put("mn", "mongol");
+        put("sr", "szerb");
+        put("sq", "alb\u00e1n");
+        put("ml", "malajalam");
+        put("ab", "abh\u00e1z");
+        put("mk", "maced\u00f3n");
+        put("aa", "afar");
+        put("so", "szom\u00e1li");
+        put("sn", "sona");
+        put("mi", "maori");
+        put("gd", "sk\u00f3t (gael)");
+        put("sm", "szamoai");
+        put("sl", "szlov\u00e9n");
+        put("mg", "madagaszk\u00e1ri");
+        put("sk", "szlov\u00e1k");
+        put("ga", "\u00edr");
+        put("yo", "joruba");
+        put("si", "szingal\u00e9z");
+        put("sh", "szerb-horv\u00e1t");
+        put("sg", "sango");
+        put("yi", "zsid\u00f3");
+        put("sd", "szindi");
+        put("fy", "fr\u00edz");
+        put("sa", "szanszkrit");
+        put("fr", "francia");
+        put("lv", "lett");
+        put("lt", "litv\u00e1n");
+        put("fo", "fer\u00f6eri");
+        put("rw", "kiruanda");
+        put("ru", "orosz");
+        put("lo", "laoszi");
+        put("fj", "fidzsi");
+        put("ln", "lingala");
+        put("fi", "finn");
+        put("ro", "rom\u00e1n");
+        put("rn", "kirundi");
+        put("rm", "r\u00e9torom\u00e1n");
+        put("fa", "perzsa");
+        put("la", "latin");
+        put("xh", "hosza");
+        put("eu", "baszk");
+        put("ky", "kirgiz");
+        put("et", "\u00e9szt");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "decimalSeparator", "," },
@@ -378,6 +527,7 @@ public class LocaleInformation_hu extends ListResourceBundle
     { "longTimeFormat", "H:mm:ss z" },
     { "fullTimeFormat", "H:mm:ss z" },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

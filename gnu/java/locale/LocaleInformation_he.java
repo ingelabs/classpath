@@ -293,9 +293,94 @@ public class LocaleInformation_he extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("es", "\u05e1\u05e4\u05e8\u05d3\u05d9\u05ea");
+        put("mul", "\u05de\u05e1\u05e4\u05e8 \u05e9\u05e4\u05d5\u05ea");
+        put("eo", "\u05d0\u05e1\u05e4\u05e8\u05e0\u05d8\u05d5");
+        put("en", "\u05d0\u05e0\u05d2\u05dc\u05d9\u05ea");
+        put("el", "\u05d9\u05d5\u05d5\u05e0\u05d9\u05ea");
+        put("ko", "\u05e7\u05d5\u05e8\u05d9\u05d0\u05e0\u05d9\u05ea");
+        put("sgn", "\u05e9\u05e4\u05ea \u05e1\u05d9\u05de\u05e0\u05d9\u05dd");
+        put("ka", "\u05d2\u05e8\u05d5\u05d6\u05d9\u05e0\u05d9\u05ea");
+        put("pt", "\u05e4\u05d5\u05e8\u05d8\u05d5\u05d2\u05d6\u05d9\u05ea");
+        put("nap", "\u05e0\u05e4\u05d5\u05dc\u05d9\u05d8\u05e0\u05d9\u05ea");
+        put("mas", "\u05de\u05d0\u05e1\u05d0\u05d9\u05ea");
+        put("de", "\u05d2\u05e8\u05de\u05e0\u05d9\u05ea");
+        put("pl", "\u05e4\u05d5\u05dc\u05e0\u05d9\u05ea");
+        put("da", "\u05d3\u05e0\u05d9\u05ea");
+        put("ja", "\u05d9\u05e4\u05e0\u05d9\u05ea");
+        put("cy", "\u05d5\u05d5\u05dc\u05e9\u05d9\u05ea");
+        put("cs", "\u05e6\u05f3\u05db\u05d9\u05ea");
+        put("lad", "\u05dc\u05d3\u05d9\u05e0\u05d5");
+        put("it", "\u05d0\u05d9\u05d8\u05dc\u05e7\u05d9\u05ea");
+        put("is", "\u05d0\u05d9\u05e1\u05dc\u05e0\u05d3\u05d9\u05ea");
+        put("aus", "\u05e9\u05e4\u05d5\u05ea \u05d0\u05d5\u05e1\u05d8\u05e8\u05dc\u05d9\u05d5\u05ea");
+        put("myn", "\u05de\u05d0\u05d9\u05d4");
+        put("ca", "\u05e7\u05d8\u05dc\u05d5\u05e0\u05d9\u05ea");
+        put("id", "\u05d0\u05d9\u05e0\u05d3\u05d5\u05e0\u05d6\u05d9\u05ea");
+        put("uk", "\u05d0\u05d5\u05e7\u05e8\u05d0\u05d9\u05e0\u05d9\u05ea");
+        put("egy", "\u05de\u05e6\u05e8\u05d9\u05ea (\u05e2\u05ea\u05d9\u05e7\u05d4)");
+        put("hy", "\u05d0\u05e8\u05de\u05e0\u05d9\u05ea");
+        put("bs", "\u05d1\u05d5\u05e1\u05e0\u05d9\u05ea");
+        put("hu", "\u05d4\u05d5\u05e0\u05d2\u05e8\u05d9\u05ea");
+        put("bo", "\u05d8\u05d9\u05d1\u05d8\u05d9\u05ea");
+        put("bn", "\u05d1\u05e0\u05d2\u05dc\u05d9\u05ea");
+        put("hr", "\u05e7\u05e8\u05d5\u05d0\u05d8\u05d9\u05ea");
+        put("bg", "\u05d1\u05d5\u05dc\u05d2\u05e8\u05d9\u05ea");
+        put("no", "\u05e0\u05d5\u05e8\u05d5\u05d5\u05d2\u05d9\u05ea");
+        put("hi", "\u05d4\u05d9\u05e0\u05d3\u05d9\u05ea");
+        put("tr", "\u05d8\u05d5\u05e8\u05e7\u05d9\u05ea");
+        put("nl", "\u05d4\u05d5\u05dc\u05e0\u05d3\u05d9\u05ea");
+        put("zu", "\u05d6\u05d5\u05dc\u05d5");
+        put("he", "\u05e2\u05d1\u05e8\u05d9\u05ea");
+        put("tk", "\u05d8\u05d5\u05e8\u05e7\u05de\u05e0\u05d9\u05ea");
+        put("ne", "\u05e0\u05e4\u05d0\u05dc\u05d9\u05ea");
+        put("cad", "\u05e7\u05d0\u05d3\u05d5");
+        put("th", "\u05ea\u05d0\u05d9");
+        put("zh", "\u05e1\u05d9\u05e0\u05d9\u05ea");
+        put("ar", "\u05e2\u05e8\u05d1\u05d9\u05ea");
+        put("ast", "\u05d0\u05d5\u05e1\u05d8\u05e8\u05d9\u05ea");
+        put("mt", "\u05de\u05dc\u05d8\u05d6\u05d9\u05ea");
+        put("sw", "\u05e1\u05d5\u05d5\u05d4\u05d9\u05dc\u05d9\u05ea");
+        put("sv", "\u05e9\u05d5\u05d5\u05d3\u05d9\u05ea");
+        put("af", "\u05d0\u05e4\u05e8\u05d9\u05e7\u05e0\u05d9\u05ea");
+        put("mo", "\u05de\u05d5\u05dc\u05d3\u05d1\u05d9\u05ea");
+        put("mn", "\u05de\u05d5\u05e0\u05d2\u05d5\u05dc\u05d9\u05ea");
+        put("sr", "\u05e1\u05e8\u05d1\u05d9\u05ea");
+        put("mk", "\u05de\u05e7\u05d3\u05d5\u05e0\u05d9\u05ea");
+        put("aa", "\u05d0\u05ea\u05d9\u05d5\u05e4\u05d9\u05ea");
+        put("mi", "\u05de\u05d0\u05d5\u05e8\u05d9\u05ea");
+        put("gd", "\u05e1\u05e7\u05d5\u05d8\u05d9\u05ea \u05d2\u05d0\u05dc\u05d9\u05ea");
+        put("sl", "\u05e1\u05dc\u05d5\u05d1\u05e0\u05d9\u05ea");
+        put("sk", "\u05e1\u05dc\u05d5\u05d1\u05e7\u05d9\u05ea");
+        put("ga", "\u05d0\u05d9\u05e8\u05d9\u05ea");
+        put("sh", "\u05e1\u05e8\u05d1\u05d5-\u05e7\u05e8\u05d5\u05d0\u05d8\u05d9\u05ea");
+        put("yi", "\u05d9\u05d9\u05d3\u05d9\u05e9");
+        put("sa", "\u05e1\u05e0\u05e1\u05e7\u05e8\u05d9\u05ea");
+        put("fr", "\u05e6\u05e8\u05e4\u05ea\u05d9\u05ea");
+        put("lv", "\u05dc\u05d8\u05d1\u05d9\u05ea");
+        put("lt", "\u05dc\u05d9\u05d8\u05d0\u05d9\u05ea");
+        put("ru", "\u05e8\u05d5\u05e1\u05d9\u05ea");
+        put("fi", "\u05e4\u05d9\u05e0\u05d9\u05ea");
+        put("ro", "\u05e8\u05d5\u05de\u05e0\u05d9\u05ea");
+        put("arc", "\u05d0\u05e8\u05de\u05d9\u05ea");
+        put("fa", "\u05e4\u05e8\u05e1\u05d9\u05ea");
+        put("la", "\u05dc\u05d8\u05d9\u05e0\u05d9\u05ea");
+        put("eu", "\u05d1\u05e1\u05e7\u05d9\u05ea");
+        put("et", "\u05d0\u05e1\u05d8\u05d5\u05e0\u05d9\u05ea");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

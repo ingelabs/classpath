@@ -55,12 +55,24 @@ public class LocaleInformation_dv extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("dv", "\u078b\u07a8\u0788\u07ac\u0780\u07a8\u0784\u07a6\u0790\u07b0");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "zeroDigit", "\u0660" },
     { "percentFormat", "#,##,##0%" },
     { "currencyFormat", "\u00a4 #,##,##0.00;-\u00a4 #,##,##0.00" },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

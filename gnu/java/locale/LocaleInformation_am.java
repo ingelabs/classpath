@@ -243,6 +243,158 @@ public class LocaleInformation_am extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("es", "\u1235\u1353\u1292\u123d");
+        put("ku", "\u12a9\u122d\u12f5\u123d\u129b");
+        put("eo", "\u12a4\u1235\u1350\u122b\u1295\u1276");
+        put("ks", "\u12ab\u123d\u121a\u122d\u129b");
+        put("en", "\u12a5\u1295\u130d\u120a\u12dd\u129b");
+        put("el", "\u130d\u122a\u12ad\u129b");
+        put("qu", "\u12b5\u127f\u129b");
+        put("ko", "\u12ae\u122a\u12eb\u129b");
+        put("kn", "\u12ab\u1293\u12f3\u129b");
+        put("km", "\u12ad\u1218\u122d\u129b");
+        put("kl", "\u12ab\u120b\u120a\u1231\u1275\u129b");
+        put("kk", "\u12ab\u12db\u12ad\u129b");
+        put("wo", "\u12ce\u120e\u134d\u129b");
+        put("ka", "\u130a\u12ee\u122d\u130a\u12eb\u1295");
+        put("dz", "\u12f5\u12de\u1295\u130d\u12bb\u129b");
+        put("jv", "\u1303\u126b\u1295\u129b");
+        put("pt", "\u1356\u122d\u1271\u130b\u120a\u129b");
+        put("ps", "\u1351\u123d\u1276\u129b");
+        put("de", "\u1300\u122d\u1218\u1295");
+        put("pl", "\u1356\u120a\u123d");
+        put("da", "\u12f4\u1292\u123d");
+        put("vo", "\u126e\u120b\u1351\u12ad\u129b");
+        put("ja", "\u1303\u1353\u1295\u129b");
+        put("vi", "\u126a\u1275\u1293\u121d\u129b");
+        put("cy", "\u12c8\u120d\u123d");
+        put("pa", "\u1353\u1295\u1303\u1262\u129b");
+        put("cs", "\u127c\u12ad\u129b");
+        put("iu", "\u12a5\u1291\u12ad\u1272\u1271\u1275\u129b");
+        put("it", "\u1323\u120a\u12eb\u1295\u129b");
+        put("co", "\u12ae\u122d\u1232\u12ab\u129b");
+        put("is", "\u12a0\u12ed\u1235\u120b\u1295\u12f5\u129b");
+        put("uz", "\u12a1\u12dd\u1260\u12ad\u129b");
+        put("or", "\u12a6\u122a\u12eb\u129b");
+        put("ik", "\u12a5\u1291\u1352\u12eb\u1245\u129b");
+        put("ur", "\u12a1\u122d\u12f1\u129b");
+        put("om", "\u12a6\u122e\u121d\u129b");
+        put("ca", "\u12ab\u1273\u120b\u1295\u129b");
+        put("ie", "\u12a5\u1295\u1270\u122d\u120a\u1295\u130d\u12c8");
+        put("id", "\u12a5\u1295\u12f6\u1292\u1232\u129b");
+        put("uk", "\u12e9\u12ad\u1228\u1292\u129b");
+        put("ia", "\u12a2\u1295\u1274\u122d\u120a\u1295\u1313");
+        put("oc", "\u12a6\u12aa\u1273\u1295\u129b");
+        put("ug", "\u12a1\u12ca\u130d\u1201\u122d\u129b");
+        put("hy", "\u12a0\u122d\u1218\u1293\u12ca");
+        put("br", "\u1265\u122c\u1276\u1295\u129b");
+        put("hu", "\u1200\u1295\u130b\u122a\u129b");
+        put("bo", "\u1275\u1260\u1275\u1295\u129b");
+        put("bn", "\u1260\u1295\u130b\u120a\u129b");
+        put("hr", "\u12ad\u122e\u123d\u12eb\u1295\u129b");
+        put("bi", "\u1262\u1235\u120b\u121d\u129b");
+        put("tw", "\u1275\u12ca\u129b");
+        put("bh", "\u1262\u1203\u122a");
+        put("bg", "\u1261\u120d\u130b\u122a\u129b");
+        put("tt", "\u1273\u1273\u122d\u129b");
+        put("no", "\u1296\u122d\u12cc\u1302\u12eb\u1295");
+        put("be", "\u1264\u120b\u122b\u123b\u129b");
+        put("ts", "\u133e\u1295\u130b\u129b");
+        put("hi", "\u1210\u1295\u12f5\u129b");
+        put("tr", "\u1271\u122d\u12ad\u129b");
+        put("nl", "\u12f0\u127d");
+        put("zu", "\u12d9\u1209\u129b");
+        put("ba", "\u1263\u1235\u12aa\u122d\u129b");
+        put("to", "\u1276\u1295\u130b");
+        put("he", "\u12d5\u1265\u122b\u1235\u1325");
+        put("tn", "\u133d\u12cb\u1293\u12ca\u129b");
+        put("tl", "\u1273\u130b\u120e\u1308\u129b");
+        put("tk", "\u1271\u122d\u12ad\u1218\u1295\u129b");
+        put("ha", "\u1203\u12cd\u1233\u129b");
+        put("ne", "\u1294\u1353\u120a\u129b");
+        put("az", "\u12a0\u12dc\u122d\u1263\u12ed\u1303\u1295\u129b");
+        put("ti", "\u1275\u130d\u122d\u129b");
+        put("ay", "\u12a0\u12eb\u121b\u122d\u129b");
+        put("th", "\u1273\u12ed\u129b");
+        put("tg", "\u1273\u1302\u12aa\u129b");
+        put("na", "\u1293\u12a1\u1229");
+        put("te", "\u1270\u1209\u1309\u129b");
+        put("zh", "\u127b\u12ed\u1295\u129b");
+        put("as", "\u12a0\u1233\u121c\u12db\u12ca");
+        put("ar", "\u12d0\u122d\u1262\u129b");
+        put("ta", "\u1273\u121a\u120d\u129b");
+        put("gu", "\u1309\u1303\u122d\u1272\u129b");
+        put("my", "\u1261\u122d\u121b\u129b");
+        put("am", "\u12a0\u121b\u122d\u129b");
+        put("za", "\u12e1\u12cb\u1295\u130d\u129b");
+        put("mt", "\u121b\u120d\u1272\u1235\u129b");
+        put("ms", "\u121b\u120b\u12ed\u129b");
+        put("byn", "\u1265\u120a\u1295");
+        put("gn", "\u1313\u122b\u1292\u129b");
+        put("sw", "\u1235\u12cb\u1202\u120a\u129b");
+        put("mr", "\u121b\u122b\u12da\u129b");
+        put("sv", "\u1235\u12ca\u12f5\u1295\u129b");
+        put("gl", "\u130b\u1208\u130b\u129b");
+        put("su", "\u1231\u12f3\u1295\u129b");
+        put("af", "\u12a0\u134d\u122a\u1243\u1295\u1235\u129b");
+        put("st", "\u1236\u12de\u129b");
+        put("mo", "\u121e\u120d\u12f3\u126b\u12ca\u1293");
+        put("ss", "\u1235\u12cb\u1272\u129b");
+        put("mn", "\u121e\u1295\u130e\u120b\u12ca\u129b");
+        put("gez", "\u130d\u12d5\u12dd\u129b");
+        put("sr", "\u1230\u122d\u1262\u129b");
+        put("sq", "\u120d\u1264\u1292\u129b");
+        put("ml", "\u121b\u120b\u12eb\u120b\u121d\u129b");
+        put("ab", "\u12a0\u1265\u1210\u12da\u129b");
+        put("mk", "\u121b\u12a8\u12f6\u1292\u129b");
+        put("aa", "\u12a0\u134b\u122d\u129b");
+        put("so", "\u1231\u121b\u120d\u129b");
+        put("sn", "\u123e\u1293\u129b");
+        put("mi", "\u121b\u12ee\u122a\u129b");
+        put("gd", "\u12a5\u1235\u12ae\u1275\u1235 \u130c\u120d\u12ad\u129b");
+        put("sm", "\u1233\u121e\u12a0\u129b");
+        put("sl", "\u1235\u120e\u126a\u129b");
+        put("mg", "\u121b\u120b\u130b\u1235\u129b");
+        put("tig", "\u1275\u130d\u1228");
+        put("sk", "\u1235\u120e\u126b\u12ad\u129b");
+        put("ga", "\u12a0\u12ed\u122a\u123d");
+        put("yo", "\u12ee\u1229\u1263\u12ca\u129b");
+        put("si", "\u1235\u1295\u1203\u120d\u129b");
+        put("sg", "\u1233\u1295\u130e\u129b");
+        put("yi", "\u12ed\u12f2\u123b\u12ca\u129b");
+        put("sd", "\u1232\u1295\u12f5\u1202\u129b");
+        put("fy", "\u134d\u122a\u1235\u129b");
+        put("sid", "\u1232\u12f3\u121d\u129b");
+        put("sa", "\u1233\u1295\u1235\u12ad\u122a\u1275\u129b");
+        put("fr", "\u1348\u1228\u1295\u1233\u12ed\u129b");
+        put("lv", "\u120b\u1275\u126a\u12eb\u1295");
+        put("lt", "\u120a\u1271\u12a0\u1292\u12eb\u1295");
+        put("fo", "\u134b\u122e\u129b");
+        put("rw", "\u12aa\u1295\u12eb\u122d\u12cb\u1295\u12f5\u129b");
+        put("ru", "\u122b\u123d\u129b");
+        put("lo", "\u120b\u12cd\u1235\u129b");
+        put("fj", "\u134a\u1302\u129b");
+        put("ln", "\u120a\u1295\u130b\u120b\u129b");
+        put("fi", "\u134a\u1292\u123d");
+        put("ro", "\u122e\u121b\u1292\u12eb\u1295");
+        put("rn", "\u1229\u1295\u12f2\u129b");
+        put("rm", "\u122e\u121b\u1295\u1235");
+        put("fa", "\u1350\u122d\u1232\u12eb\u129b");
+        put("la", "\u120b\u1272\u1295\u129b");
+        put("xh", "\u12de\u1233\u129b");
+        put("eu", "\u1263\u1235\u12ad\u129b");
+        put("ky", "\u12aa\u122d\u130a\u12dd\u129b");
+        put("et", "\u12a4\u1235\u1276\u1292\u12a0\u1295");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "shortMonths", shortMonths },
@@ -251,6 +403,7 @@ public class LocaleInformation_am extends ListResourceBundle
     { "weekdays", weekdays },
     { "eras", eras },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

@@ -324,6 +324,155 @@ public class LocaleInformation_th extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("es", "\u0e2a\u0e40\u0e1b\u0e19");
+        put("ku", "\u0e40\u0e04\u0e34\u0e14");
+        put("eo", "\u0e40\u0e2d\u0e2a\u0e40\u0e1b\u0e2d\u0e23\u0e31\u0e19\u0e42\u0e15");
+        put("ks", "\u0e04\u0e31\u0e0a\u0e21\u0e35\u0e23\u0e35");
+        put("en", "\u0e2d\u0e31\u0e07\u0e01\u0e24\u0e29");
+        put("el", "\u0e01\u0e23\u0e35\u0e01");
+        put("qu", "\u0e04\u0e34\u0e27\u0e0a\u0e31\u0e27");
+        put("ko", "\u0e40\u0e01\u0e32\u0e2b\u0e25\u0e35");
+        put("kn", "\u0e01\u0e32\u0e19\u0e32\u0e14\u0e32");
+        put("km", "\u0e40\u0e02\u0e21\u0e23");
+        put("kl", "\u0e01\u0e23\u0e35\u0e19\u0e41\u0e25\u0e19\u0e14\u0e4c\u0e14\u0e34\u0e04");
+        put("kk", "\u0e04\u0e32\u0e0b\u0e31\u0e04");
+        put("wo", "\u0e27\u0e39\u0e25\u0e2d\u0e1f");
+        put("ka", "\u0e08\u0e2d\u0e23\u0e4c\u0e40\u0e08\u0e35\u0e22\u0e19");
+        put("dz", "\u0e20\u0e39\u0e10\u0e32\u0e19\u0e35");
+        put("jv", "\u0e0a\u0e27\u0e32");
+        put("pt", "\u0e42\u0e1b\u0e23\u0e15\u0e38\u0e40\u0e01\u0e2a");
+        put("ps", "\u0e1e\u0e32\u0e2a\u0e0a\u0e4c\u0e42\u0e15 (\u0e1e\u0e38\u0e2a\u0e0a\u0e4c\u0e42\u0e15)");
+        put("de", "\u0e40\u0e22\u0e2d\u0e23\u0e21\u0e31\u0e19");
+        put("pl", "\u0e42\u0e1b\u0e41\u0e25\u0e19\u0e14\u0e4c");
+        put("da", "\u0e40\u0e14\u0e19\u0e21\u0e32\u0e23\u0e4c\u0e01");
+        put("vo", "\u0e42\u0e27\u0e25\u0e32\u0e1e\u0e38\u0e01");
+        put("ja", "\u0e0d\u0e35\u0e48\u0e1b\u0e38\u0e48\u0e19");
+        put("vi", "\u0e40\u0e27\u0e35\u0e22\u0e14\u0e19\u0e32\u0e21");
+        put("cy", "\u0e40\u0e27\u0e25\u0e2a\u0e4c");
+        put("pa", "\u0e1b\u0e31\u0e0d\u0e08\u0e32\u0e1b");
+        put("cs", "\u0e40\u0e0a\u0e47\u0e04");
+        put("iu", "\u0e44\u0e2d\u0e19\u0e38\u0e01\u0e15\u0e34\u0e15\u0e31\u0e17");
+        put("it", "\u0e2d\u0e34\u0e15\u0e32\u0e25\u0e35");
+        put("co", "\u0e04\u0e2d\u0e23\u0e4c\u0e0b\u0e34\u0e01\u0e32");
+        put("is", "\u0e44\u0e2d\u0e0b\u0e4c\u0e41\u0e25\u0e19\u0e14\u0e4c\u0e14\u0e34\u0e04");
+        put("uz", "\u0e2d\u0e38\u0e2a\u0e40\u0e1a\u0e04");
+        put("or", "\u0e42\u0e2d\u0e23\u0e34\u0e22\u0e32");
+        put("ik", "\u0e44\u0e2d\u0e19\u0e39\u0e40\u0e1b\u0e35\u0e22\u0e01");
+        put("ur", "\u0e2d\u0e34\u0e23\u0e14\u0e39");
+        put("om", "\u0e42\u0e2d\u0e42\u0e23\u0e42\u0e21 (\u0e2d\u0e32\u0e1f\u0e32\u0e19)");
+        put("ca", "\u0e41\u0e04\u0e15\u0e32\u0e41\u0e25\u0e19");
+        put("ie", "\u0e2d\u0e34\u0e19\u0e40\u0e15\u0e2d\u0e23\u0e4c\u0e25\u0e34\u0e07\u0e04\u0e4c");
+        put("id", "\u0e2d\u0e34\u0e19\u0e42\u0e14\u0e19\u0e35\u0e40\u0e0a\u0e35\u0e22");
+        put("uk", "\u0e22\u0e39\u0e40\u0e04\u0e23\u0e19");
+        put("ia", "\u0e2d\u0e34\u0e19\u0e40\u0e15\u0e2d\u0e23\u0e4c\u0e25\u0e34\u0e07\u0e01\u0e27\u0e32");
+        put("oc", "\u0e2d\u0e2d\u0e01\u0e0b\u0e34\u0e17\u0e31\u0e19");
+        put("ug", "\u0e2d\u0e38\u0e22\u0e01\u0e31\u0e27");
+        put("hy", "\u0e2d\u0e32\u0e23\u0e4c\u0e21\u0e35\u0e40\u0e19\u0e35\u0e22");
+        put("br", "\u0e1a\u0e23\u0e35\u0e17\u0e31\u0e19");
+        put("hu", "\u0e2e\u0e31\u0e07\u0e01\u0e32\u0e23\u0e35");
+        put("bo", "\u0e17\u0e34\u0e40\u0e1a\u0e15");
+        put("bn", "\u0e40\u0e1a\u0e19\u0e01\u0e32\u0e23\u0e35");
+        put("hr", "\u0e42\u0e04\u0e23\u0e40\u0e2d\u0e40\u0e17\u0e35\u0e22");
+        put("bi", "\u0e1a\u0e34\u0e2a\u0e25\u0e32\u0e21\u0e32");
+        put("tw", "\u0e17\u0e27\u0e35");
+        put("bh", "\u0e1a\u0e34\u0e2e\u0e32\u0e23\u0e35");
+        put("bg", "\u0e1a\u0e31\u0e25\u0e41\u0e01\u0e40\u0e23\u0e35\u0e22");
+        put("tt", "\u0e15\u0e32\u0e14");
+        put("no", "\u0e19\u0e2d\u0e23\u0e4c\u0e40\u0e27\u0e22\u0e4c");
+        put("be", "\u0e1a\u0e32\u0e22\u0e42\u0e25\u0e23\u0e31\u0e2a\u0e40\u0e0b\u0e35\u0e22");
+        put("ts", "\u0e0b\u0e2d\u0e07\u0e01\u0e32");
+        put("hi", "\u0e2e\u0e34\u0e19\u0e14\u0e35");
+        put("tr", "\u0e15\u0e38\u0e23\u0e01\u0e35");
+        put("nl", "\u0e2e\u0e2d\u0e25\u0e31\u0e19\u0e14\u0e32");
+        put("zu", "\u0e0b\u0e39\u0e25\u0e39");
+        put("ba", "\u0e1a\u0e32\u0e2a\u0e0a\u0e4c\u0e01\u0e35\u0e23\u0e4c");
+        put("to", "\u0e17\u0e2d\u0e07\u0e01\u0e49\u0e32");
+        put("he", "\u0e2e\u0e34\u0e1a\u0e23\u0e39");
+        put("tn", "\u0e40\u0e0b\u0e15\u0e2a\u0e27\u0e32\u0e19\u0e32");
+        put("tl", "\u0e15\u0e32\u0e01\u0e32\u0e25\u0e47\u0e2d\u0e01");
+        put("tk", "\u0e40\u0e15\u0e34\u0e23\u0e4c\u0e01\u0e40\u0e21\u0e19");
+        put("ha", "\u0e42\u0e2e\u0e0b\u0e32");
+        put("ne", "\u0e40\u0e19\u0e1b\u0e32\u0e25");
+        put("az", "\u0e2d\u0e32\u0e40\u0e0b\u0e2d\u0e23\u0e4c\u0e44\u0e1a\u0e08\u0e32\u0e19\u0e35");
+        put("ti", "\u0e17\u0e34\u0e01\u0e23\u0e34\u0e19\u0e22\u0e32");
+        put("ay", "\u0e44\u0e2d\u0e21\u0e32\u0e23\u0e32");
+        put("th", "\u0e44\u0e17\u0e22");
+        put("tg", "\u0e17\u0e32\u0e08\u0e34\u0e04");
+        put("na", "\u0e19\u0e2d\u0e23\u0e39");
+        put("te", "\u0e17\u0e34\u0e25\u0e39\u0e01\u0e39");
+        put("zh", "\u0e08\u0e35\u0e19");
+        put("as", "\u0e2d\u0e31\u0e2a\u0e2a\u0e31\u0e21\u0e21\u0e34\u0e2a");
+        put("ar", "\u0e2d\u0e32\u0e23\u0e32\u0e1a\u0e34\u0e04");
+        put("ta", "\u0e17\u0e21\u0e34\u0e2c");
+        put("gu", "\u0e01\u0e39\u0e08\u0e32\u0e23\u0e32\u0e15\u0e34");
+        put("my", "\u0e1e\u0e21\u0e48\u0e32");
+        put("am", "\u0e2d\u0e31\u0e21\u0e2e\u0e32\u0e23\u0e34\u0e04");
+        put("za", "\u0e08\u0e27\u0e07");
+        put("mt", "\u0e21\u0e2d\u0e25\u0e15\u0e32");
+        put("ms", "\u0e21\u0e25\u0e32\u0e22\u0e39");
+        put("gn", "\u0e01\u0e31\u0e27\u0e23\u0e32\u0e19\u0e35");
+        put("sw", "\u0e0b\u0e27\u0e32\u0e2e\u0e34\u0e23\u0e35");
+        put("mr", "\u0e21\u0e32\u0e23\u0e32\u0e17\u0e35");
+        put("sv", "\u0e2a\u0e27\u0e35\u0e40\u0e14\u0e19");
+        put("gl", "\u0e01\u0e30\u0e25\u0e35\u0e40\u0e0a\u0e35\u0e22");
+        put("su", "\u0e0b\u0e31\u0e19\u0e14\u0e32\u0e19\u0e35\u0e2a");
+        put("af", "\u0e41\u0e2d\u0e1f\u0e23\u0e34\u0e01\u0e31\u0e19");
+        put("st", "\u0e40\u0e0b\u0e42\u0e2a\u0e42\u0e17");
+        put("mo", "\u0e42\u0e21\u0e14\u0e32\u0e40\u0e27\u0e35\u0e22");
+        put("ss", "\u0e0b\u0e35\u0e2a\u0e27\u0e32\u0e15\u0e34");
+        put("mn", "\u0e21\u0e2d\u0e07\u0e42\u0e01\u0e25");
+        put("sr", "\u0e40\u0e0b\u0e2d\u0e23\u0e4c\u0e40\u0e1a\u0e35\u0e22");
+        put("sq", "\u0e41\u0e2d\u0e25\u0e40\u0e1a\u0e40\u0e19\u0e35\u0e22");
+        put("ml", "\u0e21\u0e32\u0e25\u0e32\u0e22\u0e32\u0e25\u0e31\u0e21");
+        put("ab", "\u0e41\u0e2d\u0e1a\u0e01\u0e32\u0e40\u0e0b\u0e35\u0e22");
+        put("mk", "\u0e41\u0e21\u0e0b\u0e35\u0e42\u0e14\u0e40\u0e19\u0e35\u0e22");
+        put("aa", "\u0e2d\u0e32\u0e1f\u0e32");
+        put("so", "\u0e42\u0e0b\u0e21\u0e32\u0e25\u0e35");
+        put("sn", "\u0e42\u0e0b\u0e19\u0e32");
+        put("mi", "\u0e40\u0e21\u0e32\u0e23\u0e35");
+        put("gd", "\u0e2a\u0e01\u0e47\u0e2d\u0e15\u0e2a\u0e4c\u0e40\u0e01\u0e25\u0e34\u0e04");
+        put("sm", "\u0e0b\u0e32\u0e21\u0e31\u0e27");
+        put("sl", "\u0e2a\u0e42\u0e25\u0e40\u0e27\u0e40\u0e19\u0e35\u0e22");
+        put("mg", "\u0e21\u0e32\u0e25\u0e32\u0e01\u0e32\u0e0b\u0e35");
+        put("sk", "\u0e2a\u0e42\u0e25\u0e27\u0e31\u0e04");
+        put("ga", "\u0e44\u0e2d\u0e23\u0e34\u0e0a");
+        put("yo", "\u0e42\u0e22\u0e23\u0e39\u0e1a\u0e32");
+        put("si", "\u0e2a\u0e34\u0e07\u0e2b\u0e25");
+        put("sh", "\u0e40\u0e0b\u0e2d\u0e23\u0e4c\u0e42\u0e1a-\u0e42\u0e04\u0e23\u0e40\u0e2d\u0e40\u0e17\u0e35\u0e22\u0e19");
+        put("sg", "\u0e2a\u0e31\u0e19\u0e42\u0e04");
+        put("yi", "\u0e22\u0e35\u0e14\u0e34\u0e0a");
+        put("sd", "\u0e0b\u0e34\u0e19\u0e14\u0e34");
+        put("fy", "\u0e1f\u0e23\u0e35\u0e2a\u0e41\u0e25\u0e19\u0e14\u0e4c");
+        put("sa", "\u0e2a\u0e31\u0e19\u0e2a\u0e01\u0e24\u0e15");
+        put("fr", "\u0e1d\u0e23\u0e31\u0e48\u0e07\u0e40\u0e28\u0e2a");
+        put("lv", "\u0e41\u0e25\u0e15\u0e40\u0e27\u0e35\u0e22 (\u0e40\u0e25\u0e17\u0e17\u0e34\u0e2a\u0e0a\u0e4c)");
+        put("lt", "\u0e25\u0e34\u0e18\u0e31\u0e27\u0e40\u0e19\u0e35\u0e22");
+        put("fo", "\u0e1f\u0e32\u0e42\u0e23\u0e2a");
+        put("rw", "\u0e04\u0e34\u0e19\u0e22\u0e32\u0e27\u0e31\u0e19\u0e14\u0e32");
+        put("ru", "\u0e23\u0e31\u0e2a\u0e40\u0e0b\u0e35\u0e22");
+        put("lo", "\u0e25\u0e32\u0e27");
+        put("fj", "\u0e1f\u0e34\u0e08\u0e34");
+        put("ln", "\u0e25\u0e34\u0e07\u0e01\u0e32\u0e25\u0e32");
+        put("fi", "\u0e1f\u0e34\u0e19");
+        put("ro", "\u0e42\u0e23\u0e21\u0e31\u0e19");
+        put("rn", "\u0e04\u0e34\u0e23\u0e31\u0e19\u0e14\u0e35");
+        put("rm", "\u0e40\u0e23\u0e42\u0e15-\u0e42\u0e23\u0e41\u0e21\u0e19\u0e0b\u0e4c");
+        put("fa", "\u0e40\u0e1b\u0e2d\u0e23\u0e4c\u0e40\u0e0b\u0e35\u0e22");
+        put("la", "\u0e25\u0e30\u0e15\u0e34\u0e19");
+        put("xh", "\u0e42\u0e0b\u0e2a\u0e32");
+        put("eu", "\u0e41\u0e1a\u0e2a\u0e01\u0e4c");
+        put("ky", "\u0e40\u0e04\u0e2d\u0e23\u0e4c\u0e01\u0e34\u0e0b");
+        put("et", "\u0e40\u0e2d\u0e2a\u0e42\u0e15\u0e40\u0e19\u0e35\u0e22");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "localPatternChars", "GanjkHmsSEDFwWxhKzAeugXZ" },
@@ -342,6 +491,7 @@ public class LocaleInformation_th extends ListResourceBundle
     { "longTimeFormat", "H' \u0e19\u0e32\u0e2c\u0e34\u0e01\u0e32 'm' \u0e19\u0e32\u0e17\u0e35'" },
     { "fullTimeFormat", "H' \u0e19\u0e32\u0e2c\u0e34\u0e01\u0e32 'm' \u0e19\u0e32\u0e17\u0e35 'ss' \u0e27\u0e34\u0e19\u0e32\u0e17\u0e35'" },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

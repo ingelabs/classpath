@@ -118,9 +118,52 @@ public class LocaleInformation_ps extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("tt", "\u062a\u0627\u062a\u0627\u0631");
+        put("ja", "\u062c\u0627\u067e\u0627\u0646\u06cc");
+        put("en", "\u0627\u0646\u06ab\u0644\u06cc\u0633\u064a");
+        put("sa", "\u0633\u0646\u0633\u06a9\u0631\u06cc\u067c");
+        put("el", "\u06cc\u0648\u0646\u0627\u0646\u064a");
+        put("hi", "\u0647\u0646\u062f\u064a");
+        put("tk", "\u062a\u0631\u06a9\u0645\u0646\u064a");
+        put("uz", "\u0627\u0632\u0628\u06a9\u064a");
+        put("he", "\u0639\u0628\u0631\u064a");
+        put("it", "\u0627\u06cc\u067c\u0627\u0644\u0648\u064a");
+        put("tg", "\u062a\u0627\u062c\u06a9");
+        put("fr", "\u0641\u0631\u0627\u0646\u0633\u0648\u064a");
+        put("zh", "\u0686\u06cc\u0646\u064a");
+        put("ru", "\u0631\u0648\u0633\u064a");
+        put("ine", "\u0647\u0646\u062f \u0648 \u0627\u0631\u0648\u067e\u0627\u06cc\u064a");
+        put("fi", "\u0641\u06cc\u0646\u0644\u0646\u0689\u064a");
+        put("ar", "\u0639\u0631\u0628\u064a");
+        put("sv", "\u0633\u0648\u06cc\u0689\u0646\u06cc");
+        put("pt", "\u067e\u0648\u0631\u062a\u06ab\u0627\u0644\u064a");
+        put("ms", "\u0645\u0644\u0627\u06cc\u0627");
+        put("fa", "\u0641\u0627\u0631\u0633\u064a");
+        put("ps", "\u067e\u069a\u062a\u0648");
+        put("la", "\u0644\u0627\u062a\u06cc\u0646\u064a");
+        put("mn", "\u0645\u063a\u0648\u0644\u064a");
+        put("pl", "\u067e\u0648\u0644\u0646\u0689\u064a");
+        put("mk", "\u0645\u0642\u062f\u0648\u0646\u064a");
+        put("hy", "\u0627\u0631\u0645\u0646\u064a");
+        put("de", "\u0627\u0644\u0645\u0627\u0646\u064a");
+        put("mg", "\u0645\u0644\u063a\u0627\u0633\u064a");
+        put("et", "\u062d\u0628\u0634\u064a");
+        put("ku", "\u06a9\u0631\u062f\u064a");
+        put("bal", "\u0628\u0644\u0648\u0685\u064a");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

@@ -123,6 +123,17 @@ public class LocaleInformation_gu extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("gu", "\u0a97\u0ac1\u0a9c\u0ab0\u0abe\u0aa4\u0ac0");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "zeroDigit", "\u0ae6" },
@@ -132,6 +143,7 @@ public class LocaleInformation_gu extends ListResourceBundle
     { "weekdays", weekdays },
     { "ampms", ampms },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

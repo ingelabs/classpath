@@ -196,6 +196,17 @@ public class LocaleInformation_sw extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("sw", "Kiswahili");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "shortMonths", shortMonths },
@@ -205,6 +216,7 @@ public class LocaleInformation_sw extends ListResourceBundle
     { "eras", eras },
     { "zoneStrings", zoneStrings },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

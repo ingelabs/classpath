@@ -119,6 +119,19 @@ public class LocaleInformation_uz_AF extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("uz", "\u0627\u06c9\u0632\u0628\u06d0\u06a9");
+        put("fa", "\u062f\u0631\u06cc");
+        put("ps", "\u067e\u0634\u062a\u0648");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "percent", "\u066a" },
@@ -143,6 +156,7 @@ public class LocaleInformation_uz_AF extends ListResourceBundle
     { "fullTimeFormat", "H:mm:ss (z)" },
     { "zoneStrings", zoneStrings },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

@@ -188,6 +188,66 @@ public class LocaleInformation_dz extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("ne", "\u0f53\u0f7a\u0f0b\u0f54\u0f0b\u0f63\u0f72");
+        put("th", "\u0f50\u0f71\u0f60\u0f7a");
+        put("new", "\u0f53\u0f72\u0f0b\u0f5d\u0f0b\u0f62\u0f72");
+        put("te", "\u0f4f\u0f7a\u0f0b\u0f63\u0f74\u0f0b\u0f42\u0f74");
+        put("dz", "\u0f62\u0fab\u0f7c\u0f44\u0f0b\u0f41");
+        put("zh", "\u0f62\u0f42\u0fb1\u0f0b\u0f58\u0f72\u0f0b\u0f41");
+        put("ta", "\u0f4f\u0f0b\u0f58\u0f72\u0f63");
+        put("dv", "\u0f51\u0f72\u0f0b\u0f56\u0f7a\u0f0b\u0f67\u0f72");
+        put("as", "\u0f68\u0f0b\u0f66\u0f0b\u0f58\u0f72\u0f0b\u0f66\u0f72");
+        put("ar", "\u0f68\u0f7a\u0f0b\u0f62\u0f0b\u0f66\u0fa6\u0f72\u0f42");
+        put("my", "\u0f56\u0f62\u0f0b\u0f58\u0f72\u0f66\u0f72");
+        put("mr", "\u0f58\u0f0b\u0f62\u0f0b\u0f50\u0f72");
+        put("mn", "\u0f66\u0f7c\u0f42\u0f0b\u0f54\u0f7c\u0f60\u0f72\u0f0b\u0f41");
+        put("ml", "\u0f58\u0f0b\u0f63\u0f0b\u0f61\u0f0b\u0f63\u0f58");
+        put("de", "\u0f47\u0f71\u0f62\u0f0b\u0f58\u0f71\u0f53");
+        put("pi", "\u0f54\u0f0b\u0f63\u0f72");
+        put("da", "\u0f4c\u0f7a\u0f0b\u0f53\u0f72\u0f64");
+        put("art", "\u0f56\u0f5f\u0f7c\u0f0b\u0f56\u0f5f\u0f7c\u0f5d (\u0f42\u0f5e\u0f53)");
+        put("si", "\u0f66\u0f72\u0f53\u0f0b\u0f67\u0f0b\u0f63\u0f72\u0f66\u0f72");
+        put("ga", "\u0f68\u0f60\u0f72\u0f0b\u0f62\u0f72\u0f64");
+        put("mni", "\u0f58\u0f0b\u0f53\u0f72\u0f0b\u0f54\u0f74\u0f0b\u0f62\u0f72");
+        put("egy", "\u0f68\u0f72\u0f0b\u0f47\u0f72\u0f54\u0f0b\u0f64\u0f71\u0f53 (\u0f66\u0f94\u0f0b\u0f51\u0f74\u0f66\u0f0b\u0f40\u0fb1\u0f72)");
+        put("pa", "\u0f54\u0f71\u0f53\u0f0b\u0f47\u0f0b\u0f56\u0f72");
+        put("mnc", "\u0f58\u0f71\u0f53\u0f0b\u0f45\u0f74");
+        put("sa", "\u0f66\u0f7e\u0f66\u0f90\u0fb2\u0f80\u0f4f");
+        put("cs", "\u0f45\u0f7a\u0f40");
+        put("it", "\u0f68\u0f72\u0f0b\u0f4a\u0f0b\u0f63\u0f72\u0f0b\u0f62\u0f53");
+        put("fr", "\u0f55\u0f7a\u0f0b\u0f62\u0f7a\u0f53\u0f46\u0f7a");
+        put("him", "\u0f67\u0f72\u0f0b\u0f58\u0f0b\u0f45\u0f0b\u0f63\u0f72");
+        put("ru", "\u0f62\u0f0b\u0f64\u0f72\u0f0b\u0f61\u0f53");
+        put("or", "\u0f68\u0f7c\u0f0b\u0f62\u0f72\u0f0b\u0f61");
+        put("lo", "\u0f63\u0f60\u0f7c");
+        put("ur", "\u0f68\u0f74\u0f62\u0f0b\u0f51\u0f74");
+        put("fa", "\u0f54\u0f62\u0f0b\u0f64\u0f72\u0f0b\u0f61\u0f53");
+        put("grc", "\u0f42\u0f72\u0f62\u0f72\u0f40, \u0f66\u0f94\u0f0b\u0f51\u0f74\u0f66\u0f0b\u0f40\u0fb1\u0f72 (\u0f21\u0f24\u0f25\u0f23)");
+        put("es", "\u0f66\u0f72\u0f54\u0f7a\u0f0b\u0f53\u0f72\u0f64");
+        put("bo", "\u0f56\u0f7c\u0f51\u0f0b\u0f41");
+        put("bn", "\u0f56\u0f7a\u0f44\u0f92\u0f0b\u0f63\u0f72");
+        put("ks", "\u0f40\u0f7a\u0f64\u0f0b\u0f58\u0f72\u0f0b\u0f62\u0f72");
+        put("en", "\u0f68\u0f72\u0f44\u0f0b\u0f63\u0f72\u0f64");
+        put("el", "\u0f42\u0f72\u0f62\u0f72\u0f40");
+        put("inc", "\u0f68\u0f72\u0f53\u0f0b\u0f4c\u0f72\u0f40 (\u0f42\u0f5e\u0f53)");
+        put("ko", "\u0f40\u0f7c\u0f0b\u0f62\u0f72\u0f61\u0f53");
+        put("kn", "\u0f40\u0f0b\u0f53\u0f0b\u0f4c");
+        put("bh", "\u0f56\u0f72\u0f0b\u0f67\u0f0b\u0f63\u0f72");
+        put("no", "\u0f53\u0f7c\u0f62\u0f0b\u0f5d\u0f72\u0f0b\u0f47\u0f72\u0f0b\u0f61\u0f53");
+        put("km", "\u0f41\u0f7a\u0f0b\u0f58\u0f62");
+        put("hi", "\u0f67\u0f72\u0f53\u0f0b\u0f51\u0f72");
+        put("nl", "\u0f4c\u0f46");
+        put("he", "\u0f67\u0f72\u0f0b\u0f56\u0f74\u0f62\u0f74");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "shortMonths", shortMonths },
@@ -205,6 +265,7 @@ public class LocaleInformation_dz extends ListResourceBundle
     { "fullTimeFormat", "\u0f46\u0f74\u0f0b\u0f5a\u0f7c\u0f51\u0f0b h \u0f66\u0f90\u0f62\u0f0b\u0f58\u0f0b mm \u0f66\u0f90\u0f62\u0f0b\u0f46\u0f71\u0f0b ss a zzzz" },
     { "zoneStrings", zoneStrings },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

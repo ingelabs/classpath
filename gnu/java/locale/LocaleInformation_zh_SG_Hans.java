@@ -61,6 +61,18 @@ public class LocaleInformation_zh_SG_Hans extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("root", "\u6839 \u6e90");
+        put("sh", "\u585e\u5c14\u7ef4\u4e9a\u514b\u7f57\u5730\u4e9a\u6587");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "currencyFormat", "\u00a4#,##0.00;-\u00a4#,##0.00" },
@@ -73,6 +85,7 @@ public class LocaleInformation_zh_SG_Hans extends ListResourceBundle
     { "longTimeFormat", "a hh:mm:ss" },
     { "fullTimeFormat", "a hh:mm:ss" },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

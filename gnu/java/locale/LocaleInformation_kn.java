@@ -121,6 +121,17 @@ public class LocaleInformation_kn extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("kn", "\u0c95\u0ca8\u0ccd\u0ca8\u0ca1");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "shortMonths", shortMonths },
@@ -129,6 +140,7 @@ public class LocaleInformation_kn extends ListResourceBundle
     { "weekdays", weekdays },
     { "ampms", ampms },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

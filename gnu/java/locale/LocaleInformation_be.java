@@ -114,6 +114,17 @@ public class LocaleInformation_be extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("be", "\u0411\u0435\u043b\u0430\u0440\u0443\u0441\u043a\u0456");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "decimalSeparator", "," },
@@ -133,6 +144,7 @@ public class LocaleInformation_be extends ListResourceBundle
     { "longTimeFormat", "HH.mm.ss z" },
     { "fullTimeFormat", "HH.mm.ss z" },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

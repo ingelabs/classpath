@@ -379,6 +379,155 @@ public class LocaleInformation_cs extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("es", "\u0160pan\u011bl\u0161tina");
+        put("ku", "Kurd\u0161tina");
+        put("eo", "Esperanto");
+        put("ks", "Ka\u0161m\u00edr\u0161tina");
+        put("en", "Angli\u010dtina");
+        put("el", "\u0158e\u010dtina");
+        put("qu", "Ke\u010du\u00e1n\u0161tina");
+        put("ko", "Korej\u0161tina");
+        put("kn", "Kannad\u0161tina");
+        put("km", "Kambod\u017e\u0161tina");
+        put("kl", "Gr\u00f3n\u0161tina");
+        put("kk", "Kazach\u0161tina");
+        put("wo", "Wolof");
+        put("ka", "Gruz\u00edn\u0161tina");
+        put("dz", "Bh\u00fat\u00e1n\u0161tina");
+        put("jv", "Jav\u00e1n\u0161tina");
+        put("pt", "Portugal\u0161tina");
+        put("ps", "Pashto (Pushto)");
+        put("de", "N\u011bm\u010dina");
+        put("pl", "Pol\u0161tina");
+        put("da", "D\u00e1n\u0161tina");
+        put("vo", "Volapuk");
+        put("ja", "Japon\u0161tina");
+        put("vi", "Vietnam\u0161tina");
+        put("cy", "Vel\u0161tina");
+        put("pa", "Pa\u0148d\u017e\u00e1b\u0161tina");
+        put("cs", "\u010ce\u0161tina");
+        put("iu", "Inuktitut\u0161tina");
+        put("it", "Ital\u0161tina");
+        put("co", "Korsi\u010dtina");
+        put("is", "Island\u0161tina");
+        put("uz", "Uzbe\u010dtina");
+        put("or", "Oriya");
+        put("ik", "Inupiak\u0161tina");
+        put("ur", "Urd\u0161tina");
+        put("om", "Oromo (Afan)");
+        put("ca", "Katal\u00e1n\u0161tina");
+        put("ie", "Interlingue");
+        put("id", "Indon\u00e9\u0161tina");
+        put("uk", "Ukrajin\u0161tina");
+        put("ia", "Interlingua");
+        put("oc", "Occitan");
+        put("ug", "Uighur\u0161tina");
+        put("hy", "Arm\u00e9n\u0161tina");
+        put("br", "Breta\u0148\u0161tina");
+        put("hu", "Ma\u010far\u0161tina");
+        put("bo", "Tibet\u0161tina");
+        put("bn", "Beng\u00e1l\u0161tina");
+        put("hr", "Chorvat\u0161tina");
+        put("bi", "Bisl\u00e1m\u0161tina");
+        put("tw", "Twi");
+        put("bh", "Bihar\u0161tina");
+        put("bg", "Bulhar\u0161tina");
+        put("tt", "Tatar\u0161tina");
+        put("no", "Nor\u0161tina");
+        put("be", "B\u011bloru\u0161tina");
+        put("ts", "Tsonga");
+        put("hi", "Hind\u0161tina");
+        put("tr", "Ture\u010dtina");
+        put("nl", "Holand\u0161tina");
+        put("zu", "Zulu");
+        put("ba", "Baskir\u0161tina");
+        put("to", "Tonga");
+        put("he", "Hebrej\u0161tina");
+        put("tn", "Setswan\u0161tina");
+        put("tl", "Tagalog");
+        put("tk", "Turkmen\u0161tina");
+        put("ha", "Hausa");
+        put("ne", "Nep\u00e1l\u0161tina");
+        put("az", "Azerbajd\u017e\u00e1n\u0161tina");
+        put("ti", "Tigrinij\u0161tina");
+        put("ay", "Aym\u00e1r\u0161tina");
+        put("th", "Thaj\u0161tina");
+        put("tg", "T\u00e1d\u017ei\u010dtina");
+        put("na", "Nauru");
+        put("te", "Telug\u0161tina");
+        put("zh", "\u010c\u00edn\u0161tina");
+        put("as", "Assam\u00e9\u0161tina");
+        put("ar", "Arab\u0161tina");
+        put("ta", "Tamil\u0161tina");
+        put("gu", "Gujarat\u0161tina");
+        put("my", "Barm\u0161tina");
+        put("am", "Amhar\u0161tina");
+        put("za", "Zhuang");
+        put("mt", "Malt\u0161tina");
+        put("ms", "Malaj\u0161tina");
+        put("gn", "Guaran\u0161tina");
+        put("sw", "Svahil\u0161tina");
+        put("mr", "Marathi");
+        put("sv", "\u0160v\u00e9d\u0161tina");
+        put("gl", "Hali\u010d\u0161tina");
+        put("su", "Sundan\u0161tina");
+        put("af", "Afrik\u00e1n\u0161tina");
+        put("st", "Sesotho");
+        put("mo", "Moldav\u0161tina");
+        put("ss", "Siswat\u0161tina");
+        put("mn", "Mongol\u0161tina");
+        put("sr", "Srb\u0161tina");
+        put("sq", "Alb\u00e1n\u0161tina");
+        put("ml", "Malabar\u0161tina");
+        put("ab", "Abch\u00e1z\u0161tina");
+        put("mk", "Makedon\u0161tina");
+        put("aa", "Afar\u0161tina");
+        put("so", "Som\u00e1l\u0161tina");
+        put("sn", "Shona");
+        put("mi", "Maor\u0161tina");
+        put("gd", "Skotsk\u00e1 gal\u0161tina");
+        put("sm", "Samoy\u0161tina");
+        put("sl", "Slovin\u0161tina");
+        put("mg", "Malga\u0161tina");
+        put("sk", "Sloven\u0161tina");
+        put("ga", "Ir\u0161tina");
+        put("yo", "Yoruba");
+        put("si", "Sinh\u00e1l\u0161tina");
+        put("sh", "Srbochorvat\u0161tina");
+        put("sg", "Sangho");
+        put("yi", "Jidi\u0161");
+        put("sd", "Sindhi");
+        put("fy", "Fr\u00ed\u0161tina");
+        put("sa", "Sanskrt");
+        put("fr", "Francouz\u0161tina");
+        put("lv", "Loty\u0161tina");
+        put("lt", "Litev\u0161tina");
+        put("fo", "Faer\u0161tina");
+        put("rw", "Kinyarwand\u0161tina");
+        put("ru", "Ru\u0161tina");
+        put("lo", "Lao\u0161tina");
+        put("fj", "Fid\u017ei");
+        put("ln", "Lingal\u0161tina");
+        put("fi", "Fin\u0161tina");
+        put("ro", "Rumun\u0161tina");
+        put("rn", "Kirundi");
+        put("rm", "R\u00e9torom\u00e1n\u0161tina");
+        put("fa", "Per\u0161tina");
+        put("la", "Latina");
+        put("xh", "Xhosa");
+        put("eu", "Baski\u010dtina");
+        put("ky", "Kirgiz\u0161tina");
+        put("et", "Eston\u0161tina");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "decimalSeparator", "," },
@@ -400,6 +549,7 @@ public class LocaleInformation_cs extends ListResourceBundle
     { "fullTimeFormat", "H:mm:ss z" },
     { "zoneStrings", zoneStrings },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

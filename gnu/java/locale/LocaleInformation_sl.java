@@ -353,6 +353,46 @@ public class LocaleInformation_sl extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("ja", "Japon\u0161\u010dina");
+        put("en", "Angle\u0161\u010dina");
+        put("tr", "Tur\u0161\u010dina");
+        put("ko", "Korej\u0161\u010dina");
+        put("no", "Norve\u0161\u010dina");
+        put("el", "Gr\u0161\u010dina");
+        put("nl", "Nizozem\u0161\u010dina");
+        put("bg", "Bolgar\u0161\u010dina");
+        put("lv", "Leton\u0161\u010dina");
+        put("he", "Hebrej\u0161\u010dina");
+        put("cs", "\u010ce\u0161\u010dina");
+        put("it", "Italijan\u0161\u010dina");
+        put("lt", "Litov\u0161\u010dina");
+        put("fr", "Franco\u0161\u010dina");
+        put("zh", "Kitaj\u0161\u010dina");
+        put("ru", "Ru\u0161\u010dina");
+        put("ro", "Romun\u0161\u010dina");
+        put("fi", "Fin\u0161\u010dina");
+        put("ar", "Arab\u0161\u010dina");
+        put("sv", "\u0160ved\u0161\u010dina");
+        put("pt", "Portugal\u0161\u010dina");
+        put("pl", "Polj\u0161\u010dina");
+        put("sl", "Sloven\u0161\u010dina");
+        put("sk", "Slova\u0161\u010dina");
+        put("de", "Nem\u0161\u010dina");
+        put("hu", "Mad\u017ear\u0161\u010dina");
+        put("et", "Eston\u0161\u010dina");
+        put("es", "\u0160pan\u0161\u010dina");
+        put("hr", "Hrva\u0161\u010dina");
+        put("da", "Dan\u0161\u010dina");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "decimalSeparator", "," },
@@ -372,6 +412,7 @@ public class LocaleInformation_sl extends ListResourceBundle
     { "longTimeFormat", "H:mm:ss z" },
     { "fullTimeFormat", "H:mm:ss z" },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

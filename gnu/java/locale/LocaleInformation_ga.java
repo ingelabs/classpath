@@ -366,6 +366,136 @@ public class LocaleInformation_ga extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("es", "Sp\u00e1innis");
+        put("kw", "Cornais");
+        put("eo", "Esperanto");
+        put("ks", "Caism\u00edris");
+        put("en", "B\u00e9arla");
+        put("el", "Gr\u00e9igis");
+        put("qu", "Ceatsuais");
+        put("ko", "C\u00f3ir\u00e9is");
+        put("kn", "Cannadais");
+        put("kk", "Casachais");
+        put("ka", "Seoirsis");
+        put("wa", "Vall\u00fanais");
+        put("jv", "I\u00e1vais");
+        put("pt", "Portaing\u00e9ilis");
+        put("ps", "Paisteo");
+        put("de", "Gearm\u00e1inis");
+        put("pl", "Polainnis");
+        put("da", "Danmhairgis");
+        put("ja", "Seap\u00e1inis");
+        put("vi", "V\u00edtneamais");
+        put("cy", "Breatnais");
+        put("pa", "Puinseaibis");
+        put("cv", "Suvaisis");
+        put("cu", "Slavais na hEaglaise");
+        put("cs", "Seicis");
+        put("cr", "Cra\u00edais");
+        put("iu", "Ion\u00faitis");
+        put("it", "Iod\u00e1ilis");
+        put("co", "Corsaicis");
+        put("is", "\u00cdoslainnais");
+        put("haw", "Hav\u00e1\u00edais");
+        put("uz", "\u00daisb\u00e9icis");
+        put("io", "Ido");
+        put("os", "\u00d3is\u00e9itis");
+        put("ik", "Inupiaq");
+        put("ce", "Sisinis");
+        put("ur", "Urdais");
+        put("ca", "Catal\u00f3inis");
+        put("ie", "Interlingue");
+        put("id", "Indin\u00e9isis");
+        put("uk", "\u00dacr\u00e1inis");
+        put("ia", "Interlingua");
+        put("oc", "Ocat\u00e1inis (tar \u00e9is 1500); Proven\u00e7al");
+        put("hy", "Airm\u00e9inis");
+        put("bs", "Boisnis");
+        put("br", "Briot\u00e1inis");
+        put("hu", "Ung\u00e1iris");
+        put("bo", "Tib\u00e9adais");
+        put("bn", "Beang\u00e1lais");
+        put("hr", "Cr\u00f3itis");
+        put("nv", "Navach\u00f3is");
+        put("ty", "Taih\u00edtis");
+        put("bg", "Bulg\u00e1iris");
+        put("tt", "Tatarais");
+        put("no", "Ioruais");
+        put("be", "Bealar\u00faisis");
+        put("nn", "Ioruais Nynorsk");
+        put("hi", "Hiond\u00fais");
+        put("tr", "Tuircis");
+        put("nl", "Ollainnais");
+        put("zu", "S\u00fal\u00fais");
+        put("ba", "Baisc\u00edris");
+        put("he", "Eabhrais");
+        put("tl", "Tag\u00e1laigis");
+        put("ne", "Neipealais");
+        put("az", "Asarbaise\u00e1inis");
+        put("th", "T\u00e9alainnis");
+        put("nb", "Ioruais Bokm\u00e5l");
+        put("na", "N\u00e1r\u00fais");
+        put("zh", "S\u00ednis");
+        put("as", "Asaimis");
+        put("ar", "Araibis");
+        put("ta", "Tamailis");
+        put("gv", "Mannainis");
+        put("gu", "G\u00faisear\u00e1itis");
+        put("my", "Burmais");
+        put("mt", "Maltais");
+        put("sw", "Svaha\u00edlis");
+        put("mr", "Maraitis");
+        put("sv", "Sualainnis");
+        put("af", "Afrac\u00e1inis");
+        put("mo", "Mold\u00e1ivis");
+        put("ae", "Aiv\u00e9istis");
+        put("mn", "Mong\u00f3ilis");
+        put("sr", "Seirbis");
+        put("sq", "Alb\u00e1inis");
+        put("ml", "Mail\u00e9alaimis");
+        put("ab", "Abc\u00e1isis");
+        put("mk", "Macad\u00f3inis");
+        put("aa", "Afar");
+        put("so", "Som\u00e1lais");
+        put("mi", "Maorais");
+        put("gd", "Gaeilge na hAlban");
+        put("sm", "Sam\u00f3is");
+        put("sl", "Sl\u00f3v\u00e9inis");
+        put("mg", "Malag\u00e1sais");
+        put("sk", "Sl\u00f3vacais");
+        put("ga", "Gaeilge");
+        put("sh", "Seirbea-Chr\u00f3itis");
+        put("se", "S\u00e1imis Thuaidh");
+        put("yi", "Gi\u00fadais");
+        put("sd", "Sindis");
+        put("fy", "Freaslainnais");
+        put("sc", "Saird\u00ednis");
+        put("sa", "Sanscrait");
+        put("fr", "Fraincis");
+        put("lv", "Laitvis");
+        put("lt", "Liotu\u00e1inis");
+        put("fo", "Far\u00f3is");
+        put("ru", "R\u00faisis");
+        put("lo", "Laosais");
+        put("fj", "Fidsis");
+        put("fi", "Fionnlainnis");
+        put("ro", "Rom\u00e1inis");
+        put("fa", "Peirsis");
+        put("lb", "Leitseabuirgis");
+        put("la", "Laidin");
+        put("eu", "Bascais");
+        put("ky", "Cirgeasais");
+        put("et", "East\u00f3inis");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "localPatternChars", "RbMLkUnsSElFtTauKcBeyrAC" },
@@ -377,6 +507,7 @@ public class LocaleInformation_ga extends ListResourceBundle
     { "ampms", ampms },
     { "zoneStrings", zoneStrings },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

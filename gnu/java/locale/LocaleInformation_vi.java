@@ -305,6 +305,76 @@ public class LocaleInformation_vi extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("ne", "Ti\u1ebfng N\u00ea-pan");
+        put("th", "Ti\u1ebfng Th\u00e1i");
+        put("az", "Ti\u1ebfng Ai-d\u00e9c-bai-gian");
+        put("zh", "Ti\u1ebfng Trung Qu\u1ed1c");
+        put("ar", "Ti\u1ebfng A-r\u1eadp");
+        put("jv", "Ti\u1ebfng Gia-va");
+        put("ms", "Ti\u1ebfng Ma-lay-xi-a");
+        put("sv", "Ti\u1ebfng Th\u1ee5y \u0110i\u1ec3n");
+        put("pt", "Ti\u1ebfng B\u1ed3 \u0110\u00e0o Nha");
+        put("sr", "Ti\u1ebfng S\u00e9c-bi");
+        put("mn", "Ti\u1ebfng M\u00f4ng C\u1ed5");
+        put("sq", "Ti\u1ebfng An-ba-ni");
+        put("so", "Ti\u1ebfng X\u00f4-ma-li");
+        put("mk", "Ti\u1ebfng Ma-x\u00ea-\u0111\u00f4-ni-a");
+        put("de", "Ti\u1ebfng \u0110\u1ee9c");
+        put("pl", "Ti\u1ebfng Ba Lan");
+        put("sl", "Ti\u1ebfng Xl\u00f4-ven");
+        put("sk", "Ti\u1ebfng Xl\u00f4-v\u00e1c");
+        put("da", "Ti\u1ebfng \u0110an M\u1ea1ch");
+        put("ga", "Ti\u1ebfng Ai-len");
+        put("vi", "Ti\u1ebfng Vi\u1ec7t");
+        put("ja", "Ti\u1ebfng Nh\u1eadt");
+        put("yi", "Ti\u1ebfng Y-\u0111it");
+        put("sa", "Ti\u1ebfng Ph\u1ea1n");
+        put("cs", "Ti\u1ebfng S\u00e9c");
+        put("lv", "Ti\u1ebfng L\u00e1t-vi-a");
+        put("it", "Ti\u1ebfng \u00dd");
+        put("fr", "Ti\u1ebfng Ph\u00e1p");
+        put("is", "Ti\u1ebfng Ai-x\u01a1-len");
+        put("uz", "Ti\u1ebfng U-d\u01a1-b\u1ebfch");
+        put("lt", "Ti\u1ebfng L\u00edt-va");
+        put("ru", "Ti\u1ebfng Nga");
+        put("lo", "Ti\u1ebfng L\u00e0o");
+        put("fi", "Ti\u1ebfng Ph\u1ea7n Lan");
+        put("ro", "Ti\u1ebfng Ru-ma-ni");
+        put("ca", "Ti\u1ebfng Ca-ta-l\u0103ng");
+        put("id", "Ti\u1ebfng In-\u0111\u00f4-n\u00ea-xia");
+        put("uk", "Ti\u1ebfng U-crai-na");
+        put("fa", "Ti\u1ebfng Ba T\u01b0");
+        put("ia", "Ti\u1ebfng Khoa H\u1ecdc Qu\u1ed1c T\u1ebf");
+        put("la", "Ti\u1ebfng La-tinh");
+        put("hy", "Ti\u1ebfng \u00c1c-m\u00ea-ni");
+        put("et", "Ti\u1ebfng E-xt\u00f4-ni-a");
+        put("hu", "Ti\u1ebfng Hung-ga-ri");
+        put("es", "Ti\u1ebfng T\u00e2y Ban Nha");
+        put("bo", "Ti\u1ebfng T\u00e2y T\u1ea1ng");
+        put("hr", "Ti\u1ebfng Cr\u00f4-a-ti-a");
+        put("eo", "Ti\u1ebfng Qu\u1ed1c T\u1ebf Ng\u1eef");
+        put("en", "Ti\u1ebfng Anh");
+        put("el", "Ti\u1ebfng Hy L\u1ea1p");
+        put("ko", "Ti\u1ebfng H\u00e0n Qu\u1ed1c");
+        put("kn", "Ti\u1ebfng Kan-na-\u0111a");
+        put("no", "Ti\u1ebfng Na Uy");
+        put("km", "Ti\u1ebfng Campuchia");
+        put("bg", "Ti\u1ebfng Bun-ga-ri");
+        put("tr", "Ti\u1ebfng Th\u1ed5 Nh\u0129 K\u1ef3");
+        put("hi", "Ti\u1ebfng Hin-\u0111i");
+        put("be", "Ti\u1ebfng B\u00ea-la-r\u00fat");
+        put("nl", "Ti\u1ebfng H\u00e0 Lan");
+        put("he", "Ti\u1ebfng H\u00ea-br\u01a1");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "decimalSeparator", "," },
@@ -321,6 +391,7 @@ public class LocaleInformation_vi extends ListResourceBundle
     { "longDateFormat", "'Ng\u00e0y' dd 'th\u00e1ng' M 'n\u0103m' yyyy" },
     { "fullDateFormat", "EEEE, 'ng\u00e0y' dd MMMM 'n\u0103m' yyyy" },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

@@ -119,6 +119,17 @@ public class LocaleInformation_gv extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("gv", "Gaelg");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "shortMonths", shortMonths },
@@ -128,6 +139,7 @@ public class LocaleInformation_gv extends ListResourceBundle
     { "eras", eras },
     { "ampms", ampms },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

@@ -353,6 +353,19 @@ public class LocaleInformation_nn extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("nb", "norsk bokm\u00e5l");
+        put("no", "norsk");
+        put("nn", "norsk nynorsk");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "decimalSeparator", "," },
@@ -371,6 +384,7 @@ public class LocaleInformation_nn extends ListResourceBundle
     { "longTimeFormat", "HH.mm.ss z" },
     { "fullTimeFormat", "'kl. 'HH.mm.ss z" },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

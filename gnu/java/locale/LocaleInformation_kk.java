@@ -109,6 +109,17 @@ public class LocaleInformation_kk extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("kk", "\u049a\u0430\u0437\u0430\u049b");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "decimalSeparator", "," },
@@ -122,6 +133,7 @@ public class LocaleInformation_kk extends ListResourceBundle
     { "longDateFormat", "d MMMM yyyy '\u0436.'" },
     { "fullDateFormat", "EEEE, d MMMM yyyy '\u0436.'" },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

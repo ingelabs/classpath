@@ -348,6 +348,87 @@ public class LocaleInformation_hr extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("ne", "nepalski");
+        put("haw", "havajski");
+        put("zh", "kineski");
+        put("dum", "nizozemski, srednji (ca. 1050-1350)");
+        put("av", "avarski");
+        put("ar", "arapski");
+        put("apa", "apa\u0161ki");
+        put("mt", "malte\u0161ki");
+        put("sv", "\u0161vedski");
+        put("pt", "portugalski");
+        put("enm", "engleski, srednji (1100-1500)");
+        put("sr", "srpski");
+        put("mn", "mongolski");
+        put("sq", "albanski");
+        put("mk", "makedonski");
+        put("de", "njema\u010dki");
+        put("pl", "poljski");
+        put("sl", "slovenski");
+        put("sk", "slova\u010dki");
+        put("da", "danski");
+        put("art", "umjetni (ostali)");
+        put("ga", "irski");
+        put("vi", "vijetnamski");
+        put("ja", "japanski");
+        put("gmh", "njema\u010dki, srednji visoki (ca.1050-1500)");
+        put("sla", "slavenski (drugi)");
+        put("cy", "vel\u0161ki");
+        put("egy", "egipatski (anti\u010dki)");
+        put("fy", "frizijski");
+        put("cel", "keltski (ostali)");
+        put("cu", "crkvenoslavenski");
+        put("cs", "\u010de\u0161ki");
+        put("lv", "latvijski");
+        put("it", "talijanski");
+        put("fr", "francuski");
+        put("is", "islandski");
+        put("lt", "litvanski");
+        put("roa", "romanski (ostali)");
+        put("ru", "ruski");
+        put("fi", "finski");
+        put("ira", "iranski");
+        put("ro", "rumunjski");
+        put("uk", "ukrajinski");
+        put("fa", "perzijski");
+        put("la", "latinski");
+        put("mga", "irski, srednji (900-1200)");
+        put("goh", "njema\u010dki, stari visoki (ca.750-1050)");
+        put("bat", "balti\u010dki (ostali)");
+        put("hy", "armenski");
+        put("ang", "engleski, stari (ca.450-1100)");
+        put("fro", "francuski, stari (842-ca.1400)");
+        put("et", "estonijski");
+        put("hu", "ma\u0111arski");
+        put("grc", "gr\u010dki, anti\u010dki (do 1453)");
+        put("es", "\u0161panjolski");
+        put("frm", "francuski, srednji (ca.1400-1600)");
+        put("hr", "hrvatski");
+        put("eo", "esperanto");
+        put("ine", "indoevropski (drugi)");
+        put("en", "engleski");
+        put("inc", "indijski (drugi)");
+        put("el", "gr\u010dki");
+        put("ko", "korejski");
+        put("no", "norve\u0161ki");
+        put("km", "kmerski");
+        put("bg", "bugarski");
+        put("tr", "turski");
+        put("be", "bjeloruski");
+        put("nl", "nizozemski");
+        put("gem", "germanski (ostali)");
+        put("he", "hebrejski");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "decimalSeparator", "," },
@@ -362,6 +443,7 @@ public class LocaleInformation_hr extends ListResourceBundle
     { "longDateFormat", "yyyy. MMMM dd" },
     { "fullDateFormat", "yyyy. MMMM dd" },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

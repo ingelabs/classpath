@@ -113,12 +113,27 @@ public class LocaleInformation_pt_PT extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("sl", "esloveno");
+        put("pl", "polaco");
+        put("cs", "checo");
+        put("et", "est\u00f3nio");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
     { "shortDateFormat", "yy/MM/dd" },
     { "mediumDateFormat", "yyyy/MM/dd" },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

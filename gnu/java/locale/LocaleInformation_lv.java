@@ -353,6 +353,46 @@ public class LocaleInformation_lv extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("ja", "jap\u0101\u0146u");
+        put("en", "ang\u013cu");
+        put("tr", "turku");
+        put("ko", "korejie\u0161u");
+        put("no", "norv\u0113\u0123u");
+        put("el", "grie\u0137u");
+        put("nl", "holandie\u0161u");
+        put("bg", "bulg\u0101ru");
+        put("lv", "latvie\u0161u");
+        put("he", "ivrits");
+        put("cs", "\u010dehu");
+        put("it", "it\u0101lie\u0161u");
+        put("lt", "lietuvie\u0161u");
+        put("fr", "fran\u010du");
+        put("zh", "\u0137\u012bnie\u0161u");
+        put("ru", "krievu");
+        put("ro", "rum\u0101\u0146u");
+        put("fi", "somu");
+        put("ar", "ar\u0101bu");
+        put("sv", "zviedru");
+        put("pt", "portug\u0101\u013cu");
+        put("pl", "po\u013cu");
+        put("sl", "slov\u0113\u0146u");
+        put("sk", "slov\u0101ku");
+        put("de", "v\u0101cu");
+        put("hu", "ung\u0101ru");
+        put("et", "igau\u0146u");
+        put("es", "sp\u0101\u0146u");
+        put("hr", "horv\u0101tu");
+        put("da", "d\u0101\u0146u");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "decimalSeparator", "," },
@@ -368,6 +408,7 @@ public class LocaleInformation_lv extends ListResourceBundle
     { "longDateFormat", "yyyy'. gada 'd. MMMM" },
     { "fullDateFormat", "EEEE, yyyy'. gada 'd. MMMM" },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

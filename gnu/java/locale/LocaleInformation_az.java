@@ -55,11 +55,23 @@ public class LocaleInformation_az extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("az", "\u0410\u0437\u04d9\u0440\u0431\u0430\u0458\u04b9\u0430\u043d");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "decimalSeparator", "," },
     { "groupingSeparator", "\u00a0" },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

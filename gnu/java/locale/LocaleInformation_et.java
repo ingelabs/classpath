@@ -353,6 +353,46 @@ public class LocaleInformation_et extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("ja", "Jaapani");
+        put("en", "Inglise");
+        put("tr", "T\u00fcrgi");
+        put("ko", "Korea");
+        put("no", "Norra");
+        put("el", "Kreeka");
+        put("nl", "Hollandi");
+        put("bg", "Bulgaaria");
+        put("lv", "L\u00e4ti");
+        put("he", "Heebrea");
+        put("cs", "Tiehhi");
+        put("it", "Itaalia");
+        put("lt", "Leedu");
+        put("fr", "Prantsuse");
+        put("zh", "Hiina");
+        put("ru", "Vene");
+        put("ro", "Rumeenia");
+        put("fi", "Soome");
+        put("ar", "Araabia");
+        put("sv", "Rootsi");
+        put("pt", "Portugali");
+        put("pl", "Poola");
+        put("sl", "Sloveeni");
+        put("sk", "Slovaki");
+        put("de", "Saksa");
+        put("hu", "Ungari");
+        put("et", "Eesti");
+        put("es", "Hispaania");
+        put("hr", "Horvaadi");
+        put("da", "Taani");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "decimalSeparator", "," },
@@ -371,6 +411,7 @@ public class LocaleInformation_et extends ListResourceBundle
     { "longTimeFormat", "H:mm:ss z" },
     { "fullTimeFormat", "H:mm:ss z" },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }

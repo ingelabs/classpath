@@ -357,6 +357,74 @@ public class LocaleInformation_sr_Latn extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
 
+  private static final class Hashtablelanguages extends java.util.Hashtable
+  {
+    public Hashtablelanguages()
+      {
+        super();
+        put("ka", "Gruzijski");
+        put("zh", "Kineski");
+        put("ar", "Arapski");
+        put("my", "Burmanski");
+        put("sw", "Svahili");
+        put("sv", "\u0160vedski");
+        put("pt", "Portugalski");
+        put("mo", "Moldavski");
+        put("sr", "Srpski");
+        put("mn", "Mongolski");
+        put("af", "Afrikanerski");
+        put("sq", "Albanski");
+        put("mk", "Makedonski");
+        put("de", "Nema\u010dki");
+        put("pl", "Poljski");
+        put("sl", "Slovena\u010dki");
+        put("sk", "Slova\u010dki");
+        put("da", "Danski");
+        put("ga", "Irski");
+        put("sh", "Srpsko-Hrvatski");
+        put("vi", "Vijetnamski");
+        put("ja", "Japanski");
+        put("yi", "Jidi\u0161");
+        put("cs", "\u010ce\u0161ki");
+        put("lv", "Letonski");
+        put("it", "Italijanski");
+        put("fr", "Francuski");
+        put("is", "Islandski");
+        put("co", "Korzikanski");
+        put("lt", "Litvanski");
+        put("ru", "Ruski");
+        put("fi", "Finski");
+        put("ro", "Rumunski");
+        put("rm", "Reto-Romanski");
+        put("ca", "Katalonski");
+        put("id", "Indonezijski");
+        put("uk", "Ukrajnski");
+        put("fa", "Persijski");
+        put("la", "Latinski");
+        put("hy", "Armenski");
+        put("ky", "Kirgiski");
+        put("eu", "Baskijski");
+        put("et", "Estonski");
+        put("br", "Bretonski");
+        put("hu", "Ma\u0111arski");
+        put("es", "\u0160panski");
+        put("ku", "Kurdski");
+        put("hr", "Hrvatski");
+        put("en", "Engleski");
+        put("el", "Gr\u010dki");
+        put("ko", "Korejski");
+        put("no", "Norve\u0161ki");
+        put("km", "Kmerski");
+        put("bg", "Bugarski");
+        put("tr", "Turski");
+        put("be", "Beloruski");
+        put("nl", "Holandski");
+        put("he", "Hebrejski");
+      }
+  }
+
+  private static final Object languages = new Hashtablelanguages();
+
   private static final Object[][] contents =
   {
     { "shortMonths", shortMonths },
@@ -368,6 +436,7 @@ public class LocaleInformation_sr_Latn extends ListResourceBundle
     { "fullDateFormat", "EEEE, dd. MMMM yyyy." },
     { "zoneStrings", zoneStrings },
     { "territories", territories },
+    { "languages", languages },
   };
 
   public Object[][] getContents() { return contents; }
