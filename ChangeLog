@@ -1,5 +1,11 @@
 2003-08-19  Torsten Rupp  <rupp@lisa.aicas.com>
 
+	* native/jni/java-nio/java_nio_FileChannelImpl.c:
+	Fixed return value of Java_java_nio_channels_FileChannelImpl_size(),
+        Java_java_nio_channels_FileChannelImpl_implPosition__()
+
+2003-08-19  Torsten Rupp  <rupp@lisa.aicas.com>
+
 	* native/jni/java-io/java_io_File.c:
 	Fixed return value of 0 in Java_java_io_File_lastModifiedInternal()
 
