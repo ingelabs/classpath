@@ -21,6 +21,21 @@ AM_INIT_AUTOMAKE(1.7.0)
 AC_CONFIG_HEADERS([include/config.h])
 AC_PREFIX_DEFAULT(/usr/local/classpath)
 
+AC_ARG_WITH([jvm],
+	    [AS_HELP_STRING(--with-jvm=NAME,choose default value used by a JVM (none,sablevm) [default=none])],
+	    [case "${with_jvm}" in 
+               sablevm) SETUP_JVM=sablevm
+	         libdir='${exec_prefix}/lib/sablevm'
+		 datadir='${prefix}/share/sablevm'
+		 PACKAGE=sablevm-classpath
+		 ac_default_prefix=/usr/local
+		 export libdir datadir PACKAGE ac_default_prefix
+	       ;;
+               none) SETUP_JVM=none ;;
+               *) AC_MSG_ERROR(bad value \"${with_jvm}\" for --with-jvm) ;;
+             esac],
+            [SETUP_JVM=none])
+
 AC_ARG_ENABLE([java],
               [AS_HELP_STRING(--enable-java,compile Java source [default=yes])],
               [case "${enableval}" in 

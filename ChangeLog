@@ -1,5 +1,10 @@
 2004-03-27  Grzegorz B. Prokopski <gadek@debian.org>
 
+        * configure.ac: Added --with-jvm= handling defaulting to none.
+	* acinclude.m4: Don't build .zip for --with-jvm=sablevm.
+
+2004-03-27  Grzegorz B. Prokopski <gadek@debian.org>
+
 	* java/lang/Object.java (static): Remove static initializer.
 	* java/lang/reflect/Array.java (static): Remove static initializer.
 	* java/lang/Throwable.java (nl): Remove static field.

@@ -551,8 +551,11 @@ AC_DEFUN([CLASSPATH_WITH_ZIP],
       ZIP="${withval}"
     fi
   ],
-  [ 
-    AC_PATH_PROG(ZIP, zip)
+  [
+    case "${SETUP_JVM}" in
+      sablevm) ZIP= ;;
+      *) AC_PATH_PROG(ZIP, zip) ;;
+    esac
   ])
   AC_SUBST(ZIP)
   AM_CONDITIONAL(HAVE_ZIP, test "x${ZIP}" != x)
