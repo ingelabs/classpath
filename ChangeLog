@@ -1,5 +1,12 @@
 2003-12-28  Guilhem Lavaux <guilhem@kaffe.org>
 
+	* java/io/ObjectOutputStream.java,
+	java/io/ObjectInputStream.java,
+	java/io/ObjectStreamClass.java: Reindented. Some exception message
+	has been added.
+
+2003-12-28  Guilhem Lavaux <guilhem@kaffe.org>
+
 	* java/io/ObjectOutputStream.java
 	(writeClassDescriptor): Externalizable class must also write their
 	hierarchy.
