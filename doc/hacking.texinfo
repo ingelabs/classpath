@@ -501,7 +501,20 @@ conventions):
 
 @item
 If possible, generate specific imports (expand) over java.io.* type
-imports.  Order by gnu, java, javax, org.
+imports. Order by gnu, java, javax, org. There must be one blank line
+between each group. The imports themselves are ordered alphabetically by
+package name. Classes and interfaces occur before sub-packages. The
+classes/interfaces are then also sorted alphabetical. Note that uppercase
+characters occur before lowercase characters.
+
+@example
+import gnu.java.awt.EmbeddedWindow;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import javax.swing.JFrame;
+@end example
 
 @item
 Blank line after package statement, last import statement, classes,

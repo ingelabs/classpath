@@ -1,5 +1,10 @@
 2005-03-02  Michael Koch  <konqueror@gmx.de>
 
+	* doc/hacking.texinfo: Improved explanation of our coding style
+	regarding import statements.
+
+2005-03-02  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/security/OID.java,
 	gnu/java/security/der/DERReader.java,
 	gnu/java/security/provider/CollectionCertStoreImpl.java,
