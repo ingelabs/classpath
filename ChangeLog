@@ -1,5 +1,14 @@
 2005-02-08  Michael Koch  <konqueror@gmx.de>
 
+	* configure.ac: Define substition variable GTK_CAIRO_ENABLED.
+	Fix handling of GTK_CAIRO conditional.
+	* gnu/classpath/Configuration.java.in (GTK_CAIRO_ENABLED):
+	New constant.
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java (static):
+	Throw error when Cairo support was not enabled during configure time.
+
+2005-02-08  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/tree/DefaultMutableTreeNode.java:
 	Reworked Javadocs all over.
 	(getPathToRoot): Fixed direction of result array initialization.

@@ -1,6 +1,5 @@
-/* -*-java-*- */
-/* gnu.classpath.Configuration
-   Copyright (C) 1998, 2001, 2003 Free Software Foundation, Inc.
+/* Configuration.java --
+   Copyright (C) 1998, 2001, 2003, 2005  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -123,4 +122,10 @@ public interface Configuration
    */
   boolean JAVA_LANG_SYSTEM_EXPLICIT_INITIALIZATION = 
 	  @JAVA_LANG_SYSTEM_EXPLICIT_INITIALIZATION@;
+
+  /**
+   * Set to true if Cairo was found and enabled during configure,
+   * false otherwise.
+   */
+  boolean GTK_CAIRO_ENABLED = @GTK_CAIRO_ENABLED@;
 }

@@ -91,12 +91,13 @@ dnl ------------------------------------------------------------
 AC_ARG_ENABLE([gtk-cairo],
               [AS_HELP_STRING(--enable-gtk-cairo,build the cairo Graphics2D implementation on GTK [default=no])],
               [case "${enableval}" in
-                yes) GTK_CAIRO=yes ;;
-                no) GTK_CAIRO=no ;;
-                *) GTK_CAIRO=yes ;;
+                yes) GTK_CAIRO_ENABLED=true ;;
+                no) GTK_CAIRO_ENABLED=false ;;
+                *) GTK_CAIRO_ENABLED=true ;;
               esac],
-              [GTK_CAIRO=no])
-AM_CONDITIONAL(GTK_CAIRO, test "x${enable_gtk_cairo}" = xyes)
+              [GTK_CAIRO_ENABLED=false])
+AC_SUBST(GTK_CAIRO_ENABLED)
+AM_CONDITIONAL(GTK_CAIRO, test "x${GTK_CAIRO_ENABLED}" = xtrue)
 
 dnl -----------------------------------------------------------
 dnl Regenerate headers at build time (disabled by default)
