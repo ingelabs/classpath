@@ -11,6 +11,8 @@ classpath, installation instructions are found in the HACKING file.
 ------------------------------------------------------------------
 Suggested Software
 ------------------------------------------------------------------
+	GNU make ("gmake") is required for building Classpath.
+
 	For any build environment involving native libraries, these 
 	new versions of autoconf, automake, and libtool are required
         if changes are made that require rebuilding configure, Makefile.in,
@@ -55,10 +57,10 @@ gives a complete list.
   --enable-load-library   enable to use JNI native methods default=yes
                           (disabled automatically using --enable-cni)
 
-2).  Type "make" to build the package.  There is no longer a
+2).  Type "gmake" to build the package.  There is no longer a
 dependency problem and we aim to keep it that way.
 
-3).  Type "make install" to install everything.  This may require
+3).  Type "gmake install" to install everything.  This may require
 being the superuser. The default install path is /usr/local/classpath
 you may change it by giving configure the --prefix=<path> option.
 
