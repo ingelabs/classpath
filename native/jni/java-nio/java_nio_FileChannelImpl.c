@@ -49,14 +49,14 @@ JNIEXPORT jlong JNICALL
 Java_java_nio_channels_FileChannelImpl_size (JNIEnv *env, jclass clazz)
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.(): not implemented");
-  return 0;
+  return TARGET_NATIVE_MATH_INT_INT64_CONST_0;
 }
 
 JNIEXPORT jlong JNICALL
 Java_java_nio_channels_FileChannelImpl_implPosition__ (JNIEnv *env, jclass clazz)
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.implPosition(): not implemented");
-  return 0;
+  return TARGET_NATIVE_MATH_INT_INT64_CONST_0;
 }
 
 JNIEXPORT jobject JNICALL
