@@ -4,7 +4,7 @@ endif
 
 sourcepath = $(top_builddir):$(top_srcdir):$(top_srcdir)/vm/reference:$(top_srcdir)/external/w3c_dom:$(top_srcdir)/external/sax
 
-classpathbox = "<span class='navbar item enabled'><a href='http://www.gnu.org/software/classpath'>GNU Classpath</a> ($(VERSION))"
+classpathbox = "<span class='logo'><a href='http://www.gnu.org/software/classpath' target='_top'>GNU Classpath</a> ($(VERSION))"
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/api

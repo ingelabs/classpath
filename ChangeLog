@@ -1,3 +1,7 @@
+2005-02-05  Mark Wielaard  <mark@klomp.org>
+
+	* doc/api/Makefile.am (classpathbox): Use class logo and target _top.
+
 2005-02-04  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/aelfred2/SAXDriver.java: Corrected implementation of
