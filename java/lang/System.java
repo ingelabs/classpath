@@ -119,6 +119,11 @@ public class System
   {
     properties = new Properties();
     VMSystem.insertSystemProperties(properties);
+
+    // XXX FIXME - Temp hack for old systems that set the wrong property
+    if (properties.get("java.io.tmpdir") == null)
+      properties.put("java.io.tmpdir", properties.get("java.tmpdir"));
+    
     insertGNUProperties();
     in = new FileInputStream(FileDescriptor.in);
     out = new PrintStream(new FileOutputStream(FileDescriptor.out));

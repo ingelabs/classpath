@@ -123,7 +123,7 @@ private String path;
   * files created are guaranteed not to currently exist and the same file name
   * will never be used twice in the same virtual machine instance.  The
   * system temporary directory is determined by examinging the 
-  * <code>java.tmpdir</code> system property.
+  * <code>java.io.tmpdir</code> system property.
   * <p>
   * The <code>prefix</code> parameter is a sequence of at least three
   * characters that are used as the start of the generated filename.  The
@@ -160,7 +160,7 @@ createTempFile(String prefix, String suffix) throws IllegalArgumentException,
   * directory. The files created are guaranteed not to currently exist and the 
   * same file name will never be used twice in the same virtual machine instance.  
   * The system temporary directory is determined by examinging the 
-  * <code>java.tmpdir</code> system property.
+  * <code>java.io.tmpdir</code> system property.
   * <p>
   * The <code>prefix</code> parameter is a sequence of at least three
   * characters that are used as the start of the generated filename.  The
@@ -186,7 +186,7 @@ createTempFile(String prefix, String suffix, File directory)
   // Grab the system temp directory if necessary
   if (directory == null)
     {
-      String dirname = System.getProperty("java.tmpdir");
+      String dirname = System.getProperty("java.io.tmpdir");
       if (dirname == null)
         throw new IOException("Cannot determine system temporary directory"); 
 

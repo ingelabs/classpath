@@ -1,5 +1,13 @@
 2002-03-03 Mark Wielaard <mark@klomp.org>
 
+	* THANKYOU: Add Sascha Brawer
+	* java/lang/System.java (static): Set java.io.tmpdir from java.tmpdir
+	if not yet set.
+	* java/io/File.java (createTempFile): Use java.io.tmpdir property not
+	java.tmpdir.
+
+2002-03-03 Mark Wielaard <mark@klomp.org>
+
 	* java/awt/Font.java (decode): Catch NumberFormatException.
 
 2002-03-03 Mark Wielaard <mark@klomp.org>
