@@ -1,5 +1,13 @@
 2003-12-02  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/Socket.java
+	(implCreated): New variable that indicates created impl.
+	(getImpl): New method.
+	(toString): Return more SUN compliant string representation.
+	(various): Use getImpl() instead of impl.
+
+2003-12-02  Michael Koch  <konqueror@gmx.de>
+
 	* java/text/DateFormat.java:
 	Explicitely import used classes.
 
