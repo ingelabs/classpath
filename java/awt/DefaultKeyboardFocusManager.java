@@ -284,10 +284,11 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager
   {
     // Check if this event represents a menu shortcut.
 
-    // MenuShortcuts are activated by Ctrl- KeyEvents.
+    // MenuShortcuts are activated by Ctrl- KeyEvents, only on KEY_PRESSED.
     int modifiers = e.getModifiers ();
-    if ((modifiers & KeyEvent.CTRL_MASK) != 0
-        || (modifiers & KeyEvent.CTRL_DOWN_MASK) != 0)
+    if (e.getID() == KeyEvent.KEY_PRESSED
+        && ((modifiers & KeyEvent.CTRL_MASK) != 0
+            || (modifiers & KeyEvent.CTRL_DOWN_MASK) != 0))
       {
         Window focusedWindow = getGlobalFocusedWindow ();
         if (focusedWindow instanceof Frame)
@@ -313,15 +314,21 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager
 
                         if (shortcut != null)
                           {
-                            // Dispatch a new ActionEvent if this is a
-                            // Shift- KeyEvent and the shortcut requires
-                            // the Shift modifier, or if the shortcut
-                            // doesn't require the Shift modifier.
-                            if ((shortcut.usesShiftModifier ()
-                                 && ((modifiers & KeyEvent.SHIFT_MASK) != 0
-                                     || (modifiers & KeyEvent.SHIFT_DOWN_MASK) != 0)
-                                 || !shortcut.usesShiftModifier ())
-                                && shortcut.getKey () == e.getKeyCode ())
+                            // Dispatch a new ActionEvent if:
+                            //
+                            //     a) this is a Shift- KeyEvent, and the
+                            //        shortcut requires the Shift modifier
+                            //
+                            // or, b) this is not a Shift- KeyEvent, and the
+                            //        shortcut does not require the Shift
+                            //        modifier.
+                            if (shortcut.getKey () == e.getKeyCode ()
+                                && ((shortcut.usesShiftModifier ()
+                                     && ((modifiers & KeyEvent.SHIFT_MASK) != 0
+                                         || (modifiers & KeyEvent.SHIFT_DOWN_MASK) != 0))
+                                    || (! shortcut.usesShiftModifier ()
+                                        && (modifiers & KeyEvent.SHIFT_MASK) == 0
+                                        && (modifiers & KeyEvent.SHIFT_DOWN_MASK) == 0)))
                               {
                                 item.dispatchEvent (new ActionEvent (item,
                                                                      ActionEvent.ACTION_PERFORMED,
