@@ -1,3 +1,9 @@
+2001-01-09  Warren Levy  <warrenl@redhat.com>
+
+	* java/util/TimeZone.java: Add standard ID names per JCL; removed
+	non-standard ones.  Marked with XXX comments to note what code
+	should be removed after java.lang.System is merged with libgcj.
+
 2001-01-08  Mark Wielaard  <mark@klomp.org>
 	* java/lang/ClassLoader.java: 1.2 updates
 	(definedPackages, parent, systemClassLoader): new private fields
