@@ -1,3 +1,7 @@
+2002-02-16  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/lang/Character.java: Reformat and comment (no code changes).
+
 2002-02-15  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/Collections.java (list): Update the API to reflect
