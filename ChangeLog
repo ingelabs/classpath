@@ -1,3 +1,7 @@
+2000-12-05  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/BitSet.java: Class no longer final.
+
 2000-12-06  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	* java/util/Random.java (nextDouble): Use 1L for bit-shift, not 1
