@@ -42,5 +42,11 @@ class VMSecurityManager {
 	 ** @return an array containing all the methods on classes
 	 **         on the Java execution stack.
 	 **/
-	protected static native Class[] getClassContext();
+	static native Class[] getClassContext();
+
+	/** Get the current ClassLoader--the one nearest to the
+	 ** top of the stack.
+	 ** @return the current ClassLoader.
+	 **/
+	static native Class currentClassLoader();
 }
