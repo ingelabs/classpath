@@ -51,19 +51,19 @@ JNIEXPORT void JNICALL Java_java_lang_Double_initIDs
   jfieldID negInfID;
   jfieldID posInfID;
 
-  isNaNID = (*env)->GetStaticMethodID(env, cls, "isNaN", "(D)Z)");
+  isNaNID = (*env)->GetStaticMethodID(env, cls, "isNaN", "(D)Z");
   if (isNaNID == NULL)
     {
       DBG("unable to determine method id of isNaN\n")
       return;
     }
-  negInfID = (*env)->GetFieldID(env, cls, "NEGATIVE_INFINITY", "D");
+  negInfID = (*env)->GetStaticFieldID(env, cls, "NEGATIVE_INFINITY", "D");
   if (negInfID == NULL)
     {
       DBG("unable to determine field id of NEGATIVE_INFINITY\n")
       return;
     }
-  posInfID = (*env)->GetFieldID(env, cls, "POSITIVE_INFINITY", "D");
+  posInfID = (*env)->GetStaticFieldID(env, cls, "POSITIVE_INFINITY", "D");
   if (posInfID == NULL)
     {
       DBG("unable to determine field id of POSITIVE_INFINITY\n")
@@ -136,7 +136,7 @@ JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
   if ((*env)->CallStaticBooleanMethod(env, cls, isNaNID, value))
     return (*env)->NewStringUTF(env, "NaN");
   
-  if (value == POSITIVE_INFINITY)
+  if ( ((jlong) value) == ((jlong)POSITIVE_INFINITY))
     return (*env)->NewStringUTF(env, "Infinity");
 
   if (value == NEGATIVE_INFINITY)
@@ -247,7 +247,11 @@ JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble0
       struct _Jv_reent reent;  
       memset (&reent, 0, sizeof reent);
 
+#ifdef KISSME_LINUX_USER
+      val = strtod ( buf, &endptr);
+   #else
       val = _strtod_r (&reent, buf, &endptr);
+   #endif
       if (endptr == buf + strlen(buf))
 	return val;
     }

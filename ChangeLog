@@ -1,3 +1,12 @@
+2001-08-07  John Leuner  <jewel@debian.org>
+
+	* native/jni/java_lang_Double.c (Java_java_lang_Double_initIDs): Fixed signature for isNaN
+	changed GetFieldID to GetStaticFieldID for pos and neg infinity
+
+	* native/jni/java_lang_Double.c (Java_java_lang_Double_toString): added casts to jlong for POS INF check
+	
+	* native/jni/java_lang_Double.c (Java_java_lang_Double_parseDouble0): added conditional for KISSME JVM to use normal strtod
+
 2001-08-05  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/StringWriter.java: Merged with libgcj.
