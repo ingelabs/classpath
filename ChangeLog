@@ -1,3 +1,11 @@
+2003-11-23  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* java/text/NumberFormat.java:
+	(getIntegerInstance) Added the java version in the comments.
+
+	* java/text/FormatCharacterIterator.java: Documented the class and
+	its methods.
+
 2003-11-23  Mark Wielaard  <mark@klomp.org>
 
 	* java/text/NumberFormat.java: Import java.io.InvalidObjectException.

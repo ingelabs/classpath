@@ -458,6 +458,7 @@ public abstract class NumberFormat extends Format implements Cloneable
    * but the actual class returned is dependent on the locale.
    *
    * @return An instance of an integer number formatter for the default locale.
+   * @since 1.4 
    */
   public static final NumberFormat getIntegerInstance()
   {
@@ -472,6 +473,7 @@ public abstract class NumberFormat extends Format implements Cloneable
    * @param locale the desired locale.
    *
    * @return An instance of an integer number formatter for the desired locale.
+   * @since 1.4 
    */
   public static NumberFormat getIntegerInstance(Locale locale)
   {
