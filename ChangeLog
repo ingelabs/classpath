@@ -1,5 +1,11 @@
 2004-03-24  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/imageio, javax/imageio/spi: New directories.
+	* javax/imageio/spi/ServiceRegistry.java: Implemented.
+	* javax/imageio/spi/RegisterableService.java: Implemented.
+
+2004-03-24  Sascha Brawer  <brawer@dandelis.ch>
+
 	* gnu/classpath/ServiceFactory.java: Implemented a general
 	facility for loading plug-in services specified via resources
 	in META-INF/services.
