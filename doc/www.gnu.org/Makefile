@@ -1,5 +1,9 @@
+ifndef MHC
+  MHC=mhc
+endif
+
 %.html : %.mhtml macros.mhtml
-	mhc $< > $@
+	$(MHC) $< > $@
 
 all : classpath.html status.html doc
 

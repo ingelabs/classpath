@@ -1,5 +1,9 @@
+ifndef MHC
+  MHC=mhc
+endif
+
 %.html : %.mhtml
-	mhc $< > $@
+	$(MHC) $< > $@
 
 %.mhtml : %.texinfo
 	texi2html -monolithic $<; 
