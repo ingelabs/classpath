@@ -1,5 +1,19 @@
 2003-08-11 Ingo Proetel <proetel@aicas.com>
 
+	* java/util/class-dependencies.conf,
+	java/text/class-dependencies.conf,
+	java/nio/class-dependencies.conf,
+	java/net/class-dependencies.conf,
+	java/math/class-dependencies.conf,
+	java/lang/class-dependencies.conf,
+	java/io/class-dependencies.conf,
+	gnu/java/io/class-dependencies.conf:
+	Added use of variables in class dependencies. These variable can be 
+	used to configure the set of supported libraries for features such 
+	as supported encoders/decoders, URL protocols, etc.
+	
+2003-08-11 Ingo Proetel <proetel@aicas.com>
+
 	* java/security/Security.java: moved initialization code of providers
 	from static initializer into a method to allow lazy evaluation of
 	this code. This permits faster startup and even automatic removal of
