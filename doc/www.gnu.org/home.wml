@@ -54,6 +54,15 @@ name="http://savannah.gnu.org/cvs.backups/classpath.tar.gz">.  This
 archive is updated nightly and can be used by setting your local
 CVSROOT environment variable and performing a checkout from the local tree.
 </p>
+<p>
+Classpath has been converted to a <link url="http://savannah.gnu.org/"
+name="Savannah"> project.  Our project page is <link
+url="http://savannah.gnu.org/projects/classpath/"
+name="http://savannah.gnu.org/projects/classpath/">.  From there you
+can submit bug reports, check the latest news, find tasks yet to be
+done, and most importantly submit patches!
+</p>
+
 </en>
 
 <H4>Announcements</H4>
