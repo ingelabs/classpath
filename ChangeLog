@@ -1,3 +1,12 @@
+2002-07-06  Jochen Hoenicke <jochen@gnu.org>
+
+	* java/util/zip/InflaterDynHeader.java (decode): Use a single
+	array for litlen and dist codes. This fixes the bug where a 
+	repeat code spans over both arrays. Rewrote the code.
+	(builtLitLenTree): This function now needs to split the common
+	litdistLens array.
+	(builtDistTree): Likewise.
+
 2002-07-05  Jochen Hoenicke <jochen@gnu.org>
 
 	* java/util/zip/Inflater.java

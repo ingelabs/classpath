@@ -43,22 +43,22 @@ class InflaterDynHeader
   private static final int DNUM   = 1;
   private static final int BLNUM  = 2;
   private static final int BLLENS = 3;
-  private static final int LLENS  = 4;
-  private static final int DLENS  = 5;
-  private static final int LREPS  = 6;
-  private static final int DREPS  = 7;
-  private static final int FINISH = 8;
+  private static final int LENS   = 4;
+  private static final int REPS   = 5;
+
+  private static final int repMin[]  = { 3, 3, 11 };
+  private static final int repBits[] = { 2, 3,  7 };
+
   
   private byte[] blLens;
-  private byte[] litlenLens;
-  private byte[] distLens;
+  private byte[] litdistLens;
 
   private InflaterHuffmanTree blTree;
   
   private int mode;
-  private int lnum, dnum, blnum;
-  private int repBits;
-  private byte repeatedLen;
+  private int lnum, dnum, blnum, num;
+  private int repSymbol;
+  private byte lastLen;
   private int ptr;
 
   private static final int[] BL_ORDER =
@@ -81,7 +81,6 @@ class InflaterDynHeader
 	      return false;
 	    lnum += 257;
 	    input.dropBits(5);
-	    litlenLens = new byte[lnum];
 //  	    System.err.println("LNUM: "+lnum);
 	    mode = DNUM;
 	    /* fall through */
@@ -91,8 +90,9 @@ class InflaterDynHeader
 	      return false;
 	    dnum++;
 	    input.dropBits(5);
-	    distLens = new byte[dnum];
 //  	    System.err.println("DNUM: "+dnum);
+	    num = lnum+dnum;
+	    litdistLens = new byte[num];
 	    mode = BLNUM;
 	    /* fall through */
 	  case BLNUM:
@@ -120,149 +120,68 @@ class InflaterDynHeader
 	    blTree = new InflaterHuffmanTree(blLens);
 	    blLens = null;
 	    ptr = 0;
-	    mode = LLENS;
+	    mode = LENS;
 	    /* fall through */
-	  case LLENS:
-	    while (ptr < lnum)
-	      {
-		int symbol = blTree.getSymbol(input);
-		if (symbol < 0)
-		  return false;
-		switch (symbol)
-		  {
-		  default:
-//  		    System.err.println("litlenLens["+ptr+"]: "+symbol);
-		    litlenLens[ptr++] = (byte) symbol;
-		    break;
-		  case 16: /* repeat last len 3-6 times */
-		    if (ptr == 0)
-		      throw new DataFormatException
-			("Repeating, but no prev len");
-//  		    System.err.println("litlenLens["+ptr+"]: repeat");
-		    repeatedLen = litlenLens[ptr-1];
-		    repBits = 2;
-		    for (int i = 3; i-- > 0; )
-		      {
-			if (ptr >= lnum)
-			  throw new DataFormatException();
-			litlenLens[ptr++] = repeatedLen;
-		      }
-		    mode = LREPS;
-		    continue decode_loop;
-		  case 17: /* repeat zero 3-10 times */
-//  		    System.err.println("litlenLens["+ptr+"]: zero repeat");
-		    repeatedLen = 0;
-		    repBits = 3;
-		    for (int i = 3; i-- > 0; )
-		      {
-			if (ptr >= lnum)
-			  throw new DataFormatException();
-			litlenLens[ptr++] = repeatedLen;
-		      }
-		    mode = LREPS;
-		    continue decode_loop;
-		  case 18: /* repeat zero 11-138 times */
-//  		    System.err.println("litlenLens["+ptr+"]: zero repeat");
-		    repeatedLen = 0;
-		    repBits = 7;
-		    for (int i = 11; i-- > 0; )
-		      {
-			if (ptr >= lnum)
-			  throw new DataFormatException();
-			litlenLens[ptr++] = repeatedLen;
-		      }
-		    mode = LREPS;
-		    continue decode_loop;
-		  }
-	      }
-	    ptr = 0;
-	    mode = DLENS;
-	    /* fall through */
-	  case DLENS:
-	    while (ptr < dnum)
-	      {
-		int symbol = blTree.getSymbol(input);
-		if (symbol < 0)
-		  return false;
-		switch (symbol)
-		  {
-		  default:
-		    distLens[ptr++] = (byte) symbol;
-//  		    System.err.println("distLens["+ptr+"]: "+symbol);
-		    break;
-		  case 16: /* repeat last len 3-6 times */
-		    if (ptr == 0)
-		      throw new DataFormatException
-			("Repeating, but no prev len");
-//  		    System.err.println("distLens["+ptr+"]: repeat");
-		    repeatedLen = distLens[ptr-1];
-		    repBits = 2;
-		    for (int i = 3; i-- > 0; )
-		      {
-			if (ptr >= dnum)
-			  throw new DataFormatException();
-			distLens[ptr++] = repeatedLen;
-		      }
-		    mode = DREPS;
-		    continue decode_loop;
-		  case 17: /* repeat zero 3-10 times */
-//  		    System.err.println("distLens["+ptr+"]: repeat zero");
-		    repeatedLen = 0;
-		    repBits = 3;
-		    for (int i = 3; i-- > 0; )
-		      {
-			if (ptr >= dnum)
-			  throw new DataFormatException();
-			distLens[ptr++] = repeatedLen;
-		      }
-		    mode = DREPS;
-		    continue decode_loop;
-		  case 18: /* repeat zero 11-138 times */
-//  		    System.err.println("distLens["+ptr+"]: repeat zero");
-		    repeatedLen = 0;
-		    repBits = 7;
-		    for (int i = 11; i-- > 0; )
-		      {
-			if (ptr >= dnum)
-			  throw new DataFormatException();
-			distLens[ptr++] = repeatedLen;
-		      }
-		    mode = DREPS;
-		    continue decode_loop;
-		  }
-	      }
-	    mode = FINISH;
-	    return true;
-	  case LREPS:
+	  case LENS:
 	    {
-	      int count = input.peekBits(repBits);
+	      int symbol;
+	      while (((symbol = blTree.getSymbol(input)) & ~15) == 0)
+		{
+		  /* Normal case: symbol in [0..15] */
+
+//  		  System.err.println("litdistLens["+ptr+"]: "+symbol);
+		  litdistLens[ptr++] = lastLen = (byte) symbol;
+
+		  if (ptr == num)
+		    {
+		      /* Finished */
+		      return true;
+		    }
+		}
+	      
+	      /* need more input ? */
+	      if (symbol < 0)
+		return false;
+
+	      /* otherwise repeat code */
+	      if (symbol >= 17)
+		{
+		  /* repeat zero */
+//  		  System.err.println("repeating zero");
+		  lastLen = 0;
+		}
+	      else
+		{
+		  if (ptr == 0)
+		    throw new DataFormatException();
+		}
+	      repSymbol = symbol-16;
+	      mode = REPS;
+	    }
+	    /* fall through */
+
+	  case REPS:
+	    {
+	      int bits = repBits[repSymbol];
+	      int count = input.peekBits(bits);
 	      if (count < 0)
 		return false;
-	      input.dropBits(repBits);
-//  	      System.err.println("litlenLens repeat: "+repBits);
+	      input.dropBits(bits);
+	      count += repMin[repSymbol];
+//  	      System.err.println("litdistLens repeated: "+count);
+
+	      if (ptr + count > num)
+		throw new DataFormatException();
 	      while (count-- > 0)
+		litdistLens[ptr++] = lastLen;
+
+	      if (ptr == num)
 		{
-		  if (ptr >= lnum)
-		    throw new DataFormatException();
-		  litlenLens[ptr++] = repeatedLen;
+		  /* Finished */
+		  return true;
 		}
 	    }
-	    mode = LLENS;
-	    continue decode_loop;
-	  case DREPS:
-	    {
-	      int count = input.peekBits(repBits);
-	      if (count < 0)
-		return false;
-	      input.dropBits(repBits);
-	      while (count-- > 0)
-		{
-		  if (ptr >= dnum)
-		    throw new DataFormatException();
-		  distLens[ptr++] = repeatedLen;
-		}
-	    }
-	    mode = DLENS;
+	    mode = LENS;
 	    continue decode_loop;
 	  }
       }
@@ -270,11 +189,15 @@ class InflaterDynHeader
 
   public InflaterHuffmanTree buildLitLenTree() throws DataFormatException
   {
+    byte[] litlenLens = new byte[lnum];
+    System.arraycopy(litdistLens, 0, litlenLens, 0, lnum);
     return new InflaterHuffmanTree(litlenLens);
   }
 
   public InflaterHuffmanTree buildDistTree() throws DataFormatException
   {
+    byte[] distLens = new byte[dnum];
+    System.arraycopy(litdistLens, lnum, distLens, 0, dnum);
     return new InflaterHuffmanTree(distLens);
   }
 }
