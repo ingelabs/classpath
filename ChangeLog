@@ -1,3 +1,8 @@
+2004-10-15  Michael Koch  <konqueror@gmx.de>
+
+	* autogen.sh: Replaced with a GNOME-like script that aborts when the
+	versions of autoconf, automake or libtool are not sufficient.
+
 2004-10-13  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/image/ByteLookupTable.java
