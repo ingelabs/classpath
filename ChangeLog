@@ -1,3 +1,13 @@
+2004-09-27  Bryce McKinlay  <mckinlay@redhat.com>
+
+	* java.util.Calendar.java (cache): New private static field. Cached
+	mappings of locales->calendar classes.
+	(ctorArgTypes): New private static field. Singleton argument for
+	calendar class constructor lookup.
+	(getInstance): Cache Locale->Calendar class mappings using HashMap.
+	Optimize by bypassing reflection instantiation for the
+	GregorianCalendar case.
+
 2004-09-27  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/SpinnerNumberModel.java
