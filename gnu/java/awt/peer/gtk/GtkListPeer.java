@@ -38,8 +38,11 @@ exception statement from your version. */
 
 package gnu.java.awt.peer.gtk;
 
+import java.awt.AWTEvent;
 import java.awt.Dimension;
 import java.awt.List;
+import java.awt.event.MouseEvent;
+import java.awt.event.KeyEvent;
 import java.awt.peer.ListPeer;
 
 public class GtkListPeer extends GtkComponentPeer
@@ -48,7 +51,8 @@ public class GtkListPeer extends GtkComponentPeer
 //    native void create (ComponentPeer parent, String [] items, boolean mode);
 
   native void create ();
-  native void connectHooks ();
+  native void connectJObject ();
+  native void connectSignals ();
 
   native void getSize (int rows, int dims[]);
 
@@ -119,6 +123,43 @@ public class GtkListPeer extends GtkComponentPeer
   public void setMultipleSelections (boolean b)
   {
     setMultipleMode (b);
+  }
+
+  public void handleEvent (AWTEvent e)
+  {
+    if (e.getID () == MouseEvent.MOUSE_CLICKED && isEnabled ())
+      {
+        /* Only generate the ActionEvent on the second click of
+	   a multiple click */
+	MouseEvent me = (MouseEvent) e;
+	if (!me.isConsumed ()
+	    && (me.getModifiers () & MouseEvent.BUTTON1_MASK) != 0
+	    && me.getClickCount() == 2)
+	  {
+            String selectedItem = ((List)awtComponent).getSelectedItem ();
+
+            /* Double-click only generates an Action event
+	       if something is selected */
+            if (selectedItem != null)
+	      postActionEvent (((List)awtComponent).getSelectedItem (), 
+			       me.getModifiers ());
+	  }
+      }
+
+    if (e.getID () == KeyEvent.KEY_PRESSED)
+      {
+	KeyEvent ke = (KeyEvent) e;
+	if (!ke.isConsumed () && ke.getKeyCode () == KeyEvent.VK_ENTER)
+	  {
+            String selectedItem = ((List)awtComponent).getSelectedItem ();
+
+            /* Enter only generates an Action event if something is selected */
+            if (selectedItem != null)
+	      postActionEvent (selectedItem, ke.getModifiers ());
+	  }
+      }
+
+    super.handleEvent (e);
   }
 
   protected void postItemEvent (int item, int stateChange)

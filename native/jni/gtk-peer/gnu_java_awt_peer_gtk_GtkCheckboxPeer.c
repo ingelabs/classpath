@@ -1,5 +1,5 @@
 /* gtkcheckboxpeer.c -- Native implementation of GtkCheckboxPeer
-   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -78,9 +78,12 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer_remove
 
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeCreate
-  (JNIEnv *env, jobject obj, jobject group)
+  (JNIEnv *env, jobject obj, jobject group, jboolean state)
 {
   GtkWidget *button;
+
+  /* Create global reference and save it for future use */
+  NSA_SET_GLOBAL_REF (env, obj);
 
   gdk_threads_enter ();
 
@@ -97,6 +100,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeCreate
 	  NSA_SET_PTR (env, group, button);
 	}
     }
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), state);
 
   gdk_threads_leave ();
 
@@ -104,25 +108,22 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeCreate
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_connectHooks
+Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_connectSignals
   (JNIEnv *env, jobject obj)
 {
   void *ptr = NSA_GET_PTR (env, obj);
-  jobject peer;
+  jobject *gref = NSA_GET_GLOBAL_REF (env, obj);
+  g_assert (gref);
 
   gdk_threads_enter ();
 
-  peer = (*env)->NewGlobalRef (env, obj);
-
-  /* FIXME: when the widget goes away, we should get rid of the global
-     reference.  */
-  gtk_signal_connect (GTK_OBJECT (ptr), "toggled",
-		      GTK_SIGNAL_FUNC (item_toggled), peer);
+  g_signal_connect (G_OBJECT (ptr), "toggled",
+		      GTK_SIGNAL_FUNC (item_toggled), *gref);
 
   gdk_threads_leave ();
 
-  /* Connect the superclass hooks.  */
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectHooks (env, obj);
+  /* Connect the superclass signals.  */
+  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectSignals (env, obj);
 }
 
 JNIEXPORT void JNICALL 

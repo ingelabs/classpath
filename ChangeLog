@@ -1,3 +1,211 @@
+2004-01-06  Graydon Hoare  <graydon@redhat.com>
+
+	* configure.in: Add --enable-gtk-cairo check.
+	* configure: Regenerate.
+	* Makefile.am: Conditionally link against cairo.
+	* Makefile.in: Regenerate.
+	* acinclude.m4: Include PKG_CHECK_MODULES.
+	* aclocal.m4: Regenerate.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java (useGraphics2D): New method.
+	(getFontMetrics, getClasspathFontPeer):
+	* gnu/java/awt/peer/gtk/GtkCanvasPeer.java (getGraphics):
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (createImage):
+	* gnu/java/awt/peer/gtk/GtkContainerPeer.java (getGraphics):
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java (getGraphics):
+	Switch behavior depending on GtkToolkit.useGraphics2D().
+	* gnu/java/awt/peer/gtk/GtkFontPeer.java: Extend ClasspathFontPeer.
+	* java/awt/Font.java: Switch to peer model.
+	* jni/gtk-peer/gtkcairopeer.h: Definitions of cairo stuff.
+	* jni/gtk-peer/gdkfont.h: Include gtkcairopeer.h.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c: Include gtkcairopeer.h.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics.c: Un-include gtkpeer.h.
+
+2004-01-06  Fernando Nasser  <fnasser@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkListPeer.java (handleEvent): Fix generation
+	of ActionEvents for mouse double-clicks.
+
+2004-01-06  Fernando Nasser  <fnasser@redhat.com>
+
+	* java/awt/Choice.java (add): Leave posting of ItemEvents to peer.
+	(insert): Ditto.
+	(remove): Ditto.  Also, Check for valid argument.
+	(removeAll): Use peer interface method.
+	* gnu/java/awt/peer/gtk/GtkChoicePeer.java (nativeAdd): New name for
+	native add function.
+	(nativeRemove): New name for native remove function.
+	(getHistory): New native function.
+	(constructor): Generate ItemEvent.
+	(add): Ditto, if selection is changed.
+	(remove): Ditto, ditto.
+	(removeAll): Add implementation.
+	(handleEvent): Remove.  Dead code.
+	(choicePostItemEvent): Add comment.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkChoicePeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkChoicePeer_append): Add comments.
+	(Java_gnu_java_awt_peer_gtk_GtkChoicePeer_add): Rename to...
+	(Java_gnu_java_awt_peer_gtk_GtkChoicePeer_nativeAdd): New name.  Add
+	comments and fix condition to change selection.
+	(Java_gnu_java_awt_peer_gtk_GtkChoicePeer_remove): Rename to...
+	(Java_gnu_java_awt_peer_gtk_GtkChoicePeer_nativeRemove): New name.  Add
+	remove all capability.
+	(Java_gnu_java_awt_peer_gtk_GtkChoicePeer_getHistory): New function.
+	(item_activate): Add cast to remove compiler warning.
+
+2004-01-06  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEvents.c
+	(pre_event_handler): Set all insets to 0 when a Configure event
+	is received for a GtkPlug.
+
+	* gnu/java/awt/peer/gtk/GtkScrollPanePeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollPanePeer.c
+	(create(int, int)): New method.
+	(create): Call new create method.
+	(gtkScrolledWindowNew, gtkScrolledWindowSetSize): Remove
+	methods.
+	(childResized): Remove native implementation.  Implement in
+	Java.
+	(getHScrollbarHeight, getVScrollbarWidth): Call
+	gtk_widget_size_request to get scrollbar dimensions.
+	* java/awt/ScrollPane.java (getViewportSize): Reimplement.  Only
+	call getVScrollbarWidth and getHScrollbarHeight when vertical
+	and horizontal scrollbars respectively are needed.
+	(doLayout): Enlarge child if it is smaller than the viewport.
+
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(getPreferredSize): Call preferredSize.
+	(preferredSize): Call gtkWidgetGetPreferredDimensions.
+	(getMinimumSize): Call minimumSize.
+	(minimumSize): Call gtkWidgetGetPreferredDimensions.
+	(gtkWidgetGetDimensions): Return the peer widget's current size
+	request.
+	(gtkWidgetGetPreferredDimensions): Return the peer widget's
+	natural size request.
+
+2004-01-06  Fernando Nasser  <fnasser@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkChoicePeer.java (postItemEvent): Rename to...
+	(choicePostItemEvent): Change signature to more specific String object.
+	* java/awt/Choice.java (add): Generate ItemEvent for the first item
+	added.
+	(insert): Generate ItemEvent if insertion caused
+	selection to change.
+	(remove): Generate ItemEvent if removal cause selection to change.
+	(removeAll): Change algorithm to prevent generation of ItemEvents.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkChoicePeer.c
+	(connect_choice_item_selectable_hook): Change argument type.
+	Fix argument value.
+	Make sure resources are feed by registering callback.
+	(Java_gnu_java_awt_peer_gtk_GtkChoicePeer_append): Adjust call to the
+	above function.
+	(Java_gnu_java_awt_peer_gtk_GtkChoicePeer_add): Ditto.
+	(item_activate): Ditto.
+	(Java_gnu_java_awt_peer_gtk_GtkChoicePeer_remove): Destroy removed
+	menuitem.
+	(item_removed): New function.  Free resources.
+	* jni/gtk-peer/gtkpeer.h (item_event_hook_info): Change member type and
+	name.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMainThread.c
+	(Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit): Obtain MethodID for
+	choicePostItemEvent.
+
+2004-01-06  Kim Ho  <kho@redhat.com>
+
+	Fix for Checkbox states.
+	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java:
+	(currentState): New field.
+	(nativeCreate): Add initial state parameter.
+	(create): Changed to reflect new parameter.
+	(setState): Fire only on changed states.
+	(postItemEvent): Fire only on changed states. Also change the 
+	Java Checkbox to reflect new state.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c:
+	(nativeCreate): Add parameter and set active state.
+
+2004-01-06  Fernando Nasser  <fnasser@redhat.com>
+
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEvents.c (awt_event_handler):
+	Most coded moved to pre_event_handler, with the modifications
+	mentioned below.
+	(pre_event_handler): New function.  Called on the Gtk "event" signal.
+	Do not retrieve the jobject from the window property as it is already
+	available as user data in the signal.
+	Do not try and find the grab widget as it is already done by Gtk at
+	this point.
+	Do not search for Window ancestor as Gtk already sends the signal to it.
+	Do not meddle with the activation state of peer widgets on each
+	key press or release.
+	Add CList to the special handling when looking for the focused widget.
+	* jni/gtk-peer/gtkpeer.h: Add declaration for pre_event_handler.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c (connectJObject):
+	New function.
+	(connectSignals): New function.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c (connectHooks):
+	Rename to...
+	(connectSignals): New name.  Get rid of NewGlobalRef call.
+	Use g_signal_connect instead of deprecated gtk_signal_connect.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkChoicePeer.c
+	(connect_choice_item_selectable_hook): Use g_signal_connect instead of
+	deprecated gtk_signal_connect.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkClipboard.c
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuItemPeer.c
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkClipboard_initNativeState): Ditto.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectHooks): Remove
+	function.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectJObject): New
+	function.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectSignals): New
+	function.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFileDialogPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectHooks): Remove
+	function.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectJObject): New
+	function.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkListPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectHooks): Remove
+	function.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectJObject): New
+	function.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectSignals): New
+	function.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_old_create): Remove dead
+	code.
+	(item_select): Remove indirection.
+	(item_unselect): Ditto.
+	(connect_selectable_hook): Folded into connectSignals.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkPanelPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectHooks): Remove
+	function.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectJObject): New
+	function.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectSignals): New
+	function.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollBarPeer.c: Ditto.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextComponentPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectHooks): Remove
+	function.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectSignals): New
+	function.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java: Declare  and call
+	connectJObject and connectSignals instead of connectHooks.
+	* gnu/java/awt/peer/gtk/GtkButtonPeer.java: Declare connectJObject and
+	connectSignals.
+	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java: Declare connectSignals
+	and not connectHooks.
+	* gnu/java/awt/peer/gtk/GtkTextComponentPeer.java: Ditto.
+	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java: Declare connectJObject
+	and not connectHooks.
+	* gnu/java/awt/peer/gtk/GtkListPeer.java: Declare connectJObject and
+	connectSignals instead of connectHooks.
+	* gnu/java/awt/peer/gtk/GtkPanelPeer.java: Ditto.
+	* gnu/java/awt/peer/gtk/GtkScrollbarPeer.java: Ditto.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java: Ditto. 
+
 2004-01-06  Michael Koch  <konqueror@gmx.de>
 
 	* java/text/CollationElementIterator.java:

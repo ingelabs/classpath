@@ -35,7 +35,7 @@
    obligated to do so.  If you do not wish to do so, delete this
    exception statement from your version. */
 
-#include "gtkpeer.h"
+#include "gtkcairopeer.h"
 #include "gdkfont.h"
 #include "gnu_java_awt_peer_gtk_GdkGraphics2D.h"
 #include <gdk/gdktypes.h>
@@ -46,7 +46,6 @@
 #include <gdk-pixbuf/gdk-pixdata.h>
 
 #include <cairo.h>
-#include <cairo-xlib.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -385,6 +384,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_gdkDrawDrawable
 
   gdk_draw_drawable(dst->drawable, gc, src->drawable, 
  		    0, 0, x, y, width, height); 
+  gdk_flush ();
 
   g_object_unref (gc);
 

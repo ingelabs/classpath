@@ -10,7 +10,7 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_connectHooks (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_connectSignals (JNIEnv *env, jobject);
 extern JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getCaretPosition (JNIEnv *env, jobject);
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_setCaretPosition (JNIEnv *env, jobject, jint);
 extern JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getSelectionStart (JNIEnv *env, jobject);

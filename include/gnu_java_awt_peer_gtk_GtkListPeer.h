@@ -11,7 +11,8 @@ extern "C"
 #endif
 
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_create (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_connectHooks (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_connectJObject (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_connectSignals (JNIEnv *env, jobject);
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_getSize (JNIEnv *env, jobject, jint, jintArray);
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_append (JNIEnv *env, jobject, jobjectArray);
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_add (JNIEnv *env, jobject, jstring, jint);

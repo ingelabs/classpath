@@ -56,6 +56,9 @@ public class GtkCanvasPeer extends GtkComponentPeer implements CanvasPeer
 
   public Graphics getGraphics ()
   {
+    if (GtkToolkit.useGraphics2D ())
+      return new GdkGraphics2D (this);
+    else
     return new GdkGraphics (this);
   }
 

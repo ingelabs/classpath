@@ -37,6 +37,7 @@ exception statement from your version. */
 
 
 #include "gtkpeer.h"
+#include "gnu_java_awt_peer_gtk_GtkComponentPeer.h"
 #include "gnu_java_awt_peer_gtk_GtkScrollbarPeer.h"
 
 struct range_scrollbar
@@ -107,46 +108,70 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_create
   GtkWidget *sb;
   GtkObject *adj;
 
+  /* Create global reference and save it for future use */
+  NSA_SET_GLOBAL_REF (env, obj);
+
   gdk_threads_enter ();
+  
   adj = gtk_adjustment_new (value, min, max, 
 			    step_incr, page_incr, 
 			    visible_amount);
 
   sb = (orientation) ? gtk_vscrollbar_new (GTK_ADJUSTMENT (adj)) :
                        gtk_hscrollbar_new (GTK_ADJUSTMENT (adj));
+
   gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, sb);
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_connectHooks
+Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_connectJObject
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
-  struct range_scrollbar *rs;
-
-  rs = (struct range_scrollbar *) malloc (sizeof (struct range_scrollbar));
 
   ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
+
+  gtk_widget_realize (GTK_WIDGET (ptr));
+
+  connect_awt_hook (env, obj, 1, GTK_SCROLLBAR (ptr)->range);
+
+  gdk_threads_leave ();
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_connectSignals
+  (JNIEnv *env, jobject obj)
+{
+  struct range_scrollbar *rs;
+  void *ptr = NSA_GET_PTR (env, obj);
+  jobject *gref = NSA_GET_GLOBAL_REF (env, obj);
+  g_assert (gref);
+
+  rs = (struct range_scrollbar *) malloc (sizeof (struct range_scrollbar));
+
+  gdk_threads_enter ();
+
   gtk_widget_realize (GTK_WIDGET (ptr));
 
   rs->range = GTK_RANGE (ptr);
-  rs->scrollbar = (jobject *) malloc (sizeof (jobject));
-  *(rs->scrollbar) = (*env)->NewGlobalRef (env, obj);
-  gtk_signal_connect (GTK_OBJECT (GTK_RANGE (ptr)), 
+  rs->scrollbar = gref;
+
+  g_signal_connect (G_OBJECT (GTK_RANGE (ptr)), 
 		      "move-slider", 
 		      GTK_SIGNAL_FUNC (post_adjustment_event), rs);
 
-  gtk_signal_connect (GTK_OBJECT (GTK_RANGE (ptr)), 
+  g_signal_connect (G_OBJECT (GTK_RANGE (ptr)), 
 		      "value-changed", 
 		      GTK_SIGNAL_FUNC (post_change_event), rs);
 
-
-  connect_awt_hook (env, obj, 1, GTK_SCROLLBAR (ptr)->range);
   gdk_threads_leave ();
+
+  /* Connect the superclass signals.  */
+  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectSignals (env, obj);
 }
 
 

@@ -48,10 +48,13 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_create
   GtkContainer *ebox_container;
   const char *str;
 
+  /* Create global reference and save it for future use */
+  NSA_SET_GLOBAL_REF (env, obj);
+
   str = (*env)->GetStringUTFChars (env, text, 0);
 
   gdk_threads_enter ();
-
+  
   ebox = gtk_event_box_new ();
   ebox_container = GTK_CONTAINER (ebox);
   label = gtk_label_new (str);
@@ -90,7 +93,7 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setText
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setAlignment
+Java_gnu_java_awt_peer_gtk_GtkLabelPeer_nativeSetAlignment
   (JNIEnv *env, jobject obj, jfloat xalign)
 {
   void *ptr;

@@ -92,6 +92,9 @@ public class GtkContainerPeer extends GtkComponentPeer
 
   public Graphics getGraphics ()
   {
+    if (GtkToolkit.useGraphics2D ())
+        return new GdkGraphics2D (this);
+    else
     return new GdkGraphics (this);
   }
 
@@ -107,6 +110,11 @@ public class GtkContainerPeer extends GtkComponentPeer
 	  try 
 	    {
 	      Graphics g = getGraphics ();
+
+	      // Some peers like GtkFileDialogPeer are repainted by Gtk itself
+	      if (g == null)
+	        break;
+
 	      g.setClip (((PaintEvent)event).getUpdateRect());
 
 	      if (id == PaintEvent.PAINT)

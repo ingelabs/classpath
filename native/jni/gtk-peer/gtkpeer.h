@@ -61,9 +61,11 @@ exception statement from your version. */
 #ifdef JVM_SUN
 
 extern struct state_table *native_state_table;
+extern struct state_table *native_global_ref_table;
 
 #define NSA_INIT(env, clazz) \
-  native_state_table = init_state_table (env, clazz)
+   do {native_state_table = init_state_table (env, clazz); \
+   native_global_ref_table = init_state_table (env, clazz);} while (0)
 
 #define NSA_GET_PTR(env, obj) \
   get_state (env, obj, native_state_table)
@@ -73,6 +75,21 @@ extern struct state_table *native_state_table;
 
 #define NSA_DEL_PTR(env, obj) \
   remove_state_slot (env, obj, native_state_table)
+
+#define NSA_GET_GLOBAL_REF(env, obj) \
+  get_state (env, obj, native_global_ref_table)
+
+#define NSA_SET_GLOBAL_REF(env, obj) \
+  do {jobject *globRefPtr; \
+    globRefPtr = (jobject *) malloc (sizeof (jobject)); \
+    *globRefPtr = (*env)->NewGlobalRef (env, obj); \
+    set_state (env, obj, native_global_ref_table, (void *)globRefPtr);} while (0)
+
+#define NSA_DEL_GLOBAL_REF(env, obj) \
+  do {jobject *globRefPtr = get_state (env, obj, native_global_ref_table); \
+    remove_state_slot (env, obj, native_global_ref_table); \
+    (*env)->DeleteGlobalRef (env, *globRefPtr); \
+    free (globRefPtr);} while (0)
 
 #endif /* JVM_SUN */
 
@@ -378,6 +395,7 @@ extern jmethodID postExposeEventID;
 extern jmethodID postKeyEventID;
 extern jmethodID postFocusEventID;
 extern jmethodID postAdjustmentEventID;
+extern jmethodID choicePostItemEventID;
 extern jmethodID postItemEventID;
 extern jmethodID postListItemEventID;
 extern jmethodID postTextEventID;
@@ -392,6 +410,10 @@ extern GtkWindowGroup *global_gtk_window_group;
 
 void awt_event_handler (GdkEvent *event);
 
+gboolean pre_event_handler (GtkWidget *widget,
+                               GdkEvent *event,
+			       jobject peer);
+
 void connect_awt_hook (JNIEnv *env, jobject peer_obj, int nwindows, ...);
 
 void set_visible (GtkWidget *widget, jboolean visible);
@@ -403,7 +425,7 @@ jint keyevent_state_to_awt_mods (GdkEvent *event);
 struct item_event_hook_info
 {
   jobject peer_obj;
-  jobject item_obj;
+  const char *label;
 };
 
 #endif /* __GTKPEER_H */

@@ -1,6 +1,9 @@
-/* gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics.c
-   Copyright (C) 1999, 2003 Free Software Foundation, Inc.
+#ifndef __GDKFONT_H__
+#define __GDKFONT_H__
 
+/* gdkfont.h -- Some global stuff related to fonts and glyphs 
+   Copyright (C) 2003 Free Software Foundation, Inc.
+   
    This file is part of GNU Classpath.
    
    GNU Classpath is free software; you can redistribute it and/or modify
@@ -35,58 +38,56 @@
    obligated to do so.  If you do not wish to do so, delete this
    exception statement from your version. */
 
-#include <math.h>
+#include "gtkcairopeer.h"
 
-#include "gdkfont.h"
-#include "gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics.h"
+#include <pango/pango.h>
+#include <pango/pango-context.h>
+#include <pango/pango-fontmap.h>
+#include <pango/pangoft2.h>
 
-#define ASCENT      0
-#define MAX_ASCENT  1
-#define DESCENT     2
-#define MAX_DESCENT 3
-#define MAX_ADVANCE 4
-#define NUM_METRICS 5
+extern struct state_table *native_font_state_table;
+extern struct state_table *native_glyphvector_state_table;
 
-JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics_initState
-  (JNIEnv *env, jobject self, jobject font)
+#define NSA_FONT_INIT(env, clazz) \
+  native_font_state_table = init_state_table (env, clazz)
+
+#define NSA_GET_FONT_PTR(env, obj) \
+  get_state (env, obj, native_font_state_table)
+
+#define NSA_SET_FONT_PTR(env, obj, ptr) \
+  set_state (env, obj, native_font_state_table, (void *)ptr)
+
+#define NSA_DEL_FONT_PTR(env, obj) \
+  remove_state_slot (env, obj, native_font_state_table)
+
+
+#define NSA_GV_INIT(env, clazz) \
+  native_glyphvector_state_table = init_state_table (env, clazz)
+
+#define NSA_GET_GV_PTR(env, obj) \
+  get_state (env, obj, native_glyphvector_state_table)
+
+#define NSA_SET_GV_PTR(env, obj, ptr) \
+  set_state (env, obj, native_glyphvector_state_table, (void *)ptr)
+
+#define NSA_DEL_GV_PTR(env, obj) \
+  remove_state_slot (env, obj, native_glyphvector_state_table)
+
+struct peerfont
 {
-  jintArray array;
-  jint *metrics;
-  struct peerfont *pf = NULL;
+  PangoFont *font;
+  PangoFontDescription *desc;
+  PangoContext *ctx;
+};
 
-  pf = NSA_GET_FONT_PTR(env, font);
-  g_assert (pf != NULL);
+struct glyphvec 
+{
+  /* the GList is list of PangoGlyphItems, each of which is a pair of 1
+     PangoItem and 1 PangoGlyphString. */
+  GList *glyphitems;
+  PangoFontDescription *desc;
+  PangoFont *font;
+  PangoContext *ctx;
+};
 
-  array = (*env)->NewIntArray (env, NUM_METRICS);
-  metrics = (*env)->GetIntArrayElements (env, array, NULL);
-
-  gdk_threads_enter ();
-
-#define DOUBLE_TO_26_6(d) ((FT_F26Dot6)((d) * 63.0))
-#define DOUBLE_FROM_26_6(t) (((double)((t) >> 6)) \
-			     + ((double)((t) & 0x3F) / 63.0))
-
-  double pointsize = pango_font_description_get_size (pf->desc);
-  pointsize /= (double) PANGO_SCALE;
-
-  FT_Face face = pango_ft2_font_get_face (pf->font);  
-  FT_Set_Char_Size( face, 
-		    DOUBLE_TO_26_6 (pointsize),
-		    DOUBLE_TO_26_6 (pointsize),
-		    0, 0);
-
-  metrics[ASCENT]      = ceil (DOUBLE_FROM_26_6(face->size->metrics.ascender));
-  metrics[MAX_ASCENT]  = metrics[ASCENT];
-  metrics[DESCENT]     = floor (DOUBLE_FROM_26_6(face->size->metrics.descender));
-  if (metrics[DESCENT] < 0)
-    metrics[DESCENT] = - metrics[DESCENT];
-  metrics[MAX_DESCENT] = metrics[DESCENT];
-  metrics[MAX_ADVANCE] = ceil (DOUBLE_FROM_26_6(face->size->metrics.max_advance));
-
-  gdk_threads_leave ();
-
-  (*env)->ReleaseIntArrayElements (env, array, metrics, 0);
-
-  return array;
-}
-
+#endif /* __GDKFONT_H__ */

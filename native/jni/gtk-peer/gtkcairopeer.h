@@ -1,5 +1,8 @@
-/* GtkFileDialogPeer.java -- Implements FileDialogPeer with GTK
-   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
+#ifndef __GTKCAIROPEER_H__
+#define __GTKCAIROPEER_H__
+
+/* gtkcairopeer.h -- Some global variables and #defines
+   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,38 +38,41 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+#include "gtkpeer.h"
+#include <cairo.h>
+#include <gdk-pixbuf/gdk-pixbuf.h>
 
-package gnu.java.awt.peer.gtk;
+/* 
+   A graphics2d struct is both simpler and uglier than a graphics
+   struct. 
 
-import java.awt.FileDialog;
-import java.awt.Graphics;
-import java.awt.peer.FileDialogPeer;
-import java.io.FilenameFilter;
+   Most of the graphics2d drawing state is held in the referenced cairo_t
+   and corresponding cairo_surface_t, so we can ignore it.
 
-public class GtkFileDialogPeer extends GtkDialogPeer implements FileDialogPeer
+   In addition to the cairo_t, we need to hold an extra reference to the
+   underlying GdkDrawable so its refcount matches the lifecycle of the java
+   Graphics object which is peering with us; also a reference to a byte
+   buffer and cairo_surface_t which contain the pattern you're drawing from
+   (if it exists).
+
+   Finally, it is possible that we are using a non-RENDER capable X server,
+   therefore we will be drawing to an cairo_surface_t which is actually a
+   pixbuf. When this is the case, the pointer to a GdkPixbuf will be
+   non-NULL and any drawing operation needs to be bracketed by pixbuf
+   load/save operations. If the GdkPixbuf pointer is NULL, we will treat
+   the cairo_surface_t as RENDER-capable.
+ */
+
+struct graphics2d
 {
-  native void create ();
+  cairo_t *cr;
+  cairo_surface_t *surface;
+  GdkDrawable *drawable;
+  GdkWindow *win;
+  GdkPixbuf *drawbuf;
+  char *pattern_pixels;
+  cairo_surface_t *pattern;
+  gboolean debug;
+};
 
-  public GtkFileDialogPeer (FileDialog fd)
-  {
-    super (fd);
-  }
-
-  public void setDirectory (String directory)
-  {
-    setFile (directory);
-  }
-
-  public native void setFile (String file);
-  public native void connectJObject ();
-
-  public void setFilenameFilter (FilenameFilter filter)
-  {
-    /* GTK has no filters. */
-  }
-
-  public Graphics getGraphics ()
-  {
-    return null;
-  }
-}
+#endif /* __GTKCAIROPEER_H */

@@ -48,24 +48,29 @@ static void textcomponent_changed_cb (GtkEditable *editable,
                                   jobject peer);
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_connectHooks
+Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_connectSignals
   (JNIEnv *env, jobject obj)
 {
-  void *ptr;
   GtkTextView *text = NULL;
   GtkTextBuffer *buf;
-
-  ptr = NSA_GET_PTR (env, obj);
+  void *ptr = NSA_GET_PTR (env, obj);
+  jobject *gref = NSA_GET_GLOBAL_REF (env, obj);
+  g_assert (gref);
 
   gdk_threads_enter ();
 
   if (GTK_IS_ENTRY(ptr))
     {
       g_signal_connect (GTK_ENTRY (ptr)->im_context, "commit",
-                        G_CALLBACK (textcomponent_commit_cb), obj);
+                        G_CALLBACK (textcomponent_commit_cb), *gref);
 
       g_signal_connect (GTK_EDITABLE (ptr), "changed",
-                        G_CALLBACK (textcomponent_changed_cb), obj);
+                        G_CALLBACK (textcomponent_changed_cb), *gref);
+
+      gdk_threads_leave ();
+
+      /* Connect the superclass signals.  */
+      Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectSignals (env, *gref);
     }
   else
     {
@@ -81,19 +86,24 @@ Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_connectHooks
       if (text)
 	{
           g_signal_connect (text->im_context, "commit",
-                            G_CALLBACK (textcomponent_commit_cb), obj);
+                            G_CALLBACK (textcomponent_commit_cb), *gref);
 
           buf = gtk_text_view_get_buffer (text);
           if (buf)
             g_signal_connect (buf, "changed",
-                              G_CALLBACK (textcomponent_changed_cb), obj);
+                              G_CALLBACK (textcomponent_changed_cb), *gref);
+
+          /* Connect the superclass signals.  */
+          /* FIXME: Cannot do that here or it will get the sw and not the list.
+             We must a generic way of doing this. */
+          /* Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectSignals (env,
+	                                                                 obj); */
+          g_signal_connect (GTK_OBJECT (text), "event", 
+                    G_CALLBACK (pre_event_handler), *gref);
+
+          gdk_threads_leave ();
 	}
     }
-
-  gdk_threads_leave ();
-
-  /* Connect the superclass hooks.  */
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectHooks (env, obj);
 }
 
 JNIEXPORT jint JNICALL 
@@ -101,7 +111,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getCaretPosition
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
-  int pos;
+  int pos = 0;
   GtkEditable *editable;    // type of GtkEntry    (TextField)
   GtkWidget *text = NULL;   // type of GtkTextView (TextArea)
   GtkTextBuffer *buf;
@@ -187,7 +197,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getSelectionStart
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
-  int pos;
+  int pos = 0;
   GtkEditable *editable;    // type of GtkEntry    (TextField)
   GtkWidget *text = NULL;   // type of GtkTextView (TextArea)
   GtkTextBuffer *buf;
@@ -244,7 +254,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getSelectionEnd
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
-  int pos;
+  int pos = 0;
   GtkEditable *editable;    // type of GtkEntry    (TextField)
   GtkWidget *text = NULL;   // type of GtkTextView (TextArea)
   GtkTextBuffer *buf;
@@ -384,7 +394,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getText
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
-  char *contents;
+  char *contents = NULL;
   jstring jcontents;
   GtkEditable *editable;    // type of GtkEntry    (TextField)
   GtkWidget *text = NULL;   // type of GtkTextView (TextArea)
