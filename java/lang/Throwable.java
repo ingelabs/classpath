@@ -20,7 +20,7 @@ public class Throwable extends Object implements Serializable
 {
   static final long serialVersionUID = -3042686055658047285L;
 
-  private String detailMessage = null;
+  private String message = null;
   private StackTrace st;
   
   /** 
@@ -37,7 +37,7 @@ public class Throwable extends Object implements Serializable
   public Throwable(String message) {
     st = StackTrace.copyCurrentStackTrace();
     st.pop(); // Remove the Throwable <init> from the trace
-    this.detailMessage = message;
+    this.message = message;
   }
   
   /**
@@ -45,8 +45,8 @@ public class Throwable extends Object implements Serializable
    * @return the error message associated with this Throwable.
    */
   public String getMessage() {
-		return detailMessage;
-	}
+    return message;
+  }
 
   /** 
    * Get a localized version of this Throwable's error message.
@@ -66,7 +66,7 @@ public class Throwable extends Object implements Serializable
    * @XXX find out what exactly this should look like.
    */
   public String toString() {
-    return getClass().getName() + detailMessage != null ? ": " + detailMessage : "";
+    return getClass().getName() + message != null ? ": " + message : "";
   }
   
   /** 
@@ -123,7 +123,7 @@ public class Throwable extends Object implements Serializable
     {
       ObjectOutputStream.PutField oFields;
       oFields = s.putFields();
-      oFields.put("detailMessage", detailMessage);
+      oFields.put("detailMessage", message);
       s.writeFields(); 
     }
 
@@ -135,6 +135,6 @@ public class Throwable extends Object implements Serializable
     {
       ObjectInputStream.GetField oFields;
       oFields = s.readFields();
-      detailMessage = (String)oFields.get("detailMessage", (String)null);
+      message = (String)oFields.get("detailMessage", (String)null);
     }
 }
