@@ -1,5 +1,10 @@
 2003-11-17  Graydon Hoare  <graydon@redhat.com>
 
+	* javax/swing/plaf/basic/BasicDefaults.java: Rewrite to spec.
+	* javax/swing/UIDefaults.java: Modify to reflect rewrite.
+
+2003-11-17  Graydon Hoare  <graydon@redhat.com>
+
 	* gnu/classpath/Configuration.java.in (default_awt_peer_toolkit):
 	Change GTK -> Gtk.
 
