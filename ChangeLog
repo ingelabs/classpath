@@ -1,5 +1,11 @@
 2003-06-10  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/BorderFactory.java:
+	Wrapped all method documentations.
+	(createEtchedBorder): New method.
+
+2003-06-10  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/awt/image/GdkPixbufDecoder.java:
 	Reworked imports to explicitely import classes only.
 
