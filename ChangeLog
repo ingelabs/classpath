@@ -1,3 +1,8 @@
+2003-09-24  Bryce McKinlay  <bryce@mckinlay.net.nz>
+
+	* java/lang/StringBuffer.java (substring): Don't set `shared' on small
+	Strings, even if buffer is already shared.
+
 2003-09-23  Sascha Brawer  <brawer@dandelis.ch>
 
 	* java/awt/font/FontRenderContext.java (getTransform): Return
