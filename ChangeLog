@@ -1,3 +1,27 @@
+2004-09-23  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/AbstractButton.java:
+	Little re-formatting.
+	(changeEvent): Made protected.
+	(fireStateChanged): Removed argument.
+	(setHorizontalAlignment): Abort method when old value is equal too new
+	value.
+	(setHorizontalTextPosition): Likewise.
+	(setVerticalAlignment): Likewise.
+	(setVerticalTextPosition): Likewise.
+	(setBorderPainted): Likewise.
+	(setIcon): Likewise.
+	(setText): Likewise.
+	(setIconTextGap): Likewise.
+	(setMargin): Likewise.
+	(setPressedIcon): Likewise.
+	(setFocusPainted): Likewise.
+	(setDisabledSelectedIcon): Likewise.
+	(setRolloverIcon): Likewise.
+	(setRolloverSelectedIcon): Likewise.
+	(setSelectedIcon): Likewise.
+	(setContentAreaFilled): Likewise.
+
 2004-09-23  Jerry Quinn  <jlquinn@optonline.net>
 
 	* java/awt/image/ComponentSampleModel.java: Add documentation.
