@@ -1,5 +1,13 @@
 2004-01-26  Fernando Nasser  <fnasser@redhat.com>
 
+	* java/awt/EventDispatchThread.java (run): Stop running when
+	interrupted.
+	* java/awt/EventQueue.java (pop): Stop dispatch thread when done.
+	Reset the queue after transferring its contents.
+	(push): Start a new dispatch thread if none is running.
+
+2004-01-26  Fernando Nasser  <fnasser@redhat.com>
+
 	* java/awt/EventQueue.java (isDispatchThread): Do check on top of stack.
 	(push): Make sure push is performed at the top of the thread stack.
 
