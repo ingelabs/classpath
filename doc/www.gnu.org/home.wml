@@ -94,41 +94,11 @@ name="ftp://alpha.gnu.org/gnu/classpath/">.
 <p>
 <en>
 GNU Classpath 1.0 will be fully compatible with Java 1.1 and largely 
-compatible with Java 2.  Detailed information on the
-current state of a package can be obtained by clicking on the
-appropriate link below.  This information will become part of the Savannah
-Tasks information in the future and no longer appear on this page.
+compatible with Java 2.  The current state of GNU Classpath can be
+obtained by looking at the current list of
+<A HREF="http://savannah.gnu.org/pm/task.php?group_id=85&set=custom&advsrch=0&group_project_id=0&_assigned_to=0&_status=1&SUBMIT=Browse">all open tasks</A>.
 </en>
 </p>
-<package-list>
-  <package-item name="java.applet">
-  <package-item name="java.awt">
-  <package-item name="java.awt.datatransfer" section="java.awt">
-  <package-item name="java.awt.event" section="java.awt">
-  <package-item name="java.awt.image">
-  <package-item name="java.awt.peer" section="java.awt">
-  <package-item name="java.beans">
-  <package-item name="java.beans.beancontext" section="java.beans">
-  <package-item name="java.io">
-  <package-item name="java.lang">
-  <package-item name="java.lang.ref" section="java.lang">
-  <package-item name="java.lang.reflect" section="java.lang">
-  <package-item name="java.math">
-  <package-item name="java.net">
-  <package-item name="java.rmi">
-  <package-item name="java.rmi.dgc" section="java.rmi">
-  <package-item name="java.rmi.registry" section="java.rmi">
-  <package-item name="java.rmi.server" section="java.rmi">
-  <package-item name="java.security">
-  <package-item name="java.security.acl" section="java.security">
-  <package-item name="java.security.cert" section="java.security">
-  <package-item name="java.security.interfaces" section="java.security">
-  <package-item name="java.security.spec" section="java.security">
-  <package-item name="java.sql">
-  <package-item name="java.text">
-  <package-item name="java.util">
-  <package-item name="java.util.zip">
-</package-list>
 
 <H4>Testing</H4>
 <en>
@@ -136,6 +106,8 @@ Tasks information in the future and no longer appear on this page.
 The test framework for GNU Classpath is called 
 <link url="http://sources.redhat.com/mauve/" name="Mauve">.  There 
 are instructions within the Mauve website on how to download and use Mauve.
+Writing Mauve tests is the most important thing GNU Classpath developers
+could do for the project at this time.
 </en>
 </p>
 
@@ -144,11 +116,8 @@ are instructions within the Mauve website on how to download and use Mauve.
 <p>
 The primary target for GNU Classpath was originally <link
 url="http://www.japhar.org/" name="Japhar">.  Japhar-0.07 works out-of-the-box with
-GNU Classpath-0.00.  Japhar-0.09 is required for newer releases of GNU
-Classpath.  In the past couple of years no one has been able to take
-over the maintenance of Japhar and once again Japhar does not work
-with GNU Classpath CVS.  Thankfully other VMs have taken an
-interest in GNU Classpath and those are listed below.
+GNU Classpath-0.00.  Current Japhar versions do not work with current versions
+of GNU Classpath.
 </p>
 
 <table border="1">
@@ -180,13 +149,15 @@ mailing list archives.
 <tr>
 <td><link url="http://kissme.sourceforge.net/" name="Kissme"></td>
 <td>
-This VM includes a modified version of the GNU Classpath libraries.
+This VM is almost always guaranteed to work with GNU Classpath cvs
+source code.
 </td>
 </tr>
 <tr>
 <td><link url="http://www.sablevm.org/" name="SableVM"></td>
 <td>
-This VM also uses a modified version of the GNU Classpath libraries.
+This VM provides a repackaged version of GNU Classpath that aims to
+be the easiest to install and use.
 </td>
 </tr>
 <tr>
@@ -205,6 +176,13 @@ allows user-defined static verification procedures to be integrated
 into the VM's dynamic linking process through pluggable verification
 modules.
 </td>
+</tr>
+<td><link url="www.e-leos.net/" name="E-LEOS"></td>
+<td>
+GNU Classpath is used as part of this project to create a Java operating
+system.
+</td>
+<tr>
 </tr>
 </table>
 </en>

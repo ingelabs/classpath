@@ -1,3 +1,8 @@
+2002-09-22  C. Brian Jones <cbj@gnu.org>
+
+	* doc/www.gnu.org/home.wml: remove old task list, refer to Savannah instead.
+	Updated list of projects using GNU Classpath.
+
 2002-09-17  Sascha Brawer  <brawer@acm.org>
 
 	* java/util/logging/ErrorManager.java: Verify correctness of
