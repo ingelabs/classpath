@@ -1,5 +1,12 @@
 2004-10-25  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JMenuBar.java
+	(updateUI): Simplified.
+	* javax/swing/tree/DefaultTreeSelectionModel.java:
+	Reorganized import statements.
+
+2004-10-25  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/InetAddress.java
 	(toString): Rename 'address' to 'addr'.
 
