@@ -1,3 +1,26 @@
+2003-03-15  Aaron M. Renn <arenn@urbanophile.com>
+
+	* java/io/FileDescriptor - Make native signatures match Java, misc fixs
+	(FileDescriptor(long)): Change parm from int
+	(close): Synchronize, ensure consistency via try/catch loop
+	(nativeWriteByte): Change byte from long to int
+	(write): Change offset, len to int
+	(nativeWriteBuf): Change offset, len to int
+	(read): Expect byte from nativeReadByte
+	(nativeReadByte): Return int
+	(read(byte[],int, int): Expect int return from nativeReadBuf
+	(nativeReadBuf): offset, len to int
+	(available): Expect int from nativeAvailable
+	(nativeAvailable): Return int
+	* native/jni/java-io/FileDescriptor.c
+	Change function signatures to match Java signatures
+	(nativeWriteByte): Byte to write to int
+	(nativeWriteBuf): offset, len to int
+	(nativeReadByte): return int
+	(nativeReadBuf): offset, len to int, return int
+	(nativeAvailable): return int
+	
+
 2003-03-14  Michael Koch  <konqueror@gmx.de>
 
 	* java/beans/beancontext/BeanContextServicesSupport.java

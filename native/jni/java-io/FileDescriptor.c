@@ -87,6 +87,9 @@ exception statement from your version. */
 // FIXME: This can't be right.  Need converter macros
 #define CONVERT_JLONG_TO_OFF_T(x) (x)
 
+// FIXME: This can't be right.  Need converter macros
+#define CONVERT_JINT_TO_INT(x) ((int)(x & 0xFFFF))
+
 /* These are initialized in nativeInit() */
 static jint SET;
 static jint CUR;
@@ -186,9 +189,9 @@ Java_java_io_FileDescriptor_nativeClose(JNIEnv *env, jobject obj, jlong fd)
  * Writes a single byte to the specified file descriptor
  * Return status code, exception on error
  */
-JNIEXPORT jlong JNICALL
+JNIEXPORT jint JNICALL
 Java_java_io_FileDescriptor_nativeWriteByte(JNIEnv *env, jobject obj,
-                                            jlong fd, jlong b)
+                                            jlong fd, jint b)
 {
   int native_fd;
   int native_byte;
@@ -196,7 +199,7 @@ Java_java_io_FileDescriptor_nativeWriteByte(JNIEnv *env, jobject obj,
   ssize_t rc; 
 
   native_fd = CONVERT_JLONG_TO_INT(fd);
-  native_byte = CONVERT_JLONG_TO_INT(b);
+  native_byte = CONVERT_JINT_TO_INT(b);
   buf[0] = (char)(native_byte & 0xFF);
 
   while (rc != 1)
@@ -205,11 +208,11 @@ Java_java_io_FileDescriptor_nativeWriteByte(JNIEnv *env, jobject obj,
       if ((rc == -1) && (errno != EINTR))
         {
           JCL_ThrowException(env, "java/io/IOException", strerror(errno));
-          return(rc);
+          return(-1);
 	}
     }
 
-  return(rc);
+  return(0);
 }
 
 /*************************************************************************/
@@ -217,10 +220,10 @@ Java_java_io_FileDescriptor_nativeWriteByte(JNIEnv *env, jobject obj,
  * Writes a byte buffer to the specified file descriptor
  * Return status code, exception on error
  */
-JNIEXPORT jlong JNICALL
+JNIEXPORT jint JNICALL
 Java_java_io_FileDescriptor_nativeWriteBuf(JNIEnv *env, jobject obj,
-                                           jlong fd, jarray buf, jlong offset,
-					   jlong len)
+                                           jlong fd, jarray buf, jint offset,
+					   jint len)
 {
   int native_fd;
   ssize_t rc, bytes_written = 0;
@@ -256,7 +259,7 @@ Java_java_io_FileDescriptor_nativeWriteBuf(JNIEnv *env, jobject obj,
  * Read a single byte from the file descriptor
  * Return byte read or -1 on eof, exception on error
  */
-JNIEXPORT jlong JNICALL
+JNIEXPORT jint JNICALL
 Java_java_io_FileDescriptor_nativeReadByte(JNIEnv *env, jobject obj, jlong fd)
 {
   int native_fd;
@@ -276,7 +279,7 @@ Java_java_io_FileDescriptor_nativeReadByte(JNIEnv *env, jobject obj, jlong fd)
           return(-1);
 	}
     }
-  return(b);
+  return(b & 0xFF);
 }
 
 /*************************************************************************/
@@ -284,10 +287,10 @@ Java_java_io_FileDescriptor_nativeReadByte(JNIEnv *env, jobject obj, jlong fd)
  * Reads to a byte buffer from the specified file descriptor
  * Return number of bytes read or -1 on eof, exception on error
  */
-JNIEXPORT jlong JNICALL
+JNIEXPORT jint JNICALL
 Java_java_io_FileDescriptor_nativeReadBuf(JNIEnv *env, jobject obj,
-                                         jlong fd, jarray buf, jlong offset,
-					 jlong len)
+                                         jlong fd, jarray buf, jint offset,
+					 jint len)
 {
   int native_fd;
   ssize_t rc, bytes_read = 0;
@@ -312,7 +315,7 @@ Java_java_io_FileDescriptor_nativeReadBuf(JNIEnv *env, jobject obj,
           if (bytes_read == 0)
             return(-1); /* Signal end of file to Java */
           else 
-            return(bytes_read);
+            return((jint)(bytes_read & 0xFFFF));
         }
 
       if ((rc == -1) && (errno != EINTR))
@@ -325,7 +328,7 @@ Java_java_io_FileDescriptor_nativeReadBuf(JNIEnv *env, jobject obj,
     }
 
   (*env)->ReleaseByteArrayElements(env, buf, bufptr, 0);
-  return(bytes_read);
+  return((jint)(bytes_read & 0xFFFF));
 }
 
 /*************************************************************************/
@@ -333,7 +336,7 @@ Java_java_io_FileDescriptor_nativeReadBuf(JNIEnv *env, jobject obj,
  * Return number of bytes that can be read from the file w/o blocking.
  * Exception on error
  */
-JNIEXPORT jlong JNICALL
+JNIEXPORT jint JNICALL
 Java_java_io_FileDescriptor_nativeAvailable(JNIEnv *env, jobject obj, jlong fd)
 {
 #if defined(FIONREAD) || defined(HAVE_SELECT) || defined(HAVE_FSTAT)
@@ -400,7 +403,7 @@ Java_java_io_FileDescriptor_nativeAvailable(JNIEnv *env, jobject obj, jlong fd)
   if (!found)
     return(0);
   else
-    return(num);
+    return((jint)(num & 0xFFFF));
 
 #else /* defined FIONREAD, HAVE_SELECT, HAVE_FSTAT */
  /* FIXME: Probably operation isn't supported, but this exception

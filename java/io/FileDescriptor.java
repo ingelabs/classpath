@@ -125,7 +125,7 @@ public final class FileDescriptor
   {
   }
 
-  private FileDescriptor(int nativeFd)
+  private FileDescriptor(long nativeFd)
   {
     this.nativeFd = nativeFd;
   }
@@ -193,13 +193,20 @@ public final class FileDescriptor
     nativeFd = nativeOpen(path, mode);
   }
 
-  void close() throws IOException
+  synchronized void close() throws IOException
   {
     if (nativeFd == -1L)
       return;
 
-    nativeClose(nativeFd);
-    nativeFd = -1L;
+    try
+      {
+        nativeClose(nativeFd);
+      }
+    catch(IOException e)
+      {
+        nativeFd = -1L;
+        throw new IOException(e.getMessage());
+      }
   }
 
   void write(int b) throws IOException
@@ -207,10 +214,10 @@ public final class FileDescriptor
     if (nativeFd == -1L)
       throw new IOException("Invalid FileDescriptor");
 
-    nativeWriteByte(nativeFd, (long)(b & 0xFF));
+    nativeWriteByte(nativeFd, (b & 0xFF));
   }
 
-  void write(byte[] buf, long offset, long len) throws IOException
+  void write(byte[] buf, int offset, int len) throws IOException
   {
     if (nativeFd == -1L)
       throw new IOException("Invalid FileDescriptor");
@@ -234,11 +241,7 @@ public final class FileDescriptor
     if (nativeFd == -1L)
       throw new IOException("Invalid FileDescriptor");
 
-    long byteRead = nativeReadByte(nativeFd);
-    if (byteRead == -1L)
-      return(-1);
-
-    return((int)(byteRead & 0xFF));
+    return(nativeReadByte(nativeFd));
   }
 
   int read(byte[] buf, int offset, int len) throws IOException
@@ -257,11 +260,7 @@ public final class FileDescriptor
 
     // Note that above ops implicitly bomb if buf == null
 
-    long bytesRead = nativeReadBuf(nativeFd, buf, offset, len);
-    if (bytesRead == -1L)
-      return(-1);
-
-    return((int)(bytesRead & 0xFFFF));
+    return(nativeReadBuf(nativeFd, buf, offset, len));
   }
 
   int available() throws IOException
@@ -269,13 +268,7 @@ public final class FileDescriptor
     if (nativeFd == -1L)
       throw new IOException("Invalid FileDescriptor");
     
-    long bytesAvail = nativeAvailable(nativeFd);
-
-    // FIXME:  Is this right?
-    if (bytesAvail > 0xFFFFL)
-      return(0xFFFF);
-    else
-      return((int)(bytesAvail & 0xFFFF));
+    return(nativeAvailable(nativeFd));
   }
 
   long seek(long offset, int whence, boolean stopAtEof) throws IOException
@@ -391,7 +384,7 @@ public final class FileDescriptor
     *
     * @exception IOException If an error occurs
     */
-  private native long nativeWriteByte(long fd, long b) throws IOException;
+  private native long nativeWriteByte(long fd, int b) throws IOException;
   // I hate name mangling.
 
   /**
@@ -406,7 +399,7 @@ public final class FileDescriptor
     *
     * @exception IOException If an error occurs
     */
-  private native long nativeWriteBuf(long fd, byte[] buf, long offset, long len)
+  private native long nativeWriteBuf(long fd, byte[] buf, int offset, int len)
     throws IOException;
   // I hate name mangling.
 
@@ -420,7 +413,7 @@ public final class FileDescriptor
     *
     * @exception IOException If an error occurs
     */
-  private native long nativeReadByte(long fd) throws IOException;
+  private native int nativeReadByte(long fd) throws IOException;
   // I hate name mangling.
 
   /**
@@ -435,7 +428,7 @@ public final class FileDescriptor
     *
     * @exception IOException If an error occurs
     */
-  private native long nativeReadBuf(long fd, byte[] buf, long offset, long len) 
+  private native int nativeReadBuf(long fd, byte[] buf, int offset, int len) 
     throws IOException;
   // I hate name mangling.
 
@@ -448,7 +441,7 @@ public final class FileDescriptor
     *
     * @exception IOException If an error occurs
     */
-  private native long nativeAvailable(long fd) throws IOException;
+  private native int nativeAvailable(long fd) throws IOException;
 
   /**
     * Method to do a "seek" operation on the file
