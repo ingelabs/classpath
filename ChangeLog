@@ -1,3 +1,9 @@
+2001-10-26  Mark Wielaard  <mark@klomp.org>
+
+	* java/lang/reflect/Proxy.java (getProxyClass):
+	Workaround for bug in gcj
+	* java/util/TreeMap.java (TreeIterator (int)): likewise
+
 2001-10-25  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/AbstractCollection.java (removeAllInternal),

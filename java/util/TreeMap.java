@@ -1391,7 +1391,11 @@ public class TreeMap extends AbstractMap
      */
     TreeIterator(int type)
     {
-      this(type, firstNode(), nil);
+      // FIXME gcj cannot handle this. Bug java/4695
+      // this(type, firstNode(), nil);
+      this.type = type;
+      this.next = firstNode();
+      this.max = nil;
     }
 
     /**
