@@ -7,3 +7,4 @@
 ^../java/text/.*$
 ^../gnu/java/awt/peer/gtk/GtkToolkit.java$
 ^../gnu/java/awt/peer/gtk/Test.java$
+^../gnu/test/.*$

@@ -2,6 +2,75 @@
 
 SUBDIRS = reflect
 
-javalangdir = $(datadir)/java/lang
+EXTRA_DIST = \
+AbstractMethodError.java \
+ArithmeticException.java \
+ArrayIndexOutOfBoundsException.java \
+ArrayStoreException.java \
+Boolean.java \
+Byte.java \
+Character.java \
+ClassCastException.java \
+ClassCircularityError.java \
+ClassFormatError.java \
+ClassLoader.java \
+ClassNotFoundException.java \
+CloneNotSupportedException.java \
+Cloneable.java \
+Comparable.java \
+Compiler.java \
+Double.java \
+Error.java \
+Exception.java \
+ExceptionInInitializerError.java \
+Float.java \
+IllegalAccessError.java \
+IllegalAccessException.java \
+IllegalArgumentException.java \
+IllegalMonitorStateException.java \
+IllegalStateException.java \
+IllegalThreadStateException.java \
+IncompatibleClassChangeError.java \
+IndexOutOfBoundsException.java \
+InstantiationError.java \
+InstantiationException.java \
+Integer.java \
+InternalError.java \
+InterruptedException.java \
+LinkageError.java \
+Long.java \
+Math.java \
+NegativeArraySizeException.java \
+NoClassDefFoundError.java \
+NoSuchFieldError.java \
+NoSuchFieldException.java \
+NoSuchMethodError.java \
+NoSuchMethodException.java \
+NullPointerException.java \
+Number.java \
+NumberFormatException.java \
+Object.java \
+OutOfMemoryError.java \
+Process.java \
+Runnable.java \
+RuntimeException.java \
+RuntimePermission.java \
+SecurityException.java \
+SecurityManager.java \
+Short.java \
+StackOverflowError.java \
+String.java \
+StringBuffer.java \
+StringIndexOutOfBoundsException.java \
+System.java \
+ThreadDeath.java \
+ThreadGroup.java \
+Throwable.java \
+UnknownError.java \
+UnsatisfiedLinkError.java \
+UnsupportedClassVersionError.java \
+UnsupportedOperationException.java \
+VerifyError.java \
+VirtualMachineError.java \
+Void.java
 
-javalang_JAVA = Boolean.java Byte.java Cloneable.java Compiler.java Comparable.java Integer.java Long.java Number.java Runnable.java Short.java String.java StringBuffer.java UnsupportedOperationException.java Void.java

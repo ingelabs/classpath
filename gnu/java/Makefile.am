@@ -1,4 +1,4 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-SUBDIRS = lang net io
+SUBDIRS = awt beans io lang locale net security
 

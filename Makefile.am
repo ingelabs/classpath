@@ -1,6 +1,15 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-#SUBDIRS = java gnu native compat test doc
-SUBDIRS = lib native doc
+SUBDIRS = lib native doc resource gnu java vm
 
-EXTRA_DIST = BUGS
+EXTRA_DIST = \
+AUTHORS \
+BUGS \
+COPYING \
+COPYING.LIB \
+ChangeLog \
+INSTALL \
+NEWS \
+README \
+THANKYOU
+

@@ -374,20 +374,6 @@
 ./java/security/UnrecoverableKeyException.class: ./java/security/GeneralSecurityException.class
 
 
-# Rules for gnu.test.Result
-#
-./gnu/test/Result.class: ../gnu/test/Result.java
-	$(JAVAC) ../gnu/test/Result.java
-
-
-# Rules for gnu.test.XPass
-#
-./gnu/test/XPass.class: ../gnu/test/XPass.java
-	$(JAVAC) ../gnu/test/XPass.java
-
-./gnu/test/XPass.class: ./gnu/test/Result.class
-
-
 # Rules for gnu.java.awt.peer.gtk.GtkGenericPeer
 #
 ./gnu/java/awt/peer/gtk/GtkGenericPeer.class: ../gnu/java/awt/peer/gtk/GtkGenericPeer.java
@@ -1016,14 +1002,6 @@
 ./java/security/Provider.class: ./java/lang/Exception.class ./java/lang/Throwable.class ./java/io/ObjectInputStream.class ./java/io/ValidatorAndPriority.class ./java/util/Arrays.class ./java/util/AbstractList.class ./java/util/AbstractCollection.class ./java/lang/UnsupportedOperationException.class ./java/lang/RuntimeException.class ./java/lang/String.class ./java/util/Locale.class ./java/io/IOException.class ./java/io/PrintStream.class ./java/io/FilterOutputStream.class ./java/io/OutputStream.class ./java/io/ObjectOutputStream.class ./gnu/java/lang/reflect/TypeSignature.class ./java/lang/reflect/Constructor.class ./java/lang/reflect/InvocationTargetException.class ./java/io/PrintWriter.class ./java/io/Writer.class ./gnu/vm/stack/StackTrace.class ./gnu/vm/stack/StackFrame.class ./java/lang/reflect/Method.class ./java/lang/Object.class ./java/lang/System.class ./java/lang/SecurityManager.class ./java/lang/SecurityContext.class ./java/lang/Class.class ./java/lang/ClassNotFoundException.class ./java/util/Vector.class ./java/util/Hashtable.class ./java/io/InputStream.class ./java/io/ObjectInput.class ./java/io/DataInput.class ./java/io/EOFException.class ./java/io/StreamCorruptedException.class ./java/io/ObjectStreamException.class ./java/io/DataInputStream.class ./java/io/FilterInputStream.class ./java/io/BlockDataException.class ./java/io/ObjectStreamClass.class ./java/io/InterfaceComparator.class ./java/io/MemberComparator.class ./java/io/ObjectStreamField.class ./java/io/NotSerializableException.class ./java/io/Externalizable.class ./java/io/WriteAbortedException.class ./java/io/NotActiveException.class ./java/io/ObjectInputValidation.class ./java/io/InvalidObjectException.class ./java/io/OptionalDataException.class ./gnu/java/io/EncodingManager.class ./gnu/java/io/decode/Decoder.class ./java/io/CharConversionException.class ./java/lang/NullPointerException.class ./java/lang/StringBuffer.class ./java/lang/NegativeArraySizeException.class ./java/lang/IndexOutOfBoundsException.class ./java/lang/StringIndexOutOfBoundsException.class ./java/lang/Error.class ./java/io/UnsupportedEncodingException.class ./java/lang/Math.class ./java/lang/Integer.class ./java/lang/VMClassLoader.class ./java/lang/ClassLoader.class ./java/lang/SecurityException.class ./java/lang/Long.class ./java/lang/Float.class ./java/lang/Double.class ./java/util/Properties.class ./java/util/ResourceBundle.class ./java/io/ObjectOutput.class ./java/io/DataOutput.class ./java/io/DataOutputStream.class ./java/io/OutputStreamWriter.class ./gnu/java/io/encode/Encoder.class ./java/lang/CloneNotSupportedException.class ./java/lang/VMObject.class ./java/lang/IllegalMonitorStateException.class ./java/lang/InterruptedException.class ./java/lang/VMSystem.class ./java/io/FileInputStream.class ./java/io/FileNotFoundException.class ./java/io/FileDescriptor.class ./java/io/SyncFailedException.class ./java/io/FileOutputStream.class ./java/lang/Runtime.class ./java/lang/VMSecurityManager.class ./java/lang/Thread.class ./java/lang/ThreadGroup.class ./java/lang/ThreadDeath.class ./java/net/InetAddress.class ./java/lang/InstantiationException.class ./java/lang/IllegalAccessException.class ./java/lang/IllegalArgumentException.class ./java/lang/UnknownError.class ./java/lang/VirtualMachineError.class ./java/lang/NoSuchMethodException.class ./java/net/URL.class ./gnu/java/lang/ClassHelper.class ./java/lang/NoSuchFieldException.class ./java/util/Collections.class ./java/util/AbstractSet.class ./java/util/Bucket.class ./java/util/BasicMapEntry.class ./java/io/UTFDataFormatException.class ./java/io/PushbackInputStream.class ./gnu/java/io/NullOutputStream.class ./java/lang/Comparable.class ./java/io/Reader.class ./java/lang/NumberFormatException.class ./java/lang/ClassFormatError.class ./java/lang/LinkageError.class ./java/net/MalformedURLException.class ./java/io/BufferedReader.class ./java/io/InputStreamReader.class ./java/util/Date.class ./java/util/GregorianCalendar.class ./java/util/Calendar.class ./java/util/PropertyResourceBundle.class ./java/io/ByteArrayOutputStream.class ./java/io/File.class ./java/lang/UnsatisfiedLinkError.class ./java/lang/Process.class ./java/lang/IllegalThreadStateException.class ./java/net/UnknownHostException.class ./java/net/URLStreamHandlerFactory.class ./java/net/URLStreamHandler.class ./java/net/URLConnection.class ./java/util/AbstractSequentialList.class ./java/util/TimeZone.class ./java/util/SimpleTimeZone.class ./java/io/FilenameFilter.class ./java/io/FileFilter.class ./java/net/MimeTypeMapper.class ./java/net/ContentHandlerFactory.class ./java/net/ContentHandler.class ./java/net/UnknownServiceException.class 
 
 
-# Rules for gnu.test.Fail
-#
-./gnu/test/Fail.class: ../gnu/test/Fail.java
-	$(JAVAC) ../gnu/test/Fail.java
-
-./gnu/test/Fail.class: ./gnu/test/Result.class
-
-
 # Rules for java.io.FilterReader
 #
 ./java/io/FilterReader.class: ../java/io/FilterReader.java
@@ -1146,22 +1124,6 @@
 ./java/security/interfaces/DSAKeyPairGenerator.class: ./java/security/InvalidParameterException.class
 
 ./java/security/interfaces/DSAKeyPairGenerator.class: ./java/security/interfaces/DSAParams.class
-
-
-# Rules for gnu.test.Untested
-#
-./gnu/test/Untested.class: ../gnu/test/Untested.java
-	$(JAVAC) ../gnu/test/Untested.java
-
-./gnu/test/Untested.class: ./gnu/test/Result.class
-
-
-# Rules for gnu.test.Pass
-#
-./gnu/test/Pass.class: ../gnu/test/Pass.java
-	$(JAVAC) ../gnu/test/Pass.java
-
-./gnu/test/Pass.class: ./gnu/test/Result.class
 
 
 # Rules for java.io.InvalidClassException
@@ -2066,14 +2028,6 @@
 ./gnu/java/lang/ClassLoaderHelper.class: ./java/util/StringTokenizer.class
 
 
-# Rules for gnu.test.Unsupported
-#
-./gnu/test/Unsupported.class: ../gnu/test/Unsupported.java
-	$(JAVAC) ../gnu/test/Unsupported.java
-
-./gnu/test/Unsupported.class: ./gnu/test/Result.class
-
-
 # Rules for java.lang.InternalError
 #
 ./java/lang/InternalError.class: ../java/lang/InternalError.java
@@ -2334,36 +2288,12 @@
 ./gnu/java/awt/peer/gtk/GtkMainThread.class: ./gnu/java/awt/peer/gtk/GtkGenericPeer.class
 
 
-# Rules for gnu.test.Test
-#
-./gnu/test/Test.class: ../gnu/test/Test.java
-	$(JAVAC) ../gnu/test/Test.java
-
-./gnu/test/Test.class: ./gnu/test/Result.class
-
-
-# Rules for gnu.test.XFail
-#
-./gnu/test/XFail.class: ../gnu/test/XFail.java
-	$(JAVAC) ../gnu/test/XFail.java
-
-./gnu/test/XFail.class: ./gnu/test/Result.class
-
-
 # Rules for java.lang.ArrayIndexOutOfBoundsException
 #
 ./java/lang/ArrayIndexOutOfBoundsException.class: ../java/lang/ArrayIndexOutOfBoundsException.java
 	$(JAVAC) ../java/lang/ArrayIndexOutOfBoundsException.java
 
 ./java/lang/ArrayIndexOutOfBoundsException.class: ./java/lang/Exception.class ./java/lang/Throwable.class ./java/io/ObjectInputStream.class ./java/io/ValidatorAndPriority.class ./java/util/Arrays.class ./java/util/AbstractList.class ./java/util/AbstractCollection.class ./java/lang/UnsupportedOperationException.class ./java/lang/RuntimeException.class ./java/lang/String.class ./java/util/Locale.class ./java/io/IOException.class ./java/io/PrintStream.class ./java/io/FilterOutputStream.class ./java/io/OutputStream.class ./java/io/ObjectOutputStream.class ./gnu/java/lang/reflect/TypeSignature.class ./java/lang/reflect/Constructor.class ./java/lang/reflect/InvocationTargetException.class ./java/io/PrintWriter.class ./java/io/Writer.class ./gnu/vm/stack/StackTrace.class ./gnu/vm/stack/StackFrame.class ./java/lang/reflect/Method.class ./java/lang/Object.class ./java/lang/System.class ./java/lang/SecurityManager.class ./java/lang/SecurityContext.class ./java/lang/Class.class ./java/lang/ClassNotFoundException.class ./java/util/Vector.class ./java/util/Hashtable.class ./java/io/InputStream.class ./java/io/ObjectInput.class ./java/io/DataInput.class ./java/io/EOFException.class ./java/io/StreamCorruptedException.class ./java/io/ObjectStreamException.class ./java/io/DataInputStream.class ./java/io/FilterInputStream.class ./java/io/BlockDataException.class ./java/io/ObjectStreamClass.class ./java/io/InterfaceComparator.class ./java/io/MemberComparator.class ./java/io/ObjectStreamField.class ./java/io/NotSerializableException.class ./java/io/Externalizable.class ./java/io/WriteAbortedException.class ./java/io/NotActiveException.class ./java/io/ObjectInputValidation.class ./java/io/InvalidObjectException.class ./java/io/OptionalDataException.class ./gnu/java/io/EncodingManager.class ./gnu/java/io/decode/Decoder.class ./java/io/CharConversionException.class ./java/lang/NullPointerException.class ./java/lang/StringBuffer.class ./java/lang/NegativeArraySizeException.class ./java/lang/IndexOutOfBoundsException.class ./java/lang/StringIndexOutOfBoundsException.class ./java/lang/Error.class ./java/io/UnsupportedEncodingException.class ./java/lang/Math.class ./java/lang/Integer.class ./java/lang/VMClassLoader.class ./java/lang/ClassLoader.class ./java/lang/SecurityException.class ./java/lang/Long.class ./java/lang/Float.class ./java/lang/Double.class ./java/util/Properties.class ./java/util/ResourceBundle.class ./java/io/ObjectOutput.class ./java/io/DataOutput.class ./java/io/DataOutputStream.class ./java/io/OutputStreamWriter.class ./gnu/java/io/encode/Encoder.class ./java/lang/CloneNotSupportedException.class ./java/lang/VMObject.class ./java/lang/IllegalMonitorStateException.class ./java/lang/InterruptedException.class ./java/lang/VMSystem.class ./java/io/FileInputStream.class ./java/io/FileNotFoundException.class ./java/io/FileDescriptor.class ./java/io/SyncFailedException.class ./java/io/FileOutputStream.class ./java/lang/Runtime.class ./java/lang/VMSecurityManager.class ./java/lang/Thread.class ./java/lang/ThreadGroup.class ./java/lang/ThreadDeath.class ./java/net/InetAddress.class ./java/lang/InstantiationException.class ./java/lang/IllegalAccessException.class ./java/lang/IllegalArgumentException.class ./java/lang/UnknownError.class ./java/lang/VirtualMachineError.class ./java/lang/NoSuchMethodException.class ./java/net/URL.class ./gnu/java/lang/ClassHelper.class ./java/lang/NoSuchFieldException.class ./java/util/Collections.class ./java/util/AbstractSet.class ./java/util/Bucket.class ./java/util/BasicMapEntry.class ./java/io/UTFDataFormatException.class ./java/io/PushbackInputStream.class ./gnu/java/io/NullOutputStream.class ./java/lang/Comparable.class ./java/io/Reader.class ./java/lang/NumberFormatException.class ./java/lang/ClassFormatError.class ./java/lang/LinkageError.class ./java/net/MalformedURLException.class ./java/io/BufferedReader.class ./java/io/InputStreamReader.class ./java/util/Date.class ./java/util/GregorianCalendar.class ./java/util/Calendar.class ./java/util/PropertyResourceBundle.class ./java/io/ByteArrayOutputStream.class ./java/io/File.class ./java/lang/UnsatisfiedLinkError.class ./java/lang/Process.class ./java/lang/IllegalThreadStateException.class ./java/net/UnknownHostException.class ./java/net/URLStreamHandlerFactory.class ./java/net/URLStreamHandler.class ./java/net/URLConnection.class ./java/util/AbstractSequentialList.class ./java/util/TimeZone.class ./java/util/SimpleTimeZone.class ./java/io/FilenameFilter.class ./java/io/FileFilter.class ./java/net/MimeTypeMapper.class ./java/net/ContentHandlerFactory.class ./java/net/ContentHandler.class ./java/net/UnknownServiceException.class 
-
-
-# Rules for gnu.test.Unresolved
-#
-./gnu/test/Unresolved.class: ../gnu/test/Unresolved.java
-	$(JAVAC) ../gnu/test/Unresolved.java
-
-./gnu/test/Unresolved.class: ./gnu/test/Result.class
 
 
 # Rules for java.io.FilePermission
@@ -2492,8 +2422,6 @@ CLASSES =  \
 	./java/lang/Exception.class ./java/lang/Throwable.class ./java/io/ObjectInputStream.class ./java/io/ValidatorAndPriority.class ./java/util/Arrays.class ./java/util/AbstractList.class ./java/util/AbstractCollection.class ./java/lang/UnsupportedOperationException.class ./java/lang/RuntimeException.class ./java/lang/String.class ./java/util/Locale.class ./java/io/IOException.class ./java/io/PrintStream.class ./java/io/FilterOutputStream.class ./java/io/OutputStream.class ./java/io/ObjectOutputStream.class ./gnu/java/lang/reflect/TypeSignature.class ./java/lang/reflect/Constructor.class ./java/lang/reflect/InvocationTargetException.class ./java/io/PrintWriter.class ./java/io/Writer.class ./gnu/vm/stack/StackTrace.class ./gnu/vm/stack/StackFrame.class ./java/lang/reflect/Method.class ./java/lang/Object.class ./java/lang/System.class ./java/lang/SecurityManager.class ./java/lang/SecurityContext.class ./java/lang/Class.class ./java/lang/ClassNotFoundException.class ./java/util/Vector.class ./java/util/Hashtable.class ./java/io/InputStream.class ./java/io/ObjectInput.class ./java/io/DataInput.class ./java/io/EOFException.class ./java/io/StreamCorruptedException.class ./java/io/ObjectStreamException.class ./java/io/DataInputStream.class ./java/io/FilterInputStream.class ./java/io/BlockDataException.class ./java/io/ObjectStreamClass.class ./java/io/InterfaceComparator.class ./java/io/MemberComparator.class ./java/io/ObjectStreamField.class ./java/io/NotSerializableException.class ./java/io/Externalizable.class ./java/io/WriteAbortedException.class ./java/io/NotActiveException.class ./java/io/ObjectInputValidation.class ./java/io/InvalidObjectException.class ./java/io/OptionalDataException.class ./gnu/java/io/EncodingManager.class ./gnu/java/io/decode/Decoder.class ./java/io/CharConversionException.class ./java/lang/NullPointerException.class ./java/lang/StringBuffer.class ./java/lang/NegativeArraySizeException.class ./java/lang/IndexOutOfBoundsException.class ./java/lang/StringIndexOutOfBoundsException.class ./java/lang/Error.class ./java/io/UnsupportedEncodingException.class ./java/lang/Math.class ./java/lang/Integer.class ./java/lang/VMClassLoader.class ./java/lang/ClassLoader.class ./java/lang/SecurityException.class ./java/lang/Long.class ./java/lang/Float.class ./java/lang/Double.class ./java/util/Properties.class ./java/util/ResourceBundle.class ./java/io/ObjectOutput.class ./java/io/DataOutput.class ./java/io/DataOutputStream.class ./java/io/OutputStreamWriter.class ./gnu/java/io/encode/Encoder.class ./java/lang/CloneNotSupportedException.class ./java/lang/VMObject.class ./java/lang/IllegalMonitorStateException.class ./java/lang/InterruptedException.class ./java/lang/VMSystem.class ./java/io/FileInputStream.class ./java/io/FileNotFoundException.class ./java/io/FileDescriptor.class ./java/io/SyncFailedException.class ./java/io/FileOutputStream.class ./java/lang/Runtime.class ./java/lang/VMSecurityManager.class ./java/lang/Thread.class ./java/lang/ThreadGroup.class ./java/lang/ThreadDeath.class ./java/net/InetAddress.class ./java/lang/InstantiationException.class ./java/lang/IllegalAccessException.class ./java/lang/IllegalArgumentException.class ./java/lang/UnknownError.class ./java/lang/VirtualMachineError.class ./java/lang/NoSuchMethodException.class ./java/net/URL.class ./gnu/java/lang/ClassHelper.class ./java/lang/NoSuchFieldException.class ./java/util/Collections.class ./java/util/AbstractSet.class ./java/util/Bucket.class ./java/util/BasicMapEntry.class ./java/io/UTFDataFormatException.class ./java/io/PushbackInputStream.class ./gnu/java/io/NullOutputStream.class ./java/lang/Comparable.class ./java/io/Reader.class ./java/lang/NumberFormatException.class ./java/lang/ClassFormatError.class ./java/lang/LinkageError.class ./java/net/MalformedURLException.class ./java/io/BufferedReader.class ./java/io/InputStreamReader.class ./java/util/Date.class ./java/util/GregorianCalendar.class ./java/util/Calendar.class ./java/util/PropertyResourceBundle.class ./java/io/ByteArrayOutputStream.class ./java/io/File.class ./java/lang/UnsatisfiedLinkError.class ./java/lang/Process.class ./java/lang/IllegalThreadStateException.class ./java/net/UnknownHostException.class ./java/net/URLStreamHandlerFactory.class ./java/net/URLStreamHandler.class ./java/net/URLConnection.class ./java/util/AbstractSequentialList.class ./java/util/TimeZone.class ./java/util/SimpleTimeZone.class ./java/io/FilenameFilter.class ./java/io/FileFilter.class ./java/net/MimeTypeMapper.class ./java/net/ContentHandlerFactory.class ./java/net/ContentHandler.class ./java/net/UnknownServiceException.class  \
 	./java/security/acl/NotOwnerException.class \
 	./java/security/UnrecoverableKeyException.class \
-	./gnu/test/Result.class \
-	./gnu/test/XPass.class \
 	./gnu/java/awt/peer/gtk/GtkGenericPeer.class \
 	./gnu/java/awt/peer/gtk/GtkComponentPeer.class \
 	./gnu/java/awt/peer/gtk/GtkContainerPeer.class \
@@ -2563,7 +2491,6 @@ CLASSES =  \
 	./gnu/java/io/decode/Decoder8859_1.class \
 	./java/beans/Visibility.class \
 	./java/security/Provider.class \
-	./gnu/test/Fail.class \
 	./java/io/FilterReader.class \
 	./java/io/PushbackReader.class \
 	./java/io/LineNumberReader.class \
@@ -2573,8 +2500,6 @@ CLASSES =  \
 	./gnu/java/beans/ExplicitBeanInfo.class \
 	./gnu/java/beans/BeanInfoEmbryo.class \
 	./java/security/interfaces/DSAKeyPairGenerator.class \
-	./gnu/test/Untested.class \
-	./gnu/test/Pass.class \
 	./java/io/InvalidClassException.class \
 	./java/security/acl/Permission.class \
 	./gnu/java/lang/MainThread.class \
@@ -2664,7 +2589,6 @@ CLASSES =  \
 	./java/security/Key.class \
 	./java/security/NoSuchProviderException.class \
 	./gnu/java/lang/ClassLoaderHelper.class \
-	./gnu/test/Unsupported.class \
 	./java/lang/InternalError.class \
 	./java/io/ByteArrayInputStream.class \
 	./gnu/java/net/protocol/file/Handler.class \
@@ -2693,10 +2617,7 @@ CLASSES =  \
 	./gnu/java/net/content/text/plain.class \
 	./java/lang/OutOfMemoryError.class \
 	./gnu/java/awt/peer/gtk/GtkMainThread.class \
-	./gnu/test/Test.class \
-	./gnu/test/XFail.class \
 	./java/lang/ArrayIndexOutOfBoundsException.class \
-	./gnu/test/Unresolved.class \
 	./java/io/FilePermission.class \
 	./java/security/DigestException.class \
 	./java/lang/ArrayStoreException.class \

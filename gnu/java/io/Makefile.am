@@ -1,5 +1,11 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-gnujavaiodir = $(datadir)/gnu/java/io
+SUBDIRS = decode encode
 
-gnujavaio_JAVA = NullOutputStream.java ObjectIdentityWrapper.java
+EXTRA_DIST = \
+ChangeLog \
+ClassLoaderObjectInputStream.java \
+EncodingManager.java \
+NullOutputStream.java \
+ObjectIdentityWrapper.java
+

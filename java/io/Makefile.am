@@ -1,6 +1,82 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-javaiodir = $(datadir)/java/io
-
-javaio_JAVA = BlockDataException.java BufferedInputStream.java BufferedOutputStream.java BufferedReader.java BufferedWriter.java ByteArrayInputStream.java ByteArrayOutputStream.java CharArrayReader.java CharArrayWriter.java CharConversionException.java DataInput.java DataInputStream.java DataOutput.java DataOutputStream.java EOFException.java Externalizable.java File.java FileDescriptor.java FileInputStream.java FileNotFoundException.java FileOutputStream.java FilePermission.java FileReader.java FileWriter.java FilenameFilter.java FilterInputStream.java FilterOutputStream.java FilterReader.java FilterWriter.java IOException.java InputStream.java InputStreamReader.java InterruptedIOException.java InvalidClassException.java InvalidObjectException.java LineNumberInputStream.java LineNumberReader.java NotActiveException.java NotSerializableException.java ObjectInput.java ObjectInputStream.java ObjectInputValidation.java ObjectOutput.java ObjectOutputStream.java ObjectStreamClass.java ObjectStreamConstants.java ObjectStreamException.java ObjectStreamField.java OptionalDataException.java OutputStream.java OutputStreamWriter.java PipedInputStream.java PipedOutputStream.java PipedReader.java PipedWriter.java PrintStream.java PrintWriter.java PushbackInputStream.java PushbackReader.java RandomAccessFile.java Reader.java Replaceable.java Resolvable.java SequenceInputStream.java Serializable.java SerializablePermission.java StreamCorruptedException.java StreamTokenizer.java StringBufferInputStream.java StringReader.java StringWriter.java SyncFailedException.java UTFDataFormatException.java UnsupportedEncodingException.java WriteAbortedException.java Writer.java
-
+EXTRA_DIST = \
+ChangeLog \
+BlockDataException.java \
+BufferedInputStream.java \
+BufferedOutputStream.java \
+BufferedReader.java \
+BufferedWriter.java \
+ByteArrayInputStream.java \
+ByteArrayOutputStream.java \
+CharArrayReader.java \
+CharArrayWriter.java \
+CharConversionException.java \
+DataInput.java \
+DataInputStream.java \
+DataOutput.java \
+DataOutputStream.java \
+EOFException.java \
+Externalizable.java \
+File.java \
+FileDescriptor.java \
+FileFilter.java \
+FileInputStream.java \
+FileNotFoundException.java \
+FileOutputStream.java \
+FilePermission.java \
+FileReader.java \
+FileWriter.java \
+FilenameFilter.java \
+FilterInputStream.java \
+FilterOutputStream.java \
+FilterReader.java \
+FilterWriter.java \
+IOException.java \
+InputStream.java \
+InputStreamReader.java \
+InterruptedIOException.java \
+InvalidClassException.java \
+InvalidObjectException.java \
+LineNumberInputStream.java \
+LineNumberReader.java \
+NotActiveException.java \
+NotSerializableException.java \
+ObjectInput.java \
+ObjectInputStream.java \
+ObjectInputValidation.java \
+ObjectOutput.java \
+ObjectOutputStream.java \
+ObjectStreamClass.java \
+ObjectStreamConstants.java \
+ObjectStreamException.java \
+ObjectStreamField.java \
+OptionalDataException.java \
+OutputStream.java \
+OutputStreamWriter.java \
+PipedInputStream.java \
+PipedOutputStream.java \
+PipedReader.java \
+PipedWriter.java \
+PrintStream.java \
+PrintWriter.java \
+PushbackInputStream.java \
+PushbackReader.java \
+RandomAccessFile.java \
+Reader.java \
+Replaceable.java \
+Resolvable.java \
+SequenceInputStream.java \
+Serializable.java \
+SerializablePermission.java \
+StreamCorruptedException.java \
+StreamTokenizer.java \
+StringBufferInputStream.java \
+StringReader.java \
+StringWriter.java \
+SyncFailedException.java \
+UTFDataFormatException.java \
+UnsupportedEncodingException.java \
+WriteAbortedException.java \
+Writer.java
+ 
