@@ -95,7 +95,7 @@ Reader(Object lock)
   * 11 chars of data are read from the stream before the <code>reset()</code>
   * method is called, then the mark is invalid and the stream object
   * instance is not required to remember the mark.
-  * 
+  *  <p>
   * This method does nothing in this class, but subclasses may override it
   * to provide mark/reset functionality.
   *
@@ -116,7 +116,7 @@ mark(int readlimit) throws IOException
   * methods are supported in this class.  Those methods can be used to
   * remember a specific point in the stream and reset the stream to that
   * point.
-  *
+  * <p>
   * This method always returns <code>false</code> in this class, but subclasses
   * can override this method to return <code>true</code> if they support 
   * mark/reset functionality.
@@ -136,7 +136,7 @@ markSupported()
   * This method resets a stream to the point where the <code>mark()</code> method
   * was called.  Any chars that were read after the mark point was set will
   * be re-read during subsequent reads.
-  *
+  * <p>
   * This method always throws an IOException in this class, but subclasses
   * can override this method if they provide mark/reset functionality.
   *
@@ -154,7 +154,7 @@ reset() throws IOException
   * This method determines whether or not this stream is ready to be
   * read.  If it returns <code>false</code> the stream may block if a
   * read is attempted, but it is not guaranteed to do so.
-  *
+  * <p>
   * This method always returns <code>false</code> in this class
   *
   * @return <code>true</code> if the stream is ready to be read, <code>false</code> otherwise.
@@ -173,7 +173,7 @@ ready() throws IOException
   * This method skips the specified number of chars in the stream.  It
   * returns the actual number of chars skipped, which may be less than the
   * requested amount.
-  *
+  * <p>
   * This method reads and discards chars into a 256 char array until the
   * specified number of chars were skipped or until either the end of stream
   * is reached or a read attempt returns a short count.  Subclasses can
@@ -231,7 +231,7 @@ skip(long num_chars) throws IOException
   * This method reads an char from the input stream and returns it
   * as an int in the range of 0-65535.  This method also will return -1 if
   * the end of the stream has been reached.
-  *
+  * <p>
   * This method will block until the char can be read.
   *
   * @return The char read or -1 if end of stream
@@ -257,9 +257,9 @@ read() throws IOException
   * supplied buffer.  This method attempts to completely fill the buffer,
   * but can return before doing so.  The actual number of chars read is
   * returned as an int.  A -1 is returned to indicate the end of the stream.
-  *
+  * <p>
   * This method will block until some data can be read.
-  *
+  * <p>
   * This method operates by calling an overloaded read method like so:
   * <code>read(buf, 0, buf.length)</code>
   *
@@ -284,9 +284,9 @@ read(char[] buf) throws IOException
   * return before reading the number of chars requested.  The actual number
   * of chars read is returned as an int.  A -1 is returned to indicate the
   * end of the stream.
-  * 
+  *  <p>
   * This method will block until some data can be read.
-  *
+  * <p>
   * This method operates by calling the single char <code>read()</code> method
   * in a loop until the desired number of chars are read.  The read loop
   * stops short if the end of the stream is encountered or if an IOException

@@ -24,16 +24,16 @@ package java.io;
 import java.util.Enumeration;
 
 /**
-  * This class merges a sequence of multiple @code{InputStream}'s in order
+  * This class merges a sequence of multiple <code>InputStream</code>'s in order
   * to form a single logical stream that can be read by applications that
   * expect only one stream.
-  *
+  * <p>
   * The streams passed to the constructor method are read in order until
   * they return -1 to indicate they are at end of stream.  When a stream
   * reports end of stream, it is closed, then the next stream is read.
   * When the last stream is closed, the next attempt to read from this
   * stream will return a -1 to indicate it is at end of stream.
-  *
+  * <p>
   * If this stream is closed prior to all subordinate streams being read
   * to completion, all subordinate streams are closed.
   *
@@ -51,32 +51,32 @@ public class SequenceInputStream extends InputStream
  */
 
 /**
-  * This variable holds the @code{Enumeration} containing the list of
-  * streams to be read, or @code{null} if the subordinate streams are not
-  * being obtained from an @code{Enumeration}.
+  * This variable holds the <code>Enumeration</code> containing the list of
+  * streams to be read, or <code>null</code> if the subordinate streams are not
+  * being obtained from an <code>Enumeration</code>
   */
 private Enumeration stream_list;
 
 /**
-  * This variable holds the first @code{InputStream} to read, if the list
-  * of streams is not being obtained from an @code{Enumeration}
+  * This variable holds the first <code>InputStream</code> to read, if the list
+  * of streams is not being obtained from an <code>Enumeration</code>
   */
 private InputStream first_stream;
 
 /**
-  * This variable holds the second @code{InputStream} to read, if the list
-  * of streams is not being obtained from an @code{Enumeration}
+  * This variable holds the second <code>InputStream</code> to read, if the list
+  * of streams is not being obtained from an <code>Enumeration</code>
   */
 private InputStream second_stream;
 
 /**
-  * This is the current @code{InputStream} that is being read
+  * This is the current <code>InputStream</code> that is being read
   */
 private InputStream current_stream;
 
 /**
-  * This value is @code{true} if this stream has been closed.  It is
-  * @code{false} otherwise.
+  * This value is <code>true</code> if this stream has been closed.  It is
+  * <code>false</code> otherwise.
   */
 private boolean closed = false;
 
@@ -87,11 +87,11 @@ private boolean closed = false;
  */
 
 /**
-  * This method creates a new @code{SequenceInputStream} that obtains its
-  * list of subordinate @code{InputStream}'s from the specified
-  * @code{Enumeration}
+  * This method creates a new <code>SequenceInputStream</code> that obtains its
+  * list of subordinate <code>InputStream</code>s from the specified
+  * <code>Enumeration</code>
   *
-  * @param stream_list An @code{Enumeration} that will return a list of @code{InputStream}'s to read in sequence
+  * @param stream_list An <code>Enumeration</code> that will return a list of <code>InputStream</code>s to read in sequence
   */
 public
 SequenceInputStream(Enumeration stream_list)
@@ -104,11 +104,11 @@ SequenceInputStream(Enumeration stream_list)
 /*************************************************************************/
 
 /**
-  * This method creates a new @code{SequenceInputStream} that will read the
-  * two specified subordinate @code{InputStream}'s in sequence.
+  * This method creates a new <code>SequenceInputStream</code> that will read the
+  * two specified subordinate <code>InputStream</code>s in sequence.
   *
-  * @param first_stream The first @code{InputStream} to read
-  * @param second_stream The second @code{InputStream to read
+  * @param first_stream The first <code>InputStream</code> to read
+  * @param second_stream The second <code>InputStream</code> to read
   */
 public 
 SequenceInputStream(InputStream first_stream, InputStream second_stream)
@@ -148,7 +148,7 @@ available() throws IOException
 
 /**
   * Closes this stream.  This will cause any remaining unclosed subordinate
-  * @code{InputStream}'s to be closed as well.  Subsequent attempts to 
+  * <code>InputStream</code>'s to be closed as well.  Subsequent attempts to 
   * read from this stream may cause an exception.
   *
   * @exception IOException If an error occurs
@@ -185,7 +185,7 @@ close() throws IOException
   * as an int in the range of 0-255.  This method also will return -1 if
   * the end of the stream has been reached.  This will only happen when
   * all of the subordinate streams have been read.
-  *
+  * <p>
   * This method will block until the byte can be read.
   *
   * @return The byte read, or -1 if end of stream
@@ -219,13 +219,13 @@ read() throws IOException
 
 /**
   * This method reads bytes from a stream and stores them into a caller
-  * supplied buffer.  It starts storing the data at index @code{offset} into
-  * the buffer and attempts to read @code{len} bytes.  This method can
+  * supplied buffer.  It starts storing the data at index <code>offset</code> into
+  * the buffer and attempts to read <code>len</code> bytes.  This method can
   * return before reading the number of bytes requested.  The actual number
   * of bytes read is returned as an int.  A -1 is returend to indicate the
   * end of the stream.  This will only happen when all of the subordinate
   * streams have been read.
-  *
+  * <p>
   * This method will block until at least one byte can be read.
   *
   * @param buf The array into which bytes read should be stored
@@ -276,7 +276,7 @@ read(byte[] buf, int offset, int len) throws IOException
 /*************************************************************************/
 
 /**
-  * This private method is used to get the next @code{InputStream} to read
+  * This private method is used to get the next <code>InputStream</code> to read
   * from
   */
 private void

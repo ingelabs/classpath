@@ -30,9 +30,9 @@ import java.security.BasicPermission;
   * <p>
   * There are currently two allowable permission names for this class:
   * <ul>
-  * <li><xmp>enableSubclassImplementation</xmp> - Allows a subclass to
+  * <li><code>enableSubclassImplementation</code> - Allows a subclass to
   * override the default serialization behavior of objects.
-  * <li><xmp>enableSubstitution</xmp> - Allows substitution of one object
+  * <li><code>enableSubstitution</code> - Allows substitution of one object
   * for another during serialization or deserialization.
   * </ul>
   *
