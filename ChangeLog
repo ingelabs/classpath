@@ -1,3 +1,8 @@
+2002-03-17  C. Brian Jones <cbj@gnu.org>
+
+	* java/net/URLStreamHandler.java (parseURL): incorporate patch from
+	Intel to accomodate additional formats
+
 2002-03-12  C. Brian Jones <cbj@gnu.org>
 
 	* lib/gen_nio.sh.in: new file is renamed gen_nio.sh plus fixes 

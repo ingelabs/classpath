@@ -170,57 +170,101 @@ parseURL(URL url, String url_string, int start, int end)
 
   // Skip remains of protocol
   url_string = url_string.substring(start);
-  if (!url_string.startsWith("//"))
-    return;
-  url_string = url_string.substring(2);
+  boolean nohost = false; //whether no host part presents
 
+  /* root path prefix of a file: could be "/", and for some windows file: "drive:/" */
+  String prefix = "/";    
+
+  if (! url.getProtocol().equals ("file"))
+    {
+      if (! url_string.startsWith ("//"))
+	return;
+      url_string = url_string.substring (2);
+    } 
+  else 
+    { 
+      // The following special work is for file protocol...
+    
+      //normalize the file separator
+      url_string = url_string.replace 
+	(System.getProperty ("file.separator").charAt (0), '/');
+      
+      //deal with the case: file:///d|/dir/dir/file and file:///d%7C/dir/dir/file
+      url_string = url_string.replace ('|', ':');
+      int i;
+      if((i = url_string.toUpperCase().indexOf ("%7C")) >= 0)
+	url_string = url_string.substring (0, i) 
+	  + ":" + url_string.substring (i+3);
+      
+      if (url_string.startsWith("//"))
+	url_string = url_string.substring (2);  //filter the leading "//"
+      
+      // if another "/" encounters, it's end of a null host part or beginning of root path 
+      if (url_string.startsWith("/"))
+	{ 
+	  nohost = true;
+	  url_string = url_string.substring (1);
+	}
+      
+      // Check whether it's a windows platform file: drive:/dir/dir/file
+      if(url_string.charAt (1) == ':' && url_string.charAt (2) == '/')
+	{
+	  nohost = true;
+	  prefix = url_string.substring (0, 3); //assign "drive:/" to prefix
+	  url_string = url_string.substring (3);
+	}
+    } // url.getProtocol().equals("file")
+  
   // Declare some variables
   String host = null;
   int port = -1;
   String file = null;
   String anchor = null;
 
-  // Process host and port
-  int slash_index = url_string.indexOf("/");
-  int colon_index = url_string.indexOf(":");
-
-  if (slash_index > (url_string.length() - end))
-    return;
-  else if (slash_index == -1)
-    slash_index = url_string.length() - end;
-
-  if ((colon_index == -1) || (colon_index > slash_index))
+  if (! nohost )
     {
-      host = url_string.substring(0, slash_index);
-    }
-  else
-    {
-      host = url_string.substring(0, colon_index);
+      // Process host and port
+      int slash_index = url_string.indexOf("/");
+      int colon_index = url_string.indexOf(":");
       
-      String port_str = url_string.substring(colon_index + 1, slash_index);
-      try
-        {
-          port = Integer.parseInt(port_str);
-        }
-      catch (NumberFormatException e)
-        {
-          return;
-        }
+      if (slash_index > (url_string.length() - end))
+	return;
+      else if (slash_index == -1)
+	slash_index = url_string.length() - end;
+      
+      if ((colon_index == -1) || (colon_index > slash_index))
+	{
+	  host = url_string.substring(0, slash_index);
+	}
+      else
+	{
+	  host = url_string.substring(0, colon_index);
+	  
+	  String port_str = url_string.substring(colon_index + 1, slash_index);
+	  try
+	    {
+	      port = Integer.parseInt(port_str);
+	    }
+	  catch (NumberFormatException e)
+	    {
+	      return;
+	    }
+	}
+      if (slash_index < (url_string.length() - 1))
+	url_string = url_string.substring(slash_index + 1);
+      else
+	url_string = "";
     }
-  if (slash_index < (url_string.length() - 1))
-    url_string = url_string.substring(slash_index + 1);
-  else
-    url_string = "";
 
   // Process file and anchor 
   if (end == 0)
     {
-      file = "/" + url_string;
+      file = prefix + url_string;
       anchor = null;
     }
   else
     {
-      file = "/" + url_string.substring(0, url_string.length() - end);
+      file = prefix + url_string.substring(0, url_string.length() - end);
 
       // Only set anchor if end char is a '#'.  Otherwise assume we're
       // just supposed to stop scanning for some reason
