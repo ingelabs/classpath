@@ -1,3 +1,22 @@
+2001-11-06  Joseph S. Myers  <jsm28@cam.ac.uk>
+
+	* java/io/ByteArrayOutputStream.java,
+	java/io/CharConversionException.java,
+	java/io/PipedInputStream.java, java/io/PipedReader.java,
+	java/io/PrintWriter.java, java/io/WriteAbortedException.java,
+	java/net/BindException.java, java/net/ConnectException.java,
+	java/net/ProtocolException.java, java/net/SocketException.java,
+	java/net/UnknownServiceException.java,
+	java/security/SecureRandom.java, java/security/SignedObject.java,
+	java/security/cert/X509Certificate.java,
+	java/security/interfaces/DSAKey.java,
+	java/sql/DatabaseMetaData.java,
+	java/text/DecimalFormatSymbols.java, java/util/Calendar.java,
+	java/util/GregorianCalendar.java, java/util/Properties.java,
+	java/util/Timer.java, java/util/jar/Attributes.java,
+	java/util/jar/JarEntry.java, java/util/jar/JarInputStream.java,
+	java/util/jar/JarOutputStream.java: Fix spelling errors.
+
 2001-11-05  C. Brian Jones <cbj@gnu.org>
 	* configure.in: changed AC_CANONICAL_SYSTEM to AC_CANONICAL_TARGET.
 	Modify usage of target_vendor to target_cpu to link jni_md.h.
