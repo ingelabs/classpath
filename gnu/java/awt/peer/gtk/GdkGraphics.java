@@ -64,7 +64,7 @@ public class GdkGraphics extends Graphics
 
   static final int GDK_COPY = 0, GDK_XOR = 2;
 
-  native int[] initState (GtkComponentPeer component);
+  native void initState (GtkComponentPeer component);
   native void initState (int width, int height);
   native void copyState (GdkGraphics g);
 
@@ -84,15 +84,15 @@ public class GdkGraphics extends Graphics
     initState (width, height);
     color = Color.black;
     clip = new Rectangle (0, 0, width, height);
-    font = new Font ("Dialog", Font.PLAIN, 10);
+    font = new Font ("Dialog", Font.PLAIN, 12);
   }
 
   GdkGraphics (GtkComponentPeer component)
   {
     this.component = component;
-    int rgb[] = initState (component);
-    color = new Color (rgb[0], rgb[1], rgb[2]);
-    font = component.awtComponent.getFont();
+    initState (component);
+    color = component.awtComponent.getForeground ();
+    font = component.awtComponent.getFont ();
     Dimension d = component.awtComponent.getSize ();
     clip = new Rectangle (0, 0, d.width, d.height);
   }

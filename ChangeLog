@@ -1,3 +1,28 @@
+2004-07-30  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c
+	(initState(GtkComponentPeer)): Don't return array of colour
+	values.
+	(GdkGraphics(int,int)): Set default font to size 12.
+	(GdkGraphics(GtkComponentPeer)): Set graphics colour to
+	component's foreground colour.
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
+	(initState(GtkComponentPeer)): Don't return array of colour
+	values.
+	(GdkGraphics2D(GtkComponentPeer)): Set foreground and background
+	colours to component's colours.
+	(current_colors_of_widget): Remove function.
+	* gnu/java/awt/peer/gtk/GtkOffScreenImage.java (getGraphics):
+	Return a new graphics object.
+	* java/awt/Font.java (toString): Fix format.
+	* java/awt/Graphics.java (toString): Likewise.
+
+2004-07-30  Mark Wielaard  <mark@klomp.org>
+
+	* include/gnu_java_awt_peer_gtk_GdkGraphics.h: Regenerated
+
 2004-07-30  Bryce McKinlay  <mckinlay@redhat.com>
 
 	* gnu/java/awt/ClasspathToolkit.java (createImageProducer): New.

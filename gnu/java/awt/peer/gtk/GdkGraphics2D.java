@@ -87,7 +87,7 @@ public class GdkGraphics2D extends Graphics2D
 
   private Stack stateStack;
   
-  native private int[] initState (GtkComponentPeer component);
+  native private void initState (GtkComponentPeer component);
   native private void initState (int width, int height);
   native private void copyState (GdkGraphics2D g);
   native public void dispose ();
@@ -168,10 +168,10 @@ public class GdkGraphics2D extends Graphics2D
   GdkGraphics2D (GtkComponentPeer component)
   {
     this.component = component;
-    int rgb[] = initState (component);
+    initState (component);
 
-    setColor (new Color (rgb[0], rgb[1], rgb[2]));
-    setBackground (new Color (rgb[3], rgb[4], rgb[5]));
+    setColor (component.awtComponent.getForeground ());
+    setBackground (component.awtComponent.getBackground ());
     setPaint (getColor());
     setFont (new Font("SansSerif", Font.PLAIN, 12));
     setTransform (new AffineTransform ());
