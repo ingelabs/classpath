@@ -566,7 +566,7 @@ isMulticastAddress()
     return(false);
 
   // Mask against high order bits of 1110
-  if ((my_ip[0] & 224) == 224)
+  if ((my_ip[0] & 0xF0) == 224)
     return(true);
 
   return(false);
