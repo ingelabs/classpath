@@ -1,3 +1,8 @@
+2003-09-19  Mark Wielaard  <mark@klomp.org>
+
+	* doc/www.gnu.org/home.wml: The latest release can again be found at
+	ftp://alpha.gnu.org/gnu/classpath/.
+
 2003-09-19  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/DatagramSocket.java

@@ -68,8 +68,8 @@ source code is available via GNU's anonymous
 <createlink url="http://savannah.gnu.org/cvs/?group_id=85" name="CVS server">
 , and snapshots of the Classpath tree have been released and are
 available from <createlink url="ftp://alpha.gnu.org/gnu/classpath/"
-name="ftp://alpha.gnu.org/gnu/classpath/"> (temporarily down, try the
-<createlink url="http://www.klomp.org/mark/classpath/" name="backup">).  
+name="ftp://alpha.gnu.org/gnu/classpath/"> (older releases can be found in the
+<createlink url="http://www.klomp.org/mark/classpath/" name="archive">).  
 </p>
 </en>
 
