@@ -33,7 +33,7 @@ AC_DEFUN(CLASSPATH_INTERNAL_CHECK_JAPHAR,
   AC_SUBST(JAPHAR_CFLAGS)
   AC_SUBST(JAPHAR_LIBS)
   AC_SUBST(JVM)
-  AM_CONDITIONAL(JAPHAR, test x = x)
+  conditional_with_japhar=true
   AC_MSG_RESULT(yes)
 
   dnl programs we probably need somewhere
@@ -78,7 +78,8 @@ AC_DEFUN(CLASSPATH_CHECK_JAPHAR,
     if test ${withval} = "yes" || test ${withval} = ""; then
       CLASSPATH_INTERNAL_CHECK_JAPHAR
     fi
-  ])
+  ],
+  [ conditional_with_japhar=false] )
 ])
 
 dnl CLASSPATH_CHECK_KAFFE - checks for which java virtual machine to use
@@ -90,7 +91,8 @@ AC_DEFUN(CLASSPATH_CHECK_KAFFE,
     if test ${withval} = "yes" || test ${withval} = ""; then
       CLASSPATH_INTERNAL_CHECK_KAFFE
     fi
-  ])
+  ],
+  [ conditional_with_kaffe=false] )
 ])
 
 dnl threads packages (mostly stolen from Japhar)

@@ -85,6 +85,9 @@ else
   AC_MSG_RESULT(yes)
 fi
 
+dnl must check our conditionals from vm checks
+AM_CONDITIONAL(JAPHAR, test x$conditional_with_japhar = xtrue)
+
 AC_ARG_WITH(java,
   [  --with-java		  specify path to a java-like program ],
   [
@@ -94,22 +97,42 @@ AC_ARG_WITH(java,
       USER_JABBA=${withval}
       AC_SUBST(USER_JABBA)
       AC_MSG_RESULT(${withval})
-      AM_CONDITIONAL(USER_SPECIFIED_JABBA, test x = x)
+      conditional_with_java=true
     fi
-  ])
+  ],
+  [ conditional_with_java=false])
+AM_CONDITIONAL(USER_SPECIFIED_JABBA, test x$conditional_with_java = xtrue)
+
+AC_ARG_WITH(javah,
+  [  --with-javah		  specify path to a javah-like program ],
+  [
+    if test ${withval} != "" || test ${withval} != "yes" || test ${withval} != "no"; then
+      # set javah to user input value
+      AC_MSG_CHECKING(for javah)
+      USER_JAVAH=${withval}
+      AC_SUBST(USER_JAVAH)
+      AC_MSG_RESULT(${withval})
+      conditional_with_javah=true
+    fi
+  ],
+  [ conditional_with_javah=false ])
+AM_CONDITIONAL(USER_SPECIFIED_JAVAH, test x$conditional_with_javah = xtrue)
 
 AC_ARG_WITH(classlib,
   [  --with-classlib		  specify path to a classes.zip like file ],
   [
     if test ${withval} != "" || test ${withval} != "yes" || test ${withval} != "no"; then
       # set javac to user input value
+      AM_CONDITIONAL(USER_SPECIFIED_CLASSLIB, test x = y)
       AC_MSG_CHECKING(for classlib)
       USER_CLASSLIB=${withval}
       AC_SUBST(USER_CLASSLIB)
       AC_MSG_RESULT(${withval})
-      AM_CONDITIONAL(USER_SPECIFIED_CLASSLIB, test x = x)
+      conditional_with_classlib=true
     fi
-  ])
+  ],
+  [ conditional_with_classlib=false ])
+AM_CONDITIONAL(USER_SPECIFIED_CLASSLIB, test x$conditional_with_classlib = xtrue)
 
 dnl Since most people won't have JavaDeps or Jikes to compute dependencies
 dnl on the Java source files.
@@ -117,13 +140,13 @@ AC_ARG_ENABLE(maintainer-build,
 [  --enable-maintainer-build	java dependency computation [default=no]],
 [case "${enableval}" in 
   yes) 
-    maintainer_debug=true
+    conditional_maintainer_build=true
     ;;
-  no)  maintainer_debug=false ;;
+  no)  conditional_maintainer_build=false ;;
   *) AC_MSG_ERROR(bad value ${enableval} for --enable-maintainer-build) ;;
 esac],
-[maintainer_debug=false])
-AM_CONDITIONAL(MAINTAINER_BUILD, test x$maintainer_debug = xtrue)
+[conditional_maintainer_build=false])
+AM_CONDITIONAL(MAINTAINER_BUILD, test x$conditional_maintainer_build = xtrue)
 
 dnl java dependency creation
 AC_ARG_WITH(jdeps,
@@ -136,12 +159,17 @@ AC_ARG_WITH(jdeps,
   fi
 ],
 [
-  if test x"$maintainer_debug" = xtrue; then
+  if test x"$conditional_maintainer_build" = xtrue; then
     AC_PATH_PROG(JAVADEPS, jdeps, "", $PATH)
   fi
 ])
 
+dnl This is probably useless.
 AC_PATH_PROG(SH, sh)
+
+dnl According to the GNU coding guide, we shouldn't require find
+dnl however it should be okay since it is only used in maintainer 
+dnl build mode.
 AC_PATH_PROG(FIND, find)
 
 AC_OUTPUT(Makefile
