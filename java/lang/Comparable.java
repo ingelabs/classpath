@@ -29,6 +29,8 @@ package java.lang;
  ** "abc" and "ABC" compare as equal even though "abc".equals("ABC")
  ** returns false.
  **
+ ** @author Geoff Berry
+ **
  ** @since JDK1.2
  ** @see java.util.Comparator
  **/

@@ -1,5 +1,5 @@
 /*************************************************************************
-/* Byte.java -- object wrapper for boolean
+/* Byte.java -- object wrapper for byte
 /*
 /* Copyright (c) 1998 by Free Software Foundation, Inc.
 /*

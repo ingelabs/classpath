@@ -27,6 +27,9 @@ package java.lang;
  * on an object which does not implement the Cloneable interface,
  * a CloneNotSupportedException will be thrown.
  *
+ * @since JDK1.0
+ * @author Paul Fisher
+ *
  * @see java.lang.Object#clone
  * @see java.lang.CloneNotSupportedException
  */

@@ -408,15 +408,15 @@ public final class Integer extends Number {
     return (negative) ? -result : result;
   }
 
-  /** Return the value of this <code>Integer</code> as an <code>short</code>.
-   ** @return the value of this <code>Integer</code> as an <code>short</code>.
+  /** Return the value of this <code>Integer</code> as a <code>byte</code>.
+   ** @return the value of this <code>Integer</code> as a <code>byte</code>.
    **/
   public byte byteValue() {
     return (byte) value;
   }
 
-  /** Return the value of this <code>Integer</code> as an <code>short</code>.
-   ** @return the value of this <code>Integer</code> as an <code>short</code>.
+  /** Return the value of this <code>Integer</code> as a <code>short</code>.
+   ** @return the value of this <code>Integer</code> as a <code>short</code>.
    **/
   public short shortValue() {
     return (short) value;
