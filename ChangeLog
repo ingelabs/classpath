@@ -1,5 +1,13 @@
 2004-07-10  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/io/ObjectInputStream.java (readObject): Delegate instantation
+	of Externalizable classes to ObjectStreamClass.
+	* java/io/ObjectStreamClass.java (newInstance): New method to
+	instantiate Externalizable (while ignoring the accessibility of
+	the constructor). (constructor): New field to cache the constructor.
+
+2004-07-10  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/lang/reflect/Proxy.java (getPackage, ClassFactory): Fixed
 	handling of default package. (generate): Removed confused comments
 	and code about making Method and Field accessible.
