@@ -1023,8 +1023,8 @@ public class SecurityManager
              index != -1; index = list.indexOf(packageName, index + 1))
           {
             // Exploit package visibility for speed.
-            if (index + packageName.count == list.count
-                || list.charAt(index + packageName.count) == ',')
+            if (index + packageName.length() == list.length()
+                || list.charAt(index + packageName.length()) == ',')
               {
                 checkPermission(p);
                 return;
@@ -1043,3 +1043,4 @@ class SecurityContext {
 		this.classes = classes;
 	}
 }
+
