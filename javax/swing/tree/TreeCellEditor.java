@@ -40,14 +40,15 @@ package javax.swing.tree;
 
 import java.awt.Component;
 
+import javax.swing.CellEditor;
 import javax.swing.JTree;
 
 /**
  * TreeCellEditor public interface
  * @author Andrew Selkirk
  */
-public interface TreeCellEditor {
-
+public interface TreeCellEditor extends CellEditor
+{
 	/**
 	 * getTreeCellEditorComponent
 	 * @param tree TODO

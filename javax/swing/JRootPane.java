@@ -482,7 +482,7 @@ public class JRootPane extends JComponent
    *
    * @return DOCUMENT ME!
    */
-  protected JComponent createContentPane()
+  protected Container createContentPane()
   {
     JPanel p = new JPanel();
     p.setName(this.getName() + ".contentPane");

@@ -1,5 +1,25 @@
 2004-10-22  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JEditorPane.java
+	(getStream): Throws IOException.
+	(read): Likewise.
+	* javax/swing/JRootPane.java
+	(createContentPane): Fixed return type.
+	* javax/swing/JSpinner.java
+	(commitEdit): Throws ParseException.
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(serialVersionUID): New field.
+	* javax/swing/table/TableColumn.java
+	(resizedPostingDisableCount): Added @deprecated tag.
+	(disableResizedPosting): Likewise.
+	(enableResizedPosting): Likewise.
+	* javax/swing/text/Document.java
+	(TitleProperty): Fixed value.
+	* javax/swing/tree/TreeCellEditor.java
+	(TreeCellEditor): Extends CellEditor.
+
+2004-10-22  Michael Koch  <konqueror@gmx.de>
+
 	* scripts/checkstyle-config.xml: Uncomment checks for modifiers.
 
 2004-10-22  Michael Koch  <konqueror@gmx.de>

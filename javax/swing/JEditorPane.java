@@ -154,16 +154,9 @@ public class JEditorPane extends JTextComponent
   }
 
   protected InputStream getStream(URL page)
+    throws IOException
   {
-    try
-      {
-	return page.openStream();
-      }
-    catch (Exception e)
-      {
-	System.out.println("Hhmmm, failed to open stream: " + e);
-      }
-    return null;
+    return page.openStream();
   }
 
   public String getText()
@@ -210,6 +203,7 @@ public class JEditorPane extends JTextComponent
    * This method initializes from a stream. 
    */
   public void read(InputStream in, Object desc)
+    throws IOException
   {
   }
 

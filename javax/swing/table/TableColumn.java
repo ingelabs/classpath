@@ -130,6 +130,8 @@ public class TableColumn
 
   /**
    * resizedPostingDisableCount
+   *
+   * @deprecated 1.3
    */
   protected transient int resizedPostingDisableCount;
 
@@ -473,6 +475,8 @@ public class TableColumn
 
   /**
    * disableResizedPosting
+   *
+   * @deprecated 1.3
    */
   public void disableResizedPosting()
   {
@@ -481,6 +485,8 @@ public class TableColumn
 
   /**
    * enableResizedPosting
+   *
+   * @deprecated 1.3
    */
   public void enableResizedPosting()
   {

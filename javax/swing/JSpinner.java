@@ -142,6 +142,7 @@ public class JSpinner extends JComponent
      * DOCUMENT ME!
      */
     public void commitEdit()
+      throws ParseException
     {
     } /* TODO */
 
