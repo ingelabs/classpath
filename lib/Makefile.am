@@ -114,9 +114,9 @@ else
 if USER_SPECIFIED_JIKES
 
 if USER_SPECIFIED_CLASSLIB
-JAVAC = @JIKES@ -nowarn +CSO +F $(ARG_CLASSPATH_JAVAC) ..:../vm/current:. -d . @classes
-else
 JAVAC = @JIKES@ -nowarn +CSO +F $(ARG_CLASSPATH_JAVAC) ..:../vm/current:.:@USER_CLASSLIB@ -d . @classes
+else
+JAVAC = @JIKES@ -nowarn +CSO +F $(ARG_CLASSPATH_JAVAC) ..:../vm/current:. -d . @classes
 endif
 
 else
