@@ -45,11 +45,8 @@ public class DirectColorModel extends ColorModel
      * @param bmask the bits describing the blue component of a pixel 
      */
     public DirectColorModel(int bits, int rmask, int gmask, int bmask) {
-	super(bits);
-	red_mask = rmask;
-	green_mask = gmask;
-	blue_mask = bmask;
-	alpha_mask = 0;     // determined from getAlphaMask() of JDK 1.1
+	// 0 alpha mask determined from JDK 1.1
+	this(bits, rmask, gmask, bmask, 0);  
     }
 
     /**
@@ -66,7 +63,10 @@ public class DirectColorModel extends ColorModel
      * @param amask the bits describing the alpha component of a pixel 
      */
     public DirectColorModel(int bits, int rmask, int gmask, int bmask, int amask) {
-	this(bits, rmask, gmask, bmask);
+	super(bits);
+	red_mask = rmask;
+	green_mask = gmask;
+	blue_mask = bmask;
 	alpha_mask = amask;
     }
 
