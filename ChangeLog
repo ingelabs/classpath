@@ -1,5 +1,9 @@
 2002-02-04  Mark Wielaard  <mark@klomp.org>
 
+	* include/jni.h.in: Add GPL license exception clarification
+
+2002-02-04  Mark Wielaard  <mark@klomp.org>
+
 	* NEWS: updates for next release
 
 2002-02-03  Mark Wielaard  <mark@klomp.org>
