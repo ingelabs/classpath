@@ -29,9 +29,7 @@ public class GtkWindowPeer extends GtkContainerPeer
   static final int toplevelType=1;
   static final int popupType=3;
 
-  native void gtkWindowNew(int type, int width, int height, boolean visible);
-  native void gtkWindowSetTitle(String title);    
-  native void gtkWindowSetPolicy(int shrink, int grow, int autos);    
+  native void gtkWindowNew (int type, int width, int height, boolean visible);
   
   public GtkWindowPeer(int type, Window w)
   {
@@ -57,6 +55,18 @@ public class GtkWindowPeer extends GtkContainerPeer
   native public void toFront ();
 
   native public void setBounds (int x, int y, int width, int height);
+
+  native public void setTitle (String title);    
+  native public void setResizable (boolean r);
+  native public void setMenuBarPeer (MenuBarPeer bar);
+
+  public void setMenuBar (MenuBar bar)
+  {
+    if (bar == null)
+      setMenuBarPeer (null);
+    else
+      setMenuBarPeer ((MenuBarPeer) bar.getPeer ());
+  }
 
   protected void postConfigureEvent (int x, int y, int width, int height)
   {

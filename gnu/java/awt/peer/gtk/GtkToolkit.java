@@ -218,17 +218,17 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected MenuPeer createMenu (Menu m) 
   {
-    return null;
+    return new GtkMenuPeer (m);
   }
 
   protected MenuBarPeer createMenuBar (MenuBar mb) 
   {
-    return null;
+    return new GtkMenuBarPeer (mb);
   }
 
   protected MenuItemPeer createMenuItem (MenuItem mi) 
   {
-    return null;
+    return new GtkMenuItemPeer (mi);
   }
 
   protected PanelPeer createPanel (Panel p) 

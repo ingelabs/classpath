@@ -107,6 +107,13 @@ class MainWindow extends PrettyFrame implements ActionListener
   {
     System.out.println (getInsets ());
 
+    MenuBar mb = new MenuBar ();
+    Menu menu = new Menu ("File");
+    menu.add (new MenuItem ("Foobar"));
+    mb.add (menu);
+
+    setMenuBar (mb);
+
     add (new Label ("Classpath v0.0.0"), "North");
       
     closeButton = new Button ("Close");
@@ -117,12 +124,13 @@ class MainWindow extends PrettyFrame implements ActionListener
     buttons = new Vector ();
 
     addSubWindow ("Buttons", new ButtonsWindow ());
-    addSubWindow ("Dialog", new DialogWindow (this));
     addSubWindow ("Cursors", new CursorsWindow ());
-    addSubWindow ("TextField", new TextFieldWindow ());
+    addSubWindow ("Dialog", new DialogWindow (this));
     addSubWindow ("File", new FileWindow (this));
     addSubWindow ("Labels", new LabelWindow ());
+    addSubWindow ("List", new ListWindow ());
     addSubWindow ("Radio Buttons", new RadioWindow ());
+    addSubWindow ("TextField", new TextFieldWindow ());
 
     ScrollPane sp = new ScrollPane();
     PrettyPanel p = new PrettyPanel();
@@ -456,6 +464,36 @@ class LabelWindow extends SubFrame
     setSize (160, 180);
   }
 }
+
+class ListWindow extends SubFrame
+{
+  public void init ()
+  {
+    initted = true;
+
+    Panel p = new Panel ();
+    p.setLayout (new GridLayout (3, 1));
+    
+    List l = new List (5, true);
+    for (int i = 0; i < 10; i++)
+      l.add ("added item " + i);
+
+    p.add (l);
+
+    add (p, "Center");
+
+    Button cb = new Button ("Close");
+    cb.addActionListener(new ActionListener () {
+      public void actionPerformed (ActionEvent e) {
+	dispose();
+      }
+    });
+
+    add (cb, "South");
+    setTitle ("List");
+    setSize (85, 167);
+  }
+}    
 
 
 class RadioWindow extends SubFrame

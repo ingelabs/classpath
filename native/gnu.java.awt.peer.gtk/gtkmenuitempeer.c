@@ -1,8 +1,7 @@
 /*
- * GtkFramePeer.java -- Implements FramePeer with GTK
+ * gtkmenuitempeer.c -- Native implementation of GtkMenuItemPeer
  *
- * Copyright (c) 1998 Free Software Foundation, Inc.
- * Written by James E. Blair <corvus@gnu.org>
+ * Copyright (c) 1999 Free Software Foundation, Inc.
  *
  * This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License as published 
@@ -19,23 +18,24 @@
  * Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
 
-package gnu.java.awt.peer.gtk;
-import java.awt.*;
-import java.awt.peer.FramePeer;
+#include "gtkpeer.h"
+#include "GtkMenuItemPeer.h"
 
-public class GtkFramePeer extends GtkWindowPeer
-    implements FramePeer
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_create
+  (JNIEnv *env, jobject obj, jstring label)
 {
-  public GtkFramePeer (Frame f)
-  {
-    super (toplevelType, f);
-    setTitle (f.getTitle ());
-  }
+  GtkWidget *widget;
+  const char *str;
 
-  public void setIconImage (Image image) 
-  {
-      /* TODO: Waiting on Toolkit Image routines */
-  }
+  str = (*env)->GetStringUTFChars (env, label, NULL);
+
+  gdk_threads_enter ();
+  widget = gtk_menu_item_new_with_label (str);
+  gtk_widget_show (widget);
+  printf ("GOT HERE: %s\n", str);
+  gdk_threads_leave ();
+
+  (*env)->ReleaseStringUTFChars (env, label, str);
+
+  NSA_SET_PTR (env, obj, widget);
 }
-
-

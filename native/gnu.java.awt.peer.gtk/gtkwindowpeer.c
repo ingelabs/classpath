@@ -55,16 +55,19 @@ void
 setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width, 
 	      jint height, jboolean visible)
 {
-  GtkWidget *fixed;
+  GtkWidget *fixed, *vbox;
 
   gtk_window_set_policy (GTK_WINDOW (window), 1, 1, 1);
   gtk_widget_set_usize (window, width, height);
   
+  vbox = gtk_vbox_new (0, 0);
   fixed = gtk_fixed_new ();
-  gtk_container_add (GTK_CONTAINER (window), fixed);
+  gtk_box_pack_end (GTK_BOX (vbox), fixed, 1, 1, 0);
+  gtk_container_add (GTK_CONTAINER (window), vbox);
   gtk_widget_realize (fixed);
   connect_awt_hook (env, obj, fixed, 1, fixed->window);
   gtk_widget_show (fixed);
+  gtk_widget_show (vbox);
 
   gtk_widget_realize (window);
   connect_awt_hook (env, obj, window, 1, window->window);
@@ -74,13 +77,42 @@ setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width,
 }
 
 
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setMenuBarPeer
+  (JNIEnv *env, jobject obj, jobject menubar)
+{
+  void *wptr, *mptr;
+  GtkBox *box;
+  GtkMenuBar *mbar;
+
+  if (!menubar) return;
+
+  wptr = NSA_GET_PTR (env, obj);
+  mptr = NSA_GET_PTR (env, menubar);
+
+  if (!mptr) return; /* this case should remove a menu */
+
+  gdk_threads_enter ();
+  box = GTK_BOX (GTK_BIN (wptr)->child);
+  gtk_box_pack_start (box, GTK_WIDGET (mptr), 0, 0, 0);
+
+  mbar = GTK_MENU_BAR (mptr);
+  if (gtk_container_children (mbar))
+    printf ("we have a sub\n");
+  else
+    printf ("we DONT have a sub\n");
+  
+  gdk_threads_leave ();
+}
+
+
 /*
  * Set a frame's title
  */
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowSetTitle (JNIEnv *env, 
-  jobject obj, jstring title)
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setTitle
+  (JNIEnv *env, jobject obj, jstring title)
 {
   void *ptr;
   const char *str;
@@ -100,16 +132,16 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowSetTitle (JNIEnv *env,
  * Set a window's resizing policy
  */
 
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowSetPolicy (JNIEnv *env, 
-    jobject obj, jint shrink, jint grow, jint autos)
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setResizable
+  (JNIEnv *env, jobject obj, jboolean resize)
 {
   void *ptr;
   
   ptr = NSA_GET_PTR (env, obj);
   
   gdk_threads_enter ();
-  gtk_window_set_policy (GTK_WINDOW (ptr), shrink, grow, autos);
+  gtk_window_set_policy (GTK_WINDOW (ptr), resize, resize, 0);
   gdk_threads_leave ();
 }
 

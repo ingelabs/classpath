@@ -419,7 +419,15 @@ void
 set_parent (GtkWidget *widget, GtkContainer *parent)
 {
   if (GTK_IS_WINDOW (parent))
-    gtk_container_add (GTK_CONTAINER (GTK_BIN (parent)->child), widget);
+    {
+      GList *children = gtk_container_children 
+	                  (GTK_CONTAINER (GTK_BIN (parent)->child));
+
+      if (GTK_IS_MENU_BAR (children->data))
+	gtk_container_add (GTK_CONTAINER (children->next->data), widget);
+      else /* GTK_IS_FIXED (children->data) */
+	gtk_container_add (GTK_CONTAINER (children->data), widget);
+    }
   else
     if (GTK_IS_SCROLLED_WINDOW (parent))
       gtk_container_add 

@@ -43,16 +43,4 @@ public class GtkDialogPeer extends GtkWindowPeer
   {
     super (bogusType, w);
   }
-
-  public void setTitle(String title)
-  {
-    gtkWindowSetTitle(title);
-  }
-  
-  public void setResizable(boolean resizable)
-  {
-    int r=resizable?1:0;
-      
-    gtkWindowSetPolicy(r,r,0); //shrink,grow,auto
-  }
 }
