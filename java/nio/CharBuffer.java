@@ -49,7 +49,7 @@ public abstract class CharBuffer extends Buffer
 
   protected char [] backing_buffer;
 
-  private int array_offset;
+  protected int array_offset;
 
   /**
    * Allocats a non-direct character buffer.
