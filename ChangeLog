@@ -1,3 +1,16 @@
+2003-06-07  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/border/BevelBorder.java,
+	javax/swing/border/EmptyBorder.java,
+	javax/swing/border/EtchedBorder.java,
+	javax/swing/border/LineBorder.java,
+	javax/swing/border/MatteBorder.java,
+	javax/swing/border/TitledBorder.java,
+	javax/swing/plaf/BorderUIResource.java,
+	javax/swing/plaf/basic/BasicDefaults.java,
+	javax/swing/plaf/basic/BasicOptionPaneUI.java:
+	New versions from libgcj to make it all compile.
+
 2003-06-05  Scott Gilbertson  <scottg@mantatest.com>
 
 	* java/text/SimpleDateFormat.java (SimpleDateFormat): Added

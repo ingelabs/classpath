@@ -35,29 +35,39 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package javax.swing.border;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
 
-public class LineBorder extends EmptyBorder
+public class LineBorder extends AbstractBorder
 {
-    Color c;
+  protected Color lineColor;
+  protected boolean roundedCorners;
+  protected int thickness;
 
-    public LineBorder()
-    {
-    }
+  public LineBorder (Color color)
+  {
+    this (color, 1);
+  }
 
+  public LineBorder (Color color, int thickness)
+  {
+    this (color, thickness, false); // FIXME: check roundedCorners argument
+  }
+
+  /**
+   * @since 1.3
+   */
+  public LineBorder (Color color, int thickness, boolean roundedCorners)
+  {
+    this.lineColor = color;
+    this.thickness = thickness;
+    this.roundedCorners = roundedCorners;
+  }
     
-    public LineBorder(int top,
-		int left,
-		int bottom, 
-		int right,
-		Color color)
-    {
-        super(top, left, bottom, right);
-        this.c = color;
-    }
-
     public boolean isBorderOpaque()
     {
 	return false;
