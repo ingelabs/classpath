@@ -25,8 +25,8 @@ package java.util;
  * a class which implements Map.Entry
  *
  * @author      Jon Zeppieri
- * @version     $Revision: 1.1 $
- * @modified    $Id: BasicMapEntry.java,v 1.1 1998-10-13 00:38:31 jaz Exp $
+ * @version     $Revision: 1.2 $
+ * @modified    $Id: BasicMapEntry.java,v 1.2 1998-12-19 07:23:17 arenn Exp $
  */
 class BasicMapEntry implements Map.Entry
 {
@@ -118,7 +118,7 @@ class BasicMapEntry implements Map.Entry
      * @param     newValue         the new value of this Map.Entry
      */
     public Object setValue(Object newValue)
-	throws UnsupportedOperationException, ClassCastException, 
+	throws java.lang.UnsupportedOperationException, ClassCastException, 
 	       IllegalArgumentException, NullPointerException
     {
 	Object oVal = value;

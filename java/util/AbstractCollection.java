@@ -60,7 +60,7 @@ public abstract class AbstractCollection implements Collection {
    *   supported on this collection
    */
   public boolean add(Object o) {
-    throw new UnsupportedOperationException();
+    throw new java.lang.UnsupportedOperationException();
   }
 
   /**
