@@ -37,7 +37,8 @@ You can get CVS (development) versions of GNU Classpath by giving cvs the
         <http://savannah.gnu.org/projects/classpath/>
 
 If you start from the current CVS version, you will have to run the
-following from the toplevel directory.
+following from the toplevel directory.  The autoreconf script does not
+always run these as might be expected.
 
         aclocal; autoheader; automake; autoconf
 

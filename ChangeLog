@@ -1,5 +1,12 @@
 2002-02-09  C. Brian Jones <cbj@gnu.org>
 
+	* INSTALL: removed mention of needing gcjh and edited compilation
+	verbage
+	* HACKING: warning that autoreconf does not always do what might
+	be expected
+
+2002-02-09  C. Brian Jones <cbj@gnu.org>
+
 	* lib/Makefile.am: no JNI header generation, do not use mkdep.pl,
 	Remake classes when source changes or new classes are added.
 	Do not bother including glibj.zip in dist, it has to be remade 

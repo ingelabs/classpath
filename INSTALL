@@ -32,9 +32,6 @@ Suggested Software
 
 	For building the JNI native libraries, the following are required.
 
-        - gcjh from GCJ 2.96+, others can be specified using 
-          --with-javah=<program> as an argument to configure but have 
-          not been tested and may not work
         - GTK+ 1.2.x
         - libart_lgpl 2.1.0
         - gdk-pixbuf (Only needed if you want to compile the native library)
@@ -76,7 +73,7 @@ native libraries in /usr/local/classpath/lib/classpath.
 If you don't know what this means then the examples are correct.
 
 LD_LIBRARY_PATH=/usr/local/classpath/lib/classpath
-CLASSPATH=/usr/local/classpath/share/classpath:.
+CLASSPATH=/usr/local/classpath/share/classpath/glibj.zip:.
 export LD_LIBRARY_PATH CLASSPATH
 
 More information about the VMs that use GNU Classpath can be found in the
@@ -89,8 +86,7 @@ Misc. Notes
 Use of Sun's compiler is deprecated and probably does not work.  At
 least three free compilers are supported: gcj, jikes, and kjc.
 
-Recompilation may cause a lot of unneeded compilation.  This has to 
-do with how the compiler handles dependency tracking.  For our part, 
+Compilation is accomplished using a compiler's @file syntax.  For our part, 
 we avoid placing make style dependencies as rules upon the compilation 
 of a particular class file and leave this up to the Java compiler instead.
 
