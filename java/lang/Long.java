@@ -225,7 +225,7 @@ public final class Long extends Number implements Comparable
    *
    * @param s the <code>String</code> to convert
    * @param radix the radix (base) to use in the conversion
-   * @return the <code>String</code> argument converted to </code>long</code>
+   * @return the <code>String</code> argument converted to <code>long</code>
    * @throws NumberFormatException if <code>s</code> cannot be parsed as a
    *         <code>long</code>
    */

@@ -1,5 +1,21 @@
 2004-04-12  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/ClassLoader.java,
+	java/lang/Compiler.java,
+	java/lang/Double.java,
+	java/lang/Float.java,
+	java/lang/Long.java,
+	java/lang/Math.java,
+	java/lang/Runtime.java,
+	java/lang/RuntimePermission.java,
+	java/lang/Short.java,
+	java/lang/System.java,
+	java/lang/reflect/InvocationHandler.java,
+	java/lang/reflect/Proxy.java:
+	Fixed HTML in javadocs.
+
+2004-04-12  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/DirectByteBufferImpl.java
 	(shiftDown): Made static and give address of memory block as argument.
 	* native/jni/java-nio/java_nio_DirectByteBufferImpl.c:

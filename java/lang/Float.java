@@ -391,9 +391,9 @@ public final class Float extends Number implements Comparable
    * <code>Float.NaN</code> as equal, but treats <code>0.0</code> and
    * <code>-0.0</code> as unequal.
    *
-   * <p>Note that <code>f1.equals(f2)<code> is identical to
+   * <p>Note that <code>f1.equals(f2)</code> is identical to
    * <code>floatToIntBits(f1.floatValue()) ==
-   *    floatToIntBits(f2.floatValue())<code>.
+   *    floatToIntBits(f2.floatValue())</code>.
    *
    * @param obj the object to compare
    * @return whether the objects are semantically equal
