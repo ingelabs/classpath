@@ -1,5 +1,5 @@
 /* DEREncodingException.java --- DER Encoding Exception
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999,2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.java.security.der;
 
-public class DEREncodingException extends Exception
+public class DEREncodingException extends java.io.IOException
 {
 
   public DEREncodingException()
