@@ -783,7 +783,7 @@ void
 _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
 {
   int fd = -1, rc;
-  int optval;
+  int optval, sockopt;
   jclass cls;
   jmethodID mid;
   struct linger linger;
@@ -857,6 +857,23 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
 #endif
         break;
 
+      case SOCKOPT_SO_SNDBUF:
+      case SOCKOPT_SO_RCVBUF:
+        mid = (*env)->GetMethodID(env, cls, "intValue", "()I");
+        if (!mid)
+          { _javanet_throw_exception(env, IO_EXCEPTION, 
+                                     "Internal Error"); return; }
+
+        optval = (*env)->CallIntMethod(env, val, mid);
+        
+        if (option_id == SOCKOPT_SO_SNDBUF) 
+          sockopt = SO_SNDBUF;
+        else
+          sockopt = SO_RCVBUF;
+        
+        rc = setsockopt(fd, SOL_SOCKET, sockopt, &optval, sizeof(int));
+        break;
+
       /* TTL case.  Val with be an Integer with the new time to live value */
       case SOCKOPT_IP_TTL:
         mid = (*env)->GetMethodID(env, cls, "intValue", "()I");
@@ -903,7 +920,7 @@ jobject
 _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
 {
   int fd = -1, rc;
-  int optval, optlen;
+  int optval, optlen, sockopt;
   struct linger linger;
   struct sockaddr_in si;
 
@@ -963,6 +980,25 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
                                  "SO_TIMEOUT not supported on this platform");
         return(0);
 #endif /* not SO_TIMEOUT */
+
+        if (rc == -1)
+          {
+            _javanet_throw_exception(env, SOCKET_EXCEPTION, strerror(errno)); 
+            return(0);
+          }
+
+        return(_javanet_create_integer(env, optval));
+        break;
+
+      case SOCKOPT_SO_SNDBUF:
+      case SOCKOPT_SO_RCVBUF:
+        optlen = sizeof(int);
+        if (option_id == SOCKOPT_SO_SNDBUF)
+          sockopt = SO_SNDBUF;
+        else
+          sockopt = SO_RCVBUF;
+            
+        rc = getsockopt(fd, SOL_SOCKET, sockopt, &optval, &optlen);
 
         if (rc == -1)
           {

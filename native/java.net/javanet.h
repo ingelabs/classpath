@@ -37,12 +37,16 @@
                                the JDK will be broken! These also need to
                                be kept compatible with java.net.SocketOptions */
 #define SOCKOPT_TCP_NODELAY 1
+#define SOCKOPT_SO_BINDADDR 15
 #define SOCKOPT_SO_LINGER 128
 #define SOCKOPT_SO_TIMEOUT 4102
+#define SOCKOPT_SO_SNDBUF 4
+#define SOCKOPT_SO_RCVBUF 4098
+#define SOCKOPT_SO_REUSEADDR 4097
+#define SOCKOPT_IP_MULTICAST_IF 16
 
 /* Internal option identifiers. Not needed for JDK compatibility */
 #define SOCKOPT_IP_TTL 7777
-#define SOCKOPT_IP_MULTICAST_IF 7778
 
 /*************************************************************************/
 
