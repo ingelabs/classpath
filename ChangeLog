@@ -1,3 +1,24 @@
+2002-11-23  Mark Wielaard  <mark@klomp.org>
+
+	* javax/transaction/HeuristicCommitException.java: New file from gcj,
+	* javax/transaction/HeuristicMixedException.java: Likewise.
+	* javax/transaction/HeuristicRollbackException.java: Likewise.
+	* javax/transaction/NotSupportedException.java: Likewise.
+	* javax/transaction/RollbackException.java: Likewise.
+	* javax/transaction/Status.java: Likewise.
+	* javax/transaction/Synchronization.java: Likewise.
+	* javax/transaction/SystemException.java: Likewise.
+	* javax/transaction/Transaction.java: Likewise.
+	* javax/transaction/TransactionManager.java: Likewise.
+	* javax/transaction/UserTransaction.java: Likewise.
+
+	* javax/transaction/Makefile.am (SUBDIRS): Add transaction.
+	* javax/transaction/Makefile: New file.
+	* javax/transaction/.cvsignore: Likewise.
+	* javax/transaction/xa/Makefile.am: Likewise.
+	* javax/transaction/xa/.cvsignore: Likewise.
+	* configure.in (AC_OUTPUT): Add new Makefiles.am.
+
 2002-11-26  Stephen Crawley  <crawley@dstc.edu.au>
 
 	* java/nio/CharBuffer.java (array_offset): Now protected.

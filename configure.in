@@ -354,6 +354,8 @@ javax/swing/text/html/Makefile
 javax/swing/text/html/parser/Makefile
 javax/swing/tree/Makefile
 javax/swing/undo/Makefile
+javax/transaction/Makefile
+javax/transaction/xa/Makefile
 native/Makefile
 native/fdlibm/Makefile
 native/cni/Makefile
