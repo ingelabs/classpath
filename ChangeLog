@@ -1,3 +1,9 @@
+2004-10-09  Michael Koch  <konqueror@gmx.de>
+
+	* javax/imageio/stream/ImageInputStreamImpl.java,
+	javax/imageio/stream/ImageOutputStreamImpl.java:
+	New files.
+
 2004-10-09  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gdkfont.h: Include gtkpeer.h not gtkcairopeer.h.
