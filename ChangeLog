@@ -1,5 +1,9 @@
 2004-03-12  Mark Wielaard  <mark@klomp.org>
 
+	* configure.ac: Set version to 0.08+cvs.
+
+2004-03-12  Mark Wielaard  <mark@klomp.org>
+
 	* configure.ac: Set version to 0.08.
 	* NEWS: Update with interesting items.
 	* TODO: Point to http://www.gnu.org/software/classpath/tasks.html
