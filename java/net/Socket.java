@@ -671,12 +671,12 @@ public class Socket
 
   public void shutdownInput() throws IOException
   {
-    impl.shutdownInput();
+    // impl.shutdownInput();
   }
 
   public void shutdownOutput() throws IOException
   {
-    impl.shutdownOutput();
+    // impl.shutdownOutput();
   }
 
   SocketChannel ch; // this field must have been set if created by SocketChannel
