@@ -1,3 +1,14 @@
+2001-09-17  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/Collections.java (SynchronizedCollection)
+	(SynchronizedSet): Made package visible.
+	* java/util/Hashtable.java: More cleanup and documentation. Fix
+	synchronization issues.
+	(HashEntry): renamed from Entry, to avoid conflict with Map.Entry.
+	(clone): Reverted prior change.
+	* java/util/HashMap.java (clone): Reverted prior change; as
+	pointed out to me, recursion is worse than looping.
+
 2001-09-16  C. Brian Jones  <cbj@gnu.org>
         * gnu/tools/serialver/Main.java: moved to 
         gnu/classpath/tools/SerialVer.java

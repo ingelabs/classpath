@@ -1,5 +1,5 @@
 /* Collections.java -- Utility class with methods to operate on collections
-   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -1294,7 +1294,11 @@ public class Collections
     }
   }
 
-  private static class SynchronizedCollection implements Collection,
+  /**
+   * Package visible, so that collections such as the one for
+   * Hashtable.values() can specify which object to synchronize on.
+   */
+  static class SynchronizedCollection implements Collection,
     Serializable
   {
     Object sync;
@@ -1522,7 +1526,11 @@ public class Collections
     }
   }
 
-  private static class SynchronizedSet extends SynchronizedCollection
+  /**
+   * Package visible, so that sets such as the one for Hashtable.keySet()
+   * can specify which object to synchronize on.
+   */
+  static class SynchronizedSet extends SynchronizedCollection
     implements Set
   {
     public SynchronizedSet(Object sync, Set s)

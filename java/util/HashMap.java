@@ -111,14 +111,6 @@ public class HashMap extends AbstractMap
     {
       super(key, value);
     }
-
-    Entry copy()
-    {
-      Entry e = new Entry(key, value);
-      if (next != null)
-        e.next = next.copy();
-      return e;
-    }
   }
 
   /**
@@ -373,8 +365,22 @@ public class HashMap extends AbstractMap
     for (int i=0; i < buckets.length; i++)
       {
         Entry e = buckets[i];
-        if (e != null)
-          copy.buckets[i] = e.copy();
+        Entry last = null;
+
+        while (e != null)
+          {
+            if (last == null)
+              {
+                last = new Entry(e.key, e.value);
+                copy.buckets[i] = last;
+              }
+            else
+              {
+                last.next = new Entry(e.key, e.value);
+                last = last.next;
+              }
+            e = e.next;
+          }
       }
     return copy;
   }
