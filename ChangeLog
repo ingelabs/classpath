@@ -1,3 +1,7 @@
+2005-01-11  Michael Koch  <konqueror@gmx.de>
+
+	* configure.ac: Check for gdk-pixbuf-2.0.
+
 2005-01-11  Graydon Hoare  <graydon@redhat.com>
 
 	* gnu/java/awt/ClasspathToolkit.java
