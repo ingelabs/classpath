@@ -47,8 +47,7 @@ libjavanet_la_SOURCES = \
                         java_net_PlainSocketImpl.c
 
 libjavautil_la_SOURCES = \
-			java_util_TimeZone.c \
-                        java_util_ResourceBundle.c 
+			java_util_TimeZone.c
 
 libjavaio_la_LDFLAGS = -version-info @LIBVERSION@ 
 libjavalang_la_LDFLAGS = -version-info @LIBVERSION@

@@ -1,3 +1,12 @@
+2001-11-04  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
+
+	* java/util/ResourceBundle.java (getClassContext): Removed.
+	(Security): New class, extends SecurityManger.
+	(getBundle): Use Security.getCallingClassLoader instead of
+	getClassContext.
+	* native/jni/java_util_ResourceBundle.c: Removed.
+	* native/jni/Makefile.am: Updated.
+
 2001-10-30  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/Collections.java:
