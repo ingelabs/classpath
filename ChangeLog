@@ -1,5 +1,11 @@
 2003-07-23  Torsten Rupp  <rupp@lisa.aicas.com>
 
+	* native/target/generic/target_generic_file.h:
+	Fixed include of utime.h, sys/utime.h: rename HAVE_UTIME -> 
+        HAVE_UTIME_H, HAVE_SYS_UTIME -> HAVE_SYS_UTIME_H
+
+2003-07-23  Torsten Rupp  <rupp@lisa.aicas.com>
+
 	* gnu/java/io/class-dependencies.conf:
 	Added missing class-dependency file
 
