@@ -1,3 +1,20 @@
+2004-09-23  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/AbstractButton.java: Whitespace cleanup.
+	* javax/swing/DefaultButtonModel.java: Likewise.
+	* javax/swing/JLabel.java: Likewise.
+	* javax/swing/KeyStroke.java: Likewise.
+	* javax/swing/plaf/basic/BasicButtonListener.java: Likewise.
+	* javax/swing/plaf/basic/BasicComboBoxUI.java: Likewise.
+	* javax/swing/plaf/basic/BasicComboPopup.java: Likewise.
+	* javax/swing/plaf/basic/BasicTableHeaderUI.java: Likewise.
+	* javax/swing/plaf/basic/BasicTableUI.java: Likewise.
+	* javax/swing/plaf/basic/BasicTextUI.java: Likewise.
+	* javax/swing/table/DefaultTableCellRenderer.java: Likewise.
+	* javax/swing/text/AbstractDocument.java: Likewise.
+	* javax/swing/text/AttributeSet.java: Likewise.
+	* javax/swing/text/DefaultEditorKit.java: Likewise.
+
 2004-09-23  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/InputVerifier.java:

@@ -1127,7 +1127,6 @@ public class BasicComboBoxUI extends ComboBoxUI
      */
     public void intervalRemoved(ListDataEvent e)
     {
-      
       // recalculate display size of the JComboBox.
       largestItemSize = getLargestItemSize();
       comboBox.repaint();

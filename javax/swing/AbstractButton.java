@@ -234,7 +234,7 @@ public abstract class AbstractButton extends JComponent
   /** The time in miliseconds in which clicks get coalesced into a single
    * <code>ActionEvent</code>. */
   long multiClickThreshhold;
-
+  
   /** Listener the button uses to receive PropertyChangeEvents from its
       Action. */
   PropertyChangeListener actionPropertyChangeListener;
@@ -299,9 +299,9 @@ public abstract class AbstractButton extends JComponent
   /** Fired in a PropertyChangeEvent when the "verticalTextPosition" property changes. */
   public static final String VERTICAL_TEXT_POSITION_CHANGED_PROPERTY = "verticalTextPosition";
 
-    /**
-     * A Java Accessibility extension of the AbstractButton.
-     */
+  /**
+   * A Java Accessibility extension of the AbstractButton.
+   */
   protected abstract class AccessibleAbstractButton
     extends AccessibleJComponent implements AccessibleAction, AccessibleValue,
                                             AccessibleText
@@ -433,7 +433,7 @@ public abstract class AbstractButton extends JComponent
     }
 
     public String getSelectedText()
-  {
+    {
       return null; // TODO
     }
 

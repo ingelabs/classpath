@@ -837,7 +837,7 @@ public class BasicComboPopup extends JPopupMenu implements ComboPopup
         }
       if (e.getPropertyName().equals(JComboBox.MODEL_CHANGED_PROPERTY))
         {
-	  list.setModel((ComboBoxModel) e.getNewValue());	  
+	  list.setModel((ComboBoxModel) e.getNewValue());
 	  revalidate();
 	  repaint();
         }
