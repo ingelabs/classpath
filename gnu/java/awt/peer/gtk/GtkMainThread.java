@@ -20,43 +20,38 @@
  */
 package gnu.java.awt.peer.gtk;
 
-public class GtkMainThread extends GtkGenericPeer
-  implements Runnable
+public class GtkMainThread extends GtkGenericPeer implements Runnable
 {
   private static Thread mainThread = null;
+  private static Object mainThreadLock = new Object();
 
   native static void GtkInitTable();
   static native void GtkInit();
   native void GtkMain();
   
-  public GtkMainThread()
-    {
-      start();
+  public GtkMainThread() {
+    synchronized (mainThreadLock) {
+      if (mainThread != null)
+	throw new IllegalStateException();
     }
+    
+    mainThread = new Thread(this, "GtkMain");
+    synchronized (this) {
+      mainThread.start();
+      try {
+	wait();
+      } catch (InterruptedException e) { }
+    }
+  }
   
-  public void start() 
-    {
-      if (mainThread == null) 
-	{
-	  mainThread = new Thread(this, "GtkMain");
-	  synchronized (this) {
-	    mainThread.start();
-	    try {
-	      wait();
-	    } catch (InterruptedException e) { }
-	  }
-	}
+  public void run() {
+    synchronized (this) {
+      GtkInitTable();
+      GtkInit();
+      notify();
     }
-  
-  public void run() 
-    {
-      synchronized (this) {
-	GtkInitTable();
-	GtkInit();
-	notify();
-      }
-      GtkMain();
-    }
+    GtkMain();
+  }
 }
 
 
