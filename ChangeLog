@@ -1,3 +1,8 @@
+2005-02-21  Mark Wielaard  <mark@klomp.org>
+
+	* java/util/jar/JarFile.java (verifyHashes): Check whether ZipEntry
+	exists.
+	
 2005-02-21  Robert Schuster  <thebohemian@gmx.net>
 	
 	* gnu/java/nio/ChannelReader: Fixed comments.
