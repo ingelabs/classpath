@@ -62,7 +62,7 @@ private Font font;
 private String name;
 
 // The parent of this component
-private transient MenuContainer parent;
+transient MenuContainer parent;
 
 // The native peer for this componet
 transient MenuComponentPeer peer;
