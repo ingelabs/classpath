@@ -1,5 +1,10 @@
 2004-05-05  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/File.java
+	(getParent): Fixed javadoc.
+
+2004-05-05  Michael Koch  <konqueror@gmx.de>
+
 	* include/java_lang_Double.h: Regenerated.
 
 2004-05-05  Michael Koch  <konqueror@gmx.de>

@@ -421,7 +421,7 @@ public class File implements Serializable, Comparable
    * This method returns a <code>File</code> object representing the parent
    * file of this one.
    *
-   * @param A <code>File</code> for the parent of this object.  
+   * @return a <code>File</code> for the parent of this object.  
    * <code>null</code>
    * will be returned if this object does not have a parent.
    *
