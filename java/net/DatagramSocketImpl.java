@@ -159,7 +159,7 @@ setTTL(byte ttl) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected abstract byte
+protected abstract int
 getTimeToLive() throws IOException;
 
 /*************************************************************************/
@@ -173,7 +173,7 @@ getTimeToLive() throws IOException;
   * @exception IOException If an error occurs
   */
 protected abstract void
-setTimeToLive(byte ttl) throws IOException;
+setTimeToLive(int ttl) throws IOException;
 
 /*************************************************************************/
 
