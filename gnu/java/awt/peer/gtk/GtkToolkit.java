@@ -1,5 +1,5 @@
 /* GtkToolkit.java -- Implements an AWT Toolkit using GTK for peers
-   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -69,7 +69,8 @@ public class GtkToolkit extends java.awt.Toolkit
 
   static 
   {
-    System.loadLibrary("gtkpeer");
+    if (Configuration.INIT_LOAD_LIBRARY)
+      System.loadLibrary("gtkpeer");
   }
 
   public GtkToolkit ()
