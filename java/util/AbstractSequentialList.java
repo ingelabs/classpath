@@ -55,12 +55,15 @@ public abstract class AbstractSequentialList extends AbstractList {
   }
 
   public boolean addAll(int index, Collection c) {
+    boolean changed = false;
     Iterator ci = c.iterator();
     ListIterator i = listIterator(index);
     while (ci.hasNext()) {
       i.add(ci.next());
+      changed = true;
       i.next();
     }
+    return changed;
   }
 
   public Object get(int index) {
