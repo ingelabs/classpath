@@ -181,11 +181,21 @@ public class DatagramSocket
     impl = new PlainDatagramSocketImpl();
     impl.create();
 
-    if (address != null)
-      {
+    if (address != null) {
+      try {
         local_addr = tmp.getAddress ();
         impl.bind(tmp.getPort (), tmp.getAddress ());
+      } catch (SocketException exception) {
+        impl.close();
+        throw exception;
+      } catch (RuntimeException exception) {
+        impl.close();
+        throw exception;
+      } catch (Error error) {
+        impl.close();
+        throw error;
       }
+    }
   }
   
   /**

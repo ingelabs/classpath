@@ -1,3 +1,18 @@
+2003-04-30  Torsten Rupp  <rupp@homer.aicas.com>
+
+        * /cvsroot/classpath/classpath/java/net/Socket.java:
+        Added try-catch-blocks to
+
+         * Socket.java: socket()
+         * ServerSocket.java: socket()
+         * DatagramSocket.java: socket()
+
+        with clean-up of file-descriptors in case bind(), connect() or listen()
+        fail. This fix will avoid loss of file-descriptors in the case create()
+        is executed successfully, but bind/connect/listen fail with an exception.
+        Then close() was not called and the file-descriptor allcoated by create()
+        was not returned to the OS.
+
 2003-04-30  Michael Koch  <konqueror@gmx.de>
 
 	* java/security/cert/Certificate.java
