@@ -6,8 +6,8 @@
 
 2005-03-11  Robert Schuster  <thebohemian@gmx.net>
 
-    * java/beans/EventHandler.java: Reworked documentation.
-    (invoke): Fixed behavior to match spec. 
+	* java/beans/EventHandler.java: Reworked documentation.
+	(invoke): Fixed behavior to match spec. 
 
 2005-03-11  Jeroen Frijters  <jeroen@frijters.net>
 
