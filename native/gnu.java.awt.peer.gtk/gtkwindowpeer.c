@@ -44,6 +44,8 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env, jobject obj,
       window=gtk_window_new (GTK_WINDOW_POPUP);
       break;
     }
+  connect_awt_hook (env, obj, window, 1, &window->window);
+
   /* Every window needs a fixed widget to support absolute positioning. */
 
   fix=gtk_fixed_new();
@@ -110,7 +112,7 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowSetPolicy (JNIEnv *env,
  */
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gdkWindowLower (JNIEnv *env, 
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_toBack (JNIEnv *env, 
     jobject obj)
 {
   void *ptr;
@@ -126,7 +128,7 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gdkWindowLower (JNIEnv *env,
  */
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gdkWindowRaise (JNIEnv *env, 
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_toFront (JNIEnv *env, 
     jobject obj)
 {
   void *ptr;
@@ -134,5 +136,22 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gdkWindowRaise (JNIEnv *env,
     
   gdk_threads_enter ();
   gdk_window_raise (GTK_WIDGET (ptr)->window);
+  gdk_threads_leave ();
+}
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setBounds
+  (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)
+{
+  GtkWidget *widget;
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+
+  widget = GTK_WIDGET (ptr);
+  gtk_widget_set_usize (widget, width, height);
+  gtk_widget_set_uposition (widget, x, y);
+
   gdk_threads_leave ();
 }

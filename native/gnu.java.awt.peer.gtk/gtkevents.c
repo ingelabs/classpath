@@ -99,7 +99,8 @@ awt_event_handler (GdkEvent *event)
   if ((event->type == GDK_BUTTON_PRESS
        || event->type == GDK_BUTTON_RELEASE
        || event->type == GDK_ENTER_NOTIFY
-       || event->type == GDK_LEAVE_NOTIFY)
+       || event->type == GDK_LEAVE_NOTIFY
+       || event->type == GDK_CONFIGURE)
       && gdk_property_get (event->any.window,
 			   gdk_atom_intern ("_GNU_GTKAWT_ADDR", FALSE),
 			   gdk_atom_intern ("CARDINAL", FALSE),
@@ -190,6 +191,35 @@ awt_event_handler (GdkEvent *event)
 					(jint)event->crossing.y, 
 					0, JNI_FALSE);
 	  break;
+	case GDK_CONFIGURE:
+	  {
+	    GtkWidget *widget;
+
+	    gdk_window_get_user_data (event->any.window, (void **) &widget);
+	    if (!widget) break;
+	    
+	    if (GTK_IS_WINDOW (widget))
+	      {
+		gint x, y;
+		gdk_window_get_root_origin (widget->window, &x, &y);
+
+		gdk_threads_leave ();
+/*  		(*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr,  */
+/*  					    postConfigureEventID, */
+/*  					    (jint)event->configure.x-x, */
+/*  					    (jint)event->configure.y-y, */
+/*  					    (jint)event->configure.width, */
+/*  					    (jint)event->configure.height); */
+		(*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr, 
+					    postConfigureEventID,
+					    (jint)x,
+					    (jint)y,
+					    (jint)event->configure.width,
+					    (jint)event->configure.height);
+		gdk_threads_enter ();
+	      }
+	  }
+	  break;
 	default:
 	}
       g_free (obj_ptr);
@@ -213,7 +243,8 @@ attach_jobject (GdkWindow *window, jobject *obj)
 			 | GDK_KEY_PRESS_MASK
 			 | GDK_KEY_RELEASE_MASK
 			 | GDK_ENTER_NOTIFY_MASK
-			 | GDK_LEAVE_NOTIFY_MASK);
+			 | GDK_LEAVE_NOTIFY_MASK
+			 | GDK_STRUCTURE_MASK);
 
   gdk_property_change (window,
 		       addr_atom,

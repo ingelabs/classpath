@@ -34,12 +34,12 @@ public class GtkComponentPeer extends GtkGenericPeer
   native void gtkWidgetShowChildren();
   native void gtkWidgetGetDimensions(int[] dim);
   native void gtkWidgetGetLocationOnScreen(int[] point);
-  native void gtkWidgetSetUsize(int width, int height);
+//    native void gtkWidgetSetUsize(int width, int height);
   native void gtkWidgetSetCursor (int type);
 
   native void gtkFixedNew (int w, int h);
   native void gtkFixedPut (Object parent, int x, int y);
-  native void gtkFixedMove(int x, int y);
+//    native void gtkFixedMove(int x, int y);
 
   protected GtkComponentPeer (Component awtComponent)
     {
@@ -144,7 +144,7 @@ public class GtkComponentPeer extends GtkGenericPeer
   
   public void handleEvent (AWTEvent e)
     {
-      System.out.println("componentpeer: handleawtevent");
+//        System.out.println("componentpeer: handleawtevent");
     }
   
   public boolean isFocusTraversable () 
@@ -191,12 +191,7 @@ public class GtkComponentPeer extends GtkGenericPeer
     {
     }
 
-  public void setBounds (int x, int y, int width, int height) 
-    {
-      System.out.println("Cpeer.setbounds: "+this+": "+x+","+y+","+width+","+height);
-      gtkWidgetSetUsize(width,height);
-      gtkFixedMove(x,y);
-    }
+  native public void setBounds (int x, int y, int width, int height);
 
   public void setCursor (Cursor cursor) 
     {

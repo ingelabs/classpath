@@ -34,6 +34,14 @@ class Test
 
       final Frame f=new Frame();
       
+      f.addComponentListener (new ComponentAdapter() {
+	public void componentMoved (ComponentEvent e) {
+	  System.out.println("component moved");
+	}
+	public void componentResized (ComponentEvent e) {
+	  System.out.println("component resized");
+	}
+      });
       f.setSize(200,200);
 
       Panel pan=new Panel();
@@ -52,9 +60,9 @@ class Test
       ch.add("Quassia");
       ch.add("Pterodactyl");
 
-            ch.addMouseListener(new MouseAdapter() {
+      ch.addMouseListener(new MouseAdapter() {
 	public void mousePressed(MouseEvent e) {
-	  System.out.println("mouse pressed wb");
+	  System.out.println("mouse pressed ch");
 	  System.out.println("shift = " + e.isShiftDown());
 	  System.out.println("meta = " + e.isMetaDown());
 	  System.out.println("alt = " + e.isAltDown());
@@ -66,10 +74,10 @@ class Test
 	  System.out.println();
 	}
 	public void mouseReleased(MouseEvent e) {
-	  System.out.println("mouse released wb");
+	  System.out.println("mouse released ch");
 	}
 	public void mouseClicked(MouseEvent e) {
-	  System.out.println("mouse clicked wb");
+	  System.out.println("mouse clicked ch");
 	}
       });
 
@@ -98,9 +106,9 @@ class Test
       cb=new Checkbox("two", group, false);
       east_panel.add(cb);
 
-            cb.addMouseListener(new MouseAdapter() {
-	public void mousePressed(MouseEvent e) {
-	  System.out.println("mouse pressed wb");
+      cb.addMouseListener(new MouseAdapter() {
+	  public void mousePressed(MouseEvent e) {
+	  System.out.println("mouse pressed cb");
 	  System.out.println("shift = " + e.isShiftDown());
 	  System.out.println("meta = " + e.isMetaDown());
 	  System.out.println("alt = " + e.isAltDown());
@@ -112,10 +120,16 @@ class Test
 	  System.out.println();
 	}
 	public void mouseReleased(MouseEvent e) {
-	  System.out.println("mouse released wb");
+	  System.out.println("mouse released cb");
 	}
 	public void mouseClicked(MouseEvent e) {
-	  System.out.println("mouse clicked wb");
+	  System.out.println("mouse clicked cb");
+	}
+	public void mouseEntered(MouseEvent e) {
+	  System.out.println("mouse entered cb");
+	}
+	public void mouseExited(MouseEvent e) {
+	  System.out.println("mouse exited cb");
 	}
       });
 

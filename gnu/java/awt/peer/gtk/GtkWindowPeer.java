@@ -33,8 +33,6 @@ public class GtkWindowPeer extends GtkContainerPeer
   native void gtkWindowNew(int type, int w, int h);    
   native void gtkWindowSetTitle(String title);    
   native void gtkWindowSetPolicy(int shrink, int grow, int autos);    
-  native void gdkWindowLower();
-  native void gdkWindowRaise();
   
   public GtkWindowPeer(int type, Window w)
   {
@@ -56,13 +54,13 @@ public class GtkWindowPeer extends GtkContainerPeer
     System.out.println("WindowPeer default cons");
   }
   
-  public void toBack()
-  {
-    gdkWindowLower();
-  }
+  native public void toBack();
+  native public void toFront();
 
-  public void toFront()
+  native public void setBounds (int x, int y, int width, int height);
+
+  protected void postConfigureEvent (int x, int y, int width, int height)
   {
-    gdkWindowRaise();
+    awtComponent.setBounds (x, y, width, height);
   }
 }

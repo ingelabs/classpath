@@ -221,7 +221,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetLocationOnScreen
   point = (*env)->GetIntArrayElements (env, jpoint, 0);
 
   gdk_threads_enter ();
-  gdk_window_get_origin (GTK_WIDGET(ptr)->window, point, point+1);
+  gdk_window_get_origin (GTK_WIDGET (ptr)->window, point, point+1);
   gdk_threads_leave ();
 
   (*env)->ReleaseIntArrayElements(env, jpoint, point, 0);
@@ -384,4 +384,23 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedMove (JNIEnv *env,
       gdk_threads_leave ();
     }
 }
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setBounds
+  (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)
+{
+  GtkWidget *widget;
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
+  
+  gdk_threads_enter ();
+
+  widget = GTK_WIDGET (ptr);
+  gtk_widget_set_usize (widget, width, height);
+  gtk_fixed_move (GTK_FIXED (widget->parent), widget, x, y);
+
+  gdk_threads_leave ();
+}
+
+
 
