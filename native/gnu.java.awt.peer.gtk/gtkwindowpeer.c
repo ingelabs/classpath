@@ -23,6 +23,7 @@
 #include "gnu_java_awt_peer_gtk_GtkWindowPeer.h"
 #include "gnu_java_awt_peer_gtk_GtkFramePeer.h"
 #include <gdk/gdkprivate.h>
+#include <gdk/gdkx.h>
 void
 setBounds (GtkWidget *, jint, jint, jint, jint);
 
@@ -53,6 +54,24 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_create
   NSA_SET_PTR (env, obj, window);
 }
 
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setVisible
+  (JNIEnv *env, jobject obj, jboolean visible)
+{
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+
+  if (visible)
+    gtk_widget_show (GTK_WIDGET (ptr));
+  else
+    gtk_widget_hide (GTK_WIDGET (ptr));
+
+  XFlush (GDK_DISPLAY ());
+  gdk_threads_leave ();
+}
+
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_connectHooks
   (JNIEnv *env, jobject obj)
 {
@@ -68,29 +87,6 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_connectHooks
   
   gtk_widget_realize (GTK_WIDGET (ptr));
   connect_awt_hook (env, obj, 1, GTK_WIDGET (ptr)->window);
-  gdk_threads_leave ();
-}
-
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env, 
-  jobject obj, jint type, jint width, jint height, jboolean visible)
-{
-  GtkWidget *window;
-
-  gdk_threads_enter ();
-  switch (type)
-    {
-    case 1:
-      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-      break;
-    case 3:
-      window = gtk_window_new (GTK_WINDOW_POPUP);
-      break;
-    }
-
-  setup_window (env, obj, window, width, height, visible);
-
-  NSA_SET_PTR (env, obj, window);
   gdk_threads_leave ();
 }
 
@@ -194,6 +190,8 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_toBack (JNIEnv *env,
     
   gdk_threads_enter ();
   gdk_window_lower (GTK_WIDGET (ptr)->window);
+
+  XFlush (GDK_DISPLAY ());
   gdk_threads_leave ();
 }
 
@@ -210,6 +208,8 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_toFront (JNIEnv *env,
     
   gdk_threads_enter ();
   gdk_window_raise (GTK_WIDGET (ptr)->window);
+
+  XFlush (GDK_DISPLAY ());
   gdk_threads_leave ();
 }
 
