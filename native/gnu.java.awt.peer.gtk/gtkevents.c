@@ -124,7 +124,7 @@ awt_event_handler (GdkEvent *event)
 				      (jint)event->button.y, 
 				      click_count, JNI_FALSE);
 
-	  grab_counter++;
+	  /*	  grab_counter++;
 	  gdk_pointer_grab (event->any.window,
 			    FALSE,
 			    GDK_POINTER_MOTION_MASK |
@@ -135,16 +135,16 @@ awt_event_handler (GdkEvent *event)
 			    GDK_LEAVE_NOTIFY_MASK,
 			    NULL,
 			    NULL,
-			    event->button.time);
+			    event->button.time);*/
 	  break;
 	case GDK_BUTTON_RELEASE:
 	  {
 	    int width, height;
 
 	    /* only ungrab if no other buttons are pressed down */
-	    if (--grab_counter == 0)
+	    /*	    if (--grab_counter == 0)
 	      gdk_pointer_ungrab (event->button.time);
-
+	    */
 	    (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr, postMouseEventID,
 					AWT_MOUSE_RELEASED, 
 					(jlong)event->button.time,

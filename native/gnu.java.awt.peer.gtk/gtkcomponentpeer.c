@@ -390,14 +390,23 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setBounds
 {
   GtkWidget *widget;
   void *ptr;
+  GtkAllocation alloc;
 
   ptr = NSA_GET_PTR (env, obj);
   
   gdk_threads_enter ();
 
   widget = GTK_WIDGET (ptr);
-  gtk_widget_set_usize (widget, width, height);
+  //  gtk_widget_set_usize (widget, width, height);
+
+  alloc.x = alloc.y = 0;
+  alloc.width = width;
+  alloc.height = height;
+
+  gtk_widget_size_allocate (widget, &alloc);
   gtk_fixed_move (GTK_FIXED (widget->parent), widget, x, y);
+
+  printf ("native: setbounds: %i, %i  %ix%i\n", x, y, width, height);  
 
   gdk_threads_leave ();
 }

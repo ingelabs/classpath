@@ -27,7 +27,8 @@
  */
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env, jobject obj, jint type, jint width, jint height)
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env, 
+  jobject obj, jint type, jint width, jint height)
 {
   GtkWidget *window, *fix;
 
@@ -44,6 +45,8 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env, jobject obj,
       window = gtk_window_new (GTK_WINDOW_POPUP);
       break;
     }
+  gtk_window_set_policy (GTK_WINDOW (window), 1, 1, 1);
+
   connect_awt_hook (env, obj, window, 1, &window->window);
 
   /* Every window needs a fixed widget to support absolute positioning. */
