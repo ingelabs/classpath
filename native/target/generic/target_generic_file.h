@@ -643,9 +643,9 @@ extern "C" {
   #include <sys/types.h>
   #include <sys/stat.h>
   #include <unistd.h>
-  #ifdef HAVE_UTIME
+  #ifdef HAVE_UTIME_H
     #include <utime.h>
-  #elif HAVE_SYS_UTIME
+  #elif HAVE_SYS_UTIME_H
     #include <sys/utime.h>
   #else
     #error utime.h not found. Please check configuration.
