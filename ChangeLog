@@ -1,5 +1,10 @@
 2004-10-25  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/InetAddress.java
+	(toString): Rename 'address' to 'addr'.
+
+2004-10-25  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/font/TextAttribute.java,
 	javax/swing/JComponent.java,
 	javax/swing/JInternalFrame.java,
