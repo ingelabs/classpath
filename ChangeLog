@@ -1,3 +1,17 @@
+2004-09-26  Kim Ho  <kho@redhat.com>
+
+	* javax/swing/plaf/basic/BasicArrowButton.java:
+	Jalopy. Reimplement.
+	* javax/swing/plaf/basic/BasicScrollBarUI.java:
+	Jalopy.
+	(arrowIcon, upIcon, downIcon, leftIcon,
+	rightIcon): Removed.
+	(createIncreaseButton): Use BasicArrowButton.
+	(createDecreaseButton): Ditto.
+	* javax/swing/plaf/basic/BasicSplitPaneDivider.java:
+	(createRightOneTouchButton): Remove button border.
+	(createLeftOneTouchButton): Ditto.
+
 2004-09-26  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/JTree.java
