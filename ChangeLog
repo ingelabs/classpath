@@ -1,3 +1,7 @@
+2004-06-11  Steven Augart  <augart@watson.ibm.com>
+
+	* NEWS: Added info on bug fix.
+
 2004-06-09  Steven Augart  <augart@watson.ibm.com>
 
 	* configure.ac: Add SIZEOF_VOID_P to include/config.h.

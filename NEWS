@@ -14,6 +14,9 @@ New in release 0.10 (in preparation)
   one JNI 1.2 function: GetEnv(), in the JNI Invocation API. 
   If this poses problems, please raise them on the classpath mailing list.
 
+* Double.toString() and Float.toString() now work properly on 64-bit 
+  Linux/PowerPC systems.
+
 New in release 0.09 (2004/02/02)
 
 * Includes updated GNU JAXP version from 2004-02-01.
