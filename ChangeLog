@@ -1,3 +1,8 @@
+2002-04-06  Tom Tromey  <tromey@redhat.com>
+
+	* lib/Makefile.am (JAVAC): Added -bootclasspath and
+	$(ARG_CLASSPATH_JAVAC) arguments.
+
 2002-04-07  Mark Wielaard <mark@klomp.org>
 
 	* java/util/Hashtable.java (contains): Remove NullPointer check.
