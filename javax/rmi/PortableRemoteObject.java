@@ -1,4 +1,4 @@
-/* gnu.java.rmi.RMIMarshalledObjectOutputStream
+/* PortableRemoteObject.java -- 
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -36,48 +36,79 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.java.rmi;
+package javax.rmi;
 
-import java.io.OutputStream;
-import java.io.ObjectOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.rmi.Remote;
-import java.rmi.server.ObjID;
-import java.rmi.server.RemoteStub;
+import java.rmi.RemoteException;
+import java.rmi.NoSuchObjectException;
+import gnu.javax.rmi.CORBA.DelegateFactory;
+import gnu.javax.rmi.CORBA.GetDelegateInstanceException;
+import javax.rmi.CORBA.PortableRemoteObjectDelegate;
+import javax.rmi.CORBA.Util;
 
-import gnu.java.rmi.server.RMIObjectOutputStream;
-import gnu.java.rmi.server.UnicastServerRef;
-
-/**
- * This class is only for java.rmi.MarshalledObject to serialize object and 
- * got objBytes and locBytes
- */
-public class RMIMarshalledObjectOutputStream extends RMIObjectOutputStream
+public class PortableRemoteObject
+  implements Remote /* why doc doesn't say should implement Remote */
 {
-  private ObjectOutputStream locStream;
-  private ByteArrayOutputStream locBytesStream;
-  
-  public RMIMarshalledObjectOutputStream(OutputStream objStream) throws IOException
-  {
-    super(objStream);
-    locBytesStream = new ByteArrayOutputStream(256);
-    locStream = new ObjectOutputStream(locBytesStream);
-  }
-  
-  //This method overrides RMIObjectOutputStream's.
-  protected void setAnnotation(String annotation) throws IOException{
-    locStream.writeObject(annotation);
-  }
-  
-  public void flush() throws IOException {
-    super.flush();
-    locStream.flush();
-  }
-  
-  public byte[] getLocBytes(){
-    return locBytesStream.toByteArray();
-  }
-  
-} // End of RMIMarshalledObjectOutputStream
 
+  private static PortableRemoteObjectDelegate delegate;
+  static
+  {
+    try
+      {
+	delegate = (PortableRemoteObjectDelegate)DelegateFactory.getInstance
+	  ("PortableRemoteObject");
+      }
+    catch(GetDelegateInstanceException e)
+      {
+	e.printStackTrace();
+	delegate = null;
+      }
+  }
+
+  protected PortableRemoteObject()
+    throws RemoteException
+  {
+    if(delegate != null)
+      exportObject((Remote)this);
+  }
+
+  public static void connect(Remote target, Remote source)
+    throws RemoteException
+  {
+    if(delegate != null)
+      delegate.connect(target, source);
+  }
+    
+  public static void exportObject(Remote obj)
+    throws RemoteException
+  {
+    if(delegate != null)
+      delegate.exportObject(obj);
+  }
+
+  public static Object narrow(Object narrowFrom, Class narrowTo)
+    throws ClassCastException
+  {
+    if(delegate != null)
+      return delegate.narrow(narrowFrom, narrowTo);
+    else
+      return null;
+  }
+
+  public static Remote toStub(Remote obj)
+    throws NoSuchObjectException
+  {
+    if(delegate != null)
+      return delegate.toStub(obj);
+    else
+      return null;
+  }
+
+  public static void unexportObject(Remote obj)
+    throws NoSuchObjectException
+  {
+    if(delegate != null)
+      delegate.unexportObject(obj);
+  }
+  
+}

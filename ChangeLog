@@ -1,3 +1,93 @@
+2002-10-31  Mark Wielaard  <mark@klomp.org>:
+
+	Merge Orp RMI patches from Wu Gansha <gansha.wu@intel.com>
+	* configure.in (AC_OUTPUT): Add javax/rmi/Makefile,
+	* gnu/javax/Makefile, gnu/javax/rmi/Makefile,
+	javax/rmi/CORBA/Makefile and gnu/javax/rmi/CORBA/Makefile.
+	* javax/.cvsignore: New File.
+	* javax/Makefile.am (SUBDIRS): Add rmi.
+	* javax/rmi/.cvsignore: New File.
+	* javax/rmi/Makefile.am: New file.
+	* javax/rmi/CORBA/.cvsignore: New file.
+	* javax/rmi/CORBA/Makefile.am: New file.
+	* gnu/Makefile.am (SUBDIRS): Add javax.
+	* gnu/javax/.cvsignore: New file.
+	* gnu/javax/Makefile.am: New file.
+	* gnu/javax/rmi/.cvsignore: New file.
+	* gnu/javax/rmi/Makefile.am: New file.
+	* gnu/javax/rmi/CORBA/.cvsignore: New file.
+	* gnu/javax/rmi/CORBA/Makefile.am: New file.
+
+	* java/rmi/MarshalledObject.java (equals): Check hashcode first.
+
+	* java/rmi/server/RMIClassLoader.java (MyClassLoader): Create/Use
+	annotation.
+	(loadClass): Take String as codebases.
+	(getClassAnnotation): Use MyClassLoader annotations.
+	* java/rmi/server/UnicastRemoteObject.java (UnicastRemoteObject):
+	call exportObject(this).
+
+	* gnu/java/rmi/RMIMarshalledObjectOutputStream.java
+	(RMIMarshalledObjectOutputStream): set locBytesStream and locStream.
+	(setAnnotation): Don't set locBytesStream and locStream.
+	(replaceObject): Removed.
+	(flush): Don't test locStream.
+	(getLocButes): LikeWise.
+	* gnu/java/rmi/dgc/DGCImpl.java: extends UnicastServerRef.
+	(leaseCache): New field.
+	(dirty): Use leaseCache.
+	(LeaseRecord): New inner class.
+	* gnu/java/rmi/registry/RegistryImpl.java (RegistryImpl): Don't
+	explicitly call exportObject().
+	* gnu/java/rmi/registry/RegistryImpl_Stub.java: set useNewInvoke to
+	false to communicate with Sun JDK130.
+	* gnu/java/rmi/server/ConnectionRunnerPool.java: Add CPU comment.
+	* gnu/java/rmi/server/RMIObjectInputStream.java
+	(UnicastConnectionManager): Removed field.
+	* gnu/java/rmi/server/RMIObjectOutputStream.java (replaceObject):
+	Use UnicastServer.getExportedRef().
+	* gnu/java/rmi/server/UnicastConnection.java (reviveTime): New field.
+	(expireTime): Likewise.
+	(CONNECTION_TIMEOUT): Likewise.
+	(disconnect): Call sock.close().
+	(isExpired): New method.
+	(resetTime): Likewise.
+	(run): Use do while loop and catch Exception for discardConnection().
+	* gnu/java/rmi/server/UnicastConnectionManager.java: Pool connections.
+	* gnu/java/rmi/server/UnicastRef.java: Lots of changes.
+	* gnu/java/rmi/server/UnicastRemoteCall.java: Lots of changes.
+	* gnu/java/rmi/server/UnicastServer.java (refcache): New field.
+	(exportObject): Use refcache.
+	(unexportObject): Likewise.
+	(getExportedRef): New method.
+	* gnu/java/rmi/server/UnicastServerRef.java (UnicastServerRef): New
+	constructor.
+	(exportObject): Save manager.serverobj.
+	(getStub): New method.
+
+	* javax/rmi/PortableRemoteObject.java: New file.
+	* gnu/javax/rmi/PortableServer.java: Likewise.
+
+	* javax/rmi/CORBA/ClassDesc.java: New file.
+	* javax/rmi/CORBA/PortableRemoteObjectDelegate.java: Likewise.
+	* javax/rmi/CORBA/Stub.java: Likewise.
+	* javax/rmi/CORBA/StubDelegate.java: Likewise.
+	* javax/rmi/CORBA/Tie.java: Likewise.
+	* javax/rmi/CORBA/Util.java: Likewise.
+	* javax/rmi/CORBA/UtilDelegate.java: Likewise.
+	* javax/rmi/CORBA/ValueHandler.java: Likewise.
+	* gnu/javax/rmi/CORBA/DelegateFactory.java: Likewise.
+	* gnu/javax/rmi/CORBA/GetDelegateInstanceException.java: Likewise.
+	* gnu/javax/rmi/CORBA/PortableRemoteObjectDelegateImpl.java: Likewise.
+	* gnu/javax/rmi/CORBA/StubDelegateImpl.java: Likewise.
+	* gnu/javax/rmi/CORBA/UtilDelegateImpl.java: Likewise.
+	* gnu/javax/rmi/CORBA/ValueHandlerImpl.java: Likewise.
+
+	* javax/rmi/BAD_OPERATION.java: Stub class.
+	* javax/rmi/ORB.java: Likewise
+	* javax/rmi/CORBA/ObjectImpl.java: Likewise
+	* javax/rmi/CORBA/SystemException.java: Likewise.
+
 2002-10-30  Sascha Brawer  <brawer@acm.org>
 
 	* java/util/logging/Level.java (isStandardLevel): New package-private

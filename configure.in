@@ -281,6 +281,9 @@ gnu/java/security/util/Makefile
 gnu/java/text/Makefile
 gnu/java/util/Makefile
 gnu/java/util/prefs/Makefile
+gnu/javax/Makefile
+gnu/javax/rmi/Makefile
+gnu/javax/rmi/CORBA/Makefile
 include/jni.h
 java/Makefile
 java/applet/Makefile
@@ -334,6 +337,8 @@ javax/accessibility/Makefile
 javax/naming/Makefile
 javax/naming/directory/Makefile
 javax/naming/spi/Makefile
+javax/rmi/Makefile
+javax/rmi/CORBA/Makefile
 javax/swing/Makefile
 javax/swing/border/Makefile
 javax/swing/colorchooser/Makefile

@@ -1,3 +1,3 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-SUBDIRS = accessibility naming swing
+SUBDIRS = accessibility rmi naming swing

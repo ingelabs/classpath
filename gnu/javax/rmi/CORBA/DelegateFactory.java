@@ -1,4 +1,4 @@
-/* gnu.java.rmi.RMIMarshalledObjectOutputStream
+/* DelegateFactory.java -- 
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -36,48 +36,39 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.java.rmi;
+package gnu.javax.rmi.CORBA;
 
-import java.io.OutputStream;
-import java.io.ObjectOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.rmi.Remote;
-import java.rmi.server.ObjID;
-import java.rmi.server.RemoteStub;
+import java.util.HashMap;
+import javax.rmi.CORBA.Util;
 
-import gnu.java.rmi.server.RMIObjectOutputStream;
-import gnu.java.rmi.server.UnicastServerRef;
-
-/**
- * This class is only for java.rmi.MarshalledObject to serialize object and 
- * got objBytes and locBytes
- */
-public class RMIMarshalledObjectOutputStream extends RMIObjectOutputStream
+public class DelegateFactory
 {
-  private ObjectOutputStream locStream;
-  private ByteArrayOutputStream locBytesStream;
-  
-  public RMIMarshalledObjectOutputStream(OutputStream objStream) throws IOException
+  private static HashMap cache = new HashMap(4);
+    
+  public static synchronized Object getInstance(String type)
+    throws GetDelegateInstanceException
   {
-    super(objStream);
-    locBytesStream = new ByteArrayOutputStream(256);
-    locStream = new ObjectOutputStream(locBytesStream);
+    Object r = cache.get(type);
+    if (r != null)
+      return r;
+    String dcname = System.getProperty("javax.rmi.CORBA." + type + "Class");
+    if (dcname == null)
+      {
+	//throw new DelegateException
+	//  ("no javax.rmi.CORBA.XXXClass property sepcified.");
+	dcname = "gnu.javax.rmi.CORBA." + type + "DelegateImpl";
+      }
+    try
+      {
+	Class dclass = Class.forName(dcname);
+	r = dclass.newInstance();
+	cache.put(type, r);
+	return r;
+      }
+    catch(Exception e)
+      {
+	throw new GetDelegateInstanceException
+	  ("Exception when trying to get delegate instance:" + dcname, e);
+      }
   }
-  
-  //This method overrides RMIObjectOutputStream's.
-  protected void setAnnotation(String annotation) throws IOException{
-    locStream.writeObject(annotation);
-  }
-  
-  public void flush() throws IOException {
-    super.flush();
-    locStream.flush();
-  }
-  
-  public byte[] getLocBytes(){
-    return locBytesStream.toByteArray();
-  }
-  
-} // End of RMIMarshalledObjectOutputStream
-
+}

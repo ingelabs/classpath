@@ -38,15 +38,24 @@ exception statement from your version. */
 package gnu.java.rmi.server;
 
 import java.lang.Exception;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectInput;
 import java.io.StreamCorruptedException;
 import java.rmi.server.RemoteCall;
+import java.rmi.RemoteException;
+import java.rmi.MarshalException;
+import java.rmi.UnmarshalException;
+import java.rmi.server.UID;
+import java.rmi.server.ObjID;
+import java.rmi.server.RemoteObject;
+
 import java.util.Vector;
 
-public class UnicastRemoteCall implements RemoteCall
-{
+public class UnicastRemoteCall
+	implements RemoteCall, ProtocolConstants {
 
   private UnicastConnection conn;
   private Object result;
@@ -56,92 +65,152 @@ public class UnicastRemoteCall implements RemoteCall
   private Vector vec;
   private int ptr;
 
+private ObjectOutput oout;
+private ObjectInput oin;
+
   /**
    * Incoming call.
    */
-  UnicastRemoteCall(UnicastConnection conn)
-  {
+UnicastRemoteCall(UnicastConnection conn) {
     this.conn = conn;
   }
 
   /**
    * Outgoing call.
    */
-  UnicastRemoteCall(Object obj, int opnum, long hash)
-  {
+/*
+UnicastRemoteCall(Object obj, int opnum, long hash) {
     this.object = obj;
     this.opnum = opnum;
     this.hash = hash;
   }
+*/
 
-  public ObjectOutput getOutputStream() throws IOException
+UnicastRemoteCall(UnicastConnection conn, ObjID objid, int opnum, long hash) throws RemoteException
   {
+    this.conn = conn;
+	this.opnum = opnum;
+	this.hash = hash;
+	
+	// signal the call when constructing
+	try{
+    	DataOutputStream dout = conn.getDataOutputStream();
+    	dout.write(MESSAGE_CALL);
+    	
+        oout = conn.getObjectOutputStream();
+	    objid.write(oout);
+        oout.writeInt(opnum);
+        oout.writeLong(hash);
+    }catch(IOException ex){
+        throw new MarshalException("Try to write header but failed.", ex);
+    }
+}
+
+UnicastConnection getConnection(){
+    return conn;
+}
+
+public ObjectOutput getOutputStream() throws IOException {
+    if (conn != null) {
+        if(oout == null)
+            return (oout = conn.getObjectOutputStream());
+        else
+            return oout;
+    }else{
     vec = new Vector();
-    return new DummyObjectOutputStream();
+    	return (new DummyObjectOutputStream());
+    }
   }
 
-  public void releaseOutputStream() throws IOException
-  {
-    // Does nothing.
+public void releaseOutputStream() throws IOException {
+	if(oout != null)
+         oout.flush();
   }
 
-  public ObjectInput getInputStream() throws IOException
-  {
-    if (conn != null)
-      return conn.getObjectInputStream();
+public ObjectInput getInputStream() throws IOException {
+	if (conn != null) {
+	    if(oin == null)
+		    return (oin = conn.getObjectInputStream());
+		else
+		    return oin;
+	}
+	else {
     ptr = 0;
-    return new DummyObjectInputStream();
+		return (new DummyObjectInputStream());
+	}
   }
 
-  public void releaseInputStream() throws IOException
-  {
+public void releaseInputStream() throws IOException {
     // Does nothing.
   }
 
-  public ObjectOutput getResultStream(boolean success)
-    throws IOException, StreamCorruptedException
-  {
+public ObjectOutput getResultStream(boolean success) throws IOException, StreamCorruptedException {
     vec = new Vector();
-    return new DummyObjectOutputStream();
+	return (new DummyObjectOutputStream());
   }
 
-  public void executeCall() throws Exception
-  {
-    throw new Error("Not implemented");
+public void executeCall() throws Exception {
+	byte returncode;
+	ObjectInput oin;
+	try{
+        releaseOutputStream();
+        DataInputStream din = conn.getDataInputStream();
+        if (din.readByte() != MESSAGE_CALL_ACK) {
+			throw new RemoteException("Call not acked");
+		}
+        oin = getInputStream();
+        returncode = oin.readByte();
+        UID.read(oin);
+    }catch(IOException ex){
+        throw new UnmarshalException("Try to read header but failed:", ex);
   }
 
-  public void done() throws IOException
-  {
-    /* Does nothing */
+    //check return code
+    switch(returncode){
+    case RETURN_ACK: //it's ok
+        return;
+    case RETURN_NACK:{
+        Object returnobj;
+        try{
+            returnobj = oin.readObject();
+        }
+        catch(Exception ex2){
+            throw new UnmarshalException("Try to read exception object but failed", ex2);
+        }
+        if(!(returnobj instanceof Exception))
+            throw new UnmarshalException("Should be Exception type here");
+        throw (Exception)returnobj;
+    }
+    default:
+        throw new UnmarshalException("Invalid return code");
+    }
   }
 
-  Object returnValue()
-  {
-    return vec.elementAt(0);
+public void done() throws IOException {
+    // conn.disconnect();
   }
 
-  Object[] getArguments()
-  {
-    return vec.toArray();
+Object returnValue() {
+	return (vec.elementAt(0));
   }
 
-  Object getObject()
-  {
-    return object;
+Object[] getArguments() {
+	return (vec.toArray());
   }
 
-  int getOpnum()
-  {
-    return opnum;
+Object getObject() {
+	return (object);
   }
 
-  long getHash()
-  {
-    return hash;
+int getOpnum() {
+	return (opnum);
   }
 
-  void setReturnValue(Object obj)
-  {
+long getHash() {
+	return (hash);
+}
+
+void setReturnValue(Object obj) {
     vec.removeAllElements();
     vec.addElement(obj);
   }
@@ -149,227 +218,176 @@ public class UnicastRemoteCall implements RemoteCall
   /**
    * Dummy object output class.
    */
-  private class DummyObjectOutputStream implements ObjectOutput
-  {
-    /**
-     * Non-private constructor to reduce bytecode emitted.
-     */
-    DummyObjectOutputStream()
-    {
-    }
+private class DummyObjectOutputStream implements ObjectOutput {
 
-    public void writeBoolean(boolean v) throws IOException
-    {
+public void writeBoolean(boolean v) throws IOException {
       vec.addElement(new Boolean(v));
     }
 
-    public void writeByte(int v) throws IOException
-    {
+public void writeByte(int v) throws IOException {
       vec.addElement(new Byte((byte) v));
     }
 
-    public void writeChar(int v) throws IOException
-    {
+public void writeChar(int v) throws IOException {
       vec.addElement(new Character((char) v));
     }
 
-    public void writeDouble(double v) throws IOException
-    {
+public void writeDouble(double v) throws IOException {
       vec.addElement(new Double(v));
     }
 
-    public void writeFloat(float v) throws IOException
-    {
+public void writeFloat(float v) throws IOException {
       vec.addElement(new Float(v));
     }
 
-    public void writeInt(int v) throws IOException
-    {
+public void writeInt(int v) throws IOException {
       vec.addElement(new Integer(v));
     }
 
-    public void writeLong(long v) throws IOException
-    {
+public void writeLong(long v) throws IOException {
       vec.addElement(new Long(v));
     }
 
-    public void writeShort(int v) throws IOException
-    {
+public void writeShort(int v) throws IOException {
       vec.addElement(new Short((short) v));
     }
 
-    public void writeObject(Object obj) throws IOException
-    {
+public void writeObject(Object obj) throws IOException {
       vec.addElement(obj);
     }
 
-    public void write(byte b[]) throws IOException
-    {
+public void write(byte b[]) throws IOException {
       throw new IOException("not required");
     }
 
-    public void write(byte b[], int off, int len) throws IOException
-    {
+public void write(byte b[], int off, int len) throws IOException {
       throw new IOException("not required");
     }
 
-    public void write(int b) throws IOException
-    {
+public void write(int b) throws IOException {
       throw new IOException("not required");
     }
 
-    public void writeBytes(String s) throws IOException
-    {
+public void writeBytes(String s) throws IOException {
       throw new IOException("not required");
     }
 
-    public void writeChars(String s) throws IOException
-    {
+public void writeChars(String s) throws IOException {
       throw new IOException("not required");
     }
 
-    public void writeUTF(String str) throws IOException
-    {
+public void writeUTF(String str) throws IOException {
       throw new IOException("not required");
     }
 
-    public void flush() throws IOException
-    {
+public void flush() throws IOException {
+}
+
+public void close() throws IOException {
     }
 
-    public void close() throws IOException
-    {
     }
-  } // class DummyObjectOutputStream
 
   /**
    * Dummy object input class.
    */
-  private class DummyObjectInputStream implements ObjectInput
-  {
-    /**
-     * Non-private constructor to reduce bytecode emitted.
-     */
-    DummyObjectInputStream()
-    {
-    }
+private class DummyObjectInputStream implements ObjectInput {
 
-    public boolean readBoolean() throws IOException
-    {
+public boolean readBoolean() throws IOException {
       Object obj = vec.elementAt(ptr++);
-      return ((Boolean) obj).booleanValue();
+	return (((Boolean)obj).booleanValue());
     }
 
-    public byte readByte() throws IOException
-    {
+public byte readByte() throws IOException {
       Object obj = vec.elementAt(ptr++);
-      return ((Byte) obj).byteValue();
+	return (((Byte)obj).byteValue());
     }
 
-    public char readChar() throws IOException
-    {
+public char readChar() throws IOException {
       Object obj = vec.elementAt(ptr++);
-      return ((Character) obj).charValue();
+	return (((Character)obj).charValue());
     }
 
-    public double readDouble() throws IOException
-    {
+public double readDouble() throws IOException {
       Object obj = vec.elementAt(ptr++);
-      return ((Double) obj).doubleValue();
+	return (((Double)obj).doubleValue());
     }
 
-    public float readFloat() throws IOException
-    {
+public float readFloat() throws IOException {
       Object obj = vec.elementAt(ptr++);
-      return ((Float) obj).floatValue();
+	return (((Float)obj).floatValue());
     }
 
-    public int readInt() throws IOException
-    {
+public int readInt() throws IOException {
       Object obj = vec.elementAt(ptr++);
-      return ((Integer) obj).intValue();
+	return (((Integer)obj).intValue());
     }
 
-    public long readLong() throws IOException
-    {
+public long readLong() throws IOException {
       Object obj = vec.elementAt(ptr++);
-      return ((Long) obj).longValue();
+	return (((Long)obj).longValue());
     }
 
-    public short readShort() throws IOException
-    {
+public short readShort() throws IOException {
       Object obj = vec.elementAt(ptr++);
-      return ((Short) obj).shortValue();
+	return (((Short)obj).shortValue());
     }
 
-    public Object readObject() throws IOException
-    {
-      return vec.elementAt(ptr++);
+public Object readObject() throws IOException {
+	return (vec.elementAt(ptr++));
     }
 
-    public int read(byte b[]) throws IOException
-    {
+public int read(byte b[]) throws IOException {
       throw new IOException("not required");
     }
 
-    public int read(byte b[], int off, int len) throws IOException
-    {
+public int read(byte b[], int off, int len) throws IOException {
       throw new IOException("not required");
     }
 
-    public int read() throws IOException
-    {
+public int read() throws IOException {
       throw new IOException("not required");
     }
 
-    public long skip(long n) throws IOException
-    {
+public long skip(long n) throws IOException {
       throw new IOException("not required");
     }
 
-    public int available() throws IOException
-    {
+public int available() throws IOException {
       throw new IOException("not required");
     }
 
-    public void readFully(byte b[]) throws IOException
-    {
+public void readFully(byte b[]) throws IOException {
       throw new IOException("not required");
     }
 
-    public void readFully(byte b[], int off, int len) throws IOException
-    {
+public void readFully(byte b[], int off, int len) throws IOException {
       throw new IOException("not required");
     }
 
-    public String readLine() throws IOException
-    {
+public String readLine() throws IOException {
       throw new IOException("not required");
     }
 
-    public String readUTF() throws IOException
-    {
+public String readUTF() throws IOException {
       throw new IOException("not required");
     }
 
-    public int readUnsignedByte() throws IOException
-    {
+public int readUnsignedByte() throws IOException {
       throw new IOException("not required");
     }
 
-    public int readUnsignedShort() throws IOException
-    {
+public int readUnsignedShort() throws IOException {
       throw new IOException("not required");
     }
 
-    public int skipBytes(int n) throws IOException
-    {
+public int skipBytes(int n) throws IOException {
       throw new IOException("not required");
     }
 
-    public void close() throws IOException
-    {
+public void close() throws IOException {
+}
+
     }
-  } // class DummyObjectInputStream
 
 }

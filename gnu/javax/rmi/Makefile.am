@@ -1,4 +1,7 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
 
-SUBDIRS = classpath java javax
+SUBDIRS = CORBA
+
+EXTRA_DIST = \
+PortableServer.java

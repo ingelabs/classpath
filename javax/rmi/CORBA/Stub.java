@@ -1,4 +1,4 @@
-/* gnu.java.rmi.RMIMarshalledObjectOutputStream
+/* Stub.java -- 
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -36,48 +36,85 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.java.rmi;
+package javax.rmi.CORBA;
 
-import java.io.OutputStream;
-import java.io.ObjectOutputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.rmi.Remote;
-import java.rmi.server.ObjID;
-import java.rmi.server.RemoteStub;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.rmi.RemoteException;
+//import org.omg.CORBA.ORB;
+//import org.omg.CORBA_2_3.portable.ObjectImpl;
+//import org.omg.CORBA.portable.ObjectImpl;
+import gnu.javax.rmi.CORBA.DelegateFactory;
+import gnu.javax.rmi.CORBA.GetDelegateInstanceException;
 
-import gnu.java.rmi.server.RMIObjectOutputStream;
-import gnu.java.rmi.server.UnicastServerRef;
-
-/**
- * This class is only for java.rmi.MarshalledObject to serialize object and 
- * got objBytes and locBytes
- */
-public class RMIMarshalledObjectOutputStream extends RMIObjectOutputStream
+public abstract class Stub extends ObjectImpl
+  implements Serializable
 {
-  private ObjectOutputStream locStream;
-  private ByteArrayOutputStream locBytesStream;
-  
-  public RMIMarshalledObjectOutputStream(OutputStream objStream) throws IOException
+  private transient StubDelegate delegate;
+                
+  protected Stub()
   {
-    super(objStream);
-    locBytesStream = new ByteArrayOutputStream(256);
-    locStream = new ObjectOutputStream(locBytesStream);
+    try
+      {
+	delegate = (StubDelegate)DelegateFactory.getInstance("Stub");
+      }
+    catch(GetDelegateInstanceException e)
+      {
+	delegate = null;
+      }
   }
-  
-  //This method overrides RMIObjectOutputStream's.
-  protected void setAnnotation(String annotation) throws IOException{
-    locStream.writeObject(annotation);
-  }
-  
-  public void flush() throws IOException {
-    super.flush();
-    locStream.flush();
-  }
-  
-  public byte[] getLocBytes(){
-    return locBytesStream.toByteArray();
-  }
-  
-} // End of RMIMarshalledObjectOutputStream
 
+  public int hashCode()
+  {
+    if(delegate != null)
+      return delegate.hashCode(this);
+    else
+      return 0;
+  }
+
+  public boolean equals(Object obj)
+  {
+    if(delegate != null)
+      return delegate.equals(this, obj);
+    else
+      return false;
+  }
+
+  public String toString()
+  {
+    String s = null;
+    if(delegate != null)
+      s = delegate.toString(this);
+    if(s == null)
+      s = super.toString();
+    return s;
+  }
+
+  // XXX javax.rmi.ORB -> org.omg.CORBA.ORB
+  public void connect(javax.rmi.ORB orb)
+    throws RemoteException
+  {
+    if(delegate != null)
+      delegate.connect(this, orb);
+  }
+
+  /**
+   * The following two routines are required by serialized form of Java API doc.
+   */
+  private void readObject(ObjectInputStream stream)
+    throws IOException, ClassNotFoundException
+  {
+    if(delegate != null)
+      delegate.readObject(this, stream);
+  }
+
+  private void writeObject(ObjectOutputStream stream)
+    throws IOException
+  {
+    if(delegate != null)
+      delegate.writeObject(this, stream);
+  }
+
+}
