@@ -62,17 +62,17 @@ public class Thread {
 	/** The maximum priority for a Thread.
 	 ** @XXX find out the value for this.
 	 **/
-	public static final int MAX_PRIORITY;
+	public static final int MAX_PRIORITY  = 100;
 
 	/** The priority a Thread gets by default.
 	 ** @XXX find out the value for this.
 	 **/
-	public static final int NORM_PRIORITY;
+	public static final int NORM_PRIORITY = 50;
 
 	/** The minimum priority for a Thread.
 	 ** @XXX find out the value for this.
 	 **/
-	public static final int MIN_PRIORITY;
+	public static final int MIN_PRIORITY = 0;
 
 	static int numThreadsCreated = 0;
 
