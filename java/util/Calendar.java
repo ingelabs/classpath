@@ -901,7 +901,7 @@ public abstract class Calendar implements Serializable, Cloneable
     ",WEEK_OF_YEAR=", ",WEEK_OF_MONTH=",
     ",DAY_OF_MONTH=", ",DAY_OF_YEAR=", ",DAY_OF_WEEK=",
     ",DAY_OF_WEEK_IN_MONTH=",
-    ",AM_PM", ",HOUR=", ",HOUR_OF_DAY=",
+    ",AM_PM=", ",HOUR=", ",HOUR_OF_DAY=",
     ",MINUTE=", ",SECOND=", ",MILLISECOND=",
     ",ZONE_OFFSET=", ",DST_OFFSET="
   };
@@ -923,16 +923,13 @@ public abstract class Calendar implements Serializable, Cloneable
       sb.append("?");
     sb.append(",zone=" + zone);
     sb.append(",areFieldsSet=" + areFieldsSet);
-    if (areFieldsSet)
+    for (int i = 0; i < FIELD_COUNT; i++)
       {
-	for (int i = 0; i < FIELD_COUNT; i++)
-	  {
-	    sb.append(fieldNames[i]);
-	    if (isSet[i])
-	      sb.append(fields[i]);
-	    else
-	      sb.append("?");
-	  }
+	sb.append(fieldNames[i]);
+	if (isSet[i])
+	  sb.append(fields[i]);
+	else
+	  sb.append("?");
       }
     sb.append(",lenient=").append(lenient);
     sb.append(",firstDayOfWeek=").append(firstDayOfWeek);
