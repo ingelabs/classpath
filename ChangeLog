@@ -1,3 +1,16 @@
+2002-11-08  Michael Koch <konqueror@gmx.de>
+
+	* gnu/java/nio/charset/ISO_8859_1.java,
+	gnu/java/nio/charset/Provider.java,
+	gnu/java/nio/charset/US_ASCII.java,
+	gnu/java/nio/charset/UTF_16.java,
+	gnu/java/nio/charset/UTF_16BE.java,
+	gnu/java/nio/charset/UTF_16Decoder.java,
+	gnu/java/nio/charset/UTF_16Encoder.java,
+	gnu/java/nio/charset/UTF_16LE.java,
+	gnu/java/nio/charset/UTF_8.java:
+	Added copyright text.
+	
 2002-11-08  Mark Wielaard  <mark@klomp.org>
 
 	* java/io/InputStreamReader.java (InputStreamReader): Throw
