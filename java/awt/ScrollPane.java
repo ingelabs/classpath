@@ -39,21 +39,21 @@ public class ScrollPane extends Container implements java.io.Serializable
  */
 
 /**
-  * Constant indicating that scrollbars are always displayed in this
-  * window.
-  */
-public static final int SCROLLBARS_ALWAYS = 0;
-
-/**
   * Constant indicating that scrollbars are created as needed in this
   * windows.
   */
-public static final int SCROLLBARS_AS_NEEDED = 2;
+public static final int SCROLLBARS_AS_NEEDED = 0;
+
+/**
+  * Constant indicating that scrollbars are always displayed in this
+  * window.
+  */
+public static final int SCROLLBARS_ALWAYS = 1;
 
 /**
   * Constant indicating that scrollbars are never displayed in this window.
   */
-public static final int SCROLLBARS_NEVER = 1;
+public static final int SCROLLBARS_NEVER = 2;
 
 // Serialization constant
 private static final long serialVersionUID = 7956609840827222915L;
