@@ -45,14 +45,14 @@ import gnu.java.nio.LongBufferImpl;
 public abstract class LongBuffer extends Buffer
   implements Comparable
 {
-  protected long [] backing_buffer;
   protected int array_offset;
+  protected long [] backing_buffer;
 
-  public static LongBuffer allocateDirect(int capacity)
+  protected LongBuffer (int capacity, int limit, int position, int mark)
   {
-    throw new Error ("direct buffers not implemented");
+    super (capacity, limit, position, mark);
   }
-
+  
   public static LongBuffer allocate(int capacity)
   {
     return new LongBufferImpl(capacity, 0, capacity);
@@ -61,19 +61,6 @@ public abstract class LongBuffer extends Buffer
   final public static LongBuffer wrap(long[] array, int offset, int length)
   {
     return new LongBufferImpl (array, offset, length);
-  }
-
-  final public static LongBuffer wrap(String a)
-  {
-    int len = a.length();
-    long[] buffer = new long[len];
-
-    for (int i=0;i<len;i++)
-      {
-        buffer[i] = (long) a.charAt(i);
-      }
-
-    return wrap(buffer, 0, len);
   }
 
   /**
@@ -85,12 +72,6 @@ public abstract class LongBuffer extends Buffer
     return wrap (array, 0, array.length);
   }
 
-  protected LongBuffer (int capacity, int limit, int position, int mark)
-  {
-    super (capacity, limit, position, mark);
-    array_offset = 0;
-  }
-  
   /**
    * This method transfers <code>longs<code> from this buffer into the given
    * destination array.

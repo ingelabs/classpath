@@ -45,14 +45,14 @@ import gnu.java.nio.ShortBufferImpl;
 public abstract class ShortBuffer extends Buffer
   implements Comparable
 {
-  protected short [] backing_buffer;
   protected int array_offset;
+  protected short [] backing_buffer;
 
-  public static ShortBuffer allocateDirect(int capacity)
+  protected ShortBuffer (int capacity, int limit, int position, int mark)
   {
-    throw new Error ("direct buffers not implemented");
+    super (capacity, limit, position, mark);
   }
-
+  
   public static ShortBuffer allocate(int capacity)
   {
     return new ShortBufferImpl(capacity, 0, capacity);
@@ -61,19 +61,6 @@ public abstract class ShortBuffer extends Buffer
   final public static ShortBuffer wrap(short[] array, int offset, int length)
   {
     return new ShortBufferImpl(array, offset, length);
-  }
-
-  final public static ShortBuffer wrap(String a)
-  {
-    int len = a.length();
-    short[] buffer = new short[len];
-
-    for (int i=0;i<len;i++)
-      {
-        buffer[i] = (short) a.charAt(i);
-      }
-
-    return wrap(buffer, 0, len);
   }
 
   /**
@@ -85,12 +72,6 @@ public abstract class ShortBuffer extends Buffer
     return wrap (array, 0, array.length);
   }
 
-  protected ShortBuffer (int capacity, int limit, int position, int mark)
-  {
-    super (capacity, limit, position, mark);
-    array_offset = 0;
-  }
-  
   /**
    * This method transfers <code>shorts<code> from this buffer into the given
    * destination array.

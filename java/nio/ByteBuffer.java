@@ -50,6 +50,11 @@ public abstract class ByteBuffer extends Buffer
   protected int offset;
   protected byte[] backing_buffer;
   
+  protected ByteBuffer (int capacity, int limit, int position, int mark)
+  {
+    super (capacity, limit, position, mark);
+  }
+  
   /**
    * Allocates a new direct byte buffer.
    */ 
@@ -87,11 +92,6 @@ public abstract class ByteBuffer extends Buffer
     return wrap (array, 0, array.length);
   }
 
-  protected ByteBuffer (int capacity, int limit, int position, int mark)
-  {
-    super (capacity, limit, position, mark);
-  }
-  
   /**
    * This method transfers <code>bytes<code> from this buffer into the given
    * destination array.

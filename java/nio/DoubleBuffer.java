@@ -45,14 +45,14 @@ import gnu.java.nio.DoubleBufferImpl;
 public abstract class DoubleBuffer extends Buffer
   implements Comparable
 {
-  protected double [] backing_buffer;
   protected int array_offset;
+  protected double [] backing_buffer;
 
-  public static DoubleBuffer allocateDirect(int capacity)
+  protected DoubleBuffer (int capacity, int limit, int position, int mark)
   {
-    throw new Error ("direct buffers are not implemented");
+    super (capacity, limit, position, mark);
   }
-
+  
   public static DoubleBuffer allocate(int capacity)
   {
     return new DoubleBufferImpl(capacity, 0, capacity);
@@ -61,19 +61,6 @@ public abstract class DoubleBuffer extends Buffer
   final public static DoubleBuffer wrap (double[] array, int offset, int length)
   {
     return new DoubleBufferImpl(array, offset, length);
-  }
-
-  final public static DoubleBuffer wrap(String a)
-  {
-    int len = a.length();
-    double[] buffer = new double[len];
-
-    for (int i=0;i<len;i++)
-      {
-        buffer[i] = (double) a.charAt(i);
-      }
-
-    return wrap(buffer, 0, len);
   }
 
   /**
@@ -85,11 +72,6 @@ public abstract class DoubleBuffer extends Buffer
     return wrap (array, 0, array.length);
   }
 
-  protected DoubleBuffer (int capacity, int limit, int position, int mark)
-  {
-    super (capacity, limit, position, mark);
-  }
-  
   /**
    * This method transfers <code>doubles<code> from this buffer into the given
    * destination array.

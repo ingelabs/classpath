@@ -45,14 +45,14 @@ import gnu.java.nio.FloatBufferImpl;
 public abstract class FloatBuffer extends Buffer
   implements Comparable
 {
-  protected float [] backing_buffer;
   protected int array_offset;
+  protected float [] backing_buffer;
 
-  public static FloatBuffer allocateDirect(int capacity)
+  protected FloatBuffer (int capacity, int limit, int position, int mark)
   {
-    throw new Error ("direct buffers not implemented");
+    super (capacity, limit, position, mark);
   }
-
+  
   public static FloatBuffer allocate(int capacity)
   {
     return new FloatBufferImpl (capacity, 0, capacity);
@@ -61,19 +61,6 @@ public abstract class FloatBuffer extends Buffer
   final public static FloatBuffer wrap(float[] array, int offset, int length)
   {
     return new FloatBufferImpl(array, offset, length);
-  }
-
-  final public static FloatBuffer wrap(String a)
-  {
-    int len = a.length();
-    float[] buffer = new float[len];
-
-    for (int i=0;i<len;i++)
-      {
-        buffer[i] = (float) a.charAt(i);
-      }
-
-    return wrap(buffer, 0, len);
   }
 
   /**
@@ -85,12 +72,6 @@ public abstract class FloatBuffer extends Buffer
     return wrap (array, 0, array.length);
   }
 
-  protected FloatBuffer (int capacity, int limit, int position, int mark)
-  {
-    super (capacity, limit, position, mark);
-    array_offset = 0;                    
-  }
-  
   /**
    * This method transfers <code>floats<code> from this buffer into the given
    * destination array.

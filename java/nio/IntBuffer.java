@@ -45,14 +45,14 @@ import gnu.java.nio.IntBufferImpl;
 public abstract class IntBuffer extends Buffer
   implements Comparable
 {
-  protected int [] backing_buffer;
   protected int array_offset;
+  protected int [] backing_buffer;
 
-  public static IntBuffer allocateDirect(int capacity)
+  protected IntBuffer (int capacity, int limit, int position, int mark)
   {
-    throw new Error ("direct buffers not implemented");
+    super (capacity, limit, position, mark);
   }
-
+  
   public static IntBuffer allocate(int capacity)
   {
     return new IntBufferImpl (capacity, 0, capacity);
@@ -61,19 +61,6 @@ public abstract class IntBuffer extends Buffer
   final public static IntBuffer wrap(int[] array, int offset, int length)
   {
     return new IntBufferImpl(array, offset, length);
-  }
-
-  final public static IntBuffer wrap(String a)
-  {
-    int len = a.length();
-    int[] buffer = new int[len];
-
-    for (int i=0;i<len;i++)
-      {
-        buffer[i] = (int) a.charAt(i);
-      }
-
-    return wrap(buffer, 0, len);
   }
 
   /**
@@ -85,12 +72,6 @@ public abstract class IntBuffer extends Buffer
     return wrap (array, 0, array.length);
   }
 
-  protected IntBuffer (int capacity, int limit, int position, int mark)
-  {
-    super (capacity, limit, position, mark);
-    array_offset = 0;
-  }
-  
   /**
    * This method transfers <code>ints<code> from this buffer into the given
    * destination array.

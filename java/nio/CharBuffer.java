@@ -48,6 +48,11 @@ public abstract class CharBuffer extends Buffer
   protected int array_offset = 0;
   protected char [] backing_buffer;
   
+  protected CharBuffer (int cap, int lim, int pos, int mark)
+  {
+    super (cap, lim, pos, mark);
+  }
+  
   /**
    * Allocates a new <code>CharBuffer</code> object with a given capacity.
    */
@@ -114,11 +119,6 @@ public abstract class CharBuffer extends Buffer
     return wrap (array, 0, array.length);
   }
  
-  protected CharBuffer (int cap, int lim, int pos, int mark)
-  {
-    super (cap, lim, pos, mark);
-  }
-  
   /**
    * This method transfers <code>chars<code> from this buffer into the given
    * destination array.

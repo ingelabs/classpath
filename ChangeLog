@@ -1,5 +1,32 @@
 2003-05-18  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/ByteBuffer.java
+	(ByteBuffer): Moved.
+	* java/nio/CharBuffer.java
+	(CharBuffer): Moved.
+	* java/nio/DoubleBuffer.java
+	(DoubleBuffer): Moved.
+	(allocateDirect): Removed.
+	(wrap): Removed.
+	* java/nio/FloatBuffer.java
+	(FloatBuffer): Moved, removed initialization of array_offset.
+	(allocateDirect): Removed.
+	(wrap): Removed.
+	* java/nio/IntBuffer.java
+	(IntBuffer): Moved, removed initialization of array_offset.
+	(allocateDirect): Removed.
+	(wrap): Removed.
+	* java/nio/LongBuffer.java
+	(LongBuffer): Moved, removed initialization of array_offset.
+	(allocateDirect): Removed.
+	(wrap): Removed.
+	* java/nio/ShortBuffer.java
+	(ShortBuffer): Moved, removed initialization of array_offset.
+	(allocateDirect): Removed.
+	(wrap): Removed.
+
+2003-05-18  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/ShortBuffer.java
 	(get): Merged from libgcj.
 	(put): Likewise.
