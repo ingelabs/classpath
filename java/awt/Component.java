@@ -2231,9 +2231,9 @@ public abstract class Component
    * calls {@link #postEvent}.
    *
    * @param e the event to deliver
-   * @deprecated use {@link #dispatchEvent(AWTEvent)} instead
+   * @deprecated use {@link #dispatchEvent (AWTEvent)} instead
    */
-  public void deliverEvent(Event e)
+  public void deliverEvent (Event e)
   {
     postEvent (e);
   }
@@ -2265,7 +2265,7 @@ public abstract class Component
    * @return true if the event was handled, false otherwise
    * @deprecated use {@link #dispatchEvent(AWTEvent)} instead
    */
-  public boolean postEvent(Event e)
+  public boolean postEvent (Event e)
   {
     boolean handled = handleEvent (e);
 
@@ -3162,9 +3162,9 @@ public abstract class Component
    *
    * @param evt the event to handle
    * @return true if the event was handled, false otherwise
-   * @deprecated use {@link #processEvent(AWTEvent)} instead
+   * @deprecated use {@link #processEvent (AWTEvent)} instead
    */
-  public boolean handleEvent(Event evt)
+  public boolean handleEvent (Event evt)
   {
     switch (evt.id)
       {
@@ -3821,9 +3821,9 @@ public abstract class Component
                                                          currentFocusOwner));
                           }
                         else
-                    eq.postEvent (new FocusEvent(this, FocusEvent.FOCUS_GAINED, temporary));
+                          eq.postEvent (new FocusEvent(this, FocusEvent.FOCUS_GAINED, temporary));
+                      }
                   }
-              }
               }
             else
               // FIXME: need to add a focus listener to our top-level
@@ -3938,9 +3938,9 @@ public abstract class Component
                                                              currentFocusOwner));
                               }
                             else
-                        eq.postEvent (new FocusEvent(this, FocusEvent.FOCUS_GAINED, temporary));
+                              eq.postEvent (new FocusEvent(this, FocusEvent.FOCUS_GAINED, temporary));
+                          }
                       }
-                  }
                   }
                 else
                   return false;
@@ -4685,7 +4685,7 @@ p   * <li>the set of backward traversal keys
    *
    * @param e the event to dispatch
    */
-  void dispatchEventImpl(AWTEvent e)
+  void dispatchEventImpl (AWTEvent e)
   {
     Event oldEvent = translateEvent (e);
 
@@ -4693,7 +4693,7 @@ p   * <li>the set of backward traversal keys
       postEvent (oldEvent);
 
     if (eventTypeEnabled (e.id))
-      processEvent(e);
+      processEvent (e);
   }
 
   /**
