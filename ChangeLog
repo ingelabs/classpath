@@ -1,5 +1,10 @@
 2003-06-25  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/swing/JWindow.java (JWindow()): Add stubbed constructor
+	so that javax/swing/Popup.java compiles.
+
+2003-06-25  Sascha Brawer  <brawer@dandelis.ch>
+
 	* javax/swing/Popup.java, javax/swing/PopupFactory.java:
 	Initial	check-in.
 
