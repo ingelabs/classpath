@@ -1,3 +1,10 @@
+2003-06-11  Anthony Green  <green@redhat.com>
+
+	* java/util/Locale.java (Locale): Intern String fields.
+	(equals): Compare String references, not contents.
+	(getISO3Language): Ditto.
+	(getISO3Country): Ditto.
+
 2003-06-11  Stephen Crawley  <crawley@dstc.edu.au>
 
 	* configure.in: Allow building when glib 2.0 / gtk 2.0 are not
