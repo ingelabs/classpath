@@ -1,3 +1,14 @@
+2004-10-05  Michael Koch  <konqueror@gmx.de>
+
+	* javax/imageio/IIOParam.java,
+	javax/imageio/ImageReadParam.java,
+	javax/imageio/ImageReader.java,
+	javax/imageio/ImageWriter.java:
+	Mostly implemented.
+	* javax/imageio/spi/ImageReaderSpi.java,
+	javax/imageio/spi/ImageWriterSpi.java:
+	New files.
+
 2004-10-04  Michael Koch  <konqueror@gmx.de>
 
 	* javax/imageio/ImageWriteParam.java,
