@@ -1,3 +1,8 @@
+2001-09-15  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
+
+	* java/io/File.java (File(String, String)): Correct error in
+	yesterday's patch. Thanks to Stuart Ballard.
+
 2001-09-14  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 
 	Fixes for specjvm javac benchmark, reports from Gansha Wu:

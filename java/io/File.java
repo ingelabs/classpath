@@ -295,7 +295,7 @@ File(File directory, String name)
 public
 File(String dirname, String name)
 {
-  this(dirname == null ? name : dirname + separator + name);
+  this((name == null || dirname == null) ? name : dirname + separator + name);
 }
 
 /*************************************************************************/
