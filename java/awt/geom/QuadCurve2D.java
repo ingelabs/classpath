@@ -234,25 +234,101 @@ public abstract class QuadCurve2D
   }
 
 
-  public void subdivide(QuadCurve2D l, QuadCurve2D r)
+  /**
+   * Subdivides this curve into two halves.
+   *
+   * <p><img src="doc-files/QuadCurve2D-3.png" width="700"
+   * height="180" alt="A drawing that illustrates the effects of
+   * subdividing a QuadCurve2D" />
+   *
+   * @param left a curve whose geometry will be set to the left half
+   * of this curve, or <code>null</code> if the caller is not
+   * interested in the left half.
+   *
+   * @param right a curve whose geometry will be set to the right half
+   * of this curve, or <code>null</code> if the caller is not
+   * interested in the right half.
+   */
+  public void subdivide(QuadCurve2D left, QuadCurve2D right)
   {
     // Use empty slots at end to share single array.
     double[] d = new double[] { getX1(), getY1(), getCtrlX(), getCtrlY(),
                                 getX2(), getY2(), 0, 0, 0, 0 };
     subdivide(d, 0, d, 0, d, 4);
-    if (l != null)
-      l.setCurve(d, 0);
-    if (r != null)
-      r.setCurve(d, 4);
+    if (left != null)
+      left.setCurve(d, 0);
+    if (right != null)
+      right.setCurve(d, 4);
   }
 
 
-  public static void subdivide(QuadCurve2D src, QuadCurve2D l, QuadCurve2D r)
+  /**
+   * Subdivides a quadratic curve into two halves.
+   *
+   * <p><img src="doc-files/QuadCurve2D-3.png" width="700"
+   * height="180" alt="A drawing that illustrates the effects of
+   * subdividing a QuadCurve2D" />
+   *
+   * @param src the curve to be subdivided.
+   *
+   * @param left a curve whose geometry will be set to the left half
+   * of <code>src</code>, or <code>null</code> if the caller is not
+   * interested in the left half.
+   *
+   * @param right a curve whose geometry will be set to the right half
+   * of <code>src</code>, or <code>null</code> if the caller is not
+   * interested in the right half.
+   */
+  public static void subdivide(QuadCurve2D src, QuadCurve2D left,
+                               QuadCurve2D right)
   {
-    src.subdivide(l, r);
+    src.subdivide(left, right);
   }
 
 
+  /**
+   * Subdivides a quadratic curve into two halves, passing all
+   * coordinates in an array.
+   *
+   * <p><img src="doc-files/QuadCurve2D-3.png" width="700"
+   * height="180" alt="A drawing that illustrates the effects of
+   * subdividing a QuadCurve2D" />
+   *
+   * <p>The left end point and the right start point will always be
+   * identical. Memory-concious programmers thus may want to pass the
+   * same array for both <code>left</code> and <code>right</code>, and
+   * set <code>rightOff</code> to <code>leftOff + 4</code>.
+   *
+   * @param src an array containing the coordinates of the curve to be
+   * subdivided.  The <i>x</i> coordinate of the start point is
+   * located at <code>src[srcOff]</code>, its <i>y</i> at
+   * <code>src[srcOff + 1]</code>.  The <i>x</i> coordinate of the
+   * control point is located at <code>src[srcOff + 2]</code>, its
+   * <i>y</i> at <code>src[srcOff + 3]</code>.  The <i>x</i>
+   * coordinate of the end point is located at <code>src[srcOff +
+   * 4]</code>, its <i>y</i> at <code>src[srcOff + 5]</code>.
+   *
+   * @param srcOff an offset into <code>src</code>, specifying
+   * the index of the start point&#x2019;s <i>x</i> coordinate.
+   *
+   * @param left an array that will receive the coordinates of the
+   * left half of <code>src</code>. It is acceptable to pass
+   * <code>src</code>. A caller who is not interested in the left half
+   * can pass <code>null</code>.
+   *
+   * @param leftOff an offset into <code>left</code>, specifying the
+   * index where the start point&#x2019;s <i>x</i> coordinate will be
+   * stored.
+   *
+   * @param right an array that will receive the coordinates of the
+   * right half of <code>src</code>. It is acceptable to pass
+   * <code>src</code> or <code>left</code>. A caller who is not
+   * interested in the right half can pass <code>null</code>.
+   *
+   * @param rightOff an offset into <code>right</code>, specifying the
+   * index where the start point&#x2019;s <i>x</i> coordinate will be
+   * stored.
+   */
   public static void subdivide(double[] src, int srcOff,
                                double[] left, int leftOff,
                                double[] right, int rightOff)
