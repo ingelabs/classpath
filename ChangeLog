@@ -1,3 +1,7 @@
+2001-12-14  C. Brian Jones <cbj@gnu.org>
+	* doc/www.gnu.org/home.wml: blockquote special exception. fix 
+	cvs directions.
+
 2001-12-08  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/ObjectInputStream.java (readObject): Fixed typo.

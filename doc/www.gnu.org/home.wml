@@ -27,11 +27,15 @@ name="GNU General Public License"> with the following special exception.
 </p>
 
 <p>
+<blockquote>
+<code>
 As a special exception, if you link this library with other files to
 produce an executable, this library does not by itself cause the
 resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License.
+</code>
+</blockquote>
 </p>
 
 <p>
@@ -44,16 +48,17 @@ Classpath is a work in progress.  There have been no public releases;
 however, pre-release source code is available via GNU's anonymous CVS
 server, and snapshots of the Classpath tree have been released and are
 available from <link url="ftp://alpha.gnu.org/gnu/classpath/"
-name="ftp://alpha.gnu.org/gnu/classpath/">.  CVSROOT is
-<tt>:pserver:anoncvs@subversions.gnu.org:/cvs</tt>; Module is
-<tt>classpath</tt>.  There is no password.  If it is diffult to use
-CVS perhaps because you are behind a firewall, then you may download
-the entire CVS tree from <link
-url="http://savannah.gnu.org/cvs.backups/classpath.tar.gz"
-name="http://savannah.gnu.org/cvs.backups/classpath.tar.gz">.  This
-archive is updated nightly and can be used by setting your local
-CVSROOT environment variable and performing a checkout from the local tree.
+name="ftp://alpha.gnu.org/gnu/classpath/">.  
 </p>
+
+<p>
+Directions for obtaining the source code through CVS are available 
+at <link url="http://savannah.gnu.org/cvs/?group_id=85" 
+name="http://savannah.gnu.org/cvs/?group_id=85">.  These directions are 
+for anonymous and developer access.  Information about accessing CVS 
+from behind a firewall is also available.
+</p>
+
 <p>
 Classpath has been converted to a <link url="http://savannah.gnu.org/"
 name="Savannah"> project.  Our project page is <link
