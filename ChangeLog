@@ -1,5 +1,19 @@
 2004-04-17  Michael Koch  <konqueror@gmx.de>
 
+	* java/security/AlgorithmParameterGenerator.java,
+	java/security/AlgorithmParameters.java,
+	java/security/CodeSource.java,
+	java/security/Identity.java,
+	java/security/IdentityScope.java,
+	java/security/KeyPairGenerator.java,
+	java/security/KeyStore.java,
+	java/security/Signature.java,
+	java/security/SignatureSpi.java,
+	java/security/SignedObject.java:
+	Fixed HTML tags in javadoc comments all over.
+
+2004-04-17  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/JarURLConnection.java,
 	java/net/NetPermission.java,
 	java/net/SocketPermission.java,
