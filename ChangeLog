@@ -1,3 +1,30 @@
+2003-05-06  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/DataOutputStream.java
+	(write): Renamed argument to "value", merged documentation with
+	libgcj.
+	(writeBoolean): Likewise.
+	(writeByte): Likewise.
+	(writeShort): Likewise.
+	(writeChar): Likewise.
+	(writeInt): Likewise.
+	(writeLong): Likewise.
+	(writeFloat): Likewise.
+	(writeDouble): Likewise.
+	(writeBytes): Likewise.
+	(writeChars):Likewise.
+	(writeUTF): Likewise.
+	* java/io/File.java:
+	Reordered methods to match libgcj, some documentation merged from
+	libgcj and reformatting of some code.
+	* java/io/FileOutputStream.java
+	(FileOutputStream): Merged from libgcj.
+	* java/io/InputStreamReader.java:
+	Merged copyright from libgcj.
+	(InputStreamReader): Merged from libgcj.
+	* java/io/RandomAccessFile.java
+	(RandomAccessFile): Merged from libgcj.
+
 2003-05-05  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/DataInputStream.java:

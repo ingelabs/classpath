@@ -129,7 +129,7 @@ public class RandomAccessFile implements DataOutput, DataInput
 		  | FileDescriptor.SYNC);
       }
     else
-      throw new IllegalArgumentException("Bad mode value: " + mode);
+      throw new IllegalArgumentException ("invalid mode: " + mode);
 
     // The obligatory SecurityManager stuff
     SecurityManager s = System.getSecurityManager();

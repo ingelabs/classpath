@@ -83,6 +83,8 @@ import gnu.java.io.decode.Decoder;
  * @see InputStream
  *
  * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Per Bothner <bothner@cygnus.com>
+ * @date April 22, 1998.  
  */
 public class InputStreamReader extends Reader
 {
@@ -117,7 +119,7 @@ public class InputStreamReader extends Reader
    * @exception UnsupportedEncodingException If the encoding scheme 
    * requested is not available.
    */
-  public InputStreamReader(InputStream in, String encoding_name) 
+  public InputStreamReader(InputStream in, String encoding_name)
     throws UnsupportedEncodingException
   {
     if (in == null

@@ -56,7 +56,6 @@ package java.io;
  */
 public class DataOutputStream extends FilterOutputStream implements DataOutput
 {
-  
   private byte[] buf = new byte[8];
   
   // FIXME: This method should eventually die.  I'd bet there are
@@ -143,13 +142,13 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    * This method writes the specified byte (passed as an <code>int</code>)
    * to the underlying output stream.
    *
-   * @param b The byte to write, passed as an <code>int</code>.
+   * @param value The <code>byte</code> to write, passed as an <code>int</code>.
    *
    * @exception IOException If an error occurs.
    */
-  public synchronized void write (int b) throws IOException
+  public synchronized void write (int value) throws IOException
   {
-    out.write(b);
+    out.write (value);
     ++written;
   }
 
@@ -180,15 +179,15 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    * The value written can be read using the <code>readBoolean</code>
    * method in <code>DataInput</code>.
    *
-   * @param value The boolean value to write
+   * @param value The <code>boolean</code> value to write to the stream
    *
    * @exception IOException If an error occurs
    *
    * @see DataInput#readBoolean
    */
-  public final void writeBoolean (boolean v) throws IOException
+  public final void writeBoolean (boolean value) throws IOException
   {
-    write (v ? 1 : 0);
+    write (value ? 1 : 0);
   }
 
   /**
@@ -199,16 +198,17 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    * The value written can be read using the <code>readByte</code> or
    * <code>readUnsignedByte</code> methods in <code>DataInput</code>.
    *
-   * @param value The int value to write
+   * @param value The <code>byte</code> to write to the stream, passed as 
+   * the low eight bits of an <code>int</code>.
    *
    * @exception IOException If an error occurs
    *
    * @see DataInput#readByte
    * @see DataInput#readUnsignedByte
    */
-  public final void writeByte (int v) throws IOException
+  public final void writeByte (int value) throws IOException
   {
-    write (v & 0xff);
+    write (value & 0xff);
   }
 
   /**
@@ -224,17 +224,18 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    * The value written can be read using the <code>readShort</code> and
    * <code>readUnsignedShort</code> methods in <code>DataInput</code>.
    *
-   * @param value The int value to write as a 16-bit value
+   * @param value The <code>short</code> value to write to the stream,
+   * passed as an <code>int</code>.
    *
    * @exception IOException If an error occurs
    *
    * @see DataInput#readShort
    * @see DataInput#readUnsignedShort
    */
-  public final synchronized void writeShort (int s) throws IOException
+  public final synchronized void writeShort (int value) throws IOException
   {
-    buf[0] = (byte)((s & 0xff00) >> 8);
-    buf[1] = (byte)(s & 0x00ff);
+    buf[0] = (byte)((value & 0xff00) >> 8);
+    buf[1] = (byte)(value & 0x00ff);
   
     write(buf, 0, 2);
   }
@@ -252,16 +253,17 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    * The value written can be read using the <code>readChar</code>
    * method in <code>DataInput</code>.
    *
-   * @param value The char value to write
+   * @param value The <code>char</code> value to write, 
+   * passed as an <code>int</code>.
    *
    * @exception IOException If an error occurs
    *
    * @see DataInput#readChar
    */
-  public final synchronized void writeChar (int c) throws IOException
+  public final synchronized void writeChar (int value) throws IOException
   {
-    buf[0] = (byte)((c & 0xff00) >> 8);
-    buf[1] = (byte)((int)c & 0x00ff);
+    buf[0] = (byte)((value & 0xff00) >> 8);
+    buf[1] = (byte)(value & 0x00ff);
   
     write(buf, 0, 2);
   }
@@ -280,18 +282,18 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    * The value written can be read using the <code>readInt</code>
    * method in <code>DataInput</code>.
    *
-   * @param value The int value to write
+   * @param value The <code>int</code> value to write to the stream
    *
    * @exception IOException If an error occurs
    *
    * @see DataInput#readInt
    */
-  public final synchronized void writeInt (int v) throws IOException
+  public final synchronized void writeInt (int value) throws IOException
   {
-    buf[0] = (byte)((v & 0xff000000) >> 24);
-    buf[1] = (byte)((v & 0x00ff0000) >> 16);
-    buf[2] = (byte)((v & 0x0000ff00) >> 8);
-    buf[3] = (byte)(v & 0x000000ff);
+    buf[0] = (byte)((value & 0xff000000) >> 24);
+    buf[1] = (byte)((value & 0x00ff0000) >> 16);
+    buf[2] = (byte)((value & 0x0000ff00) >> 8);
+    buf[3] = (byte)(value & 0x000000ff);
   
     write(buf, 0, 4);
   }
@@ -314,22 +316,22 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    * The value written can be read using the <code>readLong</code>
    * method in <code>DataInput</code>.
    *
-   * @param value The long value to write
+   * @param value The <code>long</code> value to write to the stream
    *
    * @exception IOException If an error occurs
    *
    * @see DataInput#readLong
    */
-  public final synchronized void writeLong (long v) throws IOException
+  public final synchronized void writeLong (long value) throws IOException
   {
-    buf[0] = (byte)((v & 0xff00000000000000L) >> 56);
-    buf[1] = (byte)((v & 0x00ff000000000000L) >> 48);
-    buf[2] = (byte)((v & 0x0000ff0000000000L) >> 40);
-    buf[3] = (byte)((v & 0x000000ff00000000L) >> 32);
-    buf[4] = (byte)((v & 0x00000000ff000000L) >> 24);
-    buf[5] = (byte)((v & 0x0000000000ff0000L) >> 16);
-    buf[6] = (byte)((v & 0x000000000000ff00L) >> 8);
-    buf[7] = (byte)(v & 0x00000000000000ffL);
+    buf[0] = (byte)((value & 0xff00000000000000L) >> 56);
+    buf[1] = (byte)((value & 0x00ff000000000000L) >> 48);
+    buf[2] = (byte)((value & 0x0000ff0000000000L) >> 40);
+    buf[3] = (byte)((value & 0x000000ff00000000L) >> 32);
+    buf[4] = (byte)((value & 0x00000000ff000000L) >> 24);
+    buf[5] = (byte)((value & 0x0000000000ff0000L) >> 16);
+    buf[6] = (byte)((value & 0x000000000000ff00L) >> 8);
+    buf[7] = (byte)(value & 0x00000000000000ffL);
   
     write(buf, 0, 8);
   }
@@ -345,7 +347,7 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    * The value written can be read using the <code>readFloat</code>
    * method in <code>DataInput</code>.
    *
-   * @param value The float value to write
+   * @param value The <code>float</code> value to write to the stream
    *
    * @exception IOException If an error occurs
    *
@@ -353,9 +355,9 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    * @see DataInput#readFloat
    * @see Float#floatToIntBits
    */
-  public final void writeFloat (float v) throws IOException
+  public final void writeFloat (float value) throws IOException
   {
-    writeInt (Float.floatToIntBits(v));
+    writeInt (Float.floatToIntBits (value));
   }
 
   /**
@@ -369,17 +371,17 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    * The value written can be read using the <code>readDouble</code>
    * method in <code>DataInput</code>.
    *
-   * @param value The double value to write
+   * @param value The <code>double</code> value to write to the stream
    *
-   * @exception IOException If any other error occurs
+   * @exception IOException If an error occurs
    *
    * @see writeLong
    * @see DataInput#readDouble
    * @see Double#doubleToLongBits
    */
-  public final void writeDouble (double v) throws IOException
+  public final void writeDouble (double value) throws IOException
   {
-    writeLong (Double.doubleToLongBits(v));
+    writeLong (Double.doubleToLongBits (value));
   }
 
   /**
@@ -389,20 +391,20 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    * The high eight bits of each character are discarded, thus this
    * method is inappropriate for completely representing Unicode characters.
    *
-   * @param value The <code>String</code> to write
+   * @param value The <code>String</code> to write to the stream
    *
    * @exception IOException If an error occurs
    */
-  public final void writeBytes (String s) throws IOException
+  public final void writeBytes (String value) throws IOException
   {
-    int len = s.length();
+    int len = value.length();
     if (len == 0)
       return;
   
     byte[] buf = new byte[len];
   
     for (int i = 0; i < len; i++)
-      buf[i] = (byte)(s.charAt(i) & 0xff);
+      buf[i] = (byte)(value.charAt (i) & 0xff);
   
     write(buf, 0, buf.length);
   }
@@ -413,15 +415,15 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    * is written using the method specified in the <code>writeChar</code>
    * method.
    *
-   * @param value The String to write
+   * @param value The <code>String</code> to write to the stream
    *
    * @exception IOException If an error occurs
    *
    * @see writeChar
    */
-  public final void writeChars (String s) throws IOException
+  public final void writeChars (String value) throws IOException
   {
-    int len = s.length();
+    int len = value.length();
     if (len == 0)
       return;
   
@@ -429,8 +431,8 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
   
     for (int i = 0; i < len; i++)
       {
-        buf[i * 2] = (byte)((s.charAt(i) & 0xff00) >> 8);
-        buf[(i * 2) + 1] = (byte)(s.charAt(i) & 0x00ff);
+        buf[i * 2] = (byte)((value.charAt(i) & 0xff00) >> 8);
+        buf[(i * 2) + 1] = (byte)(value.charAt(i) & 0x00ff);
       }
   
     write(buf, 0, buf.length);
@@ -462,20 +464,20 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    * The value written can be read using the <code>readUTF</code>
    * method in <code>DataInput</code>.
    *
-   * @param s The <code>String</code> to write to the output in UTF format
+   * @param value The <code>String</code> to write to the output in UTF format
    *
    * @exception IOException If an error occurs
    *
    * @see DataInput#readUTF
    */
-  public synchronized final void writeUTF (String v) throws IOException
+  public synchronized final void writeUTF (String value) throws IOException
   {
     // FIXME:  Stylistically, replacing this with s.getBytes("UTF-8")
     // would be better. However, that's likely to be expensive because of
     // the char encoder overhead. Maybe we should have an easily
     // invokable UTF-8 converter function, but I'm not sure this is the
     // right class for it to live in. 
-    byte[] buf = convertToUTF(v);
+    byte[] buf = convertToUTF (value);
   
     writeShort(buf.length);
     write(buf, 0, buf.length);
