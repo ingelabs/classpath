@@ -1,3 +1,39 @@
+2004-09-22  Kim Ho  <kho@redhat.com>
+
+	* javax/swing/colorchooser/DefaultHSBChooserPanel.java:
+	(stateChanged): Only update the image and the track if
+	the values are not being adjusted.
+	(updateChooser): Grab the new mouse point from the
+	spinner values. Update the image and track only if 
+	the values are not being adjusted. 
+	(getHSBValues): New method.
+	* javax/swing/colorchooser/DefaultRGBChooserPanel.java:
+	(SliderHandler::stateChanged): Changed internalChange 
+	to updateChange. Set sliderChange.
+	(SpinnerHandler::stateChanged): Ditto. Set spinnerChange.
+	(spinnerChange): New variable.
+	(sliderChange): Ditto.
+	(updateChange): Renamed from internalChange.
+	(updateChooser): Do not update sliders if the sliders
+	were the original source of the change. Ditto for spinners.
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java:
+	(mousePress): Don't scroll the JViewport if there will
+	be extra space at the end of the run. Change layout() to
+	revalidate().
+	(calculateSize): Use the component's width/height unless
+	it is smaller than the max tab width/height.
+	(calculateTabRects): Subtract the tab run overlay.
+	(rotateTabRuns): Don't rotate if there's only one run.
+	(layoutContainer): Reuse the viewport point.
+	(createLayoutManager): Set the viewport to use no layout.
+	(paintTabArea): Don't paint the tabs that are not visible
+	to the JViewport.
+	(paintContentBorderTopEdge): Check for scroll tab layout before
+	looking for gap.
+	(paintContentBorderLeftEdge): Ditto.
+	(paintContentBorderBottomEdge): Ditto.
+	(paintContentBorderRightEdge): Ditto.
+
 2004-09-22  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/awt/peer/gtk/GtkClipboard.java,
