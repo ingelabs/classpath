@@ -196,8 +196,19 @@ public class GtkComponentPeer extends GtkGenericPeer
   public int checkImage (Image image, int width, int height, 
 			 ImageObserver observer) 
   {
-    GtkImage i = (GtkImage) image;
-    return i.checkImage ();
+    if(i instanceof GtkImage) 
+      {
+	GtkImage i = (GtkImage) image;
+	return i.checkImage ();
+      } else {
+	// buffered images, FIXME: Return properties?
+	int flags = ImageObserver.ALLBITS;
+	if(((BufferedImage)image).getWidth(observer) != -1)
+	    flags |= ImageObserver.WIDTH;
+	if(((BufferedImage)image).getHeight(observer) != -1)
+	    flags |= ImageObserver.HEIGHT;
+	return flags;
+      }
   }
 
   public Image createImage (ImageProducer producer) 
