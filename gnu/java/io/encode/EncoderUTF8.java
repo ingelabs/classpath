@@ -86,8 +86,18 @@ bytesInCharArray(char[] buf, int offset, int len)
         ++num_bytes;
       else if (buf[i] <= 0x07FF)
         num_bytes += 2;
-      else
+      else if (buf[i] < 0xD800 || buf[i] > 0xDFFF)
         num_bytes += 3;
+      else if (buf[i] < 0xDC00
+            && i + 1 < offset + len
+            && buf[i + 1] >= 0xDC00
+            && buf[i + 1] <= 0xDFFF)
+        {
+          num_bytes += 4;
+          i++;
+        }
+      else
+        num_bytes += 1;
     }
 
   return(num_bytes);
@@ -116,13 +126,35 @@ convertToBytes(char[] buf, int buf_offset, int len, byte[] bbuf,
           bbuf[bbuf_offset] = (byte)(0x80 | (buf[i] & 0x3F));
           ++bbuf_offset;
         }
-      else 
+      else if (buf[i] < 0xD800 || buf[i] > 0xDFFF)
         {
           bbuf[bbuf_offset] = (byte)(0xE0 | ((buf[i] >> 12) & 0x0F));
           ++bbuf_offset;
           bbuf[bbuf_offset] = (byte)(0x80 | ((buf[i] >> 6) & 0x3F));
           ++bbuf_offset;
           bbuf[bbuf_offset] = (byte)(0x80 | (buf[i] & 0x3F));
+          ++bbuf_offset;
+        }
+      else if (buf[i] < 0xDC00
+                 && i + 1 < buf_offset + len
+                 && buf[i + 1] >= 0xDC00
+                 && buf[i + 1] <= 0xDFFF)
+        {
+          int ch = 0x10000 + ((buf[i] & 0x3FF) << 10) + (buf[i + 1] & 0x3FF);
+          bbuf[bbuf_offset] = (byte)(0xF0 | ((ch >> 18) & 0x07));
+          ++bbuf_offset;
+          bbuf[bbuf_offset] = (byte)(0x80 | ((ch >> 12) & 0x3F));
+          ++bbuf_offset;
+          bbuf[bbuf_offset] = (byte)(0x80 | ((ch >> 6) & 0x3F));
+          ++bbuf_offset;
+          bbuf[bbuf_offset] = (byte)(0x80 | (ch & 0x3F));
+          ++bbuf_offset;
+          i++;
+        }
+      else
+        {
+          // We've got an illegal half of a surrogate pair.
+          bbuf[bbuf_offset] = (byte)'?';
           ++bbuf_offset;
         }
     }

@@ -56,6 +56,11 @@ public class DecoderUTF8 extends Decoder
 {
 private static final char REPLACEMENT_CHARACTER = '\uFFFD';
 
+// If we're operating in stream mode and we encounter a surrogate pair that
+// we can't fit in the output buffer, we use this field to store the
+// second half of the surrogate pair.
+private int pendingChar = -1;
+
 /*************************************************************************/
 
 /*
@@ -81,6 +86,7 @@ public int
 charsInByteArray(byte[] buf, int offset, int len)
 {
     int more = 0;
+    int val = 0;
     int num_chars = 0;
 
     for (int i = offset; i < offset + len; i++)
@@ -100,9 +106,15 @@ charsInByteArray(byte[] buf, int offset, int len)
                 num_chars++; // ?
             else
               {
+                val <<= 6;
+                val |= b & 0x3F;
                 more--;
                 if (more == 0)
+                  {
                     num_chars++;
+                    if (val >= 0x10000)
+                        num_chars++;
+                  }
               }
           }
         else
@@ -110,10 +122,21 @@ charsInByteArray(byte[] buf, int offset, int len)
             if (more != 0)
                 num_chars++; // ?
 
-            if ((b & 0xF0) == 0xE0)
+            if ((b & 0xF8) == 0xF0)
+              {
+                val = b & 0x07;
+                more = 3;
+              }
+            else if ((b & 0xF0) == 0xE0)
+              {
+                val = b & 0x0F;
                 more = 2;
+              }
             else if ((b & 0xE0) == 0xC0)
+              {
+                val = b & 0x1F;
                 more = 1;
+              }
             else
                 num_chars++; // ?
           }
@@ -155,7 +178,16 @@ convertToChars(byte[] buf, int buf_offset, int len, char cbuf[],
                 val |= b & 0x3F;
                 more--;
                 if (more == 0)
-                    cbuf[cbuf_offset++] = (char)val;
+                  {
+                    if (val < 0x10000)
+                        cbuf[cbuf_offset++] = (char)val;
+                    else
+                      {
+                        val -= 0x10000;
+                        cbuf[cbuf_offset++] = (char)(0xD800 + (val >> 10));
+                        cbuf[cbuf_offset++] = (char)(0xDC00 + (val & 0x3FF));
+                      }
+                  }
               }
           }
         else
@@ -163,7 +195,12 @@ convertToChars(byte[] buf, int buf_offset, int len, char cbuf[],
             if (more != 0)
                 cbuf[cbuf_offset++] = REPLACEMENT_CHARACTER;
 
-            if ((b & 0xF0) == 0xE0)
+            if ((b & 0xF8) == 0xF0)
+              {
+                val = b & 0x07;
+                more = 3;
+              }
+            else if ((b & 0xF0) == 0xE0)
               {
                 val = b & 0x0F;
                 more = 2;
@@ -192,6 +229,12 @@ read(char[] cbuf, int offset, int len) throws IOException
     int start_offset = offset;
     int more = 0;
     int val = 0;
+
+    if (pendingChar != -1 && len > 0)
+      {
+        cbuf[offset++] = (char)pendingChar;
+        pendingChar = -1;
+      }
 
     while (offset < start_offset + len)
       {
@@ -222,7 +265,19 @@ read(char[] cbuf, int offset, int len) throws IOException
                 val |= b & 0x3F;
                 more--;
                 if (more == 0)
-                    cbuf[offset++] = (char)val;
+                  {
+                    if (val < 0x10000)
+                        cbuf[offset++] = (char)val;
+                    else
+                      {
+                        val -= 0x10000;
+                        cbuf[offset++] = (char)(0xD800 + (val >> 10));
+                        if (offset < start_offset + len)
+                            cbuf[offset++] = (char)(0xDC00 + (val & 0x3FF));
+                        else
+                            pendingChar = (char)(0xDC00 + (val & 0x3FF));
+                      }
+                  }
               }
           }
         else
@@ -230,7 +285,12 @@ read(char[] cbuf, int offset, int len) throws IOException
             if (more != 0)
                 cbuf[offset++] = REPLACEMENT_CHARACTER;
 
-            if ((b & 0xF0) == 0xE0)
+            if ((b & 0xF8) == 0xF0)
+              {
+                val = b & 0x07;
+                more = 3;
+              }
+            else if ((b & 0xF0) == 0xE0)
               {
                 val = b & 0x0F;
                 more = 2;

@@ -1,3 +1,12 @@
+2004-11-18  Jeroen Frijters  <jeroen@frijters.net>
+
+	* gnu/java/io/decode/DecoderUTF8.java
+	(charsInByteArray, convertToChars, read): Added surrogate pair
+	support.
+	(pendingChar): New field.
+	* gnu/java/io/encode/EncoderUTF8.java
+	(bytesInCharArray, convertToBytes): Added surrogate pair support.
+
 2004-11-18  Casey Marshall  <csm@gnu.org>
 
 	* gnu/java/nio/FileLock.java (isValid): locks are valid if the
