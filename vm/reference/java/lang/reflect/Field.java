@@ -1,6 +1,6 @@
 /*
  * java.lang.reflect.Field: part of the Java Class Libraries project.
- * Copyright (C) 1998 John Keiser
+ * Copyright (C) 1998 Free Software Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -85,7 +85,7 @@ public final class Field implements Member {
 	 ** Two Fields are semantically equivalent if they have the same declaring class and the
 	 ** same name.
 	 ** @param o the object to compare to.
-	 ** @return <code>true<code> if they are equal; <code>false</code> if not.
+	 ** @return <code>true</code> if they are equal; <code>false</code> if not.
 	 **/
 	public boolean equals(Object o) {
 		return this == o;

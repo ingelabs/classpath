@@ -1,6 +1,6 @@
 /*
  * java.lang.reflect.Method: part of the Java Class Libraries project.
- * Copyright (C) 1998 John Keiser
+ * Copyright (C) 1998 Free Software Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -29,7 +29,7 @@ package java.lang.reflect;
  ** java.lang.Byte.TYPE, </code>etc.  These are not to be confused with the classes
  ** <code>java.lang.Boolean, java.lang.Byte</code>, etc., which are real classes.<P>
  **
- ** <STRONG>Serialization:</STROMG>Note that this is not a serializable class.  It is entirely feasible to make it
+ ** <STRONG>Serialization:</STRONG>Note that this is not a serializable class.  It is entirely feasible to make it
  ** serializable, but this is on Sun, not me.<P>
  **
  ** <STRONG>Access and Security:</STRONG> Once this Method is created by java.lang.Class (which does its own
@@ -137,7 +137,7 @@ public final class Method implements Member {
 	 ** and parameter list.  <STRONG>Though I really don't see how two different Method objects
 	 ** with identical parameters could be created.</STRONG>
 	 ** @param o the object to compare to.
-	 ** @return <code>true<code> if they are equal; <code>false</code> if not.
+	 ** @return <code>true</code> if they are equal; <code>false</code> if not.
 	 **/
 	public boolean equals(Object o) {
 		return this == o;

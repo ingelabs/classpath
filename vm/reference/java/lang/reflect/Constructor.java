@@ -1,6 +1,6 @@
 /*
  * java.lang.reflect.Constructor: part of the Java Class Libraries project.
- * Copyright (C) 1998 John Keiser
+ * Copyright (C) 1998 Free Software Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -32,7 +32,7 @@ package java.lang.reflect;
  ** the classes <code>java.lang.Boolean, java.lang.Byte</code>, etc.,
  ** which are real classes.<P>
  **
- ** <STRONG>Serialization:</STROMG>Note that this is not a serializable
+ ** <STRONG>Serialization:</STRONG>Note that this is not a serializable
  ** class.  It is entirely feasible to make it serializable, but this
  ** is on Sun, not me.<P>
  **
@@ -151,7 +151,7 @@ public final class Constructor implements Member {
 	 ** same parameter list.  <B>Though I really don't see how two different Constructor objects with
 	 ** identical parameters could be created.</B>
 	 ** @param o the object to compare to.
-	 ** @return <code>true<code> if they are equal; <code>false</code> if not.
+	 ** @return <code>true</code> if they are equal; <code>false</code> if not.
 	 **/
 	public boolean equals(Object o) {
 		return this == o;

@@ -1,6 +1,6 @@
 /*
  * java.lang.System: part of the Java Class Libraries project.
- * Copyright (C) 1998 John Keiser
+ * Copyright (C) 1998 Free Software Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -73,7 +73,7 @@ class VMSystem {
 	 **            an array, or if one is a primitive type
 	 **            and the other is a reference type or a
 	 **            different primitive type.  The array will
-	 **            not be modified if any of these is the
+	 **            not be modified if any of these is th
 	 **            case.  If there is an element in src that
 	 **            is not assignable to dest's type, this will
 	 **            be thrown and all elements up to but not
