@@ -38,16 +38,12 @@ exception statement from your version. */
 
 package java.lang;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import gnu.classpath.Configuration;
+
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Properties;
 import java.util.PropertyPermission;
-import gnu.classpath.Configuration;
 
 /**
  * System represents system-wide resources; things that represent the
@@ -621,7 +617,7 @@ public final class System
    * since it can force initialization on objects which are still in use
    * by live threads, leading to deadlock; therefore this is disabled by
    * default. There may be a security check, <code>checkExit(0)</code>. This
-   * calls <code>Runtime.getRuntime().runFinalizersOnExit()</code>.
+   * calls <code>Runtime.runFinalizersOnExit()</code>.
    *
    * @param finalizeOnExit whether to run finalizers on exit
    * @throws SecurityException if permission is denied
