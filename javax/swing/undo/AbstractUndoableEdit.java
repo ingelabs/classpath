@@ -136,7 +136,7 @@ public class AbstractUndoableEdit
    * Determines whether it would be possible to undo this editing
    * action.
    *
-   * @returns <code>true</code> to indicate that this action can be
+   * @return <code>true</code> to indicate that this action can be
    * undone, <code>false</code> otherwise.
    *
    * @see #undo()
@@ -171,7 +171,7 @@ public class AbstractUndoableEdit
    * Determines whether it would be possible to redo this editing
    * action.
    *
-   * @returns <code>true</code> to indicate that this action can be
+   * @return <code>true</code> to indicate that this action can be
    * redone, <code>false</code> otherwise.
    *
    * @see #redo()
@@ -234,7 +234,7 @@ public class AbstractUndoableEdit
    *
    * <p>The default implementation returns <code>true</code>.
    *
-   * @returns <code>true</code> to indicate that the action is
+   * @return <code>true</code> to indicate that the action is
    * significant enough for being separately undoable, or
    * <code>false</code> otherwise.
    */

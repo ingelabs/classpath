@@ -228,7 +228,7 @@ public class StateEdit
    * Returns a human-readable, localized name that describes this
    * editing action and can be displayed to the user.
    *
-   * @returns the name, or <code>null</code> if no presentation
+   * @return the name, or <code>null</code> if no presentation
    * name is available.
    */
   public String getPresentationName()
