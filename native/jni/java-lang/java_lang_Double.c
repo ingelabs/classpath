@@ -1,5 +1,5 @@
 /* Double.c - java.lang.Double native functions
-   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -222,87 +222,39 @@ JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
 
   return (*env)->NewStringUTF(env, result);
 }
-
+  
 /*
  * Class:     java_lang_Double
  * Method:    parseDouble
  * Signature: (Ljava/lang/String)D
  */
-JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
+JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble0
   (JNIEnv * env, jclass cls, jstring str)
 {
   jboolean isCopy;
   int length;
   char *buf, *endptr;
-  jdouble val = 0.0;
+  jdouble val;
 
-  buf = (char *) (*env)->GetStringUTFChars (env, str, &isCopy);
-  if (buf != NULL)
+  buf = (*env)->GetStringUTFChars(env, str, &isCopy);
+  if (buf == NULL)
     {
-      unsigned char *p = buf, *end, *last_non_ws;
-      unsigned char *copy;
-      int ok = 1;
-
-      /* Trim the buffer, similar to String.trim().  */
-      while (*p <= ' ')
-	++p;
-
-      /* Find the last non-whitespace character and terminate the
-	 buffer at that position.  This method is safe even with
-	 multi-byte UTF-8 characters.  */
-      end = p;
-      last_non_ws = NULL;
-      while (*end)
-	{
-	  if (*end > ' ')
-	    last_non_ws = end;
-	  ++end;
-	}
-
-      /* If the VM didn't copy the result for us, we make our own copy
-	 so we can edit it a bit.  */
-      if (isCopy)
-	copy = p;
-      else
-	{
-	  copy = (char *) malloc (last_non_ws + 1 - p);
-	  memcpy (copy, p, last_non_ws - p);
-	  last_non_ws = copy + (last_non_ws - p);
-	}
-
-      if (last_non_ws != NULL)
-	*(last_non_ws + 1) = '\0';
-
-      length = strlen (p);
-      if (length > 0)
-	{
-	  struct _Jv_reent reent;  
-	  memset (&reent, 0, sizeof reent);
-
-#ifdef KISSME_LINUX_USER
-	  val = strtod ( p, &endptr);
-#else
-	  val = _strtod_r (&reent, p, &endptr);
-#endif
-	  if ((unsigned char *) endptr != p + length)
-	    ok = 0;
-	}
-      else
-	ok = 0;
-
-      if (copy != p)
-	free (copy);
-
-      if (! ok)
-	{
-	  val = 0.0;
-	  JCL_ThrowException (env,
-			      "java/lang/NumberFormatException",
-			      "unable to parse double");
-	}
-
-      (*env)->ReleaseStringUTFChars (env, str, buf);
+      return 0.0; /* OutOfMemoryError already thrown */
     }
 
-  return val;
+  if (strlen(buf) > 0)
+    {
+      struct _Jv_reent reent;  
+      memset (&reent, 0, sizeof reent);
+
+#ifdef KISSME_LINUX_USER
+      val = strtod ( buf, &endptr);
+   #else
+      val = _strtod_r (&reent, buf, &endptr);
+   #endif
+      if (endptr == buf + strlen(buf))
+	return val;
+    }
+  JCL_ThrowException(env, "java/lang/NumberFormatException", "unable to parse double");
+  return 0.0; /* NumberFormatException already thrown */
 }
