@@ -186,7 +186,7 @@ static jfieldID getFieldReference(JNIEnv *env, jobject field,
 	}
       else
 	{
-	  type = (char *) malloc(type_len);
+	  type = (char *) malloc(type_len + 1);
 	  type[type_len] = '\0';
 	}
 
