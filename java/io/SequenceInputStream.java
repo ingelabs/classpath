@@ -1,5 +1,5 @@
 /* SequenceInputStream.java -- Reads multiple input streams in sequence
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -29,10 +29,16 @@ package java.io;
 
 import java.util.Enumeration;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete and correct.
+ */
+ 
 /**
-  * This class merges a sequence of multiple <code>InputStream</code>'s in order
-  * to form a single logical stream that can be read by applications that
-  * expect only one stream.
+  * This class merges a sequence of multiple <code>InputStream</code>'s in
+  * order to form a single logical stream that can be read by applications
+  * that expect only one stream.
   * <p>
   * The streams passed to the constructor method are read in order until
   * they return -1 to indicate they are at end of stream.  When a stream
@@ -43,94 +49,49 @@ import java.util.Enumeration;
   * If this stream is closed prior to all subordinate streams being read
   * to completion, all subordinate streams are closed.
   *
-  * @version 0.0
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Warren Levy <warrenl@cygnus.com>
   */
 public class SequenceInputStream extends InputStream
 {
+  /** The handle for the current input stream. */
+  private InputStream in;
 
-/*************************************************************************/
+  /** Secondary input stream; not used if constructed w/ enumeration. */
+  private InputStream in2;
 
-/*
- * Instance Methods
- */
+  /** The enum handle; not used if constructed w/ 2 explicit input streams. */
+  private Enumeration enum;
 
-/**
-  * This variable holds the <code>Enumeration</code> containing the list of
-  * streams to be read, or <code>null</code> if the subordinate streams are not
-  * being obtained from an <code>Enumeration</code>
-  */
-private Enumeration stream_list;
-
-/**
-  * This variable holds the first <code>InputStream</code> to read, if the list
-  * of streams is not being obtained from an <code>Enumeration</code>
-  */
-private InputStream first_stream;
-
-/**
-  * This variable holds the second <code>InputStream</code> to read, if the list
-  * of streams is not being obtained from an <code>Enumeration</code>
-  */
-private InputStream second_stream;
-
-/**
-  * This is the current <code>InputStream</code> that is being read
-  */
-private InputStream current_stream;
-
-/**
-  * This value is <code>true</code> if this stream has been closed.  It is
-  * <code>false</code> otherwise.
-  */
-private boolean closed = false;
-
-/*************************************************************************/
-
-/*
- * Constructors
- */
-
-/**
-  * This method creates a new <code>SequenceInputStream</code> that obtains its
-  * list of subordinate <code>InputStream</code>s from the specified
+ /**
+  * This method creates a new <code>SequenceInputStream</code> that obtains
+  * its list of subordinate <code>InputStream</code>s from the specified
   * <code>Enumeration</code>
   *
-  * @param stream_list An <code>Enumeration</code> that will return a list of <code>InputStream</code>s to read in sequence
+  * @param e An <code>Enumeration</code> that will return a list of
+  * <code>InputStream</code>s to read in sequence
   */
-public
-SequenceInputStream(Enumeration stream_list)
-{
-  this.stream_list = stream_list;
+  public SequenceInputStream(Enumeration e)
+  {
+    enum = e;
+    in = (InputStream) enum.nextElement();
+    in2 = null;
+  }
 
-  current_stream = (InputStream)stream_list.nextElement();
-}
-
-/*************************************************************************/
-
-/**
-  * This method creates a new <code>SequenceInputStream</code> that will read the
-  * two specified subordinate <code>InputStream</code>s in sequence.
+ /**
+  * This method creates a new <code>SequenceInputStream</code> that will read
+  * the two specified subordinate <code>InputStream</code>s in sequence.
   *
-  * @param first_stream The first <code>InputStream</code> to read
-  * @param second_stream The second <code>InputStream</code> to read
+  * @param s1 The first <code>InputStream</code> to read
+  * @param s2 The second <code>InputStream</code> to read
   */
-public 
-SequenceInputStream(InputStream first_stream, InputStream second_stream)
-{
-  this.first_stream = first_stream;
-  this.second_stream = second_stream;
-  current_stream = first_stream;
-}
+  public SequenceInputStream(InputStream s1, InputStream s2)
+  {
+    in = s1;
+    in2 = s2;
+  }
 
-/*************************************************************************/
-
-/*
- * Instance Methods
- */
-
-/**
+ /**
   * This method returns the number of bytes than can be read from the
   * currently being read subordinate stream before that stream could
   * block.  Note that it is possible more bytes than this can actually
@@ -141,52 +102,31 @@ SequenceInputStream(InputStream first_stream, InputStream second_stream)
   *
   * @exception IOException If an error occurs
   */
-public int
-available() throws IOException
-{
-  if (closed)
-    return(0);
+  public int available() throws IOException
+  {
+    if (in == null)
+      return 0;
 
-  return(current_stream.available());
-}
+    return in.available();
+  }
 
-/*************************************************************************/
-
-/**
+ /**
   * Closes this stream.  This will cause any remaining unclosed subordinate
   * <code>InputStream</code>'s to be closed as well.  Subsequent attempts to 
   * read from this stream may cause an exception.
   *
   * @exception IOException If an error occurs
   */
-public synchronized void
-close() throws IOException
-{
-  if (closed)
-    return;
-
-  if ((current_stream == first_stream) && (first_stream != null))
-    {
-      first_stream.close();
-      second_stream.close();
-    }
-
-  if ((current_stream == second_stream) && (second_stream != null))
-    second_stream.close();
-
-  if (stream_list != null)
-    while (stream_list.hasMoreElements())
+  public void close() throws IOException
+  {
+    while (in != null)
       {
-        InputStream stream = (InputStream)stream_list.nextElement();
-        stream.close();
+	in.close();
+	in = getNextStream ();
       }
+  }
 
-  closed = true;
-}
-
-/*************************************************************************/
-
-/**
+ /**
   * This method reads an unsigned byte from the input stream and returns it
   * as an int in the range of 0-255.  This method also will return -1 if
   * the end of the stream has been reached.  This will only happen when
@@ -198,113 +138,73 @@ close() throws IOException
   *
   * @exception IOException If an error occurs
   */
-public synchronized int
-read() throws IOException
-{
-  if (closed)
-    return(-1);
+  public int read() throws IOException
+  {
+    int ch = -1;
 
-  int byte_read = current_stream.read();
+    while (in != null && (ch = in.read()) < 0)
+      {
+	in.close();
+        in = getNextStream();
+      }
 
-  while (byte_read == -1)
-    {
-      getNextStream();
-      if (current_stream == null)
-        {
-          close();
-          return(-1);
-        }
+    return ch;
+  }
 
-      byte_read = current_stream.read();
-    }    
-
-  return(byte_read);
-}
-
-/*************************************************************************/
-
-/**
+ /**
   * This method reads bytes from a stream and stores them into a caller
-  * supplied buffer.  It starts storing the data at index <code>offset</code> into
-  * the buffer and attempts to read <code>len</code> bytes.  This method can
-  * return before reading the number of bytes requested.  The actual number
-  * of bytes read is returned as an int.  A -1 is returend to indicate the
-  * end of the stream.  This will only happen when all of the subordinate
+  * supplied buffer.  It starts storing the data at index <code>offset</code>
+  * into the buffer and attempts to read <code>len</code> bytes. This method
+  * can return before reading the number of bytes requested. The actual number
+  * of bytes read is returned as an int. A -1 is returend to indicate the
+  * end of the stream. This will only happen when all of the subordinate
   * streams have been read.
   * <p>
   * This method will block until at least one byte can be read.
   *
-  * @param buf The array into which bytes read should be stored
-  * @param offset The offset into the array to start storing bytes
+  * @param b The array into which bytes read should be stored
+  * @param off The offset into the array to start storing bytes
   * @param len The requested number of bytes to read
   *
   * @return The actual number of bytes read, or -1 if end of stream
   *
   * @exception IOException If an error occurs
   */
-public synchronized int
-read(byte[] buf, int offset, int len) throws IOException
-{
-  if (closed)
-    return(-1);
+  public int read(byte[] b, int off, int len) throws IOException
+  {
+    int ch = -1;
 
-  if (len == 0)
-    return(0);
+    // The validity of the parameters will be checked by in.read so
+    // don't bother doing it here.
+    while (in != null && (ch = in.read(b, off, len)) < 0)
+      {
+	in.close();
+        in = getNextStream();
+      }
 
-  int total_read = 0;
-  for (;;)
-    {
-      int bytes_read = current_stream.read(buf, offset + total_read, 
-                                          len - total_read);
+    return ch;
+  }
 
-      // Are we done?
-      if (bytes_read == (len - total_read))
-        return(len);
-
-      // Is the current stream empty?
-      if (bytes_read == -1)
-        {
-          getNextStream();
-          if (current_stream == null)
-            {
-              close();
-              if (total_read == 0)
-                return(-1);
-              else
-                return(total_read);
-            }
-        }
-      else
-        total_read += bytes_read;
-    }
-}
-
-/*************************************************************************/
-
-/**
-  * This private method is used to get the next <code>InputStream</code> to read
-  * from
+ /**
+  * This private method is used to get the next <code>InputStream</code> to
+  * read from. Returns null when no more streams are available.
   */
-private void
-getNextStream()
-{
-  if (stream_list == null)
-    {
-      if (current_stream == first_stream)
-        current_stream = second_stream;
-      else
-        current_stream = null;
-    }
-  else
-    {
-      if (stream_list.hasMoreElements())
-        current_stream = (InputStream)stream_list.nextElement();
-      else
-        current_stream = null;
-    }
+  private InputStream getNextStream()
+  {
+    InputStream nextIn = null;
 
-  return;
+    if (enum != null)
+      {
+        if (enum.hasMoreElements())
+	  nextIn = (InputStream) enum.nextElement();
+      }
+    else
+      if (in2 != null)
+	{
+	  nextIn = in2;
+	  in2 = null;
+	}
+
+    return nextIn;
+  }
 }
-
-} // class SequenceInputStream
-

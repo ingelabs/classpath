@@ -1,5 +1,9 @@
-2001-10-01  Mark Wielaard  <mark@klomp.org>
+2001-10-03  Mark Wielaard  <mark@klomp.org>
 
+	* java/io/SequenceInputStream.java: Merge with libgcj
+	* java/io/StringBufferInputStream.java: Ditto
+
+2001-10-01  Mark Wielaard  <mark@klomp.org>
 	* java/lang/InheritableThreadLocal.java (addToHeritage): check if this
 	local is already contained in the heritage before adding it.
 
