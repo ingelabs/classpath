@@ -1,5 +1,10 @@
 2005-03-11  Audrius Meskauskas  <audriusa@bluewin.ch>
 
+	* org/omg/CORBA/portable/InputStream.java (read_Context):
+	following API, this must be concrete and unimplemented.
+
+2005-03-11  Audrius Meskauskas  <audriusa@bluewin.ch>
+
 	* org/omg/CORBA/BooleanSeqHelper.java,
 	org/omg/CORBA/CharSeqHelper.java,
 	org/omg/CORBA/DoubleSeqHelper.java,
