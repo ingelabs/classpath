@@ -105,15 +105,15 @@ public final class Class implements Serializable
     unknownProtectionDomain = new ProtectionDomain(null, permissions);
   }
 
-  private transient final VMClass vmClass;
+  transient final VMClass vmClass;
 
   /**
    * Class is non-instantiable from Java code; only the VM can create
    * instances of this class.
    */
-  private Class()
+  Class(VMClass vmClass)
   {
-    this.vmClass = VMClass.getInstance ();
+    this.vmClass = vmClass;
   }
 
   /**
@@ -192,12 +192,23 @@ public final class Class implements Serializable
             if (cl != null)
               sm.checkPermission(new RuntimePermission("getClassLoader"));
           }
+	if (name.startsWith("["))
+	    return VMClass.loadArrayClass(name, null);
 	Class c = VMClassLoader.loadClass(name, initialize);
-        if (c != null)
-          return c;
+	if (c != null)
+	  {
+	    if (initialize)
+		c.vmClass.initialize();
+	    return c;
+	  }
         throw new ClassNotFoundException(name);
       }
-    return classloader.loadClass(name, initialize);
+    if (name.startsWith("["))
+	return VMClass.loadArrayClass(name, classloader);
+    Class c = classloader.loadClass(name, initialize);
+    if (initialize)
+	c.vmClass.initialize();
+    return c;
   }
 
   /**
@@ -295,7 +306,7 @@ public final class Class implements Serializable
     if ((result = vmClass.isArray ()) < 0)
       return getName().charAt(0) == '[';
 
-    return (result == 1) ? true : false;
+    return result == 1;
   }
 
   /**
@@ -525,10 +536,10 @@ public final class Class implements Serializable
    */
   private Class[] internalGetClasses() {
     ArrayList list = new ArrayList();
-    list.add(Arrays.asList(getDeclaredClasses(true)));
+    list.addAll(Arrays.asList(getDeclaredClasses(true)));
     Class superClass = getSuperclass();
     if (superClass != null)
-      list.add(Arrays.asList(superClass.internalGetClasses()));
+      list.addAll(Arrays.asList(superClass.internalGetClasses()));
     return (Class[])list.toArray(new Class[list.size()]);
   }
 
@@ -554,15 +565,15 @@ public final class Class implements Serializable
    */
   private Field[] internalGetFields() {
     ArrayList list = new ArrayList();
-    list.add(Arrays.asList(getDeclaredFields(true)));
+    list.addAll(Arrays.asList(getDeclaredFields(true)));
     if (isInterface()) {
       Class[] interfaces = getInterfaces();
       for (int i = 0; i < interfaces.length; i++)
-	list.add(Arrays.asList(interfaces[i].internalGetFields()));
+	list.addAll(Arrays.asList(interfaces[i].internalGetFields()));
     } else {
       Class superClass = getSuperclass();
       if (superClass != null)
-	list.add(Arrays.asList(superClass.internalGetFields()));
+	list.addAll(Arrays.asList(superClass.internalGetFields()));
     }
     return (Field[])list.toArray(new Field[list.size()]);
   }
@@ -746,9 +757,16 @@ public final class Class implements Serializable
 	throws NoSuchMethodException {
     memberAccessCheck(Member.PUBLIC);
     for (Class c = this; c != null; c = c.getSuperclass()) {
-      Method match = matchMethod(c.getDeclaredMethods(true), name, args);
-      if (match != null)
-	return match;
+	Method match = matchMethod(c.getDeclaredMethods(true), name, args);
+	if (match != null)
+	    return match;
+	Class[] interfaces = c.getInterfaces();
+	for (int i = 0; i < interfaces.length; i++) 
+	{
+	    match = matchMethod(interfaces[i].getDeclaredMethods(true), name, args);
+	    if (match != null)
+		return match;
+	}
     }
     throw new NoSuchMethodException();
   }

@@ -1,3 +1,26 @@
+2003-04-05  C. Brian Jones  <cbj@gnu.org>
+
+	* vm/reference/java/lang/VMClass.java (getInstance): removed
+	* include/java_lang_VMClass.h: regenerated
+
+2003-04-05  Jeroen Frijters  <jeroen@sumatra.nl>
+
+	* java/lang/Class.java
+	(vmClass): Made vmClass field package instead of private
+	(Class): Made constructor package instead of private and passed in
+	VMClass instance
+	(forName(String,boolean,ClassLoader)): Added special handling for array
+	classes and initialization
+	(isArray): Removed superfluous ternary operator
+	(internalGetClasses): Fixed to use ArrayList.addAll instead of
+	ArrayList.add
+	(internalGetFields): Fixed to use ArrayList.addAll instead of
+	ArrayList.add
+	(getMethod(String,Class[])): Added code to also look at interfaces
+	* vm/reference/java/lang/VMClass.java
+	(initialize): Added
+	(loadArrayClass): Added
+
 2003-04-04  C. Brian Jones  <cbj@gnu.org>
 
 	* THANKYOU: added Archie Cobbs
@@ -27,6 +50,7 @@
 
 2003-04-03  C. Brian Jones  <cbj@gnu.org>
 
+	Many pieces of this patch contributed by Archie Cobbs
 	* vm/reference/java/lang/VMClass.java: new file
 	* vm/reference/java/lang/Class.java: moved to java/lang
 	* java/lang/Class.java: added transient reference to VMClass

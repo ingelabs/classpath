@@ -79,8 +79,6 @@ public final class VMClass
     this.vmData = vmData;
   }
 
-  static native VMClass getInstance();
-
   private void initialize(int thread) throws InterruptedException
   {
     Error error;
@@ -341,5 +339,24 @@ public final class VMClass
    * operation
    */
   native int isArray();
+
+  /**
+   * This method should trigger class initialization (if the
+   * class hasn't already been initialized)
+   * 
+   * @throws ExceptionInInitializerError if an exception
+   *         occurs during initialization
+   */
+  native void initialize();
+
+  /**
+   * Load an array class.
+   *
+   * @return the Class object representing the class
+   * @throws ClassNotFoundException if the class was not found by the
+   *         classloader
+   */
+  static native Class loadArrayClass(String name, ClassLoader classloader)
+	throws ClassNotFoundException;
 
 } // class VMClass

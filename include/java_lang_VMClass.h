@@ -14,7 +14,6 @@ extern jboolean Java_java_lang_VMClass_isInitialized (JNIEnv *env, jobject);
 extern void Java_java_lang_VMClass_setInitialized (JNIEnv *env, jobject);
 extern void Java_java_lang_VMClass_step7 (JNIEnv *env, jobject);
 extern void Java_java_lang_VMClass_step8 (JNIEnv *env, jobject);
-extern jobject Java_java_lang_VMClass_getInstance (JNIEnv *env, jclass);
 extern jboolean Java_java_lang_VMClass_isInstance (JNIEnv *env, jobject, jobject);
 extern jboolean Java_java_lang_VMClass_isAssignableFrom (JNIEnv *env, jobject, jclass);
 extern jboolean Java_java_lang_VMClass_isInterface (JNIEnv *env, jobject);
@@ -32,6 +31,8 @@ extern jobjectArray Java_java_lang_VMClass_getDeclaredConstructors (JNIEnv *env,
 extern jobject Java_java_lang_VMClass_getClassLoader (JNIEnv *env, jobject);
 extern jclass Java_java_lang_VMClass_forName (JNIEnv *env, jclass, jstring);
 extern jint Java_java_lang_VMClass_isArray (JNIEnv *env, jobject);
+extern void Java_java_lang_VMClass_initialize__ (JNIEnv *env, jobject);
+extern jclass Java_java_lang_VMClass_loadArrayClass (JNIEnv *env, jclass, jstring, jobject);
 
 #ifdef __cplusplus
 }
