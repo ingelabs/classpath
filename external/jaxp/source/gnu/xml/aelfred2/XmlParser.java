@@ -1,5 +1,4 @@
 /*
- * $Id: XmlParser.java,v 1.1 2003-02-01 02:10:12 cbj Exp $
  * Copyright (C) 1999-2001 David Brownell
  * 
  * This file is part of GNU JAXP, a library.
@@ -69,8 +68,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 
-// $Id: XmlParser.java,v 1.1 2003-02-01 02:10:12 cbj Exp $
-
 /**
  * Parse XML documents and return parse events through call-backs.
  * Use the <code>SAXDriver</code> class as your entry point, as all
@@ -79,7 +76,6 @@ import org.xml.sax.SAXException;
  * @author Written by David Megginson &lt;dmeggins@microstar.com&gt;
  *	(version 1.2a with bugfixes)
  * @author Updated by David Brownell &lt;dbrownell@users.sourceforge.net&gt;
- * @version $Date: 2003-02-01 02:10:12 $
  * @see SAXDriver
  */
 final class XmlParser
@@ -1721,6 +1717,11 @@ loop:
 	}
     }
 
+  private void parseCharRef ()
+    throws SAXException, IOException
+  {
+    parseCharRef (true /* do flushDataBuffer by default */);
+  }
 
     /**
      * Read and interpret a character reference.
@@ -1729,7 +1730,7 @@ loop:
      * </pre>
      * <p>NOTE: the '&#' has already been read.
      */
-    private void parseCharRef ()
+    private void parseCharRef (boolean doFlush)
     throws SAXException, IOException
     {
 	int value = 0;
@@ -1803,7 +1804,7 @@ loop2:
 	    error ("character reference " + value + " is too large for UTF-16",
 		   new Integer (value).toString (), null);
 	}
-	dataBufferFlush ();
+  if (doFlush) dataBufferFlush ();
     }
 
 
@@ -2381,7 +2382,7 @@ loop:
 			    dataBufferAppend ('&');
 			    break;
 			}
-			parseCharRef ();
+      parseCharRef (false /* Do not do flushDataBuffer */);
 
 			// exotic WFness risk: this is an entity literal,
 			// dataBuffer [dataBufferPos - 1] == '&', and
@@ -3444,10 +3445,15 @@ loop:
 
 	    // we might be using alternate IDs/encoding
 	    systemId = source.getSystemId ();
+	    // The following warning and setting systemId was deleted bcause
+	    // the application has the option of not setting systemId
+	    // provided that it has set the characte/byte stream.
+	    /*
 	    if (systemId == null) {
 		handler.warn ("missing system ID, using " + ids [1]);
 		systemId = ids [1];
 	    }
+	    */
 	} else {
 	    // "[document]", or "[dtd]" via getExternalSubset()
 	    scratch.setCharacterStream (reader);

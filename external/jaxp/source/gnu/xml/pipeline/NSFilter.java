@@ -1,5 +1,4 @@
 /*
- * $Id: NSFilter.java,v 1.1 2003-02-01 02:10:19 cbj Exp $
  * Copyright (C) 1999-2001 David Brownell
  * 
  * This file is part of GNU JAXP, a library.
@@ -77,7 +76,6 @@ import org.xml.sax.helpers.NamespaceSupport;
  * appropriate logic (perhaps adding additional heuristics in a subclass).
  *
  * @author David Brownell
- * @version $Date: 2003-02-01 02:10:19 $
  */
 public class NSFilter extends EventFilter
 {

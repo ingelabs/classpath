@@ -1,5 +1,4 @@
 /*
- * $Id: JAXPFactory.java,v 1.1 2003-02-01 02:10:17 cbj Exp $
  * Copyright (C) 2001 David Brownell
  * 
  * This file is part of GNU JAXP, a library.
@@ -53,7 +52,6 @@ import javax.xml.parsers.SAXParserFactory;
  * @see Consumer
  *
  * @author David Brownell
- * @version $Date: 2003-02-01 02:10:17 $
  */
 public final class JAXPFactory extends DocumentBuilderFactory
 {

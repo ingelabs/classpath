@@ -1,5 +1,4 @@
 /*
- * $Id: DomImpl.java,v 1.1 2003-02-01 02:10:15 cbj Exp $
  * Copyright (C) 1999-2001 David Brownell
  * 
  * This file is part of GNU JAXP, a library.
@@ -32,8 +31,6 @@ import java.util.Vector;
 import org.w3c.dom.*;
 
 
-// $Id: DomImpl.java,v 1.1 2003-02-01 02:10:15 cbj Exp $
-
 /**
  * <p> "DOMImplementation" implementation. </p>
  *
@@ -44,7 +41,6 @@ import org.w3c.dom.*;
  * Traversal).
  *
  * @author David Brownell 
- * @version $Date: 2003-02-01 02:10:15 $
  */
 public class DomImpl implements DOMImplementation
 {

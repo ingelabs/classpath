@@ -3,7 +3,6 @@
 // Written by Edwin Goei, edwingo@apache.org
 // and by David Brownell, dbrownell@users.sourceforge.net
 // NO WARRANTY!  This class is in the Public Domain.
-// $Id: NewInstance.java,v 1.1 2003-02-01 02:10:46 cbj Exp $
 
 package org.xml.sax.helpers;
 

@@ -1,5 +1,4 @@
 /*
- * $Id: DomExtern.java,v 1.1 2003-02-01 02:10:15 cbj Exp $
  * Copyright (C) 1999-2001 David Brownell
  * 
  * This file is part of GNU JAXP, a library.
@@ -30,8 +29,6 @@ package gnu.xml.dom;
 import org.w3c.dom.*;
 
 
-// $Id: DomExtern.java,v 1.1 2003-02-01 02:10:15 cbj Exp $
-
 /**
  * <p> Abstract implemention of nodes describing external DTD-related
  * objects.  This facilitates reusing code for Entity, Notation, and
@@ -44,7 +41,6 @@ import org.w3c.dom.*;
  * XML feature they partially expose. </p>
  *
  * @author David Brownell 
- * @version $Date: 2003-02-01 02:10:15 $
  */
 public abstract class DomExtern extends DomNode
 {

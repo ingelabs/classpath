@@ -1,7 +1,6 @@
 // SAX parser interface.
 // http://www.saxproject.org
 // No warranty; no copyright -- use this as you will.
-// $Id: Parser.java,v 1.1 2003-02-01 02:10:43 cbj Exp $
 
 package org.xml.sax;
 

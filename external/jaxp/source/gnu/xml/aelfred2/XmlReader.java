@@ -1,5 +1,4 @@
 /*
- * $Id: XmlReader.java,v 1.1 2003-02-01 02:10:13 cbj Exp $
  * Copyright (C) 1999-2001 David Brownell
  * 
  * This file is part of GNU JAXP, a library.
@@ -37,8 +36,6 @@ import gnu.xml.pipeline.EventFilter;
 import gnu.xml.pipeline.ValidationConsumer;
 
 
-// $Id: XmlReader.java,v 1.1 2003-02-01 02:10:13 cbj Exp $
-
 /**
  * This SAX2 parser optionally layers a validator over the &AElig;lfred2
  * SAX2 parser.  While this will not evaluate every XML validity constraint,
@@ -61,7 +58,6 @@ import gnu.xml.pipeline.ValidationConsumer;
  * @see gnu.xml.pipeline.ValidationConsumer
  *
  * @author David Brownell
- * @version $Date: 2003-02-01 02:10:13 $
  */
 public final class XmlReader implements XMLReader
 {

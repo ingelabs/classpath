@@ -1,3 +1,147 @@
+2004-05-01  Mark Wielaard  <mark@klomp.org>
+
+	Import GNU JAXP 2004-02-01
+	* external/jaxp/source/gnu/xml/aelfred2/JAXPFactory.java: Imported.
+	* external/jaxp/source/gnu/xml/aelfred2/SAXDriver.java: Idem.
+	* external/jaxp/source/gnu/xml/aelfred2/XmlParser.java: Idem.
+	* external/jaxp/source/gnu/xml/aelfred2/XmlReader.java: Idem.
+	* external/jaxp/source/gnu/xml/aelfred2/package.html: Idem.
+	* external/jaxp/source/gnu/xml/dom/Consumer.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomAttr.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomCDATA.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomCharacterData.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomComment.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomDoctype.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomDocument.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomElement.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomEntity.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomEntityReference.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomEvent.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomEx.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomExtern.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomFragment.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomImpl.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomIterator.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomNamedNodeMap.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomNode.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomNotation.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomNsNode.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomPI.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/DomText.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/JAXPFactory.java: Idem.
+	* external/jaxp/source/gnu/xml/dom/package.html: Idem.
+	* external/jaxp/source/gnu/xml/pipeline/CallFilter.java: Idem.
+	* external/jaxp/source/gnu/xml/pipeline/DomConsumer.java: Idem.
+	* external/jaxp/source/gnu/xml/pipeline/EventConsumer.java: Idem.
+	* external/jaxp/source/gnu/xml/pipeline/EventFilter.java: Idem.
+	* external/jaxp/source/gnu/xml/pipeline/LinkFilter.java: Idem.
+	* external/jaxp/source/gnu/xml/pipeline/NSFilter.java: Idem.
+	* external/jaxp/source/gnu/xml/pipeline/PipelineFactory.java: Idem.
+	* external/jaxp/source/gnu/xml/pipeline/TeeConsumer.java: Idem.
+	* external/jaxp/source/gnu/xml/pipeline/TextConsumer.java: Idem.
+	* external/jaxp/source/gnu/xml/pipeline/ValidationConsumer.java: Idem.
+	* external/jaxp/source/gnu/xml/pipeline/WellFormednessFilter.java:
+	Idem.
+	* external/jaxp/source/gnu/xml/pipeline/XIncludeFilter.java: Idem.
+	* external/jaxp/source/gnu/xml/pipeline/XsltFilter.java: Idem.
+	* external/jaxp/source/gnu/xml/pipeline/package.html: Idem.
+	* external/jaxp/source/gnu/xml/util/DoParse.java: Idem.
+	* external/jaxp/source/gnu/xml/util/DomParser.java: Idem.
+	* external/jaxp/source/gnu/xml/util/Resolver.java: Idem.
+	* external/jaxp/source/gnu/xml/util/SAXNullTransformerFactory.java:
+	Idem.
+	* external/jaxp/source/gnu/xml/util/XCat.java: Idem.
+	* external/jaxp/source/gnu/xml/util/XHTMLWriter.java: Idem.
+	* external/jaxp/source/gnu/xml/util/XMLWriter.java: Idem.
+	* external/jaxp/source/gnu/xml/util/package.html: Idem.
+	* external/jaxp/source/javax/xml/parsers/ClassStuff.java: Idem.
+	* external/jaxp/source/javax/xml/parsers/DocumentBuilder.java: Idem.
+	* external/jaxp/source/javax/xml/parsers/DocumentBuilderFactory.java:
+	Idem.
+	* external/jaxp/source/javax/xml/parsers/
+	FactoryConfigurationError.java: Idem.
+	* external/jaxp/source/javax/xml/parsers/
+	ParserConfigurationException.java: Idem.
+	* external/jaxp/source/javax/xml/parsers/SAXParser.java: Idem.
+	* external/jaxp/source/javax/xml/parsers/SAXParserFactory.java: Idem.
+	* external/jaxp/source/javax/xml/transform/ClassStuff.java: Idem.
+	* external/jaxp/source/javax/xml/transform/ErrorListener.java: Idem.
+	* external/jaxp/source/javax/xml/transform/OutputKeys.java: Idem.
+	* external/jaxp/source/javax/xml/transform/Result.java: Idem.
+	* external/jaxp/source/javax/xml/transform/Source.java: Idem.
+	* external/jaxp/source/javax/xml/transform/SourceLocator.java: Idem.
+	* external/jaxp/source/javax/xml/transform/Templates.java: Idem.
+	* external/jaxp/source/javax/xml/transform/Transformer.java: Idem.
+	* external/jaxp/source/javax/xml/transform/
+	TransformerConfigurationException.java: Idem.
+	* external/jaxp/source/javax/xml/transform/TransformerException.java:
+	Idem.
+	* external/jaxp/source/javax/xml/transform/TransformerFactory.java:
+	Idem.
+	* external/jaxp/source/javax/xml/transform/
+	TransformerFactoryConfigurationError.java: Idem.
+	* external/jaxp/source/javax/xml/transform/URIResolver.java: Idem.
+	* external/jaxp/source/javax/xml/transform/dom/DOMLocator.java: Idem.
+	* external/jaxp/source/javax/xml/transform/dom/DOMResult.java: Idem.
+	* external/jaxp/source/javax/xml/transform/dom/DOMSource.java: Idem.
+	* external/jaxp/source/javax/xml/transform/sax/SAXResult.java: Idem.
+	* external/jaxp/source/javax/xml/transform/sax/SAXSource.java: Idem.
+	* external/jaxp/source/javax/xml/transform/sax/
+	SAXTransformerFactory.java: Idem.
+	* external/jaxp/source/javax/xml/transform/sax/TemplatesHandler.java:
+	Idem.
+	* external/jaxp/source/javax/xml/transform/sax/
+	TransformerHandler.java: Idem.
+	* external/jaxp/source/javax/xml/transform/stream/StreamResult.java:
+	Idem.
+	* external/jaxp/source/javax/xml/transform/stream/StreamSource.java:
+	Idem.
+	* external/jaxp/source/org/xml/sax/AttributeList.java: Idem.
+	* external/jaxp/source/org/xml/sax/Attributes.java: Idem.
+	* external/jaxp/source/org/xml/sax/ContentHandler.java: Idem.
+	* external/jaxp/source/org/xml/sax/DTDHandler.java: Idem.
+	* external/jaxp/source/org/xml/sax/DocumentHandler.java: Idem.
+	* external/jaxp/source/org/xml/sax/EntityResolver.java: Idem.
+	* external/jaxp/source/org/xml/sax/ErrorHandler.java: Idem.
+	* external/jaxp/source/org/xml/sax/HandlerBase.java: Idem.
+	* external/jaxp/source/org/xml/sax/InputSource.java: Idem.
+	* external/jaxp/source/org/xml/sax/Locator.java: Idem.
+	* external/jaxp/source/org/xml/sax/Parser.java: Idem.
+	* external/jaxp/source/org/xml/sax/SAXException.java: Idem.
+	* external/jaxp/source/org/xml/sax/SAXNotRecognizedException.java:
+	Idem.
+	* external/jaxp/source/org/xml/sax/SAXNotSupportedException.java:
+	Idem.
+	* external/jaxp/source/org/xml/sax/SAXParseException.java: Idem.
+	* external/jaxp/source/org/xml/sax/XMLFilter.java: Idem.
+	* external/jaxp/source/org/xml/sax/XMLReader.java: Idem.
+	* external/jaxp/source/org/xml/sax/package.html: Idem.
+	* external/jaxp/source/org/xml/sax/ext/Attributes2.java: Idem.
+	* external/jaxp/source/org/xml/sax/ext/Attributes2Impl.java: Idem.
+	* external/jaxp/source/org/xml/sax/ext/DeclHandler.java: Idem.
+	* external/jaxp/source/org/xml/sax/ext/DefaultHandler2.java: Idem.
+	* external/jaxp/source/org/xml/sax/ext/EntityResolver2.java: Idem.
+	* external/jaxp/source/org/xml/sax/ext/LexicalHandler.java: Idem.
+	* external/jaxp/source/org/xml/sax/ext/Locator2.java: Idem.
+	* external/jaxp/source/org/xml/sax/ext/Locator2Impl.java: Idem.
+	* external/jaxp/source/org/xml/sax/ext/package.html: Idem.
+	* external/jaxp/source/org/xml/sax/helpers/AttributeListImpl.java:
+	Idem.
+	* external/jaxp/source/org/xml/sax/helpers/AttributesImpl.java: Idem.
+	* external/jaxp/source/org/xml/sax/helpers/DefaultHandler.java: Idem.
+	* external/jaxp/source/org/xml/sax/helpers/LocatorImpl.java: Idem.
+	* external/jaxp/source/org/xml/sax/helpers/NamespaceSupport.java:
+	Idem.
+	* external/jaxp/source/org/xml/sax/helpers/NewInstance.java: Idem.
+	* external/jaxp/source/org/xml/sax/helpers/ParserAdapter.java: Idem.
+	* external/jaxp/source/org/xml/sax/helpers/ParserFactory.java: Idem.
+	* external/jaxp/source/org/xml/sax/helpers/XMLFilterImpl.java: Idem.
+	* external/jaxp/source/org/xml/sax/helpers/XMLReaderAdapter.java:
+	Idem.
+	* external/jaxp/source/org/xml/sax/helpers/XMLReaderFactory.java:
+	Idem.
+	* external/jaxp/source/org/xml/sax/helpers/package.html: Idem.
+
 2004-05-01  Guilhem Lavaux <guilhem@kaffe.org>
 
 	* java/text/DecimalFormat.java

@@ -1,5 +1,5 @@
 /*
- * $Id: SAXSource.java,v 1.1 2003-02-01 02:10:28 cbj Exp $
+ * $Id: SAXSource.java,v 1.2 2004-05-01 16:18:51 mark Exp $
  * Copyright (C) 2001 Andrew Selkirk
  * Copyright (C) 2001 David Brownell
  * 
@@ -122,7 +122,11 @@ public class SAXSource implements Source
 	{
 	    InputSource	retval;
 	    boolean	ok = false;
-
+      
+      if (in instanceof SAXSource) {
+        return ((SAXSource) in).inputSource;
+      }
+      
 	    if (in.getSystemId () != null) {
 		retval = new InputSource (in.getSystemId ());
 		ok = true;

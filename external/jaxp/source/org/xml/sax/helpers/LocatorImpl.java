@@ -1,7 +1,6 @@
 // SAX default implementation for Locator.
 // http://www.saxproject.org
 // No warranty; no copyright -- use this as you will.
-// $Id: LocatorImpl.java,v 1.1 2003-02-01 02:10:46 cbj Exp $
 
 package org.xml.sax.helpers;
 

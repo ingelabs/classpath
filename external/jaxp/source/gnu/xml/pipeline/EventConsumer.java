@@ -1,5 +1,4 @@
 /*
- * $Id: EventConsumer.java,v 1.1 2003-02-01 02:10:18 cbj Exp $
  * Copyright (C) 1999-2001 David Brownell
  * 
  * This file is part of GNU JAXP, a library.
@@ -47,7 +46,6 @@ import org.xml.sax.*;
  * by the {@link PipelineFactory} class.
  *
  * @author David Brownell
- * @version $Date: 2003-02-01 02:10:18 $
  */
 public interface EventConsumer
 {

@@ -1,5 +1,4 @@
 /*
- * $Id: DomIterator.java,v 1.1 2003-02-01 02:10:16 cbj Exp $
  * Copyright (C) 1999-2001 David Brownell
  * 
  * This file is part of GNU JAXP, a library.
@@ -34,14 +33,11 @@ import org.w3c.dom.events.*;
 import org.w3c.dom.traversal.*;
 
 
-// $Id: DomIterator.java,v 1.1 2003-02-01 02:10:16 cbj Exp $
-
 /**
  * <p> "NodeIterator" implementation, usable with any L2 DOM which
  * supports MutationEvents. </p>
  *
  * @author David Brownell 
- * @version $Date: 2003-02-01 02:10:16 $
  */
 final public class DomIterator implements NodeIterator, EventListener
 {

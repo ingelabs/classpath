@@ -1,5 +1,4 @@
 /*
- * $Id: SAXNullTransformerFactory.java,v 1.1 2003-02-01 02:10:24 cbj Exp $
  * Copyright (C) 2001 David Brownell
  * 
  * This file is part of GNU JAXP, a library.
@@ -82,7 +81,6 @@ import org.xml.sax.helpers.LocatorImpl;
  * @see gnu.xml.pipeline.XsltFilter
  *
  * @author David Brownell
- * @version $Date: 2003-02-01 02:10:24 $
  */
 public class SAXNullTransformerFactory extends SAXTransformerFactory
 {

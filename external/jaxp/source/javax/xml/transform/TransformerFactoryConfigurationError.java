@@ -1,5 +1,5 @@
 /*
- * $Id: TransformerFactoryConfigurationError.java,v 1.1 2003-02-01 02:10:28 cbj Exp $
+ * $Id: TransformerFactoryConfigurationError.java,v 1.2 2004-05-01 16:18:51 mark Exp $
  * Copyright (C) 2001 Andrew Selkirk
  * Copyright (C) 2001 David Brownell
  * 
