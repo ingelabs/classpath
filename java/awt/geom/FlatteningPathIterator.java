@@ -1,5 +1,5 @@
-/* Dimension2D.java -- abstraction of a dimension
-   Copyright (C) 1999, 2000, 2002 Free Software Foundation
+/* FlatteningPathIterator.java -- performs interpolation of curved paths
+   Copyright (C) 2002 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -39,75 +39,65 @@ exception statement from your version. */
 package java.awt.geom;
 
 /**
- * This stores a dimension in 2-dimensional space - a width (along the x-axis)
- * and height (along the y-axis). The storage is left to subclasses.
+ * This class can be used to perform the flattening required by the Shape
+ * interface. It interpolates a curved path segment into a sequence of flat
+ * ones within a certain flatness, up to a recursion limit.
  *
- * @author Per Bothner <bothner@cygnus.com>
  * @author Eric Blake <ebb9@email.byu.edu>
+ * @see Shape
+ * @see RectangularShape#getPathIterator(AffineTransform, double)
  * @since 1.2
- * @status updated to 1.4
+ * @status STUBS ONLY
  */
-public abstract class Dimension2D implements Cloneable
+public class FlatteningPathIterator implements PathIterator
 {
-  /**
-   * The default constructor.
-   */
-  protected Dimension2D()
+  // The iterator we are applied to.
+  private PathIterator subIterator;
+  private double flatness;
+  private int limit;
+
+  public FlatteningPathIterator(PathIterator src, double flatness)
   {
+    this(src, flatness, 10);
+  }
+  public FlatteningPathIterator(PathIterator src, double flatness, int limit)
+  {
+    subIterator = src;
+    this.flatness = flatness;
+    this.limit = limit;
   }
 
-  /**
-   * Get the width of this dimension. A negative result, while legal, is
-   * undefined in meaning.
-   *
-   * @return the width
-   */
-  public abstract double getWidth();
-
-  /**
-   * Get the height of this dimension. A negative result, while legal, is
-   * undefined in meaning.
-   *
-   * @return the height
-   */
-  public abstract double getHeight();
-
-  /**
-   * Set the size of this dimension to the requested values. Loss of precision
-   * may occur.
-   *
-   * @param w the new width
-   * @param h the new height
-   */
-  public abstract void setSize(double w, double h);
-
-  /**
-   * Set the size of this dimension to the requested value. Loss of precision
-   * may occur.
-   *
-   * @param d the dimension containing the new values
-   * @throws NullPointerException if d is null
-   */
-  public void setSize(Dimension2D d)
+  public double getFlatness()
   {
-    setSize(d.getWidth(), d.getHeight());
+    return flatness;
   }
 
-  /**
-   * Create a new dimension of the same run-time type with the same contents
-   * as this one.
-   *
-   * @return the clone
-   */
-  public Object clone()
+  public int getRecursionLimit()
   {
-    try
-      {
-        return super.clone();
-      }
-    catch (CloneNotSupportedException e)
-      {
-        throw (Error) new InternalError().initCause(e); // Impossible
-      }
+    return limit;
   }
-} // class Dimension2D
+
+  public int getWindingRule()
+  {
+    return subIterator.getWindingRule();
+  }
+
+  public boolean isDone()
+  {
+    return subIterator.isDone();
+  }
+
+  public void next()
+  {
+    throw new Error("not implemented");
+  }
+
+  public int currentSegment(double[] coords)
+  {
+    throw new Error("not implemented");
+  }
+  public int currentSegment(float[] coords)
+  {
+    throw new Error("not implemented");
+  }
+} // class FlatteningPathIterator

@@ -123,7 +123,8 @@ public class Polygon implements Shape, Serializable
   }
 
   /**
-   * Create a new polygon with the specified endpoints.
+   * Create a new polygon with the specified endpoints. The arrays are copied,
+   * so that future modifications to the parameters do not affect the polygon.
    *
    * @param xpoints the array of X coordinates for this polygon
    * @param ypoints the array of Y coordinates for this polygon
@@ -134,12 +135,10 @@ public class Polygon implements Shape, Serializable
    */
   public Polygon(int[] xpoints, int[] ypoints, int npoints)
   {
-    if (npoints < 0)
-      throw new NegativeArraySizeException();
-    if (npoints > xpoints.length || npoints > ypoints.length)
-      throw new IndexOutOfBoundsException();
-    this.xpoints = xpoints;
-    this.ypoints = ypoints;
+    this.xpoints = new int[npoints];
+    this.ypoints = new int[npoints];
+    System.arraycopy(xpoints, 0, this.xpoints, 0, npoints);
+    System.arraycopy(ypoints, 0, this.ypoints, 0, npoints);
     this.npoints = npoints;
   }
 
@@ -371,9 +370,11 @@ public class Polygon implements Shape, Serializable
       return false;
     // A point is contained if a ray to (-inf, y) crosses an odd number
     // of segments. This must obey the semantics of Shape when the point is
-    // exactly on a segment or vertex. Note that we are guaranteed that the
-    // condensed polygon has area, and no two segments with identical slope.
-    int intersections = 0;
+    // exactly on a segment or vertex: a point is inside only if the adjacent
+    // point in the increasing x or y direction is also inside. Note that we
+    // are guaranteed that the condensed polygon has area, and no consecutive
+    // segments with identical slope.
+    boolean inside = false;
     int limit = condensed[0];
     int curx = condensed[(limit << 1) - 1];
     int cury = condensed[limit << 1];
@@ -391,7 +392,7 @@ public class Polygon implements Shape, Serializable
           {
             if (priorx < x && curx < x) // Right of segment.
               {
-                intersections++;
+                inside = ! inside;
                 continue;
               }
             // Did we approach this segment from above or below?
@@ -401,7 +402,7 @@ public class Polygon implements Shape, Serializable
             if ((curx == x && (curx > priorx || above))
                 || (priorx == x && (curx < priorx || ! above))
                 || (curx > priorx && ! above) || above)
-              intersections++;
+              inside = ! inside;
             continue;
           }
         if (priorx == x && priory == y) // On prior vertex.
@@ -409,17 +410,19 @@ public class Polygon implements Shape, Serializable
         if (priorx == curx // Vertical segment.
             || (priorx < x && curx < x)) // Right of segment.
           {
-            intersections++;
+            inside = ! inside;
             continue;
           }
         // The point is inside the segment's bounding box, compare slopes.
+        double leftx = curx > priorx ? priorx : curx;
+        double lefty = curx > priorx ? priory : cury;
         double slopeseg = (double) (cury - priory) / (curx - priorx);
-        double slopepoint = (double) (y - priory) / (x - priorx);
+        double slopepoint = (double) (y - lefty) / (x - leftx);
         if ((slopeseg > 0 && slopeseg > slopepoint)
             || slopeseg < slopepoint)
-          intersections++;
+          inside = ! inside;
       }
-    return (intersections & 1) != 0;
+    return inside;
   }
 
   /**
@@ -639,7 +642,7 @@ public class Polygon implements Shape, Serializable
 
       public boolean isDone()
       {
-        return vertex >= npoints;
+        return vertex > npoints;
       }
 
       public void next()
@@ -655,7 +658,7 @@ public class Polygon implements Shape, Serializable
         coords[1] = ypoints[vertex];
         if (transform != null)
           transform.transform(coords, 0, coords, 0, 1);
-        return SEG_LINETO;
+        return vertex == 0 ? SEG_MOVETO : SEG_LINETO;
       }
 
       public int currentSegment(double[] coords)
@@ -666,18 +669,19 @@ public class Polygon implements Shape, Serializable
         coords[1] = ypoints[vertex];
         if (transform != null)
           transform.transform(coords, 0, coords, 0, 1);
-        return SEG_LINETO;
+        return vertex == 0 ? SEG_MOVETO : SEG_LINETO;
       }
     };
   }
 
   /**
    * Return an iterator along the flattened version of the shape boundary.
-   * Since rectangles are already flat, the flatness parameter is ignored, and
-   * the resulting iterator only has SEG_LINETO and SEG_CLOSE points. If the
-   * optional transform is provided, the iterator is transformed accordingly.
-   * Each call returns a new object, independent from others in use. This
-   * class is not threadsafe to begin with, so the path iterator is not either.
+   * Since polygons are already flat, the flatness parameter is ignored, and
+   * the resulting iterator only has SEG_MOVETO, SEG_LINETO and SEG_CLOSE
+   * points. If the optional transform is provided, the iterator is
+   * transformed accordingly. Each call returns a new object, independent
+   * from others in use. This class is not threadsafe to begin with, so the
+   * path iterator is not either.
    *
    * @param transform an optional transform to apply to the iterator
    * @param double the maximum distance for deviation from the real boundary

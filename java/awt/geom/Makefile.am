@@ -4,6 +4,7 @@ EXTRA_DIST = \
 AffineTransform.java \
 Dimension2D.java \
 Ellipse2D.java \
+FlatteningPathIterator.java \
 IllegalPathStateException.java \
 Line2D.java \
 NoninvertibleTransformException.java \
