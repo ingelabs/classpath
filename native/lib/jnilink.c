@@ -1,20 +1,22 @@
+/*
+ * JNILINK 1.1: JNI version.
+ */
+
 #include "jnilink.h"
 #include <string.h>
-#include <vmi.h>
 #include <jcl.h>
 
 #include <malloc.h>
 
-typedef struct jniMethodInfo {
-	int isStatic;
-	union {
-		struct {
-			char * name;
-			char * sig;
-		} dynamic;
-		jmethodID statID;
-	} data;
-} jniMethodInfo;
+typedef struct linkedMethod {
+	jclass theClass;
+	jmethodID m;
+} linkedMethod;
+
+typedef struct linkedField {
+	jclass theClass;
+	jfieldID f;
+} linkedField;
 
 /* These functions are called to get the link pointers. */
 /* One possible optimization for Japhar would be to store the slot number of the method in the linkPtr.
@@ -22,87 +24,122 @@ typedef struct jniMethodInfo {
  * For JNI, the linkPtr must point to a struct containing the name and sig so that it can be re-resolved for
  * every object.
  */
-JNIEXPORT linkPtr JNICALL LINK_LinkMethod      (JNIEnv * env, jclass clazz, char * name, char * sig) {
-	jniMethodInfo * m;
-
-	jint classMods;
-	jint methodMods;
-	vmiError vmiErr;
-
-	jmethodID theMethod;
-
-	m = JCL_malloc(env, sizeof(jniMethodInfo));
+JNIEXPORT linkPtr JNICALL LINK_LinkMethod      (JNIEnv * env, linkPtr * p, jclass clazz, char * name, char * sig) {
+	linkedMethod * m;
+	if(p != NULL && *p != NULL) {
+		return *p;
+	}
+	m = JCL_malloc(env,sizeof(linkedMethod));
 	if(m == NULL)
 		return NULL;
 
-	vmiErr = VMI_GetClassModifiers(env, clazz, &classMods);
-	if(vmiErr != VMI_ERROR_NONE) {
-		VMI_ThrowAppropriateException(env, vmiErr);
-		free(m);
+	m->theClass = (*env)->NewGlobalRef(env,clazz);
+	if(m->theClass == NULL)
 		return NULL;
-	}
 
-	theMethod = (*env)->GetMethodID(env, clazz, name, sig);
-	if((*env)->ExceptionOccurred(env)) {
-		free(m);
+	m->m = (*env)->GetMethodID(env, clazz, name, sig);
+	if(m->m == NULL)
 		return NULL;
-	}
 
-	if(classMods & VMI_MOD_FINAL) {
-		m->isStatic = TRUE;
-	} else {
-		vmiErr = VMI_GetMethodModifiers(env, theMethod, &methodMods);
-		if(vmiErr != VMI_ERROR_NONE) {
-			VMI_ThrowAppropriateException(env, vmiErr);
-			free(m);
-			return NULL;
-		}
-
-		if(methodMods & VMI_MOD_FINAL || methodMods & VMI_MOD_STATIC || methodMods & VMI_MOD_PRIVATE) {
-			m->isStatic = TRUE;
-		} else {
-			if(!strcmp(name,"<init>"))
-				m->isStatic = TRUE;
-			else
-				m->isStatic = FALSE;
-		}
-	}
-
-	if(m->isStatic) {
-		m->data.statID = theMethod;
-	} else {
-		m->data.dynamic.name = JCL_malloc(env, strlen(name) + 1);
-		if(m->data.dynamic.name == NULL) {
-			free(m);
-			return NULL;
-		}
-
-		strcpy(m->data.dynamic.name, name);
-
-		m->data.dynamic.sig = JCL_malloc(env, strlen(sig) + 1);
-		if(m->data.dynamic.sig == NULL) {
-			free(m->data.dynamic.name);
-			free(m->data.dynamic.sig);
-			return NULL;
-		}
-
-		strcpy(m->data.dynamic.sig, sig);
-	}
+	if(p != NULL)
+		*p=m;
+	return (linkPtr)m;
 } 
 
-/* Do we need to re-resolve fields based on objects?  I don't think so, but I could be wrong ... */
-JNIEXPORT linkPtr JNICALL LINK_LinkField       (JNIEnv * env, jclass clazz, char * name, char * sig) {
-	return (linkPtr)(*env)->GetFieldID(env, clazz, name, sig);
+JNIEXPORT linkPtr JNICALL LINK_LinkStaticMethod(JNIEnv * env, linkPtr * p, jclass clazz, char * name, char * sig) {
+	linkedMethod * m;
+	if(p != NULL && *p != NULL) {
+		return *p;
+	}
+	m = JCL_malloc(env,sizeof(linkedMethod));
+	if(m == NULL)
+		return NULL;
+
+	m->theClass = (*env)->NewGlobalRef(env,clazz);
+	if(m->theClass == NULL)
+		return NULL;
+
+	m->m = (*env)->GetStaticMethodID(env, clazz, name, sig);
+	if(m->m == NULL)
+		return NULL;
+
+	if(p != NULL)
+		*p=m;
+	return (linkPtr)m;
 }
 
-JNIEXPORT linkPtr JNICALL LINK_LinkClass       (JNIEnv * env, char * name) {
-	jclass c = (*env)->FindClass(env, name);
+JNIEXPORT linkPtr JNICALL LINK_LinkField       (JNIEnv * env, linkPtr * p, jclass clazz, char * name, char * sig) {
+	linkedField * f;
+	if(p != NULL && *p != NULL) {
+		return *p;
+	}
+	f = JCL_malloc(env,sizeof(linkedMethod));
+	if(f == NULL)
+		return NULL;
+
+	f->theClass = (*env)->NewGlobalRef(env,clazz);
+	if(f->theClass == NULL)
+		return NULL;
+
+	f->f = (*env)->GetFieldID(env, clazz, name, sig);
+	if(f->f == NULL)
+		return NULL;
+
+	if(p != NULL)
+		*p=f;
+	return (linkPtr)f;
+}
+
+JNIEXPORT linkPtr JNICALL LINK_LinkStaticField (JNIEnv * env, linkPtr * p, jclass clazz, char * name, char * sig) {
+	linkedField * f;
+	if(p != NULL && *p != NULL) {
+		return *p;
+	}
+	f = JCL_malloc(env,sizeof(linkedMethod));
+	if(f == NULL)
+		return NULL;
+
+	f->theClass = (*env)->NewGlobalRef(env,clazz);
+	if(f->theClass == NULL)
+		return NULL;
+
+	f->f = (*env)->GetStaticFieldID(env, clazz, name, sig);
+	if(f->f == NULL)
+		return NULL;
+
+	if(p != NULL)
+		*p=f;
+	return (linkPtr)f;
+}
+
+JNIEXPORT linkPtr JNICALL LINK_LinkClass       (JNIEnv * env, linkPtr * p, char * name) {
+	jclass c;
+	if(p != NULL && *p != NULL)
+		return *p;
+	c = (*env)->FindClass(env, name);
 	if((*env)->ExceptionOccurred(env)) {
 		return NULL;
 	}
-	return (linkPtr)(*env)->NewGlobalRef(env, c);
+	c = (*env)->NewGlobalRef(env, c);
+	if(p != NULL)
+		*p = c;
+	return (linkPtr)c;
 }
 
+/* Extra convenience functions */
+JNIEXPORT linkPtr JNICALL LINK_LinkConstructor (JNIEnv * env, linkPtr * p, jclass clazz, char * sig) {
+	return LINK_LinkMethod(env, p, clazz, "<init>", sig);
+}
+
+JNIEXPORT linkPtr JNICALL LINK_LinkKnownClass  (JNIEnv * env, linkPtr * p, jclass clazz) {
+	jclass c;
+	if(p!=NULL && *p!=NULL)
+		return *p;
+	c = (*env)->NewGlobalRef(env, clazz);
+	if(p!=NULL)
+		*p=c;
+	return (linkPtr)c;
+}
 
 /* The GetXXX functions can be inlined. */
 /* Note: GetMethod does actual resolution of the method based on the object type.
@@ -111,28 +148,23 @@ JNIEXPORT linkPtr JNICALL LINK_LinkClass       (JNIEnv * env, char * name) {
  * will be thrown.  If the method is not found, a MethodNotFoundException will be
  * thrown.
  */
-JNIEXPORT jmethodID JNICALL LINK_GetMethod      (JNIEnv * env, linkPtr methodLink, jobject obj) {
-	jniMethodInfo * m;
-	jclass objClass;
-
-	m = (jniMethodInfo *)methodLink;
-	if(m->isStatic) {
-		return m->data.statID;
-	} else {
-		if(obj == NULL) {
-			JCL_ThrowException(env, "java/lang/NullPointerException", "Attempt to access non-static method with null object in LINK_GetMethod");
-			return NULL;
-		}
-		objClass = (*env)->GetObjectClass(env, obj);
-		return (*env)->GetMethodID(env, objClass, m->data.dynamic.name, m->data.dynamic.sig);
-	}
+JNIEXPORT jmethodID JNICALL LINK_ResolveMethod      (JNIEnv * env, linkPtr methodLink) {
+	return ((linkedMethod*)methodLink)->m;
 }
 
-JNIEXPORT jfieldID JNICALL  LINK_GetField       (JNIEnv * env, linkPtr fieldLink) {
-	return (jfieldID)fieldLink;
+JNIEXPORT jmethodID JNICALL LINK_ResolveStaticMethod(JNIEnv * env, linkPtr methodLink) {
+	return ((linkedMethod*)methodLink)->m;
 }
 
-JNIEXPORT jclass JNICALL    LINK_GetClass       (JNIEnv * env, linkPtr classLink) {
+JNIEXPORT jfieldID JNICALL  LINK_ResolveField       (JNIEnv * env, linkPtr fieldLink) {
+	return ((linkedField*)fieldLink)->f;
+}
+
+JNIEXPORT jfieldID JNICALL  LINK_ResolveStaticField (JNIEnv * env, linkPtr fieldLink) {
+	return ((linkedField*)fieldLink)->f;
+}
+
+JNIEXPORT jclass JNICALL    LINK_ResolveClass       (JNIEnv * env, linkPtr classLink) {
 	return (jclass)classLink;
 }
 
@@ -142,18 +174,23 @@ destroys any object references
  * the linker might have kept around.
  */
 JNIEXPORT void JNICALL LINK_UnlinkMethod      (JNIEnv * env, linkPtr methodLink) {
-	jniMethodInfo * m = (jniMethodInfo *)methodLink;
-	if(m != NULL) {
-		if(!m->isStatic) {
-			if(m->data.dynamic.name != NULL) free(m->data.dynamic.name);
-			if(m->data.dynamic.sig != NULL) free(m->data.dynamic.sig);
-		}
-		free(m);
-	}
+	if(methodLink != NULL)
+		(*env)->DeleteGlobalRef(env,((linkedMethod*)methodLink)->theClass);
+}
+
+JNIEXPORT void JNICALL LINK_UnlinkStaticMethod(JNIEnv * env, linkPtr methodLink) {
+	if(methodLink != NULL)
+		(*env)->DeleteGlobalRef(env,((linkedMethod*)methodLink)->theClass);
 }
 
 JNIEXPORT void JNICALL LINK_UnlinkField       (JNIEnv * env, linkPtr fieldLink) {
-	return;
+	if(fieldLink != NULL)
+		(*env)->DeleteGlobalRef(env,((linkedMethod*)fieldLink)->theClass);
+}
+
+JNIEXPORT void JNICALL LINK_UnlinkStaticField (JNIEnv * env, linkPtr fieldLink) {
+	if(fieldLink != NULL)
+		(*env)->DeleteGlobalRef(env,((linkedMethod*)fieldLink)->theClass);
 }
 
 JNIEXPORT void JNICALL LINK_UnlinkClass       (JNIEnv * env, linkPtr classLink) {
