@@ -1,3 +1,7 @@
+2003-06-25  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/plaf/SpinnerUI.java: Initial check-in of new file.
+
 2003-06-24  Sascha Brawer  <brawer@dandelis.ch>
 	
 	* javax/swing/plaf/RootPaneUI.java,
