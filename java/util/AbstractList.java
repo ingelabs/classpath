@@ -20,6 +20,8 @@
 // TO DO:
 // ~ Doc comments for almost everything.
 // ~ Better general commenting
+// ~ Hope that the collections guy is successful in getting the various
+//   spec changes that he's agreed are good ideas, into 1.2FCS.
 
 package java.util;
 
@@ -67,6 +69,7 @@ public abstract class AbstractList extends AbstractCollection implements List {
     }
   }
 
+  // New in 1.2FCS
   public void clear() {
     removeRange(0, size());
   }
@@ -270,7 +273,7 @@ public abstract class AbstractList extends AbstractCollection implements List {
 
       public void add(Object o) {
         checkMod();
-        AbstractList.this.add(position++, o);
+        AbstractList.this.add(position, o);
         lastReturned = -1;
         knownMod = modCount;
       }
@@ -300,6 +303,7 @@ public abstract class AbstractList extends AbstractCollection implements List {
    * @exception IndexOutOfBoundsException if fromIndex > toIndex || fromIndex <
    *   0 || toIndex > size().
    */
+  // New in 1.2FCS
   protected void removeRange(int fromIndex, int toIndex) {
     if (fromIndex > toIndex) {
       throw new IllegalArgumentException();
@@ -463,7 +467,6 @@ public abstract class AbstractList extends AbstractCollection implements List {
             i.add(o);
             upMod();
             size++;
-            position++;
           }
 
           // Here is the reason why the various modCount fields are mostly
@@ -520,25 +523,15 @@ public abstract class AbstractList extends AbstractCollection implements List {
       }
 
       public void removeRange(int fromIndex, int toIndex) {
-        checkMod();
-        checkBoundsExclusive(fromIndex);
-        checkBoundsInclusive(toIndex);
-
-        // this call will catch the toIndex < fromIndex condition
         AbstractList.this.removeRange(offset + fromIndex, offset + toIndex);
-        upMod();
-        size -= toIndex - fromIndex;
       }
 
-      public boolean addAll(int index, Collection c) {
-        checkMod();
-        checkBoundsInclusive(index);
-        int s = AbstractList.this.size;
-        boolean result = AbstractList.this.addAll(offset + index, c);
-        upMod();
-        size += AbstractList.this.size - s;
-        return result;
-      }
+      // I'm hoping for further methods here: *all* possible methods
+      // should delegate to the backing list, or many O(n) optimizations
+      // will be lost. This is one aspect of the spec bug which has been
+      // submitted to the JDC - no number yet.
+      // 22 Sep 1998 - at least addAll *is* in here as of 1.2FCS.
+
     };
   }
 }
