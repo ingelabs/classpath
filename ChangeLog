@@ -1,3 +1,9 @@
+2004-04-13  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/java-io/java_io_VMObjectStreamClass.c
+	getFieldReference(): Array types are different from reference
+	types.
+
 2004-04-13  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/imageio/spi/IIOServiceProvider.java,
@@ -89,6 +95,7 @@
 	* java/net/InetAddress.java,
 	java/net/SocketPermission.java:
 	Jalopied.
+
 2004-04-12  Michael Koch  <konqueror@gmx.de>
 
 	* configure.ac: Initialize CLASSPATH_MODULE.

@@ -172,20 +172,32 @@ static jfieldID getFieldReference(JNIEnv *env, jobject field,
       type_name = (*env)->GetStringUTFChars(env, tname, NULL);
 
       /*
-       * The actual field type descriptor starts with 'L', ends with ';'
-       * and has '/' instead of '.'.
+       * If it isn't an array class then the actual field type descriptor
+       * starts with 'L', ends with ';' and has '/' instead of '.'.
        */
       type_len = strlen((char *) type_name);
-      type = (char *) malloc(type_len + 3);
-      type[0] = 'L';
-      type[type_len + 1] = ';';
-      type[type_len + 2] = '\0';
+      if (type_name[0] != '[')
+        {
+	  type = (char *) malloc(type_len + 3);
+	  type[0] = 'L';
+	  type[type_len + 1] = ';';
+	  type[type_len + 2] = '\0';
+	  type++;
+	}
+      else
+	{
+	  type = (char *) malloc(type_len);
+	  type[type_len] = '\0';
+	}
 
       for (i = 0; i < type_len; i++)
 	if (type_name[i] == '.')
-	  type[i + 1] = '/';
+	  type[i] = '/';
         else
-	  type[i + 1] = type_name[i];
+	  type[i] = type_name[i];
+
+      if (type_name[0] != '[')
+	type--;
 
       (*env)->ReleaseStringUTFChars(env, tname, type_name);
     }
