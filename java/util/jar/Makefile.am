@@ -4,4 +4,5 @@ EXTRA_DIST = \
 Attributes.java \
 JarEntry.java \
 JarException.java \
+JarOutputStream.java \
 Manifest.java
