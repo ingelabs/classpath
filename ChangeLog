@@ -1,5 +1,12 @@
 2004-12-23  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/plaf/basic/BasicButtonListener.java
+	(BasicButtonListener): New constructor.
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(createButtonListener): Usw new BasicButtonListener constructor.
+
+2004-12-23  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/image/MemoryImageSource.java: Reformatted.
 
 2004-12-23  Michael Koch  <konqueror@gmx.de>
