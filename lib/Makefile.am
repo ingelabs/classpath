@@ -19,4 +19,4 @@ endif
 glibj.zip: $(CLASSES)
 	zip -r -D -0 glibj.zip gnu java
 
-EXTRA_DIST: glibj.zip
+EXTRA_DIST = glibj.zip
