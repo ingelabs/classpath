@@ -1,5 +1,5 @@
 /* DatagramSocketImpl.java -- Abstract class for UDP socket implementations
-   Copyright (C) 1998,, 1999 2000, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -104,7 +104,7 @@ public abstract class DatagramSocketImpl implements SocketOptions
    * Transmits the specified packet of data to the network.  The destination
    * host and port should be encoded in the packet.
    *
-   * @param packet The packet to send
+   * @param p The packet to send
    *
    * @exception IOException If an error occurs
    */
