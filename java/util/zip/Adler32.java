@@ -1,5 +1,5 @@
-/* java.util.zip.Adler32
-   Copyright (C) 2001 Free Software Foundation, Inc.
+/* Adler32.java - Computes Adler32 data checksum of a data stream
+   Copyright (C) 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -26,12 +26,20 @@ executable file might be covered by the GNU General Public License. */
 
 package java.util.zip;
 
+/*
+ * Written using on-line Java Platform 1.2 API Specification, as well
+ * as "The Java Class Libraries", 2nd edition (Addison-Wesley, 1998).
+ * The actual Adler32 algorithm is taken from RFC 1950.
+ * Status:  Believed complete and correct.
+ */
+
 /**
- * This class computes an Adler32 checksum for a stream of data. An Adler32 
+ * Computes Adler32 checksum for a stream of data. An Adler32 
  * checksum is not as reliable as a CRC32 checksum, but a lot faster to 
  * compute.
  *<p>
  * The specification for Adler32 may be found in RFC 1950.
+ * (ZLIB Compressed Data Format Specification version 3.3)
  *<p>
  *<p>
  * From that document:
@@ -71,12 +79,15 @@ package java.util.zip;
  *
  * @author John Leuner, Per Bothner
  * @since JDK 1.1
+ *
+ * @see InflaterInputStream
+ * @see InflaterOutputStream
  */
+public class Adler32 implements Checksum
+{
 
-
-public class Adler32 implements Checksum {
-
-  private static final int BASE = 65521; // largest prime smaller than 65536 
+  /** largest prime smaller than 65536 */
+  private static final int BASE = 65521;
 
   private int checksum; //we do all in int.
 
@@ -86,25 +97,36 @@ public class Adler32 implements Checksum {
   //avoid sign confusion.
 
   /**
+   * Creates a new instance of the <code>Adler32</code> class. 
+   * The checksum starts off with a value of 1. 
+   */
+  public Adler32 ()
+  {
+    reset();
+  }
+
+  /**
+   * Resets the Adler32 checksum to the initial value.
+   */
+  public void reset () 
+  {
+    checksum = 1; //Initialize to 1    
+  }
+
+  /**
    * Updates the checksum with the byte b. 
    *
-   * @param b (the byte is taken as the lower 8 bits of b)
-   *
+   * @param bval the data value to add. The high byte of the int is ignored.
    */
-
-  public void update(int b) 
+  public void update (int bval)
   {
-    //(borrowed from libgcj)
-    //
     //We could make a length 1 byte array and call update again, but I
     //would rather not have that overhead
     int s1 = checksum & 0xffff;
     int s2 = checksum >>> 16;
     
-      s1 = (s1 + (b & 0xff)); 
-      s1 %= BASE;
-
-      s2 = (s2 + s1) % BASE;
+    s1 = (s1 + (bval & 0xFF)) % BASE;
+    s2 = (s1 + s2) % BASE;
     
     checksum = (s2 << 16) + s1;
   }
@@ -112,24 +134,21 @@ public class Adler32 implements Checksum {
   /**
    * Updates the checksum with the bytes taken from the array. 
    * 
-   * @param bs an array of bytes
+   * @param buffer an array of bytes
    */
-
-  public void update(byte[] bs)
+  public void update (byte[] buffer)
   {
-    update(bs, 0, bs.length);
+    update(buffer, 0, buffer.length);
   }
 
   /**
    * Updates the checksum with the bytes taken from the array. 
    * 
-   * @param bs an array of bytes
-   * @param offset the start of the data used for this update
+   * @param buf an array of bytes
+   * @param off the start of the data used for this update
    * @param len the number of bytes to use for this update
-   *
    */
-
-  public void update(byte[] bs, int offset, int len)
+  public void update (byte[] buf, int off, int len)
   {
     //(By Per Bothner)
     int s1 = checksum & 0xffff;
@@ -145,7 +164,10 @@ public class Adler32 implements Checksum {
 	  n = len;
 	len -= n;
 	while (--n >= 0)
-	  s2 += s1 += (bs[offset++] & 0xFF);
+	  {
+	    s1 = s1 + (buf[off++] & 0xFF);
+	    s2 = s2 + s1;
+	  }
 	s1 %= BASE;
 	s2 %= BASE;
       }
@@ -163,35 +185,10 @@ public class Adler32 implements Checksum {
   }
 
   /**
-   * Resets the Adler32 checksum to the initial value.
-   * 
+   * Returns the Adler32 data checksum computed so far.
    */
-
-  public void reset() 
+  public long getValue()
   {
-    checksum = 1; //Initialize to 1    
-  }
-
-  /**
-   * Returns the current checksum value
-   * 
-   */
-
-  public long getValue() 
-  {
-    //    System.err.println("At getValue " + Integer.toHexString(checksum));
     return (long) checksum & 0xffffffffL;
   }
-
-  /**
-   * Creates a new instance of the <code>Adler32</code> class. 
-   *
-   * The checksum starts off with a value of 1. 
-   */
-
-  public Adler32()
-  {
-    reset();
-  }
 }
-

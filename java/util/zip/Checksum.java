@@ -1,5 +1,5 @@
-/* java.util.zip.Checksum
-   Copyright (C) 2001 Free Software Foundation, Inc.
+/* Checksum.java - Interface to compute a data checksum
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
-
+ 
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -26,37 +26,50 @@ executable file might be covered by the GNU General Public License. */
 
 package java.util.zip;
 
-/**
- * This is an interface for calculating checksums.
- *
- * @author Jochen Hoenicke
- * @since JDK 1.1
+/*
+ * Written using on-line Java Platform 1.2 API Specification, as well
+ * as "The Java Class Libraries", 2nd edition (Addison-Wesley, 1998).
+ * Status:  Believed complete and correct.
  */
-public interface Checksum {
+
+/**
+ * Interface to compute a data checksum used by checked input/output streams.
+ * A data checksum can be updated by one byte or with a byte array. After each
+ * update the value of the current checksum can be returned by calling
+ * <code>getValue</code>. The complete checksum object can also be reset
+ * so it can be used again with new data.
+ *
+ * @see CheckedInputStream
+ * @see CheckedOutputStream
+ *
+ * @author Per Bothner
+ * @date January 9, 1999.
+ */
+public interface Checksum
+{
+  /**
+   * Returns the data checksum computed so far.
+   */
+  public long getValue ();
 
   /**
-   * Updates the checksum with the byte b.
-   * @param b the byte, only the lower 8 bits are used.
+   * Resets the data checksum as if no update was ever called.
    */
-  public void update(int b); 
+  public void reset ();
 
   /**
-   * Calculates the checksum of the given part of the byte array, updating
-   * its current value.  
-   * @param b an array of bytes
-   * @param off the offset into the array.
-   * @param len the length.
+   * Adds one byte to the data checksum.
+   *
+   * @param bval the data value to add. The high byte of the int is ignored.
    */
-  public void update(byte[] b, int off, int len);
+  public void update (int bval);
 
   /**
-   * Resets the checksum to the initial value.
+   * Adds the byte array to the data checksum.
+   *
+   * @param buf the buffer which contains the data
+   * @param off the offset in the buffer where the data starts
+   * @param len the length of the data
    */
-  public void reset();
-
-  /**
-   * Gets the current checksum value.
-   */
-  public long getValue(); 
+  public void update (byte[] buf, int off, int len);
 }
-

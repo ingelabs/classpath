@@ -1,5 +1,5 @@
-/* java.util.zip.DataFormatException
-   Copyright (C) 2001 Free Software Foundation, Inc.
+/* DataformatException.java - Exception thrown when compressed data is corrupt
+   Copyright (C) 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -26,27 +26,26 @@ executable file might be covered by the GNU General Public License. */
 
 package java.util.zip;
 
+/* Written using on-line Java Platform 1.2 API Specification.
+ * Believed complete and correct.
+ */
+
 /**
- * May be thrown by methods that are decompressing (inflating) compressed data.
+ * Exception thrown when compressed data is corrupt.
  *
- *
+ * @author Tom Tromey
  * @author John Leuner
  * @since JDK 1.1
  */
-
-
-public class DataFormatException extends Exception 
+public class DataFormatException extends Exception
 {
-  public DataFormatException()
+  public DataFormatException ()
   {
-    this("");
+    super();
   }
 
-  public DataFormatException(String m)
+  public DataFormatException (String msg)
   {
-    super(m);
+    super(msg);
   }
 }
-
-
-
