@@ -49,20 +49,11 @@ import gnu.java.nio.FileChannelImpl;
  */
 public class FileInputStream extends InputStream
 {
-  /*
-   * Instance Variables
-   */
 
   /**
-    * This is the native file handle for the file this stream is reading from
-    */
-  private FileDescriptor fd;
-
-  /*************************************************************************/
-
-  /*
-   * Constructors
+   * This is the native file handle for the file this stream is reading from
    */
+  private FileDescriptor fd;
 
   /**
    * This method initializes a <code>FileInputStream</code> to read from the
@@ -306,7 +297,6 @@ public class FileInputStream extends InputStream
   	}
       return ch;
   }
-
 
 } // class FileInputStream
 

@@ -515,7 +515,7 @@ public class ObjectOutputStream extends OutputStream
      @exception IOException if <code>version</code> is not a valid
      protocol
 
-     @see useProtocolVersion (int)
+     @see #useProtocolVersion(int)
   */
   public static void setDefaultProtocolVersion (int version)
     throws IOException
@@ -536,7 +536,7 @@ public class ObjectOutputStream extends OutputStream
      @exception IOException Exception from underlying
      <code>OutputStream</code>.
 
-     @see java.io.ObjectInputStream#resolveClass (java.io.ObjectStreamClass)
+     @see ObjectInputStream#resolveClass(java.io.ObjectStreamClass)
   */
   protected void annotateClass (Class cl) throws IOException
   {}
@@ -556,7 +556,7 @@ public class ObjectOutputStream extends OutputStream
      @exception IOException Exception from underlying
      <code>OutputStream</code>.
 
-     @see enableReplaceObject (boolean)
+     @see #enableReplaceObject(boolean)
   */
   protected Object replaceObject (Object obj) throws IOException
   {
@@ -643,8 +643,8 @@ public class ObjectOutputStream extends OutputStream
 
 
   /**
-     @see java.io.DataOutputStream#write (int)
-  */
+   * @see DataOutputStream#write(int)
+   */
   public void write (int data) throws IOException
   {
     if (writeDataAsBlocks)
@@ -660,8 +660,8 @@ public class ObjectOutputStream extends OutputStream
 
 
   /**
-     @see java.io.DataOutputStream#write (byte[])
-  */
+   * @see DataOutputStream#write(byte[])
+   */
   public void write (byte[] b) throws IOException
   {
     write (b, 0, b.length);
@@ -669,8 +669,8 @@ public class ObjectOutputStream extends OutputStream
 
 
   /**
-     @see java.io.DataOutputStream#write (byte[],int,int)
-  */
+   * @see DataOutputStream#write(byte[],int,int)
+   */
   public void write (byte[] b, int off, int len) throws IOException
   {
     if (writeDataAsBlocks)
@@ -696,8 +696,8 @@ public class ObjectOutputStream extends OutputStream
 
 
   /**
-     @see java.io.DataOutputStream#flush ()
-  */
+   * @see DataOutputStream#flush()
+   */
   public void flush () throws IOException
   {
     drain ();
@@ -725,8 +725,8 @@ public class ObjectOutputStream extends OutputStream
 
 
   /**
-     @see java.io.DataOutputStream#close ()
-  */
+   * @see java.io.DataOutputStream#close ()
+   */
   public void close () throws IOException
   {
     flush ();
@@ -735,8 +735,8 @@ public class ObjectOutputStream extends OutputStream
 
 
   /**
-     @see java.io.DataOutputStream#writeBoolean (boolean)
-  */
+   * @see java.io.DataOutputStream#writeBoolean (boolean)
+   */
   public void writeBoolean (boolean data) throws IOException
   {
     blockDataOutput.writeBoolean (data);
@@ -744,8 +744,8 @@ public class ObjectOutputStream extends OutputStream
 
 
   /**
-     @see java.io.DataOutputStream#writeByte (int)
-  */
+   * @see java.io.DataOutputStream#writeByte (int)
+   */
   public void writeByte (int data) throws IOException
   {
     blockDataOutput.writeByte (data);
@@ -753,8 +753,8 @@ public class ObjectOutputStream extends OutputStream
 
 
   /**
-     @see java.io.DataOutputStream#writeShort (int)
-  */
+   * @see java.io.DataOutputStream#writeShort (int)
+   */
   public void writeShort (int data) throws IOException
   {
     blockDataOutput.writeShort (data);
@@ -762,8 +762,8 @@ public class ObjectOutputStream extends OutputStream
 
 
   /**
-     @see java.io.DataOutputStream#writeChar (int)
-  */
+   * @see java.io.DataOutputStream#writeChar (int)
+   */
   public void writeChar (int data) throws IOException
   {
     blockDataOutput.writeChar (data);
@@ -771,8 +771,8 @@ public class ObjectOutputStream extends OutputStream
 
 
   /**
-     @see java.io.DataOutputStream#writeInt (int)
-  */
+   * @see java.io.DataOutputStream#writeInt (int)
+   */
   public void writeInt (int data) throws IOException
   {
     blockDataOutput.writeInt (data);
@@ -780,8 +780,8 @@ public class ObjectOutputStream extends OutputStream
 
 
   /**
-     @see java.io.DataOutputStream#writeLong (long)
-  */
+   * @see java.io.DataOutputStream#writeLong (long)
+   */
   public void writeLong (long data) throws IOException
   {
     blockDataOutput.writeLong (data);
@@ -789,8 +789,8 @@ public class ObjectOutputStream extends OutputStream
 
 
   /**
-     @see java.io.DataOutputStream#writeFloat (float)
-  */
+   * @see java.io.DataOutputStream#writeFloat (float)
+   */
   public void writeFloat (float data) throws IOException
   {
     blockDataOutput.writeFloat (data);
@@ -798,8 +798,8 @@ public class ObjectOutputStream extends OutputStream
 
 
   /**
-     @see java.io.DataOutputStream#writeDouble (double)
-  */
+   * @see java.io.DataOutputStream#writeDouble (double)
+   */
   public void writeDouble (double data) throws IOException
   {
     blockDataOutput.writeDouble (data);
@@ -807,8 +807,8 @@ public class ObjectOutputStream extends OutputStream
 
 
   /**
-     @see java.io.DataOutputStream#writeBytes (java.lang.String)
-  */
+   * @see java.io.DataOutputStream#writeBytes (java.lang.String)
+   */
   public void writeBytes (String data) throws IOException
   {
     blockDataOutput.writeBytes (data);
@@ -816,8 +816,8 @@ public class ObjectOutputStream extends OutputStream
 
 
   /**
-     @see java.io.DataOutputStream#writeChars (java.lang.String)
-  */
+   * @see java.io.DataOutputStream#writeChars (java.lang.String)
+   */
   public void writeChars (String data) throws IOException
   {
     dataOutput.writeChars (data);

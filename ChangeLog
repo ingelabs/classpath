@@ -1,5 +1,12 @@
 2003-03-23  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/FileInputStream.java:
+	Reformated.
+	* java/io/ObjectOutputStream.java:
+	Reformated and some @see tags fixed.
+
+2003-03-23  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/DataOutputStream.java
 	(writeDouble): Fixed @see tag.
 	(writeFloat): Fixed @see tag.
