@@ -1,3 +1,11 @@
+2003-03-04  Michael Koch  <konqueror@gmx.de>
+
+	* include/java_net_NetworkInterface.h: New file.
+	* java/net/NetworkInterface.java: Merged with libgcj.
+	* native/jni/java-net/java_net_NetworkInterface.c: New file.
+	* native/jni/java-net/Makefile.am
+	(libjavanet_la_SOURCES): Added java_net_NetworkInterface.c.
+
 2003-03-03  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/Socket.java

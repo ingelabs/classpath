@@ -59,12 +59,8 @@ public final class NetworkInterface
     this.inetAddresses.add (address);
   }
 
-  private static Vector getRealNetworkInterfaces ()
-    throws SocketException
-  {
-    throw new InternalError (
-      "NetworkInterface::getRealNetworkInterfaces not implemented");
-  }
+  private native static Vector getRealNetworkInterfaces ()
+    throws SocketException;
 
   /**
    *  Returns the name of the network interface
@@ -205,7 +201,7 @@ public final class NetworkInterface
    
     NetworkInterface tmp = (NetworkInterface) obj;
     return (name.equals (tmp.name)
-	    && inetAddresses.equals (tmp.inetAddresses));
+            && inetAddresses.equals (tmp.inetAddresses));
   }
 
   /**
