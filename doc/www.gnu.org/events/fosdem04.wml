@@ -18,8 +18,8 @@ A whole room was devoted to Free Java Developers. The following talks took place
 <i>Mark presented an overview of the GNU Classpath project, the current development state, and the problems encountered, in particular the ability to fit so many JVM with different requirements and constraints</i>
 
 <li><strong>SableVM - the Apache of Java Virtual Machines</strong>, Grzegorz B. Prokopski (SableVM)<br>
-<i>Grzegorz presented the SableVM JVM and its technical details; a whole unter the hood tour, including the use of m4 macro expansion for generating the VM code and an overview of interpreter and JIT techniques used.</i><br>
 [<createlink name="slides" url="http://gadek.debian.net/FOSDEM/">]<br>
+<i>Grzegorz presented the SableVM JVM and its technical details; a whole unter the hood tour, including the use of m4 macro expansion for generating the VM code and an overview of interpreter and JIT techniques used.</i><br>
 
 
 <li><strong>fbAWT - Direct to your buffer</strong>, Stephane Meslin-Weber<br>
@@ -34,7 +34,8 @@ There was a whole track of Java-related presentations:
 <ul>
 <li><strong>JOnAS</strong>, Florent Benoit (WebObjects)
 <li><strong>GCJ</strong>, Tom Tromey (GCJ, Red Hat)<br>
-<i>Tom presented the GCJ project and its goals. Many details on performance and status.</i>
+[<createlink name="slides" url="http://www.peakpeak.com/~tromey/FOSDEM/gcj.html">]<br>
+<i>Tom presented the GCJ project and its goals. Many details on performance and status.</i><br>
 
 <li><strong>NetBeans</strong>, Ian Formanek (Sun)
 <li><strong>Java Security: How Free Software Is Secured Using the Java Language

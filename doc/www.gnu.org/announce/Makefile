@@ -6,13 +6,13 @@ ifndef WML
 endif
 
 WML_SRC = $(wildcard *.wml)
-WML_EN_OBJS = $(patsubst %.wml,%.en.html,$(WML_SRC))
+WML_OBJS = $(patsubst %.wml,%.html,$(WML_SRC))
 
-%.en.html: %.wml ../include/macros.wml
+%.html: %.wml ../include/macros.wml
 	$(WML) -o $@ $<
 #	-rm -f $(patsubst %.wml,%.html,$<)
 
-all : $(WML_EN_OBJS) subdirs
+all : $(WML_OBJS) subdirs
 
 .PHONY : clean
 clean :

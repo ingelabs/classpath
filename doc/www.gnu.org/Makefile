@@ -1,4 +1,4 @@
-SUBDIRS 	:= downloads docs faq events
+SUBDIRS 	:= announce downloads docs faq events
 
 ifndef WMK
   export WMK=wmk

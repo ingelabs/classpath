@@ -1,3 +1,11 @@
+2004-03-15  Patrik Reali  <reali@acm.org>
+	* doc/www.gnu.org/announce/20040313.wml doc/www.gnu.org/Makefile
+	doc/www.gnu.org/announce/Makefile doc/www.gnu.org/newsitems.txt:
+	classpath 0.08 release news item
+	* doc/www.gnu.org/home.wml: broken links to JDK comparison fixed
+	* doc/www.gnu.org/events/fosdem04.wml: link to Tom's slides
+	* doc/www.gnu.org/faq/faq.wml: entry on free java needs
+
 2004-03-13  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/lang/Class.java (resourcePath): If the resource path is

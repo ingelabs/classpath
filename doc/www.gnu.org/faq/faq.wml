@@ -96,6 +96,28 @@ a modified version of the code.</p>
 <p>Therefore, Sun&#x2019;s implementation does not qualify as Free
 Software.</p>
 
+</faq>
+
+<faq question="What do we need to make Java free?">
+
+<p>Though it would be helpful if Sun would open their sources, this is not the
+most important step toward a free Java. Even more important for a free Java are:
+<ul>
+<li>Access to the TCK (Technology Compatibility Kits) on acceptable terms
+<li>Involvement in the JCP without contamination or other unacceptable
+   constraints
+<li>Easing of the requirements on subsetting.  The free software
+   community doesn't work well with the "one big perfect release"
+   model that Sun seems to want.  
+</ul>
+
+<p>There was already a lot of discussions around this topic on other sites:
+<ul>
+<li><createlink name="Sys-Con: <i>Let's Bundle Free Java with Linux</i>, Says IBM's Sutor" url="http://sys-con.com/story/print.cfm?storyid=43969">
+<li><createlink name="Hacking Log 4.0: RE: JCP 2.6 - Are we there yet?" url="http://linuxintegrators.com/blog/acoliver/news/?permalink=0124.html">
+<li><createlink name="Javalobby: ESR - Open Letter to Sun: Let Java Go" url="http://www.javalobby.org/thread.jspa?forumID=61&threadID=11412">
+</ul>
+
 
 </faq>
 
