@@ -1,3 +1,8 @@
+2002-10-28  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/java-io/javaio.c (_javaio_read): Return 0, if len == 0.
+	(_javaio_write): Likewise.
+
 2002-10-27  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/zip/ZipInputStream.java (getNextEntry): Throw IOException

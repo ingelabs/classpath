@@ -152,6 +152,9 @@ _javaio_read(JNIEnv *env, jobject obj, jint fd, jarray buf, jint offset,
   jbyte *bufptr;
   int rc;
 
+  if (len == 0)
+    return 0; /* Nothing todo, and GetByteArrayElements() seems undefined. */
+
   bufptr = (*env)->GetByteArrayElements(env, buf, JNI_FALSE);
   if (!bufptr)
     {
@@ -183,6 +186,9 @@ _javaio_write(JNIEnv *env, jobject obj, jint fd, jarray buf, jint offset,
 {
   jbyte *bufptr;
   int rc;
+
+  if (len == 0)
+    return 0; /* Nothing todo, and GetByteArrayElements() seems undefined. */
 
   bufptr = (*env)->GetByteArrayElements(env, buf, 0);
   if (!bufptr)
