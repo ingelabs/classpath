@@ -51,6 +51,7 @@ import java.lang.reflect.Array;
  * non-deterministic behavior.
  *
  * @author Original author unknown
+ * @author Bryce McKinlay
  * @author Eric Blake <ebb9@email.byu.edu>
  * @see List
  * @see ArrayList
@@ -299,8 +300,7 @@ public class LinkedList extends AbstractSequentialList
     Entry e = new Entry(o);
 
     modCount++;
-    size++;
-    if (size == 1)
+    if (size == 0)
       first = last = e;
     else
       {
@@ -308,6 +308,7 @@ public class LinkedList extends AbstractSequentialList
         first.previous = e;
         first = e;
       }
+    size++;
   }
 
   /**
@@ -328,7 +329,6 @@ public class LinkedList extends AbstractSequentialList
   private void addLastEntry(Entry e)
   {
     modCount++;
-    size++;
     if (size == 0)
       first = last = e;
     else
@@ -337,6 +337,7 @@ public class LinkedList extends AbstractSequentialList
         last.next = e;
         last = e;
       }
+    size++;
   }
 
   /**

@@ -5,6 +5,9 @@
 	* java/util/AbstractList.java (iterator.next): Increment pos after
 	calling get on backing list.
 	(listIterator.next): Likewise.
+	* java/util/LinkedList.java (addLastEntry): Don't increment size before
+	checking for size == 0.
+	(addFirstEntry): Rearrange to match addLastEntry.
 
 2001-11-18  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 
