@@ -167,20 +167,33 @@ class PlainSocketImpl extends SocketImpl
   protected native void connect(InetAddress addr, int port)
     throws IOException;
 
-  protected void connect(SocketAddress address, int timeout)
-    throws IOException    
+  protected synchronized void connect(SocketAddress address, int timeout)
+    throws IOException
   {
-    // NYI: this method need to support timeout
-    if (address instanceof InetSocketAddress)
+    InetSocketAddress sockAddr = (InetSocketAddress) address;
+    InetAddress addr = sockAddr.getAddress();
+
+    if (addr == null)
+      throw new IllegalArgumentException ("address is unresolved: " + sockAddr);
+
+    int port = sockAddr.getPort();
+    
+    if (timeout < 0)
+      throw new IllegalArgumentException ("negative timeout");
+
+    Object oldTimeoutObj = null;
+    
+    try
       {
-        connect(((InetSocketAddress) address).getAddress(),
-                ((InetSocketAddress) address).getPort()    );
+ 	oldTimeoutObj = this.getOption (SocketOptions.SO_TIMEOUT);
+ 	this.setOption (SocketOptions.SO_TIMEOUT, new Integer (timeout));
+ 	connect (addr, port);
       }
-    else
+    finally
       {
-        throw new InternalError("PlainSocketImpl:connect not implemented for anything other than InetSocketAddress");
+	if (oldTimeoutObj != null)
+	  this.setOption (SocketOptions.SO_TIMEOUT, oldTimeoutObj);
       }
-      //     throw new InternalError ("PlainSocketImpl::connect not implemented");
   }
 
   /**

@@ -1,3 +1,8 @@
+2003-07-30  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/PlainSocketImpl.java
+	(connect): Reverted Torsten's commit.
+
 2003-07-30  Torsten Rupp  <rupp@lisa.aicas.com>
 
 	* include/java_nio_FileChannelImpl.h:
