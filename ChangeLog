@@ -1,3 +1,8 @@
+2002-11-29  Gary Benson  <gbenson@redhat.com>
+
+	* java/beans/Introspector.java (flushCaches): New method.
+	(flushFromCaches): Likewise.
+
 2002-11-29  Mark Wielaard  <mark@klomp.org>
 
 	* java/net/InetAddress.java (toString): Convert signed byte to
