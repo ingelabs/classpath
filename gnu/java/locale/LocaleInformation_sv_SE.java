@@ -68,7 +68,6 @@ public class LocaleInformation_sv_SE extends ListResourceBundle
     { "ampms", ampms },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },

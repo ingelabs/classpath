@@ -60,7 +60,7 @@ public class LocaleInformation_de_BE extends ListResourceBundle
     { "mediumDateFormat", "d-MMM-yy" },
     { "longDateFormat", "d MMMM yyyy" },
     { "fullDateFormat", "EEEE d MMMM yyyy" },
-    { "fullTimeFormat", "HH 'h' mm 'min' ss 's' z" }
+    { "fullTimeFormat", "HH 'h' mm 'min' ss 's' z" },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
   };

@@ -1,5 +1,29 @@
 2004-12-17  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/locale/LocaleInformation_ar_QA.java,
+	gnu/java/locale/LocaleInformation_ar_SY.java,
+	gnu/java/locale/LocaleInformation_cy_GB.java,
+	gnu/java/locale/LocaleInformation_de_BE.java,
+	gnu/java/locale/LocaleInformation_en_GB.java,
+	gnu/java/locale/LocaleInformation_es_ES.java,
+	gnu/java/locale/LocaleInformation_es_US.java,
+	gnu/java/locale/LocaleInformation_fo_FO.java,
+	gnu/java/locale/LocaleInformation_fr_CH.java,
+	gnu/java/locale/LocaleInformation_it_CH.java,
+	gnu/java/locale/LocaleInformation_kl_GL.java,
+	gnu/java/locale/LocaleInformation_nl_BE.java,
+	gnu/java/locale/LocaleInformation_pt_BR.java,
+	gnu/java/locale/LocaleInformation_sv_SE.java,
+	gnu/java/locale/LocaleInformation_te_IN.java,
+	gnu/java/locale/LocaleInformation_gd_GB.java:
+	Updated.
+	gnu/java/locale/LocaleInformation_mi_NZ.java
+	gnu/java/locale/LocaleInformation_tl_PH.java
+	gnu/java/locale/LocaleInformation_yi_US.java:
+	Removed.
+
+2004-12-17  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/locale/LocaleInformation_af_ZA.java,
 	gnu/java/locale/LocaleInformation_ar_DZ.java,
 	gnu/java/locale/LocaleInformation_ar_IN.java,

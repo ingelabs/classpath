@@ -67,7 +67,7 @@ public class LocaleInformation_it_CH extends ListResourceBundle
     { "mediumDateFormat", "d-MMM-yy" },
     { "longDateFormat", "d MMMM yyyy" },
     { "fullDateFormat", "EEEE, d MMMM yyyy" },
-    { "fullTimeFormat", "HH.mm:ss' h' z" }
+    { "fullTimeFormat", "HH.mm:ss' h' z" },
     { "weekdays", weekdays },
     { "shortWeekdays", shortWeekdays },
     { "shortMonths", shortMonths },

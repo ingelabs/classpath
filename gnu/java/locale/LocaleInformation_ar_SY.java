@@ -103,7 +103,7 @@ public class LocaleInformation_ar_SY extends ListResourceBundle
     { "currencyFormat", "\u00a4###0.00;-\u00a4###0.00" },
     { "shortMonths", shortMonths },
     { "months", months },
-    { "shortWeekdays", shortWeekdays }
+    { "shortWeekdays", shortWeekdays },
     { "ampms", ampms },
     { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },

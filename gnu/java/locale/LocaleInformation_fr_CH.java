@@ -67,7 +67,6 @@ public class LocaleInformation_fr_CH extends ListResourceBundle
     { "ampms", ampms },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
     { "decimalSeparator", "." },
     { "groupingSeparator", "'" },

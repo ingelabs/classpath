@@ -49,14 +49,13 @@ public class LocaleInformation_pt_BR extends ListResourceBundle
   static final String numberFormat = "#.###";
   static final String percentFormat = "#%";
   static final String[] weekdays = { null, "domingo", "segunda", "ter\u00E7a", "quarta", "quinta", "sexta", "s\u00E1bado" };
-
   static final String[] shortWeekdays = { null, "Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "S\u00E1b" };
-
   static final String[] shortMonths = { "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez", null };
-
   static final String[] months = { "janeiro", "fevereiro", "mar\u00E7o", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro", null };
-
   static final String[] ampms = { "", "" };
+  static final String currencySymbol = "R$";
+  static final String intlCurrencySymbol = "BRL";
+  static final String currencyFormat = "#,###,##0.00 $;-#,###,##0.00 $";
 
   private static final Object[][] contents =
   {
@@ -67,7 +66,6 @@ public class LocaleInformation_pt_BR extends ListResourceBundle
     { "ampms", ampms },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },

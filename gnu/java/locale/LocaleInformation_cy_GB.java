@@ -44,10 +44,6 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_cy_GB extends ListResourceBundle
 {
-  static final String decimalSeparator = LocaleInformation_en_GB.decimalSeparator;
-  static final String groupingSeparator = LocaleInformation_en_GB.groupingSeparator;
-  static final String numberFormat = LocaleInformation_en_GB.numberFormat;
-  static final String percentFormat = LocaleInformation_en_GB.percentFormat;
   static final String[] weekdays = { null, "Sul", "Llun", "Mawrth", "Mercher", "Iau", "Gwener", "Sadwrn" };
 
   static final String[] shortWeekdays = { null, "Sul", "Llu", "Maw", "Mer", "Iau", "Gwe", "Sad" };
@@ -57,8 +53,9 @@ public class LocaleInformation_cy_GB extends ListResourceBundle
   static final String[] months = { "Ionawr", "Chwefror", "Mawrth", "Ebrill", "Mai", "Mehefin", "Gorffennaf", "Awst", "Medi", "Hydref", "Tachwedd", "Rhagfyr", null };
 
   static final String[] ampms = { "", "" };
-  static final String currencySymbol = LocaleInformation_en_GB.currencySymbol;
-  static final String intlCurrencySymbol = LocaleInformation_en_GB.intlCurrencySymbol;
+
+  static final String currencySymbol = "\u00A3";
+  static final String intlCurrencySymbol = "GBP";
 
   private static final Object[][] contents =
   {
@@ -69,10 +66,10 @@ public class LocaleInformation_cy_GB extends ListResourceBundle
     { "ampms", ampms },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "decimalSeparator", decimalSeparator },
-    { "groupingSeparator", groupingSeparator },
-    { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
+    { "decimalSeparator", "." },
+    { "groupingSeparator", "," },
+    { "percentFormat", "#,##0%" },
+    { "numberFormat", "#,##0.###" },
     { "currencyFormat", "\u00a4#,##0.00;-\u00a4#,##0.00" },
     { "shortDateFormat", "dd/MM/yyyy" },
     { "mediumDateFormat", "d MMM yyyy" },

@@ -55,6 +55,7 @@ public class LocaleInformation_es_ES extends ListResourceBundle
   static final String[] months = { "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre", null };
 
   static final String[] ampms = { "", "" };
+  static final String currencySymbol = "Pts";
   static final String intlCurrencySymbol = "ESP";
   static final String currencyFormat = "$ #,###,##0.;-$ #,###,##0.";
 

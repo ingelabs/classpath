@@ -72,7 +72,6 @@ public class LocaleInformation_te_IN extends ListResourceBundle
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
     { "percentFormat", "##,##,##0%" },
     { "currencyFormat", "\u00a4 ##,##,##0.00;-\u00a4 ##,##,##0.00" },
     { "shortDateFormat", "dd-MM-yy" },

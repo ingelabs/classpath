@@ -44,10 +44,6 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_es_US extends ListResourceBundle
 {
-  static final String decimalSeparator = LocaleInformation_en_US.decimalSeparator;
-  static final String groupingSeparator = LocaleInformation_en_US.groupingSeparator;
-  static final String numberFormat = LocaleInformation_en_US.numberFormat;
-  static final String percentFormat = LocaleInformation_en_US.percentFormat;
   static final String[] weekdays = { null, "domingo", "lunes", "martes", "mi\u00E9rcoles", "jueves", "viernes", "s\u00E1bado" };
 
   static final String[] shortWeekdays = { null, "dom", "lun", "mar", "mi\u00E9", "jue", "vie", "s\u00E1b" };
@@ -71,10 +67,9 @@ public class LocaleInformation_es_US extends ListResourceBundle
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },
-    { "decimalSeparator", decimalSeparator },
-    { "groupingSeparator", groupingSeparator },
-    { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
+    { "decimalSeparator", "." },
+    { "groupingSeparator", "," },
+    { "percentFormat", "#,##0%" },
     { "shortDateFormat", "M/d/yy" },
     { "mediumDateFormat", "MMM d, yyyy" },
     { "shortTimeFormat", "h:mm a" },
