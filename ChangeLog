@@ -1,5 +1,10 @@
 2002-02-21  Eric Blake  <ebb9@email.byu.edu>
 
+	* java/util/PropertyPermission.java: Improve Javadoc.
+	* java/util/StringTokenizer.java: Improve Javadoc.
+
+2002-02-21  Eric Blake  <ebb9@email.byu.edu>
+
 	* java/util/EventObject.java (EventObject(Object)): Check for
 	null, to match JDK behavior.
 	* java/util/Observable.java (observers): Change from Vector to
