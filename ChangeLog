@@ -1,5 +1,8 @@
 2001-08-31  Tom Tromey  <tromey@redhat.com>
 
+	* java/beans/VetoableChangeSupport.java: Updated copyright
+	header.
+
 	* java/util/ResourceBundle.java (getBundle): Now synchronized.
 
 	Merge with libgcj:
