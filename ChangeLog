@@ -1,5 +1,9 @@
 2003-09-27  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/image/IndexColorModel.java: Reformated.
+
+2003-09-27  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/URL.java (getURLStreamHandler):
 	Try to put handler into cache only once. Reformat some code
 	to match libgcj more.
