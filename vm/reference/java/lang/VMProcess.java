@@ -1,5 +1,5 @@
 /* java.lang.VMProcess -- VM implementation of java.lang.Process
-   Copyright (C) 2004 Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -73,27 +73,27 @@ final class VMProcess extends Process
   private static final int TERMINATED = 2;
 
   // Dedicated thread that does all the fork()'ing and wait()'ing.
-  private static Thread processThread;
+  static Thread processThread;
 
   // New processes waiting to be spawned by processThread.
-  private static final LinkedList workList = new LinkedList();
+  static final LinkedList workList = new LinkedList();
 
   // Return values set by nativeReap() when a child is reaped.
   // These are only accessed by processThread so no locking required.
-  private static long reapedPid;
-  private static int reapedExitValue;
+  static long reapedPid;
+  static int reapedExitValue;
 
   // Information about this process
-  private int state;                           // current state of process
-  private final String[] cmd;                  // copied from Runtime.exec()
-  private final String[] env;                  // copied from Runtime.exec()
-  private final File dir;                      // copied from Runtime.exec()
-  private Throwable exception;                 // if process failed to start
-  private long pid;                            // process id
-  private OutputStream stdin;                  // process input stream
-  private InputStream stdout;                  // process output stream
-  private InputStream stderr;                  // process error stream
-  private int exitValue;                       // process exit value
+  int state;				       // current state of process
+  final String[] cmd;			       // copied from Runtime.exec()
+  final String[] env;			       // copied from Runtime.exec()
+  final File dir;			       // copied from Runtime.exec()
+  Throwable exception;			       // if process failed to start
+  long pid;				       // process id
+  OutputStream stdin;			       // process input stream
+  InputStream stdout;			       // process output stream
+  InputStream stderr;			       // process error stream
+  int exitValue;			       // process exit value
 
   //
   // Dedicated thread that does all the fork()'ing and wait()'ing
@@ -115,7 +115,7 @@ final class VMProcess extends Process
     // constructor will be private, which means the compiler will have
     // to generate a second package-private constructor, which is
     // bogus.
-    public ProcessThread ()
+    ProcessThread ()
     {
     }
 
@@ -349,7 +349,7 @@ final class VMProcess extends Process
    *
    * @throws IOException if the O/S process could not be created.
    */
-  private native void nativeSpawn(String[] cmd, String[] env, File dir)
+  native void nativeSpawn(String[] cmd, String[] env, File dir)
     throws IOException;
 
   /**
@@ -360,7 +360,8 @@ final class VMProcess extends Process
    *
    * @return true if a child was reaped, otherwise false
    */
-  private static native boolean nativeReap();
+  // This is not private as it is called from an inner class.
+  static native boolean nativeReap();
 
   /**
    * Kill a process. This sends it a fatal signal but does not reap it.

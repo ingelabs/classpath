@@ -1,5 +1,16 @@
 2005-01-04  Tom Tromey  <tromey@redhat.com>
 
+	* vm/reference/java/lang/VMProcess.java (VMProcess): Constructor
+	now package-private.
+	(processThread, workList, reapedPid, reapedExitValue, state, cmd,
+	env, dir, exception, pid, stdin, stdout, stderr, exitValue): Now
+	package-private.
+	(nativeSpawn, nativeReap): Likewise.
+	* vm/reference/java/lang/VMThread.java (currentThread): Reordered
+	modifiers.
+	* vm/reference/java/security/VMAccessController.java
+	(DEFAULT_CONTEXT): Reordered modifiers.
+
 	* gnu/java/nio/SelectorImpl.java: Removed unused import.
 	* gnu/java/security/der/DERWriter.java: Removed unused import.
 	* gnu/java/net/protocol/http/Connection.java: Removed unused

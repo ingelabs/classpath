@@ -1,5 +1,5 @@
 /* VMThread -- VM interface for Thread of executable code
-   Copyright (C) 2003, 2004 Free Software Foundation
+   Copyright (C) 2003, 2004, 2005 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -345,7 +345,7 @@ final class VMThread
      *
      * @return the currently executing Thread
      */
-    native static Thread currentThread();
+    static native Thread currentThread();
 
     /**
      * Yield to another thread. The Thread will not lose any locks it holds
