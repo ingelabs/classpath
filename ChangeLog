@@ -1,5 +1,48 @@
 2004-02-17  Per Bothner  <per@bothner.com>
 
+	* java/nio/CharBufferImpl.java:  Inline super constructor.
+	* java/nio/DoubleBufferImpl.java:  Likewise.
+	* java/nio/FloatBufferImpl.java:  Likewise.
+	* java/nio/IntBufferImpl.java:  Likewise.
+	* java/nio/LongBufferImpl.java:  Likewise.
+	* java/nio/ShortBufferImpl.java:  Likewise.
+	* java/nio/CharBuffer.java:  Remove unused constructor.
+	* java/nio/DoubleBuffer.java:  Likewise.
+	* java/nio/FloatBuffer.java:  Likewise.
+	* java/nio/IntBuffer.java:  Likewise.
+	* java/nio/LongBuffer.java:  Likewise.
+	* java/nio/ShortBuffer.java:  Likewise.
+	* java/nio/CharViewBufferImpl.java:  New convenience constructor.
+	Fix buggy call to super constructor.
+	* java/nio/DoubleViewBufferImpl.java:  Likewise.
+	* java/nio/FloatViewBufferImpl.java:  Likewise.
+	* java/nio/IntViewBufferImpl.java:  Likewise.
+	* java/nio/LongViewBufferImpl.java:  Likewise.
+	* java/nio/ShortViewBufferImpl.java:  Likewise.
+	
+	* java/nio/ByteBuffer.java (endian):  Make non-private so other
+	java.nio classes can inherit it.
+	(<init>):  Don't bother clearing array_offset.
+	* java/nio/ByteBuffer.java (allocate):  Re-implement using wrap.
+	* java/nio/ByteBuffer.java (get(byte[],int,int)):  Check underflow.
+	Remove redundant test.
+
+	* java/nio/ByteBufferImpl.java (asCharBuffer, asShortBuffer,
+	asIntBuffer, asLongBuffer, asFloatBuffer, asDoubleBuffer):
+	Use new XxxViewBufferImpl constructors.
+	* java/nio/MappedByteBufferImpl.java:  Likewise.
+	* java/nio/DirectByteBufferImpl.java:  Likewise.
+
+	* java/nio/ByteBufferImpl.java:  Remove one constructor.
+	Inline super in remaining constructor.
+	* java/nio/ByteBuffer.java:  Remove unused constructor.
+
+	* java/nio/ByteBufferImpl.java (shiftDown):  New optimized method.
+
+	* java/nio/ByteBufferImpl.java (get, put):  Add array_offset.
+
+2004-02-17  Per Bothner  <per@bothner.com>
+
 	* java/nio/channels/spi/AbstractInterruptibleChannel.java (close):
 	Set closed before calling implCloseChannel, as in the spec.
 
