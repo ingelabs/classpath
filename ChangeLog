@@ -1,5 +1,23 @@
 2003-06-21  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/FileChannelImpl.java:
+	Use new MappedByteBufferImpl instead of MappedByteFileBuffer.
+	* java/nio/MappedByteBufferImpl.java:
+	New files.
+	* java/nio/MappedByteFileBuffer.java,
+	java/nio/MappedCharFileBuffer.java,
+	java/nio/MappedDoubleFileBuffer.java,
+	java/nio/MappedFloatFileBuffer.java,
+	java/nio/MappedIntFileBuffer.java,
+	java/nio/MappedLongFileBuffer.java,
+	java/nio/MappedLongFileBuffer.java:
+	Removed.
+	* java/nio/Makefile.am:
+	(EXTRA_DIST): Added MappedByteBufferImpl.java and removed
+	Mapped*FileBuffer.java
+
+2003-06-21  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/ObjectStreamField.java:
 	New version from libgcj.
 
