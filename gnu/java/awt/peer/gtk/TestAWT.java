@@ -60,7 +60,7 @@ class PrettyFrame extends Frame
   public PrettyFrame (String title)
     {
       super (title);
-      myInsets = new Insets (10, 10, 10, 10);
+      myInsets = new Insets (-10, -10, -10, -10);
       ((BorderLayout) getLayout ()).setHgap (5);
       ((BorderLayout) getLayout ()).setVgap (5);
     }
@@ -85,6 +85,8 @@ class MainWindow extends PrettyFrame implements ActionListener
   MainWindow () 
     {
       super ("TestAWT");
+
+      System.out.println (getInsets ());
 
       ScrollPane sp = new ScrollPane();
       PrettyPanel p = new PrettyPanel();
@@ -277,11 +279,12 @@ class DialogWindow extends Dialog
     }
 }
 
-class CursorsWindow extends Dialog
+class CursorsWindow extends Dialog implements ItemListener
 {
   static Frame f;
   MainWindow mainWindow;
   Choice cursorChoice;
+  Canvas cursorCanvas;
 
   public CursorsWindow (MainWindow mw)
     {
@@ -290,16 +293,48 @@ class CursorsWindow extends Dialog
       mainWindow = mw;
 
       cursorChoice = new Choice();
-      cursorChoice.add ("Foo");
-      
+      cursorChoice.add ("Default");
+      cursorChoice.add ("Crosshair");
+      cursorChoice.add ("Text");
+      cursorChoice.add ("Wait");
+      cursorChoice.add ("Southwest Resize");
+      cursorChoice.add ("Southeast Resize");
+      cursorChoice.add ("Northwest Resize");
+      cursorChoice.add ("Northeast Resize");
+      cursorChoice.add ("North Resize");
+      cursorChoice.add ("South Resize");
+      cursorChoice.add ("West Resize");
+      cursorChoice.add ("East Resize");
+      cursorChoice.add ("Hand");
+      cursorChoice.add ("Move");
+
+      cursorChoice.addItemListener(this);
+
       add (cursorChoice, "North");
 
+      cursorCanvas = new Canvas () { 
+	public void paint (Graphics g) {
+	  Dimension d = getSize();
+	  int hoffset = d.width/6;
+	  int voffset = d.height/6;
+	  d.width = d.width-(hoffset*2);
+	  d.height = d.height-(voffset*2);
+	  g.setColor (Color.white);
+	  g.fillRect (hoffset, voffset, d.width, d.height/2);
+	  g.setColor (Color.black);
+	  g.fillRect (hoffset, voffset+d.height/2, d.width, d.height/2);
+	  g.setColor (getBackground());
+	  g.fillRect (hoffset+d.width/3, voffset+d.height/3, d.width/3,
+		      d.height/3);
+	}
+      };
+
+      cursorCanvas.setSize (80,80);
+      add (cursorCanvas, "Center");
+
       Panel p = new Panel();
-      add (p, "Center");
 
-      p = new Panel();
-
-      Button cb = new Button ("close");
+      Button cb = new Button ("Close");
       cb.addMouseListener(new MouseAdapter () {
         public void mouseClicked (MouseEvent e) {
 	  dispose();
@@ -309,12 +344,19 @@ class CursorsWindow extends Dialog
 
       add (p, "South");
       setTitle ("Cursor");
-      pack ();
+
+      setSize (160, 180);
+    }
+
+  public void itemStateChanged (ItemEvent e)
+    {
+      System.out.println (cursorChoice.getSelectedIndex());
+      cursorCanvas.setCursor (Cursor.getPredefinedCursor (cursorChoice.getSelectedIndex()));
     }
 
   public void dispose()
     {
-      mainWindow.dialogWindow=null;
+      mainWindow.cursorsWindow=null;
       super.dispose();
     }
 }

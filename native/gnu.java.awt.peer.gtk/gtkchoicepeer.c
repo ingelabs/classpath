@@ -148,10 +148,12 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuSelect (JNIEnv *env,
 static void
 item_activate (GtkItem *item, struct item_event_hook_info *ie)
 {
+  gdk_threads_leave ();
   (*gdk_env)->CallVoidMethod (gdk_env, ie->peer_obj,
 			      postItemEventID,
 			      ie->item_obj,
 			      (jint) AWT_ITEM_SELECTED);
+  gdk_threads_enter ();
 }
 
 static void

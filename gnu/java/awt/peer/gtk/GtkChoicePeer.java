@@ -22,6 +22,7 @@
 package gnu.java.awt.peer.gtk;
 import java.awt.peer.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class GtkChoicePeer extends GtkComponentPeer
   implements ChoicePeer
@@ -68,4 +69,18 @@ public class GtkChoicePeer extends GtkComponentPeer
   {
     gtkOptionMenuSelect (position);
   }
+  /*
+  public void handleEvent (AWTEvent event)
+  {
+    if (event instanceof ItemEvent)
+      ((Choice) awtComponent).select ((String) ((ItemEvent)event).getItem ());
+    super.handleEvent (event);
+  }
+  */
+  protected void postItemEvent (Object item, int stateChange)
+    {
+      if (stateChange == ItemEvent.SELECTED)
+	((Choice) awtComponent).select ((String) item);
+      super.postItemEvent (item, stateChange);
+    }
 }
