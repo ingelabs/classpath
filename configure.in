@@ -85,51 +85,31 @@ else
   AC_MSG_RESULT(yes)
 fi
 
-AC_ARG_WITH(javac,
-  [  --with-javac		  specify the path to the javac-like program to use],
+AC_ARG_WITH(java,
+  [  --with-java		  specify path to a java-like program ],
   [
-    if test ${withval} = "" || test ${withval} = "yes" || test ${withval} = "no"; then
-      # determine javac automatically
-      javac_found="no"
-      AC_PATH_PROG(JAVAC, guavac)
-      if test -n "$JAVAC"; then
-        javac_found="yes"
-      fi
-      if test "x"${javac_found} = "xno"; then
-        AC_PATH_PROG(JAVAC, javac)
-        if test -n "$JAVAC"; then
-          javac_found="yes"
-        fi
-      fi
-      if test "x"${javac_found} = "xno"; then
-        AC_MSG_CHECKING("for javac")
-        AC_MSG_ERROR("[no javac found]")
-      fi
-    else
-      JAVAC=${withval}
-      AC_SUBST(JAVAC)
-    fi
-  ],
-  [
-    # determine javac automatically
-    javac_found="no"
-    AC_PATH_PROG(JAVAC, guavac)
-    if test -n "$JAVAC"; then
-      javac_found="yes"
-    fi
-    if test "x"${javac_found} = "xno"; then
-      AC_PATH_PROG(JAVAC, javac)
-      if test -n "$JAVAC"; then
-        javac_found="yes"
-      fi
-    fi
-    if test "x"${javac_found} = "xno"; then
-      AC_MSG_CHECKING("for javac")
-      AC_MSG_ERROR("[no javac found]")
+    if test ${withval} != "" || test ${withval} != "yes" || test ${withval} != "no"; then
+      # set javac to user input value
+      AC_MSG_CHECKING(for java)
+      USER_JABBA=${withval}
+      AC_SUBST(USER_JABBA)
+      AC_MSG_RESULT(${withval})
+      AM_CONDITIONAL(USER_SPECIFIED_JABBA, test x = x)
     fi
   ])
 
-AC_SUBST(JAVAC)
+AC_ARG_WITH(classlib,
+  [  --with-classlib		  specify path to a classes.zip like file ],
+  [
+    if test ${withval} != "" || test ${withval} != "yes" || test ${withval} != "no"; then
+      # set javac to user input value
+      AC_MSG_CHECKING(for classlib)
+      USER_CLASSLIB=${withval}
+      AC_SUBST(USER_CLASSLIB)
+      AC_MSG_RESULT(${withval})
+      AM_CONDITIONAL(USER_SPECIFIED_CLASSLIB, test x = x)
+    fi
+  ])
 
 dnl Since most people won't have JavaDeps or Jikes to compute dependencies
 dnl on the Java source files.
@@ -205,6 +185,6 @@ lib/deps.sh
 lib/gen-classlist.sh
 lib/Makefile)
 
-chmod 755 lib/deps.sh
-chmod 755 lib/gen-classlist.sh
+AC_OUTPUT_COMMANDS(chmod 755 lib/deps.sh)
+AC_OUTPUT_COMMANDS(chmod 755 lib/gen-classlist.sh)
 

@@ -10,6 +10,171 @@ dnl but WITHOUT ANY WARRANTY, to the extent permitted by law; without
 dnl even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 dnl PARTICULAR PURPOSE.
 
+dnl
+dnl Add macros
+dnl JAPHAR_GREP_CFLAGS
+dnl CLASSPATH_CHECK_JAPHAR
+dnl CLASSPATH_CHECK_KAFFE
+dnl CLASSPATH_CHECK_THREADS
+dnl
+
+dnl JAPHAR_GREP_CFLAGS(flag, cmd_if_missing, cmd_if_present)
+AC_DEFUN(JAPHAR_GREP_CFLAGS,
+[case "$CFLAGS" in
+"$1" | "$1 "* | *" $1" | *" $1 "* )
+  ifelse($#, 3, [$3], [:])
+  ;;
+*)
+  $2
+  ;;
+esac
+])
+
+dnl CLASSPATH_INTERNAL_CHECK_JAPHAR
+AC_DEFUN(CLASSPATH_INTERNAL_CHECK_JAPHAR,
+[
+  AC_PATH_PROG(JAPHAR_CONFIG, japhar-config, "", $PATH:/usr/local/japhar/bin:/usr/japhar/bin)
+  if test "$JAPHAR_CONFIG" = ""; then
+    echo "configure: cannot find japhar-config: is Japhar installed?" 1>&2
+    exit 1
+  fi
+  AC_MSG_CHECKING(for Japhar)
+  JAPHAR_CFLAGS="`$JAPHAR_CONFIG compile`"
+  JAPHAR_LIBS="`$JAPHAR_CONFIG link`"
+  JVM="yes"
+  AC_SUBST(JAPHAR_CFLAGS)
+  AC_SUBST(JAPHAR_LIBS)
+  AC_SUBST(JVM)
+  AM_CONDITIONAL(JAPHAR, test x = x)
+  AC_MSG_RESULT(yes)
+
+  dnl programs we probably need somewhere
+  bindir=`$JAPHAR_CONFIG info bindir`
+  datadir=`$JAPHAR_CONFIG info datadir`
+  AC_PATH_PROG(JAPHAR_JABBA, japhar, "", $bindir:$PATH)
+  AC_PATH_PROG(JAPHAR_JAVAC, javac, "", $bindir:$PATH)
+  AC_PATH_PROG(JAPHAR_JAVAH, japharh, "", $bindir:$PATH)
+  AC_MSG_CHECKING(for Japhar classes)
+  if test -e $datadir/classes.zip; then
+    JAPHAR_CLASSLIB=$datadir/classes.zip
+  elif test -e $datadir/classes.jar; then
+    JAPHAR_CLASSLIB=$datadir/classes.jar
+  elif test -e $datadir/rt.jar; then
+    JAPHAR_CLASSLIB=$datadir/rt.jar
+  elif test -e $datadir/rt.zip; then
+    JAPHAR_CLASSLIB=$datadir/rt.zip
+  else
+    AC_MSG_ERROR(no)
+  fi
+  AC_MSG_RESULT(yes)
+dnl  if test -n "$CLASSLIB"; then
+    AC_SUBST(JAPHAR_CLASSLIB)
+dnl  fi
+])
+
+dnl CLASSPATH_INTERNAL_CHECK_KAFFE
+AC_DEFUN(CLASSPATH_INTERNAL_CHECK_KAFFE,
+[
+  AC_MSG_CHECKING(for Kaffe)
+  JVM="no"
+  AC_SUBST(JVM)
+  AC_MSG_ERROR(Help GNU Classpath support Kaffe!)
+])
+
+dnl CLASSPATH_CHECK_JAPHAR - checks for japhar
+AC_DEFUN(CLASSPATH_CHECK_JAPHAR,
+[
+  AC_ARG_WITH(japhar, 
+  [  --with-japhar		  configure GNU Classpath for Japhar [default=yes]],
+  [
+    if test ${withval} = "yes" || test ${withval} = ""; then
+      CLASSPATH_INTERNAL_CHECK_JAPHAR
+    fi
+  ])
+])
+
+dnl CLASSPATH_CHECK_KAFFE - checks for which java virtual machine to use
+AC_DEFUN(CLASSPATH_CHECK_KAFFE,
+[
+  AC_ARG_WITH(kaffe, 
+  [  --with-kaffe		  configure GNU Classpath for Kaffe [default=no]],
+  [   
+    if test ${withval} = "yes" || test ${withval} = ""; then
+      CLASSPATH_INTERNAL_CHECK_KAFFE
+    fi
+  ])
+])
+
+dnl threads packages (mostly stolen from Japhar)
+dnl given that japhar-config gives -lpthread, may not need this (cbj)
+AC_DEFUN(CLASSPATH_CHECK_THREADS,
+[
+  threads=no
+
+  if test "x${threads}" = xno; then
+    AC_CHECK_LIB(threads, cthread_fork)
+    if test "x${ac_cv_lib_threads_cthread_fork}" = xyes; then
+        AC_DEFINE(USE_CTHREADS, )
+        threads=yes
+    fi
+  fi
+
+  if test "x${threads}" = xno; then
+    AC_CHECK_FUNCS(_beginthreadex)
+    if test "x${ac_cv_CreateThread}" = xyes; then
+        AC_DEFINE(USE_WIN32_THREADS, )
+        AC_CHECK_FUNCS(CloseHandle SetThreadPriority ExitThread Sleep \
+                GetCurrentThreadId TlsAlloc TlsSetValue TlsGetValue)
+        threads=yes
+    fi
+  fi
+
+  if test "x${threads}" = xno; then
+    AC_CHECK_LIB(pthread, pthread_create)
+    if test "x${ac_cv_lib_pthread_pthread_create}" = xyes; then
+      threads=yes
+    fi
+
+    if test "x${threads}" = xno; then
+      AC_CHECK_LIB(c_r, pthread_create)
+      if test "x${ac_cv_lib_c_r_pthread_create}" = xyes; then
+        threads=yes
+      fi
+    fi
+
+    if test "x${threads}" = xno; then
+      # HP/UX 10.20 uses -lcma
+      AC_CHECK_LIB(cma, pthread_create)
+      if test "x${ac_cv_lib_cma_pthread_create}" = xyes; then
+        threads=yes
+      fi
+    fi
+
+    if test "x${threads}" = xno; then
+      AC_CHECK_LIB(c, pthread_create)
+      if test "x${ac_cv_lib_c_pthread_create}" = xyes; then
+        threads=yes
+      fi
+    fi
+
+    if test "x${threads}" = xyes; then
+      AC_DEFINE(USE_PTHREADS, )
+    fi
+  fi
+])
+# Define a conditional.
+
+AC_DEFUN(AM_CONDITIONAL,
+[AC_SUBST($1_TRUE)
+AC_SUBST($1_FALSE)
+if $2; then
+  $1_TRUE=
+  $1_FALSE='#'
+else
+  $1_TRUE='#'
+  $1_FALSE=
+fi])
+
 # Do all the work for Automake.  This macro actually does too much --
 # some checks are only needed if your package does certain things.
 # But this isn't really a big deal.
@@ -348,93 +513,4 @@ NM="$ac_cv_path_NM"
 AC_MSG_RESULT([$NM])
 AC_SUBST(NM)
 ])
-
-dnl   Automake macros for working with Guile.
-dnl   
-dnl   	Copyright (C) 1998 Free Software Foundation, Inc.
-dnl   
-dnl   This program is free software; you can redistribute it and/or modify
-dnl   it under the terms of the GNU General Public License as published by
-dnl   the Free Software Foundation; either version 2, or (at your option)
-dnl   any later version.
-dnl   
-dnl   This program is distributed in the hope that it will be useful,
-dnl   but WITHOUT ANY WARRANTY; without even the implied warranty of
-dnl   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-dnl   GNU General Public License for more details.
-dnl   
-dnl   You should have received a copy of the GNU General Public License
-dnl   along with this software; see the file COPYING.  If not, write to
-dnl   the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
-dnl   Boston, MA 02111-1307 USA
-dnl   
-dnl   As a special exception, the Free Software Foundation gives permission
-dnl   for additional uses of the text contained in its release of GUILE.
-dnl   
-dnl   The exception is that, if you link the GUILE library with other files
-dnl   to produce an executable, this does not by itself cause the
-dnl   resulting executable to be covered by the GNU General Public License.
-dnl   Your use of that executable is in no way restricted on account of
-dnl   linking the GUILE library code into it.
-dnl   
-dnl   This exception does not however invalidate any other reasons why
-dnl   the executable file might be covered by the GNU General Public License.
-dnl   
-dnl   This exception applies only to the code released by the
-dnl   Free Software Foundation under the name GUILE.  If you copy
-dnl   code from other Free Software Foundation releases into a copy of
-dnl   GUILE, as the General Public License permits, the exception does
-dnl   not apply to the code that you add in this way.  To avoid misleading
-dnl   anyone as to the status of such modified files, you must delete
-dnl   this exception notice from them.
-dnl   
-dnl   If you write modifications of your own for GUILE, it is your choice
-dnl   whether to permit this exception to apply to your modifications.
-dnl   If you do not wish that, delete this exception notice.
-
-
-dnl   GUILE_FLAGS --- set flags for compiling and linking with Guile
-dnl 
-dnl   This macro runs the `guile-config' script, installed with Guile,
-dnl   to find out where Guile's header files and libraries are
-dnl   installed.  It sets two variables, marked for substitution, as
-dnl   by AC_SUBST.
-dnl
-dnl	GUILE_CFLAGS --- flags to pass to a C or C++ compiler to build
-dnl		code that uses Guile header files.  This is almost
-dnl		always just a -I flag.
-dnl
-dnl     GUILE_LDFLAGS --- flags to pass to the linker to link a
-dnl		program against Guile.  This includes `-lguile' for
-dnl		the Guile library itself, any libraries that Guile
-dnl		itself requires (like -lqthreads), and so on.  It may
-dnl		also include a -L flag to tell the compiler where to
-dnl		find the libraries.
-
-AC_DEFUN([GUILE_FLAGS],[
-  ## First, let's just see if we can find Guile at all.
-  AC_MSG_CHECKING(for Guile)
-  guile-config link > /dev/null || {
-    echo "configure: cannot find guile-config; is Guile installed?" 1>&2
-    exit 1
-  }
-  GUILE_CFLAGS="`guile-config compile`"
-  GUILE_LDFLAGS="`guile-config link`"
-  AC_SUBST(GUILE_CFLAGS)
-  AC_SUBST(GUILE_LDFLAGS)
-  AC_MSG_RESULT(yes)
-])
-
-# Define a conditional.
-
-AC_DEFUN(AM_CONDITIONAL,
-[AC_SUBST($1_TRUE)
-AC_SUBST($1_FALSE)
-if $2; then
-  $1_TRUE=
-  $1_FALSE='#'
-else
-  $1_TRUE='#'
-  $1_FALSE=
-fi])
 
