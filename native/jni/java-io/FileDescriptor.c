@@ -722,12 +722,12 @@ Java_java_io_FileDescriptor_nativeValid(JNIEnv *env, jobject obj, jlong fd)
 JNIEXPORT void JNICALL
 Java_java_io_FileDescriptor_nativeSync(JNIEnv *env, jobject obj, jlong fd)
 {
+#ifdef HAVE_FSYNC
   int native_fd;
   int result;
 
   native_fd = CONVERT_JLONG_TO_INT(fd);
 
-#ifdef HAVE_FSYNC
   TARGET_NATIVE_FILE_FSYNC(native_fd, result);
   /* FIXME: gcj does not throw an exception on EROFS or EINVAL.
    * Should we emulate? */
