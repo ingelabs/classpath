@@ -33,9 +33,12 @@ public class GtkFileDialogPeer extends GtkDialogPeer
   
     public GtkFileDialogPeer(FileDialog fd)
     {
-	super (bogusType, fd);
-	System.out.println("FileDialogPeer contructor");
-	gtkFileSelectionNew();
+      super (bogusType, fd);
+      System.out.println("FileDialogPeer contructor");
+      gtkFileSelectionNew();
+      /*
+	FIXME:  need to work like DialogPeer
+      */
     }
 
     public void setDirectory(String directory)

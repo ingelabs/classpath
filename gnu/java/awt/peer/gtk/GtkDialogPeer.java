@@ -40,6 +40,11 @@ public class GtkDialogPeer extends GtkWindowPeer
 		    w.getTitle (), w.isModal(), parent);
     }
 
+  public GtkDialogPeer (int type, Dialog w)
+    {
+      super (bogusType, w);
+    }
+
   public void setTitle(String title)
     {
       System.out.println("setting title");

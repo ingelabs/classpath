@@ -72,7 +72,7 @@ setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width,
 
   gtk_widget_set_usize (window, width, height);
 
-  gtk_container_add (GTK_CONTAINER (window), fix);
+  gtk_container_add (GTK_CONTAINER (window), fixed);
 }
 
 
