@@ -1,3 +1,8 @@
+2003-04-19  Scott Gilbertson  <scottg@mantatest.com>
+
+	* java/awt/Container.java (visitChild): Dispose gfx2 when
+	finished.
+
 2003-04-19  Jerry Quinn  <jlquinn@optonline.net>
 
 	* java/math/BigInteger.java (probablePrime): New.
