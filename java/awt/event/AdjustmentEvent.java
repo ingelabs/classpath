@@ -70,7 +70,7 @@ public static final int BLOCK_DECREMENT = 3;
 /**
   * Adjustment type for block increments
   */
-public static final int BLOCK_INCREMENTS = 4;
+public static final int BLOCK_INCREMENT = 4;
 
 /**
   * Adjustment type for tracking adjustments
