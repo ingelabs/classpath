@@ -13,12 +13,12 @@ libjava_io_ObjectInputStream_la_SOURCES = java_io_ObjectInputStream.c
 
 libjava_io_ObjectInputStream_la_LDFLAGS = -version-info 0:0:0
 
-libjavaio_la_SOURCES = File.c FileDescriptor.c FileInputStream.c FileOutputStream.c javaio.c
+libjavaio_la_SOURCES = File.c FileDescriptor.c FileInputStream.c FileOutputStream.c javaio.c RandomAccessFile.c
 
-libjavaio_la_LDFLAGS = -version-info 0:0:0
+libjavaio_la_LDFLAGS = -version-info 0:0:0 
 
 if JAPHAR
-INCLUDES += -I ../lib @JAPHAR_CFLAGS@
+INCLUDES +=  @JAPHAR_CFLAGS@
 endif
 
 #File.c: java_io_File.h
