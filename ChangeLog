@@ -1,5 +1,34 @@
 2005-02-16  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/geom/Ellipse2D.java,
+	java/beans/PropertyDescriptor.java,
+	java/net/NetworkInterface.java,
+	java/nio/ByteBufferImpl.java,
+	java/nio/DoubleBufferImpl.java,
+	java/nio/FloatBufferImpl.java,
+	java/nio/IntBufferImpl.java,
+	java/nio/LongBufferImpl.java,
+	java/nio/ShortBufferImpl.java,
+	java/nio/channels/Channel.java,
+	java/util/Calendar.java,
+	java/util/Comparator.java,
+	java/util/Date.java,
+	java/util/SimpleTimeZone.java,
+	java/util/logging/FileHandler.java,
+	java/util/prefs/InvalidPreferencesFormatException.java,
+	java/util/prefs/Preferences.java,
+	javax/security/auth/callback/ConfirmationCallback.java,
+	javax/security/sasl/Sasl.java,
+	javax/security/sasl/SaslServerFactory.java,
+	javax/swing/JComponent.java,
+	javax/swing/JList.java,
+	javax/swing/JProgressBar.java,
+	javax/swing/JTree.java,
+	javax/swing/text/JTextComponent.java:
+	Fixed javadocs to contain valid (X)HTML.
+
+2005-02-16  Michael Koch  <konqueror@gmx.de>
+
 	* javax/xml/XMLConstants.java,
 	javax/xml/datatype/DatatypeConfigurationException.java,
 	javax/xml/datatype/DatatypeConstants.java,
