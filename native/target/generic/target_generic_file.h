@@ -111,6 +111,10 @@ extern "C" {
   #define TARGET_NATIVE_FILE_FILEPERMISSION_PRIVATE (S_IRUSR | S_IWUSR)
 #endif
 
+#ifndef TARGET_NATIVE_FILE_FILEPERMISSION_READONLY
+  #define TARGET_NATIVE_FILE_FILEPERMISSION_READONLY (~(S_IWRITE|S_IWGRP|S_IWOTH))
+#endif
+
 /***************************** Datatypes *******************************/
 
 /***************************** Variables *******************************/
@@ -270,10 +274,26 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_VALID_FILE_DESCRIPTOR
-  #define TARGET_NATIVE_FILE_VALID_FILE_DESCRIPTOR(filedescriptor,result) \
-    do { \
-      result=(fcntl(filedescriptor,F_GETFL,0)!=-1)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
-    } while(0)
+  #if   defined(HAVE_FCNTL)
+    #include <unistd.h>
+    #include <fcntl.h>
+    #define TARGET_NATIVE_FILE_VALID_FILE_DESCRIPTOR(filedescriptor,result) \
+      do { \
+        result=(fcntl(filedescriptor,F_GETFL,0)!=-1)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
+      } while(0)
+  #elif defined(HAVE_FSTAT)
+    #include <sys/types.h>
+    #include <sys/stat.h>
+    #include <unistd.h>
+    #define TARGET_NATIVE_FILE_VALID_FILE_DESCRIPTOR(filedescriptor,result) \
+      do { \
+        struct stat __stat; \
+        \
+        result=(fstat(filedescriptor,&__stat)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
+      } while(0)
+  #else
+    #error fcntl() nor fstat() available for checking if file descriptor is valid
+  #endif
 #endif
 
 /***********************************************************************\
@@ -386,13 +406,12 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_AVAILABLE
-  #if   defined(FIONREAD)
-    #include <sys/ioctl.h>
-    #ifdef HAVE_SYS_IOCTL_H
+  #if   defined(HAVE_FIONREAD)
+    #ifdef HAVE_SYS_IOCTL
       #define BSD_COMP /* Get FIONREAD on Solaris2 */
       #include <sys/ioctl.h>
     #endif
-    #ifdef HAVE_SYS_FILIO_H /* Get FIONREAD on Solaris 2.5 */
+    #ifdef HAVE_SYS_FILIO /* Get FIONREAD on Solaris 2.5 */
       #include <sys/filio.h>
     #endif
     #define TARGET_NATIVE_FILE_AVAILABLE(filedescriptor,length,result) \
@@ -507,7 +526,7 @@ extern "C" {
       struct stat __statBuffer; \
       \
       if (stat(filename,&__statBuffer)==0) { \
-        result=(chmod(filename,__statBuffer.st_mode & (~(S_IWRITE|S_IWGRP|S_IWOTH)))==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
+        result=(chmod(filename,__statBuffer.st_mode & TARGET_NATIVE_FILE_FILEPERMISSION_READONLY)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       } else { \
         result=TARGET_NATIVE_ERROR; \
       } \
@@ -624,9 +643,9 @@ extern "C" {
   #include <sys/types.h>
   #include <sys/stat.h>
   #include <unistd.h>
-  #ifdef HAVE_UTIME_H
+  #ifdef HAVE_UTIME
     #include <utime.h>
-  #elif HAVE_SYS_UTIME_H
+  #elif HAVE_SYS_UTIME
     #include <sys/utime.h>
   #else
     #error utime.h not found. Please check configuration.
