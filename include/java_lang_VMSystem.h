@@ -10,13 +10,13 @@ extern "C"
 {
 #endif
 
-  extern void Java_java_lang_VMSystem_arraycopy (JNIEnv *env, jclass, jobject, jint, jobject, jint, jint);
-  extern jint Java_java_lang_VMSystem_identityHashCode (JNIEnv *env, jclass, jobject);
-  extern jboolean Java_java_lang_VMSystem_isWordsBigEndian (JNIEnv *env, jclass);
-  extern void Java_java_lang_VMSystem_setIn (JNIEnv *env, jclass, jobject);
-  extern void Java_java_lang_VMSystem_setOut (JNIEnv *env, jclass, jobject);
-  extern void Java_java_lang_VMSystem_setErr (JNIEnv *env, jclass, jobject);
-  extern jlong Java_java_lang_VMSystem_currentTimeMillis (JNIEnv *env, jclass);
+extern void Java_java_lang_VMSystem_arraycopy (JNIEnv *env, jclass, jobject, jint, jobject, jint, jint);
+extern jint Java_java_lang_VMSystem_identityHashCode (JNIEnv *env, jclass, jobject);
+extern jboolean Java_java_lang_VMSystem_isWordsBigEndian (JNIEnv *env, jclass);
+extern void Java_java_lang_VMSystem_setIn (JNIEnv *env, jclass, jobject);
+extern void Java_java_lang_VMSystem_setOut (JNIEnv *env, jclass, jobject);
+extern void Java_java_lang_VMSystem_setErr (JNIEnv *env, jclass, jobject);
+extern jlong Java_java_lang_VMSystem_currentTimeMillis (JNIEnv *env, jclass);
 
 #ifdef __cplusplus
 }

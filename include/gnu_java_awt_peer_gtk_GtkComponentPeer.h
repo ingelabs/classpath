@@ -19,8 +19,7 @@ extern void Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetDimensions (
 extern void Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetLocationOnScreen (JNIEnv *env, jobject, jintArray);
 extern void Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursor (JNIEnv *env, jobject, jint);
 extern void Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectHooks (JNIEnv *env, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkComponentPeer_dispose (JNIEnv *env, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkComponentPeer_requestFocus (JNIEnv *env, jobject);
+extern void Java_gnu_java_awt_peer_gtk_GtkComponentPeer_requestFocus__ (JNIEnv *env, jobject);
 extern void Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setNativeBounds (JNIEnv *env, jobject, jint, jint, jint, jint);
 extern void Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv *env, jobject, jstring, jstring);
 extern void Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Z (JNIEnv *env, jobject, jstring, jboolean);

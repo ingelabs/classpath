@@ -157,7 +157,7 @@ with GNU Classpath
 </p>
 <table border="1" width="100%">
 <th>Core Package</th><th>Provider</th>
-<tr><td>javax.crypto</td><td><createlink url="http://www.gnu.org/software/classpathx/crypto/crypto.html" name="GNU Crypto"></td></tr>
+<tr><td>javax.crypto</td><td><createlink url="http://www.gnu.org/software/gnu-crypto/" name="GNU Crypto"></td></tr>
 <tr><td>javax.sound</td><td><createlink url="http://tritonus.org/" 
                              name="Tritonus"></td></tr>
 <tr><td>org.ietf.jgss</td><td><createlink

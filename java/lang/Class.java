@@ -145,7 +145,7 @@ public final class Class implements Serializable
    */
   public static Class forName(String name) throws ClassNotFoundException
   {
-    Class result = vmClass.forName (name);
+    Class result = VMClass.forName (name);
     if (result == null)
       result = Class.forName(name, true,
         VMSecurityManager.getClassContext()[1].getClassLoader());
@@ -390,7 +390,7 @@ public final class Class implements Serializable
    */
   public Class getSuperclass()
   {
-    return vmClass.getSuperClass ();
+    return vmClass.getSuperclass ();
   }
 
   /**
@@ -464,7 +464,7 @@ public final class Class implements Serializable
    */
   public Object[] getSigners()
   {
-    return signers.clone ();
+    return (Object[]) signers.clone ();
   }
 
   /**
@@ -607,7 +607,7 @@ public final class Class implements Serializable
     Class superClass = getSuperclass();
     if(superClass != null)
       {
-	methods = superclass.internalGetMethods();
+	methods = superClass.internalGetMethods();
 	for(int i = 0; i < methods.length; i++)
 	  {
 	    map.put(new MethodKey(methods[i]), methods[i]);

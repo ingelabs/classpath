@@ -11,16 +11,17 @@ extern "C"
 #endif
 
 extern jobject Java_java_lang_Thread_currentThread (JNIEnv *env, jclass);
+extern void Java_java_lang_Thread_yield (JNIEnv *env, jclass);
 extern void Java_java_lang_Thread_sleep__JI (JNIEnv *env, jclass, jlong, jint);
 extern void Java_java_lang_Thread_start (JNIEnv *env, jobject);
-extern void Java_java_lang_Thread_yield (JNIEnv *env, jclass);
-extern jint Java_java_lang_Thread_countStackFrames (JNIEnv *env, jobject);
+extern jboolean Java_java_lang_Thread_interrupted (JNIEnv *env, jclass);
 extern jboolean Java_java_lang_Thread_isInterrupted (JNIEnv *env, jobject);
 extern jboolean Java_java_lang_Thread_isAlive (JNIEnv *env, jobject);
-extern void Java_java_lang_Thread_nativeInit (JNIEnv *env, jobject);
+extern jint Java_java_lang_Thread_countStackFrames (JNIEnv *env, jobject);
+extern jboolean Java_java_lang_Thread_holdsLock (JNIEnv *env, jclass, jobject);
+extern void Java_java_lang_Thread_nativeInit (JNIEnv *env, jobject, jlong);
 extern void Java_java_lang_Thread_nativeStop (JNIEnv *env, jobject, jthrowable);
 extern void Java_java_lang_Thread_nativeInterrupt (JNIEnv *env, jobject);
-extern void Java_java_lang_Thread_nativeDestroy (JNIEnv *env, jobject);
 extern void Java_java_lang_Thread_nativeSuspend (JNIEnv *env, jobject);
 extern void Java_java_lang_Thread_nativeResume (JNIEnv *env, jobject);
 extern void Java_java_lang_Thread_nativeSetPriority (JNIEnv *env, jobject, jint);

@@ -10,8 +10,20 @@ extern "C"
 {
 #endif
 
-extern void Java_java_io_FileDescriptor_syncInternal (JNIEnv *env, jobject, jint);
-extern jboolean Java_java_io_FileDescriptor_validInternal (JNIEnv *env, jobject, jint);
+extern void Java_java_io_FileDescriptor_nativeInit (JNIEnv *env, jclass);
+extern jlong Java_java_io_FileDescriptor_nativeOpen (JNIEnv *env, jobject, jstring, jstring);
+extern jlong Java_java_io_FileDescriptor_nativeClose (JNIEnv *env, jobject, jlong);
+extern jlong Java_java_io_FileDescriptor_nativeWriteByte (JNIEnv *env, jobject, jlong, jint);
+extern jlong Java_java_io_FileDescriptor_nativeWriteBuf (JNIEnv *env, jobject, jlong, jbyteArray, jint, jint);
+extern jint Java_java_io_FileDescriptor_nativeReadByte (JNIEnv *env, jobject, jlong);
+extern jint Java_java_io_FileDescriptor_nativeReadBuf (JNIEnv *env, jobject, jlong, jbyteArray, jint, jint);
+extern jint Java_java_io_FileDescriptor_nativeAvailable (JNIEnv *env, jobject, jlong);
+extern jlong Java_java_io_FileDescriptor_nativeSeek (JNIEnv *env, jobject, jlong, jlong, jint, jboolean);
+extern jlong Java_java_io_FileDescriptor_nativeGetFilePointer (JNIEnv *env, jobject, jlong);
+extern jlong Java_java_io_FileDescriptor_nativeGetLength (JNIEnv *env, jobject, jlong);
+extern void Java_java_io_FileDescriptor_nativeSetLength (JNIEnv *env, jobject, jlong, jlong);
+extern jboolean Java_java_io_FileDescriptor_nativeValid (JNIEnv *env, jobject, jlong);
+extern void Java_java_io_FileDescriptor_nativeSync (JNIEnv *env, jobject, jlong);
 
 #ifdef __cplusplus
 }

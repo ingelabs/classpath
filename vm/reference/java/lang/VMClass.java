@@ -38,6 +38,9 @@ exception statement from your version. */
 package java.lang;
 
 import gnu.classpath.RawData;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 
 /*
  * This class is a reference version, mainly for compiling a class library

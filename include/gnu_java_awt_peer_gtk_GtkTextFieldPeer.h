@@ -13,6 +13,7 @@ extern "C"
 extern void Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_create (JNIEnv *env, jobject);
 extern void Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_createHooks (JNIEnv *env, jobject);
 extern void Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryGetSize (JNIEnv *env, jobject, jint, jintArray);
+extern void Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkSetFont (JNIEnv *env, jobject, jstring, jint);
 extern void Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_setEchoChar (JNIEnv *env, jobject, jchar);
 
 #ifdef __cplusplus

@@ -10,7 +10,7 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT jobject JNICALL Java_java_net_NetworkInterface_getRealNetworkInterfaces (JNIEnv *env, jclass);
+extern jobject Java_java_net_NetworkInterface_getRealNetworkInterfaces (JNIEnv *env, jclass);
 
 #ifdef __cplusplus
 }

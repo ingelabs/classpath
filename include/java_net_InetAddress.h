@@ -11,9 +11,9 @@ extern "C"
 #endif
 
 extern jstring Java_java_net_InetAddress_getLocalHostName (JNIEnv *env, jclass);
-extern jintArray Java_java_net_InetAddress_lookupInaddrAny (JNIEnv *env, jclass);
-extern jstring Java_java_net_InetAddress_getHostByAddr (JNIEnv *env, jclass, jintArray);
-extern jintArray Java_java_net_InetAddress_getHostByName (JNIEnv *env, jclass, jstring);
+extern jbyteArray Java_java_net_InetAddress_lookupInaddrAny (JNIEnv *env, jclass);
+extern jstring Java_java_net_InetAddress_getHostByAddr (JNIEnv *env, jclass, jbyteArray);
+extern jbyteArray Java_java_net_InetAddress_getHostByName (JNIEnv *env, jclass, jstring);
 
 #ifdef __cplusplus
 }

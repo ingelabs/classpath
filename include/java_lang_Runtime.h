@@ -10,18 +10,20 @@ extern "C"
 {
 #endif
 
-extern void Java_java_lang_Runtime_exitInternal (JNIEnv *env, jobject, jint);
-extern void Java_java_lang_Runtime_gc (JNIEnv *env, jobject);
-extern void Java_java_lang_Runtime_runFinalization (JNIEnv *env, jobject);
-extern void Java_java_lang_Runtime_runFinalizersOnExitInternal (JNIEnv *env, jclass, jboolean);
+extern jint Java_java_lang_Runtime_availableProcessors (JNIEnv *env, jobject);
 extern jlong Java_java_lang_Runtime_freeMemory (JNIEnv *env, jobject);
 extern jlong Java_java_lang_Runtime_totalMemory (JNIEnv *env, jobject);
+extern jlong Java_java_lang_Runtime_maxMemory (JNIEnv *env, jobject);
+extern void Java_java_lang_Runtime_gc (JNIEnv *env, jobject);
+extern void Java_java_lang_Runtime_runFinalization (JNIEnv *env, jobject);
 extern void Java_java_lang_Runtime_traceInstructions (JNIEnv *env, jobject, jboolean);
 extern void Java_java_lang_Runtime_traceMethodCalls (JNIEnv *env, jobject, jboolean);
+extern void Java_java_lang_Runtime_runFinalizersOnExitInternal (JNIEnv *env, jclass, jboolean);
+extern void Java_java_lang_Runtime_exitInternal (JNIEnv *env, jobject, jint);
 extern jint Java_java_lang_Runtime_nativeLoad (JNIEnv *env, jobject, jstring);
-extern jstring Java_java_lang_Runtime_nativeGetLibname (JNIEnv *env, jobject, jstring, jstring);
-extern jobject Java_java_lang_Runtime_execInternal (JNIEnv *env, jobject, jobjectArray, jobjectArray);
-extern jstring Java_java_lang_Runtime_getLibraryPath (JNIEnv *env, jclass);
+extern jstring Java_java_lang_Runtime_nativeGetLibname (JNIEnv *env, jclass, jstring, jstring);
+extern jobject Java_java_lang_Runtime_execInternal (JNIEnv *env, jobject, jobjectArray, jobjectArray, jobject);
+extern void Java_java_lang_Runtime_insertSystemProperties (JNIEnv *env, jclass, jobject);
 
 #ifdef __cplusplus
 }

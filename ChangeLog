@@ -1,5 +1,16 @@
 2003-04-03  C. Brian Jones  <cbj@gnu.org>
 
+	* vm/reference/java/lang/VMClass.java: fix imports
+	* java/lang/Class.java
+	(internalGetMethods): fix spelling of superClass
+	(getSigners): cast clone of Object[]
+	(getSuperclass): fix spelling of getSuperclass
+	(forName): use VMClass.forName for static invocation
+	* include/*.h: updated
+	* doc/www.gnu.org/home.wml: update link to GNU Crypto
+
+2003-04-03  C. Brian Jones  <cbj@gnu.org>
+
 	* vm/reference/java/lang/VMClass.java: new file
 	* vm/reference/java/lang/Class.java: moved to java/lang
 	* java/lang/Class.java: added transient reference to VMClass
