@@ -1,3 +1,7 @@
+2002-06-16  Tom Tromey  <tromey@redhat.com>
+
+	* java/io/LineNumberInputStream.java: Merged with libgcj version.
+
 2002-06-13  Tom Tromey  <tromey@redhat.com>
 
 	Fix for Mauve regressions:
