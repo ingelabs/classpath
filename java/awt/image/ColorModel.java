@@ -44,7 +44,7 @@ public abstract class ColorModel
      * of <code>DirectColorModel</code>.
      */
     public static ColorModel getRGBdefault() {
-	return new DirectColorModel(32);
+	return new DirectColorModel(8, 8, 8, 8);
     }
 
     /**
