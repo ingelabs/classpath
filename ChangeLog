@@ -1,5 +1,10 @@
 2004-10-09  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/rmi/server/UnicastConnectionManager.java:
+	Fix file header.
+
+2004-10-09  Michael Koch  <konqueror@gmx.de>
+
 	* configure.ac: Use AC_C_BIGENDIAN instead of AC_C_BIGENDIAN_CROSS as
 	we don't support cross compiling anyway.
 
