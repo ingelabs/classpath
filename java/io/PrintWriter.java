@@ -87,7 +87,7 @@ private boolean auto_flush;
   * This is the underlying <code>Writer</code> we are sending output
   * to
   */
-private Writer out;
+protected Writer out;
 
 /*************************************************************************/
 
