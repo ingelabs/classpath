@@ -50,6 +50,7 @@ public class CompletionStatus
 {
   /**
    * Use serialVersionUID for interoperability.
+   * Using the version 1.4 UID.
    */
   private static final long serialVersionUID = -9047319660881406859L;
 

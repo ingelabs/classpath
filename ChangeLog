@@ -1,3 +1,15 @@
+2005-03-06  Audrius Meskauskas  <audriusa@bluewin.ch>
+	* org/omg/CORBA/TypeCodePackage/BadKind.java: documenting 
+	that serialVersionUID is from v1.4
+	* org/omg/CORBA/SystemException.java: documenting 
+	that serialVersionUID is from v1.4
+	* org/omg/CORBA/TypeCode.java: documenting 
+	that serialVersionUID is from v1.4
+	* org/omg/CORBA/UserException.java:documenting 
+	that serialVersionUID is from v1.4
+	* org/omg/CORBA/CompletionStatus.java:documenting 
+	that serialVersionUID is from v1.4
+	
 2005-04-06  Audrius Meskauskas  <audriusa@bluewin.ch>
 	* org/omg/CORBA/Context.java: new file
 	* org/omg/CORBA/ContextList.java: new file

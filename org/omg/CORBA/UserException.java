@@ -50,6 +50,7 @@ public class UserException
 {
   /** 
    * Use serialVersionUID for interoperability. 
+   * Using the version 1.4 UID.
    */
   private static final long serialVersionUID =-6594940734566091244L;
   

@@ -50,6 +50,7 @@ public class SystemException
 {
   /**
    * Use serialVersionUID for interoperability.
+   * Using the version 1.4 UID.
    */
   private static final long serialVersionUID = -8486391734674855519L;
 
