@@ -297,7 +297,7 @@ public class WeakHashMap extends AbstractMap implements Map
    *
    * @author Jochen Hoenicke 
    */
-  private class WeakBucket extends WeakReference
+  private static class WeakBucket extends WeakReference
   {
     /**
      * The value of this entry.  The key is stored in the weak
@@ -331,7 +331,7 @@ public class WeakHashMap extends AbstractMap implements Map
      * @param slot the slot.  This must match the slot where this bucket
      * will be enqueued.
      */
-    public WeakBucket(Object key, Object value, int slot)
+    public WeakBucket(Object key, ReferenceQueue queue, Object value, int slot)
     {
       super(key, queue);
       this.value = value;
@@ -583,7 +583,7 @@ public class WeakHashMap extends AbstractMap implements Map
     if (key == null)
       key = NULL_KEY;
     int slot = hash(key);
-    WeakBucket bucket = new WeakBucket(key, value, slot);
+    WeakBucket bucket = new WeakBucket(key, queue, value, slot);
     bucket.next = buckets[slot];
     buckets[slot] = bucket;
     size++;
