@@ -36,6 +36,7 @@ import java.lang.reflect.Array;
  * Vector implements the JDK 1.2 List interface, and is therefor a fully
  * compliant Collection object.
  * 
+ * @author Scott G. Miller
  */
 public class Vector extends AbstractList implements List, 
     Cloneable, java.io.Serializable {
@@ -43,18 +44,21 @@ public class Vector extends AbstractList implements List,
   /**
    * The amount the Vector's internal array should be increased in size when
    * a new element is added that exceeds the current size of the array,
-   * or when @see #ensureCapacity is called.
+   * or when {@link #ensureCapacity} is called.
+   * @serial
    */
   protected int capacityIncrement;
 
   /**
    * The number of elements currently in the vector, also returned by
-   * @see #size.
+   * {@link #size}.
+   * @serial
    */
   protected int elementCount;
 
   /**
    * The internal array used to hold members of a Vector
+   * @serial
    */
   protected Object[] elementData;
 
@@ -221,7 +225,8 @@ public class Vector extends AbstractList implements List,
    */
   public int indexOf(Object elem, int index) {
     for (int i=index; i < elementCount; i++) {
-      if (elementData[i].equals(elem)) return i;
+      if (elementData[i].equals(elem)) 
+	return i;
     }
     return -1;
   }
@@ -389,15 +394,11 @@ public class Vector extends AbstractList implements List,
 	(index > elementCount)) 
       throw new ArrayIndexOutOfBoundsException(index);
 
-    if (index == elementCount - 1) {
-      addElement(obj);
-    } else {
-      ensureCapacity(++elementCount);
-      modCount++;
-      System.arraycopy(elementData, index, elementData, index + 1, 
-		       (elementCount - index) - 1);
-      elementData[index] = obj;
-    }
+    ensureCapacity(++elementCount);
+    modCount++;
+    System.arraycopy(elementData, index, elementData, index + 1, 
+		     elementCount-1 - index);
+    elementData[index] = obj;
   }
 
   /**
@@ -450,7 +451,16 @@ public class Vector extends AbstractList implements List,
    * Creates a new Vector with the same contents as this one.
    */
   public Object clone() {
-    return new Vector(this);
+    try
+      {
+	Vector clone = (Vector) super.clone();
+	clone.elementData = (Object[]) elementData.clone();
+	return clone;
+      } 
+    catch (CloneNotSupportedException ex)
+      {
+	throw new InternalError(ex.toString());
+      }
   }
 
   /**
@@ -536,7 +546,6 @@ public class Vector extends AbstractList implements List,
    * @param element The element to add to the Vector
    */
   public void add(int index, Object element) {
-    modCount++;
     insertElementAt(element, index);
   }
 
@@ -563,96 +572,6 @@ public class Vector extends AbstractList implements List,
   }
 
   /**
-   * Returns true if the Vector contains every element within the Collection
-   * <b>c</b>
-   *
-   * @param c The collection to search for within the Vector
-   * @returns true if every element in the Collection is in this Vector
-   */
-  public boolean containsAll(Collection c) {
-    for (Iterator i=c.iterator(); i.hasNext();) {
-      if (!contains(i.next())) return false;
-    }
-    return true;
-  }
-
-  /**
-   * Adds every element of the provided Collection to the Vector, in the
-   * order provided by the Collection's iterator.  This overrides the
-   * addAll in the AbstractList class in order to optimize for Vectors.
-   *
-   * @param c A collection to add to this Vector
-   * @returns true per the Collections specification
-   */
-  public boolean addAll(Collection c) {
-    modCount++;
-    ensureCapacity(c.size());
-    for (Iterator i=c.iterator(); i.hasNext();) {
-      addElement(i.next());
-    }
-    return true; //?? API isn't clear on this
-  }
-
-  /**
-   * Adds all the elements of Collection in order, at position <b>index</b>
-   * 
-   * @param index the position in the Vector at which the Collection
-   * should be added
-   * @param c The collection to add to the Vector
-   */
-  public boolean addAll(int index, Collection c) {
-    modCount++;
-    int idx=index;
-    ensureCapacity(size() + c.size());
-    if (index < elementCount) {
-      System.arraycopy(elementData, index, elementData, 
-		       index+c.size(), elementCount - index);
-    }
-    for (Iterator i=c.iterator(); i.hasNext();) {
-      elementData[idx++]=i.next();
-    }
-    elementCount=size() + c.size();
-    return true; //?? Again, not sure about this
-  }
-
-  /**
-   * Removes all the elements of the provided Collection from the Vector.
-   * If no elements were removed, returns false, otherwise true.
-   *
-   * @param c The collection to remove from this Vector
-   * @returns true if the Vector was modified
-   */
-  public boolean removeAll(Collection c) {
-    boolean result=false;
-    for (Iterator i=c.iterator(); i.hasNext();) {
-      result=remove(i.next()) || result;
-    }
-    if (result) modCount++;
-    return result;
-  }
-
-  /**
-   * Keeps only those elements that appear in the provided collection.  All
-   * other elements are removed.  If all the elements in this Vector appear
-   * within the collection, false is returned, otherwise true.
-   *
-   * @param c The collection of elements to retain within this Vector
-   * @returns true if the Vector was modified, false otherwise
-   */
-  public boolean retainAll(Collection c) {
-    boolean result=false;
-    for (Iterator i=listIterator(); i.hasNext();) {
-      Object temp=i.next();
-      if (!c.contains(temp)) {
-	i.remove();
-	result=true;
-      }
-    }
-    if (result) modCount++;
-    return result;
-  }
-
-  /**
    * Returns a string representation of this Vector in the form 
    * [element0, element1, ... elementN]
    *
@@ -660,11 +579,12 @@ public class Vector extends AbstractList implements List,
    */
   public String toString() {
     StringBuffer toReturn=new StringBuffer("[");
+    String comma = "";
     for (int i=0; i < elementCount; i++) {
-      toReturn.append(elementData[i].toString()).append(", ");
+      toReturn.append(comma).append(elementData[i].toString());
+      comma = ", ";
     }
-    int x=toReturn.length();
-    return toReturn.delete(x-3, x).append("]").toString();
+    return toReturn.append("]").toString();
   }
 
   /**
