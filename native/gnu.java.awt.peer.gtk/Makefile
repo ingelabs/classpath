@@ -7,7 +7,7 @@ objects  = native_state.o  gtklistpeer.o gtkwindowpeer.o \
 	   gtktextfieldpeer.o  gtktextareapeer.o gtklabelpeer.o gtkevents.o
 CPPFLAGS = -I/usr/local/jdk/include -I/usr/local/jdk/include/genunix
 CFLAGS   = -Wall `gtk-config --cflags`
-LDFLAGS  = `gtk-config --libs`
+LDFLAGS  = `gtk-config --libs` `glib-config --libs gthread`
 all: libgtkpeer.so.0.0.0 install
 
 libgtkpeer.so.0.0.0: $(objects)
