@@ -1,3 +1,12 @@
+2002-11-23  Michael Koch <konqueror@gmx.de>
+
+	* java/net/DatagramSocket.java
+	(DatagramSocket): New method.
+	(DatagramSocket): Call new method istead of own implementation,
+	Added exception documentation.
+	* java/net/MulticastSocket.java
+	(MulticastSocket): New method.
+	
 2002-11-22  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/net/protocol/jar/JarURLConnection.java (get):

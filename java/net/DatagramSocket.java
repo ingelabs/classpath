@@ -104,6 +104,8 @@ public class DatagramSocket
    *
    * @param port The local port number to bind to
    *
+   * @exception SecurityException If a security manager exists and its
+   * checkListen method doesn't allow the operation.
    * @exception SocketException If an error occurs.
    */
   public DatagramSocket(int port) throws SocketException
@@ -118,27 +120,43 @@ public class DatagramSocket
    * @param port The local port number to bind to
    * @param laddr The local address to bind to
    *
+   * @exception SecurityException If a security manager exists and its
+   * checkListen method doesn't allow the operation.
    * @exception SocketException If an error occurs
    */
   public DatagramSocket(int port, InetAddress laddr) throws SocketException
   {
-    if (port < 0 || port > 65535)
-      throw new IllegalArgumentException("Invalid port: " + port);
+    this (new InetSocketAddress (laddr != null ? laddr : InetAddress.ANY_IF, port));
+  }
+
+  /**
+   * Initializes a new instance of <code>DatagramSocket</code> that binds to 
+   * the specified local port and address.
+   *
+   * @param port The local port number to bind to
+   * @param laddr The local address to bind to
+   *
+   * @exception SecurityException If a security manager exists and its
+   * checkListen method doesn't allow the operation.
+   * @exception SocketException If an error occurs
+   */
+  public DatagramSocket (SocketAddress address) throws SocketException
+  {
+    InetSocketAddress tmp = (InetSocketAddress) address;
 
     SecurityManager s = System.getSecurityManager();
     if (s != null)
-      s.checkListen(port);
+      s.checkListen(tmp.getPort ());
   
     // Why is there no factory for this?
     impl = new PlainDatagramSocketImpl();
-
     impl.create();
 
-    if (laddr == null)
-       laddr = InetAddress.ANY_IF;
-
-    local_addr = laddr;
-    impl.bind(port, laddr);
+    if (address != null)
+      {
+        local_addr = tmp.getAddress ();
+        impl.bind(tmp.getPort (), tmp.getAddress ());
+      }
   }
 
   /**

@@ -97,6 +97,22 @@ public class MulticastSocket extends DatagramSocket
   }
 
   /**
+   * Create a multicast socket bound to the specified SocketAddress.
+   *
+   * @param address The SocketAddress the multicast socket will be bound to
+   *
+   * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager exists and its
+   * checkListen method doesn't allow the operation
+   *
+   * @since 1.4
+   */
+  public MulticastSocket(SocketAddress address) throws IOException
+  {
+    super(address);
+  }
+  
+  /**
    * Returns the interface being used for multicast packets
    * 
    * @return The multicast interface
