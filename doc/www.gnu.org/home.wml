@@ -4,6 +4,14 @@
 <subject "GNU Classpath">
 
 <box>
+<boxitem>
+<strong>Upcoming Events:</strong><br>
+<ul>
+<li>[21+22 Feb. 2004] <createlink url="http://www.fosdem.org/2004/index/dev_room_java" name="Free Java Developers Meeting"> at the upcoming <createlink url="http://www.fosdem.org" name="FOSDEM"> in Brussels.
+</ul>
+<br><br><br>
+</boxitem>
+
 <boxtitle><a name="home">Classpath::Home</a></boxtitle>
 
 <boxitem>
