@@ -1,3 +1,62 @@
+2002-05-06  C. Brian Jones <cbj@gnu.org>
+
+	* java/applet/package.html: Add stub package description fo gjdoc.
+	* java/awt/color/package.html: Likewise.
+	* java/awt/dnd/package.html: Likewise.
+	* java/awt/im/spi/package.html: Likewise.
+	* java/awt/im/package.html: Likewise.
+	* java/awt/datatransfer/package.html: Likewise.
+	* java/awt/event/package.html: Likewise.
+	* java/awt/font/package.html: Likewise.
+	* java/awt/geom/package.html: Likewise.
+	* java/awt/image/package.html: Likewise.
+	* java/awt/peer/package.html: Likewise.
+	* java/awt/print/package.html: Likewise.
+	* java/awt/package.html: Likewise.
+	* java/beans/beancontext/package.html: Likewise.
+	* java/beans/package.html: Likewise.
+	* java/io/package.html: Likewise.
+	* java/lang/ref/package.html: Likewise.
+	* java/lang/reflect/package.html: Likewise.
+	* java/lang/package.html: Likewise.
+	* java/math/package.html: Likewise.
+	* java/net/package.html: Likewise.
+	* java/rmi/activation/package.html: Likewise.
+	* java/rmi/dgc/package.html: Likewise.
+	* java/rmi/registry/package.html: Likewise.
+	* java/rmi/server/package.html: Likewise.
+	* java/rmi/package.html: Likewise.
+	* java/security/acl/package.html: Likewise.
+	* java/security/cert/package.html: Likewise.
+	* java/security/interfaces/package.html: Likewise.
+	* java/security/spec/package.html: Likewise.
+	* java/security/package.html: Likewise.
+	* java/sql/package.html: Likewise.
+	* java/text/package.html: Likewise.
+	* java/util/jar/package.html: Likewise.
+	* java/util/zip/package.html: Likewise.
+	* java/util/package.html: Likewise.
+	* java/util/prefs/package.html: Likewise.
+	* java/util/logging/package.html: Likewise.
+	* java/util/regex/package.html: Likewise.
+	* java/nio/channels/spi/package.html: Likewise.
+	* java/nio/channels/package.html: Likewise.
+	* java/nio/charset/package.html: Likewise.
+	* java/nio/package.html: Likewise.
+	* javax/accessibility/package.html: Likewise.
+	* javax/naming/package.html: Likewise.
+	* javax/swing/border/package.html: Likewise.
+	* javax/swing/event/package.html: Likewise.
+	* javax/swing/table/package.html: Likewise.
+	* javax/swing/plaf/basic/package.html: Likewise.
+	* javax/swing/plaf/metal/package.html: Likewise.
+	* javax/swing/plaf/package.html: Likewise.
+	* javax/swing/text/html/package.html: Likewise.
+	* javax/swing/text/package.html: Likewise.
+	* javax/swing/tree/package.html: Likewise.
+	* javax/swing/undo/package.html: Likewise.
+	* javax/swing/package.html: Likewise.
+
 2002-05-05  C. Brian Jones <cbj@gnu.org>
 
         * doc/www.gnu.org/home.wml: Announcements section removed; we use
