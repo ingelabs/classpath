@@ -137,8 +137,12 @@ public class InputStreamReader extends Reader
    */
   public void close() throws IOException
   {
-    in.close();
-    in = null;
+    synchronized (lock)
+      {
+	if (in != null)
+	  in.close();
+	in = null;
+      }
   }
 
   /**

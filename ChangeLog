@@ -1,3 +1,9 @@
+2003-08-01  David P Grove  <groved@us.ibm.com>
+
+	* java/util/zip/InflaterInputStream.java (close): Only close
+	once.
+	* java/io/InputStreamReader.java (close): Only close once.
+
 2003-08-01  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/WeakHashMap.java (WeakHashMap(int,float)): If

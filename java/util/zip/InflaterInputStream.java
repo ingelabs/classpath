@@ -1,5 +1,5 @@
 /* java.util.zip.InflaterInputStream
-   Copyright (C) 2001 Free Software Foundation, Inc.
+   Copyright (C) 2001, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -133,9 +133,10 @@ public class InflaterInputStream extends FilterInputStream
   /**
    * Closes the input stream
    */
-  public void close() throws IOException
+  public synchronized void close() throws IOException
   {
-    in.close();
+    if (in != null)
+      in.close();
     in = null;
   }
 
