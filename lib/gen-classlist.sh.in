@@ -1,9 +1,17 @@
 #! @SH@
 # @configure_input@
-if test "@top_srcdir@" = "${top_builddir}"; then
-  @FIND@ @top_srcdir@/java @top_srcdir@/javax @top_srcdir@/gnu @top_srcdir@/org @top_srcdir@/vm/reference @top_srcdir@/external/w3c_dom @top_srcdir@/external/sax -follow -type f -print | grep '\.java$' > ${top_builddir}/lib/classes.1
-else
-  @FIND@ @top_srcdir@/java @top_srcdir@/javax @top_srcdir@/gnu @top_srcdir@/org ${top_builddir}/gnu ${top_builddir}/java @top_srcdir@/vm/reference @top_srcdir@/external/w3c_dom @top_srcdir@/external/sax -follow -type f -print | grep '\.java$' > ${top_builddir}/lib/classes.1
+
+echo "Adding java source files from srcdir '@top_srcdir@'."
+@FIND@ @top_srcdir@/java @top_srcdir@/javax @top_srcdir@/gnu \
+       @top_srcdir@/org @top_srcdir@/vm/reference \
+       @top_srcdir@/external/w3c_dom @top_srcdir@/external/sax \
+       -follow -type f -print | grep '\.java$' > ${top_builddir}/lib/classes.1
+
+# Only include generated files once.
+if test ! "${top_builddir}" -ef "@top_srcdir@"; then
+  echo "Adding generated files in builddir '${top_builddir}'."
+  @FIND@ ${top_builddir}/gnu ${top_builddir}/java -follow -type f -print \
+  | grep '\.java$' >> ${top_builddir}/lib/classes.1
 fi
 
 for filexp in `cat @top_srcdir@/lib/$1.omit` ; do { grep -v ${filexp} < ${top_builddir}/lib/classes.1 > ${top_builddir}/lib/classes.2 ; mv ${top_builddir}/lib/classes.2 ${top_builddir}/lib/classes.1 ; } ; done

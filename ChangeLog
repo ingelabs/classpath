@@ -1,5 +1,10 @@
 2005-01-02  Mark Wielaard  <mark@klomp.org>
 
+	* lib/gen-classlist.sh.in: Use test -ef and echo top_srcdir and
+	top_builddir locations.
+
+2005-01-02  Mark Wielaard  <mark@klomp.org>
+
 	* configure.ac: Fix pkg checks for libxml-2.0 and libxslt.
 	* native/jni/xmlj/Makefile.am (AM_CFLAGS): Add STRICT_WARNING_CFLAGS
 	but disable ERROR_CFLAGS.
