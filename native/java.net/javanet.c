@@ -878,7 +878,7 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
         if ((*env)->ExceptionOccurred(env))
           return;
 
-        rc = setsockopt(fd, SOL_IP, IP_MULTICAST_IF, &si, 
+        rc = setsockopt(fd, IPPROTO_IP, IP_MULTICAST_IF, &si, 
                         sizeof(struct sockaddr_in));
         break;
 
