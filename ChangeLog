@@ -4,6 +4,7 @@
 	* doc/www.gnu.org/Makefile: SUBDIRS reflect new docs directory, copy
 	texi2html output to the correct directory
 	* doc/www.gnu.org/docs/Makefile: publish to docs directory
+	* doc/www.gnu.org/home.wml: point doc URLs to docs
 
 2002-12-11  Tom Tromey  <tromey@redhat.com>
 
