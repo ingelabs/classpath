@@ -10,8 +10,8 @@ extern "C"
 {
 #endif
 
-extern void Java_gnu_java_awt_image_GdkPixbufDecoder_initState (JNIEnv *env, jclass);
-extern void Java_gnu_java_awt_image_GdkPixbufDecoder_loaderWrite (JNIEnv *env, jobject, jobject, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_image_GdkPixbufDecoder_initState (JNIEnv *env, jclass);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_image_GdkPixbufDecoder_loaderWrite (JNIEnv *env, jobject, jobject, jobject);
 
 #ifdef __cplusplus
 }

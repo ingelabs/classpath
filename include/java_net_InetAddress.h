@@ -10,10 +10,10 @@ extern "C"
 {
 #endif
 
-extern jstring Java_java_net_InetAddress_getLocalHostName (JNIEnv *env, jclass);
-extern jbyteArray Java_java_net_InetAddress_lookupInaddrAny (JNIEnv *env, jclass);
-extern jstring Java_java_net_InetAddress_getHostByAddr (JNIEnv *env, jclass, jbyteArray);
-extern jbyteArray Java_java_net_InetAddress_getHostByName (JNIEnv *env, jclass, jstring);
+extern JNIEXPORT jstring JNICALL Java_java_net_InetAddress_getLocalHostName (JNIEnv *env, jclass);
+extern JNIEXPORT jbyteArray JNICALL Java_java_net_InetAddress_lookupInaddrAny (JNIEnv *env, jclass);
+extern JNIEXPORT jstring JNICALL Java_java_net_InetAddress_getHostByAddr (JNIEnv *env, jclass, jbyteArray);
+extern JNIEXPORT jobjectArray JNICALL Java_java_net_InetAddress_getHostByName (JNIEnv *env, jclass, jstring);
 
 #ifdef __cplusplus
 }

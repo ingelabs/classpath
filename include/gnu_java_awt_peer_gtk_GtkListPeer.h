@@ -10,17 +10,17 @@ extern "C"
 {
 #endif
 
-extern void Java_gnu_java_awt_peer_gtk_GtkListPeer_create (JNIEnv *env, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkListPeer_connectHooks (JNIEnv *env, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkListPeer_getSize (JNIEnv *env, jobject, jint, jintArray);
-extern void Java_gnu_java_awt_peer_gtk_GtkListPeer_append (JNIEnv *env, jobject, jobjectArray);
-extern void Java_gnu_java_awt_peer_gtk_GtkListPeer_add (JNIEnv *env, jobject, jstring, jint);
-extern void Java_gnu_java_awt_peer_gtk_GtkListPeer_delItems (JNIEnv *env, jobject, jint, jint);
-extern void Java_gnu_java_awt_peer_gtk_GtkListPeer_deselect (JNIEnv *env, jobject, jint);
-extern jintArray Java_gnu_java_awt_peer_gtk_GtkListPeer_getSelectedIndexes (JNIEnv *env, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkListPeer_makeVisible (JNIEnv *env, jobject, jint);
-extern void Java_gnu_java_awt_peer_gtk_GtkListPeer_select (JNIEnv *env, jobject, jint);
-extern void Java_gnu_java_awt_peer_gtk_GtkListPeer_setMultipleMode (JNIEnv *env, jobject, jboolean);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_create (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_connectHooks (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_getSize (JNIEnv *env, jobject, jint, jintArray);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_append (JNIEnv *env, jobject, jobjectArray);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_add (JNIEnv *env, jobject, jstring, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_delItems (JNIEnv *env, jobject, jint, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_deselect (JNIEnv *env, jobject, jint);
+extern JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_getSelectedIndexes (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_makeVisible (JNIEnv *env, jobject, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_select (JNIEnv *env, jobject, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_setMultipleMode (JNIEnv *env, jobject, jboolean);
 
 #ifdef __cplusplus
 }

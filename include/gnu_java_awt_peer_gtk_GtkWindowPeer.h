@@ -10,13 +10,13 @@ extern "C"
 {
 #endif
 
-extern void Java_gnu_java_awt_peer_gtk_GtkWindowPeer_create__I (JNIEnv *env, jobject, jint);
-extern void Java_gnu_java_awt_peer_gtk_GtkWindowPeer_connectHooks (JNIEnv *env, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkWindowPeer_toBack (JNIEnv *env, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkWindowPeer_toFront (JNIEnv *env, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setBounds (JNIEnv *env, jobject, jint, jint, jint, jint);
-extern void Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setResizable (JNIEnv *env, jobject, jboolean);
-extern void Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setVisible (JNIEnv *env, jobject, jboolean);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_create__I (JNIEnv *env, jobject, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_connectHooks (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_toBack (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_toFront (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setBounds (JNIEnv *env, jobject, jint, jint, jint, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setResizable (JNIEnv *env, jobject, jboolean);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setVisible (JNIEnv *env, jobject, jboolean);
 
 #ifdef __cplusplus
 }

@@ -10,17 +10,17 @@ extern "C"
 {
 #endif
 
-extern void Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_create (JNIEnv *env, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowNew (JNIEnv *env, jobject, jobject, jint, jint, jint, jintArray);
-extern void Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetScrollPosition (JNIEnv *env, jobject, jint, jint);
-extern void Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetHScrollIncrement (JNIEnv *env, jobject, jint);
-extern void Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetVScrollIncrement (JNIEnv *env, jobject, jint);
-extern void Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetSize (JNIEnv *env, jobject, jint, jint);
-extern void Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_setPolicy (JNIEnv *env, jobject, jint);
-extern void Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_childResized (JNIEnv *env, jobject, jint, jint);
-extern jint Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getHScrollbarHeight (JNIEnv *env, jobject);
-extern jint Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getVScrollbarWidth (JNIEnv *env, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_setScrollPosition (JNIEnv *env, jobject, jint, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_create (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowNew (JNIEnv *env, jobject, jobject, jint, jint, jint, jintArray);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetScrollPosition (JNIEnv *env, jobject, jint, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetHScrollIncrement (JNIEnv *env, jobject, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetVScrollIncrement (JNIEnv *env, jobject, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetSize (JNIEnv *env, jobject, jint, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_setPolicy (JNIEnv *env, jobject, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_childResized (JNIEnv *env, jobject, jint, jint);
+extern JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getHScrollbarHeight (JNIEnv *env, jobject);
+extern JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getVScrollbarWidth (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_setScrollPosition (JNIEnv *env, jobject, jint, jint);
 
 #ifdef __cplusplus
 }

@@ -1,5 +1,7 @@
 2003-07-30  Tom Tromey  <tromey@redhat.com>
 
+	* include/*.h: Rebuilt.
+
 	* native/jni/java-nio/java_nio_FileChannelImpl.c: Include
 	java_nio_channels_FileChannelImpl.h.
 	* include/java_nio_FileChannelImpl.h: Removed.

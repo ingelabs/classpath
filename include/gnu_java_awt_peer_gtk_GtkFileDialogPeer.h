@@ -10,9 +10,9 @@ extern "C"
 {
 #endif
 
-extern void Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_create (JNIEnv *env, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_setFile (JNIEnv *env, jobject, jstring);
-extern void Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_connectHooks (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_create (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_setFile (JNIEnv *env, jobject, jstring);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_connectHooks (JNIEnv *env, jobject);
 
 #ifdef __cplusplus
 }

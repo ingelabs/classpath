@@ -10,20 +10,20 @@ extern "C"
 {
 #endif
 
-extern jboolean Java_java_io_File_createInternal (JNIEnv *env, jclass, jstring);
-extern jboolean Java_java_io_File_canReadInternal (JNIEnv *env, jobject, jstring);
-extern jboolean Java_java_io_File_canWriteInternal (JNIEnv *env, jobject, jstring);
-extern jboolean Java_java_io_File_setReadOnlyInternal (JNIEnv *env, jobject, jstring);
-extern jboolean Java_java_io_File_existsInternal (JNIEnv *env, jobject, jstring);
-extern jboolean Java_java_io_File_isFileInternal (JNIEnv *env, jobject, jstring);
-extern jboolean Java_java_io_File_isDirectoryInternal (JNIEnv *env, jobject, jstring);
-extern jlong Java_java_io_File_lengthInternal (JNIEnv *env, jobject, jstring);
-extern jlong Java_java_io_File_lastModifiedInternal (JNIEnv *env, jobject, jstring);
-extern jboolean Java_java_io_File_setLastModifiedInternal (JNIEnv *env, jobject, jstring, jlong);
-extern jboolean Java_java_io_File_deleteInternal (JNIEnv *env, jobject, jstring);
-extern jboolean Java_java_io_File_mkdirInternal (JNIEnv *env, jobject, jstring);
-extern jboolean Java_java_io_File_renameToInternal (JNIEnv *env, jobject, jstring, jstring);
-extern jobjectArray Java_java_io_File_listInternal (JNIEnv *env, jobject, jstring);
+extern JNIEXPORT jboolean JNICALL Java_java_io_File_isFileInternal (JNIEnv *env, jobject, jstring);
+extern JNIEXPORT jboolean JNICALL Java_java_io_File_isDirectoryInternal (JNIEnv *env, jobject, jstring);
+extern JNIEXPORT jboolean JNICALL Java_java_io_File_canReadInternal (JNIEnv *env, jobject, jstring);
+extern JNIEXPORT jboolean JNICALL Java_java_io_File_canWriteInternal (JNIEnv *env, jobject, jstring);
+extern JNIEXPORT jboolean JNICALL Java_java_io_File_deleteInternal (JNIEnv *env, jobject, jstring);
+extern JNIEXPORT jboolean JNICALL Java_java_io_File_existsInternal (JNIEnv *env, jobject, jstring);
+extern JNIEXPORT jlong JNICALL Java_java_io_File_lastModifiedInternal (JNIEnv *env, jobject, jstring);
+extern JNIEXPORT jlong JNICALL Java_java_io_File_lengthInternal (JNIEnv *env, jobject, jstring);
+extern JNIEXPORT jobjectArray JNICALL Java_java_io_File_listInternal (JNIEnv *env, jobject, jstring);
+extern JNIEXPORT jboolean JNICALL Java_java_io_File_mkdirInternal (JNIEnv *env, jobject, jstring);
+extern JNIEXPORT jboolean JNICALL Java_java_io_File_createInternal (JNIEnv *env, jclass, jstring);
+extern JNIEXPORT jboolean JNICALL Java_java_io_File_setReadOnlyInternal (JNIEnv *env, jobject, jstring);
+extern JNIEXPORT jboolean JNICALL Java_java_io_File_renameToInternal (JNIEnv *env, jobject, jstring, jstring);
+extern JNIEXPORT jboolean JNICALL Java_java_io_File_setLastModifiedInternal (JNIEnv *env, jobject, jstring, jlong);
 
 #ifdef __cplusplus
 }

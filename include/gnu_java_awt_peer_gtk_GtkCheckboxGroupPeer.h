@@ -10,8 +10,8 @@ extern "C"
 {
 #endif
 
-extern void Java_gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer_dispose (JNIEnv *env, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer_remove (JNIEnv *env, jobject, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer_dispose (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer_remove (JNIEnv *env, jobject, jobject);
 
 #ifdef __cplusplus
 }

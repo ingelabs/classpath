@@ -10,7 +10,7 @@ extern "C"
 {
 #endif
 
-extern jclass Java_java_lang_Object_getClass (JNIEnv *env, jobject);
+extern JNIEXPORT jclass JNICALL Java_java_lang_Object_getClass (JNIEnv *env, jobject);
 
 #ifdef __cplusplus
 }

@@ -10,8 +10,8 @@ extern "C"
 {
 #endif
 
-extern jint Java_gnu_java_awt_peer_gtk_GtkFramePeer_getMenuBarHeight (JNIEnv *env, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkFramePeer_setMenuBarPeer (JNIEnv *env, jobject, jobject);
+extern JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkFramePeer_getMenuBarHeight (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkFramePeer_setMenuBarPeer (JNIEnv *env, jobject, jobject);
 
 #ifdef __cplusplus
 }

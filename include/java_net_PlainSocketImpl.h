@@ -10,17 +10,17 @@ extern "C"
 {
 #endif
 
-extern void Java_java_net_PlainSocketImpl_accept (JNIEnv *env, jobject, jobject);
-extern jint Java_java_net_PlainSocketImpl_available (JNIEnv *env, jobject);
-extern void Java_java_net_PlainSocketImpl_bind (JNIEnv *env, jobject, jobject, jint);
-extern void Java_java_net_PlainSocketImpl_close (JNIEnv *env, jobject);
-extern void Java_java_net_PlainSocketImpl_connect__Ljava_net_InetAddress_2I (JNIEnv *env, jobject, jobject, jint);
-extern void Java_java_net_PlainSocketImpl_create (JNIEnv *env, jobject, jboolean);
-extern void Java_java_net_PlainSocketImpl_listen (JNIEnv *env, jobject, jint);
-extern jint Java_java_net_PlainSocketImpl_read (JNIEnv *env, jobject, jbyteArray, jint, jint);
-extern void Java_java_net_PlainSocketImpl_write (JNIEnv *env, jobject, jbyteArray, jint, jint);
-extern void Java_java_net_PlainSocketImpl_setOption (JNIEnv *env, jobject, jint, jobject);
-extern jobject Java_java_net_PlainSocketImpl_getOption (JNIEnv *env, jobject, jint);
+extern JNIEXPORT void JNICALL Java_java_net_PlainSocketImpl_setOption (JNIEnv *env, jobject, jint, jobject);
+extern JNIEXPORT jobject JNICALL Java_java_net_PlainSocketImpl_getOption (JNIEnv *env, jobject, jint);
+extern JNIEXPORT void JNICALL Java_java_net_PlainSocketImpl_create (JNIEnv *env, jobject, jboolean);
+extern JNIEXPORT void JNICALL Java_java_net_PlainSocketImpl_connect__Ljava_net_InetAddress_2I (JNIEnv *env, jobject, jobject, jint);
+extern JNIEXPORT void JNICALL Java_java_net_PlainSocketImpl_bind (JNIEnv *env, jobject, jobject, jint);
+extern JNIEXPORT void JNICALL Java_java_net_PlainSocketImpl_listen (JNIEnv *env, jobject, jint);
+extern JNIEXPORT void JNICALL Java_java_net_PlainSocketImpl_accept (JNIEnv *env, jobject, jobject);
+extern JNIEXPORT jint JNICALL Java_java_net_PlainSocketImpl_available (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_java_net_PlainSocketImpl_close (JNIEnv *env, jobject);
+extern JNIEXPORT jint JNICALL Java_java_net_PlainSocketImpl_read (JNIEnv *env, jobject, jbyteArray, jint, jint);
+extern JNIEXPORT void JNICALL Java_java_net_PlainSocketImpl_write (JNIEnv *env, jobject, jbyteArray, jint, jint);
 
 #ifdef __cplusplus
 }

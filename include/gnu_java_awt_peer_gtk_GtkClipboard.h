@@ -10,9 +10,9 @@ extern "C"
 {
 #endif
 
-extern void Java_gnu_java_awt_peer_gtk_GtkClipboard_initNativeState (JNIEnv *env, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkClipboard_requestStringConversion (JNIEnv *env, jclass);
-extern void Java_gnu_java_awt_peer_gtk_GtkClipboard_selectionGet (JNIEnv *env, jclass);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkClipboard_initNativeState (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkClipboard_requestStringConversion (JNIEnv *env, jclass);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkClipboard_selectionGet (JNIEnv *env, jclass);
 
 #ifdef __cplusplus
 }

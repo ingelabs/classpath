@@ -10,9 +10,9 @@ extern "C"
 {
 #endif
 
-extern void Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeCreate (JNIEnv *env, jobject, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeSetCheckboxGroup (JNIEnv *env, jobject, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_connectHooks (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeCreate (JNIEnv *env, jobject, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeSetCheckboxGroup (JNIEnv *env, jobject, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_connectHooks (JNIEnv *env, jobject);
 
 #ifdef __cplusplus
 }

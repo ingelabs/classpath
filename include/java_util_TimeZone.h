@@ -10,7 +10,7 @@ extern "C"
 {
 #endif
 
-extern jstring Java_java_util_TimeZone_getDefaultTimeZoneId (JNIEnv *env, jclass);
+extern JNIEXPORT jstring JNICALL Java_java_util_TimeZone_getDefaultTimeZoneId (JNIEnv *env, jclass);
 
 #ifdef __cplusplus
 }

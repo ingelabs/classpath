@@ -10,9 +10,9 @@ extern "C"
 {
 #endif
 
-extern jobject Java_java_io_ObjectInputStream_currentClassLoader (JNIEnv *env, jclass, jobject);
-extern jobject Java_java_io_ObjectInputStream_allocateObject (JNIEnv *env, jobject, jclass);
-extern void Java_java_io_ObjectInputStream_callConstructor (JNIEnv *env, jobject, jclass, jobject);
+extern JNIEXPORT jobject JNICALL Java_java_io_ObjectInputStream_currentClassLoader (JNIEnv *env, jclass, jobject);
+extern JNIEXPORT jobject JNICALL Java_java_io_ObjectInputStream_allocateObject (JNIEnv *env, jobject, jclass);
+extern JNIEXPORT void JNICALL Java_java_io_ObjectInputStream_callConstructor (JNIEnv *env, jobject, jclass, jobject);
 
 #ifdef __cplusplus
 }
