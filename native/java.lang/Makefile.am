@@ -8,7 +8,8 @@ libjaphar_javalang_la_LDFLAGS = -version-info 0:0:0
 
 libjaphar_java_lang_Math_la_SOURCES = acos.c asin.c atan.c atan2.c ceil.c \
 cos.c e_fmod.c exp.c floor.c k_cos.c k_rem_pio2.c k_sin.c k_tan.c \
-log.c pow.c remainder.c rint.c s_fabs.c sin.c sqrt.c tan.c fdlibm.h
+log.c pow.c remainder.c rint.c s_fabs.c sin.c sqrt.c tan.c fdlibm.h \
+java_lang_Math.h
 
 libjaphar_java_lang_Math_la_LDFLAGS = -version-info 0:0:0
 else
