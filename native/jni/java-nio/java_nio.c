@@ -35,32 +35,27 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <sys/stat.h>
+/* do not move; needed here because of some macro definitions */
+#include <config.h>
 
+#ifdef HAVE_MMAP
 #include <sys/mman.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <netinet/tcp.h>
-#include <netinet/in.h>
+#endif
 
 #include <jni.h>
 #include <jcl.h>
+
+#include "target_native.h"
+#ifndef WITHOUT_NETWORK
+  #include "target_native_network.h"
+#endif /* WITHOUT_NETWORK */
+
 #include "gnu_java_nio_FileChannelImpl.h"
 
 #include "javaio.h"
 
-
 #define NIO_DEBUG(X) /* no debug */
 //#define NIO_DEBUG(X) X
-
-
 
 /***************************************
  *
@@ -222,6 +217,7 @@ u_int64_t nio_mmap_file(jint fd,
 			jint size,
 			jint jflags)
 {
+#ifdef HAVE_MMAP
   u_int64_t ret = 0;
   void *address;
   
@@ -251,6 +247,9 @@ u_int64_t nio_mmap_file(jint fd,
   *(void **) &ret = address;
 
   return ret;
+#else /* not HAVE_MMAP */
+  return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
+#endif /* not HAVE_MMAP */
 }
 
 
@@ -258,6 +257,7 @@ void nio_msync(int fd,
 	       jlong jaddress,
 	       int size)
 {
+#ifdef HAVE_MMAP
   int res;
   char *address = *(void **) &jaddress;	
 
@@ -269,12 +269,15 @@ void nio_msync(int fd,
     {
       perror("synchronize with file failed");
     }
+#else /* not HAVE_MMAP */
+#endif /* not HAVE_MMAP */
 }
 
 void nio_unmmap_file(int fd,
 		     jlong jaddress,
 		     int size)
 {
+#ifdef HAVE_MMAP
   int res = 0;
   char *address = *(void **) &jaddress;	
 
@@ -287,6 +290,8 @@ void nio_unmmap_file(int fd,
     {
       perror("un-mapping file failed");
     }
+#else /* not HAVE_MMAP */
+#endif /* not HAVE_MMAP */
 }
 
 
@@ -330,11 +335,10 @@ void Java_gnu_java_nio_FileChannelImpl_nio_1unmmap_1file(JNIEnv *env,
  * It's a copy to avoid a link error in orp.
  */
 
-#define IO_EXCEPTION "java/io/IOException"
-
 static
 int socket_channel_get_net_addr(JNIEnv *env, jobject addr)
 {
+#ifndef WITHOUT_NETWORK
   jclass cls = 0;
   jmethodID mid;
   jarray arr = 0;
@@ -346,17 +350,17 @@ int socket_channel_get_net_addr(JNIEnv *env, jobject addr)
   /* Call the getAddress method on the object to retrieve the IP address */
   cls = (*env)->GetObjectClass(env, addr);
   if (cls == NULL)
-    return 0;
+    return(0);
 
   mid = (*env)->GetMethodID(env, cls, "getAddress", "()[B");
   if (mid == NULL)
-    return 0;
+    return(0);
 
   DBG("socket_channel_get_net_addr(): Got getAddress method\n");
 
   arr = (*env)->CallObjectMethod(env, addr, mid);
   if (arr == NULL)
-    return 0;
+    return(0);
 
   DBG("socket_channel_get_net_addr(): Got the address\n");
 
@@ -364,152 +368,222 @@ int socket_channel_get_net_addr(JNIEnv *env, jobject addr)
   len = (*env)->GetArrayLength(env, arr);
   if (len != 4)
     {
-      JCL_ThrowException(env, IO_EXCEPTION, "Internal Error");
-      return 0;
+      JCL_ThrowException(env, "java/io/IOException", "Internal Error: invalid byte array length");
+      return(0);
     }
   DBG("socket_channel_get_net_addr(): Length ok\n");
 
   octets = (*env)->GetByteArrayElements(env, arr, 0);  
   if (octets == NULL)
-    return 0;
+    return(0);
 
   DBG("socket_channel_get_net_addr(): Grabbed bytes\n");
 
-  netaddr = (((unsigned char)octets[0]) << 24) + 
-            (((unsigned char)octets[1]) << 16) +
-            (((unsigned char)octets[2]) << 8) +
-            ((unsigned char)octets[3]);
-
-  netaddr = htonl(netaddr);
+  TARGET_NATIVE_NETWORK_IPADDRESS_BYTES_TO_INT(octets[0],
+                                               octets[1],
+                                               octets[2],
+                                               octets[3],
+                                               netaddr
+                                              );
 
   (*env)->ReleaseByteArrayElements(env, arr, octets, 0);
   DBG("socket_channel_get_net_addr(): Done getting addr\n");
 
   return netaddr; 
+#else /* not WITHOUT_NETWORK */
+  return(0);
+#endif /* not WITHOUT_NETWORK */
 }
 
 int Java_gnu_java_nio_SocketChannelImpl_SocketCreate(JNIEnv *env,jclass c)
 {
-  int val = 1;
+#ifndef WITHOUT_NETWORK
+  int fd;
   int result;
   
-  result = socket(AF_INET, SOCK_STREAM, 0 /* IPPROTO_TCP */ );
-  
-  //  fprintf(stderr, "socket created: %d\n", result);
+  TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM(fd, result);
+  if (result != TARGET_NATIVE_OK)
+    {
+      return(0);
+    }
 
-  if (result < 0) return result;
-  
-  setsockopt(result, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(int));
-  setsockopt(result, 6 /* TCP */ , TCP_NODELAY, &val, sizeof(int));
+  TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_REUSE_ADDRESS(fd, 1, result);
+  if (result != TARGET_NATIVE_OK)
+    {
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE(fd,result);
+      return(0);
+    }
+  TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_TCP_NODELAY(fd, 1, result);
+  if (result != TARGET_NATIVE_OK)
+    {
+      TARGET_NATIVE_NETWORK_SOCKET_CLOSE(fd, result);
+      return(0);
+    }
 
-  return result;
+  return(fd);
+#else /* not WITHOUT_NETWORK */
+  return(-1);
+#endif /* not WITHOUT_NETWORK */
 }
 
 int Java_gnu_java_nio_SocketChannelImpl_SocketConnect(JNIEnv *env,jclass c,int fd, jobject InetAddress, int port)
 {
+#ifndef WITHOUT_NETWORK
+  int inet_addr;
   int result;
-  struct sockaddr_in server;
-  int inet_addr =  socket_channel_get_net_addr(env, InetAddress);
+  int local_address;
+  int local_port;
 
-  server.sin_family = PF_INET;
-  server.sin_addr.s_addr = inet_addr;
-  server.sin_port = htons(port);
+  inet_addr = socket_channel_get_net_addr(env, InetAddress);
 
-  do {
-    result = connect(fd, (struct sockaddr *) &server, sizeof(server));
-  } while (result == -1 && errno == EINTR);
-  
-  if (result >= 0) {
-    socklen_t len = sizeof(server);
-    if (getsockname(fd, (struct sockaddr *) &server, &len) < 0) {
-      perror("getsockname: ");
-      return -1;
+  /* connect */
+  do
+    {
+      TARGET_NATIVE_NETWORK_SOCKET_CONNECT(fd, inet_addr, inet_addr, result);
+    } while ((result != TARGET_NATIVE_OK) &&
+             (TARGET_NATIVE_LAST_ERROR() == TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL)
+            );
+  if (result != TARGET_NATIVE_OK)
+    {
+      return(-1);
     }
-    result = ntohs(server.sin_port);
-  }
-  
-  return result;
+
+  /* get local address info */
+  TARGET_NATIVE_NETWORK_SOCKET_GET_LOCAL_INFO(fd, local_address, local_port, result);
+  if (result != TARGET_NATIVE_OK)
+    {
+//??? NYI
+      perror("getsockname: ");
+      return(-1);
+    }
+
+  return(local_port);
+#else /* not WITHOUT_NETWORK */
+  return(-1);
+#endif /* not WITHOUT_NETWORK */
 }
 
 int Java_gnu_java_nio_SocketChannelImpl_SocketBind(JNIEnv *env,jclass c,int fd, jobject InetAddress, int port)
 {
-  struct sockaddr_in server;
-  int inet_addr =  socket_channel_get_net_addr(env, InetAddress);
+#ifndef WITHOUT_NETWORK
+  int inet_addr;
+  int result;
+  int local_address;
+  int local_port;
 
-  server.sin_family = AF_INET;
-  server.sin_addr.s_addr = inet_addr;
-  server.sin_port = htons(port);
+  inet_addr =  socket_channel_get_net_addr(env, InetAddress);
 
-  if (bind(fd, (struct sockaddr *) &server, sizeof(server)) < 0) {
-    fprintf(stderr, "Error binding fd %d port %d\n", fd, port);
-    perror("BIND");
-    return -1;
-  }
-  if (port == 0) {
-    socklen_t len = sizeof(server);
-    /* Find the port number and return it; */
-    if (getsockname(fd, (struct sockaddr *) &server, &len) < 0) {
-      perror("getsockname: ");
+  TARGET_NATIVE_NETWORK_SOCKET_BIND(fd, inet_addr, port, result);
+  if (result != TARGET_NATIVE_OK)
+    {
+//??? NYI
+      perror("BIND");
       return -1;
     }
-    return ntohs(server.sin_port);
-  }
-  return port;
+  if (port == 0)
+    {
+      /* get local address info */
+      TARGET_NATIVE_NETWORK_SOCKET_GET_LOCAL_INFO(fd, local_address, local_port, result);
+      if (result != TARGET_NATIVE_OK)
+        {
+//??? NYI
+          perror("getsockname: ");
+          return -1;
+        }
+    }
+  else
+    {
+      local_port = port;
+    }
+
+  return(local_port);
+#else /* not WITHOUT_NETWORK */
+#endif /* not WITHOUT_NETWORK */
 }
 
 int Java_gnu_java_nio_SocketChannelImpl_SocketListen(JNIEnv *env,jclass c,int fd, int backlog)
 {
-  int res;
+#ifndef WITHOUT_NETWORK
+  int result;
 
-  res = listen(fd, backlog);
+  TARGET_NATIVE_NETWORK_SOCKET_LISTEN(fd, backlog, result);
+  if (result != TARGET_NATIVE_OK)
+  {
+    return(-1);
+  }
 
-  return res;
+  return(0);
+#else /* not WITHOUT_NETWORK */
+  return(-1);
+#endif /* not WITHOUT_NETWORK */
 }
 
 int Java_gnu_java_nio_SocketChannelImpl_SocketAvailable(JNIEnv *env,jclass c,int fd)
 {
-    unsigned long curr = lseek(fd, 0, SEEK_CUR);
-    struct stat stat_buf;
+#ifndef WITHOUT_NETWORK
+  int bytes_available;
+  int result;
 
-    if (fstat(fd, &stat_buf) < 0) {
-        return 0;
-    }
-    return stat_buf.st_size - curr;
+  TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_AVAILABLE(fd, bytes_available, result);
+  if (result!=TARGET_NATIVE_OK)
+  {
+    return(0);
+  }
+
+  return(bytes_available);
+#else /* not WITHOUT_NETWORK */
+  return(0);
+#endif /* not WITHOUT_NETWORK */
 }
 
 int Java_gnu_java_nio_SocketChannelImpl_SocketClose(JNIEnv *env,jclass c,int fd)
 {
-    if (fd >= 0) {
-        return close(fd);
-    }
-    return 0;
+#ifndef WITHOUT_NETWORK
+  int result;
 
+  if (fd >= 0) {
+    TARGET_NATIVE_NETWORK_SOCKET_CLOSE(fd, result);
+  }
+
+  return(0);
+#else /* not WITHOUT_NETWORK */
+  return(0);
+#endif /* not WITHOUT_NETWORK */
 }
 
 int Java_gnu_java_nio_SocketChannelImpl_SocketRead(JNIEnv *env,jclass c,int fd, jarray buf, int off, int len)
 {
-  int result;
-  jbyte *p;
-  p = (*env)->GetByteArrayElements(env, buf, 0);
-  
-  result = read(fd, p + off, len);
+#ifndef WITHOUT_NETWORK
+  jbyte *buffer;
+  int   bytes_received;
 
-  (*env)->ReleaseByteArrayElements(env, buf, p, 0);
+  buffer = (*env)->GetByteArrayElements(env, buf, 0);
+  assert(buffer != NULL);
 
-  //  fprintf(stderr, "p=%s\n", p+off);
- 
-  return result;
+  TARGET_NATIVE_NETWORK_SOCKET_RECEIVE(fd, buffer + off, len, bytes_received);
+
+  (*env)->ReleaseByteArrayElements(env, buf, buffer, 0);
+
+  return(bytes_received);
+#else /* not WITHOUT_NETWORK */
+  return(0);
+#endif /* not WITHOUT_NETWORK */
 }
 
 int Java_gnu_java_nio_SocketChannelImpl_SocketWrite(JNIEnv *env,jclass c,int fd, jarray buf, int off, int len)
 {
-  int result;
-  jbyte *p;
-  p = (*env)->GetByteArrayElements(env, buf, 0);
-  
-  result = write(fd, p + off, len);
- 
-  (*env)->ReleaseByteArrayElements(env, buf, p, 0);
+#ifndef WITHOUT_NETWORK
+  jbyte *buffer;
+  int   bytes_sent;
 
-  return result;
+  buffer = (*env)->GetByteArrayElements(env, buf, 0);
+
+  TARGET_NATIVE_NETWORK_SOCKET_SEND(fd, buffer + off, len, bytes_sent);
+
+  (*env)->ReleaseByteArrayElements(env, buf, buffer, 0);
+
+  return(bytes_sent);
+#else /* not WITHOUT_NETWORK */
+  return(0);
+#endif /* not WITHOUT_NETWORK */
 }
