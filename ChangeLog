@@ -1,7 +1,13 @@
 2003-06-19  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/UIManager.java (getLookAndFeelDefaults): Made public.
-
+	* javax/swing/plaf/basic/BasicBorders.java (ButtonBorder): Re-written.
+	(getButtonBorder): New public method.
+	(getMarginBorder): New private method.
+	(sharedMarginBorder): New private field.
+	* javax/swing/plaf/basic/doc-files/BasicBorders.ButtonBorder-1.png:
+	New image.
+	
 2003-06-18  Tom Tromey  <tromey@redhat.com>
 
 	* java/net/Inet6Address.java (isAnyLocalAddress): Don't use "=="
