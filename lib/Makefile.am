@@ -45,7 +45,7 @@ endif
 # handling javac definition including programs like jikes here
 #-----------------------------------------------------------------
 if FOUND_JIKES
-JAVAC = $(JIKES) -nowarn +F $(ARG_CLASSPATH_JAVAC) $(top_srcdir):$(top_builddir)/vm/current:.:$(USER_CLASSLIB) -d . @classes
+JAVAC = $(JIKES) +F $(ARG_CLASSPATH_JAVAC) $(top_srcdir):$(top_builddir)/vm/current:.:$(USER_CLASSLIB) -d . @classes
 else
 if FOUND_GCJ
 JAVAC = $(GCJ) -C -d . @classes
