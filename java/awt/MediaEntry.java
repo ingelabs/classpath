@@ -28,12 +28,12 @@ package java.awt;
 abstract class MediaEntry implements java.io.Serializable
 {
 
-private static final int LOADING = 1;
-private static final int ABORTED = 2;
-private static final int ERRORED = 4;
-private static final int COMPLETE = 8;
-private static final int LOADSTARTED = 16;
-private static final int DONE = 32;
+protected static final int LOADING = 1;
+protected static final int ABORTED = 2;
+protected static final int ERRORED = 4;
+protected static final int COMPLETE = 8;
+protected static final int LOADSTARTED = 16;
+protected static final int DONE = 32;
 
 private MediaTracker tracker;
 private int ID;

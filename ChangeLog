@@ -1,3 +1,7 @@
+2001-07-26  R. S. Veldema
+	* java/awt/MediaEntry.java: LOADING, ABORTED, ERRORED, COMPLETE,
+	LOADSTARTED, DONE access changed from private to public
+
 2001-07-26  C. Brian Jones
 	* vm/reference/java/lang/Runtime.java (Runtime): use 
 	File.pathSeparatorChar instead of ':'
