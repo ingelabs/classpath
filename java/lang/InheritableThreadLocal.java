@@ -127,9 +127,12 @@ public class InheritableThreadLocal extends ThreadLocal
             InheritableThreadLocal local = (InheritableThreadLocal) it.next();
             Object parentValue = local.valueMap.get(parentThread);
             if (parentValue != null)
-              local.valueMap.put(childThread,
-                                 local.childValue(parentValue == NULL
-                                                  ? null : parentValue));
+              {
+                Object childValue = local.childValue(parentValue == NULL
+                                                     ? null : parentValue);
+                local.valueMap.put(childThread, (childValue == null
+                                                 ? NULL : parentValue));
+              }
           }
       }
   }

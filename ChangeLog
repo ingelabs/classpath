@@ -1,3 +1,12 @@
+2002-03-24  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/lang/InheritableThreadLocal.java (newChildThread): Fix case
+	with inheriting null.
+	* java/util/ListResourceBundle.java: Update to 1.4.
+	* java/util/Locale.java: Update to 1.4.
+	* java/util/PropertyResourceBundle.java: Update to 1.4.
+	* java/util/ResourceBundle.java: Javadoc improvements.
+
 2002-03-24  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java (connectHooks): New
