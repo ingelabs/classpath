@@ -38,6 +38,7 @@ exception statement from your version. */
 package java.lang;
 
 import java.io.Serializable;
+import java.io.InputStream;
 import java.lang.reflect.*;
 import java.security.*;
 import java.net.URL;
@@ -117,7 +118,8 @@ public final class Class implements Serializable
    */
   public String toString()
   {
-    //XXX Fix for primitive types.
+    if (isPrimitive())
+      return getName();
     return (isInterface() ? "interface " : "class ") + getName();
   }
 
@@ -134,15 +136,11 @@ public final class Class implements Serializable
    * @throws ExceptionInInitializerError if the class loads, but an exception
    *         occurs during initialization
    */
-  //XXX This does not need to be native.
-  public static native Class forName(String name)
-    throws ClassNotFoundException;
-  /*
+  public static Class forName(String name) throws ClassNotFoundException
   {
     return forName(name, true,
                    VMSecurityManager.getClassContext()[1].getClassLoader());
   }
-  */
 
   /**
    * Use the specified classloader to load and link a class. If the loader
@@ -211,27 +209,21 @@ public final class Class implements Serializable
   {
     try
       {
-        //XXX What about getConstructor(null).newInstance(null)?
-        return getConstructor(new Class[0]).newInstance(new Object[0]);
-      }
-    catch(SecurityException e)
-      {
-        //XXX Why is this trapped?
-        throw new IllegalAccessException("Cannot access no-arg constructor");
+        return getConstructor(null).newInstance(null);
       }
     catch(IllegalArgumentException e)
       {
-        throw new UnknownError("IllegalArgumentException thrown from Constructor.newInstance().  Something is rotten in Denmark.");
+        throw (Error) new InternalError("Should not happen").initCause(e);
       }
     catch(InvocationTargetException e)
       {
-        //XXX Chain this.
-        throw new InstantiationException("Target threw an exception.");
+        throw (InstantiationException)
+          new InstantiationException(e.toString()).initCause(e);
       }
     catch(NoSuchMethodException e)
       {
-        //XXX Chain this.
-        throw new InstantiationException("Method not found");
+        throw (InstantiationException)
+          new InstantiationException(e.toString()).initCause(e);
       }
   }
 
@@ -387,8 +379,8 @@ public final class Class implements Serializable
     if(isArray())
       try
         {
-          //XXX This should not initialize the component type.
-          return Class.forName(getName().substring(1));
+          return Class.forName(getName().substring(1), false,
+                               getClassLoader());
         }
       catch(ClassNotFoundException e)
         {
@@ -772,7 +764,7 @@ public final class Class implements Serializable
    * @see ClassLoader#setPackageAssertionStatus(String, boolean)
    * @see ClassLoader#setDefaultAssertionStatus(boolean)
    * @since 1.4
-   * @XXX For 1.4 compliance, implement this method.
+   */
   public boolean desiredAssertionStatus()
   {
     ClassLoader c = getClassLoader();
@@ -825,6 +817,5 @@ public final class Class implements Serializable
       }
     return c.defaultAssertionStatus;
   }
-  */
 }
 

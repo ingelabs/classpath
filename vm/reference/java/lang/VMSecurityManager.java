@@ -1,5 +1,5 @@
-/* VMSecurityManager.java
-   Copyright (C) 1998 Free Software Foundation
+/* VMSecurityManager.java -- Reference implementation of VM hooks for security
+   Copyright (C) 1998, 2002 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -37,33 +37,32 @@ exception statement from your version. */
 
 package java.lang;
 
-import java.net.*;
-import java.util.*;
-import java.io.*;
-
 /**
- ** VMSecurityManager is a helper class for SecurityManager the VM must
- ** implement.
- **
- ** @author  John Keiser
- ** @version 1.1.0, 31 May 1998
- **/
-class VMSecurityManager {
-	/** Get a list of all the classes currently executing
-	 ** methods on the Java stack.  getClassContext()[0] is
-	 ** the currently executing method
-	 ** <STRONG>Spec Note:</STRONG> does not say whether
-	 ** the stack will include the getClassContext() call or
-	 ** the one just before it.
-	 **
-	 ** @return an array containing all the methods on classes
-	 **         on the Java execution stack.
-	 **/
-	static native Class[] getClassContext();
+ * VMSecurityManager is a helper class for SecurityManager the VM must
+ * implement.
+ *
+ * @author John Keiser
+ * @author Eric Blake <ebb9@email.byu.edu>
+ */
+final class VMSecurityManager
+{
+  /**
+   * Get a list of all the classes currently executing methods on the
+   * Java stack.  getClassContext()[0] is the currently executing method, ie.
+   * the method which called SecurityManager.getClassContext().  (Hint: you
+   * may need to pop off one or more frames: don't include SecurityManager
+   * or VMSecurityManager.getClassContext in your result. Also, be sure that
+   * you correctly handle the context if SecurityManager.getClassContext
+   * was invoked by reflection).
+   *
+   * @return an array of the declaring classes of each stack frame
+   */
+  static native Class[] getClassContext();
 
-	/** Get the current ClassLoader--the one nearest to the
-	 ** top of the stack.
-	 ** @return the current ClassLoader.
-	 **/
-	static native ClassLoader currentClassLoader();
+  /**
+   * Get the current ClassLoader--the one nearest to the top of the stack.
+   *
+   * @return the current ClassLoader
+   */
+  static native ClassLoader currentClassLoader();
 }

@@ -38,6 +38,13 @@ exception statement from your version. */
 
 package java.lang;
 
+import java.security.ProtectionDomain;
+import java.net.URL;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Map;
+import java.util.HashMap;
+
 /**
  * java.lang.VMClassLoader is a package-private helper for VMs to implement
  * on behalf of java.lang.ClassLoader.
@@ -49,7 +56,10 @@ package java.lang;
 final class VMClassLoader
 {
   /**
-   * Helper to define a class using a string of bytes.
+   * Helper to define a class using a string of bytes. This assumes that
+   * the security checks have already been performed, if necessary.
+   * <strong>This method will be removed in a future version of GNU
+   * Classpath</strong>.
    *
    * @param name the name to give the class, or null if unknown
    * @param data the data representing the classfile, in classfile format
@@ -57,11 +67,37 @@ final class VMClassLoader
    * @param len the length of the classfile data in the array
    * @return the class that was defined
    * @throws ClassFormatError if data is not in proper classfile format
-   * @XXX This should also have a ProtectionDomain argument.
+   * @deprecated Implement
+   * {@link #defineClass(ClassLoader, String, byte[], int, int, ProtectionDomain)}
+   *   instead.
    */
   static final native Class defineClass(ClassLoader cl, String name,
                                         byte[] data, int offset, int len)
     throws ClassFormatError;
+
+  /**
+   * Helper to define a class using a string of bytes. This assumes that
+   * the security checks have already been performed, if necessary.
+   *
+   * <strong>For backward compatibility, this just ignores the protection
+   * domain; that is the wrong behavior, and you should directly implement
+   * this method natively if you can.</strong>
+   *
+   * @param name the name to give the class, or null if unknown
+   * @param data the data representing the classfile, in classfile format
+   * @param offset the offset into the data where the classfile starts
+   * @param len the length of the classfile data in the array
+   * @param pd the protection domain
+   * @return the class that was defined
+   * @throws ClassFormatError if data is not in proper classfile format
+   */
+  static final Class defineClass(ClassLoader cl, String name,
+                                 byte[] data, int offset, int len,
+                                 ProtectionDomain pd)
+    throws ClassFormatError
+  {
+    return defineClass(cl, name, data, offset, len);
+  }
 
   /**
    * Helper to resolve all references to other classes from this class.
@@ -69,6 +105,73 @@ final class VMClassLoader
    * @param c the class to resolve
    */
   static final native void resolveClass(Class c);
+
+  /**
+   * Helper to load a class from the bootstrap class loader.
+   *
+   * XXX - Not implemented yet; this requires native help.
+   *
+   * @param name the class name to load
+   * @param resolve whether to resolve it
+   * @return the class, loaded by the bootstrap classloader
+   */
+  static final Class loadClass(String name, boolean resolve)
+    throws ClassNotFoundException
+  {
+    return Class.forName(name, resolve, ClassLoader.getSystemClassLoader());
+  }
+
+  /**
+   * Helper to load a resource from the bootstrap class loader.
+   *
+   * XXX - Not implemented yet; this requires native help.
+   *
+   * @param name the resource to find
+   * @return the URL to the resource
+   */
+  static URL getResource(String name)
+  {
+    return ClassLoader.getSystemResource(name);
+  }
+
+  /**
+   * Helper to get a list of resources from the bootstrap class loader.
+   *
+   * XXX - Not implemented yet; this requires native help.
+   *
+   * @param name the resource to find
+   * @return an enumeration of resources
+   * @throws IOException if one occurs
+   */
+  static Enumeration getResources(String name) throws IOException
+  {
+    return ClassLoader.getSystemResources(name);
+  }
+
+  /**
+   * Helper to get a package from the bootstrap class loader.  The default
+   * implementation of returning null may be adequate, or you may decide
+   * that this needs some native help.
+   *
+   * @param name the name to find
+   * @return the named package, if it exists
+   */
+  static Package getPackage(String name)
+  {
+    return null;
+  }
+
+  /**
+   * Helper to get all packages from the bootstrap class loader.  The default
+   * implementation of returning an empty array may be adequate, or you may
+   * decide that this needs some native help.
+   *
+   * @return all named packages, if any exist
+   */
+  static Package[] getPackages()
+  {
+    return new Package[0];
+  }
 
   /**
    * Helper for java.lang.Integer, Byte, etc to get the TYPE class
@@ -153,10 +256,14 @@ final class VMClassLoader
    * classes (those with a null ClassLoader), as well as the initial value for
    * every ClassLoader's default assertion status.
    *
+   * XXX - Not implemented yet; this requires native help.
+   *
    * @return the system-wide default assertion status
-   * @XXX Implement this for 1.4 compatibility.
-   static final native boolean defaultAssertionStatus();
    */
+  static final boolean defaultAssertionStatus()
+  {
+    return true;
+  }
 
   /**
    * The system default for package assertion status. This is used for all
@@ -164,18 +271,26 @@ final class VMClassLoader
    * package names to Boolean.TRUE or Boolean.FALSE, with the unnamed package
    * represented as a null key.
    *
+   * XXX - Not implemented yet; this requires native help.
+   *
    * @return a (read-only) map for the default packageAssertionStatus
-   * @XXX Implement this for 1.4 compatibility.
-   static final native Map packageAssertionStatus();
    */
+  static final Map packageAssertionStatus()
+  {
+    return new HashMap();
+  }
 
   /**
    * The system default for class assertion status. This is used for all
    * ClassLoader's classAssertionStatus defaults. It must be a map of
    * class names to Boolean.TRUE or Boolean.FALSE
    *
+   * XXX - Not implemented yet; this requires native help.
+   *
    * @return a (read-only) map for the default classAssertionStatus
-   * @XXX Implement this for 1.4 compatibility.
-   static final native Map classAssertionStatus();
    */
+  static final Map classAssertionStatus()
+  {
+    return new HashMap();
+  }
 }

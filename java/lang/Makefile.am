@@ -7,6 +7,7 @@ AbstractMethodError.java \
 ArithmeticException.java \
 ArrayIndexOutOfBoundsException.java \
 ArrayStoreException.java \
+AssertionError.java \
 Boolean.java \
 Byte.java \
 Character.java \
@@ -62,6 +63,7 @@ SecurityException.java \
 SecurityManager.java \
 Short.java \
 StackOverflowError.java \
+StackTraceElement.java \
 StrictMath.java \
 StringBuffer.java \
 StringIndexOutOfBoundsException.java \

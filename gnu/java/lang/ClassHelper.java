@@ -90,14 +90,13 @@ public class ClassHelper
   }
 
   /** Cache of methods found in getAllMethods(). */
-  static Hashtable allMethods = new Hashtable();
-
-  /** Cache of methods found in getAllMethodsAtDeclaration(). */
-  static Hashtable allMethodsAtDeclaration = new Hashtable();
+  private static Map allMethods = new HashMap();
 
   /**
    * Get all the methods, public, private and otherwise, from the class,
-   * getting them from the most recent class to find them.
+   * getting them from the most recent class to find them. This may not
+   * be quite the correct approach, as this includes methods that are not
+   * inherited or accessible from clazz, so beware.
    *
    * @param clazz the class to start at
    * @return all methods declared or inherited in clazz
@@ -107,91 +106,45 @@ public class ClassHelper
     Method[] retval = (Method[]) allMethods.get(clazz);
     if (retval == null)
       {
-        Method[] superMethods;
-        if (clazz.getSuperclass() != null)
-            superMethods = getAllMethods(clazz.getSuperclass());
-        else
-            superMethods = new Method[0];
-        Vector v = new Vector();
-        Method[] currentMethods = clazz.getDeclaredMethods();
-        for (int i = 0; i < currentMethods.length; i++)
-          v.addElement(currentMethods[i]);
-        for (int i = 0; i < superMethods.length; i++)
+        Set methods = new HashSet();
+        Class c = clazz;
+        while (c != null)
           {
-            boolean addOK = true;
-            for (int j = 0; j < currentMethods.length; j++)
+            Method[] currentMethods = c.getDeclaredMethods();
+          loop:
+            for (int i = 0; i < currentMethods.length; i++)
               {
-                if (getTruncatedName(superMethods[i].getName())
-                    .equals(getTruncatedName(currentMethods[j].getName()))
-                    && ArrayHelper.equalsArray(superMethods[i].getParameterTypes(),
-                                               currentMethods[j].getParameterTypes()))
+                Method current = currentMethods[i];
+                int size = methods.size();
+                Iterator iter = methods.iterator();
+                while (--size >= 0)
                   {
-                    addOK = false;
+                    Method override = (Method) iter.next();
+                    if (current.getName().equals(override.getName())
+                        && Arrays.equals(current.getParameterTypes(),
+                                         override.getParameterTypes())
+                        && current.getReturnType() == override.getReturnType())
+                      continue loop;
                   }
+                methods.add(current);
               }
-            if(addOK)
-              v.addElement(superMethods[i]);
+            c = c.getSuperclass();
           }
-        retval = new Method[v.size()];
-        v.copyInto(retval);
-        allMethods.put(clazz,retval);
-      }
-    return retval;
-  }
-
-  /**
-   * Get all the methods, public, private and otherwise, from the class,
-   * and get them from their point of declaration.
-   *
-   * @param clazz the class to start at
-   * @return all methods declared or inherited in clazz
-   */
-  public static Method[] getAllMethodsAtDeclaration(Class clazz)
-  {
-    Method[] retval = (Method[]) allMethodsAtDeclaration.get(clazz);
-    if (retval == null)
-      {
-        Method[] superMethods;
-        if (clazz.getSuperclass() != null)
-          superMethods = getAllMethodsAtDeclaration(clazz.getSuperclass());
-        else
-          superMethods = new Method[0];
-        Vector v = new Vector();
-        Method[] currentMethods = clazz.getDeclaredMethods();
-        for (int i = 0; i < superMethods.length; i++)
-          v.addElement(superMethods[i]);
-        for (int i = 0; i < superMethods.length; i++)
-          {
-            boolean addOK = true;
-            for (int j = 0; j < currentMethods.length; j++)
-              {
-                if (getTruncatedName(superMethods[i].getName())
-                    .equals(getTruncatedName(currentMethods[j].getName()))
-                    && ArrayHelper.equalsArray(superMethods[i].getParameterTypes(),
-                                               currentMethods[j].getParameterTypes()))
-                  {
-                    addOK = false;
-                  }
-              }
-            if(addOK)
-              v.addElement(superMethods[i]);
-          }
-        retval = new Method[v.size()];
-        v.copyInto(retval);
-        allMethodsAtDeclaration.put(clazz,retval);
+        retval = new Method[methods.size()];
+        methods.toArray(retval);
+        allMethods.put(clazz, retval);
       }
     return retval;
   }
 
   /** Cache of fields found in getAllFields(). */
-  static Hashtable allFields = new Hashtable();
-
-  /** Cache of fields found in getAllFieldsAtDeclaration(). */
-  static Hashtable allFieldsAtDeclaration = new Hashtable();
+  private static Map allFields = new HashMap();
 
   /**
    * Get all the fields, public, private and otherwise, from the class,
-   * getting them from the most recent class to find them.
+   * getting them from the most recent class to find them. This may not
+   * be quite the correct approach, as this includes fields that are not
+   * inherited or accessible from clazz, so beware.
    *
    * @param clazz the class to start at
    * @return all fields declared or inherited in clazz
@@ -201,74 +154,31 @@ public class ClassHelper
     Field[] retval = (Field[]) allFields.get(clazz);
     if (retval == null)
       {
-        Field[] superFields;
-        if (clazz.getSuperclass() != null)
-          superFields = getAllFields(clazz.getSuperclass());
-        else
-          superFields = new Field[0];
-        Vector v = new Vector();
-        Field[] currentFields = clazz.getDeclaredFields();
-        for (int i = 0; i < currentFields.length; i++)
-          v.addElement(currentFields[i]);
-        for (int i = 0; i < superFields.length; i++)
+        Set fields = new HashSet();
+        Class c = clazz;
+        while (c != null)
           {
-            boolean addOK = true;
-            for (int j = 0; j < currentFields.length; j++)
+            Field[] currentFields = c.getDeclaredFields();
+          loop:
+            for (int i = 0; i < currentFields.length; i++)
               {
-                if (getTruncatedName(superFields[i].getName())
-                    .equals(getTruncatedName(currentFields[j].getName())))
+                Field current = currentFields[i];
+                int size = fields.size();
+                Iterator iter = fields.iterator();
+                while (--size >= 0)
                   {
-                    addOK = false;
+                    Field override = (Field) iter.next();
+                    if (current.getName().equals(override.getName())
+                        && current.getType() == override.getType())
+                      continue loop;
                   }
+                fields.add(current);
               }
-            if (addOK)
-              v.addElement(superFields[i]);
+            c = c.getSuperclass();
           }
-        retval = new Field[v.size()];
-        v.copyInto(retval);
-        allFields.put(clazz,retval);
-      }
-    return retval;
-  }
-
-  /**
-   * Get all the fields, public, private and otherwise, from the class,
-   * and get them from their point of declaration.
-   *
-   * @param clazz the class to start at
-   * @return all fields declared or inherited in clazz
-   */
-  public static Field[] getAllFieldsAtDeclaration(Class clazz)
-  {
-    Field[] retval = (Field[]) allFieldsAtDeclaration.get(clazz);
-    if (retval == null)
-      {
-        Field[] superFields;
-        if (clazz.getSuperclass() != null)
-          superFields = getAllFieldsAtDeclaration(clazz.getSuperclass());
-        else
-          superFields = new Field[0];
-        Vector v = new Vector();
-        Field[] currentFields = clazz.getDeclaredFields();
-        for (int i = 0; i < superFields.length; i++)
-          v.addElement(superFields[i]);
-        for (int i = 0; i < superFields.length; i++)
-          {
-            boolean addOK = true;
-            for (int j = 0; j < currentFields.length; j++)
-              {
-                if (getTruncatedName(superFields[i].getName())
-                    .equals(getTruncatedName(currentFields[j].getName())))
-                  {
-                    addOK = false;
-                  }
-              }
-            if(addOK)
-              v.addElement(superFields[i]);
-          }
-        retval = new Field[v.size()];
-        v.copyInto(retval);
-        allFieldsAtDeclaration.put(clazz,retval);
+        retval = new Field[fields.size()];
+        fields.toArray(retval);
+        allFields.put(clazz, retval);
       }
     return retval;
   }

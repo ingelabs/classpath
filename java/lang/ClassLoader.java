@@ -114,10 +114,10 @@ import gnu.java.util.EmptyEnumeration;
 public abstract class ClassLoader
 {
   /** All classes loaded by this classloader. */
-  private Hashtable loadedClasses = new Hashtable();
+  private final Map loadedClasses = new HashMap();
 
   /** All packages defined by this classloader. */
-  private Hashtable definedPackages = new Hashtable();
+  private final Map definedPackages = new HashMap();
 
   /**
    * The classloader that is consulted before this classloader.
@@ -126,57 +126,68 @@ public abstract class ClassLoader
   private final ClassLoader parent;
 
   /**
-   * System/Application classloader gnu.java.lang.SystemClassLoader.
-   * Due to bootstrapping issues, the VM must modify this field.
+   * System/Application classloader: defaults to an instance of
+   * gnu.java.lang.SystemClassLoader, unless the first invocation of
+   * getSystemClassLoader loads another class loader because of the
+   * java.system.class.loader property.
+   *
+   * XXX - The VM may needs to modify this field or set it to something
+   * else, until gnu.java.lang.SystemClassLoader is correctly implemented.
    */
-  static final ClassLoader systemClassLoader
-    = null; // XXX = SystemClassLoader.getInstance();
+  static final ClassLoader systemClassLoader = getSystemClassLoader();
+
+  /**
+   * The default protection domain, used when defining a class with a null
+   * paramter for the domain.
+   */
+  static final ProtectionDomain defaultProtectionDomain;
+  static
+  {
+    CodeSource cs = new CodeSource(null, null);
+    PermissionCollection perm = Policy.getPolicy().getPermissions(cs);
+    defaultProtectionDomain = new ProtectionDomain(cs, perm);
+  }
 
   /**
    * The desired assertion status of classes loaded by this loader, if not
    * overridden by package or class instructions.
-   * @XXX Implement for 1.4 compatibility.
+   */
   // Package visible for use by Class.
   boolean defaultAssertionStatus = VMClassLoader.defaultAssertionStatus();
-   */
 
   /**
    * The command-line state of the package assertion status overrides. This
    * map is never modified, so it does not need to be synchronized.
-   * @XXX Implement for 1.4 compatibility.
+   */
   // Package visible for use by Class.
   static final Map systemPackageAssertionStatus
     = VMClassLoader.packageAssertionStatus();
-   */
 
   /**
    * The map of package assertion status overrides, or null if no package
    * overrides have been specified yet. The values of the map should be
    * Boolean.TRUE or Boolean.FALSE, and the unnamed package is represented
    * by the null key. This map must be synchronized on this instance.
-   * @XXX Implement for 1.4 compatibility.
+   */
   // Package visible for use by Class.
   Map packageAssertionStatus;
-   */
 
   /**
    * The command-line state of the class assertion status overrides. This
    * map is never modified, so it does not need to be synchronized.
-   * @XXX Implement for 1.4 compatibility.
+   */
   // Package visible for use by Class.
   static final Map systemClassAssertionStatus
     = VMClassLoader.classAssertionStatus();
-   */
 
   /**
    * The map of class assertion status overrides, or null if no class
    * overrides have been specified yet. The values of the map should be
    * Boolean.TRUE or Boolean.FALSE. This map must be synchronized on this
    * instance.
-   * @XXX Implement for 1.4 compatibility.
+   */
   // Package visible for use by Class.
   Map classAssertionStatus;
-   */
 
   /**
    * Create a new ClassLoader with as parent the system classloader. There
@@ -186,8 +197,7 @@ public abstract class ClassLoader
    */
   protected ClassLoader() throws SecurityException
   {
-    //XXX This should be this(getSystemClassLoader());
-    this(systemClassLoader);
+    this(getSystemClassLoader());
   }
 
   /**
@@ -257,25 +267,21 @@ public abstract class ClassLoader
       if (c != null)
         return c;
 
-      // Can the class be loaded by one of our parent?
+      // Can the class been loaded by a parent?
       try
         {
           if (parent == null)
-            // XXX - use the bootstrap classloader
-            // return VMClassLoader.loadClass(name, resolve);
-            return findSystemClass(name);
+            return VMClassLoader.loadClass(name, resolve);
           return parent.loadClass(name, resolve);
         }
       catch (ClassNotFoundException e)
         {
-          // Ignore, use findClass().
+          // Still not found, we have to do it ourself.
+          c = findClass(name);
+          if (resolve)
+            resolveClass(c);
+          return c;
         }
-
-      // Still not found, we have to do it ourself.
-      c = findClass(name);
-      if (resolve)
-        resolveClass(c);
-      return c;
     }
 
   /**
@@ -349,7 +355,8 @@ public abstract class ClassLoader
    * ProtectionDomain. Subclasses should call this method from their
    * <code>findClass()</code> implementation. The name should use '.'
    * separators, and discard the trailing ".class".  The default protection
-   * domain is <code>Policy.getPolicy().getPermissions(null, null)<code>.
+   * domain has the permissions of
+   * <code>Policy.getPolicy().getPermissions(new CodeSource(null, null))<code>.
    *
    * @param name the name to give the class, or null if unknown
    * @param data the data representing the classfile, in classfile format
@@ -365,22 +372,19 @@ public abstract class ClassLoader
   protected final Class defineClass(String name, byte[] data, int offset,
                                     int len) throws ClassFormatError
   {
-    // XXX - return defineClass(name, data, offset, len, null);
-    Class retval = VMClassLoader.defineClass(this, name, data, offset, len);
-    loadedClasses.put(retval.getName(), retval);
-    return retval;
+    return defineClass(name, data, offset, len, null);
   }
 
   /**
    * Helper to define a class using a string of bytes. Subclasses should call
    * this method from their <code>findClass()</code> implementation. If the
    * domain is null, the default of
-   * <code>Policy.getPolicy().getPermissions(null, null)<code> is used.
-   * Once a class has been defined in a package, all further classes in that
-   * package must have the same set of certificates or a SecurityException is
-   * thrown
+   * <code>Policy.getPolicy().getPermissions(new CodeSource(null, null))<code>
+   * is used. Once a class has been defined in a package, all further classes
+   * in that package must have the same set of certificates or a
+   * SecurityException is thrown.
    *
-   * XXX - not implemented yet. Needs native support.
+   * XXX - protection domain is not implemented yet; it needs native support.
    *
    * @param name the name to give the class.  null if unknown
    * @param data the data representing the classfile, in classfile format
@@ -400,13 +404,12 @@ public abstract class ClassLoader
                                     int len, ProtectionDomain domain)
     throws ClassFormatError
   {
-    /* XXX - needs native support.
-    Class retval
-      = VMClassLoader.defineClass(this, name, data, offset, len, domain);
+    if (domain == null)
+      domain = defaultProtectionDomain;
+    Class retval = VMClassLoader.defineClass(this, name, data,
+                                             offset, len, domain);
     loadedClasses.put(retval.getName(), retval);
     return retval;
-    */
-    return defineClass(name, data, offset, len);
   }
 
   /**
@@ -434,9 +437,7 @@ public abstract class ClassLoader
   protected final Class findSystemClass(String name)
     throws ClassNotFoundException
   {
-    // XXX This should be:
-    // return Class.forName(name, false, getSystemClassLoader());
-    return Class.forName(name);
+    return Class.forName(name, false, getSystemClassLoader());
   }
 
   /**
@@ -506,10 +507,9 @@ public abstract class ClassLoader
     URL result;
 
     if (parent == null)
-      // XXX - try bootstrap classloader;
-      // result = VMClassLoader.getResource(name);
-      return ClassLoader.getSystemResource(name);
-    result = parent.getResource(name);
+      result = VMClassLoader.getResource(name);
+    else
+      result = parent.getResource(name);
 
     if (result == null)
       result = findResource(name);
@@ -540,8 +540,7 @@ public abstract class ClassLoader
   {
     Enumeration parentResources;
     if (parent == null)
-      // XXX - Should use the bootstrap classloader
-      parentResources = EmptyEnumeration.getInstance();
+      parentResources = VMClassLoader.getResources(name);
     else
       parentResources = parent.getResources(name);
     return new DoubleEnumeration(parentResources, findResources(name));
@@ -644,9 +643,7 @@ public abstract class ClassLoader
    */
   public static Enumeration getSystemResources(String name) throws IOException
   {
-    // XXX should be
-    // return getSystemClassLoader().getResources(name);
-    return systemClassLoader.getResources(name);
+    return getSystemClassLoader().getResources(name);
   }
 
   /**
@@ -664,14 +661,14 @@ public abstract class ClassLoader
    */
   public InputStream getResourceAsStream(String name)
   {
-    URL url = getResource(name);
-    if (url == null)
-      return null;
     try
       {
+        URL url = getResource(name);
+        if (url == null)
+          return null;
         return url.openStream();
       }
-    catch(IOException e)
+    catch (IOException e)
       {
         return null;
       }
@@ -693,7 +690,7 @@ public abstract class ClassLoader
           return null;
         return url.openStream();
       }
-    catch(IOException e)
+    catch (IOException e)
       {
         return null;
       }
@@ -708,6 +705,8 @@ public abstract class ClassLoader
    * <code>java.system.class.loader</code>, if defined, is taken to be the
    * name of the class to use as the system class loader, otherwise this
    * uses gnu.java.lang.SystemClassLoader.
+   *
+   * XXX - overriding the class loader does not currently work
    *
    * <p>Note that this is different from the bootstrap classloader that
    * actually loads all the real "system" classes (the bootstrap classloader
@@ -725,7 +724,13 @@ public abstract class ClassLoader
    */
   public static ClassLoader getSystemClassLoader()
   {
-    //XXX This needs to check for java.system.class.loader.
+    // This method is called as the initialization of systemClassLoader,
+    // so if there is a null value, this is the first call and we must check
+    // for java.system.class.loader.
+    if (systemClassLoader == null)
+      {
+        // XXX return SystemClassLoader.getInstance();
+      }
     // Check if we may return the system classloader
     SecurityManager sm = System.getSecurityManager();
     if (sm != null)
@@ -776,7 +781,10 @@ public abstract class ClassLoader
                                          + " already defined");
     Package p = new Package(name, specTitle, specVendor, specVersion,
                             implTitle, implVendor, implVersion, sealed);
-    definedPackages.put(name, p);
+    synchronized (definedPackages)
+      {
+        definedPackages.put(name, p);
+      }
     return p;
   }
 
@@ -793,13 +801,15 @@ public abstract class ClassLoader
   {
     Package p;
     if (parent == null)
-      // XXX - Should we use the bootstrap classloader?
-      p = null;
+      p = VMClassLoader.getPackage(name);
     else
       p = parent.getPackage(name);
 
     if (p == null)
-      p = (Package)definedPackages.get(name);
+      synchronized (definedPackages)
+        {
+          p = (Package) definedPackages.get(name);
+        }
     return p;
   }
 
@@ -811,35 +821,27 @@ public abstract class ClassLoader
    */
   protected Package[] getPackages()
   {
-    Package[] allPackages;
-
     // Get all our packages.
     Package[] packages;
     synchronized(definedPackages)
       {
         packages = new Package[definedPackages.size()];
-        Enumeration e = definedPackages.elements();
-        int i = 0;
-        while (e.hasMoreElements())
-          {
-            packages[i] = (Package)e.nextElement();
-            i++;
-          }
+        definedPackages.values().toArray(packages);
       }
 
     // If we have a parent get all packages defined by our parents.
-    if (parent != null)
-      {
-        Package[] parentPackages = parent.getPackages();
-        allPackages = new Package[parentPackages.length + packages.length];
-        System.arraycopy(parentPackages, 0, allPackages, 0,
-                         parentPackages.length);
-        System.arraycopy(packages, 0, allPackages, parentPackages.length,
-                         packages.length);
-      } else
-        // XXX - Should we use the bootstrap classloader?
-        allPackages = packages;
+    Package[] parentPackages;
+    if (parent == null)
+      parentPackages = VMClassLoader.getPackages();
+    else
+      parentPackages = parent.getPackages();
 
+    Package[] allPackages = new Package[parentPackages.length
+                                       + packages.length];
+    System.arraycopy(parentPackages, 0, allPackages, 0,
+                     parentPackages.length);
+    System.arraycopy(packages, 0, allPackages, parentPackages.length,
+                     packages.length);
     return allPackages;
   }
 
@@ -872,12 +874,11 @@ public abstract class ClassLoader
    * @see #setPackageAssertionStatus(String, boolean)
    * @see #clearAssertionStatus()
    * @since 1.4
-   * @XXX Implement for 1.4 compatibility.
+   */
   public void setDefaultAssertionStatus(boolean enabled)
   {
     defaultAssertionStatus = enabled;
   }
-   */
   
   /**
    * Set the default assertion status for packages, used unless overridden
@@ -890,7 +891,7 @@ public abstract class ClassLoader
    * @see #setClassAssertionStatus(String, boolean)
    * @see #clearAssertionStatus()
    * @since 1.4
-   * @XXX Implement for 1.4 compatibility.
+   */
   public synchronized void setPackageAssertionStatus(String name,
                                                      boolean enabled)
   {
@@ -899,7 +900,6 @@ public abstract class ClassLoader
         = new HashMap(systemPackageAssertionStatus);
     packageAssertionStatus.put(name, Boolean.valueOf(enabled));
   }
-   */
   
   /**
    * Set the default assertion status for a class. This only affects the
@@ -912,7 +912,7 @@ public abstract class ClassLoader
    * @see #setPackageAssertionStatus(String, boolean)
    * @see #clearAssertionStatus()
    * @since 1.4
-   * @XXX Implement for 1.4 compatibility.
+   */
   public synchronized void setClassAssertionStatus(String name,
                                                    boolean enabled)
   {
@@ -921,7 +921,6 @@ public abstract class ClassLoader
     // The toString() hack catches null, as required.
     classAssertionStatus.put(name.toString(), Boolean.valueOf(enabled));
   }
-   */
   
   /**
    * Resets the default assertion status of this classloader, its packages
@@ -932,14 +931,11 @@ public abstract class ClassLoader
    * @see #setClassAssertionStatus(String, boolean)
    * @see #setPackageAssertionStatus(String, boolean)
    * @since 1.4
-   * @XXX Implement for 1.4 compatibility.
+   */
   public synchronized void clearAssertionStatus()
   {
     defaultAssertionStatus = false;
     packageAssertionStatus = new HashMap();
     classAssertionStatus = new HashMap();
   }
-   */
-  
 }
-

@@ -1,3 +1,29 @@
+2002-02-23  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/lang/Makefile.am (EXTRA_DIST): Add AssertionError.java and
+	StackTraceElement.java.
+	* java/lang/AssertionError.java: New file.
+	* java/lang/ClassLoader.java: Add some synchronization and code
+	cleanups to use improved VMClassLoader.
+	Add assertion status fields and methods.
+	* java/lang/StackTraceElement.java: New file.
+	* vm/reference/java/lang/Class.java (desiredAssertionStatus): Add.
+	Other locations: clean up code.
+	* vm/reference/java/lang/Throwable.java (cause, stackTrace): Add
+	exception chaining, and Java code for stack traces (native code
+	unimplemented).
+	* vm/reference/java/lang/VMClassLoader.java: Add (unimplemented)
+	hooks to compile assertion status.
+	(defineClass, loadClass): Add prototypes for missing native hooks.
+	* vm/reference/java/lang/VMSecurityManager.java: Formatting.
+	* gnu/java/lang/ClassHelper.java (getAllMethodsAtDeclaration),
+	(getAllFieldsAtDeclaration): Delete, as they were just duplicates.
+	(getAllMethods, getAllFields): Optimize.
+	* gnu/java/lang/ArrayHelper.java: Formatting and Javadoc.
+	(equalsArray): Delete, it duplicates java.util.Arrays.equals.
+	* gnu/java/beans/BeanInfoEmbryo.java (hasMethod): Use
+	Arrays.equals instead of ArrayHelper.equalsArray.
+
 2002-02-22  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/java/rmi/rmic/RMIC.java (parseOptions): Include the "Inc.".
@@ -24,8 +50,8 @@
 	* vm/reference/java/lang/VMObject.java: Ditto.
 	* java/lang/Boolean.java: Ditto.
 	* java/lang/ClassLoader.java: Ditto.
-	* java/lang/Error.java: Ditto.
 	* java/lang/Object.java: Ditto.
+	* java/lang/Error.java: Update to 1.4 with new constructors.
 
 2002-02-22  Eric Blake  <ebb9@email.byu.edu>
 

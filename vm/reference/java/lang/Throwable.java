@@ -107,6 +107,7 @@ import java.io.IOException;
  *
  * @author Brian Jones
  * @author John Keiser
+ * @author Mark Wielaard
  * @author Eric Blake <ebb9@email.byu.edu>
  * @since 1.0
  * @status still missing 1.4 functionality
@@ -122,9 +123,8 @@ public class Throwable extends Object implements Serializable
    * The detail message.
    *
    * @serial specific details about the exception, may be null
-   * @XXX for serialization, renaming this detailMessage would be nice
    */
-  private String message = null;
+  private String detailMessage;
 
   /**
    * The cause of the throwable, including null for an unknown or non-chained
@@ -133,9 +133,8 @@ public class Throwable extends Object implements Serializable
    *
    * @serial the cause, or null if unknown, or this if not yet set
    * @since 1.4
-   * @XXX for 1.4 compatibility, add this field
-   private Throwable cause = this; 
    */
+  private Throwable cause = this;
 
   /**
    * The stack trace, in a serialized form.
@@ -143,9 +142,9 @@ public class Throwable extends Object implements Serializable
    * @serial the elements of the stack trace; this is non-null, and has
    *         no null entries
    * @since 1.4
-   * @XXX for 1.4 compatibility, add this field
-   private StackTraceElement[] stackTrace;
    */
+  // XXX Don't initialize this, once fillInStackTrace() does it.
+  private StackTraceElement[] stackTrace = {};
 
   /**
    * Instantiate this Throwable with an empty message. The cause remains
@@ -154,7 +153,7 @@ public class Throwable extends Object implements Serializable
    */
   public Throwable()
   {
-    this(null);
+    this((String) null);
   }
 
   /**
@@ -167,7 +166,7 @@ public class Throwable extends Object implements Serializable
   public Throwable(String message)
   {
     fillInStackTrace();
-    this.message = message;
+    detailMessage = message;
   }
 
   /**
@@ -178,13 +177,12 @@ public class Throwable extends Object implements Serializable
    * @param message the message to associate with the Throwable
    * @param cause the cause, may be null
    * @since 1.4
-   * @XXX for 1.4 compatibility, add this constructor
+   */
   public Throwable(String message, Throwable cause)
   {
     this(message);
     initCause(cause);
   }
-   */
 
   /**
    * Instantiate this Throwable with the given cause. The message is then
@@ -193,12 +191,11 @@ public class Throwable extends Object implements Serializable
    *
    * @param cause the cause, may be null
    * @since 1.4
-   * @XXX for 1.4 compatibility, add this constructor
+   */
   public Throwable(Throwable cause)
   {
     this(cause == null ? null : cause.toString(), cause);
   }
-   */
 
   /**
    * Get the message associated with this Throwable.
@@ -207,7 +204,7 @@ public class Throwable extends Object implements Serializable
    */
   public String getMessage()
   {
-    return message;
+    return detailMessage;
   }
 
   /**
@@ -232,12 +229,11 @@ public class Throwable extends Object implements Serializable
    *
    * @return the cause of this Throwable
    * @since 1.4
-   * @XXX for 1.4 compatibility, add this method
+   */
   public Throwable getCause()
   {
     return cause == this ? null : cause;
   }
-   */
 
   /**
    * Initialize the cause of this Throwable.  This may only be called once
@@ -250,7 +246,7 @@ public class Throwable extends Object implements Serializable
    *         its own cause!)
    * @throws IllegalStateException if the cause has already been set
    * @since 1.4
-   * @XXX for 1.4 compatibility, add this method
+   */
   public Throwable initCause(Throwable cause)
   {
     if (cause == this)
@@ -260,7 +256,6 @@ public class Throwable extends Object implements Serializable
     this.cause = cause;
     return this;
   }
-   */
 
   /**
    * Get a human-readable representation of this Throwable. With a null
@@ -272,7 +267,8 @@ public class Throwable extends Object implements Serializable
    */
   public String toString()
   {
-    return getClass().getName() + (message != null ? ": " + message : "");
+    return getClass().getName()
+      + (detailMessage == null ? "" : ": " + detailMessage);
   }
 
   /**
@@ -310,7 +306,7 @@ public class Throwable extends Object implements Serializable
    *   static void b() throws MidLevelException
    *   {
    *     c();
-   *   }   
+   *   }
    *   static void c() throws MidLevelException
    *   {
    *     try
@@ -373,8 +369,7 @@ public class Throwable extends Object implements Serializable
    */
   public void printStackTrace(PrintStream s)
   {
-    s.println(toString());
-    printStackTrace0(s);
+    printStackTrace(new PrintWriter(s));
   }
 
   /**
@@ -386,16 +381,99 @@ public class Throwable extends Object implements Serializable
    */
   public void printStackTrace(PrintWriter w)
   {
-    w.println(toString());
+    //XXX - should be printStackTrace1(w);
     printStackTrace0(w);
   }
 
   /**
    * The implentation for printing a stack trace.
    *
-   * @param stream either a PrintStream or PrintWriter
+   * @param stream the destination stream
    */
-  private native void printStackTrace0 (Object stream);
+  private native void printStackTrace0(PrintWriter stream);
+
+  /**
+   * Alternative printStackTrace that uses <code>getStrackTrace0()</code>
+   * to print the exception, stack trace and cause (recursively). Not used
+   * since <code>getStackTrace()</code> does not yet work.
+   *
+   * <p>Prints the exception, the detailed message and the stack trace
+   * associated with this Throwable to the given <code>PrintWriter</code>.
+   * The actual output written is implemention specific. Use the result of
+   * <code>getStackTrace()</code> when more precise information is needed.
+   *
+   * <p>This implementation first prints a line with the result of this
+   * object's <code>toString()</code> method.
+   * <br>
+   * Then for all elements given by <code>getStackTrace</code> it prints
+   * a line containing a tab, the string "at " and the result of calling the
+   * <code>toString()</code> method on the <code>StackTraceElement</code>
+   * object. If <code>getStackTrace()</code> returns an empty array it prints
+   * a line containing a tab and the string "<<No stacktrace available>>".
+   * <br>
+   * Then if <code>getCause()</code> doesn't return null it adds a line
+   * starting with "Caused by: " and the result of calling
+   * <code>toString()</code> on the cause.
+   * <br>
+   * Then for every cause (of a cause, etc) the stacktrace is printed the
+   * same as for the top level <code>Throwable</code> except that as soon
+   * as all the remaining stack frames of the cause are the same as the
+   * the last stack frames of the throwable that the cause is wrapped in
+   * then a line starting with a tab and the string "... X more" is printed,
+   * where X is the number of remaining stackframes.
+   */
+  private void printStackTrace1(PrintWriter pw)
+  {
+    // First line
+    pw.println(toString());
+
+    // The stacktrace
+    StackTraceElement[] stack = getStackTrace();
+    for (int i = 0; i < stack.length; i++)
+      pw.println("\tat " + stack[i]);
+
+    // The cause(s)
+    Throwable cause = getCause();
+    while (cause != null)
+      {
+        // Cause first line
+        pw.println("Caused by: " + cause);
+
+        // Cause stacktrace
+        StackTraceElement[] parentStack = stack;
+        stack = cause.getStackTrace();
+        boolean equal = false; // Is rest of stack equal to parent frame?
+        for (int i = 0; i < stack.length && ! equal; i++)
+          {
+            // Check if we already printed the rest of the stack
+            // since it was the tail of the parent stack
+            int remaining = stack.length - i;
+            int element = i;
+            int parentElement = parentStack.length - remaining;
+            equal = parentElement >= 0
+              && parentElement < parentStack.length; // be optimistic
+            while (equal && element < stack.length)
+              {
+                if (stack[element].equals(parentStack[parentElement]))
+                  {
+                    element++;
+                    parentElement++;
+                  }
+                else
+                  equal = false;
+              }
+            // Print stacktrace element or indicate the rest is equal 
+            if (! equal)
+              pw.println("\tat " + stack[i]);
+            else
+              {
+                pw.println("\t..." + remaining + " more");
+                break; // from stack printing for loop
+              }
+          }
+        cause = cause.getCause();
+      }
+  }
 
   /**
    * Fill in the stack trace with the current execution stack.
@@ -417,12 +495,11 @@ public class Throwable extends Object implements Serializable
    *
    * @return an array of stack trace information, as available from the VM
    * @since 1.4
-   * @XXX for 1.4 compatibility, add this method
+   */
   public StackTraceElement[] getStackTrace()
   {
     return stackTrace;
   }
-   */
 
   /**
    * Change the stack trace manually. This method is designed for remote
@@ -432,43 +509,12 @@ public class Throwable extends Object implements Serializable
    * @param stackTrace the new trace to use
    * @throws NullPointerException if stackTrace is null or has null elements
    * @since 1.4
-   * @XXX for 1.4 compatibility, add this method
+   */
   public void setStackTrace(StackTraceElement[] stackTrace)
   {
     for (int i = stackTrace.length; --i >= 0; )
       if (stackTrace[i] == null)
         throw new NullPointerException();
     this.stackTrace = stackTrace;
-  }
-   */
-
-  /**
-   * Serialize the object in a manner binary compatible with the JDK 1.2.
-   *
-   * @param s the stream to write to
-   * @throws IOException if the write fails
-   */
-  private void writeObject(ObjectOutputStream s)
-    throws IOException
-  {
-    ObjectOutputStream.PutField oFields;
-    oFields = s.putFields();
-    oFields.put("detailMessage", message);
-    s.writeFields();
-  }
-
-  /**
-   * Deserialize the object in a manner binary compatible with the JDK 1.2.
-   *
-   * @param s the stream to read from
-   * @throws IOException if the read fails
-   * @throws ClassNotFoundException if deserialization fails
-   */
-  private void readObject(ObjectInputStream s)
-    throws IOException, ClassNotFoundException
-  {
-    ObjectInputStream.GetField oFields;
-    oFields = s.readFields();
-    message = (String)oFields.get("detailMessage", (String)null);
   }
 }
