@@ -1,4 +1,4 @@
-/* AncestorEvent.java --
+/* TableColumnModel.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
