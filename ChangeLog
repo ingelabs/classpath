@@ -1,3 +1,14 @@
+2004-03-26  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkChoicePeer.c
+	(item_activate): Declare label before use.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(gtkSetFont): Removed unused variable label.
+	(addExposeFilter): Declare variables before use.
+	(removeExposeFilter): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFileDialogPeer.c
+	(ok_clicked): Declare str_fileName before use.
+
 2004-03-25  Archie Cobbs  <archie@dellroad.org>
 
 	* configure.ac: Use the more portable ``:'' expr(1)
