@@ -1,3 +1,8 @@
+2003-09-23  Sascha Brawer  <brawer@dandelis.ch>
+
+	* java/awt/font/FontRenderContext.java (getTransform): Return
+	copy of internal transform object. Add Javadoc.
+
 2003-09-22  Michael Koch  <konqueror@gmx.de>
 
 	* external/.cvsignore: New file, ignore Makefile and Makefile.in.
