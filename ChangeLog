@@ -1,3 +1,8 @@
+2003-08-12  Graydon Hoare  <graydon@redhat.com>
+
+	* java/awt/Color.java (getAlpha): 
+	Prevent sign-extended alpha values.
+
 2003-08-12  Ingo Proetel  <proetel@aicas.com>
 
 	* java/util/TimeZone.java: initialize lazily 
