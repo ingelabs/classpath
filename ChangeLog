@@ -1,5 +1,7 @@
 2003-02-10  Tom Tromey  <tromey@redhat.com>
 
+	* javax/swing/undo/AbstractUndoableEdit.java: Reindented.
+
 	* javax/sql/ConnectionEvent.java (serialVersionUID): New field.
 	(ex): Renamed from sqlException.
 
