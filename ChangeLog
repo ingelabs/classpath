@@ -1,3 +1,8 @@
+2003-12-26  Fernando Nasser  <fnasser@redhat.com>
+
+	* java/awt/List.java (replaceItem): Prevent selection to move with
+	replace and minimize flickering.
+
 2003-12-26  Michael Koch  <konqueror@gmx.de>
 
 	* native/target/generic/target_generic_file.h
