@@ -251,8 +251,8 @@ public class Handler extends URLStreamHandler
             
             int idx = file.lastIndexOf ("/");  
 
-            if (idx == -1) //context path is weird
-              file = "/" + url_string; 
+            if (idx == -1) //no context path, make relative url
+              file = url_string; 
             else if (idx == (file.length() - 1))
               //just concatenate two parts
               file = file + url_string;
