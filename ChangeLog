@@ -1,5 +1,12 @@
 2003-03-14  Michael Koch  <konqueror@gmx.de>
 
+	* java/beans/beancontext/BeanContextServicesSupport.java,
+	java/beans/beancontext/BeanContextServicesSupport.java: New files.
+	* java/beans/beancontext/Makefile.am
+	(EXTRA_DIST): Added new files.
+
+2003-03-14  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/SelectionKeyImpl.java:
 	Merged with libgcj.
 	* gnu/java/nio/SelectorProviderImpl.java:
