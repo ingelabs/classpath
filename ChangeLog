@@ -1,3 +1,19 @@
+2004-09-22  Jerry Quinn  <jlquinn@optonline.net>
+
+	* java/awt/image/ColorModel.java (getDataElement): Implemented.
+	Update javadoc.
+	(getDataElements): Add missing version.  Remove bogus version.
+	Update javadoc.
+	* java/awt/image/MultiPixelPackedSampleModel.java: Implement.
+	* java/awt/image/Raster.java
+	(createPackedRaster(int,int,int,int,int,Point)): Implement for
+	bands>1.
+	(getNumBands): Implement.
+	* java/awt/image/SinglePixelPackedSampleModel.java
+	(SinglePixelPackedSampleModel): Throw exception for unsupported
+	datatype.
+			
+
 2004-09-22  Olga Rodimina  <rodimina@redhat.com>
 
 	* javax/swing/plaf/basic/BasicComboBoxUI.java:
