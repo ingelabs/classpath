@@ -1,5 +1,16 @@
 2003-10-20  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/PlainDatagramSocketImpl.java
+	(native_fd): Made package-private.
+	(finalize): New method.
+	(getTTL): Call getTimeToLive.
+	(setTTL): Call setTimeToLive.
+	* gnu/java/net/PlainSocketImpl.java
+	(native_fd): Made package-private.
+	(finalize): New method.
+
+2003-10-20  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/net/HeaderFieldHelper.java: Reformated.
 
 2003-10-20  Michael Koch  <konqueror@gmx.de>

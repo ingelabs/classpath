@@ -84,7 +84,7 @@ public final class PlainSocketImpl extends SocketImpl
    *
    * When the socket is closed this is reset to -1.
    */
-  protected int native_fd = -1;
+  int native_fd = -1;
 
   /**
    * A cached copy of the in stream for reading from the socket.
@@ -101,6 +101,22 @@ public final class PlainSocketImpl extends SocketImpl
    */
   public PlainSocketImpl()
   {
+  }
+  
+  protected void finalize() throws Throwable
+  {
+    synchronized (this)
+      {
+	if (native_fd != -1)
+	  try
+	    {
+	      close();
+	    }
+	  catch (IOException ex)
+	    {
+	    }
+      }
+    super.finalize();
   }
 
   public int getNativeFD()

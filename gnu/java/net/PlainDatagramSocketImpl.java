@@ -73,7 +73,7 @@ public final class PlainDatagramSocketImpl extends DatagramSocketImpl
         System.loadLibrary("javanet");
       }
   }
-
+  
   /**
    * Option id for the IP_TTL (time to live) value.
    */
@@ -82,7 +82,7 @@ public final class PlainDatagramSocketImpl extends DatagramSocketImpl
   /**
    * This is the actual underlying file descriptor
    */
-  protected int native_fd = -1;
+  int native_fd = -1;
   
   /**
    * Lock object to serialize threads wanting to receive 
@@ -99,6 +99,16 @@ public final class PlainDatagramSocketImpl extends DatagramSocketImpl
    */
   public PlainDatagramSocketImpl()
   {
+  }
+
+  protected void finalize() throws Throwable
+  {
+    synchronized (this)
+      {
+	if (native_fd != -1)
+	  close();
+      }
+    super.finalize();
   }
 
   public int getNativeFD()
@@ -248,12 +258,7 @@ public final class PlainDatagramSocketImpl extends DatagramSocketImpl
    */
   protected synchronized byte getTTL() throws IOException
   {
-    Object obj = getOption(IP_TTL);
-
-    if (!(obj instanceof Integer))
-      throw new IOException("Internal Error");
-
-    return(((Integer)obj).byteValue());
+    return (byte) getTimeToLive();
   }
 
   /**
@@ -267,10 +272,7 @@ public final class PlainDatagramSocketImpl extends DatagramSocketImpl
    */
   protected synchronized void setTTL(byte ttl) throws IOException
   {
-    if (ttl > 0) 
-      setOption(IP_TTL, new Integer(ttl));
-    else
-      setOption(IP_TTL, new Integer(ttl + 256));
+    setTimeToLive(((int) ttl) & 0xFF);
   }
 
   /**
