@@ -6,4 +6,5 @@ EXTRA_DIST = \
 BitMaskExtent.java \
 Buffers.java \
 ComponentDataBlitOp.java \
+ClasspathToolkit.java \
 EventModifier.java

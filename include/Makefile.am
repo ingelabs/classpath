@@ -3,9 +3,9 @@ ARG_CLASSPATH_JAVAH = -classpath
 JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) ../lib:$(USER_CLASSLIB)
 
 H_FILES = \
-$(top_srcdir)/include/gnu_java_awt_image_GdkPixbufDecoder.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkFontMetrics.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics.h \
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkPixbufDecoder.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkButtonPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkCanvasPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer.h \
@@ -55,12 +55,12 @@ if CREATE_JNI_HEADERS
 
 all-local: $(H_FILES)
 
-$(top_srcdir)/include/gnu_java_awt_image_GdkPixbufDecoder.h: $(top_srcdir)/gnu/java/awt/image/GdkPixbufDecoder.java
-	$(JAVAH) -o $@ gnu.java.awt.image.GdkPixbufDecoder
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkFontMetrics.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkFontMetrics.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkFontMetrics
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkGraphics.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkGraphics
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkPixbufDecoder.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkPixbufDecoder.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkPixbufDecoder
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkButtonPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkButtonPeer.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkButtonPeer
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkCanvasPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkCanvasPeer.java

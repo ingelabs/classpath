@@ -1,8 +1,12 @@
 # used by automake to generate Makefile.in
 
 EXTRA_DIST = \
+	GdkClasspathFontPeer.java \
 	GdkFontMetrics.java \
+	GdkGlyphVector.java \
 	GdkGraphics.java \
+	GdkGraphics2D.java \
+	GdkPixbufDecoder.java \
 	GtkArg.java \
 	GtkArgList.java \
 	GtkButtonPeer.java \

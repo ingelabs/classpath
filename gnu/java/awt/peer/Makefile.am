@@ -3,4 +3,5 @@
 SUBDIRS = gtk
 
 EXTRA_DIST = \
+ClasspathFontPeer.java \
 GLightweightPeer.java

@@ -1,5 +1,35 @@
 2003-11-04  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/awt/ClasspathToolkit.java: New file.
+	* gnu/java/awt/Makefile.am
+	(EXTRA_DIST): Added ClasspathToolkit.java.
+	* gnu/java/awt/image/GdkPixbufDecoder.java,
+	gnu/java/awt/image/GtkOffScreenDecoder.java: Removed.
+	* gnu/java/awt/image/ImageDecoder.java
+	(produce): Made public.
+	* gnu/java/awt/image/Makefile.am
+	(EXTRA_DIST): Removed GdkPixbufDecoder.java and
+	GtkOffScreenDecoder.java.
+	* gnu/java/awt/peer/ClasspathFontPeer.java,
+	gnu/java/awt/peer/gtk/GdkClasspathFontPeer.java,
+	gnu/java/awt/peer/gtk/GdkGlyphVector.java,
+	gnu/java/awt/peer/gtk/GdkGraphics2D.java,
+	gnu/java/awt/peer/gtk/GdkPixbufDecoder.java: New files.
+	* gnu/java/awt/peer/Makefile.am
+	(EXTRA_DIST): Added ClasspathFontPeer.java.
+	* gnu/java/awt/peer/gtk/Makefile.am
+	(EXTRA_DIST): Added GdkClasspathFontPeer.java, GdkGlyphVector.java,
+	GdkGraphics2D.java and GdkPixbufDecoder.java.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java:
+	Import gnu.java.awt.peer.gtk.GdkPixbufDecoder.
+	* include/Makefile.am: Generate and install new file
+	gnu_java_awt_peer_gtk_GdkPixbufDecoder.h.
+	* include/gnu_java_awt_image_GdkPixbufDecoder.h: Removed.
+	* include/gnu_java_awt_peer_gtk_GdkPixbufDecoder.h: New file.
+	* native/jni/gtk-peer/gnu_java_awt_image_GdkPixbufDecoder.c: Removed.
+
+2003-11-04  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/SocketPermission.java
 	(equals): Removed unneeded obj == null check.
 	* java/net/URL.java

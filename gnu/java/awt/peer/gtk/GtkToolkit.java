@@ -52,7 +52,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Properties;
-import gnu.java.awt.image.GdkPixbufDecoder;
+import gnu.java.awt.peer.gtk.GdkPixbufDecoder;
 import gnu.classpath.Configuration;
 
 /* This class uses a deprecated method java.awt.peer.ComponentPeer.getPeer().
@@ -62,7 +62,7 @@ import gnu.classpath.Configuration;
    this class.  If getPeer() ever goes away, we can implement a hash table
    that will keep up with every window's peer, but for now this is faster. */
 
-public class GtkToolkit extends java.awt.Toolkit
+public class GtkToolkit extends Toolkit
 {
   GtkMainThread main;
   Hashtable containers = new Hashtable();
