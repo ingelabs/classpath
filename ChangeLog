@@ -1,5 +1,8 @@
 2004-09-28  Tom Tromey  <tromey@redhat.com>
 
+	* java/text/MessageFormat.java (Field): Constructor now
+	protected.
+
 	* java/net/URLConnection.java (setFileNameMap): Now synchronized.
 
 	* javax/crypto/MacSpi.java: Fixed typo.
