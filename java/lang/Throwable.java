@@ -1,6 +1,6 @@
 package java.lang;
 
-import java.io.Serializable;
+import java.io.*;
 
 /**
  * 
@@ -30,7 +30,7 @@ public class Throwable extends Object implements Serializable
 
   public String toString()
     {
-      
+      return "";
     }
 
   public void printStackTrace()
