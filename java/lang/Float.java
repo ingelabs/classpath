@@ -293,7 +293,7 @@ public final class Float extends Number
      * @param f the <code>float</code> to compare
      * @return whether the argument is (-/+) infinity.
      */
-    public boolean isInfinite(float f) 
+    public static boolean isInfinite(float f) 
     {
 	return (f == POSITIVE_INFINITY || f == NEGATIVE_INFINITY);
     }
