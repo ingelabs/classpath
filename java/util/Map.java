@@ -22,27 +22,28 @@
 
 package java.util;
 
-public interface Map {
-  void clear();
-  boolean containsKey(Object key);
-  boolean containsValue(Object value);
-  Set entries();
-  boolean equals(Object o);
-  Object get(Object key);
-  int hashCode();
-  boolean isEmpty();
-  Set keySet();
-  Object put(Object key, Object value);
-  void putAll(Map m);
-  Object remove(Object o);
-  int size();
-  Collection values();
-
-  public static interface Entry {
-    boolean equals(Object o);
-    Object getKey();
-    Object getValue();
-    int hashCode();
-    Object setValue(Object value);
-  }
+public interface Map 
+{
+    public void clear();
+    public boolean containsKey(Object key);
+    public boolean containsValue(Object value);
+    public Set entrySet();
+    public boolean equals(Object o);
+    public Object get(Object key);
+    public Object put(Object key, Object value);
+    public int hashCode();
+    public boolean isEmpty();
+    public Set keySet();
+    public void putAll(Map m);
+    public Object remove(Object o);
+    public int size();
+    public Collection values();
+    
+    public static interface Entry {
+	public Object getKey();
+	public Object getValue();
+	public Object setValue(Object value);
+	public int hashCode();
+	public boolean equals(Object o);
+    }
 }
