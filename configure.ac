@@ -378,6 +378,10 @@ java/util/regex/Makefile
 java/util/zip/Makefile
 javax/Makefile
 javax/accessibility/Makefile
+javax/imageio/Makefile
+javax/imageio/event/Makefile
+javax/imageio/spi/Makefile
+javax/imageio/stream/Makefile
 javax/naming/Makefile
 javax/naming/directory/Makefile
 javax/naming/event/Makefile

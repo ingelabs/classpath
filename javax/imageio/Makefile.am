@@ -1,8 +1,9 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-SUBDIRS = stream spi
+SUBDIRS = event stream spi
 
 EXTRA_DIST = \
+IIOException.java \
 ImageReader.java \
 ImageTranscoder.java \
 ImageWriter.java \

@@ -1,3 +1,23 @@
+2004-04-21  Michael Koch  <konqueror@gmx.de>
+
+	* javax/imageio/IIOException.java,
+	javax/imageio/event/IIOReadProgressListener.java,
+	javax/imageio/event/IIOReadUpdateListener.java,
+	javax/imageio/event/IIOReadWarningListener.java,
+	javax/imageio/event/IIOWriteProgressListener.java,
+	javax/imageio/event/IIOWriteWarningListener.java: New files.
+	* configure.ac: Added all Makefiles under javax.imageio to
+	AC_OUTPUT_FILES.
+	* javax/Makefile.am
+	(SUBDIRS): Added imageio.
+	* javax/imageio/Makefile.am
+	(SUBDIRS): Added event.
+	(EXTRA_DIST): Added IIOException.java.
+	* javax/imageio/event/Makefile.am: New file.
+	* javax/imageio/event/.cvsignore,
+	javax/imageio/spi/.cvsignore,
+	javax/imageio/stream/.cvsignore: New files to ignore generated files.
+
 2004-04-21  Dalibor Topic  <robilad@kaffe.org>
 
 	* java/util/prefs/Preferences.java,
