@@ -1,3 +1,17 @@
+2002-04-01  Eric Blake  <ebb9@email.byu.edu>
+
+	* configure.in: Add java/awt/dnd.
+	* java/awt/dnd/.cvsignore: New file.
+	* java/awt/dnd/Makefile.am: New file.
+	* java/awt/dnd/DropTarget.java: New file (stubbed).
+	* java/awt/event/WindowAdapter.java: Make abstract.
+	* java/beans/PropertyChangeEvent.java (rollback): New method.
+	* java/beans/VetoableChangeListener.java: Improve documentation.
+	* java/beans/VetoableChangeSupport.java (fireVetoableChange):
+	Rollback a failed change.
+	* javax/accessibility/AccessibleText.java: Uncomment javax.swing.
+	* javax/accessibility/AccessibleEditableText.java: Ditto.	
+
 2002-03-31  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/beans/ExceptionListener.java: New file.

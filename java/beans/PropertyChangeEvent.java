@@ -172,4 +172,18 @@ public class PropertyChangeEvent extends EventObject
   {
     return propagationId;
   }
+
+  /**
+   * Utility method to rollback a change.
+   *
+   * @param event the event to rollback
+   * @return a new event with old and new swapped
+   */
+  PropertyChangeEvent rollback()
+  {
+    PropertyChangeEvent result
+      = new PropertyChangeEvent(source, propertyName, newValue, oldValue);
+    result.propagationId = propagationId;
+    return result;
+  }
 } // class PropertyChangeEvent

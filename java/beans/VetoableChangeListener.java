@@ -47,8 +47,9 @@ import java.util.EventListener;
  * been requested, but before it is permanent. If any listener rejects the
  * change by throwing the PropertyChangeException, a new vetoableChange()
  * event will be fired to all listeners who received a vetoableChange() event
- * in the first place, informing them to revert back to the old value.
- * The value, of course, never actually changed.
+ * in the first place, informing them to revert back to the old value. Thus,
+ * the listener that threw the exception the first time should be prepared
+ * to rethrow it the second time. The value, of course, never actually changed.
  *
  * <p><strong>Note:</strong> This class may not be reliably used to determine
  * whether a property has actually changed.  Use the PropertyChangeListener

@@ -278,6 +278,7 @@ java/applet/Makefile
 java/awt/Makefile
 java/awt/color/Makefile
 java/awt/datatransfer/Makefile
+java/awt/dnd/Makefile
 java/awt/event/Makefile
 java/awt/font/Makefile
 java/awt/geom/Makefile

@@ -51,7 +51,7 @@ package java.awt.event;
  * @since 1.1
  * @status updated to 1.4
  */
-public class WindowAdapter
+public abstract class WindowAdapter
   implements WindowListener, WindowStateListener, WindowFocusListener
 {
   /**

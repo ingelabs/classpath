@@ -40,8 +40,7 @@ package javax.accessibility;
 
 import java.awt.Rectangle;
 import java.awt.Point;
-// XXX Waiting on javax.swing support.
-// import javax.swing.text.AttributeSet;
+import javax.swing.text.AttributeSet;
 
 /**
  * Objects which present textual information on the display should implement
@@ -57,7 +56,7 @@ import java.awt.Point;
  * @see AccessibleContext
  * @see AccessibleContext#getAccessibleText()
  * @since 1.2
- * @status updated to 1.4, except for javax.swing support
+ * @status updated to 1.4
  */
 public interface AccessibleText
 {
@@ -158,8 +157,7 @@ public interface AccessibleText
    * @param index the 0-based character index
    * @return the character's attributes
    */
-  // XXX Waiting on javax.swing support.
-  //  AttributeSet getCharacterAttribute(int index);
+  AttributeSet getCharacterAttribute(int index);
 
   /**
    * Returns the start index of the selection. If there is no selection, this

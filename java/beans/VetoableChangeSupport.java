@@ -314,7 +314,8 @@ public class VetoableChangeSupport implements Serializable
    * Fire a PropertyChangeEvent containing the old and new values of the
    * property to all the global listeners, and to all the listeners for the
    * specified property name. This does nothing if old and new are non-null
-   * and equal.
+   * and equal. If the change is vetoed, a new event is fired to notify
+   * listeners about the rollback before the exception is thrown.
    *
    * @param propertyName the name of the property that changed
    * @param oldVal the old value
@@ -333,6 +334,8 @@ public class VetoableChangeSupport implements Serializable
    * Fire a PropertyChangeEvent containing the old and new values of the
    * property to all the global listeners, and to all the listeners for the
    * specified property name. This does nothing if old and new are equal.
+   * If the change is vetoed, a new event is fired to notify listeners about
+   * the rollback before the exception is thrown.
    *
    * @param propertyName the name of the property that changed
    * @param oldVal the old value
@@ -352,6 +355,8 @@ public class VetoableChangeSupport implements Serializable
    * Fire a PropertyChangeEvent containing the old and new values of the
    * property to all the global listeners, and to all the listeners for the
    * specified property name. This does nothing if old and new are equal.
+   * If the change is vetoed, a new event is fired to notify listeners about
+   * the rollback before the exception is thrown.
    *
    * @param propertyName the name of the property that changed
    * @param oldVal the old value
@@ -371,7 +376,9 @@ public class VetoableChangeSupport implements Serializable
   /**
    * Fire a PropertyChangeEvent to all the global listeners, and to all the
    * listeners for the specified property name. This does nothing if old and
-   * new values of the event are equal.
+   * new values of the event are equal. If the change is vetoed, a new event
+   * is fired to notify listeners about the rollback before the exception is
+   * thrown.
    *
    * @param event the event to fire
    * @throws NullPointerException if event is null
@@ -386,8 +393,20 @@ public class VetoableChangeSupport implements Serializable
     if (v != null)
       {
         int i = v.size();
-        while (--i >= 0)
-          ((VetoableChangeListener) v.get(i)).vetoableChange(event);
+        try
+          {
+            while (--i >= 0)
+              ((VetoableChangeListener) v.get(i)).vetoableChange(event);
+          }
+        catch (PropertyVetoException e)
+          {
+            event = event.rollback();
+            int limit = i;
+            i = v.size();
+            while (--i >= limit)
+              ((VetoableChangeListener) v.get(i)).vetoableChange(event);
+            throw e;
+          }
       }
     Hashtable h = children; // Be thread-safe.
     if (h != null && event.propertyName != null)
@@ -396,10 +415,25 @@ public class VetoableChangeSupport implements Serializable
           = (VetoableChangeSupport) h.get(event.propertyName);
         if (s != null)
           {
-            v = s.listeners; // Be thread-safe.
-            int i = v == null ? 0 : v.size();
-            while (--i >= 0)
-              ((VetoableChangeListener) v.get(i)).vetoableChange(event);
+            Vector v1 = s.listeners; // Be thread-safe.
+            int i = v1 == null ? 0 : v1.size();
+            try
+              {
+                while (--i >= 0)
+                  ((VetoableChangeListener) v1.get(i)).vetoableChange(event);
+              }
+            catch (PropertyVetoException e)
+              {
+                event = event.rollback();
+                int limit = i;
+                i = v.size();
+                while (--i >= 0)
+                  ((VetoableChangeListener) v.get(i)).vetoableChange(event);
+                i = v1.size();
+                while (--i >= limit)
+                  ((VetoableChangeListener) v1.get(i)).vetoableChange(event);
+                throw e;
+              }
           }
       }
   }

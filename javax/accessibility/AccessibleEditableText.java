@@ -37,8 +37,7 @@ exception statement from your version. */
 
 package javax.accessibility;
 
-// XXX Waiting on javax.swing support.
-// import javax.swing.test.AttributeSet;
+import javax.swing.text.AttributeSet;
 
 /**
  * Objects which present editable textual information on the display should
@@ -139,6 +138,5 @@ public interface AccessibleEditableText extends AccessibleText
    * @param s the new attribute set for the range
    */
   // XXX What happens if indices are out of bounds, or s is null?
-  // XXX Waiting on javax.swing support.
-  //  void setAttributes(int start, int end, AttributeSet s);
+  void setAttributes(int start, int end, AttributeSet s);
 } // interface AccessibleEditableText
