@@ -1,5 +1,5 @@
 /* OutputStreamWriter.java -- Writer that converts chars to bytes
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -70,157 +70,148 @@ import gnu.java.io.encode.Encoder;
   * <li>More Later
   * </ul>
   *
-  * @version 0.0
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
 public class OutputStreamWriter extends Writer
 {
+  /**
+    * This is the byte-character encoder class that does the writing and
+    * translation of characters to bytes before writing to the underlying
+    * class.
+    */
+  private Encoder out;
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/**
-  * This is the byte-character encoder class that does the writing and
-  * translation of characters to bytes before writing to the underlying
-  * class.
-  */
-private Encoder out;
+  /*
+   * Constructors
+   */
 
-/*************************************************************************/
+  /**
+    * This method initializes a new instance of <code>OutputStreamWriter</code>
+    * to write to the specified stream using the default encoding.
+    *
+    * @param out The <code>OutputStream</code> to write to
+    */
+  public OutputStreamWriter(OutputStream out)
+  {
+    this.out = EncodingManager.getEncoder(out);
+  }
 
-/*
- * Constructors
- */
+  /*************************************************************************/
 
-/**
-  * This method initializes a new instance of <code>OutputStreamWriter</code>
-  * to write to the specified stream using the default encoding.
-  *
-  * @param out The <code>OutputStream</code> to write to
-  */
-public
-OutputStreamWriter(OutputStream out)
-{
-  this.out = EncodingManager.getEncoder(out);
-}
+  /**
+    * This method initializes a new instance of <code>OutputStreamWriter</code>
+    * to write to the specified stream using a caller supplied character
+    * encoding scheme.  Note that due to a deficiency in the Java language
+    * design, there is no way to determine which encodings are supported.
+    *
+    * @param out The <code>OutputStream</code> to write to
+    * @param encoding_scheme The name of the encoding scheme to use for 
+    * character to byte translation
+    *
+    * @exception UnsupportedEncodingException If the named encoding is 
+    * not available.
+    */
+  public OutputStreamWriter(OutputStream out, String encoding_scheme) 
+    throws UnsupportedEncodingException
+  {
+    this.out = EncodingManager.getEncoder(out, encoding_scheme);
+  }
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/**
-  * This method initializes a new instance of <code>OutputStreamWriter</code>
-  * to write to the specified stream using a caller supplied character
-  * encoding scheme.  Note that due to a deficiency in the Java language
-  * design, there is no way to determine which encodings are supported.
-  *
-  * @param out The <code>OutputStream</code> to write to
-  * @param encoding_scheme The name of the encoding scheme to use for character to byte translation
-  *
-  * @exception UnsupportedEncodingException If the named encoding is not available.
-  */
-public
-OutputStreamWriter(OutputStream out, String encoding_scheme) 
-                              throws UnsupportedEncodingException
-{
-  this.out = EncodingManager.getEncoder(out, encoding_scheme);
-}
+  /*
+   * Instance Methods
+   */
 
-/*************************************************************************/
+  /**
+    * This method closes this stream, and the underlying 
+    * <code>OutputStream</code>
+    *
+    * @exception IOException If an error occurs
+    */
+  public void close() throws IOException
+  {
+    out.close();
+  }
 
-/*
- * Instance Methods
- */
+  /*************************************************************************/
 
-/**
-  * This method closes this stream, and the underlying <code>OutputStream</code>
-  *
-  * @exception IOException If an error occurs
-  */
-public void
-close() throws IOException
-{
-  out.close();
-}
+  /**
+    * This method flushes any buffered bytes to the underlying output sink.
+    *
+    * @exception IOException If an error occurs
+    */
+  public void flush() throws IOException
+  {
+    out.flush();
+  }
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/**
-  * This method flushes any buffered bytes to the underlying output sink.
-  *
-  * @exception IOException If an error occurs
-  */
-public void
-flush() throws IOException
-{
-  out.flush();
-}
+  /**
+    * This method returns the name of the character encoding scheme currently
+    * in use by this stream.  If the stream has been closed, then this method
+    * may return <code>null</code>.
+    *
+    * @return The encoding scheme name
+    */
+  public String getEncoding()
+  {
+    return(out.getSchemeName());
+  }
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/**
-  * This method returns the name of the character encoding scheme currently
-  * in use by this stream.  If the stream has been closed, then this method
-  * may return <code>null</code>.
-  *
-  * @return The encoding scheme name
-  */
-public String
-getEncoding()
-{
-  return(out.getSchemeName());
-}
+  /**
+    * This method writes a single character to the output stream.
+    *
+    * @param c The char to write, passed as an int.
+    *
+    * @exception IOException If an error occurs
+    */
+  public void write(int c) throws IOException
+  {
+    out.write(c);
+  }
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/**
-  * This method writes a single character to the output stream.
-  *
-  * @param c The char to write, passed as an int.
-  *
-  * @exception IOException If an error occurs
-  */
-public void
-write(int c) throws IOException
-{
-  out.write(c);
-}
+  /**
+    * This method writes <code>len</code> characters from the specified
+    * array to the output stream starting at position <code>offset</code>
+    * into the array.
+    *
+    * @param buf The array of character to write from
+    * @param offset The offset into the array to start writing chars from
+    * @param len The number of chars to write.
+    *
+    * @exception IOException If an error occurs
+    */
+  public void write(char[] buf, int offset, int len) throws IOException
+  {
+    out.write(buf, offset, len);
+  }
 
-/*************************************************************************/
+  /*************************************************************************/
 
-/**
-  * This method writes <code>len</code> characters from the specified
-  * array to the output stream starting at position <code>offset</code>
-  * into the array.
-  *
-  * @param buf The array of character to write from
-  * @param offset The offset into the array to start writing chars from
-  * @param len The number of chars to write.
-  *
-  * @exception IOException If an error occurs
-  */
-public void
-write(char[] buf, int offset, int len) throws IOException
-{
-  out.write(buf, offset, len);
-}
-
-/*************************************************************************/
-
-/**
-  * This method writes <code>len</code> bytes from the specified 
-  * <code>String</code> starting at position <code>offset</code> into the
-  * <code>String</code>.
-  *
-  * @param str The <code>String</code> to write chars from
-  * @param offset The position in the <code>String</code> to start writing chars from
-  * @param len The number of chars to write
-  *
-  * @exception IOException If an error occurs
-  */
-public void
-write(String str, int offset, int len) throws IOException
-{
-  out.write(str, offset, len);
-}
+  /**
+    * This method writes <code>len</code> bytes from the specified 
+    * <code>String</code> starting at position <code>offset</code> into the
+    * <code>String</code>.
+    *
+    * @param str The <code>String</code> to write chars from
+    * @param offset The position in the <code>String</code> to start 
+    * writing chars from
+    * @param len The number of chars to write
+    *
+    * @exception IOException If an error occurs
+    */
+  public void write(String str, int offset, int len) throws IOException
+  {
+    out.write(str, offset, len);
+  }
 
 } // class OutputStreamWriter
 
