@@ -1,3 +1,11 @@
+2004-12-12  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/util/zip/ZipFile.java
+	(getEntry): Fix to find dir entries without slash.
+	* java/util/zip/ZipEntry.java
+	(ZipEntry(ZipEntry,String)): New constructor to copy and change name.
+	(ZipEntry(ZipEntry)): Delegate to new constructor.
+
 2004-12-11  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics.java (setClip): Protect
