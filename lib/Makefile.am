@@ -109,7 +109,7 @@ else
 if USER_SPECIFIED_JIKES
 
 if USER_SPECIFIED_CLASSLIB
-JAVAC = @JIKES@ -nowarn +CSO +M +F $(ARG_CLASSPATH_JAVAC) ..:../vm/current:.:@USER_CLASSLIB@ -d . @classes
+JAVAC = @JIKES@ -nowarn +CSO +F $(ARG_CLASSPATH_JAVAC) ..:../vm/current:.:@USER_CLASSLIB@ -d . @classes
 else
 JAVAC = @JIKES@ -nowarn +CSO +M +F $(ARG_CLASSPATH_JAVAC) ..:../vm/current:. -d . @classes
 endif
@@ -182,16 +182,16 @@ endif
 JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) .:$(USER_CLASSLIB)
 
 
-#pkgdata_DATA = glibj.zip
+pkgdata_DATA = glibj.zip
 install-data-local :
 	if ! [ -e $(pkgdatadir) ]; then mkdir -p $(pkgdatadir); fi
 	unzip -d $(pkgdatadir) glibj.zip
 
-all: $(HEADERS_DEPEND) glibj.zip $(HEADERS)
+all: $(HEADERS_DEPEND) glibj.zip $(CP_HEADERS)
 #jar-classes
 
 # this makes headers always generate after making glibj.zip
-# $(HEADERS) : glibj.zip 
+$(CP_HEADERS) : headers.dep
 
 #.PHONY: jar-classes
 glibj.zip: classes compile-classes $(MAKEFILE_DEPEND)
@@ -262,7 +262,7 @@ $(JAVA_DEPEND): classes
 EXTRA_DIST = glibj.zip standard.omit
 ## not sure if we want to let the user easily get rid of glibj.zip
 ## CLEANFILES = glibj.zip
-DISTCLEANFILES = $(CLASSES) $(HEADERS)
+DISTCLEANFILES = $(CLASSES) $(CP_HEADERS)
 MAINTAINERCLEANFILES = makefile.dep $(JAVA_DEPEND) $(HEADERS_DEPEND)
 
 maintainer-clean-local:
