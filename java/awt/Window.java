@@ -1,4 +1,5 @@
-/* Window.java -- Toplevel window object
+/* Copyright (C) 1999, 2000, 2002  Free Software Foundation
+
    Copyright (C) 1999 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -24,350 +25,440 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.awt;
-
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.peer.WindowPeer;
-import java.awt.peer.ContainerPeer;
 import java.awt.peer.ComponentPeer;
+import java.util.EventListener;
 import java.util.Locale;
+import java.util.ResourceBundle;
 
 /**
-  * This class represents a top-level window with no decorations.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public class Window extends Container implements java.io.Serializable
-{
-
-// FIXME: Serialization
-
-/*
- * Static Variables
+ * This class represents a top-level window with no decorations.
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Warren Levy  <warrenl@cygnus.com>
  */
-
-private static final String defaultWarningString = "Warning: Applet Window";
-
-/*************************************************************************/
-
-/*
- * Instance Variables
- */
-
-/**
-  * @serial A string that is displayed if this window is being popped up
-  * by an unsecure applet or application.
-  */
-private String warningString = defaultWarningString;
-
-// List of listeners for window events.
-private WindowListener window_listeners;
-
-/*************************************************************************/
-
-/*
- * Constructors
- */
-
-/**
-  * Initializes a new instance of <code>Window</code> with the specified
-  * parent.  The window will initially be invisible.
-  *
-  * @param parent The owning <code>Frame</code> of this window.
-  */
-public
-Window(Frame parent)
+public class Window extends Container
 {
-  setParent(parent);
+  // Serialized fields, from Sun's serialization spec.
+  // private FocusManager focusMgr;  // FIXME: what is this?  
+  private String warningString = null;
+  private int state = 0;
+  private int windowSerializedDataVersion = 0; // FIXME
 
-  // FIXME: SecurityManager check for toplevel window.
-  // FIXME: How should we add to parent/create peer?  This is not really
-  // a child component of the parent container.
-  if (parent != null)
-    {
-      parent.ownedWindows.addElement(this);
-    }
-  is_notified = true;
-}
+  private transient WindowListener windowListener;
+  private transient GraphicsConfiguration graphicsConfiguration;
 
-/*************************************************************************/
+  /** 
+   * This (package access) constructor is used by subclasses that want
+   * to build windows that do not have parents.  Eg. toplevel
+   * application frames.  Subclasses cannot call super(null), since
+   * null is an illegal argument.
+   */
+  Window()
+  {
+    setVisible(false);
+    setLayout((LayoutManager) new BorderLayout());
+  }
 
-/*
- * Instance Methods
- */
+  Window(GraphicsConfiguration gc)
+  {
+    this();
+    graphicsConfiguration = gc;
+  }
+    
+  /**
+   * Initializes a new instance of <code>Window</code> with the specified
+   * parent.  The window will initially be invisible.
+   *
+   * @param parent The owning <code>Frame</code> of this window.
+   */
+  public Window(Frame owner)
+  {
+    this((Window) owner);
+  }
 
-/**
-  * Returns the warning string that will be displayed if this window is
-  * popped up by an unsecure applet or application.
-  *
-  * @return The unsecure window warning message.
-  */
-public final String
-getWarningString()
-{
-  return(warningString);
-}
+  /** @since 1.2 */
+  public Window(Window owner)
+  {
+    this();
+    if (owner == null)
+      throw new IllegalArgumentException("owner must not be null");
+    
+    this.parent = owner;
 
-/*************************************************************************/
+    // FIXME: add to owner's "owned window" list
+    //owner.owned.add(this); // this should be a weak reference
+  }
+  
+  /** @since 1.3 */
+  public Window(Window owner, GraphicsConfiguration gc)
+  {
+    this(owner);
 
-/**
-  * Adds the specified listener to the list of <code>WindowListeners</code>
-  * that will receive events for this window.
-  *
-  * @param listener The <code>WindowListener</code> to add.
-  */
-public synchronized void
-addWindowListener(WindowListener listener)
-{
-  window_listeners = AWTEventMulticaster.add(window_listeners, listener);
-}
+    /*  FIXME: Security check
+    SecurityManager.checkTopLevelWindow(...)
 
-/*************************************************************************/
+    if (gc != null
+        && gc.getDevice().getType() != GraphicsDevice.TYPE_RASTER_SCREEN)
+      throw new IllegalArgumentException ("gc must be from a screen device");
 
-/**
-  * Removes the specified listener from the list of
-  * <code>WindowListeners</code> that will receive events for this window.
-  *
-  * @param listener The <code>WindowListener</code> to remove.
-  */
-public synchronized void
-removeWindowListener(WindowListener listener)
-{
-  window_listeners = AWTEventMulticaster.remove(window_listeners, listener);
-}
+    if (gc == null)
+      graphicsConfiguration = GraphicsEnvironment.getLocalGraphicsEnvironment()
+			     .getDefaultScreenDevice()
+			     .getDefaultConfiguration();
+    else
+    */    
+    graphicsConfiguration = gc;
+  }
 
-/*************************************************************************/
+  GraphicsConfiguration getGraphicsConfigurationImpl()
+  {
+    if (graphicsConfiguration != null)
+	return graphicsConfiguration;
 
-/**
-  * Processes the specified event for this window.  If the event is an
-  * instance of <code>WindowEvent</code>, then <code>processWindowEvent()</code>
-  * is called to process the event, otherwise the superclass version of
-  * this method is invoked.
-  *
-  * @param event The event to process.
-  */
-protected void
-processEvent(AWTEvent event)
-{
-  if (event instanceof WindowEvent)
-    processWindowEvent((WindowEvent)event);
-  else
-    super.processEvent(event);
-}
+    return super.getGraphicsConfigurationImpl();
+  }
 
-/*************************************************************************/
+  protected void finalize() throws Throwable
+  {
+    // FIXME: remove from owner's "owned window" list (Weak References)
+    super.finalize();
+  }
 
-/**
-  * Dispatches this event to any listeners that are listening for
-  * <code>WindowEvents</code> on this window.  This method only gets
-  * invoked if it is enabled via <code>enableEvents()</code> or if
-  * a listener has been added.
-  *
-  * @param event The event to process.
-  */
-protected void
-processWindowEvent(WindowEvent event)
-{
-  if (window_listeners != null)
-    switch(event.getID())
+  /**
+   * Creates the native peer for this window.
+   */
+  public void addNotify()
+  {
+    if (peer == null)
+      peer = getToolkit ().createWindow (this);
+    super.addNotify ();
+  }
+
+  /**
+   * Relays out this window's child components at their preferred size.
+   *
+   * @specnote pack() doesn't appear to be called internally by show(), so
+   *             we duplicate some of the functionality.
+   */
+  public void pack()
+  {
+    if (parent != null
+        && !parent.isDisplayable())
+      parent.addNotify();
+    if (peer == null)
+      addNotify();
+
+    setSize(getPreferredSize());
+    
+    validate();
+  }
+
+  /**
+   * Makes this window visible and brings it to the front.
+   */
+  public void show ()
+  {
+    if (peer == null)
+      addNotify();
+
+    super.show();
+    toFront();
+  }
+
+  public void hide()
+  {
+    // FIXME: call hide() on amy "owned" children here.
+    super.hide();
+  }
+
+  /**
+   * Called to free any resource associated with this window.
+   */
+  public void dispose()
+  {
+    hide();
+
+    Window[] list = getOwnedWindows();
+    for (int i=0; i<list.length; i++)
+      list[i].dispose();
+
+    for (int i = 0; i < ncomponents; ++i)
+      component[i].removeNotify();
+    this.removeNotify();
+  }
+
+  /**
+   * Sends this window to the back so that all other windows display in
+   * front of it.
+   */
+  public void toBack ()
+  {
+    if (peer != null)
       {
-        case WindowEvent.WINDOW_ACTIVATED:
-          window_listeners.windowActivated(event);
-          break;
-
-        case WindowEvent.WINDOW_DEACTIVATED:
-          window_listeners.windowDeactivated(event);
-          break;
-
-        case WindowEvent.WINDOW_ICONIFIED:
-          window_listeners.windowIconified(event);
-          break;
-
-        case WindowEvent.WINDOW_DEICONIFIED:
-          window_listeners.windowDeiconified(event);
-          break;
-
-        case WindowEvent.WINDOW_OPENED:
-          window_listeners.windowOpened(event);
-          break;
-
-        case WindowEvent.WINDOW_CLOSING:
-          window_listeners.windowClosing(event);
-          break;
-
-        case WindowEvent.WINDOW_CLOSED:
-          window_listeners.windowClosed(event);
-          break;
-
-        default:
-          break;
+	WindowPeer wp = (WindowPeer) peer;
+	wp.toBack ();
       }
-}
+  }
 
-/*************************************************************************/
+  /**
+   * Brings this window to the front so that it displays in front of
+   * any other windows.
+   */
+  public void toFront ()
+  {
+    if (peer != null)
+      {
+	WindowPeer wp = (WindowPeer) peer;
+	wp.toFront ();
+      }
+  }
 
-/**
-  * Post a Java 1.0 event to the event queue.
-  *
-  * @param event The event to post.
+  /**
+   * Returns the toolkit used to create this window.
+   *
+   * @return The toolkit used to create this window.
+   *
+   * @specnote Unlike Component.getToolkit, this implementation always 
+   *           returns the value of Toolkit.getDefaultToolkit().
+   */
+  public Toolkit getToolkit()
+  {
+    return Toolkit.getDefaultToolkit ();    
+  }
 
-public boolean
-postEvent(Event event)
-{
-  return(false);
-}
+  /**
+   * Returns the warning string that will be displayed if this window is
+   * popped up by an unsecure applet or application.
+   *
+   * @return The unsecure window warning message.
+   */
+  public final String getWarningString()
+  {
+    boolean secure = true;
+    /* boolean secure = SecurityManager.checkTopLevelWindow(...) */
+
+    if (!secure)
+      {
+        if (warningString != null)
+	  return warningString;
+	else
+	  {
+	    String warning = System.getProperty("awt.appletWarning");
+	    return warning;
+	  }
+      }
+    return null;
+  }
+
+  /**
+   * Returns the locale that this window is configured for.
+   *
+   * @return The locale this window is configured for.
+   */
+  public Locale getLocale ()
+  {
+    return locale == null ? Locale.getDefault () : locale;
+  }
+
+  /*
+  /** @since 1.2
+  public InputContext getInputContext()
+  {
+    // FIXME
+  }
   */
-/*************************************************************************/
 
-/**
-  * Sets the cursor for this window to the specifiec cursor.
-  *
-  * @param cursor The new cursor for this window.
+  /**
+   * Sets the cursor for this window to the specifiec cursor.
+   *
+   * @param cursor The new cursor for this window.
+   */
+  public void setCursor(Cursor cursor)
+  {
+    super.setCursor(cursor);
+  }
+
+  public Window getOwner()
+  {
+    return (Window) parent;
+  }
+
+  /** @since 1.2 */
+  public Window[] getOwnedWindows()
+  {
+    // FIXME: return array containing all the windows this window currently 
+    // owns.
+    return null;
+  }
+
+  /**
+   * Adds the specified listener to the list of <code>WindowListeners</code>
+   * that will receive events for this window.
+   *
+   * @param listener The <code>WindowListener</code> to add.
+   */
+  public synchronized void addWindowListener (WindowListener listener)
+  {
+    windowListener = AWTEventMulticaster.add (windowListener, listener);
+  }
+
+  /**
+   * Removes the specified listener from the list of
+   * <code>WindowListeners</code> that will receive events for this window.
+   *
+   * @param listener The <code>WindowListener</code> to remove.
+   */
+  public synchronized void removeWindowListener (WindowListener listener)
+  {
+    windowListener = AWTEventMulticaster.remove (windowListener, listener);
+  }
+
+  /** @since 1.3 */
+  public EventListener[] getListeners(Class listenerType)
+  {
+    if (listenerType == WindowListener.class)
+      return getListenersImpl(listenerType, windowListener);
+    else return super.getListeners(listenerType);
+  }
+
+  void dispatchEventImpl(AWTEvent e)
+  {
+    // Make use of event id's in order to avoid multiple instanceof tests.
+    if (e.id <= WindowEvent.WINDOW_LAST 
+        && e.id >= WindowEvent.WINDOW_FIRST
+        && (windowListener != null 
+	    || (eventMask & AWTEvent.WINDOW_EVENT_MASK) != 0))
+      processEvent(e);
+    else
+      super.dispatchEventImpl(e);
+  }
+
+  /**
+   * Processes the specified event for this window.  If the event is an
+   * instance of <code>WindowEvent</code>, then
+   * <code>processWindowEvent()</code> is called to process the event,
+   * otherwise the superclass version of this method is invoked.
+   *
+   * @param event The event to process.
+   */
+  protected void processEvent (AWTEvent evt)
+  {
+    if (evt instanceof WindowEvent)
+      processWindowEvent ((WindowEvent) evt);
+    else
+      super.processEvent (evt);
+  }
+
+  /**
+   * Dispatches this event to any listeners that are listening for
+   * <code>WindowEvents</code> on this window.  This method only gets
+   * invoked if it is enabled via <code>enableEvents()</code> or if
+   * a listener has been added.
+   *
+   * @param event The event to process.
+   */
+  protected void processWindowEvent (WindowEvent evt)
+  {
+    if (windowListener != null)
+      {
+	switch (evt.getID ())
+	  {
+	  case WindowEvent.WINDOW_ACTIVATED:
+	    windowListener.windowActivated (evt);
+	    break;
+	  case WindowEvent.WINDOW_CLOSED:
+	    windowListener.windowClosed (evt);
+	    break;
+	  case WindowEvent.WINDOW_CLOSING:
+	    windowListener.windowClosing (evt);
+	    break;
+	  case WindowEvent.WINDOW_DEACTIVATED:
+	    windowListener.windowDeactivated (evt);
+	    break;
+	  case WindowEvent.WINDOW_DEICONIFIED:
+	    windowListener.windowDeiconified (evt);
+	    break;
+	  case WindowEvent.WINDOW_ICONIFIED:
+	    windowListener.windowIconified (evt);
+	    break;
+	  case WindowEvent.WINDOW_OPENED:
+	    windowListener.windowOpened (evt);
+	    break;
+	  }
+      }
+  }
+
+  /**
+   * Returns the child window that has focus if this window is active.
+   * This method returns <code>null</code> if this window is not active
+   * or no children have focus.
+   *
+   * @return The component that has focus, or <code>null</code> if no
+   * component has focus.
+   */
+  public Component getFocusOwner()
+  {
+    // FIXME
+    return null;
+  }
+
+  /**
+   * Post a Java 1.0 event to the event queue.
+   *
+   * @param event The event to post.
+   */
+  public boolean postEvent(Event e)
+  {
+    // FIXME
+    return false;
+  }
+
+  /**
+   * Tests whether or not this window is visible on the screen.
+   *
+   * @return <code>true</code> if this window is visible, <code>false</code>
+   * otherwise.
+   */
+  public boolean isShowing()
+  {
+    return super.isShowing();
+  }
+
+  /** @since 1.2 */
+  public void applyResourceBundle(ResourceBundle rb)
+  {
+    // FIXME
+  }
+
+  /** @since 1.2 */
+  public void applyResourceBundle(String rbName)
+  {
+    ResourceBundle rb = ResourceBundle.getBundle(rbName);
+    if (rb != null)
+      applyResourceBundle(rb);    
+  }
+
+  /*
+  public AccessibleContext getAccessibleContext()
+  {
+    // FIXME
+  }
   */
-public synchronized void
-setCursor(Cursor cursor)
-{
-  super.setCursor(cursor);
+
+  /** 
+   * Get graphics configuration.  The implementation for Window will
+   * not ask any parent containers, since Window is a toplevel
+   * window and not actually embedded in the parent component.
+   */
+  public GraphicsConfiguration getGraphicsConfiguration()
+  {
+    if (graphicsConfiguration != null) return graphicsConfiguration;
+    if (peer != null) return peer.getGraphicsConfiguration();
+    return null;
+  }
+
 }
-
-/*************************************************************************/
-
-/**
-  * Makes this window visible and brings it to the front.
-  */
-public void
-show()
-{
-  if (getPeer() == null)
-    addNotify();
-
-  super.show();
-  toFront();
-}
-
-/*************************************************************************/
-
-/**
-  * Tests whether or not this window is visible on the screen.
-  *
-  * @return <code>true</code> if this window is visible, <code>false</code>
-  * otherwise.
-  */
-public boolean
-isShowing()
-{
-  return(super.isShowing());
-}
-
-/*************************************************************************/
-
-/**
-  * Brings this window to the front so that it displays in front of
-  * any other windows.
-  */
-public void
-toFront()
-{
-  ((WindowPeer)getPeer()).toFront();
-}
-
-/*************************************************************************/
-
-/**
-  * Sends this window to the back so that all other windows display in
-  * front of it.
-  */
-public void
-toBack()
-{
-  ((WindowPeer)getPeer()).toBack();
-}
-
-/*************************************************************************/
-
-/**
-  * Returns the toolkit used to create this window.
-  *
-  * @return The toolkit used to create this window.
-  */
-public Toolkit
-getToolkit()
-{
-  return(super.getToolkit());
-}
-
-/*************************************************************************/
-
-/**
-  * Returns the locale that this window is configured for.
-  *
-  * @return The locale this window is configured for.
-  */
-public Locale
-getLocale()
-{
-  return(super.getLocale());
-}
-
-/*************************************************************************/
-
-/**
-  * Returns the child window that has focus if this window is active.
-  * This method returns <code>null</code> if this window is not active
-  * or no children have focus.
-  *
-  * @return The component that has focus, or <code>null</code> if no
-  * component has focus.
-  */
-public Component
-getFocusOwner()
-{
-  // FIXME: Implement
-  return(null);
-}
-
-/*************************************************************************/
-
-/**
-  * Relays out this window's child components at their preferred size.
-  */
-public void
-pack()
-{
-  Dimension dim = getPreferredSize();
-  setSize(dim);
-  doLayout();
-}
-
-/*************************************************************************/
-
-/**
-  * Creates the native peer for this window.
-  */
-public void
-addNotify()
-{
-  setPeer((ComponentPeer)getToolkit().createWindow(this));
-}
-
-/*************************************************************************/
-
-/**
-  * Called to free any resource associated with this window.
-  */
-public void
-dispose()
-{
-  // Destroy all component peers.
-  Component[] c = getComponents();
-  if (c.length > 0)
-    for (int i = 0; i < c.length; i++)
-      c[i].removeNotify();
-
-  removeNotify();
-}
-
-} // class Window 
-

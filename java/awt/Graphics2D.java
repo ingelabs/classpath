@@ -1,0 +1,150 @@
+/* Copyright (C) 2000, 2002  Free Software Foundation
+
+This file is part of GNU Classpath.
+
+GNU Classpath is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
+
+GNU Classpath is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with GNU Classpath; see the file COPYING.  If not, write to the
+Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+02111-1307 USA.
+
+As a special exception, if you link this library with other files to
+produce an executable, this library does not by itself cause the
+resulting executable to be covered by the GNU General Public License.
+This exception does not however invalidate any other reasons why the
+executable file might be covered by the GNU General Public License. */
+
+package java.awt;
+
+import java.awt.geom.AffineTransform;
+import java.awt.image.ImageObserver;
+
+//import java.util.Map;
+
+/**
+ * @author Rolf W. Rasmussen <rolfwr@ii.uib.no>
+ */
+public abstract class Graphics2D extends Graphics
+{
+
+  protected Graphics2D()
+  {
+  }
+  
+  public void draw3DRect(int x, int y, int width, int height,
+			 boolean raised)
+  {
+    super.draw3DRect(x, y, width, height, raised);
+  }
+  
+  public void fill3DRect(int x, int y, int width, int height,
+			 boolean raised)
+  {
+    super.fill3DRect(x, y, width, height, raised);
+  }
+
+  public abstract void draw(Shape shape);
+
+  public abstract boolean drawImage(Image image, AffineTransform xform,
+				    ImageObserver obs);
+
+  /*
+  public abstract void drawImage(BufferedImage image,
+				 BufferedImageOp op,
+				 int x,
+				 int y);
+  */
+
+  /*
+  public abstract void drawRenderedImage(RenderedImage image,
+					 AffineTransform xform);
+  */
+
+  /*
+  public abstract void drawRenderableImage(RenderableImage image,
+                                           AffineTransform xform);
+  */
+
+  public abstract void drawString(String text, int x, int y);
+
+  public abstract void drawString(String text, float x, float y);
+    
+  /*
+  public abstract void drawString(AttributedCharacterIterator iterator,
+                                  int x, int y);
+  */
+
+  /*
+  public abstract void drawString(AttributedCharacterIterator iterator,
+				  float x, float y);
+  */
+
+  /*
+  public abstract void drawGlyphVector(GlyphVector g, float x, float y);
+  */
+
+  public abstract void fill(Shape shape);
+    
+  public abstract boolean hit(Rectangle rect, Shape text,
+			      boolean onStroke);
+
+  public abstract GraphicsConfiguration getDeviceConfiguration();
+
+  //public abstract void setComposite(Composite comp);
+    
+  public abstract void setPaint(Paint paint);
+
+  //public abstract void setStroke(Stroke stroke)
+
+  public abstract void setRenderingHint(RenderingHints.Key hintKey,
+                                        Object hintValue);
+
+  public abstract Object getRenderingHint(RenderingHints.Key hintKey);
+  
+  //public abstract void setRenderingHints(Map hints);
+
+  //public abstract void addRenderingHints(Map hints);
+
+  public abstract RenderingHints getRenderingHints();
+
+  public abstract void translate(int x, int y);
+
+  public abstract void translate(double tx, double ty);
+    
+  public abstract void rotate(double theta);
+
+  public abstract void rotate(double theta, double x, double y);
+
+  public abstract void scale(double scaleX, double scaleY);
+
+  public abstract void shear(double shearX, double shearY);
+
+  public abstract void transform(AffineTransform Tx);
+  
+  public abstract void setTransform(AffineTransform Tx);
+
+  public abstract AffineTransform getTransform();
+
+  public abstract Paint getPaint();
+
+  //public abstract Composite getComposite();
+
+  public abstract void setBackground(Color color);
+
+  public abstract Color getBackground();
+
+  //public abstract Stroke getStroke();    
+
+  public abstract void clip(Shape s);
+
+  //public abstract FontRenderContext getFontRenderContext()
+}

@@ -1,3 +1,113 @@
+2002-01-14  Tom Tromey  <tromey@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(getGraphicsConfiguration): New method.
+	(setMask): Likewise.
+
+	Start of AWT merge with libgcj:
+	* java/awt/CardLayout.java: Merged with libgcj.
+	* java/awt/Rectangle.java: Merged with libgcj.
+	* java/awt/Frame.java (Frame): Use `super()'.
+	(setIconImage): Only notify peer if it exists.
+	(setResizable): Likewise.
+	(setTitle): Likewise.
+	(setMenuBar): Likewise.
+	(getState): New method from libgcj.
+	(Frame(GraphicsConfiguration)): Likewise.
+	(Frame(String,GraphicsConfiguration)): Likewise.
+	(addNotify): New implementation from libgcj.
+	(getFrames): New stub from libgcj.
+	* java/awt/Paint.java: New file from libgcj.
+	* java/awt/RenderingHints.java: New file from libgcj.
+	* java/awt/Graphics.java (drawRect(int,int,int,int)): New
+	implementation from libgcj.
+	(draw3DRect): New method from libgcj.
+	(drawBytes): Likewise.
+	(hitClip): Likewise.
+	(getClipBounds(Rectangle)): Likewise.
+	(fill3DRect): Implementation from libgcj.
+	* java/awt/image/DirectColorModel.java: Merged with libgcj.
+	* java/awt/Transparency.java: New file from libgcj.
+	* java/awt/image/ColorModel.java: Merged with libgcj.
+	* java/awt/geom/AffineTransform.java: New file from libgcj.
+	* java/awt/geom/Dimension2D.java: New file from libgcj.
+	* java/awt/geom/Ellipse2D.java: New file from libgcj.
+	* java/awt/geom/IllegalPathStateException.java: New file from libgcj.
+	* java/awt/geom/Line2D.java: New file from libgcj.
+	* java/awt/geom/NoninvertibleTransformException.java: New file
+	from libgcj.
+	* java/awt/geom/PathIterator.java: New file from libgcj.
+	* java/awt/geom/Point2D.java: New file from libgcj.
+	* java/awt/geom/Rectangle2D.java: New file from libgcj.
+	* java/awt/geom/Rectangle2D.java: New file from libgcj.
+	* java/awt/geom/RectanglularShape.java: New file from libgcj.
+	* java/awt/geom/RoundRectangle2D.java: New file from libgcj.
+	* java/awt/Graphics2D.java: New file from libgcj.
+	* java/awt/image/Raster.java: New file from libgcj.
+	* java/awt/image/ComponentColorModel.java: New file from libgcj.
+	* java/awt/image/BufferedImage.java: New file from libgcj.
+	* java/awt/image/DataBuffer.java: New file from libgcj.
+	* java/awt/image/DataBufferByte.java: New file from libgcj.
+	* java/awt/image/DataBufferInt.java: New file from libgcj.
+	* java/awt/image/DataBufferUShort.java: New file from libgcj.
+	* java/awt/image/WritableRaster.java: New file from libgcj.
+	* java/awt/image/ComponentSampleModel.java: New file from libgcj.
+	* java/awt/image/PackedColorModel.java: New file from libgcj.
+	* java/awt/image/RasterOp.java: New file from libgcj.
+	* java/awt/image/SampleModel.java: New file from libgcj.
+	* java/awt/image/SinglePixelPackedSampleModel.java: New file from
+	libgcj.
+	* java/awt/EventDispatcher.java: Removed.
+	* java/awt/EventDispatchThread.java: New file from libgcj.
+	* java/awt/Window.java: Merged with libgcj.
+	* java/awt/color/ColorSpace.java: New file from libgcj.
+	* java/awt/color/ICC_ColorSpace.java: Likewise.
+	* java/awt/color/ICC_Profile.java: Likewise.
+	* java/awt/AWTEventMulticaster.java: Merged with libgcj.
+	* java/awt/event/HierarchyListener.java: New file from libgcj.
+	* java/awt/event/HierarchyEvent.java: New file from libgcj.
+	* java/awt/event/HierarchyBoundsListener.java: New file from
+	libgcj.
+	* java/awt/event/HierarchyBoundsAdapter.java: New file from
+	libgcj.
+	* java/awt/peer/ComponentPeer.java (getGraphicsConfiguration): New
+	method.
+	(setEventMask): Likewise.
+	* java/awt/AWTEvent.java: Merged with libgcj.
+	* java/awt/Event.java: New file from libgcj.
+	* java/awt/GraphicsConfiguration.java: New file from libgcj.
+	* java/awt/Component.java: Merged with libgcj.
+	* java/awt/Container.java (addImpl): Handle case where constraint
+	is not a String.  Post event via system event queue.
+	(remove): Post event via system event queue.
+	(validateTree): Only validate child if it is invalid.
+	(getAlignmentX): Call super method as default.
+	(getAlignmentY): Likewise.
+	(addContainerListener): Now synchronized.
+	(removeContainerListener): Likewise.
+	(addNotifyContainerChildren): Now private.
+	* java/awt/FlowLayout.java (serialVersionUID): New field.
+	(setAlignment): Better exception message.
+	(layoutContainer): Don't compute component's preferred size unless
+	we're going to use it.
+	* java/awt/ComponentOrientation.java: New file from libgcj.
+	* java/awt/BorderLayout.java (AFTER_LAST_LINE, AFTER_LINE_ENDS,
+	BEFORE_FIRST_LINE, BEFORE_LINE_BEGINS): New constants.
+	(firstLine, lastLine, firstItem, lastItem): New fields.
+	(addLayoutComponent): Handle case where constraints is null.
+	Also, handle relative locations.
+	(removeLayoutComponent): Handle relative locations.
+	(MIN, MAX, PREF): New constants.
+	(calcCompSize): New method.
+	(calcSize): New method.
+	(minimumLayoutSize): Use it.
+	(preferredLayoutSize): Likewise.
+	(maximumLayoutSize): Likewise.
+	(toString): Include more information.
+	(setBounds): New method.
+	(layoutContainer): Use libgcj implementation; extended to handle
+	relative locations.
+
 2002-01-15  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/lang/Double.java (equals, compare): Fix 0.0 vs. -0.0 math.

@@ -1,5 +1,5 @@
 /* ComponentPeer.java -- Toplevel component peer
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -32,41 +32,48 @@ import java.awt.image.*;
 
 public interface ComponentPeer
 {
+  public int checkImage(Image img, int width, int height, 
+			ImageObserver ob);
+  public Image createImage(ImageProducer prod);
+  public Image createImage(int width, int height);
+  public void disable();
+  public void dispose();
+  public void enable();
+  public ColorModel getColorModel();
+  public FontMetrics getFontMetrics(Font f);
+  public Graphics getGraphics();
+  public Point getLocationOnScreen();
+  public Dimension getMinimumSize();
+  public Dimension getPreferredSize();
+  public Toolkit getToolkit();
+  // The JCL says that handleEvent returns boolean.  However, we've
+  // experimentally determined that it in fact actually returns void.
+  public void handleEvent(AWTEvent e);
+  public void hide();
+  public boolean isFocusTraversable();
+  public Dimension minimumSize();
+  public Dimension preferredSize();
+  public void paint(Graphics graphics);
+  public boolean prepareImage(Image img, int width, int height,
+				       ImageObserver ob);
+  public void print(Graphics graphics);
+  public void repaint(long tm, int x, int y, int width, int height);
+  public void requestFocus();
+  public void reshape(int x, int y, int width, int height);
+  public void setBackground(Color color);
+  public void setBounds(int x, int y, int width, int height);
+  public void setCursor(Cursor cursor);
+  public void setEnabled(boolean enabled);
+  public void setFont(Font font);
+  public void setForeground(Color color);
+  public void setVisible(boolean visible);
+  public void show();
 
-public abstract int checkImage(Image img, int width, int height, 
-                               ImageObserver ob);
-public abstract Image createImage(ImageProducer prod);
-public abstract Image createImage(int width, int height);
-public abstract void disable();
-public abstract void dispose();
-public abstract void enable();
-public abstract ColorModel getColorModel();
-public abstract FontMetrics getFontMetrics(Font f);
-public abstract Graphics getGraphics();
-public abstract Point getLocationOnScreen();
-public abstract Dimension getMinimumSize();
-public abstract Dimension getPreferredSize();
-public abstract Toolkit getToolkit();
-public abstract void handleEvent(AWTEvent e);
-public abstract void hide();
-public abstract boolean isFocusTraversable();
-public abstract Dimension minimumSize();
-public abstract Dimension preferredSize();
-public abstract void paint(Graphics graphics);
-public abstract boolean prepareImage(Image img, int width, int height,
-                                     ImageObserver ob);
-public abstract void print(Graphics graphics);
-public abstract void repaint(long tm, int x, int y, int width, int height);
-public abstract void requestFocus();
-public abstract void reshape(int x, int y, int width, int height);
-public abstract void setBackground(Color color);
-public abstract void setBounds(int x, int y, int width, int height);
-public abstract void setCursor(Cursor cursor);
-public abstract void setEnabled(boolean enabled);
-public abstract void setFont(Font font);
-public abstract void setForeground(Color color);
-public abstract void setVisible(boolean visible);
-public abstract void show();
+  /** 
+   * Get the graphics configuration of the component. The color model
+   * of the component can be derived from the configuration.
+   */
+  GraphicsConfiguration getGraphicsConfiguration();
 
-} // interface ComponentPeer
-
+  public void setEventMask (long mask);
+}

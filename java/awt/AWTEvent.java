@@ -1,5 +1,4 @@
-/* AWTEvent.java -- Toplevel AWT event class
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* Copyright (C) 1999, 2000, 2002  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -27,207 +26,178 @@ executable file might be covered by the GNU General Public License. */
 
 package java.awt;
 
-/**
-  * 
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public abstract class AWTEvent extends java.util.EventObject 
-       implements java.io.Serializable
-{
-
-/*
- * Static Variables
+/* Written using on-line Java 2 Platform Standard Edition v1.3 API 
+ * Specification, as well as "The Java Class Libraries", 2nd edition 
+ * (Addison-Wesley, 1998).
+ * Status:  Believed complete and correct, except for the java.awt.Event 
+ * compatibility constructor.
  */
 
 /**
+ * AWTEvent is the root event class for all AWT events in the JDK 1.1 event 
+ * model. It supersedes the Event class from JDK 1.0.
+ * @author Warren Levy  <warrenl@cygnus.com>
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ */
+public abstract class AWTEvent extends java.util.EventObject
+{
+  /**
+   * @serial Indicates whether or not this event has been consumed.
+   */
+  protected boolean consumed;
+
+  /**
+   * @serial The identifier number of this event.
+   */
+  protected int id;
+
+  /**
   * Mask for selecting component events.
   */
-public static final int COMPONENT_EVENT_MASK = 0x001;
+  public static final long COMPONENT_EVENT_MASK = 0x001;
 
-/**
+  /**
   * Mask for selecting container events.
   */
-public static final int CONTAINER_EVENT_MASK = 0x002;
+  public static final long CONTAINER_EVENT_MASK = 0x002;
 
-/**
+  /**
   * Mask for selecting component focus events.
   */
-public static final int FOCUS_EVENT_MASK = 0x004;
+  public static final long FOCUS_EVENT_MASK = 0x004;
 
-/**
+  /**
   * Mask for selecting keyboard events.
   */
-public static final int KEY_EVENT_MASK = 0x008;
+  public static final long KEY_EVENT_MASK = 0x008;
 
-/**
+  /**
   * Mask for mouse button events.
   */
-public static final int MOUSE_EVENT_MASK = 0x010;
+  public static final long MOUSE_EVENT_MASK = 0x010;
 
-/**
+  /**
   * Mask for mouse motion events.
   */
-public static final int MOUSE_MOTION_EVENT_MASK = 0x020;
+  public static final long MOUSE_MOTION_EVENT_MASK = 0x020;
 
-/**
+  /**
   * Mask for window events.
   */
-public static final int WINDOW_EVENT_MASK = 0x040;
+  public static final long WINDOW_EVENT_MASK = 0x040;
 
-/**
+  /**
   * Mask for action events.
   */
-public static final int ACTION_EVENT_MASK = 0x080;
+  public static final long ACTION_EVENT_MASK = 0x080;
 
-/**
+  /**
   * Mask for adjustment events.
   */
-public static final int ADJUSTMENT_EVENT_MASK = 0x100;
+  public static final long ADJUSTMENT_EVENT_MASK = 0x100;
 
-/**
+  /**
   * Mask for item events.
   */
-public static final int ITEM_EVENT_MASK = 0x200;
+  public static final long ITEM_EVENT_MASK = 0x200;
 
-/**
+  /**
   * Mask for text events.
   */
-public static final int TEXT_EVENT_MASK = 0x400;
+  public static final long TEXT_EVENT_MASK = 0x400;
 
-/**
+  /**
   * This is the highest number for event ids that are reserved for use by
   * the AWT system itself.
   */
-public static final int RESERVED_ID_MAX = 1999;
+  public static final int RESERVED_ID_MAX = 1999;
 
-/*************************************************************************/
+  public static final long INPUT_METHOD_EVENT_MASK = 1 << 11;
 
-/*
- * Instance Variables
- */
+  /* Additional event selection masks from JDK 1.3 javadocs */
+  public static final long PAINT_EVENT_MASK            = 1 << 13,
+			   INVOCATION_EVENT_MASK       = 1 << 14,
+			   HIERARCHY_EVENT_MASK        = 1 << 15,
+			   HIERARCHY_BOUNDS_EVENT_MASK = 1 << 16;
 
-/**
-  * @serial The identifier number of this event.
-  */
-protected int id;
+  /**
+   * Initializes a new instance of <code>AWTEvent</code> from the
+   * specified Java 1.0 event object.
+   *
+   * @param event The Java 1.0 event to initialize from.
+   *
+   *
+   * Removed this method because we no longer support Java 1.0
+   *
+   */
+  public AWTEvent(Event event)
+  {
+    // FIXME??
+    super(event.target);
+    this.id = event.id;
+  }
 
-/**
-  * @serial Indicates whether or not this event has been consumed.
-  */
-protected boolean consumed;
+  /**
+   * Initializes a new instance of <code>AWTEvent</code> with the specified
+   * source and id.
+   *
+   * @param source The object that caused the event.
+   * @param id The event id.
+   */
+  public AWTEvent(Object source, int id)
+  {
+    super(source);
+    this.id = id;
+  }
 
-// Used by EventQueue
-AWTEvent next;
+  /**
+   * Returns the id number of this event.
+   *
+   * @return The id number of this event.
+   */
+  public int getID()
+  {
+    return id;
+  }
 
-/*************************************************************************/
+  /**
+   * Returns a string representation of this event.
+   *
+   * @return A string representation of this event.
+   */
+  public String paramString ()
+  {
+    return "";
+  }
 
-/*
- * Constructors
- */
+  /**
+   * Returns a string representation of this event.
+   *
+   * @return A string representation of this event.
+   */
+  public String toString ()
+  {
+    return getClass().getName() + "[" + paramString() + "] on " + source;
+  }
 
-/**
-  * Initializes a new instance of <code>AWTEvent</code> from the
-  * specified Java 1.0 event object.
-  *
-  * @param event The Java 1.0 event to initialize from.
-  *
-  *
-  * Removed this method because we no longer support Java 1.0
-  *
-  
-public
-AWTEvent(Event event)
-{
-  this(event.target, event.id);
+  /**
+   * Consumes this event so that it will not be processed in the default
+   * manner.
+   */
+  protected void consume()
+  {
+    consumed = true;
+  }
+
+  /**
+   * Tests whether not not this event has been consumed.  A consumed event
+   * is not processed in the default manner.
+   *
+   * @return <code>true</code> if this event has been consumed, 
+   * <code>false</code> otherwise.
+   */
+  protected boolean isConsumed()
+  {
+    return consumed;
+  }
 }
-*/
-
-/*************************************************************************/
-
-/**
-  * Initializes a new instance of <code>AWTEvent</code> with the specified
-  * source and id.
-  *
-  * @param source The object that caused the event.
-  * @param id The event id.
-  */
-public
-AWTEvent(Object source, int id)
-{
-  super(source);
-  this.id = id;
-}
-
-/*************************************************************************/
-
-/*
- * Instance Methods
- */
-
-/**
-  * Returns the id number of this event.
-  *
-  * @return The id number of this event.
-  */
-public int
-getID()
-{
-  return(id);
-}
-
-/*************************************************************************/
-
-/**
-  * Tests whether not not this event has been consumed.  A consumed event
-  * is not processed in the default manner.
-  *
-  * @return <code>true</code> if this event has been consumed, 
-  * <code>false</code> otherwise.
-  */
-public boolean
-isConsumed()
-{
-  return(consumed);
-}
-
-/*************************************************************************/
-
-/**
-  * Consumes this event so that it will not be processed in the default
-  * manner.
-  */
-protected void
-consume()
-{
-  consumed = true;
-}
-
-/*************************************************************************/
-
-/**
-  * Returns a string representation of this event.
-  *
-  * @return A string representation of this event.
-  */
-public String
-paramString()
-{
-  return(toString());
-}
-
-/*************************************************************************/
-
-/**
-  * Returns a string representation of this event.
-  *
-  * @return A string representation of this event.
-  */
-public String
-toString()
-{
-  return(getClass().getName() + "(id=" + getID() + ")");
-}
-
-} // class AWTEvent
-

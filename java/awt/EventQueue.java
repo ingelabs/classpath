@@ -1,5 +1,4 @@
-/* EventQueue.java -- Event queuing mechanism
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* Copyright (C) 1999, 2000, 2001, 2002  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -27,161 +26,287 @@ executable file might be covered by the GNU General Public License. */
 
 package java.awt;
 
+import java.awt.event.*;
+import java.util.EmptyStackException;
+import java.lang.reflect.InvocationTargetException;
+
+/* Written using on-line Java 2 Platform Standard Edition v1.3 API 
+ * Specification, as well as "The Java Class Libraries", 2nd edition 
+ * (Addison-Wesley, 1998).
+ * Status:  Believed complete, but untested. Check FIXME's.
+ */
+
 /**
-  * This class manages a queue of <code>AWTEvent</code> objects that
-  * are posted to it.  The AWT system uses only one event queue for all
-  * events.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This class manages a queue of <code>AWTEvent</code> objects that
+ * are posted to it.  The AWT system uses only one event queue for all
+ * events.
+ *
+ * @author Bryce McKinlay
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ */
 public class EventQueue
 {
+  private static final int INITIAL_QUEUE_DEPTH = 8;
+  private AWTEvent[] queue = new AWTEvent[INITIAL_QUEUE_DEPTH];
 
-/*
- * Instance Methods
- */
+  private int next_in = 0; // Index where next event will be added to queue
+  private int next_out = 0; // Index of next event to be removed from queue
 
-// The queue.  We added a package protected field to AWTEvent to make it
-// a convenient linked list.
-private AWTEvent queue;
+  private EventQueue next;
+  private EventQueue prev;
 
-/*************************************************************************/
+  private EventDispatchThread dispatchThread = new EventDispatchThread(this);
 
-/*
- * Constructors
- */
+  /**
+   * Initializes a new instance of <code>EventQueue</code>.
+   */
+  public EventQueue()
+  {
+  }
 
-/**
-  * Initializes a new instance of <code>EventQueue</code>.
-  */
-public
-EventQueue()
-{
-  EventDispatcher ed = new EventDispatcher(this);
-  Thread t = new Thread(ed);
-  t.start();
-}
+  /**
+   * Returns the next event in the queue.  This method will block until
+   * an event is available or until the thread is interrupted.
+   *
+   * @return The next event in the queue.
+   *
+   * @exception InterruptedException If this thread is interrupted while
+   * waiting for an event to be posted to the queue.
+   */
+  public synchronized AWTEvent getNextEvent()
+    throws InterruptedException
+  {
+    if (next != null)
+      return next.getNextEvent();
 
-/*************************************************************************/
-
-/*
- * Instance Variables
- */
-
-/**
-  * Posts a new event to the queue.
-  *
-  * @param event The event to post to the queue.
-  */
-public synchronized void
-postEvent(AWTEvent event)
-{
-  if (queue == null)
-    queue = event;
-  else
-    {
-      AWTEvent end = queue;
-      while (end.next != null)
-        end = end.next;
-
-      end.next = queue;
-    }
-  notify();
-}
-
-/*************************************************************************/
-
-/**
-  * Returns the next event in the queue.  This method will block until
-  * an event is available or until the thread is interrupted.
-  *
-  * @return The next event in the queue.
-  *
-  * @exception InterruptedException If this thread is interrupted while
-  * waiting for an event to be posted to the queue.
-  */
-public synchronized AWTEvent
-getNextEvent() throws InterruptedException
-{
-  for (;;)
-    {
-      if (queue != null)
-        {
-          AWTEvent evt = queue;
-          queue = queue.next;
-          evt.next = null;
-          return(evt);
-        }
+    while (next_in == next_out)
       wait();
-    }
+
+    AWTEvent res = queue[next_out];
+
+    if (++next_out == queue.length)
+      next_out = 0;
+    return res;
+  }
+
+  /**
+   * Returns the next event in the queue without removing it from the queue.
+   * This method will block until an event is available or until the thread
+   * is interrupted.
+   *
+   * @return The next event in the queue.
+   * @specnote Does not block. Returns null if there are no events on the 
+   *            queue. 
+   */ 
+  public synchronized AWTEvent peekEvent()
+  {
+    if (next != null)
+      return next.peekEvent();
+
+    if (next_in != next_out)
+      return queue[next_out];
+    else return null;
+  }
+
+  /**
+   * Returns the next event in the queue that has the specified id
+   * without removing it from the queue.
+   * This method will block until an event is available or until the thread
+   * is interrupted.
+   *
+   * @param id The event id to return.
+   *
+   * @return The next event in the queue.
+   *
+   * @specnote Does not block. Returns null if there are no matching events 
+   *            on the queue. 
+   */ 
+  public synchronized AWTEvent peekEvent(int id)
+  {
+    if (next != null)
+      return next.peekEvent(id);
+
+    int i = next_out;
+    while (i != next_in)
+      {
+        AWTEvent qevt = queue[i];
+        if (qevt.id == id)
+	  return qevt;
+      }
+    return null;
+  }
+
+  /**
+   * Posts a new event to the queue.
+   *
+   * @param event The event to post to the queue.
+   */
+  public synchronized void postEvent(AWTEvent evt)
+  {
+    if (next != null)
+      {
+        next.postEvent(evt);
+	return;
+      }
+    // FIXME: Security checks?
+
+    /* Check for any events already on the queue with the same source 
+       and ID. */	
+    int i = next_out;
+    while (i != next_in)
+      {
+        AWTEvent qevt = queue[i];
+	Object src;
+	if (qevt.id == evt.id
+	    && (src = qevt.getSource()) == evt.getSource()
+	    && src instanceof Component)
+	  {
+	    /* If there are, call coalesceEvents on the source component 
+	       to see if they can be combined. */
+	    Component srccmp = (Component) src;
+	    AWTEvent coalesced_evt = srccmp.coalesceEvents(qevt, evt);
+	    if (coalesced_evt != null)
+	      {
+	        /* Yes. Replace the existing event with the combined event. */
+	        queue[i] = coalesced_evt;
+		return;
+	      }
+            break;
+	  }
+	if (++i == queue.length)
+	  i = 0;
+      }
+
+    queue[next_in] = evt;    
+    if (++next_in == queue.length)
+      next_in = 0;
+
+    if (next_in == next_out)
+      {
+        /* Queue is full. Extend it. */
+        AWTEvent[] oldQueue = queue;
+	queue = new AWTEvent[queue.length * 2];
+
+	int len = oldQueue.length - next_out;
+	System.arraycopy(oldQueue, next_out, queue, 0, len);
+	if (next_out != 0)
+	  System.arraycopy(oldQueue, 0, queue, len, next_out);
+
+	next_out = 0;
+	next_in = oldQueue.length;
+      }
+    notify();
+  }
+
+  /** @since JDK1.2 */
+  public static void invokeAndWait(Runnable runnable)
+    throws InterruptedException, InvocationTargetException
+  {
+    EventQueue eq = Toolkit.getDefaultToolkit().getSystemEventQueue(); 
+    Thread current = Thread.currentThread();
+    if (current == eq.dispatchThread)
+      throw new Error("Can't call invokeAndWait from event dispatch thread");
+
+    InvocationEvent ie = 
+      new InvocationEvent(eq, runnable, current, true);
+
+    synchronized (current)
+      {
+	eq.postEvent(ie);
+	current.wait();
+      }
+
+    Exception exception;
+
+    if ((exception = ie.getException()) != null)
+      throw new InvocationTargetException(exception);
+  }
+
+  /** @since JDK1.2 */
+  public static void invokeLater(Runnable runnable)
+  {
+    EventQueue eq = Toolkit.getDefaultToolkit().getSystemEventQueue(); 
+
+    InvocationEvent ie = 
+      new InvocationEvent(eq, runnable, null, false);
+
+    eq.postEvent(ie);
+  }
+
+  public static boolean isDispatchThread()
+  {
+    EventQueue eq = Toolkit.getDefaultToolkit().getSystemEventQueue(); 
+    return (Thread.currentThread() == eq.dispatchThread);
+  }
+
+  /** Allows a custom EventQueue implementation to replace this one. 
+    * All pending events are transferred to the new queue. Calls to postEvent,
+    * getNextEvent, and peekEvent are forwarded to the pushed queue until it
+    * is removed with a pop().
+    */
+  public synchronized void push(EventQueue newEventQueue)
+  {
+    int i = next_out;
+    while (i != next_in)
+      {
+        newEventQueue.postEvent(queue[i]);
+	next_out = i;
+	if (++i == queue.length)
+	  i = 0;
+      }
+
+    next = newEventQueue;
+    newEventQueue.prev = this;    
+  }
+
+  /** Transfer any pending events from this queue back to the parent queue that
+    * was previously push()ed. Event dispatch from this queue is suspended. */
+  protected void pop() throws EmptyStackException
+  {
+    if (prev == null)
+      throw new EmptyStackException();
+
+    // Don't synchronize both this and prev at the same time, or deadlock could
+    // occur.
+    synchronized (prev)
+      {
+	prev.next = null;
+      }
+
+    synchronized (this)
+      {
+	int i = next_out;
+	while (i != next_in)
+	  {
+            prev.postEvent(queue[i]);
+	    next_out = i;
+	    if (++i == queue.length)
+	      i = 0;
+	  }
+      }
+  }
+
+  protected void dispatchEvent(AWTEvent evt)
+  {
+    if (evt instanceof ActiveEvent)
+      {
+        ActiveEvent active_evt = (ActiveEvent) evt;
+	active_evt.dispatch();
+      }
+    else
+      {
+	Object source = evt.getSource();
+
+	if (source instanceof Component)
+	  {
+            Component srccmp = (Component) source;
+	    srccmp.dispatchEvent(evt);
+	  }
+	else if (source instanceof MenuComponent)
+	  {
+	    MenuComponent srccmp = (MenuComponent) source;
+	    srccmp.dispatchEvent(evt);
+	  }
+      }
+  }
 }
- 
-/*************************************************************************/
-
-/**
-  * Returns the next event in the queue without removing it from the queue.
-  * This method will block until an event is available or until the thread
-  * is interrupted.
-  *
-  * @return The next event in the queue.
-  */
-public synchronized AWTEvent
-peekEvent()
-{
-  for (;;)
-    {
-      if (queue != null)
-        {
-          // We are taking a chance that the user doesn't repost the same
-          // event back to the queue, but AWTEvent isn't cloneable so we
-          // don't have much choice.  If this becomes a problem we'll have
-          // to write a wrapper class for enqueuing.
-          return(queue);
-        }
-
-      try
-        {
-          wait();
-        }
-      catch(InterruptedException e) {  }
-    }
-}
-
-/*************************************************************************/
-
-/**
-  * Returns the next event in the queue that has the specified id
-  * without removing it from the queue.
-  * This method will block until an event is available or until the thread
-  * is interrupted.
-  *
-  * @param id The event id to return.
-  *
-  * @return The next event in the queue.
-  */
-public synchronized AWTEvent
-peekEvent(int id)
-{
-  for(;;)
-    {
-      if (queue != null)
-        {
-          AWTEvent evt = queue;
-          while (evt != null)
-            {
-              if (evt.getID() == id)
-                 return(evt);
-              evt = evt.next;
-            }
-        }
-
-      try
-        {
-          wait();
-        }
-      catch(InterruptedException e) {  }
-    }
-}
-
-} // class EventQueue
-

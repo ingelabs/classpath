@@ -1,5 +1,5 @@
 /* Graphics.java -- Abstract Java drawing class
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -34,6 +34,7 @@ import java.awt.image.ImageObserver;
   * devices such as the screen or printers.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Warren Levy <warrenl@cygnus.com>
   */
 public abstract class Graphics
 {
@@ -325,10 +326,14 @@ fillRect(int x, int y, int width, int height);
 public void
 drawRect(int x, int y, int width, int height)
 {
-  drawLine(x, y, x + width, y);
-  drawLine(x, y, x, y + height);
-  drawLine(x + width, y, x + width, y + height);
-  drawLine(x, y + height, x, y + height);
+  int x1 = x;
+  int y1 = y;
+  int x2 = x + width;
+  int y2 = y + height;
+  drawLine(x1, y1, x2, y1);
+  drawLine(x2, y1, x2, y2);
+  drawLine(x2, y2, x1, y2);
+  drawLine(x1, y2, x1, y1);
 }
 
 /*************************************************************************/
@@ -376,6 +381,34 @@ fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight);
 
 /*************************************************************************/
 
+public void
+draw3DRect(int x, int y, int width, int height, boolean raised)
+{
+  Color color = getColor();
+  Color tl = color.brighter();
+  Color br = color.darker();
+    
+  if (!raised)
+    {
+      Color tmp = tl;
+      tl = br;
+      br = tmp;
+    }
+    
+  int x1 = x;
+  int y1 = y;
+  int x2 = x + width;
+  int y2 = y + height;
+    
+  setColor(tl);
+  drawLine(x1, y1, x2, y1);
+  drawLine(x1, y2, x1, y1);
+  setColor(br);
+  drawLine(x2, y1, x2, y2);
+  drawLine(x2, y1, x1, y2);
+  setColor(color);
+}
+
 /**
   * Fills the specified rectangle with a 3D effect
   *
@@ -389,7 +422,8 @@ fillRoundRect(int x, int y, int width, int height, int arcWidth, int arcHeight);
 public void
 fill3DRect(int x, int y, int width, int height, boolean raised)
 {
-  // FIXME
+  fillRect(x, y, width, height);
+  draw3DRect(x, y, width-1, height-1, raised);
 }
 
 /*************************************************************************/
@@ -584,6 +618,18 @@ drawChars(byte data[], int offset, int length, int x, int y)
   drawString(new String(data, offset, length), x, y);
 }
 
+/*
+public abstract void drawString(AttributedCharacterIterator iterator,
+	        		  int x, int y)
+*/
+
+public void
+drawBytes(byte[] data, int offset, int length, int x, int y)
+{
+  String str = new String(data, offset, length);
+  drawString(str, x, y);
+}
+
 /*************************************************************************/
 
 /**
@@ -722,6 +768,26 @@ toString()
   return(super.toString());
 }
 
+public boolean
+hitClip(int x, int y, int width, int height)
+{
+  throw new UnsupportedOperationException("not implemented yet");
+}
+
+public Rectangle
+getClipBounds(Rectangle r)
+{
+  Rectangle clipBounds = getClipBounds();
+  
+  if (r == null)
+    return clipBounds;
+
+  r.x      = clipBounds.x;
+  r.y      = clipBounds.y;
+  r.width  = clipBounds.width;
+  r.height = clipBounds.height;
+  return r;
+}
 
 } // class Graphics
 

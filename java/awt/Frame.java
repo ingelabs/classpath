@@ -1,5 +1,5 @@
 /* Frame.java -- AWT toplevel window
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -206,10 +206,23 @@ Frame()
 public
 Frame(String title)
 {
-  super(null);
+  super();
   System.err.println("returned");
   this.title = title;
   System.err.println("end");
+}
+
+public
+Frame(GraphicsConfiguration gc)
+{
+  super(gc);
+}
+
+public
+Frame(String title, GraphicsConfiguration gc)
+{
+  super(gc);
+  setTitle(title);
 }
 
 /*************************************************************************/
@@ -240,7 +253,8 @@ public synchronized void
 setTitle(String title)
 {
   this.title = title;
-  ((FramePeer)getPeer()).setTitle(title);
+  if (peer != null)
+    ((FramePeer) peer).setTitle(title);
 }
 
 /*************************************************************************/
@@ -268,7 +282,8 @@ public synchronized void
 setIconImage(Image icon)
 {
   this.icon = icon;
-  ((FramePeer)getPeer()).setIconImage(icon);
+  if (peer != null)
+    ((FramePeer) peer).setIconImage(icon);
 }
 
 /*************************************************************************/
@@ -296,7 +311,8 @@ public synchronized void
 setMenuBar(MenuBar menuBar)
 {
   this.menuBar = menuBar;
-  ((FramePeer)getPeer()).setMenuBar(menuBar);
+  if (peer != null)
+    ((FramePeer) peer).setMenuBar(menuBar);
 }
 
 /*************************************************************************/
@@ -326,7 +342,8 @@ public synchronized void
 setResizable(boolean resizable)
 {
   this.resizable = resizable;
-  ((FramePeer)getPeer()).setResizable(resizable);
+  if (peer != null)
+    ((FramePeer) peer).setResizable(resizable);
 }
 
 /*************************************************************************/
@@ -382,7 +399,9 @@ remove(MenuComponent menu)
 public void
 addNotify()
 {
-  setPeer((ComponentPeer)getToolkit().createFrame(this));
+  if (peer == null)
+    peer = getToolkit ().createFrame (this);
+  super.addNotify();
 }
 
 /*************************************************************************/
@@ -415,6 +434,25 @@ protected String
 paramString()
 {
   return(getClass().getName());
+}
+
+public int
+getState()
+{
+  /* FIXME: State might have changed in the peer... Must check. */
+    
+  return state;
+}
+
+public static Frame[]
+getFrames()
+{
+  //Frame[] array = new Frames[frames.size()];
+  //return frames.toArray(array);
+    
+    // see finalize() comment
+  String msg = "FIXME: can't be implemented without weak references";
+  throw new UnsupportedOperationException(msg);
 }
 
 } // class Frame 

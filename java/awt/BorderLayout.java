@@ -1,5 +1,5 @@
 /* BorderLayout.java -- A layout manager class
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -32,6 +32,7 @@ package java.awt;
   * in certain sectors of the parent container.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Rolf W. Rasmussen  <rolfwr@ii.uib.no>
   */
 public class BorderLayout implements LayoutManager2, java.io.Serializable
 {
@@ -64,6 +65,28 @@ public static final String WEST = "West";
   * Constant indicating the center of the container
   */
 public static final String CENTER = "Center";
+
+/**
+  * Constant indicating the position just after the last line of the
+  * layout.
+  */
+public static final String AFTER_LAST_LINE = "Last";
+
+/**
+  * Constant indicating the position just after the end of the line.
+  */
+public static final String AFTER_LINE_ENDS = "After";
+
+/**
+  * Constant indicating the position just before the first line of the
+  * layout.
+  */
+public static final String BEFORE_FIRST_LINE = "First";
+
+/**
+  * Constant indicating the position at the beginning of the line.
+  */
+public static final String BEFORE_LINE_BEGINS = "Before";
 
 // Serialization constant
 private static final long serialVersionUID = -8658291919501921765L;
@@ -98,6 +121,26 @@ private Component west;
   * @serial
   */
 private Component center;
+
+/**
+  * @serial
+  */
+private Component firstLine;
+
+/**
+  * @serial
+  */
+private Component lastLine;
+
+/**
+  * @serial
+  */
+private Component firstItem;
+
+/**
+  * @serial
+  */
+private Component lastItem;
 
 /**
   * @serial The horizontal gap between components
@@ -212,21 +255,29 @@ setVgap(int vgap)
 public void
 addLayoutComponent(Component component, Object constraints)
 {
-  if (!(constraints instanceof String))
+  if (constraints != null && ! (constraints instanceof String))
     throw new IllegalArgumentException("Constraint must be a string");
 
   String str = (String)constraints;
 
-  if (constraints.equals(NORTH))
-    north = component;
-  else if (constraints.equals(SOUTH))
-    south = component;
-  else if (constraints.equals(EAST))
-    east = component;
-  else if (constraints.equals(WEST))
-    west = component;
-  else if (constraints.equals(CENTER))
+  if (str == null || str.equals(CENTER))
     center = component;
+  if (str.equals(NORTH))
+    north = component;
+  else if (str.equals(SOUTH))
+    south = component;
+  else if (str.equals(EAST))
+    east = component;
+  else if (str.equals(WEST))
+    west = component;
+  else if (str.equals(BEFORE_FIRST_LINE))
+    firstLine = component;
+  else if (str.equals(AFTER_LAST_LINE))
+    lastLine = component;
+  else if (str.equals(BEFORE_LINE_BEGINS))
+    firstItem = component;
+  else if (str.equals(AFTER_LINE_ENDS))
+    lastItem = component;
   else
     throw new IllegalArgumentException("Constraint value not valid: " + str);
 }
@@ -272,6 +323,14 @@ removeLayoutComponent(Component component)
     west = null;
   if (center == component)
     center = null;
+  if (firstItem == component)
+    firstItem = null;
+  if (lastItem == component)
+    lastItem = null;
+  if (firstLine == component)
+    firstLine = null;
+  if (lastLine == component)
+    lastLine = null;
 }
 
 /*************************************************************************/
@@ -286,42 +345,7 @@ removeLayoutComponent(Component component)
 public Dimension 
 minimumLayoutSize(Container target)
 {
-  Insets ins = target.getInsets();
-
-  Dimension ndim = new Dimension(0,0);
-  Dimension sdim = new Dimension(0,0);
-  Dimension edim = new Dimension(0,0);
-  Dimension wdim = new Dimension(0,0);
-  Dimension cdim = new Dimension(0,0);
-
-  if (north != null)
-    ndim = north.getMinimumSize();
-  if (south != null)
-    sdim = south.getMinimumSize();
-  if (east != null)
-    edim = east.getMinimumSize();
-  if (west != null)
-    wdim = west.getMinimumSize();
-  if (center != null)
-    cdim = center.getMinimumSize();
-
-  int width = edim.width + cdim.width + wdim.width + (hgap * 2);
-  if (ndim.width > width)
-    width = ndim.width;
-  if (sdim.width > width)
-    width = sdim.width;
-
-  width += (ins.left + ins.right);
-
-  int height = edim.height;
-  if (cdim.height > height)
-    height = cdim.height;
-  if (wdim.height > height)
-    height = wdim.height;
-
-  height += (ndim.height + sdim.height + (vgap * 2) + ins.top + ins.bottom);
-
-  return(new Dimension(width, height));
+  return calcSize(target, MIN);
 }
 
 /*************************************************************************/
@@ -336,42 +360,7 @@ minimumLayoutSize(Container target)
 public Dimension 
 preferredLayoutSize(Container target)
 {
-  Insets ins = target.getInsets();
-
-  Dimension ndim = new Dimension(0,0);
-  Dimension sdim = new Dimension(0,0);
-  Dimension edim = new Dimension(0,0);
-  Dimension wdim = new Dimension(0,0);
-  Dimension cdim = new Dimension(0,0);
-
-  if (north != null)
-    ndim = north.getPreferredSize();
-  if (south != null)
-    sdim = south.getPreferredSize();
-  if (east != null)
-    edim = east.getPreferredSize();
-  if (west != null)
-    wdim = west.getPreferredSize();
-  if (center != null)
-    cdim = center.getPreferredSize();
-
-  int width = edim.width + cdim.width + wdim.width + (hgap * 2);
-  if (ndim.width > width)
-    width = ndim.width;
-  if (sdim.width > width)
-    width = sdim.width;
-
-  width += (ins.left + ins.right);
-
-  int height = edim.height;
-  if (cdim.height > height)
-    height = cdim.height;
-  if (wdim.height > height)
-    height = wdim.height;
-
-  height += (ndim.height + sdim.height + (vgap * 2) + ins.top + ins.bottom);
-
-  return(new Dimension(width, height));
+  return calcSize(target, PREF);
 }
 
 /*************************************************************************/
@@ -386,42 +375,7 @@ preferredLayoutSize(Container target)
 public Dimension 
 maximumLayoutSize(Container target)
 {
-  Insets ins = target.getInsets();
-
-  Dimension ndim = new Dimension(0,0);
-  Dimension sdim = new Dimension(0,0);
-  Dimension edim = new Dimension(0,0);
-  Dimension wdim = new Dimension(0,0);
-  Dimension cdim = new Dimension(0,0);
-
-  if (north != null)
-    ndim = north.getMaximumSize();
-  if (south != null)
-    sdim = south.getMaximumSize();
-  if (east != null)
-    edim = east.getMaximumSize();
-  if (west != null)
-    wdim = west.getMaximumSize();
-  if (center != null)
-    cdim = center.getMaximumSize();
-
-  int width = edim.width + cdim.width + wdim.width + (hgap * 2);
-  if (ndim.width > width)
-    width = ndim.width;
-  if (sdim.width > width)
-    width = sdim.width;
-
-  width += (ins.left + ins.right);
-
-  int height = edim.height;
-  if (cdim.height > height)
-    height = cdim.height;
-  if (wdim.height > height)
-    height = wdim.height;
-
-  height += (ndim.height + sdim.height + (vgap * 2) + ins.top + ins.bottom);
-
-  return(new Dimension(width, height));
+  return calcSize(target, MAX);
 }
 
 /*************************************************************************/
@@ -484,65 +438,80 @@ invalidateLayout(Container parent)
 public void
 layoutContainer(Container target)
 {
-  Insets ins = target.getInsets();
-  Dimension tdim = target.getSize();
+  Insets i = target.getInsets();
 
-  Dimension ndim = new Dimension(0,0);
-  Dimension sdim = new Dimension(0,0);
-  Dimension edim = new Dimension(0,0);
-  Dimension wdim = new Dimension(0,0);
-  Dimension cdim = new Dimension(0,0);
+  ComponentOrientation orient = target.getComponentOrientation ();
+  boolean left_to_right = orient.isLeftToRight ();
 
-  if (north != null)
-    ndim = north.getPreferredSize();
-  if (south != null)
-    sdim = south.getPreferredSize();
-  if (east != null)
-    edim = east.getPreferredSize();
-  if (west != null)
-    wdim = west.getPreferredSize();
-  if (center != null)
-    cdim = center.getPreferredSize();
+  Component my_north = north;
+  Component my_east = east;
+  Component my_south = south;
+  Component my_west = west;
 
-  if (north != null)
+  // Note that we currently don't handle vertical layouts.  Neither
+  // does JDK 1.3.
+  if (firstLine != null)
+    my_north = firstLine;
+  if (lastLine != null)
+    my_south = lastLine;
+  if (firstItem != null)
     {
-      north.setLocation(ins.left, ins.top);
-      north.setSize(tdim.width - (ins.left + ins.right), ndim.height);
+      if (left_to_right)
+	my_west = firstItem;
+      else
+	my_east = firstItem;
+    }
+  if (lastItem != null)
+    {
+      if (left_to_right)
+	my_east = lastItem;
+      else
+	my_west = lastItem;
     }
 
-  // Blech! - This will bomb if height goes negative
-  int maxh = tdim.height - (ins.top + ins.bottom + ndim.height +
-                            sdim.height + (vgap * 2));
+  Dimension c = calcCompSize(center, PREF);
+  Dimension n = calcCompSize(my_north, PREF);
+  Dimension s = calcCompSize(my_south, PREF);
+  Dimension e = calcCompSize(my_east, PREF);
+  Dimension w = calcCompSize(my_west, PREF);
+  Dimension t = target.getSize();
 
-  if (west != null)
-    {
-      west.setLocation(ins.left, ins.top + ndim.height + vgap);
-      west.setSize(wdim.width, maxh);
-    }
+    /*
+             <-> hgap     <-> hgap
+      +----------------------------+          }
+      |t                           |          } i.top
+      |  +----------------------+  |  --- y1  }
+      |  |n                     |  |
+      |  +----------------------+  |          } vgap
+      |  +---+ +----------+ +---+  |  --- y2  }        }
+      |  |w  | |c         | |e  |  |                   } hh
+      |  +---+ +----------+ +---+  |          } vgap   }
+      |  +----------------------+  |  --- y3  }
+      |  |s                     |  |
+      |  +----------------------+  |          }
+      |                            |          } i.bottom
+      +----------------------------+          }
+         |x1   |x2          |x3
+         <---------------------->
+      <-->         ww           <-->
+     i.left                    i.right
+    */
 
-  // Blech! - This will bomb if width goes negative
-  int cwidth = tdim.width - (ins.left + ins.right + wdim.width +
-                             edim.width + (vgap * 2));
+  int x1 = i.left;
+  int x2 = x1 + w.width + hgap;
+  int x3 = t.width - i.right - e.width;
+  int ww = t.width - i.right - i.left;
 
-  if (center != null)
-    {
-      center.setLocation(ins.left + wdim.width + hgap, 
-                         ins.top + ndim.height + vgap);
-      center.setSize(cwidth, maxh);
-    }
+  int y1 = i.top;
+  int y2 = y1 + n.height + vgap;
+  int y3 = t.height - i.bottom - s.height;
+  int hh = y3-y2-vgap;
 
-  if (east != null)
-    {
-      east.setLocation(ins.left + wdim.width + cwidth + (hgap * 2),
-                       ins.top + ndim.height + vgap);
-      east.setSize(edim.width, maxh);
-    }
-
-  if (south != null)
-    {
-      south.setLocation(ins.left, ins.top + ndim.height + maxh + (vgap * 2));
-      south.setSize(tdim.width - (ins.left + ins.right), sdim.height);                        
-    }
+  setBounds(center, x2, y2, x3-x2-hgap, hh);
+  setBounds(my_north, x1, y1, ww, n.height);
+  setBounds(my_south, x1, y3, ww, s.height);
+  setBounds(my_west, x1, y2, w.width, hh);
+  setBounds(my_east, x3, y2, e.width, hh);
 }
 
 /*************************************************************************/
@@ -555,8 +524,92 @@ layoutContainer(Container target)
 public String
 toString()
 {
-  return(getClass().getName());
+  return getClass().getName() + "[hgap=" + hgap + ",vgap=" + vgap + "]";
 }
 
-} // class BorderLayout 
+private void
+setBounds(Component comp, int x, int y, int w, int h)
+{
+  if (comp == null)
+    return;
+  comp.setBounds(x, y, w, h);
+}
 
+// Some constants for use with calcSize().
+private static final int MIN = 0;
+private static final int MAX = 1;
+private static final int PREF = 2;
+
+private Dimension
+calcCompSize(Component comp, int what)
+{
+  if (comp == null)
+    return new Dimension(0, 0);
+  if (what == MIN)
+    return comp.getMinimumSize();
+  else if (what == MAX)
+    return comp.getMaximumSize();
+  return comp.getPreferredSize();
+}
+
+// This is a helper function used to compute the various sizes for
+// this layout.
+private Dimension
+calcSize(Container target, int what)
+{
+  Insets ins = target.getInsets();
+
+  ComponentOrientation orient = target.getComponentOrientation ();
+  boolean left_to_right = orient.isLeftToRight ();
+
+  Component my_north = north;
+  Component my_east = east;
+  Component my_south = south;
+  Component my_west = west;
+
+  // Note that we currently don't handle vertical layouts.  Neither
+  // does JDK 1.3.
+  if (firstLine != null)
+    my_north = firstLine;
+  if (lastLine != null)
+    my_south = lastLine;
+  if (firstItem != null)
+    {
+      if (left_to_right)
+	my_west = firstItem;
+      else
+	my_east = firstItem;
+    }
+  if (lastItem != null)
+    {
+      if (left_to_right)
+	my_east = lastItem;
+      else
+	my_west = lastItem;
+    }
+      
+  Dimension ndim = calcCompSize(my_north, what);
+  Dimension sdim = calcCompSize(my_south, what);
+  Dimension edim = calcCompSize(my_east, what);
+  Dimension wdim = calcCompSize(my_west, what);
+  Dimension cdim = calcCompSize(center, what);
+
+  int width = edim.width + cdim.width + wdim.width + (hgap * 2);
+  if (ndim.width > width)
+    width = ndim.width;
+  if (sdim.width > width)
+    width = sdim.width;
+
+  width += (ins.left + ins.right);
+
+  int height = edim.height;
+  if (cdim.height > height)
+    height = cdim.height;
+  if (wdim.height > height)
+    height = wdim.height;
+
+  height += (ndim.height + sdim.height + (vgap * 2) + ins.top + ins.bottom);
+
+  return(new Dimension(width, height));
+}
+} // class BorderLayout 
