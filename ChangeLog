@@ -1,3 +1,8 @@
+2005-03-10  Tom Tromey  <tromey@redhat.com>
+
+	* java/io/InputStreamReader.java: Indentation fixlets.  Added
+	'@since' markers.
+
 2005-03-10  Chris Burdess  <dog@bluezoo.org>
 
 	* gnu/xml/dom/ls/SAXEventSink.java: Ignore element declarations if
