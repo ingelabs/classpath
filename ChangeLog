@@ -1,3 +1,8 @@
+2003-02-06  Mark Wielaard <mark@klomp.org>
+
+	* java/io/ObjectOutputStream.java (defaultProtocolVersion): Now
+	defaults to PROTOCOL_VERSION_2
+
 2003-02-04  Mark Wielaard <mark@klomp.org>
 
 	* java/util/jar/JarFile.java: Reindent.
@@ -30,6 +35,7 @@
 	* doc/hacking.texinfo: updated with new sections, modifications
 
 2003-02-01  Stephen Crawley  <crawley@dstc.edu.au>
+
 	* java/math/BigDecimal(valueOf): fix DiagBigDecimal val008, val013
 	tests; see patch #1016 on Savannah.
 

@@ -1405,7 +1405,7 @@ public class ObjectOutputStream extends OutputStream
   // this value comes from 1.2 spec, but is used in 1.1 as well
   private final static int BUFFER_SIZE = 1024;
 
-  private static int defaultProtocolVersion = PROTOCOL_VERSION_1;
+  private static int defaultProtocolVersion = PROTOCOL_VERSION_2;
 
   private DataOutputStream dataOutput;
   private boolean writeDataAsBlocks;
