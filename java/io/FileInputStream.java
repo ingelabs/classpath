@@ -49,6 +49,7 @@ import gnu.java.nio.FileChannelImpl;
  */
 public class FileInputStream extends InputStream
 {
+  private FileChannel ch; /* cached associated file-channel */
 
   /**
    * This is the native file handle for the file this stream is reading from
@@ -283,19 +284,16 @@ public class FileInputStream extends InputStream
    * A file channel must be created by first creating an instance of
    * Input/Output/RandomAccessFile and invoking the getChannel() method on it.
    */
-
-  private FileChannel ch; /* cached associated file-channel */
-
   public FileChannel getChannel() 
   {
-      synchronized (this) 
-  	{
-            // FIXME:  Convert NIO to 64 bit
-  	    if (ch == null)
-  		ch = new gnu.java.nio.FileChannelImpl(
-                   (int)(fd.getNativeFd() & 0xFFFF), this);
-  	}
-      return ch;
+    synchronized (this) 
+      {
+        // FIXME:  Convert NIO to 64 bit
+        if (ch == null)
+          ch = new FileChannelImpl ((int) (fd.getNativeFd () & 0xFFFF), this);
+      }
+    
+    return ch;
   }
 
 } // class FileInputStream

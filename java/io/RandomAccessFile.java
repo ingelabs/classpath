@@ -56,6 +56,8 @@ public class RandomAccessFile implements DataOutput, DataInput
 {
   private FileDescriptor fd;
   
+  private FileChannel ch; /* cached associated file-channel */
+  
   /**
    * Whether or not this file is open in read only mode
    */
@@ -1083,19 +1085,12 @@ public class RandomAccessFile implements DataOutput, DataInput
    * A file channel must be created by first creating an instance of
    * Input/Output/RandomAccessFile and invoking the getChannel() method on it.
    */
-  
-  private FileChannel ch; /* cached associated file-channel */
-  
-  public FileChannel getChannel() 
+  public synchronized FileChannel getChannel() 
   {
-      synchronized (this) 
-  	{
-            // FIXME:  Need to convert NIO to 64 bit
-  	    if (ch == null)
-  		ch = new gnu.java.nio.FileChannelImpl(
-                   (int)(fd.getNativeFd() & 0xFFFF), this);
-  	}
-      return ch;
+    if (ch == null)
+      ch = new FileChannelImpl ((int) (fd.getNativeFd() & 0xFFFF), this);
+
+    return ch;
   }
 
 } // class RandomAccessFile

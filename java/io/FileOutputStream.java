@@ -52,6 +52,8 @@ public class FileOutputStream extends OutputStream
 {
   private FileDescriptor fd;
 
+  private FileChannel ch; /* cached associated file-channel */
+
   /**
    * This method initializes a <code>FileOutputStream</code> object to write
    * to the named file.  The file is created if it does not exist, and
@@ -258,25 +260,17 @@ public class FileOutputStream extends OutputStream
   }
 
   /**
-   *  This method creates a java.nio.channels.FileChannel.
+   * This method creates a java.nio.channels.FileChannel.
    * Nio does not allow one to create a file channel directly.
    * A file channel must be created by first creating an instance of
    * Input/Output/RandomAccessFile and invoking the getChannel() method on it.
    */
-
-  private FileChannel ch; /* cached associated file-channel */
-
-  public FileChannel 
-  getChannel() 
+  public synchronized FileChannel getChannel() 
   {
-      synchronized (this) 
-  	{
-            // FIXME:  Convert NIO to 64 bit
-  	    if (ch == null)
-  		ch = new gnu.java.nio.FileChannelImpl(
-                    (int)(fd.getNativeFd() & 0xFFFF), this);
-  	}
-      return ch;
+    if (ch == null)
+      ch = new FileChannelImpl ((int) (fd.getNativeFd() & 0xFFFF), this);
+
+    return ch;
   }
 
 } // class FileOutputStream

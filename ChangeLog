@@ -1,5 +1,14 @@
 2003-03-23  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/FileInputStream.java
+	(getChannel): Make it synchronized, rewrote implementation.
+	* java/io/FileOutputStream.java
+	(getChannel): Make it synchronized, rewrote implementation.
+	* java/io/RandomAccessFile.java
+	(getChannel): Make it synchronized, rewrote implementation.
+
+2003-03-23  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/ObjectOutputStream.java,
 	java/io/RandomAccessFile.java:
 	Reformated.
