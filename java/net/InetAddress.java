@@ -262,6 +262,32 @@ public class InetAddress implements Serializable
   }
 
   /**
+   * Utility routine to check if the InetAddress in a wildcard address
+   * 
+   * @since 1.4
+   */
+  public boolean isAnyLocalAddress()
+  {
+    // This is the IPv4 implementation.
+    // Any class derived from InetAddress should override this.
+    
+    return equals (ANY_IF);
+  }
+
+  /**
+   * Utility routine to check if the InetAddress is a loopback address
+   * 
+   * @since 1.4
+   */
+  public boolean isLoopbackAddress()
+  {
+    // This is the IPv4 implementation.
+    // Any class derived from InetAddress should override this.
+    
+    return addr [0] == 0x7F;
+  }
+
+  /**
    * Utility routine to check if InetAddress is a link local address
    * 
    * @since 1.4
@@ -364,14 +390,9 @@ public class InetAddress implements Serializable
    */
   public byte[] getAddress()
   {
-    byte[] ipaddr = new byte [addr.length];
-
-    for (int i = 0; i < addr.length; i++)
-      {
-        ipaddr [i] = (byte) addr [i];
-      }
-
-    return ipaddr;
+    // An experiment shows that JDK1.2 returns a different byte array each
+    // time.  This makes sense, in terms of security.
+    return (byte[]) addr.clone();
   }
 
   /**
@@ -405,19 +426,16 @@ public class InetAddress implements Serializable
    */
   public int hashCode()
   {
-    long val1 = 0, val2 = 0;
-
-    // Its obvious here that I have no idea how to generate a good
-    // hash key
-    for (int i = 0; i < addr.length; i++)
-      val1 = val1 + (addr [i] << ((addr.length - i) / 8));
-
-    for (int i = 0; i < addr.length; i++)
-      val2 = val2 + (addr [i] * 10 * i);
-
-    val1 = (val1 >> 1) ^ val2;
-
-    return ((int) val1);
+    // There hashing algorithm is not specified, but a simple experiment
+    // shows that it is equal to the address, as a 32-bit big-endian integer.
+    int hash = 0;
+    int len = addr.length;
+    int i = len > 4 ? len - 4 : 0;
+    
+    for ( ; i < len;  i++)
+      hash = (hash << 8) | (addr[i] & 0xFF);
+    
+    return hash;
   }
 
   /**
@@ -436,14 +454,20 @@ public class InetAddress implements Serializable
         || ! (obj instanceof InetAddress))
       return false;
     
-    byte[] test_ip = ((InetAddress) obj).getAddress();
-
-    if (test_ip.length != addr.length)
+    // "The Java Class Libraries" 2nd edition says "If a machine has
+    // multiple names instances of InetAddress for different name of
+    // that same machine are not equal.  This is because they have
+    // different host names."  This violates the description in the
+    // JDK 1.2 API documentation.  A little experimentation
+    // shows that the latter is correct.
+    byte[] addr2 = ((InetAddress) obj).addr;
+    
+    if (addr.length != addr2.length)
       return false;
     
     for (int i = 0; i < addr.length; i++)
-      if (test_ip [i] != (byte) addr [i])
-        return false;
+      if (addr [i] != addr2 [i])
+	return false;
     
     return true;
   }
@@ -529,12 +553,18 @@ public class InetAddress implements Serializable
    * 
    * @return The address of the host as an InetAddress object.
    *
-   * @exception UnknownHostException If no IP address can be found for the
-   * given hostname
+   * @exception UnknownHostException If no IP address for the host could
+   * be found
+   * @exception SecurityException If a security manager exists and its
+   * checkConnect method doesn't allow the operation
    */
   public static InetAddress getByName (String hostname)
     throws UnknownHostException
   {
+    SecurityManager s = System.getSecurityManager();
+    if (s != null)
+      s.checkConnect (hostname, -1);
+   
     // Default to current host if necessary
     if (hostname == null)
       return getLocalHost();
@@ -588,8 +618,10 @@ public class InetAddress implements Serializable
    *
    * @return All addresses of the host as an array of InetAddress objects.
    * 
-   * @exception UnknownHostException If no IP address can be found for the
-   * given hostname
+   * @exception UnknownHostException If no IP address for the host could
+   * be found
+   * @exception SecurityException If a security manager exists and its
+   * checkConnect method doesn't allow the operation
    */
   public static InetAddress[] getAllByName (String hostname)
     throws UnknownHostException

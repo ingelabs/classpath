@@ -1,5 +1,16 @@
 2003-10-02  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/InetAddress.java
+	(isAnyLocalAddress): New method.
+	(isLoopbackAddress): New method.
+	(getAddress): Clone addr instead of copying it ourself.
+	(hashCode): Merge much simpler (but SUN conform) code from libgcj.
+	(equals): Renamed "test_ip" to "addr2".
+	(getByName): Added security manager check, fixed documentation.
+	(getAllByName): Fixed documentation.
+
+2003-10-02  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/URL.java
 	(DEFAULT_SEARCH_PATH): Added sun.net.www.protocol to search path.
 	(ph_cache): Made it a HashMap.
