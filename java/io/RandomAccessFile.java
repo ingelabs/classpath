@@ -212,7 +212,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public long length () throws IOException
   {
-    return fd.length();
+    return fd.getLength();
   }
 
   /**
@@ -225,7 +225,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public int read () throws IOException
   {
-    return in.read();
+    return fd.read();
   }
 
   /**

@@ -1,5 +1,11 @@
 2003-03-25  Michael Koch <konqueror@gmx.de>
 
+	* java/io/RandomAccessFile.java
+	(length): Replace length() with getLength().
+	(read): Replace in with fd.
+
+2003-03-25  Michael Koch <konqueror@gmx.de>
+
 	* java/io/FileOutputStream.java
 	(getFD): Check FileDescriptor object before using it, Reformatted.
 	(write): Reformatted.
