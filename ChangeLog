@@ -1,3 +1,13 @@
+2003-12-28  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/net/HeaderFieldHelper.java
+	(getHeaderFieldValueByKey): New method.
+	(getHeaderFields): New method.
+	* gnu/java/net/protocol/http/Connection.java
+	(connect): Lowercase key before adding to HeaderFieldHelper object.
+	(getHeaderField): New method.
+	(getHeaderFields): New method.
+
 2003-12-28  Guilhem Lavaux <guilhem@kaffe.org>
 
 	* java/io/ObjectOutputStream.java,
