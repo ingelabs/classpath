@@ -111,6 +111,8 @@ private Decoder in;
 public
 InputStreamReader(InputStream in)
 {
+  if (in == null)
+    throw new NullPointerException();
   this.in = EncodingManager.getDecoder(in);
 }
 
@@ -131,6 +133,8 @@ public
 InputStreamReader(InputStream in, String encoding_name) throws
                                              UnsupportedEncodingException
 {
+  if (in == null || encoding_name == null)
+    throw new NullPointerException();
   this.in = EncodingManager.getDecoder(in, encoding_name);
 }
 
