@@ -446,14 +446,30 @@ _javanet_create(JNIEnv *env, jobject this, jboolean stream)
   assert((*env)!=NULL);
 
   if (stream)
-    TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM(fd,result);
-  else
-    TARGET_NATIVE_NETWORK_SOCKET_OPEN_DATAGRAM(fd,result);
-
-  if (result != TARGET_NATIVE_OK)
     {
-      JCL_ThrowException(env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING());
-      return;
+      /* create a stream socket */
+      TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM(fd,result);
+      if (result != TARGET_NATIVE_OK)
+        {
+          JCL_ThrowException(env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING());
+          return;
+        }
+    }
+  else
+    {
+      /* create a datagram socket, set broadcast option */
+      TARGET_NATIVE_NETWORK_SOCKET_OPEN_DATAGRAM(fd,result);
+      if (result != TARGET_NATIVE_OK)
+        {
+          JCL_ThrowException(env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING());
+          return;
+        }
+      TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_BROADCAST(fd,1,result);
+      if (result != TARGET_NATIVE_OK)
+        {
+          JCL_ThrowException(env, IO_EXCEPTION, TARGET_NATIVE_LAST_ERROR_STRING());
+          return;
+        }
     }
     
   if (stream)
@@ -1076,7 +1092,7 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
 
         TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_TIMEOUT(fd,optval,result);
 #endif
-	return;  // ignore errors and do not throw an exception
+	result = TARGET_NATIVE_OK;  // ignore errors and do not throw an exception
         break;
 
       case SOCKOPT_SO_SNDBUF:
@@ -1085,6 +1101,7 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
         if (mid == NULL)
           { JCL_ThrowException(env, IO_EXCEPTION, 
                                      "Internal error: _javanet_set_option()"); return; }
+
 
         optval = (*env)->CallIntMethod(env, val, mid);
 	if ((*env)->ExceptionOccurred(env))
