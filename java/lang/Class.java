@@ -156,7 +156,7 @@ public final class Class implements Serializable
     Class result = VMClass.forName (name);
     if (result == null)
       result = Class.forName(name, true,
-        VMSecurityManager.getClassContext()[1].getClassLoader());
+			     VMSecurityManager.getClassContext()[1].getClassLoader());
     return result;
   }
 
@@ -201,22 +201,22 @@ public final class Class implements Serializable
               sm.checkPermission(new RuntimePermission("getClassLoader"));
           }
 	if (name.startsWith("["))
-	    return VMClass.loadArrayClass(name, null);
+	  return VMClass.loadArrayClass(name, null);
 	Class c = VMClassLoader.loadClass(name, true);
 	if (c != null)
 	  {
 	    if (initialize)
-		c.vmClass.initialize();
+	      c.vmClass.initialize();
 	    return c;
 	  }
         throw new ClassNotFoundException(name);
       }
     if (name.startsWith("["))
-	return VMClass.loadArrayClass(name, classloader);
+      return VMClass.loadArrayClass(name, classloader);
     Class c = classloader.loadClass(name);
     classloader.resolveClass(c);
     if (initialize)
-	c.vmClass.initialize();
+      c.vmClass.initialize();
     return c;
   }
 
@@ -250,29 +250,29 @@ public final class Class implements Serializable
       {
 	Constructor[] constructors = getDeclaredConstructors(false);
 	for (int i = 0; i < constructors.length; i++)
-	{
+	  {
 	    if (constructors[i].getParameterTypes().length == 0)
-	    {
+	      {
 		constructor = constructors[i];
 		break;
-	    }
-	}
+	      }
+	  }
 	if (constructor == null)
-	    throw new InstantiationException(getName());
+	  throw new InstantiationException(getName());
 	if (!Modifier.isPublic(constructor.getModifiers()))
 	  {
 	    final Constructor finalConstructor = constructor;
 	    AccessController.doPrivileged(new PrivilegedAction() {
 		public Object run() {
-		    finalConstructor.setAccessible(true);
-		    return null;
+		  finalConstructor.setAccessible(true);
+		  return null;
 		}
-	    });
+	      });
 	  }
 	synchronized(this)
 	  {
 	    if (this.constructor == null)
-		this.constructor = constructor;
+	      this.constructor = constructor;
 	  }	    
       }
     int modifiers = constructor.getModifiers();
@@ -283,9 +283,9 @@ public final class Class implements Serializable
 	    (Modifier.isPrivate(modifiers)
 	     || getClassLoader() != caller.getClassLoader()
 	     || !ClassHelper.getPackagePortion(getName())
-		.equals(ClassHelper.getPackagePortion(caller.getName()))))
-	    throw new IllegalAccessException(getName()
-			    + " has an inaccessible constructor");
+	     .equals(ClassHelper.getPackagePortion(caller.getName()))))
+	  throw new IllegalAccessException(getName()
+					   + " has an inaccessible constructor");
       }
     try
       {
@@ -295,7 +295,7 @@ public final class Class implements Serializable
       {
 	VMClass.throwException(e.getTargetException());
 	throw (InternalError) new InternalError
-		("VMClass.throwException returned").initCause(e);
+	  ("VMClass.throwException returned").initCause(e);
       }
   }
 
@@ -540,14 +540,16 @@ public final class Class implements Serializable
    * Perform security checks common to all of the methods that
    * get members of this Class.
    */
-  private void memberAccessCheck(int which) {
+  private void memberAccessCheck(int which)
+  {
     SecurityManager sm = System.getSecurityManager();
-    if (sm != null) {
-      sm.checkMemberAccess(this, which);
-      Package pkg = getPackage();
-      if (pkg != null)
-	sm.checkPackageAccess(pkg.getName());
-    }
+    if (sm != null)
+      {
+	sm.checkMemberAccess(this, which);
+	Package pkg = getPackage();
+	if (pkg != null)
+	  sm.checkPackageAccess(pkg.getName());
+      }
   }
 
   /**
@@ -574,7 +576,8 @@ public final class Class implements Serializable
    * @throws SecurityException if the security check fails
    * @since 1.1
    */
-  public Class[] getClasses() {
+  public Class[] getClasses()
+  {
     memberAccessCheck(Member.PUBLIC);
     return internalGetClasses();
   }
@@ -582,7 +585,8 @@ public final class Class implements Serializable
   /**
    * Like <code>getClasses()</code> but without the security checks.
    */
-  private Class[] internalGetClasses() {
+  private Class[] internalGetClasses()
+  {
     ArrayList list = new ArrayList();
     list.addAll(Arrays.asList(getDeclaredClasses(true)));
     Class superClass = getSuperclass();
@@ -603,7 +607,8 @@ public final class Class implements Serializable
    * @throws SecurityException if the security check fails
    * @since 1.1
    */
-  public Field[] getFields() {
+  public Field[] getFields()
+  {
     memberAccessCheck(Member.PUBLIC);
     return internalGetFields();
   }
@@ -611,15 +616,16 @@ public final class Class implements Serializable
   /**
    * Like <code>getFields()</code> but without the security checks.
    */
-  private Field[] internalGetFields() {
+  private Field[] internalGetFields()
+  {
     HashSet set = new HashSet();
     set.addAll(Arrays.asList(getDeclaredFields(true)));
     Class[] interfaces = getInterfaces();
     for (int i = 0; i < interfaces.length; i++)
-	set.addAll(Arrays.asList(interfaces[i].internalGetFields()));
+      set.addAll(Arrays.asList(interfaces[i].internalGetFields()));
     Class superClass = getSuperclass();
     if (superClass != null)
-	set.addAll(Arrays.asList(superClass.internalGetFields()));
+      set.addAll(Arrays.asList(superClass.internalGetFields()));
     return (Field[])set.toArray(new Field[set.size()]);
   }
 
@@ -639,7 +645,8 @@ public final class Class implements Serializable
    * @throws SecurityException if the security check fails
    * @since 1.1
    */
-  public Method[] getMethods() {
+  public Method[] getMethods()
+  {
     memberAccessCheck(Member.PUBLIC);
     // NOTE the API docs claim that no methods are returned for arrays,
     // but Sun's implementation *does* return the public methods of Object
@@ -739,7 +746,8 @@ public final class Class implements Serializable
    * @throws SecurityException if the security check fails
    * @since 1.1
    */
-  public Constructor[] getConstructors() {
+  public Constructor[] getConstructors()
+  {
     memberAccessCheck(Member.PUBLIC);
     return getDeclaredConstructors(true);
   }
@@ -759,11 +767,12 @@ public final class Class implements Serializable
    * @see #getFields()
    * @since 1.1
    */
-  public Field getField(String name) throws NoSuchFieldException {
+  public Field getField(String name) throws NoSuchFieldException
+  {
     memberAccessCheck(Member.PUBLIC);
     Field field = internalGetField(name);
     if(field != null)
-	return field;
+      return field;
     throw new NoSuchFieldException();
   }
 
@@ -771,22 +780,25 @@ public final class Class implements Serializable
    * Like <code>getField(String)</code> but without the security checks and returns null
    * instead of throwing NoSuchFieldException.
    */
-  private Field internalGetField(String name) {
+  private Field internalGetField(String name)
+  {
     Field[] fields = getDeclaredFields(true);
-    for (int i = 0; i < fields.length; i++) {
+    for (int i = 0; i < fields.length; i++)
+      {
 	Field field = fields[i];
 	if (field.getName().equals(name))
-	    return field;
-    }
+	  return field;
+      }
     Class[] interfaces = getInterfaces();
-    for (int i = 0; i < interfaces.length; i++) {
+    for (int i = 0; i < interfaces.length; i++)
+      {
 	Field field = interfaces[i].internalGetField(name);
 	if(field != null)
-	    return field;
-    }
+	  return field;
+      }
     Class superClass = getSuperclass();
     if (superClass != null)
-	return superClass.internalGetField(name);
+      return superClass.internalGetField(name);
     return null;
   }
 
@@ -813,11 +825,12 @@ public final class Class implements Serializable
    * @since 1.1
    */
   public Method getMethod(String name, Class[] args)
-	throws NoSuchMethodException {
+    throws NoSuchMethodException
+  {
     memberAccessCheck(Member.PUBLIC);
     Method method = internalGetMethod(name, args);
     if (method != null)
-	return method;
+      return method;
     throw new NoSuchMethodException();
   }
 
@@ -825,22 +838,25 @@ public final class Class implements Serializable
    * Like <code>getMethod(String,Class[])</code> but without the security
    * checks and returns null instead of throwing NoSuchMethodException.
    */
-  public Method internalGetMethod(String name, Class[] args) {
+  public Method internalGetMethod(String name, Class[] args)
+  {
     Method match = matchMethod(getDeclaredMethods(true), name, args);
     if (match != null)
-	return match;
+      return match;
     Class superClass = getSuperclass();
-    if (superClass != null) {
+    if (superClass != null)
+      {
 	match = superClass.internalGetMethod(name, args);
 	if(match != null)
-	    return match;
-    }
+	  return match;
+      }
     Class[] interfaces = getInterfaces();
-    for (int i = 0; i < interfaces.length; i++) {
+    for (int i = 0; i < interfaces.length; i++)
+      {
 	match = interfaces[i].internalGetMethod(name, args);
 	if (match != null)
-	    return match;
-    }
+	  return match;
+      }
     return null;
   }
 
@@ -856,18 +872,20 @@ public final class Class implements Serializable
    * @param args Method parameter types
    * @see #getMethod()
    */
-  private static Method matchMethod(Method[] list, String name, Class[] args) {
+  private static Method matchMethod(Method[] list, String name, Class[] args)
+  {
     Method match = null;
-    for (int i = 0; i < list.length; i++) {
-      Method method = list[i];
-      if (!method.getName().equals(name))
-	continue;
-      if (!matchParameters(args, method.getParameterTypes()))
-	continue;
-      if (match == null
-	  || match.getReturnType().isAssignableFrom(method.getReturnType()))
-	match = method;
-    }
+    for (int i = 0; i < list.length; i++)
+      {
+	Method method = list[i];
+	if (!method.getName().equals(name))
+	  continue;
+	if (!matchParameters(args, method.getParameterTypes()))
+	  continue;
+	if (match == null
+	    || match.getReturnType().isAssignableFrom(method.getReturnType()))
+	  match = method;
+      }
     return match;
   }
 
@@ -876,17 +894,19 @@ public final class Class implements Serializable
    * Either list may be <code>null</code> to mean a list of
    * length zero.
    */
-  private static boolean matchParameters(Class[] types1, Class[] types2) {
+  private static boolean matchParameters(Class[] types1, Class[] types2)
+  {
     if (types1 == null)
       return types2 == null || types2.length == 0;
     if (types2 == null)
       return types1 == null || types1.length == 0;
     if (types1.length != types2.length)
       return false;
-    for (int i = 0; i < types1.length; i++) {
-      if (types1[i] != types2[i])
-	return false;
-    }
+    for (int i = 0; i < types1.length; i++)
+      {
+	if (types1[i] != types2[i])
+	  return false;
+      }
     return true;
   }
 
@@ -904,14 +924,16 @@ public final class Class implements Serializable
    * @see #getConstructors()
    * @since 1.1
    */
-  public Constructor getConstructor(Class[] args) throws NoSuchMethodException {
+  public Constructor getConstructor(Class[] args) throws NoSuchMethodException
+  {
     memberAccessCheck(Member.PUBLIC);
     Constructor[] constructors = getDeclaredConstructors(true);
-    for (int i = 0; i < constructors.length; i++) {
-      Constructor constructor = constructors[i];
-      if (matchParameters(args, constructor.getParameterTypes()))
-	return constructor;
-    }
+    for (int i = 0; i < constructors.length; i++)
+      {
+	Constructor constructor = constructors[i];
+	if (matchParameters(args, constructor.getParameterTypes()))
+	  return constructor;
+      }
     throw new NoSuchMethodException();
   }
 
@@ -927,7 +949,8 @@ public final class Class implements Serializable
    * @throws SecurityException if the security check fails
    * @since 1.1
    */
-  public Class[] getDeclaredClasses() {
+  public Class[] getDeclaredClasses()
+  {
     memberAccessCheck(Member.DECLARED);
     return getDeclaredClasses(false);
   }
@@ -949,7 +972,8 @@ public final class Class implements Serializable
    * @throws SecurityException if the security check fails
    * @since 1.1
    */
-  public Field[] getDeclaredFields() {
+  public Field[] getDeclaredFields()
+  {
     memberAccessCheck(Member.DECLARED);
     return getDeclaredFields(false);
   }
@@ -975,7 +999,8 @@ public final class Class implements Serializable
    * @throws SecurityException if the security check fails
    * @since 1.1
    */
-  public Method[] getDeclaredMethods() {
+  public Method[] getDeclaredMethods()
+  {
     memberAccessCheck(Member.DECLARED);
     return getDeclaredMethods(false);
   }
@@ -997,7 +1022,8 @@ public final class Class implements Serializable
    * @throws SecurityException if the security check fails
    * @since 1.1
    */
-  public Constructor[] getDeclaredConstructors() {
+  public Constructor[] getDeclaredConstructors()
+  {
     memberAccessCheck(Member.DECLARED);
     return getDeclaredConstructors(false);
   }
@@ -1020,13 +1046,15 @@ public final class Class implements Serializable
    * @see #getDeclaredFields()
    * @since 1.1
    */
-  public Field getDeclaredField(String name) throws NoSuchFieldException {
+  public Field getDeclaredField(String name) throws NoSuchFieldException
+  {
     memberAccessCheck(Member.DECLARED);
     Field[] fields = getDeclaredFields(false);
-    for (int i = 0; i < fields.length; i++) {
-      if (fields[i].getName().equals(name))
-	return fields[i];
-    }
+    for (int i = 0; i < fields.length; i++)
+      {
+	if (fields[i].getName().equals(name))
+	  return fields[i];
+      }
     throw new NoSuchFieldException();
   }
 
@@ -1051,8 +1079,9 @@ public final class Class implements Serializable
    * @see #getDeclaredMethods()
    * @since 1.1
    */
-   public Method getDeclaredMethod(String name, Class[] args)
-		throws NoSuchMethodException {
+  public Method getDeclaredMethod(String name, Class[] args)
+    throws NoSuchMethodException
+  {
     memberAccessCheck(Member.DECLARED);
     Method match = matchMethod(getDeclaredMethods(false), name, args);
     if (match != null)
@@ -1075,14 +1104,16 @@ public final class Class implements Serializable
    * @since 1.1
    */
   public Constructor getDeclaredConstructor(Class[] args)
-		throws NoSuchMethodException {
+    throws NoSuchMethodException
+  {
     memberAccessCheck(Member.DECLARED);
     Constructor[] constructors = getDeclaredConstructors(false);
-    for (int i = 0; i < constructors.length; i++) {
-      Constructor constructor = constructors[i];
-      if (matchParameters(args, constructor.getParameterTypes()))
-	return constructor;
-    }
+    for (int i = 0; i < constructors.length; i++)
+      {
+	Constructor constructor = constructors[i];
+	if (matchParameters(args, constructor.getParameterTypes()))
+	  return constructor;
+      }
     throw new NoSuchMethodException();
   }
 
@@ -1108,8 +1139,8 @@ public final class Class implements Serializable
   public InputStream getResourceAsStream(String name)
   {
     if (name.length() > 0 && name.charAt(0) != '/')
-        name = ClassHelper.getPackagePortion(getName()).replace('.','/')
-          + "/" + name;
+      name = ClassHelper.getPackagePortion(getName()).replace('.','/')
+	+ "/" + name;
     ClassLoader c = getClassLoader();
     if (c == null)
       return ClassLoader.getSystemResourceAsStream(name);
