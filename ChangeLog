@@ -1,3 +1,23 @@
+2004-10-22  Andreas Tobler  <a.tobler@schweiz.ch>
+
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.c:
+	New File.
+	(nativeGetNumFontsFamilies) New function.
+	(nativeGetFontFamilies) Likewise.
+	* gnu/java/awt/peer/gtk/GdkGraphicsEnvironment.java
+	(getAvailableFontFamilyNames): Implement.
+
+2004-10-22  Michael Koch  <konqueror@gmx.de>
+
+	* include/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.h:
+	New file.
+	* include/gnu_java_awt_peer_gtk_GtkButtonPeer.h,
+	include/gnu_java_awt_peer_gtk_GtkLabelPeer.h: Regenerated,
+	* include/Makefile.am:
+	Added gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.h.
+	* native/jni/gtk-peer/Makefile.am:
+	Added gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.c.
+
 2004-10-22  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/ClasspathFontPeer.java

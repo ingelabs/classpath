@@ -10,6 +10,7 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkFontPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGlyphVector.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics2D.h \
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkPixbufDecoder.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkTextLayout.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkButtonPeer.h \
@@ -80,6 +81,8 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics.h: $(top_srcdir)/gnu/jav
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkGraphics
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics2D.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkGraphics2D.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkGraphics2D
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkGraphicsEnvironment.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkGraphicsEnvironment
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkPixbufDecoder.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkPixbufDecoder.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkPixbufDecoder
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkTextLayout.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkTextLayout.java
