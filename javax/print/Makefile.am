@@ -7,7 +7,7 @@ AttributeException.java \
 CancelablePrintJob.java \
 Doc.java \
 DocFlavor.java \
-DonPrintJob.java \
+DocPrintJob.java \
 FlavorException.java \
 MultiDoc.java \
 MultiDocPrintJob.java \
@@ -17,4 +17,3 @@ PrintService.java \
 ServiceUIFactory.java \
 StreamPrintService.java \
 URIException.java
-

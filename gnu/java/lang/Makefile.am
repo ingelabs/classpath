@@ -6,6 +6,5 @@ EXTRA_DIST = \
 ArrayHelper.java \
 CharData.java \
 ClassHelper.java \
-ClassLoaderHelper.java \
 MainThread.java \
 SystemClassLoader.java
