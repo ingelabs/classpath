@@ -1,6 +1,6 @@
 /* Implemented when a class wants to be informed of changes in Observable
    objects.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -28,7 +28,21 @@ executable file might be covered by the GNU General Public License. */
 
 package java.util;
 
-public abstract interface Observer
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete and correct
+ */
+
+/**
+ * Interface that is implemented when a class wants to be informed of changes
+ * in Observable objects.
+ *
+ * @see java.util.Observable
+ * @author Warren Levy <warrenl@cygnus.com>
+ * @date August 25, 1998.
+ */
+public interface Observer
 {
   public void update(Observable observable, Object arg);
 }

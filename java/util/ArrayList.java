@@ -40,7 +40,6 @@ import java.io.ObjectOutputStream;
  * to or removing from the end of a list, checking the size, &c.
  *
  * @author        Jon A. Zeppieri
- * @version       $Id: ArrayList.java,v 1.14 2001-02-15 06:26:31 bryce Exp $
  * @see           java.util.AbstractList
  * @see           java.util.List
  */

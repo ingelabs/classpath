@@ -1,5 +1,5 @@
 /* NoSuchElementException.java -- Attempt to access element that does not exist
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,11 +27,20 @@ executable file might be covered by the GNU General Public License. */
 
 package java.util;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete and correct.
+ */
+
 /**
  * Exception thrown when an attempt is made to access an element that does not
  * exist. This exception is thrown by the Enumeration, Iterator and ListIterator
  * classes if the nextElement, next or previous method goes beyond the end of
  * the list of elements that are being accessed.
+ *
+ * @author Warren Levy <warrenl@cygnus.com>
+ * @date September 2, 1998.
  */
 public class NoSuchElementException extends RuntimeException
 {

@@ -1,5 +1,5 @@
 /* ConcurrentModificationException.java -- Data structure concurrently modified
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,6 +27,12 @@ executable file might be covered by the GNU General Public License. */
 
 package java.util;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete and correct.
+ */
+
 /**
  * Exception that is thrown by the collections classes when it is detected that
  * a modification has been made to a data structure when this is not allowed,
@@ -34,6 +40,10 @@ package java.util;
  * operating over it. In cases where this can be detected, a
  * ConcurrentModificationException will be thrown. An Iterator that detects this
  * condition is referred to as fail-fast.
+ *
+ * @author Warren Levy <warrenl@cygnus.com>
+ * @date September 2, 1998.
+ * @since 1.2
  */
 public class ConcurrentModificationException extends RuntimeException
 {

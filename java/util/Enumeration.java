@@ -1,5 +1,5 @@
 /* Enumeration.java -- Interface for enumerating lists of objects
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -24,18 +24,25 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.util;
+
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1.
+ * Status:  Believed complete and correct
+ */
 
 /**
  * Interface for lists of objects that can be returned in sequence. Successive
  * objects are obtained by the nextElement method.
- * <P>
+ * <p>
  * As of Java 1.2, the Iterator interface provides the same functionality, but
  * with shorter method names and a new optional method to remove items from the
  * list. If writing for 1.2, consider using Iterator instead. Enumerations over
  * the new collections classes, for use with legacy APIs that require them, can
  * be obtained by the enumeration method in class Collections.
+ *
+ * @author Warren Levy <warrenl@cygnus.com>
+ * @date August 25, 1998.
  */
 public interface Enumeration
 {
@@ -54,5 +61,5 @@ public interface Enumeration
    * @return the next element in the enumeration
    * @exception NoSuchElementException if there are no more elements
    */
-  Object nextElement();
+  Object nextElement() throws NoSuchElementException;
 }

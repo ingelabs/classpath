@@ -1,5 +1,5 @@
 /* java.util.Observable
-   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,10 +27,31 @@ executable file might be covered by the GNU General Public License. */
 
 package java.util;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete and correct.
+ */
+
+/**
+ * @author Warren Levy <warrenl@cygnus.com>
+ * @date September 2, 1998.
+ */
 public class Observable
 {
+  /** tracks whether this object has changed */
   private boolean changed;
+
+  /* list of the Observers registered as interested in this Observable */
   private Vector observers;
+
+  /* TBD: This might be better implemented as an Observer[]
+   * but that would mean writing more code rather than making use of
+   * the existing Vector class (this also implies a larger text code
+   * space in resulting executables).  The tradeoff is one of speed
+   * (manipulating the Observer[] directly) vs. size/reuse.  In the future,
+   * we may decide to make the tradeoff and reimplement with an Observer[].
+   */
 
   /**
    * Constructs an Observable with zero Observers.
@@ -42,19 +63,21 @@ public class Observable
   }
 
   /**
-   * Adds an Observer.
+   * Adds an Observer. If the observer was already added this method does
+   * nothing.
    *
    * @param observer Observer to add.
    */
-  public void addObserver(Observer observer)
+  public synchronized void addObserver(Observer observer)
   {
-    observers.add(observer);
+    if (!observers.contains(observer))
+      observers.addElement(observer);
   }
 
   /**
    * Reset this Observable's state to unchanged.
    */
-  protected void clearChanged()
+  protected synchronized void clearChanged()
   {
     changed = false;
   }
@@ -62,7 +85,7 @@ public class Observable
   /**
    * @return Number of Observers for this Observable.
    */
-  public int countObservers()
+  public synchronized int countObservers()
   {
     return observers.size();
   }
@@ -72,15 +95,15 @@ public class Observable
    *
    * @param victim Observer to delete.
    */
-  public void deleteObserver(Observer victim)
+  public synchronized void deleteObserver(Observer victim)
   {
-    observers.remove(victim);
+    observers.removeElement(victim);
   }
 
   /**
    * Deletes all Observers of this Observable.
    */
-  public void deleteObservers()
+  public synchronized void deleteObservers()
   {
     observers.removeAllElements();
   }
@@ -88,14 +111,14 @@ public class Observable
   /**
    * @return Whether or not this Observable has changed.
    */
-  public boolean hasChanged()
+  public synchronized boolean hasChanged()
   {
     return changed;
   }
 
   /**
-   * Tell Observers that this Observable has changed, then
-   * resets state to unchanged.
+   * If the Observable has actually changed then tell all Observers about it,
+   * then resets state to unchanged.
    */
   public void notifyObservers()
   {
@@ -103,6 +126,11 @@ public class Observable
   }
 
   /**
+   * If the Observable has actually changed then tell all Observers about it,
+   * then resets state to unchanged. 
+   * Note that though the order of notification is unspecified in subclasses,
+   * in Observable it is in the order of registration.
+   *
    * @param obj Arguement to Observer's update method.
    */
   public void notifyObservers(Object obj)
@@ -120,7 +148,7 @@ public class Observable
   /**
    * Marks this Observable as having changed.
    */
-  protected void setChanged()
+  protected synchronized void setChanged()
   {
     changed = true;
   }

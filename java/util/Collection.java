@@ -213,7 +213,7 @@ public interface Collection
    *   collection, containing the elements currently in this collection, in
    *   any order.
    */
-  Object[]toArray();
+  Object[] toArray();
 
   /**
    * Copy the current contents of this collection into an array. If the array
@@ -232,5 +232,5 @@ public interface Collection
    * @exception ArrayStoreException if the type of any element of the
    *   collection is not a subtype of the element type of a.
    */
-  Object[]toArray(Object[]a);
+  Object[] toArray(Object[] a);
 }

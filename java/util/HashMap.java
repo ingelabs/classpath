@@ -60,8 +60,6 @@ import java.io.ObjectOutputStream;
  * @author         Jon Zeppieri
  * @author         Jochen Hoenicke
  * @author	   Bryce McKinlay
- * @version        $Revision: 1.9 $
- * @modified       $Id: HashMap.java,v 1.9 2001-02-15 06:26:31 bryce Exp $
  */
 public class HashMap extends AbstractMap
   implements Map, Cloneable, Serializable
@@ -619,8 +617,6 @@ public class HashMap extends AbstractMap
    * keys, values, or entries.
    *
    * @author       Jon Zeppieri
-   * @version      $Revision: 1.9 $
-   * @modified     $Id: HashMap.java,v 1.9 2001-02-15 06:26:31 bryce Exp $
    */
   class HashIterator implements Iterator
   {

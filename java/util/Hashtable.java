@@ -64,8 +64,6 @@ import java.io.ObjectOutputStream;
  * @author      Jon Zeppieri
  * @author	Warren Levy
  * @author      Bryce McKinlay
- * @version     $Revision: 1.10 $
- * @modified    $Id: Hashtable.java,v 1.10 2001-02-15 06:26:31 bryce Exp $
  */
 public class Hashtable extends Dictionary 
   implements Map, Cloneable, Serializable
@@ -721,8 +719,6 @@ public class Hashtable extends Dictionary
    * as per the Javasoft spec.
    *
    * @author       Jon Zeppieri
-   * @version      $Revision: 1.10 $
-   * @modified     $Id: Hashtable.java,v 1.10 2001-02-15 06:26:31 bryce Exp $
    */
   class HashIterator implements Iterator
   {
@@ -818,16 +814,15 @@ public class Hashtable extends Dictionary
    * elements; this implementation is parameterized to provide access either 
    * to the keys or to the values in the Hashtable.
    *
-   * <b>NOTE: Enumeration is not safe if new elements are put in the table as
-   * this could cause a rehash and we'd completely lose our place.  Even
+   * <b>NOTE</b>: Enumeration is not safe if new elements are put in the table
+   * as this could cause a rehash and we'd completely lose our place.  Even
    * without a rehash, it is undetermined if a new element added would
    * appear in the enumeration.  The spec says nothing about this, but
    * the "Java Class Libraries" book infers that modifications to the
    * hashtable during enumeration causes indeterminate results.  Don't do it!
    *
    * @author       Jon Zeppieri
-   * @version      $Revision: 1.10 $
-   * @modified $Id: Hashtable.java,v 1.10 2001-02-15 06:26:31 bryce Exp $ */
+   */
   class Enumerator implements Enumeration
   {
     static final int KEYS = 0;

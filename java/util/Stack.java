@@ -1,6 +1,6 @@
 /* Stack.java - Class that provides a Last In First Out (LIFO)
    datatype, known more commonly as a Stack
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -28,15 +28,28 @@ executable file might be covered by the GNU General Public License. */
 
 package java.util;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete and correct
+ */
+
 /**
  * Stack provides a Last In First Out (LIFO) data type, commonly known
  * as a Stack.  
  *
  * Stack itself extends Vector and provides the additional methods
  * for stack manipulation (push, pop, peek). 
+ *
+ * @author Warren Levy <warrenl@cygnus.com>
+ * @date August 20, 1998.
  */
 public class Stack extends Vector
 {
+  // Could use Vector methods internally for the following methods
+  // but have used Vector fields directly for efficiency (i.e. this
+  // often reduces out duplicate bounds checking).
+
   private static final long serialVersionUID = 1224463164541339165L;
 
   /**
@@ -57,6 +70,10 @@ public class Stack extends Vector
    */
   public Object push(Object item)
   {
+    // When growing the Stack, use the Vector routines in case more
+    // memory is needed.
+    // Note: spec indicates that this method *always* returns obj passed in!
+
     addElement(item);
     return item;
   }
@@ -67,11 +84,16 @@ public class Stack extends Vector
    *
    * @returns the Object popped from the stack
    */
-  public Object pop()
+  public synchronized Object pop()
   {
-    if (isEmpty())
+    if (elementCount == 0)
       throw new EmptyStackException();
-    return remove(size() - 1);
+
+    Object obj = elementData[--elementCount];
+
+    // Set topmost element to null to assist the gc in cleanup
+    elementData[elementCount] = null;
+    return obj;
   }
 
   /**
@@ -79,11 +101,12 @@ public class Stack extends Vector
    *
    * @returns the top Object on the stack
    */
-  public Object peek()
+  public synchronized Object peek()
   {
-    if (isEmpty())
+    if (elementCount == 0)
       throw new EmptyStackException();
-    return lastElement();
+
+    return elementData[elementCount - 1];
   }
 
   /**
@@ -93,7 +116,7 @@ public class Stack extends Vector
    */
   public boolean empty()
   {
-    return isEmpty();
+    return elementCount == 0;
   }
 
   /**
@@ -105,9 +128,12 @@ public class Stack extends Vector
    * @returns The 1 based depth of the Object, or -1 if the Object 
    * is not on the stack.
    */
-  public int search(Object o)
+  public synchronized int search(Object o)
   {
-    int idx = lastIndexOf(o);
-    return (idx == -1 ? -1 : elementCount - idx);
+    for (int i = elementCount-1; i >=0; --i)
+      if (elementData[i].equals(o))
+        return elementCount - i;
+
+    return -1;
   }
 }

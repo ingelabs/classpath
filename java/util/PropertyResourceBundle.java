@@ -27,6 +27,8 @@ executable file might be covered by the GNU General Public License. */
 
 package java.util;
 
+import gnu.java.util.DoubleEnumeration;
+
 /**
  * This class is a concrete <code>ResourceBundle</code> that gets it
  * resources from a property file.  This implies that the resources are
