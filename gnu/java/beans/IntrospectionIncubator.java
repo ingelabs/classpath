@@ -40,6 +40,10 @@ public class IntrospectionIncubator {
 	Hashtable listenerMethods = new Hashtable();
 	Vector otherMethods = new Vector();
 
+	Class propertyStopClass;
+	Class eventStopClass;
+	Class methodStopClass;
+
 	public IntrospectionIncubator() {
 	}
 
@@ -50,37 +54,44 @@ public class IntrospectionIncubator {
 			Class retType = method.getReturnType();
 			Class[] params = method.getParameterTypes();
 			boolean isVoid = retType.equals(java.lang.Void.TYPE);
-			if(name.startsWith("is")
-			   && retType.equals(java.lang.Boolean.TYPE)
-			   && params.length == 0) {
-				addToPropertyHash(name,method,IS);
-			} else if(name.startsWith("get") && !isVoid) {
-				if(params.length == 0) {
-					addToPropertyHash(name,method,GET);
-				} else if(params.length == 1 && params[0].equals(java.lang.Integer.TYPE)) {
-					addToPropertyHash(name,method,GET_I);
-				} else {
-					otherMethods.addElement(method);
+			Class methodClass = method.getDeclaringClass();
+			if(propertyStopClass == null || (propertyStopClass.isAssignableFrom(methodClass) && !propertyStopClass.equals(methodClass))) {
+				if(name.startsWith("is")
+				   && retType.equals(java.lang.Boolean.TYPE)
+				   && params.length == 0) {
+					addToPropertyHash(name,method,IS);
+				} else if(name.startsWith("get") && !isVoid) {
+					if(params.length == 0) {
+						addToPropertyHash(name,method,GET);
+					} else if(params.length == 1 && params[0].equals(java.lang.Integer.TYPE)) {
+						addToPropertyHash(name,method,GET_I);
+					} else {
+						otherMethods.addElement(method);
+					}
+				} else if(name.startsWith("set") && isVoid) {
+					if(params.length == 1) {
+						addToPropertyHash(name,method,SET);
+					} else if(params.length == 2 && params[0].equals(java.lang.Integer.TYPE)) {
+						addToPropertyHash(name,method,SET_I);
+					} else {
+						otherMethods.addElement(method);
+					}
 				}
-			} else if(name.startsWith("set") && isVoid) {
-				if(params.length == 1) {
-					addToPropertyHash(name,method,SET);
-				} else if(params.length == 2 && params[0].equals(java.lang.Integer.TYPE)) {
-					addToPropertyHash(name,method,SET_I);
-				} else {
-					otherMethods.addElement(method);
+			}
+			if(eventStopClass == null || (eventStopClass.isAssignableFrom(methodClass) && !eventStopClass.equals(methodClass))) {
+				if(name.startsWith("add")
+				          && isVoid
+				          && params.length == 1
+				          && java.util.EventListener.class.isAssignableFrom(params[0])) {
+					addToListenerHash(name,method,ADD);
+				} else if(name.startsWith("remove")
+				          && isVoid
+				          && params.length == 1
+				          && java.util.EventListener.class.isAssignableFrom(params[0])) {
+					addToListenerHash(name,method,REMOVE);
 				}
-			} else if(name.startsWith("add")
-			          && isVoid
-			          && params.length == 1
-			          && java.util.EventListener.class.isAssignableFrom(params[0])) {
-				addToListenerHash(name,method,ADD);
-			} else if(name.startsWith("remove")
-			          && isVoid
-			          && params.length == 1
-			          && java.util.EventListener.class.isAssignableFrom(params[0])) {
-				addToListenerHash(name,method,REMOVE);
-			} else {
+			}
+			if(methodStopClass == null || (methodStopClass.isAssignableFrom(methodClass) && !methodStopClass.equals(methodClass))) {
 				otherMethods.addElement(method);
 			}
 		}
@@ -92,6 +103,19 @@ public class IntrospectionIncubator {
 		}
 	}
 
+	public void setPropertyStopClass(Class c) {
+		propertyStopClass = c;
+	}
+
+	public void setEventStopClass(Class c) {
+		eventStopClass = c;
+	}
+
+	public void setMethodStopClass(Class c) {
+		methodStopClass = c;
+	}
+
+
 	public BeanInfoEmbryo getBeanInfoEmbryo() throws IntrospectionException {
 		BeanInfoEmbryo b = new BeanInfoEmbryo();
 		findXXX(b,IS);
@@ -100,10 +124,11 @@ public class IntrospectionIncubator {
 		findXXX(b,GET);
 		findXXX(b,SET);
 		findAddRemovePairs(b);
-		moveMethodsToOther(propertyMethods);
-		moveMethodsToOther(listenerMethods);
 		for(int i=0;i<otherMethods.size();i++) {
-			b.addMethod(new MethodDescriptor((Method)otherMethods.elementAt(i)));
+			MethodDescriptor newMethod = new MethodDescriptor((Method)otherMethods.elementAt(i));
+			if(!b.hasMethod(newMethod)) {
+				b.addMethod(new MethodDescriptor((Method)otherMethods.elementAt(i)));
+			}
 		}
 		return b;
 	}
@@ -115,7 +140,6 @@ public class IntrospectionIncubator {
 
 	void findAddRemovePairs(BeanInfoEmbryo b) throws IntrospectionException {
 		Enumeration listenerEnum = listenerMethods.keys();
-		Vector toRemove = new Vector();
 		while(listenerEnum.hasMoreElements()) {
 			DoubleKey k = (DoubleKey)listenerEnum.nextElement();
 			Method[] m = (Method[])listenerMethods.get(k);
@@ -124,23 +148,8 @@ public class IntrospectionIncubator {
 				                                              k.getType(), k.getType().getMethods(),
 				                                              m[ADD],m[REMOVE]);
 				e.setUnicast(ArrayHelper.contains(m[ADD].getExceptionTypes(),java.util.TooManyListenersException.class));
-				b.addEvent(e);
-				toRemove.addElement(k);
-			}
-		}
-
-		for(int i=0;i<toRemove.size();i++) {
-			listenerMethods.remove(toRemove.elementAt(i));
-		}
-	}
-
-	void moveMethodsToOther(Hashtable methodHash) {
-		Enumeration enum = methodHash.elements();
-		while(enum.hasMoreElements()) {
-			Method[] m = (Method[])enum.nextElement();
-			for(int i=0;i<m.length;i++) {
-				if(m[i] != null) {
-					otherMethods.addElement(m[i]);
+				if(!b.hasEvent(e)) {
+					b.addEvent(e);
 				}
 			}
 		}
@@ -148,34 +157,29 @@ public class IntrospectionIncubator {
 
 	void findXXX(BeanInfoEmbryo b, int funcType) throws IntrospectionException {
 		Enumeration keys = propertyMethods.keys();
-		Vector toRemove = new Vector();
 		while(keys.hasMoreElements()) {
 			DoubleKey k = (DoubleKey)keys.nextElement();
 			Method[] m = (Method[])propertyMethods.get(k);
-			if(m[funcType] != null && !b.hasProperty(Introspector.decapitalize(k.getName()))) {
+			if(m[funcType] != null) {
 				PropertyDescriptor p = new PropertyDescriptor(Introspector.decapitalize(k.getName()),
 				                                     m[IS] != null ? m[IS] : m[GET],
 				                                     m[SET]);
 				if(m[SET] != null) {
 					p.setConstrained(ArrayHelper.contains(m[SET].getExceptionTypes(),java.beans.PropertyVetoException.class));
 				}
-				b.addProperty(p);
-				toRemove.addElement(k);
+				if(!b.hasProperty(p)) {
+					b.addProperty(p);
+				}
 			}
-		}
-
-		for(int i=0;i<toRemove.size();i++) {
-			propertyMethods.remove(toRemove.elementAt(i));
 		}
 	}
 
 	void findXXXInt(BeanInfoEmbryo b, int funcType) throws IntrospectionException {
 		Enumeration keys = propertyMethods.keys();
-		Vector toRemove = new Vector();
 		while(keys.hasMoreElements()) {
 			DoubleKey k = (DoubleKey)keys.nextElement();
 			Method[] m = (Method[])propertyMethods.get(k);
-			if(m[funcType] != null && !b.hasProperty(Introspector.decapitalize(k.getName()))) {
+			if(m[funcType] != null) {
 				boolean constrained;
 				if(m[SET_I] != null) {
 					constrained = ArrayHelper.contains(m[SET_I].getExceptionTypes(),java.beans.PropertyVetoException.class);
@@ -199,16 +203,12 @@ public class IntrospectionIncubator {
 					p = new IndexedPropertyDescriptor(Introspector.decapitalize(k.getName()),
 				                                          m[GET],m[SET],
 				                                          m[GET_I],m[SET_I]);
-					toRemove.addElement(findSetArray);
 				}
 				p.setConstrained(constrained);
-				b.addProperty(p);
-				toRemove.addElement(k);
+				if(!b.hasProperty(p)) {
+					b.addProperty(p);
+				}
 			}
-		}
-
-		for(int i=0;i<toRemove.size();i++) {
-			propertyMethods.remove(toRemove.elementAt(i));
 		}
 	}
 

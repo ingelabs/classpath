@@ -22,6 +22,8 @@ package gnu.java.beans;
 
 import java.beans.*;
 import java.util.*;
+import gnu.java.lang.*;
+import java.lang.reflect.*;
 
 /**
  ** A BeanInfoEmbryo accumulates information about a Bean
@@ -39,48 +41,49 @@ import java.util.*;
  **/
 
 public class BeanInfoEmbryo {
-	BeanDescriptor beanDescriptor;
-	Vector additionalBeanInfo = new Vector();
 	Hashtable properties = new Hashtable();
 	Hashtable events = new Hashtable();
 	Vector methods = new Vector();
 
-	BeanInfo[] AadditionalBeanInfo;
-	PropertyDescriptor[] Aproperties;
-	EventSetDescriptor[] Aevents;
-	MethodDescriptor[] Amethods;
+	BeanDescriptor beanDescriptor;
+	BeanInfo[] additionalBeanInfo;
+	java.awt.Image[] im;
+	String defaultPropertyName;
+	String defaultEventName;
 
 	public BeanInfoEmbryo() {
 	}
 
 	public BeanInfo getBeanInfo() {
-		if(additionalBeanInfo != null) {
-			AadditionalBeanInfo = new BeanInfo[additionalBeanInfo.size()];
-			additionalBeanInfo.copyInto(AadditionalBeanInfo);
-		}
-		if(properties != null) {
-			Aproperties = new PropertyDescriptor[properties.size()];
-			int i = 0;
-			Enumeration enum = properties.elements();
-			while(enum.hasMoreElements()) {
-				Aproperties[i] = (PropertyDescriptor)enum.nextElement();
-				i++;
+		int defaultProperty = -1;
+		int defaultEvent = -1;
+
+		PropertyDescriptor[] Aproperties = new PropertyDescriptor[properties.size()];
+		int i = 0;
+		Enumeration enum = properties.elements();
+		while(enum.hasMoreElements()) {
+			Aproperties[i] = (PropertyDescriptor)enum.nextElement();
+			if(defaultPropertyName != null && Aproperties[i].getName().equals(defaultPropertyName)) {
+				defaultProperty = i;
 			}
+			i++;
 		}
-		if(events != null) {
-			Aevents = new EventSetDescriptor[events.size()];
-			int i = 0;
-			Enumeration enum = events.elements();
-			while(enum.hasMoreElements()) {
-				Aevents[i] = (EventSetDescriptor)enum.nextElement();
-				i++;
+
+		EventSetDescriptor[] Aevents = new EventSetDescriptor[events.size()];
+		i = 0;
+		enum = events.elements();
+		while(enum.hasMoreElements()) {
+			Aevents[i] = (EventSetDescriptor)enum.nextElement();
+			if(defaultEventName != null && Aevents[i].getName().equals(defaultEventName)) {
+				defaultEvent = i;
 			}
+			i++;
 		}
-		if(methods != null) {
-			Amethods = new MethodDescriptor[methods.size()];
-			methods.copyInto(Amethods);
-		}
-		return new ExplicitBeanInfo(beanDescriptor,AadditionalBeanInfo,Aproperties,-1,Aevents,-1,Amethods,null);
+
+		MethodDescriptor[] Amethods = new MethodDescriptor[methods.size()];
+		methods.copyInto(Amethods);
+
+		return new ExplicitBeanInfo(beanDescriptor,additionalBeanInfo,Aproperties,defaultProperty,Aevents,defaultEvent,Amethods,im);
 	}
 
 	public void setBeanDescriptor(BeanDescriptor b) {
@@ -88,24 +91,11 @@ public class BeanInfoEmbryo {
 	}
 
 	public void setAdditionalBeanInfo(BeanInfo[] b) {
-		additionalBeanInfo = null;
-		AadditionalBeanInfo = b;
-	}
-	public void addAdditionalBeanInfo(BeanInfo b) {
-		additionalBeanInfo.addElement(b);
-	}
-	public void setParentBeanInfo(BeanInfo b) {
-		BeanInfo[] ba = new BeanInfo[1];
-		ba[0] = b;
-		setAdditionalBeanInfo(ba);
+		additionalBeanInfo = b;
 	}
 
-	public boolean hasProperty(String name) {
-		return properties.get(name) != null;
-	}
-	public void setProperties(PropertyDescriptor[] p) {
-		properties = null;
-		Aproperties = p;
+	public boolean hasProperty(PropertyDescriptor p) {
+		return properties.get(p.getName()) != null;
 	}
 	public void addProperty(PropertyDescriptor p) {
 		properties.put(p.getName(),p);
@@ -114,22 +104,36 @@ public class BeanInfoEmbryo {
 		properties.put(p.getName(),p);
 	}
 
-	public boolean hasEvent(String name) {
-		return events.get(name) != null;
+	public boolean hasEvent(EventSetDescriptor e) {
+		return events.get(e.getName()) != null;
 	}
 	public void addEvent(EventSetDescriptor e) {
 		events.put(e.getName(),e);
 	}
-	public void setEvents(EventSetDescriptor[] e) {
-		events = null;
-		Aevents = e;
-	}
 
+	public boolean hasMethod(MethodDescriptor m) {
+		for(int i=0;i<methods.size();i++) {
+			Method thisMethod = ((MethodDescriptor)methods.elementAt(i)).getMethod();
+			if(m.getMethod().getName().equals(thisMethod.getName())
+			   && ArrayHelper.equalsArray(m.getMethod().getParameterTypes(), thisMethod.getParameterTypes())) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public void addMethod(MethodDescriptor m) {
 		methods.addElement(m);
 	}
-	public void setMethods(MethodDescriptor[] m) {
-		methods = null;
-		Amethods = m;
+
+	public void setDefaultPropertyName(String defaultPropertyName) {
+		this.defaultPropertyName = defaultPropertyName;
+	}
+
+	public void setDefaultEventName(String defaultEventName) {
+		this.defaultEventName = defaultEventName;
+	}
+
+	public void setIcons(java.awt.Image[] im) {
+		this.im = im;
 	}
 }
