@@ -1,5 +1,17 @@
 2001-08-31  Tom Tromey  <tromey@redhat.com>
 
+	Merge with libgcj:
+	* java/util/StringTokenizer.java (countTokens): Replaced with
+	libgcj implementation.
+	* java/util/Locale.java (Locale): Don't intern values.  Convert
+	values to canonical case.
+	(convertLanguage): Likewise.
+	Class now final.
+	(getAvailableLocales): Fixed indentation.
+	(equals): Likewise.
+	(writeObject): Now synchronized.  Restore hashcode when done.
+	(hashCode): Now synchronized.
+
 	* java/util/Random.java: Fixed keyword ordering.
 
 	* java/io/ByteArrayOutputStream.java: Updated copyright header.

@@ -1,5 +1,5 @@
 /* java.util.StringTokenizer
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -42,7 +42,9 @@ package java.util;
  * constructor.  The delimiters are returned as token consisting of a
  * single character.  
  *
- * @author Jochen Hoenicke */
+ * @author Jochen Hoenicke
+ * @author Warren Levy <warrenl@cygnus.com>
+ */
 public class StringTokenizer implements Enumeration
 {
   /**
@@ -219,33 +221,42 @@ public class StringTokenizer implements Enumeration
   public int countTokens()
   {
     int count = 0;
+    int delimiterCount = 0;
+    boolean tokenFound = false;		// Set when a non-delimiter is found
     int tmpPos = pos;
+
+    // Note for efficiency, we count up the delimiters rather than check
+    // retDelims every time we encounter one.  That way, we can
+    // just do the conditional once at the end of the method
     while (tmpPos < str.length())
       {
-	if (delim.indexOf(str.charAt(tmpPos)) > -1)
+	if (delim.indexOf(str.charAt(tmpPos++)) > -1)
 	  {
-	    if (retDelims)
+	    if (tokenFound)
 	      {
-		count++;
-		continue;
+		// Got to the end of a token
+	        count++;
+	        tokenFound = false;
 	      }
 
-	    while (++tmpPos < str.length()
-		   && delim.indexOf(str.charAt(tmpPos)) > -1)
-	      {
-		/* empty */
-	      }
+	    delimiterCount++;		// Increment for this delimiter
 	  }
-	if (tmpPos < str.length())
+	else
 	  {
-	    while (++tmpPos < str.length()
+	    tokenFound = true;
+
+	    // Get to the end of the token
+	    while (tmpPos < str.length()
 		   && delim.indexOf(str.charAt(tmpPos)) == -1)
-	      {
-		/* empty */
-	      }
-	    count++;
+	      ++tmpPos;
 	  }
       }
-    return count;
+
+    // Make sure to count the last token 
+    if (tokenFound)
+      count++;
+
+    // if counting delmiters add them into the token count
+    return retDelims ? count + delimiterCount : count;
   }
 }

@@ -1,5 +1,5 @@
 /* java.util.Locale
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
  
 This file is part of GNU Classpath.
  
@@ -59,7 +59,7 @@ package java.util;
  * @author Jochen Hoenicke
  * @author Paul Fisher
  */
-public class Locale implements java.io.Serializable, Cloneable
+public final class Locale implements java.io.Serializable, Cloneable
 {
   /**
    * Locale which represents the English language.
@@ -182,12 +182,13 @@ public class Locale implements java.io.Serializable, Cloneable
   private String convertLanguage(String language)
   {
     if (language.equals(""))
-      return (language.intern());
+      return language;
 
+    language = language.toLowerCase();
     int index = "iw,in,ji".indexOf(language);
     if (index != -1)
-      return "he,id,yi".substring(index, index + 2).intern();
-    return language.intern();
+      return "he,id,yi".substring(index, index + 2);
+    return language;
   }
 
   /**
@@ -199,10 +200,10 @@ public class Locale implements java.io.Serializable, Cloneable
   public Locale(String language, String country, String variant)
   {
     this.language = convertLanguage(language);
-    this.country = country.intern();
-    this.variant = variant.intern();
-    this.hashcode = this.language.hashCode() ^ this.country.hashCode()
-      ^ this.variant.hashCode();
+    this.country = country.toUpperCase();
+    this.variant = variant.toUpperCase();
+    this.hashcode = (this.language.hashCode() ^ this.country.hashCode()
+		     ^ this.variant.hashCode());
   }
 
   /**
@@ -253,7 +254,8 @@ public class Locale implements java.io.Serializable, Cloneable
      */
     return new Locale[]
     {
-    ENGLISH, FRENCH, GERMAN, new Locale("ga", "")};
+      ENGLISH, FRENCH, GERMAN, new Locale("ga", "")
+    };
   }
 
   /**
@@ -650,8 +652,10 @@ public class Locale implements java.io.Serializable, Cloneable
    * The hash code is precomputed, since <code>Locale</code>s are often
    * used in hash tables.
    */
-  public int hashCode()
+  public synchronized int hashCode()
   {
+    // This method is synchronized because writeObject() might reset
+    // the hashcode.
     return hashcode;
   }
 
@@ -668,19 +672,22 @@ public class Locale implements java.io.Serializable, Cloneable
     if (!(obj instanceof Locale))
       return false;
     Locale l = (Locale) obj;
-    return language.equals(l.language)
-      && country.equals(l.country) && variant.equals(l.variant);
+    return (language.equals(l.language)
+	    && country.equals(l.country)
+	    && variant.equals(l.variant));
   }
 
   /**
    * @serialdata According to jdk1.2 the hashcode should always be 
    * written as -1; 
    */
-  private void writeObject(java.io.ObjectOutputStream output)
+  private synchronized void writeObject(java.io.ObjectOutputStream output)
     throws java.io.IOException
   {
+    int tmpHashcode = hashcode;
     hashcode = -1;
     output.defaultWriteObject();
+    hashcode = tmpHashcode;
   }
 
   /**
