@@ -1,3 +1,17 @@
+2002-02-07  C. Brian Jones <cbj@gnu.org>
+
+	* native/jni/java-lang/Makefile.am: removed empty SUBDIRS
+	* gnu/classpath/Makefile.am: ditto
+	* native/fdlibm/Makefile.am: ditto
+	* native/jni/java-io/Makefile.am: ditto
+	* native/jni/java-net/Makefile.am: ditto
+	* native/jni/java-util/Makefile.am: ditto
+	* java/io/Makefile.am: removed BlockDataException.java
+	* native/Makefile.am: removed empty SUBDIRS, added option to build
+	cni and jni libraries at the same time (if we actually built cni
+	libraries)
+	* configure.in: added native/cni/Makefile to output
+
 2002-02-06  Eric Blake  <ebb9@email.byu.edu>
 
 	* native/jni/java-lang/Makefile.am: Clean up automake problems

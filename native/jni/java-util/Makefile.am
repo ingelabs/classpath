@@ -1,5 +1,3 @@
-SUBDIRS = 
-
 pkglib_LTLIBRARIES = libjavautil.la
 
 libjavautil_la_SOURCES = java_util_TimeZone.c

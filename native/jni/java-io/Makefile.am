@@ -1,5 +1,3 @@
-SUBDIRS = 
-
 pkglib_LTLIBRARIES = libjavaio.la 
 
 libjavaio_la_SOURCES = 	javaio.h \

@@ -303,6 +303,7 @@ javax/naming/directory/Makefile
 javax/naming/spi/Makefile
 native/Makefile
 native/fdlibm/Makefile
+native/cni/Makefile
 native/jni/Makefile
 native/jni/classpath/Makefile
 native/jni/java-io/Makefile

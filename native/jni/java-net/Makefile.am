@@ -1,5 +1,3 @@
-SUBDIRS = 
-
 pkglib_LTLIBRARIES = libjavanet.la
 
 libjavanet_la_SOURCES = javanet.c \

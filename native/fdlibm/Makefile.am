@@ -1,8 +1,6 @@
-SUBDIRS = 
-
 noinst_LTLIBRARIES = libfdlibm.la 
 
-libfdlibm_la_SOURCES = 	\
+libfdlibm_la_SOURCES =  \
 			dtoa.c \
 			e_acos.c \
 			e_asin.c \

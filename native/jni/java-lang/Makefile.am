@@ -1,4 +1,3 @@
-SUBDIRS = 
 pkglib_LTLIBRARIES = 	libjavalang.la 	libjavalangreflect.la
 
 libjavalang_la_SOURCES = java_lang_System.c \
