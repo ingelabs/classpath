@@ -1,6 +1,13 @@
 2002-08-28  Michael Koch <konqueror@gmx.de>
 
-       * java/net/Authenticator.java: added some documentation.
+	* javax/swing/colorchooser/.cvsignore,
+	javax/swing/filechooser/.cvsignore,
+	javax/swing/text/html/.cvsignore,
+	javax/swing/text/html/parser/.cvsignore: added some CVS ignore files.
+
+2002-08-28  Michael Koch <konqueror@gmx.de>
+
+	* java/net/Authenticator.java: added some documentation.
        
 2002-08-27  Michael Koch <konqueror@gmx.de>
 
