@@ -412,9 +412,9 @@ public class Vector extends AbstractList implements List,
    * @param obj The object to add to the Vector
    */
   public void addElement(Object obj) {
-    ensureCapacity(++elementCount);
+    ensureCapacity(elementCount+1);
     modCount++;
-    elementData[elementCount] = obj;
+    elementData[elementCount++] = obj;
   }
 
   /**
