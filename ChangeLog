@@ -1,3 +1,8 @@
+2005-03-12  Audrius Meskauskas  <audriusa@bluewin.ch>
+
+	* org/omg/CORBA/StringSeqHelper.java,
+	org/omg/CORBA/WStringSeqHelper.java: New files.
+
 2005-03-12  Mark Wielaard  <mark@klomp.org>
 
 	* doc/www.gnu.org/events/escape_fosdem05.wml: Add links to
