@@ -28,9 +28,8 @@ public class GtkFramePeer extends GtkWindowPeer
 {
     public GtkFramePeer(Frame f)
     {
-      super(toplevelType,f);
-      Dimension d=f.getSize();
-      System.out.println("FramePeer contructor: "+d.width+" x "+d.height);
+      super(toplevelType, f);
+      gtkWindowSetTitle(f.getTitle ());
     }
     
     public void setIconImage (Image image) 
