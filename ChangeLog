@@ -1,3 +1,34 @@
+2001-02-15  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* java/util/HashMap.java: Rewritten.
+	* java/util/Hashtable.java: Rewritten based on new HashMap code.
+	* java/util/TreeMap.java: Rewritten.
+	* java/util/Bucket.java: Deleted.
+	* java/util/BasicMapEntry.java: Remove unneccessary comments. 
+	(equals): Simplified. Made final.
+	(getKey): Made final.
+	(getValue): Likewise.
+	(toString): New method.
+	* java/util/Collections.java (search): Use a for-loop, not iterator
+	hasNext().
+	(copy): Use a for-loop. Throw an IndexOutOfBoundsException if run out 
+	of elements in source.
+	(max): Use a for-loop.
+	(min): Ditto.
+	(reverse): Keep track of positions instead of using Iterator's 
+	nextIndex() and previousIndex().
+	(shuffle(List)): Initialize defaultRandom if required using 
+	double-check thread safety idiom. Call two-argument shuffle method 
+	using defaultRandom.
+	(defaultRandom): New field.
+	(shuffle(List, Random)): Use a for-loop. Keep track of pos instead of
+	using previousIndex() and nextIndex().
+	(singletonMap(iterator)): Use a HashMap.Entry, not BasicMapEntry.
+	(ReverseComparator): New static class.
+	(reverseOrder): Return static instance of ReverseComparator.	
+	* java/util/AbstractCollection.java (toString): Use a StringBuffer.
+	* java/util/AbstractMap.java (toString): Use StringBuffer.
+
 2001-02-09  Steve Mayer <SMayer@dynamicsoft.com>
 
 	* java/util/Timer.java (remove): Install new heap.

@@ -1,6 +1,6 @@
 /* BasicMapEntry.java -- a class providing a plain-vanilla implementation of
    the Map.Entry interface; could be used anywhere in java.util
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -29,108 +29,64 @@ executable file might be covered by the GNU General Public License. */
 package java.util;
 
 /**
- * a class which implements Map.Entry
+ * A class which implements Map.Entry. It is shared by HashMap, TreeMap, and
+ * Hashtable.
  *
  * @author      Jon Zeppieri
- * @version     $Revision: 1.5 $
- * @modified    $Id: BasicMapEntry.java,v 1.5 2000-10-26 10:19:00 bryce Exp $
+ * @version     $Revision: 1.6 $
+ * @modified    $Id: BasicMapEntry.java,v 1.6 2001-02-15 06:26:31 bryce Exp $
  */
 class BasicMapEntry implements Map.Entry
 {
-  /** the key */
   Object key;
-  /** the value */
   Object value;
 
-  /**
-   * construct a new BasicMapEntry with the given key and value
-   *
-   * @param     newKey       the key of this Entry
-   * @param     newValue     the value of this Entry
-   */
   BasicMapEntry(Object newKey, Object newValue)
   {
     key = newKey;
     value = newValue;
   }
 
-  /**
-   * returns true if <pre>o</pre> is a Map.Entry and 
-   * <pre> 
-   * (((o.getKey == null) ? (key == null) : 
-   * o.getKey().equals(key)) && 
-   * ((o.getValue() == null) ? (value == null) : 
-   * o.getValue().equals(value)))
-   * </pre>
-   *
-   * NOTE: the calls to getKey() and getValue() in this implementation
-   * are <i>NOT</i> superfluous and should not be removed.  They insure 
-   * that subclasses such as HashMapEntry work correctly
-   *
-   * @param      o        the Object being tested for equality
-   */
-  public boolean equals(Object o)
+  public final boolean equals(Object o)
   {
-    Map.Entry tester;
-    Object oTestingKey, oTestingValue;
-    Object oKey, oValue;
-    if (o instanceof Map.Entry)
-      {
-	tester = (Map.Entry) o;
-	oKey = getKey();
-	oValue = getValue();
-	oTestingKey = tester.getKey();
-	oTestingValue = tester.getValue();
-	return (((oTestingKey == null) ? (oKey == null) :
-		 oTestingKey.equals(oKey)) &&
-		((oTestingValue == null) ? (oValue == null) :
-		 oTestingValue.equals(oValue)));
-      }
-    return false;
+    if (!(o instanceof Map.Entry))
+      return false;
+    Map.Entry e = (Map.Entry) o;
+    return (key == null ? e.getKey() == null : key.equals(e.getKey())
+            && value == null ? e.getValue() == null 
+			     : value.equals(e.getValue()));
   }
 
-  /** returns the key */
-  public Object getKey()
+  public final Object getKey()
   {
     return key;
   }
 
-  /** returns the value */
-  public Object getValue()
+  public final Object getValue()
   {
     return value;
   }
 
-  /** the hashCode() for a Map.Entry is 
-   * <pre> 
-   * ((getKey() == null) ? 0 : getKey().hashCode()) ^ 
-   * ((getValue() == null) ? 0 : getValue().hashCode());
-   * </pre>
-   *
-   * NOTE: the calls to getKey() and getValue() in this implementation
-   * are <i>NOT</i> superfluous and should not be removed.  They insure 
-   * that subclasses such as HashMapEntry work correctly
-   */
-  public int hashCode()
+  public final int hashCode()
   {
-    Object oKey = getKey();
-    Object oValue = getValue();
-    return ((oKey == null) ? 0 : oKey.hashCode()) ^
-      ((oValue == null) ? 0 : oValue.hashCode());
+    int kc = (key == null ? 0 : key.hashCode());
+    int vc = (value == null ? 0 : value.hashCode());
+    return kc ^ vc;
   }
 
   /** 
-   * sets the value of this Map.Entry 
-   *
-   * @param     newValue         the new value of this Map.Entry
+   * sets the value of this Map.Entry. Note that this is overriden by 
+   * Hashtable.Entry, which does not permit a null value.
    */
-  public Object setValue(Object newValue)
-    throws UnsupportedOperationException, ClassCastException,
-	   IllegalArgumentException, NullPointerException
+  public Object setValue(Object newVal)
   {
-    Object oVal = value;
-    value = newValue;
-    return oVal;
+    Object r = value;
+    value = newVal;
+    return r;
+  }
+
+  public final String toString()
+  {
+    return key + "=" + value;
   }
 }
-

@@ -45,18 +45,15 @@ import java.io.ObjectOutputStream;
  * HashSet is a part of the JDK1.2 Collections API.
  *
  * @author      Jon Zeppieri
- * @version     $Revision: 1.5 $
- * @modified    $Id: HashSet.java,v 1.5 2000-10-26 10:19:00 bryce Exp $
+ * @version     $Revision: 1.6 $
+ * @modified    $Id: HashSet.java,v 1.6 2001-02-15 06:26:31 bryce Exp $
  */
 public class HashSet extends AbstractSet
   implements Set, Cloneable, Serializable
 {
-  // INSTANCE VARIABLES -------------------------------------------------
   /** the HashMap which backs this Set */
-  private transient HashMap map;
+  transient HashMap map;
   static final long serialVersionUID = -5024744406713321676L;
-
-  // CONSTRUCTORS ---------------------------------------------------------
 
   /**
    * construct a new, empty HashSet whose backing HashMap has the default 
@@ -106,9 +103,6 @@ public class HashSet extends AbstractSet
     addAll(c);
   }
 
-
-  // PUBLIC METHODS ---------------------------------------------------------
-
   /**
    * adds the given Object to the set if it is not already in the Set,
    * returns true if teh element was added, false otherwise
@@ -117,15 +111,7 @@ public class HashSet extends AbstractSet
    */
   public boolean add(Object o)
   {
-    if (map.containsKey(o))
-      {
-	return false;
-      }
-    else
-      {
-	internalAdd(o);
-	return true;
-      }
+    return (map.put(o, Boolean.TRUE) == null);
   }
 
   /**
@@ -142,11 +128,9 @@ public class HashSet extends AbstractSet
    */
   public Object clone()
   {
-    Iterator it = iterator();
-    HashSet clone = new HashSet(map.capacity, map.loadFactor);
-    while (it.hasNext())
-      clone.internalAdd(it.next());
-    return clone;
+    HashSet copy = new HashSet();
+    copy.map = (HashMap) map.clone();
+    return copy;
   }
 
   /**
@@ -193,50 +177,37 @@ public class HashSet extends AbstractSet
     return map.size();
   }
 
-
-  // PRIVATE METHODS -----------------------------------------------------------
-
-  /** 
-   * adds the supplied element to this Set; this private method is used
-   * internally [clone()] instead of add(), because add() can be overridden
-   * to do unexpected things
-   *
-   * @param         o        the Object to add to this Set
-   */
-  private void internalAdd(Object o)
-  {
-    map.put(o, Boolean.TRUE);
-  }
-
-  /** Serialize this Object in a manner which is binary-compatible with the JDK */
+  /** Serialize this Object in a manner which is binary-compatible with the 
+    * JDK */
   private void writeObject(ObjectOutputStream s) throws IOException
   {
     Iterator it = iterator();
-    s.writeInt(map.capacity);
+    s.writeInt(map.buckets.length);
     s.writeFloat(map.loadFactor);
-    s.writeInt(size());
+    s.writeInt(map.size);
     while (it.hasNext())
       s.writeObject(it.next());
   }
 
-  /** Deserialize this Object in a manner which is binary-compatible with the JDK */
+  /** Deserialize this Object in a manner which is binary-compatible with 
+    * the JDK */
   private void readObject(ObjectInputStream s) throws IOException,
     ClassNotFoundException
   {
-    int i, iSize, iCapacity;
-    float fLoadFactor;
-    Object oElement;
+    int i, size, capacity;
+    float loadFactor;
+    Object element;
 
-    iCapacity = s.readInt();
-    fLoadFactor = s.readFloat();
-    iSize = s.readInt();
+    capacity = s.readInt();
+    loadFactor = s.readFloat();
+    size = s.readInt();
 
-    map = new HashMap(iCapacity, fLoadFactor);
+    map = new HashMap(capacity, loadFactor);
 
-    for (i = 0; i < iSize; i++)
+    for (i = 0; i < size; i++)
       {
-	oElement = s.readObject();
-	internalAdd(oElement);
+	element = s.readObject();
+	map.put(element, Boolean.TRUE);
       }
   }
 }

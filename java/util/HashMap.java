@@ -32,9 +32,10 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream.GetField;
-import java.io.ObjectOutputStream.PutField;
-import java.io.ObjectStreamField;
+
+// NOTE: This implementation is very similar to that of Hashtable. If you fix
+// a bug in here, chances are you should make a similar change to the Hashtable
+// code.
 
 /**
  * This class provides a hashtable-backed implementation of the
@@ -57,119 +58,69 @@ import java.io.ObjectStreamField;
  * does not support "Enumeration views."
  *
  * @author         Jon Zeppieri
- * @version        $Revision: 1.8 $
- * @modified       $Id: HashMap.java,v 1.8 2000-10-26 10:19:00 bryce Exp $
+ * @author         Jochen Hoenicke
+ * @author	   Bryce McKinlay
+ * @version        $Revision: 1.9 $
+ * @modified       $Id: HashMap.java,v 1.9 2001-02-15 06:26:31 bryce Exp $
  */
 public class HashMap extends AbstractMap
   implements Map, Cloneable, Serializable
 {
-  // STATIC (CLASS) VARIABLES ------------------------------------------
-
-  /** 
-   * the default capacity for an instance of HashMap -- I think this
-   * is low, and perhaps it shoudl be raised; Sun's documentation mildly
-   * suggests that this (11) is the correct value, though
-   */
-  private static final int DEFAULT_CAPACITY = 11;
-
-  /** the default load factor of a HashMap */
-  private static final float DEFAULT_LOAD_FACTOR = 0.75F;
-
-  /** used internally to represent the null key */
-  private static final HashMap.Null NULL_KEY = new HashMap.Null();
-
-  /** used internally to parameterize the creation of set/collection views */
-  private static final int KEYS = 0;
-
-  /** used internally to parameterize the creation of set/collection views */
-  private static final int VALUES = 1;
-
-  /** used internally to parameterize the creation of set/collection views */
-  private static final int ENTRIES = 2;
+  /** Default number of buckets. This is the value the JDK 1.3 uses. Some 
+    * early documentation specified this value as 101. That is incorrect. */
+  private static final int DEFAULT_CAPACITY = 11;  
+  /** The defaulty load factor; this is explicitly specified by the spec. */
+  private static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
   private static final long serialVersionUID = 362498820763181265L;
 
-  // INSTANCE VARIABLES -------------------------------------------------
+  /** 
+   * The rounded product of the capacity and the load factor; when the number 
+   * of elements exceeds the threshold, the HashMap calls <pre>rehash()</pre>.
+   * @serial
+   */
+  int threshold;
 
-  /** the capacity of this HashMap:  denotes the size of the bucket array */
-  transient int capacity;
+  /** Load factor of this HashMap:  used in computing the threshold.
+   * @serial
+   */
+  float loadFactor = DEFAULT_LOAD_FACTOR;
+
+  /** 
+   * Array containing the actual key-value mappings
+   */
+  transient Entry[] buckets;
+
+  /** 
+   * counts the number of modifications this HashMap has undergone, used 
+   * by Iterators to know when to throw ConcurrentModificationExceptions.
+   */
+  transient int modCount;
 
   /** the size of this HashMap:  denotes the number of key-value pairs */
-  private transient int size;
-
-  /** the load factor of this HashMap:  used in computing the threshold 
-   * @serial
-   */
-  float loadFactor;
-
-  /* the rounded product of the capacity and the load factor; when the number of
-   * elements exceeds the threshold, the HashMap calls <pre>rehash()</pre>
-   * @serial
-   */
-  private int threshold;
-
-  /** 
-   * this data structure contains the actual key-value mappings; a
-   * <pre>BucketList</pre> is a lightweight linked list of "Buckets",
-   * which, in turn, are linked nodes containing a key-value mapping 
-   * and a reference to the "next" Bucket in the list
-   */
-  private transient Bucket[] buckets;
-
-  /** 
-   * counts the number of modifications this HashMap has undergone; used by Iterators
-   * to know when to throw ConcurrentModificationExceptions (idea ripped-off from
-   * Stuart Ballard's AbstractList implementation) 
-   */
-  private transient int modCount;
-
-
-  // CONSTRUCTORS ---------------------------------------------------------
+  transient int size;
 
   /**
-   * construct a new HashMap with the default capacity and the default
-   * load factor
+   * Class to represent an entry in the hash table. Holds a single key-value
+   * pair.
+   */
+  static class Entry extends BasicMapEntry
+  {
+    Entry next;
+    
+    Entry(Object key, Object value)
+    {
+      super(key, value);
+    }
+  }
+
+  /**
+   * construct a new HashMap with the default capacity (11) and the default
+   * load factor (0.75).
    */
   public HashMap()
   {
-    init(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR);
-  }
-
-  /**
-   * construct a new HashMap with a specific inital capacity and load factor
-   *
-   * @param   initialCapacity     the initial capacity of this HashMap (>=0)
-   * @param   initialLoadFactor   the load factor of this HashMap 
-   *                              (a misnomer, really, since the load factor of
-   *                              a HashMap does not change)
-   * 
-   * @throws   IllegalArgumentException    if (initialCapacity < 0) ||
-   *                                          (initialLoadFactor > 1.0) ||
-   *                                          (initialLoadFactor <= 0.0)
-   */
-  public HashMap(int initialCapacity, float initialLoadFactor)
-    throws IllegalArgumentException
-  {
-    if (initialCapacity < 0 || initialLoadFactor <= 0
-	|| initialLoadFactor > 1)
-      throw new IllegalArgumentException();
-    else
-      init(initialCapacity, initialLoadFactor);
-  }
-
-  /**
-   * construct a new HashMap with a specific inital capacity 
-   *
-   * @param   initialCapacity     the initial capacity of this HashMap (>=0)
-   *
-   * @throws   IllegalArgumentException    if (initialCapacity < 0)
-   */
-  public HashMap(int initialCapacity) throws IllegalArgumentException
-  {
-    if (initialCapacity < 0)
-      throw new IllegalArgumentException();
-    else
-      init(initialCapacity, DEFAULT_LOAD_FACTOR);
+    this(DEFAULT_CAPACITY, DEFAULT_LOAD_FACTOR);
   }
 
   /**
@@ -181,16 +132,46 @@ public class HashMap extends AbstractMap
    *                     the new HashMap.  <b>NOTE: key / value pairs
    *                     are not cloned in this constructor</b>
    */
-  public HashMap(Map t)
+  public HashMap(Map m)
   {
-    int mapSize = t.size() * 2;
-    init(((mapSize > DEFAULT_CAPACITY) ? mapSize : DEFAULT_CAPACITY),
-	 DEFAULT_LOAD_FACTOR);
-    putAll(t);
+    int size = Math.max(m.size() * 2, DEFAULT_CAPACITY);
+    buckets = new Entry[size];
+    threshold = (int) (size * loadFactor);
+    putAll(m);
   }
 
+  /**
+   * construct a new HashMap with a specific inital capacity 
+   *
+   * @param   initialCapacity     the initial capacity of this HashMap (>=0)
+   *
+   * @throws   IllegalArgumentException    if (initialCapacity < 0)
+   */
+  public HashMap(int initialCapacity) throws IllegalArgumentException
+  {
+    this(initialCapacity, DEFAULT_LOAD_FACTOR);
+  }
 
-  // PUBLIC METHODS ---------------------------------------------------------
+  /**
+   * construct a new HashMap with a specific inital capacity and load factor
+   *
+   * @param   initialCapacity  the initial capacity (>=0)
+   * @param   loadFactor       the load factor
+   * 
+   * @throws   IllegalArgumentException    if (initialCapacity < 0) ||
+   *                                          (initialLoadFactor > 1.0) ||
+   *                                          (initialLoadFactor <= 0.0)
+   */
+  public HashMap(int initialCapacity, float loadFactor)
+    throws IllegalArgumentException
+  {
+    if (initialCapacity < 0 || loadFactor <= 0 || loadFactor > 1)
+      throw new IllegalArgumentException();
+    
+    buckets = new Entry[initialCapacity];
+    this.loadFactor = loadFactor;
+    this.threshold = (int) (initialCapacity * loadFactor);
+  }
 
   /** returns the number of kay-value mappings currently in this Map */
   public int size()
@@ -204,47 +185,25 @@ public class HashMap extends AbstractMap
     return size == 0;
   }
 
-  /** empties this HashMap of all elements */
-  public void clear()
-  {
-    size = 0;
-    modCount++;
-    buckets = new Bucket[capacity];
-  }
-
-  /** 
-   * returns a shallow clone of this HashMap (i.e. the Map itself is cloned, but
-   * its contents are not)
+  /**
+   * returns true if this HashMap contains a value <pre>o</pre>, such that
+   * <pre>o.equals(value)</pre>.
+   *
+   * @param      value       the value to search for in this Hashtable
    */
-  public Object clone()
+  public boolean containsValue(Object value)
   {
-    Map.Entry entry;
-    Iterator it = entrySet().iterator();
-    HashMap clone = new HashMap(capacity, loadFactor);
-    while (it.hasNext())
+    for (int i = 0; i < buckets.length; i++)
       {
-	entry = (Map.Entry) it.next();
-	clone.internalPut(entry.getKey(), entry.getValue());
+	Entry e = buckets[i];
+	while (e != null)
+	  {
+	    if (value == null ? e.value == null : value.equals(e.value))
+	      return true;
+	    e = e.next;
+	  }
       }
-    return clone;
-  }
-
-  /** returns a "set view" of this HashMap's keys */
-  public Set keySet()
-  {
-    return new HashMapSet(KEYS);
-  }
-
-  /** returns a "set view" of this HashMap's entries */
-  public Set entrySet()
-  {
-    return new HashMapSet(ENTRIES);
-  }
-
-  /** returns a "collection view" (or "bag view") of this HashMap's values */
-  public Collection values()
-  {
-    return new HashMapCollection();
+    return false;
   }
 
   /** 
@@ -255,30 +214,18 @@ public class HashMap extends AbstractMap
    */
   public boolean containsKey(Object key)
   {
-    return (internalGet(key) != null);
-  }
-
-  /**
-   * returns true if this HashMap contains a value <pre>o</pre>, such that
-   * <pre>o.equals(value)</pre>.
-   *
-   * @param      value       the value to search for in this Hashtable
-   */
-  public boolean containsValue(Object value)
-  {
-    int i;
-    Bucket list;
-
-    for (i = 0; i < capacity; i++)
+    int idx = hash(key);
+    Entry e = buckets[idx];
+    while (e != null)
       {
-	list = buckets[i];
-	if (list != null && list.containsValue(value))
+        if (key == null ? e.key == null : key.equals(e.key))
 	  return true;
+	e = e.next;
       }
     return false;
   }
 
-  /*
+  /**
    * return the value in this Hashtable associated with the supplied key, or <pre>null</pre>
    * if the key maps to nothing
    *
@@ -286,8 +233,15 @@ public class HashMap extends AbstractMap
    */
   public Object get(Object key)
   {
-    Map.Entry oResult = internalGet(key);
-    return (oResult == null) ? null : oResult.getValue();
+    int idx = hash(key);
+    Entry e = buckets[idx];
+    while (e != null)
+      {
+        if (key == null ? e.key == null : key.equals(e.key))
+	  return e.value;
+	e = e.next;
+      }
+    return null;
   }
 
   /**
@@ -298,7 +252,38 @@ public class HashMap extends AbstractMap
    */
   public Object put(Object key, Object value)
   {
-    return internalPut(key, value);
+    modCount++;
+    int idx = hash(key);
+    Entry e = buckets[idx];
+    
+    while (e != null)
+      {
+        if (key == null ? e.key == null : key.equals(e.key))
+	  {
+	    Object r = e.value;
+	    e.value = value;
+	    return r;
+	  }
+	else
+	  {
+	    e = e.next;
+	  }
+      }
+    
+    // At this point, we know we need to add a new entry.
+    if (++size > threshold)
+      {
+	rehash();
+	// Need a new hash value to suit the bigger table.
+	idx = hash(key);
+      }
+
+    e = new Entry(key, value);
+    
+    e.next = buckets[idx];
+    buckets[idx] = e;
+    
+    return null;
   }
 
   /**
@@ -310,165 +295,271 @@ public class HashMap extends AbstractMap
    */
   public Object remove(Object key)
   {
-    Bucket list;
-    int index;
-    Object result = null;
-    if (size > 0)
+    modCount++;
+    int idx = hash(key);
+    Entry e = buckets[idx];
+    Entry last = null;
+
+    while (e != null)
       {
-	index = hash(((key == null) ? NULL_KEY : key));
-	list = buckets[index];
-	if (list != null)
+        if (key == null ? e.key == null : key.equals(e.key))
 	  {
-	    result = list.removeByKey(key);
-	    if (result != null)
-	      {
-		size--;
-		modCount++;
-		if (list.first == null)
-		  buckets[index] = null;
-	      }
+	    if (last == null)
+	      buckets[idx] = e.next;
+	    else
+	      last.next = e.next;
+	    size--;
+	    return e.value;
+	  }
+	last = e;
+	e = e.next;
+      }
+    return null;
+  }
+
+  public void putAll(Map m)
+  {
+    int msize = m.size();
+    Iterator itr = m.entrySet().iterator();
+    
+    for (int i=0; i < msize; i++)
+      {
+        Map.Entry e = (Map.Entry) itr.next();
+	// Optimize in case the Entry is one of our own.
+	if (e instanceof BasicMapEntry)
+	  {
+	    BasicMapEntry entry = (BasicMapEntry) e;
+	    put(entry.key, entry.value);
+	  }
+	else
+	  {
+            put(e.getKey(), e.getValue());
 	  }
       }
-    return result;
   }
-
-
-  // PRIVATE METHODS -----------------------------------------------------------
-
-  /** 
-   * puts the given key-value pair into this HashMap; a private method is used
-   * because it is called by the rehash() method as well as the put() method,
-   * and if a subclass overrides put(), then rehash would do funky things
-   * if it called put()
-   *
-   * @param       key        the HashMap key used to locate the value
-   * @param       value      the value to be stored in the HashMap
-   */
-  private Object internalPut(Object key, Object value)
+  
+  public void clear()
   {
-    HashMapEntry entry;
-    Bucket list;
-    int hashIndex;
-    Object oResult;
-    Object oRealKey = ((key == null) ? NULL_KEY : key);
-
-    entry = new HashMapEntry(oRealKey, value);
-    hashIndex = hash(oRealKey);
-    list = buckets[hashIndex];
-    if (list == null)
+    modCount++;
+    for (int i=0; i < buckets.length; i++)
       {
-	list = new Bucket();
-	buckets[hashIndex] = list;
+        buckets[i] = null;
       }
-    oResult = list.add(entry);
-    if (oResult == null)
-      {
-	modCount++;
-	if (size++ == threshold)
-	  rehash();
-	return null;
-      }
-    else
-      {
-	// SEH: if key already exists, we don't rehash & we don't update the modCount
-	// because it is not a "structural" modification
-	return oResult;
-      }
-  }
-
-  /** 
-   * a private method, called by all of the constructors to initialize a new HashMap
-   *
-   * @param   initialCapacity     the initial capacity of this HashMap (>=0)
-   * @param   initialLoadFactor   the load factor of this HashMap 
-   *                              (a misnomer, really, since the load factor of
-   *                              a HashMap does not change)
-   */
-  private void init(int initialCapacity, float initialLoadFactor)
-  {
     size = 0;
-    modCount = 0;
-    capacity = initialCapacity;
-    loadFactor = initialLoadFactor;
-    threshold = (int) ((float) capacity * loadFactor);
-    buckets = new Bucket[capacity];
   }
 
-  /** private -- simply hashes a non-null Object to its array index */
+  /** 
+   * returns a shallow clone of this HashMap (i.e. the Map itself is cloned, but
+   * its contents are not)
+   */
+  public Object clone()
+  {
+    HashMap copy = null;
+    try
+      {
+        copy = (HashMap) super.clone();
+      }
+    catch (CloneNotSupportedException x)
+      {
+      }
+    copy.buckets = new Entry[buckets.length];
+    
+    for (int i=0; i < buckets.length; i++)
+      {
+        Entry e = buckets[i];
+	Entry last = null;
+	
+	while (e != null)
+	  {
+	    if (last == null)
+	      {
+		copy.buckets[i] = new Entry(e.key, e.value);
+		last = copy.buckets[i];
+              }
+	    else		
+              {
+	        last.next = new Entry(e.key, e.value);
+		last = last.next;
+	      }
+	    e = e.next;
+	  }
+      }
+    return copy;
+  }
+
+  /** returns a "set view" of this HashMap's keys */
+  public Set keySet()
+  {
+    // Create an AbstractSet with custom implementations of those methods that 
+    // can be overriden easily and efficiently.
+    return new AbstractSet()
+    {
+      public int size()
+      {
+        return size;
+      }
+      
+      public Iterator iterator()
+      {
+        return new HashIterator(HashIterator.KEYS);
+      }
+            
+      public void clear()
+      {
+        HashMap.this.clear();
+      }
+
+      public boolean contains(Object o)
+      {
+        return HashMap.this.containsKey(o);
+      }
+      
+      public boolean remove(Object o)
+      {
+        // Test against the size of the HashMap to determine if anything
+	// really got removed. This is neccessary because the return value of
+	// HashMap.remove() is ambiguous in the null case.
+        int oldsize = size;
+        HashMap.this.remove(o);
+	return (oldsize != size);
+      }
+    };
+  }
+  
+  /** Returns a "collection view" (or "bag view") of this HashMap's values. */
+  public Collection values()
+  {
+    // We don't bother overriding many of the optional methods, as doing so
+    // wouldn't provide any significant performance advantage.
+    return new AbstractCollection()
+    {
+      public int size()
+      {
+        return size;
+      }
+      
+      public Iterator iterator()
+      {
+        return new HashIterator(HashIterator.VALUES);
+      }
+      
+      public void clear()
+      {
+        HashMap.this.clear();
+      }
+    };
+  }
+
+  /** Returns a "set view" of this HashMap's entries. */
+  public Set entrySet()
+  {
+    // Create an AbstractSet with custom implementations of those methods that 
+    // can be overriden easily and efficiently.
+    return new AbstractSet()
+    {
+      public int size()
+      {
+        return size;
+      }
+      
+      public Iterator iterator()
+      {
+        return new HashIterator(HashIterator.ENTRIES);
+      }
+            
+      public void clear()
+      {
+        HashMap.this.clear();
+      }
+
+      public boolean contains(Object o)
+      {
+        if (!(o instanceof Map.Entry))
+	  return false;
+	Map.Entry me = (Map.Entry) o;
+	Entry e = getEntry(me);
+	return (e != null);
+      }
+      
+      public boolean remove(Object o)
+      {
+        if (!(o instanceof Map.Entry))
+	  return false;
+	Map.Entry me = (Map.Entry) o;
+	Entry e = getEntry(me);
+	if (e != null)
+	  {
+	    HashMap.this.remove(e.key);
+	    return true;
+	  }
+	return false;
+      }
+    };
+  }
+  
+  /** Return an index in the buckets array for `key' based on its hashCode() */
   private int hash(Object key)
   {
-    return Math.abs(key.hashCode() % capacity);
+    if (key == null)
+      return 0;
+    else
+      return Math.abs(key.hashCode() % buckets.length);
   }
 
+  /** Return an Entry who's key and value equal the supplied Map.Entry. 
+    * This is used by entrySet's contains() and remove() methods. They can't
+    * use contains(key) and remove(key) directly because that would result
+    * in entries with the same key but a different value being matched. */
+  private Entry getEntry(Map.Entry me)
+  {
+    int idx = hash(me.getKey());
+    Entry e = buckets[idx];
+    while (e != null)
+      {
+        if (e.equals(me))
+	  return e;
+	e = e.next;
+      }
+    return null;
+  }
+  
   /** 
-   * increases the size of the HashMap and rehashes all keys to new array indices;
-   * this is called when the addition of a new value would cause size() > threshold
+   * increases the size of the HashMap and rehashes all keys to new array 
+   * indices; this is called when the addition of a new value would cause 
+   * size() > threshold. Note that the existing Entry objects are reused in 
+   * the new hash table.
    */
   private void rehash()
   {
-    int i;
-    Bucket[]data = buckets;
-    Bucket.Node node;
-
-    modCount++;
-    capacity = (capacity * 2) + 1;
-    size = 0;
-    threshold = (int) ((float) capacity * loadFactor);
-    buckets = new Bucket[capacity];
-    for (i = 0; i < data.length; i++)
+    Entry[] oldBuckets = buckets;
+    
+    int newcapacity = (buckets.length * 2) + 1;
+    threshold = (int) (newcapacity * loadFactor);
+    buckets = new Entry[newcapacity];
+    
+    for (int i = 0; i < oldBuckets.length; i++)
       {
-	if (data[i] != null)
+	Entry e = oldBuckets[i];
+        while (e != null)
 	  {
-	    node = data[i].first;
-	    while (node != null)
+	    int idx = hash(e.key);
+	    Entry dest = buckets[idx];
+
+	    if (dest != null)
 	      {
-		internalPut(node.getKey(), node.getValue());
-		node = node.next;
+		while (dest.next != null)
+        	  dest = dest.next;
+		dest.next = e;
 	      }
+	    else
+	      {
+        	buckets[idx] = e;
+	      }
+
+	    Entry next = e.next;
+	    e.next = null;
+	    e = next;
 	  }
-      }
-  }
-
-  /** 
-   * a private method which does the "dirty work" (or some of it anyway) of fetching a value
-   * with a key
-   *
-   *  @param     key      the key for which to fetch an associated value
-   */
-  private Map.Entry internalGet(Object key)
-  {
-    Bucket list;
-    if (size == 0)
-      {
-	return null;
-      }
-    else
-      {
-	list = buckets[hash(((key == null) ? NULL_KEY : key))];
-	return (list == null) ? null : list.getEntryByKey(key);
-      }
-  }
-
-  /**
-   * a private method used by inner class HashMapSet to implement its own 
-   * <pre>contains(Map.Entry)</pre> method; returns true if the supplied
-   * key / value pair is found in this HashMap (again, using <pre>equals()</pre>,
-   * rather than <pre>==</pre>)
-   *
-   * @param      entry      a Map.Entry to match against key / value pairs in 
-   *                        this HashMap
-   */
-  private boolean containsEntry(Map.Entry entry)
-  {
-    Map.Entry oInternalEntry;
-    if (entry == null)
-      {
-	return false;
-      }
-    else
-      {
-	oInternalEntry = internalGet(entry.getKey());
-	return (oInternalEntry != null && oInternalEntry.equals(entry));
       }
   }
 
@@ -481,17 +572,17 @@ public class HashMap extends AbstractMap
    */
   private void writeObject(ObjectOutputStream s) throws IOException
   {
-    // the fields
+    // the threshold and loadFactor fields
     s.defaultWriteObject();
 
-    s.writeInt(capacity);
+    s.writeInt(buckets.length);
     s.writeInt(size);
     Iterator it = entrySet().iterator();
     while (it.hasNext())
       {
-	Map.Entry oEntry = (Map.Entry) it.next();
-	s.writeObject(oEntry.getKey());
-	s.writeObject(oEntry.getValue());
+	Map.Entry entry = (Map.Entry) it.next();
+	s.writeObject(entry.getKey());
+	s.writeObject(entry.getValue());
       }
   }
 
@@ -505,289 +596,96 @@ public class HashMap extends AbstractMap
   private void readObject(ObjectInputStream s)
     throws IOException, ClassNotFoundException
   {
-    // the fields
+    // the threshold and loadFactor fields
     s.defaultReadObject();
 
-    capacity = s.readInt();
-    int iLen = s.readInt();
+    int capacity = s.readInt();
+    int len = s.readInt();
     size = 0;
     modCount = 0;
-    buckets = new Bucket[capacity];
+    buckets = new Entry[capacity];
 
-    for (int i = 0; i < iLen; i++)
+    for (int i = 0; i < len; i++)
       {
-	Object oKey = s.readObject();
-	Object oValue = s.readObject();
-	internalPut(oKey, oValue);
+	Object key = s.readObject();
+	Object value = s.readObject();
+	put(key, value);
       }
   }
 
-  // INNER CLASSES -------------------------------------------------------------
-  // ---------------------------------------------------------------------------
-
   /**
-   * an inner class providing a Set view of a HashMap; this implementation is 
-   * parameterized to view either a Set of keys or a Set of Map.Entry objects
-   *
-   * Note:  a lot of these methods are implemented by AbstractSet, and would work 
-   * just fine without any meddling, but far greater efficiency can be gained by
-   * overriding a number of them.  And so I did.
-   *
-   * @author      Jon Zeppieri
-   * @version     $Revision: 1.8 $
-   * @modified    $Id: HashMap.java,v 1.8 2000-10-26 10:19:00 bryce Exp $
-   */
-  private class HashMapSet extends AbstractSet implements Set
-  {
-    /** the type of this Set view:  KEYS or ENTRIES */
-    private int setType;
-
-    /** construct a new HashtableSet with the supplied view type */
-    HashMapSet(int type)
-    {
-      setType = type;
-    }
-
-    /**
-     * adding an element is unsupported; this method simply throws an exception 
-     *
-     * @throws       UnsupportedOperationException
-     */
-    public boolean add(Object o) throws UnsupportedOperationException
-    {
-      throw new UnsupportedOperationException();
-    }
-
-    /**
-     * adding an element is unsupported; this method simply throws an exception 
-     *
-     * @throws       UnsupportedOperationException
-     */
-    public boolean addAll(Collection c) throws UnsupportedOperationException
-    {
-      throw new UnsupportedOperationException();
-    }
-
-    /**
-     * clears the backing HashMap; this is a prime example of an overridden implementation
-     * which is far more efficient than its superclass implementation (which uses an iterator
-     * and is O(n) -- this is an O(1) call)
-     */
-    public void clear()
-    {
-      HashMap.this.clear();
-    }
-
-    /**
-     * returns true if the supplied object is contained by this Set
-     *
-     * @param     o       an Object being testing to see if it is in this Set
-     */
-    public boolean contains(Object o)
-    {
-      if (setType == KEYS)
-	return HashMap.this.containsKey(o);
-      else
-	return (o instanceof Map.Entry) ? HashMap.this.
-	  containsEntry((Map.Entry) o) : false;
-    }
-
-    /** 
-     * returns true if the backing HashMap is empty (which is the only case either a KEYS
-     * Set or an ENTRIES Set would be empty)
-     */
-    public boolean isEmpty()
-    {
-      return HashMap.this.isEmpty();
-    }
-
-    /**
-     * removes the supplied Object from the Set
-     *
-     * @param      o       the Object to be removed
-     */
-    public boolean remove(Object o)
-    {
-      if (setType == KEYS)
-	return (HashMap.this.remove(o) != null);
-      else
-	return (o instanceof Map.Entry) ?
-	  (HashMap.this.remove(((Map.Entry) o).getKey()) != null) : false;
-    }
-
-    /** returns the size of this Set (always equal to the size of the backing Hashtable) */
-    public int size()
-    {
-      return HashMap.this.size();
-    }
-
-    /** returns an Iterator over the elements of this Set */
-    public Iterator iterator()
-    {
-      return new HashMapIterator(setType);
-    }
-  }
-
-  /**
-   * Like the above Set view, except this one if for values, which are not
-   * guaranteed to be unique in a Map; this prvides a Bag of values
-   * in the HashMap
+   * Iterate over HashMap's entries.
+   * This implementation is parameterized to give a sequential view of
+   * keys, values, or entries.
    *
    * @author       Jon Zeppieri
-   * @version      $Revision: 1.8 $
-   * @modified     $Id: HashMap.java,v 1.8 2000-10-26 10:19:00 bryce Exp $
+   * @version      $Revision: 1.9 $
+   * @modified     $Id: HashMap.java,v 1.9 2001-02-15 06:26:31 bryce Exp $
    */
-  private class HashMapCollection extends AbstractCollection
-    implements Collection
+  class HashIterator implements Iterator
   {
-    /** a trivial contructor for HashMapCollection */
-    HashMapCollection()
-    {
-    }
+    static final int KEYS = 0,
+                     VALUES = 1,
+		     ENTRIES = 2;
+		    
+    // the type of this Iterator: KEYS, VALUES, or ENTRIES.
+    int type;
+    // the number of modifications to the backing Hashtable that we know about.
+    int knownMod;
+    // The total number of elements returned by next(). Used to determine if
+    // there are more elements remaining.
+    int count;
+    // Current index in the physical hash table.
+    int idx;
+    // The last Entry returned by a next() call.
+    Entry last;
+    // The next entry that should be returned by next(). It is set to something
+    // if we're iterating through a bucket that contains multiple linked 
+    // entries. It is null if next() needs to find a new bucket.
+    Entry next;
 
-    /** 
-     * adding elements is not supported by this Collection;
-     * this method merely throws an exception
-     *
-     * @throws     UnsupportedOperationException
-     */
-    public boolean add(Object o) throws UnsupportedOperationException
+    /* construct a new HashtableIterator with the supllied type: 
+       KEYS, VALUES, or ENTRIES */
+    HashIterator(int type)
     {
-      throw new UnsupportedOperationException();
-    }
-
-    /** 
-     * adding elements is not supported by this Collection;
-     * this method merely throws an exception
-     *
-     * @throws     UnsupportedOperationException
-     */
-    public boolean addAll(Collection c) throws UnsupportedOperationException
-    {
-      throw new UnsupportedOperationException();
-    }
-
-    /** removes all elements from this Collection (and from the backing HashMap) */
-    public void clear()
-    {
-      HashMap.this.clear();
-    }
-
-    /** 
-     * returns true if this Collection contains at least one Object which equals() the
-     * supplied Object
-     *
-     * @param         o        the Object to compare against those in the Set
-     */
-    public boolean contains(Object o)
-    {
-      return HashMap.this.containsValue(o);
-    }
-
-    /** returns true IFF the Collection has no elements */
-    public boolean isEmpty()
-    {
-      return HashMap.this.isEmpty();
-    }
-
-    /** returns the size of this Collection */
-    public int size()
-    {
-      return HashMap.this.size();
-    }
-
-    /** returns an Iterator over the elements in this Collection */
-    public Iterator iterator()
-    {
-      return new HashMapIterator(VALUES);
-    }
-  }
-
-  /**
-   * a class which implements the Iterator interface and is used for
-   * iterating over HashMaps;
-   * this implementation is parameterized to give a sequential view of
-   * keys, values, or entries; it also allows the removal of elements, 
-   * as per the Javasoft spec.
-   *
-   * @author       Jon Zeppieri
-   * @version      $Revision: 1.8 $
-   * @modified     $Id: HashMap.java,v 1.8 2000-10-26 10:19:00 bryce Exp $
-   */
-  class HashMapIterator implements Iterator
-  {
-    /** the type of this Iterator: KEYS, VALUES, or ENTRIES */
-    private int myType;
-    /** 
-     * the number of modifications to the backing Hashtable for which
-     * this Iterator can account (idea ripped off from Stuart Ballard)
-     */
-    private int knownMods;
-    /** the location of our sequential "cursor" */
-    private int position;
-    /** the current index of the BucketList array */
-    private int bucketIndex;
-    /** a reference, originally null, to the specific Bucket our "cursor" is pointing to */
-    private Bucket.Node currentNode;
-    /** a reference to the current key -- used fro removing elements via the Iterator */
-    private Object currentKey;
-
-    /** construct a new HashtableIterator with the supllied type: KEYS, VALUES, or ENTRIES */
-    HashMapIterator(int type)
-    {
-      myType = type;
-      knownMods = HashMap.this.modCount;
-      position = 0;
-      bucketIndex = -1;
-      currentNode = null;
-      currentKey = null;
-    }
-
-    /** 
-     * Stuart Ballard's code:  if the backing HashMap has been altered through anything 
-     * but <i>this</i> Iterator's <pre>remove()</pre> method, we will give up right here,
-     * rather than risking undefined behavior
-     *
-     * @throws    ConcurrentModificationException
-     */
-    private void checkMod()
-    {
-      if (knownMods != HashMap.this.modCount)
-	throw new ConcurrentModificationException();
+      this.type = type;
+      knownMod = HashMap.this.modCount;
+      count = 0;
+      idx = buckets.length;
     }
 
     /** returns true if the Iterator has more elements */
     public boolean hasNext()
     {
-      checkMod();
-      return position < HashMap.this.size();
+      if (knownMod != HashMap.this.modCount)
+	throw new ConcurrentModificationException();
+      return count < size;
     }
 
     /** returns the next element in the Iterator's sequential view */
     public Object next()
     {
-      Bucket list = null;
-      Object result;
-      checkMod();
-      try
-	{
-	  while (currentNode == null)
-	    {
-	      while (list == null)
-		list = HashMap.this.buckets[++bucketIndex];
-	      currentNode = list.first;
-	    }
-	  currentKey = currentNode.getKey();
-	  result = (myType == KEYS) ? currentKey :
-	    ((myType == VALUES) ? currentNode.getValue() : currentNode);
-	  currentNode = currentNode.next;
+      if (knownMod != HashMap.this.modCount)
+	throw new ConcurrentModificationException();
+      if (count == size)
+        throw new NoSuchElementException();
+      count++;
+      Entry e = null;
+      if (next != null)
+        e = next;
+
+      while (e == null)
+        {
+	  e = buckets[--idx];
 	}
-      catch (Exception e)
-	{
-	  throw new NoSuchElementException();
-	}
-      position++;
-      return result;
+
+      next = e.next;
+      last = e;
+      if (type == VALUES)
+        return e.value;
+      else if (type == KEYS)
+        return e.key;
+      return e;
     }
 
     /** 
@@ -796,65 +694,19 @@ public class HashMap extends AbstractMap
      */
     public void remove()
     {
-      checkMod();
-      if (currentKey == null)
+      if (knownMod != HashMap.this.modCount)
+	throw new ConcurrentModificationException();
+      if (last == null)
 	{
 	  throw new IllegalStateException();
 	}
       else
 	{
-	  HashMap.this.remove(currentKey);
-	  knownMods++;
-	  position--;
-	  currentKey = null;
+	  HashMap.this.remove(last.key);
+	  knownMod++;
+	  count--;
+	  last = null;
 	}
     }
   }
-
-  /**
-   * a singleton instance of this class (HashMap.NULL_KEY)
-   * is used to represent the null key in HashMap objects
-   *
-   * @author     Jon Zeppieri
-   * @version    $Revision: 1.8 $
-   * @modified   $Id: HashMap.java,v 1.8 2000-10-26 10:19:00 bryce Exp $
-   */
-  private static class Null
-  {
-    /** trivial constructor */
-    Null()
-    {
-    }
-  }
-
-  /**
-   * a HashMap version of Map.Entry -- one thing in this implementation is
-   * HashMap-specific:  if the key is HashMap.NULL_KEY, getKey() will return
-   * null
-   *
-   * Simply, a key / value pair
-   *
-   * @author      Jon Zeppieri
-   * @version     $Revision: 1.8 $
-   * @modified    $Id: HashMap.java,v 1.8 2000-10-26 10:19:00 bryce Exp $
-   */
-  private static class HashMapEntry extends Bucket.Node implements Map.Entry
-  {
-    /** construct a new HashMapEntry with the given key and value */
-    public HashMapEntry(Object key, Object value)
-    {
-      super(key, value);
-    }
-
-    /**
-     * if the key == HashMap.NULL_KEY, null is returned, otherwise the actual
-     * key is returned
-     */
-    public Object getKey()
-    {
-      Object oResult = super.getKey();
-      return (oResult == HashMap.NULL_KEY) ? null : oResult;
-    }
-  }
-  // EOF -----------------------------------------------------------------------
 }

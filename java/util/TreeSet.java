@@ -1,5 +1,5 @@
 /* TreeSet.java -- a class providing a TreeMap-backet SortedSet
-   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -44,29 +44,25 @@ import java.io.ObjectOutputStream;
  * TreeSet is a part of the JDK1.2 Collections API.
  *
  * @author      Jon Zeppieri
- * @version     $Revision: 1.7 $
- * @modified    $Id: TreeSet.java,v 1.7 2000-10-26 10:19:01 bryce Exp $
+ * @version     $Revision: 1.8 $
+ * @modified    $Id: TreeSet.java,v 1.8 2001-02-15 06:26:31 bryce Exp $
  */
 
 public class TreeSet extends AbstractSet
   implements SortedSet, Cloneable, Serializable
 {
-  // INSTANCE VARIABLES -------------------------------------------------
-
   /** The TreeMap which backs this Set */
-  transient SortedMap _oMap;
+  transient SortedMap map;
+
   static final long serialVersionUID = -2479143000061671589L;
 
-
-  // CONSTRUCTORS -------------------------------------------------------
-
   /**
-   * Construct a new TreeSet whose backing TreeMap using the "natural" ordering
-   * of keys.
+   * Construct a new TreeSet whose backing TreeMap using the "natural" 
+   * ordering of keys.
    */
   public TreeSet()
   {
-    this((Comparator) null);
+    map = new TreeMap();
   }
 
   /** 
@@ -75,9 +71,9 @@ public class TreeSet extends AbstractSet
    *
    * @param     oComparator      the Comparator this Set will use
    */
-  public TreeSet(Comparator oComparator)
+  public TreeSet(Comparator comparator)
   {
-    _oMap = new TreeMap(oComparator);
+    map = new TreeMap(comparator);
   }
 
   /** 
@@ -88,10 +84,10 @@ public class TreeSet extends AbstractSet
    * @param     oCollection      the new Set will be initialized with all
    *                             of the elements in this Collection
    */
-  public TreeSet(Collection oCollection)
+  public TreeSet(Collection collection)
   {
-    this((Comparator) null);
-    addAll(oCollection);
+    map = new TreeMap();
+    addAll(collection);
   }
 
   /**
@@ -99,68 +95,55 @@ public class TreeSet extends AbstractSet
    * SortedSet and containing all of the elements in the supplied SortedSet.
    * This constructor runs in linear time.
    *
-   * @param     oSortedSet       the new TreeSet will use this SortedSet's
-   *                             comparator and will initialize itself
-   *                             with all of the elements in this SortedSet
+   * @param     sortedSet       the new TreeSet will use this SortedSet's
+   *                            comparator and will initialize itself
+   *                            with all of the elements in this SortedSet
    */
-  public TreeSet(SortedSet oSortedSet)
+  public TreeSet(SortedSet sortedSet)
   {
-    TreeMap oMap = new TreeMap(oSortedSet.comparator());
-    _oMap = oMap;
+    TreeMap map = new TreeMap(sortedSet.comparator());
     int i = 0;
-    Map.Entry[]arEntries = new Map.Entry[oSortedSet.size()];
-    Iterator itEntries = oSortedSet.iterator();
-
-    while (itEntries.hasNext())
-      arEntries[i++] = new BasicMapEntry(itEntries.next(), Boolean.TRUE);
-
-    oMap._iSize = i;
-    oMap.putAllLinear(arEntries);
+    Iterator itr = sortedSet.iterator();
+    map.putKeysLinear(itr, sortedSet.size());
+    this.map = map;
   }
-
-  TreeSet(SortedMap oMap)
+  
+  /* This private constructor is used to implement the subSet() calls around
+    a backing TreeMap.SubMap. */
+  TreeSet(SortedMap backingMap)
   {
-    _oMap = oMap;
+    map = backingMap;
   }
-
-  // METHODS -----------------------------------------------------------
 
   /** 
    * Adds the spplied Object to the Set if it is not already in the Set;
    * returns true if the element is added, false otherwise
    *
-   * @param       oObject       the Object to be added to this Set
+   * @param       obj       the Object to be added to this Set
    */
-  public boolean add(Object oObject)
+  public boolean add(Object obj)
   {
-    if (_oMap.containsKey(oObject))
-      {
-	return false;
-      }
-    else
-      {
-	internalAdd(_oMap, oObject);
-	return true;
-      }
+    return (map.put(obj, Boolean.TRUE) == null);
   }
 
   /**
    * Adds all of the elements in the supplied Collection to this TreeSet.
    *
-   * @param        oCollection     All of the elements in this Collection
-   *                               will be added to the Set.
+   * @param        c         All of the elements in this Collection
+   *                         will be added to the Set.
    *
    * @return       true if the Set is altered, false otherwise
    */
-  public boolean addAll(Collection oCollection)
+  public boolean addAll(Collection c)
   {
-    boolean boResult = false;
-    Iterator itElements = oCollection.iterator();
+    boolean result = false;
+    int size = c.size();
+    Iterator itr = c.iterator();
 
-    while (itElements.hasNext())
-      boResult |= add(itElements.next());
+    for (int i = 0; i < size; i++)
+      result |= (map.put(itr.next(), Boolean.TRUE) == null);
 
-    return boResult;
+    return result;
   }
 
   /**
@@ -168,30 +151,21 @@ public class TreeSet extends AbstractSet
    */
   public void clear()
   {
-    _oMap.clear();
+    map.clear();
   }
 
   /** Returns a shallow copy of this Set. */
   public Object clone()
   {
-    TreeSet oClone;
-
-    try
-      {
-	oClone = (TreeSet) super.clone();
-	oClone._oMap = new TreeMap(_oMap);
-      }
-    catch (CloneNotSupportedException e)
-      {
-	throw new InternalError(e.toString());
-      }
-    return oClone;
+    TreeSet copy = new TreeSet();
+    copy.map = (SortedMap) ((TreeMap) map).clone();
+    return copy;
   }
 
   /** Returns this Set's comparator */
   public Comparator comparator()
   {
-    return _oMap.comparator();
+    return map.comparator();
   }
 
   /** 
@@ -201,133 +175,108 @@ public class TreeSet extends AbstractSet
    * @param       oObject        the Object whose existence in the Set is
    *                             being tested
    */
-  public boolean contains(Object oObject)
+  public boolean contains(Object obj)
   {
-    return _oMap.containsKey(oObject);
+    return map.containsKey(obj);
   }
 
   /** Returns true if this Set has size 0, false otherwise */
   public boolean isEmpty()
   {
-    return _oMap.isEmpty();
+    return map.isEmpty();
   }
 
   /** Returns the number of elements in this Set */
   public int size()
   {
-    return _oMap.size();
+    return map.size();
   }
 
   /** 
    * If the supplied Object is in this Set, it is removed, and true is
    * returned; otherwise, false is returned.
    *
-   * @param         oObject        the Object we are attempting to remove
-   *                               from this Set
+   * @param         obj        the Object we are attempting to remove
+   *                           from this Set
    */
-  public boolean remove(Object oObject)
+  public boolean remove(Object obj)
   {
-    return (_oMap.remove(oObject) != null);
+    return (map.remove(obj) != null);
   }
 
   /** Returns the first (by order) element in this Set */
   public Object first()
   {
-    return _oMap.firstKey();
+    return map.firstKey();
   }
 
   /** Returns the last (by order) element in this Set */
   public Object last()
   {
-    return _oMap.lastKey();
+    return map.lastKey();
   }
 
   /**
    * Returns a view of this Set including all elements in the interval
    * [oFromElement, oToElement).
    *
-   * @param       oFromElement  the resultant view will contain all
-   *                            elements greater than or equal to this
-   *                            element
-   * @param       oToElement    the resultant view will contain all
-   *                            elements less than this element
+   * @param       from  the resultant view will contain all
+   *                    elements greater than or equal to this element
+   * @param       to    the resultant view will contain all
+   *                    elements less than this element
    */
-  public SortedSet subSet(Object oFromElement, Object oToElement)
+  public SortedSet subSet(Object from, Object to)
   {
-    return new TreeSet(_oMap.subMap(oFromElement, oToElement));
+    return new TreeSet(map.subMap(from, to));
   }
 
   /**
    * Returns a view of this Set including all elements less than oToElement
    *
-   * @param       oToElement    the resultant view will contain all
+   * @param       toElement    the resultant view will contain all
    *                            elements less than this element
    */
-  public SortedSet headSet(Object oToElement)
+  public SortedSet headSet(Object to)
   {
-    return new TreeSet(_oMap.headMap(oToElement));
+    return new TreeSet(map.headMap(to));
   }
 
   /**
    * Returns a view of this Set including all elements greater than or
    * equal to oFromElement.
    *
-   * @param       oFromElement  the resultant view will contain all
-   *                            elements greater than or equal to this
-   *                            element
+   * @param       from  the resultant view will contain all
+   *              elements greater than or equal to this element
    */
-  public SortedSet tailSet(Object oFromElement)
+  public SortedSet tailSet(Object from)
   {
-    return new TreeSet(_oMap.tailMap(oFromElement));
+    return new TreeSet(map.tailMap(from));
   }
-
 
   /** Returns in Iterator over the elements in this TreeSet */
   public Iterator iterator()
   {
-    return _oMap.keySet().iterator();
+    return map.keySet().iterator();
   }
 
-  private void writeObject(ObjectOutputStream oOut) throws IOException
+  private void writeObject(ObjectOutputStream out) throws IOException
   {
-    Iterator itElements = iterator();
+    Iterator itr = map.keySet().iterator();
 
-    oOut.writeObject(comparator());
-    oOut.writeInt(size());
+    out.writeObject(map.comparator());
+    out.writeInt(map.size());
 
-    while (itElements.hasNext())
-      oOut.writeObject(itElements.next());
+    while (itr.hasNext())
+      out.writeObject(itr.next());
   }
 
-  private void readObject(ObjectInputStream oIn)
+  private void readObject(ObjectInputStream in)
     throws IOException, ClassNotFoundException
   {
-    int i;
-    Map.Entry[]arEntries;
-    TreeMap oMap;
-    Comparator oComparator = (Comparator) oIn.readObject();
-    int iSize = oIn.readInt();
-
-    arEntries = new Map.Entry[iSize];
-
-    for (i = 0; i < iSize; i++)
-      arEntries[iSize] = new BasicMapEntry(oIn.readObject(), Boolean.TRUE);
-
-    oMap = new TreeMap(oComparator);
-    oMap._iSize = iSize;
-    oMap.putAllLinear(arEntries);
-    _oMap = oMap;
-  }
-
-  /** 
-   * adds the supplied element to this Set; this private method is used
-   * internally instead of add(), because add() can be overridden
-   * to do unexpected things
-   *
-   * @param         o        the Object to add to this Set
-   */
-  private static final void internalAdd(Map oMap, Object oObject)
-  {
-    oMap.put(oObject, Boolean.TRUE);
+    Comparator comparator = (Comparator) in.readObject();
+    int size = in.readInt();
+    TreeMap map = new TreeMap(comparator);    
+    map.putFromObjStream(in, size, false);
+    this.map = map;
   }
 }

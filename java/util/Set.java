@@ -45,5 +45,5 @@ public interface Set extends Collection
   boolean removeAll(Collection c);
   boolean retainAll(Collection c);
   int size();
-  Object[]toArray();
+  Object[] toArray();
 }

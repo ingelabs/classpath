@@ -1,6 +1,6 @@
 /* TreeMap.java -- a class providing a basic Red-Black Tree data structure,
    mapping Object --> Object
-   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -31,9 +31,6 @@ package java.util;
 import java.io.Serializable;
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream.PutField;
-import java.io.ObjectInputStream.GetField;
-import java.io.ObjectStreamField;
 import java.io.IOException;
 
 /**
@@ -58,38 +55,47 @@ import java.io.IOException;
  * always allowed.
  *
  * @author           Jon Zeppieri
- * @version          $Revision: 1.8 $
- * @modified         $Id: TreeMap.java,v 1.8 2000-10-26 10:19:01 bryce Exp $
+ * @author	     Bryce McKinlay
+ * @modified         $Id: TreeMap.java,v 1.9 2001-02-15 06:26:31 bryce Exp $
  */
 public class TreeMap extends AbstractMap
   implements SortedMap, Cloneable, Serializable
 {
-  private static final int ENTRIES = 0;
-  private static final int KEYS = 1;
-  private static final int VALUES = 2;
+  private static final int RED = -1,
+                           BLACK = 1;
 
-  private static final int RED = -1;
-  private static final int BLACK = 1;
-
-  private static final RBNode NIL = new RBNode(null, null);
+  /** Sentinal node, used to avoid null checks for corner cases and make the
+      delete rebalance code simpler. Note that this must not be static, due 
+      to thread-safety concerns. */
+  transient final Node nil = new Node(null, null);
 
   /** The root node of this TreeMap */
-  RBNode _oRoot;
+  transient Node root = nil;
 
   /** The size of this TreeMap */
-  int _iSize;
+  transient int size = 0;
 
   /** Number of modifications */
-  int _iModCount;
+  transient int modCount = 0;
 
-  /** This TreeMap's comparator */
-  Comparator _oComparator;
-
-  /** used for serialization -- denotes which fields are serialized */
-  private static final ObjectStreamField[] serialPersistentFields =
-    { new ObjectStreamField("comparator", Comparator.class) };
+  /** This TreeMap's comparator, if any. */
+  Comparator comparator = null;
 
   static final long serialVersionUID = 919286545866124006L;
+
+  private static class Node extends BasicMapEntry implements Map.Entry
+  {
+    int color;
+    Node left;
+    Node right;
+    Node parent;
+
+    Node(Object key, Object value)
+    {
+      super(key, value);
+      this.color = BLACK;
+    }
+  }
 
   /**
    * Instantiate a new TreeMap with no elements, using the keys'
@@ -99,7 +105,6 @@ public class TreeMap extends AbstractMap
    */
   public TreeMap()
   {
-    this((Comparator) null);
   }
 
   /**
@@ -109,12 +114,9 @@ public class TreeMap extends AbstractMap
    * @param        oComparator        a Comparator object, used to sort 
    *                                  the keys of this SortedMap
    */
-  public TreeMap(Comparator oComparator)
+  public TreeMap(Comparator c)
   {
-    _oRoot = NIL;
-    _iSize = 0;
-    _iModCount = 0;
-    _oComparator = oComparator;
+    comparator = c;
   }
 
   /**
@@ -122,7 +124,7 @@ public class TreeMap extends AbstractMap
    * elements in the provided Map.  The elements will be sorted 
    * using the natural ordering of the keys.
    *
-   * @param              oMap         a Map, whose keys will be put into
+   * @param              map         a Map, whose keys will be put into
    *                                  this TreeMap
    *
    * @throws             ClassCastException     if the keys in the provided
@@ -131,10 +133,9 @@ public class TreeMap extends AbstractMap
    *
    * @see                java.lang.Comparable
    */
-  public TreeMap(Map oMap)
+  public TreeMap(Map map)
   {
-    this((Comparator) null);
-    putAll(oMap);
+    putAll(map);
   }
 
   /** 
@@ -142,1305 +143,1305 @@ public class TreeMap extends AbstractMap
    * elements in the provided SortedMap.  The elements will be sorted 
    * using the same method as in the provided SortedMap.
    */
-  public TreeMap(SortedMap oSortedMap)
+  public TreeMap(SortedMap sm)
   {
-    this(oSortedMap.comparator());
+    this(sm.comparator());
 
-    Map.Entry[]arEntries = new Map.Entry[oSortedMap.size()];
-    Iterator itElements = oSortedMap.entrySet().iterator();
-    int i = 0;
+    int sm_size = sm.size();
+    Iterator itr = sm.entrySet().iterator();
 
-    while (itElements.hasNext())
-      arEntries[i++] = (Map.Entry) itElements.next();
+    fabricateTree(sm_size);
+    Node node = firstNode();
+    
+    for (int i = 0; i < sm_size; i++)
+      {
+	Map.Entry me = (Map.Entry) itr.next();
+	node.key = me.getKey();
+	node.value = me.getValue();	
+	node = successor(node);
+      }
+  }
 
-    _iSize = i;
-    putAllLinear(arEntries);
+  public int size()
+  {
+    return size;
   }
 
   public void clear()
   {
-    _oRoot = NIL;
-    _iSize = 0;
-    _iModCount++;
+    modCount++;
+    root = nil;
+    // nil node could have a residual parent reference, clear it for GC.
+    nil.parent = null;
+    size = 0;
   }
 
   public Object clone()
   {
-    TreeMap oClone;
+    TreeMap copy = new TreeMap();
+    copy.comparator = comparator;
+    copy.fabricateTree(size);
 
-    try
+    Node node = firstNode();
+    Node cnode = copy.firstNode();
+    
+    while (node != nil)
       {
-	oClone = (TreeMap) super.clone();
-	oClone._oRoot = (RBNode) _oRoot.clone();
-	oClone._iModCount = 0;
+        cnode.key = node.key;
+	cnode.value = node.value;
+	node = successor(node);
+	cnode = copy.successor(cnode);
       }
-    catch (CloneNotSupportedException e)
-      {
-	throw new InternalError(e.toString());
-      }
-
-    return oClone;
+    return copy;
   }
-
+  
   public Comparator comparator()
   {
-    return _oComparator;
+    return comparator;
   }
 
-  public boolean containsKey(Object oKey)
+  public boolean containsKey(Object key)
   {
-    return (treeSearch(_oRoot, _oComparator, oKey) != NIL);
+    return getNode(key) != nil;
   }
 
-  public boolean containsValue(Object oValue)
+  public boolean containsValue(Object value)
   {
-    RBNode oNode = treeMin(_oRoot);
-    Object oCurrentValue;
+    Node node = firstNode();
+    Object currentVal;
 
-    while (oNode != NIL)
+    while (node != nil)
       {
-	oCurrentValue = oNode.getValue();
+	currentVal = node.getValue();
 
-	if (((oValue == null) && (oCurrentValue == null))
-	    || oValue.equals(oCurrentValue))
+        if (value == null ? currentVal == null : value.equals (currentVal))
 	  return true;
 
-	oNode = treeSuccessor(oNode);
+	node = successor(node);
       }
     return false;
   }
 
   public Set entrySet()
   {
-    return new TreeMapSet(this, ENTRIES);
+    // Create an AbstractSet with custom implementations of those methods that 
+    // can be overriden easily and efficiently.
+    return new AbstractSet()
+    {
+      public int size()
+      {
+        return size;
+      }
+      
+      public Iterator iterator()
+      {
+        return new TreeIterator(TreeIterator.ENTRIES);
+      }
+            
+      public void clear()
+      {
+        TreeMap.this.clear();
+      }
+
+      public boolean contains(Object o)
+      {
+        if (!(o instanceof Map.Entry))
+	  return false;
+	Map.Entry me = (Map.Entry) o;
+	Node n = getNode(me.getKey());
+	return (n != nil && me.getValue().equals(n.value));
+      }
+      
+      public boolean remove(Object o)
+      {
+        if (!(o instanceof Map.Entry))
+	  return false;
+	Map.Entry me = (Map.Entry) o;
+	Node n = getNode(me.getKey());
+	if (n != nil && me.getValue().equals(n.value))
+	  {
+	    removeNode(n);
+	    return true;
+	  }
+	return false;
+      }
+    };
   }
 
   public Object firstKey()
   {
-    try
-      {
-	return treeMin(_oRoot).getKey();
-      }
-    catch (NullPointerException e)
-      {
-	throw new NoSuchElementException("TreeMap is empty");
-      }
+    if (root == nil)
+      throw new NoSuchElementException("empty");
+    return firstNode().getKey();
   }
-
-  public Object get(Object oKey)
+  
+  private Node firstNode()
   {
-    RBNode oNode = treeSearch(_oRoot, _oComparator, oKey);
-    return (oNode != NIL) ? oNode.getValue() : null;
-  }
-
-  public SortedMap headMap(Object oToKey)
-  {
-    if (keyInClosedMaxRange(_oComparator, oToKey, null))
-      return new SubTreeMap(null, oToKey);
-    else
-      throw new IllegalArgumentException(getArgumentError("create a headMap",
-							  null, null));
-  }
-
-  public Set keySet()
-  {
-    return new TreeMapSet(this, KEYS);
+    if (root == nil)
+      return nil;
+    Node node = root;
+    while (node.left != nil)
+      node = node.left;
+    return node;
   }
 
   public Object lastKey()
   {
-    try
+    if (root == nil)
+      throw new NoSuchElementException("empty");
+    return lastNode().getKey();
+  }
+  
+  private Node lastNode()
+  {
+    if (root == nil)
+      return nil;
+    Node node = root;
+    while (node.right != nil)
+      node = node.right;
+    return node;  
+  }
+  
+  public Object get(Object key)
+  {
+    return getNode(key).value;
+  }
+  
+  /** Return the TreeMap.Node associated with KEY, or the nil node if no such
+      node exists in the tree. */
+  private Node getNode(Object key)
+  {
+    int comparison;
+    Node current = root;
+
+    while (current != nil)
       {
-	return treeMax(_oRoot).getKey();
+        comparison = compare(key, current.key);
+	if (comparison > 0)
+	  current = current.right;
+	else if (comparison < 0)
+	  current = current.left;
+	else
+	  return current;
       }
-    catch (NullPointerException e)
-      {
-	throw new NoSuchElementException("TreeMap is empty");
-      }
+    return current; 
   }
 
-  public Object put(Object oKey, Object oValue)
+  public Set keySet()
   {
-    Map.Entry oEntry = rbInsert(this, _oComparator, new RBNode(oKey, oValue));
-    if (oEntry == NIL)
-      _iSize++;
-    _iModCount++;
-    return ((oEntry == NIL) ? null : oEntry.getValue());
+    // Create an AbstractSet with custom implementations of those methods that 
+    // can be overriden easily and efficiently.
+    return new AbstractSet()
+    {
+      public int size()
+      {
+        return size;
+      }
+      
+      public Iterator iterator()
+      {
+        return new TreeIterator(TreeIterator.KEYS);
+      }
+
+      public void clear()
+      {
+        TreeMap.this.clear();
+      }
+
+      public boolean contains(Object o)
+      {
+        return TreeMap.this.containsKey(o);
+      }
+      
+      public boolean remove(Object key)
+      {
+        Node n = getNode(key);
+	if (n == nil)
+	  return false;
+        TreeMap.this.removeNode(n);
+	return true;
+      }
+    };
   }
 
-  public void putAll(Map oMap)
+  public Object put(Object key, Object value)
   {
-    Iterator itEntries = oMap.entrySet().iterator();
-    Map.Entry oEntry;
-
-    while (itEntries.hasNext())
+    modCount++;
+    Node current = root;
+    Node parent = nil;
+    int comparison = 0;
+    
+    // Find new node's parent.
+    while (current != nil)
       {
-	oEntry = (Map.Entry) itEntries.next();
-	put(oEntry.getKey(), oEntry.getValue());
+	parent = current;
+	comparison = compare(key, current.key);
+	if (comparison > 0)
+	  current = current.right;
+	else if (comparison < 0)
+	  current = current.left;
+	else
+	  {
+	    // Key already in tree.
+	    Object r = current.value;
+	    current.value = value;
+	    return r;
+	  }
       }
-  }
-
-  public Object remove(Object oKey)
-  {
-    RBNode oResult = treeSearch(_oRoot, _oComparator, oKey);
-
-    if (oResult != NIL)
+    
+    // Set up new node.
+    Node n = new Node(key, value);
+    n.color = RED;
+    n.parent = parent;
+    n.left = nil;
+    n.right = nil;
+    
+    // Insert node in tree.
+    size++;
+    if (parent == nil)
       {
-	oResult = rbDelete(this, oResult);
-	_iSize--;
-	_iModCount++;
-	return oResult.getValue();
-      }
-    else
-      {
+        // Special case: inserting into an empty tree.
+	root = n;
+	n.color = BLACK;
 	return null;
       }
-  }
-
-  public int size()
-  {
-    return _iSize;
-  }
-
-  public SortedMap subMap(Object oFromKey, Object oToKey)
-  {
-    if (compare(_oComparator, oFromKey, oToKey) < 0)
-      return new SubTreeMap(oFromKey, oToKey);
+    else if (comparison > 0)
+      parent.right = n;
     else
-      throw new IllegalArgumentException(getArgumentError("create a subMap",
-							  null, null));
+      parent.left = n;   
+    
+    // Rebalance after insert.
+    insertFixup(n);
+    //verifyTree();
+    return null;
   }
 
-  public SortedMap tailMap(Object oFromKey)
+  /** Maintain red-black balance after inserting a new node. */
+  private void insertFixup(Node n)
   {
-    if (keyInMinRange(_oComparator, oFromKey, null))
-      return new SubTreeMap(oFromKey, null);
-    else
-      throw new IllegalArgumentException(getArgumentError("create a tailMap",
-							  null, null));
+    // Only need to rebalance when parent is a RED node, and while at least
+    // 2 levels deep into the tree (ie: node has a grandparent).
+    while (n != root && n.parent.parent != nil && n.parent.color == RED)
+      {
+	if (n.parent == n.parent.parent.left)
+	  {
+            Node uncle = n.parent.parent.right;
+            if (uncle != nil && uncle.color == RED) 
+	      {
+        	n.parent.color = BLACK;
+        	uncle.color = BLACK;
+        	n.parent.parent.color = RED;
+        	n = n.parent.parent;
+              }
+	    else // Uncle is BLACK.
+	      {                
+                if (n == n.parent.right)
+		  {
+                    // Make n a left child.
+                    n = n.parent;
+                    rotateLeft(n);
+                  }
+
+                // Recolor and rotate.
+                n.parent.color = BLACK;
+                n.parent.parent.color = RED;
+                rotateRight(n.parent.parent);
+              }
+	  }
+	else
+	  {
+	    // Mirror image of above code.
+	    Node uncle = n.parent.parent.left;
+            if (uncle != nil && uncle.color == RED)
+	      {
+                n.parent.color = BLACK;
+                uncle.color = BLACK;
+                n.parent.parent.color = RED;
+                n = n.parent.parent;
+              }
+	    else
+	      {
+                if (n == n.parent.left)
+		  {
+                    n = n.parent;
+                    rotateRight(n);
+                  }
+                n.parent.color = BLACK;
+                n.parent.parent.color = RED;
+                rotateLeft(n.parent.parent);
+	      }
+	  }
+      }
+    root.color = BLACK;
   }
 
+  public void putAll(Map m)
+  {
+    Iterator itr = m.entrySet().iterator();
+    int msize = m.size();
+    Map.Entry e;
+
+    for (int i = 0; i < msize; i++)
+      {
+	e = (Map.Entry) itr.next();
+	put(e.getKey(), e.getValue());
+      }
+  }
+
+  public Object remove(Object key)
+  {
+    Node n = getNode(key);
+    if (n != nil)
+      {
+        removeNode(n);
+	return n.value;
+      }
+    return null;
+  }
+  
+  // Remove node from tree. This will increment modCount and decrement size. 
+  // Node must exist in the tree.
+  private void removeNode(Node node) // z
+  {
+    Node splice; // y
+    Node child;  // x
+    
+    modCount++;
+    size--;
+
+    // Find splice, the node at the position to actually remove from the tree. 
+    if (node.left == nil || node.right == nil)
+      {
+	// Node to be deleted has 0 or 1 children.
+        splice = node;
+	if (node.left == nil)
+	  child = node.right;
+	else
+	  child = node.left;
+      }
+    else
+      {
+	// Node has 2 children. Splice is node's successor, and will be 
+	// swapped with node since we can't remove node directly.
+        splice = node.right;
+        while (splice.left != nil)
+	  splice = splice.left;
+	child = splice.right;
+      }
+
+    // Unlink splice from the tree.
+    Node parent = splice.parent;
+    child.parent = parent;
+    if (parent != nil)
+      {
+	if (splice == parent.left)
+          parent.left = child;
+	else
+          parent.right = child;
+      }
+    else
+      root = child;
+
+    // Keep track of splice's color in case it gets changed in the swap.
+    int spliceColor = splice.color;
+
+/*
+    if (splice != node)
+      {
+        node.key = splice.key;
+	node.value = splice.value;
+      }
+*/
+    if (splice != node)
+      {
+        // Swap SPLICE for NODE. Some implementations optimize here by simply
+	// swapping the values, but we can't do that: if an iterator was
+	// referencing a node in its "next" field, and that node got swapped, 
+	// things would get confused.
+	if (node == root)
+	  {
+	    root = splice;
+	  }
+	else
+	  {
+	    if (node.parent.left == node)
+	      node.parent.left = splice;
+	    else
+	      node.parent.right = splice;
+          }
+	splice.parent = node.parent;
+	splice.left = node.left;
+	splice.right = node.right;
+	splice.left.parent = splice;
+	splice.right.parent = splice;
+	splice.color = node.color;
+      }
+
+    if (spliceColor == BLACK)
+      deleteFixup (child);
+    
+    //verifyTree();      
+  }
+
+  /** Maintain red-black balance after deleting a node. */
+  private void deleteFixup (Node node)
+  {
+    // A black node has been removed, so we need to rebalance to avoid 
+    // violating the "same number of black nodes on any path" rule. If
+    // node is red, we can simply recolor it black and all is well. 
+    while (node != root && node.color == BLACK)
+      {
+        if (node == node.parent.left)
+	  {
+	    // Rebalance left side.
+	    Node sibling = node.parent.right;
+	    if (sibling.color == RED)
+	      {
+                sibling.color = BLACK;
+                node.parent.color = RED;
+                rotateLeft(node.parent);
+                sibling = node.parent.right;
+	      }
+
+	    if (sibling.left.color == BLACK && sibling.right.color == BLACK)
+              {
+	        // Case 2: Sibling has no red children.
+		sibling.color = RED;
+		// Black height has been decreased, so move up the tree and 
+		// repeat.
+		node = node.parent;
+              }
+	    else
+	      {	      
+	        if (sibling.right.color == BLACK)
+		  {
+		    // Case 3: Sibling has red left child.
+		    sibling.left.color = BLACK;
+		    sibling.color = RED;
+                    rotateRight(sibling);
+                    sibling = node.parent.right;
+		  }		  
+		
+		// Case 4: Sibling has red right child.
+		sibling.color = sibling.parent.color;
+		sibling.parent.color = BLACK;
+		sibling.right.color = BLACK;
+                rotateLeft(node.parent);
+                node = root; // Finished.
+	      }
+	  }
+	else
+	  {
+	    // Symmetric "mirror" of left-side case.
+	    Node sibling = node.parent.left;
+	    if (sibling.color == RED)
+	      {
+                sibling.color = BLACK;
+                node.parent.color = RED;
+                rotateRight(node.parent);
+                sibling = node.parent.left;
+	      }
+
+	    if (sibling.left.color == BLACK && sibling.right.color == BLACK)
+              {
+		sibling.color = RED;
+		node = node.parent;
+              }
+	    else
+	      {	      
+	        if (sibling.left.color == BLACK)
+		  {
+		    sibling.right.color = BLACK;
+		    sibling.color = RED;
+                    rotateLeft(sibling);
+                    sibling = node.parent.left;
+		  }		  
+		
+		sibling.color = sibling.parent.color;
+		sibling.parent.color = BLACK;
+		sibling.left.color = BLACK;
+                rotateRight(node.parent);
+                node = root;
+	      }
+	  }
+      }
+    node.color = BLACK;
+  }
+
+  public SortedMap subMap(Object fromKey, Object toKey)
+  {
+    if (compare(fromKey, toKey) <= 0)
+      return new SubMap(fromKey, toKey);
+    else
+      throw new IllegalArgumentException("fromKey > toKey");
+  }
+
+  public SortedMap headMap(Object toKey)
+  {
+    return new SubMap(nil, toKey);
+  }
+
+  public SortedMap tailMap(Object fromKey)
+  {
+    return new SubMap(fromKey, nil);
+  }
+
+  /** Returns a "collection view" (or "bag view") of this TreeMap's values. */
   public Collection values()
   {
-    return new TreeMapCollection(this);
-  }
-
-  void putAllLinear(Map.Entry[]arEntries)
-  {
-    int iHeight;
-    double dHeight;
-    boolean boComplete;
-
-    dHeight = Math.pow((double) arEntries.length, (double) 0.5);
-    iHeight = (int) dHeight;
-    boComplete = (dHeight == ((double) iHeight));
-
-    _oRoot =
-      buildTree(arEntries, iHeight, boComplete, 0, 0, arEntries.length);
-  }
-
-  private void writeObject(ObjectOutputStream oOut) throws IOException
-  {
-    RBNode oNode = treeMin(_oRoot);
-    ObjectOutputStream.PutField oFields = oOut.putFields();
-    oFields.put("comparator", _oComparator);
-    oOut.writeFields();
-
-    oOut.writeInt(_iSize);
-
-    while (oNode != NIL)
+    // We don't bother overriding many of the optional methods, as doing so
+    // wouldn't provide any significant performance advantage.
+    return new AbstractCollection()
+    {
+      public int size()
       {
-	oOut.writeObject(oNode.getKey());
-	oOut.writeObject(oNode.getValue());
-	oNode = treeSuccessor(oNode);
+        return size;
+      }
+      
+      public Iterator iterator()
+      {
+        return new TreeIterator(TreeIterator.VALUES);
+      }
+      
+      public void clear()
+      {
+        TreeMap.this.clear();
+      }
+    };
+  }
+
+  // Find the "highest" node which is < key. If key is nil, return last node.
+  // Note that highestLessThan is exclusive (it won't return a key which is
+  // equal to "key"), while lowestGreaterThan is inclusive, in order to be 
+  // consistent with the semantics of subMap().
+  private Node highestLessThan(Object key)
+  {
+    if (key == nil)
+      return lastNode();
+  
+    Node last = nil;
+    Node current = root;
+    int comparison = 0;
+
+    while (current != nil)
+      {
+        last = current;
+        comparison = compare(key, current.key);
+	if (comparison > 0)
+	  current = current.right;
+	else if (comparison < 0)
+	  current = current.left;
+	else /* Exact match. */
+	  return predecessor(last);
+      }
+    if (comparison <= 0)
+      return predecessor(last);
+    else
+      return last;
+  }
+
+  // Find the "lowest" node which is >= key. If key is nil, return first node.
+  private Node lowestGreaterThan(Object key)
+  {
+    if (key == nil)
+      return firstNode();
+
+    Node last = nil;
+    Node current = root;
+    int comparison = 0;
+
+    while (current != nil)
+      {
+        last = current;
+        comparison = compare(key, current.key);
+	if (comparison > 0)
+	  current = current.right;
+	else if (comparison < 0)
+	  current = current.left;
+	else
+	  return current;
+      }
+    if (comparison > 0)
+      return successor(last);
+    else
+      return last;
+  }  
+
+  private void writeObject(ObjectOutputStream out) throws IOException
+  {
+    ObjectOutputStream.PutField fields = out.putFields();
+    fields.put("comparator", comparator);
+    out.writeFields();
+
+    Node node = firstNode();
+    out.writeInt(size);
+    
+    while (node != nil)
+      {
+        out.writeObject(node.key);
+	out.writeObject(node.value);
+	node = successor(node);
       }
   }
 
-  private void readObject(ObjectInputStream oIn)
+  private void readObject(ObjectInputStream in)
     throws IOException, ClassNotFoundException
   {
-    int i;
-    Map.Entry[]arEntries;
-    ObjectInputStream.GetField oFields = oIn.readFields();
-    _oComparator = (Comparator) oFields.get("comparator", null);
-    _iSize = oIn.readInt();
-    _iModCount = 0;
-
-    arEntries = new Map.Entry[_iSize];
-    for (i = 0; i < _iSize; i++)
-      arEntries[i] = new RBNode(oIn.readObject(), oIn.readObject());
-
-    putAllLinear(arEntries);
+    ObjectInputStream.GetField fields = in.readFields();
+    comparator = (Comparator) fields.get("comparator", null);
+    int size = in.readInt();
+    putFromObjStream(in, size, true);
   }
 
-
-  private static final RBNode buildTree(Map.Entry[]arEntries, int iHeight,
-					boolean boComplete, int iCurrentTier,
-					int iStart, int iStop)
+  private int compare(Object o1, Object o2)
   {
-    RBNode oNewTree;
-    int iRootIndex;
+    if (comparator == null)
+      return ((Comparable) o1).compareTo(o2);
+    else
+      return comparator.compare(o1, o2);
+  }
 
-    if (iStart == iStop)
+  /* Return the node following Node, or nil if there isn't one. */
+  private Node successor(Node node)
+  {
+    if (node.right != nil)
       {
-	return NIL;
+        node = node.right;
+	while (node.left != nil)
+	  node = node.left;
+	return node;
+      }
+
+    Node parent = node.parent;
+    while (parent != nil && node == parent.right)
+      {
+	node = parent;
+	parent = parent.parent;
+      }
+    return parent;
+  }
+
+  /* Return the node preceeding Node, or nil if there isn't one. */
+  private Node predecessor(Node node)
+  {
+    if (node.left != nil)
+      {
+        node = node.left;
+	while (node.right != nil)
+	  node = node.right;
+	return node;
+      }
+      
+    Node parent = node.parent;
+    while (parent != nil && node == parent.left)
+      {
+	node = parent;
+	parent = parent.parent;
+      }
+    return parent;
+  }
+
+  /** Rotate node n to the left. */
+  private void rotateLeft(Node node)
+  {
+    Node child = node.right;
+    
+    // Establish node.right link.
+    node.right = child.left;
+    if (child.left != nil)
+      child.left.parent = node;
+
+    // Establish child->parent link.
+    child.parent = node.parent;
+    if (node.parent != nil)
+      {
+        if (node == node.parent.left)
+	  node.parent.left = child;
+	else
+	  node.parent.right = child;
       }
     else
+      root = child;
+
+    // Link n and child.
+    child.left = node;
+    if (node != nil)
+      node.parent = child;
+  }
+
+  /** Rotate node n to the right. */
+  private void rotateRight(Node node)
+  {
+    Node child = node.left;
+    
+    // Establish node.left link.
+    node.left = child.right;
+    if (child.right != nil)
+      child.right.parent = node;
+      
+    // Establish child->parent link.
+    child.parent = node.parent;
+    if (node.parent != nil)
       {
-	iRootIndex = (iStop + iStart) / 2;
-
-	oNewTree = new RBNode(arEntries[iRootIndex].getKey(),
-			      arEntries[iRootIndex].getValue());
-	oNewTree._oLeft = buildTree(arEntries, iHeight, boComplete,
-				    (iCurrentTier + 1), iStart, iRootIndex);
-	oNewTree._oRight = buildTree(arEntries, iHeight, boComplete,
-				     (iCurrentTier + 1),
-				     (iRootIndex + 1), iStop);
-
-	if ((!boComplete) &&
-	    ((iHeight % 2) == 1) && (iCurrentTier >= (iHeight - 2)))
-	  oNewTree._iColor = (iCurrentTier == (iHeight - 1)) ? RED : BLACK;
+        if (node == node.parent.right)
+	  node.parent.right = child;
 	else
-	  oNewTree._iColor = ((iCurrentTier % 2) == 1) ? RED : BLACK;
-
-	if (oNewTree._oLeft != NIL)
-	  oNewTree._oLeft._oParent = oNewTree;
-	if (oNewTree._oRight != NIL)
-	  oNewTree._oRight._oParent = oNewTree;
-	return oNewTree;
+	  node.parent.left = child;
+      }
+    else
+      root = child;
+    
+    // Link n and child.
+    child.right = node;
+    if (node != nil)
+      node.parent = child;
+  }
+  
+  /* Construct a tree from sorted keys in linear time. This is used to
+     implement TreeSet's SortedSet constructor. */
+  void putKeysLinear(Iterator keys, int count)
+  {
+    fabricateTree(count);    
+    Node node = firstNode();
+    
+    for (int i = 0; i < count; i++)
+      {
+	node.key = keys.next();
+	node.value = Boolean.TRUE;
+	node = successor(node);
       }
   }
-
-  static final int compare(Comparator oComparator, Object oOne, Object oTwo)
+  
+  /* As above, but load keys from an ObjectInputStream. Used by readObject()
+     methods. If "readValues" is set, entry values will also be read from the 
+     stream. If not, only keys will be read. */
+  void putFromObjStream(ObjectInputStream in, int count, boolean readValues) 
+    throws IOException, ClassNotFoundException
   {
-    return ((oComparator == null)
-	    ? ((Comparable) oOne).compareTo(oTwo)
-	    : oComparator.compare(oOne, oTwo));
-  }
-
-  static final boolean keyInMinRange(Comparator oComparator,
-				     Object oKey, Object oMinKey)
-  {
-    return ((oMinKey == null) || (compare(oComparator, oMinKey, oKey) <= 0));
-  }
-
-  static final boolean keyInMaxRange(Comparator oComparator,
-				     Object oKey, Object oMaxKey)
-  {
-    return ((oMaxKey == null) || (compare(oComparator, oMaxKey, oKey) > 0));
-  }
-
-  static final boolean keyInClosedMaxRange(Comparator oComparator,
-					   Object oKey, Object oMaxKey)
-  {
-    return ((oMaxKey == null) || (compare(oComparator, oMaxKey, oKey) >= 0));
-  }
-
-  static final boolean keyInRange(Comparator oComparator,
-				  Object oKey, Object oMinKey, Object oMaxKey)
-  {
-    return (keyInMinRange(oComparator, oKey, oMinKey) &&
-	    keyInMaxRange(oComparator, oKey, oMaxKey));
-  }
-
-  static final boolean keyInClosedRange(Comparator oComparator,
-					Object oKey,
-					Object oMinKey, Object oMaxKey)
-  {
-    return (keyInMinRange(oComparator, oKey, oMinKey) &&
-	    keyInClosedMaxRange(oComparator, oKey, oMaxKey));
-  }
-
-  static final RBNode treeSearch(RBNode oRoot,
-				 Comparator oComparator, Object oKey)
-  {
-    int iCompareResult;
-
-    while (oRoot != NIL)
+    fabricateTree(count);    
+    Node node = firstNode();
+    
+    for (int i = 0; i < count; i++)
       {
-	iCompareResult = compare(oComparator, oKey, oRoot.getKey());
-	if (iCompareResult == 0)
-	  return oRoot;
-	else if (iCompareResult < 0)
-	  oRoot = oRoot._oLeft;
+	node.key = in.readObject();
+	if (readValues)
+	  node.value = in.readObject();
 	else
-	  oRoot = oRoot._oRight;
+	  node.value = Boolean.TRUE;	  
+	node = successor(node);
       }
-    return oRoot;
   }
-
-  static final RBNode treeMin(RBNode oRoot)
+     
+  /* Construct a perfectly balanced tree consisting of n "blank" nodes. 
+     This permits a tree to be generated from pre-sorted input in linear 
+     time. */
+  private void fabricateTree(int count)
   {
-    while (oRoot._oLeft != NIL)
-      oRoot = oRoot._oLeft;
-
-    return oRoot;
-  }
-
-  static final RBNode treeMinConstrained(RBNode oRoot,
-					 Comparator oComparator,
-					 Object oMinKey, Object oMaxKey)
-  {
-    int iCompare;
-    RBNode oCurrent;
-
-    do
-      {
-	oCurrent = oRoot;
-	iCompare = compare(oComparator, oMinKey, oCurrent.getKey());
-
-	if (iCompare == 0)
-	  return oRoot;
+    if (count == 0)
+      return;
+    // Calculate the (maximum) depth of the perfectly balanced tree.
+    double ddepth = (Math.log (count + 1) / Math.log (2));
+    int maxdepth = (int) Math.ceil (ddepth);
+    
+    // The number of nodes which can fit in a perfectly-balanced tree of 
+    // height "depth - 1".
+    int max = (int) Math.pow (2, maxdepth - 1) - 1;
+    
+    // Number of nodes which spill over into the deepest row of the tree.
+    int overflow = (int) count - max;
+    
+    size = count;
+    // Make the root node.
+    root = new Node(null, null);
+    root.parent = nil;
+    root.left = nil;
+    root.right = nil;
+    
+    Node row = root;
+    for (int depth = 2; depth <= maxdepth; depth++)  // each row
+      {	
+	// Number of nodes at this depth
+	int rowcap = (int) Math.pow (2, depth - 1);
+	Node parent = row;
+	Node last = null;
+	
+	// Actual number of nodes to create in this row
+	int rowsize;
+	if (depth == maxdepth)
+	  rowsize = overflow;
 	else
-	  oRoot = (iCompare < 0) ? oCurrent._oLeft : oCurrent._oRight;
-      }
-    while (oRoot != NIL);
-
-    if (iCompare > 0)
-      oCurrent = treeSuccessor(oCurrent);
-
-    return oCurrent;
-  }
-
-  static final RBNode treeMax(RBNode oRoot)
-  {
-    while (oRoot._oRight != NIL)
-      oRoot = oRoot._oRight;
-
-    return oRoot;
-  }
-
-  static final RBNode treeMaxConstrained(RBNode oRoot,
-					 Comparator oComparator,
-					 Object oMinKey, Object oMaxKey)
-  {
-    int iCompare;
-    RBNode oCurrent;
-
-    do
-      {
-	oCurrent = oRoot;
-	iCompare = compare(oComparator, oMaxKey, oCurrent.getKey());
-
-	if (iCompare == 0)
-	  return oRoot;
-	else
-	  oRoot = (iCompare < 0) ? oCurrent._oLeft : oCurrent._oRight;
-      }
-    while (oRoot != NIL);
-
-    if (iCompare < 0)
-      oCurrent = treePredecessor(oCurrent);
-
-    return oCurrent;
-  }
-
-  static RBNode lowerBound(RBNode oRoot, Comparator oComparator,
-			   Object oMinKey, Object oMaxKey)
-  {
-    return ((oMinKey != null)
-	    ? treeMinConstrained(oRoot, oComparator, oMinKey, oMaxKey)
-	    : treeMin(oRoot));
-  }
-
-  static RBNode upperBound(RBNode oRoot, Comparator oComparator,
-			   Object oMinKey, Object oMaxKey)
-  {
-    return ((oMaxKey != null)
-	    ? treeMaxConstrained(oRoot, oComparator, oMinKey, oMaxKey) : NIL);
-  }
-
-  static final RBNode treeSuccessor(RBNode oNode)
-  {
-    RBNode oParent;
-
-    if (oNode._oRight != NIL)
-      return treeMin(oNode._oRight);
-
-    oParent = oNode._oParent;
-    while ((oParent != NIL) && (oNode == oParent._oRight))
-      {
-	oNode = oParent;
-	oParent = oParent._oParent;
-      }
-
-    return oParent;
-  }
-
-  static final RBNode treePredecessor(RBNode oNode)
-  {
-    RBNode oParent;
-
-    if (oNode._oLeft != NIL)
-      return treeMax(oNode._oLeft);
-
-    oParent = oNode._oParent;
-    while ((oParent != NIL) && (oNode == oParent._oLeft))
-      {
-	oNode = oParent;
-	oParent = oParent._oParent;
-      }
-
-    return oParent;
-  }
-
-  static final String getArgumentError(String stType,
-				       Object oMinKey, Object oMaxKey)
-  {
-    return ("Attempt to " + stType + " outside of range [" +
-	    oMinKey.toString() + ", " + oMaxKey.toString() + ").");
-  }
-
-  private static final RBNode treeInsert(TreeMap oTree,
-					 Comparator oComparator,
-					 RBNode oNewNode)
-  {
-    int iCompareResult;
-    Object oNewKey = oNewNode.getKey();
-    RBNode oParent = NIL;
-    RBNode oRoot = oTree._oRoot;
-    RBNode oResult;
-
-    while (oRoot != NIL)
-      {
-	oParent = oRoot;
-
-	iCompareResult = compare(oComparator, oNewKey, oRoot.getKey());
-
-	if (iCompareResult == 0)
+	  rowsize = rowcap;
+	
+	// The bottom most row of nodes is coloured red, as is every second row 
+	// going up, except the root node (row 1). I'm not sure if this is the 
+	// optimal configuration for the tree, but it seems logical enough.
+	// We just need to honour the black-height and red-parent rules here.
+	boolean colorRowRed = (depth % 2 == maxdepth % 2);
+	
+	int i;
+	for (i = 1; i <= rowsize; i++)  // each node in row
 	  {
-	    oResult = new RBNode(oRoot.getKey(), oRoot.getValue());
-	    oRoot.key = oNewNode.key;
-	    oRoot.value = oNewNode.value;
-	    return oResult;
-	  }
-	else
-	  {
-	    oRoot = (iCompareResult < 0) ? oRoot._oLeft : oRoot._oRight;
-	  }
-      }
-
-    oNewNode._oParent = oParent;
-    if (oParent == NIL)
-      oTree._oRoot = oNewNode;
-    else if (compare(oComparator, oNewKey, oParent.getKey()) < 0)
-      oParent._oLeft = oNewNode;
-    else
-      oParent._oRight = oNewNode;
-
-    return oRoot;
-  }
-
-  private static final void leftRotate(TreeMap oTree, RBNode oNode)
-  {
-    RBNode oChild = oNode._oRight;
-    oNode._oRight = oChild._oLeft;
-
-    if (oChild._oLeft != NIL)
-      oChild._oLeft._oParent = oNode;
-
-    oChild._oParent = oNode._oParent;
-
-    if (oNode._oParent == NIL)
-      oTree._oRoot = oChild;
-    else if (oNode == oNode._oParent._oLeft)
-      oNode._oParent._oLeft = oChild;
-    else
-      oNode._oParent._oRight = oChild;
-
-    oChild._oLeft = oNode;
-    oNode._oParent = oChild;
-  }
-
-  private static final void rightRotate(TreeMap oTree, RBNode oNode)
-  {
-    RBNode oChild = oNode._oLeft;
-    oNode._oLeft = oChild._oRight;
-
-    if (oChild._oRight != NIL)
-      oChild._oRight._oParent = oNode;
-
-    oChild._oParent = oNode._oParent;
-
-    if (oNode._oParent == NIL)
-      oTree._oRoot = oChild;
-    else if (oNode == oNode._oParent._oRight)
-      oNode._oParent._oRight = oChild;
-    else
-      oNode._oParent._oLeft = oChild;
-
-    oChild._oRight = oNode;
-    oNode._oParent = oChild;
-  }
-
-  private static final RBNode rbInsert(TreeMap oTree,
-				       Comparator oComparator, RBNode oNode)
-  {
-    RBNode oUncle;
-    RBNode oResult = treeInsert(oTree, oComparator, oNode);
-
-    if (oResult == NIL)
-      {
-	oNode._iColor = RED;
-	while ((oNode != oTree._oRoot) && (oNode._oParent._iColor == RED))
-	  {
-	    if (oNode._oParent != oNode._oParent._oParent._oRight)
-	      {
-		oUncle = oNode._oParent._oParent._oRight;
-		if (oUncle != NIL && oUncle._iColor == RED)
-		  {
-		    oNode._oParent._iColor = BLACK;
-		    oUncle._iColor = BLACK;
-		    oNode._oParent._oParent._iColor = RED;
-		    oNode = oNode._oParent._oParent;
-		  }
-		else
-		  {
-		    if (oNode == oNode._oParent._oRight)
-		      {
-			oNode = oNode._oParent;
-			leftRotate(oTree, oNode);
-		      }
-		    oNode._oParent._iColor = BLACK;
-		    oNode._oParent._oParent._iColor = RED;
-		    rightRotate(oTree, oNode._oParent._oParent);
-		  }
-	      }
+	    Node node = new Node(null, null);
+	    node.parent = parent;
+	    if (i % 2 == 1)
+	      parent.left = node;
 	    else
 	      {
-		oUncle = oNode._oParent._oParent._oLeft;
-		if (oUncle != NIL && oUncle._iColor == RED)
-		  {
-		    oNode._oParent._iColor = BLACK;
-		    oUncle._iColor = BLACK;
-		    oNode._oParent._oParent._iColor = RED;
-		    oNode = oNode._oParent._oParent;
-		  }
-		else
-		  {
-		    if (oNode == oNode._oParent._oLeft)
-		      {
-			oNode = oNode._oParent;
-			rightRotate(oTree, oNode);
-		      }
-		    oNode._oParent._iColor = BLACK;
-		    oNode._oParent._oParent._iColor = RED;
-		    leftRotate(oTree, oNode._oParent._oParent);
-		  }
+		Node nextparent = parent.right;
+		parent.right = node;
+		parent = nextparent;
 	      }
+	    if (last != null)
+	      last.right = node;
+	    last = node;
+	    
+	    if (colorRowRed)
+	      node.color = RED;
+	    
+	    if (i == 1)
+	      row = node;
 	  }
-      }
-    oTree._oRoot._iColor = BLACK;
-    return oResult;
-  }
 
-  /* Method for dumping the whole tree -- comment in if you need it
-     private void dumpTree() {
-     Vector lastLevel = new Vector();
-     lastLevel.addElement(_oRoot);
-     while (!lastLevel.isEmpty()) {
-     Vector nextLevel = new Vector();
-     for (int i=0; i< lastLevel.size();i++) {
-     RBNode node = (RBNode) lastLevel.elementAt(i);
-     if (node != NIL)
-     {
-     System.err.print("[");
-     if (node._oLeft._iColor == RED)
-     {
-     System.err.print(node._oLeft.getKey()+"<-");
-     nextLevel.addElement(node._oLeft._oLeft);
-     nextLevel.addElement(node._oLeft._oRight);
-     }
-     else
-     nextLevel.addElement(node._oLeft);
-     if (node._iColor == RED)
-     System.err.print("???RED:");
-     System.err.print(node.getKey());
-     if (node._oRight._iColor == RED)
-     {
-     System.err.print("->"+node._oRight.getKey());
-     nextLevel.addElement(node._oRight._oLeft);
-     nextLevel.addElement(node._oRight._oRight);
-     }
-     else
-     nextLevel.addElement(node._oRight);
-     System.err.print("] ");
-     }
-     else
-     System.err.print("NIL ");
-     }
-     System.err.println();
-     lastLevel = nextLevel;
-     }
-     } */
-
-  private static final RBNode rbDelete(TreeMap oTree, RBNode oNode)
-  {
-    RBNode oSplice;
-    RBNode oChild;
-    RBNode oSentinelParent = NIL;
-    RBNode oResult = oNode;
-
-    oSplice = (((oNode._oLeft == NIL) || (oNode._oRight == NIL))
-	       ? oNode : treeSuccessor(oNode));
-    oChild = (oSplice._oLeft != NIL) ? oSplice._oLeft : oSplice._oRight;
-
-    if (oSplice._oParent == NIL)
-      oTree._oRoot = oChild;
-    else if (oSplice == oSplice._oParent._oLeft)
-      oSplice._oParent._oLeft = oChild;
-    else
-      oSplice._oParent._oRight = oChild;
-
-    if (oSplice != oNode)
-      {
-	oResult = new RBNode(oNode.getKey(), oNode.getValue());
-	oNode.key = oSplice.key;
-	oNode.value = oSplice.value;
-      }
-
-    /* We only need the FIXUP if oChild is NIL!  
-     * Otherwise oChild is the only child of oSplice, so it must
-     * be a red node (the tree without red nodes is fully balanced)
-     * We can simply mark oChild as black and all is well.
-     */
-    if (oChild != NIL)
-      {
-	oChild._oParent = oSplice._oParent;
-	oChild._iColor = BLACK;
-      }
-    else if (oSplice._iColor == BLACK)
-      {
-	/* oChild is NIL */
-	rbDeleteFixup(oTree, oSplice._oParent);
-      }
-    return oResult;
-  }
-
-  private static final void rbDeleteFixup(TreeMap oTree, RBNode oParent)
-  {
-    RBNode oNode = NIL;
-    RBNode oSibling;
-
-    while (oParent != NIL)
-      {
-	/* Invariant of this loop: oNode is a black node (or NIL)
-	 * oParent is its parent and the tree on the oNode side is
-	 * one black node too small.
-	 */
-	if (oNode == oParent._oLeft)
+        // Set nil child pointers on leaf nodes.
+	if (depth == maxdepth)
 	  {
-	    oSibling = oParent._oRight;
-	    if (oSibling._iColor == RED)
+	    // leaf nodes at maxdepth-1.
+	    if (parent != null)
 	      {
-		oSibling._iColor = BLACK;
-		oParent._iColor = RED;
-		leftRotate(oTree, oParent);
-		oSibling = oParent._oRight;
-	      }
-	    if (oSibling._oLeft._iColor == BLACK &&
-		oSibling._oRight._iColor == BLACK)
-	      {
-		oSibling._iColor = RED;
-		oNode = oParent;
-		oParent = oParent._oParent;
-	      }
-	    else
-	      {
-		if (oSibling._oLeft._iColor == RED)
+		if (i % 2 == 0)
 		  {
-		    oSibling._oLeft._iColor = BLACK;
-		    oSibling._iColor = RED;
-		    rightRotate(oTree, oSibling);
-		    oSibling = oParent._oRight;
-		  }
-		oSibling._iColor = oParent._iColor;
-		oParent._iColor = BLACK;
-		oSibling._oRight._iColor = BLACK;
-		leftRotate(oTree, oParent);
-		/* Fixup completed */
-		return;
-	      }
-	  }
-	else
-	  {
-	    oSibling = oParent._oLeft;
-	    if (oSibling._iColor == RED)
-	      {
-		oSibling._iColor = BLACK;
-		oParent._iColor = RED;
-		rightRotate(oTree, oParent);
-		oSibling = oParent._oLeft;
-	      }
-	    if (oSibling._oRight._iColor == BLACK &&
-		oSibling._oLeft._iColor == BLACK)
-	      {
-		oSibling._iColor = RED;
-		oNode = oParent;
-		oParent = oParent._oParent;
-	      }
-	    else
-	      {
-		if (oSibling._oRight._iColor == RED)
+	            // Current "parent" has "left" set already.
+		    Node next = parent.right;
+		    parent.right = nil;
+		    parent = next;
+		  }		  		  
+		while (parent != null)
 		  {
-		    oSibling._oRight._iColor = BLACK;
-		    oSibling._iColor = RED;
-		    leftRotate(oTree, oSibling);
-		    oSibling = oParent._oLeft;
+		    parent.left = nil;
+		    Node next = parent.right;
+		    parent.right = nil;
+		    parent = next;
 		  }
-		oSibling._iColor = oParent._iColor;
-		oParent._iColor = BLACK;
-		oSibling._oLeft._iColor = BLACK;
-		rightRotate(oTree, oParent);
-		/* Fixup completed */
-		return;
 	      }
-	  }
-
-	if (oNode._iColor == RED)
-	  {
-	    oNode._iColor = BLACK;
-	    return;
+	    // leaf nodes at maxdepth.
+	    Node node = row;
+	    Node next;
+	    while (node != null)
+	      {
+	        node.left = nil;
+		next = node.right;
+		node.right = nil;
+		node = next;
+	      }
 	  }
       }
   }
-
-  private static class RBNode extends BasicMapEntry implements Map.Entry,
-    Cloneable
+  
+  private class VerifyResult
   {
-    int _iColor;
-    RBNode _oLeft;
-    RBNode _oRight;
-    RBNode _oParent;
-
-    RBNode(Object oKey, Object oValue)
-    {
-      super(oKey, oValue);
-      _oLeft = NIL;
-      _oRight = NIL;
-      _oParent = NIL;
-      _iColor = BLACK;
-    }
-
-    public Object clone()
-    {
-      try
-	{
-	  RBNode node = (RBNode) super.clone();
-	  node._oLeft = (RBNode) _oLeft.clone();
-	  node._oLeft._oParent = node;
-	  node._oRight = (RBNode) _oRight.clone();
-	  node._oRight._oParent = node;
-	  return node;
-	}
-      catch (CloneNotSupportedException e)
-	{
-	  throw new InternalError(e.toString());
-	}
-    }
+    int count; // Total number of nodes.
+    int black; // Black height/depth.
+    int maxdepth; // Maximum depth of branch.
   }
 
-  private class TreeMapSet extends AbstractSet implements Set
+  /* Check that red-black properties are consistent for the tree. */
+  private void verifyTree()
   {
-    SortedMap _oMap;
-    int _iType;
+    if (root == nil)
+      {
+        System.err.println ("Verify: empty tree");
+	if (size != 0)
+	  verifyError (this, "no root node but size=" + size);
+	return;
+      }
+    VerifyResult vr = verifySub (root);
+    if (vr.count != size)
+      {
+	verifyError (this, "Tree size not consistent with actual nodes counted. "
+                     + "counted " + vr.count + ", size=" + size);
+        System.exit(1);
+      }
+    System.err.println ("Verify: " + vr.count + " nodes, black height=" + vr.black
+                        + ", maxdepth=" + vr.maxdepth);
+  }
+  
+  /* Recursive call to check that rbtree rules hold. Returns total node count
+     and black height of the given branch. */
+  private VerifyResult verifySub(Node n)
+  {
+    VerifyResult vr1 = null;
+    VerifyResult vr2 = null;
+    
+    if (n.left == nil && n.right == nil)
+      {
+        // leaf node
+	VerifyResult r = new VerifyResult();
+	r.black = (n.color == BLACK ? 1 : 0);
+	r.count = 1;
+	r.maxdepth = 1;
+	return r;
+      }
+    
+    if (n.left != nil)
+      {
+        if (n.left.parent != n)
+	  verifyError(n.left, "Node's parent link does not point to " + n);
+	
+	if (n.color == RED && n.left.color == RED)
+	  verifyError(n, "Red node has red left child");
+	
+	vr1 = verifySub (n.left);
+	if (n.right == nil)
+	  {
+	    if (n.color == BLACK)
+	      vr1.black++;
+	    vr1.count++;
+	    vr1.maxdepth++;
+	    return vr1;
+	  }
+      }
 
-    TreeMapSet(SortedMap oMap, int iType)
-    {
-      _oMap = oMap;
-      _iType = iType;
-    }
+    if (n.right != nil)
+      {
+        if (n.right.parent != n)
+	  verifyError(n.right, "Node's parent link does not point to " + n);
 
-    /**
-     * adding an element is unsupported; this method simply 
-     * throws an exception 
-     *
-     * @throws       UnsupportedOperationException
-     */
-    public boolean add(Object oObject) throws UnsupportedOperationException
-    {
-      throw new UnsupportedOperationException();
-    }
+	if (n.color == RED && n.right.color == RED)
+	  verifyError(n, "Red node has red right child");
 
-    /**
-     * adding an element is unsupported; this method simply throws 
-     * an exception 
-     *
-     * @throws       UnsupportedOperationException
-     */
-    public boolean addAll(Collection oCollection)
-      throws UnsupportedOperationException
-    {
-      throw new UnsupportedOperationException();
-    }
-
-    /**
-     * clears the backing TreeMap; this is a prime example of an 
-     * overridden implementation which is far more efficient than 
-     * its superclass implementation (which uses an iterator
-     * and is O(n) -- this is an O(1) call)
-     */
-    public void clear()
-    {
-      _oMap.clear();
-    }
-
-    /**
-     * returns true if the supplied object is contained by this Set
-     *
-     * @param     oObject  an Object being testing to see if it is in this Set
-     */
-    public boolean contains(Object oObject)
-    {
-      Map.Entry oEntry;
-      Object oKey;
-      Object oInputValue;
-      Object oMapValue;
-
-      if (_iType == KEYS)
-	{
-	  return _oMap.containsKey(oObject);
-	}
-      else if (oObject instanceof Map.Entry)
-	{
-	  oEntry = (Map.Entry) oObject;
-	  oKey = oEntry.getKey();
-
-	  if (_oMap.containsKey(oKey))
-	    {
-	      oInputValue = oEntry.getValue();
-	      oMapValue = _oMap.get(oKey);
-	      return ((oInputValue == null)
-		      ? (oMapValue == null)
-		      : (oInputValue.equals(oMapValue)));
-	    }
-	}
-      return false;
-    }
-
-    /** 
-     * returns true if the backing Map is empty (which is the only 
-     * case either a KEYS Set or an ENTRIES Set would be empty)
-     */
-    public boolean isEmpty()
-    {
-      return _oMap.isEmpty();
-    }
-
-    /**
-     * removes the supplied Object from the Set
-     *
-     * @param      o       the Object to be removed
-     */
-    public boolean remove(Object oObject)
-    {
-      if (_iType == KEYS)
-	return (_oMap.remove(oObject) != null);
-      else
-	return (oObject instanceof Map.Entry)
-	  ? (_oMap.remove(((Map.Entry) oObject).getKey()) != null) : false;
-    }
-
-    /** returns the size of this Set (always equal to the size of 
-     *  the backing Hashtable) */
-    public int size()
-    {
-      return _oMap.size();
-    }
-
-    /** returns an Iterator over the elements in this set */
-    public Iterator iterator()
-    {
-      return new TreeMapIterator(_oMap, _iType);
-    }
+	vr2 = verifySub (n.right);
+	if (n.left == nil)
+	  {
+	    if (n.color == BLACK)
+	      vr2.black++;
+	    vr2.count++;
+	    vr2.maxdepth++;
+	    return vr2;
+	  }
+      }
+    
+    if (vr1.black != vr2.black)
+      verifyError (n, "Black heights: " + vr1.black + "," + vr2.black + " don't match.");
+    vr1.count += vr2.count + 1;
+    vr1.maxdepth = Math.max(vr1.maxdepth, vr2.maxdepth) + 1;
+    if (n.color == BLACK)
+      vr1.black++;
+    return vr1;
+  }
+  
+  private void verifyError (Object obj, String msg)
+  {
+    System.err.print ("Verify error: ");
+    try
+      {
+        System.err.print (obj);
+      }
+    catch (Exception x)
+      {
+        System.err.print ("(error printing obj): " + x);
+      }
+    System.err.println();
+    System.err.println (msg);
+    Thread.dumpStack();
+    System.exit(1);
   }
 
-  private class TreeMapCollection extends AbstractCollection
-    implements Collection
+  /**
+   * Iterate over HashMap's entries.
+   * This implementation is parameterized to give a sequential view of
+   * keys, values, or entries.
+   */   
+  class TreeIterator implements Iterator
   {
-    private SortedMap _oMap;
+    static final int ENTRIES = 0,
+                     KEYS = 1,
+                     VALUES = 2;  
+  
+    // the type of this Iterator: KEYS, VALUES, or ENTRIES.
+    int type;
+    // the number of modifications to the backing Map that we know about.
+    int knownMod = TreeMap.this.modCount;
+    // The last Entry returned by a next() call.
+    Node last;
+    // The next entry that should be returned by next().
+    Node next;
+    // The last node visible to this iterator. This is used when iterating
+    // on a SubMap.
+    Node max;
 
-    TreeMapCollection(SortedMap oMap)
+    /* Create Iterator with the supplied type: KEYS, VALUES, or ENTRIES */
+    TreeIterator(int type)
     {
-      _oMap = oMap;
+      this.type = type;
+      this.next = firstNode();
     }
-
-    /** 
-     * adding elements is not supported by this Collection;
-     * this method merely throws an exception
-     *
-     * @throws     UnsupportedOperationException
-     */
-    public boolean add(Object oObject) throws UnsupportedOperationException
+    
+    /* Construct an interator for a SubMap. Iteration will begin at node
+       "first", and stop when "max" is reached. */    
+    TreeIterator(int type, Node first, Node max)
     {
-      throw new UnsupportedOperationException();
-    }
-
-    /** 
-     * adding elements is not supported by this Collection;
-     * this method merely throws an exception
-     *
-     * @throws     UnsupportedOperationException
-     */
-    public boolean addAll(Collection oCollection)
-      throws UnsupportedOperationException
-    {
-      throw new UnsupportedOperationException();
-    }
-
-    /** removes all elements from this Collection (and from the 
-     *  backing TreeMap) */
-    public void clear()
-    {
-      _oMap.clear();
-    }
-
-    /** 
-     * returns true if this Collection contains at least one Object 
-     * which equals() the supplied Object
-     *
-     * @param         o        the Object to compare against those in the Set
-     */
-    public boolean contains(Object oObject)
-    {
-      return _oMap.containsValue(oObject);
-    }
-
-    /** returns true IFF the Collection has no elements */
-    public boolean isEmpty()
-    {
-      return _oMap.isEmpty();
-    }
-
-    /** returns the size of this Collection */
-    public int size()
-    {
-      return _oMap.size();
-    }
-
-    /** returns an Iterator over the elements in this Collection */
-    public Iterator iterator()
-    {
-      return new TreeMapIterator(_oMap, VALUES);
-    }
-  }
-
-  private class TreeMapIterator implements Iterator
-  {
-    SortedMap _oMap;
-    int _iType;
-    int _iKnownMods;
-    RBNode _oFirst;
-    RBNode _oLast;
-    RBNode _oPrev;
-
-    TreeMapIterator(SortedMap oMap, int iType)
-    {
-      TreeMap oBackingMap = TreeMap.this;
-
-      _oMap = oMap;
-      _iType = iType;
-      _iKnownMods = oBackingMap._iModCount;
-      _oPrev = NIL;
-
-      if (_oMap.isEmpty())
-	{
-	  _oFirst = NIL;
-	}
-      else
-	{
-	  _oFirst = TreeMap.treeSearch(oBackingMap._oRoot,
-				       oBackingMap._oComparator,
-				       _oMap.firstKey());
-	  _oLast = TreeMap.treeSearch(oBackingMap._oRoot,
-				      oBackingMap._oComparator,
-				      _oMap.lastKey());
-	}
-    }
-
-
-    /** 
-     * Stuart Ballard's code:  if the backing TreeMap has been altered 
-     * through anything but <i>this</i> Iterator's <pre>remove()</pre> 
-     * method, we will give up right here, rather than risking undefined 
-     * behavior
-     *
-     * @throws    ConcurrentModificationException
-     */
-    private void checkMod()
-    {
-      if (_iKnownMods < TreeMap.this._iModCount)
-	throw new ConcurrentModificationException();
+      this.type = type;
+      this.next = first;
+      this.max = max;
     }
 
     public boolean hasNext()
     {
-      checkMod();
-      return (_oFirst != NIL);
+      if (knownMod != TreeMap.this.modCount)
+	throw new ConcurrentModificationException();
+      return (next != nil);
     }
 
     public Object next()
     {
-      checkMod();
-
-      RBNode oResult = _oFirst;
-
-      if (oResult == NIL)
+      if (next == nil)
 	throw new NoSuchElementException();
-      else if (oResult == _oLast)
-	_oFirst = NIL;
+      if (knownMod != TreeMap.this.modCount)
+	throw new ConcurrentModificationException();
+      Node n = next;
+
+      // Check limit in case we are iterating through a submap.
+      if (n != max)
+	next = successor(n);
       else
-	_oFirst = TreeMap.treeSuccessor(_oFirst);
-
-      _oPrev = oResult;
-
-      return ((_iType == KEYS)
-	      ? oResult.getKey()
-	      : ((_iType == VALUES) ? oResult.getValue() : oResult));
+        next = nil;
+      
+      last = n;
+      
+      if (type == VALUES)
+        return n.value;
+      else if (type == KEYS)
+        return n.key;
+      return n;
     }
 
     public void remove()
     {
-      checkMod();
-
-      Object oKey;
-
-      if (_oPrev == NIL)
-	{
-	  throw new IllegalStateException("No previous call to next(), " +
-					  "or remove() has already been " +
-					  "called on this iteration.");
-	}
-      else
-	{
-	  oKey = _oPrev.getKey();
-	  if (_oMap.containsKey(oKey))
-	    {
-	      _oMap.remove(oKey);
-	      _iKnownMods++;
-	    }
-	  _oPrev = NIL;
-	}
+      if (last == null)
+	throw new IllegalStateException();
+      if (knownMod != TreeMap.this.modCount)
+	throw new ConcurrentModificationException();
+/*
+      Object key = null;
+      if (next != nil)
+        key = next.key;
+*/
+      TreeMap.this.removeNode(last);
+      knownMod++;
+/*
+      if (key != null)
+        next = getNode(key);
+*/	
+      last = null;
     }
   }
 
-
-  private class SubTreeMap extends AbstractMap implements SortedMap
+  class SubMap extends AbstractMap implements SortedMap
   {
-    Object _oMinKey;
-    Object _oMaxKey;
+    Object minKey;
+    Object maxKey;
 
-    SubTreeMap(Object oMinKey, Object oMaxKey)
+    /* Create a SubMap representing the elements between minKey and maxKey
+       (inclusive). If minKey is nil, SubMap has no lower bound (headMap).
+       If maxKey is nil, the SubMap has no upper bound (tailMap). */
+    SubMap(Object minKey, Object maxKey)
     {
-      _oMinKey = oMinKey;
-      _oMaxKey = oMaxKey;
+      this.minKey = minKey;
+      this.maxKey = maxKey;
     }
 
     public void clear()
     {
-      Object oMaxKey;
-      RBNode oMin = TreeMap.lowerBound(TreeMap.this._oRoot,
-				       TreeMap.this._oComparator,
-				       _oMinKey, _oMaxKey);
-      RBNode oMax = TreeMap.upperBound(TreeMap.this._oRoot,
-				       TreeMap.this._oComparator,
-				       _oMinKey, _oMaxKey);
-      oMaxKey = oMax.getKey();
-      while ((oMin != NIL) &&
-	     ((oMax == NIL) ||
-	      (TreeMap.compare(TreeMap.this._oComparator,
-			       oMin.getKey(), oMaxKey) < 0)))
-	{
-	  TreeMap.this.remove(oMin.getKey());
-	  oMin = TreeMap.treeSuccessor(oMin);
+      Node current;
+      Node next = lowestGreaterThan(minKey);
+      Node max = highestLessThan(maxKey);
+      
+      if (compare(next.key, max.key) > 0)
+        // Nothing to delete.
+	return;
+        
+      do
+        {
+	  current = next;
+	  next = successor(current);
+	  remove(current);
 	}
+      while (current != max);
+    }
+    
+    /* Check if "key" is in within the range bounds for this SubMap. 
+       The lower ("from") SubMap range is inclusive, and the upper (to) bound
+       is exclusive. */
+    private boolean keyInRange(Object key)
+    {
+      return ((minKey == nil || compare(key, minKey) >= 0)
+	      && (maxKey == nil || compare(key, maxKey) < 0));
     }
 
-    public boolean containsKey(Object oKey)
+    public boolean containsKey(Object key)
     {
-      return
-	(keyInRange(TreeMap.this._oComparator, oKey, _oMinKey, _oMaxKey) &&
-	 TreeMap.this.containsKey(oKey));
+      return (keyInRange(key) && TreeMap.this.containsKey(key));
     }
 
-    public boolean containsValue(Object oValue)
+    public boolean containsValue(Object value)
     {
-      Object oCurrentValue;
-      Object oMaxKey;
-      RBNode oMin = TreeMap.lowerBound(TreeMap.this._oRoot,
-				       TreeMap.this._oComparator,
-				       _oMinKey, _oMaxKey);
-      RBNode oMax = TreeMap.upperBound(TreeMap.this._oRoot,
-				       TreeMap.this._oComparator,
-				       _oMinKey, _oMaxKey);
+      Node node = lowestGreaterThan(minKey);
+      Node max = highestLessThan(maxKey);
+      Object currentVal;
 
-      oMaxKey = oMax.getKey();
-      while ((oMin != NIL) &&
-	     ((oMax == NIL) ||
-	      (TreeMap.compare(TreeMap.this._oComparator,
-			       oMin.getKey(), oMaxKey) < 0)))
+      if (node == nil || max == nil || compare(node.key, max.key) > 0)
+        // Nothing to search.
+	return false;
+
+      while (true)
 	{
-	  oCurrentValue = oMin.getValue();
-
-	  if (((oValue == null) && (oCurrentValue == null))
-	      || oValue.equals(oCurrentValue))
+	  currentVal = node.getValue();
+          if (value == null ? currentVal == null : value.equals (currentVal))
 	    return true;
-	  oMin = treeSuccessor(oMin);
-	}
-      return false;
-    }
-
-    public Object get(Object oKey)
-    {
-      if (keyInRange(TreeMap.this._oComparator, oKey, _oMinKey, _oMaxKey))
-	return TreeMap.this.get(oKey);
-      else
-	return null;
-    }
-
-    public Object put(Object oKey, Object oValue)
-    {
-      if (keyInRange(TreeMap.this._oComparator, oKey, _oMinKey, _oMaxKey))
-	return TreeMap.this.put(oKey, oValue);
-      else
-	throw new IllegalArgumentException(getArgumentError("insert an entry",
-							    _oMinKey,
-							    _oMaxKey));
-    }
-
-    public void putAll(Map oMap)
-    {
-      Map.Entry oEntry;
-      Iterator itElements = oMap.entrySet().iterator();
-
-      while (itElements.hasNext())
-	{
-	  oEntry = (Map.Entry) itElements.next();
-	  put(oEntry.getKey(), oEntry.getValue());
+	  if (node == max)
+	    return false;
+	  node = successor(node);
 	}
     }
 
-    public Object remove(Object oKey)
+    public Object get(Object key)
     {
-      if (keyInRange(TreeMap.this._oComparator, oKey, _oMinKey, _oMaxKey))
-	return TreeMap.this.remove(oKey);
+      if (keyInRange(key))
+	return TreeMap.this.get(key);
+      return null;
+    }
+
+    public Object put(Object key, Object value)
+    {
+      if (keyInRange(key))
+	return TreeMap.this.put(key, value);
       else
-	throw new IllegalArgumentException(getArgumentError("remove an entry",
-							    _oMinKey,
-							    _oMaxKey));
+	throw new IllegalArgumentException("Key outside range");
+    }
+
+    public Object remove(Object key)
+    {
+      if (keyInRange(key))
+	return TreeMap.this.remove(key);
+      else
+        return null;
     }
 
     public int size()
     {
-      int iCount = 0;
-      Object oMaxKey;
-      RBNode oMin = TreeMap.lowerBound(TreeMap.this._oRoot,
-				       TreeMap.this._oComparator,
-				       _oMinKey, _oMaxKey);
-      RBNode oMax = TreeMap.upperBound(TreeMap.this._oRoot,
-				       TreeMap.this._oComparator,
-				       _oMinKey, _oMaxKey);
+      Node node = lowestGreaterThan(minKey);
+      Node max = highestLessThan(maxKey);
 
-      oMaxKey = oMax.getKey();
-      while ((oMin != NIL) &&
-	     ((oMax == NIL) ||
-	      (TreeMap.compare(TreeMap.this._oComparator,
-			       oMin.getKey(), oMaxKey) < 0)))
-	{
-	  iCount++;
-	  oMin = TreeMap.treeSuccessor(oMin);
+      if (node == nil || max == nil || compare(node.key, max.key) > 0)
+	return 0;  // Empty.
+
+      int count = 1;
+      while (node != max)
+        {
+	  count++;
+	  node = successor(node);
 	}
 
-      return iCount;
+      return count;
     }
 
     public Set entrySet()
     {
-      return new TreeMapSet(this, ENTRIES);
-    }
+      // Create an AbstractSet with custom implementations of those methods that 
+      // can be overriden easily and efficiently.
+      return new AbstractSet()
+      {
+	public int size()
+	{
+          return SubMap.this.size();
+	}
 
-    public Set keySet()
-    {
-      return new TreeMapSet(this, KEYS);
-    }
+	public Iterator iterator()
+	{
+	  Node first = lowestGreaterThan(minKey);
+	  Node max = highestLessThan(maxKey);
+          return new TreeIterator(TreeIterator.ENTRIES, first, max);
+	}
 
-    public Collection values()
-    {
-      return new TreeMapCollection(this);
+	public void clear()
+	{
+          this.clear();
+	}
+
+	public boolean contains(Object o)
+	{
+          if (!(o instanceof Map.Entry))
+	    return false;
+	  Map.Entry me = (Map.Entry) o;
+	  Object key = me.getKey();
+	  if (!keyInRange(key))
+	    return false;
+	  Node n = getNode(key);
+	  return (n != nil && me.getValue().equals(n.value));
+	}
+
+	public boolean remove(Object o)
+	{
+          if (!(o instanceof Map.Entry))
+	    return false;
+	  Map.Entry me = (Map.Entry) o;
+	  Object key = me.getKey();
+	  if (!keyInRange(key))
+	    return false;
+	  Node n = getNode(key);
+	  if (n != nil && me.getValue().equals(n.value))
+	    {
+	      removeNode(n);
+	      return true;
+	    }
+	  return false;
+	}
+      };    
     }
 
     public Comparator comparator()
     {
-      return TreeMap.this._oComparator;
+      return comparator;
     }
 
     public Object firstKey()
     {
-      RBNode oFirst = TreeMap.lowerBound(TreeMap.this._oRoot,
-					 TreeMap.this._oComparator,
-					 _oMinKey, _oMaxKey);
-
-      return (oFirst != NIL) ? oFirst.getKey() : null;
+      Node node = lowestGreaterThan(minKey);
+      if (node == nil || !keyInRange(node.key))
+        throw new NoSuchElementException ("empty");
+      return node.key;
     }
 
     public Object lastKey()
     {
-      RBNode oLast;
-
-      if (_oMaxKey == null)
-	{
-	  oLast = TreeMap.treeMax(TreeMap.this._oRoot);
-	  return (oLast != NIL) ? oLast.getKey() : null;
-	}
-      else
-	{
-	  oLast = TreeMap.treeMaxConstrained(TreeMap.this._oRoot,
-					     TreeMap.this._oComparator,
-					     _oMinKey, _oMaxKey);
-	  return (oLast !=
-		  NIL) ? TreeMap.treePredecessor(oLast).getKey() : null;
-	}
+      Node node = highestLessThan(maxKey);
+      if (node == nil || !keyInRange(node.key))
+        throw new NoSuchElementException ("empty");
+      return node.key;
     }
 
-    public SortedMap subMap(Object oFromKey, Object oToKey)
+    public SortedMap subMap(Object fromKey, Object toKey)
     {
-      if ((compare(_oComparator, oFromKey, oToKey) < 0) &&
-	  keyInMinRange(TreeMap.this._oComparator,
-			oFromKey, _oMinKey) &&
-	  keyInClosedMaxRange(TreeMap.this._oComparator,
-			      oFromKey, _oMaxKey) &&
-	  keyInMinRange(TreeMap.this._oComparator,
-			oToKey, _oMinKey) &&
-	  keyInClosedMaxRange(TreeMap.this._oComparator, oToKey, _oMaxKey))
-	return new SubTreeMap(oFromKey, oToKey);
-      else
-	throw new IllegalArgumentException(getArgumentError("create a subMap",
-							    _oMinKey,
-							    _oMaxKey));
+      if (!keyInRange(fromKey) || !keyInRange(toKey))
+        throw new IllegalArgumentException("key outside range");
+
+      return TreeMap.this.subMap(fromKey, toKey);
     }
 
-    public SortedMap headMap(Object oToKey)
+    public SortedMap headMap(Object toKey)
     {
-      if (keyInMinRange(TreeMap.this._oComparator,
-			oToKey, _oMinKey) &&
-	  keyInClosedMaxRange(TreeMap.this._oComparator, oToKey, _oMaxKey))
-	return new SubTreeMap(_oMinKey, oToKey);
-      else
-	throw new IllegalArgumentException(getArgumentError("create a subMap",
-							    _oMinKey,
-							    _oMaxKey));
+      if (!keyInRange(toKey))
+        throw new IllegalArgumentException("key outside range");
+
+      return TreeMap.this.subMap(minKey, toKey);
     }
 
-    public SortedMap tailMap(Object oFromKey)
+    public SortedMap tailMap(Object fromKey)
     {
-      if (keyInMinRange(TreeMap.this._oComparator,
-			oFromKey, _oMinKey) &&
-	  keyInClosedMaxRange(TreeMap.this._oComparator, oFromKey, _oMaxKey))
-	return new SubTreeMap(oFromKey, _oMaxKey);
-      else
-	throw new IllegalArgumentException(getArgumentError("create a subMap",
-							    _oMinKey,
-							    _oMaxKey));
+      if (!keyInRange(fromKey))
+        throw new IllegalArgumentException("key outside range");
+
+      return TreeMap.this.subMap(fromKey, maxKey);
     }
   }
 }
