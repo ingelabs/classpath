@@ -1,3 +1,9 @@
+2004-04-23  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* gnu/java/net/protocol/file/Handler.java: 
+	Imported GCJ implementation. The URL parsing is completely handled
+	by URLStreamHandler now.
+
 2004-04-23  Michael Koch  <konqueror@gmx.de>
 
 	* java/nio/charset/IllegalCharsetNameException.java
