@@ -56,8 +56,7 @@ public class Throwable extends Object implements Serializable
    * @param message the message to associate with the Throwable.
    */
   public Throwable(String message) {
-    st = StackTrace.copyCurrentStackTrace();
-    st.pop(); // Remove the Throwable <init> from the trace
+    fillInStackTrace();
     this.message = message;
   }
   
@@ -87,7 +86,7 @@ public class Throwable extends Object implements Serializable
    * @XXX find out what exactly this should look like.
    */
   public String toString() {
-    return getClass().getName() + message != null ? ": " + message : "";
+    return getClass().getName() + (message != null ? ": " + message : "");
   }
   
   /** 
@@ -102,11 +101,11 @@ public class Throwable extends Object implements Serializable
    * @param s the PrintStream to write the trace to.
    */
   public void printStackTrace(PrintStream s) {
-    synchronized(st) {
-      for(int i=st.numFrames()-1;i>=0;i++) {
-	StackFrame f = st.frameAt(i);
-	s.println("in " + f.getCalledMethod().getName() + " at " + f.getSourceFilename() + ":" + f.getSourceLineNumber());
-      }
+    s.println(toString());
+    StackTrace st = this.st;
+    for(int i=st.numFrames() - 1; i >= 0; i--) {
+      StackFrame f = st.frameAt(i);
+      s.println("in " + f.toString());
     }
   }
   
@@ -115,11 +114,10 @@ public class Throwable extends Object implements Serializable
    * @param w the PrintWriter to write the trace to.
    */
   public void printStackTrace(PrintWriter w) {
-    synchronized(st) {
-      for(int i=st.numFrames()-1;i>=0;i++) {
-	StackFrame f = st.frameAt(i);
-	w.println("in " + f.getCalledMethod().getName() + " at " + f.getSourceFilename() + ":" + f.getSourceLineNumber());
-      }
+    w.println(toString());
+    for(int i=st.numFrames() - 1; i>=0; i--) {
+      StackFrame f = st.frameAt(i);
+      w.println("in " + f.toString());
     }
   }
   
@@ -129,10 +127,20 @@ public class Throwable extends Object implements Serializable
    * off unnecessary extra stack frames.
    * @return this same throwable.
    */
-  public Throwable fillInStackTrace() 
+  public Throwable fillInStackTrace()
   {
     st = StackTrace.copyCurrentStackTrace();
     st.pop(); // get rid of the fillInStackTrace() call
+    int lastIndex = st.numFrames() - 1;
+    StackFrame frame = st.frameAt(lastIndex);
+    while (Throwable.class.isAssignableFrom(frame.getCalledClass())
+	   && frame.getCalledMethod().equals("<init>")) {
+      // get rid of the throwable - constructor hierarchy, that is present
+      // on the stack if this is called from our init method.
+      st.pop();
+      lastIndex--;
+      frame = st.frameAt(lastIndex);
+    }
     return this;
   }
 
