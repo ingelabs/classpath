@@ -5,6 +5,10 @@
 
 2005-03-11  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/lang/Class.java (newInstance): Fixed previous patch.
+
+2005-03-11  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/lang/Class.java (newInstance): Fix bug related to package
 	private classes.
 

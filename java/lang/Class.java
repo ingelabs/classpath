@@ -1133,7 +1133,8 @@ public final class Class implements Serializable
 	  }	    
       }
     int modifiers = constructor.getModifiers();
-    if (!Modifier.isPublic(modifiers))
+    if (!Modifier.isPublic(modifiers)
+        || !Modifier.isPublic(getModifiers()))
       {
 	Class caller = VMStackWalker.getCallingClass();
 	if (caller != null &&
