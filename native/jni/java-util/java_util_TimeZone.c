@@ -62,6 +62,10 @@ exception statement from your version. */
  * initializer in java.util.TimeZone to create the default timezone
  * instance.  This is a key into the timezone table used by
  * that class.
+ *
+ * Class:     java_util_TimeZone
+ * Method:    getDefaultTimeZoneId
+ * Signature: ()Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL
 Java_java_util_TimeZone_getDefaultTimeZoneId(JNIEnv *env, jclass clazz)
@@ -101,8 +105,6 @@ Java_java_util_TimeZone_getDefaultTimeZoneId(JNIEnv *env, jclass clazz)
   if (!retval)
     return(0);
  
-  (*env)->NewGlobalRef(env, retval);
-
   return(retval);
 }
 

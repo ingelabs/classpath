@@ -53,6 +53,10 @@ exception statement from your version. */
 
 /*
  * Returns the length of the file being read.
+ *
+ * Class:     java_io_FileInputStream
+ * Method:    getFileLength
+ * Signature: (I)J
  */
 
 JNIEXPORT jlong JNICALL
@@ -64,7 +68,11 @@ Java_java_io_FileInputStream_getFileLength(JNIEnv *env, jobject obj, jint fd)
 /*************************************************************************/
 
 /*
- * Method to skip bytes in a file
+ * Method to skip bytes in a file.
+ *
+ * Class:     java_io_FileInputStream
+ * Method:    skipInternal
+ * Signature: (IJ)J
  */
 
 JNIEXPORT jlong JNICALL
@@ -77,7 +85,11 @@ Java_java_io_FileInputStream_skipInternal(JNIEnv *env, jobject obj, jint fd,
 /*************************************************************************/
 
 /*
- * Opens the file for reading
+ * Opens the file for reading.
+ *
+ * Class:     java_io_FileInputStream
+ * Method:    open
+ * Signature: (Ljava/lang/String;)I
  */
 
 JNIEXPORT jint JNICALL
@@ -89,7 +101,11 @@ Java_java_io_FileInputStream_open(JNIEnv *env, jobject obj, jstring name)
 /*************************************************************************/
 
 /*
- * Reads bytes from the file
+ * Reads bytes from the file.
+ *
+ * Class:     java_io_FileInputStream
+ * Method:    readInternal
+ * Signature: (I[BII)I
  */ 
 
 JNIEXPORT jint JNICALL
@@ -102,7 +118,11 @@ Java_java_io_FileInputStream_readInternal(JNIEnv *env, jobject obj, jint fd,
 /*************************************************************************/
 
 /*
- * Closes the file
+ * Closes the file.
+ *
+ * Class:     java_io_FileInputStream
+ * Method:    closeInternal
+ * Signature: (I)V
  */
 
 JNIEXPORT void JNICALL

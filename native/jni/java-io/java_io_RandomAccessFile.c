@@ -53,6 +53,10 @@ exception statement from your version. */
 
 /*
  * Returns the length of the file being read.
+ *
+ * Class:     java_io_RandomAccessFile
+ * Method:    lengthInternal
+ * Signature: (I)J
  */
 
 JNIEXPORT jlong JNICALL
@@ -65,6 +69,10 @@ Java_java_io_RandomAccessFile_lengthInternal(JNIEnv *env, jobject obj, jint fd)
 
 /*
  * Method to skip bytes in a file.
+ *
+ * Class:     java_io_RandomAccessFile
+ * Method:    skipInternal
+ * Signature: (II)I
  */
 
 JNIEXPORT jint JNICALL
@@ -77,7 +85,11 @@ Java_java_io_RandomAccessFile_skipInternal(JNIEnv *env, jobject obj, jint fd,
 /*************************************************************************/
 
 /*
- * Opens the file for reading
+ * Opens the file for reading.
+ *
+ * Class:     java_io_RandomAccessFile
+ * Method:    open
+ * Signature: (Ljava/lang/String;Z)I
  */
 
 JNIEXPORT jint JNICALL
@@ -93,7 +105,11 @@ Java_java_io_RandomAccessFile_open(JNIEnv *env, jobject obj, jstring name,
 /*************************************************************************/
 
 /*
- * Closes the file
+ * Closes the file.
+ *
+ * Class:     java_io_RandomAccessFile
+ * Method:    closeInternal
+ * Signature: (I)V
  */
 
 JNIEXPORT void JNICALL
@@ -105,7 +121,11 @@ Java_java_io_RandomAccessFile_closeInternal(JNIEnv *env, jobject obj, jint fd)
 /*************************************************************************/
 
 /*
- * Reads bytes from the file
+ * Reads bytes from the file.
+ *
+ * Class:     java_io_RandomAccessFile
+ * Method:    readInternal
+ * Signature: (I[BII)I
  */ 
 
 JNIEXPORT jint JNICALL
@@ -118,7 +138,11 @@ Java_java_io_RandomAccessFile_readInternal(JNIEnv *env, jobject obj, jint fd,
 /*************************************************************************/
 
 /*
- * Write bytes to the file
+ * Write bytes to the file.
+ *
+ * Class:     java_io_RandomAccessFile
+ * Method:    writeInternal
+ * Signature: (I[BII)V
  */ 
 
 JNIEXPORT void JNICALL
@@ -131,7 +155,11 @@ Java_java_io_RandomAccessFile_writeInternal(JNIEnv *env, jobject obj, jint fd,
 /*************************************************************************/
 
 /*
- * This method returns the current position in the file
+ * This method returns the current position in the file.
+ *
+ * Class:     java_io_RandomAccessFile
+ * Method:    getFilePointerInternal
+ * Signature: (I)J
  */
 
 JNIEXPORT jlong JNICALL
@@ -148,7 +176,11 @@ Java_java_io_RandomAccessFile_getFilePointerInternal(JNIEnv *env, jobject obj,
 /*************************************************************************/
 
 /*
- * This method seeks to the specified position from the beginning of the file
+ * This method seeks to the specified position from the beginning of the file.
+ *
+ * Class:     java_io_RandomAccessFile
+ * Method:    seekInternal
+ * Signature: (IJ)V
  */
 
 JNIEXPORT void JNICALL
@@ -165,7 +197,11 @@ Java_java_io_RandomAccessFile_seekInternal(JNIEnv *env, jobject obj,
 /* 
  * This method sets the length of the file.  Hmm.  Do all platforms have
  * ftruncate?  Probably not so we migth have to do some non-atomic stuff
- * on those
+ * on those.
+ *
+ * Class:     java_io_RandomAccessFile
+ * Method:    setLengthInternal
+ * Signature: (IJ)V
  */
 
 JNIEXPORT void JNICALL

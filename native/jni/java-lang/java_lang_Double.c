@@ -54,7 +54,7 @@ static jdouble POSITIVE_INFINITY;
 /*
  * Class:     java_lang_Double
  * Method:    initIDs
- * Signature: ()
+ * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_java_lang_Double_initIDs
   (JNIEnv *env, jclass cls)
@@ -137,9 +137,9 @@ JNIEXPORT jdouble JNICALL Java_java_lang_Double_longBitsToDouble
 }
 
 /*
- * Class:    java_lang_Double
- * Method:   toString(double d)
- * Signature: (D)Ljava/lang/String
+ * Class:     java_lang_Double
+ * Method:    toString
+ * Signature: (DZ)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
   (JNIEnv * env, jclass cls, jdouble value, jboolean isFloat)
@@ -246,7 +246,7 @@ JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
 /*
  * Class:     java_lang_Double
  * Method:    parseDouble
- * Signature: (Ljava/lang/String)D
+ * Signature: (Ljava/lang/String;)D
  */
 JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
   (JNIEnv * env, jclass cls, jstring str)

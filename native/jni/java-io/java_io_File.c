@@ -56,7 +56,11 @@ exception statement from your version. */
 /*************************************************************************/
 
 /*
- * Method to create an empty file
+ * Method to create an empty file.
+ *
+ * Class:     java_io_File
+ * Method:    createInternal
+ * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
@@ -84,7 +88,11 @@ Java_java_io_File_createInternal(JNIEnv *env, jclass clazz, jstring name)
 /*************************************************************************/
 
 /*
- * This method checks to see if we have read permission on a file
+ * This method checks to see if we have read permission on a file.
+ *
+ * Class:     java_io_File
+ * Method:    canReadInternal
+ * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
@@ -114,7 +122,11 @@ Java_java_io_File_canReadInternal(JNIEnv *env, jobject obj, jstring name)
 /*************************************************************************/
 
 /*
- * This method checks to see if we have write permission on a file
+ * This method checks to see if we have write permission on a file.
+ *
+ * Class:     java_io_File
+ * Method:    canWriteInternal
+ * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
@@ -144,7 +156,11 @@ Java_java_io_File_canWriteInternal(JNIEnv *env, jobject obj, jstring name)
 /*************************************************************************/
 
 /*
- * This method makes a file read only
+ * This method makes a file read only.
+ *
+ * Class:     java_io_File
+ * Method:    setReadOnlyInternal
+ * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
@@ -184,7 +200,11 @@ Java_java_io_File_setReadOnlyInternal(JNIEnv *env, jobject obj, jstring name)
 /*************************************************************************/
 
 /*
- * This method checks to see if a file exists
+ * This method checks to see if a file exists.
+ *
+ * Class:     java_io_File
+ * Method:    existsInternal
+ * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
@@ -212,8 +232,12 @@ Java_java_io_File_existsInternal(JNIEnv *env, jobject obj, jstring name)
 /*************************************************************************/
 
 /*
- * This method checks to see if a file is a "plain" file.  That is, not
+ * This method checks to see if a file is a "plain" file; that is, not
  * a directory, pipe, etc.
+ *
+ * Class:     java_io_File
+ * Method:    isFileInternal
+ * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
@@ -244,6 +268,10 @@ Java_java_io_File_isFileInternal(JNIEnv *env, jobject obj, jstring name)
 
 /*
  * This method checks to see if a file is a directory or not.
+ *
+ * Class:     java_io_File
+ * Method:    isDirectoryInternal
+ * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
@@ -273,7 +301,11 @@ Java_java_io_File_isDirectoryInternal(JNIEnv *env, jobject obj, jstring name)
 /*************************************************************************/
 
 /*
- * This method returns the length of the file
+ * This method returns the length of the file.
+ *
+ * Class:     java_io_File
+ * Method:    lengthInternal
+ * Signature: (Ljava/lang/String;)J
  */
 
 JNIEXPORT jlong JNICALL
@@ -301,7 +333,11 @@ Java_java_io_File_lengthInternal(JNIEnv *env, jobject obj, jstring name)
 /*************************************************************************/
 
 /*
- * This method returns the  modification date of the file
+ * This method returns the modification date of the file.
+ *
+ * Class:     java_io_File
+ * Method:    lastModifiedInternal
+ * Signature: (Ljava/lang/String;)J
  */
 
 JNIEXPORT jlong JNICALL
@@ -333,7 +369,11 @@ Java_java_io_File_lastModifiedInternal(JNIEnv *env, jobject obj, jstring name)
 /*************************************************************************/
 
 /*
- * This method sets the modificatino date of the file
+ * This method sets the modification date of the file.
+ *
+ * Class:     java_io_File
+ * Method:    setLastModifiedInternal
+ * Signature: (Ljava/lang/String;J)Z
  */
 
 JNIEXPORT jboolean JNICALL
@@ -375,7 +415,11 @@ Java_java_io_File_setLastModifiedInternal(JNIEnv *env, jobject obj,
 
 /*
  * This method deletes a file (actually a name for a file - additional
- * linke could exist).
+ * links could exist).
+ *
+ * Class:     java_io_File
+ * Method:    deleteInternal
+ * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
@@ -404,7 +448,11 @@ Java_java_io_File_deleteInternal(JNIEnv *env, jobject obj, jstring name)
 /*************************************************************************/
 
 /*
- * This method creates a directory
+ * This method creates a directory.
+ *
+ * Class:     java_io_File
+ * Method:    mkdirInternal
+ * Signature: (Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
@@ -431,7 +479,11 @@ Java_java_io_File_mkdirInternal(JNIEnv *env, jobject obj, jstring name)
 /*************************************************************************/
 
 /*
- * This method creates a directory
+ * This method renames a (link to a) file.
+ *
+ * Class:     java_io_File
+ * Method:    renameToInternal
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)Z
  */
 
 JNIEXPORT jboolean JNICALL
@@ -467,7 +519,11 @@ Java_java_io_File_renameToInternal(JNIEnv *env, jobject obj, jstring t, jstring 
 
 /*
  * This method returns an array of String representing all the files
- * in a directory except "." and ".."
+ * in a directory except "." and "..".
+ *
+ * Class:     java_io_File
+ * Method:    listInternal
+ * Signature: (Ljava/lang/String;)[Ljava/lang/String;
  */
 
 JNIEXPORT jobjectArray JNICALL

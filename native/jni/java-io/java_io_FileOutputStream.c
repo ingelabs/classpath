@@ -52,7 +52,11 @@ exception statement from your version. */
 /*************************************************************************/
 
 /*
- * Opens the file for writing
+ * Opens the file for writing.
+ *
+ * Class:     java_io_FileOutputStream
+ * Method:    open
+ * Signature: (Ljava/lang/String;Z)I
  */
 
 JNIEXPORT jint JNICALL
@@ -78,7 +82,11 @@ Java_java_io_FileOutputStream_open(JNIEnv *env, jobject obj, jstring name,
 /*************************************************************************/
 
 /*
- * Write bytes to file
+ * Write bytes to file.
+ *
+ * Class:     java_io_FileOutputStream
+ * Method:    writeInternal
+ * Signature: (I[BII)V
  */ 
 
 JNIEXPORT void JNICALL
@@ -91,7 +99,11 @@ Java_java_io_FileOutputStream_writeInternal(JNIEnv *env, jobject obj, jint fd,
 /*************************************************************************/
 
 /*
- * Closes the file
+ * Closes the file.
+ *
+ * Class:     java_io_FileOutputStream
+ * Method:    closeInternal
+ * Signature: (I)V
  */
 
 JNIEXPORT void JNICALL

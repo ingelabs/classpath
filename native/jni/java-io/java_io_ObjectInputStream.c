@@ -43,6 +43,11 @@ exception statement from your version. */
 #include <jcl.h>
 #include "java_io_ObjectInputStream.h"
 
+/*
+ * Class:     java_io_ObjectInputStream
+ * Method:    currentClassLoader
+ * Signature: (Ljava/lang/SecurityManager;)Ljava/lang/ClassLoader;
+ */
 JNIEXPORT jobject JNICALL
 Java_java_io_ObjectInputStream_currentClassLoader( JNIEnv * env,
 						   jclass clazz,
@@ -61,6 +66,11 @@ Java_java_io_ObjectInputStream_currentClassLoader( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectInputStream
+ * Method:    allocateObject
+ * Signature: (Ljava/lang/Class;)Ljava/lang/Object;
+ */
 JNIEXPORT jobject JNICALL
 Java_java_io_ObjectInputStream_allocateObject( JNIEnv * env,
 					       jobject self,
@@ -70,6 +80,11 @@ Java_java_io_ObjectInputStream_allocateObject( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectInputStream
+ * Method:    callConstructor
+ * Signature: (Ljava/lang/Class;Ljava/lang/Object;)V
+ */
 JNIEXPORT void JNICALL 
 Java_java_io_ObjectInputStream_callConstructor( JNIEnv * env,
 						jclass clazz,
@@ -85,6 +100,11 @@ Java_java_io_ObjectInputStream_callConstructor( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectInputStream
+ * Method:    callReadMethod
+ * Signature: (Ljava/lang/Object;Ljava/lang/Class;)V
+ */
 JNIEXPORT void JNICALL
 Java_java_io_ObjectInputStream_callReadMethod( JNIEnv * env,
 					       jobject self,
@@ -102,6 +122,11 @@ Java_java_io_ObjectInputStream_callReadMethod( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectInputStream
+ * Method:    setBooleanField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;Z)V
+ */
 JNIEXPORT void JNICALL
 Java_java_io_ObjectInputStream_setBooleanField( JNIEnv * env,
 						 jobject self,
@@ -127,6 +152,11 @@ Java_java_io_ObjectInputStream_setBooleanField( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectInputStream
+ * Method:    setByteField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;B)V
+ */
 JNIEXPORT void JNICALL
 Java_java_io_ObjectInputStream_setByteField( JNIEnv * env,
 					      jobject self,
@@ -152,6 +182,11 @@ Java_java_io_ObjectInputStream_setByteField( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectInputStream
+ * Method:    setCharField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;C)V
+ */
 JNIEXPORT void JNICALL
 Java_java_io_ObjectInputStream_setCharField( JNIEnv * env,
 					      jobject self,
@@ -177,6 +212,11 @@ Java_java_io_ObjectInputStream_setCharField( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectInputStream
+ * Method:    setDoubleField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;D)V
+ */
 JNIEXPORT void JNICALL
 Java_java_io_ObjectInputStream_setDoubleField( JNIEnv * env,
 						jobject self,
@@ -202,6 +242,11 @@ Java_java_io_ObjectInputStream_setDoubleField( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectInputStream
+ * Method:    setFloatField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;F)V
+ */
 JNIEXPORT void JNICALL
 Java_java_io_ObjectInputStream_setFloatField( JNIEnv * env,
 					       jobject self,
@@ -227,6 +272,11 @@ Java_java_io_ObjectInputStream_setFloatField( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectInputStream
+ * Method:    setIntField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;I)V
+ */
 JNIEXPORT void JNICALL
 Java_java_io_ObjectInputStream_setIntField( JNIEnv * env,
 					     jobject self,
@@ -252,6 +302,11 @@ Java_java_io_ObjectInputStream_setIntField( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectInputStream
+ * Method:    setLongField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;J)V
+ */
 JNIEXPORT void JNICALL
 Java_java_io_ObjectInputStream_setLongField( JNIEnv * env,
 					      jobject self,
@@ -277,6 +332,11 @@ Java_java_io_ObjectInputStream_setLongField( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectInputStream
+ * Method:    setShortField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;S)V
+ */
 JNIEXPORT void JNICALL
 Java_java_io_ObjectInputStream_setShortField( JNIEnv * env,
 					       jobject self,
@@ -302,6 +362,12 @@ Java_java_io_ObjectInputStream_setShortField( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectInputStream
+ * Method:    setObjectField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;Ljava/lang/String;Ljava/lang/
+Object;)V
+ */
 JNIEXPORT void JNICALL
 Java_java_io_ObjectInputStream_setObjectField( JNIEnv * env,
 						jobject self,

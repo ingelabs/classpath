@@ -52,6 +52,11 @@ exception statement from your version. */
 #endif
 #define RETHROW_EXCEPTION( env ) if((*(env))->ExceptionOccurred((env)) != NULL) return;
 
+/*
+ * Class:     java_io_ObjectOutputStream
+ * Method:    callWriteMethod
+ * Signature: (Ljava/lang/Object;)V
+ */
 JNIEXPORT void JNICALL
 Java_java_io_ObjectOutputStream_callWriteMethod( JNIEnv * env,
 						 jobject self,
@@ -72,6 +77,11 @@ Java_java_io_ObjectOutputStream_callWriteMethod( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectOutputStream
+ * Method:    getBooleanField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;)Z
+ */
 JNIEXPORT jboolean JNICALL
 Java_java_io_ObjectOutputStream_getBooleanField( JNIEnv * env,
 						 jobject self,
@@ -98,6 +108,11 @@ Java_java_io_ObjectOutputStream_getBooleanField( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectOutputStream
+ * Method:    getByteField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;)B
+ */
 JNIEXPORT jbyte JNICALL
 Java_java_io_ObjectOutputStream_getByteField( JNIEnv * env,
 					      jobject self,
@@ -124,6 +139,11 @@ Java_java_io_ObjectOutputStream_getByteField( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectOutputStream
+ * Method:    getCharField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;)C
+ */
 JNIEXPORT jchar JNICALL
 Java_java_io_ObjectOutputStream_getCharField( JNIEnv * env,
 					      jobject self,
@@ -150,6 +170,11 @@ Java_java_io_ObjectOutputStream_getCharField( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectOutputStream
+ * Method:    getDoubleField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;)D
+ */
 JNIEXPORT jdouble JNICALL
 Java_java_io_ObjectOutputStream_getDoubleField( JNIEnv * env,
 						jobject self,
@@ -176,6 +201,11 @@ Java_java_io_ObjectOutputStream_getDoubleField( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectOutputStream
+ * Method:    getFloatField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;)F
+ */
 JNIEXPORT jfloat JNICALL
 Java_java_io_ObjectOutputStream_getFloatField( JNIEnv * env,
 					       jobject self,
@@ -202,6 +232,11 @@ Java_java_io_ObjectOutputStream_getFloatField( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectOutputStream
+ * Method:    getIntField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;)I
+ */
 JNIEXPORT jint JNICALL
 Java_java_io_ObjectOutputStream_getIntField( JNIEnv * env,
 					     jobject self,
@@ -228,6 +263,11 @@ Java_java_io_ObjectOutputStream_getIntField( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectOutputStream
+ * Method:    getLongField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;)J
+ */
 JNIEXPORT jlong JNICALL
 Java_java_io_ObjectOutputStream_getLongField( JNIEnv * env,
 					      jobject self,
@@ -254,6 +294,11 @@ Java_java_io_ObjectOutputStream_getLongField( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectOutputStream
+ * Method:    getShortField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;)S
+ */
 JNIEXPORT jshort JNICALL
 Java_java_io_ObjectOutputStream_getShortField( JNIEnv * env,
 					       jobject self,
@@ -280,6 +325,11 @@ Java_java_io_ObjectOutputStream_getShortField( JNIEnv * env,
 }
 
 
+/*
+ * Class:     java_io_ObjectOutputStream
+ * Method:    getObjectField
+ * Signature: (Ljava/lang/Object;Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;
+ */
 JNIEXPORT jobject JNICALL
 Java_java_io_ObjectOutputStream_getObjectField( JNIEnv * env,
 						jobject self,

@@ -51,7 +51,11 @@ exception statement from your version. */
 /*************************************************************************/
 
 /*
- * Method to force all data for this descriptor to be flushed to disk 
+ * Method to force all data for this descriptor to be flushed to disk.
+ *
+ * Class:     java_io_FileDescriptor
+ * Method:    syncInternal
+ * Signature: (I)V
  */
 
 JNIEXPORT void JNICALL
@@ -68,6 +72,10 @@ Java_java_io_FileDescriptor_syncInternal(JNIEnv *env, jobject obj, jint fd)
 
 /*
  * Method to check if a given descriptor is valid.
+ *
+ * Class:     java_io_FileDescriptor
+ * Method:    validInternal
+ * Signature: (I)Z
  */
 
 JNIEXPORT jboolean JNICALL
