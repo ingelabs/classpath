@@ -209,7 +209,7 @@ Java_gnu_java_nio_VMSelector_select (JNIEnv *env,
 	jclass thread_class = (*env)->FindClass(env, "java/lang/Thread");
 	jmethodID thread_current_thread = (*env)->GetStaticMethodID(env, thread_class, "currentThread", "()Ljava/lang/Thread;");
 	jmethodID thread_interrupt = (*env)->GetMethodID(env, thread_class, "interrupt", "()V");
-	jmethodID thread_interrupted = (*env)->GetMethodID(env, thread_class, "interrupted", "()Z");
+	jmethodID thread_interrupted = (*env)->GetStaticMethodID(env, thread_class, "interrupted", "()Z");
 	jobject current_thread;
 	int max_fd = 0;
 	fd_set read_fds;
