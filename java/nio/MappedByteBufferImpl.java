@@ -40,11 +40,12 @@ package java.nio;
 
 import gnu.java.nio.FileChannelImpl;
 import java.io.IOException;
+import gnu.classpath.RawData;
 
 public class MappedByteBufferImpl extends MappedByteBuffer
 {
   boolean readOnly;
-  long map_address;
+  RawData map_address;
   public FileChannelImpl ch;
   
   public MappedByteBufferImpl (FileChannelImpl ch) throws IOException
@@ -63,13 +64,13 @@ public class MappedByteBufferImpl extends MappedByteBuffer
   }
   
   public static byte getImpl (FileChannelImpl ch, int index,
-			      int limit, long map_address)
+			      int limit, RawData map_address)
   {
     throw new Error ("Not implemented");
   }
   
   public static void putImpl (FileChannelImpl ch, int index,
-			      int limit, byte value, long map_address)
+			      int limit, byte value, RawData map_address)
   {
     throw new Error ("Not implemented");
   }
