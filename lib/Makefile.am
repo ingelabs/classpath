@@ -83,16 +83,26 @@ default: all
 all: glibj.zip
 
 glibj.zip: .deps $(CLASSES) Makefile
+	-mkdir gnu
+	-mkdir gnu/java
+	-mkdir gnu/java/locale
 	cp $(top_srcdir)/gnu/java/locale/*.properties gnu/java/locale/
 	cp $(top_srcdir)/gnu/java/locale/*.uni gnu/java/locale/
 	zip -r -D glibj.zip gnu java
+
+.deps : Makefile
+	touch .deps
+
 endif
 
 if MAINTAINER_BUILD
 default : all
-all: glib.zip
+all: glibj.zip
 
 glibj.zip: .deps $(CLASSES) Makefile
+	-mkdir gnu
+	-mkdir gnu/java
+	-mkdir gnu/java/locale
 	cp $(top_srcdir)/gnu/java/locale/*.properties gnu/java/locale/
 	cp $(top_srcdir)/gnu/java/locale/*.uni gnu/java/locale/
 	zip -r -D glibj.zip gnu java
@@ -101,7 +111,7 @@ glibj.zip: .deps $(CLASSES) Makefile
 	./deps.sh
 endif
 
-EXTRA_DIST = glibj.zip .deps
+EXTRA_DIST = glibj.zip .deps standard.omit
 ## not sure if we want to let the user easily get rid of glibj.zip
 ## CLEANFILES = glibj.zip
 DISTCLEANFILES = $(CLASSES)

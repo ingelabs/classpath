@@ -3,6 +3,7 @@
 ^../java/lang/RuntimePermission.java$
 ^../java/security/CodeSource.java$
 ^../java/security/ProtectionDomain.java$
+^../java/sql/.*$
 ^../java/text/.*$
 ^../gnu/java/awt/peer/gtk/.*$
 ^../gnu/test/.*$
