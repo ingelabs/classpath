@@ -1,5 +1,10 @@
 2004-11-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/URLConnection.java
+	(getContent): Added missing @return tag.
+
+2004-11-21  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/text/FieldView.java,
 	javax/swing/text/JTextComponent.java:
 	Removed debug code.
