@@ -1,3 +1,8 @@
+2003-06-19  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/URL.java
+	(equals): Simplified code.
+
 2003-06-19  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/UIManager.java (getLookAndFeelDefaults): Made public.

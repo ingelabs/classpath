@@ -469,9 +469,7 @@ public final class URL implements Serializable
     if (obj == null || ! (obj instanceof URL))
       return false;
 
-    URL uObj = (URL) obj;
-
-    return handler.equals (this, uObj);
+    return handler.equals (this, (URL) obj);
   }
 
   /**
