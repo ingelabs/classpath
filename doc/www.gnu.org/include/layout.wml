@@ -32,61 +32,6 @@
 <tr><td class="boxhighlight">%body</td><tr>
 </define-tag>
 
-<define-tag createlink>
-<preserve name>
-<preserve url>
-<set-var %attributes>
-<ifeq <get-var name> "" <set-var name="<get-var url>">>
-<a href="<get-var url>"><get-var name></a>
-<restore url>
-<restore name>
-</define-tag>
-
-<define-tag commented-code endtag=required>
-  <ul>
-  <table cellspacing="0" cellpadding="4">
-  %body
-  </table>
-  </ul>
-</define-tag>
-
-<define-tag code-line endtag=required>
-  <preserve code>
-  <set-var %attributes>
-  <tr><td valign="top"><code><get-var code></code></td><td style="padding-left: 20px;">%body</td></tr>
-  <tr bgcolor="#999999"><td colspan="2"></td></tr>
-  <restore code>
-</define-tag>
-
-##
-#
-# Newslines
-#
-# Use the news and newsitem to create a table with news entries
-#
-<define-tag news endtag=required>
-  <preserve newscount>
-  <preserve __NEWSCNT>
-  <set-var __NEWSCNT=0>
-  <set-var %attributes>
-  <table>
-  %body
-  </table>
-  <restore __NEWSCNT>
-  <restore newscount>
-</define-tag>
-
-<define-tag newsitem endtag=required>
-  <preserve date>
-  <set-var %attributes>
-  <if <lt <get-var __NEWSCNT> <get-var newscount>>
-    "<tr><td><strong><get-var date></strong></td><td>%body</td></tr>"
-  >
-  <increment __NEWSCNT>
-  <restore date>
-</define-tag>
-
-
 ##
 # Site Layout
 #
@@ -141,7 +86,7 @@
 #
 
 <menutitle>Classpath</menutitle>
-<menuitem><createlink name="Home" url="home.html#home"></menuitem>
+<menuitem><createlink name="Home" url="home.html"></menuitem>
 <!--
 <menuitem><createlink name="Status" url="home.html#status"></menuitem>
 <menuitem><createlink name="Roadmap" url="home.html#roadmap"></menuitem>
@@ -150,14 +95,12 @@
 <menuitem><createlink name="Team" url="http://savannah.gnu.org/project/memberlist.php?group_id=85"></menuitem>
 <menuitem><createlink name="Download" url="downloads/downloads.html"></menuitem>
 <menuitem><createlink name="FAQ" url="faq/faq.html"></menuitem>
+<menuitem><createlink name="News" url="home.html#news"></menuitem>
 <menuitem><createlink name="Events" url="events/events.html"></menuitem>
 <menuitem><createlink name="Planet Classpath" url="http://classpath.wildebeest.org/planet/"></menuitem>
 
 <menutitle>Success Stories</menutitle>
 <menuitem><createlink name="JVMs" url="stories.html#jvm"></menuitem>
-<!--
-<menuitem><createlink name="Applications" url="stories.html#applications"></menuitem>
--->
 <menuitem><createlink name="Research" url="stories.html#research"></menuitem>
 
 <menutitle>Savannah</menutitle>
@@ -177,14 +120,17 @@
 <menuitem><createlink name="Docs" url="docs/docs.html"></menuitem>
 <menuitem><createlink name="Testing" url="benchmarks.html#testing"></menuitem>
 <menuitem><createlink name="Benchmarks" url="benchmarks.html#benchmarks"></menuitem>
-<menuitem><createlink name="External Projecs" url="external.html"></menuitem>
 
-<menutitle><createlink name="Tools" url="downloads/tools.html"></menutitle>
-<menuitem><createlink name="Mauve" url="downloads/tools.html#mauve"></menuitem>
-<menuitem><createlink name="Jalopy" url="downloads/tools.html#jalopy"></menuitem>
-<menuitem><createlink name="Jessie" url="downloads/tools.html#jessie"></menuitem>
-<menuitem><createlink name="Classpath Tools" url="http://savannah.gnu.org/projects/cp-tools/"></menuitem>
+<menutitle>Classpath Projects</menutitle>
+<menuitem><createlink name="Inetlib" url="inetlib.html"></menuitem>
+<menuitem><createlink name="Classpath Tools" url="cp-tools/"></menuitem>
 
+<menutitle>External Tools</menutitle>
+<menuitem><createlink name="External Packages" url="external.html#packages"></menuitem>
+<menuitem><createlink name="ClasspathX" url="http://www.gnu.org/software/classpathx/"></menuitem>
+<menuitem><createlink name="Mauve" url="http://sources.redhat.com/mauve/"></menuitem>
+<menuitem><createlink name="Jessie" url="http://www.nongnu.org/jessie/"></menuitem>
+<menuitem><createlink name="Jalopy" url="external.html#jalopy"></menuitem>
 
 </td>
 <td valign="top">

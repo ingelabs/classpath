@@ -1,3 +1,15 @@
+2004-10-06  Patrik Reali  <reali@acm.org>
+
+	* doc/www.gnu.org/README: a few custom tag documented
+	* doc/www.gnu.org/external.wml: external package table reformatted,
+	added external tools from tools.wml page (only those without website)
+	* doc/www.gnu.org/home.wml: added "news" anchor for news
+	* doc/www.gnu.org/inetlib.wml: first version
+	* doc/www.gnu.org/newsitems.txt: cp-tools savannah merge
+	* doc/www.gnu.org/include/layout.wml doc/www.gnu.org/include/macros.wml
+	doc/www.gnu.org/stories.wml: custom tag jvm renamed to project and
+	moved to macros.wml, custom tags moved from layout to macros
+
 2004-10-05  Michael Koch  <konqueror@gmx.de>
 
 	* javax/imageio/ImageIO.java:

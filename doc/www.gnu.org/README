@@ -51,20 +51,26 @@ Guide to the custom-defined tags
 --------------------------------
 
 Links
-  <createlink name="name" url="url>
-  <createlink url="url>
-
-  creates a <a href="url">name</a> entry; if name is missing, uses the url 
-  as name
-
+  Description:
+    creates a <a href="url">name</a> entry; if name is missing, uses the url 
+    as name
+  Availability:
+    everywhere (defined in macros.wml)
+  Format:
+    <createlink name="name" url="url>
+    <createlink url="url>
 
 Commented code
-
-  <commented-code>
-    <code-line code="1st code-line">comment to 1st line of code</code-line>
-    <code-line code="2nd code-line">comment to 2nd line of code</code-line>
-    <code-line code="3rd code-line" />
-  </commented-code>
+  Description:
+    creates a commented code example
+  Availability:
+    everywhere (defined in macros.wml)
+  Format:
+    <commented-code>
+      <code-line code="1st code-line">comment to 1st line of code</code-line>
+      <code-line code="2nd code-line">comment to 2nd line of code</code-line>
+      <code-line code="3rd code-line" />
+    </commented-code>
 
 
 FAQ-Lists
@@ -82,4 +88,22 @@ FAQ-Lists
       1st answer
     </faq>
   </faq-section>
+
+Project Tables
+  Description:
+    Define a project in a project table
+  Example: 
+    stories.wml
+  Availability:
+    everywhere (defined in macros.wml)
+  Format:
+    <project-list>
+      <project name="proj name"  url="proj url">
+        project description
+      </project>
+      <project name="proj name"  url="proj url">
+        project description
+      </project>
+    </project-list>
+
 

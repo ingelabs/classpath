@@ -1,3 +1,7 @@
+<newsitem date="03 Oct 2004">
+GNU Classpath Tools (cp-tools) now part of savannah classpath project (<createlink url="http://lists.gnu.org/archive/html/classpath/2004-10/msg00012.html" name="link">)
+</newsitem>
+
 <newsitem date="13 Sep 2004">
 <createlink name="GNU Classpath 0.11" url="announce/20040913.html">
 </newsitem>

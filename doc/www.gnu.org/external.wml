@@ -1,19 +1,46 @@
 #include "include/layout.wml"
 
+
+##
+#
+# Special Tags
+#
+
+<define-tag tool endtag=required>
+	<preserve maintainer>
+	<preserve name>
+	<preserve url>
+	<set-var %attributes>
+
+	<boxtitle><a name="<get-var name>">Classpath External Tools::<get-var name></a></boxtitle>
+	<boxitem>
+	<table cellspacing="4">
+		<tr><td valign="top"><strong>Maintainer</strong></td><td><get-var maintainer></td></tr>
+		<tr><td valign="top"><strong>Link</strong></td><td><createlink name="<get-var url>" url="<get-var url>"></td></tr>
+		<tr><td valign="top"><strong>Description</strong></td><td>%body</td></tr>
+	</table>
+	</boxitem>
+	<restore url>
+	<restore name>
+	<restore maintainer>
+</define-tag>
+
+
+
+
 <set-var last-modified-author="prk">
-<subject "GNU Classpath External Project References">
+<subject "GNU Classpath External Tools">
 
 <box>
-<boxtitle><a name="jvm">Classpath::External Project References</a></boxtitle>
+<boxtitle><a name="packages">Classpath::External Packages</a></boxtitle>
 
 <boxitem>
 <en>
-<p>Below is a table of providers for free core packages not already available
-with GNU Classpath
+<p>Below is a table of providers for free core packages not part of GNU Classpath
 </p>
-<table border="1" width="100%">
-<th>Core Package</th><th>Provider</th>
-<tr><td>
+
+<project-list>
+<project name="GNU ClasspathX" url="http://www.gnu.org/software/classpathx/">
 <ul>
 <li>javax.activation
 <li>javax.infobus
@@ -21,28 +48,39 @@ with GNU Classpath
 <li>javax.mail
 <li>javax.servlet
 <li>javax.speech
-</td><td align="top"><createlink url="http://www.gnu.org/software/classpathx/" name="GNU ClasspathX"></td></tr>
+</ul>
+</project>
 
-<tr>
-<td>javax.net.ssl</td>
-<td><createlink url="http://www.nongnu.org/jessie/" name="Jessie"></td>
-</tr>
+<project name="GNU Crypto" url="http://www.gnu.org/software/gnu-crypto/">
+<ul>
+<li>javax.crypto
+</ul>
+</project>
 
-<tr><td>javax.crypto</td><td><createlink url="http://www.gnu.org/software/gnu-crypto/" name="GNU Crypto"></td></tr>
+<project name="Jessie" url="http://www.nongnu.org/jessie/">
+<ul>
+<li>javax.net.ssl
+</ul>
+</project>
 
-<tr><td>javax.sound</td><td><createlink url="http://tritonus.org/" name="Tritonus"></td></tr>
+<project name="Tritonus" url="http://tritonus.org/">
+<ul>
+<li>javax.sound
+</ul>
+</project>
 
-<!--
-<tr><td>org.ietf.jgss</td><td><createlink
-url="http://www.ietf.org/rfc/rfc2853.txt" name="IETF RFC 2853"></td></tr>
-
-<tr><td>org.omg</td><td><createlink url="http://www.omg.org"
-name="OMG"></td></tr>
--->
-
-</table>
+</project-list>
 </en>
 
 </boxitem>
+
+<tool
+	name="Jalopy"
+	maintainer="Tom Tromey"
+	url="ftp://sources.redhat.com/pub/java/jalopy-console-1.0.4.tar.gz"
+>
+Jalopy is a pretty-printer to format Java code. To do our coding style you also need this
+<a href="ftp://sources.redhat.com/pub/java/GNU.xml">style definition file</a>.
+</tool>
 
 </box>

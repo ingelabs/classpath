@@ -1,26 +1,5 @@
 #include "include/layout.wml"
 
-##
-#
-# VM Table as custom tag, to ensure consistency and
-# simplify layout changes in the table
-#
-# tag: JVM
-# attributes: name url
-#
-<define-tag JVM endtag=required>
-  <preserve name>
-  <preserve url>
-  <set-var %attributes>
-  <tr>
-    <td valign="top"><a href="<get-var url>"><get-var name></a></td>
-    <td>%body</td>
-  </tr>
-  <restore url>
-  <restore name>
-</define-tag>
-
-
 <set-var last-modified-author="prk">
 
 <subject "GNU Classpath Success Stories">
@@ -42,98 +21,98 @@ of GNU Classpath.
 <table border="0" width="100%" cellpadding="6">
 <!--tr><th>JVM</th><th>Description</th></tr-->
 
-<JVM url="http://aegisvm.sourceforge.net/" name="AegisVM">
+<project url="http://aegisvm.sourceforge.net/" name="AegisVM">
 The Aegis VM Project is an on-going effort to develop a lightweight,
 secure virtual machine for executing Java bytecode.  The Aegis VM will
 eventually feature a modular bytecode verification architecture that
 allows user-defined static verification procedures to be integrated
 into the VM's dynamic linking process through pluggable verification
 modules.
-</JVM>
+</project>
 
-<JVM url="http://gcc.gnu.org/java/" name="GCJ">
+<project url="http://gcc.gnu.org/java/" name="GCJ">
 Although GNU Classpath cannot be directly compiled for use with
 GCJ at this time, a lot of work has been done to merge GCJ class
 library code and GNU Classpath class library code.  This has resulted
 in a better version of each.  The current merge status between the two
 projects is <createlink url="http://gcc.gnu.org/java/libgcj-classpath-compare.html"
 name="located here">.
-</JVM>
+</project>
 
-<JVM url="http://www.ikvm.net/" name="IKVM.NET">
+<project url="http://www.ikvm.net/" name="IKVM.NET">
 A JVM for the .NET platform.
 Runs on top of <createlink url="http://www.go-mono.org/" name="Mono">.
-</JVM>
+</project>
 
-<JVM url="http://sourceforge.net/projects/jamiga" name="JAmiga">
+<project url="http://sourceforge.net/projects/jamiga" name="JAmiga">
 A JRE implementation for the Amiga Platform.
-</JVM>
+</project>
 
-<JVM url="http://jamvm.sourceforge.net/" name="JamVM">
+<project url="http://jamvm.sourceforge.net/" name="JamVM">
 JamVM is a Java Virtual Machine which conforms to the JVM specification version 2 (blue book). In comparison to most other VM's (free and commercial) it is extremely small, with a stripped executable on PowerPC of only ~100K, and Intel 80K. However, unlike other small VMs (e.g. KVM) it is designed to support the full specification, and includes support for object finalisation, the Java Native Interface (JNI) and the Reflection API. 
-</JVM>
+</project>
 
-<JVM url="http://www.oberon.ethz.ch/jaos/" name="Jaos">
+<project url="http://www.oberon.ethz.ch/jaos/" name="Jaos">
 The Jaos VM is a JVM using GNU Classpath implemented on top of the
 <createlink url="http://bluebottle.ethz.ch/" name="Aos/Bluebottle"> kernel.
 This kernel offers many useful features like garbage collected memory
 management, dynamic module loading, and object-oriented model. This makes the
 implementation of a JVM particularly attractive and simple.
-</JVM>
+</project>
 
-<JVM url="http://jcvm.sourceforge.net/" name="JC">
+<project url="http://jcvm.sourceforge.net/" name="JC">
 JC is a Java virtual machine implementation that converts class 
 files into C source files using the Soot Java bytecode analysis
 framework, compiles them with GCC, and loads them using a built-in
 ELF object file loader. 
-</JVM>
+</project>
 
-<JVM url="http://www.ibm.com/developerworks/oss/jikesrvm/" name="Jikes RVM">
+<project url="http://www.ibm.com/developerworks/oss/jikesrvm/" name="Jikes RVM">
 Jikes RVM uses GNU Classpath for all of its libraries.  Instructions for using
 Classpath are provided in the Jikes RVM user's guide as of the Jikes RVM
 release 2.2.1 (4/7/03). Nightly regression tests are run against the latest
 Classpath release and the Classpath CVS head. The results are posted on the
 jikesrvm-regression mailing list, which is archived and available on the Jikes
 RVM home page.
-</JVM>
+</project>
 
-<JVM url="http://jnode.sourceforge.net/" name="JNode">
+<project url="http://jnode.sourceforge.net/" name="JNode">
 JNode is a <i>Java New Operating System Design Effort</i>. 
 The goal is to get an simple to use and install Java operating system for personal use. Any java application should run on it, fast &amp; secure! 
-</JVM>
+</project>
 
-<JVM url="http://www.eecg.toronto.edu/~doylep/jupiter/" name="Jupiter">
+<project url="http://www.eecg.toronto.edu/~doylep/jupiter/" name="Jupiter">
 This VM also uses a modified version of the GNU Classpath libraries.
-</JVM>
+</project>
 
-<JVM url="http://www.kaffe.org/" name="Kaffe">
+<project url="http://www.kaffe.org/" name="Kaffe">
 Kaffe OpenVM is a complete virtual machine, library framework and
 tools for programming in the java language. It has its own
 implementation of part of the core libraries, but uses large parts of
 the GNU Classpath framework.
-</JVM>
+</project>
 
-<JVM url="http://kissme.sourceforge.net/" name="Kissme">
+<project url="http://kissme.sourceforge.net/" name="Kissme">
 This VM is almost always guaranteed to work with GNU Classpath CVS 
 source code.
-</JVM>
+</project>
 
-<JVM url="http://www.intel.com/research/mrl/orp/" name="ORP">
+<project url="http://www.intel.com/research/mrl/orp/" name="ORP">
 Information about ORP
 can also be found at <createlink url="http://orp.sourceforge.net/"
 name="http://orp.sourceforge.net/">.  ORP 1.10 does not work with 
 current GNU Classpath libraries.  Information is available in the
 mailing list archives.
-</JVM>
+</project>
 
-<JVM url="http://www.sablevm.org/" name="SableVM">
+<project url="http://www.sablevm.org/" name="SableVM">
 SableVM is a robust, extremely portable, efficient, and
 specifications-compliant Java Virtual Machine that aims to be easy to
 maintain and to extend. It features a state-of-the-art, efficient
 interpreter engine. Its source code is very accessible and easy to
 understand, and has many robustness features that have been the object
 of careful design.
-</JVM>
+</project>
 
 </table>
 </en>
@@ -142,13 +121,13 @@ of careful design.
 <en>
 <table border="0" width="100%" cellpadding="6">
 <!--tr><th>Project</th><th>Description</th></tr-->
-<JVM url="http://www.flex-compiler.lcs.mit.edu/" name="Flex Compiler">
+<project url="http://www.flex-compiler.lcs.mit.edu/" name="Flex Compiler">
 FLEX is a compiler infrastructure written in Java for Java. Applications 
 include a program analysis and transformation framework for distributed 
 and embedded systems. Native backends exist for the StrongARM and MIPS 
 processors; it can also generate portable C code that can run on any 
 platform with gcc.
-</JVM>
+</project>
 </table>
 </en>
 
