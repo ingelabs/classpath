@@ -1,3 +1,7 @@
+2002-02-22  C. Brian Jones <cbj@gnu.org>
+
+	* java/beans/Introspector.java: reformatting
+
 2002-02-22  Eric Blake  <ebb9@email.byu.edu>
 
 	* gnu/java/lang/ClassHelper.java: Improve Javadoc and formatting,
