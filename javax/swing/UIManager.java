@@ -174,11 +174,21 @@ public class UIManager implements Serializable
 	System.out.println("UIManager.getDim");
 	return new Dimension(200,100);
     }
-    static  Font getFont(Object key)
-    //      Returns a drawing font from the defaults table. 
-    {
-	return (Font) getLookAndFeel().getDefaults().get(key);
-    }
+
+
+  /**
+   * Retrieves a font from the defaults table of the current
+   * LookAndFeel.
+   *
+   * @param key an Object that specifies the font. Typically,
+   *        this is a String such as
+   *        <code>&quot;TitledBorder.font&quot;</code>.
+   */
+  public static Font getFont(Object key)
+  {
+    return (Font) getLookAndFeel().getDefaults().get(key);
+  }
+
     static  Icon getIcon(Object key)
     //      Returns an Icon from the defaults table. 
     {
