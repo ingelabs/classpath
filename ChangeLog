@@ -1,3 +1,26 @@
+2004-11-21  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/classpath/RawData.java: Made abstract.
+	* gnu/classpath/RawData32.java,
+	gnu/classpath/RawData64.java: New files.
+	* include/Makefile.am:
+	Don't generate java_nio_DirectByteBufferImpl.h anymore
+	and generate java_nio_VMDirectByteBuffer.h now.
+	* java/nio/DirectByteBufferImpl.java:
+	Moved native methods to VMDirectByteBuffer.
+	* java/nio/MappedByteBufferImpl.java:
+	Use methods from VMDirectBteBuffer.
+	* native/jni/java-nio/Makefile.am:
+	Removed java_nio_DirectByteBufferImpl.c
+	and added java_nio_VMDirectByteBuffer.c
+	* include/java_nio_DirectByteBufferImpl.h,
+	native/jni/java-nio/java_nio_DirectByteBufferImpl.c:
+	Removed.
+	* include/java_nio_VMDirectByteBuffer.h,
+	* native/jni/java-nio/java_nio_VMDirectByteBuffer.c,
+	* vm/reference/java/nio/VMDirectByteBuffer.java:
+	New files.
+
 2004-11-20  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/ResourceBundle.java (tryBundle): Use

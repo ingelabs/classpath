@@ -62,7 +62,7 @@ $(top_srcdir)/include/java_lang_VMSystem.h \
 $(top_srcdir)/include/java_lang_reflect_Array.h \
 $(top_srcdir)/include/java_net_InetAddress.h \
 $(top_srcdir)/include/java_net_NetworkInterface.h \
-$(top_srcdir)/include/java_nio_DirectByteBufferImpl.h \
+$(top_srcdir)/include/java_nio_VMDirectByteBuffer.h \
 $(top_srcdir)/include/java_nio_MappedByteBufferImpl.h \
 $(top_srcdir)/include/java_nio_channels_Channels.h \
 $(top_srcdir)/include/java_util_VMTimeZone.h
@@ -183,8 +183,8 @@ $(top_srcdir)/include/java_net_InetAddress.h: $(top_srcdir)/java/net/InetAddress
 	$(JAVAH) -o $@ java.net.InetAddress
 $(top_srcdir)/include/java_net_NetworkInterface.h: $(top_srcdir)/java/net/NetworkInterface.java
 	$(JAVAH) -o $@ java.net.NetworkInterface
-$(top_srcdir)/include/java_nio_DirectByteBufferImpl.h: $(top_srcdir)/java/nio/DirectByteBufferImpl.java
-	$(JAVAH) -o $@ java.nio.DirectByteBufferImpl
+$(top_srcdir)/include/java_nio_VMDirectByteBuffer.h: $(top_srcdir)/vm/reference/java/nio/VMDirectByteBuffer.java
+	$(JAVAH) -o $@ java.nio.VMDirectByteBuffer
 $(top_srcdir)/include/java_nio_MappedByteBufferImpl.h: $(top_srcdir)/java/nio/MappedByteBufferImpl.java
 	$(JAVAH) -o $@ java.nio.MappedByteBufferImpl
 $(top_srcdir)/include/java_nio_channels_Channels.h: $(top_srcdir)/java/nio/channels/Channels.java
