@@ -20,10 +20,12 @@ Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA. */
 
 package java.awt.datatransfer;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
 import java.io.ObjectOutput;
 import java.io.ObjectInput;
-import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
@@ -91,22 +93,21 @@ public static final String javaRemoteObjectMimeType =
 
 static
 {
-  plainTextFlavor = new DataFlavor();
-  plainTextFlavor.representationClass = java.io.InputStream.class;
-  plainTextFlavor.mimeType = "text/plain; charset=unicode";
-  plainTextFlavor.humanPresentableName = "plain unicode text";
+  plainTextFlavor
+      = new DataFlavor(java.io.InputStream.class,
+		       "text/plain; charset=unicode",
+		       "plain unicode text");
 
-  stringFlavor = new DataFlavor();
-  stringFlavor.representationClass = java.lang.String.class;
-  stringFlavor.mimeType = javaSerializedObjectMIMEType
-                          + "; class=java.lang.String";
-  stringFlavor.humanPresentableName = "Java Unicode String";
+  stringFlavor
+      = new DataFlavor(java.lang.String.class,
+		       "Java Unicode String");
 
-  javaFileListFlavor = new DataFlavor();
-  javaFileListFlavor.representationClass = java.util.List.class;
-  javaFileListFlavor.mimeType = javaSerializedObjectMIMEType
-                                + "; class=java.util.list";
+  javaFileListFlavor
+      = new DataFlavor(java.util.List.class,
+		       "Java File List");
+
   // javaFileListFlavor.mimeType = "application/x-java-file-list";
+}
 
 /*************************************************************************/
 
@@ -192,6 +193,27 @@ tryToLoadClass(String className, ClassLoader classLoader)
 public
 DataFlavor()
 {
+    mimeType = null;
+    representationClass = null;
+    humanPresentableName = null;
+}
+
+/*************************************************************************/
+
+/**
+  * Private constructor.
+  */
+private
+DataFlavor(Class representationClass,
+	   String mimeType,
+	   String humanPresentableName)
+{
+    this.representationClass = representationClass;
+    this.mimeType = mimeType;
+    if (humanPresentableName != null)
+	this.humanPresentableName = humanPresentableName;
+    else
+	this.humanPresentableName = mimeType;
 }
 
 /*************************************************************************/
@@ -209,13 +231,11 @@ DataFlavor()
 public
 DataFlavor(Class representationClass, String humanPresentableName)
 {
-  this.representationClass = representationClass;
-  this.humanPresentableName = humanPresentableName;
-  mimeType = "application/x-java-serialized-object"
-             + "; class="
-             + representationClass.getName();
-  if (this.humanPresentableName == null)
-    this.humanPresentableName = mimeType;
+    this(representationClass,
+       "application/x-java-serialized-object"
+       + "; class="
+       + representationClass.getName(),
+       humanPresentableName);
 }
 
 /*************************************************************************/
@@ -241,25 +261,28 @@ public
 DataFlavor(String mimeType, String humanPresentableName, 
            ClassLoader classLoader) throws ClassNotFoundException
 {
-  this.mimeType = mimeType;
-  if (humanPresentableName != null)
-    this.humanPresentableName = humanPresentableName;
-  else
-    this.humanPresentableName = mimeType;
+  this(getRepresentationClassFromMime(mimeType, classLoader),
+       mimeType, humanPresentableName);
+}
 
-  String classname = getParameter("class");
-  if (className == null)
-    representationClass = java.io.InputStream.class;
-  else
+private static Class
+getRepresentationClassFromMime(String mimeString, ClassLoader classLoader)
+{
+  String classname = getParameter("class", mimeString);
+  if (classname != null)
     {
       try
         {
-          representationClass = tryToLoadClass(classname, classLoader);
+          return tryToLoadClass(classname, classLoader);
         }
       catch(Exception e)
         {
           throw new IllegalArgumentException("classname: " + e.getMessage());
         }
+    }
+  else
+    {
+      return java.io.InputStream.class;
     }
 }
 
@@ -394,6 +417,33 @@ getSubType()
 
 /**
   * Returns the value of the named MIME type parameter, or <code>null</code>
+  * if the parameter does not exist. Given the parameter name and the mime
+  * string.
+  *
+  * @param paramName The name of the parameter.
+  * @param mimeString The mime string from where the name should be found.
+  *
+  * @return The value of the parameter or null.
+  */
+private static String
+getParameter(String paramName, String mimeString)
+{
+  int idx = mimeString.indexOf(paramName + "=");
+  if (idx == -1)
+    return(null);
+
+  String value = mimeString.substring(idx + paramName.length() + 2);
+
+  idx = value.indexOf(" ");
+  if (idx == -1)
+    return(value);
+  else
+    return(value.substring(0, idx));
+}
+
+/*************************************************************************/
+/**
+  * Returns the value of the named MIME type parameter, or <code>null</code>
   * if the parameter does not exist.
   *
   * @param paramName The name of the paramter.
@@ -403,17 +453,7 @@ getSubType()
 public String
 getParameter(String paramName)
 {
-  int idx = mimeType.indexOf(paramName + "=");
-  if (idx == -1)
-    return(null);
-
-  String value = mimeType.substring(idx + paramName.length() + 2);
-
-  idx = value.indexOf(" ");
-  if (idx == -1)
-    return(value);
-  else
-    return(value.substring(0, idx));
+  return getParameter(paramName, mimeType);
 }
 
 /*************************************************************************/
@@ -800,6 +840,8 @@ getTextPlainUnicodeFlavor()
 
 /**
   * XXX - Currently returns <code>java.io.InputStream</code>.
+  *
+  * @since 1.3
   */
 public static final Class
 getDefaultRepresentationClass()
@@ -814,7 +856,7 @@ getDefaultRepresentationClass()
 public static final String
 getDefaultRepresentationClassAsString()
 {
-  return(getDefaultRepresentationClass.getName());
+  return(getDefaultRepresentationClass().getName());
 }
 
 /*************************************************************************/
@@ -836,9 +878,17 @@ selectBestTextFlavor(DataFlavor[] availableFlavors)
     {
       DataFlavor df = availableFlavors[i];
       Class c = df.representationClass;
-      if ((c instanceof Reader) || (c instanceof String))
-        return df;
-      if ((c instanceof InputStream) && ("text".equals(df.getPrimaryType()))
+
+      // A Reader or String is good.
+      if ((Reader.class.isAssignableFrom(c))
+	  || (String.class.isAssignableFrom(c)))
+	{
+	  return df;
+	}
+
+      // A InputStream is good if the mime primary type is "text"
+      if ((InputStream.class.isAssignableFrom(c))
+	  && ("text".equals(df.getPrimaryType())))
         {
           String encoding = availableFlavors[i].getParameter("charset");
           if (encoding == null)
@@ -848,9 +898,9 @@ selectBestTextFlavor(DataFlavor[] availableFlavors)
             {
               // Try to construct a dummy reader with the found encoding
               r = new InputStreamReader
-                    (new ByteArrayInputStream(new byte[0]), encoding));
+                    (new ByteArrayInputStream(new byte[0]), encoding);
             }
-          catch(UnsupportedEncodingException) { /* ignore */ }
+          catch(UnsupportedEncodingException uee) { /* ignore */ }
           if (r != null)
             return df;
         }
@@ -888,26 +938,26 @@ getReaderForText(Transferable transferable) throws UnsupportedFlavorException,
                                                    IOException,
                                                    UnsupportedEncodingException
 {
-    if (!transferable.isDataFlavorSupported(this)
-        throw UnsupportedFlavorException(this);
+    if (!transferable.isDataFlavorSupported(this))
+        throw new UnsupportedFlavorException(this);
 
-    if (representationClass instanceof Reader)
+    if (Reader.class.isAssignableFrom(representationClass))
         return((Reader)transferable.getTransferData(this));
 
-    if (representationClass instanceof String)
-        return(StringReader((String)transferable.getTransferData(this)));
+    if (String.class.isAssignableFrom(representationClass))
+        return(new StringReader((String)transferable.getTransferData(this)));
 
-    if ((representationClass instanceof InputStream)
-        && "text".equals(getPrimaryType())
+    if (InputStream.class.isAssignableFrom(representationClass)
+        && "text".equals(getPrimaryType()))
       {
         InputStream in = (InputStream)transferable.getTransferData(this);
         String encoding = getParameter("charset");
         if (encoding == null)
             encoding = "us-ascii";
-        return(InputStreamReader(in, encoding));
+        return(new InputStreamReader(in, encoding));
       }
 
-    throw UnsupportedFlavorException(this);
+    throw new UnsupportedFlavorException(this);
 }
 
 } // class DataFlavor
