@@ -5,14 +5,6 @@ JAVA_DEPEND = java.dep
 ## this file and restart the make process again
 sinclude $(JAVA_DEPEND)
 
-USER_CLASSLIB = @USER_CLASSLIB@
-
-GCJ = @GCJ@
-JIKES = @JIKES@
-USER_JABBA = @USER_JABBA@
-USER_JAVAH = @USER_JAVAH@
-FIND = @FIND@
-
 propertydirs :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java org -type d ! -name CVS -print)
 propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java org -name \*\.properties -print)
 
@@ -32,6 +24,10 @@ JAVAC = $(JIKES) +Pno-shadow +F -bootclasspath '' -extdirs '' -sourcepath '' --c
 else
 if FOUND_KJC
 JAVAC = $(KJC) -classpath .:$(USER_CLASSLIB) -d . @classes
+else
+if FOUND_GCJX
+JAVAC = $(GCJX) -classpath .:$(USER_CLASSLIB) -d . @classes
+endif # FOUND_GCJX
 endif # FOUND_KJC
 endif # FOUND_GCJ
 endif # FOUND_JIKES

@@ -8,6 +8,7 @@ AC_DEFUN([CLASSPATH_FIND_JAVAC],
   CLASSPATH_WITH_GCJ
   CLASSPATH_WITH_JIKES
   CLASSPATH_WITH_KJC
+  CLASSPATH_WITH_GCJX
 
   if test "x${user_specified_javac}" = x; then
     AM_CONDITIONAL(FOUND_GCJ, test "x${GCJ}" != x)
@@ -17,9 +18,11 @@ AC_DEFUN([CLASSPATH_FIND_JAVAC],
     AM_CONDITIONAL(FOUND_JIKES, test "x${user_specified_javac}" = xjikes)
   fi
   AM_CONDITIONAL(FOUND_KJC, test "x${user_specified_javac}" = xkjc)
+  AM_CONDITIONAL(FOUND_GCJX, test "x${user_specified_javac}" = xgcjx)
 
-  if test "x${GCJ}" = x && test "x${JIKES}" = x && test "x${user_specified_javac}" != xkjc; then
-      echo "configure: cannot find javac, try --with-gcj, --with-jikes, or --with-kjc" 1>&2
+  if test "x${GCJ}" = x && test "x${JIKES}" = x && test "x${user_specified_javac}" != xkjc && test "x${user_specified_javac}" != xgcjx; then
+      # FIXME: use autoconf error function
+      echo "configure: cannot find javac, try --with-gcj, --with-jikes, --with-kjc, or --with-gcjx" 1>&2
       exit 1    
   fi
 ])
@@ -186,6 +189,41 @@ AC_DEFUN([CLASSPATH_CHECK_KJC],
     fi
   else
     AC_PATH_PROG(KJC, "kJC")
+  fi
+])
+
+dnl -----------------------------------------------------------
+AC_DEFUN([CLASSPATH_WITH_GCJX],
+[
+  AC_ARG_WITH([gcjx], 
+  	      [AS_HELP_STRING(--with-gcjx,bytecode compilation with gcjx)],
+  [
+    if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
+      CLASSPATH_CHECK_GCJX(${withval})
+    else
+      if test "x${withval}" != xno; then
+        CLASSPATH_CHECK_GCJX
+      fi
+    fi
+    user_specified_javac=gcjx
+  ],
+  [ 
+    CLASSPATH_CHECK_GCJX
+  ])
+  AC_SUBST(GCJX)
+])
+
+dnl -----------------------------------------------------------
+AC_DEFUN([CLASSPATH_CHECK_GCJX],
+[
+  if test "x$1" != x; then
+    if test -f "$1"; then
+      GCJX="$1"
+    else
+      AC_PATH_PROG(GCJX, "$1")
+    fi
+  else
+    AC_PATH_PROG(GCJX, "gcjx")
   fi
 ])
 

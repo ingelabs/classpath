@@ -1,3 +1,19 @@
+2004-12-25  Tom Tromey  <tromey@redhat.com>
+
+	* lib/Makefile.am (JAVAC): Handle GCJX.
+	(GCJ): Removed.
+	(JIKES): Likewise.
+	(USER_JABBA): Likewise.
+	(USER_JAVAH): Likewise.
+	(FIND): Likewise.
+	(USER_CLASSLIB): Likewise.
+	* examples/Makefile.am (JCOMPILER): Handle gcjx.
+	(GCJ): Removed.
+	(JIKES): Likewise.
+	* acinclude.m4 (CLASSPATH_WITH_GCJX): New macro.
+	(CLASSPATH_CHECK_GCJX): Likewise.
+	(CLASSPATH_FIND_JAVAC): Use it.
+
 2004-12-24  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug libgcj/18014.
