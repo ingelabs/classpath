@@ -51,6 +51,10 @@ import java.awt.Insets;
 public class CompoundBorder
   extends AbstractBorder
 {
+  /**
+   * Determined using the <code>serialver</code> tool
+   * of Apple/Sun JDK 1.3.1 on MacOS X 10.1.5.
+   */
   static final long serialVersionUID = 9054540377030555103L;
 
 
