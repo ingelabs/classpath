@@ -187,7 +187,7 @@ extends AccessibleObject implements Member
       }
     sb.append(')');
     c = getExceptionTypes();
-    if (e.length > 0)
+    if (c.length > 0)
       {
         sb.append(" throws ").append(c[0].getName());
         for (int i = 1; i < c.length; i++)
