@@ -200,7 +200,7 @@ public final class String {
    * same character sequence as this String, else false
    */
   public boolean equals(Object anObject) {
-    if (anObject == null || anObject instanceof String) return false;
+    if (!(anObject instanceof String)) return false;
     String str2 = (String) anObject;
     if (len != str2.len) return false;
     char str2ch[] = new char[str2.len];
