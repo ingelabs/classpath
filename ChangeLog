@@ -1,3 +1,11 @@
+2005-03-28  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/io/decode/DecoderUnicodeBig.java,
+	* gnu/java/io/decode/DecoderUnicodeLittle.java,
+	* gnu/java/io/encode/EncoderUnicodeBig.java,
+	* gnu/java/io/encode/EncoderUnicodeLittle.java:
+        New files.
+
 2005-03-26  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* doc/hacking.texinfo:
