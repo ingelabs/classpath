@@ -1,3 +1,10 @@
+2003-03-28  Michael Koch  <konqueror@gmx.de>
+
+	* java/text/MessageFormat.java (MessageFormat.serialVersionUID):
+	Define.
+	* java/text/AttributedCharacterIterator.java
+	(Attribute.serialVersionUID): Define.
+
 2003-03-28  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/Package.java (toString): Formatting fixlet.
