@@ -1,3 +1,17 @@
+2004-08-25 Sven de Marothy <sven@physto.se>
+	* java/awt/geom/Arc2D.java
+	Reformatted.
+	setArc(): Correct documentation to say 'upper left corner'.
+	(setArcByTangent,contains,intersects): Implemented.
+	(containsAngle): Corrected to handle negative extents.
+	ArcIterator: Set to private.
+	ArcIterator: Corrected for CHORD-type arcs, negative extents.
+	* java/awt/geom/Ellipse2D.java
+	Documented.
+	(contains,intersects): Implemented.
+	* java/awt/geom/Line2D.java
+	(linesIntersect): Correct handling of special cases.
+
 2004-08-24  Andrew John Hughes <gnu_andrew@member.fsf.org>
 
 	* java/awt/Label.java, java/awt/Canvas.java
