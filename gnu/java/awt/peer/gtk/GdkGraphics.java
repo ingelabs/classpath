@@ -167,9 +167,9 @@ public class GdkGraphics extends Graphics
     return font;
   }
 
-  public FontMetrics getFontMetrics (Font f)
+  public FontMetrics getFontMetrics (Font font)
   {
-    return null;
+    return new GdkFontMetrics (font);
   }
 
   public void setClip (int x, int y, int width, int height)

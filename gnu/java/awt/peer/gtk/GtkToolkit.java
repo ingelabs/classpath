@@ -82,13 +82,16 @@ public class GtkToolkit extends java.awt.Toolkit
 
   public String[] getFontList () 
   {
-    return (new String[] { "Dialog", "DialogInput", "Monospaced", "Serif",
+    return (new String[] { "Dialog", 
+			   "DialogInput", 
+			   "Monospaced", 
+			   "Serif", 
 			   "SansSerif" });
   }
 
   public FontMetrics getFontMetrics (Font font) 
   {
-    return null;
+    return new GdkFontMetrics (font);
   }
 
   public Image getImage (String filename) 
