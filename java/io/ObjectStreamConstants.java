@@ -19,11 +19,16 @@
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
-//TODO: comments
-
 package java.io;
 
-public interface ObjectStreamConstants
+/**
+   This interface contains constants that are used in object
+   serialization.  This interface is used by ObjectOutputStream,
+   ObjectInputStream, ObjectStreamClass, and possibly other classes.
+   The values for these constants are specified in Javasoft's "Object
+   Serialization Specification" TODO: add reference
+*/
+interface ObjectStreamConstants
 {
   final static short STREAM_MAGIC = (short)0xaced;
   final static short STREAM_VERSION = 5;
@@ -39,8 +44,6 @@ public interface ObjectStreamConstants
   final static byte TC_RESET = (byte)0x79;
   final static byte TC_BLOCKDATALONG = (byte)0x7A;
   final static byte TC_EXCEPTION = (byte)0x7B;
-
-  // bit masks for classDescFlags  
   final static byte SC_WRITE_METHOD = 0x01;
   final static byte SC_SERIALIZABLE = 0x02;
   final static byte SC_EXTERNALIZABLE = 0x04;

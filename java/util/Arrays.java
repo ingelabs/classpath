@@ -1460,7 +1460,10 @@ public class Arrays {
           int p1 = start;
           int p2 = start + size;
           int i = start;
-          int d1, d2;
+          int d1;
+
+	  // initial value added to placate javac
+	  int d2 = -1;
 
           // The main merge loop; terminates as soon as either half is ended
           // You'd think you needed to use & rather than && to make sure d2 gets

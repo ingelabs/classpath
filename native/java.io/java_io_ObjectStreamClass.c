@@ -18,9 +18,8 @@
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
-//TODO: comments
-
 #include "java_io_ObjectStreamClass.h"
+
 
 static jfieldID mysuid_fid = NULL;
 static const char * myUID_str = "myUID";
@@ -29,6 +28,10 @@ static const char * serialVersionUID_str = "serialVersionUID";
 static const char * class_init_str = "<clinit>";
 static const char * class_init_sig = "()V";
 
+
+/*
+  Precomputes jfieldID for the `myUID' field in ObjectStreamClass.
+*/ 
 JNIEXPORT void JNICALL
 Java_java_io_ObjectStreamClass_initializeClass( JNIEnv * env,
 						jclass myclass )
@@ -37,6 +40,13 @@ Java_java_io_ObjectStreamClass_initializeClass( JNIEnv * env,
 }
 
 
+/*
+  Returns true if CLAZZ has a long field named `serialVersionUID'.  A
+  side-effect of this method is that the `myUID' field of SELF is set
+  to the value of CLAZZ's `serialVersionUID' field.
+
+  A NoSuchFieldError is raised if CLAZZ has no such field.
+*/
 JNIEXPORT jboolean JNICALL
 Java_java_io_ObjectStreamClass_hasDefinedSUID( JNIEnv * env,
 					       jobject self,
@@ -56,6 +66,12 @@ Java_java_io_ObjectStreamClass_hasDefinedSUID( JNIEnv * env,
 }
 
 
+/* 
+   Returns true if CLAZZ has a static class initializer
+   (a.k.a. <clinit>).
+
+   A NoSuchMethodError is raised if CLAZZ has no such method.
+*/
 JNIEXPORT jboolean JNICALL
 Java_java_io_ObjectStreamClass_hasClassInitializer( JNIEnv * env,
 						    jclass myclass,
