@@ -1,3 +1,8 @@
+2004-09-19  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/ClassLoader.java (loadedClasses): Declare as HashMap.
+	(definedPackages): Likewise.
+
 2004-09-19  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/Collections.java (rotate): Just return when list is empty.
