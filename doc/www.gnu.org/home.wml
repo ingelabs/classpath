@@ -7,9 +7,10 @@
 
 <boxtitle><a name="ShortNews">Classpath::Short News</a></boxtitle>
 <boxitem>
-<news>
+<news newscount="8">
 #include "newsitems.txt"
 </news>
+<p><createlink name="... more news" url="news.html">
 </boxitem>
 
 <boxtitle><a name="home">Classpath::Home</a></boxtitle>

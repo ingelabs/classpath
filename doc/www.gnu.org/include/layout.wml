@@ -65,15 +65,24 @@
 # Use the news and newsitem to create a table with news entries
 #
 <define-tag news endtag=required>
+  <preserve newscount>
+  <preserve __NEWSCNT>
+  <set-var __NEWSCNT=0>
+  <set-var %attributes>
   <table>
   %body
   </table>
+  <restore __NEWSCNT>
+  <restore newscount>
 </define-tag>
 
 <define-tag newsitem endtag=required>
   <preserve date>
   <set-var %attributes>
-  <tr><td><strong><get-var date></td><td>%body</td></tr>
+  <if <lt <get-var __NEWSCNT> <get-var newscount>>
+    "<tr><td><strong><get-var date></strong></td><td>%body</td></tr>"
+  >
+  <increment __NEWSCNT>
   <restore date>
 </define-tag>
 
@@ -142,6 +151,7 @@
 <menuitem><createlink name="Download" url="downloads/downloads.html"></menuitem>
 <menuitem><createlink name="FAQ" url="faq/faq.html"></menuitem>
 <menuitem><createlink name="Events" url="events/events.html"></menuitem>
+<menuitem><createlink name="Planet Classpath" url="http://classpath.wildebeest.org/planet/"></menuitem>
 
 <menutitle>Success Stories</menutitle>
 <menuitem><createlink name="JVMs" url="stories.html#jvm"></menuitem>

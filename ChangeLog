@@ -1,3 +1,10 @@
+2004-05-25  Patrik Reali  <reali@acm.org>
+	* doc/www.gnu.org/news.wml, doc/www.gnu.org/home.wml, 
+	doc/www.gnu.org/include/layout.wml: added page with all newsitems, 
+	newsitems on home limited to 8
+
+	* doc/www.gnu.org/newsitems.txt: news updated
+
 2004-05-24  Steven Augart  <augart@watson.ibm.com>
 
 	* acinclude.m4
