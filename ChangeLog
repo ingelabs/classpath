@@ -1,5 +1,15 @@
 2004-08-08  Mark Wielaard  <mark@klomp.org>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMainThread.c
+	(Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit): Initialize
+	gdk_env before calling any gdk or gtk function.
+
+	* gnu/java/awt/peer/gtk/GtkMainThread.java (gtkInitCalled): New field.
+	(GtkMainThread): Call wait() in while loop waiting for gtkInitCalled.
+	(run): Seet gtkInitCalled.
+
+2004-08-08  Mark Wielaard  <mark@klomp.org>
+
 	* native/jni/gtk-peer/gthread-jni.c (setup_cache): Call
 	ExceptionOccurred, not ExceptionCheck, when we don't have JNI 1.2.
 

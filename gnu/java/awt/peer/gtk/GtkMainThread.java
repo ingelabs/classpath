@@ -43,6 +43,9 @@ public class GtkMainThread extends GtkGenericPeer implements Runnable
   private static Thread mainThread = null;
   private static Object mainThreadLock = new Object();
 
+  // Whether the gtk+ subsystem has been initialized.
+  private boolean gtkInitCalled = false;
+
   /**
    * Call gtk_init.  It is very important that this happen before any other
    * gtk calls.
@@ -67,9 +70,15 @@ public class GtkMainThread extends GtkGenericPeer implements Runnable
     synchronized (this) 
       {
 	mainThread.start();
-	try {
-	  wait();
-	} catch (InterruptedException e) { }
+	
+	while (!gtkInitCalled)
+	  {
+	    try
+	      {
+		wait();
+	      }
+	    catch (InterruptedException e) { }
+	  }
       }
   }
   
@@ -91,7 +100,8 @@ public class GtkMainThread extends GtkGenericPeer implements Runnable
     synchronized (this) 
       {
 	gtkInit(portableNativeSync);
-	notify();
+	gtkInitCalled = true;
+	notifyAll();
       }
     gtkMain();
   }

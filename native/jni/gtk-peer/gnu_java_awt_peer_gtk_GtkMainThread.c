@@ -96,6 +96,7 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz,
     gtkmenuitempeer, gtktextcomponentpeer, window;
 
   NSA_INIT (env, clazz);
+  gdk_env = env;
 
   /* GTK requires a program's argc and argv variables, and requires that they
      be valid.   Set it up. */
@@ -125,7 +126,6 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz,
      we're shutting down. */
   atexit (gdk_threads_enter);
 
-  gdk_env = env;
   gdk_event_handler_set ((GdkEventFunc)awt_event_handler, NULL, NULL);
 
   if ((homedir = getenv ("HOME")))
