@@ -4,8 +4,7 @@ libjavanio_la_SOURCES = gnu_java_nio_VMPipe.c \
 			gnu_java_nio_VMSelector.c \
 			gnu_java_nio_channels_FileChannelImpl.c \
 			java_nio_MappedByteBufferImpl.c \
-			java_nio_VMDirectByteBuffer.c \
-			java_nio_channels_Channels.c
+			java_nio_VMDirectByteBuffer.c
 
 libjavanio_la_LIBADD = $(top_builddir)/native/jni/classpath/jcl.lo
 
