@@ -1,3 +1,9 @@
+2004-11-25  Sven de Marothy  <sven@physto.se>
+
+	* java/awt/image/IndexColorModel.java
+	(IndexColorModel): Add FIXME with respect to alpha handling.
+	(getAlpha): Default to returning opaque pixels.
+
 2004-11-25  Mark Wielaard  <mark@klomp.org>
 
 	* doc/vmintegration.texinfo: Fix link to Japhar.
