@@ -50,6 +50,8 @@ import java.security.Permissions;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import gnu.java.lang.ClassHelper;
 
 /*
@@ -475,7 +477,7 @@ public final class Class implements Serializable
    */
   public Object[] getSigners()
   {
-    return (Object[]) signers.clone ();
+    return signers == null ? null : (Object[]) signers.clone ();
   }
 
   /**
@@ -564,25 +566,22 @@ public final class Class implements Serializable
    * Like <code>getFields()</code> but without the security checks.
    */
   private Field[] internalGetFields() {
-    ArrayList list = new ArrayList();
-    list.addAll(Arrays.asList(getDeclaredFields(true)));
-    if (isInterface()) {
-      Class[] interfaces = getInterfaces();
-      for (int i = 0; i < interfaces.length; i++)
-	list.addAll(Arrays.asList(interfaces[i].internalGetFields()));
-    } else {
-      Class superClass = getSuperclass();
-      if (superClass != null)
-	list.addAll(Arrays.asList(superClass.internalGetFields()));
-    }
-    return (Field[])list.toArray(new Field[list.size()]);
+    HashSet set = new HashSet();
+    set.addAll(Arrays.asList(getDeclaredFields(true)));
+    Class[] interfaces = getInterfaces();
+    for (int i = 0; i < interfaces.length; i++)
+	set.addAll(Arrays.asList(interfaces[i].internalGetFields()));
+    Class superClass = getSuperclass();
+    if (superClass != null)
+	set.addAll(Arrays.asList(superClass.internalGetFields()));
+    return (Field[])set.toArray(new Field[set.size()]);
   }
 
   /**
    * Get all the public methods declared in this class or inherited from
    * superclasses. This returns an array of length 0 if there are no methods,
-   * including for primitive types. This does include the implicit methods of
-   * arrays and interfaces which mirror methods of Object, nor does it
+   * including for primitive types. This does not include the implicit
+   * methods of interfaces which mirror methods of Object, nor does it
    * include constructors or the class initialization methods. The Virtual
    * Machine allows multiple methods with the same signature but differing
    * return types; all such methods are in the returned array. A security
@@ -596,6 +595,10 @@ public final class Class implements Serializable
    */
   public Method[] getMethods() {
     memberAccessCheck(Member.PUBLIC);
+    // NOTE the API docs claim that no methods are returned for arrays,
+    // but Sun's implementation *does* return the public methods of Object
+    // (as would be expected), so we follow their implementation instead
+    // of their documentation.
     return internalGetMethods();
   }
 
@@ -604,7 +607,7 @@ public final class Class implements Serializable
    */
   private Method[] internalGetMethods()
   {
-    java.util.HashMap map = new java.util.HashMap();
+    HashMap map = new HashMap();
     Method[] methods;
     Class[] interfaces = getInterfaces();
     for(int i = 0; i < interfaces.length; i++)
@@ -712,30 +715,40 @@ public final class Class implements Serializable
    */
   public Field getField(String name) throws NoSuchFieldException {
     memberAccessCheck(Member.PUBLIC);
+    Field field = internalGetField(name);
+    if(field != null)
+	return field;
+    throw new NoSuchFieldException();
+  }
+
+  /**
+   * Like <code>getField(String)</code> but without the security checks and returns null
+   * instead of throwing NoSuchFieldException.
+   */
+  private Field internalGetField(String name) {
     Field[] fields = getDeclaredFields(true);
     for (int i = 0; i < fields.length; i++) {
-      Field field = fields[i];
-      if (field.getName().equals(name))
-	return field;
+	Field field = fields[i];
+	if (field.getName().equals(name))
+	    return field;
     }
     Class[] interfaces = getInterfaces();
     for (int i = 0; i < interfaces.length; i++) {
-      try {
-	return interfaces[i].getField(name);
-      } catch (NoSuchFieldException e) {
-      }
+	Field field = interfaces[i].internalGetField(name);
+	if(field != null)
+	    return field;
     }
-    Class superclass = getSuperclass();
-    if (superclass != null)
-      return superclass.getField(name);
-    throw new NoSuchFieldException();
+    Class superClass = getSuperclass();
+    if (superClass != null)
+	return superClass.internalGetField(name);
+    return null;
   }
 
   /**
    * Get a public method declared or inherited in this class, where name is
    * its simple name. The implicit methods of Object are not available from
-   * arrays or interfaces.  Constructors (named "<init>" in the class file)
-   * and class initializers (name "<clinit>") are not available.  The Virtual
+   * interfaces.  Constructors (named "<init>" in the class file) and class
+   * initializers (name "<clinit>") are not available.  The Virtual
    * Machine allows multiple methods with the same signature but differing
    * return types, and the class can inherit multiple methods of the same
    * return type; in such a case the most specific return types are favored,
@@ -756,19 +769,33 @@ public final class Class implements Serializable
   public Method getMethod(String name, Class[] args)
 	throws NoSuchMethodException {
     memberAccessCheck(Member.PUBLIC);
-    for (Class c = this; c != null; c = c.getSuperclass()) {
-	Method match = matchMethod(c.getDeclaredMethods(true), name, args);
+    Method method = internalGetMethod(name, args);
+    if (method != null)
+	return method;
+    throw new NoSuchMethodException();
+  }
+
+  /**
+   * Like <code>getMethod(String,Class[])</code> but without the security
+   * checks and returns null instead of throwing NoSuchMethodException.
+   */
+  public Method internalGetMethod(String name, Class[] args) {
+    Method match = matchMethod(getDeclaredMethods(true), name, args);
+    if (match != null)
+	return match;
+    Class superClass = getSuperclass();
+    if (superClass != null) {
+	match = superClass.internalGetMethod(name, args);
+	if(match != null)
+	    return match;
+    }
+    Class[] interfaces = getInterfaces();
+    for (int i = 0; i < interfaces.length; i++) {
+	match = interfaces[i].internalGetMethod(name, args);
 	if (match != null)
 	    return match;
-	Class[] interfaces = c.getInterfaces();
-	for (int i = 0; i < interfaces.length; i++) 
-	{
-	    match = matchMethod(interfaces[i].getDeclaredMethods(true), name, args);
-	    if (match != null)
-		return match;
-	}
     }
-    throw new NoSuchMethodException();
+    return null;
   }
 
   /** 
@@ -811,7 +838,7 @@ public final class Class implements Serializable
     if (types1.length != types2.length)
       return false;
     for (int i = 0; i < types1.length; i++) {
-      if (!types1[i].equals(types2[i]))
+      if (types1[i] != types2[i])
 	return false;
     }
     return true;

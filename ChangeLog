@@ -1,3 +1,24 @@
+2003-04-07  Jeroen Frijters  <jeroen@sumatra.nl>
+
+	* java/lang/Class.java
+	(getSigners): If signers array is null, don't attempt to 
+	clone it
+	(internalGetFields): Implemented algorithm dictated by API docs 
+	and used HashSet to prevent the same field showing up twice (if 
+	an interface is implemented multiple times)
+	(getMethods): Changed comments to indicate that Object methods are
+	available from array types. This is in contrast with the API docs, but
+	it matches common sense and the Sun implementation.
+	(internalGetMethods): For consistency, changed to use HashMap 
+	instead of java.util.HashMap.
+	(getField): Now uses internalGetField.
+	(internalGetField): New method to implement correct search algorithm.
+	(getMethod): Changed comments to indicate that Object methods are
+	available from array types. Changed to use internalGetMethod.
+	(internalGetMethod): New method to implement correct search algorithm.
+	(matchParameters): Don't use equals() to compare Class objects, they
+	have to be identical so == can be used.
+
 2003-04-06  Aaron M. Renn (arenn@urbanophile.com)
 
 	* java/io/ObjectStreamException
