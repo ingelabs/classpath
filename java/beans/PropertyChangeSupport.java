@@ -28,7 +28,7 @@ import java.util.Vector;
  **
  ** @author John Keiser
  ** @since JDK1.1
- ** @version 1.1.0, 29 Jul 1998
+ ** @version 1.2.0, 15 Mar 1999
  **/
 
 public class PropertyChangeSupport implements java.io.Serializable {
@@ -136,27 +136,23 @@ public class PropertyChangeSupport implements java.io.Serializable {
 		}
 	}
 
-	/** Fire a PropertyChangeEvent containing the old and new
-	 ** values of the property to all the listeners.
+	/** Fire a PropertyChangeEvent to all the listeners.
 	 **
-	 ** @param propertyName the name of the property that changed.
-	 ** @param oldVal the old value.
-	 ** @param newVal the new value.
+	 ** @param event the event to fire.
 	 **/
-	public void firePropertyChange(PropertyChangeEvent e) {
+	public void firePropertyChange(PropertyChangeEvent event) {
 		for(int i=0;i<listeners.size();i++) {
-			((PropertyChangeListener)listeners.elementAt(i)).propertyChange(e);
+			((PropertyChangeListener)listeners.elementAt(i)).propertyChange(event);
 		}
-		Vector moreListeners = (Vector)propertyListeners.get(e.getPropertyName());
+		Vector moreListeners = (Vector)propertyListeners.get(event.getPropertyName());
 		if(moreListeners != null) {
 			for(int i=0;i<moreListeners.size();i++) {
-				((PropertyChangeListener)moreListeners.elementAt(i)).propertyChange(e);
+				((PropertyChangeListener)moreListeners.elementAt(i)).propertyChange(event);
 			}
 		}
 	}
 
-	/** Fire a PropertyChangeEvent containing the old and new
-	 ** values of the property to all the listeners.
+	/** Fire a PropertyChangeEvent containing the old and new values of the property to all the listeners.
 	 **
 	 ** @param propertyName the name of the property that changed.
 	 ** @param oldVal the old value.
@@ -166,8 +162,7 @@ public class PropertyChangeSupport implements java.io.Serializable {
 		firePropertyChange(new PropertyChangeEvent(bean,propertyName,oldVal,newVal));
 	}
 
-	/** Fire a PropertyChangeEvent containing the old and new
-	 ** values of the property to all the listeners.
+	/** Fire a PropertyChangeEvent containing the old and new values of the property to all the listeners.
 	 **
 	 ** @param propertyName the name of the property that changed.
 	 ** @param oldVal the old value.
@@ -177,8 +172,7 @@ public class PropertyChangeSupport implements java.io.Serializable {
 		firePropertyChange(new PropertyChangeEvent(bean, propertyName, new Boolean(oldVal), new Boolean(newVal)));
 	}
 
-	/** Fire a PropertyChangeEvent containing the old and new
-	 ** values of the property to all the listeners.
+	/** Fire a PropertyChangeEvent containing the old and new values of the property to all the listeners.
 	 **
 	 ** @param propertyName the name of the property that changed.
 	 ** @param oldVal the old value.
