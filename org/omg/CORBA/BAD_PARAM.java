@@ -62,7 +62,7 @@ public class BAD_PARAM
   /** 
    * Use serialVersionUID for interoperability. 
    */
-  private final static long serialVersionUID = 1917109334939470379L;
+  private static final long serialVersionUID = 1917109334939470379L;
 
   /**
    * Creates BAD_PARAM with the default minor code of 0 and a

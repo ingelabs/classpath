@@ -40,11 +40,11 @@ package org.omg.CORBA;
 
 import gnu.CORBA.primitiveTypeCode;
 
+import java.math.BigDecimal;
+
 import org.omg.CORBA.portable.InputStream;
 import org.omg.CORBA.portable.OutputStream;
 import org.omg.CORBA.portable.Streamable;
-
-import java.math.BigDecimal;
 
 /**
  * A holder for CORBA <code>fixed</code> that is mapped into

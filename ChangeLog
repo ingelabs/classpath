@@ -1,5 +1,21 @@
 2005-03-13  Michael Koch  <konqueror@gmx.de>
 
+	* org/omg/CORBA/ARG_IN.java: Removed redundant modifiers.
+	* org/omg/CORBA/ARG_INOUT.java: Likewise.
+	* org/omg/CORBA/ARG_OUT.java: Likewise.
+	* org/omg/CORBA/Any.java: Fixed HTML tags.
+	* org/omg/CORBA/Principal.java: Likewise.
+	* org/omg/CORBA/BAD_PARAM.java: Reordered modifiers.
+	* org/omg/CORBA/FixedHolder.java: Reworked imports.
+	* org/omg/CORBA/StringSeqHolder.java: Likewise.
+	* org/omg/CORBA/TypeCode.java: Likewise.
+	* org/omg/CORBA/TypeCodePackage/BadKind.java: Likewise.
+	* org/omg/CORBA/TypeCodePackage/Bounds.java: Likewise.
+	* org/omg/CORBA/WStringSeqHolder.java: Likewise.
+	* org/omg/CORBA/portable/OutputStream.java: Likewise.
+
+2005-03-13  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/net/protocol/https/Handler.java:
 	Reworked import statements.
 
