@@ -1,3 +1,5 @@
+package java.lang;
+
 public final class Double extends Number 
 {
   public static final double MIN_VALUE = 5e-324;
@@ -10,7 +12,7 @@ public final class Double extends Number
   public static final int WIDEFP_MIN_EXPONENT = -1022;
   public static final int WIDEFP_MAX_EXPONENT = 1023;
 
-  /*  public static final Class TYPE = VMClassLoader.getPrimitiveClass("double"); */
+  public static final Class TYPE = VMClassLoader.getPrimitiveClass("double");
 
   private double value;
 

@@ -1,3 +1,5 @@
+package java.lang;
+
 public final class Float extends Number 
 {
   public static final float MIN_VALUE = 1.4e-45f;
@@ -10,7 +12,7 @@ public final class Float extends Number
   public static final int WIDEFP_MIN_EXPONENT = -126;
   public static final int WIDEFP_MAX_EXPONENT = 127;
 
-  /*  public static final Class TYPE = VMClassLoader.getPrimitiveClass("float"); */
+  public static final Class TYPE = VMClassLoader.getPrimitiveClass("float");
 
   private float value;
 
