@@ -1,5 +1,10 @@
 2003-07-18  Mark Wielaard  <mark@klomp.org>
 
+	* java/security/BasicPermission.java: Extends with fully qualified
+	classname is workaround for gcj 3.3.
+
+2003-07-18  Mark Wielaard  <mark@klomp.org>
+
 	* java/util/zip/InflaterInputStream.java (InflaterInputStream): Check
 	for null InputStream and Inflater.
 
