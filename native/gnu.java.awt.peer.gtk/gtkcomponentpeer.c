@@ -56,29 +56,34 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetShowChildren (JNIEnv *env,
  * Show a widget
  */
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetShow (JNIEnv *env, 
-    jobject obj)
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetVisible (JNIEnv *env, 
+    jobject obj, jboolean visible)
 {
   GtkWidget *widget;
   void *ptr;
   GList *child;
+  GtkArg arg;
 
   ptr = NSA_GET_PTR (env, obj);
-  
+
+  arg.name = "GtkWidget::visible";
+  arg.type = GTK_TYPE_BOOL;
+  GTK_VALUE_BOOL (arg) = visible;
+
   (*env)->MonitorEnter (env,java_mutex);
-  widget=GTK_WIDGET (ptr);
+  widget = GTK_WIDGET (ptr);
   
   /* Windows are a special case; they have a fixed widget
-     which needs to be shown as well. */
-  if (GTK_IS_WINDOW(GTK_OBJECT(ptr)))
+     which needs to be shown/hidden as well. */
+  if (GTK_IS_WINDOW (GTK_OBJECT (ptr)))
     {
-      child=gtk_container_children (GTK_CONTAINER(widget));
-      gtk_widget_show(GTK_WIDGET(child->data));
-      g_list_free(child);
+      child = gtk_container_children (GTK_CONTAINER (widget));
+      gtk_widget_setv (GTK_WIDGET (child->data), 1, &arg);
+      g_list_free (child);
     }
   
-  gtk_widget_show (widget);
-  gdk_threads_wake();
+  gtk_widget_setv (GTK_WIDGET (widget), 1, &arg);
+  gdk_threads_wake ();
   (*env)->MonitorExit (env,java_mutex);
 }
 

@@ -27,7 +27,7 @@ import java.awt.peer.ComponentPeer;
 public class GtkComponentPeer extends GtkGenericPeer
   implements ComponentPeer
 {
-  native void gtkWidgetShow();
+  native void gtkWidgetSetVisible(boolean b);
   native void gtkWidgetShowChildren();
   native void gtkWidgetGetDimensions(int[] dim);
   native void gtkWidgetSetUsize(int width, int height);
@@ -126,11 +126,6 @@ public class GtkComponentPeer extends GtkGenericPeer
       System.out.println("componentpeer: handleawtevent");
     }
   
-  public void hide () 
-    {
-      System.out.println("componentpeer: hide");
-    }
-
   public boolean isFocusTraversable () 
     {
       return false;
@@ -145,7 +140,7 @@ public class GtkComponentPeer extends GtkGenericPeer
   public void paint(Graphics g)
     {
       System.out.println("componentpeer: paint");
-      gtkWidgetShow();
+      gtkWidgetSetVisible (true);
     }
 
   public Dimension preferredSize()
@@ -208,16 +203,26 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void setVisible (boolean b) 
     {
-      if(b)
+      if (b)
 	{
-	  System.out.println("componentpeer: setting visible: "+ this);
-	  gtkWidgetShow();
+	  System.out.println ("componentpeer: setting visible: "+ this);
+	  gtkWidgetSetVisible (b);
+	}
+      else
+	{
+	  System.out.println ("componentpeer: setting invisible: " + this);
+	  gtkWidgetSetVisible (b);
 	}
     }
   
+  public void hide () 
+    {
+      setVisible (false);
+    }
+
   public void show () 
     {
-      setVisible(true);
+      setVisible (true);
     }
 }
 
