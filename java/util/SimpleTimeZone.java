@@ -223,7 +223,7 @@ public class SimpleTimeZone extends TimeZone {
      * this day lies in the same month. </dd>
      * <dt><code>day &lt; 0, dayOfWeek = -Calendar.WEEKDAY</code></dt>
      * <dd>The start/end of daylight is on the first WEEKDAY on or
-     * <i>before</i> the <code>day</code>-th day of the month.  You
+     * <i>before</i> the <code>-day</code>-th day of the month.  You
      * must make sure that this day lies in the same month. </dd>
      * </dl>
      *
@@ -231,9 +231,7 @@ public class SimpleTimeZone extends TimeZone {
      * or a dayOfWeek that is too big,  the result is undefined.
      *
      * The start rule must have a different month than the end rule.
-     * This restriction shouldn't hurt for all possible time zones.  To
-     * be compatible with standard JDK, you should give a bigger ending
-     * month.
+     * This restriction shouldn't hurt for all possible time zones.
      * 
      * @param rawOffset The time offset from GMT in milliseconds.
      * @param id  The identifier of this time zone.
@@ -416,29 +414,25 @@ public class SimpleTimeZone extends TimeZone {
             // This is mainly because setStartYear doesn't take an era.
             daylightSavings = false;
 
-        else if (startMonth < endMonth) {
-            // use daylight savings, if the date is after the start of
-            // savings, and before the end of savings.
+        else { 
+	    boolean afterStart
+		= !isBefore(year, month, day, dayOfWeek, millis,
+			    startMode, startMonth, 
+			    startDay, startDayOfWeek, startTime);
+	    boolean beforeEnd
+                = isBefore(year, month, day, dayOfWeek, millis,
+			   endMode, endMonth, 
+			   endDay, endDayOfWeek, endTime);
 
-            daylightSavings =
-                !isBefore(year, month, day, dayOfWeek, millis,
-                          startMode, startMonth, 
-                          startDay, startDayOfWeek, startTime)
-                && isBefore(year, month, day, dayOfWeek, millis,
-                            endMode, endMonth, 
-                            endDay, endDayOfWeek, endTime);
-
-        } else {
-
-            // use daylight savings, if the date is before the end of
-            // savings, or after the start of savings.
-            daylightSavings =
-                !isBefore(year, month, day, dayOfWeek, millis,
-                          startMode, startMonth, 
-                          startDay, startDayOfWeek, startTime)
-                || isBefore(year, month, day, dayOfWeek, millis,
-                            endMode, endMonth, 
-                            endDay, endDayOfWeek, endTime);
+	    if (startMonth < endMonth) {
+		// use daylight savings, if the date is after the start of
+		// savings, and before the end of savings.
+		daylightSavings = afterStart && beforeEnd;
+	    } else {
+		// use daylight savings, if the date is before the end of
+		// savings, or after the start of savings.
+		daylightSavings = beforeEnd || afterStart;
+	    }
         }
         return rawOffset + (daylightSavings ? dstSavings : 0);
     }
@@ -502,7 +496,7 @@ public class SimpleTimeZone extends TimeZone {
      * or after the change.
      */
     private boolean isBefore(int calYear, 
-                             int calMonth, int calDay, int calDayOfWeek,
+                             int calMonth, int calDayOfMonth, int calDayOfWeek,
                              int calMillis, int mode, int month,
                              int day, int dayOfWeek, int millis) {
 
@@ -517,13 +511,13 @@ public class SimpleTimeZone extends TimeZone {
         // check the day:
         switch (mode) {
         case DOM_MODE:
-            if (calDay != day)
-                return calDay < day;
+            if (calDayOfMonth != day)
+                return calDayOfMonth < day;
             break;
         case DOW_IN_MONTH_MODE: {
             // This computes the day of month of the day of type
-            // "dayOfWeek" that lies in the same week as cal.
-            calDay += (dayOfWeek - calDayOfWeek);
+            // "dayOfWeek" that lies in the same (sunday based) week as cal.
+            calDayOfMonth += (dayOfWeek - calDayOfWeek);
 
             // Now we convert it to 7 based number (to get a one based offset
             // after dividing by 7).  If we count from the end of the
@@ -531,9 +525,9 @@ public class SimpleTimeZone extends TimeZone {
             // the end:
 
             if (day < 0)
-                calDay -= getDaysInMonth(calMonth, calYear)+7;
+                calDayOfMonth -= getDaysInMonth(calMonth, calYear)+7;
             else
-                calDay += 6;
+                calDayOfMonth += 6;
 
             //  day > 0                    day < 0
             //  S  M  T  W  T  F  S        S  M  T  W  T  F  S
@@ -544,7 +538,7 @@ public class SimpleTimeZone extends TimeZone {
             // 34 35 36                   -9 -8 -7
 
             // Now we calculate the day of week in month:
-            int week = calDay / 7;
+            int week = calDayOfMonth / 7;
             //  day > 0                    day < 0
             //  S  M  T  W  T  F  S        S  M  T  W  T  F  S
             //     1  1  1  1  1  1          -5 -5 -4 -4 -4 -4
@@ -571,11 +565,11 @@ public class SimpleTimeZone extends TimeZone {
 
             // Calculate the day of month of the day of type
             // "dayOfWeek" that lies before (or on) the given date.
-            calDay -= (calDayOfWeek < dayOfWeek ? 7 : 0) 
+            calDayOfMonth -= (calDayOfWeek < dayOfWeek ? 7 : 0) 
                 + calDayOfWeek - dayOfWeek;
-            if (calDay < day)
+            if (calDayOfMonth < day)
                 return true;
-            if (calDayOfWeek != dayOfWeek || calDay >= day+7)
+            if (calDayOfWeek != dayOfWeek || calDayOfMonth >= day+7)
                 return false;
             // now we have the same day
             break;
@@ -592,55 +586,6 @@ public class SimpleTimeZone extends TimeZone {
         Calendar cal = Calendar.getInstance(this);
         cal.setTime(date);
         return (cal.get(Calendar.DST_OFFSET) != 0);
-    }
-
-    /**
-     * This method returns a string suitable for displaying to the
-     * user with the name of this time zone.
-     *
-     * @param dst <code>true</code> to return the zone name in daylight
-     * savings time, <code>false</code> otherwise.
-     * @param style <code>LONG</code> for a long time zone name, or
-     * <code>SHORT</code> for an abbreviation.
-     * @param locale The locale to retrieve the zone name for.
-     *
-     * @return The name of this time zone.
-     */
-    public String getDisplayName(boolean dst, int style, Locale locale) {
-      DateFormatSymbols dfs;
-      try
-        {
-          dfs = new DateFormatSymbols(locale);
-        }
-      catch(MissingResourceException e)
-        {
-          return(super.getDisplayName(dst, style, locale));
-        }
-
-      // The format of the value returned is defined by us.
-      String[][] zoneinfo = dfs.getZoneStrings();
-      for (int i = 0; i < zoneinfo.length; i++)
-        {
-          if (zoneinfo[i][0].equals(getID()))
-            {
-              if (!dst)
-                {
-                  if (style == SHORT)
-                    return(zoneinfo[i][2]);
-                  else
-                    return(zoneinfo[i][1]);
-                }
-              else
-                {
-                  if (style == SHORT)
-                    return(zoneinfo[i][4]);
-                  else
-                    return(zoneinfo[i][3]);
-                }
-            }
-        }
-
-      return(super.getDisplayName(dst, style, locale));
     }
 
     /**
@@ -663,6 +608,7 @@ public class SimpleTimeZone extends TimeZone {
         SimpleTimeZone zone = (SimpleTimeZone) o;
         if (zone.hashCode() != hashCode()
             || !getID().equals(zone.getID())
+	    || rawOffset != zone.rawOffset
             || useDaylight != zone.useDaylight)
             return false;
         if (!useDaylight)
@@ -676,6 +622,64 @@ public class SimpleTimeZone extends TimeZone {
                 && endDay         == zone.endDay
                 && endDayOfWeek   == zone.endDayOfWeek
                 && endTime        == zone.endTime);
+    }
+
+    /**
+     * Test if the other time zone uses the same rule and only
+     * possibly differs in ID.  This implementation for this particular
+     * class will return true if the other object is a SimpleTimeZone,
+     * the raw offsets and useDaylight are identical and if useDaylight
+     * is true, also the start and end datas are identical.
+     * @return true if this zone uses the same rule.
+     */
+    public boolean hasSameRules(TimeZone other) {
+        if (this == other)
+            return true;
+        if (!(other instanceof SimpleTimeZone))
+            return false;
+        SimpleTimeZone zone = (SimpleTimeZone) other;
+        if (zone.hashCode() != hashCode()
+	    || rawOffset != zone.rawOffset
+            || useDaylight != zone.useDaylight)
+            return false;
+        if (!useDaylight)
+            return true;
+        return (startYear == zone.startYear
+                && startMonth     == zone.startMonth
+                && startDay       == zone.startDay
+                && startDayOfWeek == zone.startDayOfWeek
+                && startTime      == zone.startTime
+                && endMonth       == zone.endMonth
+                && endDay         == zone.endDay
+                && endDayOfWeek   == zone.endDayOfWeek
+                && endTime        == zone.endTime);
+    }
+
+    /**
+     * Returns a string representation of this SimpleTimeZone object.
+     * @return a string representation of this SimpleTimeZone object.
+     */
+    public String toString() {
+	// the test for useDaylight is an incompatibility to jdk1.2, but
+	// I think this shouldn't hurt.
+	return getClass().getName()+"["
+	    + "id=" + getID()
+	    + ",offset=" + rawOffset
+	    + ",dstSavings=" + dstSavings
+	    + ",useDaylight=" + useDaylight
+	    + (useDaylight ? 
+	       ",startYear=" + startYear
+	       + ",startMode=" + startMode
+	       + ",startMonth=" + startMonth
+	       + ",startDay=" + startDay
+	       + ",startDayOfWeek=" + startDayOfWeek
+	       + ",startTime=" + startTime
+	       + ",endMode=" + endMode
+	       + ",endMonth=" + endMonth
+	       + ",endDay=" + endDay
+	       + ",endDayOfWeek=" + endDayOfWeek
+	       + ",endTime=" + endTime : "")
+	    + "]";
     }
 
     /**
