@@ -40,6 +40,7 @@ package java.awt;
 
 import java.awt.image.ColorModel;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  *
