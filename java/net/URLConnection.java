@@ -138,9 +138,16 @@ protected boolean doInput;
 protected boolean doOutput;
 
 /**
-  * Determines whether or not caches should be used for this URL.
-  * Setting this to true does not guarantee that caching will take place,
-  * only that caching will take place if possible
+  * If this flag is set, the protocol is allowed to cache data whenever
+  * it can (caching is not guaranteed). If it is not set, the protocol must a get a fresh copy of
+  * the data. 
+  * <p>
+  * This field is set by the setUseCaches method and returned by the 
+  * getUseCaches method.
+  *
+  * Its default value is that determined by the last invocation of 
+  * setDefaultUseCaches
+  *
   */
 protected boolean useCaches;
 
@@ -359,7 +366,7 @@ URLConnection(URL url)
   *
   * @return true if caches will be used, false otherwise
   */
-public static boolean
+public boolean
 getDefaultUseCaches()
 {
   return(def_use_caches);
@@ -373,7 +380,7 @@ getDefaultUseCaches()
   *
   * @param use true to use caches if possible by default, false otherwise
   */
-public static synchronized void
+public synchronized void
 setDefaultUseCaches(boolean use)
 {
   def_use_caches = use;

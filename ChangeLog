@@ -1,3 +1,8 @@
+2001-08-11  John Leuner  <jewel@debian.org>
+
+	* java/net/URLConnection.java (getDefaultUseCaches): made non-static
+	(setDefaultUseCaches): made non-static
+
 2001-08-07  John Leuner  <jewel@debian.org>
 
 	* native/jni/java_lang_Double.c (Java_java_lang_Double_initIDs): Fixed signature for isNaN
