@@ -1,6 +1,6 @@
 2004-04-19  Dalibor Topic  <robilad@kaffe.org>
 
-	* javax/rmi/CORBA/UtilDelegate.java:
+	* javax/rmi/CORBA/Util.java:
 	Cleaned up imports.
 
 2004-04-19  Dalibor Topic  <robilad@kaffe.org>
