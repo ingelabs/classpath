@@ -146,7 +146,7 @@ public final class Constructor implements Member {
 	 ** @return a list of classes representing the exception types.
 	 **/
 	public Class[] getExceptionTypes() {
-		return parameterTypes;
+		return exceptionTypes;
 	}
 
 	/** Compare two objects to see if they are semantically equivalent.
