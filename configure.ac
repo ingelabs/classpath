@@ -125,7 +125,7 @@ if test "x${COMPILE_JNI}" = xyes; then
   if test "x${GCC}" = xyes; then
     dnl We want ISO C90 pedantic ansi, but with longlong (jlong) support
     dnl and modern POSIX and BSD C library funtions/prototypes.
-    AM_CFLAGS='-ansi -std=c89 -pedantic -Wall -Wno-long-long -D_POSIX_SOURCE -D_BSD_SOURCE'
+    AM_CFLAGS='-ansi -std=c89 -pedantic -Wall -Wno-long-long -D_BSD_SOURCE'
   fi
   AC_SUBST(AM_CFLAGS)
 

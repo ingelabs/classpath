@@ -68,38 +68,6 @@ Systems    : all
 /****************************** Macros *********************************/
 
 /***********************************************************************\
-* Name       : TARGET_NATIVE_MISC_FORMAT_STRING
-* Purpose    : format a string with arguments
-* Input      : buffer     - buffer for string
-*              bufferSize - size of buffer
-*              format     - format string (like printf)
-*              args       - optional arguments (GNU CPP only!)
-* Output     : -
-* Return     : -
-* Side-effect: unknown
-* Notes      : - this macro can only be used with a GNU gcc (CPP)
-*              - this is a "safe" macro to format string; buffer-
-*                overflows will be avoided. Direct usage of e. g.
-*                snprintf() is not permitted because it is not ANSI C
-*                (not portable!)
-*              - do not use this routine in a function without
-*                variable number of arguments (ellipses), because
-*                va_list/va_start/va_end is used!
-\***********************************************************************/
-
-#ifndef TARGET_NATIVE_MISC_FORMAT_STRING
-  #ifdef __GNUC__
-    #include <stdarg.h>
-    #define TARGET_NATIVE_MISC_FORMAT_STRING(buffer,bufferSize,format,args...) \
-      do { \
-        snprintf(buffer,bufferSize,format, ## args); \
-      } while (0)
-  #else
-    #error TARGET_NATIVE_MISC_FORMAT_STRING with variable number of arguments is only supported by GNU gcc! Use TARGET_NATIVE_FORMAT_STRING<n> instead.
-  #endif
-#endif
-
-/***********************************************************************\
 * Name       : TARGET_NATIVE_MISC_FORMAT_STRING<n>
 * Purpose    : format a string (with a fixed number of) arguments
 * Input      : buffer     - buffer for string

@@ -1,5 +1,19 @@
 2004-04-09  Mark Wielaard  <mark@klomp.org>
 
+	* configure.ac (AM_CFLAGS): Don't define _POSIX_SOURCE.
+
+	* native/jni/gtk-peer/gthread-jni.c (maybe_rethrow): Explicitly
+	malloc and free buf.
+
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
+	(GET_NATIVE_FD): Remove macro.
+	(get_native_fd): Replace GET_NATIVE_FD macro.
+
+	* native/target/generic/target_generic_misc.h
+	(TARGET_NATIVE_MISC_FORMAT_STRING): Remove unused macro.
+
+2004-04-09  Mark Wielaard  <mark@klomp.org>
+
 	* autogen.sh: Check for explicit versions of the autotools installed
 	in /usr/bin.
 

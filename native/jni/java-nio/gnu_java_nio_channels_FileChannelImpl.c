@@ -90,21 +90,27 @@ exception statement from your version. */
 #define CONVERT_SSIZE_T_TO_JINT(x) ((jint)(x & 0xFFFFFFFF))
 #define CONVERT_JINT_TO_SSIZE_T(x) (x)
 
-#define GET_NATIVE_FD(native_fd)					\
-  jclass clazz_fc = (*env)->FindClass (env, "gnu/java/nio/channels/FileChannelImpl"); \
-  if (!clazz_fc)							\
-    {									\
-      JCL_ThrowException(env, IO_EXCEPTION, "Internal error");		\
-      native_fd = -1;							\
-    }									\
-  jfieldID field_fd = (*env)->GetFieldID (env, clazz_fc, "fd", "I");	\
-  if (!field_fd)							\
-    {									\
-      JCL_ThrowException(env, IO_EXCEPTION, "Internal error");		\
-      native_fd = -1;							\
-    }									\
-									\
-  native_fd = (*env)->GetIntField (env, obj, field_fd);
+static jint get_native_fd(JNIEnv *env, jobject obj)
+{
+  jclass clazz_fc;
+  jfieldID field_fd;
+
+  clazz_fc = (*env)->FindClass (env, "gnu/java/nio/channels/FileChannelImpl");
+  if (!clazz_fc)
+    {
+      JCL_ThrowException(env, IO_EXCEPTION, "Internal error");
+      return -1;
+    }
+
+  field_fd = (*env)->GetFieldID (env, clazz_fc, "fd", "I");
+  if (!field_fd)							
+    {									
+      JCL_ThrowException(env, IO_EXCEPTION, "Internal error");		
+      return -1;							
+    }									
+
+  return (*env)->GetIntField (env, obj, field_fd);
+}
 
 /*
  * Library initialization routine.  Called as part of java.io.FileDescriptor
@@ -222,7 +228,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_implCloseChannel (JNIEnv *env, jobjec
   int native_fd;
   int result;
 
-  GET_NATIVE_FD(native_fd);
+  native_fd = get_native_fd(env, obj);
   
   TARGET_NATIVE_FILE_CLOSE(native_fd,result);
   if (result != TARGET_NATIVE_OK)
@@ -243,7 +249,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_available (JNIEnv *env, jobject obj)
   jlong bytes_available;
   int   result;
 
-  GET_NATIVE_FD(native_fd);
+  native_fd = get_native_fd(env, obj);
   
   TARGET_NATIVE_FILE_AVAILABLE(native_fd,bytes_available,result);
   if (result != TARGET_NATIVE_OK)
@@ -275,7 +281,7 @@ Java_java_io_FileDescriptor_nativeGetLength(JNIEnv *env, jobject obj, jlong fd)
   jlong file_size;
   int   result;
 
-  GET_NATIVE_FD(native_fd);
+  native_fd = get_native_fd(env, obj);
 
   TARGET_NATIVE_FILE_SIZE(native_fd, file_size, result);
   if (result != TARGET_NATIVE_OK)
@@ -299,7 +305,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_implPosition (JNIEnv *env, jobject ob
   jlong current_offset;
   int   result;
 
-  GET_NATIVE_FD(native_fd);
+  native_fd = get_native_fd(env, obj);
 
   TARGET_NATIVE_FILE_TELL(native_fd, current_offset, result);
   if (result != TARGET_NATIVE_OK)
@@ -323,7 +329,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_seek (JNIEnv *env, jobject obj, jlong
   jlong new_offset;
   int   result;
 
-  GET_NATIVE_FD(native_fd);
+  native_fd = get_native_fd(env, obj);
 
 #if 0
   /* Should there be such an exception? All native layer macros should
@@ -370,7 +376,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_implTruncate (JNIEnv *env, jobject ob
   char  data;
   int   result;
 
-  GET_NATIVE_FD(native_fd);
+  native_fd = get_native_fd(env, obj);
 
 #if 0
   /* Should there be such an exception? All native layer macros should
@@ -488,7 +494,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_read__ (JNIEnv *env, jobject obj)
   ssize_t bytes_read;
   int     result; 
 
-  GET_NATIVE_FD(native_fd);
+  native_fd = get_native_fd(env, obj);
 
   bytes_read = 0;
   do
@@ -524,7 +530,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_read___3BII (JNIEnv *env, jobject obj
   ssize_t n;
   int     result; 
 
-  GET_NATIVE_FD(native_fd);
+  native_fd = get_native_fd(env, obj);
 
   bufptr = (*env)->GetByteArrayElements(env, buffer, 0);
   if (!bufptr)
@@ -572,7 +578,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_write__I (JNIEnv *env, jobject obj, j
   ssize_t bytes_written;
   int     result; 
 
-  GET_NATIVE_FD(native_fd);
+  native_fd = get_native_fd(env, obj);
   native_data = (char)(CONVERT_JINT_TO_INT(b) & 0xFF);
 
   do
@@ -601,7 +607,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_write___3BII (JNIEnv *env, jobject ob
   ssize_t n;
   int     result; 
 
-  GET_NATIVE_FD(native_fd);
+  native_fd = get_native_fd(env, obj);
     
   bufptr = (*env)->GetByteArrayElements(env, buffer, 0);
   if (!bufptr)
