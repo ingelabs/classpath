@@ -30,6 +30,7 @@ public class GtkComponentPeer extends GtkGenericPeer
   native void gtkWidgetSetVisible(boolean b);
   native void gtkWidgetShowChildren();
   native void gtkWidgetGetDimensions(int[] dim);
+  native void gtkWidgetGetLocationOnScreen(int[] point);
   native void gtkWidgetSetUsize(int width, int height);
 
   native void gtkFixedNew (int w, int h);
@@ -87,8 +88,9 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public Point getLocationOnScreen () 
     { 
-      System.out.println("componentpeer: getlocationonscreen");
-      return null;
+      int point[] = new int[2];
+      gtkWidgetGetLocationOnScreen (point);
+      return new Point (point[0], point[1]);
     }
 
   public Dimension getMinimumSize () 

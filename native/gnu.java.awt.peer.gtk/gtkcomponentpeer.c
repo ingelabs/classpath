@@ -109,6 +109,27 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_repaint
 }
 
 /*
+ * Find the origin of a widget's window.
+ */
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetLocationOnScreen
+  (JNIEnv * env, jobject obj, jintArray jpoint)
+{
+  void *ptr;
+  jint *point;
+
+  ptr = NSA_GET_PTR (env, obj);
+  point = (*env)->GetIntArrayElements (env, jpoint, 0);
+
+  (*env)->MonitorEnter (env, java_mutex);
+  gdk_window_get_origin (GTK_WIDGET(ptr)->window, point, point+1);
+  gdk_threads_wake();
+  (*env)->MonitorExit (env, java_mutex);
+
+  (*env)->ReleaseIntArrayElements(env, jpoint, point, 0);
+}
+
+/*
  * Find the preferred size of a widget.
  */
 JNIEXPORT void JNICALL 
