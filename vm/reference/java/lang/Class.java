@@ -136,11 +136,15 @@ public final class Class implements Serializable
    * @throws ExceptionInInitializerError if the class loads, but an exception
    *         occurs during initialization
    */
-  public static Class forName(String name) throws ClassNotFoundException
+  //XXX This does not need to be native.
+  public static native Class forName(String name)
+    throws ClassNotFoundException;
+  /*
   {
     return forName(name, true,
                    VMSecurityManager.getClassContext()[1].getClassLoader());
   }
+  */
 
   /**
    * Use the specified classloader to load and link a class. If the loader

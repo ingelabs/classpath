@@ -667,4 +667,13 @@ public class Socket
 
     factory = fac;
   }
+
+  public void shutdownInput() throws IOException
+  {
+  }
+
+  public void shutdownOutput() throws IOException
+  {
+  }
+
 }
