@@ -1,6 +1,13 @@
 2004-07-03  Mark Wielaard  <mark@klomp.org>
             Anthony Green  <green@redhat.com>
 
+	* java/net/URL.java (getFile): Clarify return value doc.
+	(getPath): Return null if file is empty - not
+	empty String.
+
+2004-07-03  Mark Wielaard  <mark@klomp.org>
+            Anthony Green  <green@redhat.com>
+
 	* java/net/URL.java (set): Convert protocol to lower case before
 	doing anything.
         Only change the protocol handler if it's different.

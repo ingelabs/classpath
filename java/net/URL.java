@@ -519,7 +519,7 @@ public final class URL implements Serializable
    * Defined as <code>path[?query]</code>.
    * Returns the empty string if there is no file portion.
    *
-   * @return The filename specified in this URL.
+   * @return The filename specified in this URL, or an empty string if empty.
    */
   public String getFile()
   {
@@ -530,13 +530,17 @@ public final class URL implements Serializable
    * Returns the path of the URL. This is the part of the file before any '?'
    * character.
    *
-   * @return The path specified in this URL.
+   * @return The path specified in this URL, or null if empty.
    *
    * @since 1.3
    */
   public String getPath()
   {
-    int quest = (file == null) ? -1 : file.indexOf('?');
+    // The spec says we need to return an empty string, but some
+    // applications depends on receiving null when the path is empty.
+    if (file == null)
+      return null;
+    int quest = file.indexOf('?');
     return quest < 0 ? getFile() : file.substring(0, quest);
   }
 
