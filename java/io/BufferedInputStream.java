@@ -174,7 +174,7 @@ BufferedInputStream(InputStream in, int bufsize)
   *
   * @param readlimit The number of bytes that can be read before the mark becomes invalid
   */
-public synchronized void
+public void
 mark(int readlimit)
 {
   // If we already have a special buffer that we are reading text from,
@@ -250,7 +250,7 @@ markSupported()
   *
   * @exception IOException If an error occurs;
   */
-public synchronized void
+public void
 reset() throws IOException
 {
   if (markpos == -1)
@@ -325,12 +325,9 @@ available() throws IOException
   *
   * @exception IOException If an error occurs
   */
-public synchronized long
+public long
 skip(long num_bytes) throws IOException
 {
-  if (num_bytes <= 0)
-    return(0);
-
   if ((count - pos) >= num_bytes)
     {
       pos += num_bytes;
@@ -359,20 +356,19 @@ skip(long num_bytes) throws IOException
   *
   * @exception IOException If an error occurs
   */
-public synchronized int
+public int
 read() throws IOException
 {
   if ((pos == count) || !primed)
     {
       refillBuffer(1);
-      
       if (pos == count)
         return(-1);
     }
 
   ++pos;
 
-  return((buf[pos - 1] & 0xFF));
+  return(buf[pos - 1]);
 }
 
 /*************************************************************************/
@@ -404,7 +400,7 @@ read() throws IOException
   *
   * @exception IOException If an error occurs.
   */
-public synchronized int
+public int
 read(byte[] buf, int offset, int len) throws IOException
 {
   if (len == 0)
@@ -413,7 +409,7 @@ read(byte[] buf, int offset, int len) throws IOException
   // Read the first byte here in order to allow IOException's to 
   // propagate up
   int byte_read = read();
-  if (byte_read == -1) 
+  if (byte_read == -1)
     return(-1);
   buf[offset] = (byte)byte_read;
 
@@ -424,41 +420,33 @@ read(byte[] buf, int offset, int len) throws IOException
   // Read the rest of the bytes
   try
     {
-      for(;total_read != len;)
+      for(;;)
         {
-          if (pos == count)
-            refillBuffer(len - total_read);
-
-          if (pos == count)
-            if (total_read == 0)
-              return(-1);
-            else
-              return(total_read);
-
           if ((len - total_read) <= (count - pos))
             {
-              System.arraycopy(this.buf, pos, buf, offset + total_read, 
+              System.arraycopy(this.buf, pos, buf, total_read, 
                                len - total_read);
 
               pos += (len - total_read);
-              total_read += (len - total_read);
+
+              return(len);
             }
           else
             {
-              System.arraycopy(this.buf, pos, buf, offset + total_read, 
-                               count - pos);
+              System.arraycopy(this.buf, pos, buf, total_read, count - pos);
 
-              total_read += (count - pos);
-              pos += (count - pos);
+              total_read += count - pos;
             }
+
+          refillBuffer(len - total_read);
+          if (pos == count)
+            return(total_read);
         }
     }
   catch (IOException e)
     {
       return(total_read);
     }
-
-  return(total_read);
 }
 
 /*************************************************************************/

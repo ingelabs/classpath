@@ -175,12 +175,9 @@ available() throws IOException
   *
   * @exception IOException If an error occurs
   */
-public synchronized long
+public long
 skip(long num_bytes) throws IOException
 {
-  if (num_bytes <= 0)
-    return(0);
-
   if ((buf.length - pos) >= num_bytes)
     {
       pos += num_bytes;
@@ -210,14 +207,14 @@ skip(long num_bytes) throws IOException
   *
   * @exception IOException If an error occurs
   */
-public synchronized int
+public int
 read() throws IOException
 {
   if (pos == buf.length)
     return(in.read());
  
   ++pos;
-  return((buf[pos - 1] & 0xFF));
+  return(buf[pos - 1]);
 }
 
 /*************************************************************************/
@@ -245,7 +242,7 @@ read() throws IOException
   *
   * @exception IOException If an error occurs.
   */
-public synchronized int
+public int
 read(byte[] buf, int offset, int len) throws IOException
 {
   if (len == 0)
@@ -317,7 +314,7 @@ read(byte[] buf, int offset, int len) throws IOException
   *
   * @exception IOException If the pushback buffer is full.
   */
-public synchronized void
+public void
 unread(int b) throws IOException
 {
   if (pos == 0)
@@ -342,7 +339,7 @@ unread(int b) throws IOException
   *
   * @exception IOException If the pushback buffer is full
   */
-public synchronized void
+public void
 unread(byte[] buf) throws IOException
 {
   unread(buf, 0, buf.length);
@@ -366,7 +363,7 @@ unread(byte[] buf) throws IOException
   *
   * @exception IOException If the pushback buffer is full
   */
-public synchronized void
+public void
 unread(byte[] buf, int offset, int len) throws IOException
 {
   if (pos < (len - 1))

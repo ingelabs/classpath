@@ -1,5 +1,5 @@
 /*************************************************************************
-/* ByteArrayInputStream.java -- Read an array as a stream
+/* StringBufferInputStream.java -- Read an array as a stream
 /*
 /* Copyright (c) 1998 by Aaron M. Renn (arenn@urbanophile.com)
 /*
@@ -20,13 +20,29 @@
 package java.io;
 
 /**
-  * This class permits an array of bytes to be read as an input stream.
+  * This class permits a @code{String} to be read as an input stream.  The low
+  * eight bits of each character in the @code{String} are the bytes that
+  * are returned.  The high eight bits of each character are discarded.
+  *
+  * The mark/reset functionality in this class behaves differently than
+  * normal.  The @code{mark()} method is always ignored and the @code{reset()}
+  * method always resets in stream to start reading from position 0 in
+  * the String.  Note that since this method does not override 
+  * @code{markSupported()} in @code{InputStream}, calling that method will
+  * return @code{false}.
+  *
+  * Note that this class is deprecated because it does not properly handle
+  * 16-bit Java characters.  It is provided for backwards compatibility only
+  * and should not be used for new development.  The @code{StringReader}
+  * class should be used instead.
+  *
+  * @deprecated
   *
   * @version 0.0
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public class ByteArrayInputStream extends InputStream
+public class StringBufferInputStream extends InputStream
 {
 
 /*************************************************************************/
@@ -36,77 +52,36 @@ public class ByteArrayInputStream extends InputStream
  */
 
 /**
-  * The array that contains the data supplied during read operations
+  * The @code{String} that contains the data supplied during read operations
   */
-protected byte[] buf;
+protected String buffer;
 
 /**
-  * The array index of the next byte to be read from the buffer @code{buf}
+  * The index of the next byte to be read from @code{bufer}
   */
-protected int pos;
-
-/**
-  * The currently marked position in the stream.  This defaults to 0, so a
-  * reset operation on the stream resets it to read from array index 0 in
-  * the buffer - even if the stream was initially created with an offset
-  * greater than 0
-  */
-protected int mark;
+protected int pos = 0;
 
 /**
   * This indicates the maximum number of bytes that can be read from this
-  * stream.  It is the array index of the position after the last valid
-  * byte in the buffer @code{buf}
+  * stream.  It is the length of the @code{String} that this stream is
+  * reading bytes from.
   */
 protected int count;
   
 /*************************************************************************/
 
 /**
-  * Create a new ByteArrayInputStream that will read bytes from the passed
-  * in byte array.  This stream will read from the beginning to the end
-  * of the array.  It is identical to calling an overloaded constructor
-  * as @code{ByteArrayInputStream(buf, 0, buf.length)}.
+  * Create a new @code{StringBufferInputStream} that will read bytes from the 
+  * passed in @code{String}.  This stream will read from the beginning to the 
+  * end of the @code{String}.
   *
-  * Note that this array is not copied.  If its contents are changed 
-  * while this stream is being read, those changes will be reflected in the
-  * bytes supplied to the reader.  Please use caution in changing the 
-  * contents of the buffer while this stream is open.
-  *
-  * @param buf The byte array buffer this stream will read from.
+  * @param s The @code{String} this stream will read from.
   */
 public
-ByteArrayInputStream(byte[] buf)
+StringBufferInputStream(String s)
 {
-  this(buf, 0, buf.length);
-}
-
-/*************************************************************************/
-
-/**
-  * Create a new ByteArrayInputStream that will read bytes from the passed
-  * in byte array.  This stream will read from position @code{offset} in
-  * the array for a length of @code{length} bytes past @code{offset}.  If the
-  * stream is reset to a position before @code{offset} then more than
-  * @code{length} bytes can be read from the stream.  The @code{length} value
-  * should be viewed as the array index one greater than the last position
-  * in the buffer to read.
-  *
-  * Note that this array is not copied.  If its contents are changed 
-  * while this stream is being read, those changes will be reflected in the
-  * bytes supplied to the reader.  Please use caution in changing the 
-  * contents of the buffer while this stream is open.
-  *
-  * @param buf The byte array buffer this stream will read from.
-  * @param offset The index into the buffer to start reading bytes from
-  * @param length The number of bytes to read from the buffer
-  */
-public
-ByteArrayInputStream(byte[] buf, int offset, int length)
-{
-  this.buf = buf;
-  this.pos = offset;
-  this.count = length;
+  buffer = s;
+  count = s.length();
 }
 
 /*************************************************************************/
@@ -130,51 +105,14 @@ available()
 /*************************************************************************/
 
 /**
-  * This method overrides the @code{markSupported} method in @code{InputStream}
-  * in order to return @code{true} - indicating that this stream class
-  * supports mark/reset functionality.
-  *
-  * @return @code{true} to indicate that this class supports mark/reset.
-  */
-public boolean
-markSupported()
-{
-  return(true);
-}
-
-/*************************************************************************/
-
-/**
-  * This method sets the mark position in this stream to the current
-  * position.  Note that the @code{readlimit} parameter in this method does
-  * nothing as this stream is always capable of remembering all the bytes
-  * int it.
-  *
-  * Note that in this class the mark position is set by default to
-  * position 0 in the stream.  This is in constrast to some other stream types
-  * where there is no default mark position.
-  *
-  * @param readlimit The number of bytes this stream must remember.  This parameter is ignored.
-  */
-public void
-mark(int readlimit)
-{
-  mark = pos;
-}
-
-/*************************************************************************/
-
-/**
-  * This method sets the read position in the stream to the mark point by
-  * setting the @code{pos} variable equal to the @code{mark} variable.
-  * Since a mark can be set anywhere in the array, the mark/reset methods
-  * int this class can be used to provide random search capabilities for
-  * this type of stream.
+  * This method sets the read position in the stream to the beginning
+  * setting the @code{pos} variable equal to 0.  Note that this differs
+  * from the common implementation of the @code{reset()} method.
   */
 public void
 reset()
 {
-  pos = mark;
+  pos = 0;
 } 
 
 /*************************************************************************/
@@ -223,7 +161,7 @@ read()
 
   ++pos;
 
-  return(buf[pos - 1]);
+  return(buffer.charAt(pos - 1) & 0xFF);
 }  
 
 /*************************************************************************/
@@ -257,14 +195,17 @@ read(byte[] buf, int offset, int len)
   // All requested bytes can be read
   if (len < (count - pos))
     {
-      System.arraycopy(this.buf, pos, buf, offset, len);
-      pos += len;
+      for (int i = 0; i < len; i++)
+        buf[offset + i] = (byte)(buffer.charAt(pos + i) & 0xFF);
+
+      pos +=len;
       return(len);
     }
   // Cannot read all requested bytes because there aren't enough left in buf
   else
     {
-      System.arraycopy(this.buf, pos, buf, offset, count - pos);
+      for (int i = 0; i < (count - pos); i++)
+        buf[offset + i] = (byte)(buffer.charAt(pos + i) & 0xFF);
 
       int retval = count - pos;
       pos = count;
@@ -272,5 +213,5 @@ read(byte[] buf, int offset, int len)
     }
 }
 
-} // class ByteArrayInputStream
+} // class StringBufferInputStream
 
