@@ -1,5 +1,10 @@
 2004-10-15  Michael Koch  <konqueror@gmx.de>
 
+	* java/rmi/activation/ActivationSystem.java
+	(SYSTEM_PORT): Initialize with correct port number.
+
+2004-10-15  Michael Koch  <konqueror@gmx.de>
+
 	* java/rmi/server/RemoteRef.java
 	(serialVersionUID): Revert latest change to it.
 	* java/rmi/server/ServerRef.java
