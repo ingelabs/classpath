@@ -1,3 +1,8 @@
+2003-12-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* java/awt/FlowLayout.java (layoutContainer): Let components
+	assume their preferred height.  Centre components vertically.
+
 2003-12-26  Fernando Nasser  <fnasser@redhat.com>
 
 	* java/awt/List.java (replaceItem): Prevent selection to move with
