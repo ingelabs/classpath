@@ -1,3 +1,11 @@
+2004-11-08  Robert Schuster <thebohemian@gmx.net>
+
+	Fixed regression:
+	* gnu/java/beans/IntrospectionIncubator.java:
+	(addMethod): corrected classification of normal and property methods
+	(capitalize): added documentation
+	(DoubleKey): [class] added documentation
+
 2004-11-08  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/net/URLStreamHandler.java
