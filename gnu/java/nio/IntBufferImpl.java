@@ -44,14 +44,14 @@ public final class IntBufferImpl extends java.nio. IntBuffer
   public IntBufferImpl(int cap, int off, int lim)
     {
       this.backing_buffer = new int[cap];
-      this.capacity(cap);
+      this.cap = cap;
       this.position(off);
       this.limit(lim);
     }
   public IntBufferImpl(int[] array, int off, int lim)
     {
       this.backing_buffer = array;
-      this.capacity(array.length);
+      this.cap = array.length;
       this.position(off);
       this.limit(lim);
     }

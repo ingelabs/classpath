@@ -44,14 +44,14 @@ public final class ShortBufferImpl extends java.nio. ShortBuffer
   public ShortBufferImpl(int cap, int off, int lim)
     {
       this.backing_buffer = new short[cap];
-      this.capacity(cap);
+      this.cap = cap;
       this.position(off);
       this.limit(lim);
     }
   public ShortBufferImpl(short[] array, int off, int lim)
     {
       this.backing_buffer = array;
-      this.capacity(array.length);
+      this.cap = array.length;
       this.position(off);
       this.limit(lim);
     }

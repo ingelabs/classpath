@@ -87,11 +87,6 @@ public class SocketChannelImpl extends SocketChannel
 	    }
     }
 
-    public int validOps()
-    {
-    	return SelectionKey.OP_READ | SelectionKey.OP_WRITE | SelectionKey.OP_CONNECT;
-    }
-
     protected void implCloseSelectableChannel()
     {
 	connected = false;

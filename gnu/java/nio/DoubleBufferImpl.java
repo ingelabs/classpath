@@ -44,14 +44,14 @@ public final class DoubleBufferImpl extends java.nio. DoubleBuffer
   public DoubleBufferImpl(int cap, int off, int lim)
     {
       this.backing_buffer = new double[cap];
-      this.capacity(cap);
+      this.cap = cap;
       this.position(off);
       this.limit(lim);
     }
   public DoubleBufferImpl(double[] array, int off, int lim)
     {
       this.backing_buffer = array;
-      this.capacity(array.length);
+      this.cap = array.length;
       this.position(off);
       this.limit(lim);
     }

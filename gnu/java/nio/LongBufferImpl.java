@@ -44,14 +44,14 @@ public final class LongBufferImpl extends java.nio. LongBuffer
   public LongBufferImpl(int cap, int off, int lim)
     {
       this.backing_buffer = new long[cap];
-      this.capacity(cap);
+      this.cap = cap;
       this.position(off);
       this.limit(lim);
     }
   public LongBufferImpl(long[] array, int off, int lim)
     {
       this.backing_buffer = array;
-      this.capacity(array.length);
+      this.cap = array.length;
       this.position(off);
       this.limit(lim);
     }

@@ -39,19 +39,20 @@ package gnu.java.nio;
 import java.nio.*;
 public final class ByteBufferImpl extends java.nio. ByteBuffer
 {
+  private byte[] backing_buffer;
     private int array_offset;
     private boolean ro;
   public ByteBufferImpl(int cap, int off, int lim)
     {
       this.backing_buffer = new byte[cap];
-      this.capacity(cap);
+      this.cap = cap;
       this.position(off);
       this.limit(lim);
     }
   public ByteBufferImpl(byte[] array, int off, int lim)
     {
       this.backing_buffer = array;
-      this.capacity(array.length);
+      this.cap = array.length;
       this.position(off);
       this.limit(lim);
     }

@@ -44,14 +44,14 @@ public final class CharBufferImpl extends java.nio. CharBuffer
   public CharBufferImpl(int cap, int off, int lim)
     {
       this.backing_buffer = new char[cap];
-      this.capacity(cap);
+      this.cap = cap;
       this.position(off);
       this.limit(lim);
     }
   public CharBufferImpl(char[] array, int off, int lim)
     {
       this.backing_buffer = array;
-      this.capacity(array.length);
+      this.cap = array.length;
       this.position(off);
       this.limit(lim);
     }

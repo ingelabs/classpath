@@ -1,5 +1,20 @@
 2002-11-13  Michael Koch <konqueror@gmx.de>
 
+	* gnu/java/nio/SocketChannelImpl.java
+	(validOps): Removed.
+	* gnu/java/nio/ByteBufferImpl.java,
+	gnu/java/nio/DoubleBufferImpl.java,
+	gnu/java/nio/FloatBufferImpl.java,
+	gnu/java/nio/IntBufferImpl.java,
+	gnu/java/nio/LongBufferImpl.java,
+	gnu/java/nio/ShortBufferImpl.java,
+	gnu/java/nio/SocketChannelImpl.java:
+	Dont use capacity(cap).
+        * java/nio/InvalidMarkException.java: New file.
+	* java/nio/Makefile.am: Added InvalidMarkException.java.
+
+2002-11-13  Michael Koch <konqueror@gmx.de>
+
 	* java/net/Makefile.am: Added URI.java.
 
 2002-11-13  Michael Koch <konqueror@gmx.de>

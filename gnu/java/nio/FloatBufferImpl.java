@@ -44,14 +44,14 @@ public final class FloatBufferImpl extends java.nio. FloatBuffer
   public FloatBufferImpl(int cap, int off, int lim)
     {
       this.backing_buffer = new float[cap];
-      this.capacity(cap);
+      this.cap = cap;
       this.position(off);
       this.limit(lim);
     }
   public FloatBufferImpl(float[] array, int off, int lim)
     {
       this.backing_buffer = array;
-      this.capacity(array.length);
+      this.cap = array.length;
       this.position(off);
       this.limit(lim);
     }
