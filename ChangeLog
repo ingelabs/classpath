@@ -1,3 +1,8 @@
+2004-08-08  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gthread-jni.c (setup_cache): Call
+	ExceptionOccurred, not ExceptionCheck, when we don't have JNI 1.2.
+
 2004-07-08  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/Box.java: Put FIXME comment above class declaration.

@@ -756,7 +756,12 @@ setup_cache (JNIEnv * env)
   if (setup_exception_cache (env) < 0)
     return initialized = -1;
 
-  assert ( ! (*env)->ExceptionCheck (env));
+#ifdef JNI_VERSION_1_2
+  if (HAVE_JNI_VERSION_1_2)
+    assert ( ! (*env)->ExceptionCheck (env));
+  else
+#endif
+    assert ( ! (*env)->ExceptionOccurred (env));
 
   /* java.lang.Object and its methods */
   lcl_class = (*env)->FindClass (env, "java/lang/Object");
