@@ -92,6 +92,7 @@ public class IdentityHashMap extends AbstractMap
       {
         IdentityHashMap copy = (IdentityHashMap) super.clone ();
 	copy.table = (Object[]) table.clone ();
+	return copy;
       }
     catch (CloneNotSupportedException e) 
       {
