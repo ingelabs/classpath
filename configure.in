@@ -68,7 +68,7 @@ AC_SUBST(VMINCLUDE)
 AC_ARG_WITH(javac,
   [  --with-javac	Specify the path to the javac-like program to use],
   [
-    if test "x"${withval} = "x"; then
+    if test ${withval} = "" || test ${withval} = "yes" || test ${withval} = "no"; then
       # determine javac automatically
       javac_found="no"
       AC_PATH_PROG(JAVAC, guavac)
@@ -86,7 +86,7 @@ AC_ARG_WITH(javac,
         AC_MSG_ERROR("[no javac found]")
       fi
     else
-      $JAVAC = ${withval}
+      JAVAC=${withval}
       AC_SUBST(JAVAC)
     fi
   ],
