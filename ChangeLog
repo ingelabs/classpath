@@ -1,6 +1,20 @@
 2003-09-29  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/table/AbstractTableModel.java:
+	This patch is based on a patch done by Arnaud Vandyck
+	<arnaud.vandyck@ulg.ac.be>.
+	(getColumnName): Fixed method documentation.
+	(findColumn): Likewise.
+	(getColumnClass): Likewise.
+	(isCellEditable): Likewise.
+	(setValueAt): Likewise.
+	(addTableModelListener): Likewise.
+	(removeTableModelListener): Likewise.
+	(getTableModelListeners): New method.
+
+2003-09-29  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/table/AbstractTableModel.java:
 	Reformated.
 
 2003-09-29  Michael Koch  <konqueror@gmx.de>

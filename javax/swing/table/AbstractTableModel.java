@@ -67,9 +67,13 @@ public abstract class AbstractTableModel implements TableModel, Serializable
   }
 
   /**
-   * getColumnName
-   * @param value0 TODO
-   * @return String
+   * Get the name of the column for this index. If you do not override
+   * this methode, you'll get something like: 0, A; 1, B; ...; AA; AB;
+   * ...
+   *
+   * @param columnIndex The index of the column.
+   *
+   * @return The name of the column.
    */
   public String getColumnName (int columnIndex)
   {
@@ -128,9 +132,11 @@ public abstract class AbstractTableModel implements TableModel, Serializable
   }
 
   /**
-   * findColumn
-   * @param value0 TODO
-   * @return int
+   * Return the index of the given name.
+   *
+   * @param columnName The name of the column.
+   *
+   * @return The index of the column, -1 if not found.
    */
   public int findColumn (String columnName)
   {
@@ -149,9 +155,11 @@ public abstract class AbstractTableModel implements TableModel, Serializable
   }
 
   /**
-   * getColumnClass
-   * @param value0 TODO
-   * @return Class
+   * Returns the class of a comlumn.
+   *
+   * @param columnIndex The index of the column.
+   *
+   * @return The class type of the column.
    */
   public Class getColumnClass (int columnIndex)
   {
@@ -159,10 +167,12 @@ public abstract class AbstractTableModel implements TableModel, Serializable
   }
 
   /**
-   * isCellEditable
-   * @param value0 TODO
-   * @param value1 TODO
-   * @return boolean
+   * Tells whether a cell is editable.
+   *
+   * @param rowIndex The row of the cell.
+   * @param columnIndex The index of the cell.
+   *
+   * @return True if cell is editable.
    */
   public boolean isCellEditable (int rowIndex, int columnIndex)
   {
@@ -170,10 +180,11 @@ public abstract class AbstractTableModel implements TableModel, Serializable
   }
 
   /**
-   * setValueAt
-   * @param value0 TODO
-   * @param value1 TODO
-   * @param value2 TODO
+   * Sets a cell to a value.
+   *
+   * @param value New value of cell.
+   * @param rowIndex The row of the cell.
+   * @param columnIndex The column of the cell.
    */
   public void setValueAt (Object value, int rowIndex, int columnIndex)
   {
@@ -181,8 +192,9 @@ public abstract class AbstractTableModel implements TableModel, Serializable
   }
 
   /**
-   * addTableModelListener
-   * @param value0 TODO
+   * Add a TableModelListener.
+   *
+   * @param listener The listener to add.
    */
   public void addTableModelListener (TableModelListener listener)
   {
@@ -190,12 +202,26 @@ public abstract class AbstractTableModel implements TableModel, Serializable
   }
 
   /**
-   * removeTableModelListener
-   * @param value0 TODO
+   * Removes a TableModelListener.
+   *
+   * @param listener The listener to remove.
    */
   public void removeTableModelListener (TableModelListener listener)
   {
     listenerList.remove (TableModelListener.class, listener);
+  }
+
+  /**
+   * Return all registered TableModelListener objects.
+   *
+   * @return Array of TableModelListener objects.
+   *
+   * @since 1.4
+   */
+  public TableModelListener[] getTableModelListeners()
+  {
+    return (TableModelListener[])
+      listenerList.getListeners (TableModelListener.class);
   }
 
   /**
