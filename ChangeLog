@@ -1,3 +1,19 @@
+
+2002-03-11  Ronald Veldema <rveldema@cs.vu.nl>
+
+	* added java.nio.*      <abstract classes>	
+	* added gnu.java.nio.*  <implements java.nio>
+             - still need to add the native side
+	* added javax.swing.*   
+	     - embryonic still	
+	     - swing builds ontop of java.awt, so needs awt
+	     - needs makefile support
+	* added lib/gen_nio.sh 
+	  It generates all those java.nio.TYPEBuffer.java and	
+	  gnu.java.nio.TYPEBuffer.java files
+	  where TYPE={Byte,Long,Float,etc}
+	
+
 2002-03-11  Mark Wielaard <mark@klomp.org>
 
 	* lib/standard.omit: add java.nio package.
