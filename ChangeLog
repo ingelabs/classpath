@@ -1,5 +1,20 @@
 2004-09-04  Graydon Hoare  <graydon@redhat.com>
 
+	* javax/swing/Box.java: Fix setting of layout in ctor.
+	* javax/swing/JScrollPane.java: Scroll headers as well.
+	* javax/swing/JTable.java: Reimplement.
+	* javax/swing/JViewPort.java: Only add non-null children.
+	* javax/swing/ScrollPaneLayout.java: Correct header calculations.
+	* javax/swing/Timer.java: Fix stopping null waker.
+	* javax/swing/plaf/basic/BasicTableHeaderUI.java: New file.
+	* javax/swing/plaf/basic/BasicTableUI.java: New file.
+	* javax/swing/table/DefaultTableCellRenderer.java: Configure.
+	* javax/swing/table/DefaultTableColumnModel.java: Flesh out.
+	* javax/swing/table/DefaultTableModel.java: Clean up.
+	* javax/swing/table/JTableHeader.java: Implement.
+
+2004-09-04  Graydon Hoare  <graydon@redhat.com>
+
 	* javax/swing/DefaultButtonModel.java:
 	Skip group notification when no group is set.
 

@@ -394,7 +394,8 @@ public class Timer implements Serializable
   public void stop()
   {
     running = false;
-    waker.interrupt();
+    if (waker != null)
+      waker.interrupt();
     synchronized (queueLock)
       {
 	queue = 0;
