@@ -46,13 +46,13 @@ dnl -----------------------------------------------------------
 dnl Whether to compile with -Werror or not (enabled by default)
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([Werror],
-              [AS_HELP_STRING(--disable-Werror,whether to compile C code with -Werror which turns any compiler warning into a compilation failure [default=yes])],
+              [AS_HELP_STRING(--disable-Werror,whether to compile C code with -Werror which turns any compiler warning into a compilation failure [default=no])],
               [case "${enableval}" in
                 yes) ENABLE_WERROR=yes ;;
                 no) ENABLE_WERROR=no ;;
                 *) ENABLE_WERROR=yes ;;
               esac],
-              [ENABLE_WERROR=yes])
+              [ENABLE_WERROR=no])
 
 dnl -----------------------------------------------------------
 dnl GTK native peer (enabled by default)

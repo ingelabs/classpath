@@ -1,5 +1,9 @@
 2004-11-14  Mark Wielaard  <mark@klomp.org>
 
+	* configure.ac (--disable-Werror): Make no the default.
+
+2004-11-14  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/ToolTipManager.java (mouseMoved): Set currentComponent
 	when not yet set.
 
