@@ -44,7 +44,7 @@ Systems    : all
 #define __TARGET_NATIVE__
 
 #ifdef __cplusplus
-extern "C"
+extern "C" {
 #endif
 
 /****************************** Includes *******************************/

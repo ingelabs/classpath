@@ -45,7 +45,7 @@ Systems    : all
 #define __TARGET_NATIVE_MATH_FLOAT__
 
 #ifdef __cplusplus
-extern "C"
+extern "C" {
 #endif
 
 /****************************** Includes *******************************/

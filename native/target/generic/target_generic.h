@@ -44,7 +44,7 @@ Systems    : all
 #define __TARGET_GENERIC__
 
 #ifdef __cplusplus
-extern "C"
+extern "C" {
 #endif
 
 /* check if target_native_network.h included */

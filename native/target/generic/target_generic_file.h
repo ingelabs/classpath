@@ -44,10 +44,10 @@ Systems    : all
 #define __TARGET_GENERIC_FILE__
 
 #ifdef __cplusplus
-extern "C"
+extern "C" {
 #endif
 
-/* check if target_native_network.h included */
+/* check if target_native_file.h included */
 #ifndef __TARGET_NATIVE_FILE__
   #error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
 #endif
