@@ -104,12 +104,16 @@ public class SimpleBeanInfo implements BeanInfo {
 	}
 
 	/** Helper method to load an image using the Bean class
-	 ** getResource() method.  Currently unimplemented.
+	 ** getResource() method on the BeanInfo class (using
+	 ** getClass(), since you'll extend this class to get
+	 ** the BeanInfo).  Basically it's assumed that the Bean
+	 ** and its BeanInfo are both loaded by the same
+	 ** ClassLoader, generally a reasonable assumption.
 	 ** @param location the URL relative
 	 ** @return the Image in question.
 	 **/
 	public Image loadImage(String location) {
-		return null;
+		return Toolkit.getDefaultToolkit().getImage(getClass().getResource(location));
 	}
 }
 
