@@ -203,30 +203,51 @@ public abstract class Signature extends SignatureSpi
     return getInstance(algorithm, p);
   }
 
-  private static Signature getInstance(String algorithm, Provider p)
+  /**
+   * Generates a <code>Signature</code> object implementing the specified
+   * algorithm, as supplied from the specified provider, if such an algorithm
+   * is available from the provider. Note: the provider doesn't have to be
+   * registered.
+   *
+   * @param algorithm the name of the algorithm requested. See Appendix A in
+   * the Java Cryptography Architecture API Specification &amp; Reference for
+   * information about standard algorithm names.
+   * @param provider the provider.
+   * @return the new <code>Signature</code> object.
+   * @throws NoSuchAlgorithmException if the <code>algorithm</code> is not
+   * available in the package supplied by the requested <code>provider</code>.
+   * @throws IllegalArgumentException if the <code>provider</code> is
+   * <code>null</code>.
+   * @since 1.4
+   * @see Provider
+   */
+  public static Signature getInstance(String algorithm, Provider provider)
     throws NoSuchAlgorithmException
   {
+    if (provider == null)
+      throw new IllegalArgumentException();
+
     // try the name as is
-    String className = p.getProperty("Signature." + algorithm);
+    String className = provider.getProperty("Signature." + algorithm);
     if (className == null) // try all uppercase
       {
         String upper = algorithm.toUpperCase();
-        className = p.getProperty("Signature." + upper);
+        className = provider.getProperty("Signature." + upper);
         if (className == null) // try if it's an alias
           {
-            String alias = p.getProperty("Alg.Alias.Signature." + algorithm);
+            String alias = provider.getProperty("Alg.Alias.Signature." + algorithm);
             if (alias == null)
               {
-                alias = p.getProperty("Alg.Alias.Signature." + upper);
+                alias = provider.getProperty("Alg.Alias.Signature." + upper);
                 if (alias == null) // spit the dummy
                   throw new NoSuchAlgorithmException(algorithm);
               }
-            className = p.getProperty("Signature." + alias);
+            className = provider.getProperty("Signature." + alias);
             if (className == null)
               throw new NoSuchAlgorithmException(algorithm);
           }
       }
-    return getInstance(className, algorithm, p);
+    return getInstance(className, algorithm, provider);
   }
 
   private static Signature getInstance(String classname, String algorithm,
@@ -302,7 +323,7 @@ public abstract class Signature extends SignatureSpi
    * encoded properly or does not include required parameter information or
    * cannot be used for digital signature purposes.
    */
-  public final void initVerify(Certificate certificate) 
+  public final void initVerify(Certificate certificate)
     throws InvalidKeyException
   {
     state = VERIFY;
@@ -430,6 +451,49 @@ public abstract class Signature extends SignatureSpi
   }
 
   /**
+   * <p>Verifies the passed-in <code>signature</code> in the specified array of
+   * bytes, starting at the specified <code>offset</code>.</p>
+   *
+   * <p>A call to this method resets this signature object to the state it was
+   * in when previously initialized for verification via a call to
+   * <code>initVerify(PublicKey)</code>. That is, the object is reset and
+   * available to verify another signature from the identity whose public key
+   * was specified in the call to <code>initVerify()</code>.</p>
+   *
+   * @param signature the signature bytes to be verified.
+   * @param offset the offset to start from in the array of bytes.
+   * @param length the number of bytes to use, starting at offset.
+   * @return <code>true</code> if the signature was verified, <code>false</code>
+   * if not.
+   * @throws SignatureException if this signature object is not initialized
+   * properly, or the passed-in <code>signature</code> is improperly encoded or
+   * of the wrong type, etc.
+   * @throws IllegalArgumentException if the <code>signature</code> byte array
+   * is <code>null</code>, or the <code>offset</code> or <code>length</code> is
+   * less than <code>0</code>, or the sum of the <code>offset</code> and
+   * <code>length</code> is greater than the length of the <code>signature</code>
+   * byte array.
+   */
+  public final boolean verify(byte[] signature, int offset, int length)
+    throws SignatureException
+  {
+    if (state != VERIFY)
+      throw new SignatureException("illegal state");
+
+    if (signature == null)
+      throw new IllegalArgumentException("signaure is null");
+    if (offset < 0)
+      throw new IllegalArgumentException("offset is less than 0");
+    if (length < 0)
+      throw new IllegalArgumentException("length is less than 0");
+    if (offset + length < signature.length)
+      throw new IllegalArgumentException("range is out of bounds");
+
+    state = UNINITIALIZED;
+    return engineVerify(signature, offset, length);
+  }
+
+  /**
    * Updates the data to be signed or verified by a byte.
    *
    * @param b the byte to use for the update.
@@ -537,6 +601,24 @@ public abstract class Signature extends SignatureSpi
     throws InvalidAlgorithmParameterException
   {
     engineSetParameter(params);
+  }
+
+  /**
+   * <p>Returns the parameters used with this signature object.</p>
+   *
+   * <p>The returned parameters may be the same that were used to initialize
+   * this signature, or may contain a combination of default and randomly
+   * generated parameter values used by the underlying signature implementation
+   * if this signature requires algorithm parameters but was not initialized
+   * with any.
+   *
+   * @return the parameters used with this signature, or <code>null</code> if
+   * this signature does not use any parameters.
+   * @see #setParameter(AlgorithmParameterSpec)
+   */
+  public final AlgorithmParameters getParameters()
+  {
+    return engineGetParameters();
   }
 
   /**
