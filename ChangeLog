@@ -1,3 +1,8 @@
+2004-07-25 Dalibor Topic <robilad@kaffe.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFileDialogPeer.c
+	(filenameFilterCallback): Declare local variable accepted before use.
+
 2004-07-25  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac (AC_CONFIG_FILES): gnu/java/security/action/Makefile
