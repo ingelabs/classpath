@@ -1,3 +1,9 @@
+2005-02-02  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/net/protocol/jar/Connection.java (is_trying): Removed
+	field.
+	(get): Don't use or set is_trying.
+
 2005-02-02  Sven de Marothy  <sven@physto.se>
 
 	* java/util/Calendar.java 
