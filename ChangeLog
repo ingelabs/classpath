@@ -1,5 +1,12 @@
 2004-10-05  Michael Koch  <konqueror@gmx.de>
 
+	* javax/imageio/ImageReader.java,
+	javax/imageio/ImageWriter.java,
+	javax/imageio/spi/ImageWriterSpi.java:
+	Add SOME new methods.
+
+2004-10-05  Michael Koch  <konqueror@gmx.de>
+
 	* javax/imageio/IIOParam.java,
 	javax/imageio/ImageReadParam.java,
 	javax/imageio/ImageReader.java,

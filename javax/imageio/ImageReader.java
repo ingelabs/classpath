@@ -54,6 +54,8 @@ import javax.imageio.spi.ImageReaderSpi;
 
 public abstract class ImageReader
 {
+  private boolean aborted;
+  
   protected Locale[] availableLocales;
   protected boolean ignoreMetadata;
   protected Object input;
@@ -71,6 +73,15 @@ public abstract class ImageReader
     this.originatingProvider = originatingProvider;
   }
 
+  public void abort()
+  {
+    aborted = true;
+  }
+
+  protected boolean abortRequested()
+  {
+    return aborted;
+  }
 
   public void addIIOReadProgressListener(IIOReadProgressListener listener)
   {
@@ -101,6 +112,11 @@ public abstract class ImageReader
     return false;
   }
 
+  protected void clearAbortRequest()
+  {
+    aborted = false;
+  }
+  
   public void dispose()
   {
     // The default implementation does nothing.
@@ -166,6 +182,18 @@ public abstract class ImageReader
 
   public abstract IIOMetadata getStreamMetadata()
     throws IOException;
+
+  public int getThumbnailHeight(int imageIndex, int thumbnailIndex)
+    throws IOException
+  {
+    return readThumbnail(imageIndex, thumbnailIndex).getHeight();
+  }
+
+  public int getThumbnailWidth(int imageIndex, int thumbnailIndex)
+    throws IOException
+  {
+    return readThumbnail(imageIndex, thumbnailIndex).getWidth();
+  }
 
   public int getTileGridXOffset(int imageIndex)
     throws IOException

@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package javax.imageio;
 
+import java.awt.Dimension;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
@@ -51,6 +53,8 @@ import javax.imageio.spi.ImageWriterSpi;
 public abstract class ImageWriter
   implements ImageTranscoder
 {
+  private boolean aborted;
+  
   protected Locale[] availableLocales;
   protected Locale locale;
   protected ImageWriterSpi originatingProvider;
@@ -62,6 +66,22 @@ public abstract class ImageWriter
   protected ImageWriter(ImageWriterSpi originatingProvider)
   {
     this.originatingProvider = originatingProvider;
+  }
+
+  private void checkOutputSet()
+  {
+    if (output == null)
+      throw new IllegalStateException("no output set");
+  }
+  
+  public void abort()
+  {
+    aborted = true;
+  }
+
+  protected boolean abortRequested()
+  {
+    return aborted;
   }
 
   public void addIIOWriteProgressListener(IIOWriteProgressListener listener)
@@ -80,6 +100,75 @@ public abstract class ImageWriter
     warningListeners.add(listener);
   }
 
+  public boolean canInsertEmpty(int imageIndex)
+    throws IOException
+  {
+    checkOutputSet();
+    return false;
+  }
+
+  public boolean canInsertImage(int imageIndex)
+    throws IOException
+  {
+    checkOutputSet();
+    return false;
+  }
+
+  public boolean canRemoveImage(int imageIndex)
+    throws IOException
+  {
+    checkOutputSet();
+    return false;
+  }
+
+  public boolean canReplaceImageMetadata(int imageIndex)
+    throws IOException
+  {
+    checkOutputSet();
+    return false;
+  }
+
+  public boolean canReplacePixels(int imageIndex)
+    throws IOException
+  {
+    checkOutputSet();
+    return false;
+  }
+
+  public boolean canReplaceStreamMetadata()
+    throws IOException
+  {
+    checkOutputSet();
+    return false;
+  }
+
+  public boolean canWriteEmpty()
+    throws IOException
+  {
+    checkOutputSet();
+    return false;
+  }
+
+  public boolean canWriteRasters()
+  {
+    return false;
+  }
+
+  public boolean canWriteSequence()
+  {
+    return false;
+  }
+
+  protected void clearAbortRequest()
+  {
+    aborted = false;
+  }
+  
+  public void dispose()
+  {
+    // The default implementation is empty. Subclasses have to overwrite it.
+  }
+  
   public Locale[] getAvailableLocales()
   {
     return availableLocales;
@@ -89,14 +178,38 @@ public abstract class ImageWriter
 
   public abstract IIOMetadata getDefaultStreamMetadata (ImageWriteParam param);
 
+  public ImageWriteParam getDefaultWriteParam()
+  {
+    return new ImageWriteParam(getLocale());
+  }
+
   public Locale getLocale()
   {
     return locale;
   }
 
+  public int getNumThumbnailsSupported (ImageTypeSpecifier imageType, ImageWriteParam param,
+		                        IIOMetadata streamMetadata, IIOMetadata imageMetadata)
+  {
+    return 0;
+  }
+
   public ImageWriterSpi getOriginatingProvider()
   {
     return originatingProvider;
+  }
+
+  public Object getOutput()
+  {
+    return output;
+  }
+
+  public Dimension[] getPreferredThumbnailSizes (ImageTypeSpecifier imageType,
+		                                 ImageWriteParam param,
+						 IIOMetadata streamMetadata,
+						 IIOMetadata imageMetadata)
+  {
+    return null;
   }
 
   protected void processImageComplete()
@@ -211,5 +324,56 @@ public abstract class ImageWriter
       return;
     
     warningListeners.remove(listener);
+  }
+  
+  public void reset()
+  {
+    setOutput(null);
+    setLocale(null);
+    removeAllIIOWriteWarningListeners();
+    removeAllIIOWriteProgressListeners();
+    clearAbortRequest();
+  }
+  
+  public void setLocale(Locale locale)
+  {
+    if (locale != null)
+      {
+	// Check if its a valid locale.
+	boolean found = false;
+
+	if (availableLocales != null)
+	  for (int i = availableLocales.length - 1; i >= 0; --i)
+	    if (availableLocales[i].equals(locale))
+	      found = true;
+
+	if (! found)
+	  throw new IllegalArgumentException("looale not available");
+      }
+
+    this.locale = locale;
+  }
+
+  public void setOutput(Object output)
+  {
+    if (output != null)
+      {
+	// Check if its a valid output object.
+	boolean found = false;
+	Class[] types = null;
+
+	if (originatingProvider != null)
+	  types = originatingProvider.getOutputTypes();
+	
+	if (types != null)
+	  for (int i = types.length - 1; i >= 0; --i)
+	    if (types[i].equals(output.getClass()))
+	      found = true;
+
+	if (! found)
+	  throw new IllegalArgumentException("output type not available");
+      }
+
+    this.output = output;
   }
 }
