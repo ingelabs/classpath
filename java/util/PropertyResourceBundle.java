@@ -65,24 +65,25 @@ import gnu.java.util.DoubleEnumeration;
  * and put it in the CLASSPATH. (The char <code>\u00e4<char> is the
  * german &auml;)
  *
- * <pre>
- * s1=3
- * s2=MeineDisk
- * s3=3. M\u00e4rz 96
- * s4=Die Diskette ''{1}'' enth\u00e4lt {0} in {2}.
- * s5=0
- * s6=keine Dateien
- * s7=1
- * s8=eine Datei
- * s9=2
- * s10={0,number} Dateien
- * s11=Die Formatierung warf eine Exception: {0}
- * s12=FEHLER
- * s13=Ergebnis
- * s14=Dialog
- * s15=Auswahlkriterium
- * s16=1,3
- * </pre>
+ *
+<pre>
+s1=3
+s2=MeineDisk
+s3=3. M\u00e4rz 96
+s4=Die Diskette ''{1}'' enth\u00e4lt {0} in {2}.
+s5=0
+s6=keine Dateien
+s7=1
+s8=eine Datei
+s9=2
+s10={0,number} Dateien
+s11=Die Formatierung warf eine Exception: {0}
+s12=FEHLER
+s13=Ergebnis
+s14=Dialog
+s15=Auswahlkriterium
+s16=1,3
+</pre>
  *
  * @author Jochen Hoenicke
  * @see ResourceBundle
