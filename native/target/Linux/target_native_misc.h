@@ -43,10 +43,6 @@ Systems    : all
 #ifndef __TARGET_NATIVE_MISC__
 #define __TARGET_NATIVE_MISC__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /****************************** Includes *******************************/
 /* do not move; needed here because of some macro definitions */
 #include <config.h>
@@ -65,13 +61,17 @@ extern "C" {
 
 /***************************** Functions *******************************/
 
-/* include rest of definitions from generic file (do not move it to 
-   another position!) */
-#include "target_generic_misc.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifdef __cplusplus
 }
 #endif
+
+/* include rest of definitions from generic file (do not move it to 
+   another position!) */
+#include "target_generic_misc.h"
 
 #endif /* __TARGET_NATIVE_MISC__ */
 

@@ -43,10 +43,6 @@ Systems    : all
 #ifndef __TARGET_GENERIC_MISC__
 #define __TARGET_GENERIC_MISC__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* check if target_native_misc.h included */
 #ifndef __TARGET_NATIVE_MISC__
   #error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
@@ -275,6 +271,10 @@ extern "C" {
 #endif
 
 /***************************** Functions *******************************/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifdef __cplusplus
 }

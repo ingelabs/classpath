@@ -44,10 +44,6 @@ Systems    : all
 #ifndef __TARGET_NATIVE_MATH_FLOAT__
 #define __TARGET_NATIVE_MATH_FLOAT__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /****************************** Includes *******************************/
 /* do not move; needed here because of some macro definitions */
 #include <config.h>
@@ -66,13 +62,17 @@ extern "C" {
 
 /***************************** Functions *******************************/
 
-/* include rest of definitions from generic file (do not move it to 
-   another position!) */
-#include "target_generic_math_float.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifdef __cplusplus
 }
 #endif
+
+/* include rest of definitions from generic file (do not move it to 
+   another position!) */
+#include "target_generic_math_float.h"
 
 #endif /* __TARGET_NATIVE_MATH_FLOAT__ */
 

@@ -43,10 +43,6 @@ Systems    : all
 #ifndef __TARGET_GENERIC_IO__
 #define __TARGET_GENERIC_IO__
 
-#ifdef __cplusplus
-extern "C"
-#endif
-
 /* check if target_native_io.h included */
 #ifndef __TARGET_NATIVE_IO__
   #error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
@@ -72,6 +68,10 @@ extern "C"
 /****************************** Macros *********************************/
 
 /***************************** Functions *******************************/
+
+#ifdef __cplusplus
+extern "C"
+#endif
 
 #ifdef __cplusplus
 }

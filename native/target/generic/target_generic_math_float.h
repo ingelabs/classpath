@@ -44,10 +44,6 @@ Systems    : all
 #ifndef __TARGET_GENERIC_MATH_FLOAT__
 #define __TARGET_GENERIC_MATH_FLOAT__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* check if target_native_math_float.h included */
 #ifndef __TARGET_NATIVE_MATH_FLOAT__
   #error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
@@ -119,6 +115,10 @@ extern "C" {
 #endif
 
 /***************************** Functions *******************************/
+
+#ifdef __cplusplus
+extern "C"
+#endif
 
 #ifdef __cplusplus
 }

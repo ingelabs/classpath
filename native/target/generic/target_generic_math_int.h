@@ -44,10 +44,6 @@ Systems    : all
 #ifndef __TARGET_GENERIC_MATH_INT__
 #define __TARGET_GENERIC_MATH_INT__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* check if target_native_math_int.h included */
 #ifndef __TARGET_NATIVE_MATH_INT__
   #error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
@@ -249,6 +245,10 @@ extern "C" {
 #endif
 
 /***************************** Functions *******************************/
+
+#ifdef __cplusplus
+extern "C"
+#endif
 
 #ifdef __cplusplus
 }
