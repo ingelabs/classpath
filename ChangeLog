@@ -1,5 +1,16 @@
 2004-09-25  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JComponent.java
+	(JComponent): Added javadoc comment.
+	(setBorder): Fire property change event.
+	(setEnabled): Likewise.
+	(setMaximumSize): Likewise.
+	(setMinimumSize): Likewise.
+	(setPreferredSize): Likewise.
+	(setOpaque): Likewise.
+
+2004-09-25  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JCheckBox.java
 	(BORDER_PAINTED_FLAT_CHANGED_PROPERTY): New static field.
 
