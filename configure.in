@@ -59,6 +59,8 @@ java/net/Makefile \
 native/Makefile \
 native/java.io/Makefile \
 native/java.net/Makefile \
+native/java.lang.reflect/Makefile \
+native/lib/Makefile \
 test/Makefile \
 test/gnu.java.lang.reflect/Makefile \
 test/java.io/Makefile \
