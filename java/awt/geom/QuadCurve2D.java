@@ -42,78 +42,190 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.NoSuchElementException;
 
+
 /**
- * STUBS ONLY
- * XXX Implement and document.
+ * A two-dimensional curve that is parameterized with a quadratic
+ * function.
+ *
+ * <p><img src="doc-files/QuadCurve2D-1.png" width="350" height="180"
+ * alt="A drawing of a QuadCurve2D" />
+ *
+ * @author Eric Blake (ebb9@email.byu.edu)
+ * @author Sascha Brawer (brawer@dandelis.ch)
+ *
+ * @since 1.2
  */
-public abstract class QuadCurve2D implements Shape, Cloneable
+public abstract class QuadCurve2D
+  implements Shape, Cloneable
 {
+  /**
+   * Constructs a new QuadCurve2D. Typical users will want to
+   * construct instances of a subclass, such as {@link
+   * QuadCurve2D.Float} or {@link QuadCurve2D.Double}.
+   */
   protected QuadCurve2D()
   {
   }
 
+
+  /**
+   * Returns the <i>x</i> coordinate of the curve&#x2019;s start
+   * point.
+   */
   public abstract double getX1();
+
+
+  /**
+   * Returns the <i>y</i> coordinate of the curve&#x2019;s start
+   * point.
+   */
   public abstract double getY1();
+
+
+  /**
+   * Returns the curve&#x2019;s start point.
+   */
   public abstract Point2D getP1();
+
+
+  /**
+   * Returns the <i>x</i> coordinate of the curve&#x2019;s control
+   * point.
+   */
   public abstract double getCtrlX();
+
+
+  /**
+   * Returns the <i>y</i> coordinate of the curve&#x2019;s control
+   * point.
+   */
   public abstract double getCtrlY();
+
+
+  /**
+   * Returns the curve&#x2019;s control point.
+   */
   public abstract Point2D getCtrlPt();
+
+
+  /**
+   * Returns the <i>x</i> coordinate of the curve&#x2019;s end
+   * point.
+   */
   public abstract double getX2();
+
+
+  /**
+   * Returns the <i>y</i> coordinate of the curve&#x2019;s end
+   * point.
+   */
   public abstract double getY2();
+
+
+  /**
+   * Returns the curve&#x2019;s end point.
+   */
   public abstract Point2D getP2();
 
+
+  /**
+   * Changes the geometry of the curve.
+   *
+   * @param x1 the <i>x</i> coordinate of the curve&#x2019;s new start
+   * point.
+   *
+   * @param y1 the <i>y</i> coordinate of the curve&#x2019;s new start
+   * point.
+   *
+   * @param cx the <i>x</i> coordinate of the curve&#x2019;s new
+   * control point.
+   *
+   * @param cy the <i>y</i> coordinate of the curve&#x2019;s new
+   * control point.
+   *
+   * @param x2 the <i>x</i> coordinate of the curve&#x2019;s new end
+   * point.
+   *
+   * @param y2 the <i>y</i> coordinate of the curve&#x2019;s new end
+   * point.
+   */
   public abstract void setCurve(double x1, double y1, double cx, double cy,
                                 double x2, double y2);
+
+
   public void setCurve(double[] coords, int offset)
   {
     setCurve(coords[offset++], coords[offset++],
              coords[offset++], coords[offset++],
              coords[offset++], coords[offset++]);
   }
+
+
   public void setCurve(Point2D p1, Point2D c, Point2D p2)
   {
     setCurve(p1.getX(), p1.getY(), c.getX(), c.getY(),
              p2.getX(), p2.getY());
   }
+
+
   public void setCurve(Point2D[] pts, int offset)
   {
     setCurve(pts[offset].getX(), pts[offset++].getY(),
              pts[offset].getX(), pts[offset++].getY(),
              pts[offset].getX(), pts[offset++].getY());
   }
+
+
+  /**
+   * Changes the geometry of the curve to that of another curve.
+   *
+   * @param c the curve whose coordinates will be copied.
+   */
   public void setCurve(QuadCurve2D c)
   {
     setCurve(c.getX1(), c.getY1(), c.getCtrlX(), c.getCtrlY(),
              c.getX2(), c.getY2());
   }
+
+
   public static double getFlatnessSq(double x1, double y1, double cx,
                                      double cy, double x2, double y2)
   {
     return Line2D.ptSegDistSq(x1, y1, x2, y2, cx, cy);
   }
+
+
   public static double getFlatness(double x1, double y1, double cx, double cy,
                                    double x2, double y2)
   {
     return Line2D.ptSegDist(x1, y1, x2, y2, cx, cy);
   }
+
+
   public static double getFlatnessSq(double[] coords, int offset)
   {
     return Line2D.ptSegDistSq(coords[offset], coords[offset + 1],
                               coords[offset + 4], coords[offset + 5],
                               coords[offset + 2], coords[offset + 3]);
   }
+
+
   public static double getFlatness(double[] coords, int offset)
   {
     return Line2D.ptSegDist(coords[offset], coords[offset + 1],
                             coords[offset + 4], coords[offset + 5],
                             coords[offset + 2], coords[offset + 3]);
   }
+
+
   public double getFlatnessSq()
   {
     return Line2D.ptSegDistSq(getX1(), getY1(),
                               getX2(), getY2(),
                               getCtrlX(), getCtrlY());
   }
+
+
   public double getFlatness()
   {
     return Line2D.ptSegDist(getX1(), getY1(),
@@ -195,18 +307,20 @@ public abstract class QuadCurve2D implements Shape, Cloneable
   {
     return solveQuadratic(eqn, eqn);
   }
+
+
   public static int solveQuadratic(double[] eqn, double[] res)
   {
     double c = eqn[0];
     double b = eqn[1];
     double a = eqn[2];
     if (a == 0)
-      {
-        if (b == 0)
-          return -1;
-        res[0] = -c / b;
-        return 1;
-      }
+    {
+      if (b == 0)
+        return -1;
+      res[0] = -c / b;
+      return 1;
+    }
     c /= a;
     b /= a * 2;
     double det = Math.sqrt(b * b - c);
@@ -214,49 +328,74 @@ public abstract class QuadCurve2D implements Shape, Cloneable
       return 0;
     // For fewer rounding errors, we calculate the two roots differently.
     if (b > 0)
-      {
-        res[0] = -b - det;
-        res[1] = -c / (b + det);
-      }
+    {
+      res[0] = -b - det;
+      res[1] = -c / (b + det);
+    }
     else
-      {
-        res[0] = -c / (b - det);
-        res[1] = -b + det;
-      }
+    {
+      res[0] = -c / (b - det);
+      res[1] = -b + det;
+    }
     return 2;
   }
+
 
   public boolean contains(double x, double y)
   {
     // XXX Implement.
     throw new Error("not implemented");
   }
+
+
   public boolean contains(Point2D p)
   {
     return contains(p.getX(), p.getY());
   }
+
+
   public boolean intersects(double x, double y, double w, double h)
   {
     // XXX Implement.
     throw new Error("not implemented");
   }
+
+
   public boolean intersects(Rectangle2D r)
   {
     return intersects(r.getX(), r.getY(), r.getWidth(), r.getHeight());
   }
+
+
   public boolean contains(double x, double y, double w, double h)
   {
     // XXX Implement.
     throw new Error("not implemented");
   }
+
+
   public boolean contains(Rectangle2D r)
   {
     return contains(r.getX(), r.getY(), r.getWidth(), r.getHeight());
   }
+
+
+  /**
+   * Determines the smallest rectangle that encloses the
+   * curve&#x2019;s start, end and control point. As the illustration
+   * below shows, the invisible control point may cause the bounds to
+   * be much larger than the area that is actually covered by the
+   * curve.
+   *
+   * <p><img src="doc-files/QuadCurve2D-2.png" width="350" height="180"
+   * alt="An illustration of the bounds of a QuadCurve2D" />
+   */
   public Rectangle getBounds()
   {
     return getBounds2D().getBounds();
   }
+
+
   public PathIterator getPathIterator(final AffineTransform at)
   {
     return new PathIterator()
@@ -264,115 +403,190 @@ public abstract class QuadCurve2D implements Shape, Cloneable
       /** Current coordinate. */
       private int current = 0;
 
+
       public int getWindingRule()
       {
         return WIND_NON_ZERO;
       }
+
 
       public boolean isDone()
       {
         return current >= 2;
       }
 
+
       public void next()
       {
         current++;
       }
 
+
       public int currentSegment(float[] coords)
       {
         int result;
         switch (current)
-          {
-          case 0:
-            coords[0] = (float) getX1();
-            coords[1] = (float) getY1();
-            result = SEG_MOVETO;
-            break;
-          case 1:
-            coords[0] = (float) getCtrlX();
-            coords[1] = (float) getCtrlY();
-            coords[2] = (float) getX2();
-            coords[3] = (float) getY2();
-            result = SEG_QUADTO;
-            break;
-          default:
-            throw new NoSuchElementException("quad iterator out of bounds");
-          }
+        {
+        case 0:
+          coords[0] = (float) getX1();
+          coords[1] = (float) getY1();
+          result = SEG_MOVETO;
+          break;
+
+        case 1:
+          coords[0] = (float) getCtrlX();
+          coords[1] = (float) getCtrlY();
+          coords[2] = (float) getX2();
+          coords[3] = (float) getY2();
+          result = SEG_QUADTO;
+          break;
+
+        default:
+          throw new NoSuchElementException("quad iterator out of bounds");
+        }
         if (at != null)
           at.transform(coords, 0, coords, 0, 2);
         return result;
       }
 
+
       public int currentSegment(double[] coords)
       {
         int result;
         switch (current)
-          {
-          case 0:
-            coords[0] = getX1();
-            coords[1] = getY1();
-            result = SEG_MOVETO;
-            break;
-          case 1:
-            coords[0] = getCtrlX();
-            coords[1] = getCtrlY();
-            coords[2] = getX2();
-            coords[3] = getY2();
-            result = SEG_QUADTO;
-            break;
-          default:
-            throw new NoSuchElementException("quad iterator out of bounds");
-          }
+        {
+        case 0:
+          coords[0] = getX1();
+          coords[1] = getY1();
+          result = SEG_MOVETO;
+          break;
+
+        case 1:
+          coords[0] = getCtrlX();
+          coords[1] = getCtrlY();
+          coords[2] = getX2();
+          coords[3] = getY2();
+          result = SEG_QUADTO;
+          break;
+
+        default:
+          throw new NoSuchElementException("quad iterator out of bounds");
+        }
         if (at != null)
           at.transform(coords, 0, coords, 0, 2);
         return result;
       }
     };
   }
+
+
   public PathIterator getPathIterator(AffineTransform at, double flatness)
   {
     return new FlatteningPathIterator(getPathIterator(at), flatness);
   }
 
+
   /**
-   * Create a new curve of the same run-time type with the same contents as
+   * Creates a new curve with the same contents as
    * this one.
    *
-   * @return the clone
-   *
-   * @exception OutOfMemoryError If there is not enough memory available.
-   *
-   * @since 1.2
+   * @return the clone.
    */
   public Object clone()
   {
     try
-      {
-        return super.clone();
-      }
+    {
+      return super.clone();
+    }
     catch (CloneNotSupportedException e)
-      {
-        throw (Error) new InternalError().initCause(e); // Impossible
-      }
+    {
+      throw (Error) new InternalError().initCause(e); // Impossible
+    }
   }
 
+
   /**
-   * STUBS ONLY
+   * A two-dimensional curve that is parameterized with a quadratic
+   * function and stores coordinate values in double-precision
+   * floating-point format.
+   *
+   * @see QuadCurve2D.Float
+   *
+   * @author Eric Blake (ebb9@email.byu.edu)
+   * @author Sascha Brawer (brawer@dandelis.ch)
    */
-  public static class Double extends QuadCurve2D
+  public static class Double
+    extends QuadCurve2D
   {
+    /**
+     * The <i>x</i> coordinate of the curve&#x2019;s start point.
+     */
     public double x1;
+
+
+    /**
+     * The <i>y</i> coordinate of the curve&#x2019;s start point.
+     */
     public double y1;
+
+
+    /**
+     * The <i>x</i> coordinate of the curve&#x2019;s control point.
+     */
     public double ctrlx;
+
+
+    /**
+     * The <i>y</i> coordinate of the curve&#x2019;s control point.
+     */
     public double ctrly;
+
+
+    /**
+     * The <i>x</i> coordinate of the curve&#x2019;s end point.
+     */
     public double x2;
+
+
+    /**
+     * The <i>y</i> coordinate of the curve&#x2019;s end point.
+     */
     public double y2;
 
+
+    /**
+     * Constructs a new QuadCurve2D that stores its coordinate values
+     * in double-precision floating-point format. All points are
+     * initially at position (0, 0).
+     */
     public Double()
     {
     }
 
+
+    /**
+     * Constructs a new QuadCurve2D that stores its coordinate values
+     * in double-precision floating-point format, specifying the
+     * initial position of each point.
+     *
+     * @param x1 the <i>x</i> coordinate of the curve&#x2019;s start
+     * point.
+     *
+     * @param y1 the <i>y</i> coordinate of the curve&#x2019;s start
+     * point.
+     *
+     * @param cx the <i>x</i> coordinate of the curve&#x2019;s control
+     * point.
+     *
+     * @param cy the <i>y</i> coordinate of the curve&#x2019;s control
+     * point.
+     *
+     * @param x2 the <i>x</i> coordinate of the curve&#x2019;s end
+     * point.
+     *
+     * @param y2 the <i>y</i> coordinate of the curve&#x2019;s end
+     * point.
+     */
     public Double(double x1, double y1, double cx, double cy,
                   double x2, double y2)
     {
@@ -384,45 +598,115 @@ public abstract class QuadCurve2D implements Shape, Cloneable
       this.y2 = y2;
     }
 
+
+    /**
+     * Returns the <i>x</i> coordinate of the curve&#x2019;s start
+     * point.
+     */
     public double getX1()
     {
       return x1;
     }
+
+
+    /**
+     * Returns the <i>y</i> coordinate of the curve&#x2019;s start
+     * point.
+     */
     public double getY1()
     {
       return y1;
     }
+
+
+    /**
+     * Returns the curve&#x2019;s start point.
+     */
     public Point2D getP1()
     {
       return new Point2D.Double(x1, y1);
     }
 
+
+    /**
+     * Returns the <i>x</i> coordinate of the curve&#x2019;s control
+     * point.
+     */
     public double getCtrlX()
     {
       return ctrlx;
     }
+
+
+    /**
+     * Returns the <i>y</i> coordinate of the curve&#x2019;s control
+     * point.
+     */
     public double getCtrlY()
     {
       return ctrly;
     }
+
+
+    /**
+     * Returns the curve&#x2019;s control point.
+     */
     public Point2D getCtrlPt()
     {
       return new Point2D.Double(ctrlx, ctrly);
     }
 
+
+    /**
+     * Returns the <i>x</i> coordinate of the curve&#x2019;s end
+     * point.
+     */
     public double getX2()
     {
       return x2;
     }
+
+
+    /**
+     * Returns the <i>y</i> coordinate of the curve&#x2019;s end
+     * point.
+     */
     public double getY2()
     {
       return y2;
     }
+
+
+    /**
+     * Returns the curve&#x2019;s end point.
+     */
     public Point2D getP2()
     {
       return new Point2D.Double(x2, y2);
     }
 
+
+    /**
+     * Changes the geometry of the curve.
+     *
+     * @param x1 the <i>x</i> coordinate of the curve&#x2019;s new
+     * start point.
+     *
+     * @param y1 the <i>y</i> coordinate of the curve&#x2019;s new
+     * start point.
+     *
+     * @param cx the <i>x</i> coordinate of the curve&#x2019;s new
+     * control point.
+     *
+     * @param cy the <i>y</i> coordinate of the curve&#x2019;s new
+     * control point.
+     *
+     * @param x2 the <i>x</i> coordinate of the curve&#x2019;s new
+     * end point.
+     *
+     * @param y2 the <i>y</i> coordinate of the curve&#x2019;s new
+     * end point.
+     */
     public void setCurve(double x1, double y1, double cx, double cy,
                          double x2, double y2)
     {
@@ -433,6 +717,18 @@ public abstract class QuadCurve2D implements Shape, Cloneable
       this.x2 = x2;
       this.y2 = y2;
     }
+
+
+    /**
+     * Determines the smallest rectangle that encloses the
+     * curve&#x2019;s start, end and control point. As the
+     * illustration below shows, the invisible control point may cause
+     * the bounds to be much larger than the area that is actually
+     * covered by the curve.
+     *
+     * <p><img src="doc-files/QuadCurve2D-2.png" width="350" height="180"
+     * alt="An illustration of the bounds of a QuadCurve2D" />
+     */
     public Rectangle2D getBounds2D()
     {
       double nx1 = Math.min(Math.min(x1, ctrlx), x2);
@@ -441,24 +737,91 @@ public abstract class QuadCurve2D implements Shape, Cloneable
       double ny2 = Math.max(Math.max(y1, ctrly), y2);
       return new Rectangle2D.Double(nx1, ny1, nx2 - nx1, ny2 - ny1);
     }
-  } // class Double
+  }
+
 
   /**
-   * STUBS ONLY
+   * A two-dimensional curve that is parameterized with a quadratic
+   * function and stores coordinate values in single-precision
+   * floating-point format.
+   *
+   * @see QuadCurve2D.Double
+   *
+   * @author Eric Blake (ebb9@email.byu.edu)
+   * @author Sascha Brawer (brawer@dandelis.ch)
    */
-  public static class Float extends QuadCurve2D
+  public static class Float
+    extends QuadCurve2D
   {
+    /**
+     * The <i>x</i> coordinate of the curve&#x2019;s start point.
+     */
     public float x1;
+
+
+    /**
+     * The <i>y</i> coordinate of the curve&#x2019;s start point.
+     */
     public float y1;
+
+
+    /**
+     * The <i>x</i> coordinate of the curve&#x2019;s control point.
+     */
     public float ctrlx;
+
+
+    /**
+     * The <i>y</i> coordinate of the curve&#x2019;s control point.
+     */
     public float ctrly;
+
+
+    /**
+     * The <i>x</i> coordinate of the curve&#x2019;s end point.
+     */
     public float x2;
+
+
+    /**
+     * The <i>y</i> coordinate of the curve&#x2019;s end point.
+     */
     public float y2;
 
+
+    /**
+     * Constructs a new QuadCurve2D that stores its coordinate values
+     * in single-precision floating-point format. All points are
+     * initially at position (0, 0).
+     */
     public Float()
     {
     }
 
+
+    /**
+     * Constructs a new QuadCurve2D that stores its coordinate values
+     * in single-precision floating-point format, specifying the
+     * initial position of each point.
+     *
+     * @param x1 the <i>x</i> coordinate of the curve&#x2019;s start
+     * point.
+     *
+     * @param y1 the <i>y</i> coordinate of the curve&#x2019;s start
+     * point.
+     *
+     * @param cx the <i>x</i> coordinate of the curve&#x2019;s control
+     * point.
+     *
+     * @param cy the <i>y</i> coordinate of the curve&#x2019;s control
+     * point.
+     *
+     * @param x2 the <i>x</i> coordinate of the curve&#x2019;s end
+     * point.
+     *
+     * @param y2 the <i>y</i> coordinate of the curve&#x2019;s end
+     * point.
+     */
     public Float(float x1, float y1, float cx, float cy,
                  float x2, float y2)
     {
@@ -470,45 +833,116 @@ public abstract class QuadCurve2D implements Shape, Cloneable
       this.y2 = y2;
     }
 
+
+    /**
+     * Returns the <i>x</i> coordinate of the curve&#x2019;s start
+     * point.
+     */
     public double getX1()
     {
       return x1;
     }
+
+
+    /**
+     * Returns the <i>y</i> coordinate of the curve&#x2019;s start
+     * point.
+     */
     public double getY1()
     {
       return y1;
     }
+
+
+    /**
+     * Returns the curve&#x2019;s start point.
+     */
     public Point2D getP1()
     {
       return new Point2D.Float(x1, y1);
     }
 
+
+    /**
+     * Returns the <i>x</i> coordinate of the curve&#x2019;s control
+     * point.
+     */
     public double getCtrlX()
     {
       return ctrlx;
     }
+
+
+    /**
+     * Returns the <i>y</i> coordinate of the curve&#x2019;s control
+     * point.
+     */
     public double getCtrlY()
     {
       return ctrly;
     }
+
+
+    /**
+     * Returns the curve&#x2019;s control point.
+     */
     public Point2D getCtrlPt()
     {
       return new Point2D.Float(ctrlx, ctrly);
     }
 
+
+    /**
+     * Returns the <i>x</i> coordinate of the curve&#x2019;s end
+     * point.
+     */
     public double getX2()
     {
       return x2;
     }
+
+
+    /**
+     * Returns the <i>y</i> coordinate of the curve&#x2019;s end
+     * point.
+     */
     public double getY2()
     {
       return y2;
     }
+
+
+    /**
+     * Returns the curve&#x2019;s end point.
+     */
     public Point2D getP2()
     {
       return new Point2D.Float(x2, y2);
     }
 
+
+    /**
+     * Changes the geometry of the curve, specifying coordinate values
+     * as double-precision floating-point numbers.
+     *
+     * @param x1 the <i>x</i> coordinate of the curve&#x2019;s new
+     * start point.
+     *
+     * @param y1 the <i>y</i> coordinate of the curve&#x2019;s new
+     * start point.
+     *
+     * @param cx the <i>x</i> coordinate of the curve&#x2019;s new
+     * control point.
+     *
+     * @param cy the <i>y</i> coordinate of the curve&#x2019;s new
+     * control point.
+     *
+     * @param x2 the <i>x</i> coordinate of the curve&#x2019;s new
+     * end point.
+     *
+     * @param y2 the <i>y</i> coordinate of the curve&#x2019;s new
+     * end point.
+     */
     public void setCurve(double x1, double y1, double cx, double cy,
                          double x2, double y2)
     {
@@ -519,6 +953,30 @@ public abstract class QuadCurve2D implements Shape, Cloneable
       this.x2 = (float) x2;
       this.y2 = (float) y2;
     }
+
+
+    /**
+     * Changes the geometry of the curve, specifying coordinate values
+     * as single-precision floating-point numbers.
+     *
+     * @param x1 the <i>x</i> coordinate of the curve&#x2019;s new
+     * start point.
+     *
+     * @param y1 the <i>y</i> coordinate of the curve&#x2019;s new
+     * start point.
+     *
+     * @param cx the <i>x</i> coordinate of the curve&#x2019;s new
+     * control point.
+     *
+     * @param cy the <i>y</i> coordinate of the curve&#x2019;s new
+     * control point.
+     *
+     * @param x2 the <i>x</i> coordinate of the curve&#x2019;s new
+     * end point.
+     *
+     * @param y2 the <i>y</i> coordinate of the curve&#x2019;s new
+     * end point.
+     */
     public void setCurve(float x1, float y1, float cx, float cy,
                          float x2, float y2)
     {
@@ -529,6 +987,18 @@ public abstract class QuadCurve2D implements Shape, Cloneable
       this.x2 = x2;
       this.y2 = y2;
     }
+
+
+    /**
+     * Determines the smallest rectangle that encloses the
+     * curve&#x2019;s start, end and control point. As the
+     * illustration below shows, the invisible control point may cause
+     * the bounds to be much larger than the area that is actually
+     * covered by the curve.
+     *
+     * <p><img src="doc-files/QuadCurve2D-2.png" width="350" height="180"
+     * alt="An illustration of the bounds of a QuadCurve2D" />
+     */
     public Rectangle2D getBounds2D()
     {
       float nx1 = (float) Math.min(Math.min(x1, ctrlx), x2);
@@ -537,5 +1007,5 @@ public abstract class QuadCurve2D implements Shape, Cloneable
       float ny2 = (float) Math.max(Math.max(y1, ctrly), y2);
       return new Rectangle2D.Float(nx1, ny1, nx2 - nx1, ny2 - ny1);
     }
-  } // class Float
-} // class CubicCurve2D
+  }
+}
