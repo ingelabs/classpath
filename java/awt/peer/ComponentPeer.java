@@ -45,7 +45,6 @@ public abstract boolean handleEvent(AWTEvent e);
 public abstract void hide();
 public abstract boolean isFocusTraversable();
 public abstract Dimension minimumSize();
-public abstract void nextFocus();
 public abstract Dimension preferredSize();
 public abstract void paint(Graphics graphics);
 public abstract boolean prepareImage(Image img, int width, int height,
