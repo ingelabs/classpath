@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package gnu.classpath;
 
+import java.util.Properties;
+
 class VMSystemProperties
 {
     /**

@@ -1,5 +1,10 @@
 2004-12-07  Jeroen Frijters  <jeroen@frijters.net>
 
+	* vm/reference/gnu/classpath/VMSystemProperties.java:
+	Added import to make it compile.
+
+2004-12-07  Jeroen Frijters  <jeroen@frijters.net>
+
 	* include/java_lang_VMSystem.h:
 	Removed isWordsBigEndian.
 
