@@ -13,6 +13,5 @@
 ../gnu/java/nio/.*$
 ../gnu/java/util/prefs/.*$
 ../gnu/classpath/tools/.*$
-../javax/accessibility/.*$
 ../javax/swing/.*$
 ../java/security/cert/CertPathValidatorException.java

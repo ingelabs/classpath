@@ -310,6 +310,7 @@ java/util/jar/Makefile
 java/util/prefs/Makefile
 java/util/zip/Makefile
 javax/Makefile
+javax/accessibility/Makefile
 javax/naming/Makefile
 javax/naming/directory/Makefile
 javax/naming/spi/Makefile

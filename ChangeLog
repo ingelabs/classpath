@@ -1,5 +1,10 @@
 2002-03-18  Eric Blake  <ebb9@email.byu.edu>
 
+	* lib/standard.omit: Remove javax/accessibility.
+	* configure.in (AC_OUTPUT): Add javax/accessibility/Makefile.
+
+2002-03-18  Eric Blake  <ebb9@email.byu.edu>
+
 	* java/applet/AppletContext.java (setStream, getStream),
 	(getStreamKeys): Add new methods.
 	* java/applet/AppletStub.java: Improve javadoc.
