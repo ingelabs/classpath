@@ -52,7 +52,7 @@ import java.util.List;
 import gnu.java.security.Engine;
 
 /**
- * This class implments the CertificateFactory class interface used to
+ * This class implements the CertificateFactory class interface used to
  * generate certificates, certificate revocation lists (CRLs), and certificate
  * paths objects from their encoded forms.
  *

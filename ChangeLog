@@ -1,3 +1,12 @@
+2003-04-30  Michael Koch  <konqueror@gmx.de>
+
+	* java/security/SecureClassLoader.java,
+	java/security/SecureRandom.java,
+	java/security/Security.java,
+	java/security/cert/CertificateFactory.java,
+	java/security/cert/CertificateFactorySpi.java:
+	Fixed typos in documention.
+
 2003-04-29  Casey Marshall  <rsdio@metastatic.org>
 
 	* java/security/cert/CertPathValidator.java:

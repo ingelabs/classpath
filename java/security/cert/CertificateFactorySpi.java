@@ -47,7 +47,7 @@ import java.util.List;
 /**
    CertificateFactorySpi is the abstract class Service Provider
    Interface (SPI) for the CertificateFactory class. A provider
-   must implment all the abstract methods if they wish to 
+   must implement all the abstract methods if they wish to 
    supply a certificate factory for a particular certificate
    type. Ex: X.509
    
