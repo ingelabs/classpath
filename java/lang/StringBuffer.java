@@ -1,31 +1,26 @@
-/* java.lang.StringBuffer -- a mutable String
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+// StringBuffer.java - Growable strings.
 
-This file is part of GNU Classpath.
+/* Copyright (C) 1998, 1999, 2000  Red Hat
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
- 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+   This file is part of libgcj.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
-
-As a special exception, if you link this library with other files to
-produce an executable, this library does not by itself cause the
-resulting executable to be covered by the GNU General Public License.
-This exception does not however invalidate any other reasons why the
-executable file might be covered by the GNU General Public License. */
-
+This software is copyrighted work licensed under the terms of the
+Libgcj License.  Please consult the file "LIBGCJ_LICENSE" for
+details.  */
 
 package java.lang;
+import java.io.Serializable;
+
+/**
+ * @author Tom Tromey <tromey@cygnus.com>
+ * @date October 23, 1998.  
+ */
+
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * Updated using online JDK 1.2 docs.
+ * Believed complete and correct to JDK 1.2.
+ * Merged with Classpath.
+ */
 
 /**
  * <code>StringBuffer</code> represents a changeable <code>String</code>.
@@ -59,64 +54,136 @@ package java.lang;
  * @since JDK1.0
  * @author Paul Fisher
  * @author John Keiser
+ * @author Tom Tromey
  * @see java.lang.String
  */
-public final class StringBuffer implements java.io.Serializable {
-  private char[] str;		// str.length is the capacity
-  private int len;		// number of chars in str
-  private boolean sharing;	// true if str[] is shared with a String
-  private final static int DEFAULT_CAPACITY = 16; // JLS 20.13.1
-
-  static final long serialVersionUID = 3388685877147921107L;
-
-  /** Create a new StringBuffer with default capacity 16.
-   *  @see JLS 20.13.1
+public final class StringBuffer implements Serializable
+{
+  /** Append the <code>String</code> value of the argument to this <code>StringBuffer</code>.
+   *  Uses <code>String.valueOf()</code> to convert to
+   *  <code>String</code>.
+   *  @param bool the <code>boolean</code> to convert and append.
+   *  @return this <code>StringBuffer</code>.
+   *  @see java.lang.String#valueOf(boolean)
    */
-  public StringBuffer() {
-    str = new char[DEFAULT_CAPACITY];
+  public StringBuffer append (boolean bool)
+  {
+    return append (String.valueOf(bool));
   }
 
-  /** Create an empty <code>StringBuffer</code> with the specified initial capacity.
-   *  @param len the initial capacity.
+  /** Append the <code>char</code> to this <code>StringBuffer</code>.
+   *  @param c the <code>char</code> to append.
+   *  @return this <code>StringBuffer</code>.
    */
-  public StringBuffer(int len) throws NegativeArraySizeException {
-    str = new char[len];
+  public synchronized StringBuffer append (char ch)
+  {
+    ensureCapacity_unsynchronized (count + 1);
+    value[count++] = ch;
+    return this;
   }
 
-  /** Create a new <code>StringBuffer</code> with the characters in the specified <code>String</code>.
-   *  Initial size will be the size of the String.
-   *  @param str the <code>String</code> to make a <code>StringBuffer</code> out of.
-   *  @XXX optimize for sharing.
+  /** Append the <code>String</code> value of the argument to this <code>StringBuffer</code>.
+   *  Uses <code>String.valueOf()</code> to convert to
+   *  <code>String</code>.
+   *  @param inum the <code>int</code> to convert and append.
+   *  @return this <code>StringBuffer</code>.
+   *  @see java.lang.String#valueOf(int)
    */
-  public StringBuffer(String str) {
-    len = str.length();
-    this.str = new char[len + DEFAULT_CAPACITY];
-    System.arraycopy(str.toCharArray(), 0, this.str, 0, str.length());
+  public StringBuffer append (int inum)
+  {
+    return append (String.valueOf(inum));
   }
 
-  /** Convert this <code>StringBuffer</code> to a <code>String</code>.
-   *  @return the characters in this StringBuffer
+  /** Append the <code>String</code> value of the argument to this <code>StringBuffer</code>.
+   *  Uses <code>String.valueOf()</code> to convert to
+   *  <code>String</code>.
+   *  @param lnum the <code>long</code> to convert and append.
+   *  @return this <code>StringBuffer</code>.
+   *  @see java.lang.String#valueOf(long)
    */
-  public String toString() {
-// uncomment to share memory with $classpath's String.
-// currently commented for testing with Sun's classes.zip
-//      synchronized (this) {
-//        sharing = true;
-//      }
-// return new String(str, len);
-    return new String(str, 0, len);
+  public StringBuffer append (long lnum)
+  {
+    return append (String.valueOf(lnum));
   }
 
-  /** Get the length of the <code>String</code> this
-   *  <code>StringBuffer</code> would create.  Not to be confused with the
-   *  <em>capacity</em> of the <code>StringBuffer</code>.
-   *  @return the length of this <code>StringBuffer</code>.
-   *  @see #capacity()
-   *  @see #setLength()
+  /** Append the <code>String</code> value of the argument to this <code>StringBuffer</code>.
+   *  Uses <code>String.valueOf()</code> to convert to
+   *  <code>String</code>.
+   *  @param fnum the <code>float</code> to convert and append.
+   *  @return this <code>StringBuffer</code>.
+   *  @see java.lang.String#valueOf(float)
    */
-  public int length() {
-    return len;
+  public StringBuffer append (float fnum)
+  {
+    return append (String.valueOf(fnum));
   }
+
+  /** Append the <code>String</code> value of the argument to this <code>StringBuffer</code>.
+   *  Uses <code>String.valueOf()</code> to convert to
+   *  <code>String</code>.
+   *  @param dnum the <code>double</code> to convert and append.
+   *  @return this <code>StringBuffer</code>.
+   *  @see java.lang.String#valueOf(double)
+   */
+  public StringBuffer append (double dnum)
+  {
+    return append (String.valueOf(dnum));
+  }
+
+  /** Append the <code>String</code> value of the argument to this <code>StringBuffer</code>.
+   *  Uses <code>String.valueOf()</code> to convert to
+   *  <code>String</code>.
+   *  @param obj the <code>Object</code> to convert and append.
+   *  @return this <code>StringBuffer</code>.
+   *  @see java.lang.String#valueOf(java.lang.Object)
+   */
+  public StringBuffer append (Object obj)
+  {
+    return append (String.valueOf(obj));
+  }
+
+  /** Append the <code>String</code> to this <code>StringBuffer</code>.
+   *  @param str the <code>String</code> to append.
+   *  @return this <code>StringBuffer</code>.
+   */
+  public synchronized StringBuffer append (String str)
+  {
+    if (str == null)
+      str = "null";
+    int len = str.length();
+    ensureCapacity_unsynchronized (count + len);
+    str.getChars(0, len, value, count);
+    count += len;
+    return this;
+  }
+
+  /** Append the <code>char</code> array to this <code>StringBuffer</code>.
+   *  @param data the <code>char[]</code> to append.
+   *  @return this <code>StringBuffer</code>.
+   *  @exception NullPointerException if <code>str</code> is <code>null</code>.
+   */
+  public StringBuffer append (char[] data)
+  {
+    return append (data, 0, data.length);
+  }
+
+  /** Append the <code>char</code> array to this <code>StringBuffer</code>.
+   *  @param data the <code>char[]</code> to append.
+   *  @param offset the place to start grabbing characters from
+   *         <code>str</code>.
+   *  @param count the number of characters to get from <code>str</code>.
+   *  @return this <code>StringBuffer</code>.
+   *  @exception NullPointerException if <code>str</code> is <code>null</code>.
+   *  @exception IndexOutOfBoundsException if <code>offset</code> or
+   *             <code>offset+len</code> is out of range.
+   */
+  public synchronized StringBuffer append (char[] data, int offset, int count)
+  {
+    ensureCapacity_unsynchronized (this.count + count);
+    System.arraycopy(data, offset, value, this.count, count);
+    this.count += count;
+    return this;
+  } 
 
   /** Get the total number of characters this <code>StringBuffer</code>
    *  can support before it must be grown.  Not to be confused with
@@ -125,8 +192,55 @@ public final class StringBuffer implements java.io.Serializable {
    *  @see #length()
    *  @see #ensureCapacity(int)
    */
-  public int capacity() {
-    return str.length;
+  public int capacity ()
+  {
+    return value.length;
+  }
+
+  /** Get the character at the specified index.
+   *  @param index the index of the character to get, starting at 0.
+   *  @return the character at the specified index.
+   *  @exception IndexOutOfBoundsException if the desired character index
+   *             is not between 0 and length() - 1 (inclusive).
+   */
+  public synchronized char charAt (int index)
+  {
+    if (index >= count)
+      throw new StringIndexOutOfBoundsException (index);
+    return value[index];
+  }
+
+  /** Delete characters from this <code>StringBuffer</code>.
+   *  <code>delete(10, 12)</code> will delete 10 and 11, but not 12.
+   *  @param start the first character to delete.
+   *  @param end the index after the last character to delete.
+   *  @return this <code>StringBuffer</code>.
+   *  @exception StringIndexOutOfBoundsException if <code>start</code>
+   *             or <code>end-1</code> are out of bounds, or if
+   *             <code>start > end</code>.
+   */
+  public synchronized StringBuffer delete (int start, int end)
+  {
+    if (start < 0 || start > count || start > end)
+      throw new StringIndexOutOfBoundsException (start);
+    if (end > count)
+      end = count;
+    // This will unshare if required.
+    ensureCapacity_unsynchronized (count);
+    count -= (end - start);
+    System.arraycopy (value, end - 1, value, start, end - start);
+    return this;
+  }
+
+  /** Delete a character from this <code>StringBuffer</code>.
+   *  @param index the index of the character to delete.
+   *  @return this <code>StringBuffer</code>.
+   *  @exception StringIndexOutOfBoundsException if <code>index</code>
+   *             is out of bounds.
+   */
+  public StringBuffer deleteCharAt(int index)
+  {
+    return delete (index, index + 1);
   }
 
   /** Increase the capacity of this <code>StringBuffer</code>.
@@ -136,219 +250,160 @@ public final class StringBuffer implements java.io.Serializable {
    *  @param minimumCapacity the new capacity.
    *  @see #capacity()
    */
-  public synchronized void ensureCapacity(int minimumCapacity) {
-    // if minCapacity is nonpositve or not larger than the current
-    //  capacity, just return
-    if (minimumCapacity <= 0 || str.length >= minimumCapacity) return;
-
-    int newSize = Math.max(minimumCapacity, str.length * 2 + 2);
-    char newArray[] = new char[newSize];
-    System.arraycopy(str, 0, newArray, 0, len);
-    str = newArray;
-    sharing = false;		// since str[] points to a new char array,
-				//   we're not sharing anymore
-  }
-  
-  /** Set the length of this StringBuffer.
-   *  <P>
-   *
-   *  If the new length is greater than the current length, all the new
-   *  characters are set to '\0'.
-   *  <P>
-   *
-   *  If the new length is less than the current length, the first
-   *  <code>newLength</code> characters of the old array will be
-   *
-   *  @XXX I think there may be a bug here.  If the array is "abcdef",
-   *       and the person does setLength(4), the array will still be
-   *       the same, but the length will be 4.  Then if the person does
-   *       setLength(6), the last two characters are not set to '\0' but
-   *       instead remain as "ef".
-   *
-   * @see #length()
-   */
-  public synchronized void setLength(int newLength)
-       throws IndexOutOfBoundsException {
-    if (newLength < 0) 
-      throw new StringIndexOutOfBoundsException(newLength);
-
-    ensureCapacity(newLength);
-    len = newLength;
+  public synchronized void ensureCapacity (int minimumCapacity)
+  {
+    if (shared || minimumCapacity > value.length)
+      {
+	// We don't want to make a larger vector when `shared' is
+	// set.  If we do, then setLength becomes very inefficient
+	// when repeatedly reusing a StringBuffer in a loop.
+	int max = (minimumCapacity > value.length
+		   ? value.length*2+2
+		   : value.length);
+	minimumCapacity = (minimumCapacity < max ? max : minimumCapacity);
+	char[] nb = new char[minimumCapacity];
+	System.arraycopy(value, 0, nb, 0, count);
+	value = nb;
+	shared = false;
+      }
   }
 
-  /** Get the character at the specified index.
-   *  @param index the index of the character to get, starting at 0.
-   *  @return the character at the specified index.
-   *  @exception IndexOutOfBoundsException if the desired character index
-   *             is not between 0 and length() - 1 (inclusive).
-   */
-  public synchronized char charAt(int index) throws IndexOutOfBoundsException {
-    if (index < 0 || index >= len) 
-      throw new StringIndexOutOfBoundsException(index);
-    return str[index];
-  }
-
-  private void makeCopy() {
-    char newArray[] = new char[str.length];
-    System.arraycopy(str, 0, newArray, 0, len);
-    str = newArray;
-    sharing = false;
-  }    
-
-  /** Set the character at the specified index.
-   *  @param index the index of the character to set starting at 0.
-   *  @param ch the value to set that character to.
-   *  @exception IndexOutOfBoundsException if the specified character
-   *             index is not between 0 and length() - 1 (inclusive).
-   */
-  public synchronized void setCharAt(int index, char ch)
-       throws IndexOutOfBoundsException {
-    if (index < 0 || index >= len)
-      throw new StringIndexOutOfBoundsException(index);
-
-    if (sharing) makeCopy();
-    str[index] = ch;
+  // ensureCapacity is used by several synchronized methods in StringBuffer.
+  // There's no need to synchronize again.
+  private void ensureCapacity_unsynchronized (int minimumCapacity)
+  {
+    if (shared || minimumCapacity > value.length)
+      {
+	// We don't want to make a larger vector when `shared' is
+	// set.  If we do, then setLength becomes very inefficient
+	// when repeatedly reusing a StringBuffer in a loop.
+	int max = (minimumCapacity > value.length
+		   ? value.length*2+2
+		   : value.length);
+	minimumCapacity = (minimumCapacity < max ? max : minimumCapacity);
+	char[] nb = new char[minimumCapacity];
+	System.arraycopy(value, 0, nb, 0, count);
+	value = nb;
+	shared = false;
+      }
   }
 
   /** Get the specified array of characters.
    *  The characters will be copied into the array you pass in.
-   *  @param srcBegin the index to start copying from in the
+   *  @param srcOffset the index to start copying from in the
    *         <code>StringBuffer</code>.
    *  @param srcEnd the number of characters to copy.
    *  @param dst the array to copy into.
-   *  @param dstBegin the index to start copying into <code>dst</code>.
+   *  @param dstOffset the index to start copying into <code>dst</code>.
    *  @exception NullPointerException if dst is null.
    *  @exception IndexOutOfBoundsException if any source or target
    *             indices are out of range.
    *  @see java.lang.System#arrayCopy(java.lang.Object,int,java.lang.Object,int,int)
    */
-  public synchronized void getChars(int srcBegin, int srcEnd, 
-				    char[] dst, int dstBegin)
-       throws NullPointerException, IndexOutOfBoundsException {
-    if (dst == null) throw new NullPointerException("dst is null");
-    if (srcBegin < 0 || srcBegin > srcEnd || srcEnd > len || 
-	dstBegin+srcEnd-srcBegin > dst.length)
-      throw new StringIndexOutOfBoundsException();
-    System.arraycopy(str, srcBegin, dst, dstBegin, srcEnd-srcBegin);
-  }
-
-  /** Append the <code>String</code> value of the argument to this <code>StringBuffer</code>.
-   *  Uses <code>String.valueOf()</code> to convert to
-   *  <code>String</code>.
-   *  @param obj the <code>Object</code> to convert and append.
-   *  @return this <code>StringBuffer</code>.
-   *  @see java.lang.String#valueOf(java.lang.Object)
-   */
-  public synchronized StringBuffer append(Object obj) {
-    return append(String.valueOf(obj));
+  public synchronized void getChars (int srcOffset, int srcEnd,
+				     char[] dst, int dstOffset)
+  {
+    if (srcOffset < 0 || srcOffset > srcEnd)
+      throw new StringIndexOutOfBoundsException (srcOffset);
+    int todo = srcEnd - srcOffset;
+    if (srcEnd > count || dstOffset + todo > count)
+      throw new StringIndexOutOfBoundsException (srcEnd);
+    System.arraycopy(value, srcOffset, dst, dstOffset, todo);
   }
 
-  /** Append the <code>String</code> to this <code>StringBuffer</code>.
-   *  @param str the <code>String</code> to append.
+  /** Insert the <code>String</code> value of the argument into this <code>StringBuffer</code>.
+   *  Uses <code>String.valueOf()</code> to convert to
+   *  <code>String</code>.
+   *  @param offset the place to insert.
+   *  @param bool the <code>boolean</code> to convert and insert.
    *  @return this <code>StringBuffer</code>.
+   *  @exception IndexOutOfBoundsException if <code>offset</code> is out
+   *             of range for this <code>StringBuffer</code>.
+   *  @see java.lang.String#valueOf(boolean)
    */
-  public synchronized StringBuffer append(String str) {
-    if (str == null) str = "null";
-    ensureCapacity(len + str.length());
-    if (sharing) makeCopy();
-    // access the internals of java.lang.String, and copy them
-    // change arg1 to str.str and last arg to str.str.length
-    System.arraycopy(str.toCharArray(), 0, this.str, len, str.length());
-    len += str.length();
+  public StringBuffer insert (int offset, boolean bool)
+  {
+    return insert (offset, bool ? "true" : "false");
+  }
+
+  /** Insert the <code>char</code> argument into this <code>StringBuffer</code>.
+   *  @param offset the place to insert.
+   *  @param ch the <code>char</code> to insert.
+   *  @return this <code>StringBuffer</code>.
+   *  @exception IndexOutOfBoundsException if <code>offset</code> is out
+   *             of range for this <code>StringBuffer</code>.
+   */
+  public synchronized StringBuffer insert (int offset, char ch)
+  {
+    if (offset < 0 || offset > count)
+      throw new StringIndexOutOfBoundsException (offset);
+    ensureCapacity_unsynchronized (count+1);
+    System.arraycopy(value, offset, value, offset+1, count-offset);
+    value[offset] = ch;
+    count++;
     return this;
   }
 
-  /** Append the <code>char</code> array to this <code>StringBuffer</code>.
-   *  @param str the <code>char[]</code> to append.
-   *  @return this <code>StringBuffer</code>.
-   *  @exception NullPointerException if <code>str</code> is <code>null</code>.
-   *  @XXX do a more direct append in the future.
-   */
-  public StringBuffer append(char[] str) 
-       throws NullPointerException {
-    return append(String.valueOf(str));
-  }
-
-  /** Append the <code>char</code> array to this <code>StringBuffer</code>.
-   *  @param str the <code>char[]</code> to append.
-   *  @param offset the place to start grabbing characters from
-   *         <code>str</code>.
-   *  @param len the number of characters to get from <code>str</code>.
-   *  @return this <code>StringBuffer</code>.
-   *  @exception NullPointerException if <code>str</code> is <code>null</code>.
-   *  @exception IndexOutOfBoundsException if <code>offset</code> or
-   *             <code>offset+len</code> is out of range.
-   *  @XXX do a more direct append in the future.
-   */
-  public StringBuffer append(char[] str, int offset, int len)
-       throws NullPointerException, IndexOutOfBoundsException {
-    return append(String.valueOf(str, offset, len));
-  }
-
-  /** Append the <code>String</code> value of the argument to this <code>StringBuffer</code>.
+  /** Insert the <code>String</code> value of the argument into this <code>StringBuffer</code>.
    *  Uses <code>String.valueOf()</code> to convert to
    *  <code>String</code>.
-   *  @param b the <code>boolean</code> to convert and append.
+   *  @param offset the place to insert.
+   *  @param inum the <code>int</code> to convert and insert.
    *  @return this <code>StringBuffer</code>.
-   *  @see java.lang.String#valueOf(boolean)
-   */
-  public StringBuffer append(boolean b) {
-    return append(String.valueOf(b));
-  }
-
-  /** Append the <code>char</code> to this <code>StringBuffer</code>.
-   *  @param c the <code>char</code> to append.
-   *  @return this <code>StringBuffer</code>.
-   *  @XXX do a more direct append in the future.
-   */
-  public StringBuffer append(char c) {
-    return append(String.valueOf(c));
-  }
-
-  /** Append the <code>String</code> value of the argument to this <code>StringBuffer</code>.
-   *  Uses <code>String.valueOf()</code> to convert to
-   *  <code>String</code>.
-   *  @param i the <code>int</code> to convert and append.
-   *  @return this <code>StringBuffer</code>.
+   *  @exception IndexOutOfBoundsException if <code>offset</code> is out
+   *             of range for this <code>StringBuffer</code>.
    *  @see java.lang.String#valueOf(int)
    */
-  public StringBuffer append(int i) {
-    return append(String.valueOf(i));
+  public StringBuffer insert (int offset, int inum)
+  {
+    return insert (offset, String.valueOf(inum));
   }
 
-  /** Append the <code>String</code> value of the argument to this <code>StringBuffer</code>.
+  /** Insert the <code>String</code> value of the argument into this <code>StringBuffer</code>.
    *  Uses <code>String.valueOf()</code> to convert to
    *  <code>String</code>.
-   *  @param l the <code>long</code> to convert and append.
+   *  @param offset the place to insert.
+   *  @param lnum the <code>long</code> to convert and insert.
    *  @return this <code>StringBuffer</code>.
+   *  @exception IndexOutOfBoundsException if <code>offset</code> is out
+   *             of range for this <code>StringBuffer</code>.
    *  @see java.lang.String#valueOf(long)
    */
-  public StringBuffer append(long l) {
-    return append(String.valueOf(l));
+  public StringBuffer insert (int offset, long lnum)
+  {
+    return insert (offset, String.valueOf(lnum));
   }
 
-  /** Append the <code>String</code> value of the argument to this <code>StringBuffer</code>.
+  /** Insert the <code>String</code> value of the argument into this <code>StringBuffer</code>.
    *  Uses <code>String.valueOf()</code> to convert to
    *  <code>String</code>.
-   *  @param f the <code>float</code> to convert and append.
+   *  @param offset the place to insert.
+   *  @param fnum the <code>float</code> to convert and insert.
    *  @return this <code>StringBuffer</code>.
+   *  @exception IndexOutOfBoundsException if <code>offset</code> is out
+   *             of range for this <code>StringBuffer</code>.
    *  @see java.lang.String#valueOf(float)
    */
-  public StringBuffer append(float f) {
-    return append(String.valueOf(f));
+  public StringBuffer insert (int offset, float fnum)
+  {
+    return insert (offset, String.valueOf(fnum));
   }
 
-  /** Append the <code>String</code> value of the argument to this <code>StringBuffer</code>.
+  /** Insert the <code>String</code> value of the argument into this <code>StringBuffer</code>.
    *  Uses <code>String.valueOf()</code> to convert to
    *  <code>String</code>.
-   *  @param d the <code>double</code> to convert and append.
+   *  @param offset the place to insert.
+   *  @param dnum the <code>double</code> to convert and insert.
    *  @return this <code>StringBuffer</code>.
+   *  @exception IndexOutOfBoundsException if <code>offset</code> is out
+   *             of range for this <code>StringBuffer</code>.
    *  @see java.lang.String#valueOf(double)
    */
-  public StringBuffer append(double d) {
-    return append(String.valueOf(d));
+  public StringBuffer insert (int offset, double dnum)
+  {
+    return insert (offset, String.valueOf(dnum));
   }
-
+
   /** Insert the <code>String</code> value of the argument into this <code>StringBuffer</code>.
    *  Uses <code>String.valueOf()</code> to convert to
    *  <code>String</code>.
@@ -359,9 +414,9 @@ public final class StringBuffer implements java.io.Serializable {
    *             of range for this <code>StringBuffer</code>.
    *  @see java.lang.String#valueOf(java.lang.Object)
    */
-  public StringBuffer insert(int offset, Object obj) 
-    throws IndexOutOfBoundsException {
-    return insert(offset, String.valueOf(obj));
+  public StringBuffer insert (int offset, Object obj)
+  {
+    return insert (offset, String.valueOf(obj));
   }
 
   /** Insert the <code>String</code> argument into this <code>StringBuffer</code>.
@@ -371,42 +426,38 @@ public final class StringBuffer implements java.io.Serializable {
    *  @exception IndexOutOfBoundsException if <code>offset</code> is out
    *             of range for this <code>StringBuffer</code>.
    */
-  public synchronized StringBuffer insert(int offset, String str) 
-    throws IndexOutOfBoundsException {
-    if (offset < 0|| offset > len) 
-      throw new StringIndexOutOfBoundsException(offset);
-
-    if (str == null) str = "null";
-    ensureCapacity(len + str.length());
-    if (sharing) makeCopy();
-
-    // make a hole in the current str[] if necessary
-    if (offset < len)
-      System.arraycopy(this.str, offset, this.str, 
-		       offset+str.length(), str.length());
-
-    // access the internals of java.lang.String, and copy them
-    // change arg1 to str.str, and last arg to str.str.length
-    System.arraycopy(str.toCharArray(), 0, this.str, offset, str.length());
-    len += str.length();
+  public synchronized StringBuffer insert (int offset, String str)
+  {
+    if (offset < 0 || offset > count)
+      throw new StringIndexOutOfBoundsException (offset);
+    // Note that using `null' is from JDK 1.2.
+    if (str == null)
+      str = "null";
+    int len = str.length();
+    ensureCapacity_unsynchronized (count+len);
+    System.arraycopy(value, offset, value, offset+len, count-offset);
+    str.getChars(0, len, value, offset);
+    count += len;
     return this;
   }
 
-  /** Insert the <code>char[]</code> argument into this <code>StringBuffer</code>.
+  /** Insert the <code>char[]</code> argument into this
+   *  <code>StringBuffer</code>. 
    *  @param offset the place to insert.
-   *  @param str the <code>char[]</code> to insert.
+   *  @param data the <code>char[]</code> to insert.
    *  @return this <code>StringBuffer</code>.
-   *  @exception NullPointerException if <code>str</code> is <code>null</code>.
+   *  @exception NullPointerException if <code>data</code> is
+   *             <code>null</code>.
    *  @exception IndexOutOfBoundsException if <code>offset</code> is out
    *             of range for this <code>StringBuffer</code>.
-   *  @XXX insert more directly in the future.
    */
-  public StringBuffer insert(int offset, char[] str)
-    throws NullPointerException, IndexOutOfBoundsException {
-    return insert(offset, String.valueOf(str));
+  public StringBuffer insert (int offset, char[] data)
+  {
+    return insert (offset, data, 0, data.length);
   }
 
-  /** Insert the <code>char[]</code> argument into this <code>StringBuffer</code>.
+  /** Insert the <code>char[]</code> argument into this
+   *  <code>StringBuffer</code>.
    *  @param offset the place to insert.
    *  @param str the <code>char[]</code> to insert.
    *  @param str_offset the index in <code>str</code> to start inserting
@@ -418,160 +469,134 @@ public final class StringBuffer implements java.io.Serializable {
    *             of range, for this <code>StringBuffer</code>, or if
    *             <code>str_offset</code> or <code>str_offset+len</code>
    *             are out of range for <code>str</code>.
-   *  @XXX insert more directly in the future.
    */
-  public StringBuffer insert(int offset, char[] str, int str_offset, int len)
-    throws NullPointerException, IndexOutOfBoundsException {
-    return insert(offset, String.valueOf(str, str_offset, len));
+  public synchronized StringBuffer insert(int offset, char[] str,
+					  int str_offset, int len)
+  {
+    if (offset < 0 || offset > count)
+      throw new StringIndexOutOfBoundsException (offset);
+    if (len < 0)
+      throw new StringIndexOutOfBoundsException (len);
+    if (str_offset < 0 || str_offset + len > str.length)
+      throw new StringIndexOutOfBoundsException (str_offset);
+    ensureCapacity_unsynchronized (count + len);
+    System.arraycopy(value, offset, value, offset + len, count - offset);
+    System.arraycopy(str, str_offset, value, offset, len);
+    count += len;
+    return this;
   }
 
-  /** Insert the <code>String</code> value of the argument into this <code>StringBuffer</code>.
-   *  Uses <code>String.valueOf()</code> to convert to
-   *  <code>String</code>.
-   *  @param offset the place to insert.
-   *  @param b the <code>boolean</code> to convert and insert.
-   *  @return this <code>StringBuffer</code>.
-   *  @exception IndexOutOfBoundsException if <code>offset</code> is out
-   *             of range for this <code>StringBuffer</code>.
-   *  @see java.lang.String#valueOf(boolean)
+  /** Get the length of the <code>String</code> this
+   *  <code>StringBuffer</code> would create.  Not to be confused with the
+   *  <em>capacity</em> of the <code>StringBuffer</code>.
+   *  @return the length of this <code>StringBuffer</code>.
+   *  @see #capacity()
+   *  @see #setLength()
    */
-  public StringBuffer insert(int offset, boolean b)
-    throws IndexOutOfBoundsException {
-    return insert(offset, String.valueOf(b));
+  public int length ()
+  {
+    return count;
   }
 
-  /** Insert the <code>char</code> argument into this <code>StringBuffer</code>.
-   *  @param offset the place to insert.
-   *  @param c the <code>char</code> to insert.
+  /** Delete a character from this <code>StringBuffer</code>.
+   *  @param index the index of the character to delete.
    *  @return this <code>StringBuffer</code>.
-   *  @exception IndexOutOfBoundsException if <code>offset</code> is out
-   *             of range for this <code>StringBuffer</code>.
-   *  @XXX insert more directly in the future.
+   *  @exception StringIndexOutOfBoundsException if <code>index</code>
+   *             is out of bounds.
    */
-  public StringBuffer insert(int offset, char c) 
-    throws IndexOutOfBoundsException {
-    return insert(offset, String.valueOf(c));
+  public synchronized StringBuffer replace (int start, int end, String str)
+  {
+    // FIXME: this is inefficient.
+    delete (start, end);
+    return insert (start, str);
   }
 
-  /** Insert the <code>String</code> value of the argument into this <code>StringBuffer</code>.
-   *  Uses <code>String.valueOf()</code> to convert to
-   *  <code>String</code>.
-   *  @param offset the place to insert.
-   *  @param i the <code>int</code> to convert and insert.
-   *  @return this <code>StringBuffer</code>.
-   *  @exception IndexOutOfBoundsException if <code>offset</code> is out
-   *             of range for this <code>StringBuffer</code>.
-   *  @see java.lang.String#valueOf(int)
-   */
-  public StringBuffer insert(int offset, int i)
-    throws IndexOutOfBoundsException {
-    return insert(offset, String.valueOf(i));
-  }
-
-  /** Insert the <code>String</code> value of the argument into this <code>StringBuffer</code>.
-   *  Uses <code>String.valueOf()</code> to convert to
-   *  <code>String</code>.
-   *  @param offset the place to insert.
-   *  @param l the <code>long</code> to convert and insert.
-   *  @return this <code>StringBuffer</code>.
-   *  @exception IndexOutOfBoundsException if <code>offset</code> is out
-   *             of range for this <code>StringBuffer</code>.
-   *  @see java.lang.String#valueOf(long)
-   */
-  public StringBuffer insert(int offset, long l)
-    throws IndexOutOfBoundsException {
-    return insert(offset, String.valueOf(l));
-  }
-
-  /** Insert the <code>String</code> value of the argument into this <code>StringBuffer</code>.
-   *  Uses <code>String.valueOf()</code> to convert to
-   *  <code>String</code>.
-   *  @param offset the place to insert.
-   *  @param f the <code>float</code> to convert and insert.
-   *  @return this <code>StringBuffer</code>.
-   *  @exception IndexOutOfBoundsException if <code>offset</code> is out
-   *             of range for this <code>StringBuffer</code>.
-   *  @see java.lang.String#valueOf(float)
-   */
-  public StringBuffer insert(int offset, float f)
-    throws IndexOutOfBoundsException {
-    return insert(offset, String.valueOf(f));
-  }
-
-  /** Insert the <code>String</code> value of the argument into this <code>StringBuffer</code>.
-   *  Uses <code>String.valueOf()</code> to convert to
-   *  <code>String</code>.
-   *  @param offset the place to insert.
-   *  @param d the <code>double</code> to convert and insert.
-   *  @return this <code>StringBuffer</code>.
-   *  @exception IndexOutOfBoundsException if <code>offset</code> is out
-   *             of range for this <code>StringBuffer</code>.
-   *  @see java.lang.String#valueOf(double)
-   */
-  public StringBuffer insert(int offset, double d)
-    throws IndexOutOfBoundsException {
-    return insert(offset, String.valueOf(d));
-  }
-
   /** Reverse the characters in this StringBuffer.
    *  @return this <code>StringBuffer</code>.
    */
-  public synchronized StringBuffer reverse() {
-    for (int i = 0; i < len/2; i++) {
-      char swap = str[i];
-      str[i] = str[len-1-i];
-      str[len-1-i] = swap;
-    }
-    return this;
-  }
- 
-// JDK 1.2 additions
-
-  /** Delete characters from this <code>StringBuffer</code>.
-   *  <code>delete(10, 12)</code> will delete 10 and 11, but not 12.
-   *  @param start the first character to delete.
-   *  @param end the index after the last character to delete.
-   *  @return this <code>StringBuffer</code>.
-   *  @exception StringIndexOutOfBoundsException if <code>start</code>
-   *             or <code>end-1</code> are out of bounds, or if
-   *             <code>start > end</code>.
-   */
-  public synchronized StringBuffer delete(int start, int end)
-    throws StringIndexOutOfBoundsException {
-    if (start < 0 || end > len || start > end)
-      throw new StringIndexOutOfBoundsException(start);
-    if (end > len) end = len;
-    len = len - (end-start);
-    if (sharing) makeCopy();
-    System.arraycopy(str, end-1, str, start, end-start);
+  public synchronized StringBuffer reverse ()
+  {
+    for (int i = 0; i < count / 2; ++i)
+      {
+	char c = value[i];
+	value[i] = value[count - i - 1];
+	value[count - i - 1] = c;
+      }
     return this;
   }
 
-  /** Delete a character from this <code>StringBuffer</code>.
-   *  @param index the index of the character to delete.
-   *  @return this <code>StringBuffer</code>.
-   *  @exception StringIndexOutOfBoundsException if <code>index</code>
-   *             is out of bounds.
+  /** Set the character at the specified index.
+   *  @param index the index of the character to set starting at 0.
+   *  @param ch the value to set that character to.
+   *  @exception IndexOutOfBoundsException if the specified character
+   *             index is not between 0 and length() - 1 (inclusive).
    */
-  public StringBuffer deleteCharAt(int index)
-    throws StringIndexOutOfBoundsException {
-    if (index < 0 || index >= len)
-      throw new StringIndexOutOfBoundsException(index);
-    return delete(index, index+1);
+  public synchronized void setCharAt (int index, char ch)
+  {
+    if (index < 0 || index >= count)
+      throw new StringIndexOutOfBoundsException (index);
+    // Call ensureCapacity to enforce copy-on-write.
+    ensureCapacity_unsynchronized (count);
+    value[index] = ch;
   }
-  
-  /** Delete a character from this <code>StringBuffer</code>.
-   *  @param index the index of the character to delete.
-   *  @return this <code>StringBuffer</code>.
-   *  @exception StringIndexOutOfBoundsException if <code>index</code>
-   *             is out of bounds.
+
+  /** Set the length of this StringBuffer.
+   *  <P>
+   *  If the new length is greater than the current length, all the new
+   *  characters are set to '\0'.
+   *  <P>
+   *  If the new length is less than the current length, the first
+   *  <code>newLength</code> characters of the old array will be
+   * @param newLength the new length
+   * @exception IndexOutOfBoundsException if the new length is
+   *            negative.
+   * @see #length()
    */
-  public synchronized StringBuffer replace(int start, int end, String str)
-    throws NullPointerException, StringIndexOutOfBoundsException {
-    if (start < 0 || end > len || start > end)
-      throw new StringIndexOutOfBoundsException(start);
-    delete(start, end);
-    return insert(start, str);
+  public synchronized void setLength (int newLength)
+  {
+    if (newLength < 0)
+      throw new StringIndexOutOfBoundsException (newLength);
+
+    ensureCapacity_unsynchronized (newLength);
+    for (int i = count; i < newLength; ++i)
+      value[i] = '\0';
+    count = newLength;
+  }
+
+  /** Create a new StringBuffer with default capacity 16.
+   *  @see JLS 20.13.1
+   */
+  public StringBuffer ()
+  {
+    this (DEFAULT_CAPACITY);
+  }
+
+  /** Create an empty <code>StringBuffer</code> with the specified initial capacity.
+   *  @param capacity the initial capacity.
+   */
+  public StringBuffer (int capacity)
+  {
+    count = 0;
+    value = new char[capacity];
+    shared = false;
+  }
+
+  /** Create a new <code>StringBuffer</code> with the characters in the specified <code>String</code>.
+   *  Initial capacity will be the size of the String plus 16.
+   *  @param str the <code>String</code> to make a <code>StringBuffer</code> out of.
+   *  @XXX optimize for sharing.
+   */
+  public StringBuffer (String str)
+  {
+    // The documentation is not clear, but experimentation with
+    // other implementations indicates that StringBuffer(null)
+    // should throw a NullPointerException.
+    count = str.length();
+    // JLS: The initial capacity of the string buffer is 16 plus the
+    // length of the argument string.
+    value = new char[count + 16];
+    str.getChars(0, count, value, 0);
+    shared = false;
   }
 
   /**
@@ -585,9 +610,9 @@ public final class StringBuffer implements java.io.Serializable {
    * @exception StringIndexOutOfBoundsException 
    *   if (beginIndex < 0 || beginIndex > this.length())
    */
-  public String substring(int beginIndex) 
-    throws StringIndexOutOfBoundsException {
-    return substring(beginIndex, len);
+  public String substring (int beginIndex)
+  {
+    return substring (beginIndex, count);
   }
 
   /**
@@ -603,12 +628,40 @@ public final class StringBuffer implements java.io.Serializable {
    * @exception StringIndexOutOfBoundsException 
    *   if (beginIndex < 0 || endIndex > this.length() || beginIndex > endIndex)
    */
-  public synchronized String substring(int beginIndex, int endIndex) 
-       throws StringIndexOutOfBoundsException {
-    if (beginIndex < 0 || endIndex > len || beginIndex > endIndex)
-      throw new StringIndexOutOfBoundsException();
-    char[] newStr = new char[endIndex-beginIndex];
-    System.arraycopy(str, beginIndex, newStr, 0, endIndex-beginIndex);
-    return new String(newStr);
+  public synchronized String substring (int beginIndex, int endIndex) 
+  {
+    if (beginIndex < 0 || endIndex > count || beginIndex > endIndex)
+      throw new StringIndexOutOfBoundsException ();
+    // FIXME: for libgcj it would be possible, and more efficient, to
+    // enable sharing here.
+    return new String (value, beginIndex, endIndex - beginIndex);
   }
+
+  /** Convert this <code>StringBuffer</code> to a <code>String</code>.
+   *  @return the characters in this StringBuffer
+   */
+  public String toString ()
+  {
+    // Note: in libgcj this causes the StringBuffer to be shared.  In
+    // Classpath it does not.
+    return new String (this);
+  }
+
+  // Index of next available character.  Note that this has
+  // permissions set this way so that String can get the value.
+  int count;
+
+  // The buffer.  Note that this has permissions set this way so that
+  // String can get the value.
+  char[] value;
+
+  // True if we need to copy the buffer before writing to it again.
+  // FIXME: JDK 1.2 doesn't specify this.  The new buffer-growing
+  // semantics make this less useful in that case, too.  Note that
+  // this has permissions set this way so that String can get the
+  // value.
+  boolean shared;
+
+  static final long serialVersionUID = 3388685877147921107L;
+  private final static int DEFAULT_CAPACITY = 16; // JLS 20.13.1
 }

@@ -1,3 +1,15 @@
+2000-05-09  Tom Tromey  <tromey@cygnus.com>
+
+	Merged with libgcj:
+	* java/lang/StringBuffer.java (toString): Don't mark buffer as
+	shared.
+	(insert(int,char[],int,int): New method.
+	(delete): New method from Classpath.
+	(deleteCharAt): Likewise.
+	(substring): Likewise.
+	(shared): No longer private.
+	Added JavaDoc comments from Classpath.
+
 2000-05-08  Tom Tromey  <tromey@cygnus.com>
 
 	From Mark Wielaard <mark@klomp.org>:
