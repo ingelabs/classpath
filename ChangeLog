@@ -1,5 +1,15 @@
 2005-03-09  Sven de Marothy  <sven@physto.se>
 
+	* java/util/Calendar.java
+	(set): Use starting day of week when one is needed if none is given.
+	* java/text/SimpleDateFormat.java
+	(parse): Handle 1-12 and 1-24 timestamps correctly.
+	* java/util/GregorianCalendar
+	(computeTime, computeFields): HOUR should be in 0-11 format.
+	(nonLeniencyCheck): Adjust leniency checking to that fact.
+
+2005-03-09  Sven de Marothy  <sven@physto.se>
+
 	* gnu/java/locale/Calendar.java,
 	gnu/java/locale/Calendar_nl.java,
 	gnu/java/locale/Calendar_de.java,
