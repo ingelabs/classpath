@@ -110,33 +110,7 @@ public final class Runtime {
 		if(sm != null) {
 			sm.checkLink(filename);
 		}
-		ickyDoo4();
 		nativeLoad(filename);
-		ickyDoo5();
-	}
-
-	public int ickyDoo() {
-		return 1;
-	}
-
-	public int ickyDoo2() {
-		return 1;
-	}
-
-	public int ickyDoo3() {
-		return 1;
-	}
-
-	public int ickyDoo4() {
-		return 1;
-	}
-
-	public int ickyDoo5() {
-		return 1;
-	}
-
-	public int ickyDoo6() {
-		return 1;
 	}
 
 	/** Load a native library using a system-independent "short
@@ -154,9 +128,7 @@ public final class Runtime {
 		for(int i=0;i<libpath.length;i++) {
 			try {
 				String filename = nativeGetLibname(libpath[i],libname);
-				ickyDoo();
 				load(filename);
-				ickyDoo2();
 				return;
 			} catch(UnsatisfiedLinkError e) {
 			}
