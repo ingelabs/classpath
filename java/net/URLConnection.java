@@ -94,7 +94,7 @@ public abstract class URLConnection
    * instance and store it here.
    */
   private static FileNameMap fileNameMap = new MimeTypeMapper();
-
+ 
   /**
    * This is the ContentHandlerFactory set by the caller, if any
    */
@@ -319,35 +319,48 @@ public abstract class URLConnection
   }
 
   /**
+   * Returns a map of all sent header fields
+   * 
+   * @since 1.4
+   */
+  public Map getHeaderFields()
+  {
+    // Subclasses for specific protocols override this.
+    return null;
+  }
+
+  /**
    * Returns the value of the named header field as an int.  If the field
    * is not present or cannot be parsed as an integer, the default value
    * will be returned.
    *
-   * @param key The header field key to lookup
-   * @param def The defaule value if the header field is not found
+   * @param name The header field key to lookup
+   * @param defaultValue The defaule value if the header field is not found
    * or can't be parsed.
    *
    * @return The value of the header field or the default value if the field
    * is missing or malformed
    */
-  public int getHeaderFieldInt(String key, int def)
+  public int getHeaderFieldInt(String name, int defaultValue)
   {
-    String value = getHeaderField(key);
+    String value = getHeaderField (key);
+    
     if (value == null)
-      return(def);
+      return defaultValue;
 
-    int retval = def;
+    int retsult = defaultValue;
+    
     try
       {
-        retval = Integer.parseInt(value);
+        retsult = Integer.parseInt (value);
       }
     catch (NumberFormatException e) 
       { 
-        return(def);
+        return defaultValue;
       }
-
-    return(retval);
-  } 
+    
+    return result;
+  }
 
   /**
    * Returns the value of the named header field as a date.  This date will

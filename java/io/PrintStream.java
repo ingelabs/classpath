@@ -141,20 +141,20 @@ public class PrintStream extends FilterOutputStream
    * Note that this class is deprecated in favor of <code>PrintWriter</code>.
    *
    * @param out The <code>OutputStream</code> to write to.
-   * @param autoFlush <code>true</code> to flush the stream after every 
+   * @param auto_flush <code>true</code> to flush the stream after every 
    * line, <code>false</code> otherwise
    * @param encoding The name of the character encoding to use for this
    * object.
    *
    * @deprecated
    */
-  public PrintStream (OutputStream out, boolean autoFlush, String encoding)
+  public PrintStream (OutputStream out, boolean auto_flush, String encoding)
     throws UnsupportedEncodingException
   {
     super (out);
 
     pw = new PrintWriter (new OutputStreamWriter (out, encoding), autoFlush);
-    this.auto_flush = autoFlush;
+    this.auto_flush = auto_flush;
   }
 
   /**
@@ -469,14 +469,12 @@ public class PrintStream extends FilterOutputStream
       {
         out.write (oneByte);
 
-        if (auto_flush)
-          if ((oneByte == '\n')
-              || (oneByte == '\n'))
-            flush ();
+        if (auto_flush && oneByte == '\n')
+          flush ();
       }
     catch (IOException e)
       {
-        error_occurred = true;
+        setError ();
       }
   }
 
@@ -497,7 +495,7 @@ public class PrintStream extends FilterOutputStream
     try
       {
         out.write (buffer, offset, len);
-
+        
         if (auto_flush)
           for (int i = offset; i < len; i++)
             if ((buffer [i] == '\r')
@@ -509,7 +507,7 @@ public class PrintStream extends FilterOutputStream
       }
     catch (IOException e)
       {
-        error_occurred = true;
+        setError ();
       }
   }
 

@@ -1,3 +1,14 @@
+2003-05-26  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/PrintStream.java
+	(PrintStream): Merged with libgcj.
+	(write): Likewise.
+	* java/lang/reflect/Modifier.java:
+	Merged copyrigth with libgcj.
+	* java/net/URLConnection.java
+	(getHeaderFields): New method merged from libgcj.
+	(getHeaderFieldInt): Merged with libgcj.
+
 2003-05-25  Aaron M. Renn (arenn@urbanophile.com)
 
 	* java/net/NetPermission.java
