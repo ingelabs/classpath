@@ -46,29 +46,30 @@ package java.util;
  * <p>The key/value list is a two dimensional list of Object.  The first
  * dimension ranges over the resources. The second dimension ranges from
  * zero (key) to one (value). The keys must be of type String, and they are
- * case-sensitive. For example:<br>
- * <pre>
- * public class MyResources extends ListResourceBundle
- * {
- *   public Object[][] getContents()
- *   {
- *     return contents;
- *   }
- *   static final Object[][] contents
- *     = {
- *         // LOCALIZED STRINGS
- *         {"s1", "The disk \"{1}\" contains {0}."},  // MessageFormat pattern
- *         {"s2", "1"},                       // location of {0} in pattern
- *         {"s3", "My Disk"},                 // sample disk name
- *         {"s4", "no files"},                // first ChoiceFormat choice
- *         {"s5", "one file"},                // second ChoiceFormat choice
- *         {"s6", "{0,number} files"}         // third ChoiceFormat choice
- *         {"s7", "3 Mar 96"},                // sample date
- *         {"s8", new Dimension(1,5)}         // real object, not just string
- *         // END OF LOCALIZED MATERIAL
- *       };
- * }
- * </pre>
+ * case-sensitive. For example:
+ *
+<br><pre>public class MyResources
+  extends ListResourceBundle
+{
+  public Object[][] getContents()
+  {
+    return contents;
+  }
+
+  static final Object[][] contents =
+  {
+    // LOCALIZED STRINGS
+    {"s1", "The disk \"{1}\" contains {0}."},  // MessageFormat pattern
+    {"s2", "1"},                       // location of {0} in pattern
+    {"s3", "My Disk"},                 // sample disk name
+    {"s4", "no files"},                // first ChoiceFormat choice
+    {"s5", "one file"},                // second ChoiceFormat choice
+    {"s6", "{0,number} files"}         // third ChoiceFormat choice
+    {"s7", "3 Mar 96"},                // sample date
+    {"s8", new Dimension(1,5)}         // real object, not just string
+    // END OF LOCALIZED MATERIAL
+  };
+}</pre>
  *
  * @author Jochen Hoenicke
  * @author Eric Blake <ebb9@email.byu.edu>
