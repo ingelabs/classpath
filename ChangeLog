@@ -1,3 +1,8 @@
+2005-03-31  Audrius Meskauskas  <audriusa@bluewin.ch>
+	* org/omg/CORBA/ORBPackage/InconsistentTypeCode.java,
+	org/omg/CORBA/ORBPackage/InvalidName.java,
+	org/omg/CORBA/ORBPackage/package.html: New files.
+
 2005-03-31  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics.java
