@@ -286,7 +286,7 @@ AC_ARG_ENABLE([portable-native-sync],
               [])
 dnl -----------------------------------------------------------
 
-AC_CONFIG_FILES(Makefile
+AC_CONFIG_FILES([Makefile
 doc/Makefile
 doc/api/Makefile
 external/Makefile
@@ -443,7 +443,6 @@ vm/reference/java/lang/Makefile
 vm/reference/java/lang/reflect/Makefile
 vm/reference/java/io/Makefile
 lib/Makefile
-lib/gen-classlist.sh
-lib/gen_nio.sh)
+lib/gen-classlist.sh])
 AC_OUTPUT_COMMANDS([chmod 755 lib/gen-classlist.sh])
 AC_OUTPUT

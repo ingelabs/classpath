@@ -1,3 +1,11 @@
+2004-01-30  Michael Koch  <konqueror@gmx.de>
+
+	* configure.ac (AC_CONFIG_FILES): Removed lib/gen_nio.sh and fixed
+	quotation.
+	* java/nio/GenericBuffer.cpp: Removed.
+	* lib/gen_nio.sh.in: Removed.
+	* lib/Makefile.am: Removed rule to regenerate NIO buffer classes.
+
 2004-01-29  Kim Ho  <kho@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkFramePeer.java

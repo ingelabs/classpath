@@ -111,9 +111,6 @@ classes: genclasses
 genclasses: gen-classlist.sh standard.omit
 	top_builddir=$(top_builddir) $(SHELL) ./gen-classlist.sh standard
 
-gennio:
-	top_builddir=$(top_builddir) $(SHELL) ./gen_nio.sh
-
 $(JAVA_DEPEND): genclasses
 
 compile-classes: classes $(JAVA_SRCS) Makefile
