@@ -46,11 +46,12 @@ class PrettyPanel extends Panel
     {
       myInsets = new Insets (10, 10, 10, 10);
     }
-
+  /*
   public Insets getInsets ()
     {
       return myInsets;
     }
+  */
 }
 
 class PrettyFrame extends Frame
@@ -60,27 +61,28 @@ class PrettyFrame extends Frame
   public PrettyFrame (String title)
     {
       super (title);
-      myInsets = new Insets (-10, -10, -10, -10);
-      ((BorderLayout) getLayout ()).setHgap (5);
-      ((BorderLayout) getLayout ()).setVgap (5);
+      myInsets = new Insets (10, 10, 10, 10);
+      //      ((BorderLayout) getLayout ()).setHgap (5);
+      //      ((BorderLayout) getLayout ()).setVgap (5);
     }
 
   public PrettyFrame ()
     {
       this ("");
     }
-
+  /*
   public Insets getInsets()
     {
       return myInsets;
     }
+  */
 }
 
 class MainWindow extends PrettyFrame implements ActionListener 
 {
   Button closeButton, buttonsButton, dialogButton, cursorsButton;
-  Frame buttonsWindow = null;
-  Dialog dialogWindow = null, cursorsWindow = null;
+  Frame buttonsWindow = null, cursorsWindow = null;
+  Dialog dialogWindow = null;
 
   MainWindow () 
     {
@@ -88,8 +90,24 @@ class MainWindow extends PrettyFrame implements ActionListener
 
       System.out.println (getInsets ());
 
-      ScrollPane sp = new ScrollPane();
-      PrettyPanel p = new PrettyPanel();
+      ScrollPane sp = new ScrollPane()
+      {
+	public void setBounds (int x, int y, int w, int h)
+	{
+	  System.out.println (getVScrollbarWidth());
+	  System.out.println ("SP bounds: " + x +", "+ y + " " + w + "x" + h);
+	  super.setBounds (x, y, w, h);
+	}
+      };
+      PrettyPanel p = new PrettyPanel()
+      {
+	public void setBounds (int x, int y, int w, int h)
+	{
+	  System.out.println ("Panel bounds: " + x +", "+ y + " " + w + "x" + h);
+	  super.setBounds (x, y, w, h);
+	}
+      };
+
       p.setLayout (new GridLayout (10, 1));
       sp.add (p);
       add (sp, "Center");
@@ -112,7 +130,7 @@ class MainWindow extends PrettyFrame implements ActionListener
       cursorsButton.addActionListener (this);
       p.add (cursorsButton);
 
-      pack();
+      setSize (200, 400);
     }
 
   public void actionPerformed (ActionEvent evt)
@@ -279,7 +297,7 @@ class DialogWindow extends Dialog
     }
 }
 
-class CursorsWindow extends Dialog implements ItemListener
+class CursorsWindow extends PrettyFrame implements ItemListener
 {
   static Frame f;
   MainWindow mainWindow;
@@ -288,7 +306,7 @@ class CursorsWindow extends Dialog implements ItemListener
 
   public CursorsWindow (MainWindow mw)
     {
-      super (mw);
+      super ("Cursors");
 
       mainWindow = mw;
 
@@ -312,27 +330,36 @@ class CursorsWindow extends Dialog implements ItemListener
 
       add (cursorChoice, "North");
 
-      cursorCanvas = new Canvas () { 
-	public void paint (Graphics g) {
+      cursorCanvas = new Canvas () 
+      { 
+	public void paint (Graphics g) 
+	{
 	  Dimension d = getSize();
-	  int hoffset = d.width/6;
-	  int voffset = d.height/6;
-	  d.width = d.width-(hoffset*2);
-	  d.height = d.height-(voffset*2);
 	  g.setColor (Color.white);
-	  g.fillRect (hoffset, voffset, d.width, d.height/2);
+	  g.fillRect (0, 0, d.width, d.height/2);
 	  g.setColor (Color.black);
-	  g.fillRect (hoffset, voffset+d.height/2, d.width, d.height/2);
+	  g.fillRect (0, d.height/2, d.width, d.height/2);
 	  g.setColor (getBackground());
-	  g.fillRect (hoffset+d.width/3, voffset+d.height/3, d.width/3,
+	  g.fillRect (d.width/3, d.height/3, d.width/3,
 		      d.height/3);
 	}
       };
 
       cursorCanvas.setSize (80,80);
+      /*
+      Panel p = new Panel() 
+      {
+	public Insets getInsets ()
+	{
+	  return new Insets (10, 0, 10, 0);
+	}
+      };
+      
+      p.add (cursorCanvas);
+      add (p, "Center");
+      */
       add (cursorCanvas, "Center");
-
-      Panel p = new Panel();
+     Panel p = new Panel();
 
       Button cb = new Button ("Close");
       cb.addMouseListener(new MouseAdapter () {
@@ -343,7 +370,6 @@ class CursorsWindow extends Dialog implements ItemListener
       p.add (cb);
 
       add (p, "South");
-      setTitle ("Cursor");
 
       setSize (160, 180);
     }
@@ -361,25 +387,3 @@ class CursorsWindow extends Dialog implements ItemListener
     }
 }
 
-
-
-
-
-/*
-
-      Panel pan=new Panel();
-
-      Label l = new Label ("Pithy Message:");
-      l.setCursor (Cursor.getPredefinedCursor (Cursor.WAIT_CURSOR));
-      pan.add (l);
-
-      TextField tf = new TextField("Hello world!");
-      pan.add(tf);
-
-      final Canvas ch = new Canvas () { 
-	public void paint (Graphics g) {
-	  g.setColor (Color.blue);
-	  g.drawLine (xs,ys,xs+20,ys+20);
-	}
-      };
-*/
