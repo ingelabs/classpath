@@ -72,8 +72,6 @@ static jint window_get_new_state (GtkWidget *widget);
 static gboolean window_property_changed_cb (GtkWidget *widget,
 					    GdkEventProperty *event,
 					    jobject peer);
-static void menubar_resize_cb (GtkWidget *widget, GtkAllocation *alloc, 
-                               jobject peer);					    
 
 /*
  * Make a new window.
@@ -196,7 +194,12 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_connectJObject
       printf("*** this is not a vbox\n");
     }
   children = gtk_container_get_children(GTK_CONTAINER(vbox));
-  layout = children->data;
+  do
+  {
+    layout = children->data;
+    children = children->next;
+  }
+  while (!GTK_IS_LAYOUT (layout) && children != NULL);
 
   if(!GTK_IS_LAYOUT(layout))
     {
@@ -374,18 +377,37 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_nativeSetBounds
 
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkFramePeer_removeMenuBarPeer
-  (JNIEnv *env, jobject obj, jobject menubar)
+  (JNIEnv *env, jobject obj)
 {
   void *wptr;
   GtkWidget *box;
   GtkWidget *mptr;
+  GList* children;
 
   wptr = NSA_GET_PTR (env, obj);
-  mptr = NSA_GET_PTR (env, menubar);
   
   gdk_threads_enter ();
 
   box = GTK_BIN (wptr)->child;
+  
+  children = gtk_container_get_children (GTK_CONTAINER (box));
+  
+  while (children != NULL && !GTK_IS_MENU_SHELL (children->data)) 
+  {
+    children = children->next;
+  }
+  
+  /* If there isn't a MenuBar in this Frame's list of children
+     then we can just return. */
+  if (!GTK_IS_MENU_SHELL (children->data))
+    return;
+  else
+    mptr = children->data;
+    
+  /* This will actually destroy the MenuBar. By removing it from
+     its parent, the reference count for the MenuBar widget will
+     decrement to 0. The widget will be automatically destroyed 
+     by Gtk. */
   gtk_container_remove (GTK_CONTAINER (box), GTK_WIDGET (mptr));  
   
   gdk_threads_leave();
@@ -398,15 +420,12 @@ Java_gnu_java_awt_peer_gtk_GtkFramePeer_setMenuBarPeer
   void *wptr;
   GtkWidget *mptr;
   GtkWidget *box;
-  jobject *gref = NSA_GET_GLOBAL_REF (env, obj);
-  
+
   wptr = NSA_GET_PTR (env, obj);
   mptr = NSA_GET_PTR (env, menubar);
   
   gdk_threads_enter ();
 
-  g_signal_connect (G_OBJECT (mptr), "size-allocate", 
-                    G_CALLBACK (menubar_resize_cb), *gref);    
   box = GTK_BIN (wptr)->child;		    
   gtk_box_pack_start (GTK_BOX (box), mptr, 0, 0, 0);
  
@@ -422,14 +441,57 @@ Java_gnu_java_awt_peer_gtk_GtkFramePeer_getMenuBarHeight
 {
   GtkWidget *ptr;
   jint height;
+  GtkRequisition gtkreq;
   
   ptr = NSA_GET_PTR (env, menubar);
 
   gdk_threads_enter ();
-  height = ptr->allocation.height;
+  gtk_widget_size_request (ptr, &gtkreq);
+
+  height = gtkreq.height;
   gdk_threads_leave ();
   return height;
 }
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkFramePeer_moveLayout
+  (JNIEnv *env, jobject obj, jint offset)
+{
+  void* ptr;
+  GList* children;
+  GtkBox* vbox;
+  GtkLayout* layout;
+  GtkWidget* widget;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+
+  children = gtk_container_get_children (GTK_CONTAINER (ptr));
+  vbox = children->data;
+  g_assert (GTK_IS_VBOX (vbox));
+
+  children = gtk_container_get_children (GTK_CONTAINER (vbox));
+  do
+  {
+    layout = children->data;
+    children = children->next;
+  }
+  while (!GTK_IS_LAYOUT (layout) && children != NULL);
+  g_assert (GTK_IS_LAYOUT (layout));  
+  children = gtk_container_get_children (GTK_CONTAINER (layout));
+  
+  while (children != NULL)
+  {
+    widget = children->data;
+    gtk_layout_move (layout, widget, widget->allocation.x,
+                     widget->allocation.y+offset);
+    children = children->next;
+  }
+  
+  gdk_threads_leave ();
+}
+  
 
 static void
 window_get_frame_extents (GtkWidget *window,
@@ -728,27 +790,4 @@ window_property_changed_cb (GtkWidget *widget __attribute__((unused)),
 				(jint) extents[1]); /* right */
 
   return FALSE;
-}
-
-static void menubar_resize_cb (GtkWidget *widget __attribute__((unused)), 
-                               GtkAllocation *alloc __attribute__((unused)), 
-                               jobject peer)
-{
-  static int id_set = 0;
-  static jmethodID postSizeAllocateEventID;
-  
-  if (!id_set)
-    {
-      jclass gtkframepeer = (*gdk_env)->FindClass (gdk_env,
-                                "gnu/java/awt/peer/gtk/GtkFramePeer");
-      postSizeAllocateEventID = (*gdk_env)->GetMethodID (gdk_env,
-                                                     gtkframepeer,
-                                                     "postSizeAllocateEvent",
-                                                     "()V");
-      id_set = 1;
-    }
-  gdk_threads_leave();
-  (*gdk_env)->CallVoidMethod (gdk_env, peer,
-                              postSizeAllocateEventID);
-  gdk_threads_enter();
 }

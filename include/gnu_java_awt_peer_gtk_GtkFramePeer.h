@@ -12,7 +12,8 @@ extern "C"
 
 extern JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkFramePeer_getMenuBarHeight (JNIEnv *env, jobject, jobject);
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkFramePeer_setMenuBarPeer (JNIEnv *env, jobject, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkFramePeer_removeMenuBarPeer (JNIEnv *env, jobject, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkFramePeer_removeMenuBarPeer (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkFramePeer_moveLayout (JNIEnv *env, jobject, jint);
 
 #ifdef __cplusplus
 }

@@ -19,6 +19,7 @@ libgtkpeer_la_SOURCES = \
 			gnu_java_awt_peer_gtk_GtkToolkit.c \
 			gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer.c \
 			gnu_java_awt_peer_gtk_GtkMenuBarPeer.c \
+                        gnu_java_awt_peer_gtk_GtkMenuComponentPeer.c \
 			gnu_java_awt_peer_gtk_GtkWindowPeer.c \
 			gnu_java_awt_peer_gtk_GtkCheckboxPeer.c \
 			gnu_java_awt_peer_gtk_GtkMenuItemPeer.c \
