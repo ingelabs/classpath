@@ -1,5 +1,5 @@
 /* Checkbox.java -- An AWT checkbox widget
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -34,10 +34,12 @@ import java.awt.event.ItemListener;
 import java.io.Serializable;
 
 /**
-  * This class implements a checkbox widget.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This class implements a component which has an on/off state.  Two
+ * or more Checkboxes can be grouped by a CheckboxGroup.
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Tom Tromey <tromey@redhat.com>
+ */
 public class Checkbox extends Component implements ItemSelectable, Serializable
 {
 
@@ -188,10 +190,11 @@ public synchronized void
 setLabel(String label)
 {
   this.label = label;
-
-  CheckboxPeer cp = (CheckboxPeer)getPeer();
-  if (cp != null)
-    cp.setLabel(label);
+  if (peer != null)
+    {
+      CheckboxPeer cp = (CheckboxPeer) peer;
+      cp.setLabel(label);
+    }
 }
 
 /*************************************************************************/
@@ -220,10 +223,11 @@ public synchronized void
 setState(boolean state)
 {
   this.state = state;
-  
-  CheckboxPeer cp = (CheckboxPeer)getPeer();
-  if (cp != null)
-    cp.setState(state);
+  if (peer != null)
+    {
+      CheckboxPeer cp = (CheckboxPeer) peer;
+      cp.setState (state);
+    }
 }
 
 /*************************************************************************/
@@ -272,10 +276,11 @@ public synchronized void
 setCheckboxGroup(CheckboxGroup group)
 {
   this.group = group;
-  
-  CheckboxPeer cp = (CheckboxPeer)getPeer();
-  if (cp != null)
-    cp.setCheckboxGroup(group);
+  if (peer != null)
+    {
+      CheckboxPeer cp = (CheckboxPeer) peer;
+      cp.setCheckboxGroup (group);
+    }
 }
 
 /*************************************************************************/
@@ -286,10 +291,9 @@ setCheckboxGroup(CheckboxGroup group)
 public void
 addNotify()
 {
-  if (getPeer() != null)
-    return;
-
-  setPeer((ComponentPeer)getToolkit().createCheckbox(this));
+  if (peer == null)
+    peer = getToolkit ().createCheckbox (this);
+  super.addNotify ();
 }
 
 /*************************************************************************/
@@ -358,8 +362,8 @@ processItemEvent(ItemEvent event)
 protected String
 paramString()
 {
-  return(getClass().getName() + "(label=" + label + ",state=" + state + ")");
+  return(getClass().getName() + "[label=" + label + ",state=" + state
+	 + ",group=" + group + "]");
 }
 
 } // class Checkbox 
-
