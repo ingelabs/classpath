@@ -1,3 +1,7 @@
+2004-07-15  Michael Koch  <konqueror@gmx.de>
+
+	* include/Makefile.am: Distclean jni_md.h.
+
 2004-07-15  Andrew Haley  <aph@redhat.com>
 
 	* java/io/ObjectOutputStream.java: Add DEBUG statements
