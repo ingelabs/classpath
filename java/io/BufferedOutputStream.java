@@ -1,5 +1,5 @@
 /* BufferedOutputStream.java -- Buffer output into large blocks before writing
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -202,35 +202,21 @@ write(int b) throws IOException
 public synchronized void
 write(byte[] buf, int offset, int len) throws IOException
 {
-  // Buffer can hold everything
+  // Buffer can hold everything.  Note that the case where LEN < 0
+  // is automatically handled by the downstream write.
   if (len < (this.buf.length - count))
     {
       System.arraycopy(buf, offset, this.buf, count, len);
       count += len;
-
-      if (count == buf.length)
-        flush();
     }
   else
     {
+      // The write was too big.  So flush the buffer and write the new
+      // bytes directly to the underlying stream, per the JDK 1.2
+      // docs.
       flush();
-       
-      // Loop and write out full buffer chunks. As an optimization, 
-      // don't buffer these, just write them
-      int i = 0;
-      if ((len / this.buf.length) != 0)
-        for (i = 0; i < (len / this.buf.length); i++)
-          out.write(buf, offset + (i * this.buf.length), this.buf.length);
-
-      // Buffer the remaining bytes
-      if ((len % buf.length) != 0)
-        {
-          System.arraycopy(buf, offset + (i * this.buf.length), this.buf, count, 
-                           len - (i * this.buf.length));
-          count += (len - (i * this.buf.length));
-        }
+      out.write (buf, offset, len);
     }
 }
 
 } // class BufferedOutputStream 
-

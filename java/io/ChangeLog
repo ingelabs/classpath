@@ -1,3 +1,9 @@
+2000-05-19  Tom Tromey  <tromey@cygnus.com>
+
+	* BufferedWriter.java: Merged with libgcj.
+	* BufferedOutputStream.java (write(byte[],int,int)): Removed
+	unused `if'.  Don't bother chunking or buffering large writes.
+
 2000-04-21  Tom Tromey  <tromey@cygnus.com>
 
 	* PipedOutputStream.java (write(int)): Use `receive', not
