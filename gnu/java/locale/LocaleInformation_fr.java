@@ -100,7 +100,7 @@ public class LocaleInformation_fr extends ListResourceBundle
 
   private static final String[] eras = {
     "av. J.-C.",
-    "ap. J.-C."
+    "ap. J.-C.",
   };
 
   private static final String[][] zoneStrings =
@@ -124,7 +124,7 @@ public class LocaleInformation_fr extends ListResourceBundle
     { "America/Montreal", "Heure normale de l\u2019Est", "HNE", "Heure avanc\u00e9e de l\u2019Est", "HAE" },
     { "America/Halifax", "Heure normale de l\u2019Atlantique", "HNA", "Heure avanc\u00e9e de l\u2019Atlantique", "HAA" },
     { "America/St_Johns", "Heure normale de Terre-Neuve", "HNT", "Heure avanc\u00e9e de Terre-Neuve", "HAT" },
-    { "America/Chicago", "Heure normale du Centre (\u00c9UA)", "HNC (\u00c9UA)", "Heure avanc\u00e9e du Centre (\u00c9UA)", "HAC (\u00c9UA)" }
+    { "America/Chicago", "Heure normale du Centre (\u00c9UA)", "HNC (\u00c9UA)", "Heure avanc\u00e9e du Centre (\u00c9UA)", "HAC (\u00c9UA)" },
   };
 
   private static final class Hashtableterritories extends java.util.Hashtable
@@ -393,7 +393,7 @@ public class LocaleInformation_fr extends ListResourceBundle
     { "fullDateFormat", "EEEE d MMMM yyyy" },
     { "fullTimeFormat", "HH' h 'mm z" },
     { "zoneStrings", zoneStrings },
-    { "territories", territories }
+    { "territories", territories },
   };
 
   public Object[][] getContents() { return contents; }

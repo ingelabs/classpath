@@ -53,7 +53,7 @@ public class LocaleInformation_de_LU extends ListResourceBundle
     { "ampms", ampms },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" }
+    { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
   };
 
   public Object[][] getContents() { return contents; }

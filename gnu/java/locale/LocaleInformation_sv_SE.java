@@ -52,7 +52,7 @@ public class LocaleInformation_sv_SE extends ListResourceBundle
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "percentFormat", "#,##0 %" },
-    { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" }
+    { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
   };
 
   public Object[][] getContents() { return contents; }

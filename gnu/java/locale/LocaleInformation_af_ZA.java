@@ -81,7 +81,7 @@ public class LocaleInformation_af_ZA extends ListResourceBundle
     { "shortTimeFormat", "h:mm a" },
     { "mediumTimeFormat", "h:mm:ss a" },
     { "longTimeFormat", "h:mm:ss a" },
-    { "fullTimeFormat", "h:mm:ss a" }
+    { "fullTimeFormat", "h:mm:ss a" },
   };
 
   public Object[][] getContents() { return contents; }

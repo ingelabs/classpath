@@ -46,12 +46,12 @@ public class LocaleInformation_en_IE extends ListResourceBundle
 {
   private static final String[] ampms = {
     "a.m.",
-    "p.m."
+    "p.m.",
   };
 
   private static final String[][] zoneStrings =
   {
-    { "Europe/Dublin", "Greenwich Mean Time", "GMT", "Irish Summer Time", "IST" }
+    { "Europe/Dublin", "Greenwich Mean Time", "GMT", "Irish Summer Time", "IST" },
   };
   
   static final String currencySymbol = "\u00A3";
@@ -72,7 +72,7 @@ public class LocaleInformation_en_IE extends ListResourceBundle
     { "mediumTimeFormat", "HH:mm:ss" },
     { "longTimeFormat", "HH:mm:ss z" },
     { "fullTimeFormat", "HH:mm:ss z" },
-    { "zoneStrings", zoneStrings }
+    { "zoneStrings", zoneStrings },
   };
 
   public Object[][] getContents() { return contents; }

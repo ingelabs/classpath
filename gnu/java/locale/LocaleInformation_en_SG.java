@@ -46,7 +46,7 @@ public class LocaleInformation_en_SG extends ListResourceBundle
 {
   private static final String[][] zoneStrings =
   {
-    { "Pacific/Guadalcanal", "Singapore Standard Time", "SST", "Singapore Standard Time", "SST" }
+    { "Pacific/Guadalcanal", "Singapore Standard Time", "SST", "Singapore Standard Time", "SST" },
   };
 
   static final String[] ampms = { "AM", "PM" };
@@ -68,7 +68,7 @@ public class LocaleInformation_en_SG extends ListResourceBundle
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },
-    { "zoneStrings", zoneStrings }
+    { "zoneStrings", zoneStrings },
   };
 
   public Object[][] getContents() { return contents; }

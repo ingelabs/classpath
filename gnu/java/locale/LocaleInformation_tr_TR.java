@@ -51,7 +51,7 @@ public class LocaleInformation_tr_TR extends ListResourceBundle
   {
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", "#,##0 TL;-#,##0 TL" }
+    { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
   };
 
   public Object[][] getContents() { return contents; }

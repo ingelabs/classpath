@@ -52,7 +52,7 @@ public class LocaleInformation_en_GB extends ListResourceBundle
   
   private static final String[][] zoneStrings =
   {
-    { "Europe/London", "Greenwich Mean Time", "GMT", "", "" }
+    { "Europe/London", "Greenwich Mean Time", "GMT", "", "" },
   };
 
   private static final Object[][] contents =
@@ -69,7 +69,7 @@ public class LocaleInformation_en_GB extends ListResourceBundle
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },
-    { "zoneStrings", zoneStrings }
+    { "zoneStrings", zoneStrings },
   };
 
   public Object[][] getContents() { return contents; }

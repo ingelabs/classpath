@@ -73,7 +73,7 @@ public class LocaleInformation_fr_CH extends ListResourceBundle
     { "currencyFormat", "\u00a4 #,##0.00;\u00a4-#,##0.00" },
     { "shortDateFormat", "dd.MM.yy" },
     { "fullDateFormat", "EEEE, d MMMM yyyy" },
-    { "fullTimeFormat", "HH.mm:ss' h' z" }
+    { "fullTimeFormat", "HH.mm:ss' h' z" },
   };
 
   public Object[][] getContents() { return contents; }

@@ -78,7 +78,7 @@ public class LocaleInformation_ru_UA extends ListResourceBundle
     { "shortTimeFormat", "HH:mm" },
     { "mediumTimeFormat", "HH:mm:ss" },
     { "longTimeFormat", "HH:mm:ss z" },
-    { "fullTimeFormat", "HH:mm:ss z" }
+    { "fullTimeFormat", "HH:mm:ss z" },
   };
 
   public Object[][] getContents() { return contents; }

@@ -84,7 +84,7 @@ public class LocaleInformation_ar_QA extends ListResourceBundle
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
     { "currencyFormat", "\u00a4###0.00;-\u00a4###0.00" },
-    { "shortWeekdays", shortWeekdays }
+    { "shortWeekdays", shortWeekdays },
   };
 
   public Object[][] getContents() { return contents; }

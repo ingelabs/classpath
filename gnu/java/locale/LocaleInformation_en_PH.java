@@ -54,7 +54,7 @@ public class LocaleInformation_en_PH extends ListResourceBundle
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", "\u00a4#,##0.00;(\u00a4#,##0.00)" },
-    { "mediumDateFormat", "MM d, yy" }
+    { "mediumDateFormat", "MM d, yy" },
   };
 
   public Object[][] getContents() { return contents; }

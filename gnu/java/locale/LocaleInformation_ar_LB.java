@@ -112,7 +112,7 @@ public class LocaleInformation_ar_LB extends ListResourceBundle
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
-    { "shortWeekdays", shortWeekdays }
+    { "shortWeekdays", shortWeekdays },
   };
 
   public Object[][] getContents() { return contents; }

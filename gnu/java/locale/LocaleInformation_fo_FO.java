@@ -63,7 +63,7 @@ public class LocaleInformation_fo_FO extends ListResourceBundle
     { "ampms", ampms },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", "\u00a4#,##0.00;\u00a4 -#,##0.00" }
+    { "currencyFormat", "\u00a4#,##0.00;\u00a4 -#,##0.00" },
   };
 
   public Object[][] getContents() { return contents; }

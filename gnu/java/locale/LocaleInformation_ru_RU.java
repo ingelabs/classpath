@@ -71,7 +71,7 @@ public class LocaleInformation_ru_RU extends ListResourceBundle
     { "percentFormat", percentFormat },
     { "decimalSeparator", "," },
     { "groupingSeparator", "\u00a0" },
-    { "currencyFormat", "#,##0.00\u00a4;-#,##0.00\u00a4" }
+    { "currencyFormat", "#,##0.00\u00a4;-#,##0.00\u00a4" },
   };
 
   public Object[][] getContents() { return contents; }

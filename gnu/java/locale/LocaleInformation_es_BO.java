@@ -79,7 +79,7 @@ public class LocaleInformation_es_BO extends ListResourceBundle
     { "shortTimeFormat", "hh:mm a" },
     { "mediumTimeFormat", "hh:mm:ss a" },
     { "longTimeFormat", "hh:mm:ss a z" },
-    { "fullTimeFormat", "hh:mm:ss a z" }
+    { "fullTimeFormat", "hh:mm:ss a z" },
   };
 
   public Object[][] getContents() { return contents; }

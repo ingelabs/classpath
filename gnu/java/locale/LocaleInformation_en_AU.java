@@ -80,7 +80,7 @@ public class LocaleInformation_en_AU extends ListResourceBundle
     { "mediumDateFormat", "dd/MM/yyyy" },
     { "longDateFormat", "d MMMM yyyy" },
     { "fullDateFormat", "EEEE, d MMMM yyyy" },
-    { "longTimeFormat", "h:mm:ss a" }
+    { "longTimeFormat", "h:mm:ss a" },
   };
 
   public Object[][] getContents() { return contents; }

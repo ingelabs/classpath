@@ -76,7 +76,7 @@ public class LocaleInformation_fa_IR extends ListResourceBundle
     { "decimalSeparator", "\u066b" },
     { "groupingSeparator", "\u066c" },
     { "percentFormat", "%#,##0" },
-    { "currencyFormat", "#,##0 \u00a4;\u2212#,##0 \u00a4" }
+    { "currencyFormat", "#,##0 \u00a4;\u2212#,##0 \u00a4" },
   };
 
   public Object[][] getContents() { return contents; }

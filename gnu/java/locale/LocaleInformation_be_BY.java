@@ -76,7 +76,7 @@ public class LocaleInformation_be_BY extends ListResourceBundle
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
-    { "currencyFormat", "\u00a4#,##0;-\u00a4#,##0" }
+    { "currencyFormat", "\u00a4#,##0;-\u00a4#,##0" },
   };
 
   public Object[][] getContents() { return contents; }

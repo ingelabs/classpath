@@ -106,7 +106,7 @@ public class LocaleInformation_nl extends ListResourceBundle
 
   private static final String[] eras = {
     "v. Chr.",
-    "n. Chr."
+    "n. Chr.",
   };
 
   private static final String[][] zoneStrings =
@@ -412,7 +412,7 @@ public class LocaleInformation_nl extends ListResourceBundle
     { "longTimeFormat", "H:mm:ss z" },
     { "fullTimeFormat", "H:mm:ss' uur' z" },
     { "zoneStrings", zoneStrings },
-    { "territories", territories }
+    { "territories", territories },
   };
 
   public Object[][] getContents() { return contents; }

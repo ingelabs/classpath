@@ -76,7 +76,7 @@ public class LocaleInformation_fr_CA extends ListResourceBundle
     { "currencyFormat", "#,##0.00 \u00a4;(#,##0.00\u00a4)" },
     { "shortDateFormat", "yy-MM-dd" },
     { "mediumDateFormat", "yy-MM-dd" },
-    { "fullTimeFormat", "HH' h 'mm' min 'ss' s 'z" }
+    { "fullTimeFormat", "HH' h 'mm' min 'ss' s 'z" },
   };
 
   public Object[][] getContents() { return contents; }

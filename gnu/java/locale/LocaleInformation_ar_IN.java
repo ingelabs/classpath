@@ -78,7 +78,7 @@ public class LocaleInformation_ar_IN extends ListResourceBundle
     { "longDateFormat", "d MMMM yyyy" },
     { "fullDateFormat", "EEEE d MMMM yyyy" },
     { "longTimeFormat", "h:mm:ss a z" },
-    { "fullTimeFormat", "h:mm:ss a z" }
+    { "fullTimeFormat", "h:mm:ss a z" },
   };
 
   public Object[][] getContents() { return contents; }

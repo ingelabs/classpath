@@ -82,7 +82,7 @@ public class LocaleInformation_ta_IN extends ListResourceBundle
     { "shortTimeFormat", "h:mm a" },
     { "mediumTimeFormat", "h:mm:ss a" },
     { "longTimeFormat", "h:mm:ss a z" },
-    { "fullTimeFormat", "h:mm:ss a z" }
+    { "fullTimeFormat", "h:mm:ss a z" },
   };
 
   public Object[][] getContents() { return contents; }

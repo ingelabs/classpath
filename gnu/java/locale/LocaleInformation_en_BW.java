@@ -60,7 +60,7 @@ public class LocaleInformation_en_BW extends ListResourceBundle
     { "longDateFormat", "dd MMMM yyyy" },
     { "fullDateFormat", "EEEE dd MMMM yyyy" },
     { "longTimeFormat", "h:mm:ss a" },
-    { "fullTimeFormat", "h:mm:ss a" }
+    { "fullTimeFormat", "h:mm:ss a" },
   };
 
   public Object[][] getContents() { return contents; }

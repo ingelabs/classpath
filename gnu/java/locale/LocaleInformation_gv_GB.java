@@ -78,7 +78,7 @@ public class LocaleInformation_gv_GB extends ListResourceBundle
     { "mediumDateFormat", "MMM dd,yy" },
     { "longDateFormat", "dd MMMM yyyy" },
     { "fullDateFormat", "EEEE dd MMMM yyyy" },
-    { "longTimeFormat", "HH:mm:ss" }
+    { "longTimeFormat", "HH:mm:ss" },
   };
 
   public Object[][] getContents() { return contents; }

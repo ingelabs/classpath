@@ -100,12 +100,12 @@ public class LocaleInformation_el extends ListResourceBundle
 
   private static final String[] eras = {
     "\u03c0.\u03a7.",
-    "\u03bc.\u03a7."
+    "\u03bc.\u03a7.",
   };
 
   private static final String[] ampms = {
     "\u03a0\u039c",
-    "\u039c\u039c"
+    "\u039c\u039c",
   };
 
   private static final class Hashtableterritories extends java.util.Hashtable
@@ -376,7 +376,7 @@ public class LocaleInformation_el extends ListResourceBundle
     { "mediumTimeFormat", "h:mm:ss a" },
     { "longTimeFormat", "h:mm:ss a z" },
     { "fullTimeFormat", "h:mm:ss a z" },
-    { "territories", territories }
+    { "territories", territories },
   };
 
   public Object[][] getContents() { return contents; }

@@ -76,7 +76,7 @@ public class LocaleInformation_ar_KW extends ListResourceBundle
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
-    { "currencyFormat", "\u00a4 #,##0.000;\u00a4 #,##0.000-" }
+    { "currencyFormat", "\u00a4 #,##0.000;\u00a4 #,##0.000-" },
   };
 
   public Object[][] getContents() { return contents; }

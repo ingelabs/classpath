@@ -73,7 +73,7 @@ public class LocaleInformation_sq_AL extends ListResourceBundle
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
-    { "currencyFormat", "\u00a4#,##0.00;-\u00a4#,##0.00" }
+    { "currencyFormat", "\u00a4#,##0.00;-\u00a4#,##0.00" },
   };
 
   public Object[][] getContents() { return contents; }

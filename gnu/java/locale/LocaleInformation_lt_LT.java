@@ -72,7 +72,7 @@ public class LocaleInformation_lt_LT extends ListResourceBundle
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", "#,##%" },
-    { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" }
+    { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
   };
 
   public Object[][] getContents() { return contents; }

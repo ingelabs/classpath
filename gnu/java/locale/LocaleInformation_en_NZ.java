@@ -57,7 +57,7 @@ public class LocaleInformation_en_NZ extends ListResourceBundle
     { "mediumDateFormat", "d/MM/yyyy" },
     { "longDateFormat", "d MMMM yyyy" },
     { "fullDateFormat", "EEEE, d MMMM yyyy" },
-    { "longTimeFormat", "h:mm:ss a" }
+    { "longTimeFormat", "h:mm:ss a" },
   };
 
   public Object[][] getContents() { return contents; }

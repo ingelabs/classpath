@@ -78,7 +78,7 @@ public class LocaleInformation_kw_GB extends ListResourceBundle
     { "mediumDateFormat", "d MMM yyyy" },
     { "longDateFormat", "d MMMM yyyy" },
     { "fullDateFormat", "EEEE d MMMM yyyy" },
-    { "longTimeFormat", "HH:mm:ss" }
+    { "longTimeFormat", "HH:mm:ss" },
   };
 
   public Object[][] getContents() { return contents; }

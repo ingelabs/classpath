@@ -51,7 +51,7 @@ public class LocaleInformation_fi_FI extends ListResourceBundle
   {
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", "#,##0.00 $;-#,##0.00 $" }
+    { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
   };
 
   public Object[][] getContents() { return contents; }

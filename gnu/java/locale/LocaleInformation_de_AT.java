@@ -64,7 +64,7 @@ public class LocaleInformation_de_AT extends ListResourceBundle
     { "currencyFormat", currencyFormat },
     { "longDateFormat", "dd. MMMM yyyy" },
     { "fullDateFormat", "EEEE, dd. MMMM yyyy" },
-    { "fullTimeFormat", "HH:mm' Uhr 'z" }
+    { "fullTimeFormat", "HH:mm' Uhr 'z" },
   };
 
   public Object[][] getContents() { return contents; }

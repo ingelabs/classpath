@@ -76,7 +76,7 @@ public class LocaleInformation_fr_LU extends ListResourceBundle
     { "decimalSeparator", decimalSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
-    { "groupingSeparator", "." }
+    { "groupingSeparator", "." },
   };
 
   public Object[][] getContents() { return contents; }

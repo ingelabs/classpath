@@ -77,7 +77,7 @@ public class LocaleInformation_ga_IE extends ListResourceBundle
     { "shortDateFormat", "dd/MM/yyyy" },
     { "mediumDateFormat", "d MMM yyyy" },
     { "longDateFormat", "d MMMM yyyy" },
-    { "fullDateFormat", "EEEE d MMMM yyyy" }
+    { "fullDateFormat", "EEEE d MMMM yyyy" },
   };
 
   public Object[][] getContents() { return contents; }

@@ -100,12 +100,12 @@ public class LocaleInformation_sv extends ListResourceBundle
 
   private static final String[] eras = {
     "f.Kr.",
-    "e.Kr."
+    "e.Kr.",
   };
 
   private static final String[] ampms = {
     "f.m.",
-    "e.m."
+    "e.m.",
   };
 
   private static final String[][] zoneStrings =
@@ -126,7 +126,7 @@ public class LocaleInformation_sv extends ListResourceBundle
     { "America/Chicago", "Central, normaltid", "CST", "Central, sommartid", "CDT" },
     { "Europe/Bucharest", "\u00d6steuropa, normaltid", "EET", "\u00d6steuropa, sommartid", "EEST" },
     { "Asia/Tokyo", "Japan, normaltid", "JST", "Japan, normaltid", "JST" },
-    { "America/Phoenix", "Mountain, normaltid", "MST", "Mountain, sommartid", "MST" }
+    { "America/Phoenix", "Mountain, normaltid", "MST", "Mountain, sommartid", "MST" },
   };
 
   private static final class Hashtableterritories extends java.util.Hashtable
@@ -398,7 +398,7 @@ public class LocaleInformation_sv extends ListResourceBundle
     { "longTimeFormat", "HH.mm.ss z" },
     { "fullTimeFormat", "'kl. 'HH.mm.ss z" },
     { "zoneStrings", zoneStrings },
-    { "territories", territories }
+    { "territories", territories },
   };
 
   public Object[][] getContents() { return contents; }

@@ -105,12 +105,12 @@ public class LocaleInformation_de extends ListResourceBundle
 
   private static final String[] eras = {
     "v. Chr.",
-    "n. Chr."
+    "n. Chr.",
   };
 
   private static final String[] ampms = {
     "vorm.",
-    "nachm."
+    "nachm.",
   };
 
   private static final String[][] zoneStrings =
@@ -406,7 +406,7 @@ public class LocaleInformation_de extends ListResourceBundle
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "monetarySeparator", monetarySeparator },
-    { "territories", territories }
+    { "territories", territories },
   };
 
   public Object[][] getContents() { return contents; }

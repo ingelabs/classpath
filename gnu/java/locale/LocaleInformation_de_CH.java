@@ -77,7 +77,7 @@ public class LocaleInformation_de_CH extends ListResourceBundle
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", "\u00a4 #,##0.00;\u00a4-#,##0.00" },
-    { "territories", territories }
+    { "territories", territories },
   };
 
   public Object[][] getContents() { return contents; }

@@ -82,7 +82,7 @@ public class LocaleInformation_id_ID extends ListResourceBundle
     { "shortTimeFormat", "H:mm" },
     { "mediumTimeFormat", "H:mm:ss" },
     { "longTimeFormat", "H:mm:ss" },
-    { "fullTimeFormat", "H:mm:ss" }
+    { "fullTimeFormat", "H:mm:ss" },
   };
 
   public Object[][] getContents() { return contents; }

@@ -76,7 +76,7 @@ public class LocaleInformation_es_AR extends ListResourceBundle
     { "shortDateFormat", "dd/MM/yy" },
     { "mediumDateFormat", "dd/MM/yyyy" },
     { "longTimeFormat", "H:mm:ss z" },
-    { "fullTimeFormat", "HH'h'''mm z" }
+    { "fullTimeFormat", "HH'h'''mm z" },
   };
 
   public Object[][] getContents() { return contents; }

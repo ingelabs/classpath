@@ -74,7 +74,7 @@ public class LocaleInformation_cy_GB extends ListResourceBundle
     { "shortDateFormat", "dd/MM/yyyy" },
     { "mediumDateFormat", "d MMM yyyy" },
     { "longDateFormat", "dd MMMM yyyy" },
-    { "fullDateFormat", "EEEE, dd MMMM yyyy" }
+    { "fullDateFormat", "EEEE, dd MMMM yyyy" },
   };
 
   public Object[][] getContents() { return contents; }

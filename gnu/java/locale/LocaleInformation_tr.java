@@ -100,7 +100,7 @@ public class LocaleInformation_tr extends ListResourceBundle
 
   private static final String[] eras = {
     "M\u00d6",
-    "MS"
+    "MS",
   };
 
   private static final class Hashtableterritories extends java.util.Hashtable
@@ -366,7 +366,7 @@ public class LocaleInformation_tr extends ListResourceBundle
     { "mediumDateFormat", "dd.MMM.yyyy" },
     { "longDateFormat", "dd MMMM yyyy EEEE" },
     { "fullDateFormat", "dd MMMM yyyy EEEE" },
-    { "territories", territories }
+    { "territories", territories },
   };
 
   public Object[][] getContents() { return contents; }

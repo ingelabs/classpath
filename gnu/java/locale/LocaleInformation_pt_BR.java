@@ -71,6 +71,9 @@ public class LocaleInformation_pt_BR extends ListResourceBundle
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
     { "shortDateFormat", "dd/MM/yy" },
+    { "mediumDateFormat", "dd/MM/yyyy" },
+    { "longTimeFormat", "H'h'm'min's's' z" },
+    { "fullTimeFormat", "HH'h'mm'min'ss's' z" },
   };
 
   public Object[][] getContents() { return contents; }

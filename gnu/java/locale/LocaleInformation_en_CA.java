@@ -55,7 +55,7 @@ public class LocaleInformation_en_CA extends ListResourceBundle
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", "\u00a4#,##0.00;(\u00a4#,##0.00)" },
     { "shortDateFormat", "dd/MM/yy" },
-    { "mediumDateFormat", "d-MMM-yy" }
+    { "mediumDateFormat", "d-MMM-yy" },
   };
 
   public Object[][] getContents() { return contents; }

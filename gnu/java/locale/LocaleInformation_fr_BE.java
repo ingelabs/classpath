@@ -54,7 +54,7 @@ public class LocaleInformation_fr_BE extends ListResourceBundle
     { "groupingSeparator", "." },
     { "shortDateFormat", "d/MM/yy" },
     { "mediumDateFormat", "dd-MMM-yy" },
-    { "fullTimeFormat", "H' h 'mm' min 'ss' s 'z" }
+    { "fullTimeFormat", "H' h 'mm' min 'ss' s 'z" },
   };
 
   public Object[][] getContents() { return contents; }

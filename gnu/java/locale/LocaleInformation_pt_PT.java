@@ -147,7 +147,7 @@ public class LocaleInformation_pt_PT extends ListResourceBundle
     { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
     { "shortDateFormat", "yy/MM/dd" },
     { "mediumDateFormat", "yyyy/MM/dd" },
-    { "territories", territories }
+    { "territories", territories },
   };
 
   public Object[][] getContents() { return contents; }

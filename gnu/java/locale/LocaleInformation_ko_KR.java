@@ -78,7 +78,7 @@ public class LocaleInformation_ko_KR extends ListResourceBundle
     { "mediumDateFormat", "yyyy. MM. dd" },
     { "longDateFormat", "yyyy'\ub144' M'\uc6d4' d'\uc77c'" },
     { "shortTimeFormat", "a h:mm" },
-    { "mediumTimeFormat", "a h:mm:ss" }
+    { "mediumTimeFormat", "a h:mm:ss" },
   };
 
   public Object[][] getContents() { return contents; }
