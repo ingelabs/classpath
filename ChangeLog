@@ -1,5 +1,10 @@
 2004-08-16  Tom Tromey  <tromey@redhat.com>
 
+	Bug 9944.
+	* java/rmi/server/UID.java (UID): Read `nextCount', not count.
+
+2004-08-16  Tom Tromey  <tromey@redhat.com>
+
 	* NEWS: Mention VMCompiler.
 	* java/lang/Compiler.java: Rewrote in terms of VMCompiler.
 	* vm/reference/java/lang/VMCompiler.java: New file.
