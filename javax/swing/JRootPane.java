@@ -3,6 +3,11 @@ package javax.swing;
 import java.awt.*;
 import java.awt.event.*;
 
+import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleRole;
+import javax.accessibility.AccessibleState;
+import javax.accessibility.AccessibleStateSet;
+
 /**
  * This class is where JComponents are added to.
  * Unlike awt where you could just say frame.add(),

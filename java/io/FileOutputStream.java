@@ -39,6 +39,8 @@ exception statement from your version. */
 package java.io;
 
 import gnu.classpath.Configuration;
+import java.nio.channels.FileChannel;
+import gnu.java.nio.FileChannelImpl;
 
 /**
   * This classes allows a stream of data to be written to a disk file or
@@ -352,6 +354,30 @@ finalize() throws IOException
 {
   close();
 }
+
+/*************************************************************************/
+
+/**
+ *  This method creates a java.nio.channels.FileChannel.
+ * Nio does not allow one to create a file channel directly.
+ * A file channel must be created by first creating an instance of
+ * Input/Output/RandomAccessFile and invoking the getChannel() method on it.
+ */
+
+private FileChannel ch; /* cached associated file-channel */
+
+public FileChannel 
+getChannel() 
+{
+    synchronized (this) 
+	{
+	    if (ch == null)
+		ch = new gnu.java.nio.FileChannelImpl(native_fd,
+						      this);
+	}
+    return ch;
+}
+
 
 } // class FileOutputStream
 

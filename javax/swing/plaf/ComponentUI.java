@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.border.*;
 import javax.swing.*;
 
+import javax.accessibility.*;
 
 public abstract class ComponentUI 
     implements UIResource // ??

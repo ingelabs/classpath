@@ -10,7 +10,6 @@ import java.nio.*;
 public final class BUFFERImpl extends java.nio.  BUFFER
 {
     private int array_offset;
-    ELT [] backing_buffer;
     private boolean ro;
 
   public BUFFERImpl(int cap, int off, int lim)
@@ -31,7 +30,7 @@ public final class BUFFERImpl extends java.nio.  BUFFER
 
   public BUFFERImpl(BUFFERImpl copy)
     {
-	backing_buffer = copy.backing_buffer;
+        backing_buffer = copy.backing_buffer;
 	ro             = copy.ro;
 
 	position(copy.position());
@@ -51,7 +50,7 @@ public final class BUFFERImpl extends java.nio.  BUFFER
   private static native ELT[] nio_cast(float[]copy);
   private static native ELT[] nio_cast(double[]copy);
 
-#define CAST_CTOR(ELT,TO_TYPE) \
+#define CAST_CTOR(ELT,TO_TYPE,TO_SIZE) \
     BUFFERImpl(ELT[] copy) \
     { \
 	this.backing_buffer = copy != null ? nio_cast(copy) : null; \
@@ -59,25 +58,27 @@ public final class BUFFERImpl extends java.nio.  BUFFER
 \
 \
 \
-    private static native ELT nio_get_ ## TO_TYPE(BUFFERImpl b, int index); \
+    private static native ELT nio_get_ ## TO_TYPE(BUFFERImpl b, int index, int limit); \
 \
 \
-    private static native void nio_put_ ## TO_TYPE(BUFFERImpl b, int index, ELT value);\
+    private static native void nio_put_ ## TO_TYPE(BUFFERImpl b, int index, int limit, ELT value);\
 \
 \
    public java.nio. TO_TYPE ## Buffer as ## TO_TYPE ## Buffer() \
   { \
-    return new gnu.java.nio. TO_TYPE ## BufferImpl(backing_buffer); \
+       gnu.java.nio. TO_TYPE ## BufferImpl res = new gnu.java.nio. TO_TYPE ## BufferImpl(backing_buffer); \
+       res.limit((limit()*TO_SIZE)/SIZE); \
+       return res; \
   } 
 
 
-  CAST_CTOR(byte,Byte)
-  CAST_CTOR(char,Char)
-  CAST_CTOR(short,Short)
-  CAST_CTOR(int,Int)
-  CAST_CTOR(long,Long)
-  CAST_CTOR(float,Float)
-  CAST_CTOR(double,Double)
+  CAST_CTOR(byte,Byte,1)
+  CAST_CTOR(char,Char,2)
+  CAST_CTOR(short,Short,2)
+  CAST_CTOR(int,Int,4)
+  CAST_CTOR(long,Long,8)
+  CAST_CTOR(float,Float,4)
+  CAST_CTOR(double,Double,8)
 
 
     public  boolean isReadOnly() 
@@ -142,25 +143,25 @@ public final class BUFFERImpl extends java.nio.  BUFFER
 #define NATIVE_GET_PUT(TYPE,SIZE,ELT)					\
     final public  ELT get ## TYPE()                        			\
     {									\
-	ELT a = nio_get_ ## TYPE(this, position()); 				\
+	ELT a = nio_get_ ## TYPE(this, position(), limit()); 				\
 	inc_pos(SIZE);							\
 	return a;							\
     }									\
     final public  java.nio. BUFFER put ## TYPE(ELT  value) 			\
     {									\
-        nio_put_ ## TYPE(this, position(), value);				\
+        nio_put_ ## TYPE(this, position(), limit(), value);				\
 	inc_pos(SIZE);							\
 	return this; 							\
     }									\
     final public  ELT get ## TYPE(int  index)					\
     {									\
-	ELT a = nio_get_ ## TYPE(this, index); 				\
+	ELT a = nio_get_ ## TYPE(this, index, limit()); 				\
 	/*inc_pos(SIZE);*/							\
 	return a;							\
     }									\
     final public  java.nio. BUFFER put ## TYPE(int  index, ELT  value)	\
     {									\
-	nio_put_ ## TYPE(this, index, value); 			\
+	nio_put_ ## TYPE(this, index, limit(), value); 			\
 	/* inc_pos(SIZE);*/							\
 	return this;							\
     }

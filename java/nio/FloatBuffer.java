@@ -2,6 +2,7 @@ package java.nio;
 public abstract class FloatBuffer extends Buffer
 {
     private ByteOrder endian = ByteOrder.BIG_ENDIAN;
+   protected float [] backing_buffer;
     public static FloatBuffer allocateDirect(int capacity)
     {
         FloatBuffer b = new gnu.java.nio. FloatBufferImpl(capacity, 0, capacity);
@@ -34,8 +35,8 @@ public abstract class FloatBuffer extends Buffer
         return wrap(array, 0, array.length);
     }
     final public FloatBuffer get(float[] dst,
-                      int offset,
-                      int length)
+                            int offset,
+                            int length)
     {
           for (int i = offset; i < offset + length; i++)
               {
@@ -67,11 +68,11 @@ public final FloatBuffer put(float[] src)
     }
 public final boolean hasArray()
     {
-        return false;
+      return (backing_buffer != null);
     }
-    public final float[] array()
+public final float[] array()
     {
-        return null;
+      return backing_buffer;
     }
     public final int arrayOffset()
     {

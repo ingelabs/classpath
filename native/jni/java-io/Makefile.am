@@ -8,7 +8,9 @@ libjavaio_la_SOURCES = 	javaio.h \
 			java_io_FileOutputStream.c \
 			java_io_RandomAccessFile.c \
 			java_io_ObjectOutputStream.c \
-			java_io_ObjectInputStream.c
+			java_io_ObjectInputStream.c \
+			java_nio.c
+		
 
 libjavaio_la_LDFLAGS = -module -version-info @LIBVERSION@ 
 

@@ -2,6 +2,10 @@ package javax.swing;
 
 import java.awt.*;
 import javax.swing.plaf.*;
+import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleRole;
+import javax.accessibility.AccessibleState;
+import javax.accessibility.AccessibleStateSet;
 
 public class JOptionPane extends JComponent 
 {

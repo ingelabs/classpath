@@ -6,6 +6,7 @@ import javax.swing.text.*;
 import javax.swing.event.*;
 import java.awt.event.*;
 import java.awt.*;
+import javax.accessibility.*;
 
 public class JEditorPane extends JTextComponent
 {

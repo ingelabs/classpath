@@ -1,6 +1,7 @@
 package gnu.java.nio;
 
 import java.nio.*;
+import java.io.IOException;
 
 #include "temp.h"
 
@@ -20,6 +21,12 @@ final public class MappedTYPEFileBuffer
   {
     this.ch = ch;
     address = ch.address;
+    try {
+      long si = ch.size() / SIZE;
+      limit((int)si);
+    } catch (IOException e) {
+      System.err.println("failed to get size of file-channel's file");
+    }
   }
 
   public MappedTYPEFileBuffer(MappedTYPEFileBuffer b)
@@ -27,6 +34,8 @@ final public class MappedTYPEFileBuffer
     this.ro = b.ro;
     this.ch = b.ch;
     address = b.address;
+    
+    limit(b.limit());   
   }
 
   public boolean isReadOnly()
@@ -36,8 +45,8 @@ final public class MappedTYPEFileBuffer
 
 #if SIZE == 1
 #define GO(TYPE,ELT) \
- public static native ELT nio_read_ ## TYPE ## _file_channel(FileChannelImpl ch, int index); \
- public static native void nio_write_ ## TYPE ## _file_channel(FileChannelImpl ch, int index, ELT value)
+ public static native ELT nio_read_ ## TYPE ## _file_channel(FileChannelImpl ch, int index, int limit, long address); \
+ public static native void nio_write_ ## TYPE ## _file_channel(FileChannelImpl ch, int index, int limit, ELT value, long address)
     
   GO(Byte,byte);
   GO(Short,short);
@@ -50,27 +59,27 @@ final public class MappedTYPEFileBuffer
 
 final public ELT get()
   {
-    ELT a = MappedByteFileBuffer.nio_read_TYPE_file_channel(ch, position());
+    ELT a = MappedByteFileBuffer.nio_read_TYPE_file_channel(ch, position(), limit(), address);
     position(position() + SIZE);
     return a;
   }
 
 final public TYPEBuffer put(ELT b)
   {
-    MappedByteFileBuffer.nio_write_TYPE_file_channel(ch, position(), b);
+    MappedByteFileBuffer.nio_write_TYPE_file_channel(ch, position(), limit(), b, address);
     position(position() + SIZE);
     return this;
   }
 
 final public ELT get(int index)
   {
-    ELT a = MappedByteFileBuffer.nio_read_TYPE_file_channel(ch, index);
+    ELT a = MappedByteFileBuffer.nio_read_TYPE_file_channel(ch, index, limit(), address);
     return a;
   }
 
 final public TYPEBuffer put(int index, ELT b)
   {
-    MappedByteFileBuffer.nio_write_TYPE_file_channel(ch, index, b);
+    MappedByteFileBuffer.nio_write_TYPE_file_channel(ch, index, limit(), b,  address);
     return this;
   }
 
@@ -101,41 +110,43 @@ public  TYPEBuffer asReadOnlyBuffer()
     return b;
   }
 
-#define CONVERT(TYPE,STYPE)					\
+#define CONVERT(TYPE,STYPE,TO_SIZE)					\
 final    public  TYPE ## Buffer as ## TYPE ## Buffer()		\
     {								\
-	return new Mapped ## TYPE ## FileBuffer(ch);		\
+       TYPE ## Buffer res =	 new Mapped ## TYPE ## FileBuffer(ch);		\
+       res.limit((limit()*SIZE)/TO_SIZE); \
+       return res; \
     }								\
 final public  STYPE get ## TYPE()					\
   {								\
-    STYPE a = MappedByteFileBuffer.nio_read_ ## TYPE ## _file_channel(ch, position());	\
+    STYPE a = MappedByteFileBuffer.nio_read_ ## TYPE ## _file_channel(ch, position(), limit(), address);	\
     position(position() + SIZE);						\
     return a;							\
   }								\
 final public TYPEBuffer put ## TYPE(STYPE value)				\
   {								\
-    MappedByteFileBuffer.nio_write_ ## TYPE ## _file_channel(ch, position(), value);	\
+    MappedByteFileBuffer.nio_write_ ## TYPE ## _file_channel(ch, position(), limit(), value, address);	\
     position(position() + SIZE);						\
     return this;						\
   }								\
 final public STYPE get ## TYPE(int index)					\
   {								\
-    STYPE a = MappedByteFileBuffer.nio_read_ ## TYPE ## _file_channel(ch, index);	\
+    STYPE a = MappedByteFileBuffer.nio_read_ ## TYPE ## _file_channel(ch, index, limit(), address);	\
     return a;							\
   }								\
 final public  TYPEBuffer put ## TYPE(int index, STYPE value)		\
   {								\
-    MappedByteFileBuffer.nio_write_ ## TYPE ## _file_channel(ch, index, value);	\
+    MappedByteFileBuffer.nio_write_ ## TYPE ## _file_channel(ch, index, limit(), value,  address);	\
     return this;						\
   }
 
-  CONVERT(Byte,byte);
-  CONVERT(Char,char);
-  CONVERT(Short,short);
-  CONVERT(Int,int);
-  CONVERT(Long,long);
-  CONVERT(Float,float);
-  CONVERT(Double,double);
+  CONVERT(Byte,byte,1);
+  CONVERT(Char,char,2);
+  CONVERT(Short,short,2);
+  CONVERT(Int,int,4);
+  CONVERT(Long,long,8);
+  CONVERT(Float,float,4);
+  CONVERT(Double,double,8);
     
 }
 

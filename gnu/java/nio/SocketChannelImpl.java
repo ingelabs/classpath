@@ -5,6 +5,7 @@ import java.io.*;
 import java.nio.*;
 import java.nio.channels.*;
 import java.nio.channels.spi.*;
+import gnu.classpath.Configuration;
 
 public class SocketChannelImpl extends SocketChannel
 {
@@ -14,7 +15,7 @@ public class SocketChannelImpl extends SocketChannel
     boolean blocking = true;
     boolean connected = false;
     InetSocketAddress sa;
-
+    
     static native int SocketCreate();
     static native int SocketConnect(int fd, InetAddress a, int port);
     static native int SocketBind(int fd, InetAddress host, int port);
@@ -29,6 +30,11 @@ public class SocketChannelImpl extends SocketChannel
 	super(provider);
 
 	fd = SocketCreate();
+	
+	if (fd == -1)
+	    {
+		System.err.println("failed to create socket:"+fd);
+	    }
 
 	//System.out.println("socket-channel:"+fd);
     }
@@ -162,7 +168,7 @@ public class SocketChannelImpl extends SocketChannel
 	if (src instanceof ByteBufferImpl)
 	    {
 		ByteBufferImpl bi = (ByteBufferImpl) src;
-		byte[]b = bi.backing_buffer;
+		byte[]b = bi.array();
 		bytes = SocketWrite(fd, b, 0, len);
 
 		//System.out.println("reused memory buffer....");

@@ -2,6 +2,7 @@ package java.nio;
 public abstract class LongBuffer extends Buffer
 {
     private ByteOrder endian = ByteOrder.BIG_ENDIAN;
+   protected long [] backing_buffer;
     public static LongBuffer allocateDirect(int capacity)
     {
         LongBuffer b = new gnu.java.nio. LongBufferImpl(capacity, 0, capacity);
@@ -34,8 +35,8 @@ public abstract class LongBuffer extends Buffer
         return wrap(array, 0, array.length);
     }
     final public LongBuffer get(long[] dst,
-                      int offset,
-                      int length)
+                            int offset,
+                            int length)
     {
           for (int i = offset; i < offset + length; i++)
               {
@@ -67,11 +68,11 @@ public final LongBuffer put(long[] src)
     }
 public final boolean hasArray()
     {
-        return false;
+      return (backing_buffer != null);
     }
-    public final long[] array()
+public final long[] array()
     {
-        return null;
+      return backing_buffer;
     }
     public final int arrayOffset()
     {

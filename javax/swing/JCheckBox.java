@@ -3,6 +3,7 @@ package javax.swing;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.plaf.*;
+import javax.accessibility.*;
 
 /**
  * An instance of JCheckbox can be added to a panel, frame etc

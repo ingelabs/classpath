@@ -4,6 +4,12 @@ import java.util.*;
 import javax.swing.plaf.*;
 import java.awt.*;
 
+
+import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleRole;
+import javax.accessibility.AccessibleState;
+import javax.accessibility.AccessibleStateSet;
+
 public class JTabbedPane extends JComponent
 {
     class Tab

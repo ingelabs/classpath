@@ -2,6 +2,7 @@ package javax.swing;
 
 import java.awt.*;
 import javax.swing.plaf.*;
+import javax.accessibility.*;
 
 public class JTree extends JComponent implements Scrollable, Accessible
 {

@@ -28,35 +28,34 @@ public abstract class CharsetEncoder
 	this.repl = replacement;
     }
  
- float averageBytesPerChar()
+    public float averageBytesPerChar()
     {
 	return averageBytesPerChar;
     }
 
-    boolean canEncode(char c)
+    public boolean canEncode(char c)
     {
 	return true;
     }
     
- boolean canEncode(CharSequence cs)
+    public boolean canEncode(CharSequence cs)
     {
 	return true;
     }
     
-    Charset charset()
+    public Charset charset()
     {
 	return cs;
     }
     
-    ByteBuffer encode(CharBuffer in)
+    public ByteBuffer encode(CharBuffer in)
     {
 	ByteBuffer x = ByteBuffer.allocate(in.remaining());
 	encode(in, x, false);
-
 	return x;
     }
     
-    CoderResult encode(CharBuffer in, ByteBuffer out, boolean endOfInput)
+    public CoderResult encode(CharBuffer in, ByteBuffer out, boolean endOfInput)
     {   
 	return encodeLoop(in, out);
     }
@@ -64,9 +63,7 @@ public abstract class CharsetEncoder
     
     protected abstract  CoderResult encodeLoop(CharBuffer in, ByteBuffer out);
     
-    
-
-    CoderResult flush(ByteBuffer out)
+    public CoderResult flush(ByteBuffer out)
     {
 	return implFlush(out);
     }
@@ -97,43 +94,44 @@ public abstract class CharsetEncoder
 	return true;
     }
 
- CodingErrorAction malformedInputAction()
+
+    public CodingErrorAction malformedInputAction()
     {
 	return null;
     }
 
- float maxBytesPerChar()
+    public float maxBytesPerChar()
     {
 	return  maxBytesPerChar;
     }    
 
-    CharsetEncoder onMalformedInput(CodingErrorAction newAction)
+    public CharsetEncoder onMalformedInput(CodingErrorAction newAction)
     {
 	return null;
     }
 
-    CharsetEncoder onUnmappableCharacter(CodingErrorAction newAction)
+    public CharsetEncoder onUnmappableCharacter(CodingErrorAction newAction)
     {
 	return null;
     }
     
-    byte[] replacement()
+    public byte[] replacement()
     {
 	return repl;
     }
 
-    CharsetEncoder replaceWith(byte[] newReplacement)
+    public CharsetEncoder replaceWith(byte[] newReplacement)
     {
 	repl = newReplacement;
 	return null;
     }
 
- CharsetEncoder reset()
+    public CharsetEncoder reset()
     {
 	return null;
     }
 
- CodingErrorAction unmappableCharacterAction()
+    public CodingErrorAction unmappableCharacterAction()
     {
 	return null;
     } 

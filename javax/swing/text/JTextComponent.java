@@ -5,6 +5,11 @@ import javax.swing.*;
 import javax.swing.plaf.*;
 
 
+import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleRole;
+import javax.accessibility.AccessibleState;
+import javax.accessibility.AccessibleStateSet;
+
 public class JTextComponent extends JComponent
 {
     public class KeyBinding

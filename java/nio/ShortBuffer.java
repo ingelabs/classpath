@@ -2,6 +2,7 @@ package java.nio;
 public abstract class ShortBuffer extends Buffer
 {
     private ByteOrder endian = ByteOrder.BIG_ENDIAN;
+   protected short [] backing_buffer;
     public static ShortBuffer allocateDirect(int capacity)
     {
         ShortBuffer b = new gnu.java.nio. ShortBufferImpl(capacity, 0, capacity);
@@ -34,8 +35,8 @@ public abstract class ShortBuffer extends Buffer
         return wrap(array, 0, array.length);
     }
     final public ShortBuffer get(short[] dst,
-                      int offset,
-                      int length)
+                            int offset,
+                            int length)
     {
           for (int i = offset; i < offset + length; i++)
               {
@@ -67,11 +68,11 @@ public final ShortBuffer put(short[] src)
     }
 public final boolean hasArray()
     {
-        return false;
+      return (backing_buffer != null);
     }
-    public final short[] array()
+public final short[] array()
     {
-        return null;
+      return backing_buffer;
     }
     public final int arrayOffset()
     {

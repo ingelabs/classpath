@@ -3,6 +3,12 @@ package javax.swing;
 import java.awt.*;
 import java.awt.event.*;
 
+import javax.accessibility.Accessible;
+import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleRole;
+import javax.accessibility.AccessibleState;
+import javax.accessibility.AccessibleStateSet;
+
 
 /**
  * Unlike JComponent derivatives, JDialog inherits from

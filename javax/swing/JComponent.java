@@ -12,6 +12,12 @@ import javax.swing.plaf.*;
 import java.util.*;
 import java.beans.*;
 
+
+import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleRole;
+import javax.accessibility.AccessibleState;
+import javax.accessibility.AccessibleStateSet;
+
 /**
  * Every component in swing inherits from this class (JLabel, JButton, etc).
  * It contains generic methods to manage events, properties and sizes.

@@ -1,6 +1,5 @@
 package java.nio.charset;
 
-
 import java.nio.*;
 
 
@@ -19,35 +18,38 @@ public abstract class CharsetDecoder
 	this.averageCharsPerByte = averageCharsPerByte;
 	this.maxCharsPerByte     = maxCharsPerByte;
     }
- 
-    float averageCharsPerByte()
+    
+    public float averageCharsPerByte()
     {
 	return averageCharsPerByte;
     }
 
-    Charset charset()
+    public Charset charset()
     {
 	return cs;
     }
 
-    CharBuffer decode(ByteBuffer in)
+    public CharBuffer decode(ByteBuffer in)
     {
 	CharBuffer x = CharBuffer.allocate(in.remaining());
-	decode(in, x, false);
+	decode(in, x, false);	
+	x.rewind();
 	return x;
     }
      
-    CoderResult decode(ByteBuffer in, CharBuffer out, boolean endOfInput)
+    public CoderResult decode(ByteBuffer in, CharBuffer out, boolean endOfInput)
     {
 	return decodeLoop(in,out);
     }
+
     protected abstract  CoderResult decodeLoop(ByteBuffer in, CharBuffer out);
 
-    Charset detectedCharset()
+    public Charset detectedCharset()
     {
 	return charset();
     }
-    CoderResult flush(CharBuffer out)
+    
+    public CoderResult flush(CharBuffer out)
     {
 	return implFlush(out);
     }
@@ -55,57 +57,60 @@ public abstract class CharsetDecoder
     {
 	return null;
     }
-protected  void implOnMalformedInput(CodingErrorAction newAction)
+    protected  void implOnMalformedInput(CodingErrorAction newAction)
     {
     }
-protected  void implOnUnmappableCharacter(CodingErrorAction newAction)
+    protected  void implOnUnmappableCharacter(CodingErrorAction newAction)
     {
     }
-protected  void implReplaceWith(String newReplacement)
+    protected  void implReplaceWith(String newReplacement)
     {
     }
-protected  void implReset()
+    protected  void implReset()
     {
     }
- boolean isAutoDetecting()
-    {
-	return true;
-    }
- boolean isCharsetDetected()
+
+    public boolean isAutoDetecting()
     {
 	return true;
     }
- CodingErrorAction malformedInputAction()
+    
+    public boolean isCharsetDetected()
+    {
+	return true;
+    }
+    public CodingErrorAction malformedInputAction()
     {
 	return null;
     }
- float maxCharsPerByte()
+    public float maxCharsPerByte()
     {
 	return maxCharsPerByte;
     }
- CharsetDecoder onMalformedInput(CodingErrorAction newAction)
+    public CharsetDecoder onMalformedInput(CodingErrorAction newAction)
     {
 	return null;
     }
- CharsetDecoder onUnmappableCharacter(CodingErrorAction newAction)
+    public CharsetDecoder onUnmappableCharacter(CodingErrorAction newAction)
     {
 	return null;
     }
- String replacement()
+    public String replacement()
     {
 	return repl;
     }
 
- CharsetDecoder replaceWith(String newReplacement)
+    public CharsetDecoder replaceWith(String newReplacement)
     {
 	return null;
     }
 
- CharsetDecoder reset()
+    public CharsetDecoder reset()
     {
 	return null;
     }
- CodingErrorAction unmappableCharacterAction()
+    
+    public CodingErrorAction unmappableCharacterAction()
     {
 	return null;
     }

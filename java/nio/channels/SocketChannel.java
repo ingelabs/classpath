@@ -13,12 +13,12 @@ abstract public class SocketChannel extends AbstractSelectableChannel
     {
     }
  
-    static SocketChannel open() throws IOException
+    public static SocketChannel open() throws IOException
     {
 	return SelectorProvider.provider().openSocketChannel();
     }
     
-    static SocketChannel open(SocketAddress remote) throws IOException
+    public static SocketChannel open(SocketAddress remote) throws IOException
     {
 	SocketChannel ch = open();
 	
@@ -29,7 +29,7 @@ abstract public class SocketChannel extends AbstractSelectableChannel
     }
     
     
-    long read(ByteBuffer[] dsts)
+    public long read(ByteBuffer[] dsts)
     {
 	long b = 0;
 	for (int i=0;i<dsts.length;i++)
@@ -39,7 +39,7 @@ abstract public class SocketChannel extends AbstractSelectableChannel
 	return b;
     }
     
-    long write(ByteBuffer[] dsts)
+    public long write(ByteBuffer[] dsts)
     {
 	long b = 0;
 	for (int i=0;i<dsts.length;i++)

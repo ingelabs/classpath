@@ -7,6 +7,11 @@ import javax.swing.plaf.*;
 import java.util.*;
 
 
+import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleRole;
+import javax.accessibility.AccessibleState;
+import javax.accessibility.AccessibleStateSet;
+
 public class JList extends JComponent implements Scrollable
 {
     Color select_back, select_fore;

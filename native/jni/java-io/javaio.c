@@ -203,3 +203,7 @@ _javaio_write(JNIEnv *env, jobject obj, jint fd, jarray buf, jint offset,
   return(rc);
 }
 
+
+
+
+

@@ -5,6 +5,11 @@ import java.awt.*;
 import java.awt.event.*;
 
 
+import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleRole;
+import javax.accessibility.AccessibleState;
+import javax.accessibility.AccessibleStateSet;
+
 
 public class JApplet extends Applet
 {
@@ -86,7 +91,7 @@ public class JApplet extends Applet
     protected  void addImpl(Component comp, Object constraints, int index)
     {   super.addImpl(comp, constraints, index);    }
   
-    AccessibleContext getAccessibleContext()
+    public AccessibleContext getAccessibleContext()
     {    return null;  }
   
     int getDefaultCloseOperation()

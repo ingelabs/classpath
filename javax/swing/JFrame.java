@@ -3,6 +3,11 @@ package javax.swing;
 import java.awt.*;
 import java.awt.event.*;
 
+import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleRole;
+import javax.accessibility.AccessibleState;
+import javax.accessibility.AccessibleStateSet;
+
 /**
  * Unlike JComponent derivatives, JFrame inherits from
  * java.awt.Frame. But also lets a look-and-feel component to its work.

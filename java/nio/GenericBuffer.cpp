@@ -16,6 +16,8 @@ package java.nio;
 public abstract class BUFFER extends Buffer
 { 
     private ByteOrder endian = ByteOrder.BIG_ENDIAN;
+
+   protected ELT [] backing_buffer;
     
     public static BUFFER allocateDirect(int capacity)
     {
@@ -58,8 +60,8 @@ public abstract class BUFFER extends Buffer
     }
     
     final public BUFFER get(ELT[] dst,
-		      int offset,
-		      int length)
+			    int offset,
+			    int length)
     {
 
 	  for (int i = offset; i < offset + length; i++)
@@ -97,12 +99,12 @@ public final BUFFER put(ELT[] src)
 
 public final boolean hasArray()
     {
-	return false;
+      return (backing_buffer != null);
     }
 
-    public final ELT[] array()
+public final ELT[] array()
     {
-	return null;
+      return backing_buffer;
     }
 
     public final int arrayOffset()

@@ -5,12 +5,12 @@ import java.nio.*;
 
 public class Charset
 {
-    static Charset forName(String name)
+    public static Charset forName(String name)
     {
 	return new Charset();
     }
 
-    CharsetDecoder newDecoder()
+    public CharsetDecoder newDecoder()
     {	
 	return new CharsetDecoder(this,2,2)
 	    {
@@ -27,20 +27,22 @@ public class Charset
 	    };
     }
 
-    CharsetEncoder newEncoder()
+    public CharsetEncoder newEncoder()
     {		
 	return new CharsetEncoder(this,2,2)
 	    {
 		protected CoderResult encodeLoop(CharBuffer  in,
 						 ByteBuffer  out)
 		{
+		    //System.out.println("in encode loop:"+in.hasRemaining());
+
 		    while (in.hasRemaining())
 			{
 			    char a = in.get();
 			    out.put((byte)a);
 
 			    //int len = out.position();
-			    //System.out.println("pos="+len);
+			    //System.out.println("pos="+len + ","+a);
 			}
 		    return null;
 		}

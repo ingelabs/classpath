@@ -2,6 +2,7 @@ package java.nio;
 public abstract class CharBuffer extends Buffer
 {
     private ByteOrder endian = ByteOrder.BIG_ENDIAN;
+   protected char [] backing_buffer;
     public static CharBuffer allocateDirect(int capacity)
     {
         CharBuffer b = new gnu.java.nio. CharBufferImpl(capacity, 0, capacity);
@@ -34,8 +35,8 @@ public abstract class CharBuffer extends Buffer
         return wrap(array, 0, array.length);
     }
     final public CharBuffer get(char[] dst,
-                      int offset,
-                      int length)
+                            int offset,
+                            int length)
     {
           for (int i = offset; i < offset + length; i++)
               {
@@ -67,11 +68,11 @@ public final CharBuffer put(char[] src)
     }
 public final boolean hasArray()
     {
-        return false;
+      return (backing_buffer != null);
     }
-    public final char[] array()
+public final char[] array()
     {
-        return null;
+      return backing_buffer;
     }
     public final int arrayOffset()
     {

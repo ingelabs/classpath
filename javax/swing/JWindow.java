@@ -2,7 +2,7 @@ package javax.swing;
 
 import java.awt.*;
 import java.awt.event.*;
-
+import javax.accessibility.*;
 
 
 /**

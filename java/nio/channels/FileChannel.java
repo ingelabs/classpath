@@ -4,22 +4,19 @@ import java.io.*;
 import java.nio.*;
 import java.nio.channels.spi.*;
 
-public abstract class FileChannel  extends AbstractChannel
+public abstract class FileChannel  extends AbstractInterruptibleChannel
     implements ByteChannel, GatheringByteChannel, ScatteringByteChannel
 {
 
     public int write(ByteBuffer[]  srcs) throws IOException
     {
-	for (int i=0;i<srcs.length;i++)
-	    {
-		write(srcs[i]);
-	    }
-	return 0;
+	long p = write(srcs, 0, srcs.length);
+    	return (int) p;
     }
 
     public static class MapMode
     {
-	int m;
+	public int m;
 
 	public static MapMode READ_ONLY  = new MapMode(0);
 	public static MapMode READ_WRITE = new MapMode(1);
@@ -40,5 +37,17 @@ public abstract class FileChannel  extends AbstractChannel
 					 long position,
 					 int size)
         throws IOException;
+
+    /**
+     * Return the size of the file thus far
+     */
+    public abstract long size() throws IOException;
+    public abstract long write(ByteBuffer[] srcs, int offset, int length) throws IOException;
+    public abstract int read(ByteBuffer dst) throws IOException;
+    public abstract int write(ByteBuffer src) throws IOException;
+    protected abstract  void implCloseChannel()  throws IOException;
+
+    /* msync with the disk */
+    public abstract  void force(boolean metaData);    
 }
 
