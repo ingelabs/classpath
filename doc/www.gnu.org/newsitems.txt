@@ -1,5 +1,14 @@
+<newsitem date="Feb 25 2005">
+<createlink name="GNU Classpath 0.14"
+            url="https://savannah.gnu.org/forum/forum.php?forum_id=3690">
+Base core class libraries for the GCC 4.0 (gcj) and Kaffe 1.1.5 releases.
+</newsitem>
+
 <newsitem date="18 Feb 2005">
-The gui branch is dead! Long live the gui work.
+<createlink
+ name="The gui branch is dead!"
+ url="http://lists.gnu.org/archive/html/classpath/2005-02/msg00081.html">
+ Long live the gui work.
 </newsitem>
 
 <newsitem date="18 Feb 2005">
