@@ -1,6 +1,7 @@
 2002-11-07  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/rmi/server/UnicastRemoteCall.java: Reindent.
+	* java/rmi/server/RemoteObject.java (readObject): Chain exceptions.
 
 2002-11-07  Michael Koch <konqueror@gmx.de>
 
