@@ -32,7 +32,13 @@ html: create_html
 
 core := $(shell cd $(top_srcdir) && $(FIND) java javax -type d ! -regex .*CVS ! -regex .*doc-files | tr '/' '.' | grep -v "java.awt.dnd.peer" | grep -v "java.awt.peer")
 jaxp := $(shell cd $(top_srcdir)/external/jaxp/source && $(FIND) javax org -type d ! -regex .*CVS | tr '/' '.' | grep -v "org.w3c.dom.")
-packages = $(core) $(jaxp)
+
+# Just generate api doc for the core packages.
+# Adding the external ones takes a lot more time and we should reference
+# them anyway since we will place out own copyright notive on the generated
+# pages.
+# packages = $(core) $(jaxp)
+packages = $(core)
 #| grep -v "^java\$" )
 date := $(shell $(DATE))
 
@@ -63,10 +69,17 @@ clean:
 
 create_html:
 	-$(MKDIR) html > /dev/null 2>&1
-	$(GJDOC) -sourcepath \
-	"$(top_srcdir):$(top_srcdir)/vm/reference:$(top_srcdir)/external/jaxp/source" \
+	$(GJDOC) -sourcepath "$(top_srcdir):$(top_srcdir)/vm/reference" \
 	-d html -bottomnote "$(srcdir)/classpath-copyright.xml" \
 	$(packages)
+
+# Including the external ones (jaxp) this would be:
+# create_html:
+# 	-$(MKDIR) html > /dev/null 2>&1
+# 	$(GJDOC) -sourcepath \
+# 	"$(top_srcdir):$(top_srcdir)/vm/reference:$(top_srcdir)/external/jaxp/source" \
+# 	-d html -bottomnote "$(srcdir)/classpath-copyright.xml" \
+# 	$(packages)
 
 #	-$(CP) -Ru $(srcdir)/xslt/common html
 #	$(XSLTPROC) \

@@ -1,3 +1,8 @@
+2003-11-30  Mark Wielaard  <mark@klomp.org>
+
+	* doc/api/Makefile.am (packages, create_html): Only generate api doc
+	for the core packages, not the external ones.
+
 2003-11-29  Mark Wielaard  <mark@klomp.org>
 
 	Reported by Etienne Gagnon <gagnon.etienne_m@uqam.ca>
