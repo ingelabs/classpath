@@ -15,12 +15,12 @@ esac
 dnl CLASSPATH_CHECK_JAPHAR
 AC_DEFUN(CLASSPATH_CHECK_JAPHAR,
 [
-  if test "$1" = ""; then
+  if test "x$1" = x; then
     AC_PATH_PROG(JAPHAR_CONFIG, japhar-config, "", $PATH:/usr/local/japhar/bin:/usr/japhar/bin)
   else
     AC_PATH_PROG(JAPHAR_CONFIG, japhar-config, "", $1/bin:$PATH)
   fi
-  if test "$JAPHAR_CONFIG" = ""; then
+  if test "x${JAPHAR_CONFIG}" = x; then
     echo "configure: cannot find japhar-config: is Japhar installed?" 1>&2
     exit 1
   fi
@@ -73,7 +73,7 @@ dnl CLASSPATH_CHECK_KAFFE
 AC_DEFUN(CLASSPATH_CHECK_KAFFE,
 [
   AC_PATH_PROG(KAFFE_CONFIG, kaffe-config, "", $PATH:/usr/local/kaffe/bin:/usr/kaffe/bin)
-  if test "$KAFFE_CONFIG" = ""; then
+  if test "x${KAFFE_CONFIG}" = x; then
     echo "configure: cannot find kaffe-config: is Kaffe installed?" 1>&2
     exit 1
   fi
@@ -159,9 +159,9 @@ AC_DEFUN(CLASSPATH_WITH_JAPHAR,
   AC_ARG_WITH(japhar, 
   [  --with-japhar		  configure GNU Classpath for Japhar [default=yes]],
   [
-    if test ${withval} = "yes" || test ${withval} = ""; then
+    if test "x${withval}" = xyes || test "x${withval}" = x; then
       CLASSPATH_CHECK_JAPHAR
-    elif test ${withval} != "no" || test ${withval} != "false"; then
+    elif test "x${withval}" != xno || test "x${withval}" != xfalse; then
       CLASSPATH_CHECK_JAPHAR(${withval})
     fi
   ],
@@ -178,7 +178,7 @@ AC_DEFUN(CLASSPATH_WITH_KAFFE,
   AC_ARG_WITH(kaffe, 
   [  --with-kaffe		  configure GNU Classpath for Kaffe [default=no]],
   [   
-    if test ${withval} = "yes" || test ${withval} = ""; then
+    if test "x${withval}" = xyes || test "x${withval}" = x; then
       CLASSPATH_CHECK_KAFFE
     fi
   ],
@@ -255,16 +255,16 @@ AC_DEFUN(CLASSPATH_FIND_JAVAC,
   CLASSPATH_WITH_JIKES
   CLASSPATH_WITH_KJC
 
-  if test "$user_specified_javac" = ""; then
-    AM_CONDITIONAL(FOUND_GCJ, test "$GCJ" != "")
-    AM_CONDITIONAL(FOUND_JIKES, test "$JIKES" != "")
+  if test "x${user_specified_javac}" = x; then
+    AM_CONDITIONAL(FOUND_GCJ, test "x${GCJ}" != x)
+    AM_CONDITIONAL(FOUND_JIKES, test "x${JIKES}" != x)
   else
-    AM_CONDITIONAL(FOUND_GCJ, test "$user_specified_javac" = "gcj")
-    AM_CONDITIONAL(FOUND_JIKES, test "$user_specified_javac" = "jikes")
+    AM_CONDITIONAL(FOUND_GCJ, test "x${user_specified_javac}" = xgcj)
+    AM_CONDITIONAL(FOUND_JIKES, test "x${user_specified_javac}" = xjikes)
   fi
-  AM_CONDITIONAL(FOUND_KJC, test "$user_specified_javac" = "kjc")
+  AM_CONDITIONAL(FOUND_KJC, test "x${user_specified_javac}" = xkjc)
 
-  if test "$GCJ" = "" && test "$JIKES" = "" && test "$user_specified_javac" != "kjc"; then
+  if test "x${GCJ}" = x && test "x${JIKES}" = x && test "x${user_specified_javac}" != xkjc; then
       echo "configure: cannot find javac, try --with-gcj, --with-jikes, or --with-kjc" 1>&2
       exit 1    
   fi
@@ -276,10 +276,10 @@ AC_DEFUN(CLASSPATH_WITH_GCJ,
   AC_ARG_WITH(gcj,
   [  --with-gcj              bytecode compilation with gcj ],
   [
-    if test ${withval} != "" && test ${withval} != "yes" && test ${withval} != "no"; then
+    if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
       CLASSPATH_CHECK_GCJ(${withval})
     else
-      if test ${withval} != "no"; then
+      if test "x${withval}" != xno; then
         CLASSPATH_CHECK_GCJ
       fi
     fi
@@ -288,14 +288,14 @@ AC_DEFUN(CLASSPATH_WITH_GCJ,
   [
     CLASSPATH_CHECK_GCJ
   ])
-  AM_CONDITIONAL(USER_SPECIFIED_GCJ, test "$GCJ" != "")
+  AM_CONDITIONAL(USER_SPECIFIED_GCJ, test "x${GCJ}" != x)
   AC_SUBST(GCJ)
 ])
 
 
 AC_DEFUN(CLASSPATH_CHECK_GCJ,
 [
-  if test "$1" != ""; then
+  if test "x$1" != x; then
     if test -f "$1"; then
       GCJ="$1"
     else
@@ -312,10 +312,10 @@ AC_DEFUN(CLASSPATH_WITH_JIKES,
   AC_ARG_WITH(jikes,
   [  --with-jikes		  bytecode compilation with jikes ],
   [
-    if test ${withval} != "" && test ${withval} != "yes" && test ${withval} != "no"; then
+    if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
       CLASSPATH_CHECK_JIKES(${withval})
     else
-      if test ${withval} != "no"; then
+      if test "x${withval}" != xno; then
         CLASSPATH_CHECK_JIKES
       fi
     fi
@@ -324,14 +324,14 @@ AC_DEFUN(CLASSPATH_WITH_JIKES,
   [ 
     CLASSPATH_CHECK_JIKES
   ])
-  AM_CONDITIONAL(USER_SPECIFIED_JIKES, test "$JIKES" != "")
+  AM_CONDITIONAL(USER_SPECIFIED_JIKES, test "x${JIKES}" != x)
   AC_SUBST(JIKES)
 ])
 
 
 AC_DEFUN(CLASSPATH_CHECK_JIKES,
 [
-  if test "$1" != ""; then
+  if test "x$1" != x; then
     if test -f "$1"; then
       JIKES="$1"
     else
@@ -348,9 +348,9 @@ AC_DEFUN(CLASSPATH_WITH_KJC,
   AC_ARG_WITH(kjc, 
   [  --with-kjc=<ksusu.jar>  bytecode compilation with kjc [default=no]],
   [
-    if test ${withval} != "no"; then
+    if test "x${withval}" != xno; then
       AC_MSG_CHECKING(for kjc)
-      if test ${withval} = "" || test ${withval} = "yes"; then
+      if test "x${withval}" = x || test "x${withval}" = xyes; then
         AC_MSG_ERROR(specify the location of ksusu.jar or kjc CLASSPATH)
       fi
       KJC_CLASSPATH=${withval}
@@ -365,9 +365,9 @@ AC_DEFUN(CLASSPATH_WITH_KJC,
   ])
 
 
-  AM_CONDITIONAL(USER_SPECIFIED_KJC, test x$conditional_with_kjc = xtrue)
-  if test x$conditional_with_kjc = xtrue && test "$USER_JABBA" = ""; then
-    if test "$USER_JABBA" = ""; then
+  AM_CONDITIONAL(USER_SPECIFIED_KJC, test "x${conditional_with_kjc}" = xtrue)
+  if test "x${conditional_with_kjc}" = xtrue && test "x${USER_JABBA}" = x; then
+    if test "x${USER_JABBA}" = x; then
       echo "configure: cannot find java, try --with-java" 1>&2
       exit 1
     fi
@@ -380,10 +380,10 @@ AC_DEFUN(CLASSPATH_WITH_JAVA,
   AC_ARG_WITH(java,
   [  --with-java		  specify path or name of a java-like program ],
   [
-    if test ${withval} != "" && test ${withval} != "yes" && test ${withval} != "no"; then
+    if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
       CLASSPATH_CHECK_JAVA(${withval})
     else
-      if test ${withval} != "no"; then
+      if test "x${withval}" != xno; then
         CLASSPATH_CHECK_JAVA
       fi
     fi
@@ -391,14 +391,14 @@ AC_DEFUN(CLASSPATH_WITH_JAVA,
   [ 
     CLASSPATH_CHECK_JAVA
   ])
-  AM_CONDITIONAL(USER_SPECIFIED_JABBA, test "$USER_JABBA" != "")
+  AM_CONDITIONAL(USER_SPECIFIED_JABBA, test "x${USER_JABBA}" != x)
   AC_SUBST(USER_JABBA)
 ])
 
 
 AC_DEFUN(CLASSPATH_CHECK_JAVA,
 [
-  if test "$1" != ""; then
+  if test "x$1" != x; then
     if test -f "$1"; then
       USER_JABBA="$1"
     else
@@ -423,7 +423,7 @@ AC_DEFUN(CLASSPATH_WITH_JAVAH,
   AC_ARG_WITH(javah,
   [  --with-javah		  specify path or name of a javah-like program ],
   [
-    if test ${withval} != "" && test ${withval} != "yes" && test ${withval} != "no"; then
+    if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
       CLASSPATH_CHECK_JAVAH(${withval})
     else
       CLASSPATH_CHECK_JAVAH
@@ -432,14 +432,14 @@ AC_DEFUN(CLASSPATH_WITH_JAVAH,
   [ 
     CLASSPATH_CHECK_JAVAH
   ])
-  AM_CONDITIONAL(USER_SPECIFIED_JAVAH, test "$USER_JAVAH" != "")
+  AM_CONDITIONAL(USER_SPECIFIED_JAVAH, test "x${USER_JAVAH}" != x)
   AC_SUBST(USER_JAVAH)
 ])
 
 dnl Checking for a javah like program 
 AC_DEFUN(CLASSPATH_CHECK_JAVAH,
 [
-  if test "$1" != ""; then
+  if test "x$1" != x; then
     if test -f "$1"; then
       USER_JAVAH="$1"
     else
@@ -448,13 +448,13 @@ AC_DEFUN(CLASSPATH_CHECK_JAVAH,
   else
     for javah_name in gcjh javah; do
       AC_PATH_PROG(USER_JAVAH, "$javah_name")
-      if test "$USER_JAVAH" != ""; then
+      if test "x${USER_JAVAH}" != x; then
         break
       fi
     done
   fi
   
-#  if test "$USER_JAVAH" = ""; then
+#  if test "x${USER_JAVAH}" = x; then
 #    echo "configure: cannot find javah" 1>&2
 #    exit 1
 #  fi
@@ -466,14 +466,14 @@ AC_DEFUN(CLASSPATH_WITH_CLASSLIB,
   AC_ARG_WITH(classpath,
   [  --with-classpath        specify path to a classes.zip like file ],
   [
-    if test ${withval} = "yes"; then
+    if test "x${withval}" = xyes; then
       # set user classpath to CLASSPATH from env
       AC_MSG_CHECKING(for classlib)
       USER_CLASSLIB=${CLASSPATH}
       AC_SUBST(USER_CLASSLIB)
       AC_MSG_RESULT(${USER_CLASSLIB})
       conditional_with_classlib=true      
-    elif test ${withval} != "" && test ${withval} != "no"; then
+    elif test "x${withval}" != x && test "x${withval}" != xno; then
       # set user classpath to specified value
       AC_MSG_CHECKING(for classlib)
       USER_CLASSLIB=${withval}
@@ -483,7 +483,7 @@ AC_DEFUN(CLASSPATH_WITH_CLASSLIB,
     fi
   ],
   [ conditional_with_classlib=false ])
-  AM_CONDITIONAL(USER_SPECIFIED_CLASSLIB, test x$conditional_with_classlib = xtrue)
+  AM_CONDITIONAL(USER_SPECIFIED_CLASSLIB, test "x${conditional_with_classlib}" = xtrue)
 ])
 
 
@@ -494,9 +494,9 @@ AC_DEFUN(CLASSPATH_WITH_INCLUDEDIR,
   [  --with-includedir=DIR   specify path to an extra include dir ],
   [
     AC_MSG_CHECKING(for includedir)
-    if test ${withval} != "" && test ${withval} != "yes" && test ${withval} != "no"; then
+    if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
       if test -r ${withval}; then
-        if test "$EXTRA_INCLUDES" = ""; then
+        if test "x${EXTRA_INCLUDES}" = x; then
           EXTRA_INCLUDES="-I${withval}"
         else
           EXTRA_INCLUDES="${EXTRA_INCLUDES} -I${withval}"

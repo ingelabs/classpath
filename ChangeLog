@@ -1,5 +1,13 @@
 2002-03-28  Eric Blake  <ebb9@email.byu.edu>
 
+	* .cvsignore: Add autom4te.cache to ignored list.
+	* configure.in: Move CLASSPATH_WITH_JAVAH and
+	CLASSPATH_WITH_INCLUDEDIR out of conditionals, for use with latest
+	autotools. Make variable tests consistent.
+	* acinclude.m4: Make variable tests consistent.
+
+2002-03-28  Eric Blake  <ebb9@email.byu.edu>
+
 	* AUTHORS: Update.
 	* THANKYOU: Update.
 
