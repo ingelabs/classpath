@@ -1,3 +1,4 @@
 #! @SH@
+# @configure_input@
 gen-classlist.sh standard
 @JAVADEPS@ --native -b "\$(JAVAC)" -d . -f classes -v > .deps
