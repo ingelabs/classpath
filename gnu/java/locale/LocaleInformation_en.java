@@ -64,7 +64,8 @@ private static final String[] sentence_breaks = { ". " };
 /**
   * This is the list of potential line break locations.
   */
-private static final String[] line_breaks = { " ", "\t", "-", "\r\n", "\n" };
+private static final String[] line_breaks = { "\t", "-", "\r\n", 
+  "\n", ".  ", ". ", ".",  "?  ", "? ", "?",  "!  ", "! ", "!", ", ", " " };
 
 /**
   * This is the list of months, fully spelled out
@@ -180,6 +181,76 @@ private static final String fullTimeFormat = "h:mm:ss 'o''clock' a z";
   */
 private static final String defaultTimeFormat = "h:mm:ss a";
 
+/**
+  * This is the currency symbol
+  */
+private static final String currencySymbol = "$";
+
+/**
+  * This is the international currency symbol. 
+  */
+private static final String intlCurrencySymbol = "US$";
+
+/**
+  * This is the decimal point.
+  */
+private static final String decimalSeparator = ".";
+
+/**
+  * This is the exponential symbol
+  */
+private static final String exponential = "E";
+
+/**
+  * This is the char used for digits in format strings
+  */
+private static final String digit = "9";
+
+/**
+  * This is the grouping separator symbols
+  */
+private static final String groupingSeparator = ",";
+
+/**
+  * This is the symbols for infinity
+  */
+private static final String infinity = "???";
+
+/**
+  * This is the symbol for the not a number value
+  */
+private static final String NaN = "NaN";
+
+/**
+  * This is the minus sign symbol.
+  */
+private static final String minusSign = "-";
+
+/**
+  * This is the decimal separator in monetary values.
+  */
+private static final String monetarySeparator = ".";
+
+/**
+  * This is the separator between positive and negative subpatterns.
+  */
+private static final String patternSeparator = "-";
+
+/**
+  * This is the percent sign
+  */
+private static final String percent = "%";
+
+/**
+  * This is the per mille sign
+  */
+private static final String perMill = "%";
+
+/**
+  * This is the character for zero.
+  */
+private static final String zeroDigit = "0";
+
 /*************************************************************************/
 
 /**
@@ -189,10 +260,13 @@ private static final String defaultTimeFormat = "h:mm:ss a";
 
 private static final Object[][] contents =
 {
+  // For RuleBasedCollator
   { "collation_rules", collation_rules },
+  // For BreakIterator
   { "word_breaks", word_breaks },
   { "sentence_breaks", sentence_breaks },
   { "line_breaks", line_breaks },
+  // For SimpleDateFormat/DateFormatSymbols
   { "months", months },
   { "shortMonths", shortMonths },
   { "weekdays", weekdays },
@@ -211,6 +285,21 @@ private static final Object[][] contents =
   { "longTimeFormat", longTimeFormat },
   { "fullTimeFormat", fullTimeFormat },
   { "defaultTimeFormat", defaultTimeFormat },
+  // For DecimalFormat/DecimalFormatSymbols
+  { "currencySymbol", currencySymbol },
+  { "intlCurrencySymbol", intlCurrencySymbol },
+  { "decimalSeparator", decimalSeparator },
+  { "digit", digit },
+  { "exponential", exponential },
+  { "groupingSepartor", groupingSeparator },
+  { "infinity", infinity },
+  { "NaN", NaN },
+  { "minusSign", minusSign },
+  { "monetarySepartor", monetarySeparator },
+  { "patternSeparator", patternSeparator },
+  { "percent", percent },
+  { "perMill", perMill },
+  { "zeroDigit", zeroDigit },
 };
 
 /*************************************************************************/
