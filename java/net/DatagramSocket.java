@@ -437,10 +437,6 @@ public class DatagramSocket
    */
   public synchronized void receive(DatagramPacket p) throws IOException
   {
-    SecurityManager s = System.getSecurityManager();
-    if (s != null)
-      s.checkAccept(p.getAddress().getHostAddress(), p.getPort());
-
     impl.receive(p);
 
     SecurityManager s = System.getSecurityManager();
