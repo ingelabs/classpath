@@ -1,5 +1,9 @@
 2004-08-14  Mark Wielaard  <mark@klomp.org>
 
+	* examples/.cvsignore: New file.
+
+2004-08-14  Mark Wielaard  <mark@klomp.org>
+
 	* java/lang/Rectangle.java (intersects): Check r.width and r.height
 	first.
 
