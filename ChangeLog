@@ -1,5 +1,10 @@
 2004-04-29  Mark Wielaard  <mark@klomp.org>
 
+	Reported by f.haeglsperger@gmx.de [patch #2485]
+	* java/util/HashMap.java (rehash): Add entry at start of bucket.
+
+2004-04-29  Mark Wielaard  <mark@klomp.org>
+
 	* java/io/RandomAccessFile.java (setLength): Set position to new
 	length when new length is smaller then current position.
 
