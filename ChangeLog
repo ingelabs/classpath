@@ -1,5 +1,11 @@
 2003-06-19  Michael Koch  <konqueror@gmx.de>
 
+	* java/util/SimpleTimeZone.java:
+	Dont import unneeded classes, reformatted.
+	(getDSTDavings): @since 1.2.
+
+2003-06-19  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JInternalFrame.java
 	(serialVersionUID): New member variable.
 	(CONTENT_PANE_PROPERTY): Likewise.
