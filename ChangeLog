@@ -1,5 +1,15 @@
 2004-04-18  Mark Wielaard  <mark@klomp.org>
 
+	* include/Makefile.am: Remove java_nio_FileLockImpl.h generation.
+	* include/gnu_java_awt_peer_gtk_GtkMenuItemPeer.h: Regenerate.
+	* include/gnu_java_awt_peer_gtk_GtkPanelPeer.h: Regenerate.
+	* include/gnu_java_nio_FileLockImpl.h: Removed.
+	* native/jni/java-nio/Makefile.am (libjavanio_la_SOURCES): Removed
+	java_nio_FileLockImpl.c.
+	* native/jni/java-nio/java_nio_FileLockImpl.c: Removed.
+
+2004-04-18  Mark Wielaard  <mark@klomp.org>
+
 	* java/io/File.java (canWrite): Only do checkWrite() security
 	check, use internal methods for actual actions.
 	(createTempFile): Don't do security checks for temp files that
