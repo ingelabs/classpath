@@ -1,5 +1,5 @@
 /* SocketImpl.java -- Abstract socket implementation class
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.net;
 
 import java.io.*;
@@ -35,20 +34,15 @@ import java.io.*;
   * perform system specific socket operations.
   * <p>
   * A default implementation is provided by the system, but this can be
-  * changed via installing a SocketImplFactory (through a call to the
-  * static method Socket.setSocketImplFactory).  A subclass of Socket can
-  * also pass in a SocketImpl to the Socket(SocketImpl) constructor to
-  * use an implementation different from the system default without installing
+  * changed via installing a <code>SocketImplFactory</code> (through a call 
+  * to the static method <code>Socket.setSocketImplFactory</code>).  A 
+  * subclass of <code>Socket</code> can also pass in a <code>SocketImpl</code>
+  * to the <code>Socket(SocketImpl)</code> constructor to use an 
+  * implementation different from the system default without installing
   * a factory.
-  * <p>
-  * Note that the SocketOptions interface is protected.  It contains the
-  * declaration of the methods getOption and setOption (***???***) that are
-  * used by Socket() for setting various options on the socket.  This is
-  * of interest only to implementors.
-  *
-  * @version 0.5
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Per Bothner <bothner@cygnus.com>
   */
 public abstract class SocketImpl implements SocketOptions
 {
@@ -76,7 +70,6 @@ protected int localport;
 
 /**
   * A FileDescriptor object representing this socket connection.  
-  * ***** How do I create one of these? ********
   */
 protected FileDescriptor fd;
 
@@ -87,12 +80,11 @@ protected FileDescriptor fd;
  */
 
 /**
-  * A do nothing default public construtor
+  * Default, no-argument constructor for use by subclasses.
   */
 public
 SocketImpl()
 {
-  ;
 }
 
 /*************************************************************************/
@@ -242,9 +234,9 @@ getPort()
 /*************************************************************************/
 
 /**
-  * Returns an InputStream object for reading from this socket
+  * Returns an <code>InputStream</code> object for reading from this socket.
   *
-  * @return An InputStream
+  * @return An <code>InputStream</code> for reading from this socket.
   *
   * @exception IOException If an error occurs
   */
@@ -254,11 +246,11 @@ getInputStream() throws IOException;
 /*************************************************************************/
 
 /**
-  * Returns an OutputStream object for writing to this socket
+  * Returns an <code>OutputStream</code> object for writing to this socket
   * 
-  * @return An OutputStream
+  * @return An <code>OutputStream</code> for writing to this socket.
   *
-  * @exception IOException If an error occurs
+  * @exception IOException If an error occurs.
   */
 protected abstract OutputStream
 getOutputStream() throws IOException;
@@ -281,22 +273,16 @@ listen(int queuelen) throws IOException;
 /*************************************************************************/
 
 /**
-  * Returns a String representing the remote host and port of this
+  * Returns a <code>String</code> representing the remote host and port of this
   * socket.
+  *
+  * @return A <code>String</code> for this socket.
   */
 public String
 toString()
 {
-  StringBuffer sb = new StringBuffer("");
-
-  if (address == null)
-    sb.append("<null>:");
-  else
-    sb.append(address.getHostAddress() + ":");
-
-  sb.append(port);
-
-  return(sb.toString());
+  return "[addr=" + address.toString() + ",port=" + Integer.toString(port) +
+    ",localport=" + Integer.toString(localport) + "]";
 }
 
 } // class SocketImpl

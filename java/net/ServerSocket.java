@@ -1,5 +1,5 @@
 /* ServerSocket.java -- Class for implementing server side sockets
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.net;
 
 import java.io.IOException;
@@ -36,12 +35,11 @@ import java.io.IOException;
   * server sockets are ready to communicate with one another utilizing
   * whatever application layer protocol they desire.
   * <p>
-  * As with the Socket class, most instance methods of this class simply
-  * redirect their calls to an implementation class.
-  *
-  * @version 0.5
+  * As with the <code>Socket</code> class, most instance methods of this class 
+  * simply redirect their calls to an implementation class.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Per Bothner <bothner@cygnus.com>
   */
 public class ServerSocket
 {
@@ -71,24 +69,17 @@ private SocketImpl impl;
 
 /*************************************************************************/
 
-/**
-  * Since the implementation doesn't directly store this value, we keep
-  * it here.  This is the local address we are bound to.
-  */
-InetAddress addr;
-
-/*************************************************************************/
-
 /*
  * Class methods
  */
 
 /**
-  * Sets the SocketImplFactory for all ServerSockets.  This may only be done
-  * once per virtual machine.  Subsequent attempts will generate a 
-  * SocketException.  Note that a SecurityManager check is made prior to
+  * Sets the <code>SocketImplFactory</code> for all 
+  * <code>ServerSocket</code>'s.  This may only be done
+  * once per virtual machine.  Subsequent attempts will generate an
+  * exception.  Note that a <code>SecurityManager</code> check is made prior to
   * setting the factory.  If insufficient privileges exist to set the factory,
-  * an IOException will be thrown
+  * an exception will be thrown
   *
   * @exception SecurityException If this operation is not allowed by the
   * <code>SecurityManager</code>.
@@ -137,7 +128,7 @@ ServerSocket()
 public 
 ServerSocket(int port) throws IOException
 {
-  this(port, 50, InetAddress.getInaddrAny());
+  this(port, 50, null);
 }
 
 /*************************************************************************/
@@ -156,7 +147,7 @@ ServerSocket(int port) throws IOException
 public
 ServerSocket(int port, int queuelen) throws IOException
 {
-  this(port, queuelen, InetAddress.getInaddrAny());
+  this(port, queuelen, null);
 }
 
 /*************************************************************************/
@@ -185,9 +176,11 @@ ServerSocket(int port, int queuelen, InetAddress addr) throws IOException
   if (sm != null)
     sm.checkListen(port);
 
+  if (addr == null)
+    addr = InetAddress.getInaddrAny();
+
   impl.create(true);
   impl.bind(addr, port);
-  this.addr = addr;
   impl.listen(queuelen);
 }
 
@@ -195,10 +188,10 @@ ServerSocket(int port, int queuelen, InetAddress addr) throws IOException
 
 /**
   * This protected method is used to help subclasses override 
-  * ServerSocket.accept().  The passed in Socket will be connected when
-  * this method returns.
+  * <code>ServerSocket.accept()</code>.  The passed in socket will be connected 
+  * when this method returns.
   *
-  * @param socket The Socket that is used for the accepted connection
+  * @param socket The socket that is used for the accepted connection
   *
   * @exception IOException If an error occurs
   */
@@ -211,8 +204,8 @@ implAccept(Socket socket) throws IOException
 /*************************************************************************/
 
 /**
-  * Accepts a new connection and returns a connected Socket instance
-  * representing that connection.  This method will block until a 
+  * Accepts a new connection and returns a connected <code>Socket</code> 
+  * instance representing that connection.  This method will block until a 
   * connection is available.
   *
   * @exception IOException If an error occurs
@@ -249,7 +242,7 @@ close() throws IOException
 public InetAddress
 getInetAddress()
 {
-  return(addr);
+  return(impl.getInetAddress());
 }
 
 /*************************************************************************/
@@ -303,21 +296,23 @@ getSoTimeout() throws IOException
 public synchronized void
 setSoTimeout(int timeout) throws IOException
 {
+  if (timeout < 0)
+    throw new IllegalArgumentException("SO_TIMEOUT value must be >= 0");
+
   impl.setOption(SocketOptions.SO_TIMEOUT, new Integer(timeout));
 }
 
 /*************************************************************************/
 
 /**
-  * Returns the value of this ServerSocket as a String.  Overrides 
-  * Object.toString()
+  * Returns the value of this socket as a <code>String</code>. 
   *
-  * @return This socket represented as a String
+  * @return This socket represented as a <code>String</code>.
   */
 public String
 toString()
 {
-  return(addr + ":" + getLocalPort());
+  return("Server Socket " + impl.toString());
 }
 
 } // class ServerSocket

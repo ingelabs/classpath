@@ -1,5 +1,5 @@
 /* Socket.java -- Client socket implementation
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -24,11 +24,9 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.net;
 
 import java.io.*;
-import java.security.*;
 
 /**
   * This class models a client site socket.  A socket is a TCP/IP endpoint
@@ -36,16 +34,16 @@ import java.security.*;
   * <p>
   * This class does not actually do any work.  Instead, it redirects all of
   * its calls to a socket implementation object which implements the
-  * SocketImpl interface.  The implementation class is instantiated by
-  * factory class that implements the SocketImplFactory interface.  A default
+  * <code>SocketImpl</code> interface.  The implementation class is 
+  * instantiated by factory class that implements the 
+  * <code>SocketImplFactory interface</code>.  A default
   * factory is provided, however the factory may be set by a call to
-  * the setSocketImplFactory method.  Note that this may only be done once
-  * per virtual machine.  If a subsequent attempt is made to set the
-  * factory, a SocketException will be thrown.
-  *
-  * @version 0.0
+  * the <code>setSocketImplFactory</code> method.  Note that this may only be 
+  * done once per virtual machine.  If a subsequent attempt is made to set the
+  * factory, a <code>SocketException</code> will be thrown.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Per Bothner <bothner@cygnus.com>
   */
 public class Socket
 {
@@ -73,11 +71,6 @@ private static SocketImplFactory factory;
   */
 SocketImpl impl;
 
-/**
-  * The local address to which we are connected
-  */
-InetAddress local_addr;
-
 /*************************************************************************/
 
 /*
@@ -85,11 +78,12 @@ InetAddress local_addr;
  */
 
 /**
-  * Sets the SocketImplFactory.  This may be done only once per virtual 
-  * machine.  Subsequent attempts will generate a SocketException.  Note that
-  * a SecurityManager check is made prior to setting the factory.  If 
-  * insufficient privileges exist to set the factory, then an IOException
-  * will be thrown.
+  * Sets the <code>SocketImplFactory</code>.  This may be done only once per 
+  * virtual machine.  Subsequent attempts will generate a 
+  * <code>SocketException</code>.  Note that a <code>SecurityManager</code>
+  * check is made prior to setting the factory.  If 
+  * insufficient privileges exist to set the factory, then an 
+  * <code>IOException</code> will be thrown.
   *
   * @exception SecurityException If the <code>SecurityManager</code> does
   * not allow this operation.
@@ -118,8 +112,9 @@ setSocketImplFactory(SocketImplFactory factory) throws IOException
  */
 
 /**
-  * This creates a Socket object without connecting to a remote host.  This
-  * useful for subclasses of socket that might want this behavior.
+  * Initializes a new instance of <code>Socket</code> object without 
+  * connecting to a remote host.  This useful for subclasses of socket that 
+  * might want this behavior.
   */
 protected
 Socket()
@@ -133,14 +128,17 @@ Socket()
 /*************************************************************************/
 
 /**
-  * This creates a Socket object without connecting to a remote host.  This
-  * is useful for subclasses of socket that might want this behavior.  
+  * Initializes a new instance of <code>Socket</code> object without connecting 
+  * to a remote host.  This is useful for subclasses of socket that might want 
+  * this behavior.  
+  * <p>
   * Additionally, this socket will be created using the supplied implementation
   * class instead the default class or one returned by a factory.  This
-  * value can be null, but if it is, all instance methods in Socket should
-  * be overridden because most of them rely on this value being populated.
+  * value can be <code>null</code>, but if it is, all instance methods in 
+  * <code>Socket</code> should be overridden because most of them rely on this 
+  * value being populated.
   *
-  * @param impl The SocketImpl to use for this Socket
+  * @param impl The <code>SocketImpl</code> to use for this <code>Socket</code>
   *
   * @exception SocketException If an error occurs
   */
@@ -153,8 +151,8 @@ Socket(SocketImpl impl) throws SocketException
 /*************************************************************************/
 
 /**
-  * Creates a Socket and connects to the address and port number specified
-  * as arguments.
+  * Initializes a new instance of <code>Socket</code> and connects to the 
+  * address and port number specified as arguments.
   *
   * @param add The address to connect to
   * @param port The port number to connect to
@@ -164,38 +162,39 @@ Socket(SocketImpl impl) throws SocketException
 public
 Socket(InetAddress addr, int port) throws IOException
 {
-  this(addr, port, InetAddress.getInaddrAny(), 0, true);
+  this(addr, port, null, 0, true);
 }
 
 /*************************************************************************/
 
 /**
-  * Creates a Socket and connects to the address and port number specified
-  * as arguments.  If the stream param is true, a stream socket will be
-  * created, otherwise a datagram socket is created.
-  * <p>
-  * <b>This method is deprecated.  Use the DatagramSocket class for creating
-  * datagram sockets.</b>
+  * Initializes a new instance of <code>Socket</code> and connects to the 
+  * address and port number specified as arguments.  If the stream param is 
+  * <code>true</code>, a stream socket will be created, otherwise a datagram 
+  * socket is created.
   *
   * @param add The address to connect to
   * @param port The port number to connect to
-  * @param stream True to create a stream socket, false to create a datagram socket
+  * @param stream <code>true</code> to create a stream socket, 
+  * <code>false</code> to create a datagram socket.
   *
   * @exception IOException If an error occurs
   *
-  * @deprecated
+  * @deprecated Use the <code>DatagramSocket</code> class to create
+  * datagram oriented sockets.
   */
 public
 Socket(InetAddress addr, int port, boolean stream) throws IOException
 {
-  this(addr, port, InetAddress.getInaddrAny(), 0, stream);
+  this(addr, port, null, 0, stream);
 }
 
 /*************************************************************************/
 
 /**
-  * Creates a Socket and connects to the address and port number specified
-  * as arguments, plus binds to the specified local address and port.
+  * Initializes a new instance of <code>Socket</code> and connects to the 
+  * address and port number specified as arguments, plus binds to the 
+  * specified local address and port.
   *
   * @param raddr The remote address to connect to
   * @param rport The remote port to connect to
@@ -214,50 +213,52 @@ Socket(InetAddress raddr, int rport, InetAddress laddr,
 /*************************************************************************/
 
 /**
-  * Creates a Socket and connects to the hostname and port specified as
-  * arguments.
+  * Initializes a new instance of <code>Socket</code> and connects to the 
+  * hostname and port specified as arguments.
   *
   * @param hostname The name of the host to connect to
   * @param port The port number to connect to
   *
-  * @exception UnknownHostException If the hostname cannot be resolved to an address
+  * @exception UnknownHostException If the hostname cannot be resolved to a
+  * network address.
   * @exception IOException If an error occurs
   */
 public
 Socket(String hostname, int port) throws IOException
 {
-  this(InetAddress.getByName(hostname), port, InetAddress.getInaddrAny(), 
-       0, true);
+  this(InetAddress.getByName(hostname), port, null, 0, true);
 }
 
 /*************************************************************************/
 
 /**
-  * Creates a Socket and connects to the hostname and port specified as
-  * arguments.  If the stream argument is set to true, then a stream socket
-  * is created.  If it is false, a datagram socket is created.
-  * <p>
-  * <b>This method is deprecated.  Use the DatagramSocket class to create
-  * datagram oriented sockets.</b>
+  * Initializes a new instance of <code>Socket</code> and connects to the 
+  * hostname and port specified as arguments.  If the stream argument is set 
+  * to <code>true</code>, then a stream socket is created.  If it is 
+  * <code>false</code>, a datagram socket is created.
   *
   * @param hostname The name of the host to connect to
   * @param port The port to connect to
-  * @param stream true for a stream socket, false for a datagram socket
+  * @param stream <code>true</code> for a stream socket, <code>false</code>
+  * for a datagram socket
   *
   * @exception IOException If an error occurs
+  *
+  * @deprecated Use the <code>DatagramSocket</code> class to create
+  * datagram oriented sockets.
   */
 public
 Socket(String hostname, int port, boolean stream) throws IOException
 {
-  this(InetAddress.getByName(hostname), port, InetAddress.getInaddrAny(), 
-       0, stream);
+  this(InetAddress.getByName(hostname), port, null, 0, stream);
 }
 
 /*************************************************************************/
 
 /**
-  * This method connects to the named host on the specified port and
-  * binds to the specified local address and port.
+  * Initializes a new instance of <code>Socket</code> that connects to the 
+  * named host on the specified port and binds to the specified local address 
+  * and port.
   *
   * @param host The name of the remote host to connect to.
   * @param port The remote port to connect to.
@@ -310,8 +311,6 @@ Socket(InetAddress raddr, int rport, InetAddress laddr, int lport,
   if (laddr != null)
     impl.bind(laddr, lport);
 
-  local_addr = laddr;
-
   if (raddr != null)
     impl.connect(raddr, rport);
 }
@@ -338,7 +337,7 @@ close() throws IOException
 
 /**
   * Returns the address of the remote end of the socket.  If this socket
-  * is not connected, then ???
+  * is not connected, then <code>null</code> is returned.
   *
   * @return The remote address this socket is connected to
   */
@@ -355,7 +354,7 @@ getInetAddress()
 
 /**
   * Returns the port number of the remote end of the socket connection.  If
-  * this socket is not connected, then ???
+  * this socket is not connected, then -1 is returned.
   *
   * @return The remote port this socket is connected to
   */
@@ -372,21 +371,43 @@ getPort()
 
 /**
   * Returns the local address to which this socket is bound.  If this socket
-  * is not connected, then ???
+  * is not connected, then <code>null</code> is returned.
   *
   * @return The local address
   */
 public InetAddress
 getLocalAddress()
 {
-  return(local_addr);
+  if (impl == null)
+    return(null);
+
+  InetAddress addr = null;
+  try
+    {
+      addr = (InetAddress)impl.getOption(SocketOptions.SO_BINDADDR);
+    }
+  catch(SocketException e)
+    {
+      return(null);
+    }
+
+  // FIXME: According to libgcj, checkConnect() is supposed to be called
+  // before performing this operation.  Problems: 1) We don't have the
+  // addr until after we do it, so we do a post check.  2). The docs I
+  // see don't require this in the Socket case, only DatagramSocket, but
+  // we'll assume they mean both.
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    sm.checkConnect(addr.getHostName(), getLocalPort());
+
+  return(addr);
 }
 
 /*************************************************************************/
 
 /**
   * Returns the local port number to which this socket is bound.  If this
-  * socket is not connected, then ???
+  * socket is not connected, then -1 is returned.
   *
   * @return The local port
   */
@@ -446,7 +467,8 @@ getOutputStream() throws IOException
   * of a second (****????****)) if SO_LINGER is set, or -1 if SO_LINGER is
   * not set.
   *
-  * @return The SO_LINGER timeout in hundreths of a second or -1 if SO_LINGER not set
+  * @return The SO_LINGER timeout in hundreths of a second or -1 
+  * if SO_LINGER not set
   *
   * @exception SocketException If an error occurs
   */
@@ -478,7 +500,8 @@ getSoLinger() throws SocketException
   * *********???????********
   *
   * @param state true to enable SO_LINGER, false to disable
-  * @param timeout The SO_LINGER timeout in hundreths of a second or -1 if SO_LINGER not set
+  * @param timeout The SO_LINGER timeout in hundreths of a second or -1 if 
+  * SO_LINGER not set.
   *
   * @exception SocketException If an error occurs
   */
@@ -489,9 +512,19 @@ setSoLinger(boolean state, int timeout) throws SocketException
     throw new SocketException("No socket created");
 
   if (state == true)
-    impl.setOption(SocketOptions.SO_LINGER, new Integer(timeout));
+    {
+      if (timeout < 0)
+        throw new IllegalArgumentException("SO_LINGER value must be > 0");
+
+      if (timeout > 65535)
+        timeout = 65535;
+
+      impl.setOption(SocketOptions.SO_LINGER, new Integer(timeout));
+    }
   else
-    impl.setOption(SocketOptions.SO_LINGER, new Boolean(false));
+    {
+      impl.setOption(SocketOptions.SO_LINGER, new Boolean(false));
+    }
 
   return;
 }
@@ -508,7 +541,8 @@ setSoLinger(boolean state, int timeout) throws SocketException
   * values, this method returns the read timeout.  This
   * value is in thousandths of a second. (*****Is it *******); 
   *
-  * @return The length of the timeout in thousandth's of a second or 0 if not set
+  * @return The length of the timeout in thousandth's of a second or 0 
+  * if not set
   *
   * @exception SocketException If an error occurs
   */
@@ -538,7 +572,8 @@ getSoTimeout() throws SocketException
   * values, this method returns the read timeout.  This
   * value is in thousandths of a second (****????*****)
   *
-  * @param timeout The length of the timeout in thousandth's of a second or 0 if not set
+  * @param timeout The length of the timeout in thousandth's of a second or 
+  * 0 if not set
   *
   * @exception SocketException If an error occurs
   */
@@ -547,6 +582,9 @@ setSoTimeout(int timeout) throws SocketException
 {
   if (impl == null)
     throw new SocketException("Not connected");
+
+  if (timeout < 0)
+    throw new IllegalArgumentException("SO_TIMEOUT value must be > 0");
 
   impl.setOption(SocketOptions.SO_TIMEOUT, new Integer(timeout));
 
@@ -563,16 +601,21 @@ setSoTimeout(int timeout) throws SocketException
   * @return The send buffer size.
   *
   * @exception SocketException If an error occurs.
+  *
+  * @since Java 1.2
   */
 public synchronized int
 getSendBufferSize() throws SocketException
 {
+  if (impl == null)
+    throw new SocketException("Not connected");
+
   Object obj = impl.getOption(SocketOptions.SO_SNDBUF);
 
   if (obj instanceof Integer)
     return(((Integer)obj).intValue());
   else
-    throw new SocketException("Unexpected type");
+    throw new SocketException("Internal Error: Unexpected type");
 }
 
 /*************************************************************************/
@@ -585,10 +628,18 @@ getSendBufferSize() throws SocketException
   * @param size The new send buffer size.
   *
   * @exception SocketException If an error occurs.
+  *
+  * @since Java 1.2
   */
 public synchronized void
 setSendBufferSize(int size) throws SocketException
 {
+  if (impl == null)
+    throw new SocketException("Not connected");
+
+  if (size <= 0)
+    throw new IllegalArgumentException("SO_SNDBUF value must be > 0");
+  
   impl.setOption(SocketOptions.SO_SNDBUF, new Integer(size));
 }
 
@@ -602,16 +653,21 @@ setSendBufferSize(int size) throws SocketException
   * @return The receive buffer size.
   *
   * @exception SocketException If an error occurs.
+  *
+  * @since Java 1.2
   */
 public synchronized int
 getReceiveBufferSize() throws SocketException
 {
+  if (impl == null)
+    throw new SocketException("Not connected");
+
   Object obj = impl.getOption(SocketOptions.SO_RCVBUF);
 
   if (obj instanceof Integer)
     return(((Integer)obj).intValue());
   else
-    throw new SocketException("Unexpected type");
+    throw new SocketException("Internal Error: Unexpected type");
 }
 
 /*************************************************************************/
@@ -624,10 +680,18 @@ getReceiveBufferSize() throws SocketException
   * @param size The new receive buffer size.
   *
   * @exception SocketException If an error occurs.
+  *
+  * @since Java 1.2
   */
 public synchronized void
 setReceiveBufferSize(int size) throws SocketException
 {
+  if (impl == null)
+    throw new SocketException("Not connected");
+
+  if (size <= 0)
+    throw new IllegalArgumentException("SO_RCVBUF value must be > 0");
+  
   impl.setOption(SocketOptions.SO_RCVBUF, new Integer(size));
 }
 
@@ -681,14 +745,14 @@ setTcpNoDelay(boolean state) throws SocketException
 /*************************************************************************/
 
 /**
-  * Converts this Socket to a String.  Overrides Object.toString()
+  * Converts this <code>Socket</code> to a <code>String</code>.
   *
-  * @return The String representation of this Socket
+  * @return The <code>String</code> representation of this <code>Socket</code>
   */
 public String
 toString()
 {
-  return(getInetAddress().getHostName() + ":" + getPort());
+  return("Socket " + impl);
 }
 
 } // class Socket
