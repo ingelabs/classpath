@@ -1,4 +1,9 @@
 2004-01-26  Fernando Nasser  <fnasser@redhat.com>
+
+	* gnu/java/awt/peer/gtk/TestAWT.java (DialogWindow): Make text not
+	visible so that dialog can be reused.
+
+2004-01-26  Fernando Nasser  <fnasser@redhat.com>
  
 	* gnu/java/awt/peer/gtk/TestAWT.java (DialogWindow): Add WindowAdapter
 	to handle Window "Closing" events.
