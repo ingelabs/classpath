@@ -1,5 +1,5 @@
 /*
- * java.util.PropertyResourceBundle: part of the Java Class Libraries project.
+ * java.util.Properties: part of the Java Class Libraries project.
  * Copyright (C) 1998 Jochen Hoenicke
  *
  * This library is free software; you can redistribute it and/or
@@ -25,21 +25,21 @@ import java.io.*;
  * An example of a properties file for the german language is given
  * here.  This extends the example given in ListResourceBundle.
  * Create a file MyResource_de.properties with the following contents
- * and put it in the CLASSPATH.  (The char <code>\u00e4<char> is the 
- * german &auml;)
+ * and put it in the CLASSPATH.  (The character
+ * <code>\</code><code>u00e4</code> is the german &auml;)
  * 
  * <pre>
  * s1=3
  * s2=MeineDisk
- * s3=3. M\u00e4rz 96
- * s4=Die Diskette ''{1}'' enth\u00e4lt {0} in {2}.
+ * s3=3. M\<code></code>u00e4rz 96
+ * s4=Die Diskette ''{1}'' enth\<code></code>u00e4lt {0} in {2}.
  * s5=0
  * s6=keine Dateien
  * s7=1
  * s8=eine Datei
  * s9=2
  * s10={0,number} Dateien
- * s11=Die Formatierung warf eine Exception: {0}
+ * s11=Das Formatieren schlug fehl mit folgender Exception: {0}
  * s12=FEHLER
  * s13=Ergebnis
  * s14=Dialog
@@ -47,9 +47,14 @@ import java.io.*;
  * s16=1,3
  * </pre>
  *
+ * Although this is a sub class of a hash table, you should never
+ * insert anything other than strings to this property, or several
+ * methods, that need string keys and values, will fail.  To ensure
+ * this, you should use the <code>get/setProperty</code> method instead
+ * of <code>get/put</code>.
+ *
  * @see PropertyResourceBundle
- * @author Jochen Hoenicke 
- */
+ * @author Jochen Hoenicke */
 public class Properties extends Hashtable {
     /**
      * The property list that contains default values for any keys not
@@ -74,29 +79,40 @@ public class Properties extends Hashtable {
 
     /**
      * Reads a property list from an input stream.  The stream should
-     * have the following format:
+     * have the following format: <br>
      *
      * An empty line or a line starting with <code>#</code> or
-     * <code>!</code is ignored.  An backslash (<code>\</code>) at the
-     * end of the line makes the line continueing on the next line.
-     * Otherwise, each line describes a key/value pair.
+     * <code>!</code> is ignored.  An backslash (<code>\</code>) at the
+     * end of the line makes the line continueing on the next line
+     * (but make sure there is no whitespace after the backslash).
+     * Otherwise, each line describes a key/value pair. <br>
      *
      * The chars up to the first whitespace, = or : are the key.  You
      * can include this caracters in the key, if you precede them with
      * a backslash (<code>\</code>). The key is followed by optional
      * whitespaces, optionally one <code>=</code> or <code>:</code>,
      * and optionally some more whitespaces.  The rest of the line is
-     * the resource belonging to the key.
+     * the resource belonging to the key. <br>
      *
-     * Escape sequences <code>\t, \n, \r, \\, \", \', \ <code>(a
+     * Escape sequences <code>\t, \n, \r, \\, \", \', \!, \#, \ </code>(a
      * space), and unicode characters with the
      * <code>\</code><code>u</code>xxxx notation are detected, and 
-     * converted to the corresponding single character.  
+     * converted to the corresponding single character. <br>
      *
-     * XXX - examples
+     * <pre>
+     * # This is a comment
+     * key     = value
+     * k\:5      \ a string starting with space and ending with newline\n
+     * # This is a multiline specification; note that the value contains
+     * # no white space.
+     * weekdays: Sunday,Monday,Tuesday,Wednesday,\
+     *           Thursday,Friday,Saturday
+     * # The safest way to include a space at the end of a value:
+     * label   = Name:\<code></code>u0020
+     * </pre>
      *
      * @param in the input stream
-     * @throws IOException if an error occured when reading
+     * @exception IOException if an error occured when reading
      * from the input.  */
     public void load(InputStream inStream) throws IOException {
         BufferedReader reader = 
@@ -140,30 +156,15 @@ public class Properties extends Hashtable {
                         case 'r':
                             key.append('\r');
                             break;
-                        case '\\':
-                            key.append('\\');
-                            break;
-                        case '"':
-                            key.append('\"');
-                            break;
-                        case '\'':
-                            key.append('\'');
-                            break;
-                        case ':':
-                            key.append(':');
-                            break;
-                        case '=':
-                            key.append('=');
-                            break;
-                        case ' ':
-                            key.append(' ');
-                            break;
                         case 'u':
                             if (pos+4 <= line.length()) {
                                 char uni = (char) Integer.parseInt
                                     (line.substring(pos, pos+4), 16);
                                 key.append(uni);
                             } // else throw exception?
+                            break;
+			default:
+                            key.append(c);
                             break;
                         }
                     }
@@ -183,7 +184,7 @@ public class Properties extends Hashtable {
                     pos++;
             }
 
-            StringBuffer element = new StringBuffer();
+            StringBuffer element = new StringBuffer(line.length()-pos);
             while (pos < line.length()) {
                 c = line.charAt(pos++);
                 if (c == '\\') {
@@ -194,6 +195,7 @@ public class Properties extends Hashtable {
                         while (pos < line.length()
                                && Character.isWhitespace(c = line.charAt(pos)))
                             pos++;
+			element.ensureCapacity(line.length()-pos+element.length());
                     } else {
                         c = line.charAt(pos++);
                         switch (c) {
@@ -206,24 +208,6 @@ public class Properties extends Hashtable {
                         case 'r':
                             element.append('\r');
                             break;
-                        case '\\':
-                            element.append('\\');
-                            break;
-                        case '"':
-                            element.append('\"');
-                            break;
-                        case '\'':
-                            element.append('\'');
-                            break;
-                        case ':':
-                            element.append(':');
-                            break;
-                        case '=':
-                            element.append('=');
-                            break;
-                        case ' ':
-                            element.append(' ');
-                            break;
                         case 'u':
                             if (pos+4 <= line.length()) {
                                 char uni = (char) Integer.parseInt
@@ -231,12 +215,14 @@ public class Properties extends Hashtable {
                                 element.append(uni);
                             } // else throw exception?
                             break;
+			default:
+                            element.append(c);
+                            break;
                         }
                     }
                 } else 
                     element.append(c);
             }
-
             put(key.toString(), element.toString());
         }
     }
@@ -245,6 +231,8 @@ public class Properties extends Hashtable {
      * Calls <code>store(OutputStream out, String header)</code> and
      * ignores the IOException that may be thrown.
      * @deprecated use store instead.
+     * @exception ClassCastException if this property contains any key or
+     * value that isn't a string.
      */
     public void save(OutputStream out, String header) {
         try {
@@ -253,6 +241,28 @@ public class Properties extends Hashtable {
         }
     }
     
+    /**
+     * Writes the key/value pairs to the given output stream. <br>
+     *
+     * If header is not null, this method writes a comment containing
+     * the header as first line to the stream.  The next line (or first
+     * line if header is null) contains a comment with the current date.
+     * Afterwards the key/value pairs are written to the stream in the
+     * following format. <br>
+     *
+     * Each line has the form <code>key = value</code>.  Newlines,
+     * Returns and tabs are written as <code>\n,\t,\r</code> resp.
+     * The characters <code>\, !, #, =</code> and <code>:</code> are
+     * preceeded by a backslash.  Spaces are preceded with a backslash,
+     * if and only if they are at the beginning of the key.  Characters
+     * that are not in the ascii range 33 to 127 are written in the
+     * <code>\</code><code>u</code>xxxx Form.
+     *
+     * @param out the output stream
+     * @param header the header written in the first line, may be null.
+     * @exception ClassCastException if this property contains any key or
+     * value that isn't a string.
+     */
     public void store(OutputStream out, String header) throws IOException {
         PrintWriter writer = new PrintWriter(out);
         if (header != null)
@@ -279,7 +289,10 @@ public class Properties extends Hashtable {
      * default, null is returned.
      * @param key The key for this property.
      * @param defaulValue A default value
-     * @return The value for the given key, or null if not found.  */
+     * @return The value for the given key, or null if not found. 
+     * @exception ClassCastException if this property contains any key or
+     * value that isn't a string.
+     */
     public String getProperty(String key) {
         return getProperty(key, null);
     }
@@ -292,6 +305,8 @@ public class Properties extends Hashtable {
      * @param key The key for this property.
      * @param defaulValue A default value
      * @return The value for the given key.
+     * @exception ClassCastException if this property contains any key or
+     * value that isn't a string.
      */
     public String getProperty(String key, String defaultValue) {
         Properties prop = this;
@@ -314,14 +329,18 @@ public class Properties extends Hashtable {
             : new DoubleEnumeration(keys(), defaults.propertyNames());
     }
 
+
+
     /**
      * Formats a key/value pair for output in a properties file.
      * See store for a description of the format.
      * @param key the key.
      * @param value the value.
+     * @see #store
      */
     private String formatForOutput(String key, String value) {
-        StringBuffer result = new StringBuffer();
+	// This is a simple approximation of the expected line size.
+        StringBuffer result = new StringBuffer(key.length()+value.length()+16);
         boolean head = true;
         for (int i=0; i< key.length(); i++) {
             char c = key.charAt(i);
@@ -350,14 +369,15 @@ public class Properties extends Hashtable {
             case ':':
                 result.append("\\:");
                 break;
+	    case ' ':
+		result.append(head ? "\\ ": " ");
+		break;
             default:
                 if (c < 32 || c > '~') {
                     String hex = Integer.toHexString(c);
                     result.append("\\u0000".substring(0, 6-hex.length()));
                     result.append(hex);
-                } else if (c == 32 && head)
-                    result.append("\\ ");
-                else
+                } else
                     result.append(c);
             }
             if (c != 32)
@@ -386,14 +406,15 @@ public class Properties extends Hashtable {
             case '#':
                 result.append("\\#");
                 break;
+	    case ' ':
+		result.append(head ? "\\ ": " ");
+		break;
             default:
                 if (c < 32 || c > '~') {
                     String hex = Integer.toHexString(c);
                     result.append("\\u0000".substring(0, 6-hex.length()));
                     result.append(hex);
-                } else if (c == 32 && head)
-                    result.append("\\ ");
-                else
+                } else
                     result.append(c);
             }
             if (c != 32)
@@ -402,6 +423,14 @@ public class Properties extends Hashtable {
         return result.toString();
     }
 
+    /**
+     * Writes the key/value pairs to the given print stream.  They are
+     * written in the way, described in the method store.
+     * @param out the stream, where the key/value pairs are written to.
+     * @exception ClassCastException if this property contains any key or
+     * value that isn't a string.
+     * @see #store
+     */
     public void list(PrintStream out) {
         Enumeration keys = keys();
         Enumeration elts = elements();
@@ -414,7 +443,13 @@ public class Properties extends Hashtable {
     }
 
     /**
-     *
+     * Writes the key/value pairs to the given print writer.  They are
+     * written in the way, described in the method store.
+     * @param out the writer, where the key/value pairs are written to.
+     * @exception ClassCastException if this property contains any key or
+     * value that isn't a string.
+     * @see #store
+     * @see #list(java.io.PrintStream)
      * @since JDK1.1
      */
     public void list(PrintWriter out) {
