@@ -38,7 +38,6 @@ exception statement from your version. */
 
 package java.io;
 
-import gnu.classpath.Configuration;
 import java.nio.channels.FileChannel;
 import gnu.java.nio.FileChannelImpl;
 
@@ -207,8 +206,10 @@ public class FileOutputStream extends OutputStream
    *
    * @exception IOException If an error occurs
    */
-  public final FileDescriptor getFD() throws IOException
+  public final FileDescriptor getFD () throws IOException
   {
+    if (! fd.valid())
+      throw new IOException ();
     return fd;
   }
 
@@ -219,7 +220,7 @@ public class FileOutputStream extends OutputStream
    *
    * @exception IOException If an error occurs
    */
-  public void write(int b) throws IOException
+  public void write (int b) throws IOException
   {
     fd.write (b);
   }
@@ -261,7 +262,8 @@ public class FileOutputStream extends OutputStream
    */
   public void close () throws IOException
   {
-    fd.close ();
+    if (fd.valid())
+      fd.close();
   }
 
   /**
