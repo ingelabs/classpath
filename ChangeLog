@@ -1,3 +1,7 @@
+2002-12-04  Tom Tromey  <tromey@redhat.com>
+
+	* java/net/SocketPermission.java (hashCode): Rewrote.
+
 2002-12-03  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/nio/SocketChannelImpl.java:
