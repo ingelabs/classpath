@@ -1,3 +1,8 @@
+2005-02-07  Craig Black  <craig.black@aonix.com>
+
+	* native/jni/classpath/native_state.c
+	(add_node): Update head pointer when moving node to front of list.
+
 2005-02-07  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* acinclude.m4:
