@@ -1,3 +1,15 @@
+2004-11-11  Mark Wielaard  <mark@klomp.org>
+
+	* include/gnu_java_awt_peer_gtk_GdkFontMetrics.h: Regenerated.
+	* include/gnu_java_awt_peer_gtk_GdkGraphics.h: Likewise.
+	* include/gnu_java_awt_peer_gtk_GtkClipboard.h: Likewise.
+	* include/gnu_java_net_PlainDatagramSocketImpl.h: Likewise.
+	* include/java_io_ObjectInputStream.h: Likewise.
+	* include/java_io_VMFile.h: Likewise.
+	* include/java_lang_Math.h: Likewise.
+	* include/java_lang_VMProcess.h: Likewise.
+	* include/java_net_InetAddress.h: Likewise.
+
 2004-11-11  Graydon Hoare  <graydon@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java

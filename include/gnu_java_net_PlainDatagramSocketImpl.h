@@ -19,6 +19,8 @@ JNIEXPORT jobject JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_getOption (J
 JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_close (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_join (JNIEnv *env, jobject, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_leave (JNIEnv *env, jobject, jobject);
+#undef gnu_java_net_PlainDatagramSocketImpl_IP_TTL
+#define gnu_java_net_PlainDatagramSocketImpl_IP_TTL 7777L
 
 #ifdef __cplusplus
 }

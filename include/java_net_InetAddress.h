@@ -14,6 +14,14 @@ JNIEXPORT jstring JNICALL Java_java_net_InetAddress_getLocalHostname (JNIEnv *en
 JNIEXPORT jbyteArray JNICALL Java_java_net_InetAddress_lookupInaddrAny (JNIEnv *env, jclass);
 JNIEXPORT jstring JNICALL Java_java_net_InetAddress_getHostByAddr (JNIEnv *env, jclass, jbyteArray);
 JNIEXPORT jobjectArray JNICALL Java_java_net_InetAddress_getHostByName (JNIEnv *env, jclass, jstring);
+#undef java_net_InetAddress_serialVersionUID
+#define java_net_InetAddress_serialVersionUID 3286316764910316507LL
+#undef java_net_InetAddress_DEFAULT_CACHE_SIZE
+#define java_net_InetAddress_DEFAULT_CACHE_SIZE 89L
+#undef java_net_InetAddress_DEFAULT_CACHE_PERIOD
+#define java_net_InetAddress_DEFAULT_CACHE_PERIOD 240L
+#undef java_net_InetAddress_DEFAULT_CACHE_PURGE_PCT
+#define java_net_InetAddress_DEFAULT_CACHE_PURGE_PCT 30L
 
 #ifdef __cplusplus
 }

@@ -34,6 +34,10 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_setClipRectangle (
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_setFGColor (JNIEnv *env, jobject, jint, jint, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_setFunction (JNIEnv *env, jobject, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_translateNative (JNIEnv *env, jobject, jint, jint);
+#undef gnu_java_awt_peer_gtk_GdkGraphics_GDK_COPY
+#define gnu_java_awt_peer_gtk_GdkGraphics_GDK_COPY 0L
+#undef gnu_java_awt_peer_gtk_GdkGraphics_GDK_XOR
+#define gnu_java_awt_peer_gtk_GdkGraphics_GDK_XOR 2L
 
 #ifdef __cplusplus
 }

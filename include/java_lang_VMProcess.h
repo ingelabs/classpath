@@ -13,6 +13,12 @@ extern "C"
 JNIEXPORT void JNICALL Java_java_lang_VMProcess_nativeSpawn (JNIEnv *env, jobject, jobjectArray, jobjectArray, jobject);
 JNIEXPORT jboolean JNICALL Java_java_lang_VMProcess_nativeReap (JNIEnv *env, jclass);
 JNIEXPORT void JNICALL Java_java_lang_VMProcess_nativeKill (JNIEnv *env, jclass, jlong);
+#undef java_lang_VMProcess_INITIAL
+#define java_lang_VMProcess_INITIAL 0L
+#undef java_lang_VMProcess_RUNNING
+#define java_lang_VMProcess_RUNNING 1L
+#undef java_lang_VMProcess_TERMINATED
+#define java_lang_VMProcess_TERMINATED 2L
 
 #ifdef __cplusplus
 }
