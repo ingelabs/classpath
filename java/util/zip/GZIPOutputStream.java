@@ -50,8 +50,9 @@ import java.io.IOException;
  */
 
 
-public class GZIPOutputStream extends DeflaterOutputStream implements GZIPConstants {
-
+public class GZIPOutputStream
+  extends DeflaterOutputStream
+{
   //Variables
 
   /* CRC-32 value for uncompressed data
@@ -89,7 +90,8 @@ public class GZIPOutputStream extends DeflaterOutputStream implements GZIPConsta
     byte[] gzipHeader =
       {
 	/* The two magic bytes */
-	(byte) (GZIP_MAGIC >> 8), (byte) GZIP_MAGIC,
+	(byte) (GZIPInputStream.GZIP_MAGIC >> 8),
+	(byte) GZIPInputStream.GZIP_MAGIC,
 	  
 	/* The compression type */
 	(byte) Deflater.DEFLATED,
