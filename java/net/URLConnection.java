@@ -872,7 +872,7 @@ public abstract class URLConnection
    */
   public static synchronized void setContentHandlerFactory(ContentHandlerFactory factory)
   {
-    if (factory != null)
+    if (URLConnection.factory != null)
       throw new Error("ContentHandlerFactory already set");
 
     // Throw an exception if an extant security mgr precludes
