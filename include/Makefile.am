@@ -42,7 +42,7 @@ $(top_srcdir)/include/gnu_java_net_PlainDatagramSocketImpl.h \
 $(top_srcdir)/include/gnu_java_net_PlainSocketImpl.h \
 $(top_srcdir)/include/gnu_java_nio_NIOServerSocket.h \
 $(top_srcdir)/include/gnu_java_nio_VMPipe.h \
-$(top_srcdir)/include/gnu_java_nio_SelectorImpl.h \
+$(top_srcdir)/include/gnu_java_nio_VMSelector.h \
 $(top_srcdir)/include/gnu_java_nio_channels_FileChannelImpl.h \
 $(top_srcdir)/include/java_io_ObjectInputStream.h \
 $(top_srcdir)/include/java_io_VMFile.h \
@@ -140,8 +140,8 @@ $(top_srcdir)/include/gnu_java_nio_NIOServerSocket.h: $(top_srcdir)/gnu/java/nio
 	$(JAVAH) -o $@ gnu.java.nio.NIOServerSocket
 $(top_srcdir)/include/gnu_java_nio_VMPipe.h: ../vm/current/gnu/java/nio/VMPipe.java
 	$(JAVAH) -o $@ gnu.java.nio.VMPipe
-$(top_srcdir)/include/gnu_java_nio_SelectorImpl.h: $(top_srcdir)/gnu/java/nio/SelectorImpl.java
-	$(JAVAH) -o $@ gnu.java.nio.SelectorImpl
+$(top_srcdir)/include/gnu_java_nio_VMSelector.h: ../vm/current/gnu/java/nio/VMSelector.java
+	$(JAVAH) -o $@ gnu.java.nio.VMSelector
 $(top_srcdir)/include/java_io_ObjectInputStream.h: $(top_srcdir)/java/io/ObjectInputStream.java
 	$(JAVAH) -o $@ java.io.ObjectInputStream
 $(top_srcdir)/include/java_io_VMFile.h: ../vm/current/java/io/VMFile.java

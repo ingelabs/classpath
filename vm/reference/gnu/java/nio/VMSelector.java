@@ -1,4 +1,4 @@
-/* gnu_java_nio_SelectorImpl.c - Native methods for SelectorImpl class
+/* VMSelector.java -- 
    Copyright (C) 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -35,22 +35,25 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-#include <config.h>
-#include <errno.h>
+package gnu.java.nio;
 
-#include <jni.h>
-#include <jcl.h>
+import gnu.classpath.Configuration;
+import java.io.IOException;
 
-#include "gnu_java_nio_SelectorImpl.h"
-
-#define IO_EXCEPTION "java/io/IOException"
-
-JNIEXPORT jint JNICALL
-Java_gnu_java_nio_SelectorImpl_implSelect (JNIEnv *env, jclass obj,
-					   jintArray read, jintArray write,
-					   jintArray except, jlong timeout)
+public final class VMSelector
 {
-  JCL_ThrowException (env, IO_EXCEPTION, "gnu.java.nio.SelectorImpl.implSelect(): not implemented");
-  return 0;
-}
+  static
+  {
+    // load the shared library needed for native methods.
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+        System.loadLibrary ("javanio");
+      }
+  }
+  
+  // A timeout value of 0 means block forever.
+  static native int select (int[] read, int[] write,
+                                        int[] except, long timeout)
+    throws IOException;
 
+}
