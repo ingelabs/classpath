@@ -1,5 +1,10 @@
 2004-05-19  Michael Koch  <konqueror@gmx.de>
 
+	* configure.ac (AM_CFLAGS): Added -Wmissing-declarations
+	-Wmissing-prototypes and -Wstring-prototypes.
+
+2004-05-19  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/Makefile.am (EXTRA_DIST): Added DeleteFileHelper.java.
 
 2004-05-19  Guilhem Lavaux  <guilhem@kaffe.org>
