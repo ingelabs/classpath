@@ -1186,7 +1186,7 @@ public class ObjectInputStream extends InputStream
       else if (type == Character.TYPE)
       {
 	char value =
-	  default_initialize ? 0 : this.realInputStream.readChar ();
+	  default_initialize ? (char)0 : this.realInputStream.readChar ();
 	if (set_value)
 	  setCharField (obj, field_name, value);
       }
@@ -1221,7 +1221,7 @@ public class ObjectInputStream extends InputStream
       else if (type == Short.TYPE)
       {
 	short value =
-	  default_initialize ? 0 : this.realInputStream.readShort ();
+	  default_initialize ? (short)0 : this.realInputStream.readShort ();
 	if (set_value)
 	  setShortField (obj, field_name, value);
       }
