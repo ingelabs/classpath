@@ -1,4 +1,8 @@
 2005-03-05  Audrius Meskauskas  <audriusa@bluewin.ch>
+	* org/omg/CORBA/BAD_OPERATION.java: formatting change
+	(replacing CR CR LF by CR LF).
+
+2005-03-05  Audrius Meskauskas  <audriusa@bluewin.ch>
 
 	* org/omg/CORBA/INV_POLICY.java: new file.
 	* org/omg/CORBA/NO_PERMISSION.java: new file.
