@@ -30,8 +30,6 @@ public class GtkContainerPeer extends GtkComponentPeer
   Insets insets;
   Container c;
 
-  native void gtkContainerCheckResize ();
-
   public GtkContainerPeer(Container c)
   {
     super (c);
@@ -41,20 +39,10 @@ public class GtkContainerPeer extends GtkComponentPeer
 
   public void beginValidate() 
   {
-    System.out.println("container beginvalidate");
-    /* We should probably put some code here to "freeze" 
-       the native container widget.  Until that happens, we
-       may see the layout manager moving widgets. */
   }
 
   public void endValidate() 
   {
-    System.out.println("container endvalidate");
-    /* The way I am interpreting this is that now that the Container
-       has validated its peers, we should cause the container widget
-       to unfreeze and draw the container's children. -JB */
-    gtkContainerCheckResize ();
-
     Graphics gc = getGraphics ();
     if (gc != null)
       {
