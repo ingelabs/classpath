@@ -73,14 +73,14 @@ sub writeNativeFile
 	{
 	    $j = $natives[$i];
 	    $j =~ s/^\.\.\///;          # remove ../
-	    $j =~ s/^vm\/reference\///; # remove vm/reference/
+	    $j =~ s/^vm\/current\///;   # remove vm/current/
 	    $j =~ s/\//_/g;             # replace / with _
 	    $j =~ s/\.java$/\.h/;       # replace .java with .h
 	    print MAKEDEP "          ../include/", $j, " \\", "\n";	    
 	}
 	$j = $natives[$#natives];
 	$j =~ s/^\.\.\///;          # remove ../
-	$j =~ s/^vm\/reference\///; # remove vm/reference/
+	$j =~ s/^vm\/current\///;   # remove vm//
 	$j =~ s/\//_/g;             # replace / with _
 	$j =~ s/\.java/\.h/;        # replace .java with .h
 	print MAKEDEP "          ../include/", $j, "\n\n";
@@ -99,7 +99,7 @@ sub writeNativeFile
 	{
 	    $j = $natives[$i];
 	    $j =~ s/^\.\.\///;          # remove ../
-	    $j =~ s/^vm\/reference\///; # remove vm/reference/
+	    $j =~ s/^vm\/current\///;   # remove vm/current/
 #	    $k = $l = $j;
 	    $l = $j;
 	    $j =~ s/\//_/g;             # replace / with _
@@ -117,7 +117,7 @@ sub writeNativeFile
 	}
 	$j = $natives[$#natives];
 	$j =~ s/^\.\.\///;          # remove ../
-	$j =~ s/^vm\/reference\///; # remove vm/reference/
+	$j =~ s/^vm\/current\///; # remove vm/current/
 #	$k = $l = $j;
 	$l = $j;
 	$j =~ s/\//_/g;             # replace / with _
