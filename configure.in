@@ -125,8 +125,8 @@ if test "x${COMPILE_JNI}" = xyes; then
 
   dnl Check for AWT related glib/gtk/libart_lgpl
   if test "x${COMPILE_GTK_PEER}" = xyes; then
-dnl     m4_pattern_allow([AM_PATH_GTK_2_0])
-dnl     m4_pattern_allow([AM_PATH_GLIB_2_0])
+     m4_pattern_allow([AM_PATH_GTK_2_0])
+     m4_pattern_allow([AM_PATH_GLIB_2_0])
      m4_ifdef([AM_PATH_GTK_2_0],
        [AM_PATH_GTK_2_0(2.0.0,,exit 1)],
        [AC_MSG_ERROR([No AM_PATH_GTK_2_0 macro found: use --disable-gtk-peer])])

@@ -1,3 +1,7 @@
+2003-06-19  C. Brian Jones  <cbj@gnu.org>
+
+	* configure.in: uncomment m4_pattern_allow to avoid autoconf warning
+
 2003-06-19  Michael Koch  <konqueror@gmx.de>
 
 	* java/util/SimpleTimeZone.java:
