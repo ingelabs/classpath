@@ -1,5 +1,9 @@
 2004-04-23  Tom Tromey  <tromey@redhat.com>
 
+	* gnu/java/lang/ClassLoaderHelper.java: Removed.
+
+2004-04-23  Tom Tromey  <tromey@redhat.com>
+
 	* java/lang/System.java (runFinalizersOnExit): Updated javadoc.
 	Cleaned up imports.
 
