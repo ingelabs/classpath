@@ -33,7 +33,56 @@ Java_gnu_java_awt_peer_gtk_GtkPanelPeer_create
   gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, widget);
-}  
+}
+
+typedef struct _GtkLayoutChild   GtkLayoutChild;
+
+struct _GtkLayoutChild {
+  GtkWidget *widget;
+  gint x;
+  gint y;
+};
+
+void sr (GtkWidget *widget, GtkRequisition *requisition,
+	 gpointer user_data)
+{
+  GtkLayout *layout;
+  GtkLayoutChild *child;
+  GList *children;
+
+  layout = GTK_LAYOUT (widget);
+  requisition->width = GTK_WIDGET (widget)->allocation.width;
+  requisition->height = GTK_WIDGET (widget)->allocation.height;
+
+  if (user_data)
+    {
+      printf ("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11\n");
+      printf ("%i, %i\n",   requisition->width,   requisition->height);
+    }
+  return;
+
+  children = layout->children;
+  while (children)
+    {
+      child = children->data;
+      children = children->next;
+
+      if (GTK_WIDGET_VISIBLE (child->widget))
+	{
+          requisition->height = MAX (requisition->height,
+                                     child->y +
+                                     child->widget->allocation.height);
+          requisition->width = MAX (requisition->width,
+                                    child->x +
+                                    child->widget->allocation.width);
+	}
+    }
+
+  requisition->height += GTK_CONTAINER (layout)->border_width * 2;
+  requisition->width += GTK_CONTAINER (layout)->border_width * 2;
+
+  printf ("width, height %i, %i\n", requisition->width, requisition->height);
+}
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkPanelPeer_connectHooks
@@ -46,6 +95,9 @@ Java_gnu_java_awt_peer_gtk_GtkPanelPeer_connectHooks
   gdk_threads_enter ();
   gtk_widget_realize (GTK_WIDGET (ptr));
   connect_awt_hook (env, obj, 1, GTK_LAYOUT (ptr)->bin_window);
+
+/*    gtk_signal_connect (GTK_OBJECT (ptr), "size_request", GTK_SIGNAL_FUNC (sr), */
+/*  		      NULL); */
   gdk_threads_leave ();
 }
 

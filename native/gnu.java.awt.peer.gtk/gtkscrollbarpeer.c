@@ -48,10 +48,10 @@ post_adjustment_event (GtkAdjustment *adj, struct range_scrollbar *rs)
       type = AWT_ADJUSTMENT_BLOCK_DECREMENT;
       break;
     case GTK_SCROLL_JUMP:
-    case GTK_SCROLL_NONE:
-    default:
       type = AWT_ADJUSTMENT_TRACK;
       break;
+    default: /* GTK_SCROLL_NONE */
+      return;
     }
   
   (*gdk_env)->CallVoidMethod (gdk_env, *(rs->scrollbar), postAdjustmentEventID,

@@ -21,7 +21,7 @@
 
 #include "gtkpeer.h"
 #include "gnu_java_awt_peer_gtk_GtkComponentPeer.h"
-
+#include <gtk/gtkprivate.h>
 #define GTK_OBJECT_SETV(ptr, arg)                \
   gdk_threads_enter ();                          \
   {                                              \
@@ -185,11 +185,12 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetDimensions
     jint *dims;
     GtkRequisition req;
 
-    ptr = NSA_GET_PTR (env,obj);
+    ptr = NSA_GET_PTR (env, obj);
     dims = (*env)->GetIntArrayElements (env, jdims, 0);  
 
     gdk_threads_enter ();
     gtk_signal_emit_by_name (GTK_OBJECT (ptr), "size_request", &req);
+    
 	
     dims[0] = req.width;
     dims[1] = req.height;
@@ -339,12 +340,19 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setNativeBoun
 
   printf ("Cpeer.setBounds: %i, %i  %ix%i\n",
 	  x, y, width, height);
-  
+
   gdk_threads_enter ();
 
   widget = GTK_WIDGET (ptr);
-  gtk_widget_set_usize (widget, width, height);
-  gtk_layout_move (GTK_LAYOUT (widget->parent), widget, x, y);
+  if (GTK_IS_VIEWPORT (widget->parent))
+    {
+      gtk_widget_set_usize (widget, width, height);
+    }
+  else
+    {
+      gtk_widget_set_usize (widget, width, height);
+      gtk_layout_move (GTK_LAYOUT (widget->parent), widget, x, y);
+    }
 
   gdk_threads_leave ();
 }
@@ -427,6 +435,7 @@ find_gtk_layout (GtkWidget *parent)
   return NULL;
 }
 
+#define WIDGET_CLASS(w)  GTK_WIDGET_CLASS (GTK_OBJECT (w)->klass)
 
 void
 set_parent (GtkWidget *widget, GtkContainer *parent)
@@ -443,8 +452,24 @@ set_parent (GtkWidget *widget, GtkContainer *parent)
     }
   else
     if (GTK_IS_SCROLLED_WINDOW (parent))
-      gtk_layout_put 
-	(GTK_LAYOUT (GTK_BIN (GTK_BIN (parent)->child)->child), widget, 0, 0);
+      {
+/*  	if (WIDGET_CLASS (widget)->set_scroll_adjustments_signal) */
+/*  	  gtk_container_add (GTK_CONTAINER (parent), widget); */
+/*  	else */
+/*  	  { */
+	    gtk_scrolled_window_add_with_viewport 
+	      (GTK_SCROLLED_WINDOW (parent), widget);
+/*  	    gtk_viewport_set_shadow_type (GTK_VIEWPORT (widget->parent),  */
+/*  					  GTK_SHADOW_NONE); */
+/*  	  } */
+
+      }
+/*        gtk_layout_put  */
+/*  	(GTK_LAYOUT (GTK_BIN (parent)->child), widget, 0, 0); */
+
+/*      if (GTK_IS_SCROLLED_WINDOW (parent)) */
+/*        gtk_layout_put  */
+/*  	(GTK_LAYOUT (GTK_BIN (GTK_BIN (parent)->child)->child), widget, 0, 0); */
     else
       gtk_layout_put (GTK_LAYOUT (parent), widget, 0, 0);
 }

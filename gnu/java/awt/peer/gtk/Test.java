@@ -62,9 +62,7 @@ class Test
       pan.add(tf);
 
       final Image img;
-      try {
-      img = Toolkit.getDefaultToolkit ().createImage (new XBMDecoder (new FileInputStream ("fvwm.xbm")));
-      } catch (FileNotFoundException ex) { img = null; }
+      img = Toolkit.getDefaultToolkit ().createImage (new XBMDecoder ("fvwm.xbm"));
 
 
       final Canvas ch = new Canvas () { 
@@ -79,9 +77,9 @@ class Test
 	  g.setColor (Color.blue);
 	  g.drawLine (xs,ys,xs+20,ys+20);
 
-	  System.out.println (TextArea.SCROLLBARS_BOTH);
-	  System.out.println (TextArea.SCROLLBARS_HORIZONTAL_ONLY);
-	  System.out.println (TextArea.SCROLLBARS_VERTICAL_ONLY);
+//  	  System.out.println (TextArea.SCROLLBARS_BOTH);
+//  	  System.out.println (TextArea.SCROLLBARS_HORIZONTAL_ONLY);
+//  	  System.out.println (TextArea.SCROLLBARS_VERTICAL_ONLY);
 
 //  	  Font f1 = new Font ("TimesRoman", Font.PLAIN, 10);
 //  	  System.out.println (f1.getName ());
@@ -130,14 +128,24 @@ class Test
       pan.add(ch);
       f.add(pan,"North");
 
-      ScrollPane sp=new ScrollPane(ScrollPane.SCROLLBARS_ALWAYS);
-      Panel p=new Panel();
+      final ScrollPane sp=new ScrollPane(ScrollPane.SCROLLBARS_ALWAYS);
+      System.out.println ("ALWAYS HERE: " + ScrollPane.SCROLLBARS_ALWAYS);
+      System.out.println ("ALWAYS" + ScrollPane.SCROLLBARS_ALWAYS);
+      System.out.println ("NEEDED" + ScrollPane.SCROLLBARS_AS_NEEDED);
+      System.out.println ("NEVER " + ScrollPane.SCROLLBARS_NEVER);
+
+
+      final Panel p=new Panel();
+      System.out.println ("PREFERED: " + p.getPreferredSize ());
       p.add(new Button("Stop"));
+      System.out.println ("PREFERED: " + p.getPreferredSize ());
       p.add(new Button("evil"));
+      System.out.println ("PREFERED: " + p.getPreferredSize ());
       p.add(new Button("hoarders"));
       p.add(new Button("use"));
       p.add(new Button("GNU"));
       p.add(new Scrollbar(Scrollbar.HORIZONTAL));
+      System.out.println ("PREFERED: " + p.getPreferredSize ());
 
       sp.add(p);
       f.add(sp,"South");
@@ -185,7 +193,12 @@ class Test
       wb.setLabel("Destroy Frame on Click");
       wb.addActionListener (new ActionListener () {
 	public void actionPerformed (ActionEvent e) {
+	  System.out.println (((ScrollPanePeer)sp.getPeer ()).getHScrollbarHeight ());
+	  System.out.println (((ScrollPanePeer)sp.getPeer ()).getVScrollbarWidth ());
+
 	  l.setText ("Hello World!");
+	  System.out.println ("PREFERED: " + p.getPreferredSize ());
+
 	  final Dialog d = new Dialog (f);
 	  d.setModal (true);
 	  Button b = new Button ("foobar");
@@ -194,9 +207,9 @@ class Test
 		System.out.println ("I got called");
 		d.hide ();
 
-		System.out.println (ScrollPane.SCROLLBARS_ALWAYS);
-		System.out.println (ScrollPane.SCROLLBARS_AS_NEEDED);
-		System.out.println (ScrollPane.SCROLLBARS_NEVER);
+//  		System.out.println (ScrollPane.SCROLLBARS_ALWAYS);
+//  		System.out.println (ScrollPane.SCROLLBARS_AS_NEEDED);
+//  		System.out.println (ScrollPane.SCROLLBARS_NEVER);
 	      }
 	    });
 	  d.add (b);

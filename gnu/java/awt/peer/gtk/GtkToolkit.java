@@ -237,8 +237,7 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected ScrollPanePeer createScrollPane (ScrollPane sp) 
   {
-    return null;
-//      return new GtkScrollPanePeer (sp);
+    return new GtkScrollPanePeer (sp);
   }
 
   protected ScrollbarPeer createScrollbar (Scrollbar sb) 

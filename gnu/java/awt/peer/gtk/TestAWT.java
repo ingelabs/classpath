@@ -135,7 +135,7 @@ class MainWindow extends PrettyFrame implements ActionListener
     addSubWindow ("Radio Buttons", new RadioWindow ());
     addSubWindow ("TextField", new TextFieldWindow ());
 
-    ScrollPane sp = new ScrollPane();
+    Panel sp = new Panel();
     PrettyPanel p = new PrettyPanel();
     p.setLayout (new GridLayout (windows.size(), 1));
 
