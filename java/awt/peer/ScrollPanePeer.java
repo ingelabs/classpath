@@ -26,8 +26,8 @@ import java.awt.Adjustable;
 public interface ScrollPanePeer extends ContainerPeer
 {
 
-public abstract void getHScrollbarHeight();
-public abstract void getVScrollbarWidth();
+public abstract int getHScrollbarHeight();
+public abstract int getVScrollbarWidth();
 public abstract void setScrollPosition(int h, int v);
 public abstract void childResized(int width, int height);
 public abstract void setUnitIncrement(Adjustable item, int inc);
