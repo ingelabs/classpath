@@ -111,11 +111,7 @@ JNIEXPORT jfloat JNICALL Java_java_lang_Float_parseFloat
 		    myptr++;
 		    break;
 		default:
-#if defined(WITH_JAPHAR)
-		    (*env)->ReleaseStringUTFChars(env, s, (const jbyte*)nptr);
-#else
 		    (*env)->ReleaseStringUTFChars(env, s, nptr);
-#endif
 		    _javalang_ThrowException(env, "java/lang/NumberFormatException", "bad number format for float");
 		    return 0.0;
 		    break;
@@ -124,21 +120,13 @@ JNIEXPORT jfloat JNICALL Java_java_lang_Float_parseFloat
 
     if ((val.d == 0) && (nptr == endptr))
 	{
-#if defined(WITH_JAPHAR)
-		    (*env)->ReleaseStringUTFChars(env, s, (const jbyte*)nptr);
-#else
 	    (*env)->ReleaseStringUTFChars(env, s, nptr);
-#endif
 	    _javalang_ThrowException(env, "java/lang/NumberFormatException", "no conversion performed, possible underflow");
 	    return 0.0;
 	}
     if ((val.d == -HUGE_VAL) || (val.d == HUGE_VAL))
 	{
-#if defined(WITH_JAPHAR)
-		    (*env)->ReleaseStringUTFChars(env, s, (const jbyte*)nptr);
-#else
 	    (*env)->ReleaseStringUTFChars(env, s, nptr);
-#endif
 	    _javalang_ThrowException(env, "java/lang/NumberFormatException", "conversion would cause overflow");
 	    return 0.0;
 	}
@@ -146,11 +134,7 @@ JNIEXPORT jfloat JNICALL Java_java_lang_Float_parseFloat
     val.d = atof(nptr);
 #endif
 
-#if defined(WITH_JAPHAR)
-		    (*env)->ReleaseStringUTFChars(env, s, (const jbyte*)nptr);
-#else
     (*env)->ReleaseStringUTFChars(env, s, nptr);
-#endif
     return val.f;
 }
 
