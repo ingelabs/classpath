@@ -1,12 +1,18 @@
 2004-03-27  Etienne M. Gagnon <gagnon.etienne_m@uqam.ca>
 
+	* .cvsignore: Ignore some additional generated files.
+	* config.guess, config.sub, depcomp, install-sh, ltmain.sh,
+	missing, mkinstalldirs: Removed these generated files.
+
+2004-03-27  Etienne M. Gagnon <gagnon.etienne_m@uqam.ca>
+
 	* .indent.pro: Added typedef file for GNU indent.
 	* Makefile.am: Added indent target.
 	* include/jni.h.in, native/fdlibm/fdlibm.h,
 	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGlyphVector.c,
 	native/vmi/vmi.h: Separate typedef declarations from struct/union
 	declarations.
-	
+
 2004-03-19  Ito Kazumitsu <kaz@maczuka.gcd.org>
 
 	* libraries/javalib/java/util/Properties (load): Delete leading
