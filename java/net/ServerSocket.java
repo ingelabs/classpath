@@ -339,7 +339,8 @@ public class ServerSocket
    */
   public void close () throws IOException
   {
-    impl.close ();
+    if (impl != null)
+      impl.close ();
 
     if (getChannel() != null)
       getChannel().close ();
