@@ -1,3 +1,8 @@
+2000-05-15  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* java/lang/String.java (trim): Optimize `end' loop. Don't lose the 
+	last character of the returned string. 
+
 2000-05-10  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	* java/lang/StringBuffer.java (delete): Call arrayCopy() correctly.

@@ -905,14 +905,18 @@ Character.toLowerCase(value[i]) == Character.toLowerCase(anotherString.value[i])
     if (count == 0 || (value[0] > '\u0020' && value[count-1] > '\u0020'))
       return this;
     int begin = 0;
-    for (; begin < count; begin++)
-      if (value[begin] > '\u0020')
-	break;
-    int end = count-1;
-    for (; end >= 0; end--)
-      if (value[end] > '\u0020')
-	break;
-    return substring(begin, end);
+    for (;; begin++)
+      {
+	if (begin == count)
+	  return "";
+	if (value[begin] > '\u0020')
+	  break;
+      }
+    int end = count;
+    for (;;)
+      if (value[--end] > '\u0020')
+        break;
+    return substring(begin, end + 1);
   }
 
   /**
