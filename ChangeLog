@@ -1,3 +1,11 @@
+2001-01-25  Mark Wielaard <mark@klomp.org>
+	* java/io/DataInputStream.java: update copyright notice
+	* java/io/PrintWriter.java: idem
+	* java/io/Reader.java: idem
+	* java/io/StreamTokenizer.java: idem
+	* java/io/StringReader.java: idem
+	* java/lang/reflect/ReflectPermission.java: idem
+
 2001-01-23  Mark Wielaard <mark@klomp.org>
 	* java/security/AccessController.java: new file (stub implementation)
 
