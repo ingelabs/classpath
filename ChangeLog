@@ -1,3 +1,7 @@
+2004-08-27  Sven de Marothy <sven@physto.se>
+	* java/awt/geom/Area.java
+	Implemented.
+
 2004-08-25  Mark Wielaard  <mark@klomp.org>
 
 	* java/awt/geom/Arc2D.java (ArcIterator): Make package private.
