@@ -1,3 +1,8 @@
+2004-11-16  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java
+	(buildString): Optimise String building.
+
 2004-11-15  Michael Koch  <konqueror@gmx.de>
 
 	* native/jni/Makefile.am: Add checking of JNI methods.
