@@ -200,6 +200,10 @@ dnl     AC_PATH_PROG(JAVADEPS, jdeps, "", $PATH)
 dnl   fi
 dnl ])
 
+dnl avoiding automake complaints
+REMOVE=""
+AC_SUBST(REMOVE)
+
 dnl This is probably useless.
 AC_PATH_PROG(SH, sh)
 
