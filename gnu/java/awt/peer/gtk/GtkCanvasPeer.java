@@ -5,14 +5,11 @@ import java.awt.peer.*;
 
 public class GtkCanvasPeer extends GtkComponentPeer implements CanvasPeer
 {
-  native void gtkCanvasNew (ComponentPeer parent,
-			    int width, int height);
+  native void create ();
 
-  public GtkCanvasPeer (Canvas c, ComponentPeer cp)
+  public GtkCanvasPeer (Canvas c)
   {
     super (c);
-    Dimension d = c.getSize();
-    gtkCanvasNew (cp, d.width, d.height);
   }
 
   public Graphics getGraphics ()
@@ -48,5 +45,11 @@ public class GtkCanvasPeer extends GtkComponentPeer implements CanvasPeer
 	}
 	break;
       }
+  }
+
+  /* Preferred size for a drawing widget is always what the user requested */
+  public Dimension getPreferredSize ()
+  {
+    return awtComponent.getSize ();
   }
 }

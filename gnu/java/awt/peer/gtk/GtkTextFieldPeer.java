@@ -27,13 +27,19 @@ public class GtkTextFieldPeer extends GtkTextComponentPeer
   implements TextFieldPeer
 {
 
-  native void create (ComponentPeer parent, String text);
+//    native void create (ComponentPeer parent, String text);
+
+  native void create ();
+  native void createHooks ();
+
   native void gtkEntryGetSize (int cols, int dims[]);
 
-  public GtkTextFieldPeer (TextField tf, ComponentPeer cp)
+  public GtkTextFieldPeer (TextField tf)
   {
     super (tf);
-    create (cp, tf.getText ());
+
+    if (tf.echoCharIsSet ())
+      setEchoChar (tf.getEchoChar ());
   }
 
   public Dimension getMinimumSize (int cols)

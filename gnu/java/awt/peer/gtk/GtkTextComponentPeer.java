@@ -29,14 +29,34 @@ public class GtkTextComponentPeer extends GtkComponentPeer
   GtkTextComponentPeer (TextComponent tc)
   {
     super (tc);
+
+    setText (tc.getText ());
   }
   
   public native int getCaretPosition ();
-  public native void setCaretPosition (int pos);
+  public void setCaretPosition (int pos)
+  {
+    set ("text_position", pos);
+  }
   public native int getSelectionStart ();
   public native int getSelectionEnd ();
   public native String getText ();
   public native void select (int start, int end);
-  public native void setEditable (boolean state);
+
+  public void setEditable (boolean state)
+  {
+    set ("editable", state);
+  }
+
   public native void setText (String text);
+
+  public void getArgs (Component component, GtkArgList args)
+  {
+    super.getArgs (component, args);
+
+    TextComponent tc = (TextComponent) component;
+
+    args.add ("text_position", tc.getCaretPosition ());
+    args.add ("editable", tc.isEditable ());
+  }
 }

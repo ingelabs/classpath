@@ -29,6 +29,10 @@ public class GtkScrollPanePeer extends GtkContainerPeer
   int sbHeight, sbWidth;
   ScrollPane myScrollPane;
 
+  private static final int GTK_POLICY_ALWAYS = 0,
+                           GTK_POLICY_AUTOMATIC = 1,
+                           GTK_POLICY_NEVER = 2;
+
   native void gtkScrolledWindowNew(ComponentPeer parent,
 				   int policy, int w, int h, int[] dims);
   native void gtkScrolledWindowSetScrollPosition(int x, int y);
@@ -36,30 +40,31 @@ public class GtkScrollPanePeer extends GtkContainerPeer
   native void gtkScrolledWindowSetVScrollIncrement (int u);
   native void gtkScrolledWindowSetSize(int w, int h);
   
-  public GtkScrollPanePeer(ScrollPane p, ComponentPeer parent)
+  public GtkScrollPanePeer (ScrollPane sp)
   {
-    super (p);
+    super (sp);
 
-    myScrollPane=p;
-    policy=p.getScrollbarDisplayPolicy();
-      
-    int mypolicy=1;
+    setPolicy (sp.getScrollbarDisplayPolicy ());
+  }
+
+  native void setPolicyNative (int policy);
+
+  void setPolicy (int policy)
+  {
     switch (policy)
       {
-      case ScrollPane.SCROLLBARS_ALWAYS: mypolicy=1; break;
-      case ScrollPane.SCROLLBARS_AS_NEEDED: mypolicy=2; break;
-      case ScrollPane.SCROLLBARS_NEVER: mypolicy=3; break;
+      case ScrollPane.SCROLLBARS_ALWAYS:
+	policy = GTK_POLICY_ALWAYS;
+	break;
+      case ScrollPane.SCROLLBARS_AS_NEEDED:
+	policy = GTK_POLICY_AUTOMATIC;
+	break;
+      case ScrollPane.SCROLLBARS_NEVER:
+	policy = GTK_POLICY_NEVER;
+	break;
       }
 
-    Point pnt=p.getLocation();
-    Dimension pdim=p.getSize();
-
-    int dims[]=new int[2];
-
-    gtkScrolledWindowNew(parent, mypolicy, pdim.width, pdim.height, dims);
-
-    sbWidth=dims[0];
-    sbHeight=dims[1];
+    setPolicyNative (policy);
   }
 
   public void childResized (int w, int h)
@@ -79,10 +84,7 @@ public class GtkScrollPanePeer extends GtkContainerPeer
     return sbWidth;
   }
 
-  public void setScrollPosition (int x, int y)
-  {
-    gtkScrolledWindowSetScrollPosition(x, y);
-  }
+  native public void setScrollPosition (int x, int y);
 
   public void setUnitIncrement (Adjustable adj, int u)
   {

@@ -30,12 +30,26 @@ public class GtkFramePeer extends GtkWindowPeer
   int menuBarHeight = 0;
   native int getMenuBarHeight ();
 
-  public GtkFramePeer (Frame f)
+  public GtkFramePeer (Frame frame)
   {
-    super (toplevelType, f);
-    setTitle (f.getTitle ());
+    super (frame);
   }
 
+  void create ()
+  {
+    create (GTK_WINDOW_TOPLEVEL);
+  }
+
+  public void getArgs (Component component, GtkArgList args)
+  {
+    super.getArgs (component, args);
+
+    Frame frame = (Frame) component;
+
+    args.add ("title", frame.getTitle ());
+    args.add ("allow_shrink", frame.isResizable ());
+    args.add ("allow_grow", frame.isResizable ());
+  }
   public void setIconImage (Image image) 
   {
       /* TODO: Waiting on Toolkit Image routines */

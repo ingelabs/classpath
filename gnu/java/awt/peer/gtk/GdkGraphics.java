@@ -94,7 +94,7 @@ public class GdkGraphics extends Graphics
       }
 
     GtkImage image = (GtkImage) img;
-    new GtkImagePainter (image, this, x, y, bgcolor);
+    new GtkImagePainter (image, this, x, y, -1, -1, bgcolor);
     return image.isLoaded ();
   }
 
@@ -107,33 +107,40 @@ public class GdkGraphics extends Graphics
 	return true;
       }
 
-    return drawImage (img, x, y, component.getBackground(), observer);
+    return drawImage (img, x, y, component.getBackground (), observer);
   }
 
   public boolean drawImage (Image img, int x, int y, int width, int height, 
 			    Color bgcolor, ImageObserver observer)
   {
-    return false;
+    GtkImage image = (GtkImage) img;
+    new GtkImagePainter (image, this, x, y, width, height, bgcolor);
+    return image.isLoaded ();
   }
 
   public boolean drawImage (Image img, int x, int y, int width, int height, 
 			    ImageObserver observer)
   {
-    return false;
+    return drawImage (img, x, y, width, height, component.getBackground (),
+		      observer);
   }
 
   public boolean drawImage (Image img, int dx1, int dy1, int dx2, int dy2, 
 			    int sx1, int sy1, int sx2, int sy2, 
 			    Color bgcolor, ImageObserver observer)
   {
-    return false;
+    GtkImage image = (GtkImage) img;
+    new GtkImagePainter (image, this, dx1, dy1, dx2, dy2, 
+			 sx1, sy1, sx2, sy2, bgcolor);
+    return image.isLoaded ();
   }
 
-  public boolean drawImage(Image img, int dx1, int dy1, int dx2, int dy2, 
-			   int sx1, int sy1, int sx2, int sy2, 
-			   ImageObserver observer) 
+  public boolean drawImage (Image img, int dx1, int dy1, int dx2, int dy2, 
+			    int sx1, int sy1, int sx2, int sy2, 
+			    ImageObserver observer) 
   {
-    return false;
+    return drawImage (img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2,
+		      component.getBackground (), observer);
   }
 
   native public void drawLine (int x1, int y1, int x2, int y2);

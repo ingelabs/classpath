@@ -26,15 +26,25 @@ import java.awt.peer.*;
 public class GtkListPeer extends GtkComponentPeer
   implements ListPeer
 {
-  native void create (ComponentPeer parent, String [] items, boolean mode);
+//    native void create (ComponentPeer parent, String [] items, boolean mode);
+
+  native void create ();
+  native void connectHooks ();
+
   native void getSize (int rows, int dims[]);
 
-  public GtkListPeer (List l, ComponentPeer cp)
+  public GtkListPeer (List list)
   {
-    super (l);
-    create (cp, l.getItems (), l.isMultipleMode ());
+    super (list);
+    
+    setMultipleMode (list.isMultipleMode ());
+
+    if (list.getItemCount () > 0)
+      append (list.getItems ());
   }
-  
+
+  native void append (String items[]);
+
   public native void add (String item, int index);
   
   public void addItem (String item, int index)

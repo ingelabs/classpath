@@ -25,30 +25,31 @@ import java.awt.*;
 public class GtkWindowPeer extends GtkContainerPeer
   implements WindowPeer
 {
-  static final int bogusType=0;
-  static final int toplevelType=1;
-  static final int popupType=3;
+  static protected final int GTK_WINDOW_TOPLEVEL = 0;
+  static protected final int GTK_WINDOW_DIALOG = 1;
+  static protected final int GTK_WINDOW_POPUP = 2;
 
-  native void gtkWindowNew (int type, int width, int height, boolean visible);
-  
-  public GtkWindowPeer(int type, Window w)
+  native void create (int type);
+
+  void create ()
   {
-    super (w);
-    System.out.println("WindowPeer int cons");
-    
-    Dimension d = w.getSize();
-
-    /* A bogusType indicates that we should not create a GTK window. */
-    if (type != bogusType)
-      {
-	gtkWindowNew (type, d.width, d.height, w.isVisible ());
-      }
+    create (GTK_WINDOW_POPUP);
   }
 
-  public GtkWindowPeer(Window w)
+  native void connectHooks ();
+
+  public GtkWindowPeer (Window window)
   {
-    this (popupType, w);
-    System.out.println ("WindowPeer default cons");
+    super (window);
+
+    Dimension d = window.getSize ();
+    setBounds (0, 0, d.width, d.height);
+  }
+
+  public void getArgs (Component component, GtkArgList args)
+  {
+    args.add ("visible", component.isVisible ());
+    args.add ("sensitive", component.isEnabled ());
   }
   
   native public void toBack ();
@@ -56,8 +57,13 @@ public class GtkWindowPeer extends GtkContainerPeer
 
   native public void setBounds (int x, int y, int width, int height);
 
-  native public void setTitle (String title);    
+  public void setTitle (String title)
+  {
+    set ("title", title);
+  }
+
   native public void setResizable (boolean r);
+
   native public void setMenuBarPeer (MenuBarPeer bar);
 
   public void setMenuBar (MenuBar bar)
@@ -92,5 +98,11 @@ public class GtkWindowPeer extends GtkContainerPeer
 
     awtComponent.setBounds (x, y, width, height);
     awtComponent.validate ();
+  }
+  
+  public void setVisible (boolean b)
+  {
+    System.out.println ("setVisible called: " + b);
+    super.setVisible (b);
   }
 }

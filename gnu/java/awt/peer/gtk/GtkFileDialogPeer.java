@@ -24,14 +24,13 @@ import java.io.FilenameFilter;
 import java.awt.peer.*;
 import java.awt.*;
 
-public class GtkFileDialogPeer extends GtkDialogPeer
-  implements FileDialogPeer
+public class GtkFileDialogPeer extends GtkDialogPeer implements FileDialogPeer
 {
-  native void create (String label);
+  native void create ();
   
   public GtkFileDialogPeer (FileDialog fd)
   {
-    super (fd, null);
+    super (fd);
   }
 
   public void setDirectory (String directory)

@@ -34,7 +34,10 @@ public class GtkImage extends Image implements ImageConsumer
   {
     source = producer;
     this.g = g;
-    
+
+    System.out.println (source);
+    System.out.println (this);
+
     source.addConsumer (this);
   }
   
@@ -202,7 +205,10 @@ public class GtkImage extends Image implements ImageConsumer
   startProduction (GtkImagePainter painter)
   {
     if (isLoaded)
-      painter.setPixels (0, 0, width, height, model, pixelCache, 0, width);
+      {
+	painter.setDimensions (width, height);
+	painter.setPixels (0, 0, width, height, model, pixelCache, 0, width);
+      }
     else
       {
 	source.startProduction (painter);

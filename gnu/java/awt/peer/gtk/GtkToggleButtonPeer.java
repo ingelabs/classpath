@@ -1,8 +1,7 @@
 /*
- * GtkPanelPeer.java -- Implements PanelPeer with GTK
+ * GtkToggleButtonPeer.java -- Base class for CheckboxButtons and RadioButtons
  *
- * Copyright (c) 1998 Free Software Foundation, Inc.
- * Written by James E. Blair <corvus@gnu.org>
+ * Copyright (c) 1998, 1999 Free Software Foundation, Inc.
  *
  * This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License as published 
@@ -18,18 +17,35 @@
  * along with this library; if not, write to the Free Software Foundation
  * Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
+
 package gnu.java.awt.peer.gtk;
-import java.awt.peer.*;
-import java.awt.*;
+import java.awt.Checkbox;
+import java.awt.Component;
 
-public class GtkPanelPeer extends GtkContainerPeer
-  implements PanelPeer
+public class GtkToggleButtonPeer extends GtkComponentPeer
 {
-  native void create ();
-  native void connectHooks ();
-
-  public GtkPanelPeer (Panel p)
+  public GtkToggleButtonPeer (Checkbox c)
   {
-    super (p);
+    super (c);
+  }
+  
+  public void setLabel (String label)
+  {
+    set ("label", label);
+  }
+
+  public void setState (boolean state)
+  {
+    set ("active", state);
+  }
+
+  public void getArgs (Component component, GtkArgList args)
+  {
+    super.getArgs (component, args);
+
+    Checkbox cb = (Checkbox) component;
+
+    args.add ("label", cb.getLabel ());
+    args.add ("active", cb.getState ());
   }
 }

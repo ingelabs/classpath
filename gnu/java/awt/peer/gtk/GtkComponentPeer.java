@@ -43,10 +43,38 @@ public class GtkComponentPeer extends GtkGenericPeer
   native void gtkWidgetGetLocationOnScreen(int[] point);
   native void gtkWidgetSetCursor (int type);
 
+  void create ()
+  {
+    throw new RuntimeException ();
+  }
+
+  native void connectHooks ();
+
   protected GtkComponentPeer (Component awtComponent)
   {
     super (awtComponent);
     this.awtComponent = awtComponent;
+
+    /* temporary try/catch block until all peers use this creation method */
+    try {
+      create ();
+      
+      GtkArgList args = new GtkArgList ();
+      getArgs (awtComponent, args);
+      args.setArgs (this);
+
+      connectHooks ();
+
+      if (awtComponent.getForeground () == null)
+	awtComponent.setForeground (getForeground ());
+      if (awtComponent.getBackground () == null)
+	awtComponent.setBackground (getBackground ());
+      //        if (c.getFont () == null)
+      //  	c.setFont (cp.getFont ());
+      
+      if (!(awtComponent instanceof Window))
+	setCursor (awtComponent.getCursor ());
+    } catch (RuntimeException ex) { ; }
   }
 
   public int checkImage (Image image, int width, int height, 
@@ -116,7 +144,7 @@ public class GtkComponentPeer extends GtkGenericPeer
     int dim[]=new int[2];
     gtkWidgetGetDimensions (dim);
     Dimension d = new Dimension (dim[0],dim[1]);
-    System.out.println ("min: " + this + d);
+    System.out.println ("pref: " + this + d);
     return (d);
   }
 
@@ -157,7 +185,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void print (Graphics g) 
   {
-    throw new RuntimeException();
+    throw new RuntimeException ();
   }
 
   public void repaint (long tm, int x, int y, int width, int height)
@@ -199,7 +227,10 @@ public class GtkComponentPeer extends GtkGenericPeer
     gtkWidgetSetCursor (cursor.getType ());
   }
 
-  native public void setEnabled (boolean b);
+  public void setEnabled (boolean b)
+  {
+    set ("sensitive", b);
+  }
 
   public void setFont (Font f)
   {
@@ -222,7 +253,10 @@ public class GtkComponentPeer extends GtkGenericPeer
     return new Color (rgb[0], rgb[1], rgb[2]);
   }
 
-  native public void setVisible (boolean b);
+  public void setVisible (boolean b)
+  {
+    set ("visible", b);
+  }
   
   public void hide () 
   {
@@ -264,5 +298,40 @@ public class GtkComponentPeer extends GtkGenericPeer
     q.postEvent (new ItemEvent ((ItemSelectable)awtComponent, 
 				ItemEvent.ITEM_STATE_CHANGED,
 				item, stateChange));
+  }
+
+  String getType ()
+  {
+    return null;
+  }
+
+  public void getArgs (Component component, GtkArgList args)
+  {
+    args.add ("visible", component.isVisible ());
+    args.add ("sensitive", component.isEnabled ());
+    args.add ("parent", component.getParent ().getPeer ());
+  }
+
+  native void set (String name, String value);
+  native void set (String name, boolean value);
+  native void set (String name, int value);
+  native void set (String name, float value);
+  native void set (String name, Object value);
+
+  void set (GtkArg arg)
+  {
+    String name = arg.getName ();
+    Object value = arg.getValue ();
+
+    if (value instanceof Boolean)
+      set (name, ((Boolean)value).booleanValue ());
+    else if (value instanceof Integer)
+      set (name, ((Integer)value).intValue ());
+    else if (value instanceof Float)
+      set (name, ((Float)value).floatValue ());
+    else if (value instanceof String)
+      set (name, ((String) value));
+    else
+      set (name, value);
   }
 }

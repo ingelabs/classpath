@@ -26,15 +26,46 @@ import java.awt.peer.*;
 public class GtkLabelPeer extends GtkComponentPeer
     implements LabelPeer
 {
+  native void create ();
 
-  native void gtkLabelNew (ComponentPeer parent, String text, int just);
-
-  public GtkLabelPeer (Label l, ComponentPeer cp)
+  public GtkLabelPeer (Label l)
   {
     super (l);
-    gtkLabelNew (cp, l.getText (), l.getAlignment ());
   }
     
-  native public void setText (String text);
-  native public void setAlignment (int alignment);
+  public void setText (String text)
+  {
+    set ("label", text);
+  }
+
+  public void setAlignment (int alignment)
+  {
+    set ("xalign", getGtkAlignment (alignment));
+  }
+
+  float getGtkAlignment (int alignment)
+  {
+    switch (alignment)
+      {
+      case Label.LEFT:
+	return 0.0f;
+      case Label.CENTER:
+	return 0.5f;
+      case Label.RIGHT:
+	return 1.0f;
+      }
+
+    return 0.0f;
+  }
+
+  public void getArgs (Component component, GtkArgList args)
+  {
+    super.getArgs (component, args);
+
+    Label label = (Label) component;
+
+    args.add ("label", label.getText ());
+    args.add ("xalign", getGtkAlignment (label.getAlignment ()));
+    args.add ("yalign", 0.5f);
+  }
 }

@@ -43,12 +43,16 @@ public class GtkContainerPeer extends GtkComponentPeer
 
   public void endValidate() 
   {
+//      q.postEvent (new PaintEvent (awtComponent, PaintEvent.PAINT,
+//  				 new Rectangle (x, y, width, height)));
 //      Graphics gc = getGraphics ();
 //      if (gc != null)
 //        {
-//  	c.paintComponents (gc);
+//  	awtComponent.update (gc);
 //  	gc.dispose ();
 //        }
+//      System.out.println ("got here");
+//      awtComponent.repaint ();
   }
 
   public Insets getInsets() 
@@ -84,7 +88,8 @@ public class GtkContainerPeer extends GtkComponentPeer
 	  try 
 	    {
 	      Graphics g = getGraphics ();
-		
+	      g.setClip (((PaintEvent)event).getUpdateRect());
+
 	      if (id == PaintEvent.PAINT)
 		awtComponent.paint (g);
 	      else

@@ -22,23 +22,38 @@
 package gnu.java.awt.peer.gtk;
 import java.awt.*;
 import java.awt.peer.*;
+import java.awt.event.*;
 
 public class GtkDialogPeer extends GtkWindowPeer
   implements DialogPeer
 {
-  native void gtkDialogNew(int width, int height, boolean visible,
-			   boolean resizable, String title, boolean modal,
-			   Object parent);
-
-  native void create (String title);
-
-  public GtkDialogPeer (Dialog d, ComponentPeer parent)
+  public GtkDialogPeer (Dialog dialog)
   {
-    super (bogusType, d);
-
-    create (d.getTitle ());
-//      Dimension d = w.getSize();
-//      gtkDialogNew (d.width, d.height, w.isVisible (), w.isResizable (),
-//  		  w.getTitle (), w.isModal(), parent);
+    super (dialog);
   }
+
+  void create ()
+  {
+    create (GTK_WINDOW_DIALOG);
+  }
+
+  public void getArgs (Component component, GtkArgList args)
+  {
+    super.getArgs (component, args);
+
+    Dialog dialog = (Dialog) component;
+
+    args.add ("modal", dialog.isModal ());
+    args.add ("allow_shrink", dialog.isResizable ());
+    args.add ("allow_grow", dialog.isResizable ());
+  }
+
+  public void handleEvent (AWTEvent event)
+  {
+    int id = event.getID();
+    
+    if (id == WindowEvent.WINDOW_CLOSING)
+      System.out.println ("got a closing event");
+  }
+
 }

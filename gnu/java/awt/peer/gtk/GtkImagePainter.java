@@ -12,9 +12,15 @@ public class GtkImagePainter implements Runnable, ImageConsumer
   int redBG;
   int greenBG;
   int blueBG;
+  double affine[];
+  int width, height;
+  boolean flipX, flipY;
+  Rectangle clip;
+  int s_width, s_height;
 
   public
-  GtkImagePainter (GtkImage image, GdkGraphics gc, int x, int y, Color bgcolor)
+  GtkImagePainter (GtkImage image, GdkGraphics gc, int x, int y, 
+		   int width, int height, Color bgcolor)
   {
     this.image = image;
     this.gc = (GdkGraphics) gc.create ();
@@ -23,6 +29,41 @@ public class GtkImagePainter implements Runnable, ImageConsumer
     redBG = bgcolor.getRed ();
     greenBG = bgcolor.getGreen ();
     blueBG = bgcolor.getBlue ();
+    this.width = width;
+    this.height = height;
+    flipX = flipY = false;
+    s_width = s_height = 0;
+    clip = null;
+
+    new Thread (this).start ();
+  }
+
+  public
+  GtkImagePainter (GtkImage image, GdkGraphics gc, 
+		   int dx1, int dy1, int dx2, int dy2,
+		   int sx1, int sy1, int sx2, int sy2,
+		   Color bgcolor)
+  {
+    this.image = image;
+    this.gc = (GdkGraphics) gc.create ();
+    startX = (dx1 < dx2) ? dx1 : dx2;
+    startY = dy1;
+    redBG = bgcolor.getRed ();
+    greenBG = bgcolor.getGreen ();
+    blueBG = bgcolor.getBlue ();
+
+    this.width = Math.abs (dx2 - dx1);
+    this.height = Math.abs (dy2 - dy1);
+
+    flipX = ((dx1 > dx2 && sx2 > sx1)
+	     || (dx1 < dx2 && sx2 < sx1));
+
+    flipY = ((dy1 > dy2 && sy2 > sy1)
+	     || (dy1 < dy2 && sy2 < sy1));
+
+    s_width = Math.abs (sx2 - sx1);
+    s_height = Math.abs (sy2 - sy1);
+    clip = new Rectangle (sx1, sy1, s_width, s_height);
     
     new Thread (this).start ();
   }
@@ -71,32 +112,80 @@ public class GtkImagePainter implements Runnable, ImageConsumer
   native void
   drawPixels (GdkGraphics gc, int bg_red, int bg_green, int bg_blue, 
 	      int x, int y, int width, int height, int[] pixels, int offset, 
-	      int scansize);
+	      int scansize, double affine[]);
 
  
   public void 
   setPixels (int x, int y, int width, int height, ColorModel model,
 	     int[] pixels, int offset, int scansize)
   {
+    if (clip != null)
+      {
+	Rectangle r;
+	r = clip.intersection (new Rectangle (x, y, width, height));
+	if (r.width == 0 && r.height == 0)
+	  return;
+
+	offset += r.y * scansize + r.x;
+
+	r.translate (-Math.abs (clip.x - startX), -Math.abs (clip.y - startY));
+
+	width = r.width;
+	height = r.height;
+	x = r.x;
+	y = r.y;
+      }
+
     drawPixels (gc, redBG, greenBG, blueBG,
 	        startX + x, startY + y,
 		width, height, convertPixels (pixels, model), offset,
-		scansize);
+		scansize, affine);
   }
 
   public void 
   setPixels (int x, int y, int width, int height, ColorModel model, 
 	     byte[] pixels, int offset, int scansize)
   {
-    drawPixels (gc, redBG, greenBG, blueBG,
-		startX + x, startY + y,
-		width, height, convertPixels (pixels, model), offset,
-		scansize);
+    setPixels (x, y, width, height, model, convertPixels (pixels, model),
+	       offset, scansize);
   }
 
   public void 
   setDimensions (int width, int height)
   {
+    if (!flipX && !flipY && 
+	((this.width == -1 && this.height == -1)
+	 || (this.width == width && this.height == height)))
+      return;
+
+    affine = new double[6];
+    affine[1] = affine[2] = affine[4] = affine[5] = 0;
+    
+    if (clip != null)
+      {
+	affine[0] = this.width / (double) s_width;
+	affine[3] = this.height / (double) s_height;
+      }
+    else
+      {
+	affine[0] = this.width / (double) width;
+	affine[3] = this.height / (double) height;
+      }
+
+    if (flipX)
+      {
+	affine[0] = -affine[0];
+	affine[4] = this.width;
+      }
+
+    if (flipY)
+      {
+	affine[3] = -affine[3];
+	affine[5] = this.height;
+      }
+
+    if (affine[0] == 1 && affine[3] == 1)
+      affine = null;
   }
 
   public void 

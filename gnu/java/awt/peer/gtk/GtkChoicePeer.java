@@ -1,8 +1,7 @@
 /*
  * GtkChoicePeer.java -- Implements ChoicePeer with GTK
  *
- * Copyright (c) 1998 Free Software Foundation, Inc.
- * Written by James E. Blair <corvus@gnu.org>
+ * Copyright (c) 1998, 1999 Free Software Foundation, Inc.
  *
  * This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License as published 
@@ -27,45 +26,34 @@ import java.awt.event.*;
 public class GtkChoicePeer extends GtkComponentPeer
   implements ChoicePeer
 {
+  native void create ();
 
-  native void gtkOptionMenuNew (ComponentPeer parent, String [] items);
-  native void gtkOptionMenuAdd (String item, int index);
-  native void gtkOptionMenuRemove (int index);
-  native void gtkOptionMenuSelect (int index);
-
-  public GtkChoicePeer (Choice c, ComponentPeer parent)
+  public GtkChoicePeer (Choice c)
   {
     super (c);
-    
-    int count = c.getItemCount();
-    
-    String [] items=new String[count];
-    
-    for (int i = 0; i < count; i++)
-      items[i] = c.getItem(i);
+
+    int count = c.getItemCount ();
+    if (count > 0)
+      {
+	String items[] = new String[count];
+	for (int i = 0; i < count; i++)
+	  items[i] = c.getItem (i);
 	  
-    gtkOptionMenuNew (parent, items);
+	append (items);
+      }
   }
 
-  public void add (String item, int index)
-  {
-    gtkOptionMenuAdd (item, index);
-  }
+  native void append (String items[]);
+
+  native public void add (String item, int index);
+  native public void remove (int index);
+  native public void select (int position);
   
   public void addItem (String item, int position)
   {
-    gtkOptionMenuAdd (item, position);
+    add (item, position);
   }
   
-  public void remove (int index)
-  {
-    gtkOptionMenuRemove (index);      
-  }
-
-  public void select (int position)
-  {
-    gtkOptionMenuSelect (position);
-  }
   /*
   public void handleEvent (AWTEvent event)
   {
@@ -74,10 +62,11 @@ public class GtkChoicePeer extends GtkComponentPeer
     super.handleEvent (event);
   }
   */
+
   protected void postItemEvent (Object item, int stateChange)
-    {
-      if (stateChange == ItemEvent.SELECTED)
-	((Choice) awtComponent).select ((String) item);
-      super.postItemEvent (item, stateChange);
-    }
+  {
+    if (stateChange == ItemEvent.SELECTED)
+      ((Choice) awtComponent).select ((String) item);
+    super.postItemEvent (item, stateChange);
+  }
 }

@@ -1,8 +1,7 @@
 /*
- * GtkPanelPeer.java -- Implements PanelPeer with GTK
+ * GtkArgList.java
  *
- * Copyright (c) 1998 Free Software Foundation, Inc.
- * Written by James E. Blair <corvus@gnu.org>
+ * Copyright (c) 1999 Free Software Foundation, Inc.
  *
  * This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License as published 
@@ -18,18 +17,41 @@
  * along with this library; if not, write to the Free Software Foundation
  * Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
+
 package gnu.java.awt.peer.gtk;
-import java.awt.peer.*;
-import java.awt.*;
+import java.util.Vector;
 
-public class GtkPanelPeer extends GtkContainerPeer
-  implements PanelPeer
+public class GtkArgList extends Vector
 {
-  native void create ();
-  native void connectHooks ();
-
-  public GtkPanelPeer (Panel p)
+  void add (GtkArg arg)
   {
-    super (p);
+    addElement (arg);
+  }
+
+  void add (String name, boolean value)
+  {
+    addElement (new GtkArg (name, new Boolean (value)));
+  }
+    
+  void add (String name, int value)
+  {
+    addElement (new GtkArg (name, new Integer (value)));
+  }
+
+  void add (String name, float value)
+  {
+    addElement (new GtkArg (name, new Float (value)));
+  }
+
+  void add (String name, Object value)
+  {
+    addElement (new GtkArg (name, value));
+  }
+
+  synchronized void setArgs (GtkComponentPeer cp)
+  {
+    for (int i = 0; i < elementCount; i++)
+      cp.set ((GtkArg)elementData[i]);
   }
 }
+  
