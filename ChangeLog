@@ -1,5 +1,10 @@
 2003-05-02  Michael Koch  <konqueror@gmx.de>
 
+	* java/text/CollationKey.java:
+	Reformated and reorderd to match libgcj more.
+
+2003-05-02  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/InetAddress.java:
 	Merged class documentation with libgcj.
 	* java/net/URL.java:

@@ -38,6 +38,11 @@ exception statement from your version. */
 
 package java.text;
 
+/* Written using "Java Class Libraries", 2nd edition, plus online
+ * API docs for JDK 1.2 from http://www.javasoft.com.
+ * Status: Believed complete and correct.
+ */
+
 /**
  * This class represents a pre-computed series of bits representing a
  * <code>String</code> for under a particular <code>Collator</code>.  This
@@ -55,6 +60,8 @@ package java.text;
  * <code>getCollationKey</code> method on an instance of <code>Collator</code>.
  *
  * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @author Tom Tromey <tromey@cygnus.com>
+ * @date March 25, 1999
  */
 public final class CollationKey implements Comparable
 {
@@ -73,47 +80,11 @@ public final class CollationKey implements Comparable
    */
   private byte[] key;
 
-  CollationKey(Collator collator, String str, byte[] key)
+  CollationKey (Collator collator, String str, byte[] key)
   {
     this.collator = collator;
     this.str = str;
     this.key = key;
-  }
-
-  /**
-   * This method returns the <code>String</code> that this object was created
-   * from.
-   *
-   * @return The source <code>String</code> for this object.
-   */
-  public String getSourceString()
-  {
-    return(str);
-  }
-
-  /**
-   * This method returns the collation bit sequence as a byte array.
-   *
-   * @param A byte array containing the collation bit sequence.
-   */
-  public byte[] toByteArray()
-  {
-    return(key);
-  }
-
-  /**
-   * This method compares the specified object to this one.  The specified
-   * object must be an instance of <code>CollationKey</code> or an exception
-   * will be thrown.  An integer is returned which indicates whether the
-   * specified object is less than, greater than, or equal to this object.
-   *
-   * @param obj The <code>Object</code> to compare against this one.
-   *
-   * @return A negative integer if this object is less than the specified object, 0 if it is equal or a positive integer if it is greater than the specified object.
-   */
-  public int compareTo(Object obj)
-  {
-    return(compareTo((CollationKey)obj));
   }
 
   /**
@@ -125,7 +96,7 @@ public final class CollationKey implements Comparable
    *
    * @return A negative integer if this object is less than the specified object, 0 if it is equal or a positive integer if it is greater than the specified object.
    */
-  public int compareTo(CollationKey ck)
+  public int compareTo (CollationKey ck)
   {
     int i;
     for (i = 0; i < key.length; i++)
@@ -147,6 +118,21 @@ public final class CollationKey implements Comparable
   }
 
   /**
+   * This method compares the specified object to this one.  The specified
+   * object must be an instance of <code>CollationKey</code> or an exception
+   * will be thrown.  An integer is returned which indicates whether the
+   * specified object is less than, greater than, or equal to this object.
+   *
+   * @param obj The <code>Object</code> to compare against this one.
+   *
+   * @return A negative integer if this object is less than the specified object, 0 if it is equal or a positive integer if it is greater than the specified object.
+   */
+  public int compareTo (Object obj)
+  {
+    return compareTo ((CollationKey) obj);
+  }
+
+  /**
    * This method tests the specified <code>Object</code> for equality with
    * this object.  This will be true if and only if:
    * <p>
@@ -163,7 +149,7 @@ public final class CollationKey implements Comparable
    *
    * @return <code>true</code> if the specified object is equal to this one, <code>false</code> otherwise.
    */
-  public boolean equals(Object obj)
+  public boolean equals (Object obj)
   {
     if (obj == null)
       return(false);
@@ -186,14 +172,35 @@ public final class CollationKey implements Comparable
   }
 
   /**
+   * This method returns the <code>String</code> that this object was created
+   * from.
+   *
+   * @return The source <code>String</code> for this object.
+   */
+  public String getSourceString ()
+  {
+    return str;
+  }
+
+  /**
    * This method returns a hash value for this object.  The hash value
    * returned will be the hash code of the bit key so that identical bit
    * keys will return the same value.
    *
    * @return A hash value for this object.
    */
-  public int hashCode()
+  public int hashCode ()
   {
-    return(key.hashCode());
+    return key.hashCode();
+  }
+  
+  /**
+   * This method returns the collation bit sequence as a byte array.
+   *
+   * @param A byte array containing the collation bit sequence.
+   */
+  public byte[] toByteArray ()
+  {
+    return key;
   }
 }
