@@ -53,7 +53,9 @@ public class GtkDialogPeer extends GtkWindowPeer
 
   void create ()
   {
-    create (GTK_WINDOW_POPUP);
+    create (GTK_WINDOW_TOPLEVEL,
+	    awtComponent.getWidth(),
+	    awtComponent.getHeight());
   }
 
   public void getArgs (Component component, GtkArgList args)
@@ -62,6 +64,7 @@ public class GtkDialogPeer extends GtkWindowPeer
 
     Dialog dialog = (Dialog) component;
 
+    args.add ("title", dialog.getTitle ());
     args.add ("modal", dialog.isModal ());
     args.add ("allow_shrink", dialog.isResizable ());
     args.add ("allow_grow", dialog.isResizable ());

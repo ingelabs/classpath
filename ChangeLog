@@ -1,5 +1,20 @@
 2003-09-25  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GtkDialogPeer.java (create()): Create a
+	top-level GTK window.
+	(getArgs): Add "title" property.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java (setResizable): Use
+	"allow_shrink" and "allow_grow" properties.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c: Remove
+	unused GtkArg code.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(create): Set window's size requisition.
+	(connectHooks): Fix indentation.
+	(setResizable): Remove function.
+	(static setBounds): Likewise.
+	(setBounds): Replace call to setBounds with GTK size requisition
+	and resize calls.
+
 	* java/awt/Dialog.java: Initialize resizable to true and change
 	comments accordingly.  Initialize visible to false in
 	constructors.

@@ -94,7 +94,7 @@ static void maybe_rethrow(JNIEnv *gdk_env, char *message, char *file, int line) 
   /* rethrow if an exception happened */
   if ((cause = (*gdk_env)->ExceptionOccurred(gdk_env)) != NULL) {
     jstring jmessage;
-    jclass obj_class;
+  jclass obj_class;
     jobject obj;
     jmethodID ctor;
 
@@ -109,10 +109,10 @@ static void maybe_rethrow(JNIEnv *gdk_env, char *message, char *file, int line) 
     obj_class = (*gdk_env)->FindClass (gdk_env, "java/lang/RuntimeException");
     ctor = (*gdk_env)->GetMethodID(gdk_env, obj_class, "<init>", "(Ljava/langString;Ljava/lang/Throwable)V");
     obj = (*gdk_env)->NewObject (gdk_env, obj_class, ctor, jmessage, cause);
-    
+
     /* throw it */
     (*gdk_env)->Throw(gdk_env, (jthrowable)obj);
-  }
+    }
 }
 
 /* This macro is used to include a source location in the exception message */
@@ -179,7 +179,7 @@ static void takeLock(JNIEnv *gdk_env, void *mutex) {
 
 /* Unlock a Java object */
 static void releaseLock(JNIEnv *gdk_env, void *mutex) {
-  (*gdk_env)->MonitorExit (gdk_env, *((jobject *)mutex));
+    (*gdk_env)->MonitorExit (gdk_env, *((jobject *)mutex));
   MAYBE_RETHROW(gdk_env, "cannot release lock");
 }
 
@@ -312,7 +312,7 @@ static void g_cond_wait_jni_impl (GCond *cond, GMutex *mutex) {
  * value.  On return, we check whether an InterruptedException happened.  If
  * so, that is Java-speak for wait timing out.
  */
-static gboolean 
+static gboolean
 g_cond_timed_wait_jni_impl (GCond *cond, GMutex *mutex, GTimeVal *end_time) {
   jclass lcl_class;
   jmethodID wait_mth;
@@ -340,7 +340,7 @@ g_cond_timed_wait_jni_impl (GCond *cond, GMutex *mutex, GTimeVal *end_time) {
     jclass intr = (*gdk_env)->FindClass (gdk_env, "java.lang.InterruptedException");
     if ( (*gdk_env)->IsInstanceOf(gdk_env, cause, intr) ) {
       releaseLock(gdk_env, cond);
-      return FALSE;
+  return FALSE;
     } else {
       MAYBE_RETHROW(gdk_env, "error in timed wait");
     }

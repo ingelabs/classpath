@@ -42,22 +42,28 @@ exception statement from your version. */
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
 
-static void setBounds (GtkWidget *, jint, jint, jint, jint);
-
 /*
  * Make a new window (any type)
  */
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkWindowPeer_create 
-  (JNIEnv *env, jobject obj, jint type)
+  (JNIEnv *env, jobject obj, jint type, jint width, jint height)
 {
-  gpointer window;
+  GtkWidget *window;
   GtkWidget *vbox, *layout;
 
   gdk_threads_enter ();
-
   window = gtk_window_new (type);
+
+  gtk_window_set_default_size (GTK_WINDOW(window), width, height);
+
+  /* We must set this window's size requisition.  Otherwise when a
+     resize is queued (when gtk_widget_queue_resize is called) the
+     window will snap to its default requisition of 0x0.  If we omit
+     this call, Frames and Dialogs shrink to degenerate 1x1 windows
+     when their resizable property changes. */
+  gtk_widget_set_size_request (window, width, height);
 
   vbox = gtk_vbox_new (0, 0);
   layout = gtk_layout_new (NULL, NULL);
@@ -87,6 +93,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setVisible
     gtk_widget_hide (GTK_WIDGET (ptr));
 
   XFlush (GDK_DISPLAY ());
+
   gdk_threads_leave ();
 }
 
@@ -94,37 +101,36 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_connectHooks
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
-  GtkVBox* vbox;
-  GtkWidget *layout;
+  GtkWidget* vbox, *layout;
   GList* children;
-  char* name;
+
   ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
 
-   children = gtk_container_get_children(GTK_CONTAINER(ptr));
-   vbox = children->data;
-   name = GTK_OBJECT_TYPE_NAME(vbox);
-   if(!GTK_IS_VBOX(vbox))
-     {
-       printf("*** this is not a vbox\n");
-     }
-   children = gtk_container_get_children(GTK_CONTAINER(vbox));
-   layout = children->data;
-   name = GTK_OBJECT_TYPE_NAME(layout);
-   if(!GTK_IS_LAYOUT(layout))
-     {
+  children = gtk_container_get_children(GTK_CONTAINER(ptr));
+  vbox = children->data;
+
+  if(!GTK_IS_VBOX(vbox))
+    {
+      printf("*** this is not a vbox\n");
+    }
+  children = gtk_container_get_children(GTK_CONTAINER(vbox));
+  layout = children->data;
+
+  if(!GTK_IS_LAYOUT(layout))
+    {
       printf("*** widget is not a layout ***");
-     }
+    }
 
-    gtk_widget_realize (layout);
+  gtk_widget_realize (layout);
 
-    connect_awt_hook (env, obj, 1, GTK_LAYOUT (layout)->bin_window);
-  
-    gtk_widget_realize (ptr);
+  connect_awt_hook (env, obj, 1, GTK_LAYOUT (layout)->bin_window);
 
-   connect_awt_hook (env, obj, 1, GTK_WIDGET (ptr)->window);
-  
+  gtk_widget_realize (ptr);
+
+  connect_awt_hook (env, obj, 1, GTK_WIDGET (ptr)->window);
+
   gdk_threads_leave ();
 }
 
@@ -148,7 +154,6 @@ setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width,
   gtk_widget_show (vbox);
 
   gtk_widget_realize (window);
-/*    setBounds (window, x, y, width, height); */
 
   connect_awt_hook (env, obj, 1, window->window);
   set_visible (window, visible);
@@ -176,24 +181,6 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setTitle
   
   (*env)->ReleaseStringUTFChars (env, title, str);
 }
-
-/*
- * Set a window's resizing policy
- */
-
-JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setResizable
-  (JNIEnv *env, jobject obj, jboolean resize)
-{
-  void *ptr;
-  
-  ptr = NSA_GET_PTR (env, obj);
-  
-  gdk_threads_enter ();
-  gtk_window_set_policy (GTK_WINDOW (ptr), resize, resize, 0);
-  gdk_threads_leave ();
-}
-
 
 /*
  * Lower the z-level of a window. 
@@ -231,20 +218,6 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_toFront (JNIEnv *env,
   gdk_threads_leave ();
 }
 
-static void
-setBounds (GtkWidget *widget, jint x, jint y, jint width, jint height)
-{
-/*    gdk_window_get_root_origin (widget->window, &current_x, &current_y); */
-
-/*    if (current_x != x || current_y != y) */
-/*      { */
-/*        gdk_window_set_hints (widget->window, x, y, 0, 0, 0, 0, GDK_HINT_POS); */
-/*        gdk_window_move (widget->window, x, y); */
-/*      } */
-
-  gtk_widget_set_usize (widget, width, height);
-}
-
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setBounds
   (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)
 {
@@ -256,7 +229,8 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setBounds
   gdk_threads_enter ();
 
   widget = GTK_WIDGET (ptr);
-  setBounds (widget, x, y, width, height);
+  gtk_widget_set_size_request (widget, width, height);
+  gtk_window_resize (GTK_WINDOW(widget), width, height);
 
   gdk_threads_leave ();
 }
@@ -315,8 +289,7 @@ gdk_window_get_root_geometry (GdkWindow *window,
 			      gint      *depth)
 {
   GdkWindow *private;
-  unsigned int nchildren;
-  
+
   g_return_if_fail (window != NULL);
   
   private = (GdkWindow*) window;
@@ -335,12 +308,12 @@ gdk_window_get_root_geometry (GdkWindow *window,
 
   if (GDK_WINDOW_DESTROYED (private))
     return;
-
+  
   private = gdk_window_get_toplevel (private);
   if (GDK_WINDOW_DESTROYED(private))
     return;
-
-  gdk_window_get_geometry (private, x, y, width, height, depth);
   
+  gdk_window_get_geometry (private, x, y, width, height, depth);
+      
 }
 

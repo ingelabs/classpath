@@ -494,16 +494,12 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_S
   const char *name;
   const char *value;
   void *ptr;
-  GtkArg arg;
 
   ptr = NSA_GET_PTR (env, obj);
   name = (*env)->GetStringUTFChars (env, jname, NULL);
   value = (*env)->GetStringUTFChars (env, jvalue, NULL);
 
-  arg.type = GTK_TYPE_STRING;
-  arg.name = (char *) name;
-  GTK_VALUE_STRING (arg) = (char *) value;
-  gdk_threads_enter();                          
+  gdk_threads_enter();
   g_object_set(ptr, name, value, NULL);
   gdk_threads_leave();
 
@@ -516,16 +512,12 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_la
 {
   const char *name;
   void *ptr;
-  GtkArg arg;
 
   ptr = NSA_GET_PTR (env, obj);
+
   name = (*env)->GetStringUTFChars (env, jname, NULL);
 
-  arg.type = GTK_TYPE_BOOL;
-  arg.name = (char *) name;
-  GTK_VALUE_BOOL (arg) = value;
-
-  gdk_threads_enter();                          
+  gdk_threads_enter();
   g_object_set(ptr, name, value, NULL);
   gdk_threads_leave();
 
@@ -537,15 +529,10 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_la
 {
   const char *name;
   void *ptr;
-  GtkArg arg;
 
   ptr = NSA_GET_PTR (env, obj);
   name = (*env)->GetStringUTFChars (env, jname, NULL);
 
-  arg.type = GTK_TYPE_INT;
-  arg.name = (char *) name;
-  GTK_VALUE_INT (arg) = value;
-  
   gdk_threads_enter();                          
   g_object_set(ptr, name, value, NULL);
   gdk_threads_leave();
@@ -558,15 +545,10 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_la
 {
   const char *name;
   void *ptr;
-  GtkArg arg;
 
   ptr = NSA_GET_PTR (env, obj);
   name = (*env)->GetStringUTFChars (env, jname, NULL);
 
-  arg.type = GTK_TYPE_FLOAT;
-  arg.name = (char *) name;
-  GTK_VALUE_FLOAT (arg) = value;
-  
   gdk_threads_enter();                          
   g_object_set(ptr, name, value, NULL);
   gdk_threads_leave();
@@ -580,7 +562,6 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_O
 {
   const char *name;
   void *ptr1, *ptr2;
-  GtkArg arg;
 
   ptr1 = NSA_GET_PTR (env, obj1);
   ptr2 = NSA_GET_PTR (env, obj2);
@@ -598,10 +579,6 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_O
       return;
     }
 
-  arg.type = GTK_TYPE_OBJECT;
-  arg.name = (char *) name;
-  GTK_VALUE_OBJECT (arg) = GTK_OBJECT (ptr2);
-  
   gdk_threads_enter();                          
   g_object_set(ptr1, name, ptr2, NULL);
   gdk_threads_leave();
@@ -618,6 +595,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectHooks
 
   gdk_threads_enter ();
   gtk_widget_realize (GTK_WIDGET (ptr));
+
   if(GTK_IS_BUTTON(ptr))
     connect_awt_hook (env, obj, 1, GTK_BUTTON(ptr)->event_window);
   else

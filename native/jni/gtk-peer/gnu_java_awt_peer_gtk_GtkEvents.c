@@ -79,7 +79,7 @@ state_to_awt_mods (guint state)
     result |= AWT_CTRL_MASK;
   if (state & GDK_MOD1_MASK)
     result |= AWT_ALT_MASK;
-  
+
   return result;
 }
 
@@ -774,12 +774,12 @@ keyevent_to_awt_keychar (GdkEvent *event)
         {
         case GDK_BackSpace:
           return VK_BACK_SPACE;
-    case GDK_Tab:
-      return VK_TAB;
+        case GDK_Tab:
+          return VK_TAB;
         case GDK_Delete:
         case GDK_KP_Delete:
           return VK_DELETE;
-    default:
+        default:
           return AWT_KEY_CHAR_UNDEFINED;
         }
     }
@@ -1033,7 +1033,7 @@ awt_event_handler (GdkEvent *event)
 	    window = GTK_WINDOW (gtk_widget_get_ancestor (widget, 
 							  GTK_TYPE_WINDOW));
 	    if (window
-		&& GTK_WIDGET_IS_SENSITIVE (window) 
+		&& GTK_WIDGET_IS_SENSITIVE (window)
 		&& window->focus_widget
 		&& GTK_WIDGET_IS_SENSITIVE (window->focus_widget)
 		&& window->focus_widget->window)
@@ -1069,12 +1069,12 @@ awt_event_handler (GdkEvent *event)
                              keysym_to_awt_keylocation (event));
 
                 if (generates_key_typed_event (event, window->focus_widget))
-		  (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr,
-					      postKeyEventID,
-					      (jint) AWT_KEY_TYPED,
-					      (jlong) event->key.time,
+                  (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr,
+                                              postKeyEventID,
+                                              (jint) AWT_KEY_TYPED,
+                                              (jlong) event->key.time,
                                               state_to_awt_mods (event->key.state),
-					      VK_UNDEFINED,
+                                              VK_UNDEFINED,
                                               keyevent_to_awt_keychar (event),
                                               AWT_KEY_LOCATION_UNKNOWN);
 	      }
@@ -1132,11 +1132,11 @@ awt_event_handler (GdkEvent *event)
 				      AWT_FOCUS_GAINED : AWT_FOCUS_LOST,
 				      JNI_FALSE);
 	  break;
-	default:
+        default:
 	}
       g_free (obj_ptr);
-    } 
-  
+    }
+
   gtk_main_do_event (event);
 }
 

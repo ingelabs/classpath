@@ -157,7 +157,7 @@ struct graphics
 #define VK_BACK_SPACE '\b'
 #define VK_TAB '\t'
 #define VK_CANCEL 3
-#define VK_CLEAR 12 
+#define VK_CLEAR 12
 #define VK_SHIFT 16
 #define VK_CONTROL 17
 #define VK_ALT 18

@@ -65,9 +65,9 @@ Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkSetFont
 
   button = GTK_WIDGET (ptr);
   label = gtk_bin_get_child (GTK_BIN(button));
-
+  
   if (!label)
-    return;
+      return;
 
   font_name = (*env)->GetStringUTFChars (env, jname, NULL);
 

@@ -49,11 +49,20 @@ public class GtkWindowPeer extends GtkContainerPeer
   static protected final int GTK_WINDOW_TOPLEVEL = 0;
   static protected final int GTK_WINDOW_POPUP = 1;
 
-  native void create (int type);
+  native void create (int type, int width, int height);
+
+  void create (int type)
+  {
+    create (type,
+	    awtComponent.getWidth(),
+	    awtComponent.getHeight());
+  }
 
   void create ()
   {
-    create (GTK_WINDOW_POPUP);
+    create (GTK_WINDOW_POPUP,
+	    awtComponent.getWidth(),
+	    awtComponent.getHeight());
   }
 
   native void connectHooks ();
@@ -61,9 +70,6 @@ public class GtkWindowPeer extends GtkContainerPeer
   public GtkWindowPeer (Window window)
   {
     super (window);
-
-    Dimension d = window.getSize ();
-    setBounds (0, 0, d.width, d.height);
   }
 
   public void getArgs (Component component, GtkArgList args)
@@ -71,7 +77,7 @@ public class GtkWindowPeer extends GtkContainerPeer
     args.add ("visible", component.isVisible ());
     args.add ("sensitive", component.isEnabled ());
   }
-  
+
   native public void toBack ();
   native public void toFront ();
 
@@ -82,7 +88,11 @@ public class GtkWindowPeer extends GtkContainerPeer
     set ("title", title);
   }
 
-  native public void setResizable (boolean r);
+  public void setResizable (boolean resizable)
+  {
+    set ("allow_shrink", resizable);
+    set ("allow_grow", resizable);
+  }
 
   protected void postConfigureEvent (int x, int y, int width, int height,
 				     int top, int left, int bottom, int right)

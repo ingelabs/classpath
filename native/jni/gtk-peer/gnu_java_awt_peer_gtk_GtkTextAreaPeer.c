@@ -47,6 +47,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_create
   GtkWidget *text, *sw;
 
   gdk_threads_enter ();
+
   text = gtk_text_view_new ();
   gtk_widget_show (text);
 
@@ -54,14 +55,16 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_create
   gtk_container_add (GTK_CONTAINER (sw), text);
 
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), 
-    /* horizontal scrollbar */
-    (scroll == AWT_TEXTAREA_SCROLLBARS_BOTH
-    || scroll == AWT_TEXTAREA_SCROLLBARS_HORIZONTAL_ONLY) ? 
-    GTK_POLICY_ALWAYS : GTK_POLICY_NEVER,
-    /* vertical scrollbar */
-    (scroll == AWT_TEXTAREA_SCROLLBARS_BOTH
-    || scroll == AWT_TEXTAREA_SCROLLBARS_VERTICAL_ONLY) ? 
-    GTK_POLICY_ALWAYS : GTK_POLICY_NEVER);
+
+     /* horizontal scrollbar */
+     (scroll == AWT_TEXTAREA_SCROLLBARS_BOTH
+      || scroll == AWT_TEXTAREA_SCROLLBARS_HORIZONTAL_ONLY) ? 
+       GTK_POLICY_ALWAYS : GTK_POLICY_NEVER,
+
+     /* vertical scrollbar */
+     (scroll == AWT_TEXTAREA_SCROLLBARS_BOTH
+      || scroll == AWT_TEXTAREA_SCROLLBARS_VERTICAL_ONLY) ? 
+       GTK_POLICY_ALWAYS : GTK_POLICY_NEVER);
 
   gdk_threads_leave ();
 
@@ -87,7 +90,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextGetSize
 
   text = GTK_WIDGET (TEXT_FROM_SW (ptr));
   /*   sw = GTK_SCROLLED_WINDOW (ptr); */
-  
+
   gtk_widget_size_request(GTK_WIDGET (text), &requisition);
   dims[0] = requisition.width;
   dims[1] = requisition.height;
@@ -95,7 +98,6 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextGetSize
   gdk_threads_leave ();
   
   (*env)->ReleaseIntArrayElements (env, jdims, dims, 0);
-
 }
 
 
@@ -158,7 +160,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_replaceRange
   (*env)->ReleaseStringUTFChars (env, contents, str);
 }
 
-JNIEXPORT void JNICALL 
+JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkSetFont
   (JNIEnv *env, jobject obj, jstring jname, jint size)
 {
@@ -168,8 +170,9 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkSetFont
   PangoFontDescription *font_desc;
 
   ptr = NSA_GET_PTR (env, obj);
+
   text = GTK_WIDGET (TEXT_FROM_SW (ptr));
-  
+
   font_name = (*env)->GetStringUTFChars (env, jname, NULL);
 
   gdk_threads_enter();
@@ -180,9 +183,8 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkSetFont
   gtk_widget_modify_font (GTK_WIDGET(text), font_desc);
 
   pango_font_description_free (font_desc);
-  
+
   gdk_threads_leave();
 
   (*env)->ReleaseStringUTFChars (env, jname, font_name);
-
 }

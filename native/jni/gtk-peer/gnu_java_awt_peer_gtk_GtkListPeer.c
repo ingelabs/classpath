@@ -254,7 +254,7 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_getSize
   gtk_widget_size_request(list, &myreq);
   dims[1]=myreq.height;
   dims[0]=myreq.width;
-
+  
   gdk_threads_leave ();
 
   (*env)->ReleaseIntArrayElements (env, jdims, dims, 0);
