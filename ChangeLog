@@ -1,5 +1,10 @@
 2003-10-12  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/ServerSocket.java
+	(getImpl): New package private method to be accessed only by Java NIO.
+
+2003-10-12  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/JarURLConnection.java
 	(jarFileURL): Made final.
 	(entryName): Renamed from entry_name, made file.
