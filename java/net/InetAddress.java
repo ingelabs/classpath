@@ -312,20 +312,20 @@ public class InetAddress implements Serializable
     // Any class derived from InetAddress should override this.
 
     // 10.0.0.0/8
-    if (addr [0] == 0x0a)
+    if (addr [0] == 0x0A)
       return true;
 
     // XXX: Suns JDK 1.4.1 (on Linux) seems to have a bug here:
     // it says 172.16.0.0 - 172.255.255.255 are site local addresses
 
     // 172.16.0.0/12
-    if (addr [0] == 0xac
-        && (addr [1] & 0xf0) == 0x01)
+    if (addr [0] == 0xAC
+        && (addr [1] & 0xF0) == 0x01)
       return true;
 
     // 192.168.0.0/16
-    if (addr [0] == 0xc0
-        && addr [1] == 0xa8)
+    if (addr [0] == 0xC0
+        && addr [1] == 0xA8)
       return true;
 
     // XXX: Do we need to check more addresses here ?
@@ -583,7 +583,44 @@ public class InetAddress implements Serializable
     
     throw new UnknownHostException ("IP address has illegal length");
   }
+  
+  /**
+   * If host is a valid numeric IP address, return the numeric address.
+   * Otherwise, return null.
+   */
+  private static byte[] aton (String hostname)
+  {
+    StringTokenizer st = new StringTokenizer (hostname, ".");
+    
+    if (st.countTokens() == 4)
+      {
+        int index;
+        byte[] address = new byte [4];
+	
+        for (index = 0; index < 4; index++)
+          {
+            try
+              {
+                short n = Short.parseShort (st.nextToken());
+                
+                if ((n < 0) || (n > 255))
+                  break;
+                
+                address [index] = (byte) n;
+              }
+            catch (NumberFormatException e)
+              {
+                break;
+              }
+          }
 
+        if (index == 4)
+          return address;
+      }
+
+    return null;
+  }
+  
   /**
    * Returns an InetAddress object representing the IP address of the given
    * hostname.  This name can be either a hostname such as "www.urbanophile.com"
@@ -612,37 +649,10 @@ public class InetAddress implements Serializable
     if (hostname == null)
       return getLocalHost();
 
-    // First, check to see if it is an IP address.  If so, then don't 
-    // do a DNS lookup.
-    StringTokenizer st = new StringTokenizer (hostname, ".");
-    
-    if (st.countTokens() == 4)
-      {
-        int i;
-        short n;
-        byte[] ip = new byte [4];
-	
-        for (i = 0; i < 4; i++)
-          {
-            try
-              {
-                n = Short.parseShort (st.nextToken());
-                
-		if ((n < 0) || (n > 255))
-                  break;
-                
-		ip [i] = (byte) n;
-              }
-            catch (NumberFormatException e)
-              {
-                break;
-              }
-          }
-        if (i == 4)
-          {
-            return new InetAddress (ip);
-          }
-      }
+    // Assume that the host string is an IP address.
+    byte[] address = aton (hostname);
+    if (address != null)
+      return new InetAddress (address);
    
     // Try to resolve the host by DNS
     InetAddress[] addresses = getAllByName (hostname);
@@ -793,12 +803,12 @@ public class InetAddress implements Serializable
   /**
    * This native method looks up the hostname of the local machine
    * we are on.  If the actual hostname cannot be determined, then the
-   * value "localhost" we be used.  This native method wrappers the
+   * value "localhost" will be used.  This native method wrappers the
    * "gethostname" function.
    *
    * @return The local hostname.
    */
-  private static native String getLocalHostName();
+  private static native String getLocalHostname();
 
   /**
    * Returns an InetAddress object representing the address of the current
@@ -809,16 +819,16 @@ public class InetAddress implements Serializable
    * @exception UnknownHostException If no IP address for the host could
    * be found
    */
-  public static InetAddress getLocalHost () throws UnknownHostException
+  public static InetAddress getLocalHost() throws UnknownHostException
   {
-    String hostname = getLocalHostName ();
+    String hostname = getLocalHostname();
     return getByName (hostname);
   }
 
   /**
    * Returns the value of the special address INADDR_ANY
    */
-  private static native byte[] lookupInaddrAny () throws UnknownHostException;
+  private static native byte[] lookupInaddrAny() throws UnknownHostException;
 
   /**
    * This method returns the hostname for a given IP address.  It will

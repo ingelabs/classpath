@@ -61,7 +61,7 @@ exception statement from your version. */
  * Function to return the local hostname
  */
 JNIEXPORT jstring JNICALL
-Java_java_net_InetAddress_getLocalHostName(JNIEnv *env, jclass class)
+Java_java_net_InetAddress_getLocalHostname(JNIEnv *env, jclass class)
 {
   char    hostname[256];
   int     result;

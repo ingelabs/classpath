@@ -1,5 +1,19 @@
 2003-10-09  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/InetAddress.java
+	(isSiteLocalAddress): Made hexadecimal numbers lowercase.
+	(getLocalHostname): Renamed from getLocalHostName, fixed
+	documentation.
+	(aton): New method.
+	(getByName): Moved functionality to aton(), simplified code.
+	(getLocalHost): Reformated.
+	(lookupInaddrAny): Reformated.
+	* include/java_net_InetAddress.h: Regenerated.
+	* native/jni/java-net/java_net_InetAddress.c
+	(getLocalHostname): Renamed from getLocalHostName.
+
+2003-10-09  Michael Koch  <konqueror@gmx.de>
+
 	* java/math/BigInteger.java
 	(add): Removed unused local variable len.
 
