@@ -66,7 +66,7 @@ Java_java_util_TimeZone_getDefaultTimeZoneId(JNIEnv *env, jclass clazz)
   int     result;
   jstring retval;
 
-  TARGET_NATIVE_UTIL_GET_TIMEZONE_STRING(buffer,sizeof(buffer),result);
+  TARGET_NATIVE_MISC_GET_TIMEZONE_STRING(buffer,sizeof(buffer),result);
 
   retval = (*env)->NewStringUTF(env, buffer);
  
