@@ -1,3 +1,10 @@
+2001-12-21  Tom Tromey  <tromey@redhat.com>
+
+	* java/io/ObjectInputStream.java (enableResolveObject): Use
+	correct security check.
+	* java/io/ObjectOutputStream.java (enableReplaceObject): Use
+	correct security check.
+
 2001-12-15  Tom Tromey  <tromey@redhat.com>
 
 	* java/math/BigInteger.java: Import gnu.java.math.*.
