@@ -1,3 +1,8 @@
+2003-11-25  David Belanger  <dbelan2@cs.mcgill.ca>
+
+	* java/util/zip/ZipFile (Zipfile(File)): Set file path as name.
+	(ZipFile(File,int)): Likewise.
+
 2003-11-25  Mark Wielaard  <mark@klomp.org>
 
 	Thanks to Sascha Brawer
