@@ -48,7 +48,7 @@ class VMClassLoader {
      * Helper to resolve all references to other classes from this class.
      * @param c the class to resolve.
      */
-    final native void resolveClass(Class c);
+    final static native void resolveClass(Class c);
 
     /** 
      * Helper for java.lang.Integer, Byte, etc. to get the TYPE class
