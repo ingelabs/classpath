@@ -1,5 +1,11 @@
 2002-02-18  Mark Wielaard  <mark@klomp.org>
 
+	Thanks to Orp developers
+	* gnu/java/beans/editors/NativeBooleanEditor.java (setAsText(String)):
+	switch TRUE and FALSE return values.
+
+2002-02-18  Mark Wielaard  <mark@klomp.org>
+
 	* vm/reference/java/lang/Thread.java (contextClassLoader): new field.
 	(Thread): set contextClassLoader field.
 	(stop): deprecated.
