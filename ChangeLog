@@ -1,3 +1,36 @@
+2001-07-13  John Leuner  <jewel@debian.org>
+
+	* java/text/DecimalFormat.java: Fixed duplicate 'package java.text;' line
+	* javax/swing/plaf/UIResource.java: changed 'abstract interface' to 'interface'
+	* javax/accessibility/AccessibleAction.java: idem
+	* javax/accessibility/AccessibleComponent.java: idem
+	* javax/accessibility/AccessibleSelection.java: idem
+	* javax/accessibility/Accessible.java: idem
+	* javax/accessibility/AccessibleValue.java: idem
+	* javax/accessibility/AccessibleHypertext.java: idem
+	* javax/accessibility/AccessibleText.java: idem
+	* java/security/cert/X509Extension.java: idem
+	* java/security/spec/KeySpec.java: idem
+	* java/security/spec/AlgorithmParameterSpec.java: idem
+	* com/sun/javadoc/ClassDoc.java: idem
+	* com/sun/javadoc/Doc.java: idem
+	* com/sun/javadoc/ProgramElementDoc.java: idem
+	* com/sun/javadoc/Type.java: idem
+	* com/sun/javadoc/MemberDoc.java: idem
+	* com/sun/javadoc/ExecutableMemberDoc.java: idem
+	* com/sun/javadoc/PackageDoc.java: idem
+	* com/sun/javadoc/MethodDoc.java: idem
+	* com/sun/javadoc/DocErrorReporter.java: idem
+	* com/sun/javadoc/Tag.java: idem
+	* com/sun/javadoc/ParamTag.java: idem
+	* com/sun/javadoc/RootDoc.java: idem
+	* com/sun/javadoc/SerialFieldTag.java: idem
+	* com/sun/javadoc/ThrowsTag.java: idem
+	* com/sun/javadoc/Parameter.java: idem
+	* com/sun/javadoc/ConstructorDoc.java: idem
+	* com/sun/javadoc/SeeTag.java: idem
+	* com/sun/javadoc/FieldDoc.java: idem
+
 2001-07-13  John Leuner <jewel@debian.org>
 
 	* java/text/DecimalFormat.java: Added a skeleton (ie non-working
