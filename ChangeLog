@@ -1,5 +1,10 @@
 2004-11-06  Tom Tromey  <tromey@redhat.com>
 
+	* doc/hacking.texinfo (Source Code Style Guide): Fixed
+	grammatical error.
+
+2004-11-06  Tom Tromey  <tromey@redhat.com>
+
 	* gnu/java/rmi/server/UnicastConnectionManager.java (clients): Now
 	package-private.
 	(connections): Likewise.

@@ -643,7 +643,7 @@ filters out @code{null}, so an explicit check is not needed.
 @item
 When catching an exception and rethrowing a new exception you should
 ``chain'' the Throwables.  Don't just add the String representation of
-the catched exception.
+the caught exception.
 
 @example
   try
