@@ -1,3 +1,11 @@
+2002-02-19  Mark Wielaard  <mark@klomp.org>
+
+        Based on patches submitted by Wu Gansha <gansha.wu@intel.com>
+	* vm/reference/java/lang/reflect/Method.java (toString()): use
+	Class.getName() not Class.toString().
+	* vm/reference/java/lang/Class.java: final, implements Serializable
+	(serialVersionUID): added field.
+
 2002-02-18  Eric Blake  <ebb9@email.byu.edu>
 
 	* doc/unicode/unicode-blocks.pl: Minor tweaks.

@@ -68,6 +68,9 @@ import gnu.java.lang.*;
  */
 
 public final class Class implements Serializable {
+
+    private static final long serialVersionUID = 3206093459760846163L;
+
     private Object[] signers = null;
     private ProtectionDomain pd = null;
     
