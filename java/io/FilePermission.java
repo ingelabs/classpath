@@ -20,6 +20,8 @@
 
 package java.io;
 
+import java.security.*;
+
 /**
  ** FilePermission represents permission on files and directories.
  ** You specify a file (or set of files), and the desired set of actions on
