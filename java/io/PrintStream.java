@@ -186,7 +186,7 @@ public class PrintStream extends FilterOutputStream
   /**
    * This method closes this stream and all underlying streams.
    */
-  public synchronized void close ()
+  public void close ()
   {
     pw.close ();
     closed = true;
@@ -459,7 +459,7 @@ public class PrintStream extends FilterOutputStream
    * 
    * @param b The byte to be written
    */
-  public synchronized void write (int oneByte)
+  public void write (int oneByte)
   {
     // Sigh, we actually have to implement this method. Flush first so that
     // things get written in the right order.
@@ -486,7 +486,7 @@ public class PrintStream extends FilterOutputStream
    * @param offset The index into the array to start writing from
    * @param len The number of bytes to write
    */
-  public synchronized void write (byte[] buffer, int offset, int len)
+  public void write (byte[] buffer, int offset, int len)
   {
     // We actually have to implement this method too. Flush first so that
     // things get written in the right order.
