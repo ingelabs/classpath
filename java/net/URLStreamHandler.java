@@ -112,7 +112,7 @@ public abstract class URLStreamHandler
    * subclasses that implement protocols with URL's the follow a different 
    * syntax should override this method.  The lone exception is that if
    * the protocol name set in the URL is "file", this method will accept
-   * a an empty hostname (i.e., "file:///"), which is legal for that protocol
+   * an empty hostname (i.e., "file:///"), which is legal for that protocol
    *
    * @param url The URL object in which to store the results
    * @param spec The String-ized URL to parse
