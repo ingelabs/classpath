@@ -1,5 +1,15 @@
 2002-11-29  Mark Wielaard  <mark@klomp.org>
 
+	* java/net/InetAddress.java (toString): Convert signed byte to
+	unsigned int.
+
+2002-11-29  Julian Dolby  <dolby@us.ibm.com>
+
+	* native/jni/java-net/java_net_InetAddress.c (getHostByName):
+	FindClass "[B", not "[I".
+
+2002-11-29  Mark Wielaard  <mark@klomp.org>
+
 	Merge patches from Julian Dolby <dolby@us.ibm.com>
 	* java/io/File.java (File(File, String)): Only add separator when
 	dirpath is not a root dir.

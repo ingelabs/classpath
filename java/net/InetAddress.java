@@ -544,7 +544,7 @@ getHostAddress()
 
   for (int i = 0; i < addr.length; i++)
     {
-      sb.append ((int) addr [i]);
+      sb.append (addr [i] & 0xff);
       if (i < (addr.length - 1))
         sb.append(".");
     }

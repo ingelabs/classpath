@@ -187,7 +187,7 @@ Java_java_net_InetAddress_getHostByName(JNIEnv *env, jclass class, jstring host)
   for (num_addrs = 0, i = 0; hp->h_addr_list[i] ; i++)
     ++num_addrs;
  
-  arr_class = (*env)->FindClass(env,"[I");
+  arr_class = (*env)->FindClass(env,"[B");
   if (!arr_class)
     {
       JCL_ThrowException(env, UNKNOWN_HOST_EXCEPTION, "Internal Error");
