@@ -1,3 +1,31 @@
+2004-09-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/awt/Canvas.java
+	(AccessibleAWTCanvas): added serialization UID
+	* java/awt/Label.java
+	(AccessibleAWTLabel): added serialization UID
+	* java/net/Inet4Address.java
+	(Inet4Address): added comment to serialization UID
+	* java/text/Format.java
+	(Format): added comment to serialization UID
+	* javax/rmi/CORBA/Stub.java
+	(Stub): added serialization UID
+	* javax/security/auth/PrivateCredentialPermission.java
+	(PrivateCredentialPermission): added serialization UID
+	* javax/swing/JRootPane.java
+	(AccessibleJRootPane): added comment to existing UID
+	* javax/swing/JSpinner.java
+	(DefaultEditor): added serialization UID
+	(NumberEditor): added serialization UID
+	* javax/swing/SpinnerListModel.java
+	(SpinnerListModel): added serialization UID
+	* javax/swing/SpinnerNumberModel.java
+	(SpinnerNumberModel): added serialization UID
+	* javax/swing/text/html/HTML.java
+	(UnknownTag): added serialization UID
+	* org/ietf/jgss/GSSException.java
+	(GSSException): added serialization UID
+	
 2004-09-06  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/lang/Runtime.java

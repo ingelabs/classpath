@@ -114,6 +114,11 @@ public class JSpinner extends JComponent
                                                               LayoutManager
   {
     /**
+     * For compatability with Sun's JDK 1.4.2 rev. 5
+     */
+    private static final long serialVersionUID = -5317788736173368172L;
+
+    /**
      * Creates a new DefaultEditor object.
      *
      * @param spinner DOCUMENT ME!
@@ -214,6 +219,11 @@ public class JSpinner extends JComponent
    */
   public static class NumberEditor extends DefaultEditor
   {
+    /**
+     * For compatability with Sun's JDK
+     */
+    private static final long serialVersionUID = 3791956183098282942L;
+
     /**
      * Creates a new NumberEditor object.
      *

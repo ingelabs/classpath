@@ -82,6 +82,10 @@ import java.util.ResourceBundle;
  */
 public class GSSException extends Exception
 {
+  /**
+   * For compatability with Sun's JDK 1.4.2 rev. 5
+   */
+  private static final long serialVersionUID = -2706218945227726672L;
 
   // Constants and fields.
   // -------------------------------------------------------------------------
