@@ -1,9 +1,3 @@
-./java/security/PrivateKey.class: ../java/security/PrivateKey.java 
-	$(JAVAC) ../java/security/PrivateKey.java 
-
-./java/security/PublicKey.class: ../java/security/PublicKey.java 
-	$(JAVAC) ../java/security/PublicKey.java 
-
 ./java/lang/Cloneable.class: ../java/lang/Cloneable.java 
 	$(JAVAC) ../java/lang/Cloneable.java 
 
@@ -30,13 +24,10 @@
 ./java/lang/Runnable.class: ../java/lang/Runnable.java 
 	$(JAVAC) ../java/lang/Runnable.java 
 
-./java/lang/reflect/Constructor.class ./java/lang/reflect/Member.class ./java/lang/Class.class ./java/lang/String.class ./java/util/Hashtable.class ./java/util/Dictionary.class ./java/lang/Object.class ./java/lang/System.class ./java/lang/SecurityManager.class ./java/lang/VMSecurityManager.class ./java/lang/ClassLoader.class ./java/lang/SecurityException.class ./java/lang/RuntimeException.class ./java/lang/Exception.class ./java/lang/Throwable.class ./gnu/vm/stack/StackTrace.class ./gnu/vm/stack/StackFrame.class ./java/lang/reflect/Method.class ./java/lang/StringBuffer.class ./java/lang/NegativeArraySizeException.class ./java/lang/Math.class ./java/lang/IndexOutOfBoundsException.class ./java/lang/StringIndexOutOfBoundsException.class ./java/lang/NullPointerException.class ./java/lang/reflect/Modifier.class ./java/lang/IllegalAccessException.class ./java/lang/IllegalArgumentException.class ./java/lang/reflect/InvocationTargetException.class ./java/lang/Thread.class ./java/lang/ThreadGroup.class ./java/util/Vector.class ./java/util/AbstractList.class ./java/util/AbstractCollection.class ./java/util/Collection.class ./java/util/Iterator.class ./java/lang/UnsupportedOperationException.class ./java/lang/reflect/Array.class ./java/lang/Boolean.class ./java/lang/VMClassLoader.class ./java/lang/ClassFormatError.class ./java/lang/LinkageError.class ./java/lang/Error.class ./java/lang/Byte.class ./java/lang/NumberFormatException.class ./java/lang/Character.class ./java/lang/Comparable.class ./java/io/RandomAccessFile.class ./java/io/DataInput.class ./java/io/EOFException.class ./java/io/IOException.class ./java/io/UTFDataFormatException.class ./java/io/DataOutput.class ./java/io/File.class ./java/io/FilenameFilter.class ./java/lang/ClassCastException.class ./java/io/FileDescriptor.class ./java/io/SyncFailedException.class ./java/io/DataInputStream.class ./java/io/FilterInputStream.class ./java/io/InputStream.class ./java/io/PushbackInputStream.class ./java/io/DataOutputStream.class ./java/io/FilterOutputStream.class ./java/io/OutputStream.class ./java/io/ByteArrayOutputStream.class ./java/lang/Integer.class ./java/io/UnsupportedEncodingException.class ./gnu/java/lang/ClassLoaderHelper.class ./java/io/FileInputStream.class ./java/io/FileNotFoundException.class ./java/lang/Short.class ./java/lang/Long.class ./java/lang/Void.class ./java/lang/ArrayIndexOutOfBoundsException.class ./java/util/List.class ./java/util/ListIterator.class ./java/util/ConcurrentModificationException.class ./java/util/NoSuchElementException.class ./java/lang/IllegalStateException.class ./java/util/Enumeration.class ./java/util/Collections.class ./java/util/Set.class ./java/util/AbstractSet.class ./java/util/Comparator.class ./java/util/AbstractSequentialList.class ./java/util/Arrays.class ./java/util/Map.class ./java/util/SortedMap.class ./java/util/SortedSet.class ./java/lang/IllegalThreadStateException.class ./java/lang/ThreadDeath.class ./java/lang/InterruptedException.class ./java/io/PrintStream.class ./java/io/PrintWriter.class ./java/io/Writer.class ./java/io/OutputStreamWriter.class ./gnu/java/io/encode/Encoder.class ./java/io/CharConversionException.class ./gnu/java/io/EncodingManager.class ./gnu/java/io/decode/Decoder.class ./java/io/Reader.class ./java/io/ObjectOutputStream.class ./java/io/ObjectOutput.class ./java/io/ObjectStreamClass.class ./java/io/ObjectStreamField.class ./gnu/java/lang/reflect/TypeSignature.class ./java/lang/ClassNotFoundException.class ./java/io/ObjectInputStream.class ./java/io/ObjectInput.class ./java/io/StreamCorruptedException.class ./java/io/ObjectStreamException.class ./java/io/BlockDataException.class ./gnu/java/io/ObjectIdentityWrapper.class ./java/io/NotSerializableException.class ./java/io/Externalizable.class ./java/lang/InstantiationException.class ./java/lang/NoSuchMethodError.class ./java/lang/IncompatibleClassChangeError.class ./java/lang/NoSuchMethodException.class ./java/io/WriteAbortedException.class ./java/io/NotActiveException.class ./java/io/ObjectInputValidation.class ./java/io/InvalidObjectException.class ./java/io/ValidatorAndPriority.class ./java/io/OptionalDataException.class ./java/io/Resolvable.class ./java/lang/reflect/Field.class ./java/lang/NoSuchFieldException.class ./java/security/NoSuchAlgorithmException.class ./java/security/GeneralSecurityException.class ./gnu/java/io/NullOutputStream.class ./java/io/InterfaceComparator.class ./java/io/MemberComparator.class ./java/io/Replaceable.class ./java/net/URL.class ./java/net/URLStreamHandlerFactory.class ./java/net/URLStreamHandler.class ./java/net/URLConnection.class ./java/net/FileNameMap.class ./java/net/MimeTypeMapper.class ./java/net/ContentHandlerFactory.class ./java/net/ContentHandler.class ./java/net/UnknownServiceException.class ./java/net/MalformedURLException.class ./java/lang/SecurityContext.class ./java/net/InetAddress.class ./java/net/UnknownHostException.class ./java/lang/VMSystem.class ./java/io/FileOutputStream.class ./java/lang/Runtime.class ./java/lang/UnsatisfiedLinkError.class ./java/lang/CloneNotSupportedException.class ./java/lang/VMObject.class ./java/lang/IllegalMonitorStateException.class ./java/util/Bucket.class ./java/util/BasicMapEntry.class ./java/util/Locale.class ./java/lang/UnknownError.class ./java/lang/VirtualMachineError.class ./gnu/java/lang/ClassHelper.class ./gnu/java/lang/ArrayHelper.class : ../vm/reference/java/lang/reflect/Constructor.java ../java/lang/reflect/Member.java ../vm/reference/java/lang/Class.java ../java/lang/String.java ../java/util/Hashtable.java ../java/util/Dictionary.java ../java/lang/Object.java ../java/lang/System.java ../java/lang/SecurityManager.java ../vm/reference/java/lang/VMSecurityManager.java ../java/lang/ClassLoader.java ../java/lang/SecurityException.java ../java/lang/RuntimeException.java ../java/lang/Exception.java ../java/lang/Throwable.java ../vm/reference/gnu/vm/stack/StackTrace.java ../vm/reference/gnu/vm/stack/StackFrame.java ../vm/reference/java/lang/reflect/Method.java ../java/lang/StringBuffer.java ../java/lang/NegativeArraySizeException.java ../java/lang/Math.java ../java/lang/IndexOutOfBoundsException.java ../java/lang/StringIndexOutOfBoundsException.java ../java/lang/NullPointerException.java ../java/lang/reflect/Modifier.java ../java/lang/IllegalAccessException.java ../java/lang/IllegalArgumentException.java ../java/lang/reflect/InvocationTargetException.java ../vm/reference/java/lang/Thread.java ../java/lang/ThreadGroup.java ../java/util/Vector.java ../java/util/AbstractList.java ../java/util/AbstractCollection.java ../java/util/Collection.java ../java/util/Iterator.java ../java/lang/UnsupportedOperationException.java ../java/lang/reflect/Array.java ../java/lang/Boolean.java ../vm/reference/java/lang/VMClassLoader.java ../java/lang/ClassFormatError.java ../java/lang/LinkageError.java ../java/lang/Error.java ../java/lang/Byte.java ../java/lang/NumberFormatException.java ../java/lang/Character.java ../java/lang/Comparable.java ../java/io/RandomAccessFile.java ../java/io/DataInput.java ../java/io/EOFException.java ../java/io/IOException.java ../java/io/UTFDataFormatException.java ../java/io/DataOutput.java ../java/io/File.java ../java/io/FilenameFilter.java ../java/lang/ClassCastException.java ../java/io/FileDescriptor.java ../java/io/SyncFailedException.java ../java/io/DataInputStream.java ../java/io/FilterInputStream.java ../java/io/InputStream.java ../java/io/PushbackInputStream.java ../java/io/DataOutputStream.java ../java/io/FilterOutputStream.java ../java/io/OutputStream.java ../java/io/ByteArrayOutputStream.java ../java/lang/Integer.java ../java/io/UnsupportedEncodingException.java ../gnu/java/lang/ClassLoaderHelper.java ../java/io/FileInputStream.java ../java/io/FileNotFoundException.java ../java/lang/Short.java ../java/lang/Long.java ../java/lang/Void.java ../java/lang/ArrayIndexOutOfBoundsException.java ../java/util/List.java ../java/util/ListIterator.java ../java/util/ConcurrentModificationException.java ../java/util/NoSuchElementException.java ../java/lang/IllegalStateException.java ../java/util/Enumeration.java ../java/util/Collections.java ../java/util/Set.java ../java/util/AbstractSet.java ../java/util/Comparator.java ../java/util/AbstractSequentialList.java ../java/util/Arrays.java ../java/util/Map.java ../java/util/SortedMap.java ../java/util/SortedSet.java ../java/lang/IllegalThreadStateException.java ../java/lang/ThreadDeath.java ../java/lang/InterruptedException.java ../java/io/PrintStream.java ../java/io/PrintWriter.java ../java/io/Writer.java ../java/io/OutputStreamWriter.java ../gnu/java/io/encode/Encoder.java ../java/io/CharConversionException.java ../gnu/java/io/EncodingManager.java ../gnu/java/io/decode/Decoder.java ../java/io/Reader.java ../java/io/ObjectOutputStream.java ../java/io/ObjectOutput.java ../java/io/ObjectStreamClass.java ../java/io/ObjectStreamField.java ../gnu/java/lang/reflect/TypeSignature.java ../java/lang/ClassNotFoundException.java ../java/io/ObjectInputStream.java ../java/io/ObjectInput.java ../java/io/StreamCorruptedException.java ../java/io/ObjectStreamException.java ../java/io/BlockDataException.java ../gnu/java/io/ObjectIdentityWrapper.java ../java/io/NotSerializableException.java ../java/io/Externalizable.java ../java/lang/InstantiationException.java ../java/lang/NoSuchMethodError.java ../java/lang/IncompatibleClassChangeError.java ../java/lang/NoSuchMethodException.java ../java/io/WriteAbortedException.java ../java/io/NotActiveException.java ../java/io/ObjectInputValidation.java ../java/io/InvalidObjectException.java ../java/io/OptionalDataException.java ../java/io/Resolvable.java ../vm/reference/java/lang/reflect/Field.java ../java/lang/NoSuchFieldException.java ../java/security/NoSuchAlgorithmException.java ../java/security/GeneralSecurityException.java ../gnu/java/io/NullOutputStream.java ../java/io/Replaceable.java ../java/net/URL.java ../java/net/URLStreamHandlerFactory.java ../java/net/URLStreamHandler.java ../java/net/URLConnection.java ../java/net/FileNameMap.java ../java/net/MimeTypeMapper.java ../java/net/ContentHandlerFactory.java ../java/net/ContentHandler.java ../java/net/UnknownServiceException.java ../java/net/MalformedURLException.java ../java/net/InetAddress.java ../java/net/UnknownHostException.java ../vm/reference/java/lang/VMSystem.java ../java/io/FileOutputStream.java ../vm/reference/java/lang/Runtime.java ../java/lang/UnsatisfiedLinkError.java ../java/lang/CloneNotSupportedException.java ../vm/reference/java/lang/VMObject.java ../java/lang/IllegalMonitorStateException.java ../java/util/Bucket.java ../java/util/BasicMapEntry.java ../java/util/Locale.java ../java/lang/UnknownError.java ../java/lang/VirtualMachineError.java ../gnu/java/lang/ClassHelper.java ../gnu/java/lang/ArrayHelper.java 
-	$(JAVAC) ../vm/reference/java/lang/reflect/Constructor.java ../java/lang/reflect/Member.java ../vm/reference/java/lang/Class.java ../java/lang/String.java ../java/util/Hashtable.java ../java/util/Dictionary.java ../java/lang/Object.java ../java/lang/System.java ../java/lang/SecurityManager.java ../vm/reference/java/lang/VMSecurityManager.java ../java/lang/ClassLoader.java ../java/lang/SecurityException.java ../java/lang/RuntimeException.java ../java/lang/Exception.java ../java/lang/Throwable.java ../vm/reference/gnu/vm/stack/StackTrace.java ../vm/reference/gnu/vm/stack/StackFrame.java ../vm/reference/java/lang/reflect/Method.java ../java/lang/StringBuffer.java ../java/lang/NegativeArraySizeException.java ../java/lang/Math.java ../java/lang/IndexOutOfBoundsException.java ../java/lang/StringIndexOutOfBoundsException.java ../java/lang/NullPointerException.java ../java/lang/reflect/Modifier.java ../java/lang/IllegalAccessException.java ../java/lang/IllegalArgumentException.java ../java/lang/reflect/InvocationTargetException.java ../vm/reference/java/lang/Thread.java ../java/lang/ThreadGroup.java ../java/util/Vector.java ../java/util/AbstractList.java ../java/util/AbstractCollection.java ../java/util/Collection.java ../java/util/Iterator.java ../java/lang/UnsupportedOperationException.java ../java/lang/reflect/Array.java ../java/lang/Boolean.java ../vm/reference/java/lang/VMClassLoader.java ../java/lang/ClassFormatError.java ../java/lang/LinkageError.java ../java/lang/Error.java ../java/lang/Byte.java ../java/lang/NumberFormatException.java ../java/lang/Character.java ../java/lang/Comparable.java ../java/io/RandomAccessFile.java ../java/io/DataInput.java ../java/io/EOFException.java ../java/io/IOException.java ../java/io/UTFDataFormatException.java ../java/io/DataOutput.java ../java/io/File.java ../java/io/FilenameFilter.java ../java/lang/ClassCastException.java ../java/io/FileDescriptor.java ../java/io/SyncFailedException.java ../java/io/DataInputStream.java ../java/io/FilterInputStream.java ../java/io/InputStream.java ../java/io/PushbackInputStream.java ../java/io/DataOutputStream.java ../java/io/FilterOutputStream.java ../java/io/OutputStream.java ../java/io/ByteArrayOutputStream.java ../java/lang/Integer.java ../java/io/UnsupportedEncodingException.java ../gnu/java/lang/ClassLoaderHelper.java ../java/io/FileInputStream.java ../java/io/FileNotFoundException.java ../java/lang/Short.java ../java/lang/Long.java ../java/lang/Void.java ../java/lang/ArrayIndexOutOfBoundsException.java ../java/util/List.java ../java/util/ListIterator.java ../java/util/ConcurrentModificationException.java ../java/util/NoSuchElementException.java ../java/lang/IllegalStateException.java ../java/util/Enumeration.java ../java/util/Collections.java ../java/util/Set.java ../java/util/AbstractSet.java ../java/util/Comparator.java ../java/util/AbstractSequentialList.java ../java/util/Arrays.java ../java/util/Map.java ../java/util/SortedMap.java ../java/util/SortedSet.java ../java/lang/IllegalThreadStateException.java ../java/lang/ThreadDeath.java ../java/lang/InterruptedException.java ../java/io/PrintStream.java ../java/io/PrintWriter.java ../java/io/Writer.java ../java/io/OutputStreamWriter.java ../gnu/java/io/encode/Encoder.java ../java/io/CharConversionException.java ../gnu/java/io/EncodingManager.java ../gnu/java/io/decode/Decoder.java ../java/io/Reader.java ../java/io/ObjectOutputStream.java ../java/io/ObjectOutput.java ../java/io/ObjectStreamClass.java ../java/io/ObjectStreamField.java ../gnu/java/lang/reflect/TypeSignature.java ../java/lang/ClassNotFoundException.java ../java/io/ObjectInputStream.java ../java/io/ObjectInput.java ../java/io/StreamCorruptedException.java ../java/io/ObjectStreamException.java ../java/io/BlockDataException.java ../gnu/java/io/ObjectIdentityWrapper.java ../java/io/NotSerializableException.java ../java/io/Externalizable.java ../java/lang/InstantiationException.java ../java/lang/NoSuchMethodError.java ../java/lang/IncompatibleClassChangeError.java ../java/lang/NoSuchMethodException.java ../java/io/WriteAbortedException.java ../java/io/NotActiveException.java ../java/io/ObjectInputValidation.java ../java/io/InvalidObjectException.java ../java/io/OptionalDataException.java ../java/io/Resolvable.java ../vm/reference/java/lang/reflect/Field.java ../java/lang/NoSuchFieldException.java ../java/security/NoSuchAlgorithmException.java ../java/security/GeneralSecurityException.java ../gnu/java/io/NullOutputStream.java ../java/io/Replaceable.java ../java/net/URL.java ../java/net/URLStreamHandlerFactory.java ../java/net/URLStreamHandler.java ../java/net/URLConnection.java ../java/net/FileNameMap.java ../java/net/MimeTypeMapper.java ../java/net/ContentHandlerFactory.java ../java/net/ContentHandler.java ../java/net/UnknownServiceException.java ../java/net/MalformedURLException.java ../java/net/InetAddress.java ../java/net/UnknownHostException.java ../vm/reference/java/lang/VMSystem.java ../java/io/FileOutputStream.java ../vm/reference/java/lang/Runtime.java ../java/lang/UnsatisfiedLinkError.java ../java/lang/CloneNotSupportedException.java ../vm/reference/java/lang/VMObject.java ../java/lang/IllegalMonitorStateException.java ../java/util/Bucket.java ../java/util/BasicMapEntry.java ../java/util/Locale.java ../java/lang/UnknownError.java ../java/lang/VirtualMachineError.java ../gnu/java/lang/ClassHelper.java ../gnu/java/lang/ArrayHelper.java 
+./java/lang/reflect/Constructor.class ./java/lang/reflect/Member.class ./java/lang/Class.class ./java/lang/String.class ./java/util/Hashtable.class ./java/util/Dictionary.class ./java/lang/Object.class ./java/lang/System.class ./java/lang/SecurityManager.class ./java/lang/VMSecurityManager.class ./java/lang/ClassLoader.class ./java/lang/SecurityException.class ./java/lang/RuntimeException.class ./java/lang/Exception.class ./java/lang/Throwable.class ./gnu/vm/stack/StackTrace.class ./gnu/vm/stack/StackFrame.class ./java/lang/reflect/Method.class ./java/lang/StringBuffer.class ./java/lang/NegativeArraySizeException.class ./java/lang/Math.class ./java/lang/IndexOutOfBoundsException.class ./java/lang/StringIndexOutOfBoundsException.class ./java/lang/NullPointerException.class ./java/lang/reflect/Modifier.class ./java/lang/IllegalAccessException.class ./java/lang/IllegalArgumentException.class ./java/lang/reflect/InvocationTargetException.class ./java/lang/Thread.class ./java/lang/ThreadGroup.class ./java/util/Vector.class ./java/util/AbstractList.class ./java/util/AbstractCollection.class ./java/util/Collection.class ./java/util/Iterator.class ./java/lang/UnsupportedOperationException.class ./java/lang/reflect/Array.class ./java/lang/Boolean.class ./java/lang/VMClassLoader.class ./java/lang/ClassFormatError.class ./java/lang/LinkageError.class ./java/lang/Error.class ./java/lang/Byte.class ./java/lang/NumberFormatException.class ./java/lang/Character.class ./java/lang/Comparable.class ./java/io/RandomAccessFile.class ./java/io/DataInput.class ./java/io/EOFException.class ./java/io/IOException.class ./java/io/UTFDataFormatException.class ./java/io/DataOutput.class ./java/io/File.class ./java/io/FilenameFilter.class ./java/lang/ClassCastException.class ./java/io/FileDescriptor.class ./java/io/SyncFailedException.class ./java/io/DataInputStream.class ./java/io/FilterInputStream.class ./java/io/InputStream.class ./java/io/PushbackInputStream.class ./java/io/DataOutputStream.class ./java/io/FilterOutputStream.class ./java/io/OutputStream.class ./java/io/ByteArrayOutputStream.class ./java/lang/Integer.class ./java/io/UnsupportedEncodingException.class ./gnu/java/lang/ClassLoaderHelper.class ./java/io/FileInputStream.class ./java/io/FileNotFoundException.class ./java/lang/Short.class ./java/lang/Long.class ./java/lang/Void.class ./java/lang/ArrayIndexOutOfBoundsException.class ./java/util/List.class ./java/util/ListIterator.class ./java/util/ConcurrentModificationException.class ./java/util/NoSuchElementException.class ./java/lang/IllegalStateException.class ./java/lang/CloneNotSupportedException.class ./java/util/Enumeration.class ./java/util/Collections.class ./java/util/Set.class ./java/util/AbstractSet.class ./java/util/Comparator.class ./java/util/AbstractSequentialList.class ./java/util/Arrays.class ./java/util/Map.class ./java/util/SortedMap.class ./java/util/SortedSet.class ./java/lang/IllegalThreadStateException.class ./java/lang/ThreadDeath.class ./java/lang/InterruptedException.class ./java/io/PrintStream.class ./java/io/PrintWriter.class ./java/io/Writer.class ./java/io/OutputStreamWriter.class ./gnu/java/io/encode/Encoder.class ./java/io/CharConversionException.class ./gnu/java/io/EncodingManager.class ./gnu/java/io/decode/Decoder.class ./java/io/Reader.class ./java/io/ObjectOutputStream.class ./java/io/ObjectOutput.class ./java/io/ObjectStreamClass.class ./java/io/ObjectStreamField.class ./gnu/java/lang/reflect/TypeSignature.class ./java/lang/ClassNotFoundException.class ./java/io/ObjectInputStream.class ./java/io/ObjectInput.class ./java/io/StreamCorruptedException.class ./java/io/ObjectStreamException.class ./java/io/BlockDataException.class ./gnu/java/io/ObjectIdentityWrapper.class ./java/io/NotSerializableException.class ./java/io/Externalizable.class ./java/lang/InstantiationException.class ./java/lang/NoSuchMethodError.class ./java/lang/IncompatibleClassChangeError.class ./java/lang/NoSuchMethodException.class ./java/io/WriteAbortedException.class ./java/io/NotActiveException.class ./java/io/ObjectInputValidation.class ./java/io/InvalidObjectException.class ./java/io/ValidatorAndPriority.class ./java/io/OptionalDataException.class ./java/io/Resolvable.class ./java/lang/reflect/Field.class ./java/lang/NoSuchFieldException.class ./gnu/java/io/NullOutputStream.class ./java/io/InterfaceComparator.class ./java/io/MemberComparator.class ./java/io/Replaceable.class ./java/net/URL.class ./java/net/URLStreamHandlerFactory.class ./java/net/URLStreamHandler.class ./java/net/URLConnection.class ./java/net/FileNameMap.class ./java/net/MimeTypeMapper.class ./java/net/ContentHandlerFactory.class ./java/net/ContentHandler.class ./java/net/UnknownServiceException.class ./java/net/MalformedURLException.class ./java/lang/SecurityContext.class ./java/net/InetAddress.class ./java/net/UnknownHostException.class ./java/lang/VMSystem.class ./java/io/FileOutputStream.class ./java/lang/Runtime.class ./java/lang/UnsatisfiedLinkError.class ./java/lang/VMObject.class ./java/lang/IllegalMonitorStateException.class ./java/util/Bucket.class ./java/util/BasicMapEntry.class ./java/util/Locale.class ./java/lang/UnknownError.class ./java/lang/VirtualMachineError.class ./gnu/java/lang/ClassHelper.class ./gnu/java/lang/ArrayHelper.class : ../vm/reference/java/lang/reflect/Constructor.java ../java/lang/reflect/Member.java ../vm/reference/java/lang/Class.java ../java/lang/String.java ../java/util/Hashtable.java ../java/util/Dictionary.java ../java/lang/Object.java ../java/lang/System.java ../java/lang/SecurityManager.java ../vm/reference/java/lang/VMSecurityManager.java ../java/lang/ClassLoader.java ../java/lang/SecurityException.java ../java/lang/RuntimeException.java ../java/lang/Exception.java ../java/lang/Throwable.java ../vm/reference/gnu/vm/stack/StackTrace.java ../vm/reference/gnu/vm/stack/StackFrame.java ../vm/reference/java/lang/reflect/Method.java ../java/lang/StringBuffer.java ../java/lang/NegativeArraySizeException.java ../java/lang/Math.java ../java/lang/IndexOutOfBoundsException.java ../java/lang/StringIndexOutOfBoundsException.java ../java/lang/NullPointerException.java ../java/lang/reflect/Modifier.java ../java/lang/IllegalAccessException.java ../java/lang/IllegalArgumentException.java ../java/lang/reflect/InvocationTargetException.java ../vm/reference/java/lang/Thread.java ../java/lang/ThreadGroup.java ../java/util/Vector.java ../java/util/AbstractList.java ../java/util/AbstractCollection.java ../java/util/Collection.java ../java/util/Iterator.java ../java/lang/UnsupportedOperationException.java ../java/lang/reflect/Array.java ../java/lang/Boolean.java ../vm/reference/java/lang/VMClassLoader.java ../java/lang/ClassFormatError.java ../java/lang/LinkageError.java ../java/lang/Error.java ../java/lang/Byte.java ../java/lang/NumberFormatException.java ../java/lang/Character.java ../java/lang/Comparable.java ../java/io/RandomAccessFile.java ../java/io/DataInput.java ../java/io/EOFException.java ../java/io/IOException.java ../java/io/UTFDataFormatException.java ../java/io/DataOutput.java ../java/io/File.java ../java/io/FilenameFilter.java ../java/lang/ClassCastException.java ../java/io/FileDescriptor.java ../java/io/SyncFailedException.java ../java/io/DataInputStream.java ../java/io/FilterInputStream.java ../java/io/InputStream.java ../java/io/PushbackInputStream.java ../java/io/DataOutputStream.java ../java/io/FilterOutputStream.java ../java/io/OutputStream.java ../java/io/ByteArrayOutputStream.java ../java/lang/Integer.java ../java/io/UnsupportedEncodingException.java ../gnu/java/lang/ClassLoaderHelper.java ../java/io/FileInputStream.java ../java/io/FileNotFoundException.java ../java/lang/Short.java ../java/lang/Long.java ../java/lang/Void.java ../java/lang/ArrayIndexOutOfBoundsException.java ../java/util/List.java ../java/util/ListIterator.java ../java/util/ConcurrentModificationException.java ../java/util/NoSuchElementException.java ../java/lang/IllegalStateException.java ../java/lang/CloneNotSupportedException.java ../java/util/Enumeration.java ../java/util/Collections.java ../java/util/Set.java ../java/util/AbstractSet.java ../java/util/Comparator.java ../java/util/AbstractSequentialList.java ../java/util/Arrays.java ../java/util/Map.java ../java/util/SortedMap.java ../java/util/SortedSet.java ../java/lang/IllegalThreadStateException.java ../java/lang/ThreadDeath.java ../java/lang/InterruptedException.java ../java/io/PrintStream.java ../java/io/PrintWriter.java ../java/io/Writer.java ../java/io/OutputStreamWriter.java ../gnu/java/io/encode/Encoder.java ../java/io/CharConversionException.java ../gnu/java/io/EncodingManager.java ../gnu/java/io/decode/Decoder.java ../java/io/Reader.java ../java/io/ObjectOutputStream.java ../java/io/ObjectOutput.java ../java/io/ObjectStreamClass.java ../java/io/ObjectStreamField.java ../gnu/java/lang/reflect/TypeSignature.java ../java/lang/ClassNotFoundException.java ../java/io/ObjectInputStream.java ../java/io/ObjectInput.java ../java/io/StreamCorruptedException.java ../java/io/ObjectStreamException.java ../java/io/BlockDataException.java ../gnu/java/io/ObjectIdentityWrapper.java ../java/io/NotSerializableException.java ../java/io/Externalizable.java ../java/lang/InstantiationException.java ../java/lang/NoSuchMethodError.java ../java/lang/IncompatibleClassChangeError.java ../java/lang/NoSuchMethodException.java ../java/io/WriteAbortedException.java ../java/io/NotActiveException.java ../java/io/ObjectInputValidation.java ../java/io/InvalidObjectException.java ../java/io/OptionalDataException.java ../java/io/Resolvable.java ../vm/reference/java/lang/reflect/Field.java ../java/lang/NoSuchFieldException.java ../gnu/java/io/NullOutputStream.java ../java/io/Replaceable.java ../java/net/URL.java ../java/net/URLStreamHandlerFactory.java ../java/net/URLStreamHandler.java ../java/net/URLConnection.java ../java/net/FileNameMap.java ../java/net/MimeTypeMapper.java ../java/net/ContentHandlerFactory.java ../java/net/ContentHandler.java ../java/net/UnknownServiceException.java ../java/net/MalformedURLException.java ../java/net/InetAddress.java ../java/net/UnknownHostException.java ../vm/reference/java/lang/VMSystem.java ../java/io/FileOutputStream.java ../vm/reference/java/lang/Runtime.java ../java/lang/UnsatisfiedLinkError.java ../vm/reference/java/lang/VMObject.java ../java/lang/IllegalMonitorStateException.java ../java/util/Bucket.java ../java/util/BasicMapEntry.java ../java/util/Locale.java ../java/lang/UnknownError.java ../java/lang/VirtualMachineError.java ../gnu/java/lang/ClassHelper.java ../gnu/java/lang/ArrayHelper.java 
+	$(JAVAC) ../vm/reference/java/lang/reflect/Constructor.java ../java/lang/reflect/Member.java ../vm/reference/java/lang/Class.java ../java/lang/String.java ../java/util/Hashtable.java ../java/util/Dictionary.java ../java/lang/Object.java ../java/lang/System.java ../java/lang/SecurityManager.java ../vm/reference/java/lang/VMSecurityManager.java ../java/lang/ClassLoader.java ../java/lang/SecurityException.java ../java/lang/RuntimeException.java ../java/lang/Exception.java ../java/lang/Throwable.java ../vm/reference/gnu/vm/stack/StackTrace.java ../vm/reference/gnu/vm/stack/StackFrame.java ../vm/reference/java/lang/reflect/Method.java ../java/lang/StringBuffer.java ../java/lang/NegativeArraySizeException.java ../java/lang/Math.java ../java/lang/IndexOutOfBoundsException.java ../java/lang/StringIndexOutOfBoundsException.java ../java/lang/NullPointerException.java ../java/lang/reflect/Modifier.java ../java/lang/IllegalAccessException.java ../java/lang/IllegalArgumentException.java ../java/lang/reflect/InvocationTargetException.java ../vm/reference/java/lang/Thread.java ../java/lang/ThreadGroup.java ../java/util/Vector.java ../java/util/AbstractList.java ../java/util/AbstractCollection.java ../java/util/Collection.java ../java/util/Iterator.java ../java/lang/UnsupportedOperationException.java ../java/lang/reflect/Array.java ../java/lang/Boolean.java ../vm/reference/java/lang/VMClassLoader.java ../java/lang/ClassFormatError.java ../java/lang/LinkageError.java ../java/lang/Error.java ../java/lang/Byte.java ../java/lang/NumberFormatException.java ../java/lang/Character.java ../java/lang/Comparable.java ../java/io/RandomAccessFile.java ../java/io/DataInput.java ../java/io/EOFException.java ../java/io/IOException.java ../java/io/UTFDataFormatException.java ../java/io/DataOutput.java ../java/io/File.java ../java/io/FilenameFilter.java ../java/lang/ClassCastException.java ../java/io/FileDescriptor.java ../java/io/SyncFailedException.java ../java/io/DataInputStream.java ../java/io/FilterInputStream.java ../java/io/InputStream.java ../java/io/PushbackInputStream.java ../java/io/DataOutputStream.java ../java/io/FilterOutputStream.java ../java/io/OutputStream.java ../java/io/ByteArrayOutputStream.java ../java/lang/Integer.java ../java/io/UnsupportedEncodingException.java ../gnu/java/lang/ClassLoaderHelper.java ../java/io/FileInputStream.java ../java/io/FileNotFoundException.java ../java/lang/Short.java ../java/lang/Long.java ../java/lang/Void.java ../java/lang/ArrayIndexOutOfBoundsException.java ../java/util/List.java ../java/util/ListIterator.java ../java/util/ConcurrentModificationException.java ../java/util/NoSuchElementException.java ../java/lang/IllegalStateException.java ../java/lang/CloneNotSupportedException.java ../java/util/Enumeration.java ../java/util/Collections.java ../java/util/Set.java ../java/util/AbstractSet.java ../java/util/Comparator.java ../java/util/AbstractSequentialList.java ../java/util/Arrays.java ../java/util/Map.java ../java/util/SortedMap.java ../java/util/SortedSet.java ../java/lang/IllegalThreadStateException.java ../java/lang/ThreadDeath.java ../java/lang/InterruptedException.java ../java/io/PrintStream.java ../java/io/PrintWriter.java ../java/io/Writer.java ../java/io/OutputStreamWriter.java ../gnu/java/io/encode/Encoder.java ../java/io/CharConversionException.java ../gnu/java/io/EncodingManager.java ../gnu/java/io/decode/Decoder.java ../java/io/Reader.java ../java/io/ObjectOutputStream.java ../java/io/ObjectOutput.java ../java/io/ObjectStreamClass.java ../java/io/ObjectStreamField.java ../gnu/java/lang/reflect/TypeSignature.java ../java/lang/ClassNotFoundException.java ../java/io/ObjectInputStream.java ../java/io/ObjectInput.java ../java/io/StreamCorruptedException.java ../java/io/ObjectStreamException.java ../java/io/BlockDataException.java ../gnu/java/io/ObjectIdentityWrapper.java ../java/io/NotSerializableException.java ../java/io/Externalizable.java ../java/lang/InstantiationException.java ../java/lang/NoSuchMethodError.java ../java/lang/IncompatibleClassChangeError.java ../java/lang/NoSuchMethodException.java ../java/io/WriteAbortedException.java ../java/io/NotActiveException.java ../java/io/ObjectInputValidation.java ../java/io/InvalidObjectException.java ../java/io/OptionalDataException.java ../java/io/Resolvable.java ../vm/reference/java/lang/reflect/Field.java ../java/lang/NoSuchFieldException.java ../gnu/java/io/NullOutputStream.java ../java/io/Replaceable.java ../java/net/URL.java ../java/net/URLStreamHandlerFactory.java ../java/net/URLStreamHandler.java ../java/net/URLConnection.java ../java/net/FileNameMap.java ../java/net/MimeTypeMapper.java ../java/net/ContentHandlerFactory.java ../java/net/ContentHandler.java ../java/net/UnknownServiceException.java ../java/net/MalformedURLException.java ../java/net/InetAddress.java ../java/net/UnknownHostException.java ../vm/reference/java/lang/VMSystem.java ../java/io/FileOutputStream.java ../vm/reference/java/lang/Runtime.java ../java/lang/UnsatisfiedLinkError.java ../vm/reference/java/lang/VMObject.java ../java/lang/IllegalMonitorStateException.java ../java/util/Bucket.java ../java/util/BasicMapEntry.java ../java/util/Locale.java ../java/lang/UnknownError.java ../java/lang/VirtualMachineError.java ../gnu/java/lang/ClassHelper.java ../gnu/java/lang/ArrayHelper.java 
 
-./java/lang/reflect/Constructor.class ./java/lang/reflect/Member.class ./java/lang/Class.class ./java/lang/String.class ./java/util/Hashtable.class ./java/util/Dictionary.class ./java/lang/Object.class ./java/lang/System.class ./java/lang/SecurityManager.class ./java/lang/VMSecurityManager.class ./java/lang/ClassLoader.class ./java/lang/SecurityException.class ./java/lang/RuntimeException.class ./java/lang/Exception.class ./java/lang/Throwable.class ./gnu/vm/stack/StackTrace.class ./gnu/vm/stack/StackFrame.class ./java/lang/reflect/Method.class ./java/lang/StringBuffer.class ./java/lang/NegativeArraySizeException.class ./java/lang/Math.class ./java/lang/IndexOutOfBoundsException.class ./java/lang/StringIndexOutOfBoundsException.class ./java/lang/NullPointerException.class ./java/lang/reflect/Modifier.class ./java/lang/IllegalAccessException.class ./java/lang/IllegalArgumentException.class ./java/lang/reflect/InvocationTargetException.class ./java/lang/Thread.class ./java/lang/ThreadGroup.class ./java/util/Vector.class ./java/util/AbstractList.class ./java/util/AbstractCollection.class ./java/util/Collection.class ./java/util/Iterator.class ./java/lang/UnsupportedOperationException.class ./java/lang/reflect/Array.class ./java/lang/Boolean.class ./java/lang/VMClassLoader.class ./java/lang/ClassFormatError.class ./java/lang/LinkageError.class ./java/lang/Error.class ./java/lang/Byte.class ./java/lang/NumberFormatException.class ./java/lang/Character.class ./java/lang/Comparable.class ./java/io/RandomAccessFile.class ./java/io/DataInput.class ./java/io/EOFException.class ./java/io/IOException.class ./java/io/UTFDataFormatException.class ./java/io/DataOutput.class ./java/io/File.class ./java/io/FilenameFilter.class ./java/lang/ClassCastException.class ./java/io/FileDescriptor.class ./java/io/SyncFailedException.class ./java/io/DataInputStream.class ./java/io/FilterInputStream.class ./java/io/InputStream.class ./java/io/PushbackInputStream.class ./java/io/DataOutputStream.class ./java/io/FilterOutputStream.class ./java/io/OutputStream.class ./java/io/ByteArrayOutputStream.class ./java/lang/Integer.class ./java/io/UnsupportedEncodingException.class ./gnu/java/lang/ClassLoaderHelper.class ./java/io/FileInputStream.class ./java/io/FileNotFoundException.class ./java/lang/Short.class ./java/lang/Long.class ./java/lang/Void.class ./java/lang/ArrayIndexOutOfBoundsException.class ./java/util/List.class ./java/util/ListIterator.class ./java/util/ConcurrentModificationException.class ./java/util/NoSuchElementException.class ./java/lang/IllegalStateException.class ./java/util/Enumeration.class ./java/util/Collections.class ./java/util/Set.class ./java/util/AbstractSet.class ./java/util/Comparator.class ./java/util/AbstractSequentialList.class ./java/util/Arrays.class ./java/util/Map.class ./java/util/SortedMap.class ./java/util/SortedSet.class ./java/lang/IllegalThreadStateException.class ./java/lang/ThreadDeath.class ./java/lang/InterruptedException.class ./java/io/PrintStream.class ./java/io/PrintWriter.class ./java/io/Writer.class ./java/io/OutputStreamWriter.class ./gnu/java/io/encode/Encoder.class ./java/io/CharConversionException.class ./gnu/java/io/EncodingManager.class ./gnu/java/io/decode/Decoder.class ./java/io/Reader.class ./java/io/ObjectOutputStream.class ./java/io/ObjectOutput.class ./java/io/ObjectStreamClass.class ./java/io/ObjectStreamField.class ./gnu/java/lang/reflect/TypeSignature.class ./java/lang/ClassNotFoundException.class ./java/io/ObjectInputStream.class ./java/io/ObjectInput.class ./java/io/StreamCorruptedException.class ./java/io/ObjectStreamException.class ./java/io/BlockDataException.class ./gnu/java/io/ObjectIdentityWrapper.class ./java/io/NotSerializableException.class ./java/io/Externalizable.class ./java/lang/InstantiationException.class ./java/lang/NoSuchMethodError.class ./java/lang/IncompatibleClassChangeError.class ./java/lang/NoSuchMethodException.class ./java/io/WriteAbortedException.class ./java/io/NotActiveException.class ./java/io/ObjectInputValidation.class ./java/io/InvalidObjectException.class ./java/io/ValidatorAndPriority.class ./java/io/OptionalDataException.class ./java/io/Resolvable.class ./java/lang/reflect/Field.class ./java/lang/NoSuchFieldException.class ./java/security/NoSuchAlgorithmException.class ./java/security/GeneralSecurityException.class ./gnu/java/io/NullOutputStream.class ./java/io/InterfaceComparator.class ./java/io/MemberComparator.class ./java/io/Replaceable.class ./java/net/URL.class ./java/net/URLStreamHandlerFactory.class ./java/net/URLStreamHandler.class ./java/net/URLConnection.class ./java/net/FileNameMap.class ./java/net/MimeTypeMapper.class ./java/net/ContentHandlerFactory.class ./java/net/ContentHandler.class ./java/net/UnknownServiceException.class ./java/net/MalformedURLException.class ./java/lang/SecurityContext.class ./java/net/InetAddress.class ./java/net/UnknownHostException.class ./java/lang/VMSystem.class ./java/io/FileOutputStream.class ./java/lang/Runtime.class ./java/lang/UnsatisfiedLinkError.class ./java/lang/CloneNotSupportedException.class ./java/lang/VMObject.class ./java/lang/IllegalMonitorStateException.class ./java/util/Bucket.class ./java/util/BasicMapEntry.class ./java/util/Locale.class ./java/lang/UnknownError.class ./java/lang/VirtualMachineError.class ./gnu/java/lang/ClassHelper.class ./gnu/java/lang/ArrayHelper.class : ./java/lang/Cloneable.class ./java/io/Serializable.class ./java/lang/Runnable.class ./java/lang/Number.class ./java/lang/Block.class ./java/lang/CharAttr.class ./java/io/ObjectStreamConstants.class 
-
-java_lang_Class.h: ./java/lang/Class.class 
-	$(JAVAHEADER) java.lang.Class
+./java/lang/reflect/Constructor.class ./java/lang/reflect/Member.class ./java/lang/Class.class ./java/lang/String.class ./java/util/Hashtable.class ./java/util/Dictionary.class ./java/lang/Object.class ./java/lang/System.class ./java/lang/SecurityManager.class ./java/lang/VMSecurityManager.class ./java/lang/ClassLoader.class ./java/lang/SecurityException.class ./java/lang/RuntimeException.class ./java/lang/Exception.class ./java/lang/Throwable.class ./gnu/vm/stack/StackTrace.class ./gnu/vm/stack/StackFrame.class ./java/lang/reflect/Method.class ./java/lang/StringBuffer.class ./java/lang/NegativeArraySizeException.class ./java/lang/Math.class ./java/lang/IndexOutOfBoundsException.class ./java/lang/StringIndexOutOfBoundsException.class ./java/lang/NullPointerException.class ./java/lang/reflect/Modifier.class ./java/lang/IllegalAccessException.class ./java/lang/IllegalArgumentException.class ./java/lang/reflect/InvocationTargetException.class ./java/lang/Thread.class ./java/lang/ThreadGroup.class ./java/util/Vector.class ./java/util/AbstractList.class ./java/util/AbstractCollection.class ./java/util/Collection.class ./java/util/Iterator.class ./java/lang/UnsupportedOperationException.class ./java/lang/reflect/Array.class ./java/lang/Boolean.class ./java/lang/VMClassLoader.class ./java/lang/ClassFormatError.class ./java/lang/LinkageError.class ./java/lang/Error.class ./java/lang/Byte.class ./java/lang/NumberFormatException.class ./java/lang/Character.class ./java/lang/Comparable.class ./java/io/RandomAccessFile.class ./java/io/DataInput.class ./java/io/EOFException.class ./java/io/IOException.class ./java/io/UTFDataFormatException.class ./java/io/DataOutput.class ./java/io/File.class ./java/io/FilenameFilter.class ./java/lang/ClassCastException.class ./java/io/FileDescriptor.class ./java/io/SyncFailedException.class ./java/io/DataInputStream.class ./java/io/FilterInputStream.class ./java/io/InputStream.class ./java/io/PushbackInputStream.class ./java/io/DataOutputStream.class ./java/io/FilterOutputStream.class ./java/io/OutputStream.class ./java/io/ByteArrayOutputStream.class ./java/lang/Integer.class ./java/io/UnsupportedEncodingException.class ./gnu/java/lang/ClassLoaderHelper.class ./java/io/FileInputStream.class ./java/io/FileNotFoundException.class ./java/lang/Short.class ./java/lang/Long.class ./java/lang/Void.class ./java/lang/ArrayIndexOutOfBoundsException.class ./java/util/List.class ./java/util/ListIterator.class ./java/util/ConcurrentModificationException.class ./java/util/NoSuchElementException.class ./java/lang/IllegalStateException.class ./java/lang/CloneNotSupportedException.class ./java/util/Enumeration.class ./java/util/Collections.class ./java/util/Set.class ./java/util/AbstractSet.class ./java/util/Comparator.class ./java/util/AbstractSequentialList.class ./java/util/Arrays.class ./java/util/Map.class ./java/util/SortedMap.class ./java/util/SortedSet.class ./java/lang/IllegalThreadStateException.class ./java/lang/ThreadDeath.class ./java/lang/InterruptedException.class ./java/io/PrintStream.class ./java/io/PrintWriter.class ./java/io/Writer.class ./java/io/OutputStreamWriter.class ./gnu/java/io/encode/Encoder.class ./java/io/CharConversionException.class ./gnu/java/io/EncodingManager.class ./gnu/java/io/decode/Decoder.class ./java/io/Reader.class ./java/io/ObjectOutputStream.class ./java/io/ObjectOutput.class ./java/io/ObjectStreamClass.class ./java/io/ObjectStreamField.class ./gnu/java/lang/reflect/TypeSignature.class ./java/lang/ClassNotFoundException.class ./java/io/ObjectInputStream.class ./java/io/ObjectInput.class ./java/io/StreamCorruptedException.class ./java/io/ObjectStreamException.class ./java/io/BlockDataException.class ./gnu/java/io/ObjectIdentityWrapper.class ./java/io/NotSerializableException.class ./java/io/Externalizable.class ./java/lang/InstantiationException.class ./java/lang/NoSuchMethodError.class ./java/lang/IncompatibleClassChangeError.class ./java/lang/NoSuchMethodException.class ./java/io/WriteAbortedException.class ./java/io/NotActiveException.class ./java/io/ObjectInputValidation.class ./java/io/InvalidObjectException.class ./java/io/ValidatorAndPriority.class ./java/io/OptionalDataException.class ./java/io/Resolvable.class ./java/lang/reflect/Field.class ./java/lang/NoSuchFieldException.class ./gnu/java/io/NullOutputStream.class ./java/io/InterfaceComparator.class ./java/io/MemberComparator.class ./java/io/Replaceable.class ./java/net/URL.class ./java/net/URLStreamHandlerFactory.class ./java/net/URLStreamHandler.class ./java/net/URLConnection.class ./java/net/FileNameMap.class ./java/net/MimeTypeMapper.class ./java/net/ContentHandlerFactory.class ./java/net/ContentHandler.class ./java/net/UnknownServiceException.class ./java/net/MalformedURLException.class ./java/lang/SecurityContext.class ./java/net/InetAddress.class ./java/net/UnknownHostException.class ./java/lang/VMSystem.class ./java/io/FileOutputStream.class ./java/lang/Runtime.class ./java/lang/UnsatisfiedLinkError.class ./java/lang/VMObject.class ./java/lang/IllegalMonitorStateException.class ./java/util/Bucket.class ./java/util/BasicMapEntry.class ./java/util/Locale.class ./java/lang/UnknownError.class ./java/lang/VirtualMachineError.class ./gnu/java/lang/ClassHelper.class ./gnu/java/lang/ArrayHelper.class : ./java/lang/Cloneable.class ./java/io/Serializable.class ./java/lang/Runnable.class ./java/lang/Number.class ./java/lang/Block.class ./java/lang/CharAttr.class ./java/io/ObjectStreamConstants.class 
 
 java_lang_Class.h: ./java/lang/Class.class 
 	$(JAVAHEADER) java.lang.Class
@@ -109,6 +100,18 @@ java_lang_Class.h: ./java/lang/Class.class
 
 java_lang_Class.h: ./java/lang/Class.class 
 	$(JAVAHEADER) java.lang.Class
+
+java_lang_Class.h: ./java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
+
+java_io_ObjectStreamClass.h: ./java/io/ObjectStreamClass.class 
+	$(JAVAHEADER) java.io.ObjectStreamClass
+
+java_io_ObjectStreamClass.h: ./java/io/ObjectStreamClass.class 
+	$(JAVAHEADER) java.io.ObjectStreamClass
+
+java_io_ObjectStreamClass.h: ./java/io/ObjectStreamClass.class 
+	$(JAVAHEADER) java.io.ObjectStreamClass
 
 java_lang_System.h: ./java/lang/System.class 
 	$(JAVAHEADER) java.lang.System
@@ -173,58 +176,55 @@ java_lang_VMSecurityManager.h: ./java/lang/VMSecurityManager.class
 java_lang_VMSecurityManager.h: ./java/lang/VMSecurityManager.class 
 	$(JAVAHEADER) java.lang.VMSecurityManager
 
-./java/text/ParsePosition.class: ../java/text/ParsePosition.java 
-	$(JAVAC) ../java/text/ParsePosition.java 
+./gnu/tools/serialver/Main.class: ../gnu/tools/serialver/Main.java 
+	$(JAVAC) ../gnu/tools/serialver/Main.java 
 
-./java/text/ParsePosition.class: ./java/lang/Object.class 
+./gnu/tools/serialver/Main.class: ./java/lang/String.class ./java/lang/Class.class ./java/io/ObjectStreamClass.class ./java/lang/ClassNotFoundException.class 
 
-./java/text/FieldPosition.class: ../java/text/FieldPosition.java 
-	$(JAVAC) ../java/text/FieldPosition.java 
+./gnu/test/Result.class: ../gnu/test/Result.java 
+	$(JAVAC) ../gnu/test/Result.java 
 
-./java/text/FieldPosition.class: ./java/lang/Object.class 
+./gnu/test/Result.class: ./java/lang/String.class 
 
-./java/security/PrivilegedAction.class: ../java/security/PrivilegedAction.java 
-	$(JAVAC) ../java/security/PrivilegedAction.java 
+./gnu/test/XPass.class: ../gnu/test/XPass.java 
+	$(JAVAC) ../gnu/test/XPass.java 
 
-./java/security/PrivilegedAction.class: ./java/lang/Object.class 
+./gnu/test/XPass.class: ./gnu/test/Result.class ./java/lang/String.class 
 
-java_lang_Object.h: ./java/lang/Object.class 
-	$(JAVAHEADER) java.lang.Object
+./gnu/test/XFail.class: ../gnu/test/XFail.java 
+	$(JAVAC) ../gnu/test/XFail.java 
 
-./java/text/Annotation.class: ../java/text/Annotation.java 
-	$(JAVAC) ../java/text/Annotation.java 
+./gnu/test/XFail.class: ./gnu/test/Result.class ./java/lang/String.class 
 
-./java/text/Annotation.class: ./java/lang/Object.class ./java/lang/String.class 
+./gnu/test/Untested.class: ../gnu/test/Untested.java 
+	$(JAVAC) ../gnu/test/Untested.java 
 
-./java/security/Provider.class: ../java/security/Provider.java 
-	$(JAVAC) ../java/security/Provider.java 
+./gnu/test/Untested.class: ./gnu/test/Result.class ./java/lang/String.class 
 
-./java/security/Provider.class: ./java/io/Serializable.class ./java/lang/String.class ./java/lang/Object.class 
+./gnu/test/Unsupported.class: ../gnu/test/Unsupported.java 
+	$(JAVAC) ../gnu/test/Unsupported.java 
 
-./java/security/Principal.class: ../java/security/Principal.java 
-	$(JAVAC) ../java/security/Principal.java 
+./gnu/test/Unsupported.class: ./gnu/test/Result.class ./java/lang/String.class 
 
-./java/security/Principal.class: ./java/lang/String.class ./java/lang/Object.class 
+./gnu/test/Unresolved.class: ../gnu/test/Unresolved.java 
+	$(JAVAC) ../gnu/test/Unresolved.java 
 
-./java/security/acl/Group.class: ../java/security/acl/Group.java 
-	$(JAVAC) ../java/security/acl/Group.java 
+./gnu/test/Unresolved.class: ./gnu/test/Result.class ./java/lang/String.class 
 
-./java/security/acl/Group.class: ./java/security/Principal.class ./java/util/Enumeration.class 
+./gnu/test/Test.class: ../gnu/test/Test.java 
+	$(JAVAC) ../gnu/test/Test.java 
 
-./java/security/Key.class: ../java/security/Key.java 
-	$(JAVAC) ../java/security/Key.java 
+./gnu/test/Test.class: ./java/lang/String.class ./gnu/test/Result.class 
 
-./java/security/Key.class: ./java/io/Serializable.class ./java/lang/String.class 
+./gnu/test/Pass.class: ../gnu/test/Pass.java 
+	$(JAVAC) ../gnu/test/Pass.java 
 
-./java/security/acl/Permission.class: ../java/security/acl/Permission.java 
-	$(JAVAC) ../java/security/acl/Permission.java 
+./gnu/test/Pass.class: ./gnu/test/Result.class ./java/lang/String.class 
 
-./java/security/acl/Permission.class: ./java/lang/Object.class ./java/lang/String.class 
+./gnu/test/Fail.class: ../gnu/test/Fail.java 
+	$(JAVAC) ../gnu/test/Fail.java 
 
-./java/security/acl/AclEntry.class: ../java/security/acl/AclEntry.java 
-	$(JAVAC) ../java/security/acl/AclEntry.java 
-
-./java/security/acl/AclEntry.class: ./java/lang/Cloneable.class ./java/security/Principal.class ./java/security/acl/Permission.class ./java/util/Enumeration.class ./java/lang/String.class ./java/lang/Object.class 
+./gnu/test/Fail.class: ./gnu/test/Result.class ./java/lang/String.class 
 
 ./java/net/PasswordAuthentication.class: ../java/net/PasswordAuthentication.java 
 	$(JAVAC) ../java/net/PasswordAuthentication.java 
@@ -291,155 +291,10 @@ java_lang_Object.h: ./java/lang/Object.class
 
 ./java/text/ParseException.class: ./java/lang/Exception.class ./java/lang/String.class 
 
-./java/security/PrivilegedExceptionAction.class: ../java/security/PrivilegedExceptionAction.java 
-	$(JAVAC) ../java/security/PrivilegedExceptionAction.java 
-
-./java/security/PrivilegedExceptionAction.class: ./java/lang/Object.class ./java/lang/Exception.class 
-
-./java/security/PrivilegedActionException.class: ../java/security/PrivilegedActionException.java 
-	$(JAVAC) ../java/security/PrivilegedActionException.java 
-
-./java/security/PrivilegedActionException.class: ./java/lang/Exception.class ./java/io/PrintStream.class ./java/io/PrintWriter.class 
-
-./java/security/UnrecoverableKeyException.class: ../java/security/UnrecoverableKeyException.java 
-	$(JAVAC) ../java/security/UnrecoverableKeyException.java 
-
-./java/security/UnrecoverableKeyException.class: ./java/security/GeneralSecurityException.class ./java/lang/String.class 
-
-./java/security/SignatureException.class: ../java/security/SignatureException.java 
-	$(JAVAC) ../java/security/SignatureException.java 
-
-./java/security/SignatureException.class: ./java/security/GeneralSecurityException.class ./java/lang/String.class 
-
-./java/security/NoSuchProviderException.class: ../java/security/NoSuchProviderException.java 
-	$(JAVAC) ../java/security/NoSuchProviderException.java 
-
-./java/security/NoSuchProviderException.class: ./java/security/GeneralSecurityException.class ./java/lang/String.class 
-
-./java/security/KeyStoreException.class: ../java/security/KeyStoreException.java 
-	$(JAVAC) ../java/security/KeyStoreException.java 
-
-./java/security/KeyStoreException.class: ./java/security/GeneralSecurityException.class ./java/lang/String.class 
-
-./java/security/KeyException.class: ../java/security/KeyException.java 
-	$(JAVAC) ../java/security/KeyException.java 
-
-./java/security/KeyException.class: ./java/security/GeneralSecurityException.class ./java/lang/String.class 
-
-./java/security/KeyManagementException.class: ../java/security/KeyManagementException.java 
-	$(JAVAC) ../java/security/KeyManagementException.java 
-
-./java/security/KeyManagementException.class: ./java/security/KeyException.class ./java/lang/String.class 
-
-./java/security/InvalidKeyException.class: ../java/security/InvalidKeyException.java 
-	$(JAVAC) ../java/security/InvalidKeyException.java 
-
-./java/security/InvalidKeyException.class: ./java/security/KeyException.class ./java/lang/String.class 
-
-./java/security/InvalidAlgorithmParameterException.class: ../java/security/InvalidAlgorithmParameterException.java 
-	$(JAVAC) ../java/security/InvalidAlgorithmParameterException.java 
-
-./java/security/InvalidAlgorithmParameterException.class: ./java/security/GeneralSecurityException.class ./java/lang/String.class 
-
-./java/security/DigestException.class: ../java/security/DigestException.java 
-	$(JAVAC) ../java/security/DigestException.java 
-
-./java/security/DigestException.class: ./java/security/GeneralSecurityException.class ./java/lang/String.class 
-
-./java/security/acl/NotOwnerException.class: ../java/security/acl/NotOwnerException.java 
-	$(JAVAC) ../java/security/acl/NotOwnerException.java 
-
-./java/security/acl/NotOwnerException.class: ./java/lang/Exception.class 
-
-./java/security/acl/LastOwnerException.class: ../java/security/acl/LastOwnerException.java 
-	$(JAVAC) ../java/security/acl/LastOwnerException.java 
-
-./java/security/acl/LastOwnerException.class: ./java/lang/Exception.class 
-
-./java/security/acl/Owner.class: ../java/security/acl/Owner.java 
-	$(JAVAC) ../java/security/acl/Owner.java 
-
-./java/security/acl/Owner.class: ./java/security/Principal.class ./java/security/acl/NotOwnerException.class ./java/security/acl/LastOwnerException.class 
-
-./java/security/acl/Acl.class: ../java/security/acl/Acl.java 
-	$(JAVAC) ../java/security/acl/Acl.java 
-
-./java/security/acl/Acl.class: ./java/security/acl/Owner.class ./java/lang/String.class ./java/security/Principal.class ./java/security/acl/NotOwnerException.class ./java/security/acl/AclEntry.class ./java/util/Enumeration.class ./java/security/acl/Permission.class 
-
-./java/security/acl/AclNotFoundException.class: ../java/security/acl/AclNotFoundException.java 
-	$(JAVAC) ../java/security/acl/AclNotFoundException.java 
-
-./java/security/acl/AclNotFoundException.class: ./java/lang/Exception.class 
-
 ./java/util/EmptyStackException.class: ../java/util/EmptyStackException.java 
 	$(JAVAC) ../java/util/EmptyStackException.java 
 
 ./java/util/EmptyStackException.class: ./java/lang/RuntimeException.class 
-
-./java/security/ProviderException.class: ../java/security/ProviderException.java 
-	$(JAVAC) ../java/security/ProviderException.java 
-
-./java/security/ProviderException.class: ./java/lang/RuntimeException.class ./java/lang/String.class 
-
-./java/security/Guard.class: ../java/security/Guard.java 
-	$(JAVAC) ../java/security/Guard.java 
-
-./java/security/Guard.class: ./java/lang/Object.class ./java/lang/SecurityException.class 
-
-./java/security/GuardedObject.class: ../java/security/GuardedObject.java 
-	$(JAVAC) ../java/security/GuardedObject.java 
-
-./java/security/GuardedObject.class: ./java/io/Serializable.class ./java/security/Guard.class ./java/lang/Object.class ./java/lang/SecurityException.class 
-
-./java/net/URLEncoder.class: ../java/net/URLEncoder.java 
-	$(JAVAC) ../java/net/URLEncoder.java 
-
-./java/net/URLEncoder.class: ./java/lang/String.class ./java/lang/StringBuffer.class 
-
-./java/text/CharacterIterator.class: ../java/text/CharacterIterator.java 
-	$(JAVAC) ../java/text/CharacterIterator.java 
-
-./java/text/CharacterIterator.class: ./java/lang/Cloneable.class ./java/lang/IllegalArgumentException.class ./java/lang/Object.class 
-
-./java/text/StringCharacterIterator.class: ../java/text/StringCharacterIterator.java 
-	$(JAVAC) ../java/text/StringCharacterIterator.java 
-
-./java/text/StringCharacterIterator.class: ./java/text/CharacterIterator.class ./java/lang/String.class ./java/lang/IllegalArgumentException.class ./java/lang/Object.class 
-
-./java/security/PermissionCollection.class ./java/security/Permission.class : ../java/security/PermissionCollection.java ../java/security/Permission.java 
-	$(JAVAC) ../java/security/PermissionCollection.java ../java/security/Permission.java 
-
-./java/security/PermissionCollection.class ./java/security/Permission.class : ./java/lang/Object.class ./java/io/Serializable.class ./java/lang/String.class ./java/lang/System.class ./java/lang/SecurityException.class ./java/lang/IllegalArgumentException.class ./java/util/Enumeration.class ./java/lang/StringBuffer.class ./java/security/Guard.class ./java/lang/SecurityManager.class 
-
-./java/security/AccessControlException.class: ../java/security/AccessControlException.java 
-	$(JAVAC) ../java/security/AccessControlException.java 
-
-./java/security/AccessControlException.class: ./java/lang/SecurityException.class ./java/security/Permission.class ./java/lang/String.class 
-
-./java/security/AllPermission.class: ../java/security/AllPermission.java 
-	$(JAVAC) ../java/security/AllPermission.java 
-
-./java/security/AllPermission.class: ./java/security/Permission.class ./java/lang/String.class ./java/lang/Object.class ./java/lang/System.class ./java/security/PermissionCollection.class 
-
-./java/security/InvalidParameterException.class: ../java/security/InvalidParameterException.java 
-	$(JAVAC) ../java/security/InvalidParameterException.java 
-
-./java/security/InvalidParameterException.class: ./java/lang/IllegalArgumentException.class 
-
-./java/security/BasicPermission.class: ../java/security/BasicPermission.java 
-	$(JAVAC) ../java/security/BasicPermission.java 
-
-./java/security/BasicPermission.class: ./java/security/Permission.class ./java/io/Serializable.class ./java/lang/String.class ./java/lang/IllegalArgumentException.class ./java/lang/Object.class ./java/security/PermissionCollection.class 
-
-./java/security/SecurityPermission.class: ../java/security/SecurityPermission.java 
-	$(JAVAC) ../java/security/SecurityPermission.java 
-
-./java/security/SecurityPermission.class: ./java/security/BasicPermission.class ./java/lang/String.class 
-
-./java/net/NetPermission.class: ../java/net/NetPermission.java 
-	$(JAVAC) ../java/net/NetPermission.java 
-
-./java/net/NetPermission.class: ./java/security/BasicPermission.class ./java/lang/String.class 
 
 ./java/lang/ArrayStoreException.class: ../java/lang/ArrayStoreException.java 
 	$(JAVAC) ../java/lang/ArrayStoreException.java 
@@ -451,201 +306,15 @@ java_lang_Object.h: ./java/lang/Object.class
 
 ./java/lang/ArithmeticException.class: ./java/lang/RuntimeException.class ./java/lang/String.class 
 
-./java/math/BigInteger.class: ../java/math/BigInteger.java 
-	$(JAVAC) ../java/math/BigInteger.java 
+./java/io/FileFilter.class: ../java/io/FileFilter.java 
+	$(JAVAC) ../java/io/FileFilter.java 
 
-./java/math/BigInteger.class: ./java/lang/System.class ./java/lang/String.class ./java/lang/ArithmeticException.class ./java/lang/Object.class 
-
-./java/security/interfaces/RSAPublicKey.class: ../java/security/interfaces/RSAPublicKey.java 
-	$(JAVAC) ../java/security/interfaces/RSAPublicKey.java 
-
-./java/security/interfaces/RSAPublicKey.class: ./java/security/PublicKey.class ./java/math/BigInteger.class 
-
-./java/security/interfaces/RSAPrivateKey.class: ../java/security/interfaces/RSAPrivateKey.java 
-	$(JAVAC) ../java/security/interfaces/RSAPrivateKey.java 
-
-./java/security/interfaces/RSAPrivateKey.class: ./java/security/PrivateKey.class ./java/math/BigInteger.class 
-
-./java/security/interfaces/RSAPrivateCrtKey.class: ../java/security/interfaces/RSAPrivateCrtKey.java 
-	$(JAVAC) ../java/security/interfaces/RSAPrivateCrtKey.java 
-
-./java/security/interfaces/RSAPrivateCrtKey.class: ./java/security/interfaces/RSAPrivateKey.class ./java/math/BigInteger.class 
-
-./java/security/interfaces/DSAParams.class: ../java/security/interfaces/DSAParams.java 
-	$(JAVAC) ../java/security/interfaces/DSAParams.java 
-
-./java/security/interfaces/DSAParams.class: ./java/math/BigInteger.class 
-
-./java/security/interfaces/DSAKeyPairGenerator.class: ../java/security/interfaces/DSAKeyPairGenerator.java 
-	$(JAVAC) ../java/security/interfaces/DSAKeyPairGenerator.java 
-
-./java/security/interfaces/DSAKeyPairGenerator.class: ./java/security/interfaces/DSAParams.class ./java/security/InvalidParameterException.class 
-
-./java/security/interfaces/DSAKey.class: ../java/security/interfaces/DSAKey.java 
-	$(JAVAC) ../java/security/interfaces/DSAKey.java 
-
-./java/security/interfaces/DSAKey.class: ./java/security/interfaces/DSAParams.class 
-
-./java/security/interfaces/DSAPublicKey.class: ../java/security/interfaces/DSAPublicKey.java 
-	$(JAVAC) ../java/security/interfaces/DSAPublicKey.java 
-
-./java/security/interfaces/DSAPublicKey.class: ./java/security/interfaces/DSAKey.class ./java/security/PublicKey.class ./java/math/BigInteger.class 
-
-./java/security/interfaces/DSAPrivateKey.class: ../java/security/interfaces/DSAPrivateKey.java 
-	$(JAVAC) ../java/security/interfaces/DSAPrivateKey.java 
-
-./java/security/interfaces/DSAPrivateKey.class: ./java/security/interfaces/DSAKey.class ./java/security/PrivateKey.class ./java/math/BigInteger.class 
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-java_math_BigInteger.h: ./java/math/BigInteger.class 
-	$(JAVAHEADER) java.math.BigInteger
-
-./java/text/ChoiceFormat.class: ../java/text/ChoiceFormat.java 
-	$(JAVAC) ../java/text/ChoiceFormat.java 
-
-./java/text/ChoiceFormat.class: ./java/io/Serializable.class ./java/lang/Cloneable.class ./java/lang/String.class ./java/lang/Object.class ./java/lang/IllegalArgumentException.class ./java/lang/NumberFormatException.class ./java/lang/StringBuffer.class ./java/text/FieldPosition.class ./java/lang/Number.class ./java/text/ParsePosition.class ./java/lang/RuntimeException.class ./java/lang/System.class ./java/lang/CloneNotSupportedException.class 
-
-./java/text/Format.class: ../java/text/Format.java 
-	$(JAVAC) ../java/text/Format.java 
-
-./java/text/Format.class: ./java/io/Serializable.class ./java/lang/Cloneable.class ./java/lang/String.class ./java/lang/Object.class ./java/lang/IllegalArgumentException.class ./java/lang/StringBuffer.class ./java/text/FieldPosition.class ./java/text/ParseException.class ./java/text/ParsePosition.class ./java/lang/CloneNotSupportedException.class 
-
-./java/text/BreakIterator.class ./java/text/DefaultBreakIterator.class : ../java/text/BreakIterator.java ../java/text/DefaultBreakIterator.java 
-	$(JAVAC) ../java/text/BreakIterator.java ../java/text/DefaultBreakIterator.java 
-
-./java/text/BreakIterator.class ./java/text/DefaultBreakIterator.class : ./java/lang/Cloneable.class ./java/io/Serializable.class ./java/util/Locale.class ./java/lang/String.class ./java/lang/Object.class ./java/lang/RuntimeException.class ./java/text/CharacterIterator.class ./java/text/StringCharacterIterator.class ./java/lang/StringBuffer.class 
-
-./java/net/SocketPermission.class: ../java/net/SocketPermission.java 
-	$(JAVAC) ../java/net/SocketPermission.java 
-
-./java/net/SocketPermission.class: ./java/security/Permission.class ./java/lang/String.class ./java/lang/Object.class ./java/lang/StringBuffer.class ./java/security/PermissionCollection.class ./java/lang/Integer.class ./java/net/InetAddress.class ./java/net/UnknownHostException.class 
-
-java_net_InetAddress.h: ./java/net/InetAddress.class 
-	$(JAVAHEADER) java.net.InetAddress
-
-java_net_InetAddress.h: ./java/net/InetAddress.class 
-	$(JAVAHEADER) java.net.InetAddress
-
-java_net_InetAddress.h: ./java/net/InetAddress.class 
-	$(JAVAHEADER) java.net.InetAddress
-
-java_net_InetAddress.h: ./java/net/InetAddress.class 
-	$(JAVAHEADER) java.net.InetAddress
-
-./java/net/DatagramPacket.class: ../java/net/DatagramPacket.java 
-	$(JAVAC) ../java/net/DatagramPacket.java 
-
-./java/net/DatagramPacket.class: ./java/net/InetAddress.class 
-
-./java/net/Authenticator.class: ../java/net/Authenticator.java 
-	$(JAVAC) ../java/net/Authenticator.java 
-
-./java/net/Authenticator.class: ./java/net/InetAddress.class ./java/lang/String.class ./java/security/AccessControlException.class ./java/net/NetPermission.class ./java/net/PasswordAuthentication.class 
+./java/io/FileFilter.class: ./java/lang/String.class 
 
 ./java/net/SocketException.class: ../java/net/SocketException.java 
 	$(JAVAC) ../java/net/SocketException.java 
 
 ./java/net/SocketException.class: ./java/io/IOException.class ./java/lang/String.class 
-
-./java/net/SocketOptions.class: ../java/net/SocketOptions.java 
-	$(JAVAC) ../java/net/SocketOptions.java 
-
-./java/net/SocketOptions.class: ./java/lang/Object.class ./java/net/SocketException.class 
 
 ./java/net/NoRouteToHostException.class: ../java/net/NoRouteToHostException.java 
 	$(JAVAC) ../java/net/NoRouteToHostException.java 
@@ -666,6 +335,327 @@ java_net_InetAddress.h: ./java/net/InetAddress.class
 	$(JAVAC) ../java/net/ProtocolException.java 
 
 ./java/net/ProtocolException.class: ./java/io/IOException.class ./java/lang/String.class 
+
+java_io_FileDescriptor.h: ./java/io/FileDescriptor.class 
+	$(JAVAHEADER) java.io.FileDescriptor
+
+java_io_FileDescriptor.h: ./java/io/FileDescriptor.class 
+	$(JAVAHEADER) java.io.FileDescriptor
+
+./java/io/InvalidClassException.class: ../java/io/InvalidClassException.java 
+	$(JAVAC) ../java/io/InvalidClassException.java 
+
+./java/io/InvalidClassException.class: ./java/io/ObjectStreamException.class ./java/lang/String.class 
+
+./java/io/InterruptedIOException.class: ../java/io/InterruptedIOException.java 
+	$(JAVAC) ../java/io/InterruptedIOException.java 
+
+./java/io/InterruptedIOException.class: ./java/io/IOException.class ./java/lang/String.class 
+
+./gnu/java/io/ClassLoaderObjectInputStream.class: ../gnu/java/io/ClassLoaderObjectInputStream.java 
+	$(JAVAC) ../gnu/java/io/ClassLoaderObjectInputStream.java 
+
+./gnu/java/io/ClassLoaderObjectInputStream.class: ./java/io/ObjectInputStream.class ./java/lang/ClassLoader.class ./java/io/InputStream.class ./java/io/IOException.class ./java/io/StreamCorruptedException.class ./java/lang/Class.class ./java/lang/String.class ./java/lang/ClassNotFoundException.class 
+
+./java/io/StringBufferInputStream.class: ../java/io/StringBufferInputStream.java 
+	$(JAVAC) ../java/io/StringBufferInputStream.java 
+
+./java/io/StringBufferInputStream.class: ./java/io/InputStream.class ./java/lang/String.class 
+
+./java/io/LineNumberInputStream.class: ../java/io/LineNumberInputStream.java 
+	$(JAVAC) ../java/io/LineNumberInputStream.java 
+
+./java/io/LineNumberInputStream.class: ./java/io/FilterInputStream.class ./java/io/InputStream.class ./java/io/PushbackInputStream.class ./java/io/IOException.class 
+
+./gnu/java/locale/LocaleInformation_en.class: ../gnu/java/locale/LocaleInformation_en.java 
+	$(JAVAC) ../gnu/java/locale/LocaleInformation_en.java 
+
+./gnu/java/locale/LocaleInformation_en.class: ./java/lang/String.class ./java/lang/Object.class 
+
+./gnu/java/locale/LocaleInformation.class: ../gnu/java/locale/LocaleInformation.java 
+	$(JAVAC) ../gnu/java/locale/LocaleInformation.java 
+
+./gnu/java/locale/LocaleInformation.class: ./gnu/java/locale/LocaleInformation_en.class 
+
+./gnu/java/beans/DoubleKey.class: ../gnu/java/beans/IntrospectionIncubator.java 
+	$(JAVAC) ../gnu/java/beans/IntrospectionIncubator.java 
+
+./gnu/java/beans/DoubleKey.class: ./java/lang/Class.class ./java/lang/String.class ./java/lang/Object.class 
+
+./java/io/SequenceInputStream.class: ../java/io/SequenceInputStream.java 
+	$(JAVAC) ../java/io/SequenceInputStream.java 
+
+./java/io/SequenceInputStream.class: ./java/io/InputStream.class ./java/util/Enumeration.class ./java/io/IOException.class 
+
+./java/text/ParsePosition.class: ../java/text/ParsePosition.java 
+	$(JAVAC) ../java/text/ParsePosition.java 
+
+./java/text/ParsePosition.class: ./java/lang/Object.class 
+
+./java/text/FieldPosition.class: ../java/text/FieldPosition.java 
+	$(JAVAC) ../java/text/FieldPosition.java 
+
+./java/text/FieldPosition.class: ./java/lang/Object.class 
+
+./java/text/CharacterIterator.class: ../java/text/CharacterIterator.java 
+	$(JAVAC) ../java/text/CharacterIterator.java 
+
+./java/text/CharacterIterator.class: ./java/lang/Cloneable.class ./java/lang/IllegalArgumentException.class ./java/lang/Object.class 
+
+./java/text/StringCharacterIterator.class: ../java/text/StringCharacterIterator.java 
+	$(JAVAC) ../java/text/StringCharacterIterator.java 
+
+./java/text/StringCharacterIterator.class: ./java/text/CharacterIterator.class ./java/lang/String.class ./java/lang/IllegalArgumentException.class ./java/lang/Object.class 
+
+./java/text/AttributedCharacterIterator.class: ../java/text/AttributedCharacterIterator.java 
+	$(JAVAC) ../java/text/AttributedCharacterIterator.java 
+
+./java/text/AttributedCharacterIterator.class: ./java/text/CharacterIterator.class ./java/io/Serializable.class ./java/lang/String.class ./java/lang/Object.class ./java/io/InvalidObjectException.class ./java/util/Set.class ./java/util/Map.class 
+
+./java/text/Annotation.class: ../java/text/Annotation.java 
+	$(JAVAC) ../java/text/Annotation.java 
+
+./java/text/Annotation.class: ./java/lang/Object.class ./java/lang/String.class 
+
+./java/net/SocketOptions.class: ../java/net/SocketOptions.java 
+	$(JAVAC) ../java/net/SocketOptions.java 
+
+./java/net/SocketOptions.class: ./java/lang/Object.class ./java/net/SocketException.class 
+
+./java/math/BigInteger.class: ../java/math/BigInteger.java 
+	$(JAVAC) ../java/math/BigInteger.java 
+
+./java/math/BigInteger.class: ./java/lang/System.class ./java/lang/String.class ./java/lang/ArithmeticException.class ./java/lang/Object.class 
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+java_math_BigInteger.h: ./java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
+
+./Float.class: ../java/lang/Float.java 
+	$(JAVAC) ../java/lang/Float.java 
+
+./Float.class: ./java/lang/Number.class ./java/lang/String.class ./java/lang/NullPointerException.class ./java/lang/NumberFormatException.class ./java/lang/Object.class 
+
+Float.h: ./Float.class 
+	$(JAVAHEADER) Float
+
+Float.h: ./Float.class 
+	$(JAVAHEADER) Float
+
+Float.h: ./Float.class 
+	$(JAVAHEADER) Float
+
+Float.h: ./Float.class 
+	$(JAVAHEADER) Float
+
+./Double.class: ../java/lang/Double.java 
+	$(JAVAC) ../java/lang/Double.java 
+
+./Double.class: ./java/lang/Number.class ./java/lang/String.class ./java/lang/NullPointerException.class ./java/lang/NumberFormatException.class ./java/lang/Object.class 
+
+Double.h: ./Double.class 
+	$(JAVAHEADER) Double
+
+Double.h: ./Double.class 
+	$(JAVAHEADER) Double
+
+Double.h: ./Double.class 
+	$(JAVAHEADER) Double
+
+Double.h: ./Double.class 
+	$(JAVAHEADER) Double
+
+./java/text/Format.class: ../java/text/Format.java 
+	$(JAVAC) ../java/text/Format.java 
+
+./java/text/Format.class: ./java/io/Serializable.class ./java/lang/Cloneable.class ./java/lang/String.class ./java/lang/Object.class ./java/lang/IllegalArgumentException.class ./java/lang/StringBuffer.class ./java/text/FieldPosition.class ./java/text/ParseException.class ./java/text/ParsePosition.class ./java/lang/CloneNotSupportedException.class 
+
+./java/text/NumberFormat.class: ../java/text/NumberFormat.java 
+	$(JAVAC) ../java/text/NumberFormat.java 
+
+./java/text/NumberFormat.class: ./java/text/Format.class ./java/io/Serializable.class ./java/lang/Cloneable.class ./java/util/Locale.class ./java/lang/String.class ./java/lang/StringBuffer.class ./java/text/FieldPosition.class ./java/lang/Number.class ./java/text/ParseException.class ./java/text/ParsePosition.class ./java/lang/Object.class ./java/lang/System.class 
+
+./java/text/ChoiceFormat.class: ../java/text/ChoiceFormat.java 
+	$(JAVAC) ../java/text/ChoiceFormat.java 
+
+./java/text/ChoiceFormat.class: ./java/text/NumberFormat.class ./java/io/Serializable.class ./java/lang/Cloneable.class ./java/lang/String.class ./java/lang/Object.class ./java/lang/IllegalArgumentException.class ./java/lang/NumberFormatException.class ./java/lang/StringBuffer.class ./java/text/FieldPosition.class ./java/lang/Number.class ./java/text/ParsePosition.class ./java/lang/RuntimeException.class ./java/lang/System.class ./java/lang/CloneNotSupportedException.class 
+
+./java/text/DefaultBreakIterator.class ./java/text/BreakIterator.class : ../java/text/DefaultBreakIterator.java ../java/text/BreakIterator.java 
+	$(JAVAC) ../java/text/DefaultBreakIterator.java ../java/text/BreakIterator.java 
+
+./java/text/DefaultBreakIterator.class ./java/text/BreakIterator.class : ./java/text/CharacterIterator.class ./java/lang/String.class ./java/lang/StringBuffer.class ./java/lang/Cloneable.class ./java/io/Serializable.class ./java/util/Locale.class ./java/lang/Object.class ./java/lang/RuntimeException.class ./java/text/StringCharacterIterator.class 
+
+./java/net/URLEncoder.class: ../java/net/URLEncoder.java 
+	$(JAVAC) ../java/net/URLEncoder.java 
+
+./java/net/URLEncoder.class: ./java/lang/String.class ./java/lang/StringBuffer.class 
+
+./java/net/SocketImpl.class: ../java/net/SocketImpl.java 
+	$(JAVAC) ../java/net/SocketImpl.java 
+
+./java/net/SocketImpl.class: ./java/net/SocketOptions.class ./java/net/InetAddress.class ./java/io/FileDescriptor.class ./java/io/IOException.class ./java/lang/String.class ./java/io/InputStream.class ./java/io/OutputStream.class ./java/lang/StringBuffer.class 
+
+./java/net/SocketImplFactory.class: ../java/net/SocketImplFactory.java 
+	$(JAVAC) ../java/net/SocketImplFactory.java 
+
+./java/net/SocketImplFactory.class: ./java/net/SocketImpl.class 
+
+./java/net/PlainSocketImpl.class ./java/net/SocketInputStream.class ./java/net/SocketOutputStream.class : ../java/net/PlainSocketImpl.java ../java/net/SocketInputStream.java ../java/net/SocketOutputStream.java 
+	$(JAVAC) ../java/net/PlainSocketImpl.java ../java/net/SocketInputStream.java ../java/net/SocketOutputStream.java 
+
+./java/net/PlainSocketImpl.class ./java/net/SocketInputStream.class ./java/net/SocketOutputStream.class : ./java/net/SocketImpl.class ./java/lang/System.class ./java/io/IOException.class ./java/net/InetAddress.class ./java/lang/String.class ./java/lang/Object.class ./java/net/SocketException.class ./java/io/InputStream.class ./java/io/OutputStream.class ./java/lang/Integer.class 
+
+./java/net/Socket.class: ../java/net/Socket.java 
+	$(JAVAC) ../java/net/Socket.java 
+
+./java/net/Socket.class: ./java/net/SocketImplFactory.class ./java/net/SocketImpl.class ./java/net/InetAddress.class ./java/io/IOException.class ./java/net/SocketException.class ./java/lang/SecurityManager.class ./java/lang/System.class ./java/lang/SecurityException.class ./java/net/PlainSocketImpl.class ./java/lang/String.class ./java/io/InputStream.class ./java/io/OutputStream.class ./java/lang/Object.class ./java/net/SocketOptions.class ./java/lang/Boolean.class ./java/lang/Integer.class 
+
+./java/net/ServerSocket.class: ../java/net/ServerSocket.java 
+	$(JAVAC) ../java/net/ServerSocket.java 
+
+./java/net/ServerSocket.class: ./java/net/SocketImplFactory.class ./java/net/SocketImpl.class ./java/net/InetAddress.class ./java/io/IOException.class ./java/net/SocketException.class ./java/lang/SecurityManager.class ./java/lang/System.class ./java/lang/SecurityException.class ./java/net/PlainSocketImpl.class ./java/net/Socket.class ./java/lang/Object.class ./java/net/SocketOptions.class ./java/lang/Integer.class ./java/lang/String.class 
+
+java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
+
+java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
+
+java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
+
+java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
+
+java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
+
+java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
+
+java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
+
+java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
+
+java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
+
+java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
+
+java_net_InetAddress.h: ./java/net/InetAddress.class 
+	$(JAVAHEADER) java.net.InetAddress
+
+java_net_InetAddress.h: ./java/net/InetAddress.class 
+	$(JAVAHEADER) java.net.InetAddress
+
+java_net_InetAddress.h: ./java/net/InetAddress.class 
+	$(JAVAHEADER) java.net.InetAddress
+
+java_net_InetAddress.h: ./java/net/InetAddress.class 
+	$(JAVAHEADER) java.net.InetAddress
+
+./java/net/DatagramPacket.class: ../java/net/DatagramPacket.java 
+	$(JAVAC) ../java/net/DatagramPacket.java 
+
+./java/net/DatagramPacket.class: ./java/net/InetAddress.class 
 
 ./java/net/DatagramSocketImpl.class: ../java/net/DatagramSocketImpl.java 
 	$(JAVAC) ../java/net/DatagramSocketImpl.java 
@@ -714,161 +704,8 @@ java_net_PlainDatagramSocketImpl.h: ./java/net/PlainDatagramSocketImpl.class
 
 ./java/net/MulticastSocket.class: ./java/net/DatagramSocket.class ./java/io/IOException.class ./java/net/InetAddress.class ./java/net/SocketException.class ./java/lang/Object.class ./java/net/SocketOptions.class ./java/net/DatagramPacket.class 
 
-java_io_FileDescriptor.h: ./java/io/FileDescriptor.class 
-	$(JAVAHEADER) java.io.FileDescriptor
-
-java_io_FileDescriptor.h: ./java/io/FileDescriptor.class 
-	$(JAVAHEADER) java.io.FileDescriptor
-
-./java/text/AttributedCharacterIterator.class: ../java/text/AttributedCharacterIterator.java 
-	$(JAVAC) ../java/text/AttributedCharacterIterator.java 
-
-./java/text/AttributedCharacterIterator.class: ./java/text/CharacterIterator.class ./java/io/Serializable.class ./java/lang/String.class ./java/lang/Object.class ./java/io/InvalidObjectException.class ./java/util/Set.class ./java/util/Map.class 
-
-./java/io/InvalidClassException.class: ../java/io/InvalidClassException.java 
-	$(JAVAC) ../java/io/InvalidClassException.java 
-
-./java/io/InvalidClassException.class: ./java/io/ObjectStreamException.class ./java/lang/String.class 
-
-./java/io/InterruptedIOException.class: ../java/io/InterruptedIOException.java 
-	$(JAVAC) ../java/io/InterruptedIOException.java 
-
-./java/io/InterruptedIOException.class: ./java/io/IOException.class ./java/lang/String.class 
-
-./java/security/Certificate.class: ../java/security/Certificate.java 
-	$(JAVAC) ../java/security/Certificate.java 
-
-./java/security/Certificate.class: ./java/security/Principal.class ./java/security/PublicKey.class ./java/lang/String.class ./java/io/OutputStream.class ./java/security/KeyException.class ./java/io/IOException.class ./java/io/InputStream.class 
-
-./java/security/UnresolvedPermission.class: ../java/security/UnresolvedPermission.java 
-	$(JAVAC) ../java/security/UnresolvedPermission.java 
-
-./java/security/UnresolvedPermission.class: ./java/security/Permission.class ./java/io/Serializable.class ./java/lang/String.class ./java/security/Certificate.class ./java/lang/Object.class ./java/lang/System.class ./java/security/PermissionCollection.class 
-
-./java/net/SocketImpl.class: ../java/net/SocketImpl.java 
-	$(JAVAC) ../java/net/SocketImpl.java 
-
-./java/net/SocketImpl.class: ./java/net/SocketOptions.class ./java/net/InetAddress.class ./java/io/FileDescriptor.class ./java/io/IOException.class ./java/lang/String.class ./java/io/InputStream.class ./java/io/OutputStream.class ./java/lang/StringBuffer.class 
-
-./java/net/SocketImplFactory.class: ../java/net/SocketImplFactory.java 
-	$(JAVAC) ../java/net/SocketImplFactory.java 
-
-./java/net/SocketImplFactory.class: ./java/net/SocketImpl.class 
-
-./java/net/PlainSocketImpl.class ./java/net/SocketInputStream.class ./java/net/SocketOutputStream.class : ../java/net/PlainSocketImpl.java ../java/net/SocketInputStream.java ../java/net/SocketOutputStream.java 
-	$(JAVAC) ../java/net/PlainSocketImpl.java ../java/net/SocketInputStream.java ../java/net/SocketOutputStream.java 
-
-./java/net/PlainSocketImpl.class ./java/net/SocketInputStream.class ./java/net/SocketOutputStream.class : ./java/net/SocketImpl.class ./java/lang/System.class ./java/io/IOException.class ./java/net/InetAddress.class ./java/lang/String.class ./java/lang/Object.class ./java/net/SocketException.class ./java/io/InputStream.class ./java/io/OutputStream.class ./java/lang/Integer.class 
-
-java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
-	$(JAVAHEADER) java.net.PlainSocketImpl
-
-java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
-	$(JAVAHEADER) java.net.PlainSocketImpl
-
-java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
-	$(JAVAHEADER) java.net.PlainSocketImpl
-
-java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
-	$(JAVAHEADER) java.net.PlainSocketImpl
-
-java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
-	$(JAVAHEADER) java.net.PlainSocketImpl
-
-java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
-	$(JAVAHEADER) java.net.PlainSocketImpl
-
-java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
-	$(JAVAHEADER) java.net.PlainSocketImpl
-
-java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
-	$(JAVAHEADER) java.net.PlainSocketImpl
-
-java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
-	$(JAVAHEADER) java.net.PlainSocketImpl
-
-java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class 
-	$(JAVAHEADER) java.net.PlainSocketImpl
-
-./java/io/StringBufferInputStream.class: ../java/io/StringBufferInputStream.java 
-	$(JAVAC) ../java/io/StringBufferInputStream.java 
-
-./java/io/StringBufferInputStream.class: ./java/io/InputStream.class ./java/lang/String.class 
-
-./java/io/SequenceInputStream.class: ../java/io/SequenceInputStream.java 
-	$(JAVAC) ../java/io/SequenceInputStream.java 
-
-./java/io/SequenceInputStream.class: ./java/io/InputStream.class ./java/util/Enumeration.class ./java/io/IOException.class 
-
-./java/io/ByteArrayInputStream.class: ../java/io/ByteArrayInputStream.java 
-	$(JAVAC) ../java/io/ByteArrayInputStream.java 
-
-./java/io/ByteArrayInputStream.class: ./java/io/InputStream.class ./java/lang/System.class 
-
-./java/io/LineNumberInputStream.class: ../java/io/LineNumberInputStream.java 
-	$(JAVAC) ../java/io/LineNumberInputStream.java 
-
-./java/io/LineNumberInputStream.class: ./java/io/FilterInputStream.class ./java/io/InputStream.class ./java/io/PushbackInputStream.class ./java/io/IOException.class 
-
-./java/io/BufferedOutputStream.class: ../java/io/BufferedOutputStream.java 
-	$(JAVAC) ../java/io/BufferedOutputStream.java 
-
-./java/io/BufferedOutputStream.class: ./java/io/FilterOutputStream.class ./java/io/OutputStream.class ./java/io/IOException.class ./java/lang/System.class 
-
-./java/io/BufferedInputStream.class: ../java/io/BufferedInputStream.java 
-	$(JAVAC) ../java/io/BufferedInputStream.java 
-
-./java/io/BufferedInputStream.class: ./java/io/FilterInputStream.class ./java/io/InputStream.class ./java/lang/System.class ./java/io/IOException.class 
-
-./java/beans/IntrospectionException.class: ../java/beans/IntrospectionException.java 
-	$(JAVAC) ../java/beans/IntrospectionException.java 
-
-./java/beans/IntrospectionException.class: ./java/lang/Exception.class ./java/lang/String.class 
-
-./gnu/test/Result.class: ../gnu/test/Result.java 
-	$(JAVAC) ../gnu/test/Result.java 
-
-./gnu/test/Result.class: ./java/lang/String.class 
-
-./gnu/test/XPass.class: ../gnu/test/XPass.java 
-	$(JAVAC) ../gnu/test/XPass.java 
-
-./gnu/test/XPass.class: ./gnu/test/Result.class ./java/lang/String.class 
-
-./gnu/test/XFail.class: ../gnu/test/XFail.java 
-	$(JAVAC) ../gnu/test/XFail.java 
-
-./gnu/test/XFail.class: ./gnu/test/Result.class ./java/lang/String.class 
-
-./gnu/test/Untested.class: ../gnu/test/Untested.java 
-	$(JAVAC) ../gnu/test/Untested.java 
-
-./gnu/test/Untested.class: ./gnu/test/Result.class ./java/lang/String.class 
-
-./gnu/test/Unsupported.class: ../gnu/test/Unsupported.java 
-	$(JAVAC) ../gnu/test/Unsupported.java 
-
-./gnu/test/Unsupported.class: ./gnu/test/Result.class ./java/lang/String.class 
-
-./gnu/test/Unresolved.class: ../gnu/test/Unresolved.java 
-	$(JAVAC) ../gnu/test/Unresolved.java 
-
-./gnu/test/Unresolved.class: ./gnu/test/Result.class ./java/lang/String.class 
-
-./gnu/test/Test.class: ../gnu/test/Test.java 
-	$(JAVAC) ../gnu/test/Test.java 
-
-./gnu/test/Test.class: ./java/lang/String.class ./gnu/test/Result.class 
-
-./gnu/test/Pass.class: ../gnu/test/Pass.java 
-	$(JAVAC) ../gnu/test/Pass.java 
-
-./gnu/test/Pass.class: ./gnu/test/Result.class ./java/lang/String.class 
-
-./gnu/test/Fail.class: ../gnu/test/Fail.java 
-	$(JAVAC) ../gnu/test/Fail.java 
-
-./gnu/test/Fail.class: ./gnu/test/Result.class ./java/lang/String.class 
+java_lang_Object.h: ./java/lang/Object.class 
+	$(JAVAHEADER) java.lang.Object
 
 ./java/lang/Compiler.class: ../java/lang/Compiler.java 
 	$(JAVAC) ../java/lang/Compiler.java 
@@ -884,46 +721,6 @@ java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class
 	$(JAVAC) ../java/io/FilterWriter.java 
 
 ./java/io/FilterWriter.class: ./java/io/Writer.class ./java/io/IOException.class ./java/lang/String.class 
-
-./java/io/BufferedWriter.class: ../java/io/BufferedWriter.java 
-	$(JAVAC) ../java/io/BufferedWriter.java 
-
-./java/io/BufferedWriter.class: ./java/io/Writer.class ./java/io/IOException.class ./java/lang/String.class ./java/lang/System.class ./java/lang/Error.class 
-
-./gnu/java/io/encode/EncoderUTF8.class: ../gnu/java/io/encode/EncoderUTF8.java 
-	$(JAVAC) ../gnu/java/io/encode/EncoderUTF8.java 
-
-./gnu/java/io/encode/EncoderUTF8.class: ./gnu/java/io/encode/Encoder.class ./java/io/OutputStream.class ./java/io/IOException.class 
-
-./gnu/java/io/encode/EncoderEightBitLookup.class: ../gnu/java/io/encode/EncoderEightBitLookup.java 
-	$(JAVAC) ../gnu/java/io/encode/EncoderEightBitLookup.java 
-
-./gnu/java/io/encode/EncoderEightBitLookup.class: ./gnu/java/io/encode/Encoder.class ./java/io/OutputStream.class ./java/io/CharConversionException.class ./java/io/IOException.class 
-
-./gnu/java/io/encode/Encoder8859_5.class: ../gnu/java/io/encode/Encoder8859_5.java 
-	$(JAVAC) ../gnu/java/io/encode/Encoder8859_5.java 
-
-./gnu/java/io/encode/Encoder8859_5.class: ./gnu/java/io/encode/EncoderEightBitLookup.class ./java/io/OutputStream.class 
-
-./gnu/java/io/encode/Encoder8859_4.class: ../gnu/java/io/encode/Encoder8859_4.java 
-	$(JAVAC) ../gnu/java/io/encode/Encoder8859_4.java 
-
-./gnu/java/io/encode/Encoder8859_4.class: ./gnu/java/io/encode/EncoderEightBitLookup.class ./java/io/OutputStream.class 
-
-./gnu/java/io/encode/Encoder8859_3.class: ../gnu/java/io/encode/Encoder8859_3.java 
-	$(JAVAC) ../gnu/java/io/encode/Encoder8859_3.java 
-
-./gnu/java/io/encode/Encoder8859_3.class: ./gnu/java/io/encode/EncoderEightBitLookup.class ./java/io/OutputStream.class 
-
-./gnu/java/io/encode/Encoder8859_2.class: ../gnu/java/io/encode/Encoder8859_2.java 
-	$(JAVAC) ../gnu/java/io/encode/Encoder8859_2.java 
-
-./gnu/java/io/encode/Encoder8859_2.class: ./gnu/java/io/encode/EncoderEightBitLookup.class ./java/io/OutputStream.class 
-
-./gnu/java/io/encode/Encoder8859_1.class: ../gnu/java/io/encode/Encoder8859_1.java 
-	$(JAVAC) ../gnu/java/io/encode/Encoder8859_1.java 
-
-./gnu/java/io/encode/Encoder8859_1.class: ./gnu/java/io/encode/EncoderEightBitLookup.class ./java/io/OutputStream.class 
 
 ./java/io/StringReader.class: ../java/io/StringReader.java 
 	$(JAVAC) ../java/io/StringReader.java 
@@ -944,51 +741,6 @@ java_net_PlainSocketImpl.h: ./java/net/PlainSocketImpl.class
 	$(JAVAC) ../java/io/CharArrayReader.java 
 
 ./java/io/CharArrayReader.class: ./java/io/Reader.class ./java/io/IOException.class ./java/lang/System.class 
-
-./java/io/BufferedReader.class: ../java/io/BufferedReader.java 
-	$(JAVAC) ../java/io/BufferedReader.java 
-
-./java/io/BufferedReader.class: ./java/io/Reader.class ./java/io/IOException.class ./java/lang/System.class ./java/lang/String.class 
-
-./java/io/LineNumberReader.class: ../java/io/LineNumberReader.java 
-	$(JAVAC) ../java/io/LineNumberReader.java 
-
-./java/io/LineNumberReader.class: ./java/io/BufferedReader.class ./java/io/Reader.class ./java/io/PushbackReader.class ./java/io/IOException.class ./java/lang/String.class 
-
-./gnu/java/io/decode/DecoderUTF8.class: ../gnu/java/io/decode/DecoderUTF8.java 
-	$(JAVAC) ../gnu/java/io/decode/DecoderUTF8.java 
-
-./gnu/java/io/decode/DecoderUTF8.class: ./gnu/java/io/decode/Decoder.class ./java/io/InputStream.class ./java/io/CharConversionException.class ./java/io/IOException.class 
-
-./gnu/java/io/decode/DecoderEightBitLookup.class: ../gnu/java/io/decode/DecoderEightBitLookup.java 
-	$(JAVAC) ../gnu/java/io/decode/DecoderEightBitLookup.java 
-
-./gnu/java/io/decode/DecoderEightBitLookup.class: ./gnu/java/io/decode/Decoder.class ./java/io/InputStream.class ./java/io/IOException.class 
-
-./gnu/java/io/decode/Decoder8859_5.class: ../gnu/java/io/decode/Decoder8859_5.java 
-	$(JAVAC) ../gnu/java/io/decode/Decoder8859_5.java 
-
-./gnu/java/io/decode/Decoder8859_5.class: ./gnu/java/io/decode/DecoderEightBitLookup.class ./java/io/InputStream.class 
-
-./gnu/java/io/decode/Decoder8859_4.class: ../gnu/java/io/decode/Decoder8859_4.java 
-	$(JAVAC) ../gnu/java/io/decode/Decoder8859_4.java 
-
-./gnu/java/io/decode/Decoder8859_4.class: ./gnu/java/io/decode/DecoderEightBitLookup.class ./java/io/InputStream.class 
-
-./gnu/java/io/decode/Decoder8859_3.class: ../gnu/java/io/decode/Decoder8859_3.java 
-	$(JAVAC) ../gnu/java/io/decode/Decoder8859_3.java 
-
-./gnu/java/io/decode/Decoder8859_3.class: ./gnu/java/io/decode/DecoderEightBitLookup.class ./java/io/InputStream.class 
-
-./gnu/java/io/decode/Decoder8859_2.class: ../gnu/java/io/decode/Decoder8859_2.java 
-	$(JAVAC) ../gnu/java/io/decode/Decoder8859_2.java 
-
-./gnu/java/io/decode/Decoder8859_2.class: ./gnu/java/io/decode/DecoderEightBitLookup.class ./java/io/InputStream.class 
-
-./gnu/java/io/decode/Decoder8859_1.class: ../gnu/java/io/decode/Decoder8859_1.java 
-	$(JAVAC) ../gnu/java/io/decode/Decoder8859_1.java 
-
-./gnu/java/io/decode/Decoder8859_1.class: ./gnu/java/io/decode/DecoderEightBitLookup.class ./java/io/InputStream.class 
 
 ./java/io/FilePermission.class: ../java/io/FilePermission.java 
 	$(JAVAC) ../java/io/FilePermission.java 
@@ -1055,6 +807,157 @@ java_io_File.h: ./java/io/File.class
 java_io_File.h: ./java/io/File.class 
 	$(JAVAHEADER) java.io.File
 
+java_lang_VMSystem.h: ./java/lang/VMSystem.class 
+	$(JAVAHEADER) java.lang.VMSystem
+
+java_lang_VMSystem.h: ./java/lang/VMSystem.class 
+	$(JAVAHEADER) java.lang.VMSystem
+
+java_lang_VMSystem.h: ./java/lang/VMSystem.class 
+	$(JAVAHEADER) java.lang.VMSystem
+
+java_lang_VMObject.h: ./java/lang/VMObject.class 
+	$(JAVAHEADER) java.lang.VMObject
+
+java_lang_VMObject.h: ./java/lang/VMObject.class 
+	$(JAVAHEADER) java.lang.VMObject
+
+java_lang_VMObject.h: ./java/lang/VMObject.class 
+	$(JAVAHEADER) java.lang.VMObject
+
+java_lang_VMObject.h: ./java/lang/VMObject.class 
+	$(JAVAHEADER) java.lang.VMObject
+
+java_lang_VMObject.h: ./java/lang/VMObject.class 
+	$(JAVAHEADER) java.lang.VMObject
+
+./java/io/PipedReader.class ./java/io/PipedWriter.class : ../java/io/PipedReader.java ../java/io/PipedWriter.java 
+	$(JAVAC) ../java/io/PipedReader.java ../java/io/PipedWriter.java 
+
+./java/io/PipedReader.class ./java/io/PipedWriter.class : ./java/io/Reader.class ./java/lang/String.class ./java/lang/System.class ./java/lang/Integer.class ./java/lang/NumberFormatException.class ./java/io/IOException.class ./java/lang/InterruptedException.class ./java/io/Writer.class 
+
+./java/io/PipedInputStream.class ./java/io/PipedOutputStream.class : ../java/io/PipedInputStream.java ../java/io/PipedOutputStream.java 
+	$(JAVAC) ../java/io/PipedInputStream.java ../java/io/PipedOutputStream.java 
+
+./java/io/PipedInputStream.class ./java/io/PipedOutputStream.class : ./java/io/InputStream.class ./java/lang/String.class ./java/lang/System.class ./java/lang/Integer.class ./java/lang/NumberFormatException.class ./java/io/IOException.class ./java/lang/InterruptedException.class ./java/io/OutputStream.class 
+
+java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+./gnu/java/io/encode/EncoderUTF8.class: ../gnu/java/io/encode/EncoderUTF8.java 
+	$(JAVAC) ../gnu/java/io/encode/EncoderUTF8.java 
+
+./gnu/java/io/encode/EncoderUTF8.class: ./gnu/java/io/encode/Encoder.class ./java/io/OutputStream.class ./java/io/IOException.class 
+
+./gnu/java/io/encode/EncoderEightBitLookup.class: ../gnu/java/io/encode/EncoderEightBitLookup.java 
+	$(JAVAC) ../gnu/java/io/encode/EncoderEightBitLookup.java 
+
+./gnu/java/io/encode/EncoderEightBitLookup.class: ./gnu/java/io/encode/Encoder.class ./java/io/OutputStream.class ./java/io/CharConversionException.class ./java/io/IOException.class 
+
+./gnu/java/io/encode/Encoder8859_5.class: ../gnu/java/io/encode/Encoder8859_5.java 
+	$(JAVAC) ../gnu/java/io/encode/Encoder8859_5.java 
+
+./gnu/java/io/encode/Encoder8859_5.class: ./gnu/java/io/encode/EncoderEightBitLookup.class ./java/io/OutputStream.class 
+
+./gnu/java/io/encode/Encoder8859_4.class: ../gnu/java/io/encode/Encoder8859_4.java 
+	$(JAVAC) ../gnu/java/io/encode/Encoder8859_4.java 
+
+./gnu/java/io/encode/Encoder8859_4.class: ./gnu/java/io/encode/EncoderEightBitLookup.class ./java/io/OutputStream.class 
+
+./gnu/java/io/encode/Encoder8859_3.class: ../gnu/java/io/encode/Encoder8859_3.java 
+	$(JAVAC) ../gnu/java/io/encode/Encoder8859_3.java 
+
+./gnu/java/io/encode/Encoder8859_3.class: ./gnu/java/io/encode/EncoderEightBitLookup.class ./java/io/OutputStream.class 
+
+./gnu/java/io/encode/Encoder8859_2.class: ../gnu/java/io/encode/Encoder8859_2.java 
+	$(JAVAC) ../gnu/java/io/encode/Encoder8859_2.java 
+
+./gnu/java/io/encode/Encoder8859_2.class: ./gnu/java/io/encode/EncoderEightBitLookup.class ./java/io/OutputStream.class 
+
+./gnu/java/io/encode/Encoder8859_1.class: ../gnu/java/io/encode/Encoder8859_1.java 
+	$(JAVAC) ../gnu/java/io/encode/Encoder8859_1.java 
+
+./gnu/java/io/encode/Encoder8859_1.class: ./gnu/java/io/encode/EncoderEightBitLookup.class ./java/io/OutputStream.class 
+
+./java/io/FileWriter.class: ../java/io/FileWriter.java 
+	$(JAVAC) ../java/io/FileWriter.java 
+
+./java/io/FileWriter.class: ./java/io/OutputStreamWriter.class ./java/io/File.class ./java/lang/SecurityException.class ./java/io/IOException.class ./java/io/FileOutputStream.class ./java/io/FileDescriptor.class ./java/lang/String.class 
+
+./gnu/java/io/decode/DecoderUTF8.class: ../gnu/java/io/decode/DecoderUTF8.java 
+	$(JAVAC) ../gnu/java/io/decode/DecoderUTF8.java 
+
+./gnu/java/io/decode/DecoderUTF8.class: ./gnu/java/io/decode/Decoder.class ./java/io/InputStream.class ./java/io/CharConversionException.class ./java/io/IOException.class 
+
+./gnu/java/io/decode/DecoderEightBitLookup.class: ../gnu/java/io/decode/DecoderEightBitLookup.java 
+	$(JAVAC) ../gnu/java/io/decode/DecoderEightBitLookup.java 
+
+./gnu/java/io/decode/DecoderEightBitLookup.class: ./gnu/java/io/decode/Decoder.class ./java/io/InputStream.class ./java/io/IOException.class 
+
+./gnu/java/io/decode/Decoder8859_5.class: ../gnu/java/io/decode/Decoder8859_5.java 
+	$(JAVAC) ../gnu/java/io/decode/Decoder8859_5.java 
+
+./gnu/java/io/decode/Decoder8859_5.class: ./gnu/java/io/decode/DecoderEightBitLookup.class ./java/io/InputStream.class 
+
+./gnu/java/io/decode/Decoder8859_4.class: ../gnu/java/io/decode/Decoder8859_4.java 
+	$(JAVAC) ../gnu/java/io/decode/Decoder8859_4.java 
+
+./gnu/java/io/decode/Decoder8859_4.class: ./gnu/java/io/decode/DecoderEightBitLookup.class ./java/io/InputStream.class 
+
+./gnu/java/io/decode/Decoder8859_3.class: ../gnu/java/io/decode/Decoder8859_3.java 
+	$(JAVAC) ../gnu/java/io/decode/Decoder8859_3.java 
+
+./gnu/java/io/decode/Decoder8859_3.class: ./gnu/java/io/decode/DecoderEightBitLookup.class ./java/io/InputStream.class 
+
+./gnu/java/io/decode/Decoder8859_2.class: ../gnu/java/io/decode/Decoder8859_2.java 
+	$(JAVAC) ../gnu/java/io/decode/Decoder8859_2.java 
+
+./gnu/java/io/decode/Decoder8859_2.class: ./gnu/java/io/decode/DecoderEightBitLookup.class ./java/io/InputStream.class 
+
+./gnu/java/io/decode/Decoder8859_1.class: ../gnu/java/io/decode/Decoder8859_1.java 
+	$(JAVAC) ../gnu/java/io/decode/Decoder8859_1.java 
+
+./gnu/java/io/decode/Decoder8859_1.class: ./gnu/java/io/decode/DecoderEightBitLookup.class ./java/io/InputStream.class 
+
+./java/io/InputStreamReader.class: ../java/io/InputStreamReader.java 
+	$(JAVAC) ../java/io/InputStreamReader.java 
+
+./java/io/InputStreamReader.class: ./java/io/Reader.class ./gnu/java/io/decode/Decoder.class ./java/io/InputStream.class ./gnu/java/io/EncodingManager.class ./java/lang/String.class ./java/io/UnsupportedEncodingException.class ./java/io/IOException.class 
+
+./java/io/FileReader.class: ../java/io/FileReader.java 
+	$(JAVAC) ../java/io/FileReader.java 
+
+./java/io/FileReader.class: ./java/io/InputStreamReader.class ./java/io/File.class ./java/io/FileNotFoundException.class ./java/lang/SecurityException.class ./java/io/FileInputStream.class ./java/io/FileDescriptor.class ./java/lang/String.class 
+
+./java/io/CharArrayWriter.class: ../java/io/CharArrayWriter.java 
+	$(JAVAC) ../java/io/CharArrayWriter.java 
+
+./java/io/CharArrayWriter.class: ./java/io/Writer.class ./java/lang/String.class ./java/lang/System.class ./java/lang/Integer.class ./java/lang/NumberFormatException.class ./java/io/IOException.class 
+
 ./java/beans/PropertyChangeEvent.class: ../java/beans/PropertyChangeEvent.java 
 	$(JAVAC) ../java/beans/PropertyChangeEvent.java 
 
@@ -1085,52 +988,49 @@ java_io_File.h: ./java/io/File.class
 
 ./java/beans/Customizer.class: ./java/lang/Object.class ./java/beans/PropertyChangeListener.class 
 
-./gnu/java/locale/LocaleInformation_en.class: ../gnu/java/locale/LocaleInformation_en.java 
-	$(JAVAC) ../gnu/java/locale/LocaleInformation_en.java 
+./java/beans/IntrospectionException.class: ../java/beans/IntrospectionException.java 
+	$(JAVAC) ../java/beans/IntrospectionException.java 
 
-./gnu/java/locale/LocaleInformation_en.class: ./java/lang/String.class ./java/lang/Object.class 
+./java/beans/IntrospectionException.class: ./java/lang/Exception.class ./java/lang/String.class 
 
-./gnu/java/locale/LocaleInformation.class: ../gnu/java/locale/LocaleInformation.java 
-	$(JAVAC) ../gnu/java/locale/LocaleInformation.java 
+./gnu/java/lang/MainThread.class: ../gnu/java/lang/MainThread.java 
+	$(JAVAC) ../gnu/java/lang/MainThread.java 
 
-./gnu/java/locale/LocaleInformation.class: ./gnu/java/locale/LocaleInformation_en.class 
-
-./gnu/java/beans/DoubleKey.class: ../gnu/java/beans/IntrospectionIncubator.java 
-	$(JAVAC) ../gnu/java/beans/IntrospectionIncubator.java 
-
-./gnu/java/beans/DoubleKey.class: ./java/lang/Class.class ./java/lang/String.class ./java/lang/Object.class 
-
-java_lang_VMSystem.h: ./java/lang/VMSystem.class 
-	$(JAVAHEADER) java.lang.VMSystem
-
-java_lang_VMSystem.h: ./java/lang/VMSystem.class 
-	$(JAVAHEADER) java.lang.VMSystem
-
-java_lang_VMSystem.h: ./java/lang/VMSystem.class 
-	$(JAVAHEADER) java.lang.VMSystem
-
-java_lang_VMObject.h: ./java/lang/VMObject.class 
-	$(JAVAHEADER) java.lang.VMObject
-
-java_lang_VMObject.h: ./java/lang/VMObject.class 
-	$(JAVAHEADER) java.lang.VMObject
-
-java_lang_VMObject.h: ./java/lang/VMObject.class 
-	$(JAVAHEADER) java.lang.VMObject
-
-java_lang_VMObject.h: ./java/lang/VMObject.class 
-	$(JAVAHEADER) java.lang.VMObject
-
-java_lang_VMObject.h: ./java/lang/VMObject.class 
-	$(JAVAHEADER) java.lang.VMObject
+./gnu/java/lang/MainThread.class: ./java/lang/String.class ./java/lang/reflect/Method.class ./java/lang/ClassNotFoundException.class ./java/lang/NoSuchMethodException.class ./java/lang/Class.class ./java/lang/IllegalAccessException.class ./java/lang/reflect/InvocationTargetException.class 
 
 ./gnu/java/lang/StackFrame.class: ../gnu/java/lang/StackFrame.java 
 	$(JAVAC) ../gnu/java/lang/StackFrame.java 
 
 ./gnu/java/lang/StackFrame.class: ./java/lang/Object.class ./java/lang/reflect/Method.class ./java/lang/String.class 
 
-java_lang_reflect_Method.h: ./java/lang/reflect/Method.class 
-	$(JAVAHEADER) java.lang.reflect.Method
+./gnu/java/lang/ExecutionStack.class: ../gnu/java/lang/ExecutionStack.java 
+	$(JAVAC) ../gnu/java/lang/ExecutionStack.java 
+
+./gnu/java/lang/ExecutionStack.class: ./java/lang/Class.class ./java/lang/reflect/Method.class ./gnu/java/lang/StackFrame.class ./java/lang/Thread.class 
+
+gnu_java_lang_ExecutionStack.h: ./gnu/java/lang/ExecutionStack.class 
+	$(JAVAHEADER) gnu.java.lang.ExecutionStack
+
+gnu_java_lang_ExecutionStack.h: ./gnu/java/lang/ExecutionStack.class 
+	$(JAVAHEADER) gnu.java.lang.ExecutionStack
+
+gnu_java_lang_ExecutionStack.h: ./gnu/java/lang/ExecutionStack.class 
+	$(JAVAHEADER) gnu.java.lang.ExecutionStack
+
+gnu_java_lang_ExecutionStack.h: ./gnu/java/lang/ExecutionStack.class 
+	$(JAVAHEADER) gnu.java.lang.ExecutionStack
+
+gnu_java_lang_ExecutionStack.h: ./gnu/java/lang/ExecutionStack.class 
+	$(JAVAHEADER) gnu.java.lang.ExecutionStack
+
+gnu_java_lang_ExecutionStack.h: ./gnu/java/lang/ExecutionStack.class 
+	$(JAVAHEADER) gnu.java.lang.ExecutionStack
+
+gnu_java_lang_ExecutionStack.h: ./gnu/java/lang/ExecutionStack.class 
+	$(JAVAHEADER) gnu.java.lang.ExecutionStack
+
+gnu_java_lang_ExecutionStack.h: ./gnu/java/lang/ExecutionStack.class 
+	$(JAVAHEADER) gnu.java.lang.ExecutionStack
 
 java_lang_reflect_Method.h: ./java/lang/reflect/Method.class 
 	$(JAVAHEADER) java.lang.reflect.Method
@@ -1144,97 +1044,83 @@ java_lang_reflect_Method.h: ./java/lang/reflect/Method.class
 java_lang_reflect_Method.h: ./java/lang/reflect/Method.class 
 	$(JAVAHEADER) java.lang.reflect.Method
 
-./java/io/PipedReader.class ./java/io/PipedWriter.class : ../java/io/PipedReader.java ../java/io/PipedWriter.java 
-	$(JAVAC) ../java/io/PipedReader.java ../java/io/PipedWriter.java 
+java_lang_reflect_Method.h: ./java/lang/reflect/Method.class 
+	$(JAVAHEADER) java.lang.reflect.Method
 
-./java/io/PipedReader.class ./java/io/PipedWriter.class : ./java/io/Reader.class ./java/lang/String.class ./java/lang/System.class ./java/lang/Integer.class ./java/lang/NumberFormatException.class ./java/io/IOException.class ./java/lang/InterruptedException.class ./java/io/Writer.class 
+./java/beans/FeatureDescriptor.class: ../java/beans/FeatureDescriptor.java 
+	$(JAVAC) ../java/beans/FeatureDescriptor.java 
 
-./java/io/PipedInputStream.class ./java/io/PipedOutputStream.class : ../java/io/PipedInputStream.java ../java/io/PipedOutputStream.java 
-	$(JAVAC) ../java/io/PipedInputStream.java ../java/io/PipedOutputStream.java 
+./java/beans/FeatureDescriptor.class: ./java/lang/String.class ./java/util/Hashtable.class ./java/lang/Object.class ./java/util/Enumeration.class 
 
-./java/io/PipedInputStream.class ./java/io/PipedOutputStream.class : ./java/io/InputStream.class ./java/lang/String.class ./java/lang/System.class ./java/lang/Integer.class ./java/lang/NumberFormatException.class ./java/io/IOException.class ./java/lang/InterruptedException.class ./java/io/OutputStream.class 
+./java/beans/ParameterDescriptor.class: ../java/beans/ParameterDescriptor.java 
+	$(JAVAC) ../java/beans/ParameterDescriptor.java 
 
-./java/io/CharArrayWriter.class: ../java/io/CharArrayWriter.java 
-	$(JAVAC) ../java/io/CharArrayWriter.java 
+./java/beans/ParameterDescriptor.class: ./java/beans/FeatureDescriptor.class 
 
-./java/io/CharArrayWriter.class: ./java/io/Writer.class ./java/lang/String.class ./java/lang/System.class ./java/lang/Integer.class ./java/lang/NumberFormatException.class ./java/io/IOException.class 
+./java/beans/MethodDescriptor.class: ../java/beans/MethodDescriptor.java 
+	$(JAVAC) ../java/beans/MethodDescriptor.java 
 
-java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
-	$(JAVAHEADER) java.io.RandomAccessFile
+./java/beans/MethodDescriptor.class: ./java/beans/FeatureDescriptor.class ./java/lang/reflect/Method.class ./java/beans/ParameterDescriptor.class 
 
-java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
-	$(JAVAHEADER) java.io.RandomAccessFile
+./java/beans/BeanDescriptor.class: ../java/beans/BeanDescriptor.java 
+	$(JAVAC) ../java/beans/BeanDescriptor.java 
 
-java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
-	$(JAVAHEADER) java.io.RandomAccessFile
-
-java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
-	$(JAVAHEADER) java.io.RandomAccessFile
-
-java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
-	$(JAVAHEADER) java.io.RandomAccessFile
-
-java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
-	$(JAVAHEADER) java.io.RandomAccessFile
-
-java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
-	$(JAVAHEADER) java.io.RandomAccessFile
-
-java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
-	$(JAVAHEADER) java.io.RandomAccessFile
-
-java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class 
-	$(JAVAHEADER) java.io.RandomAccessFile
-
-./java/net/Socket.class: ../java/net/Socket.java 
-	$(JAVAC) ../java/net/Socket.java 
-
-./java/net/Socket.class: ./java/net/SocketImplFactory.class ./java/net/SocketImpl.class ./java/net/InetAddress.class ./java/io/IOException.class ./java/net/SocketException.class ./java/lang/SecurityManager.class ./java/lang/System.class ./java/lang/SecurityException.class ./java/net/PlainSocketImpl.class ./java/lang/String.class ./java/io/InputStream.class ./java/io/OutputStream.class ./java/lang/Object.class ./java/net/SocketOptions.class ./java/lang/Boolean.class ./java/lang/Integer.class 
-
-./java/net/ServerSocket.class: ../java/net/ServerSocket.java 
-	$(JAVAC) ../java/net/ServerSocket.java 
-
-./java/net/ServerSocket.class: ./java/net/SocketImplFactory.class ./java/net/SocketImpl.class ./java/net/InetAddress.class ./java/io/IOException.class ./java/net/SocketException.class ./java/lang/SecurityManager.class ./java/lang/System.class ./java/lang/SecurityException.class ./java/net/PlainSocketImpl.class ./java/net/Socket.class ./java/lang/Object.class ./java/net/SocketOptions.class ./java/lang/Integer.class ./java/lang/String.class 
+./java/beans/BeanDescriptor.class: ./java/beans/FeatureDescriptor.class ./java/lang/Class.class 
 
 ./java/util/AbstractMap.class: ../java/util/AbstractMap.java 
 	$(JAVAC) ../java/util/AbstractMap.java 
 
 ./java/util/AbstractMap.class: ./java/util/Map.class ./java/lang/Object.class ./java/util/Iterator.class ./java/util/Set.class ./java/util/AbstractSet.class ./java/lang/UnsupportedOperationException.class ./java/lang/String.class ./java/util/Collection.class ./java/util/AbstractCollection.class 
 
+./java/util/HashMap.class: ../java/util/HashMap.java 
+	$(JAVAC) ../java/util/HashMap.java 
+
+./java/util/HashMap.class: ./java/util/AbstractMap.class ./java/util/Map.class ./java/lang/Cloneable.class ./java/io/Serializable.class ./java/io/ObjectStreamField.class ./java/util/Bucket.class ./java/lang/IllegalArgumentException.class ./java/lang/Object.class ./java/lang/CloneNotSupportedException.class ./java/util/Set.class ./java/util/Collection.class ./java/util/Iterator.class ./java/lang/Math.class ./java/io/ObjectOutputStream.class ./java/io/IOException.class ./java/io/ObjectInputStream.class ./java/lang/ClassNotFoundException.class ./java/util/AbstractSet.class ./java/lang/UnsupportedOperationException.class ./java/util/AbstractCollection.class ./java/util/ConcurrentModificationException.class ./java/lang/Exception.class ./java/util/NoSuchElementException.class ./java/lang/IllegalStateException.class 
+
+./java/util/HashSet.class: ../java/util/HashSet.java 
+	$(JAVAC) ../java/util/HashSet.java 
+
+./java/util/HashSet.class: ./java/util/AbstractSet.class ./java/util/Set.class ./java/lang/Cloneable.class ./java/io/Serializable.class ./java/util/HashMap.class ./java/util/Collection.class ./java/lang/Object.class ./java/lang/CloneNotSupportedException.class ./java/util/Iterator.class ./java/lang/Boolean.class ./java/io/ObjectOutputStream.class ./java/io/IOException.class ./java/io/ObjectInputStream.class ./java/lang/ClassNotFoundException.class 
+
+./java/text/AttributedStringIterator.class: ../java/text/AttributedStringIterator.java 
+	$(JAVAC) ../java/text/AttributedStringIterator.java 
+
+./java/text/AttributedStringIterator.class: ./java/text/AttributedCharacterIterator.class ./java/text/CharacterIterator.class ./java/text/StringCharacterIterator.class ./java/lang/Object.class ./java/util/Set.class ./java/util/HashSet.class ./java/util/Iterator.class ./java/util/Map.class ./java/util/HashMap.class 
+
+./java/text/AttributedString.class: ../java/text/AttributedString.java 
+	$(JAVAC) ../java/text/AttributedString.java 
+
+./java/text/AttributedString.class: ./java/util/Map.class ./java/text/StringCharacterIterator.class ./java/lang/String.class ./java/text/AttributedCharacterIterator.class ./java/lang/IllegalArgumentException.class ./java/lang/StringBuffer.class ./java/util/Set.class ./java/util/HashSet.class ./java/util/Iterator.class ./java/lang/Object.class ./java/text/Annotation.class ./java/util/Hashtable.class ./java/lang/System.class ./java/text/CharacterIterator.class ./java/text/AttributedStringIterator.class 
+
 ./java/util/LinkedList.class: ../java/util/LinkedList.java 
 	$(JAVAC) ../java/util/LinkedList.java 
 
 ./java/util/LinkedList.class: ./java/util/AbstractSequentialList.class ./java/io/Serializable.class ./java/lang/Object.class ./java/util/ConcurrentModificationException.class ./java/util/ListIterator.class ./java/util/NoSuchElementException.class ./java/lang/IllegalStateException.class ./java/util/Collection.class ./java/lang/IndexOutOfBoundsException.class ./java/util/List.class 
-
-./java/text/RuleBasedCollator.class ./java/text/Collator.class ./java/text/CollationKey.class ./java/text/CollationElementIterator.class : ../java/text/RuleBasedCollator.java ../java/text/Collator.java ../java/text/CollationKey.java ../java/text/CollationElementIterator.java 
-	$(JAVAC) ../java/text/RuleBasedCollator.java ../java/text/Collator.java ../java/text/CollationKey.java ../java/text/CollationElementIterator.java 
-
-./java/text/RuleBasedCollator.class ./java/text/Collator.class ./java/text/CollationKey.class ./java/text/CollationElementIterator.class : ./java/lang/String.class ./java/lang/Object.class ./java/text/ParseException.class ./java/lang/IllegalArgumentException.class ./java/util/Vector.class ./java/lang/StringBuffer.class ./java/text/CharacterIterator.class ./java/lang/Integer.class ./java/lang/System.class ./java/lang/CloneNotSupportedException.class ./java/util/Comparator.class ./java/lang/Cloneable.class ./java/io/Serializable.class ./java/util/Hashtable.class ./java/util/Locale.class ./java/lang/RuntimeException.class ./java/lang/ClassCastException.class ./java/lang/Comparable.class 
 
 ./java/util/Stack.class: ../java/util/Stack.java 
 	$(JAVAC) ../java/util/Stack.java 
 
 ./java/util/Stack.class: ./java/util/Vector.class ./java/lang/Object.class ./java/util/EmptyStackException.class 
 
-./java/security/CodeSource.class: ../java/security/CodeSource.java 
-	$(JAVAC) ../java/security/CodeSource.java 
+./java/text/RuleBasedCollator.class ./java/text/Collator.class ./java/text/CollationKey.class ./java/text/CollationElementIterator.class : ../java/text/RuleBasedCollator.java ../java/text/Collator.java ../java/text/CollationKey.java ../java/text/CollationElementIterator.java 
+	$(JAVAC) ../java/text/RuleBasedCollator.java ../java/text/Collator.java ../java/text/CollationKey.java ../java/text/CollationElementIterator.java 
 
-./java/security/CodeSource.class: ./java/io/Serializable.class ./java/lang/String.class ./java/lang/System.class ./java/net/URL.class ./java/net/SocketPermission.class ./java/lang/Object.class ./java/lang/StringBuffer.class 
-
-./java/security/ProtectionDomain.class: ../java/security/ProtectionDomain.java 
-	$(JAVAC) ../java/security/ProtectionDomain.java 
-
-./java/security/ProtectionDomain.class: ./java/lang/String.class ./java/lang/System.class ./java/security/CodeSource.class ./java/security/PermissionCollection.class ./java/security/Permission.class ./java/lang/StringBuffer.class 
-
-./java/net/JarURLConnection.class: ../java/net/JarURLConnection.java 
-	$(JAVAC) ../java/net/JarURLConnection.java 
-
-./java/net/JarURLConnection.class: ./java/net/URLConnection.class ./java/net/URL.class ./java/lang/String.class ./java/net/MalformedURLException.class ./java/io/IOException.class 
+./java/text/RuleBasedCollator.class ./java/text/Collator.class ./java/text/CollationKey.class ./java/text/CollationElementIterator.class : ./java/lang/String.class ./java/lang/Object.class ./java/text/ParseException.class ./java/lang/IllegalArgumentException.class ./java/util/Vector.class ./java/lang/StringBuffer.class ./java/text/CharacterIterator.class ./java/lang/Integer.class ./java/lang/System.class ./java/lang/CloneNotSupportedException.class ./java/util/Comparator.class ./java/lang/Cloneable.class ./java/io/Serializable.class ./java/util/Hashtable.class ./java/util/Locale.class ./java/lang/RuntimeException.class ./java/lang/ClassCastException.class ./java/lang/Comparable.class 
 
 ./java/net/HttpURLConnection.class: ../java/net/HttpURLConnection.java 
 	$(JAVAC) ../java/net/HttpURLConnection.java 
 
 ./java/net/HttpURLConnection.class: ./java/net/URLConnection.class ./java/lang/String.class ./java/net/URL.class ./java/net/ProtocolException.class ./java/io/IOException.class 
+
+./gnu/java/net/http/HttpURLConnection.class: ../gnu/java/net/http/HttpURLConnection.java 
+	$(JAVAC) ../gnu/java/net/http/HttpURLConnection.java 
+
+./gnu/java/net/http/HttpURLConnection.class: ./java/net/HttpURLConnection.class ./java/net/Socket.class ./java/io/DataInputStream.class ./java/io/OutputStream.class ./java/io/PrintWriter.class ./java/net/URL.class ./java/io/IOException.class ./java/io/OutputStreamWriter.class ./java/lang/String.class ./java/lang/Integer.class ./java/lang/NumberFormatException.class ./java/net/ProtocolException.class ./java/io/InputStream.class 
+
+./gnu/java/net/http/Handler.class: ../gnu/java/net/http/Handler.java 
+	$(JAVAC) ../gnu/java/net/http/Handler.java 
+
+./gnu/java/net/http/Handler.class: ./java/net/URLStreamHandler.class ./java/net/URLConnection.class ./java/net/URL.class ./java/io/IOException.class ./gnu/java/net/http/HttpURLConnection.class 
 
 ./gnu/java/net/content/text/plain.class: ../gnu/java/net/content/text/plain.java 
 	$(JAVAC) ../gnu/java/net/content/text/plain.java 
@@ -1291,6 +1177,11 @@ java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class
 
 ./gnu/java/beans/editors/NativeByteEditor.class: ./java/beans/PropertyEditorSupport.class ./java/lang/String.class ./java/lang/IllegalArgumentException.class ./java/lang/Byte.class 
 
+./gnu/java/beans/editors/NativeBooleanEditor.class: ../gnu/java/beans/editors/NativeBooleanEditor.java 
+	$(JAVAC) ../gnu/java/beans/editors/NativeBooleanEditor.java 
+
+./gnu/java/beans/editors/NativeBooleanEditor.class: ./java/beans/PropertyEditorSupport.class ./java/lang/String.class ./java/lang/IllegalArgumentException.class ./java/lang/Boolean.class 
+
 ./gnu/java/beans/editors/FontEditor.class: ../gnu/java/beans/editors/FontEditor.java 
 	$(JAVAC) ../gnu/java/beans/editors/FontEditor.java 
 
@@ -1301,30 +1192,16 @@ java_io_RandomAccessFile.h: ./java/io/RandomAccessFile.class
 
 ./gnu/java/beans/editors/ColorEditor.class: ./java/beans/PropertyEditorSupport.class ./java/lang/String.class ./java/lang/IllegalArgumentException.class ./java/lang/Integer.class 
 
-java_lang_reflect_Array.h: ./java/lang/reflect/Array.class 
-	$(JAVAHEADER) java.lang.reflect.Array
+./java/beans/EventSetDescriptor.class: ../java/beans/EventSetDescriptor.java 
+	$(JAVAC) ../java/beans/EventSetDescriptor.java 
+
+./java/beans/EventSetDescriptor.class: ./java/beans/FeatureDescriptor.class ./java/lang/reflect/Method.class ./java/lang/Class.class ./java/beans/MethodDescriptor.class ./java/lang/String.class ./java/beans/IntrospectionException.class ./java/lang/Character.class ./java/lang/StringIndexOutOfBoundsException.class ./java/lang/Void.class ./java/lang/reflect/Modifier.class ./java/lang/SecurityException.class ./java/lang/NoSuchMethodException.class ./gnu/java/lang/ClassHelper.class ./java/util/Vector.class 
 
 java_lang_reflect_Array.h: ./java/lang/reflect/Array.class 
 	$(JAVAHEADER) java.lang.reflect.Array
 
-./gnu/java/beans/editors/NativeBooleanEditor.class: ../gnu/java/beans/editors/NativeBooleanEditor.java 
-	$(JAVAC) ../gnu/java/beans/editors/NativeBooleanEditor.java 
-
-./gnu/java/beans/editors/NativeBooleanEditor.class: ./java/beans/PropertyEditorSupport.class ./java/lang/String.class ./java/lang/IllegalArgumentException.class ./java/lang/Boolean.class 
-
-java_lang_VMClassLoader.h: ./java/lang/VMClassLoader.class 
-	$(JAVAHEADER) java.lang.VMClassLoader
-
-java_lang_VMClassLoader.h: ./java/lang/VMClassLoader.class 
-	$(JAVAHEADER) java.lang.VMClassLoader
-
-java_lang_VMClassLoader.h: ./java/lang/VMClassLoader.class 
-	$(JAVAHEADER) java.lang.VMClassLoader
-
-./java/beans/FeatureDescriptor.class: ../java/beans/FeatureDescriptor.java 
-	$(JAVAC) ../java/beans/FeatureDescriptor.java 
-
-./java/beans/FeatureDescriptor.class: ./java/lang/String.class ./java/util/Hashtable.class ./java/lang/Object.class ./java/util/Enumeration.class 
+java_lang_reflect_Array.h: ./java/lang/reflect/Array.class 
+	$(JAVAHEADER) java.lang.reflect.Array
 
 ./java/beans/PropertyDescriptor.class: ../java/beans/PropertyDescriptor.java 
 	$(JAVAC) ../java/beans/PropertyDescriptor.java 
@@ -1336,40 +1213,10 @@ java_lang_VMClassLoader.h: ./java/lang/VMClassLoader.class
 
 ./java/beans/IndexedPropertyDescriptor.class: ./java/beans/PropertyDescriptor.class ./java/lang/Class.class ./java/lang/reflect/Method.class ./java/lang/String.class ./java/beans/IntrospectionException.class ./java/lang/Character.class ./java/lang/StringIndexOutOfBoundsException.class ./java/lang/Integer.class ./java/lang/reflect/Array.class ./java/lang/NoSuchMethodException.class ./java/lang/Void.class ./java/lang/SecurityException.class 
 
-./java/beans/ParameterDescriptor.class: ../java/beans/ParameterDescriptor.java 
-	$(JAVAC) ../java/beans/ParameterDescriptor.java 
-
-./java/beans/ParameterDescriptor.class: ./java/beans/FeatureDescriptor.class 
-
-./java/beans/MethodDescriptor.class: ../java/beans/MethodDescriptor.java 
-	$(JAVAC) ../java/beans/MethodDescriptor.java 
-
-./java/beans/MethodDescriptor.class: ./java/beans/FeatureDescriptor.class ./java/lang/reflect/Method.class ./java/beans/ParameterDescriptor.class 
-
-./java/beans/BeanDescriptor.class: ../java/beans/BeanDescriptor.java 
-	$(JAVAC) ../java/beans/BeanDescriptor.java 
-
-./java/beans/BeanDescriptor.class: ./java/beans/FeatureDescriptor.class ./java/lang/Class.class 
-
-./java/beans/EventSetDescriptor.class: ../java/beans/EventSetDescriptor.java 
-	$(JAVAC) ../java/beans/EventSetDescriptor.java 
-
-./java/beans/EventSetDescriptor.class: ./java/beans/FeatureDescriptor.class ./java/lang/reflect/Method.class ./java/lang/Class.class ./java/beans/MethodDescriptor.class ./java/lang/String.class ./java/beans/IntrospectionException.class ./java/lang/Character.class ./java/lang/StringIndexOutOfBoundsException.class ./java/lang/Void.class ./java/lang/reflect/Modifier.class ./java/lang/SecurityException.class ./java/lang/NoSuchMethodException.class ./gnu/java/lang/ClassHelper.class ./java/util/Vector.class 
-
 ./java/beans/BeanInfo.class: ../java/beans/BeanInfo.java 
 	$(JAVAC) ../java/beans/BeanInfo.java 
 
 ./java/beans/BeanInfo.class: ./java/beans/BeanDescriptor.class ./java/beans/EventSetDescriptor.class ./java/beans/PropertyDescriptor.class ./java/beans/MethodDescriptor.class 
-
-./java/beans/SimpleBeanInfo.class: ../java/beans/SimpleBeanInfo.java 
-	$(JAVAC) ../java/beans/SimpleBeanInfo.java 
-
-./java/beans/SimpleBeanInfo.class: ./java/beans/BeanInfo.class ./java/beans/BeanDescriptor.class ./java/beans/EventSetDescriptor.class ./java/beans/PropertyDescriptor.class ./java/beans/MethodDescriptor.class ./java/lang/String.class 
-
-./gnu/java/beans/info/ComponentBeanInfo.class: ../gnu/java/beans/info/ComponentBeanInfo.java 
-	$(JAVAC) ../gnu/java/beans/info/ComponentBeanInfo.java 
-
-./gnu/java/beans/info/ComponentBeanInfo.class: ./java/beans/SimpleBeanInfo.class ./java/beans/PropertyDescriptor.class ./java/beans/IntrospectionException.class ./java/lang/UnknownError.class 
 
 ./gnu/java/beans/ExplicitBeanInfo.class: ../gnu/java/beans/ExplicitBeanInfo.java 
 	$(JAVAC) ../gnu/java/beans/ExplicitBeanInfo.java 
@@ -1386,64 +1233,24 @@ java_lang_VMClassLoader.h: ./java/lang/VMClassLoader.class
 
 ./gnu/java/beans/BeanInfoEmbryo.class: ./java/util/Hashtable.class ./java/util/Vector.class ./java/beans/BeanDescriptor.class ./java/beans/BeanInfo.class ./java/lang/String.class ./java/beans/PropertyDescriptor.class ./java/util/Enumeration.class ./java/beans/EventSetDescriptor.class ./java/beans/MethodDescriptor.class ./gnu/java/beans/ExplicitBeanInfo.class ./java/beans/IndexedPropertyDescriptor.class ./java/lang/reflect/Method.class ./gnu/java/lang/ArrayHelper.class 
 
-./java/util/HashMap.class: ../java/util/HashMap.java 
-	$(JAVAC) ../java/util/HashMap.java 
+./java/beans/SimpleBeanInfo.class: ../java/beans/SimpleBeanInfo.java 
+	$(JAVAC) ../java/beans/SimpleBeanInfo.java 
 
-./java/util/HashMap.class: ./java/util/AbstractMap.class ./java/util/Map.class ./java/lang/Cloneable.class ./java/io/Serializable.class ./java/io/ObjectStreamField.class ./java/util/Bucket.class ./java/lang/IllegalArgumentException.class ./java/lang/Object.class ./java/util/Iterator.class ./java/util/Set.class ./java/util/Collection.class ./java/lang/Math.class ./java/io/ObjectOutputStream.class ./java/io/IOException.class ./java/io/ObjectInputStream.class ./java/lang/ClassNotFoundException.class ./java/util/AbstractSet.class ./java/lang/UnsupportedOperationException.class ./java/util/AbstractCollection.class ./java/util/ConcurrentModificationException.class ./java/lang/Exception.class ./java/util/NoSuchElementException.class ./java/lang/IllegalStateException.class 
+./java/beans/SimpleBeanInfo.class: ./java/beans/BeanInfo.class ./java/beans/BeanDescriptor.class ./java/beans/EventSetDescriptor.class ./java/beans/PropertyDescriptor.class ./java/beans/MethodDescriptor.class ./java/lang/String.class 
 
-./java/util/HashSet.class: ../java/util/HashSet.java 
-	$(JAVAC) ../java/util/HashSet.java 
+./gnu/java/beans/info/ComponentBeanInfo.class: ../gnu/java/beans/info/ComponentBeanInfo.java 
+	$(JAVAC) ../gnu/java/beans/info/ComponentBeanInfo.java 
 
-./java/util/HashSet.class: ./java/util/AbstractSet.class ./java/util/Set.class ./java/lang/Cloneable.class ./java/io/Serializable.class ./java/util/HashMap.class ./java/util/Collection.class ./java/lang/Object.class ./java/util/Iterator.class ./java/lang/Boolean.class ./java/io/ObjectOutputStream.class ./java/io/IOException.class ./java/io/ObjectInputStream.class ./java/lang/ClassNotFoundException.class 
+./gnu/java/beans/info/ComponentBeanInfo.class: ./java/beans/SimpleBeanInfo.class ./java/beans/PropertyDescriptor.class ./java/beans/IntrospectionException.class ./java/lang/UnknownError.class 
 
-./java/text/AttributedStringIterator.class: ../java/text/AttributedStringIterator.java 
-	$(JAVAC) ../java/text/AttributedStringIterator.java 
+java_lang_VMClassLoader.h: ./java/lang/VMClassLoader.class 
+	$(JAVAHEADER) java.lang.VMClassLoader
 
-./java/text/AttributedStringIterator.class: ./java/text/AttributedCharacterIterator.class ./java/text/CharacterIterator.class ./java/text/StringCharacterIterator.class ./java/lang/Object.class ./java/util/Set.class ./java/util/HashSet.class ./java/util/Iterator.class ./java/util/Map.class ./java/util/HashMap.class 
+java_lang_VMClassLoader.h: ./java/lang/VMClassLoader.class 
+	$(JAVAHEADER) java.lang.VMClassLoader
 
-./java/text/AttributedString.class: ../java/text/AttributedString.java 
-	$(JAVAC) ../java/text/AttributedString.java 
-
-./java/text/AttributedString.class: ./java/util/Map.class ./java/text/StringCharacterIterator.class ./java/lang/String.class ./java/text/AttributedCharacterIterator.class ./java/lang/IllegalArgumentException.class ./java/lang/StringBuffer.class ./java/util/Set.class ./java/util/HashSet.class ./java/util/Iterator.class ./java/lang/Object.class ./java/text/Annotation.class ./java/util/Hashtable.class ./java/lang/System.class ./java/text/CharacterIterator.class ./java/text/AttributedStringIterator.class 
-
-java_io_ObjectStreamClass.h: ./java/io/ObjectStreamClass.class 
-	$(JAVAHEADER) java.io.ObjectStreamClass
-
-java_io_ObjectStreamClass.h: ./java/io/ObjectStreamClass.class 
-	$(JAVAHEADER) java.io.ObjectStreamClass
-
-java_io_ObjectStreamClass.h: ./java/io/ObjectStreamClass.class 
-	$(JAVAHEADER) java.io.ObjectStreamClass
-
-java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
-	$(JAVAHEADER) java.io.ObjectOutputStream
-
-java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
-	$(JAVAHEADER) java.io.ObjectOutputStream
-
-java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
-	$(JAVAHEADER) java.io.ObjectOutputStream
-
-java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
-	$(JAVAHEADER) java.io.ObjectOutputStream
-
-java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
-	$(JAVAHEADER) java.io.ObjectOutputStream
-
-java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
-	$(JAVAHEADER) java.io.ObjectOutputStream
-
-java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
-	$(JAVAHEADER) java.io.ObjectOutputStream
-
-java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
-	$(JAVAHEADER) java.io.ObjectOutputStream
-
-java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
-	$(JAVAHEADER) java.io.ObjectOutputStream
-
-java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
-	$(JAVAHEADER) java.io.ObjectOutputStream
+java_lang_VMClassLoader.h: ./java/lang/VMClassLoader.class 
+	$(JAVAHEADER) java.lang.VMClassLoader
 
 ./java/beans/PropertyEditorManager.class: ../java/beans/PropertyEditorManager.java 
 	$(JAVAC) ../java/beans/PropertyEditorManager.java 
@@ -1455,64 +1262,75 @@ java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class
 
 ./java/beans/ExplicitInfo.class ./java/beans/Introspector.class ./gnu/java/beans/IntrospectionIncubator.class : ./java/beans/BeanDescriptor.class ./java/beans/BeanInfo.class ./java/beans/PropertyDescriptor.class ./java/beans/EventSetDescriptor.class ./java/beans/MethodDescriptor.class ./java/lang/Class.class ./java/util/Hashtable.class ./java/util/Vector.class ./java/lang/ClassNotFoundException.class ./java/lang/String.class ./gnu/java/lang/ClassHelper.class ./java/lang/IllegalAccessException.class ./java/lang/InstantiationException.class ./java/beans/IntrospectionException.class ./gnu/java/beans/BeanInfoEmbryo.class ./java/lang/Character.class ./java/lang/StringIndexOutOfBoundsException.class ./java/lang/NullPointerException.class ./gnu/java/beans/ExplicitBeanInfo.class ./java/lang/reflect/Method.class ./java/lang/reflect/Modifier.class ./java/lang/Void.class ./java/lang/Boolean.class ./java/lang/Integer.class ./java/util/Enumeration.class ./gnu/java/beans/DoubleKey.class ./gnu/java/lang/ArrayHelper.class ./java/beans/PropertyVetoException.class ./java/lang/reflect/Array.class ./java/beans/IndexedPropertyDescriptor.class 
 
-./gnu/java/security/DefaultPermissionCollection.class: ../gnu/java/security/DefaultPermissionCollection.java 
-	$(JAVAC) ../gnu/java/security/DefaultPermissionCollection.java 
-
-./gnu/java/security/DefaultPermissionCollection.class: ./java/security/PermissionCollection.class ./java/io/Serializable.class ./java/lang/Class.class ./java/util/Hashtable.class ./java/lang/String.class ./java/lang/IllegalArgumentException.class ./java/lang/ClassNotFoundException.class ./java/security/Permission.class ./java/lang/SecurityException.class ./java/lang/Object.class ./java/util/Enumeration.class 
-
-./java/security/Permissions.class: ../java/security/Permissions.java 
-	$(JAVAC) ../java/security/Permissions.java 
-
-./java/security/Permissions.class: ./java/security/PermissionCollection.class ./java/io/Serializable.class ./java/util/Hashtable.class ./java/security/Permission.class ./java/lang/SecurityException.class ./java/lang/IllegalArgumentException.class ./java/security/AllPermission.class ./gnu/java/security/DefaultPermissionCollection.class ./java/lang/Object.class ./java/lang/RuntimeException.class ./java/util/Enumeration.class ./java/util/NoSuchElementException.class 
-
-./gnu/java/lang/MainThread.class: ../gnu/java/lang/MainThread.java 
-	$(JAVAC) ../gnu/java/lang/MainThread.java 
-
-./gnu/java/lang/MainThread.class: ./java/lang/String.class ./java/lang/reflect/Method.class ./java/lang/ClassNotFoundException.class ./java/lang/NoSuchMethodException.class ./java/lang/Class.class ./java/lang/IllegalAccessException.class ./java/lang/reflect/InvocationTargetException.class 
-
 ./java/lang/ExceptionInInitializerError.class: ../java/lang/ExceptionInInitializerError.java 
 	$(JAVAC) ../java/lang/ExceptionInInitializerError.java 
 
 ./java/lang/ExceptionInInitializerError.class: ./java/lang/LinkageError.class ./java/lang/Throwable.class ./java/lang/String.class ./java/io/PrintStream.class ./java/io/PrintWriter.class ./java/io/ObjectOutputStream.class ./java/io/IOException.class ./java/io/ObjectInputStream.class ./java/lang/ClassNotFoundException.class 
 
-./java/io/FileWriter.class: ../java/io/FileWriter.java 
-	$(JAVAC) ../java/io/FileWriter.java 
+java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
 
-./java/io/FileWriter.class: ./java/io/OutputStreamWriter.class ./java/io/File.class ./java/lang/SecurityException.class ./java/io/IOException.class ./java/io/FileOutputStream.class ./java/io/FileDescriptor.class ./java/lang/String.class 
+java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
 
-./gnu/java/net/http/HttpURLConnection.class: ../gnu/java/net/http/HttpURLConnection.java 
-	$(JAVAC) ../gnu/java/net/http/HttpURLConnection.java 
+java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
 
-./gnu/java/net/http/HttpURLConnection.class: ./java/net/HttpURLConnection.class ./java/net/Socket.class ./java/io/DataInputStream.class ./java/io/OutputStream.class ./java/io/PrintWriter.class ./java/net/URL.class ./java/io/IOException.class ./java/io/OutputStreamWriter.class ./java/lang/String.class ./java/lang/Integer.class ./java/lang/NumberFormatException.class ./java/net/ProtocolException.class ./java/io/InputStream.class 
+java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
 
-./gnu/java/net/http/Handler.class: ../gnu/java/net/http/Handler.java 
-	$(JAVAC) ../gnu/java/net/http/Handler.java 
+java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
 
-./gnu/java/net/http/Handler.class: ./java/net/URLStreamHandler.class ./java/net/URLConnection.class ./java/net/URL.class ./java/io/IOException.class ./gnu/java/net/http/HttpURLConnection.class 
+java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
 
-./java/io/InputStreamReader.class: ../java/io/InputStreamReader.java 
-	$(JAVAC) ../java/io/InputStreamReader.java 
+java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
 
-./java/io/InputStreamReader.class: ./java/io/Reader.class ./gnu/java/io/decode/Decoder.class ./java/io/InputStream.class ./gnu/java/io/EncodingManager.class ./java/lang/String.class ./java/io/UnsupportedEncodingException.class ./java/io/IOException.class 
+java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
+
+java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
+
+java_io_ObjectOutputStream.h: ./java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
+
+./java/io/ByteArrayInputStream.class: ../java/io/ByteArrayInputStream.java 
+	$(JAVAC) ../java/io/ByteArrayInputStream.java 
+
+./java/io/ByteArrayInputStream.class: ./java/io/InputStream.class ./java/lang/System.class 
+
+./java/io/BufferedWriter.class: ../java/io/BufferedWriter.java 
+	$(JAVAC) ../java/io/BufferedWriter.java 
+
+./java/io/BufferedWriter.class: ./java/io/Writer.class ./java/io/IOException.class ./java/lang/String.class ./java/lang/System.class ./java/lang/Error.class 
+
+./java/io/BufferedReader.class: ../java/io/BufferedReader.java 
+	$(JAVAC) ../java/io/BufferedReader.java 
+
+./java/io/BufferedReader.class: ./java/io/Reader.class ./java/io/IOException.class ./java/lang/System.class ./java/lang/String.class 
+
+./java/io/LineNumberReader.class: ../java/io/LineNumberReader.java 
+	$(JAVAC) ../java/io/LineNumberReader.java 
+
+./java/io/LineNumberReader.class: ./java/io/BufferedReader.class ./java/io/Reader.class ./java/io/PushbackReader.class ./java/io/IOException.class ./java/lang/String.class 
 
 ./java/io/StreamTokenizer.class: ../java/io/StreamTokenizer.java 
 	$(JAVAC) ../java/io/StreamTokenizer.java 
 
 ./java/io/StreamTokenizer.class: ./java/lang/String.class ./java/io/LineNumberReader.class ./java/io/PushbackReader.class ./java/io/InputStream.class ./java/io/InputStreamReader.class ./java/io/Reader.class ./java/lang/IllegalArgumentException.class ./java/io/IOException.class ./java/lang/NumberFormatException.class ./java/lang/StringBuffer.class ./java/lang/System.class 
 
-./java/io/FileReader.class: ../java/io/FileReader.java 
-	$(JAVAC) ../java/io/FileReader.java 
+./java/io/BufferedOutputStream.class: ../java/io/BufferedOutputStream.java 
+	$(JAVAC) ../java/io/BufferedOutputStream.java 
 
-./java/io/FileReader.class: ./java/io/InputStreamReader.class ./java/io/File.class ./java/io/FileNotFoundException.class ./java/lang/SecurityException.class ./java/io/FileInputStream.class ./java/io/FileDescriptor.class ./java/lang/String.class 
+./java/io/BufferedOutputStream.class: ./java/io/FilterOutputStream.class ./java/io/OutputStream.class ./java/io/IOException.class ./java/lang/System.class 
 
-java_lang_Runtime.h: ./java/lang/Runtime.class 
-	$(JAVAHEADER) java.lang.Runtime
+./java/io/BufferedInputStream.class: ../java/io/BufferedInputStream.java 
+	$(JAVAC) ../java/io/BufferedInputStream.java 
 
-java_lang_Runtime.h: ./java/lang/Runtime.class 
-	$(JAVAHEADER) java.lang.Runtime
-
-java_lang_Runtime.h: ./java/lang/Runtime.class 
-	$(JAVAHEADER) java.lang.Runtime
+./java/io/BufferedInputStream.class: ./java/io/FilterInputStream.class ./java/io/InputStream.class ./java/lang/System.class ./java/io/IOException.class 
 
 java_lang_Runtime.h: ./java/lang/Runtime.class 
 	$(JAVAHEADER) java.lang.Runtime
@@ -1541,34 +1359,14 @@ java_lang_Runtime.h: ./java/lang/Runtime.class
 java_lang_Runtime.h: ./java/lang/Runtime.class 
 	$(JAVAHEADER) java.lang.Runtime
 
-./gnu/java/lang/ExecutionStack.class: ../gnu/java/lang/ExecutionStack.java 
-	$(JAVAC) ../gnu/java/lang/ExecutionStack.java 
+java_lang_Runtime.h: ./java/lang/Runtime.class 
+	$(JAVAHEADER) java.lang.Runtime
 
-./gnu/java/lang/ExecutionStack.class: ./java/lang/Class.class ./java/lang/reflect/Method.class ./gnu/java/lang/StackFrame.class ./java/lang/Thread.class 
+java_lang_Runtime.h: ./java/lang/Runtime.class 
+	$(JAVAHEADER) java.lang.Runtime
 
-gnu_java_lang_ExecutionStack.h: ./gnu/java/lang/ExecutionStack.class 
-	$(JAVAHEADER) gnu.java.lang.ExecutionStack
-
-gnu_java_lang_ExecutionStack.h: ./gnu/java/lang/ExecutionStack.class 
-	$(JAVAHEADER) gnu.java.lang.ExecutionStack
-
-gnu_java_lang_ExecutionStack.h: ./gnu/java/lang/ExecutionStack.class 
-	$(JAVAHEADER) gnu.java.lang.ExecutionStack
-
-gnu_java_lang_ExecutionStack.h: ./gnu/java/lang/ExecutionStack.class 
-	$(JAVAHEADER) gnu.java.lang.ExecutionStack
-
-gnu_java_lang_ExecutionStack.h: ./gnu/java/lang/ExecutionStack.class 
-	$(JAVAHEADER) gnu.java.lang.ExecutionStack
-
-gnu_java_lang_ExecutionStack.h: ./gnu/java/lang/ExecutionStack.class 
-	$(JAVAHEADER) gnu.java.lang.ExecutionStack
-
-gnu_java_lang_ExecutionStack.h: ./gnu/java/lang/ExecutionStack.class 
-	$(JAVAHEADER) gnu.java.lang.ExecutionStack
-
-gnu_java_lang_ExecutionStack.h: ./gnu/java/lang/ExecutionStack.class 
-	$(JAVAHEADER) gnu.java.lang.ExecutionStack
+java_lang_Runtime.h: ./java/lang/Runtime.class 
+	$(JAVAHEADER) java.lang.Runtime
 
 java_lang_Thread.h: ./java/lang/Thread.class 
 	$(JAVAHEADER) java.lang.Thread
@@ -1647,11 +1445,6 @@ java_io_ObjectInputStream.h: ./java/io/ObjectInputStream.class
 
 java_io_ObjectInputStream.h: ./java/io/ObjectInputStream.class 
 	$(JAVAHEADER) java.io.ObjectInputStream
-
-./gnu/java/io/ClassLoaderObjectInputStream.class: ../gnu/java/io/ClassLoaderObjectInputStream.java 
-	$(JAVAC) ../gnu/java/io/ClassLoaderObjectInputStream.java 
-
-./gnu/java/io/ClassLoaderObjectInputStream.class: ./java/io/ObjectInputStream.class ./java/lang/ClassLoader.class ./java/io/InputStream.class ./java/io/IOException.class ./java/io/StreamCorruptedException.class ./java/lang/Class.class ./java/lang/String.class ./java/lang/ClassNotFoundException.class 
 
 ./java/beans/Beans.class: ../java/beans/Beans.java 
 	$(JAVAC) ../java/beans/Beans.java 
@@ -1775,120 +1568,57 @@ CLASSES = \
 	./gnu/vm/stack/StackFrame.class\
 	./gnu/vm/stack/StackTrace.class\
 	./java/lang/ArrayIndexOutOfBoundsException.class\
-	./gnu/java/beans/editors/ColorEditor.class\
-	./java/beans/PropertyEditorSupport.class\
-	./java/lang/Integer.class\
-	./gnu/java/beans/editors/FontEditor.class\
-	./gnu/java/beans/editors/NativeBooleanEditor.class\
-	./java/lang/Boolean.class\
-	./gnu/java/beans/editors/NativeByteEditor.class\
-	./java/lang/Byte.class\
-	./gnu/java/beans/editors/NativeDoubleEditor.class\
-	./gnu/java/beans/editors/NativeFloatEditor.class\
-	./gnu/java/beans/editors/NativeIntEditor.class\
-	./gnu/java/beans/editors/NativeLongEditor.class\
-	./java/lang/Long.class\
-	./gnu/java/beans/editors/NativeShortEditor.class\
-	./java/lang/Short.class\
-	./gnu/java/beans/editors/StringEditor.class\
-	./gnu/java/beans/BeanInfoEmbryo.class\
-	./java/util/Hashtable.class\
 	./java/beans/BeanDescriptor.class\
-	./java/beans/BeanInfo.class\
-	./java/beans/PropertyDescriptor.class\
-	./java/util/Enumeration.class\
-	./java/beans/EventSetDescriptor.class\
-	./java/beans/MethodDescriptor.class\
-	./gnu/java/beans/ExplicitBeanInfo.class\
-	./java/beans/IndexedPropertyDescriptor.class\
-	./gnu/java/lang/ArrayHelper.class\
-	./gnu/java/beans/EmptyBeanInfo.class\
-	./gnu/java/beans/IntrospectionIncubator.class\
-	./java/lang/Void.class\
-	./java/beans/IntrospectionException.class\
-	./gnu/java/beans/DoubleKey.class\
-	./java/beans/Introspector.class\
-	./java/beans/PropertyVetoException.class\
-	./java/lang/reflect/Array.class\
-	./java/lang/Character.class\
-	./java/lang/StringIndexOutOfBoundsException.class\
-	./java/lang/NullPointerException.class\
-	./gnu/java/beans/info/ComponentBeanInfo.class\
-	./java/beans/SimpleBeanInfo.class\
-	./gnu/java/io/decode/Decoder.class\
-	./java/io/Reader.class\
-	./java/io/CharConversionException.class\
-	./java/io/IOException.class\
-	./gnu/java/io/decode/Decoder8859_1.class\
-	./gnu/java/io/decode/DecoderEightBitLookup.class\
-	./gnu/java/io/decode/Decoder8859_2.class\
-	./gnu/java/io/decode/Decoder8859_3.class\
-	./gnu/java/io/decode/Decoder8859_4.class\
-	./gnu/java/io/decode/Decoder8859_5.class\
-	./gnu/java/io/decode/DecoderUTF8.class\
-	./gnu/java/io/ClassLoaderObjectInputStream.class\
-	./java/io/ObjectInputStream.class\
-	./java/io/StreamCorruptedException.class\
-	./gnu/java/io/EncodingManager.class\
-	./gnu/java/io/encode/Encoder.class\
-	./java/lang/Exception.class\
-	./java/lang/Error.class\
-	./java/io/UnsupportedEncodingException.class\
-	./gnu/java/io/NullOutputStream.class\
-	./gnu/java/io/ObjectIdentityWrapper.class\
-	./java/io/Writer.class\
-	./gnu/java/io/encode/Encoder8859_1.class\
-	./gnu/java/io/encode/EncoderEightBitLookup.class\
-	./gnu/java/io/encode/Encoder8859_2.class\
-	./gnu/java/io/encode/Encoder8859_3.class\
-	./gnu/java/io/encode/Encoder8859_4.class\
-	./gnu/java/io/encode/Encoder8859_5.class\
-	./gnu/java/io/encode/EncoderUTF8.class\
-	./gnu/java/lang/reflect/TypeSignature.class\
-	./java/lang/RuntimeException.class\
-	./gnu/java/lang/ClassLoaderHelper.class\
-	./java/io/File.class\
-	./gnu/java/lang/ExecutionStack.class\
-	./gnu/java/lang/StackFrame.class\
-	./gnu/java/lang/MainThread.class\
-	./gnu/java/locale/LocaleInformation_en.class\
-	./gnu/java/locale/LocaleInformation.class\
-	./gnu/java/net/content/text/plain.class\
-	./java/net/ContentHandler.class\
-	./java/net/URLConnection.class\
-	./gnu/java/net/http/Handler.class\
-	./java/net/URLStreamHandler.class\
-	./gnu/java/net/http/HttpURLConnection.class\
-	./java/net/HttpURLConnection.class\
-	./java/net/Socket.class\
-	./java/io/DataInputStream.class\
-	./java/io/PrintWriter.class\
-	./java/io/OutputStreamWriter.class\
-	./java/lang/NumberFormatException.class\
-	./java/net/ProtocolException.class\
-	./gnu/java/security/DefaultPermissionCollection.class\
-	./java/security/PermissionCollection.class\
-	./java/io/Serializable.class\
-	./java/security/Permission.class\
-	./gnu/test/Fail.class\
-	./gnu/test/Result.class\
-	./gnu/test/Pass.class\
-	./gnu/test/Test.class\
-	./gnu/test/Unresolved.class\
-	./gnu/test/Unsupported.class\
-	./gnu/test/Untested.class\
-	./gnu/test/XFail.class\
-	./gnu/test/XPass.class\
 	./java/beans/FeatureDescriptor.class\
+	./java/beans/BeanInfo.class\
+	./java/beans/EventSetDescriptor.class\
+	./java/beans/PropertyDescriptor.class\
+	./java/beans/MethodDescriptor.class\
 	./java/beans/Beans.class\
+	./java/io/IOException.class\
+	./java/io/ObjectInputStream.class\
+	./gnu/java/io/ClassLoaderObjectInputStream.class\
 	./java/beans/Customizer.class\
 	./java/beans/PropertyChangeListener.class\
+	./java/beans/IntrospectionException.class\
+	./java/lang/Character.class\
+	./java/lang/StringIndexOutOfBoundsException.class\
+	./java/lang/Void.class\
+	./java/util/Hashtable.class\
+	./java/util/Enumeration.class\
+	./java/beans/IndexedPropertyDescriptor.class\
+	./java/lang/Integer.class\
+	./java/lang/reflect/Array.class\
+	./java/lang/Exception.class\
+	./java/beans/Introspector.class\
 	./java/beans/ExplicitInfo.class\
+	./gnu/java/beans/IntrospectionIncubator.class\
+	./gnu/java/beans/BeanInfoEmbryo.class\
+	./java/lang/NullPointerException.class\
+	./gnu/java/beans/ExplicitBeanInfo.class\
 	./java/beans/ParameterDescriptor.class\
 	./java/beans/PropertyChangeEvent.class\
 	./java/beans/PropertyChangeSupport.class\
+	./java/io/Serializable.class\
+	./java/lang/Boolean.class\
 	./java/beans/PropertyEditor.class\
 	./java/beans/PropertyEditorManager.class\
+	./gnu/java/beans/editors/NativeBooleanEditor.class\
+	./java/lang/Byte.class\
+	./gnu/java/beans/editors/NativeByteEditor.class\
+	./java/lang/Short.class\
+	./gnu/java/beans/editors/NativeShortEditor.class\
+	./gnu/java/beans/editors/NativeIntEditor.class\
+	./java/lang/Long.class\
+	./gnu/java/beans/editors/NativeLongEditor.class\
+	./gnu/java/beans/editors/NativeFloatEditor.class\
+	./gnu/java/beans/editors/NativeDoubleEditor.class\
+	./gnu/java/beans/editors/StringEditor.class\
+	./gnu/java/beans/editors/ColorEditor.class\
+	./gnu/java/beans/editors/FontEditor.class\
+	./java/beans/PropertyEditorSupport.class\
+	./java/beans/PropertyVetoException.class\
+	./java/beans/SimpleBeanInfo.class\
 	./java/beans/VetoableChangeListener.class\
 	./java/beans/VetoableChangeSupport.class\
 	./java/beans/Visibility.class\
@@ -1898,20 +1628,28 @@ CLASSES = \
 	./java/io/BufferedOutputStream.class\
 	./java/io/FilterOutputStream.class\
 	./java/io/BufferedReader.class\
+	./java/io/Reader.class\
 	./java/io/BufferedWriter.class\
+	./java/io/Writer.class\
+	./java/lang/Error.class\
 	./java/io/ByteArrayInputStream.class\
 	./java/io/ByteArrayOutputStream.class\
+	./java/lang/NumberFormatException.class\
+	./java/io/UnsupportedEncodingException.class\
 	./java/io/CharArrayReader.class\
 	./java/io/CharArrayWriter.class\
+	./java/io/CharConversionException.class\
 	./java/io/DataInput.class\
 	./java/io/EOFException.class\
 	./java/io/UTFDataFormatException.class\
+	./java/io/DataInputStream.class\
 	./java/io/PushbackInputStream.class\
 	./java/io/DataOutput.class\
 	./java/io/DataOutputStream.class\
 	./java/io/Externalizable.class\
 	./java/io/ObjectInput.class\
 	./java/io/ObjectOutput.class\
+	./java/io/File.class\
 	./java/io/FilenameFilter.class\
 	./java/lang/ClassCastException.class\
 	./java/io/FileDescriptor.class\
@@ -1922,8 +1660,11 @@ CLASSES = \
 	./java/io/FileReader.class\
 	./java/io/InputStreamReader.class\
 	./java/io/FileWriter.class\
+	./java/io/OutputStreamWriter.class\
 	./java/io/FilterReader.class\
 	./java/io/FilterWriter.class\
+	./gnu/java/io/decode/Decoder.class\
+	./gnu/java/io/EncodingManager.class\
 	./java/io/InterruptedIOException.class\
 	./java/io/InvalidClassException.class\
 	./java/io/ObjectStreamException.class\
@@ -1934,8 +1675,12 @@ CLASSES = \
 	./java/io/NotActiveException.class\
 	./java/io/NotSerializableException.class\
 	./java/io/ObjectStreamConstants.class\
+	./java/io/StreamCorruptedException.class\
+	./java/lang/RuntimeException.class\
+	./gnu/java/io/ObjectIdentityWrapper.class\
 	./java/io/ObjectStreamClass.class\
 	./java/io/ObjectStreamField.class\
+	./gnu/java/lang/reflect/TypeSignature.class\
 	./java/lang/NoSuchMethodError.class\
 	./java/io/WriteAbortedException.class\
 	./java/io/ObjectInputValidation.class\
@@ -1947,15 +1692,17 @@ CLASSES = \
 	./java/io/ObjectOutputStream.class\
 	./java/io/Replaceable.class\
 	./java/lang/IndexOutOfBoundsException.class\
-	./java/security/NoSuchAlgorithmException.class\
+	./gnu/java/io/NullOutputStream.class\
 	./java/util/Comparator.class\
 	./java/io/InterfaceComparator.class\
 	./java/io/MemberComparator.class\
+	./gnu/java/io/encode/Encoder.class\
 	./java/io/PipedInputStream.class\
 	./java/io/PipedOutputStream.class\
 	./java/io/PipedReader.class\
 	./java/io/PipedWriter.class\
 	./java/io/PrintStream.class\
+	./java/io/PrintWriter.class\
 	./java/io/RandomAccessFile.class\
 	./java/io/SequenceInputStream.class\
 	./java/io/StreamTokenizer.class\
@@ -1963,10 +1710,12 @@ CLASSES = \
 	./java/io/StringReader.class\
 	./java/io/StringWriter.class\
 	./java/io/FilePermission.class\
+	./java/io/FileFilter.class\
 	./java/lang/NegativeArraySizeException.class\
 	./java/lang/Number.class\
 	./java/lang/Math.class\
 	./java/lang/Block.class\
+	./gnu/java/lang/ClassLoaderHelper.class\
 	./java/lang/CharAttr.class\
 	./java/net/MalformedURLException.class\
 	./java/lang/Cloneable.class\
@@ -1977,10 +1726,12 @@ CLASSES = \
 	./java/lang/IllegalThreadStateException.class\
 	./java/lang/UnsupportedOperationException.class\
 	./java/lang/ArithmeticException.class\
+	./Double.class\
 	./java/lang/ClassCircularityError.class\
 	./java/lang/LinkageError.class\
 	./java/lang/AbstractMethodError.class\
 	./java/lang/IncompatibleClassChangeError.class\
+	./Float.class\
 	./java/lang/InstantiationError.class\
 	./java/lang/ExceptionInInitializerError.class\
 	./java/lang/IllegalAccessError.class\
@@ -1995,13 +1746,11 @@ CLASSES = \
 	./java/lang/VerifyError.class\
 	./java/lang/UnsupportedClassVersionError.class\
 	./java/math/BigInteger.class\
-	./java/net/Authenticator.class\
-	./java/security/AccessControlException.class\
-	./java/net/NetPermission.class\
-	./java/net/PasswordAuthentication.class\
 	./java/net/BindException.class\
 	./java/net/SocketException.class\
 	./java/net/ConnectException.class\
+	./java/net/ContentHandler.class\
+	./java/net/URLConnection.class\
 	./java/net/ContentHandlerFactory.class\
 	./java/net/DatagramPacket.class\
 	./java/net/DatagramSocket.class\
@@ -2010,96 +1759,34 @@ CLASSES = \
 	./java/net/UnknownHostException.class\
 	./java/net/SocketOptions.class\
 	./java/net/FileNameMap.class\
-	./java/net/JarURLConnection.class\
+	./java/net/HttpURLConnection.class\
+	./java/net/ProtocolException.class\
 	./java/net/MimeTypeMapper.class\
 	./java/net/MulticastSocket.class\
-	./java/security/BasicPermission.class\
 	./java/net/NoRouteToHostException.class\
+	./java/net/PasswordAuthentication.class\
 	./java/net/PlainSocketImpl.class\
 	./java/net/SocketImpl.class\
 	./java/net/SocketInputStream.class\
 	./java/net/SocketOutputStream.class\
 	./java/net/ServerSocket.class\
 	./java/net/SocketImplFactory.class\
-	./java/net/SocketPermission.class\
+	./java/net/Socket.class\
 	./java/net/URLStreamHandlerFactory.class\
+	./java/net/URLStreamHandler.class\
 	./java/net/UnknownServiceException.class\
 	./java/net/URLEncoder.class\
-	./java/security/acl/Acl.class\
-	./java/security/acl/Owner.class\
-	./java/security/Principal.class\
-	./java/security/acl/NotOwnerException.class\
-	./java/security/acl/AclEntry.class\
-	./java/security/acl/Permission.class\
-	./java/security/acl/AclNotFoundException.class\
-	./java/security/acl/Group.class\
-	./java/security/acl/LastOwnerException.class\
-	./java/security/AllPermission.class\
-	./java/security/Certificate.class\
-	./java/security/PublicKey.class\
-	./java/security/KeyException.class\
-	./java/security/CodeSource.class\
-	./java/security/DigestException.class\
-	./java/security/GeneralSecurityException.class\
-	./java/security/Guard.class\
-	./java/security/GuardedObject.class\
-	./java/security/InvalidAlgorithmParameterException.class\
-	./java/security/InvalidKeyException.class\
-	./java/security/InvalidParameterException.class\
-	./java/security/Key.class\
-	./java/security/KeyManagementException.class\
-	./java/security/KeyStoreException.class\
-	./java/security/NoSuchProviderException.class\
-	./java/security/Permissions.class\
-	./java/util/NoSuchElementException.class\
-	./java/security/PrivateKey.class\
-	./java/security/PrivilegedAction.class\
-	./java/security/PrivilegedActionException.class\
-	./java/security/PrivilegedExceptionAction.class\
-	./java/security/ProtectionDomain.class\
-	./java/security/Provider.class\
-	./java/security/ProviderException.class\
-	./java/security/SecurityPermission.class\
-	./java/security/SignatureException.class\
-	./java/security/UnrecoverableKeyException.class\
-	./java/security/UnresolvedPermission.class\
-	./java/security/interfaces/DSAKey.class\
-	./java/security/interfaces/DSAParams.class\
-	./java/security/interfaces/DSAKeyPairGenerator.class\
-	./java/security/interfaces/DSAPrivateKey.class\
-	./java/security/interfaces/DSAPublicKey.class\
-	./java/security/interfaces/RSAPrivateCrtKey.class\
-	./java/security/interfaces/RSAPrivateKey.class\
-	./java/security/interfaces/RSAPublicKey.class\
-	./java/util/AbstractCollection.class\
-	./java/util/Collection.class\
-	./java/util/Iterator.class\
-	./java/util/AbstractList.class\
-	./java/util/List.class\
-	./java/util/ListIterator.class\
-	./java/util/ConcurrentModificationException.class\
-	./java/util/AbstractMap.class\
-	./java/util/Map.class\
-	./java/util/Set.class\
-	./java/util/AbstractSet.class\
-	./java/util/AbstractSequentialList.class\
-	./java/util/BasicMapEntry.class\
-	./java/util/Bucket.class\
-	./java/util/Collections.class\
-	./java/util/SortedMap.class\
-	./java/util/SortedSet.class\
-	./java/util/Dictionary.class\
-	./java/util/EmptyStackException.class\
-	./java/util/HashMap.class\
-	./java/util/HashSet.class\
-	./java/util/Stack.class\
-	./java/util/LinkedList.class\
 	./java/text/Annotation.class\
 	./java/text/AttributedCharacterIterator.class\
 	./java/text/CharacterIterator.class\
+	./java/util/Set.class\
+	./java/util/Map.class\
 	./java/text/AttributedString.class\
 	./java/text/StringCharacterIterator.class\
+	./java/util/HashSet.class\
+	./java/util/Iterator.class\
 	./java/text/AttributedStringIterator.class\
+	./java/util/HashMap.class\
 	./java/text/BreakIterator.class\
 	./java/text/DefaultBreakIterator.class\
 	./java/text/CollationElementIterator.class\
@@ -2110,7 +1797,63 @@ CLASSES = \
 	./java/text/FieldPosition.class\
 	./java/text/Format.class\
 	./java/text/ParsePosition.class\
+	./java/text/NumberFormat.class\
 	./java/text/ChoiceFormat.class\
+	./java/util/AbstractCollection.class\
+	./java/util/Collection.class\
+	./java/util/AbstractList.class\
+	./java/util/List.class\
+	./java/util/ListIterator.class\
+	./java/util/ConcurrentModificationException.class\
+	./java/util/NoSuchElementException.class\
+	./java/util/AbstractMap.class\
+	./java/util/AbstractSet.class\
+	./java/util/AbstractSequentialList.class\
+	./java/util/BasicMapEntry.class\
+	./java/util/Bucket.class\
+	./java/util/Collections.class\
+	./java/util/SortedMap.class\
+	./java/util/SortedSet.class\
+	./java/util/Dictionary.class\
+	./java/util/EmptyStackException.class\
+	./java/util/Stack.class\
+	./java/util/LinkedList.class\
+	./gnu/java/lang/ArrayHelper.class\
+	./gnu/java/beans/EmptyBeanInfo.class\
+	./gnu/java/beans/DoubleKey.class\
+	./gnu/java/beans/info/ComponentBeanInfo.class\
+	./gnu/java/io/decode/Decoder8859_1.class\
+	./gnu/java/io/decode/DecoderEightBitLookup.class\
+	./gnu/java/io/decode/Decoder8859_2.class\
+	./gnu/java/io/decode/Decoder8859_3.class\
+	./gnu/java/io/decode/Decoder8859_4.class\
+	./gnu/java/io/decode/Decoder8859_5.class\
+	./gnu/java/io/decode/DecoderUTF8.class\
+	./gnu/java/io/encode/Encoder8859_1.class\
+	./gnu/java/io/encode/EncoderEightBitLookup.class\
+	./gnu/java/io/encode/Encoder8859_2.class\
+	./gnu/java/io/encode/Encoder8859_3.class\
+	./gnu/java/io/encode/Encoder8859_4.class\
+	./gnu/java/io/encode/Encoder8859_5.class\
+	./gnu/java/io/encode/EncoderUTF8.class\
+	./gnu/java/lang/ExecutionStack.class\
+	./gnu/java/lang/StackFrame.class\
+	./gnu/java/lang/MainThread.class\
+	./gnu/java/locale/LocaleInformation_en.class\
+	./gnu/java/locale/LocaleInformation.class\
+	./gnu/java/net/content/text/plain.class\
+	./gnu/java/net/http/Handler.class\
+	./gnu/java/net/http/HttpURLConnection.class\
+	./gnu/test/Fail.class\
+	./gnu/test/Result.class\
+	./gnu/test/Pass.class\
+	./gnu/test/Test.class\
+	./gnu/test/Unresolved.class\
+	./gnu/test/Unsupported.class\
+	./gnu/test/Untested.class\
+	./gnu/test/XFail.class\
+	./gnu/test/XPass.class\
+	./gnu/tools/serialver/Main.class\
 # end of classes list
 HEADERS = \
 	java_lang_reflect_Constructor.h\
@@ -2297,22 +2040,6 @@ HEADERS = \
 	java_lang_Class.c\
 	java_lang_Class.h\
 	java_lang_Class.c\
-	gnu_java_lang_ExecutionStack.h\
-	gnu_java_lang_ExecutionStack.c\
-	gnu_java_lang_ExecutionStack.h\
-	gnu_java_lang_ExecutionStack.c\
-	gnu_java_lang_ExecutionStack.h\
-	gnu_java_lang_ExecutionStack.c\
-	gnu_java_lang_ExecutionStack.h\
-	gnu_java_lang_ExecutionStack.c\
-	gnu_java_lang_ExecutionStack.h\
-	gnu_java_lang_ExecutionStack.c\
-	gnu_java_lang_ExecutionStack.h\
-	gnu_java_lang_ExecutionStack.c\
-	gnu_java_lang_ExecutionStack.h\
-	gnu_java_lang_ExecutionStack.c\
-	gnu_java_lang_ExecutionStack.h\
-	gnu_java_lang_ExecutionStack.c\
 	java_io_File.h\
 	java_io_File.c\
 	java_io_File.h\
@@ -2471,6 +2198,22 @@ HEADERS = \
 	java_lang_System.c\
 	java_lang_System.h\
 	java_lang_System.c\
+	Double.h\
+	Double.c\
+	Double.h\
+	Double.c\
+	Double.h\
+	Double.c\
+	Double.h\
+	Double.c\
+	Float.h\
+	Float.c\
+	Float.h\
+	Float.c\
+	Float.h\
+	Float.c\
+	Float.h\
+	Float.c\
 	java_math_BigInteger.h\
 	java_math_BigInteger.c\
 	java_math_BigInteger.h\
@@ -2583,4 +2326,20 @@ HEADERS = \
 	java_net_PlainSocketImpl.c\
 	java_net_PlainSocketImpl.h\
 	java_net_PlainSocketImpl.c\
+	gnu_java_lang_ExecutionStack.h\
+	gnu_java_lang_ExecutionStack.c\
+	gnu_java_lang_ExecutionStack.h\
+	gnu_java_lang_ExecutionStack.c\
+	gnu_java_lang_ExecutionStack.h\
+	gnu_java_lang_ExecutionStack.c\
+	gnu_java_lang_ExecutionStack.h\
+	gnu_java_lang_ExecutionStack.c\
+	gnu_java_lang_ExecutionStack.h\
+	gnu_java_lang_ExecutionStack.c\
+	gnu_java_lang_ExecutionStack.h\
+	gnu_java_lang_ExecutionStack.c\
+	gnu_java_lang_ExecutionStack.h\
+	gnu_java_lang_ExecutionStack.c\
+	gnu_java_lang_ExecutionStack.h\
+	gnu_java_lang_ExecutionStack.c\
 # end of stubs list
