@@ -39,10 +39,7 @@ exception statement from your version. */
 #include "gtkpeer.h"
 #include "gnu_java_awt_peer_gtk_GtkCheckboxPeer.h"
 
-static void connect_checkbox_item_selectable_hook (JNIEnv *env, 
-						   jobject peer_obj, 
-						   GtkToggleButton *item, 
-						   jobject item_obj);
+static void item_toggled (GtkToggleButton *item, jobject peer);
 
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeCreate
@@ -69,6 +66,28 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeCreate
   gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, button);
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_connectHooks
+  (JNIEnv *env, jobject obj)
+{
+  void *ptr = NSA_GET_PTR (env, obj);
+  jobject peer;
+
+  gdk_threads_enter ();
+
+  peer = (*env)->NewGlobalRef (env, obj);
+
+  /* FIXME: when the widget goes away, we should get rid of the global
+     reference.  */
+  gtk_signal_connect (GTK_OBJECT (ptr), "toggled",
+		      GTK_SIGNAL_FUNC (item_toggled), peer);
+
+  gdk_threads_leave ();
+
+  /* Connect the superclass hooks.  */
+  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectHooks (env, obj);
 }
 
 JNIEXPORT void JNICALL 
@@ -123,28 +142,12 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeSetCheckboxGroup
 }
 
 static void
-item_toggled (GtkToggleButton *item, struct item_event_hook_info *ie)
+item_toggled (GtkToggleButton *item, jobject peer)
 {
-  (*gdk_env)->CallVoidMethod (gdk_env, ie->peer_obj,
+  (*gdk_env)->CallVoidMethod (gdk_env, peer,
 			      postItemEventID,
-			      ie->item_obj,
+			      peer,
 			      item->active ?
 			      (jint) AWT_ITEM_SELECTED :
 			      (jint) AWT_ITEM_DESELECTED);
-}
-
-static void
-connect_checkbox_item_selectable_hook (JNIEnv *env, jobject peer_obj, 
-				       GtkToggleButton *item, jobject item_obj)
-{
-  struct item_event_hook_info *ie;
-
-  ie = (struct item_event_hook_info *) 
-    malloc (sizeof (struct item_event_hook_info));
-
-  ie->peer_obj = (*env)->NewGlobalRef (env, peer_obj);
-  ie->item_obj = (*env)->NewGlobalRef (env, item_obj);
-
-  gtk_signal_connect (GTK_OBJECT (item), "toggled", 
-		      GTK_SIGNAL_FUNC (item_toggled), ie);
 }

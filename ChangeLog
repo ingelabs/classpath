@@ -1,3 +1,15 @@
+2002-03-24  Tom Tromey  <tromey@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_connectHooks): New
+	function.
+	(connect_checkbox_item_selectable_hook): Removed.
+	(item_toggled): Use jobject as second argument.
+	(connect_checkbox_item_selectable_hook): Removed.
+	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java (postItemEvent): New
+	method.
+	(connectHooks): Likewise.
+
 2002-03-23  Michael Smith  <msmith@spinnakernet.com>
 
 	* java/util/GregorianCalendar.java (minimums, maximums): Correct

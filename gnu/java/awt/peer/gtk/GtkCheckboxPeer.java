@@ -49,6 +49,7 @@ public class GtkCheckboxPeer extends GtkComponentPeer
   public native void nativeCreate (CheckboxGroup group);
   public native void nativeSetCheckboxGroup (CheckboxGroup group,
 					     CheckboxGroup old_group);
+  public native void connectHooks ();
 
   public GtkCheckboxPeer (Checkbox c)
   {
@@ -86,5 +87,12 @@ public class GtkCheckboxPeer extends GtkComponentPeer
     super.getArgs (component, args);
     args.add ("active", ((Checkbox) component).getState ());
     args.add ("label", ((Checkbox) component).getLabel ());
+  }
+
+  // Override the superclass postItemEvent so that the peer doesn't
+  // need information that we have.
+  public void postItemEvent (Object item, int stateChange)
+  {
+    super.postItemEvent (awtComponent, stateChange);
   }
 }
