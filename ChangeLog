@@ -1,3 +1,7 @@
+2004-07-28  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/net/http/.cvsignore: Removed.
+
 2004-07-28  Mark Wielaard  <mark@klomp.org>
 
 	* vm/reference/java/io/VMFile.java (toCanonicalForm): Made
