@@ -625,7 +625,7 @@ public abstract class JTextComponent extends JComponent
    * @see #setKeymap()
    * @see #keymap
    */
-  Keymap getKeymap() 
+  public Keymap getKeymap() 
   {
     return keymap;
   }
