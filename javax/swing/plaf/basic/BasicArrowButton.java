@@ -350,30 +350,30 @@ public class BasicArrowButton extends JButton implements SwingConstants
   {
     Polygon arrow;
     double dsize = (double) size;
-
+		
+		int one = (int) (dsize * 1 / 10);
     int two = (int) (dsize * 2 / 10);
-    int three = (int) (dsize * 3 / 10);
-    int five = (int) (dsize * 5 / 10);
-    int seven = (int) (dsize * 7 / 10);
+		int five = (int) (dsize * 5 / 10);
     int eight = (int) (dsize * 8 / 10);
+		
     switch (direction)
       {
       case NORTH:
-	arrow = new Polygon(new int[] { two, five, eight },
-	                    new int[] { seven, three, seven }, 3);
+	arrow = new Polygon(new int[] { eight, five, one },
+	                    new int[] { eight, one, eight }, 3);
 	break;
       case SOUTH:
-	arrow = new Polygon(new int[] { two, five, eight },
-	                    new int[] { three, seven, three }, 3);
+	arrow = new Polygon(new int[] { eight, five, two },
+	                    new int[] { two, eight, two }, 3);
 	break;
       case EAST:
       case RIGHT:
-	arrow = new Polygon(new int[] { three, seven, three },
+	arrow = new Polygon(new int[] { two, eight, two },
 	                    new int[] { two, five, eight }, 3);
 	break;
       case WEST:
       case LEFT:
-	arrow = new Polygon(new int[] { seven, three, seven },
+	arrow = new Polygon(new int[] { eight, two, eight },
 	                    new int[] { two, five, eight }, 3);
 	break;
       default:

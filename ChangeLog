@@ -1,3 +1,60 @@
+2004-09-04  Mark Wielaard  <mark@klomp.org>
+
+	* examples/gnu/classpath/examples/swing/Demo.java (mkColorChooser):
+	New method.
+
+2004-09-04  Graydon Hoare  <graydon@redhat.com>
+
+        * javax/swing/JColorChooser.java:
+        Make a couple inner classes static, for jikes.
+
+2004-09-04  Kim Ho  <kho@redhat.com>
+
+        * java/awt/Color.java: Fix documentation.
+        (RGBtoHSB): Use floats for conversions.
+        * javax/swing/ButtonGroup.java: Run Jalopy.
+        (setSelected): Reimplement.
+        * javax/swing/DefaultButtonModel.java: Run Jalopy.
+        (changeState): Let ButtonGroup know that the button 
+        is changing state.
+        * javax/swing/JColorChooser.java: Implement.
+        * javax/swing/JLabel.java: Run Jalopy.
+        * javax/swing/JSpinner.java: Run Jalopy.
+        (setValue): New method.
+        * javax/swing/JTabbedPane.java: Run Jalopy.
+        (removeTabAt): Call correct remove method.
+        * javax/swing/SpinnerNumberModel.java: Run Jalopy.
+        (getPreviousValue): Compare minimum value.
+        * javax/swing/Timer.java: Run Jalopy.
+        (run): Comment out println.
+        * javax/swing/ToolTipManager.java:
+        (mouseMoved): Get new tooltip text for location.
+        * javax/swing/colorchooser/AbstractColorChooserPanel.java:
+        Jalopy and Javadoc.
+        * javax/swing/colorchooser/ColorChooserComponentFactory.java:
+        Implement.
+        * javax/swing/colorchooser/DefaultColorSelectionModel.java:
+        Run Jalopy.
+        (setSelectedColor): Fire ChangeEvent.
+        * javax/swing/colorchooser/DefaultHSBChooserPanel.java:
+        New file. Implement.
+        * javax/swing/colorchooser/DefaultPreviewPanel.java:
+        Ditto.
+        * javax/swing/colorchooser/DefaultRGBChooserPanel.java:
+        Ditto.
+        * javax/swing/colorchooser/DefaultSwatchChooserPanel.java:
+        Ditto.
+        * javax/swing/plaf/basic/BasicArrowButton.java:
+        (getArrow): Fix size of upward pointing button.
+        * javax/swing/plaf/basic/BasicColorChooserUI.java:
+        Implement.
+        * javax/swing/plaf/basic/BasicSliderUI.java:
+        (getWidthOfWidestLabel): Use preferred dimensions.
+        (getHeightOfTallestLabel): Ditto.
+        * javax/swing/plaf/basic/BasicSpinnerUI.java:
+        Run Jalopy.
+        (mousePressed): Disable changes to spinner if it is not enabled.
+
 2004-09-04  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/DeleteFileHelper.java (DeleteFileHelper): No longer

@@ -669,6 +669,11 @@ public class Demo
     return close;
   }
 
+  public static JColorChooser mkColorChooser()
+  {
+    return new JColorChooser();
+  }
+
   private static class PopUpAction
     implements ActionListener
   {
@@ -756,6 +761,10 @@ public class Demo
 
     new PopUpAction("TextField",
 		    mkTextField("Hello, World!"),
+		    panel);
+
+    new PopUpAction("ColorChooser",
+		    mkColorChooser(),
 		    panel);
 
     JButton exitDisposer = mkDisposerButton(frame);
