@@ -1,3 +1,11 @@
+2003-06-24  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/plaf/DesktopIconUI.java: Reformatted, wrote JavaDoc.
+	* javax/swing/plaf/DesktopPaneUI.java: Likewise.
+	* javax/swing/plaf/DimensionUIResource.java: Likewise.
+	* javax/swing/plaf/FileChooserUI.java: Likewise.
+	* javax/swing/plaf/FontUIResource.java: Likewise.
+	
 2003-06-24  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/Toolkit.java
