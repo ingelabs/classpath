@@ -1,3 +1,11 @@
+2001-06-13  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/Date.java (toLocaleString): Deprecated.
+	(toGMTSTring): Likewise.
+	(parse): Likewise.
+	(skipParens, parseTz, parseMonth, parseDayOfWeek, parse): New
+	methods from libgcj.
+
 2001-06-04  Tom Tromey  <tromey@redhat.com>
 
 	* java/security/PublicKey.java: Extend Key.
