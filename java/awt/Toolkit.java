@@ -332,6 +332,18 @@ createWindow(Window target);
 /*************************************************************************/
 
 /**
+  * Creates a peer object for the specified <code>Dialog</code>.
+  *
+  * @param target The dialog to create the peer for
+  *
+  * @return The peer for the specified font name.
+  */
+protected abstract DialogPeer
+createDialog(Dialog target);
+
+/*************************************************************************/
+
+/**
   * Creates a peer object for the specified <code>MenuBar</code>.
   *
   * @param target The <code>MenuBar</code> to create the peer for.
