@@ -81,6 +81,10 @@ extern "C" {
   #include <math.h>
   #define TARGET_NATIVE_MATH_FLOAT_FLOAT_ISINF(f) isinf(f)
 #endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_FINITE
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_FINITE(f) finite(f)
+#endif
 
 #ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_ISNAN
   #include <math.h>
@@ -89,6 +93,10 @@ extern "C" {
 #ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_ISINF
   #include <math.h>
   #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_ISINF(d) isinf(d)
+#endif
+#ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_FINITE
+  #include <math.h>
+  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_FINITE(d) finite(d)
 #endif
 
 /* division, modulo operations (used to avoid unexcepted exceptions on some
