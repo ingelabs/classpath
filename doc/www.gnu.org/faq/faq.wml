@@ -480,6 +480,22 @@ crashes then make sure that your java source files don't contain such
 entities.
 
 
+Alternatively, you may also try the following command (the one used to generate the doc on <createlink url="http://developer.classpath.org/doc/">):
+<code>
+$(GJDOC) -public -use \
+        -sourcepath "$(sourcepath)" \
+        -encoding UTF-8 \
+        -breakiterator \
+        -licensetext \
+        -linksource \
+        -splitindex \
+        -d html \
+        -doctitle "GNU Classpath $(VERSION)" \
+        -windowtitle "GNU Classpath $(VERSION) Documentation" \
+        -header $(classpathbox) -footer $(classpathbox) \
+        -subpackages java:javax:org
+</code>
+
 </faq>
 </faq-section>
 </box>
