@@ -58,6 +58,21 @@ public class GregorianCalendar extends Calendar {
 
     static final long serialVersionUID = -8125100834729963327L;
 
+    // Placeholder constructors
+    public GregorianCalendar(int year, int month, int day)
+    {
+      ;
+    }
+    public GregorianCalendar(int year, int month, int day, int hour, int min)
+    {
+      ;
+    }
+    public GregorianCalendar(int year, int month, int day, int hour, int min,
+                             int sec)
+    {
+      ;
+    } 
+
     /**
      * Constructs a new GregorianCalender representing the current
      * time, using the default time zone and the default locale.  
