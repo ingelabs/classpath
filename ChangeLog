@@ -1,5 +1,39 @@
 2003-02-15  Julian Dolby  <dolby@us.ibm.com>
 
+	* configure.in (portable-native-sync): new configure option allows
+	user to configure native AWT peers to use Java threading primitives
+	instead of pthread primitives.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMainThread.c
+	(Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit): get JavaVM 
+	reference before calling g_thread_init if using PORTABLE_NATIVE_SYNC
+	* native/jni/gtk-peer/gthread-jni.c
+	(maybe_rethrow): utility method checks for JNI exception and throws
+	another exception (maybe it should clear the previous first?)
+	(allocatePlainObject): new method used to create a mutex
+	(freePlainObject): new method use to free a mutex
+	(takeLock): new method
+	(releaseLock): new method
+	(g_mutex_new_jni_impl): uses allocatePlainObject instead
+	(g_mutex_lock_jni_impl): uses takeLock instead
+        (g_mutex_unlock_jni_impl): uses releaseLock instead
+	(g_mutex_free_jni_impl): uses freePlainObject instead
+        (g_private_new_jni_impl): implemented
+	(g_private_get_jni_impl): implemented
+	(g_private_set_jni_impl): implemented
+	(g_cond_new_jni_impl): implemented; uses allocatePlainObject
+        (g_cond_signal_jni_impl): implemented
+	(g_cond_broadcast_jni_impl): implemented
+        (g_cond_wait_jni_impl): implemented
+        (g_cond_timed_wait_jni_impl): implemented
+        (g_cond_free_jni_impl): implemented; uses freePlainObject
+	* native/jni/gtk-peer/gthread-jni.h: extern JavaVM *gdk_vm
+
+2003-02-15  C. Brian Jones  <cbj@gnu.org>
+
+	* TODO: updated
+
+2003-02-15  Julian Dolby  <dolby@us.ibm.com>
+
 	* java/util/zip/InflaterInputStream.java (markSupported): added method
 	(mark): added method
 	(reset): added method

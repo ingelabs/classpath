@@ -1,13 +1,14 @@
 The Classpath TODO list as of 2002/05/05
 
--- Modify Classpath build to support libgcj out of the box.  Ideally
-   the gcj folks could simply include a stock classpath in one of their
-   distribution subdirectories, have their master configure run a configure
-   on Classpath the appropriate arguments, and everything would build.
+-- Write Mauve (http://sourceware.cygnus.com/mauve/) tests for those
+   classes that don't have them.
+
+-- Write Java 2 packages not currently included or improve existing 
+   ones.
 
 -- Modify ClassLoader.getSystemResource() to support loading classes 
    from zip files in the CLASSPATH.  This requires java.util.zip to
-   be integrated first.  Jar filed can probably be treated as zip
+   be integrated first.  Jar files can probably be treated as zip
    files for now.
 
 -- Continue comparison and merge of classes between Classpath and GCJ.
@@ -26,12 +27,6 @@ The Classpath TODO list as of 2002/05/05
 
 -- Update the GNU Classpath Hacker's Guide.  There is a master texinfo
    file in the doc/ directory in Classpath CVS.
-
--- Write Mauve (http://sourceware.cygnus.com/mauve/) tests for those
-   classes that don't have them.
-
--- Write Java 2 packages not currently included or improve existing 
-   ones.
 
 -- Audit the code to identify methods that do not have Javadoc comments
    and/or comments that are incomplete.  All input parameters, return
@@ -64,13 +59,14 @@ The Classpath TODO list as of 2002/05/05
    JDK 1.1 version.  You can obtain that variable value using the
    serialver command.
 
--- Do real life serialization compatibility tests of our code with Kaffe 
-   and the JDK.
+-- Do real life serialization compatibility tests of our code vs 
+   the JDK using serialcompat from Japitools.
 
 -- Audit code for thread safety. 
 
--- Update the packaging of Classpath to make sure that we can build
-   good distribution tarballs.
+-- Audit Java code for proper Security implementation.
+
+-- Audit native code for security, memory handling, etc.
 
 -- Bug reports are always welcome.  They are double welcome if they
    are accompanied by a Mauve test that reproduces the bug.

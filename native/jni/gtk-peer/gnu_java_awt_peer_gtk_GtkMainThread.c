@@ -56,6 +56,10 @@ jmethodID postItemEventID;
 jmethodID postListItemEventID;
 JNIEnv *gdk_env;
 
+#ifdef PORTABLE_NATIVE_SYNC
+JavaVM *gdk_vm;
+#endif
+
 /*
  * Call gtk_init.  It is very important that this happen before any other
  * gtk calls.
@@ -81,7 +85,12 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 
   /* until we have JDK 1.2 JNI, assume we have a VM with threads that 
      match what GLIB was compiled for */
-  g_thread_init (NULL);
+#ifdef PORTABLE_NATIVE_SYNC
+  (*env)->GetJavaVM( env, &gdk_vm );
+  g_thread_init ( &g_thread_jni_functions );
+#else
+  g_thread_init ( NULL );
+#endif
 
   gtk_init (&argc, &argv);
 
@@ -101,7 +110,7 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
       rcpath = (char *) malloc (strlen (homedir) + strlen (RC_FILE) + 2);
       sprintf (rcpath, "%s/%s", homedir, RC_FILE);
     }
-  
+
   gtk_rc_parse ((rcpath) ? rcpath : RC_FILE);
 
   if (rcpath)
@@ -114,10 +123,13 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 /*  				      "gnu/java/awt/peer/gtk/GtkGenericPeer"); */
   gtkcomponentpeer = (*env)->FindClass (env,
 				     "gnu/java/awt/peer/gtk/GtkComponentPeer");
+
   gtkwindowpeer = (*env)->FindClass (env,
 				     "gnu/java/awt/peer/gtk/GtkWindowPeer");
+
   gtkscrollbarpeer = (*env)->FindClass (env, 
 				     "gnu/java/awt/peer/gtk/GtkScrollbarPeer");
+
   gtklistpeer = (*env)->FindClass (env, "gnu/java/awt/peer/gtk/GtkListPeer");
   gtkmenuitempeer = (*env)->FindClass (env, "gnu/java/awt/peer/gtk/GtkMenuItemPeer");
 /*    gdkColor = (*env)->FindClass (env, */
