@@ -128,7 +128,7 @@ public class Thread implements Runnable
   private ClassLoader contextClassLoader;
 
   /** The next thread number to use. */
-  private static int numAnonymousThreadsCreated = 0;
+  private static int numAnonymousThreadsCreated;
 
   /**
    * Allocates a new <code>Thread</code> object. This constructor has
