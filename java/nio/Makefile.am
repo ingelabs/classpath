@@ -9,26 +9,26 @@ ByteBufferImpl.java \
 ByteOrder.java \
 CharBuffer.java \
 CharBufferImpl.java \
-CharViewBuffer.java \
+CharViewBufferImpl.java \
 DirectByteBufferImpl.java \
 DoubleBuffer.java \
 DoubleBufferImpl.java \
-DoubleViewBuffer.java \
+DoubleViewBufferImpl.java \
 FloatBuffer.java \
 FloatBufferImpl.java \
-FloatViewBuffer.java \
+FloatViewBufferImpl.java \
 IntBuffer.java \
 IntBufferImpl.java \
-IntViewBuffer.java \
+IntViewBufferImpl.java \
 InvalidMarkException.java \
 LongBuffer.java \
 LongBufferImpl.java \
-LongViewBuffer.java \
+LongViewBufferImpl.java \
 MappedByteBuffer.java \
 MappedByteBufferImpl.java \
 ReadOnlyBufferException.java \
 ShortBuffer.java \
 ShortBufferImpl.java \
-ShortViewBuffer.java \
+ShortViewBufferImpl.java \
 package.html
 
