@@ -1,5 +1,10 @@
 2005-02-15  Mark Wielaard  <mark@klomp.org>
 
+	* java/util/jar/Attributes.java (Name.CLASS_PATH): Document that
+	file path elements are separated by spaces.
+
+2005-02-15  Mark Wielaard  <mark@klomp.org>
+
 	* javax/net/ssl/SSLContext.java (getInstance): Add exception message
 	and/or cause before throwing.
 
