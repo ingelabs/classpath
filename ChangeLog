@@ -1,5 +1,12 @@
 2004-11-30  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/tree/DefaultMutableTreeNode.java:
+	Completely Revised.
+	* javax/swing/tree/MutableTreeNode.java:
+	Reformatted.
+
+2004-11-30  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JFormattedTextField.java
 	(setDocument): Call setDocument of super class. Don't fire property
 	change event.
