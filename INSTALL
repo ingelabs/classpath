@@ -31,9 +31,9 @@ Suggested Software
         - IBM jikes 1.15b+.  You may have success with 1.13, but other
           versions will fail.  Until jikes 1.16 is released, you will
           have to use CVS access and build jikes 1.15b yourself:
-          cvs login :pserver:anoncvs@www-124.ibm.com:/usr/cvs/jikes
+          cvs -d :pserver:anoncvs@www-124.ibm.com:/usr/cvs/jikes login
             (password anoncvs)
-          cvs co -r v1-15b jikes          
+          cvs co -r v1-15b jikes
         - The kjc compiler is supported with configure but we have
           been unable to successfully compile with it.
 

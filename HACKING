@@ -21,9 +21,9 @@ is required.
         - GNU GCJ 3.0.2+.
         - IBM jikes 1.15b+.  Until jikes 1.16 is released, you will
           have to use CVS access and build jikes 1.15b yourself:
-          cvs login :pserver:anoncvs@www-124.ibm.com:/usr/cvs/jikes
+          cvs -d :pserver:anoncvs@www-124.ibm.com:/usr/cvs/jikes login
             (password anoncvs)
-          cvs co -r v1-15b jikes          
+          cvs co -r v1-15b jikes
 
 For building the JNI native libraries, the following are required.
 

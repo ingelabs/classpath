@@ -1,5 +1,10 @@
 2002-02-09  Eric Blake  <ebb9@email.byu.edu>
 
+	* INSTALL: Last-minute typo in previous commit.
+	* HACKING: Ditto.
+
+2002-02-09  Eric Blake  <ebb9@email.byu.edu>
+
 	* INSTALL: Update instructions for using jikes 1.15b.
 	* HACKING: Ditto.
 	* ChangeLog: Clean up some whitespace.
