@@ -48,6 +48,130 @@ import java.util.Map;
  */
 public class DocFlavor implements Cloneable, Serializable
 {
+  /**
+   * @author Michael Koch (konqueror@gmx.de)
+   */
+  public static class BYTE_ARRAY
+    extends DocFlavor
+  {
+    public static final BYTE_ARRAY AUTOSENSE = new BYTE_ARRAY("application/octet-stream");
+    public static final BYTE_ARRAY GIF = new BYTE_ARRAY("image/gif");
+    public static final BYTE_ARRAY JPEG = new BYTE_ARRAY("image/jpeg");
+    public static final BYTE_ARRAY PCL = new BYTE_ARRAY("application/vnd.hp-PCL");
+    public static final BYTE_ARRAY PDF = new BYTE_ARRAY("application/pdf");
+    public static final BYTE_ARRAY PNG = new BYTE_ARRAY("image/png");
+    public static final BYTE_ARRAY POSTSCRIPT = new BYTE_ARRAY("application/postscript");
+    public static final BYTE_ARRAY TEXT_HTML_HOST = new BYTE_ARRAY("text/html");
+    public static final BYTE_ARRAY TEXT_HTML_US_ASCII = new BYTE_ARRAY("text/html; charset=us-ascii");
+    public static final BYTE_ARRAY TEXT_HTML_UTF_16 = new BYTE_ARRAY("text/html; charset=utf-16");
+    public static final BYTE_ARRAY TEXT_HTML_UTF_16BE = new BYTE_ARRAY("text/html; charset=utf-16be");
+    public static final BYTE_ARRAY TEXT_HTML_UTF_16LE = new BYTE_ARRAY("text/html; charset=utf-16le");
+    public static final BYTE_ARRAY TEXT_HTML_UTF_8 = new BYTE_ARRAY("text/html; charset=utf-8");
+    public static final BYTE_ARRAY TEXT_PLAIN_HOST = new BYTE_ARRAY("text/plain");
+    public static final BYTE_ARRAY TEXT_PLAIN_US_ASCII = new BYTE_ARRAY("text/plain; charset=us-ascii");
+    public static final BYTE_ARRAY TEXT_PLAIN_UTF_16 = new BYTE_ARRAY("text/plain; charset=utf-16");
+    public static final BYTE_ARRAY TEXT_PLAIN_UTF_16BE = new BYTE_ARRAY("text/plain; charset=utf-16be");
+    public static final BYTE_ARRAY TEXT_PLAIN_UTF_16LE = new BYTE_ARRAY("text/plain; charset=utf-16le");
+    public static final BYTE_ARRAY TEXT_PLAIN_UTF_8 = new BYTE_ARRAY("text/plain; charset=utf-8");
+    
+    public BYTE_ARRAY(String mimeType)
+    {
+      super(mimeType, "[B");
+    }
+  }
+  
+  /**
+   * @author Michael Koch (konqueror@gmx.de)
+   */
+  public static class CHAR_ARRAY
+    extends DocFlavor
+  {
+    public CHAR_ARRAY(String mimeType)
+    {
+      super(mimeType, "[C");
+    }
+  }
+  
+  /**
+   * @author Michael Koch (konqueror@gmx.de)
+   */
+  public static class INPUT_STREAM
+    extends DocFlavor
+  {
+    public static final INPUT_STREAM AUTOSENSE = new INPUT_STREAM("application/octet-stream");
+    public static final INPUT_STREAM GIF = new INPUT_STREAM("image/gif");
+    public static final INPUT_STREAM JPEG = new INPUT_STREAM("image/jpeg");
+    public static final INPUT_STREAM PCL = new INPUT_STREAM("application/vnd.hp-PCL");
+    public static final INPUT_STREAM PDF = new INPUT_STREAM("application/pdf");
+    public static final INPUT_STREAM PNG = new INPUT_STREAM("image/png");
+    public static final INPUT_STREAM POSTSCRIPT = new INPUT_STREAM("application/postscript");
+    public static final INPUT_STREAM TEXT_HTML_HOST = new INPUT_STREAM("text/html");
+    public static final INPUT_STREAM TEXT_HTML_US_ASCII = new INPUT_STREAM("text/html; charset=us-ascii");
+    public static final INPUT_STREAM TEXT_HTML_UTF_16 = new INPUT_STREAM("text/html; charset=utf-16");
+    public static final INPUT_STREAM TEXT_HTML_UTF_16BE = new INPUT_STREAM("text/html; charset=utf-16be");
+    public static final INPUT_STREAM TEXT_HTML_UTF_16LE = new INPUT_STREAM("text/html; charset=utf-16le");
+    public static final INPUT_STREAM TEXT_HTML_UTF_8 = new INPUT_STREAM("text/html; charset=utf-8");
+    public static final INPUT_STREAM TEXT_PLAIN_HOST = new INPUT_STREAM("text/plain");
+    public static final INPUT_STREAM TEXT_PLAIN_US_ASCII = new INPUT_STREAM("text/plain; charset=us-ascii");
+    public static final INPUT_STREAM TEXT_PLAIN_UTF_16 = new INPUT_STREAM("text/plain; charset=utf-16");
+    public static final INPUT_STREAM TEXT_PLAIN_UTF_16BE = new INPUT_STREAM("text/plain; charset=utf-16be");
+    public static final INPUT_STREAM TEXT_PLAIN_UTF_16LE = new INPUT_STREAM("text/plain; charset=utf-16le");
+    public static final INPUT_STREAM TEXT_PLAIN_UTF_8 = new INPUT_STREAM("text/plain; charset=utf-8");
+    
+    public INPUT_STREAM(String mimeType)
+    {
+      super(mimeType, "java.io.InputStream");
+    }
+  }
+  
+  /**
+   * @author Michael Koch (konqueror@gmx.de)
+   */
+  public static class READER
+    extends DocFlavor
+  {
+    public READER(String mimeType)
+    {
+      super(mimeType, "java.io.Reader");
+    }
+  }
+  
+  /**
+   * @author Michael Koch (konqueror@gmx.de)
+   */
+  public static class SERVICE_FORMATTED
+    extends DocFlavor
+  {
+    public SERVICE_FORMATTED(String className)
+    {
+      super("application/x-java-jvm-local-objectref", className);
+    }
+  }
+  
+  /**
+   * @author Michael Koch (konqueror@gmx.de)
+   */
+  public static class STRING
+    extends DocFlavor
+  {
+    public STRING(String mimeType)
+    {
+      super(mimeType, "java.lang.String");
+    }
+  }
+  
+  /**
+   * @author Michael Koch (konqueror@gmx.de)
+   */
+  public static class URL
+    extends DocFlavor
+  {
+    public URL(String mimeType)
+    {
+      super(mimeType, "java.net.URL");
+    }
+  }
+  
   private static final long serialVersionUID = -4512080796965449721L;
   
   public static final String hostEncoding = "US-ASCII";

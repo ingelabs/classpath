@@ -1,5 +1,10 @@
 2004-04-29  Michael Koch  <konqueror@gmx.de>
 
+	* javax/print/DocFlavor.java:
+	Implemented all flavor classes.
+
+2004-04-29  Michael Koch  <konqueror@gmx.de>
+
 	* javax/print/attribute/standard/ColorSupported.java,
 	javax/print/attribute/standard/Compression.java,
 	javax/print/attribute/standard/CopiesSupported.java,
