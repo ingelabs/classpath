@@ -703,14 +703,17 @@ public final class URL implements Serializable
   protected void set(String protocol, String host, int port, String file,
                      String ref)
   {
-    URLStreamHandler protocolHandler = getURLStreamHandler(protocol);
+    URLStreamHandler protocolHandler = null;
+    protocol = protocol.toLowerCase();
+    if (! this.protocol.equals(protocol))
+      protocolHandler = getURLStreamHandler(protocol);
     
     // It is an hidden feature of the JDK. If the protocol does not exist,
     // we keep the previously initialized protocol.
     if (protocolHandler != null)
       {
-        this.ph = protocolHandler;
-        this.protocol = protocol.toLowerCase();
+	this.ph = protocolHandler;
+	this.protocol = protocol;
       }
     this.authority = "";
     this.port = port;
@@ -746,14 +749,17 @@ public final class URL implements Serializable
   protected void set(String protocol, String host, int port, String authority,
                      String userInfo, String path, String query, String ref)
   {
-    URLStreamHandler protocolHandler = getURLStreamHandler(protocol);
+    URLStreamHandler protocolHandler = null;
+    protocol = protocol.toLowerCase();
+    if (! this.protocol.equals(protocol))
+      protocolHandler = getURLStreamHandler(protocol);
     
     // It is an hidden feature of the JDK. If the protocol does not exist,
     // we keep the previously initialized protocol.
     if (protocolHandler != null)
       {
-        this.ph = protocolHandler;
-        this.protocol = protocol.toLowerCase();
+	this.ph = protocolHandler;
+	this.protocol = protocol;
       }
     this.host = host;
     this.userInfo = userInfo;

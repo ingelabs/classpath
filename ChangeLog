@@ -1,3 +1,10 @@
+2004-07-03  Mark Wielaard  <mark@klomp.org>
+            Anthony Green  <green@redhat.com>
+
+	* java/net/URL.java (set): Convert protocol to lower case before
+	doing anything.
+        Only change the protocol handler if it's different.
+
 2004-07-03  Anthony Green  <green@redhat.com>
 
 	* java/net/URL.java (URL): Convert protocol to lower case before
