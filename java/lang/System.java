@@ -85,9 +85,12 @@ public final class System
 		    Configuration.CLASSPATH_VERSION);
 
     defaultProperties.put("gnu.cpu.endian",
-                          isWordsBigEndian() ? "big" : "little");
+                          VMSystem.isWordsBigEndian() ? "big" : "little");
 
     // Common encoding aliases. See gnu.java.io.EncodingManager.
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.ISO8859_1",
+                          "8859_1");
+
     defaultProperties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-1",
                           "8859_1");
     defaultProperties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-2",
@@ -210,8 +213,8 @@ public final class System
    * other processes or files.  That should all be transparent to you,
    * however.
    */
-  public static final InputStream in
-    = new BufferedInputStream(new FileInputStream(FileDescriptor.in));
+   public static final InputStream in  = VMSystem.makeStandardInputStream();
+
   /**
    * The standard output PrintStream.  This is assigned at startup and
    * starts its life perfectly valid. Although it is marked final, you can
@@ -222,9 +225,8 @@ public final class System
    * output to other processes or files.  That should all be transparent to
    * you, however.
    */
-  public static final PrintStream out
-    = new PrintStream(new BufferedOutputStream
-      (new FileOutputStream(FileDescriptor.out)), true);
+   public static final PrintStream out = VMSystem.makeStandardOutputStream();
+
   /**
    * The standard output PrintStream.  This is assigned at startup and
    * starts its life perfectly valid. Although it is marked final, you can
@@ -235,9 +237,7 @@ public final class System
    * output to other processes or files.  That should all be transparent to
    * you, however.
    */
-  public static final PrintStream err
-    = new PrintStream(new BufferedOutputStream
-      (new FileOutputStream(FileDescriptor.err)), true);
+   public static final PrintStream err = VMSystem.makeStandardErrorStream();
 
   /**
    * This class is uninstantiable.
@@ -260,7 +260,7 @@ public final class System
     SecurityManager sm = Runtime.securityManager; // Be thread-safe.
     if (sm != null)
       sm.checkPermission(new RuntimePermission("setIO"));
-    setIn0(in);
+    VMSystem.setIn(in);
   }
 
   /**
@@ -277,7 +277,8 @@ public final class System
     SecurityManager sm = Runtime.securityManager; // Be thread-safe.
     if (sm != null)
       sm.checkPermission(new RuntimePermission("setIO"));
-    setOut0(out);
+    
+    VMSystem.setOut(out);
   }
 
   /**
@@ -294,7 +295,7 @@ public final class System
     SecurityManager sm = Runtime.securityManager; // Be thread-safe.
     if (sm != null)
       sm.checkPermission(new RuntimePermission("setIO"));
-    setErr0(err);
+    VMSystem.setErr(err);
   }
 
   /**
@@ -343,7 +344,9 @@ public final class System
    * @return the current time
    * @see java.util.Date
    */
-  public static native long currentTimeMillis();
+  public static long currentTimeMillis() {
+      return VMSystem.currentTimeMillis();
+  }
 
   /**
    * Copy one array onto another from <code>src[srcStart]</code> ...
@@ -639,8 +642,7 @@ public final class System
 
   /**
    * Convert a library name to its platform-specific variant.
-   *
-   * @param libname the library name, as used in <code>loadLibrary</code>
+   *   * @param libname the library name, as used in <code>loadLibrary</code>
    * @return the platform-specific mangling of the name
    * @since 1.2
    */
@@ -650,34 +652,4 @@ public final class System
     return Runtime.nativeGetLibname("", libname);
   }
 
-  /**
-   * Detect big-endian systems.
-   *
-   * @return true if the system is big-endian.
-   */
-  static native boolean isWordsBigEndian();
-
-  /**
-   * Set {@link #in} to a new InputStream.
-   *
-   * @param in the new InputStream
-   * @see #setIn(InputStream)
-   */
-  private static native void setIn0(InputStream in);
-
-  /**
-   * Set {@link #out} to a new PrintStream.
-   *
-   * @param out the new PrintStream
-   * @see #setOut(PrintStream)
-   */
-  private static native void setOut0(PrintStream out);
-
-  /**
-   * Set {@link #err} to a new PrintStream.
-   *
-   * @param err the new PrintStream
-   * @see #setErr(PrintStream)
-   */
-  private static native void setErr0(PrintStream err);
 } // class System

@@ -39,6 +39,8 @@ package java.lang;
 
 import java.util.Properties;
 
+import java.io.*;
+
 /**
  * VMSystem is a package-private helper class for System that the
  * VM must implement.
@@ -86,6 +88,13 @@ final class VMSystem
   static native int identityHashCode(Object o);
 
   /**
+   * Detect big-endian systems.
+   *
+   * @return true if the system is big-endian.
+   */
+  static native boolean isWordsBigEndian();
+
+  /**
    * Convert a library name to its platform-specific variant.
    *
    * @param libname the library name, as used in <code>loadLibrary</code>
@@ -93,4 +102,74 @@ final class VMSystem
    * @XXX Add this method
   static native String mapLibraryName(String libname);
    */
+
+  /**
+   * Set {@link #in} to a new InputStream.
+   *
+   * @param in the new InputStream
+   * @see #setIn(InputStream)
+   */
+  static native void setIn(InputStream in);
+
+  /**
+   * Set {@link #out} to a new PrintStream.
+   *
+   * @param out the new PrintStream
+   * @see #setOut(PrintStream)
+   */
+  static native void setOut(PrintStream out);
+
+  /**
+   * Set {@link #err} to a new PrintStream.
+   *
+   * @param err the new PrintStream
+   * @see #setErr(PrintStream)
+   */
+  static native void setErr(PrintStream err);
+
+  /**
+   * Get the current time, measured in the number of milliseconds from the
+   * beginning of Jan. 1, 1970. This is gathered from the system clock, with
+   * any attendant incorrectness (it may be timezone dependent).
+   *
+   * @return the current time
+   * @see java.util.Date
+   */
+   public static native long currentTimeMillis();
+
+  /**
+   * Helper method which creates the standard input stream.
+   * VM implementors may choose to construct these streams differently.
+   * This method can also return null if the stream is created somewhere 
+   * else in the VM startup sequence.
+   */
+
+    static InputStream makeStandardInputStream()
+    {
+	return new BufferedInputStream(new FileInputStream(FileDescriptor.in));
+    }
+
+  /**
+   * Helper method which creates the standard output stream.
+   * VM implementors may choose to construct these streams differently.
+   * This method can also return null if the stream is created somewhere 
+   * else in the VM startup sequence.
+   */
+
+    static PrintStream makeStandardOutputStream()
+    {
+	return new PrintStream(new BufferedOutputStream(new FileOutputStream(FileDescriptor.out)), true);
+    }
+  /**
+   * Helper method which creates the standard error stream.
+   * VM implementors may choose to construct these streams differently.
+   * This method can also return null if the stream is created somewhere 
+   * else in the VM startup sequence.
+   */
+
+    static PrintStream makeStandardErrorStream()
+    {
+	return new PrintStream(new BufferedOutputStream(new FileOutputStream(FileDescriptor.err)), true);
+    }
+
 }

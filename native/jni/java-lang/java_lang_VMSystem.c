@@ -35,17 +35,17 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-#include "java_lang_System.h"
+#include "java_lang_VMSystem.h"
 #include <sys/time.h>
 #include <stdlib.h>
 
 /*
- * Class:     java_lang_System
+ * Class:     java_lang_VMSystem
  * Method:    setIn0
  * Signature: (Ljava/io/InputStream;)V
  */
 JNIEXPORT void JNICALL
-Java_java_lang_System_setIn0 (JNIEnv * env, jclass thisClass, jobject in)
+Java_java_lang_VMSystem_setIn0 (JNIEnv * env, jclass thisClass, jobject in)
 {
   jfieldID inField = (*env)->GetStaticFieldID(env, thisClass, "in",
                                               "Ljava/io/InputStream;");
@@ -53,12 +53,12 @@ Java_java_lang_System_setIn0 (JNIEnv * env, jclass thisClass, jobject in)
 }
 
 /*
- * Class:     java_lang_System
+ * Class:     java_lang_VMSystem
  * Method:    setOut0
  * Signature: (Ljava/io/PrintStream;)V
  */
 JNIEXPORT void JNICALL
-Java_java_lang_System_setOut0 (JNIEnv * env, jclass thisClass, jobject out)
+Java_java_lang_VMSystem_setOut0 (JNIEnv * env, jclass thisClass, jobject out)
 {
   jfieldID outField = (*env)->GetStaticFieldID(env, thisClass, "out",
                                                "Ljava/io/PrintStream;");
@@ -66,12 +66,12 @@ Java_java_lang_System_setOut0 (JNIEnv * env, jclass thisClass, jobject out)
 }
 
 /*
- * Class:     java_lang_System
+ * Class:     java_lang_VMSystem
  * Method:    setErr0
  * Signature: (Ljava/io/PrintStream;)V
  */
 JNIEXPORT void JNICALL
-Java_java_lang_System_setErr0 (JNIEnv * env, jclass thisClass, jobject err)
+Java_java_lang_VMSystem_setErr0 (JNIEnv * env, jclass thisClass, jobject err)
 {
   jfieldID errField = (*env)->GetStaticFieldID(env, thisClass, "err",
                                                "Ljava/io/PrintStream;");
@@ -79,12 +79,12 @@ Java_java_lang_System_setErr0 (JNIEnv * env, jclass thisClass, jobject err)
 }
 
 /*
- * Class:     java_lang_System
+ * Class:     java_lang_VMSystem
  * Method:    currentTimeMillis
  * Signature: ()J
  */
 JNIEXPORT jlong JNICALL
-Java_java_lang_System_currentTimeMillis (JNIEnv * env, jclass thisClass)
+Java_java_lang_VMSystem_currentTimeMillis (JNIEnv * env, jclass thisClass)
 {
   /* Note: this implementation copied directly from Japhar's, by Chris Toshok. */
   jlong result;
@@ -101,7 +101,7 @@ Java_java_lang_System_currentTimeMillis (JNIEnv * env, jclass thisClass)
 }
 
 JNIEXPORT jboolean JNICALL 
-Java_java_lang_System_isWordsBigEndian (JNIEnv *env, jclass clazz)
+Java_java_lang_VMSystem_isWordsBigEndian (JNIEnv *env, jclass clazz)
 {
   /* Are we little or big endian?  From Harbison&Steele.  */
   union

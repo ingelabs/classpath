@@ -1,5 +1,17 @@
 2002-12-18  John Leuner  <jewel@debian.org>
 
+	* java/lang/System.java: delegated native calls to VMSystem
+	added three new calls VMSystem.makeStandardxxxStream
+	* vm/reference/java/lang/VMSystem.java: added 3 methods for default 
+	implementation of makeStandardxxxStream
+	* native/jni/java-lang/Makefile.am (libjavalang_la_SOURCES): changed System to VMSystem
+	* native/jni/java-lang/java_lang_VMSystem.c: Added this file (copied from System.c)
+	* native/jni/java-lang/java_lang_System.c:   Deleted this file
+	* include/java_lang_VMSystem.h: Added this file
+	* include/java_lang_System.h: Deleted this file
+
+2002-12-18  John Leuner  <jewel@debian.org>
+
 	* vm/reference/java/lang/reflect/Method.java: Fixed javadoc
 	* vm/reference/java/lang/VMClassLoader.java: copied code from ClassLoader
 	for getSystemClassLoader
