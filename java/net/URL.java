@@ -113,6 +113,33 @@ private static URLStreamHandlerFactory factory;
   */
 private static Hashtable ph_cache = new Hashtable();
 
+/**
+  * Whether or not to cache protocol handlers.
+  */
+private static boolean cache_handlers;
+
+/**
+  * The search path of packages to search for protocol handlers in
+  */
+private static String ph_search_path;
+
+static
+{
+  String s = System.getProperty("gnu.java.net.nocache_protocol_handlers");
+  if (s == null)
+    cache_handlers = true;
+  else
+    cache_handlers = false;
+
+  ph_search_path = System.getProperty("java.protocol.handler.pkgs");
+
+  // Tack our default package on at the ends
+  if (ph_search_path != null)
+    ph_search_path = ph_search_path + "|" + "gnu.java.net.protocol";
+  else
+    ph_search_path = "gnu.java.net.protocol";
+}
+
 /*************************************************************************/
 
 /*
@@ -181,6 +208,78 @@ setURLStreamHandlerFactory(URLStreamHandlerFactory fac)
 
 /*************************************************************************/
 
+/**
+  * This internal method is used in two different constructors to load
+  * a protocol handler for this URL.
+  *
+  * @param The protocol to load a handler for
+  *
+  * @return A URLStreamHandler for this protocol
+  *
+  * @exception MalformedURLException If the protocol can't be loaded.
+  */
+private static URLStreamHandler
+getProtocolHandler(String protocol) throws MalformedURLException
+{
+  URLStreamHandler ph;
+
+  // First, see if a protocol handler is in our cache
+  if (cache_handlers)
+    {
+      Class cls = (Class)ph_cache.get(protocol);
+      if (cls != null)
+        {
+          try
+            {
+              ph = (URLStreamHandler)cls.newInstance();
+              return(ph);
+            }
+          catch (Exception e) { ; }
+        }
+    }
+
+  // Next check the factory and use that if set
+  if (factory != null)
+    {
+      ph = factory.createURLStreamHandler(protocol);
+      if (ph == null)
+        throw new MalformedURLException(protocol);
+
+      if (cache_handlers)
+        ph_cache.put(protocol, ph.getClass());
+
+      return(ph);
+    }
+
+  // Finally loop through our search path looking for a match
+  StringTokenizer st = new StringTokenizer(ph_search_path, "|");
+  while (st.hasMoreTokens())
+    {
+      String clsname = st.nextToken() + "." + protocol + ".Handler";
+         
+      try
+        {
+          Class cls = Class.forName(clsname); 
+          Object obj = cls.newInstance();
+          if (!(obj instanceof URLStreamHandler))
+            continue;
+          else
+            ph = (URLStreamHandler)obj;
+
+          if (cache_handlers)
+            ph_cache.put(protocol, cls);
+
+          return(ph);
+        }
+      catch (Exception e) { ; }
+    }
+
+  // Still here, which is bad
+  throw new MalformedURLException(protocol);
+}
+
+/*************************************************************************/
+
 /*
  * Constructors
  */
@@ -200,16 +299,7 @@ public
 URL(String protocol, String host, int port, String file) 
     throws MalformedURLException
 {
-  this(protocol, host, port, file, null);
-/*
-  this.protocol = protocol.toLowerCase();
-  this.host = host;
-  this.port = port;
-  this.file = file;
-
-  ph = getProtocolHandler(protocol);
-  hashCode = toString.hashCode();
-*/
+  this(protocol.toLowerCase(), host, port, file, null);
 }
 
 /*************************************************************************/
@@ -227,7 +317,7 @@ URL(String protocol, String host, int port, String file)
 public
 URL(String protocol, String host, String file) throws MalformedURLException
 {
-  this(protocol, host, -1, file, null);
+  this(protocol.toLowerCase(), host, -1, file, null);
 }
 
 /*************************************************************************/
@@ -414,100 +504,6 @@ URL(String url) throws MalformedURLException
 /*
  * Instance Methods
  */
-
-/**
-  * This internal method is used in two different constructors to load
-  * a protocol handler for this URL.
-  *
-  * @param The protocol to load a handler for
-  *
-  * @return A URLStreamHandler for this protocol
-  *
-  * @exception MalformedURLException If the protocol can't be loaded.
-  */
-private URLStreamHandler
-getProtocolHandler(String protocol) throws MalformedURLException
-{
-  URLStreamHandler ph;
-
-  // First check the factory and use that if set
-  if (factory != null)
-    {
-      ph = factory.createURLStreamHandler(protocol);
-      if (ph == null)
-        throw new MalformedURLException(protocol);
-    }
-
-  // Next check the cache unless the user has disabled caches
-  String nocache = null;
-  try 
-    {
-      nocache = System.getProperty("gnu.java.net.nocache_protocol_handlers");
-    }
-  catch (SecurityException e) { ; } 
-
-  if (nocache == null)
-    {
-      Class cls = (Class)ph_cache.get(protocol);
-      if (cls != null)
-        {
-          try
-            {
-              ph = (URLStreamHandler)cls.newInstance();
-              return(ph);
-            }
-          catch (InstantiationException e) { ; }
-          catch (IllegalAccessException e) { ; }
-        }
-    }
-
-  // Next, get the protocol handler package list property
-  String pkglist = null;
-  try
-    {
-      pkglist = System.getProperty("java.protocol.handler.pkgs");
-    }
-  catch (SecurityException e) { ; }
-
-  // Tack our default package on at the ends
-  if (pkglist != null)
-    pkglist = pkglist + "|" + "gnu.java.net";
-  else
-    pkglist = "gnu.java.net";
-
-  // Now loop through looking for a match
-  if (pkglist != null)
-    {
-      StringTokenizer st = new StringTokenizer(pkglist, "|");
-      while (st.hasMoreTokens())
-        {
-          String clsname = st.nextToken() + "." + protocol + ".Handler";
-         
-          try
-            {
-              Class cls = Class.forName(clsname); 
-              Object obj = cls.newInstance();
-              if (!(obj instanceof URLStreamHandler))
-                continue;
-              else
-                ph = (URLStreamHandler)obj;
-
-              if (nocache != null)
-                ph_cache.put(protocol, cls);
-
-              return(ph);
-            }
-          catch (ClassNotFoundException e) { ; }
-          catch (InstantiationException e) { ; }
-          catch (IllegalAccessException e) { ; }
-        }
-    }
-
-  // Still here, which is bad new
-  throw new MalformedURLException(protocol);
-}
-
-/*************************************************************************/
 
 /**
   * This protected method is used by protocol handlers to set the values
