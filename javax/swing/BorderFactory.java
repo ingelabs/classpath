@@ -38,10 +38,16 @@ exception statement from your version. */
 
 package javax.swing;
 
-import java.awt.*;
-import java.awt.font.*;
-import javax.swing.border.*;
-
+import java.awt.Color;
+import java.awt.Font;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
+import javax.swing.border.TitledBorder;
 
 public class BorderFactory
 {
