@@ -1,3 +1,7 @@
+2005-04-03  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* native/jni/java-nio/gnu_java_nio_VMSelector.c: Reindented.
+	
 2005-04-01  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/AssertionError.java: Typo fix.
