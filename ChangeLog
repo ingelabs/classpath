@@ -1,5 +1,63 @@
 2003-03-09  Raif S. Naffah  <raif@fl.net.au>
 
+	* java.security.AlgorithmParameterGenerator.java
+	(getInstance(String)): use new getInstance(String, Provider).
+	(getInstance(String, String)): ditto.
+	(getInstance(String, Provider)): new method.
+	* java.security.AlgorithmParameters.java
+	(getInstance(String)): use new getInstance(String, Provider).
+	(getInstance(String, String)): ditto.
+	(getInstance(String, Provider)): new method.
+	* java.security.IdentityScope.java: added SVUID.
+	* java.security.KeyFactory.java
+	(getInstance(String)): use new getInstance(String, Provider).
+	(getInstance(String, String)): ditto.
+	(getInstance(String, Provider)): new method.
+	* java.security.KeyPairGenerator.java 
+	(getInstance(String, Provider)): made it public and documented it.
+	* java.security.MessageDigest.java
+	(getInstance(String, Provider)): made it public and documented it.
+	* java.security.Policy.java
+	(pd2pc): new field.
+	(setPolicy()): ensure instance is loaded.
+	(setup(Policy)): new method.
+	(getCurrentPolicy()): new package-private method; contains code
+	previously in static initialiser.
+	(isLoaded()): new method.
+	(getPermissions(ProtectionDomain)): new method.
+	(implies(ProtectionDomain, Permission)): new method.
+	* java.security.ProtectionDomain.java
+	(classloader, principals, staticBinding): new fields.
+	(<ctor>(CodeSource, PermissionCollection)): use new ctor.
+	(<ctor>(CodeSource, PermissionCollection, ClassLoader, Principal[])):
+	new ctor.
+	(getClassLoader(), getPrincipals(), implies(Permission)): new methods.
+	(toString()): added representation of new fields.
+	* java.security.Security.java
+	(getAlgorithmProperty(String, String)): added implementation.
+	(getAlgorithms(String), getProviders(String), getProviders(Map)): new
+	public methods.
+	(selectProviders(...), provides(...)): new private methods.
+	* java.security.Signature.java
+	(getInstance(String, Provider)): made it public and documented it.
+	(verify(byte[], int, int), getParameters()): new methods.
+	* java.security.SignatureSpi.java
+	(engineVerify(byte[], int, int), engineGetParameters()): new methods.
+	* java.security.SignedObject.java
+	(getObject()): ensure streams are closed before return.
+	(getSignature()): return a clone.
+	(readObject(ObjectInputStream)): new method.
+	* java.security.Signer.java: added SVUID.
+	* java.security.interfaces.RSAMultiPrimePrivateCrtKey.java: new file
+	* java.security.spec.PSSParameterSpec.java: new file
+	* java.security.spec.RSAMultiPrimePrivateCrtKeySpec.java: new file
+	* java.security.spec.RSAOtherPrimeInfo.java: new file
+	* java/security/interfaces/Makefile.am: added RSAMultiPrimePrivateCrtKey.java.
+	* java/security/spec/Makefile.am: added PSSParameterSpec.java,
+	RSAMultiPrimePrivateCrtKeySpec.java, RSAOtherPrimeInfo.java.
+
+2003-03-09  Raif S. Naffah  <raif@fl.net.au>
+
 	* java.security.AlgorithmParameterGenerator.java: formatting +
 	documentation
 
