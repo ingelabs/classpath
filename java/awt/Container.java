@@ -1511,7 +1511,7 @@ public class Container extends Component
         && dispatcher != null 
         && dispatcher.handleEvent (e))
       return;
-
+    
     if ((e.id <= ContainerEvent.CONTAINER_LAST
              && e.id >= ContainerEvent.CONTAINER_FIRST)
         && (containerListener != null

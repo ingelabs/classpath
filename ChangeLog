@@ -1,5 +1,13 @@
 2004-09-23  Mark Wielaard  <mark@klomp.org>
 
+	* java/awt/Component.java: Whitespace cleanup.
+	* java/awt/Container.java: Likewise.
+	* java/awt/DefaultFocusTraversalPolicy.java: Likewise.
+	* java/awt/DefaultKeyboardFocusManager.java: Likewise.
+	* java/awt/KeyboardFocusManager.java: Likewise.
+
+2004-09-23  Mark Wielaard  <mark@klomp.org>
+
 	* examples/gnu/classpath/examples/awt/Demo.java: Add help menu
 	example.
 

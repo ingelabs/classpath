@@ -4728,8 +4728,8 @@ p   * <li>the set of backward traversal keys
                     return;
               }
           }
-      processEvent (e);
-  }
+        processEvent (e);
+      }
   }
 
   /**
