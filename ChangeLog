@@ -1,5 +1,9 @@
 2002-05-28  Andrew Selkirk  <aselkirk@sympatico.ca>
 
+	* configure.in: Updated with colorchooser and filechooser dirs.
+
+2002-05-28  Andrew Selkirk  <aselkirk@sympatico.ca>
+
 	* javax/swing/AbstractAction.java: Updated.
 	* javax/swing/AbstractButton.java: Updated.
 	* javax/swing/AbstractCellEditor.java: New file.

@@ -339,7 +339,9 @@ javax/naming/directory/Makefile
 javax/naming/spi/Makefile
 javax/swing/Makefile
 javax/swing/border/Makefile
+javax/swing/colorchooser/Makefile
 javax/swing/event/Makefile
+javax/swing/filechooser/Makefile
 javax/swing/plaf/Makefile
 javax/swing/plaf/basic/Makefile
 javax/swing/plaf/metal/Makefile
