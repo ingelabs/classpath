@@ -1,5 +1,21 @@
 2004-04-17  Michael Koch  <konqueror@gmx.de>
 
+	* java/text/ChoiceFormat.java,
+	java/text/CollationElementIterator.java,
+	java/text/CollationKey.java,
+	java/text/Collator.java,
+	java/text/DateFormat.java,
+	java/text/DateFormatSymbols.java,
+	java/text/DecimalFormatSymbols.java,
+	java/text/Format.java,
+	java/text/ParsePosition.java,
+	java/text/RuleBasedCollator.java,
+	java/text/SimpleDateFormat.java,
+	java/text/StringCharacterIterator.java:
+	Fixed HTML tags in javadocs all over
+
+2004-04-17  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/DataInput.java,
 	java/io/File.java,
 	java/io/InputStream.java,

@@ -1,4 +1,4 @@
-/* DateFormatSymbols.java -- Format over a range of numbers
+/* ChoiceFormat.java -- Format over a range of numbers
    Copyright (C) 1998, 1999, 2000, 2001, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -245,11 +245,12 @@ public class DateFormatSymbols implements java.io.Serializable, Cloneable
    * the array contains five values:
    * <P>
    * <ul>
-   * <li>0 - The non-localized time zone id string.
-   * <li>1 - The long name of the time zone (standard time).
-   * <li>2 - The short name of the time zone (standard time).
-   * <li>3 - The long name of the time zone (daylight savings time).
-   * <li>4 - the short name of the time zone (daylight savings time).
+   * <li>0 - The non-localized time zone id string.</li>
+   * <li>1 - The long name of the time zone (standard time).</li>
+   * <li>2 - The short name of the time zone (standard time).</li>
+   * <li>3 - The long name of the time zone (daylight savings time).</li>
+   * <li>4 - the short name of the time zone (daylight savings time).</li>
+   * </ul>
    *
    * @return The list of time zone display strings.
    */
@@ -386,11 +387,12 @@ public class DateFormatSymbols implements java.io.Serializable, Cloneable
    * the array contains five values:
    * <P>
    * <ul>
-   * <li>0 - The non-localized time zone id string.
-   * <li>1 - The long name of the time zone (standard time).
-   * <li>2 - The short name of the time zone (standard time).
-   * <li>3 - The long name of the time zone (daylight savings time).
-   * <li>4 - the short name of the time zone (daylight savings time).
+   * <li>0 - The non-localized time zone id string.</li>
+   * <li>1 - The long name of the time zone (standard time).</li>
+   * <li>2 - The short name of the time zone (standard time).</li>
+   * <li>3 - The long name of the time zone (daylight savings time).</li>
+   * <li>4 - the short name of the time zone (daylight savings time).</li>
+   * </ul>
    *
    * @return The list of time zone display strings.
    */
@@ -438,15 +440,15 @@ public class DateFormatSymbols implements java.io.Serializable, Cloneable
    * This will be true if and only if the specified object:
    * <p>
    * <ul>
-   * <li> Is not <code>null</code>.
-   * <li> Is an instance of <code>DateFormatSymbols</code>.
-   * <li> Contains identical formatting symbols to this object.
+   * <li> Is not <code>null</code>.</li>
+   * <li> Is an instance of <code>DateFormatSymbols</code>.</li>
+   * <li> Contains identical formatting symbols to this object.</li>
    * </ul>
    * 
    * @param obj The <code>Object</code> to test for equality against.
    *
    * @return <code>true</code> if the specified object is equal to this one,
-   * </code>false</code> otherwise.
+   * <code>false</code> otherwise.
    */
   public boolean equals (Object obj)
   {

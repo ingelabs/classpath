@@ -187,7 +187,7 @@ public final class CollationElementIterator
 
   /**
    * This method resets the internal position pointer to read from the
-   * beginning of the <code>String again.
+   * beginning of the <code>String</code> again.
    */
   public void reset()
   {
