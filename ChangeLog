@@ -1,3 +1,9 @@
+2004-01-06  Fernando Nasser  <fnasser@redhat.com>
+
+	* java/awt/Dialog.java (constructor): Accept null title as per spec.
+	* java/awt/FileDialog.java (constructor): Throw exception on invalid
+	argument as per spec.
+
 2004-01-07  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/ServerSocket.java (isBound): Fixed documentation.
