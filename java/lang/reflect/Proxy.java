@@ -790,7 +790,7 @@ public class Proxy implements Serializable
                 in_package = true;
                 data.pack = inter.getPackage();
               }
-          for (int j = i; j >= 0; j--)
+          for (int j = i-1; j >= 0; j--)
             if (data.interfaces[j] == inter)
               throw new IllegalArgumentException("duplicate interface: "
                                                  + inter);
