@@ -3,4 +3,5 @@
 EXTRA_DIST = \
 Constructor.java \
 Field.java \
-Method.java
+Method.java \
+ReflectUtil.java

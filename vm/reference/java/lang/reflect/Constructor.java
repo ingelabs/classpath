@@ -76,23 +76,21 @@ import java.util.Arrays;
 public final class Constructor
 extends AccessibleObject implements Member
 {
-  private Class clazz;
-  private int slot;
+
+  private Class declaringClass;
   private Class[] parameterTypes;
   private Class[] exceptionTypes;
   
   /**
    * This class is uninstantiable except from native code.
    */
-  private Constructor(Class declaringClass,int slot)
-  {
-    this.clazz = declaringClass;
-    this.slot = slot;
-  }
 
-  private Constructor()
+  byte[] vmData;
+  private Constructor(byte[] vmData)
   {
+    this.vmData = vmData;
   }
+ 
 
   /**
    * Gets the class that declared this constructor.
@@ -100,8 +98,17 @@ extends AccessibleObject implements Member
    */
   public Class getDeclaringClass()
   {
-    return clazz;
+    if (declaringClass == null)
+      {
+	declaringClass = nativeGetDeclaringClass(vmData);
+      }
+
+    return declaringClass;
+
   }
+
+  public static native Class nativeGetDeclaringClass(byte[] vmData);
+
 
   /**
    * Gets the name of this constructor (the non-qualified name of the class
@@ -110,7 +117,8 @@ extends AccessibleObject implements Member
    */
   public String getName()
   {
-    return getDeclaringClass().getName();
+    String qualifiedName = getDeclaringClass().getName();
+    return qualifiedName.substring(qualifiedName.lastIndexOf('.') + 1);
   }
 
   /**
@@ -121,7 +129,12 @@ extends AccessibleObject implements Member
    * @return an integer representing the modifiers to this Member
    * @see Modifier
    */
-  public native int getModifiers();
+  public int getModifiers()
+  {
+    return nativeGetModifiers(vmData);
+  }
+  public native int nativeGetModifiers(byte[] vmData);
+
 
   /**
    * Get the parameter list for this constructor, in declaration order. If the
@@ -132,7 +145,11 @@ extends AccessibleObject implements Member
   public Class[] getParameterTypes()
   {
     if (parameterTypes == null)
-      return new Class[0];
+    {
+      parameterTypes =
+        ReflectUtil.getParameterTypes(nativeGetDescriptor(vmData));
+
+    }
     return parameterTypes;
   }
 
@@ -143,12 +160,17 @@ extends AccessibleObject implements Member
    *
    * @return a list of the types in the constructor's throws clause
    */
+
   public Class[] getExceptionTypes()
   {
     if (exceptionTypes == null)
-      return new Class[0];
+    {
+      exceptionTypes = nativeGetExceptionTypes(vmData);
+    }
     return exceptionTypes;
   }
+  public static native Class[] nativeGetExceptionTypes(byte[] vmData);
+
 
   /**
    * Compare two objects to see if they are semantically equivalent.
@@ -251,11 +273,174 @@ extends AccessibleObject implements Member
     throws InstantiationException, IllegalAccessException,
            InvocationTargetException
   {
-    return constructNative(args, clazz, slot);
+    /* The following code is more of a hack, than real
+     * implementation, as it lacks checking and widening. To be
+     * fixed...*/
+
+    if (args == null)
+    {
+      args = new Object[0];
+    }
+
+    char[] paramTypes = getParamTypes();
+    int count = paramTypes.length;
+
+    for (int i = 0; i < count; i++)
+    {
+      /* In the future, we should handle primitive type widening. */
+      switch (paramTypes[i])
+      {
+      case 'Z':
+        {
+          /* using a wrapper array is simpler for the VM. */
+          boolean[] wrapper = new boolean[1];
+          wrapper[0] = ((Boolean) args[i]).booleanValue();
+          args[i] = wrapper;
+        }
+        break;
+
+      case 'B':
+        {
+          byte[] wrapper = new byte[1];
+          wrapper[0] = ((Byte) args[i]).byteValue();
+          args[i] = wrapper;
+        }
+        break;
+
+      case 'S':
+        {
+          short[] wrapper = new short[1];
+          wrapper[0] = ((Short) args[i]).shortValue();
+          args[i] = wrapper;
+        }
+        break;
+
+      case 'C':
+        {
+          char[] wrapper = new char[1];
+          wrapper[0] = ((Character) args[i]).charValue();
+          args[i] = wrapper;
+        }
+        break;
+
+      case 'I':
+        {
+          int[] wrapper = new int[1];
+          wrapper[0] = ((Integer) args[i]).intValue();
+          args[i] = wrapper;
+        }
+        break;
+
+      case 'J':
+        {
+          long[] wrapper = new long[1];
+          wrapper[0] = ((Long) args[i]).longValue();
+          args[i] = wrapper;
+        }
+        break;
+
+      case 'F':
+        {
+          float[] wrapper = new float[1];
+          wrapper[0] = ((Float) args[i]).floatValue();
+          args[i] = wrapper;
+        }
+        break;
+
+      case 'D':
+        {
+          double[] wrapper = new double[1];
+          wrapper[0] = ((Double) args[i]).doubleValue();
+          args[i] = wrapper;
+        }
+        break;
+
+      case 'L':
+        {
+          /* should be checking type */
+        }
+        break;
+      default:
+        throw new InternalError();
+      }
+    }
+
+    return constructNative(vmData, paramTypes, args);
+
   }
 
-  private native Object constructNative(Object[] args, Class declaringClass,
-                                        int slot)
-    throws InstantiationException, IllegalAccessException,
-           InvocationTargetException;
+  private static native Object constructNative(byte[] vmData, char[] paramTypes, Object[] args)
+  throws InstantiationException, IllegalAccessException,
+        InvocationTargetException;
+
+  private static native String nativeGetDescriptor(byte[] vmData);
+
+  private char[] paramTypes;
+
+  private char[] getParamTypes()
+{
+    if(paramTypes == null)
+    {
+      char[] array = nativeGetDescriptor(vmData).toCharArray();
+      int count = 0;
+      int i = 0;
+      char c;
+
+      while ((c = array[++i]) != ')')
+      {
+        switch (c)
+        {
+        case 'Z':
+        case 'B':
+        case 'S':
+        case 'C':
+        case 'I':
+        case 'J':
+        case 'F':
+        case 'D':
+          {
+            array[count++] = c;
+          }
+          break;
+
+        case 'L':
+          {
+            array[count++] = 'L';
+
+            /* skip to next ';' */
+            while (array[++i] != ';')
+              ;
+          }
+          break;
+
+        case '[':
+          {
+            array[count++] = 'L';
+
+            /* skip all '[' */
+            while (array[++i] == '[')
+              ;
+
+            if (array[i] == 'L')
+            {
+              /* skip to next ';' */
+              while (array[++i] != ';')
+                ;
+            }
+          }
+          break;
+
+        default:
+          throw new InternalError();
+        }
+      }
+
+      char[] types = new char[count];
+      System.arraycopy(array, 0, types, 0, count);
+      paramTypes = types;
+    }
+
+    return paramTypes;
+  }
+
 }

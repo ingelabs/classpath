@@ -1,3 +1,13 @@
+2004-03-28  Grzegorz B. Prokopski <gadek@debian.org>
+
+        * Merged vm/reference implementation of these reflection elements,
+        that can be realized in Java:
+        vm/reference/java/lang/reflect/Constructor.java,
+        vm/reference/java/lang/reflect/Field.java,
+        vm/reference/java/lang/reflect/Makefile.am,
+        vm/reference/java/lang/reflect/Method.java,
+        vm/reference/java/lang/reflect/ReflectUtil.java.
+
 2004-03-27  Grzegorz B. Prokopski <gadek@debian.org>
 
         * configure.ac: Added --with-jvm= handling defaulting to none.
