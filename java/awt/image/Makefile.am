@@ -9,6 +9,8 @@ ImageFilter.java \
 ImageObserver.java \
 ImageProducer.java \
 IndexColorModel.java \
+MemoryImageSource.java \
+PixelGrabber.java \
 RGBImageFilter.java \
 ReplicateScaleFilter.java
 
