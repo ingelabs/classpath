@@ -575,7 +575,7 @@ public class BorderUIResource
   
   
   /**
-   * An {@link javax.swing.border.LineBorder} that also implements the
+   * A {@link javax.swing.border.LineBorder} that also implements the
    * {@link UIResource} marker interface.  This is useful for
    * implementing pluggable look-and-feels: When switching the current
    * LookAndFeel, only those borders are replaced that are marked as
@@ -630,28 +630,85 @@ public class BorderUIResource
      */
   }
 
-    /**
-     * @serial */
-    public static class MatteBorderUIResource
-	extends MatteBorder
-	implements UIResource, Serializable
-    {
-	public MatteBorderUIResource(int top, int left, int bottom, 
-				     int right, Color color)
-	{
-          super (new Insets (top, left, bottom, right), color);
-	}
-	public MatteBorderUIResource(int top, int left, int bottom,
-				     int right, Icon tileIcon)
-	{
-          super (new Insets (top, left, bottom, right), tileIcon);
 
-	}
-	public MatteBorderUIResource(Icon tileIcon)
-	{
-	  super (tileIcon);
-	}
+  /**
+   * A {@link javax.swing.border.MatteBorder} that also implements the
+   * {@link UIResource} marker interface.  This is useful for
+   * implementing pluggable look-and-feels: When switching the current
+   * LookAndFeel, only those borders are replaced that are marked as
+   * {@link UIResource}.  For this reason, a look-and-feel should
+   * always install borders that implement <code>UIResource</code>,
+   * such as the borders provided by this class.
+   *
+   * <p><img src="../border/MatteBorder-1.png" width="500" height="150"
+   * alt="[An illustration of two MatteBorders] />
+   *
+   * @author Brian Jones (cbj@gnu.org)
+   * @author Sascha Brawer (brawer@dandelis.ch)
+   */
+  public static class MatteBorderUIResource
+    extends MatteBorder
+    implements UIResource, Serializable
+  {
+    /**
+     * Constructs a MatteBorderUIResource given the width on each side
+     * and a fill color.
+     *
+     * <p><img src="../border/MatteBorder-2.png" width="500" height="150"
+     * alt="[A picture of a MatteBorder made by this constructor]" />
+     *
+     * @param top the width of the border at its top edge.
+     * @param left the width of the border at its left edge.
+     * @param bottom the width of the border at its bottom edge.
+     * @param right the width of the border at its right edge.
+     * @param matteColor the color for filling the border.
+     */
+    public MatteBorderUIResource(int top, int left,
+                                 int bottom, int right,
+                                 Color color)
+    {
+      super(top, left, bottom, right, color);
     }
+    
+    
+    /**
+     * Constructs a MatteBorderUIResource given the width on each side
+     * and an icon for tiling the border area.
+     *
+     * <p><img src="../border/MatteBorder-4.png" width="500"
+     * height="150" alt="[A picture of a MatteBorder made by this
+     * constructor]" />
+     *
+     * @param top the width of the border at its top edge.
+     * @param left the width of the border at its left edge.
+     * @param bottom the width of the border at its bottom edge.
+     * @param right the width of the border at its right edge.
+     * @param tileIcon an icon for tiling the border area.
+     */
+    public MatteBorderUIResource(int top, int left,
+                                 int bottom, int right,
+                                 Icon tileIcon)
+    {
+      super(top, left, bottom, right, tileIcon);
+    }
+    
+    
+    /**
+     * Constructs a MatteBorderUIResource given an icon for tiling the
+     * border area. The icon width is used for the border insets at
+     * the left and right edge, the icon height for the top and bottom
+     * edge.
+     *
+     * <p><img src="../border/MatteBorder-6.png" width="500" height="150"
+     * alt="[A picture of a MatteBorder made by this constructor]" />
+     *
+     * @param tileIcon an icon for tiling the border area.
+     */
+    public MatteBorderUIResource(Icon tileIcon)
+    {
+      super(tileIcon);
+    }
+  }
 
     /**
      * @serial
