@@ -1,3 +1,10 @@
+2003-09-18  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* java/awt/Frame.java (Frame(String)): Initialize visible field
+	to false.
+	(Frame(GraphicsConfiguration)): Likewise.
+	(Frame(String,GraphicsConfiguration)): Likewise.
+
 2003-09-17  Graydon Hoare  <graydon@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java,
