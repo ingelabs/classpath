@@ -54,18 +54,18 @@ package java.util.logging;
  *
  * <ul>
  *
- * <li><code>java.util.ConsoleHandler.level</code> - specifies
+ * <li><code>java.util.logging.ConsoleHandler.level</code> - specifies
  *     the initial severity level threshold. Default value:
  *     <code>Level.INFO</code>.</li>
  *
- * <li><code>java.util.ConsoleHandler.filter</code> - specifies
+ * <li><code>java.util.logging.ConsoleHandler.filter</code> - specifies
  *     the name of a Filter class. Default value: No Filter.</li>
  *
- * <li><code>java.util.ConsoleHandler.formatter</code> - specifies
+ * <li><code>java.util.logging.ConsoleHandler.formatter</code> - specifies
  *     the name of a Formatter class. Default value:
  *     <code>java.util.logging.SimpleFormatter</code>.</li>
  *
- * <li><code>java.util.ConsoleHandler.encoding</code> - specifies
+ * <li><code>java.util.logging.ConsoleHandler.encoding</code> - specifies
  *     the name of the character encoding. Default value:
  *     the default platform encoding.
  *
@@ -127,4 +127,3 @@ public class ConsoleHandler
     flush();
   }
 }
-    
