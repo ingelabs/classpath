@@ -36,6 +36,7 @@ main(String argv[])
 
       hc.connect();
 
+      System.out.flush();
       System.out.println("Dumping response headers");
       for (int i = 0; ; i++)
         {
@@ -46,12 +47,17 @@ main(String argv[])
           System.out.println(key + ": " + hc.getHeaderField(i));
         }
 
+      System.out.flush();
       System.out.println("Dumping contents");
+
       BufferedReader br = new BufferedReader(new 
                               InputStreamReader(hc.getInputStream()));
 
       for (String str = br.readLine(); str != null; str = br.readLine())
-        System.out.println(str);
+        {
+          System.out.println(str);
+        }
+      System.out.flush();
        
       hc.disconnect();
 
