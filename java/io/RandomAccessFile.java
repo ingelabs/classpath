@@ -210,11 +210,17 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public void setLength (long newLen) throws IOException
   {
-    ch.truncate (newLen);
-
-    long position = getFilePointer();
-    if (position > newLen)
-      seek(newLen);
+    // FileChannel.truncate() can only shrink a file.
+    // To expand it we need to seek forward and write at least one byte.
+    if (newLen < length())
+      ch.truncate (newLen);
+    else
+      {
+	long pos = getFilePointer();
+	seek(newLen - 1);
+	write(0);
+	seek(pos);
+      }
   }
 
   /**

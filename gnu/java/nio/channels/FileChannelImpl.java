@@ -413,7 +413,9 @@ public final class FileChannelImpl extends FileChannel
     if ((mode & WRITE) == 0)
        throw new NonWritableChannelException ();
 
-    implTruncate (size);
+    if (size < size ())
+      implTruncate (size);
+
     return this;
   }
 }

@@ -394,19 +394,19 @@ Java_gnu_java_nio_channels_FileChannelImpl_implTruncate (JNIEnv *env, jobject ob
       return;
     }
 
+  /* Save off current position */
+  TARGET_NATIVE_FILE_TELL(native_fd, save_offset, result);
+  if (result != TARGET_NATIVE_OK)
+    {
+      JCL_ThrowException(env, IO_EXCEPTION,
+                         TARGET_NATIVE_LAST_ERROR_STRING());
+      return;
+    }
+
   if (TARGET_NATIVE_MATH_INT_INT64_LT(file_size,len))
     {
       /* File is too short -- seek to one byte short of where we want,
        * then write a byte */
-
-      /* Save off current position */
-      TARGET_NATIVE_FILE_TELL(native_fd, save_offset, result);
-      if (result != TARGET_NATIVE_OK)
-        {
-          JCL_ThrowException(env, IO_EXCEPTION,
-                             TARGET_NATIVE_LAST_ERROR_STRING());
-          return;
-        }
 
       /* move to position n-1 */
       TARGET_NATIVE_FILE_SEEK_BEGIN(native_fd, TARGET_NATIVE_MATH_INT_INT64_SUB(len,1), new_offset, result);
@@ -429,14 +429,18 @@ Java_gnu_java_nio_channels_FileChannelImpl_implTruncate (JNIEnv *env, jobject ob
           return;
         }
 
-      /* Reposition file pointer to where we started */
-      TARGET_NATIVE_FILE_SEEK_BEGIN(native_fd, save_offset, new_offset, result);
-      if (result != TARGET_NATIVE_OK)
-        {
-          JCL_ThrowException(env, IO_EXCEPTION,
-                             TARGET_NATIVE_LAST_ERROR_STRING());
-          return;
-        }
+      /* Reposition file pointer to where we started if not beyond new len. */
+      if (TARGET_NATIVE_MATH_INT_INT64_LT(save_offset, len))
+	{
+	  TARGET_NATIVE_FILE_SEEK_BEGIN(native_fd, save_offset,
+					new_offset, result);
+	  if (result != TARGET_NATIVE_OK)
+	    {
+	      JCL_ThrowException(env, IO_EXCEPTION,
+				 TARGET_NATIVE_LAST_ERROR_STRING());
+	      return;
+	    }
+	}
     }
     else if (TARGET_NATIVE_MATH_INT_INT64_GT(file_size,len))
     {
@@ -458,6 +462,18 @@ Java_gnu_java_nio_channels_FileChannelImpl_implTruncate (JNIEnv *env, jobject ob
       JCL_ThrowException(env, IO_EXCEPTION,
                          "Unable to shorten file length");
 #endif /* HAVE_FTRUNCATE */
+
+      /* Reposition file pointer when it now is beyond the end of file. */
+      if (TARGET_NATIVE_MATH_INT_INT64_GT(save_offset, len))
+	{
+	  TARGET_NATIVE_FILE_SEEK_BEGIN(native_fd, len, new_offset, result);
+	  if (result != TARGET_NATIVE_OK)
+	    {
+	      JCL_ThrowException(env, IO_EXCEPTION,
+				 TARGET_NATIVE_LAST_ERROR_STRING());
+	      return;
+	    }
+	}
     }
 }
 
