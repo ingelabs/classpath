@@ -1,3 +1,7 @@
+<newsitem date="18 Jul 2004">
+Roman Kennke's <createlink name="automated mauve reports" url="http://ontographics.com/classpath/report-index.html">.
+</newsitem>
+
 <newsitem date="13 Jul 2004">
 <createlink name="JC 1.2.1" url="http://lists.gnu.org/archive/html/classpath/2004-07/msg00168.html"> released
 </newsitem>

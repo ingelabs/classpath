@@ -1,3 +1,8 @@
+2004-07-20  Patrik Reali  <reali@acm.org>
+
+	* doc/www.gnu.org/home.wml doc/www.gnu.org/newsitems.txt: mauve
+	reports added to news and homepage
+
 2004-06-19  Archie Cobbs  <archie@dellroad.org>
 
 	* native/jni/java-net/gnu_java_net_PlainDatagramSocketImpl.c
