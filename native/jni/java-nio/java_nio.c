@@ -50,7 +50,7 @@ exception statement from your version. */
   #include "target_native_network.h"
 #endif /* WITHOUT_NETWORK */
 
-#include "gnu_java_nio_FileChannelImpl.h"
+#include "java_nio_channels_FileChannelImpl.h"
 
 #include "javaio.h"
 

@@ -48,7 +48,6 @@ $(top_srcdir)/include/java_net_InetAddress.h \
 $(top_srcdir)/include/java_net_NetworkInterface.h \
 $(top_srcdir)/include/java_nio_DirectByteBufferImpl.h \
 $(top_srcdir)/include/java_nio_channels_FileChannelImpl.h \
-$(top_srcdir)/include/gnu_java_nio_FileChannelImpl.h \
 $(top_srcdir)/include/gnu_java_nio_FileLockImpl.h \
 $(top_srcdir)/include/java_util_TimeZone.h
 

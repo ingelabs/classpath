@@ -1,5 +1,13 @@
 2003-09-25  Michael Koch  <konqueror@gmx.de>
 
+	* include/Makefile.am: Dont generated gnu_java_nio_FileChannelImpl.h.
+	* include/gnu_java_nio_FileChannelImpl.h: Removed.
+	* native/jni/java-nio/java_nio.c:
+	Include java_nio_channels_FileChannelImpl.h instead of
+	gnu_java_nio_FileChannelImpl.h.
+
+2003-09-25  Michael Koch  <konqueror@gmx.de>
+
 	* java/rmi/server/RMIClassLoader.java:
 	Reindented and reformatted code, no functional changes.
 
