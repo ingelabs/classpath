@@ -73,17 +73,17 @@ public final class CollationKey implements Comparable
   /**
    * This is the <code>String</code> this object represents.
    */
-  private String str;
+  private String originalText;
 
   /**
    * This is the bit value for this key.
    */
   private byte[] key;
 
-  CollationKey (Collator collator, String str, byte[] key)
+  CollationKey (Collator collator, String originalText, byte[] key)
   {
     this.collator = collator;
-    this.str = str;
+    this.originalText = originalText;
     this.key = key;
   }
 
@@ -102,19 +102,19 @@ public final class CollationKey implements Comparable
     for (i = 0; i < key.length; i++)
       {
         if (ck.key.length <= i)
-          return(1);
+          return 1;
 
-        if (key[i] < ck.key[i])
-          return(-1);
+        if (key [i] < ck.key [i])
+          return -1;
 
-        if (key[i] > ck.key[i])
-          return(1);
+        if (key [i] > ck.key [i])
+          return 1;
       }
 
     if (i == ck.key.length)
-      return(0);
+      return 0;
     else
-      return(-1);
+      return -1;
   }
 
   /**
@@ -152,23 +152,23 @@ public final class CollationKey implements Comparable
   public boolean equals (Object obj)
   {
     if (obj == null)
-      return(false);
+      return false;
 
-    if (!(obj instanceof CollationKey))
-      return(false);
+    if (! (obj instanceof CollationKey))
+      return false;
 
-    CollationKey ck = (CollationKey)obj;
+    CollationKey ck = (CollationKey) obj;
 
-    if (!ck.collator.equals(collator))
-      return(false);
+    if (!ck.collator.equals (collator))
+      return false;
 
-    if (!ck.getSourceString().equals(getSourceString()))
-      return(false);
+    if (!ck.getSourceString ().equals (getSourceString ()))
+      return false;
 
-    if (!ck.toByteArray().equals(toByteArray()))
-      return(false);
+    if (!ck.toByteArray ().equals (toByteArray ()))
+      return false;
 
-    return(true);
+    return true;
   }
 
   /**
@@ -179,7 +179,7 @@ public final class CollationKey implements Comparable
    */
   public String getSourceString ()
   {
-    return str;
+    return originalText;
   }
 
   /**
@@ -191,7 +191,7 @@ public final class CollationKey implements Comparable
    */
   public int hashCode ()
   {
-    return key.hashCode();
+    return key.hashCode ();
   }
   
   /**
