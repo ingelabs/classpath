@@ -25,6 +25,7 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <fcntl.h>
+#include <utime.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include <dirent.h>
@@ -119,6 +120,46 @@ Java_java_io_File_canWriteInternal(JNIEnv *env, jobject obj, jstring name)
 
   close(fd);
   return(1);
+}  
+
+/*************************************************************************/
+
+/*
+ * This method makes a file read only
+ */
+
+JNIEXPORT jboolean JNICALL
+Java_java_io_File_setReadOnlyInternal(JNIEnv *env, jobject obj, jstring name)
+{
+  const char *fname;
+  struct stat buf;
+  mode_t newmode;
+  int rc;
+
+  /* Don't use the JCL convert function because it throws an exception
+     on failure */
+  fname = (*env)->GetStringUTFChars(env, name, 0);
+  if (!fname)
+    return(0);
+ 
+  rc = stat(fname, &buf);
+
+  if (rc == -1)
+    {
+      (*env)->ReleaseStringUTFChars(env, name, fname);
+      return(0);
+    }
+
+  newmode = buf.st_mode;
+  newmode = newmode ^ (S_IWRITE|S_IWGRP|S_IWOTH);
+
+  rc = chmod(fname, newmode);
+  (*env)->ReleaseStringUTFChars(env, name, fname);
+
+  if (rc == -1)
+    return(0);
+  else
+    return(1);
 }  
 
 /*************************************************************************/
@@ -264,6 +305,47 @@ Java_java_io_File_lastModifiedInternal(JNIEnv *env, jobject obj, jstring name)
     return(0);
 
   return(buf.st_mtime);
+}
+
+/*************************************************************************/
+
+/*
+ * This method sets the modificatino date of the file
+ */
+
+JNIEXPORT jboolean JNICALL
+Java_java_io_File_setLastModifiedInternal(JNIEnv *env, jobject obj,
+                                          jstring name, jlong newtime)
+{
+  const char *fname;
+  struct stat buf;
+  struct utimbuf ut;
+  int rc;
+  
+  /* Don't use the JCL convert function because it throws an exception
+     on failure */
+  fname = (*env)->GetStringUTFChars(env, name, 0);
+  if (!fname)
+    return(0);
+ 
+  rc = stat(fname, &buf);
+
+  if (rc == -1)
+    {
+      (*env)->ReleaseStringUTFChars(env, name, fname);
+      return(0);
+    }
+
+  ut.actime = buf.st_atime;
+  ut.modtime = buf.st_mtime;
+
+  rc = utime(fname, &ut);
+  (*env)->ReleaseStringUTFChars(env, name, fname);
+
+  if (rc == -1)
+    return(0);
+  else
+    return(1);
 }
 
 /*************************************************************************/
