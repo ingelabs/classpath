@@ -2,7 +2,7 @@
 // AbstractMap.java -- Abstract implementation of most of Map
 //
 // Copyright (c) 1998 by Stuart Ballard (stuart.ballard@mcmail.com),
-//                       Geoff Berry (gcb@cs.duke.edu)
+//                       Free Software Foundation, Inc.
 //
 // This program is free software; you can redistribute it and/or modify
 // it under the terms of the GNU Library General Public License as published

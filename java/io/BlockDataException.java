@@ -1,7 +1,7 @@
 /*************************************************************************
 /* BlockDataException.java -- Class used to store name and class of fields
 /*
-/* Copyright (c) 1998 by Geoffrey C. Berry (gcb@cs.duke.edu)
+/* Copyright (c) 1998 by Free Software Foundation, Inc.
 /*
 /* This program is free software; you can redistribute it and/or modify
 /* it under the terms of the GNU Library General Public License as published 
