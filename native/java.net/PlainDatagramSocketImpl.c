@@ -29,7 +29,7 @@
 
 #include <jni.h>
 
-#include "java_net_PlainDatagramSocketImpl.h"
+/*#include "java_net_PlainDatagramSocketImpl.h"*/
 
 #include "javanet.h"
 

@@ -11,11 +11,11 @@ if JAPHAR
 INCLUDES += @JAPHAR_CFLAGS@
 endif
 
-InetAddress.c: java_net_InetAddress.h
+#InetAddress.c: java_net_InetAddress.h
 
-PlainDatagramSocketImpl.c: java_net_PlainDatagramSocketImpl.h
+#PlainDatagramSocketImpl.c: java_net_PlainDatagramSocketImpl.h
 
-PlainSocketImpl.c: java_net_PlainSocketImpl.h 
+#PlainSocketImpl.c: java_net_PlainSocketImpl.h 
 
 # How to build stubs
 # How to build JNI *.h files

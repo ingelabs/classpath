@@ -21,7 +21,7 @@
 
 #include <jni.h>
 
-#include "java_net_PlainSocketImpl.h"
+/*#include "java_net_PlainSocketImpl.h"*/
 
 #include "javanet.h"
 

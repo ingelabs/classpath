@@ -27,7 +27,7 @@
 
 #include <jni.h>
 
-#include "java_net_InetAddress.h"
+/*#include "java_net_InetAddress.h"*/
 
 #include "javanet.h"
 
