@@ -653,16 +653,7 @@ public abstract class Line2D implements Shape, Cloneable
    */
   public Rectangle getBounds()
   {
-    double x1 = getX1();
-    double y1 = getY1();
-    double x2 = getX2();
-    double y2 = getY2();
-    double minx = Math.floor(Math.min(x1, x2));
-    double miny = Math.floor(Math.min(y1, y2));
-    double maxx = Math.ceil(Math.max(x1, x2));
-    double maxy = Math.ceil(Math.max(y1, y2));
-    return new Rectangle((int) minx, (int) miny,
-                         (int) (maxx - minx), (int) (maxy - miny));
+    return getBounds2D().getBounds();
   }
 
   /**
@@ -681,7 +672,7 @@ public abstract class Line2D implements Shape, Cloneable
 
       public int getWindingRule()
       {
-        return WIND_EVEN_ODD;
+        return WIND_NON_ZERO;
       }
 
       public boolean isDone()

@@ -65,6 +65,8 @@ public class FlatteningPathIterator implements PathIterator
     subIterator = src;
     this.flatness = flatness;
     this.limit = limit;
+    if (flatness < 0 || limit < 0)
+      throw new IllegalArgumentException();
   }
 
   public double getFlatness()

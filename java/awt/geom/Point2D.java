@@ -211,7 +211,7 @@ public abstract class Point2D implements Cloneable
   }
 
   /**
-   * Compares to points for equality. This returns true if they have the
+   * Compares two points for equality. This returns true if they have the
    * same coordinates.
    *
    * @param o the point to compare

@@ -1,3 +1,20 @@
+2002-03-22  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/awt/geom/AffineTransform.java: Update to 1.4.
+	* java/awt/geom/Arc2D.java: New file (stubbed).
+	* java/awt/geom/Area.java: New file (stubbed).
+	* java/awt/geom/CubicCurve2D.java: New file (stubbed).
+	* java/awt/geom/Ellipse2D.java: Update formatting.
+	* java/awt/geom/FlatteningPathIterator.java: Check parameters.
+	* java/awt/geom/GeneralPath.java: New file (stubbed).
+	* java/awt/geom/Line2D.java: Fix minor bugs.
+	* java/awt/geom/Makefile.am (EXTRA_DIST): Add new files.
+	* java/awt/geom/Point2D.java: Fix spelling typo.
+	* java/awt/geom/QuadCurve2D.java: New file (stubbed).
+	* java/awt/geom/Rectangle2D.java (Float): Add new constructor.
+	(hashCode): Fix compile error - patch 203.
+	* java/awt/geom/RoundRectangle2D.java: Update formatting.
+
 2002-03-21  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/Locale.java (<clinit>): Attempt to resolve bootstrap

@@ -513,10 +513,10 @@ public abstract class Rectangle2D extends RectangularShape
   public int hashCode()
   {
     // Talk about a fun time reverse engineering this one!
-    long l = Double.doubleToLongBits(getX())
-      + 37 * Double.doubleToLongBits(getY())
-      + 43 * Double.doubleToLongBits(getWidth())
-      + 47 * Double.doubleToLongBits(getHeight());
+    long l = java.lang.Double.doubleToLongBits(getX())
+      + 37 * java.lang.Double.doubleToLongBits(getY())
+      + 43 * java.lang.Double.doubleToLongBits(getWidth())
+      + 47 * java.lang.Double.doubleToLongBits(getHeight());
     return (int) ((l >> 32) ^ l);
   }
 
@@ -788,6 +788,22 @@ public abstract class Rectangle2D extends RectangularShape
       this.y = y;
       width = w;
       height = h;
+    }
+
+    /**
+     * Create a rectangle with the given values.
+     *
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param w the width
+     * @param h the height
+     */
+    Float(double x, double y, double w, double h)
+    {
+      this.x = (float) x;
+      this.y = (float) y;
+      width = (float) w;
+      height = (float) h;
     }
 
     /**
