@@ -81,16 +81,32 @@ public class LocaleInformation extends ListResourceBundle
     public HashtableCurrencySymbols()
     {
       super();
-      put("EUR", "\u20ac");
       put("GBP", "\u00a3");
-      put("INR", "=0#Rs.|1#Re.|1<Rs.");
+      put("JPY", "\u00A5");
       put("ITL", "\u20A4");
-      put("JPY", "\u20A5");
+      put("NGN", "\u20A6");
+      put("ESP", "\u20A7");
+      put("INR", "=0#\u20A8.|1#Re.|1<\u20A8."); /* Complex format -- see DecimalFormat */
+      put("KRW", "\u20A9");
+      put("ILS", "\u20AA");
+      put("VND", "\u20AB");
+      put("EUR", "\u20ac");
+      put("TWD", "NT$");
       put("USD", "US$");
+      put("CAD", "CAN$");
+      put("AUD", "A$");
+      put("JMD", "J$");
+      put("ZWD", "Z$");
+      put("IQD", "ID");
     }
   }
 
-  private static final Object currencySymbols = new HashtableCurrencySymbols();
+  private static final java.util.Hashtable currencySymbols = new HashtableCurrencySymbols();
+  
+  public static java.util.Hashtable getCurrencySymbols()
+  {
+    return currencySymbols;
+  }
   
   private static final Object[][] contents =
   {
