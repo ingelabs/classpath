@@ -1,5 +1,5 @@
-/* TransferHandler.java --
-   Copyright (C) 2004 Free Software Foundation, Inc.
+/* BasicTextPaneUI.java -- 
+   Copyright (C) 2004  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,81 +35,35 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package javax.swing;
 
-import java.io.Serializable;
-import java.awt.event.InputEvent;
-import java.awt.datatransfer.*;
+package javax.swing.plaf.basic;
 
-public class TransferHandler implements Serializable
+import java.beans.PropertyChangeEvent;
+
+import javax.swing.JComponent;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.text.Element;
+import javax.swing.text.PlainView;
+import javax.swing.text.View;
+
+public class BasicTextPaneUI extends BasicTextUI
 {
-  private static final long serialVersionUID = -7908749299918704233L;
-
-  public static final int NONE = 0;
-  public static final int COPY = 1;
-  public static final int MOVE = 2;
-  public static final int COPY_OR_MOVE = 3;
-
-  static Action getCopyAction ()
+  public static ComponentUI createUI(JComponent comp)
   {
-    return null;
+    return new BasicTextPaneUI();
   }
 
-  static Action getCutAction ()
-  {
-    return null;
-  }
-
-  static Action getPasteAction ()
-  {
-    return null;
-  }
-
-
-  protected TransferHandler()
-  {
-    // Do nothing here.
-  }
-
-  public TransferHandler(String property)
+  public BasicTextPaneUI()
   {
   }
 
-  public boolean canImport (JComponent c, DataFlavor[] flavors)
+  public View create(Element elem)
   {
-    return false;
+    return new PlainView(elem);
   }
 
-  public Transferable createTransferable(JComponent c) 
+  protected String getPropertyPrefix()
   {
-    return null;
+    return "TextPane";
   }
-
-  public void exportAsDrag (JComponent c, InputEvent e, int action) 
-  {    
-  }
-
-  protected void exportDone (JComponent c, Transferable data, int action) 
-  {
-  }
-
-  public void exportToClipboard(JComponent c, Clipboard clip, int action) 
-  {
-  } 
-
-  public int getSourceActions (JComponent c)
-  {
-    return 0;
-  }
-
-  public Icon getVisualRepresentation (Transferable t)
-  {
-    return null;
-  }
-
-  public boolean importData (JComponent c, Transferable t) 
-  {
-    return false;
-  }
-
 }
