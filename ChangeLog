@@ -1,3 +1,8 @@
+2004-07-14  Patrik Reali  <reali@acm.org>
+
+	* doc/www.gnu.org/newsitems.txt: SableVM and JC releases
+	* doc/www.gnu.org/tasks.wml: General Paths task removed
+
 2004-07-11  Mohan Embar  <gnustuff@thisiscool.com>
 
 	* java/net/URLStreamHandler.java (parseURL): Canonicalize

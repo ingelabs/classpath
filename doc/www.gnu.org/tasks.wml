@@ -116,16 +116,6 @@ Write an implementation of the javax.imageio framework.
 </task>
 
 <task
-	title="General Paths"
-	estimation="2 weeks"
-	skills=""
-	contact="<sb>"
->
-Implement java.awt.geom.GeneralPath, especially the contains() methods.
-This would be useful for graphics applications.
-</task>
-
-<task
 	title="Constructive Area Geometry"
 	estimation="6 weeks (?)."
 	skills="Computational geometry skills"
