@@ -101,6 +101,8 @@ name="ftp://alpha.gnu.org/gnu/classpath/">.
   <LI><createlink url="docs/" name="Current Documentation"></LI>
   <LI><createlink url="docs/orp.html" name="Using GNU
   Classpath with ORP"></LI>
+  <LI><createlink url="docs/jikesrvm.html" name="Using GNU
+  Classpath with Jikes RVM"></LI>
   <LI><createlink url="announce/announcements.html" 
        name="Old News"></LI>
 </UL>

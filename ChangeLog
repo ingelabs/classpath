@@ -1,11 +1,16 @@
-2003-03-05  Development Account  <devel@localhost.localdomain>
+2003-03-06  C. Brian Jones  <cbj@gnu.org>
+
+	* doc/www.gnu.org/home.wml: link to Jikes RVM instructions
+	* doc/www.gnu.org/docs/jikesrvm.wml: new file
+
+2003-03-05  Aaron M. Renn  <arenn@urbanophile.com>
 
 	* java/io/LineNumberReader.java
 	Re-indent code, fix word-wrapped comments
 	* java/io/PrintStream.java
 	Re-indent code, fix word-wrapped comments
 
-2003-03-04  Aaron M. Renn <arenn@urbanophile.com>
+2003-03-04  Aaron M. Renn  <arenn@urbanophile.com>
 
 	* Converted file based I/O mechanisms in java.io to new 
 	native provider interface.
