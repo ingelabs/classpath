@@ -38,7 +38,6 @@ exception statement from your version. */
 package java.security;
 
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.spec.AlgorithmParameterSpec;
 
@@ -247,7 +246,7 @@ public abstract class Signature extends SignatureSpi
       }
     catch (java.lang.reflect.InvocationTargetException ite)
       {
-	throw new NoSuchAlgorithmException(algorithm);
+        throw new NoSuchAlgorithmException(algorithm);
       }
 
     if (o instanceof SignatureSpi)
@@ -319,26 +318,7 @@ public abstract class Signature extends SignatureSpi
 	  throw new InvalidKeyException(
               "KeyUsage of this Certificate indicates it cannot be used for digital signing");
       }
-    try
-      {
-        this.initVerify(certificate.getPublicKey());
-      }
-    catch (SignatureException se)
-      {
-        throw new InvalidKeyException(se.getMessage());
-      }
-    catch (NoSuchAlgorithmException nsae)
-      {
-        throw new InvalidKeyException(nsae.getMessage());
-      }
-    catch (NoSuchProviderException nspe)
-      {
-        throw new InvalidKeyException(nspe.getMessage());
-      }
-    catch (CertificateException ce)
-      {
-        throw new InvalidKeyException(ce.getMessage());
-      }
+    this.initVerify(certificate.getPublicKey());
   }
 
   /**
