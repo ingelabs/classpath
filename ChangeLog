@@ -1,3 +1,15 @@
+2003-02-09  C. Brian Jones  <cbj@gnu.org>
+
+	* doc/www.gnu.org/home.wml: add more links to projects/products using
+	GNU Classpath.
+
+2003-02-09  Raif S. Naffah  <raif@fl.net.au>
+
+	* gnu/java/security/provider/SHA1PRNG.java (ensureIsSeeded): new 
+	method used to ensure seeding has occurred and that a specific 
+	seed can be set and used.
+
+
 2003-02-07  Stephen Crawley  <crawley@dstc.edu.au>
 
 	* java/beans/PropertyDescriptor.java

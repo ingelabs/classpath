@@ -251,12 +251,46 @@ into the VM's dynamic linking process through pluggable verification
 modules.
 </td>
 </tr>
+<tr>
 <td><createlink url="http://www.e-leos.net/" name="E-LEOS"></td>
 <td>
 GNU Classpath is used as part of this project to create a Java operating
 system.
 </td>
+</tr>
+</table>
+
+<H4>Projects or Commercial Products</H4> 
+<p>
+</p>
+
+<table border="1">
+<tr><th>Project</th><th>Description</th></tr>
 <tr>
+<td><createlink url="http://www.flex-compiler.lcs.mit.edu/" name="Flex Compiler"></td>
+<td>
+FLEX is a compiler infrastructure written in Java for Java. Applications 
+include a program analysis and transformation framework for distributed 
+and embedded systems. Native backends exist for the StrongARM and MIPS 
+processors; it can also generate portable C code that can run on any 
+platform with gcc.
+</td>
+</tr>
+<tr>
+<td><createlink url="http://www.aicas.com/jamaica.html" name="JamaicaVM"></td>
+<td>
+JamaicaVM provides realtime execution, garbage collection, sophisticated
+static optimizations and targets many real-time operating systems and 
+processor architectures.
+</td>
+</tr>
+<tr>
+<td><createlink url="http://www.svtehs.com/ipjv.htm" name="IPJV"></td>
+<td>
+The IPJVM virtual machine for Java is a clean room implementation, 
+that has been specially optimized to run on device with limited amount 
+of internal memory.  IPJV-ES evaluation board is available.
+</td>
 </tr>
 </table>
 </en>
