@@ -8,7 +8,7 @@
 <lang:new id=en short>
 <lang:star:slice:>
 
-<set-var last-modified-author="<cbj>">
+<set-var last-modified-author="<mjw>">
 
 #include <include/macros.wml>
 
@@ -16,34 +16,30 @@
 <en>
 <p>
 The Open Runtime Platform (<link
-url="http://www.intel.com/research/mrl/orp/" name="ORP">) provides a
+url="http://orp.sourceforge.net/" name="ORP">) provides a
 covenient and simple platform for both using and testing GNU
-Classpath.  With the release of ORP 1.0.8, GNU Classpath's native
-libraries are finally supported almost out of the box.  A small patch
-is needed to correct a problem not detected before the release of this
-version of ORP and all subsequent versions are expected to work without
-it.  This patch is in Classpath's CVS tree,
-classpath/resource/orp-1.0.8.patch.
+Classpath.  With the release of ORP 1.0.9, GNU Classpath's native
+libraries are supported out of the box. 
 </p>
 
 <H4>Steps to use ORP+GNU Classpath on GNU/Linux</H4>
 <p>
-Example assumes ORP 1.0.8, see above.  In the example, Classpath CVS
-is in ~/cvs/classpath/.
+Example assumes ORP 1.0.9, see above.  In the example, GNU Classpath sources
+are in ~/src/classpath/.
 </p>
 <UL>
-  <LI>Obtain <link url="http://orp.sourceforge.net/" 
-       name="ORP"> from Sourceforge</LI>
+  <LI>Obtain <link url="http://sourceforge.net/projects/orp/" 
+       name="ORP"> from the Sourceforge project page</LI>
   <OL>
     <LI><tt>wget
-    http://prdownloads.sourceforge.net/orp/orp20011116.tgz</tt></LI>
-    <LI><tt>tar -xzvf orp20011116.tgz</tt></LI>
-    <LI><tt>mv orp orp-1.0.8</tt></LI>
+    http://prdownloads.sourceforge.net/orp/orp-1.0.9.tgz</tt></LI>
+    <LI><tt>tar -xzvf orp-1.0.9.tgz</tt></LI>
   </OL>
-  <LI>Apply the patch</LI>
+  <LI>On some systems you might need to apply a patch to work around
+  gcc compile problems</LI>
   <OL>
-    <LI><tt>cd orp-1.0.8</tt></LI>
-    <LI><tt>patch -p1 < ~/cvs/classpath/resource/orp-1.0.8.patch</tt></LI>
+    <LI><tt>cd orp-1.0.9</tt></LI>
+    <LI><tt>patch -p1 < ~/src/classpath/resource/orp-1.0.9.patch</tt></LI>
   </OL>
   <LI>Build ORP</LI>
   <OL>
@@ -51,7 +47,7 @@ is in ~/cvs/classpath/.
   </OL>
 </UL>
 <p>
-ORP should now be built and ready, orp-1.0.8/mains/orp/Linux/dbg/orp.
+ORP should now be built and ready, orp-1.0.9/mains/orp/Linux/dbg/orp.
 </p>
 <H4>Using ORP+GNU Classpath on GNU/Linux</H4>
 <p>
@@ -78,12 +74,14 @@ the default prefix.
 <UL>
   <LI>Running HelloWorld with ORP</LI>
   <OL>
-    <LI><tt>orp-1.0.8/mains/orp/Linux/dbg/orp -swapjit 0 1 -classpath
+    <LI>Create a <tt>HelloWorld.java</tt> file and compile to a class file
+    with <tt>jikes</tt> or <tt>gcj -C</tt></LI>
+    <LI><tt>orp-1.0.9/mains/orp/Linux/dbg/orp -swapjit 0 1 -classpath
     $CLASSPATH HelloWorld</tt></LI>
   </OL>
 </UL>
 <p>
-ORP contains two JITs at this time.  By default ORP 1.0.8 uses a
+ORP contains two JITs at this time.  By default ORP uses a
 so-called JIT 3 and for some things it appears to have more problems
 than when using JIT 1.  This is the reasoning behind adding the
 -swapjit 0 1 argument to ORP.  ORP does not have the ability at this

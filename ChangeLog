@@ -1,3 +1,9 @@
+2002-02-07  Mark Wielaard  <mark@klomp.org>
+
+	* README: Update URLs, add more info.
+	* resource/orp-1.0.9.patch: New file.
+	* doc/www.gnu.org/doc/orp.wml: Update for ORP 1.0.9 release.
+
 2002-02-07  C. Brian Jones <cbj@gnu.org>
 
 	* native/jni/java-lang/Makefile.am: removed empty SUBDIRS

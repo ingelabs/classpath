@@ -8,18 +8,29 @@ javadoc, javap, javah, and others.
 Eventually, these essential libraries for Java will work with as many 
 free JVMs as possible.  Virtual machines known to use GNU Classpath
 include:
-	* GCJ 		(http://sources.redhat.com/java/)
-	* ORP		(http://www.intel.com/research/mrl/orp/)
+	* GCJ 		(http://gcc.gnu.org/java/)
+	* ORP		(http://orp.sourceforge.net/)
 	* Kissme	(http://kissme.sourceforge.net/)
 	* SableVM	(http://www.sablevm.org/)
 	* Jupiter	(http://www.eecg.toronto.edu/~doylep/jupiter/)
+	* Joas		(http://www.oberon.ethz.ch/jaos/)
 
 This is a development release only and is not ready for general
 purpose use.
 
+GNU Classpath has been tested to work out of the box with the latest ORP
+release. Instructions for building ORP with this GNU Classpath release can
+be found at <http://www.gnu.org/software/classpath/doc/orp.html>.
+Most JVMs come with their own customized version of GNU Classpath.
+Please check if there is a customised version available for the JVM you
+use before trying the bare bones GNU Classpath release. We are working with
+the JVM creators to keep the differences between the core classes as small
+as possible. Please tell us if you make GNU Classpath work with a new JVM.
+
 See the file INSTALL for details on installing GNU Classpath.
 See the file NEWS for details on what is included in this release.
 See the file TODO for the latest to do list.
+See the file HACKING for working on (non-released) CVS development versions.
 
 Homepage: http://www.classpath.org/ or http://www.gnu.org/software/classpath/
 
