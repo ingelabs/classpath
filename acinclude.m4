@@ -27,14 +27,20 @@ AC_DEFUN(CLASSPATH_INTERNAL_CHECK_JAPHAR,
     exit 1
   fi
   AC_MSG_CHECKING(for Japhar)
+  JAPHAR_PREFIX="`$JAPHAR_CONFIG --prefix`"
   JAPHAR_CFLAGS="`$JAPHAR_CONFIG compile`"
   JAPHAR_LIBS="`$JAPHAR_CONFIG link`"
   JVM="yes"
+  AC_SUBST(JAPHAR_PREFIX)
   AC_SUBST(JAPHAR_CFLAGS)
   AC_SUBST(JAPHAR_LIBS)
   AC_SUBST(JVM)
   conditional_with_japhar=true
   AC_MSG_RESULT(yes)
+
+  dnl Reset prefix so that we install into Japhar directory
+  prefix=$JAPHAR_PREFIX
+  AC_SUBST(prefix)
 
   dnl programs we probably need somewhere
   bindir=`$JAPHAR_CONFIG info bindir`
