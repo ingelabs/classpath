@@ -1,5 +1,11 @@
 2003-03-24  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/FileInputStream.java:
+	More merging with libgcj.
+	(read): Compile fix.
+
+2003-03-24  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/DataOutputStream.java:
 	Reordered methods to match libgcj, reformatting.
 	(writeBoolean): Replaced if ... else ... with a single line of code.

@@ -38,7 +38,6 @@ exception statement from your version. */
 
 package java.io;
 
-import gnu.classpath.Configuration;
 import java.nio.channels.FileChannel;
 import gnu.java.nio.FileChannelImpl;
 
@@ -47,7 +46,7 @@ import gnu.java.nio.FileChannelImpl;
  * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
  * Status:  Believed complete and correct.
  */
-
+ 
 /**
  * This class is a stream that reads its bytes from a file. 
  *
@@ -144,7 +143,7 @@ public class FileInputStream extends InputStream
     if (s != null)
       s.checkRead(fdObj);
 
-    this.fd = fdObj;
+    fd = fdObj;
   }
 
   /**
@@ -256,7 +255,9 @@ public class FileInputStream extends InputStream
    */
   public int read(byte[] buf, int offset, int len) throws IOException
   {
-    if (off < 0 || len < 0 || off + len > b.length)
+    if (offset < 0
+        || len < 0
+        || offset + len > buf.length)
       throw new ArrayIndexOutOfBoundsException();
 
     return fd.read(buf, offset, len);
