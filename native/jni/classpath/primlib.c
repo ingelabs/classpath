@@ -59,7 +59,7 @@ static jmethodID nativeWrapClassAccessor[PRIMLIB_NUMTYPES] =
   NULL, NULL, NULL, NULL, NULL, NULL
 };
 
-static char *nativeWrapClassName[PRIMLIB_NUMTYPES] = {
+static const char *nativeWrapClassName[PRIMLIB_NUMTYPES] = {
   NULL,
   NULL,
   "java/lang/Boolean",
@@ -74,7 +74,7 @@ static char *nativeWrapClassName[PRIMLIB_NUMTYPES] = {
   NULL
 };
 
-static char *nativeWrapClassConstructorSig[PRIMLIB_NUMTYPES] = {
+static const char *nativeWrapClassConstructorSig[PRIMLIB_NUMTYPES] = {
   NULL,
   NULL,
   "(Z)V",
@@ -89,7 +89,7 @@ static char *nativeWrapClassConstructorSig[PRIMLIB_NUMTYPES] = {
   NULL
 };
 
-static char *nativeWrapClassAccessorName[PRIMLIB_NUMTYPES] = {
+static const char *nativeWrapClassAccessorName[PRIMLIB_NUMTYPES] = {
   NULL,
   NULL,
   "booleanValue",
@@ -104,7 +104,7 @@ static char *nativeWrapClassAccessorName[PRIMLIB_NUMTYPES] = {
   NULL
 };
 
-static char *nativeWrapClassAccessorSig[PRIMLIB_NUMTYPES] = {
+static const char *nativeWrapClassAccessorSig[PRIMLIB_NUMTYPES] = {
   NULL,
   NULL,
   "()Z",

@@ -47,7 +47,7 @@ exception statement from your version. */
 #endif
 
 JNIEXPORT void JNICALL
-JCL_ThrowException (JNIEnv * env, char *className, char *errMsg)
+JCL_ThrowException (JNIEnv * env, const char *className, const char *errMsg)
 {
   jclass excClass;
   if ((*env)->ExceptionOccurred (env))
@@ -72,9 +72,9 @@ JCL_ThrowException (JNIEnv * env, char *className, char *errMsg)
 	      return;
 	    }
 	}
-      /* Removed this (more comprehensive) error string to avoid the need for a 
-       * static variable or allocation of a buffer for this message in this (unlikely) 
-       * error case. --Fridi. 
+      /* Removed this (more comprehensive) error string to avoid the need for
+       * a static variable or allocation of a buffer for this message in this
+       * (unlikely) error case. --Fridi. 
        *
        * sprintf(errstr,"JCL: Failed to throw exception %s with message %s: could not find exception class.", className, errMsg); 
        */
@@ -139,7 +139,7 @@ JCL_jstring_to_cstring (JNIEnv * env, jstring s)
 }
 
 JNIEXPORT void JNICALL
-JCL_free_cstring (JNIEnv * env, jstring s, const char *cstr)
+JCL_free_cstring (JNIEnv * env, jstring s, char *cstr)
 {
   (*env)->ReleaseStringUTFChars (env, s, cstr);
 }
@@ -169,7 +169,7 @@ JCL_MonitorExit (JNIEnv * env, jobject o)
 }
 
 JNIEXPORT jclass JNICALL
-JCL_FindClass (JNIEnv * env, char *className)
+JCL_FindClass (JNIEnv * env, const char *className)
 {
   jclass retval = (*env)->FindClass (env, className);
   if (retval == NULL)

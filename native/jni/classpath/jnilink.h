@@ -53,25 +53,25 @@ typedef void *linkedClass;
 #define LINK_LinkConstructor(env,m,c,sig)       ((m)==NULL ? LINK_RelinkMethod((env),&(m),(c),"<init>",(sig)) : (m))
 
 JNIEXPORT jclass JNICALL
-LINK_ReallyLinkClass (JNIEnv * env, linkedClass * c, char *name);
+LINK_ReallyLinkClass (JNIEnv * env, linkedClass * c, const char *name);
 JNIEXPORT jclass JNICALL
 LINK_ReallyLinkKnownClass (JNIEnv * env, linkedClass * c, jclass newClass);
 JNIEXPORT jclass JNICALL
-LINK_RelinkClass (JNIEnv * env, linkedClass * c, char *name);
+LINK_RelinkClass (JNIEnv * env, linkedClass * c, const char *name);
 JNIEXPORT jclass JNICALL
 LINK_RelinkKnownClass (JNIEnv * env, linkedClass * c, jclass newClass);
 JNIEXPORT jmethodID JNICALL
 LINK_RelinkMethod (JNIEnv * env, jmethodID * m, linkedClass c,
-		   char *name, char *sig);
+		   const char *name, const char *sig);
 JNIEXPORT jmethodID JNICALL
 LINK_RelinkStaticMethod (JNIEnv * env, jmethodID * m, linkedClass c,
-			 char *name, char *sig);
+			 const char *name, const char *sig);
 JNIEXPORT jfieldID JNICALL
 LINK_RelinkField (JNIEnv * env, jfieldID * f, linkedClass c,
-		  char *name, char *sig);
+		  const char *name, const char *sig);
 JNIEXPORT jfieldID JNICALL
 LINK_RelinkStaticField (JNIEnv * env, jfieldID * f, linkedClass c,
-			char *name, char *sig);
+			const char *name, const char *sig);
 
 /* These are for when the class referencing the symbols is unloaded; it
 destroys any object references
