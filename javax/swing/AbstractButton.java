@@ -300,7 +300,7 @@ public abstract class AbstractButton extends JComponent
   public static final String VERTICAL_TEXT_POSITION_CHANGED_PROPERTY = "verticalTextPosition";
 
     /**
-   * A Java Accessibility extension of the AbstractButton.
+     * A Java Accessibility extension of the AbstractButton.
      */
   protected abstract class AccessibleAbstractButton
     extends AccessibleJComponent implements AccessibleAction, AccessibleValue,
