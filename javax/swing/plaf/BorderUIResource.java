@@ -380,19 +380,45 @@ public class BorderUIResource
             shadowOuter, shadowInner);
     }
   }
-
+  
+  
+  /**
+   * A {@link javax.swing.border.CompoundBorder} that also implements the
+   * {@link UIResource} marker interface.  This is useful for
+   * implementing pluggable look-and-feels: When switching the current
+   * LookAndFeel, only those borders are replaced that are marked as
+   * {@link UIResource}.  For this reason, a look-and-feel should
+   * always install borders that implement <code>UIResource</code>,
+   * such as the borders provided by this class.
+   *
+   * @author Brian Jones (cbj@gnu.org)
+   * @author Sascha Brawer (brawer@dandelis.ch)
+   */
+  public static class CompoundBorderUIResource
+    extends CompoundBorder
+    implements UIResource, Serializable
+  {
     /**
-     * @serial */
-    public static class CompoundBorderUIResource
-	extends CompoundBorder
-	implements UIResource, Serializable
+     * Constructs a CompoundBorderUIResource with the specified inside
+     * and outside borders.
+     *
+     * @param outsideBorder the outside border, which is painted to the
+     *        outside of both <code>insideBorder</code> and the enclosed
+     *        component. It is acceptable to pass <code>null</code>, in
+     *        which case no outside border is painted.
+     *
+     * @param insideBorder the inside border, which is painted to
+     *        between <code>outsideBorder</code> and the enclosed
+     *        component. It is acceptable to pass <code>null</code>, in
+     *        which case no inside border is painted.
+     */
+    public CompoundBorderUIResource(Border outsideBorder,
+                                    Border insideBorder)
     {
-	public CompoundBorderUIResource(Border outsideBorder,
-					Border insideBorder)
-	{
-	  super (outsideBorder, insideBorder);
-	}
+      super(outsideBorder, insideBorder);
     }
+  }
+
 
     /**
      * @serial
