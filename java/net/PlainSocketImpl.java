@@ -63,12 +63,12 @@ class PlainSocketImpl extends SocketImpl
 {
   // Static initializer to load native library.
   static
-  {
-    if (Configuration.INIT_LOAD_LIBRARY)
-      {
-	System.loadLibrary("javanet");
-      }
-  }
+    {
+      if (Configuration.INIT_LOAD_LIBRARY)
+        {
+          System.loadLibrary("javanet");
+        }
+    }
 
   /**
    * The OS file handle representing the socket.
@@ -78,6 +78,16 @@ class PlainSocketImpl extends SocketImpl
    * When the socket is closed this is reset to -1.
    */
   protected int native_fd = -1;
+
+  /**
+   * A cached copy of the in stream for reading from the socket.
+   */
+  private InputStream in;
+
+  /**
+   * A cached copy of the out stream for writing to the socket.
+   */
+  private OutputStream out;
 
   /**
    * Default do nothing constructor
@@ -97,8 +107,7 @@ class PlainSocketImpl extends SocketImpl
    *
    * @exception SocketException If an error occurs
    */
-  public native void setOption(int option_id, Object val) 
-    throws SocketException;
+  public native void setOption(int optID, Object value) throws SocketException;
 
   /**
    * Returns the current setting of the specified option.  The Object returned
@@ -111,8 +120,7 @@ class PlainSocketImpl extends SocketImpl
    *
    * @exception SocketException If an error occurs
    */
-  public native Object getOption(int option_id)
-    throws SocketException;
+  public native Object getOption(int optID) throws SocketException;
 
   public void shutdownInput()
   {
@@ -143,11 +151,9 @@ class PlainSocketImpl extends SocketImpl
    *
    * @exception IOException If an error occurs
    */
-  protected synchronized void connect(String hostname, int port)
-    throws IOException
+  protected synchronized void connect (String host, int port) throws IOException
   {
-    InetAddress addr = InetAddress.getByName(hostname);
-    connect(addr, port);
+    connect (InetAddress.getByName (host), port);
   }
 
   /**
@@ -161,7 +167,7 @@ class PlainSocketImpl extends SocketImpl
   protected native void connect(InetAddress addr, int port)
     throws IOException;
 
-  public void connect(SocketAddress address, int timeout)
+  protected void connect(SocketAddress address, int timeout)
   {
     throw new InternalError ("PlainSocketImpl::connect not implemented");
   }
@@ -258,7 +264,10 @@ class PlainSocketImpl extends SocketImpl
    */
   protected synchronized InputStream getInputStream() throws IOException
   {
-    return(new SocketInputStream(this));
+    if (in == null)
+      in = new SocketInputStream (this);
+    
+    return in;
   }
 
   /**
@@ -271,6 +280,9 @@ class PlainSocketImpl extends SocketImpl
    */
   protected synchronized OutputStream getOutputStream() throws IOException
   {
-    return(new SocketOutputStream(this));
+    if (out == null)
+      out = new SocketOutputStream (this);
+    
+    return out;
   }
 }
