@@ -1,5 +1,11 @@
 2003-06-26  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/swing/plaf/TreeUI.java (getClosesPath): Method renamed to
+	getClosestPath.
+	* javax/swing/plaf/basic/BasicTreeUI.java (getClosesPath): Likewise.
+	
+2003-06-26  Sascha Brawer  <brawer@dandelis.ch>
+
 	* javax/swing/plaf/TreeUI.java (getPathBounds, getPathForRow,
 	getRowForPath, getRowCount, getClosesPathForLocation,
 	isEditing, stopEditing, cancelEditing, startEditingAtPath,

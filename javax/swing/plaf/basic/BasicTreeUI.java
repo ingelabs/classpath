@@ -151,8 +151,8 @@ public class BasicTreeUI
    * @return the closest path, or <code>null</code> if the
    *         tree is currenlty not displaying any paths at all.
    */
-  public TreePath getClosesPathForLocation(JTree tree,
-                                           int x, int y)
+  public TreePath getClosestPathForLocation(JTree tree,
+                                            int x, int y)
   {
     return null;  // FIXME: not implemented
   }

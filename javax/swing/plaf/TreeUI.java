@@ -144,8 +144,8 @@ public abstract class TreeUI
    * @return the closest path, or <code>null</code> if the
    *         tree is currenlty not displaying any paths at all.
    */
-  public abstract TreePath getClosesPathForLocation(JTree tree,
-                                                    int x, int y);
+  public abstract TreePath getClosestPathForLocation(JTree tree,
+                                                     int x, int y);
 
 
   /**
