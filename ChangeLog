@@ -1,3 +1,21 @@
+2004-04-23  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/security/der/DERReader.java: Call static methods staticly.
+	* java/awt/TextComponent.java (select): Use selectionEnd parameter.
+	* java/lang/System.java (runFinalizersOnExit): Call static
+	Runtime.runFinalizersOnExit staticly.
+	* java/net/URL.java
+	(set(String, String, int, String, String, String, String, String)):
+	Assign this.file to path or path + "?" + query.
+	* java/text/RuleBasedCollator.java: Call static methods staticly.A
+	* java/util/Arrays.java: Likewise.
+	* java/util/zip/ZipEntry.java: Likewise.
+	* javax/swing/plaf/basic/BasicArrowButton.java (setDirection): Assign
+	dir to this.direction.
+	* javax/swing/table/DefaultTableCellRenderer.java (noFocusBorder):
+	Assign static field only once.
+	(DefaultTableCellRenderer): Don't reassign noFocusBorder each time.
+
 2004-04-23  Dalibor Topic  <robilad@kaffe.org>
 
 	* ChangeLog: Fixed my last entry to follow
