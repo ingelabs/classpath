@@ -1,5 +1,11 @@
 2004-05-20  Mark Wielaard  <mark@klomp.org>
 
+	* java/lang/System.java (properties): Make package private.
+	* java/lang/Throwable.java (StaticData.nl): Initialize through
+	directly accessing System.properties.getProperty().
+
+2004-05-20  Mark Wielaard  <mark@klomp.org>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
 	(requestFocus): Re-add function.
                                                                                             
