@@ -304,10 +304,19 @@ public final class Currency
     /* Loop through each locale, looking for the code */
     for (int i = 0;i < allLocales.length; i++)
       {
-	Currency testCurrency = getInstance (allLocales[i]);
-	if (testCurrency != null &&
-	    testCurrency.getCurrencyCode().equals(currencyCode))
-	  return testCurrency;
+	try
+	  {
+	    Currency testCurrency = getInstance (allLocales[i]);
+	    if (testCurrency != null &&
+		testCurrency.getCurrencyCode().equals(currencyCode))
+	      {
+		return testCurrency;
+	      }
+	  }
+	catch (IllegalArgumentException exception)
+	  {
+	    /* Ignore locales without valid countries */
+	  }
       }
     /* 
      * If we get this far, the code is not supported by any of
