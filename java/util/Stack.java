@@ -28,7 +28,9 @@ package java.util;
  * for stack manipulation (push, pop, peek). 
  */
 public class Stack extends Vector {
-  
+
+  private static final long serialVersionUID = 1224463164541339165L;
+
   /**
    * This constructor creates a new Stack, initially empty
    */

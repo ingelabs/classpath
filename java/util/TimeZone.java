@@ -39,7 +39,6 @@ package java.util;
  */
 public abstract class TimeZone implements java.io.Serializable, Cloneable {
 
-    // FIXME: Verify the values for these constants!
     /**
      * Constant used to indicate that a short timezone abbreviation should
      * be returned, such as "EST"
@@ -61,6 +60,8 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
      * The default time zone, as returned by getDefault.
      */
     private static TimeZone defaultZone;
+
+    private static final long serialVersionUID = 3581463369166924961L;
 
     /**
      * Aliases for timezones.  The format is "alias name", "canonical name"

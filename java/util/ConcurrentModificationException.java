@@ -28,6 +28,7 @@ package java.util;
  * condition is referred to as fail-fast.
  */
 public class ConcurrentModificationException extends RuntimeException {
+  private static final long serialVersionUID = -3666751008965953603L;
 
   /**
    * Constructs a ConcurrentModificationException with no detail message.

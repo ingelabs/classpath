@@ -26,7 +26,8 @@ import java.io.Serializable;
 
 public class EventObject implements Serializable
 {
-	protected Object source;
+	private static final long serialVersionUID = 5516075349620653480L;
+	protected transient Object source;
 	
 	/**
 	*Constructs an EventObject with the specified source.

@@ -24,6 +24,7 @@ package java.util;
  * or otherwise access elements from an empty stack.
  */
 public class EmptyStackException extends RuntimeException {
+  private static final long serialVersionUID = 5084686378493302095L;
 
   /**
    * Constructs an EmptyStackException with no detail message.

@@ -60,7 +60,9 @@ public class Properties extends Hashtable {
      * The property list that contains default values for any keys not
      * in this property list.  
      */
-    private Properties defaults;
+    protected Properties defaults;
+
+    private static final long serialVersionUID = 4112578634029874840L;
 
     /**
      * Creates a new empty property list.

@@ -27,6 +27,7 @@ package java.util;
  * @author Jochen Hoenicke
  */
 public class MissingResourceException extends RuntimeException {
+    private static final long serialVersionUID = -4876345176062000401L;
 
     /**
      * The name of the resource bundle requested by user.

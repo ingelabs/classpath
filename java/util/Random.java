@@ -55,20 +55,22 @@ public class Random implements java.io.Serializable {
      * nextGaussian, which generates two gaussian numbers by one call,
      * and returns the second on the second call.  
      * @see #nextGaussian.  */
-    boolean haveNextNextGaussian;
+    private boolean haveNextNextGaussian;
     /**
      * The next nextGaussian if available.  This is used by nextGaussian,
      * which generates two gaussian numbers by one call, and returns the
      * second on the second call.
      * @see #nextGaussian.
      */
-    double nextNextGaussian;
+    private double nextNextGaussian;
     /**
      * The seed.  This is the number set by setSeed and which is used
      * in next.
      * @see #next
      */
-    long seed;
+    private long seed;
+
+    private static final long serialVersionUID = 3905348978240129619L;
 
     /**
      * Creates a new pseudorandom number generator.  The seed is initialized
