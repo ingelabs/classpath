@@ -61,7 +61,7 @@ private boolean need11Stubs = true;
 private boolean need12Stubs = true;
 private boolean compile = true;
 private boolean verbose;
-private String destination;
+private String destination = "";
 
 private PrintWriter out;
 private TabbedWriter ctrl;
@@ -138,6 +138,9 @@ private boolean processClass(String classname) throws Exception {
 }
 
 private void analyzeClass(String cname) throws Exception {
+	if(verbose){
+			System.out.println("[analyze class "+cname+"]");
+		}
 	int p = cname.lastIndexOf('.');
 	if (p != -1) {
 		classname = cname.substring(p+1);
@@ -147,29 +150,33 @@ private void analyzeClass(String cname) throws Exception {
 	}
 	fullclassname = cname;
 
-	// ???
+	
 	HashSet rmeths = new HashSet();
 	findClass();
 	
 	// get the remote interface
 	mRemoteInterface = getRemoteInterface(clazz);
+	if(mRemoteInterface == null)
+		return;
+	if(verbose){
+		System.out.println("[implements "+mRemoteInterface.getName()+"]");
+	}
 
 	// check if the methods of the remote interface declare RemoteExceptions
 	Method[] meths = mRemoteInterface.getDeclaredMethods();
 	for (int i = 0; i < meths.length; i++) {
-// NYI: ignore check until Method.getExceptionTypes is implemented		
-//		Class[] exceptions = meths[i].getExceptionTypes();
-//		int index = 0;
-//		for(;index < exceptions.length; index++){
-//			if(exceptions[index].equals(RemoteException.class)){
-//				break;
-//			}
-//		}
-//		if (index < exceptions.length) {
+		Class[] exceptions = meths[i].getExceptionTypes();
+		int index = 0;
+		for(;index < exceptions.length; index++){
+			if(exceptions[index].equals(RemoteException.class)){
+				break;
+			}
+		}
+		if (index < exceptions.length) {
 			rmeths.add(meths[i]);
-//		} else {
-//			logError("Method "+meths[i]+" does not throw a java.rmi.RemoteException");
-//		}
+		} else {
+			logError("Method "+meths[i]+" does not throw a java.rmi.RemoteException");
+		}
 	}
 
 
@@ -192,7 +199,7 @@ private void findClass() throws ClassNotFoundException {
 
 private void generateStub() throws IOException {
 	stubname = classname + "_Stub";
-	ctrl = new TabbedWriter(new FileWriter(stubname + ".java"));
+	ctrl = new TabbedWriter(new FileWriter(destination + File.separator + stubname + ".java"));
 	out = new PrintWriter(ctrl);
 
 	if (verbose) {
@@ -355,9 +362,7 @@ private void generateStub() throws IOException {
 			}
 		}
 		out.print(") ");
-// NYI hard-code java.rmi.RemoteException until Method.getExceptionTypes is implemented
-//		out.print("throws ");
-		out.print("throws java.rmi.RemoteException");
+		out.print("throws ");
 		for (int j = 0; j < except.length; j++) {
 			out.print(getPrettyName(except[j]));
 			if (j+1 < except.length) {
@@ -615,7 +620,7 @@ private void generateStub() throws IOException {
 
 private void generateSkel() throws IOException {
 	skelname = classname + "_Skel";
-	ctrl = new TabbedWriter(new FileWriter(skelname + ".java"));
+	ctrl = new TabbedWriter(new FileWriter(destination + File.separator + skelname + ".java"));
 	out = new PrintWriter(ctrl);
 
 	if (verbose) {
@@ -975,6 +980,35 @@ private void parseOptions() {
 	}
 }
 
+/**
+ * Looks for the java.rmi.Remote interface that that is implemented by theClazz.
+ * @param theClazz the class to look in  
+ * @return the Remote interface of theClazz or null if theClazz does not implement a Remote interface
+ */
+private Class getRemoteInterface(Class theClazz)
+{
+	Class[] interfaces = theClazz.getInterfaces();
+	for (int i = 0; i < interfaces.length; i++)
+	{
+		if (java.rmi.Remote.class.isAssignableFrom(interfaces[i]))
+		{
+			return interfaces[i];
+		}
+	}
+	logError("Class "+ theClazz.getName()
+			+ " is not a remote object. It does not implement an interface that is a java.rmi.Remote-interface.");
+	return null;
+}
+	
+/**
+ * Prints an error to System.err and increases the error count.
+ * @param theError
+ */
+private void logError(String theError){
+	errorCount++;
+	System.err.println("error:"+theError);
+}
+
 private static void error(String message) {
 	System.err.println("rmic: " + message);
 	System.err.println("Try `rmic --help' for more information.");
@@ -1027,41 +1061,5 @@ public int compareTo(Object obj) {
 }
 
 }
-
-	/**
-	 * Looks for the java.rmi.Remote interface that that is implemented by theClazz.
-	 * @param theClazz the class to look in  
-	 * @return the Remote interface of theClazz
-	 */
-	private Class getRemoteInterface(Class theClazz)
-	{
-		System.out.println(
-			"[RMIC]looking for remote interface in " + theClazz.getName());
-		Class[] interfaces = theClazz.getInterfaces();
-		System.out.println("[RMIC] got interface array");
-		for (int i = 0; i < interfaces.length; i++)
-		{
-			if (java.rmi.Remote.class.isAssignableFrom(interfaces[i]))
-			{
-				System.out.println("[RMIC]found remote interface " + interfaces[i].getName());
-				return interfaces[i];
-			}
-		}
-		System.out.println("[RMIC]found no remote interface");
-
-		logError("Class "+ theClazz.getName()
-				+ " is not a remote object. It does not implement an interface that is a java.rmi.Remote-interface.");
-		return null;
-	}
-	
-	/**
-	 * Prints an error to System.err and increases the error count.
-	 * @param theError
-	 */
-	private void logError(String theError){
-		errorCount++;
-		System.err.println("error:"+theError);
-	}
-		
 
 }

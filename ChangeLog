@@ -1,3 +1,10 @@
+2003-08-12  Ingo Proetel  <proetel@aicas.com>
+
+	* java/rmi/server/RMIClassLoader.java: identify cached classloaders by 
+	codebase and contextclassloader 
+	* java/rmi/Naming.java: added comments, now accepts pseudo protocol "rmi" 
+	* gnu/java/rmi/rmic/RMIC.java: uncommeted code  
+
 2003-08-12  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/net/URLClassLoader: (findClass): close InputStream after
