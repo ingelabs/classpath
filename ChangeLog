@@ -1,3 +1,22 @@
+2003-01-10:  C. Brian Jones  <cbj@gnu.org>
+
+	* mkinstalldirs: updated to automake 1.6
+	* missing: ditto
+	* install-sh: ditto
+	* config.sub: ditto
+	* config.guess: ditto 
+	* depcomp: ditto
+	* doc/texinfo.tex: ditto
+	* configure.in: check for headers sys/ioctl.h asm/ioctls.h
+	* native/jni/java-net/java_net_PlainSocketImpl.c: include config.h,
+	checks for HAVE_SYS_IOCTL_H and HAVE_ASM_IOCTL_H, exclude for _AIX
+	asm/ioctls.h, parts of patch from Julian Dolby
+
+2003-01-10  Julian Dolby  <dolby@us.ibm.com>
+
+	* native/fdlibm/fdlibm.h: define _XOPEN_SOURCE for AIX
+	* native/fdlibm/ieeefp.h: defines for _POWER as well as __PPC__
+
 2003-01-10  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/ObjectOuputStream.java:

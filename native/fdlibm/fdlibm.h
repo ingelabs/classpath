@@ -14,6 +14,11 @@
 #ifndef __CLASSPATH_FDLIBM_H__
 #define __CLASSPATH_FDLIBM_H__
 
+/* AIX needs _XOPEN_SOURCE */
+#ifdef _AIX
+#define _XOPEN_SOURCE
+#endif
+
 #include <config.h>
 #include <stdlib.h>
 
