@@ -202,6 +202,10 @@ final class VMProcess extends Process
 	      process.state = RUNNING;
 	      activeMap.put(new Long(process.pid), process);
 	    }
+          catch (ThreadDeath death)
+            {
+              throw death;
+            }
 	  catch (Throwable t)
 	    {
 	      process.state = TERMINATED;

@@ -1,5 +1,18 @@
 2004-12-02  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/awt/EventDispatchThread.java,
+	java/awt/Toolkit.java,
+	java/io/ObjectStreamClass.java,
+	java/lang/reflect/Proxy.java,
+	java/net/URL.java,
+	java/security/SecureRandom.java,
+	java/util/Timer.java,
+	java/util/prefs/AbstractPreferences.java,
+	vm/reference/java/lang/VMProcess.java:
+	Don't catch java.lang.ThreadDeath.
+
+2004-12-02  Jeroen Frijters  <jeroen@frijters.net>
+
 	* gnu/java/net/protocol/file/Connection.java
 	(StaticData): New inner class to contain statics.
 	(connect, getHeaderField): Modified to use StaticData.
