@@ -21,6 +21,15 @@
 	(fireActionPerformed): Made protected.
 	(fireActionPerformed): Reimplemented.
 
+2003-06-23  Torsten Rupp  <rupp@aicas.com>
+
+        * configure.in:
+        added includes 'Linux' and 'generic' as extra-include paths.
+        This change is temporary and have to be replaced by more
+        elaborated code to be able to select the target system for
+        which Classpath is compiled. Currently only 'Linux' is
+        supported; other targets will be added when available.
+
 2003-06-23  John Leuner  <jewel@debian.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c: cosmetic changes
