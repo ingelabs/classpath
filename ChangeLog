@@ -1,3 +1,15 @@
+2004-09-17  Sven de Marothy <sven@physto.se>
+
+	* java/nio/ByteBuffer.java:
+	(hashCode): Implemented.
+	* java/nio/CharBuffer.java:
+	* java/nio/DoubleBuffer.java:
+	* java/nio/FloatBuffer.java:
+	* java/nio/LongBuffer.java:
+	* java/nio/IntBuffer.java:
+	* java/nio/ShortBuffer.java:
+	Likewise.
+
 2004-09-13  Mark Wielaard  <mark@klomp.org>
 
 	* NEWS: Set release date.
