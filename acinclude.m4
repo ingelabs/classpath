@@ -89,7 +89,11 @@ AC_DEFUN(CLASSPATH_CHECK_JAPHAR,
       CLASSPATH_INTERNAL_CHECK_JAPHAR
     fi
   ],
-  [ conditional_with_japhar=false] )
+  [ 
+    conditional_with_japhar=false
+    JAPHAR_CFLAGS=""
+    AC_SUBST(JAPHAR_CFLAGS)
+  ])
 ])
 
 dnl CLASSPATH_CHECK_KAFFE - checks for which java virtual machine to use
