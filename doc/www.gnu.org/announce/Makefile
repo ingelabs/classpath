@@ -2,7 +2,7 @@ ifndef MHC
   MHC=mhc
 endif
 
-%.html : %.mhtml macros.mhtml
+%.html : %.mhtml ../macros.mhtml
 	$(MHC) $< > $@
 
 all : 19990206.html
