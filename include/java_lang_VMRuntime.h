@@ -23,7 +23,6 @@ extern JNIEXPORT void JNICALL Java_java_lang_VMRuntime_runFinalizersOnExit (JNIE
 extern JNIEXPORT void JNICALL Java_java_lang_VMRuntime_exit (JNIEnv *env, jclass, jint);
 extern JNIEXPORT jint JNICALL Java_java_lang_VMRuntime_nativeLoad (JNIEnv *env, jclass, jstring);
 extern JNIEXPORT jstring JNICALL Java_java_lang_VMRuntime_nativeGetLibname (JNIEnv *env, jclass, jstring, jstring);
-extern JNIEXPORT jobject JNICALL Java_java_lang_VMRuntime_exec (JNIEnv *env, jclass, jobjectArray, jobjectArray, jobject);
 extern JNIEXPORT void JNICALL Java_java_lang_VMRuntime_insertSystemProperties (JNIEnv *env, jclass, jobject);
 
 #ifdef __cplusplus

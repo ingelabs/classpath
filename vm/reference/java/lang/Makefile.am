@@ -8,6 +8,7 @@ VMClassLoader.java \
 VMDouble.java \
 VMFloat.java \
 VMObject.java \
+VMProcess.java \
 VMRuntime.java \
 VMSecurityManager.java \
 VMString.java \

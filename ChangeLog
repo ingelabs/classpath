@@ -1,3 +1,14 @@
+2004-04-27  Archie Cobbs  <archie@dellroad.org>
+
+	* include/Makefile.am: add java_lang_VMProcess.h
+	* include/java_lang_VMProcess.h: new file
+	* include/java_lang_VMRuntime.h: regenerate
+	* native/jni/java-lang/Makefile.am: add java_lang_VMProcess.c
+	* native/jni/java-lang/java_lang_VMProcess.c: new file
+	* vm/reference/java/lang/Makefile.am: add VMProcess.java
+	* vm/reference/java/lang/VMProcess.java: new file
+	* vm/reference/java/lang/VMRuntime.java (exec): use VMProcess
+
 2004-04-27  Michael Koch  <konqueror@gmx.de>
 
 	* javax/print/Doc.java

@@ -38,6 +38,7 @@ exception statement from your version. */
 package java.lang;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Properties;
 
 /**
@@ -178,7 +179,10 @@ final class VMRuntime
      * @return the newly created process
      * @throws NullPointerException if cmd or env have null elements
      */
-    static native Process exec(String[] cmd, String[] env, File dir);
+    static Process exec(String[] cmd, String[] env, File dir)
+	throws IOException {
+      return VMProcess.exec(cmd, env, dir);
+    }
 
     /**
      * Get the system properties. This is done here, instead of in System,

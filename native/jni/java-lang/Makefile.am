@@ -5,7 +5,8 @@ libjavalang_la_SOURCES = java_lang_VMSystem.c \
 			java_lang_VMFloat.c \
 			java_lang_Double.c \
 			java_lang_VMDouble.c \
-			java_lang_Math.c
+			java_lang_Math.c \
+			java_lang_VMProcess.c
 
 libjavalangreflect_la_SOURCES = java_lang_reflect_Array.c
 
