@@ -1,5 +1,22 @@
 2003-05-10  Michael Koch  <konqueror@gmx.de>
 
+	* java/security/Identity.java
+	(serialVersionUID): Made it private.
+	* java/security/IdentityScope.java
+	(serialVersionUID): Made it private.
+	* java/security/KeyPair.java
+	(serialVersionUID): Made it private.
+	* java/security/SecureRandom.java
+	(serialVersionUID): Made it private.
+	* java/security/SecureRandomSpi.java
+	(serialVersionUID): Made it private.
+	* java/security/SignedObject.java
+	(serialVersionUID): Made it private.
+	* java/security/Signer.java
+	(serialVersionUID): Made it private.
+
+2003-05-10  Michael Koch  <konqueror@gmx.de>
+
 	* java/text/BreakIterator.java
 	(clone): New method merged from libgcj.
 
