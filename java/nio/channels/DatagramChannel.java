@@ -101,7 +101,15 @@ public abstract class DatagramChannel
   /**
    * Connects this channel's socket.
    *
-   * @exception IOException If an error occurs
+   * @exception AsynchronousCloseException If another thread closes this channel
+   * while the connect operation is in progress.
+   * @exception ClosedByInterruptException If another thread interrupts the
+   * current thread while the read operation is in progress, thereby closing the
+   * channel and setting the current thread's interrupt status.
+   * @exception ClosedChannelException If this channel is closed.
+   * @exception IOException If an error occurs.
+   * @exception SecurityException If a security manager has been installed and
+   * it does not permit datagrams to be sent to the given address.
    */
   public abstract DatagramChannel connect (SocketAddress remote);
 
@@ -136,14 +144,30 @@ public abstract class DatagramChannel
   /**
    * Receives a datagram via this channel.
    *
+   * @exception AsynchronousCloseException If another thread closes this channel
+   * while the connect operation is in progress.
+   * @exception ClosedByInterruptException If another thread interrupts the
+   * current thread while the read operation is in progress, thereby closing the
+   * channel and setting the current thread's interrupt status.
+   * @exception ClosedChannelException If this channel is closed.
    * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager has been installed and
+   * it does not permit datagrams to be sent to the given address.
    */
   public abstract SocketAddress receive (ByteBuffer dst);
  
   /**
    * Sends a datagram via this channel.
    *
+   * @exception AsynchronousCloseException If another thread closes this channel
+   * while the connect operation is in progress.
+   * @exception ClosedByInterruptException If another thread interrupts the
+   * current thread while the read operation is in progress, thereby closing the
+   * channel and setting the current thread's interrupt status.
+   * @exception ClosedChannelException If this channel is closed.
    * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager has been installed and
+   * it does not permit datagrams to be sent to the given address.
    */
   public abstract int send (ByteBuffer src, SocketAddress target);
  

@@ -1,5 +1,20 @@
 2002-12-03  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/SocketChannelImpl.java:
+	Use native methods instead of dummy methods.
+	* java/nio/channels/DatagramChannel.java
+	(connect): Added exception documentation.
+	(receive): Added exception documentation.
+	(send): Added exception documentation.
+	* java/nio/channels/SocketChannel.java
+	(open): Added exception documentation.
+	(read): Added exception documentation.
+	(write): Added exception documentation.
+	(connect): Added exception documentation.
+	(finishConnect): Added exception documentation.
+	
+2002-12-03  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/ByteBufferImpl.java
 	Reformated.
 	* gnu/java/nio/CharBufferImpl.java
