@@ -1,16 +1,17 @@
+#include <jnilink.h>
 #include <primlib.h>
 #include <jcl.h>
 
-static jclass nativeWrapClass[PRIMLIB_NUMTYPES] = {NULL,NULL,NULL, NULL,NULL,NULL,
+static linkPtr nativeWrapClass[PRIMLIB_NUMTYPES] = {NULL,NULL,NULL, NULL,NULL,NULL,
 						NULL,NULL,NULL, NULL,NULL,NULL};
 
-static jclass nativeTypeClass[PRIMLIB_NUMTYPES] = {NULL,NULL,NULL, NULL,NULL,NULL,
+static linkPtr nativeTypeClass[PRIMLIB_NUMTYPES] = {NULL,NULL,NULL, NULL,NULL,NULL,
 						NULL,NULL,NULL, NULL,NULL,NULL};
 
-static jmethodID nativeWrapClassConstructor[PRIMLIB_NUMTYPES] = {NULL,NULL,NULL, NULL,NULL,NULL,
+static linkPtr nativeWrapClassConstructor[PRIMLIB_NUMTYPES] = {NULL,NULL,NULL, NULL,NULL,NULL,
 						NULL,NULL,NULL, NULL,NULL,NULL};
 
-static jmethodID nativeWrapClassAccessor[PRIMLIB_NUMTYPES] = {NULL,NULL,NULL, NULL,NULL,NULL,
+static linkPtr nativeWrapClassAccessor[PRIMLIB_NUMTYPES] = {NULL,NULL,NULL, NULL,NULL,NULL,
 						NULL,NULL,NULL, NULL,NULL,NULL};
 
 static char * nativeWrapClassName[PRIMLIB_NUMTYPES] = {
@@ -75,7 +76,7 @@ static char * nativeWrapClassAccessorSig[PRIMLIB_NUMTYPES] = {
 
 
 JNIEXPORT jclass JNICALL PRIMLIB_GetNativeWrapClass(JNIEnv * env, int reflectType) {
-	jclass retval = nativeWrapClass[reflectType];
+	linkPtr retval = nativeWrapClass[reflectType];
 	if(retval == NULL) {
 		switch(reflectType) {
 			case PRIMLIB_BOOLEAN:
@@ -87,20 +88,20 @@ JNIEXPORT jclass JNICALL PRIMLIB_GetNativeWrapClass(JNIEnv * env, int reflectTyp
 			case PRIMLIB_FLOAT:
 			case PRIMLIB_DOUBLE:
 			case PRIMLIB_VOID:
-				return nativeWrapClass[reflectType] = (jclass)(*env)->NewGlobalRef(env, (*env)->FindClass(env, nativeWrapClassName[reflectType]));
+				retval = LINK_LinkClass(env, &(nativeWrapClass[reflectType]), nativeWrapClassName[reflectType]);
+				break;
 			case PRIMLIB_UNKNOWN:
 			case PRIMLIB_OBJECT:
 			case PRIMLIB_NULL:
 			default:
 				return NULL;
 		}
-	} else {
-		return retval;
 	}
+	return LINK_ResolveClass(env, retval);
 }
 
 JNIEXPORT jclass JNICALL PRIMLIB_GetNativeTypeClass(JNIEnv * env, int reflectType) {
-	jclass retval = nativeTypeClass[reflectType];
+	linkPtr retval = nativeTypeClass[reflectType];
 	jfieldID typeField;
 	jclass wrapClass;
 
@@ -109,7 +110,7 @@ JNIEXPORT jclass JNICALL PRIMLIB_GetNativeTypeClass(JNIEnv * env, int reflectTyp
 		if((*env)->ExceptionOccurred(env)) {
 			return NULL;
 		}
-		typeField = (*env)->GetFieldID(env, wrapClass, "TYPE", "Ljava/lang/Class");
+		typeField = (*env)->GetStaticFieldID(env, wrapClass, "TYPE", "Ljava/lang/Class");
 		if((*env)->ExceptionOccurred(env)) {
 			return NULL;
 		}
@@ -123,20 +124,20 @@ JNIEXPORT jclass JNICALL PRIMLIB_GetNativeTypeClass(JNIEnv * env, int reflectTyp
 			case PRIMLIB_FLOAT:
 			case PRIMLIB_DOUBLE:
 			case PRIMLIB_VOID:
-				return nativeTypeClass[reflectType] = (jclass)(*env)->NewGlobalRef(env, (jclass)(*env)->GetStaticObjectField(env, wrapClass, typeField));
+				retval = LINK_LinkKnownClass(env, &(nativeTypeClass[reflectType]), (jclass)(*env)->GetStaticObjectField(env, wrapClass, typeField));
+				break;
 			case PRIMLIB_UNKNOWN:
 			case PRIMLIB_OBJECT:
 			case PRIMLIB_NULL:
 			default:
 				return NULL;
 		}
-	} else {
-		return retval;
 	}
+	return LINK_ResolveClass(env, retval);
 }
 
 JNIEXPORT jmethodID JNICALL PRIMLIB_GetNativeWrapClassConstructor(JNIEnv * env, int reflectType) {
-	jmethodID retval = nativeWrapClassConstructor[reflectType];
+	linkPtr retval = nativeWrapClassConstructor[reflectType];
 	if(retval == NULL) {
 		switch(reflectType) {
 			case PRIMLIB_BOOLEAN:
@@ -148,16 +149,16 @@ JNIEXPORT jmethodID JNICALL PRIMLIB_GetNativeWrapClassConstructor(JNIEnv * env, 
 			case PRIMLIB_FLOAT:
 			case PRIMLIB_DOUBLE:
 			case PRIMLIB_VOID:
-				return nativeWrapClassConstructor[reflectType] = (*env)->GetMethodID(env, PRIMLIB_GetNativeWrapClass(env,reflectType), "<init>", nativeWrapClassConstructorSig[reflectType]);
+				retval =  LINK_LinkConstructor(env, &(nativeWrapClassConstructor[reflectType]), PRIMLIB_GetNativeWrapClass(env,reflectType), nativeWrapClassConstructorSig[reflectType]);
+				break;
 			case PRIMLIB_UNKNOWN:
 			case PRIMLIB_OBJECT:
 			case PRIMLIB_NULL:
 			default:
 				return NULL;
 		}
-	} else {
-		return retval;
 	}
+	return LINK_ResolveMethod(env, retval);
 }
 
 JNIEXPORT jmethodID JNICALL PRIMLIB_GetNativeWrapClassAccessor(JNIEnv * env, int reflectType) {
@@ -172,7 +173,8 @@ JNIEXPORT jmethodID JNICALL PRIMLIB_GetNativeWrapClassAccessor(JNIEnv * env, int
 			case PRIMLIB_LONG:
 			case PRIMLIB_FLOAT:
 			case PRIMLIB_DOUBLE:
-				return nativeWrapClassAccessor[reflectType] = (*env)->GetMethodID(env, PRIMLIB_GetNativeWrapClass(env,reflectType), nativeWrapClassAccessorName[reflectType], nativeWrapClassAccessorSig[reflectType]);
+				retval = LINK_LinkMethod(env, &(nativeWrapClassAccessor[reflectType]), PRIMLIB_GetNativeWrapClass(env,reflectType), nativeWrapClassAccessorName[reflectType], nativeWrapClassAccessorSig[reflectType]);
+				break;
 			case PRIMLIB_VOID:
 			case PRIMLIB_UNKNOWN:
 			case PRIMLIB_OBJECT:
@@ -180,9 +182,8 @@ JNIEXPORT jmethodID JNICALL PRIMLIB_GetNativeWrapClassAccessor(JNIEnv * env, int
 			default:
 				return NULL;
 		}
-	} else {
-		return retval;
 	}
+	return LINK_ResolveMethod(env, retval);
 }
 
 
