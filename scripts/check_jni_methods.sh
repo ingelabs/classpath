@@ -1,9 +1,8 @@
 #!/bin/sh
 
-pattern=/tmp/check-jni-methods.XXXXXX
-TMPFILE=`mktemp $pattern` || { echo >&2 "$0: Unable to make temp file; aborting" ; exit 3; }
-TMPFILE2=`mktemp $pattern` || { echo >&2 "$0: Unable to make temp file; aborting" ; exit 3; }
-TMPFILE3=`mktemp $pattern` || { echo >&2 "$0: Unable to make temp file; aborting" ; exit 3; }
+TMPFILE=check-jni-methods.$$.1
+TMPFILE2=check-jni-methods.$$.2
+TMPFILE3=check-jni-methods.$$.3
 
 # Find all methods defined in the header files generated
 # from the java source files.
