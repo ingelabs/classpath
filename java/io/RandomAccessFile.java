@@ -178,33 +178,6 @@ public class RandomAccessFile implements DataOutput, DataInput
   }
   
   /**
-   * This method returns the length of the file in bytes
-   *
-   * @return The length of the file
-   *
-   * @exception IOException If an error occurs
-   */
-  public long length() throws IOException
-  {
-    return(fd.getLength());
-  }
-  
-  /**
-   * This method sets the current file position to the specified offset 
-   * from the beginning of the file.  Note that some operating systems will
-   * allow the file pointer to be set past the current end of the file.
-   *
-   * @param pos The offset from the beginning of the file at which to set 
-   * the file pointer
-   *
-   * @exception IOException If an error occurs
-   */
-  public void seek(long pos) throws IOException
-  {
-    fd.seek(pos, fd.SET, false);
-  }
-  
-  /**
    * This method sets the length of the file to the specified length.  If
    * the currently length of the file is longer than the specified length,
    * then the file is truncated to the specified length.  If the current
@@ -223,6 +196,18 @@ public class RandomAccessFile implements DataOutput, DataInput
       throw new IOException("File is open read only");
   
     fd.setLength(newlen);
+  }
+  
+  /**
+   * This method returns the length of the file in bytes
+   *
+   * @return The length of the file
+   *
+   * @exception IOException If an error occurs
+   */
+  public long length() throws IOException
+  {
+    return(fd.getLength());
   }
   
   /**
@@ -555,6 +540,55 @@ public class RandomAccessFile implements DataOutput, DataInput
   }
   
   /**
+   * This method reads raw bytes into the passed array until the array is
+   * full.  Note that this method blocks until the data is available and
+   * throws an exception if there is not enough data left in the stream to
+   * fill the buffer
+   *
+   * @param buf The buffer into which to read the data
+   *
+   * @exception EOFException If end of file is reached before filling the 
+   * buffer
+   * @exception IOException If any other error occurs
+   */
+  public final void readFully(byte[] buf) throws EOFException, IOException
+  {
+    readFully(buf, 0, buf.length);
+  }
+  
+  /**
+   * This method reads raw bytes into the passed array <code>buf</code> 
+   * starting
+   * <code>offset</code> bytes into the buffer.  The number of bytes read 
+   * will be
+   * exactly <code>len</code>  Note that this method blocks until the data is 
+   * available and throws an exception if there is not enough data left in 
+   * the stream to read <code>len</code> bytes.
+   *
+   * @param buf The buffer into which to read the data
+   * @param offset The offset into the buffer to start storing data
+   * @param len The number of bytes to read into the buffer
+   *
+   * @exception EOFException If end of file is reached before filling 
+   * the buffer
+   * @exception IOException If any other error occurs
+   */
+  public synchronized final void readFully(byte[] buf, int offset, int len) 
+    throws EOFException, IOException
+  {
+    int total_read = 0;
+  
+    while (total_read < len)
+      {
+        int bytes_read = read(buf, offset + total_read, len - total_read);
+        if (bytes_read == -1)
+          throw new EOFException("Unexpected end of stream");
+  
+        total_read += bytes_read;
+      }
+  }
+  
+  /**
    * This method reads a Java double value from an input stream.  It operates
    * by first reading a <code>logn</code> value from the stream by calling the
    * <code>readLong()</code> method in this interface, then 
@@ -725,52 +759,18 @@ public class RandomAccessFile implements DataOutput, DataInput
   }
   
   /**
-   * This method reads raw bytes into the passed array until the array is
-   * full.  Note that this method blocks until the data is available and
-   * throws an exception if there is not enough data left in the stream to
-   * fill the buffer
+   * This method sets the current file position to the specified offset 
+   * from the beginning of the file.  Note that some operating systems will
+   * allow the file pointer to be set past the current end of the file.
    *
-   * @param buf The buffer into which to read the data
+   * @param pos The offset from the beginning of the file at which to set 
+   * the file pointer
    *
-   * @exception EOFException If end of file is reached before filling the 
-   * buffer
-   * @exception IOException If any other error occurs
+   * @exception IOException If an error occurs
    */
-  public final void readFully(byte[] buf) throws EOFException, IOException
+  public void seek(long pos) throws IOException
   {
-    readFully(buf, 0, buf.length);
-  }
-  
-  /**
-   * This method reads raw bytes into the passed array <code>buf</code> 
-   * starting
-   * <code>offset</code> bytes into the buffer.  The number of bytes read 
-   * will be
-   * exactly <code>len</code>  Note that this method blocks until the data is 
-   * available and throws an exception if there is not enough data left in 
-   * the stream to read <code>len</code> bytes.
-   *
-   * @param buf The buffer into which to read the data
-   * @param offset The offset into the buffer to start storing data
-   * @param len The number of bytes to read into the buffer
-   *
-   * @exception EOFException If end of file is reached before filling 
-   * the buffer
-   * @exception IOException If any other error occurs
-   */
-  public synchronized final void readFully(byte[] buf, int offset, int len) 
-    throws EOFException, IOException
-  {
-    int total_read = 0;
-  
-    while (total_read < len)
-      {
-        int bytes_read = read(buf, offset + total_read, len - total_read);
-        if (bytes_read == -1)
-          throw new EOFException("Unexpected end of stream");
-  
-        total_read += bytes_read;
-      }
+    fd.seek(pos, fd.SET, false);
   }
   
   /**

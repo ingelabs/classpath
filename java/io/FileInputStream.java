@@ -179,7 +179,14 @@ public class FileInputStream extends InputStream
    */
   public void close() throws IOException
   {
-    fd.close();
+    if (fd.valid())
+      fd.close();
+  }
+
+  protected void finalize() throws IOException
+  {
+    // We don't actually need this, but we include it because it is
+    // mentioned in the JCL.
   }
 
   /**
@@ -193,6 +200,8 @@ public class FileInputStream extends InputStream
    */
   public final FileDescriptor getFD() throws IOException
   {
+    if (!fd.valid())
+      throw new IOException();
     return fd;
   }
 
@@ -284,9 +293,8 @@ public class FileInputStream extends InputStream
       return(0);
 
     long curPos = fd.getFilePointer();
-    long newPos = fd.seek(numBytes, fd.CUR, true);
-
-    return(newPos-curPos);
+    long newPos = fd.seek(numBytes, FileDescriptor.CUR, true);
+    return newPos - curPos;
   }
 
   /**

@@ -84,17 +84,6 @@ public class OutputStreamWriter extends Writer
 
   /**
    * This method initializes a new instance of <code>OutputStreamWriter</code>
-   * to write to the specified stream using the default encoding.
-   *
-   * @param out The <code>OutputStream</code> to write to
-   */
-  public OutputStreamWriter(OutputStream out)
-  {
-    this.out = EncodingManager.getEncoder(out);
-  }
-
-  /**
-   * This method initializes a new instance of <code>OutputStreamWriter</code>
    * to write to the specified stream using a caller supplied character
    * encoding scheme.  Note that due to a deficiency in the Java language
    * design, there is no way to determine which encodings are supported.
@@ -113,6 +102,17 @@ public class OutputStreamWriter extends Writer
   }
 
   /**
+   * This method initializes a new instance of <code>OutputStreamWriter</code>
+   * to write to the specified stream using the default encoding.
+   *
+   * @param out The <code>OutputStream</code> to write to
+   */
+  public OutputStreamWriter(OutputStream out)
+  {
+    this.out = EncodingManager.getEncoder(out);
+  }
+
+  /**
    * This method closes this stream, and the underlying 
    * <code>OutputStream</code>
    *
@@ -121,16 +121,6 @@ public class OutputStreamWriter extends Writer
   public void close() throws IOException
   {
     out.close();
-  }
-
-  /**
-   * This method flushes any buffered bytes to the underlying output sink.
-   *
-   * @exception IOException If an error occurs
-   */
-  public void flush() throws IOException
-  {
-    out.flush();
   }
 
   /**
@@ -146,15 +136,13 @@ public class OutputStreamWriter extends Writer
   }
 
   /**
-   * This method writes a single character to the output stream.
-   *
-   * @param c The char to write, passed as an int.
+   * This method flushes any buffered bytes to the underlying output sink.
    *
    * @exception IOException If an error occurs
    */
-  public void write(int c) throws IOException
+  public void flush() throws IOException
   {
-    out.write(c);
+    out.flush();
   }
 
   /**
@@ -188,6 +176,18 @@ public class OutputStreamWriter extends Writer
   public void write(String str, int offset, int len) throws IOException
   {
     out.write(str, offset, len);
+  }
+
+  /**
+   * This method writes a single character to the output stream.
+   *
+   * @param c The char to write, passed as an int.
+   *
+   * @exception IOException If an error occurs
+   */
+  public void write(int ch) throws IOException
+  {
+    out.write(ch);
   }
 
 } // class OutputStreamWriter

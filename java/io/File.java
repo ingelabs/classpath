@@ -1,5 +1,5 @@
 /* File.java -- Class representing a file on disk
-   Copyright (C) 1998, 1999, 2001, 2003 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -57,7 +57,6 @@ public class File implements Serializable, Comparable
 {
   static final long serialVersionUID = 301077366599181567L;
 
-  /*************************************************************************/
 
   /*
    * Class Variables

@@ -482,7 +482,7 @@ public class PrintStream extends FilterOutputStream
    * @param offset The index into the array to start writing from
    * @param len The number of bytes to write
    */
-  public synchronized void write(byte[] buf, int offset, int len)
+  public synchronized void write (byte[] buffer, int offset, int len)
   {
     // We actually have to implement this method too. Flush first so that
     // things get written in the right order.
@@ -490,17 +490,17 @@ public class PrintStream extends FilterOutputStream
 
     try
       {
-        out.write(buf, offset, len);
+        out.write(buffer, offset, len);
 
         if (auto_flush)
           for (int i = offset; i < len; i++)
-            if ((buf[i] == '\r') || (buf[i] == '\n'))
+            if ((buffer[i] == '\r') || (buffer[i] == '\n'))
               {
                 flush();
                 break;
               }
       }
-    catch(IOException e)
+    catch (IOException e)
       {
         error_occurred = true;
       }

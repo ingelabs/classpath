@@ -1,5 +1,22 @@
 2003-03-24  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/File.java:
+	Merged copyright from libgcj.
+	* java/io/FileInputStream.java
+	(close): Merged implementation from libgcj.
+	(finalize): Merged from libgcj for API completeness.
+	(seek): Partly merged from libgcj.
+	* java/io/InputStreamReader.java:
+	Moving of some methods to match the order in libgcj and reformatting.
+	* java/io/OutputStreamWriter.java:
+	Moving of some methods to match the order in libgcj and reformatting.
+	* java/io/PrintStream.java:
+	Moving of some methods to match the order in libgcj and reformatting.
+	* java/io/RandomAccessFile.java:
+	Moving of some methods to match the order in libgcj and reformatting.
+
+2003-03-24  Michael Koch  <konqueror@gmx.de>
+
 	* java/beans/beancontext/BeanContextEvent.java:
 	Reformated.
 
