@@ -318,7 +318,7 @@ java.util, where the
 should be used instead where possible.
 
 
-@node Naming Conventions, ,Specification Sources, Top
+@node Naming Conventions, , Specification Sources, Top
 @comment node-name, next, previous, up
 @chapter Directory and File Naming Conventions
 
