@@ -80,6 +80,7 @@ public class JWindow extends Window implements Accessible
 
     public JWindow()
     {
+      this(null);
     }
 
     // huuu ?
