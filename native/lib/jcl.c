@@ -36,8 +36,9 @@ JNIEXPORT void * JNICALL JCL_malloc(JNIEnv * env, size_t size) {
 }
 
 JNIEXPORT void JNICALL JCL_free(JNIEnv * env, void * p) {
-	if(p != NULL)
+	if(p != NULL) {
 		free(p);
+	}
 }
 
 JNIEXPORT char * JNICALL JCL_jstring_to_cstring(JNIEnv * env, jstring s) {
@@ -76,7 +77,7 @@ JNIEXPORT jint JNICALL JCL_MonitorExit(JNIEnv * env, jobject o) {
 
 JNIEXPORT jclass JNICALL JCL_FindClass(JNIEnv * env, char * className) {
 	jclass retval = (*env)->FindClass(env,className);
-	if(retval != NULL) {
+	if(retval == NULL) {
 		JCL_ThrowException(env, "java/lang/ClassNotFoundException", className);
 	}
 	return retval;
