@@ -28,7 +28,6 @@ import java.util.Calendar;
   * This class contains locale data for the German locale
   * @author Jochen Hoenicke
   */
-
 public class LocaleInformation_de extends ListResourceBundle
 {
 
@@ -163,17 +162,6 @@ private static final String decimalSeparator = ",";
   */
 private static final String monetarySeparator = ",";
 
-/**
- * This is used by Calendar.
- * @see Calendar#getFirstDayOfWeek
- */
-private static final Integer firstDayOfWeek = new Integer(Calendar.MONDAY);
-/**
- * This is used by Calendar.
- * @see Calendar#getMinimalDaysInFirstWeek
- */
-private static final Integer minimalDaysInFirstWeek = new Integer(4);
-
 /*************************************************************************/
 
 /**
@@ -207,9 +195,6 @@ private static final Object[][] contents =
   { "intlCurrencySymbol", intlCurrencySymbol },
   { "decimalSeparator", decimalSeparator },
   { "monetarySeparator", monetarySeparator },
-  // For Calendar/GregorianCalendar
-  { "firstDayOfWeek", firstDayOfWeek },
-  { "minimalDaysInFirstWeek", minimalDaysInFirstWeek },
 };
 
 /*************************************************************************/

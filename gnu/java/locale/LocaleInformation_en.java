@@ -257,40 +257,6 @@ private static final String perMill = "\u2030";
   */
 private static final String zeroDigit = "0";
 
-/**
- * This is the default calendar class, that is returned on
- * Calendar.getInstance().
- * @see Calendar#getInstance()
- */
-private static final String calendarClass = "java.util.GregorianCalendar";
-
-/**
- * This is used by Calendar.
- * @see Calendar#getFirstDayOfWeek()
- */
-private static final Integer firstDayOfWeek = new Integer(Calendar.SUNDAY);
-/**
- * This is used by Calendar.
- * @see Calendar#getMinimalDaysInFirstWeek()
- */
-private static final Integer minimalDaysInFirstWeek = new Integer(1);
-
-  /**
-   * The point at which the Gregorian calendar rules were used.
-   * The default for most catholic
-   * countries is midnight (UTC) on October 5, 1582 (Julian),
-   * or October 15, 1582 (Gregorian).
-   * @see GregorianCalendar#getGregorianCutOver
-   */
-  /* If you change this date be aware, that this formular does only 
-   * work for months from MARCH to DECEMBER and doesn't work in 
-   * leap years (look in GregorianCalendar.getDayOfYear for more info).
-   */
-private static final Date gregorianCutOver = new Date
-  ((24*60*60*1000L) *
-   (((1582*(365*4+1))/4 + (Calendar.OCTOBER*(31+30+31+30+31) - 9) / 5 + 5) -
-    ((1970*(365*4+1))/4 + 1 - 13)));
-
 /*************************************************************************/
 
 /**
@@ -340,11 +306,6 @@ private static final Object[][] contents =
   { "percent", percent },
   { "perMill", perMill },
   { "zeroDigit", zeroDigit },
-  // For Calendar/GregorianCalendar
-  { "calendarClass", calendarClass },
-  { "firstDayOfWeek", firstDayOfWeek },
-  { "minimalDaysInFirstWeek", minimalDaysInFirstWeek },
-  { "gregorianCutOver", gregorianCutOver }
 };
 
 /*************************************************************************/
