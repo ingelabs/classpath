@@ -345,6 +345,8 @@ gnu/java/security/Makefile
 gnu/java/security/der/Makefile
 gnu/java/security/provider/Makefile
 gnu/java/security/util/Makefile
+gnu/java/util/Makefile
+gnu/java/util/prefs/Makefile
 gnu/tools/Makefile
 gnu/tools/serialver/Makefile
 java/Makefile
@@ -377,6 +379,7 @@ java/sql/Makefile
 java/text/Makefile
 java/util/Makefile
 java/util/jar/Makefile
+java/util/prefs/Makefile
 java/util/zip/Makefile
 javax/Makefile
 native/Makefile

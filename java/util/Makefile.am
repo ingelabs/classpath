@@ -1,6 +1,6 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-SUBDIRS = jar zip
+SUBDIRS = jar prefs zip
 
 EXTRA_DIST = \
 AbstractCollection.java \

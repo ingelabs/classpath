@@ -1,3 +1,26 @@
+2001-09-02  Mark Wielaard  <mark@klomp.org>
+
+	* configure.in (AC_OUTPUT): List new Makefiles.
+	* gnu/java/Makefile.am (SUBDIRS): Added util.
+	* java/util/Makefile.am (SUBDIRS): Added prefs.
+	* gnu/java/util/.cvsignore, gnu/java/util/Makefile.am,
+	gnu/java/util/prefs/.cvsignore, gnu/java/util/prefs/Makefile.am,
+	java/util/prefs/.cvsignore, java/util/prefs/Makefile.am: New files.
+	* gnu/java/util/prefs/FileBasedFactory.java,
+	gnu/java/util/prefs/MemoryBasedFactory.java 
+	gnu/java/util/prefs/MemoryBasedPreferences.java 
+	gnu/java/util/prefs/NodeReader.java 
+	gnu/java/util/prefs/NodeWriter.java
+	java/util/prefs/AbstractPreferences.java 
+	java/util/prefs/BackingStoreException.java 
+	java/util/prefs/InvalidPreferencesFormatException.java 
+	java/util/prefs/NodeChangeEvent.java 
+	java/util/prefs/NodeChangeListener.java 
+	java/util/prefs/PreferenceChangeEvent.java 
+	java/util/prefs/PreferenceChangeListener.java 
+	java/util/prefs/Preferences.java 
+	java/util/prefs/PreferencesFactory.java: New class files.
+
 2001-09-02  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/IllegalThreadStateException.java,
