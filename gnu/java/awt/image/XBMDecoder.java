@@ -75,7 +75,7 @@ public class XBMDecoder extends ImageDecoder
     int scanline[] = new int[len];
     int x = 0;
 
-    while (true)
+    while (x < len)
       {
 	int ch = in.read ();
 	if (ch == '0')
@@ -89,7 +89,7 @@ public class XBMDecoder extends ImageDecoder
 
 	    for (int i = 0; i < 8; i++, x++)
 	      {
-		if (x == len)
+		if (x == len)	// condition occurs if bitmap is padded
 		  return scanline;
 
 		scanline[x] = ((byteVal >> i & 0x1) == 1) ? 
@@ -97,5 +97,7 @@ public class XBMDecoder extends ImageDecoder
 	      }
 	  }	
       }
+
+    return scanline;
   }
 }
