@@ -37,6 +37,9 @@ exception statement from your version. */
 
 package javax.swing.event;
 
+// Imports
+import java.util.EventListener;
+
 /**
  * TreeModelListener interface
  * @author Andrew Selkirk

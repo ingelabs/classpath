@@ -37,6 +37,9 @@ exception statement from your version. */
 
 package javax.swing.event;
 
+// Imports
+import java.util.EventListener;
+
 /**
  * InternalFrameListener interface
  * @author Andrew Selkirk
