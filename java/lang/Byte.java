@@ -58,7 +58,10 @@ public final class Byte extends Number implements Comparable
      */
     public static final Class TYPE = VMClassLoader.getPrimitiveClass("byte");
     
-    private byte value;
+   /**
+    * The immutable value of this Byte.
+    */
+    private final byte value;
     
     private static final char digits[] = 
     { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',

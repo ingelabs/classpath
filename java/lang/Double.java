@@ -76,7 +76,10 @@ public final class Double extends Number implements Comparable
    */
   public static final Class TYPE = VMClassLoader.getPrimitiveClass("double");
     
-  private double value;
+  /**
+   * The immutable value of this Double.
+   */
+  private final double value;
     
   /**
    * Load native routines necessary for this class.  

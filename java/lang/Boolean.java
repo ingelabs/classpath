@@ -62,7 +62,10 @@ public final class Boolean implements Serializable
      */
     public static final Class TYPE = VMClassLoader.getPrimitiveClass("boolean");
     
-    private boolean value;
+    /**
+     * The immutable value of this Boolean.
+     */
+    private final boolean value;
     
     /**
      * Create a <code>Boolean</code> object representing the value of the 
@@ -88,7 +91,7 @@ public final class Boolean implements Serializable
      *   or false
      */
     public Boolean(String s) {
-	value = (s != null && s.equalsIgnoreCase("true"));
+	value = "true".equalsIgnoreCase(s);
     }
 
     /**
@@ -149,7 +152,7 @@ public final class Boolean implements Serializable
      */
     public static boolean getBoolean(String name) {
 	String val = System.getProperty(name);
-	return (val != null && val.equalsIgnoreCase("true"));
+	return ("true".equalsIgnoreCase(val));
     }
     
     /**

@@ -73,7 +73,10 @@ public final class Float extends Number implements Comparable
      */
     public static final Class TYPE = VMClassLoader.getPrimitiveClass("float");
 
-    private float value;
+    /**
+     * The immutable value of this Float.
+     */
+    private final float value;
 
     static
     {

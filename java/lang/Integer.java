@@ -62,7 +62,10 @@ public final class Integer extends Number implements Comparable {
      */
   public static final Class TYPE = VMClassLoader.getPrimitiveClass("int");
 
-  private int value;
+  /**
+   * The immutable value of this Integer.
+   */
+  private final int value;
     
   private static final char digits[] = 
     { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',

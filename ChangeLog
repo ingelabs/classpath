@@ -1,3 +1,17 @@
+2001-07-17  Mark Wielaard  <mark@klomp.org>
+	    Eric Blake  <ebb9@email.byu.edu>
+
+	* java/lang/Boolean.java (Boolean String): equalsIgnoreCase() already
+	checks for null.
+	(value): Make field final
+	* java/lang/Byte.java (value): idem
+	* java/lang/Character.java (value): idem
+	* java/lang/Double.java (value): idem
+	* java/lang/Float.java (value): idem
+	* java/lang/Integer.java (value): idem
+	* java/lang/Long.java (value): idem
+	* java/lang/Short.java (value): idem
+
 2001-07-17  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 
 	* java/util/LinkedList.java (clone): Clear the copy list with clear(), 

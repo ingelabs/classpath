@@ -1,5 +1,5 @@
 /* java.lang.Character
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -426,7 +426,11 @@ public final class Character implements Serializable, Comparable
     public final static Subset HANJA = new Subset();
   };
 
-  private char value;		// the character represented by this class
+  /**
+   * The immutable value of this Character.
+   */
+  private final char value;
+
   static final long serialVersionUID = 3786198910865385080L;
 
   /**
