@@ -40,6 +40,7 @@ public class WriteAbortedException extends ObjectStreamException
   * The detailed exception that caused this exception to be thrown
   */
 public Exception detail;
+private String message;
 
 /*************************************************************************/
 
@@ -53,8 +54,9 @@ public Exception detail;
   *
   * @param detail The exception that caused this exception to be thrown
   */
-WriteAbortedException(Exception detail)
+WriteAbortedException(String msg, Exception detail)
 {
+  this.message = msg;
   this.detail = detail;
 }
 
@@ -72,7 +74,7 @@ WriteAbortedException(Exception detail)
 public String
 getMessage()
 {
-  return(super.getMessage() + ": " + detail.getMessage());
+  return(message + ": " + detail.getMessage());
 }
 
 } // class WriteAbortedException
