@@ -1,3 +1,11 @@
+2001-10-23  John Leuner  <jewel@debian.org>
+
+	* lib/makeJazzlibDist.sh: Added this script to make a jazzlib 
+	distribution from the java.util.zip files. It changes the 
+	package header to net.sf.jazzlib and makes a source and binary
+	file. This is not to be used by any classpath build infrastructure
+	, it's only there to make snapshots of the pure java zip code.
+
 2001-10-23  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 
 	* java/io/BufferedWriter (write (String, int, int)): Remove redundant 
@@ -372,6 +380,7 @@
 
 	* java/io/BufferedInputStream.java: Merge with libgcj
 
+>>>>>>> 1.262
 2001-10-05  Tom Tromey  <tromey@redhat.com>
 
 	* java/text/DecimalFormat.java (format): Use localized minus sign
