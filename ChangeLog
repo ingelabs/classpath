@@ -1,3 +1,13 @@
+2004-11-08  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/ClassLoader.java: Updated some comments.
+	(systemClassLoader): Moved to java.lang.System to remove
+	circular initialization dependency.
+	* java/lang/System.java: Moved initialization of static fields
+	to static initializers to make ordering more explicit.
+	(static): Added creation of system class loader.
+	(static): Added support for setting the default security manager.
+
 2004-11-07  Mark Wielaard  <mark@klomp.org>
 
 	* java/awt/image/LookupOp.java: Comments and indentation fixes.

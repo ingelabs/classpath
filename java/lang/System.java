@@ -61,6 +61,56 @@ public final class System
   // in vm/reference/java/lang/Runtime for implications of this fact.
 
   /**
+   * The System Class Loader (a.k.a. Application Class Loader). The one
+   * returned by ClassLoader.getSystemClassLoader. It lives here to prevent
+   * a circular initialization dependency between System and ClassLoader.
+   */
+  static final ClassLoader systemClassLoader;
+
+  /**
+   * Stores the current system properties. This can be modified by
+   * {@link #setProperties(Properties)}, but will never be null, because
+   * setProperties(null) sucks in the default properties.
+   */
+  static Properties properties;
+
+  /**
+   * The standard InputStream. This is assigned at startup and starts its
+   * life perfectly valid. Although it is marked final, you can change it
+   * using {@link #setIn(InputStream)} through some hefty VM magic.
+   *
+   * <p>This corresponds to the C stdin and C++ cin variables, which
+   * typically input from the keyboard, but may be used to pipe input from
+   * other processes or files.  That should all be transparent to you,
+   * however.
+   */
+  public static final InputStream in;
+
+  /**
+   * The standard output PrintStream.  This is assigned at startup and
+   * starts its life perfectly valid. Although it is marked final, you can
+   * change it using {@link #setOut(PrintStream)} through some hefty VM magic.
+   *
+   * <p>This corresponds to the C stdout and C++ cout variables, which
+   * typically output normal messages to the screen, but may be used to pipe
+   * output to other processes or files.  That should all be transparent to
+   * you, however.
+   */
+  public static final PrintStream out;
+
+  /**
+   * The standard output PrintStream.  This is assigned at startup and
+   * starts its life perfectly valid. Although it is marked final, you can
+   * change it using {@link #setErr(PrintStream)} through some hefty VM magic.
+   *
+   * <p>This corresponds to the C stderr and C++ cerr variables, which
+   * typically output error messages to the screen, but may be used to pipe
+   * output to other processes or files.  That should all be transparent to
+   * you, however.
+   */
+  public static final PrintStream err;
+
+  /**
    * Add to the default properties. The field is stored in Runtime, because
    * of the bootstrap sequence; but this adds several useful properties to
    * the defaults. Once the default is stabilized, it should not be modified;
@@ -232,53 +282,40 @@ public final class System
     if (defaultProperties.get("java.io.tmpdir") == null)
       defaultProperties.put("java.io.tmpdir",
                             defaultProperties.get("java.tmpdir"));
+
+    // Note that we use clone here and not new.  Some programs assume
+    // that the system properties do not have a parent.
+    properties = (Properties) Runtime.defaultProperties.clone();
+
+    in = VMSystem.makeStandardInputStream();
+    out = VMSystem.makeStandardOutputStream();
+    err = VMSystem.makeStandardErrorStream();
+
+    systemClassLoader = VMClassLoader.getSystemClassLoader();
+
+    String secman = properties.getProperty("java.security.manager");
+    if (secman != null)
+      {
+	if (secman.equals("") || secman.equals("default"))
+	  {
+	    Runtime.securityManager = new java.lang.SecurityManager();
+	  }
+	else
+	  {
+	    try
+	      {
+		Class cl = Class.forName(secman, false, systemClassLoader);
+		Runtime.securityManager = (SecurityManager)cl.newInstance();
+	      }
+	    catch (Exception x)
+	      {
+		throw (InternalError)
+		    new InternalError("Unable to create SecurityManager")
+			.initCause(x);
+	      }
+	  }
+      }
   }
-
-  /**
-   * Stores the current system properties. This can be modified by
-   * {@link #setProperties(Properties)}, but will never be null, because
-   * setProperties(null) sucks in the default properties.
-   */
-  // Note that we use clone here and not new.  Some programs assume
-  // that the system properties do not have a parent.
-  static Properties properties
-    = (Properties) Runtime.defaultProperties.clone();
-
-  /**
-   * The standard InputStream. This is assigned at startup and starts its
-   * life perfectly valid. Although it is marked final, you can change it
-   * using {@link #setIn(InputStream)} through some hefty VM magic.
-   *
-   * <p>This corresponds to the C stdin and C++ cin variables, which
-   * typically input from the keyboard, but may be used to pipe input from
-   * other processes or files.  That should all be transparent to you,
-   * however.
-   */
-  public static final InputStream in = VMSystem.makeStandardInputStream();
-
-  /**
-   * The standard output PrintStream.  This is assigned at startup and
-   * starts its life perfectly valid. Although it is marked final, you can
-   * change it using {@link #setOut(PrintStream)} through some hefty VM magic.
-   *
-   * <p>This corresponds to the C stdout and C++ cout variables, which
-   * typically output normal messages to the screen, but may be used to pipe
-   * output to other processes or files.  That should all be transparent to
-   * you, however.
-   */
-  public static final PrintStream out = VMSystem.makeStandardOutputStream();
-
-  /**
-   * The standard output PrintStream.  This is assigned at startup and
-   * starts its life perfectly valid. Although it is marked final, you can
-   * change it using {@link #setErr(PrintStream)} through some hefty VM magic.
-   *
-   * <p>This corresponds to the C stderr and C++ cerr variables, which
-   * typically output error messages to the screen, but may be used to pipe
-   * output to other processes or files.  That should all be transparent to
-   * you, however.
-   */
-  public static final PrintStream err = VMSystem.makeStandardErrorStream();
 
   /**
    * This class is uninstantiable.

@@ -84,8 +84,8 @@ import java.util.StringTokenizer;
  * <p>The bootstrap classloader in GNU Classpath is implemented as a couple of
  * static (native) methods on the package private class
  * <code>java.lang.VMClassLoader</code>, the system classloader is an
- * instance of <code>gnu.java.lang.SystemClassLoader</code>
- * (which is a subclass of <code>java.net.URLClassLoader</code>).
+ * anonymous inner class of ClassLoader and a subclass of
+ * <code>java.net.URLClassLoader</code>.
  *
  * <p>Users of a <code>ClassLoader</code> will normally just use the methods
  * <ul>
@@ -151,17 +151,6 @@ public abstract class ClassLoader
   private final boolean initialized;
 
   /**
-   * System/Application classloader: defaults to an instance of
-   * gnu.java.lang.SystemClassLoader, unless the first invocation of
-   * getSystemClassLoader loads another class loader because of the
-   * java.system.class.loader property. The initialization of this field
-   * is somewhat circular - getSystemClassLoader() checks whether this
-   * field is null in order to bypass a security check.
-   */
-  static final ClassLoader systemClassLoader =
-    VMClassLoader.getSystemClassLoader();
-
-  /**
    * The default protection domain, used when defining a class with a null
    * paramter for the domain.
    */
@@ -222,7 +211,7 @@ public abstract class ClassLoader
    */
   protected ClassLoader() throws SecurityException
   {
-    this(systemClassLoader);
+    this(System.systemClassLoader);
   }
 
   /**
@@ -471,7 +460,7 @@ public abstract class ClassLoader
   protected final Class findSystemClass(String name)
     throws ClassNotFoundException
   {
-    return Class.forName(name, false, systemClassLoader);
+    return Class.forName(name, false, System.systemClassLoader);
   }
 
   /**
@@ -633,7 +622,7 @@ public abstract class ClassLoader
    */
   public static final URL getSystemResource(String name)
   {
-    return systemClassLoader.getResource(name);
+    return System.systemClassLoader.getResource(name);
   }
 
   /**
@@ -649,7 +638,7 @@ public abstract class ClassLoader
    */
   public static Enumeration getSystemResources(String name) throws IOException
   {
-    return systemClassLoader.getResources(name);
+    return System.systemClassLoader.getResources(name);
   }
 
   /**
@@ -704,18 +693,18 @@ public abstract class ClassLoader
 
   /**
    * Returns the system classloader. The system classloader (also called
-   * the application classloader) is the classloader that was used to
+   * the application classloader) is the classloader that is used to
    * load the application classes on the classpath (given by the system
    * property <code>java.class.path</code>. This is set as the context
    * class loader for a thread. The system property
    * <code>java.system.class.loader</code>, if defined, is taken to be the
    * name of the class to use as the system class loader, which must have
-   * a public constructor which takes a ClassLoader as a parent; otherwise this
-   * uses gnu.java.lang.SystemClassLoader.
+   * a public constructor which takes a ClassLoader as a parent. The parent
+   * class loader passed in the constructor is the default system class
+   * loader.
    *
    * <p>Note that this is different from the bootstrap classloader that
-   * actually loads all the real "system" classes (the bootstrap classloader
-   * is the parent of the returned system classloader).
+   * actually loads all the real "system" classes.
    *
    * <p>A security check will be performed for
    * <code>RuntimePermission("getClassLoader")</code> if the calling class
@@ -735,11 +724,11 @@ public abstract class ClassLoader
       {
 	Class c = VMSecurityManager.getClassContext()[1];
 	ClassLoader cl = c.getClassLoader();
-	if (cl != null && cl != systemClassLoader)
+	if (cl != null && cl != System.systemClassLoader)
 	  sm.checkPermission(new RuntimePermission("getClassLoader"));
       }
 
-    return systemClassLoader;
+    return System.systemClassLoader;
   }
 
   /**
