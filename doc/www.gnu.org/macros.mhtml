@@ -12,7 +12,7 @@
 <PARAM name="extension" value="jpg">
 <PARAM name="num-images" value="15">
 <PARAM name="image-sequence" value="1..10,9,7,5,3,1">
-<PARAM name="frame-delay" value="60">
+<PARAM name="frame-delay" value="30">
 <PARAM name="inner-loop-repeat" value="2">
 <PARAM name="loop-delay" value="10000">
 <PARAM name="outer-loop-repeat" value="0">
