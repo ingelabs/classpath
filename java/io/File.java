@@ -860,10 +860,8 @@ public class File implements Serializable, Comparable
   	  abspath = abspath + separator;
       }
     catch(Exception _) { }
-    
-    String url_string = "file://" + abspath;
-    
-    return new URL(url_string);
+        
+    return new URL("file", "", abspath.replace(separatorChar, '/'));
   }
 
   /*

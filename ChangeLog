@@ -1,3 +1,24 @@
+2004-04-20  Jeroen Frijters <jeroen@sumatra.nl>
+
+	* java/io/File.java
+	(toURL): Correct the file path before constructing the URL.
+
+	* java/net/URLStreamHandler.java
+	(parseURL): Convert the file path to using '/' instead of native
+	file separator.
+
+2004-04-20  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* java/net/URL.java
+	(userInfo): New field.
+	(URL): Set authority to the right value.
+	(getContent, openStream): Made final as in the Java spec.
+	(setURL): Fixed authority and file initialization.
+        
+	* java/net/URLStreamHandler.java
+	(parseURL): Take care of the query tag. Build authority.
+	(toExternalForm): Fixed URL building using authority.
+
 2004-04-20  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/FilterInputStream.java
