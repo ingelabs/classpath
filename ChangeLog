@@ -1,4 +1,9 @@
-2002-10-25 Wu Gansha <gansha.wu@intel.com>:
+2002-10-25  Wu Gansha <gansha.wu@intel.com>:
+
+	* java/io/DataInputStream.java (convertFromUTF): Give StringBuffer an
+	initial estimated size to avoid enlarge buffer frequently.
+
+2002-10-25  Wu Gansha <gansha.wu@intel.com>:
 
 	* java/util/ArrayList.java (readObject, writeObject): Only read/write
 	size items.
