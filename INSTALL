@@ -1,25 +1,33 @@
-Installing GNU Classpath - June 28, 2000
+Installing GNU Classpath - Nov. 03, 2001
 
 First, this is a development release only! Unless you are interested in
 active development and debugging, or just like running random alpha code,
 this release is probably not for you. 
 
 ------------------------------------------------------------------
-Required Software
+Suggested Software
 ------------------------------------------------------------------
-	- GNU autoconf 2.13
-	- GNU automake 1.4
-	- GNU libtool 1.3.3
-	- GTK+ 1.2.x
-	- IBM jikes 1.11 + patch (see www.classpath.org website)
-	- libart_lgpl 2.1.0
-	- gdk-pixbuf (latest from gnome.org CVS)
-	- Sun's 1.1.x javah (1.2.x and 1.3.x will not work)
+	For any build environment involving native libraries, these 
+	new versions of autoconf, automake, and libtool are required.
 
-Before installing, note that only Japhar 1.20 or later is supported.
-You will need to download that from http://www.japhar.org/ in order to
-use GNU Classpath.  Japhar should be configured with --with-nspr,
---enable-shared, --enable-debugging, and --enable-logging.
+        - GNU autoconf 2.52
+        - GNU automake 1.5
+        - GNU libtool 1.4.2
+
+	For building the Java bytecode (.class files)
+
+        - IBM jikes 1.13 (newer versions up to 1.15 appear to be broken)
+          or GCJ 3.0.2+.  The kjc compiler is supported with configure 
+          but we have been unable to successfully compiled with it.
+
+	For building the JNI native libraries, the following are required.
+
+        - gcjh from GCJ 2.96+, others can be specified using 
+          --with-javah=<program> as an argument to configure but have 
+          not been tested and may not work
+        - GTK+ 1.2.x
+        - libart_lgpl 2.1.0
+        - gdk-pixbuf (Only needed if you want to compile the native library)
 
 This package was designed to use the GNU standard for configuration
 and makefiles.  To build and install do the following:
@@ -27,14 +35,13 @@ and makefiles.  To build and install do the following:
 1).  Run the "configure" script to configure the package.  There are
 various options you might want to pass to configure to control how the
 package is built.  Consider the following options, "configure --help"
-gives a complete list.  Kaffe is not supported yet!
+gives a complete list.  
 
-	--with-japhar	  configure GNU Classpath for Japhar [default=yes]
-
-	--with-jikes	  compile classes with jikes [default=no]
-	--with-kjc	  compile classes with kjc [default=no]
-	--with-classlib	  specify path to a classes.zip like file
-	--with-javah	  specify path to a javah-like program 
+  --enable-java           compile Java source default=yes
+  --enable-jni            compile JNI source default=no
+  --enable-cni            compile CNI source default=no
+  --enable-load-library   enable to use JNI native methods default=yes
+                          (disabled automatically using --enable-cni)
 
 2).  Type "make" to build the package.  There is no longer a
 dependency problem and we aim to keep it that way.
@@ -42,49 +49,35 @@ dependency problem and we aim to keep it that way.
 3).  Type "make install" to install everything.  This may require
 being the superuser.
 
-Report bugs to classpath@gnu.org.
+Report bugs to classpath@gnu.org or much better via Savannah at this
+URL: http://savannah.gnu.org/support/?func=addsupport&group_id=85
 
 Happy Hacking!
 
+Once installed, GNU Classpath is ready to be used by any VM that supports
+using the official version of GNU Classpath.  Simply ensure that
+/usr/local/classpath/share/classpath is in your $CLASSPATH environment
+variable.  You'll also have to set your LD_LIBRARY_PATH
+variable (or similar system configuration) to include the Classpath
+native libraries in /usr/local/classpath/lib/classpath.  
 
-------------------------------------------------------------------
-Japhar
-------------------------------------------------------------------
-The libraries are installed to a subdirectory of Japhar's lib
-directory called "classpath."  The compiled classes are installed to a
-subdirectory of Japhar's share directory called "classpath."
+*NOTE* All example paths assume the default prefix is used with configure.
+If you don't know what this means then the examples are correct.
 
-Once installed, GNU Classpath is ready to be used.  Simply ensure that
-/usr/local/japhar/share/classpath is in your $CLASSPATH environment
-variable.  (Change that of course if your Japhar is not installed in
-/usr/local/japhar).  You'll also have to set your LD_LIBRARY_PATH
-variable (or similar system configuration) to include the nspr lib
-directory and the classpath subdirectory of Japhar's lib directory.
-
-Ok, here is a configuration, build, install, and test example.  This
-may or may not be appropriate for your system.
-
-./configure --with-japhar --with-jikes --with-classlib=/usr/local/java/lib/classes.zip --with-javah=/usr/local/java/bin/javah
-make
-make install
-export LD_LIBRARY_PATH=/usr/local/nspr/lib:/usr/local/japhar/lib/classpath:/usr/local/japhar/lib
-export CLASSPATH=/usr/local/japhar/share/classpath:.
-japhar --classpath /usr/local/japhar/share/:. FooClass
+LD_LIBRARY_PATH=/usr/local/classpath/lib/classpath
+CLASSPATH=/usr/local/classpath/share/classpath:.
+export LD_LIBRARY_PATH CLASSPATH
 
 ------------------------------------------------------------------
 Misc. Notes
 ------------------------------------------------------------------
 Use of Sun's compiler is deprecated and probably does not work.  At
-least two free compilers are supported, jikes and kjc.
+least three free compilers are supported: gcj, jikes, and kjc.
 
-The --with-classlib argument expects a CLASSPATH env. style
-sub-argument specifying one or more files or directories separated by
-this platform's path separator character.
+Recompilation may cause a lot of unneeded compilation.  This has to 
+do with how the compiler handles dependency tracking.  For our part, 
+we avoid placing make style dependencies as rules upon the compilation 
+of a particular class file and leave this up to the Java compiler instead.
 
-Recompilation may cause a lot of unneeded compilation.  This always
-needs fixing.
-
-The --enable-developer-mode and --enable-maintainer-mode options to
-configure currently do nothing.  At some point these will again affect
-recompilation of the Java classes in the distributed package.  Until
-then, ignore them.
+The --enable-maintainer-mode option to configure currently does very 
+little and shouldn't be used by ordinary develoeprs or users anyway.

@@ -1,3 +1,162 @@
+2001-10-30  C. Brian Jones <cbj@gnu.org>
+	* native/jni/awt: renamed native/jni/gtk-peer
+	* native/jni/javaio.h: moved to native/jni/java-io
+	* native/jni/javaio.c: moved to native/jni/java-io
+	* native/jni/java_io_File.c: moved to native/jni/java-io
+	* native/jni/java_io_FileDescriptor.c: moved to native/jni/java-io
+	* native/jni/java_io_FileInputStream.c: moved to native/jni/java-io
+	* native/jni/java_io_FileOutputStream.c: moved to native/jni/java-io
+	* native/jni/java_io_ObjectInputStream.c: moved to native/jni/java-io
+	* native/jni/java_io_ObjectOutputStream.c: moved to native/jni/java-io
+	* native/jni/java_io_RandomAccessFile.c: moved to native/jni/java-io
+	* native/jni/javalang.h: moved to native/jni/java-lang
+	* native/jni/javalang.c: moved to native/jni/java-lang
+	* native/jni/java_lang_Double.c: moved to native/jni/java-lang
+	* native/jni/java_lang_Float.c: moved to native/jni/java-lang
+	* native/jni/java_lang_Object.c: moved to native/jni/java-lang
+	* native/jni/java_lang_System.c: moved to native/jni/java-lang
+	* native/jni/java_lang_reflect_Array.c: moved to native/jni/java-lang
+	* native/jni/javanet.h: moved to native/jni/java-net
+	* native/jni/javanet.c: moved to native/jni/java-net
+	* native/jni/java_net_InetAddress.c: moved to native/jni/java-net
+	* native/jni/java_net_PlainDatagramSocketImpl.c: moved to 
+	native/jni/java-net
+	* native/jni/java_net_PlainSocketImpl.c: moved to native/jni/java-net
+	* native/jni/java_util_ResourceBundle.c: moved to native/jni/java-util
+	* native/jni/java_util_TimeZone.c: moved to native/jni/java-util
+	* native/jni/ieeefp.h: moved to native/jni/mprec
+	* native/jni/java-assert.h: moved to native/jni/mprec
+	* native/jni/mprec.c: moved to native/jni/mprec
+	* native/jni/mprec.h: moved to native/jni/mprec
+	* native/jni/acos.c: removed
+	* native/jni/asin.c: removed
+	* native/jni/atan2.c: removed
+	* native/jni/atan.c: removed
+	* native/jni/ceil.c: removed
+	* native/jni/cos.c: removed
+	* native/jni/dtoa.c: removed
+	* native/jni/e_fmod.c: removed
+	* native/jni/exp.c: removed
+	* native/jni/floor.c: removed
+	* native/jni/jcl.c: removed
+	* native/jni/jcl.h: removed
+	* native/jni/k_cos.c: removed
+	* native/jni/k_rem_pio2.c: removed
+	* native/jni/k_sin.c: removed
+	* native/jni/k_tan.c: removed
+	* native/jni/log.c: removed
+	* native/jni/pow.c: removed
+	* native/jni/remainder.c: removed
+	* native/jni/rint.c: removed
+	* native/jni/s_fabs.c: removed
+	* native/jni/sin.c: removed
+	* native/jni/sqrt.c: removed
+	* native/jni/tan.c: removed
+	* native/jni/fdlibm.h: removed
+	* native/jni/java_math_BigInteger.c: no longer needed
+	* native/fdlibm/dtoa.c: added from gcj to sync sources
+	* native/fdlibm/e_acos.c: added from gcj to sync sources
+	* native/fdlibm/e_asin.c: added from gcj to sync sources
+	* native/fdlibm/e_atan2.c: added from gcj to sync sources
+	* native/fdlibm/e_exp.c: added from gcj to sync sources
+	* native/fdlibm/e_fmod.c: added from gcj to sync sources
+	* native/fdlibm/e_log.c: added from gcj to sync sources
+	* native/fdlibm/e_pow.c: added from gcj to sync sources
+	* native/fdlibm/e_remainder.c: added from gcj to sync sources
+	* native/fdlibm/e_rem_pio2.c: added from gcj to sync sources
+	* native/fdlibm/e_scalb.c: added from gcj to sync sources
+	* native/fdlibm/e_sqrt.c: added from gcj to sync sources
+	* native/fdlibm/fdlibm.h: added from gcj to sync sources
+	* native/fdlibm/ieeefp.h: added from gcj to sync sources
+	* native/fdlibm/java-assert.h: added from gcj to sync sources
+	* native/fdlibm/k_cos.c: added from gcj to sync sources
+	* native/fdlibm/k_rem_pio2.c: added from gcj to sync sources
+	* native/fdlibm/k_sin.c: added from gcj to sync sources
+	* native/fdlibm/k_tan.c: added from gcj to sync sources
+	* native/fdlibm/mprec.c: added from gcj to sync sources
+	* native/fdlibm/mprec.h: added from gcj to sync sources
+	* native/fdlibm/s_atan.c: added from gcj to sync sources
+	* native/fdlibm/s_ceil.c: added from gcj to sync sources
+	* native/fdlibm/s_copysign.c: added from gcj to sync sources
+	* native/fdlibm/s_cos.c: added from gcj to sync sources
+	* native/fdlibm/s_fabs.c: added from gcj to sync sources
+	* native/fdlibm/sf_fabs.c: added from gcj to sync sources
+	* native/fdlibm/s_floor.c: added from gcj to sync sources
+	* native/fdlibm/sf_rint.c: added from gcj to sync sources
+	* native/fdlibm/s_rint.c: added from gcj to sync sources
+	* native/fdlibm/s_scalbn.c: added from gcj to sync sources
+	* native/fdlibm/s_sin.c: added from gcj to sync sources
+	* native/fdlibm/s_tan.c: added from gcj to sync sources
+	* native/fdlibm/strtod.c: added from gcj to sync sources
+	* native/fdlibm/w_acos.c: added from gcj to sync sources
+	* native/fdlibm/w_asin.c: added from gcj to sync sources
+	* native/fdlibm/w_atan2.c: added from gcj to sync sources
+	* native/fdlibm/w_exp.c: added from gcj to sync sources
+	* native/fdlibm/w_fmod.c: added from gcj to sync sources
+	* native/fdlibm/w_log.c: added from gcj to sync sources
+	* native/fdlibm/w_pow.c: added from gcj to sync sources
+	* native/fdlibm/w_remainder.c: added from gcj to sync sources
+	* native/fdlibm/w_sqrt.c: added from gcj to sync sources
+	* native/fdlibm/.cvsignore: new file
+	* native/jni/gtk-peer/Makefile.am: added -module to LDFLAGS
+	* native/jni/java-io/Makefile.am: added -module to LDFLAGS
+	* native/jni/java-io/.cvsignore: new file
+	* native/jni/java-lang/Makefile.am: added -module to LDFLAGS
+	* native/jni/java-lang/.cvsignore: new file
+	* native/jni/java-net/Makefile.am: added -module to LDFLAGS
+	* native/jni/java-net/.cvsignore: new file
+	* native/jni/java-util/Makefile.am: added -module to LDFLAGS
+	* native/jni/java-util/.cvsignore: new file
+	* native/fdlibm/Makefile.am: added -module to LDFLAGS
+	* native/jni/Makefile.am: removed rules, SUBDIRS equals java-io,
+	java-lang, java-net, java-util, gtk-peer
+	* native/Makefile.am: prepended fdlibm to SUBDIRS
+	* java/lang/Math.java static(): load libjavalang.so instead of
+	libjavalangmath.so
+	* java/math/BigInteger.java: replaced our native version with 
+	pure Java implementation from gcj
+	* gnu/classpath/math: new directory
+	* gnu/classpath/math/MPN.java: new file from gcj, which came from Kawa,
+	and is included with permission from Per Bothner, the author.
+	* README: updated with current information about CVS and the
+	project
+	* THANKYOU: added Per Bothner
+	* TODO: updated with current information as I know it
+	* NEWS: updated with information about a 0.03 release
+	* HACKING: updated with new information
+	* INSTALL: updated with new information
+	* BUGS: added link to Savannah bug reporting page for the project
+	* ltconfig: removed due to upgrade of libtool to 1.4.2
+	* ltmain.sh: updated with libtool 1.4.2
+	* depcomp: new file from automake 1.5 upgrade
+	* configure.in: added to OUTPUT native/fdlibm/Makefile, 
+	native/jni/java-io/Makefile, native/jni/java-lang/Makefile, 
+	native/jni/java-net/Makefile, native/jni/java-util/Makefile, 
+	native/jni/gtk-peer/Makefile
+	* install.sh: updated
+	* missing: updated
+	* mkinstalldirs: updated
+	* native/lib/Makefile.am: INCLUDES += changed to just INCLUDES = to
+	avoid automake warning
+	* native/lib/jcl.h: removed TRUE/FALSE #defines, added DBG
+	* native/nsa/: removed, files native_state.* moved to native/lib
+	* native/lib: renamed native/jni/classpath
+	* native/cni/Makefile.am: new file
+	* native/cni/.cvsignore: new file
+	* native/jni/gtk-peer/Makefile.am: LIBADD used to get native_state from
+	a common location
+	* native/jni/java-io/Makefile.am: LIBADD used to get jcl from a
+	common location, source modified to use relevant JCL_* functions
+	* native/jni/java-lang/Makefile.am: LIBADD used to get jcl from a 
+	common location
+	* native/jni/java-net/Makefile.am: LIBADD used to get jcl from a common
+	location, source modified to use relevant JCL_* functions
+	* vm/reference/java/lang/Thread.java (Thread): wrongly marked private
+	constructor Thread (ThreadGroup, String) now public
+	* native/jni/java-util/java_util_ResourceBundle.c: removed file
+	* native/jni/java-util/Makefile.am: removed java_util_ResourceBundle.c
+	from library
+
 2001-11-04  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 
 	* java/util/ResourceBundle.java (getClassContext): Removed.

@@ -1,12 +1,18 @@
 GNU Classpath, Essential Libraries for Java is a project to create
 a complete "clean room" implementation of the Java class libraries 
-that will also be free software.
+that will also be free software.  Additionally GNU Classpath now includes
+a sub-project called GNU Classpath Tools whose goal is to provide 
+a number of free replacements for standard Java development tools like
+javadoc, javap, javah, and others.
 
 Eventually, these essential libraries for Java will work with as many 
-free JVMs as possible.  However, currently only Japhar is supported.  
-Classpath support is included in Japhar 0.07 or later.  You will need 
-to ensure you are at that release level or higher.  Details for 
-obtaining Japhar are available from http://www.japhar.org/
+free JVMs as possible.  Virtual machines known to use GNU Classpath
+include:
+	* GCJ 		(http://sources.redhat.com/java/)
+	* ORP		(http://www.intel.com/research/mrl/orp/)
+	* Kissme	(http://kissme.sourceforge.net/)
+	* SableVM	(http://www.sablevm.org/)
+	* Jupiter	(http://www.eecg.toronto.edu/~doylep/jupiter/)
 
 This is a development release only and is not ready for general
 purpose use.
@@ -15,29 +21,29 @@ See the file INSTALL for details on installing GNU Classpath.
 See the file NEWS for details on what is included in this release.
 See the file TODO for the latest to do list.
 
-Homepage: http://www.classpath.org/
+Homepage: http://www.classpath.org/ or http://www.gnu.org/software/classpath/
 
 General Mailing List: classpath@gnu.org
-  --> Send bugs and patches to this address
+  --> Bugs and patches can be reported via Savannah if you have a browser
+      or via this address otherwise.
   --> To subscribe send email to classpath-request@gnu.org with a 
       subject and body of "subscribe".  To unsubscribe do the same,
       only with a body and subject of "unsubscribe".  This is a
       smartlist managed mailing list.
 
-CVS Commit List: <no outside mailing address>
+CVS Commit List: commit-classpath@gnu.org
   --> To subscribe send email to commit-classpath-request@gnu.org with a 
       subject and body of "subscribe".  To unsubscribe do the same,
       only with a body and subject of "unsubscribe".  This is a
       smartlist managed mailing list.
 
-Anonymous CVSROOT: :pserver:anoncvs@subversions.gnu.org:/cvs
+Anonymous CVSROOT: :pserver:anoncvs@subversions.gnu.org:/cvsroot/classpath 
   --> First do "cvs login".  Hit <Return> when prompted for a password
+  --> More detailed instructions available on the Savannah project website.
 
 Other Java free software projects of note:
 
-Japhar - http://www.japhar.org/
 Kaffe - http://www.kaffe.org/
-Cygnus gjc - http://sourceware.cygnus.com/java/
 
 Happy Hacking!
 

@@ -1,49 +1,48 @@
 If you want to hack on GNU Classpath it will make things easier if you
 have the following installed:
 
-        - GNU autoconf 2.13
-        - GNU automake 1.4
-        - GNU libtool 1.3.3
+For any build environment involving native libraries, these new versions of 
+autoconf, automake, and libtool are required.
+
+        - GNU autoconf 2.52
+        - GNU automake 1.5
+        - GNU libtool 1.4.2
+
+For building the Java bytecode (.class files)
+
+        - IBM jikes 1.13 (newer versions up to 1.15 appear to be broken)
+	  or GCJ 3.0.2+
+
+For building the JNI native libraries, the following are required.
+
+	- gcjh from GCJ 2.96+, others can be specified with --with-javah=kaffeh
+          but have not been tested and may not work
         - GTK+ 1.2.x
-        - IBM jikes 1.0.9+
 	- libart_lgpl 2.1.0
-	- gdk-pixbuf (latest out of gnome.org's CVS)
+	- gdk-pixbuf (Only needed if you want to compile the native library)
 
 If you start from the current CVS version, you will have to run the
 following from the toplevel directory.
 
         aclocal; autoheader; automake; autoconf
 
+For those that do not understand why these programs must be executed, here
+is a brief lesson.  
+
+	aclocal    - combines acinclude.m4 and system macros to produce 
+                     aclocal.m4
+	autoheader - generates config.h.in in the include/ directory
+	automake   - generates Makefile.in from Makefile.am for every file
+                     specified as output in configure.in
+        autoconf   - generates configure
+
 Next you run configure.  Options you'll probably want to specify
-include --with-jikes, --with-javah={path to jdk}/javah,
---with-classlib={path to classes.jar}/classes.jar and --with-japhar or
---with-kaffe, neither of which take an argument.  
+may include --enable-jni.
 
-You can also now specify --with-includedir=DIR multiple times to
-indicate more include directories.  For native compilation you need
-jni.h from the JDK, Japhar, or Kaffe in your include path.  This is
-done automatically for you if you specify --with-japhar or
---with-kaffe.  Otherwise you could probably copy it to
-classpath/include and it will work.  Kaffeh appears to have a small
-bug which keeps us from using it to generate valid header files.  The
-file kaffe-config is needed to support Kaffe and so far that has not
-been incorporated into Kaffe (any version) but you can find the
-message in the archives of the Classpath list and add it to your own
-installation of Kaffe (reconfigure and install needed).
-
-If you have a new VM you would like to compile Classpath for then
-you'll probably want to modify acinclude.m4 and configure.in to add
-whatever is relevant but most importantly defining JVM_REFERENCE and
-then giving us the necessary files to add to the vm/$JVM_REFERENCE
-directory.  The vm integration document describes what those files
-should minimally include.  Otherwise you'll have to have one of Japhar
-or Kaffe installed and the programs japhar-config or kaffe-config
-available respectively.
-
-Jikes 1.11 should contain a code for placing .u (dependency files)
-where -d would also place class files.  This will be used in the
-distributions of classpath to make compilation with javac, etc.
-easier/possible.
+By default the core classes are compiled using vm/reference JVM specific
+classes.  As a VM writer you may take these reference classes and modify
+them as you wish as long as the public interface remains the same and 
+no modifications to other core parts of Classpath should be needed.
 
 Gnome cvs can be obtained with 
 :pserver:anonymous@anoncvs.gnome.org:/cvs/gnome and a blank password.  

@@ -63,6 +63,8 @@ AC_PROG_INSTALL
 
 dnl Checks for programs.
 if test "${COMPILE_JNI}" = "yes"; then
+  AC_PREREQ(2.52)
+
   dnl AC_PROG_CXX
   dnl Initialize libtool
   AM_DISABLE_STATIC
@@ -77,7 +79,10 @@ if test "${COMPILE_JNI}" = "yes"; then
   AC_EGREP_HEADER(u_int32_t, sys/types.h, AC_DEFINE(HAVE_BSD_INT32_DEFINED))
   AC_EGREP_HEADER(u_int32_t, sys/config.h, AC_DEFINE(HAVE_BSD_INT32_DEFINED))
 
-  AC_CHECK_FUNCS(gethostname socket strerror fork pipe execve strtod atof)
+  AC_CHECK_FUNCS(gethostname socket strerror fork pipe execve open close lseek \
+	fstat read write htonl memset htons connect getsockname sizeof getpeername \
+  	bind listen accept recvfrom send sendto setsockopt getsockopt time mktime)
+
   AC_HEADER_TIME
   AC_STRUCT_TM
   AC_STRUCT_TIMEZONE
@@ -286,19 +291,19 @@ javax/naming/Makefile
 javax/naming/directory/Makefile
 javax/naming/spi/Makefile
 native/Makefile
+native/fdlibm/Makefile
 native/jni/Makefile
-native/jni/awt/Makefile
-native/lib/Makefile
-native/vmi/Makefile
+native/jni/classpath/Makefile
+native/jni/java-io/Makefile
+native/jni/java-lang/Makefile
+native/jni/java-net/Makefile
+native/jni/java-util/Makefile
+native/jni/gtk-peer/Makefile
 resource/Makefile
 resource/java/Makefile
 resource/java/util/Makefile
 resource/java/security/Makefile
 vm/Makefile
-vm/kaffe/Makefile
-vm/kaffe/java/Makefile
-vm/kaffe/kaffe/Makefile
-vm/kaffe/native/Makefile
 vm/reference/Makefile
 vm/reference/gnu/Makefile
 vm/reference/gnu/vm/Makefile

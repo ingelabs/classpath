@@ -1,62 +1,31 @@
-The Classpath TODO list as of 2000/04/17
+The Classpath TODO list as of 2001/11/03
 
 -- Modify Classpath build to support libgcj out of the box.  Ideally
    the gcj folks could simply include a stock classpath in one of their
    distribution subdirectories, have their master configure run a configure
    on Classpath the appropriate arguments, and everything would build.
 
--- Integrate packages from libgcj that don't exist in Classpath:
-   o java.util.zip
-   o java.util.jar
-
 -- Modify ClassLoader.getSystemResource() to support loading classes 
    from zip files in the CLASSPATH.  This requires java.util.zip to
    be integrated first.  Jar filed can probably be treated as zip
    files for now.
 
--- Perform a class by class comparison in packages where both Classpath
-   and libgcj have implementations, and make recommendations for how
-   to merge them and/or which implementations are superior.  This has
-   been done for java.net by Gaute Smaaland.  See the mail message:
+-- Continue comparison and merge of classes between Classpath and GCJ.
 
-   http://www.mail-archive.com/classpath@gnu.org/msg02135.html
-
-   for his comments.  The packages where we need similar work are:
-   o java.io
-   o java.lang
-   o java.lang.reflect
-   o java.text
-   o java.security
+   Current status: http://gcc.gnu.org/java/libgcj-classpath-compare.html
 
    Please keep in mind that Cygnus wishes to continue to use CNI
    as their preferred native interface.  See:
 
    http://sourceware.cygnus.com/java/papers/cni/t1.html
 
--- Identify a way to resolve the CNI versus JNI issue.  JNI is the
-   Java standard for calling native methods.  Classpath needs to support
-   this for standards compliance.  CNI is the Cygnus Native Interface,
-   an efficient method for calling native code, but one limited to use
-   with gcj.  Cygnus wishes to continue using this because it is more
-   efficient than JNI in their implementation, and uses substantially
-   easier and more readable native code.  Proposed solutions to date:
-   o Binary interface
-   o A .in file that is pre-processed through a script to generate
-     CNI or JNI as desired.
-   o Multiple implementations with a compile time switch.
-   o Pre-processing script to convert CNI source to JNI 
-
--- New web site.  The Classpath web site at:
-
-   http://www.classpath.org/
-
-   is hideously out of date.  Please contact Paul Fisher (rao@gnu.org)
-   and Brian Jones (cbj@gnu.org) if you wish to work in this.
+-- No resolution was identified for generating JNI compatible code from 
+   CNI source.  The simple solution has been adopted to include
+   both in GNU Classpath.  Provisions for compiling CNI correctly need
+   to be implemented.
 
 -- Update the GNU Classpath Hacker's Guide.  There is a master texinfo
    file in the doc/ directory in Classpath CVS.
-
--- Implement a bug tracking system for Classpath.
 
 -- Write Mauve (http://sourceware.cygnus.com/mauve/) tests for those
    classes that don't have them.
@@ -74,7 +43,7 @@ standard.
 
 -- java.awt:  Mostly done and compiles cleanly.  A few classes are
    missing.  Needs to be debugged and integrated with Paul Fisher's
-   AWT peers.  This task should not be worked on for the time being.
+   AWT peers.  
 
 -- java.awt.datatransfer:  Coded and compiles cleanly.  Needs
    debugging.  This task should be considered "On Hold" for now.
@@ -82,7 +51,8 @@ standard.
 -- java.awt.event:  Coded and compiles cleanly.  Needs debugging.
    This task should be considered "On Hold" for now.
 
--- java.awt.image: Unsure of status but partially implemented.
+-- java.awt.image: Partially implemented, could use help with identifying
+   the proper image manipulation algorithms that need to be implemented.
 
 -- java.awt.peer:  Done.  Nothing needs to be done here.
 
@@ -93,36 +63,26 @@ standard.
 
 -- java.lang:  Needs to be merged with libgcj.  See above.
 
--- java.math:  Needs to be merged with libgcj.  See above.  Missing
-   some methods.
+-- java.math:  Done.
 
--- java.net:  Merger with libgcj in progress.  No tasks to be done at
-   this time.
+-- java.net:  Needs to be merged with libgcj. See above.
 
--- java.rmi:  No implementation.  Rumor has it that Transvirtual (Kaffe)
-   is producing a version we can use.
+-- java.rmi:  Done.
 
--- java.security:  Debug the implementation and get it working with Japhar
-   and/or gcj.  Mark Benvenuto (mcb54@columbia.edu) wrote this, but 
-   I'm not sure that it is totally running.
+-- java.security:  Debug the implementation.
 
--- java.sql: Coded and compiles cleanly.  Needs debugging.
+-- java.sql: Needs debugging.
 
 -- java.text:  Needs to be merged with libgcj.  See above.
 
 -- java.util:  Needs to be merged with libgcj.  See above
 
--- java.util.zip:  Need to merge in the libgcj version.  See above.
+-- java.util.zip:  Need to be merged with libgcj.  See above.
 
 -------------------------------------------------------------------------
 
 -- Write Java 1.2 packages not currently included or improve existing 
    ones.
-
--- Write an implementation of Swing.  This is a big job and should
-   probably be a separate, non-Classpath project that can be shared
-   with Kaffe.  Please write to the mailing list if you are interested
-   in helping with this.  (classpath@gnu.org)
 
 -- Figure out an easy method of generating online Javadocs from our
    code.  This will probably involve lots of misc HTML fixes.
@@ -130,7 +90,8 @@ standard.
 -- Audit the code to identify methods that do not have Javadoc comments
    and/or comments that are incomplete.  All input parameters, return
    values, etc should be documentes.  Also look for Javadoc comments on
-   variables that are serializable.  See http://java.sun.com/j2se/javadoc/writingdoccomments/index.html#tag 
+   variables that are serializable.  
+   See http://java.sun.com/j2se/javadoc/writingdoccomments/index.html#tag 
    for details of what should be where in comments.
 
 -- Figure out a way to generate a hardcopy manual for the Java class
