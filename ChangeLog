@@ -1,5 +1,18 @@
 2004-01-25  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/FileDescriptor.java
+	(open): Javadoc added.
+	(close): Likewise.
+	(write): Likewise.
+	(read): Likewise.
+	(available): Likewise.
+	(seek): Likewise.
+	(getFilePointer): Likewise.
+	(getLength): Likewise.
+	(setLength): Likewise.
+
+2004-01-25  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/FileLockImpl.java:
 	Fixed filename in copyright.
 	(released): Removed.

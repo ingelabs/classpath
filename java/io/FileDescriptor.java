@@ -152,6 +152,21 @@ public final class FileDescriptor
     return nativeValid(nativeFd);
   }
 
+  /**
+   * Opens the specified file in the specified mode.  This can be done
+   * in one of the specified modes:
+   * <ul>
+   * <li>r - Read Only
+   * <li>rw - Read / Write
+   * <li>ra - Read / Write - append to end of file
+   * <li>rws - Read / Write - synchronous writes of data/metadata
+   * <li>rwd - Read / Write - synchronous writes of data.
+   *
+   * @param path Name of the file to open
+   * @param mode Mode to open
+   *
+   * @exception IOException If an error occurs.
+   */
   void open(String path, int mode) throws FileNotFoundException
   {
     // We don't want fd leakage.
@@ -169,6 +184,11 @@ public final class FileDescriptor
     nativeFd = nativeOpen(path, mode);
   }
 
+  /**
+   * Closes this specified file descriptor
+   * 
+   * @exception IOException If an error occurs 
+   */    
   synchronized void close() throws IOException
   {
     if (nativeFd == -1L)
@@ -183,6 +203,13 @@ public final class FileDescriptor
       }
   }
 
+  /**
+   * Writes a single byte to the file
+   *
+   * @param b The byte to write, encoded in the low eight bits
+   *
+   * @exception IOException If an error occurs
+   */
   void write(int b) throws IOException
   {
     if (nativeFd == -1L)
@@ -191,6 +218,15 @@ public final class FileDescriptor
     nativeWriteByte(nativeFd, (b & 0xFF));
   }
 
+  /**
+   * Writes a byte buffer to the file
+   *
+   * @param buf The byte buffer to write from
+   * @param int The offset into the buffer to start writing from
+   * @param len The number of bytes to write.
+   *
+   * @exception IOException If an error occurs
+   */
   void write(byte[] buf, int offset, int len) throws IOException
   {
     if (nativeFd == -1L)
@@ -210,6 +246,14 @@ public final class FileDescriptor
     nativeWriteBuf(nativeFd, buf, offset, len);
   }
 
+  /**
+   * Reads a single byte from the file
+   *
+   * @return The byte read, in the low eight bits on a long, or -1
+   * if end of file
+   *
+   * @exception IOException If an error occurs
+   */
   int read() throws IOException
   {
     if (nativeFd == -1L)
@@ -218,6 +262,17 @@ public final class FileDescriptor
     return nativeReadByte(nativeFd);
   }
 
+  /**
+   * Reads a buffer of  bytes from the file
+   *
+   * @param buf The buffer to read bytes into
+   * @param offset The offset into the buffer to start storing bytes
+   * @param len The number of bytes to read.
+   *
+   * @return The number of bytes read, or -1 if end of file.
+   *
+   * @exception IOException If an error occurs
+   */
   int read(byte[] buf, int offset, int len) throws IOException
   {
     if (nativeFd == -1L)
@@ -237,6 +292,13 @@ public final class FileDescriptor
     return nativeReadBuf(nativeFd, buf, offset, len);
   }
 
+  /**
+   * Returns the number of bytes available for reading
+   *
+   * @return The number of bytes available for reading
+   *
+   * @exception IOException If an error occurs
+   */
   int available() throws IOException
   {
     if (nativeFd == -1L)
@@ -245,6 +307,20 @@ public final class FileDescriptor
     return nativeAvailable(nativeFd);
   }
 
+  /**
+   * Method to do a "seek" operation on the file
+   * 
+   * @param offset The number of bytes to seek
+   * @param whence The position to seek from, either
+   *    SET (0) for the beginning of the file, CUR (1) for the 
+   *    current position or END (2) for the end position.
+   * @param stopAtEof <code>true</code> to ensure that there is no
+   *    seeking past the end of the file, <code>false</code> otherwise.
+   *
+   * @return The new file position, or -1 if end of file.
+   *
+   * @exception IOException If an error occurs
+   */
   long seek(long offset, int whence, boolean stopAtEof) throws IOException
   {
     if (nativeFd == -1L)
@@ -256,6 +332,13 @@ public final class FileDescriptor
     return nativeSeek(nativeFd, offset, whence, stopAtEof);
   }
 
+  /**
+   * Returns the current position of the file pointer in the file
+   *
+   * @param fd The native file descriptor
+   *
+   * @exception IOException If an error occurs
+   */
   long getFilePointer() throws IOException
   { 
     if (nativeFd == -1L)
@@ -264,6 +347,13 @@ public final class FileDescriptor
     return nativeGetFilePointer(nativeFd);
   }
 
+  /**
+   * Returns the length of the file in bytes
+   *
+   * @return The length of the file in bytes
+   *
+   * @exception IOException If an error occurs
+   */
   long getLength() throws IOException
   {
     if (nativeFd == -1L)
@@ -272,6 +362,14 @@ public final class FileDescriptor
     return nativeGetLength(nativeFd);
   }
 
+  /**
+   * Sets the length of the file to the specified number of bytes
+   * This can result in truncation or extension.
+   *
+   * @param len The new length of the file
+   *
+   * @exception IOException If an error occurs
+   */
   void setLength(long len) throws IOException
   {
     if (nativeFd == -1L)
