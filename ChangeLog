@@ -1,3 +1,14 @@
+2003-06-11  Torsten Rupp  <rupp@aicas.com>
+
+        * native/jni/java-io/java_io_File.c:
+        replace lstat() -> stat() in isDirectory/isFile to be able to follow symbolic links
+
+
+2003-06-11  Torsten Rupp  <rupp@aicas.com>
+
+        * native/jni/java-net/javanet.c:
+        replace recvfrom() -> recv() in case of stream sockets
+
 2003-06-11  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/border/AbstractBorder.java: Numerous fixes for making
