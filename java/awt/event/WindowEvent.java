@@ -59,7 +59,7 @@ public static final int WINDOW_CLOSING = 201;
 /**
   * This is the id for a window that is closed.
   */
-public static final int WINDOW_ClOSED = 202;
+public static final int WINDOW_CLOSED = 202;
 
 /**
   * This is the id for a window that is iconified.
