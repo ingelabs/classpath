@@ -1,3 +1,7 @@
+<newsitem date="15 Nov 2004">
+<createlink name="GNU Classpath 0.12" url="announce/20041115.html">
+</newsitem>
+
 <newsitem date="06 Nov 2004">
 GNU Classpath is full API compatible with JDK 1.0 (<createlink url="http://www.kaffe.org/~stuart/japi/htmlout/h-jdk10-classpath.html" name="japi results for 1.0">)
 </newsitem>

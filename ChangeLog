@@ -1,3 +1,8 @@
+2004-11-22  Patrik Reali  <reali@acm.org>
+
+	* doc/www.gnu.org/newsitems.txt doc/www.gnu.org/announce/20041115.wml
+	doc/www.gnu.org/downloads/downloads.wml: classpath 0.12 announcement
+
 2004-11-21  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/nio/SocketChannelImpl.java
