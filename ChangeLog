@@ -1,3 +1,7 @@
+2005-03-07  Chris Burdess  <dog@gnu.org>
+
+	* gnu/java/net/protocol/https/Handler.java: New file.
+
 2005-03-07  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/io/DataInputStream.java (ignoreInitialNewline): Removed
