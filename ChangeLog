@@ -1,4 +1,13 @@
 2005-04-03  Guilhem Lavaux  <guilhem@kaffe.org>
+	Rei Odaira <ray@is.s.u-tokyo.ac.jp>
+
+	* native/jni/java-nio/gnu_java_nio_VMSelector.c
+	(helper_select): Return the error number.
+	(Java_gnu_java_nio_VMSelector_select0): If the result is negative
+	consider it as the error code. This prevents conflicts between EINTR
+	and the number of filedescriptor particularly.
+
+2005-04-03  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* native/jni/java-nio/gnu_java_nio_VMSelector.c: Reindented.
 	
