@@ -60,6 +60,5 @@ AM_CPPFLAGS = @CLASSPATH_INCLUDES@
 
 # Just the WARNING_CFLAGS. We cannot use the strict flags since the gtk
 # headers contain broken prototypes (by design, see gtkitemfactory.h).
-# Also no -Werror for now since not all warnings have been solved yet. FIXME.
-AM_CFLAGS = @WARNING_CFLAGS@ \
+AM_CFLAGS = @WARNING_CFLAGS@ @ERROR_CFLAGS@ \
             @GTK_CFLAGS@ @CAIRO_CFLAGS@ @PANGOFT2_CFLAGS@

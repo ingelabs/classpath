@@ -76,7 +76,7 @@ static void init_glib_threads(JNIEnv *, jint);
 
 double dpi_conversion_factor;
 
-static void init_dpi_conversion_factor ();
+static void init_dpi_conversion_factor (void);
 static void dpi_changed_cb (GtkSettings  *settings,
                             GParamSpec   *pspec);
 

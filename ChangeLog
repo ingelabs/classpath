@@ -1,3 +1,11 @@
+2004-10-26  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/Makefile.am (AM_CFLAGS): Add ERROR_CFLAGS.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkTextLayout.c
+	(Java_gnu_java_awt_peer_gtk_GdkGlyphVector_setText): Removed.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMainThread.c
+	(init_dpi_conversion_factor): Correct prototype.
+
 2004-10-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFramePeer.c 
