@@ -1,3 +1,11 @@
+2004-12-22  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/plaf/metal/MetalTheme.java,
+	javax/swing/plaf/metal/DefaultMetalTheme.java:
+	New files.
+	* javax/swing/plaf/metal/MetalLookAndFeel.java:
+	Implemented all color resource getter methods.
+
 2004-12-21  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/JLabel.java (setDisplayedMnemoic):
