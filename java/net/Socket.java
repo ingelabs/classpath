@@ -84,9 +84,20 @@ public class Socket
    */
   private boolean implCreated;
 
-  private boolean inputShutdown = false;
-  private boolean outputShutdown = false;
+  /**
+   * True if the socket is bound.
+   */
+  private boolean bound;
 
+  /**
+   * True if input is shutdown.
+   */
+  private boolean inputShutdown;
+
+  /**
+   * True if output is shutdown.
+   */
+  private boolean outputShutdown;
 
   /**
    * Initializes a new instance of <code>Socket</code> object without 
@@ -346,6 +357,7 @@ public class Socket
     try
       {
         getImpl().bind (tmp.getAddress(), tmp.getPort());
+	bound = true;
       }
     catch (IOException exception)
       {
@@ -983,6 +995,7 @@ public class Socket
       getChannel().close();
     
     impl = null;
+    bound = false;
   }
 
   /**
@@ -1183,7 +1196,7 @@ public class Socket
    */
   public boolean isBound ()
   {
-    return getLocalAddress () != null;
+    return bound;
   }
 
   /**
