@@ -1,13 +1,25 @@
-<h3>Classpath Project Status as of December 1, 1998</h3>
+<h3>Classpath Project Status as of January 1, 1999</h3>
 <p>
-Progress continues.  John Kesier has successfully integrated the classpath
-libraries with Japhar.  We now are able to run "Hello, World" using a
-Japhar/Classpath combo.  Kudos to John.  John is working on a second patch
-to Japhar which will hopefully be more easily incorporated in the near future.
+December was a big month for us.  Aaron Renn finished up the integration
+of Classpath with the Japhar JVM.  Patches have been submitted to the
+Japhar folks and will hopefully be applied to their CVS tree soon.
+With this patch applied, you can actually use Classpath as your 
+Java library for Japhar.
 <p>
-As for the first public release, things are changing a bit.  Once we have
-something buildable and runnable with Japhar, we will probably put out a
-release of what we have to date.  This will include:
+Substantial progress was also made on the Classpath build process.  Brian
+Jones cleaned up the autoconf/automake items and used the JavaDeps tool
+to generate correct dependency information for the build.  We are now
+capable of creating a standard "tar.gz" distribution file that compiles
+out of the box like any other GNU package (ie, "configure; make; make 
+install")
+<p>
+Jochen Hoenicke contributed a large chunk of java.util classes that
+round out that package for us.
+<p>
+What all this means is that a first development/alpha release of Classpath
+that works with Japhar will be available extremely soon.  Probably as
+soon as the necessary patches are accepted into Japhar.  This release
+will include the following:
 <p><ul>
 <li>java.beans
 <li>java.io
@@ -15,16 +27,14 @@ release of what we have to date.  This will include:
 <li>java.lang.reflect
 <li>java.math
 <li>java.net
-<li>java.util (partial)
-<li>java.util.zip (probably)
+<li>java.security (partial)
+<li>java.util
+<li>java.util.zip (maybe)
 </ul>
-<p>These packages were chosen since they make up the minimally useful
-Java runtime and/or were done.  Previously we planned to have all of
-java.util done as well as java.text, but these will be a while and
-Classpath should be minimally useful without them, so we will just go
-ahead and put out a release when we are ready.  Loren Peace is making
-good progress on java.util.zip, so that might be able to slip in as
-an addition to our original list.
+<p>
+In addition to this first release, Paul Fisher and Jim Blair are 
+making excellent progress on their set of GTK+ peers.  Next up on their
+plate is the actual java.awt.* implementation.
 <p>
 In other big news, the Classpath project is going to be cooperating
 with Cygnus Solutions and Transvirtual Technologies in order to produce
@@ -42,6 +52,7 @@ an appletviewer program for Classpath.
 
 <p>
 <h3>java.awt</h3>
+<p>
 Jim Blair and Paul Fisher continue to work on the GTK peers.  The current
 work is progessing nicely.
 <p>
@@ -49,40 +60,29 @@ work is progessing nicely.
 <p>
 John Keiser has completed this package.
 <p>
-<h3>java.io - Serialization</h3>
-Geoff Berry has basically finished off a 1.2 compatible serialization.
-<p>
 <h3>java.io</h3>
-This class has gone through a cleanup for specification compliance and
-doc generation.  A mostly Java 1.2 compatible version of this package 
-is complete.  It is only missing permission classes and a few new changes 
-in JDK 1.2beta4.  Aaron Renn plans on completing those once it becomes 
-clear that Java 1.2 is stable.
+<p>
+Full Java 1.2 implementation complete.
 <p>
 <h3>java.lang</h3>
 <p>
-John Keiser and Brian Jones continue to plug away at this.  Many of the
-difficult classes such as Character and String are complete.  Some work
-has gone into bringing parts of java.lang up to 1.2 specification.  In the
-near future we hope to have the native parts of Runtime.exec, Float, and
-Double complete.
+Mostly Java 1.2 implementation complete.  A few still do holes remain.
 <p>
 <h3>java.lang.reflect</h3>
 <p>
-John Keiser has finished a version of this, but it is largely untested.
-He plans to complete the integration with Japhar and test RSN.
+Full Java 1.2 implementation complete
 <p>
 <h3>java.math</h3>
 <p>
 Paul Fisher completed a version of this class using the GNU MP library.
 <p>
 <h3>java.net</h3>
-Aaron Renn has completed a mostly complete Java 1.2 version of this.  It
-is only missing URLClassLoader and miscellaneous changes that are new with
-the JDK 1.2beta4.  Also, this package needs many more protocol and content
-handlers.  The only supported protocol currently is http and only the GET
-request method is supported there.  Only text/plain is supported with a
-content handler.
+<p>
+Mostly Java 1.2 implementation complete.  Missing JarURLConnection and
+URLClassLoader.  Included are protocol handlers for the "http" and "file"
+protocol, and a "text/plain" content handler.  More need to be written,
+however.  Note also that the HTTP protocol handler only supports the "GET"
+request method.
 <p>
 <h3>java.security.*</h3>
 Aaron Renn is started work on a Java 1.2 version of this.  The 
@@ -91,18 +91,18 @@ are complete.  Work has been suspended here in order to concentrate on
 classes relevant to the first development release.
 <p>
 <h3>java.sql</h3>
-James Cooper is working on this
+James Cooper is working on this.
 <p>
 <h3>java.text</h3>
 <p>
 Aaron has written all of the collation classes in this package and is
 planning on finishing off the formatting classes that Wes Biggs started.
+These are totally untested, however.
 <p>
 <h3>java.util</h3>
 <p>
-Stuart Ballard as written much of the collection classes.  Greg Smith has
-also done some work here.  Several people off the net such as Scott Miller,
-Artur Biesiadowski, and Jon Zeppieri have also chipped in.
+Lots of people have contributed to this package, which is now almost a full
+Java 1.2 implementation.
 <p>
 <h3>java.util.zip</h3>
 <p>
