@@ -83,7 +83,6 @@ public class Window extends Container implements Accessible
    */
   Window()
   {
-    setVisible(false);
     setLayout(new BorderLayout());
   }
 
