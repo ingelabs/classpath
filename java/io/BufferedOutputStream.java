@@ -127,32 +127,34 @@ flush() throws IOException
 
 /*************************************************************************/
 
-/**
+/*
   * This method flushes any remaining buffered bytes then closes the 
   * underlying output stream.  Any further attempts to write to this stream
   * may throw an exception
-  */
+  *
 public synchronized void
 close() throws IOException
 {
   flush();
   out.close();
 }
+*/
 
 /*************************************************************************/
 
-/**
+/*
   * This method runs when the object is garbage collected.  It is 
   * responsible for ensuring that all buffered bytes are written and
   * for closing the underlying stream.
   *
   * @exception IOException If an error occurs (ignored by the Java runtime)
-  */
+  *
 protected void
 finalize() throws IOException
 {
   close();
 }
+*/
 
 /*************************************************************************/
 
