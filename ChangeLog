@@ -1,4 +1,38 @@
 2004-12-22  Michael Koch  <konqueror@gmx.de>
+	    Olga Rodimina  <rodimina@redhat.com>
+
+	* javax/swing/JTable.java
+	(editorComp): New field.
+	(JTable): Initialize local variables and call updateUI
+	(selectionBackground): Make protected.
+	(selectionForeground): Likewise.
+	(initializeLocalVars): Create default editors and renderers,
+	initialize editingColumn, editingRow variables.
+	(createDefaultEditors): New Method.
+	(createDefaultRenderers): Likewise.
+	(createDefaultListSelectionModel): Removed
+	(createDefaultSelectionModel): New Method.
+	(createDefaultTableHeader): Likewise
+	(removeColumn): Likewise.
+	(getEditingColumn): Likewise.
+	(setEditingColumn): Likewise.
+	(getEditingRow): Likewise.
+	(setEditingRow): Likewise.
+	(getEditorComponent): Likewise.
+	(isEditing): Likewise.
+	(setDefaultEditor): Likewise.
+	(addColumnSelectionInterval): Likewise.
+	(addRowSelectionInterval): Likewise.
+	(setColumnSelectionInterval): Likewise.
+	(setRowSelectionInterval): Likewise.
+	(removeColumnSelectionInterval): Likewise.
+	(removeRowSelectionInterval): Likewise.
+	(isColumnSelected): Likewise.
+	(isRowSelected): Likewise.
+	(isCellSelected): Likewise.
+	(selectAll): Likewise.
+
+2004-12-22  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/JFileChooser.java
 	(showDialog): Return CANCEL_OPTION for now.
