@@ -19,7 +19,6 @@ Copyright (C) 1998 Aaron M. Renn
 
 @title{JCL Hacking Guide}
 @author{Aaron M. Renn}
-@author{Paul N. Fisher}
 @page
 @vskip 0pt plus 1filll
 Copyright @copyright{} 1998 Aaron M. Renn
@@ -104,7 +103,7 @@ reduce temptation, it would be best if you deleted the @samp{src.zip}
 file from your JDK distribution.  If you have signed Sun's
 non-disclosure statement, then you unfortunately cannot work on JCL code
 at all.  If you have any reason to believe that your code might be
-''tainted'', please say something on the mailing list before writing
+``tainted'', please say something on the mailing list before writing
 anything.  If it turns out that your code was not developed in a clean
 room environment, we could be very embarrassed someday in court.  Please
 don't let that happen.
