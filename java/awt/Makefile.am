@@ -7,6 +7,7 @@ AWTError.java \
 AWTEvent.java \
 AWTEventMulticaster.java \
 AWTException.java \
+AWTPermission.java \
 ActiveEvent.java \
 Adjustable.java	\
 BorderLayout.java \
