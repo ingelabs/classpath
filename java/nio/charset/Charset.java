@@ -55,6 +55,9 @@ import gnu.java.nio.charset.Provider;
  */
 public abstract class Charset implements Comparable
 {
+  private static CharsetEncoder cachedEncoder;
+  private static CharsetDecoder cachedDecoder;
+  
   private final String canonicalName;
   private final String[] aliases;
   
@@ -195,10 +198,14 @@ public abstract class Charset implements Comparable
   {
     try
       {
-        // TODO: cache encoders between sucessive invocations
-        return newEncoder ().onMalformedInput (CodingErrorAction.REPLACE)
-                            .onUnmappableCharacter (CodingErrorAction.REPLACE)
-                            .encode (cb);
+	if (cachedEncoder == null)
+          {
+            cachedEncoder = newEncoder ()
+              .onMalformedInput (CodingErrorAction.REPLACE)
+              .onUnmappableCharacter (CodingErrorAction.REPLACE);
+	  }
+		  
+        return cachedEncoder.encode (cb);
       }
     catch (CharacterCodingException e)
       {
@@ -215,10 +222,14 @@ public abstract class Charset implements Comparable
   {
     try
      {
-        // TODO: cache encoders between sucessive invocations
-        return newDecoder ().onMalformedInput (CodingErrorAction.REPLACE)
-                            .onUnmappableCharacter (CodingErrorAction.REPLACE)
-                            .decode (bb);
+        if (cachedDecoder == null)
+          {
+	    cachedDecoder = newDecoder ()
+              .onMalformedInput (CodingErrorAction.REPLACE)
+              .onUnmappableCharacter (CodingErrorAction.REPLACE);
+	  }
+	
+        return cachedDecoder.decode (bb);
       }
     catch (CharacterCodingException e)
       {

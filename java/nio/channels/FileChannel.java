@@ -42,6 +42,10 @@ import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.spi.AbstractInterruptibleChannel;
 
+/**
+ * @author Michael Koch
+ * @since 1.4
+ */
 public abstract class FileChannel extends AbstractInterruptibleChannel
   implements ByteChannel, GatheringByteChannel, ScatteringByteChannel
 {
@@ -53,6 +57,9 @@ public abstract class FileChannel extends AbstractInterruptibleChannel
     public static MapMode READ_WRITE = new MapMode(1);
     public static MapMode PRIVATE    = new MapMode(2);
 
+    /**
+     * Initializes the MapMode.
+     */
     MapMode(int a)
     {
       m = a;
@@ -60,26 +67,69 @@ public abstract class FileChannel extends AbstractInterruptibleChannel
 
     public String toString() 
     {
-      return ""+m;
+      return "" + m;
     }
   }
 
-  protected FileChannel()
+  /**
+   * Initializes the channel.
+   */
+  protected FileChannel ()
   {
   }
 
-  public abstract MappedByteBuffer map(MapMode mode, long position, int size)
+  /**
+   * Maps the file into the memory.
+   *
+   * @exception IOException If an error occurs.
+   */
+  public abstract MappedByteBuffer map(MapMode mode, long position, long size)
     throws IOException;
 
   /**
    * Return the size of the file thus far
    */
   public abstract long size() throws IOException;
+  
+  /**
+   * Writes data to the channel.
+   *
+   * @exception IOException If an error occurs.
+   */
+  public long write (ByteBuffer[] srcs) throws IOException
+  {
+    long result = 0;
+    
+    for (int i = 0; i < srcs.length; i++)
+      {
+        result += write (srcs[i]);
+      }
+    
+    return result;
+  }
+  
+  /**
+   * Writes data to the channel.
+   */
   public abstract long write(ByteBuffer[] srcs, int offset, int length)
     throws IOException;
+  
+  /**
+   * Reads data from the channel.
+   */
   public abstract int read(ByteBuffer dst) throws IOException;
-  protected abstract  void implCloseChannel()  throws IOException;
+  
+  /**
+   * Closes the channel.
+   *
+   * This is called from @see close.
+   *
+   * @exception IOException If an error occurs.
+   */
+  protected abstract void implCloseChannel() throws IOException;
 
-  /* msync with the disk */
+  /**
+   * msync with the disk
+   */
   public abstract void force(boolean metaData);    
 }

@@ -49,11 +49,19 @@ import java.nio.channels.SocketChannel;
  */
 public abstract class SelectorProvider
 {
+  static SelectorProvider pr;
+    
   /**
    * Initializes the selector provider.
+   *
+   * @exception SecurityException If a security manager has been installed and
+   * it denies @see RuntimePermission ("selectorProvider").
    */
   protected SelectorProvider ()
   {
+    SecurityManager sm = System.getSecurityManager ();
+    if (sm != null)
+      sm.checkPermission (new RuntimePermission ("selectorProvider"));
   }
   
   /**
@@ -80,8 +88,6 @@ public abstract class SelectorProvider
    * Opens a socket channel.
    */
   public abstract SocketChannel openSocketChannel ();
-    
-  static SelectorProvider pr;
     
   /**
    * Returns the system-wide default selector provider for this invocation

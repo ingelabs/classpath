@@ -1,5 +1,29 @@
 2002-11-16  Michael Koch <konqueror@gmx.de>
 
+	* gnu/java/nio/FileChannelImpl.java
+	(map): Last argument must be of type long,
+	made it a dummy method for now.
+	* java/nio/channels/FileChannel.java:
+	Documentation added.
+	(MapMode): Documentation added.
+	(MapMode.toString): Reformated.
+	(FileChannel): Documentation added.
+	(map): Last argument must be type long, documentation added.
+	(write): New method.
+	(write): Documentation added.
+	(read): Documentation added.
+	(implCloseChannel): Documentation added.
+	(force): Reformated documentation.	
+	* java/nio/channels/Selector.java
+	(open): Added "throws IOException".
+	* java/nio/channels/spi/SelectorProvider.java
+	(SelectorProvider): Added SecurityManager check, documentation added.
+	* java/nio/charset/Charset.java
+	(encode): Use cached encoder object.
+	(decode): Use cached decoder object.
+	
+2002-11-16  Michael Koch <konqueror@gmx.de>
+
 	* java/nio/ReadOnlyBufferException.java: New file.
 	* java/nio/Makefile.am: Added ReadOnlyBufferException.java.
 

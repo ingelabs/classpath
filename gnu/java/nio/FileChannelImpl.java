@@ -160,23 +160,17 @@ public class FileChannelImpl extends FileChannel
 	return res;
     }
 				   
-
-        
-    public MappedByteBuffer map(java.nio.channels.FileChannel.MapMode mode,
-				long  position,
-				int  size) throws IOException
-    {
-	int cmode = mode.m;
-
-	address = nio_mmap_file(fd, position, size, cmode);
-
-	length = size;
-
-	//	System.out.println("file mapped" + address + "length="+length);
-
-	buf = new MappedByteFileBuffer(this);
-	return buf;
-    }
+  public MappedByteBuffer map (FileChannel.MapMode mode, long position,
+                               long size)
+    throws IOException
+  {
+//     int cmode = mode.m;
+//     address = nio_mmap_file (fd, position, size, cmode);
+//     length = size;
+//     buf = new MappedByteFileBuffer (this);
+//     return buf;
+    return null;
+  }
 
     static MappedByteBuffer create_direct_mapped_buffer(long address,
 							long length)
