@@ -33,8 +33,6 @@
 #include "jcl.h"
 #include "jnilink.h"
 
-#include "java_io_File.h"
-
 /*************************************************************************/
 
 /*
@@ -427,7 +425,7 @@ Java_java_io_File_listInternal(JNIEnv *env, jobject obj, jstring name)
     }
 
   /* Now put the list of files into a Java String array and return it */
-  str_clazz = LINK_LinkClass(env, &str_clazz, "java/lang/String"); 
+  str_clazz = LINK_LinkClass(env, str_clazz, "java/lang/String"); 
   if (!str_clazz)
     {
       free(filelist);

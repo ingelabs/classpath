@@ -18,3 +18,22 @@ libjavaio_la_SOURCES = File.c FileDescriptor.c FileInputStream.c FileOutputStrea
 libjavaio_la_LDFLAGS = -version-info 0:0:0
 
 INCLUDES += -I ../lib @VMINCLUDE@
+
+#File.c: java_io_File.h
+#FileDescriptor.c: java_io_FileDescriptor.h
+#FileInputStream.c: java_io_FileInputStream.h
+#FileOutputStream.c: java_io_FileOutputStream.h
+
+# How to build JNI *.h files
+
+#java_io_File.h:
+#	javah -jni -d $(srcdir) java.io.File
+
+#java_io_FileDescriptor.h:
+#	javah -jni -d $(srcdir) java.io.FileDescriptor
+
+#java_io_FileInputStream.h:
+#	javah -jni -d $(srcdir) java.io.FileInputStream
+
+#java_io_FileOutputStream.h:
+#	javah -jni -d $(srcdir) java.io.FileOutputStream

@@ -29,8 +29,6 @@
 #include <jni.h>
 #include "jcl.h"
 
-#include "java_io_FileDescriptor.h"
-
 /*************************************************************************/
 
 /*
