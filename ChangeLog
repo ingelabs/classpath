@@ -1,3 +1,9 @@
+2004-11-03  Tom Tromey  <tromey@redhat.com>
+
+	* include/jni.h (struct JNINativeInterface) <NewObjectArray>: Now
+	returns jobjectArray.
+	(_Jv_JNIEnv::NewObjectArray): Likewise.
+
 2004-11-02  Mattias Rehnberg  <Mattias.Rehnberg@home.se>
 
 	* java/io/Vector.java
