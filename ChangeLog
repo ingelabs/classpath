@@ -1,5 +1,9 @@
 2003-12-26  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/lang/reflect/TypeSignature.java: Reformatted.
+
+2003-12-26  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/FilePermission.java:
 	Import used classes explicitely.
 
