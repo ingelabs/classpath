@@ -1,3 +1,8 @@
+2005-03-11  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/aelfred2/SAXDriver.java: Corrected bug handling URI
+	warnings.
+
 2005-03-11  Audrius Meskauskas  <audriusa@bluewin.ch>
 
 	* org/omg/CORBA/portable/InputStream.java (read_Context):
