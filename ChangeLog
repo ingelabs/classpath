@@ -1,3 +1,10 @@
+2003-03-13  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/logging/FileHandler.java (FileHandler(String)): New
+	constructor.
+	* java/util/logging/LogRecord.java (serialVersionUID): Use
+	correct value.
+
 2003-03-12  Tom Tromey  <tromey@redhat.com>
 
 	* java/security/Signer.java: Removed non-ASCII characters.
