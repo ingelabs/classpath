@@ -1,3 +1,9 @@
+2002-08-13  Philip Fong <pwlfong@users.sourceforge.net>
+
+	* java/security/SecureClassLoader.java (SecureClassLoader): Only
+	create ProtectionDomain when CodeSource is not null. Don't catch and
+	ignore ClassFormatError.
+
 2002-08-13  C. Scott Ananian <cananian@lesser-magoo.lcs.mit.edu>
 
 	* native/jni/java-util/java_util_TimeZone.c
