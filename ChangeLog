@@ -1,5 +1,10 @@
 2004-01-26  Fernando Nasser  <fnasser@redhat.com>
 
+	* java/awt/EventQueue.java (pop): Prevent breaking the chain if pop
+	is called for an intermediate queue.
+
+2004-01-26  Fernando Nasser  <fnasser@redhat.com>
+
 	* java/awt/EventDispatchThread.java (run): Stop running when
 	interrupted.
 	* java/awt/EventQueue.java (pop): Stop dispatch thread when done.
