@@ -470,13 +470,17 @@ public class Collections {
 
       // Obtain a random position to swap with. nextIndex is used so that the
       // range of the random number includes the current position.
-           int swap = r.nextInt(i.nextIndex());
+      int swap = r.nextInt(i.nextIndex());
 
       // Swap the swapth element of the array with the next element of the
       // list.
-      Object o = i.previous();
-      i.set(a[swap]);
-      a[swap] = o;
+      Object o = a[swap];
+      a[swap] = a[i.previousIndex()];
+      a[i.previousIndex()] = o;
+
+      // Set the element in the original list accordingly.
+      i.previous();
+      i.set(o);
     }
   }
 
