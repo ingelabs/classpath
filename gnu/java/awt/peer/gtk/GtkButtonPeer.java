@@ -52,7 +52,8 @@ public class GtkButtonPeer extends GtkComponentPeer
       {
 	MouseEvent me = (MouseEvent) e;
 	if (!me.isConsumed()
-	    && e.getID() == MouseEvent.MOUSE_CLICKED)
+	    && me.getID() == MouseEvent.MOUSE_CLICKED
+	    && (me.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
 	  postActionEvent (((Button)awtComponent).getActionCommand (), 
 			   me.getModifiers ());
       }
