@@ -20,6 +20,7 @@
 
 package gnu.java.awt.peer.gtk;
 import java.awt.*;
+import java.awt.peer.ComponentPeer;
 import java.awt.peer.PopupMenuPeer;
 
 public class GtkPopupMenuPeer extends GtkMenuPeer
@@ -30,9 +31,11 @@ public class GtkPopupMenuPeer extends GtkMenuPeer
     super (menu);
   }
 
+  native void setupAccelGroup (GtkGenericPeer container);
+
   void setParent (MenuItem item)
   {
-    // popup's lack a parent, so we do nothing here
+    // we don't need to "add" ourselves to our parent
   }
 
   native void show (int x, int y, long time);

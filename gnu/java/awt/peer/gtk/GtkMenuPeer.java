@@ -27,16 +27,49 @@ public class GtkMenuPeer extends GtkMenuItemPeer
   implements MenuPeer
 {
   native void create (String label);
-  native void addItem (MenuItemPeer item);
+  native void addItem (MenuItemPeer item, int key, boolean shiftModifier);
+  native void setupAccelGroup (GtkGenericPeer container);
 
   public GtkMenuPeer (Menu menu)
   {
     super (menu);
+    
+    MenuContainer parent = menu.getParent ();
+    if (parent instanceof Menu)
+      setupAccelGroup ((GtkGenericPeer)((Menu)parent).getPeer ());
+    else if (parent instanceof Component)
+      setupAccelGroup ((GtkGenericPeer)((Component)parent).getPeer ());
+    else
+      setupAccelGroup (null);
   }
 
   public void addItem (MenuItem item)
   {
-    addItem ((MenuItemPeer) item.getPeer ());
+    int key = 0;
+    boolean shiftModifier = false;
+
+    MenuShortcut ms = item.getShortcut ();
+    if (ms != null)
+      {
+	key = ms.getKey ();
+	shiftModifier = ms.usesShiftModifier ();
+      }
+
+    addItem ((MenuItemPeer) item.getPeer (), key, shiftModifier);
+  }
+
+  public void addItem (MenuItemPeer item, MenuShortcut ms)
+  {
+    int key = 0;
+    boolean shiftModifier = false;
+
+    if (ms != null)
+      {
+	key = ms.getKey ();
+	shiftModifier = ms.usesShiftModifier ();
+      }
+
+    addItem (item, key, shiftModifier);
   }
 
   public void addSeparator ()

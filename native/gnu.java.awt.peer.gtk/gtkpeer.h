@@ -108,6 +108,10 @@ struct graphics
 #define AWT_LABEL_CENTER 1
 #define AWT_LABEL_RIGHT 2
 
+#define AWT_TEXTAREA_SCROLLBARS_BOTH 0
+#define AWT_TEXTAREA_SCROLLBARS_VERTICAL_ONLY 1
+#define AWT_TEXTAREA_SCROLLBARS_HORIZONTAL_ONLY 2
+
 #define AWT_ITEM_SELECTED 1
 #define AWT_ITEM_DESELECTED 2
      
@@ -260,6 +264,7 @@ void connect_awt_hook (JNIEnv *env, jobject peer_obj, GtkWidget *widget,
 
 void set_visible (GtkWidget *widget, jboolean visible);
 void set_parent (GtkWidget *widget, GtkContainer *parent);
+GtkLayout *find_gtk_layout (GtkWidget *parent);
 void setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width, 
 		   jint height, jboolean visible);
 

@@ -55,3 +55,21 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkPopupMenuPeer_show
 
   g_free (p);
 }
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkPopupMenuPeer_setupAccelGroup
+  (JNIEnv *env, jobject obj, jobject parent)
+{
+  void *ptr1, *ptr2;
+  GtkMenu *menu;
+
+  ptr1 = NSA_GET_PTR (env, obj);
+  ptr2 = NSA_GET_PTR (env, parent);
+
+  gdk_threads_enter ();
+  menu = GTK_MENU (GTK_MENU_ITEM (ptr1)->submenu);
+  gtk_menu_set_accel_group (menu, gtk_accel_group_new ());
+  gtk_accel_group_attach (gtk_menu_get_accel_group (menu),
+			  GTK_OBJECT (gtk_widget_get_toplevel (ptr2)));
+  gdk_threads_leave ();
+}

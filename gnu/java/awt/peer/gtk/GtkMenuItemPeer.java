@@ -48,7 +48,8 @@ public class GtkMenuItemPeer extends GtkMenuComponentPeer
       }
     else // parent instanceof Menu
       {
-	((GtkMenuPeer)((Menu)parent).getPeer ()).addItem (this);
+	((GtkMenuPeer)((Menu)parent).getPeer ()).addItem (this, 
+							  item.getShortcut ());
       }
   }
 
