@@ -1,3 +1,7 @@
+2003-08-08  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/System.java: Typo fix.
+
 2003-08-07  Bryce McKinlay  <bryce@mckinlay.net.nz>
 
 	* java/net/Socket.java (Socket (SocketImpl)): Don't allow null
