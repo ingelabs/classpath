@@ -1,10 +1,12 @@
 dnl Input file for autoconf to create the configure script.
 
 AC_INIT(native/java.net/javanet.c)
-AM_INIT_AUTOMAKE(jcl, 0.0)
-AM_CONFIG_HEADER(native/config.h)
+AM_INIT_AUTOMAKE(classpath, 0.0)
 
-AC_PREFIX_DEFAULT(/usr/local/japhar)
+# this file is empty, is this supposed to be here? -gcb
+#AM_CONFIG_HEADER(native/config.h)
+
+AC_PREFIX_DEFAULT(/usr/local/classpath)
 
 AC_CANONICAL_HOST
 
@@ -24,15 +26,49 @@ AC_CHECK_HEADERS(unistd.h)
 AC_C_CONST
 AC_CHECK_FUNCS(gethostname socket strerror)
 
+AC_ARG_WITH(sun-jdk,
+ [  --with-sun-jdk          Specify the path to the JDK installation directory],
+  [
+    if test -f ${withval}/include/jni.h; then
+      AC_MSG_RESULT(Using JNI headers in ${withval}/include)
+      VMINCLUDE=${withval}/include
+      AC_PREFIX_PROGRAM(java)
+    else
+      AC_MSG_ERROR([Unable to find ${withval}/include/jni.h. Use --with-sun-jdk=/path/to/jdk])
+    fi
+  ])
+
+
+AC_ARG_WITH(japhar,
+ [  --with-japhar           Specify the path to the Japhar installation directory],
+  [
+    if test -f ${withval}/include/japhar/jni.h; then
+      AC_MSG_RESULT(Using JNI headers in ${withval}/include/japhar)
+      VMINCLUDE=${withval}/include/japhar
+      AC_PREFIX_PROGRAM(japhar)
+    else
+      AC_MSG_ERROR([Unable to find ${withval}/include/japhar/jni.h. Use --with-japhar=/path/to/japhar])
+    fi
+  ])
+
+if test VMINCLUDE = ""
+then
+  AC_MSG_ERROR(Unable to find include directory for JVM)
+fi
+
+# This is the path to the chosen VM's include directory where jni.h
+# and others can be found
+AC_SUBST(VMINCLUDE)
+
 dnl AC_ARG_WITH(japhar, Install as class library for Japhar, 
 dnl             AC_PREFIX_PROGRAM(japhar))
 dnl AC_ARG_WITH(sunjdk, Install as class library for Sun's JDK,
 dnl             AC_PREFIX_PROGRAM(java))
 
-if test prefix = ""
-then
-  AC_PREFIX_PROGRAM(japhar)
-fi
+dnl if test prefix = ""
+dnl then
+dnl   AC_PREFIX_PROGRAM(japhar)
+dnl fi
 
 if test prefix = ""
 then
@@ -60,8 +96,9 @@ java/Makefile
 java/math/Makefile
 java/net/Makefile
 java/util/Makefile
-native/java.io/Makefile
 native/Makefile
+native/java.io/Makefile
+native/java.lang.reflect/Makefile
 native/java.net/Makefile
 native/lib/Makefile
 test/java.io/Makefile
