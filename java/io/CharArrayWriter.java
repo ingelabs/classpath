@@ -275,8 +275,7 @@ write(int b)
 
 /**
   * This method writes <code>len</code> chars from the passed in array 
-  * <code>buf</code> starting at index <code>offset</code> into the
-  * internal buffer.
+  * <code>buf</code> starting at index <code>offset</code> into that buffer
   *
   * @param buf The char array to write data from
   * @param offset The index into the buffer to start writing data from
@@ -310,6 +309,26 @@ write(char[] buf, int offset, int len)
     }
 
   } // synchronized
+}
+
+/*************************************************************************/
+
+/**
+  * This method writes <code>len</code> chars from the passed in <code>String</code>
+  * <code>buf</code> starting at index <code>offset</code> into the
+  * internal buffer.
+  *
+  * @param str The <code>String</code> to write data from
+  * @param offset The index into the string to start writing data from
+  * @param len The number of chars to write
+  */
+public void
+write(String str, int offset, int len)
+{
+  char[] tmpbuf = new char[len];
+  str.getChars(offset, len - offset, tmpbuf, 0);
+
+  write(tmpbuf, 0, tmpbuf.length);
 }
 
 /*************************************************************************/
