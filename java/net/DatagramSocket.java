@@ -1,5 +1,5 @@
 /* DatagramSocket.java -- A class to model UDP sockets
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.net;
 
 import java.io.IOException;
@@ -37,9 +36,8 @@ import java.io.IOException;
   * remote host.
   * <p>
   * 
-  * @version 0.5
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Warren Levy <warrenl@cygnus.com>
   */
 public class DatagramSocket
 {
@@ -56,11 +54,6 @@ public class DatagramSocket
 DatagramSocketImpl impl;
 
 /**
-  * This is the address we are bound to
-  */
-private InetAddress local_addr;
-
-/**
   * This is the address we are "connected" to
   */
 private InetAddress remote_addr;
@@ -70,6 +63,11 @@ private InetAddress remote_addr;
   */
 private int remote_port = -1;
 
+/**
+  * Is this a "connected" datagram socket?
+  */
+private boolean connected = false;
+
 /*************************************************************************/
 
 /**
@@ -77,10 +75,10 @@ private int remote_port = -1;
   */
 
 /**
-  * Create a DatagramSocket that binds to a random port and every
-  * address on the local machine.
+  * Initializes a new instance of <code>DatagramSocket</code> that binds to 
+  * a random port and every address on the local machine.
   *
-  * @exception SocketException If an error occurs
+  * @exception SocketException If an error occurs.
   */
 public
 DatagramSocket() throws SocketException
@@ -91,12 +89,12 @@ DatagramSocket() throws SocketException
 /*************************************************************************/
 
 /**
-  * Create a DatagramSocket that binds to the specified port and every
-  * address on the local machine
+  * Initializes a new instance of <code>DatagramSocket</code> that binds to 
+  * the specified port and every address on the local machine.
   *
   * @param port The local port number to bind to
   *
-  * @exception SocketException If an error occurs
+  * @exception SocketException If an error occurs.
   */
 public
 DatagramSocket(int port) throws SocketException
@@ -107,8 +105,8 @@ DatagramSocket(int port) throws SocketException
 /*************************************************************************/
 
 /**
-  * Create a DatagramSocket that binds to the specified local port and
-  * address
+  * Initializes a new instance of <code>DatagramSocket</code> that binds to 
+  * the specified local port and address.
   *
   * @param port The local port number to bind to
   * @param addr The local address to bind to
@@ -118,6 +116,13 @@ DatagramSocket(int port) throws SocketException
 public
 DatagramSocket(int port, InetAddress addr) throws SocketException
 {
+  if ((port < 0) || (port > 65535))
+    throw new IllegalArgumentException("Bad port value: " + port);
+
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    sm.checkListen(port);
+  
   // Why is there no factory for this?
   impl = new PlainDatagramSocketImpl();
 
@@ -129,11 +134,8 @@ DatagramSocket(int port, InetAddress addr) throws SocketException
          addr = InetAddress.getInaddrAny();
 
       impl.localPort = port;
-      this.local_addr = addr;
-
       impl.bind(port, addr);
 
-      local_addr = addr;
     }
   catch (UnknownHostException e)
     {
@@ -185,12 +187,34 @@ getPort()
 /*************************************************************************/
 
 /**
-  * Returns the local address this socket is bound to
+  * Returns the local address this socket is bound to.
   */
 public InetAddress
 getLocalAddress()
 {
-  return(local_addr);
+  if (impl == null)
+    return(null);
+
+  InetAddress addr = null;
+  try
+    {
+      addr = (InetAddress)impl.getOption(SocketOptions.SO_BINDADDR);
+    }
+  catch(SocketException e)
+    {
+      return(null);
+    }
+
+  // FIXME: According to libgcj, checkConnect() is supposed to be called
+  // before performing this operation.  Problems: 1) We don't have the
+  // addr until after we do it, so we do a post check.  2). The docs I
+  // see don't require this in the Socket case, only DatagramSocket, but
+  // we'll assume they mean both.
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    sm.checkConnect(addr.getHostName(), getLocalPort());
+
+  return(addr);
 }
 
 /*************************************************************************/
@@ -237,6 +261,9 @@ getSoTimeout() throws SocketException
 public synchronized void
 setSoTimeout(int timeout) throws SocketException
 {
+  if (timeout < 0)
+    throw new IllegalArgumentException("Timeout value is less than 0");
+
   impl.setOption(SocketOptions.SO_TIMEOUT, new Integer(timeout));
 }
 
@@ -276,6 +303,9 @@ getSendBufferSize() throws SocketException
 public synchronized void
 setSendBufferSize(int size) throws SocketException
 {
+  if (size < 0)
+    throw new IllegalArgumentException("Buffer size is less than 0");
+
   impl.setOption(SocketOptions.SO_SNDBUF, new Integer(size));
 }
 
@@ -315,6 +345,9 @@ getReceiveBufferSize() throws SocketException
 public synchronized void
 setReceiveBufferSize(int size) throws SocketException
 {
+  if (size < 0)
+    throw new IllegalArgumentException("Buffer size is less than 0");
+
   impl.setOption(SocketOptions.SO_RCVBUF, new Integer(size));
 }
 
@@ -336,6 +369,9 @@ public void
 connect(InetAddress addr, int port) throws SecurityException, 
                                            IllegalArgumentException
 {
+  if (addr == null)
+    throw new IllegalArgumentException("Connect address is null");
+
   if ((port < 1) || (port > 65535))
     throw new IllegalArgumentException("Bad port number: " + port);
 
@@ -346,9 +382,11 @@ connect(InetAddress addr, int port) throws SecurityException,
   this.remote_addr = addr;
   this.remote_port = port;
 
-  /* Shit, we can't do this even though the OS supports it since this method
-  isn't in DatagramSocketImpl.  What was Sun thinking? */
+  /* FIXME: Shit, we can't do this even though the OS supports it since this 
+     method isn't in DatagramSocketImpl. */
 //  impl.connect(addr, port);
+
+  connected = true;
 } 
 
 /*************************************************************************/
@@ -361,9 +399,10 @@ connect(InetAddress addr, int port) throws SecurityException,
 public void
 disconnect()
 {
-  // See my comments on connect()
+  // FIXME: See my comments on connect()
   this.remote_addr = null;
   this.remote_port = -1;
+  connected = false;
 }
 
 /*************************************************************************/
@@ -371,16 +410,20 @@ disconnect()
 /**
   * Reads a datagram packet from the socket.  Note that this method
   * will block until a packet is received from the network.  On return,
-  * the passed in DatagramPacket is populated with the data received
-  * and all the other information about the packet.
+  * the passed in <code>DatagramPacket</code> is populated with the data 
+  * received and all the other information about the packet.
   *
-  * @param packet A DatagramPacket for storing the data
+  * @param packet A <code>DatagramPacket</code> for storing the data
   *
   * @exception IOException If an error occurs
   */
 public synchronized void
 receive(DatagramPacket packet) throws IOException
 {
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    sm.checkAccept(packet.getAddress().getHostAddress(), packet.getPort());
+
   impl.receive(packet);
 }
 
@@ -397,6 +440,19 @@ receive(DatagramPacket packet) throws IOException
 public synchronized void
 send(DatagramPacket packet) throws IOException
 {
+  if (!connected)
+    {
+      SecurityManager sm = System.getSecurityManager();
+      if (sm != null)
+        {
+           InetAddress addr = packet.getAddress();
+           if (addr.isMulticastAddress())
+             sm.checkMulticast(addr);
+           else
+             sm.checkConnect(addr.getHostAddress(), packet.getPort());
+        }
+    }
+
   impl.send(packet);
 }
 
