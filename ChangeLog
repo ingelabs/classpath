@@ -1,5 +1,10 @@
 2004-01-26  Fernando Nasser  <fnasser@redhat.com>
 
+	* java/awt/EventQueue.java (isDispatchThread): Do check on top of stack.
+	(push): Make sure push is performed at the top of the thread stack.
+
+2004-01-26  Fernando Nasser  <fnasser@redhat.com>
+
 	* gnu/java/awt/peer/gtk/TestAWT.java (DialogWindow): Make text not
 	visible so that dialog can be reused.
 
