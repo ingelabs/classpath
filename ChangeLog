@@ -1,3 +1,12 @@
+2004-06-21  Steven Augart <augart@watson.ibm.com>
+
+	* native/jni/classpath/jcl.c, native/jni/classpath/jcl.h,
+	native/jni/classpath/jnilink.c, native/jni/classpath/jnilink.h,
+	native/jni/classpath/native_state.c, 
+	native/jni/classpath/native_state.h,
+	native/jni/classpath/primlib.c, native/jni/classpath/primlib.h:
+	Reformatted according to GNU Coding standards.
+ 
 2004-06-21  Steven Augart  <augart@watson.ibm.com>
 
 	* gnu/java/awt/peer/gtk/Makefile.am (EXTRA_DIST): Fixed
