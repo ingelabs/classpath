@@ -51,7 +51,8 @@ come from the <createlink name="Kaffe" url="http://www.kaffe.org"> project, the 
 	maintainer="Tom Tromey"
 	url="ftp://sources.redhat.com/pub/java/jalopy-console-1.0.4.tar.gz"
 >
-Jalopy is a pretty-printer to format Java code
+Jalopy is a pretty-printer to format Java code. To do our coding style you also need this
+<a href="ftp://sources.redhat.com/pub/java/GNU.xml">style definition file</a>.
 </tool>
 
 <tool
