@@ -1,3 +1,9 @@
+2003-01-14  Tom Tromey  <tromey@redhat.com>
+
+	* doc/api/Makefile.am (install-data-local): Avoid error when
+	htmllist is empty.
+	(uninstall-local): Likewise.
+
 2003-01-10  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/DisplayMode.java

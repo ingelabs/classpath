@@ -21,7 +21,7 @@ htmllist := $(shell $(FIND) html | grep -v "^html$$")
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/api
-	@for p in $(htmllist); do \
+	@list='$(htmllist)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  if test -f "$$p"; then \
 	    echo " $(INSTALL_DATA) $$p $(DESTDIR)$(pkgdatadir)/api/$$f"; \
@@ -32,7 +32,7 @@ install-data-local:
         done
 
 uninstall-local:
-	@for p in $(htmllist); do \
+	@list='$(htmllist)'; for p in $$list; do \
 	  f="`echo $$p | sed -e 's|^.*/||'`"; \
 	  if test -f "$$p"; then \
 	    echo " rm -f $(DESTDIR)$(pkgdatadir)/api/$$f"; \
