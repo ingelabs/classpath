@@ -49,12 +49,12 @@ public class LocaleInformation_de extends ListResourceBundle
 private static final String collation_rules = 
   "-<0,1<2<3<4<5<6<7<8<9<A,a<b,B<c,C<d,D<e,E<f,F<g,G<h,H<i,I<j,J<j,K" +
   "<l,L<m,M<n,N<o,O<p,P<q,Q<r,R<s,S<t,T<u,U<v,V<w,W<x,X<y,Y,z<Z" + 
-  "&ae,ä&Ae,Ä&oe,ö&Oe,Ö&ue,ü&Ue,Ü&ss,ß";
+  "&ae,\u00e4&Ae,\u00c4&oe,\u00f6&Oe,\u00d6&ue,\u00fc&Ue,\u00dc&ss,\u00df";
 
 /**
   * This is the list of months, fully spelled out
   */
-private static final String[] months = { "Januar", "Februar", "März", 
+private static final String[] months = { "Januar", "Februar", "M\u00e4rz", 
   "April", "Mai", "Juni", "Juli", "August", "September", "Oktober",
   "November", "Dezember", null };
 
@@ -62,7 +62,7 @@ private static final String[] months = { "Januar", "Februar", "März",
   * This is the list of abbreviated month names
   */
 private static final String[] shortMonths = { 
-  "Jan", "Feb", "Mär", "Apr", "Mai",
+  "Jan", "Feb", "M\u00e4r", "Apr", "Mai",
   "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez", null 
 };
 
@@ -93,9 +93,9 @@ private static final String[] eras = { "v. Chr.", "n. Chr." };
 private static final String[][] zoneStrings =
 {
   // European time zones.  The city names are a little bit random.
-  { "WET", "Westeuropäische Zeit", "WEZ", "Westeuropäische Sommerzeit", "WESZ", "London" },
-  { "CET", "Mitteleuropäische Zeit", "MEZ", "Mitteleuropäische Sommerzeit", "MESZ", "Berlin" },
-  { "EET", "Osteuropäische Zeit", "OEZ", "Mitteleuropäische Sommerzeit", "OESZ", "Istanbul" },
+  { "WET", "Westeurop\u00e4ische Zeit", "WEZ", "Westeurop\u00e4ische Sommerzeit", "WESZ", "London" },
+  { "CET", "Mitteleurop\u00e4ische Zeit", "MEZ", "Mitteleurop\u00e4ische Sommerzeit", "MESZ", "Berlin" },
+  { "EET", "Osteurop\u00e4ische Zeit", "OEZ", "Mitteleurop\u00e4ische Sommerzeit", "OESZ", "Istanbul" },
 };
 
 /**
