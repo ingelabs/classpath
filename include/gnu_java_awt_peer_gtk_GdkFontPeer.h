@@ -10,10 +10,13 @@ extern "C"
 {
 #endif
 
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkFontPeer_initStaticState (JNIEnv *env, jclass);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkFontPeer_initState (JNIEnv *env, jobject);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkFontPeer_dispose (JNIEnv *env, jobject);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkFontPeer_setFont (JNIEnv *env, jobject, jstring, jint, jint, jboolean);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkFontPeer_initStaticState (JNIEnv *env, jclass);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkFontPeer_initState (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkFontPeer_dispose (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkFontPeer_setFont (JNIEnv *env, jobject, jstring, jint, jint, jboolean);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkFontPeer_getFontMetrics___3D (JNIEnv *env, jobject, jdoubleArray);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkFontPeer_getTextMetrics (JNIEnv *env, jobject, jstring, jdoubleArray);
+extern JNIEXPORT jobject JNICALL Java_gnu_java_awt_peer_gtk_GdkFontPeer_getGlyphVector (JNIEnv *env, jobject, jstring, jobject, jobject);
 
 #ifdef __cplusplus
 }
