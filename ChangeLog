@@ -1,3 +1,24 @@
+2000-11-16  Warren Levy  <warrenl@cygnus.com>
+
+	* java/beans/PropertyChangeSupport.java (propertyListeners): Made
+	transient.
+	(listeners): Made transient.
+	(source): Renamed from 'bean'.
+	(children): New field for serialization.
+	(propertyChangeSupportSerializedDataVersion): Ditto.
+	(serialVersionUID): Ditto.
+	(writeObject): New serialization method.
+	(readObject): New serialization method.
+	* java/beans/VetoableChangeSupport.java (propertyListeners): Made
+	transient.
+	(listeners): Made transient.
+	(source): Renamed from 'bean'.
+	(children): New field for serialization.
+	(vetoableChangeSupportSerializedDataVersion): Ditto.
+	(serialVersionUID): Ditto.
+	(writeObject): New serialization method.
+	(readObject): New serialization method.
+
 2000-11-02  Warren Levy  <warrenl@cygnus.com>
 
 	* java/io/ObjectInputStream.java (readObject): Added code to
