@@ -2,9 +2,10 @@
 
 	* javax/swing/border/EtchedBorder.java: Re-written from scratch.
 	* javax/swing/border/doc-files/EtchedBorder-1/2.png: New images.
+	* javax/swing/border/BevelBorder.java (serialVersionUID): Added.
 	* javax/swing/border/CompundBorder.java (serialVersionUID): Explain
 	how the value was obtained.
-	
+
 2003-06-13  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/nio/MappedByteFileBuffer.java,
