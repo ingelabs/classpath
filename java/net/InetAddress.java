@@ -481,17 +481,17 @@ public class InetAddress implements Serializable
    */
   public String toString()
   {
-    StringBuffer sb;
+    String host;
+    String address = getHostAddress();
     
     if (hostName != null)
-      sb = new StringBuffer (hostName).append ('/');
+      host = hostName;
     else if (hostname_alias != null)
-      sb = new StringBuffer (hostname_alias).append ('/');
+      host = hostname_alias;
     else
-      sb = new StringBuffer();
+      host = address;
 
-    sb.append (getHostAddress());
-    return (sb.toString());
+    return host + "/" + address;
   }
 
   /**
@@ -792,7 +792,7 @@ public class InetAddress implements Serializable
   private static native byte[][] getHostByName (String hostname)
     throws UnknownHostException;
 
-  private void readResolve () throws ObjectStreamException
+  private void readResolve() throws ObjectStreamException
   {
     // FIXME: implement this
   }

@@ -1,6 +1,11 @@
 2003-10-02  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/InetAddress.java
+	(toString): Got of StringBuffer, return SUN compliant string.
+
+2003-10-02  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/InetAddress.java
 	(isAnyLocalAddress): New method.
 	(isLoopbackAddress): New method.
 	(getAddress): Clone addr instead of copying it ourself.
