@@ -1,6 +1,7 @@
-import java.util.Random;
 
 package java.math;
+
+import java.util.Random;
 
 public class BigInteger implements Comparable {
   final int native_state = System.identityHashCode(this);

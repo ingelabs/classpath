@@ -1,6 +1,7 @@
-import java.math.BigInteger;
 
 package java.math;
+
+import java.math.BigInteger;
 
 public class BigDecimal extends Number implements Comparable {
   BigInteger num;
