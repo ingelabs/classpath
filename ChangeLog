@@ -1,5 +1,13 @@
 2004-09-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/applet/Applet.java,
+	java/applet/AppletContext.java,
+	java/applet/AppletStub.java,
+	java/applet/AudioClip.java:
+	Jalopied and checkstyle clean.
+
+2004-09-21  Michael Koch  <konqueror@gmx.de>
+
 	* scripts/jalopy-gnu.xml: throws clauses have to be indented by
 	two spaces.
 
