@@ -1,3 +1,7 @@
+2004-05-17  Mark Wielaard  <mark@klomp.org>
+
+	* java/io/Writer.java (Writer(Object)): Fixed API doc.
+
 2004-05-17  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/ObjectStreamField.java: Merge copyright year with libgcj.
