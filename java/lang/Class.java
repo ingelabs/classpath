@@ -250,8 +250,8 @@ public final class Class implements Serializable
   /**
    * Get the ClassLoader that loaded this class.  If the class was loaded
    * by the bootstrap classloader, this method will return null.
-   * If there is a security manager, and the caller's class loader does not
-   * match the requested one, a security check of
+   * If there is a security manager, and the caller's class loader is not
+   * an ancestor of the requested one, a security check of
    * <code>RuntimePermission("getClassLoader")</code>
    * must first succeed. Primitive types and void return null.
    *
@@ -262,11 +262,7 @@ public final class Class implements Serializable
    */
   public ClassLoader getClassLoader()
   {
-    // Check some common cases.
     if (isPrimitive())
-      return null;
-    String name = getName();
-    if (name.startsWith("java.") || name.startsWith("gnu.java."))
       return null;
 
     ClassLoader loader = VMClass.getClassLoader(this);
@@ -276,8 +272,8 @@ public final class Class implements Serializable
       {
         // Get the calling class and classloader
         Class c = VMSecurityManager.getClassContext()[1];
-        ClassLoader cl = c.getClassLoader();
-        if (cl != null && cl != ClassLoader.systemClassLoader)
+        ClassLoader cl = VMClass.getClassLoader(c);
+        if (cl != null && !cl.isAncestorOf(loader))
           sm.checkPermission(new RuntimePermission("getClassLoader"));
       }
     return loader;

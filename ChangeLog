@@ -1,3 +1,8 @@
+2004-07-27  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/Class.java (getClassLoader): Removed special case for
+	java. and gnu.java. classes and fixed class loader security rule.
+
 2004-07-26  Archie Cobbs  <archie@dellroad.org>
 
 	* native/jni/gtk-peer/gthread-jni.c: don't #include nonexistent files
