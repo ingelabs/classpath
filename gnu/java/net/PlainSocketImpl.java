@@ -195,8 +195,7 @@ public final class PlainSocketImpl extends SocketImpl
    *
    * @param stream true for a stream socket, false for a datagram socket
    */
-  protected native synchronized void create(boolean stream)
-    throws IOException;
+  protected native synchronized void create(boolean stream) throws IOException;
 
   /**
    * Connects to the remote hostname and port specified as arguments.
@@ -206,9 +205,9 @@ public final class PlainSocketImpl extends SocketImpl
    *
    * @exception IOException If an error occurs
    */
-  protected synchronized void connect (String host, int port) throws IOException
+  protected synchronized void connect(String host, int port) throws IOException
   {
-    connect (InetAddress.getByName (host), port);
+    connect(InetAddress.getByName(host), port);
   }
 
   /**
@@ -219,22 +218,27 @@ public final class PlainSocketImpl extends SocketImpl
    *
    * @exception IOException If an error occurs
    */
-  protected native void connect(InetAddress addr, int port)
-    throws IOException;
+  protected native void connect(InetAddress addr, int port) throws IOException;
 
-  protected synchronized void connect(SocketAddress address, int timeout)
-    throws IOException
+  /**
+   * Connects to the remote socket address with a specified timeout.
+   *
+   * @param timeout The timeout to use for this connect, 0 means infinite.
+   *
+   * @exception IOException If an error occurs
+   */
+  protected synchronized void connect(SocketAddress address, int timeout) throws IOException
   {
     InetSocketAddress sockAddr = (InetSocketAddress) address;
     InetAddress addr = sockAddr.getAddress();
 
     if (addr == null)
-      throw new IllegalArgumentException ("address is unresolved: " + sockAddr);
+      throw new IllegalArgumentException("address is unresolved: " + sockAddr);
 
     int port = sockAddr.getPort();
     
     if (timeout < 0)
-      throw new IllegalArgumentException ("negative timeout");
+      throw new IllegalArgumentException("negative timeout");
 
     Object oldTimeoutObj = null;
     
@@ -304,7 +308,7 @@ public final class PlainSocketImpl extends SocketImpl
    *
    * @exception IOException If an error occurs
    */
-  protected native void close () throws IOException;
+  protected native void close() throws IOException;
 
   public void sendUrgentData(int data)
   {
@@ -344,7 +348,7 @@ public final class PlainSocketImpl extends SocketImpl
   protected synchronized InputStream getInputStream() throws IOException
   {
     if (in == null)
-      in = new SocketInputStream (this);
+      in = new SocketInputStream();
     
     return in;
   }
@@ -360,7 +364,7 @@ public final class PlainSocketImpl extends SocketImpl
   protected synchronized OutputStream getOutputStream() throws IOException
   {
     if (out == null)
-      out = new SocketOutputStream (this);
+      out = new SocketOutputStream();
     
     return out;
   }
@@ -368,59 +372,18 @@ public final class PlainSocketImpl extends SocketImpl
   /**
    * This class contains an implementation of <code>InputStream</code> for 
    * sockets.  It in an internal only class used by <code>PlainSocketImpl</code>.
+   *
+   * @author Nic Ferrier <nferrier@tapsellferrier.co.uk>
    */
   final class SocketInputStream
     extends InputStream
   {
     /**
-     * The PlainSocketImpl object this stream is associated with
-     */
-    private PlainSocketImpl impl;
-
-    /**
-     * Builds an instance of this class from a PlainSocketImpl object
-     */
-    protected SocketInputStream (PlainSocketImpl impl)
-    {
-      this.impl = impl;
-    }
-
-    /**
      * Returns the number of bytes available to be read before blocking
      */
     public int available() throws IOException
     {
-      return impl.available();
-    }
-
-    /**
-     * Determines if "mark" functionality is supported on this stream.  For
-     * sockets, this is always false.  Note that the superclass default is
-     * false, but it is overridden out of safety concerns and/or paranoia.
-     */
-    public boolean markSupported()
-    {
-      return false;
-    }
-
-    /**
-     * Do nothing mark method since we don't support this functionality.  Again,
-     * overriding out of paranoia.
-     *
-     * @param readlimit In theory, the number of bytes we can read before the mark becomes invalid
-     */
-    public void mark (int readlimit)
-    {
-    }
-
-    /**
-     * Since we don't support mark, this method always throws an exception
-     *
-     * @exception IOException Everytime since we don't support this functionality
-     */
-    public void reset() throws IOException
-    {
-      throw new IOException ("Socket InputStreams do not support mark/reset");
+      return PlainSocketImpl.this.available();
     }
 
     /**
@@ -430,7 +393,7 @@ public final class PlainSocketImpl extends SocketImpl
      */
     public void close() throws IOException
     {
-      impl.close();
+      PlainSocketImpl.this.close();
     }
 
     /**
@@ -443,17 +406,21 @@ public final class PlainSocketImpl extends SocketImpl
     public int read() throws IOException
     {
       byte buf[] = new byte [1];
-      int bytes_read = read (buf, 0, buf.length);
+      int bytes_read = read(buf, 0, 1);
  
-      if (bytes_read != -1)
-        return buf[0] & 0xFF;
-      else
+      if (bytes_read == -1)
         return -1;
+
+      return buf[0] & 0xFF;
     }
 
     /**
      * Reads up to len bytes of data into the caller supplied buffer starting
      * at offset bytes from the start of the buffer
+     *
+     * @param buf The buffer
+     * @param offset Offset into the buffer to start reading from
+     * @param len The number of bytes to read
      *
      * @return The number of bytes actually read or -1 if end of stream
      *
@@ -461,7 +428,7 @@ public final class PlainSocketImpl extends SocketImpl
      */
     public int read (byte[] buf, int offset, int len) throws IOException
     {
-      int bytes_read = impl.read (buf, offset, len);
+      int bytes_read = PlainSocketImpl.this.read (buf, offset, len);
 
       if (bytes_read == 0)
         return -1;
@@ -475,23 +442,12 @@ public final class PlainSocketImpl extends SocketImpl
    * <code>OutputStream</code> subclass returned by its 
    * <code>getOutputStream method</code>.  It expects only to  be used in that
    * context.
+   *
+   * @author Nic Ferrier  <nferrier@tapsellferrier.co.uk>
    */
   final class SocketOutputStream
     extends OutputStream
   {
-    /**
-     * The PlainSocketImpl object this stream is associated with
-     */
-    private PlainSocketImpl impl;
-
-    /**
-     * Build an instance of this class from a PlainSocketImpl object
-     */
-    protected SocketOutputStream (PlainSocketImpl impl)
-    {
-      this.impl = impl;
-    }
-
     /**
      * This method closes the stream and the underlying socket connection. This
      * action also effectively closes any other InputStream or OutputStream
@@ -501,17 +457,7 @@ public final class PlainSocketImpl extends SocketImpl
      */
     public void close() throws IOException
     {
-      impl.close();
-    }
-
-    /**
-     * Hmmm, we don't seem to have a flush() method in Socket impl, so just
-     * return for now, but this might need to be looked at later.
-     *
-     * @exception IOException Can't happen
-     */
-    public void flush() throws IOException
-    {
+      PlainSocketImpl.this.close();
     }
 
     /**
@@ -521,13 +467,10 @@ public final class PlainSocketImpl extends SocketImpl
      *
      * @exception IOException If an error occurs
      */
-    public void write (int b) throws IOException
+    public void write(int b) throws IOException
     {
-      byte buf[] = new byte [1];
-      Integer i = new Integer (b);
-
-      buf [0] = i.byteValue();
-      write (buf, 0, buf.length);
+      byte buf[] = { (byte) b };
+      write(buf, 0, 1);
     }
 
     /**
@@ -537,10 +480,12 @@ public final class PlainSocketImpl extends SocketImpl
      * @param buf The buffer
      * @param offset Offset into the buffer to start writing from
      * @param len The number of bytes to write
+     *
+     * @exception IOException If an error occurs.
      */
     public void write (byte[] buf, int offset, int len) throws IOException
     {
-      impl.write (buf, offset, len);
+      PlainSocketImpl.this.write (buf, offset, len);
     }
   }
 }

@@ -1,5 +1,26 @@
 2004-03-19  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/PlainDatagramSocketImpl.java:
+	Some reformating to match libgcj's version better.
+	* gnu/java/net/PlainSocketImpl.java:
+	Some reformating to match libgcj's version better.
+	(connect): Javadoc added.
+	(SocketInputStream.impl): Not needed, removed.
+	(SocketInputStream.SocketInputStream): Likewise.
+	(SocketInputStream.mark): Likewise.
+	(SocketInputStream.markSupported): Likewise.
+	(SocketInputStream.reset): Likewise.
+	(SocketInputStream.available): Use implicit pointer to outer class.
+	(SocketInputStream.close): Likewise.
+	(SocketInputStream.read): Javadoc refined, use implicit pointer to outer class.
+	(SocketOutputStream.impl): Not needed, removed.
+	(SocketOutputStream.SocketOutputStream): Likewise.
+	(SocketOutputStream.close): Use implicit pointer to outer class.
+	(SocketOutputStream.flush): Not needed, removed.
+	(SocketOutputStream.write): Javadoc refined, use implicit pointer to outer class.
+
+2004-03-19  Michael Koch  <konqueror@gmx.de>
+
 	* java/util/Locale.java
 	(getISO3Country): Added comment for string comparison optimization.
 	(getISO3Language): Likewise.

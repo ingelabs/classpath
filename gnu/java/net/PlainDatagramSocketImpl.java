@@ -1,5 +1,5 @@
 /* PlainDatagramSocketImpl.java -- Default DatagramSocket implementation
-   Copyright (C) 1998, 1999, 2001, 2003 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001, 2003, 2004  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -60,8 +60,8 @@ import gnu.classpath.Configuration;
  * It makes native calls to C routines that implement BSD style
  * SOCK_DGRAM sockets in the AF_INET family.
  *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @author Warren Levy <warrenl@cygnus.com>
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Warren Levy (warrenl@cygnus.com)
  */
 public final class PlainDatagramSocketImpl extends DatagramSocketImpl
 {
@@ -157,10 +157,10 @@ public final class PlainDatagramSocketImpl extends DatagramSocketImpl
   {
     Object obj = getOption(IP_TTL);
 
-    if (!(obj instanceof Integer))
+    if (! (obj instanceof Integer))
       throw new IOException("Internal Error");
 
-    return(((Integer)obj).intValue());
+    return ((Integer) obj).intValue();
   }
 
   /**
