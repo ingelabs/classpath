@@ -89,7 +89,8 @@ public class GregorianCalendar extends Calendar
    */
   private static ResourceBundle getBundle(Locale locale) 
   {
-    return ResourceBundle.getBundle(bundleName, locale);
+    return ResourceBundle.getBundle(bundleName, locale,
+      GregorianCalendar.class.getClassLoader());
   }
 
   /**
