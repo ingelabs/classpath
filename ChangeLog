@@ -1,3 +1,9 @@
+2004-05-24  Steven Augart  <augart@watson.ibm.com>
+
+	* acinclude.m4
+	(CLASSPATH_CHECK_GCJ):  Fixed the version number check to work
+	with GCC 3's --version message.
+
 2004-05-23  Mark Wielaard  <mark@klomp.org>
 
 	* doc/www.gnu.org/home.wml: Fixup archive and cvs links.
