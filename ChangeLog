@@ -1,5 +1,9 @@
 2004-06-03  Michael Koch  <konqueror@gmx.de>
 
+	* doc/hacking.texinfo: Fixed path to jnilink.h
+
+2004-06-03  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/lang/MainThread.java: Reformated to match our coding style.
 
 2004-06-03  Michael Koch  <konqueror@gmx.de>

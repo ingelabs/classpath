@@ -1013,7 +1013,7 @@ methods directly from your native code and not incur the overhead of a
 method call from Java to C.
 
 Cache methodIDs and fieldIDs wherever you can.  String lookups are
-expensive.  The best way to do this is to use the native/lib/jnilink.h
+expensive.  The best way to do this is to use the native/jni/classpath/jnilink.h
 library.  It will ensure that jmethodIDs are always valid, even if the
 class is unloaded at some point.  In 1.1, jnilink simply caches a
 NewGlobalRef() to the method's underlying class; however, when 1.2 comes
