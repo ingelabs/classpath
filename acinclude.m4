@@ -1,7 +1,7 @@
 dnl Used by aclocal to generate configure
 
 dnl JAPHAR_GREP_CFLAGS(flag, cmd_if_missing, cmd_if_present)
-AC_DEFUN(JAPHAR_GREP_CFLAGS,
+AC_DEFUN([JAPHAR_GREP_CFLAGS],
 [case "$CFLAGS" in
 "$1" | "$1 "* | *" $1" | *" $1 "* )
   ifelse($#, 3, [$3], [:])
@@ -13,7 +13,7 @@ esac
 ])
 
 dnl CLASSPATH_CHECK_JAPHAR
-AC_DEFUN(CLASSPATH_CHECK_JAPHAR,
+AC_DEFUN([CLASSPATH_CHECK_JAPHAR],
 [
   if test "x$1" = x; then
     AC_PATH_PROG(JAPHAR_CONFIG, japhar-config, "", $PATH:/usr/local/japhar/bin:/usr/japhar/bin)
@@ -70,7 +70,7 @@ AC_DEFUN(CLASSPATH_CHECK_JAPHAR,
 ])
 
 dnl CLASSPATH_CHECK_KAFFE
-AC_DEFUN(CLASSPATH_CHECK_KAFFE,
+AC_DEFUN([CLASSPATH_CHECK_KAFFE],
 [
   AC_PATH_PROG(KAFFE_CONFIG, kaffe-config, "", $PATH:/usr/local/kaffe/bin:/usr/kaffe/bin)
   if test "x${KAFFE_CONFIG}" = x; then
@@ -154,7 +154,7 @@ AC_DEFUN(CLASSPATH_CHECK_KAFFE,
 ])
 
 dnl CLASSPATH_WITH_JAPHAR - checks for japhar
-AC_DEFUN(CLASSPATH_WITH_JAPHAR,
+AC_DEFUN([CLASSPATH_WITH_JAPHAR],
 [
   AC_ARG_WITH(japhar, 
   [  --with-japhar		  configure GNU Classpath for Japhar [default=yes]],
@@ -173,7 +173,7 @@ AC_DEFUN(CLASSPATH_WITH_JAPHAR,
 ])
 
 dnl CLASSPATH_WITH_KAFFE - checks for which java virtual machine to use
-AC_DEFUN(CLASSPATH_WITH_KAFFE,
+AC_DEFUN([CLASSPATH_WITH_KAFFE],
 [
   AC_ARG_WITH(kaffe, 
   [  --with-kaffe		  configure GNU Classpath for Kaffe [default=no]],
@@ -190,7 +190,7 @@ AC_DEFUN(CLASSPATH_WITH_KAFFE,
 
 dnl threads packages (mostly stolen from Japhar)
 dnl given that japhar-config gives -lpthread, may not need this (cbj)
-AC_DEFUN(CLASSPATH_CHECK_THREADS,
+AC_DEFUN([CLASSPATH_CHECK_THREADS],
 [
   threads=no
 
@@ -247,7 +247,7 @@ AC_DEFUN(CLASSPATH_CHECK_THREADS,
 ])
 
 
-AC_DEFUN(CLASSPATH_FIND_JAVAC,
+AC_DEFUN([CLASSPATH_FIND_JAVAC],
 [
   user_specified_javac=
 
@@ -271,7 +271,7 @@ AC_DEFUN(CLASSPATH_FIND_JAVAC,
 ])
 
 
-AC_DEFUN(CLASSPATH_WITH_GCJ,
+AC_DEFUN([CLASSPATH_WITH_GCJ],
 [
   AC_ARG_WITH(gcj,
   [  --with-gcj              bytecode compilation with gcj ],
@@ -293,7 +293,7 @@ AC_DEFUN(CLASSPATH_WITH_GCJ,
 ])
 
 
-AC_DEFUN(CLASSPATH_CHECK_GCJ,
+AC_DEFUN([CLASSPATH_CHECK_GCJ],
 [
   if test "x$1" != x; then
     if test -f "$1"; then
@@ -328,7 +328,7 @@ AC_DEFUN(CLASSPATH_CHECK_GCJ,
 ])
 
 
-AC_DEFUN(CLASSPATH_WITH_JIKES,
+AC_DEFUN([CLASSPATH_WITH_JIKES],
 [
   AC_ARG_WITH(jikes,
   [  --with-jikes		  bytecode compilation with jikes ],
@@ -350,7 +350,7 @@ AC_DEFUN(CLASSPATH_WITH_JIKES,
 ])
 
 
-AC_DEFUN(CLASSPATH_CHECK_JIKES,
+AC_DEFUN([CLASSPATH_CHECK_JIKES],
 [
   if test "x$1" != x; then
     if test -f "$1"; then
@@ -364,7 +364,7 @@ AC_DEFUN(CLASSPATH_CHECK_JIKES,
 ])
 
 
-AC_DEFUN(CLASSPATH_WITH_KJC,
+AC_DEFUN([CLASSPATH_WITH_KJC],
 [
   AC_ARG_WITH(kjc, 
   [  --with-kjc=<ksusu.jar>  bytecode compilation with kjc [default=no]],
@@ -396,7 +396,7 @@ AC_DEFUN(CLASSPATH_WITH_KJC,
 ])
 
 
-AC_DEFUN(CLASSPATH_WITH_JAVA,
+AC_DEFUN([CLASSPATH_WITH_JAVA],
 [
   AC_ARG_WITH(java,
   [  --with-java		  specify path or name of a java-like program ],
@@ -417,7 +417,7 @@ AC_DEFUN(CLASSPATH_WITH_JAVA,
 ])
 
 
-AC_DEFUN(CLASSPATH_CHECK_JAVA,
+AC_DEFUN([CLASSPATH_CHECK_JAVA],
 [
   if test "x$1" != x; then
     if test -f "$1"; then
@@ -431,7 +431,7 @@ AC_DEFUN(CLASSPATH_CHECK_JAVA,
 ])
 
 
-AC_DEFUN(CLASSPATH_FIND_JAVA,
+AC_DEFUN([CLASSPATH_FIND_JAVA],
 [
   dnl Place additional bytecode interpreter checks here
 
@@ -439,7 +439,7 @@ AC_DEFUN(CLASSPATH_FIND_JAVA,
 ])
 
 
-AC_DEFUN(CLASSPATH_WITH_JAVAH,
+AC_DEFUN([CLASSPATH_WITH_JAVAH],
 [
   AC_ARG_WITH(javah,
   [  --with-javah		  specify path or name of a javah-like program ],
@@ -458,7 +458,7 @@ AC_DEFUN(CLASSPATH_WITH_JAVAH,
 ])
 
 dnl Checking for a javah like program 
-AC_DEFUN(CLASSPATH_CHECK_JAVAH,
+AC_DEFUN([CLASSPATH_CHECK_JAVAH],
 [
   if test "x$1" != x; then
     if test -f "$1"; then
@@ -482,7 +482,7 @@ AC_DEFUN(CLASSPATH_CHECK_JAVAH,
 ])
 
 dnl CLASSPATH_WITH_CLASSLIB - checks for user specified classpath additions
-AC_DEFUN(CLASSPATH_WITH_CLASSLIB,
+AC_DEFUN([CLASSPATH_WITH_CLASSLIB],
 [
   AC_ARG_WITH(classpath,
   [  --with-classpath        specify path to a classes.zip like file ],
@@ -509,7 +509,7 @@ AC_DEFUN(CLASSPATH_WITH_CLASSLIB,
 
 
 dnl CLASSPATH_WITH_INCLUDEDIR - checks for user specified extra include directories
-AC_DEFUN(CLASSPATH_WITH_INCLUDEDIR,
+AC_DEFUN([CLASSPATH_WITH_INCLUDEDIR],
 [
   AC_ARG_WITH(includedir,
   [  --with-includedir=DIR   specify path to an extra include dir ],
@@ -538,7 +538,7 @@ AC_DEFUN(CLASSPATH_WITH_INCLUDEDIR,
 ])
 
 dnl CLASSPATH_WITH_ZIP - allow user to specify without zip
-AC_DEFUN(CLASSPATH_WITH_ZIP,
+AC_DEFUN([CLASSPATH_WITH_ZIP],
 [
   AC_ARG_WITH(zip, 
   [  --with-zip		  create glibj.zip [default=yes]],
@@ -563,7 +563,7 @@ dnl Enable generation of API documentation, assumes gjdoc
 dnl has been compiled to an executable or a suitable script
 dnl is in your PATH
 dnl -----------------------------------------------------------
-AC_DEFUN(CLASSPATH_ENABLE_GJDOC,
+AC_DEFUN([CLASSPATH_ENABLE_GJDOC],
 [
   AC_ARG_ENABLE(gjdoc,
   [  --enable-gjdoc           enable API doc. generation [default=no]],
