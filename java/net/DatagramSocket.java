@@ -426,8 +426,6 @@ public class DatagramSocket
     /* FIXME: Shit, we can't do this even though the OS supports it since this 
        method isn't in DatagramSocketImpl. */
     //  impl.connect(address, port);
-
-    connected = true;
   } 
 
   /**
@@ -442,7 +440,6 @@ public class DatagramSocket
     // FIXME: See my comments on connect()
     this.remoteAddress = null;
     this.remotePort = -1;
-    connected = false;
   }
 
   /**
