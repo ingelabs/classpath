@@ -116,9 +116,11 @@ import gnu.java.lang.*;
  ** <LI>In all of the above cases, if the setXXX() method
  **     throws <CODE>PropertyVetoException</CODE>, then the
  **     property in question is assumed to be constrained.
- **     No properties are ever assumed to be bound.  See
- **     PropertyDescriptor for a description of bound and
- **     constrained properties.</LI>
+ **     No properties are ever assumed to be bound
+ **     (<STRONG>Spec Note:</STRONG> this is not in the
+ **     spec, it just makes sense).  See PropertyDescriptor
+ **     for a description of bound and constrained
+ **     properties.</LI>
  ** </OL>
  **
  ** <STRONG>Events:</STRONG><P>
@@ -126,7 +128,6 @@ import gnu.java.lang.*;
  ** If there is a pair of methods,
  ** <CODE>public void addXXX(&lt;type&gt;)</CODE> and
  ** <CODE>public void removeXXX(&lt;type&gt;)</CODE>, where
- ** XXX is the unqualified class name of &lt;type&gt;, and
  ** &lt;type&gt; is a descendant of
  ** <CODE>java.util.EventListener</CODE>, then the pair of
  ** methods imply that this Bean will fire events to
@@ -137,6 +138,12 @@ import gnu.java.lang.*;
  ** the event set is assumed to be <EM>unicast</EM>.  See
  ** EventSetDescriptor for a discussion of unicast event
  ** sets.<P>
+ **
+ ** <STRONG>Spec Note:</STRONG> the spec seems to say that
+ ** the listener type's classname must be equal to the XXX
+ ** part of addXXX() and removeXXX(), but that is not the
+ ** case in Sun's implementation, so I am assuming it is
+ ** not the case in general.<P>
  **
  ** <STRONG>Methods:</STRONG><P>
  ** 
@@ -160,7 +167,7 @@ public class Introspector {
 	 ** @param beanClass the class to get BeanInfo about.
 	 ** @return the BeanInfo object representing the class.
 	 **/
-	public static BeanInfo getBeanInfo(Class beanClass) {
+	public static BeanInfo getBeanInfo(Class beanClass) throws IntrospectionException {
 		return getBeanInfo(beanClass,null);
 	}
 
@@ -173,7 +180,7 @@ public class Introspector {
 	 ** @param stopClass the class to stop at.
 	 ** @return the BeanInfo object representing the class.
 	 **/
-	public static BeanInfo getBeanInfo(Class beanClass, Class topClass) {
+	public static BeanInfo getBeanInfo(Class beanClass, Class topClass) throws IntrospectionException {
 		if(beanClass == null) {
 			return null;
 		}
@@ -218,7 +225,9 @@ public class Introspector {
 			}
 		}
 
-		BeanInfoEmbryo currentInfo = new IntrospectionIncubator(beanClass).getBeanInfoEmbryo();
+		IntrospectionIncubator ii = new IntrospectionIncubator();
+		ii.addMethods(beanClass.getDeclaredMethods());
+		BeanInfoEmbryo currentInfo = ii.getBeanInfoEmbryo();
 		
 		if(!findBeanDescriptor) {
 			currentInfo.setBeanDescriptor(explicitInfo.getBeanDescriptor());
