@@ -47,6 +47,7 @@ $(top_srcdir)/include/java_net_NetworkInterface.h \
 $(top_srcdir)/include/java_net_PlainDatagramSocketImpl.h \
 $(top_srcdir)/include/java_net_PlainSocketImpl.h \
 $(top_srcdir)/include/java_nio_DirectByteBufferImpl.h \
+$(top_srcdir)/include/java_nio_channels_FileChannelImpl.h \
 $(top_srcdir)/include/gnu_java_nio_FileChannelImpl.h \
 $(top_srcdir)/include/gnu_java_nio_FileLockImpl.h \
 $(top_srcdir)/include/java_util_TimeZone.h
@@ -143,6 +144,8 @@ $(top_srcdir)/include/java_net_PlainSocketImpl.h: $(top_srcdir)/java/net/PlainSo
 	$(JAVAH) -o $@ java.net.PlainSocketImpl
 $(top_srcdir)/include/java_nio_DirectByteBufferImpl.h: $(top_srcdir)/java/nio/DirectByteBufferImpl.java
 	$(JAVAH) -o $@ java.nio.DirectByteBufferImpl
+$(top_srcdir)/include/java_nio_channels_FileChannelImpl.h: $(top_srcdir)/java/nio/channels/FileChannelImpl.java
+	$(JAVAH) -o $@ java.nio.channels.FileChannelImpl
 $(top_srcdir)/include/gnu_java_nio_FileChannelImpl.h: $(top_srcdir)/java/nio/channels/FileChannelImpl.java
 	$(JAVAH) -o $@ gnu.java.nio.FileChannelImpl
 $(top_srcdir)/include/gnu_java_nio_FileLockImpl.h: $(top_srcdir)/gnu/java/nio/FileLockImpl.java

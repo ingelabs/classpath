@@ -41,7 +41,7 @@ exception statement from your version. */
 #include <jni.h>
 #include <jcl.h>
 
-#include "java_nio_FileChannelImpl.h"
+#include "java_nio_channels_FileChannelImpl.h"
 
 #define IO_EXCEPTION "java/io/IOException"
 

@@ -1,3 +1,13 @@
+2003-07-30  Tom Tromey  <tromey@redhat.com>
+
+	* native/jni/java-nio/java_nio_FileChannelImpl.c: Include
+	java_nio_channels_FileChannelImpl.h.
+	* include/java_nio_FileChannelImpl.h: Removed.
+	* include/java_nio_channels_FileChannelImpl.h: New file.
+	* include/Makefile.am (H_FILES): Added
+	java_nio_channels_FileChannelImpl.h.
+	($(top_srcdir)/include/java_nio_channels_FileChannelImpl.h): New rule.
+
 2003-07-30  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/PlainSocketImpl.java
