@@ -1,5 +1,5 @@
 /* java.util.zip.ZipEntry
-   Copyright (C) 2001 Free Software Foundation, Inc.
+   Copyright (C) 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -163,7 +163,11 @@ public class ZipEntry implements ZipConstants, Cloneable
   {
     try
       {
-	return super.clone();
+	// The JCL says that the `extra' field is also copied.
+	ZipEntry clone = (ZipEntry) super.clone();
+	if (extra != null)
+	  clone.extra = (byte[]) extra.clone();
+	return clone;
       }
     catch (CloneNotSupportedException ex)
       {

@@ -1,5 +1,5 @@
 /* java.util.zip.ZipInputStream
-   Copyright (C) 2001 Free Software Foundation, Inc.
+   Copyright (C) 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -170,7 +170,7 @@ public class ZipInputStream extends InflaterInputStream implements ZipConstants
     readFully(buffer);
     String name = new String(buffer);
     
-    entry = new ZipEntry(name);
+    entry = createZipEntry(name);
     entry.setMethod(method);
     if ((flags & 8) == 0)
       {
