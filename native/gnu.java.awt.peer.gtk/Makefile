@@ -2,8 +2,8 @@ CC	 = gcc
 LFLAGS   = -shared -Wl,-soname -Wl,libgtkpeer.so.0
 objects  = native_state.o  gdkjnithreads.o     gtkwindowpeer.o \
 	   gtkbuttonpeer.o gtkcomponentpeer.o  gtkfiledialogpeer.o \
-	   gtkmainthread.o gtkscrollpanepeer.o
-CPPFLAGS = -I/usr/local/jdk1.1.6/include -I/usr/local/jdk1.1.6/include/genunix
+	   gtkmainthread.o gtkscrollpanepeer.o gtkcheckboxpeer.o
+CPPFLAGS = -I/usr/local/jdk/include -I/usr/local/jdk/include/genunix
 CFLAGS   = `gtk-config --cflags`
 LDFLAGS  = `gtk-config --libs`
 all: libgtkpeer.so.0.0.0 install
