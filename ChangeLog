@@ -1,5 +1,7 @@
 2003-02-16  Tom Tromey  <tromey@redhat.com>
 
+	* javax/swing/undo/StateEditable.java (RCSID): New field.
+
 	* javax/swing/undo/StateEditable.java: Reindented.
 
 2003-02-16  Ranjit Mathew  <rmathew@hotmail.com>

@@ -57,4 +57,9 @@ public interface StateEditable
    * @param state State
    */
   public void storeState(Hashtable state);
+
+  /**
+   * For some reason, Sun made the RCS IDs visible.
+   */
+  public static final String RCSID = "We aren't compatible";
 } // StateEditable
