@@ -1,3 +1,13 @@
+2002-11-07  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/awt/color/Makefile.am: Add ICC_Profile{Gray|RGB}.
+	* java/awt/color/ICC_ProfileGray.java: Add stubbed class.
+	* java/awt/color/ICC_ProfileRGB.java: Ditto.
+	* java/awt/color/ColorSpace.java: Improve serialization, 1.4
+	compliance, and formatting.
+	* java/awt/color/ICC_ColorSpace.java: Ditto.
+	* java/awt/color/ICC_Profile.java: Ditto.
+
 2002-11-07  Michael Koch <konqueror@gmx.de>
 
 	* java/nio/channels/ClosedChannelException.java:
