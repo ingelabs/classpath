@@ -181,7 +181,7 @@ public class Collections {
       public final Object nextElement() {
         return i.next();
       }
-    }
+    };
   }
 
   /**
