@@ -1,3 +1,8 @@
+2004-05-07  Michael Koch  <konqueror@gmx.de>
+
+	* native/jni/java-net/gnu_java_net_PlainDatagramSocketImpl.c
+	(receive0): Fix usage of java.net.DatagramPacket class.
+
 2004-05-07  Stephen Crawley <crawley@dstc.edu.au>
 
 	* vm/reference/java/lang/VMProcess.java (destroy) :

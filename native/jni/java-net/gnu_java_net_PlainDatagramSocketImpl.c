@@ -163,6 +163,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this,
 #ifndef WITHOUT_NETWORK
   unsigned int  addr, port, maxlen, offset, bytes_read;
   jclass        cls, addr_cls;
+  jfieldID	fid;
   jmethodID     mid;
   jarray        arr;
   unsigned char octets[4];
@@ -207,7 +208,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this,
     }
 
   /* Now get the offset from the packet */
-  mid  = (*env)->GetMethodID(env, cls, "getOffset", "()I");
+  mid = (*env)->GetMethodID(env, cls, "getOffset", "()I");
   if (mid == NULL)
     {
       JCL_ThrowException(env, IO_EXCEPTION, "Internal error: getOffset");
@@ -224,7 +225,19 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this,
   DBG("PlainDatagramSocketImpl.receive(): Got the offset\n");
 
   /* Now get the maximal available length from the packet */
-  maxlen = (*env)->GetArrayLength(env,arr) - offset;
+  fid = (*env)->GetFieldID(env, cls, "maxlen", "I");
+  if (mid == NULL)
+    {
+      JCL_ThrowException(env, IO_EXCEPTION, "Internal error: maxlen");
+      return;
+    }
+  
+  maxlen = (*env)->GetIntField (env, packet, fid);
+  if ((*env)->ExceptionOccurred(env))
+    { 
+      JCL_ThrowException(env, IO_EXCEPTION, "Internal error: call length");
+      return;
+    }
 
   /* Receive the packet */
   /* should we try some sort of validation on the length? */
@@ -318,17 +331,17 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this,
   DBG("PlainDatagramSocketImpl.receive(): Stored the port\n");
 
   /* Store back the length */
-  mid = (*env)->GetMethodID(env, cls, "setLength", "(I)V");
-  if (mid == NULL)
+  fid = (*env)->GetFieldID(env, cls, "length", "I");
+  if (fid == NULL)
     {
-      JCL_ThrowException(env, IO_EXCEPTION, "Internal error: setLength");
+      JCL_ThrowException(env, IO_EXCEPTION, "Internal error: length");
       return;
     }
   
-  (*env)->CallVoidMethod(env, packet, mid, bytes_read);
+  (*env)->SetIntField (env, packet, fid, bytes_read);
   if ((*env)->ExceptionOccurred(env))
     { 
-      JCL_ThrowException(env, IO_EXCEPTION, "Internal error: call setLength");
+      JCL_ThrowException(env, IO_EXCEPTION, "Internal error: call length");
       return;
     }
 
