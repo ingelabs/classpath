@@ -226,11 +226,7 @@ public abstract class URLConnection
    */
   public String getContentType()
   {
-    String type = getHeaderField("content-type");
-    if (type == null)
-      type = guessContentTypeFromName(getURL().getFile());
-
-    return(type);
+    return getHeaderField("content-type");
   }
 
   /**
@@ -363,28 +359,32 @@ public abstract class URLConnection
    * be the number of seconds since midnight 1/1/1970 GMT or the default
    * value if the field is not present or cannot be converted to a date.
    *
-   * @param key The header field key to lookup
-   * @param def The default value if the header field is not found
+   * @param name The name of the header field
+   * @param defaultValue The default date if the header field is not found
    * or can't be converted.
+   *
+   * @return Returns the date value of the header filed or the default value
+   * if the field is missing or malformed
    */
-  public long getHeaderFieldDate(String key, long def)
+  public long getHeaderFieldDate (String name, long defaultValue)
   {
-    String value = getHeaderField(key);
-    if (value == null)
-      return(def);
-
+    String str = getHeaderField (name);
+    
+    if (str == null)
+      return defaultValue;
+    
     // This needs to change since Date(String) is deprecated, but DateFormat
     // doesn't seem to be working for some reason
     //DateFormat df = DateFormat.getDateInstance(DateFormat.FULL, Locale.US);
     //df.setLenient(true);
 
     //Date d = df.parse(value, new ParsePosition(0));
-    Date d = new Date(value);
+    Date d = new Date (str);
 
     if (d == null)
-      return(def);
+      return defaultValue;
        
-    return(d.getTime() / 1000);
+    return (d.getTime() / 1000);
   }
 
   /**
@@ -398,7 +398,7 @@ public abstract class URLConnection
    * @return The header field key or null if index is past the end
    * of the headers.
    */
-  public String getHeaderFieldKey(int index)
+  public String getHeaderFieldKey (int index)
   {
     // Subclasses for specific protocols override this.
     return null;
@@ -460,6 +460,19 @@ public abstract class URLConnection
       }
 
     throw new UnknownServiceException(type);
+  }
+
+  /**
+   * Retrieves the content of this URLConnection
+   *
+   * @exception IOException If an error occurs
+   * @exception UnknownServiceException If the protocol does not support the
+   * content type
+   */
+  public Object getContent(Class[] classes) throws IOException
+  {
+    // FIXME: implement this
+    return getContent ();
   }
 
   /**
@@ -527,8 +540,11 @@ public abstract class URLConnection
    * Returns the value of a flag indicating whether or not input is going
    * to be done for this connection.  This default to true unless the
    * doOutput flag is set to false, in which case this defaults to false.
+   * 
+   * @param input <code>true</code> if input is to be done,
+   * <code>false</code> otherwise
    *
-   * @param input true if input is to be done, false otherwise
+   * @exception IllegalStateException If already connected
    */
   public void setDoInput(boolean input)
   {
@@ -630,14 +646,16 @@ public abstract class URLConnection
    * Sets a boolean flag indicating whether or not caching will be used
    * (if possible) to store data downloaded via the connection.
    *
-   * @param use_cache true if caching should be used if possible,
-   * false otherwise.
+   * @param usecaches The new value
    *
    * @exception IllegalStateException If already connected
    */
-  public void setUseCaches(boolean use_caches)
+  public void setUseCaches(boolean usecaches)
   {
-    useCaches = use_caches;
+    if (connected)
+      throw new IllegalStateException ("Already connected");
+
+    useCaches = usecaches;
   }
 
   /**
@@ -658,13 +676,17 @@ public abstract class URLConnection
    * passed should  be 0 if this feature is to be disabled or the time expressed
    * as the number of seconds since midnight 1/1/1970 GMT otherwise.
    *
-   * @param modified_since The new ifModifiedSince value
+   * @param ifmodifiedsince The new value in milliseconds
+   * since January 1, 1970 GMT
    *
    * @exception IllegalStateException If already connected
    */
-  public void setIfModifiedSince(long modified_since)
+  public void setIfModifiedSince(long ifmodifiedsince)
   {
-    ifModifiedSince = modified_since;
+    if (connected)
+      throw new IllegalStateException ("Already connected");
+
+    ifModifiedSince = ifmodifiedsince;
   }
 
   /**
@@ -682,28 +704,25 @@ public abstract class URLConnection
   }
 
   /**
+   * Returns the default value used to determine whether or not caching
+   * of documents will be done when possible.
+   *
+   * @return true if caches will be used, false otherwise
+   */
+  public boolean getDefaultUseCaches()
+  {
+    return defaultUseCaches;
+  }
+
+  /**
    * Sets the default value used to determine whether or not caching
    * of documents will be done when possible.
    *
    * @param use true to use caches if possible by default, false otherwise
    */
-  public synchronized void setDefaultUseCaches(boolean use)
+  public void setDefaultUseCaches(boolean defaultusecaches)
   {
-    defaultUseCaches = use;
-  }
-
-  /**
-   * Returns the default value used to determine whether or not caching
-   * of documents will be done when possible.
-   *
-   * @return true if caches will be used, false otherwise
-   *
-   * @see URLConnection#getRequestProperty(String key)
-   * @see URLConnection#addRequestProperty(String key, String value)
-   */
-  public boolean getDefaultUseCaches()
-  {
-    return defaultUseCaches;
+    defaultUseCaches = defaultusecaches;
   }
 
   /**
@@ -720,6 +739,31 @@ public abstract class URLConnection
   public void setRequestProperty(String key, String value)
   {
     req_props.put(key.toLowerCase(), value);
+  }
+
+  /**
+   * Sets the value of the named request property
+   *
+   * @param key Key of the property to add
+   * @param value Value of the Property to add
+   *
+   * @exception IllegalStateException If already connected
+   * @exception NullPointerException If key is null
+   * 
+   * @see URLConnection#getRequestProperty(String key)
+   * @see URLConnection#setRequestProperty(String key, String value)
+   * 
+   * @since 1.4
+   */
+  public void addRequestProperty(String key, String value)
+  {
+    if (connected)
+      throw new IllegalStateException ("Already connected");
+
+    if (getRequestProperty (key) == null)
+      {
+        setRequestProperty (key, value);
+      }
   }
 
   /**

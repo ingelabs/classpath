@@ -1,5 +1,28 @@
 2003-06-07  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/DatagramSocketImpl.java
+	(getOption): Removed. This was a workaround for GCJ < 3.3.
+	(setOption): Likewise.
+	* java/net/MulticastSocket.java
+	(MulticastSocket): Call setReuseAddress (true) in all constructors.
+	* java/net/SocketImpl.java
+	(getOption): Removed. This was a workaround for GCJ < 3.3.
+	(setOption): Likewise.
+	* java/net/URLConnection.java
+	(getContentType): Dont try to guess content type if header
+	"content-type" doesnt exist.
+	(getHeaderFieldDate): Merged with libgcj.
+	(getHeaderFieldKey): Likewise.
+	(setDoInput): Likewise.
+	(setUseCaches): Likewise.
+	(setIfModifiedSince): Likewise.
+	(getDefaultUseCaches): Likewise.
+	(setDefaultUseCaches): Likewise.
+	(addRequestProperty): New method merged from libgcj.
+	(getContent): Likewise.
+
+2003-06-07  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/border/BevelBorder.java,
 	javax/swing/border/EmptyBorder.java,
 	javax/swing/border/EtchedBorder.java,
