@@ -1,7 +1,7 @@
 /*************************************************************************
 /* ParsePosition.java -- Keep track of position while parsing.
 /*
-/* Copyright (c) 1998 Free Software Foundation, Inc.
+/* Copyright (c) 1998,1999 Free Software Foundation, Inc.
 /* Written by Aaron M. Renn (arenn@urbanophile.com)
 /*
 /* This library is free software; you can redistribute it and/or modify
@@ -24,8 +24,6 @@ package java.text;
 /**
   * This class is used to keep track of the current position during parsing
   * operations.
-  *
-  * @version 0.0
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
@@ -159,6 +157,22 @@ equals(Object obj)
 
   return(true);
 }
+
+/*************************************************************************/
+
+/**
+  * This method returns a <code>String</code> representation of this
+  * object.
+  *
+  * @return A <code>String</code> that represents this object.
+  */
+public String
+toString()
+{
+  return(getClass().getName() + "[index=" + getIndex() +
+         ",errorIndex=" + getErrorIndex() + "]");
+}
+
 
 } // class ParsePosition
 

@@ -182,5 +182,20 @@ equals(Object obj)
   return(true);
 }
 
+/*************************************************************************/
+
+/**
+  * This method returns a <code>String</code> representation of this
+  * object.
+  *
+  * @return A <code>String</code> representation of this object.
+  */
+public String
+toString()
+{
+  return(getClass().getName() + "[field=" + getField() + ",beginIndex=" +
+         getBeginIndex() + ",endIndex=" + getEndIndex() + "]");
+}
+
 } // class FieldPosition
 
