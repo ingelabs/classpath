@@ -195,7 +195,7 @@ convertToBytes(char[] buf) throws CharConversionException
 /*************************************************************************/
 
 /**
-  * This method converts <code>len<code> chars from a specified array to
+  * This method converts <code>len</code> chars from a specified array to
   * bytes starting at index <code>offset</code> into the array.  The
   * results are returned in a newly allocated byte array.
   *

@@ -1,5 +1,14 @@
 2004-05-07  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/io/decode/Decoder.java,
+	gnu/java/io/encode/Encoder.java,
+	gnu/java/math/MPN.java,
+	gnu/java/rmi/rmic/CompilerProcess.java,
+	java/awt/geom/Arc2D.java:
+	Fixed javadocs all over.
+
+2004-05-07  Michael Koch  <konqueror@gmx.de>
+
 	* javax/print/event/.cvsignore: New file.
 
 2004-05-07  Jerry Quinn  <jlquinn@optonline.net>
