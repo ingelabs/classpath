@@ -1,3 +1,8 @@
+2003-06-23  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/plaf/ActionMapUIResource.java: Reformatted.
+	Added JavaDoc.
+	
 2003-06-23  Michael Koch  <konqueror@gmx.de>
 
 	* java/nio/MappedShortFileBuffer.java:
