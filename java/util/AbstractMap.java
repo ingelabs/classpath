@@ -137,6 +137,11 @@ public abstract class AbstractMap implements Map {
           {
 	    return AbstractMap.this.size();
 	  }
+
+	  public boolean contains(Object key)
+	  {
+	    return AbstractMap.this.containsKey(key);
+	  }
 	  
 	  public Iterator iterator()
           {
