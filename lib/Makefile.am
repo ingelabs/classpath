@@ -167,7 +167,24 @@ endif
 endif
 #-----------------------------------------------------------------
 
-JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_VM) .:$(USER_CLASSLIB)
+
+#-----------------------------------------------------------------
+# defining classpath arg for javah-like program
+#-----------------------------------------------------------------
+if JAPHAR
+
+if USER_SPECIFIED_JAVAH
+ARG_CLASSPATH_JAVAH = -classpath
+else
+ARG_CLASSPATH_JAVAH = --classpath
+endif
+
+else
+ARG_CLASSPATH_JAVAH = -classpath
+endif
+#-----------------------------------------------------------------
+
+JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) .:$(USER_CLASSLIB)
 
 
 #pkgdata_DATA = glibj.zip
