@@ -1,5 +1,22 @@
 2003-07-14  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/FileChannelImpl.java: Removed.
+	* gnu/java/nio/Makefile.am
+	(EXTRA_DIST): Removed FileChannelImpl.java.
+	* java/nio/channels/FileChannelImpl.java: New file.
+	* java/nio/channels/Makefile.am
+	(EXTRA_DIST): Added FileChannelImpl.java.
+	* java/io/FileInputStream.java,
+	java/io/FileOutputStream.java,
+	java/io/RandomAccessFile.java,
+	java/nio/MappedByteBufferImpl.java:
+	Import java.nio.channels.FileChannelImpl instead of
+	gnu.java.nio.FileChannelImpl.
+	* java/nio/channels/FileChannel.java
+	(MapMode.m): Made package-private.
+
+2003-07-14  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/ServerSocket.java,
 	java/net/Socket.java: New versions from libgcj.
 

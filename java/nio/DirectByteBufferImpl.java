@@ -45,7 +45,7 @@ class DirectByteBufferImpl extends ByteBuffer
   RawData address;
   private int offset;
   private boolean readOnly;
-  
+
   public DirectByteBufferImpl (RawData address, long len)
   {
     this (address, 0, (int) len, (int) len, 0, -1, false);

@@ -2,7 +2,6 @@ SUBDIRS = charset
 
 EXTRA_DIST= \
 DatagramChannelImpl.java \
-FileChannelImpl.java \
 FileLockImpl.java \
 PipeImpl.java \
 SelectionKeyImpl.java \
