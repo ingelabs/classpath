@@ -18,7 +18,7 @@ public final class String {
    *
    * @XXX Replace with a weak reference structure for 1.2
    */
-  private static Hashtable internTable;
+  private static Hashtable internTable = new Hashtable();
 
   /**
    * Characters which make up the String.
