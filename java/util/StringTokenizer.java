@@ -81,7 +81,7 @@ public class StringTokenizer implements Enumeration {
             }
             return str.substring(start, pos);
         }
-        throw new NoSuchElementException();
+	throw new NoSuchElementException();
     }
 
     public boolean hasMoreElements() {
@@ -94,6 +94,7 @@ public class StringTokenizer implements Enumeration {
 
     public int countTokens() {
         int count = 0;
+        int savepos = pos;
         while (pos < str.length()) {
             if (delim.indexOf(str.charAt(pos)) > -1) {
                 if (retDelims) {
@@ -115,6 +116,7 @@ public class StringTokenizer implements Enumeration {
                 count++;
             }
         }
+        pos = savepos;
         return count;
     }
 }
