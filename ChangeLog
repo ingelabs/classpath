@@ -1,6 +1,13 @@
 2004-09-25  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/JComponent.java
+	(isMaximumSizeSet): New method.
+	(isMinimumSizeSet): Likewise.
+	(isPreferredSizeSet): Likewise.
+
+2004-09-25  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/JComponent.java
 	(JComponent): Added javadoc comment.
 	(setBorder): Fire property change event.
 	(setEnabled): Likewise.
