@@ -100,14 +100,8 @@ public final class Constructor implements Member {
 		initNativeState();
 	}
 
-	/* This is for JCL to call only. */
-	private Constructor(Class declaringClass, int modifiers,
-		Class[] parameterTypes, Class[] exceptionTypes) {
-		this.declaringClass = declaringClass;
-		this.modifiers = modifiers;
-		this.parameterTypes = parameterTypes;
-		this.exceptionTypes = exceptionTypes;
-	}
+	/* This class is uninstantiable. */
+	private Constructor() { }
 
 	/** Gets the class that declared this constructor.
 	 ** <B>It is unclear whether this returns the class that actually syntactically declared

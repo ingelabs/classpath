@@ -43,22 +43,17 @@ package java.lang.reflect;
 public final class Field implements Member {
 	private Class declaringClass;
 	private String name;
-	private int modifiers;
 	private Class type;
+	private int modifiers;
 
 	/* Native State Stuff */
 	private final int native_state = System.identityHashCode(this);
 	static {
 		initNativeState();
 	}
-	
-	/** This is only for JCL to call. **/
-	public Field(Class declaringClass, int modifiers, String name, Class type) {
-		this.declaringClass = declaringClass;
-		this.modifiers = modifiers;
-		this.name = name;
-		this.type = type;
-	}
+
+	/* This class is uninstantiable except natively. */
+	private Field();
 
 	/** Gets the class that declared this field.
 	 ** <B>It is unclear whether this returns the class that actually syntactically declared

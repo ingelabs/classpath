@@ -107,16 +107,8 @@ public final class Method implements Member {
 		initNativeState();
 	}
 
-	/** For use by JCL only. **/
-	private Method(Class declaringClass, int modifiers, String name,
-		Class returnType, Class[] parameterTypes, Class[] exceptionTypes) {
-		this.declaringClass = declaringClass;
-		this.modifiers = modifiers;
-		this.name = name;
-		this.returnType = returnType;
-		this.parameterTypes = parameterTypes;
-		this.exceptionTypes = exceptionTypes;
-	};
+	/* This class is uninstantiable. */
+	private Method();
 
 	/** Gets the class that declared this method.
 	 ** <STRONG>It is unclear whether this returns the class that actually syntactically declared
