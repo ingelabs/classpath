@@ -14,6 +14,8 @@ DatagramSocket.java \
 FileNameMap.java \
 HttpURLConnection.java \
 InetAddress.java \
+Inet4Address.java \
+Inet6Address.java \
 InetSocketAddress.java \
 JarURLConnection.java \
 MalformedURLException.java \

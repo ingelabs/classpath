@@ -39,26 +39,26 @@ exception statement from your version. */
 package java.net;
 
 import java.io.Serializable;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
 import gnu.classpath.Configuration;
 
 /**
-  * This class models an Internet address.  It does not have a public
-  * constructor.  Instead, new instances of this objects are created 
-  * using the static methods getLocalHost(), getByName(), and
-  * getAllByName().
-  * <p>
-  * This class fulfills the function of the C style functions gethostname(), 
-  * gethostbyname(), and gethostbyaddr().  It resolves Internet DNS names
-  * into their corresponding numeric addresses and vice versa.
-  *
-  * @version 0.5
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public final class InetAddress implements Serializable
+ * This class models an Internet address.  It does not have a public
+ * constructor.  Instead, new instances of this objects are created 
+ * using the static methods getLocalHost(), getByName(), and
+ * getAllByName().
+ * <p>
+ * This class fulfills the function of the C style functions gethostname(), 
+ * gethostbyname(), and gethostbyaddr().  It resolves Internet DNS names
+ * into their corresponding numeric addresses and vice versa.
+ *
+ * @version 0.5
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ */
+public class InetAddress implements Serializable
 {
 
 /*************************************************************************/
@@ -79,9 +79,10 @@ public final class InetAddress implements Serializable
 private static final long serialVersionUID = 3286316764910316507L;
 
 /**
-  * The default DNS hash table size
+  * The default DNS hash table size,
+  * use a prime number happy with hash table
   */
-private static final int DEFAULT_CACHE_SIZE = 400;
+private static final int DEFAULT_CACHE_SIZE = 89;
 
 /**
   * The default caching period in minutes
@@ -118,9 +119,10 @@ private static int cache_period = 0;
 private static int cache_purge_pct = 0;
 
 /**
-  * Hashtable to use as DNS lookup cache
+  * HashMap to use as DNS lookup cachem
+  * use HashMap because all accesses to cache are already synchronized
   */
-private static Hashtable cache;
+private static HashMap cache;
 
 // Static initializer for the cache
 static
@@ -140,7 +142,7 @@ static
 
   // Create the cache
   if (cache_size != 0)
-      cache = new Hashtable(cache_size);
+      cache = new HashMap (cache_size);
 
   // precompute the ANY_IF address
   try
@@ -150,7 +152,7 @@ static
   catch (UnknownHostException uhe)
     {
       // Hmmm, make one up and hope that it works.
-      int[] zeros = {0,0,0,0};
+      byte[] zeros = {0,0,0,0};
       ANY_IF = new InetAddress(zeros);
     }
 }      
@@ -164,7 +166,7 @@ static
 /**
   * An array of octets representing an IP address
   */
-transient int[] my_ip;
+transient byte[] addr;
 
 /**
   * The name of the host for this address
@@ -205,7 +207,7 @@ transient long lookup_time;
 private static synchronized InetAddress[]
 checkCacheFor(String hostname)
 {
-  InetAddress[] addrs = null;
+  InetAddress[] addresses = null;
 
   if (cache_size == 0)
     return(null);
@@ -215,19 +217,19 @@ checkCacheFor(String hostname)
     return(null);
 
   if (obj instanceof InetAddress[])
-    addrs = (InetAddress[])obj;
+    addresses = (InetAddress[])obj;
 
-  if (addrs == null)
+  if (addresses == null)
     return(null);
 
   if (cache_period != -1)
-    if ((System.currentTimeMillis() - addrs[0].lookup_time) > cache_period)
+    if ((System.currentTimeMillis() - addresses[0].lookup_time) > cache_period)
       {
         cache.remove(hostname);
         return(null);
       }
 
-  return(addrs);
+  return addresses;
 }
 
 /*************************************************************************/
@@ -239,10 +241,10 @@ checkCacheFor(String hostname)
   * lookups should set the cache size to be very large.
   *
   * @param hostname The hostname to cache this address under
-  * @param addr The InetAddress or InetAddress array to store
+  * @param obj The InetAddress or InetAddress array to store
   */  
 private static synchronized void
-addToCache(String hostname, Object addr)
+addToCache(String hostname, Object obj)
 {
   if (cache_size == 0)
     return;
@@ -254,7 +256,7 @@ addToCache(String hostname, Object addr)
         ; //*** Add code to purge later.
       } 
 
-  cache.put(hostname, addr);
+  cache.put (hostname, obj);
 } 
 
 /*************************************************************************/
@@ -272,8 +274,8 @@ getInaddrAny() throws UnknownHostException
 {
   if (inaddr_any == null)
     {
-      int[] addr = lookupInaddrAny();
-      inaddr_any = new InetAddress(addr);
+      byte[] tmp = lookupInaddrAny();
+      inaddr_any = new InetAddress (tmp);
     }
 
   return(inaddr_any);
@@ -300,21 +302,21 @@ getAllByName(String hostname) throws UnknownHostException
   // Default to current host if necessary
   if (hostname == null)
     {
-      InetAddress addr = getLocalHost();
-      return(getAllByName(addr.getHostName()));
+      InetAddress local = getLocalHost ();
+      return getAllByName (local.getHostName ());
     }
 
   // Check the cache for this host before doing a lookup
-  InetAddress[] addrs = checkCacheFor(hostname);
-  if (addrs != null)
-    return(addrs);
+  InetAddress[] addresses = checkCacheFor (hostname);
+  if (addresses != null)
+    return(addresses);
 
   // Not in cache, try the lookup
-  int[][] iplist = getHostByName(hostname);
+  byte[][] iplist = getHostByName(hostname);
   if (iplist.length == 0)
     throw new UnknownHostException(hostname);
 
-  addrs = new InetAddress[iplist.length];
+  addresses = new InetAddress [iplist.length];
 
   for (int i = 0; i < iplist.length; i++)
     {
@@ -325,12 +327,12 @@ getAllByName(String hostname) throws UnknownHostException
       // canonical names of these ip's when the user asks for the hostname
       // But do specify the host alias so if the IP returned won't
       // reverse lookup we don't throw an exception.
-      addrs[i] = new InetAddress(iplist[i], null, hostname);
+      addresses[i] = new InetAddress (iplist [i], null, hostname);
     } 
 
-  addToCache(hostname, addrs);
+  addToCache (hostname, addresses);
 
-  return(addrs);      
+  return addresses;
 }
 
 /*************************************************************************/
@@ -354,7 +356,7 @@ getByName(String hostname) throws UnknownHostException
 {
   // Default to current host if necessary
   if (hostname == null)
-    return(getLocalHost());
+    return getLocalHost();
 
   // First, check to see if it is an IP address.  If so, then don't 
   // do a DNS lookup.
@@ -362,12 +364,12 @@ getByName(String hostname) throws UnknownHostException
   if (st.countTokens() == 4)
    {
      int i;
-     int[] ip = new int[4];
+     byte[] ip = new byte[4];
      for (i = 0; i < 4; i++)
        {
          try
            {
-             ip[i] = Integer.parseInt(st.nextToken());
+             ip[i] = Byte.parseByte(st.nextToken());
              if ((ip[i] < 0) || (ip[1] > 255))
                break;
            }
@@ -382,10 +384,10 @@ getByName(String hostname) throws UnknownHostException
        }
    }
 
-  // Wasn't and IP, so try the lookup
-  InetAddress[] addrs = getAllByName(hostname);
+  // Wasn't an IP, so try the lookup
+  InetAddress[] addresses = getAllByName (hostname);
   
-  return(addrs[0]);
+  return addresses [0];
 }
 
 /*************************************************************************/
@@ -398,12 +400,10 @@ getByName(String hostname) throws UnknownHostException
   *
   * @exception UnknownHostException If an error occurs
   */
-public static InetAddress
-getLocalHost() throws UnknownHostException
+public static InetAddress getLocalHost() throws UnknownHostException
 {
   String hostname = getLocalHostName();
-
-  return(getByName(hostname));
+  return getByName (hostname);
 }
 
 /*************************************************************************/
@@ -413,52 +413,55 @@ getLocalHost() throws UnknownHostException
  */
 
 /**
-  * Initializes this object's my_ip instance variable from the passed in
+  * Initializes this object's addr instance variable from the passed in
   * int array.  Note that this constructor is protected and is called
   * only by static methods in this class.
   *
-  * @param addr The IP number of this address as an array of bytes
+  * @param ipaddr The IP number of this address as an array of bytes
   */
-private
-InetAddress(int[] addr)
+//private
+public
+InetAddress(byte[] ipaddr)
 {
-  this(addr, null, null);
+  this (ipaddr, null, null);
 }
 
 /*************************************************************************/
 
 /**
-  * Initializes this object's my_ip instance variable from the passed in
+  * Initializes this object's addr instance variable from the passed in
   * int array.  Note that this constructor is protected and is called
   * only by static methods in this class.
   *
-  * @param addr The IP number of this address as an array of bytes
+  * @param ipaddr The IP number of this address as an array of bytes
   * @param hostname The hostname of this IP address.
   */
-private
-InetAddress(int[] addr, String hostname)
+//private
+public
+InetAddress(byte[] ipaddr, String hostname)
 {
-  this(addr, hostname, null);
+  this (ipaddr, hostname, null);
 }
 
 /*************************************************************************/
 
 /**
-  * Initializes this object's my_ip instance variable from the passed in
+  * Initializes this object's addr instance variable from the passed in
   * int array.  Note that this constructor is protected and is called
   * only by static methods in this class.
   *
-  * @param addr The IP number of this address as an array of bytes
+  * @param ipaddr The IP number of this address as an array of bytes
   * @param hostname The hostname of this IP address.
   * @param hostname_alias A backup hostname to use if hostname is null to prevent reverse lookup failures
   */
-private
-InetAddress(int[] addr, String hostname, String hostname_alias)
+//private
+public
+InetAddress(byte[] ipaddr, String hostname, String hostname_alias)
 {
-  my_ip = new int[addr.length];
+  addr = new byte [ipaddr.length];
 
-  for (int i = 0; i < addr.length; i++)
-    my_ip[i] = addr[i];    
+  for (int i = 0; i < ipaddr.length; i++)
+    addr [i] = ipaddr [i];
 
   this.hostName = hostname;
   this.hostname_alias = hostname_alias;
@@ -483,23 +486,24 @@ InetAddress(int[] addr, String hostname, String hostname_alias)
   * addresses are considered equal if they contain the exact same octets.
   * This implementation overrides Object.equals()
   *
-  * @param addr The address to test for equality
+  * @param obj The address to test for equality
   *
-  * @return true if the passed in object's address is equal to this one's, false otherwise
+  * @return true if the passed in object's address is equal to this one's,
+  * false otherwise
   */
 public boolean
-equals(Object addr)
+equals(Object obj)
 {
-  if (!(addr instanceof InetAddress))
+  if (! (obj instanceof InetAddress))
+    return false;
+
+  byte[] test_ip = ((InetAddress) obj).getAddress();
+
+  if (test_ip.length != addr.length)
     return(false);
 
-  byte[] test_ip = ((InetAddress)addr).getAddress();
-
-  if (test_ip.length != my_ip.length)
-    return(false);
-
-  for (int i = 0; i < my_ip.length; i++)
-    if (test_ip[i] != (byte)my_ip[i])
+  for (int i = 0; i < addr.length; i++)
+    if (test_ip [i] != (byte) addr [i])
        return(false);
 
   return(true);
@@ -515,14 +519,14 @@ equals(Object addr)
 public byte[]
 getAddress()
 {
-  byte[] addr = new byte[my_ip.length];
+  byte[] ipaddr = new byte [addr.length];
 
-  for (int i = 0; i < my_ip.length; i++)
+  for (int i = 0; i < addr.length; i++)
     {
-      addr[i] = (byte)my_ip[i];
+      ipaddr [i] = (byte) addr [i];
     }
 
-  return(addr);
+  return ipaddr;
 }
 
 /*************************************************************************/
@@ -536,16 +540,16 @@ getAddress()
 public String
 getHostAddress()
 {
-  StringBuffer addr = new StringBuffer();
+  StringBuffer sb = new StringBuffer();
 
-  for (int i = 0; i < my_ip.length; i++)
+  for (int i = 0; i < addr.length; i++)
     {
-      addr.append((int)my_ip[i]);
-      if (i < (my_ip.length - 1))
-        addr.append(".");
+      sb.append ((int) addr [i]);
+      if (i < (addr.length - 1))
+        sb.append(".");
     }
 
-  return(addr.toString());
+  return sb.toString();
 }
 
 /*************************************************************************/
@@ -564,7 +568,7 @@ getHostName()
 
   try
     {
-      hostName = getHostByAddr(my_ip);  
+      hostName = getHostByAddr (addr);  
       return(hostName);
     }
   catch (UnknownHostException e)
@@ -591,11 +595,11 @@ hashCode()
 
   // Its obvious here that I have no idea how to generate a good
   // hash key
-  for (int i = 0; i < my_ip.length; i++)
-    val1 = val1 + (my_ip[i] << ((my_ip.length - i) / 8));
+  for (int i = 0; i < addr.length; i++)
+    val1 = val1 + (addr [i] << ((addr.length - i) / 8));
 
-  for (int i = 0; i < my_ip.length; i++)
-    val2 = val2 + (my_ip[i] * 10 * i);
+  for (int i = 0; i < addr.length; i++)
+    val2 = val2 + (addr [i] * 10 * i);
 
   val1 = (val1 >> 1) ^ val2;
 
@@ -614,11 +618,11 @@ hashCode()
 public boolean
 isMulticastAddress()
 {
-  if (my_ip.length == 0)
+  if (addr.length == 0)
     return(false);
 
   // Mask against high order bits of 1110
-  if ((my_ip[0] & 0xF0) == 224)
+  if ((addr [0] & 0xF0) == 224)
     return(true);
 
   return(false);
@@ -638,6 +642,30 @@ toString()
 {
   return(getHostAddress());
 }
+
+  /**
+   * Returns an InetAddress object given the raw IP address.
+   *
+   * The argument is in network byte order: the highest order byte of the
+   * address is in getAddress()[0].
+   *
+   * @param addr The IP address to create the InetAddress object from
+   *
+   * @exception UnknownHostException If IP address has illegal length
+   *
+   * @since 1.4
+   */
+  public static InetAddress getByAddress(byte[] addr)
+    throws UnknownHostException
+  {
+    if (addr.length != 4 && addr.length != 16)
+      throw new UnknownHostException ("IP address has illegal length");
+
+    if (addr.length == 4)
+      return new Inet4Address (addr, null);
+
+    return new Inet6Address (addr, null);
+  }
 
 /*************************************************************************/
 
@@ -660,7 +688,7 @@ private static native String getLocalHostName();
 /**
   * Returns the value of the special address INADDR_ANY
   */
-private static native int[] lookupInaddrAny() throws UnknownHostException;
+private static native byte[] lookupInaddrAny() throws UnknownHostException;
 
 /*************************************************************************/
 
@@ -674,7 +702,7 @@ private static native int[] lookupInaddrAny() throws UnknownHostException;
   *
   * @exception UnknownHostException If the reverse lookup fails
   */
-private static native String getHostByAddr(int[] ip) throws UnknownHostException;
+private static native String getHostByAddr(byte[] ip) throws UnknownHostException;
 
 /*************************************************************************/
 
@@ -682,7 +710,7 @@ private static native String getHostByAddr(int[] ip) throws UnknownHostException
   * Returns a list of all IP addresses for a given hostname.  Will throw
   * an UnknownHostException if the hostname cannot be resolved.
   */
-private static native int[][] getHostByName(String hostname) throws UnknownHostException;
+private static native byte[][] getHostByName(String hostname) throws UnknownHostException;
 
 } // class InetAddress
 
