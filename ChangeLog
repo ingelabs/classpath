@@ -1,3 +1,9 @@
+2001-01-19  Warren Levy  <warrenl@redhat.com>
+
+	* java/text/SimpleDateFormat.java (format): Compute hour for cases
+	HOUR_OF_DAY1_FIELD (1-24), HOUR1_FIELD (1-12), and HOUR0_FIELD (0-11)
+	correctly.  Adjust properly from 0-23 clock hour.
+
 2001-01-14  Mark Wielaard  <mark@klomp.org>
 	* java/net/URLDecoder.java: Thanks Edgar Villanueva (edgarvil@home.com)
 	(decode): fix comment, don't throw Exception
