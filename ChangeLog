@@ -1,5 +1,11 @@
 2004-12-23  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/plaf/metal/MetalTheme.java
+	(getControlTextColor): Return getControlInfo().
+	(getHighlightedTextColor): Return getControlTextColor().
+
+2004-12-23  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/plaf/basic/BasicButtonListener.java
 	(BasicButtonListener): New constructor.
 	* javax/swing/plaf/basic/BasicButtonUI.java
