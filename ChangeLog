@@ -1,3 +1,10 @@
+2003-12-31 Guilhem Lavaux <guilhem@kaffe.org>
+
+	* java/io/ObjectOutputStream.java
+	(putFields): Removed redundant code.
+	(writeFields): Check for multiple call to writeFields.
+	(markFieldsWritten): Fixed exception message.
+
 2003-12-30 Guilhem Lavaux <guilhem@kaffe.org>
 
 	* java/net/URLStreamHandler.java,

@@ -450,7 +450,7 @@ public class ObjectOutputStream extends OutputStream
 
     if (fieldsAlreadyWritten)
       throw new IOException
-	("Only one of putFields and defaultWriteObject may be called, and it may only be called once");
+	("Only one of writeFields and defaultWriteObject may be called, and it may only be called once");
 
     fieldsAlreadyWritten = true;
   }
@@ -876,8 +876,6 @@ public class ObjectOutputStream extends OutputStream
     if (currentPutField != null)
       return currentPutField;
 
-    markFieldsWritten();
-
     currentPutField = new PutField()
       {
 	private byte[] prim_field_data
@@ -1029,6 +1027,7 @@ public class ObjectOutputStream extends OutputStream
     if (currentPutField == null)
       throw new NotActiveException("writeFields can only be called after putFields has been called");
 
+    markFieldsWritten();
     currentPutField.write(this);
   }
 
