@@ -177,6 +177,7 @@ class Test
       } catch (InterruptedException e) {}
       f.setSize(500,500);
 
+      System.out.println (wb.getGraphics());
       System.out.println("done");
     }
 }

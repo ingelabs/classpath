@@ -38,6 +38,7 @@ public class GtkButtonPeer extends GtkComponentPeer
     System.out.println ("buttonpeer: location: "+p.x+","+p.y);
     
     gtkFixedPut (cp, p.x, p.y);
+    System.out.println ("COLOR!!!: " + b.getBackground());
   }
     
   public void setLabel (String label) 

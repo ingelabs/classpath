@@ -29,6 +29,7 @@ public class GtkComponentPeer extends GtkGenericPeer
   implements ComponentPeer
 {
   Component awtComponent;
+  GdkGraphics gc = null;
 
   native void gtkWidgetSetVisible (boolean b);
   native void gtkWidgetShowChildren();
@@ -102,7 +103,11 @@ public class GtkComponentPeer extends GtkGenericPeer
   public Graphics getGraphics () 
     {
       System.out.println("componentpeer: getgraphics");
-      return null;
+
+      if (gc == null)
+	gc = new GdkGraphics (this);
+
+      return gc;
     }
 
   public Point getLocationOnScreen () 
