@@ -1,3 +1,12 @@
+2002-02-15  Mark Wielaard <mark@klomp.org>
+
+	Thanks to Patrick Doyle
+	* java/lang/String.java (indexOf(String,int)): account for empty
+	string.
+	(lastIndexOf(String): account for empty string, and small
+	optimization.
+	(lastIndexOf(String,int): small optimization.
+
 2002-02-14  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/lang/Makefile.am: Add StrictMath.java.

@@ -799,7 +799,7 @@ Character.toLowerCase(value[i]) == Character.toLowerCase(anotherString.value[i])
    */
   public int indexOf(String str, int fromIndex) throws NullPointerException {
     if (fromIndex < 0) fromIndex = 0;
-    for (int i = fromIndex; i < count; i++)
+    for (int i = fromIndex; i <= count; i++)
       if (regionMatches(i, str, 0, str.count))
 	return i;
     return -1;
@@ -846,7 +846,7 @@ Character.toLowerCase(value[i]) == Character.toLowerCase(anotherString.value[i])
    * @exception NullPointerException if `str' is null
    */
   public int lastIndexOf(String str) throws NullPointerException {
-    return lastIndexOf(str, count-1);
+    return lastIndexOf(str, count-str.count);
   }
 
   /**
@@ -864,8 +864,8 @@ Character.toLowerCase(value[i]) == Character.toLowerCase(anotherString.value[i])
    */
   public int lastIndexOf(String str, int fromIndex)
     throws NullPointerException {
-    if (fromIndex > count)
-      fromIndex = count;
+    if (fromIndex >= count)
+      fromIndex = count - str.count;
     for (int i = fromIndex; i >= 0; i--)
       if (regionMatches(i, str, 0, str.count))
 	return i;
