@@ -241,9 +241,7 @@ public class Thread {
 	 ** this Thread was created with or else the run() method of the
 	 ** Thread itself.
 	 **/
-	public synchronized void start() {
-		nativeStart();
-	}
+	public synchronized native void start();
 
 	/** The method of Thread that will be run if there is no Runnable
 	 ** object associated with the Thread.<P>
@@ -281,6 +279,11 @@ public class Thread {
 		group.removeThread(this);
 		nativeStop(t);
 	}
+
+ 	/**
+ 	 ** Yield to another thread
+	 **/
+	public synchronized native void yield();
 
 	/** Interrupt this Thread.
 	 ** It is not clear whether locks this Thread has should be released.
@@ -510,7 +513,6 @@ public class Thread {
 
 	final native void nativeInit();
 	final native void nativeStop(Throwable t);
-	final native void nativeStart();
 	final native void nativeInterrupt();
 	final native void nativeDestroy();
 	final native void nativeSuspend();
