@@ -129,6 +129,8 @@ Dialog(Frame parent, String title, boolean modal)
   this.title = title;
   this.modal = modal;
   resizable = false;
+
+  setLayout(new BorderLayout());
 }
 
 /*************************************************************************/
