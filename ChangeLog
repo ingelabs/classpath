@@ -1,3 +1,9 @@
+2005-01-13  Jeroen Frijters  <jeroen@frijters.net>
+
+	* vm/reference/java/nio/channels/VMChannels.java: Class shouldn't
+	be public.
+	(newInputStream,newOutputStream): No need to be public.
+
 2005-01-13  Michael Koch  <konqueror@gmx.de>
 
 	* scripts/check_jni_methods.sh: Don't use GNU sed specific features.
