@@ -43,9 +43,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.StringTokenizer;
-
 
 /*
  * Written using on-line Java Platform 1.2 API Specification, as well
@@ -119,7 +118,8 @@ import java.util.StringTokenizer;
   */
 public final class URL implements Serializable
 {
-  private static final String DEFAULT_SEARCH_PATH = "gnu.java.net.protocol";
+  private static final String DEFAULT_SEARCH_PATH =
+    "gnu.java.net.protocol|sun.net.www.protocol";
   
   /**
    * The name of the protocol for this URL.
@@ -176,17 +176,12 @@ public final class URL implements Serializable
    * This a table where we cache protocol handlers to avoid the overhead
    * of looking them up each time.
    */
-  private static Hashtable ph_cache = new Hashtable();
+  private static HashMap ph_cache = new HashMap();
 
   /**
    * Whether or not to cache protocol handlers.
    */
   private static boolean cache_handlers;
-
-  /**
-   * The search path of packages to search for protocol handlers in.
-   */
-  private static String ph_search_path;
 
   static
     {
@@ -196,14 +191,6 @@ public final class URL implements Serializable
         cache_handlers = true;
       else
         cache_handlers = false;
-
-      ph_search_path = System.getProperty ("java.protocol.handler.pkgs");
-
-      // Tack our default package on at the ends
-      if (ph_search_path != null)
-        ph_search_path = ph_search_path + "|" + DEFAULT_SEARCH_PATH;
-      else
-        ph_search_path = DEFAULT_SEARCH_PATH;
     }
 
   /**
@@ -791,6 +778,18 @@ public final class URL implements Serializable
     // Use the default search algorithm to find a handler for this protocol.
     if (ph == null)
       {
+	// Get the list of packages to check and append our default handler
+	// to it, along with the JDK specified default as a last resort.
+	// Except in very unusual environments the JDK specified one shouldn't
+	// ever be needed (or available).
+	String ph_search_path = System.getProperty ("java.protocol.handler.pkgs");
+
+	// Tack our default package on at the ends.
+	if (ph_search_path != null)
+          ph_search_path += "|" + DEFAULT_SEARCH_PATH;
+	else
+          ph_search_path = DEFAULT_SEARCH_PATH;
+
 	// Finally loop through our search path looking for a match.
 	StringTokenizer pkgPrefix = new StringTokenizer (ph_search_path, "|");
         

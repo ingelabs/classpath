@@ -1,5 +1,15 @@
 2003-10-02  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/URL.java
+	(DEFAULT_SEARCH_PATH): Added sun.net.www.protocol to search path.
+	(ph_cache): Made it a HashMap.
+	(ph_search_path): Removed.
+	(static): Removed initialization of ph_search_path.
+	(getURLStreamHandler): Get java.protocol.handler.pkgs property and
+	append DEFAULT_SEARCH_PATH locally.
+
+2003-10-02  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/classpath/Configuration.java.in
 	(default_awt_peer_toolkit) :
 	New member variable for default AWT toolkit.
