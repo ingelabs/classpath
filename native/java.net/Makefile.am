@@ -8,9 +8,9 @@ libjaphar_javanet_la_SOURCES = InetAddress.c \
                                PlainSocketImpl.c \
                                javanet.c \
                                javanet.h \
-                               java_io_InetAddress.h \
-                               java_io_PlainSocketImpl.h \
-                               java_io_PlainDatagramSocketImpl.h 
+                               java_net_InetAddress.h \
+                               java_net_PlainSocketImpl.h \
+                               java_net_PlainDatagramSocketImpl.h 
 
 libjaphar_javanet_la_LDFLAGS = -version-info 0:0:0
 else
