@@ -102,9 +102,10 @@ glibj.zip: classes compile-classes
 classes: gen-classlist.sh standard.omit
 	top_builddir=$(top_builddir) $(SHELL) ./gen-classlist.sh standard
 
+gennio:
+	top_builddir=$(top_builddir) $(SHELL) ./gen_nio.sh
 
 genclasses: gen-classlist.sh standard.omit
-	/bin/sh ./gen_nio.sh
 	top_builddir=$(top_builddir) $(SHELL) ./gen-classlist.sh standard
 
 $(JAVA_DEPEND): genclasses

@@ -1,0 +1,137 @@
+#! /bin/sh
+
+export CLASSPATH_SRC=@top_srcdir@
+
+# generate java.nio.ByteBuffer etc
+
+echo "#define TYPE Byte"  > ${top_builddir}/include/temp.h
+echo "#define ELT  byte"  >> ${top_builddir}/include/temp.h
+echo "#define SIZE 1"     >> ${top_builddir}/include/temp.h
+gcc  $CLASSPATH_SRC/java/nio/GenericBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/BUFFER/ByteBuffer/g > $CLASSPATH_SRC/java/nio/ByteBuffer.java
+
+
+echo "#define TYPE Short"  > ${top_builddir}/include/temp.h
+echo "#define ELT  short"  >> ${top_builddir}/include/temp.h
+echo "#define SIZE 2"     >> ${top_builddir}/include/temp.h
+gcc  $CLASSPATH_SRC/java/nio/GenericBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/BUFFER/ShortBuffer/g > $CLASSPATH_SRC/java/nio/ShortBuffer.java
+
+
+echo "#define TYPE Char"  > ${top_builddir}/include/temp.h
+echo "#define ELT  char"  >> ${top_builddir}/include/temp.h
+echo "#define SIZE 2"     >> ${top_builddir}/include/temp.h
+gcc  $CLASSPATH_SRC/java/nio/GenericBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/BUFFER/CharBuffer/g > $CLASSPATH_SRC/java/nio/CharBuffer.java
+
+
+echo "#define TYPE Int"  > ${top_builddir}/include/temp.h
+echo "#define ELT  int"  >> ${top_builddir}/include/temp.h
+echo "#define SIZE 4"     >> ${top_builddir}/include/temp.h
+gcc  $CLASSPATH_SRC/java/nio/GenericBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/BUFFER/IntBuffer/g > $CLASSPATH_SRC/java/nio/IntBuffer.java
+
+
+echo "#define TYPE Long"  > ${top_builddir}/include/temp.h
+echo "#define ELT  long"  >> ${top_builddir}/include/temp.h
+echo "#define SIZE 8"     >> ${top_builddir}/include/temp.h
+gcc  $CLASSPATH_SRC/java/nio/GenericBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/BUFFER/LongBuffer/g > $CLASSPATH_SRC/java/nio/LongBuffer.java
+
+
+echo "#define TYPE Float"  > ${top_builddir}/include/temp.h
+echo "#define ELT  float"  >> ${top_builddir}/include/temp.h
+echo "#define SIZE 4"     >> ${top_builddir}/include/temp.h
+gcc  $CLASSPATH_SRC/java/nio/GenericBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/BUFFER/FloatBuffer/g > $CLASSPATH_SRC/java/nio/FloatBuffer.java
+
+
+echo "#define TYPE Double"  > ${top_builddir}/include/temp.h
+echo "#define ELT  double"  >> ${top_builddir}/include/temp.h
+echo "#define SIZE 8"     >> ${top_builddir}/include/temp.h
+gcc  $CLASSPATH_SRC/java/nio/GenericBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/BUFFER/DoubleBuffer/g > $CLASSPATH_SRC/java/nio/DoubleBuffer.java
+
+#generate the implementation classes of the above:
+
+echo "#define TYPE Byte"  > ${top_builddir}/include/temp.h
+echo "#define ELT  byte"  >> ${top_builddir}/include/temp.h
+echo "#define SIZE 1"     >> ${top_builddir}/include/temp.h
+echo "#define BYTE 1"     >> ${top_builddir}/include/temp.h
+gcc  $CLASSPATH_SRC/gnu/java/nio/GenericBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/BUFFER/ByteBuffer/g > $CLASSPATH_SRC/gnu/java/nio/ByteBufferImpl.java
+
+gcc  $CLASSPATH_SRC/gnu/java/nio/GenericMappedByteFileBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/TYPE/Byte/g > $CLASSPATH_SRC/gnu/java/nio/MappedByteFileBuffer.java
+
+
+echo "#define TYPE Short"  > ${top_builddir}/include/temp.h
+echo "#define ELT  short"  >> ${top_builddir}/include/temp.h
+echo "#define SIZE 2"     >> ${top_builddir}/include/temp.h
+echo "#define SHORT 2"     >> ${top_builddir}/include/temp.h
+gcc  $CLASSPATH_SRC/gnu/java/nio/GenericBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/BUFFER/ShortBuffer/g > $CLASSPATH_SRC/gnu/java/nio/ShortBufferImpl.java
+
+gcc  $CLASSPATH_SRC/gnu/java/nio/GenericMappedByteFileBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/TYPE/Short/g > $CLASSPATH_SRC/gnu/java/nio/MappedShortFileBuffer.java
+
+
+echo "#define TYPE Char"  > ${top_builddir}/include/temp.h
+echo "#define ELT  char"  >> ${top_builddir}/include/temp.h
+echo "#define SIZE 2"     >> ${top_builddir}/include/temp.h
+echo "#define CHAR 2"     >> ${top_builddir}/include/temp.h
+gcc  $CLASSPATH_SRC/gnu/java/nio/GenericBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/BUFFER/CharBuffer/g > $CLASSPATH_SRC/gnu/java/nio/CharBufferImpl.java
+
+gcc  $CLASSPATH_SRC/gnu/java/nio/GenericMappedByteFileBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/TYPE/Char/g > $CLASSPATH_SRC/gnu/java/nio/MappedCharFileBuffer.java
+
+
+
+echo "#define TYPE Int"  > ${top_builddir}/include/temp.h
+echo "#define ELT  int"  >> ${top_builddir}/include/temp.h
+echo "#define SIZE 4"     >> ${top_builddir}/include/temp.h
+echo "#define INT 2"     >> ${top_builddir}/include/temp.h
+gcc  $CLASSPATH_SRC/gnu/java/nio/GenericBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/BUFFER/IntBuffer/g > $CLASSPATH_SRC/gnu/java/nio/IntBufferImpl.java
+
+gcc  $CLASSPATH_SRC/gnu/java/nio/GenericMappedByteFileBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/TYPE/Int/g > $CLASSPATH_SRC/gnu/java/nio/MappedIntFileBuffer.java
+
+
+
+echo "#define TYPE Long"  > ${top_builddir}/include/temp.h
+echo "#define ELT  long"  >> ${top_builddir}/include/temp.h
+echo "#define SIZE 8"     >> ${top_builddir}/include/temp.h
+echo "#define LONG"     >> ${top_builddir}/include/temp.h
+gcc  $CLASSPATH_SRC/gnu/java/nio/GenericBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/BUFFER/LongBuffer/g > $CLASSPATH_SRC/gnu/java/nio/LongBufferImpl.java
+
+gcc  $CLASSPATH_SRC/gnu/java/nio/GenericMappedByteFileBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/TYPE/Long/g > $CLASSPATH_SRC/gnu/java/nio/MappedLongFileBuffer.java
+
+
+
+
+echo "#define TYPE Float"  > ${top_builddir}/include/temp.h
+echo "#define ELT  float"  >> ${top_builddir}/include/temp.h
+echo "#define SIZE 4"     >> ${top_builddir}/include/temp.h
+echo "#define FLOAT"     >> ${top_builddir}/include/temp.h
+
+gcc  $CLASSPATH_SRC/gnu/java/nio/GenericBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/BUFFER/FloatBuffer/g > $CLASSPATH_SRC/gnu/java/nio/FloatBufferImpl.java
+
+gcc  $CLASSPATH_SRC/gnu/java/nio/GenericMappedByteFileBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/TYPE/Float/g > $CLASSPATH_SRC/gnu/java/nio/MappedFloatFileBuffer.java
+
+
+
+echo "#define TYPE Double"  > ${top_builddir}/include/temp.h
+echo "#define ELT  double"  >> ${top_builddir}/include/temp.h
+echo "#define SIZE 8"     >> ${top_builddir}/include/temp.h
+echo "#define DOUBLE 8"     >> ${top_builddir}/include/temp.h
+gcc  $CLASSPATH_SRC/gnu/java/nio/GenericBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/BUFFER/DoubleBuffer/g > $CLASSPATH_SRC/gnu/java/nio/DoubleBufferImpl.java
+
+gcc  $CLASSPATH_SRC/gnu/java/nio/GenericMappedByteFileBuffer.cpp  -E -P -I${top_builddir}/include    > temp
+cat temp | sed s/TYPE/Double/g > $CLASSPATH_SRC/gnu/java/nio/MappedDoubleFileBuffer.java

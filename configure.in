@@ -113,7 +113,7 @@ if test "${COMPILE_JNI}" = "yes"; then
 
   dnl XXX Fix me when libart.m4 has the compile test fixed!
   enable_libarttest=no
-dnl  AM_PATH_LIBART(2.1.0,,exit 1)
+  AM_PATH_LIBART(2.1.0,,exit 1)
 
   CLASSPATH_WITH_JAVAH
 
@@ -251,6 +251,7 @@ gnu/java/lang/reflect/Makefile
 gnu/java/locale/Makefile
 gnu/java/net/Makefile
 gnu/java/net/content/Makefile
+gnu/java/nio/Makefile
 gnu/java/net/content/text/Makefile
 gnu/java/net/protocol/Makefile
 gnu/java/net/protocol/file/Makefile
@@ -288,6 +289,10 @@ java/lang/ref/Makefile
 java/lang/reflect/Makefile
 java/math/Makefile
 java/net/Makefile
+java/nio/Makefile
+java/nio/channels/Makefile
+java/nio/channels/spi/Makefile
+java/nio/charset/Makefile
 java/rmi/Makefile
 java/rmi/activation/Makefile
 java/rmi/dgc/Makefile
@@ -336,7 +341,8 @@ vm/reference/java/Makefile
 vm/reference/java/lang/Makefile
 vm/reference/java/lang/reflect/Makefile
 lib/Makefile
-lib/gen-classlist.sh,
+lib/gen-classlist.sh
+lib/gen_nio.sh,
 [ chmod 755 lib/gen-classlist.sh
 ])
 

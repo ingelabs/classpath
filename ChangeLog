@@ -1,3 +1,47 @@
+2002-03-12  C. Brian Jones <cbj@gnu.org>
+
+	* lib/gen_nio.sh.in: new file is renamed gen_nio.sh plus fixes 
+	to make it work when building outside of the classpath directory
+	* lib/gen_nio.sh: removed file
+	* lib/.cvsignore: ignore gen_nio.sh
+	* configure.in: generate gen_nio.sh and nio related Makefiles 
+	in OUTPUT.  Revert comment out of check for libart_lgpl
+	* lib/Makefile.am: give gen_nio.sh some idea of the top_builddir
+	and make it a separate target, gennio, that must be manually 
+	executed; the generated files will be part of CVS since they change
+	only when the source .cpp changes rather than due to a configuration
+	change
+	* java/nio/Makefile.am: new file
+	* java/nio/.cvsignore: new file
+	* java/nio/charset/Makefile.am: new file
+	* java/nio/charset/.cvsignore: new file
+	* java/nio/channels/Makefile.am: new file
+	* java/nio/channels/.cvsignore: new file
+	* java/nio/channels/spi/Makefile.am: new file
+	* java/nio/channels/spi/.cvsignore: new file
+	* gnu/java/nio/Makefile.am: new file
+	* gnu/java/nio/.cvsignore: new file
+	* java/nio/ShortBuffer.java: generated file
+	* java/nio/ByteBuffer.java: generated file
+	* java/nio/LongBuffer.java: generated file
+	* java/nio/IntBuffer.java: generated file
+	* java/nio/FloatBuffer.java: generated file
+	* java/nio/DoubleBuffer.java: generated file
+	* java/nio/CharBuffer.java: generated file
+	* gnu/java/nio/ShortBufferImpl.java: generated file
+	* gnu/java/nio/MappedShortFileBuffer.java: generated file
+	* gnu/java/nio/MappedLongFileBuffer.java: generated file
+	* gnu/java/nio/MappedIntFileBuffer.java: generated file
+	* gnu/java/nio/MappedFloatFileBuffer.java: generated file
+	* gnu/java/nio/MappedDoubleFileBuffer.java: generated file
+	* gnu/java/nio/MappedCharFileBuffer.java: generated file
+	* gnu/java/nio/MappedByteFileBuffer.java: generated file
+	* gnu/java/nio/LongBufferImpl.java: generated file
+	* gnu/java/nio/IntBufferImpl.java: generated file
+	* gnu/java/nio/FloatBufferImpl.java: generated file
+	* gnu/java/nio/DoubleBufferImpl.java: generated file
+	* gnu/java/nio/CharBufferImpl.java: generated file
+	* gnu/java/nio/ByteBufferImpl.java: generated file
 
 2002-03-12  Ronald Veldema <rveldema@cs.vu.nl>
 
