@@ -1,5 +1,11 @@
 2004-11-25  Sven de Marothy  <sven@physto.se>
 
+	* java/awt/image/MultiPixelPackedSampleModel.java
+	(MultiPixelPackedSampleModel): Corrected parameters, order of bit 
+	shifts and masks, stride length off by one.		
+	
+2004-11-25  Sven de Marothy  <sven@physto.se>
+
 	* java/awt/image/IndexColorModel.java
 	(IndexColorModel): Add FIXME with respect to alpha handling.
 	(getAlpha): Default to returning opaque pixels.
