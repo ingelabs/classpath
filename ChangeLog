@@ -1,3 +1,22 @@
+2003-11-28  Dalibor Topic <robilad@kaffe.org>
+
+        Reported by: Jim Pick <jim@kaffe.org>
+
+        * libraries/javalib/java/util/Hashtable.java
+        (internalcontainsValue): New method.
+        (contains) Delegate to internalContainsValue.
+
+        Reported by: Mark Wielaard  <mark@klomp.org>
+
+        * libraries/javalib/java/util/Hashtable.java
+        (contains): Improved comment.
+
+        Reported by: Jeroen Frijters  <jeroen@frijters.net>
+
+        * libraries/javalib/java/util/Hashtable.java
+        (containsValue): Delegate to contains(Object) to make sure older
+        code overwriting it continues to work.
+
 2003-11-27  Michael Koch  <konqueror@gmx.de>
 
 	* doc/www.gnu.org/downloads/tools.wml: Add GNU.xml style definition
