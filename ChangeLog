@@ -1,3 +1,38 @@
+2003-09-19  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/net/PlainDatagramSocketImpl.java,
+	gnu/java/net/PlainSocketImpl.java,
+	gnu/java/net/SocketInputStream.java,
+	gnu/java/net/SocketOutputStream.java: Moved from java/net.
+	* gnu/java/net/Makefile.am
+	(EXTRA_DIST): Added new files:
+	PlainDatagramSocketImpl.java, PlainSocketImpl.java,
+	SocketInputStream.java, SocketOutputStream.java.
+	* include/gnu_java_net_PlainDatagramSocketImpl.h,
+	include/gnu_java_net_PlainSocketImpl.h: New generated JNI header.
+	* include/java_net_PlainDatagramSocketImpl.h,
+	include/java_net_PlainSocketImpl.h: Removed generated JNI header.
+	* include/Makefile.am: Generate and install new JNI header files
+	instead of the old ones.
+	* java/net/PlainDatagramSocketImpl.java,
+	java/net/PlainSocketImpl.java,
+	java/net/SocketInputStream.java,
+	java/net/SocketOutputStream.java: Moved to gnu/java/net.
+	* java/net/DatagramSocket.java:
+	Import gnu.java.net.PlainDatagramSocketImpl.
+	* java/net/ServerSocket.java,
+	java/net/Socket.java: Import gnu.java.net.PlainSocketImpl.
+	* java/net/Makefile.am (EXTRA_DIST): Removed the following files:
+	PlainDatagramSocketImpl.java, PlainSocketImpl.java,
+	SocketInputStream.java, SocketOutputStream.java.
+	* native/jni/java-net/gnu_java_net_PlainDatagramSocketImpl.c,
+	native/jni/java-net/gnu_java_net_PlainSocketImpl.c,
+	native/jni/java-net/java_net_PlainDatagramSocketImpl.c,
+	native/jni/java-net/java_net_PlainSocketImpl.c:
+	Moved from java.net namespace to gnu.java.net.
+	* native/jni/java-net/Makefile.am:
+	Compile new files instead of old ones.
+
 2003-09-18  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/Toolkit.java: Added missing "in" in javadoc.

@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package java.net;
 
+import gnu.java.net.PlainSocketImpl;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;

@@ -53,7 +53,7 @@ exception statement from your version. */
   #include "target_native_network.h"
 #endif /* WITHOUT_NETWORK */
 
-#include "java_net_PlainSocketImpl.h"
+#include "gnu_java_net_PlainSocketImpl.h"
 
 /*
  * Note that the functions in this module simply redirect to another
@@ -68,7 +68,7 @@ exception statement from your version. */
  * Creates a new stream or datagram socket
  */
 JNIEXPORT void JNICALL
-Java_java_net_PlainSocketImpl_create(JNIEnv *env, jobject this, jboolean stream)
+Java_gnu_java_net_PlainSocketImpl_create(JNIEnv *env, jobject this, jboolean stream)
 {
 #ifndef WITHOUT_NETWORK
   assert(env!=NULL);
@@ -86,7 +86,7 @@ Java_java_net_PlainSocketImpl_create(JNIEnv *env, jobject this, jboolean stream)
  * action as well.
  */
 JNIEXPORT void JNICALL
-Java_java_net_PlainSocketImpl_close(JNIEnv *env, jobject this)
+Java_gnu_java_net_PlainSocketImpl_close(JNIEnv *env, jobject this)
 {
 #ifndef WITHOUT_NETWORK
   assert(env!=NULL);
@@ -103,7 +103,7 @@ Java_java_net_PlainSocketImpl_close(JNIEnv *env, jobject this)
  * Connects to the specified destination.
  */
 JNIEXPORT void JNICALL
-Java_java_net_PlainSocketImpl_connect(JNIEnv *env, jobject this, 
+Java_gnu_java_net_PlainSocketImpl_connect(JNIEnv *env, jobject this, 
                                       jobject addr, jint port)
 {
 #ifndef WITHOUT_NETWORK
@@ -123,7 +123,7 @@ Java_java_net_PlainSocketImpl_connect(JNIEnv *env, jobject this,
  * variables. 
  */
 JNIEXPORT void JNICALL
-Java_java_net_PlainSocketImpl_bind(JNIEnv *env, jobject this, jobject addr,
+Java_gnu_java_net_PlainSocketImpl_bind(JNIEnv *env, jobject this, jobject addr,
                                    jint port)
 {
 #ifndef WITHOUT_NETWORK
@@ -142,7 +142,7 @@ Java_java_net_PlainSocketImpl_bind(JNIEnv *env, jobject this, jobject addr,
  * connections allowed.
  */
 JNIEXPORT void JNICALL
-Java_java_net_PlainSocketImpl_listen(JNIEnv *env, jobject this, jint queuelen)
+Java_gnu_java_net_PlainSocketImpl_listen(JNIEnv *env, jobject this, jint queuelen)
 {
 #ifndef WITHOUT_NETWORK
   assert(env!=NULL);
@@ -160,7 +160,7 @@ Java_java_net_PlainSocketImpl_listen(JNIEnv *env, jobject this, jint queuelen)
  * object. Note that we assume this is a PlainSocketImpl just like us.
  */
 JNIEXPORT void JNICALL
-Java_java_net_PlainSocketImpl_accept(JNIEnv *env, jobject this, jobject impl)
+Java_gnu_java_net_PlainSocketImpl_accept(JNIEnv *env, jobject this, jobject impl)
 {
 #ifndef WITHOUT_NETWORK
   assert(env!=NULL);
@@ -174,7 +174,7 @@ Java_java_net_PlainSocketImpl_accept(JNIEnv *env, jobject this, jobject impl)
 /*************************************************************************/
 
 JNIEXPORT jint JNICALL
-Java_java_net_PlainSocketImpl_available(JNIEnv *env, jobject this)
+Java_gnu_java_net_PlainSocketImpl_available(JNIEnv *env, jobject this)
 {
 #ifndef WITHOUT_NETWORK
   jclass   cls;
@@ -220,7 +220,7 @@ Java_java_net_PlainSocketImpl_available(JNIEnv *env, jobject this)
  * This method sets the specified option for a socket
  */
 JNIEXPORT void JNICALL
-Java_java_net_PlainSocketImpl_setOption(JNIEnv *env, jobject this, 
+Java_gnu_java_net_PlainSocketImpl_setOption(JNIEnv *env, jobject this, 
                                         jint option_id, jobject val)
 {
 #ifndef WITHOUT_NETWORK
@@ -238,7 +238,7 @@ Java_java_net_PlainSocketImpl_setOption(JNIEnv *env, jobject this,
  * This method sets the specified option for a socket
  */
 JNIEXPORT jobject JNICALL
-Java_java_net_PlainSocketImpl_getOption(JNIEnv *env, jobject this, 
+Java_gnu_java_net_PlainSocketImpl_getOption(JNIEnv *env, jobject this, 
                                         jint option_id)
 {
 #ifndef WITHOUT_NETWORK
@@ -256,7 +256,7 @@ Java_java_net_PlainSocketImpl_getOption(JNIEnv *env, jobject this,
  * Reads a buffer from a remote host
  */
 JNIEXPORT jint JNICALL
-Java_java_net_PlainSocketImpl_read(JNIEnv *env, jobject this, jarray buf,
+Java_gnu_java_net_PlainSocketImpl_read(JNIEnv *env, jobject this, jarray buf,
                                    jint offset, jint len)
 {
 #ifndef WITHOUT_NETWORK
@@ -274,7 +274,7 @@ Java_java_net_PlainSocketImpl_read(JNIEnv *env, jobject this, jarray buf,
  * Writes a buffer to the remote host
  */
 JNIEXPORT void JNICALL
-Java_java_net_PlainSocketImpl_write(JNIEnv *env, jobject this, jarray buf,
+Java_gnu_java_net_PlainSocketImpl_write(JNIEnv *env, jobject this, jarray buf,
                                     jint offset, jint len)
 {
 #ifndef WITHOUT_NETWORK

@@ -36,8 +36,16 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package java.net;
+package gnu.java.net;
 
+import java.net.DatagramPacket;
+import java.net.DatagramSocketImpl;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.NetworkInterface;
+import java.net.SocketAddress;
+import java.net.SocketException;
+import java.net.SocketOptions;
 import java.io.IOException;
 import gnu.classpath.Configuration;
 
@@ -55,7 +63,7 @@ import gnu.classpath.Configuration;
  * @author Aaron M. Renn <arenn@urbanophile.com>
  * @author Warren Levy <warrenl@cygnus.com>
  */
-class PlainDatagramSocketImpl extends DatagramSocketImpl
+public final class PlainDatagramSocketImpl extends DatagramSocketImpl
 {
   // Static initializer to load native library
   static

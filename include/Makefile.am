@@ -33,6 +33,8 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkTextComponentPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkTextFieldPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkToolkit.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkWindowPeer.h \
+$(top_srcdir)/include/gnu_java_net_PlainDatagramSocketImpl.h \
+$(top_srcdir)/include/gnu_java_net_PlainSocketImpl.h \
 $(top_srcdir)/include/java_io_FileDescriptor.h \
 $(top_srcdir)/include/java_io_File.h \
 $(top_srcdir)/include/java_io_ObjectInputStream.h \
@@ -44,8 +46,6 @@ $(top_srcdir)/include/java_lang_VMSystem.h \
 $(top_srcdir)/include/java_lang_reflect_Array.h \
 $(top_srcdir)/include/java_net_InetAddress.h \
 $(top_srcdir)/include/java_net_NetworkInterface.h \
-$(top_srcdir)/include/java_net_PlainDatagramSocketImpl.h \
-$(top_srcdir)/include/java_net_PlainSocketImpl.h \
 $(top_srcdir)/include/java_nio_DirectByteBufferImpl.h \
 $(top_srcdir)/include/java_nio_channels_FileChannelImpl.h \
 $(top_srcdir)/include/gnu_java_nio_FileChannelImpl.h \
@@ -116,6 +116,10 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkToolkit.h: $(top_srcdir)/gnu/java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkToolkit
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkWindowPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkWindowPeer.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkWindowPeer
+$(top_srcdir)/include/gnu_java_net_PlainDatagramSocketImpl.h: $(top_srcdir)/gnu/java/net/PlainDatagramSocketImpl.java
+	$(JAVAH) -o $@ gnu.java.net.PlainDatagramSocketImpl
+$(top_srcdir)/include/gnu_java_net_PlainSocketImpl.h: $(top_srcdir)/gnu/java/net/PlainSocketImpl.java
+	$(JAVAH) -o $@ gnu.java.net.PlainSocketImpl
 $(top_srcdir)/include/java_io_FileDescriptor.h: $(top_srcdir)/java/io/FileDescriptor.java
 	$(JAVAH) -o $@ java.io.FileDescriptor
 $(top_srcdir)/include/java_io_File.h: $(top_srcdir)/java/io/File.java
@@ -138,10 +142,6 @@ $(top_srcdir)/include/java_net_InetAddress.h: $(top_srcdir)/java/net/InetAddress
 	$(JAVAH) -o $@ java.net.InetAddress
 $(top_srcdir)/include/java_net_NetworkInterface.h: $(top_srcdir)/java/net/NetworkInterface.java
 	$(JAVAH) -o $@ java.net.NetworkInterface
-$(top_srcdir)/include/java_net_PlainDatagramSocketImpl.h: $(top_srcdir)/java/net/PlainDatagramSocketImpl.java
-	$(JAVAH) -o $@ java.net.PlainDatagramSocketImpl
-$(top_srcdir)/include/java_net_PlainSocketImpl.h: $(top_srcdir)/java/net/PlainSocketImpl.java
-	$(JAVAH) -o $@ java.net.PlainSocketImpl
 $(top_srcdir)/include/java_nio_DirectByteBufferImpl.h: $(top_srcdir)/java/nio/DirectByteBufferImpl.java
 	$(JAVAH) -o $@ java.nio.DirectByteBufferImpl
 $(top_srcdir)/include/java_nio_channels_FileChannelImpl.h: $(top_srcdir)/java/nio/channels/FileChannelImpl.java

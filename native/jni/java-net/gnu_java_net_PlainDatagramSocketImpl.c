@@ -53,7 +53,7 @@ exception statement from your version. */
   #include "target_native_network.h"
 #endif /* WITHOUT_NETWORK */
 
-#include "java_net_PlainDatagramSocketImpl.h"
+#include "gnu_java_net_PlainDatagramSocketImpl.h"
 
 /*
  * Note that most of the functions in this module simply redirect to another
@@ -67,7 +67,7 @@ exception statement from your version. */
  * Creates a new datagram socket
  */
 JNIEXPORT void JNICALL
-Java_java_net_PlainDatagramSocketImpl_create(JNIEnv *env, jobject this)
+Java_gnu_java_net_PlainDatagramSocketImpl_create(JNIEnv *env, jobject this)
 {
   assert(env!=NULL);
   assert((*env)!=NULL);
@@ -84,7 +84,7 @@ Java_java_net_PlainDatagramSocketImpl_create(JNIEnv *env, jobject this)
  * Close the socket.
  */
 JNIEXPORT void JNICALL
-Java_java_net_PlainDatagramSocketImpl_close(JNIEnv *env, jobject this)
+Java_gnu_java_net_PlainDatagramSocketImpl_close(JNIEnv *env, jobject this)
 {
   assert(env!=NULL);
   assert((*env)!=NULL);
@@ -103,7 +103,7 @@ Java_java_net_PlainDatagramSocketImpl_close(JNIEnv *env, jobject this)
  * variables. 
  */
 JNIEXPORT void JNICALL
-Java_java_net_PlainDatagramSocketImpl_bind(JNIEnv *env, jobject this, 
+Java_gnu_java_net_PlainDatagramSocketImpl_bind(JNIEnv *env, jobject this, 
                                            jint port, jobject addr)
 {
   assert(env!=NULL);
@@ -121,7 +121,7 @@ Java_java_net_PlainDatagramSocketImpl_bind(JNIEnv *env, jobject this,
  * This method sets the specified option for a socket
  */
 JNIEXPORT void JNICALL
-Java_java_net_PlainDatagramSocketImpl_setOption(JNIEnv *env, jobject this, 
+Java_gnu_java_net_PlainDatagramSocketImpl_setOption(JNIEnv *env, jobject this, 
                                                 jint option_id, jobject val)
 {
   assert(env!=NULL);
@@ -139,7 +139,7 @@ Java_java_net_PlainDatagramSocketImpl_setOption(JNIEnv *env, jobject this,
  * This method sets the specified option for a socket
  */
 JNIEXPORT jobject JNICALL
-Java_java_net_PlainDatagramSocketImpl_getOption(JNIEnv *env, jobject this, 
+Java_gnu_java_net_PlainDatagramSocketImpl_getOption(JNIEnv *env, jobject this, 
                                                 jint option_id)
 {
   assert(env!=NULL);
@@ -157,7 +157,7 @@ Java_java_net_PlainDatagramSocketImpl_getOption(JNIEnv *env, jobject this,
  * Reads a buffer from a remote host
  */
 JNIEXPORT void JNICALL
-Java_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this, 
+Java_gnu_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this, 
                                               jobject packet)
 {
 #ifndef WITHOUT_NETWORK
@@ -339,7 +339,7 @@ Java_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this,
  * Writes a buffer to the remote host
  */
 JNIEXPORT void JNICALL
-Java_java_net_PlainDatagramSocketImpl_sendto(JNIEnv *env, jobject this, 
+Java_gnu_java_net_PlainDatagramSocketImpl_sendto(JNIEnv *env, jobject this, 
                                              jobject addr, jint port, jarray buf, 
                                              jint len)
 {
@@ -370,7 +370,7 @@ Java_java_net_PlainDatagramSocketImpl_sendto(JNIEnv *env, jobject this,
  * Joins a multicast group
  */
 JNIEXPORT void JNICALL
-Java_java_net_PlainDatagramSocketImpl_join(JNIEnv *env, jobject this, 
+Java_gnu_java_net_PlainDatagramSocketImpl_join(JNIEnv *env, jobject this, 
                                            jobject addr)
 {
 #ifndef WITHOUT_NETWORK
@@ -416,7 +416,7 @@ Java_java_net_PlainDatagramSocketImpl_join(JNIEnv *env, jobject this,
  * Leaves a multicast group
  */
 JNIEXPORT void JNICALL
-Java_java_net_PlainDatagramSocketImpl_leave(JNIEnv *env, jobject this, 
+Java_gnu_java_net_PlainDatagramSocketImpl_leave(JNIEnv *env, jobject this, 
                                             jobject addr)
 {
 #ifndef WITHOUT_NETWORK

@@ -26,8 +26,6 @@ NetPermission.java \
 NetworkInterface.java \
 NoRouteToHostException.java \
 PasswordAuthentication.java \
-PlainDatagramSocketImpl.java \
-PlainSocketImpl.java \
 PortUnreachableException.java \
 ProtocolException.java \
 ServerSocket.java \
@@ -36,9 +34,7 @@ Socket.java \
 SocketException.java \
 SocketImplFactory.java \
 SocketImpl.java \
-SocketInputStream.java \
 SocketOptions.java \
-SocketOutputStream.java \
 SocketPermission.java \
 SocketTimeoutException.java \
 UnknownHostException.java \

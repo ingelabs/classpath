@@ -3,5 +3,9 @@
 SUBDIRS = content protocol
 
 EXTRA_DIST = \
-HeaderFieldHelper.java
+HeaderFieldHelper.java \
+PlainDatagramSocketImpl.java \
+PlainSocketImpl.java \
+SocketInputStream.java \
+SocketOutputStream.java
 

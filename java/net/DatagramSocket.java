@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package java.net;
 
+import gnu.java.net.PlainDatagramSocketImpl;
 import java.io.IOException;
 import java.nio.channels.DatagramChannel;
 import java.nio.channels.IllegalBlockingModeException;
