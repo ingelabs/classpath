@@ -1,5 +1,13 @@
 2003-06-11  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/BufferedReader.java
+	(mark): Throw exception if readLimit < 0.
+	* java/io/FileOutputStream.java
+	(FileOutputStream): Set FileDescriptor.WRITE flag when appending to a
+	file.
+
+2003-06-11  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/Socket.java:
 	New version from libgcj.
 
