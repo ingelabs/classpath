@@ -68,7 +68,7 @@ sub writeNativeFile
     # the HEADERS = ... stuff
     if ($#natives > -1)
     {
-	print MAKEDEP "HEADERS = \\", "\n";
+	print MAKEDEP "CP_HEADERS = \\", "\n";
 	foreach $i (0 .. $#natives-1)
 	{
 	    $j = $natives[$i];
