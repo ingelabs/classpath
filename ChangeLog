@@ -1,5 +1,24 @@
 2005-01-10  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JEditorPane.java
+	(read): Implemented.
+	(write): Likewise.
+	* javax/swing/text/DefaultEditorKit.java
+	(page): Renamed from page_url. Made private.
+	(editorKit): Renamed from kit. Made private.
+	(ctype): Removed.
+	(JEditorPane): All constructors reimplemented.
+	(getContentType): Use content type from editor kit.
+	(getEditorKit): Return editorKit.
+	(getEditorKitForContentType):Likewise.
+	(getPage): Return page.
+	(setContentType): Reimplemented.
+	(setEditorKit): Likewise.
+	(setEditorKitForContentType): Removed wrong implementation.
+	(setPage): Implemented.
+
+2005-01-10  Michael Koch  <konqueror@gmx.de>
+
 	* scripts/check_jni_methods.sh: Dont ignore
 	Java_gnu_java_awt_peer_gtk_GtkFramePeer_nativeSetIconImageFromData.
 
