@@ -257,7 +257,8 @@ awt_event_handler (GdkEvent *event)
        || event->type == GDK_CONFIGURE
        || event->type == GDK_EXPOSE
        || event->type == GDK_KEY_PRESS
-       || event->type == GDK_FOCUS_CHANGE)
+       || event->type == GDK_FOCUS_CHANGE
+       || event->type == GDK_MOTION_NOTIFY)
       && gdk_property_get (event->any.window,
 			   gdk_atom_intern ("_GNU_GTKAWT_ADDR", FALSE),
 			   gdk_atom_intern ("CARDINAL", FALSE),
@@ -328,6 +329,30 @@ awt_event_handler (GdkEvent *event)
 					  click_count, JNI_FALSE);
 	    
 	  }
+	  break;
+	case GDK_MOTION_NOTIFY:
+	  (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr, postMouseEventID,
+				      AWT_MOUSE_MOVED,
+				      (jlong)event->motion.time,
+				      state_to_awt_mods (event->motion.state),
+				      (jint)event->motion.x,
+				      (jint)event->motion.y,
+				      0, JNI_FALSE);
+
+	  if (event->motion.state & (GDK_BUTTON1_MASK
+				     | GDK_BUTTON2_MASK
+				     | GDK_BUTTON3_MASK
+				     | GDK_BUTTON4_MASK
+				     | GDK_BUTTON5_MASK))
+	    {
+	      (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr, postMouseEventID,
+					  AWT_MOUSE_DRAGGED,
+					  (jlong)event->motion.time,
+				       state_to_awt_mods (event->motion.state),
+					  (jint)event->motion.x,
+					  (jint)event->motion.y,
+					  0, JNI_FALSE);
+	    }
 	  break;
 	case GDK_ENTER_NOTIFY:
 	  (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr, postMouseEventID,
