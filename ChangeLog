@@ -1,3 +1,14 @@
+2003-06-13  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/nio/MappedByteFileBuffer.java,
+	gnu/java/nio/MappedCharFileBuffer.java,
+	gnu/java/nio/MappedDoubleFileBuffer.java,
+	gnu/java/nio/MappedFloatFileBuffer.java,
+	gnu/java/nio/MappedIntFileBuffer.java,
+	gnu/java/nio/MappedLongFileBuffer.java,
+	gnu/java/nio/MappedShortFileBuffer.java:
+	Removed.
+
 2003-06-13  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/border/BevelBorder.java: Re-written from scratch.
