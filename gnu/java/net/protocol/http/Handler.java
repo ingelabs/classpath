@@ -1,5 +1,5 @@
 /* Handler.java -- HTTP protocol handler for java.net
-   Copyright (c) 1998 Free Software Foundation, Inc.
+   Copyright (c) 1998, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,68 +37,48 @@ exception statement from your version. */
 
 package gnu.java.net.protocol.http;
 
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLStreamHandler;
 import java.net.URLConnection;
-import java.io.IOException;
 
 /**
-  * This is the protocol handler for the HTTP protocol.  It implements
-  * the abstract openConnection() method from URLStreamHandler by returning
-  * a new HttpURLConnection object (from this package).  All other 
-  * methods are inherited
-  *
-  * @version 0.1
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This is the protocol handler for the HTTP protocol.  It implements
+ * the abstract openConnection() method from URLStreamHandler by returning
+ * a new HttpURLConnection object (from this package).  All other 
+ * methods are inherited
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ */
 public class Handler extends URLStreamHandler
 {
+  /**
+   * A do nothing constructor
+   */
+  public Handler()
+  {
+  }
 
-/*************************************************************************/
+  /**
+   * This method returs a new HttpURLConnection for the specified URL
+   *
+   * @param url The URL to return a connection for
+   *
+   * @return The URLConnection
+   *
+   * @exception IOException If an error occurs
+   */
+  protected URLConnection openConnection (URL url) throws IOException
+  {
+    return new gnu.java.net.protocol.http.HttpURLConnection (url);
+  }
 
-/*
- * Constructors
- */
-
-/**
-  * A do nothing constructor
-  */
-public
-Handler()
-{
-  ;
-}
-
-/*************************************************************************/
-
-/*
- * Instance Methods
- */
-
-/**
-  * This method returs a new HttpURLConnection for the specified URL
-  *
-  * @param url The URL to return a connection for
-  *
-  * @return The URLConnection
-  *
-  * @exception IOException If an error occurs
-  */
-protected URLConnection
-openConnection(URL url) throws IOException
-{
-  return(new gnu.java.net.protocol.http.HttpURLConnection(url));
-}
-
-
-/**
- * Returns the default port for a URL parsed by this handler.
- */
-protected int getDefaultPort ()
-{
-  return 80;
-}
+  /**
+   * Returns the default port for a URL parsed by this handler.
+   */
+  protected int getDefaultPort()
+  {
+    return 80;
+  }
 
 } // class Handler
-

@@ -1,3 +1,10 @@
+2003-10-18  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/net/protocol/file/Handler.java,
+	gnu/java/net/protocol/http/Handler.java,
+	gnu/java/net/protocol/jar/Handler.java:
+	Reformated.
+
 2003-10-18  Ralph Loader  <rcl@ihug.co.nz>
 
 	* java/lang/StringBuffer.java (getChars): Fix array index checks.

@@ -1,5 +1,5 @@
 /* Handler.java -- "file" protocol handler for java.net
-   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,29 +37,27 @@ exception statement from your version. */
 
 package gnu.java.net.protocol.file;
 
+import gnu.java.io.PlatformHelper;
+import java.io.IOException;
 import java.net.URL;
 import java.net.URLStreamHandler;
 import java.net.URLConnection;
-import java.io.IOException;
-import gnu.java.io.PlatformHelper;
 
 /**
-  * This is the protocol handler for the "file" protocol.
-  * It implements the abstract openConnection() method from
-  * URLStreamHandler by returning a new FileURLConnection object (from
-  * this package).  All other methods are inherited
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This is the protocol handler for the "file" protocol.
+ * It implements the abstract openConnection() method from
+ * URLStreamHandler by returning a new FileURLConnection object (from
+ * this package).  All other methods are inherited
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ */
 public class Handler extends URLStreamHandler
 {
-
   /**
    * A do nothing constructor
    */
-  public Handler ()
+  public Handler()
   {
-    ;
   }
 
   /**
@@ -72,20 +70,19 @@ public class Handler extends URLStreamHandler
   protected URLConnection openConnection (URL url)
     throws IOException
   {
-    return (new gnu.java.net.protocol.file.FileURLConnection(url));
+    return new gnu.java.net.protocol.file.FileURLConnection (url);
   }
 
-/**
-  * This method overrides URLStreamHandler's for parsing url of protocol "file"
-  *
-  * @param url The URL object in which to store the results
-  * @param url_string The String-ized URL to parse
-  * @param start The position in the string to start scanning from
-  * @param end The position in the string to stop scanning
-  */
-protected void
-parseURL(URL url, String url_string, int start, int end)
-{
+  /**
+   * This method overrides URLStreamHandler's for parsing url of protocol "file"
+   *
+   * @param url The URL object in which to store the results
+   * @param url_string The String-ized URL to parse
+   * @param start The position in the string to start scanning from
+   * @param end The position in the string to stop scanning
+   */
+  protected void parseURL (URL url, String url_string, int start, int end)
+  {
     // This method does not throw an exception or return a value.  Thus our
     // strategy when we encounter an error in parsing is to return without
     // doing anything.
@@ -105,26 +102,29 @@ parseURL(URL url, String url_string, int start, int end)
     end = url_string.length() - end;
     
     // Skip remains of protocol
-    url_string = url_string.substring(start);
+    url_string = url_string.substring (start);
     
-    if ( !url.getProtocol().equals("file") )
-        return;
+    if ( !url.getProtocol().equals ("file"))
+      return;
     
     // Normalize the file separator
-    url_string = url_string.replace(System.getProperty("file.separator").charAt(0), '/');
+    url_string = url_string.replace
+      (System.getProperty ("file.separator").charAt (0), '/');
     
     // Deal with the case: file:///d|/dir/dir/file and file:///d%7C/dir/dir/file
-    url_string = url_string.replace('|', ':');
+    url_string = url_string.replace ('|', ':');
     int i;
-    if ((i = url_string.toUpperCase().indexOf("%7C")) >= 0)
-        url_string = url_string.substring(0, i) + ":" + url_string.substring(i+3);
+    
+    if ((i = url_string.toUpperCase().indexOf ("%7C")) >= 0)
+      url_string = url_string.substring (0, i) + ":" + url_string.substring (i + 3);
 
     boolean needContext = url.getFile() != null;
     // Skip the leading "//"
-    if (url_string.startsWith("//")){
-        url_string = url_string.substring(2);
+    if (url_string.startsWith ("//"))
+      {
+        url_string = url_string.substring (2);
         needContext = false;
-    }
+      }
 
     // Declare some variables
     String host = null;
@@ -133,74 +133,94 @@ parseURL(URL url, String url_string, int start, int end)
     String anchor = null;
     String prefix = "/";  //root path prefix of a file: could be "/", and for some windows file: "drive:/"
     
-    if (!needContext){
+    if (!needContext)
+      {
         boolean hostpart = true; //whether host part presents
         
         // Deal with the UNC case: //server/file
-        if ( url_string.startsWith("//") ){
+        if (url_string.startsWith ("//"))
+          {
             hostpart = true;
-            url_string = url_string.substring(2);
-        }
-        else {
+            url_string = url_string.substring (2);
+          }
+        else
+          {
             // If encounter another "/", it's end of a null host part or beginning of root path 
-            if ( url_string.startsWith("/") ){
+            if (url_string.startsWith ("/"))
+              {
                 hostpart = false;
-                // url_string = url_string.substring(1);
-            }
-        }
+                // url_string = url_string.substring (1);
+              }
+          }
         
         // If another "/" or "drive:/" or "drive:\\" encounters, 
-        if ( (i = PlatformHelper.beginWithRootPathPrefix(url_string)) > 0) {
+        if ((i = PlatformHelper.beginWithRootPathPrefix (url_string)) > 0)
+          {
             hostpart = false;
             // Skip root path prefix
-            prefix = url_string.substring(0, i);
+            prefix = url_string.substring (0, i);
             url_string = url_string.substring(i);
-        }
+          }
         
-        if (hostpart){
-          // Process host and port
-          int slash_index = url_string.indexOf("/");
-          int colon_index = url_string.indexOf(":");
+        if (hostpart)
+          {
+            // Process host and port
+            int slash_index = url_string.indexOf ("/");
+            int colon_index = url_string.indexOf (":");
         
-          if (slash_index > (url_string.length() - end))
+            if (slash_index > (url_string.length() - end))
               return;
-          else if (slash_index == -1)
+            else if (slash_index == -1)
               slash_index = url_string.length() - end;
         
-          if ((colon_index == -1) || (colon_index > slash_index)) {
-              host = url_string.substring(0, slash_index);
-          }
-          else {
-              host = url_string.substring(0, colon_index);
-          
-              String port_str = url_string.substring(colon_index + 1, slash_index);
-              try {
-                  port = Integer.parseInt(port_str);
+            if ((colon_index == -1)
+                || (colon_index > slash_index))
+              {
+                host = url_string.substring (0, slash_index);
               }
-              catch (NumberFormatException e) {
-                  return;
+            else
+              {
+                host = url_string.substring (0, colon_index);
+                String port_str = url_string.substring (colon_index + 1,
+                                                        slash_index);
+
+                try
+                  {
+                    port = Integer.parseInt(port_str);
+                  }
+                catch (NumberFormatException e)
+                  {
+                    return;
+                  }
               }
-          }
-          if (slash_index < (url_string.length() - 1))
-              url_string = url_string.substring(slash_index + 1);
-          else
+            
+            if (slash_index < (url_string.length() - 1))
+              url_string = url_string.substring (slash_index + 1);
+            else
               url_string = "";
-        }
-    }
+          }
+      }
     
     // Process file and anchor 
-    if (needContext){
+    if (needContext)
+      {
         host = url.getHost();
         port = url.getPort();
-        if ( (i = PlatformHelper.beginWithRootPathPrefix(url_string)) > 0){ //url string is an absolute path
+
+        if ((i = PlatformHelper.beginWithRootPathPrefix (url_string)) > 0)
+          { //url string is an absolute path
             file = url.getFile();
-            int j = PlatformHelper.beginWithRootPathPrefix(file);
+            int j = PlatformHelper.beginWithRootPathPrefix (file);
+
             if (j >= i)
-                file = file.substring(0, j) + url_string.substring(i);
+              file = file.substring (0, j) + url_string.substring (i);
             else
-                file = url_string;
-        }else{
+              file = url_string;
+          }
+        else
+          {
             file = url.getFile();
+
             /*
             // Is the following necessary?
             java.io.File f = new java.io.File(file);
@@ -209,78 +229,89 @@ parseURL(URL url, String url_string, int start, int end)
             }
             */
             
-            int idx = file.lastIndexOf("/");  
+            int idx = file.lastIndexOf ("/");  
+
             if (idx == -1) //context path is weird
-                file = "/" + url_string; 
+              file = "/" + url_string; 
             else if (idx == (file.length() - 1))
-                //just concatenate two parts
-                file = file + url_string;
+              //just concatenate two parts
+              file = file + url_string;
             else
-                file = file.substring(0, idx + 1) + url_string;
-        }
-    }else
-        file = prefix + url_string;  
+              file = file.substring (0, idx + 1) + url_string;
+          }
+      }
+    else
+      file = prefix + url_string;  
         
-    if (end == 0) {
+    if (end == 0)
+      {
         anchor = null;
-    } else {
+      }
+    else
+      {
         // Only set anchor if end char is a '#'.  Otherwise assume we're
         // just supposed to stop scanning for some reason
-        if (file.charAt(file.length() - end) == '#'){
+        if (file.charAt (file.length() - end) == '#')
+          {
             int len = file.length();
-            anchor = file.substring( len - end + 1, len);
-            file = file.substring(0, len - end);
-        }else
-            anchor = null;
-    }
-    file = PlatformHelper.toCanonicalForm(file, '/');
+            anchor = file.substring ( len - end + 1, len);
+            file = file.substring (0, len - end);
+          }
+        else
+          anchor = null;
+      }
+    
+    file = PlatformHelper.toCanonicalForm (file, '/');
 
-    if (host == null) {
+    if (host == null)
+      {
         host = "";
-    }
+      }
 
     // Now set the values
-    setURL(url, url.getProtocol(), host, port, file, anchor); 
-}
+    setURL (url, url.getProtocol(), host, port, file, anchor); 
+  }
 
+  /**
+   * This method overrides URLStreamHandler's as a specialized 
+   * and more efficient toExternalForm 
+   *
+   * @param url The URL object whose external form will be returned 
+   */
 
-/**
-  * This method overrides URLStreamHandler's as a specialized 
-  * and more efficient toExternalForm 
-  *
-  * @param url The URL object whose external form will be returned 
-  */
-
-protected String
-toExternalForm(URL url)
-{ 
-    StringBuffer sb = new StringBuffer(PlatformHelper.INITIAL_MAX_PATH);
-    sb.append("file:");
-    
+  protected String toExternalForm (URL url)
+  { 
+    StringBuffer sb = new StringBuffer (PlatformHelper.INITIAL_MAX_PATH);
+    sb.append ("file:");
     String prefix = url.getHost();
-    if(prefix != null && prefix.length() > 0){
-        sb.append(prefix);
+
+    if (prefix != null
+        && prefix.length() > 0)
+      {
+        sb.append (prefix);
         int port = url.getPort();
-        if (port > 0){
-          sb.append(':');
-          sb.append(port);
-	}
-    }
+        
+        if (port > 0)
+          {
+            sb.append (':');
+            sb.append (port);
+          }
+      }
     
     String file = url.getFile();
     if (file != null)
-        sb.append(file);
+      sb.append (file);
     else
-        sb.append('/');
+      sb.append ('/');
     
     String anchor = url.getRef();
-    if (anchor != null){
-        sb.append('#');
-        sb.append(anchor);
-    }
+    if (anchor != null)
+      {
+        sb.append ('#');
+        sb.append (anchor);
+      }
     
     return sb.toString();
-}
+  }
 
 } // class Handler
-
