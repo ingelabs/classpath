@@ -1,5 +1,5 @@
 /* Class.java -- Reference implementation of access to object metadata
-   Copyright (C) 1998, 2002 Free Software Foundation
+   Copyright (C) 1998, 2002, 2003 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -258,16 +258,7 @@ public final class Class implements Serializable
 	}
 	if (constructor == null)
 	    throw new InstantiationException(getName());
-      }
-    int modifiers = constructor.getModifiers();
-    if (!Modifier.isPublic(modifiers))
-      {
-	Class caller = VMSecurityManager.getClassContext()[1];
-	if (caller != this &&
-	    (Modifier.isPrivate(modifiers) || getClassLoader() != caller.getClassLoader() ||
-	    !ClassHelper.getPackagePortion(getName()).equals(ClassHelper.getPackagePortion(caller.getName()))))
-	    throw new IllegalAccessException(getName() + " has an inaccessible constructor");
-	if (!constructor.isAccessible())
+	if (!Modifier.isPublic(constructor.getModifiers()))
 	  {
 	    final Constructor finalConstructor = constructor;
 	    AccessController.doPrivileged(new PrivilegedAction() {
@@ -276,12 +267,24 @@ public final class Class implements Serializable
 		    return null;
 		}
 	    });
-	    synchronized(this)
-	      {
-		if (this.constructor == null)
-		    this.constructor = constructor;
-	      }
 	  }
+	synchronized(this)
+	  {
+	    if (this.constructor == null)
+		this.constructor = constructor;
+	  }	    
+      }
+    int modifiers = constructor.getModifiers();
+    if (!Modifier.isPublic(modifiers))
+      {
+	Class caller = VMSecurityManager.getClassContext()[1];
+	if (caller != this &&
+	    (Modifier.isPrivate(modifiers)
+	     || getClassLoader() != caller.getClassLoader()
+	     || !ClassHelper.getPackagePortion(getName())
+		.equals(ClassHelper.getPackagePortion(caller.getName()))))
+	    throw new IllegalAccessException(getName()
+			    + " has an inaccessible constructor");
       }
     try
       {
@@ -290,7 +293,8 @@ public final class Class implements Serializable
     catch (InvocationTargetException e)
       {
 	VMClass.throwException(e.getTargetException());
-	throw (InternalError) new InternalError("VMClass.throwException returned").initCause(e);
+	throw (InternalError) new InternalError
+		("VMClass.throwException returned").initCause(e);
       }
   }
 

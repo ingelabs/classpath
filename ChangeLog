@@ -1,3 +1,7 @@
+2003-07-17  Jeroen Frijters <jeroen@sumatra.nl>
+
+	* java/lang/Class.java (newInstance): Improved constructor caching.
+
 2003-07-16  Jeroen Frijters <jeroen@sumatra.nl>
 
 	* java/net/URLClassLoader.java (JarURLLoader.getResource): If the
