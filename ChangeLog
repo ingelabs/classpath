@@ -1,3 +1,11 @@
+2003-03-29  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/ClassLoader.java (getSystemClassLoader): Fixed
+	formatting.
+	(loadClass(String,boolean)): Likewise.
+	(getPackage): Likewise.
+	(getPackages): Likewise.
+
 2003-03-28  Michael Koch  <konqueror@gmx.de>
 
 	* java/text/MessageFormat.java (MessageFormat.serialVersionUID):

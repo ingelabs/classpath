@@ -280,37 +280,37 @@ public abstract class ClassLoader
    * @return the loaded class
    * @throws ClassNotFoundException if the class cannot be found
    */
-    protected synchronized Class loadClass(String name, boolean resolve)
-      throws ClassNotFoundException
-    {
-      // Have we already loaded this class?
-      Class c = findLoadedClass(name);
-      if (c != null)
-        return c;
-
-      // Can the class be loaded by a parent?
-      try
-      {
-        if (parent == null)
-        {
-          c = VMClassLoader.loadClass(name, resolve);
-          if (c != null)
-            return c;
-        }
-        else
-        {
-          return parent.loadClass(name, resolve);
-        }
-      }
-      catch (ClassNotFoundException e)
-      {
-      }
-      // Still not found, we have to do it ourself.
-      c = findClass(name);
-      if (resolve)
-        resolveClass(c);
+  protected synchronized Class loadClass(String name, boolean resolve)
+    throws ClassNotFoundException
+  {
+    // Have we already loaded this class?
+    Class c = findLoadedClass(name);
+    if (c != null)
       return c;
-    }
+
+    // Can the class be loaded by a parent?
+    try
+      {
+	if (parent == null)
+	  {
+	    c = VMClassLoader.loadClass(name, resolve);
+	    if (c != null)
+	      return c;
+	  }
+	else
+	  {
+	    return parent.loadClass(name, resolve);
+	  }
+      }
+    catch (ClassNotFoundException e)
+      {
+      }
+    // Still not found, we have to do it ourself.
+    c = findClass(name);
+    if (resolve)
+      resolveClass(c);
+    return c;
+  }
 
   /**
    * Called for every class name that is needed but has not yet been
@@ -723,17 +723,17 @@ public abstract class ClassLoader
    */
   public static ClassLoader getSystemClassLoader()
   {
-     // Check if we may return the system classloader
-      SecurityManager sm = System.getSecurityManager();
-      if (sm != null)
-	  {
-	      Class c = VMSecurityManager.getClassContext()[1];
-	      ClassLoader cl = c.getClassLoader();
-	      if (cl != null && cl != systemClassLoader)
-		  sm.checkPermission(new RuntimePermission("getClassLoader"));
-	  }
+    // Check if we may return the system classloader
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null)
+      {
+	Class c = VMSecurityManager.getClassContext()[1];
+	ClassLoader cl = c.getClassLoader();
+	if (cl != null && cl != systemClassLoader)
+	  sm.checkPermission(new RuntimePermission("getClassLoader"));
+      }
 
-      return systemClassLoader;
+    return systemClassLoader;
   }
 
   /**
@@ -799,10 +799,12 @@ public abstract class ClassLoader
       p = parent.getPackage(name);
 
     if (p == null)
-      synchronized (definedPackages)
-        {
-          p = (Package) definedPackages.get(name);
-        }
+      {
+	synchronized (definedPackages)
+	  {
+	    p = (Package) definedPackages.get(name);
+	  }
+      }
     return p;
   }
 
@@ -830,7 +832,7 @@ public abstract class ClassLoader
       parentPackages = parent.getPackages();
 
     Package[] allPackages = new Package[parentPackages.length
-                                       + packages.length];
+					+ packages.length];
     System.arraycopy(parentPackages, 0, allPackages, 0,
                      parentPackages.length);
     System.arraycopy(packages, 0, allPackages, parentPackages.length,
