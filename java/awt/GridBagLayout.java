@@ -54,16 +54,15 @@ public class GridBagLayout
   protected static final int MAXGRIDSIZE = 512;
 
   protected Hashtable comptable;
-  protected GridBagConstraints layoutInfo;
+  protected GridBagLayoutInfo layoutInfo;
   protected GridBagConstraints defaultConstraints = new GridBagConstraints();
+  
 
   public double[] columnWeights;
   public int[] columnWidths;
   public double[] rowWeights;
   public int[] rowHeights;
 
-  // FIXME: How should this class look like ?
-  //protected GridBagLayoutInfo layoutInfo;
   public GridBagLayout ()
   {
     // Do nothing here.
@@ -115,12 +114,12 @@ public class GridBagLayout
 
   public float getLayoutAlignmentX (Container target)
   {
-    throw new Error ("Not implemented");
+    return Component.CENTER_ALIGNMENT;
   }
 
   public float getLayoutAlignmentY (Container target)
   {
-    throw new Error ("Not implemented");
+    return Component.CENTER_ALIGNMENT;
   }
 
   public void invalidateLayout (Container target)
@@ -128,6 +127,9 @@ public class GridBagLayout
     this.layoutInfo = null;
   }
 
+  /**
+   * @since 1.4
+   */
   protected void adjustForGravity (GridBagConstraints gbc, Rectangle rect)
   {
     throw new Error ("Not implemented");
@@ -138,6 +140,9 @@ public class GridBagLayout
     adjustForGravity (gbc, rect);
   }
 
+  /**
+   * @since 1.4
+   */
   protected void arrangeGrid (Container parent)
   {
     throw new Error ("Not implemented");
@@ -169,11 +174,17 @@ public class GridBagLayout
     return (GridBagConstraints) comptable.get (component);
   }
 
+  /**
+   * @since 1.1
+   */
   public int[][] getLayoutDimensions ()
   {
     throw new Error ("Not implemented");
   }
 
+  /**
+   * @since 1.1
+   */
   public Point getLayoutOrigin ()
   {
     throw new Error ("Not implemented");
@@ -184,7 +195,36 @@ public class GridBagLayout
     throw new Error ("Not implemented");
   }
 
+  /**
+   * @since 1.1
+   */
   public Point location (int x, int y)
+  {
+    throw new Error ("Not implemented");
+  }
+
+  /**
+   * @since 1.4
+   */
+  protected GridBagLayoutInfo getLayoutInfo (Container parent, int sizeflag)
+  {
+    throw new Error ("Not implemented");
+  }
+
+  protected GridBagLayoutInfo GetLayoutInfo (Container parent, int sizeflag)
+  {
+    return getLayoutInfo (parent, sizeflag);
+  }
+
+  /**
+   * @since 1.4
+   */
+  protected Dimension getMinSize (Container parent, GridBagLayoutInfo info)
+  {
+    throw new Error ("Not implemented");
+  }
+
+  protected Dimension GetMinSize (Container parent, GridBagLayoutInfo info)
   {
     throw new Error ("Not implemented");
   }
