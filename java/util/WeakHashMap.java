@@ -76,7 +76,8 @@ import java.lang.ref.ReferenceQueue;
  * possible to do it with the jdk 1.2 reference model, though.
  *
  * @author Jochen Hoenicke
- * @author Eric Blake <ebb9@email.byu.edu>
+ * @author Eric Blake (ebb9@email.byu.edu)
+ *
  * @see HashMap
  * @see WeakReference
  * @see LinkedHashMap
@@ -150,7 +151,7 @@ public class WeakHashMap extends AbstractMap implements Map
   /**
    * The rounded product of the capacity (i.e. number of buckets) and
    * the load factor. When the number of elements exceeds the
-   * threshold, the HashMap calls <pre>rehash()</pre>.
+   * threshold, the HashMap calls <code>rehash()</code>.
    */
   private int threshold;
 
@@ -366,11 +367,11 @@ public class WeakHashMap extends AbstractMap implements Map
 
     /**
      * The slot of this entry. This should be
-     * <pre>
-     *  Math.abs(key.hashCode() % buckets.length)
-     * </pre>
+     * <code>Math.abs(key.hashCode() % buckets.length)</code>.
+     *
      * But since the key may be silently removed we have to remember
      * the slot number.
+     *
      * If this bucket was removed the slot is -1.  This marker will
      * prevent the bucket from being removed twice.
      */
