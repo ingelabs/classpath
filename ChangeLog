@@ -1,3 +1,8 @@
+2004-04-25  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/java-net/javanet.c (_javanet_accept): Retry when we get
+	EINTR.
+
 2004-04-25  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/FileDialog.java: Import java.io.Serializable explicitetly.

@@ -789,12 +789,17 @@ _javanet_accept(JNIEnv *env, jobject this, jobject impl)
     }
 
   /* Accept the connection */
-  /******* Do we need to look for EINTR? */
-  TARGET_NATIVE_NETWORK_SOCKET_ACCEPT(fd,newfd,result);
-  if (result != TARGET_NATIVE_OK)
+  while (result != TARGET_NATIVE_OK)
     {
-       JCL_ThrowException(env, IO_EXCEPTION, "Internal error: _javanet_accept(): ");
-       return;
+      TARGET_NATIVE_NETWORK_SOCKET_ACCEPT(fd,newfd,result);
+      if (result != TARGET_NATIVE_OK
+	  && (TARGET_NATIVE_LAST_ERROR()
+	      != TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL))
+	{
+	  JCL_ThrowException(env, IO_EXCEPTION,
+			     "Internal error: _javanet_accept(): ");
+	  return;
+	}
     }
 
   /* Populate instance variables */ 
