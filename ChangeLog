@@ -1,3 +1,7 @@
+2002-05-07  Etienne M. Gagnon  <etienne.gagnon@uqam.ca>
+
+	* native/jni/java-io/java_nio.c: Fixed file title in copyright notice.
+
 2002-05-06  Eric Blake  <ebb9@email.byu.edu>
 
 	* Makefile.am (SUBDIRS): Alphabetize.
@@ -285,6 +289,13 @@
 
 	* java/util/TreeMap.java (SubMap.values): return this.values instead
 	of this.keys
+
+2002-04-30  Etienne M. Gagnon <etienne.gagnon@uqam.ca>
+
+	* native/jni/java-io/Makefile.am: Re-added java_nio.c into JNI
+        build.
+	* native/jni/java-io/java_nio.c: Solved compile time problems under
+        gcc 2.95.x and added missing Copyright statement.
 
 2002-04-30  Eric Blake  <ebb9@email.byu.edu>
 

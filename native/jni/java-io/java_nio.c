@@ -1,4 +1,4 @@
-/* java_nio.c - Native methods for java.io.File class
+/* java_nio.c - Native methods for gnu.java.nio.FileChannelImpl class
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
