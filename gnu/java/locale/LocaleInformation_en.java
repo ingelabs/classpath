@@ -102,17 +102,27 @@ private static final String[] ampms = { "AM", "PM" };
 private static final String[] eras = { "BC", "AD" };
 
 /**
-  * This is the list of timezone strings.
+  * This is the list of timezone strings.  The JDK appears to include a
+  * city name as the sixth element.
   */
 private static final String[][] zoneStrings =
 {
-  { "EST6EDT", "Eastern Standard Time", "EST", "Eastern Daylight Time", "EDT" },
-  { "EST6", "Eastern Standard Time", "EST", "Eastern Standard Time", "EST" },
-  { "CST6CDT", "Central Standard Time", "CST", "Central Daylight Time", "CDT" },
+  { "EST6EDT", "Eastern Standard Time", "EST", "Eastern Daylight Time", "EDT",
+    "New York" },
+  { "EST6", "Eastern Standard Time", "EST", "Eastern Standard Time", "EST",
+    "Indianapolis" },
+  { "CST6CDT", "Central Standard Time", "CST", "Central Daylight Time", "CDT",
+    "Chicago" },
   { "MST6MDT", "Mountain Standard Time", "MST", "Mountain Daylight Time", 
-    "MDT" },
-  { "MST6", "Mountain Standard Time", "MST", "Mountain Standard Time", "MST" },
-  { "PST6PDT", "Pacific Standard Time", "PDT", "Pacific Daylight Time", "PDT" }
+    "MDT", "Denver" },
+  { "MST6", "Mountain Standard Time", "MST", "Mountain Standard Time", "MST",
+    "Phoenix" },
+  { "PST6PDT", "Pacific Standard Time", "PDT", "Pacific Daylight Time", "PDT",
+    "San Francisco" },
+  { "AST6ADT", "Alaska Standard Time", "AST", "Alaska Daylight Time", "ADT",
+    "Anchorage" },
+  { "HST6HDT", "Hawaii Standard Time", "HST", "Hawaii Daylight Time", "HDT",
+    "Honolulu" }
 };
 
 /**
