@@ -1,3 +1,17 @@
+2004-10-16  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkButtonPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c
+	(setNativeBounds): Set GtkEventBox, GtkButton and GtkLabel size
+	requests.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(setNativeBounds): Make package private.  Set size request even
+	if GTK parent is NULL.
+	* gnu/java/awt/peer/gtk/GtkLabelPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkLabelPeer.c
+	(setNativeBounds): Set GtkEventBox and GtkLabel size requests.
+
 2004-10-16  Michael Koch  <konqueror@gmx.de>
 
 	* vm/reference/java/lang/reflect/Method.java

@@ -1,5 +1,5 @@
 /* gtkwindowpeer.c -- Native implementation of GtkWindowPeer
-   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -413,7 +413,9 @@ request_frame_extents (GtkWidget *window)
 
   /* Check if the current window manager supports
      _NET_REQUEST_FRAME_EXTENTS. */
-  if (gdk_net_wm_supports (request_extents))
+  /* FIXME: The window->window != NULL check is a workaround for bug
+     http://bugzilla.gnome.org/show_bug.cgi?id=17952. */
+  if (gdk_net_wm_supports (request_extents) && window->window != NULL)
     {
       GdkDisplay *display = gtk_widget_get_display (window);
       Display *xdisplay = GDK_DISPLAY_XDISPLAY (display);
