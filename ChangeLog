@@ -1,3 +1,8 @@
+2001-09-07  John Leuner  <jewel@debian.org>
+
+	* java/util/zip/*.java: imported the jazzlib code. Should
+	all be functional.
+
 2001-09-05  Tom Tromey  <tromey@redhat.com>
 
 	* java/text/DecimalFormat.java (clone): Rewrote.
