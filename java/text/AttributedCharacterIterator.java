@@ -89,6 +89,7 @@ public static final Attribute INPUT_METHOD_SEGMENT =
 
 /**
   * This is the name of the attribute key
+  * @serial
   */
 private String name;
 
@@ -172,19 +173,10 @@ readResolve() throws InvalidObjectException
 public final boolean
 equals(Object obj)
 {
-  if (obj == null)
+  if (obj == this)
+    return(true);
+  else 
     return(false);
-
-  if (!(obj instanceof AttributedCharacterIterator.Attribute))
-    return(false);
-
-  AttributedCharacterIterator.Attribute attrib = 
-      (AttributedCharacterIterator.Attribute)obj;
-
-  if (!name.equals(attrib.getName()))
-    return(false);
-
-  return(true);
 }
 
 /*************************************************************************/
