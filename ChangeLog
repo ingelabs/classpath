@@ -1,5 +1,12 @@
 2004-10-15  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/Object.java (equals): Rename 'o' to 'obj'.
+	* java/lang/Runtime.java, java/lang/Thread.java,
+	java/lang/ThreadLocal.java, java/lang/Void.java:
+	Improved javadocs to be valid XHTML.
+
+2004-10-15  Michael Koch  <konqueror@gmx.de>
+
 	* java/lang/reflect/Proxy.java: Improved javadocs.
 
 2004-10-15  Michael Koch  <konqueror@gmx.de>

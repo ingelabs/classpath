@@ -80,27 +80,27 @@ public class Runtime
    * treated as read-only.
    *
    * No matter what class you start initialization with, it defers to the
-   * superclass, therefore Object.<clinit> will be the first Java code
+   * superclass, therefore Object.&lt;clinit&gt; will be the first Java code
    * executed. From there, the bootstrap sequence, up to the point that
    * native libraries are loaded (as of March 24, when I traced this
    * manually) is as follows:
    *
-   * Object.<clinit> uses a String literal, possibly triggering initialization
-   *  String.<clinit> calls WeakHashMap.<init>, triggering initialization
+   * Object.&lt;clinit&gt; uses a String literal, possibly triggering initialization
+   *  String.&lt;clinit&gt; calls WeakHashMap.&lt;init&gt;, triggering initialization
    *   AbstractMap, WeakHashMap, WeakHashMap$1 have no dependencies
-   *  String.<clinit> calls CaseInsensitiveComparator.<init>, triggering
+   *  String.&lt;clinit&gt; calls CaseInsensitiveComparator.&lt;init&gt;, triggering
    *      initialization
    *   CaseInsensitiveComparator has no dependencies
-   * Object.<clinit> calls System.loadLibrary, triggering initialization
-   *  System.<clinit> calls System.loadLibrary
+   * Object.&lt;clinit&gt; calls System.loadLibrary, triggering initialization
+   *  System.&lt;clinit&gt; calls System.loadLibrary
    *  System.loadLibrary calls Runtime.getRuntime, triggering initialization
-   *   Runtime.<clinit> calls Properties.<init>, triggering initialization
+   *   Runtime.&lt;clinit&gt; calls Properties.&lt;init&gt;, triggering initialization
    *    Dictionary, Hashtable, and Properties have no dependencies
-   *   Runtime.<clinit> calls VMRuntime.insertSystemProperties, triggering
+   *   Runtime.&lt;clinit&gt; calls VMRuntime.insertSystemProperties, triggering
    *      initialization of VMRuntime; the VM must make sure that there are
    *      not any harmful dependencies
-   *   Runtime.<clinit> calls Runtime.<init>
-   *    Runtime.<init> calls StringTokenizer.<init>, triggering initialization
+   *   Runtime.&lt;clinit&gt; calls Runtime.&lt;init&gt;
+   *    Runtime.&lt;init&gt; calls StringTokenizer.&lt;init&gt;, triggering initialization
    *     StringTokenizer has no dependencies
    *  System.loadLibrary calls Runtime.loadLibrary
    *   Runtime.loadLibrary should be able to load the library, although it
