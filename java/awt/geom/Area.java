@@ -584,6 +584,9 @@ public class Area implements Shape, Cloneable
    */
   public boolean isRectangular()
   {
+    if (isEmpty())
+      return true;
+
     if (holes.size() != 0 || solids.size() != 1)
       return false;
 
@@ -700,6 +703,9 @@ public class Area implements Shape, Cloneable
    */
   public boolean equals(Area area)
   {
+    if (area == null)
+      return false;
+
     if (! getBounds2D().equals(area.getBounds2D()))
       return false;
 
@@ -919,7 +925,7 @@ public class Area implements Shape, Cloneable
       }
 
     // Non-intersecting, Is any point inside?
-    if (contains(x, y))
+    if (contains(x + w * 0.5, y + h * 0.5))
       return true;
 
     // What if the rectangle encloses the whole shape?
@@ -2515,12 +2521,13 @@ public class Area implements Shape, Cloneable
 	return 0;
 
       if (y0 == 0.0)
-	y0 += EPSILON;
+	y0 -= EPSILON;
 
       if (y1 == 0.0)
-	y1 += EPSILON;
+	y1 -= EPSILON;
 
-      if (Line2D.linesIntersect(x0, y0, x1, y1, 0.0, 0.0, Double.MAX_VALUE, 0.0))
+      if (Line2D.linesIntersect(x0, y0, x1, y1, 
+				EPSILON, 0.0, Double.MAX_VALUE, 0.0))
 	return 1;
       return 0;
     }
@@ -2727,9 +2734,9 @@ public class Area implements Shape, Cloneable
       if ((x0 > 0.0 || x1 > 0.0 || x2 > 0.0) && (y0 * y1 <= 0 || y1 * y2 <= 0))
         {
 	  if (y0 == 0.0)
-	    y0 += EPSILON;
+	    y0 -= EPSILON;
 	  if (y2 == 0.0)
-	    y2 += EPSILON;
+	    y2 -= EPSILON;
 
 	  r[0] = y0;
 	  r[1] = 2 * (y1 - y0);
@@ -3139,9 +3146,9 @@ public class Area implements Shape, Cloneable
           && (y0 * y1 <= 0 || y1 * y2 <= 0 || y2 * y3 <= 0))
         {
 	  if (y0 == 0.0)
-	    y0 += EPSILON;
+	    y0 -= EPSILON;
 	  if (y3 == 0.0)
-	    y3 += EPSILON;
+	    y3 -= EPSILON;
 
 	  r[0] = y0;
 	  r[1] = 3 * (y1 - y0);

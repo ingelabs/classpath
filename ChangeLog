@@ -1,3 +1,29 @@
+2004-09-07  Sven de Marothy  <sven@physto.se>
+	* java/awt/geom/doc-files/Area-1.png:
+	Graphics for Area documentation. New file.
+
+	* java/awt/geom/doc-files/Ellipse-1.png:
+	Graphics for Ellipse2D documentation. New file.
+
+	* java/awt/geom/doc-files/GeneralPath-1.png:
+	Graphics for GeneralPath documentation. New file.
+
+	* java/awt/geom/Arc2D.java:
+	(intersects): Fix: Now checks the arc segment.
+	(contains): Cleaned up.
+
+	* java/awt/geom/Area.java:
+	(isRectangular): Should return true on an empty path.
+	(equals): Check for null.
+	(rayIntersects): Fix insideness-test
+
+	* java/awt/geom/CubicCurve2D.java:
+	Fix insideness-test to comply with the correct behavior on edges
+	* java/awt/geom/GeneralPath.java:
+	Likewise
+	* java/awt/geom/QuadCurve2D.java:
+	Likewise
+	
 2004-09-07  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/util/TimeZone.java

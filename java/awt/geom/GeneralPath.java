@@ -793,11 +793,11 @@ public final class GeneralPath implements Shape, Cloneable
 		y1 = firsty;
 
 		if (y0 == 0.0)
-		  y0 += epsilon;
+		  y0 -= epsilon;
 		if (y1 == 0.0)
-		  y1 += epsilon;
-		if (Line2D.linesIntersect(x0, y0, x1, y1, 0.0, 0.0, distance,
-		                          0.0))
+		  y1 -= epsilon;
+		if (Line2D.linesIntersect(x0, y0, x1, y1, 
+					  epsilon, 0.0, distance, 0.0))
 		  windingNumber += (y1 < y0) ? 1 : negative;
 
 		cx = firstx;
@@ -814,10 +814,11 @@ public final class GeneralPath implements Shape, Cloneable
 	    y1 = firsty;
 
 	    if (y0 == 0.0)
-	      y0 += epsilon;
+	      y0 -= epsilon;
 	    if (y1 == 0.0)
-	      y1 += epsilon;
-	    if (Line2D.linesIntersect(x0, y0, x1, y1, 0.0, 0.0, distance, 0.0))
+	      y1 -= epsilon;
+	    if (Line2D.linesIntersect(x0, y0, x1, y1, 
+				      epsilon, 0.0, distance, 0.0))
 	      windingNumber += (y1 < y0) ? 1 : negative;
 
 	    cx = firstx;
@@ -832,10 +833,11 @@ public final class GeneralPath implements Shape, Cloneable
 	    y1 = ypoints[pos++] - (float) y;
 
 	    if (y0 == 0.0)
-	      y0 += epsilon;
+	      y0 -= epsilon;
 	    if (y1 == 0.0)
-	      y1 += epsilon;
-	    if (Line2D.linesIntersect(x0, y0, x1, y1, 0.0, 0.0, distance, 0.0))
+	      y1 -= epsilon;
+	    if (Line2D.linesIntersect(x0, y0, x1, y1, 
+				      epsilon, 0.0, distance, 0.0))
 	      windingNumber += (y1 < y0) ? 1 : negative;
 
 	    cx = xpoints[pos - 1] - (float) x;
@@ -854,9 +856,9 @@ public final class GeneralPath implements Shape, Cloneable
 	        && (y0 * y1 <= 0 || y1 * y2 <= 0))
 	      {
 		if (y0 == 0.0)
-		  y0 += epsilon;
+		  y0 -= epsilon;
 		if (y2 == 0.0)
-		  y2 += epsilon;
+		  y2 -= epsilon;
 
 		r[0] = y0;
 		r[1] = 2 * (y1 - y0);
@@ -897,9 +899,9 @@ public final class GeneralPath implements Shape, Cloneable
 	        && (y0 * y1 <= 0 || y1 * y2 <= 0 || y2 * y3 <= 0))
 	      {
 		if (y0 == 0.0)
-		  y0 += epsilon;
+		  y0 -= epsilon;
 		if (y3 == 0.0)
-		  y3 += epsilon;
+		  y3 -= epsilon;
 
 		r[0] = y0;
 		r[1] = 3 * (y1 - y0);
@@ -942,3 +944,4 @@ public final class GeneralPath implements Shape, Cloneable
     return (windingNumber);
   }
 } // class GeneralPath
+
