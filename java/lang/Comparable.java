@@ -31,7 +31,7 @@ package java.lang;
 
     @see java.util.Comparator
 */
-public interface Comparable
+public abstract interface Comparable
 {
   /**
      @return a negative integer if this object is less than
