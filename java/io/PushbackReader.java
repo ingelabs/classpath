@@ -1,5 +1,5 @@
 /* PushbackReader.java -- An character stream that can unread chars
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -40,6 +40,7 @@ package java.io;
   * @version 0.0
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Warren Levy <warrenl@cygnus.com>
   */
 public class PushbackReader extends FilterReader
 {
@@ -109,6 +110,9 @@ PushbackReader(Reader in, int bufsize)
 {
   super(in);
 
+  if (bufsize < 0)
+    throw new IllegalArgumentException("buffer size must be positive");
+
   buf = new char[bufsize];
   pos = bufsize;
 }
@@ -127,7 +131,11 @@ PushbackReader(Reader in, int bufsize)
 public void
 close() throws IOException
 {
-  super.close();
+  synchronized (lock)
+    {
+      buf = null;
+      super.close();
+    }
 }
 
 /*************************************************************************/
@@ -143,7 +151,7 @@ close() throws IOException
 public void
 mark(int read_limit) throws IOException
 {
-  throw new IOException("Mark not supported in this class");
+  throw new IOException("mark not supported in this class");
 }
 
 /*************************************************************************/
@@ -172,7 +180,7 @@ markSupported()
 public void
 reset() throws IOException
 {
-  throw new IOException("Mark not supported in this class");
+  throw new IOException("reset not supported in this class");
 }
 
 /*************************************************************************/
@@ -194,10 +202,16 @@ reset() throws IOException
 public boolean
 ready() throws IOException
 {
-  if (((buf.length - pos) > 0) || in.ready())
-    return(true);
-  else
-    return(false);
+  synchronized (lock)
+    {
+      if (buf == null)
+	throw new IOException ("stream closed");
+
+      if (((buf.length - pos) > 0) || super.ready())
+	return(true);
+      else
+	return(false);
+    }
 }
 
 /*************************************************************************/
@@ -222,25 +236,24 @@ ready() throws IOException
 public long
 skip(long num_chars) throws IOException
 {
-  if (num_chars <= 0)
-    return(0);
-
-  synchronized (lock) {
-
-  if ((buf.length - pos) >= num_chars)
+  synchronized (lock)
     {
-      pos += num_chars;
-      return(num_chars);
-    }
+      if (num_chars <= 0)
+	return(0);
 
-  int chars_discarded = buf.length - pos;
-  pos = buf.length;
+      if ((buf.length - pos) >= num_chars)
+	{
+	  pos += num_chars;
+	  return(num_chars);
+	}
 
-  long chars_skipped = in.skip(num_chars - chars_discarded);
+      int chars_discarded = buf.length - pos;
+      pos = buf.length;
 
-  return(chars_discarded + chars_skipped);
+      long chars_skipped = in.skip(num_chars - chars_discarded);
 
-  } // synchronized
+      return(chars_discarded + chars_skipped);
+    } // synchronized
 }
 
 /*************************************************************************/
@@ -261,15 +274,17 @@ skip(long num_chars) throws IOException
 public int
 read() throws IOException
 {
-  if (pos == buf.length)
-    return(in.read());
- 
-  synchronized (lock) {
+  synchronized (lock)
+    {
+      if (buf == null)
+        throw new IOException("stream closed");
 
-  ++pos;
-  return((buf[pos - 1] & 0xFFFF));
+      if (pos == buf.length)
+	return(super.read());
 
-  }
+      ++pos;
+      return((buf[pos - 1] & 0xFFFF));
+    }
 }
 
 /*************************************************************************/
@@ -298,63 +313,26 @@ read() throws IOException
   * @exception IOException If an error occurs.
   */
 public synchronized int
-read(char[] buf, int offset, int len) throws IOException
+read(char[] b, int offset, int len) throws IOException
 {
-  if (len == 0)
-    return(0);
-
-  synchronized (lock) {
-
-  // Read the first char here in order to allow IOException's to 
-  // propagate up
-
-  int char_read = read();
-  if (char_read == -1)
-    return(-1);
-  buf[offset] = (char)char_read;
-
-  if (len == 1)
-    return(1);
-
-  int total_read = 1;
-
-  // Grab chars from pushback buffer if available
-  if (pos != this.buf.length)
+  synchronized (lock)
     {
-      int desired_chars = 0;
-      if ((this.buf.length - pos) >= (len - total_read))
-        desired_chars = len - total_read;
-      else
-        desired_chars = this.buf.length - pos;
+      if (buf == null)
+        throw new IOException("stream closed");
 
-      System.arraycopy(this.buf, pos, buf, offset + total_read, desired_chars);
+      if (offset < 0 || len < 0 || offset + len > b.length)
+        throw new ArrayIndexOutOfBoundsException();
 
-      total_read += desired_chars;
-      pos += desired_chars;
+      int numBytes = Math.min(buf.length - pos, len);
+      if (numBytes > 0)
+	{
+	  System.arraycopy (buf, pos, b, offset, numBytes);
+	  pos += numBytes;
+	  return numBytes;
+	}
+
+      return super.read(b, offset, len);
     }
-
-  // Read from underlying stream if we still need chars
-  if (total_read != len)
-    {
-      int chars_read = 0;
-      try
-        {
-          chars_read = in.read(buf, offset + total_read, len - total_read);
-        }
-      catch(IOException e)
-        {
-          return(total_read);
-        }
-
-      if (chars_read == -1)
-        return(total_read);
-
-      total_read += chars_read;
-    }
-
-  return(total_read);
-
-  } // synchronized
 }
 
 /*************************************************************************/
@@ -376,15 +354,16 @@ read(char[] buf, int offset, int len) throws IOException
 public void
 unread(int b) throws IOException
 {
-  if (pos == 0)
-    throw new IOException("Pushback buffer is full");
+  synchronized (lock)
+    {
+      if (buf == null)
+	throw new IOException("stream closed");
+      if (pos == 0)
+	throw new IOException("Pushback buffer is full");
 
-  synchronized (lock) {
-
-  --pos;
-  buf[pos] = (char)(b & 0xFFFF);
-
-  } // synchronized
+      --pos;
+      buf[pos] = (char)(b & 0xFFFF);
+    } // synchronized
 }
 
 /*************************************************************************/
@@ -427,21 +406,24 @@ unread(char[] buf) throws IOException
   * @exception IOException If the pushback buffer is full
   */
 public synchronized void
-unread(char[] buf, int offset, int len) throws IOException
+unread(char[] b, int offset, int len) throws IOException
 {
-  if (pos < (len - 1))
-    throw new IOException("Insufficient space in pushback buffer");
-
-  synchronized (lock) {
-
-  for (int i = (offset + len) - 1; i >= offset; i--)
+  synchronized (lock)
     {
-      --pos;
-      this.buf[pos] = buf[i];
-    }
+      if (buf == null)
+        throw new IOException("stream closed");
+      if (pos < len)
+	throw new IOException("Pushback buffer is full");
 
-  } //synchronized
+      // Note the order that these chars are being added is the opposite
+      // of what would be done if they were added to the buffer one at a time.
+      // See the Java Class Libraries book p. 1397.
+      System.arraycopy(b, offset, buf, pos - len, len);
+
+      // Don't put this into the arraycopy above, an exception might be thrown
+      // and in that case we don't want to modify pos.
+      pos -= len;
+    }
 }
 
 } // class PushbackReader
-

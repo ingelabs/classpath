@@ -1,3 +1,18 @@
+2000-11-16  Tom Tromey  <tromey@cygnus.com>
+
+	Merged with libgcj:
+	* java/io/PushbackReader.java (PushbackReader): Throw correct
+	exception if buffer size not positive.
+	(close): Reset buf.  Synchronize.
+	(mark, reset): Minor changes to exception text.
+	(ready): Throw exception if stream closed.  Synchronize.
+	(skip): Indentation cleanup.  Fixed synchronization.
+	(read): Fixed synchronization.  Throw exception if stream closed.
+	Indentation cleanup.
+	(read(char[],int,int)): Use libgcj implementation.
+	(unread): Fixed synchronization, indentation.
+	(unread(char[],int,int): Use libgcj implementation.
+
 2000-11-17  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	* java/util/Locale.java: Fix reformatting screw-up.
