@@ -1,3 +1,9 @@
+2004-07-12  Mark Wielaard  <mark@klomp.org>
+
+	* doc/www.gnu.org/announce/20040712.wml: New file.
+	* doc/www.gnu.org/downloads/downloads.wml: Add 0.10 release.
+	* doc/www.gnu.org/newsitems.txt: Add announcement.
+
 2004-07-10  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/io/BufferedInputStream.java (count, pos, marklimit): Removed

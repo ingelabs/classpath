@@ -1,3 +1,7 @@
+<newsitem date="12 Jul 2004">
+<createlink name="GNU Classpath 0.10" url="announce/20040712.wml">
+</newsitem>
+
 <newsitem date="06 Jul 2004">
 <createlink name="Emacs support for GNU Classpath coding style" url="http://lists.gnu.org/archive/html/classpath/2004-07/msg00077.html">
 </newsitem>
