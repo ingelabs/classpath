@@ -85,6 +85,9 @@ private static final int DEFAULT_CACHE_PURGE_PCT = 30;
   */
 private static InetAddress inaddr_any;
 
+/** dummy InetAddress, used to bind socket to any (all) network interfaces */
+static InetAddress ANY_IF;
+
 /**
   * The size of the cache
   */
@@ -125,6 +128,18 @@ static
   // Create the cache
   if (cache_size != 0)
       cache = new Hashtable(cache_size);
+
+  // precompute the ANY_IF address
+  try
+    {
+      ANY_IF = getInaddrAny();
+    }
+  catch (UnknownHostException uhe)
+    {
+      // Hmmm, make one up and hope that it works.
+      int[] zeros = {0,0,0,0};
+      ANY_IF = new InetAddress(zeros);
+    }
 }      
 
 /*************************************************************************/
