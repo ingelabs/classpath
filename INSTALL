@@ -22,7 +22,7 @@ can be overridden by specifying a java executable to use (the
 --with-java=<path-to-java> option) and the class library archive to use 
 (the --with-classlib=<path-to-classlib> option).  It is a good idea to 
 use these last two options to specify the JDK for compiling, since 
-Japhar current doesn't work. :-)
+Japhar currently doesn't work. :-)
 
 Recompilation of the Java packages is not done by default.  The compiled
 classes are included with this distribution.  To enable recompilation,
