@@ -70,13 +70,13 @@ public class DeflaterOutputStream extends FilterOutputStream
    * The deflater which is used to deflate the stream.
    */
   protected Deflater def;
-
+  
   /**
    * Deflates everything in the def's input buffers.  This will call
    * <code>def.deflate()</code> until all bytes from the input buffers
    * are processed.
    */
-  protected void deflate () throws IOException
+  protected void deflate() throws IOException
   {
     while (! def.needsInput())
       {
@@ -97,9 +97,9 @@ public class DeflaterOutputStream extends FilterOutputStream
    * default buffer size.
    * @param out the output stream where deflated output should be written.
    */
-  public DeflaterOutputStream (OutputStream out)
+  public DeflaterOutputStream(OutputStream out)
   {
-    this (out, new Deflater (), 512);
+    this(out, new Deflater(), 512);
   }
 
   /** 
@@ -108,9 +108,9 @@ public class DeflaterOutputStream extends FilterOutputStream
    * @param out the output stream where deflated output should be written.
    * @param defl the underlying deflater.
    */
-  public DeflaterOutputStream (OutputStream out, Deflater defl)
+  public DeflaterOutputStream(OutputStream out, Deflater defl)
   {
-    this (out, defl, 512);
+    this(out, defl, 512);
   }
 
   /** 
@@ -123,7 +123,7 @@ public class DeflaterOutputStream extends FilterOutputStream
    */
   public DeflaterOutputStream(OutputStream out, Deflater defl, int bufsize)
   {
-    super (out);
+    super(out);
     if (bufsize <= 0)
       throw new IllegalArgumentException("bufsize <= 0");
     buf = new byte[bufsize];
@@ -148,10 +148,10 @@ public class DeflaterOutputStream extends FilterOutputStream
    * was the only way to ensure that all bytes are flushed in Sun's
    * JDK.  
    */
-  public void finish () throws IOException
+  public void finish() throws IOException
   {
     def.finish();
-    while (! def.finished ())
+    while (! def.finished())
       {
 	int len = def.deflate(buf, 0, buf.length);
 	if (len <= 0)
@@ -164,7 +164,7 @@ public class DeflaterOutputStream extends FilterOutputStream
   }
 
   /**
-   * Calls finish () and closes the stream. 
+   * Calls finish() and closes the stream. 
    */
   public void close() throws IOException
   {

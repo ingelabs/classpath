@@ -1,3 +1,13 @@
+2004-06-15  Michael Koch  <konqueror@gmx.de>
+
+	* java/util/zip/DeflaterOutputStream.java:
+	Reformatted.
+	* java/util/zip/InflaterInputStream.java
+	(InflaterInputStream): Removed redundant initialization of len to 0.
+	(available): Check for closed stream.
+	(read): Likewise.
+	(skip): Check for closed stream, simplified implementation.
+
 2004-06-14  Patrik Reali  <reali@acm.org>
 
 	* doc/www.gnu.org/newsitems.txt: consistent layout and latest news
