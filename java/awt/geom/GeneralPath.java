@@ -148,39 +148,68 @@ public final class GeneralPath implements Shape, Cloneable
   {
     append(s.getPathIterator(null), connect);
   }
-  public void append(PathIterator i, boolean connect)
+
+
+  /**
+   * Appends the segments of a PathIterator to this GeneralPath.
+   * Optionally, the initial {@link PathIterator#SEG_MOVETO} segment
+   * of the appended path is changed into a {@link
+   * PathIterator#SEG_LINETO} segment.
+   *
+   * @param iter the PathIterator specifying which segments shall be
+   * appended.
+   * 
+   * @param connect <code>true</code> for substituting the initial
+   * {@link PathIterator#SEG_MOVETO} segment by a {@link
+   * PathIterator#SEG_LINETO}, or <code>false</code> for not
+   * performing any substitution. If this GeneralPath is currently
+   * empty, <code>connect</code> is assumed to be <code>false</code>,
+   * thus leaving the initial {@link PathIterator#SEG_MOVETO}
+   * unchanged.
+   */
+  public void append(PathIterator iter, boolean connect)
   {
+    // A bad implementation of this method had caused Classpath bug #6076.
     float[] f = new float[6];
-    while (! i.isDone())
+    while (!iter.isDone())
+    {
+      switch (iter.currentSegment(f))
       {
-        int result = i.currentSegment(f);
-        switch (result)
-          {
-          case PathIterator.SEG_MOVETO:
-            if (! connect)
-              {
-                moveTo(f[0], f[1]);
-                break;
-              }
-            if (subpath >= 0 && f[0] == points[subpath]
-                && f[1] == points[subpath + 1])
-              break;
-            // Fallthrough.
-          case PathIterator.SEG_LINETO:
-            lineTo(f[0], f[1]);
-            break;
-          case PathIterator.SEG_QUADTO:
-            quadTo(f[0], f[1], f[2], f[3]);
-            break;
-          case PathIterator.SEG_CUBICTO:
-            curveTo(f[0], f[1], f[2], f[3], f[4], f[5]);
-            break;
-          default:
-            closePath();
-          }
-        connect = false;
+      case PathIterator.SEG_MOVETO:
+        if (!connect || (index == 0))
+        {
+          moveTo(f[0], f[1]);
+          break;
+        }
+
+        if ((index >= 2) && (types[(index - 2) >> 2] == PathIterator.SEG_CLOSE)
+            && (f[0] == points[index - 2]) && (f[1] == points[index - 1]))
+          break;
+        
+        // Fall through.
+
+      case PathIterator.SEG_LINETO:
+        lineTo(f[0], f[1]);
+        break;
+
+      case PathIterator.SEG_QUADTO:
+        quadTo(f[0], f[1], f[2], f[3]);
+        break;
+
+      case PathIterator.SEG_CUBICTO:
+        curveTo(f[0], f[1], f[2], f[3], f[4], f[5]);
+        break;
+
+      case PathIterator.SEG_CLOSE:
+        closePath();
+        break;
       }
+
+      connect = false;
+      iter.next();
+    }
   }
+
 
   public int getWindingRule()
   {
