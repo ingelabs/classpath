@@ -1,3 +1,10 @@
+2003-06-10  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/border/AbstractBorder.java,
+	javax/swing/border/Border.java,
+	javax/swing/border/CompoundBorder.java:
+	Reworked imports and constructors, reformatted files.
+
 2003-06-09  John Leuner  <jewel@debian.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c,
