@@ -1,5 +1,9 @@
 2003-04-07  Archie Cobbs  <archie@dellroad.org>
 
+	* java/lang/Character.java (digit): char[] array element never negative
+
+2003-04-07  Archie Cobbs  <archie@dellroad.org>
+
 	* vm/reference/java/lang/Thread.java (currentThread): javadoc updates
 
 2003-04-07  Aaron M. Renn (arenn@urbanophile.com)
