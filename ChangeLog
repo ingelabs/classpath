@@ -1,3 +1,8 @@
+2004-09-26  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/SpringLayout.java
+	(Constraints): May not be final.
+
 2004-09-26  Mark Wielaard  <mark@klomp.org>
 
 	* java/lang/Throwable.java (StaticData.nl): Make package private.
