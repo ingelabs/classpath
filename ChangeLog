@@ -1,3 +1,8 @@
+2005-01-10  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFramePeer.c
+	(nativeSetIconImageFromData): Re-add native implementation.
+
 2005-01-09  Mark Wielaard  <mark@klomp.org>
 
 	* java/security/AlgorithmParameterGenerator.java (getInstance):
