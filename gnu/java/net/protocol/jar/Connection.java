@@ -97,8 +97,8 @@ public final class Connection extends JarURLConnection
 	  
 	  fos.close();
 	  // Always verify the Manifest, open read only and delete when done.
-	  jar_file = new JarFile (f, true,
-				  ZipFile.OPEN_READ | ZipFile.OPEN_DELETE);
+	  jf = new JarFile (f, true,
+			    ZipFile.OPEN_READ | ZipFile.OPEN_DELETE);
 	}
           
       cache.put (url, jf);
