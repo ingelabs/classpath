@@ -93,7 +93,7 @@ public class Date implements Cloneable, Comparable, java.io.Serializable {
     /**
      * Creates a new Date from the given string representation.  This
      * does the same as <code>new Date(Date.parse(s))</code>
-     * @see parse
+     * @see #parse
      * @deprecated use <code>java.text.DateFormat.parse(s)</code> instead.  
      */
     public Date(String s) {
@@ -109,6 +109,19 @@ public class Date implements Cloneable, Comparable, java.io.Serializable {
     }
 
     /**
+     * @deprecated Use Calendar with a UTC TimeZone instead.
+     * @return the time in millis since the epoch.
+     */
+    public static long UTC(int year, int month, int date,
+			   int hrs, int min, int sec) {
+	GregorianCalendar cal = 
+	    new GregorianCalendar(year+1900,month,date,hrs,min,sec);
+	cal.set(Calendar.ZONE_OFFSET, 0);
+	cal.set(Calendar.DST_OFFSET, 0);
+	return cal.getTimeInMillis();
+    }
+
+    /**
      * Gets the time represented by this Object
      * @return the time in milliseconds since the epoch.
      */
@@ -117,9 +130,23 @@ public class Date implements Cloneable, Comparable, java.io.Serializable {
     }
 
     /**
-     * Sets the time which this Object should represented.
-     * @param time the time in milliseconds since the epoch.
+     * @deprecated use
+     * Calendar.get(Calendar.ZONE_OFFSET)+Calendar.get(Calendar.DST_OFFSET)
+     * instead.
+     * @return The time zone offset in minutes of the local time zone
+     * relative to UTC.  The time represented by this object is used to
+     * determine if we should use daylight savings.
      */
+    public int getTimezoneOffset() {
+	Calendar cal = Calendar.getInstance();
+	cal.setTimeInMillis(time);
+	return (cal.get(Calendar.ZONE_OFFSET)
+		+cal.get(Calendar.DST_OFFSET)) / (60*1000);
+    }
+
+    /**
+     * Sets the time which this Object should represented.
+     * @param time the time in milliseconds since the epoch.  */
     public void setTime(long time) {
         this.time = time;
     }
@@ -177,7 +204,7 @@ public class Date implements Cloneable, Comparable, java.io.Serializable {
      * by obj is exactly the same as the time represented by this
      * object, a negative if this Date is before the other Date, and
      * a positive value otherwise.  
-     * @throws ClassCastException if obj is not of type Date.
+     * @exception ClassCastException if obj is not of type Date.
      */
     public int compareTo(Object obj) {
         return  compareTo((Date)obj);
@@ -187,8 +214,36 @@ public class Date implements Cloneable, Comparable, java.io.Serializable {
         return (int) time ^ (int) (time >>> 32);
     }
 
+    private String[] weekNames = { "Sun", "Mon", "Tue", "Wed", 
+				   "Thu", "Fri", "Sat"};
+    private String[] monthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+				    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     public String toString() {
+	Calendar cal = Calendar.getInstance();
+	cal.setTimeInMillis(time);
+	String day = "0"+cal.get(Calendar.DATE);
+	String hour = "0"+cal.get(Calendar.HOUR);
+	String min = "0"+cal.get(Calendar.MINUTE);
+	String sec = "0"+cal.get(Calendar.SECOND);
+	String year = "000"+cal.get(Calendar.YEAR);
+	return weekNames[cal.get(Calendar.DAY_OF_WEEK)] + " "
+	    + monthNames[cal.get(Calendar.MONTH)] + " "
+	    + day.substring(day.length()-2) + " "
+	    + hour.substring(hour.length()-2) + ":"
+	    + min.substring(min.length()-2) + ":"
+	    + sec.substring(sec.length()-2) + " "
+	    + cal.getTimeZone().getID() + " "
+	    + year.substring(year.length()-4);
+    }
+
+    public String toLocaleString() {
         return java.text.DateFormat.getInstance().format(this);
+    }
+
+    public String toGMTString() {
+	java.text.DateFormat format = java.text.DateFormat.getInstance();
+	format.setTimeZone(TimeZone.getTimeZone("GMT"));
+        return format.format(this);
     }
 
     public static long parse(String s) {
@@ -197,6 +252,162 @@ public class Date implements Cloneable, Comparable, java.io.Serializable {
         } catch (java.text.ParseException ex) {
             return 0;
         }
+    }
+
+    /**
+     * @return the year minus 1900 represented by this date object.
+     * @deprecated Use Calendar instead of Date, and use get(Calendar.YEAR)
+     * instead.  Note about the 1900 difference in year.
+     */
+    public int getYear() {
+	Calendar cal = Calendar.getInstance();
+	cal.setTimeInMillis(time);
+	return cal.get(Calendar.YEAR) - 1900;
+    }
+
+    /**
+     * Sets the year to year minus 1900, not changing the other fields.
+     * @param year the year minus 1900.
+     * @deprecated Use Calendar instead of Date, and use
+     * set(Calendar.YEAR, year) instead.  Note about the 1900
+     * difference in year.  
+     */
+    public void setYear(int year) {
+	Calendar cal = Calendar.getInstance();
+	cal.setTimeInMillis(time);
+	cal.set(Calendar.YEAR, 1900 + year);
+	time = cal.getTimeInMillis();
+    }
+
+    /**
+     * @return the month represented by this date object (zero based).
+     * @deprecated Use Calendar instead of Date, and use get(Calendar.MONTH)
+     * instead.
+     */
+    public int getMonth() {
+	Calendar cal = Calendar.getInstance();
+	cal.setTimeInMillis(time);
+	return cal.get(Calendar.MONTH);
+    }
+
+    /**
+     * Sets the month to the given value, not changing the other fields.
+     * @param month the month, zero based.
+     * @deprecated Use Calendar instead of Date, and use
+     * set(Calendar.MONTH, month) instead. 
+     */
+    public void setMonth(int month) {
+	Calendar cal = Calendar.getInstance();
+	cal.setTimeInMillis(time);
+	cal.set(Calendar.MONTH, month);
+	time = cal.getTimeInMillis();
+    }
+
+    /**
+     * @return the day of month represented by this date object.
+     * @deprecated Use Calendar instead of Date, and use get(Calendar.DATE)
+     * instead.
+     */
+    public int getDate() {
+	Calendar cal = Calendar.getInstance();
+	cal.setTimeInMillis(time);
+	return cal.get(Calendar.DATE);
+    }
+
+    /**
+     * Sets the date to the given value, not changing the other fields.
+     * @param date the date.
+     * @deprecated Use Calendar instead of Date, and use
+     * set(Calendar.DATE, date) instead. 
+     */
+    public void setDate(int date) {
+	Calendar cal = Calendar.getInstance();
+	cal.setTimeInMillis(time);
+	cal.set(Calendar.DATE, date);
+	time = cal.getTimeInMillis();
+    }
+
+    /**
+     * @return the day represented by this date object.
+     * @deprecated Use Calendar instead of Date, and use get(Calendar.DAY_OF_WEEK)
+     * instead.
+     */
+    public int getDay() {
+	Calendar cal = Calendar.getInstance();
+	cal.setTimeInMillis(time);
+	return cal.get(Calendar.DAY_OF_WEEK);
+    }
+
+    /**
+     * @return the hours represented by this date object.
+     * @deprecated Use Calendar instead of Date, and use get(Calendar.HOUR_OF_DAY)
+     * instead.
+     */
+    public int getHours() {
+	Calendar cal = Calendar.getInstance();
+	cal.setTimeInMillis(time);
+	return cal.get(Calendar.HOUR_OF_DAY);
+    }
+
+    /**
+     * Sets the hours to the given value, not changing the other fields.
+     * @param hours the hours.
+     * @deprecated Use Calendar instead of Date, and use
+     * set(Calendar.HOUR_OF_DAY, hours) instead. 
+     */
+    public void setHours(int hours) {
+	Calendar cal = Calendar.getInstance();
+	cal.setTimeInMillis(time);
+	cal.set(Calendar.HOUR_OF_DAY, hours);
+	time = cal.getTimeInMillis();
+    }
+
+    /**
+     * @return the minutes represented by this date object.
+     * @deprecated Use Calendar instead of Date, and use get(Calendar.MINUTE)
+     * instead.
+     */
+    public int getMinutes() {
+	Calendar cal = Calendar.getInstance();
+	cal.setTimeInMillis(time);
+	return cal.get(Calendar.MINUTE);
+    }
+
+    /**
+     * Sets the minutes to the given value, not changing the other fields.
+     * @param minutes the minutes.
+     * @deprecated Use Calendar instead of Date, and use
+     * set(Calendar.MINUTE, minutes) instead. 
+     */
+    public void setMinutes(int minutes) {
+	Calendar cal = Calendar.getInstance();
+	cal.setTimeInMillis(time);
+	cal.set(Calendar.MINUTE, minutes);
+	time = cal.getTimeInMillis();
+    }
+
+    /**
+     * @return the seconds represented by this date object.
+     * @deprecated Use Calendar instead of Date, and use get(Calendar.SECOND)
+     * instead.
+     */
+    public int getSeconds() {
+	Calendar cal = Calendar.getInstance();
+	cal.setTimeInMillis(time);
+	return cal.get(Calendar.SECOND);
+    }
+
+    /**
+     * Sets the seconds to the given value, not changing the other fields.
+     * @param seconds the seconds.
+     * @deprecated Use Calendar instead of Date, and use
+     * set(Calendar.SECOND, seconds) instead. 
+     */
+    public void setSeconds(int seconds) {
+	Calendar cal = Calendar.getInstance();
+	cal.setTimeInMillis(time);
+	cal.set(Calendar.SECOND, seconds);
+	time = cal.getTimeInMillis();
     }
 
     /**
