@@ -538,8 +538,6 @@ public class Runtime
     SecurityManager sm = securityManager; // Be thread-safe!
     if (sm != null)
       sm.checkExec(cmd[0]);
-    if (env == null)
-      env = new String[0];
     //XXX Should be:    return execInternal(cmd, env, dir);
     return execInternal(cmd, env);
   }
@@ -745,11 +743,12 @@ public class Runtime
    * Execute a process. The command line has already been tokenized, and
    * the environment should contain name=value mappings. If directory is null,
    * use the current working directory; otherwise start the process in that
-   * directory.
+   * directory.  If env is null, then the new process should inherit
+   * the environment of this process.
    * XXX Add directory support.
    *
    * @param cmd the non-null command tokens
-   * @param env the non-null environment setup
+   * @param env the environment setup
    * @param dir the directory to use, may be null
    * @return the newly created process
    * @throws NullPointerException if cmd or env have null elements
