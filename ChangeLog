@@ -1,5 +1,13 @@
 2003-11-04  Michael Koch  <konqueror@gmx.de>
 
+	* java/util/zip/Checksum.java,
+	java/util/zip/ZipConstants.java:
+	Removed redundant modifiers.
+	* java/util/zip/InflaterInputStream.java:
+	Merged copyright with libgcj's version.
+
+2003-11-04  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/ByteBuffer.java
 	(equals): Removed unneeded obj != null check.
 
