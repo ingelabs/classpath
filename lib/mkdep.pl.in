@@ -80,7 +80,7 @@ sub writeNativeFile
 	}
 	$j = $natives[$#natives];
 	$j =~ s/^\.\.\///;          # remove ../
-	$j =~ s/^vm\/current\///;   # remove vm//
+	$j =~ s/^vm\/current\///;   # remove vm/current/
 	$j =~ s/\//_/g;             # replace / with _
 	$j =~ s/\.java/\.h/;        # replace .java with .h
 	print MAKEDEP "          ../include/", $j, "\n\n";
