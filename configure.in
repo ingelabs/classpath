@@ -245,9 +245,6 @@ dnl Useful for disabling zip even if you have it
 CLASSPATH_WITH_ZIP
 
 AC_OUTPUT(Makefile
-com/Makefile
-com/sun/Makefile
-com/sun/javadoc/Makefile
 doc/Makefile
 gnu/Makefile
 gnu/classpath/Makefile

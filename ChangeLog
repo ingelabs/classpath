@@ -1,5 +1,43 @@
 2002-10-06  Mark Wielaard  <mark@klomp.org>
 
+	* configure.in (AC_OUTPUT): Remove com/Makefile, com/sun/Makefile
+	and com/sun/javadoc/Makefile.
+	* Makefile.am (SUBDIRS): Remove com.
+	* lib/Makefile.am (install-data-local): Don't copy com dir.
+	(glibj.zip): Don't zip com dir.
+	(maintainer-clean-local): Don't remove com dir.
+	* gen-classlist.sh.in: Remove com dir from find.
+	* com/.cvsignore: Removed.
+	* com/Makefile.am: Removed.
+	* com/sun/.cvsignore: Removed.
+	* com/sun/Makefile.am: Removed.
+	* com/sun/javadoc/.cvsignore: Removed.
+	* com/sun/javadoc/ClassDoc.java: Removed.
+	* com/sun/javadoc/ConstructorDoc.java: Removed.
+	* com/sun/javadoc/Doc.java: Removed.
+	* com/sun/javadoc/DocErrorReporter.java: Removed.
+	* com/sun/javadoc/Doclet.java: Removed.
+	* com/sun/javadoc/ExecutableMemberDoc.java: Removed.
+	* com/sun/javadoc/FieldDoc.java: Removed.
+	* com/sun/javadoc/MemberDoc.java: Removed.
+	* com/sun/javadoc/MethodDoc.java: Removed.
+	* com/sun/javadoc/PackageDoc.java: Removed.
+	* com/sun/javadoc/ParamTag.java: Removed.
+	* com/sun/javadoc/Parameter.java: Removed.
+	* com/sun/javadoc/ProgramElementDoc.java: Removed.
+	* com/sun/javadoc/RootDoc.java: Removed.
+	* com/sun/javadoc/SeeTag.java: Removed.
+	* com/sun/javadoc/SerialFieldTag.java: Removed.
+	* com/sun/javadoc/Tag.java: Removed.
+	* com/sun/javadoc/ThrowsTag.java: Removed.
+	* com/sun/javadoc/Type.java: Removed.
+	* com/sun/javadoc/Makefile.am: Removed.
+	* NEWS: Document javadoc class move.
+
+	* vm/reference/Makefile.am (SUBDIRS): Remove gnu.
+
+2002-10-06  Mark Wielaard  <mark@klomp.org>
+
 	* configure.in (AC_OUTPUT): Remove vm/reference/gnu/Makefile,
 	vm/reference/gnu/vm/Makefile and vm/reference/gnu/vm/stack/Makefile.
 	* gnu/java/lang/Makefile.am (EXTRA_DIST): Remove ExecutionStack.java

@@ -85,7 +85,6 @@ endif
 
 install-data-local :
 	-$(top_srcdir)/mkinstalldirs $(pkgdatadir)
-	if ! [ -e glibj.zip ]; then cp -R com $(pkgdatadir); fi
 	if ! [ -e glibj.zip ]; then cp -R gnu $(pkgdatadir); fi
 	if ! [ -e glibj.zip ]; then cp -R java $(pkgdatadir); fi
 	if ! [ -e glibj.zip ]; then cp -R javax $(pkgdatadir); fi
@@ -95,7 +94,7 @@ glibj.zip: classes compile-classes
 	if ! [ -e gnu/java ]; then mkdir gnu/java; fi
 	if ! [ -e gnu/java/locale ]; then mkdir gnu/java/locale; fi
 	cp $(top_srcdir)/gnu/java/locale/*.properties gnu/java/locale/
-	if test "$(ZIP)" != ""; then $(ZIP) -r -D glibj.zip com gnu java javax > /dev/null; fi
+	if test "$(ZIP)" != ""; then $(ZIP) -r -D glibj.zip gnu java javax > /dev/null; fi
 
 .PHONY: genclasses
 
@@ -121,7 +120,6 @@ DISTCLEANFILES =
 MAINTAINERCLEANFILES = classes $(JAVA_DEPEND)
 
 maintainer-clean-local:
-	-rm -rf com
 	-rm -rf gnu
 	-rm -rf java
 	-rm -rf javax

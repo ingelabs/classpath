@@ -9,6 +9,9 @@ New in release 0.05 [ no date yet ]
 * The vm/reference classes from the gnu.vm.stack and their counterparts
   ExecutionStack and StackFrame in gnu.java.lang have been removed since they
   are not actually part of the VM interface anyway.
+* The GPLed com.sun.javadoc classes have been moved to the gjdoc application
+  from the GNU Classpath Tools project. See for more information the homepage
+  at: <http://www.gnu.org/software/cp-tools/>.
 
 New in release 0.04 (2002/05/05)
 * Additional configure options to disable zip creation and installation as
