@@ -1,3 +1,8 @@
+2003-08-01  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/WeakHashMap.java (WeakHashMap(int,float)): If
+	initialCapacity is 0, set it to 1.
+
 2003-08-01  Mark Wielaard  <mark@klomp.org>
 
 	* java/math/BigDecimal.java (divide): Calculate sign correctly. And
