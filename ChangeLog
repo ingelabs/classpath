@@ -1,3 +1,7 @@
+2004-12-23  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/tree/TreeCellEditor.java: Refomatted.
+
 2004-12-22  Michael Koch  <konqueror@gmx.de>
 	    Olga Rodimina  <rodimina@redhat.com>
 
