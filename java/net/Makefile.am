@@ -22,6 +22,7 @@ MalformedURLException.java \
 MimeTypeMapper.java \
 MulticastSocket.java \
 NetPermission.java \
+NetworkInterface.java \
 NoRouteToHostException.java \
 PasswordAuthentication.java \
 PlainDatagramSocketImpl.java \

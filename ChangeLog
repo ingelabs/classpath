@@ -1,4 +1,8 @@
 2002-11-12  Michael Koch <konqueror@gmx.de>
+	
+	* java/net/Makefile.am: Added NetworkInterface.java.
+	
+2002-11-12  Michael Koch <konqueror@gmx.de>
 
 	* java/net/NetworkInterface.java: New file.
 	* java/net/DatagramSocketImpl.java
