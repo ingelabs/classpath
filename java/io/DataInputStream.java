@@ -756,6 +756,51 @@ readFully(byte[] buf, int offset, int len) throws EOFException, IOException
 /*************************************************************************/
 
 /**
+  * This method reads bytes from the underlying stream into the specified
+  * byte array buffer.  It will attempt to fill the buffer completely, but
+  * may return a short count if there is insufficient data remaining to be
+  * read to fill the buffer.
+  *
+  * @param buf The buffer into which bytes will be read.
+  * 
+  * @return The actual number of bytes read, or -1 if end of stream reached 
+  * before reading any bytes.
+  *
+  * @exception IOException If an error occurs.
+  */
+public final int
+read(byte[] buf) throws IOException
+{
+  return(read(buf, 0, buf.length));
+}
+
+/*************************************************************************/
+
+/**
+  * This method reads bytes from the underlying stream into the specified
+  * byte array buffer.  It will attempt to read <code>len</code> bytes and
+  * will start storing them at position <code>offset</code> into the buffer.
+  * This method can return a short count if there is insufficient data
+  * remaining to be read to complete the desired read length.
+  *
+  * @param buf The buffer into which bytes will be read.
+  * @param offset The offset into the buffer to start storing bytes.
+  * @param len The requested number of bytes to read.
+  *
+  * @return The actual number of bytes read, or -1 if end of stream reached
+  * before reading any bytes.
+  *
+  * @exception IOException If an error occurs.
+  */
+public final int
+read(byte[] buf, int offset, int len) throws IOException
+{
+  return(in.read(buf, offset, len));
+}
+
+/*************************************************************************/
+
+/**
   * This method attempts to skip and discard the specified number of bytes 
   * in the input stream.  It may actually skip fewer bytes than requested. 
   * The actual number of bytes skipped is returned.  This method will not
