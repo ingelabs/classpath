@@ -1,5 +1,5 @@
 /* SQLException.java -- General SQL exception
-   Copyright (C) 1999, 2000, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
-
+ 
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -39,74 +39,52 @@ exception statement from your version. */
 package java.sql;
 
 /**
- * This exception is thrown when a database error occurs. This exception
- * keeps track of additional information:<br><ul>
- * <li>The error message string (part of all Throwables)</li>
- * <li>An "SQLstate" string, following either the XOPEN SQLstate or the SQL 99
- *   conventions.</li>
- * <li>A vendor-specific integer error code.</li>
- * <li>A chain to the next exception.</li>
- * <ul>
+ * This exception is thrown when a database error occurs.
  *
  * @author Aaron M. Renn (arenn@urbanophile.com)
- * @status updated to 1.4
  */
-public class SQLException extends Exception
+public class SQLException extends Exception 
 {
-  /**
-   * Compatible with JDK 1.1+.
-   */
-  private static final long serialVersionUID = 2135244094396331484L;
+  static final long serialVersionUID = 2135244094396331484L;
 
   /**
-   * This is the next exception in the chain.
-   *
-   * @serial the next exception in the chain
+   * This is the next exception in the chain
    */
-  // Package visible for use by SQLWarning.
-  SQLException next;
+  private SQLException next;
 
   /**
    * This is the state of the SQL statement at the time of the error.
-   *
-   * @serial the SQLstate
    */
-  private final String SQLState;
+  private String SQLState;
 
   /**
-   * The vendor error code for this error.
-   *
-   * @serial the vendor code
+   * The vendor error code for this error
    */
-  private final int vendorCode;
+  private int vendorCode;
 
   /**
-   * Create a new instance that does not have a descriptive messages or SQL
-   * state, and which has a vendor error code of 0.
+   * This method initializes a nwe instance of <code>SQLException</code>
+   * with the specified descriptive error message, SQL state string, and
+   * vendor code.
+   *
+   * @param message A string describing the nature of the error.
+   * @param SQLState A string containing the SQL state of the error.
+   * @param vendorCode The vendor error code associated with this error.
    */
-  public SQLException()
+  public SQLException(String message, String SQLState, int vendorCode)
   {
-    this(null, null, 0);
+    super(message);
+    this.SQLState = SQLState;
+    this.vendorCode = vendorCode;  
   }
 
   /**
-   * Create a new instance with the specified descriptive error message.  The
-   * SQL state of this instance will be <code>null</code> and the vendor
-   * error code will be 0.
+   * This method initializes a new instance of <code>SQLException</code>
+   * with the specified descriptive error message and SQL state string.
+   * The vendor error code of this instance will be 0.
    *
-   * @param message a string describing the nature of the error
-   */
-  public SQLException(String message)
-  {
-    this(message, null, 0);
-  }
-
-  /**
-   * Create a new instance with the specified descriptive error message
-   * and SQL state string. The vendor error code of this instance will be 0.
-   *
-   * @param message a string describing the nature of the error
-   * @param SQLState a string containing the SQL state of the error
+   * @param message A string describing the nature of the error.
+   * @param SQLState A string containing the SQL state of the error.
    */
   public SQLException(String message, String SQLState)
   {
@@ -114,25 +92,33 @@ public class SQLException extends Exception
   }
 
   /**
-   * Create a new instance with the specified descriptive error message,
-   * SQL state string, and vendor code.
+   * This method initializes a new instance of <code>SQLException</code>
+   * with the specified descriptive error message.  The SQL state of this
+   * instance will be <code>null</code> and the vendor error code will be 0.
    *
-   * @param message a string describing the nature of the error
-   * @param SQLState a string containing the SQL state of the error
-   * @param vendorCode the vendor error code associated with this error
+   * @param message A string describing the nature of the error.
    */
-  public SQLException(String message, String SQLState, int vendorCode)
+  public SQLException(String message)
   {
-    super(message);
-    this.SQLState = SQLState;
-    this.vendorCode = vendorCode;
+    this(message, null, 0);  
   }
 
   /**
-   * Get the SQLState information associated with this error.  This
-   * implementation formats the value using the XOPEN SQL state conventions.
+   * This method initializes a new instance of <code>SQLException</code>
+   * that does not have a descriptive messages and SQL state, and which
+   * has a vendor error code of 0.
+   */
+  public SQLException()
+  {
+    this(null, null, 0);  
+  }
+
+  /**
+   * This method returns the SQLState information associated with this
+   * error.  The value returned is a <code>String</code> which is formatted
+   * using the XOPEN SQL state conventions.
    *
-   * @return The SQL state, which may be <code>null</code>
+   * @return The SQL state, which may be <code>null</code>.
    */
   public String getSQLState()
   {
@@ -140,9 +126,10 @@ public class SQLException extends Exception
   }
 
   /**
-   * Get the vendor specific error code associated with this error.
+   * This method returns the vendor specific error code associated with 
+   * this error.
    *
-   * @return the vendor specific error code associated with this error
+   * @return The vendor specific error code associated with this error.
    */
   public int getErrorCode()
   {
@@ -150,9 +137,10 @@ public class SQLException extends Exception
   }
 
   /**
-   * Get any exception that is chained to this object.
+   * This method returns the exception that is chained to this object.
    *
-   * @return the exception chained to this object, or null
+   * @return The exception chained to this object, which may be 
+   *         <code>null</code>.
    */
   public SQLException getNextException()
   {
@@ -160,18 +148,20 @@ public class SQLException extends Exception
   }
 
   /**
-   * Add a new exception to the end of the chain of exceptions that are
-   * chained to this object.
+   * This method adds a new exception to the end of the chain of exceptions
+   * that are chained to this object.
    *
-   * @param e the exception to add to the end of the chain
+   * @param e The exception to add to the end of the chain.
    */
   public void setNextException(SQLException e)
   {
     if (e == null)
       return;
-    SQLException entry = this;
-    while (entry.next != null)
-      entry = entry.next;
-    entry.next = e;
+
+    SQLException list_entry = this;
+    while (list_entry.getNextException() != null)
+      list_entry = list_entry.getNextException();
+
+    list_entry.next = e;
   }
-} // class SQLException
+}
