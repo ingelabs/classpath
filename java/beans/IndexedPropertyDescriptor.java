@@ -214,7 +214,7 @@ public class IndexedPropertyDescriptor extends PropertyDescriptor {
 		return setIndex;
 	}
 
-	private void findMethods(Class beanClass, String getMethodName, String setMethodName, String setIndexName, String getIndexName) throws IntrospectionException {
+	private void findMethods(Class beanClass, String getMethodName, String setMethodName, String getIndexName, String setIndexName) throws IntrospectionException {
 		try {
 			if(getIndexName != null) {
 				try {
@@ -238,7 +238,7 @@ public class IndexedPropertyDescriptor extends PropertyDescriptor {
 					} catch(NoSuchMethodException E) {
 					}
 				}
-			} else if(setMethodName != null) {
+			} else if(setIndexName != null) {
 				Method[] m = beanClass.getMethods();
 				for(int i=0;i<m.length;i++) {
 					Method current = m[i];
@@ -261,7 +261,6 @@ public class IndexedPropertyDescriptor extends PropertyDescriptor {
 				throw new IntrospectionException("Cannot find get or set methods.");
 			}
 
-
 			Class arrayType = Array.newInstance(indexedPropertyType,0).getClass();
 
 			Class[] setArgs = new Class[1];
@@ -269,7 +268,7 @@ public class IndexedPropertyDescriptor extends PropertyDescriptor {
 			try {
 				setMethod = beanClass.getMethod(setMethodName,setArgs);
 				if(!setMethod.getReturnType().equals(java.lang.Void.TYPE)) {
-					throw new IntrospectionException(setMethodName + " has non-void return type.");
+					setMethod = null;
 				}
 			} catch(NoSuchMethodException E) {
 			}
@@ -277,8 +276,8 @@ public class IndexedPropertyDescriptor extends PropertyDescriptor {
 			Class[] getArgs = new Class[0];
 			try {
 				getMethod = beanClass.getMethod(getMethodName,getArgs);
-				if(!setMethod.getReturnType().equals(arrayType)) {
-					throw new IntrospectionException(getMethodName + " has wrong return type.");
+				if(!getMethod.getReturnType().equals(arrayType)) {
+					getMethod = null;
 				}
 			} catch(NoSuchMethodException E) {
 			}
