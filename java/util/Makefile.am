@@ -61,4 +61,6 @@ TooManyListenersException.java \
 TreeMap.java \
 TreeSet.java \
 Vector.java \
-WeakHashMap.java
+WeakHashMap.java \
+package.html
+

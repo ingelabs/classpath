@@ -2,4 +2,6 @@
 
 EXTRA_DIST = DGC.java \
 Lease.java \
-VMID.java
+VMID.java \
+package.html
+

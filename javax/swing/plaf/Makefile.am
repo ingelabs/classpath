@@ -18,4 +18,6 @@ TabbedPaneUI.java \
 TextUI.java \
 TreeUI.java \
 UIResource.java \
-ViewportUI.java
+ViewportUI.java \
+package.html
+

@@ -7,4 +7,6 @@ JarInputStream.java \
 JarEntry.java \
 JarException.java \
 JarOutputStream.java \
-Manifest.java
+Manifest.java \
+package.html
+

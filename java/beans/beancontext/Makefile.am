@@ -16,6 +16,6 @@ BeanContextServiceProviderBeanInfo.java \
 BeanContextServiceRevokedEvent.java \
 BeanContextServiceRevokedListener.java \
 BeanContextServices.java \
-BeanContextServicesListener.java
-
+BeanContextServicesListener.java \
+package.html
 

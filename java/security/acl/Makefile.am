@@ -8,4 +8,6 @@ Group.java \
 LastOwnerException.java \
 NotOwnerException.java \
 Owner.java \
-Permission.java
+Permission.java \
+package.html
+

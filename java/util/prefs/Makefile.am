@@ -9,4 +9,6 @@ NodeChangeListener.java \
 PreferenceChangeEvent.java \
 PreferenceChangeListener.java \
 Preferences.java \
-PreferencesFactory.java
+PreferencesFactory.java \
+package.html
+

@@ -1,5 +1,64 @@
 2002-05-06  Mark Wielaard <mark@klomp.org>
 
+	* java/applet/Makefile.am (EXTRA_DIST): Add package.html
+	* java/awt/color/Makefile.am (EXTRA_DIST): Likewise.
+	* java/awt/dnd/Makefile.am (EXTRA_DIST): Likewise.
+	* java/awt/im/spi/Makefile.am (EXTRA_DIST): Likewise.
+	* java/awt/im/Makefile.am (EXTRA_DIST): Likewise.
+	* java/awt/datatransfer/Makefile.am (EXTRA_DIST): Likewise.
+	* java/awt/event/Makefile.am (EXTRA_DIST): Likewise.
+	* java/awt/font/Makefile.am (EXTRA_DIST): Likewise.
+	* java/awt/geom/Makefile.am (EXTRA_DIST): Likewise.
+	* java/awt/image/Makefile.am (EXTRA_DIST): Likewise.
+	* java/awt/peer/Makefile.am (EXTRA_DIST): Likewise.
+	* java/awt/print/Makefile.am (EXTRA_DIST): Likewise.
+	* java/awt/Makefile.am (EXTRA_DIST): Likewise.
+	* java/beans/beancontext/Makefile.am (EXTRA_DIST): Likewise.
+	* java/beans/Makefile.am (EXTRA_DIST): Likewise.
+	* java/io/Makefile.am (EXTRA_DIST): Likewise.
+	* java/lang/ref/Makefile.am (EXTRA_DIST): Likewise.
+	* java/lang/reflect/Makefile.am (EXTRA_DIST): Likewise.
+	* java/lang/Makefile.am (EXTRA_DIST): Likewise.
+	* java/math/Makefile.am (EXTRA_DIST): Likewise.
+	* java/net/Makefile.am (EXTRA_DIST): Likewise.
+	* java/rmi/activation/Makefile.am (EXTRA_DIST): Likewise.
+	* java/rmi/dgc/Makefile.am (EXTRA_DIST): Likewise.
+	* java/rmi/registry/Makefile.am (EXTRA_DIST): Likewise.
+	* java/rmi/server/Makefile.am (EXTRA_DIST): Likewise.
+	* java/rmi/Makefile.am (EXTRA_DIST): Likewise.
+	* java/security/acl/Makefile.am (EXTRA_DIST): Likewise.
+	* java/security/cert/Makefile.am (EXTRA_DIST): Likewise.
+	* java/security/interfaces/Makefile.am (EXTRA_DIST): Likewise.
+	* java/security/spec/Makefile.am (EXTRA_DIST): Likewise.
+	* java/security/Makefile.am (EXTRA_DIST): Likewise.
+	* java/sql/Makefile.am (EXTRA_DIST): Likewise.
+	* java/text/Makefile.am (EXTRA_DIST): Likewise.
+	* java/util/jar/Makefile.am (EXTRA_DIST): Likewise.
+	* java/util/zip/Makefile.am (EXTRA_DIST): Likewise.
+	* java/util/Makefile.am (EXTRA_DIST): Likewise.
+	* java/util/prefs/Makefile.am (EXTRA_DIST): Likewise.
+	* java/util/logging/Makefile.am (EXTRA_DIST): Likewise.
+	* java/util/regex/Makefile.am (EXTRA_DIST): Likewise and
+	PatternSyntaxException.java.
+	* java/nio/channels/spi/Makefile.am (EXTRA_DIST): Likewise.
+	* java/nio/channels/Makefile.am (EXTRA_DIST): Likewise.
+	* java/nio/charset/Makefile.am (EXTRA_DIST): Likewise.
+	* java/nio/Makefile.am (EXTRA_DIST): Likewise.
+	* javax/accessibility/Makefile.am (EXTRA_DIST): Likewise.
+	* javax/naming/Makefile.am (EXTRA_DIST): Likewise.
+	* javax/swing/border/Makefile.am (EXTRA_DIST): Likewise.
+	* javax/swing/event/Makefile.am (EXTRA_DIST): Likewise.
+	* javax/swing/table/Makefile.am (EXTRA_DIST): Likewise.
+	* javax/swing/plaf/basic/Makefile.am (EXTRA_DIST): Likewise.
+	* javax/swing/plaf/metal/Makefile.am (EXTRA_DIST): Likewise.
+	* javax/swing/plaf/Makefile.am (EXTRA_DIST): Likewise.
+	* javax/swing/text/Makefile.am (EXTRA_DIST): Likewise.
+	* javax/swing/tree/Makefile.am (EXTRA_DIST): Likewise.
+	* javax/swing/undo/Makefile.am (EXTRA_DIST): Likewise.
+	* javax/swing/Makefile.am (EXTRA_DIST): Likewise.
+
+2002-05-06  Mark Wielaard <mark@klomp.org>
+
 	* java/awt/Choice.java: Fix javadoc spelling mistake.
 	* java/awt/im/spi/InputMethodContext.java: Import HeadlessException.
 	* java/awt/image/PixelGrabber.java: Fix javadoc spelling mistake.

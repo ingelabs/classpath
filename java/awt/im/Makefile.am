@@ -6,4 +6,5 @@ EXTRA_DIST = \
 InputContext.java \
 InputMethodHighlight.java \
 InputMethodRequests.java \
-InputSubset.java
+InputSubset.java \
+package.html

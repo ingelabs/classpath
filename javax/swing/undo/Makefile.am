@@ -7,4 +7,6 @@ StateEdit.java \
 StateEditable.java \
 UndoManager.java \
 UndoableEdit.java \
-UndoableEditSupport.java
+UndoableEditSupport.java \
+package.html
+

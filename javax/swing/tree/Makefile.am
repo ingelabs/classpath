@@ -15,4 +15,6 @@ TreeModel.java \
 TreeNode.java \
 TreePath.java \
 TreeSelectionModel.java \
-VariableHeightLayoutCache.java
+VariableHeightLayoutCache.java \
+package.html
+

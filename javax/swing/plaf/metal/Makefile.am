@@ -1,2 +1,4 @@
 EXTRA_DIST = \
-MetalLookAndFeel.java
+MetalLookAndFeel.java \
+package.html
+

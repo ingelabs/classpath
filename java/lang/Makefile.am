@@ -78,5 +78,6 @@ UnsupportedClassVersionError.java \
 UnsupportedOperationException.java \
 VerifyError.java \
 VirtualMachineError.java \
-Void.java
+Void.java \
+package.html
 

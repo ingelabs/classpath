@@ -100,4 +100,6 @@ TextField.java \
 TexturePaint.java \
 Toolkit.java \
 Transparency.java \
-Window.java
+Window.java \
+package.html
+

@@ -26,4 +26,6 @@ Statement.java \
 Struct.java \
 Time.java \
 Timestamp.java \
-Types.java
+Types.java \
+package.html
+

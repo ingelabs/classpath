@@ -2,3 +2,4 @@
 
 EXTRA_DIST = \
 DropTarget.java
+package.html

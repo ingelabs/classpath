@@ -63,4 +63,6 @@ Timer.java \
 ToggleButtonModel.java \
 UIDefaults.java \
 UIManager.java \
-UnsupportedLookAndFeelException.java
+UnsupportedLookAndFeelException.java \
+package.html
+

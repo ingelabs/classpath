@@ -35,4 +35,6 @@ SinglePixelPackedSampleModel.java \
 TileObserver.java \
 VolatileImage.java \
 WritableRaster.java \
-WritableRenderedImage.java
+WritableRenderedImage.java \
+package.html
+

@@ -4,4 +4,5 @@ EXTRA_DIST = \
 	AppletContext.java \
 	Applet.java \
 	AppletStub.java \
-	AudioClip.java
+	AudioClip.java \
+	package.html

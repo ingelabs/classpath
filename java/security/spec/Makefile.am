@@ -14,4 +14,6 @@ RSAKeyGenParameterSpec.java \
 RSAPrivateCrtKeySpec.java \
 RSAPrivateKeySpec.java \
 RSAPublicKeySpec.java \
-X509EncodedKeySpec.java
+X509EncodedKeySpec.java \
+package.html
+

@@ -41,4 +41,6 @@ TreeSelectionEvent.java \
 TreeSelectionListener.java \
 TreeWillExpandListener.java \
 UndoableEditEvent.java \
-UndoableEditListener.java
+UndoableEditListener.java \
+package.html
+

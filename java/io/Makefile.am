@@ -74,5 +74,6 @@ SyncFailedException.java \
 UTFDataFormatException.java \
 UnsupportedEncodingException.java \
 WriteAbortedException.java \
-Writer.java
- 
+Writer.java \
+package.html
+

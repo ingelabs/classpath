@@ -17,4 +17,6 @@ Point2D.java \
 QuadCurve2D.java \
 Rectangle2D.java \
 RectangularShape.java \
-RoundRectangle2D.java
+RoundRectangle2D.java \
+package.html
+

@@ -3,4 +3,5 @@
 EXTRA_DIST = \
 InputMethod.java \
 InputMethodContext.java \
-InputMethodDescriptor.java
+InputMethodDescriptor.java \
+package.html

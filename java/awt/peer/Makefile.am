@@ -24,5 +24,6 @@ ScrollbarPeer.java \
 TextAreaPeer.java \
 TextComponentPeer.java \
 TextFieldPeer.java \
-WindowPeer.java 
+WindowPeer.java  \
+package.html
 

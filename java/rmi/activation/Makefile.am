@@ -13,4 +13,6 @@ ActivationMonitor.java \
 ActivationSystem.java \
 Activator.java \
 UnknownGroupException.java \
-UnknownObjectException.java
+UnknownObjectException.java \
+package.html
+

@@ -16,4 +16,6 @@ BasicTabbedPaneUI.java \
 BasicTextUI.java \
 BasicToggleButtonUI.java \
 BasicTreeUI.java \
-BasicViewportUI.java
+BasicViewportUI.java \
+package.html
+

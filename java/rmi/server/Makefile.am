@@ -24,4 +24,6 @@ SkeletonNotFoundException.java \
 SocketSecurityException.java \
 UID.java \
 UnicastRemoteObject.java \
-Unreferenced.java
+Unreferenced.java \
+package.html
+

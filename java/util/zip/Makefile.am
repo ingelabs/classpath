@@ -27,4 +27,6 @@ ZipEntry.java \
 ZipException.java \
 ZipFile.java \
 ZipInputStream.java \
-ZipOutputStream.java
+ZipOutputStream.java \
+package.html
+

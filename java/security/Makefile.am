@@ -68,4 +68,6 @@ SignatureSpi.java \
 SignedObject.java \
 Signer.java \
 UnrecoverableKeyException.java \
-UnresolvedPermission.java
+UnresolvedPermission.java \
+package.html
+

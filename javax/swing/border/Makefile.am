@@ -7,4 +7,6 @@ EmptyBorder.java \
 EtchedBorder.java \
 LineBorder.java \
 MatteBorder.java \
-TitledBorder.java
+TitledBorder.java \
+package.html
+

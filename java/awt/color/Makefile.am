@@ -5,4 +5,5 @@ CMMException.java \
 ColorSpace.java	\
 ICC_ColorSpace.java \
 ICC_Profile.java \
-ProfileDataException.java
+ProfileDataException.java \
+package.html

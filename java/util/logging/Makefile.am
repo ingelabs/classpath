@@ -18,4 +18,6 @@ MemoryHandler.java \
 SimpleFormatter.java \
 SocketHandler.java \
 StreamHandler.java \
-XMLFormatter.java
+XMLFormatter.java \
+package.html
+

@@ -2,4 +2,6 @@
 
 EXTRA_DIST = LocateRegistry.java \
 Registry.java \
-RegistryHandler.java
+RegistryHandler.java \
+package.html
+

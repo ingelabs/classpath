@@ -2,4 +2,6 @@
 
 EXTRA_DIST = \
 BigInteger.java \
-BigDecimal.java
+BigDecimal.java \
+package.html
+

@@ -4,4 +4,7 @@ SUBDIRS =
 
 EXTRA_DIST = \
 Matcher.java \
-Pattern.java
+Pattern.java \
+PatternSyntaxException.java \
+package.html
+

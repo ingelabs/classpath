@@ -24,4 +24,6 @@ AccessibleStateSet.java \
 AccessibleTable.java \
 AccessibleTableModelChange.java \
 AccessibleText.java \
-AccessibleValue.java
+AccessibleValue.java \
+package.html
+

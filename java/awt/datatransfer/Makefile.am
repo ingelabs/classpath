@@ -7,5 +7,7 @@ MimeTypeParseException.java \
 StringSelection.java \
 SystemFlavorMap.java \
 Transferable.java \
-UnsupportedFlavorException.java
+UnsupportedFlavorException.java \
+package.html
+
 

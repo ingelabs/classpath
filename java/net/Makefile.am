@@ -46,4 +46,6 @@ URLDecoder.java \
 URLEncoder.java \
 URL.java \
 URLStreamHandlerFactory.java \
-URLStreamHandler.java
+URLStreamHandler.java \
+package.html
+

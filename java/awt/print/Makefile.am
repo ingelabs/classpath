@@ -8,4 +8,6 @@ PrinterAbortException.java \
 PrinterException.java \
 PrinterGraphics.java \
 PrinterIOException.java \
-PrinterJob.java
+PrinterJob.java \
+package.html
+

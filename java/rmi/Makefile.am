@@ -21,4 +21,6 @@ ServerRuntimeException.java \
 StubNotFoundException.java \
 UnexpectedException.java \
 UnknownHostException.java \
-UnmarshalException.java
+UnmarshalException.java \
+package.html
+

@@ -31,4 +31,6 @@ TODO \
 VetoableChangeListener.java \
 VetoableChangeListenerProxy.java \
 VetoableChangeSupport.java \
-Visibility.java
+Visibility.java \
+package.html
+

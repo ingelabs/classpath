@@ -5,4 +5,6 @@ Reference.java \
 WeakReference.java \
 SoftReference.java \
 PhantomReference.java \
-ReferenceQueue.java
+ReferenceQueue.java \
+package.html
+

@@ -4,4 +4,6 @@ CharsetDecoder.java \
 CharsetEncoder.java \
 Charset.java \
 CoderResult.java \
-CodingErrorAction.java
+CodingErrorAction.java \
+package.html
+

@@ -23,4 +23,6 @@ ParseException.java \
 ParsePosition.java \
 RuleBasedCollator.java \
 SimpleDateFormat.java \
-StringCharacterIterator.java
+StringCharacterIterator.java \
+package.html
+

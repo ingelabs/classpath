@@ -8,4 +8,6 @@ InvalidNameException.java \
 Name.java \
 NamingException.java \
 RefAddr.java \
-StringRefAddr.java
+StringRefAddr.java \
+package.html
+

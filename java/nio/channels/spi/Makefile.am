@@ -4,4 +4,6 @@ AbstractInterruptibleChannel.java \
 AbstractSelectableChannel.java \
 AbstractSelectionKey.java \
 AbstractSelector.java \
-SelectorProvider.java
+SelectorProvider.java \
+package.html
+
