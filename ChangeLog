@@ -1,5 +1,11 @@
 2004-07-01  Mark Wielaard  <mark@klomp.org>
 
+	* java/net/URL.java (systemClassLoader): New static field.
+	(getURLStreamHandler): Always use system/application classloader
+	for finding URLStreamhandler. Remove unecessary instanceof checks.
+
+2004-07-01  Mark Wielaard  <mark@klomp.org>
+
 	* java/awt/event/InvocationEvent.java (dispatch): Synchronize
 	on notifier object before calling notifyAll().
 
