@@ -1,5 +1,5 @@
 /* URLClassLoader.java --  ClassLoader that loads classes from one or more URLs
-   Copyright (C) 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -282,7 +282,7 @@ public class URLClassLoader extends SecureClassLoader
     {
       super(classloader, baseURL);
 
-      // cache url prefix for all resources in this jar url
+      // Cache url prefix for all resources in this jar url.
       String external = baseURL.toExternalForm();
       StringBuffer sb = new StringBuffer(external.length() + 6);
       sb.append("jar:");
@@ -448,12 +448,12 @@ public class URLClassLoader extends SecureClassLoader
     {
       return stream;
     }
-                        
+
     public int getLength()
     {
       return length;
     }
-                
+
     public URL getURL()
     {
       return url;
@@ -644,7 +644,7 @@ public class URLClassLoader extends SecureClassLoader
     //   for cache initial size
     synchronized(factoryCache)
       {
-	if(factory != null && factoryCache.get(factory) == null)
+	if (factory != null && factoryCache.get(factory) == null)
 	  factoryCache.put(factory, new HashMap(5));
       }
   }
@@ -667,8 +667,8 @@ public class URLClassLoader extends SecureClassLoader
 	if (newUrl == null)
 	  return; // Silently ignore...
         
-	// check global cache to see if there're already url loader
-	// for this url
+	// Check global cache to see if there're already url loader
+	// for this url.
 	URLLoader loader = (URLLoader)urlloaders.get(newUrl);
 	if (loader == null)
 	  {
@@ -681,7 +681,7 @@ public class URLClassLoader extends SecureClassLoader
 	    else
 	      loader = new RemoteURLLoader(this, newUrl);
 
-	    // cache it
+	    // Cache it.
 	    urlloaders.put(newUrl, loader);
 	  }
 
@@ -914,12 +914,12 @@ public class URLClassLoader extends SecureClassLoader
     URLStreamHandler handler;
     synchronized (factoryCache)
       {
-	// check if there're handler for the same protocol in cache
+	// Check if there're handler for the same protocol in cache.
 	HashMap cache = (HashMap)factoryCache.get(factory);
 	handler = (URLStreamHandler)cache.get(protocol);
 	if(handler == null)
 	  {
-	    // add it to cache
+	    // Add it to cache.
 	    handler = factory.createURLStreamHandler(protocol);
 	    cache.put(protocol, handler);
 	  }
@@ -978,23 +978,23 @@ public class URLClassLoader extends SecureClassLoader
     // First get the permissions that would normally be granted
     PermissionCollection permissions = super.getPermissions(source);
         
-    // Now add the any extra permissions depending on the URL location
+    // Now add any extra permissions depending on the URL location.
     URL url = source.getLocation();
     String protocol = url.getProtocol();
     if (protocol.equals("file"))
       {
 	String file = url.getFile();
-	// If the file end in / it must be an directory
+	// If the file end in / it must be an directory.
 	if (file.endsWith("/") || file.endsWith(File.separator))
 	  {
 	    // Grant permission to read everything in that directory and
-	    // all subdirectories
+	    // all subdirectories.
 	    permissions.add(new FilePermission(file + "-", "read"));
 	  }
 	else
 	  {
-	    // It is a 'normal' file
-	    // Grant permission to access that file
+	    // It is a 'normal' file.
+	    // Grant permission to access that file.
 	    permissions.add(new FilePermission(file, "read"));
 	  }
       }
