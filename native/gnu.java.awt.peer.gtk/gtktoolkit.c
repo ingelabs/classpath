@@ -58,7 +58,7 @@ JNIEXPORT jint JNICALL
 Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenResolution (JNIEnv *env, 
 							   jobject obj)
 {
-  int res;
+  jint res;
 
   gdk_threads_enter ();
 
