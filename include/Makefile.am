@@ -51,7 +51,6 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkGenericPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkImagePainter.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkLabelPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkListPeer.h \
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMainThread.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMenuBarPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMenuComponentPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMenuItemPeer.h \

@@ -34,7 +34,6 @@ libgtkpeer_la_SOURCES = $(gtk_cairo_c_source_files) \
 			gnu_java_awt_peer_gtk_GtkImagePainter.c \
 			gnu_java_awt_peer_gtk_GtkLabelPeer.c \
 			gnu_java_awt_peer_gtk_GtkListPeer.c \
-			gnu_java_awt_peer_gtk_GtkMainThread.c \
 			gnu_java_awt_peer_gtk_GtkMenuBarPeer.c \
 			gnu_java_awt_peer_gtk_GtkMenuComponentPeer.c \
 			gnu_java_awt_peer_gtk_GtkMenuItemPeer.c \
