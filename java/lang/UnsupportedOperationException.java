@@ -1,6 +1,6 @@
 /*************************************************************************
 /* UnsupportedOperationException.java -- Exception thrown when an
-/*   unsupported operation is attempted on an object
+/* unsupported operation is attempted on an object
 /*
 /* Copyright (c) 1998 by Free Software Foundation, Inc.
 /*
@@ -26,10 +26,19 @@ package java.lang;
 */
 public class UnsupportedOperationException extends RuntimeException
 {
-  public UnsupportedOperationException() {}
-
-  public UnsupportedOperationException( String msg )
+  /**
+   * Create an exception without a message.
+   */
+  public UnsupportedOperationException() 
   {
-    super( msg );
+    super();
+  }
+
+  /**
+   * Create an exception with a message.
+   */
+  public UnsupportedOperationException( String s )
+  {
+    super(s);
   }
 }
