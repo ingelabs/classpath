@@ -1,3 +1,7 @@
+2000-11-20  Tom Tromey  <tromey@cygnus.com>
+
+        * java/lang/reflect/ReflectPermission.java: New file.
+
 2000-11-20 04:39  Brian Jones <cbj@gnu.org>
 
 	* NEWS: NEWS: added sparce information concerning the 0.01 release
