@@ -294,38 +294,56 @@ public class Socket
     // create socket
     impl.create(stream);
 
-    // bind/connect to address/port
     // FIXME: JCL p. 1586 says if localPort is unspecified, bind to any port,
     // i.e. '0' and if localAddr is unspecified, use getLocalAddress() as
     // that default.  JDK 1.2 doc infers not to do a bind.
-    if (laddr != null) {
-      try {
-        impl.bind(laddr, lport);
-      } catch (IOException exception) {
-        impl.close();
-        throw exception;
-      } catch (RuntimeException exception) {
-        impl.close();
-        throw exception;
-      } catch (Error error) {
-        impl.close();
-        throw error;
+    
+    // bind/connect to address/port
+    if (laddr != null)
+      {
+        try
+	  {
+            impl.bind(laddr, lport);
+          }
+	catch (IOException exception)
+          {
+            impl.close();
+            throw exception;
+          }
+        catch (RuntimeException exception)
+          {
+            impl.close();
+            throw exception;
+          }
+        catch (Error error)
+          {
+            impl.close();
+            throw error;
+          }
       }
-    }
-    if (raddr != null) {
-      try {
-        impl.connect(raddr, rport);
-      } catch (IOException exception) {
-        impl.close();
-        throw exception;
-      } catch (RuntimeException exception) {
-        impl.close();
-        throw exception;
-      } catch (Error error) {
-        impl.close();
-        throw error;
+
+    if (raddr != null)
+      {
+        try
+          {
+            impl.connect(raddr, rport);
+          }
+        catch (IOException exception)
+          {
+            impl.close();
+            throw exception;
+          }
+        catch (RuntimeException exception)
+          {
+            impl.close();
+            throw exception;
+          }
+        catch (Error error)
+          {
+            impl.close();
+            throw error;
+          }
       }
-    }
   }
 
   /**

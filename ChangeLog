@@ -1,3 +1,16 @@
+2003-05-02  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/DatagramSocket.java
+	(DatagramSocket): Reformatted.
+	* java/net/ServerSocket.java
+	(ServerSocket): Reformatted.
+	* java/net/Socket.java
+	(Socket): Reformatted.
+	* java/net/URLConnection.java:
+	Some documentation merged with libgcj.
+	(doInput): Set default value to true.
+	(ifModifiedSince): Set default value to 0L.
+
 2003-05-01  C. Brian Jones  <cbj@gnu.org>
 
 	Fixes [ Bug #3415 ] System.setIn/setOut/setErr do not work

@@ -39,18 +39,25 @@ exception statement from your version. */
 package java.net;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.security.Permission;
 import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.ParseException;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Locale;
+
+/**
+ * Written using on-line Java Platform 1.2 API Specification, as well
+ * as "The Java Class Libraries", 2nd edition (Addison-Wesley, 1998).
+ * Status:  One guessContentTypeFrom... methods not implemented.
+ *    getContent method assumes content type from response; see comment there.
+ */
 
 /**
  * This class models a connection that retrieves the information pointed
@@ -64,7 +71,7 @@ import java.util.Locale;
  * various connection options prior to calling the actual connect() method.
  * <p>
  * After the connection has been opened, there are a number of methods in
- * this class that access various attributes of the data, typically 
+ * this class that access various attributes of the data, typically
  * represented by headers sent in advance of the actual data itself.
  * <p>
  * Also of note are the getInputStream and getContent() methods which allow
@@ -80,9 +87,8 @@ import java.util.Locale;
  * by the actual content handlers as described in the description of that
  * method.
  *
- * @version 0.5
- *
- * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @author Warren Levy <warrenl@cygnus.com>
  */
 public abstract class URLConnection
 {
@@ -130,8 +136,8 @@ public abstract class URLConnection
   /**
    * Indicates whether or not input can be read from this URL
    */
-  protected boolean doInput;
-
+  protected boolean doInput = true;
+  
   /**
    * Indicates whether or not output can be sent to this URL
    */
@@ -140,14 +146,13 @@ public abstract class URLConnection
   /**
    * If this flag is set, the protocol is allowed to cache data whenever
    * it can (caching is not guaranteed). If it is not set, the protocol
-   * must a get a fresh copy of the data. 
+   * must a get a fresh copy of the data.
    * <p>
-   * This field is set by the setUseCaches method and returned by the 
+   * This field is set by the setUseCaches method and returned by the
    * getUseCaches method.
    *
-   * Its default value is that determined by the last invocation of 
+   * Its default value is that determined by the last invocation of
    * setDefaultUseCaches
-   *
    */
   protected boolean useCaches;
 
@@ -157,7 +162,7 @@ public abstract class URLConnection
    * modified more recently than the date set in this variable.  That date
    * should be specified as the number of seconds since 1/1/1970 GMT.
    */
-  protected long ifModifiedSince;
+  protected long ifModifiedSince = 0L;
 
   /**
    * This is the URL associated with this connection
