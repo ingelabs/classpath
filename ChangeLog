@@ -1,4 +1,9 @@
 2001-11-12  C. Brian Jones <cbj@gnu.org>
+	* native/jni/java-lang/java_lang_Double.c (parseDouble0): 
+	handle 'f', 'F', 'd', 'D' per JLS 3.10.2, fixes problems found using
+	Mauve
+
+2001-11-12  C. Brian Jones <cbj@gnu.org>
 	* native/jni/java-io/javaio.c (_javaio_open): use 
 	JCL_jstring_to_cstring instead of old undefined method
 	* acconfig.h: changed #define DEBUG 0 to #undef DEBUG to match

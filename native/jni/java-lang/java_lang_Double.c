@@ -251,6 +251,10 @@ JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble0
       return 0.0; /* OutOfMemoryError already thrown */
     }
 
+#ifdef DEBUG
+  fprintf (stderr, "java.lang.Double.parseDouble0 (%s)\n", buf);
+#endif
+
   if (strlen(buf) > 0)
     {
       struct _Jv_reent reent;  
@@ -258,10 +262,23 @@ JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble0
 
 #ifdef KISSME_LINUX_USER
       val = strtod ( buf, &endptr);
-   #else
+#else
       val = _strtod_r (&reent, buf, &endptr);
-   #endif
-      if (endptr == buf + strlen(buf))
+#endif
+
+      length = strlen(buf);
+      if    ((buf[length-1] == 'f')
+         || (buf[length-1] == 'F')
+         || (buf[length-1] == 'd')
+         || (buf[length-1] == 'D'))
+        length = length - 1;
+
+#ifdef DEBUG
+  fprintf (stderr, "java.lang.Double.parseDouble0 val = %g\n", val);
+  fprintf (stderr, "java.lang.Double.parseDouble0 %i = %i + %i\n", endptr, buf, length);
+#endif
+
+      if (endptr == buf + length)
 	return val;
     }
   JCL_ThrowException(env, "java/lang/NumberFormatException", "unable to parse double");
