@@ -37,78 +37,115 @@ exception statement from your version. */
 
 package javax.swing.undo;
 
+// Imports
+import java.util.*;
+
 /**
- * UndoableEdit interface
- * @author Andrew Selkirk
+ * StateEdit
+ * @author	Andrew Selkirk
  */
-public interface UndoableEdit {
+public class StateEdit extends AbstractUndoableEdit {
+
+	//-------------------------------------------------------------
+	// Variables --------------------------------------------------
+	//-------------------------------------------------------------
 
 	/**
-	 * anEdit
-	 * @param anEdit TODO
-	 * @returns TODO
+	 * RCSID
 	 */
-	public boolean addEdit(UndoableEdit anEdit);
+	protected static final String RCSID = ""; // TODO
 
 	/**
-	 * canRedo
-	 * @returns TODO
+	 * object
 	 */
-	public boolean canRedo();
+	protected StateEditable object;
 
 	/**
-	 * canRedo
-	 * @returns TODO
+	 * preState
 	 */
-	public boolean canUndo();
+	protected Hashtable preState;
 
 	/**
-	 * die
+	 * postState
 	 */
-	public void die();
+	protected Hashtable postState;
 
 	/**
-	 * getPresentationName
-	 * @returns TODO
+	 * undoRedoName
 	 */
-	public String getPresentationName();
+	protected String undoRedoName;
+
+
+	//-------------------------------------------------------------
+	// Initialization ---------------------------------------------
+	//-------------------------------------------------------------
 
 	/**
-	 * getRedoPresentationName
-	 * @returns TODO
+	 * Constructor StateEdit
+	 * @param value0 TODO
 	 */
-	public String getRedoPresentationName();
+	public StateEdit(StateEditable value0) {
+		// TODO
+	} // StateEdit()
 
 	/**
-	 * getUndoPresentationName
-	 * @returns TODO
+	 * Constructor StateEdit
+	 * @param value0 TODO
+	 * @param value1 TODO
 	 */
-	public String getUndoPresentationName();
+	public StateEdit(StateEditable value0, String value1) {
+		// TODO
+	} // StateEdit()
+
+
+	//-------------------------------------------------------------
+	// Methods ----------------------------------------------------
+	//-------------------------------------------------------------
 
 	/**
-	 * isSignificant
-	 * @returns TODO
+	 * init
+	 * @param value0 TODO
+	 * @param value1 TODO
 	 */
-	public boolean isSignificant();
+	protected void init(StateEditable value0, String value1) {
+		// TODO
+	} // init()
 
 	/**
-	 * redo
-	 * @throws CannotRedoException TODO
+	 * end
 	 */
-	public void redo() throws CannotRedoException;
-
-	/**
-	 * replaceEdit
-	 * @param anEdit TODO
-	 * @returns TODO
-	 */
-	public boolean replaceEdit(UndoableEdit anEdit);
+	public void end() {
+		// TODO
+	} // end()
 
 	/**
 	 * undo
-	 * @throws CannotUndoException TODO
 	 */
-	public void undo() throws CannotUndoException;
+	public void undo() {
+		// TODO
+	} // undo()
+
+	/**
+	 * redo
+	 */
+	public void redo() {
+		// TODO
+	} // redo()
+
+	/**
+	 * getPresentationName
+	 * @returns String
+	 */
+	public String getPresentationName() {
+		return null; // TODO
+	} // getPresentationName()
+
+	/**
+	 * removeRedundantState
+	 */
+	protected void removeRedundantState() {
+		// TODO
+	} // removeRedundantState()
 
 
-} // UndoableEdit
+} // StateEdit

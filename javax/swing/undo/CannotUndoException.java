@@ -38,77 +38,17 @@ exception statement from your version. */
 package javax.swing.undo;
 
 /**
- * UndoableEdit interface
+ * CannotUndoException
  * @author Andrew Selkirk
  */
-public interface UndoableEdit {
+public class CannotUndoException extends RuntimeException {
 
 	/**
-	 * anEdit
-	 * @param anEdit TODO
-	 * @returns TODO
+	 * Create exception
 	 */
-	public boolean addEdit(UndoableEdit anEdit);
-
-	/**
-	 * canRedo
-	 * @returns TODO
-	 */
-	public boolean canRedo();
-
-	/**
-	 * canRedo
-	 * @returns TODO
-	 */
-	public boolean canUndo();
-
-	/**
-	 * die
-	 */
-	public void die();
-
-	/**
-	 * getPresentationName
-	 * @returns TODO
-	 */
-	public String getPresentationName();
-
-	/**
-	 * getRedoPresentationName
-	 * @returns TODO
-	 */
-	public String getRedoPresentationName();
-
-	/**
-	 * getUndoPresentationName
-	 * @returns TODO
-	 */
-	public String getUndoPresentationName();
-
-	/**
-	 * isSignificant
-	 * @returns TODO
-	 */
-	public boolean isSignificant();
-
-	/**
-	 * redo
-	 * @throws CannotRedoException TODO
-	 */
-	public void redo() throws CannotRedoException;
-
-	/**
-	 * replaceEdit
-	 * @param anEdit TODO
-	 * @returns TODO
-	 */
-	public boolean replaceEdit(UndoableEdit anEdit);
-
-	/**
-	 * undo
-	 * @throws CannotUndoException TODO
-	 */
-	public void undo() throws CannotUndoException;
+	public CannotUndoException() {
+		super();
+	} // CannotUndoException()
 
 
-} // UndoableEdit
+} // CannotUndoException

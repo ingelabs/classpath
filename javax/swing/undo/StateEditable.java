@@ -37,78 +37,26 @@ exception statement from your version. */
 
 package javax.swing.undo;
 
+// Imports
+import java.util.Hashtable;
+
 /**
- * UndoableEdit interface
+ * StateEditable interface
  * @author Andrew Selkirk
  */
-public interface UndoableEdit {
+public interface StateEditable {
 
 	/**
-	 * anEdit
-	 * @param anEdit TODO
-	 * @returns TODO
+	 * Restore State
+	 * @param state State
 	 */
-	public boolean addEdit(UndoableEdit anEdit);
+	public void restoreState(Hashtable state);
 
 	/**
-	 * canRedo
-	 * @returns TODO
+	 * Store State
+	 * @param state State
 	 */
-	public boolean canRedo();
-
-	/**
-	 * canRedo
-	 * @returns TODO
-	 */
-	public boolean canUndo();
-
-	/**
-	 * die
-	 */
-	public void die();
-
-	/**
-	 * getPresentationName
-	 * @returns TODO
-	 */
-	public String getPresentationName();
-
-	/**
-	 * getRedoPresentationName
-	 * @returns TODO
-	 */
-	public String getRedoPresentationName();
-
-	/**
-	 * getUndoPresentationName
-	 * @returns TODO
-	 */
-	public String getUndoPresentationName();
-
-	/**
-	 * isSignificant
-	 * @returns TODO
-	 */
-	public boolean isSignificant();
-
-	/**
-	 * redo
-	 * @throws CannotRedoException TODO
-	 */
-	public void redo() throws CannotRedoException;
-
-	/**
-	 * replaceEdit
-	 * @param anEdit TODO
-	 * @returns TODO
-	 */
-	public boolean replaceEdit(UndoableEdit anEdit);
-
-	/**
-	 * undo
-	 * @throws CannotUndoException TODO
-	 */
-	public void undo() throws CannotUndoException;
+	public void storeState(Hashtable state);
 
 
-} // UndoableEdit
+} // StateEditable
