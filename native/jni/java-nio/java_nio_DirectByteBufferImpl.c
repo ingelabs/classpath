@@ -1,5 +1,5 @@
-/* NetworkInterface.c - Native methods for NetworkInterface class
-   Copyright (C) 2003 Free Software Foundation, Inc.
+/* java_nio_DirectByteBufferImpl.c - Native methods for DirectByteBufferImpl
+   Copyright (C) 2003, 2004  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -59,20 +59,35 @@ Java_java_nio_DirectByteBufferImpl_freeImpl (JNIEnv *env, jclass class, jobject 
 }
 
 JNIEXPORT jbyte JNICALL
-Java_java_nio_DirectByteBufferImpl_getImpl (JNIEnv *env, jclass class, jint index)
+Java_java_nio_DirectByteBufferImpl_getImpl__Lgnu_classpath_RawData_2I
+  (JNIEnv *env, jclass clazz, jobject address, jint index)
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.getImpl(): not implemented");
   return 0;
 }
 
 JNIEXPORT void JNICALL
-Java_java_nio_DirectByteBufferImpl_putImpl (JNIEnv *env, jclass class, jint index, jbyte value)
+Java_java_nio_DirectByteBufferImpl_putImpl (JNIEnv *env, jclass class, jobject address, jint index, jbyte value)
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.putImpl(): not implemented");
 }
 
 JNIEXPORT void JNICALL
-Java_java_nio_DirectByteBufferImpl_shiftDown (JNIEnv *env, jobject obj, jint src_offset, jint dst_offset, jint count)
+Java_java_nio_DirectByteBufferImpl_getImpl__Lgnu_classpath_RawData_2I_3BII
+  (JNIEnv *env, jclass clazz, jobject address, jint index, jbyteArray dst_buffer, jint dst_offset, jint dst_len)
+{
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.getImpl(): not implemented");
+  return 0;
+}
+
+JNIEXPORT void JNICALL
+Java_java_nio_DirectByteBufferImpl_shiftDown (JNIEnv *env, jobject obj, jint dst_offset, jint src_offset, jint count)
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.shiftDown(): not implemented");
+}
+
+JNIEXPORT jobject JNICALL
+Java_java_nio_DirectByteBufferImpl_adjustAddress (JNIEnv *env, jclass class, jobject address, jint offset)
+{
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.adjustAddress(): not implemented");
 }

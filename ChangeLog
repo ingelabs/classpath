@@ -1,5 +1,141 @@
 2004-04-08  Michael Koch  <konqueror@gmx.de>
 
+	* configure.ac: Added gnu/java/nio/channels/Makefile to output files.
+	* gnu/java/nio/Makefile.am: Added subdir channels.
+	* include/gnu_java_nio_channels_FileChannelImpl.h: New file.
+	* include/java_io_FileDescriptor.h,
+	include/java_nio_DirectByteBufferImpl.h: Updates.
+	* include/java_nio_channels_FileChannelImpl.h: Removed.
+	* include/Makefile.am: Handle generation of
+	gnu_java_nio_channels_FileChannelImpl.h.
+	* java/nio/channels/Makefile.am (EXTRA_DIST): Removed FileChannelImpl.java.
+	* native/jni/java-nio/Makefile.am
+	(libjavanio_la_SOURCES): Removed java_nio_FileChannelImpl.c and
+	added gnu_java_nio_channels_FileChannelImpl.c.
+	* native/jni/java-io/FileDescriptor.c: Commented out all code.
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c: New file.
+	* native/jni/java-nio/java_nio_DirectByteBufferImpl.c: Fixed method names.
+	* native/jni/java-nio/java_nio_FileChannelImpl.c: Removed.
+
+2004-04-08  Per Bothner  <per@bothner.com>
+
+	* java/nio/channels/Channels.java (newInputStream, newOutputStream):
+	Optimize when argument is a FileChannelImpl.
+	(newInputStream(FileChannelImpl), newOutputStream(FileChannelImpl)):
+	New native methods.
+
+2004-04-08  Per Bothner  <per@bothner.com>
+
+	* java/nio/channels/FileChannelImpl.java:  Moved to package
+	gnu/java/nio/channels, since we need to refer to it from java.io.
+	* java/nio/channels/natFileChannelImpl.cc:  Removed file.
+	* gnu/java/nio/channels/FileChannelImpl.java:  New class, renamed
+	from java/nio/channels.  Don't depend on FileDescriptor.
+	(in, out, err):  New static fields.
+	(mode):  New field.
+	(SET, CUR, READ, WRITE, APPEND, EXCL, SYNC, DSYNC):  Moved constants
+	from FileDescriptor.
+	(by):  Removed MappedByteBuffer field.
+	(map):  New working implementation.
+	* java/io/FileDescriptor.java:  Implement on top of FileChannel.
+	Remove native methods.
+	* gnu/java/nio/FileLockImpl.java (fd):  Remove field, replacing it by:
+	(ch):  New FileChannelImpl field.  Update constructor to match.
+	(releaseImpl):  Remove native method.  Instead ...
+	(release):  Call unlock on channel.
+	* java/io/FileInputStream.java (ch):  Change type to FileChannelImpl.
+	(<init>(File)):  Allocate a FileChannelImpl, not a FileDescriptor.
+	(<init>(FileChannelImpl)):  New package-private constructor.
+	(<init>(FileDescriptor)):  Extract FileChannelImpl from arg.
+	(available, close, read, skip):  Implement using FileChannelImpl.
+	(getFD):  Allocate FileDescriptor if needed.
+	(getChannel):  Is now trivial.
+	* java/io/FileOutputStream.java:  Corresponding changes.
+	* java/io/RandomAccessFile.java:  Corresponding changes.
+	* java/nio/MappedByteBuffer.java: (forceImpl, isLoadedImpl, loadImpl,
+	unmapImpl):  New dummy methods, to be overridden by subclass.
+	(finalize, isLoaded, load, force):  New methods.
+	* java/nio/MappedByteBufferImpl.java:  More-or-less rewrite.
+	Now works, at least for read mapping.
+
+2004-04-08  Per Bothner  <per@bothner.com>
+
+	* java/nio/CharBufferImpl.java:  Inline super constructor.
+	* java/nio/DoubleBufferImpl.java:  Likewise.
+	* java/nio/FloatBufferImpl.java:  Likewise.
+	* java/nio/IntBufferImpl.java:  Likewise.
+	* java/nio/LongBufferImpl.java:  Likewise.
+	* java/nio/ShortBufferImpl.java:  Likewise.
+	* java/nio/CharBuffer.java:  Remove unused constructor.
+	* java/nio/DoubleBuffer.java:  Likewise.
+	* java/nio/FloatBuffer.java:  Likewise.
+	* java/nio/IntBuffer.java:  Likewise.
+	* java/nio/LongBuffer.java:  Likewise.
+	* java/nio/ShortBuffer.java:  Likewise.
+	* java/nio/CharViewBufferImpl.java:  New convenience constructor.
+	Fix buggy call to super constructor.
+	* java/nio/DoubleViewBufferImpl.java:  Likewise.
+	* java/nio/FloatViewBufferImpl.java:  Likewise.
+	* java/nio/IntViewBufferImpl.java:  Likewise.
+	* java/nio/LongViewBufferImpl.java:  Likewise.
+	* java/nio/ShortViewBufferImpl.java:  Likewise.
+	* java/nio/ByteBuffer.java (endian):  Make non-private so other
+	java.nio classes can inherit it.
+	(<init>):  Don't bother clearing array_offset.
+	* java/nio/ByteBuffer.java (allocate):  Re-implement using wrap.
+	* java/nio/ByteBuffer.java (get(byte[],int,int)):  Check underflow.
+	Remove redundant test.
+	* java/nio/ByteBufferImpl.java (asCharBuffer, asShortBuffer,
+	asIntBuffer, asLongBuffer, asFloatBuffer, asDoubleBuffer):
+	Use new XxxViewBufferImpl constructors.
+	* java/nio/MappedByteBufferImpl.java:  Likewise.
+	* java/nio/DirectByteBufferImpl.java:  Likewise.
+	* java/nio/ByteBufferImpl.java:  Remove one constructor.
+	Inline super in remaining constructor.
+	* java/nio/ByteBuffer.java:  Remove unused constructor.
+	* java/nio/ByteBufferImpl.java (shiftDown):  New optimized method.
+	* java/nio/ByteBufferImpl.java (get, put):  Add array_offset.
+	* java/nio/DirectByteBufferImpl.java (owner):  New field.
+	(offset):  Remove unused field.
+	(<init>):  Modify one and add another constructor.  Change callers.
+	(allocateDirect):  Removed - not used.
+	(getImpl, putImpl):  Make static and pass address explicitly,
+	to make them useful for MappedByteBufferImpl.
+	(get, put):  Check for underflow.  Modify for new getImpl.
+	(getImpl):  New native method where target is array.
+	(get(byte[],int,int)):  Use the above.
+	(adjustAddress):  New static native method.
+	(slice, duplicate, asReadOnly):  New implementations.
+
+2004-04-08  Per Bothner  <per@bothner.com>
+
+	* java/nio/ByteBuffer.java (shiftDown):  New helper method.
+	* java/nio/ByteBufferImpl.java (compact):  Use new shiftDown method.
+	* sava/nio/ByteBufferHelper.java:  Remove redundant 'final' specifiers.
+	Pass ByteOrder parameter to most methods, since the underlying
+	ByteBuffer's order isn't always what we should use.
+	* java/nio/ByteBufferImpl.java:  Pass byte-order various places.
+	* java/nio/DirectByteBufferImpl.java:  Likewise.
+	Use ByteBufferHelper methods.
+	* java/nio/MappedByteBufferImpl.java:  Likewise.
+	(compact):  Use shiftDown.
+	* java/nio/CharViewBufferImpl.java (<init>):  Pass byte-order.
+	(get, put):  Use ByteBufferHelper.
+	(compact):  Use new shiftDown method.
+	(duplicate(boolean)):  New helper method.
+	(duplicate, asReadOnlyBuffer):  Use it.
+	(order):  Return endian field.
+	* java/nio/DoubleViewBufferImpl.java:  Likewise.
+	* java/nio/FloatViewBufferImpl.java:  Likewise.
+	* java/nio/IntViewBufferImpl.java:  Likewise.
+	* java/nio/LongViewBufferImpl.java:  Likewise.
+	* java/nio/ShortViewBufferImpl.java:  Likewise.
+	* java/nio/CharViewBufferImpl.java (subsequence):  Redundant test.
+	* java/nio/DirectByteBufferImpl.java (shiftDown):  New native method.
+	(compact):  Re-implement using shiftDown.
+
+2004-04-08  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/ContentHandler.java,
 	java/net/ContentHandlerFactory.java,
 	java/net/Inet4Address.java,

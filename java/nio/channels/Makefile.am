@@ -12,7 +12,6 @@ ClosedSelectorException.java \
 ConnectionPendingException.java \
 DatagramChannel.java \
 FileChannel.java \
-FileChannelImpl.java \
 FileLock.java \
 FileLockInterruptionException.java \
 GatheringByteChannel.java \

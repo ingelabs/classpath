@@ -39,6 +39,7 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkWindowPeer.h \
 $(top_srcdir)/include/gnu_java_net_PlainDatagramSocketImpl.h \
 $(top_srcdir)/include/gnu_java_net_PlainSocketImpl.h \
 $(top_srcdir)/include/gnu_java_nio_NIOServerSocket.h \
+$(top_srcdir)/include/gnu_java_nio_channels_FileChannelImpl.h \
 $(top_srcdir)/include/java_io_FileDescriptor.h \
 $(top_srcdir)/include/java_io_File.h \
 $(top_srcdir)/include/java_io_ObjectInputStream.h \
@@ -53,7 +54,6 @@ $(top_srcdir)/include/java_lang_reflect_Array.h \
 $(top_srcdir)/include/java_net_InetAddress.h \
 $(top_srcdir)/include/java_net_NetworkInterface.h \
 $(top_srcdir)/include/java_nio_DirectByteBufferImpl.h \
-$(top_srcdir)/include/java_nio_channels_FileChannelImpl.h \
 $(top_srcdir)/include/gnu_java_nio_FileLockImpl.h \
 $(top_srcdir)/include/java_util_TimeZone.h
 
@@ -161,10 +161,8 @@ $(top_srcdir)/include/java_net_NetworkInterface.h: $(top_srcdir)/java/net/Networ
 	$(JAVAH) -o $@ java.net.NetworkInterface
 $(top_srcdir)/include/java_nio_DirectByteBufferImpl.h: $(top_srcdir)/java/nio/DirectByteBufferImpl.java
 	$(JAVAH) -o $@ java.nio.DirectByteBufferImpl
-$(top_srcdir)/include/java_nio_channels_FileChannelImpl.h: $(top_srcdir)/java/nio/channels/FileChannelImpl.java
-	$(JAVAH) -o $@ java.nio.channels.FileChannelImpl
-$(top_srcdir)/include/gnu_java_nio_FileChannelImpl.h: $(top_srcdir)/java/nio/channels/FileChannelImpl.java
-	$(JAVAH) -o $@ gnu.java.nio.FileChannelImpl
+$(top_srcdir)/include/gnu_java_nio_channels_FileChannelImpl.h: $(top_srcdir)/gnu/java/nio/channels/FileChannelImpl.java
+	$(JAVAH) -o $@ gnu.java.nio.channels.FileChannelImpl
 $(top_srcdir)/include/gnu_java_nio_FileLockImpl.h: $(top_srcdir)/gnu/java/nio/FileLockImpl.java
 	$(JAVAH) -o $@ gnu.java.nio.FileLockImpl
 $(top_srcdir)/include/java_util_TimeZone.h: $(top_srcdir)/java/util/TimeZone.java

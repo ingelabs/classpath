@@ -1,4 +1,4 @@
-SUBDIRS = charset
+SUBDIRS = channels charset
 
 EXTRA_DIST= \
 ChannelInputStream.java \

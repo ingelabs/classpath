@@ -1,6 +1,8 @@
 dnl Process this file with autoconf to produce a configure script.
 
+dnl -----------------------------------------------------------
 dnl Turning off cache for debug reasons
+dnl -----------------------------------------------------------
 dnl define([AC_CACHE_LOAD], )dnl
 dnl define([AC_CACHE_SAVE], )dnl
 
@@ -9,11 +11,15 @@ AC_CONFIG_SRCDIR(java/lang/System.java)
 
 AC_CANONICAL_TARGET
 
+dnl -----------------------------------------------------------
 dnl Fold all IA-32 CPU architectures into "x86"
+dnl -----------------------------------------------------------
 if expr ${target_cpu} : .*86 > /dev/null; then target_cpu=x86; fi
 
+dnl -----------------------------------------------------------
 dnl We will not track/change lib version until we reach version 1.0
 dnl at which time we'll have to be more anal about such things
+dnl -----------------------------------------------------------
 AC_SUBST(LIBVERSION, "0:0:0")
 
 AC_PREREQ(2.59)
@@ -21,16 +27,9 @@ AM_INIT_AUTOMAKE(1.7.0)
 AC_CONFIG_HEADERS([include/config.h])
 AC_PREFIX_DEFAULT(/usr/local/classpath)
 
-AC_ARG_ENABLE([java],
-              [AS_HELP_STRING(--enable-java,compile Java source [default=yes])],
-              [case "${enableval}" in 
-                 yes) COMPILE_JAVA=yes ;;
-                 no) COMPILE_JAVA=no ;;
-                 *) COMPILE_JAVA=yes ;;
-               esac],
-              [COMPILE_JAVA=yes])
-AM_CONDITIONAL(BUILD_GLIBJ_ZIP, test "x${COMPILE_JAVA}" = xyes)
-
+dnl -----------------------------------------------------------
+dnl Enable JNI libraries (enabled by default)
+dnl -----------------------------------------------------------
 AC_ARG_ENABLE([jni],
               [AS_HELP_STRING(--enable-jni,compile JNI source [default=yes])],
               [case "${enableval}" in 
@@ -39,7 +38,11 @@ AC_ARG_ENABLE([jni],
                 *) COMPILE_JNI=yes; COMPILE_JAVA=yes ;;
               esac],
               [COMPILE_JNI=yes])
+AM_CONDITIONAL(CREATE_JNI_LIBRARIES, test "x${COMPILE_JNI}" = xyes)
 
+dnl -----------------------------------------------------------
+dnl Enable CNI libraries (disabled by default)
+dnl -----------------------------------------------------------
 AC_ARG_ENABLE([cni],
               [AS_HELP_STRING(--enable-cni,compile CNI source [default=no])],
               [case "${enableval}" in 
@@ -48,9 +51,10 @@ AC_ARG_ENABLE([cni],
                 *) COMPILE_CNI=yes; COMPILE_JAVA=yes ;;
               esac],
               [COMPILE_CNI=no])
+AM_CONDITIONAL(CREATE_CNI_LIBRARIES, test "x${COMPILE_CNI}" = xyes)
 
 dnl -----------------------------------------------------------
-dnl GTK native peer
+dnl GTK native peer (enabled by default)
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([gtk-peer],
               [AS_HELP_STRING(--enable-gtk-peer,compile GTK native peers [default=yes])],
@@ -60,11 +64,11 @@ AC_ARG_ENABLE([gtk-peer],
                 *) COMPILE_GTK_PEER=yes ;;
               esac],
               [COMPILE_GTK_PEER=yes])
-
-AM_CONDITIONAL(CREATE_JNI_LIBRARIES, test "x${COMPILE_JNI}" = xyes)
-AM_CONDITIONAL(CREATE_CNI_LIBRARIES, test "x${COMPILE_CNI}" = xyes)
 AM_CONDITIONAL(CREATE_GTK_PEER_LIBRARIES, test "x${COMPILE_GTK_PEER}" = xyes)
 
+dnl -----------------------------------------------------------
+dnl Regenerate headers at build time (disabled by default)
+dnl -----------------------------------------------------------
 AC_ARG_ENABLE([regen-headers],
               [AS_HELP_STRING(--enable-regen-headers,automatically regenerate JNI headers [default=no])],
               [case "${enableval}" in
@@ -73,13 +77,14 @@ AC_ARG_ENABLE([regen-headers],
                 *) REGENERATE_JNI_HEADERS=no ;;
               esac],
               [REGENERATE_JNI_HEADERS=no])
-
 AM_CONDITIONAL(CREATE_JNI_HEADERS, test "x${REGENERATE_JNI_HEADERS}" = xyes)
 
 AC_PROG_LN_S
 AC_PROG_INSTALL
 
+dnl -----------------------------------------------------------
 dnl Checks for programs.
+dnl -----------------------------------------------------------
 dnl AC_PROG_CXX
 dnl Initialize libtool
 AC_DISABLE_STATIC
@@ -134,13 +139,11 @@ CLASSPATH_WITH_JAVAH
 CLASSPATH_WITH_INCLUDEDIR
 
 dnl ----------------------------------------------------------- 
-dnl add the include files for the native abstraction layer
+dnl Add the include files for the native abstraction layer.
 dnl -----------------------------------------------------------
-
 EXTRA_INCLUDES="${EXTRA_INCLUDES} -I\$(top_srcdir)/native/target/Linux -I\$(top_srcdir)/native/target/generic"
 
 dnl -----------------------------------------------------------
-
 if test "x${COMPILE_JNI}" = xyes; then
   AC_MSG_CHECKING("jni_md.h support")
   if test -f ${srcdir}/include/jni_md-${target_cpu}-${target_os}.h; then
@@ -165,7 +168,6 @@ CLASSPATH_FIND_JAVAC
 
 CLASSPATH_WITH_CLASSLIB
 
-
 dnl -----------------------------------------------------------
 dnl Initialize maintainer mode
 dnl -----------------------------------------------------------
@@ -189,8 +191,6 @@ AC_ARG_ENABLE([debug],
               esac],
               [LIBDEBUG="false"])
 AC_SUBST(LIBDEBUG)
-dnl -----------------------------------------------------------
-
 
 dnl -----------------------------------------------------------
 dnl Enable execution of all static initializer loadLibrary() 
@@ -214,27 +214,10 @@ AC_ARG_ENABLE([load-library],
                 fi
               ])
 AC_SUBST(INIT_LOAD_LIBRARY)
-dnl -----------------------------------------------------------
-
 
 dnl -----------------------------------------------------------
-dnl Small loop to add other things to EXTRA_INCLUDES from a VM
-dnl -----------------------------------------------------------
-dnl for i in $JAPHAR_CFLAGS $KAFFE_CFLAGS ; do
-dnl   add_to_extra_includes=1
-dnl   for j in $EXTRA_INCLUDES ; do
-dnl     if test $i = $j ; then
-dnl       add_to_extra_includes=0
-dnl     fi
-dnl   done
-dnl   if test $add_to_extra_includes -eq 1; then
-dnl     EXTRA_INCLUDES="$EXTRA_INCLUDES $i"
-dnl   fi
-dnl done
-dnl -----------------------------------------------------------
-
-
 dnl Create a link to the VM specific files we're compiling with
+dnl -----------------------------------------------------------
 if test "x${JVM_REFERENCE}" = x; then
   JVM_REFERENCE=reference
 fi
@@ -247,26 +230,41 @@ while test -n "$ac_sources"; do
 done
 AC_CONFIG_LINKS([$ac_config_links_2])
 
+dnl -----------------------------------------------------------
 dnl avoiding automake complaints
+dnl -----------------------------------------------------------
 REMOVE=""
 AC_SUBST(REMOVE)
 
+dnl -----------------------------------------------------------
 dnl This is probably useless.
+dnl -----------------------------------------------------------
 AC_PATH_PROG(SH, sh)
 AC_PATH_PROG(MKDIR, mkdir)
 AC_PATH_PROG(CP, cp)
 AC_PATH_PROG(DATE, date)
 
+dnl -----------------------------------------------------------
 dnl According to the GNU coding guide, we shouldn't require find, 
 dnl and zip, however GNU provides both so it should be okay 
+dnl -----------------------------------------------------------
 AC_PATH_PROG(FIND, find)
 
-dnl Useful for disabling zip even if you have it
-CLASSPATH_WITH_ZIP
-
-CLASSPATH_ENABLE_GJDOC
+dnl -----------------------------------------------------------
+dnl Create glibj.zip (enabled by default)
+dnl -----------------------------------------------------------
+CLASSPATH_ENABLE_GLIBJ
 
 dnl -----------------------------------------------------------
+dnl Install class files (disabled by default)
+dnl -----------------------------------------------------------
+CLASSPATH_ENABLE_CLASS_INSTALL
+
+dnl -----------------------------------------------------------
+dnl Enable API documentation generation (disabled by default)
+dnl -----------------------------------------------------------
+CLASSPATH_ENABLE_GJDOC
+
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([portable-native-sync],
               [AS_HELP_STRING(--enable-portable-native-sync,synchronize VM threads portably)],
@@ -280,8 +278,10 @@ AC_ARG_ENABLE([portable-native-sync],
                      ;;
               esac],
               [])
-dnl -----------------------------------------------------------
 
+dnl -----------------------------------------------------------
+dnl output files
+dnl -----------------------------------------------------------
 AC_CONFIG_FILES([Makefile
 doc/Makefile
 doc/api/Makefile
@@ -306,6 +306,7 @@ gnu/java/locale/Makefile
 gnu/java/net/Makefile
 gnu/java/net/content/Makefile
 gnu/java/nio/Makefile
+gnu/java/nio/channels/Makefile
 gnu/java/nio/charset/Makefile
 gnu/java/net/content/text/Makefile
 gnu/java/net/protocol/Makefile
