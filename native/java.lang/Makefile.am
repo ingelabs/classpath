@@ -13,6 +13,12 @@ libjavalangmath_la_LDFLAGS = -version-info @LIBVERSION@
 INCLUDES += @EXTRA_INCLUDES@ \
             -I$(top_srcdir)/include
 
+if JAPHAR
+install-data-local : 
+	cd $(pkglibdir) && ln -s libjavalang.so libjaphar_javalang.so
+	cd $(pkglibdir) && ln -s libjavalangmath.so libjaphar_javalangmath.so
+endif
+
 clean-local:
 	-rm -rf .deps
 

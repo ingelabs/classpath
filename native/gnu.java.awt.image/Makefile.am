@@ -10,6 +10,11 @@ INCLUDES += @EXTRA_INCLUDES@ \
 	    @LIBART_CFLAGS@ \
 	    -I$(top_srcdir)/include
 
+if JAPHAR
+install-data-local : 
+	cd $(pkglibdir) && ln -s libcpgdkpixbuf.so libjaphar_cpgdkpixbuf.so
+endif
+
 clean-local:
 	-rm -rf .deps
 
