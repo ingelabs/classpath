@@ -1,3 +1,11 @@
+2002-10-25  Wu Gansha <gansha.wu@intel.com>:
+
+	* java/lang/reflect/Proxy.java (ProxyType): Set loader to System
+	ClassLoader when null.
+	(ProxyType.hashCode): Loader null check no longer needed.
+	(ProxyType.sameTypes): New method.
+	(ProxyType.equals): Use new method.
+
 2002-10-25  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/net/protocol/jar/JarURLConnection.java (JarFileCache.get):
