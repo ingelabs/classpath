@@ -33,6 +33,7 @@ jmethodID postConfigureEventID;
 jmethodID postExposeEventID;
 jmethodID postKeyEventID;
 jmethodID postFocusEventID;
+jmethodID postAdjustmentEventID;
 jmethodID syncAttrsID;
 JNIEnv *gdk_env;
 
@@ -48,7 +49,7 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
   char **argv;
   char *homedir, *rcpath = NULL;
 /*    jclass gtkgenericpeer; */
-  jclass gtkcomponentpeer, gtkwindowpeer;
+  jclass gtkcomponentpeer, gtkwindowpeer, gtkscrollbarpeer;
 
   printf ("init\n");
 
@@ -90,6 +91,8 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 				     "gnu/java/awt/peer/gtk/GtkComponentPeer");
   gtkwindowpeer = (*env)->FindClass (env,
 				     "gnu/java/awt/peer/gtk/GtkWindowPeer");
+  gtkscrollbarpeer = (*env)->FindClass (env, 
+				     "gnu/java/awt/peer/gtk/GtkScrollbarPeer");
 /*    gdkColor = (*env)->FindClass (env, */
 /*  				"gnu/java/awt/peer/gtk/GdkColor"); */
 /*    gdkColorID = (*env)->GetMethodID (env, gdkColor, "<init>", "(III)V"); */
@@ -106,8 +109,12 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 					"postKeyEvent", "(IJIIC)V");
   postFocusEventID = (*env)->GetMethodID (env, gtkcomponentpeer,
 					  "postFocusEvent", "(IZ)V");
+  postAdjustmentEventID = (*env)->GetMethodID (env, gtkscrollbarpeer,
+					       "postAdjustmentEvent", 
+					       "(II)V");
   syncAttrsID = (*env)->GetMethodID (env, gtkcomponentpeer,
 				     "syncAttrs", "()V");
+
 
 }
 

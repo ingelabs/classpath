@@ -22,6 +22,7 @@
 package gnu.java.awt.peer.gtk;
 import java.awt.*;
 import java.awt.peer.*;
+import java.awt.event.AdjustmentEvent;
 
 public class GtkScrollbarPeer extends GtkComponentPeer
     implements ScrollbarPeer
@@ -44,5 +45,12 @@ public class GtkScrollbarPeer extends GtkComponentPeer
 		     s.getMinimum(),
 		     s.getMaximum(),
 		     s.isVisible ());
+  }
+
+  protected void postAdjustmentEvent (int type, int value)
+  {
+    q.postEvent (new AdjustmentEvent ((Adjustable)awtComponent, 
+				      AdjustmentEvent.ADJUSTMENT_VALUE_CHANGED,
+				      type, value));
   }
 }

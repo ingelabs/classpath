@@ -91,6 +91,12 @@ extern struct state_table *native_state_table;
 #define AWT_MOUSE_EXITED   505
 #define AWT_MOUSE_DRAGGED  506
 
+#define AWT_ADJUSTMENT_UNIT_INCREMENT 1
+#define AWT_ADJUSTMENT_UNIT_DECREMENT 2
+#define AWT_ADJUSTMENT_BLOCK_DECREMENT 3
+#define AWT_ADJUSTMENT_BLOCK_INCREMENT 4
+#define AWT_ADJUSTMENT_TRACK 5
+
 #define AWT_KEY_TYPED    400
 #define AWT_KEY_PRESSED  401
 #define AWT_KEY_RELEASED 402
@@ -215,6 +221,7 @@ extern jmethodID postConfigureEventID;
 extern jmethodID postExposeEventID;
 extern jmethodID postKeyEventID;
 extern jmethodID postFocusEventID;
+extern jmethodID postAdjustmentEventID;
 extern jmethodID syncAttrsID;
 extern jclass gdkColor;
 extern jmethodID gdkColorID;

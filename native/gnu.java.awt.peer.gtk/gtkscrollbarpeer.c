@@ -22,6 +22,41 @@
 #include "gtkpeer.h"
 #include "GtkScrollbarPeer.h"
 
+struct range_scrollbar
+{
+  GtkRange *range;
+  jobject *scrollbar;
+};
+
+static void 
+post_adjustment_event (GtkAdjustment *adj, struct range_scrollbar *rs)
+{
+  jint type;
+
+  switch (rs->range->scroll_type)
+    {
+    case GTK_SCROLL_STEP_FORWARD:
+      type = AWT_ADJUSTMENT_UNIT_INCREMENT;
+      break;
+    case GTK_SCROLL_STEP_BACKWARD:
+      type = AWT_ADJUSTMENT_UNIT_DECREMENT;
+      break;
+    case GTK_SCROLL_PAGE_FORWARD:
+      type = AWT_ADJUSTMENT_BLOCK_INCREMENT;
+      break;
+    case GTK_SCROLL_PAGE_BACKWARD:
+      type = AWT_ADJUSTMENT_BLOCK_DECREMENT;
+      break;
+    case GTK_SCROLL_JUMP:
+    case GTK_SCROLL_NONE:
+      type = AWT_ADJUSTMENT_TRACK;
+      break;
+    }
+  
+  (*gdk_env)->CallVoidMethod (gdk_env, *(rs->scrollbar), postAdjustmentEventID,
+			      type, (jint) adj->value);
+}
+
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_gtkScrollbarNew
     (JNIEnv *env, jobject obj, jobject parent_obj,
@@ -31,7 +66,9 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_gtkScrollbarNew
   GtkWidget *sb;
   GtkObject *adj;
   void *parent;
+  struct range_scrollbar *rs;
 
+  rs = (struct range_scrollbar *) malloc (sizeof (struct range_scrollbar));
   parent = NSA_GET_PTR (env, parent_obj);
 
   gdk_threads_enter ();
@@ -48,6 +85,13 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_gtkScrollbarNew
 		    GTK_RANGE (sb)->step_forw,
 		    GTK_RANGE (sb)->step_back);
   set_visible (sb, visible);
+
+  rs->range = GTK_RANGE (sb);
+  rs->scrollbar = (jobject *) malloc (sizeof (jobject));
+  *(rs->scrollbar) = (*env)->NewGlobalRef (env, obj);
+  gtk_signal_connect (GTK_OBJECT (adj), "value_changed", 
+		      GTK_SIGNAL_FUNC (post_adjustment_event), rs);
+
   gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, sb);
@@ -83,6 +127,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setPageIncrement
   gdk_threads_enter ();
 
   adj = GTK_RANGE(ptr)->adjustment;
+  /* XXX: Figure out the difference between page_increment and page_size */
   adj->page_increment = amount;
   adj->page_size = amount;
   gtk_adjustment_changed (adj);
@@ -109,4 +154,3 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setValues
 
   gdk_threads_leave ();
 }
-
