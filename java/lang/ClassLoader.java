@@ -842,7 +842,7 @@ public abstract class ClassLoader
    * @return the package, if defined
    * @since 1.2
    */
-  protected final Package getPackage(String name)
+  protected Package getPackage(String name)
   {
     Package p;
     if (parent == null)
