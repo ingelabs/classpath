@@ -1,6 +1,7 @@
 2001-10-01  Mark Wielaard  <mark@klomp.org>
 
 	* java/lang/CharSequence.java: Fix javadoc comment.
+	* java/lang/StringBuffer.java: Remove extra javadoc author.date block.
 
 2001-09-30  Mark Wielaard  <mark@klomp.org>
 

@@ -27,11 +27,6 @@ executable file might be covered by the GNU General Public License. */
 package java.lang;
 import java.io.Serializable;
 
-/**
- * @author Tom Tromey <tromey@cygnus.com>
- * @date October 23, 1998.  
- */
-
 /* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
  * Updated using online JDK 1.2 docs.
  * Believed complete and correct to JDK 1.2.
