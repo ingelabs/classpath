@@ -108,7 +108,7 @@ public class ObjectStreamField implements Comparable
         type = Object.class; //FIXME: ???
       }
   }
-
+  
   /**
    * There are many cases you can not get java.lang.Class from typename 
    * if your context class loader cann not load it, then use typename to
@@ -206,6 +206,10 @@ public class ObjectStreamField implements Comparable
   }
 
   /**
+   * This method returns whether the field represented by this object is
+   * unshared or not.
+   *
+   * @return Tells if this field is unshared or not.
    */
   public boolean isUnshared ()
   {
