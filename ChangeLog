@@ -1,5 +1,10 @@
 2003-07-16  Torsten Rupp  <rupp@lisa.aicas.com>
 
+        * configure.in:
+        Some fixes for target native layer (reported by Stephen Crawley)
+
+2003-07-16  Torsten Rupp  <rupp@lisa.aicas.com>
+
         * java/io/class-dependencies.conf:
         java/lang/class-dependencies.conf:
         java/math/class-dependencies.conf:
