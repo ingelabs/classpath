@@ -1,3 +1,10 @@
+2004-10-01  Jerry Quinn  <jlquinn@optonline.net>
+
+	* java/awt/image/IndexColorModel.java: Fix use of immutable
+	BigIntegers.
+	* java/awt/image/ComponentColorModel.java: Remove FIXME comment
+	since it's correct.
+
 2004-09-30  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/InetAddress.java: Reformatted.
