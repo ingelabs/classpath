@@ -1,5 +1,6 @@
 /* Thread -- an independent thread of executable code
-   Copyright (C) 1998, 2001, 2002, 2003 Free Software Foundation
+   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003, 2004
+   Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -37,6 +38,14 @@ exception statement from your version. */
 
 package java.lang;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete to version 1.4, with caveats. We do not 
+ *          implement the deprecated (and dangerous) stop, suspend, and resume
+ *          methods. Security implementation is not complete.
+ */
+
 /**
  * Thread represents a single thread of execution in the VM. When an
  * application VM starts up, it creates a non-daemon Thread which calls the
@@ -65,6 +74,7 @@ package java.lang;
  * or interrupted?  The only thing that is clear is that the Thread should be
  * removed when it is stopped.
  *
+ * @author Tom Tromey
  * @author John Keiser
  * @author Eric Blake <ebb9@email.byu.edu>
  * @see Runnable
@@ -144,7 +154,7 @@ public class Thread implements Runnable
   {
     this(null, toRun);
   }
-
+  
   /**
    * Allocate a new Thread object, as if by
    * <code>Thread(group, toRun, <i>fake name</i>)</code>, where the fake name
@@ -310,6 +320,51 @@ public class Thread implements Runnable
   }
 
   /**
+   * Get the number of active threads in the current Thread's ThreadGroup.
+   * This implementation calls
+   * <code>currentThread().getThreadGroup().activeCount()</code>.
+   *
+   * @return the number of active threads in the current ThreadGroup
+   * @see ThreadGroup#activeCount()
+   */
+  public static int activeCount()
+  {
+    return currentThread().group.activeCount();
+  }
+
+  /**
+   * Check whether the current Thread is allowed to modify this Thread. This
+   * passes the check on to <code>SecurityManager.checkAccess(this)</code>.
+   *
+   * @throws SecurityException if the current Thread cannot modify this Thread
+   * @see SecurityManager#checkAccess(Thread)
+   */
+  public final void checkAccess()
+  {
+    // Bypass System.getSecurityManager, for bootstrap efficiency.
+    SecurityManager sm = Runtime.securityManager;
+    if (sm != null)
+      sm.checkAccess(this);
+  }
+
+  /**
+   * Count the number of stack frames in this Thread.  The Thread in question
+   * must be suspended when this occurs.
+   *
+   * @return the number of stack frames in this Thread
+   * @throws IllegalThreadStateException if this Thread is not suspended
+   * @deprecated pointless, since suspend is deprecated
+   */
+  public int countStackFrames()
+  {
+    VMThread t = vmThread;
+    if (t == null || group == null)
+	throw new IllegalThreadStateException();
+
+    return t.countStackFrames();
+  }
+
+  /**
    * Get the currently executing Thread. In the situation that the
    * currently running thread was created by native code and doesn't
    * have an associated Thread object yet, a new Thread object is
@@ -320,6 +375,332 @@ public class Thread implements Runnable
   public static Thread currentThread()
   {
     return VMThread.currentThread();
+  }
+
+  /**
+   * Originally intended to destroy this thread, this method was never
+   * implemented by Sun, and is hence a no-op.
+   */
+  public void destroy()
+  {
+  }
+  
+  /**
+   * Print a stack trace of the current thread to stderr using the same
+   * format as Throwable's printStackTrace() method.
+   *
+   * @see Throwable#printStackTrace()
+   */
+  public static void dumpStack()
+  {
+    new Throwable().printStackTrace();
+  }
+
+  /**
+   * Copy every active thread in the current Thread's ThreadGroup into the
+   * array. Extra threads are silently ignored. This implementation calls
+   * <code>getThreadGroup().enumerate(array)</code>, which may have a
+   * security check, <code>checkAccess(group)</code>.
+   *
+   * @param array the array to place the Threads into
+   * @return the number of Threads placed into the array
+   * @throws NullPointerException if array is null
+   * @throws SecurityException if you cannot access the ThreadGroup
+   * @see ThreadGroup#enumerate(Thread[])
+   * @see #activeCount()
+   * @see SecurityManager#checkAccess(ThreadGroup)
+   */
+  public static int enumerate(Thread[] array)
+  {
+    return currentThread().group.enumerate(array);
+  }
+
+  /**
+   * Get this Thread's name.
+   *
+   * @return this Thread's name
+   */
+  public final String getName()
+  {
+    VMThread t = vmThread;
+    return t == null ? name : t.getName();
+  }
+
+  /**
+   * Get this Thread's priority.
+   *
+   * @return the Thread's priority
+   */
+  public final synchronized int getPriority()
+  {
+    VMThread t = vmThread;
+    return t == null ? priority : t.getPriority();
+  }
+
+  /**
+   * Get the ThreadGroup this Thread belongs to. If the thread has died, this
+   * returns null.
+   *
+   * @return this Thread's ThreadGroup
+   */
+  public final ThreadGroup getThreadGroup()
+  {
+    return group;
+  }
+
+  /**
+   * Checks whether the current thread holds the monitor on a given object.
+   * This allows you to do <code>assert Thread.holdsLock(obj)</code>.
+   *
+   * @param obj the object to check
+   * @return true if the current thread is currently synchronized on obj
+   * @throws NullPointerException if obj is null
+   * @since 1.4
+   */
+  public static boolean holdsLock(Object obj)
+  {
+    return VMThread.holdsLock(obj);
+  }
+
+  /**
+   * Interrupt this Thread. First, there is a security check,
+   * <code>checkAccess</code>. Then, depending on the current state of the
+   * thread, various actions take place:
+   *
+   * <p>If the thread is waiting because of {@link #wait()},
+   * {@link #sleep(long)}, or {@link #join()}, its <i>interrupt status</i>
+   * will be cleared, and an InterruptedException will be thrown. Notice that
+   * this case is only possible if an external thread called interrupt().
+   *
+   * <p>If the thread is blocked in an interruptible I/O operation, in
+   * {@link java.nio.channels.InterruptibleChannel}, the <i>interrupt
+   * status</i> will be set, and ClosedByInterruptException will be thrown.
+   *
+   * <p>If the thread is blocked on a {@link java.nio.channels.Selector}, the
+   * <i>interrupt status</i> will be set, and the selection will return, with
+   * a possible non-zero value, as though by the wakeup() method.
+   *
+   * <p>Otherwise, the interrupt status will be set.
+   *
+   * @throws SecurityException if you cannot modify this Thread
+   */
+  public synchronized void interrupt()
+  {
+    checkAccess();
+    VMThread t = vmThread;
+    if (t != null)
+	t.interrupt();
+  }
+
+  /**
+   * Determine whether the current Thread has been interrupted, and clear
+   * the <i>interrupted status</i> in the process.
+   *
+   * @return whether the current Thread has been interrupted
+   * @see #isInterrupted()
+   */
+  public static boolean interrupted()
+  {
+    return VMThread.interrupted();
+  }
+
+  /**
+   * Determine whether the given Thread has been interrupted, but leave
+   * the <i>interrupted status</i> alone in the process.
+   *
+   * @return whether the Thread has been interrupted
+   * @see #interrupted()
+   */
+  public boolean isInterrupted()
+  {
+    VMThread t = vmThread;
+    return t != null && t.isInterrupted();
+  }
+
+  /**
+   * Determine whether this Thread is alive. A thread which is alive has
+   * started and not yet died.
+   *
+   * @return whether this Thread is alive
+   */
+  public final boolean isAlive()
+  {
+    return vmThread != null && group != null;
+  }
+
+  /**
+   * Tell whether this is a daemon Thread or not.
+   *
+   * @return whether this is a daemon Thread or not
+   * @see #setDaemon(boolean)
+   */
+  public final boolean isDaemon()
+  {
+    VMThread t = vmThread;
+    return t == null ? daemon : t.isDaemon();
+  }
+
+  /**
+   * Wait forever for the Thread in question to die.
+   *
+   * @throws InterruptedException if the Thread is interrupted; it's
+   *         <i>interrupted status</i> will be cleared
+   */
+  public final void join() throws InterruptedException
+  {
+    join(0, 0);
+  }
+
+  /**
+   * Wait the specified amount of time for the Thread in question to die.
+   *
+   * @param ms the number of milliseconds to wait, or 0 for forever
+   * @throws InterruptedException if the Thread is interrupted; it's
+   *         <i>interrupted status</i> will be cleared
+   */
+  public final void join(long ms) throws InterruptedException
+  {
+    join(ms, 0);
+  }
+
+  /**
+   * Wait the specified amount of time for the Thread in question to die.
+   *
+   * <p>Note that 1,000,000 nanoseconds == 1 millisecond, but most VMs do
+   * not offer that fine a grain of timing resolution. Besides, there is
+   * no guarantee that this thread can start up immediately when time expires,
+   * because some other thread may be active.  So don't expect real-time
+   * performance.
+   *
+   * @param ms the number of milliseconds to wait, or 0 for forever
+   * @param ns the number of extra nanoseconds to sleep (0-999999)
+   * @throws InterruptedException if the Thread is interrupted; it's
+   *         <i>interrupted status</i> will be cleared
+   * @throws IllegalArgumentException if ns is invalid
+   */
+  public final void join(long ms, int ns) throws InterruptedException
+  {
+    if(ms < 0 || ns < 0 || ns > 999999)
+	throw new IllegalArgumentException();
+
+    VMThread t = vmThread;
+    if(t != null)
+        t.join(ms, ns);
+  }
+
+  /**
+   * Resume this Thread.  If the thread is not suspended, this method does
+   * nothing. To mirror suspend(), there may be a security check:
+   * <code>checkAccess</code>.
+   *
+   * @throws SecurityException if you cannot resume the Thread
+   * @see #checkAccess()
+   * @see #suspend()
+   * @deprecated pointless, since suspend is deprecated
+   */
+  public final synchronized void resume()
+  {
+    checkAccess();
+    VMThread t = vmThread;
+    if (t != null)
+	t.resume();
+  }
+
+  /**
+   * The method of Thread that will be run if there is no Runnable object
+   * associated with the Thread. Thread's implementation does nothing at all.
+   *
+   * @see #start()
+   * @see #Thread(ThreadGroup, Runnable, String)
+   */
+  public void run()
+  {
+    if (toRun != null)
+      toRun.run();
+  }
+
+  /**
+   * Set the daemon status of this Thread.  If this is a daemon Thread, then
+   * the VM may exit even if it is still running.  This may only be called
+   * while the Thread is not running. There may be a security check,
+   * <code>checkAccess</code>.
+   *
+   * @param daemon whether this should be a daemon thread or not
+   * @throws SecurityException if you cannot modify this Thread
+   * @throws IllegalThreadStateException if the Thread is active
+   * @see #isDaemon()
+   * @see #checkAccess()
+   */
+  public final synchronized void setDaemon(boolean daemon)
+  {
+    if (vmThread != null || group == null)
+      throw new IllegalThreadStateException();
+    checkAccess();
+    this.daemon = daemon;
+  }
+
+  /**
+   * Returns the context classloader of this Thread. The context
+   * classloader can be used by code that want to load classes depending
+   * on the current thread. Normally classes are loaded depending on
+   * the classloader of the current class. There may be a security check
+   * for <code>RuntimePermission("getClassLoader")</code> if the caller's
+   * class loader is not null or an ancestor of this thread's context class
+   * loader.
+   *
+   * @return the context class loader
+   * @throws SecurityException when permission is denied
+   * @see setContextClassLoader(ClassLoader)
+   * @since 1.2
+   */
+  public ClassLoader getContextClassLoader()
+  {
+    // Bypass System.getSecurityManager, for bootstrap efficiency.
+    SecurityManager sm = Runtime.securityManager;
+    if (sm != null)
+      // XXX Don't check this if the caller's class loader is an ancestor.
+      sm.checkPermission(new RuntimePermission("getClassLoader"));
+    return contextClassLoader;
+  }
+
+  /**
+   * Sets the context classloader for this Thread. When not explicitly set,
+   * the context classloader for a thread is the same as the context
+   * classloader of the thread that created this thread. The first thread has
+   * as context classloader the system classloader. There may be a security
+   * check for <code>RuntimePermission("setContextClassLoader")</code>.
+   *
+   * @param classloader the new context class loader
+   * @throws SecurityException when permission is denied
+   * @see getContextClassLoader()
+   * @since 1.2
+   */
+  public void setContextClassLoader(ClassLoader classloader)
+  {
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null)
+      sm.checkPermission(new RuntimePermission("setContextClassLoader"));
+    this.contextClassLoader = classloader;
+  }
+
+  /**
+   * Set this Thread's name.  There may be a security check,
+   * <code>checkAccess</code>.
+   *
+   * @param name the new name for this Thread
+   * @throws NullPointerException if name is null
+   * @throws SecurityException if you cannot modify this Thread
+   */
+  public final synchronized void setName(String name)
+  {
+    checkAccess();
+    // Use toString hack to detect null.
+    name = name.toString();
+    VMThread t = vmThread;
+    if (t != null)
+	t.setName(name);
+    else
+	this.name = name;
   }
 
   /**
@@ -392,20 +773,7 @@ public class Thread implements Runnable
 
     VMThread.create(this, stacksize);
   }
-
-  /**
-   * The method of Thread that will be run if there is no Runnable object
-   * associated with the Thread. Thread's implementation does nothing at all.
-   *
-   * @see #start()
-   * @see #Thread(ThreadGroup, Runnable, String)
-   */
-  public void run()
-  {
-    if (toRun != null)
-      toRun.run();
-  }
-
+  
   /**
    * Cause this Thread to stop abnormally because of the throw of a ThreadDeath
    * error. If you stop a Thread that has not yet started, it will stop
@@ -482,80 +850,6 @@ public class Thread implements Runnable
   }
 
   /**
-   * Interrupt this Thread. First, there is a security check,
-   * <code>checkAccess</code>. Then, depending on the current state of the
-   * thread, various actions take place:
-   *
-   * <p>If the thread is waiting because of {@link #wait()},
-   * {@link #sleep(long)}, or {@link #join()}, its <i>interrupt status</i>
-   * will be cleared, and an InterruptedException will be thrown. Notice that
-   * this case is only possible if an external thread called interrupt().
-   *
-   * <p>If the thread is blocked in an interruptible I/O operation, in
-   * {@link java.nio.channels.InterruptibleChannel}, the <i>interrupt
-   * status</i> will be set, and ClosedByInterruptException will be thrown.
-   *
-   * <p>If the thread is blocked on a {@link java.nio.channels.Selector}, the
-   * <i>interrupt status</i> will be set, and the selection will return, with
-   * a possible non-zero value, as though by the wakeup() method.
-   *
-   * <p>Otherwise, the interrupt status will be set.
-   *
-   * @throws SecurityException if you cannot modify this Thread
-   */
-  public synchronized void interrupt()
-  {
-    checkAccess();
-    VMThread t = vmThread;
-    if (t != null)
-	t.interrupt();
-  }
-
-  /**
-   * Determine whether the current Thread has been interrupted, and clear
-   * the <i>interrupted status</i> in the process.
-   *
-   * @return whether the current Thread has been interrupted
-   * @see #isInterrupted()
-   */
-  public static boolean interrupted()
-  {
-    return VMThread.interrupted();
-  }
-
-  /**
-   * Determine whether the given Thread has been interrupted, but leave
-   * the <i>interrupted status</i> alone in the process.
-   *
-   * @return whether the Thread has been interrupted
-   * @see #interrupted()
-   */
-  public boolean isInterrupted()
-  {
-    VMThread t = vmThread;
-    return t != null && t.isInterrupted();
-  }
-
-  /**
-   * Originally intended to destroy this thread, this method was never
-   * implemented by Sun, and is hence a no-op.
-   */
-  public void destroy()
-  {
-  }
-
-  /**
-   * Determine whether this Thread is alive. A thread which is alive has
-   * started and not yet died.
-   *
-   * @return whether this Thread is alive
-   */
-  public final boolean isAlive()
-  {
-    return vmThread != null && group != null;
-  }
-
-  /**
    * Suspend this Thread.  It will not come back, ever, unless it is resumed.
    *
    * <p>This is inherently unsafe, as the suspended thread still holds locks,
@@ -573,24 +867,6 @@ public class Thread implements Runnable
     VMThread t = vmThread;
     if (t != null)
 	t.suspend();
-  }
-
-  /**
-   * Resume this Thread.  If the thread is not suspended, this method does
-   * nothing. To mirror suspend(), there may be a security check:
-   * <code>checkAccess</code>.
-   *
-   * @throws SecurityException if you cannot resume the Thread
-   * @see #checkAccess()
-   * @see #suspend()
-   * @deprecated pointless, since suspend is deprecated
-   */
-  public final synchronized void resume()
-  {
-    checkAccess();
-    VMThread t = vmThread;
-    if (t != null)
-	t.resume();
   }
 
   /**
@@ -623,214 +899,6 @@ public class Thread implements Runnable
   }
 
   /**
-   * Get this Thread's priority.
-   *
-   * @return the Thread's priority
-   */
-  public final synchronized int getPriority()
-  {
-    VMThread t = vmThread;
-    return t == null ? priority : t.getPriority();
-  }
-
-  /**
-   * Set this Thread's name.  There may be a security check,
-   * <code>checkAccess</code>.
-   *
-   * @param name the new name for this Thread
-   * @throws NullPointerException if name is null
-   * @throws SecurityException if you cannot modify this Thread
-   */
-  public final synchronized void setName(String name)
-  {
-    checkAccess();
-    // Use toString hack to detect null.
-    name = name.toString();
-    VMThread t = vmThread;
-    if (t != null)
-	t.setName(name);
-    else
-	this.name = name;
-  }
-
-  /**
-   * Get this Thread's name.
-   *
-   * @return this Thread's name
-   */
-  public final String getName()
-  {
-    VMThread t = vmThread;
-    return t == null ? name : t.getName();
-  }
-
-  /**
-   * Get the ThreadGroup this Thread belongs to. If the thread has died, this
-   * returns null.
-   *
-   * @return this Thread's ThreadGroup
-   */
-  public final ThreadGroup getThreadGroup()
-  {
-    return group;
-  }
-
-  /**
-   * Get the number of active threads in the current Thread's ThreadGroup.
-   * This implementation calls
-   * <code>currentThread().getThreadGroup().activeCount()</code>.
-   *
-   * @return the number of active threads in the current ThreadGroup
-   * @see ThreadGroup#activeCount()
-   */
-  public static int activeCount()
-  {
-    return currentThread().group.activeCount();
-  }
-
-  /**
-   * Copy every active thread in the current Thread's ThreadGroup into the
-   * array. Extra threads are silently ignored. This implementation calls
-   * <code>getThreadGroup().enumerate(array)</code>, which may have a
-   * security check, <code>checkAccess(group)</code>.
-   *
-   * @param array the array to place the Threads into
-   * @return the number of Threads placed into the array
-   * @throws NullPointerException if array is null
-   * @throws SecurityException if you cannot access the ThreadGroup
-   * @see ThreadGroup#enumerate(Thread[])
-   * @see #activeCount()
-   * @see SecurityManager#checkAccess(ThreadGroup)
-   */
-  public static int enumerate(Thread[] array)
-  {
-    return currentThread().group.enumerate(array);
-  }
-
-  /**
-   * Count the number of stack frames in this Thread.  The Thread in question
-   * must be suspended when this occurs.
-   *
-   * @return the number of stack frames in this Thread
-   * @throws IllegalThreadStateException if this Thread is not suspended
-   * @deprecated pointless, since suspend is deprecated
-   */
-  public int countStackFrames()
-  {
-    VMThread t = vmThread;
-    if (t == null || group == null)
-	throw new IllegalThreadStateException();
-
-    return t.countStackFrames();
-  }
-
-  /**
-   * Wait the specified amount of time for the Thread in question to die.
-   *
-   * @param ms the number of milliseconds to wait, or 0 for forever
-   * @throws InterruptedException if the Thread is interrupted; it's
-   *         <i>interrupted status</i> will be cleared
-   */
-  public final void join(long ms) throws InterruptedException
-  {
-    join(ms, 0);
-  }
-
-  /**
-   * Wait the specified amount of time for the Thread in question to die.
-   *
-   * <p>Note that 1,000,000 nanoseconds == 1 millisecond, but most VMs do
-   * not offer that fine a grain of timing resolution. Besides, there is
-   * no guarantee that this thread can start up immediately when time expires,
-   * because some other thread may be active.  So don't expect real-time
-   * performance.
-   *
-   * @param ms the number of milliseconds to wait, or 0 for forever
-   * @param ns the number of extra nanoseconds to sleep (0-999999)
-   * @throws InterruptedException if the Thread is interrupted; it's
-   *         <i>interrupted status</i> will be cleared
-   * @throws IllegalArgumentException if ns is invalid
-   */
-  public final void join(long ms, int ns) throws InterruptedException
-  {
-    if(ms < 0 || ns < 0 || ns > 999999)
-	throw new IllegalArgumentException();
-
-    VMThread t = vmThread;
-    if(t != null)
-        t.join(ms, ns);
-  }
-
-  /**
-   * Wait forever for the Thread in question to die.
-   *
-   * @throws InterruptedException if the Thread is interrupted; it's
-   *         <i>interrupted status</i> will be cleared
-   */
-  public final void join() throws InterruptedException
-  {
-    join(0, 0);
-  }
-
-  /**
-   * Print a stack trace of the current thread to stderr using the same
-   * format as Throwable's printStackTrace() method.
-   *
-   * @see Throwable#printStackTrace()
-   */
-  public static void dumpStack()
-  {
-    new Throwable().printStackTrace();
-  }
-
-  /**
-   * Set the daemon status of this Thread.  If this is a daemon Thread, then
-   * the VM may exit even if it is still running.  This may only be called
-   * while the Thread is not running. There may be a security check,
-   * <code>checkAccess</code>.
-   *
-   * @param daemon whether this should be a daemon thread or not
-   * @throws SecurityException if you cannot modify this Thread
-   * @throws IllegalThreadStateException if the Thread is active
-   * @see #isDaemon()
-   * @see #checkAccess()
-   */
-  public final synchronized void setDaemon(boolean daemon)
-  {
-    if (vmThread != null || group == null)
-      throw new IllegalThreadStateException();
-    checkAccess();
-    this.daemon = daemon;
-  }
-
-  /**
-   * Tell whether this is a daemon Thread or not.
-   *
-   * @return whether this is a daemon Thread or not
-   * @see #setDaemon(boolean)
-   */
-  public final boolean isDaemon()
-  {
-    VMThread t = vmThread;
-    return t == null ? daemon : t.isDaemon();
-  }
-
-  /**
-   * Check whether the current Thread is allowed to modify this Thread. This
-   * passes the check on to <code>SecurityManager.checkAccess(this)</code>.
-   *
-   * @throws SecurityException if the current Thread cannot modify this Thread
-   * @see SecurityManager#checkAccess(Thread)
-   */
-  public final void checkAccess()
-  {
-    // Bypass System.getSecurityManager, for bootstrap efficiency.
-    SecurityManager sm = Runtime.securityManager;
-    if (sm != null)
-      sm.checkAccess(this);
-  }
-
-  /**
    * Return a human-readable String representing this Thread. The format of
    * the string is:<br>
    * <code>"Thread[" + getName() + ',' + getPriority() + ','
@@ -841,66 +909,8 @@ public class Thread implements Runnable
    */
   public String toString()
   {
-    return "Thread[" + name + ',' + priority + ','
-      + (group == null ? "" : group.name) + ']';
-  }
-
-  /**
-   * Returns the context classloader of this Thread. The context
-   * classloader can be used by code that want to load classes depending
-   * on the current thread. Normally classes are loaded depending on
-   * the classloader of the current class. There may be a security check
-   * for <code>RuntimePermission("getClassLoader")</code> if the caller's
-   * class loader is not null or an ancestor of this thread's context class
-   * loader.
-   *
-   * @return the context class loader
-   * @throws SecurityException when permission is denied
-   * @see setContextClassLoader(ClassLoader)
-   * @since 1.2
-   */
-  public ClassLoader getContextClassLoader()
-  {
-    // Bypass System.getSecurityManager, for bootstrap efficiency.
-    SecurityManager sm = Runtime.securityManager;
-    if (sm != null)
-      // XXX Don't check this if the caller's class loader is an ancestor.
-      sm.checkPermission(new RuntimePermission("getClassLoader"));
-    return contextClassLoader;
-  }
-
-  /**
-   * Sets the context classloader for this Thread. When not explicitly set,
-   * the context classloader for a thread is the same as the context
-   * classloader of the thread that created this thread. The first thread has
-   * as context classloader the system classloader. There may be a security
-   * check for <code>RuntimePermission("setContextClassLoader")</code>.
-   *
-   * @param classloader the new context class loader
-   * @throws SecurityException when permission is denied
-   * @see getContextClassLoader()
-   * @since 1.2
-   */
-  public void setContextClassLoader(ClassLoader classloader)
-  {
-    SecurityManager sm = System.getSecurityManager();
-    if (sm != null)
-      sm.checkPermission(new RuntimePermission("setContextClassLoader"));
-    this.contextClassLoader = classloader;
-  }
-
-  /**
-   * Checks whether the current thread holds the monitor on a given object.
-   * This allows you to do <code>assert Thread.holdsLock(obj)</code>.
-   *
-   * @param obj the object to check
-   * @return true if the current thread is currently synchronized on obj
-   * @throws NullPointerException if obj is null
-   * @since 1.4
-   */
-  public static boolean holdsLock(Object obj)
-  {
-    return VMThread.holdsLock(obj);
+    return ("Thread[" + name + "," + priority + "," + 
+	    (group == null ? "" : group.getName()) + "]");
   }
 
   /**
@@ -911,4 +921,4 @@ public class Thread implements Runnable
     group.removeThread(this);
     vmThread = null;
   }
-} // class Thread
+}

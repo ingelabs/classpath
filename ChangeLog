@@ -1,5 +1,9 @@
 2004-01-28  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/Thread.java: Reordered methods to match libgcj.
+
+2004-01-28  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JComponent.java
 	(listenerList): Initalize globally.
 	(ancestor_list): Removed.
