@@ -1,3 +1,7 @@
+2002-02-04  Mark Wielaard  <mark@klomp.org>
+
+	* NEWS: updates for next release
+
 2002-02-03  Mark Wielaard  <mark@klomp.org>
 
 	* vm/reference/java/lang/Class.java (pd): rename field to pd from

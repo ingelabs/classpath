@@ -1,16 +1,29 @@
 New in release 0.03 (TBD)
 * More merges with libgcj have been performed including java.math which now
   provides a pure Java implementation of that package.
-* A pure Java implementation of java.util.zip is available.
+  Current status at <http://gcc.gnu.org/java/libgcj-classpath-compare.html>
+* A pure Java implementation (Jazzlib) of java.util.zip is available.
+* Added the java.rmi implementation that Transvirtual donated to the FSF.
 * Includes jni.h now, eliminating the need to specify a particular VM
   via configure.
 * No proprietary classes or programs are required to compile.
+  Compiles out of the box with jikes or gcj.
 * Separation of compiling Java source and native libraries through the 
   configure mechanism.  If given no arguments, configure will setup the
   subsequent build to only produce Java bytecode (.class files).  More
   information is available in INSTALLING.
 * Support for compiling in a separate directory, as an example you may
   cd classpath-0.03; mkdir build; cd build; ../configure; make
+* Works with Orp 1.0.9 out of the box. Build instructions can be found at
+  <http://www.gnu.org/software/classpath/doc/orp.html>
+* Lots of bugfixes that were found by using Classpath with the gcj, Orp,
+  SableVM, KissMe and Jaos VMs. Please use our bugdatabase at
+  <http://savannah.gnu.org/support/?group_id=85>
+* Lots of updates to make Classpath more compliant with the 1.2, 1.3 and 1.4
+  API specification. The current status can be found at
+  <http://www.gnu.org/software/classpath/status.html>
+* All files are now distributed under the same terms. Added clarification to
+  GPL exception.
 
 New in release 0.02 (2001/01/06)
 * Support for printing exceptions with Japhar 0.09 + patch included in
