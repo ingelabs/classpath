@@ -51,21 +51,14 @@ package java.lang;
  **/
 
 public class Thread {
-	static final byte INITIALIZED = 0;
-	static final byte RUNNING = 1;
-	static final byte SUSPENDED = 2;
-	static final byte INTERRUPTED = 3;
-	static final byte STOPPED = 4;
-	static final byte SLEEPING= 5;
-	static final byte WAITING_FOR_LOCK = 6;
-	static final byte STOPPED_BEFORE_START = 7;
-
 	ThreadGroup group;
 	Runnable toRun;
 	String name;
 	boolean daemon;
-	byte state = INITIALIZED;
-	
+	int priority;
+	private int privateInfo;  // stopgap until Japhar supports an
+				  // extra pointer per object
+
 	/** The maximum priority for a Thread.
 	 ** @XXX find out the value for this.
 	 **/
@@ -83,7 +76,6 @@ public class Thread {
 
 	static int numThreadsCreated = 0;
 
-	int priority;
 
 	/** Allocate a new Thread object, with the same ThreadGroup
 	 ** as the calling thread, with an automatic name, and using
@@ -241,31 +233,14 @@ public class Thread {
 	 ** @exception InterruptedException if the Thread is interrupted
 	 **            by another Thread.
 	 **/
-	public static void sleep(long ms, int ns) throws InterruptedException {
-		synchronized(currentThread()) {
-		if(currentThread().state != RUNNING && currentThread().state != INTERRUPTED) {
-			return;
-		}
-		try {
-			currentThread().state = SLEEPING;
-			currentThread().nativeSleep(ms,ns);
-		} catch(InterruptedException e) {
-			currentThread().state = INTERRUPTED;
-			throw e;
-		}
-		currentThread().state = RUNNING;
-		}
-	}
+	public static native void sleep(long ms, int ns) throws InterruptedException;
 
 	/** Start this Thread, calling the run() method of the Runnable
 	 ** this Thread was created with or else the run() method of the
 	 ** Thread itself.
 	 **/
 	public synchronized void start() {
-		if(state == INITIALIZED) {
-			nativeStart();
-			state = RUNNING;
-		}
+		nativeStart();
 	}
 
 	/** The method of Thread that will be run if there is no Runnable
@@ -303,7 +278,6 @@ public class Thread {
 		checkAccess();
 		group.removeThread(this);
 		nativeStop(t);
-		state = STOPPED;
 	}
 
 	/** Interrupt this Thread.
@@ -314,10 +288,7 @@ public class Thread {
 	 **/
 	public synchronized void interrupt() {
 		checkAccess();
-		if(state == SUSPENDED || state == SLEEPING) {
-			nativeInterrupt();
-			state = INTERRUPTED;
-		}
+		nativeInterrupt();
 	}
 
 	/** Destroy this thread.  Don't even bother to clean up locks.
@@ -326,7 +297,6 @@ public class Thread {
 	public synchronized void destroy() {
 		checkAccess();
 		group.removeThread(this);
-		state = STOPPED;
 		nativeDestroy();
 	}
 
@@ -337,10 +307,7 @@ public class Thread {
 	 **/
 	public final synchronized void suspend() {
 		checkAccess();
-		if(state == RUNNING || state == INTERRUPTED) {
-			nativeSuspend();
-			state = SUSPENDED;
-		}
+		nativeSuspend();
 	}
 	
 	/** Resume this Thread.  If the thread is not suspended, this
@@ -349,10 +316,7 @@ public class Thread {
 	 **/
 	public final synchronized void resume() {
 		checkAccess();
-		if(state != SUSPENDED) {
-			nativeResume();
-			state = RUNNING;
-		}
+		nativeResume();
 	}
 
 	/** Wait forever for the Thread in question to die.
@@ -416,6 +380,7 @@ public class Thread {
 		   || priority > group.getMaxPriority())
 			throw new IllegalArgumentException("Invalid thread priority value " + priority + ".");
 		this.priority = priority;
+		nativeSetPriority(priority);
 	}
 
 	/** Get this Thread's priority.
@@ -513,16 +478,12 @@ public class Thread {
 	/** Determine whether this Thread has been interrupted.
 	 ** @return whether this Thread has been interrupted.
 	 **/
-	public boolean isInterrupted() {
-		return state == INTERRUPTED;
-	}
+	public native boolean isInterrupted();
 
 	/** Determine whether this Thread is alive.
 	 ** @return whether this Thread is alive.
 	 **/
-	public final boolean isAlive() {
-		return state != STOPPED && state != INITIALIZED;
-	}
+	public final native boolean isAlive();
 
 
 	/** Check whether the current Thread is allowed to
@@ -552,5 +513,5 @@ public class Thread {
 	final native void nativeDestroy();
 	final native void nativeSuspend();
 	final native void nativeResume();
-	final native void nativeSleep(long ms, int ns) throws InterruptedException;
+	final native void nativeSetPriority(int newPriority);
 }
