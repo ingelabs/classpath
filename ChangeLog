@@ -1,4 +1,10 @@
-2003-06-25  Sascha Brawer  <brawer@dandelis.ch>
+2003-06-26  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/plaf/basic/BasicTextUI.java (RootView): Commented
+	out to avoid errors when compiling with the Sun JDK.  The
+	implementation was way too incomplete to be of any use.
+
+2003-06-26  Sascha Brawer  <brawer@dandelis.ch>
 	
         * javax/swing/plaf/TextUI.java: Made imports specific, reformatted,
 	wrote JavaDoc.
