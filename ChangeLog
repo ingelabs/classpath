@@ -1,3 +1,10 @@
+2003-06-08  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/DatagramSocket.java
+	(localAddr): Removed.
+	(bind): Dont initialize localAddr.
+	(getLocalAddress): Get local address from socket implementation.
+
 2003-06-07  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/DatagramSocketImpl.java

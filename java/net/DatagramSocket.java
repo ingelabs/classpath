@@ -79,11 +79,6 @@ public class DatagramSocket
   DatagramChannel ch;
 
   /**
-   * This is the local address which cannot be changed
-   */
-  private InetAddress localAddr;
-
-  /**
    * This is the address we are "connected" to
    */
   private InetAddress remoteAddress;
@@ -161,9 +156,8 @@ public class DatagramSocket
     SecurityManager s = System.getSecurityManager();
     if (s != null)
       s.checkListen(port);
-  
+
     // Why is there no factory for this?
-    // FIXME: Insert call to factory here
     impl = new PlainDatagramSocketImpl();
     impl.create();
 
@@ -172,7 +166,6 @@ public class DatagramSocket
     
     try
       {
-        localAddr = laddr;
         impl.bind (port, laddr);
       }
     catch (SocketException exception)
@@ -268,6 +261,18 @@ public class DatagramSocket
     // addr until after we do it, so we do a post check.  2). The docs I
     // see don't require this in the Socket case, only DatagramSocket, but
     // we'll assume they mean both.
+
+    InetAddress localAddr;
+    
+    try
+      {
+	localAddr = (InetAddress) impl.getOption (SocketOptions.SO_BINDADDR);
+      }
+    catch (SocketException e)
+      {
+        return null;
+      }
+    
     SecurityManager sm = System.getSecurityManager();
     if (sm != null)
       sm.checkConnect(localAddr.getHostName(), getLocalPort());
