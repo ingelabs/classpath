@@ -1,3 +1,8 @@
+2005-04-01  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* java/awt/image/IndexColorModel.java
+	(getRGB): Check if pixel is negative.
+
 2005-03-31  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* javax/swing/text/JTextComponent.java (viewToModel): New method.
