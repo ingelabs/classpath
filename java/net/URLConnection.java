@@ -939,7 +939,7 @@ public abstract class URLConnection
    *
    * @since 1.2
    */
-  public static void setFileNameMap(FileNameMap map)
+  public static synchronized void setFileNameMap(FileNameMap map)
   {
     // Throw an exception if an extant security manager precludes
     // setting the factory.

@@ -1,5 +1,7 @@
 2004-09-28  Tom Tromey  <tromey@redhat.com>
 
+	* java/net/URLConnection.java (setFileNameMap): Now synchronized.
+
 	* javax/crypto/MacSpi.java: Fixed typo.
 
 	* java/lang/System.java (getenv): Added @specnote.
