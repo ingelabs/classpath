@@ -409,8 +409,9 @@ public abstract class ClassLoader
    *         do not match up
    * @since 1.2
    */
-  protected final Class defineClass(String name, byte[] data, int offset,
-                                    int len, ProtectionDomain domain)
+  protected final synchronized Class defineClass(String name, byte[] data,
+						 int offset, int len,
+						 ProtectionDomain domain)
     throws ClassFormatError
   {
     if (domain == null)
@@ -492,7 +493,7 @@ public abstract class ClassLoader
    * @return the found Class, or null if it is not found
    * @since 1.1
    */
-  protected final Class findLoadedClass(String name)
+  protected final synchronized Class findLoadedClass(String name)
   {
     // NOTE: If the VM is keeping its own cache, it may make sense to have
     // this method be native.
