@@ -1,5 +1,10 @@
 2003-09-11  Sascha Brawer  <brawer@dandelis.ch>
 
+	* java/awt/Toolkit.java (getSystemEventQueue, getSystemEventQueueImpl):
+	Replace UTF-8 characters in Javadoc by XML/HTML escape sequence.
+
+2003-09-11  Sascha Brawer  <brawer@dandelis.ch>
+
 	* java/awt/Toolkit.java (getSystemEventQueue): Call SecurityManager
 	if one is installed. Improve Javadoc.
 	(getSystemEventQueueImpl): Improve Javadoc.
