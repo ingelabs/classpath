@@ -79,7 +79,7 @@ sub mylink {
 <download
 	date="13 Mar. 2004"
 	version="0.08"
-	url="ftp://alpha.gnu.org/gnu/classpath/classpath-0.08.tar.gz"
+	url="ftp://ftp.gnu.org/gnu/classpath/classpath-0.08.tar.gz"
 >
 
 <!-- download
@@ -101,7 +101,7 @@ sub mylink {
 <download
 	date="05 Dec. 2003"
 	version="0.07"
-	url="ftp://alpha.gnu.org/gnu/classpath/classpath-0.067tar.gz"
+	url="ftp://alpha.gnu.org/gnu/classpath/classpath-0.07tar.gz"
 >
 
 <download
