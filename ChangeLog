@@ -1,3 +1,10 @@
+2003-03-05  Development Account  <devel@localhost.localdomain>
+
+	* java/io/LineNumberReader.java
+	Re-indent code, fix word-wrapped comments
+	* java/io/PrintStream.java
+	Re-indent code, fix word-wrapped comments
+
 2003-03-04  Aaron M. Renn <arenn@urbanophile.com>
 
 	* Converted file based I/O mechanisms in java.io to new 
