@@ -1,3 +1,19 @@
+2004-08-14  Ka-Hing Cheung  <kahing@javabsp.org>
+
+	* javax/swing/AbstractSpinnerModel.java,
+	javax/swing/JSpinner.java,
+	javax/swing/SpinnerNumberModel.java,
+	javax/swing/plaf/basic/BasicSpinnerUI.java:
+	New files.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initClassDefaults): Added defaults for BasicSpinnerUI.
+
+2004-08-14  Mark Wielaard  <mark@klomp.org>
+
+	* examples/gnu/classpath/examples/swing/Demo.java (mkSpinner):
+	New method.
+	(mkButtonBar): Add Spinner.
+
 2004-08-14  Casey Marshall <csm@gnu.org>
 
 	The Big Crypto Merge of 2004.

@@ -549,7 +549,12 @@ public class Demo
       }
     return tabs;
   }
-  
+
+  public static JSpinner mkSpinner()
+  {
+    JSpinner spinner = new JSpinner();
+    return spinner;
+  }
 
   public static JButton mkBigButton(String title)
   {
@@ -743,6 +748,10 @@ public class Demo
 		    mkTabs(new String[] {"happy",
 					 "sad",
 					 "indifferent"}),
+		    panel);
+
+    new PopUpAction("Spinner",
+		    mkSpinner(),
 		    panel);
 
     JButton exitDisposer = mkDisposerButton(frame);
