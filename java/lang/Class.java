@@ -1,5 +1,6 @@
-/* Class.java -- Reference implementation of access to object metadata
-   Copyright (C) 1998, 2002, 2003 Free Software Foundation
+/* Class.java -- Representation of a Java class.
+   Copyright (C) 1998, 1999, 2000, 2002, 2003, 2004
+   Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -55,13 +56,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import gnu.java.lang.ClassHelper;
-
-/*
- * This class is a reference version, mainly for compiling a class library
- * jar.  It is likely that VM implementers replace this with their own
- * version that can communicate effectively with the VM.
- */
 
 /**
  * A Class represents a Java type.  There will never be multiple Class
@@ -86,6 +80,7 @@ import gnu.java.lang.ClassHelper;
  *
  * @author John Keiser
  * @author Eric Blake <ebb9@email.byu.edu>
+ * @author Tom Tromey <tromey@cygnus.com>
  * @since 1.0
  * @see ClassLoader
  */
@@ -122,20 +117,6 @@ public final class Class implements Serializable
   Class(VMClass vmClass)
   {
     this.vmClass = vmClass;
-  }
-
-  /**
-   * Return the human-readable form of this Object.  For an object, this
-   * is either "interface " or "class " followed by <code>getName()</code>,
-   * for primitive types and void it is just <code>getName()</code>.
-   *
-   * @return the human-readable form of this Object
-   */
-  public String toString()
-  {
-    if (isPrimitive())
-      return getName();
-    return (isInterface() ? "interface " : "class ") + getName();
   }
 
   /**
@@ -219,7 +200,7 @@ public final class Class implements Serializable
       c.vmClass.initialize();
     return c;
   }
-
+  
   /**
    * Get a new instance of this class by calling the no-argument constructor.
    * The class is initialized if it has not been already. A security check
@@ -282,8 +263,8 @@ public final class Class implements Serializable
 	if (caller != this &&
 	    (Modifier.isPrivate(modifiers)
 	     || getClassLoader() != caller.getClassLoader()
-	     || !ClassHelper.getPackagePortion(getName())
-	     .equals(ClassHelper.getPackagePortion(caller.getName()))))
+	     || !getPackagePortion(getName())
+	     .equals(getPackagePortion(caller.getName()))))
 	  throw new IllegalAccessException(getName()
 					   + " has an inaccessible constructor");
       }
@@ -311,7 +292,7 @@ public final class Class implements Serializable
   {
     return vmClass.isInstance (o);
   }
-
+  
   /**
    * Discover whether an instance of the Class parameter would be an
    * instance of this Class as well.  Think of doing
@@ -439,7 +420,7 @@ public final class Class implements Serializable
       }
     return loader;
   }
-
+  
   /**
    * Get the direct superclass of this class.  If this is an interface,
    * Object, a primitive type, or void, it will return null. If this is an
@@ -465,7 +446,7 @@ public final class Class implements Serializable
   {
     ClassLoader cl = getClassLoader();
     if (cl != null)
-      return cl.getPackage(ClassHelper.getPackagePortion(getName()));
+      return cl.getPackage(getPackagePortion(getName()));
     return null;
   }
 
@@ -687,7 +668,7 @@ public final class Class implements Serializable
       }
     return (Method[])map.values().toArray(new Method[map.size()]);
   }
-  
+
   private static final class MethodKey
   {
     private String name;
@@ -733,7 +714,6 @@ public final class Class implements Serializable
     }
   }
   
-
   /**
    * Get all the public constructors of this class. This returns an array of
    * length 0 if there are no constructors, including for primitive types,
@@ -816,7 +796,7 @@ public final class Class implements Serializable
    * <code>checkMemberAccess(this, Member.PUBLIC)</code> as well as
    * <code>checkPackageAccess</code> both having to succeed.
    *
-   * @param name the name of the method
+   * @param methodName the name of the method
    * @param types the type of each parameter
    * @return the method
    * @throws NoSuchMethodException if the method does not exist
@@ -824,36 +804,36 @@ public final class Class implements Serializable
    * @see #getMethods()
    * @since 1.1
    */
-  public Method getMethod(String name, Class[] args)
+  public Method getMethod(String methodName, Class[] args)
     throws NoSuchMethodException
   {
     memberAccessCheck(Member.PUBLIC);
-    Method method = internalGetMethod(name, args);
-    if (method != null)
-      return method;
-    throw new NoSuchMethodException();
+    Method method = internalGetMethod(methodName, args);
+    if (method == null)
+      throw new NoSuchMethodException(methodName);
+    return method;
   }
 
   /**
    * Like <code>getMethod(String,Class[])</code> but without the security
    * checks and returns null instead of throwing NoSuchMethodException.
    */
-  public Method internalGetMethod(String name, Class[] args)
+  public Method internalGetMethod(String methodName, Class[] args)
   {
-    Method match = matchMethod(getDeclaredMethods(true), name, args);
+    Method match = matchMethod(getDeclaredMethods(true), methodName, args);
     if (match != null)
       return match;
     Class superClass = getSuperclass();
     if (superClass != null)
       {
-	match = superClass.internalGetMethod(name, args);
+	match = superClass.internalGetMethod(methodName, args);
 	if(match != null)
 	  return match;
       }
     Class[] interfaces = getInterfaces();
     for (int i = 0; i < interfaces.length; i++)
       {
-	match = interfaces[i].internalGetMethod(name, args);
+	match = interfaces[i].internalGetMethod(methodName, args);
 	if (match != null)
 	  return match;
       }
@@ -909,7 +889,7 @@ public final class Class implements Serializable
       }
     return true;
   }
-
+  
   /**
    * Get a public constructor declared in this class. If the constructor takes
    * no argument, an array of zero elements and null are equivalent for the
@@ -1009,7 +989,7 @@ public final class Class implements Serializable
   {
     return vmClass.getDeclaredMethods (publicOnly);
   }
-
+  
   /**
    * Get all the declared constructors of this class. This returns an array of
    * length 0 if there are no constructors, including for primitive types,
@@ -1032,7 +1012,7 @@ public final class Class implements Serializable
   {
     return vmClass.getDeclaredConstructors (publicOnly);
   }
-
+  
   /**
    * Get a field declared in this class, where name is its simple name. The
    * implicit length field of arrays is not available. A security check may
@@ -1057,7 +1037,7 @@ public final class Class implements Serializable
       }
     throw new NoSuchFieldException();
   }
-
+ 
   /**
    * Get a method declared in this class, where name is its simple name. The
    * implicit methods of Object are not available from arrays or interfaces.
@@ -1088,7 +1068,7 @@ public final class Class implements Serializable
       return match;
     throw new NoSuchMethodException();
   }
-
+  
   /**
    * Get a constructor declared in this class. If the constructor takes no
    * argument, an array of zero elements and null are equivalent for the
@@ -1116,7 +1096,7 @@ public final class Class implements Serializable
       }
     throw new NoSuchMethodException();
   }
-
+  
   /**
    * Get a resource using this class's package using the
    * getClassLoader().getResourceAsStream() method.  If this class was loaded
@@ -1139,14 +1119,14 @@ public final class Class implements Serializable
   public InputStream getResourceAsStream(String name)
   {
     if (name.length() > 0 && name.charAt(0) != '/')
-      name = ClassHelper.getPackagePortion(getName()).replace('.','/')
+      name = getPackagePortion(getName()).replace('.','/')
 	+ "/" + name;
     ClassLoader c = getClassLoader();
     if (c == null)
       return ClassLoader.getSystemResourceAsStream(name);
     return c.getResourceAsStream(name);
   }
-
+  
   /**
    * Get a resource URL using this class's package using the
    * getClassLoader().getResource() method.  If this class was loaded using
@@ -1168,7 +1148,7 @@ public final class Class implements Serializable
   public URL getResource(String name)
   {
     if(name.length() > 0 && name.charAt(0) != '/')
-      name = ClassHelper.getPackagePortion(getName()).replace('.','/')
+      name = getPackagePortion(getName()).replace('.','/')
         + "/" + name;
     ClassLoader c = getClassLoader();
     if (c == null)
@@ -1184,7 +1164,8 @@ public final class Class implements Serializable
    * <code>RuntimePermission("getProtectionDomain")</code>.
    *
    * @return the protection domain
-   * @throws SecurityException if the security check fails
+   * @throws SecurityException if the security manager exists and the caller
+   * does not have <code>RuntimePermission("getProtectionDomain")</code>.
    * @see RuntimePermission
    * @since 1.2
    */
@@ -1195,6 +1176,20 @@ public final class Class implements Serializable
       sm.checkPermission(new RuntimePermission("getProtectionDomain"));
 
     return pd == null ? unknownProtectionDomain : pd;
+  }
+
+  /**
+   * Return the human-readable form of this Object.  For an object, this
+   * is either "interface " or "class " followed by <code>getName()</code>,
+   * for primitive types and void it is just <code>getName()</code>.
+   *
+   * @return the human-readable form of this Object
+   */
+  public String toString()
+  {
+    if (isPrimitive())
+      return getName();
+    return (isInterface() ? "interface " : "class ") + getName();
   }
 
   /**
@@ -1235,14 +1230,14 @@ public final class Class implements Serializable
     if (c.packageAssertionStatus != null)
       synchronized (c)
         {
-          String name = ClassHelper.getPackagePortion(getName());
+          String name = getPackagePortion(getName());
           if ("".equals(name))
             status = c.packageAssertionStatus.get(null);
           else
             do
               {
                 status = c.packageAssertionStatus.get(name);
-                name = ClassHelper.getPackagePortion(name);
+                name = getPackagePortion(name);
               }
             while (! "".equals(name) && status == null);
           if (status != null)
@@ -1250,14 +1245,14 @@ public final class Class implements Serializable
         }
     else
       {
-        String name = ClassHelper.getPackagePortion(getName());
+        String name = getPackagePortion(getName());
         if ("".equals(name))
           status = ClassLoader.systemPackageAssertionStatus.get(null);
         else
           do
             {
               status = ClassLoader.systemPackageAssertionStatus.get(name);
-              name = ClassHelper.getPackagePortion(name);
+              name = getPackagePortion(name);
             }
           while (! "".equals(name) && status == null);
         if (status != null)
@@ -1266,4 +1261,17 @@ public final class Class implements Serializable
     return c.defaultAssertionStatus;
   }
 
-} // class Class
+  /**
+   * Strip the last portion of the name (after the last dot).
+   *
+   * @param name the name to get package of
+   * @return the package name, or "" if no package
+   */
+  public static String getPackagePortion(String name)
+  {
+    int lastInd = name.lastIndexOf('.');
+    if (lastInd == -1)
+      return "";
+    return name.substring(0, lastInd);
+  }
+}

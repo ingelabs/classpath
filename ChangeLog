@@ -1,5 +1,14 @@
 2004-01-25  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/lang/ClassHelper.java
+	(getPackagePortion): Moved to java.lang.Class.
+	* java/lang/Class.java: Merged more with libgcj, renamed some
+	variables.
+	(toString): Moved.
+	(getPackagePortion): New method.
+	
+2004-01-25  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/URLConnection.java
 	(fileNameMap): Don't initialize. Initialization should be lazy.
 	(guessContentTypeFromName): Get filename map from getFileNameMap().
