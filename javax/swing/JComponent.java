@@ -323,6 +323,7 @@ public abstract class JComponent extends Container implements Serializable
   private InputMap inputMap_whenAncestorOfFocused;
   private InputMap inputMap_whenInFocusedWindow;
   private ActionMap actionMap;
+  private InputVerifier inputVerifier;
 
   /** 
    * A lock held during recursive painting; this is used to serialize
@@ -2118,5 +2119,27 @@ public abstract class JComponent extends Container implements Serializable
   public static void setDefaultLocale(Locale l)
   {
     defaultLocale = l;
+  }
+  
+  /**
+   * Returns the currently set input verifier for this component.
+   *
+   * @return the input verifier, or <code>null</code> if none
+   */
+  public InputVerifier getInputVerifier()
+  {
+    return inputVerifier;
+  }
+
+  /**
+   * Sets the input verifier to use by this component.
+   *
+   * @param verifier the input verifier, or <code>null</code>
+   */
+  public void setInputVerifier(InputVerifier verifier)
+  {
+    InputVerifier oldVerifier = inputVerifier;
+    inputVerifier = verifier;
+    firePropertyChange("inputVerifier", oldVerifier, verifier);
   }
 }
