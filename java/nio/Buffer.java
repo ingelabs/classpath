@@ -39,7 +39,10 @@ package java.nio;
 
 public abstract class Buffer
 {
-  int cap = 0;
+  /** Capacity of the buffer.
+   * XXX - FIXME - should not be protected but (package) private
+   * */
+  protected int cap = 0;
   int limit = 0;
   int pos = 0;
   int mark = -1;

@@ -1,3 +1,12 @@
+2002-11-15  Mark Wielaard <mark@klomp.org>
+
+	* java/nio/Buffer.java (cap): Make field protected for now to get
+	things compiling. Added a FIXME.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setBounds): Declare widget
+	before use.
+
 2002-11-15  Eric Blake  <ebb9@email.byu.edu>
 
 	* gnu/java/nio/FileChannelImpl.java (write, read): Add missing
