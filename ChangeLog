@@ -1,3 +1,8 @@
+2003-10-26  Bryce McKinlay  <bryce@mckinlay.net.nz>
+
+	* java/lang/reflect/AccessibleObject.java (secureSetAccessible):
+	Don't check for AccessibleObject. Update javadocs.
+
 2003-10-24  Julian Dolby  <dolby@us.ibm.com>
 
 	* javax/naming/spi/NamingManager.java (getContinuationContext): Call
