@@ -1,5 +1,5 @@
 /* OutOfMemoryError.java 
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,6 +27,12 @@ executable file might be covered by the GNU General Public License. */
 
 package java.lang;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete and correct. 
+ */
+
 /**
  * When the Java Virtual Machine is unable to allocate an object because it 
  * is out of memory and no more memory could be made available by the 
@@ -35,6 +41,8 @@ package java.lang;
  * @since JDK 1.0
  * 
  * @author Brian Jones
+ * @author Tom Tromey <tromey@cygnus.com>
+ * @date October 1, 1998
  */
 public class OutOfMemoryError extends VirtualMachineError
 {

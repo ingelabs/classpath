@@ -1,5 +1,5 @@
 /* StreamCorruptedException.java -- Error in stream during serialization
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,6 +27,10 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
+/* Written using on-line Java Platform 1.2 API Specification.
+ * Status:  Believed complete and correct. 
+ */
+  
 /**
   * This exception is thrown when there is an error in the data that is
   * read from a stream during de-serialization.
@@ -34,6 +38,8 @@ package java.io;
   * @version 0.0
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Warren Levy <warrenl@cygnus.com>
+  * @date February 7, 2000.
   */
 public class StreamCorruptedException extends ObjectStreamException
 {

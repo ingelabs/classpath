@@ -1,5 +1,5 @@
 /* ExceptionInInitializerError.java 
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,11 +27,14 @@ executable file might be covered by the GNU General Public License. */
 
 package java.lang;
 
-import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
-import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete and correct.
+ */
 
 /**
  * An <code>ExceptionInInitializerError</code> is thrown when an 
@@ -41,12 +44,14 @@ import java.io.PrintWriter;
  * @since JDK 1.1
  * 
  * @author Brian Jones
+ * @author Tom Tromey <tromey@cygnus.com>
+ * @date October 1, 1998 
  */
 public class ExceptionInInitializerError extends LinkageError
 {
   static final long serialVersionUID = 1521711792217232256L;
 
-  private Throwable t = null;
+  private Throwable exception = null;
 
   /**
    * Create an error without a message.
@@ -73,7 +78,7 @@ public class ExceptionInInitializerError extends LinkageError
   public ExceptionInInitializerError(Throwable t)
     {
       super();
-      this.t = t;
+      exception = t;
     }
 
   /** 
@@ -84,7 +89,7 @@ public class ExceptionInInitializerError extends LinkageError
    */
   public Throwable getException()
     {
-      return t;
+      return exception;
     }
 
   /**
@@ -92,13 +97,13 @@ public class ExceptionInInitializerError extends LinkageError
    */
   public void printStackTrace()
     {
-      if (t == null)
+      if (exception == null)
 	{
 	  super.printStackTrace();
 	}
       else
 	{
-	  t.printStackTrace();
+	  exception.printStackTrace();
 	}
     }
 
@@ -108,13 +113,13 @@ public class ExceptionInInitializerError extends LinkageError
    */
   public void printStackTrace(PrintStream ps)
     {
-      if (t == null)
+      if (exception == null)
 	{
 	  super.printStackTrace(ps);
 	}
       else
 	{
-	  t.printStackTrace(ps);
+	  exception.printStackTrace(ps);
 	}
     }
 
@@ -124,36 +129,13 @@ public class ExceptionInInitializerError extends LinkageError
    */
   public void printStackTrace(PrintWriter pw)
     {
-      if (t == null)
+      if (exception == null)
 	{
 	  super.printStackTrace(pw);
 	}
       else
 	{
-	  t.printStackTrace(pw);
+	  exception.printStackTrace(pw);
 	}
-    }
-
-  /**
-   * Serialize the object in a manner binary compatible with the JDK 1.2
-   */
-  private void writeObject(java.io.ObjectOutputStream s) 
-    throws IOException
-    {
-      ObjectOutputStream.PutField oFields;
-      oFields = s.putFields();
-      oFields.put("exception", this.t);
-      s.writeFields();
-    }
-
-  /**
-   * Deserialize the object in a manner binary compatible with the JDK 1.2
-   */    
-  private void readObject(java.io.ObjectInputStream s)
-    throws IOException, ClassNotFoundException
-    {
-      ObjectInputStream.GetField oFields;
-      oFields = s.readFields();
-      this.t = (Throwable)oFields.get("exception", (Throwable)null);
     }
 }

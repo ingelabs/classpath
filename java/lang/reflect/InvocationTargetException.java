@@ -1,5 +1,5 @@
-/* java.lang.reflect.InvocationTargetException
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+/* InvocationTargetException.java - Wrapper exception for reflection
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,7 +27,13 @@ executable file might be covered by the GNU General Public License. */
 
 package java.lang.reflect;
 
-import java.io.*;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * Status:  Believed complete and correct.
+ */
 
 /**
  * InvocationTargetException is sort of a way to "wrap" whatever exception 
@@ -35,6 +41,9 @@ import java.io.*;
  *
  * @author John Keiser
  * @version 1.1.0, 31 May 1998
+ * @author Tom Tromey <tromey@cygnus.com>
+ * @date December 12, 1998
+ *
  * @see Method#invoke(Object,Object[])
  * @see Constructor#newInstance(Object[])
  */
@@ -42,7 +51,8 @@ import java.io.*;
 public class InvocationTargetException extends Exception 
 {
   static final long serialVersionUID = 4085088731926701167L;
-  private Throwable targetException = null;
+
+  private Throwable target = null;
   
   protected InvocationTargetException() 
     {
@@ -57,7 +67,7 @@ public class InvocationTargetException extends Exception
   public InvocationTargetException(Throwable targetException) 
     {
       super();
-      this.targetException = targetException;
+      target = targetException;
     }
   
   /** 
@@ -70,7 +80,7 @@ public class InvocationTargetException extends Exception
   public InvocationTargetException(Throwable targetException, String err) 
     {
       super(err);
-      this.targetException = targetException;
+      target = targetException;
     }
   
   /**
@@ -80,53 +90,30 @@ public class InvocationTargetException extends Exception
    */
   public Throwable getTargetException() 
     {
-      return targetException;
+      return target;
     }
 
   public void printStackTrace()
     {
-      if (targetException == null)
+      if (target == null)
 	super.printStackTrace();
       else
-	targetException.printStackTrace();
+	target.printStackTrace();
     }
 
   public void printStackTrace(PrintStream ps)
     {
-      if (targetException == null)
+      if (target == null)
 	super.printStackTrace(ps);
       else
-	targetException.printStackTrace(ps);
+	target.printStackTrace(ps);
     }
 
   public void printStackTrace(PrintWriter pw)
     {
-      if (targetException == null)
+      if (target == null)
 	super.printStackTrace(pw);
       else
-	targetException.printStackTrace(pw);
-    }
-
-  /**
-   * Serialize the object in a manner binary compatible with the JDK 1.2
-   */
-  private void writeObject(java.io.ObjectOutputStream s) 
-    throws IOException
-    {
-      ObjectOutputStream.PutField oFields;
-      oFields = s.putFields();
-      oFields.put("target", targetException);
-      s.writeFields(); 
-    }
-
-  /**
-   * Deserialize the object in a manner binary compatible with the JDK 1.2
-   */    
-  private void readObject(java.io.ObjectInputStream s)
-    throws IOException, ClassNotFoundException
-    {
-      ObjectInputStream.GetField oFields;
-      oFields = s.readFields();
-      targetException = (Throwable)oFields.get("target", (Throwable)null);
+	target.printStackTrace(pw);
     }
 }

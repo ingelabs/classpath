@@ -1,7 +1,7 @@
 /* CloneNotSupportedException.java -- exception thrown to indicate that 
    the object calling the clone method of Object does not implement the 
    Cloneable interface.
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -29,6 +29,12 @@ executable file might be covered by the GNU General Public License. */
 
 package java.lang;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete and correct.
+ */
+
 /**
  * Exceptions may be thrown by one part of a Java program and caught
  * by another in order to deal with exceptional conditions.  
@@ -40,6 +46,8 @@ package java.lang;
  * @since JDK 1.0
  * 
  * @author Brian Jones
+ * @author Warren Levy <warrenl@cygnus.com>
+ * @date September 18, 1998.
  */
 public class CloneNotSupportedException extends Exception
 {

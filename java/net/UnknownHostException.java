@@ -1,5 +1,5 @@
 /* UnknownHostException.java -- The hostname is not unknown
-   Copyright (C) 1998,2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -26,6 +26,11 @@ executable file might be covered by the GNU General Public License. */
 
 package java.net;
 
+/*
+ * Written using on-line Java Platform 1.2 API Specification.
+ * Status:  Believed complete and correct.
+ */
+
 /**
   * This exception indicates that an attempt was made to reference a hostname
   * or IP address that is not valid.  This could possibly indicate that a
@@ -33,6 +38,8 @@ package java.net;
   * correctly specified.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Per Bothner 
+  * @date January 6, 1999.
   */
 public class UnknownHostException extends java.io.IOException
 {

@@ -1,5 +1,5 @@
 /* ParseException.java -- An error occurred while parsing.
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,12 +27,19 @@ executable file might be covered by the GNU General Public License. */
 
 package java.text;
 
+/* Written using "Java Class Libraries", 2nd edition, plus online
+ * API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete and correct.
+ */
+
 /**
   * This exception is thrown when an unexpected error occurs during parsing.
   *
   * @version 0.0
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Per Bothner <bothner@cygnus.com>
+  * @date October 25, 1998.
   */
 public class ParseException extends Exception
 {
@@ -44,7 +51,7 @@ public class ParseException extends Exception
 /**
   * This is the position where the error was encountered.
   */
-private int offset;
+private int errorOffset;
 
 /*************************************************************************/
 
@@ -64,7 +71,7 @@ ParseException(String s, int offset)
 {
   super(s);
   
-  this.offset = offset;
+  errorOffset = offset;
 }
 
 /*************************************************************************/
@@ -77,7 +84,7 @@ ParseException(String s, int offset)
 public int
 getErrorOffset()
 {
-  return(offset);
+  return(errorOffset);
 }
 
 } // class ParseException

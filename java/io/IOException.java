@@ -1,5 +1,5 @@
 /* IOException.java -- Generic input/output exception
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,7 +27,10 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
-import java.lang.Exception;
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * Status:  Complete to 1.1.
+ */
 
 /**
   * This exception is thrown to indicate an I/O problem of some sort
@@ -38,8 +41,10 @@ import java.lang.Exception;
   * @version 0.0
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Tom Tromey <tromey@cygnus.com>
+  * @date September 24, 1998
   */
-public class IOException extends java.lang.Exception
+public class IOException extends Exception
 {
 
 /*

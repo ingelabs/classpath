@@ -1,5 +1,5 @@
-/* java.lang.ThreadDeath
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* java.lang.ThreadDeath - Special exception registering Thread death.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,13 +27,20 @@ executable file might be covered by the GNU General Public License. */
 
 package java.lang;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Complete to version 1.1
+ */
+
 /**
  ** ThreadDeath is thrown in a thread when someone calls <CODE>stop()</CODE> on that thread.
  **
  ** <B>Important:</B> Make sure you rethrow this exception if you catch it.  If you don't, the thread will not die.
  **
  ** @author John Keiser
- ** @version 1.1.0, 5 Feb 1998
+ ** @author Tom Tromey <tromey@cygnus.com>
+ ** @version 1.1.0, 5 Feb 1998, August 26 1998
  ** @since JDK1.0
  ** @see java.lang.Thread#stop()
  **/

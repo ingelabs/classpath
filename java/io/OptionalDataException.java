@@ -1,5 +1,5 @@
-/* OptionalDataException.java -- Unexpected end of file exception
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* OptionalDataException.java -- indicates unexpected data in serialised stream
+   Copyright (C) 1998, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,6 +27,10 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
+/* Written using on-line Java Platform 1.2 API Specification.
+ * Status:  Believed complete and correct.
+ */
+
 /**
   * This exception is thrown when unexpected data appears in the input
   * stream from which a serialized object is being read.  The field
@@ -37,9 +41,13 @@ package java.io;
   * @version 0.0
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Warren Levy <warrenl@cygnus.com>
+  * @date February 7, 2000. 
   */
 public class OptionalDataException extends ObjectStreamException
 {
+
+private static final long serialVersionUID = -8011121865681257820L;
 
 /*
  * Instance Variables
@@ -69,10 +77,10 @@ public int length;
   * @param eof 'true' if end of stream reached, 'false' otherwise
   * @param count The number of valid bytes to be read.
   */
-OptionalDataException()
+OptionalDataException(boolean eof, int count)
 {
   this.eof = eof;
-  this.length = length;
+  this.length = count;
 }
 
 } // class OptionalDataException

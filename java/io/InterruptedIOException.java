@@ -1,5 +1,5 @@
 /* InterruptedIOException.java -- An I/O operation was interrupted.
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,6 +27,11 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * Status:  Complete to 1.1.
+ */
+
 /**
   * This exception is thrown when a in process I/O operation is 
   * interrupted for some reason.  The field bytesTransferred will contain
@@ -35,9 +40,13 @@ package java.io;
   * @version 0.0
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Tom Tromey <tromey@cygnus.com>
+  * @date September 24, 1998
   */
 public class InterruptedIOException extends IOException
 {
+
+private static final long serialVersionUID = 4020568460727500567L;
 
 /*
  * Instance Variables

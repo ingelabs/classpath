@@ -1,5 +1,5 @@
 /* UnsupportedEncodingException.java -- The requested encoding isn't supported
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,6 +27,11 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
+/* Written using "Java Class Libraries", 2nd edition, plus online
+ * API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete and correct.
+ */
+ 
 /**
   * This exception is thrown when the requested character encoding is 
   * not supported.
@@ -34,6 +39,8 @@ package java.io;
   * @version 0.0
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Per Bothner <bothner@cygnus.com>
+  * @date April 17, 1998.
   */
 public class UnsupportedEncodingException extends IOException
 {

@@ -1,5 +1,5 @@
 /* SocketException.java -- An exception occured while performing a socket op
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -26,12 +26,18 @@ executable file might be covered by the GNU General Public License. */
 
 package java.net;
 
+/* Written using on-line Java Platform 1.2 API Specification.
+ * Believed complete and correct.
+ */
+
 /**
   * This exception indicates that a generic error occured related to an
   * operation on a socket.  Check the descriptive message (if any) for
   * details on the nature of this error
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Per Bothner 
+  * @date January 6, 1999.
   */
 public class SocketException extends java.io.IOException
 {

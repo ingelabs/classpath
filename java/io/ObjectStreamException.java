@@ -1,5 +1,5 @@
-/* ObjectStreamException.java -- Unexpected end of file exception
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* ObjectStreamException.java -- Superclass of all serialisation exceptions
+   Copyright (C) 1998, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,6 +27,10 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
+/* Written using on-line Java Platform 1.2 API Specification.
+ * Status:  Believed complete and correct.
+ */
+
 /**
   * This exception is thrown when a problem occurs during serialization.
   * There are more specific subclasses than give more fine grained 
@@ -35,9 +39,10 @@ package java.io;
   * @version 0.0
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Warren Levy <warrenl@cygnus.com>
+  * @date February 7, 2000. 
   */
 public abstract class ObjectStreamException extends IOException 
-                                            implements Serializable
 {
 
 /*
