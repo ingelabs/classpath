@@ -18,13 +18,8 @@
 /////////////////////////////////////////////////////////////////////////////
 
 // TO DO:
-// ~ Most of the inner classes are not yet implemented.
-// ~ The methods that would return unimplemented inner classes return their
-//   arguments - ie, the collection is NOT made synchronized or unmodifiable.
 // ~ Serialization is very much broken. Blame Sun for not specifying it.
-// ~ The unimplemented methods don't have doc-comments.
-
-// Note: In as much as this is implemented, it is totally to beta4 spec.
+// ~ The synchronized* and unmodifiable* methods don't have doc-comments.
 
 package java.util;
 
@@ -571,78 +566,836 @@ public class Collections {
     }
   }
 
-  // All methods from here on in do NOT work, but DO return something which
-  // will in most circumstances have similar behaviour to the correct return
-  // value.
-  // They all simply return their argument, so they do not add synchronization
-  // or unmodifiability. Absence of synchronization is a potential problem for
-  // programs, which might be relying on it, but absence of unmodifiability is
-  // probably "merely" a security hole.
+  // All the methods from here on in require doc-comments.
+
   public static Collection synchronizedCollection(Collection c) {
-    return c;
+    return new SynchronizedCollection(c);
   }
   public static List synchronizedList(List l) {
-    return l;
+    return new SynchronizedList(l);
   }
   public static Map synchronizedMap(Map m) {
-    return m;
+    return new SynchronizedMap(m);
   }
   public static Set synchronizedSet(Set s) {
-    return s;
+    return new SynchronizedSet(s);
   }
   public static SortedMap synchronizedSortedMap(SortedMap m) {
-    return m;
+    return new SynchronizedSortedMap(m);
   }
   public static SortedSet synchronizedSortedSet(SortedSet s) {
-    return s;
+    return new SynchronizedSortedSet(s);
   }
-    public static Collection unmodifiableCollection(final Collection c) {
-	return new AbstractCollection() {
-	    public int size() {
-		return c.size();
-	    }
-	    public Iterator iterator() {
-		return new Iterator() {
-		    final Iterator i = c.iterator();
-		    public Object next() {
-			return i.next();
-		    }
-		    public boolean hasNext() {
-			return i.hasNext();
-		    }
-		    public void remove() {
-			throw new UnsupportedOperationException();
-		    }
-		};
-	    }
-	    public boolean contains(Object o) {
-		return c.contains(o);
-	    }
-	    public boolean containsAll(Collection c1) {
-		return c.containsAll(c1);
-	    }
-	    public Object[] toArray() {
-		return c.toArray();
-	    }
-	    public Object[] toArray(Object[] a) {
-		return c.toArray(a);
-	    }
-	};
-    }
-    
- public static List unmodifiableList(List l) {
-    return l;
+  public static Collection unmodifiableCollection(Collection c) {
+    return new UnmodifiableCollection(c);
+  }
+  public static List unmodifiableList(List l) {
+    return new UnmodifiableList(l);
   }
   public static Map unmodifiableMap(Map m) {
-    return m;
+    return new UnmodifiableMap(m);
   }
   public static Set unmodifiableSet(Set s) {
-    return s;
+    return new UnmodifiableSet(s);
   }
   public static SortedMap unmodifiableSortedMap(SortedMap m) {
-    return m;
+    return new UnmodifiableSortedMap(m);
   }
   public static SortedSet unmodifiableSortedSet(SortedSet s) {
-    return s;
+    return new UnmodifiableSortedSet(s);
+  }
+
+  // Sun's spec will need to be checked for the precise names of these
+  // classes, for serializability's sake. However, from what I understand,
+  // serialization is broken for these classes anyway.
+
+  // Note: although this code is largely uncommented, it is all very
+  // mechanical and there's nothing really worth commenting.
+  // When serialization of these classes works, we'll need doc-comments on
+  // them to document the serialized form.
+
+  private static class UnmodifiableIterator implements Iterator {
+    private Iterator i;
+
+    public UnmodifiableIterator(Iterator i) {
+      this.i = i;
+    }
+
+    public Object next() {
+      return i.next();
+    }
+    public boolean hasNext() {
+      return i.hasNext();
+    }
+    public void remove() {
+      throw new UnsupportedOperationException();
+    }
+  }
+
+  private static class UnmodifiableListIterator extends UnmodifiableIterator
+      implements ListIterator {
+
+    // This is stored both here and in the superclass, to avoid excessive
+    // casting.
+    private ListIterator li;
+
+    public UnmodifiableListIterator(ListIterator li) {
+      super(li);
+      this.li = li;
+    }
+
+    public boolean hasPrevious() {
+      return li.hasPrevious();
+    }
+    public Object previous() {
+      return li.previous();
+    }
+    public int nextIndex() {
+      return li.nextIndex();
+    }
+    public int previousIndex() {
+      return li.previousIndex();
+    }
+    public void add(Object o) {
+      throw new UnsupportedOperationException();
+    }
+    public void set(Object o) {
+      throw new UnsupportedOperationException();
+    }
+  }
+
+  private static class UnmodifiableCollection implements Collection, Serializable {
+    Collection c;
+
+    public UnmodifiableCollection(Collection c) {
+      this.c = c;
+    }
+
+    public boolean add(Object o) {
+      throw new UnsupportedOperationException();
+    }
+    public boolean addAll(Collection c) {
+      throw new UnsupportedOperationException();
+    }
+    public void clear() {
+      throw new UnsupportedOperationException();
+    }
+    public boolean contains(Object o) {
+      return c.contains(o);
+    }
+    public boolean containsAll(Collection c1) {
+      return c.containsAll(c1);
+    }
+    public boolean isEmpty() {
+      return c.isEmpty();
+    }
+    public Iterator iterator() {
+      return new UnmodifiableIterator(c.iterator());
+    }
+    public boolean remove(Object o) {
+      throw new UnsupportedOperationException();
+    }
+    public boolean removeAll(Collection c) {
+      throw new UnsupportedOperationException();
+    }
+    public boolean retainAll(Collection c) {
+      throw new UnsupportedOperationException();
+    }
+    public int size() {
+      return c.size();
+    }
+    public Object[] toArray() {
+      return c.toArray();
+    }
+    public Object[] toArray(Object[] a) {
+      return c.toArray(a);
+    }
+  }
+
+  private static class UnmodifiableList extends UnmodifiableCollection
+      implements List {
+
+    // This is stored both here and in the superclass, to avoid excessive
+    // casting.
+    List l;
+
+    public UnmodifiableList(List l) {
+      super(l);
+      this.l = l;
+    }
+
+    public void add(int index, Object o) {
+      l.add(index, o);
+    }
+    public boolean addAll(int index, Collection c) {
+      return l.addAll(index, c);
+    }
+    public boolean equals(Object o) {
+      return l.equals(o);
+    }
+    public Object get(int index) {
+      return l.get(index);
+    }
+    public int hashCode() {
+      return l.hashCode();
+    }
+    public int indexOf(Object o) {
+      return l.indexOf(o);
+    }
+    public int lastIndexOf(Object o) {
+      return l.lastIndexOf(o);
+    }
+    public ListIterator listIterator() {
+      return new UnmodifiableListIterator(l.listIterator());
+    }
+    public ListIterator listIterator(int index) {
+      return new UnmodifiableListIterator(l.listIterator(index));
+    }
+    public Object remove(int index) {
+      return l.remove(index);
+    }
+    public boolean remove(Object o) {
+      return l.remove(o);
+    }
+    public Object set(int index, Object o) {
+      return l.set(index, o);
+    }
+    public List subList(int fromIndex, int toIndex) {
+      return new UnmodifiableList(l.subList(fromIndex, toIndex));
+    }
+  }
+
+  private static class UnmodifiableSet extends UnmodifiableCollection implements Set {
+    public UnmodifiableSet(Set s) {
+      super(s);
+    }
+    public boolean equals(Object o) {
+      return c.equals(o);
+    }
+    public int hashCode() {
+      return c.hashCode();
+    }
+  }
+
+  private static class UnmodifiableSortedSet extends UnmodifiableSet
+      implements SortedSet {
+
+    // This is stored both here and in the superclass, to avoid excessive
+    // casting.
+    private SortedSet ss;
+
+    public UnmodifiableSortedSet(SortedSet ss) {
+      super(ss);
+      this.ss = ss;
+    }
+
+    public Comparator comparator() {
+      return ss.comparator();
+    }
+    public Object first() {
+      return ss.first();
+    }
+    public Object last() {
+      return ss.last();
+    }
+    public SortedSet headSet(Object toElement) {
+      return new UnmodifiableSortedSet(ss.headSet(toElement));
+    }
+    public SortedSet tailSet(Object fromElement) {
+      return new UnmodifiableSortedSet(ss.tailSet(fromElement));
+    }
+    public SortedSet subSet(Object fromElement, Object toElement) {
+      return new UnmodifiableSortedSet(ss.subSet(fromElement, toElement));
+    }
+  }
+
+  private static class UnmodifiableMap implements Map, Serializable {
+
+    Map m;
+
+    public UnmodifiableMap(Map m) {
+      this.m = m;
+    }
+
+    public void clear() {
+      throw new UnsupportedOperationException();
+    }
+    public boolean containsKey(Object key) {
+      return m.containsKey(key);
+    }
+    public boolean containsValue(Object value) {
+      return m.containsValue(value);
+    }
+
+    // This is one of the ickiest cases of nesting I've ever seen. It just
+    // means "return an UnmodifiableSet, except that the iterator() method
+    // returns an UnmodifiableIterator whos next() method returns an
+    // unmodifiable wrapper around its normal return value".
+    public Set entrySet() {
+      return new UnmodifiableSet(m.entrySet()) {
+        public Iterator iterator() {
+          return new UnmodifiableIterator(c.iterator()) {
+            public Object next() {
+              final Map.Entry e = (Map.Entry)super.next();
+              return new Map.Entry() {
+                public Object getKey() {
+                  return e.getKey();
+                }
+                public Object getValue() {
+                  return e.getValue();
+                }
+                public Object setValue(Object value) {
+                  throw new UnsupportedOperationException();
+                }
+                public int hashCode() {
+                  return e.hashCode();
+                }
+                public boolean equals(Object o) {
+                  return e.equals(o);
+                }
+              };
+            }
+          };
+        }
+      };
+    }
+    public boolean equals(Object o) {
+      return m.equals(o);
+    }
+    public Object get(Object key) {
+      return m.get(key);
+    }
+    public Object put(Object key, Object value) {
+      throw new UnsupportedOperationException();
+    }
+    public int hashCode() {
+      return m.hashCode();
+    }
+    public boolean isEmpty() {
+      return m.isEmpty();
+    }
+    public Set keySet() {
+      return new UnmodifiableSet(m.keySet());
+    }
+    public void putAll(Map m) {
+      throw new UnsupportedOperationException();
+    }
+    public Object remove(Object o) {
+      throw new UnsupportedOperationException();
+    }
+    public int size() {
+      return m.size();
+    }
+    public Collection values() {
+      return new UnmodifiableCollection(m.values());
+    }
+  }
+
+  private static class UnmodifiableSortedMap extends UnmodifiableMap
+      implements SortedMap {
+
+    // This is stored both here and in the superclass, to avoid excessive
+    // casting.
+    private SortedMap sm;
+
+    public UnmodifiableSortedMap(SortedMap sm) {
+      super(sm);
+      this.sm = sm;
+    }
+
+    public Comparator comparator() {
+      return sm.comparator();
+    }
+    public Object firstKey() {
+      return sm.firstKey();
+    }
+    public Object lastKey() {
+      return sm.lastKey();
+    }
+    public SortedMap headMap(Object toKey) {
+      return new UnmodifiableSortedMap(sm.headMap(toKey));
+    }
+    public SortedMap tailMap(Object fromKey) {
+      return new UnmodifiableSortedMap(sm.tailMap(fromKey));
+    }
+    public SortedMap subMap(Object fromKey, Object toKey) {
+      return new UnmodifiableSortedMap(sm.subMap(fromKey, toKey));
+    }
+  }
+
+  // All the "Synchronized" wrapper objects include a "sync" field which
+  // specifies what object to synchronize on. That way, nested wrappers such as
+  // UnmodifiableMap.keySet synchronize on the right things.
+
+  private static class SynchronizedIterator implements Iterator {
+    Object sync;
+    private Iterator i;
+
+    public SynchronizedIterator(Object sync, Iterator i) {
+      this.sync = sync;
+      this.i = i;
+    }
+
+    public Object next() {
+      synchronized (sync) {
+        return i.next();
+      }
+    }
+    public boolean hasNext() {
+      synchronized (sync) {
+        return i.hasNext();
+      }
+    }
+    public void remove() {
+      synchronized (sync) {
+        i.remove();
+      }
+    }
+  }
+
+  private static class SynchronizedListIterator extends SynchronizedIterator
+      implements ListIterator {
+
+    // This is stored both here and in the superclass, to avoid excessive
+    // casting.
+    private ListIterator li;
+
+    public SynchronizedListIterator(Object sync, ListIterator li) {
+      super(sync, li);
+      this.li = li;
+    }
+
+    public boolean hasPrevious() {
+      synchronized (sync) {
+        return li.hasPrevious();
+      }
+    }
+    public Object previous() {
+      synchronized (sync) {
+        return li.previous();
+      }
+    }
+    public int nextIndex() {
+      synchronized (sync) {
+        return li.nextIndex();
+      }
+    }
+    public int previousIndex() {
+      synchronized (sync) {
+        return li.previousIndex();
+      }
+    }
+    public void add(Object o) {
+      synchronized (sync) {
+        li.add(o);
+      }
+    }
+    public void set(Object o) {
+      synchronized (sync) {
+        li.set(o);
+      }
+    }
+  }
+
+  private static class SynchronizedCollection implements Collection, Serializable {
+    Object sync;
+    Collection c;
+
+    public SynchronizedCollection(Collection c) {
+      this.sync = this;
+      this.c = c;
+    }
+    public SynchronizedCollection(Object sync, Collection c) {
+      this.c = c;
+      this.sync = sync;
+    }
+
+    public boolean add(Object o) {
+      synchronized (sync) {
+        return c.add(o);
+      }
+    }
+    public boolean addAll(Collection col) {
+      synchronized (sync) {
+        return c.addAll(col);
+      }
+    }
+    public void clear() {
+      synchronized (sync) {
+        c.clear();
+      }
+    }
+    public boolean contains(Object o) {
+      synchronized (sync) {
+        return c.contains(o);
+      }
+    }
+    public boolean containsAll(Collection c1) {
+      synchronized (sync) {
+        return c.containsAll(c1);
+      }
+    }
+    public boolean isEmpty() {
+      synchronized (sync) {
+        return c.isEmpty();
+      }
+    }
+    public Iterator iterator() {
+      synchronized (sync) {
+        return new SynchronizedIterator(sync, c.iterator());
+      }
+    }
+    public boolean remove(Object o) {
+      synchronized (sync) {
+        return c.remove(o);
+      }
+    }
+    public boolean removeAll(Collection col) {
+      synchronized (sync) {
+        return c.removeAll(col);
+      }
+    }
+    public boolean retainAll(Collection col) {
+      synchronized (sync) {
+        return c.retainAll(col);
+      }
+    }
+    public int size() {
+      synchronized (sync) {
+        return c.size();
+      }
+    }
+    public Object[] toArray() {
+      synchronized (sync) {
+        return c.toArray();
+      }
+    }
+    public Object[] toArray(Object[] a) {
+      synchronized (sync) {
+        return c.toArray(a);
+      }
+    }
+  }
+
+  private static class SynchronizedList extends SynchronizedCollection
+      implements List {
+
+    // This is stored both here and in the superclass, to avoid excessive
+    // casting.
+    List l;
+
+    public SynchronizedList(Object sync, List l) {
+      super(sync, l);
+      this.l = l;
+    }
+    public SynchronizedList(List l) {
+      super(l);
+    }
+
+    public void add(int index, Object o) {
+      synchronized (sync) {
+        l.add(index, o);
+      }
+    }
+    public boolean addAll(int index, Collection c) {
+      synchronized (sync) {
+        return l.addAll(index, c);
+      }
+    }
+    public boolean equals(Object o) {
+      synchronized (sync) {
+        return l.equals(o);
+      }
+    }
+    public Object get(int index) {
+      synchronized (sync) {
+        return l.get(index);
+      }
+    }
+    public int hashCode() {
+      synchronized (sync) {
+        return l.hashCode();
+      }
+    }
+    public int indexOf(Object o) {
+      synchronized (sync) {
+        return l.indexOf(o);
+      }
+    }
+    public int lastIndexOf(Object o) {
+      synchronized (sync) {
+        return l.lastIndexOf(o);
+      }
+    }
+    public ListIterator listIterator() {
+      synchronized (sync) {
+        return new SynchronizedListIterator(sync, l.listIterator());
+      }
+    }
+    public ListIterator listIterator(int index) {
+      synchronized (sync) {
+        return new SynchronizedListIterator(sync, l.listIterator(index));
+      }
+    }
+    public Object remove(int index) {
+      synchronized (sync) {
+        return l.remove(index);
+      }
+    }
+    public boolean remove(Object o) {
+      synchronized (sync) {
+        return l.remove(o);
+      }
+    }
+    public Object set(int index, Object o) {
+      synchronized (sync) {
+        return l.set(index, o);
+      }
+    }
+    public List subList(int fromIndex, int toIndex) {
+      synchronized (sync) {
+        return new SynchronizedList(l.subList(fromIndex, toIndex));
+      }
+    }
+  }
+
+  private static class SynchronizedSet extends SynchronizedCollection implements Set {
+
+    public SynchronizedSet(Object sync, Set s) {
+      super(sync, s);
+    }
+    public SynchronizedSet(Set s) {
+      super(s);
+    }
+
+    public boolean equals(Object o) {
+      synchronized (sync) {
+        return c.equals(o);
+      }
+    }
+    public int hashCode() {
+      synchronized (sync) {
+        return c.hashCode();
+      }
+    }
+  }
+
+  private static class SynchronizedSortedSet extends SynchronizedSet
+      implements SortedSet {
+
+    // This is stored both here and in the superclass, to avoid excessive
+    // casting.
+    private SortedSet ss;
+
+    public SynchronizedSortedSet(Object sync, SortedSet ss) {
+      super(sync, ss);
+      this.ss = ss;
+    }
+    public SynchronizedSortedSet(SortedSet ss) {
+      super(ss);
+    }
+
+    public Comparator comparator() {
+      synchronized (sync) {
+        return ss.comparator();
+      }
+    }
+    public Object first() {
+      synchronized (sync) {
+        return ss.first();
+      }
+    }
+    public Object last() {
+      synchronized (sync) {
+        return ss.last();
+      }
+    }
+    public SortedSet headSet(Object toElement) {
+      synchronized (sync) {
+        return new SynchronizedSortedSet(sync, ss.headSet(toElement));
+      }
+    }
+    public SortedSet tailSet(Object fromElement) {
+      synchronized (sync) {
+        return new SynchronizedSortedSet(sync, ss.tailSet(fromElement));
+      }
+    }
+    public SortedSet subSet(Object fromElement, Object toElement) {
+      synchronized (sync) {
+        return new SynchronizedSortedSet(sync, ss.subSet(fromElement, toElement));
+      }
+    }
+  }
+
+  private static class SynchronizedMap implements Map, Serializable {
+
+    Object sync;
+    Map m;
+
+    public SynchronizedMap(Object sync, Map m) {
+      this.sync = sync;
+      this.m = m;
+    }
+    public SynchronizedMap(Map m) {
+      this.m = m;
+      this.sync = this;
+    }
+
+    public void clear() {
+      synchronized (sync) {
+        m.clear();
+      }
+    }
+    public boolean containsKey(Object key) {
+      synchronized (sync) {
+        return m.containsKey(key);
+      }
+    }
+    public boolean containsValue(Object value) {
+      synchronized (sync) {
+        return m.containsValue(value);
+      }
+    }
+
+    // This is one of the ickiest cases of nesting I've ever seen. It just
+    // means "return an SynchronizedSet, except that the iterator() method
+    // returns an SynchronizedIterator whos next() method returns a
+    // synchronized wrapper around its normal return value".
+    public Set entrySet() {
+      synchronized (sync) {
+        return new SynchronizedSet(sync, m.entrySet()) {
+          public Iterator iterator() {
+            synchronized (SynchronizedMap.this.sync) {
+              return new SynchronizedIterator(SynchronizedMap.this.sync, c.iterator()) {
+                public Object next() {
+                  synchronized (SynchronizedMap.this.sync) {
+                    final Map.Entry e = (Map.Entry)super.next();
+                    return new Map.Entry() {
+                      public Object getKey() {
+                        synchronized (SynchronizedMap.this.sync) {
+                          return e.getKey();
+                        }
+                      }
+                      public Object getValue() {
+                        synchronized (SynchronizedMap.this.sync) {
+                          return e.getValue();
+                        }
+                      }
+                      public Object setValue(Object value) {
+                        synchronized (SynchronizedMap.this.sync) {
+                          return e.setValue(value);
+                        }
+                      }
+                      public int hashCode() {
+                        synchronized (SynchronizedMap.this.sync) {
+                          return e.hashCode();
+                        }
+                      }
+                      public boolean equals(Object o) {
+                        synchronized (SynchronizedMap.this.sync) {
+                          return e.equals(o);
+                        }
+                      }
+                    };
+                  }
+                }
+              };
+            }
+          }
+        };
+      }
+    }
+    public boolean equals(Object o) {
+      synchronized (sync) {
+        return m.equals(o);
+      }
+    }
+    public Object get(Object key) {
+      synchronized (sync) {
+        return m.get(key);
+      }
+    }
+    public Object put(Object key, Object value) {
+      synchronized (sync) {
+        return m.put(key, value);
+      }
+    }
+    public int hashCode() {
+      synchronized (sync) {
+        return m.hashCode();
+      }
+    }
+    public boolean isEmpty() {
+      synchronized (sync) {
+        return m.isEmpty();
+      }
+    }
+    public Set keySet() {
+      synchronized (sync) {
+        return new SynchronizedSet(sync, m.keySet());
+      }
+    }
+    public void putAll(Map map) {
+      synchronized (sync) {
+        m.putAll(map);
+      }
+    }
+    public Object remove(Object o) {
+      synchronized (sync) {
+        return m.remove(o);
+      }
+    }
+
+    public int size() {
+      synchronized (sync) {
+        return m.size();
+      }
+    }
+    public Collection values() {
+      synchronized (sync) {
+        return new SynchronizedCollection(sync, m.values());
+      }
+    }
+  }
+
+  private static class SynchronizedSortedMap extends SynchronizedMap
+      implements SortedMap {
+
+    // This is stored both here and in the superclass, to avoid excessive
+    // casting.
+    private SortedMap sm;
+
+    public SynchronizedSortedMap(Object sync, SortedMap sm) {
+      super(sync, sm);
+      this.sm = sm;
+    }
+    public SynchronizedSortedMap(SortedMap sm) {
+      super(sm);
+    }
+
+    public Comparator comparator() {
+      synchronized (sync) {
+        return sm.comparator();
+      }
+    }
+    public Object firstKey() {
+      synchronized (sync) {
+        return sm.firstKey();
+      }
+    }
+    public Object lastKey() {
+      synchronized (sync) {
+        return sm.lastKey();
+      }
+    }
+    public SortedMap headMap(Object toKey) {
+      return new SynchronizedSortedMap(sync, sm.headMap(toKey));
+    }
+    public SortedMap tailMap(Object fromKey) {
+      return new SynchronizedSortedMap(sync, sm.tailMap(fromKey));
+    }
+    public SortedMap subMap(Object fromKey, Object toKey) {
+      return new SynchronizedSortedMap(sync, sm.subMap(fromKey, toKey));
+    }
   }
 }
