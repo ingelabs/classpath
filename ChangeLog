@@ -1,3 +1,11 @@
+2003-12-25  Mark Wielaard  <mark@klomp.org>
+
+	* include/Makefile.am (ARG_CLASSPATH_JAVAH): Use -bootclasspath.
+	* include/gnu_java_awt_peer_gtk_GdkPixbufDecoder.h: Regenerated.
+	* include/gnu_java_awt_peer_gtk_GtkComponentPeer.h: Likewise.
+	* include/gnu_java_awt_peer_gtk_GtkToolkit.h: Likewise.
+	* include/java_lang_VMSystem.h: Likewise.
+
 2003-12-25  Guilhem Lavaux <guilhem@kaffe.org>
 
 	* gnu/java/net/URLParseError.java: New file.
