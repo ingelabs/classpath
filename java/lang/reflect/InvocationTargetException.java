@@ -1,5 +1,5 @@
-/* InvocationTargetException.java - Wrapper exception for reflection
-   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
+/* InvocationTargetException.java -- Wrapper exception for reflection
+   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -38,11 +38,8 @@ exception statement from your version. */
 
 package java.lang.reflect;
 
-import java.io.PrintStream;
-import java.io.PrintWriter;
-
 /**
- * InvocationTargetException is sort of a way to "wrap" whatever exception 
+ * InvocationTargetException is sort of a way to "wrap" whatever exception
  * comes up when a method or constructor is called via Reflection. As of
  * JDK 1.4, it was retrofitted to match the exception chaining of all other
  * exceptions, but <code>getTargetException()</code> still works.
@@ -53,75 +50,62 @@ import java.io.PrintWriter;
  * @see Method#invoke(Object,Object[])
  * @see Constructor#newInstance(Object[])
  * @since 1.1
- * @status stuck at 1.3; awaiting exception chaining in Throwable
+ * @status updated to 1.4
  */
-
-public class InvocationTargetException
-  extends Exception 
+public class InvocationTargetException extends Exception
 {
   /**
-   * Compatible with JDK 1.1.
+   * Compatible with JDK 1.1+.
    */
   private static final long serialVersionUID = 4085088731926701167L;
 
   /**
    * The chained exception. This field is only around for serial compatibility.
+   *
    * @serial the chained exception
    */
   private final Throwable target;
 
   /**
-   * Construct an exception with null as the cause.
+   * Construct an exception with null as the cause. The cause is initialized
+   * to null.
    */
-  protected InvocationTargetException() 
+  protected InvocationTargetException()
   {
-    // XXX Use this implementation when Throwable is ready.
-    // this(null);
-
-    super();
-    target = null;
+    this(null, null);
   }
-  
+
   /**
-   * Create an <code>InvocationTargetException</code> using another 
+   * Create an <code>InvocationTargetException</code> using another
    * exception.
    *
    * @param targetException the exception to wrap
    */
-  public InvocationTargetException(Throwable targetException) 
+  public InvocationTargetException(Throwable targetException)
   {
-    // XXX Use this implementation when Throwable is ready.
-    // super(targetException);
-    // target = targetException;
-
-    super(targetException.toString());
-    target = targetException;
+    this(targetException, null);
   }
-  
-  /** 
-   * Create an <code>InvocationTargetException</code> using another 
+
+  /**
+   * Create an <code>InvocationTargetException</code> using another
    * exception and an error message.
    *
    * @param targetException the exception to wrap
    * @param err an extra reason for the exception-throwing
    */
-  public InvocationTargetException(Throwable targetException, String err) 
+  public InvocationTargetException(Throwable targetException, String err)
   {
-    // XXX Use this implementation when Throwable is ready.
-    // super(err, targetException);
-    // target = targetException;
-
-    super(err);
+    super(err, targetException);
     target = targetException;
   }
 
   /**
    * Get the wrapped (targeted) exception.
    *
-   * @return the targeted exception.
+   * @return the targeted exception
    * @see #getCause()
    */
-  public Throwable getTargetException() 
+  public Throwable getTargetException()
   {
     return target;
   }
@@ -129,7 +113,7 @@ public class InvocationTargetException
   /**
    * Returns the cause of this exception (which may be null).
    *
-   * @return the cause.
+   * @return the cause
    * @since 1.4
    */
   public Throwable getCause()

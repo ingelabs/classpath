@@ -31,6 +31,7 @@ EventQueue.java	\
 FileDialog.java	\
 FlowLayout.java	\
 Font.java \
+FontFormatException.java \
 FontMetrics.java \
 Frame.java \
 Graphics2D.java \
@@ -38,6 +39,7 @@ GraphicsConfiguration.java \
 Graphics.java \
 GridBagConstraints.java \
 GridLayout.java	\
+HeadlessException.java \
 IllegalComponentStateException.java \
 Image.java \
 ImageMediaEntry.java \

@@ -1,5 +1,6 @@
-/* BackingStoreException - Chained exception thrown when backing store fails
-   Copyright (C) 2001 Free Software Foundation, Inc.
+/* BackingStoreException.java - chained exception thrown when backing store
+   fails
+   Copyright (C) 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +8,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -37,31 +38,65 @@ exception statement from your version. */
 
 package java.util.prefs;
 
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.NotSerializableException;
+
 /**
- * Chained exception thrown when backing store fails.
- * This exception is only thrown from methods that actually have to access
- * the backing store such as <code>clear(), keys(), childrenNames(),
- * nodeExists(), removeNode(), flush(), sync(), exportNode(), exportSubTree()
- * </code>, normal operations do not throw BackingStoreExceptions.
+ * Chained exception thrown when backing store fails. This exception is
+ * only thrown from methods that actually have to access the backing store,
+ * such as <code>clear(), keys(), childrenNames(), nodeExists(), removeNode(),
+ * flush(), sync(), exportNode(), exportSubTree()</code>; normal operations
+ * do not throw BackingStoreExceptions.
  *
+ * <p>Note that although this class inherits the Serializable interface, an
+ * attempt to serialize will fail with a <code>NotSerializableException</code>.
+ *
+ * @author Mark Wielaard <mark@klomp.org>
  * @since 1.4
- * @author Mark Wielaard (mark@klomp.org)
+ * @status updated to 1.4
  */
-public class BackingStoreException extends Exception {
+public class BackingStoreException extends Exception
+{
+  /**
+   * Creates a new exception with a descriptive message.
+   *
+   * @param message the message
+   */
+  public BackingStoreException(String message)
+  {
+    super(message);
+  }
 
-    /**
-     * Creates a new exception with a descriptive message.
-     */
-    public BackingStoreException(String message) {
-        super(message);
-    }
+  /**
+   * Create a new exception with the given cause.
+   *
+   * @param cause the cause
+   */
+  public BackingStoreException(Throwable cause)
+  {
+    super(cause);
+  }
 
-    /**
-     * Create a new exception with the given cause.
-     */
-    public BackingStoreException(Throwable cause) {
-        // XXX - use when we have 1.4 Throwable support
-        // super(cause);
-        super();
-    }
+  /**
+   * This class should not be serialized.
+   *
+   * @param o the output stream
+   */
+  private void writeObject(ObjectOutputStream o)
+  {
+    throw new NotSerializableException
+      ("java.util.prefs.BackingStoreException");
+  }
+
+  /**
+   * This class should not be serialized.
+   *
+   * @param i the input stream
+   */
+  private void readObject(ObjectInputStream i)
+  {
+    throw new NotSerializableException
+      ("java.util.prefs.BackingStoreException");
+  }
 }

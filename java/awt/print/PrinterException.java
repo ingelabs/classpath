@@ -1,5 +1,5 @@
-/* PrinterException.java -- Generic problem in the printing subsystem.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* PrinterException.java -- generic problem in the printing subsystem
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,44 +38,34 @@ exception statement from your version. */
 
 package java.awt.print;
 
-import java.io.Serializable;
-
 /**
-  * This is the generic toplevel exception for printing errors.  Subclasses
-  * provide more detailed descriptions of the problem.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public class PrinterException extends Exception implements Serializable
-{
-
-/*
- * Constructors
+ * This is the generic toplevel exception for printing errors.  Subclasses
+ * provide more detailed descriptions of the problem.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @status updated to 1.4
  */
-
-/**
-  * Initializes a new instance of <code>PrinterException</code> with no
-  * detailed error message.
-  */
-public
-PrinterException()
+public class PrinterException extends Exception
 {
-  super();
-}
+  /**
+   * Compatible with JDK 1.2+.
+   */
+  private static final long serialVersionUID = -3757589981158265819L;
 
-/*************************************************************************/
+  /**
+   * Create a new instance with no detailed error message.
+   */
+  public PrinterException()
+  {
+  }
 
-/**
-  * Initializes a new instance of <code>PrinterException</code> with a
-  * descriptive error message.
-  *
-  * @param message The descriptive error message.
-  */
-public
-PrinterException(String message)
-{
-  super(message);
-}
-
+  /**
+   * Create a new instance with a descriptive error message.
+   *
+   * @param message the descriptive error message
+   */
+  public PrinterException(String message)
+  {
+    super(message);
+  }
 } // class PrinterException
-

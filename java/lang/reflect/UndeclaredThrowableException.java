@@ -1,5 +1,6 @@
-/* java.lang.reflect.UndeclaredThrowableException
-   Copyright (C) 2001 Free Software Foundation, Inc.
+/* UndeclaredThrowableException.java -- wraps an undeclared checked exception
+   thrown by a Proxy invocation handler
+   Copyright (C) 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -43,30 +44,29 @@ package java.lang.reflect;
  * the {@link InvocationHandler#invoke(Object, Method, Object[]) invoke}
  * method of that instance's InvocationHandler attempts to throw an
  * exception that not declared by the throws clauses of all of the
- * interface methods that the proxy instance is implementing.<p>
+ * interface methods that the proxy instance is implementing.
  *
- * When thrown by Proxy, this class will always wrap a checked
+ * <p>When thrown by Proxy, this class will always wrap a checked
  * exception, never {@link Error} or {@link RuntimeException},
  * which are unchecked.
  *
+ * @author Eric Blake <ebb9@email.byu.edu>
  * @see Proxy
  * @see InvocationHandler
- * @author Eric Blake <ebb9@email.byu.edu>
  * @since 1.3
- * @status stuck at 1.3; awaiting exception chaining in Throwable
+ * @status updated to 1.4
  */
-public class UndeclaredThrowableException
-  extends RuntimeException
+public class UndeclaredThrowableException extends RuntimeException
 {
   /**
-   * Compliant with JDK 1.3+
+   * Compatible with JDK 1.3+.
    */
   private static final long serialVersionUID = 330127114055056639L;
 
   /**
-   * The immutable exception that this wraps.
-   * This field is redundant with {@link Throwable#cause}, but
-   * is necessary for serial compatibility.
+   * The immutable exception that this wraps. This field is redundant
+   * with {@link Throwable#cause}, but is necessary for serial compatibility.
+   *
    * @serial the chained exception
    */
   private final Throwable undeclaredThrowable;
@@ -95,11 +95,7 @@ public class UndeclaredThrowableException
    */
   public UndeclaredThrowableException(Throwable cause, String message)
   {
-    // XXX Use this implementation when Throwable is ready.
-    // super(message, cause);
-    // undeclaredThrowable = cause;
-
-    super(message);
+    super(message, cause);
     undeclaredThrowable = cause;
   }
 

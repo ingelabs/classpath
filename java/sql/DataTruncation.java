@@ -1,5 +1,5 @@
-/* DataTruncation.java -- Warning when data has been truncated.
-   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
+/* DataTruncation.java -- warning when data has been truncated
+   Copyright (C) 1999, 2000, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -39,169 +39,125 @@ exception statement from your version. */
 package java.sql;
 
 /**
-  * This exception is thrown when a piece of data is unexpectedly 
-  * truncated in JDBC.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This exception is thrown when a piece of data is unexpectedly
+ * truncated in JDBC. This has an SQLstate of <code>01004</code>.
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @status updated to 1.4
+ */
 public class DataTruncation extends SQLWarning
 {
+  /**
+   * Compatible with JDK 1.1+.
+   */
+  private static final long serialVersionUID = 6464298989504059473L;
 
-/*************************************************************************/
+  /**
+   * The original size of the data.
+   *
+   * @serial the original data size
+   */
+  private final int dataSize;
 
-/*
- * Instance Variables
- */
+  /**
+   * The index of the parameter or column whose value was truncated.
+   *
+   * @serial the index that was truncated
+   */
+  private final int index;
 
-/**
-  * The original size of the data.
-  * @serialized
-  */
-private int dataSize;
+  /**
+   * Indicates whether or not a parameter value was truncated.
+   *
+   * @serial true if a parameter was truncated
+   */
+  private final boolean parameter;
 
-/**
-  * The index of the parameter or column whose value was truncated.
-  * @serialized
-  */
-private int index;
+  /**
+   * Indicates whether or not a data column value was truncated.
+   *
+   * @serial true if a data column was read before truncation
+   */
+  private final boolean read;
 
-/**
-  * Indicates whether or not a parameter value was truncated.
-  * @serialized
-  */
-private boolean parameter;
+  /**
+   * This is the size of the data after truncation.
+   *
+   * @serial the size actually transferred
+   */
+  private final int transferSize;
 
-/**
-  * Indicates whether or not a data column value was truncated.
-  * @serialized
-  */
-private boolean read;
+  /**
+   * Create a new instance with the specified values.  The descriptive error
+   * message for this exception will be "Data truncation", the SQL state
+   * will be "01004", and the vendor specific error code will be set to 0.
+   *
+   * @param index the index of the parameter or column that was truncated
+   * @param parameter <code>true</code> if a parameter was truncated
+   * @param read <code>true</code> if a data column was truncated
+   * @param dataSize the original size of the data
+   * @param transferSize the size of the data after truncation
+   */
+  public DataTruncation(int index, boolean parameter, boolean read,
+                        int dataSize, int transferSize)
+  {
+    super("Data truncation", "01004");
+    this.index = index;
+    this.parameter = parameter;
+    this.read = read;
+    this.dataSize = dataSize;
+    this.transferSize = transferSize;
+  }
 
-/**
-  * This is the size of the data after truncation.
-  * @serialized
-  */
-private int transferSize;
+  /**
+   * Get the index of the column or parameter that was truncated.
+   *
+   * @return the index of the column or parameter that was truncated
+   */
+  public int getIndex()
+  {
+    return index;
+  }
 
-/*************************************************************************/
+  /**
+   * Return true if it was a parameter that was truncated.
+   *
+   * @return <code>true</code> if a parameter was truncated
+   */
+  public boolean getParameter()
+  {
+    return parameter;
+  }
 
-/**
-  * Static Variables
-  */
+  /**
+   * Return true if it was a column that was truncated.
+   *
+   * @return <code>true</code> if a column was truncated
+   */
+  public boolean getRead()
+  {
+    return read;
+  }
 
-/**
-  * This is the serialization UID for this class
-  */
-private static final long serialVersionUID = 6464298989504059473L;
+  /**
+   * This method returns the original size of the parameter or column that
+   * was truncated.
+   *
+   * @return the original size
+   */
+  public int getDataSize()
+  {
+    return dataSize;
+  }
 
-/*************************************************************************/
-
-/*
- * Constructors
- */
-
-/**
-  * This method initializes a new instance of <code>DataTruncation</code>
-  * with the specified values.  The descriptive error message for this 
-  * exception will be "Data truncation", the SQL state will be "01004"
-  * and the vendor specific error code will be set to 0.
-  *
-  * @param index The index of the parameter or column that was truncated.
-  * @param parameter <code>true</code> if a parameter was truncated,
-  * <code>false</code> otherwise.
-  * @param read <code>true</code> if a data column was truncated,
-  * <code>false</code> otherwise.
-  * @param dataSize The original size of the data.
-  * @param transferSize The size of the data after truncation.
-  */
-public
-DataTruncation(int index, boolean parameter, boolean read, int dataSize,
-               int transferSize)
-{
-  super("Data truncation", "01004");
-
-  this.index = index;
-  this.parameter = parameter;
-  this.read = read;
-  this.dataSize = dataSize;
-  this.transferSize = transferSize;
-}
-
-/*************************************************************************/
-
-/*
- * Instance Methods
- */
-
-/**
-  * This method returns the index of the column or parameter that was
-  * truncated.
-  *
-  * @return The index of the column or parameter that was truncated.
-  */
-public int
-getIndex()
-{
-  return(index);
-}
-
-/*************************************************************************/
-
-/**
-  * This method determines whether or not it was a parameter that was
-  * truncated.
-  *
-  * @return <code>true</code> if a parameter was truncated, <code>false</code>
-  * otherwise.
-  */
-public boolean
-getParameter()
-{
-  return(parameter);
-}
-
-/*************************************************************************/
-
-/**
-  * This method determines whether or not it was a column that was
-  * truncated.
-  *
-  * @return <code>true</code> if a column was truncated, <code>false</code>
-  * otherwise.
-  */
-public boolean
-getRead()
-{
-  return(read);
-}
-
-/*************************************************************************/
-
-/**
-  * This method returns the original size of the parameter or column that
-  * was truncated.
-  *
-  * @return The original size of the parameter or column that was truncated.
-  */
-public int
-getDataSize()
-{
-  return(dataSize);
-}
-
-/*************************************************************************/
-
-/**
-  * This method returns the size of the parameter or column after it was
-  * truncated.
-  *
-  * @return The size of the parameter or column after it was truncated.
-  */
-public int
-getTransferSize()
-{
-  return(transferSize);
-}
-
+  /**
+   * This method returns the size of the parameter or column after it was
+   * truncated.
+   *
+   * @return the truncated size
+   */
+  public int getTransferSize()
+  {
+    return transferSize;
+  }
 } // class DataTruncation
-

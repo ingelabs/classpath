@@ -1,5 +1,6 @@
-/* InvalidPreferenceFormatException - Indicates reading prefs from stream failed
-   Copyright (C) 2001 Free Software Foundation, Inc.
+/* InvalidPreferencesFormatException - indicates reading prefs from stream
+   failed
+   Copyright (C) 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +8,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -37,38 +38,77 @@ exception statement from your version. */
 
 package java.util.prefs;
 
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.NotSerializableException;
+
 /**
  * Indicates reading prefs from stream failed. Thrown by the
  * <code>importPreferences()</code> method when the supplied input stream
  * could not be read because it was not in the correct XML format.
  *
+ * <p>Note that although this class inherits the Serializable interface, an
+ * attempt to serialize will fail with a <code>NotSerializableException</code>.
+ *
+ * @author Mark Wielaard <mark@klomp.org>
+ * @see Preferences
  * @since 1.4
- * @author Mark Wielaard (mark@klomp.org)
+ * @status updated to 1.4
  */
-public class InvalidPreferencesFormatException extends Exception {
+public class InvalidPreferencesFormatException extends Exception
+{
+  /**
+   * Creates a new exception with a descriptive message. The cause remains
+   * uninitialized.
+   *
+   * @param message the message
+   */
+  public InvalidPreferencesFormatException(String message)
+  {
+    super(message);
+  }
 
-    /**
-     * Creates a new exception with a descriptive message.
-     */
-    public InvalidPreferencesFormatException(String message) {
-        super(message);
-    }
+  /**
+   * Creates a new exception with the given cause.
+   *
+   * @param cause the cause
+   */
+  public InvalidPreferencesFormatException(Throwable cause)
+  {
+    super(cause);
+  }
 
-    /**
-     * Creates a new exception with the given cause.
-     */
-    public InvalidPreferencesFormatException(Throwable cause) {
-        // XXX - Use when we have 1.4 Throwable support
-        // super(cause);
-        super();
-    }
+  /**
+   * Creates a new exception with a descriptive message and a cause.
+   *
+   * @param message the message
+   * @param cause the cause
+   */
+  public InvalidPreferencesFormatException(String message, Throwable cause)
+  {
+    super(message, cause);
+    super(message);
+  }
 
-    /**
-     * Creates a new exception with a descriptive message and a cause.
-     */
-    public InvalidPreferencesFormatException(String message, Throwable cause) {
-        // XXX - Use when we have 1.4 Throwable support
-        // super(message, cause);
-        super(message);
-    }
+  /**
+   * This class should not be serialized.
+   *
+   * @param o the output stream
+   */
+  private void writeObject(ObjectOutputStream o)
+  {
+    throw new NotSerializableException
+      ("java.util.prefs.InvalidPreferencesFormatException");
+  }
+
+  /**
+   * This class should not be serialized.
+   *
+   * @param i the input stream
+   */
+  private void readObject(ObjectInputStream i)
+  {
+    throw new NotSerializableException
+      ("java.util.prefs.InvalidPreferencesFormatException");
+  }
 }

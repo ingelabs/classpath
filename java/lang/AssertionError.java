@@ -1,4 +1,4 @@
-/* AssertionError.java -- fIndication of a failed assertion
+/* AssertionError.java -- indication of a failed assertion
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.

@@ -1,5 +1,5 @@
 /* PrinterIOException.java -- The print job encountered an I/O error
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,80 +38,61 @@ exception statement from your version. */
 
 package java.awt.print;
 
-import java.io.Serializable;
 import java.io.IOException;
 
 /**
-  * This exception is thrown when the print job encounters an I/O problem
-  * of some kind.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public class PrinterIOException extends PrinterException 
-                                implements Serializable
-{
-
-/*
- * Instance Variables
+ * This exception is thrown when the print job encounters an I/O problem
+ * of some kind.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @status updated to 1.4
  */
-
-/**
-  * @serial The <code>IOException</code> that lead to this 
-  * exception being thrown.
-  */
-private IOException mException;
-
-/*************************************************************************/
-
-/*
- * Constructors
- */
-
-/**
-  * Initializes a new instance of <code>PrinterIOException</code> with the
-  * text description of the specified <code>IOException</code>.
-  *
-  * @param mException The <code>IOException</code> that caused this
-  * exception to be thrown.
-  */
-public
-PrinterIOException(IOException mException)
+public class PrinterIOException extends PrinterException
 {
-  this(mException.toString());
-  this.mException = mException;  
-}
+  /**
+   * Compatible with JDK 1.2+.
+   */
+  private static final long serialVersionUID = 5850870712125932846L;
 
-/*************************************************************************/
-
-/**
-  * Initializes a new instance of <code>PrinterIOException</code> with a
-  * descriptive error message.  Note that this constructor is private.
-  *
-  * @param message The descriptive error message.
+  /**
+   * The exception that caused this (duplicates Throwable).
+   *
+   * @serial the I/O exception that terminated the job
   */
-private
-PrinterIOException(String message)
-{
-  super(message);
-}
+  private final IOException mException;
 
-/*************************************************************************/
+  /**
+   * Initializes a new instance with the given cause.
+   *
+   * @param mException the cause
+   */
+  public PrinterIOException(IOException mException)
+  {
+    super(mException == null ? null : mException.toString());
+    initCause(mException);
+    this.mException = mException;  
+  }
 
-/*
- * Instance Methods
- */
-
-/**
-  * This method returns the underlying <code>IOException</code> that
-  * caused this exception.
-  *
-  * @return The <code>IOException</code> that caused this exception.
+  /**
+   * Gets the underlying <code>IOException</code> that caused this exception.
+   * This legacy method has been replaced by {@link #getCause()}.
+   *
+   * @return the cause
   */
-public IOException
-getIOException()
-{
-  return(mException);
-}
+  public IOException getIOException()
+  {
+    return mException;
+  }
 
+  /**
+   * Gets the cause.
+   *
+   * @return the cause
+   */
+  public Throwable getCause()
+  {
+    return mException;
+  }
 } // class PrinterIOException
 

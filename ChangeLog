@@ -1,5 +1,181 @@
 2002-02-23  Eric Blake  <ebb9@email.byu.edu>
 
+	* java/awt/AWTError.java: Update to 1.4.
+	* java/awt/AWTException.java: Ditto.
+	* java/awt/IllegalComponentStateException.java: Ditto.
+	* java/awt/datatransfer/MimeTypeParseException.java: Ditto.
+	* java/awt/datatransfer/UnsupportedFlavorException.java: Ditto.
+	* java/awt/geom/IllegalPathStateException.java: Ditto.
+	* java/awt/geom/NoninvertibleTransformException.java: Ditto.
+	* java/awt/print/PrinterAbortException.java: Ditto.
+	* java/awt/print/PrinterException.java: Ditto.
+	* java/awt/print/PrinterIOException.java: Ditto.
+	* java/beans/IntrospectionException.java: Ditto.
+	* java/beans/PropertyVetoException.java: Ditto.
+	* java/io/CharConversionException.java: Ditto.
+	* java/io/EOFException.java: Ditto.
+	* java/io/FileNotFoundException.java: Ditto.
+	* java/io/InterruptedIOException.java: Ditto.
+	* java/io/InvalidClassException.java: Ditto.
+	* java/io/InvalidObjectException.java: Ditto.
+	* java/io/IOException.java: Ditto.
+	* java/io/NotActiveException.java: Ditto.
+	* java/io/NotSerializableException.java: Ditto.
+	* java/io/ObjectStreamException.java: Ditto.
+	* java/io/OptionalDataException.java: Ditto.
+	* java/io/StreamCorruptedException.java: Ditto.
+	* java/io/SyncFailedException.java: Ditto.
+	* java/io/UnsupportedEncodingException.java: Ditto.
+	* java/io/UTFDataFormatException.java: Ditto.
+	* java/io/WriteAbortedException.java: Ditto.
+	* java/lang/AbstractMethodError.java: Ditto.
+	* java/lang/ArithmeticException.java: Ditto.
+	* java/lang/ArrayIndexOutOfBoundsException.java: Ditto.
+	* java/lang/ArrayStoreException.java: Ditto.
+	* java/lang/AssertionError.java: Ditto.
+	* java/lang/ClassCastException.java: Ditto.
+	* java/lang/ClassCircularityError.java: Ditto.
+	* java/lang/ClassFormatError.java: Ditto.
+	* java/lang/ClassNotFoundException.java: Ditto.
+	* java/lang/CloneNotSupportedException.java: Ditto.
+	* java/lang/Exception.java: Ditto.
+	* java/lang/ExceptionInInitializerError.java: Ditto.
+	* java/lang/IllegalAccessError.java: Ditto.
+	* java/lang/IllegalAccessException.java: Ditto.
+	* java/lang/IllegalArgumentException.java: Ditto.
+	* java/lang/IllegalMonitorStateException.java: Ditto.
+	* java/lang/IllegalStateException.java: Ditto.
+	* java/lang/IllegalThreadStateException.java: Ditto.
+	* java/lang/IncompatibleClassChangeError.java: Ditto.
+	* java/lang/IndexOutOfBoundsException.java: Ditto.
+	* java/lang/InstantiationError.java: Ditto.
+	* java/lang/InstantiationException.java: Ditto.
+	* java/lang/InternalError.java: Ditto.
+	* java/lang/InterruptedException.java: Ditto.
+	* java/lang/LinkageError.java: Ditto.
+	* java/lang/NegativeArraySizeException.java: Ditto.
+	* java/lang/NoClassDefFoundError.java: Ditto.
+	* java/lang/NoSuchFieldError.java: Ditto.
+	* java/lang/NoSuchFieldException.java: Ditto.
+	* java/lang/NoSuchMethodError.java: Ditto.
+	* java/lang/NoSuchMethodException.java: Ditto.
+	* java/lang/NullPointerException.java: Ditto.
+	* java/lang/NumberFormatException.java: Ditto.
+	* java/lang/OutOfMemoryError.java: Ditto.
+	* java/lang/RuntimeException.java: Ditto.
+	* java/lang/SecurityException.java: Ditto.
+	* java/lang/StackOverflowError.java: Ditto.
+	* java/lang/StringIndexOutOfBoundsException.java: Ditto.
+	* java/lang/ThreadDeath.java: Ditto.
+	* java/lang/UnknownError.java: Ditto.
+	* java/lang/UnsatisfiedLinkError.java: Ditto.
+	* java/lang/UnsupportedClassVersionError.java: Ditto.
+	* java/lang/UnsupportedOperationException.java: Ditto.
+	* java/lang/VerifyError.java: Ditto.
+	* java/lang/VirtualMachineError.java: Ditto.
+	* java/lang/Void.java: Ditto.
+	* java/lang/reflect/InvocationTargetException.java: Ditto.
+	* java/lang/reflect/UndeclaredThrowableException.java: Ditto.
+	* java/net/BindException.java: Ditto.
+	* java/net/ConnectException.java: Ditto.
+	* java/net/MalformedURLException.java: Ditto.
+	* java/net/NoRouteToHostException.java: Ditto.
+	* java/net/ProtocolException.java: Ditto.
+	* java/net/SocketException.java: Ditto.
+	* java/net/UnknownHostException.java: Ditto.
+	* java/net/UnknownServiceException.java: Ditto.
+	* java/rmi/AccessException.java: Ditto.
+	* java/rmi/AlreadyBoundException.java: Ditto.
+	* java/rmi/ConnectException.java: Ditto.
+	* java/rmi/ConnectIOException.java: Ditto.
+	* java/rmi/MarshalException.java: Ditto.
+	* java/rmi/NoSuchObjectException.java: Ditto.
+	* java/rmi/NotBoundException.java: Ditto.
+	* java/rmi/RemoteException.java: Ditto.
+	* java/rmi/RMISecurityException.java: Ditto.
+	* java/rmi/ServerException.java: Ditto.
+	* java/rmi/ServerRuntimeException.java: Ditto.
+	* java/rmi/StubNotFoundException.java: Ditto.
+	* java/rmi/UnexpectedException.java: Ditto.
+	* java/rmi/UnknownHostException.java: Ditto.
+	* java/rmi/UnmarshalException.java: Ditto.
+	* java/rmi/activation/ActivateFailedException.java: Ditto.
+	* java/rmi/activation/ActivationException.java: Ditto.
+	* java/rmi/activation/UnknownGroupException.java: Ditto.
+	* java/rmi/activation/UnknownObjectException.java: Ditto.
+	* java/rmi/server/ExportException.java: Ditto.
+	* java/rmi/server/ServerCloneException.java: Ditto.
+	* java/rmi/server/ServerNotActiveException.java: Ditto.
+	* java/rmi/server/SkeletonMismatchException.java: Ditto.
+	* java/rmi/server/SkeletonNotFoundException.java: Ditto.
+	* java/rmi/server/SocketSecurityException.java: Ditto.
+	* java/security/AccessControlException.java: Ditto.
+	* java/security/DigestException.java: Ditto.
+	* java/security/GeneralSecurityException.java: Ditto.
+	* java/security/InvalidAlgorithmParameterException.java: Ditto.
+	* java/security/InvalidKeyException.java: Ditto.
+	* java/security/InvalidParameterException.java: Ditto.
+	* java/security/KeyException.java: Ditto.
+	* java/security/KeyManagementException.java: Ditto.
+	* java/security/KeyStoreException.java: Ditto.
+	* java/security/NoSuchAlgorithmException.java: Ditto.
+	* java/security/NoSuchProviderException.java: Ditto.
+	* java/security/PrivilegedActionException.java: Ditto.
+	* java/security/ProviderException.java: Ditto.
+	* java/security/SignatureException.java: Ditto.
+	* java/security/UnrecoverableKeyException.java: Ditto.
+	* java/security/acl/AclNotFoundException.java: Ditto.
+	* java/security/acl/LastOwnerException.java: Ditto.
+	* java/security/acl/NotOwnerException.java: Ditto.
+	* java/security/cert/CertificateEncodingException.java: Ditto.
+	* java/security/cert/CertificateException.java: Ditto.
+	* java/security/cert/CertificateExpiredException.java: Ditto.
+	* java/security/cert/CertificateNotYetValidException.java: Ditto.
+	* java/security/cert/CertificateParsingException.java: Ditto.
+	* java/security/cert/CRLException.java: Ditto.
+	* java/security/spec/InvalidKeySpecException.java: Ditto.
+	* java/security/spec/InvalidParameterSpecException.java: Ditto.
+	* java/sql/BatchUpdateException.java: Ditto.
+	* java/sql/DataTruncation.java: Ditto.
+	* java/sql/SQLException.java: Ditto.
+	* java/sql/SQLWarning.java: Ditto.
+	* java/text/ParseException.java: Ditto.
+	* java/util/MissingResourceException.java: Ditto.
+	* java/util/jar/JarException.java: Ditto.
+	* java/util/prefs/BackingStoreException.java: Ditto.
+	* java/util/prefs/InvalidPreferencesFormatException.java: Ditto.
+	* java/util/zip/DataFormatException.java: Ditto.
+	* java/util/zip/ZipException.java: Ditto.
+	* java/awt/Makefile.am (EXTRA_DIST): Add FontFormatException.java
+	and HeadlessException.java.
+	* java/awt/FontFormatException.java: New file.
+	* java/awt/HeadlessException.java: New file.
+	* java/awt/color/Makefile.am (EXTRA_DIST): Add CMMException.java
+	and ProfileDataException.java.
+	* java/awt/color/CMMException.java: New file.
+	* java/awt/color/ProfileDataException.java: New file.
+	* java/awt/image/Makefile.am (EXTRA_DIST): Add
+	ImagingOpException.java and RasterFormatException.java.
+	* java/awt/image/ImagingOpException.java: New file.
+	* java/awt/image/RasterFormatException.java: New file.
+	* java/net/Makefile.am (EXTRA_DIST): Add
+	PortUnreachableException.java, SocketTimeoutException.java and
+	URISyntaxException.java.
+	* java/net/PortUnreachableException.java: New file.
+	* java/net/SocketTimeoutException.java: New file.
+	* java/net/URISyntaxException.java: New file.
+	* java/security/cert/Makefile.am (EXTRA_DIST): Add
+	CertPathBuilderException.java, CertPathValidatorException.java,
+	and CertStoreException.java.
+	* java/security/cert/CertPathBuilderException.java: New file.
+	* java/security/cert/CertPathValidatorException.java: New file.
+	* java/security/cert/CertStoreException.java: New file.
+	* vm/reference/java/lang/Throwable.java (toString): Use
+	getLocalizedMessage().
+	* ChangeLog: Fix spelling error.
+
+2002-02-23  Eric Blake  <ebb9@email.byu.edu>
+
 	* java/lang/Makefile.am (EXTRA_DIST): Add AssertionError.java and
 	StackTraceElement.java.
 	* java/lang/AssertionError.java: New file.
@@ -264,9 +440,9 @@
 
 	* java/lang/StringBuffer.java (subSequence): is new in 1.4,
 	though it was already implemented in classpath.  I added the
-	"@since 1.4" tag to make it compatable with the 1.4. I
+	"@since 1.4" tag to make it compatible with the 1.4. I
 	altered the exception thrown to be IndexOutOfBoundsException to
-	make the documentation compatable with the 1.4.
+	make the documentation compatible with the 1.4.
 	* java/lang/StringBuffer.java (indexOf, lastIndexOf): I copied the
 	javadoc in the classpath String class.  The functions call through
 	to those functions, so they behave exactly the same.

@@ -258,17 +258,17 @@ public class Throwable extends Object implements Serializable
   }
 
   /**
-   * Get a human-readable representation of this Throwable. With a null
-   * detail message, this string is simply the object's class name. With
-   * a detail message, the string is
-   * <code>getClass().getName() + ": " + getMessage()</code>.
+   * Get a human-readable representation of this Throwable. The detail message
+   * is retrieved by getLocalizedMessage().  Then, with a null detail
+   * message, this string is simply the object's class name; otherwise
+   * the string is <code>getClass().getName() + ": " + message</code>.
    *
    * @return a human-readable String represting this Throwable
    */
   public String toString()
   {
-    return getClass().getName()
-      + (detailMessage == null ? "" : ": " + detailMessage);
+    String msg = getLocalizedMessage();
+    return getClass().getName() + (msg == null ? "" : ": " + msg);
   }
 
   /**

@@ -15,12 +15,14 @@ ImageConsumer.java \
 ImageFilter.java \
 ImageObserver.java \
 ImageProducer.java \
+ImagingOpException.java \
 IndexColorModel.java \
 MemoryImageSource.java \
 PackedColorModel.java \
 PixelGrabber.java \
 RGBImageFilter.java \
 Raster.java \
+RasterFormatException.java \
 RasterOp.java \
 ReplicateScaleFilter.java \
 SampleModel.java \

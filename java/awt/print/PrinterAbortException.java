@@ -1,5 +1,5 @@
 /* PrinterAbortException.java -- Indicates the print job was aborted
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,41 +38,34 @@ exception statement from your version. */
 
 package java.awt.print;
 
-import java.io.Serializable;
-
 /**
-  * This exception is thrown when the print job is aborted, either by the
-  * user or by the application.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public class PrinterAbortException extends PrinterException 
-                                   implements Serializable
+ * This exception is thrown when the print job is aborted, either by the
+ * user or by the application.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @status updated to 1.4
+ */
+public class PrinterAbortException extends PrinterException
 {
+  /**
+   * Compatible with JDK 1.2+.
+   */
+  private static final long serialVersionUID = 4725169026278854136L;
 
-/**
-  * Initializes a new instance of <code>PrinterAbortException</code> with no
-  * detailed error message.
-  */
-public
-PrinterAbortException()
-{
-  super();
-}
+  /**
+   * Create a new instance with no detailed error message.
+   */
+  public PrinterAbortException()
+  {
+  }
 
-/*************************************************************************/
-
-/**
-  * Initializes a new instance of <code>PrinterAbortException</code> with a
-  * descriptive error message.
-  *
-  * @param message The descriptive error message.
-  */
-public
-PrinterAbortException(String message)
-{
-  super(message);
-}
-
+  /**
+   * Create a new instance with a descriptive error message.
+   *
+   * @param message the descriptive error message
+   */
+  public PrinterAbortException(String message)
+  {
+    super(message);
+  }
 } // class PrinterAbortException
-
