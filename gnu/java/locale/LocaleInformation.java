@@ -100,6 +100,7 @@ public class LocaleInformation extends ListResourceBundle
       put("JMD", "J$");
       put("ZWD", "Z$");
       put("IQD", "ID");
+      put("EEK", "kr");
     }
   }
 
