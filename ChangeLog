@@ -1,3 +1,9 @@
+2002-08-26  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/Authenticator.java,
+	java/net/ContentHandler.java: Merge with libgcj. 
+	Updated to JDK 1.4 compatibility.
+	
 2002-08-20  Tom Tromey  <tromey@redhat.com>
 
 	* vm/reference/java/lang/Runtime.java (exec): Pass `dir' argument
