@@ -126,6 +126,17 @@ DatagramSocket(int port, InetAddress addr) throws SocketException
 /*************************************************************************/
 
 /**
+  * Ensure that the socket is closed when this object is garbage collected
+  */
+protected void
+finalize() throws IOException
+{
+  close();
+}
+
+/*************************************************************************/
+
+/**
   * Closes this socket. 
   */
 public synchronized void

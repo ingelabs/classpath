@@ -229,6 +229,18 @@ accept() throws IOException
 /*************************************************************************/
 
 /**
+  * Ensure that this socket gets closed when the object is garbage
+  * collected.
+  */
+protected void
+finalize() throws IOException
+{
+  close();
+}
+
+/*************************************************************************/
+
+/**
   * Closes this socket and stops listening for connections
   *
   * @exception IOException If an error occurs

@@ -297,6 +297,17 @@ Socket(InetAddress raddr, int rport, InetAddress laddr, int lport,
  */
 
 /**
+  * This method closes the socket when this object is garbage collected
+  */
+protected void
+finalize() throws IOException
+{
+  close();
+}
+
+/*************************************************************************/
+
+/**
   * Closes the socket.
   *
   * @exception IOException If an error occurs
