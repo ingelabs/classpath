@@ -1,5 +1,27 @@
 2003-10-15  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/NIOSocket.java
+	(setChannel): Initialize impl.
+	* gnu/java/nio/ServerSocketChannelImpl.java
+	(ServerSocketChannelImpl): Made class public final.
+	(serverSocket): Made it a NIOServerSocket.
+	(getNativeFD): New method.
+	(implConfigureBlocking): Set socket timeout.
+	(accept): Rewritten.
+	* gnu/java/nio/SelectorImpl.java
+	(register): Use ServerSocketChannelSelectionKey for server socket
+	channels, removed comments.
+	* gnu/java/nio/SocketChannelImpl.java
+	(impl): New member variable.
+	(SocketChannelImpl): Initialize impl.
+	(getImpl): New method.
+	* gnu/java/nio/NIOServerSocket.java,
+	gnu/java/nio/ServerSocketChannelSelectionKey.java: New files.
+	* gnu/java/nio/Makefile.am (EXTRA_DIST):
+	Added NIOServerSocket.java and ServerSocketChannelSelectionKey.java.
+
+2003-10-15  Michael Koch  <konqueror@gmx.de>
+
 	* java/util/Map.java,
 	java/util/Observer.java:
 	Removed redundant modifiers.

@@ -1,4 +1,4 @@
-/* NIOSocket.java -- 
+/* ServerSocketChannelSelectionKey.java -- 
    Copyright (C) 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,40 +38,19 @@ exception statement from your version. */
 
 package gnu.java.nio;
 
-import gnu.java.net.PlainSocketImpl;
-import java.io.IOException;
-import java.net.Socket;
-import java.nio.channels.SocketChannel;
+import java.nio.channels.spi.AbstractSelectableChannel;
 
-/**
- * @author Michael Koch
- */
-public final class NIOSocket extends Socket
+public final class ServerSocketChannelSelectionKey
+  extends SelectionKeyImpl
 {
-  private PlainSocketImpl impl;
-  private SocketChannelImpl channel;
-    
-  protected NIOSocket (PlainSocketImpl impl, SocketChannelImpl channel)
-    throws IOException
+  public ServerSocketChannelSelectionKey (AbstractSelectableChannel channel,
+                                          SelectorImpl selector)
   {
-    super (impl);
-    this.impl = impl;
-    this.channel = channel;
+    super (channel, selector);
   }
 
-  public final PlainSocketImpl getImpl()
+  public int getNativeFD()
   {
-    return impl;
-  }
-
-  final void setChannel (SocketChannelImpl channel)
-  {
-    this.impl = channel.getImpl();
-    this.channel = channel;
-  }
-  
-  public final SocketChannel getChannel()
-  {
-    return channel;
+    return ((ServerSocketChannelImpl) ch).getNativeFD();
   }
 }
