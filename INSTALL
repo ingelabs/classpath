@@ -26,24 +26,26 @@ the JDK for compiling, since Japhar current doesn't work. :-)
 3).  Type "make install" to install everything.  This may require
 being the superuser.
 
-The compiled classes are stored in a file called glibj.zip, which is
-installed in the architecture independent data directory of your
-target JVM.  For Japhar, this is the "share" directory under the
-Japhar root.  The native libraries are stored where the target JVM
-stores its own native libraries.  This is the "lib" directory under
-the Japhar root directory.
+The compiled classes are stored in the Japhar "share" directory,
+exactly where the Sun classes.zip is stored.  The native libraries
+are stored in the Japhar "lib" directory.  Please do not zip the
+Classpath classes into a zip/jar archive or it will bomb on many
+things.
 
 Once installed, GNU Classpath is ready to be used.  Simply ensure that
-the glibj.zip file is in your $CLASSPATH environment variable.
+/usr/local/japhar/share is in your $CLASSPATH environment variable.
+(Change that of course if your Japhar is not installed in /usr/local/japhar).
 
 Ok, here is a configuration, build, install, and test example.  This
 may or may not be appropriate for your system.
 
-./configure --with-japhar --with-java=/usr/local/jdk1.1.5/bin/javav \
-    --with-classlib=/usr/local/jdk1.1.5/lib/classes.zip
+./configure 
 make
 make install
-japhar --classpath /usr/local/japhar/share/glibj.zip:. FooClass
+japhar --classpath /usr/local/japhar/share/:. FooClass
+
+If it completely bombs, do a japhar --version.  If it doesn't say 0.07
+or higher, you need to upgrade.
 
 Report bugs to classpath@gnu.org.
 
