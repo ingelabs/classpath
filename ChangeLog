@@ -1,3 +1,8 @@
+2002-12-25  Daryl Lee <dolee@sources.redhat.com>
+
+	* java/io/PipedOutputStream.java: corrected connect(); test to check if
+	already connected was invalid.
+
 2002-12-24  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/Properties.java (formatForOutput): Don't fall 
