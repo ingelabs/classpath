@@ -184,12 +184,17 @@ analyze, and change the code for one's purposes.</p>
 </entry>
 
 <entry name="SableVM">
-<createlink url="http://www.sablevm.org/" name="SableVM"> is a portable bytecode interpreter written in C, and implementing the Java virtual machine specification, second edition.
+<createlink url="http://www.sablevm.org/" name="SableVM"> is a portable
+bytecode interpreter written in C, and implementing the Java virtual machine
+specification, second edition.  Its goals are to be reasonably small, fast,
+and efficient, as well as providing a well-designed and robust platform for
+conducting research.
 
 <p>
 The initial development of SableVM was done as part of the Ph.D. research project of Etienne Gagnon. Continuing development of SableVM project involves the <createlink name="Sable Research Group" url="http://www.sable.mcgill.ca/"> of McGill University, a new research group of the <createlink name="computer science department of UQAM" url="http://www.info.uqam.ca/"> , and other generous <createlink name="Free software contributors" url="http://sourceforge.net/project/memberlist.php?group_id=5523">.
 
-<p>[<createlink name="Publications" url="http://www.sablevm.org/docs.html">]
+<p>[<createlink name="SableVM Documents" url="http://www.sablevm.org/docs.html">]
+<br>[<createlink name="Sable Publications (Papers)" url="http://www.sable.mcgill.ca/publications/papers/">]
 </entry>
 
 <entry name="Jaos">

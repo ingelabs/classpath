@@ -1,5 +1,11 @@
 2003-11-29  Mark Wielaard  <mark@klomp.org>
 
+	Reported by Etienne Gagnon <gagnon.etienne_m@uqam.ca>
+	* doc/www.gnu.org/stories: Updated SableVM blurb and add extra
+	publications link.
+
+2003-11-29  Mark Wielaard  <mark@klomp.org>
+
 	* doc/hacking.texi: Clearify jikesrvm link (www, not www-124).
 	* doc/www.gnu.org/stories.wml: Likewise.
 	* doc/www.gnu.org/home.wml: Update Open Tasks savannah link.
