@@ -1,5 +1,15 @@
 2004-10-13  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/image/DataBufferByte.java,
+	java/awt/image/DataBufferDouble.java,
+	java/awt/image/DataBufferFloat.java,
+	java/awt/image/DataBufferInt.java,
+	java/awt/image/DataBufferShort.java,
+	java/awt/image/DataBufferUShort.java:
+	Fix initialization of bankData in constructors.
+
+2004-10-13  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/BindException.java, java/net/ConnectException.java,
 	java/net/ContentHandler.java, java/net/ContentHandlerFactory.java,
 	java/net/DatagramPacket.java, java/net/DatagramSocket.java,
