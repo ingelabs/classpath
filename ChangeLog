@@ -1,3 +1,8 @@
+2002-04-30  Tom Tromey  <tromey@redhat.com>
+
+	* java/io/BufferedReader.java (fill): Handle case where markPos
+	point to ignored \n.
+
 2002-04-30  Sascha Brawer  <brawer@acm.org>
 
 	* java/text/ChoiceFormat.java (class description):
