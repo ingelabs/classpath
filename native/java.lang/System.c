@@ -34,7 +34,7 @@ executable file might be covered by the GNU General Public License. */
  */
 JNIEXPORT void JNICALL Java_java_lang_System_setIn
   (JNIEnv * env, jclass thisClass, jobject in) {
-	jfieldID inField = (*env)->GetStaticFieldID(env,thisClass,"in","Ljava/io/InputStream");
+	jfieldID inField = (*env)->GetStaticFieldID(env,thisClass,"in","Ljava/io/InputStream;");
 	(*env)->SetStaticObjectField(env,thisClass,inField,in);
 }
 
@@ -45,7 +45,7 @@ JNIEXPORT void JNICALL Java_java_lang_System_setIn
  */
 JNIEXPORT void JNICALL Java_java_lang_System_setOut
   (JNIEnv * env, jclass thisClass, jobject out) {
-	jfieldID outField = (*env)->GetStaticFieldID(env,thisClass,"out","Ljava/io/PrintStream");
+	jfieldID outField = (*env)->GetStaticFieldID(env,thisClass,"out","Ljava/io/PrintStream;");
 	(*env)->SetStaticObjectField(env,thisClass,outField,out);
 }
 
@@ -56,7 +56,7 @@ JNIEXPORT void JNICALL Java_java_lang_System_setOut
  */
 JNIEXPORT void JNICALL Java_java_lang_System_setErr
   (JNIEnv * env, jclass thisClass, jobject err) {
-	jfieldID errField = (*env)->GetStaticFieldID(env,thisClass,"err","Ljava/io/PrintStream");
+	jfieldID errField = (*env)->GetStaticFieldID(env,thisClass,"err","Ljava/io/PrintStream;");
 	(*env)->SetStaticObjectField(env,thisClass,errField,err);
 }
 

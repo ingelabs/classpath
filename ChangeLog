@@ -1,3 +1,13 @@
+2000-12-10  Brian Jones  <cbj@gnu.org>
+	* gnu/classpath/.cvsignore : Ignore Configuration.java
+	* native/java.lang/System.c (Java_java_lang_System_setIn) : fixed 
+	call to GetStaticFieldID().
+	(Java_java_lang_System_setOut) : Ditto.
+	(Java_java_lang_System_setErr) : Ditto.
+	* java/lang/Makefile.am : Removed Throwable.java
+	* vm/reference/java/lang/Makefile.am : Added Throwable.java.  
+	Throwable.java is now part of the VM interface.
+
 2000-12-09  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	* java/io/DataInputStream.java (readBoolean): Use convertToBoolean().

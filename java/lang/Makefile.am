@@ -68,7 +68,6 @@ System.java \
 ThreadDeath.java \
 ThreadGroup.java \
 ThreadLocal.java \
-Throwable.java \
 UnknownError.java \
 UnsatisfiedLinkError.java \
 UnsupportedClassVersionError.java \

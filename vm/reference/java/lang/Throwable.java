@@ -33,8 +33,6 @@ import java.io.PrintStream;
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
 import java.io.IOException;
-import gnu.vm.stack.StackTrace;
-import gnu.vm.stack.StackFrame;
 
 /**
  * Throwable is the superclass of all exceptions that can be raised.
@@ -49,8 +47,12 @@ public class Throwable extends Object implements Serializable
   static final long serialVersionUID = -3042686055658047285L;
 
   private String message = null;
-  private StackTrace st;
-  
+
+  static 
+  {
+    System.loadLibrary ("runtime");
+  }  
+
   /** 
    * Instantiate this Throwable with an empty message. 
    */
@@ -109,11 +111,7 @@ public class Throwable extends Object implements Serializable
    */
   public void printStackTrace(PrintStream s) {
     s.println(toString());
-    StackTrace st = this.st;
-    for(int i=st.numFrames() - 1; i >= 0; i--) {
-      StackFrame f = st.frameAt(i);
-      s.println("in " + f.toString());
-    }
+    printStackTrace0 (s);
   }
   
   /** 
@@ -122,40 +120,18 @@ public class Throwable extends Object implements Serializable
    */
   public void printStackTrace(PrintWriter w) {
     w.println(toString());
-    for(int i=st.numFrames() - 1; i>=0; i--) {
-      StackFrame f = st.frameAt(i);
-      w.println("in " + f.toString());
-    }
+    printStackTrace0 (w);
   }
-  
+
+  private native void printStackTrace0 (Object stream);
+
   /** 
    * Fill in the stack trace with the current execution stack.
    * Normally used when rethrowing an exception, to strip
    * off unnecessary extra stack frames.
    * @return this same throwable.
    */
-  public Throwable fillInStackTrace()
-  {
-    st = StackTrace.copyCurrentStackTrace();
-    st.pop(); // get rid of the fillInStackTrace() call
-    int lastIndex = st.numFrames() - 1;
-    // This needs to be in here because exceptions in general are bad
-    // when in the exception code. :)
-    // It can be safely removed once exception code is real.
-    if(lastIndex < 0) {
-    	return this;
-    }
-    StackFrame frame = st.frameAt(lastIndex);
-    while (Throwable.class.isAssignableFrom(frame.getCalledClass())
-	   && frame.getCalledMethod().equals("<init>")) {
-      // get rid of the throwable - constructor hierarchy, that is present
-      // on the stack if this is called from our init method.
-      st.pop();
-      lastIndex--;
-      frame = st.frameAt(lastIndex);
-    }
-    return this;
-  }
+  public native Throwable fillInStackTrace();
 
   /**
    * Serialize the object in a manner binary compatible with the JDK 1.2
