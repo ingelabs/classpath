@@ -3,6 +3,6 @@
 ^../java/net/JarURLConnection.java$
 ^../java/net/NetPermission.java$
 ^../java/net/SocketPermission.java$
-^../java/io/FilePermission$
+^../java/io/FilePermission.java$
 ^../java/io/SerializablePermission.java$
 ^../gnu/java/security/DefaultPermissionCollection.java$
