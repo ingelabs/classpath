@@ -76,7 +76,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void disable () 
     {
-      setEnable (false);
+      setEnabled (false);
     }
 
   public void dispose () 
@@ -86,7 +86,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void enable () 
     {
-      setEnable (true);
+      setEnabled (true);
     }
 
   public ColorModel getColorModel () 
@@ -208,10 +208,7 @@ public class GtkComponentPeer extends GtkGenericPeer
       gtkWidgetSetCursor (cursor.getType ());
     }
 
-  public void setEnabled (boolean b) 
-    {
-      System.out.println("componentpeer: setenabled");      
-    }
+  native public void setEnabled (boolean b);
 
   public void setFont (Font f) 
     {
