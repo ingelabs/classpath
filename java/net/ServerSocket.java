@@ -293,12 +293,7 @@ public class ServerSocket
     if (!isBound())
       return null;
     
-    InetAddress addr = getInetAddress();
-
-    if (addr != null)
-      return new InetSocketAddress (getInetAddress(), getLocalPort());
-
-    return null;
+    return new InetSocketAddress(getInetAddress(), getLocalPort());
   }
 
   /**
@@ -320,10 +315,9 @@ public class ServerSocket
     if (sm != null)
       sm.checkListen (impl.getLocalPort ());
 
-    Socket s = new Socket();
-    implAccept (s);
-
-    return s;
+    Socket socket = new Socket();
+    implAccept (socket);
+    return socket;
   }
 
   /**
@@ -339,7 +333,7 @@ public class ServerSocket
    *
    * @since 1.1
    */
-  protected final void implAccept (Socket s)
+  protected final void implAccept (Socket socket)
     throws IOException
   {
     if (isClosed())
@@ -349,7 +343,7 @@ public class ServerSocket
         && !getChannel().isBlocking())
       throw new IllegalBlockingModeException();
 	    
-    impl.accept(s.impl);
+    impl.accept(socket.getImpl());
   }
 
   /**
@@ -548,7 +542,10 @@ public class ServerSocket
     if (!isBound())
       return "ServerSocket[unbound]";
     
-    return "ServerSocket" + impl.toString();
+    return ("ServerSocket[addr=" + getInetAddress()
+	    + ",port=" + impl.getPort()
+	    + ",localport=" + impl.getLocalPort()
+	    + "]");
   }
 
   /**

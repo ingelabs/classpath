@@ -123,7 +123,7 @@ public class DatagramSocket
    */
   public DatagramSocket() throws SocketException
   {
-    this(0, null);
+    this(new InetSocketAddress(0));
   }
 
   /**
@@ -138,7 +138,7 @@ public class DatagramSocket
    */
   public DatagramSocket(int port) throws SocketException
   {
-    this(port, null);
+    this(new InetSocketAddress(port));
   }
 
   /**
@@ -266,6 +266,8 @@ public class DatagramSocket
   /**
    * Returns the local address this datagram socket is bound to.
    * 
+   * @return The local address is the socket is bound or null
+   *
    * @since 1.1
    */
   public InetAddress getLocalAddress()
@@ -683,6 +685,8 @@ public class DatagramSocket
   /**
    * Returns the datagram channel assoziated with this datagram socket.
    * 
+   * @return The associated <code>DatagramChannel</code> object or null
+   * 
    * @since 1.4
    */
   public DatagramChannel getChannel()
@@ -706,8 +710,7 @@ public class DatagramSocket
       throw new SocketException("socket is closed");
     
     if ( !(address instanceof InetSocketAddress) )
-      throw new IllegalArgumentException (
-		      "SocketAddress is not InetSocketAddress");
+      throw new IllegalArgumentException("unsupported address type");
 
     InetSocketAddress tmp = (InetSocketAddress) address;
     connect(tmp.getAddress(), tmp.getPort());
@@ -715,6 +718,8 @@ public class DatagramSocket
   
   /**
    * Returns the binding state of the socket.
+   * 
+   * @return True if socket bound, false otherwise.
    * 
    * @since 1.4
    */
@@ -725,6 +730,8 @@ public class DatagramSocket
 
   /**
    * Returns the connection state of the socket.
+   * 
+   * @return True if socket is connected, false otherwise.
    * 
    * @since 1.4
    */
@@ -737,6 +744,8 @@ public class DatagramSocket
    * Returns the SocketAddress of the host this socket is conneted to
    * or null if this socket is not connected.
    * 
+   * @return The socket address of the remote host if connected or null
+   * 
    * @since 1.4
    */
   public SocketAddress getRemoteSocketAddress()
@@ -748,8 +757,9 @@ public class DatagramSocket
   }
 
   /**
-   * Returns the local SocketAddress this socket is bound to
-   * or null if it is not bound.
+   * Returns the local SocketAddress this socket is bound to.
+   *
+   * @return The local SocketAddress or null if the socket is not bound.
    * 
    * @since 1.4
    */
@@ -781,6 +791,8 @@ public class DatagramSocket
   /**
    * Checks if SO_REUSEADDR is enabled.
    *
+   * @return True if SO_REUSEADDR is set on the socket, false otherwise.
+   *
    * @exception SocketException If an error occurs.
    * 
    * @since 1.4
@@ -801,23 +813,25 @@ public class DatagramSocket
   /**
    * Enables/Disables SO_BROADCAST
    * 
-   * @param on Whether or not to have SO_BROADCAST turned on
+   * @param enable True if SO_BROADCAST should be enabled, false otherwise.
    *
    * @exception SocketException If an error occurs
    *
    * @since 1.4
    */
-  public void setBroadcast(boolean on) throws SocketException
+  public void setBroadcast(boolean enable) throws SocketException
   {
     if (isClosed())
       throw new SocketException("socket is closed");
 
-    getImpl().setOption(SocketOptions.SO_BROADCAST, new Boolean(on));
+    getImpl().setOption(SocketOptions.SO_BROADCAST, new Boolean(enable));
   }
 
   /**
    * Checks if SO_BROADCAST is enabled
    * 
+   * @return Whether SO_BROADCAST is set
+   *
    * @exception SocketException If an error occurs
    * 
    * @since 1.4
@@ -862,6 +876,8 @@ public class DatagramSocket
   /**
    * Returns the current traffic class
    * 
+   * @return The current traffic class.
+   *
    * @see DatagramSocket#setTrafficClass(int tc)
    *
    * @exception SocketException If an error occurs

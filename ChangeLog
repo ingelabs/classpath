@@ -1,6 +1,45 @@
 2003-12-02  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/DatagramSocket.java
+	(DatagramSocket): Call other sister constructor.
+	(connect): Revised exception message.
+	(setBroadcast): Renamed on to enable.
+	(getLocalAddress): Completed documentation.
+	(getChannel): Likewise.
+	(isBound): Likewise.
+	(isConnected): Likewise.
+	(getRemoteSocketAddress): Likewise.
+	(getLocalSocketAddress): Likewise.
+	(getReuseAddress): Likewise.
+	(setBroadcast): Likewise.
+	(getTrafficClass): Likewise.
+	* java/net/ServerSocket.java
+	(getLocalSocketAddress): Simplified.
+	(accept): Renamed s to socket.
+	(implAccept): Likewise.
+	(toString): Made it compliant to SUNs JDK.
+	* java/net/Socket.java
+	(impl): Make private.
+	(getInetAddress): Check if socket is connected.
+	(getPort): Likewise.
+	(getInputStream): Likewise.
+	(getOutputStream): Likewise.
+	(getLocalPort): Check if socket is bound.
+	(shutdownOutput):
+	Readd accidently removed "getImpl().shutdownOutput()".
+	(connect): Completed documentation.
+	(getOOBInline): Likewise.
+	(getReuseAddress): Likewise.
+	(getTrafficClass): Likewise.
+	(isConnected): Likewise.
+	(isBound): Likewise.
+	(isClosed): Likewise.
+	(isInputShutdown): Likewise.
+	(isOutputShutdown): Likewise.
+
+2003-12-02  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/DatagramSocket.java
 	(impl): Made private.
 	(bound): New private member variable.
 	(DatagramSocket): Fixed documentation, use getImpl().

@@ -77,7 +77,7 @@ public class Socket
   /**
    * The implementation object to which calls are redirected
    */
-  SocketImpl impl;
+  private SocketImpl impl;
 
   /**
    * True if socket implementation was created by calling their create() method.
@@ -400,6 +400,8 @@ public class Socket
    * until established or an error occurs.
    *
    * @param endpoint The address to connect to
+   * @param timeout The length of the timeout in milliseconds, or 
+   * 0 to indicate no timeout.
    *
    * @exception IOException If an error occurs
    * @exception IllegalArgumentException If the address type is not supported
@@ -454,6 +456,9 @@ public class Socket
    */
   public InetAddress getInetAddress ()
   {
+    if (!isConnected())
+      return null;
+
     try
       {
 	return getImpl().getInetAddress();
@@ -510,6 +515,9 @@ public class Socket
    */
   public int getPort ()
   {
+    if (!isConnected())
+      return 0;
+
     try
       {
 	if (getImpl() != null)
@@ -531,6 +539,9 @@ public class Socket
    */
   public int getLocalPort ()
   {
+    if (!isBound())
+      return -1;
+    
     try
       {
 	if (getImpl() != null)
@@ -602,10 +613,10 @@ public class Socket
     if (isClosed())
       throw new SocketException("socket is closed");
     
-    if (impl != null)
-      return getImpl().getInputStream();
-
-    throw new IOException("Not connected");
+    if (!isConnected())
+      throw new IOException("not connected");
+	    
+    return getImpl().getInputStream();
   }
 
   /**
@@ -619,6 +630,9 @@ public class Socket
   {
     if (isClosed())
       throw new SocketException("socket is closed");
+    
+    if (!isConnected())
+      throw new IOException("not connected");
     
     return getImpl().getOutputStream();
   }
@@ -770,6 +784,8 @@ public class Socket
   /**
    * Returns the current setting of the SO_OOBINLINE option for this socket
    * 
+   * @return True if SO_OOBINLINE is set, false otherwise.
+   *
    * @exception SocketException If an error occurs
    * 
    * @since 1.4
@@ -1080,6 +1096,7 @@ public class Socket
     if (isClosed())
       throw new SocketException("socket is closed");
     
+    getImpl().shutdownOutput();
     outputShutdown = true;
   }
 
@@ -1097,6 +1114,8 @@ public class Socket
 
   /**
    * Checks if the SO_REUSEADDR option is enabled
+   *
+   * @return True if SO_REUSEADDR is set, false otherwise.
    *
    * @exception SocketException If an error occurs
    *
@@ -1118,6 +1137,8 @@ public class Socket
   /**
    * Enables/Disables the SO_REUSEADDR option
    *
+   * @param reuseAddress True if SO_REUSEADDR should be set.
+   * 
    * @exception SocketException If an error occurs
    *
    * @since 1.4
@@ -1130,6 +1151,8 @@ public class Socket
   /**
    * Returns the current traffic class
    *
+   * @return The current traffic class.
+   * 
    * @exception SocketException If an error occurs
    *
    * @see Socket#setTrafficClass(int tc)
@@ -1175,6 +1198,8 @@ public class Socket
   /**
    * Checks if the socket is connected
    *
+   * @return True if socket is connected, false otherwise.
+   *
    * @since 1.4
    */
   public boolean isConnected ()
@@ -1192,6 +1217,8 @@ public class Socket
   /**
    * Checks if the socket is already bound.
    *
+   * @return True if socket is bound, false otherwise.
+   *
    * @since 1.4
    */
   public boolean isBound ()
@@ -1202,6 +1229,8 @@ public class Socket
   /**
    * Checks if the socket is closed.
    * 
+   * @return True if socket is closed, false otherwise.
+   *
    * @since 1.4
    */
   public boolean isClosed ()
@@ -1212,6 +1241,8 @@ public class Socket
   /**
    * Checks if the socket's input stream is shutdown
    *
+   * @return True if input is shut down.
+   * 
    * @since 1.4
    */
   public boolean isInputShutdown ()
@@ -1222,6 +1253,8 @@ public class Socket
   /**
    * Checks if the socket's output stream is shutdown
    *
+   * @return True if output is shut down.
+   * 
    * @since 1.4
    */
   public boolean isOutputShutdown ()
