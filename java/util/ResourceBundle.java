@@ -23,7 +23,7 @@ import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
 
 /**
- * A resouce bundle contains locale-specific data.  If you need
+ * A resource bundle contains locale-specific data.  If you need
  * localized data, you can load a resource bundle that matches the
  * locale with <code>getBundle</code>.  Now you can get your object by
  * calling <code>getObject</code> or <code>getString</code> on that
@@ -42,9 +42,10 @@ import java.lang.ref.SoftReference;
  * baseName_<i>def. language code</i>
  * baseName
  * </pre>
- * The bundle is backed up by the bundles appearing below in the above
- * list.  That means, that if a resource if missing in the bundle,
- * the back up bundles are searched for the resource.
+ *
+ * A bundle is backed up, by less specific bundle (omiting variant,
+ * country or language). But it is not backed up by the default
+ * language locale.
  * <br>
  * If you provide a bundle for a given locale, say
  * <code>Bundle_en_UK_POSIX</code>, you must also provide a bundle for
@@ -62,8 +63,7 @@ import java.lang.ref.SoftReference;
  *
  * @see Locale
  * @see PropertyResourceBundle
- * @author Jochen Hoenicke
- */
+ * @author Jochen Hoenicke */
 public abstract class ResourceBundle {
   /**
    * The parent bundle.  This is consulted when you call getObject
@@ -187,11 +187,12 @@ public abstract class ResourceBundle {
   }
   
   /**
-   * The resource bundle cache.  The key is the localized name,
-   * the values are soft references to the resource bundle.
-   */
+   * The resource bundle cache.  This is a two-level hash map: The key
+   * is the class loader, the value is a new HashMap.  The key of this
+   * second hash map is the localized name, the value is a soft
+   * references to the resource bundle.  */
   private static Map resourceBundleCache = new HashMap();
-  
+
   /**
    * Tries to load a class or a property file with the specified name.
    * @param name the name.
@@ -201,18 +202,16 @@ public abstract class ResourceBundle {
    * @return the resource bundle if that could be loaded, otherwise 
    * <code>bundle</code>.
    */
-  private static final ResourceBundle tryBundle(String name, 
+  private static final ResourceBundle tryBundle(String localizedName, 
 						Locale locale,
 						ClassLoader classloader,
-						ResourceBundle bundle)
+						ResourceBundle bundle,
+						HashMap cache)
   {
-    if (locale.toString().length() > 0)
-      name += "_" + locale.toString();
-    
     {
       // First look into the cache.
       // XXX We should remove cleared references from the cache.
-      Reference ref = (Reference) resourceBundleCache.get(name);
+      Reference ref = (Reference) cache.get(localizedName);
       if (ref != null)
 	{
 	  ResourceBundle rb = (ResourceBundle) ref.get();
@@ -228,10 +227,10 @@ public abstract class ResourceBundle {
 	java.io.InputStream is; 
 	if (classloader == null)
 	  is = ClassLoader.getSystemResourceAsStream
-	    (name.replace('.','/') + ".properties");
+	    (localizedName.replace('.','/') + ".properties");
 	else
 	  is = classloader.getResourceAsStream
-	    (name.replace('.','/') + ".properties");
+	    (localizedName.replace('.','/') + ".properties");
 	if (is != null) {
 	  ResourceBundle rb = new PropertyResourceBundle(is);
 	  rb.parent = bundle;
@@ -247,9 +246,9 @@ public abstract class ResourceBundle {
       {
 	Class rbClass;
 	if (classloader == null)
-	  rbClass = Class.forName(name);
+	  rbClass = Class.forName(localizedName);
 	else
-	  rbClass = classloader.loadClass(name);
+	  rbClass = classloader.loadClass(localizedName);
 	ResourceBundle rb = (ResourceBundle) rbClass.newInstance();
 	rb.parent = bundle;
 	rb.locale = locale;
@@ -265,8 +264,52 @@ public abstract class ResourceBundle {
 
     // Put the bundle in the cache
     if (bundle != null)
-      resourceBundleCache.put(name, new SoftReference(bundle));
+      cache.put(localizedName, new SoftReference(bundle));
     
+    return bundle;
+  }
+
+  /**
+   * Tries to load a the bundle for a given locale, also loads the backup
+   * locales with the same language.
+   *
+   * @param name the name.
+   * @param locale the locale, that must be used exactly.
+   * @param classloader the classloader.
+   * @param bundle the back up (parent) bundle
+   * @return the resource bundle if that could be loaded, otherwise 
+   * <code>bundle</code>.
+   */
+  private static final ResourceBundle tryLocalBundle(String baseName, 
+						     Locale locale,
+						     ClassLoader classloader,
+						     ResourceBundle bundle,
+						     HashMap cache) 
+  {
+    if (locale.getLanguage().length() > 0) 
+      {
+	String name = baseName + "_" + locale.getLanguage();
+	
+	if (locale.getCountry().length() != 0)
+	  {
+	    bundle = tryBundle(name, 
+			       new Locale(locale.getLanguage(),""), 
+			       classloader, bundle, cache);
+
+	    name += "_" + locale.getCountry();
+	    
+	    if (locale.getVariant().length() != 0)
+	      {
+		bundle = tryBundle(name, 
+				   new Locale(locale.getLanguage(),
+					      locale.getCountry()), 
+				   classloader, bundle, cache);
+		
+		name += "_" + locale.getVariant();
+	      }
+	  }
+	bundle = tryBundle(name, locale, classloader, bundle, cache);
+      }
     return bundle;
   }
   
@@ -283,69 +326,50 @@ public abstract class ResourceBundle {
    */
   public static final ResourceBundle getBundle(String baseName, 
 					       Locale locale,
-					       ClassLoader classloader) 
+					       ClassLoader classLoader) 
        throws MissingResourceException
   {
     // This implementation searches the bundle in the reverse direction
     // and builds the parent chain on the fly.
     
-    ResourceBundle bundle = tryBundle(baseName, new Locale("",""),
-				      classloader, null);
-    if (bundle == null)
+    HashMap cache = (HashMap) resourceBundleCache.get(classLoader);
+    if (cache == null) 
+      {
+	cache = new HashMap();
+	resourceBundleCache.put(classLoader, cache);
+      }
+    else
+      {
+	// Fast path: If baseName + "_" + locale is in cache use it.
+	String name = baseName + "_" + locale.toString();
+	Reference ref = (Reference) cache.get(name);
+	if (ref != null)
+	  {
+	    ResourceBundle rb = (ResourceBundle) ref.get();
+	    if (rb != null)
+	      // rb should already have the right parent, except if
+	      // something very strange happened.
+	      return rb;
+	  }
+      }
+    
+    ResourceBundle baseBundle = tryBundle(baseName, new Locale("",""),
+					  classLoader, null, cache);
+    if (baseBundle == null)
       // JDK says, that if one provides a bundle base_en_UK, one
       // must also provide the bundles base_en and base.
       // This implies that if there is no bundle for base, there
       // is no bundle at all.
       throw new MissingResourceException
 	("Bundle not found", baseName, "");
-    
-    // Now use the defaultLocale.
-    Locale myLocale = Locale.getDefault();
-    if (myLocale.getLanguage().length() != 0)
-      {
-	bundle = tryBundle(baseName, 
-			   new Locale(myLocale.getLanguage(),""), 
-			   classloader, bundle);
-	
-	if (myLocale.getCountry().length() != 0)
-	  {
-	    bundle = tryBundle(baseName, 
-			       new Locale(myLocale.getLanguage(),
-					  myLocale.getCountry()), 
-			       classloader, bundle);
-	    
-	    if (myLocale.getVariant().length() != 0)
-	      {
-		bundle = tryBundle(baseName, myLocale,
-				   classloader, bundle);
-	      }
-	  }
-      }
-    if (myLocale.equals(locale))
-      return bundle;
-    
-    // Last but not least use the desired locale.
-    myLocale = locale;
-    if (myLocale.getLanguage().length() != 0)
-      {
-	bundle = tryBundle(baseName, 
-			   new Locale(myLocale.getLanguage(),""), 
-			   classloader, bundle);
-	
-	if (myLocale.getCountry().length() != 0)
-	  {
-	    bundle = tryBundle(baseName, 
-			       new Locale(myLocale.getLanguage(),
-					  myLocale.getCountry()), 
-			       classloader, bundle);
-	    
-	    if (myLocale.getVariant().length() != 0)
-	      {
-		bundle = tryBundle(baseName, myLocale,
-				   classloader, bundle);
-	      }
-	  }
-      }
+
+    // Now use the default locale.
+    ResourceBundle bundle = tryLocalBundle(baseName, locale, 
+					   classLoader, baseBundle, cache);
+    if (bundle == baseBundle && !locale.equals(Locale.getDefault())) {
+      bundle = tryLocalBundle(baseName, Locale.getDefault(), 
+			      classLoader, baseBundle, cache);
+    }
     return bundle;
   }
 
