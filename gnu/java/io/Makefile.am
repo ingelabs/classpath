@@ -3,6 +3,8 @@
 SUBDIRS = decode encode
 
 EXTRA_DIST = \
+ASN1ParsingException.java \
+Base64InputStream.java \
 ClassLoaderObjectInputStream.java \
 EncodingManager.java \
 NullOutputStream.java \
