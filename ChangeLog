@@ -1,3 +1,7 @@
+2004-07-07  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* include/jni.h: Fixed compilation in C++ mode.
+
 2004-07-07  Steven Augart  <augart@watson.ibm.com>
 
 	* gnu/java/awt/peer/gtk/GtkMainThread.java (run): Pass the value of 
