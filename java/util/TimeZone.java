@@ -884,7 +884,7 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable
 	// Offset could be in hours or seconds.  Convert to millis.
 	// The offset is given as the time to add to local time to get GMT
 	// we need the time to add to GMT to get localtime.
-	if (gmtOffset < 24)
+	if (Math.abs(gmtOffset) < 24)
 	  gmtOffset *= 60 * 60;
 	gmtOffset *= -1000;
       }

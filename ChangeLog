@@ -1,3 +1,9 @@
+2004-09-07  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/util/TimeZone.java
+	(getDefaultTimeZone): Fixed test to distinguish between hours and
+	minutes in specified timezone.
+
 2004-09-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/awt/Canvas.java
