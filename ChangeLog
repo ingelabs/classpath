@@ -20,6 +20,14 @@
 	* java/awt/Stroke.java: New file.
 	* java/awt/Transparency.java: Update to 1.4.
 
+2002-03-19  Sascha Brawer  <brawer@acm.org>
+
+	* java/awt/AWTEvent.java: Add constant field values to match J2SE
+	1.4 javadoc.
+	* java/awt/BorderLayout.java: Add constant field values in order
+	to match J2SE 1.4 javadoc.  Nicer documentation strings for some
+	constant field values.  Add @since tags to mark 1.2 and 1.4 fields.
+
 2002-03-19  Stephen Crawley  <crawley@dstc.edu.au>
 
 	* java/lang/String.java (regionMatches): Used wrong String, see
