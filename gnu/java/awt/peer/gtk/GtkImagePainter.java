@@ -1,4 +1,21 @@
-package gnu.java.awt.peer.gtk;
+/* GtkImagePainter.java
+   Copyright (C) 1999 Free Software Foundation, Inc.
+
+This file is part of the peer AWT libraries of GNU Classpath.
+
+This library is free software; you can redistribute it and/or modify
+it under the terms of the GNU Library General Public License as published 
+by the Free Software Foundation, either version 2 of the License, or
+(at your option) any later verion.
+
+This library is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Library General Public License for more details.
+
+You should have received a copy of the GNU Library General Public License
+along with this library; if not, write to the Free Software Foundation
+Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA. */
 
 import java.awt.*;
 import java.awt.image.*;
@@ -79,7 +96,7 @@ public class GtkImagePainter implements Runnable, ImageConsumer
   static int[] 
   convertPixels (int[] pixels, ColorModel model)
   {
-    if (model instanceof DirectColorModel)
+    if (model.equals (ColorModel.getRGBdefault ()))
       return pixels;
     
     int ret[] = new int[pixels.length];
@@ -95,16 +112,8 @@ public class GtkImagePainter implements Runnable, ImageConsumer
   {
     int ret[] = new int[pixels.length];
 
-    if (model instanceof DirectColorModel)
-      {
-	for (int i = 0; i < pixels.length; i++)
-	  ret[i] = pixels[i];
-      }
-    else
-      {
-	for (int i = 0; i < pixels.length; i++)
-	  ret[i] = model.getRGB (pixels[i]);
-      }
+    for (int i = 0; i < pixels.length; i++)
+      ret[i] = model.getRGB (pixels[i]);
 
     return ret;
   }

@@ -1,23 +1,22 @@
-/*
- * GtkComponentPeer.java -- Implements ComponentPeer with GTK
- *
- * Copyright (c) 1998 Free Software Foundation, Inc.
- * Written by James E. Blair <corvus@gnu.org>
- *
- * This library is free software; you can redistribute it and/or modify
- * it under the terms of the GNU Library General Public License as published 
- * by the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later verion.
- *
- * This library is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Library General Public License for more details.
- *
- * You should have received a copy of the GNU Library General Public License
- * along with this library; if not, write to the Free Software Foundation
- * Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
- */
+/* GtkComponentPeer.java -- Implements ComponentPeer with GTK
+   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+
+This file is part of the peer AWT libraries of GNU Classpath.
+
+This library is free software; you can redistribute it and/or modify
+it under the terms of the GNU Library General Public License as published 
+by the Free Software Foundation, either version 2 of the License, or
+(at your option) any later verion.
+
+This library is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Library General Public License for more details.
+
+You should have received a copy of the GNU Library General Public License
+along with this library; if not, write to the Free Software Foundation
+Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA. */
+
 
 package gnu.java.awt.peer.gtk;
 import java.awt.*;
@@ -80,7 +79,8 @@ public class GtkComponentPeer extends GtkGenericPeer
   public int checkImage (Image image, int width, int height, 
 			 ImageObserver observer) 
   {
-    return 0;
+    GtkImage i = (GtkImage) image;
+    return i.checkImage ();
   }
 
   public Image createImage (ImageProducer producer) 
@@ -178,6 +178,29 @@ public class GtkComponentPeer extends GtkGenericPeer
   public boolean prepareImage (Image image, int width, int height,
 			       ImageObserver observer) 
   {
+    GtkImage i = (GtkImage) image;
+
+    if (i.isLoaded ()) return true;
+
+    class PrepareImage extends Thread
+    {
+      GtkImage image;
+      ImageObserver observer;
+
+      PrepareImage (GtkImage image, ImageObserver observer)
+      {
+	this.image = image;
+	this.observer = observer;
+      }
+      
+      public void run ()
+      {
+	// XXX: need to return data to image observer
+	image.source.startProduction (null);
+      }
+    }
+
+    new PrepareImage (i, observer).start ();
     return false;
   }
 
@@ -302,7 +325,17 @@ public class GtkComponentPeer extends GtkGenericPeer
   {
     args.add ("visible", component.isVisible ());
     args.add ("sensitive", component.isEnabled ());
-    args.add ("parent", component.getParent ().getPeer ());
+
+    ComponentPeer p;
+
+    do
+      {
+	component = component.getParent ();
+	System.out.println ("COMPONPEER: " + component);
+	p = component.getPeer ();
+      } while (p instanceof java.awt.peer.LightweightPeer);
+    
+    args.add ("parent", p);
   }
 
   native void set (String name, String value);

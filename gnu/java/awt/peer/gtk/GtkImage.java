@@ -1,3 +1,23 @@
+/* GtkImage.java
+   Copyright (C) 1999 Free Software Foundation, Inc.
+
+This file is part of the peer AWT libraries of GNU Classpath.
+
+This library is free software; you can redistribute it and/or modify
+it under the terms of the GNU Library General Public License as published 
+by the Free Software Foundation, either version 2 of the License, or
+(at your option) any later verion.
+
+This library is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Library General Public License for more details.
+
+You should have received a copy of the GNU Library General Public License
+along with this library; if not, write to the Free Software Foundation
+Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA. */
+
+
 package gnu.java.awt.peer.gtk;
 
 import java.awt.*;
@@ -10,6 +30,7 @@ public class GtkImage extends Image implements ImageConsumer
   Hashtable props = null;
   boolean isLoaded = false;
   boolean isCacheable = true;
+  boolean loading = false;
 
   Vector widthObservers = new Vector ();
   Vector heightObservers = new Vector ();
@@ -165,6 +186,8 @@ public class GtkImage extends Image implements ImageConsumer
   setPixels (int x, int y, int width, int height, ColorModel cm, int[] pixels,
 	     int offset, int scansize)
   {
+    loading = true;
+
     if (!isCacheable)
       return;
 
@@ -225,5 +248,24 @@ public class GtkImage extends Image implements ImageConsumer
       ret[i] = pixels[i];
     
     return ret;
+  }
+
+  synchronized int 
+  checkImage ()
+  {
+    int bits = 0;
+
+    if (width != -1)
+      bits |= ImageObserver.WIDTH;
+    if (height != -1)
+      bits |= ImageObserver.HEIGHT;
+    if (props != null)
+      bits |= ImageObserver.PROPERTIES;
+    if (loading)
+      bits |= ImageObserver.SOMEBITS;
+    if (isLoaded)
+      bits |= ImageObserver.ALLBITS;
+
+    return bits;
   }
 }

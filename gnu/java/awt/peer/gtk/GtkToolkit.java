@@ -1,23 +1,23 @@
-/*
- * GtkToolkit.java -- Implements an AWT Toolkit using GTK for peers
- *
- * Copyright (c) 1998 Free Software Foundation, Inc.
- * Written by James E. Blair <corvus@gnu.org>
- *
- * This library is free software; you can redistribute it and/or modify
- * it under the terms of the GNU Library General Public License as published 
- * by the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later verion.
- *
- * This library is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Library General Public License for more details.
- *
- * You should have received a copy of the GNU Library General Public License
- * along with this library; if not, write to the Free Software Foundation
- * Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
- */
+/* GtkToolkit.java -- Implements an AWT Toolkit using GTK for peers
+   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+
+This file is part of the peer AWT libraries of GNU Classpath.
+
+This library is free software; you can redistribute it and/or modify
+it under the terms of the GNU Library General Public License as published 
+by the Free Software Foundation, either version 2 of the License, or
+(at your option) any later verion.
+
+This library is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Library General Public License for more details.
+
+You should have received a copy of the GNU Library General Public License
+along with this library; if not, write to the Free Software Foundation
+Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA. */
+
+
 package gnu.java.awt.peer.gtk;
 import java.awt.*;
 import java.net.*;
@@ -27,6 +27,7 @@ import java.util.MissingResourceException;
 import java.awt.datatransfer.*;
 import java.awt.image.*;
 import java.awt.peer.*;
+import gnu.java.awt.image.*;
 
 /* This class uses a deprecated method java.awt.peer.ComponentPeer.getPeer().
    This merits comment.  We are basically calling Sun's bluff on this one.
@@ -61,7 +62,10 @@ public class GtkToolkit extends java.awt.Toolkit
   public int checkImage (Image image, int width, int height, 
 			 ImageObserver observer) 
   {
-    return 0;
+    return ImageObserver.ALLBITS;
+
+//      GtkImage i = (GtkImage) image;
+//      return i.checkImage ();
   }
 
   public Image createImage (ImageProducer producer) 
@@ -72,12 +76,13 @@ public class GtkToolkit extends java.awt.Toolkit
   public Image createImage (byte[] imagedata, int imageoffset,
 			    int imagelength) 
   {
+    System.out.println ("createImage byte[] NOT SUPPORTED");
     return null;
   }
 
   public ColorModel getColorModel () 
   {
-    return null;
+    return ColorModel.getRGBdefault ();
   }
 
   public String[] getFontList () 
@@ -96,12 +101,12 @@ public class GtkToolkit extends java.awt.Toolkit
 
   public Image getImage (String filename) 
   {
-    return null;
+    return new GtkImage (new GdkPixbufDecoder (filename), null);
   }
 
   public Image getImage (URL url) 
   {
-    return null;
+    return new GtkImage (new GdkPixbufDecoder (url), null);
   }
 
   public PrintJob getPrintJob (Frame frame, String jobtitle, Properties props) 
