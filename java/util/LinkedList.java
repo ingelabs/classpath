@@ -246,8 +246,7 @@ public class LinkedList extends AbstractSequentialList
 
       // New for 1.2RC1 - the semantics changed so that the iterator is
       // positioned *after* the new element.
-      previous = next;
-      next = previous.next;
+      previous = previous.next;
       pos++;
 
       size++;
@@ -444,7 +443,8 @@ public class LinkedList extends AbstractSequentialList
       throw new IndexOutOfBoundsException();
     }
 
-    return new SubLinkedList(back, getEntry(fromIndex - 1, size, ends, ends),
+    return new SubLinkedList(back, modCount,
+			     getEntry(fromIndex - 1, size, ends, ends),
 			     getEntry(toIndex, size, ends, ends),
 			     toIndex - fromIndex);
   }
@@ -473,7 +473,8 @@ public class LinkedList extends AbstractSequentialList
       }
     };
 
-    SubLinkedList(Backing backing, Entry h, Entry t, int s) {
+    SubLinkedList(Backing backing, int knownMod, Entry h, Entry t, int s) {
+      this.modCount = knownMod;
       b = backing;
       head = h;
       tail = t;
@@ -517,7 +518,8 @@ public class LinkedList extends AbstractSequentialList
 	throw new IndexOutOfBoundsException();
       }
 
-      return new SubLinkedList(back, getEntry(fromIndex - 1, size, head, tail),
+      return new SubLinkedList(back, this.modCount,
+			       getEntry(fromIndex - 1, size, head, tail),
 			       getEntry(toIndex, size, head, tail),
 			       toIndex - fromIndex);
     }
