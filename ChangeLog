@@ -1,3 +1,8 @@
+2003-11-21  Jeroen Frijters  <jeroen@frijters.net>
+	* vm/reference/java/lang/Runtime.java (exit): Fixed bug introduced
+	earlier today that caused exit() calls during finalization for exit
+	to get lost.
+
 2003-11-21  Mark Wielaard  <mark@klomp.org>
 
 	* configure.in: Depend on gtk+ 2.2.x.
