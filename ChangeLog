@@ -4,6 +4,7 @@
 	verbage
 	* HACKING: warning that autoreconf does not always do what might
 	be expected
+	* configure.in: version set back to 0.03
 
 2002-02-09  C. Brian Jones <cbj@gnu.org>
 
