@@ -96,10 +96,10 @@ private int pos;
   *
   * @return The primary order value of the specified collation value.  This is the high 16 bits.
   */
-public static final int
-primaryOrder(int value)
+public static final int primaryOrder (int order)
 {
-  return((int)((value & 0xFFFF0000L) >> 16));
+  // From the JDK 1.2 spec.
+  return order >>> 16;
 }
 
 /*************************************************************************/
@@ -112,10 +112,10 @@ primaryOrder(int value)
   *
   * @return The secondary order value of the specified collation value.  This is the bits 8-15.
   */
-public static final int
-secondaryOrder(int value)
+public static final short secondaryOrder (int order)
 {
-  return((value & 0xFF00) >> 8);
+  // From the JDK 1.2 spec.
+  return (short) ((order >>> 8) & 255);
 }
 
 /*************************************************************************/
@@ -128,10 +128,10 @@ secondaryOrder(int value)
   *
   * @return The tertiary order value of the specified collation value.  This is the low eight bits.
   */
-public static final int
-tertiaryOrder(int value)
+public static final short tertiaryOrder (int order)
 {
-  return(value & 0xFF);
+  // From the JDK 1.2 spec.
+  return (short) (order & 255);
 }
 
 /*************************************************************************/
