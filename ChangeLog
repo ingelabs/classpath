@@ -1,5 +1,8 @@
 2004-11-08  Tom Tromey  <tromey@redhat.com>
 
+	* java/util/GregorianCalendar.java: Removed unused imports.
+	* java/util/Vector.java: Removed unused import.
+
 	* java/io/PrintStream.java (ForwardStream): New constructor.
 
 2004-11-08  Robert Schuster <thebohemian@gmx.net>
