@@ -21,6 +21,7 @@ package java.io;
 
 import gnu.java.lang.reflect.TypeSignature;
 
+// XXX doc
 public class ObjectStreamField implements Comparable
 {
   public ObjectStreamField( String name, Class type )
@@ -29,21 +30,6 @@ public class ObjectStreamField implements Comparable
     this.type = type;
   }
   
-  public int compareTo( Object o )
-  {
-    ObjectStreamField f = (ObjectStreamField)o;
-    boolean this_is_primitive = isPrimitive();
-    boolean f_is_primitive = f.isPrimitive();
-    
-    if( this_is_primitive && !f_is_primitive )
-      return -1;
-
-    if( !this_is_primitive && f_is_primitive )
-      return 1;
-
-    return getName().compareTo( f.getName() );
-  }
-
   public String getName()
   {
     return name;
@@ -64,11 +50,36 @@ public class ObjectStreamField implements Comparable
     return TypeSignature.getEncodingOfClass( this.type );
   }
   
+  public int getOffset()
+  {
+    return offset;
+  }
+  
+  protected void setOffset( int off )
+  {
+    offset = off;
+  }
+
   public boolean isPrimitive()
   {
     return this.type.isPrimitive();
   }
   
+  public int compareTo( Object o )
+  {
+    ObjectStreamField f = (ObjectStreamField)o;
+    boolean this_is_primitive = isPrimitive();
+    boolean f_is_primitive = f.isPrimitive();
+    
+    if( this_is_primitive && !f_is_primitive )
+      return -1;
+
+    if( !this_is_primitive && f_is_primitive )
+      return 1;
+
+    return getName().compareTo( f.getName() );
+  }
+
   public String toString()
   {
     return "ObjectStreamField< " + this.type + " " + this.name + " >";
@@ -76,4 +87,5 @@ public class ObjectStreamField implements Comparable
 
   private String name;
   private Class type;
+  private int offset = -1; // XXX make sure this is correct
 }

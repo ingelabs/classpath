@@ -221,7 +221,7 @@ public class ObjectOutputStream extends OutputStream
 	  myRealOutput.writeByte( TC_ENDBLOCKDATA );
 
 	  if( osc.isSerializable() )
-	    writeObject(ObjectStreamClass.lookup(osc.forClass().getSuperclass()));
+	    writeObject( osc.getSuper() );
 	  else
 	    writeObject( null );
 	  break;
@@ -368,7 +368,7 @@ public class ObjectOutputStream extends OutputStream
      @exception IOException Exception from underlying
      <code>OutputStream</code>.
   */
-  public final void defaultWriteObject()
+  public void defaultWriteObject()
     throws IOException, NotActiveException
   {
     if( myCurrentObject == null || myCurrentObjectStreamClass == null )
@@ -508,7 +508,7 @@ public class ObjectOutputStream extends OutputStream
 
      @exception SecurityException This class is not trusted.
   */
-  protected final boolean enableReplaceObject( boolean enable )
+  protected boolean enableReplaceObject( boolean enable )
     throws SecurityException
   {
     if( enable )
@@ -763,6 +763,98 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
+  /**
+     This class allows a class to specify exactly which fields should
+     be written, and what values should be written for these fields.
+     
+     XXX: finish up comments
+  */
+  public static abstract class PutField
+  {
+    public abstract void put( String name, boolean value )
+      throws IOException, IllegalArgumentException;
+    public abstract void put( String name, byte value )
+      throws IOException, IllegalArgumentException;
+    public abstract void put( String name, char value )
+      throws IOException, IllegalArgumentException;
+    public abstract void put( String name, double value )
+      throws IOException, IllegalArgumentException;
+    public abstract void put( String name, float value )
+      throws IOException, IllegalArgumentException;
+    public abstract void put( String name, int value )
+      throws IOException, IllegalArgumentException;
+    public abstract void put( String name, long value )
+      throws IOException, IllegalArgumentException;
+    public abstract void put( String name, short value )
+      throws IOException, IllegalArgumentException;
+    public abstract void put( String name, Object value )
+      throws IOException, IllegalArgumentException;
+    public abstract void write( ObjectOutput out ) throws IOException;
+  }
+  
+  public PutField putFields() throws IOException
+  {
+    if( true )
+      throw new RuntimeException( "putFields() not implemented!" );
+
+    // XXX finish
+    return new PutField()
+    {
+      public void put( String name, boolean value )
+	throws IOException, IllegalArgumentException
+      {
+      }
+
+      public void put( String name, byte value )
+	throws IOException, IllegalArgumentException
+      {
+      }
+
+      public void put( String name, char value )
+	throws IOException, IllegalArgumentException
+      {
+      }
+
+      public void put( String name, double value )
+	throws IOException, IllegalArgumentException
+      {
+      }
+
+      public void put( String name, float value )
+	throws IOException, IllegalArgumentException
+      {
+      }
+
+      public void put( String name, int value )
+	throws IOException, IllegalArgumentException
+      {
+      }
+
+      public void put( String name, long value )
+	throws IOException, IllegalArgumentException
+      {
+      }
+
+      public void put( String name, short value )
+	throws IOException, IllegalArgumentException
+      {
+      }
+
+      public void put( String name, Object value )
+	throws IOException, IllegalArgumentException
+      {
+      }
+
+      public void write( ObjectOutput out ) throws IOException
+      {
+      }
+
+      private byte[] data;
+      private Object[] objs;
+    };
+  }
+  
+
   // write out the block-data buffer, picking the correct header
   // depending on the size of the buffer
   private void writeBlockDataHeader( int size ) throws IOException
@@ -889,11 +981,12 @@ public class ObjectOutputStream extends OutputStream
   // writes out FIELDS of OBJECT.  If CALL_WRITE_METHOD is true, use
   // object's writeObject(ObjectOutputStream), otherwise use default
   // serialization.  FIELDS are already in canonical order.
-  private void writeFields( Object obj, ObjectStreamField[] fields, boolean call_write_method )
-    throws IOException
-  {
+  private void writeFields( Object obj, 
+			    ObjectStreamField[] fields, 
+			    boolean call_write_method ) throws IOException
+  { 
     if( call_write_method )
-    {
+    { 
       setBlockDataMode( true );
       callWriteMethod( obj );
       setBlockDataMode( false );

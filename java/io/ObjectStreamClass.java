@@ -31,9 +31,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Hashtable;
-import java.util.Vector;
-
-import gnu.java.io.NullOutputStream;
+import java.util.Vector;import gnu.java.io.NullOutputStream;
 import gnu.java.lang.reflect.TypeSignature;
 
 public class ObjectStreamClass implements Serializable
@@ -106,6 +104,30 @@ public class ObjectStreamClass implements Serializable
   }
   
 
+  // Returns the serializable (non-static and non-transient) Fields
+  // of the class represented by this ObjectStreamClass.  The Fields
+  // are sorted by name.
+  // XXX doc
+  public ObjectStreamField[] getFields()
+  {
+    ObjectStreamField[] copy = new ObjectStreamField[ myFields.length ];
+    System.arraycopy( myFields, 0, copy, 0, myFields.length );
+    return copy;
+  }
+
+
+  // XXX doc
+  // Can't do binary search since myFields is sorted by name and
+  // primitiveness.
+  public ObjectStreamField getField( String name )
+  {
+    for( int i=0; i < myFields.length; i++ )
+      if( myFields[i].getName().equals( name ) )
+	return myFields[i];
+    return null;
+  }
+  
+  
   /**
      Returns a textual representation of this
      <code>ObjectStreamClass</code> object including the name of the
@@ -121,52 +143,30 @@ public class ObjectStreamClass implements Serializable
   }
 
 
-  /**
-     <em>GNU $classpath specific</em>
-
-     Returns true iff the class that this
-     <code>ObjectStreamClass</code> represents has the following
-     method:
-     
-     <code>private void writeObject( ObjectOutputStream )</code>
-     
-     This method is used by the class to override default
-     serialization behaivior.  See Javasoft's "Object Serialization
-     Specification" TODO: add reference for more details.
-  */
-  public boolean hasWriteMethod()
+  // Returns true iff the class that this ObjectStreamClass represents
+  // has the following method:
+  //
+  // private void writeObject( ObjectOutputStream )
+  //
+  // This method is used by the class to override default
+  // serialization behaivior.
+  boolean hasWriteMethod()
   {
     return (myFlags & ObjectStreamConstants.SC_WRITE_METHOD) != 0;
   }
   
 
-  /**
-     <em>GNU $classpath specific</em>
-
-     Returns true iff the class that this
-     <code>ObjectStreamClass</code> represents implements
-     <code>Serializable</code> but does <em>not</em> implement
-     <code>Externalizable</code>.
-     
-     @see java.io.Externalizable
-     @see java.io.Serializable
-  */
-  public boolean isSerializable()
+  // Returns true iff the class that this ObjectStreamClass represents
+  // implements Serializable but does *not* implement Externalizable.
+  boolean isSerializable()
   {
     return (myFlags & ObjectStreamConstants.SC_SERIALIZABLE) != 0;
   }
   
 
-  /**
-     <em>GNU $classpath specific</em>
-
-     Returns true iff the class that this
-     <code>ObjectStreamClass</code> represents implements
-     <code>Externalizable</code>.
-     
-     @see java.io.Externalizable
-  */
-  public boolean isExternalizable()
+  // Returns true iff the class that this ObjectStreamClass represents
+  // implements Externalizable.
+  boolean isExternalizable()
   {
     return (myFlags & ObjectStreamConstants.SC_EXTERNALIZABLE) != 0;
   }
@@ -225,15 +225,6 @@ public class ObjectStreamClass implements Serializable
   }
 
 
-  // Returns the serializable (non-static and non-transient) Field's
-  // of the class represented by this ObjectStreamClass.  The Field's
-  // are sorted by name.
-  ObjectStreamField[] getFields()
-  {
-    return myFields;
-  }
-  
-  
   ObjectStreamClass( String name, long uid, byte flags,
 		     ObjectStreamField[] fields )
   {
@@ -253,6 +244,45 @@ public class ObjectStreamClass implements Serializable
   void setSuperclass( ObjectStreamClass osc )
   {
     mySuper = osc;
+  }
+  
+
+  void calculateOffsets()
+  {     
+    int i;
+    ObjectStreamField field;
+    myDataFieldSize = 0;
+    for( i=0; true; i++ )
+    {
+      field = myFields[i];
+
+      if( ! field.isPrimitive() )
+	break;
+
+      field.setOffset( myDataFieldSize );
+      switch( field.getTypeCode() )
+      {
+	case 'B':
+	case 'Z':
+	  myDataFieldSize++;
+	  break;
+	case 'C':
+	case 'S':
+	  myDataFieldSize += 2;
+	  break;
+	case 'I':
+	case 'F':
+	  myDataFieldSize += 4;
+	  break;
+	case 'D':
+	case 'J':
+	  myDataFieldSize += 8;
+	  break;
+      }
+    }
+
+    for( myObjectFieldCount = 0; i < myFields.length; i++ )
+      myFields[i].setOffset( myObjectFieldCount++ );
   }
   
   
@@ -281,7 +311,7 @@ public class ObjectStreamClass implements Serializable
 
     try
     {
-      Method writeMethod = cl.getDeclaredMethod( ourWriteMethodName,
+      Method writeMethod = cl.getDeclaredMethod( "writeObject",
 						 ourWriteMethodArgTypes );
       int modifiers = writeMethod.getModifiers();
 
@@ -301,9 +331,28 @@ public class ObjectStreamClass implements Serializable
   {
     if( ! isSerializable() || isExternalizable() )
     {
-      myFields = ourEmptyFields;
+      myFields = NO_FIELDS;
       return;
     }
+
+    try
+    {
+      Field serialPersistantFields
+	= cl.getDeclaredField( "serialPersistantFields" );
+      int modifiers = serialPersistantFields.getModifiers();
+
+      if( Modifier.isStatic( modifiers )
+	  && Modifier.isFinal( modifiers )
+	  && Modifier.isPrivate( modifiers ) )
+      {
+	myFields = getSerialPersistantFields( cl );
+	Arrays.sort( myFields );
+	calculateOffsets();
+	return;
+      }
+    }
+    catch( NoSuchFieldException ignore )
+    {}    
 
     int num_good_fields = 0;
     Field[] all_fields = cl.getDeclaredFields();
@@ -331,8 +380,8 @@ public class ObjectStreamClass implements Serializable
       }
 
     Arrays.sort( myFields );
+    calculateOffsets();
   }
-  
 
   // Sets myUID be serial version UID defined by class, or if that
   // isn't present, calculates value of serial version UID.
@@ -340,7 +389,7 @@ public class ObjectStreamClass implements Serializable
   {
     try
     {
-      Field suid = cl.getDeclaredField( ourSUIDFieldName );
+      Field suid = cl.getDeclaredField( "serialVersionUID" );
       int modifiers = suid.getModifiers();
 
       if( Modifier.isStatic( modifiers )
@@ -405,9 +454,9 @@ public class ObjectStreamClass implements Serializable
       
       if( has_init )
       {
-	data_out.writeUTF( ourClassInitializerName );
+	data_out.writeUTF( "<clinit>" );
 	data_out.writeInt( Modifier.STATIC );
-	data_out.writeUTF( ourClassInitializerTypecode );
+	data_out.writeUTF( "()V" );
       }
 
       Constructor constructor;
@@ -420,7 +469,7 @@ public class ObjectStreamClass implements Serializable
 	if( Modifier.isPrivate( modifiers ) )
 	  continue;
       
-	data_out.writeUTF( ourConstructorName );
+	data_out.writeUTF( "<init>" );
 	data_out.writeInt( modifiers );
 
 	// the replacement of '/' with '.' was needed to make computed
@@ -470,10 +519,11 @@ public class ObjectStreamClass implements Serializable
 
   // Returns the value of CLAZZ's final static long field named
   // `serialVersionUID'.
-  //
-  // A NoSuchFieldError is raised if CLAZZ has no such field.
   private native long getDefinedSUID( Class clazz );
 
+  // Returns the value of CLAZZ's private static final field named
+  // `serialPersistantFields'.
+  private native ObjectStreamField[] getSerialPersistantFields( Class clazz );
     
   // Returns true if CLAZZ has a static class initializer
   // (a.k.a. <clinit>).
@@ -482,38 +532,32 @@ public class ObjectStreamClass implements Serializable
   private static native boolean hasClassInitializer( Class clazz );
   
 
-  private static void DEBUGln( String s )
-  {
-    System.out.println( s );
-  }
-
+  public static final ObjectStreamField[] NO_FIELDS = {};
 
   private static Hashtable ourClassLookupTable;  
   private static final NullOutputStream ourNullOutputStream;
   private static final Comparator ourInterfaceComparartor;
   private static final Comparator ourMemberComparator;
-  private static final String ourSUIDFieldName = "serialVersionUID";
-  private static final String ourWriteMethodName = "writeObject";
   private static final
-  Class[] ourWriteMethodArgTypes = { java.io.ObjectOutputStream.class };
-  private static final ObjectStreamField[] ourEmptyFields = {};
-  private static final String ourClassInitializerName = "<clinit>";
-  private static final String ourClassInitializerTypecode = "()V";
-  private static final String ourConstructorName = "<init>";
+    Class[] ourWriteMethodArgTypes = { java.io.ObjectOutputStream.class };
 
   private ObjectStreamClass mySuper;
   private Class myClass;
   private String myName;
   private long myUID;
   private byte myFlags;
-  private ObjectStreamField[] myFields;
 
+  // XXX possible optimization: make this field package protected so
+  // that ObjectInputStream and ObjectOutputStream can acces directly
+  // (make sure they don't change it)
+  private ObjectStreamField[] myFields;
   
+  private int myDataFieldSize = -1;  // -1 if not yet calculated
+  private int myObjectFieldCount;
+
   static
   {
-    //DEBUG
-    System.out.println( "Using ObjectStreamClass" );
-    //eDEBUG
+    System.out.println( "Using ObjectStreamClass" ); // DEBUG
 
     System.loadLibrary( "java_io_ObjectStreamClass" );
 

@@ -344,7 +344,7 @@ public class ObjectInputStream extends InputStream
 	  try
 	  {
 	    this.currentObjectStreamClass.forClass().
-	      getDeclaredMethod( ourReadObjectName, ourReadObjectParams );
+	      getDeclaredMethod( "readObject", ourReadObjectParams );
 	  }
 	  catch( NoSuchMethodException e )
 	  {
@@ -422,15 +422,20 @@ public class ObjectInputStream extends InputStream
      @exception IOException Exception from underlying
      <code>OutputStream</code>.
   */
-  public final void defaultReadObject()
+  public void defaultReadObject()
     throws ClassNotFoundException, IOException, NotActiveException
   {
     if( this.currentObject == null || this.currentObjectStreamClass == null )
       throw new NotActiveException( "defaultReadObject called by non-active class and/or object" );
+    
+    if( fieldsAlreadyRead )
+      throw new NotActiveException( "defaultReadObject called but fields already read from stream (by defaultReadObject or readFields)" );
 
     readFields( this.currentObject,
 		this.currentObjectStreamClass.getFields(),
 		false, this.currentObjectStreamClass );
+
+    fieldsAlreadyRead = true;
   }
 
 
@@ -471,9 +476,12 @@ public class ObjectInputStream extends InputStream
      Called when a class is being deserialized.  This is a hook to
      allow subclasses to read in information written by the
      <code>annotateClass(Class)</code> method of an
-     <code>ObjectOutputStream</code>.  This method must return a class
-     with the same name and serial version UID as the class
-     represented by <code>osc</code>.
+     <code>ObjectOutputStream</code>.
+
+     This implementation looks up the active call stack for a
+     <code>ClassLoader</code>; if a <code>ClassLoader</code> is found,
+     it is used to load the class associated with <code>osc</code>,
+     otherwise, the default system <code>ClassLoader</code> is used.
 
      @exception IOException Exception from underlying
      <code>OutputStream</code>.
@@ -483,8 +491,25 @@ public class ObjectInputStream extends InputStream
   protected Class resolveClass( ObjectStreamClass osc )
     throws ClassNotFoundException, IOException
   {
-    // XXX: search up stack for class loader
-    return Class.forName( osc.getName() );
+    DEBUGln( "Resolving " + osc );
+
+    SecurityManager sm = System.getSecurityManager();
+    
+    if( sm == null )
+      sm = new SecurityManager() {};
+    
+    ClassLoader cl = currentClassLoader( sm );
+
+    if( cl == null )
+    {
+      DEBUGln( "No class loader found" );
+      return Class.forName( osc.getName() );
+    }
+    else
+    {
+      DEBUGln( "Using " + cl );
+      return cl.loadClass( osc.getName() );
+    }
   }
 
 
@@ -515,7 +540,7 @@ public class ObjectInputStream extends InputStream
 
      @exception SecurityException This class is not trusted.
   */
-  protected final boolean enableResolveObject( boolean enable )
+  protected boolean enableResolveObject( boolean enable )
     throws SecurityException
   {
     if( enable )
@@ -661,6 +686,10 @@ public class ObjectInputStream extends InputStream
     return this.dataInputStream.skipBytes( len );
   }
 
+  /**
+     @deprecated
+     @see java.io.DataInputStream#readLine()
+  */
   public String readLine() throws IOException
   {
     return this.dataInputStream.readLine();
@@ -669,6 +698,235 @@ public class ObjectInputStream extends InputStream
   public String readUTF() throws IOException
   {
     return this.dataInputStream.readUTF();
+  }
+
+  
+  /**
+     This class allows a class to specify exactly which fields should
+     be read, and what values should be read for these fields.
+     
+     XXX: finish up comments
+  */
+  public static abstract class GetField
+  {
+    public abstract ObjectStreamClass getObjectStreamClass();
+
+    public abstract boolean defaulted( String name )
+      throws IOException, IllegalArgumentException;
+
+    public abstract boolean get( String name, boolean defvalue )
+      throws IOException, IllegalArgumentException;
+
+    public abstract char get( String name, char defvalue)
+      throws IOException, IllegalArgumentException;
+    
+    public abstract byte get( String name, byte defvalue )
+      throws IOException, IllegalArgumentException;
+
+    public abstract short get( String name, short defvalue )
+      throws IOException, IllegalArgumentException;
+
+    public abstract int get( String name, int defvalue )
+      throws IOException, IllegalArgumentException;
+
+    public abstract long get( String name, long defvalue )
+      throws IOException, IllegalArgumentException;
+
+    public abstract float get( String name, float defvalue )
+      throws IOException, IllegalArgumentException;
+
+    public abstract double get( String name, double defvalue )
+      throws IOException, IllegalArgumentException;
+
+    public abstract Object get( String name, Object defvalue)
+      throws IOException, IllegalArgumentException;
+  }
+
+  public GetField readFields()
+    throws IOException, ClassNotFoundException, NotActiveException
+  {
+    if( true )
+      throw new RuntimeException( "putFields() not implemented!" );
+
+    if( this.currentObject == null || this.currentObjectStreamClass == null )
+      throw new NotActiveException( "readFields called by non-active class and/or object" );
+
+    if( fieldsAlreadyRead )
+      throw new NotActiveException( "readFields called but fields already read from stream (by defaultReadObject or readFields)" );
+    
+    // XXX actually read the data
+    return new GetField()
+    {
+      public ObjectStreamClass getObjectStreamClass()
+      {
+	return currentObjectStreamClass;
+      }
+
+      public boolean defaulted( String name )
+	throws IOException, IllegalArgumentException
+      {
+	return currentObjectStreamClass.getField( name ) == null;
+      }
+      
+      public boolean get( String name, boolean defvalue )
+	throws IOException, IllegalArgumentException
+      {
+	ObjectStreamField field = getField( name, Boolean.TYPE );
+
+	if( field == null )
+	  return defvalue;
+	
+	return primFieldData[ field.getOffset() ] == 0 ? false : true;
+      }
+      
+      public char get( String name, char defvalue )
+	throws IOException, IllegalArgumentException
+      {
+	ObjectStreamField field = getField( name, Character.TYPE );
+
+	if( field == null )
+	  return defvalue;
+	
+	int off = field.getOffset();
+	
+	return (char)(((primFieldData[off++] & 0xFF) << 8)
+		      | (primFieldData[off] & 0xFF));
+      }
+      
+      public byte get( String name, byte defvalue )
+	throws IOException, IllegalArgumentException
+      {
+	ObjectStreamField field = getField( name, Byte.TYPE );
+
+	if( field == null )
+	  return defvalue;
+	
+	return primFieldData[ field.getOffset() ];
+      }
+      
+      public short get( String name, short defvalue )
+	throws IOException, IllegalArgumentException
+      {
+	ObjectStreamField field = getField( name, Short.TYPE );
+
+	if( field == null )
+	  return defvalue;
+	
+	int off = field.getOffset();
+	
+	return (short)(((primFieldData[off++] & 0xFF) << 8)
+		       | (primFieldData[off] & 0xFF));	
+      }
+      
+      public int get( String name, int defvalue )
+	throws IOException, IllegalArgumentException
+      {
+	ObjectStreamField field = getField( name, Integer.TYPE );
+
+	if( field == null )
+	  return defvalue;
+	
+	int off = field.getOffset();
+	
+	return ((primFieldData[off++] & 0xFF) << 24)
+	  | ((primFieldData[off++] & 0xFF) << 16)
+	  | ((primFieldData[off++] & 0xFF) << 8)
+	  | (primFieldData[off] & 0xFF);
+      }
+      
+      public long get( String name, long defvalue )
+	throws IOException, IllegalArgumentException
+      {
+	ObjectStreamField field = getField( name, Long.TYPE );
+
+	if( field == null )
+	  return defvalue;
+	
+	int off = field.getOffset();
+	
+	return (long)(((primFieldData[off++] & 0xFF) << 56)
+		      | ((primFieldData[off++] & 0xFF) << 48)
+		      | ((primFieldData[off++] & 0xFF) << 40)
+		      | ((primFieldData[off++] & 0xFF) << 32)
+		      | ((primFieldData[off++] & 0xFF) << 24)
+		      | ((primFieldData[off++] & 0xFF) << 16)
+		      | ((primFieldData[off++] & 0xFF) << 8)
+		      | (primFieldData[off] & 0xFF));
+      }
+
+      public float get( String name, float defvalue )
+	throws IOException, IllegalArgumentException
+      {
+	ObjectStreamField field = getField( name, Float.TYPE );
+
+	if( field == null )
+	  return defvalue;
+	
+	int off = field.getOffset();
+	
+	return Float.intBitsToFloat(((primFieldData[off++] & 0xFF) << 24)
+				    | ((primFieldData[off++] & 0xFF) << 16)
+				    | ((primFieldData[off++] & 0xFF) << 8)
+				    | (primFieldData[off] & 0xFF));
+      }
+
+      public double get( String name, double defvalue )
+	throws IOException, IllegalArgumentException
+      {
+	ObjectStreamField field = getField( name, Double.TYPE );
+
+	if( field == null )
+	  return defvalue;
+	
+	int off = field.getOffset();
+	
+	return Double.longBitsToDouble(
+	  (long)(((primFieldData[off++] & 0xFF) << 56)
+		 | ((primFieldData[off++] & 0xFF) << 48)
+		 | ((primFieldData[off++] & 0xFF) << 40)
+		 | ((primFieldData[off++] & 0xFF) << 32)
+		 | ((primFieldData[off++] & 0xFF) << 24)
+		 | ((primFieldData[off++] & 0xFF) << 16)
+		 | ((primFieldData[off++] & 0xFF) << 8)
+		 | (primFieldData[off] & 0xFF)));
+      }
+
+      public Object get( String name, Object defvalue )
+	throws IOException, IllegalArgumentException
+      {
+	ObjectStreamField field = getField( name, null );
+
+	if( field == null )
+	  return defvalue;
+	
+	return objects[ field.getOffset() ];
+      }
+
+      private ObjectStreamField getField( String name, Class type )
+	throws IllegalArgumentException
+      {
+	ObjectStreamField field = currentObjectStreamClass.getField( name );
+
+	if( field == null )
+	  return null;
+	
+	Class field_type = field.getType();
+
+	if( type == field_type ||
+	    ( type != null && field_type.isPrimitive() ) )
+	  return field;
+
+	throw new IllegalArgumentException( "Field requested is of type "
+					    + field_type.getName()
+					    + ", but requested type was "
+					    + (type == null ? 
+					       "Object" : type.getName()) );
+      }
+
+      private byte[] primFieldData;
+      private Object[] objects;
+    };
+    
   }
 
 
@@ -734,7 +992,7 @@ public class ObjectInputStream extends InputStream
       obj = resolveObject( obj );
     
     this.objectLookupTable.put( new Integer( handle ),
-			     new ObjectIdentityWrapper( obj ) );
+				new ObjectIdentityWrapper( obj ) );
 
     return obj;
   }
@@ -857,6 +1115,7 @@ public class ObjectInputStream extends InputStream
   {
     if( call_read_method )
     {
+      fieldsAlreadyRead = false;
       setBlockDataMode( true );
       callReadMethod( obj, stream_osc.forClass() );
       setBlockDataMode( false );
@@ -1008,11 +1267,7 @@ public class ObjectInputStream extends InputStream
     try
     {
       Object obj = allocateObject( real_class );
-      //XXX: figure out how to construct an object using a superclass
-      // constructor, but have the resulting object be of the subclass
-      // e.g. make an Integer by calling the constructor for Object,
-      // but still have the class of the new object be Integer
-//      callConstructor( obj, constructor_class );
+      callConstructor( constructor_class, obj );
       return obj;
     }
     catch( InstantiationException e )
@@ -1042,10 +1297,17 @@ public class ObjectInputStream extends InputStream
   }
   
 
+  // this native method is used to get access to the protected method
+  // of the same name in SecurityManger
+  private static native ClassLoader currentClassLoader( SecurityManager sm );
+
   private native void callReadMethod( Object obj, Class clazz );
+
   private native Object allocateObject( Class clazz )
     throws InstantiationException;
-  private native void callConstructor( Object obj, Class clazz );
+
+  private native void callConstructor( Class clazz, Object obj );
+
   private native void setBooleanField( Object obj, String field_name,
 				       boolean val );
   private native void setByteField( Object obj, String field_name,
@@ -1067,7 +1329,6 @@ public class ObjectInputStream extends InputStream
 
 
   private static final int BUFFER_SIZE = 1024;
-  private static final String ourReadObjectName = "readObject";
   private static final Class[] ourReadObjectParams = { ObjectInputStream.class };
   
   private DataInputStream realInputStream;
@@ -1084,6 +1345,7 @@ public class ObjectInputStream extends InputStream
   private ObjectStreamClass currentObjectStreamClass;
   private boolean readDataFromBlock;
   private boolean isDeserializing;
+  private boolean fieldsAlreadyRead;
   private Vector validators;
 
   static
