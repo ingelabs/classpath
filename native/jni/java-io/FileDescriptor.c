@@ -83,15 +83,16 @@ exception statement from your version. */
 #define CONVERT_JINT_TO_SSIZE_T(x) (x)
 
 /* These values must be kept in sync with FileDescriptor.java.  */
-#define SET     0
-#define CUR     1
-#define END     2
-#define READ    1
-#define WRITE   2
-#define APPEND  4
-#define EXCL    8
-#define SYNC   16
-#define DSYNC  32
+#define FILEDESCRIPTOR_FILESEEK_SET          0
+#define FILEDESCRIPTOR_FILESEEK_CUR          1
+#define FILEDESCRIPTOR_FILESEEK_END          2
+
+#define FILEDESCRIPTOR_FILEOPEN_FLAG_READ    1
+#define FILEDESCRIPTOR_FILEOPEN_FLAG_WRITE   2
+#define FILEDESCRIPTOR_FILEOPEN_FLAG_APPEND  4
+#define FILEDESCRIPTOR_FILEOPEN_FLAG_EXCL    8
+#define FILEDESCRIPTOR_FILEOPEN_FLAG_SYNC   16
+#define FILEDESCRIPTOR_FILEOPEN_FLAG_DSYNC  32
 
 /*************************************************************************/
 
@@ -147,13 +148,13 @@ Java_java_io_FileDescriptor_nativeOpen(JNIEnv *env, jobject obj, jstring name,
     return(-1); /* Exception will already have been thrown */
 
   /* get file/permission flags for open() */
-  if ((jflags & READ) && (jflags & WRITE))
+  if ((jflags & FILEDESCRIPTOR_FILEOPEN_FLAG_READ) && (jflags & FILEDESCRIPTOR_FILEOPEN_FLAG_WRITE))
     {
       /* read/write */
       flags       = TARGET_NATIVE_FILE_FILEFLAG_CREATE | TARGET_NATIVE_FILE_FILEFLAG_READWRITE;
       permissions = TARGET_NATIVE_FILE_FILEPERMISSION_NORMAL;
     }
-  else if ((jflags & READ))
+  else if ((jflags & FILEDESCRIPTOR_FILEOPEN_FLAG_READ))
     {
       /* read */
       flags       = TARGET_NATIVE_FILE_FILEFLAG_READ;
@@ -163,7 +164,7 @@ Java_java_io_FileDescriptor_nativeOpen(JNIEnv *env, jobject obj, jstring name,
     {
       /* write */
       flags       = TARGET_NATIVE_FILE_FILEFLAG_CREATE | TARGET_NATIVE_FILE_FILEFLAG_WRITE;
-      if ((jflags & APPEND))
+      if ((jflags & FILEDESCRIPTOR_FILEOPEN_FLAG_APPEND))
         {
            flags |= TARGET_NATIVE_FILE_FILEFLAG_APPEND;
         }
@@ -174,12 +175,12 @@ Java_java_io_FileDescriptor_nativeOpen(JNIEnv *env, jobject obj, jstring name,
       permissions = TARGET_NATIVE_FILE_FILEPERMISSION_NORMAL;
     }
 
-  if ((jflags & SYNC))
+  if ((jflags & FILEDESCRIPTOR_FILEOPEN_FLAG_SYNC))
     {
       flags |= TARGET_NATIVE_FILE_FILEFLAG_SYNC;
     }
 
-  if ((jflags & DSYNC))
+  if ((jflags & FILEDESCRIPTOR_FILEOPEN_FLAG_DSYNC))
     {
       flags |= TARGET_NATIVE_FILE_FILEFLAG_DSYNC;
     }
@@ -460,7 +461,7 @@ Java_java_io_FileDescriptor_nativeSeek(JNIEnv *env, jobject obj, jlong fd,
                          "Cannot represent position correctly on this system");
       return(JNI_JLONG_CONST_MINUS_1);
     }
-#endif
+#endif /* 0 */
     
   if (stop_at_eof)
     {
@@ -475,12 +476,12 @@ Java_java_io_FileDescriptor_nativeSeek(JNIEnv *env, jobject obj, jlong fd,
         }
 
       /* set file read/write position (seek) */
-      if      (whence == SET)
+      if      (whence == FILEDESCRIPTOR_FILESEEK_SET)
         {
           if (TARGET_NATIVE_MATH_INT_INT64_GT(offset,file_size))
             offset = file_size;
         }
-      else if (whence == CUR)
+      else if (whence == FILEDESCRIPTOR_FILESEEK_CUR)
         {
           TARGET_NATIVE_FILE_TELL(native_fd, current_offset, result);
           if (result != TARGET_NATIVE_OK)
@@ -493,7 +494,7 @@ Java_java_io_FileDescriptor_nativeSeek(JNIEnv *env, jobject obj, jlong fd,
           if (TARGET_NATIVE_MATH_INT_INT64_GT(TARGET_NATIVE_MATH_INT_INT64_ADD(current_offset,offset),file_size))
             {
               offset = file_size;
-              whence = SET;
+              whence = FILEDESCRIPTOR_FILESEEK_SET;
             }
         }
       else if (TARGET_NATIVE_MATH_INT_INT64_GT(offset,0)) /* Default to END case */
@@ -505,11 +506,11 @@ Java_java_io_FileDescriptor_nativeSeek(JNIEnv *env, jobject obj, jlong fd,
   /* Now do it */
   result = TARGET_NATIVE_ERROR;
   new_offset = JNI_JLONG_CONST_MINUS_1;
-  if (whence == SET)
+  if (whence == FILEDESCRIPTOR_FILESEEK_SET)
     TARGET_NATIVE_FILE_SEEK_BEGIN(native_fd, offset, new_offset, result);
-  if (whence == CUR)
+  if (whence == FILEDESCRIPTOR_FILESEEK_CUR)
     TARGET_NATIVE_FILE_SEEK_CURRENT(native_fd, offset, new_offset, result);
-  if (whence == END)
+  if (whence == FILEDESCRIPTOR_FILESEEK_END)
     TARGET_NATIVE_FILE_SEEK_END(native_fd, offset, new_offset, result);
 
   if (result != TARGET_NATIVE_OK)
