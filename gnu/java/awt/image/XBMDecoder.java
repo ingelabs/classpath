@@ -11,6 +11,8 @@ public class XBMDecoder extends ImageDecoder
   static final ColorModel cm = ColorModel.getRGBdefault ();
   static final int black = 0xff000000;
   static final int transparent = 0x00000000;
+  static final int masktable[] = { 0x01, 0x02, 0x04, 0x08, 
+				   0x10, 0x20, 0x40, 0x80 };
 
   public XBMDecoder (InputStream is)
   {
@@ -92,7 +94,7 @@ public class XBMDecoder extends ImageDecoder
 		if (x == len)	// condition occurs if bitmap is padded
 		  return scanline;
 
-		scanline[x] = ((byteVal >> i & 0x1) == 1) ? 
+		scanline[x] = ((byteVal & masktable[i]) != 0) ? 
 		               black : transparent;
 	      }
 	  }	
