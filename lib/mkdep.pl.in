@@ -262,14 +262,21 @@ sub findNativeFiles
 sub hasNativeMethod
 {
     my ($file) = @_;
-    my ($line) = "";
+    my ($line, $one, $two) = "";
     open(FILE, "<$file") || die "Could not open file ", $file, "\n";
     while(<FILE>)
     {
-	$line = $_;
+	chop;
+	$one = $two;
+	$two = $_;
+
+	$line = $one . " " . $two;
 	if ( ($line =~ /^\s*public\s.*native\s+\S+\s+\S+\s*\(/) ||
+	     ($line =~ /^\s*public\s.*native\s+\S+\s+\S+\s+\S+\s*\(/) ||
 	     ($line =~ /^\s*protected\s.*native\s+\S+\s+\S+\s*\(/) ||
+	     ($line =~ /^\s*protected\s.*native\s+\S+\s+\S+\s+\S+\s*\(/) ||
 	     ($line =~ /^\s*private\s.*native\s+\S+\s+\S+\s*\(/) ||
+	     ($line =~ /^\s*private\s.*native\s+\S+\s+\S+\s+\S+\s*\(/) ||
 	     ($line =~ /^\s*abstract\s.*native\s+\S+\s+\S+\s*\(/) ||
 	     ($line =~ /^\s*final\s.*native\s+\S+\s+\S+\s*\(/) ||
 	     ($line =~ /^\s*synchronized\s.*native\s+\S+\s+\S+\s*\(/) ||
