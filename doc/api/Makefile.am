@@ -34,7 +34,8 @@ clean:
 
 create_html:
 	-$(MKDIR) html > /dev/null 2>&1
-	$(GJDOC) -public -use \
+	$(GJDOC) \
+	-use \
 	-sourcepath "$(sourcepath)" \
 	-encoding UTF-8 \
 	-breakiterator \
