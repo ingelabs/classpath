@@ -1,8 +1,7 @@
 /*
- * GtkScrollbarPeer.java -- Implements ScrollbarPeer with GTK
+ * GtkScrollbarPeer.java -- Implements ScrollbarPeer with GTK+
  *
  * Copyright (c) 1998 Free Software Foundation, Inc.
- * Written by James E. Blair <corvus@gnu.org>
  *
  * This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License as published 
@@ -27,25 +26,30 @@ import java.awt.event.AdjustmentEvent;
 public class GtkScrollbarPeer extends GtkComponentPeer
     implements ScrollbarPeer
 {
+  void create ()
+  {
+    Scrollbar sb = (Scrollbar) awtComponent;
 
-  native void gtkScrollbarNew (ComponentPeer parent, 
-			       int orientation, int value, int visibleAmount,
-			       int min, int max);
+    create (sb.getOrientation (), sb.getValue (),
+	    sb.getMinimum (), sb.getMaximum (), 
+	    sb.getUnitIncrement (), sb.getBlockIncrement (),
+	    sb.getVisibleAmount ());
+  }
+
+  native void create (int orientation, int value,
+		      int min, int max, int stepIncr, int pageIncr,
+		      int visibleAmount);
+
+  native void connectHooks ();
+
+  public GtkScrollbarPeer (Scrollbar s)
+  {
+    super (s);
+  }
+
   native public void setLineIncrement (int amount);
   native public void setPageIncrement (int amount);
   native public void setValues (int value, int visible, int min, int max);
-
-  public GtkScrollbarPeer (Scrollbar s, ComponentPeer cp)
-  {
-    super (s);
-
-    gtkScrollbarNew (cp,
-		     s.getOrientation(),
-		     s.getValue(),
-		     s.getVisibleAmount(),
-		     s.getMinimum(),
-		     s.getMaximum());
-  }
 
   protected void postAdjustmentEvent (int type, int value)
   {

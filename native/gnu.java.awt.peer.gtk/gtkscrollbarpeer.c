@@ -49,6 +49,7 @@ post_adjustment_event (GtkAdjustment *adj, struct range_scrollbar *rs)
       break;
     case GTK_SCROLL_JUMP:
     case GTK_SCROLL_NONE:
+    default:
       type = AWT_ADJUSTMENT_TRACK;
       break;
     }
@@ -58,42 +59,53 @@ post_adjustment_event (GtkAdjustment *adj, struct range_scrollbar *rs)
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_gtkScrollbarNew
-(JNIEnv *env, jobject obj, jobject parent_obj, jint orientation, jint value, 
- jint visible_amount, jint min, jint max)
+Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_create
+(JNIEnv *env, jobject obj, jint orientation, jint value, 
+ jint min, jint max, jint step_incr, jint page_incr, jint visible_amount)
 {
   GtkWidget *sb;
   GtkObject *adj;
-  void *parent;
-  struct range_scrollbar *rs;
-
-  rs = (struct range_scrollbar *) malloc (sizeof (struct range_scrollbar));
-  parent = NSA_GET_PTR (env, parent_obj);
 
   gdk_threads_enter ();
-  adj = gtk_adjustment_new (value, min, max, 1, 10, visible_amount);
+  adj = gtk_adjustment_new (value, min, max, 
+			    step_incr, page_incr, 
+			    visible_amount);
 
   sb = (orientation) ? gtk_vscrollbar_new (GTK_ADJUSTMENT (adj)) :
                        gtk_hscrollbar_new (GTK_ADJUSTMENT (adj));
-
-  set_parent (sb, GTK_CONTAINER (parent));
-  gtk_widget_realize (sb);
-  connect_awt_hook (env, obj, 4, 
-		    GTK_RANGE (sb)->trough,
-		    GTK_RANGE (sb)->slider,
-		    GTK_RANGE (sb)->step_forw,
-		    GTK_RANGE (sb)->step_back);
-
-  rs->range = GTK_RANGE (sb);
-  rs->scrollbar = (jobject *) malloc (sizeof (jobject));
-  *(rs->scrollbar) = (*env)->NewGlobalRef (env, obj);
-  gtk_signal_connect (GTK_OBJECT (adj), "value_changed", 
-		      GTK_SIGNAL_FUNC (post_adjustment_event), rs);
-
   gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, sb);
 }
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_connectHooks
+  (JNIEnv *env, jobject obj)
+{
+  void *ptr;
+  struct range_scrollbar *rs;
+
+  rs = (struct range_scrollbar *) malloc (sizeof (struct range_scrollbar));
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+  gtk_widget_realize (GTK_WIDGET (ptr));
+
+  rs->range = GTK_RANGE (ptr);
+  rs->scrollbar = (jobject *) malloc (sizeof (jobject));
+  *(rs->scrollbar) = (*env)->NewGlobalRef (env, obj);
+  gtk_signal_connect (GTK_OBJECT (ptr), "value_changed", 
+		      GTK_SIGNAL_FUNC (post_adjustment_event), rs);
+
+  connect_awt_hook (env, obj, 4, 
+		    GTK_RANGE (ptr)->trough,
+		    GTK_RANGE (ptr)->slider,
+		    GTK_RANGE (ptr)->step_forw,
+		    GTK_RANGE (ptr)->step_back);
+  gdk_threads_leave ();
+}
+
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setLineIncrement
