@@ -80,7 +80,7 @@ private Paper paper;
 public
 PageFormat()
 {
-  this.paper = Paper.DEFAULT;
+  this.paper = new Paper();
   this.orientation = PORTRAIT;
 }
 
@@ -183,7 +183,7 @@ getImageableHeigth()
 public Paper
 getPaper()
 {
-  return(paper.clone());
+  return((Paper)paper.clone());
 }
 
 /*************************************************************************/

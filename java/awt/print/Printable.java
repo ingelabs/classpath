@@ -21,6 +21,8 @@
 
 package java.awt.print;
 
+import java.awt.Graphics;
+
 /**
   * This interface provides a mechanism for the actual printing of pages to the
   * printer.  The object implementing this interface performs the page
