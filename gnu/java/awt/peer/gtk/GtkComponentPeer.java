@@ -30,6 +30,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 {
   Component awtComponent;
 
+  native void gtkWidgetSetEnabled (boolean b);
   native void gtkWidgetShowChildren();
   native void gtkWidgetGetDimensions(int[] dim);
   native void gtkWidgetGetLocationOnScreen(int[] point);
@@ -203,7 +204,12 @@ public class GtkComponentPeer extends GtkGenericPeer
       gtkWidgetSetCursor (cursor.getType ());
     }
 
-  native public void setEnabled (boolean b);
+  public void setEnabled (boolean b) {
+    gtkWidgetSetEnabled (b);
+    q.postEvent (new ComponentEvent (awtComponent, 
+				     b ? ComponentEvent.COMPONENT_SHOWN : 
+				         ComponentEvent.COMPONENT_HIDDEN));
+  }
 
   public void setFont (Font f) 
     {
