@@ -191,10 +191,7 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected ButtonPeer createButton (Button b)
   {
-    GtkButtonPeer bp = new GtkButtonPeer (b);
-    Rectangle bounds = b.getBounds ();
-    bp.setBounds (bounds.x, bounds.y, bounds.width, bounds.height);
-    return bp;
+    return new GtkButtonPeer (b);
   }
 
   protected CanvasPeer createCanvas (Canvas c) 

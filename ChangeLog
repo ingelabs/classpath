@@ -1,5 +1,10 @@
 2002-11-09  Tom Tromey  <tromey@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GtkToolkit.java (createButton): Don't set
+	bounds on new button.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (GtkComponentPeer):
+	Set bounds on component.
+
 	* gnu/java/awt/peer/gtk/GtkWindowPeer.java (postConfigureEvent):
 	Removed println.
 	* gnu/java/awt/peer/gtk/GtkToolkit.java (static): Removed

@@ -89,8 +89,12 @@ public class GtkComponentPeer extends GtkGenericPeer
       //        if (c.getFont () == null)
       //  	c.setFont (cp.getFont ());
       
-      if (!(awtComponent instanceof Window))
-	setCursor (awtComponent.getCursor ());
+      if (! (awtComponent instanceof Window))
+	{
+	  setCursor (awtComponent.getCursor ());
+	  Rectangle bounds = awtComponent.getBounds ();
+	  setBounds (bounds.x, bounds.y, bounds.width, bounds.height);
+	}
     } catch (RuntimeException ex) { ; }
   }
 
