@@ -141,8 +141,12 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_translateNative
 
   g = (struct graphics *) NSA_GET_PTR (env, obj);
 
+  gdk_threads_enter ();
+
   g->x_offset += x;
   g->y_offset += y;
+
+  gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawString
