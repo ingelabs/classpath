@@ -85,7 +85,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntrySetEchoChar
   
   if (c!=0)
     {
-      gtk_entry_set_echo_char (entry, c);
+/*        gtk_entry_set_echo_char (entry, c); */
       gtk_entry_set_visibility (entry, FALSE);
     }
   else

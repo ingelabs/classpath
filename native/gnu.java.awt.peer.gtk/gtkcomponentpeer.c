@@ -240,7 +240,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedPut
     {
       printf("fixedput: container is scrolled window\n");
 
-      child=gtk_container_children (GTK_CONTAINER (GTK_SCROLLED_WINDOW(containerptr)->child));
+      child=gtk_container_children (GTK_CONTAINER (GTK_BIN(containerptr)->child));
       
       if (!child)
 	printf("No children in window!\n");

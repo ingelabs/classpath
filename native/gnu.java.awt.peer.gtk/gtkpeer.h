@@ -35,14 +35,10 @@
 
 #ifndef __GTKPEER_H__
 #define __GTKPEER_H__
-#define EXTERN 
-#else
-#define EXTERN extern
-#endif
 
 #ifdef JVM_SUN
 
-EXTERN struct state_table *native_state_table;
+extern struct state_table *native_state_table;
 
 #define NSA_INIT(env, clazz) \
   native_state_table = init_state_table (env, clazz)
@@ -55,5 +51,8 @@ EXTERN struct state_table *native_state_table;
 
 #endif /* JVM_SUN */
 
-EXTERN jobject java_mutex;
+extern jobject java_mutex;
+extern JNIEnv *gdk_env;
+void gdk_threads_wake ();
 
+#endif /* __GTKPEER_H */

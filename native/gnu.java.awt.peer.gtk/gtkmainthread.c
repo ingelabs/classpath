@@ -21,7 +21,14 @@
 
 #include "gtkpeer.h"
 #include "GtkMainThread.h"
-#include "gdkjnithreads.h"
+#include "gthread-jni.h"
+
+jobject java_mutex;
+JNIEnv *gdk_env;
+
+#ifdef JVM_SUN
+  struct state_table *native_state_table;
+#endif
 
 /*
  * Call gtk_init.  It is very important that this happen before any other
@@ -31,33 +38,32 @@
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 {
-  int argc=1;
+  int argc = 1;
   char **argv;
-  GdkJavaMutex *initret;
-  char *homedir, *rcpath=NULL;
+  char *homedir, *rcpath = NULL;
 
   printf ("init\n");
 
-  NSA_INIT(env, clazz);
+  NSA_INIT (env, clazz);
 
   /* GTK requires a program's argc and argv variables, and requires that they
      be valid.  */
 
-  argv=(char **)malloc (sizeof(char*)*2);
-  argv[0]="";
-  argv[1]=NULL;
+  argv = (char **) malloc (sizeof (char *) * 2);
+  argv[0] = "";
+  argv[1] = NULL;
 
   /* This sets the gdk thread function pointers to our set. */
+  gdk_env = env;
+  g_thread_init (&g_thread_jni_functions);
 
-  gdk_threads_set_funcs (&jni_threads_mutex_funcs);
-  initret=gdk_threads_init (env);
-  java_mutex=*(initret->mutex);
+  gtk_init (&argc, &argv);
 
-  gtk_init (&argc,&argv);
+  java_mutex = * ((jobject *) gdk_threads_mutex);
 
-  if ((homedir=getenv("HOME")))
+  if ((homedir = getenv ("HOME")))
     {
-      rcpath=(char *)malloc (strlen (homedir)+strlen (RC_FILE)+2);
+      rcpath = (char *) malloc (strlen (homedir) + strlen (RC_FILE) + 2);
       sprintf (rcpath, "%s/%s", homedir, RC_FILE);
     }
   
@@ -75,11 +81,11 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkMain (JNIEnv *env, jobject obj)
 {
-    (*env)->MonitorEnter (env,java_mutex);
-    /* This won't return until GTK is _done_.
-       It is okay (absolutely necessary) to have it inside of a monitor
-       block because gtk_main itself releases the monitor when appropriate. */
-    gtk_main();
-    gdk_threads_wake();
-    (*env)->MonitorExit (env,java_mutex);
+  gdk_env = env;
+  (*env)->MonitorEnter (env,java_mutex);
+  /* This won't return until GTK is _done_.
+     It is okay (absolutely necessary) to have it inside of a monitor
+     block because gtk_main itself releases the monitor when appropriate. */
+  gtk_main();
+  (*env)->MonitorExit (env,java_mutex);
 }

@@ -156,7 +156,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetSize
   sw=GTK_SCROLLED_WINDOW(ptr);
 
   child=gtk_container_children (GTK_CONTAINER 
-				(GTK_SCROLLED_WINDOW(sw)->child));
+				(GTK_BIN(sw)->child));
       
   while (child && !GTK_IS_FIXED(child->data))
     child=g_list_next(child);
