@@ -330,7 +330,7 @@ public abstract class DateFormat extends Format implements java.io.Serializable
          throw new IllegalArgumentException("Bad style: " + dateStyle);
      }
 
-    switch(dateStyle)
+    switch(timeStyle)
      {
        case SHORT:
        case MEDIUM:
