@@ -1,3 +1,10 @@
+2000-12-17  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* java/util/ArrayList.java (data): Declare transient.
+	(serialPersistantFields): Removed.
+	(readObject): Use defaultReadObject(), not readFields().
+	(writeObject): Use defaultWriteObject(), not writeFields().
+
 2000-12-17  Brian Jones  <cbj@gnu.org>
 	* java/util/ArrayList.java: Changes made to let a given Perl script
 	produce the correct collections api in a different package for
