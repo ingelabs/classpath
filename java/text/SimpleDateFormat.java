@@ -1,6 +1,6 @@
 /* SimpleDateFormat.java -- A class for parsing/formating simple 
    date constructs
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,8 +36,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 import java.util.SimpleTimeZone;
 import java.util.Vector;
-
-// Note that readObject still needs to be written for this class.
+import java.io.ObjectInputStream;
+import java.io.IOException;
 
 /**
  * SimpleDateFormat provides convenient methods for parsing and formatting
@@ -60,12 +60,34 @@ public class SimpleDateFormat extends DateFormat
     }
   }
 
-  private Vector tokens;
+  private transient Vector tokens;
   private DateFormatSymbols formatData;  // formatData
   private Date defaultCenturyStart = 
-     new Date(System.currentTimeMillis() - (80*365*24*60*60*1000));
+    new Date(System.currentTimeMillis() - (80*365*24*60*60*1000));
   private String pattern;
   private int serialVersionOnStream = 1; // 0 indicates JDK1.1.3 or earlier
+  private static final long serialVersionUID = 4774881970558875024L;
+
+  // This string is specified in the JCL.  We set it here rather than
+  // do a DateFormatSymbols(Locale.US).getLocalPatternChars() since
+  // someone could theoretically change those values (though unlikely).
+  private static final String standardChars = "GyMdkHmsSEDFwWahKz";
+
+  private void readObject(ObjectInputStream stream)
+    throws IOException, ClassNotFoundException
+  {
+    stream.defaultReadObject();
+    if (serialVersionOnStream < 1)
+      {
+        defaultCenturyStart =
+	  new Date(System.currentTimeMillis() - (80*365*24*60*60*1000));
+	serialVersionOnStream = 1;
+      }
+
+    // Set up items normally taken care of by the constructor.
+    tokens = new Vector();
+    compileFormat(pattern);
+  }
 
   private void compileFormat(String pattern) 
   {
@@ -137,12 +159,13 @@ public class SimpleDateFormat extends DateFormat
      * variables in DateFormatSymbols to encapsulate this.
      */
     super();
-    calendar = new GregorianCalendar();
-    calendar.setTimeZone(TimeZone.getDefault());
+    Locale locale = Locale.getDefault();
+    calendar = new GregorianCalendar(locale);
     tokens = new Vector();
-    formatData = new DateFormatSymbols();
-    compileFormat(formatData.dateFormats[DEFAULT]+' '+formatData.timeFormats[DEFAULT]);
-    this.pattern = pattern;
+    formatData = new DateFormatSymbols(locale);
+    pattern = formatData.dateFormats[DEFAULT]+' '+formatData.timeFormats[DEFAULT];
+    compileFormat(pattern);
+    numberFormat = NumberFormat.getInstance(locale);
   }
   
   /**
@@ -151,7 +174,7 @@ public class SimpleDateFormat extends DateFormat
    */
   public SimpleDateFormat(String pattern) 
   {
-    this(pattern,new DateFormatSymbols());
+    this(pattern, Locale.getDefault());
   }
 
   /**
@@ -160,7 +183,13 @@ public class SimpleDateFormat extends DateFormat
    */
   public SimpleDateFormat(String pattern, Locale locale) 
   {
-    this(pattern,new DateFormatSymbols(locale));
+    super();
+    calendar = new GregorianCalendar(locale);
+    tokens = new Vector();
+    formatData = new DateFormatSymbols(locale);
+    compileFormat(pattern);
+    this.pattern = pattern;
+    numberFormat = NumberFormat.getInstance(locale);
   }
 
   /**
@@ -170,11 +199,14 @@ public class SimpleDateFormat extends DateFormat
   public SimpleDateFormat(String pattern, DateFormatSymbols formatData) {
     super();
     calendar = new GregorianCalendar();
+    // FIXME: XXX: Is it really necessary to set the timezone?
+    // The Calendar constructor is supposed to take care of this.
     calendar.setTimeZone(TimeZone.getDefault());
     tokens = new Vector();
     this.formatData = formatData;
     compileFormat(pattern);
     this.pattern = pattern;
+    numberFormat = NumberFormat.getInstance();
   }
 
   // What is the difference between localized and unlocalized?  The
@@ -198,10 +230,10 @@ public class SimpleDateFormat extends DateFormat
    *
    * @return The format string.
    */
-  public String
-  toLocalizedPattern()
+  public String toLocalizedPattern()
   {
-    return(pattern);
+    String localChars = formatData.getLocalPatternChars();
+    return applyLocalizedPattern (pattern, standardChars, localChars);
   }
 
   /**
@@ -224,12 +256,33 @@ public class SimpleDateFormat extends DateFormat
    *
    * @param pattern The new format pattern.
    */
-  public void
-  applyLocalizedPattern(String pattern)
+  public void applyLocalizedPattern(String pattern)
   {
-    tokens = new Vector();
-    compileFormat(pattern);
-    this.pattern = pattern;
+    String localChars = formatData.getLocalPatternChars();
+    pattern = applyLocalizedPattern (pattern, localChars, standardChars);
+    applyPattern(pattern);
+  }
+
+  private String applyLocalizedPattern(String pattern,
+				       String oldChars, String newChars)
+  {
+    int len = pattern.length();
+    StringBuffer buf = new StringBuffer(len);
+    boolean quoted = false;
+    for (int i = 0;  i < len;  i++)
+      {
+	char ch = pattern.charAt(i);
+	if (ch == '\'')
+	  quoted = ! quoted;
+	if (! quoted)
+	  {
+	    int j = oldChars.indexOf(ch);
+	    if (j >= 0)
+	      ch = newChars.charAt(j);
+	  }
+	buf.append(ch);
+      }
+    return buf.toString();
   }
 
   /** 
@@ -331,7 +384,7 @@ public class SimpleDateFormat extends DateFormat
    * appending to the specified StringBuffer.  The input StringBuffer
    * is returned as output for convenience.
    */
-  public StringBuffer format(Date date, StringBuffer buffer, FieldPosition z) {
+  public StringBuffer format(Date date, StringBuffer buffer, FieldPosition pos) {
     String temp;
     Calendar theCalendar = (Calendar) calendar.clone();
     theCalendar.setTime(date);
@@ -342,6 +395,7 @@ public class SimpleDateFormat extends DateFormat
       Object o = e.nextElement();
       if (o instanceof FieldSizePair) {
 	FieldSizePair p = (FieldSizePair) o;
+	int beginIndex = buffer.length();
 	switch (p.field) {
 	case ERA_FIELD:
 	  buffer.append(formatData.eras[theCalendar.get(Calendar.ERA)]);
@@ -412,6 +466,11 @@ public class SimpleDateFormat extends DateFormat
 	default:
 	  throw new IllegalArgumentException("Illegal pattern character");
 	}
+	if (pos != null && p.field == pos.getField())
+	  {
+	    pos.setBeginIndex(beginIndex);
+	    pos.setEndIndex(buffer.length());
+	  }
       } else {
 	buffer.append(o.toString());
       }
@@ -465,7 +524,7 @@ public class SimpleDateFormat extends DateFormat
    * US style MM/DD/YY or the European style DD/MM/YY. Or is it YYYY/MM/DD?
    * I'm an American, so I guess you know which one I'm choosing....
    */
-  public Date parseLenient(String dateStr, ParsePosition pos)
+  private Date parseLenient(String dateStr, ParsePosition pos)
   {
     int month = -1;
     int day = -1;
@@ -829,7 +888,7 @@ public class SimpleDateFormat extends DateFormat
    * Note that this method doesn't properly protect against
    * StringIndexOutOfBoundsException.  FIXME
    */
-  public Date parseStrict(String dateStr, ParsePosition pos)
+  private Date parseStrict(String dateStr, ParsePosition pos)
   {
     // start looking at position pos.index
     Enumeration e = tokens.elements();

@@ -141,7 +141,7 @@ private static final String[][] zoneStrings =
 /**
   * This is the list of pattern characters for formatting dates
   */
-private static final String localPatternChars = "GyMdhHmsSEDFwWakKz"; // Not a mistake!
+private static final String localPatternChars = "GyMdkHmsSEDFwWahKz"; // Not a mistake!
 
 /**
   * This is the DateFormat.SHORT date format

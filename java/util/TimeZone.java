@@ -712,7 +712,11 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable
   {
     System.loadLibrary("javautil");
 
-    String tzid = getDefaultTimeZoneId();
+    String tzid = System.getProperty("user.timezone");
+
+    if (tzid == null)
+      tzid = getDefaultTimeZoneId();
+
     if (tzid == null)
       tzid = "GMT";
 
@@ -751,6 +755,13 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable
    * @return the time zone offset in milliseconds.  
    */
   public abstract int getRawOffset();
+
+  /**
+   * Sets the time zone offset, ignoring daylight savings.  This is
+   * the offset to add to UTC to get the local time.
+   * @param offsetMillis the time zone offset to GMT.
+   */
+  public abstract void setRawOffset(int offsetMillis);
 
   /**
    * Gets the identifier of this time zone. For instance, PST for
@@ -905,7 +916,7 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable
   /**
    * Gets the TimeZone for the given ID.
    * @param ID the time zone identifier.
-   * @return The time zone for the identifier or null, if no such time
+   * @return The time zone for the identifier or GMT, if no such time
    * zone exists.
    */
   public static TimeZone getTimeZone(String ID)

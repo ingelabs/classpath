@@ -1,3 +1,25 @@
+2000-11-27  Warren Levy <warrenl@cygnus.com>
+
+	* gnu/java/locale/LocaleInformation_en.java (localPatternChars):
+	Letters 'k' and 'h' were reversed from the spec.
+	* java/text/DateFormat.java: Minor formatting fixes.
+	(DEFAULT): Added comment to note discrepancy against JCL.
+	(equals): Check that numberFormat is equals (per JCL).
+	* java/text/SimpleDateFormat.java (tokens): Made transient.
+	(serialVersionUID): Added new field.
+	(readObject): Added serialization method.
+	(standardChars): Added new private field.
+	(SimpleDateFormat): Rewrote constructors to match JCL.  Merged
+	from libgcj.
+	(toLocalizedPattern): Merged from libgcj.
+	(applyLocalizedPattern): Merged from libgcj.
+	(format): Merged from libgcj; now handles pos.
+	(parseLenient): Made private.
+	(parseStrict): Made private.
+	* java/util/TimeZone.java: Use user.timezone property if set.
+	(setRawOffset): Added abstract method per spec.
+	(getTimeZone): Changed comment to reflect that GMT is the default.
+
 2000-11-27  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	* java/util/Vector.java (ensureCapacity): Don't increment modCount.

@@ -1,5 +1,5 @@
 /* DateFormat.java -- Class for formatting/parsing date/times
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -67,6 +67,8 @@ public abstract class DateFormat extends Format implements java.io.Serializable
   public static final int LONG = 1;
   public static final int MEDIUM = 2;
   public static final int SHORT = 3;
+  // FIXME: XXX: The JCL says this should be set to MEDIUM.  Changing this
+  // to match the spec will affect other modules.
   public static final int DEFAULT = 4;
 
   /**
@@ -99,7 +101,7 @@ public abstract class DateFormat extends Format implements java.io.Serializable
     if (!(obj instanceof Date))
       throw new IllegalArgumentException("Invalid object type: " + obj);
 
-    return(format((Date)obj, toAppendTo, fieldPosition));
+    return format((Date)obj, toAppendTo, fieldPosition);
   }
 
   /**
@@ -363,7 +365,7 @@ public abstract class DateFormat extends Format implements java.io.Serializable
     Locale[] l = new Locale[1];
     l[0] = Locale.getDefault();
 
-    return(l);
+    return l;
   }
 
   /**
@@ -466,7 +468,7 @@ public abstract class DateFormat extends Format implements java.io.Serializable
    */
   public int hashCode()
   {
-    return(System.identityHashCode(this));
+    return System.identityHashCode(this);
   }
 
   /**
@@ -477,7 +479,7 @@ public abstract class DateFormat extends Format implements java.io.Serializable
    * <ul>
    * <li>Is not <code>null</code>.
    * <li>Is an instance of <code>DateFormat</code>.
-   * <li>Has the same calendar field value as this object.
+   * <li>Has the same calendar and numberFormat field values as this object.
    * </ul>
    *
    * @param obj The object to test for equality against.
@@ -487,16 +489,13 @@ public abstract class DateFormat extends Format implements java.io.Serializable
   public boolean equals(Object obj)
   {
     if (obj == null)
-      return(false);
+      return false;
 
     if (!(obj instanceof DateFormat))
-      return(false);
+      return false;
 
     DateFormat df = (DateFormat)obj;
-    if (!df.calendar.equals(calendar))
-      return(false);
-
-    return(true);
+    return calendar.equals(df.calendar) && numberFormat.equals(df.numberFormat);
   }
 
   /**
@@ -506,7 +505,7 @@ public abstract class DateFormat extends Format implements java.io.Serializable
    */
   public Object clone()
   {
-    return(super.clone());
+    return super.clone();
   }
 
 } // class DateFormat
