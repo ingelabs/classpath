@@ -1,5 +1,5 @@
 /* GtkCheckboxPeer.java -- Implements CheckboxPeer with GTK
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -43,39 +43,48 @@ import java.awt.*;
 public class GtkCheckboxPeer extends GtkComponentPeer
   implements CheckboxPeer
 {
+  // Group from last time it was set.
+  public CheckboxGroup old_group;
 
-  native void gtkRadioButtonSetGroup (Object group);
-  native void gtkRadioButtonNew (ComponentPeer parent,
-				 Object group, boolean checked, String label);
-  native void gtkCheckButtonNew (ComponentPeer parent,
-				 boolean checked, String label);
-  native void gtkCheckButtonSetState (boolean checked);
-  native void gtkCheckButtonSetLabel (String label);
+  public native void nativeCreate (CheckboxGroup group);
+  public native void nativeSetCheckboxGroup (CheckboxGroup group,
+					     CheckboxGroup old_group);
 
-  public GtkCheckboxPeer (Checkbox c, ComponentPeer cp)
+  public GtkCheckboxPeer (Checkbox c)
   {
     super (c);
-    
-    CheckboxGroup group = c.getCheckboxGroup ();
-    
-    if (group == null)
-      gtkCheckButtonNew (cp, c.getState (), c.getLabel ());
-    else
-      gtkRadioButtonNew (cp, group, c.getState(), c.getLabel ());
+  }
+
+  // We can't fully use the ordinary getArgs code here, due to
+  // oddities of this particular widget.  In particular we must be
+  // able to switch between a checkbutton and a radiobutton
+  // dynamically.
+  public void create ()
+  {
+    CheckboxGroup g = ((Checkbox) awtComponent).getCheckboxGroup ();
+    nativeCreate (g);
+  }
+
+  public void setState (boolean state)
+  {
+    set ("active", state);
+  }
+
+  public void setLabel (String label)
+  {
+    set ("label", label);
   }
 
   public void setCheckboxGroup (CheckboxGroup group)
   {
-    gtkRadioButtonSetGroup (group);
+    nativeSetCheckboxGroup (group, old_group);
+    old_group = group;
   }
-  
-  public void setLabel (String label)
+
+  public void getArgs (Component component, GtkArgList args)
   {
-    gtkCheckButtonSetLabel (label);
-  }
-  
-  public void setState (boolean state)
-  {
-    gtkCheckButtonSetState (state);
+    super.getArgs (component, args);
+    args.add ("active", ((Checkbox) component).getState ());
+    args.add ("label", ((Checkbox) component).getLabel ());
   }
 }

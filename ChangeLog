@@ -1,5 +1,38 @@
 2002-03-10  Tom Tromey  <tromey@redhat.com>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEvents.c
+	(awt_event_handler): Set insets to 0.
+
+	* native/jni/gtk-peer/gthread-jni.h: Fixed #endif.
+
+	Update checkbutton and radiobutton code.  Now it mostly works.
+	* gnu/java/awt/peer/gtk/GtkRadioButtonPeer.java: Removed.
+	* gnu/java/awt/peer/gtk/GtkCheckButtonPeer.java: Removed.
+	* gnu/java/awt/peer/gtk/GtkToggleButtonPeer.java: Removed.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java (createCheckbox): Use
+	GtkCheckboxPeer.
+	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java (setLabel): Rewrote.
+	(setState): Rewrote.
+	(gtkCheckButtonSetState, gtkCheckButtonSetLabel): Removed.
+	(setCheckboxGroup): Rewrote.
+	(gtkRadioButtonSetGroup): Removed.
+	(nativeCreate): Declare.
+	(gtkRadioButtonNew, gtkCheckButtonNew): Removed.
+	(GtkCheckboxPeer): Don't call `new' methods.
+	(create): New method.
+	(getArgs): Likewise.
+	(nativeSetCheckboxGroup): New method.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_setCheckboxGroup):
+	Likewise.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_setState): Removed.
+	(Java_gnu_java_awt_peer_gtk_GtkRadioButtonPeer_create): Removed.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonNew):
+	Removed.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonNew):
+	Removed.
+	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_setLabel): Removed.
+
 	* java/awt/GridLayout.java (layoutContainer): Handle case where
 	there are no items in container.
 

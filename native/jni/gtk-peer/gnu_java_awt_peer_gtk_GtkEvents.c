@@ -1,5 +1,5 @@
 /* gtkevents.c -- GDK/GTK event handlers
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -408,10 +408,10 @@ awt_event_handler (GdkEvent *event)
 		gdk_window_get_root_geometry (event->any.window, 
 					      &x, &y, &w, &h, &wb, &d);
 
-		top = event->configure.y - y;
-		left = event->configure.x - x;
-		bottom = h - event->configure.height - top;
-		right = w - event->configure.width - left;
+		/* We used to compute these based on the configure
+		   event's fields.  However, that gives strange and
+		   apparently incorrect results.  */
+		top = left = bottom = right = 0;
 
 		/* configure events are not posted to the AWT event queue,
 		   and as such, gdk/gtk will be called back before

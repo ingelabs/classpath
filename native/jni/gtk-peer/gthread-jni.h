@@ -1,5 +1,5 @@
 /* gthread-jni.h
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -44,4 +44,4 @@ exception statement from your version. */
 
 extern GThreadFunctions g_thread_jni_functions;
 
-#endif __GTHREADJNI_H__
+#endif /* __GTHREADJNI_H__ */

@@ -1,5 +1,5 @@
 /* gtkcheckboxpeer.c -- Native implementation of GtkCheckboxPeer
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -44,164 +44,82 @@ static void connect_checkbox_item_selectable_hook (JNIEnv *env,
 						   GtkToggleButton *item, 
 						   jobject item_obj);
 
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonSetGroup
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeCreate
   (JNIEnv *env, jobject obj, jobject group)
+{
+  GtkWidget *button;
+
+  gdk_threads_enter ();
+
+  if (group == NULL)
+    button = gtk_check_button_new_with_label ("");
+  else
+    {
+      void *native_group = NSA_GET_PTR (env, group);
+      button = gtk_radio_button_new_with_label_from_widget (native_group, "");
+      if (native_group == NULL)
+	{
+	  /* Set the native group so we can use the correct value the
+	     next time around.  FIXME: this doesn't work!  */
+	  NSA_SET_PTR (env, group, button);
+	}
+    }
+
+  gdk_threads_leave ();
+
+  NSA_SET_PTR (env, obj, button);
+}
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeSetCheckboxGroup
+  (JNIEnv *env, jobject obj, jobject group, jobject old_group)
 {
   GtkRadioButton *button;
   void *native_group, *ptr;
 
-  native_group = NSA_GET_PTR (env, group);
   ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
 
-  button=GTK_RADIO_BUTTON(ptr);
+  /* FIXME: we can't yet switch between a checkbutton and a
+     radiobutton.  However, AWT requires this.  For now we just
+     crash.  */
 
-  if (native_group==NULL)
+  button = GTK_RADIO_BUTTON (ptr);
+
+  if (old_group != NULL)
+    {
+      /* First, update our old group, if one exists, to point to some
+	 other widget in the group.  We have to do this because Gtk
+	 doesn't have a separate object to represent a radio button's
+	 group.  */
+      GSList *list;
+      for (list = gtk_radio_button_group (button); list != NULL;
+	   list = list->next)
+	{
+	  if (list->data != button)
+	    break;
+	}
+
+      NSA_SET_PTR (env, old_group, list ? list->data : NULL);
+    }
+
+  native_group = NSA_GET_PTR (env, group);
+  if (native_group == NULL)
     gtk_radio_button_set_group (button, NULL);
   else
     gtk_radio_button_set_group (button,
 				gtk_radio_button_group 
 				(GTK_RADIO_BUTTON (native_group)));
-				
+
   gdk_threads_leave ();
 
-  if (native_group==NULL)
+  /* If the native group wasn't set on the new CheckboxGroup, then set
+     it now so that the right thing will happen with the next
+     radiobutton.  */
+  if (native_group == NULL)
     NSA_SET_PTR (env, group, native_group);
-}
-
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkRadioButtonPeer_create
-  (JNIEnv *env, jobject obj)
-{
-  gpointer widget;
-
-  gdk_threads_enter ();
-  widget = gtk_type_new (gtk_radio_button_get_type ());
-  gdk_threads_leave ();
-
-  NSA_SET_PTR (env, obj, widget);
-}
-
-
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonNew
-  (JNIEnv *env, jobject obj, jobject parent_obj, 
-   jobject group, jboolean checked, jstring label)
-{
-  GtkWidget *button;
-  const char *str;
-  void *native_group;
-  void *parent;
-
-  str = (*env)->GetStringUTFChars (env, label, NULL);
-  native_group = NSA_GET_PTR (env, group);
-  parent = NSA_GET_PTR (env, parent_obj);
-
-  gdk_threads_enter ();
-
-  /* All checkboxes get a label, even if it is blank. */  
-
-  if (native_group==NULL)
-    button=gtk_radio_button_new_with_label_from_widget (NULL, str);
-  else
-    button=gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON 
-							(native_group), str);
-  set_parent (button, GTK_CONTAINER (parent));
-  gtk_widget_realize (button);
-  connect_awt_hook (env, obj, 1, 
-		    GTK_TOGGLE_BUTTON (button)->event_window);
-  connect_checkbox_item_selectable_hook (env, obj, GTK_TOGGLE_BUTTON (button),
-					 label);
-
-  if (checked)
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
-  
-  gdk_threads_leave ();
-  (*env)->ReleaseStringUTFChars (env, label, str);
-
-  if (native_group==NULL)
-    NSA_SET_PTR (env, group, button);
-  
-  NSA_SET_PTR (env, obj, button);
-}
-
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonNew
-  (JNIEnv *env, jobject obj, jobject parent_obj,
-   jboolean checked, jstring label)
-{
-  GtkWidget *button;
-  const char *str;
-  void *parent;
-
-  parent = NSA_GET_PTR (env, parent_obj);
-  str = (*env)->GetStringUTFChars (env, label, NULL);
-
-  gdk_threads_enter ();
-
-  /* All checkboxes get a label, even if it is blank. */  
-  button=gtk_check_button_new_with_label (str);
-  if (checked)
-    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
-  
-  set_parent (button, GTK_CONTAINER (parent));
-  gtk_widget_realize (button);
-  connect_awt_hook (env, obj, 1, 
-		    GTK_TOGGLE_BUTTON (button)->event_window);
-  connect_checkbox_item_selectable_hook (env, obj, GTK_TOGGLE_BUTTON (button),
-					 label);
-  gdk_threads_leave ();
-
-  (*env)->ReleaseStringUTFChars (env, label, str);
-
-  NSA_SET_PTR (env, obj, button);
-}
-
-
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkToggleButtonPeer_setState
-  (JNIEnv *env, jobject obj, jboolean checked)
-{
-  void *ptr;
-
-  ptr = NSA_GET_PTR (env, obj);
-
-  gdk_threads_enter ();
-  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (ptr),
-			       (checked) ? TRUE : FALSE);
-  gdk_threads_leave ();
-}
-
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkToggleButtonPeer_setLabel
-  (JNIEnv *env, jobject obj, jstring label)
-{
-  void *ptr;
-  const char *str;
-  GList *child;
-
-  ptr = NSA_GET_PTR (env, obj);
-  
-  printf("labelset\n");
-
-  str = (*env)->GetStringUTFChars (env, label, NULL);
-  gdk_threads_enter ();
-  
-  /* We assume that the checkbutton has 1 child, a label. */
-  
-  child=gtk_container_children (GTK_CONTAINER(ptr));
-  if (!child)
-    printf("No children in button!\n");
-  if(!GTK_IS_LABEL(child->data))
-    printf("Child is not label!\n");
-  
-  gtk_label_set (GTK_LABEL(child->data),str);
-  
-  gdk_threads_leave ();
-
-  g_list_free(child);
-  (*env)->ReleaseStringUTFChars (env, label, str);
 }
 
 static void

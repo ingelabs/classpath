@@ -206,10 +206,7 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected CheckboxPeer createCheckbox (Checkbox cb) 
   {
-    if (cb.getCheckboxGroup () != null)
-      return new GtkRadioButtonPeer (cb);
-    else
-      return new GtkCheckButtonPeer (cb);
+    return new GtkCheckboxPeer (cb);
   }
 
   protected CheckboxMenuItemPeer createCheckboxMenuItem (CheckboxMenuItem cmi)
