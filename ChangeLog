@@ -1,5 +1,10 @@
 2005-02-21  Michael Koch  <konqueror@gmx.de>
 
+	* include/gnu_java_nio_channels_FileChannelImpl.h:
+	Regenerated.
+
+2005-02-21  Michael Koch  <konqueror@gmx.de>
+
 	* java/lang/Class.java,
 	java/lang/SecurityManager.java,
 	java/net/URL.java:

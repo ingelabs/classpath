@@ -25,6 +25,18 @@ JNIEXPORT void JNICALL Java_gnu_java_nio_channels_FileChannelImpl_write___3BII (
 JNIEXPORT void JNICALL Java_gnu_java_nio_channels_FileChannelImpl_write__I (JNIEnv *env, jobject, jint);
 JNIEXPORT jobject JNICALL Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv *env, jobject, jchar, jlong, jint);
 JNIEXPORT jboolean JNICALL Java_gnu_java_nio_channels_FileChannelImpl_lock (JNIEnv *env, jobject, jlong, jlong, jboolean, jboolean);
+#undef gnu_java_nio_channels_FileChannelImpl_READ
+#define gnu_java_nio_channels_FileChannelImpl_READ 1L
+#undef gnu_java_nio_channels_FileChannelImpl_WRITE
+#define gnu_java_nio_channels_FileChannelImpl_WRITE 2L
+#undef gnu_java_nio_channels_FileChannelImpl_APPEND
+#define gnu_java_nio_channels_FileChannelImpl_APPEND 4L
+#undef gnu_java_nio_channels_FileChannelImpl_EXCL
+#define gnu_java_nio_channels_FileChannelImpl_EXCL 8L
+#undef gnu_java_nio_channels_FileChannelImpl_SYNC
+#define gnu_java_nio_channels_FileChannelImpl_SYNC 16L
+#undef gnu_java_nio_channels_FileChannelImpl_DSYNC
+#define gnu_java_nio_channels_FileChannelImpl_DSYNC 32L
 
 #ifdef __cplusplus
 }
