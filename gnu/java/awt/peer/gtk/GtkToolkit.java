@@ -1,5 +1,5 @@
 /* GtkToolkit.java -- Implements an AWT Toolkit using GTK for peers
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -88,6 +88,16 @@ public class GtkToolkit extends java.awt.Toolkit
 
 //      GtkImage i = (GtkImage) image;
 //      return i.checkImage ();
+  }
+
+  public Image createImage (String filename)
+  {
+    return new GtkImage (new GdkPixbufDecoder (filename), null);
+  }
+
+  public Image createImage (URL url)
+  {
+    return new GtkImage (new GdkPixbufDecoder (url), null);
   }
 
   public Image createImage (ImageProducer producer) 

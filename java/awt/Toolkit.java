@@ -1,5 +1,5 @@
 /* Toolkit.java -- AWT Toolkit superclass
-   Copyright (C) 1999, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,11 +38,13 @@ exception statement from your version. */
 
 package java.awt;
 
+import java.awt.event.*;
 import java.awt.peer.*;
 import java.awt.image.*;
 import java.awt.datatransfer.Clipboard;
 import java.util.Properties;
 import java.net.URL;
+import java.beans.*;
 
 /**
   * The AWT system uses a set of native peer objects to implement its
@@ -74,8 +76,11 @@ private static String default_toolkit_name =
 private static Toolkit toolkit;
 
 // The toolkit properties
-// FIXME: Who sets these?
 private static Properties props = new Properties();
+
+private PropertyChangeSupport changeSupport = new PropertyChangeSupport(this);
+
+private Properties desktopProperties = new Properties();
 
 /*************************************************************************/
 
@@ -623,7 +628,7 @@ createImage(ImageProducer producer);
   * @return The created image.
   */
 public abstract Image
-createImage(byte[] date, int offset, int len);
+createImage(byte[] data, int offset, int len);
 
 /*************************************************************************/
 
@@ -640,6 +645,13 @@ createImage(byte[] data)
 {
   return(createImage(data, 0, data.length));
 }
+
+public abstract Image
+createImage(String filename);
+
+public abstract Image
+createImage(URL url);
+
 
 /*************************************************************************/
 
@@ -679,8 +691,29 @@ getSystemClipboard();
 public int
 getMenuShortcutKeyMask()
 {
-  return java.awt.event.KeyEvent.VK_CONTROL;
-  //  return(Event.CTRL_MASK);
+  return Event.CTRL_MASK;
+}
+
+public boolean
+getLockingKeyState(int keyCode)
+{
+  if (keyCode != KeyEvent.VK_CAPS_LOCK
+      && keyCode != KeyEvent.VK_NUM_LOCK
+      && keyCode != KeyEvent.VK_SCROLL_LOCK)
+    throw new IllegalArgumentException();
+
+  throw new UnsupportedOperationException();
+}
+
+public void
+setLockingKeyState(int keyCode, boolean on)
+{
+  if (keyCode != KeyEvent.VK_CAPS_LOCK
+      && keyCode != KeyEvent.VK_NUM_LOCK
+      && keyCode != KeyEvent.VK_SCROLL_LOCK)
+    throw new IllegalArgumentException();
+
+  throw new UnsupportedOperationException();
 }
 
 /*************************************************************************/
@@ -713,5 +746,80 @@ getSystemEventQueueImpl();
   */
 public abstract void
 beep();
+
+public Cursor
+createCustomCursor(Image cursor, Point hotSpot, String name)
+  throws IndexOutOfBoundsException
+{
+  // Presumably the only reason this isn't abstract is for backwards
+  // compatibility? FIXME?
+  return null;
+}
+
+public Dimension
+getBestCursorSize(int preferredWidth, int preferredHeight)
+{
+  return new Dimension (0,0);
+}
+
+public int
+getMaximumCursorColors()
+{
+  return 0;
+}
+
+public final Object
+getDesktopProperty(String propertyName)
+{
+  return desktopProperties.get(propertyName);
+}
+
+protected final void
+setDesktopProperty(String name, Object newValue)
+{
+  Object oldValue = getDesktopProperty(name);
+  desktopProperties.put(name, newValue);
+  changeSupport.firePropertyChange(name, oldValue, newValue);
+}
+protected Object
+lazilyLoadDesktopProperty(String name)
+{
+  // FIXME - what is this??
+  return null;
+}
+
+protected void
+initializeDesktopProperties()
+{
+  // Overridden by toolkit implementation?
+}
+
+public void
+addPropertyChangeListener(String name, PropertyChangeListener pcl)
+{
+  changeSupport.addPropertyChangeListener(name, pcl);
+}
+  
+public void
+removePropertyChangeListener(String name, PropertyChangeListener pcl)
+{
+  changeSupport.removePropertyChangeListener(name, pcl);
+}
+
+public void
+addAWTEventListener(AWTEventListener listener, long eventMask)
+{
+  // SecurityManager s = System.getSecurityManager();
+  // if (s != null)
+  //  s.checkPermission(AWTPermission("listenToAllAWTEvents"));
+
+  // FIXME
+}
+
+public void
+removeAWTEventListener(AWTEventListener listener)
+{
+  // FIXME
+}
 
 } // class Toolkit

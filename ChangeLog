@@ -1,5 +1,27 @@
 2002-01-23  Tom Tromey  <tromey@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GtkToolkit.java (createImage(String)): New
+	method.
+	(createImage(URL)): Likewise.
+	* java/awt/Toolkit.java (createImage(String)): New method.
+	(createImage(URL)): Likewise.
+	(getMenuShortcutKeyMask): Return Event.CTRL_MASK.
+	(getLockingKeyState): New method.
+	(setLockingKeyState): Likewise.
+	(createCustomCursor): Likewise.
+	(getBestCursorSize): Likewise.
+	(getMaximumCursorColors): Likewise.
+	(getDesktopProperty): Likewise.
+	(setDesktopProperty): Likewise.
+	(changeSupport): New field.
+	(desktopProperties): Likewise.
+	(lazilyLoadDesktopProperty): New method.
+	(initializeDesktopProperties): Likewise.
+	(addPropertyChangeListener): Likewise.
+	(removePropertyChangeListener): Likewise.
+	(addAWTEventListener): Likewise.
+	(removeAWTEventListener): Likewise.
+
 	* java/awt/PaintContext.java: Updated license.
 
 	* java/awt/GridBagConstraints.java (clone): Catch
