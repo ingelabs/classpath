@@ -147,7 +147,6 @@ AC_ARG_ENABLE(maintainer-build,
   *) AC_MSG_ERROR(bad value ${enableval} for --enable-maintainer-build) ;;
 esac],
 [conditional_maintainer_build=false])
-AM_CONDITIONAL(MAINTAINER_BUILD, test x$conditional_maintainer_build = xtrue)
 
 dnl This build mode indicates to configure it should compile java classes
 dnl but not rebuild the .deps file for doing so.  The default then is to
@@ -163,7 +162,13 @@ AC_ARG_ENABLE(developer-build,
   *) AC_MSG_ERROR(bad value ${enableval} for --enable-developer-build) ;;
 esac],
 [conditional_developer_build=false])
+
+AM_CONDITIONAL(MAINTAINER_BUILD, test x$conditional_maintainer_build = xtrue)
+if test x$conditional_maintainer_build = xtrue; then
+  conditional_developer_build=false
+endif
 AM_CONDITIONAL(DEVELOPER_BUILD, test x$conditional_developer_build = xtrue)
+
 
 dnl java dependency creation
 AC_ARG_WITH(jdeps,
