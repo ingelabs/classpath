@@ -54,8 +54,6 @@ public class MenuItem extends MenuComponent
   implements Serializable
 {
 
-// FIXME: The enabled event mask is not used at this time.
-
 /*
  * Static Variables
  */

@@ -87,6 +87,9 @@ public class GtkFramePeer extends GtkWindowPeer
         gtkFixedSetVisible (false);
         menuBar = (MenuBarPeer) ((MenuBar) bar).getPeer();
         setMenuBarPeer (menuBar);
+        int menuBarWidth =
+          awtComponent.getWidth () - insets.left - insets.right;
+        setMenuBarWidth (menuBar, menuBarWidth);
         menuBarHeight = getMenuBarHeight ();
         insets.top += menuBarHeight;
         awtComponent.validate ();
@@ -98,8 +101,11 @@ public class GtkFramePeer extends GtkWindowPeer
         gtkFixedSetVisible (false);
         removeMenuBarPeer();
         int oldHeight = menuBarHeight;
+        int menuBarWidth =
+          awtComponent.getWidth () - insets.left - insets.right;
         menuBar = (MenuBarPeer) ((MenuBar) bar).getPeer ();
         setMenuBarPeer (menuBar);
+        setMenuBarWidth (menuBar, menuBarWidth);
         menuBarHeight = getMenuBarHeight ();
         if (oldHeight != menuBarHeight)
           {

@@ -54,8 +54,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_create
   str = (*env)->GetStringUTFChars (env, label, NULL);
 
   gdk_threads_enter ();
-  
-  if (strcmp (str, "-") == 0) /* "-" signals that we need a separator */
+
+  /* "-" signals that we need a separator. */
+  if (strcmp (str, "-") == 0)
     widget = gtk_menu_item_new ();
   else
     widget = gtk_menu_item_new_with_label (str);
@@ -102,18 +103,21 @@ Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_gtkWidgetModifyFont
 
   label = gtk_bin_get_child (GTK_BIN (ptr));
 
-  font_desc = pango_font_description_from_string (font_name);
-  pango_font_description_set_size (font_desc, size * dpi_conversion_factor);
+  if (label)
+    {
+      font_desc = pango_font_description_from_string (font_name);
+      pango_font_description_set_size (font_desc, size * dpi_conversion_factor);
 
-  if (style & AWT_STYLE_BOLD)
-    pango_font_description_set_weight (font_desc, PANGO_WEIGHT_BOLD);
+      if (style & AWT_STYLE_BOLD)
+        pango_font_description_set_weight (font_desc, PANGO_WEIGHT_BOLD);
 
-  if (style & AWT_STYLE_ITALIC)
-    pango_font_description_set_style (font_desc, PANGO_STYLE_OBLIQUE);
+      if (style & AWT_STYLE_ITALIC)
+        pango_font_description_set_style (font_desc, PANGO_STYLE_OBLIQUE);
 
-  gtk_widget_modify_font (GTK_WIDGET(label), font_desc);
+      gtk_widget_modify_font (GTK_WIDGET(label), font_desc);
 
-  pango_font_description_free (font_desc);
+      pango_font_description_free (font_desc);
+    }
 
   gdk_threads_leave();
 
@@ -125,6 +129,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_setLabel
 {
   void *ptr;
   const char *str;
+  GtkAccelLabel *accel_label;
 
   ptr = NSA_GET_PTR (env, obj);
 
@@ -132,15 +137,10 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_setLabel
 
   gdk_threads_enter ();
 
-  if (strcmp (str, "-") == 0) /* "-" signals that we need a separator */
-    gtk_container_remove (GTK_CONTAINER (ptr), GTK_BIN (ptr)->child);
-  else
-    {
-      GtkAccelLabel *accel_label = GTK_ACCEL_LABEL (GTK_BIN (ptr)->child);
+  accel_label = GTK_ACCEL_LABEL (GTK_BIN (ptr)->child);
 
-      gtk_label_set_text (GTK_LABEL (accel_label), str);
-      gtk_accel_label_refetch (accel_label);
-    }
+  gtk_label_set_text (GTK_LABEL (accel_label), str);
+  gtk_accel_label_refetch (accel_label);
 
   gdk_threads_leave ();
 
@@ -153,4 +153,3 @@ item_activate (GtkMenuItem *item __attribute__((unused)), jobject peer_obj)
   (*gdk_env)->CallVoidMethod (gdk_env, peer_obj,
 			      postMenuActionEventID);
 }
-
