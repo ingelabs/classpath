@@ -1,5 +1,14 @@
 2003-06-18  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/FileChannelImpl.java,
+	gnu/java/nio/SelectorImpl.java,
+	gnu/java/nio/ServerSocketChannelImpl.java,
+	gnu/java/nio/SocketChannelImpl.java,
+	java/nio/DirectByteBufferImpl.java:
+	New versions from libgcj.
+
+2003-06-18  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/InetSocketAddress.java,
 	java/net/Socket.java:
 	New versions from libgcj.

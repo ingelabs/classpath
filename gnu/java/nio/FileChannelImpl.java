@@ -35,6 +35,7 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package gnu.java.nio;
 
 import java.io.EOFException;
@@ -65,7 +66,6 @@ import gnu.classpath.RawData;
 
 public class FileChannelImpl extends FileChannel
 {
-  // FIXME: This should not be public
   public RawData map_address;
   
   int length;
