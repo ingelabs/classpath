@@ -1,3 +1,9 @@
+2002-11-01  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/java-io/java_io_ObjectInputStream.c
+	(Java_java_io_ObjectInputStream_currentClassLoader): Return result of
+	CallObjectMethod().
+
 2002-10-31  Mark Wielaard  <mark@klomp.org>:
 
 	* java/net/URLDecoder.java: Indentation and documentation update.

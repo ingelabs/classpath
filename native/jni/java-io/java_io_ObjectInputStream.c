@@ -61,8 +61,7 @@ Java_java_io_ObjectInputStream_currentClassLoader( JNIEnv * env,
   if( id == NULL )
     return NULL;
   
-  (*env)->CallObjectMethod( env, loader, id );
-  return loader;
+  return (*env)->CallObjectMethod( env, loader, id, clazz );
 }
 
 
