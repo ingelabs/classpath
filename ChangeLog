@@ -1,3 +1,9 @@
+2005-02-08  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/tree/DefaultMutableTreeNode.java:
+	Reworked Javadocs all over.
+	(getPathToRoot): Fixed direction of result array initialization.
+
 2005-02-07  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/ResourceBundle.java (getObject): Clarify
