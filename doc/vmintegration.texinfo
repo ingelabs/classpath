@@ -90,7 +90,8 @@ JIT, and suffers recently from slow development.
 @item @uref{http://www.intel.com/research/mrl/orp/,Intel's Open Runtime Platform}
 Intel surprised us not long ago with the release of this rather advanced
 VM that uses GNU Classpath for a set of class libraries and works on
-Linux and Windows 2000.
+Linux and Windows 2000.  As of June, 2004, it does not appear that ORP
+is under active development.
 
 @item @uref{http://www.sablevm.org/,SableVM}
 SableVM is a robust, extremely portable, efficient, and
@@ -127,11 +128,27 @@ compiled/interpreted applications.
 GCJ is part of the GNU Compiler Collection (@uref{http://gcc.gnu.org/,GCC}).
 On march 6 2000 the libgcj and GNU Classpath projects were officially merged
 and there is active work on merging all the classes between the projects.
+Licensed under GPL+exception, just as GNU Classpath is.
 
 @item @uref{http://kissme.sourceforge.net/,Kissme}
 This is a free Java Virtual Machine that is being developed on GNU/Linux
-and can run console java applications.  kissme also provides support for
-orthogonally persistent java.
+and can run console Java applications.  Kissme also provides support for
+orthogonally persistent Java.
+@c I don't know what ``orthogonally persistent Java'' is, and I bet
+@c there are other people don't know either. -- Steve Augart, 4 June 2004
+
+@item @uref{http://jamvm.sourceforge.net/,JamVM}
+A simple, small bytecode interpreter that works out-of-the-box with
+pure GNU Classpath; it is emerging as the preferred platform for
+quickly testing a new build of GNU Classpath.  Licensed under the GPL.
+
+@item @uref{http://oss.software.ibm.com/jikesrvm,Jikes RVM}
+A free runtime environment for Java, written in Java.  Works
+out-of-the-box with pure GNU Classpath.  Features an optimizing JIT.
+Runs on the x86 and PowerPC architectures, on the AIX, Linux, and Mac
+OS/X operating systems.  Licensed under the CPL (Common Public
+License).  Extensively documented.  Actively developed as of June,
+2004.
 
 @end itemize
 
@@ -151,7 +168,7 @@ yet.  However, when we move to 1.2 support, it probably will matter, so
 we'll have a note in here at that time.
 
 The current initialization order is currently documented in the
-Runtime.java source file.
+@file{Runtime.java} source file.
 
 @node Classpath Hooks, VM Hooks, Initialization, Top
 @comment node-name, next, previous, up
@@ -173,23 +190,23 @@ You also need to implement some helper classes in java.lang that classes
 from Classpath call out to to get certain VM-specific dirty work done:
 
 @itemize @bullet
-@item java.lang.VMObject
-is the bridge between the low level Object facilities such
-as makeing a clone, getting the class of the object and the wait/notify
+@item @code{java.lang.VMObject}
+is the bridge between the low level @code{Object} facilities such
+as making a clone, getting the class of the object and the wait/notify
 semantics.
-@item java.lang.VMClassLoader
+@item @code{java.lang.VMClassLoader}
 provides methods for defining and resolving core and primitive classes.
-@item java.lang.VMSystem
-is used to initialize the System properties, the System.arraycopy
-method and the identityHashCode of an Object.
-@item java.lang.VMSecurityManager
+@item @code{java.lang.VMSystem}
+is used to initialize the @code{System} properties, the @code{System.arraycopy}
+method and the @code{identityHashCode} of an @code{Object}.
+@item @code{java.lang.VMSecurityManager}
 provides the class context (stack trace) of the currently
-executing thread and a way to get the currently active ClassLoader.
-@item java.lang.VMThrowable
-used to hold the VM state of a throwable, created when a Throwable is
-created or the fillInStacktrace() method is called, when the actual stack
+executing thread and a way to get the currently active @code{ClassLoader}.
+@item @code{java.lang.VMThrowable}
+used to hold the VM state of a throwable, created when a @code{Throwable} is
+created or the @code{fillInStacktrace()} method is called, when the actual stack
 trace is needed (a lot of exceptions are never actually used), the
-getStackTrace() method is used to create a real StackTraceElement array
+@code{getStackTrace()} method is used to create a real @code{StackTraceElement} array
 for the exception.
 @end itemize
 
@@ -197,12 +214,12 @@ Some of the classes you implement for the VM will need to call back to
 package-private methods in Classpath:
 
 @itemize @bullet
-@item java.lang.ThreadGroup.addThread(Thread)
-Call this method from Thread when a new Thread is created, to add it to
+@item @code{java.lang.ThreadGroup.addThread(Thread)}
+Call this method from @code{Thread} when a new @code{Thread} is created, to add it to
 the group.
 
-@item java.lang.ThreadGroup.removeThread(Thread)
-Call this method from Thread when a Thread is stopped or destroyed.
+@item @code{java.lang.ThreadGroup.removeThread(Thread)}
+Call this method from @code{Thread} when a @code{Thread} is stopped or destroyed.
 
 @end itemize
 
@@ -217,27 +234,27 @@ classes.  This is a guide to all of the things the VM itself needs to
 know about classes.
 
 @itemize @bullet
-@item java.lang.Class @*
-You, the VM, get to create this Class, so you may define the internal
+@item @code{java.lang.Class} @*
+You, the VM, get to create this @code{Class}, so you may define the internal
 structure any way you wish.  You probably have code somewhere to
-translate your internal class structure into a Class object.  That is
+translate your internal class structure into a @code{Class} object.  That is
 the only known place where this matters.  Some VMs do not create the
-Class object at the point where the class is defined; instead, they wait
-until a Class object is actually used.
+@code{Class} object at the point where the class is defined; instead, they wait
+until a @code{Class} object is actually used.
 
 @item Array Classes @*
-When you are creating an array class, you should set the ClassLoader of
-the array class to the ClassLoader of its component type.  Whenever you
-add a class to a ClassLoader, you need to notify the ClassLoader and
-add the new Class to its internal cache of classes.  To do this, call
-ClassLoader.addVMCreatedClass(Class).  @emph{Note: this is written in
+When you are creating an array class, you should set the @code{ClassLoader} of
+the array class to the @code{ClassLoader} of its component type.  Whenever you
+add a class to a @code{ClassLoader}, you need to notify the @code{ClassLoader} and
+add the new @code{Class} to its internal cache of classes.  To do this, call
+@code{ClassLoader.addVMCreatedClass(Class)}.  @emph{Note: this is written in
 anticipation of 1.2 support and does not apply just yet.}
 
 @item Primordial Class Loader @*
 When the primordial class loader loads a class, it needs to tell
 Classpath what it has done in order for security stuff to work right.
 To do this, call the static method
-ClassLoader.newPrimordialClass(Class).
+@code{ClassLoader.newPrimordialClass(Class)}.
 
 Even the first few core classes need to do this; in order to do it,
 simply call this method @emph{after} the initial class loading has been
@@ -249,29 +266,29 @@ apply just yet.}
 
 @item Top-level Exception Handler @*
 Exceptions take care of themselves in Classpath; all you need to do in
-the top-level exception handler is call Throwable.printStackTrace().
+the top-level exception handler is call @code{Throwable.printStackTrace()}.
 
 @item Security and Traces @*
 There will eventually be a feature in the 1.2 security that keeps the
-AccessController from having to evaluate @emph{all} of the
-ProtectionDomains every time a security check is made.  I think a common
+@code{AccessController} from having to evaluate @emph{all} of the
+@code{ProtectionDomain}s every time a security check is made.  I think a common
 case is a single method doing a lot of things that require security
 checks.  However, I don't want to bog down the method stack too much, so
-this feature of the VM will have the AccessController for a thread
+this feature of the VM will have the @code{AccessController} for a thread
 calling out to the VM to tell it how high it was on the stack when it
 made the last security request.  Every time the stack goes lower than
-that number, the VM will decrement the number.  The AccessController
+that number, the VM will decrement the number.  The @code{AccessController}
 will remember what the accumulated protection status was at every stack
-level (an AccessControlContext) and use that aggregated information to
+level (an @code{AccessControlContext}) and use that aggregated information to
 do the check.  I am not sure, however, whether the savings are
 substantial enough to outweigh the integer check and set after every
 method call.  I will investigate.
 
 @item Threading @*
 I figured I'd put this here because a VM guy might be wondering about it.
-We implement ThreadGroup, but that class is almost entirely
-VM-independent.  The root ThreadGroup, a static field called
-ThreadGroup.root, should be initialized by Classpath, but if you wish to
+We implement @code{ThreadGroup}, but that class is almost entirely
+VM-independent.  The root @code{ThreadGroup}, a static field called
+@code{ThreadGroup.root}, should be initialized by Classpath, but if you wish to
 reinitialize it yourself, there should be no harm.
 
 @end itemize

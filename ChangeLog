@@ -1,3 +1,9 @@
+2004-06-05  Steven Augart  <augart@watson.ibm.com>
+
+	* doc/vmintegration.texinfo: Added formatting.  Fixed some typos.
+	(Introduction): Added Jikes RVM and JamVM to the VM list.
+	Minor updates to other VM descriptions.
+
 2004-06-04  Steven Augart  <augart@watson.ibm.com>
 
 	* resource/gnu/regexp/MessagesBundle.properties, 
