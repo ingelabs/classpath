@@ -1,5 +1,9 @@
 2005-01-11  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/text/DefaultEditorKit.java
+
+2005-01-11  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/UIDefaults.java (put): Handle value of null.
 
 2005-01-11  Chris Burdess  <dog@gnu.org>
