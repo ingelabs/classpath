@@ -1,3 +1,15 @@
+2003-09-22  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/InetAddress.java
+	(static): Unified static initializers.
+	(address): Made private.
+	(InetAddress): Moved around.
+	(isMulticastAddress): Moved around.
+	(getByAddress): New method, merged from libgcj.
+	(readResolve): Likewise.
+	(readObject): Likewise.
+	(writeObject): Likewise.
+
 2003-09-21  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/JarURLConnection.java

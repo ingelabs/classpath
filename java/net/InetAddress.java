@@ -38,6 +38,10 @@ exception statement from your version. */
 
 package java.net;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -60,74 +64,70 @@ import gnu.classpath.Configuration;
  */
 public class InetAddress implements Serializable
 {
-  // Static Initializer to load the shared library needed for name resolution
-  static
-  {
-    if (Configuration.INIT_LOAD_LIBRARY)
-      {
-        System.loadLibrary ("javanet");
-      }
-  }
-
   private static final long serialVersionUID = 3286316764910316507L;
 
   /**
    * The default DNS hash table size,
-   * use a prime number happy with hash table
+   * Use a prime number happy with hash table.
    */
   private static final int DEFAULT_CACHE_SIZE = 89;
 
   /**
-   * The default caching period in minutes
+   * The default caching period in minutes.
    */
   private static final int DEFAULT_CACHE_PERIOD = (4 * 60);
 
   /**
-   * Percentage of cache entries to purge when the table gets full
+   * Percentage of cache entries to purge when the table gets full.
    */
   private static final int DEFAULT_CACHE_PURGE_PCT = 30;
   
   /**
-   * The special IP address INADDR_ANY
+   * The special IP address INADDR_ANY.
    */
   private static InetAddress inaddr_any;
 
   /**
-   * dummy InetAddress, used to bind socket to any (all) network interfaces
+   * Dummy InetAddress, used to bind socket to any (all) network interfaces.
    */
   static InetAddress ANY_IF;
 
   /**
-   * The size of the cache
+   * The size of the cache.
    */
   private static int cache_size = 0;
 
   /**
    * The length of time we will continue to read the address from cache
-   * before forcing another lookup
+   * before forcing another lookup.
    */
   private static int cache_period = 0;
 
   /**
-   * What percentage of the cache we will purge if it gets full
+   * What percentage of the cache we will purge if it gets full.
    */
   private static int cache_purge_pct = 0;
 
   /**
-   * HashMap to use as DNS lookup cache
-   * use HashMap because all accesses to cache are already synchronized
+   * HashMap to use as DNS lookup cache.
+   * Use HashMap because all accesses to cache are already synchronized.
    */
   private static HashMap cache;
 
-  // Static initializer for the cache
   static
   {
+    // load the shared library needed for name resolution
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+        System.loadLibrary ("javanet");
+      }
+    
     // Look for properties that override default caching behavior
     cache_size = Integer.getInteger ("gnu.java.net.dns_cache_size",
-				     DEFAULT_CACHE_SIZE).intValue ();
+				     DEFAULT_CACHE_SIZE).intValue();
     cache_period = Integer.getInteger ("gnu.java.net.dns_cache_period",
-				       DEFAULT_CACHE_PERIOD * 60 *
-				       1000).intValue ();
+				       DEFAULT_CACHE_PERIOD * 60
+				       * 1000).intValue();
 
     cache_purge_pct = Integer.getInteger ("gnu.java.net.dns_cache_purge_pct",
 					  DEFAULT_CACHE_PURGE_PCT).
@@ -149,18 +149,25 @@ public class InetAddress implements Serializable
     catch (UnknownHostException uhe)
       {
         // Hmmm, make one up and hope that it works.
-        byte[]zeros = { 0, 0, 0, 0 };
+        byte[] zeros = { 0, 0, 0, 0 };
         ANY_IF = new InetAddress (zeros);
       }
   }
 
   /**
-   * An array of octets representing an IP address
+   * The Serialized Form specifies that an int 'address' is saved/restored.
+   * This class uses a byte array internally so we'll just do the conversion
+   * at serialization time and leave the rest of the algorithm as is.
+   */
+  private int address;
+
+  /**
+   * An array of octets representing an IP address.
    */
   transient byte[] addr;
 
   /**
-   * The name of the host for this address
+   * The name of the host for this address.
    */
   String hostName;
 
@@ -170,15 +177,93 @@ public class InetAddress implements Serializable
   transient String hostname_alias;
 
   /**
-   * The time this address was looked up
+   * The time this address was looked up.
    */
   transient long lookup_time;
 
   /**
-   * Required for serialized form
+   * The field 'family' seems to be the AF_ value.
+   * FIXME: Much of the code in the other java.net classes does not make
+   * use of this family field.  A better implementation would be to make
+   * use of getaddrinfo() and have other methods just check the family
+   * field rather than examining the length of the address each time.
    */
-  int address;
   int family;
+
+  /**
+   * Initializes this object's addr instance variable from the passed in
+   * int array.  Note that this constructor is protected and is called
+   * only by static methods in this class.
+   *
+   * @param ipaddr The IP number of this address as an array of bytes
+   */
+  InetAddress (byte[] address)
+  {
+    this (address, null, null);
+  }
+
+  /**
+   * Initializes this object's addr instance variable from the passed in
+   * int array.  Note that this constructor is protected and is called
+   * only by static methods in this class.
+   *
+   * @param ipaddr The IP number of this address as an array of bytes
+   * @param hostname The hostname of this IP address.
+   */
+  InetAddress (byte[] address, String hostname)
+  {
+    this (address, hostname, null);
+  }
+
+  /**
+   * Initializes this object's addr instance variable from the passed in
+   * int array.  Note that this constructor is protected and is called
+   * only by static methods in this class.
+   *
+   * @param ipaddr The IP number of this address as an array of bytes
+   * @param hostname The hostname of this IP address.
+   * @param hostname_alias A backup hostname to use if hostname is null to
+   * prevent reverse lookup failures
+   */
+  InetAddress (byte[] ipaddr, String hostname, String hostname_alias)
+  {
+    addr = new byte [ipaddr.length];
+
+    for (int i = 0; i < ipaddr.length; i++)
+      addr [i] = ipaddr [i];
+
+    this.hostName = hostname;
+    this.hostname_alias = hostname_alias;
+    lookup_time = System.currentTimeMillis();
+
+    family = 2;			/* AF_INET */
+    address = addr [3] & 0xff;
+    address |= ((addr [2] << 8) & 0xff00);
+    address |= ((addr [1] << 16) & 0xff0000);
+    address |= ((addr [0] << 24) & 0xff000000);
+
+  }
+
+  /**
+   * Returns true if this address is a multicast address, false otherwise.
+   * An address is multicast if the high four bits are "1110".  These are
+   * also known as "Class D" addresses.
+   *
+   * @return true if mulitcast, false if not
+   */
+  public boolean isMulticastAddress ()
+  {
+    if (addr.length == 0)
+      return (false);
+
+    // Mask against high order bits of 1110
+    if ((addr[0] & 0xF0) == 224)
+      return (true);
+
+    return (false);
+  }
+
+  
 
   /**
    * This method checks the DNS cache to see if we have looked this hostname
@@ -384,60 +469,6 @@ public class InetAddress implements Serializable
   }
 
   /**
-   * Initializes this object's addr instance variable from the passed in
-   * int array.  Note that this constructor is protected and is called
-   * only by static methods in this class.
-   *
-   * @param ipaddr The IP number of this address as an array of bytes
-   */
-  InetAddress (byte[]ipaddr)
-  {
-    this (ipaddr, null, null);
-  }
-
-  /**
-   * Initializes this object's addr instance variable from the passed in
-   * int array.  Note that this constructor is protected and is called
-   * only by static methods in this class.
-   *
-   * @param ipaddr The IP number of this address as an array of bytes
-   * @param hostname The hostname of this IP address.
-   */
-  InetAddress (byte[]ipaddr, String hostname)
-  {
-    this (ipaddr, hostname, null);
-  }
-
-  /**
-   * Initializes this object's addr instance variable from the passed in
-   * int array.  Note that this constructor is protected and is called
-   * only by static methods in this class.
-   *
-   * @param ipaddr The IP number of this address as an array of bytes
-   * @param hostname The hostname of this IP address.
-   * @param hostname_alias A backup hostname to use if hostname is null to
-   * prevent reverse lookup failures
-   */
-  InetAddress (byte[]ipaddr, String hostname, String hostname_alias)
-  {
-    addr = new byte[ipaddr.length];
-
-    for (int i = 0; i < ipaddr.length; i++)
-      addr[i] = ipaddr[i];
-
-    this.hostName = hostname;
-    this.hostname_alias = hostname_alias;
-    lookup_time = System.currentTimeMillis ();
-
-    family = 2;			/* AF_INET */
-    address = addr[3] & 0xff;
-    address |= ((addr[2] << 8) & 0xff00);
-    address |= ((addr[1] << 16) & 0xff0000);
-    address |= ((addr[0] << 24) & 0xff000000);
-
-  }
-
-  /**
    * Tests this address for equality against another InetAddress.  The two
    * addresses are considered equal if they contain the exact same octets.
    * This implementation overrides Object.equals()
@@ -550,25 +581,6 @@ public class InetAddress implements Serializable
   }
 
   /**
-   * Returns true if this address is a multicast address, false otherwise.
-   * An address is multicast if the high four bits are "1110".  These are
-   * also known as "Class D" addresses.
-   *
-   * @return true if mulitcast, false if not
-   */
-  public boolean isMulticastAddress ()
-  {
-    if (addr.length == 0)
-      return (false);
-
-    // Mask against high order bits of 1110
-    if ((addr[0] & 0xF0) == 224)
-      return (true);
-
-    return (false);
-  }
-
-  /**
    * Converts this address to a String.  This string contains the IP in
    * dotted decimal form. For example: "127.0.0.1"  This method is equivalent
    * to getHostAddress() and overrides Object.toString()
@@ -601,7 +613,7 @@ public class InetAddress implements Serializable
    *
    * @since 1.4
    */
-  public static InetAddress getByAddress (byte[]addr)
+  public static InetAddress getByAddress (byte[] addr)
     throws UnknownHostException
   {
     if (addr.length != 4 && addr.length != 16)
@@ -611,6 +623,29 @@ public class InetAddress implements Serializable
       return new Inet4Address (addr, null);
 
     return new Inet6Address (addr, null);
+  }
+
+  /**
+   * Creates an InetAddress based on the provided host name and IP address.
+   * No name service is checked for the validity of the address.
+   *
+   * @param host The hostname of the InetAddress object to create
+   * @param addr The IP address to create the InetAddress object from
+   *
+   * @exception UnknownHostException If IP address is of illegal length
+   *
+   * @since 1.4
+   */
+  public static InetAddress getByAddress (String host, byte[] addr)
+    throws UnknownHostException
+  {
+    if (addr.length == 4)
+      return new Inet4Address (addr, host);
+
+    if (addr.length == 16)
+      return new Inet6Address (addr, host);
+    
+    throw new UnknownHostException ("IP address has illegal length");
   }
 
   /**
@@ -647,4 +682,35 @@ public class InetAddress implements Serializable
    */
   private static native byte[][] getHostByName (String hostname)
     throws UnknownHostException;
+
+  private void readResolve () throws ObjectStreamException
+  {
+    // FIXME: implement this
+  }
+	  
+  private void readObject (ObjectInputStream ois)
+    throws IOException, ClassNotFoundException
+  {
+    ois.defaultReadObject ();
+    addr = new byte [4];
+    addr [3] = (byte) address;
+    
+    for (int i = 2; i >= 0; --i)
+      addr [i] = (byte) (address >>= 8);
+    
+    family = 2;  /* AF_INET  */
+  }
+
+  private void writeObject (ObjectOutputStream oos) throws IOException
+  {
+    // Build a 32 bit address from the last 4 bytes of a 4 byte IPv4 address
+    // or a 16 byte IPv6 address.
+    int len = addr.length;
+    int i = len - 4;
+    
+    for (; i < len; i++)
+      address = address << 8 | (((int) addr [i]) & 0xFF);
+    
+    oos.defaultWriteObject ();
+  }
 }
