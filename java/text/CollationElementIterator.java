@@ -92,6 +92,11 @@ public final class CollationElementIterator
   private Object[] text_decomposition;
 
   /**
+   * Array containing the index of the specified block.
+   */
+  private int[] text_indexes;
+
+  /**
    * This method initializes a new instance of <code>CollationElementIterator</code>
    * to iterate over the specified <code>String</code> using the rules in the
    * specified <code>RuleBasedCollator</code>.
@@ -112,9 +117,11 @@ public final class CollationElementIterator
       return null;
     
     RuleBasedCollator.CollationElement e =
-      (RuleBasedCollator.CollationElement) text_decomposition[index++];
+      (RuleBasedCollator.CollationElement) text_decomposition[index];
     
-    textIndex += e.key.length();
+    textIndex = text_indexes[index+1];
+
+    index++;
 
     return e;
   }
@@ -128,7 +135,7 @@ public final class CollationElementIterator
     RuleBasedCollator.CollationElement e =
       (RuleBasedCollator.CollationElement) text_decomposition[index];
 
-    textIndex -= e.key.length();
+    textIndex = text_indexes[index+1];
     
     return e;
   }
@@ -231,6 +238,9 @@ public final class CollationElementIterator
   public void setText(String text)
   {
     int idx = 0;
+    int idx_idx = 0;
+    int alreadyExpanded = 0;
+    int idxToMove = 0;
 
     this.text = text;
     this.index = 0;
@@ -238,6 +248,8 @@ public final class CollationElementIterator
     String work_text = text.intern();
 
     Vector v = new Vector();
+    Vector vi = new Vector();
+
     // Build element collection ordered as they come in "text".
     while (idx < work_text.length())
       {
@@ -254,6 +266,16 @@ public final class CollationElementIterator
 	      key_old = key;
 	    key = work_text.substring (idx, idx+p);
 	    object = collator.prefix_tree.get (key);
+	    if (object != null && idx < alreadyExpanded)
+	      {
+		RuleBasedCollator.CollationElement prefix = (RuleBasedCollator.CollationElement)object;
+		if (prefix.expansion != null && 
+		    prefix.expansion.startsWith(work_text.substring(0, idx)))
+		{
+		  object = null;
+		  key = key_old;
+		}
+	      }
 	    p++;
 	  }
 	while (idx+p <= work_text.length());
@@ -263,33 +285,107 @@ public final class CollationElementIterator
 	
 	RuleBasedCollator.CollationElement prefix =
 	  (RuleBasedCollator.CollationElement) collator.prefix_tree.get (key);
-	
+
+	/*
+	 * First case: There is no such sequence in the database.
+	 * We will have to build one from the context.
+	 */
 	if (prefix == null)
 	  {
-	    RuleBasedCollator.CollationElement e =
-	      collator.getDefaultElement(work_text.charAt (idx));
-	    
-	    v.add (e);
-	    idx++;
+	    /*
+	     * We are dealing with sequences in an expansion. They
+	     * are treated as accented characters (tertiary order).
+	     */
+	    if (alreadyExpanded > 0)
+	      {
+		RuleBasedCollator.CollationElement e =
+		  collator.getDefaultAccentedElement (work_text.charAt (idx));
+		
+		v.add (e);
+		vi.add (new Integer(idx_idx));
+		idx++;
+		alreadyExpanded--;
+		if (alreadyExpanded == 0)
+		  {
+		    /* There is not any characters left in the expansion set.
+		     * We can increase the pointer in the source string.
+		     */
+		    idx_idx += idxToMove;
+		    idxToMove = 0; 
+		  }
+		else
+		  idx_idx++;
+	      }
+	    else
+	      {
+		/* This is a normal character. */
+		RuleBasedCollator.CollationElement e =
+		  collator.getDefaultElement (work_text.charAt (idx));
+		Integer i_ref = new Integer(idx_idx);
+
+		/* Don't forget to mark it as a special sequence so the
+		 * string can be ordered.
+		 */
+		v.add (RuleBasedCollator.SPECIAL_UNKNOWN_SEQ);
+		vi.add (i_ref);
+		v.add (e);
+		vi.add (i_ref);
+		idx_idx++;
+		idx++;
+	      }
 	    continue;
 	  }
-
+ 
+	/*
+	 * Second case: Here we have found a matching sequence.
+	 * Here we have an expansion string prepend it to the "work text" and
+	 * add the corresponding sorting element. We must also mark 
+	 */
 	if (prefix.expansion != null)
 	  {
 	    work_text = prefix.expansion
 	      + work_text.substring (idx+prefix.key.length());
 	    idx = 0;
 	    v.add (prefix);
+	    vi.add (new Integer(idx_idx));
+	    if (alreadyExpanded == 0)
+	      idxToMove = prefix.key.length();
+	    alreadyExpanded += prefix.expansion.length()-prefix.key.length();
 	  }
 	else
 	  {
+	    /* Third case: the simplest. We have got the prefix and it
+	     * has not to be expanded.
+	     */
 	    if (!prefix.ignore)
-	      v.add (prefix);
+	      {
+		v.add (prefix);
+		vi.add (new Integer(idx_idx));
+	      }
 	    idx += prefix.key.length();
+	    /* If the sequence is in an expansion, we must decrease the
+	     * counter.
+	     */
+	    if (alreadyExpanded > 0)
+	      {
+		alreadyExpanded -= prefix.key.length();
+		if (alreadyExpanded == 0)
+		  {
+		    idx_idx += idxToMove;
+		    idxToMove = 0;
+		  }
+	      } else
+		idx_idx += prefix.key.length();
 	  }
       }
     
     text_decomposition = v.toArray();
+    text_indexes = new int[vi.size()+1];
+    for (int i = 0; i < vi.size(); i++) 
+      {
+	text_indexes[i] = ((Integer)vi.elementAt(i)).intValue();
+      }
+    text_indexes[vi.size()] = text.length();
   }
 
   /**
@@ -341,22 +437,22 @@ public final class CollationElementIterator
     if (offset < 0)
       throw new IllegalArgumentException("Negative offset: " + offset);
 
-    if ((text.length() > 0) && (offset > 0))
+    if (offset > (text.length() - 1))
       throw new IllegalArgumentException("Offset too large: " + offset);
-    else if (offset > (text.length() - 1))
-      throw new IllegalArgumentException("Offset too large: " + offset);
-
-    textIndex = 0;
-    for (int i=0;i<text_decomposition.length;i++)
-      {
-	RuleBasedCollator.CollationElement e =
-	  (RuleBasedCollator.CollationElement) text_decomposition[i];
-	int idx = textIndex + e.key.length();
-	
-	if (idx > offset)
+    
+    for (index = 0; index < text_decomposition.length; index++)
+      {	
+	if (offset <= text_indexes[index])
 	  break;
-	textIndex = idx;
       }
+    /*
+     * As text_indexes[0] == 0, we should not have to take care whether index is
+     * greater than 0. It is always.
+     */
+    if (text_indexes[index] == offset)
+      textIndex = offset;
+    else
+      textIndex = text_indexes[index-1];
   }
 
   /**

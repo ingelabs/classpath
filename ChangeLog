@@ -1,3 +1,29 @@
+2004-05-20  Guilhem Lavaux <guilhem@kaffe.org>
+                                                                                            
+	* java/text/CollationElementIterator.java
+	(nextBlock, previousBlock): Use text_indexes to compute
+	textIndex.
+	(setOffset): Use text_indexes to chose the right position.
+	(text_indexes): New field.
+	(setText): Build text_indexes. Better handling of expansion
+	ordering.
+	* java/text/RuleBasedCollator.java
+	(CollationElement, CollationSorter): Made static.
+	(last_tertiary_value, SPECIAL_UNKNOWN_SEQ): Introduced special
+	collation elements for unknown character this is for sequence
+	using resets.
+	(mergeRules): Fixed insertion point.
+	(buildCollationVector): Initialize last_tertiary_value.
+	(compare): Handle special cases of accented characters.
+	(getDefaultAccentedElement): New method.
+	(getCollationFixed): Fixed key building.
+	* java/text/DecimalFormat.java
+	(parse): Fixed parsing of decimal strings. Number of maximum
+	digits to be read should now work.
+	* java/text/SimpleDateFormat.java:
+	(SimpleDateFormat): Set maximumFractionDigit to 0 for the number
+	formatter. This fixes DateFormatTest. 
+
 2004-05-19  Michael Koch  <konqueror@gmx.de>
 
 	* configure.ac (AM_CFLAGS): Added -Wmissing-declarations
