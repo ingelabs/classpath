@@ -33,8 +33,7 @@ public final class Boolean implements Serializable
   }
 
   public boolean equals(Object obj) {
-    if (obj == null || (!(obj instanceof Boolean))) return false;
-    return (value == ((Boolean)obj).booleanValue());
+    return (obj instanceof Boolean && value == ((Boolean)obj.value));
   }
 
   public static boolean getBoolean(String name) {
