@@ -172,12 +172,20 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListGetSize
     (GTK_OBJECT (sw)->klass)->scrollbar_spacing;
   */
 
-  gtk_widget_size_request(GTK_WIDGET (GTK_SCROLLED_WINDOW(sw)->vscrollbar), 
+  gtk_signal_emit_by_name (GTK_OBJECT (GTK_SCROLLED_WINDOW(sw)->vscrollbar), 
+			   "size_request", &myreq);
+  /*
+
+    gtk_widget_size_request(GTK_WIDGET (GTK_SCROLLED_WINDOW(sw)->vscrollbar), 
                                       &myreq);
+  */
+
   dims[0]=myreq.width+GTK_SCROLLED_WINDOW_CLASS
     (GTK_OBJECT (sw)->klass)->scrollbar_spacing;
+
+  gtk_signal_emit_by_name (GTK_OBJECT (list), "size_request", &myreq);
   
-  gtk_widget_size_request(GTK_WIDGET (list), &myreq);
+  //  gtk_widget_size_request(GTK_WIDGET (list), &myreq);
                                       
   dims[0] += myreq.width + gdk_char_width (list->style->font, 'W');
              

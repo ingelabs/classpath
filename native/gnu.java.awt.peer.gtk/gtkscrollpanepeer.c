@@ -58,11 +58,14 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowNew
 
   /* Uh-oh.  Magic numbers.  I think this discrepancy comes from 
    The grey lines that border the viewport. */
-
-  gtk_widget_size_request(GTK_SCROLLED_WINDOW(sw)->vscrollbar,&myreq);
+  gtk_signal_emit_by_name (GTK_OBJECT (GTK_SCROLLED_WINDOW(sw)->vscrollbar), 
+			   "size_request", &myreq);
+  //  gtk_widget_size_request(GTK_SCROLLED_WINDOW(sw)->vscrollbar,&myreq);
   dims[0]=myreq.width+GTK_SCROLLED_WINDOW_CLASS (GTK_OBJECT (sw)->klass)->scrollbar_spacing+4;
 
-  gtk_widget_size_request(GTK_SCROLLED_WINDOW(sw)->hscrollbar,&myreq);
+  gtk_signal_emit_by_name (GTK_OBJECT (GTK_SCROLLED_WINDOW(sw)->hscrollbar), 
+			   "size_request", &myreq);
+  //  gtk_widget_size_request(GTK_SCROLLED_WINDOW(sw)->hscrollbar,&myreq);
   dims[1]=myreq.height+GTK_SCROLLED_WINDOW_CLASS (GTK_OBJECT (sw)->klass)->scrollbar_spacing+4;
 
   printf("sbsize: %i %i\n",dims[0],dims[1]);

@@ -39,13 +39,17 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetShowChildren (JNIEnv *env,
   widget=GTK_WIDGET (ptr);
   
   /* Windows are the real reason we are here... to show the fixed and
-     everything in it. */
+     everything in it. 
   if (GTK_IS_WINDOW(GTK_OBJECT(ptr)))
     {
       child=gtk_container_children (GTK_CONTAINER(widget));
       gtk_widget_show_all(GTK_WIDGET(child->data));
       g_list_free(child);
     }
+  */
+
+  gtk_widget_show_all (GTK_WIDGET (widget));
+  gtk_container_check_resize (GTK_CONTAINER (widget));
 
   gdk_threads_leave ();
 }
@@ -243,16 +247,18 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetDimensions
 
     gdk_threads_enter ();
 
-    dims[0]=GTK_WIDGET(ptr)->allocation.width;
-    dims[1]=GTK_WIDGET(ptr)->allocation.height;
+    //    dims[0]=GTK_WIDGET(ptr)->allocation.width;
+    //    dims[1]=GTK_WIDGET(ptr)->allocation.height;
 
-    gtk_widget_size_request(GTK_WIDGET(ptr),&myreq);
+    gtk_signal_emit_by_name (GTK_OBJECT (ptr), "size_request", &myreq);
 
-    if (dims[0]<=1 && dims[1]<=1)
-      {
+    //    gtk_widget_size_request(GTK_WIDGET(ptr),&myreq);
+
+    //    if (dims[0]<=1 && dims[1]<=1)
+    //      {
 	dims[0]=myreq.width;
 	dims[1]=myreq.height;
-      }
+	//      }
 
     
     gdk_threads_leave ();
@@ -397,13 +403,19 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setBounds
   gdk_threads_enter ();
 
   widget = GTK_WIDGET (ptr);
-  //  gtk_widget_set_usize (widget, width, height);
+  gtk_widget_set_usize (widget, width, height);
 
-  alloc.x = alloc.y = 0;
+  /*
+  alloc.x = 0;
+  alloc.y = 0;
   alloc.width = width;
   alloc.height = height;
 
+  widget->requisition.width=width;
+  widget->requisition.height=height;
+    
   gtk_widget_size_allocate (widget, &alloc);
+  */
   gtk_fixed_move (GTK_FIXED (widget->parent), widget, x, y);
 
   printf ("native: setbounds: %i, %i  %ix%i\n", x, y, width, height);  

@@ -61,8 +61,9 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryGetSize
   
   gdk_threads_enter ();
   entry = GTK_ENTRY (ptr);
-  
-  gtk_widget_size_request (GTK_WIDGET(entry), &myreq);
+
+  gtk_signal_emit_by_name (GTK_OBJECT (entry), "size_request", &myreq);  
+  //  gtk_widget_size_request (GTK_WIDGET(entry), &myreq);
   
   dims[0]=myreq.width-150 + (cols * 
 			     gdk_char_width (GTK_WIDGET (entry)->style->font,
