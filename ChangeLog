@@ -1,3 +1,10 @@
+2004-12-16  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/text/JTextComponent.java
+	(focusAccelerator): New variable.
+	(getFocusAccelerator): New method.
+	(setFocusAccelerator): Likewise.
+
 2004-12-15  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/JComponent.java
