@@ -1,5 +1,10 @@
 2004-04-11  Mark Wielaard  <mark@klomp.org>
 
+	* configure.ac (CFLAGS): Remove definition.
+	(AM_CFLAGS): Remove -std=c89 option.
+
+2004-04-11  Mark Wielaard  <mark@klomp.org>
+
 	* native/jni/java-io/java_io_VMObjectStreamClass.c
 	(throwInternalError): Just return when everything fails.
 	(getFieldReference): Get field declaring class, not object class.

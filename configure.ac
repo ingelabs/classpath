@@ -115,17 +115,12 @@ if test "x${COMPILE_JNI}" = xyes; then
   dnl FIXME - does not allow cross compiling
   AC_C_BIGENDIAN
 
-  dnl We want to avoid -O2 at the moment, gcc 2.96 from Red Hat 7
-  dnl cannot compile some native functions (gcc errors) with this
-  dnl flag.
-  CFLAGS="-g"
-
   dnl We want warnings, lots of warnings :-)
   AM_CFLAGS=
   if test "x${GCC}" = xyes; then
     dnl We want ISO C90 pedantic ansi, but with longlong (jlong) support
     dnl and modern POSIX and BSD C library funtions/prototypes.
-    AM_CFLAGS='-ansi -std=c89 -pedantic -Wall -Wno-long-long -D_BSD_SOURCE'
+    AM_CFLAGS='-ansi -pedantic -Wall -Wno-long-long -D_BSD_SOURCE'
   fi
   AC_SUBST(AM_CFLAGS)
 
