@@ -1,5 +1,13 @@
 2003-07-13  Jeroen Frijters <jeroen@sumatra.nl>
 
+	* java/beans/PropertyEditorManager.java (findEditor): use the thread
+	context class loader to try and find the class
+
+	* javax/naming/spi/NamingManager.java (getInitialContext): use the
+	thread context class loader
+
+2003-07-13  Jeroen Frijters <jeroen@sumatra.nl>
+
 	* gnu/java/rmi/server/UnicastServerRef.java
 	(getHelperClass): if class loader is null, use Class.forName
 
