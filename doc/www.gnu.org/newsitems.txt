@@ -1,4 +1,9 @@
-<newsitem date="7 Jan 2005">
+<newsitem date="18 Feb 2005">
+<createlink name="Escape the Java Trap @ Fosdem 2005"
+            url="events/escape_fosdem05.html">
+</newsitem>
+
+<newsitem date="07 Jan 2005">
 <createlink name="GNU Classpath 0.13" url="announce/20050107.html">
 </newsitem>
 

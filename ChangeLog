@@ -1,3 +1,9 @@
+2005-02-18  Mark Wielaard  <mark@klomp.org>
+
+	* doc/www.gnu.org/events/escape_fosdem05.wml: New event.
+	* doc/www.gnu.org/newsitems.txt: Add Escape the Java Trap.
+	* doc/www.gnu.org/events/events.wml: Likewise.
+
 2005-02-18  Sven de Marothy <sven@physto.se>
 
 	* java/util/TimeZone.java,
