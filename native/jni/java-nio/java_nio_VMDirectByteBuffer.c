@@ -1,5 +1,5 @@
 /* java_nio_VMDirectByteBuffer.c - Native methods for VMDirectByteBuffer
-   Copyright (C) 2004  Free Software Foundation, Inc.
+   Copyright (C) 2004, 2005  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -55,14 +55,27 @@ static jobject NIOGetRawData (JNIEnv *, void *pointer);
 static void *
 NIOGetPointer (JNIEnv *env, jobject rawdata)
 {
+#if SIZEOF_VOID_P == 4
   return (void *) (*env)->GetIntField (env, rawdata, fieldNativePointer);
+#elif SIZEOF_VOID_P == 8
+  return (void *) (*env)->GetLongField (env, rawdata, fieldNativePointer);
+#else
+#error unsupported pointer size
+#endif
 }
 
 static jobject
 NIOGetRawData (JNIEnv *env, void *pointer)
 {
+#if SIZEOF_VOID_P == 4
   return (*env)->NewObject (env, classRawData, methodRawDataInit,
 			    (jint) pointer);
+#elif SIZEOF_VOID_P == 8
+  return (*env)->NewObject (env, classRawData, methodRawDataInit,
+			    (jlong) pointer);
+#else
+#error unsupported pointer size
+#endif
 }
 
 JNIEXPORT void JNICALL
@@ -94,7 +107,7 @@ Java_java_nio_VMDirectByteBuffer_init
 			      "unable to find internal field");
       return;
     }
-#else /* SIZEOF_VOID_P != 4 */
+#elif SIZEOF_VOID_P == 8
   classRawData = (*env)->FindClass (env, "gnu/classpath/RawData64");
   if (classRawData == NULL)
     {
@@ -104,7 +117,7 @@ Java_java_nio_VMDirectByteBuffer_init
     }
 
   methodRawDataInit = (*env)->GetMethodID (env, classRawData,
-					   "<init>", "(L)V");
+					   "<init>", "(J)V");
   if (methodRawDataInit == NULL)
     {
       JCL_ThrowException(env, "java/lang/InternalError",
@@ -112,14 +125,16 @@ Java_java_nio_VMDirectByteBuffer_init
       return;
     }
   
-  fieldNativePointer = (*env)->GetFieldID (env, classRawData, "data", "L");
+  fieldNativePointer = (*env)->GetFieldID (env, classRawData, "data", "J");
   if (fieldNativePointer == NULL)
     {
       JCL_ThrowException(env, "java/lang/InternalError",
 			      "unable to find internal field");
       return;
     }
-#endif /* SIZEOF_VOID_P != 4 */
+#else
+#error unsupported pointer size
+#endif
 }
 
 JNIEXPORT jobject JNICALL

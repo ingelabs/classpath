@@ -1,5 +1,13 @@
 2005-02-08  Michael Koch  <konqueror@gmx.de>
 
+	* native/jni/java-nio/java_nio_VMDirectByteBuffer.c
+	(NIOGetPointer): Handle case of pointer size != 32 bit.
+	(NIOGetRawData): Likewise.
+	(Java_java_nio_VMDirectByteBuffer_init): Likewise.
+	Fixed asking for primitive type 'long'.
+
+2005-02-08  Michael Koch  <konqueror@gmx.de>
+
 	* configure.ac: Define substition variable GTK_CAIRO_ENABLED.
 	Fix handling of GTK_CAIRO conditional.
 	* gnu/classpath/Configuration.java.in (GTK_CAIRO_ENABLED):
