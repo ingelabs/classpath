@@ -295,16 +295,7 @@ File(File directory, String name)
 public
 File(String dirname, String name)
 {
-  if (name == null)
-    throw new NullPointerException ("File name is null");
-
-  if (dirname == null)
-    return new File (name);
-
-  StringBuffer buf = new StringBuffer(dirname);
-  buf.append(separator);
-  buf.append(name);
-  return new File (buf.toString());
+  this((name == null || dirname ==null) ? null : dirname + separator + name);
 }
 
 /*************************************************************************/
