@@ -24,7 +24,7 @@ Copyright (C) 1998-2001 Free Software Foundation, Inc.
 
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 1998-2001 Free Software Foundation, Inc.
+Copyright @copyright{} 1998-2002 Free Software Foundation, Inc.
 @sp 2
 Permission is granted to make and distribute verbatim copies of
 this document provided the copyright notice and this permission notice
@@ -89,9 +89,10 @@ operating system can ship with Java included.  Parts of a free Java
 implementation have already been written, including free Java virtual
 machines (JVM's) such as @uref{http://www.kaffe.org/,Kaffe} and
 @uref{http://www.hungry.com/products/japhar/,Japhar}, and Java compilers
-such as @uref{http://www.cs.berkeley.edu/~engberg/guavac/,Guavac}.
+such as @uref{http://www.jikes.org/, Jikes} and
+@uref{http://gcc.gnu.org/java/, GCJ}.
 However, there is currently no free replacement for Sun's proprietary
-libraries.  This Classpath project aims to correct this problem by
+libraries.  The Classpath project aims to correct this problem by
 supplying a free class library implementation that will allow a 100%
 free Java platform to be distributed.  Note that Kaffe now ships with a
 partial class library that is also free, so there is more than one group
@@ -104,8 +105,8 @@ working towards a common goal.
 Although Classpath is following an open development model where input
 from developers is welcome, there are certain base requirements that
 need to be met by anyone who wants to contribute code to this project.
-They are mostly unfortunately dictated by legal requirements and are not
-arbitrary restrictions chosen by the Classpath team.
+They are mostly dictated by legal requirements and are not arbitrary
+restrictions chosen by the Classpath team.
 
 You will need to adhere to the following things if you want to donate
 code to the Classpath project:
@@ -196,7 +197,7 @@ to a complete and robust product.  Writing them as you go is much easier
 than going back at the end and adding them.  We use the Mauve testsuite, see
 @uref{http://sources.redhat.com/mauve/,Mauve}.  There is always room for
 improvement when testing software and there is plenty of headroom left
-before Mauve becomes close to complete.
+before Mauve becomes close to complete.  
 
 @node Project Goals, Programming Tools, Volunteering, Top
 @comment node-name, next, previous, up
@@ -234,15 +235,15 @@ probably incomplete list is below.
 
 @enumerate
 @item
+@uref{http://www.intel.com/research/mrl/orp/,Intel's Open Runtime Platform}
+@item
 @uref{http://www.japhar.org/,Japhar}
 @item
 @uref{http://www.kaffe.org/,Kaffe}
 @item
 @uref{http://www.sablevm.org/,SableVM}
-@item
-@uref{http://www.intel.com/research/mrl/orp/,Intel's Open Runtime Platform}
 @item 
-@uref{http://www.mozilla.org/projects/ef,Electrical File}
+@uref{http://kissme.sourceforge.net/,Kissme}
 @item
 @uref{http://latte.snu.ac.kr/,LaTTe}
 @item
@@ -252,12 +253,12 @@ Other JNI Compliant JVM's.
 As with OS platform support, this priority list could change if a
 volunteer comes forward to port, maintain, and test releases for a
 particular JVM.  Kaffe is now developing its own class library, so the
-priority of supporting that platform is not as high as for Japhar or any
-other free VM.
+priority of supporting that platform is not as high as for other free VMs.
 
-The initial target version for Classpath is Java 1.1.  Java 1.2 can be
+The initial target version for Classpath is Java 1.1.  Java 2 can be
 implemented if desired, but please do not create classes that depend on
-1.2 features in other packages.
+Java 2 features in other packages unless Classpath already contains
+those features.
 
 @node Programming Tools, Programming Standards, Project Goals, Top
 @comment node-name, next, previous, up
@@ -274,13 +275,11 @@ automake 1.4
 @item
 autoconf 2.13
 @item
-libtool 1.3.5
+libtool 1.4.2
 @item
 GNU m4 1.4
 @item
 perl 5.6
-@item
-GNU MP 2.0.2
 @end itemize
 
 All of these tools are available from
@@ -342,7 +341,10 @@ For Java code, please follow the
 @uref{http://www.fsf.org/prep/standards_toc.html,GNU Coding Standards},
 with the exception of naming conventions.  Please follow
 @uref{http://java.sun.com/docs/codeconv/html/CodeConventions.doc8.html,Sun's
-naming conventions}.
+naming conventions}.  There are a number of exceptions to the GNU
+Coding Standards that we make for GNU Classpath and these will be
+documented soon as well as hopefully providing developers with a code
+formatting tool that closely matches those rules.
 
 For documentation comments, please follow
 @uref{http://java.sun.com/products/jdk/javadoc/writingdoccomments.html,How
@@ -386,6 +388,26 @@ Right now the only supported platform is Linux.  This will change as that
 version stabilizes and we begin the effort to port to many other
 platforms.
 
+Sun has produced documentation concerning much of the information
+needed to make Classpath serializable compatible with Sun
+implementations.  Part of doing this is to make sure that every class
+that is Serializable actually defines a field named serialVersionUID
+with a value that matches the output of serialver on Sun's
+implementation.  The reason for doing this is below.
+
+If a class has a field (of any accessibility) named serialVersionUID
+of type long, that is what serialver uses. Otherwise it computes a
+value using some sort of hash function on the names of all method
+signatures in the .class file. I'm not sure whether the methods are
+sorted first, or what the hash function is.  The fact that different
+compilers create different synthetic method signatures, such as
+access$0() if an inner class needs access to a private member of an
+enclosing class, make it impossible for two distinct compilers to
+reliably generate the same serial #, because their .class files
+differ. However, once you have a .class file, its serial # is unique,
+and the computation will give the same result no matter what platform
+you execute on.
+
 @node Robustness, Java Efficiency, Portability, Top
 @comment node-name, next, previous, up
 @chapter Robustness
@@ -412,8 +434,8 @@ Check for null values of jclasses before you send them to JNI functions.
 JNI does not behave nicely when you pass a null class to it: it
 terminates Java with a "JNI Panic."
 
-In general, try to use functions in native/lib/jcl.h.  They check
-exceptions and return values and throw appropriate exceptions.
+In general, try to use functions in native/jni/classpath/jcl.h.  They
+check exceptions and return values and throw appropriate exceptions.
 
 @node Java Efficiency, Native Efficiency, Robustness, Top
 @comment node-name, next, previous, up
@@ -465,7 +487,10 @@ A final problem is efficiency of native code when it comes to things
 like method calls, fields, finding classes, etc.  Generally you should
 cache things like that in static C variables if you're going to use them
 over and over again.  GetMethodID(), GetFieldID(), and FindClass() are
-*slow*.
+*slow*.  Classpath provides utility libraries for caching methodIDs
+and fieldIDs in native/jni/classpath/jnilink.h.  Other native data can
+be cached between method calls using functions found in
+native/jni/classpath/native_state.h.
 
 Here are a few tips on writing native code efficiently:
 
@@ -494,6 +519,14 @@ Fisher's native_state library (NSA).  It will allow you to get and set
 state fairly efficiently.  Japhar now supports this library, making
 native state get and set calls as fast as accessing a C variable
 directly.
+
+If you are using native libraries defined outside of Classpath, then
+these should be wrapped by a Classpath function instead and defined
+within a library of their own.  This makes porting Classpath's native
+libraries to new platforms easier in the long run.  It would be nice
+to be able to use Mozilla's NSPR or Apache's APR, as these libraries
+are already ported to numerous systems and provide all the necessary
+system functions as well.
 
 @node Specification Sources, Naming Conventions, Native Efficiency, Top
 @comment node-name, next, previous, up
@@ -583,11 +616,15 @@ classpath
  |
  |---->native
          |
-         |-->java.io
-         |-->java.lang
-         |-->java.net
-         |-->java.util.jar
-         |-->etc
+         |-->jni
+         |    |-->classpath
+         |    |-->gtk-peer
+         |    |-->java-io
+         |    |-->java-lang
+         |    |-->java-net
+         |    |-->java-util
+         |    |-->etc
+         |-->cni
   
 @end example
 
@@ -601,7 +638,7 @@ class library.  Because this is the public interface to Java, it is
 important that the public classes, interfaces, methods, and variables
 are exactly the same as specified in Sun's documentation.  The directory
 structure is laid out just like the java package names.  For example,
-the class java.util.zip would be in the directory java/util/zip.
+the class java.util.zip would be in the directory java-util.
 
 @item gnu/java
 Internal classes (roughly analogous to Sun's sun.* classes) should go
@@ -616,7 +653,9 @@ appropriate name and see what everybody else thinks.
 This directory holds native code needed by the public Java packages.
 Each package has its own subdirectory, which is the ``flattened'' name
 of the package.  For example, native method implementations for
-java.util.zip should go in native/java.util.zip.
+java.util.zip should go in native/classpath/java-util.  Classpath
+actually includes an all Java version of the zip classes, so no native
+code is required.
 
 @end table
 
@@ -628,19 +667,18 @@ general guidelines above, the following standards should be followed:
 
 @item
 Classes that need to load native code should load a library with the
-same name as the flattened package name, with all periods removed.  For
+same name as the flattened package name, with all hyphens removed.  For
 example, the native library name specified in LoadLibrary for
-java.util.zip would be ``javautilzip''.
+java-util would be ``javautil''.
 
 @item
-Each package has its own shared library for native code (if any).  The
-actual library name to be built will depend on the target JVM.
+Each package has its own shared library for native code (if any).
 
 @item
 The main native method implementation for a given method in class should
 go in a file with the same name as the class with a ``.c'' extension.
-For example, the implementation of the native methods in
-java.util.InetAddress would go in native/java.net/InetAddress.c.
+For example, the JNI implementation of the native methods in
+java.net.InetAddress would go in native/jni/java-net/InetAddress.c.
 ``Internal'' native functions called from the main native method can
 reside in files of any name.
 @end itemize
