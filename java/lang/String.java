@@ -1,10 +1,13 @@
 package java.lang;
 
 import java.util.Hashtable;
+import java.util.Locale;
+import gnu.java.io.EncodingManager;
+import java.io.*;
 
 /**
  * Strings represent an immutable set of characters.
- * Compliant with JLS 20.12 and not JDK 1.1.
+ * Compliant with JDK 1.1.
  *
  * @author Paul N. Fisher
  */
@@ -119,6 +122,69 @@ public final class String {
     System.arraycopy(data, offset, str, 0, count);
   }
 
+  public String(byte[] data) throws NullPointerException {
+    try {
+      str = EncodingManager.getDecoder().convertToChars(data);
+    } catch (CharConversionException cce) {
+      try {
+	str = EncodingManager.getDecoder("8859_1").convertToChars(data);
+      } catch (IOException ioe) {
+	throw new Error(ioe.toString());
+      }
+    }
+    len = str.length;
+  }
+
+  public String(byte[] data, String encoding) 
+    throws NullPointerException, UnsupportedEncodingException {
+    try {
+      str = EncodingManager.getDecoder(encoding).convertToChars(data);
+    } catch (CharConversionException cce) {
+      try {
+	str = EncodingManager.getDecoder("8859_1").convertToChars(data);
+      } catch (IOException ioe) {
+	throw new Error(ioe.toString());
+      }
+    }
+    len = str.length;
+  }
+
+  public String(byte[] data, int offset, int count, String encoding)
+    throws NullPointerException, IndexOutOfBoundsException, 
+    UnsupportedEncodingException {
+    if (offset < 0 || count < 0 || offset+count > data.length)
+      throw new StringIndexOutOfBoundsException();
+    try {
+      str = EncodingManager.getDecoder(encoding).convertToChars(data, offset,
+								count);
+    } catch (CharConversionException cce) {
+      try {
+	str = EncodingManager.getDecoder("8859_1").convertToChars(data, offset,
+								  count);
+      } catch (IOException ioe) {
+	throw new Error(ioe.toString());
+      }
+    }
+    len = str.length;
+  }
+
+  public String(byte[] data, int offset, int count)
+    throws NullPointerException, IndexOutOfBoundsException {
+    if (offset < 0 || count < 0 || offset+count > data.length)
+      throw new StringIndexOutOfBoundsException();
+    try {
+      str = EncodingManager.getDecoder().convertToChars(data, offset, count);
+    } catch (CharConversionException cce) {
+      try {
+	str = EncodingManager.getDecoder("8859_1").convertToChars(data, offset,
+								  count);
+      } catch (IOException ioe) {
+	throw new Error(ioe.toString());
+      }
+    }
+    len = str.length;
+  }
+
   /**
    * Creates a new String using an 8-bit array of integer values.
    * Each character `c', using corresponding byte `b', is created 
@@ -133,7 +199,7 @@ public final class String {
    * 
    * @exception NullPointerException if `ascii' is null
    *
-   * @deprecated Use constructors with byte to char encoders.
+   * @deprecated Use constructors with byte to char decoders.
    */
   public String(byte[] ascii, int hibyte) throws NullPointerException {
     len = ascii.length;
@@ -161,7 +227,7 @@ public final class String {
    * @exception StringIndexOutOfBoundsException
    *   if (offset < 0 || count < 0 || offset+count > ascii.length)
    *
-   * @deprecated Use constructors with byte to char encoders.
+   * @deprecated Use constructors with byte to char decoders.
    */
   public String(byte[] ascii, int hibyte, int offset, int count)
        throws NullPointerException, IndexOutOfBoundsException {
@@ -292,7 +358,7 @@ public final class String {
    * if (srcBegin < 0 || srcBegin > srcEnd || srcEnd > this.length() || 
    *     dstBegin < 0 || dstBegin+(srcEnd-srcBegin) > dst.length)
    *
-   * @deprecated Use a getBytes() which takes a char to byte encoder.
+   * @deprecated Use a getBytes() which uses a char to byte encoder.
    */
   public void getBytes(int srcBegin, int srcEnd, byte dst[], int dstBegin)
        throws NullPointerException, IndexOutOfBoundsException {
@@ -302,6 +368,40 @@ public final class String {
     for (int i = srcBegin; i < srcEnd; i++)
       dst[dstBegin + i - srcBegin] = (byte) str[i];
   }
+
+  /**
+   * Converts the Unicode characters in this String to a byte stream
+   * using a specified encoding method.
+   *
+   * @param enc encoding name
+   *
+   * @return byte array representing the characters in this String using
+   * enc encoding, or null if the encoding fails
+   *
+   * @exception UnsupportedEncodingException if encoding is not supported
+   */
+  public byte[] getBytes(String enc) throws UnsupportedEncodingException {
+    try {
+      return EncodingManager.getEncoder(enc).convertToBytes(str, offset, len);
+    } catch (CharConversionException e) {
+      return null;
+    }
+  }
+
+  /**
+   * Converts the Unicode characters in this String to a byte stream
+   * using the system's default encoding method.
+   *
+   * @return byte array representing the characters in this String using
+   * the default encoding, or null if the encoding fails
+   */
+  public byte[] getBytes() {
+    try {
+      return EncodingManager.getEncoder().convertToBytes(str, offset, len);
+    } catch (CharConversionException e) {
+      return null;
+    }
+  }    
 
   /**
    * Copies the contents of this String into a character array.
@@ -505,7 +605,6 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
     return indexOf(str, 0);
   }
 
-
   /**
    * Finds the first instance of a String in this String, starting at
    * a given index.  If starting index is less than 0, the search
@@ -689,6 +788,18 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
   }
 
   /**
+   * Lowercases this String according to a particular locale.
+   * In general, this method has the same results as toLowerCase().
+   *
+   * @param loc locale to use
+   *
+   * @return new lowercased String, or `this' if no characters were lowercased
+   */
+  public String toLowerCase(Locale loc) {
+    return toLowerCase();
+  }
+
+  /**
    * Uppercases this String.
    *
    * @return new uppercased String, or `this' if no characters were uppercased
@@ -702,6 +813,18 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
       if (str[i] != newStr[i])
 	return new String(newStr);
     return this;
+  }
+
+  /**
+   * Uppercases this String according to a particular locale.
+   * In general, this method has the same results as toUpperCase().
+   *
+   * @param loc locale to use
+   *
+   * @return new uppercased String, or `this' if no characters were uppercased
+   */
+  public String toUpperCase(Locale loc) {
+    return toUpperCase();
   }
   
   /**
