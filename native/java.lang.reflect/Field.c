@@ -877,43 +877,7 @@ static jfieldID GetTheInstanceFieldID(JNIEnv * env, jobject thisObj,
 
 static void DoInitialChecking(JNIEnv * env, jobject invokeObj,
 								  jclass declaringClass, jint modifiers) {
-	jframeID thisFrame;
-	jframeID methodObjFrame;
-	jframeID callerFrame;
-
-	jobject callerObject;
-	jclass callerClass;
-
-	vmiError vmiErr;
-	jvmdiError jvmdiErr;
-
-	vmiErr = VMI_GetThisFrame(env, &thisFrame);
-	if(vmiErr != VMI_ERROR_NONE) {
-			VMI_ThrowAppropriateException(env, vmiErr);
-			return;
-	}
-
-	jvmdiErr = JVMDI_GetCallerFrame(env, thisFrame, &methodObjFrame);
-	if(jvmdiErr != JVMDI_ERROR_NONE) {
-			VMI_ThrowAppropriateException(env, jvmdiErr);
-			return;
-	}
-
-	jvmdiErr = JVMDI_GetCallerFrame(env, methodObjFrame, &callerFrame);
-	if(jvmdiErr != JVMDI_ERROR_NONE) {
-			VMI_ThrowAppropriateException(env, jvmdiErr);
-			return;
-	}
-
-	vmiErr = VMI_GetFrameObject(env, callerFrame, &callerObject);
-	if(vmiErr != VMI_ERROR_NONE) {
-			VMI_ThrowAppropriateException(env, vmiErr);
-			return;
-	}
-
-	callerClass = (*env)->GetObjectClass(env, callerObject);
-
-	if(!REFLECT_HasLinkLevelAccessToMember(env, callerClass, declaringClass, modifiers)) {
+	if(!REFLECT_CallerHasAccess(env, declaringClass, modifiers, 2)) {
 		JCL_ThrowException(env, "java/lang/IllegalAccessException", "Cannot access reflected Method");
 		return;
 	}

@@ -9,7 +9,6 @@
 #include "reflect.h"
 #include <jcl.h>
 #include <vmi.h>
-#include <jvmdi.h>
 #include <primlib.h>
 #include <native_state.h>
 #include <jnilink.h>
@@ -97,13 +96,6 @@ N           If the class of the argument is not assignment-compatible (instanceo
 static jvalue * DoInitialCheckingAndConverting(JNIEnv * env, jobject invokeObj, jobjectArray args,
 	jclass declaringClass, jobjectArray targetArgTypes, jint modifiers, jint argLength) {
 
-	jframeID thisFrame;
-	jframeID methodObjFrame;
-	jframeID callerFrame;
-
-	jobject callerObject;
-	jclass callerClass;
-
 	jvalue * retval;
 
 	jobject obj;
@@ -111,36 +103,7 @@ static jvalue * DoInitialCheckingAndConverting(JNIEnv * env, jobject invokeObj, 
 
 	jsize argNum;
 
-	vmiError vmiErr;
-	jvmdiError jvmdiErr;
-
-	vmiErr = VMI_GetThisFrame(env, &thisFrame);
-	if(vmiErr != VMI_ERROR_NONE) {
-			VMI_ThrowAppropriateException(env, vmiErr);
-			return NULL;
-	}
-
-	jvmdiErr = JVMDI_GetCallerFrame(env, thisFrame, &methodObjFrame);
-	if(jvmdiErr != JVMDI_ERROR_NONE) {
-			VMI_ThrowAppropriateException(env, jvmdiErr);
-			return NULL;
-	}
-
-	jvmdiErr = JVMDI_GetCallerFrame(env, methodObjFrame, &callerFrame);
-	if(jvmdiErr != JVMDI_ERROR_NONE) {
-			VMI_ThrowAppropriateException(env, jvmdiErr);
-			return NULL;
-	}
-
-	vmiErr = VMI_GetFrameObject(env, callerFrame, &callerObject);
-	if(vmiErr != VMI_ERROR_NONE) {
-			VMI_ThrowAppropriateException(env, vmiErr);
-			return NULL;
-	}
-
-	callerClass = (*env)->GetObjectClass(env, callerObject);
-
-	if(!REFLECT_HasLinkLevelAccessToMember(env, callerClass, declaringClass, modifiers)) {
+	if(!REFLECT_CallerHasAccess(env, declaringClass, modifiers, 2)) {
 		JCL_ThrowException(env, "java/lang/IllegalAccessException", "Cannot access reflected Method");
 		return NULL;
 	}

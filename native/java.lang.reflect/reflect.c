@@ -12,7 +12,54 @@
 
 static jint StartMethodSignature(JNIEnv * env, char * signatureBuf, jobjectArray argTypes);
 
+JNIEXPORT jclass JNICALL REFLECT_GetCallerClass(JNIEnv * env, jint callerStackPos) {
+#ifndef NO_VMI
+	jframeID callerFrame;
+	jclass callerClass;
+	vmiError vmiErr;
+	jvmdiError jvmdiErr;
+	jint i;
+
+	vmiErr = VMI_GetThisFrame(env, &callerFrame);
+	if(vmiErr != VMI_ERROR_NONE) {
+			VMI_ThrowAppropriateException(env, vmiErr);
+			return NULL;
+	}
+
+	for(i=0;i<callerStackPos;i++) {
+		jvmdiErr = JVMDI_GetCallerFrame(env, callerFrame, &callerFrame);
+		if(jvmdiErr != JVMDI_ERROR_NONE) {
+			VMI_ThrowAppropriateException(env, jvmdiErr);
+			return NULL;
+		}
+	}
+
+	vmiErr = VMI_GetFrameClass(env, callerFrame, &callerClass);
+	if(jvmdiErr != JVMDI_ERROR_NONE) {
+		VMI_ThrowAppropriateException(env, jvmdiErr);
+		return NULL;
+	}
+	return callerClass;
+#else
+	return NULL;
+#endif
+}
+
+JNIEXPORT jboolean JNICALL REFLECT_CallerHasAccess(JNIEnv * env, jclass accessee, jint memberMods, jint callerStackPos) {
+#ifndef NO_VMI
+	jclass callerClass;
+	callerClass = REFLECT_GetCallerClass(env, callerStackPos);
+	if(callerClass == NULL) {
+		return JNI_FALSE;
+	}
+	return REFLECT_HasLinkLevelAccessToMember(env, callerClass, accessee, memberMods);
+#else
+	return TRUE;
+#endif
+}
+
 JNIEXPORT jboolean JNICALL REFLECT_HasLinkLevelAccessToMember(JNIEnv * env, jclass accessor, jclass accessee, jint memberMods) {
+#ifndef NO_VMI
 	jstring accessorNameUTF;
 	jstring accesseeNameUTF;
 	char * accessorName;
@@ -102,6 +149,9 @@ JNIEXPORT jboolean JNICALL REFLECT_HasLinkLevelAccessToMember(JNIEnv * env, jcla
 		default:
 			return (classMods & VMI_MOD_PUBLIC) && (memberMods & VMI_MOD_PUBLIC);
 	}
+#else
+	return TRUE;
+#endif
 }
 
 static jint StartMethodSignature(JNIEnv * env, char * signatureBuf, jobjectArray argTypes) {
@@ -163,7 +213,6 @@ JNIEXPORT jint JNICALL REFLECT_GetFieldSignature(JNIEnv * env, char * signatureB
 	jstring classNameUTF;
 	char * className;
 	jint reflectType;
-	jvmdiError jvmdiErr;
 
 	reflectType = PRIMLIB_GetReflectiveType(env, fieldType);
 
@@ -197,11 +246,20 @@ JNIEXPORT jint JNICALL REFLECT_GetFieldSignature(JNIEnv * env, char * signatureB
 		return 1;
 	case PRIMLIB_OBJECT:
 		signatureBuf[0] = 'L';
+
+#ifndef NO_VMI
 		jvmdiErr = JVMDI_GetClassName(env, fieldType, &classNameUTF);
 		if(jvmdiErr != JVMDI_ERROR_NONE) {
 			VMI_ThrowAppropriateException(env, jvmdiErr);
 			return -1;
 		}
+#else
+		{
+			jclass _c = (*env)->FindClass(env, "java/lang/Class");
+			jmethodID _m = (*env)->GetMethodID(env, _c, "getName", "()java/lang/String");
+			classNameUTF = (jstring)(*env)->CallObjectMethod(env, fieldType, _m);
+		}
+#endif
 
 		className = JCL_jstring_to_cstring(env, classNameUTF);
 		if(className == NULL) {
