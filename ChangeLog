@@ -1,3 +1,10 @@
+2003-11-13  Dalibor Topic <robilad@kaffe.org>
+
+	* gnu/java/net/protocol/file/Connection.java (permission): New field.
+	(DEFAULT_PERMISSION): New constant.
+	(Connection): Create a FilePermission with permission to read file.
+	(getPermission): Overwrite getPermission to return a FilePermission.
+
 2003-11-13  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/undo/CannotRedoException.java: Re-format, document.
