@@ -488,8 +488,6 @@ public class RandomAccessFile implements DataOutput, DataInput
    * @exception IOException If an error occurs
    *
    * @see DataOutput
-   *
-   * @deprecated
    */
   public final String readLine () throws IOException
   {

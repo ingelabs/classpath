@@ -1,5 +1,36 @@
 2003-06-26  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/FileChannelImpl.java
+	(write): Removed.
+	* java/awt/font/GraphicAttribute.java
+	(getAlignment): Made final.
+	* java/awt/font/ImageGraphicAttribute.java
+	(ImageGraphicAttribute): Made final.
+	* java/awt/image/DataBufferByte.java
+	(DataBufferByte): Made final.
+	* java/awt/image/DataBufferInt.java
+	(DataBufferInt): Made final.
+	* java/awt/image/DataBufferUShort.java
+	(DataBufferUShort): Made final.
+	* java/awt/image/DirectColorModel.java
+	(coerceData): Made final.
+	* java/awt/image/PixelGrabber.java
+	(status): Removed @deprecated tag.
+	* java/beans/beancontext/BeanContextSupport.java
+	(BCSIterator): Made final.
+	* java/io/RandomAccessFile.java
+	(readLine): Removed @deprecated tag.
+	* java/net/Inet4Address.java
+	(Inet4Address): Made package-private.
+	* java/net/Inet6Address.java
+	(Inet6Address): Made package-private.
+	* java/nio/channels/FileChannel.java
+	(write): Made final.
+	* java/nio/channels/ServerSocketChannel.java
+	(ServerSocketChannel): Made protected.
+
+2003-06-26  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/event/AncestorEvent.java,
 	javax/swing/event/InternalFrameEvent.java,
 	javax/swing/event/ListDataEvent.java,
