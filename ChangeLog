@@ -1,3 +1,8 @@
+2002-03-08  John Leuner  <jewel@debian.org>
+
+	* java/util/regex/Matcher.java: Added stub class
+	* java/util/regex/Pattern.java: Added stub class
+
 2002-03-07  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/lang/String.java: Improve Javadoc and formatting.
