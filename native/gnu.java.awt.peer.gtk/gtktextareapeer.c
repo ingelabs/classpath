@@ -33,7 +33,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextNew
 
   str=(char *)(*env)->GetStringUTFChars (env, contents, 0);
 
-  (*env)->MonitorEnter (env, java_mutex);
+  gdk_threads_enter ();
 
   text = gtk_text_new (NULL, NULL);
   gtk_text_set_editable (GTK_TEXT (text), TRUE);
@@ -51,8 +51,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextNew
 
   gtk_widget_show (text);
   
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, sw);
   NSA_SET_PTR (env, jedit, text);
@@ -76,7 +75,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextGetSize
   dims = (*env)->GetIntArrayElements (env, jdims, 0);  
   dims[0]=dims[1]=0;
 
-  (*env)->MonitorEnter (env, java_mutex);
+  gdk_threads_enter ();
 
   gtk_widget_size_request(GTK_WIDGET (GTK_SCROLLED_WINDOW(sw)->hscrollbar), 
 				      &myreq);
@@ -97,8 +96,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextGetSize
   dims[1] += ((rows * gdk_char_height (text->style->font, 'W'))
 	     + (2 * (text->style->klass->ythickness + 1)));
 
-  gdk_threads_wake ();
-  (*env)->MonitorExit (env, java_mutex);
+  gdk_threads_leave ();
   
   (*env)->ReleaseIntArrayElements (env, jdims, dims, 0);
 }
@@ -109,18 +107,21 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextGetText
 {
   GtkEditable *text;
   char *contents;
+  jstring jcontents;
 
   text = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
   
-  (*env)->MonitorEnter (env, java_mutex);
+  gdk_threads_enter ();
   
   contents = gtk_editable_get_chars (text, 0, 
 				     gtk_text_get_length (GTK_TEXT(text)));
 
-  gdk_threads_wake ();
-  (*env)->MonitorExit (env, java_mutex);
+  gdk_threads_leave ();
 
-  return (*env)->NewStringUTF (env, contents);
+  jcontents = (*env)->NewStringUTF (env, contents);
+  g_free (contents);
+
+  return jcontents;
 }
 
 JNIEXPORT void JNICALL 
@@ -134,7 +135,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextSetText
   text = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
   str=(char *)(*env)->GetStringUTFChars (env, contents, 0);
   
-  (*env)->MonitorEnter (env, java_mutex);
+  gdk_threads_enter ();
   
   gtk_text_freeze (GTK_TEXT (text));
 
@@ -144,8 +145,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextSetText
 			    strlen (str), &pos);
   gtk_text_thaw (GTK_TEXT (text));
 
-  gdk_threads_wake ();
-  (*env)->MonitorExit (env, java_mutex);
+  gdk_threads_leave ();
   (*env)->ReleaseStringUTFChars (env, contents, str);
 }
 
@@ -157,16 +157,15 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextInsert
   char *str;
   int pos=position;
 
-  text = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
   str=(char *)(*env)->GetStringUTFChars (env, contents, 0);
   
-  (*env)->MonitorEnter (env, java_mutex);
+  gdk_threads_enter ();
   
+  text = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
   gtk_editable_insert_text (text, str,
 			    strlen (str), &pos);
 
-  gdk_threads_wake ();
-  (*env)->MonitorExit (env, java_mutex);
+  gdk_threads_leave ();
   (*env)->ReleaseStringUTFChars (env, contents, str);
 }
 
@@ -179,18 +178,18 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextReplace
   char *str;
   int pos=start;
 
-  text = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
   str=(char *)(*env)->GetStringUTFChars (env, contents, 0);
   
-  (*env)->MonitorEnter (env, java_mutex);
+  gdk_threads_enter ();
   
+  text = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
   gtk_text_freeze (GTK_TEXT (text));
   gtk_editable_delete_text (text, start, end);
   gtk_editable_insert_text (text, str,
 			    strlen (str), &pos);
   gtk_text_thaw (GTK_TEXT (text));
 
-  gdk_threads_wake ();
-  (*env)->MonitorExit (env, java_mutex);
+  gdk_threads_leave ();
   (*env)->ReleaseStringUTFChars (env, contents, str);
 }
+

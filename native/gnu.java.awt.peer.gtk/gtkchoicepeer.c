@@ -35,7 +35,7 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuNew (JNIEnv *env,
 
   count=(*env)->GetArrayLength (env, items);
 
-  (*env)->MonitorEnter (env,java_mutex);
+  gdk_threads_enter ();
 
   menu = gtk_menu_new();
   
@@ -54,8 +54,7 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuNew (JNIEnv *env,
   optionmenu = gtk_option_menu_new ();
   gtk_option_menu_set_menu (GTK_OPTION_MENU (optionmenu), menu);
 
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, optionmenu);
 }
@@ -73,7 +72,7 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuAdd (JNIEnv *env,
   printf("add\n");
 
   label=(char *)(*env)->GetStringUTFChars (env, item, 0);      
-  (*env)->MonitorEnter (env,java_mutex);
+  gdk_threads_enter ();
   
   menu=gtk_option_menu_get_menu (GTK_OPTION_MENU (ptr));
 
@@ -81,8 +80,7 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuAdd (JNIEnv *env,
   gtk_menu_insert (GTK_MENU (menu), menuitem, index);
   gtk_widget_show (menuitem);
 
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
   (*env)->ReleaseStringUTFChars (env, item, label);
 }
 
@@ -98,7 +96,7 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuRemove (JNIEnv *env,
   
   printf("remove\n");
 
-  (*env)->MonitorEnter (env,java_mutex);
+  gdk_threads_enter ();
 
   menu_shell = GTK_MENU_SHELL (gtk_option_menu_get_menu (GTK_OPTION_MENU 
 							 (ptr)));
@@ -108,8 +106,7 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuRemove (JNIEnv *env,
   gtk_container_remove (GTK_CONTAINER (menu_shell), GTK_WIDGET 
 			(tmp->data));
 
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL 
@@ -122,12 +119,9 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuSelect (JNIEnv *env,
   
   printf("set\n");
 
-  (*env)->MonitorEnter (env,java_mutex);
-  
+  gdk_threads_enter ();
   gtk_option_menu_set_history (GTK_OPTION_MENU (ptr), index);
-
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 }
 
 

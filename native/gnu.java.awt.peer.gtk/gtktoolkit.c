@@ -25,12 +25,9 @@
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkToolkit_beep (JNIEnv *env, jobject obj)
 {
-  (*env)->MonitorEnter (env, java_mutex);
-
+  gdk_threads_enter ();
   gdk_beep ();
-
-  gdk_threads_wake ();
-  (*env)->MonitorExit (env, java_mutex);
+  gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL 
@@ -39,12 +36,12 @@ Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenSizeDimensions
 {
   jint *dims = (*env)->GetIntArrayElements (env, jdims, 0);  
 
-  (*env)->MonitorEnter (env, java_mutex);
+  gdk_threads_enter ();
 
   dims[0] = gdk_screen_width ();
   dims[1] = gdk_screen_height ();
 
-  (*env)->MonitorExit (env, java_mutex);
+  gdk_threads_leave ();
 
   (*env)->ReleaseIntArrayElements(env, jdims, dims, 0);
 }
@@ -55,11 +52,11 @@ Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenResolution (JNIEnv *env,
 {
   int res;
 
-  (*env)->MonitorEnter (env, java_mutex);
+  gdk_threads_enter ();
 
   res = gdk_screen_width() / (gdk_screen_width_mm() / 25.4);
 
-  (*env)->MonitorExit (env, java_mutex);
+  gdk_threads_leave ();
   return res;
 }
 

@@ -32,7 +32,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonSetGroup
   native_group = NSA_GET_PTR (env, group);
   ptr = NSA_GET_PTR (env, obj);
 
-  (*env)->MonitorEnter (env,java_mutex);
+  gdk_threads_enter ();
 
   button=GTK_RADIO_BUTTON(ptr);
 
@@ -43,8 +43,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonSetGroup
 				gtk_radio_button_group 
 				(GTK_RADIO_BUTTON (native_group)));
 				
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 
   if (native_group==NULL)
     NSA_SET_PTR (env, group, native_group);
@@ -61,7 +60,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonNew
   str=(char *)(*env)->GetStringUTFChars (env, label, 0);      
   native_group = NSA_GET_PTR (env, group);
 
-  (*env)->MonitorEnter (env,java_mutex);
+  gdk_threads_enter ();
 
   /* All checkboxes get a label, even if it is blank. */  
 
@@ -75,8 +74,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonNew
   if (checked)
     gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (button), TRUE);
   
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 
   if (native_group==NULL)
     NSA_SET_PTR (env, group, button);
@@ -95,15 +93,14 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonNew
 
   str=(char *)(*env)->GetStringUTFChars (env, label, 0);      
 
-  (*env)->MonitorEnter (env,java_mutex);
+  gdk_threads_enter ();
 
   /* All checkboxes get a label, even if it is blank. */  
   button=gtk_check_button_new_with_label (str);
   if (checked)
     gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (button), TRUE);
 
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, button);
 
@@ -119,8 +116,10 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonSetState
 
   ptr = NSA_GET_PTR (env, obj);
 
-  if (checked)
-    gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (ptr), TRUE);
+  gdk_threads_enter ();
+  gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (ptr),
+			       (checked) ? TRUE : FALSE);
+  gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL 
@@ -136,7 +135,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonSetLabel
   printf("labelset\n");
 
   str=(char *)(*env)->GetStringUTFChars (env, label, 0);      
-  (*env)->MonitorEnter (env,java_mutex);
+  gdk_threads_enter ();
   
   /* We assume that the checkbutton has 1 child, a label. */
   
@@ -147,10 +146,10 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonSetLabel
     printf("Child is not label!\n");
   
   gtk_label_set (GTK_LABEL(child->data),str);
-  g_list_free(child);
   
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
+
+  g_list_free(child);
   (*env)->ReleaseStringUTFChars (env, label, str);
 }
 

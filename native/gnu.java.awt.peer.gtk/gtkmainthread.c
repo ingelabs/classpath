@@ -23,9 +23,6 @@
 #include "GtkMainThread.h"
 #include "gthread-jni.h"
 
-jobject java_mutex;
-JNIEnv *gdk_env;
-
 #ifdef JVM_SUN
   struct state_table *native_state_table;
 #endif
@@ -53,13 +50,11 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
   argv[0] = "";
   argv[1] = NULL;
 
-  /* This sets the gdk thread function pointers to our set. */
-  gdk_env = env;
-  g_thread_init (&g_thread_jni_functions);
+  /* until we have JDK 1.2 JNI, assume we have a VM with threads that 
+     match what GLIB was compiled for */
+  g_thread_init (NULL);
 
   gtk_init (&argc, &argv);
-
-  java_mutex = * ((jobject *) gdk_threads_mutex);
 
   if ((homedir = getenv ("HOME")))
     {
@@ -81,11 +76,7 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkMain (JNIEnv *env, jobject obj)
 {
-  gdk_env = env;
-  (*env)->MonitorEnter (env,java_mutex);
-  /* This won't return until GTK is _done_.
-     It is okay (absolutely necessary) to have it inside of a monitor
-     block because gtk_main itself releases the monitor when appropriate. */
-  gtk_main();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_enter ();
+  gtk_main ();
+  gdk_threads_leave ();
 }

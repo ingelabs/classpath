@@ -51,8 +51,4 @@ extern struct state_table *native_state_table;
 
 #endif /* JVM_SUN */
 
-extern jobject java_mutex;
-extern JNIEnv *gdk_env;
-void gdk_threads_wake ();
-
 #endif /* __GTKPEER_H */

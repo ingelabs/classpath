@@ -42,7 +42,7 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelNew
 
   str = (char *)(*env)->GetStringUTFChars (env, text, 0);      
 
-  (*env)->MonitorEnter (env, java_mutex);
+  gdk_threads_enter ();
 
   box = gtk_event_box_new ();
   label = gtk_label_new (str);
@@ -52,8 +52,7 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelNew
 
   gtk_label_set_justify (GTK_LABEL (label), j);
 
-  gdk_threads_wake();
-  (*env)->MonitorExit (env, java_mutex);
+  gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, box);
 
@@ -67,15 +66,15 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelSet
   char *str;
   GtkLabel *label;
 
-  label = GTK_LABEL (GTK_BIN (NSA_GET_PTR (env, obj))->child);
-  
   str = (char *)(*env)->GetStringUTFChars (env, text, 0);      
-  (*env)->MonitorEnter (env, java_mutex);
-  
+
+  gdk_threads_enter ();
+
+  label = GTK_LABEL (GTK_BIN (NSA_GET_PTR (env, obj))->child);
   gtk_label_set (label, str);
 
-  gdk_threads_wake();
-  (*env)->MonitorExit (env, java_mutex);
+  gdk_threads_leave ();
+
   (*env)->ReleaseStringUTFChars (env, text, str);
 }
 
@@ -96,13 +95,11 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelSetJustify
       break;
     }
 
-  label = GTK_LABEL (GTK_BIN (NSA_GET_PTR (env, obj))->child);
-  
-  (*env)->MonitorEnter (env, java_mutex);
+  gdk_threads_enter ();
 
+  label = GTK_LABEL (GTK_BIN (NSA_GET_PTR (env, obj))->child);
   gtk_label_set_justify (label, j);
-  
-  gdk_threads_wake();
-  (*env)->MonitorExit (env, java_mutex);
+
+  gdk_threads_leave ();
 }
 

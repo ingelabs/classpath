@@ -29,14 +29,12 @@ Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_gtkEditableGetPosition
   GtkEditable *edit;
   int pos;
 
+  gdk_threads_enter ();
+
   edit = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
-
-  (*env)->MonitorEnter (env,java_mutex);
-
   pos = gtk_editable_get_position (edit);
 
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
   
   return pos;
 }
@@ -47,14 +45,13 @@ Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_gtkEditableSetPosition
 {
   GtkEditable *edit;
 
+
+  gdk_threads_enter ();
+
   edit = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
-
-  (*env)->MonitorEnter (env,java_mutex);
-
   gtk_editable_set_position (edit, pos);
 
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 }
 
 JNIEXPORT jint JNICALL 
@@ -64,13 +61,12 @@ Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_gtkEditableGetSelectionStart
   GtkEditable *edit;
   int pos;
 
+  gdk_threads_enter ();
+
   edit = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
-
-  (*env)->MonitorEnter (env,java_mutex);
-
   pos = edit->selection_start_pos;
 
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 
   return pos;
 }
@@ -82,13 +78,12 @@ Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_gtkEditableGetSelectionEnd
   GtkEditable *edit;
   int pos;
 
+  gdk_threads_enter ();
+
   edit = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
-
-  (*env)->MonitorEnter (env,java_mutex);
-
   pos = edit->selection_end_pos;
 
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 
   return pos;
 }
@@ -99,13 +94,12 @@ Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_gtkEditableSelectRegion
 {
   GtkEditable *edit;
 
+  gdk_threads_enter ();
+
   edit = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
-
-  (*env)->MonitorEnter (env,java_mutex);
-
   gtk_editable_select_region (edit, start, end);
 
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL 
@@ -114,12 +108,11 @@ Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_gtkEditableSetEditable
 {
   GtkEditable *edit;
 
+  gdk_threads_enter ();
+
   edit = GTK_EDITABLE (NSA_GET_PTR (env, jedit));
-
-  (*env)->MonitorEnter (env,java_mutex);
-
   gtk_editable_set_editable (edit, state);
 
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 }
 

@@ -35,10 +35,9 @@ Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkButtonNewWithLabel
   str=(char *)(*env)->GetStringUTFChars (env, label, 0);      
 
   /* All buttons get a label, even if it is blank.  This is okay for java. */
-  (*env)->MonitorEnter (env,java_mutex);
+  gdk_threads_enter ();
   button=gtk_button_new_with_label (str);
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, button);
 
@@ -61,7 +60,7 @@ Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkButtonLabelSet
   printf("labelset\n");
 
   str=(char *)(*env)->GetStringUTFChars (env, label, 0);      
-  (*env)->MonitorEnter (env,java_mutex);
+  gdk_threads_enter ();
   
   /* We assume that the button has 1 child, a label. */
   /* We'd better not be wrong. */
@@ -73,8 +72,8 @@ Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkButtonLabelSet
     printf("Child is not label!\n");
   
   gtk_label_set (GTK_LABEL(child->data),str);
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+
+  gdk_threads_leave ();
   (*env)->ReleaseStringUTFChars (env, label, str);
   g_list_free(child);
 }

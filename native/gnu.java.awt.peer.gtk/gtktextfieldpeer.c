@@ -31,13 +31,12 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryNew
 
   str=(char *)(*env)->GetStringUTFChars (env, text, 0);      
 
-  (*env)->MonitorEnter (env,java_mutex);
+  gdk_threads_enter ();
 
   entry = gtk_entry_new ();
   gtk_entry_set_text (GTK_ENTRY(entry), str);
 
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, entry);
 
@@ -53,10 +52,10 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryGetSize
   GtkRequisition myreq;
   GtkEntry *entry;
   
-  entry = GTK_ENTRY (NSA_GET_PTR (env, obj));
   dims = (*env)->GetIntArrayElements (env, jdims, 0);  
   
-  (*env)->MonitorEnter (env, java_mutex);
+  gdk_threads_enter ();
+  entry = GTK_ENTRY (NSA_GET_PTR (env, obj));
   
   gtk_widget_size_request (GTK_WIDGET(entry), &myreq);
   
@@ -67,8 +66,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryGetSize
   
   printf("native: %i x %i\n", dims[0], dims[1]);
 
-  gdk_threads_wake ();
-  (*env)->MonitorExit (env, java_mutex);
+  gdk_threads_leave ();
   
   (*env)->ReleaseIntArrayElements (env, jdims, dims, 0);
 }
@@ -79,10 +77,9 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntrySetEchoChar
 {
   GtkEntry *entry;
 
+  gdk_threads_enter ();
   entry = GTK_ENTRY (NSA_GET_PTR (env, obj));
-  
-  (*env)->MonitorEnter (env, java_mutex);
-  
+    
   if (c!=0)
     {
 /*        gtk_entry_set_echo_char (entry, c); */
@@ -91,8 +88,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntrySetEchoChar
   else
     gtk_entry_set_visibility (entry, TRUE);
 
-  gdk_threads_wake ();
-  (*env)->MonitorExit (env, java_mutex);
+  gdk_threads_leave ();
 }
 
 JNIEXPORT jstring JNICALL 
@@ -101,17 +97,18 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryGetText
 {
   GtkEntry *entry;
   gchar *text;
+  jstring jtext;
 
+  
+  gdk_threads_enter ();
+  
   entry = GTK_ENTRY (NSA_GET_PTR (env, obj));
-  
-  (*env)->MonitorEnter (env, java_mutex);
-  
   text = gtk_entry_get_text (entry);
-  
-  gdk_threads_wake ();
-  (*env)->MonitorExit (env, java_mutex);
+  jtext = (*env)->NewStringUTF (env, text);
 
-  return (*env)->NewStringUTF (env, text);
+  gdk_threads_leave ();
+
+  return jtext;
 }
 
 JNIEXPORT void JNICALL 
@@ -121,15 +118,14 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntrySetText
   GtkEntry *entry;
   char *str;
 
-  entry = GTK_ENTRY (NSA_GET_PTR (env, obj));
   str=(char *)(*env)->GetStringUTFChars (env, text, 0);      
 
-  (*env)->MonitorEnter (env, java_mutex);
+  gdk_threads_enter ();
   
+  entry = GTK_ENTRY (NSA_GET_PTR (env, obj));
   gtk_entry_set_text (entry, str);
   
-  gdk_threads_wake ();
-  (*env)->MonitorExit (env, java_mutex);
+  gdk_threads_leave ();
 
   (*env)->ReleaseStringUTFChars (env, text, str);
 }

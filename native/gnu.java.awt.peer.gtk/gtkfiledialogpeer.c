@@ -32,10 +32,9 @@ Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_gtkFileSelectionNew (JNIEnv *env,
 {
   GtkWidget *window;
   
-  (*env)->MonitorEnter (env,java_mutex);
+  gdk_threads_enter ();
   window=GTK_WIDGET (gtk_file_selection_new (NULL));
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
   NSA_SET_PTR (env, obj, window);
 }
 
@@ -53,9 +52,8 @@ Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_gtkFileSelectionSetFilename
   ptr=NSA_GET_PTR (env, obj);
     
   str=(char *)(*env)->GetStringUTFChars (env, filename, 0);      
-  (*env)->MonitorEnter (env,java_mutex);
+  gdk_threads_enter ();
   gtk_file_selection_set_filename (GTK_FILE_SELECTION (ptr), str);
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
   (*env)->ReleaseStringUTFChars (env, filename, str);
 }

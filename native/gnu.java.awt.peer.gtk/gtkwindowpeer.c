@@ -31,7 +31,7 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env, jobject obj,
 {
   GtkWidget *window, *fix;
 
-  (*env)->MonitorEnter (env,java_mutex);
+  gdk_threads_enter ();
   switch(type)
     {
     case 1:
@@ -58,8 +58,7 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env, jobject obj,
   
   gtk_container_add(GTK_CONTAINER(window),fix);
 
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, window);
 }
@@ -80,10 +79,9 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowSetTitle (JNIEnv *env,
   
   str=(char *)(*env)->GetStringUTFChars (env, title, 0);      
   
-  (*env)->MonitorEnter (env,java_mutex);
+  gdk_threads_enter ();
   gtk_window_set_title (GTK_WINDOW (ptr),str);
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
   
   (*env)->ReleaseStringUTFChars (env, title, str);
 }
@@ -100,10 +98,9 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowSetPolicy (JNIEnv *env,
   
   ptr = NSA_GET_PTR (env, obj);
   
-  (*env)->MonitorEnter (env,java_mutex);
+  gdk_threads_enter ();
   gtk_window_set_policy (GTK_WINDOW (ptr),shrink,grow,autos);
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 }
 
 
@@ -118,10 +115,9 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gdkWindowLower (JNIEnv *env,
   void *ptr;
   ptr = NSA_GET_PTR (env, obj);
     
-  (*env)->MonitorEnter (env,java_mutex);
+  gdk_threads_enter ();
   gdk_window_lower (GTK_WIDGET (ptr)->window);
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 }
 
 /*
@@ -135,8 +131,7 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gdkWindowRaise (JNIEnv *env,
   void *ptr;
   ptr = NSA_GET_PTR (env, obj);
     
-  (*env)->MonitorEnter (env,java_mutex);
+  gdk_threads_enter ();
   gdk_window_raise (GTK_WIDGET (ptr)->window);
-  gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  gdk_threads_leave ();
 }
