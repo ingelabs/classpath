@@ -1,5 +1,13 @@
 2002-03-24  Tom Tromey  <tromey@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java (connectHooks): New
+	method.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFileDialogPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_old_create ):
+	Removed.
+	(Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_connectHooks): New
+	function.
+
 	* java/awt/TextComponent.java (TextComponent): Editable by
 	default.
 

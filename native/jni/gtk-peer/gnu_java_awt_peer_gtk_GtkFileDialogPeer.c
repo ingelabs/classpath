@@ -1,5 +1,5 @@
 /* gtkfiledialogpeer.c -- Native implementation of GtkFileDialogPeer
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -56,22 +56,19 @@ Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_create
   NSA_SET_PTR (env, obj, widget);
 }
 
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_old_create 
-  (JNIEnv *env, jobject obj, jstring title)
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkFileDialogPeer_connectHooks
+  (JNIEnv *env, jobject obj)
 {
-  GtkWidget *window;
-  const char *str;
+  void *ptr = NSA_GET_PTR (env, obj);
 
-  str = (*env)->GetStringUTFChars (env, title, NULL);
-  
   gdk_threads_enter ();
-  window = gtk_file_selection_new (str);
 
-  NSA_SET_PTR (env, obj, window);
+  /* NOTE: we don't call the superclass connect method here.  */
+  gtk_widget_realize (GTK_WIDGET (ptr));
+  connect_awt_hook (env, obj, 1, GTK_WIDGET (ptr)->window);
+
   gdk_threads_leave ();
-  
-  (*env)->ReleaseStringUTFChars (env, title, str);
 }
 
 /*
