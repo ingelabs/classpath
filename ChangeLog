@@ -1,3 +1,11 @@
+2003-06-10  Tom Tromey  <tromey@redhat.com>
+
+	* javax/swing/JList.java (setListData): Remove gcj workaround.
+	* java/security/BasicPermission.java: Remove gcj workaround.
+	* java/lang/reflect/Proxy.java (getProperty): Remove gcj
+	workaround.
+	* java/awt/im/InputSubset.java: Remove gcj workaround.
+
 2003-06-10  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/BorderFactory.java:

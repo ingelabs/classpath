@@ -1,5 +1,5 @@
 /* JList.java -- 
-   Copyright (C) 2002 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -143,14 +143,13 @@ public class JList extends JComponent implements Accessible, Scrollable
     
     public void setListData(final Vector listData)
     {
-	// XXX - FIXME Don't also name this AL, workaround for gcj 3.1.
-	class ALData extends AbstractListModel 
+	class AL extends AbstractListModel 
 	{
 	    public int getSize()              { return listData.size(); }
 	    public Object getElementAt(int i) { return listData.elementAt(i); }
 	};
 	
-        setModel (new ALData());
+        setModel (new AL());
     }
     
     
