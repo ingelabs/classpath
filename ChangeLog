@@ -1,5 +1,14 @@
 2003-05-01  C. Brian Jones  <cbj@gnu.org>
 
+	Fixes [ Bug #3415 ] System.setIn/setOut/setErr do not work
+	* native/jni/java-lang/java_lang_VMSystem.c
+	(Java_java_lang_VMSystem_setIn): set static field in java/lang/System
+	and perform appropriate JNI exception checks
+	(Java_java_lang_VMSystem_setOut): ditto
+	(Java_java_lang_VMSystem_setErr): ditto
+
+2003-05-01  C. Brian Jones  <cbj@gnu.org>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c
 	(GDK_STABLE_IS_PIXMAP): converted macro to use GDK_IS_PIXMAP
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextAreaPeer.c

@@ -45,11 +45,20 @@ exception statement from your version. */
  * Signature: (Ljava/io/InputStream;)V
  */
 JNIEXPORT void JNICALL
-Java_java_lang_VMSystem_setIn (JNIEnv * env, jclass thisClass, jobject in)
+Java_java_lang_VMSystem_setIn (JNIEnv * env, jclass thisClass, jobject obj)
 {
-  jfieldID inField = (*env)->GetStaticFieldID(env, thisClass, "in",
-                                              "Ljava/io/InputStream;");
-  (*env)->SetStaticObjectField(env, thisClass, inField, in);
+  jclass cls;
+  jfieldID field;
+
+  cls = JCL_FindClass(env, "java/lang/System");
+  if (!cls)
+    return;
+
+  field = (*env)->GetStaticFieldID(env, cls, "in",
+				   "Ljava/io/InputStream;");
+  if (!field)
+    return;
+  (*env)->SetStaticObjectField(env, cls, field, obj);
 }
 
 /*
@@ -58,11 +67,20 @@ Java_java_lang_VMSystem_setIn (JNIEnv * env, jclass thisClass, jobject in)
  * Signature: (Ljava/io/PrintStream;)V
  */
 JNIEXPORT void JNICALL
-Java_java_lang_VMSystem_setOut (JNIEnv * env, jclass thisClass, jobject out)
+Java_java_lang_VMSystem_setOut (JNIEnv * env, jclass thisClass, jobject obj)
 {
-  jfieldID outField = (*env)->GetStaticFieldID(env, thisClass, "out",
-                                               "Ljava/io/PrintStream;");
-  (*env)->SetStaticObjectField(env, thisClass, outField, out);
+  jclass cls;
+  jfieldID field;
+
+  cls = JCL_FindClass(env, "java/lang/System");
+  if (!cls)
+    return;
+
+  field = (*env)->GetStaticFieldID(env, cls, "out",
+				   "Ljava/io/PrintStream;");
+  if (!field)
+    return;
+  (*env)->SetStaticObjectField(env, cls, field, obj);
 }
 
 /*
@@ -71,11 +89,20 @@ Java_java_lang_VMSystem_setOut (JNIEnv * env, jclass thisClass, jobject out)
  * Signature: (Ljava/io/PrintStream;)V
  */
 JNIEXPORT void JNICALL
-Java_java_lang_VMSystem_setErr (JNIEnv * env, jclass thisClass, jobject err)
+Java_java_lang_VMSystem_setErr (JNIEnv * env, jclass thisClass, jobject obj)
 {
-  jfieldID errField = (*env)->GetStaticFieldID(env, thisClass, "err",
-                                               "Ljava/io/PrintStream;");
-  (*env)->SetStaticObjectField(env, thisClass, errField, err);
+  jclass cls;
+  jfieldID field;
+
+  cls = JCL_FindClass(env, "java/lang/System");
+  if (!cls)
+    return;
+
+  field = (*env)->GetStaticFieldID(env, cls, "err",
+				   "Ljava/io/PrintStream;");
+  if (!field)
+    return;
+  (*env)->SetStaticObjectField(env, cls, field, obj);
 }
 
 /*
