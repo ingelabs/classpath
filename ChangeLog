@@ -1,5 +1,9 @@
 2004-07-29  Michael Koch  <konqueror@gmx.de>
 
+	* lib/Makefile.am: Don't include glibj.zip into dist tarball.
+
+2004-07-29  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/awt/EmbeddedWindow.java
 	(addNotify): Use AccessController to allow execution of privileged
 	code.

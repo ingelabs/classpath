@@ -35,7 +35,7 @@ JAVAH = $(USER_JAVAH) -jni -classpath .:$(USER_CLASSLIB)
 
 if INSTALL_GLIBJ_ZIP
 
-dist_pkgdata_DATA = glibj.zip
+pkgdata_DATA = glibj.zip
 
 endif # INSTALL_GLIBJ_ZIP
 
