@@ -171,9 +171,19 @@ public class GtkImage extends Image implements ImageConsumer
 	return;
       }
 
-    System.arraycopy (pixels, offset, 
-		      pixelCache, y * this.width + x,
-		      pixels.length - offset);
+    if (scansize == width)
+      {
+	System.arraycopy (pixels, offset, 
+			  pixelCache, y * this.width + x,
+			  pixels.length - offset);
+      }
+    else			// skip over scansize-width for each row
+      {
+	for (int i = 0; i < height; i++)
+	  System.arraycopy (pixels, offset + (i * scansize),
+			    pixelCache, (y + i) * this.width + x,
+			    width);
+      }
   }
 
   public synchronized void 
