@@ -546,7 +546,7 @@ pushBack()
   * (carriage return), '\"' (double quote), '\'' (single quote), '\\'
   * (backslash), '\XXX' (octal esacpe) are converted to the appropriate
   * char values.  Invalid esacape sequences are left in untranslated.  
-  * Unicode escapes ('\uXXXX') are not recognized. 
+  * Unicode characters like ('\u0000') are not recognized. 
   * <li>If the C++ comment sequence "//" is encountered, and the parser
   * is configured to handle that sequence, then the remainder of the line
   * is skipped and another token is read exactly as if a character with
@@ -797,7 +797,8 @@ nextToken() throws IOException
                     break;
 
                   case 'n': // Newline
-                    c = '\u000a';
+                    /* c = '\\u000a'; */
+		    c = '\n';
                     break;
 
                   case 'f': // Form feed
