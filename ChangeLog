@@ -1,5 +1,10 @@
 2005-01-28  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/SwingUtilities.java
+	(getFontMetrics): Removed.
+
+2005-01-28  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/Container.java
 	(paramString): Implemented.
 	* javax/swing/AbstractButton.java
