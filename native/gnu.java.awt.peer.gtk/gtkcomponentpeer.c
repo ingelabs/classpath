@@ -441,3 +441,18 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_isEnabled
 
   return ret_val;
 }
+
+JNIEXPORT jboolean JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_modalHasGrab
+  (JNIEnv *env, jclass clazz)
+{
+  GtkWidget *widget;
+  jboolean retval;
+
+  gdk_threads_enter ();
+  widget = gtk_grab_get_current ();
+  retval = (widget && GTK_IS_WINDOW (widget) && GTK_WINDOW (widget)->modal);
+  gdk_threads_leave ();
+
+  return retval;
+}
