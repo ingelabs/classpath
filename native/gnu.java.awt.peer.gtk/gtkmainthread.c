@@ -69,6 +69,10 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 
   gtk_init (&argc, &argv);
 
+  gdk_rgb_init ();
+  gtk_widget_set_default_colormap (gdk_rgb_get_cmap ());
+  gtk_widget_set_default_visual (gdk_rgb_get_visual ());
+
   gdk_env = env;
   gdk_event_handler_set ((GdkEventFunc)awt_event_handler, NULL, NULL);
 
