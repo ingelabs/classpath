@@ -34,7 +34,9 @@ public class GtkComponentPeer extends GtkGenericPeer
      knows if a parent is disabled, in which case Component.isEnabled 
      will return true, but our isEnabled will return false */
   native boolean isEnabled ();
+  native static boolean modalHasGrab ();
 
+  //  native void gtkWidgetPaint();
   native int[] gtkWidgetGetForeground ();
   native int[] gtkWidgetGetBackground ();
   native void gtkWidgetSetVisible (boolean b);
@@ -183,6 +185,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void paint (Graphics g)
     {
+      //      gtkWidgetPaint();
       awtComponent.paint (g);
     }
 
