@@ -1,5 +1,10 @@
 2003-07-14  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/DirectByteBufferImpl.java:
+	Partly merge with libgcj.
+
+2003-07-14  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/FileChannelImpl.java: Removed.
 	* gnu/java/nio/Makefile.am
 	(EXTRA_DIST): Removed FileChannelImpl.java.
