@@ -36,136 +36,146 @@ lib/java/lang/reflect/Constructor.class lib/java/lang/reflect/Member.class lib/j
 lib/java/lang/reflect/Constructor.class lib/java/lang/reflect/Member.class lib/java/lang/Class.class lib/java/lang/String.class lib/java/util/Hashtable.class lib/java/util/Dictionary.class lib/java/lang/Object.class lib/java/lang/System.class lib/java/lang/SecurityManager.class lib/java/lang/VMSecurityManager.class lib/java/lang/ClassLoader.class lib/java/lang/SecurityException.class lib/java/lang/RuntimeException.class lib/java/lang/Exception.class lib/java/lang/Throwable.class lib/gnu/vm/stack/StackTrace.class lib/gnu/vm/stack/StackFrame.class lib/java/lang/reflect/Method.class lib/java/lang/StringBuffer.class lib/java/lang/NegativeArraySizeException.class lib/java/lang/Math.class lib/java/lang/IndexOutOfBoundsException.class lib/java/lang/StringIndexOutOfBoundsException.class lib/java/lang/NullPointerException.class lib/java/lang/reflect/Modifier.class lib/java/lang/IllegalAccessException.class lib/java/lang/IllegalArgumentException.class lib/java/lang/reflect/InvocationTargetException.class lib/java/lang/Thread.class lib/java/lang/ThreadGroup.class lib/java/util/Vector.class lib/java/util/AbstractList.class lib/java/util/AbstractCollection.class lib/java/util/Collection.class lib/java/util/Iterator.class lib/java/lang/UnsupportedOperationException.class lib/java/lang/reflect/Array.class lib/java/lang/Boolean.class lib/java/lang/VMClassLoader.class lib/java/lang/Byte.class lib/java/lang/NumberFormatException.class lib/java/lang/Character.class lib/java/lang/Comparable.class lib/java/io/RandomAccessFile.class lib/java/io/DataInput.class lib/java/io/EOFException.class lib/java/io/IOException.class lib/java/io/UTFDataFormatException.class lib/java/io/DataOutput.class lib/java/io/File.class lib/java/io/FilenameFilter.class lib/java/lang/ClassCastException.class lib/java/io/FileDescriptor.class lib/java/io/SyncFailedException.class lib/java/io/DataInputStream.class lib/java/io/FilterInputStream.class lib/java/io/InputStream.class lib/java/io/PushbackInputStream.class lib/java/io/DataOutputStream.class lib/java/io/FilterOutputStream.class lib/java/io/OutputStream.class lib/java/io/ByteArrayOutputStream.class lib/java/lang/Integer.class lib/java/io/UnsupportedEncodingException.class lib/gnu/java/lang/ClassLoaderHelper.class lib/java/io/FileInputStream.class lib/java/io/FileNotFoundException.class lib/java/lang/Short.class lib/java/lang/Long.class lib/java/lang/Void.class lib/java/lang/ArrayIndexOutOfBoundsException.class lib/java/util/List.class lib/java/util/ListIterator.class lib/java/util/ConcurrentModificationException.class lib/java/util/NoSuchElementException.class lib/java/lang/IllegalStateException.class lib/java/util/Enumeration.class lib/java/util/Collections.class lib/java/util/Comparator.class lib/java/util/AbstractSequentialList.class lib/java/util/Arrays.class lib/java/util/Map.class lib/java/util/Set.class lib/java/util/SortedMap.class lib/java/util/SortedSet.class lib/java/lang/IllegalThreadStateException.class lib/java/lang/InterruptedException.class lib/java/io/PrintStream.class lib/java/io/PrintWriter.class lib/java/io/Writer.class lib/java/io/OutputStreamWriter.class lib/gnu/java/io/encode/Encoder.class lib/java/io/CharConversionException.class lib/gnu/java/io/EncodingManager.class lib/gnu/java/io/decode/Decoder.class lib/java/io/Reader.class lib/java/lang/ClassNotFoundException.class lib/java/net/URL.class lib/java/net/URLStreamHandlerFactory.class lib/java/net/URLStreamHandler.class lib/java/net/URLConnection.class lib/java/net/FileNameMap.class lib/java/net/MimeTypeMapper.class lib/java/net/ContentHandlerFactory.class lib/java/net/ContentHandler.class lib/java/net/UnknownServiceException.class lib/java/lang/InstantiationException.class lib/java/net/MalformedURLException.class lib/java/lang/SecurityContext.class lib/java/net/InetAddress.class lib/java/net/UnknownHostException.class lib/java/lang/VMSystem.class lib/java/io/FileOutputStream.class lib/java/lang/Runtime.class lib/java/lang/CloneNotSupportedException.class lib/java/lang/VMObject.class lib/java/lang/IllegalMonitorStateException.class lib/java/io/ObjectStreamField.class lib/gnu/java/lang/reflect/TypeSignature.class lib/java/lang/reflect/Field.class lib/java/util/Bucket.class lib/java/util/BasicMapEntry.class lib/java/io/ObjectOutputStream.class lib/java/io/ObjectOutput.class lib/java/io/ObjectStreamClass.class lib/java/io/Externalizable.class lib/java/io/ObjectInput.class lib/java/lang/NoSuchMethodException.class lib/java/lang/NoSuchFieldException.class lib/java/security/NoSuchAlgorithmException.class lib/java/security/GeneralSecurityException.class lib/gnu/java/io/NullOutputStream.class lib/java/io/InterfaceComparator.class lib/java/io/MemberComparator.class lib/java/io/Replaceable.class lib/java/io/NotSerializableException.class lib/java/io/ObjectStreamException.class lib/java/io/StreamCorruptedException.class lib/java/io/NotActiveException.class lib/gnu/java/io/ObjectIdentityWrapper.class lib/java/io/ObjectInputStream.class lib/java/io/BlockDataException.class lib/java/io/WriteAbortedException.class lib/java/io/ObjectInputValidation.class lib/java/io/InvalidObjectException.class lib/java/io/ValidatorAndPriority.class lib/java/io/OptionalDataException.class lib/java/io/Resolvable.class lib/java/util/AbstractSet.class lib/java/util/Locale.class lib/gnu/java/lang/ClassHelper.class lib/gnu/java/lang/ArrayHelper.class : lib/java/lang/Cloneable.class lib/java/io/Serializable.class lib/java/lang/Runnable.class lib/java/lang/Number.class lib/java/lang/Block.class lib/java/lang/CharAttr.class lib/java/io/ObjectStreamConstants.class 
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
 
 java_lang_Class.h: lib/java/lang/Class.class 
+	$(JAVAHEADER) java.lang.Class
+
+java_lang_Math.h: lib/java/lang/Math.class 
+	$(JAVAHEADER) java.lang.Math
+
+java_lang_Math.h: lib/java/lang/Math.class 
+	$(JAVAHEADER) java.lang.Math
+
+java_lang_Math.h: lib/java/lang/Math.class 
+	$(JAVAHEADER) java.lang.Math
+
+java_lang_Math.h: lib/java/lang/Math.class 
+	$(JAVAHEADER) java.lang.Math
+
+java_lang_Math.h: lib/java/lang/Math.class 
+	$(JAVAHEADER) java.lang.Math
+
+java_lang_Math.h: lib/java/lang/Math.class 
+	$(JAVAHEADER) java.lang.Math
+
+java_lang_Math.h: lib/java/lang/Math.class 
+	$(JAVAHEADER) java.lang.Math
+
+java_lang_Math.h: lib/java/lang/Math.class 
+	$(JAVAHEADER) java.lang.Math
+
+java_lang_Math.h: lib/java/lang/Math.class 
+	$(JAVAHEADER) java.lang.Math
+
+java_lang_Math.h: lib/java/lang/Math.class 
+	$(JAVAHEADER) java.lang.Math
+
+java_lang_Math.h: lib/java/lang/Math.class 
+	$(JAVAHEADER) java.lang.Math
+
+java_lang_Math.h: lib/java/lang/Math.class 
+	$(JAVAHEADER) java.lang.Math
+
+java_lang_Math.h: lib/java/lang/Math.class 
+	$(JAVAHEADER) java.lang.Math
+
+java_lang_Math.h: lib/java/lang/Math.class 
+	$(JAVAHEADER) java.lang.Math
+
+java_lang_Math.h: lib/java/lang/Math.class 
+	$(JAVAHEADER) java.lang.Math
 
 java_lang_System.h: lib/java/lang/System.class 
+	$(JAVAHEADER) java.lang.System
 
 java_lang_System.h: lib/java/lang/System.class 
+	$(JAVAHEADER) java.lang.System
 
 java_lang_System.h: lib/java/lang/System.class 
+	$(JAVAHEADER) java.lang.System
 
 java_lang_System.h: lib/java/lang/System.class 
+	$(JAVAHEADER) java.lang.System
 
-java_lang_Math.h: lib/java/lang/Math.class 
+lib/java/text/ParsePosition.class: ../java/text/ParsePosition.java 
+	$(JAVAC) ../java/text/ParsePosition.java 
 
-java_lang_Math.h: lib/java/lang/Math.class 
+lib/java/text/ParsePosition.class: lib/java/lang/Object.class 
 
-java_lang_Math.h: lib/java/lang/Math.class 
+lib/java/text/FieldPosition.class: ../java/text/FieldPosition.java 
+	$(JAVAC) ../java/text/FieldPosition.java 
 
-java_lang_Math.h: lib/java/lang/Math.class 
-
-java_lang_Math.h: lib/java/lang/Math.class 
-
-java_lang_Math.h: lib/java/lang/Math.class 
-
-java_lang_Math.h: lib/java/lang/Math.class 
-
-java_lang_Math.h: lib/java/lang/Math.class 
-
-java_lang_Math.h: lib/java/lang/Math.class 
-
-java_lang_Math.h: lib/java/lang/Math.class 
-
-java_lang_Math.h: lib/java/lang/Math.class 
-
-java_lang_Math.h: lib/java/lang/Math.class 
-
-java_lang_Math.h: lib/java/lang/Math.class 
-
-java_lang_Math.h: lib/java/lang/Math.class 
-
-java_lang_Math.h: lib/java/lang/Math.class 
-
-lib/java/security/PrivilegedActionException.class: ../java/security/PrivilegedActionException.java 
-	$(JAVAC) ../java/security/PrivilegedActionException.java 
-
-lib/java/security/PrivilegedActionException.class: lib/java/lang/Exception.class lib/java/io/PrintStream.class lib/java/io/PrintWriter.class 
-
-lib/java/security/acl/NotOwnerException.class: ../java/security/acl/NotOwnerException.java 
-	$(JAVAC) ../java/security/acl/NotOwnerException.java 
-
-lib/java/security/acl/NotOwnerException.class: lib/java/lang/Exception.class 
-
-lib/java/security/acl/LastOwnerException.class: ../java/security/acl/LastOwnerException.java 
-	$(JAVAC) ../java/security/acl/LastOwnerException.java 
-
-lib/java/security/acl/LastOwnerException.class: lib/java/lang/Exception.class 
-
-lib/java/security/acl/AclNotFoundException.class: ../java/security/acl/AclNotFoundException.java 
-	$(JAVAC) ../java/security/acl/AclNotFoundException.java 
-
-lib/java/security/acl/AclNotFoundException.class: lib/java/lang/Exception.class 
-
-lib/java/io/ByteArrayInputStream.class: ../java/io/ByteArrayInputStream.java 
-	$(JAVAC) ../java/io/ByteArrayInputStream.java 
-
-lib/java/io/ByteArrayInputStream.class: lib/java/io/InputStream.class lib/java/lang/System.class 
-
-lib/java/io/LineNumberInputStream.class: ../java/io/LineNumberInputStream.java 
-	$(JAVAC) ../java/io/LineNumberInputStream.java 
-
-lib/java/io/LineNumberInputStream.class: lib/java/io/FilterInputStream.class lib/java/io/InputStream.class lib/java/io/PushbackInputStream.class lib/java/io/IOException.class 
-
-java_lang_VMSecurityManager.h: lib/java/lang/VMSecurityManager.class 
-
-java_lang_VMSecurityManager.h: lib/java/lang/VMSecurityManager.class 
-
-lib/java/io/SequenceInputStream.class: ../java/io/SequenceInputStream.java 
-	$(JAVAC) ../java/io/SequenceInputStream.java 
-
-lib/java/io/SequenceInputStream.class: lib/java/io/InputStream.class lib/java/util/Enumeration.class lib/java/io/IOException.class 
-
-lib/java/security/PrivilegedExceptionAction.class: ../java/security/PrivilegedExceptionAction.java 
-	$(JAVAC) ../java/security/PrivilegedExceptionAction.java 
-
-lib/java/security/PrivilegedExceptionAction.class: lib/java/lang/Object.class lib/java/lang/Exception.class 
+lib/java/text/FieldPosition.class: lib/java/lang/Object.class 
 
 lib/java/security/PrivilegedAction.class: ../java/security/PrivilegedAction.java 
 	$(JAVAC) ../java/security/PrivilegedAction.java 
@@ -173,6 +183,54 @@ lib/java/security/PrivilegedAction.class: ../java/security/PrivilegedAction.java
 lib/java/security/PrivilegedAction.class: lib/java/lang/Object.class 
 
 java_lang_Object.h: lib/java/lang/Object.class 
+	$(JAVAHEADER) java.lang.Object
+
+java_io_File.h: lib/java/io/File.class 
+	$(JAVAHEADER) java.io.File
+
+java_io_File.h: lib/java/io/File.class 
+	$(JAVAHEADER) java.io.File
+
+java_io_File.h: lib/java/io/File.class 
+	$(JAVAHEADER) java.io.File
+
+java_io_File.h: lib/java/io/File.class 
+	$(JAVAHEADER) java.io.File
+
+java_io_File.h: lib/java/io/File.class 
+	$(JAVAHEADER) java.io.File
+
+java_io_File.h: lib/java/io/File.class 
+	$(JAVAHEADER) java.io.File
+
+java_io_File.h: lib/java/io/File.class 
+	$(JAVAHEADER) java.io.File
+
+java_io_File.h: lib/java/io/File.class 
+	$(JAVAHEADER) java.io.File
+
+java_io_File.h: lib/java/io/File.class 
+	$(JAVAHEADER) java.io.File
+
+java_io_File.h: lib/java/io/File.class 
+	$(JAVAHEADER) java.io.File
+
+java_io_File.h: lib/java/io/File.class 
+	$(JAVAHEADER) java.io.File
+
+java_io_File.h: lib/java/io/File.class 
+	$(JAVAHEADER) java.io.File
+
+java_lang_VMSecurityManager.h: lib/java/lang/VMSecurityManager.class 
+	$(JAVAHEADER) java.lang.VMSecurityManager
+
+java_lang_VMSecurityManager.h: lib/java/lang/VMSecurityManager.class 
+	$(JAVAHEADER) java.lang.VMSecurityManager
+
+lib/java/text/Annotation.class: ../java/text/Annotation.java 
+	$(JAVAC) ../java/text/Annotation.java 
+
+lib/java/text/Annotation.class: lib/java/lang/Object.class lib/java/lang/String.class 
 
 lib/java/security/Provider.class: ../java/security/Provider.java 
 	$(JAVAC) ../java/security/Provider.java 
@@ -184,11 +242,6 @@ lib/java/security/Principal.class: ../java/security/Principal.java
 
 lib/java/security/Principal.class: lib/java/lang/String.class lib/java/lang/Object.class 
 
-lib/java/security/acl/Owner.class: ../java/security/acl/Owner.java 
-	$(JAVAC) ../java/security/acl/Owner.java 
-
-lib/java/security/acl/Owner.class: lib/java/security/Principal.class lib/java/security/acl/NotOwnerException.class lib/java/security/acl/LastOwnerException.class 
-
 lib/java/security/acl/Group.class: ../java/security/acl/Group.java 
 	$(JAVAC) ../java/security/acl/Group.java 
 
@@ -198,6 +251,36 @@ lib/java/security/Key.class: ../java/security/Key.java
 	$(JAVAC) ../java/security/Key.java 
 
 lib/java/security/Key.class: lib/java/io/Serializable.class lib/java/lang/String.class 
+
+lib/java/security/acl/Permission.class: ../java/security/acl/Permission.java 
+	$(JAVAC) ../java/security/acl/Permission.java 
+
+lib/java/security/acl/Permission.class: lib/java/lang/Object.class lib/java/lang/String.class 
+
+lib/java/security/acl/AclEntry.class: ../java/security/acl/AclEntry.java 
+	$(JAVAC) ../java/security/acl/AclEntry.java 
+
+lib/java/security/acl/AclEntry.class: lib/java/lang/Cloneable.class lib/java/security/Principal.class lib/java/security/acl/Permission.class lib/java/util/Enumeration.class lib/java/lang/String.class lib/java/lang/Object.class 
+
+lib/java/net/PasswordAuthentication.class: ../java/net/PasswordAuthentication.java 
+	$(JAVAC) ../java/net/PasswordAuthentication.java 
+
+lib/java/net/PasswordAuthentication.class: lib/java/lang/String.class 
+
+lib/java/text/ParseException.class: ../java/text/ParseException.java 
+	$(JAVAC) ../java/text/ParseException.java 
+
+lib/java/text/ParseException.class: lib/java/lang/Exception.class lib/java/lang/String.class 
+
+lib/java/security/PrivilegedExceptionAction.class: ../java/security/PrivilegedExceptionAction.java 
+	$(JAVAC) ../java/security/PrivilegedExceptionAction.java 
+
+lib/java/security/PrivilegedExceptionAction.class: lib/java/lang/Object.class lib/java/lang/Exception.class 
+
+lib/java/security/PrivilegedActionException.class: ../java/security/PrivilegedActionException.java 
+	$(JAVAC) ../java/security/PrivilegedActionException.java 
+
+lib/java/security/PrivilegedActionException.class: lib/java/lang/Exception.class lib/java/io/PrintStream.class lib/java/io/PrintWriter.class 
 
 lib/java/security/UnrecoverableKeyException.class: ../java/security/UnrecoverableKeyException.java 
 	$(JAVAC) ../java/security/UnrecoverableKeyException.java 
@@ -244,60 +327,30 @@ lib/java/security/DigestException.class: ../java/security/DigestException.java
 
 lib/java/security/DigestException.class: lib/java/security/GeneralSecurityException.class lib/java/lang/String.class 
 
-lib/java/security/Certificate.class: ../java/security/Certificate.java 
-	$(JAVAC) ../java/security/Certificate.java 
+lib/java/security/acl/NotOwnerException.class: ../java/security/acl/NotOwnerException.java 
+	$(JAVAC) ../java/security/acl/NotOwnerException.java 
 
-lib/java/security/Certificate.class: lib/java/security/Principal.class lib/java/security/PublicKey.class lib/java/lang/String.class lib/java/io/OutputStream.class lib/java/security/KeyException.class lib/java/io/IOException.class lib/java/io/InputStream.class 
+lib/java/security/acl/NotOwnerException.class: lib/java/lang/Exception.class 
 
-lib/java/security/acl/Permission.class: ../java/security/acl/Permission.java 
-	$(JAVAC) ../java/security/acl/Permission.java 
+lib/java/security/acl/LastOwnerException.class: ../java/security/acl/LastOwnerException.java 
+	$(JAVAC) ../java/security/acl/LastOwnerException.java 
 
-lib/java/security/acl/Permission.class: lib/java/lang/Object.class lib/java/lang/String.class 
+lib/java/security/acl/LastOwnerException.class: lib/java/lang/Exception.class 
 
-lib/java/security/acl/AclEntry.class: ../java/security/acl/AclEntry.java 
-	$(JAVAC) ../java/security/acl/AclEntry.java 
+lib/java/security/acl/Owner.class: ../java/security/acl/Owner.java 
+	$(JAVAC) ../java/security/acl/Owner.java 
 
-lib/java/security/acl/AclEntry.class: lib/java/lang/Cloneable.class lib/java/security/Principal.class lib/java/security/acl/Permission.class lib/java/util/Enumeration.class lib/java/lang/String.class lib/java/lang/Object.class 
+lib/java/security/acl/Owner.class: lib/java/security/Principal.class lib/java/security/acl/NotOwnerException.class lib/java/security/acl/LastOwnerException.class 
 
 lib/java/security/acl/Acl.class: ../java/security/acl/Acl.java 
 	$(JAVAC) ../java/security/acl/Acl.java 
 
 lib/java/security/acl/Acl.class: lib/java/security/acl/Owner.class lib/java/lang/String.class lib/java/security/Principal.class lib/java/security/acl/NotOwnerException.class lib/java/security/acl/AclEntry.class lib/java/util/Enumeration.class lib/java/security/acl/Permission.class 
 
-lib/java/net/SocketException.class: ../java/net/SocketException.java 
-	$(JAVAC) ../java/net/SocketException.java 
+lib/java/security/acl/AclNotFoundException.class: ../java/security/acl/AclNotFoundException.java 
+	$(JAVAC) ../java/security/acl/AclNotFoundException.java 
 
-lib/java/net/SocketException.class: lib/java/io/IOException.class lib/java/lang/String.class 
-
-lib/java/net/SocketOptions.class: ../java/net/SocketOptions.java 
-	$(JAVAC) ../java/net/SocketOptions.java 
-
-lib/java/net/SocketOptions.class: lib/java/lang/Object.class lib/java/net/SocketException.class 
-
-lib/java/net/ProtocolException.class: ../java/net/ProtocolException.java 
-	$(JAVAC) ../java/net/ProtocolException.java 
-
-lib/java/net/ProtocolException.class: lib/java/io/IOException.class lib/java/lang/String.class 
-
-lib/java/net/PasswordAuthentication.class: ../java/net/PasswordAuthentication.java 
-	$(JAVAC) ../java/net/PasswordAuthentication.java 
-
-lib/java/net/PasswordAuthentication.class: lib/java/lang/String.class 
-
-lib/java/net/NoRouteToHostException.class: ../java/net/NoRouteToHostException.java 
-	$(JAVAC) ../java/net/NoRouteToHostException.java 
-
-lib/java/net/NoRouteToHostException.class: lib/java/net/SocketException.class lib/java/lang/String.class 
-
-lib/java/net/ConnectException.class: ../java/net/ConnectException.java 
-	$(JAVAC) ../java/net/ConnectException.java 
-
-lib/java/net/ConnectException.class: lib/java/net/SocketException.class lib/java/lang/String.class 
-
-lib/java/net/BindException.class: ../java/net/BindException.java 
-	$(JAVAC) ../java/net/BindException.java 
-
-lib/java/net/BindException.class: lib/java/net/SocketException.class lib/java/lang/String.class 
+lib/java/security/acl/AclNotFoundException.class: lib/java/lang/Exception.class 
 
 lib/java/util/EmptyStackException.class: ../java/util/EmptyStackException.java 
 	$(JAVAC) ../java/util/EmptyStackException.java 
@@ -323,6 +376,16 @@ lib/java/security/GuardedObject.class: ../java/security/GuardedObject.java
 	$(JAVAC) ../java/security/GuardedObject.java 
 
 lib/java/security/GuardedObject.class: lib/java/io/Serializable.class lib/java/security/Guard.class lib/java/lang/Object.class lib/java/lang/SecurityException.class 
+
+lib/java/text/CharacterIterator.class: ../java/text/CharacterIterator.java 
+	$(JAVAC) ../java/text/CharacterIterator.java 
+
+lib/java/text/CharacterIterator.class: lib/java/lang/Cloneable.class lib/java/lang/IllegalArgumentException.class lib/java/lang/Object.class 
+
+lib/java/text/StringCharacterIterator.class: ../java/text/StringCharacterIterator.java 
+	$(JAVAC) ../java/text/StringCharacterIterator.java 
+
+lib/java/text/StringCharacterIterator.class: lib/java/text/CharacterIterator.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/lang/Object.class 
 
 lib/java/security/InvalidParameterException.class: ../java/security/InvalidParameterException.java 
 	$(JAVAC) ../java/security/InvalidParameterException.java 
@@ -385,93 +448,268 @@ lib/java/security/interfaces/DSAPrivateKey.class: ../java/security/interfaces/DS
 lib/java/security/interfaces/DSAPrivateKey.class: lib/java/security/interfaces/DSAKey.class lib/java/security/PrivateKey.class lib/java/math/BigInteger.class 
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 java_math_BigInteger.h: lib/java/math/BigInteger.class 
+	$(JAVAHEADER) java.math.BigInteger
 
 lib/java/util/AbstractMap.class: ../java/util/AbstractMap.java 
 	$(JAVAC) ../java/util/AbstractMap.java 
 
 lib/java/util/AbstractMap.class: lib/java/util/Map.class lib/java/lang/Object.class lib/java/util/Iterator.class lib/java/util/Set.class lib/java/util/AbstractSet.class lib/java/lang/UnsupportedOperationException.class lib/java/lang/String.class lib/java/util/Collection.class lib/java/util/AbstractCollection.class 
 
+lib/java/text/ChoiceFormat.class: ../java/text/ChoiceFormat.java 
+	$(JAVAC) ../java/text/ChoiceFormat.java 
+
+lib/java/text/ChoiceFormat.class: lib/java/io/Serializable.class lib/java/lang/Cloneable.class lib/java/lang/String.class lib/java/lang/Object.class lib/java/lang/IllegalArgumentException.class lib/java/lang/NumberFormatException.class lib/java/lang/StringBuffer.class lib/java/text/FieldPosition.class lib/java/lang/Number.class lib/java/text/ParsePosition.class lib/java/lang/RuntimeException.class lib/java/lang/System.class lib/java/lang/CloneNotSupportedException.class 
+
+lib/java/text/Format.class: ../java/text/Format.java 
+	$(JAVAC) ../java/text/Format.java 
+
+lib/java/text/Format.class: lib/java/io/Serializable.class lib/java/lang/Cloneable.class lib/java/lang/String.class lib/java/lang/Object.class lib/java/lang/IllegalArgumentException.class lib/java/lang/StringBuffer.class lib/java/text/FieldPosition.class lib/java/text/ParseException.class lib/java/text/ParsePosition.class lib/java/lang/CloneNotSupportedException.class 
+
 lib/java/net/URLEncoder.class: ../java/net/URLEncoder.java 
 	$(JAVAC) ../java/net/URLEncoder.java 
 
 lib/java/net/URLEncoder.class: lib/java/lang/String.class lib/java/lang/StringBuffer.class 
 
-java_net_InetAddress.h: lib/java/net/InetAddress.class 
+lib/java/lang/Compiler.class: ../java/lang/Compiler.java 
+	$(JAVAC) ../java/lang/Compiler.java 
+
+lib/java/lang/Compiler.class: lib/java/lang/Class.class lib/java/lang/String.class lib/java/lang/Object.class 
+
+lib/java/text/BreakIterator.class lib/java/text/DefaultBreakIterator.class : ../java/text/BreakIterator.java ../java/text/DefaultBreakIterator.java 
+	$(JAVAC) ../java/text/BreakIterator.java ../java/text/DefaultBreakIterator.java 
+
+lib/java/text/BreakIterator.class lib/java/text/DefaultBreakIterator.class : lib/java/lang/Cloneable.class lib/java/io/Serializable.class lib/java/util/Locale.class lib/java/lang/String.class lib/java/lang/Object.class lib/java/lang/RuntimeException.class lib/java/text/CharacterIterator.class lib/java/text/StringCharacterIterator.class lib/java/lang/StringBuffer.class 
+
+lib/java/text/Collator.class lib/java/text/RuleBasedCollator.class lib/java/text/CollationElementIterator.class lib/java/text/CollationKey.class : ../java/text/Collator.java ../java/text/RuleBasedCollator.java ../java/text/CollationElementIterator.java ../java/text/CollationKey.java 
+	$(JAVAC) ../java/text/Collator.java ../java/text/RuleBasedCollator.java ../java/text/CollationElementIterator.java ../java/text/CollationKey.java 
+
+lib/java/text/Collator.class lib/java/text/RuleBasedCollator.class lib/java/text/CollationElementIterator.class lib/java/text/CollationKey.class : lib/java/util/Comparator.class lib/java/lang/Cloneable.class lib/java/io/Serializable.class lib/java/util/Hashtable.class lib/java/util/Locale.class lib/java/lang/Object.class lib/java/lang/String.class lib/java/lang/RuntimeException.class lib/java/text/ParseException.class lib/java/lang/IllegalArgumentException.class lib/java/lang/ClassCastException.class lib/java/lang/CloneNotSupportedException.class lib/java/util/Vector.class lib/java/lang/StringBuffer.class lib/java/text/CharacterIterator.class lib/java/lang/Integer.class lib/java/lang/System.class lib/java/lang/Comparable.class 
 
 java_net_InetAddress.h: lib/java/net/InetAddress.class 
+	$(JAVAHEADER) java.net.InetAddress
 
 java_net_InetAddress.h: lib/java/net/InetAddress.class 
+	$(JAVAHEADER) java.net.InetAddress
 
 java_net_InetAddress.h: lib/java/net/InetAddress.class 
+	$(JAVAHEADER) java.net.InetAddress
+
+java_net_InetAddress.h: lib/java/net/InetAddress.class 
+	$(JAVAHEADER) java.net.InetAddress
 
 lib/java/net/DatagramPacket.class: ../java/net/DatagramPacket.java 
 	$(JAVAC) ../java/net/DatagramPacket.java 
 
 lib/java/net/DatagramPacket.class: lib/java/net/InetAddress.class 
+
+lib/java/net/SocketException.class: ../java/net/SocketException.java 
+	$(JAVAC) ../java/net/SocketException.java 
+
+lib/java/net/SocketException.class: lib/java/io/IOException.class lib/java/lang/String.class 
+
+lib/java/net/SocketOptions.class: ../java/net/SocketOptions.java 
+	$(JAVAC) ../java/net/SocketOptions.java 
+
+lib/java/net/SocketOptions.class: lib/java/lang/Object.class lib/java/net/SocketException.class 
+
+lib/java/net/NoRouteToHostException.class: ../java/net/NoRouteToHostException.java 
+	$(JAVAC) ../java/net/NoRouteToHostException.java 
+
+lib/java/net/NoRouteToHostException.class: lib/java/net/SocketException.class lib/java/lang/String.class 
+
+lib/java/net/ConnectException.class: ../java/net/ConnectException.java 
+	$(JAVAC) ../java/net/ConnectException.java 
+
+lib/java/net/ConnectException.class: lib/java/net/SocketException.class lib/java/lang/String.class 
+
+lib/java/net/BindException.class: ../java/net/BindException.java 
+	$(JAVAC) ../java/net/BindException.java 
+
+lib/java/net/BindException.class: lib/java/net/SocketException.class lib/java/lang/String.class 
+
+lib/java/net/ProtocolException.class: ../java/net/ProtocolException.java 
+	$(JAVAC) ../java/net/ProtocolException.java 
+
+lib/java/net/ProtocolException.class: lib/java/io/IOException.class lib/java/lang/String.class 
+
+lib/java/io/StringWriter.class: ../java/io/StringWriter.java 
+	$(JAVAC) ../java/io/StringWriter.java 
+
+lib/java/io/StringWriter.class: lib/java/io/Writer.class lib/java/lang/StringBuffer.class lib/java/lang/String.class 
+
+lib/java/net/DatagramSocketImpl.class: ../java/net/DatagramSocketImpl.java 
+	$(JAVAC) ../java/net/DatagramSocketImpl.java 
+
+lib/java/net/DatagramSocketImpl.class: lib/java/net/SocketOptions.class lib/java/io/FileDescriptor.class lib/java/net/InetAddress.class lib/java/net/SocketException.class lib/java/io/IOException.class lib/java/net/DatagramPacket.class 
+
+lib/java/net/PlainDatagramSocketImpl.class: ../java/net/PlainDatagramSocketImpl.java 
+	$(JAVAC) ../java/net/PlainDatagramSocketImpl.java 
+
+lib/java/net/PlainDatagramSocketImpl.class: lib/java/net/DatagramSocketImpl.class lib/java/lang/System.class lib/java/net/SocketException.class lib/java/net/InetAddress.class lib/java/net/DatagramPacket.class lib/java/io/IOException.class lib/java/lang/Object.class lib/java/net/SocketOptions.class lib/java/lang/Integer.class 
+
+java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainDatagramSocketImpl
+
+java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainDatagramSocketImpl
+
+java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainDatagramSocketImpl
+
+java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainDatagramSocketImpl
+
+java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainDatagramSocketImpl
+
+java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainDatagramSocketImpl
+
+java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainDatagramSocketImpl
+
+java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainDatagramSocketImpl
+
+java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainDatagramSocketImpl
+
+lib/java/net/DatagramSocket.class: ../java/net/DatagramSocket.java 
+	$(JAVAC) ../java/net/DatagramSocket.java 
+
+lib/java/net/DatagramSocket.class: lib/java/net/DatagramSocketImpl.class lib/java/net/InetAddress.class lib/java/net/SocketException.class lib/java/net/PlainDatagramSocketImpl.class lib/java/net/UnknownHostException.class lib/java/lang/Object.class lib/java/net/SocketOptions.class lib/java/lang/Integer.class lib/java/net/DatagramPacket.class lib/java/io/IOException.class 
+
+lib/java/net/MulticastSocket.class: ../java/net/MulticastSocket.java 
+	$(JAVAC) ../java/net/MulticastSocket.java 
+
+lib/java/net/MulticastSocket.class: lib/java/net/DatagramSocket.class lib/java/io/IOException.class lib/java/net/InetAddress.class lib/java/net/SocketException.class lib/java/lang/Object.class lib/java/net/SocketOptions.class lib/java/net/DatagramPacket.class 
+
+java_io_FileDescriptor.h: lib/java/io/FileDescriptor.class 
+	$(JAVAHEADER) java.io.FileDescriptor
+
+java_io_FileDescriptor.h: lib/java/io/FileDescriptor.class 
+	$(JAVAHEADER) java.io.FileDescriptor
+
+lib/java/io/StringReader.class: ../java/io/StringReader.java 
+	$(JAVAC) ../java/io/StringReader.java 
+
+lib/java/io/StringReader.class: lib/java/io/Reader.class lib/java/lang/String.class lib/java/io/IOException.class 
+
+lib/java/text/AttributedCharacterIterator.class: ../java/text/AttributedCharacterIterator.java 
+	$(JAVAC) ../java/text/AttributedCharacterIterator.java 
+
+lib/java/text/AttributedCharacterIterator.class: lib/java/text/CharacterIterator.class lib/java/io/Serializable.class lib/java/lang/String.class lib/java/lang/Object.class lib/java/io/InvalidObjectException.class lib/java/util/Set.class lib/java/util/Map.class 
+
+lib/java/io/InvalidClassException.class: ../java/io/InvalidClassException.java 
+	$(JAVAC) ../java/io/InvalidClassException.java 
+
+lib/java/io/InvalidClassException.class: lib/java/io/ObjectStreamException.class lib/java/lang/String.class 
+
+lib/java/io/InterruptedIOException.class: ../java/io/InterruptedIOException.java 
+	$(JAVAC) ../java/io/InterruptedIOException.java 
+
+lib/java/io/InterruptedIOException.class: lib/java/io/IOException.class lib/java/lang/String.class 
+
+lib/java/security/Certificate.class: ../java/security/Certificate.java 
+	$(JAVAC) ../java/security/Certificate.java 
+
+lib/java/security/Certificate.class: lib/java/security/Principal.class lib/java/security/PublicKey.class lib/java/lang/String.class lib/java/io/OutputStream.class lib/java/security/KeyException.class lib/java/io/IOException.class lib/java/io/InputStream.class 
 
 lib/java/net/SocketImpl.class: ../java/net/SocketImpl.java 
 	$(JAVAC) ../java/net/SocketImpl.java 
@@ -489,81 +727,104 @@ lib/java/net/PlainSocketImpl.class lib/java/net/SocketInputStream.class lib/java
 lib/java/net/PlainSocketImpl.class lib/java/net/SocketInputStream.class lib/java/net/SocketOutputStream.class : lib/java/net/SocketImpl.class lib/java/lang/System.class lib/java/io/IOException.class lib/java/net/InetAddress.class lib/java/lang/String.class lib/java/lang/Object.class lib/java/net/SocketException.class lib/java/io/InputStream.class lib/java/io/OutputStream.class lib/java/lang/Integer.class 
 
 java_net_PlainSocketImpl.h: lib/java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
 
 java_net_PlainSocketImpl.h: lib/java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
 
 java_net_PlainSocketImpl.h: lib/java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
 
 java_net_PlainSocketImpl.h: lib/java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
 
 java_net_PlainSocketImpl.h: lib/java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
 
 java_net_PlainSocketImpl.h: lib/java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
 
 java_net_PlainSocketImpl.h: lib/java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
 
 java_net_PlainSocketImpl.h: lib/java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
 
 java_net_PlainSocketImpl.h: lib/java/net/PlainSocketImpl.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
 
 java_net_PlainSocketImpl.h: lib/java/net/PlainSocketImpl.class 
-
-lib/java/net/DatagramSocketImpl.class: ../java/net/DatagramSocketImpl.java 
-	$(JAVAC) ../java/net/DatagramSocketImpl.java 
-
-lib/java/net/DatagramSocketImpl.class: lib/java/net/SocketOptions.class lib/java/io/FileDescriptor.class lib/java/net/InetAddress.class lib/java/net/SocketException.class lib/java/io/IOException.class lib/java/net/DatagramPacket.class 
-
-lib/java/net/PlainDatagramSocketImpl.class: ../java/net/PlainDatagramSocketImpl.java 
-	$(JAVAC) ../java/net/PlainDatagramSocketImpl.java 
-
-lib/java/net/PlainDatagramSocketImpl.class: lib/java/net/DatagramSocketImpl.class lib/java/lang/System.class lib/java/net/SocketException.class lib/java/net/InetAddress.class lib/java/net/DatagramPacket.class lib/java/io/IOException.class lib/java/lang/Object.class lib/java/net/SocketOptions.class lib/java/lang/Integer.class 
-
-java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
-
-java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
-
-java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
-
-java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
-
-java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
-
-java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
-
-java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
-
-java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
-
-java_net_PlainDatagramSocketImpl.h: lib/java/net/PlainDatagramSocketImpl.class 
-
-lib/java/net/DatagramSocket.class: ../java/net/DatagramSocket.java 
-	$(JAVAC) ../java/net/DatagramSocket.java 
-
-lib/java/net/DatagramSocket.class: lib/java/net/DatagramSocketImpl.class lib/java/net/InetAddress.class lib/java/net/SocketException.class lib/java/net/PlainDatagramSocketImpl.class lib/java/net/UnknownHostException.class lib/java/lang/Object.class lib/java/net/SocketOptions.class lib/java/lang/Integer.class lib/java/net/DatagramPacket.class lib/java/io/IOException.class 
-
-lib/java/net/MulticastSocket.class: ../java/net/MulticastSocket.java 
-	$(JAVAC) ../java/net/MulticastSocket.java 
-
-lib/java/net/MulticastSocket.class: lib/java/net/DatagramSocket.class lib/java/io/IOException.class lib/java/net/InetAddress.class lib/java/net/SocketException.class lib/java/lang/Object.class lib/java/net/SocketOptions.class lib/java/net/DatagramPacket.class 
-
-java_io_FileDescriptor.h: lib/java/io/FileDescriptor.class 
-
-java_io_FileDescriptor.h: lib/java/io/FileDescriptor.class 
+	$(JAVAHEADER) java.net.PlainSocketImpl
 
 lib/java/io/StringBufferInputStream.class: ../java/io/StringBufferInputStream.java 
 	$(JAVAC) ../java/io/StringBufferInputStream.java 
 
 lib/java/io/StringBufferInputStream.class: lib/java/io/InputStream.class lib/java/lang/String.class 
 
-lib/java/io/InvalidClassException.class: ../java/io/InvalidClassException.java 
-	$(JAVAC) ../java/io/InvalidClassException.java 
+lib/java/io/SequenceInputStream.class: ../java/io/SequenceInputStream.java 
+	$(JAVAC) ../java/io/SequenceInputStream.java 
 
-lib/java/io/InvalidClassException.class: lib/java/io/ObjectStreamException.class lib/java/lang/String.class 
+lib/java/io/SequenceInputStream.class: lib/java/io/InputStream.class lib/java/util/Enumeration.class lib/java/io/IOException.class 
 
-lib/java/io/InterruptedIOException.class: ../java/io/InterruptedIOException.java 
-	$(JAVAC) ../java/io/InterruptedIOException.java 
+lib/java/io/ByteArrayInputStream.class: ../java/io/ByteArrayInputStream.java 
+	$(JAVAC) ../java/io/ByteArrayInputStream.java 
 
-lib/java/io/InterruptedIOException.class: lib/java/io/IOException.class lib/java/lang/String.class 
+lib/java/io/ByteArrayInputStream.class: lib/java/io/InputStream.class lib/java/lang/System.class 
+
+lib/java/io/FilterReader.class: ../java/io/FilterReader.java 
+	$(JAVAC) ../java/io/FilterReader.java 
+
+lib/java/io/FilterReader.class: lib/java/io/Reader.class lib/java/io/IOException.class 
+
+lib/java/io/PushbackReader.class: ../java/io/PushbackReader.java 
+	$(JAVAC) ../java/io/PushbackReader.java 
+
+lib/java/io/PushbackReader.class: lib/java/io/FilterReader.class lib/java/io/Reader.class lib/java/io/IOException.class lib/java/lang/System.class 
+
+lib/java/io/LineNumberInputStream.class: ../java/io/LineNumberInputStream.java 
+	$(JAVAC) ../java/io/LineNumberInputStream.java 
+
+lib/java/io/LineNumberInputStream.class: lib/java/io/FilterInputStream.class lib/java/io/InputStream.class lib/java/io/PushbackInputStream.class lib/java/io/IOException.class 
+
+lib/java/io/CharArrayReader.class: ../java/io/CharArrayReader.java 
+	$(JAVAC) ../java/io/CharArrayReader.java 
+
+lib/java/io/CharArrayReader.class: lib/java/io/Reader.class lib/java/io/IOException.class lib/java/lang/System.class 
+
+lib/java/io/BufferedOutputStream.class: ../java/io/BufferedOutputStream.java 
+	$(JAVAC) ../java/io/BufferedOutputStream.java 
+
+lib/java/io/BufferedOutputStream.class: lib/java/io/FilterOutputStream.class lib/java/io/OutputStream.class lib/java/io/IOException.class lib/java/lang/System.class 
+
+lib/java/io/BufferedInputStream.class: ../java/io/BufferedInputStream.java 
+	$(JAVAC) ../java/io/BufferedInputStream.java 
+
+lib/java/io/BufferedInputStream.class: lib/java/io/FilterInputStream.class lib/java/io/InputStream.class lib/java/lang/System.class lib/java/io/IOException.class 
+
+lib/java/io/FilterWriter.class: ../java/io/FilterWriter.java 
+	$(JAVAC) ../java/io/FilterWriter.java 
+
+lib/java/io/FilterWriter.class: lib/java/io/Writer.class lib/java/io/IOException.class lib/java/lang/String.class 
+
+lib/java/io/BufferedWriter.class: ../java/io/BufferedWriter.java 
+	$(JAVAC) ../java/io/BufferedWriter.java 
+
+lib/java/io/BufferedWriter.class: lib/java/io/Writer.class lib/java/io/IOException.class lib/java/lang/String.class lib/java/lang/System.class 
+
+lib/java/io/BufferedReader.class: ../java/io/BufferedReader.java 
+	$(JAVAC) ../java/io/BufferedReader.java 
+
+lib/java/io/BufferedReader.class: lib/java/io/Reader.class lib/java/io/IOException.class lib/java/lang/System.class lib/java/lang/String.class 
+
+lib/java/io/LineNumberReader.class: ../java/io/LineNumberReader.java 
+	$(JAVAC) ../java/io/LineNumberReader.java 
+
+lib/java/io/LineNumberReader.class: lib/java/io/BufferedReader.class lib/java/io/Reader.class lib/java/io/PushbackReader.class lib/java/io/IOException.class lib/java/lang/String.class 
+
+lib/java/beans/IntrospectionException.class: ../java/beans/IntrospectionException.java 
+	$(JAVAC) ../java/beans/IntrospectionException.java 
+
+lib/java/beans/IntrospectionException.class: lib/java/lang/Exception.class lib/java/lang/String.class 
 
 lib/gnu/test/Result.class: ../gnu/test/Result.java 
 	$(JAVAC) ../gnu/test/Result.java 
@@ -609,365 +870,6 @@ lib/gnu/test/Fail.class: ../gnu/test/Fail.java
 	$(JAVAC) ../gnu/test/Fail.java 
 
 lib/gnu/test/Fail.class: lib/gnu/test/Result.class lib/java/lang/String.class 
-
-lib/java/lang/Compiler.class: ../java/lang/Compiler.java 
-	$(JAVAC) ../java/lang/Compiler.java 
-
-lib/java/lang/Compiler.class: lib/java/lang/Class.class lib/java/lang/String.class lib/java/lang/Object.class 
-
-lib/java/io/StringWriter.class: ../java/io/StringWriter.java 
-	$(JAVAC) ../java/io/StringWriter.java 
-
-lib/java/io/StringWriter.class: lib/java/io/Writer.class lib/java/lang/StringBuffer.class lib/java/lang/String.class 
-
-lib/java/io/FilterWriter.class: ../java/io/FilterWriter.java 
-	$(JAVAC) ../java/io/FilterWriter.java 
-
-lib/java/io/FilterWriter.class: lib/java/io/Writer.class lib/java/io/IOException.class lib/java/lang/String.class 
-
-lib/java/io/StringReader.class: ../java/io/StringReader.java 
-	$(JAVAC) ../java/io/StringReader.java 
-
-lib/java/io/StringReader.class: lib/java/io/Reader.class lib/java/lang/String.class lib/java/io/IOException.class 
-
-lib/java/io/FilterReader.class: ../java/io/FilterReader.java 
-	$(JAVAC) ../java/io/FilterReader.java 
-
-lib/java/io/FilterReader.class: lib/java/io/Reader.class lib/java/io/IOException.class 
-
-lib/java/io/PushbackReader.class: ../java/io/PushbackReader.java 
-	$(JAVAC) ../java/io/PushbackReader.java 
-
-lib/java/io/PushbackReader.class: lib/java/io/FilterReader.class lib/java/io/Reader.class lib/java/io/IOException.class lib/java/lang/System.class 
-
-lib/java/io/CharArrayReader.class: ../java/io/CharArrayReader.java 
-	$(JAVAC) ../java/io/CharArrayReader.java 
-
-lib/java/io/CharArrayReader.class: lib/java/io/Reader.class lib/java/io/IOException.class lib/java/lang/System.class 
-
-lib/java/beans/PropertyChangeEvent.class: ../java/beans/PropertyChangeEvent.java 
-	$(JAVAC) ../java/beans/PropertyChangeEvent.java 
-
-lib/java/beans/PropertyChangeEvent.class: lib/java/lang/String.class lib/java/lang/Object.class 
-
-lib/java/beans/PropertyChangeListener.class: ../java/beans/PropertyChangeListener.java 
-	$(JAVAC) ../java/beans/PropertyChangeListener.java 
-
-lib/java/beans/PropertyChangeListener.class: lib/java/beans/PropertyChangeEvent.class 
-
-lib/java/beans/PropertyEditor.class: ../java/beans/PropertyEditor.java 
-	$(JAVAC) ../java/beans/PropertyEditor.java 
-
-lib/java/beans/PropertyEditor.class: lib/java/lang/Object.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/beans/PropertyChangeListener.class 
-
-lib/java/beans/FeatureDescriptor.class: ../java/beans/FeatureDescriptor.java 
-	$(JAVAC) ../java/beans/FeatureDescriptor.java 
-
-lib/java/beans/FeatureDescriptor.class: lib/java/lang/String.class lib/java/util/Hashtable.class lib/java/lang/Object.class lib/java/util/Enumeration.class 
-
-lib/java/beans/ParameterDescriptor.class: ../java/beans/ParameterDescriptor.java 
-	$(JAVAC) ../java/beans/ParameterDescriptor.java 
-
-lib/java/beans/ParameterDescriptor.class: lib/java/beans/FeatureDescriptor.class 
-
-lib/java/beans/BeanDescriptor.class: ../java/beans/BeanDescriptor.java 
-	$(JAVAC) ../java/beans/BeanDescriptor.java 
-
-lib/java/beans/BeanDescriptor.class: lib/java/beans/FeatureDescriptor.class lib/java/lang/Class.class 
-
-lib/java/beans/Customizer.class: ../java/beans/Customizer.java 
-	$(JAVAC) ../java/beans/Customizer.java 
-
-lib/java/beans/Customizer.class: lib/java/lang/Object.class lib/java/beans/PropertyChangeListener.class 
-
-lib/gnu/java/locale/LocaleInformation_en.class: ../gnu/java/locale/LocaleInformation_en.java 
-	$(JAVAC) ../gnu/java/locale/LocaleInformation_en.java 
-
-lib/gnu/java/locale/LocaleInformation_en.class: lib/java/lang/String.class lib/java/lang/Object.class 
-
-lib/gnu/java/locale/LocaleInformation.class: ../gnu/java/locale/LocaleInformation.java 
-	$(JAVAC) ../gnu/java/locale/LocaleInformation.java 
-
-lib/gnu/java/locale/LocaleInformation.class: lib/gnu/java/locale/LocaleInformation_en.class 
-
-lib/gnu/java/beans/DoubleKey.class: ../gnu/java/beans/IntrospectionIncubator.java 
-	$(JAVAC) ../gnu/java/beans/IntrospectionIncubator.java 
-
-lib/gnu/java/beans/DoubleKey.class: lib/java/lang/Class.class lib/java/lang/String.class lib/java/lang/Object.class 
-
-java_lang_VMSystem.h: lib/java/lang/VMSystem.class 
-
-java_lang_VMSystem.h: lib/java/lang/VMSystem.class 
-
-java_lang_VMSystem.h: lib/java/lang/VMSystem.class 
-
-java_lang_VMObject.h: lib/java/lang/VMObject.class 
-
-java_lang_VMObject.h: lib/java/lang/VMObject.class 
-
-java_lang_VMObject.h: lib/java/lang/VMObject.class 
-
-java_lang_VMObject.h: lib/java/lang/VMObject.class 
-
-java_lang_VMObject.h: lib/java/lang/VMObject.class 
-
-lib/java/io/PipedReader.class lib/java/io/PipedWriter.class : ../java/io/PipedReader.java ../java/io/PipedWriter.java 
-	$(JAVAC) ../java/io/PipedReader.java ../java/io/PipedWriter.java 
-
-lib/java/io/PipedReader.class lib/java/io/PipedWriter.class : lib/java/io/Reader.class lib/java/lang/String.class lib/java/lang/System.class lib/java/lang/Integer.class lib/java/lang/NumberFormatException.class lib/java/io/IOException.class lib/java/lang/InterruptedException.class lib/java/io/Writer.class 
-
-lib/java/io/PipedInputStream.class lib/java/io/PipedOutputStream.class : ../java/io/PipedInputStream.java ../java/io/PipedOutputStream.java 
-	$(JAVAC) ../java/io/PipedInputStream.java ../java/io/PipedOutputStream.java 
-
-lib/java/io/PipedInputStream.class lib/java/io/PipedOutputStream.class : lib/java/io/InputStream.class lib/java/lang/String.class lib/java/lang/System.class lib/java/lang/Integer.class lib/java/lang/NumberFormatException.class lib/java/io/IOException.class lib/java/lang/InterruptedException.class lib/java/io/OutputStream.class 
-
-lib/java/io/CharArrayWriter.class: ../java/io/CharArrayWriter.java 
-	$(JAVAC) ../java/io/CharArrayWriter.java 
-
-lib/java/io/CharArrayWriter.class: lib/java/io/Writer.class lib/java/lang/String.class lib/java/lang/System.class lib/java/lang/Integer.class lib/java/lang/NumberFormatException.class lib/java/io/IOException.class 
-
-java_lang_VMClassLoader.h: lib/java/lang/VMClassLoader.class 
-
-java_lang_VMClassLoader.h: lib/java/lang/VMClassLoader.class 
-
-java_lang_VMClassLoader.h: lib/java/lang/VMClassLoader.class 
-
-lib/java/net/JarURLConnection.class: ../java/net/JarURLConnection.java 
-	$(JAVAC) ../java/net/JarURLConnection.java 
-
-lib/java/net/JarURLConnection.class: lib/java/net/URLConnection.class lib/java/net/URL.class lib/java/lang/String.class lib/java/net/MalformedURLException.class lib/java/io/IOException.class 
-
-lib/java/net/HttpURLConnection.class: ../java/net/HttpURLConnection.java 
-	$(JAVAC) ../java/net/HttpURLConnection.java 
-
-lib/java/net/HttpURLConnection.class: lib/java/net/URLConnection.class lib/java/lang/String.class lib/java/net/URL.class lib/java/net/ProtocolException.class lib/java/io/IOException.class 
-
-lib/java/security/Permission.class lib/java/security/PermissionCollection.class : ../java/security/Permission.java ../java/security/PermissionCollection.java 
-	$(JAVAC) ../java/security/Permission.java ../java/security/PermissionCollection.java 
-
-lib/java/security/Permission.class lib/java/security/PermissionCollection.class : lib/java/security/Guard.class lib/java/io/Serializable.class lib/java/lang/String.class lib/java/lang/Object.class lib/java/lang/SecurityException.class lib/java/lang/SecurityManager.class lib/java/lang/System.class lib/java/lang/IllegalArgumentException.class lib/java/util/Enumeration.class lib/java/lang/StringBuffer.class 
-
-lib/java/security/UnresolvedPermission.class: ../java/security/UnresolvedPermission.java 
-	$(JAVAC) ../java/security/UnresolvedPermission.java 
-
-lib/java/security/UnresolvedPermission.class: lib/java/security/Permission.class lib/java/io/Serializable.class lib/java/lang/String.class lib/java/security/Certificate.class lib/java/lang/Object.class lib/java/lang/System.class lib/java/security/PermissionCollection.class 
-
-lib/java/security/BasicPermission.class: ../java/security/BasicPermission.java 
-	$(JAVAC) ../java/security/BasicPermission.java 
-
-lib/java/security/BasicPermission.class: lib/java/security/Permission.class lib/java/io/Serializable.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/lang/Object.class lib/java/security/PermissionCollection.class 
-
-lib/java/security/SecurityPermission.class: ../java/security/SecurityPermission.java 
-	$(JAVAC) ../java/security/SecurityPermission.java 
-
-lib/java/security/SecurityPermission.class: lib/java/security/BasicPermission.class lib/java/lang/String.class 
-
-lib/java/net/NetPermission.class: ../java/net/NetPermission.java 
-	$(JAVAC) ../java/net/NetPermission.java 
-
-lib/java/net/NetPermission.class: lib/java/security/BasicPermission.class lib/java/lang/String.class 
-
-lib/java/security/AllPermission.class: ../java/security/AllPermission.java 
-	$(JAVAC) ../java/security/AllPermission.java 
-
-lib/java/security/AllPermission.class: lib/java/security/Permission.class lib/java/lang/String.class lib/java/lang/Object.class lib/java/lang/System.class lib/java/security/PermissionCollection.class 
-
-lib/java/security/AccessControlException.class: ../java/security/AccessControlException.java 
-	$(JAVAC) ../java/security/AccessControlException.java 
-
-lib/java/security/AccessControlException.class: lib/java/lang/SecurityException.class lib/java/security/Permission.class lib/java/lang/String.class 
-
-lib/java/net/Authenticator.class: ../java/net/Authenticator.java 
-	$(JAVAC) ../java/net/Authenticator.java 
-
-lib/java/net/Authenticator.class: lib/java/net/InetAddress.class lib/java/lang/String.class lib/java/security/AccessControlException.class lib/java/net/NetPermission.class lib/java/net/PasswordAuthentication.class 
-
-lib/java/net/SocketPermission.class: ../java/net/SocketPermission.java 
-	$(JAVAC) ../java/net/SocketPermission.java 
-
-lib/java/net/SocketPermission.class: lib/java/security/Permission.class lib/java/lang/String.class lib/java/lang/Object.class lib/java/lang/StringBuffer.class lib/java/security/PermissionCollection.class lib/java/lang/Integer.class lib/java/net/InetAddress.class lib/java/net/UnknownHostException.class 
-
-lib/java/security/CodeSource.class: ../java/security/CodeSource.java 
-	$(JAVAC) ../java/security/CodeSource.java 
-
-lib/java/security/CodeSource.class: lib/java/io/Serializable.class lib/java/lang/String.class lib/java/lang/System.class lib/java/net/URL.class lib/java/net/SocketPermission.class lib/java/lang/Object.class lib/java/lang/StringBuffer.class 
-
-lib/java/security/ProtectionDomain.class: ../java/security/ProtectionDomain.java 
-	$(JAVAC) ../java/security/ProtectionDomain.java 
-
-lib/java/security/ProtectionDomain.class: lib/java/lang/String.class lib/java/lang/System.class lib/java/security/CodeSource.class lib/java/security/PermissionCollection.class lib/java/security/Permission.class lib/java/lang/StringBuffer.class 
-
-lib/gnu/java/security/DefaultPermissionCollection.class: ../gnu/java/security/DefaultPermissionCollection.java 
-	$(JAVAC) ../gnu/java/security/DefaultPermissionCollection.java 
-
-lib/gnu/java/security/DefaultPermissionCollection.class: lib/java/security/PermissionCollection.class lib/java/io/Serializable.class lib/java/lang/Class.class lib/java/util/Hashtable.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/lang/ClassNotFoundException.class lib/java/security/Permission.class lib/java/lang/SecurityException.class lib/java/lang/Object.class lib/java/util/Enumeration.class 
-
-lib/java/security/Permissions.class: ../java/security/Permissions.java 
-	$(JAVAC) ../java/security/Permissions.java 
-
-lib/java/security/Permissions.class: lib/java/security/PermissionCollection.class lib/java/io/Serializable.class lib/java/util/Hashtable.class lib/java/security/Permission.class lib/java/lang/SecurityException.class lib/java/lang/IllegalArgumentException.class lib/java/security/AllPermission.class lib/gnu/java/security/DefaultPermissionCollection.class lib/java/lang/Object.class lib/java/lang/RuntimeException.class lib/java/util/Enumeration.class lib/java/util/NoSuchElementException.class 
-
-lib/java/net/Socket.class: ../java/net/Socket.java 
-	$(JAVAC) ../java/net/Socket.java 
-
-lib/java/net/Socket.class: lib/java/net/SocketImplFactory.class lib/java/net/SocketImpl.class lib/java/net/InetAddress.class lib/java/io/IOException.class lib/java/net/SocketException.class lib/java/lang/SecurityManager.class lib/java/lang/System.class lib/java/lang/SecurityException.class lib/java/net/PlainSocketImpl.class lib/java/lang/String.class lib/java/io/InputStream.class lib/java/io/OutputStream.class lib/java/lang/Object.class lib/java/net/SocketOptions.class lib/java/lang/Boolean.class lib/java/lang/Integer.class 
-
-lib/java/net/ServerSocket.class: ../java/net/ServerSocket.java 
-	$(JAVAC) ../java/net/ServerSocket.java 
-
-lib/java/net/ServerSocket.class: lib/java/net/SocketImplFactory.class lib/java/net/SocketImpl.class lib/java/net/InetAddress.class lib/java/io/IOException.class lib/java/net/SocketException.class lib/java/lang/SecurityManager.class lib/java/lang/System.class lib/java/lang/SecurityException.class lib/java/net/PlainSocketImpl.class lib/java/net/Socket.class lib/java/lang/Object.class lib/java/net/SocketOptions.class lib/java/lang/Integer.class lib/java/lang/String.class 
-
-java_io_FileOutputStream.h: lib/java/io/FileOutputStream.class 
-
-java_io_FileOutputStream.h: lib/java/io/FileOutputStream.class 
-
-java_io_FileOutputStream.h: lib/java/io/FileOutputStream.class 
-
-java_io_FileInputStream.h: lib/java/io/FileInputStream.class 
-
-java_io_FileInputStream.h: lib/java/io/FileInputStream.class 
-
-java_io_FileInputStream.h: lib/java/io/FileInputStream.class 
-
-java_io_FileInputStream.h: lib/java/io/FileInputStream.class 
-
-java_io_FileInputStream.h: lib/java/io/FileInputStream.class 
-
-java_io_File.h: lib/java/io/File.class 
-
-java_io_File.h: lib/java/io/File.class 
-
-java_io_File.h: lib/java/io/File.class 
-
-java_io_File.h: lib/java/io/File.class 
-
-java_io_File.h: lib/java/io/File.class 
-
-java_io_File.h: lib/java/io/File.class 
-
-java_io_File.h: lib/java/io/File.class 
-
-java_io_File.h: lib/java/io/File.class 
-
-java_io_File.h: lib/java/io/File.class 
-
-java_io_File.h: lib/java/io/File.class 
-
-java_io_File.h: lib/java/io/File.class 
-
-java_io_File.h: lib/java/io/File.class 
-
-lib/java/beans/PropertyChangeSupport.class: ../java/beans/PropertyChangeSupport.java 
-	$(JAVAC) ../java/beans/PropertyChangeSupport.java 
-
-lib/java/beans/PropertyChangeSupport.class: lib/java/io/Serializable.class lib/java/util/Vector.class lib/java/lang/Object.class lib/java/beans/PropertyChangeListener.class lib/java/lang/String.class lib/java/beans/PropertyChangeEvent.class 
-
-lib/java/beans/PropertyEditorSupport.class: ../java/beans/PropertyEditorSupport.java 
-	$(JAVAC) ../java/beans/PropertyEditorSupport.java 
-
-lib/java/beans/PropertyEditorSupport.class: lib/java/beans/PropertyEditor.class lib/java/lang/Object.class lib/java/beans/PropertyChangeSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/beans/PropertyChangeListener.class 
-
-lib/gnu/java/beans/editors/StringEditor.class: ../gnu/java/beans/editors/StringEditor.java 
-	$(JAVAC) ../gnu/java/beans/editors/StringEditor.java 
-
-lib/gnu/java/beans/editors/StringEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class 
-
-lib/gnu/java/beans/editors/NativeShortEditor.class: ../gnu/java/beans/editors/NativeShortEditor.java 
-	$(JAVAC) ../gnu/java/beans/editors/NativeShortEditor.java 
-
-lib/gnu/java/beans/editors/NativeShortEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/lang/Short.class 
-
-lib/gnu/java/beans/editors/NativeLongEditor.class: ../gnu/java/beans/editors/NativeLongEditor.java 
-	$(JAVAC) ../gnu/java/beans/editors/NativeLongEditor.java 
-
-lib/gnu/java/beans/editors/NativeLongEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/lang/Long.class 
-
-lib/gnu/java/beans/editors/NativeIntEditor.class: ../gnu/java/beans/editors/NativeIntEditor.java 
-	$(JAVAC) ../gnu/java/beans/editors/NativeIntEditor.java 
-
-lib/gnu/java/beans/editors/NativeIntEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/lang/Integer.class 
-
-lib/gnu/java/beans/editors/NativeFloatEditor.class: ../gnu/java/beans/editors/NativeFloatEditor.java 
-	$(JAVAC) ../gnu/java/beans/editors/NativeFloatEditor.java 
-
-lib/gnu/java/beans/editors/NativeFloatEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class 
-
-lib/gnu/java/beans/editors/NativeDoubleEditor.class: ../gnu/java/beans/editors/NativeDoubleEditor.java 
-	$(JAVAC) ../gnu/java/beans/editors/NativeDoubleEditor.java 
-
-lib/gnu/java/beans/editors/NativeDoubleEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class 
-
-lib/gnu/java/beans/editors/NativeByteEditor.class: ../gnu/java/beans/editors/NativeByteEditor.java 
-	$(JAVAC) ../gnu/java/beans/editors/NativeByteEditor.java 
-
-lib/gnu/java/beans/editors/NativeByteEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/lang/Byte.class 
-
-lib/gnu/java/beans/editors/NativeBooleanEditor.class: ../gnu/java/beans/editors/NativeBooleanEditor.java 
-	$(JAVAC) ../gnu/java/beans/editors/NativeBooleanEditor.java 
-
-lib/gnu/java/beans/editors/NativeBooleanEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/lang/Boolean.class 
-
-lib/gnu/java/beans/editors/FontEditor.class: ../gnu/java/beans/editors/FontEditor.java 
-	$(JAVAC) ../gnu/java/beans/editors/FontEditor.java 
-
-lib/gnu/java/beans/editors/FontEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class 
-
-lib/gnu/java/beans/editors/ColorEditor.class: ../gnu/java/beans/editors/ColorEditor.java 
-	$(JAVAC) ../gnu/java/beans/editors/ColorEditor.java 
-
-lib/gnu/java/beans/editors/ColorEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/lang/Integer.class 
-
-java_lang_reflect_Array.h: lib/java/lang/reflect/Array.class 
-
-java_lang_reflect_Array.h: lib/java/lang/reflect/Array.class 
-
-java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
-
-java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
-
-java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
-
-java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
-
-java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
-
-java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
-
-java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
-
-java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
-
-java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
-
-lib/java/io/BufferedWriter.class: ../java/io/BufferedWriter.java 
-	$(JAVAC) ../java/io/BufferedWriter.java 
-
-lib/java/io/BufferedWriter.class: lib/java/io/Writer.class lib/java/io/IOException.class lib/java/lang/String.class lib/java/lang/System.class 
-
-lib/java/io/BufferedReader.class: ../java/io/BufferedReader.java 
-	$(JAVAC) ../java/io/BufferedReader.java 
-
-lib/java/io/BufferedReader.class: lib/java/io/Reader.class lib/java/io/IOException.class lib/java/lang/System.class lib/java/lang/String.class 
-
-lib/java/io/LineNumberReader.class: ../java/io/LineNumberReader.java 
-	$(JAVAC) ../java/io/LineNumberReader.java 
-
-lib/java/io/LineNumberReader.class: lib/java/io/BufferedReader.class lib/java/io/Reader.class lib/java/io/PushbackReader.class lib/java/io/IOException.class lib/java/lang/String.class 
-
-lib/java/io/BufferedOutputStream.class: ../java/io/BufferedOutputStream.java 
-	$(JAVAC) ../java/io/BufferedOutputStream.java 
-
-lib/java/io/BufferedOutputStream.class: lib/java/io/FilterOutputStream.class lib/java/io/OutputStream.class lib/java/io/IOException.class lib/java/lang/System.class 
-
-lib/java/io/BufferedInputStream.class: ../java/io/BufferedInputStream.java 
-	$(JAVAC) ../java/io/BufferedInputStream.java 
-
-lib/java/io/BufferedInputStream.class: lib/java/io/FilterInputStream.class lib/java/io/InputStream.class lib/java/lang/System.class lib/java/io/IOException.class 
-
-lib/gnu/java/net/content/text/plain.class: ../gnu/java/net/content/text/plain.java 
-	$(JAVAC) ../gnu/java/net/content/text/plain.java 
-
-lib/gnu/java/net/content/text/plain.class: lib/java/net/ContentHandler.class lib/java/lang/Object.class lib/java/net/URLConnection.class lib/java/io/IOException.class 
 
 lib/gnu/java/io/encode/EncoderUTF8.class: ../gnu/java/io/encode/EncoderUTF8.java 
 	$(JAVAC) ../gnu/java/io/encode/EncoderUTF8.java 
@@ -1039,6 +941,203 @@ lib/gnu/java/io/decode/Decoder8859_1.class: ../gnu/java/io/decode/Decoder8859_1.
 
 lib/gnu/java/io/decode/Decoder8859_1.class: lib/gnu/java/io/decode/DecoderEightBitLookup.class lib/java/io/InputStream.class 
 
+lib/java/io/PipedReader.class lib/java/io/PipedWriter.class : ../java/io/PipedReader.java ../java/io/PipedWriter.java 
+	$(JAVAC) ../java/io/PipedReader.java ../java/io/PipedWriter.java 
+
+lib/java/io/PipedReader.class lib/java/io/PipedWriter.class : lib/java/io/Reader.class lib/java/lang/String.class lib/java/lang/System.class lib/java/lang/Integer.class lib/java/lang/NumberFormatException.class lib/java/io/IOException.class lib/java/lang/InterruptedException.class lib/java/io/Writer.class 
+
+lib/java/io/PipedInputStream.class lib/java/io/PipedOutputStream.class : ../java/io/PipedInputStream.java ../java/io/PipedOutputStream.java 
+	$(JAVAC) ../java/io/PipedInputStream.java ../java/io/PipedOutputStream.java 
+
+lib/java/io/PipedInputStream.class lib/java/io/PipedOutputStream.class : lib/java/io/InputStream.class lib/java/lang/String.class lib/java/lang/System.class lib/java/lang/Integer.class lib/java/lang/NumberFormatException.class lib/java/io/IOException.class lib/java/lang/InterruptedException.class lib/java/io/OutputStream.class 
+
+lib/java/io/CharArrayWriter.class: ../java/io/CharArrayWriter.java 
+	$(JAVAC) ../java/io/CharArrayWriter.java 
+
+lib/java/io/CharArrayWriter.class: lib/java/io/Writer.class lib/java/lang/String.class lib/java/lang/System.class lib/java/lang/Integer.class lib/java/lang/NumberFormatException.class lib/java/io/IOException.class 
+
+java_lang_VMClassLoader.h: lib/java/lang/VMClassLoader.class 
+	$(JAVAHEADER) java.lang.VMClassLoader
+
+java_lang_VMClassLoader.h: lib/java/lang/VMClassLoader.class 
+	$(JAVAHEADER) java.lang.VMClassLoader
+
+java_lang_VMClassLoader.h: lib/java/lang/VMClassLoader.class 
+	$(JAVAHEADER) java.lang.VMClassLoader
+
+lib/java/net/JarURLConnection.class: ../java/net/JarURLConnection.java 
+	$(JAVAC) ../java/net/JarURLConnection.java 
+
+lib/java/net/JarURLConnection.class: lib/java/net/URLConnection.class lib/java/net/URL.class lib/java/lang/String.class lib/java/net/MalformedURLException.class lib/java/io/IOException.class 
+
+lib/java/net/HttpURLConnection.class: ../java/net/HttpURLConnection.java 
+	$(JAVAC) ../java/net/HttpURLConnection.java 
+
+lib/java/net/HttpURLConnection.class: lib/java/net/URLConnection.class lib/java/lang/String.class lib/java/net/URL.class lib/java/net/ProtocolException.class lib/java/io/IOException.class 
+
+lib/java/security/Permission.class lib/java/security/PermissionCollection.class : ../java/security/Permission.java ../java/security/PermissionCollection.java 
+	$(JAVAC) ../java/security/Permission.java ../java/security/PermissionCollection.java 
+
+lib/java/security/Permission.class lib/java/security/PermissionCollection.class : lib/java/security/Guard.class lib/java/io/Serializable.class lib/java/lang/String.class lib/java/lang/Object.class lib/java/lang/SecurityException.class lib/java/lang/SecurityManager.class lib/java/lang/System.class lib/java/lang/IllegalArgumentException.class lib/java/util/Enumeration.class lib/java/lang/StringBuffer.class 
+
+lib/java/security/UnresolvedPermission.class: ../java/security/UnresolvedPermission.java 
+	$(JAVAC) ../java/security/UnresolvedPermission.java 
+
+lib/java/security/UnresolvedPermission.class: lib/java/security/Permission.class lib/java/io/Serializable.class lib/java/lang/String.class lib/java/security/Certificate.class lib/java/lang/Object.class lib/java/lang/System.class lib/java/security/PermissionCollection.class 
+
+lib/java/security/BasicPermission.class: ../java/security/BasicPermission.java 
+	$(JAVAC) ../java/security/BasicPermission.java 
+
+lib/java/security/BasicPermission.class: lib/java/security/Permission.class lib/java/io/Serializable.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/lang/Object.class lib/java/security/PermissionCollection.class 
+
+lib/java/security/SecurityPermission.class: ../java/security/SecurityPermission.java 
+	$(JAVAC) ../java/security/SecurityPermission.java 
+
+lib/java/security/SecurityPermission.class: lib/java/security/BasicPermission.class lib/java/lang/String.class 
+
+lib/java/net/NetPermission.class: ../java/net/NetPermission.java 
+	$(JAVAC) ../java/net/NetPermission.java 
+
+lib/java/net/NetPermission.class: lib/java/security/BasicPermission.class lib/java/lang/String.class 
+
+lib/java/security/AllPermission.class: ../java/security/AllPermission.java 
+	$(JAVAC) ../java/security/AllPermission.java 
+
+lib/java/security/AllPermission.class: lib/java/security/Permission.class lib/java/lang/String.class lib/java/lang/Object.class lib/java/lang/System.class lib/java/security/PermissionCollection.class 
+
+lib/java/security/AccessControlException.class: ../java/security/AccessControlException.java 
+	$(JAVAC) ../java/security/AccessControlException.java 
+
+lib/java/security/AccessControlException.class: lib/java/lang/SecurityException.class lib/java/security/Permission.class lib/java/lang/String.class 
+
+lib/java/net/Authenticator.class: ../java/net/Authenticator.java 
+	$(JAVAC) ../java/net/Authenticator.java 
+
+lib/java/net/Authenticator.class: lib/java/net/InetAddress.class lib/java/lang/String.class lib/java/security/AccessControlException.class lib/java/net/NetPermission.class lib/java/net/PasswordAuthentication.class 
+
+lib/java/net/SocketPermission.class: ../java/net/SocketPermission.java 
+	$(JAVAC) ../java/net/SocketPermission.java 
+
+lib/java/net/SocketPermission.class: lib/java/security/Permission.class lib/java/lang/String.class lib/java/lang/Object.class lib/java/lang/StringBuffer.class lib/java/security/PermissionCollection.class lib/java/lang/Integer.class lib/java/net/InetAddress.class lib/java/net/UnknownHostException.class 
+
+lib/java/security/CodeSource.class: ../java/security/CodeSource.java 
+	$(JAVAC) ../java/security/CodeSource.java 
+
+lib/java/security/CodeSource.class: lib/java/io/Serializable.class lib/java/lang/String.class lib/java/lang/System.class lib/java/net/URL.class lib/java/net/SocketPermission.class lib/java/lang/Object.class lib/java/lang/StringBuffer.class 
+
+lib/java/security/ProtectionDomain.class: ../java/security/ProtectionDomain.java 
+	$(JAVAC) ../java/security/ProtectionDomain.java 
+
+lib/java/security/ProtectionDomain.class: lib/java/lang/String.class lib/java/lang/System.class lib/java/security/CodeSource.class lib/java/security/PermissionCollection.class lib/java/security/Permission.class lib/java/lang/StringBuffer.class 
+
+lib/java/net/Socket.class: ../java/net/Socket.java 
+	$(JAVAC) ../java/net/Socket.java 
+
+lib/java/net/Socket.class: lib/java/net/SocketImplFactory.class lib/java/net/SocketImpl.class lib/java/net/InetAddress.class lib/java/io/IOException.class lib/java/net/SocketException.class lib/java/lang/SecurityManager.class lib/java/lang/System.class lib/java/lang/SecurityException.class lib/java/net/PlainSocketImpl.class lib/java/lang/String.class lib/java/io/InputStream.class lib/java/io/OutputStream.class lib/java/lang/Object.class lib/java/net/SocketOptions.class lib/java/lang/Boolean.class lib/java/lang/Integer.class 
+
+lib/java/net/ServerSocket.class: ../java/net/ServerSocket.java 
+	$(JAVAC) ../java/net/ServerSocket.java 
+
+lib/java/net/ServerSocket.class: lib/java/net/SocketImplFactory.class lib/java/net/SocketImpl.class lib/java/net/InetAddress.class lib/java/io/IOException.class lib/java/net/SocketException.class lib/java/lang/SecurityManager.class lib/java/lang/System.class lib/java/lang/SecurityException.class lib/java/net/PlainSocketImpl.class lib/java/net/Socket.class lib/java/lang/Object.class lib/java/net/SocketOptions.class lib/java/lang/Integer.class lib/java/lang/String.class 
+
+java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+java_io_RandomAccessFile.h: lib/java/io/RandomAccessFile.class 
+	$(JAVAHEADER) java.io.RandomAccessFile
+
+java_io_FileOutputStream.h: lib/java/io/FileOutputStream.class 
+	$(JAVAHEADER) java.io.FileOutputStream
+
+java_io_FileOutputStream.h: lib/java/io/FileOutputStream.class 
+	$(JAVAHEADER) java.io.FileOutputStream
+
+java_io_FileOutputStream.h: lib/java/io/FileOutputStream.class 
+	$(JAVAHEADER) java.io.FileOutputStream
+
+java_io_FileInputStream.h: lib/java/io/FileInputStream.class 
+	$(JAVAHEADER) java.io.FileInputStream
+
+java_io_FileInputStream.h: lib/java/io/FileInputStream.class 
+	$(JAVAHEADER) java.io.FileInputStream
+
+java_io_FileInputStream.h: lib/java/io/FileInputStream.class 
+	$(JAVAHEADER) java.io.FileInputStream
+
+java_io_FileInputStream.h: lib/java/io/FileInputStream.class 
+	$(JAVAHEADER) java.io.FileInputStream
+
+java_io_FileInputStream.h: lib/java/io/FileInputStream.class 
+	$(JAVAHEADER) java.io.FileInputStream
+
+java_lang_Runtime.h: lib/java/lang/Runtime.class 
+	$(JAVAHEADER) java.lang.Runtime
+
+java_lang_Runtime.h: lib/java/lang/Runtime.class 
+	$(JAVAHEADER) java.lang.Runtime
+
+java_lang_Runtime.h: lib/java/lang/Runtime.class 
+	$(JAVAHEADER) java.lang.Runtime
+
+java_lang_Runtime.h: lib/java/lang/Runtime.class 
+	$(JAVAHEADER) java.lang.Runtime
+
+java_lang_Runtime.h: lib/java/lang/Runtime.class 
+	$(JAVAHEADER) java.lang.Runtime
+
+java_lang_Runtime.h: lib/java/lang/Runtime.class 
+	$(JAVAHEADER) java.lang.Runtime
+
+java_lang_Runtime.h: lib/java/lang/Runtime.class 
+	$(JAVAHEADER) java.lang.Runtime
+
+java_lang_Runtime.h: lib/java/lang/Runtime.class 
+	$(JAVAHEADER) java.lang.Runtime
+
+java_lang_Runtime.h: lib/java/lang/Runtime.class 
+	$(JAVAHEADER) java.lang.Runtime
+
+java_lang_Runtime.h: lib/java/lang/Runtime.class 
+	$(JAVAHEADER) java.lang.Runtime
+
+java_lang_Runtime.h: lib/java/lang/Runtime.class 
+	$(JAVAHEADER) java.lang.Runtime
+
+java_lang_Runtime.h: lib/java/lang/Runtime.class 
+	$(JAVAHEADER) java.lang.Runtime
+
+java_lang_reflect_Array.h: lib/java/lang/reflect/Array.class 
+	$(JAVAHEADER) java.lang.reflect.Array
+
+java_lang_reflect_Array.h: lib/java/lang/reflect/Array.class 
+	$(JAVAHEADER) java.lang.reflect.Array
+
+lib/java/beans/PropertyChangeEvent.class: ../java/beans/PropertyChangeEvent.java 
+	$(JAVAC) ../java/beans/PropertyChangeEvent.java 
+
+lib/java/beans/PropertyChangeEvent.class: lib/java/lang/String.class lib/java/lang/Object.class 
+
 lib/java/beans/PropertyVetoException.class: ../java/beans/PropertyVetoException.java 
 	$(JAVAC) ../java/beans/PropertyVetoException.java 
 
@@ -1054,36 +1153,188 @@ lib/java/beans/VetoableChangeSupport.class: ../java/beans/VetoableChangeSupport.
 
 lib/java/beans/VetoableChangeSupport.class: lib/java/io/Serializable.class lib/java/util/Vector.class lib/java/lang/Object.class lib/java/beans/VetoableChangeListener.class lib/java/lang/String.class lib/java/beans/PropertyVetoException.class lib/java/beans/PropertyChangeEvent.class 
 
-lib/java/beans/IntrospectionException.class: ../java/beans/IntrospectionException.java 
-	$(JAVAC) ../java/beans/IntrospectionException.java 
+lib/java/beans/PropertyChangeListener.class: ../java/beans/PropertyChangeListener.java 
+	$(JAVAC) ../java/beans/PropertyChangeListener.java 
 
-lib/java/beans/IntrospectionException.class: lib/java/lang/Exception.class lib/java/lang/String.class 
+lib/java/beans/PropertyChangeListener.class: lib/java/beans/PropertyChangeEvent.class 
+
+lib/java/beans/PropertyEditor.class: ../java/beans/PropertyEditor.java 
+	$(JAVAC) ../java/beans/PropertyEditor.java 
+
+lib/java/beans/PropertyEditor.class: lib/java/lang/Object.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/beans/PropertyChangeListener.class 
+
+lib/java/beans/PropertyChangeSupport.class: ../java/beans/PropertyChangeSupport.java 
+	$(JAVAC) ../java/beans/PropertyChangeSupport.java 
+
+lib/java/beans/PropertyChangeSupport.class: lib/java/io/Serializable.class lib/java/util/Vector.class lib/java/lang/Object.class lib/java/beans/PropertyChangeListener.class lib/java/lang/String.class lib/java/beans/PropertyChangeEvent.class 
+
+lib/java/beans/PropertyEditorSupport.class: ../java/beans/PropertyEditorSupport.java 
+	$(JAVAC) ../java/beans/PropertyEditorSupport.java 
+
+lib/java/beans/PropertyEditorSupport.class: lib/java/beans/PropertyEditor.class lib/java/lang/Object.class lib/java/beans/PropertyChangeSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/beans/PropertyChangeListener.class 
+
+lib/gnu/java/beans/editors/StringEditor.class: ../gnu/java/beans/editors/StringEditor.java 
+	$(JAVAC) ../gnu/java/beans/editors/StringEditor.java 
+
+lib/gnu/java/beans/editors/StringEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class 
+
+lib/gnu/java/beans/editors/NativeShortEditor.class: ../gnu/java/beans/editors/NativeShortEditor.java 
+	$(JAVAC) ../gnu/java/beans/editors/NativeShortEditor.java 
+
+lib/gnu/java/beans/editors/NativeShortEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/lang/Short.class 
+
+lib/gnu/java/beans/editors/NativeLongEditor.class: ../gnu/java/beans/editors/NativeLongEditor.java 
+	$(JAVAC) ../gnu/java/beans/editors/NativeLongEditor.java 
+
+lib/gnu/java/beans/editors/NativeLongEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/lang/Long.class 
+
+lib/gnu/java/beans/editors/NativeIntEditor.class: ../gnu/java/beans/editors/NativeIntEditor.java 
+	$(JAVAC) ../gnu/java/beans/editors/NativeIntEditor.java 
+
+lib/gnu/java/beans/editors/NativeIntEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/lang/Integer.class 
+
+lib/gnu/java/beans/editors/NativeFloatEditor.class: ../gnu/java/beans/editors/NativeFloatEditor.java 
+	$(JAVAC) ../gnu/java/beans/editors/NativeFloatEditor.java 
+
+lib/gnu/java/beans/editors/NativeFloatEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class 
+
+lib/gnu/java/beans/editors/NativeDoubleEditor.class: ../gnu/java/beans/editors/NativeDoubleEditor.java 
+	$(JAVAC) ../gnu/java/beans/editors/NativeDoubleEditor.java 
+
+lib/gnu/java/beans/editors/NativeDoubleEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class 
+
+lib/gnu/java/beans/editors/NativeByteEditor.class: ../gnu/java/beans/editors/NativeByteEditor.java 
+	$(JAVAC) ../gnu/java/beans/editors/NativeByteEditor.java 
+
+lib/gnu/java/beans/editors/NativeByteEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/lang/Byte.class 
+
+lib/gnu/java/beans/editors/NativeBooleanEditor.class: ../gnu/java/beans/editors/NativeBooleanEditor.java 
+	$(JAVAC) ../gnu/java/beans/editors/NativeBooleanEditor.java 
+
+lib/gnu/java/beans/editors/NativeBooleanEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/lang/Boolean.class 
+
+lib/gnu/java/beans/editors/FontEditor.class: ../gnu/java/beans/editors/FontEditor.java 
+	$(JAVAC) ../gnu/java/beans/editors/FontEditor.java 
+
+lib/gnu/java/beans/editors/FontEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class 
+
+lib/gnu/java/beans/editors/ColorEditor.class: ../gnu/java/beans/editors/ColorEditor.java 
+	$(JAVAC) ../gnu/java/beans/editors/ColorEditor.java 
+
+lib/gnu/java/beans/editors/ColorEditor.class: lib/java/beans/PropertyEditorSupport.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/lang/Integer.class 
+
+lib/java/beans/FeatureDescriptor.class: ../java/beans/FeatureDescriptor.java 
+	$(JAVAC) ../java/beans/FeatureDescriptor.java 
+
+lib/java/beans/FeatureDescriptor.class: lib/java/lang/String.class lib/java/util/Hashtable.class lib/java/lang/Object.class lib/java/util/Enumeration.class 
+
+lib/java/beans/ParameterDescriptor.class: ../java/beans/ParameterDescriptor.java 
+	$(JAVAC) ../java/beans/ParameterDescriptor.java 
+
+lib/java/beans/ParameterDescriptor.class: lib/java/beans/FeatureDescriptor.class 
+
+lib/java/beans/BeanDescriptor.class: ../java/beans/BeanDescriptor.java 
+	$(JAVAC) ../java/beans/BeanDescriptor.java 
+
+lib/java/beans/BeanDescriptor.class: lib/java/beans/FeatureDescriptor.class lib/java/lang/Class.class 
+
+lib/java/beans/Customizer.class: ../java/beans/Customizer.java 
+	$(JAVAC) ../java/beans/Customizer.java 
+
+lib/java/beans/Customizer.class: lib/java/lang/Object.class lib/java/beans/PropertyChangeListener.class 
+
+lib/gnu/java/locale/LocaleInformation_en.class: ../gnu/java/locale/LocaleInformation_en.java 
+	$(JAVAC) ../gnu/java/locale/LocaleInformation_en.java 
+
+lib/gnu/java/locale/LocaleInformation_en.class: lib/java/lang/String.class lib/java/lang/Object.class 
+
+lib/gnu/java/locale/LocaleInformation.class: ../gnu/java/locale/LocaleInformation.java 
+	$(JAVAC) ../gnu/java/locale/LocaleInformation.java 
+
+lib/gnu/java/locale/LocaleInformation.class: lib/gnu/java/locale/LocaleInformation_en.class 
+
+lib/gnu/java/security/DefaultPermissionCollection.class: ../gnu/java/security/DefaultPermissionCollection.java 
+	$(JAVAC) ../gnu/java/security/DefaultPermissionCollection.java 
+
+lib/gnu/java/security/DefaultPermissionCollection.class: lib/java/security/PermissionCollection.class lib/java/io/Serializable.class lib/java/lang/Class.class lib/java/util/Hashtable.class lib/java/lang/String.class lib/java/lang/IllegalArgumentException.class lib/java/lang/ClassNotFoundException.class lib/java/security/Permission.class lib/java/lang/SecurityException.class lib/java/lang/Object.class lib/java/util/Enumeration.class 
+
+lib/java/security/Permissions.class: ../java/security/Permissions.java 
+	$(JAVAC) ../java/security/Permissions.java 
+
+lib/java/security/Permissions.class: lib/java/security/PermissionCollection.class lib/java/io/Serializable.class lib/java/util/Hashtable.class lib/java/security/Permission.class lib/java/lang/SecurityException.class lib/java/lang/IllegalArgumentException.class lib/java/security/AllPermission.class lib/gnu/java/security/DefaultPermissionCollection.class lib/java/lang/Object.class lib/java/lang/RuntimeException.class lib/java/util/Enumeration.class lib/java/util/NoSuchElementException.class 
+
+lib/gnu/java/net/content/text/plain.class: ../gnu/java/net/content/text/plain.java 
+	$(JAVAC) ../gnu/java/net/content/text/plain.java 
+
+lib/gnu/java/net/content/text/plain.class: lib/java/net/ContentHandler.class lib/java/lang/Object.class lib/java/net/URLConnection.class lib/java/io/IOException.class 
+
+lib/gnu/java/beans/DoubleKey.class: ../gnu/java/beans/IntrospectionIncubator.java 
+	$(JAVAC) ../gnu/java/beans/IntrospectionIncubator.java 
+
+lib/gnu/java/beans/DoubleKey.class: lib/java/lang/Class.class lib/java/lang/String.class lib/java/lang/Object.class 
+
+java_lang_VMSystem.h: lib/java/lang/VMSystem.class 
+	$(JAVAHEADER) java.lang.VMSystem
+
+java_lang_VMSystem.h: lib/java/lang/VMSystem.class 
+	$(JAVAHEADER) java.lang.VMSystem
+
+java_lang_VMSystem.h: lib/java/lang/VMSystem.class 
+	$(JAVAHEADER) java.lang.VMSystem
+
+java_lang_VMObject.h: lib/java/lang/VMObject.class 
+	$(JAVAHEADER) java.lang.VMObject
+
+java_lang_VMObject.h: lib/java/lang/VMObject.class 
+	$(JAVAHEADER) java.lang.VMObject
+
+java_lang_VMObject.h: lib/java/lang/VMObject.class 
+	$(JAVAHEADER) java.lang.VMObject
+
+java_lang_VMObject.h: lib/java/lang/VMObject.class 
+	$(JAVAHEADER) java.lang.VMObject
+
+java_lang_VMObject.h: lib/java/lang/VMObject.class 
+	$(JAVAHEADER) java.lang.VMObject
 
 java_io_ObjectStreamClass.h: lib/java/io/ObjectStreamClass.class 
+	$(JAVAHEADER) java.io.ObjectStreamClass
 
 java_io_ObjectStreamClass.h: lib/java/io/ObjectStreamClass.class 
+	$(JAVAHEADER) java.io.ObjectStreamClass
 
 java_io_ObjectStreamClass.h: lib/java/io/ObjectStreamClass.class 
+	$(JAVAHEADER) java.io.ObjectStreamClass
 
 java_io_ObjectOutputStream.h: lib/java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
 
 java_io_ObjectOutputStream.h: lib/java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
 
 java_io_ObjectOutputStream.h: lib/java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
 
 java_io_ObjectOutputStream.h: lib/java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
 
 java_io_ObjectOutputStream.h: lib/java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
 
 java_io_ObjectOutputStream.h: lib/java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
 
 java_io_ObjectOutputStream.h: lib/java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
 
 java_io_ObjectOutputStream.h: lib/java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
 
 java_io_ObjectOutputStream.h: lib/java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
 
 java_io_ObjectOutputStream.h: lib/java/io/ObjectOutputStream.class 
+	$(JAVAHEADER) java.io.ObjectOutputStream
 
 lib/java/beans/PropertyDescriptor.class: ../java/beans/PropertyDescriptor.java 
 	$(JAVAC) ../java/beans/PropertyDescriptor.java 
@@ -1116,20 +1367,28 @@ lib/gnu/java/lang/ExecutionStack.class: ../gnu/java/lang/ExecutionStack.java
 lib/gnu/java/lang/ExecutionStack.class: lib/java/lang/Class.class lib/java/lang/reflect/Method.class lib/gnu/java/lang/StackFrame.class lib/java/lang/Thread.class 
 
 gnu_java_lang_ExecutionStack.h: lib/gnu/java/lang/ExecutionStack.class 
+	$(JAVAHEADER) gnu.java.lang.ExecutionStack
 
 gnu_java_lang_ExecutionStack.h: lib/gnu/java/lang/ExecutionStack.class 
+	$(JAVAHEADER) gnu.java.lang.ExecutionStack
 
 gnu_java_lang_ExecutionStack.h: lib/gnu/java/lang/ExecutionStack.class 
+	$(JAVAHEADER) gnu.java.lang.ExecutionStack
 
 gnu_java_lang_ExecutionStack.h: lib/gnu/java/lang/ExecutionStack.class 
+	$(JAVAHEADER) gnu.java.lang.ExecutionStack
 
 gnu_java_lang_ExecutionStack.h: lib/gnu/java/lang/ExecutionStack.class 
+	$(JAVAHEADER) gnu.java.lang.ExecutionStack
 
 gnu_java_lang_ExecutionStack.h: lib/gnu/java/lang/ExecutionStack.class 
+	$(JAVAHEADER) gnu.java.lang.ExecutionStack
 
 gnu_java_lang_ExecutionStack.h: lib/gnu/java/lang/ExecutionStack.class 
+	$(JAVAHEADER) gnu.java.lang.ExecutionStack
 
 gnu_java_lang_ExecutionStack.h: lib/gnu/java/lang/ExecutionStack.class 
+	$(JAVAHEADER) gnu.java.lang.ExecutionStack
 
 lib/java/beans/PropertyEditorManager.class: ../java/beans/PropertyEditorManager.java 
 	$(JAVAC) ../java/beans/PropertyEditorManager.java 
@@ -1167,64 +1426,58 @@ lib/gnu/java/beans/EmptyBeanInfo.class: ../gnu/java/beans/EmptyBeanInfo.java
 lib/gnu/java/beans/EmptyBeanInfo.class: lib/gnu/java/beans/ExplicitBeanInfo.class lib/java/lang/Class.class lib/java/beans/BeanDescriptor.class lib/java/beans/BeanInfo.class lib/java/beans/PropertyDescriptor.class lib/java/beans/EventSetDescriptor.class lib/java/beans/MethodDescriptor.class 
 
 java_lang_reflect_Method.h: lib/java/lang/reflect/Method.class 
+	$(JAVAHEADER) java.lang.reflect.Method
 
 java_lang_reflect_Method.h: lib/java/lang/reflect/Method.class 
+	$(JAVAHEADER) java.lang.reflect.Method
 
 java_lang_reflect_Method.h: lib/java/lang/reflect/Method.class 
+	$(JAVAHEADER) java.lang.reflect.Method
 
 java_lang_reflect_Method.h: lib/java/lang/reflect/Method.class 
+	$(JAVAHEADER) java.lang.reflect.Method
 
 java_lang_reflect_Method.h: lib/java/lang/reflect/Method.class 
+	$(JAVAHEADER) java.lang.reflect.Method
 
 java_lang_Thread.h: lib/java/lang/Thread.class 
+	$(JAVAHEADER) java.lang.Thread
 
 java_lang_Thread.h: lib/java/lang/Thread.class 
+	$(JAVAHEADER) java.lang.Thread
 
 java_lang_Thread.h: lib/java/lang/Thread.class 
+	$(JAVAHEADER) java.lang.Thread
 
 java_lang_Thread.h: lib/java/lang/Thread.class 
+	$(JAVAHEADER) java.lang.Thread
 
 java_lang_Thread.h: lib/java/lang/Thread.class 
+	$(JAVAHEADER) java.lang.Thread
 
 java_lang_Thread.h: lib/java/lang/Thread.class 
+	$(JAVAHEADER) java.lang.Thread
 
 java_lang_Thread.h: lib/java/lang/Thread.class 
+	$(JAVAHEADER) java.lang.Thread
 
 java_lang_Thread.h: lib/java/lang/Thread.class 
+	$(JAVAHEADER) java.lang.Thread
 
 java_lang_Thread.h: lib/java/lang/Thread.class 
+	$(JAVAHEADER) java.lang.Thread
 
 java_lang_Thread.h: lib/java/lang/Thread.class 
+	$(JAVAHEADER) java.lang.Thread
 
 java_lang_Thread.h: lib/java/lang/Thread.class 
+	$(JAVAHEADER) java.lang.Thread
 
 java_lang_Thread.h: lib/java/lang/Thread.class 
+	$(JAVAHEADER) java.lang.Thread
 
 java_lang_Thread.h: lib/java/lang/Thread.class 
-
-java_lang_Runtime.h: lib/java/lang/Runtime.class 
-
-java_lang_Runtime.h: lib/java/lang/Runtime.class 
-
-java_lang_Runtime.h: lib/java/lang/Runtime.class 
-
-java_lang_Runtime.h: lib/java/lang/Runtime.class 
-
-java_lang_Runtime.h: lib/java/lang/Runtime.class 
-
-java_lang_Runtime.h: lib/java/lang/Runtime.class 
-
-java_lang_Runtime.h: lib/java/lang/Runtime.class 
-
-java_lang_Runtime.h: lib/java/lang/Runtime.class 
-
-java_lang_Runtime.h: lib/java/lang/Runtime.class 
-
-java_lang_Runtime.h: lib/java/lang/Runtime.class 
-
-java_lang_Runtime.h: lib/java/lang/Runtime.class 
-
-java_lang_Runtime.h: lib/java/lang/Runtime.class 
+	$(JAVAHEADER) java.lang.Thread
 
 lib/java/io/FileWriter.class: ../java/io/FileWriter.java 
 	$(JAVAC) ../java/io/FileWriter.java 
@@ -1276,31 +1529,54 @@ lib/java/util/HashSet.class: ../java/util/HashSet.java
 
 lib/java/util/HashSet.class: lib/java/util/AbstractSet.class lib/java/util/Set.class lib/java/lang/Cloneable.class lib/java/io/Serializable.class lib/java/util/HashMap.class lib/java/util/Collection.class lib/java/lang/Object.class lib/java/util/Iterator.class lib/java/lang/Boolean.class lib/java/io/ObjectOutputStream.class lib/java/io/IOException.class lib/java/io/ObjectInputStream.class lib/java/lang/ClassNotFoundException.class 
 
-java_io_ObjectInputStream.h: lib/java/io/ObjectInputStream.class 
+lib/java/text/AttributedStringIterator.class: ../java/text/AttributedStringIterator.java 
+	$(JAVAC) ../java/text/AttributedStringIterator.java 
+
+lib/java/text/AttributedStringIterator.class: lib/java/text/AttributedCharacterIterator.class lib/java/text/CharacterIterator.class lib/java/text/StringCharacterIterator.class lib/java/lang/Object.class lib/java/util/Set.class lib/java/util/HashSet.class lib/java/util/Iterator.class lib/java/util/Map.class lib/java/util/HashMap.class 
+
+lib/java/text/AttributedString.class: ../java/text/AttributedString.java 
+	$(JAVAC) ../java/text/AttributedString.java 
+
+lib/java/text/AttributedString.class: lib/java/util/Map.class lib/java/text/StringCharacterIterator.class lib/java/lang/String.class lib/java/text/AttributedCharacterIterator.class lib/java/lang/IllegalArgumentException.class lib/java/lang/StringBuffer.class lib/java/util/Set.class lib/java/util/HashSet.class lib/java/util/Iterator.class lib/java/lang/Object.class lib/java/text/Annotation.class lib/java/util/Hashtable.class lib/java/lang/System.class lib/java/text/CharacterIterator.class lib/java/text/AttributedStringIterator.class 
 
 java_io_ObjectInputStream.h: lib/java/io/ObjectInputStream.class 
+	$(JAVAHEADER) java.io.ObjectInputStream
 
 java_io_ObjectInputStream.h: lib/java/io/ObjectInputStream.class 
+	$(JAVAHEADER) java.io.ObjectInputStream
 
 java_io_ObjectInputStream.h: lib/java/io/ObjectInputStream.class 
+	$(JAVAHEADER) java.io.ObjectInputStream
 
 java_io_ObjectInputStream.h: lib/java/io/ObjectInputStream.class 
+	$(JAVAHEADER) java.io.ObjectInputStream
 
 java_io_ObjectInputStream.h: lib/java/io/ObjectInputStream.class 
+	$(JAVAHEADER) java.io.ObjectInputStream
 
 java_io_ObjectInputStream.h: lib/java/io/ObjectInputStream.class 
+	$(JAVAHEADER) java.io.ObjectInputStream
 
 java_io_ObjectInputStream.h: lib/java/io/ObjectInputStream.class 
+	$(JAVAHEADER) java.io.ObjectInputStream
 
 java_io_ObjectInputStream.h: lib/java/io/ObjectInputStream.class 
+	$(JAVAHEADER) java.io.ObjectInputStream
 
 java_io_ObjectInputStream.h: lib/java/io/ObjectInputStream.class 
+	$(JAVAHEADER) java.io.ObjectInputStream
 
 java_io_ObjectInputStream.h: lib/java/io/ObjectInputStream.class 
+	$(JAVAHEADER) java.io.ObjectInputStream
 
 java_io_ObjectInputStream.h: lib/java/io/ObjectInputStream.class 
+	$(JAVAHEADER) java.io.ObjectInputStream
 
 java_io_ObjectInputStream.h: lib/java/io/ObjectInputStream.class 
+	$(JAVAHEADER) java.io.ObjectInputStream
+
+java_io_ObjectInputStream.h: lib/java/io/ObjectInputStream.class 
+	$(JAVAHEADER) java.io.ObjectInputStream
 
 lib/gnu/java/io/ClassLoaderObjectInputStream.class: ../gnu/java/io/ClassLoaderObjectInputStream.java 
 	$(JAVAC) ../gnu/java/io/ClassLoaderObjectInputStream.java 
@@ -1313,52 +1589,76 @@ lib/java/beans/Beans.class: ../java/beans/Beans.java
 lib/java/beans/Beans.class: lib/java/lang/Object.class lib/java/lang/ClassLoader.class lib/java/lang/String.class lib/java/io/IOException.class lib/java/lang/ClassNotFoundException.class lib/java/io/InputStream.class lib/java/io/ObjectInputStream.class lib/gnu/java/io/ClassLoaderObjectInputStream.class lib/java/lang/Class.class lib/java/lang/IllegalAccessException.class lib/java/lang/InstantiationException.class lib/java/lang/SecurityException.class 
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Field.h: lib/java/lang/reflect/Field.class 
+	$(JAVAHEADER) java.lang.reflect.Field
 
 java_lang_reflect_Constructor.h: lib/java/lang/reflect/Constructor.class 
+	$(JAVAHEADER) java.lang.reflect.Constructor
 
 java_lang_reflect_Constructor.h: lib/java/lang/reflect/Constructor.class 
+	$(JAVAHEADER) java.lang.reflect.Constructor
 
 java_lang_reflect_Constructor.h: lib/java/lang/reflect/Constructor.class 
+	$(JAVAHEADER) java.lang.reflect.Constructor
 
 java_lang_reflect_Constructor.h: lib/java/lang/reflect/Constructor.class 
+	$(JAVAHEADER) java.lang.reflect.Constructor
 
 CLASSES = \
 	lib/java/lang/reflect/Constructor.class\
@@ -1376,28 +1676,28 @@ CLASSES = \
 	lib/java/lang/reflect/Method.class\
 	lib/java/lang/VMClassLoader.class\
 	lib/java/lang/ClassLoader.class\
-	lib/java/lang/Runtime.class\
-	lib/java/lang/SecurityManager.class\
-	lib/java/lang/System.class\
-	lib/java/util/Vector.class\
-	lib/java/io/InputStream.class\
-	lib/java/io/OutputStream.class\
 	lib/java/lang/VMObject.class\
 	lib/java/lang/CloneNotSupportedException.class\
 	lib/java/lang/IllegalMonitorStateException.class\
 	lib/java/lang/InterruptedException.class\
-	lib/java/lang/VMSecurityManager.class\
 	lib/java/lang/Thread.class\
 	lib/java/lang/ThreadGroup.class\
 	lib/java/lang/Runnable.class\
 	lib/java/lang/Throwable.class\
+	lib/java/lang/SecurityManager.class\
+	lib/java/lang/System.class\
+	lib/java/lang/VMSecurityManager.class\
 	lib/java/lang/VMSystem.class\
 	lib/java/lang/SecurityException.class\
 	lib/java/lang/NoSuchMethodException.class\
 	lib/java/lang/ClassNotFoundException.class\
 	lib/java/net/URL.class\
 	lib/gnu/java/lang/ClassHelper.class\
+	lib/java/io/InputStream.class\
 	lib/java/lang/NoSuchFieldException.class\
+	lib/java/lang/Runtime.class\
+	lib/java/util/Vector.class\
+	lib/java/io/OutputStream.class\
 	lib/gnu/vm/stack/StackFrame.class\
 	lib/gnu/vm/stack/StackTrace.class\
 	lib/java/lang/ArrayIndexOutOfBoundsException.class\
@@ -1476,8 +1776,6 @@ CLASSES = \
 	lib/gnu/java/lang/ExecutionStack.class\
 	lib/gnu/java/lang/StackFrame.class\
 	lib/gnu/java/lang/MainThread.class\
-	lib/gnu/java/locale/LocaleInformation_en.class\
-	lib/gnu/java/locale/LocaleInformation.class\
 	lib/gnu/java/net/content/text/plain.class\
 	lib/java/net/ContentHandler.class\
 	lib/java/net/URLConnection.class\
@@ -1495,6 +1793,8 @@ CLASSES = \
 	lib/java/security/PermissionCollection.class\
 	lib/java/io/Serializable.class\
 	lib/java/security/Permission.class\
+	lib/gnu/java/locale/LocaleInformation_en.class\
+	lib/gnu/java/locale/LocaleInformation.class\
 	lib/gnu/test/Fail.class\
 	lib/gnu/test/Result.class\
 	lib/gnu/test/Pass.class\
@@ -1597,8 +1897,8 @@ CLASSES = \
 	lib/java/lang/SecurityContext.class\
 	lib/java/net/InetAddress.class\
 	lib/java/util/Locale.class\
-	lib/java/lang/IllegalThreadStateException.class\
 	lib/java/lang/UnsupportedOperationException.class\
+	lib/java/lang/IllegalThreadStateException.class\
 	lib/java/lang/ArithmeticException.class\
 	lib/java/lang/ArrayStoreException.class\
 	lib/java/lang/IllegalStateException.class\
@@ -1691,14 +1991,503 @@ CLASSES = \
 	lib/java/util/Set.class\
 	lib/java/util/AbstractSet.class\
 	lib/java/util/AbstractSequentialList.class\
-	lib/java/util/BasicMapEntry.class\
-	lib/java/util/Bucket.class\
 	lib/java/util/Collections.class\
 	lib/java/util/SortedMap.class\
 	lib/java/util/SortedSet.class\
-	lib/java/util/Dictionary.class\
 	lib/java/util/EmptyStackException.class\
+	lib/java/util/Stack.class\
+	lib/java/util/BasicMapEntry.class\
+	lib/java/util/Bucket.class\
+	lib/java/util/Dictionary.class\
 	lib/java/util/HashMap.class\
 	lib/java/util/HashSet.class\
-	lib/java/util/Stack.class\
+	lib/java/text/Annotation.class\
+	lib/java/text/CharacterIterator.class\
+	lib/java/text/CollationKey.class\
+	lib/java/text/Collator.class\
+	lib/java/text/FieldPosition.class\
+	lib/java/text/ParseException.class\
+	lib/java/text/ParsePosition.class\
+	lib/java/text/StringCharacterIterator.class\
+	lib/java/text/RuleBasedCollator.class\
+	lib/java/text/AttributedCharacterIterator.class\
+	lib/java/text/Format.class\
+	lib/java/text/AttributedString.class\
+	lib/java/text/AttributedStringIterator.class\
+	lib/java/text/BreakIterator.class\
+	lib/java/text/DefaultBreakIterator.class\
+	lib/java/text/CollationElementIterator.class\
+	lib/java/text/ChoiceFormat.class\
 # end of classes list
+HEADERS = \
+	java_lang_reflect_Constructor.h\
+	java_lang_reflect_Constructor.c\
+	java_lang_reflect_Constructor.h\
+	java_lang_reflect_Constructor.c\
+	java_lang_reflect_Constructor.h\
+	java_lang_reflect_Constructor.c\
+	java_lang_reflect_Constructor.h\
+	java_lang_reflect_Constructor.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Field.h\
+	java_lang_reflect_Field.c\
+	java_lang_reflect_Method.h\
+	java_lang_reflect_Method.c\
+	java_lang_reflect_Method.h\
+	java_lang_reflect_Method.c\
+	java_lang_reflect_Method.h\
+	java_lang_reflect_Method.c\
+	java_lang_reflect_Method.h\
+	java_lang_reflect_Method.c\
+	java_lang_reflect_Method.h\
+	java_lang_reflect_Method.c\
+	java_lang_VMClassLoader.h\
+	java_lang_VMClassLoader.c\
+	java_lang_VMClassLoader.h\
+	java_lang_VMClassLoader.c\
+	java_lang_VMClassLoader.h\
+	java_lang_VMClassLoader.c\
+	java_lang_VMObject.h\
+	java_lang_VMObject.c\
+	java_lang_VMObject.h\
+	java_lang_VMObject.c\
+	java_lang_VMObject.h\
+	java_lang_VMObject.c\
+	java_lang_VMObject.h\
+	java_lang_VMObject.c\
+	java_lang_VMObject.h\
+	java_lang_VMObject.c\
+	java_lang_Thread.h\
+	java_lang_Thread.c\
+	java_lang_Thread.h\
+	java_lang_Thread.c\
+	java_lang_Thread.h\
+	java_lang_Thread.c\
+	java_lang_Thread.h\
+	java_lang_Thread.c\
+	java_lang_Thread.h\
+	java_lang_Thread.c\
+	java_lang_Thread.h\
+	java_lang_Thread.c\
+	java_lang_Thread.h\
+	java_lang_Thread.c\
+	java_lang_Thread.h\
+	java_lang_Thread.c\
+	java_lang_Thread.h\
+	java_lang_Thread.c\
+	java_lang_Thread.h\
+	java_lang_Thread.c\
+	java_lang_Thread.h\
+	java_lang_Thread.c\
+	java_lang_Thread.h\
+	java_lang_Thread.c\
+	java_lang_Thread.h\
+	java_lang_Thread.c\
+	java_lang_VMSecurityManager.h\
+	java_lang_VMSecurityManager.c\
+	java_lang_VMSecurityManager.h\
+	java_lang_VMSecurityManager.c\
+	java_lang_VMSystem.h\
+	java_lang_VMSystem.c\
+	java_lang_VMSystem.h\
+	java_lang_VMSystem.c\
+	java_lang_VMSystem.h\
+	java_lang_VMSystem.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Class.h\
+	java_lang_Class.c\
+	java_lang_Runtime.h\
+	java_lang_Runtime.c\
+	java_lang_Runtime.h\
+	java_lang_Runtime.c\
+	java_lang_Runtime.h\
+	java_lang_Runtime.c\
+	java_lang_Runtime.h\
+	java_lang_Runtime.c\
+	java_lang_Runtime.h\
+	java_lang_Runtime.c\
+	java_lang_Runtime.h\
+	java_lang_Runtime.c\
+	java_lang_Runtime.h\
+	java_lang_Runtime.c\
+	java_lang_Runtime.h\
+	java_lang_Runtime.c\
+	java_lang_Runtime.h\
+	java_lang_Runtime.c\
+	java_lang_Runtime.h\
+	java_lang_Runtime.c\
+	java_lang_Runtime.h\
+	java_lang_Runtime.c\
+	java_lang_Runtime.h\
+	java_lang_Runtime.c\
+	gnu_java_lang_ExecutionStack.h\
+	gnu_java_lang_ExecutionStack.c\
+	gnu_java_lang_ExecutionStack.h\
+	gnu_java_lang_ExecutionStack.c\
+	gnu_java_lang_ExecutionStack.h\
+	gnu_java_lang_ExecutionStack.c\
+	gnu_java_lang_ExecutionStack.h\
+	gnu_java_lang_ExecutionStack.c\
+	gnu_java_lang_ExecutionStack.h\
+	gnu_java_lang_ExecutionStack.c\
+	gnu_java_lang_ExecutionStack.h\
+	gnu_java_lang_ExecutionStack.c\
+	gnu_java_lang_ExecutionStack.h\
+	gnu_java_lang_ExecutionStack.c\
+	gnu_java_lang_ExecutionStack.h\
+	gnu_java_lang_ExecutionStack.c\
+	java_io_File.h\
+	java_io_File.c\
+	java_io_File.h\
+	java_io_File.c\
+	java_io_File.h\
+	java_io_File.c\
+	java_io_File.h\
+	java_io_File.c\
+	java_io_File.h\
+	java_io_File.c\
+	java_io_File.h\
+	java_io_File.c\
+	java_io_File.h\
+	java_io_File.c\
+	java_io_File.h\
+	java_io_File.c\
+	java_io_File.h\
+	java_io_File.c\
+	java_io_File.h\
+	java_io_File.c\
+	java_io_File.h\
+	java_io_File.c\
+	java_io_File.h\
+	java_io_File.c\
+	java_io_FileDescriptor.h\
+	java_io_FileDescriptor.c\
+	java_io_FileDescriptor.h\
+	java_io_FileDescriptor.c\
+	java_io_FileInputStream.h\
+	java_io_FileInputStream.c\
+	java_io_FileInputStream.h\
+	java_io_FileInputStream.c\
+	java_io_FileInputStream.h\
+	java_io_FileInputStream.c\
+	java_io_FileInputStream.h\
+	java_io_FileInputStream.c\
+	java_io_FileInputStream.h\
+	java_io_FileInputStream.c\
+	java_io_FileOutputStream.h\
+	java_io_FileOutputStream.c\
+	java_io_FileOutputStream.h\
+	java_io_FileOutputStream.c\
+	java_io_FileOutputStream.h\
+	java_io_FileOutputStream.c\
+	java_io_ObjectInputStream.h\
+	java_io_ObjectInputStream.c\
+	java_io_ObjectInputStream.h\
+	java_io_ObjectInputStream.c\
+	java_io_ObjectInputStream.h\
+	java_io_ObjectInputStream.c\
+	java_io_ObjectInputStream.h\
+	java_io_ObjectInputStream.c\
+	java_io_ObjectInputStream.h\
+	java_io_ObjectInputStream.c\
+	java_io_ObjectInputStream.h\
+	java_io_ObjectInputStream.c\
+	java_io_ObjectInputStream.h\
+	java_io_ObjectInputStream.c\
+	java_io_ObjectInputStream.h\
+	java_io_ObjectInputStream.c\
+	java_io_ObjectInputStream.h\
+	java_io_ObjectInputStream.c\
+	java_io_ObjectInputStream.h\
+	java_io_ObjectInputStream.c\
+	java_io_ObjectInputStream.h\
+	java_io_ObjectInputStream.c\
+	java_io_ObjectInputStream.h\
+	java_io_ObjectInputStream.c\
+	java_io_ObjectInputStream.h\
+	java_io_ObjectInputStream.c\
+	java_io_ObjectOutputStream.h\
+	java_io_ObjectOutputStream.c\
+	java_io_ObjectOutputStream.h\
+	java_io_ObjectOutputStream.c\
+	java_io_ObjectOutputStream.h\
+	java_io_ObjectOutputStream.c\
+	java_io_ObjectOutputStream.h\
+	java_io_ObjectOutputStream.c\
+	java_io_ObjectOutputStream.h\
+	java_io_ObjectOutputStream.c\
+	java_io_ObjectOutputStream.h\
+	java_io_ObjectOutputStream.c\
+	java_io_ObjectOutputStream.h\
+	java_io_ObjectOutputStream.c\
+	java_io_ObjectOutputStream.h\
+	java_io_ObjectOutputStream.c\
+	java_io_ObjectOutputStream.h\
+	java_io_ObjectOutputStream.c\
+	java_io_ObjectOutputStream.h\
+	java_io_ObjectOutputStream.c\
+	java_io_ObjectStreamClass.h\
+	java_io_ObjectStreamClass.c\
+	java_io_ObjectStreamClass.h\
+	java_io_ObjectStreamClass.c\
+	java_io_ObjectStreamClass.h\
+	java_io_ObjectStreamClass.c\
+	java_io_RandomAccessFile.h\
+	java_io_RandomAccessFile.c\
+	java_io_RandomAccessFile.h\
+	java_io_RandomAccessFile.c\
+	java_io_RandomAccessFile.h\
+	java_io_RandomAccessFile.c\
+	java_io_RandomAccessFile.h\
+	java_io_RandomAccessFile.c\
+	java_io_RandomAccessFile.h\
+	java_io_RandomAccessFile.c\
+	java_io_RandomAccessFile.h\
+	java_io_RandomAccessFile.c\
+	java_io_RandomAccessFile.h\
+	java_io_RandomAccessFile.c\
+	java_io_RandomAccessFile.h\
+	java_io_RandomAccessFile.c\
+	java_io_RandomAccessFile.h\
+	java_io_RandomAccessFile.c\
+	java_lang_reflect_Array.h\
+	java_lang_reflect_Array.c\
+	java_lang_reflect_Array.h\
+	java_lang_reflect_Array.c\
+	java_lang_Object.h\
+	java_lang_Object.c\
+	java_lang_System.h\
+	java_lang_System.c\
+	java_lang_System.h\
+	java_lang_System.c\
+	java_lang_System.h\
+	java_lang_System.c\
+	java_lang_System.h\
+	java_lang_System.c\
+	java_lang_Math.h\
+	java_lang_Math.c\
+	java_lang_Math.h\
+	java_lang_Math.c\
+	java_lang_Math.h\
+	java_lang_Math.c\
+	java_lang_Math.h\
+	java_lang_Math.c\
+	java_lang_Math.h\
+	java_lang_Math.c\
+	java_lang_Math.h\
+	java_lang_Math.c\
+	java_lang_Math.h\
+	java_lang_Math.c\
+	java_lang_Math.h\
+	java_lang_Math.c\
+	java_lang_Math.h\
+	java_lang_Math.c\
+	java_lang_Math.h\
+	java_lang_Math.c\
+	java_lang_Math.h\
+	java_lang_Math.c\
+	java_lang_Math.h\
+	java_lang_Math.c\
+	java_lang_Math.h\
+	java_lang_Math.c\
+	java_lang_Math.h\
+	java_lang_Math.c\
+	java_lang_Math.h\
+	java_lang_Math.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_math_BigInteger.h\
+	java_math_BigInteger.c\
+	java_net_InetAddress.h\
+	java_net_InetAddress.c\
+	java_net_InetAddress.h\
+	java_net_InetAddress.c\
+	java_net_InetAddress.h\
+	java_net_InetAddress.c\
+	java_net_InetAddress.h\
+	java_net_InetAddress.c\
+	java_net_PlainDatagramSocketImpl.h\
+	java_net_PlainDatagramSocketImpl.c\
+	java_net_PlainDatagramSocketImpl.h\
+	java_net_PlainDatagramSocketImpl.c\
+	java_net_PlainDatagramSocketImpl.h\
+	java_net_PlainDatagramSocketImpl.c\
+	java_net_PlainDatagramSocketImpl.h\
+	java_net_PlainDatagramSocketImpl.c\
+	java_net_PlainDatagramSocketImpl.h\
+	java_net_PlainDatagramSocketImpl.c\
+	java_net_PlainDatagramSocketImpl.h\
+	java_net_PlainDatagramSocketImpl.c\
+	java_net_PlainDatagramSocketImpl.h\
+	java_net_PlainDatagramSocketImpl.c\
+	java_net_PlainDatagramSocketImpl.h\
+	java_net_PlainDatagramSocketImpl.c\
+	java_net_PlainDatagramSocketImpl.h\
+	java_net_PlainDatagramSocketImpl.c\
+	java_net_PlainSocketImpl.h\
+	java_net_PlainSocketImpl.c\
+	java_net_PlainSocketImpl.h\
+	java_net_PlainSocketImpl.c\
+	java_net_PlainSocketImpl.h\
+	java_net_PlainSocketImpl.c\
+	java_net_PlainSocketImpl.h\
+	java_net_PlainSocketImpl.c\
+	java_net_PlainSocketImpl.h\
+	java_net_PlainSocketImpl.c\
+	java_net_PlainSocketImpl.h\
+	java_net_PlainSocketImpl.c\
+	java_net_PlainSocketImpl.h\
+	java_net_PlainSocketImpl.c\
+	java_net_PlainSocketImpl.h\
+	java_net_PlainSocketImpl.c\
+	java_net_PlainSocketImpl.h\
+	java_net_PlainSocketImpl.c\
+	java_net_PlainSocketImpl.h\
+	java_net_PlainSocketImpl.c\
+# end of stubs list
