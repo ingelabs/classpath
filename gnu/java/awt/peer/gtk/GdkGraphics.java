@@ -7,6 +7,8 @@ public class GdkGraphics extends Graphics
 {
   private final int native_state = java.lang.System.identityHashCode (this);
 
+  int xOrigin = 0, yOrigin = 0;
+
   native void initState (GtkComponentPeer component);
 
   GdkGraphics (GtkComponentPeer component)
@@ -78,7 +80,11 @@ public class GdkGraphics extends Graphics
     return false;
   }
 
-  native public void drawLine (int x1, int y1, int x2, int y2);
+  native private void drawLineNative (int x1, int y1, int x2, int y2);
+  public void drawLine (int x1, int y1, int x2, int y2)
+  {
+    drawLineNative (x1 + xOrigin, y1 + yOrigin, x2 + xOrigin, y2 + yOrigin);
+  }
 
   public void drawOval(int x, int y, int width, int height)
   {
@@ -114,8 +120,11 @@ public class GdkGraphics extends Graphics
   {
   }
 
-  public void fillRect(int x, int y, int width, int height)
+  private native void fillRectNative (int x, int y, int width, int height);
+  public void fillRect (int x, int y, int width, int height)
   {
+    System.out.println ("got called to fill");
+//      fillRectNative (x + xOrigin, y + yOrigin, width, height);
   }
 
   public void fillRoundRect (int x, int y, int width, int height, 
@@ -174,6 +183,8 @@ public class GdkGraphics extends Graphics
 
   public void translate (int x, int y)
   {
+    xOrigin = x;
+    yOrigin = y;
   }
 }
 

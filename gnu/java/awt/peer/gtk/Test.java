@@ -185,7 +185,8 @@ class Test
 //        } catch (InterruptedException e) {}
 //        f.setSize(500,500);
 
-      System.out.println (wb.getGraphics().getColor());
+      System.out.println ("background of canvas: " + ch.getBackground ());
+      System.out.println ("foreground of canvas: " + ch.getForeground ());
       System.out.println("done");
     }
 }

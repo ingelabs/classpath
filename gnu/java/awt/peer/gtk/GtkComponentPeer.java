@@ -31,6 +31,8 @@ public class GtkComponentPeer extends GtkGenericPeer
   Component awtComponent;
   GdkGraphics gc = null;
 
+  native int[] gtkWidgetGetForeground ();
+  native int[] gtkWidgetGetBackground ();
   native void gtkWidgetSetVisible (boolean b);
   native void gtkWidgetShowChildren();
   native void gtkWidgetGetDimensions(int[] dim);
@@ -212,6 +214,18 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void setForeground (Color c) 
     {
+    }
+
+  public Color getForeground ()
+    {
+      int rgb[] = gtkWidgetGetForeground ();
+      return new Color (rgb[0], rgb[1], rgb[2]);
+    }
+
+  public Color getBackground ()
+    {
+      int rgb[] = gtkWidgetGetBackground ();
+      return new Color (rgb[0], rgb[1], rgb[2]);
     }
 
   native public void setVisible (boolean b);
