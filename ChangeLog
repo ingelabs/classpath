@@ -1,3 +1,8 @@
+2005-03-13  Audrius Meskauskas  <audriusa@bluewin.ch>
+	* org/omg/CORBA/StringSeqHolder.java,
+	org/omg/CORBA/WStringSeqHolder.java:
+	replacing replacing CR CR LF by CR LF.
+
 2005-03-13  Michael Koch  <konqueror@gmx.de>
 
 	* org/omg/CORBA/ARG_IN.java: Removed redundant modifiers.

@@ -78,7 +78,7 @@ public class BAD_PARAM
    * @param minor additional error code.
    * @param completed the method completion status.
    */
-  BAD_PARAM(int minor, CompletionStatus completed)
+  public BAD_PARAM(int minor, CompletionStatus completed)
   {
     super("", minor, completed);
   }
@@ -89,7 +89,7 @@ public class BAD_PARAM
    * @param minor additional error code (the "minor").
    * @param completed the method completion status.
    */
-  BAD_PARAM(String reason, int minor, CompletionStatus completed)
+  public BAD_PARAM(String reason, int minor, CompletionStatus completed)
   {
     super(reason, minor, completed);
   }

@@ -1,4 +1,4 @@
-/* StringSeqHolder.java -- 
+/* StringSeqHolder.java --
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
