@@ -1,3 +1,7 @@
+2003-12-02  Graydon Hoare  <graydon@redhat.com>
+
+	* javax/swing/JLayeredPane.java: Implement.
+
 2003-12-02  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/DatagramSocket.java
