@@ -54,6 +54,7 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
      */
     private static final String[][] zone_aliases =
     {
+      { "UTC", "GMT" },
       /* Common US Abbreviations */
       { "EST", "EST5EDT" },
       { "EST5EWT", "EST5EDT" },
@@ -62,6 +63,8 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
       { "MST", "MST7MDT" },
       { "MST7MWT", "MST7MDT" },
       { "PST", "PST8PDT" },
+      /* Middle vs. Central European Time */
+      { "MET", "CET" },
       /* Major US Cities */
       { "New York", "EST5EDT" },
       { "Indianapolis", "EST5" },
@@ -84,7 +87,6 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
     {
         new SimpleTimeZone(-1000*3600, "CVT"),
         new SimpleTimeZone(+0000*3600, "GMT"),
-        new SimpleTimeZone(+0000*3600, "UTC"),
         new SimpleTimeZone(+1000*3600, "WAT"),
         new SimpleTimeZone(+2000*3600, "CAT"),
         new SimpleTimeZone(+3000*3600, "EAT"),
@@ -103,17 +105,15 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
         new SimpleTimeZone(+2000*3600, "EET" , 
                            Calendar.MARCH    , -1, Calendar.SUNDAY, 3000*3600,
                            Calendar.OCTOBER  , -1, Calendar.SUNDAY, 3000*3600),
-        new SimpleTimeZone(-5000*3600, "EST"),
+        new SimpleTimeZone(-5000*3600, "EST5"),
         new SimpleTimeZone(-5000*3600, "EST5EDT" ,
                            Calendar.APRIL    ,  1, Calendar.SUNDAY, 2000*3600,
                            Calendar.OCTOBER  , -1, Calendar.SUNDAY, 2000*3600),
-        new SimpleTimeZone(-6000*3600, "CST" ,
-                           Calendar.APRIL    ,  1, Calendar.SUNDAY, 2000*3600,
-                           Calendar.OCTOBER  , -1, Calendar.SUNDAY, 2000*3600),
+        new SimpleTimeZone(-6000*3600, "CST6"),
         new SimpleTimeZone(-6000*3600, "CST6CDT" ,
                            Calendar.APRIL    ,  1, Calendar.SUNDAY, 2000*3600,
                            Calendar.OCTOBER  , -1, Calendar.SUNDAY, 2000*3600),
-        new SimpleTimeZone(-7000*3600, "MST"),
+        new SimpleTimeZone(-7000*3600, "MST7"),
         new SimpleTimeZone(-7000*3600, "MST7MDT" ,
                            Calendar.APRIL    ,  1, Calendar.SUNDAY, 2000*3600,
                            Calendar.OCTOBER  , -1, Calendar.SUNDAY, 2000*3600),
@@ -122,9 +122,6 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
                            Calendar.OCTOBER  , -1, Calendar.SUNDAY, 2000*3600),
         new SimpleTimeZone(-10000*3600, "HST"),
         /* Add your favourite time zone here! */
-        new SimpleTimeZone(+1000*3600, "MET" , //MET is a synonym for CET
-                           Calendar.MARCH    , -1, Calendar.SUNDAY, 2000*3600,
-                           Calendar.OCTOBER  , -1, Calendar.SUNDAY, 2000*3600),
     };
 
     /* Look up default timezone */
@@ -148,7 +145,7 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
        daylight time, then the daylight zone name is omitted.  Examples:
        in Chicago, the timezone would be CST6CDT.  In Indianapolis 
        (which does not have Daylight Savings Time) the string would
-       be EST6
+       be EST5
     */
     private static native String
     getDefaultTimeZoneId();
@@ -273,7 +270,7 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
     }
 
     /**
-     * Gets the avaialable IDs according to the given time zone
+     * Gets the available IDs according to the given time zone
      * offset.  
      * @param rawOffset the given time zone GMT offset.
      * @return An array of IDs, where the time zone has the specified GMT
@@ -310,7 +307,7 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
      * Returns the time zone under which the host is running.  This
      * can be changed with setDefault.
      * @return the time zone for this host.
-     * @see setDefault
+     * @see #setDefault
      */
     public static TimeZone getDefault() {
         return defaultZone;
