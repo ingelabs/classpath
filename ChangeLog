@@ -1,5 +1,14 @@
 2003-09-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/JarURLConnection.java:
+	(jar_file): Removed.
+	(JarURLConnection): Renamed "url_string" to "str", no need to strip
+	"jar:", URL.getFile does this already for us, simplified code.
+	(getJarEntry): Reimplemented without using jar_file.
+	(getManifest): Likewise.
+
+2003-09-21  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/JarURLConnection.java
 	(real_url): Renamed to jarFileURL.
 	(jarFileURL): Renamed from jarFileURL (to match libgcj).

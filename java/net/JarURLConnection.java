@@ -85,11 +85,6 @@ public abstract class JarURLConnection extends URLConnection
   private String entry_name;
 
   /**
-   * The JarFile object for the jar file pointed to by the real URL
-   */
-  private JarFile jar_file;
-
-  /**
    * Creates a JarURLConnection from an URL object
    *
    * @param URL url The URL object for this connection.
@@ -106,19 +101,14 @@ public abstract class JarURLConnection extends URLConnection
     if (!url.getProtocol().equals ("jar"))
       throw new MalformedURLException (url + ": Not jar protocol.");
 
-    // Now, strip off the "jar:" and everything from the "!/" to the end
-    // to get the "real" URL inside
-    String url_string = url.toExternalForm();
+    String str = url.getFile();
 
-    int bang = url_string.indexOf ("!/");
+    int bang = str.indexOf ("!/");
     if (bang == -1)
       throw new MalformedURLException (url + ": No `!/' in spec.");
 
-    jarFileURL = new URL (url_string.substring (4, bang));
-    if (url_string.length() == (bang + 1))
-      entry_name = "";
-    else
-      entry_name = url_string.substring (bang + 2);
+    jarFileURL = new URL (str.substring (0, bang));
+    entry_name = str.length() == (bang + 1) ? "" : str.substring (bang + 2);
   }
 
   /**
@@ -153,10 +143,9 @@ public abstract class JarURLConnection extends URLConnection
    */
   public JarEntry getJarEntry () throws IOException
   {
-    if (jar_file == null)
-      jar_file = getJarFile();
+    JarFile file = getJarFile();
 
-    return jar_file.getJarEntry(entry_name);
+    return file != null ? file.getJarEntry (entry_name) : null;
   }
 
   /**
@@ -218,9 +207,8 @@ public abstract class JarURLConnection extends URLConnection
    */
   public Manifest getManifest () throws IOException
   {
-    if (jar_file == null)
-      jar_file = getJarFile();
+    JarFile file = getJarFile();
 
-    return jar_file.getManifest();
+    return file != null ? file.getManifest() : null;
   }
 }
