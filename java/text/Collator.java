@@ -50,8 +50,6 @@ import java.util.MissingResourceException;
   * are described in detail in the documentation for the methods and values
   * that are related to them.
   *
-  * @version 0.0
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
 public abstract class Collator implements Comparator, Cloneable, Serializable
@@ -185,7 +183,7 @@ getInstance(Locale locale)
        ResourceBundle rb = PropertyResourceBundle.getBundle(
                         "gnu/java/locale/LocaleInformation", locale);
 
-       rules = rb.getString("CollationRules");
+       rules = rb.getString("collation_rules");
     }
   catch(MissingResourceException e)
     {
