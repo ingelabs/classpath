@@ -1,5 +1,10 @@
 2002-02-17  Eric Blake  <ebb9@email.byu.edu>
 
+	* doc/unicode/UnicodeCharacterDatabase-3.0.0.html: Add
+	redistribution license to accompany previous commit.
+
+2002-02-17  Eric Blake  <ebb9@email.byu.edu>
+
 	* java/lang/Character.java (getUnicodeBlock): Delete.
 	(class UnicodeBlock): Add (generated) class, and move constants
 	from Subset into it.
