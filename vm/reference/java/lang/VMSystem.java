@@ -1,6 +1,6 @@
-/* VMSystem.java
-   Copyright (C) 1998 Free Software Foundation
- 
+/* VMSystem.java -- helper for java.lang.system
+   Copyright (C) 1998, 2002 Free Software Foundation
+
 This file is part of GNU Classpath.
 
 GNU Classpath is free software; you can redistribute it and/or modify
@@ -40,78 +40,94 @@ package java.lang;
 import java.util.Properties;
 
 /**
- ** VMSystem is a package-private helper class for System that the
- ** VM must implement.
- **
- ** @author John Keiser
- ** @version 1.1.0, Aug 8 1998
- **/
+ * VMSystem is a package-private helper class for System that the
+ * VM must implement.
+ *
+ * @author John Keiser
+ */
+final class VMSystem
+{
+  /**
+   * Get the system properties. These MUST include:
+   * <dl>
+   * <dt>java.version         <dd>Java version number
+   * <dt>java.vendor          <dd>Java vendor specific string
+   * <dt>java.vendor.url      <dd>Java vendor URL
+   * <dt>java.home            <dd>Java installation directory
+   * <dt>java.vm.specification.version <dd>VM Spec version
+   * <dt>java.vm.specification.vendor  <dd>VM Spec vendor
+   * <dt>java.vm.specification.name    <dd>VM Spec name
+   * <dt>java.vm.version      <dd>VM implementation version
+   * <dt>java.vm.vendor       <dd>VM implementation vendor
+   * <dt>java.vm.name         <dd>VM implementation name
+   * <dt>java.specification.version    <dd>Java Runtime Environment version
+   * <dt>java.specification.vendor     <dd>Java Runtime Environment vendor
+   * <dt>java.specification.name       <dd>Java Runtime Environment name
+   * <dt>java.class.version   <dd>Java class version number
+   * <dt>java.class.path      <dd>Java classpath
+   * <dt>java.library.path    <dd>Path for finding Java libraries
+   * <dt>java.io.tmpdir       <dd>Default temp file path
+   * <dt>java.compiler        <dd>Name of JIT to use
+   * <dt>java.ext.dirs        <dd>Java extension path
+   * <dt>os.name              <dd>Operating System Name
+   * <dt>os.arch              <dd>Operating System Architecture
+   * <dt>os.version           <dd>Operating System Version
+   * <dt>file.separator       <dd>File separator ("/" on Unix)
+   * <dt>path.separator       <dd>Path separator (":" on Unix)
+   * <dt>line.separator       <dd>Line separator ("\n" on Unix)
+   * <dt>user.name            <dd>User account name
+   * <dt>user.home            <dd>User home directory
+   * <dt>user.dir             <dd>User's current working directory
+   * </dl>
+   *
+   * @param p the Properties object to insert the system properties into
+   */
+  static native void insertSystemProperties(Properties p);
 
-class VMSystem {
-	/** Get the system properties.
-	 ** <dl>
-	 ** <dt>java.version         <dd>Java version number
-	 ** <dt>java.vendor          <dd>Java vendor specific string
-	 ** <dt>java.vendor.url      <dd>Java vendor URL
-	 ** <dt>java.home            <dd>Java installation directory
-	 ** <dt>java.class.version   <dd>Java class version number
-	 ** <dt>java.class.path      <dd>Java classpath
-	 ** <dt>os.name              <dd>Operating System Name
-	 ** <dt>os.arch              <dd>Operating System Architecture
-	 ** <dt>os.version           <dd>Operating System Version
-	 ** <dt>file.separator       <dd>File separator ("/" on Unix)
-	 ** <dt>path.separator       <dd>Path separator (":" on Unix)
-	 ** <dt>line.separator       <dd>Line separator ("\n" on Unix)
-	 ** <dt>user.name            <dd>User account name
-	 ** <dt>user.home            <dd>User home directory
-	 ** <dt>user.dir             <dd>User's current working directory
-	 ** </dl>
-	 ** It will also define the java.compiler if env(JAVA_COMPILER) is defined.<P>
-	 ** 
-	 ** <STRONG>Copyright Note:</STRONG> The above text was taken from
-	 ** Japhar, by the Hungry Programmers (http://www.japhar.org).
-	 **
-	 ** @param p the Properties object to insert the system
-	 **        properties into.
-	 **/
-	static native void insertSystemProperties(Properties p);
+  /**
+   * Copy one array onto another from <code>src[srcStart]</code> ...
+   * <code>src[srcStart+len-1]</code> to <code>dest[destStart]</code> ...
+   * <code>dest[destStart+len-1]</code>. First, the arguments are validated:
+   * neither array may be null, they must be of compatible types, and the
+   * start and length must fit within both arrays. Then the copying starts,
+   * and proceeds through increasing slots.  If src and dest are the same
+   * array, this will appear to copy the data to a temporary location first.
+   * An ArrayStoreException in the middle of copying will leave earlier
+   * elements copied, but later elements unchanged.
+   *
+   * @param src the array to copy elements from
+   * @param srcStart the starting position in src
+   * @param dest the array to copy elements to
+   * @param destStart the starting position in dest
+   * @param len the number of elements to copy
+   * @throws NullPointerException if src or dest is null
+   * @throws ArrayStoreException if src or dest is not an array, if they are
+   *         not compatible array types, or if an incompatible runtime type
+   *         is stored in dest
+   * @throws IndexOutOfBoundsException if len is negative, or if the start or
+   *         end copy position in either array is out of bounds
+   */
+  static native void arraycopy(Object src, int srcStart,
+                               Object dest, int destStart, int len);
 
-	/** Copy one array onto another from
-	 ** <CODE>src[srcStart] ... src[srcStart+len]</CODE> to
-	 ** <CODE>dest[destStart] ... dest[destStart+len]</CODE>
-	 ** @param src the array to copy elements from
-	 ** @param srcStart the starting position to copy elements
-	 **        from in the src array
-	 ** @param dest the array to copy elements to
-	 ** @param destStart the starting position to copy
-	 **        elements from in the src array
-	 ** @param len the number of elements to copy
-	 ** @exception ArrayStoreException if src or dest is not
-	 **            an array, or if one is a primitive type
-	 **            and the other is a reference type or a
-	 **            different primitive type.  The array will
-	 **            not be modified if any of these is th
-	 **            case.  If there is an element in src that
-	 **            is not assignable to dest's type, this will
-	 **            be thrown and all elements up to but not
-	 **            including that element will have been
-	 **            modified.
-	 ** @exception ArrayIndexOutOfBoundsException if len is
-	 **            negative, or if the start or end copy
-	 **            position in either array is out of bounds.
-	 **            The array will not be modified if this
-	 **            exception is thrown.
-	 **/
-	static native void arraycopy(Object src, int srcStart, Object dest, int destStart, int len);
+  /**
+   * Get a hash code computed by the VM for the Object. This hash code will
+   * be the same as Object's hashCode() method.  It is usually some
+   * convolution of the pointer to the Object internal to the VM.  It
+   * follows standard hash code rules, in that it will remain the same for a
+   * given Object for the lifetime of that Object.
+   *
+   * @param o the Object to get the hash code for
+   * @return the VM-dependent hash code for this Object
+   */
+  static native int identityHashCode(Object o);
 
-	/** Get a hash code computed by the VM for the Object.
-	 ** This hash code will be the same as Object's hashCode()
-	 ** method.  It is usually some convolution of the pointer
-	 ** to the Object internal to the VM.  It follows standard
-	 ** hash code rules, in that it will remain the same for a
-	 ** given Object for the lifetime of that Object.
-	 ** @param o the Object to get the hash code for
-	 ** @return the VM-dependent hash code for this Object
-	 **/
-	static native int identityHashCode(Object o);
+  /**
+   * Convert a library name to its platform-specific variant.
+   *
+   * @param libname the library name, as used in <code>loadLibrary</code>
+   * @return the platform-specific mangling of the name
+   * @XXX Add this method
+  static native String mapLibraryName(String libname);
+   */
 }

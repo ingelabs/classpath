@@ -1,5 +1,5 @@
-/* java.lang.System
-   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
+/* System.java -- useful methods to interface with the system
+   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -43,405 +43,544 @@ import java.util.*;
 import gnu.classpath.Configuration;
 
 /**
- * System represents system-wide resources; things that
- * represent the general environment.  As such, all
- * methods are static.
+ * System represents system-wide resources; things that represent the
+ * general environment.  As such, all methods are static.
  *
  * @author John Keiser
- * @version 1.1.0, Aug 8 1998
- * @since JDK1.0
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @since 1.0
+ * @status still missing 1.4 functionality
  */
-
 public class System
 {
-
+  /**
+   * Load native methods.
+   */
   static
   {
     if (Configuration.INIT_LOAD_LIBRARY)
       {
-	System.loadLibrary ("javalang");
+	System.loadLibrary("javalang");
       }
   }
 
-  /* This class is uninstantiable. */
-  private System ()
+  /**
+   * This class is uninstantiable.
+   */
+  private System()
   {
   }
 
+  /**
+   * Stores the system properties.
+   */
   private static Properties properties;
 
-	/** The standard InputStream.  This is assigned at
-	 ** startup and starts its life perfectly valid.<P>
-	 ** This corresponds to the C stdin and C++ cin
-	 ** variables, which typically input from the keyboard,
-	 ** but may be used to pipe input from other processes
-	 ** or files.  That should all be transparent to you,
-	 ** however.
-	 **/
+  /**
+   * The standard InputStream. This is assigned at startup and starts its
+   * life perfectly valid. Although it is marked final, you can change it
+   * using {@link #setIn(InputStream)} through some hefty VM magic.
+   *
+   * <p>This corresponds to the C stdin and C++ cin variables, which
+   * typically input from the keyboard, but may be used to pipe input from
+   * other processes or files.  That should all be transparent to you,
+   * however.
+   */
   public static final InputStream in;
 
-	/** The standard output PrintStream.  This is assigned at
-	 ** startup and starts its life perfectly valid.<P>
-	 ** This corresponds to the C stderr and C++ cerr
-	 ** variables, which typically output to the screen,
-	 ** but may be used to pipe output to other processes
-	 ** or files.  That should all be transparent to you,
-	 ** however.
-	 **/
+  /**
+   * The standard output PrintStream.  This is assigned at startup and
+   * starts its life perfectly valid. Although it is marked final, you can
+   * change it using {@link #setOut(PrintStream)} through some hefty VM magic.
+   *
+   * <p>This corresponds to the C stdout and C++ cout variables, which
+   * typically output normal messages to the screen, but may be used to pipe
+   * output to other processes or files.  That should all be transparent to
+   * you, however.
+   */
   public static final PrintStream out;
 
-	/** The standard error PrintStream.  This is assigned at
-	 ** startup and starts its life perfectly valid.<P>
-	 ** This corresponds to the C stdout and C++ cout
-	 ** variables, which typically output to the screen,
-	 ** but may be used to pipe output to other processes
-	 ** or files.  That should all be transparent to you,
-	 ** however.
-	 **/
+  /**
+   * The standard output PrintStream.  This is assigned at startup and
+   * starts its life perfectly valid. Although it is marked final, you can
+   * change it using {@link #setOut(PrintStream)} through some hefty VM magic.
+   *
+   * <p>This corresponds to the C stderr and C++ cerr variables, which
+   * typically output error messages to the screen, but may be used to pipe
+   * output to other processes or files.  That should all be transparent to
+   * you, however.
+   */
   public static final PrintStream err;
 
+  /**
+   * Initialize the properties and I/O streams.
+   */
   static
   {
-    properties = new Properties ();
-    VMSystem.insertSystemProperties (properties);
-    insertGNUProperties ();
-    in = new FileInputStream (FileDescriptor.in);
-    out = new PrintStream (new FileOutputStream (FileDescriptor.out));
-    err = new PrintStream (new FileOutputStream (FileDescriptor.err));
+    properties = new Properties();
+    VMSystem.insertSystemProperties(properties);
+    insertGNUProperties();
+    in = new FileInputStream(FileDescriptor.in);
+    out = new PrintStream(new FileOutputStream(FileDescriptor.out));
+    err = new PrintStream(new FileOutputStream(FileDescriptor.err));
   }
 
-	/** Set in to a new InputStream.
-	 ** @param in the new InputStream.
-	 ***/
-  public static native void setIn (InputStream in);
+  /**
+   * Set {@link #in} to a new InputStream. This uses some VM magic to change
+   * a "final" variable, so naturally there is a security check,
+   * <code>RuntimePermission("setIO")</code>.
+   *
+   * @param in the new InputStream
+   * @throws SecurityException if permission is denied
+   * @since 1.1
+   * @XXX Perform security check (which means setIn should probably be in
+   *      Java, and add setIn0 as native).
+   */
+  public static native void setIn(InputStream in);
 
-	/** Set out to a new PrintStream.
-	 ** @param out the new PrintStream.
-	 ***/
-  public static native void setOut (PrintStream out);
+  /**
+   * Set {@link #out} to a new PrintStream. This uses some VM magic to change
+   * a "final" variable, so naturally there is a security check,
+   * <code>RuntimePermission("setIO")</code>.
+   *
+   * @param out the new PrintStream
+   * @throws SecurityException if permission is denied
+   * @since 1.1
+   * @XXX Perform security check (which means setOut should probably be in
+   *      Java, and add setOut0 as native).
+   */
+  public static native void setOut(PrintStream out);
 
-	/** Set err to a new PrintStream.
-	 ** @param err the new PrintStream.
-	 ***/
-  public static native void setErr (PrintStream err);
+  /**
+   * Set {@link #err} to a new PrintStream. This uses some VM magic to change
+   * a "final" variable, so naturally there is a security check,
+   * <code>RuntimePermission("setIO")</code>.
+   *
+   * @param err the new PrintStream
+   * @throws SecurityException if permission is denied
+   * @since 1.1
+   * @XXX Perform security check (which means setErr should probably be in
+   *      Java, and add setErr0 as native).
+   */
+  public static native void setErr(PrintStream err);
 
-	/** Get the current SecurityManager.
-	 ** If the SecurityManager has not been set yet, then this
-	 ** method returns null.
-	 ** @return the current SecurityManager, or null.
-	 **/
-  public static SecurityManager getSecurityManager ()
+  /**
+   * Set the current SecurityManager. If a security manager already exists,
+   * then <code>RuntimePermission("setSecurityManager")</code> is checked
+   * first. Since this permission is denied by the default security manager,
+   * setting the security manager is often an irreversible action.
+   *
+   * <STRONG>Spec Note:</STRONG> Don't ask me, I didn't write it.  It looks
+   * pretty vulnerable; whoever gets to the gate first gets to set the policy.
+   * There is probably some way to set the original security manager as a
+   * command line argument to the VM, but I don't know it.
+   *
+   * @param securityManager the new SecurityManager
+   * @throws SecurityException if permission is denied
+   */
+  public static void setSecurityManager(SecurityManager securityManager)
   {
-    return Runtime.getSecurityManager ();
+    // Implementation note: this is done in Runtime because of bootstrap
+    // initialization issues.
+    Runtime.setSecurityManager(securityManager);
   }
 
-	/** Set the current SecurityManager.
-	 ** This may only be done once.  If you try to re-set the
-	 ** current SecurityManager, then you will get a
-	 ** SecurityException.  If you use null and there is no
-	 ** SecurityManager set, then the state will not
-	 ** change.<P>
-	 ** <STRONG>Spec Note:</STRONG> Don't ask me, I didn't
-	 ** write it.  It looks pretty vulnerable; whoever gets to
-	 ** the gate first gets to set the policy.
-	 **
-	 ** @param securityManager the new SecurityManager.
-	 ** @exception SecurityException if the SecurityManger is
-	 **            already set.
-	 **/
-  public static void setSecurityManager (SecurityManager securityManager)
+  /**
+   * Get the current SecurityManager. If the SecurityManager has not been
+   * set yet, then this method returns null.
+   *
+   * @return the current SecurityManager, or null
+   */
+  public static SecurityManager getSecurityManager()
   {
-    Runtime.setSecurityManager (securityManager);
+    // Implementation note: this is done in Runtime because of bootstrap
+    // initialization issues.
+    return Runtime.getSecurityManager();
   }
 
-	/** Get the current time, measured in the number of
-	 ** milliseconds from the beginning of Jan. 1, 1970.
-	 ** This is gathered from the system clock, with any
-	 ** attendant incorrectness (it may be timezone
-	 ** dependent).
-	 ** @return the current time.
-	 **/
-  public static native long currentTimeMillis ();
+  /**
+   * Get the current time, measured in the number of milliseconds from the
+   * beginning of Jan. 1, 1970. This is gathered from the system clock, with
+   * any attendant incorrectness (it may be timezone dependent).
+   *
+   * @return the current time
+   * @see java.util.Date
+   */
+  public static native long currentTimeMillis();
 
-	/** Copy one array onto another from
-	 ** <CODE>src[srcStart] ... src[srcStart+len]</CODE> to
-	 ** <CODE>dest[destStart] ... dest[destStart+len]</CODE>
-	 ** @param src the array to copy elements from
-	 ** @param srcStart the starting position to copy elements
-	 **        from in the src array
-	 ** @param dest the array to copy elements to
-	 ** @param destStart the starting position to copy
-	 **        elements from in the src array
-	 ** @param len the number of elements to copy
-	 ** @exception ArrayStoreException if src or dest is not
-	 **            an array, or if one is a primitive type
-	 **            and the other is a reference type or a
-	 **            different primitive type.  The array will
-	 **            not be modified if any of these is the
-	 **            case.  If there is an element in src that
-	 **            is not assignable to dest's type, this will
-	 **            be thrown and all elements up to but not
-	 **            including that element will have been
-	 **            modified.
-	 ** @exception ArrayIndexOutOfBoundsException if len is
-	 **            negative, or if the start or end copy
-	 **            position in either array is out of bounds.
-	 **            The array will not be modified if this
-	 **            exception is thrown.
-	 **/
-  public static void arraycopy (Object src, int srcStart, Object dest,
-				int destStart, int len)
+  /**
+   * Copy one array onto another from <code>src[srcStart]</code> ...
+   * <code>src[srcStart+len-1]</code> to <code>dest[destStart]</code> ...
+   * <code>dest[destStart+len-1]</code>. First, the arguments are validated:
+   * neither array may be null, they must be of compatible types, and the
+   * start and length must fit within both arrays. Then the copying starts,
+   * and proceeds through increasing slots.  If src and dest are the same
+   * array, this will appear to copy the data to a temporary location first.
+   * An ArrayStoreException in the middle of copying will leave earlier
+   * elements copied, but later elements unchanged.
+   *
+   * @param src the array to copy elements from
+   * @param srcStart the starting position in src
+   * @param dest the array to copy elements to
+   * @param destStart the starting position in dest
+   * @param len the number of elements to copy
+   * @throws NullPointerException if src or dest is null
+   * @throws ArrayStoreException if src or dest is not an array, if they are
+   *         not compatible array types, or if an incompatible runtime type
+   *         is stored in dest
+   * @throws IndexOutOfBoundsException if len is negative, or if the start or
+   *         end copy position in either array is out of bounds
+   */
+  public static void arraycopy(Object src, int srcStart,
+                               Object dest, int destStart, int len)
   {
-    VMSystem.arraycopy (src, srcStart, dest, destStart, len);
+    VMSystem.arraycopy(src, srcStart, dest, destStart, len);
   }
 
-	/** Get a hash code computed by the VM for the Object.
-	 ** This hash code will be the same as Object's hashCode()
-	 ** method.  It is usually some convolution of the pointer
-	 ** to the Object internal to the VM.  It follows standard
-	 ** hash code rules, in that it will remain the same for a
-	 ** given Object for the lifetime of that Object.
-	 ** @param o the Object to get the hash code for
-	 ** @return the VM-dependent hash code for this Object
-	 **/
-  public static int identityHashCode (Object o)
+  /**
+   * Get a hash code computed by the VM for the Object. This hash code will
+   * be the same as Object's hashCode() method.  It is usually some
+   * convolution of the pointer to the Object internal to the VM.  It
+   * follows standard hash code rules, in that it will remain the same for a
+   * given Object for the lifetime of that Object.
+   *
+   * @param o the Object to get the hash code for
+   * @return the VM-dependent hash code for this Object
+   * @since 1.1
+   */
+  public static int identityHashCode(Object o)
   {
-    return VMSystem.identityHashCode (o);
+    return VMSystem.identityHashCode(o);
   }
 
-	/** Get all the system properties at once.
-	 ** @XXX list the standard system properties
-	 ** @return the system properties
-	 ** @exception SecurityException if thrown by
-	 **            getSecurityManager().checkPropertiesAccess()
-	 **/
-  public static Properties getProperties ()
+  /**
+   * Get all the system properties at once. A security check may be performed,
+   * <code>checkPropertiesAccess</code>. Note that a security manager may
+   * allow getting a single property, but not the entire group.
+   *
+   * <p>The default properties include:
+   * <dl>
+   * <dt>java.version         <dd>Java version number
+   * <dt>java.vendor          <dd>Java vendor specific string
+   * <dt>java.vendor.url      <dd>Java vendor URL
+   * <dt>java.home            <dd>Java installation directory
+   * <dt>java.vm.specification.version <dd>VM Spec version
+   * <dt>java.vm.specification.vendor  <dd>VM Spec vendor
+   * <dt>java.vm.specification.name    <dd>VM Spec name
+   * <dt>java.vm.version      <dd>VM implementation version
+   * <dt>java.vm.vendor       <dd>VM implementation vendor
+   * <dt>java.vm.name         <dd>VM implementation name
+   * <dt>java.specification.version    <dd>Java Runtime Environment version
+   * <dt>java.specification.vendor     <dd>Java Runtime Environment vendor
+   * <dt>java.specification.name       <dd>Java Runtime Environment name
+   * <dt>java.class.version   <dd>Java class version number
+   * <dt>java.class.path      <dd>Java classpath
+   * <dt>java.library.path    <dd>Path for finding Java libraries
+   * <dt>java.io.tmpdir       <dd>Default temp file path
+   * <dt>java.compiler        <dd>Name of JIT to use
+   * <dt>java.ext.dirs        <dd>Java extension path
+   * <dt>os.name              <dd>Operating System Name
+   * <dt>os.arch              <dd>Operating System Architecture
+   * <dt>os.version           <dd>Operating System Version
+   * <dt>file.separator       <dd>File separator ("/" on Unix)
+   * <dt>path.separator       <dd>Path separator (":" on Unix)
+   * <dt>line.separator       <dd>Line separator ("\n" on Unix)
+   * <dt>user.name            <dd>User account name
+   * <dt>user.home            <dd>User home directory
+   * <dt>user.dir             <dd>User's current working directory
+   * </dl>
+   *
+   * @return the system properties, will never be null
+   * @throws SecurityException if permission is denied
+   */
+  public static Properties getProperties()
   {
-    try
-    {
-      getSecurityManager ().checkPropertiesAccess ();
-    }
-    catch (NullPointerException e)
-    {
-    }
+    SecurityManager sm = Runtime.getSecurityManager();
+    if (sm != null)
+      sm.checkPropertiesAccess();
+    //XXX Make sure this is not null, and be thread-safe
     return properties;
   }
 
-	/** Set all the system properties at once.
-	 ** @param properties the new set of system properties.
-	 ** @exception SecurityException if thrown by
-	 **            getSecurityManager().checkPropertiesAccess()
-	 **/
-  public static void setProperties (Properties properties)
+  /**
+   * Set all the system properties at once. A security check may be performed,
+   * <code>checkPropertiesAccess</code>. Note that a security manager may
+   * allow setting a single property, but not the entire group. An argument
+   * of null resets the properties to the startup default.
+   *
+   * @param properties the new set of system properties
+   * @throws SecurityException if permission is denied
+   */
+  public static void setProperties(Properties properties)
   {
-    try
-    {
-      getSecurityManager ().checkPropertiesAccess ();
-    }
-    catch (NullPointerException e)
-    {
-    }
+    SecurityManager sm = Runtime.getSecurityManager();
+    if (sm != null)
+      sm.checkPropertiesAccess();
+    // XXX Special case null
     System.properties = properties;
   }
 
-
-	/** Get a single system property by name.
-	 ** @param name the name of the system property to get
-	 ** @return the property, or null if not found.
-	 ** @exception SecurityException if thrown by
-	 **            getSecurityManager().checkPropertyAccess(name)
-	 **/
-  public static String getProperty (String name)
+  /**
+   * Get a single system property by name. A security check may be performed,
+   * <code>checkPropertyAccess(key)</code>.
+   *
+   * @param key the name of the system property to get
+   * @return the property, or null if not found
+   * @throws SecurityException if permission is denied
+   * @throws NullPointerException if key is null
+   * @throws IllegalArgumentException if key is ""
+   */
+  public static String getProperty(String key)
   {
-    SecurityManager sm = getSecurityManager ();
-    try
-    {
-      sm.checkPropertyAccess (name);
-    }
-    catch (NullPointerException e)
-    {
-    }
-    return properties.getProperty (name);
-  }
-
-	/** Set a single system property by name.
-	 ** @param name the name of the system property to set
-	 ** @param value the new value of the system property
-	 ** @return the old property value, or null if not yet set
-	 ** @exception SecurityException if a SecurityManager is set
-     **            and the caller doesn't have
-	 **            <code>PropertyPermission(name, "write")</code>
-	 **
-	 ** @since 1.2
-	 **/
-  public static String setProperty (String name, String value)
-  {
-    SecurityManager sm = getSecurityManager ();
+    SecurityManager sm = Runtime.getSecurityManager();
     if (sm != null)
-      sm.checkPermission (new PropertyPermission (name, "write"));
-
-    return (String) properties.setProperty (name, value);
+      sm.checkPropertyAccess(key);
+    // XXX ensure properties is not null, and be thread-safe
+    return properties.getProperty(key);
   }
 
-	/** Get a single property by name, with a possible default
-	 ** value returned if not found.
-	 ** @param name the name of the system property to set
-	 ** @param def the default value to use if the
-	 **        property does not exist.
-	 ** @return the property, or default if not found.
-	 ** @exception SecurityException if thrown by
-	 **            getSecurityManager().checkPropertyAccess(name)
-	 **/
-  public static String getProperty (String name, String def)
+  /**
+   * Get a single system property by name. A security check may be performed,
+   * <code>checkPropertyAccess(key)</code>.
+   *
+   * @param key the name of the system property to get
+   * @param def the default
+   * @return the property, or def if not found
+   * @throws SecurityException if permission is denied
+   * @throws NullPointerException if key is null
+   * @throws IllegalArgumentException if key is ""
+   */
+  public static String getProperty(String key, String def)
   {
-    try
-    {
-      getSecurityManager ().checkPropertyAccess (name);
-    }
-    catch (NullPointerException e)
-    {
-    }
-    return properties.getProperty (name, def);
+    SecurityManager sm = Runtime.getSecurityManager();
+    if (sm != null)
+      sm.checkPropertyAccess(key);
+    // XXX ensure properties is not null, and be thread-safe
+    return properties.getProperty(key, def);
   }
 
-	/** Get a single property by name.  Calls getProperty(name).
-	 ** @deprecated use getProperty(name).
-	 ** @see #getProperty(java.lang.String)
-	 **/
-  public static String getenv (String name)
+  /**
+   * Set a single system property by name. A security check may be performed,
+   * <code>checkPropertyAccess(key, "write")</code>.
+   *
+   * @param key the name of the system property to set
+   * @param value the new value
+   * @return the previous value, or null
+   * @throws SecurityException if permission is denied
+   * @throws NullPointerException if key is null
+   * @throws IllegalArgumentException if key is ""
+   * @since 1.2
+   */
+  public static String setProperty(String key, String value)
   {
-    return getProperty (name);
+    SecurityManager sm = Runtime.getSecurityManager();
+    if (sm != null)
+      sm.checkPermission(new PropertyPermission(key, "write"));
+    // XXX ensure properties is not null, and be thread-safe
+    return (String) properties.setProperty(key, value);
   }
 
-	/** Helper method to exit the Java runtime using
-	 ** <CODE>Runtime.getRuntime().exit()</CODE>.
-	 ** @see java.lang.Runtime#exit(int)
-	 **/
-  public static void exit (int status)
+  /**
+   * Get an environment variable. <b>WARNING</b>: This is not the preferred
+   * way to check properties, nor is it guaranteed to work across all
+   * implementations. Use <code>getProperty</code> instead.
+   *
+   * @param name the name of the environment variable
+   * @return the value of the variable, or null
+   * @deprecated use {@link #getProperty(String)}
+   */
+  public static String getenv(String name)
   {
-    Runtime.getRuntime ().exit (status);
+    //XXX This should be a native method, which actually uses getenv(3).
+    return getProperty(name);
   }
 
-	/** Helper method to run the garbage collector using
-	 ** <CODE>Runtime.getRuntime().gc()</CODE>.
-	 ** @see java.lang.Runtime#gc()
-	 **/
-  public static void gc ()
+  /**
+   * Terminate the Virtual Machine. This just calls
+   * <code>Runtime.getRuntime().exit(status)</code>, and never returns.
+   * Obviously, a security check is in order, <code>checkExit</code>.
+   *
+   * @param status the exit status; by convention non-zero is abnormal
+   * @throws SecurityException if permission is denied
+   * @see Runtime#exit(int)
+   */
+  public static void exit(int status)
   {
-    Runtime.getRuntime ().gc ();
+    Runtime.getRuntime().exit(status);
   }
 
-	/** Helper method to run finalization using
-	 ** <CODE>Runtime.getRuntime().runFinalization()</CODE>.
-	 ** @see java.lang.Runtime#runFinalization()
-	 **/
-  public static void runFinalization ()
+  /**
+   * Calls the garbage collector. This is only a hint, and it is up to the
+   * implementation what this hint suggests, but it usually causes a
+   * best-effort attempt to reclaim unused memory from discarded objects.
+   * This calls <code>Runtime.getRuntime().gc()</code>.
+   *
+   * @see Runtime#gc()
+   */
+  public static void gc()
   {
-    Runtime.getRuntime ().runFinalization ();
+    Runtime.getRuntime().gc();
   }
 
-	/** Tell the Runtime whether to run finalization before
-	 ** exiting the JVM.  Just uses
-	 ** <CODE>Runtime.getRuntime().runFinalizersOnExit()</CODE>.
-	 ** @see java.lang.Runtime#runFinalizersOnExit()
-	 **
-	 ** @deprecated Since 1.2 this method is officially deprecated
-	 ** because there is no guarantee and doing the actual finalization
-	 ** on all objects is unsafe since not all (daemon) threads might
-	 ** be finished with all objects when the VM terminates.
-	 **/
-  public static void runFinalizersOnExit (boolean finalizeOnExit)
+  /**
+   * Runs object finalization on pending objects. This is only a hint, and
+   * it is up to the implementation what this hint suggests, but it usually
+   * causes a best-effort attempt to run finalizers on all objects ready
+   * to be reclaimed. This calls
+   * <code>Runtime.getRuntime().runFinalization()</code>.
+   *
+   * @see Runtime#runFinalization()
+   */
+  public static void runFinalization()
   {
-    Runtime.getRuntime ().runFinalizersOnExit (finalizeOnExit);
+    Runtime.getRuntime().runFinalization();
   }
 
-	/** Helper method to load a library using its explicit
-	 ** system-dependent filename.  This just calls
-	 ** <CODE>Runtime.getRuntime().load(filename)</CODE>.
-	 ** @see java.lang.Runtime#load(java.lang.String)
-	 **/
-  public static void load (String filename)
+  /**
+   * Tell the Runtime whether to run finalization before exiting the
+   * JVM.  This is inherently unsafe in multi-threaded applications,
+   * since it can force initialization on objects which are still in use
+   * by live threads, leading to deadlock; therefore this is disabled by
+   * default. There may be a security check, <code>checkExit(0)</code>. This
+   * calls <code>Runtime.getRuntime().runFinalizersOnExit()</code>.
+   *
+   * @param finalizeOnExit whether to run finalizers on exit
+   * @throws SecurityException if permission is denied
+   * @see Runtime#runFinalizersOnExit()
+   * @since 1.1
+   * @deprecated never rely on finalizers to do a clean, thread-safe,
+   *             mop-up from your code
+   */
+  public static void runFinalizersOnExit(boolean finalizeOnExit)
   {
-    Runtime.getRuntime ().load (filename);
+
+    Runtime.getRuntime().runFinalizersOnExit(finalizeOnExit);
   }
 
-	/** Helper method to load a library using just a
-	 ** short identifier for the name.  This just calls
-	 ** <CODE>Runtime.getRuntime().loadLibrary(libname)</CODE>.
-	 ** @see java.lang.Runtime#loadLibrary(java.lang.String)
-	 **/
-  public static void loadLibrary (String libname)
+  /**
+   * Load a code file using its explicit system-dependent filename. A security
+   * check may be performed, <code>checkLink</code>. This just calls
+   * <code>Runtime.getRuntime().load(filename)</code>.
+   *
+   * @param filename the code file to load
+   * @throws SecurityException if permission is denied
+   * @throws UnsatisfiedLinkError if the file cannot be loaded
+   * @see Runtime#load(String)
+   */
+  public static void load(String filename)
   {
-    Runtime.getRuntime ().loadLibrary (libname);
+    Runtime.getRuntime().load(filename);
   }
 
-  /** Add Classpath specific system properties.
-   ** <br>
-   ** Current properties:
-   ** <br>
-   ** <ul>
-   **   <li> gnu.cpu.endian - big or little</li>
-   ** </ul>
-   **/
-  static void insertGNUProperties ()
+  /**
+   * Load a library using its explicit system-dependent filename. A security
+   * check may be performed, <code>checkLink</code>. This just calls
+   * <code>Runtime.getRuntime().load(filename)</code>.
+   *
+   * @param libname the library file to load
+   * @throws SecurityException if permission is denied
+   * @throws UnsatisfiedLinkError if the file cannot be loaded
+   * @see Runtime#load(String)
+   */
+  public static void loadLibrary(String libname)
   {
-    properties.put ("gnu.cpu.endian",
-		    (isWordsBigEndian ())? "big" : "little");
+    Runtime.getRuntime().loadLibrary(libname);
+  }
+
+  /**
+   * Convert a library name to its platform-specific variant.
+   *
+   * @param libname the library name, as used in <code>loadLibrary</code>
+   * @return the platform-specific mangling of the name
+   * @since 1.2
+   * @XXX Add this method, and its support in VMSystem.
+  public static String mapLibraryName(String libname)
+  {
+    return VMSystem.mapLibraryName(libname);
+  }
+   */
+
+  /**
+   * Add Classpath specific system properties.
+   * <br>
+   * Current properties:
+   * <br>
+   * <ul>
+   *   <li> gnu.cpu.endian - big or little</li>
+   *   <li> gnu.java.io.encoding_scheme_alias.ISO-8859-? - 8859_?</li>
+   *   <li> gnu.java.io.encoding_scheme_alias.iso-8859-? - 8859_?</li>
+   *   <li> gnu.java.io.encoding_scheme_alias.iso8859_? - 8859_?</li>
+   *   <li> gnu.java.io.encoding_scheme_alias.iso-latin-_? - 8859_?</li>
+   *   <li> gnu.java.io.encoding_scheme_alias.latin? - 8859_?</li>
+   *   <li> gnu.java.io.encoding_scheme_alias.UTF-8 - UTF8</li>
+   *   <li> gnu.java.io.encoding_scheme_alias.utf-8 - UTF8</li>
+   * </ul>
+   * @see gnu.java.io.EncodingManager
+   */
+  static void insertGNUProperties()
+  {
+    properties.put("gnu.cpu.endian",
+                   isWordsBigEndian() ? "big" : "little");
 
     // Common encoding aliases. See gnu.java.io.EncodingManager.
-    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-1", "8859_1");
-    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-2", "8859_2");
-    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-3", "8859_3");
-    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-4", "8859_4");
-    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-5", "8859_5");
-    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-6", "8859_6");
-    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-7", "8859_7");
-    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-8", "8859_8");
-    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-9", "8859_9");
+    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-1", "8859_1");
+    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-2", "8859_2");
+    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-3", "8859_3");
+    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-4", "8859_4");
+    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-5", "8859_5");
+    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-6", "8859_6");
+    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-7", "8859_7");
+    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-8", "8859_8");
+    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-9", "8859_9");
 
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-1", "8859_1");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-2", "8859_2");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-3", "8859_3");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-4", "8859_4");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-5", "8859_5");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-6", "8859_6");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-7", "8859_7");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-8", "8859_8");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-9", "8859_9");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-1", "8859_1");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-2", "8859_2");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-3", "8859_3");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-4", "8859_4");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-5", "8859_5");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-6", "8859_6");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-7", "8859_7");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-8", "8859_8");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-9", "8859_9");
 
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_1", "8859_1");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_2", "8859_2");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_3", "8859_3");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_4", "8859_4");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_5", "8859_5");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_6", "8859_6");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_7", "8859_7");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_8", "8859_8");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_9", "8859_9");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_1", "8859_1");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_2", "8859_2");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_3", "8859_3");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_4", "8859_4");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_5", "8859_5");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_6", "8859_6");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_7", "8859_7");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_8", "8859_8");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_9", "8859_9");
 
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-1", "8859_1");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-2", "8859_2");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-3", "8859_3");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-4", "8859_4");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-5", "8859_5");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-6", "8859_6");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-7", "8859_7");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-8", "8859_8");
-    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-9", "8859_9");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-1", "8859_1");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-2", "8859_2");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-3", "8859_3");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-4", "8859_4");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-5", "8859_5");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-6", "8859_6");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-7", "8859_7");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-8", "8859_8");
+    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-9", "8859_9");
 
-    properties.put ("gnu.java.io.encoding_scheme_alias.latin1", "8859_1");
-    properties.put ("gnu.java.io.encoding_scheme_alias.latin2", "8859_2");
-    properties.put ("gnu.java.io.encoding_scheme_alias.latin3", "8859_3");
-    properties.put ("gnu.java.io.encoding_scheme_alias.latin4", "8859_4");
-    properties.put ("gnu.java.io.encoding_scheme_alias.latin5", "8859_5");
-    properties.put ("gnu.java.io.encoding_scheme_alias.latin6", "8859_6");
-    properties.put ("gnu.java.io.encoding_scheme_alias.latin7", "8859_7");
-    properties.put ("gnu.java.io.encoding_scheme_alias.latin8", "8859_8");
-    properties.put ("gnu.java.io.encoding_scheme_alias.latin9", "8859_9");
+    properties.put("gnu.java.io.encoding_scheme_alias.latin1", "8859_1");
+    properties.put("gnu.java.io.encoding_scheme_alias.latin2", "8859_2");
+    properties.put("gnu.java.io.encoding_scheme_alias.latin3", "8859_3");
+    properties.put("gnu.java.io.encoding_scheme_alias.latin4", "8859_4");
+    properties.put("gnu.java.io.encoding_scheme_alias.latin5", "8859_5");
+    properties.put("gnu.java.io.encoding_scheme_alias.latin6", "8859_6");
+    properties.put("gnu.java.io.encoding_scheme_alias.latin7", "8859_7");
+    properties.put("gnu.java.io.encoding_scheme_alias.latin8", "8859_8");
+    properties.put("gnu.java.io.encoding_scheme_alias.latin9", "8859_9");
 
-    properties.put ("gnu.java.io.encoding_scheme_alias.UTF-8", "UTF8");
-    properties.put ("gnu.java.io.encoding_scheme_alias.utf-8", "UTF8");
+    properties.put("gnu.java.io.encoding_scheme_alias.UTF-8", "UTF8");
+    properties.put("gnu.java.io.encoding_scheme_alias.utf-8", "UTF8");
   }
 
-  static native boolean isWordsBigEndian ();
+  /**
+   * Detect big-endian systems.
+   *
+   * @return true if the system is big-endian.
+   */
+  static native boolean isWordsBigEndian();
 }

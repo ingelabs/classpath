@@ -1,3 +1,10 @@
+2002-02-26  Eric Blake  <ebb9@email.byu.edu>
+
+	* vm/reference/java/lang/Runtime.java: Formatting and Javadoc.
+	* vm/reference/java/lang/VMSystem.java: Ditto.
+	* java/lang/System.java: Ditto.
+	* java/util/Properties.java: Fix doc typo.
+
 2002-02-25  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/lang/Double.java (byteValue, shortValue, compareTo): Add

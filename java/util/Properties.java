@@ -398,7 +398,7 @@ public class Properties extends Hashtable
    * returned.
    *
    * @param key The key for this property
-   * @param defaulValue A default value
+   * @param defaultValue A default value
    * @return The value for the given key
    * @throws ClassCastException if this property contains any key or
    *         value that isn't a string
