@@ -1,5 +1,12 @@
 2004-12-22  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JFileChooser.java
+	(showDialog): Return CANCEL_OPTION for now.
+	(showOpenDialog): Likewise.
+	(showSaveDialog): Likewise.
+
+2004-12-22  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JTextField.java (getPreferredSize):
 	Re-implemented.
 
