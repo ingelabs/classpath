@@ -351,8 +351,7 @@ public class Vector extends AbstractList implements List,
    * @throws ArrayIndexOutOfBoundsException the index is out of range
    */
   public Object set(int index, Object element) {
-    if ((index < 0) ||
-	(index >= elementCount)) 
+    if (index >= elementCount)
       throw new ArrayIndexOutOfBoundsException(index);
     
     modCount++;
@@ -370,13 +369,15 @@ public class Vector extends AbstractList implements List,
   public void removeElementAt(int index) {
     if (index >= elementCount) 
       throw new ArrayIndexOutOfBoundsException(index);    
+
     modCount++;
-    if (index < elementCount - 1) 
+    elementCount--;
+    if (index < elementCount ) 
       System.arraycopy(elementData, index + 1, elementData, index, 
-		       elementCount - (index + 1));
+		       elementCount - index);
     //Delete the last element (which has been copied back one index)
     //so it can be garbage collected;
-    elementData[(elementCount--)-1]=null;
+    elementData[elementCount] = null;
   }
 
   /**
@@ -411,9 +412,9 @@ public class Vector extends AbstractList implements List,
    * @param obj The object to add to the Vector
    */
   public void addElement(Object obj) {
-    ensureCapacity(elementCount + 1);
+    ensureCapacity(++elementCount);
     modCount++;
-    elementData[elementCount++] = obj;
+    elementData[elementCount] = obj;
   }
 
   /**
@@ -661,12 +662,12 @@ public class Vector extends AbstractList implements List,
    * @returns the String representation of this Vector
    */
   public String toString() {
-    String toReturn="[";
+    StringBuffer toReturn=new StringBuffer("[");
     for (int i=0; i < elementCount; i++) {
-      toReturn+=elementData[i];
-      if (i < elementCount - 1) toReturn+=", ";
+      toReturn.append(elementData[i].toString()).append(", ");
     }
-    return toReturn+"]";
+    int x=toReturn.length();
+    return toReturn.delete(x-3, x).append("]").toString();
   }
 
   /**
