@@ -36,16 +36,16 @@ import java.io.ObjectOutputStream;
  * HashSet is a part of the JDK1.2 Collections API.
  *
  * @author      Jon Zeppieri
- * @version     $Revision: 1.1 $
- * @modified    $Id: HashSet.java,v 1.1 1998-10-13 00:38:37 jaz Exp $
+ * @version     $Revision: 1.2 $
+ * @modified    $Id: HashSet.java,v 1.2 1999-06-25 13:17:02 jochen Exp $
  */
 public class HashSet extends AbstractSet 
     implements Set, Cloneable, Serializable
 {
     // INSTANCE VARIABLES -------------------------------------------------
     /** the HashMap which backs this Set */
-    private HashMap map;
-
+    private transient HashMap map;
+    static final long serialVersionUID = -5024744406713321676L;
 
     // CONSTRUCTORS ---------------------------------------------------------
 

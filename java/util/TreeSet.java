@@ -35,8 +35,8 @@ import java.io.ObjectOutputStream;
  * TreeSet is a part of the JDK1.2 Collections API.
  *
  * @author      Jon Zeppieri
- * @version     $Revision: 1.2 $
- * @modified    $Id: TreeSet.java,v 1.2 1999-04-27 00:20:26 jaz Exp $
+ * @version     $Revision: 1.3 $
+ * @modified    $Id: TreeSet.java,v 1.3 1999-06-25 13:17:04 jochen Exp $
  */
 
 public class TreeSet extends AbstractSet
@@ -45,7 +45,8 @@ public class TreeSet extends AbstractSet
   // INSTANCE VARIABLES -------------------------------------------------
 
   /** The TreeMap which backs this Set */
-  SortedMap _oMap;
+  transient SortedMap _oMap;
+  static final long serialVersionUID = -2479143000061671589L;
 
 
   // CONSTRUCTORS -------------------------------------------------------

@@ -53,8 +53,8 @@ import java.io.IOException;
  * always allowed.
  *
  * @author           Jon Zeppieri
- * @version          $Revision: 1.2 $
- * @modified         $Id: TreeMap.java,v 1.2 1999-03-16 08:04:59 jaz Exp $
+ * @version          $Revision: 1.3 $
+ * @modified         $Id: TreeMap.java,v 1.3 1999-06-25 13:17:03 jochen Exp $
  */ 
 public class TreeMap extends AbstractMap 
   implements SortedMap, Cloneable, Serializable
@@ -83,6 +83,8 @@ public class TreeMap extends AbstractMap
   /** used for serialization -- denotes which fields are serialized */
   private static final ObjectStreamField[] serialPersistentFields =
   {new ObjectStreamField("comparator", Comparator.class)};
+
+  static final long serialVersionUID = 919286545866124006L;
 
   /**
    * Instantiate a new TreeMap with no elements, using the keys'
