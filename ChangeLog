@@ -1,3 +1,8 @@
+2002-11-06  Tom Tromey  <tromey@redhat.com>
+
+	From svens@it.uu.se:
+	* java/util/Random.java (nextInt(int)): Only use 31 bits.
+
 2002-11-06  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/AbstractMap.java (values().contains): Add missing
