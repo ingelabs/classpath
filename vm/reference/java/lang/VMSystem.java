@@ -88,13 +88,6 @@ final class VMSystem
   static native int identityHashCode(Object o);
 
   /**
-   * Detect big-endian systems.
-   *
-   * @return true if the system is big-endian.
-   */
-  static native boolean isWordsBigEndian();
-
-  /**
    * Convert a library name to its platform-specific variant.
    *
    * @param libname the library name, as used in <code>loadLibrary</code>

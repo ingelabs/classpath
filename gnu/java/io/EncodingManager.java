@@ -38,9 +38,9 @@ exception statement from your version. */
 
 package gnu.java.io;
 
+import gnu.classpath.SystemProperties;
 import gnu.java.io.decode.Decoder;
 import gnu.java.io.encode.Encoder;
-import gnu.java.security.action.GetPropertyAction;
 
 import java.lang.reflect.Constructor;
 import java.io.InputStream;
@@ -110,15 +110,6 @@ private static Hashtable decoder_instances;
   */
 private static Hashtable encoder_instances;
 
-/**
- * Helper method to get system properties in the proper security context.
- */
-private static String getSystemProperty(String propName, String defaultValue)
-{
-    GetPropertyAction getProp = new GetPropertyAction(propName, defaultValue);
-    return (String)AccessController.doPrivileged(getProp);
-}
-
 static 
 {
   // Initialize hashtables
@@ -126,14 +117,14 @@ static
   encoder_instances = new Hashtable();
 
   // Find the system default decoder search path
-  encoding_path = getSystemProperty("file.encoding.pkg", null);
+  encoding_path = SystemProperties.getProperty("file.encoding.pkg", null);
   if (encoding_path == null)
     encoding_path = "gnu.java.io";
   else
     encoding_path = encoding_path + ":gnu.java.io";
 
   // Find the system default encoding name
-  String default_encoding = getSystemProperty("file.encoding", "8859_1");
+  String default_encoding = SystemProperties.getProperty("file.encoding", "8859_1");
 
   // Load the class
   try
@@ -179,7 +170,7 @@ private static Constructor findDecoderConstructor(String encoding)
     throws UnsupportedEncodingException
 {
   // First check for an aliased encoding name
-  encoding = getSystemProperty("gnu.java.io.encoding_scheme_alias." + 
+  encoding = SystemProperties.getProperty("gnu.java.io.encoding_scheme_alias." + 
                                     encoding, encoding);
 
   StringTokenizer st = new StringTokenizer(encoding_path, ":");
@@ -210,7 +201,7 @@ private static Constructor findEncoderConstructor(String encoding)
     throws UnsupportedEncodingException
 {
   // First check for an aliased encoding name
-  encoding = getSystemProperty("gnu.java.io.encoding_scheme_alias." + 
+  encoding = SystemProperties.getProperty("gnu.java.io.encoding_scheme_alias." + 
                                     encoding, encoding);
 
   StringTokenizer st = new StringTokenizer(encoding_path, ":");

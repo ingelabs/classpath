@@ -188,7 +188,7 @@ public final class Class implements Serializable
     if (classloader == null)
       {
         // Check if we may access the bootstrap classloader
-        SecurityManager sm = System.getSecurityManager();
+        SecurityManager sm = SecurityManager.current;
         if (sm != null)
           {
             // Get the calling class and classloader
@@ -268,7 +268,7 @@ public final class Class implements Serializable
 
     ClassLoader loader = VMClass.getClassLoader(this);
     // Check if we may get the classloader
-    SecurityManager sm = System.getSecurityManager();
+    SecurityManager sm = SecurityManager.current;
     if (sm != null)
       {
         // Get the calling class and classloader
@@ -1161,7 +1161,7 @@ public final class Class implements Serializable
    */
   public ProtectionDomain getProtectionDomain()
   {
-    SecurityManager sm = System.getSecurityManager();
+    SecurityManager sm = SecurityManager.current;
     if (sm != null)
       sm.checkPermission(new RuntimePermission("getProtectionDomain"));
 
@@ -1300,7 +1300,7 @@ public final class Class implements Serializable
    */
   private void memberAccessCheck(int which)
   {
-    SecurityManager sm = System.getSecurityManager();
+    SecurityManager sm = SecurityManager.current;
     if (sm != null)
       {
 	sm.checkMemberAccess(this, which);

@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package java.lang;
 
+import gnu.classpath.SystemProperties;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -65,56 +67,6 @@ public class Runtime
   private final String[] libpath;
 
   /**
-   * The current security manager. This is located here instead of in
-   * System, to avoid security problems, as well as bootstrap issues.
-   * Make sure to access it in a thread-safe manner; it is package visible
-   * to avoid overhead in java.lang.
-   */
-  static SecurityManager securityManager;
-
-  /**
-   * The default properties defined by the system. This is likewise located
-   * here instead of in Runtime, to avoid bootstrap issues; it is package
-   * visible to avoid overhead in java.lang. Note that System will add a
-   * few more properties to this collection, but that after that, it is
-   * treated as read-only.
-   *
-   * No matter what class you start initialization with, it defers to the
-   * superclass, therefore Object.&lt;clinit&gt; will be the first Java code
-   * executed. From there, the bootstrap sequence, up to the point that
-   * native libraries are loaded (as of March 24, when I traced this
-   * manually) is as follows:
-   *
-   * Object.&lt;clinit&gt; uses a String literal, possibly triggering initialization
-   *  String.&lt;clinit&gt; calls WeakHashMap.&lt;init&gt;, triggering initialization
-   *   AbstractMap, WeakHashMap, WeakHashMap$1 have no dependencies
-   *  String.&lt;clinit&gt; calls CaseInsensitiveComparator.&lt;init&gt;, triggering
-   *      initialization
-   *   CaseInsensitiveComparator has no dependencies
-   * Object.&lt;clinit&gt; calls System.loadLibrary, triggering initialization
-   *  System.&lt;clinit&gt; calls System.loadLibrary
-   *  System.loadLibrary calls Runtime.getRuntime, triggering initialization
-   *   Runtime.&lt;clinit&gt; calls Properties.&lt;init&gt;, triggering initialization
-   *    Dictionary, Hashtable, and Properties have no dependencies
-   *   Runtime.&lt;clinit&gt; calls VMRuntime.insertSystemProperties, triggering
-   *      initialization of VMRuntime; the VM must make sure that there are
-   *      not any harmful dependencies
-   *   Runtime.&lt;clinit&gt; calls Runtime.&lt;init&gt;
-   *    Runtime.&lt;init&gt; calls StringTokenizer.&lt;init&gt;, triggering initialization
-   *     StringTokenizer has no dependencies
-   *  System.loadLibrary calls Runtime.loadLibrary
-   *   Runtime.loadLibrary should be able to load the library, although it
-   *       will probably set off another string of initializations from
-   *       ClassLoader first
-   */
-  static Properties defaultProperties = new Properties();
-
-  static
-  {
-    VMRuntime.insertSystemProperties(defaultProperties);
-  }
-
-  /**
    * The thread that started the exit sequence. Access to this field must
    * be thread-safe; lock on libpath to avoid deadlock with user code.
    * <code>runFinalization()</code> may want to look at this to see if ALL
@@ -130,8 +82,7 @@ public class Runtime
   private Set shutdownHooks;
 
   /**
-   * The one and only runtime instance. This must appear after the default
-   * properties have been initialized by the VM.
+   * The one and only runtime instance.
    */
   private static final Runtime current = new Runtime();
 
@@ -142,11 +93,9 @@ public class Runtime
   {
     if (current != null)
       throw new InternalError("Attempt to recreate Runtime");
-    // Using defaultProperties directly avoids a security check, as well
-    // as bootstrap issues (since System is not initialized yet).
-    String path = defaultProperties.getProperty("java.library.path", ".");
-    String pathSep = defaultProperties.getProperty("path.separator", ":");
-    String fileSep = defaultProperties.getProperty("file.separator", "/");
+    String path = SystemProperties.getProperty("java.library.path", ".");
+    String pathSep = SystemProperties.getProperty("path.separator", ":");
+    String fileSep = SystemProperties.getProperty("file.separator", "/");
     StringTokenizer t = new StringTokenizer(path, pathSep);
     libpath = new String[t.countTokens()];
     for (int i = 0; i < libpath.length; i++)
@@ -194,7 +143,7 @@ public class Runtime
    */
   public void exit(int status)
   {
-    SecurityManager sm = securityManager; // Be thread-safe!
+    SecurityManager sm = SecurityManager.current; // Be thread-safe!
     if (sm != null)
       sm.checkExit(status);
 
@@ -340,7 +289,7 @@ public class Runtime
    */
   public void addShutdownHook(Thread hook)
   {
-    SecurityManager sm = securityManager; // Be thread-safe!
+    SecurityManager sm = SecurityManager.current; // Be thread-safe!
     if (sm != null)
       sm.checkPermission(new RuntimePermission("shutdownHooks"));
     if (hook.isAlive() || hook.getThreadGroup() == null)
@@ -374,7 +323,7 @@ public class Runtime
    */
   public boolean removeShutdownHook(Thread hook)
   {
-    SecurityManager sm = securityManager; // Be thread-safe!
+    SecurityManager sm = SecurityManager.current; // Be thread-safe!
     if (sm != null)
       sm.checkPermission(new RuntimePermission("shutdownHooks"));
     synchronized (libpath)
@@ -401,7 +350,7 @@ public class Runtime
    */
   public void halt(int status)
   {
-    SecurityManager sm = securityManager; // Be thread-safe!
+    SecurityManager sm = SecurityManager.current; // Be thread-safe!
     if (sm != null)
       sm.checkExit(status);
     VMRuntime.exit(status);
@@ -425,7 +374,7 @@ public class Runtime
    */
   public static void runFinalizersOnExit(boolean finalizeOnExit)
   {
-    SecurityManager sm = securityManager; // Be thread-safe!
+    SecurityManager sm = SecurityManager.current; // Be thread-safe!
     if (sm != null)
       sm.checkExit(0);
     VMRuntime.runFinalizersOnExit(finalizeOnExit);
@@ -555,7 +504,7 @@ public class Runtime
   public Process exec(String[] cmd, String[] env, File dir)
     throws IOException
   {
-    SecurityManager sm = securityManager; // Be thread-safe!
+    SecurityManager sm = SecurityManager.current; // Be thread-safe!
     if (sm != null)
       sm.checkExec(cmd[0]);
     return VMRuntime.exec(cmd, env, dir);
@@ -666,7 +615,7 @@ public class Runtime
    */
   public void load(String filename)
   {
-    SecurityManager sm = securityManager; // Be thread-safe!
+    SecurityManager sm = SecurityManager.current; // Be thread-safe!
     if (sm != null)
       sm.checkLink(filename);
     if (loadLib(filename) == 0)
@@ -682,7 +631,7 @@ public class Runtime
    */
   private static int loadLib(String filename)
   {
-    SecurityManager sm = securityManager; // Be thread-safe!
+    SecurityManager sm = SecurityManager.current; // Be thread-safe!
     if (sm != null)
       sm.checkRead(filename);
     return VMRuntime.nativeLoad(filename);
@@ -710,7 +659,7 @@ public class Runtime
    */
   public void loadLibrary(String libname)
   {
-    SecurityManager sm = securityManager; // Be thread-safe!
+    SecurityManager sm = SecurityManager.current; // Be thread-safe!
     if (sm != null)
       sm.checkLink(libname);
 
@@ -728,7 +677,7 @@ public class Runtime
           }
       }
 
-    filename = System.mapLibraryName(libname);
+    filename = VMRuntime.mapLibraryName(libname);
     for (int i = 0; i < libpath.length; i++)
       if (loadLib(libpath[i] + filename) != 0)
 	return;

@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package java.lang;
 
+import gnu.classpath.SystemProperties;
 import gnu.java.util.DoubleEnumeration;
 import gnu.java.util.EmptyEnumeration;
 
@@ -153,6 +154,45 @@ public abstract class ClassLoader
   static class StaticData
   {
     /**
+     * The System Class Loader (a.k.a. Application Class Loader). The one
+     * returned by ClassLoader.getSystemClassLoader.
+     */
+    static final ClassLoader systemClassLoader =
+                              VMClassLoader.getSystemClassLoader();
+    static
+    {
+      // Find out if we have to install a default security manager. Note that
+      // this is done here because we potentially need the system class loader
+      // to load the security manager and note also that we don't need the
+      // security manager until the system class loader is created.
+      // If the runtime chooses to use a class loader that doesn't have the
+      // system class loader as its parent, it is responsible for setting
+      // up a security manager before doing so.
+      String secman = SystemProperties.getProperty("java.security.manager");
+      if (secman != null && SecurityManager.current == null)
+        {
+          if (secman.equals("") || secman.equals("default"))
+	    {
+	      SecurityManager.current = new SecurityManager();
+	    }
+	  else
+	    {
+	      try
+	        {
+	  	  Class cl = Class.forName(secman, false, StaticData.systemClassLoader);
+		  SecurityManager.current = (SecurityManager)cl.newInstance();
+	        }
+	      catch (Exception x)
+	        {
+		  throw (InternalError)
+		      new InternalError("Unable to create SecurityManager")
+		  	  .initCause(x);
+	        }
+	    }
+        }
+    }
+
+    /**
      * The default protection domain, used when defining a class with a null
      * parameter for the domain.
      */
@@ -212,7 +252,7 @@ public abstract class ClassLoader
    */
   protected ClassLoader() throws SecurityException
   {
-    this(System.systemClassLoader);
+    this(StaticData.systemClassLoader);
   }
 
   /**
@@ -232,7 +272,7 @@ public abstract class ClassLoader
   protected ClassLoader(ClassLoader parent)
   {
     // May we create a new classloader?
-    SecurityManager sm = System.getSecurityManager();
+    SecurityManager sm = SecurityManager.current;
     if (sm != null)
       sm.checkCreateClassLoader();
     this.parent = parent;
@@ -461,7 +501,7 @@ public abstract class ClassLoader
   protected final Class findSystemClass(String name)
     throws ClassNotFoundException
   {
-    return Class.forName(name, false, System.systemClassLoader);
+    return Class.forName(name, false, StaticData.systemClassLoader);
   }
 
   /**
@@ -477,7 +517,7 @@ public abstract class ClassLoader
   public final ClassLoader getParent()
   {
     // Check if we may return the parent classloader.
-    SecurityManager sm = System.getSecurityManager();
+    SecurityManager sm = SecurityManager.current;
     if (sm != null)
       {
         Class c = VMSecurityManager.getClassContext()[1];
@@ -623,7 +663,7 @@ public abstract class ClassLoader
    */
   public static final URL getSystemResource(String name)
   {
-    return System.systemClassLoader.getResource(name);
+    return StaticData.systemClassLoader.getResource(name);
   }
 
   /**
@@ -639,7 +679,7 @@ public abstract class ClassLoader
    */
   public static Enumeration getSystemResources(String name) throws IOException
   {
-    return System.systemClassLoader.getResources(name);
+    return StaticData.systemClassLoader.getResources(name);
   }
 
   /**
@@ -720,16 +760,16 @@ public abstract class ClassLoader
   public static ClassLoader getSystemClassLoader()
   {
     // Check if we may return the system classloader
-    SecurityManager sm = System.getSecurityManager();
+    SecurityManager sm = SecurityManager.current;
     if (sm != null)
       {
 	Class c = VMSecurityManager.getClassContext()[1];
 	ClassLoader cl = c.getClassLoader();
-	if (cl != null && cl != System.systemClassLoader)
+	if (cl != null && cl != StaticData.systemClassLoader)
 	  sm.checkPermission(new RuntimePermission("getClassLoader"));
       }
 
-    return System.systemClassLoader;
+    return StaticData.systemClassLoader;
   }
 
   /**
@@ -949,7 +989,7 @@ public abstract class ClassLoader
 
   private static URL[] getExtClassLoaderUrls()
   {
-    String classpath = getSystemProperty("java.ext.dirs", "");
+    String classpath = SystemProperties.getProperty("java.ext.dirs", "");
     StringTokenizer tok = new StringTokenizer(classpath, File.pathSeparator);
     ArrayList list = new ArrayList();
     while (tok.hasMoreTokens())
@@ -985,7 +1025,7 @@ public abstract class ClassLoader
 
   private static URL[] getSystemClassLoaderUrls()
   {
-    String classpath = getSystemProperty("java.class.path", ".");
+    String classpath = SystemProperties.getProperty("java.class.path", ".");
     StringTokenizer tok = new StringTokenizer(classpath, File.pathSeparator, true);
     ArrayList list = new ArrayList();
     while (tok.hasMoreTokens())
@@ -1023,7 +1063,7 @@ public abstract class ClassLoader
 		boolean resolve)
 		throws ClassNotFoundException
 	    {
-		SecurityManager sm = Runtime.securityManager;
+		SecurityManager sm = SecurityManager.current;
 		if (sm != null)
 		{
 		    int lastDot = name.lastIndexOf('.');
@@ -1033,7 +1073,7 @@ public abstract class ClassLoader
 		return super.loadClass(name, resolve);
 	    }
 	};
-    String loader = getSystemProperty("java.system.class.loader", null);
+    String loader = SystemProperties.getProperty("java.system.class.loader", null);
     if (loader == null)
       {
 	return systemClassLoader;
@@ -1051,16 +1091,5 @@ public abstract class ClassLoader
 	    new Error("Requested system classloader " + loader + " failed.")
 		.initCause(e);
       }
-  }
-
-  static String getSystemProperty(String name, String defaultValue)
-  {
-    // access properties directly to bypass security
-    String val = System.properties.getProperty(name);
-    if (val == null)
-      {
-	val = defaultValue;
-      }
-    return val;
   }
 }

@@ -138,22 +138,6 @@ Java_java_lang_VMSystem_currentTimeMillis
   return result;
 }
 
-JNIEXPORT jboolean JNICALL 
-Java_java_lang_VMSystem_isWordsBigEndian
-(JNIEnv *env __attribute__((__unused__)),
- jclass clazz __attribute__((__unused__)))
-{
-  /* Are we little or big endian?  From Harbison&Steele.  */
-  union
-  {
-    long l;
-    char c[sizeof (long)];
-  } u;
-
-  u.l = 1;
-  return (u.c[sizeof (long) - 1] == 1);
-}
-
 JNIEXPORT jstring JNICALL
 Java_java_lang_VMSystem_getenv (JNIEnv *env,
 				jclass klass __attribute__((__unused__)),

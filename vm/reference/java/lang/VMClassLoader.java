@@ -51,6 +51,7 @@ import java.util.Vector;
 import java.lang.reflect.Constructor;
 import gnu.java.lang.SystemClassLoader;
 
+import gnu.classpath.SystemProperties;
 import gnu.java.util.EmptyEnumeration;
 
 /**
@@ -161,7 +162,7 @@ final class VMClassLoader
   static Enumeration getResources(String name)
   {
     StringTokenizer st = new StringTokenizer(
-      ClassLoader.getSystemProperty("java.boot.class.path", "."),
+      SystemProperties.getProperty("java.boot.class.path", "."),
       File.pathSeparator);
     Vector v = new Vector();
     while (st.hasMoreTokens())
