@@ -286,6 +286,28 @@ gnu.testlet.SimpleTestHarness</code><br>
 
 </faq>
 
+<faq question="How can I synchronize my sources with GNU Classpath?">
+
+When developing a JVM that uses GNU Classpath, a copy of GNU Classpath local to the JVM is often used. To keep the Classpath sources synchronized with the main development, a few approaches are possible (we assume here that you are keeping the local copy of Classpath in your JVM revision control software):
+<ul>
+<li>Use CVS import and CVS update as explained in <createlink url="http://www.cvshome.org/docs/manual/cvs-1.11.14/cvs_13.html#SEC104" name="Section 13: Tracking Thirdparty sources"> of the CVS manual. This works well for minor changes, but has the disadvantage of a limited control on the update / merge of the sources. In fact, most of the developers prefer merging the changes by hand.
+
+<li>libgcj, which is almost always trying to be
+as synchronized as possible with GNU Classpath CVS, has a script
+that runs daily which produces a (colored) differences overview
+(including patch/diffs). They also put in special markers into the
+source for gcj specific changes that the script recognizes.
+<ul>
+<li>Script can be found at:
+<createlink url="http://savannah.gnu.org/cgi-bin/viewcvs/gcc/wwwdocs/bin/gen-classpath-compare">
+
+<li>Daily updated result:
+<createlink url="http://gcc.gnu.org/java/libgcj-classpath-compare.html">
+</ul>
+</ul>
+
+</faq>
+
 </faq-section>
 
 <faq-section name="Classpath Implementation">
