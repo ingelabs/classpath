@@ -1,3 +1,7 @@
+2004-04-01  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/JViewport.java (JViewport): Make constructor public.
+
 2004-04-01  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/text/DecimalFormat.java (scanFix): Removed suffix check
