@@ -90,8 +90,6 @@ public final class DatagramPacket
   */
   public DatagramPacket(byte[] buf, int offset, int length)
   {
-    // FIXME: We can't currently rely on NullPointerException being
-    // thrown when we invoke a method on a null object.
     if (buf == null)
       throw new NullPointerException("Null buffer");
     if (offset < 0)
@@ -136,8 +134,6 @@ public final class DatagramPacket
   public DatagramPacket(byte[] buf, int offset, int length,
 	InetAddress address, int port)
   {
-    // FIXME: We can't currently rely on NullPointerException being
-    // thrown when we invoke a method on a null object.
     if (buf == null)
       throw new NullPointerException("Null buffer");
     if (offset < 0)
@@ -288,8 +284,6 @@ public final class DatagramPacket
   {
     // This form of setData must be used if offset is to be changed.
 
-    // FIXME: We can't currently rely on NullPointerException being
-    // thrown when we invoke a method on a null object.
     if (buf == null)
       throw new NullPointerException("Null buffer");
     if (offset < 0)

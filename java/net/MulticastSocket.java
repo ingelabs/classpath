@@ -177,10 +177,6 @@ public class MulticastSocket extends DatagramSocket
   */
   public void joinGroup(InetAddress mcastaddr) throws IOException
   {
-    // FIXME: We can't currently rely on NullPointerException being
-    // thrown when we invoke a method on a null object.
-    if (mcastaddr == null)
-      throw new NullPointerException("Null address");
     if (! mcastaddr.isMulticastAddress())
       throw new IOException("Not a Multicast address");
 
@@ -200,10 +196,6 @@ public class MulticastSocket extends DatagramSocket
   */
   public void leaveGroup(InetAddress mcastaddr) throws IOException
   {
-    // FIXME: We can't currently rely on NullPointerException being
-    // thrown when we invoke a method on a null object.
-    if (mcastaddr == null)
-      throw new NullPointerException("Null address");
     if (! mcastaddr.isMulticastAddress())
       throw new IOException("Not a Multicast address");
 

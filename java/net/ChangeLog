@@ -1,3 +1,12 @@
+2000-05-04  Tom Tromey  <tromey@cygnus.com>
+
+	* java/net/MulticastSocket.java (joinGroup): Don't explicitly
+	check for null pointer.
+	(leaveGroup): Likewise.
+	* java/net/DatagramPacket.java (DatagramPacket): Removed erroneous
+	comment.
+	(setData): Likewise.
+
 Sat May 16 15:18:55 1998  arenn's Development Account  <devel@larissa.foo.com>
 
 	* URLConnection.java: changed property names to gnu.*
