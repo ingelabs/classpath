@@ -1,5 +1,15 @@
 2004-12-31  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JComponent.java
+	(getToolTipText): New method.
+	(getTitledBorderText): Likewise.
+	(getAccessibleKeyBinding): Likewise.
+	(getVerifyInputWhenFocusTarget): Likewise.
+	(setVerifyInputWhenFocusTarget): Likewise.
+	(verifyInputWhenFocusTarget): New instance field.
+
+2004-12-31  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/DefaultListSelectionModel.java
 	(fireValueChanged): New method.
 
