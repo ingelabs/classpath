@@ -1,3 +1,19 @@
+2005-02-05  C. Brian Jones  <cbj@gnu.org>
+
+	* gnu/java/rmi/rmic/: added to cp-tools and removed from classpath
+	* gnu/java/rmi/rmic/Compile_gcj.java: ditto
+	* gnu/java/rmi/rmic/Compile_jikes.java: ditto
+	* gnu/java/rmi/rmic/Compile_kjc.java: ditto
+	* gnu/java/rmi/rmic/Compiler.java: ditto
+	* gnu/java/rmi/rmic/CompilerProcess.java: ditto
+	* gnu/java/rmi/rmic/RMICException.java: ditto
+	* gnu/java/rmi/rmic/RMIC.java: ditto
+	* gnu/java/rmi/rmic/TabbedWriter.java: ditto
+	* gnu/java/rmi/registry/: added to cp-tools and removed from classpath
+	* gnu/java/rmi/registry/RegistryImpl.java: ditto
+	* gnu/java/rmi/registry/RegistryImpl_Skel.java: ditto
+	* gnu/java/rmi/registry/RegistryImpl_Stub.java: ditto
+
 2005-02-05  Mark Wielaard  <mark@klomp.org>
 
 	* doc/api/Makefile.am (classpathbox): Use class logo and target _top.
