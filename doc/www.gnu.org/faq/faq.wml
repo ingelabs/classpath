@@ -308,6 +308,10 @@ source for gcj specific changes that the script recognizes.
 
 </faq>
 
+<faq question="How do I avoid compiling some files or packages?">
+The file <code>lib/standard.omit</code> controls which files are omitted from the compilation. Add a regex with the files to be omitted and rebuild classpath.
+</faq>
+
 </faq-section>
 
 <faq-section name="Classpath Implementation">

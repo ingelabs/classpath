@@ -1,5 +1,9 @@
 2004-07-20  Patrik Reali  <reali@acm.org>
 
+	* doc/www.gnu.org/faq/faq.wml: entry on lib/standard.omit
+
+2004-07-20  Patrik Reali  <reali@acm.org>
+
 	* configure.ac, 
 	gnu/java/nio/PipeImpl.java, 
 	include/Makefile.am, 
