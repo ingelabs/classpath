@@ -1,5 +1,9 @@
 2004-12-24  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/InternalFrameFocusTraversalPolicy.java: New file.
+
+2004-12-24  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JFormattedTextField.java: Implemented.
 	* javax/swing/JWindow.java
 	(JWindow): New constructors.
