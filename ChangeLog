@@ -1,3 +1,8 @@
+2004-12-06  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/awt/color/ICC_Profile.java
+	(finalize): Removed pointless field assignments.
+
 2004-12-05  Chris Burdess  <dog@gnu.org>
 
 	* gnu/java/net/protocol/http/HTTPConnection.java,
