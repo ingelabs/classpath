@@ -1,5 +1,10 @@
 2002-11-10  Tom Tromey  <tromey@redhat.com>
 
+	* java/awt/GridLayout.java (setColumns): Check newCols, not cols.
+	(setRows): Check newRows, not rows.
+
+2002-11-10  Tom Tromey  <tromey@redhat.com>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
 	(Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setBounds): Reverted
 	earlier patch.
