@@ -39,9 +39,8 @@ exception statement from your version. */
 package java.awt;
 
 import java.awt.event.MouseEvent;
-import java.awt.peer.ScrollPanePeer;
-import java.awt.peer.ContainerPeer;
 import java.awt.peer.ComponentPeer;
+import java.awt.peer.ScrollPanePeer;
 import javax.accessibility.Accessible;
 
 /**

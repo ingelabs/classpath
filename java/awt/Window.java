@@ -43,7 +43,6 @@ import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
 import java.awt.event.WindowStateListener;
 import java.awt.peer.WindowPeer;
-import java.awt.peer.ComponentPeer;
 import java.util.EventListener;
 import java.util.Locale;
 import java.util.ResourceBundle;
