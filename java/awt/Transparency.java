@@ -47,16 +47,16 @@ package java.awt;
 public interface Transparency
 {
   /** Image data which is completely opaque, for an alpha value of 1.0. */
-  static final int OPAQUE = 1;
+  int OPAQUE = 1;
 
   /**
    * Image data which is either completely opaque or transparent, for an
    * exact integer alpha value.
    */
-  static final int BITMASK = 2;
+  int BITMASK = 2;
 
   /** Image data which is translucent, for a non-integer alpha value. */
-  static final int TRANSLUCENT = 3;
+  int TRANSLUCENT = 3;
 
   /**
    * Return the transparency type.

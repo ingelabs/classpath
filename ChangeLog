@@ -1,3 +1,11 @@
+2003-01-01  Tom Tromey  <tromey@redhat.com>
+
+	* java/awt/Transparency.java: Don't mark fields as static or
+	final.
+	* java/awt/Scrollbar.java: Typo fix.
+	* java/awt/BasicStroke.java: Typo fixes.
+	* java/awt/Adjustable.java: Don't mark fields as static or final.
+
 2002-12-31  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/logging/LogManager.java (readConfiguration): Remove

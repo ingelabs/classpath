@@ -1,5 +1,5 @@
 /* BasicStroke.java -- 
-   Copyright (C) 2002 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -93,7 +93,7 @@ public class BasicStroke implements Stroke
   }
 
   /**
-   * Creates a basicc stroke.
+   * Creates a basic stroke.
    *
    * @param width The width of the BasicStroke. May not be negative .
    * @param cap May be either CAP_BUTT, CAP_ROUND or CAP_SQUARE.
@@ -110,7 +110,7 @@ public class BasicStroke implements Stroke
   }
 
   /**
-   * Creates a basicc stroke.
+   * Creates a basic stroke.
    *
    * @param width The width of the BasicStroke. May not be nehative.
    * @param cap May be either CAP_BUTT, CAP_ROUND or CAP_SQUARE.
@@ -126,7 +126,7 @@ public class BasicStroke implements Stroke
   }
 
   /**
-   * Creates a basicc stroke.
+   * Creates a basic stroke.
    *
    * @param width The width of the BasicStroke.
    * 
@@ -138,7 +138,7 @@ public class BasicStroke implements Stroke
   }
 
   /**
-   * Creates a basicc stroke.
+   * Creates a basic stroke.
    */
   public BasicStroke()
   {

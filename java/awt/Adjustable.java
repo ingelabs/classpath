@@ -51,13 +51,13 @@ import java.awt.event.AdjustmentListener;
 public interface Adjustable
 {
   /** Constant for an adjustable object with horizontal orientation. */
-  static final int HORIZONTAL = 0;
+  int HORIZONTAL = 0;
 
   /** Constant for an adjustable object with vertical orientation. */
-  static final int VERTICAL = 1;
+  int VERTICAL = 1;
 
   /** Constant for an adjustable object with no orientation. */
-  static final int NO_ORIENTATION = 2;
+  int NO_ORIENTATION = 2;
 
   /**
    * Returns a constant representing the orientation of the object.

@@ -1,5 +1,5 @@
 /* Scrollbar.java -- AWT Scrollbar widget
-   Copyright (C) 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -125,7 +125,7 @@ private AdjustmentListener adjustment_listeners;
 
 /**
   * Initializes a new instance of <code>Scrollbar</code> with a
-  * veritical orientation and default values for all other parameters.
+  * vertical orientation and default values for all other parameters.
   *
   * @exception HeadlessException If GraphicsEnvironment.isHeadless() is true,
   */
