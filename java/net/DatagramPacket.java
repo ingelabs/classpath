@@ -51,24 +51,29 @@ public final class DatagramPacket
 /**
   * The data buffer to send
   */
-protected byte[] buf;
+private byte[] buf;
 
 /**
   * The length of the data buffer to send
   */
-protected int len;
+private int len;
+
+/**
+  * This is the offset into the buffer to start sending from or receiving to.
+  */
+private int offset;
 
 /**
   * The address to which the packet should be sent or from which it
   * was received
   */
-protected InetAddress addr;
+private InetAddress addr;
 
 /**
   * The port to which the packet should be sent or from which it was
   * was received.
   */
-protected int port;
+private int port;
 
 /*************************************************************************/
 
@@ -85,14 +90,23 @@ protected int port;
 public
 DatagramPacket(byte[] buf, int len)
 {
-  // Hmm, what should we do if len > buf.length?  I say silently reduce len
-  if (buf == null)
-    len = 0;
-  else if (len > buf.length)
-    len = buf.length;
+  this(buf, 0, len, null, 0);
+}
 
-  this.buf = buf;
-  this.len = len;
+/*************************************************************************/
+
+/**
+  * This method initializes a new instance of <code>DatagramPacket</code>
+  * which has the specified buffer, offset, and length.
+  *
+  * @param buf The buffer for holding the incoming datagram.
+  * @param offset The offset into the buffer to start writing.
+  * @param len The maximum number of bytes to read.
+  */
+public
+DatagramPacket(byte[] buf, int offset, int len)
+{
+  this(buf, offset, len, null, 0);
 }
 
 /*************************************************************************/
@@ -108,8 +122,26 @@ DatagramPacket(byte[] buf, int len)
 public
 DatagramPacket(byte[] buf, int len, InetAddress addr, int port)
 {
-  this(buf, len);
+  this(buf, 0, len, addr, port);
+}
 
+/*************************************************************************/
+
+/**
+  * Creates a DatagramPacket for transmitting packets across the network.
+  *
+  * @param buf A buffer containing the data to send
+  * @param offset The offset into the buffer to start writing from.
+  * @param len The length of the buffer (must be <= buf.length)
+  * @param addr The address to send to
+  * @param port The port to send to
+  */
+public
+DatagramPacket(byte[] buf, int offset, int len, InetAddress addr, int port)
+{
+  this.buf = buf;
+  this.offset = offset;
+  this.len = len;
   this.addr = addr;
   this.port = port;
 }
@@ -202,14 +234,47 @@ public synchronized void
 setData(byte[] buf)
 {
   this.buf = buf;
+  offset = 0;
 
   if (buf == null)
     {
-      this.buf = null;
       len = 0;
     }
-  else if (len > buf.length)
-    len = buf.length;
+  else 
+    {
+      len = buf.length;
+    }
+}
+
+/*************************************************************************/
+
+/**
+  * This method sets the data buffer for the packet.
+  *
+  * @param buf The byte array containing the data for this packet.
+  * @param offset The offset into the buffer to start reading data from.
+  * @param len The number of bytes of data in the buffer.
+  */
+public synchronized void
+setData(byte[] buf, int offset, int len)
+{
+  this.buf = buf;
+  this.offset = offset;
+  this.len = len;
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns the current offset value into the data buffer
+  * where data will be sent from.
+  *
+  * @return The buffer offset.
+  */
+public int
+getOffset()
+{
+  return(offset);
 }
 
 /*************************************************************************/
