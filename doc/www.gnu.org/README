@@ -2,8 +2,7 @@ All HTML files are generated from WML source.
 
 If you wish to generate/view the HTML files locally, you'll need to
 have wml and texi2html installed.  To make the HTML files, just
-type "make".  At this time you may also need sed 3.02.80+ as well which
-is available at ftp://alpha.gnu.org/pub/gnu/sed/
+type "make".
 
 Questions, comments, or gripes about this setup can be sent to
 /dev/null.
