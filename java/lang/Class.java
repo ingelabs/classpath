@@ -202,7 +202,7 @@ public final class Class implements Serializable
           }
 	if (name.startsWith("["))
 	    return VMClass.loadArrayClass(name, null);
-	Class c = VMClassLoader.loadClass(name, initialize);
+	Class c = VMClassLoader.loadClass(name, true);
 	if (c != null)
 	  {
 	    if (initialize)
@@ -213,7 +213,8 @@ public final class Class implements Serializable
       }
     if (name.startsWith("["))
 	return VMClass.loadArrayClass(name, classloader);
-    Class c = classloader.loadClass(name, initialize);
+    Class c = classloader.loadClass(name);
+    classloader.resolveClass(c);
     if (initialize)
 	c.vmClass.initialize();
     return c;

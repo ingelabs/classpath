@@ -1,3 +1,10 @@
+2003-08-04  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/Class.java (forName(String,boolean,ClassLoader)):
+	Call ClassLoader.loadClass(String) instead of
+	ClassLoader.loadClass(String,boolean) as per VM spec.
+
+
 2003-08-01  David P Grove  <groved@us.ibm.com>
 
 	* java/util/zip/InflaterInputStream.java (close): Only close
