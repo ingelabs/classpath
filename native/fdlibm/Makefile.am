@@ -51,6 +51,3 @@ libfdlibm_la_LDFLAGS = @CLASSPATH_MODULE@
 # and our normal -ansi -pedantic -Wall -Werror breaks this lib.
 AM_CFLAGS = 
 
-INCLUDES =  @EXTRA_INCLUDES@ \
-	     -I$(top_builddir)/include 
-

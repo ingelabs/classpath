@@ -370,37 +370,6 @@ AC_DEFUN([CLASSPATH_WITH_CLASSLIB],
 ])
 
 dnl -----------------------------------------------------------
-dnl CLASSPATH_WITH_INCLUDEDIR - checks for user specified extra include directories
-dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_WITH_INCLUDEDIR],
-[
-  AC_ARG_WITH(includedir,
-  [  --with-includedir=DIR   specify path to an extra include dir ],
-  [
-    AC_MSG_CHECKING(for includedir)
-    if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
-      if test -r ${withval}; then
-        if test "x${EXTRA_INCLUDES}" = x; then
-          EXTRA_INCLUDES="-I${withval}"
-        else
-          EXTRA_INCLUDES="${EXTRA_INCLUDES} -I${withval}"
-        fi
-        AC_SUBST(EXTRA_INCLUDES)
-        AC_MSG_RESULT("added ${withval}")
-      else
-        AC_MSG_RESULT("${withval} does not exist")
-      fi
-    fi
-  ],
-  [
-    if test -z "$EXTRA_INCLUDES"; then
-      EXTRA_INCLUDES=""
-      AC_SUBST(EXTRA_INCLUDES)
-    fi
-  ])
-])
-
-dnl -----------------------------------------------------------
 dnl CLASSPATH_WITH_GLIBJ - specify what to install
 dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_GLIBJ],

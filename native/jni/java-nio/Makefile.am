@@ -10,8 +10,3 @@ libjavanio_la_SOURCES = gnu_java_nio_NIOServerSocket.c \
 
 libjavanio_la_LDFLAGS = @CLASSPATH_MODULE@
 libjavanio_la_LIBADD = $(top_builddir)/native/jni/classpath/jcl.lo
-
-INCLUDES = -I. @EXTRA_INCLUDES@ \
-	   -I$(top_srcdir)/native/jni/classpath \
-           -I$(top_srcdir)/include \
-	   -I$(top_builddir)/include 

@@ -143,12 +143,12 @@ fi
 
 CLASSPATH_WITH_JAVAH
 
-CLASSPATH_WITH_INCLUDEDIR
-
 dnl ----------------------------------------------------------- 
 dnl Add the include files for the native abstraction layer.
 dnl -----------------------------------------------------------
-EXTRA_INCLUDES="${EXTRA_INCLUDES} -I\$(top_srcdir)/native/target/Linux -I\$(top_srcdir)/native/target/generic"
+AM_CPPFLAGS="-I\$(top_srcdir)/include -I\$(top_srcdir)/native/jni/classpath"
+AM_CPPFLAGS="$AM_CPPFLAGS -I\$(top_srcdir)/native/target/Linux -I\$(top_srcdir)/native/target/generic"
+AC_SUBST(AM_CPPFLAGS)
 
 dnl -----------------------------------------------------------
 if test "x${COMPILE_JNI}" = xyes; then

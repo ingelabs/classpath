@@ -1,3 +1,20 @@
+2004-05-21  Michael Koch  <konqueror@gmx.de>
+
+	* acinclude.m4 (CLASSPATH_WITH_INCLUDEDIR): Removed.
+	* configure.ac (EXTRA_INCLUDES): Removed.
+	(AM_CPPFLAGS): New variable to store needed includes.
+	* native/fdlibm/Makefile.am (INCLUDES): Removed.
+	* native/jni/classpath/Makefile.am (INCLUDES): Removed.
+	* native/jni/gtk-peer/Makefile.am: Use libgtkpeer_la_CPPFLAGS
+	instead of INCLUDES.
+	* native/jni/java-awt/Makefile.am (INCLUDES): Removed.
+	* native/jni/java-io/Makefile.am (INCLUDES): Removed.
+	* native/jni/java-lang/Makefile.am: Use libjavalang_la_CFLAGS and
+	libjavalangreflect_la_CFLAGS instead of INCLUDES.
+	* native/jni/java-net/Makefile.am (INCLUDES): Removed.
+	* native/jni/java-nio/Makefile.am (INCLUDES): Removed.
+	* native/jni/java-util/Makefile.am (INCLUDES): Removed.
+
 2004-05-21  Mark Wielaard  <mark@klomp.org>
 
 	* native/fdlibm/e_pow.c: CYGNUS LOCAL should be GCJ LOCAL.

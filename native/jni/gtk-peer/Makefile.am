@@ -37,12 +37,6 @@ libgtkpeer_la_SOURCES = \
 			gthread-jni.h \
 			gtkpeer.h 
 
+libgtkpeer_la_CPPFLAGS = $(AM_CPPFLAGS) @GTK_CFLAGS@
 libgtkpeer_la_LIBADD = $(top_builddir)/native/jni/classpath/native_state.lo
 libgtkpeer_la_LDFLAGS = @CLASSPATH_MODULE@ @GTK_LIBS@
-
-INCLUDES = -I. @EXTRA_INCLUDES@ \
-	   @GTK_CFLAGS@ \
-	   -I$(top_srcdir)/native/jni/classpath \
-           -I$(top_srcdir)/include \
-	   -I$(top_builddir)/include
-
