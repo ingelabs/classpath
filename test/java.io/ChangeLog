@@ -1,3 +1,70 @@
+Sat Aug  1 22:02:47 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* UTF8EncodingTest.java: Wrote this class, got a clean compile,
+	and tested the UTF8 encoding scheme.
+
+Fri Jul 31 21:03:16 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* PrintWriterTest.java: Wrote this class, got a clean compile,
+	and tested PrintWriter.
+
+	* FileWriterTest.java: Wrote this class, got a clean compile,
+	and tested FileWriter and OutputStreamWriter.
+
+	* BufferedCharWriterTest.java: Wrote this class, got a clean
+	compile, and tested BufferedWriter and CharArrayWriter.
+
+	* PipedReaderWriterTest.java: Wrote this class, got a clean
+	compile, and tested PipedReader and PipedWriter.
+
+	* FileReaderTest.java: Wrote this class, got a clean compile, and
+	tested FileReader and InputStreamReader
+
+Wed Jul 29 20:00:20 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* LineNumberReaderTest.java: Wrote this class, got a clean compile,
+	and tested LineNumberReader.
+
+	* PushbackReaderTest.java: Wrote this class, got a clean compile,
+	and tested PushbackReader.
+
+	* BufferedReaderTest.java: Wrote this class, got a clean compile,
+	and tested BufferedReader and StringReader.
+
+	* CharArrayReaderTest.java: Wrote this class, got a clean compile,
+	and tested CharArrayReader.
+
+Sat Jul 18 16:45:07 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* PrintStreamTest.java: Wrote this class, got a clean compile,
+	and tested PrintStream
+
+Fri Jul 17 23:22:23 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* RandomAccessFileTest.java: Wrote this class, got a clean compile,
+	and tested RandomAccessFile
+
+Thu Jul 16 21:00:47 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* FileOutputStreamTest.java: Wrote this class, got a clean compile,
+	and tested FileOutputStream.
+
+	* FileInputStreamTest.java: Wrote this class and got a clean compile
+	and tested FileInputStream.
+
+	* FileTest.java: Wrote this class, got a clean compile, and
+	tested File.
+
+Fri Jun 26 20:50:29 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* BufferedByteOutputStreamTest.java: Wrote these classes and
+	tested BufferedOutputStream and ByteOutputStream.s
+
+Tue Jun 23 19:02:27 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* DataInputOutputTest.java: Modified to read in both the JCL 
+	produced output and the JDK reference output.
+
 Tue Jun 16 20:09:50 1998  arenn's Development Account  <devel@larissa.foo.com>
 
 	* DataInputOutputTest.java: Finished this class and initial debug
