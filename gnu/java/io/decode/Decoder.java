@@ -195,9 +195,9 @@ convertToChars(byte[] buf) throws CharConversionException
 public char[]
 convertToChars(byte[] buf, int offset, int len) throws CharConversionException
 {
-  char[] cbuf = new char[charsInByteArray(buf)];
+  char[] cbuf = new char[charsInByteArray(buf, offset, len)];
 
-  return(convertToChars(buf, offset, len, cbuf, offset));
+  return(convertToChars(buf, offset, len, cbuf, 0));
 }
 
 /*************************************************************************/
