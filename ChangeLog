@@ -1,3 +1,26 @@
+2000-12-03 01:00  Brian Jones <cbj@gnu.org>
+
+        * gnu/java/beans/ChangeLog: removed
+        * gnu/java/beans/editors/ChangeLog: removed
+        * gnu/java/beans/info/ChangeLog: removed
+        * gnu/java/io/ChangeLog: removed
+        * gnu/java/io/decode/ChangeLog: removed
+        * gnu/java/io/encode/ChangeLog: removed
+        * gnu/java/lang/ChangeLog: removed
+        * gnu/java/lang/reflect/ChangeLog: removed
+        * gnu/java/net/content/text/ChangeLog: removed
+        * java/beans/ChangeLog: removed
+        * java/io/ChangeLog: removed
+        * java/lang/reflect/ChangeLog: removed
+        * java/net/ChangeLog: removed
+        * java/util/ChangeLog: removed
+        * native/java.io/ChangeLog: removed
+        * native/java.lang.reflect/ChangeLog: removed
+        * native/java.net/ChangeLog: removed
+        * native/lib/ChangeLog: removed
+        * native/vmi/ChangeLog: removed
+        * test/java.io/ChangeLog: removed
+	
 2000-12-02 04:16  Tom Tromey <tromey@cygnus.com>
 
 	* java/util/Vector.java (insertElementAt): Unconditionally 
