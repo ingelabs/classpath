@@ -1,3 +1,8 @@
+2003-10-24  Ito Kazumitsu <kaz@maczuka.gcd.org>
+
+	* java/text/DecimalFormat.java
+	(scanFormat) corrected so that '%' may appear in a pattern.
+
 2003-10-24  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkDialogPeer.java (handleEvent):
