@@ -1,5 +1,20 @@
 2003-05-19  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/ByteBuffer.java
+	(allocateDirect): Implemented.
+	* java/nio/CharViewBufferImpl.java,
+	java/nio/DirectByteBufferImpl.java,
+	java/nio/DoubleViewBufferImpl.java,
+	java/nio/FloatViewBufferImpl.java,
+	java/nio/IntViewBufferImpl.java,
+	java/nio/LongViewBufferImpl.java,
+	java/nio/ShortViewBufferImpl.java:
+	New files.
+	* java/nio/Makefile.am:
+	(EXTRA_DIST): Added new files.
+
+2003-05-19  Michael Koch  <konqueror@gmx.de>
+
 	* java/util/Calendar.java
 	(get): Not final anymore since JDK 1.4.
 	(set): Likewise.
