@@ -1,3 +1,18 @@
+2003-01-03  Mark Wielaard  <mark@klomp.org>
+
+	Merge with libgcj.
+	* java/io/ObjectStreamClass.java (isProxyClass): Now a field.
+	(setClass): Throws InvalidClassException.
+	(setSuperclass): Use getClassUID if not a proxy Class.
+	(setFields): Make sure to call setAccessible(true).
+	(setUID): Renamed to...
+	(getClassUID): Return the uid. Call setAccessible(true) for field.
+	Fall back to Gnu provider SHA algorithm if necessary.
+	(getDefinedSUID): Removed method.
+	(hasClassInitializer): Don't throw NoSuchMethodError.
+	(static): Removed.
+	* java/io/ObjectOutputStream.java (writeObject): Use isProxyClass.
+
 2003-01-03  Dhek Bhun Kho  <bhun@chello.nl>
 
 	* gnu/java/rmi/server/UnicastServerRef.java (unexportObject):

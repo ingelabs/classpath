@@ -206,7 +206,7 @@ public class ObjectOutputStream extends OutputStream
 		ObjectStreamClass osc = ObjectStreamClass.lookupForClassObject (cl);
 		assignNewHandle (obj);
 		realOutput.writeByte (TC_CLASS);
-		if (!osc.isProxyClass ())
+		if (!osc.isProxyClass)
 		  {
 		    writeObject (osc);
 		  }

@@ -1,6 +1,6 @@
 /* ObjectStreamClass.java -- Class used to write class information
    about serialized objects.
-   Copyright (C) 1998, 1999, 2000, 2001  Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2003  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -48,13 +48,15 @@ import java.lang.reflect.Proxy;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.Security;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Vector;
 import gnu.java.io.NullOutputStream;
 import gnu.java.lang.reflect.TypeSignature;
-import gnu.classpath.Configuration;
+import gnu.java.security.provider.Gnu;
+
 
 public class ObjectStreamClass implements Serializable
 {
@@ -260,12 +262,6 @@ public class ObjectStreamClass implements Serializable
   }
 
 
-  final boolean isProxyClass()
-  {
-    return _isProxyClass;
-  }
-
-
   ObjectStreamClass (String name, long uid, byte flags,
 		     ObjectStreamField[] fields)
   {
@@ -275,18 +271,33 @@ public class ObjectStreamClass implements Serializable
     this.fields = fields;
   }
 
-
-  void setClass (Class clazz)
+  void setClass (Class cl) throws InvalidClassException
   {
-    _isProxyClass = Proxy.isProxyClass(clazz);
-    this.clazz = clazz;
+    this.clazz = cl;
+
+    long class_uid = getClassUID (cl);
+    if (uid == 0)
+      uid = class_uid;
+    else
+      {
+	// Check that the actual UID of the resolved class matches the UID from 
+	// the stream.    
+	if (uid != class_uid)
+	  {
+	    String msg = cl + 
+	      ": Local class not compatible: stream serialVersionUID="
+	      + uid + ", local serialVersionUID=" + class_uid;
+	    throw new InvalidClassException (msg);
+	  }
+      }
+
+    isProxyClass = clazz != null && Proxy.isProxyClass (clazz);
     ObjectStreamClass osc = (ObjectStreamClass)classLookupTable.get (clazz);
     if (osc == null)
       classLookupTable.put (clazz, this);
     superClass = lookupForClassObject (clazz.getSuperclass ());
     calculateOffsets ();
   }
-
 
   void setSuperclass (ObjectStreamClass osc)
   {
@@ -338,15 +349,15 @@ public class ObjectStreamClass implements Serializable
   {
     uid = 0;
     flags = 0;
-    _isProxyClass = Proxy.isProxyClass (cl);
+    isProxyClass = Proxy.isProxyClass (cl);
 
     clazz = cl;
     name = cl.getName ();
     setFlags (cl);
     setFields (cl);
     // to those class nonserializable, its uid field is 0
-    if ( (Serializable.class).isAssignableFrom (cl) )
-      setUID (cl);
+    if ( (Serializable.class).isAssignableFrom (cl) && !isProxyClass)
+      uid = getClassUID (cl);
     superClass = lookup (cl.getSuperclass ());
   }
 
@@ -390,6 +401,7 @@ public class ObjectStreamClass implements Serializable
     {
       Field serialPersistentFields
 	= cl.getDeclaredField ("serialPersistentFields");
+      serialPersistentFields.setAccessible(true);
       int modifiers = serialPersistentFields.getModifiers ();
 
       if (Modifier.isStatic (modifiers)
@@ -426,14 +438,7 @@ public class ObjectStreamClass implements Serializable
       if (all_fields[from] != null)
       {
 	Field f = all_fields[from];
-	String name = f.getName();
-	// here is a hack to interoperate with JDK
-	/* if Throwable is not align with serialized form of Java API spec,
-	   you should uncomment the following two line.
-	   if (name.equals("message") && getName().equals("java.lang.Throwable"))
-           name = "detailMessage";
-	*/
-	fields[to] = new ObjectStreamField (name, f.getType ());
+	fields[to] = new ObjectStreamField (f.getName (), f.getType ());
 	to++;
       }
 
@@ -441,29 +446,45 @@ public class ObjectStreamClass implements Serializable
     calculateOffsets ();
   }
 
-  // Sets uid to be serial version UID defined by class, or if that
+  // Returns the serial version UID defined by class, or if that
   // isn't present, calculates value of serial version UID.
-  private void setUID (Class cl)
+  private long getClassUID (Class cl)
   {
     try
     {
+      // Use getDeclaredField rather than getField, since serialVersionUID
+      // may not be public AND we only want the serialVersionUID of this
+      // class, not a superclass or interface.
       Field suid = cl.getDeclaredField ("serialVersionUID");
+      suid.setAccessible(true);
       int modifiers = suid.getModifiers ();
 
       if (Modifier.isStatic (modifiers)
-	  && Modifier.isFinal (modifiers))
-      {
-	uid = getDefinedSUID (cl);
-	return;
-      }
+	  && Modifier.isFinal (modifiers)
+	  && suid.getType() == Long.TYPE)
+	return suid.getLong (null);
     }
     catch (NoSuchFieldException ignore)
+    {}
+    catch (IllegalAccessException ignore)
     {}
 
     // cl didn't define serialVersionUID, so we have to compute it
     try
     {
-      MessageDigest md = MessageDigest.getInstance ("SHA");
+      MessageDigest md;
+      try 
+	{
+	  md = MessageDigest.getInstance ("SHA");
+	}
+      catch (NoSuchAlgorithmException e)
+	{
+	  // If a provider already provides SHA, use it; otherwise, use this.
+	  Gnu gnuProvider = new Gnu();
+	  Security.addProvider(gnuProvider);
+	  md = MessageDigest.getInstance ("SHA");
+	}
+
       DigestOutputStream digest_out =
 	new DigestOutputStream (nullOutputStream, md);
       DataOutputStream data_out = new DataOutputStream (digest_out);
@@ -504,17 +525,7 @@ public class ObjectStreamClass implements Serializable
       }
 
       // write class initializer method if present
-      boolean has_init;
-      try
-      {
-	has_init = hasClassInitializer (cl);
-      }
-      catch (NoSuchMethodError e)
-      {
-	has_init = false;
-      }
-
-      if (has_init)
+      if (hasClassInitializer (cl))
       {
 	data_out.writeUTF ("<clinit>");
 	data_out.writeInt (Modifier.STATIC);
@@ -566,42 +577,17 @@ public class ObjectStreamClass implements Serializable
       for (int i=0; i < len; i++)
 	result += (long)(sha[i] & 0xFF) << (8 * i);
 
-      uid = result;
+      return result;
     }
     catch (NoSuchAlgorithmException e)
     {
       throw new RuntimeException ("The SHA algorithm was not found to use in computing the Serial Version UID for class "
-				  + cl.getName ());
+				  + cl.getName (), e);
     }
     catch (IOException ioe)
     {
-      throw new RuntimeException (ioe.getMessage ());
+      throw new RuntimeException (ioe);
     }
-  }
-
-
-  // Returns the value of CLAZZ's final static long field named
-  // `serialVersionUID'.
-  private long getDefinedSUID (Class clazz)
-  {
-    long l = 0;
-    try
-      {
-	// Use getDeclaredField rather than getField, since serialVersionUID
-	// may not be public AND we only want the serialVersionUID of this
-	// class, not a superclass or interface.
-	Field f = clazz.getDeclaredField ("serialVersionUID");
-	l = f.getLong (null);
-      }
-    catch (java.lang.NoSuchFieldException e)
-      {
-      }
-
-    catch (java.lang.IllegalAccessException e)
-      {
-      }
-
-    return l;
   }
 
   // Returns the value of CLAZZ's private static final field named
@@ -614,6 +600,7 @@ public class ObjectStreamClass implements Serializable
 	// Use getDeclaredField rather than getField for the same reason
 	// as above in getDefinedSUID.
 	Field f = clazz.getDeclaredField ("getSerialPersistentFields");
+	f.setAccessible(true);
 	o = (ObjectStreamField[])f.get (null);
       }
     catch (java.lang.NoSuchFieldException e)
@@ -629,19 +616,16 @@ public class ObjectStreamClass implements Serializable
 
   // Returns true if CLAZZ has a static class initializer
   // (a.k.a. <clinit>).
-  //
-  // A NoSuchMethodError is raised if CLAZZ has no such method.
   private static boolean hasClassInitializer (Class clazz)
-    throws java.lang.NoSuchMethodError
   {
     Method m = null;
 
     try
       {
 	/*
-	 * There exists a problem here, JDK run of 
+	 * There exists a problem here, according to the spec
 	 * clazz.getDeclaredMethod ("<clinit>", classArgs);
-	 * will always throw NoSuchMethodException, even the static 
+	 * will always throw NoSuchMethodException, even if the static 
 	 * intializer does exist.
 	 */
 	Class classArgs[] = {};
@@ -649,7 +633,6 @@ public class ObjectStreamClass implements Serializable
       }
     catch (java.lang.NoSuchMethodException e)
       {
-	throw new java.lang.NoSuchMethodError ();
       }
 
     return m != null;
@@ -678,19 +661,12 @@ public class ObjectStreamClass implements Serializable
   int primFieldSize = -1;  // -1 if not yet calculated
   int objectFieldCount;
 
-  boolean _isProxyClass = false;
+  boolean isProxyClass = false;
 
   // This is probably not necessary because this class is special cased already
   // but it will avoid showing up as a discrepancy when comparing SUIDs.
   private static final long serialVersionUID = -6120832682080437368L;
 
-  static
-  {
-    if (Configuration.INIT_LOAD_LIBRARY)
-      {
-        System.loadLibrary ("javaio");
-      }
-  }
 }
 
 
