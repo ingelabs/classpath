@@ -79,11 +79,13 @@ MulticastSocket(int port) throws IOException
 
 /**
   * Returns the current value of the "Time to Live" option.  This is the
-  * number of hops a packet can make before it "expires". 
+  * number of hops a packet can make before it "expires".   This method id
+  * deprecated.  Use <code>getTimeToLive</code> instead.
   * 
   * @return The TTL value
   *
   * @exception IOException If an error occurs
+  * @deprecated
   */
 public synchronized byte
 getTTL() throws IOException
@@ -95,16 +97,50 @@ getTTL() throws IOException
 
 /**
   * Sets the "Time to Live" value for a socket.  The value must be between
-  * 1 and 255.
+  * 1 and 255.  This method deprecated.  Use <code>setTimeToLive</code>
+  * instead.
+  *
+  * @param ttl The new TTL value
+  *
+  * @exception IOException If an error occurs
+  * @deprecated
+  */
+public synchronized void
+setTTL(byte ttl) throws IOException
+{
+  impl.setTTL(ttl);
+}
+
+/*************************************************************************/
+
+/**
+  * Returns the current value of the "Time to Live" option.  This is the
+  * number of hops a packet can make before it "expires". 
+  * 
+  * @return The TTL value
+  *
+  * @exception IOException If an error occurs
+  */
+public synchronized int
+getTimeToLive() throws IOException
+{
+  return(impl.getTimeToLive());
+}
+
+/*************************************************************************/
+
+/**
+  * Sets the "Time to Live" value for a socket.  The value must be between
+  * 1 and 255.  
   *
   * @param ttl The new TTL value
   *
   * @exception IOException If an error occurs
   */
 public synchronized void
-setTTL(byte ttl) throws IOException
+setTimeToLive(int ttl) throws IOException
 {
-  impl.setTTL(ttl);
+  impl.setTimeToLive(ttl);
 }
 
 /*************************************************************************/
