@@ -1,4 +1,4 @@
-New in release 0.11 (not released yet)
+New in release 0.11 (Sep 9, 2004)
 
 * javax.swing.Spring and SpringLayout support.
 * Added pluggable look and feel support for BasicTextFieldUI and
@@ -33,6 +33,8 @@ New in release 0.11 (not released yet)
   tool integrators are encouraged to directly integrate GNU JAXP.
   This release has been tested against GNU JAXP 1.1.
   http://www.gnu.org/software/classpathx/jaxp/jaxp.html
+* JColorChooser, JComboBox and JTextField implemented, including example
+  uses in GNU Classpath Examples swing Demo.
 
 Runtime interface Changes:
 

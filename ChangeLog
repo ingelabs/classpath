@@ -1,5 +1,10 @@
 2004-09-09  Mark Wielaard  <mark@klomp.org>
 
+	* NEWS: Mention JColorChooser, JComboBox and JTextField addition.
+	Set release date.
+
+2004-09-09  Mark Wielaard  <mark@klomp.org>
+
 	* LICENSE: Reindent. List examples and all external libraries
 	distributed together with GNU Classpath.
 	* examples/README: Fix is/are as indicated by FSF legal.
