@@ -1,5 +1,15 @@
 2002-10-25  Wu Gansha <gansha.wu@intel.com>:
 
+	* vm/reference/java/lang/reflect/Constructor.java (toString): Use 128
+	as initial StringBuffer size.
+	* vm/reference/java/lang/reflect/Field.java (toString): Use 64 as
+	initial StringBuffer size.
+	* vm/reference/java/lang/reflect/Method.java (equals): Explicitly
+	check for null.
+	(toString): Use 128 as initial StringBuffer size.
+
+2002-10-25  Wu Gansha <gansha.wu@intel.com>:
+
 	* java/lang/reflect/Proxy.java (ProxyType): Set loader to System
 	ClassLoader when null.
 	(ProxyType.hashCode): Loader null check no longer needed.

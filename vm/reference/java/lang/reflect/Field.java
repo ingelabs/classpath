@@ -159,7 +159,8 @@ extends AccessibleObject implements Member
    */
   public String toString()
   {
-    StringBuffer sb = new StringBuffer();
+    // 64 is a reasonable buffer initial size for field
+    StringBuffer sb = new StringBuffer(64);
     Modifier.toString(getModifiers(), sb).append(' ');
     sb.append(getType().getName()).append(' ');
     sb.append(getDeclaringClass().getName()).append('.');

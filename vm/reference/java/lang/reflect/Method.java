@@ -172,6 +172,8 @@ extends AccessibleObject implements Member
       //
       // return return this == o;
       //
+      if (o == null)
+        return false;
 
       if (!(o instanceof Method))
         return false;
@@ -217,7 +219,8 @@ extends AccessibleObject implements Member
    */
   public String toString()
   {
-    StringBuffer sb = new StringBuffer();
+    // 128 is a reasonable buffer initial size for constructor
+    StringBuffer sb = new StringBuffer(128);
     Modifier.toString(getModifiers(), sb).append(' ');
     sb.append(getReturnType().getName()).append(' ');
     sb.append(getDeclaringClass().getName()).append('.');
