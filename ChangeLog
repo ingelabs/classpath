@@ -4,6 +4,12 @@
 	constant.
 	* test/java.io/dataoutput-jdk.out: Update with corrected JDK output.
 
+	* java/io/PipedInputStream: Rewritten. Now simpler and more correct.
+	* java/io/PipedOutputStream: Updated to match new PipedInputStream.
+	* java/io/PipedReader: New implementation based on new
+	PipedInputStream.
+	* java/io/PipedWriter: Updated to match new PipedReader.
+
 2000-12-27  Jeff Sturm  <jeff.sturm@commerceone.com>
 
 	* java/sql/DriverManager.java (getConnection): Don't set user/password
