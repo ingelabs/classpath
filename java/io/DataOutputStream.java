@@ -56,47 +56,6 @@ package java.io;
  */
 public class DataOutputStream extends FilterOutputStream implements DataOutput
 {
-  private byte[] buf = new byte[8];
-  
-  // FIXME: This method should eventually die.  I'd bet there are
-  // at least half a dozen UTF converters scattered throughout the
-  // code.  String getBytes("UTF-8") would work as well, but might
-  // have higher overhead. Perhaps a shared internal method for
-  // this someplace?
-  static final byte[] convertToUTF(String s) throws IOException
-  {
-    ByteArrayOutputStream os = new ByteArrayOutputStream(s.length());
-  
-    for (int i = 0; i < s.length(); i++)
-      {
-        char c = s.charAt(i);
-        if ((c <= 0x007F) && (c != 0))
-          {
-            os.write(c);
-          }
-        else if ((c <= 0x07FF) || (c == 0))
-          {
-            byte b1 = (byte)(0xC0 | (c >> 6));
-            byte b2 = (byte)(0x80 | (c & 0x3F));
-  
-            os.write(b1);
-            os.write(b2);
-          }
-        else
-          {
-            byte b1 = (byte)(0xE0 | (c >> 12));
-            byte b2 = (byte)(0x80 | ((c >> 6) & 0x3F));
-            byte b3 = (byte)(0x80 | (c & 0x3F));
-  
-            os.write(b1);
-            os.write(b2);
-            os.write(b3);
-          }
-      }
-  
-    return(os.toByteArray());
-  }
-  
   /**
    * This is the total number of bytes that have been written to the
    * stream by this object instance.
@@ -234,10 +193,8 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    */
   public final synchronized void writeShort (int value) throws IOException
   {
-    buf[0] = (byte)((value & 0xff00) >> 8);
-    buf[1] = (byte)(value & 0x00ff);
-  
-    write(buf, 0, 2);
+    write ((byte) (0xff & (value >> 8)));
+    write ((byte) (0xff & value));
   }
 
   /**
@@ -262,10 +219,8 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    */
   public final synchronized void writeChar (int value) throws IOException
   {
-    buf[0] = (byte)((value & 0xff00) >> 8);
-    buf[1] = (byte)(value & 0x00ff);
-  
-    write(buf, 0, 2);
+    write ((byte) (0xff & (value >> 8)));
+    write ((byte) (0xff & value));
   }
 
   /**
@@ -290,12 +245,10 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    */
   public final synchronized void writeInt (int value) throws IOException
   {
-    buf[0] = (byte)((value & 0xff000000) >> 24);
-    buf[1] = (byte)((value & 0x00ff0000) >> 16);
-    buf[2] = (byte)((value & 0x0000ff00) >> 8);
-    buf[3] = (byte)(value & 0x000000ff);
-  
-    write(buf, 0, 4);
+    write ((byte) (0xff & (value >> 24)));
+    write ((byte) (0xff & (value >> 16)));
+    write ((byte) (0xff & (value >>  8)));
+    write ((byte) (0xff & value));
   }
 
   /**
@@ -324,16 +277,14 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    */
   public final synchronized void writeLong (long value) throws IOException
   {
-    buf[0] = (byte)((value & 0xff00000000000000L) >> 56);
-    buf[1] = (byte)((value & 0x00ff000000000000L) >> 48);
-    buf[2] = (byte)((value & 0x0000ff0000000000L) >> 40);
-    buf[3] = (byte)((value & 0x000000ff00000000L) >> 32);
-    buf[4] = (byte)((value & 0x00000000ff000000L) >> 24);
-    buf[5] = (byte)((value & 0x0000000000ff0000L) >> 16);
-    buf[6] = (byte)((value & 0x000000000000ff00L) >> 8);
-    buf[7] = (byte)(value & 0x00000000000000ffL);
-  
-    write(buf, 0, 8);
+    write ((byte) (0xff & (value >> 56)));
+    write ((byte) (0xff & (value>> 48)));
+    write ((byte) (0xff & (value>> 40)));
+    write ((byte) (0xff & (value>> 32)));
+    write ((byte) (0xff & (value>> 24)));
+    write ((byte) (0xff & (value>> 16)));
+    write ((byte) (0xff & (value>>  8)));
+    write ((byte) (0xff & value));
   }
 
   /**
@@ -398,15 +349,8 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
   public final void writeBytes (String value) throws IOException
   {
     int len = value.length();
-    if (len == 0)
-      return;
-  
-    byte[] buf = new byte[len];
-  
-    for (int i = 0; i < len; i++)
-      buf[i] = (byte)(value.charAt (i) & 0xff);
-  
-    write(buf, 0, buf.length);
+    for (int i = 0; i < len; ++i)
+      writeByte (value.charAt(i));
   }
 
   /**
@@ -424,18 +368,8 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
   public final void writeChars (String value) throws IOException
   {
     int len = value.length();
-    if (len == 0)
-      return;
-  
-    byte[] buf = new byte[len * 2];
-  
-    for (int i = 0; i < len; i++)
-      {
-        buf[i * 2] = (byte)((value.charAt(i) & 0xff00) >> 8);
-        buf[(i * 2) + 1] = (byte)(value.charAt(i) & 0x00ff);
-      }
-  
-    write(buf, 0, buf.length);
+    for (int i = 0; i < len; ++i)
+      writeChar (value.charAt(i));
   }
 
   /**
@@ -472,15 +406,45 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
    */
   public synchronized final void writeUTF (String value) throws IOException
   {
-    // FIXME:  Stylistically, replacing this with s.getBytes("UTF-8")
-    // would be better. However, that's likely to be expensive because of
-    // the char encoder overhead. Maybe we should have an easily
-    // invokable UTF-8 converter function, but I'm not sure this is the
-    // right class for it to live in. 
-    byte[] buf = convertToUTF (value);
-  
-    writeShort(buf.length);
-    write(buf, 0, buf.length);
+    int len = value.length();
+    int sum = 0;
+
+    for (int i = 0; i < len && sum <= 65535; ++i)
+      {
+	char c = value.charAt(i);
+	if (c >= '\u0001' && c <= '\u007f')
+	  sum += 1;
+	else if (c == '\u0000' || (c >= '\u0080' && c <= '\u07ff'))
+	  sum += 2;
+	else
+	  sum += 3;
+      }
+
+    if (sum > 65535)
+      throw new UTFDataFormatException ();
+
+    writeShort (sum);
+
+    for (int i = 0; i < len; ++i)
+      {
+	char c = value.charAt(i);
+	if (c >= '\u0001' && c <= '\u007f')
+	  write (c);
+	else if (c == '\u0000' || (c >= '\u0080' && c <= '\u07ff'))
+	  {
+	    write (0xc0 | (0x1f & (c >> 6)));
+	    write (0x80 | (0x3f & c));
+	  }
+	else
+	  {
+	    // JSL says the first byte should be or'd with 0xc0, but
+	    // that is a typo.  Unicode says 0xe0, and that is what is
+	    // consistent with DataInputStream.
+	    write (0xe0 | (0x0f & (c >> 12)));
+	    write (0x80 | (0x3f & (c >> 6)));
+	    write (0x80 | (0x3f & c));
+	  }
+      }
   }
 
 } // class DataOutputStream

@@ -247,7 +247,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public int read (byte[] buffer) throws IOException
   {
-    return read (buffer, 0, buffer.length);
+    return in.read (buffer);
   }
 
   /**

@@ -1,5 +1,14 @@
 2003-05-18  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/DataOutputStream.java:
+	New version from libgcj.
+	* java/io/PrintWriter.java:
+	Reformatted and moved class documentation.
+	* java/io/RandomAccessFile.java
+	(read): call in directly.
+
+2003-05-18  Michael Koch  <konqueror@gmx.de>
+
 	* java/security/Key.java
 	(Key): Fixed declaration of serialVersionUID.
 	* java/security/PrivateKey.java
