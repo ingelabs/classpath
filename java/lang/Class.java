@@ -1213,7 +1213,8 @@ public final class Class implements Serializable
         }
     else
       {
-        status = ClassLoader.systemClassAssertionStatus.get(getName());
+        status = ClassLoader.StaticData.
+                    systemClassAssertionStatus.get(getName());
         if (status != null)
           return status.equals(Boolean.TRUE);
       }
@@ -1237,11 +1238,13 @@ public final class Class implements Serializable
       {
         String name = getPackagePortion(getName());
         if ("".equals(name))
-          status = ClassLoader.systemPackageAssertionStatus.get(null);
+          status = ClassLoader.StaticData.
+                    systemPackageAssertionStatus.get(null);
         else
           do
             {
-              status = ClassLoader.systemPackageAssertionStatus.get(name);
+              status = ClassLoader.StaticData.
+                        systemPackageAssertionStatus.get(name);
               name = getPackagePortion(name);
             }
           while (! "".equals(name) && status == null);

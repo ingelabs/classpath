@@ -150,16 +150,33 @@ public abstract class ClassLoader
    */
   private final boolean initialized;
 
-  /**
-   * The default protection domain, used when defining a class with a null
-   * paramter for the domain.
-   */
-  static final ProtectionDomain defaultProtectionDomain;
-  static
+  static class StaticData
   {
-    CodeSource cs = new CodeSource(null, null);
-    PermissionCollection perm = Policy.getPolicy().getPermissions(cs);
-    defaultProtectionDomain = new ProtectionDomain(cs, perm);
+    /**
+     * The default protection domain, used when defining a class with a null
+     * parameter for the domain.
+     */
+    static final ProtectionDomain defaultProtectionDomain;
+    static
+    {
+        CodeSource cs = new CodeSource(null, null);
+        PermissionCollection perm = Policy.getPolicy().getPermissions(cs);
+        defaultProtectionDomain = new ProtectionDomain(cs, perm);
+    }
+    /**
+     * The command-line state of the package assertion status overrides. This
+     * map is never modified, so it does not need to be synchronized.
+     */
+    // Package visible for use by Class.
+    static final Map systemPackageAssertionStatus
+      = VMClassLoader.packageAssertionStatus();
+    /**
+     * The command-line state of the class assertion status overrides. This
+     * map is never modified, so it does not need to be synchronized.
+     */
+    // Package visible for use by Class.
+    static final Map systemClassAssertionStatus
+      = VMClassLoader.classAssertionStatus();
   }
 
   /**
@@ -170,14 +187,6 @@ public abstract class ClassLoader
   boolean defaultAssertionStatus = VMClassLoader.defaultAssertionStatus();
 
   /**
-   * The command-line state of the package assertion status overrides. This
-   * map is never modified, so it does not need to be synchronized.
-   */
-  // Package visible for use by Class.
-  static final Map systemPackageAssertionStatus
-    = VMClassLoader.packageAssertionStatus();
-
-  /**
    * The map of package assertion status overrides, or null if no package
    * overrides have been specified yet. The values of the map should be
    * Boolean.TRUE or Boolean.FALSE, and the unnamed package is represented
@@ -185,14 +194,6 @@ public abstract class ClassLoader
    */
   // Package visible for use by Class.
   Map packageAssertionStatus;
-
-  /**
-   * The command-line state of the class assertion status overrides. This
-   * map is never modified, so it does not need to be synchronized.
-   */
-  // Package visible for use by Class.
-  static final Map systemClassAssertionStatus
-    = VMClassLoader.classAssertionStatus();
 
   /**
    * The map of class assertion status overrides, or null if no class
@@ -426,7 +427,7 @@ public abstract class ClassLoader
     throws ClassFormatError
   {
     if (domain == null)
-      domain = defaultProtectionDomain;
+      domain = StaticData.defaultProtectionDomain;
     if (! initialized)
       throw new SecurityException("attempt to define class from uninitialized class loader");
     Class retval = VMClassLoader.defineClass(this, name, data,
@@ -887,7 +888,7 @@ public abstract class ClassLoader
   {
     if (packageAssertionStatus == null)
       packageAssertionStatus
-        = new HashMap(systemPackageAssertionStatus);
+        = new HashMap(StaticData.systemPackageAssertionStatus);
     packageAssertionStatus.put(name, Boolean.valueOf(enabled));
   }
   
@@ -907,7 +908,8 @@ public abstract class ClassLoader
                                                    boolean enabled)
   {
     if (classAssertionStatus == null)
-      classAssertionStatus = new HashMap(systemClassAssertionStatus);
+      classAssertionStatus = 
+        new HashMap(StaticData.systemClassAssertionStatus);
     // The toString() hack catches null, as required.
     classAssertionStatus.put(name.toString(), Boolean.valueOf(enabled));
   }

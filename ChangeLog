@@ -1,3 +1,15 @@
+2004-12-02  Jeroen Frijters  <jeroen@frijters.net>
+
+	* gnu/java/net/protocol/file/Connection.java
+	(StaticData): New inner class to contain statics.
+	(connect, getHeaderField): Modified to use StaticData.
+	* java/lang/Class.java
+	(desiredAssertionStatus): Modified to use ClassLoader.StaticData.
+	* java/lang/ClassLoader.java
+	(StaticData): New inner class to contain statics.
+	(defineClass, setPackageAssertionStatus, setClassAssertionStatus):
+	Modified to use StaticData.
+
 2004-12-01  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/AbstractListModel.java
