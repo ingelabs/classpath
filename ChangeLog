@@ -1,5 +1,12 @@
 2003-10-12  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/FilePermission.java
+	(implies): Removed unused local variables.
+	* java/io/ObjectStreamClass.java
+	(getObjectStreamClasses): Removed unused local variable.
+
+2003-10-12  Michael Koch  <konqueror@gmx.de>
+
 	* javax/print/attribute/Attribute.java,
 	javax/print/attribute/AttributeSet.java,
 	javax/print/attribute/PrintRequestAttributeSet.java,
