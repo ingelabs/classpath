@@ -1,5 +1,5 @@
 /* ProtectionDomain.java -- A security domain
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2003, Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,55 +38,53 @@ exception statement from your version. */
 package java.security;
 
 /**
- * This class represents a group of classes, along with the permissions
- * they are granted.  The classes are identified by a <code>CodeSource</code>.
- * Thus, any class loaded from the specified <code>CodeSource</code> is
- * treated as part of this domain.  The set of permissions is represented
- * by a <code>PermissionCollection</code>.
- * <p>
- * Every class in the system will belong to one and only one
- * <code>ProtectionDomain</code>.
+ * <p>This <code>ProtectionDomain</code> class encapsulates the characteristics
+ * of a domain, which encloses a set of classes whose instances are granted a
+ * set of permissions when being executed on behalf of a given set of
+ * <i>Principals</i>.
  *
- * @version 0.0
+ * <p>A static set of permissions can be bound to a <code>ProtectionDomain</code>
+ * when it is constructed; such permissions are granted to the domain regardless
+ * of the {@link Policy} in force. However, to support dynamic security
+ * policies, a <code>ProtectionDomain</code> can also be constructed such that
+ * it is dynamically mapped to a set of permissions by the current {@link
+ * Policy} whenever a permission is checked.</p>
  *
  * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @version 0.0
  */
 public class ProtectionDomain
 {
-  /**
-   * This is the <code>CodeSource</code> for this protection domain
-   */
+  /** This is the <code>CodeSource</code> for this protection domain. */
   private CodeSource code_source;
 
-  /**
-   * This is the set of permissions granted to this domain
-   */
+  /** This is the set of permissions granted to this domain. */
   private PermissionCollection perms;
 
   /**
-   * This method initializes a new instance of <code>ProtectionDomain</code>
-   * representing the specified <code>CodeSource</code> and permission set.
-   * No permissions may be added to the <code>PermissionCollection</code>
-   * and this contructor will call the <code>setReadOnly</code> method on
-   * the specified permission set.
+   * Creates a new <code>ProtectionDomain</code> with the given {@link
+   * CodeSource} and {@link Permissions}. If the permissions object is not
+   * <code>null</code>, then <code>setReadOnly()</code> will be called on the
+   * passed in {@link Permissions} object. The only permissions granted to this
+   * domain are the ones specified; the current {@link Policy} will not be
+   * consulted.
    *
-   * @param code_source The <code>CodeSource</code> for this domain
-   * @param perms The permission set for this domain
-   *
-   * @see java.security.PermissionCollection#setReadOnly()
+   * @param codesource the codesource associated with this domain.
+   * @param permissions the permissions granted to this domain
    */
-  public ProtectionDomain(CodeSource code_source, PermissionCollection perms)
+  public ProtectionDomain(CodeSource codesource, PermissionCollection permissions)
   {
-    this.code_source = code_source;
-    this.perms = perms;
-    if (perms != null)
-      perms.setReadOnly();
+    this.code_source = codesource;
+    this.perms = permissions;
+    if (permissions != null)
+      permissions.setReadOnly();
   }
 
   /**
-     * This method returns the <code>CodeSource</code> for this domain.
-     *
-     * @return This domain's <code>CodeSource</code>.
+   * Returns the {@link CodeSource} of this domain.
+   *
+   * @return the {@link CodeSource} of this domain which may be <code>null</code>.
+   * @since 1.2
    */
   public final CodeSource getCodeSource()
   {
@@ -94,9 +92,12 @@ public class ProtectionDomain
   }
 
   /**
-   * This method returns the set of permissions granted to this domain.
+   * Returns the static permissions granted to this domain.
    *
-   * @return The permission set for this domain
+   * @return the static set of permissions for this domain which may be
+   * <code>null</code>.
+   * @see Policy#refresh()
+   * @see Policy#getPermissions(ProtectionDomain)
    */
   public final PermissionCollection getPermissions()
   {
@@ -104,28 +105,40 @@ public class ProtectionDomain
   }
 
   /**
-   * This method tests whether or not the specified <code>Permission</code> is
-   * implied by the set of permissions granted to this domain.
+   * <p>Check and see if this <code>ProtectionDomain</code> implies the
+   * permissions expressed in the <code>Permission</code> object.</p>
    *
-   * @param perm The <code>Permission</code> to test.
+   * <p>The set of permissions evaluated is a function of whether the
+   * <code>ProtectionDomain</code> was constructed with a static set of
+   * permissions or it was bound to a dynamically mapped set of permissions.</p>
    *
-   * @return <code>true</code> if the specified <code>Permission</code> is implied for this domain, <code>false</code> otherwise.
+   * <p>If the <code>ProtectionDomain</code> was constructed to a statically
+   * bound {@link PermissionCollection} then the permission will only be checked
+   * against the {@link PermissionCollection} supplied at construction.</p>
+   *
+   * <p>However, if the <code>ProtectionDomain</code> was constructed with the
+   * constructor variant which supports dynamically binding permissions, then
+   * the permission will be checked against the combination of the
+   * {@link PermissionCollection} supplied at construction and the current
+   * {@link Policy} binding.
+   *
+   * @param permission the {@link Permission} object to check.
+   * @return <code>true</code> if <code>permission</code> is implicit to this
+   * <code>ProtectionDomain</code>.
    */
-  public boolean implies(Permission perm)
+  public boolean implies(Permission permission)
   {
     PermissionCollection pc = getPermissions();
     if (pc == null)
       return (false);
 
-    return (pc.implies(perm));
+    return pc.implies(permission);
   }
 
   /**
-   * This method returns a <code>String</code> representation of this
-   * object.  It will print the <code>CodeSource</code> and 
-   * permission set associated with this domain.
+   * Convert a <code>ProtectionDomain</code> to a String.
    *
-   * @return A <code>String</code> representation of this object.
+   * @return a string representation of the object.
    */
   public String toString()
   {
@@ -138,7 +151,7 @@ public class ProtectionDomain
       sb.append(code_source + linesep);
     sb.append(perms);
     sb.append(linesep + ")" + linesep);
-    
+
     return sb.toString();
   }
 }

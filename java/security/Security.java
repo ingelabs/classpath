@@ -1,5 +1,5 @@
 /* Security.java --- Java base security class implmentation
-   Copyright (C) 1999, 2001, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2001, 2002, 2003, Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,28 +36,25 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 package java.security;
-import java.io.File;
+
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.IOException;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.security.Provider;
-import java.util.Vector;
-import java.util.Enumeration;
 import java.util.Properties;
+import java.util.Vector;
 
 /**
-   Security class that loads the Providers and provides an 
-   interface to security properties.
-
-   @author Mark Benvenuto <ivymccough@worldnet.att.net>
+ * This class centralizes all security properties and common security methods.
+ * One of its primary uses is to manage providers.
+ *
+ * @author Mark Benvenuto <ivymccough@worldnet.att.net>
  */
-
 public final class Security extends Object
 {
   private static Vector providers = new Vector();
   private static Properties secprops;
-
   static
   {
     String base = System.getProperty("gnu.classpath.home.url");
@@ -76,7 +73,6 @@ public final class Security extends Object
       return;
 
     String secfilestr = baseUrl + "/security/" + vendor + ".security";
-
     try
       {
 	InputStream fin = new URL(secfilestr).openStream();
@@ -85,12 +81,9 @@ public final class Security extends Object
 
 	int i = 1;
 	String name;
-
-	while ((name = secprops.getProperty("security.provider." + i)) !=
-	       null)
+	while ((name = secprops.getProperty("security.provider." + i)) != null)
 	  {
 	    Exception exception = null;
-
 	    try
 	      {
 		providers.addElement(Class.forName(name).newInstance());
@@ -107,15 +100,16 @@ public final class Security extends Object
 	      {
 	        exception = x;
 	      }
+
 	    if (exception != null)
-	      System.err.println ("Error loading security provider " + name
-	                          + ": " + exception);
+	      System.err.println (
+	          "Error loading security provider " + name + ": " + exception);
 	    i++;
 	  }
       }
     catch (FileNotFoundException ignored)
       {
-        // Actually we probibly shouldn't ignore these, once the security
+        // Actually we probably shouldn't ignore these, once the security
 	// properties file is actually installed somewhere.
       }
     catch (IOException ignored)
@@ -124,18 +118,22 @@ public final class Security extends Object
   }
 
   /**
-     Gets a specific property for an algorithm. This is used to produce
-     specialized algorithm parsers.
-
-     @deprecated it used to a return the value of a propietary property
-     for the "SUN" Cryptographic Service Provider to obtain 
-     algorithm-specific parameters. Used AlogorithmParameters and 
-     KeyFactory instead.
-
-     @param algName name of algorithm to get property of 
-     @param propName name of property to check
-
-     @return a string containing the value of the property
+   * Gets a specified property for an algorithm. The algorithm name should be a
+   * standard name. See Appendix A in the Java Cryptography Architecture API
+   * Specification &amp; Reference for information about standard algorithm
+   * names. One possible use is by specialized algorithm parsers, which may map
+   * classes to algorithms which they understand (much like {@link Key} parsers
+   * do).
+   *
+   * @param algName the algorithm name.
+   * @param propName the name of the property to get.
+   * @return the value of the specified property.
+   * @deprecated This method used to return the value of a proprietary property
+   * in the master file of the "SUN" Cryptographic Service Provider in order to
+   * determine how to parse algorithm-specific parameters. Use the new
+   * provider-based and algorithm-independent {@link AlgorithmParameters} and
+   * {@link KeyFactory} engine classes (introduced in the Java 2 platform)
+   * instead.
    */
   public static String getAlgorithmProperty(String algName, String propName)
   {
@@ -144,37 +142,40 @@ public final class Security extends Object
   }
 
   /**
-     Adds a new provider, at a specified position. The position is the
-     preference order in which providers are searched for requested algorithms.
-     Note that it is not guaranteed that this preference will be respected. The
-     position is 1-based, that is, 1 is most preferred, followed by 2, and so
-     on.
-     <p>
-     If the given provider is installed at the requested position, the
-     provider that used to be at that position, and all providers with a
-     position greater than position, are shifted up one position (towards the
-     end of the list of installed providers).
-     <p>
-     A provider cannot be added if it is already installed.
-     <p>
-     <b>NOT IMPLEMENTED YET:</b>[
-     First, if there is a security manager, its <code>checkSecurityAccess</code>
-     method is called with the string
-     <code>"insertProvider."+provider.getName()</code>
-     to see if it's ok to add a new provider. If the default implementation of
-     <code>checkSecurityAccess</code> is used (i.e., that method is not
-     overriden), then this will result in a call to the security manager's
-     <code>checkPermission</code> method with a <code>SecurityPermission(
-     "insertProvider."+provider.getName())</code> permission.]
-
-     @param provider the provider to be added.
-     @param position the preference position that the caller would like for
-     this provider.
-     @return the actual preference position (1-based) in which the provider was
-     added, or -1 if the provider was not added because it is already installed.
-     @throws SecurityException if a security manager exists and its <code>
-     SecurityManager.checkSecurityAccess(java.lang.String)</code> method denies
-     access to add a new provider.
+   * <p>Adds a new provider, at a specified position. The position is the
+   * preference order in which providers are searched for requested algorithms.
+   * Note that it is not guaranteed that this preference will be respected. The
+   * position is 1-based, that is, <code>1</code> is most preferred, followed by
+   * <code>2</code>, and so on.</p>
+   *
+   * <p>If the given provider is installed at the requested position, the
+   * provider that used to be at that position, and all providers with a
+   * position greater than position, are shifted up one position (towards the
+   * end of the list of installed providers).</p>
+   *
+   * <p>A provider cannot be added if it is already installed.</p>
+   *
+   * <p>First, if there is a security manager, its <code>checkSecurityAccess()
+   * </code> method is called with the string <code>"insertProvider."+provider.
+   * getName()</code> to see if it's ok to add a new provider. If the default
+   * implementation of <code>checkSecurityAccess()</code> is used (i.e., that
+   * method is not overriden), then this will result in a call to the security
+   * manager's <code>checkPermission()</code> method with a
+   * <code>SecurityPermission("insertProvider."+provider.getName())</code>
+   * permission.</p>
+   *
+   * @param provider the provider to be added.
+   * @param position the preference position that the caller would like for
+   * this provider.
+   * @return the actual preference position in which the provider was added, or
+   * <code>-1</code> if the provider was not added because it is already
+   * installed.
+   * @throws SecurityException if a security manager exists and its
+   * {@link SecurityManager#checkSecurityAccess(String)} method denies access
+   * to add a new provider.
+   * @see #getProvider(String)
+   * @see #removeProvider(String)
+   * @see SecurityPermission
    */
   public static int insertProviderAt(Provider provider, int position)
   {
@@ -186,8 +187,7 @@ public final class Security extends Object
     int max = providers.size ();
     for (int i = 0; i < max; i++)
       {
-	if (((Provider) providers.elementAt(i)).getName() ==
-	    provider.getName())
+	if (((Provider) providers.elementAt(i)).getName() == provider.getName())
 	  return -1;
       }
 
@@ -201,26 +201,28 @@ public final class Security extends Object
     return position + 1;
   }
 
-
   /**
-     Adds a provider to the next position available.
-     <p>
-     <b>NOT IMPLEMENTED YET:</b> [
-     First, if there is a security manager, its <code>checkSecurityAccess</code>
-     method is called with the string
-     <code>"insertProvider."+provider.getName()</code>
-     to see if it's ok to add a new provider. If the default implementation of
-     <code>checkSecurityAccess</code> is used (i.e., that method is not
-     overriden), then this will result in a call to the security manager's
-     <code>checkPermission</code> method with a <code>SecurityPermission(
-     "insertProvider."+provider.getName())</code> permission.]
-
-     @param provider the provider to be added.
-     @return the preference position in which the provider was added, or <code>
-     -1</code> if the provider was not added because it is already installed.
-     @throws SecurityException if a security manager exists and its <code>
-     SecurityManager.checkSecurityAccess(java.lang.String)</code> method denies
-     access to add a new provider.
+   * <p>Adds a provider to the next position available.</p>
+   *
+   * <p>First, if there is a security manager, its <code>checkSecurityAccess()
+   * </code> method is called with the string <code>"insertProvider."+provider.
+   * getName()</code> to see if it's ok to add a new provider. If the default
+   * implementation of <code>checkSecurityAccess()</code> is used (i.e., that
+   * method is not overriden), then this will result in a call to the security
+   * manager's <code>checkPermission()</code> method with a
+   * <code>SecurityPermission("insertProvider."+provider.getName())</code>
+   * permission.</p>
+   *
+   * @param provider the provider to be added.
+   * @return the preference position in which the provider was added, or
+   * <code>-1</code> if the provider was not added because it is already
+   * installed.
+   * @throws SecurityException if a security manager exists and its
+   * {@link SecurityManager#checkSecurityAccess(String)} method denies access
+   * to add a new provider.
+   * @see #getProvider(String)
+   * @see #removeProvider(String)
+   * @see SecurityPermission
    */
   public static int addProvider(Provider provider)
   {
@@ -228,18 +230,28 @@ public final class Security extends Object
   }
 
   /**
-     Removes a provider. This allows dynamic unloading
-     of providers. It will automatically shift up providers to a higher
-     ranking. If the provider is not installed, it fails silently.
-
-     This method checks the security manager with the call checkSecurityAccess
-     with "removeProvider."+provider.getName() to see if the user can remove
-     this provider.
-
-     @param name name of the provider to add
-
-     @throws SecurityException - if the security manager denies access to
-     remove a new provider
+   * <p>Removes the provider with the specified name.</p>
+   *
+   * <p>When the specified provider is removed, all providers located at a
+   * position greater than where the specified provider was are shifted down
+   * one position (towards the head of the list of installed providers).</p>
+   *
+   * <p>This method returns silently if the provider is not installed.</p>
+   *
+   * <p>First, if there is a security manager, its <code>checkSecurityAccess()
+   * </code> method is called with the string <code>"removeProvider."+name</code>
+   * to see if it's ok to remove the provider. If the default implementation of
+   * <code>checkSecurityAccess()</code> is used (i.e., that method is not
+   * overriden), then this will result in a call to the security manager's
+   * <code>checkPermission()</code> method with a <code>SecurityPermission(
+   * "removeProvider."+name)</code> permission.</p>
+   *
+   * @param name the name of the provider to remove.
+   * @throws SecurityException if a security manager exists and its
+   * {@link SecurityManager#checkSecurityAccess(String)} method denies access
+   * to remove the provider.
+   * @see #getProvider(String)
+   * @see #addProvider(Provider)
    */
   public static void removeProvider(String name)
   {
@@ -247,7 +259,6 @@ public final class Security extends Object
     if (sm != null)
       sm.checkSecurityAccess("removeProvider." + name);
 
-    Provider p = null;
     int max = providers.size ();
     for (int i = 0; i < max; i++)
       {
@@ -260,10 +271,10 @@ public final class Security extends Object
   }
 
   /**
-     Returns array containing all the providers. It is in the preference order 
-     of the providers.
-
-     @return an array of installed providers
+   * Returns an array containing all the installed providers. The order of the
+   * providers in the array is their preference order.
+   *
+   * @return an array of all the installed providers.
    */
   public static Provider[] getProviders()
   {
@@ -273,12 +284,13 @@ public final class Security extends Object
   }
 
   /**
-     Returns the provider with the specified name. It will return null 
-     if the provider cannot be found. 
-
-     @param name name of the requested provider
-
-     @return requested provider
+   * Returns the provider installed with the specified name, if any. Returns
+   * <code>null</code> if no provider with the specified name is installed.
+   *
+   * @param name the name of the provider to get.
+   * @return the provider of the specified name.
+   * @see #removeProvider(String)
+   * @see #addProvider(Provider)
    */
   public static Provider getProvider(String name)
   {
@@ -294,17 +306,20 @@ public final class Security extends Object
   }
 
   /**
-     Gets the value of a security property.
-
-     This method checks the security manager with the call checkSecurityAccess
-     with "getProperty."+key to see if the user can get this property.
-
-     @param key property to get
-
-     @return value of the property      
-
-     @throws SecurityException - if the security manager denies access to 
-     getting a property
+   * <p>Gets a security property value.</p>
+   *
+   * <p>First, if there is a security manager, its <code>checkPermission()</code>
+   * method is called with a <code>SecurityPermission("getProperty."+key)</code>
+   * permission to see if it's ok to retrieve the specified security property
+   * value.</p>
+   *
+   * @param key the key of the property being retrieved.
+   * @return the value of the security property corresponding to key.
+   * @throws SecurityException if a security manager exists and its
+   * {@link SecurityManager#checkPermission(Permission)} method denies access
+   * to retrieve the specified security property value.
+   * @see #setProperty(String, String)
+   * @see SecurityPermission
    */
   public static String getProperty(String key)
   {
@@ -317,16 +332,20 @@ public final class Security extends Object
 
 
   /**
-     Sets the value of a security property.
-
-     This method checks the security manager with the call checkSecurityAccess
-     with "setProperty."+key to see if the user can get this property.
-
-     @param key property to set
-     @param datnum new value of property
-
-     @throws SecurityException - if the security manager denies access to 
-     setting a property
+   * <p>Sets a security property value.</p>
+   *
+   * <p>First, if there is a security manager, its <code>checkPermission()</code>
+   * method is called with a <code>SecurityPermission("setProperty."+key)</code>
+   * permission to see if it's ok to set the specified security property value.
+   * </p>
+   *
+   * @param key the name of the property to be set.
+   * @param datnum the value of the property to be set.
+   * @throws SecurityException if a security manager exists and its
+   * {@link SecurityManager#checkPermission(Permission)} method denies access
+   * to set the specified security property value.
+   * @see #getProperty(String)
+   * @see SecurityPermission
    */
   public static void setProperty(String key, String datnum)
   {
