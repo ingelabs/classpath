@@ -1,3 +1,8 @@
+2005-01-28  Mark Wielaard  <mark@klomp.org>
+
+	* java/util/jar/Attributes.java (Attributes.Name): Add documentation
+	to describe attributes without a constant field value in this class.
+
 2005-01-28  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/SwingUtilities.java
