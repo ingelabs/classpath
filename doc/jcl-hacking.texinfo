@@ -245,11 +245,11 @@ perl 5.X
 GNU MP 2.0.2
 @end itemize
 
-All of these tools are available from  
-@uref{ftp://prep.ai.mit.edu/pub/gnu/,ftp://prep.ai.mit.edu} via 
-anonymous ftp.  With the exception of perl and DejaGnu, they are fully 
-documented with a texinfo manuals.  Texinfo can be browsed with the Emacs 
-editor, or with the text editor of your choice.
+All of these tools are available from
+@uref{ftp://prep.ai.mit.edu/pub/gnu/,prep.ai.mit.edu} via anonymous ftp.
+With the exception of perl and DejaGnu, they are fully documented with
+texinfo manuals.  Texinfo can be browsed with the Emacs editor, or with
+the text editor of your choice.
 
 Here is a brief description of the purpose of those tools.
 
