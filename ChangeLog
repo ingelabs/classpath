@@ -1,3 +1,10 @@
+2004-01-25  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/nio/FileLockImpl.java:
+	Fixed filename in copyright.
+	(released): Removed.
+	(finalize): New method.
+
 2004-01-23  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/FileDescriptor.java: Reformated.
