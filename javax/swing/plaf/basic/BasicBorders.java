@@ -1192,9 +1192,92 @@ public class BasicBorders
   }
 
 
+  /**
+   * A one-pixel thick border for rollover buttons, for example in
+   * tool bars.
+   *
+   * @since 1.4
+   * @author Sascha Brawer (brawer@dandelis.ch)
+   */
   public static class RolloverButtonBorder
+    extends ButtonBorder
   {
-  } // class RolloverButtonBorder
+    /**
+     * Determined using the <code>serialver</code> tool
+     * of Sun JDK 1.4.1_01 on GNU/Linux 2.4.20 for x86.
+     */
+    static final long serialVersionUID = 1976364864896996846L;
+
+
+    /**
+     * Constructs a new border for drawing a roll-over button
+     * in the Basic look and feel.
+     *
+     * @param shadow the shadow color.
+     * @param darkShadow a darker variant of the shadow color.
+     * @param highlight the highlight color.
+     * @param lightHighlight a brighter variant of the highlight  color.
+     */
+    public RolloverButtonBorder(Color shadow, Color darkShadow,
+                                Color highlight, Color lightHighlight)
+    {
+      super(shadow, darkShadow, highlight, lightHighlight);
+    }
+
+
+    /**
+     * Paints the border around a rollover button.  If <code>c</code>
+     * is not an {@link javax.swing.AbstractButton} whose model
+     * returns <code>true</code> for {@link
+     * javax.swing.ButtonModel#isRollver}, nothing gets painted at
+     * all.
+     *
+     * @param c the button whose border is to be painted.
+     * @param g the graphics for painting.
+     * @param x the horizontal position for painting the border.
+     * @param y the vertical position for painting the border.
+     * @param width the width of the available area for painting the border.
+     * @param height the height of the available area for painting the border.
+     */
+    public void paintBorder(Component c, Graphics  g,
+                            int x, int y, int width, int height)
+    {
+      ButtonModel bmodel = null;
+      boolean drawPressed;
+      Color oldColor = g.getColor();
+      int x2, y2;
+
+      if (c instanceof AbstractButton)
+        bmodel = ((AbstractButton) c).getModel();
+
+      /* Draw nothing if c is not a rollover button. */
+      if ((bmodel == null) || !bmodel.isRollover())
+        return;
+
+      /* Draw nothing if the mouse is pressed, but outside the button. */
+      if (bmodel.isPressed() && !bmodel.isArmed())
+        return;
+
+      drawPressed = bmodel.isSelected() || bmodel.isPressed();
+      x2 = x + width - 1;
+      y2 = y + height - 1;
+
+      try
+      {
+        g.setColor(drawPressed ? shadow : lightHighlight);
+        g.drawLine(x, y, x2 - 1, y);     // top edge
+        g.drawLine(x, y + 1, x, y2 - 1); // left edge
+
+        g.setColor(drawPressed ? lightHighlight : shadow);
+        g.drawLine(x, y2, x2, y2);       // bottom edge
+        g.drawLine(x2, y, x2, y2 - 1);   // right edge
+      }
+      finally
+      {
+        g.setColor(oldColor);
+      }
+    }
+  }
 
 
   /**
