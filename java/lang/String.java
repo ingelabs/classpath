@@ -1,5 +1,6 @@
 /* String.java -- immutable character sequences; the object of string literals
-   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,14 +39,14 @@ exception statement from your version. */
 
 package java.lang;
 
+import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.util.Comparator;
 import java.util.WeakHashMap;
 import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
-import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.io.CharConversionException;
 import gnu.java.io.EncodingManager;
 import gnu.java.lang.CharData;
@@ -72,6 +73,7 @@ import gnu.java.lang.CharData;
  *
  * @author Paul N. Fisher
  * @author Eric Blake <ebb9@email.byu.edu>
+ * @author Per Bothner <bothner@cygnus.com>
  * @since 1.0
  * @status updated to 1.4; but could use better data sharing via offset field
  */
@@ -745,25 +747,25 @@ public final class String implements Serializable, Comparable, CharSequence
    * character of the string. This is unsatisfactory for locale-based
    * comparison, in which case you should use {@link java.text.Collator}.
    *
-   * @param s the string to compare against
+   * @param str the string to compare against
    * @return the comparison
    * @see Collator#compare(String, String)
    * @since 1.2
    */
-  public int compareToIgnoreCase(String s)
+  public int compareToIgnoreCase(String str)
   {
-    int i = Math.min(count, s.count);
+    int i = Math.min(count, str.count);
     int x = offset;
-    int y = s.offset;
+    int y = str.offset;
     while (--i >= 0)
       {
         int result = Character.toLowerCase(Character.toUpperCase(value[x++]))
-          - Character.toLowerCase(Character.toUpperCase(s.value[y++]));
+          - Character.toLowerCase(Character.toUpperCase(str.value[y++]));
         if (result != 0)
           return result;
       }
-    return count - s.count;
-  }
+    return count - str.count;
+  }  
 
   /**
    * Predicate which determines if this String matches another String
@@ -1463,7 +1465,7 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public static String valueOf(char[] data)
   {
-    return new String(data, 0, data.length, false);
+    return valueOf (data, 0, data.length);
   }
 
   /**

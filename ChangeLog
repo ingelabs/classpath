@@ -1,5 +1,13 @@
 2003-05-22  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/String.java:
+	Merged copyright with libgcj, added Per Bother as author, reordered
+	imports.
+	(compareToIgnoreCase): Renamed s to str to match libgcj.
+	(valueof): Merged from libgcj.
+
+2003-05-22  Michael Koch  <konqueror@gmx.de>
+
 	* java/util/zip/Inflater.java:
 	Merged copyright from libgcj, reformatted and reordered some methods.
 
