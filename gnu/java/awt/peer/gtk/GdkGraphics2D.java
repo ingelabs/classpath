@@ -1028,7 +1028,7 @@ public class GdkGraphics2D extends Graphics2D
 	if (sm instanceof MultiPixelPackedSampleModel)
 	  {
 	    pixels = r.getPixels(0, 0, r.getWidth(), r.getHeight(), pixels);
-	    for (int i = 0; i < pixels2.length; i++)
+	    for (int i = 0; i < pixels.length; i++)
 	      pixels[i] = cm.getRGB(pixels[i]);
 	  }
 	else

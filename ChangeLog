@@ -1,3 +1,7 @@
+2004-11-28  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java: Fix typo.
+
 2004-11-27  Sven de Marothy  <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java
