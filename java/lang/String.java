@@ -616,7 +616,7 @@ public final class String implements Serializable, Comparable, CharSequence
     String str2 = (String) anObject;
     if (count != str2.count)
       return false;
-    if (value == str2.value)
+    if (value == str2.value && offset == str2.offset)
       return true;
     int i = count;
     int x = offset;

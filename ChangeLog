@@ -1,3 +1,8 @@
+2002-07-30   Mark Wielaard  <mark@klomp.org>
+
+	* java/lang/String.java (equals): Also check offset when value is the
+	same.
+
 2002-07-26  Tom Tromey  <tromey@redhat.com>
 
 	* java/nio/ByteOrder.java (toString): Simplified; now conforms to
