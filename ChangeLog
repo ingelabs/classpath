@@ -1,5 +1,10 @@
 2004-09-26  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/text/SimpleAttributeSet.java
+	(EMPTY): Made public final.
+
+2004-09-26  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/UIManager.java
 	(get): New method.
 	(getBoolean): Likewise.
