@@ -188,6 +188,11 @@ public class BigDecimal extends Number implements Comparable {
     return thisParts[1].compareTo (valParts[1]);
   }
 
+  public int compareTo (Object val) 
+  {
+    return(compareTo((BigDecimal)val));
+  }
+
   public boolean equals (Object o) 
   {
     return (o instanceof BigDecimal 
