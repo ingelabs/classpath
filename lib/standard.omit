@@ -1,7 +1,6 @@
 ^../java/net/Authenticator.java$
 ^../java/net/JarURLConnection.java$
 ^../java/lang/RuntimePermission.java$
-^../java/lang/Character.java$
 ^../java/security/CodeSource.java$
 ^../java/security/ProtectionDomain.java$
 ^../java/text/.*$
