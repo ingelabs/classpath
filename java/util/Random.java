@@ -1,5 +1,5 @@
 /* java.util.Random
-   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -112,13 +112,13 @@ public class Random implements java.io.Serializable
    * same seed, should produce the same results, if the same methods
    * are called.  The implementation for java.util.Random is:
    * <pre>
-   * synchronized public void setSeed(long seed) {
+   * public synchronized void setSeed(long seed) {
    *     this.seed = (seed ^ 0x5DEECE66DL) & ((1L << 48) - 1);
    *     haveNextNextGaussian = false;
    * }
    * </pre>
    */
-  synchronized public void setSeed(long seed)
+  public synchronized void setSeed(long seed)
   {
     this.seed = (seed ^ 0x5DEECE66DL) & ((1L << 48) - 1);
     haveNextNextGaussian = false;
@@ -130,7 +130,7 @@ public class Random implements java.io.Serializable
    * independent chosen random bits (0 and 1 are equally likely).
    * The implementation for java.util.Random is:
    * <pre>
-   * synchronized protected int next(int bits) {
+   * protected synchronized int next(int bits) {
    *     seed = (seed * 0x5DEECE66DL + 0xBL) & ((1L << 48) - 1);
    *     return (int) (seed >>> (48 - bits));
    * }
@@ -140,7 +140,7 @@ public class Random implements java.io.Serializable
    * @return the next pseudorandom value.
    * @since JDK1.1
    */
-  synchronized protected int next(int bits)
+  protected synchronized int next(int bits)
     /*{ require { 1 <= bits && bits <=32 :: 
        "bits "+bits+" not in range [1..32]" } } */
   {
@@ -330,7 +330,7 @@ public class Random implements java.io.Serializable
    * double value, with mean 0.0 and standard deviation 1.0.
    * The algorithm is as follows.
    * <pre>
-   * synchronized public double nextGaussian() {
+   * public synchronized double nextGaussian() {
    *     if (haveNextNextGaussian) {
    *         haveNextNextGaussian = false;
    *         return nextNextGaussian;
@@ -353,7 +353,7 @@ public class Random implements java.io.Serializable
    *
    * @return the next pseudorandom Gaussian distributed double.  
    */
-  synchronized public double nextGaussian()
+  public synchronized double nextGaussian()
   {
     if (haveNextNextGaussian)
       {
