@@ -41,47 +41,68 @@ exception statement from your version. */
 #include <jni.h>
 #include <jcl.h>
 
-#include "gnu_java_nio_FileChannelImpl.h"
+#include "java_nio_FileChannelImpl.h"
 
 #define IO_EXCEPTION "java/io/IOException"
 
 JNIEXPORT jlong JNICALL
-Java_gnu_java_nio_FileChannelImpl_size (JNIEnv *env, jclass class)
+Java_java_nio_channels_FileChannelImpl_size (JNIEnv *env, jclass clazz)
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.(): not implemented");
   return 0;
 }
 
 JNIEXPORT jlong JNICALL
-Java_gnu_java_nio_FileChannelImpl_implPosition__ (JNIEnv *env, jclass class)
+Java_java_nio_channels_FileChannelImpl_implPosition__ (JNIEnv *env, jclass clazz)
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.implPosition(): not implemented");
   return 0;
 }
 
 JNIEXPORT jobject JNICALL
-Java_gnu_java_nio_FileChannelImpl_implPosition__J (JNIEnv *env, jclass class, jlong newPosition)
+Java_java_nio_channels_FileChannelImpl_implPosition__J (JNIEnv *env, jclass clazz, jlong newPosition)
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.implPosition(): not implemented");
   return 0;
 }
 
 JNIEXPORT jobject JNICALL
-Java_gnu_java_nio_FileChannelImpl_implTruncate (JNIEnv *env, jclass class, jlong size)
+Java_java_nio_channels_FileChannelImpl_implTruncate (JNIEnv *env, jclass clazz, jlong size)
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.implTruncate(): not implemented");
   return 0;
 }
 
+JNIEXPORT jobject JNICALL
+Java_java_nio_channels_FileChannelImpl_nio_1mmap_1file (JNIEnv *env, jclass clazz, jlong pos, jlong size, jint mode)
+{
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.nio_mmap_file(): not implemented");
+  return 0;
+}
+
+JNIEXPORT void JNICALL
+Java_java_nio_channels_FileChannelImpl_nio_1unmmap_1file (JNIEnv *env, jclass clazz, jobject map_address, jint size)
+{
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.nio_unmmap_file(): not implemented");
+  return 0;
+}
+
+JNIEXPORT void JNICALL
+Java_java_nio_channels_FileChannelImpl_nio_1msync (JNIEnv *env, jclass clazz, jobject map_address, jint length)
+{
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.nio_msync(): not implemented");
+  return 0;
+}
+
 JNIEXPORT jint JNICALL
-Java_gnu_java_nio_FileChannelImpl_implRead (JNIEnv *env, jclass class, jbyteArray buffer, jint offset, jint length)
+Java_java_nio_channels_FileChannelImpl_implRead (JNIEnv *env, jclass clazz, jbyteArray buffer, jint offset, jint length)
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.implRead(): not implemented");
   return 0;
 }
 
 JNIEXPORT jint JNICALL
-Java_gnu_java_nio_FileChannelImpl_implWrite (JNIEnv *env, jclass class, jbyteArray buffer, jint offset, jint length)
+Java_java_nio_channels_FileChannelImpl_implWrite (JNIEnv *env, jclass clazz, jbyteArray buffer, jint offset, jint length)
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.implWrite(): not implemented");
   return 0;
