@@ -7,7 +7,7 @@ public final class Long extends Number {
 
   public static final long MIN_VALUE = 0x8000000000000000L;
   public static final long MAX_VALUE = 0x7fffffffffffffffL;
-  public static final Class TYPE = VMClass.getPrimitiveClass("long");
+  public static final Class TYPE = VMClassLoader.getPrimitiveClass("long");
 
   private long value;
     

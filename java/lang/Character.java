@@ -428,7 +428,7 @@ public final class Character implements Serializable, Comparable
   /**
    * Class object representing the primitive char data type.
    */
-  public static final Class TYPE = VMClass.getPrimitiveClass("char");
+  public static final Class TYPE = VMClassLoader.getPrimitiveClass("char");
 
   /**
    * Cn = Other, Not Assigned (Normative)
