@@ -86,39 +86,35 @@ public class PropertyDescriptor extends FeatureDescriptor {
    ** <CODE>&lt;beanClass&gt;</CODE>, where &lt;name&gt; has its
    ** first letter capitalized by the constructor.<P>
    **
-   ** <B>Implementation note:</B> If there is a get method (or
-   ** boolean isXXX() method), then the return type of that method
-   ** is used to find the set method.  If there is no get method,
-   ** then the set method is searched for exhaustively.<P>
-   **
-   ** <B>Spec note:</B>
-   ** If there is no get method and multiple set methods with
-   ** the same name and a single parameter (different type of course),
-   ** then an IntrospectionException is thrown.  While Sun's spec
-   ** does not state this, it can make Bean behavior different on
-   ** different systems (since method order is not guaranteed) and as
-   ** such, can be treated as a bug in the spec.  I am not aware of
-   ** whether Sun's implementation catches this.
+   ** <B>Implementation note:</B> If there is both are both isXXX and
+   ** getXXX methods, the former is used in preference to the latter.
+   ** We do not check that an isXXX method returns a boolean. In both
+   ** cases, this matches the behaviour of JDK 1.4<P>
    **
    ** @param name the programmatic name of the property, usually
    **             starting with a lowercase letter (e.g. fooManChu
    **             instead of FooManChu).
    ** @param beanClass the class the get and set methods live in.
-   ** @exception IntrospectionException if the methods are not found or invalid.
+   ** @exception IntrospectionException if the methods are not found 
+   **            or invalid.
    **/
   public PropertyDescriptor(String name, Class beanClass) 
     throws IntrospectionException 
   {
     setName(name);
-    String capitalized;
-    try {
-      capitalized = Character.toUpperCase(name.charAt(0)) + name.substring(1);
-    } 
-    catch (StringIndexOutOfBoundsException e) {
-      capitalized = "";
+    if (name.length() == 0) {
+      throw new IntrospectionException("empty property name");
     }
-    findMethods(beanClass, "is" + capitalized, "get" + capitalized, 
-		"set" + capitalized);
+    String caps = Character.toUpperCase(name.charAt(0)) + name.substring(1);
+    findMethods(beanClass, "is" + caps, "get" + caps, "set" + caps);
+    if (getMethod == null) {
+      throw new IntrospectionException("Cannot find an is" + caps + 
+				       " or get" + caps + " method");
+    }
+    if (setMethod == null) {
+      throw new IntrospectionException("Cannot find a " + caps + " method");
+    }
+    checkMethods();
   }
   
   /** Create a new PropertyDescriptor by introspection.
@@ -154,6 +150,15 @@ public class PropertyDescriptor extends FeatureDescriptor {
   {
     setName(name);
     findMethods(beanClass, getMethodName, null, setMethodName);
+    if (getMethod == null && getMethodName != null) {
+      throw new IntrospectionException("Cannot find a getter method called " + 
+				       getMethodName);
+    }
+    if (setMethod == null && setMethodName != null) {
+      throw new IntrospectionException("Cannot find a setter method called " + 
+				       setMethodName);
+    }
+    checkMethods();
   }
   
   /** Create a new PropertyDescriptor using explicit Methods.
@@ -172,35 +177,15 @@ public class PropertyDescriptor extends FeatureDescriptor {
     throws IntrospectionException 
   {
     setName(name);
-    if (getMethod != null && getMethod.getParameterTypes().length > 0) {
-      throw new IntrospectionException("get method has parameters");
-    }
-    if (setMethod != null && setMethod.getParameterTypes().length != 1) {
-      String msg = "set method does not have exactly one parameter"; 
-      throw new IntrospectionException(msg);
-    }
-    if (getMethod != null && setMethod != null) {
-      if (!getMethod.getReturnType().
-	  equals(setMethod.getParameterTypes()[0])) {
-	String msg = "set and get methods do not share the same type";
-	throw new IntrospectionException(msg);
-      }
-      if ((!getMethod.getDeclaringClass().
-	   isAssignableFrom(setMethod.getDeclaringClass())) &&
-	  (!setMethod.getDeclaringClass().
-	   isAssignableFrom(getMethod.getDeclaringClass()))) {
-	String msg = "set and get methods are not in the same class.";
-	throw new IntrospectionException(msg);
-      }
-    }
     this.getMethod = getMethod;
     this.setMethod = setMethod;
     if (getMethod != null) {
       this.propertyType = getMethod.getReturnType();
     } 
-    else {
+    else if (setMethod != null) {
       this.propertyType = setMethod.getParameterTypes()[0];
     }
+    checkMethods();
   }
   
   /** Get the property type.
@@ -295,89 +280,97 @@ public class PropertyDescriptor extends FeatureDescriptor {
     throws IntrospectionException 
   {
     try {
+      // Try the first get method name
       if (getMethodName1 != null) {
 	try {
 	  getMethod = beanClass.getMethod(getMethodName1, new Class[0]);
 	} 
-	catch (NoSuchMethodException E) {
+	catch (NoSuchMethodException e) {
 	}
-	if (getMethodName2 != null) {
-	  if (getMethod != null && 
-	      !getMethod.getReturnType().equals(java.lang.Boolean.TYPE)) {
-	    // If the is() method exists but isn't boolean, we'll just
-	    // go on and look for an ordinary get() method.
-	    getMethod = null;
+      }
+
+      // Fall back to the second get method name
+      if (getMethod == null && getMethodName2 != null) {
+	try {
+	  getMethod = beanClass.getMethod(getMethodName2, new Class[0]);
+	} 
+	catch (NoSuchMethodException e) {
+	}
+      }
+
+      // Try the set method name
+      if (setMethodName != null) {
+	if (getMethod != null) {
+	  // If there is a get method, use its return type to help
+	  // select the corresponding set method.
+	  Class propertyType = getMethod.getReturnType();
+	  if (propertyType == Void.TYPE) {
+	    String msg = "The property's read method has return type 'void'";
+	    throw new IntrospectionException(msg);
 	  }
 	  
-	  Method getMethod2;
-	  try {
-	    getMethod2 = beanClass.getMethod(getMethodName2, new Class[0]);
-	  } 
-	  catch (NoSuchMethodException E) {
-	    getMethod2 = null;
-	  }
-	  if (getMethod2 != null) {
-	    if (getMethod != null) {
-	      if (!getMethod.getReturnType().
-		  equals(getMethod2.getReturnType())) {
-		String msg = "Both " + getMethodName1 + 
-		  " and " + getMethodName2 + 
-		  " exist, and have contradictory return types.";
-		throw new IntrospectionException(msg);
-	      }
-	    } 
-	    else {
-	      getMethod = getMethod2;
-	    }
-	  }
-	}
-      }
-      
-      if (getMethod != null) {
-	propertyType = getMethod.getReturnType();
-	if (setMethodName != null) {
-	  Class[] setArgs = new Class[1];
-	  setArgs[0] = propertyType;
+	  Class[] setArgs = new Class[]{propertyType};
 	  try {
 	    setMethod = beanClass.getMethod(setMethodName, setArgs);
-	    if (!setMethod.getReturnType().equals(java.lang.Void.TYPE)) {
-	      throw new IntrospectionException(setMethodName + 
-					       " has non-void return type");
-	    }
 	  } 
-	  catch (NoSuchMethodException E) {
+	  catch (NoSuchMethodException e) {
 	  }
 	}
-      } 
-      else if (setMethodName != null) {
-	Method[] m = beanClass.getMethods();
-	for(int i = 0; i < m.length; i++) {
-	  Method current = m[i];
-	  if (current.getName().equals(setMethodName) &&
-	      current.getParameterTypes().length == 1 &&
-	      current.getReturnType().equals(java.lang.Void.TYPE)) {
-	    if (setMethod != null) {
-	      String msg = 
-		"Multiple, different set methods found that fit the bill!";
-	      throw new IntrospectionException(msg);
-	    } 
-	    else {
-	      setMethod = current;
-	      propertyType = current.getParameterTypes()[0];
+	else if (getMethodName1 == null && getMethodName2 == null) {
+	  // If this is a write-only property, choose the first set method
+	  // with the required name, one parameter and return type 'void'
+	  Method[] methods = beanClass.getMethods();
+	  for (int i = 0; i < methods.length; i++) {
+	    if (methods[i].getName().equals(setMethodName) &&
+		methods[i].getParameterTypes().length == 1 &&
+		methods[i].getReturnType() == Void.TYPE) {
+	      setMethod = methods[i];
+	      break;
 	    }
 	  }
 	}
-	if (setMethod == null) {
-	  throw new IntrospectionException("Cannot find get or set methods.");
-	}
-      } 
-      else {
-	throw new IntrospectionException("Cannot find get or set methods.");
       }
     } 
-    catch (SecurityException E) {
+    catch (SecurityException e) {
+      // FIXME -- shouldn't we just allow SecurityException to propagate?
       String msg = "SecurityException thrown on attempt to access methods.";
       throw new IntrospectionException(msg);
+    }
+  }
+
+  private void checkMethods() 
+    throws IntrospectionException
+  {
+    if (getMethod != null) {
+      if (getMethod.getParameterTypes().length > 0) {
+	throw new IntrospectionException("get method has parameters");
+      }
+      this.propertyType = getMethod.getReturnType();
+      if (propertyType == Void.TYPE) {
+	throw new IntrospectionException("get method has void return type");
+      }
+    }
+    if (setMethod != null) {
+      if (setMethod.getParameterTypes().length != 1) {
+	String msg = "set method does not have exactly one parameter"; 
+	throw new IntrospectionException(msg);
+      }
+      if (getMethod == null) {
+	propertyType = setMethod.getParameterTypes()[0];
+      }
+      else {
+	if (!propertyType.equals(setMethod.getParameterTypes()[0])) {
+	  String msg = "set and get methods do not share the same type";
+	  throw new IntrospectionException(msg);
+	}
+	if ((!getMethod.getDeclaringClass().
+	     isAssignableFrom(setMethod.getDeclaringClass())) &&
+	    (!setMethod.getDeclaringClass().
+	     isAssignableFrom(getMethod.getDeclaringClass()))) {
+	  String msg = "set and get methods are not in the same class.";
+	  throw new IntrospectionException(msg);
+	}
+      }
     }
   }
 }
