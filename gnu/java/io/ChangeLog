@@ -1,4 +1,15 @@
+Sun Jul 26 19:16:25 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* EncodingManager.java: Added the Encoder portion to this class
+	and got a clean compile.
+
+Sat Jul 25 19:09:42 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* EncodingManager.java: Wrote this class (Decoder portion) and
+	got a clean compile.
+	
 1998-07-06  Geoff Berry  <gcb@cs.duke.edu>
 
 	* UniqueObjectWrapper.java: Added comments.
+
 
