@@ -92,7 +92,7 @@ import java.util.Hashtable;
   *
   * @see URLStreamHandler
   */
-public final class URL implements Serializable //, Comparable
+public final class URL implements Serializable 
 {
 
 /*************************************************************************/
@@ -105,13 +105,13 @@ public final class URL implements Serializable //, Comparable
   * If an application installs in own protocol handler factory, this is
   * where we keep track of it.
   */
-protected static URLStreamHandlerFactory factory;
+private static URLStreamHandlerFactory factory;
 
 /**
   * This a table where we cache protocol handlers to avoid the overhead
   * of looking them up each time.
   */
-protected static Hashtable ph_cache = new Hashtable();
+private static Hashtable ph_cache = new Hashtable();
 
 /*************************************************************************/
 
@@ -122,33 +122,38 @@ protected static Hashtable ph_cache = new Hashtable();
 /**
   * The name of the protocol for this URL
   */
-protected String protocol;
+private String protocol;
 
 /**
   * The hostname or IP address of this protocol
   */
-protected String host;
+private String host;
 
 /**
   * The port number of this protocol or -1 if the port number used is
   * the default for this protocol.
   */
-protected int port = -1;
+private int port = -1;
 
 /**
   * The "file" portion of the URL
   */
-protected String file;
+private String file;
 
 /**
   * The anchor portion of the URL
   */
-protected String anchor;
+private String ref;
 
 /**
   * The protocol handler in use for this URL
   */
-protected URLStreamHandler ph;
+private URLStreamHandler ph;
+
+/**
+  * This is the hashCode for this URL
+  */
+private int hashCode;
 
 /*************************************************************************/
 
@@ -195,12 +200,16 @@ public
 URL(String protocol, String host, int port, String file) 
     throws MalformedURLException
 {
+  this(protocol, host, port, file, null);
+/*
   this.protocol = protocol.toLowerCase();
   this.host = host;
   this.port = port;
   this.file = file;
 
   ph = getProtocolHandler(protocol);
+  hashCode = toString.hashCode();
+*/
 }
 
 /*************************************************************************/
@@ -218,7 +227,53 @@ URL(String protocol, String host, int port, String file)
 public
 URL(String protocol, String host, String file) throws MalformedURLException
 {
-  this(protocol, host, -1, file);
+  this(protocol, host, -1, file, null);
+}
+
+/*************************************************************************/
+
+/**
+  * This method initializes a new instance of <code>URL</code> with the
+  * specified protocol, host, port, and file.  Additionally, this method
+  * allows the caller to specify a protocol handler to use instead of 
+  * the default.  If this handler is specified, the caller must have
+  * the "specifyStreamHandler" permission (see <code>NetPermission</code>)
+  * or a <code>SecurityException</code> will be thrown.
+  *
+  * @param protocol The protocol for this URL ("http", "ftp", etc)
+  * @param host The hostname or IP address to connect to
+  * @param port The port number to use, or -1 to use the protocol's default port
+  * @param file The "file" portion of the URL.
+  * @param ph The protocol handler to use with this URL.
+  *
+  * @exception MalformedURLException If no protocol handler can be loaded
+  * for the specified protocol.
+  * @exception SecurityException If the <code>SecurityManager</code> exists
+  * and does not allow the caller to specify its own protocol handler.
+  */
+public
+URL(String protocol, String host, int port, String file,
+    URLStreamHandler ph) throws MalformedURLException, SecurityException
+{
+  this.protocol = protocol.toLowerCase();
+  this.host = host;
+  this.port = port;
+  this.file = file;
+
+  if (ph != null)
+    {
+      SecurityManager sm = System.getSecurityManager();
+      if (sm != null)
+        sm.checkPermission(new NetPermission("specifyStreamHandler"));
+
+      this.ph = ph;
+    }
+  else
+    {
+      this.ph = getProtocolHandler(protocol);
+    }
+
+  hashCode = toString().hashCode();
 }
 
 /*************************************************************************/
@@ -236,10 +291,42 @@ URL(String protocol, String host, String file) throws MalformedURLException
   * @param context The context URL
   * @param url A String representing this URL
   *
-  * @exception MalformedURLException If a protocol handler cannot be found or the URL cannot be parsed
+  * @exception MalformedURLException If a protocol handler cannot be found 
+  * for the URL cannot be parsed
   */
 public
 URL(URL context, String url) throws MalformedURLException
+{
+  this(context, url, null);
+}
+
+/*************************************************************************/
+
+/**
+  * This method parses a String representation of a URL within the
+  * context of an existing URL.  Principally this means that any fields
+  * not present the URL are inheritied from the context URL.  This allows
+  * relative URL's to be easily constructed (***true?***).  If the
+  * context argument is null, then a complete URL must be specified in the
+  * URL string.  If the protocol parsed out of the URL is different 
+  * from the context URL's protocol, then then URL String is also
+  * expected to be a complete URL.
+  * 
+  * Additionally, this method allows the caller to specify a protocol handler to 
+  * use instead of  the default.  If this handler is specified, the caller must 
+  * have the "specifyStreamHandler" permission (see <code>NetPermission</code>)
+  * or a <code>SecurityException</code> will be thrown.
+  *
+  * @param context The context URL
+  * @param url A String representing this URL
+  * @param ph The protocol handler for this URL
+  *
+  * @exception MalformedURLException If a protocol handler cannot be found or the URL cannot be parsed
+  * @exception SecurityException If the <code>SecurityManager</code> exists
+  * and does not allow the caller to specify its own protocol handler.
+  */
+public
+URL(URL context, String url, URLStreamHandler ph) throws MalformedURLException
 {
   int end, start = -1;
 
@@ -275,7 +362,18 @@ URL(URL context, String url) throws MalformedURLException
       }
 
   // Get the protocol handler and parse the rest of the URL string.
-  ph = getProtocolHandler(protocol);
+  if (ph != null)
+    {
+      SecurityManager sm = System.getSecurityManager();
+      if (sm != null)
+        sm.checkPermission(new NetPermission("specifyStreamHandler"));
+
+      this.ph = ph;
+    }
+  else
+    {
+      this.ph = getProtocolHandler(protocol);
+    }
 
   if (start == -1)
     start = 0;
@@ -286,9 +384,10 @@ URL(URL context, String url) throws MalformedURLException
   if (end == -1)
     end = url.length();
   if (end != (url.length()))
-    anchor = url.substring(end + 1);
+    ref = url.substring(end + 1);
 
-  ph.parseURL(this, url, start, end);
+  this.ph.parseURL(this, url, start, end);
+  hashCode = toString().hashCode();
 }
 
 /*************************************************************************/
@@ -419,10 +518,10 @@ getProtocolHandler(String protocol) throws MalformedURLException
   * @param host The hostname or IP address for this URL
   * @param port The port number of this URL
   * @param file The "file" portion of this URL.
-  * @param anchor The anchor portion of this URL.
+  * @param ref The anchor portion of this URL.
   */
 protected synchronized void
-set(String protocol, String host, int port, String file, String anchor)
+set(String protocol, String host, int port, String file, String ref)
 {
   //*** Should we ignore null'd fields?  Assume not for now.
 
@@ -430,7 +529,7 @@ set(String protocol, String host, int port, String file, String anchor)
   this.host = host;
   this.port = port;
   this.file = file;
-  this.anchor = anchor;
+  this.ref = ref;
 }
 
 /*************************************************************************/
@@ -489,15 +588,15 @@ getFile()
 /*************************************************************************/
 
 /**
-  * Returns the anchor (sometimes called the "reference") portion of the
+  * Returns the ref (sometimes called the "reference") portion of the
   * URL
   *
-  * @return The anchor
+  * @return The ref
   */
 public String
 getRef()
 {
-  return(anchor);
+  return(ref);
 }
 
 /*************************************************************************/
@@ -505,7 +604,7 @@ getRef()
 /**
   * Test another URL for equality with this one.  This will be true only if
   * the argument is non-null and all of the fields in the URL's match 
-  * exactly (ie, protocol, host, port, file, and anchor).  Overrides
+  * exactly (ie, protocol, host, port, file, and ref).  Overrides
   * Object.equals().
   *
   * @param url The URL to compare with
@@ -525,11 +624,11 @@ equals(Object url)
 
   URL u = (URL)url;
 
-  // Check everything but the anchor
+  // Check everything but the ref
   if (!sameFile(u))
     return(false);
 
-  // Do the anchor's match
+  // Do the ref's match
   String s = u.getRef();
   if (s != null)
     if (!s.equals(getRef()))
@@ -546,7 +645,7 @@ equals(Object url)
 /**
   * Tests whether or not another URL refers to the same "file" as this one.
   * This will be true if and only if the passed object is not null, is a
-  * URL, and matches all fields but the anchor (ie, protocol, host, port,
+  * URL, and matches all fields but the ref (ie, protocol, host, port,
   * and file);
   *
   * @param url The URL object to test with
@@ -593,7 +692,7 @@ sameFile(URL url)
 
 /*************************************************************************/
 
-/**
+/*
   * This is the implementation of the Comparable interface for URL's.  It
   * will return a negative int, 0, or a positive int depending on whether
   * a URL is less than, equal to, or greater than this URL respectively.
@@ -603,12 +702,13 @@ sameFile(URL url)
   * @param url The URL to compare against
   *
   * @return An int indicating whether a URL is less than, equal to, or greater than this URL
-  */
+  *
 public int
 compareTo(Object url)
 {
   return(toExternalForm().compareTo(((URL)url).toExternalForm()));
 }
+*/
 
 /*************************************************************************/
 
@@ -686,6 +786,19 @@ public final synchronized Object
 getContent() throws IOException
 {
   return(openConnection().getContent());
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns a hash value for this object.
+  *
+  * @return a hash value for this object.
+  */
+public int
+hashCode()
+{
+  return(hashCode);
 }
 
 } // class URL
