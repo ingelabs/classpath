@@ -1,3 +1,9 @@
+2003-08-16  Mark Wielaard  <mark@klomp.org>
+
+	Reported by Guilhem Lavaux and Julian Dolby
+	* java/io/ObjectStreamClass.java (getSerialPersistentFields): Get the
+	field "serialPersistentFields", not "getSerialPersistentFields".
+
 2003-08-15  Mark Wielaard  <mark@klomp.org>
 
 	* NEWS: Updated with important improvements for 0.06 release.
