@@ -1,5 +1,12 @@
 2003-10-02  Michael Koch  <konqueror@gmx.de>
 
+	* java/text/SimpleDateFormat.java
+	(compileFormat): Character.isLetter(char) allows too much characters.
+	Replace it with Character.isLowerCase(char) ||
+	Character.isUpperCase(char).
+
+2003-10-02  Michael Koch  <konqueror@gmx.de>
+
 	* java/util/prefs/Preferences.java
 	(defaultFactoryClass): Fixed default factory class name.
 	(getFactory): Instantiate factory class.
