@@ -296,7 +296,7 @@ public class DatagramSocket
    *
    * @since 1.1
    */
-  public void setSoTimeout(int timeout) throws SocketException
+  public synchronized void setSoTimeout(int timeout) throws SocketException
   {
     if (timeout < 0)
       throw new IllegalArgumentException("Invalid timeout: " + timeout);
@@ -739,7 +739,7 @@ public class DatagramSocket
    * @exception SocketException If an error occurs
    * @exception IllegalArgumentException If tc value is illegal
    *
-   * @see DatagramSocket:getTrafficClass
+   * @see DatagramSocket#getTrafficClass()
    * 
    * @since 1.4
    */
@@ -758,7 +758,7 @@ public class DatagramSocket
   /**
    * Returns the current traffic class
    * 
-   * @see DatagramSocket:setTrafficClass
+   * @see DatagramSocket#setTrafficClass(int tc)
    *
    * @exception SocketException If an error occurs
    * 

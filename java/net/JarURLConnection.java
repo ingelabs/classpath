@@ -61,9 +61,10 @@ import java.util.jar.*;
  * local cache file, then performing standard jar operations on it.
  * (At least this is true for the default protocol implementation).
  *
- * @version 0.1
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @author Kresten Krab Thorup <krab@gnu.org>
  *
- * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @since 1.2
  */
 public abstract class JarURLConnection extends URLConnection
 {
@@ -88,8 +89,13 @@ public abstract class JarURLConnection extends URLConnection
    * Creates a JarURLConnection from a URL objects
    *
    * @param URL url The URL object for this connection.
+   *
+   * @exception MalformedURLException If url is invalid
+   *
+   * @specnote This constructor is protected since JDK 1.4
    */
-  protected JarURLConnection(URL url) throws MalformedURLException
+  protected JarURLConnection(URL url)
+    throws MalformedURLException
   {
     super(url);
 
@@ -145,22 +151,6 @@ public abstract class JarURLConnection extends URLConnection
   public abstract JarFile getJarFile() throws IOException;
 
   /**
-   * Returns a Manifest object for this jar file, or null if there is no
-   * manifest.
-   *
-   * @return The Manifest
-   *
-   * @exception IOException If an error occurs
-   */
-  public Manifest getManifest() throws IOException
-  {
-    if (jar_file == null)
-      jar_file = getJarFile();
-
-    return(jar_file.getManifest());
-  }
-
-  /**
    * Returns the entry in this jar file specified by the URL.  
    * 
    * @return The jar entry
@@ -172,33 +162,7 @@ public abstract class JarURLConnection extends URLConnection
     if (jar_file == null)
       jar_file = getJarFile();
 
-    return(jar_file.getJarEntry(entry_name));
-  }
-
-  /**
-   * Returns the Attributes for the Jar entry specified by the URL or null
-   * if none
-   *
-   * @return The Attributes
-   *
-   * @exception IOException If an error occurs
-   */
-  public Attributes getAttributes() throws IOException
-  {
-    return(getJarEntry().getAttributes());
-  }
-
-  /**
-   * Returns the main Attributes for the jar file specified in the URL or
-   * null if there are none
-   *
-   * @return The main Attributes
-   *
-   * @exception IOException If an error occurs
-   */
-  public Attributes getMainAttributes() throws IOException
-  {
-    return(getManifest().getMainAttributes());
+    return jar_file.getJarEntry(entry_name);
   }
 
   /**
@@ -209,9 +173,50 @@ public abstract class JarURLConnection extends URLConnection
    *
    * @exception IOException If an error occurs
    */
-  public Certificate[] getCertificates() throws IOException
+  public Certificate[] getCertificates () throws IOException
   {
-    return(getJarEntry().getCertificates());
+    return getJarEntry ().getCertificates ();
   }
-} // class JarURLConnection
 
+  /**
+   * Returns the main Attributes for the jar file specified in the URL or
+   * null if there are none
+   *
+   * @return The main Attributes
+   *
+   * @exception IOException If an error occurs
+   */
+  public Attributes getMainAttributes () throws IOException
+  {
+    return getManifest ().getMainAttributes ();
+  }
+
+  /**
+   * Returns the Attributes for the Jar entry specified by the URL or null
+   * if none
+   *
+   * @return The Attributes
+   *
+   * @exception IOException If an error occurs
+   */
+  public Attributes getAttributes () throws IOException
+  {
+    return getJarEntry().getAttributes();
+  }
+
+  /**
+   * Returns a Manifest object for this jar file, or null if there is no
+   * manifest.
+   *
+   * @return The Manifest
+   *
+   * @exception IOException If an error occurs
+   */
+  public Manifest getManifest () throws IOException
+  {
+    if (jar_file == null)
+      jar_file = getJarFile();
+
+    return jar_file.getManifest();
+  }
+}

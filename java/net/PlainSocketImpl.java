@@ -39,8 +39,8 @@ exception statement from your version. */
 package java.net;
 
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import gnu.classpath.Configuration;
 
 /**
@@ -117,7 +117,7 @@ class PlainSocketImpl extends SocketImpl
    *
    * @exception IOException If an error occurs
    */
-  protected native void close() throws IOException;
+  protected native void close () throws IOException;
 
   /**
    * Connects to the remote address and port specified as arguments.
@@ -223,7 +223,7 @@ class PlainSocketImpl extends SocketImpl
    * Returns an InputStream object for reading from this socket.  This will
    * be an instance of SocketInputStream.
    *
-   * @return An InputStream
+   * @return An input stream attached to the socket.
    *
    * @exception IOException If an error occurs
    */
@@ -231,12 +231,12 @@ class PlainSocketImpl extends SocketImpl
   {
     return(new SocketInputStream(this));
   }
-  
+
   /**
    * Returns an OutputStream object for writing to this socket.  This will
    * be an instance of SocketOutputStream.
-   * 
-   * @return An OutputStream
+   *
+   * @return An output stream attached to the socket.
    *
    * @exception IOException If an error occurs
    */
