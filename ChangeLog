@@ -1,3 +1,7 @@
+2001-09-05  Tom Tromey  <tromey@redhat.com>
+
+	* java/text/DateFormatSymbols.java: Updated license info.
+
 2001-09-05  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 
 	* java/text/MessageFormat.java (setLocale): Don't catch ParseException 
