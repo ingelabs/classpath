@@ -1,3 +1,9 @@
+2003-03-01  Mark Wielaard  <mark@klomp.org>
+ 
+	* java/io/ObjectInputStream.java: Reindent and remove dead and/or
+	commented out code.
+	* java/io/ObjectOutputStream.java: Likewise.
+
 2003-03-01  Tom Tromey  <tromey@redhat.com>
 
 	* java/rmi/registry/RegistryHandler.java: Deprecate.
