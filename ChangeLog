@@ -1,3 +1,9 @@
+2005-02-20  Mark Wielaard  <mark@klomp.org>
+
+	* java/text/SimpleDateFormat.java
+	(SimpleDateFormat(String, DateFormatSymbols)): Throw
+	NullPointerException when formatData is null.
+
 2005-02-19  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/locale/LocaleInformation_af.java,
