@@ -1,3 +1,8 @@
+2002-11-16  Michael Koch <konqueror@gmx.de>
+
+	* java/nio/ReadOnlyBufferException.java: New file.
+	* java/nio/Makefile.am: Added ReadOnlyBufferException.java.
+
 2002-11-15  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/java/awt/peer/gtk/TestAWT.java (RadioWindow.init): Add

@@ -13,6 +13,7 @@ IntBuffer.java \
 InvalidMarkException.java \
 LongBuffer.java \
 MappedByteBuffer.java \
+ReadOnlyBufferException.java \
 ShortBuffer.java \
 package.html
 
