@@ -1,3 +1,8 @@
+2003-02-02  C. Brian Jones  <cbj@gnu.org>
+
+	* configure.in: updated VERSION to 0.05-beta1
+	* doc/hacking.texinfo: updated with new sections, modifications
+
 2003-02-01  Stephen Crawley  <crawley@dstc.edu.au>
 	* java/math/BigDecimal(valueOf): fix DiagBigDecimal val008, val013
 	tests; see patch #1016 on Savannah.

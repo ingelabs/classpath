@@ -11,7 +11,7 @@
 This file contains important information you will need to know if you
 are going to hack on the GNU Classpath project code.
 
-Copyright (C) 1998-2001 Free Software Foundation, Inc.
+Copyright (C) 1998,1999,2000,2001,2002,2003 Free Software Foundation, Inc.
 
 @end ifinfo
 
@@ -24,7 +24,7 @@ Copyright (C) 1998-2001 Free Software Foundation, Inc.
 
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 1998-2002 Free Software Foundation, Inc.
+Copyright @copyright{} 1998,1999,2000,2001,2002,2003 Free Software Foundation, Inc.
 @sp 2
 Permission is granted to make and distribute verbatim copies of
 this document provided the copyright notice and this permission notice
@@ -59,23 +59,31 @@ class libraries.
 * Programming Tools::           A list of tools you will need for hacking
 * Programming Standards::       Standards to use when writing code for Classpath
 * Programming Goals::           What to consider when writing code for Classpath
-* Portability::                 How to ensure your code is portable
-* Robustness::                  How to make native code robust
-* Java Efficiency::             Tips for making Java code faster
-* Native Efficiency::           Tips for making native Java code faster
+* API Compatibility::           
 * Specification Sources::       Where to find the Java class library specs
 * Naming Conventions::          How files and directories are named in Classpath
 * Character Conversions::       Working on Character conversions
 * Localization::                How Classpath handles localization/internationalization
 
- -- Detailed Node Listing --
+@detailmenu
+ --- The Detailed Node Listing ---
+
+Programming Goals
+
+* Portability::                 Writing Portable Software                
+* Robustness::                  Writing Robust Software               
+* Java Efficiency::             Writing Efficient Java            
+* Native Efficiency::           Writing Efficient JNI          
+* Security::                    Writing Secure Software
 
 Localization
 
 * String Collation::            Sorting strings in different locales
 * Break Iteration::             Breaking up text into words, sentences, and lines
-* Date Formatting and Parsing:: Locale specific date handling
+* Date Formatting and Parsing::  Locale specific date handling
+* Decimal/Currency Formatting and Parsing::  Local specific number handling
 
+@end detailmenu
 @end menu
 
 @node Introduction, Requirements, Top, Top
@@ -83,20 +91,13 @@ Localization
 @chapter Introduction
 
 The Classpath Project is a dedicated to providing a 100% free, clean
-room implementation of the standard Java class libraries.  Because there
-is currently no free implementation of the Java environment, no free
-operating system can ship with Java included.  Parts of a free Java
-implementation have already been written, including free Java virtual
-machines (JVM's) such as @uref{http://www.kaffe.org/,Kaffe} and
-@uref{http://www.hungry.com/products/japhar/,Japhar}, and Java compilers
-such as @uref{http://www.jikes.org/, Jikes} and
-@uref{http://gcc.gnu.org/java/, GCJ}.
-However, there is currently no free replacement for Sun's proprietary
-libraries.  The Classpath project aims to correct this problem by
-supplying a free class library implementation that will allow a 100%
-free Java platform to be distributed.  Note that Kaffe now ships with a
-partial class library that is also free, so there is more than one group
-working towards a common goal.
+room implementation of the standard Java class libraries which offer
+free software developers an alternative to Sun's proprietary
+libraries.  The Classpath Project was started in the Spring of 1998 as
+an official Free Software Foundation project.  Most of the volunteers
+working on GNU Classpath do so in their spare time.  We appreciate
+everyone's efforts in the past to improve and help the project and
+look forward to future contributions by old and new members alike.
 
 @node Requirements, Volunteering, Introduction, Top
 @comment node-name, next, previous, up
@@ -188,16 +189,18 @@ protected method and variable.  These should be superior to Sun's and
 cover everything about the item being documented.
 
 @item
-Please write a regression test package that can be used to run tests of
-your package's functionality.  
+Please write a regression test package that can be used to run tests
+of your package's functionality.  GNU Classpath uses the
+@uref{http://sources.redhat.com/mauve/,Mauve project} for testing the
+functionality of the core class libraries.  The Classpath Project is
+fast approaching the point in time where all modifications to the
+source code repository will require appropriate test cases in Mauve to
+ensure correctness and prevent regressions.  
 @end itemize
 
-Nobody likes to write documentation and test cases, but they are vital
-to a complete and robust product.  Writing them as you go is much easier
-than going back at the end and adding them.  We use the Mauve testsuite, see
-@uref{http://sources.redhat.com/mauve/,Mauve}.  There is always room for
-improvement when testing software and there is plenty of headroom left
-before Mauve becomes close to complete.  
+With the exception of the AWT, writing tests and fixing bugs should be
+every developer's top priority in order to reach the elusive release
+of version 1.0.  
 
 @node Project Goals, Programming Tools, Volunteering, Top
 @comment node-name, next, previous, up
@@ -216,7 +219,7 @@ Free operating systems.  This includes GNU/Linux, GNU/Hurd, and the free
 BSDs.
 
 @item
-Other Unix like operating systems.
+Other UNIX-like operating systems.
 
 @item
 Platforms which currently have no Java support at all.
@@ -234,20 +237,20 @@ or CNI support.  However, the top priority is free JVM's.  A small, and
 probably incomplete list is below.
 
 @enumerate
-@item
-@uref{http://www.intel.com/research/mrl/orp/,Intel's Open Runtime Platform}
-@item
-@uref{http://www.japhar.org/,Japhar}
-@item
-@uref{http://www.kaffe.org/,Kaffe}
-@item
-@uref{http://www.sablevm.org/,SableVM}
 @item 
 @uref{http://kissme.sourceforge.net/,Kissme}
 @item
-@uref{http://latte.snu.ac.kr/,LaTTe}
+@uref{http://www-124.ibm.com/developerworks/oss/jikesrvm/,Jikes RVM}
 @item
-Other JNI Compliant JVM's.
+@uref{http://www.sablevm.org/,SableVM}
+@item
+@uref{http://www.intel.com/research/mrl/orp/,Intel's Open Runtime Platform}
+@item
+@uref{http://www.kaffe.org/,Kaffe}
+@item
+@uref{http://www.japhar.org/,Japhar}
+@item
+@uref{http://latte.snu.ac.kr/,LaTTe}
 @end enumerate
 
 As with OS platform support, this priority list could change if a
@@ -271,22 +274,22 @@ familiarize yourself with the following tools:
 @item
 CVS 1.11
 @item
-automake 1.4
+automake 1.6+
 @item
-autoconf 2.13
+autoconf 2.53+
 @item
-libtool 1.4.2
+libtool 1.4.2+
 @item
 GNU m4 1.4
-@item
-perl 5.6
 @end itemize
 
 All of these tools are available from
-@uref{ftp://gnudist.gnu.org/pub/gnu/,gnudist.gnu.org} via anonymous ftp.
-With the exception of perl, they are fully documented with texinfo
-manuals.  Texinfo can be browsed with the Emacs editor, or with the text
-editor of your choice.
+@uref{ftp://gnudist.gnu.org/pub/gnu/,gnudist.gnu.org} via anonymous
+ftp, except CVS which is available from
+@uref{http://www.cvshome.org/,www.cvshome.org}.  They are fully
+documented with texinfo manuals.  Texinfo can be browsed with the
+Emacs editor, or with the text editor of your choice, or transformed
+into nicely printable Postscript.
 
 Here is a brief description of the purpose of those tools.
 
@@ -295,37 +298,34 @@ Here is a brief description of the purpose of those tools.
 @item CVS  
 A version control system that maintains a centralized Internet
 repository of all code in the Classpath system.  Access to the
-repository requires an account.  Contact Paul Fisher
-(@email{rao@@gnu.org}) for details.
+repository requires an account.  Contact C. Brian Jones
+(@email{cbj@@gnu.org}) for details.
 
 @item automake  
 This tool automatically creates Makefile.in files from Makefile.am
-files.  The Makefile.in is turned into a Makefile by autoconf.  Why use
-this?  Because it automatically generates every makefile target you
-would ever want (clean, install, dist, etc) in full compliance with the
-GNU coding standards.  It also simplifies Makefile creation in a ton of
-different ways I can't describe here.  Read the docs for more info.
+files.  The Makefile.in is turned into a Makefile by autoconf.  Why
+use this?  Because it automatically generates every makefile target
+you would ever want (clean, install, dist, etc) in full compliance
+with the GNU coding standards.  It also simplifies Makefile creation
+in a number of ways that cannot be described here.  Read the docs for
+more info.
 
 @item autoconf  
-Automatically configures a package for the platform on which it is being
-built and generates the Makefile for that platform.
+Automatically configures a package for the platform on which it is
+being built and generates the Makefile for that platform.
 
 @item libtool  
-Handles all of the zillions of hairy platform specific options needed to
-build shared libraries.
+Handles all of the zillions of hairy platform specific options needed
+to build shared libraries.
 
 @item m4
-The free GNU replacement for the standard Unix macro processor.
+The free GNU replacement for the standard UNIX macro processor.
 Proprietary m4 programs are broken and so GNU m4 is required for
-autoconf to work.
+autoconf to work though knowing a lot about GNU m4 is not required to
+work with autoconf.
 
 @item perl
 Larry Wall's scripting language.  It is used internally by automake.
-
-@item MP
-Required for java.lang.Float, java.lang.Double, java.math.BigInteger,
-and java.math.BigDecimal.
-
 @end table
 
 @node Programming Standards, Programming Goals, Programming Tools, Top
@@ -350,7 +350,7 @@ For documentation comments, please follow
 @uref{http://java.sun.com/products/jdk/javadoc/writingdoccomments.html,How
 to Write Doc Comments for Javadoc}.
 
-@node Programming Goals, Portability, Programming Standards, Top
+@node Programming Goals, API Compatibility, Programming Standards, Top
 @comment node-name, next, previous, up
 @chapter Programming Goals
 
@@ -363,9 +363,17 @@ code.  Of course, as a programmer you would probably like to find sneaky
 ways to get around the issue so that your code can be all three ... the
 following chapters will give some hints on how to do this.
 
-@node Portability, Robustness, Programming Goals, Top
+@menu
+* Portability::                 Writing Portable Software                
+* Robustness::                  Writing Robust Software               
+* Java Efficiency::             Writing Efficient Java            
+* Native Efficiency::           Writing Efficient JNI          
+* Security::                    Writing Secure Software
+@end menu
+
+@node Portability, Robustness, Programming Goals, Programming Goals
 @comment node-name, next, previous, up
-@chapter Portability
+@section Portability
 
 The portability goal for Classpath is the following:
 
@@ -388,29 +396,9 @@ Right now the only supported platform is Linux.  This will change as that
 version stabilizes and we begin the effort to port to many other
 platforms.
 
-Sun has produced documentation concerning much of the information
-needed to make Classpath serializable compatible with Sun
-implementations.  Part of doing this is to make sure that every class
-that is Serializable actually defines a field named serialVersionUID
-with a value that matches the output of serialver on Sun's
-implementation.  The reason for doing this is below.
-
-If a class has a field (of any accessibility) named serialVersionUID
-of type long, that is what serialver uses. Otherwise it computes a
-value using some sort of hash function on the names of all method
-signatures in the .class file. I'm not sure whether the methods are
-sorted first, or what the hash function is.  The fact that different
-compilers create different synthetic method signatures, such as
-access$0() if an inner class needs access to a private member of an
-enclosing class, make it impossible for two distinct compilers to
-reliably generate the same serial #, because their .class files
-differ. However, once you have a .class file, its serial # is unique,
-and the computation will give the same result no matter what platform
-you execute on.
-
-@node Robustness, Java Efficiency, Portability, Top
+@node Robustness, Java Efficiency, Portability, Programming Goals
 @comment node-name, next, previous, up
-@chapter Robustness
+@section Robustness
 
 Native code is very easy to make non-robust.  (That's one reason Java is
 so much better!)  Here are a few hints to make your native code more
@@ -437,9 +425,9 @@ terminates Java with a "JNI Panic."
 In general, try to use functions in native/jni/classpath/jcl.h.  They
 check exceptions and return values and throw appropriate exceptions.
 
-@node Java Efficiency, Native Efficiency, Robustness, Top
+@node Java Efficiency, Native Efficiency, Robustness, Programming Goals
 @comment node-name, next, previous, up
-@chapter Java Efficiency
+@section Java Efficiency
 
 For methods which explicitly throw a NullPointerException when an
 argument is passed which is null, per a Sun specification, do not write
@@ -470,9 +458,9 @@ will throw a NullPointerException when length() is invoked.  Classpath
 is designed to be as fast as possible -- every optimization, no matter
 how small, is important.
 
-@node Native Efficiency, Specification Sources, Java Efficiency, Top
+@node Native Efficiency, Security, Java Efficiency, Programming Goals
 @comment node-name, next, previous, up
-@chapter Native Efficiency
+@section Native Efficiency
 
 You might think that using native methods all over the place would give
 our implementation of Java speed, speed, blinding speed.  You'd be
@@ -528,7 +516,50 @@ to be able to use Mozilla's NSPR or Apache's APR, as these libraries
 are already ported to numerous systems and provide all the necessary
 system functions as well.
 
-@node Specification Sources, Naming Conventions, Native Efficiency, Top
+@node Security,  , Native Efficiency, Programming Goals
+@comment  node-name,  next,  previous,  up
+@section Security
+
+Security is such a huge topic it probably deserves its own chapter.
+Most of the current code needs to be audited for security to ensure
+all of the proper security checks are in place within the Java
+platform, but also to verify that native code is reasonably secure and
+avoids common pitfalls, buffer overflows, etc.  A good source for
+information on secure programming is the excellent HOWTO by David
+Wheeler,
+@uref{http://www.dwheeler.com/secure-programs/Secure-Programs-HOWTO/index.html,Secure
+Programming for Linux and Unix HOWTO}.
+
+@node API Compatibility, Specification Sources, Programming Goals, Top
+@comment  node-name,  next,  previous,  up
+@chapter API Compatibility
+
+Sun has produced documentation concerning much of the information
+needed to make Classpath serializable compatible with Sun
+implementations.  Part of doing this is to make sure that every class
+that is Serializable actually defines a field named serialVersionUID
+with a value that matches the output of serialver on Sun's
+implementation.  The reason for doing this is below.
+
+If a class has a field (of any accessibility) named serialVersionUID
+of type long, that is what serialver uses. Otherwise it computes a
+value using some sort of hash function on the names of all method
+signatures in the .class file.  The fact that different compilers
+create different synthetic method signatures, such as access$0() if an
+inner class needs access to a private member of an enclosing class,
+make it impossible for two distinct compilers to reliably generate the
+same serial #, because their .class files differ. However, once you
+have a .class file, its serial # is unique, and the computation will
+give the same result no matter what platform you execute on.
+
+Serialzation compatibility can be tested using tools provided with
+@uref{http://rainbow.netreach.net/~sballard/japi/,Japitools}.  These
+tools can test binary serialization compatibility and also provide
+information about unknown serialized formats by writing these in XML
+instead.  Japitools is also the primary means of checking API
+compatibility for GNU Classpath with Sun's Java Platform.
+
+@node Specification Sources, Naming Conventions, API Compatibility, Top
 @comment node-name, next, previous, up
 @chapter Specification Sources
 
@@ -798,8 +829,8 @@ given locale.
 @menu
 * String Collation::            Sorting strings in different locales
 * Break Iteration::             Breaking up text into words, sentences, and lines
-* Date Formatting and Parsing:: Locale specific date handling
-* Decimal/Currency Formatting and Parsing:: Local specific number handling
+* Date Formatting and Parsing::  Locale specific date handling
+* Decimal/Currency Formatting and Parsing::  Local specific number handling
 @end menu
 
 In Classpath, all locale specific data is stored in a 
