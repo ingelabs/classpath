@@ -1,5 +1,13 @@
 2004-11-21  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/BorderFactory.java
+	(BorderFactory): Added private constructor.
+	* javax/swing/SwingUtilities.java
+	(SwingUtilities): Likewise.
+	(computeStringWidth): New method.
+
+2004-11-21  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/color/ICC_Profile.java
 	(icSigNamedColorTag): Removed.
 	* java/awt/datatransfer/DataFlavor.java
