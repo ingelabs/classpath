@@ -50,20 +50,20 @@ AC_DEFUN(CLASSPATH_INTERNAL_CHECK_JAPHAR,
   AC_SUBST(prefix)
 
   dnl programs we probably need somewhere
-  bindir=`$JAPHAR_CONFIG info bindir`
-  datadir=`$JAPHAR_CONFIG info datadir`
-  AC_PATH_PROG(JAPHAR_JABBA, japhar, "", $bindir:$PATH)
-  AC_PATH_PROG(JAPHAR_JAVAC, javac, "", $bindir:$PATH)
-  AC_PATH_PROG(JAPHAR_JAVAH, javah, "", $bindir:$PATH)
+  _t_bindir=`$JAPHAR_CONFIG info bindir`
+  _t_datadir=`$JAPHAR_CONFIG info datadir`
+  AC_PATH_PROG(JAPHAR_JABBA, japhar, "", $_t_bindir:$PATH)
+  AC_PATH_PROG(JAPHAR_JAVAC, javac, "", $_t_bindir:$PATH)
+  AC_PATH_PROG(JAPHAR_JAVAH, javah, "", $_t_bindir:$PATH)
   AC_MSG_CHECKING(for Japhar classes)
-  if test -e $datadir/classes.zip; then
-    JAPHAR_CLASSLIB=$datadir/classes.zip
-  elif test -e $datadir/classes.jar; then
-    JAPHAR_CLASSLIB=$datadir/classes.jar
-  elif test -e $datadir/rt.jar; then
-    JAPHAR_CLASSLIB=$datadir/rt.jar
-  elif test -e $datadir/rt.zip; then
-    JAPHAR_CLASSLIB=$datadir/rt.zip
+  if test -e $_t_datadir/classes.zip; then
+    JAPHAR_CLASSLIB=$_t_datadir/classes.zip
+  elif test -e $_t_datadir/classes.jar; then
+    JAPHAR_CLASSLIB=$_t_datadir/classes.jar
+  elif test -e $_t_datadir/rt.jar; then
+    JAPHAR_CLASSLIB=$_t_datadir/rt.jar
+  elif test -e $_t_datadir/rt.zip; then
+    JAPHAR_CLASSLIB=$_t_datadir/rt.zip
   else
     AC_MSG_ERROR(no)
   fi
@@ -103,43 +103,43 @@ AC_DEFUN(CLASSPATH_INTERNAL_CHECK_KAFFE,
   AC_SUBST(prefix)
 
   dnl programs we probably need somewhere
-  bindir=`$KAFFE_CONFIG info bindir`
-  datadir=`$KAFFE_CONFIG info datadir`
-  AC_PATH_PROG(KAFFE_JABBA, kaffe, "", $bindir:$PATH)
-  AC_PATH_PROG(KAFFE_JAVAC, kjc, "", $bindir:$PATH)
-  AC_PATH_PROG(KAFFE_JAVAH, kaffeh, "", $bindir:$PATH)
+  _t_bindir=`$KAFFE_CONFIG info bindir`
+  _t_datadir=`$KAFFE_CONFIG info datadir`
+  AC_PATH_PROG(KAFFE_JABBA, kaffe, "", $_t_bindir:$PATH)
+  AC_PATH_PROG(KAFFE_JAVAC, kjc, "", $_t_bindir:$PATH)
+  AC_PATH_PROG(KAFFE_JAVAH, kaffeh, "", $_t_bindir:$PATH)
 
   AC_MSG_CHECKING(for Kaffe classes)
   KAFFE_CLASSLIB=""
-  if test -e $datadir/glibj.jar; then
-    KAFFE_CLASSLIB=$datadir/glibj.jar
-  elif test -e $datadir/kaffe/glibj.jar; then
-    KAFFE_CLASSLIB=$datadir/kaffe/glibj.jar
-  elif test -e $datadir/Klasses.jar; then
-    KAFFE_CLASSLIB=$datadir/Klasses.jar
-  elif test -e $datadir/kaffe/Klasses.jar; then
-    KAFFE_CLASSLIB=$datadir/kaffe/Klasses.jar
+  if test -e $_t_datadir/glibj.jar; then
+    KAFFE_CLASSLIB=$_t_datadir/glibj.jar
+  elif test -e $_t_datadir/kaffe/glibj.jar; then
+    KAFFE_CLASSLIB=$_t_datadir/kaffe/glibj.jar
+  elif test -e $_t_datadir/Klasses.jar; then
+    KAFFE_CLASSLIB=$_t_datadir/Klasses.jar
+  elif test -e $_t_datadir/kaffe/Klasses.jar; then
+    KAFFE_CLASSLIB=$_t_datadir/kaffe/Klasses.jar
   else
     AC_MSG_ERROR(no)
   fi
   AC_MSG_RESULT(yes)
-  if test -e $datadir/kjc.jar; then
-    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$datadir/kjc.jar
+  if test -e $_t_datadir/kjc.jar; then
+    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$_t_datadir/kjc.jar
   fi
-  if test -e $datadir/kaffe/kjc.jar; then
-    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$datadir/kaffe/kjc.jar
+  if test -e $_t_datadir/kaffe/kjc.jar; then
+    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$_t_datadir/kaffe/kjc.jar
   fi
-  if test -e $datadir/rmi.jar; then
-    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$datadir/rmi.jar
+  if test -e $_t_datadir/rmi.jar; then
+    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$_t_datadir/rmi.jar
   fi
-  if test -e $datadir/kaffe/rmi.jar; then
-    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$datadir/kaffe/rmi.jar
+  if test -e $_t_datadir/kaffe/rmi.jar; then
+    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$_t_datadir/kaffe/rmi.jar
   fi
-  if test -e $datadir/tools.jar; then
-    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$datadir/tools.jar
+  if test -e $_t_datadir/tools.jar; then
+    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$_t_datadir/tools.jar
   fi
-  if test -e $datadir/kaffe/tools.jar; then
-    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$datadir/kaffe/tools.jar
+  if test -e $_t_datadir/kaffe/tools.jar; then
+    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$_t_datadir/kaffe/tools.jar
   fi
 
   AC_SUBST(KAFFE_CLASSLIB)
@@ -267,3 +267,27 @@ AC_DEFUN(CLASSPATH_CHECK_JIKES,
     conditional_with_jikes=false
   ])
 ])
+
+
+dnl CLASSPATH_CHECK_KJC - checks for kjc
+AC_DEFUN(CLASSPATH_CHECK_KJC,
+[
+  AC_ARG_WITH(kjc, 
+  [  --with-kjc=DIR	  compile classes with kjc [default=no]],
+  [
+    if test ${withval} != "no"; then
+      AC_MSG_CHECKING(for kjc)
+      if test ${withval} = "" || test ${withval} = "yes"; then
+        AC_MSG_ERROR(specify a classpath to kjc)
+      fi
+      KJC_CLASSPATH=${withval}
+      AC_SUBST(KJC_CLASSPATH)
+      conditional_with_kjc=true
+      AC_MSG_RESULT(${withval})
+    fi
+  ],
+  [ 
+    conditional_with_kjc=false
+  ])
+])
+
