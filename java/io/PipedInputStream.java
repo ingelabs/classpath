@@ -24,7 +24,7 @@ package java.io;
 /**
   * This class is an input stream that reads its bytes from an output stream
   * to which it is connected. 
-  * <code>
+  * <p>
   * Data is read and written to an internal buffer.  It is highly recommended
   * that the <code>PipedInputStream</code> and connected <code>PipedOutputStream</code>
   * be part of different threads.  If they are not, there is a possibility
@@ -46,18 +46,18 @@ public class PipedInputStream extends InputStream
 /**
   * The size of the internal buffer used for input/output.  Note that this
   * can be overriden by setting the system property 
-  * <xmp>gnu.java.io.PipedInputStream.pipe_size</xmp> to the desired size shown 
+  * <code>gnu.java.io.PipedInputStream.pipe_size</code> to the desired size shown 
   * in bytes.  This is not a standard part of the class library.  Note that 
   * since this variable is <code>final</code>, it cannot be changed to refect 
   * the size specified in the property.
-  * <code>
+  * <p>
   * The value for this variable is 2048.
   */
 protected static final int PIPE_SIZE = 2048;
 
 /**
   * This is the real pipe size.  It defaults to PIPE_SIZE, unless overridden
-  * by use of the system property <xmp>gnu.java.io.PipedInputStream.pipe_size</xmp>.
+  * by use of the system property <code>gnu.java.io.PipedInputStream.pipe_size</code>.
   */
 private static int pipe_size;
 
@@ -66,7 +66,7 @@ private static int pipe_size;
   * return a short count if this will possibly keep the stream from blocking.  
   * The default for this is <code>false</code> because that is what what the JDK seems
   * to imply in its javadocs.  We set this to <code>false</code> if the system 
-  * property <xmp>gnu.java.io.try_not_to_block</xmp> is set.
+  * property <code>gnu.java.io.try_not_to_block</code> is set.
   */
 private static boolean try_not_to_block = false;
 
@@ -291,7 +291,7 @@ read() throws IOException
   * returned.  A -1 is returned to indicated that no bytes can be read
   * because the end of the stream was reached.  If the stream is already
   * closed, a -1 will again be returned to indicate the end of the stream.
-  *  <code>
+  * <p>
   * This method will block if no bytes are available to be read.
   *
   * @param buf The buffer into which bytes will be stored

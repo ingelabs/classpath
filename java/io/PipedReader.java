@@ -46,7 +46,7 @@ public class PipedReader extends Reader
 /**
   * The size of the internal buffer used for input/output.  Note that this
   * can be overriden by setting the system property 
-  * <xmp>gnu.java.io.PipedReader.pipe_size</xmp> to the desired size shown 
+  * <code>gnu.java.io.PipedReader.pipe_size</code> to the desired size shown 
   * in chars.  This is not a standard part of the class library.  Note that 
   * since this variable is <code>final</code>, it cannot be changed to refect 
   * the size specified in the property.
@@ -57,7 +57,7 @@ protected static final int PIPE_SIZE = 2048;
 
 /**
   * This is the real pipe size.  It defaults to PIPE_SIZE, unless overridden
-  * by use of the system property <xmp>gnu.java.io.PipedReader.pipe_size</xmp>.
+  * by use of the system property <code>gnu.java.io.PipedReader.pipe_size</code>.
   */
 private static int pipe_size;
 
@@ -66,7 +66,7 @@ private static int pipe_size;
   * return a short count if this will possibly keep the stream from blocking.  
   * The default for this is <code>false</code> because that is what what the JDK seems
   * to imply in its javadocs.  We set this to <code>false</code> if the system 
-  * property <xmp>gnu.java.io.try_not_to_block</xmp> is set.
+  * property <code>gnu.java.io.try_not_to_block</code> is set.
   */
 private static boolean try_not_to_block = false;
 
