@@ -100,11 +100,11 @@ public final class CollationElementIterator
    */
   public int next ()
   {
-    ++index;
     if (index >= text.length ())
       return NULLORDER;
 
     String s = text.charAt (index) + "";
+    index++;
     return collator.getCollationElementValue (s);
   }
 
