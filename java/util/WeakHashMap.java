@@ -314,7 +314,7 @@ public class WeakHashMap extends AbstractMap implements Map
     /**
      * The slot of this entry. This should be 
      * <pre>
-     *  key.hashCode() % buckets.length
+     *  Math.abs(key.hashCode() % buckets.length)
      * </pre>
      * But since the key may be silently removed we have to remember
      * the slot number.
@@ -425,7 +425,7 @@ public class WeakHashMap extends AbstractMap implements Map
      */
     Entry getEntry() 
     {
-      final Object key = get();
+      final Object key = this.get();
       if (key == null)
 	return null;
       return new Entry(key);
@@ -476,6 +476,14 @@ public class WeakHashMap extends AbstractMap implements Map
     theEntrySet = new WeakEntrySet();
     queue = new ReferenceQueue();
     buckets = new WeakBucket[initialCapacity];
+  }
+
+  /** 
+   * simply hashes a non-null Object to its array index 
+   */
+  private int hash(Object key)
+  {
+    return Math.abs(key.hashCode() % buckets.length);
   }
 
   /**
@@ -532,7 +540,7 @@ public class WeakHashMap extends AbstractMap implements Map
 	    else
 	      {
 		/* add this bucket to its new slot */
-		int slot = key.hashCode() % buckets.length;
+		int slot = hash(key);
 		bucket.slot = slot;
 		bucket.next = buckets[slot];
 		buckets[slot] = bucket;
@@ -552,7 +560,7 @@ public class WeakHashMap extends AbstractMap implements Map
   {
     if (key == null)
       key = NULL_KEY;
-    int slot = key.hashCode() % buckets.length;
+    int slot = hash(key);
     WeakBucket bucket = buckets[slot];
     while (bucket != null)
       {
@@ -574,7 +582,7 @@ public class WeakHashMap extends AbstractMap implements Map
   {
     if (key == null)
       key = NULL_KEY;
-    int slot = key.hashCode() % buckets.length;
+    int slot = hash(key);
     WeakBucket bucket = new WeakBucket(key, value, slot);
     bucket.next = buckets[slot];
     buckets[slot] = bucket;
