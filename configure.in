@@ -1,14 +1,18 @@
-dnl Input file for autoconf to create the configure script.
+dnl Process this file with autoconf to produce a configure script.
 
 AC_INIT(native/java.net/javanet.c)
-AM_INIT_AUTOMAKE(classpath, 0.0)
+AC_CANONICAL_HOST
+
+PACKAGE="classpath"
+VERSION="0.0"
+AC_SUBST(PACKAGE)
+AC_SUBST(VERSION)
+AM_INIT_AUTOMAKE(${PACKAGE}, ${VERSION})
 
 # this file is empty, is this supposed to be here? -gcb
 #AM_CONFIG_HEADER(native/config.h)
 
 AC_PREFIX_DEFAULT(/usr/local/classpath)
-
-AC_CANONICAL_HOST
 
 dnl Initialize libtool
 AM_PROG_LIBTOOL
@@ -29,36 +33,84 @@ AC_CHECK_FUNCS(gethostname socket strerror)
 AC_ARG_WITH(sun-jdk,
  [  --with-sun-jdk          Specify the path to the JDK installation directory],
   [
+    AC_MSG_CHECKING("for sun jdk")
     if test -f ${withval}/include/jni.h; then
-      AC_MSG_RESULT(Using JNI headers in ${withval}/include)
+      AC_MSG_RESULT(using JNI headers in ${withval}/include)
       VMINCLUDE=${withval}/include
-      AC_PREFIX_PROGRAM(java)
+#      AC_PREFIX_PROGRAM(java)  this sets the prefix to the program's dir
+      AC_SUBST(VMINCLUDE)
     else
-      AC_MSG_ERROR([Unable to find ${withval}/include/jni.h. Use --with-sun-jdk=/path/to/jdk])
+      AC_MSG_ERROR([unable to find ${withval}/include/jni.h. Use --with-sun-jdk=/path/to/jdk])
     fi
   ])
-
 
 AC_ARG_WITH(japhar,
  [  --with-japhar           Specify the path to the Japhar installation directory],
   [
+    AC_MSG_CHECKING("for japhar")
     if test -f ${withval}/include/japhar/jni.h; then
       AC_MSG_RESULT(Using JNI headers in ${withval}/include/japhar)
       VMINCLUDE=${withval}/include/japhar
-      AC_PREFIX_PROGRAM(japhar)
+#      AC_PREFIX_PROGRAM(japhar)   this sets the prefix to the program's dir
+      AC_SUBST(VMINCLUDE)
     else
       AC_MSG_ERROR([Unable to find ${withval}/include/japhar/jni.h. Use --with-japhar=/path/to/japhar])
     fi
   ])
 
-if test VMINCLUDE = ""
-then
+if test VMINCLUDE = ""; then
   AC_MSG_ERROR(Unable to find include directory for JVM)
 fi
-
 # This is the path to the chosen VM's include directory where jni.h
 # and others can be found
 AC_SUBST(VMINCLUDE)
+
+AC_ARG_WITH(javac,
+  [  --with-javac	Specify the path to the javac-like program to use],
+  [
+    if test "x"${withval} = "x"; then
+      # determine javac automatically
+      javac_found="no"
+      AC_PATH_PROG(JAVAC, guavac)
+      if test -n "$JAVAC"; then
+        javac_found="yes"
+      fi
+      if test "x"${javac_found} = "xno"; then
+        AC_PATH_PROG(JAVAC, javac)
+        if test -n "$JAVAC"; then
+          javac_found="yes"
+        fi
+      fi
+      if test "x"${javac_found} = "xno"; then
+        AC_MSG_CHECKING("for javac")
+        AC_MSG_ERROR("[no javac found]")
+      fi
+    else
+      $JAVAC = ${withval}
+      AC_SUBST(JAVAC)
+    fi
+  ],
+  [
+    # determine javac automatically
+    javac_found="no"
+    AC_PATH_PROG(JAVAC, guavac)
+    if test -n "$JAVAC"; then
+      javac_found="yes"
+    fi
+    if test "x"${javac_found} = "xno"; then
+      AC_PATH_PROG(JAVAC, javac)
+      if test -n "$JAVAC"; then
+        javac_found="yes"
+      fi
+    fi
+    if test "x"${javac_found} = "xno"; then
+      AC_MSG_CHECKING("for javac")
+      AC_MSG_ERROR("[no javac found]")
+    fi
+  ])
+
+AC_SUBST(JAVAC)
+
 
 dnl AC_ARG_WITH(japhar, Install as class library for Japhar, 
 dnl             AC_PREFIX_PROGRAM(japhar))
