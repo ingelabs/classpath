@@ -25,8 +25,6 @@ import java.util.*;
 import java.awt.datatransfer.*;
 import java.awt.image.*;
 import java.awt.peer.*;
-import java.util.Hashtable;
-import java.util.MissingResourceException;
 
 /* This class uses a deprecated method java.awt.peer.ComponentPeer.getPeer().
    This merits comment.  We are basically calling Sun's bluff on this one.
@@ -214,7 +212,7 @@ public class GtkToolkit extends java.awt.Toolkit
     return lp;
   }
 
-  protected ListPeer createList (List l) 
+  protected ListPeer createList (java.awt.List l) 
   {
     GtkListPeer lp = new GtkListPeer (l, l.getParent().getPeer());
     setComponentState (l, lp);
