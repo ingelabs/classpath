@@ -29,6 +29,11 @@ public final class Integer extends Number {
     return value;
   }
 
+  public boolean equals(Object obj) {
+    if (obj == null || (!(obj instanceof Integer))) return false;
+    return (value == ((Integer)obj).intValue());
+  }
+
   public static Integer getInteger(String nm) {
     return getInteger(nm, null);
   }
