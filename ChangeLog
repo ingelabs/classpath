@@ -1,5 +1,10 @@
 2004-01-27  Michael Koch  <konqueror@gmx.de>
 
+	* include/gnu_java_awt_peer_gtk_GtkFileDialogPeer.h: Updated with
+	current gnu.java.awt.peer.gtk.GtkFileDialogPeer class.
+
+2004-01-27  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/AbstractAction.java: Reformated.
 	(getPropertyChangeListeners): New method.
 	* javax/swing/AbstractCellEditor.java: Reformated.
