@@ -47,11 +47,11 @@ package java.util;
  * People at Javasoft are probably embarrassed by it.  At this point,
  * it might as well be an interface rather than a class, but it remains
  * this poor, laughable skeleton for the sake of backwards compatibility.
- * At any rate, this was what came before the <pre>Map</pre> interface 
+ * At any rate, this was what came before the {@link Map} interface 
  * in the Collections framework.
  *
  * @author Jon Zeppieri
- * @author Eric Blake <ebb9@email.byu.edu>
+ * @author Eric Blake (ebb9@email.byu.edu)
  * @see Map
  * @see Hashtable
  * @since 1.0
