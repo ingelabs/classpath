@@ -72,7 +72,7 @@ public class Thread {
 	 **/
 	public static final int MIN_PRIORITY = 0;
 
-	static int numThreadsCreated = 0;
+	static int numAnonymousThreadsCreated = 0;
 
 
 	/** Allocate a new Thread object, with the same ThreadGroup
@@ -133,7 +133,7 @@ public class Thread {
 	 **            specified ThreadGroup.
 	 **/
 	public Thread(ThreadGroup group, Runnable toRun) {
-		this(group,toRun,"Thread-" + (++numThreadsCreated));
+		this(group,toRun,null);
 	}
 
 	/** Allocate a new Thread object, with the same ThreadGroup
@@ -199,8 +199,16 @@ public class Thread {
 		} else {
 			this.group = currentThread().getThreadGroup();
 		}
+
+		if ( name != null )
+ 		{
+			this.name = name;
+ 		} else {
+ 			this.name = "Thread-" + (++numAnonymousThreadsCreated);
+		}
+
 		this.toRun = toRun;
-		this.name = name;
+
 		priority = currentThread().getPriority();
 		daemon = currentThread().isDaemon();
 		nativeInit();
@@ -357,11 +365,11 @@ public class Thread {
 	 **/
 	public final void join(long ms, int ns) throws InterruptedException {
 		if(ms == 0 && ns == 0) {
-			while(!isAlive())
+			while(isAlive())
 				currentThread().sleep(1);
 		} else {
 			for(long i=0;i<ms;i++) {
-				if(isAlive())
+				if(!isAlive())
 					return;
 				currentThread().sleep(1);
 			}
@@ -507,11 +515,12 @@ public class Thread {
 	}
 
 	/** Return a human-readable String representing this Thread.
+	 ** The format of the string is
+	 ** "<CODE>Thread[&lt;name&gt;,&lt;priority&gt;,&lt;thread group name&gt;]</CODE>"
 	 ** @return a human-readable String representing this Thread.
-	 ** @XXX determine the exact format of this String.
 	 **/
 	public String toString() {
-		return "";
+		return "Thread[" + getName() + "," + getPriority() + "," + getThreadGroup().getName() + "]";
 	}
 
 	final native void nativeInit();
