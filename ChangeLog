@@ -1,3 +1,28 @@
+2000-12-09  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* java/io/DataInputStream.java (readBoolean): Use convertToBoolean().
+	(readByte): Use convertToByte().
+	(readChar): Use convertToChar().
+	(readInt): Use convertToInt().
+	(readLong): Use convertToLong().
+	(readShort): Use convertToShort().
+	(readUnsignedByte): Use convertToUnsignedByte().
+	(readUnsignedShort): Use convertToUnsignedShort().
+	(readUTF): Use convertToUTF().
+
+	(convertToBoolean): Resurrected.
+	(convertToByte): Ditto.
+	(convertToChar): Ditto.
+	(convertToInt): Ditto.
+	(convertToLong): Ditto.
+	(convertToShort): Ditto.
+	(convertToUnsignedByte): Ditto.
+	(convertToUnsignedShort): Ditto.
+	(convertToUTF): Ditto.
+
+	* java/io/BufferedReader (DEFAULT_BUFFER_SIZE): Restored.
+	(BufferedReader): Use it.
+
 2000-12-08  Warren Levy  <warrenl@redhat.com>
 
 	* java/lang/StringBuffer.java (insert(int,char[])): Avoid
