@@ -1,5 +1,5 @@
 /* Timer.java -- Timer that runs TimerTasks at a later time.
-   Copyright (C) 2000 Free Software Foundation, Inc.
+   Copyright (C) 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -122,6 +122,7 @@ public class Timer
 	{
 	  TimerTask new_heap[] = new TimerTask[heap.length / 2];
 	  System.arraycopy(heap, 0, new_heap, 0, elements + 1);
+	  heap = new_heap;
 	}
     }
 
