@@ -1,5 +1,10 @@
 2004-04-07  Ingo Proetel  <proetel@aicas.com>
 
+	* java/awt/Polygon.java (getBoundingBox): Use correct y-coordinate
+	in Rectangle constructor.
+
+2004-04-07  Ingo Proetel  <proetel@aicas.com>
+
 	* java/awt/image/Raster.java (toString): Added method. 
 
 2004-04-07  Patrik Reali  <reali@acm.org>
