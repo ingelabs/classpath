@@ -1,3 +1,10 @@
+2002-02-14  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/lang/Makefile.am: Add StrictMath.java.
+	* java/lang/StrictMath.java: New file.
+	* java/lang/Math.java: Formatting and comments (no functional
+	changes).
+
 2002-02-13  Julian Scheid  <julian@sektor37.de>
 
 	* com/sun/javadoc/Doclet.java (validOptions): Now static.

@@ -62,6 +62,7 @@ SecurityException.java \
 SecurityManager.java \
 Short.java \
 StackOverflowError.java \
+StrictMath.java \
 StringBuffer.java \
 StringIndexOutOfBoundsException.java \
 String.java \
