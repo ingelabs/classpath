@@ -1,5 +1,16 @@
 2004-10-04  Michael Koch  <konqueror@gmx.de>
 
+	* javax/imageio/spi/ImageInputStreamSpi.java,
+	javax/imageio/spi/ImageOutputStreamSpi.java:
+	Reworked import startments.
+	* javax/imageio/spi/ServiceRegistry.java:
+	Reworked import startments. Fixed XHTML in javadocs.
+	(ServiceRegistry): Added @param tag to javadoc.
+	* javax/imageio/stream/ImageInputStream.java
+	(mark): Doesn't throws IOException;
+
+2004-10-04  Michael Koch  <konqueror@gmx.de>
+
 	* javax/imageio/ImageIO.java:
 	New file.
 
