@@ -5,7 +5,6 @@ ARG_CLASSPATH_JAVAH = -bootclasspath
 JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) ../lib:$(USER_CLASSLIB)
 
 H_FILES = \
-$(top_srcdir)/include/gnu_java_awt_EmbeddedWindow.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkFontMetrics.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkPixbufDecoder.h \
@@ -66,8 +65,6 @@ if CREATE_JNI_HEADERS
 
 all-local: $(H_FILES)
 
-$(top_srcdir)/include/gnu_java_awt_EmbeddedWindow.h: $(top_srcdir)/gnu/java/awt/EmbeddedWindow.java
-	$(JAVAH) -o $@ gnu.java.awt.EmbeddedWindow
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkFontMetrics.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkFontMetrics.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkFontMetrics
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkGraphics.java

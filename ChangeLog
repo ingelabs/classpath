@@ -1,3 +1,8 @@
+2004-07-22  Michael Koch  <konqueror@gmx.de>
+
+	* include/Makefile.am: Don't generate gnu_java_awt_EmbeddedWindow.h.
+	* include/gnu_java_awt_EmbeddedWindow.h: Removed.
+
 2004-07-22  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/lang/Class.java (pd): Made final. (unknownProtectionDomain):
