@@ -47,7 +47,7 @@ public class DateFormatSymbols
   String localPatternChars; // Serialized
 
   // The order of these prefixes must be the same as in DateFormat
-  private final String[] formatPrefixes = { "full", "long", "medium", "short", "default" };
+  private static final String[] formatPrefixes = { "full", "long", "medium", "short", "default" };
 
   private static boolean
   arrayEquals(Object[] o1, Object[] o2)

@@ -1,3 +1,9 @@
+2000-11-28  Warren Levy <warrenl@cygnus.com>
+
+	* java/text/DateFormatSymbols.java (formatPrefixes): Made field static.
+	* java/text/SimpleDateFormat.java (format): Added case for
+	TIMEZONE_FIELD.
+
 2000-11-28  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	* java/io/DataInputStream.java: Merge libgcj implementation.
