@@ -1,3 +1,8 @@
+2005-01-09  Patrik Reali  <reali@acm.org>
+
+	* doc/www.gnu.org/newsitems.txt doc/www.gnu.org/announce/20050107.wml 
+	doc/www.gnu.org/downloads/downloads.wml: classpath 0.13 release news
+
 2005-01-08  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	* java/nio/charset/Charset.java (providers):
