@@ -23,44 +23,14 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
 import java.io.ObjectStreamException;
 import java.io.Serializable;
 
-public class ObjectOutputStreamTest
+public class ObjectOutputStreamTest extends Test
 {
-  public static void error()
-  {
-    System.out.print( "ERROR: " );
-  }
-  
-  public static void pass()
-  {
-    System.out.print( "PASSED: " );
-  }
-  
-  public static void fail()
-  {
-    System.out.print( "FAILED: " );
-  }
-
-  public static void pass( boolean exp_pass )
-  {
-    if( exp_pass )
-      pass();
-    else
-      System.out.print( "XPASSED: " );
-  }
-  
-  public static void fail( boolean exp_pass )
-  {
-    if( exp_pass )
-      fail();
-    else
-      System.out.print( "XFAIL: " );
-  }
-
   public static void testSerial( Object obj, String filename )
   {
     if( writeMode )
@@ -183,110 +153,5 @@ class OOSBadField implements Serializable
     x = X;
     y = Y;
     o = O;
-  }
-}
-
-
-class OOSCallDefault implements Serializable
-{
-  int x;
-  double y;
-  transient String s;
-
-  OOSCallDefault( int X, double Y, String S )
-  {
-    x = X;
-    y = Y;
-    s = S;
-  }
-
-  private void writeObject( ObjectOutputStream oos ) throws IOException
-  {
-    oos.writeObject( s );
-    oos.defaultWriteObject();
-    oos.writeObject( s );
-  }
-}
-
-class OOSNoCallDefault implements Serializable
-{
-  int x;
-  String s;
-  boolean b;
-  
-  OOSNoCallDefault( int X, String S, boolean B )
-  {
-    x = X;
-    s = S;
-    b = B;
-  }
-
-  private void writeObject( ObjectOutputStream oos ) throws IOException
-  {
-    oos.writeInt( x );
-    oos.writeObject( s );
-    oos.writeBoolean( b );
-  }
-}
-
-class OOSExtern extends OOSNoCallDefault implements Externalizable
-{
-  OOSExtern( int X, String S, boolean B )
-  {
-    super( X, S, B );
-  }
-
-  public void writeExternal( ObjectOutput oo ) throws IOException
-  {
-    oo.writeInt( super.x );
-    oo.writeObject( super.s );
-    oo.writeBoolean( super.b );
-  }
-  
-  public void readExternal( ObjectInput oi ) {}
-}
-
-class GraphNode implements Serializable
-{
-  GraphNode a;
-  GraphNode b;
-  GraphNode c;
-  GraphNode d;
-}
-
-
-class HairyGraph implements Serializable
-{
-  GraphNode A;
-  GraphNode B;
-  GraphNode C;
-  GraphNode D;
-  
-  HairyGraph()
-  {
-    A = new GraphNode();
-    B = new GraphNode();
-    C = new GraphNode();
-    D = new GraphNode();
-
-    A.a = B;
-    A.b = C;
-    A.c = D;
-    A.d = A;
-    
-    B.a = C;
-    B.b = D;
-    B.c = A;
-    B.d = B;
-
-    C.a = D;
-    C.b = A;
-    C.c = B;
-    C.d = C;
-    
-    D.a = A;
-    D.b = B;
-    D.c = C;
-    D.d = D;
   }
 }
