@@ -1,3 +1,9 @@
+2002-01-25  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
+
+	* java/awt/image/PixelGrabber.java (grabPixels()): Call grabPixels(0).
+	(grabPixels(long)): Wait to be notified that the ImageProducer has 
+	completed.
+
 2002-01-23  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/BorderLayout.java (addLayoutComponent): Added missing
