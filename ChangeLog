@@ -1,5 +1,9 @@
 2002-05-20  Andrew Selkirk  <aselkirk@sympatico.ca>
 
+	* javax/swing/Makefile.am: Updated.
+
+2002-05-20  Andrew Selkirk  <aselkirk@sympatico.ca>
+
 	* javax/swing/AbstractListModel.java: Updated.
 	* javax/swing/BoundedRangeModel.java: Compile fix.
 
