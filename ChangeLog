@@ -1,3 +1,9 @@
+2005-01-28  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/DomNode: Correct implementation of getElementsByTagName
+	etc to return a NodeList that returns consistent results from item
+	and getLength methods.
+
 2005-01-28  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/jar/Attributes.java (Attributes.Name): Add documentation
