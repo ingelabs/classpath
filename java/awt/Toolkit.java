@@ -380,32 +380,32 @@ public abstract class Toolkit
    */
   protected void loadSystemColors(int systemColors[])
   {
-    systemColors[SystemColor.DESKTOP] = 0xFF005C5C;
-    systemColors[SystemColor.ACTIVE_CAPTION] = 0xFF00008;
-    systemColors[SystemColor.ACTIVE_CAPTION_TEXT] = 0xFFFFFFFF;
-    systemColors[SystemColor.ACTIVE_CAPTION_BORDER] = 0xFFC0C0C0;
-    systemColors[SystemColor.INACTIVE_CAPTION] = 0xFF808080;
-    systemColors[SystemColor.INACTIVE_CAPTION_TEXT] = 0xFFC0C0C0;
+    systemColors[SystemColor.DESKTOP]                 = 0xFF005C5C;
+    systemColors[SystemColor.ACTIVE_CAPTION]          = 0xFF000080;
+    systemColors[SystemColor.ACTIVE_CAPTION_TEXT]     = 0xFFFFFFFF;
+    systemColors[SystemColor.ACTIVE_CAPTION_BORDER]   = 0xFFC0C0C0;
+    systemColors[SystemColor.INACTIVE_CAPTION]        = 0xFF808080;
+    systemColors[SystemColor.INACTIVE_CAPTION_TEXT]   = 0xFFC0C0C0;
     systemColors[SystemColor.INACTIVE_CAPTION_BORDER] = 0xFFC0C0C0;
-    systemColors[SystemColor.WINDOW] = 0xFFFFFFFF;
-    systemColors[SystemColor.WINDOW_BORDER] = 0xFF000000;
-    systemColors[SystemColor.WINDOW_TEXT] = 0xFF000000;
-    systemColors[SystemColor.MENU] = 0xFFC0C0C0;
-    systemColors[SystemColor.MENU_TEXT] = 0xFF000000;
-    systemColors[SystemColor.TEXT] = 0xFFC0C0C0;
-    systemColors[SystemColor.TEXT_TEXT] = 0xFF000000;
-    systemColors[SystemColor.TEXT_HIGHLIGHT] = 0xFF000090;
-    systemColors[SystemColor.TEXT_HIGHLIGHT_TEXT] = 0xFFFFFFFF;
-    systemColors[SystemColor.TEXT_INACTIVE_TEXT] = 0xFF808080;
-    systemColors[SystemColor.CONTROL] = 0xFFC0C0C0;
-    systemColors[SystemColor.CONTROL_TEXT] = 0xFF000000;
-    systemColors[SystemColor.CONTROL_HIGHLIGHT] = 0xFFFFFFFF;
-    systemColors[SystemColor.CONTROL_LT_HIGHLIGHT] = 0xFFE0E0E0;
-    systemColors[SystemColor.CONTROL_SHADOW] = 0xFF808080;
-    systemColors[SystemColor.CONTROL_DK_SHADOW] = 0xFF000000;
-    systemColors[SystemColor.SCROLLBAR] = 0xFFE0E0E0;
-    systemColors[SystemColor.INFO] = 0xFFE0E000;
-    systemColors[SystemColor.INFO_TEXT] = 0xFF000000;
+    systemColors[SystemColor.WINDOW]                  = 0xFFFFFFFF;
+    systemColors[SystemColor.WINDOW_BORDER]           = 0xFF000000;
+    systemColors[SystemColor.WINDOW_TEXT]             = 0xFF000000;
+    systemColors[SystemColor.MENU]                    = 0xFFC0C0C0;
+    systemColors[SystemColor.MENU_TEXT]               = 0xFF000000;
+    systemColors[SystemColor.TEXT]                    = 0xFFC0C0C0;
+    systemColors[SystemColor.TEXT_TEXT]               = 0xFF000000;
+    systemColors[SystemColor.TEXT_HIGHLIGHT]          = 0xFF000090;
+    systemColors[SystemColor.TEXT_HIGHLIGHT_TEXT]     = 0xFFFFFFFF;
+    systemColors[SystemColor.TEXT_INACTIVE_TEXT]      = 0xFF808080;
+    systemColors[SystemColor.CONTROL]                 = 0xFFC0C0C0;
+    systemColors[SystemColor.CONTROL_TEXT]            = 0xFF000000;
+    systemColors[SystemColor.CONTROL_HIGHLIGHT]       = 0xFFFFFFFF;
+    systemColors[SystemColor.CONTROL_LT_HIGHLIGHT]    = 0xFFE0E0E0;
+    systemColors[SystemColor.CONTROL_SHADOW]          = 0xFF808080;
+    systemColors[SystemColor.CONTROL_DK_SHADOW]       = 0xFF000000;
+    systemColors[SystemColor.SCROLLBAR]               = 0xFFE0E0E0;
+    systemColors[SystemColor.INFO]                    = 0xFFE0E000;
+    systemColors[SystemColor.INFO_TEXT]               = 0xFF000000;
   }
 
   /**
