@@ -53,12 +53,6 @@ public class GtkComponentPeer extends GtkGenericPeer
       this.awtComponent = awtComponent;
     }
 
-  protected void postMouseEvent(int id, long when, int mods, int x, int y, 
-				int clickCount, boolean popupTrigger) {
-    q.postEvent(new MouseEvent(awtComponent, id, when, mods, x, y, 
-			       clickCount, popupTrigger));
-  }
-
   /* this method should be called from a gtk-realize hook */
   protected void syncAttrs ()
     {
@@ -268,9 +262,22 @@ public class GtkComponentPeer extends GtkGenericPeer
       setVisible (true);
     }
 
+  protected void postMouseEvent(int id, long when, int mods, int x, int y, 
+				int clickCount, boolean popupTrigger) {
+    q.postEvent(new MouseEvent(awtComponent, id, when, mods, x, y, 
+			       clickCount, popupTrigger));
+  }
+
   protected void postExposeEvent (int x, int y, int width, int height)
   {
     q.postEvent (new PaintEvent (awtComponent, PaintEvent.PAINT,
 				 new Rectangle (x, y, width, height)));
+  }
+
+  protected void postKeyEvent (int id, long when, int mods, 
+			       int keyCode, char keyChar)
+  {
+    q.postEvent (new KeyEvent (awtComponent, id, when, mods, 
+			       keyCode, keyChar));
   }
 }

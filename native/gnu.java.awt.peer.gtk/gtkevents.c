@@ -19,6 +19,8 @@
  * Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
 #include "gtkpeer.h"
+#include <X11/Xlib.h>
+#include <gdk/gdkkeysyms.h>
 #include <stdarg.h>
 
 /* A widget can be composed of multipled windows, so we need to hook
@@ -30,7 +32,7 @@ struct event_hook_info
   GdkWindow ***windows;		/* array of pointers to (GdkWindow *) */
 };
 
-static int
+static jint
 button_to_awt_mods (int button)
 {
   switch (button)
@@ -46,10 +48,10 @@ button_to_awt_mods (int button)
   return 0;
 }
 
-static int
+static jint
 state_to_awt_mods (int mods)
 {
-  int result = 0;
+  jint result = 0;
 
   if (mods & (GDK_SHIFT_MASK | GDK_LOCK_MASK))
     result |= AWT_SHIFT_MASK;
@@ -57,6 +59,158 @@ state_to_awt_mods (int mods)
     result |= AWT_CTRL_MASK;
   
   return result;
+}
+
+#ifdef __GNUC__
+__inline
+#endif
+static jint
+keysym_to_awt_keycode (guint keyval)
+{
+  guint vk;
+
+  vk = gdk_keyval_to_upper (keyval);
+
+  if (vk <= 0x41 && vk <= 0x5A)	/* VK_A through VK_Z */
+    return vk;
+
+  if (vk <= 0x30 && vk <= 39)	/* VK_0 through VK_9 */
+    return vk;
+
+  switch (vk)
+    {
+    case GDK_Alt_L:
+    case GDK_Alt_R:
+      return VK_ALT;
+    case GDK_BackSpace:
+      return VK_BACK_SPACE;
+    case GDK_Cancel:
+      return VK_CANCEL;
+    case GDK_Caps_Lock:
+      return VK_CAPS_LOCK;
+    case GDK_Clear:
+      return VK_CLEAR;
+    case GDK_bracketright:
+      return VK_CLOSE_BRACKET;
+    case GDK_comma:
+      return VK_COMMA;
+    case GDK_Control_L:
+    case GDK_Control_R:
+      return VK_CONTROL;
+    case GDK_KP_Decimal:
+      return VK_DECIMAL;
+    case GDK_Delete:
+      return VK_DELETE;
+    case GDK_KP_Divide:
+      return VK_DIVIDE;
+    case GDK_Down:
+      return VK_DOWN;
+    case GDK_End:
+      return VK_END;
+    case GDK_Return:
+      return VK_ENTER;
+    case GDK_Escape:
+      return VK_ESCAPE;
+    case GDK_F1:
+      return VK_F1;
+    case GDK_F2:
+      return VK_F2;
+    case GDK_F3:
+      return VK_F3;
+    case GDK_F4:
+      return VK_F4;
+    case GDK_F5:
+      return VK_F5;
+    case GDK_F6:
+      return VK_F6;
+    case GDK_F7:
+      return VK_F7;
+    case GDK_F8:
+      return VK_F8;
+    case GDK_F9:
+      return VK_F9;
+    case GDK_F10:
+      return VK_F10;
+    case GDK_F11:
+      return VK_F11;
+    case GDK_F12:
+      return VK_F12;
+    case GDK_Help:
+      return VK_HELP;
+    case GDK_Home:
+      return VK_HOME;
+    case GDK_Insert:
+      return VK_INSERT;
+    case GDK_Kanji:
+      return VK_KANJI;
+    case GDK_Left:
+      return VK_LEFT;
+    case GDK_Meta_L:
+    case GDK_Meta_R:
+      return VK_META;
+    case GDK_KP_Multiply:
+      return VK_MULTIPLY;
+    case GDK_Num_Lock:
+      return VK_NUM_LOCK;
+    case GDK_KP_0:
+      return VK_NUMPAD0;
+    case GDK_KP_1:
+      return VK_NUMPAD1;
+    case GDK_KP_2:
+      return VK_NUMPAD2;
+    case GDK_KP_3:
+      return VK_NUMPAD3;
+    case GDK_KP_4:
+      return VK_NUMPAD4;
+    case GDK_KP_5:
+      return VK_NUMPAD5;
+    case GDK_KP_6:
+      return VK_NUMPAD6;
+    case GDK_KP_7:
+      return VK_NUMPAD7;
+    case GDK_KP_8:
+      return VK_NUMPAD8;
+    case GDK_KP_9:
+      return VK_NUMPAD9;
+    case GDK_bracketleft:
+      return VK_OPEN_BRACKET;
+    case GDK_Page_Down:
+      return VK_PAGE_DOWN;
+    case GDK_Page_Up:
+      return VK_PAGE_UP;
+    case GDK_Pause:
+      return VK_PAUSE;
+    case GDK_period:
+      return VK_PERIOD;
+    case GDK_Print:
+      return VK_PRINTSCREEN;
+    case GDK_quoteright:
+      return VK_QUOTE;
+    case GDK_Right:
+      return VK_RIGHT;
+    case GDK_Scroll_Lock:
+      return VK_SCROLL_LOCK;
+    case GDK_semicolon:
+      return VK_SEMICOLON;
+    case GDK_KP_Separator:
+      return VK_SEPARATOR;
+    case GDK_Shift_L:
+    case GDK_Shift_R:
+      return VK_SHIFT;
+    case GDK_slash:
+      return VK_SLASH;
+    case GDK_space:
+      return VK_SPACE;
+    case GDK_KP_Subtract:
+      return VK_SUBTRACT;
+    case GDK_Tab:
+      return VK_TAB;
+    case GDK_Up:
+      return VK_UP;
+
+    default:
+      return VK_UNDEFINED;
+    }
 }
 
 void
@@ -101,7 +255,8 @@ awt_event_handler (GdkEvent *event)
        || event->type == GDK_ENTER_NOTIFY
        || event->type == GDK_LEAVE_NOTIFY
        || event->type == GDK_CONFIGURE
-       || event->type == GDK_EXPOSE)
+       || event->type == GDK_EXPOSE
+       || event->type == GDK_KEY_PRESS)
       && gdk_property_get (event->any.window,
 			   gdk_atom_intern ("_GNU_GTKAWT_ADDR", FALSE),
 			   gdk_atom_intern ("CARDINAL", FALSE),
@@ -197,9 +352,8 @@ awt_event_handler (GdkEvent *event)
 	    GtkWidget *widget;
 
 	    gdk_window_get_user_data (event->any.window, (void **) &widget);
-	    if (!widget) break;
 	    
-	    if (GTK_IS_WINDOW (widget))
+	    if (widget && GTK_IS_WINDOW (widget))
 	      {
 		gint x, y;
 		/* ignore where the WM puts us */
@@ -220,20 +374,40 @@ awt_event_handler (GdkEvent *event)
 	  }
 	  break;
 	case GDK_EXPOSE:
+	  (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr,
+				      postExposeEventID,
+				      (jint)event->expose.area.x,
+				      (jint)event->expose.area.y,
+				      (jint)event->expose.area.width,
+				      (jint)event->expose.area.height);
+	  break;
+
+	case GDK_KEY_PRESS:
 	  {
 	    GtkWidget *widget;
 
 	    gdk_window_get_user_data (event->any.window, (void **) &widget);
-	    if (!widget) break;
-
-	    /* only canvases and containers can be drawn on in Java */
-	    if (GTK_IS_DRAWING_AREA (widget) || GTK_IS_FIXED (widget))
-	      (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr,
-					  postExposeEventID,
-					  (jint)event->expose.area.x,
-					  (jint)event->expose.area.y,
-					  (jint)event->expose.area.width,
-					  (jint)event->expose.area.height);
+	    
+	    if (widget && GTK_WIDGET_HAS_FOCUS (widget))
+	      {
+		(*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr,
+					    postKeyEventID,
+					    (jint) AWT_KEY_PRESSED,
+					    (jlong) event->key.time,
+					  state_to_awt_mods (event->key.state),
+				     keysym_to_awt_keycode (event->key.keyval),
+					    (jchar) (event->key.length) ? 
+					    event->key.string[0] : 
+					    AWT_KEY_CHAR_UNDEFINED);
+		if (event->key.length)
+		  (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr,
+					      postKeyEventID,
+					      (jint) AWT_KEY_TYPED,
+					      (jlong) event->key.time,
+					  state_to_awt_mods (event->key.state),
+					      VK_UNDEFINED,
+					      (jchar) event->key.string[0]);
+	      }
 	  }
 	  break;
 	default:
@@ -260,7 +434,8 @@ attach_jobject (GdkWindow *window, jobject *obj)
 			 | GDK_KEY_RELEASE_MASK
 			 | GDK_ENTER_NOTIFY_MASK
 			 | GDK_LEAVE_NOTIFY_MASK
-			 | GDK_STRUCTURE_MASK);
+			 | GDK_STRUCTURE_MASK
+			 | GDK_KEY_PRESS_MASK);
 
   gdk_property_change (window,
 		       addr_atom,
