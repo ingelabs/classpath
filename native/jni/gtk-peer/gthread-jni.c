@@ -218,7 +218,11 @@ exception statement from your version. */
 /* Global data				     				*/
 /************************************************************************/
 
+#if defined HAVE_STDINT_H
 #include <stdint.h>		/* provides intptr_t */
+#elif defined HAVE_INTTYPES_H
+#include <inttypes.h>
+#endif
 #include <stdarg.h>		/* va_list */
 #include "gthread-jni.h"
 #include <assert.h>		/* assert() */

@@ -1,3 +1,7 @@
+2004-07-26  Archie Cobbs  <archie@dellroad.org>
+
+	* native/jni/gtk-peer/gthread-jni.c: don't #include nonexistent files
+
 2004-07-26  Patrik Reali  <reali@acm.org>
 	
 	* doc/www.gnu.org/home.wml doc/www.gnu.org/newsitems.txt: link to
