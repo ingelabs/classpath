@@ -1,3 +1,10 @@
+2003-05-06  Matt Kraai  <kraai@alumni.cmu.edu>
+
+	* java/security/Key.java: Fix misspelling of "version".
+	* java/security/PrivateKey.java: Likewise.
+	* java/security/Provider.java: Likewise.
+	* java/security/PublicKey.java: Likewise.
+
 2003-05-06  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/File.java
