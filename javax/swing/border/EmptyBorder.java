@@ -190,6 +190,21 @@ public class EmptyBorder
 
 
   /**
+   * Measures the width of this border.
+   *
+   * @return an Insets object whose <code>left</code>, <code>right</code>,
+   *         <code>top</code> and <code>bottom</code> fields indicate the
+   *         width of the border at the respective edge.
+   *
+   * @see #getBorderInsets(java.awt.Component, java.awt.Insets)
+   */
+  public Insets getBorderInsets()
+  {
+    return getBorderInsets(null, null);
+  }
+  
+  
+  /**
    * Determines whether this border fills every pixel in its area
    * when painting. Since an empty border does not paint any pixels
    * whatsoever, the result is <code>false</code>.
