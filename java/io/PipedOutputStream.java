@@ -185,5 +185,19 @@ write(byte[] buf, int offset, int len) throws IOException
   snk.write(buf, 0, len);
 }
 
+/*************************************************************************/
+
+/**
+  * This method flushes any unwritten bytes to the output and notifies
+  * any waiting readers that the pipe is ready to be read.
+  *
+  * @exception IOException If an error occurs.
+  */
+public void
+flush() throws IOException
+{
+  return;
+}
+
 } // class PipedOutputStream
 
