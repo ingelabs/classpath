@@ -472,34 +472,110 @@ public class BorderUIResource
       super(insets);
     }
   }
-
+  
+  
+  /**
+   * An {@link javax.swing.border.EtchedBorder} that also implements the
+   * {@link UIResource} marker interface.  This is useful for
+   * implementing pluggable look-and-feels: When switching the current
+   * LookAndFeel, only those borders are replaced that are marked as
+   * {@link UIResource}.  For this reason, a look-and-feel should
+   * always install borders that implement <code>UIResource</code>,
+   * such as the borders provided by this class.
+   *
+   * <p><img src="../border/EtchedBorder-1.png" width="500" height="200"
+   * alt="[An illustration of the two EtchedBorder variants]" />
+   *
+   * @author Brian Jones (cbj@gnu.org)
+   * @author Sascha Brawer (brawer@dandelis.ch)
+   */
+  public static class EtchedBorderUIResource
+    extends EtchedBorder
+    implements UIResource, Serializable
+  {
     /**
-     * @serial
+     * Constructs an EtchedBorderUIResource that appears lowered into
+     * the surface. The colors will be derived from the background
+     * color of the enclosed Component when the border gets painted.
      */
-    public static class EtchedBorderUIResource
-	extends EtchedBorder
-	implements UIResource, Serializable
+    public EtchedBorderUIResource()
     {
-	public EtchedBorderUIResource() { }
-	public EtchedBorderUIResource(int etchType) 
-	{
-	  super (etchType);
-	}
-	public EtchedBorderUIResource(Color highlight, Color shadow)
-	{
-	  super (highlight, shadow);
-	}
-	public EtchedBorderUIResource(int etchType, Color highlight, 
-				      Color shadow)
-	{
-          super (etchType, highlight, shadow);
-	}
-
+      super();
     }
-
+    
+    
     /**
-     * @serial
+     * Constructs an EtchedBorderUIResource with the specified
+     * appearance. The colors will be derived from the background
+     * color of the enclosed Component when the border gets painted.
+     *
+     * <p><img src="../border/EtchedBorder-1.png" width="500" height="200"
+     * alt="[An illustration of the two EtchedBorder variants]" />
+     *
+     * @param etchType the desired appearance of the border. The value
+     *        must be either {@link javax.swing.border.EtchedBorder#RAISED}
+     *        or {@link javax.swing.border.EtchedBorder#LOWERED}.
+     *
+     * @throws IllegalArgumentException if <code>etchType</code> has
+     *         an unsupported value.
      */
+    public EtchedBorderUIResource(int etchType) 
+    {
+      super(etchType);
+    }
+    
+    
+    /**
+     * Constructs a lowered EtchedBorderUIResource, explicitly
+     * selecting the colors that will be used for highlight and
+     * shadow.
+     *
+     * @param highlight the color that will be used for painting
+     *        the highlight part of the border.
+     *
+     * @param shadow the color that will be used for painting
+     *        the shadow part of the border.
+     *
+     * @see #EtchedBorderUIResource(int, Color, Color)
+     */
+    public EtchedBorderUIResource(Color highlight, Color shadow)
+    {
+      super(highlight, shadow);
+    }
+    
+    
+    /**
+     * Constructs an EtchedBorderUIResource with the specified
+     * appearance, explicitly selecting the colors that will be used
+     * for highlight and shadow.
+     *
+     * <p><img src="../border/EtchedBorder-2.png" width="500"
+     * height="200" alt="[An illustration that shows which pixels get
+     * painted in what color]" />
+     *
+     * @param etchType the desired appearance of the border. The value
+     *        must be either {@link javax.swing.border.EtchedBorder#RAISED}
+     *        or {@link javax.swing.border.EtchedBorder#LOWERED}.
+     *
+     * @param highlight the color that will be used for painting
+     *        the highlight part of the border.
+     *
+     * @param shadow the color that will be used for painting
+     *        the shadow part of the border.
+     *
+     * @throws IllegalArgumentException if <code>etchType</code> has
+     *         an unsupported value.
+     */
+    public EtchedBorderUIResource(int etchType,
+                                  Color highlight, Color shadow)
+    {
+      super(etchType, highlight, shadow);
+    }
+  }
+  
+  
+    /**
+     * @serial */
     public static class LineBorderUIResource
 	extends LineBorder
 	implements UIResource, Serializable
