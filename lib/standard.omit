@@ -10,3 +10,4 @@
 ^../java/awt/event/InputMethodEvent.java$
 ^../java/awt/event/InputMethodListener.java$
 ^../java/awt/event/InvocationEvent.java$
+^../java/awt/image/.*$
