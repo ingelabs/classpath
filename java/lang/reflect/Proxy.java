@@ -1326,11 +1326,6 @@ public class Proxy implements Serializable
         {
           // XXX Do we require more native support here?
 
-          // XXX Security hole - it is possible for another thread to grab the
-          // VMClassLoader.defineClass Method object, and abuse it while we
-          // have temporarily made it accessible. Do we need to add some
-          // synchronization lock to prevent user reflection while we use it?
-
           // XXX This is waiting on VM support for protection domains.
 
           Class vmClassLoader = Class.forName("java.lang.VMClassLoader");

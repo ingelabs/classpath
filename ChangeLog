@@ -1,3 +1,8 @@
+2003-10-08  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/reflect/Proxy.java (generate): Removed comment about
+	security hole.
+
 2003-10-08  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkMenuItemPeer.java (setEnabled): Stub
