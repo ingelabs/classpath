@@ -135,7 +135,8 @@ AC_ARG_WITH(classlib,
 AM_CONDITIONAL(USER_SPECIFIED_CLASSLIB, test x$conditional_with_classlib = xtrue)
 
 dnl Since most people won't have JavaDeps or Jikes to compute dependencies
-dnl on the Java source files.
+dnl on the Java source files.  This mode also causes the resulting Makefiles
+dnl to attempt to build java classes where applicable.
 AC_ARG_ENABLE(maintainer-build,
 [  --enable-maintainer-build	java dependency computation [default=no]],
 [case "${enableval}" in 
@@ -147,6 +148,22 @@ AC_ARG_ENABLE(maintainer-build,
 esac],
 [conditional_maintainer_build=false])
 AM_CONDITIONAL(MAINTAINER_BUILD, test x$conditional_maintainer_build = xtrue)
+
+dnl This build mode indicates to configure it should compile java classes
+dnl but not rebuild the .deps file for doing so.  The default then is to
+dnl not build any Java classes (glibj.zip is distributed in the build using
+dnl the maintainer-build mode)
+AC_ARG_ENABLE(developer-build,
+[  --enable-developer-build	rebuild glibj.zip [default=no]],
+[case "${enableval}" in 
+  yes) 
+    conditional_developer_build=true
+    ;;
+  no)  conditional_developer_build=false ;;
+  *) AC_MSG_ERROR(bad value ${enableval} for --enable-developer-build) ;;
+esac],
+[conditional_developer_build=false])
+AM_CONDITIONAL(DEVELOPER_BUILD, test x$conditional_developer_build = xtrue)
 
 dnl java dependency creation
 AC_ARG_WITH(jdeps,
