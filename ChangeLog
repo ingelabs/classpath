@@ -1,3 +1,18 @@
+2004-07-31  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/JFormattedTextField.java
+	(JFormattedTextField): Implemented.
+	* javax/swing/text/DefaultEditorKit.java
+	(BeepAction): New inner class.
+	* javax/swing/text/Segment.java
+	(partialReturn): New field.
+	(setPartialReturn): New method.
+	(isPartialReturn): Likewise.
+	* javax/swing/text/View.java
+	(createFragment): Fixed typo.
+	(getStartOffset): New method.
+	(getEndOffset): Likewise.
+
 2004-07-31  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/plaf/basic/BasicArrowButton.java: Reindent.
