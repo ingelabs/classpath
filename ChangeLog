@@ -1,5 +1,10 @@
 2003-11-26  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/DatagramPacket.java
+	(DatagramPacket): Fixed documentation to become legal HTML.
+
+2003-11-26  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/InetSocketAddress.java
 	(hostname): Made private, added documentation.
 	(addr): Likewise.
