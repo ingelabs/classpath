@@ -13,6 +13,8 @@ extern "C"
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeCreate (JNIEnv *env, jobject, jobject, jboolean);
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeSetCheckboxGroup (JNIEnv *env, jobject, jobject);
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_connectSignals (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkSetFont (JNIEnv *env, jobject, jstring, jint, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkSetLabel (JNIEnv *env, jobject, jstring);
 
 #ifdef __cplusplus
 }

@@ -11,8 +11,9 @@ extern "C"
 #endif
 
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkLabelPeer_create__Ljava_lang_String_2F (JNIEnv *env, jobject, jstring, jfloat);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setText (JNIEnv *env, jobject, jstring);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkSetFont (JNIEnv *env, jobject, jstring, jint, jint);
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkLabelPeer_nativeSetAlignment (JNIEnv *env, jobject, jfloat);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setText (JNIEnv *env, jobject, jstring);
 
 #ifdef __cplusplus
 }

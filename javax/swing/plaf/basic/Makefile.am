@@ -10,9 +10,13 @@ BasicListUI.java \
 BasicLookAndFeel.java \
 BasicOptionPaneUI.java \
 BasicPanelUI.java \
+BasicProgressBarUI.java \
 BasicRadioButtonUI.java \
 BasicRootPaneUI.java \
+BasicScrollBarUI.java \
 BasicScrollPaneUI.java \
+BasicSeparatorUI.java \
+BasicSliderUI.java \
 BasicSplitPaneDivider.java \
 BasicSplitPaneUI.java \
 BasicTabbedPaneUI.java \

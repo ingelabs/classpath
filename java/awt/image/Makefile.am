@@ -1,6 +1,7 @@
 SUBDIRS = renderable
 
 EXTRA_DIST = \
+AffineTransformOp.java \
 AreaAveragingScaleFilter.java \
 BufferedImage.java \
 BufferedImageOp.java \

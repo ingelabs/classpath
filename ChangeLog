@@ -1,5 +1,17 @@
 2004-03-19  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/awt/peer/gtk/Makefile.am,
+	java/awt/image/Makefile.am,
+	javax/swing/plaf/basic/Makefile.am:
+	Added new files.
+	* include/gnu_java_awt_peer_gtk_GdkGraphics.h,
+	include/gnu_java_awt_peer_gtk_GtkCheckboxPeer.h,
+	include/gnu_java_awt_peer_gtk_GtkComponentPeer.h,
+	include/gnu_java_awt_peer_gtk_GtkLabelPeer.h:
+	Regenerated.
+
+2004-03-19  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/image/AffineTransformOp.java
 	(AffineTransformOp): Made public.
 	* javax/swing/JComponent.java

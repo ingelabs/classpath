@@ -7,6 +7,7 @@ EXTRA_DIST = \
 	GdkGlyphVector.java \
 	GdkGraphics.java \
 	GdkGraphics2D.java \
+	GdkGraphicsEnvironment.java \
 	GdkPixbufDecoder.java \
 	GtkArg.java \
 	GtkArgList.java \
