@@ -1,5 +1,5 @@
 /* PublicKey.java -- "Super-interface" for all public keys
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,24 +24,16 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 
 /**
-  * This interface specified no methods.  In simply provides a common
-  * super-interface for all algorithm specific public key values.
-  *
-  * @version 0.0
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public interface PublicKey
+ * This interface specified no methods.  In simply provides a common
+ * super-interface for all algorithm specific public key values.
+ *
+ * @version 0.0
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ */
+public interface PublicKey extends Key
 {
-
-/**
-  * This is the version id used for serialization
-  */
-public static final long serialVersionUID = 0L;
-
-} // interface PublicKey
-
+}
