@@ -1,5 +1,5 @@
 /* Class.java
-   Copyright (C) 1998 Free Software Foundation
+   Copyright (C) 1998, 2002 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package java.lang;
 
+import java.io.Serializable;
 import java.lang.reflect.*;
 import java.security.*;
 import gnu.java.lang.*;
@@ -66,7 +67,7 @@ import gnu.java.lang.*;
  * @since JDK1.0
  */
 
-public class Class {
+public final class Class implements Serializable {
     private Object[] signers = null;
     private ProtectionDomain pd = null;
     

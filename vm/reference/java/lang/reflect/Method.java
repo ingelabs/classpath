@@ -1,5 +1,5 @@
 /* java.lang.reflect.Method - reflection of Java methods
-   Copyright (C) 1998, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -180,7 +180,7 @@ extends AccessibleObject implements Member
   {
     StringBuffer sb = new StringBuffer();
     Modifier.toString(getModifiers(), sb).append(' ');
-    sb.append(getReturnType()).append(' ');
+    sb.append(getReturnType().getName()).append(' ');
     sb.append(getDeclaringClass().getName()).append('.');
     sb.append(getName()).append('(');
     Class[] c = getParameterTypes();
