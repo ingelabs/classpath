@@ -27,13 +27,13 @@ package java.io;
   * and simply redirects calls made to it to the subordinate Reader
   * instead.  Subclasses of this class perform additional filtering
   * functions in addition to simply redirecting the call.
-  *
+  * <p>
   * This class is not abstract.  However, since it only redirects calls
   * to a subordinate <code>Reader</code> without adding any functionality on top
   * of it, this class should not be used directly.  Instead, various
   * subclasses of this class should be used.  This is enforced with a
   * protected constructor.  Do not try to hack around it.
-  *
+  * <p>
   * When creating a subclass of <code>FilterReader</code>, override the
   * appropriate methods to implement the desired filtering.  However, note
   * that the <code>read(char[])</code> method does not need to be overridden

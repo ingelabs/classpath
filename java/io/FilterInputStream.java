@@ -27,19 +27,19 @@ package java.io;
   * and simply redirects calls made to it to the subordinate InputStream
   * instead.  Subclasses of this class perform additional filtering
   * functions in addition to simply redirecting the call.
-  *
+  * <p>
   * This class is not abstract.  However, since it only redirects calls
   * to a subordinate <code>InputStream</code> without adding any functionality on top
   * of it, this class should not be used directly.  Instead, various
   * subclasses of this class should be used.  This is enforced with a
   * protected constructor.  Do not try to hack around it.
-  *
+  * <p>
   * When creating a subclass of <code>FilterInputStream</code>, override the
   * appropriate methods to implement the desired filtering.  However, note
   * that the <code>read(byte[])</code> method does not need to be overridden
   * as this class redirects calls to that method to 
   * <code>read(byte[], int, int)</code> instead of to the subordinate
-  * <code>InputStream} read(byte[])</code> method.
+  * <code>InputStream read(byte[])</code> method.
   *
   * @version 0.0
   *

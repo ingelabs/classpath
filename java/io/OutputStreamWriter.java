@@ -30,7 +30,7 @@ import gnu.java.io.encode.Encoder;
   * which is specific to a particular encoding standard.  The desired
   * encoding can either be specified by name, or if no encoding is specified,
   * the system default encoding will be used.  The system default encoding
-  * name is determined from the system property <xmp>file.encoding</xmp>.
+  * name is determined from the system property <code>file.encoding</code>.
   * The only encodings that are guaranteed to be available are "8859_1"
   * (the Latin-1 character set) and "UTF8".  Unfortunately, Java does not
   * provide a mechanism for listing the encodings that are supported in
