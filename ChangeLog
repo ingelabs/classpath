@@ -1,3 +1,11 @@
+2003-12-27  Mark Wielaard  <mark@klomp.org>
+
+	* include/Makefile.am: Add java_lang_VMRuntime.h generation rule.
+	* include/java_lang_VMRuntime.h: Regenerated.
+	* java/lang/Makefile.am (EXTRA_DIST): Add Runtime.java.
+	* vm/reference/java/lang/Makefile.am: Remove Runtime.java, add
+	VMRuntime.java.
+
 2003-12-27  Guilhem Lavaux <guilhem@kaffe.org>
 
 	* gnu/java/net/protocol/http/Connection.java

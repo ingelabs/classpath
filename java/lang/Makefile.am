@@ -58,6 +58,7 @@ OutOfMemoryError.java \
 Package.java \
 Process.java \
 Runnable.java \
+Runtime.java \
 RuntimeException.java \
 RuntimePermission.java \
 SecurityException.java \

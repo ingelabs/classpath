@@ -10,21 +10,21 @@ extern "C"
 {
 #endif
 
-extern jint Java_java_lang_VMRuntime_availableProcessors(JNIEnv *, jclass);
-extern jlong Java_java_lang_VMRuntime_freeMemory(JNIEnv *, jclass);
-extern jlong Java_java_lang_VMRuntime_totalMemory(JNIEnv *, jclass);
-extern jlong Java_java_lang_VMRuntime_maxMemory(JNIEnv *, jclass);
-extern void Java_java_lang_VMRuntime_gc(JNIEnv *, jclass);
-extern void Java_java_lang_VMRuntime_runFinalization(JNIEnv *, jclass);
-extern void Java_java_lang_VMRuntime_runFinalizationForExit(JNIEnv *, jclass);
-extern void Java_java_lang_VMRuntime_traceInstructions(JNIEnv *, jclass, jboolean);
-extern void Java_java_lang_VMRuntime_traceMethodCalls(JNIEnv *, jclass, jboolean);
-extern void Java_java_lang_VMRuntime_runFinalizersOnExit(JNIEnv *, jclass, jboolean);
-extern void Java_java_lang_VMRuntime_exit(JNIEnv *, jclass, jint);
-extern jint Java_java_lang_VMRuntime_nativeLoad(JNIEnv *, jclass, jstring);
-extern jstring Java_java_lang_VMRuntime_nativeGetLibname(JNIEnv *, jclass, jstring, jstring);
-extern jobject Java_java_lang_VMRuntime_exec(JNIEnv *, jclass, jobjectArray, jobjectArray, jobject);
-extern void Java_java_lang_VMRuntime_insertSystemProperties(JNIEnv *, jclass, jobject);
+extern JNIEXPORT jint JNICALL Java_java_lang_VMRuntime_availableProcessors (JNIEnv *env, jclass);
+extern JNIEXPORT jlong JNICALL Java_java_lang_VMRuntime_freeMemory (JNIEnv *env, jclass);
+extern JNIEXPORT jlong JNICALL Java_java_lang_VMRuntime_totalMemory (JNIEnv *env, jclass);
+extern JNIEXPORT jlong JNICALL Java_java_lang_VMRuntime_maxMemory (JNIEnv *env, jclass);
+extern JNIEXPORT void JNICALL Java_java_lang_VMRuntime_gc (JNIEnv *env, jclass);
+extern JNIEXPORT void JNICALL Java_java_lang_VMRuntime_runFinalization (JNIEnv *env, jclass);
+extern JNIEXPORT void JNICALL Java_java_lang_VMRuntime_runFinalizationForExit (JNIEnv *env, jclass);
+extern JNIEXPORT void JNICALL Java_java_lang_VMRuntime_traceInstructions (JNIEnv *env, jclass, jboolean);
+extern JNIEXPORT void JNICALL Java_java_lang_VMRuntime_traceMethodCalls (JNIEnv *env, jclass, jboolean);
+extern JNIEXPORT void JNICALL Java_java_lang_VMRuntime_runFinalizersOnExit (JNIEnv *env, jclass, jboolean);
+extern JNIEXPORT void JNICALL Java_java_lang_VMRuntime_exit (JNIEnv *env, jclass, jint);
+extern JNIEXPORT jint JNICALL Java_java_lang_VMRuntime_nativeLoad (JNIEnv *env, jclass, jstring);
+extern JNIEXPORT jstring JNICALL Java_java_lang_VMRuntime_nativeGetLibname (JNIEnv *env, jclass, jstring, jstring);
+extern JNIEXPORT jobject JNICALL Java_java_lang_VMRuntime_exec (JNIEnv *env, jclass, jobjectArray, jobjectArray, jobject);
+extern JNIEXPORT void JNICALL Java_java_lang_VMRuntime_insertSystemProperties (JNIEnv *env, jclass, jobject);
 
 #ifdef __cplusplus
 }
