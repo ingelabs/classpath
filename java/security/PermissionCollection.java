@@ -64,7 +64,7 @@ public abstract class PermissionCollection extends Object implements Serializabl
  * Class Variables
  */
 
-public static final String linesep;
+public static final String linesep = null;
 
 static
 {
