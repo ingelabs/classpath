@@ -55,13 +55,13 @@ public interface Customizer {
 	 **/
 	public abstract void setObject(Object bean);
 
-	/** Add a PropertyChangeLister.
+	/** Add a PropertyChangeListener.
 	 ** @param l the PropertyChangeListener to add.
 	 **/
 	public abstract void addPropertyChangeListener(PropertyChangeListener l);
 
-	/** Remove a PropertyChangeLister.
+	/** Remove a PropertyChangeListener.
 	 ** @param l the PropertyChangeListener to remove.
 	 **/
-	public abstract void removePropertyChangeLister(PropertyChangeListener l);
+	public abstract void removePropertyChangeListener(PropertyChangeListener l);
 }

@@ -43,7 +43,7 @@ public class PropertyEditorSupport implements PropertyEditor {
 	/** Call this constructor when you are deriving from
 	 ** PropertyEditorSupport.
 	 **/
-	public PropertyEditorSupport() {
+	protected PropertyEditorSupport() {
 		this.eventSource = this;
 		this.pSupport = new PropertyChangeSupport(this);
 	}
@@ -53,7 +53,7 @@ public class PropertyEditorSupport implements PropertyEditor {
 	 ** @param eventSource the source to use when firing
 	 **        property change events.
 	 **/
-	public PropertyEditorSupport(Object eventSource) {
+	protected PropertyEditorSupport(Object eventSource) {
 		this.eventSource = eventSource;
 		this.pSupport = new PropertyChangeSupport(this);
 	}
@@ -184,3 +184,4 @@ public class PropertyEditorSupport implements PropertyEditor {
 		pSupport.firePropertyChange(null,null,val);
 	}
 }
+

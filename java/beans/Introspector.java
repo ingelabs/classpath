@@ -159,6 +159,8 @@ public class Introspector {
 	static String[] beanInfoSearchPath = {"gnu.java.beans.info", "sun.beans.infos"};
 	static Hashtable beanInfoCache = new Hashtable();
 
+	private Introspector() {}
+
 	/** Get the BeanInfo for class <CODE>beanClass</CODE>,
 	 ** first by looking for explicit information, next by
 	 ** using standard design patterns to determine
@@ -252,7 +254,7 @@ public class Introspector {
 	 ** @param beanInfoSearchPath the new BeanInfo search
 	 **        path.
 	 **/
-	public static void getBeanInfoSearchPath(String[] beanInfoSearchPath) {
+	public static void setBeanInfoSearchPath(String[] beanInfoSearchPath) {
 		Introspector.beanInfoSearchPath = beanInfoSearchPath;
 	}
 

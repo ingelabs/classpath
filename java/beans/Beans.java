@@ -167,7 +167,7 @@ public class Beans {
 	/** Set whether the GUI is available to use.
 	 ** @param guiAvailable whether the GUI is available to use.
 	 **/
-	public static void setGuiAvailable(boolean guiAvailable) {
+	public static void setGuiAvailable(boolean guiAvailable) throws SecurityException {
 		Beans.guiAvailable = guiAvailable;
 	}
 
@@ -175,7 +175,7 @@ public class Beans {
 	 ** are in a RAD tool.
 	 ** @param designTime whether it is design time.
 	 **/
-	public static void setDesignTime(boolean designTime) {
+	public static void setDesignTime(boolean designTime) throws SecurityException {
 		Beans.designTime = designTime;
 	}
 }

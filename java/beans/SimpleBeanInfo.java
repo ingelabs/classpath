@@ -20,6 +20,8 @@
 
 package java.beans;
 
+import java.awt.*;
+
 /**
  ** SimpleBeanInfo is a class you may extend to more easily
  ** provide select information to the Introspector.  It
@@ -97,7 +99,17 @@ public class SimpleBeanInfo implements BeanInfo {
 	 ** @param iconType the type of icon
 	 ** @return <CODE>null</CODE>.
 	 **/
-	public java.awt.Image getIcon(int iconType) {
+	public Image getIcon(int iconType) {
+		return null;
+	}
+
+	/** Helper method to load an image using the Bean class
+	 ** getResource() method.  Currently unimplemented.
+	 ** @param location the URL relative
+	 ** @return the Image in question.
+	 **/
+	public Image loadImage(String location) {
 		return null;
 	}
 }
+

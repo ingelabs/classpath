@@ -1,0 +1,3 @@
+add AppletStub and AppletContext to java.beans.Beans.instantiate().
+Find out when exactly to throw SecurityException from java.beans.Beans.setDesignTime() and setGuiAvailable().
+Implement java.beans.SimpleBeanInfo.loadImage().
