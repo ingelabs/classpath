@@ -63,10 +63,6 @@ jmethodID postWindowEventID;
 
 JNIEnv *gdk_env;
 
-#ifdef PORTABLE_NATIVE_SYNC
-JavaVM *gdk_vm;
-#endif
-
 GtkWindowGroup *global_gtk_window_group;
 
 /*
@@ -87,18 +83,25 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
   NSA_INIT (env, clazz);
 
   /* GTK requires a program's argc and argv variables, and requires that they
-     be valid.  */
-
-  argv = (char **) malloc (sizeof (char *) * 2);
-  argv[0] = "";
+     be valid.   Set it up. */
+  argv = (char **) g_malloc (sizeof (char *) * 2);
+  argv[0] = (char *) g_malloc(1);
+#if 1
+  strcpy(argv[0], "");
+#else  /* The following is a more efficient alternative, but less intuitively
+	* expresses what we are trying to do.   This code is only run once, so
+	* I'm going for intuitive. */
+  argv[0][0] = '\0';
+#endif
   argv[1] = NULL;
 
   /* until we have JDK 1.2 JNI, assume we have a VM with threads that 
      match what GLIB was compiled for */
 #ifdef PORTABLE_NATIVE_SYNC
-  (*env)->GetJavaVM( env, &gdk_vm );
-  g_thread_init ( &g_thread_jni_functions );
-  printf("called gthread init\n");
+  (*env)->GetJavaVM( env, &the_vm );
+  g_thread_init ( &portable_native_sync_jni_functions );
+  /* Debugging progress message; uncomment if needed: */
+  /*   printf("called gthread init\n"); */
 #else
   g_thread_init ( NULL );
 #endif
@@ -121,16 +124,15 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 
   if ((homedir = getenv ("HOME")))
     {
-      rcpath = (char *) malloc (strlen (homedir) + strlen (RC_FILE) + 2);
+      rcpath = (char *) g_malloc (strlen (homedir) + strlen (RC_FILE) + 2);
       sprintf (rcpath, "%s/%s", homedir, RC_FILE);
     }
   
   gtk_rc_parse ((rcpath) ? rcpath : RC_FILE);
 
-  if (rcpath)
-    free (rcpath);
-
-  free (argv);
+  g_free (rcpath);
+  g_free (argv[0]);
+  g_free (argv);
 
   /* setup cached IDs for posting GTK events to Java */
 /*    gtkgenericpeer = (*env)->FindClass (env,  */

@@ -1,3 +1,44 @@
+2004-06-06  Steven Augart  <augart@watson.ibm.com>
+
+	--portable-native-sync implemented for GTK2:
+	
+	* gnu/native/jni/gtk-peer/gthread-jni.c: Indentation fixes.
+	Implemented missing functions for GTK2.
+	Added error handling.
+	Renamed static functions out of the g_ namespace.
+	Added TRACE_API_CALLS, EXPLAIN_TROUBLE, EXPLAIN_BROKEN, 
+	EXPLAIN_BADLY_BROKEN, and DELETE_LOCAL_REFS options.
+	Rewrote global-reference code.
+	Eliminated cascading errors.
+	(mutex_trylock_jni_impl) Fully implemented.
+	(cond_timed_wait_jni_impl) Went from millisecond to microsecond
+	resolution.
+	(setup_cache) New function.
+	(mutex_cond_wait_jni_impl, mutex_cond_timed_wait_jni_impl) Fixed
+	bug where they were not unlocking the GMutex associated with the
+	condition variable during the wait on that condition variable.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMainThread.c,
+	native/jni/gtk-peer/gthread-jni.c,
+	native/jni/gtk-peer/gthread-jni.h
+	(g_thread_jni_functions): Renamed to ...
+	(portable_native_sync_jni_functions): this name.
+	(gdk_vm): Renamed to...
+	(the_vm): this name.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMainThread.c
+	(gdk_vm): Removed duplicate definition.
+	(gtkInit): Removed stray message to stdout.
+	(gtkInit): Use g_malloc and g_free instead of malloc and free.
+	(gtkInit): Fix a const assignment bug.
+	(gtkInit): Simplified code.
+
+	* gnu/java/awt/peer/gtk/GThreadNativeMethodRunner.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.h,
+	gnu/java/awt/peer/gtk/GThreadMutex.java:
+	New files.
+	
 2004-06-05  Steven Augart  <augart@watson.ibm.com>
 
 	* doc/vmintegration.texinfo: Added formatting.  Fixed some typos.
