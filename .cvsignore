@@ -4,6 +4,8 @@ configure
 config.log
 config.cache
 config.status
+config.h.in
+config.h
 stamp-h
 libtool
 aclocal.m4
