@@ -1,3 +1,7 @@
+2004-12-17  Mark Wielaard  <mark@klomp.org>
+
+	* scripts/.cvsignore: New file.
+
 2004-12-17  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/locale/LocaleInformation_ar_QA.java,
