@@ -44,6 +44,8 @@ import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Map;
 import java.util.HashMap;
+import java.lang.reflect.Constructor;
+import gnu.java.lang.SystemClassLoader;
 
 import gnu.java.util.EmptyEnumeration;
 
@@ -294,5 +296,40 @@ final class VMClassLoader
   static final Map classAssertionStatus()
   {
     return new HashMap();
+  }
+
+  static ClassLoader getSystemClassLoader()
+  {
+    // This method is called as the initialization of systemClassLoader,
+    // so if there is a null value, this is the first call and we must check
+    // for java.system.class.loader.
+      String loader = System.getProperty("java.system.class.loader",
+                                           "gnu.java.lang.SystemClassLoader");
+      try
+          {
+	      // Give the new system class loader a null parent.
+	      Constructor c = Class.forName(loader).getConstructor
+		  ( new Class[] { ClassLoader.class } );
+	      return (ClassLoader) c.newInstance(new Object[1]);
+          }
+      catch (Exception e)
+          {
+	      try
+		  {
+		      System.err.println("Requested system classloader "
+					 + loader + " failed, trying "
+					 + "gnu.java.lang.SystemClassLoader");
+		      e.printStackTrace();
+		      // Fallback to gnu.java.lang.SystemClassLoader.
+		      return new SystemClassLoader(null);
+		  }
+	      catch (Exception e1)
+		  {
+		      throw (Error) new InternalError
+			  ("System class loader could not be found: " + e1)
+			  .initCause(e1);
+		  }
+          }
+ 
   }
 }

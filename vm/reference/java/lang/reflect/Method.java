@@ -170,7 +170,7 @@ extends AccessibleObject implements Member
       // If a VM uses the Method class as their native/internal representation
       // then just using the following would be optimal:
       //
-      // return return this == o;
+      // return this == o;
       //
       if (o == null)
         return false;

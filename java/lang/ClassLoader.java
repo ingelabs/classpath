@@ -145,7 +145,7 @@ public abstract class ClassLoader
    * is somewhat circular - getSystemClassLoader() checks whether this
    * field is null in order to bypass a security check.
    */
-  static final ClassLoader systemClassLoader = getSystemClassLoader();
+  static final ClassLoader systemClassLoader = VMClassLoader.getSystemClassLoader();
 
   /**
    * The default protection domain, used when defining a class with a null
@@ -744,49 +744,17 @@ public abstract class ClassLoader
    */
   public static ClassLoader getSystemClassLoader()
   {
-    // This method is called as the initialization of systemClassLoader,
-    // so if there is a null value, this is the first call and we must check
-    // for java.system.class.loader.
-    if (systemClassLoader == null)
-      {
-        String loader = System.getProperty("java.system.class.loader",
-                                           "gnu.java.lang.SystemClassLoader");
-        try
-          {
-            // Give the new system class loader a null parent.
-            Constructor c = Class.forName(loader).getConstructor
-              ( new Class[] { ClassLoader.class } );
-            return (ClassLoader) c.newInstance(new Object[1]);
-          }
-        catch (Exception e)
-          {
-            try
-              {
-                System.err.println("Requested system classloader "
-                                   + loader + " failed, trying "
-                                   + "gnu.java.lang.SystemClassLoader");
-                e.printStackTrace();
-                // Fallback to gnu.java.lang.SystemClassLoader.
-                return new SystemClassLoader(null);
-              }
-            catch (Exception e1)
-              {
-                throw (Error) new InternalError
-                  ("System class loader could not be found: " + e1)
-                  .initCause(e1);
-              }
-          }
-      }
-    // Check if we may return the system classloader
-    SecurityManager sm = System.getSecurityManager();
-    if (sm != null)
-      {
-        Class c = VMSecurityManager.getClassContext()[1];
-        ClassLoader cl = c.getClassLoader();
-        if (cl != null && cl != systemClassLoader)
-          sm.checkPermission(new RuntimePermission("getClassLoader"));
-      }
-    return systemClassLoader;
+     // Check if we may return the system classloader
+      SecurityManager sm = System.getSecurityManager();
+      if (sm != null)
+	  {
+	      Class c = VMSecurityManager.getClassContext()[1];
+	      ClassLoader cl = c.getClassLoader();
+	      if (cl != null && cl != systemClassLoader)
+		  sm.checkPermission(new RuntimePermission("getClassLoader"));
+	  }
+
+      return systemClassLoader;
   }
 
   /**
