@@ -49,9 +49,10 @@ import gnu.java.lang.*;
  **/
 
 public class Class {
-	Class superclass;
-	String name;
-	Object[] signers;
+	int private_data;
+	Class superclass = null;
+	String name = null;
+	Object[] signers = null;
 
 	/** Return the human-readable form of this Object.  For
 	 ** class, that means "interface " or "class " plus the
