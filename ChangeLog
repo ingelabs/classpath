@@ -1,5 +1,10 @@
 2004-10-18  Michael Koch  <konqueror@gmx.de>
 
+	* java/text/RuleBasedCollator.java:
+	Reorganized import statements.
+
+2004-10-18  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/security/provider/DSAParameters.java:
 	Fixed copyright years.
 
