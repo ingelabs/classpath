@@ -10,8 +10,8 @@ extern "C"
 {
 #endif
 
-extern void Java_gnu_java_awt_peer_gtk_GtkButtonPeer_create (JNIEnv *env, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkSetFont (JNIEnv *env, jobject, jstring, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkButtonPeer_create (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkSetFont (JNIEnv *env, jobject, jstring, jint);
 
 #ifdef __cplusplus
 }
