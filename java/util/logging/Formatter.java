@@ -47,11 +47,9 @@ import java.util.ResourceBundle;
 import java.text.MessageFormat;
 
 /**
- * A <code>Formatter</code> supports LoggingHandlers by localizing
+ * A <code>Formatter</code> supports handlers by localizing
  * message texts and by subsituting parameter values for their
  * placeholders.
- *
- * <p>FIXME: Missing Javadoc.
  *
  * @author Sascha Brawer (brawer@acm.org)
  */
@@ -65,15 +63,49 @@ public abstract class Formatter
   }
 
 
+  /**
+   * Formats a LogRecord into a string.  Usually called by handlers
+   * which need a string for a log record, for example to append
+   * a record to a log file or to transmit a record over the network.
+   *
+   * @param record the log record for which a string form is requested.
+   */
   public abstract String format(LogRecord record);
 
-  public String getHead(Handler h)
+
+  /**
+   * Returns a string that handlers are supposed to emit before
+   * the first log record.  The base implementation returns an
+   * empty string, but subclasses such as {@link XMLFormatter}
+   * override this method in order to provide a suitable header.
+   *
+   * @return a string for the header.
+   *
+   * @param handler the handler which will prepend the returned
+   *     string in front of the first log record.  This method
+   *     may inspect certain properties of the handler, for
+   *     example its encoding, in order to construct the header.
+   */
+  public String getHead(Handler handler)
   {
     return "";
   }
 
 
-  public String getTail(Handler h)
+  /**
+   * Returns a string that handlers are supposed to emit after
+   * the last log record.  The base implementation returns an
+   * empty string, but subclasses such as {@link XMLFormatter}
+   * override this method in order to provide a suitable tail.
+   *
+   * @return a string for the header.
+   *
+   * @param handler the handler which will append the returned
+   *     string after the last log record.  This method
+   *     may inspect certain properties of the handler
+   *     in order to construct the tail.
+   */
+  public String getTail(Handler handler)
   {
     return "";
   }
@@ -120,9 +152,9 @@ public abstract class Formatter
     if (bundle != null)
     {
       try
-       {
-	 msg = bundle.getString(msg);
-       }
+      {
+	msg = bundle.getString(msg);
+      }
       catch (java.util.MissingResourceException _)
       {
       }
