@@ -14,6 +14,7 @@ DataInput.java \
 DataInputStream.java \
 DataOutput.java \
 DataOutputStream.java \
+DeleteFileHelper.java \
 EOFException.java \
 Externalizable.java \
 File.java \
