@@ -55,14 +55,17 @@ import java.util.ResourceBundle;
 public class Level
   implements java.io.Serializable
 {
+  /* The integer values are the same as in the Sun J2SE 1.4.
+   * They have been obtained with a test program.
+   */
   public static final Level OFF = new Level ("OFF", Integer.MAX_VALUE);
-  public static final Level SEVERE = new Level ("SEVERE", 10000);
-  public static final Level WARNING = new Level ("WARNING", 9000);
-  public static final Level INFO = new Level ("INFO", 8000);
-  public static final Level CONFIG = new Level ("CONFIG", 7000);
-  public static final Level FINE = new Level ("FINE", 6000);
-  public static final Level FINER = new Level ("FINER", 5000);
-  public static final Level FINEST = new Level ("FINEST", 4000);
+  public static final Level SEVERE = new Level ("SEVERE", 1000);
+  public static final Level WARNING = new Level ("WARNING", 900);
+  public static final Level INFO = new Level ("INFO", 800);
+  public static final Level CONFIG = new Level ("CONFIG", 700);
+  public static final Level FINE = new Level ("FINE", 500);
+  public static final Level FINER = new Level ("FINER", 400);
+  public static final Level FINEST = new Level ("FINEST", 300);
   public static final Level ALL = new Level ("ALL", Integer.MIN_VALUE);
 
   private static final Level[] knownLevels = {
