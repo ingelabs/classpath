@@ -178,6 +178,8 @@ setBounds (GtkWidget *widget, jint x, jint y, jint width, jint height)
   gint current_x, current_y;
   gint origin_x, origin_y;
 
+  /* XXX: Need to be able to eventually re-enable this */
+
 /*    gdk_window_get_root_origin (widget->window, &current_x, &current_y); */
 
 /*    if (current_x != x || current_y != y) */
