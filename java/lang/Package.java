@@ -1,5 +1,5 @@
-/* java.lang.Object - Everything you ever wanted to know about a package.
-   Copyright (C) 2000 Free Software Foundation, Inc.
+/* java.lang.Package - Everything you ever wanted to know about a package.
+   Copyright (C) 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -43,7 +43,7 @@ import java.util.StringTokenizer;
  * compares a desired version of a specification with the version of the
  * specification as implemented by a package. A package is considered
  * compatible with another version if the version of the specification is
- * equal or higer then the requested version. Version numbers are represented
+ * equal or higher then the requested version. Version numbers are represented
  * as strings of positive numbers seperated by dots (e.g. "1.2.0").
  * The first number is called the major number, the second the minor,
  * the third the micro, etc. A version is considered higher then another
@@ -51,9 +51,6 @@ import java.util.StringTokenizer;
  * the major numbers of the versions are equal if it has a bigger minor number
  * then the other version, etc. (If a version has no minor, micro, etc numbers
  * then they are considered the be 0.)
- * <p>
- * XXX - Two methods (getPackage and getPackages) need support in ClassLoader
- * and are currently not implemented.
  *
  * @since 1.2
  * @author Mark Wielaard (mark@klomp.org)
@@ -86,23 +83,27 @@ public class Package {
 
     /** 
      * A package local constructor for the Package class.
-     * There are no public constructors defined for Package so I just
-     * invented a package local constructor that can be used by classes in
-     * java.lang.
+     * All parameters except the <code>name</code> of the package may be
+     * <code>null</code>.
+     * There are no public constructors defined for Package this is a package
+     * local constructor that is used by java.lang.Classloader.definePackage().
      * 
      * @param name The name of the Package
-     * @param implTitle The name of the implementation
-     * @param implVendor The vendor that wrote this implementation
-     * @param implVersion The version of this implementation
      * @param specTitle The name of the specification
      * @param specVendor The name of the specification designer
      * @param specVersion The version of this specification
+     * @param implTitle The name of the implementation
+     * @param implVendor The vendor that wrote this implementation
+     * @param implVersion The version of this implementation
      * @param sealed If sealed the origin of the package classes
      */
     Package(String name,
-            String implTitle, String implVendor, String implVersion,
             String specTitle, String specVendor, String specVersion,
+            String implTitle, String implVendor, String implVersion,
             URL sealed) {
+
+	if (name == null)
+	    throw new IllegalArgumentException("null Package name");
 
         this.name = name;
 
@@ -221,27 +222,35 @@ public class Package {
 
     /**
      * Returns the named package if it is known by the callers class loader.
-     * It may return null if the package is unknown or when there is no
-     * information on that particular package available.
-     * <p>
-     * XXX - Since ClassLoader.getPackage() is not yet implemented it just
-     * returns null.
+     * It may return null if the package is unknown, when there is no
+     * information on that particular package available or when the callers
+     * classloader is null.
      * @param name the name of the desired package
      */
     public static Package getPackage(String name) {
-        // ClassLoader.getPackage(name);
-        return null;
+        // get the callers classloader
+        Class c = VMSecurityManager.getClassContext()[1];
+        ClassLoader cl = c.getClassLoader();
+        
+        if (cl != null)
+            return cl.getPackage(name);
+        else
+            return null;
     }
 
     /**
      * Returns all the packages that are known to the callers class loader.
-     * <p>
-     * XXX - Since ClassLoader.getPackages() is not yet implemented it just
-     * returns null.
+     * It may return an empty array if the classloader of the caller is null.
      */
     public static Package[] getPackages() {
-        // ClassLoader.getPackages();
-        return null;
+        // get the callers classloader
+        Class c = VMSecurityManager.getClassContext()[1];
+        ClassLoader cl = c.getClassLoader();
+        
+        if (cl != null)
+            return cl.getPackages();
+        else
+            return new Package[0];
     }
 
     /** 

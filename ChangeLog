@@ -1,3 +1,16 @@
+2001-01-08  Mark Wielaard  <mark@klomp.org>
+	* java/lang/ClassLoader.java: 1.2 updates
+	(definedPackages, parent, systemClassLoader): new private fields
+	(ClassLoader): new constructor that takes a parent classloader
+	(definePackage, getPackage, getPackages): new protected methods
+	* java/lang/Package.java: 1.2 updates
+	(Package): change argument order to match ClassLoader.definePackage(),
+	throw NullPointerException when name == null
+	(getPackage, getPackages): implemented
+	* java/lang/Sysem.java: 1.2 updates
+	(setProperty): new method
+	(runFinalizersOnExit): deprecated
+
 2001-01-07  Mark Wielaard  <mark@klomp.org>
 	* java/lang/Float.java: implements Comparable, new method compareTo()
 	* java/lang/Integer.java: Ditto

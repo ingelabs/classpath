@@ -1,5 +1,5 @@
 /* java.lang.System
-   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -222,6 +222,24 @@ public class System {
 		return properties.getProperty(name);
 	}
 
+	/** Set a single system property by name.
+	 ** @param name the name of the system property to set
+	 ** @param value the new value of the system property
+	 ** @return the old property value, or null if not yet set
+	 ** @exception SecurityException if a SecurityManager is set
+     **            and the caller doesn't have
+	 **            <code>PropertyPermission(name, "write")</code>
+	 **
+	 ** @since 1.2
+	 **/
+	public static String setProperty(String name, String value) {
+	    SecurityManager sm = getSecurityManager();
+        if (sm != null)
+            sm.checkPermission(new PropertyPermission(name, "write"));
+        
+        return (String)properties.setProperty(name, value);
+	}
+
 	/** Get a single property by name, with a possible default
 	 ** value returned if not found.
 	 ** @param name the name of the system property to set
@@ -275,6 +293,11 @@ public class System {
 	 ** exiting the JVM.  Just uses
 	 ** <CODE>Runtime.getRuntime().runFinalizersOnExit()</CODE>.
 	 ** @see java.lang.Runtime#runFinalizersOnExit()
+	 **
+	 ** @deprecated Since 1.2 this method is officially deprecated
+	 ** because there is no guarantee and doing the actual finalization
+	 ** on all objects is unsafe since not all (daemon) threads might
+	 ** be finished with all objects when the VM terminates.
 	 **/
 	public static void runFinalizersOnExit(boolean finalizeOnExit) {
 		Runtime.getRuntime().runFinalizersOnExit(finalizeOnExit);

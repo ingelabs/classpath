@@ -1,5 +1,5 @@
 /* java.lang.ClassLoader
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -50,17 +50,50 @@ public abstract class ClassLoader {
 	/* Each instance gets a list of these. */
 	private Hashtable loadedClasses = new Hashtable();
 
-	/** Create a new ClassLoader.
-	 ** @exception SecurityException if you do not have permission
-	 **            to create a ClassLoader.
-	 **/
-	protected ClassLoader() throws SecurityException {
-		try {
-			System.getSecurityManager().checkCreateClassLoader();
-		} catch(NullPointerException e) {
-		}
-	}
+    /* Each instance gets a list of these. */
+    private Hashtable definedPackages = new Hashtable();
 
+    /* The classloader that is consulted before this classloader.
+       if null then the parent is the bootstrap classloader. */
+    private final ClassLoader parent;
+
+    /* System/Application classloader gnu.java.lang.SystemClassLoader. */
+    static final ClassLoader systemClassLoader
+        = null; // XXX = SystemClassLoader.getInstance();
+
+    /** Create a new ClassLoader with as parent the system classloader.
+     ** @exception SecurityException if you do not have permission
+     **            to create a ClassLoader.
+     **/
+    protected ClassLoader() throws SecurityException {
+        this(systemClassLoader);
+    }
+ 
+    /** Create a new ClassLoader with the specified parent.
+     ** The parent will be consulted when a class or resource is
+     ** requested through <code>loadClass()</code> or
+     ** <code>getResource()</code>. Only when the parent classloader
+     ** cannot provide the requested class or resource the
+     ** <code>findClass()</code> or <code>findResource()</code> method
+     ** of this classloader will be called.
+     **
+     ** @param parent the classloader that should be consulted before
+     ** this classloader. Use <code>null</code> to specify the bootstrap
+     ** classloader.
+     ** @exception SecurityException if you do not have permission
+     **            to create a ClassLoader.
+     **
+     ** @since 1.2
+     **/
+    protected ClassLoader(ClassLoader parent) {
+        // May we create a new classloader?
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null)
+            sm.checkCreateClassLoader();
+        
+        this.parent = parent;
+    }
+    
 	/** Load a class using this ClassLoader, resolving it as well.
 	 ** @param name the name of the class relative to this ClassLoader.
 	 ** @exception ClassNotFoundException if the class cannot be found to
@@ -209,5 +242,109 @@ public abstract class ClassLoader {
 			return null;
 		}
 	}
+
+    /**
+     * Defines a new package and creates a Package object.
+     * The package should be defined before any class in the package is
+     * defined with <code>defineClass()</code>. The package should not yet
+     * be defined before in this classloader or in one of its parents (which
+     * means that <code>getPackage()</code> should return <code>null</code>).
+     * All parameters except the <code>name</code> of the package may be
+     * <code>null</code>.
+     * <p>
+     * Subclasses should call this method from their <code>findClass()</code>
+     * implementation before calling <code>defineClass()</code> on a Class
+     * in a not yet defined Package (which can be checked by calling
+     * <code>getPackage()</code>).
+     *
+     * @param name The name of the Package
+     * @param specTitle The name of the specification
+     * @param specVendor The name of the specification designer
+     * @param specVersion The version of this specification
+     * @param implTitle The name of the implementation
+     * @param implVendor The vendor that wrote this implementation
+     * @param implVersion The version of this implementation
+     * @param sealed If sealed the origin of the package classes
+     * @return the Package object for the specified package
+     *
+     * @exception IllegalArgumentException if the package name is null or if
+     * it was already defined by this classloader or one of its parents.
+     *
+     * @see Package
+     * @since 1.2
+     */
+    protected Package definePackage(String name,
+            String specTitle, String specVendor, String specVersion,
+            String implTitle, String implVendor, String implVersion,
+            URL sealed) {
+
+        if (getPackage(name) != null)
+            throw new IllegalArgumentException("Package " + name
+                                               + " already defined");
+        Package p = new Package(name,
+                                specTitle, specVendor, specVersion,
+                                implTitle, implVendor, implVersion,
+                                sealed);
+        definedPackages.put(name, p);
+
+        return p;
+    }
+
+    /**
+     * Returns the Package object for the requested package name. It returns
+     * null when the package is not defined by this classloader or one of its
+     * parents.
+     *
+     * @since 1.2
+     */
+    protected final Package getPackage(String name) {
+        Package p;
+        if (parent == null)
+            // XXX - Should we use the bootstrap classloader?
+            p = null;
+        else
+            p = parent.getPackage(name);
+
+        if (p == null)
+            p = (Package)definedPackages.get(name);
+
+        return p;
+    }
+
+    /**
+     * Returns all Package objects defined by this classloader and its parents.
+     *
+     * @since 1.2
+     */
+    protected Package[] getPackages() {
+        Package[] allPackages;
+        
+        // Get all our packages.
+        Package[] packages;
+        synchronized(definedPackages) {
+            packages = new Package[definedPackages.size()];
+            Enumeration e = definedPackages.elements();
+            int i = 0;
+            while (e.hasMoreElements()) {
+                packages[i] = (Package)e.nextElement();
+                i++;
+            }
+        }
+        
+        // If we have a parent get all packages defined by our parents.
+        if (parent != null) {
+            Package[] parentPackages = parent.getPackages();
+            allPackages = new Package[parentPackages.length+packages.length];
+            System.arraycopy(parentPackages, 0, allPackages, 0,
+                             parentPackages.length);
+            System.arraycopy(packages, 0, allPackages, parentPackages.length,
+                             packages.length);
+        } else
+            // XXX - Should we use the bootstrap classloader?
+            allPackages = packages;
+        
+        return allPackages;
+    }
+
 }
 
