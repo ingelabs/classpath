@@ -1,0 +1,5 @@
+1998-07-06  Geoff Berry  <gcb@cs.duke.edu>
+
+	* Arrays.java (mergeSort(Object[],Comparator)): Added
+	initialization of int `d2' to -1 to placate javac.
+
