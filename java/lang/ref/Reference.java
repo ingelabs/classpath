@@ -40,7 +40,7 @@ package java.lang.ref;
 
 /**
  * This is the base class of all references.  A reference allows
- * refering to an object without preventing the garbage collector from
+ * refering to an object without preventing the garbage collector to
  * collect it.  The only way to get the referred object is via the
  * <code>get()</code>-method.  This method will return
  * <code>null</code> if the object was collected. <br>
