@@ -10,6 +10,7 @@
 #include <jcl.h>
 #include <native_state.h>
 #include <jnilink.h>
+#include <jvmdi.h>
 #include <vmi.h>
 #include <primlib.h>
 
@@ -25,7 +26,6 @@ static jmethodID
 GetTheMethodID(JNIEnv * env, jobject thisObj, jclass declarer,
 				jstring name, jobjectArray targetArgTypes) {
 	linkPtr l;
-	char * nameUTF;
 	char * signature;
 	jmethodID m;
 
@@ -36,11 +36,6 @@ GetTheMethodID(JNIEnv * env, jobject thisObj, jclass declarer,
 	l = (linkPtr)get_state(env, thisObj, table);
 
 	if(l == NULL) {
-		nameUTF = JCL_jstring_to_cstring(env, name);
-		if(nameUTF == NULL) {
-			return NULL;
-		}
-
 		signature = JCL_malloc(env, sizeof(char) * MAX_SIGNATURE_SIZE);
 		if(signature == NULL) {
 			return NULL;
@@ -49,9 +44,10 @@ GetTheMethodID(JNIEnv * env, jobject thisObj, jclass declarer,
 		if(REFLECT_GetConstructorSignature(env, signature, targetArgTypes) == -1) {
 			return NULL;
 		}
-		l = LINK_LinkMethod(env, declarer, nameUTF, signature);
+		if(LINK_LinkConstructor(env, &l, declarer, signature) == NULL) {
+			return NULL;
+		}
 
-		JCL_free_cstring(env, name, nameUTF);
 		free(signature);
 
 		set_state(env, thisObj, table, l);
@@ -61,7 +57,7 @@ GetTheMethodID(JNIEnv * env, jobject thisObj, jclass declarer,
 		return NULL;
 	}
 
-	m = LINK_GetMethod(env, l, NULL);
+	m = LINK_ResolveMethod(env, l);
 	return m;
 }
 
@@ -83,6 +79,7 @@ static jvalue * DoInitialCheckingAndConverting(JNIEnv * env, jobjectArray args,
 	jsize argNum;
 
 	vmiError vmiErr;
+	jvmdiError jvmdiErr;
 
 	vmiErr = VMI_GetThisFrame(env, &thisFrame);
 	if(vmiErr != VMI_ERROR_NONE) {
@@ -90,15 +87,15 @@ static jvalue * DoInitialCheckingAndConverting(JNIEnv * env, jobjectArray args,
 			return NULL;
 	}
 
-	vmiErr = VMI_GetCallerFrame(env, thisFrame, &methodObjFrame);
-	if(vmiErr != VMI_ERROR_NONE) {
-			VMI_ThrowAppropriateException(env, vmiErr);
+	jvmdiErr = JVMDI_GetCallerFrame(env, thisFrame, &methodObjFrame);
+	if(jvmdiErr != JVMDI_ERROR_NONE) {
+			VMI_ThrowAppropriateException(env, jvmdiErr);
 			return NULL;
 	}
 
-	vmiErr = VMI_GetCallerFrame(env, methodObjFrame, &callerFrame);
-	if(vmiErr != VMI_ERROR_NONE) {
-			VMI_ThrowAppropriateException(env, vmiErr);
+	jvmdiErr = JVMDI_GetCallerFrame(env, methodObjFrame, &callerFrame);
+	if(jvmdiErr != VMI_ERROR_NONE) {
+			VMI_ThrowAppropriateException(env, jvmdiErr);
 			return NULL;
 	}
 

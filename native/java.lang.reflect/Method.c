@@ -9,6 +9,7 @@
 #include "reflect.h"
 #include <jcl.h>
 #include <vmi.h>
+#include <jvmdi.h>
 #include <primlib.h>
 #include <native_state.h>
 #include <jnilink.h>
@@ -111,6 +112,7 @@ static jvalue * DoInitialCheckingAndConverting(JNIEnv * env, jobject invokeObj, 
 	jsize argNum;
 
 	vmiError vmiErr;
+	jvmdiError jvmdiErr;
 
 	vmiErr = VMI_GetThisFrame(env, &thisFrame);
 	if(vmiErr != VMI_ERROR_NONE) {
@@ -118,15 +120,15 @@ static jvalue * DoInitialCheckingAndConverting(JNIEnv * env, jobject invokeObj, 
 			return NULL;
 	}
 
-	vmiErr = VMI_GetCallerFrame(env, thisFrame, &methodObjFrame);
-	if(vmiErr != VMI_ERROR_NONE) {
-			VMI_ThrowAppropriateException(env, vmiErr);
+	jvmdiErr = JVMDI_GetCallerFrame(env, thisFrame, &methodObjFrame);
+	if(jvmdiErr != JVMDI_ERROR_NONE) {
+			VMI_ThrowAppropriateException(env, jvmdiErr);
 			return NULL;
 	}
 
-	vmiErr = VMI_GetCallerFrame(env, methodObjFrame, &callerFrame);
-	if(vmiErr != VMI_ERROR_NONE) {
-			VMI_ThrowAppropriateException(env, vmiErr);
+	jvmdiErr = JVMDI_GetCallerFrame(env, methodObjFrame, &callerFrame);
+	if(jvmdiErr != JVMDI_ERROR_NONE) {
+			VMI_ThrowAppropriateException(env, jvmdiErr);
 			return NULL;
 	}
 
@@ -178,7 +180,7 @@ static jvalue * DoInitialCheckingAndConverting(JNIEnv * env, jobject invokeObj, 
 	}
 }
 
-static jmethodID GetTheMethodID(JNIEnv * env, jobject thisObj, jobject theObj, jclass declarer, jstring name, jobjectArray targetArgTypes, jclass retType) {
+static jmethodID GetTheStaticMethodID(JNIEnv * env, jobject thisObj, jclass declarer, jstring name, jobjectArray targetArgTypes, jclass retType) {
 	linkPtr l;
 	char * nameUTF;
 	char * signature;
@@ -205,7 +207,8 @@ static jmethodID GetTheMethodID(JNIEnv * env, jobject thisObj, jobject theObj, j
 			JCL_ThrowException(env, "java/lang/NullPointerException", "Null class in argTypes[]");
 			return NULL;
 		}
-		l = LINK_LinkMethod(env, declarer, nameUTF, signature);
+		if(LINK_LinkStaticMethod(env, &l, declarer, nameUTF, signature) == NULL)
+			return NULL;
 
 		JCL_free_cstring(env, name, nameUTF);
 		free(signature);
@@ -217,7 +220,51 @@ static jmethodID GetTheMethodID(JNIEnv * env, jobject thisObj, jobject theObj, j
 		return NULL;
 	}
 
-	m = LINK_GetMethod(env, l, theObj);
+	m = LINK_ResolveStaticMethod(env, l);
+	return m;
+}
+
+static jmethodID GetTheInstanceMethodID(JNIEnv * env, jobject thisObj, jobject theObj, jclass declarer, jstring name, jobjectArray targetArgTypes, jclass retType) {
+	linkPtr l;
+	char * nameUTF;
+	char * signature;
+	jmethodID m;
+
+	if(JCL_MonitorEnter(env, thisObj) != 0) {
+		return NULL;
+	}
+
+	l = (linkPtr)get_state(env, thisObj, table);
+
+	if(l == NULL) {
+		nameUTF = JCL_jstring_to_cstring(env, name);
+		if(nameUTF == NULL) {
+			return NULL;
+		}
+
+		signature = JCL_malloc(env, sizeof(char) * MAX_SIGNATURE_SIZE);
+		if(signature == NULL) {
+			return NULL;
+		}
+
+		if(REFLECT_GetMethodSignature(env, signature, targetArgTypes, retType) == -1) {
+			JCL_ThrowException(env, "java/lang/NullPointerException", "Null class in argTypes[]");
+			return NULL;
+		}
+		if(LINK_LinkMethod(env, &l, declarer, nameUTF, signature) == NULL)
+			return NULL;
+
+		JCL_free_cstring(env, name, nameUTF);
+		free(signature);
+
+		set_state(env, thisObj, table, l);
+	}
+
+	if(JCL_MonitorExit(env, thisObj) != 0) {
+		return NULL;
+	}
+
+	m = LINK_ResolveMethod(env, l);
 	return m;
 }
 
@@ -286,11 +333,9 @@ JNIEXPORT jobject JNICALL Java_java_lang_reflect_Method_invokeNative
 
 	type = PRIMLIB_GetReflectiveType(env, returnType);
 
-	m = GetTheMethodID(env, thisObj, invokeObj, declarer, name, parameterTypes, returnType);
-
-	JCL_RETHROW_EXCEPTION(env);
-
 	if(modifiers & VMI_MOD_STATIC) {
+		m = GetTheStaticMethodID(env, thisObj, declarer, name, parameterTypes, returnType);
+		JCL_RETHROW_EXCEPTION(env);
 		switch(type) {
 			case PRIMLIB_BOOLEAN:
 				z = (*env)->CallStaticBooleanMethod(env, declarer, m, argVals);
@@ -334,6 +379,8 @@ JNIEXPORT jobject JNICALL Java_java_lang_reflect_Method_invokeNative
 				return NULL;
 		}
 	} else {
+		m = GetTheInstanceMethodID(env, thisObj, invokeObj, declarer, name, parameterTypes, returnType);
+		JCL_RETHROW_EXCEPTION(env);
 		switch(type) {
 			case PRIMLIB_BOOLEAN:
 				z = (*env)->CallBooleanMethod(env, invokeObj, m, argVals);
