@@ -1,6 +1,6 @@
 2003-02-21  Mark Wielaard  <mark@klomp.org>
 
-	* java/util/zip/ZipEntry.java (setEntry): Don't check length when
+	* java/util/zip/ZipEntry.java (setComment): Don't check length when
 	argument is null.
 
 2003-02-21  Mark Wielaard  <mark@klomp.org>
