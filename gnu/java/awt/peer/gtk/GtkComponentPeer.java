@@ -170,7 +170,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void reshape (int x, int y, int width, int height) 
     {
-      System.out.println("componentpeer: reshape");
+      setBounds (x, y, width, height);
     }
 
   public void setBackground (Color c) 
