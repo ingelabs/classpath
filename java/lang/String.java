@@ -43,7 +43,7 @@ import java.util.Comparator;
 import java.util.WeakHashMap;
 import java.util.Locale;
 import java.util.regex.Pattern;
-import java.util.regexp.PatternSyntaxException;
+import java.util.regex.PatternSyntaxException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.io.CharConversionException;

@@ -1,5 +1,11 @@
 2002-05-06  Mark Wielaard <mark@klomp.org>
 
+	* java/util/regex/PatternSyntaxException.java: package java.util.regex,
+	not regexp.
+	* java/lang/String.java: import likewise.
+
+2002-05-06  Mark Wielaard <mark@klomp.org>
+
 	* java/applet/Makefile.am (EXTRA_DIST): Add package.html
 	* java/awt/color/Makefile.am (EXTRA_DIST): Likewise.
 	* java/awt/dnd/Makefile.am (EXTRA_DIST): Likewise.
