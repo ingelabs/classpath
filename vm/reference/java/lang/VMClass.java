@@ -359,4 +359,9 @@ public final class VMClass
   static native Class loadArrayClass(String name, ClassLoader classloader)
 	throws ClassNotFoundException;
 
+  /**
+   * Throw a checked exception without declaring it.
+   */
+  static native void throwException(Throwable t);
+
 } // class VMClass

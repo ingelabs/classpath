@@ -33,6 +33,7 @@ extern jclass Java_java_lang_VMClass_forName (JNIEnv *env, jclass, jstring);
 extern jint Java_java_lang_VMClass_isArray (JNIEnv *env, jobject);
 extern void Java_java_lang_VMClass_initialize__ (JNIEnv *env, jobject);
 extern jclass Java_java_lang_VMClass_loadArrayClass (JNIEnv *env, jclass, jstring, jobject);
+extern void Java_java_lang_VMClass_throwException (JNIEnv *env, jclass, jthrowable);
 
 #ifdef __cplusplus
 }

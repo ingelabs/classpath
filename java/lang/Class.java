@@ -44,10 +44,13 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.security.AllPermission;
 import java.security.Permissions;
 import java.security.ProtectionDomain;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -108,6 +111,9 @@ public final class Class implements Serializable
   }
 
   transient final VMClass vmClass;
+
+  /** newInstance() caches the default constructor */
+  private transient Constructor constructor;
 
   /**
    * Class is non-instantiable from Java code; only the VM can create
@@ -233,23 +239,58 @@ public final class Class implements Serializable
   public Object newInstance()
     throws InstantiationException, IllegalAccessException
   {
+    memberAccessCheck(Member.PUBLIC);
+    Constructor constructor;
+    synchronized(this)
+      {
+	constructor = this.constructor;
+      }
+    if (constructor == null)
+      {
+	Constructor[] constructors = getDeclaredConstructors(false);
+	for (int i = 0; i < constructors.length; i++)
+	{
+	    if (constructors[i].getParameterTypes().length == 0)
+	    {
+		constructor = constructors[i];
+		break;
+	    }
+	}
+	if (constructor == null)
+	    throw new InstantiationException(getName());
+      }
+    int modifiers = constructor.getModifiers();
+    if (!Modifier.isPublic(modifiers))
+      {
+	Class caller = VMSecurityManager.getClassContext()[1];
+	if (caller != this &&
+	    (Modifier.isPrivate(modifiers) || getClassLoader() != caller.getClassLoader() ||
+	    !ClassHelper.getPackagePortion(getName()).equals(ClassHelper.getPackagePortion(caller.getName()))))
+	    throw new IllegalAccessException(getName() + " has an inaccessible constructor");
+	if (!constructor.isAccessible())
+	  {
+	    final Constructor finalConstructor = constructor;
+	    AccessController.doPrivileged(new PrivilegedAction() {
+		public Object run() {
+		    finalConstructor.setAccessible(true);
+		    return null;
+		}
+	    });
+	    synchronized(this)
+	      {
+		if (this.constructor == null)
+		    this.constructor = constructor;
+	      }
+	  }
+      }
     try
       {
-        return getConstructor(null).newInstance(null);
-      }
-    catch (IllegalArgumentException e)
-      {
-        throw (Error) new InternalError("Should not happen").initCause(e);
+        return constructor.newInstance(null);
       }
     catch (InvocationTargetException e)
       {
-        throw (InstantiationException)
-          new InstantiationException(e.toString()).initCause(e);
-      }
-    catch (NoSuchMethodException e)
-      {
-        throw (InstantiationException)
-          new InstantiationException(e.toString()).initCause(e);
+	VMClass.throwException(e.getTargetException());
+	throw (InternalError) new InternalError("VMClass.throwException returned").initCause(e);
       }
   }
 

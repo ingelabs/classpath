@@ -1,3 +1,14 @@
+2003-04-17  Jeroen Frijters  <jeroen@sumatra.nl>
+
+	* java/lang/Class.java
+	(constructor): Added transient field to cache constructor.
+	(newInstance): Fixed to consider non-public constructors as well, 
+	added constructor object caching and implemented accessibility check.
+	* vm/reference/java/lang/VMClass.java (throwException): option method
+	used to throw exception without declaring it... useful for 
+	duplicating Sun behavior in newInstance
+	* include/java_lang_VMClass.h: updated
+
 2003-04-07  Archie Cobbs  <archie@dellroad.org>
 
 	* java/lang/Character.java (digit): char[] array element never negative
