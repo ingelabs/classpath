@@ -21,7 +21,7 @@ dnl We will not track/change lib version until we reach version 1.0
 dnl at which time we'll have to be more anal about such things
 dnl -----------------------------------------------------------
 AC_SUBST(LIBVERSION, "0:0:0")
-CLASSPATH_MODULE="-module -version-info ${LIBVERSION}"
+CLASSPATH_MODULE="-module -version-info ${LIBVERSION} -no-undefined"
 AC_SUBST(CLASSPATH_MODULE)
 
 AC_PREREQ(2.59)
@@ -43,10 +43,22 @@ AC_ARG_ENABLE([jni],
 AM_CONDITIONAL(CREATE_JNI_LIBRARIES, test "x${COMPILE_JNI}" = xyes)
 
 dnl -----------------------------------------------------------
+dnl Whether to compile with -Werror or not (enabled by default)
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE([Werror],
+              [AS_HELP_STRING(--disable-Werror,whether to compile C code with -Werror which turns any compiler warning into a compilation failure [default=yes])],
+              [case "${enableval}" in
+                yes) ENABLE_WERROR=yes ;;
+                no) ENABLE_WERROR=no ;;
+                *) ENABLE_WERROR=yes ;;
+              esac],
+              [ENABLE_WERROR=yes])
+
+dnl -----------------------------------------------------------
 dnl GTK native peer (enabled by default)
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([gtk-peer],
-              [AS_HELP_STRING(--disable-gtk-peer,compile GTK native peers,disabled by --disable-jni [default=yes])],
+              [AS_HELP_STRING(--disable-gtk-peer,compile GTK native peers (disabled by --disable-jni) [default=yes])],
               [case "${enableval}" in
                 yes) COMPILE_GTK_PEER=yes ;;
                 no) COMPILE_GTK_PEER=no ;;
@@ -160,14 +172,29 @@ if test "x${COMPILE_JNI}" = xyes; then
   dnl FIXME - does not allow cross compiling
   AC_C_BIGENDIAN
 
-  dnl We want warnings, lots of warnings :-)
-  AM_CFLAGS=
+  dnl When using gcc we want warnings, lots of warnings :-)
   if test "x${GCC}" = xyes; then
     dnl We want ISO C90 pedantic ansi, but with longlong (jlong) support
     dnl and modern POSIX and BSD C library functions/prototypes.
-    AM_CFLAGS='-ansi -pedantic -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wall -Wno-long-long -D_BSD_SOURCE '
+
+    dnl Warning flags for (almost) everybody.
+    dnl Should probably be configurable
+    WARNING_CFLAGS='-pedantic -W -Wall -Wmissing-declarations -Wwrite-strings -Wmissing-prototypes -Wno-long-long'
+    AC_SUBST(WARNING_CFLAGS)
+
+    dnl Strict warning flags which not every module uses.
+    dnl Should probably be configurable.
+    STRICT_WARNING_CFLAGS=-Wstrict-prototypes
+    AC_SUBST(STRICT_WARNING_CFLAGS)
+
+    dnl Whether or not to add -Werror, also not used by all modueles.
+    dnl Can be configured by --disable-Werror
+    ERROR_CFLAGS=
+    if test "x${ENABLE_WERROR}" = xyes; then
+       ERROR_CFLAGS='-Werror'
+    fi
+    AC_SUBST(ERROR_CFLAGS)
   fi
-  AC_SUBST(AM_CFLAGS)
 
   dnl Check for AWT related gthread/gtk/libart_lgpl
   if test "x${COMPILE_GTK_PEER}" = xyes; then
@@ -191,10 +218,10 @@ CLASSPATH_WITH_JAVAH
 
 dnl ----------------------------------------------------------- 
 dnl Add the include files for the native abstraction layer.
+dnl Used by AM_CPPFLAGS in the different modules.
 dnl -----------------------------------------------------------
-AM_CPPFLAGS="-I\$(top_srcdir)/include -I\$(top_srcdir)/native/jni/classpath"
-AM_CPPFLAGS="$AM_CPPFLAGS -I\$(top_srcdir)/native/target/Linux -I\$(top_srcdir)/native/target/generic"
-AC_SUBST(AM_CPPFLAGS)
+CLASSPATH_INCLUDES="-I\$(top_srcdir)/include -I\$(top_srcdir)/native/jni/classpath -I\$(top_srcdir)/native/target/Linux -I\$(top_srcdir)/native/target/generic"
+AC_SUBST(CLASSPATH_INCLUDES)
 
 dnl -----------------------------------------------------------
 if test "x${COMPILE_JNI}" = xyes; then

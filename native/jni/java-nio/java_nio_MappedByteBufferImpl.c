@@ -46,26 +46,34 @@ exception statement from your version. */
 #define IO_EXCEPTION "java/io/IOException"
 
 JNIEXPORT void JNICALL
-Java_java_nio_MappedByteBufferImpl_unmapImpl (JNIEnv *env, jclass class)
+Java_java_nio_MappedByteBufferImpl_unmapImpl (JNIEnv *env,
+					      jclass class
+					      __attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.MappedByteBufferImpl.unmapImpl(): not implemented");
 }
 
 JNIEXPORT jboolean JNICALL
-Java_java_nio_MappedByteBufferImpl_isLoadedImpl (JNIEnv *env, jclass class)
+Java_java_nio_MappedByteBufferImpl_isLoadedImpl (JNIEnv *env,
+						 jclass class
+						 __attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.MappedByteBufferImpl.isLoadedImpl(): not implemented");
   return 0;
 }
 
 JNIEXPORT void JNICALL
-Java_java_nio_MappedByteBufferImpl_loadImpl (JNIEnv *env, jclass clazz)
+Java_java_nio_MappedByteBufferImpl_loadImpl (JNIEnv *env,
+					     jclass clazz
+					     __attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.MappedByteBufferImpl.loadImpl(): not implemented");
 }
 
 JNIEXPORT void JNICALL
-Java_java_nio_MappedByteBufferImpl_forceImpl (JNIEnv *env, jclass class)
+Java_java_nio_MappedByteBufferImpl_forceImpl (JNIEnv *env,
+					      jclass class
+					      __attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.MappedByteBufferImpl.forceImpl(): not implemented");
 }

@@ -5,4 +5,6 @@ libclasspath_la_SOURCES = jcl.c jcl.h \
 			  primlib.c primlib.h \
 			  native_state.c native_state.h
 
-libclasspath_la_LDFLAGS = @CLASSPATH_MODULE@
+AM_LDFLAGS = @CLASSPATH_MODULE@
+AM_CPPFLAGS = @CLASSPATH_INCLUDES@
+AM_CFLAGS = @WARNING_CFLAGS@ @STRICT_WARNING_CFLAGS@ @ERROR_CFLAGS@

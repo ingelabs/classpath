@@ -214,8 +214,7 @@ _javaio_get_file_length(JNIEnv *env, jint fd)
  */
 
 jint
-_javaio_read(JNIEnv *env, jobject obj, jint fd, jarray buf, jint offset,
-             jint len)
+_javaio_read(JNIEnv *env, jint fd, jarray buf, jint offset, jint len)
 {
 #ifndef WITHOUT_FILESYSTEM
   jbyte *bufptr;
@@ -291,8 +290,7 @@ _javaio_read(JNIEnv *env, jobject obj, jint fd, jarray buf, jint offset,
  */
 
 jint
-_javaio_write(JNIEnv *env, jobject obj, jint fd, jarray buf, jint offset,
-              jint len)
+_javaio_write(JNIEnv *env, jint fd, jarray buf, jint offset, jint len)
 {
 #ifndef WITHOUT_FILESYSTEM
   jbyte *bufptr;

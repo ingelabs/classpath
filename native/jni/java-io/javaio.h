@@ -1,5 +1,5 @@
 /* javaio.h - Declaration for common java.io native functions
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -51,8 +51,8 @@ extern jint _javaio_open(JNIEnv *, jstring, int);
 extern jint _javaio_open_read(JNIEnv *, jstring);
 extern jint _javaio_open_readwrite(JNIEnv *, jstring);
 extern void _javaio_close(JNIEnv *, jint fd);
-extern jint _javaio_read(JNIEnv *, jobject obj, jint, jarray, jint, jint);
-extern jint _javaio_write(JNIEnv *, jobject obj, jint, jarray, jint, jint);
+extern jint _javaio_read(JNIEnv *, jint, jarray, jint, jint);
+extern jint _javaio_write(JNIEnv *, jint, jarray, jint, jint);
 
 #endif /* JAVAIO_H_INCLUDED */
 

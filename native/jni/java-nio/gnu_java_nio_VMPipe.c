@@ -46,9 +46,10 @@ exception statement from your version. */
 #define IO_EXCEPTION "java/io/IOException"
 
 JNIEXPORT void JNICALL
-Java_gnu_java_nio_VMPipe_init (JNIEnv *env, jclass cls,
-                                       jobject self,
-				       jobject provider)
+Java_gnu_java_nio_VMPipe_init (JNIEnv *env,
+			       jclass cls __attribute__ ((__unused__)),
+			       jobject self __attribute__ ((__unused__)),
+			       jobject provider __attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "gnu.java.nio.VMPipe.init(): not implemented");
 }

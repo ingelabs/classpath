@@ -1,5 +1,5 @@
 /* Double.c - java.lang.Double native functions
-   Copyright (C) 1998, 1999, 2001, 2003 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001, 2003, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -212,10 +212,11 @@ JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
  * Signature: (Ljava/lang/String;)D
  */
 JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
-  (JNIEnv * env, jclass cls, jstring str)
+  (JNIEnv * env, jclass cls __attribute__((__unused__)), jstring str)
 {
   jboolean isCopy;
-  char *buf, *endptr;
+  const char *buf;
+  char *endptr;
   jdouble val = 0.0;
 
   if (str == NULL)
@@ -231,7 +232,7 @@ JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
     }
   else
     {
-      unsigned char *p = buf, *end, *last_non_ws;
+      const char *p = buf, *end, *last_non_ws, *temp;
       int ok = 1;
  
 #ifdef DEBUG
@@ -263,7 +264,7 @@ JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
 	}
 
       /* Check for infinity and NaN */
-      unsigned char *temp = p;
+      temp = p;
       if(temp[0] == '+' || temp[0] == '-')
 	temp++;
       if(strncmp("Infinity", temp, (size_t) 8) == 0)
@@ -300,7 +301,7 @@ JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
 	  fprintf (stderr, "java.lang.Double.parseDouble %i != %i ???\n",
 		   endptr, last_non_ws);
 #endif
- 	  if ((unsigned char *) endptr != last_non_ws)
+ 	  if (endptr != last_non_ws)
  	    ok = 0;
  	}
       else

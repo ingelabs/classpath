@@ -45,9 +45,8 @@ libfdlibm_la_SOURCES =  \
 			w_remainder.c \
 			w_sqrt.c 
 
-libfdlibm_la_LDFLAGS = @CLASSPATH_MODULE@ 
+AM_LDFLAGS = @CLASSPATH_MODULE@ 
 
 # We just want the standard flags for fdlibm since it is an upstream lib
-# and our normal -ansi -pedantic -Wall -Werror breaks this lib.
-AM_CFLAGS = 
-
+# and our normal -pedantic -Wall -Werror breaks this lib. So no AM_CFLAGS.
+# We also don't need extra includes, so no AM_CPPFLAGS either.

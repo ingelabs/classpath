@@ -46,9 +46,16 @@ exception statement from your version. */
 #define IO_EXCEPTION "java/io/IOException"
 
 JNIEXPORT jint JNICALL
-Java_gnu_java_nio_VMSelector_select (JNIEnv *env, jclass obj,
-					   jintArray read, jintArray write,
-					   jintArray except, jlong timeout)
+Java_gnu_java_nio_VMSelector_select (JNIEnv *env,
+				     jclass obj __attribute__ ((__unused__)),
+				     jintArray read
+				     __attribute__ ((__unused__)),
+				     jintArray write
+				     __attribute__ ((__unused__)),
+				     jintArray except
+				     __attribute__ ((__unused__)),
+				     jlong timeout
+				     __attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "gnu.java.nio.VMSelector.select(): not implemented");
   return 0;

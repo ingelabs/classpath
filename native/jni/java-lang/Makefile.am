@@ -8,12 +8,11 @@ libjavalang_la_SOURCES = java_lang_VMSystem.c \
 			 java_lang_Math.c \
 			 java_lang_VMProcess.c
 
-libjavalang_la_CFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/native/fdlibm
 libjavalang_la_LIBADD = $(wildcard $(top_builddir)/native/fdlibm/*.lo) \
 			$(top_builddir)/native/jni/classpath/jcl.lo
-libjavalang_la_LDFLAGS = @CLASSPATH_MODULE@
 
-libjavalangreflect_la_CFLAGS = $(AM_CPPFLAGS) -I$(top_srcdir)/native/fdlibm
 libjavalangreflect_la_SOURCES = java_lang_reflect_Array.c
 
-libjavalangreflect_la_LDFLAGS = @CLASSPATH_MODULE@
+AM_LDFLAGS = @CLASSPATH_MODULE@
+AM_CPPFLAGS = @CLASSPATH_INCLUDES@ -I$(top_srcdir)/native/fdlibm
+AM_CFLAGS = @WARNING_CFLAGS@ @STRICT_WARNING_CFLAGS@ @ERROR_CFLAGS@

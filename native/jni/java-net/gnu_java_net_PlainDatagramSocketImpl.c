@@ -161,7 +161,8 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this,
                                               jobject packet)
 {
 #ifndef WITHOUT_NETWORK
-  unsigned int  addr, port, maxlen, offset, bytes_read;
+  int  addr, port, bytes_read;
+  unsigned int maxlen, offset;
   jclass        cls, addr_cls;
   jfieldID	fid;
   jmethodID     mid;

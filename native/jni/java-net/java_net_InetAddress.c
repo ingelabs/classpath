@@ -61,7 +61,9 @@ exception statement from your version. */
  * Function to return the local hostname
  */
 JNIEXPORT jstring JNICALL
-Java_java_net_InetAddress_getLocalHostname(JNIEnv *env, jclass class)
+Java_java_net_InetAddress_getLocalHostname(JNIEnv *env,
+					   jclass class
+					   __attribute__ ((__unused__)))
 {
   char    hostname[256];
   int     result;
@@ -91,7 +93,9 @@ Java_java_net_InetAddress_getLocalHostname(JNIEnv *env, jclass class)
  * Returns the value of the special IP address INADDR_ANY 
  */
 JNIEXPORT jarray JNICALL
-Java_java_net_InetAddress_lookupInaddrAny(JNIEnv *env, jclass class)
+Java_java_net_InetAddress_lookupInaddrAny(JNIEnv *env,
+					  jclass class
+					  __attribute__ ((__unused__)))
 {
   jarray IParray; 
   jbyte  *octets;
@@ -135,7 +139,10 @@ Java_java_net_InetAddress_lookupInaddrAny(JNIEnv *env, jclass class)
  * in as a byte array
  */
 JNIEXPORT jstring JNICALL
-Java_java_net_InetAddress_getHostByAddr(JNIEnv *env, jclass class, jarray arr)
+Java_java_net_InetAddress_getHostByAddr(JNIEnv *env,
+					jclass class
+					__attribute__ ((__unused__)),
+					jarray arr)
 {
 #ifndef WITHOUT_NETWORK
   jbyte   *octets;
@@ -193,7 +200,10 @@ Java_java_net_InetAddress_getHostByAddr(JNIEnv *env, jclass class, jarray arr)
 /*************************************************************************/
 
 JNIEXPORT jobjectArray JNICALL
-Java_java_net_InetAddress_getHostByName(JNIEnv *env, jclass class, jstring host)
+Java_java_net_InetAddress_getHostByName(JNIEnv *env,
+					jclass class
+					__attribute__ ((__unused__)),
+					jstring host)
 {
 #ifndef WITHOUT_NETWORK
   const char     *hostname;
@@ -206,6 +216,7 @@ Java_java_net_InetAddress_getHostByName(JNIEnv *env, jclass class, jstring host)
   int            i;
   jbyte          *octets;
   jarray         ret_octets;
+  int            max_addresses;
 
   assert(env!=NULL);
   assert((*env)!=NULL);
@@ -218,13 +229,12 @@ Java_java_net_InetAddress_getHostByName(JNIEnv *env, jclass class, jstring host)
       return (jobjectArray)NULL;
     }
 
-  /* Look up the host */
+  max_addresses = sizeof(addresses) / sizeof(addresses[0]);
   TARGET_NATIVE_NETWORK_GET_HOSTNAME_BY_NAME(hostname,
                                              addresses,
-                                             sizeof(addresses)/sizeof(addresses[0]),
+                                             max_addresses,
                                              addresses_count,
-                                             result
-                                            );
+                                             result);
   if (result != TARGET_NATIVE_OK)
     {
       JCL_ThrowException(env, UNKNOWN_HOST_EXCEPTION, (char*)hostname);

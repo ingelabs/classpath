@@ -152,7 +152,10 @@ Java_gnu_java_nio_channels_FileChannelImpl_init (JNIEnv *env, jclass clazz)
  * Open the specified file and return a native file descriptor
  */
 JNIEXPORT jint JNICALL
-Java_gnu_java_nio_channels_FileChannelImpl_open (JNIEnv *env, jobject obj, jstring name, jint mode)
+Java_gnu_java_nio_channels_FileChannelImpl_open (JNIEnv *env,
+						 jobject obj
+						 __attribute__ ((__unused__)),
+						 jstring name, jint mode)
 {
   const char *filename;
   int        flags;
@@ -483,7 +486,15 @@ Java_gnu_java_nio_channels_FileChannelImpl_implTruncate (JNIEnv *env, jobject ob
 }
 
 JNIEXPORT jobject JNICALL
-Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv *env, jobject obj, jchar mode, jlong position, jint size)
+Java_gnu_java_nio_channels_FileChannelImpl_mapImpl(JNIEnv *env,
+						 jobject obj
+						 __attribute__ ((__unused__)),
+						 jchar mode
+						 __attribute__ ((__unused__)),
+						 jlong position
+						 __attribute__ ((__unused__)),
+						 jint size
+						 __attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.nio_mmap_file(): not implemented");
   return 0;
@@ -651,14 +662,30 @@ Java_gnu_java_nio_channels_FileChannelImpl_write___3BII (JNIEnv *env, jobject ob
 }
 
 JNIEXPORT jboolean JNICALL
-Java_gnu_java_nio_channels_FileChannelImpl_lock (JNIEnv *env, jobject obj, jlong position, jlong size, jboolean shared, jboolean wait)
+Java_gnu_java_nio_channels_FileChannelImpl_lock(JNIEnv *env,
+						jobject obj
+						__attribute__ ((__unused__)),
+						jlong position
+						__attribute__ ((__unused__)),
+						jlong size
+						__attribute__ ((__unused__)),
+						jboolean shared
+						__attribute__ ((__unused__)),
+						jboolean wait
+						__attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.lock(): not implemented");
   return 0;
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_nio_channels_FileChannelImpl_unlock (JNIEnv *env, jobject obj, jlong position, jlong length)
+Java_gnu_java_nio_channels_FileChannelImpl_unlock(JNIEnv *env,
+						  jobject obj
+						  __attribute__ ((__unused__)),
+						  jlong position
+						  __attribute__ ((__unused__)),
+						  jlong length
+						  __attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.unlock(): not implemented");
 }

@@ -53,8 +53,13 @@ libgtkpeer_la_SOURCES = $(gtk_cairo_c_source_files) \
 			gtkcairopeer.h \
 			gtkpeer.h
 
-libgtkpeer_la_CPPFLAGS = $(AM_CPPFLAGS) @GTK_CFLAGS@ \
-                         @CAIRO_CFLAGS@ @PANGOFT2_CFLAGS@
 libgtkpeer_la_LIBADD = $(top_builddir)/native/jni/classpath/native_state.lo
-libgtkpeer_la_LDFLAGS = @CLASSPATH_MODULE@ @GTK_LIBS@ \
-                        @CAIRO_LIBS@ @PANGOFT2_LIBS@
+
+AM_LDFLAGS = @CLASSPATH_MODULE@ @GTK_LIBS@ @CAIRO_LIBS@ @PANGOFT2_LIBS@
+AM_CPPFLAGS = @CLASSPATH_INCLUDES@
+
+# Just the WARNING_CFLAGS. We cannot use the strict flags since the gtk
+# headers contain broken prototypes (by design, see gtkitemfactory.h).
+# Also no -Werror for now since not all warnings have been solved yet. FIXME.
+AM_CFLAGS = @WARNING_CFLAGS@ \
+            @GTK_CFLAGS@ @CAIRO_CFLAGS@ @PANGOFT2_CFLAGS@

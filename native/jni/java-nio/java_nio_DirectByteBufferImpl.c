@@ -46,47 +46,82 @@ exception statement from your version. */
 #define IO_EXCEPTION "java/io/IOException"
 
 JNIEXPORT jobject JNICALL
-Java_java_nio_DirectByteBufferImpl_allocateImpl (JNIEnv *env, jclass class, jint size)
+Java_java_nio_DirectByteBufferImpl_allocateImpl (JNIEnv *env, 
+						 jclass class
+						 __attribute__ ((__unused__)),
+						 jint size
+						 __attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.allocateImpl(): not implemented");
   return 0;
 }
 
 JNIEXPORT void JNICALL
-Java_java_nio_DirectByteBufferImpl_freeImpl (JNIEnv *env, jclass class, jobject address)
+Java_java_nio_DirectByteBufferImpl_freeImpl (JNIEnv *env,
+					     jclass class
+					     __attribute__ ((__unused__)),
+					     jobject address
+					     __attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.freeImpl(): not implemented");
 }
 
 JNIEXPORT jbyte JNICALL
 Java_java_nio_DirectByteBufferImpl_getImpl__Lgnu_classpath_RawData_2I
-  (JNIEnv *env, jclass clazz, jobject address, jint index)
+  (JNIEnv *env,
+   jclass clazz __attribute__ ((__unused__)),
+   jobject address __attribute__ ((__unused__)),
+   jint index __attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.getImpl(): not implemented");
   return 0;
 }
 
 JNIEXPORT void JNICALL
-Java_java_nio_DirectByteBufferImpl_putImpl (JNIEnv *env, jclass class, jobject address, jint index, jbyte value)
+Java_java_nio_DirectByteBufferImpl_putImpl (JNIEnv *env,
+					    jclass class
+					    __attribute__ ((__unused__)),
+					    jobject address
+					    __attribute__ ((__unused__)),
+					    jint index
+					    __attribute__ ((__unused__)),
+					    jbyte value
+					    __attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.putImpl(): not implemented");
 }
 
 JNIEXPORT void JNICALL
 Java_java_nio_DirectByteBufferImpl_getImpl__Lgnu_classpath_RawData_2I_3BII
-  (JNIEnv *env, jclass clazz, jobject address, jint index, jbyteArray dst_buffer, jint dst_offset, jint dst_len)
+  (JNIEnv *env,
+   jclass clazz __attribute__ ((__unused__)),
+   jobject address __attribute__ ((__unused__)),
+   jint index __attribute__ ((__unused__)),
+   jbyteArray dst_buffer __attribute__ ((__unused__)),
+   jint dst_offset __attribute__ ((__unused__)),
+   jint dst_len __attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.getImpl(): not implemented");
 }
 
 JNIEXPORT void JNICALL
-Java_java_nio_DirectByteBufferImpl_shiftDown (JNIEnv *env, jclass clazz, jobject address, jint dst_offset, jint src_offset, jint count)
+Java_java_nio_DirectByteBufferImpl_shiftDown
+  (JNIEnv *env,
+   jclass clazz __attribute__ ((__unused__)),
+   jobject address __attribute__ ((__unused__)),
+   jint dst_offset __attribute__ ((__unused__)),
+   jint src_offset __attribute__ ((__unused__)),
+   jint count __attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.shiftDown(): not implemented");
 }
 
 JNIEXPORT jobject JNICALL
-Java_java_nio_DirectByteBufferImpl_adjustAddress (JNIEnv *env, jclass class, jobject address, jint offset)
+Java_java_nio_DirectByteBufferImpl_adjustAddress
+  (JNIEnv *env,
+   jclass class __attribute__ ((__unused__)),
+   jobject address __attribute__ ((__unused__)),
+   jint offset __attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.adjustAddress(): not implemented");
   return NULL;

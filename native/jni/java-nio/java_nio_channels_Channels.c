@@ -46,14 +46,22 @@ exception statement from your version. */
 #define IO_EXCEPTION "java/io/IOException"
 
 JNIEXPORT jobject JNICALL
-Java_java_nio_channels_Channels_newInputStream (JNIEnv *env, jclass cls, jobject filechannel)
+Java_java_nio_channels_Channels_newInputStream (JNIEnv *env,
+						jclass cls
+						__attribute__ ((__unused__)),
+						jobject filechannel
+						__attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.channels.Channels.newInputStream(): not implemented");
   return NULL;
 }
 
 JNIEXPORT jobject JNICALL
-Java_java_nio_channels_Channels_newOutputStream (JNIEnv *env, jclass cls, jobject filechannel)
+Java_java_nio_channels_Channels_newOutputStream (JNIEnv *env,
+						 jclass cls
+						 __attribute__ ((__unused__)),
+						 jobject filechannel
+						 __attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.channels.Channels.newOutputStream(): not implemented");
   return NULL;

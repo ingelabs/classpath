@@ -48,7 +48,9 @@ exception statement from your version. */
  * Signature: (Ljava/io/InputStream;)V
  */
 JNIEXPORT void JNICALL
-Java_java_lang_VMSystem_setIn (JNIEnv * env, jclass thisClass, jobject obj)
+Java_java_lang_VMSystem_setIn (JNIEnv * env,
+			       jclass thisClass __attribute__((__unused__)),
+			       jobject obj)
 {
   jclass cls;
   jfieldID field;
@@ -70,7 +72,9 @@ Java_java_lang_VMSystem_setIn (JNIEnv * env, jclass thisClass, jobject obj)
  * Signature: (Ljava/io/PrintStream;)V
  */
 JNIEXPORT void JNICALL
-Java_java_lang_VMSystem_setOut (JNIEnv * env, jclass thisClass, jobject obj)
+Java_java_lang_VMSystem_setOut (JNIEnv * env,
+				jclass thisClass __attribute__((__unused__)),
+				jobject obj)
 {
   jclass cls;
   jfieldID field;
@@ -92,7 +96,9 @@ Java_java_lang_VMSystem_setOut (JNIEnv * env, jclass thisClass, jobject obj)
  * Signature: (Ljava/io/PrintStream;)V
  */
 JNIEXPORT void JNICALL
-Java_java_lang_VMSystem_setErr (JNIEnv * env, jclass thisClass, jobject obj)
+Java_java_lang_VMSystem_setErr (JNIEnv * env,
+				jclass thisClass __attribute__((__unused__)),
+				jobject obj)
 {
   jclass cls;
   jfieldID field;
@@ -114,7 +120,9 @@ Java_java_lang_VMSystem_setErr (JNIEnv * env, jclass thisClass, jobject obj)
  * Signature: ()J
  */
 JNIEXPORT jlong JNICALL
-Java_java_lang_VMSystem_currentTimeMillis (JNIEnv * env, jclass thisClass)
+Java_java_lang_VMSystem_currentTimeMillis
+(JNIEnv * env __attribute__((__unused__)),
+ jclass thisClass __attribute__((__unused__)))
 {
   /* Note: this implementation copied directly from Japhar's, by Chris Toshok. */
   jlong result;
@@ -131,7 +139,9 @@ Java_java_lang_VMSystem_currentTimeMillis (JNIEnv * env, jclass thisClass)
 }
 
 JNIEXPORT jboolean JNICALL 
-Java_java_lang_VMSystem_isWordsBigEndian (JNIEnv *env, jclass clazz)
+Java_java_lang_VMSystem_isWordsBigEndian
+(JNIEnv *env __attribute__((__unused__)),
+ jclass clazz __attribute__((__unused__)))
 {
   /* Are we little or big endian?  From Harbison&Steele.  */
   union
@@ -145,7 +155,9 @@ Java_java_lang_VMSystem_isWordsBigEndian (JNIEnv *env, jclass clazz)
 }
 
 JNIEXPORT jstring JNICALL
-Java_java_lang_VMSystem_getenv (JNIEnv *env, jclass klass, jstring jname)
+Java_java_lang_VMSystem_getenv (JNIEnv *env,
+				jclass klass __attribute__((__unused__)),
+				jstring jname)
 {
   const char *cname;
   const char *envname;

@@ -71,7 +71,8 @@ exception statement from your version. */
  * Sets an integer field in the specified object.
  */
 static void
-_javanet_set_int_field(JNIEnv *env, jobject obj, char *class, char *field, 
+_javanet_set_int_field(JNIEnv *env, jobject obj,
+		       const char *class, const char *field, 
                        int val)
 {
   jclass   cls;
@@ -789,7 +790,7 @@ _javanet_accept(JNIEnv *env, jobject this, jobject impl)
     }
 
   /* Accept the connection */
-  while (result != TARGET_NATIVE_OK)
+  do
     {
       TARGET_NATIVE_NETWORK_SOCKET_ACCEPT(fd,newfd,result);
       if (result != TARGET_NATIVE_OK
@@ -801,6 +802,7 @@ _javanet_accept(JNIEnv *env, jobject this, jobject impl)
 	  return;
 	}
     }
+  while (result != TARGET_NATIVE_OK);
 
   /* Populate instance variables */ 
   _javanet_set_int_field(env, impl, "gnu/java/net/PlainSocketImpl", "native_fd",

@@ -1,5 +1,5 @@
 /* java_io_ObjectInputStream.c -- Native methods for ObjectInputStream class
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -76,7 +76,8 @@ Java_java_io_ObjectInputStream_currentClassLoader( JNIEnv * env,
  */
 JNIEXPORT jobject JNICALL
 Java_java_io_ObjectInputStream_allocateObject( JNIEnv * env,
-					       jobject self,
+					       jobject self
+					       __attribute__ ((__unused__)),
 					       jclass clazz )
 {
   return (*env)->AllocObject( env, clazz );
@@ -90,7 +91,8 @@ Java_java_io_ObjectInputStream_allocateObject( JNIEnv * env,
  */
 JNIEXPORT void JNICALL 
 Java_java_io_ObjectInputStream_callConstructor( JNIEnv * env,
-						jclass clazz,
+						jclass clazz
+						__attribute__ ((__unused__)),
 						jclass constr_class,
 						jobject obj )
 {

@@ -1,3 +1,68 @@
+2004-10-26  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac (CLASSPATH_MODULE): Add -no-undefined.
+	(Werror): New configure flag.
+	(gtk-peer): Remove comma from help string.
+	(AM_CFLAGS): Replace by...
+	(WARNING_CFLAGS, STRICT_WARNING_CFLAGS, ERROR_CFLAGS): New gcc flags.
+	(AM_CPPFLAGS): Replace by...
+	(CLASSPATH_INCLUDES): New -I gcc flags.
+	* native/fdlibm/Makefile.am: Use new AM_LDFLAGS, AM_CPPFLAGS and
+	AM_CFLAGS when not library specific flags are used.
+	* native/jni/gtk-peer/Makefile.am: Likewise.
+	* native/jni/java-io/Makefile.am: Likewise.
+	* native/jni/java-lang/Makefile.am: Likewise.
+	* native/jni/java-net/Makefile.am: Likewise.
+	* native/jni/java-nio/Makefile.am: Likewise.
+	* native/jni/java-util/Makefile.am: Likewise.
+
+	* native/jni/java-io/java_io_ObjectInputStream.c: Mark function
+	arguments unused where necessary.
+	* native/jni/java-io/java_io_VMFile.c: Likewise.
+	* native/jni/java-io/java_io_VMObjectStreamClass.c: Likewise.
+	(getFieldReference): Make sure we allocate the_type ourselves if we
+	free it later. Removed unused argument object.
+	* native/jni/java-io/javaio.c (javaio_read): Removed unused argument
+	obj.
+	(javaio_write): Likewise.
+	* native/jni/java-io/javaio.h: Mark function arguments unused where
+	necessary.
+	* native/jni/java-lang/java_lang_Double.c: Likewise.
+	(Java_java_lang_Double_parseDouble): Declare buf as const char*.
+	* native/jni/java-lang/java_lang_Math.c: Mark function arguments
+	unused where necessary.
+	* native/jni/java-lang/java_lang_VMDouble.c: Likewise.
+	* native/jni/java-lang/java_lang_VMFloat.c: Likewise.
+	* native/jni/java-lang/java_lang_VMSystem.c: Likewise.
+	* native/jni/java-lang/java_lang_reflect_Array.c: Likewise.
+	* native/jni/java-net/gnu_java_net_PlainDatagramSocketImpl.c
+	(Java_gnu_java_net_PlainDatagramSocketImpl_receive0): Mark only
+	maxlen and offset as unsigned.
+	* native/jni/java-net/java_net_InetAddress.c: Mark function arguments
+	unused where necessary.
+	(Java_java_net_InetAddress_getHostByName): New local int variable
+	max_addresses.
+	* native/jni/java-net/java_net_NetworkInterface.c: Mark function
+	arguments unused where necessary.
+	* native/jni/java-net/javanet.c (_javanet_set_int_field): Removed
+	unused argument class.
+	(_javanet_accept): Check result variable after it has been assigned.
+	* native/jni/java-nio/gnu_java_nio_NIOServerSocket.c: Mark function
+	arguments unused where necessary.
+	* native/jni/java-nio/gnu_java_nio_VMPipe.c: Likewise.
+	* native/jni/java-nio/gnu_java_nio_VMSelector.c: Likewise.
+	* native/jni/java-nio/gnu_java_nio_VMSelector.c: Likewise.
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c:
+	Likewise.
+	* native/jni/java-nio/java_nio_DirectByteBufferImpl.c: Likewise.
+	* native/jni/java-nio/java_nio_MappedByteBufferImpl.c: Likewise.
+	* native/jni/java-nio/java_nio_channels_Channels.c: Likewise.
+	* native/jni/java-util/java_util_VMTimeZone.c (jint_to_charbuf):
+	Mark as static function.
+	(Java_java_util_VMTimeZone_getSystemTimeZoneId): Mark clazz argument
+	as unused. Cast _timezone to long before use.
+	* native/target/generic/target_generic_network.h: Remove asserts.
+	
 2004-10-25  Noa Resare  <noa@resare.com>
 
 	* java/awt/Choice.java (add):

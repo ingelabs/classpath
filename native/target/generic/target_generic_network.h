@@ -53,7 +53,6 @@ Systems    : all
 #include "config.h"
 
 #include <stdlib.h>
-#include <assert.h>
 
 #include "target_native.h"
 
@@ -412,7 +411,6 @@ Systems    : all
       result=(getsockname(socketDescriptor,(struct sockaddr*)&__socketAddress,&__socketAddressLength)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       if (result==TARGET_NATIVE_OK) \
       { \
-        assert(__socketAddressLength>=sizeof(__socketAddress)); \
         localAddress=ntohl(__socketAddress.sin_addr.s_addr); \
         localPort   =ntohs(__socketAddress.sin_port); \
       } \
@@ -447,7 +445,6 @@ Systems    : all
       result=(getpeername(socketDescriptor,(struct sockaddr*)&__socketAddress,&__socketAddressLength)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       if (result==TARGET_NATIVE_OK) \
       { \
-        assert(__socketAddressLength>=sizeof(__socketAddress)); \
         remoteAddress=ntohl(__socketAddress.sin_addr.s_addr); \
         remotePort   =ntohs(__socketAddress.sin_port); \
       } \
@@ -936,7 +933,6 @@ Systems    : all
       result=(getsockopt(socketDescriptor,IPPROTO_TCP,TCP_NODELAY,&__value,&__len)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       if (result==TARGET_NATIVE_OK) \
       { \
-        assert(__len>=sizeof(__value)); \
         flag=__value; \
       } \
     } while (0)
@@ -970,7 +966,6 @@ Systems    : all
       result=(getsockopt(socketDescriptor,SOL_SOCKET,SO_LINGER,&__linger,&__len)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       if (result==TARGET_NATIVE_OK) \
       { \
-        assert(__len>=sizeof(__linger)); \
         flag =__linger.l_onoff; \
         value=__linger.l_linger; \
       } \
@@ -1003,7 +998,6 @@ Systems    : all
       result=(getsockopt(socketDescriptor,SOL_SOCKET,SO_TIMEOUT,&__value,&__len)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       if (result==TARGET_NATIVE_OK) \
       { \
-        assert(__len>=sizeof(__value)); \
         flag=__value; \
       } \
     } while (0)
@@ -1035,7 +1029,6 @@ Systems    : all
       result=(getsockopt(socketDescriptor,SOL_SOCKET,SO_SNDBUF,&__value,&__len)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       if (result==TARGET_NATIVE_OK) \
       { \
-        assert(__len>=sizeof(__value)); \
         size=__value; \
       } \
     } while (0)
@@ -1067,7 +1060,6 @@ Systems    : all
       result=(getsockopt(socketDescriptor,SOL_SOCKET,SO_RCVBUF,&__value,&__len)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       if (result==TARGET_NATIVE_OK) \
       { \
-        assert(__len>=sizeof(__value)); \
         size=__value; \
       } \
     } while (0)
@@ -1100,7 +1092,6 @@ Systems    : all
       result=(getsockopt(socketDescriptor,IPPROTO_IP,IP_TTL,&__value,&__len)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       if (result==TARGET_NATIVE_OK) \
       { \
-        assert(__len>=sizeof(__value)); \
         flag=__value; \
       } \
     } while (0)
@@ -1136,7 +1127,6 @@ Systems    : all
       result=(getsockopt(socketDescriptor,IPPROTO_IP,IP_MULTICAST_IF,&__socketAddress,&__socketAddressLength)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       if (result==TARGET_NATIVE_OK) \
       { \
-        assert(__socketAddressLength>=sizeof(__socketAddress)); \
         address=ntohl(__socketAddress.sin_addr.s_addr); \
       } \
     } while (0)
@@ -1170,7 +1160,6 @@ Systems    : all
       result=(getsockname(socketDescriptor,(struct sockaddr*)&__socketAddress,&__socketAddressLength)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       if (result==TARGET_NATIVE_OK) \
       { \
-        assert(__socketAddressLength>=sizeof(__socketAddress)); \
         address=ntohl(__socketAddress.sin_addr.s_addr); \
       } \
     } while (0)
@@ -1203,7 +1192,6 @@ Systems    : all
       result=(getsockopt(socketDescriptor,SOL_SOCKET,SO_REUSEADDR,&__value,&__len)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       if (result==TARGET_NATIVE_OK) \
       { \
-        assert(__len>=sizeof(__value)); \
         flag=__value; \
       } \
     } while (0)
@@ -1236,7 +1224,6 @@ Systems    : all
       result=(getsockopt(socketDescriptor,SOL_SOCKET,SO_KEEPALIVE,&__value,&__len)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       if (result==TARGET_NATIVE_OK) \
       { \
-        assert(__len>=sizeof(__value)); \
         flag=__value; \
       } \
     } while (0)
@@ -1269,7 +1256,6 @@ Systems    : all
       result=(getsockopt(socketDescriptor,SOL_SOCKET,SO_BROADCAST,&__value,&__len)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       if (result==TARGET_NATIVE_OK) \
       { \
-        assert(__len>=sizeof(__value)); \
         flag=__value; \
       } \
     } while (0)

@@ -46,7 +46,9 @@ exception statement from your version. */
 #define IO_EXCEPTION "java/io/IOException"
 
 JNIEXPORT jobject JNICALL
-Java_gnu_java_nio_NIOServerSocket_getPlainSocketImpl (JNIEnv *env, jclass class)
+Java_gnu_java_nio_NIOServerSocket_getPlainSocketImpl (JNIEnv *env,
+						      jclass class
+						 __attribute__ ((__unused__)))
 {
   JCL_ThrowException (env, IO_EXCEPTION, "gnu.java.nio.NIOServerSocket.getPlainSocketImpl(): not implemented");
   return NULL;

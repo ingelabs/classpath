@@ -65,7 +65,9 @@ exception statement from your version. */
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_VMFile_create(JNIEnv *env, jclass clazz, jstring name)
+Java_java_io_VMFile_create(JNIEnv *env,
+			   jclass clazz __attribute__ ((__unused__)),
+			   jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -107,7 +109,9 @@ Java_java_io_VMFile_create(JNIEnv *env, jclass clazz, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_VMFile_canRead(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_canRead(JNIEnv *env,
+			    jobject obj __attribute__ ((__unused__)),
+			    jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -149,7 +153,9 @@ Java_java_io_VMFile_canRead(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_VMFile_canWrite(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_canWrite(JNIEnv *env,
+			     jobject obj __attribute__ ((__unused__)),
+			     jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -191,7 +197,9 @@ Java_java_io_VMFile_canWrite(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_VMFile_setReadOnly(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_setReadOnly(JNIEnv *env,
+				jobject obj __attribute__ ((__unused__)),
+				jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -225,7 +233,9 @@ Java_java_io_VMFile_setReadOnly(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_VMFile_exists(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_exists(JNIEnv *env,
+			   jobject obj __attribute__ ((__unused__)),
+			   jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -260,7 +270,9 @@ Java_java_io_VMFile_exists(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_VMFile_isFile(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_isFile(JNIEnv *env,
+			   jobject obj __attribute__ ((__unused__)),
+			   jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -294,7 +306,9 @@ Java_java_io_VMFile_isFile(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_VMFile_isDirectory(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_isDirectory(JNIEnv *env,
+				jobject obj __attribute__ ((__unused__)),
+				jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -328,7 +342,9 @@ Java_java_io_VMFile_isDirectory(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jlong JNICALL
-Java_java_io_VMFile_length(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_length(JNIEnv *env,
+			   jobject obj __attribute__ ((__unused__)),
+			   jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -376,7 +392,9 @@ Java_java_io_VMFile_length(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jlong JNICALL
-Java_java_io_VMFile_lastModified(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_lastModified(JNIEnv *env,
+				 jobject obj __attribute__ ((__unused__)),
+				 jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -411,8 +429,9 @@ Java_java_io_VMFile_lastModified(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_VMFile_setLastModified(JNIEnv *env, jobject obj,
-                                          jstring name, jlong newtime)
+Java_java_io_VMFile_setLastModified(JNIEnv *env,
+				    jobject obj __attribute__ ((__unused__)),
+				    jstring name, jlong newtime)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -447,7 +466,9 @@ Java_java_io_VMFile_setLastModified(JNIEnv *env, jobject obj,
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_VMFile_delete(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_delete(JNIEnv *env,
+			   jobject obj __attribute__ ((__unused__)),
+			   jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
@@ -481,7 +502,9 @@ Java_java_io_VMFile_delete(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_VMFile_mkdir(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_mkdir(JNIEnv *env,
+			  jobject obj __attribute__ ((__unused__)),
+			  jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *pathname;
@@ -515,7 +538,9 @@ Java_java_io_VMFile_mkdir(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_VMFile_renameTo(JNIEnv *env, jobject obj, jstring t, jstring d)
+Java_java_io_VMFile_renameTo(JNIEnv *env,
+			     jobject obj __attribute__ ((__unused__)),
+			     jstring t, jstring d)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *old_filename, *new_filename;
@@ -558,7 +583,8 @@ Java_java_io_VMFile_renameTo(JNIEnv *env, jobject obj, jstring t, jstring d)
  */
 
 JNIEXPORT jobjectArray JNICALL
-Java_java_io_VMFile_list(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_VMFile_list(JNIEnv *env, jobject obj __attribute__ ((__unused__)),
+			 jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const int REALLOC_SIZE = 10;

@@ -56,7 +56,7 @@ exception statement from your version. */
 
 #include "java_util_VMTimeZone.h"
 
-size_t jint_to_charbuf (char* bufend, jint num);
+static size_t jint_to_charbuf (char* bufend, jint num);
 
 /**
  * This method returns a time zone id string which is in the form
@@ -75,7 +75,9 @@ size_t jint_to_charbuf (char* bufend, jint num);
  * TimeZone object.
  */
 JNIEXPORT jstring JNICALL
-Java_java_util_VMTimeZone_getSystemTimeZoneId(JNIEnv *env, jclass clazz)
+Java_java_util_VMTimeZone_getSystemTimeZoneId(JNIEnv *env,
+					      jclass clazz
+					      __attribute__ ((__unused__)))
 {
   struct tm tim;
 #ifndef HAVE_LOCALTIME_R
@@ -147,7 +149,8 @@ Java_java_util_VMTimeZone_getSystemTimeZoneId(JNIEnv *env, jclass clazz)
      to get GMT. */
   tzoffset = -1L * tim.tm_gmtoff;
 #elif HAVE_UNDERSCORE_TIMEZONE
-  tzoffset = _timezone;
+  /* On some systems _timezone is actually defined as time_t. */
+  tzoffset = (long) _timezone;
 #elif HAVE_TIMEZONE
   /* timezone is secs WEST of UTC. */
   tzoffset = timezone;	
