@@ -4,6 +4,7 @@
 	* javax/swing/plaf/LabelUI.java: Made abstract.
 	* javax/swing/plaf/MenuBarUI.java: Reformatted, wrote JavaDoc.
 	* javax/swing/plaf/MenuItemUI.java: Likewise.
+	* javax/swing/plaf/OptionPaneUI.java: Re-written.
 
 2003-06-24  Sascha Brawer  <brawer@dandelis.ch>
 
