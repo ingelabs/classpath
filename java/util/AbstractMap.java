@@ -146,17 +146,17 @@ public abstract class AbstractMap implements Map {
 	      
 	      public boolean hasNext()
               {
-		return this.map_iterator.hasNext();
+		return map_iterator.hasNext();
 	      }
 
 	      public Object next()
               {
-		return ((Map.Entry)this.map_iterator.next()).getKey();
+		return ((Map.Entry)map_iterator.next()).getKey();
 	      }
 	      
 	      public void remove()
               {
-		this.map_iterator.remove();
+		map_iterator.remove();
 	      }
 	    };
 	  }
@@ -243,17 +243,17 @@ public abstract class AbstractMap implements Map {
 	      
 	      public boolean hasNext()
               {
-		return this.map_iterator.hasNext();
+		return map_iterator.hasNext();
 	      }
 
 	      public Object next()
               {
-		return ((Map.Entry)this.map_iterator.next()).getValue();
+		return ((Map.Entry)map_iterator.next()).getValue();
 	      }
 	      
 	      public void remove()
               {
-		this.map_iterator.remove();
+		map_iterator.remove();
 	      }
 	    };
 	  }
