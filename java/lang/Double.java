@@ -306,7 +306,7 @@ public final class Double extends Number implements Comparable
      * "<CODE>&lt;digit&gt;</CODE>" means a single digit (0-9).
      * <P>
      *
-     * <TABLE>
+     * <TABLE BORDER=1>
      * <TR><TH>Value of Float</TH><TH>String Representation</TH></TR>
      * <TR>
      *     <TD>[+-] 0</TD>
@@ -376,7 +376,7 @@ public final class Double extends Number implements Comparable
      *
      * Here are the possible forms the number can take:
      * <BR>
-     * <TABLE>
+     * <TABLE BORDER=1>
      *     <TR><TH>Form</TH><TH>Examples</TH></TR>
      *     <TR><TD><CODE>[+-]&lt;number&gt;[.]</CODE></TD><TD>345., -10, 12</TD></TR>
      *     <TR><TD><CODE>[+-]&lt;number&gt;.&lt;number&gt;</CODE></TD><TD>40.2, 80.00, -12.30</TD></TR>

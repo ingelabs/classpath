@@ -236,7 +236,7 @@ public final class StringBuffer implements java.io.Serializable {
     return append(String.valueOf(obj));
   }
 
-  /** Append the <code>String<code> to this <code>StringBuffer</code>.
+  /** Append the <code>String</code> to this <code>StringBuffer</code>.
    *  @param str the <code>String</code> to append.
    *  @return this <code>StringBuffer</code>.
    */

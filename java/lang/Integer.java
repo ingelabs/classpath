@@ -320,7 +320,7 @@ public final class Integer extends Number {
      * characters.  Depending on what the String begins with, the base will be
      * interpreted differently:
      *
-     * <table>
+     * <table border=1>
      * <tr><th>Leading<br>Characters</th><th>Base</th></tr>
      * <tr><td>#</td><td>16</td></tr>
      * <tr><td>0x</td><td>16</td></tr>

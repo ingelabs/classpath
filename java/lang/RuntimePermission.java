@@ -29,7 +29,7 @@ import java.security.*;
  * convention.  In addition, an asterisk may appear at the end of a 
  * name if following a period or by itself.
  *
- * <table>
+ * <table border=1>
  * <tr><th>Valid names</th><th>Invalid names</th></tr>
  * <tr><td>"accessClassInPackage.*","*"</td>
  * <td>"**", "*x", "*.a"</td></tr>
@@ -38,8 +38,8 @@ import java.security.*;
  * 
  * The following table provides a list of all the possible RuntimePermission
  * permission names with a description of what that permission allows.
- *
- * <table>
+ * <br>
+ * <table border=1>
  * <tr><th>Permission Name</th><th>Permission Allows</th></tr>
  * <tr>
  *   <td><code>createClassLoader</code></td>

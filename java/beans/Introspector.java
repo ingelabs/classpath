@@ -134,7 +134,7 @@ import gnu.java.lang.*;
  ** listeners of type &lt;type&gt;.<P>
  **
  ** If the addXXX() method throws
- ** <CODE>java.util.TooManyListenersException</LI>, then
+ ** <CODE>java.util.TooManyListenersException</CODE>, then
  ** the event set is assumed to be <EM>unicast</EM>.  See
  ** EventSetDescriptor for a discussion of unicast event
  ** sets.<P>

@@ -52,6 +52,7 @@ public class Object {
 	 **     true.</LI>
 	 ** <LI>a.equals(null) must be false.</LI>
 	 ** </UL>
+	 ** <P>
 	 **
 	 ** The Object implementation of equals returns this == o.
 	 **
