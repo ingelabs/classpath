@@ -81,7 +81,7 @@ private boolean continued_newline;
 
 /**
   * Create a new <code>LineNumberReader</code> that reads from the 
-  * specified subordinate <code>Reader</code>.  A default 512 char sized
+  * specified subordinate <code>Reader</code>.  A default 4096 char sized
   * buffer will be used for reads.
   *
   * @param in The subordinate <code>Reader</code> to read from

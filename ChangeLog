@@ -1,3 +1,15 @@
+2001-08-31  C. Brian Jones <cbj@gnu.org>
+
+        * java/io/BufferedReader.java (DEFAULT_BUFFER_SIZE): Restored.
+        (BufferedReader): Use it.
+        * java/io/LineNumberReader.java: comment change to note buffer size
+
+        Uncertain about clone() implementations given JDK 1.4 docs
+        * java/util/AbstractMap.java (clone): new method to conform to API
+        * java/util/IdentityHashMap.java (clone): don't throw
+        CloneNotSupportedException
+
+
 2001-08-31  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/PipedWriter.java (write): Changed argument to `int'.

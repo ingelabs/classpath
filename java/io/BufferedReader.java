@@ -72,6 +72,8 @@ public class BufferedReader extends Reader
      guaranteed to be >= the read-limit requested in the call to mark. */
   int markPos = -1;
 
+  static final int DEFAULT_BUFFER_SIZE = 4096;
+
   /**
     * Create a new <code>BufferedReader</code> that will read from the 
     * specified subordinate stream with a default buffer size of 4096 chars.
@@ -80,7 +82,7 @@ public class BufferedReader extends Reader
     */
   public BufferedReader(Reader in)
   {
-    this(in, 8192);
+    this(in, DEFAULT_BUFFER_SIZE);
   }
 
   /**

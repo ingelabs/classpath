@@ -83,10 +83,22 @@ public class IdentityHashMap extends AbstractMap
     size = 0;
   }
 
+  /**
+   * Creates a shallow copy where keys and values are not cloned.
+   */
   public Object clone ()
   {
-    IdentityHashMap copy = (IdentityHashMap) super.clone ();
-    copy.table = (Object[]) table.clone ();
+    IdentityHashMap copy = null;
+    try 
+      {
+        copy = (IdentityHashMap) super.clone ();
+      }
+    catch (CloneNotSupportedException e) 
+      {
+        copy = new IdentityHashMap (size);
+      }
+
+    // copy.table = (Object[]) table.clone (); 
     return copy;
   }
 
