@@ -32,40 +32,92 @@ AC_CHECK_HEADERS(unistd.h)
 AC_C_CONST
 AC_CHECK_FUNCS(gethostname socket strerror)
 
-AC_ARG_WITH(sun-jdk,
- [  --with-sun-jdk          Specify the path to the JDK installation directory],
-  [
-    AC_MSG_CHECKING("for sun jdk")
-    if test -f ${withval}/include/jni.h; then
-      AC_MSG_RESULT(using JNI headers in ${withval}/include)
-      VMINCLUDE=${withval}/include
-#      AC_PREFIX_PROGRAM(java)  this sets the prefix to the program's dir
-      AC_SUBST(VMINCLUDE)
-    else
-      AC_MSG_ERROR([unable to find ${withval}/include/jni.h. Use --with-sun-jdk=/path/to/jdk])
-    fi
-  ])
+#AC_ARG_WITH(sun-jdk,
+#[  --with-sun-jdk          Specify the path to the JDK installation directory],
+#[
+#  AC_MSG_CHECKING("for sun jdk")
+#  if test -f ${withval}/include/jni.h; then
+#    AC_MSG_RESULT(using JNI headers in ${withval}/include)
+#    VMINCLUDE=${withval}/include
+##   AC_PREFIX_PROGRAM(java)  this sets the prefix to the program's dir
+#    AC_SUBST(VMINCLUDE)
+#  else
+#    AC_MSG_ERROR(could not find ${withval}/include/jni.h. Use --with-sun-jdk=/path/to/jdk)
+#  fi
+#])
+
+#if test "$VMINCLUDE" = ""; then
+#  AC_MSG_ERROR(please specify the location of Sun's JDK with --with-sun-jdk=/path/to/jdk)
+#fi
 
 AC_ARG_WITH(japhar,
- [  --with-japhar           Specify the path to the Japhar installation directory],
-  [
-    AC_MSG_CHECKING("for japhar")
-    if test -f ${withval}/include/japhar/jni.h; then
-      AC_MSG_RESULT(Using JNI headers in ${withval}/include/japhar)
-      VMINCLUDE=${withval}/include/japhar
-#      AC_PREFIX_PROGRAM(japhar)   this sets the prefix to the program's dir
-      AC_SUBST(VMINCLUDE)
-    else
-      AC_MSG_ERROR([Unable to find ${withval}/include/japhar/jni.h. Use --with-japhar=/path/to/japhar])
-    fi
-  ])
+[  --with-japhar           Specify the path to the Japhar installation directory],
+[
+  AC_MSG_CHECKING("for japhar includes")
+  if test -f ${withval}/include/japhar/jni.h; then
+    AC_MSG_RESULT(using JNI headers in ${withval}/include/japhar)
+    VMINCLUDE=${withval}/include/japhar
+#   AC_PREFIX_PROGRAM(japhar)   this sets the prefix to the program's dir
+    AC_SUBST(VMINCLUDE)
+  else
+    AC_MSG_ERROR(could not find ${withval}/include/japhar/jni.h. Use --with-japhar)
+  fi
+  AC_MSG_CHECKING("for japhar libs")
+  if test -f ${withval}/lib/libjni.so; then
+    VMLIB=${withval}/lib
+    AC_MSG_RESULT("using vm libs from $VMLIB")
+    AC_SUBST(VMLIB)
+  else
+    AC_MSG_ERROR(could not find libjni.so.  Try using --with-japhar)
+  fi
+],
+[
+  AC_MSG_CHECKING("for japhar includes")
+  if test -f /usr/local/japhar/include/japhar/jni.h; then
+    VMINCLUDE=/usr/local/japhar/include/japhar
+  elif test -f /usr/local/include/japhar/jni.h; then
+    VMINCLUDE=/usr/local/include/japhar
+  elif test -f /usr/japhar/include/japhar/jni.h; then
+    VMINCLUDE=/usr/japhar/include/japhar
+  elif test -f /usr/include/japhar/jni.h; then
+    VMINCLUDE=/usr/include/japhar
+  fi
+  if test -n "$VMINCLUDE"; then
+    AC_SUBST(VMINCLUDE)
+    AC_MSG_RESULT("using JNI headers in $VMINCLUDE")
+  else
+    AC_MSG_ERROR(could not find include directory with jni.h.  Try using --with-japhar)    
+  fi
+  AC_MSG_CHECKING("for japhar libs")
+  if test -f /usr/local/japhar/lib/libjni.so; then 
+    VMLIB=/usr/local/japhar/lib
+  elif test -f /usr/local/lib/libjni.so; then
+    VMLIB=/usr/local/lib
+  elif test -f /usr/japhar/lib/libjni.so; then
+    VMLIB=/usr/japhar/lib
+  elif test -f /usr/lib/libjni.so; then
+    VMLIB=/usr/lib
+  fi
+  if test -n "$VMLIB"; then
+    AC_SUBST(VMLIB)
+    AC_MSG_RESULT("using vm libs from $VMLIB")
+  else
+    AC_MSG_ERROR(could not find libjni.so.  Try using --with-japhar)
+  fi
+])
 
-if test VMINCLUDE = ""; then
-  AC_MSG_ERROR(Unable to find include directory for JVM)
+if test -z "$VMINCLUDE"; then 
+  AC_MSG_ERROR(could not find include directory with jni.h.  Try using --with-japhar)
 fi
+
+if test -z "$VMLIB"; then
+  AC_MSG_ERROR(could not find libjni.so.  Try using --with-japhar)
+fi
+
 # This is the path to the chosen VM's include directory where jni.h
 # and others can be found
 AC_SUBST(VMINCLUDE)
+AC_SUBST(VMLIB)
 
 dnl AC_ARG_WITH(japhar, Install as class library for Japhar, 
 dnl             AC_PREFIX_PROGRAM(japhar))
@@ -77,10 +129,10 @@ dnl then
 dnl   AC_PREFIX_PROGRAM(japhar)
 dnl fi
 
-if test prefix = ""
-then
-  AC_MSG_ERROR(Unable to locate Virtual Machine to configure for)
-fi
+#if test prefix = ""
+#then
+#  AC_MSG_ERROR(Unable to locate Virtual Machine to configure for)
+#fi
 
 AC_ARG_WITH(javac,
   [  --with-javac	Specify the path to the javac-like program to use],
@@ -140,6 +192,7 @@ gnu/java/net/content/text/Makefile
 gnu/java/net/content/Makefile
 gnu/java/net/Makefile
 gnu/java/net/http/Makefile
+gnu/test/Makefile
 gnu/Makefile
 gnu/tools/serialver/Makefile
 gnu/tools/Makefile
@@ -155,6 +208,7 @@ native/java.io/Makefile
 native/java.lang.reflect/Makefile
 native/java.net/Makefile
 native/lib/Makefile
+native/testsuite/Makefile
 test/java.io/Makefile
 test/Makefile
 test/gnu.java.lang.reflect/Makefile
