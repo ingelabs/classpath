@@ -12,3 +12,4 @@
 ../gnu/java/util/prefs/.*$
 ../gnu/classpath/tools/.*$
 ../java/security/cert/CertPathValidatorException.java
+../javax/swing/.*$

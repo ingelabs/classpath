@@ -1,5 +1,9 @@
 2002-04-28  C. Brian Jones <cbj@gnu.org>
 
+* lib/standard.omit: disable javax.swing
+
+2002-04-28  C. Brian Jones <cbj@gnu.org>
+
 * acinclude.m4(CLASSPATH_CHECK_GCJ): check gcj version; 3.1 or higher or warn
 
 2002-04-27  Tom Tromey  <tromey@redhat.com>
