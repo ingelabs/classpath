@@ -1,3 +1,9 @@
+2003-09-25  Tom Tromey  <tromey@redhat.com>
+
+	* java/io/ObjectOutputStream.java (writeFields): Fixed
+	indentation.
+	(putFields): Likewise.
+
 2003-09-25  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkDialogPeer.java (create()): Create a
