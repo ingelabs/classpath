@@ -5,6 +5,9 @@
 	* javax/swing/plaf/MenuBarUI.java: Reformatted, wrote JavaDoc.
 	* javax/swing/plaf/MenuItemUI.java: Likewise.
 	* javax/swing/plaf/OptionPaneUI.java: Re-written.
+	* javax/swing/plaf/PanelUI.java: Made abstract, reformatted,
+	wrote JavaDoc.
+	* javax/swing/plaf/ProgressBarUI.java: Reformatted, wrote JavaDoc.
 
 2003-06-24  Sascha Brawer  <brawer@dandelis.ch>
 
