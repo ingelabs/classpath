@@ -526,10 +526,34 @@ class RadioWindow extends SubFrame
     ((GridLayout) p.getLayout ()).setHgap (5);
     ((GridLayout) p.getLayout ()).setVgap (5);
 
-    CheckboxGroup cg = new CheckboxGroup();
-    p.add(new Checkbox("button1", cg, true));
-    p.add(new Checkbox("button2", cg, false));
-    p.add(new Checkbox("button3", cg, false));
+    final CheckboxGroup cg = new CheckboxGroup();
+    final Checkbox[] boxes = new Checkbox[3];
+    for (int i = 0; i < 3; ++i)
+      {
+	boxes[i] = new Checkbox("button" + i, cg, i == 0);
+	p.add(boxes[i]);
+      }
+
+    add (p, "North");
+
+    p = new Panel();
+    p.setLayout (new GridLayout (1, 3));
+    ((GridLayout) p.getLayout ()).setHgap (5);
+    ((GridLayout) p.getLayout ()).setVgap (5);
+
+    for (int i = 0; i < 3; ++i)
+      {
+	final int val = i;
+	Button tweak = new Button ("Set " + i);
+	tweak.addActionListener(new ActionListener ()
+	  {
+	    public void actionPerformed (ActionEvent e)
+	    {
+	      cg.setSelectedCheckbox(boxes[val]);
+	    }
+	  });
+	p.add(tweak);
+      }
 
     add (p, "Center");
 

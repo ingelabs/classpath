@@ -1,3 +1,8 @@
+2002-11-15  Tom Tromey  <tromey@redhat.com>
+
+	* gnu/java/awt/peer/gtk/TestAWT.java (RadioWindow.init): Add
+	buttons to set state via group.
+
 2002-11-15  Mark Wielaard <mark@klomp.org>
 
 	* java/nio/Buffer.java (cap): Make field protected for now to get
