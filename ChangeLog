@@ -1,3 +1,8 @@
+2000-11-28  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* java/io/DataInputStream.java: Merge libgcj implementation.
+	* java/io/BufferedReader.java: Ditto.
+
 2000-11-27  Warren Levy <warrenl@cygnus.com>
 
 	* java/text/SimpleDateFormat.java: Minor formatting fixes.
