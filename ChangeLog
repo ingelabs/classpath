@@ -1,5 +1,16 @@
 2004-01-25  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/Class.java
+	(getDeclaredMethod): Renamed argument "name" to "methodName".
+	(getField): Renamed argument "name" to "fieldName".
+	(getResource): Renamed argument "name" to "resourceName".
+	Call resourcePath() instead of doing the work here.
+	(getResourceAsStream): Renamed argument "name" to "resourceName".
+	Call resourcePath() instead of doing the work here.
+	(resourcePath): New method.
+
+2004-01-25  Michael Koch  <konqueror@gmx.de>
+
 	* java/lang/Class.java: Moved all methods to get it in order with
 	libgcj.
 

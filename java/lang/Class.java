@@ -462,7 +462,7 @@ public final class Class implements Serializable
    * <code>checkMemberAccess(this, Member.DECLARED)</code> as well as
    * <code>checkPackageAccess</code> both having to succeed.
    *
-   * @param name the name of the method
+   * @param methodName the name of the method
    * @param types the type of each parameter
    * @return the method
    * @throws NoSuchMethodException if the method does not exist
@@ -470,14 +470,14 @@ public final class Class implements Serializable
    * @see #getDeclaredMethods()
    * @since 1.1
    */
-  public Method getDeclaredMethod(String name, Class[] args)
+  public Method getDeclaredMethod(String methodName, Class[] args)
     throws NoSuchMethodException
   {
     memberAccessCheck(Member.DECLARED);
-    Method match = matchMethod(getDeclaredMethods(false), name, args);
-    if (match != null)
-      return match;
-    throw new NoSuchMethodException();
+    Method match = matchMethod(getDeclaredMethods(false), methodName, args);
+    if (match == null)
+      throw new NoSuchMethodException(methodName);
+    return match;
   }
   
   /**
@@ -527,20 +527,21 @@ public final class Class implements Serializable
    * <code>checkMemberAccess(this, Member.PUBLIC)</code> as well as
    * <code>checkPackageAccess</code> both having to succeed.
    *
-   * @param name the name of the field
+   * @param fieldName the name of the field
    * @return the field
    * @throws NoSuchFieldException if the field does not exist
    * @throws SecurityException if the security check fails
    * @see #getFields()
    * @since 1.1
    */
-  public Field getField(String name) throws NoSuchFieldException
+  public Field getField(String fieldName)
+    throws NoSuchFieldException
   {
     memberAccessCheck(Member.PUBLIC);
-    Field field = internalGetField(name);
-    if(field != null)
-      return field;
-    throw new NoSuchFieldException();
+    Field field = internalGetField(fieldName);
+    if (field == null)
+      throw new NoSuchFieldException(fieldName);
+    return field;
   }
 
   /**
@@ -873,20 +874,18 @@ public final class Class implements Serializable
    * <p>The URL returned is system- and classloader-dependent, and could
    * change across implementations.
    *
-   * @param name the name of the resource, generally a path
+   * @param resourceName the name of the resource, generally a path
    * @return the URL to the resource
    * @throws NullPointerException if name is null
    * @since 1.1
    */
-  public URL getResource(String name)
+  public URL getResource(String resourceName)
   {
-    if(name.length() > 0 && name.charAt(0) != '/')
-      name = getPackagePortion(getName()).replace('.','/')
-        + "/" + name;
-    ClassLoader c = getClassLoader();
-    if (c == null)
+    String name = resourcePath(resourceName);
+    ClassLoader loader = getClassLoader();
+    if (loader == null)
       return ClassLoader.getSystemResource(name);
-    return c.getResource(name);
+    return loader.getResource(name);
   }
 
   /**
@@ -903,22 +902,28 @@ public final class Class implements Serializable
    * <p>The URL returned is system- and classloader-dependent, and could
    * change across implementations.
    *
-   * @param name the name of the resource, generally a path
+   * @param resourceName the name of the resource, generally a path
    * @return an InputStream with the contents of the resource in it, or null
    * @throws NullPointerException if name is null
    * @since 1.1
    */
-  public InputStream getResourceAsStream(String name)
+  public InputStream getResourceAsStream(String resourceName)
   {
-    if (name.length() > 0 && name.charAt(0) != '/')
-      name = getPackagePortion(getName()).replace('.','/')
-	+ "/" + name;
-    ClassLoader c = getClassLoader();
-    if (c == null)
+    String name = resourcePath(resourceName);
+    ClassLoader loader = getClassLoader();
+    if (loader == null)
       return ClassLoader.getSystemResourceAsStream(name);
-    return c.getResourceAsStream(name);
+    return loader.getResourceAsStream(name);
   }
   
+  private String resourcePath(String resourceName)
+  {
+    if (resourceName.length() > 0 && resourceName.charAt(0) != '/')
+      resourceName = getPackagePortion(getName()).replace('.','/')
+        + "/" + resourceName;
+    return resourceName;
+  }
+
   /**
    * Get the signers of this class. This returns null if there are no signers,
    * such as for primitive types or void.
