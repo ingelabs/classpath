@@ -277,14 +277,15 @@ reset() throws IOException
     throw new IOException("Stream not marked");
 
   doing_reset = false;
-  markpos = -1;
 
   if (markbuf == null)
     {
       pos = markpos;  
+      markpos = -1;
     }
   else
     {
+      markpos = -1;
       if (in.markSupported())
         {
           in.reset();
