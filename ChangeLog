@@ -1,5 +1,14 @@
 2004-05-05  Michael Koch  <konqueror@gmx.de>
 
+	* javax/print/package.html,
+	javax/print/event/package.html: New files.
+	* javax/print/Makefile.am
+	(EXTRA_DIST): Added package.html.
+	* javax/print/event/Makefile.am
+	(EXTRA_DIST): Added package.html.
+
+2004-05-05  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/NetworkInterface.java
 	(getByName): Return null when no interface was found.
 

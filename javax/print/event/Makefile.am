@@ -8,5 +8,6 @@ PrintJobAttributeListener.java \
 PrintJobEvent.java \
 PrintJobListener.java \
 PrintServiceAttributeEvent.java \
-PrintServiceAttributeListener.java
+PrintServiceAttributeListener.java \
+package.html
 

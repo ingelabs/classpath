@@ -17,4 +17,6 @@ PrintService.java \
 PrintServiceLookup.java \
 ServiceUIFactory.java \
 StreamPrintService.java \
-URIException.java
+URIException.java \
+package.html
+
