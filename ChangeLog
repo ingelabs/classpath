@@ -1,3 +1,10 @@
+2004-09-28  Jerry Quinn  <jlquinn@optonline.net>
+
+	* java/awt/image/IndexColorModel.java: Add class docs.
+	(getRGBs, convertToIntDiscrete): Implement.
+	(isValid, getValidPixels): Implement.
+	* java/awt/image/RescaleOp.java: Implement.
+
 2004-09-28  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/URLConnection.java:
