@@ -1,3 +1,15 @@
+2004-12-05  Chris Burdess  <dog@gnu.org>
+
+	* gnu/java/net/protocol/http/HTTPConnection.java,
+	gnu/java/net/protocol/http/HTTPURLConnection.java:
+	HTTPURLConnection now derives from HttpsURLConnection.
+
+2004-12-01  Chris Burdess  <dog@gnu.org>
+
+	* gnu/java/net/protocol/http/HTTPConnection.java:
+	HTTPConnection's default User-Agent header set to "classpath/" plus
+	the version of Classpath in use.
+
 2004-12-03  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/net/protocol/ftp/package.html,
