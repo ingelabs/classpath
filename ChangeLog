@@ -1,3 +1,8 @@
+2002-01-15  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/lang/Double.java (equals, compare): Fix 0.0 vs. -0.0 math.
+	* java/lang/Float.java (equals, compare): Ditto.
+
 2002-01-14  Mark Wielaard  <mark@klomp.org>
 
 	* acinclude.m4: Fix $user_specified_javac detection

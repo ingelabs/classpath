@@ -1,5 +1,5 @@
 /* Double.java -- object wrapper for double primitive
-   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -44,7 +44,8 @@ import gnu.classpath.Configuration;
  *
  * @author Paul Fisher
  * @author Andrew Haley <aph@cygnus.com>
- * @since JDK 1.0
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @since 1.0
  */
 public final class Double extends Number implements Comparable
 {
@@ -163,9 +164,12 @@ public final class Double extends Number implements Comparable
     if (!(obj instanceof Double))
       return false;
 
-    Double d = (Double) obj;
+    double d = ((Double) obj).value;
 
-    return doubleToLongBits (value) == doubleToLongBits (d.doubleValue ());
+    // common case first, then check NaN and 0
+    if (value == d)
+      return (value != 0) || (1 / value == 1 / d);
+    return isNaN(value) && isNaN(d);
   }
 
   /**
@@ -336,10 +340,9 @@ public final class Double extends Number implements Comparable
       return isNaN (y) ? 0 : 1;
     if (isNaN (y))
       return -1;
-    if (x == 0.0d && y == -0.0d)
-      return 1;
-    if (x == -0.0d && y == 0.0d)
-      return -1;
+    // recall that 0.0 == -0.0, so we convert to infinites and try again
+    if (x == 0 && y == 0)
+      return (int) (1 / x - 1 / y);
     if (x == y)
       return 0;
 
