@@ -24,7 +24,7 @@ package java.io;
 /**
   * This class is an input stream that reads its chars from an output stream
   * to which it is connected. 
-  *
+  * <p>
   * Data is read and written to an internal buffer.  It is highly recommended
   * that the <code>PipedReader</code> and connected <code>PipedWriter</code>
   * be part of different threads.  If they are not, there is a possibility
@@ -50,7 +50,7 @@ public class PipedReader extends Reader
   * in chars.  This is not a standard part of the class library.  Note that 
   * since this variable is <code>final</code>, it cannot be changed to refect 
   * the size specified in the property.
-  *
+  * <p>
   * The value for this variable is 2048.
   */
 protected static final int PIPE_SIZE = 2048;
@@ -265,7 +265,7 @@ ready() throws IOException
   * returned.  A -1 is returned to indicated that no chars can be read
   * because the end of the stream was reached.  If the stream is already
   * closed, a -1 will again be returned to indicate the end of the stream.
-  * 
+  *  <p>
   * This method will block if no chars are available to be read.
   *
   * @param buf The buffer into which chars will be stored

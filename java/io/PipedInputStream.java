@@ -24,7 +24,7 @@ package java.io;
 /**
   * This class is an input stream that reads its bytes from an output stream
   * to which it is connected. 
-  *
+  * <code>
   * Data is read and written to an internal buffer.  It is highly recommended
   * that the <code>PipedInputStream</code> and connected <code>PipedOutputStream</code>
   * be part of different threads.  If they are not, there is a possibility
@@ -50,7 +50,7 @@ public class PipedInputStream extends InputStream
   * in bytes.  This is not a standard part of the class library.  Note that 
   * since this variable is <code>final</code>, it cannot be changed to refect 
   * the size specified in the property.
-  *
+  * <code>
   * The value for this variable is 2048.
   */
 protected static final int PIPE_SIZE = 2048;
@@ -257,7 +257,7 @@ available() throws IOException
   * and int in the range of 0-255.  If a byte cannot be read because of an
   * end of stream condition, -1 is returned.  If the stream is already
   * closed, an IOException will be thrown.
-  * 
+  *  <code>
   * This method will block if no bytes are available to be read.
   *
   * @return The byte read or -1 if end of stream.
@@ -291,7 +291,7 @@ read() throws IOException
   * returned.  A -1 is returned to indicated that no bytes can be read
   * because the end of the stream was reached.  If the stream is already
   * closed, a -1 will again be returned to indicate the end of the stream.
-  * 
+  *  <code>
   * This method will block if no bytes are available to be read.
   *
   * @param buf The buffer into which bytes will be stored
