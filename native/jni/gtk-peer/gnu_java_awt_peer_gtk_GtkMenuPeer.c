@@ -46,8 +46,12 @@ accel_attach (GtkMenuItem *menu_item,
   GtkAccelGroup *accel;
 
   accel = gtk_menu_get_accel_group (GTK_MENU (menu_item->submenu));
+  // FIXME: _gtk_accel_group_attach is a GTK-private function, so
+  // we'll need a different approach here:
+#if 0
   _gtk_accel_group_attach (accel, 
     G_OBJECT (gtk_widget_get_toplevel (GTK_WIDGET(menu_item))));
+#endif
 }
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuPeer_setupAccelGroup

@@ -1,3 +1,10 @@
+2004-04-08  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuPeer.c
+	(accel_attach): Comment out _gtk_accel_group_attach call.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkPopupMenuPeer.c
+	(setupAccelGroup): Likewise.
+
 2004-04-08  Michael Koch  <konqueror@gmx.de>
 
 	* java/security/AccessController.java:
