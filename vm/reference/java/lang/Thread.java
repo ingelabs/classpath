@@ -56,8 +56,6 @@ public class Thread {
 	String name;
 	boolean daemon;
 	int priority;
-	private int privateInfo;  // stopgap until Japhar supports an
-				  // extra pointer per object
 
 	/** The maximum priority for a Thread.
 	 ** @XXX find out the value for this.

@@ -49,7 +49,6 @@ import gnu.java.lang.*;
  **/
 
 public class Class {
-	int private_data;
 	Class superclass = null;
 	String name = null;
 	Object[] signers = null;
