@@ -183,8 +183,8 @@ public abstract class URLConnection
   {
     // Set up all our instance variables
     this.url = url;
-    allowUserInteraction = def_allow_user_inter;
-    useCaches = def_use_caches;
+    allowUserInteraction = defaultAllowUserInteraction;
+    useCaches = defaultUseCaches;
 
     req_props = new Hashtable(def_req_props);
   }
@@ -202,7 +202,7 @@ public abstract class URLConnection
    */
   public URL getURL()
   {
-    return(url);
+    return url;
   }
 
   /**
@@ -213,7 +213,7 @@ public abstract class URLConnection
    */
   public int getContentLength()
   {
-    return(getHeaderFieldInt("content-length", -1));
+    return getHeaderFieldInt("content-length", -1);
   }
 
   /**
@@ -243,7 +243,7 @@ public abstract class URLConnection
    */
   public String getContentEncoding()
   {
-    return(getHeaderField("content-encoding"));
+    return getHeaderField("content-encoding");
   }
 
   /**
@@ -407,7 +407,9 @@ public abstract class URLConnection
    * The default class will also be used if the content handler factory returns
    * a null content handler.
    *
-   * @exception IOException If an error occurs.
+   * @exception IOException If an error occurs
+   * @exception UnknownServiceException If the protocol does not support the
+   * content type
    */
   public Object getContent() throws IOException
   {
@@ -465,7 +467,8 @@ public abstract class URLConnection
    */
   public Permission getPermission() throws IOException
   {
-    return(new java.security.AllPermission());
+    // Subclasses may override this.
+    return new java.security.AllPermission();
   }
 
   /**
@@ -475,6 +478,7 @@ public abstract class URLConnection
    * @return An InputStream for this connection
    *
    * @exception IOException If an error occurs
+   * @exception UnknownServiceException If the protocol does not support input
    */
   public InputStream getInputStream() throws IOException
   {
@@ -488,6 +492,7 @@ public abstract class URLConnection
    * @return An OutputStream for this connection
    *
    * @exception IOException If an error occurs
+   * @exception UnknownServiceException If the protocol does not support output
    */
   public OutputStream getOutputStream() throws IOException
   {
@@ -526,7 +531,7 @@ public abstract class URLConnection
    */
   public boolean getDoInput()
   {
-    return(doInput);
+    return doInput;
   }
 
   /**
@@ -549,7 +554,7 @@ public abstract class URLConnection
    */
   public boolean getDoOutput()
   {
-    return(doOutput);
+    return doOutput;
   }
 
   /**
@@ -573,7 +578,7 @@ public abstract class URLConnection
    */
   public boolean getAllowUserInteraction()
   {
-    return(allowUserInteraction);
+    return allowUserInteraction;
   }
 
   /**
@@ -584,7 +589,7 @@ public abstract class URLConnection
    */
   public static synchronized void setDefaultAllowUserInteraction(boolean allow)
   {
-    def_allow_user_inter = allow;
+    defaultAllowUserInteraction = allow;
   }
 
   /**
@@ -595,7 +600,7 @@ public abstract class URLConnection
    */
   public static boolean getDefaultAllowUserInteraction()
   {
-    return(def_allow_user_inter);
+    return defaultAllowUserInteraction;
   }
 
   /**
@@ -618,7 +623,7 @@ public abstract class URLConnection
    */
   public boolean getUseCaches()
   {
-    return(useCaches);
+    return useCaches;
   }
 
   /**
@@ -646,7 +651,7 @@ public abstract class URLConnection
    */
   public long getIfModifiedSince()
   {
-    return(ifModifiedSince);
+    return ifModifiedSince;
   }
 
   /**
@@ -657,7 +662,7 @@ public abstract class URLConnection
    */
   public synchronized void setDefaultUseCaches(boolean use)
   {
-    def_use_caches = use;
+    defaultUseCaches = use;
   }
 
   /**
@@ -668,7 +673,7 @@ public abstract class URLConnection
    */
   public boolean getDefaultUseCaches()
   {
-    return(def_use_caches);
+    return defaultUseCaches;
   }
 
   /**

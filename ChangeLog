@@ -1,5 +1,10 @@
 2003-05-02  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/URLConnection.java:
+	More merging with libgcj.
+
+2003-05-02  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/DatagramSocket.java,
 	java/net/JarURLConnection,
 	java/net/URLConnection:
