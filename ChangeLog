@@ -1,5 +1,11 @@
 2004-11-23  Michael Koch  <konqueror@gmx.de>
 
+	* java/util/zip/InflaterInputStream.java
+	(onebytebuffer): Little reformatting to match libgcj's version.
+	(read): Likewise.
+
+2004-11-23  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/NIOServerSocket.java
 	(getPlainSocketImpl): Implemented in java with reflection.
 	* include/gnu_java_nio_NIOServerSocket.h,
