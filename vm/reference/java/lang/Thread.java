@@ -171,6 +171,10 @@ public class Thread {
 		this(null,toRun,name);
 	}
 
+	private Thread(ThreadGroup group, String name) {
+		this(group,null,name);
+	}
+
 	/** Allocate a new Thread object, with the specified ThreadGroup,
 	 ** with the specified name, and using the specified Runnable
 	 ** object's <CODE>run()</CODE> method to execute.  If the
