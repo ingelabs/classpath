@@ -1,5 +1,10 @@
 2004-12-06  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/io/BufferedInputStream.java
+	(read(byte,int,int)): Handle case when zero bytes are requested.
+
+2004-12-06  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/awt/color/ICC_Profile.java
 	(finalize): Removed pointless field assignments.
 
