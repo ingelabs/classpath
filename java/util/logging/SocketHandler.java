@@ -42,6 +42,7 @@ exception statement from your version.
 
 package java.util.logging;
 
+
 /**
  * A <code>SocketHandler</code> publishes log records to
  * a TCP/IP socket.
@@ -128,7 +129,8 @@ public class SocketHandler
    *
    * @throws java.lang.IllegalArgumentException if either
    *         <code>host</code> or <code>port</code> specify
-   *         an invalid value.  */
+   *         an invalid value.
+   */
   public SocketHandler(String host, int port)
     throws java.io.IOException
   {
@@ -157,6 +159,24 @@ public class SocketHandler
   }
 
 
+  /**
+   * Creates an OutputStream for publishing log records to an Internet
+   * host and port.  This private method is a helper for use by the
+   * constructor of SocketHandler.
+   *
+   * @param host the Internet host to which log records will be
+   *        forwarded.
+   *
+   * @param port the port at the host which will accept a request
+   *        for a TCP/IP connection.
+   *
+   * @throws java.io.IOException if the connection to the specified
+   *         network host and port cannot be established.
+   *
+   * @throws java.lang.IllegalArgumentException if either
+   *         <code>host</code> or <code>port</code> specify
+   *         an invalid value.
+   */
   private static java.io.OutputStream createSocket(String host, int port)
     throws java.io.IOException, java.lang.IllegalArgumentException
   {
@@ -166,12 +186,13 @@ public class SocketHandler
       throw new IllegalArgumentException();
 
     socket = new java.net.Socket(host, port);
+
     socket.shutdownInput();
 
-    /* Because of the architecture of the logging framework
-     * provides replaceable formatters that perform their
-     * task by returning one single String for each LogRecord
-     * to be formatted, there is no need to buffer.
+    /* The architecture of the logging framework provides replaceable
+     * formatters.  Because these formatters perform their task by
+     * returning one single String for each LogRecord to be formatted,
+     * there is no need to buffer.
      */
     socket.setTcpNoDelay(true);
 

@@ -91,12 +91,29 @@ public class StreamHandler
   private static final int STATE_CLOSED = 2;
 
 
+  /**
+   * Creates a <code>StreamHandler</code> without an output stream.
+   * Subclasses can later use {@link
+   * #setOutputStream(java.io.OutputStream)} to associate an output
+   * stream with this StreamHandler.
+   */
   public StreamHandler()
   {
     this(null, null);
   }
 
 
+  /**
+   * Creates a <code>StreamHandler</code> that formats log messages
+   * with the specified Formatter and publishes them to the specified
+   * output stream.
+   *
+   * @param out the output stream to which the formatted log messages
+   *     are published.
+   *
+   * @param formatter the <code>Formatter</code> that will be used
+   *     to format log messages.
+   */
   public StreamHandler(OutputStream out, Formatter formatter)
   {
     this(out, "java.util.logging.StreamHandler", Level.INFO,
@@ -352,10 +369,29 @@ public class StreamHandler
 
 
   /**
-   * Checks if this <code>StreamHandler</code> would log a record.
+   * Checks whether or not a <code>LogRecord</code> would be logged
+   * if it was passed to this <code>StreamHandler</code> for publication.
    *
-   * FIXME: Better documentation.
-   */
+   * <p>The <code>StreamHandler</code> implementation first checks
+   * whether a writer is present and the handler's level is greater
+   * than or equal to the severity level threshold.  In a second step,
+   * if a {@link Filter} has been installed, its {@link
+   * Filter#isLoggable(LogRecord) isLoggable} method is
+   * invoked. Subclasses of <code>StreamHandler</code> can override
+   * this method to impose their own constraints.
+   *
+   * @param record the <code>LogRecord</code> to be checked.
+   *
+   * @return <code>true</code> if <code>record</code> would
+   *         be published by {@link #publish(LogRecord) publish},
+   *         <code>false</code> if it would be discarded.
+   *
+   * @see #setLevel(Level)
+   * @see #setFilter(Filter)
+   * @see Filter#isLoggable(LogRecord)
+   *
+   * @throws NullPointerException if <code>record</code> is
+   *         <code>null</code>.  */
   public boolean isLoggable(LogRecord record)
   {
     return (writer != null) && super.isLoggable(record);

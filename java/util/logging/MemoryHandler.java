@@ -84,9 +84,31 @@ public class MemoryHandler
 {
   private final LogRecord[] buffer;
   private int position;
-  private int numPushed;
+
+
+  /**
+   * The number of log records which have been published, but not
+   * pushed yet to the target handler.
+   */
+  private int numPublished;
+
+
+  /**
+   * The push level threshold for this <code>Handler</code>.  When a
+   * record is published whose severity level is greater than or equal
+   * to the <code>pushLevel</code> of this <code>MemoryHandler</code>,
+   * the {@link #push()} method will be invoked for pushing the buffer
+   * contents to the target <code>Handler</code>.
+  */
   private Level pushLevel;
+
+
+  /**
+   * The Handler to which log records are forwarded for actual
+   * publication.
+   */
   private final Handler target;
+
 
   /**
    * Constructs a <code>MemoryHandler</code> for keeping a circular
@@ -144,7 +166,7 @@ public class MemoryHandler
 
     buffer[position] = record;
     position = (position + 1) % buffer.length;
-    numPushed = numPushed + 1;
+    numPublished = numPublished + 1;
 
     if (record.getLevel().intValue() >= pushLevel.intValue())
       push();
@@ -166,7 +188,7 @@ public class MemoryHandler
   {
     int i;
 
-    if (numPushed < buffer.length)
+    if (numPublished < buffer.length)
     {
       for (i = 0; i < position; i++)
         target.publish(buffer[i]);
@@ -179,7 +201,7 @@ public class MemoryHandler
 	target.publish(buffer[i]);
     }
 
-    numPushed = 0;
+    numPublished = 0;
     position = 0;
   }
 
@@ -229,7 +251,7 @@ public class MemoryHandler
   {
     push();
 
-    /* This will check for the SecurityPermission. If the
+    /* This will check for LoggingPermission("control"). If the
      * current security context does not grant this permission,
      * push() has been executed, but this does not impose a
      * security risk.
@@ -262,9 +284,8 @@ public class MemoryHandler
    * <code>MemoryHandler</code>, the {@link #push()} method will be
    * invoked for pushing the buffer contents to the target
    * <code>Handler</code>.
-
-   * @param pushLevel the push level threshold for automatic
-   *                  pushing.
+   *
+   * @param pushLevel the push level threshold for automatic pushing.
    *
    * @exception SecurityException if a security manager exists and
    *            the caller is not granted the permission to control
@@ -272,7 +293,7 @@ public class MemoryHandler
    *
    * @exception NullPointerException if <code>pushLevel</code> is
    *            <code>null</code>.
-  */
+   */
   public void setPushLevel(Level pushLevel)
   {
     LogManager.getLogManager().checkAccess();

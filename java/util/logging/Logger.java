@@ -47,7 +47,12 @@ import java.util.MissingResourceException;
 import java.util.List;
 
 /**
- * FIXME: Documentation.
+ * A Logger is used for logging information about events. Usually, there
+ * is a seprate logger for each subsystem or component, although there
+ * is a shared instance for components that make only occasional use of
+ * the logging framework.
+ *
+ * FIXME: Write more documentation.
  *
  * @author Sascha Brawer (brawer@acm.org)
  */
@@ -248,7 +253,15 @@ public class Logger
 
   
   /**
-   * FIXME: Write Javadoc.
+   * Creates a new, unnamed logger.  Unnamed loggers are not
+   * registered in the namespace of the LogManager, and no special
+   * security permission is required for changing their state.
+   * Therefore, untrusted applets are able to modify their private
+   * logger instance obtained through this method.
+   *
+   * <p>The parent of the newly created logger will the the root
+   * logger, from which the level threshold and the handlers are
+   * inherited.
    */
   public static Logger getAnonymousLogger()
   {
@@ -257,7 +270,15 @@ public class Logger
 
 
   /**
-   * FIXME: Write Javadoc.
+   * Creates a new, unnamed logger.  Unnamed loggers are not
+   * registered in the namespace of the LogManager, and no special
+   * security permission is required for changing their state.
+   * Therefore, untrusted applets are able to modify their private
+   * logger instance obtained through this method.
+   *
+   * <p>The parent of the newly created logger will the the root
+   * logger, from which the level threshold and the handlers are
+   * inherited.
    *
    * @param resourceBundleName the name of a resource bundle
    *        for localizing messages, or <code>null</code>
@@ -278,7 +299,12 @@ public class Logger
 
 
   /**
-   * FIXME: Write Javadoc.
+   * Returns the name of the resource bundle that is being used for
+   * localizing messages.
+   *
+   * @return the name of the resource bundle used for localizing messages,
+   *         or <code>null</code> if the parent's resource bundle
+   *         is used for this purpose.
    */
   public synchronized String getResourceBundleName()
   {
@@ -287,7 +313,12 @@ public class Logger
 
 
   /**
-   * FIXME: Write Javadoc.
+   * Returns the resource bundle that is being used for localizing
+   * messages.
+   *
+   * @return the resource bundle used for localizing messages,
+   *         or <code>null</code> if the parent's resource bundle
+   *         is used for this purpose.
    */
   public synchronized ResourceBundle getResourceBundle()
   {
@@ -301,9 +332,9 @@ public class Logger
    * a log record of the same or a higher level will be published
    * unless an installed <code>Filter</code> decides to discard it.
    *
-   * @return the severity level below which all log messages
-   *         will be discarded, or <code>null</code> if
-   *         the logger inherits the threshold from its parent.
+   * @return the severity level below which all log messages will be
+   *         discarded, or <code>null</code> if the logger inherits
+   *         the threshold from its parent.
    */
   public synchronized Level getLevel()
   {
@@ -312,7 +343,8 @@ public class Logger
 
 
   /**
-   * FIXME: Javadoc.
+   * Returns whether or not a message of the specified level
+   * would be logged by this logger.
    *
    * @throws NullPointerException if <code>level</code>
    *         is <code>null</code>.
@@ -777,16 +809,14 @@ public class Logger
 
   /**
    * Logs a message with severity level CONFIG.  {@link Level#CONFIG} is
-   * intended for static configuration messages, for example
-   * [FIXME: (Sun's Javadoc mentions graphics depth, GUI look-and-feel)],
-   * etc.
+   * intended for static configuration messages, for example about the
+   * windowing environment, the operating system version, etc.
    *
    * @param message the message text, also used as look-up key if the
-   *                logger is localizing messages with a resource
-   *                bundle.  While it is possible to pass
-   *                <code>null</code>, this is not recommended, since
-   *                a logging message without text is unlikely to be
-   *                helpful.
+   *     logger is localizing messages with a resource bundle.  While
+   *     it is possible to pass <code>null</code>, this is not
+   *     recommended, since a logging message without text is unlikely
+   *     to be helpful.
    */
   public synchronized void config(String message)
   {
@@ -795,17 +825,11 @@ public class Logger
   }
 
 
-  /* FIXME: Phrase copied verbatim from Sun's Javadoc.  We absolutely
-   * must use different words.  (only "information that will be
-   * broadly interesting to developers who do not have a specialized
-   * interest in the subsystem")
-   */
   /**
    * Logs a message with severity level FINE.  {@link Level#FINE} is
-   * intended for information that will be broadly interesting to
-   * developers who do not have a specialized interest in the
-   * subsystem emitting log messages, such as minor, recoverable
-   * failures or potential performance problems.
+   * intended for messages that are relevant for developers using
+   * the component generating log messages. Examples include minor,
+   * recoverable failures, or possible inefficiencies.
    *
    * @param message the message text, also used as look-up key if the
    *                logger is localizing messages with a resource
@@ -983,12 +1007,13 @@ public class Logger
 
 
   /**
-   * FIXME: Write Javadoc.
+   * Returns the parent of this logger.  By default, the parent is
+   * assigned by the LogManager by inspecting the logger's name.
    *
    * @return the parent of this logger (as detemined by the LogManager
-   *         by inspecting logger names), the root logger if no
-   *         other logger has a name which is a prefix of this
-   *         logger's name, or <code>null</code> for the root logger.
+   *     by inspecting logger names), the root logger if no other
+   *     logger has a name which is a prefix of this logger's name, or
+   *     <code>null</code> for the root logger.
    */
   public synchronized Logger getParent()
   {
@@ -997,7 +1022,11 @@ public class Logger
 
 
   /**
-   * FIXME: Write Javadoc.
+   * Sets the parent of this logger.  Usually, applications do not
+   * call this method directly.  Instead, the LogManager will ensure
+   * that the tree of loggers reflects the hierarchical logger namespace.
+   * Basically, this method should not be public at all, but the
+   * GNU implementation follows the Sun specification.
    *
    * @throws SecurityException if this logger is not anonymous, a
    *     security manager exists, and the caller is not granted
@@ -1013,7 +1042,8 @@ public class Logger
     if (this == lm.rootLogger)
     {
       if (parent != null)
-	throw new IllegalArgumentException("only the root logger can have a null parent");
+        throw new IllegalArgumentException(
+          "only the root logger can have a null parent");
       this.parent = null;
       return;
     }
