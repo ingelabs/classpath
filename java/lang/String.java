@@ -1096,9 +1096,9 @@ public final class String implements Serializable, Comparable, CharSequence
     if (oldChar == newChar)
       return this;
     int i = count;
-    int x = offset;
+    int x = offset - 1;
     while (--i >= 0)
-      if (value[x++] == oldChar)
+      if (value[++x] == oldChar)
         break;
     if (i < 0)
       return this;
@@ -1108,7 +1108,7 @@ public final class String implements Serializable, Comparable, CharSequence
       if (value[++x] == oldChar)
         newStr[x] = newChar;
     // Package constructor avoids an array copy.
-    return new String(newStr, 0, count, true);
+    return new String(newStr, offset, count, true);
   }
 
   /**
@@ -1245,10 +1245,10 @@ public final class String implements Serializable, Comparable, CharSequence
     // First, see if the current string is already lower case.
     boolean turkish = "tr".equals(loc.getLanguage());
     int i = count;
-    int x = offset;
+    int x = offset - 1;
     while (--i >= 0)
       {
-        char ch = value[x++];
+        char ch = value[++x];
         if ((turkish && ch == '\u0049')
             || ch != Character.toLowerCase(ch))
           break;
@@ -1263,13 +1263,12 @@ public final class String implements Serializable, Comparable, CharSequence
       {
         char ch = value[x];
         // Hardcoded special case.
-        newStr[x] = (turkish && ch == '\u0049') ? '\u0131'
+        newStr[x++] = (turkish && ch == '\u0049') ? '\u0131'
           : Character.toLowerCase(ch);
-        x++;
       }
     while (--i >= 0);
     // Package constructor avoids an array copy.
-    return new String(newStr, 0, count, true);
+    return new String(newStr, offset, count, true);
   }
 
   /**
@@ -1304,8 +1303,9 @@ public final class String implements Serializable, Comparable, CharSequence
     boolean turkish = "tr".equals(loc.getLanguage());
     int expand = 0;
     boolean unchanged = true;
-    int x = count + offset;
-    for (int i = count; --i >= 0; )
+    int i = count;
+    int x = i + offset;
+    while (--i >= 0)
       {
         char ch = value[--x];
         expand += upperCaseExpansion(ch);
@@ -1317,10 +1317,10 @@ public final class String implements Serializable, Comparable, CharSequence
       return this;
 
     // Now we perform the conversion.
+    i = count;
     if (expand == 0)
       {
         char[] newStr = (char[]) value.clone();
-        int i = count;
         while (--i >= 0)
           {
             char ch = value[x];
@@ -1329,12 +1329,13 @@ public final class String implements Serializable, Comparable, CharSequence
               : Character.toUpperCase(ch);
           }
         // Package constructor avoids an array copy.
-        return new String(newStr, 0, count, true);
+        return new String(newStr, offset, count, true);
       }
 
     // Expansion is necessary.
     char[] newStr = new char[count + expand];
-    for (int i = 0, j = 0; i++ < count; )
+    int j = 0;
+    while (--i >= 0)
       {
         char ch = value[x++];
         // Hardcoded special case.

@@ -1,4 +1,10 @@
 2002-03-21  Eric Blake  <ebb9@email.byu.edu>
+	    Patrik Reali  <reali@acm.org>
+
+	* java/lang/String.java (replace, toLowerCase, toUpperCase): Fix
+	off-by-one and offset errors - inspired by patch 201.
+
+2002-03-21  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/awt/Rectangle.java: Spelling typo.
 	* java/awt/geom/Rectangle2D.java (hashCode, equals): Missed these
