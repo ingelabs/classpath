@@ -198,7 +198,7 @@ public class ZipFile implements ZipConstants
 	byte[] buffer = new byte[Math.max(nameLen, commentLen)];
 
 	raf.readFully(buffer, 0, nameLen);
-	String name = new String(buffer, 0, nameLen, "UTF8");
+	String name = new String(buffer, 0, nameLen);
 
 	ZipEntry entry = new ZipEntry(name);
 	entry.setMethod(method);
@@ -215,7 +215,7 @@ public class ZipFile implements ZipConstants
 	if (commentLen > 0)
 	  {
 	    raf.readFully(buffer, 0, commentLen);
-	    entry.setComment(new String(buffer, 0, commentLen, "UTF8"));
+	    entry.setComment(new String(buffer, 0, commentLen));
 	  }
 	entry.zipFileIndex = i;
 	entry.offset = offset;

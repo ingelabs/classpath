@@ -168,7 +168,7 @@ public class ZipInputStream extends InflaterInputStream implements ZipConstants
 
     byte[] buffer = new byte[nameLen];
     readFully(buffer);
-    String name = new String(buffer, "UTF8");
+    String name = new String(buffer);
     
     entry = new ZipEntry(name);
     entry.setMethod(method);

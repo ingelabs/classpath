@@ -1,3 +1,11 @@
+2002-05-30  John Leuner  <jewel@debian.org>
+
+	* java/util/zip/*java: Changed to use default character 
+	encoding instead of UTF8 for zip comments.
+	
+	* lib/jazzlib/makeJazzlibDist.sh: Changed to use zsh. 
+	Builds .zip and .jar files too.
+	
 2002-05-28  Andrew Selkirk  <aselkirk@sympatico.ca>
 
 	* configure.in: Updated with colorchooser and filechooser dirs.

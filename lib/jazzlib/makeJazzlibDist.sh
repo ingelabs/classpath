@@ -1,15 +1,41 @@
-#!/bin/sh
+#!/bin/zsh
 
 echo "----- Run this from the classpath/java/util/zip directory -----"
-echo "----- Run it with 'juz' as an argument to put *precompiled*"
-echo "----- classes into a jazzlib-0.0v-juz.tar.gz package"
-echo "----- "
+echo "-----                                                     -----"
+echo "----- Options:                                            -----"
+echo "-----                                                     -----"
+echo "----- juz -- build .tar.gz and .zip archives in java.util.zip namespace"
+echo "----- jar -- build .jar file in java.util.zip and java.util.jar namespaces"
+echo "-----     -- build .tar.gz. and .zip archive for net.sf.jazzlib namespace"
+echo "-----                                                     -----"
 echo "----- Edit this script to change the release number       -----"
 echo "----- Do rm -rf dist when you're finished                 -----"
-echo "----- 23 October 2001 John Leuner <jewel@debian.org>      -----"
+echo "----- 30 May 2002 John Leuner <jewel@debian.org>      -----"
 
-RELEASE_NUMBER=03
+RELEASE_NUMBER=04
 
+# $1 is the archive command, eg "tar czvf" or "zip" or "jar cf"
+# $2 is the archive suffix, eg ".zip" or ".tar.gz"
+# $3 is the "-binary" flag, which may be empty
+# $4 is the "-juz" suffix, which may be empty
+# $5 is the set of files that need to be md5-summed
+# $6 is the set of files in addition to $5 that are to be archived
+
+function create_archive {
+    md5sum ${=5} > md5sums
+    gpg --clearsign md5sums
+    ${=1} jazzlib${3}-0.$RELEASE_NUMBER${4}${2} ${=5} ${=6}
+    rm -f md5sums
+    rm -f md5sums.asc
+}  
+
+# $1 is the package name, ie java.util.zip or net.sf.jazzlib
+
+function make_javadoc {
+    rm -rf javadoc
+    mkdir javadoc
+    javadoc -sourcepath . -d javadoc/ $1
+}
 
 case "$1" in
     juz)
@@ -19,28 +45,42 @@ case "$1" in
     cp *.java dist/java/util/zip
     pushd dist
     
-    rm -rf javadoc
-    mkdir javadoc
-    javadoc -sourcepath . -d javadoc/ java.util.zip
-    cp ../../../../COPYING.LIB .
+    make_javadoc java.util.zip
 
-    md5sum java/util/zip/*.java > md5sums
-    gpg --clearsign md5sums
-    tar cvfz jazzlib-0.$RELEASE_NUMBER-juz.tar.gz java/util/zip/*.java javadoc md5sums md5sums.asc COPYING.LIB
-    rm -f md5sums
-    rm -f md5sums.asc
+    cp ../../../../COPYING .
+
+    foo=(java/util/zip/*.java)
+    create_archive "tar czvf" ".tar.gz" "" "-juz" "$foo" "javadoc md5sums md5sums.asc COPYING" 
+    create_archive "zip" ".zip" "" "-juz" "$foo" "javadoc md5sums md5sums.asc COPYING" 
     
     popd
 
     #make binary distro second
     cp *.class dist/java/util/zip
     pushd dist
+
+    foo=(java/util/zip/*.class)
+    create_archive "tar czvf" ".tar.gz" "-binary" "-juz" "$foo" "javadoc md5sums md5sums.asc COPYING"
+    create_archive "zip" ".zip" "-binary" "-juz" "$foo" "javadoc md5sums md5sums.asc COPYING"
     
-    md5sum java/util/zip/*.class > md5sums
-    gpg --clearsign md5sums
-    tar cvfz jazzlib-binary-0.$RELEASE_NUMBER-juz.tar.gz java/util/zip/*.class javadoc md5sums md5sums.asc COPYING.LIB
-    rm -f md5sums
-    rm -f md5sums.asc
+    popd
+    ;;
+    jar)
+    mkdir -p dist/java/util/zip
+    mkdir -p dist/java/util/jar
+
+    
+
+    #make binary distro second
+    cp *.class dist/java/util/zip
+    cp ../jar/*.class dist/java/util/jar
+    pushd dist
+
+    cp ../../../../COPYING .
+    foo=(java/util/zip/*.class)
+    foo=($foo java/util/jar/*.class)
+
+    create_archive "jar cf" ".jar" "-binary" "-juz" "$foo" "md5sums md5sums.asc COPYING"
     
     popd
     ;;
@@ -56,35 +96,28 @@ case "$1" in
 	
     pushd dist
 	
-    #make the javadoc
-    rm -rf javadoc
-    mkdir javadoc
-    javadoc -sourcepath . -d javadoc/ net.sf.jazzlib
+    make_javadoc "net.sf.jazzlib"
 
-    #make the source dist
-    md5sum net/sf/jazzlib/*.java > md5sums
-    gpg --clearsign md5sums
-    cp ../../../../COPYING.LIB .
-    tar cvfz jazzlib-0.$RELEASE_NUMBER.tar.gz net/sf/jazzlib/*.java javadoc md5sums md5sums.asc COPYING.LIB
-    rm -f md5sums
-    rm -f md5sums.asc
+    cp ../../../../COPYING .
+
+    foo=(net/sf/jazzlib/*.java)
+    create_archive "tar czvf" ".tar.gz" "" "" "$foo" "javadoc md5sums md5sums.asc COPYING" 
+    create_archive "zip" ".zip" "" "" "$foo" "javadoc md5sums md5sums.asc COPYING" 
 
     #compile the source
     javac net/sf/jazzlib/*.java
 
-    #make the binary distribution
-    md5sum net/sf/jazzlib/*.class > md5sums
-    gpg --clearsign md5sums
-    tar cvfz jazzlib-binary-0.$RELEASE_NUMBER.tar.gz net/sf/jazzlib/*.class javadoc md5sums md5sums.asc COPYING.LIB
-    rm -f md5sums
-    rm -f md5sums.asc
+    foo=(net/sf/jazzlib/*.class)
+    create_archive "tar czvf" ".tar.gz" "-binary" "" "$foo" "javadoc md5sums md5sums.asc COPYING"
+    create_archive "zip" ".zip" "-binary" "" "$foo" "javadoc md5sums md5sums.asc COPYING"
 
     #back to dir
     popd
 
     ;;
 esac
-ls -la dist/*.tar.gz
+ls -la dist/{*.tar.gz,*.jar,*.zip}
+
 
 
 

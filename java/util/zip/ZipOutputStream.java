@@ -94,20 +94,13 @@ public class ZipOutputStream extends DeflaterOutputStream implements ZipConstant
   /**
    * Set the zip file comment.
    * @param comment the comment.
-   * @exception IllegalArgumentException if UTF8 encoding of comment is
+   * @exception IllegalArgumentException if encoding of comment is
    * longer than 0xffff bytes.
    */
   public void setComment(String comment)
   {
     byte[] commentBytes;
-    try
-      {
-	commentBytes = comment.getBytes("UTF8");
-      }
-    catch (UnsupportedEncodingException ex)
-      {
-	throw new InternalError("UTF8 encoding not found");
-      }
+    commentBytes = comment.getBytes();
     if (commentBytes.length > 0xffff)
       throw new IllegalArgumentException("Comment too long.");
     zipComment = commentBytes;
@@ -231,7 +224,7 @@ public class ZipOutputStream extends DeflaterOutputStream implements ZipConstant
 	writeLeInt(0);
 	writeLeInt(0);
       }
-    byte[] name = entry.getName().getBytes("UTF8");
+    byte[] name = entry.getName().getBytes();
     if (name.length > 0xffff)
       throw new ZipException("Name too long.");
     byte[] extra = entry.getExtra();
@@ -362,7 +355,7 @@ public class ZipOutputStream extends DeflaterOutputStream implements ZipConstant
 	writeLeInt((int)entry.getCompressedSize());
 	writeLeInt((int)entry.getSize());
 
-	byte[] name = entry.getName().getBytes("UTF8");
+	byte[] name = entry.getName().getBytes();
 	if (name.length > 0xffff)
 	  throw new ZipException("Name too long.");
 	byte[] extra = entry.getExtra();
@@ -370,7 +363,7 @@ public class ZipOutputStream extends DeflaterOutputStream implements ZipConstant
 	  extra = new byte[0];
 	String strComment = entry.getComment();
 	byte[] comment = strComment != null
-	  ? strComment.getBytes("UTF8") : new byte[0];
+	  ? strComment.getBytes() : new byte[0];
 	if (comment.length > 0xffff)
 	  throw new ZipException("Comment too long.");
 
