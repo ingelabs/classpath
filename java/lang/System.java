@@ -593,7 +593,6 @@ public final class System
    */
   public static void runFinalizersOnExit(boolean finalizeOnExit)
   {
-
     Runtime.getRuntime().runFinalizersOnExit(finalizeOnExit);
   }
 
