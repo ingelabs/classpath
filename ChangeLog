@@ -1,5 +1,11 @@
 2003-08-09  Mark Wielaard  <mark@klomp.org>
 
+	Reported by Archie Cobbs <archie@dellroad.org>
+	* vm/reference/java/lang/Thread.java (Thread): Explicitly set
+	contextClassLoader.
+
+2003-08-09  Mark Wielaard  <mark@klomp.org>
+
 	* LICENSE: Update with current exception statement.
 
 2003-08-08  Tom Tromey  <tromey@redhat.com>

@@ -105,7 +105,7 @@ public class Thread implements Runnable
   int priority;
 
   /** The context classloader for this Thread. */
-  private ClassLoader contextClassLoader = ClassLoader.getSystemClassLoader();
+  private ClassLoader contextClassLoader;
 
   /** The next thread number to use. */
   private static int numAnonymousThreadsCreated = 0;
@@ -274,13 +274,15 @@ public class Thread implements Runnable
     this.toRun = toRun;
     if (current == null)
       {
-      priority = NORM_PRIORITY;
-      daemon = false;
+	priority = NORM_PRIORITY;
+	daemon = false;
+	contextClassLoader = ClassLoader.getSystemClassLoader();
       }
     else
       {
-      priority = current.priority;
-      daemon = current.daemon;
+	priority = current.priority;
+	daemon = current.daemon;
+	contextClassLoader = current.contextClassLoader;
       }
     nativeInit(size);
 
