@@ -1,5 +1,16 @@
 2003-10-12  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/Externalizable.java,
+	java/io/FileFilter.java,
+	java/io/ObjectInput.java,
+	java/io/ObjectInputValidation.java,
+	java/io/ObjectOutput.java,
+	java/io/ObjectStreamConstants.java,
+	java/io/Serializable.java:
+	Removed redundant modifiers.
+
+2003-10-12  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/ContentHandlerFactory.java,
 	java/net/DatagramSocketImplFactory.java,
 	java/net/FileNameMap.java,
