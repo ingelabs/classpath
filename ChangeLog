@@ -1,3 +1,75 @@
+2001-10-18  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/AbstractCollection.java: Improve javadoc.
+	(AbstractCollection()): Make constructor protected.
+	(equals(Object, Object), hashCode(Object)): Add utility methods.
+	* java/util/AbstractList.java: Improve javadoc.
+	(AbstractList()): Make constructor protected.
+	(indexOf(Object)): Call listIterator(), not listIterator(int).
+	(iterator()): Follow Sun's requirement to not use listIterator(0).
+	(listIterator(int)): Make AbstractListItr anonymous.
+	(subList(int, int)): Add support for RandomAccess.
+	(SubList.add(int, Object), SubList.remove(Object)): Fix bug with
+	modCount tracking.
+	(SubList.addAll(Collection)): Add missing method.
+	(SubList.listIterator(int)): Fix bugs in indexing, modCount
+	tracking.
+	(class RandomAccessSubList): Add new class.
+	* java/util/AbstractMap.java: Improve javadoc.
+	(keys, values, KEYS, VALUES, ENTRIES): Consolidate common map
+	fields.
+	(AbstractMap()): Make constructor protected.
+	(equals(Object, Object), hashCode(Object)): Add utility methods.
+	(equals(Object)): Change algorithm to
+	entrySet().equals(m.entrySet()), as documented by Sun.
+	(keySet(), values()): Cache the collections.
+	* java/util/AbstractSequentialList.java: Improve javadoc.
+	(AbstractSequentialList()): Make constructor protected.
+	* java/util/AbstractSet.java: Improve javadoc.
+	(AbstractSet()): Make constructor protected.
+	(removeAll(Collection)): Add missing method.
+	* java/util/Arrays.java: Improve javadoc, rearrange method orders.
+	(defaultComparator): Remove, in favor of
+	Collections.compare(Object, Object, Comparator).
+	(binarySearch, equals, sort): Fix natural order comparison of
+	floats and doubles. Also improve Object comparison - when
+	comparator is null, use natural order.
+	(fill, sort): Add missing checks for IllegalArgumentException.
+	(sort, qsort): Fix sorting bugs, rework the code for more
+	legibility.
+	(mergeSort): Inline into sort(Object[], int, int, Comparator).
+	(class ArrayList): Rename from ListImpl, and make compatible with
+	JDK serialization. Add methods which more efficiently override
+	those of AbstractList.
+	* java/util/Collections: Improve javadoc.
+	(isSequential(List)): Add and use a method for deciding between
+	RandomAccess and sequential algorithms on lists.
+	(class Empty*, class Synchronized*, class Unmodifiable*): Make
+	compliant with JDK serializability.
+	(class Singleton*, class CopiesList, class RevereseComparator),
+	(class UnmodifiableMap.UnmodifiableEntrySet),
+	(class *RandomAccessList): New classes for serial compatibility.
+	(class Empty*, class Singleton*, class CopiesList): Add methods
+	which more efficiently override those of Abstract*.
+	(search): Inline into binarySearch(List, Object, Comparator).
+	(binarySearch): Make sequential search only do log(n) comparisons,
+	instead of n.
+	(copy(List, List)): Do bounds checking before starting.
+	(indexOfSubList, lastIndexOfSubList, list, replaceAll, rotate),
+	(swap):	Add new JDK 1.4 methods.
+	(binarySearch, max, min, sort): Allow null comparator to represent
+	natural ordering.
+	(reverse(List)): Avoid unnecessary swap.
+	(shuffle(List, Random)): Do shuffle in-place for RandomAccess
+	lists.
+	(SingletonList.get): Fix logic bug.
+	(SingletonMap.entrySet): Make the entry immutable, and cache the
+	returned set.
+	(SynchronizedCollection, SynchronizedMap, UnmodifiableCollection),
+	(UnmodifiableMap): Detect null pointer in construction.
+	(SynchronizedMap, UnmodifiableMap): Cache collection views.
+	* java/util/BasicMapEntry: Improve javadoc.
+
 2001-10-18  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/BufferedWriter.java (write(String,int,int)): Correctly
