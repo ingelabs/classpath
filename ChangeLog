@@ -1,5 +1,10 @@
 2004-12-31  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JTree.java
+	(hasChildren): New instance field.
+
+2004-12-31  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JComponent.java
 	(getToolTipText): New method.
 	(getTitledBorderText): Likewise.
