@@ -44,7 +44,7 @@ import java.rmi.server.ServerNotActiveException;
 
 public interface ServerRef extends RemoteRef
 {
-  long serialVersionUID = -4557750989390278438L;
+  long serialVersionUID = 0;
 
   RemoteStub exportObject(Remote obj, Object data) throws RemoteException;
 

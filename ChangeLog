@@ -1,5 +1,12 @@
 2004-10-15  Michael Koch  <konqueror@gmx.de>
 
+	* java/rmi/server/RemoteRef.java
+	(serialVersionUID): Revert latest change to it.
+	* java/rmi/server/ServerRef.java
+	(serialVersionUID): Revert latest change to it.
+
+2004-10-15  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/InetAddress.java
 	(InetAddress): Don't initialize address field. Its only used during
 	serialization.
