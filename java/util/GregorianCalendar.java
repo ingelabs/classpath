@@ -1,5 +1,5 @@
 /* java.util.GregorianCalendar
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -69,7 +69,7 @@ public class GregorianCalendar extends Calendar
   /**
    * The name of the resource bundle.
    */
-  private static final String bundleName = "gnu/java/locale/Calendar";
+  private static final String bundleName = "gnu.java.locale.Calendar";
 
   /**
    * Constructs a new GregorianCalender representing the current

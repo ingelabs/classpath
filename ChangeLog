@@ -1,3 +1,8 @@
+2001-05-08  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/GregorianCalendar.java (bundleName): Use `.', not `/',
+	as separator.
+
 2001-04-20  J. Russell Smyth  <drfish@uswest.net>
 
 	* java/math/BigInteger.java (forEachDigit): Corrected
