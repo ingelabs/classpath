@@ -1,15 +1,36 @@
-New since last release
+New in release 0.08 (2004/12/03)
 
-* Split native methods in java.lang.Runtime into java.lang.VMRuntime.
+* java.util.regexp implementation through gnu.regexp wrappers.
+* java.net.URI implementation.
+* Working implementation of javax.swing.undo.
 * java.awt.geom.CubicCurve2D/QuadCurve2D: Can now solve cubic and quadratic
   equations; implementation adapted from the GNU Scientific Library.
-* Fixed Classpath bugs:
+* Lots of java.awt and gtk+ peer improvements. Also more Swing work. Start
+  of EmbeddedWindow support.
+* BufferedReader speed improvements.
+* Improved useabilty of java.text implementation for several applications.
+* ObjectInputStream is much faster and more compatible with other
+  implementations.
+* Fix handling of alias methods, where a method has been deprecated in
+  favour of a new one with the same funtion but a different name.
+  (See Deprecated Methods section in the GNU Classpath Hacking Guide.)
+* javax.print.attribute.standard added.
+* Lots of java.nio, java.net, java.io
+* Depend on autoconf 2.59+ and automake 1.7+, GCJ 3.3+, jikes 1.18+.
+
+VM Interface changes:
+* Split native methods in java.lang.Runtime into java.lang.VMRuntime.
+* Resources are now also loaded/needed through the bootstrap classloader
+  (gnu.regexp needs MessageBundle included in glibj.zip
+
+Fixed Classpath bugs:
   #6095 java.awt.geom.QuadCurve2D.solveQuadratic sometimes gives
         wrong results
   #7099 EventListenerList.getListenerCount should accept null argument
   #7104 EventListenerList.add does not work
   #7105 EventListenerList.remove does not work
   #7107 DefaultBoundedRangeModel.setValue and friends should not throw
+  And lots more.
 
 New in release 0.07 (2003/30/11)
 
