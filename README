@@ -1,0 +1,13 @@
+This is a "100% Free Java" implementation of the Java language standard
+class library.  Currently supported is the java.net package.  Soon this
+will be part of the "real" jcl project, whose goal is to provide a 
+complete clean room implementation of the Java class libraries that will
+work with any JNI compliant JVM.
+
+See the file INSTALL for details on installnig
+See the file NEWS for details on what is included
+See the various TODO and BUGS files in subdirectories for things that
+might not work right or that need to be implemented.
+
+Send comments/bug reports to arenn@urbanophile.com
+

@@ -1,0 +1,13 @@
+New in release 0.0 (5/10/98)
+* First release of a drop in replacement for Sun's java.net package
+* Inlcludes all Java 1.1 classes/methods except URLClassLoader and includes
+  many 1.2 methods/classes (and lots that are partially implemented)
+* Includes an http protocol handler and a text/plain content handler
+* Full javadoc comments for public API
+* All "behind the scenes" classes and native methods implemented.
+* Works under Linux 2.0, untested on other platforms
+* Builds/works with Japhar 0.04
+* Licensed under the GNU Library General Public License (see COPYING.LIB)
+* Does not depend on any non-free code - developed in a "clean room"
+  environment.
+

@@ -1,0 +1,35 @@
+This package was designed to use the GNU standard for configuration and
+makefiles.  To build and install do the following:
+
+1).  Run configure to configure the package: ./configure
+
+2).  Type "make' to build the package
+
+3).  Type "make install" to install everything.
+
+Be sure that both Sun's JDK and Japhar are in your PATH and that
+Sun's JDK comes first!
+
+This setup currently has minimal configure support.  It looks for Japhar
+in /usr/local/japhar and installs the code there.  In particular, it:
+
+-- Installs the native libraries in /usr/local/japhar/lib
+-- Installs the documentation in /usr/local/japhar/docs
+-- Installs the Java classes in /usr/local/japhar/share
+
+The Java classes are installed into an uncompressed directory structure. 
+Any old code there will be overwritten, but certain stray classes used
+by Sun might still be lying around.  To be sure you are running this
+code, unzip your classes.zip or classes.jar, delete everything in 
+java/net/*, then move classes.{zip,jar} off to another directory
+besides share before installing/running.
+
+4).  Run the tests if you'd like.  cd to test/java.net and run the
+runtest script.  This will generate lots of out so redirect and grep
+through it for FAILED.  Note that some things will doubtless fail as 
+they are based on the specifics of my system.  Also note that you need
+to have multicast enabled on your network interfaces and need to have
+your tty/shell settings set to allow background processes to write to
+the terminal.  You should also have the UDP daytime server enabled
+in inetd.conf
+

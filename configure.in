@@ -1,0 +1,59 @@
+dnl Input file for autoconf to create the configure script.
+
+AC_INIT(native/java.net/javanet.c)
+AM_INIT_AUTOMAKE(jcl, 0.0)
+AM_CONFIG_HEADER(native/config.h)
+
+AC_PREFIX_DEFAULT(/usr/local/japhar)
+
+AC_CANONICAL_HOST
+
+dnl Initialize libtool
+AM_DISABLE_STATIC
+AM_PROG_LIBTOOL
+
+dnl Checks for programs.
+dnl AC_PROG_CXX
+AC_PROG_AWK
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
+AC_HEADER_STDC
+AC_CHECK_HEADERS(unistd.h)
+AC_C_CONST
+AC_CHECK_FUNCS(gethostname socket strerror)
+
+dnl AC_ARG_WITH(japhar, Install as class library for Japhar, 
+dnl             AC_PREFIX_PROGRAM(japhar))
+dnl AC_ARG_WITH(sunjdk, Install as class library for Sun's JDK,
+dnl             AC_PREFIX_PROGRAM(java))
+
+if test prefix = ""
+then
+  AC_PREFIX_PROGRAM(japhar)
+fi
+
+if test prefix = ""
+then
+  AC_MSG_ERROR(Unable to locate Virtual Machine to configure for)
+fi
+
+AC_OUTPUT(Makefile \
+gnu/Makefile \
+gnu/java/Makefile \
+gnu/java/net/Makefile \
+gnu/java/net/http/Makefile \
+gnu/java/net/content/Makefile \
+gnu/java/net/content/text/Makefile \
+compat/Makefile \
+compat/java.net/Makefile \
+java/Makefile \
+java/net/Makefile \
+native/Makefile \
+native/java.net/Makefile \
+test/Makefile \
+test/java.net/Makefile)
+
