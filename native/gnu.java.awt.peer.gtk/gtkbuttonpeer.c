@@ -30,20 +30,19 @@ Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkButtonNewWithLabel
     (JNIEnv *env, jobject obj, jstring label)
 {
   GtkWidget *button;
-  char *str;
+  const char *str;
 
-  str=(char *)(*env)->GetStringUTFChars (env, label, 0);      
+  str = (*env)->GetStringUTFChars (env, label, NULL);
 
   /* All buttons get a label, even if it is blank.  This is okay for java. */
   gdk_threads_enter ();
-  button=gtk_button_new_with_label (str);
-  connect_awt_hook (env, obj, button);
-
+  button = gtk_button_new_with_label (str);
+  connect_awt_hook (env, obj, button, 1, &button->window);
   gdk_threads_leave ();
 
-  NSA_SET_PTR (env, obj, button);
-
   (*env)->ReleaseStringUTFChars (env, label, str);
+
+  NSA_SET_PTR (env, obj, button);
 }
 
 /*
@@ -54,14 +53,14 @@ Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkButtonLabelSet
     (JNIEnv *env, jobject obj, jstring label)
 {
   void *ptr;
-  char *str;
+  const char *str;
   GList *child;
 
   ptr=NSA_GET_PTR (env, obj);
   
   printf("labelset\n");
 
-  str=(char *)(*env)->GetStringUTFChars (env, label, 0);      
+  str = (*env)->GetStringUTFChars (env, label, NULL);
   gdk_threads_enter ();
   
   /* We assume that the button has 1 child, a label. */
@@ -70,13 +69,14 @@ Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkButtonLabelSet
   child=gtk_container_children (GTK_CONTAINER(ptr));
   if (!child)
     printf("No children in button!\n");
-  if(!GTK_IS_LABEL(child->data))
+  if (!GTK_IS_LABEL(child->data))
     printf("Child is not label!\n");
   
   gtk_label_set (GTK_LABEL(child->data),str);
 
   gdk_threads_leave ();
+
   (*env)->ReleaseStringUTFChars (env, label, str);
-  g_list_free(child);
+  g_list_free (child);
 }
 

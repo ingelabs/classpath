@@ -31,18 +31,18 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuNew (JNIEnv *env,
   jsize count;
   jobject item;
   int i;
-  char *label;
+  const char *label;
 
   count=(*env)->GetArrayLength (env, items);
 
   gdk_threads_enter ();
 
   menu = gtk_menu_new();
-  
-  for (i=0; i<count; i++) 
+
+  for (i = 0; i < count; i++) 
     {
-      item=(*env)->GetObjectArrayElement (env, items, i);
-      label=(char *)(*env)->GetStringUTFChars (env, item, 0);
+      item = (*env)->GetObjectArrayElement (env, items, i);
+      label = (*env)->GetStringUTFChars (env, item, NULL);
 
       menuitem = gtk_menu_item_new_with_label (label);
       gtk_menu_append (GTK_MENU (menu), menuitem);
@@ -52,6 +52,8 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuNew (JNIEnv *env,
     }
 
   optionmenu = gtk_option_menu_new ();
+  connect_awt_hook (env, obj, optionmenu, 1, &optionmenu->window);
+
   gtk_option_menu_set_menu (GTK_OPTION_MENU (optionmenu), menu);
 
   gdk_threads_leave ();
@@ -64,14 +66,14 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuAdd (JNIEnv *env,
     jobject obj, jstring item, jint index)
 {
   void *ptr;
-  char *label;
+  const char *label;
   GtkWidget *menu, *menuitem;
 
   ptr=NSA_GET_PTR (env, obj);
   
   printf("add\n");
 
-  label=(char *)(*env)->GetStringUTFChars (env, item, 0);      
+  label = (*env)->GetStringUTFChars (env, item, 0);      
   gdk_threads_enter ();
   
   menu=gtk_option_menu_get_menu (GTK_OPTION_MENU (ptr));

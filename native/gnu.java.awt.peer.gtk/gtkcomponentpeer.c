@@ -110,7 +110,6 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursor
 
   widget = GTK_WIDGET(ptr);
 
-  gtk_widget_realize (widget);
   gdk_cursor = gdk_cursor_new (gdk_cursor_type);
   gdk_window_set_cursor (widget->window, gdk_cursor);
   gdk_cursor_destroy (gdk_cursor);
@@ -164,15 +163,11 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_repaint
   (JNIEnv *env, jobject obj, jlong tm, jint x, jint y, jint width, jint height)
 {
   void *ptr;
-  GtkWidget *widget;
 
   ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  widget = GTK_WIDGET (ptr);
-
-  gtk_widget_queue_draw_area (widget, x, y, width, height);
-
+  gtk_widget_queue_draw_area (GTK_WIDGET (ptr), x, y, width, height);
   gdk_threads_leave ();
 }
 

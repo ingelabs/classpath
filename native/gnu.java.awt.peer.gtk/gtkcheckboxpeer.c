@@ -54,10 +54,10 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonNew
   (JNIEnv *env, jobject obj, jobject group, jboolean checked, jstring label)
 {
   GtkWidget *button;
-  char *str;
+  const char *str;
   void *native_group;
 
-  str=(char *)(*env)->GetStringUTFChars (env, label, 0);      
+  str = (*env)->GetStringUTFChars (env, label, NULL);
   native_group = NSA_GET_PTR (env, group);
 
   gdk_threads_enter ();
@@ -69,19 +69,19 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonNew
   else
     button=gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON 
 							(native_group), str);
-  
+  connect_awt_hook (env, obj, button, 1, 
+		    &GTK_TOGGLE_BUTTON (button)->event_window);
 
   if (checked)
     gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (button), TRUE);
   
   gdk_threads_leave ();
+  (*env)->ReleaseStringUTFChars (env, label, str);
 
   if (native_group==NULL)
     NSA_SET_PTR (env, group, button);
   
   NSA_SET_PTR (env, obj, button);
-
-  (*env)->ReleaseStringUTFChars (env, label, str);
 }
 
 JNIEXPORT void JNICALL 
@@ -89,9 +89,9 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonNew
   (JNIEnv *env, jobject obj, jboolean checked, jstring label)
 {
   GtkWidget *button;
-  char *str;
+  const char *str;
 
-  str=(char *)(*env)->GetStringUTFChars (env, label, 0);      
+  str = (*env)->GetStringUTFChars (env, label, NULL);
 
   gdk_threads_enter ();
 
@@ -99,12 +99,14 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonNew
   button=gtk_check_button_new_with_label (str);
   if (checked)
     gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (button), TRUE);
+  connect_awt_hook (env, obj, button, 1, 
+		    &GTK_TOGGLE_BUTTON (button)->event_window);
 
   gdk_threads_leave ();
 
-  NSA_SET_PTR (env, obj, button);
-
   (*env)->ReleaseStringUTFChars (env, label, str);
+
+  NSA_SET_PTR (env, obj, button);
 }
 
 
@@ -127,14 +129,14 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonSetLabel
   (JNIEnv *env, jobject obj, jstring label)
 {
   void *ptr;
-  char *str;
+  const char *str;
   GList *child;
 
   ptr = NSA_GET_PTR (env, obj);
   
   printf("labelset\n");
 
-  str=(char *)(*env)->GetStringUTFChars (env, label, 0);      
+  str = (*env)->GetStringUTFChars (env, label, NULL);
   gdk_threads_enter ();
   
   /* We assume that the checkbutton has 1 child, a label. */

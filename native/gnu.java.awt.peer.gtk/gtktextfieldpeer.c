@@ -34,7 +34,10 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryNew
   gdk_threads_enter ();
 
   entry = gtk_entry_new ();
-  gtk_entry_set_text (GTK_ENTRY(entry), str);
+  connect_awt_hook (env, obj, entry, 2, 
+		    &entry->window, &GTK_ENTRY (entry)->text_area);
+  gtk_entry_set_text (GTK_ENTRY (entry), str);
+
 
   gdk_threads_leave ();
 

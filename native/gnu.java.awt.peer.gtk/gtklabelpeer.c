@@ -47,11 +47,10 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelNew
   box = gtk_event_box_new ();
   label = gtk_label_new (str);
   gtk_widget_show (label);
-
   gtk_container_add (GTK_CONTAINER (box), label);
-
   gtk_label_set_justify (GTK_LABEL (label), j);
 
+  connect_awt_hook (env, obj, box, 1, &box->window);
   gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, box);

@@ -35,6 +35,7 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListNew
   gdk_threads_enter ();
 
   list = gtk_list_new ();
+  connect_awt_hook (env, obj, list, 1, &list->window);
   sw = gtk_scrolled_window_new (NULL, NULL);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), 
 				  GTK_POLICY_AUTOMATIC,
@@ -54,6 +55,8 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListNew
       text = (*env)->GetStringUTFChars (env, item, NULL);
 
       listitem = gtk_list_item_new_with_label (text);
+      connect_awt_hook (env, obj, listitem, 1, &listitem->window);
+
       gtk_widget_show (listitem);
       gtk_container_add (GTK_CONTAINER (list), listitem);
 
@@ -83,6 +86,8 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListInsert
   
   item_list = g_list_alloc ();
   item_list->data = gtk_list_item_new_with_label (str);
+  connect_awt_hook (env, obj, item_list->data, 1, 
+		    &GTK_WIDGET(item_list->data)->window);
 
   gtk_widget_show (item_list->data);
 

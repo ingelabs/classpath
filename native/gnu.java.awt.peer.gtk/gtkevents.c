@@ -19,7 +19,16 @@
  * Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
 #include "gtkpeer.h"
-#include <X11/Xlib.h>
+#include <stdarg.h>
+
+/* A widget can be composed of multipled windows, so we need to hook
+   events on all of them. */
+struct event_hook_info
+{
+  jobject *peer_obj;
+  int nwindows;
+  GdkWindow ***windows;		/* array of pointers to (GdkWindow *) */
+};
 
 static int
 button_to_awt_mods (int button)
@@ -100,41 +109,74 @@ awt_event_handler (GdkEvent *event)
 			   NULL,
 			   NULL,
 			   (guchar **)&obj_ptr))
-      {
-	switch (event->type)
-	  {
-	  case GDK_BUTTON_PRESS:
-	    (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr, postMouseEventID,
-					AWT_MOUSE_PRESSED, 
-					(jlong)event->button.time,
+    {
+      switch (event->type)
+	{
+	case GDK_BUTTON_PRESS:
+	  (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr, postMouseEventID,
+				      AWT_MOUSE_PRESSED, 
+				      (jlong)event->button.time,
 				    state_to_awt_mods (event->button.state) |
 				    button_to_awt_mods (event->button.button), 
-					(jint)event->button.x,
-					(jint)event->button.y, 
-					click_count, JNI_FALSE);
-	    break;
-	  default:
-	  }
-	  free (obj_ptr);
-      }
-
+				      (jint)event->button.x,
+				      (jint)event->button.y, 
+				      click_count, JNI_FALSE);
+	  break;
+	default:
+	}
+      g_free (obj_ptr);
+    } 
+  
   gtk_main_do_event (event);
 }
 
-static gint
-awt_realize_hook (GtkWidget *widget, gpointer data)
+static void
+attach_jobject (GdkWindow *window, jobject *obj)
 {
-  jobject *obj = (jobject *) data;
   GdkAtom addr_atom = gdk_atom_intern ("_GNU_GTKAWT_ADDR", FALSE);
   GdkAtom type_atom = gdk_atom_intern ("CARDINAL", FALSE);
 
-  gdk_property_change (widget->window,
+  gdk_window_set_events (window, 
+			 gdk_window_get_events (window)
+			 | GDK_POINTER_MOTION_MASK
+			 | GDK_BUTTON_MOTION_MASK
+			 | GDK_BUTTON_PRESS_MASK
+			 | GDK_BUTTON_RELEASE_MASK
+			 | GDK_KEY_PRESS_MASK
+			 | GDK_KEY_RELEASE_MASK
+			 | GDK_ENTER_NOTIFY_MASK
+			 | GDK_LEAVE_NOTIFY_MASK);
+
+  gdk_property_change (window,
 		       addr_atom,
 		       type_atom,
 		       8,
 		       GDK_PROP_MODE_REPLACE,
 		       (guchar *)obj,
 		       sizeof (jobject));
+}
+
+static gint
+awt_realize_hook (GtkWidget *widget, gpointer data)
+{
+  struct event_hook_info *hook_info = (struct event_hook_info *) data;
+  int i;
+  
+  for (i = 0; i < hook_info->nwindows; i++)
+    attach_jobject (*(hook_info->windows[i]), hook_info->peer_obj);
+  
+/*    attach_jobject (widget->window, obj); */
+/*    if (GTK_IS_ENTRY (widget)) */
+/*      attach_jobject (GTK_ENTRY (widget)->text_area, obj); */
+/*    if (GTK_IS_TOGGLE_BUTTON (widget)) */
+/*      attach_jobject (GTK_TOGGLE_BUTTON (widget)->event_window, obj); */
+/*    if (GTK_IS_CHECK_BUTTON (widget)) */
+/*      attach_jobject (GTK_CHECK_BUTTON (widget)->toggle_button.event_window, */
+/*  		    obj); */
+
+  gdk_threads_leave ();
+  (*gdk_env)->CallVoidMethod (gdk_env, *(hook_info->peer_obj), syncAttrsID);
+  gdk_threads_enter ();
 
   return FALSE;
 }
@@ -142,25 +184,42 @@ awt_realize_hook (GtkWidget *widget, gpointer data)
 static gint
 awt_unrealize_hook (GtkWidget *widget, gpointer data)
 {
-  jobject *obj = (jobject *) data;
+  struct event_hook_info *hook_info = (struct event_hook_info *) data;
 
-  (*gdk_env)->DeleteGlobalRef (gdk_env, *obj);
-  free (obj);
+  (*gdk_env)->DeleteGlobalRef (gdk_env, *(hook_info->peer_obj));
+
+  free (hook_info->peer_obj);
+  free (hook_info->windows);
+  free (hook_info);
 
   return FALSE;
 }
 
 void
-connect_awt_hook (JNIEnv *env, jobject peer_obj, GtkWidget *widget)
+connect_awt_hook (JNIEnv *env, jobject peer_obj, GtkWidget *widget,
+		  int nwindows, ...)
 {
-  jobject *gobj = (jobject *) malloc (sizeof (jobject));
-  *gobj = (*env)->NewGlobalRef (env, peer_obj);
+  struct event_hook_info *hook_info;
+  int i;
+  va_list ap;
+
+  hook_info = (struct event_hook_info *) malloc (sizeof 
+						 (struct event_hook_info));
+  hook_info->peer_obj = (jobject *) malloc (sizeof (jobject));
+  *(hook_info->peer_obj) = (*env)->NewGlobalRef (env, peer_obj);
+  hook_info->nwindows = nwindows;
+  hook_info->windows = (GdkWindow ***) malloc (sizeof (GdkWindow **) 
+					       * nwindows);
+  va_start (ap, nwindows);
+  for (i = 0; i < nwindows; i++)
+    hook_info->windows[i] = va_arg (ap, GdkWindow **);
+  va_end (ap);
 
   gtk_signal_connect_after (GTK_OBJECT(widget), "realize", 
 			    GTK_SIGNAL_FUNC(awt_realize_hook), 
-			    gobj);
+			    hook_info);
   gtk_signal_connect (GTK_OBJECT(widget), "unrealize",
 		      GTK_SIGNAL_FUNC(awt_unrealize_hook),
-		      gobj);
+		      hook_info);
 }
 

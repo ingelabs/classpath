@@ -90,9 +90,11 @@ extern struct state_table *native_state_table;
 
 extern jmethodID postActionEventID;
 extern jmethodID postMouseEventID;
+extern jmethodID syncAttrsID;
 extern JNIEnv *gdk_env;
 
 void awt_event_handler (GdkEvent *event);
-void connect_awt_hook (JNIEnv *env, jobject peer_obj, GtkWidget *widget);
+void connect_awt_hook (JNIEnv *env, jobject peer_obj, GtkWidget *widget,
+		       int nwindows, ...);
 
 #endif /* __GTKPEER_H */
