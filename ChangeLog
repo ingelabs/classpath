@@ -1,3 +1,9 @@
+2002-04-04  Sascha Brawer  <brawer@acm.org>
+
+	* java/util/logging/Level.java (readResolve): Add Javadoc.
+	* java/util/logging/Level.java (serialVersionUID): Make equal
+	to value of Sun J2SE1.4.
+
 2002-04-03  Mark Wielaard  <mark@klomp.org>
 
 	* java/lang/reflect/Modifier.java (toString(int,StringBuffer)): Fix
