@@ -54,7 +54,6 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Properties;
 import gnu.java.awt.peer.ClasspathFontPeer;
-import gnu.java.awt.peer.ClasspathFontPeer;
 import gnu.classpath.Configuration;
 import gnu.java.awt.peer.gtk.GdkPixbufDecoder;
 

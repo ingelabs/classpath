@@ -1,3 +1,8 @@
+2004-01-10  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkToolkit.java: Don't import
+	ClasspathFontPeer twice.
+
 2004-01-10  Michael Koch  <konqueror@gmx.de>
 
 	* javax/print/attribute/EnumSyntax.java
