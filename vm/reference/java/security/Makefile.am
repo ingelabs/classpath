@@ -1,3 +1,5 @@
 # used by automake to generate Makefile.in
 
-SUBDIRS = lang io security
+
+EXTRA_DIST = \
+VMAccessController.java

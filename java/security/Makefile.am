@@ -26,6 +26,7 @@ GuardedObject.java \
 Guard.java \
 Identity.java \
 IdentityScope.java \
+IntersectingDomainCombiner.java \
 InvalidAlgorithmParameterException.java \
 InvalidKeyException.java \
 InvalidParameterException.java \

@@ -115,7 +115,15 @@ public final class AccessController
   public static Object doPrivileged(PrivilegedAction action,
 				    AccessControlContext context)
   {
-    return action.run();
+    VMAccessController.pushContext (context, action.getClass());
+    try
+      {
+        return action.run();
+      }
+    finally
+      {
+        VMAccessController.popContext (action.getClass());
+      }
   }
 
   /**
@@ -170,6 +178,7 @@ public final class AccessController
 				    AccessControlContext context)
     throws PrivilegedActionException
   {
+    VMAccessController.pushContext (context, action.getClass());
 
     try
       {
@@ -179,19 +188,28 @@ public final class AccessController
       {
 	throw new PrivilegedActionException(e);
       }
+    finally
+      {
+        VMAccessController.popContext (action.getClass());
+      }
   }
 
   /**
    * Returns the complete access control context of the current thread.
-   * <p>
-   * XXX - Should this include all the protection domains in the call chain
-   * or only the domains till the last <code>doPrivileged()</code> call?
-   * <p>
-   * XXX - needs native support. Currently returns an empty context.
+   * The returned object encompasses all {@link ProtectionDomain} objects
+   * for all classes in the current call stack, or the set of protection
+   * domains until the last call to {@link
+   * #doPrivileged(java.security.PrivilegedAction)}.
+   *
+   * <p>Additionally, if a call was made to {@link
+   * #doPrivileged(java.security.PrivilegedAction,java.security.AccessControlContext)}
+   * that supplied an {@link AccessControlContext}, then that context
+   * will be intersected with the calculated one.
+   *
+   * @return The context.
    */
   public static AccessControlContext getContext()
   {
-    // For now just return an new empty context
-    return new AccessControlContext(new ProtectionDomain[0]);
+    return VMAccessController.getContext();
   }
 }

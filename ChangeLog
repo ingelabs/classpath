@@ -1,3 +1,27 @@
+2004-06-03  Casey Marshall  <csm@gnu.org>
+
+	* java/security/AccessController.java
+	(doPrivileged(PrivilegedAction,AccessControlContext)): call
+	VMAccessController.pushContext and popContext.
+	(doPrivileged(PrivilegedExceptionAction,AccessControlContext)):
+	likewise.
+	(getContext): call VMAccessController.getContext.
+	* java/security/Makefile.am
+	(EXTRA_DIST): add IntersectingDomainCombiner.java.
+	* gnu/java/security/Makefile.am
+	(EXTRA_DIST): add PolicyFile.java
+	* vm/reference/java/Makefile.am
+	(SUBDIRS): add security.
+	* java/security/IntersectingDomainCombiner.java: new file.
+	* gnu/java/security/PolicyFile.java: new file.
+	* vm/reference/java/security/VMAccessController.java: new file.
+	* vm/reference/java/security/Makefile.am: new file
+
+2004-06-03  Michael Koch  <konqerorq@gmx.de>
+
+	* configure.ac: Added vm/runtime/java/security/Makefile to output
+	files.
+
 2004-06-03  Michael Koch  <konqueror@gmx.de>
 
 	* java/security/AccessControlContext.java,

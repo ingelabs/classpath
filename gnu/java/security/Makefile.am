@@ -4,5 +4,6 @@ SUBDIRS = der provider util x509
 
 EXTRA_DIST = \
 Engine.java \
-OID.java
+OID.java \
+PolicyFile.java
 
