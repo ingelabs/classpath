@@ -1,3 +1,7 @@
+2004-10-16  Michael Koch  <konqueror@gmx.de>
+
+	* autogen.sh: Fixed check for AUTOGEN_SUBDIR_MODE.
+
 2004-10-15  Michael Koch  <konqueror@gmx.de>
 
 	* java/rmi/activation/ActivationSystem.java
