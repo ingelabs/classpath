@@ -626,7 +626,11 @@ public class Demo
   {
     final DefaultListModel mod = new DefaultListModel();
     final JList list1 = new JList(mod);
+    list1.setLayoutOrientation(JList.VERTICAL_WRAP);
+    list1.setVisibleRowCount(4);
     final JList list2 = new JList(mod);
+    list2.setLayoutOrientation(JList.VERTICAL_WRAP);
+    list2.setVisibleRowCount(4);
 
     list2.setSelectionModel(list1.getSelectionModel());
     for (int i = 0; i < elts.length; ++i)
@@ -740,7 +744,10 @@ public class Demo
 					       "this",
 					       "is",
 					       "a",
-					       "list"}),
+					       "list",
+                                               "that",
+                                               "wraps",
+                                               "over"}),
 		    panel);
 
     new PopUpAction("Scrollbar",

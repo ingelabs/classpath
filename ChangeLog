@@ -1,3 +1,10 @@
+2005-02-28  Roman Kennke  <roman@ontographics.com>
+
+	* examples/gnu/classpath/examples/swing/Demo.java
+	(mkListPanel,mkButtonBar): Changed JList example so that
+	the newly added support for JList.HORIZONTAL_WRAP and
+	JList.VERTICAL_WRAP is shown.
+
 2005-02-27  Roman Kennke  <roman@ontographics.com>
 
 	* javax/swing/JList.java
