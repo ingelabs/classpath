@@ -1,4 +1,19 @@
 2004-04-08  Michael Koch  <konqueror@gmx.de>
+,
+	* java/nio/channels/DatagramChannel.java,
+	java/nio/channels/FileChannel.java,
+	java/nio/channels/FileLock.java,
+	java/nio/channels/Pipe.java,
+	java/nio/channels/ServerSocketChannel.java,
+	java/nio/channels/SocketChannel.java,
+	java/nio/channels/spi/AbstractInterruptibleChannel.java,
+	java/nio/channels/spi/AbstractSelectableChannel.java,
+	java/nio/channels/spi/AbstractSelectionKey.java,
+	java/nio/channels/spi/AbstractSelector.java,
+	java/nio/channels/spi/SelectorProvider.java:
+	Reworked coding style and javadocs.
+
+2004-04-08  Michael Koch  <konqueror@gmx.de>
 
 	* resource/gnu/regexp/.cvsignore: New file.
 
