@@ -86,6 +86,7 @@ public class ObjectStreamField implements Comparable
    *
    * @param name Name of the field to export.
    * @param type Type of the field in the concerned class.
+   * @param unshared true if field will be unshared, false otherwise.
    */
   public ObjectStreamField (String name, Class type, boolean unshared)
   {
@@ -237,9 +238,16 @@ public class ObjectStreamField implements Comparable
     return typename.length() == 1;
   }
 
-  public int compareTo (Object o)
+  /**
+   * Compares this object to the given object.
+   *
+   * @param obj the object to compare to.
+   *
+   * @return -1, 0 or 1.
+   */
+  public int compareTo (Object obj)
   {
-    ObjectStreamField f = (ObjectStreamField)o;
+    ObjectStreamField f = (ObjectStreamField) obj;
     boolean this_is_primitive = isPrimitive ();
     boolean f_is_primitive = f.isPrimitive ();
 
@@ -347,6 +355,11 @@ public class ObjectStreamField implements Comparable
 	 " in class " + field.getDeclaringClass());
   }
 
+  /**
+   * Returns a string representing this object.
+   *
+   * @return the string.
+   */
   public String toString ()
   {
     return "ObjectStreamField< " + type + " " + name + " >";

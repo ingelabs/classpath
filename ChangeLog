@@ -1,3 +1,17 @@
+2004-04-08  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/ByteArrayInputStream.java,
+	java/io/DataInput.java,
+	java/io/DataInputStream.java,
+	java/io/InputStream.java,
+	java/io/InputStreamReader.java,
+	java/io/ObjectStreamClass.java,
+	java/io/ObjectStreamField.java,
+	java/io/PushbackReader.java,
+	java/io/StringWriter.java,
+	java/io/Writer.java:
+	Fixed javadocs and style all over.
+
 2004-04-06  Guilhem Lavaux <guilhem@kaffe.org>
 
 	* java/io/ObjectStreamField.java
