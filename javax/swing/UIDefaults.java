@@ -286,11 +286,8 @@ public class UIDefaults extends Hashtable
 
   public Object put(Object key, Object value)
   {
-    Object old;
-    if (value != null)
-      old = super.put(key, value);
-    else
-      old = super.remove(key);
+    Object old = checkAndPut(key, value);
+
     if (key instanceof String && old != value)
       firePropertyChange((String) key, old, value);
     return old;
@@ -300,9 +297,31 @@ public class UIDefaults extends Hashtable
   {
     for (int i = 0; (2 * i + 1) < entries.length; ++i)
   {
-        super.put(entries[2 * i], entries[2 * i + 1]);
+        checkAndPut(entries[2 * i], entries[2 * i + 1]);
       }
     firePropertyChange("UIDefaults", null, null);
+  }
+
+  /**
+   * Checks the value for <code>null</code> and put it into the Hashtable, if
+   * it is not <code>null</code>. If the value is <code>null</code> then
+   * remove the corresponding key.
+   *
+   * @param key the key to put into this UIDefauls table
+   * @param value the value to put into this UIDefaults table
+   *
+   * @return the old value for <code>key</code>
+   */
+  private Object checkAndPut(Object key, Object value)
+  {
+    Object old;
+
+    if (value != null)
+      old = super.put(key, value);
+    else
+      old = super.remove(key);
+
+    return old;
   }
 
   public Font getFont(Object key)

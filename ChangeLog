@@ -1,3 +1,13 @@
+2005-04-06  Roman Kennke  <roman@kennke.org>
+
+	* javax/swing/UIDefaults.java
+	(put): Now uses new checkAndPut method instead of checking
+	directly.
+	(putDefaults): Fixed so that it accepts null-values and
+	treats them like remove(key).
+	(checkAndPut): Added. This checks for null-values and calls
+	put or remove.
+
 2005-04-06   Audrius Meskauskas  <audriusa@bluewin.ch>
 
 	* org/omg/CORBA/CTX_RESTRICT_SCOPE.java,
