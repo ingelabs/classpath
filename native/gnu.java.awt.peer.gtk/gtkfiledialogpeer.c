@@ -20,7 +20,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkFileDialogPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkFileDialogPeer.h"
 
 /*
  * Make a new file selection dialog

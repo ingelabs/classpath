@@ -20,7 +20,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkMainThread.h"
+#include "gnu_java_awt_peer_gtk_GtkMainThread.h"
 #include "gthread-jni.h"
 
 #ifdef JVM_SUN

@@ -20,7 +20,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkButtonPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkButtonPeer.h"
 
 /*
  * Make a new button.

@@ -20,8 +20,8 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkWindowPeer.h"
-#include "GtkFramePeer.h"
+#include "gnu_java_awt_peer_gtk_GtkWindowPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkFramePeer.h"
 #include <gdk/gdkprivate.h>
 void
 setBounds (GtkWidget *, jint, jint, jint, jint);

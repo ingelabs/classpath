@@ -1,5 +1,5 @@
 #include "gtkpeer.h"
-#include "GtkImagePainter.h"
+#include "gnu_java_awt_peer_gtk_GtkImagePainter.h"
 
 #define SWAPU32(w) \
   (((w) << 24) | (((w) & 0xff00) << 8) | (((w) >> 8) & 0xff00) | ((w) >> 24))

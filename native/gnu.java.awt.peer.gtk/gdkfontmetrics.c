@@ -1,5 +1,5 @@
 #include "gtkpeer.h"
-#include "GdkGraphics.h"
+#include "gnu_java_awt_peer_gtk_GdkGraphics.h"
 #include <gdk/gdkx.h>
 
 #define ASCENT      0

@@ -20,7 +20,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkChoicePeer.h"
+#include "gnu_java_awt_peer_gtk_GtkChoicePeer.h"
 
 static void connect_choice_item_selectable_hook (JNIEnv *env, 
 						 jobject peer_obj, 

@@ -20,7 +20,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkCheckboxPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkCheckboxPeer.h"
 
 static void connect_checkbox_item_selectable_hook (JNIEnv *env, 
 						   jobject peer_obj, 

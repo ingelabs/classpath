@@ -20,7 +20,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkScrollbarPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkScrollbarPeer.h"
 
 struct range_scrollbar
 {

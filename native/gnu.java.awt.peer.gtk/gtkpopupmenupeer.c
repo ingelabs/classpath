@@ -19,7 +19,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkPopupMenuPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkPopupMenuPeer.h"
 
 struct pos
 {

@@ -19,8 +19,8 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkMenuItemPeer.h"
-#include "GtkComponentPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkMenuItemPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkComponentPeer.h"
 
 static void
 connect_activate_hook (JNIEnv *, jobject, GtkMenuItem *);

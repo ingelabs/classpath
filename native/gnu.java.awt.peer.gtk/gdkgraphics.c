@@ -1,5 +1,5 @@
 #include "gtkpeer.h"
-#include "GdkGraphics.h"
+#include "gnu_java_awt_peer_gtk_GdkGraphics.h"
 #include <gdk/gdkprivate.h>
 
 #define GDK_STABLE_IS_PIXMAP(d) (((GdkWindowPrivate *)d)->window_type == GDK_WINDOW_PIXMAP)

@@ -20,7 +20,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkDialogPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkDialogPeer.h"
 
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkDialogPeer_create

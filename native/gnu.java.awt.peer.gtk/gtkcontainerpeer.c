@@ -20,7 +20,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkContainerPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkContainerPeer.h"
 
 /*
  * Make sure that all the children of this container are the proper size.

@@ -20,7 +20,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkTextComponentPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkTextComponentPeer.h"
 
 #define GET_EDITABLE(obj) (GTK_IS_EDITABLE (obj) ? GTK_EDITABLE (obj) : \
   GTK_EDITABLE (GTK_SCROLLED_WINDOW (obj)->container.child))

@@ -20,7 +20,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkTextFieldPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkTextFieldPeer.h"
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_create

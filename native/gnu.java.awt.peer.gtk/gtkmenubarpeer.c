@@ -19,7 +19,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkMenuBarPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkMenuBarPeer.h"
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuBarPeer_create
   (JNIEnv *env, jobject obj)

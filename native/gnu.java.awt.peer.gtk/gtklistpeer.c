@@ -19,7 +19,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkListPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkListPeer.h"
 
 static void
 connect_selectable_hook (JNIEnv *env, jobject peer_obj, GtkCList *list);

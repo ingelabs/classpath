@@ -20,7 +20,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkTextAreaPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkTextAreaPeer.h"
 
 #define TEXT_FROM_SW(obj) (GTK_TEXT(GTK_SCROLLED_WINDOW (obj)->container.child))
 

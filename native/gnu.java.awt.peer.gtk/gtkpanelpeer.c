@@ -20,7 +20,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkPanelPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkPanelPeer.h"
 
 /*
  * Make a new panel.

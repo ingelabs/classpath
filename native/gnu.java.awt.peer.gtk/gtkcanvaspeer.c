@@ -1,5 +1,5 @@
 #include "gtkpeer.h"
-#include "GtkCanvasPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkCanvasPeer.h"
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCanvasPeer_gtkCanvasNew
   (JNIEnv *env, jobject obj, jobject parent_obj, 

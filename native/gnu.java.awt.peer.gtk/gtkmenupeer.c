@@ -19,7 +19,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkMenuPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkMenuPeer.h"
 
 static void
 accel_attach (GtkMenuItem *menu_item, gpointer *user_data)

@@ -20,7 +20,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkClipboard.h"
+#include "gnu_java_awt_peer_gtk_GtkClipboard.h"
 
 jmethodID stringSelectionReceivedID;
 jmethodID stringSelectionHandlerID;

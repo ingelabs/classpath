@@ -19,7 +19,7 @@
  */
 
 #include "gtkpeer.h"
-#include "GtkMenuItemPeer.h"
+#include "gnu_java_awt_peer_gtk_GtkMenuItemPeer.h"
 
 JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer_create
