@@ -1,3 +1,8 @@
+2003-06-13  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/border/EtchedBorder.java: Re-written from scratch.
+	* javax/swing/border/doc-files/EtchedBorder-1/2.png: New images.
+
 2003-06-13  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/nio/MappedByteFileBuffer.java,
