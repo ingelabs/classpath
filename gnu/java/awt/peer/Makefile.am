@@ -1,4 +1,5 @@
 # used by automake to generate Makefile.in
 
-SUBDIRS = gtk
+## pretending this doesn't exist, as Paul suggests
+## SUBDIRS = gtk
 
