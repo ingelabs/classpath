@@ -209,13 +209,7 @@ public class GtkComponentPeer extends GtkGenericPeer
     {
     }
 
-  public void setVisible (boolean b)
-    {
-      gtkWidgetSetVisible (b);
-      q.postEvent (new ComponentEvent (awtComponent, 
-				       b ? ComponentEvent.COMPONENT_SHOWN : 
-				           ComponentEvent.COMPONENT_HIDDEN));
-    }
+  native public void setVisible (boolean b);
   
   public void hide () 
     {
