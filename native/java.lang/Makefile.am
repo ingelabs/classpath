@@ -15,8 +15,8 @@ INCLUDES += @EXTRA_INCLUDES@ \
 
 if JAPHAR
 install-data-local : 
-	cd $(pkglibdir) && ln -s libjavalang.so libjaphar_javalang.so
-	cd $(pkglibdir) && ln -s libjavalangmath.so libjaphar_javalangmath.so
+	-cd $(pkglibdir) && ln -s libjavalang.so libjaphar_javalang.so
+	-cd $(pkglibdir) && ln -s libjavalangmath.so libjaphar_javalangmath.so
 endif
 
 clean-local:

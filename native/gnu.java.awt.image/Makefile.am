@@ -12,7 +12,7 @@ INCLUDES += @EXTRA_INCLUDES@ \
 
 if JAPHAR
 install-data-local : 
-	cd $(pkglibdir) && ln -s libcpgdkpixbuf.so libjaphar_cpgdkpixbuf.so
+	-cd $(pkglibdir) && ln -s libcpgdkpixbuf.so libjaphar_cpgdkpixbuf.so
 endif
 
 clean-local:

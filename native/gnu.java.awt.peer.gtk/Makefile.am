@@ -22,7 +22,7 @@ INCLUDES += @EXTRA_INCLUDES@ \
 
 if JAPHAR
 install-data-local : 
-	cd $(pkglibdir) && ln -s libgtkpeer.so libjaphar_gtkpeer.so
+	-cd $(pkglibdir) && ln -s libgtkpeer.so libjaphar_gtkpeer.so
 endif
 
 clean-local:

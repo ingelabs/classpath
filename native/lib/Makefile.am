@@ -9,7 +9,7 @@ INCLUDES += -I../lib -I../nsa -I../vmi -I. -DNO_VMI @EXTRA_INCLUDES@ \
 
 if JAPHAR
 install-data-local : 
-	cd $(pkglibdir) && ln -s libclasspath.so libjaphar_classpath.so
+	-cd $(pkglibdir) && ln -s libclasspath.so libjaphar_classpath.so
 endif
 
 clean-local:

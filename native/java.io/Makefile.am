@@ -13,7 +13,7 @@ INCLUDES +=  @EXTRA_INCLUDES@ \
 
 if JAPHAR
 install-data-local : 
-	cd $(pkglibdir) && ln -s libjavaio.so libjaphar_javaio.so
+	-cd $(pkglibdir) && ln -s libjavaio.so libjaphar_javaio.so
 endif
 
 clean-local:

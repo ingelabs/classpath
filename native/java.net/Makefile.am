@@ -12,7 +12,7 @@ libjavanet_la_LDFLAGS = -version-info @LIBVERSION@
 
 if JAPHAR
 install-data-local : 
-	cd $(pkglibdir) && ln -s libjavanet.so libjaphar_javanet.so
+	-cd $(pkglibdir) && ln -s libjavanet.so libjaphar_javanet.so
 endif
 
 clean-local:
