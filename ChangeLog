@@ -1,3 +1,8 @@
+2003-10-17  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/reflect/Proxy.java (generate): Pass protection domain
+	to VMClassLoader.defineClass.
+
 2003-10-15  Mark Wielaard  <mark@klomp.org>
 
 	Reported by M.Negovanovic

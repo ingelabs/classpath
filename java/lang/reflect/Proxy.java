@@ -1326,12 +1326,10 @@ public class Proxy implements Serializable
         {
           // XXX Do we require more native support here?
 
-          // XXX This is waiting on VM support for protection domains.
-
           Class vmClassLoader = Class.forName("java.lang.VMClassLoader");
           Class[] types = {ClassLoader.class, String.class,
                            byte[].class, int.class, int.class,
-                           /* ProtectionDomain.class */ };
+                           ProtectionDomain.class };
           Method m = vmClassLoader.getDeclaredMethod("defineClass", types);
 
           // Bypass the security check of setAccessible(true), since this
@@ -1340,7 +1338,7 @@ public class Proxy implements Serializable
           m.flag = true;
           Object[] args = {loader, qualName, bytecode, new Integer(0),
                            new Integer(bytecode.length),
-                           /* Object.class.getProtectionDomain() */ };
+                           Object.class.getProtectionDomain() };
           Class clazz = (Class) m.invoke(null, args);
           m.flag = false;
 
