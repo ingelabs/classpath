@@ -122,6 +122,7 @@ awt_event_handler (GdkEvent *event)
 				      (jint)event->button.x,
 				      (jint)event->button.y, 
 				      click_count, JNI_FALSE);
+
 	  grab_counter++;
 	  gdk_pointer_grab (event->any.window,
 			    FALSE,
@@ -155,7 +156,10 @@ awt_event_handler (GdkEvent *event)
 	    /* check to see if the release occured in the window it was pressed
 	       in, and if so, generate an AWT click event */
 	    gdk_window_get_size (event->any.window, &width, &height);
-	    if (event->button.x <= width && event->button.y <= height)
+	    if (event->button.x >= 0
+		&& event->button.y >= 0
+		&& event->button.x <= width 
+		&& event->button.y <= height)
 	      (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr, postMouseEventID,
 					  AWT_MOUSE_CLICKED, 
 					  (jlong)event->button.time,
@@ -166,6 +170,25 @@ awt_event_handler (GdkEvent *event)
 					  click_count, JNI_FALSE);
 	    
 	  }
+	  break;
+	case GDK_ENTER_NOTIFY:
+	  (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr, postMouseEventID,
+				      AWT_MOUSE_ENTERED, 
+				      (jlong)event->crossing.time,
+				    state_to_awt_mods (event->crossing.state), 
+				      (jint)event->crossing.x,
+				      (jint)event->crossing.y, 
+				      0, JNI_FALSE);
+	  break;
+	case GDK_LEAVE_NOTIFY:
+	  if (event->crossing.mode == GDK_CROSSING_NORMAL)
+	    (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr, postMouseEventID,
+					AWT_MOUSE_EXITED, 
+					(jlong)event->crossing.time,
+				    state_to_awt_mods (event->crossing.state),
+					(jint)event->crossing.x,
+					(jint)event->crossing.y, 
+					0, JNI_FALSE);
 	  break;
 	default:
 	}
