@@ -1,3 +1,23 @@
+2001-01-12  Mark Wielaard  <mark@klomp.org>
+	* java/awt/datatransfer/Clibboard.java:
+	(getContents, setContents): synchronized, add comment
+	* java/awt/datatransfer/DataFlavor.java:
+	(DataFlavor constructor): refactored,
+	if null set humanPresentable name to mimeType
+	(getParameter): renamed from getParamter
+	(equals(String)): deprecated
+	(hashCode): new method
+	(match): new method, XXX implemented as equals
+	(toString): new method
+	(getTextPlainUnicodeFlavor): new method, XXX returns plainTextFlavor
+	(getDefaultRepresentationClass): new method, XXX returns InputStream
+	(getDefaultRepresentationClassAsString): new method, XXX
+	(selectBestTextFlavor): new method
+	(getReaderForText): new method
+	* java/awt/datatransfer/FlavorMap.java: update comments
+	* java/awt/datatransfer/MimeTypeParseException.java: new class
+	* java/awt/datatransfer/SystemFlavorMap.java: new class XXX
+
 2001-01-10  Mark Wielaard  <mark@klomp.org>
 	* java/lang/ClassLoader.java: 1.2 updates
 	(loadClass(String)): now calls loadClass with resolve set to false not true

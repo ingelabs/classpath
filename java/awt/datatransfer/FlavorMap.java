@@ -1,5 +1,5 @@
 /* FlavorMap.java -- Maps between flavor names and MIME types.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of the non-peer AWT libraries of GNU Classpath.
 
@@ -23,7 +23,7 @@ package java.awt.datatransfer;
 import java.util.Map;
 
 /**
-  * This interface maps between data flavor names and MIME types.
+  * This interface maps between native platform type names and DataFlavors.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
@@ -36,7 +36,8 @@ public interface FlavorMap
   * the data flavors and values that are strings.  The returned map
   * may be modified.  This can be useful for implementing nested mappings.
   *
-  * @param flavors An array of data flavors to map.
+  * @param flavors An array of data flavors to map
+  *                or null for all data flavors.
   *
   * @return A <code>Map</code> of native data types.
   */
@@ -51,7 +52,8 @@ getNativesForFlavors(DataFlavor[] flavors);
   * that are <code>DataFlavor</code>'s.  The returned map may be
   * modified.  This can be useful for implementing nested mappings.
   *
-  * @param natives An array of native types to map.
+  * @param natives An array of native types to map
+  *                or null for all native types.
   *
   * @return A <code>Map</code> of data flavors.
   */

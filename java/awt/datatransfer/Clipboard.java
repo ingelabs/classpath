@@ -1,5 +1,5 @@
 /* Clipboard.java -- Class for transferring data via cut and paste.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of the non-peer AWT libraries of GNU Classpath.
 
@@ -86,7 +86,7 @@ getName()
   *
   * @param requestor The object requesting the contents.
   */
-public Transferable
+public synchronized Transferable
 getContents(Object requestor)
 {
   return(contents);
@@ -96,11 +96,14 @@ getContents(Object requestor)
 
 /**
   * Sets the content and owner of this clipboard.
+  * If the given owner is different from the current owner
+  * then lostOwnership is called on the current owner.
+  * XXX - is this called with the old or new contents.
   *
   * @param contents The new clipboard contents.
   * @param owner The new clipboard owner
   */
-public void
+public synchronized void
 setContents(Transferable contents, ClipboardOwner owner)
 {
   if (this.owner != owner)
