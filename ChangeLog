@@ -1,5 +1,17 @@
 2003-04-29  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/AbstractListModel.java:
+	Reformatted.
+	(getListDataListeners): New method.
+	* javax/swing/DefaultBoundedRangeModel.java:
+	Reformatted.
+	(getChangeListeners): New method.
+	* javax/swing/DefaultSingleSelectionModel.java:
+	Reformatted.
+	(getChangeListeners): New method.
+	
+2003-04-29  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/Window.java
 	(show): Call super.show() instead of setVisible() to avoid endless
 	loop.
