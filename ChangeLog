@@ -1,5 +1,10 @@
 2004-09-25  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JCheckBox.java
+	(BORDER_PAINTED_FLAT_CHANGED_PROPERTY): New static field.
+
+2004-09-25  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JApplet.java, javax/swing/JFrame.java:
 	Re-indented.
 
