@@ -1,3 +1,23 @@
+2005-03-11  Audrius Meskauskas  <audriusa@bluewin.ch>
+
+	* org/omg/CORBA/BooleanSeqHelper.java,
+	org/omg/CORBA/CharSeqHelper.java,
+	org/omg/CORBA/DoubleSeqHelper.java,
+	org/omg/CORBA/FloatSeqHelper.java,
+	org/omg/CORBA/LongLongSeqHelper.java,
+	org/omg/CORBA/LongSeqHelper.java,
+	org/omg/CORBA/OctetSeqHelper.java,
+	org/omg/CORBA/ShortSeqHelper.java,
+	org/omg/CORBA/ULongLongSeqHelper.java,
+	org/omg/CORBA/ULongSeqHelper.java,
+	org/omg/CORBA/UShortSeqHelper.java,
+	org/omg/CORBA/WCharSeqHelper.java,
+	org/omg/CORBA/StringSeqHelper.java,
+	org/omg/CORBA/WStringSeqHelper.java:
+	New sequence holders.
+	* org/omg/CORBA/StringSeqHelper.java,
+	org/omg/CORBA/WStringSeqHelper.java: New helpers.
+
 2005-03-11  Archie Cobbs  <archie@dellroad.org>
 
 	* native/jni/java-lang/java_lang_VMProcess.c: Fix segfault
