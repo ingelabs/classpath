@@ -1,5 +1,12 @@
 2004-12-21  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JFrame.java
+	(setDefaultLookAndFeelDecorated): Removed wrong code again.
+	* javax/swing/JInternalFrame.java
+	(setDefaultCloseOperation): Fixed typo.
+
+2004-12-21  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JApplet.java
 	(HIDE_ON_CLOSE): Removed.
 	(EXIT_ON_CLOSE): Likewise.
