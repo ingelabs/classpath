@@ -234,7 +234,11 @@ parseURL(URL url, String url_string, int start, int end)
             anchor = null;
     }
     file = PlatformHelper.toCanonicalForm(file, '/');
-    
+
+    if (host == null) {
+        host = "";
+    }
+
     // Now set the values
     setURL(url, url.getProtocol(), host, port, file, anchor); 
 }

@@ -1,7 +1,14 @@
+2002-12-28  Jeroen Frijters <jeroen@sumatra.nl>
+
+	* gnu/java/net/protocol/file/Handler.java (parseURL): Make sure that
+	host != null.
+
 2002-12-27  Daryl Lee <dolee@sources.redhat.com>
+
 	* java/io/RandomAccessFile.java: corrected skipBytes() to stop at EOF
 
 2002-12-25  Daryl Lee <dolee@sources.redhat.com>
+
 	* java/io/PipedOutputStream.java: corrected connect(); test to check if
 	already connected was invalid.
 
