@@ -1,5 +1,5 @@
 /* Key.java -- A abstract representation of a digital key
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -53,7 +53,7 @@ public interface Key extends Serializable
 /**
   * The verion identifier used for serialization.
   */
-public static final long serialVersionUID = 0L;
+public static final long serialVersionUID = 6603384152749567654L;
 
 /*************************************************************************/
 

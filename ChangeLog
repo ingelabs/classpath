@@ -1,3 +1,16 @@
+2000-10-05  Warren Levy  <warrenl@cygnus.com>
+
+	* java/security/Key.java (serialVersionUID): New value.
+	* java/security/Provider.java (serialVersionUID): New field.
+	* java/security/interfaces/DSAPrivateKey.java (serialVersionUID):
+	New value.
+	* java/security/interfaces/DSAPublicKey.java (serialVersionUID):
+        New value.
+	* java/sql/DataTruncation.java (serialVersionUID): New field.
+	* java/sql/SQLException.java (serialVersionUID): New field.
+	* java/sql/SQLWarning.java (serialVersionUID): New field.
+	* java/util/Date.java (writeObject): Renamed from incorrect name.
+
 2000-09-08  Warren Levy  <warrenl@cygnus.com>
 
 	* java/beans/PropertyChangeEvent.java (serialVersionUID): Added.

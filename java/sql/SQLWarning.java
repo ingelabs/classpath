@@ -1,5 +1,5 @@
 /* SQLWarning.java -- Database access warnings.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -34,6 +34,17 @@ package java.sql;
   */
 public class SQLWarning extends SQLException implements java.io.Serializable
 {
+
+/*************************************************************************/
+
+/**
+  * Static Variables
+  */
+
+/**
+  * This is the serialization UID for this class
+  */
+private static final long serialVersionUID = 3917336774604784856L;
 
 /*************************************************************************/
 

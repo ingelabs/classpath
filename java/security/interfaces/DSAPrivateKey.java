@@ -1,7 +1,7 @@
 /*************************************************************************
 /* DSAPrivateKey.java -- A Digital Signature Algorithm private key
 /*
-/* Copyright (c) 1998 Free Software Foundation, Inc.
+/* Copyright (c) 1998, 2000 Free Software Foundation, Inc.
 /* Written by Aaron M. Renn (arenn@urbanophile.com)
 /*
 /* This library is free software; you can redistribute it and/or modify
@@ -43,7 +43,7 @@ public interface DSAPrivateKey extends DSAKey, PrivateKey
 /**
   * This is the serialization UID for this interface
   */
-public static final long serialVersionUID = 0L;
+public static final long serialVersionUID = 7776497482533790279L;
 
 /*************************************************************************/
 

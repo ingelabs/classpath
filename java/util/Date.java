@@ -1,5 +1,5 @@
 /* java.util.Date
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -48,10 +48,14 @@ package java.util;
 public class Date implements Cloneable, Comparable, java.io.Serializable {
 
     /**
+     * This is the serialization UID for this class
+     */
+    private static final long serialVersionUID = 7523967970034938905L;
+
+    /**
      * The time in milliseconds since the epoch.
      */
     private transient long time;
-    private static final long serialVersionUID = 7523967970034938905L;
 
     /**
      * Creates a new Date Object representing the current time.
@@ -434,7 +438,7 @@ public class Date implements Cloneable, Comparable, java.io.Serializable {
      * in milliseconds.  This is the same value that is returned by the
      * method getTime().
      */
-    private void readObject(java.io.ObjectOutputStream output) 
+    private void writeObject(java.io.ObjectOutputStream output) 
         throws java.io.IOException {
         output.defaultWriteObject();
         output.writeLong(time);
