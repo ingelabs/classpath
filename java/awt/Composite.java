@@ -1,5 +1,5 @@
-/* LayoutManager.java -- lay out elements in a Container
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+/* Composite.java -- graphics formed from composite layers
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,55 +38,36 @@ exception statement from your version. */
 
 package java.awt;
 
+import java.awt.image.ColorModel;
+
 /**
- * This interface is for laying out containers in a particular sequence.
+ * This interface is for graphics which are formed as composites of others.
+ * It combines {@link Graphics2D} shapes according to defined rules to form
+ * the new image. Implementations of this interface must be immutable, because
+ * they are not cloned when a Graphics2D container is cloned.
  *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @see Container
- * @since 1.0
+ * <p>Since this can expose pixels to untrusted code, there is a security
+ * check on custom objects, <code>readDisplayPixels</code>, to prevent leaking
+ * restricted information graphically.
+ *
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @see AlphaComposite
+ * @see CompositeContext
+ * @see Graphics2D#setComposite(Composite)
+ * @since 1.2
  * @status updated to 1.4
  */
-public interface LayoutManager
+public interface Composite
 {
   /**
-   * Adds the specified component to the layout group.
+   * Create a context state for performing the compositing operation. Several
+   * contexts may exist for this object, in a multi-threaded environment.
    *
-   * @param name the name of the component to add
-   * @param component the component to add
+   * @param srcColorModel the color model of the source
+   * @param dstColorModel the color model of the destination
+   * @param hints hints for choosing between rendering alternatives
    */
-  void addLayoutComponent(String name, Component component);
-
-  /**
-   * Removes the specified component from the layout group.
-   *
-   * @param component the component to remove
-   */
-  void removeLayoutComponent(Component component);
-
-  /**
-   * Calculates the preferred size for this container, taking into account
-   * the components it contains.
-   *
-   * @param parent the parent container to lay out
-   * @return the preferred dimensions of this container
-   * @see #minimumLayoutSize(Container)
-   */
-  Dimension preferredLayoutSize(Container parent);
-
-  /**
-   * Calculates the minimum size for this container, taking into account
-   * the components it contains.
-   *
-   * @param parent the parent container to lay out
-   * @return the minimum dimensions of this container
-   * @see #preferredLayoutSize(Container)
-   */
-  Dimension minimumLayoutSize(Container parent);
-
-  /**
-   * Lays out the components in the given container.
-   *
-   * @param parent the container to lay out
-   */
-  void layoutContainer(Container parent);
-} // interface LayoutManager
+  CompositeContext createContext(ColorModel srcColorModel,
+                                 ColorModel dstColorModel,
+                                 RenderingHints hints);
+} // interface Composite

@@ -1,5 +1,5 @@
-/* LayoutManager.java -- lay out elements in a Container
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+/* Stroke.java -- a stroked outline of a shape
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,54 +39,27 @@ exception statement from your version. */
 package java.awt;
 
 /**
- * This interface is for laying out containers in a particular sequence.
+ * This interface allows a Graphics2D to grab the outline of a shape, as if
+ * stroked by a marking pen of appropriate size and shape. The area inked
+ * by the pen is the area of this stroke. Anything in the graphic which
+ * traces an outline will use this stroke, such as <code>drawLine</code>.
+ * Strokes must be immutable, because the graphics object does not clone
+ * them.
  *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @see Container
- * @since 1.0
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @see BasicStroke
+ * @see Graphics2D#setStroke(Stroke)
+ * @since 1.1
  * @status updated to 1.4
  */
-public interface LayoutManager
+public interface Stroke
 {
   /**
-   * Adds the specified component to the layout group.
+   * Returns a shape which outlines the boundary of the given shape, in
+   * effect converting the infinitely thin line into a new shape.
    *
-   * @param name the name of the component to add
-   * @param component the component to add
+   * @param s the shape to stroke
+   * @return the stroked outline shape
    */
-  void addLayoutComponent(String name, Component component);
-
-  /**
-   * Removes the specified component from the layout group.
-   *
-   * @param component the component to remove
-   */
-  void removeLayoutComponent(Component component);
-
-  /**
-   * Calculates the preferred size for this container, taking into account
-   * the components it contains.
-   *
-   * @param parent the parent container to lay out
-   * @return the preferred dimensions of this container
-   * @see #minimumLayoutSize(Container)
-   */
-  Dimension preferredLayoutSize(Container parent);
-
-  /**
-   * Calculates the minimum size for this container, taking into account
-   * the components it contains.
-   *
-   * @param parent the parent container to lay out
-   * @return the minimum dimensions of this container
-   * @see #preferredLayoutSize(Container)
-   */
-  Dimension minimumLayoutSize(Container parent);
-
-  /**
-   * Lays out the components in the given container.
-   *
-   * @param parent the container to lay out
-   */
-  void layoutContainer(Container parent);
-} // interface LayoutManager
+  Shape createStrokedShape(Shape s);
+} // interface Stroke

@@ -1,5 +1,5 @@
-/* LayoutManager.java -- lay out elements in a Container
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+/* Composite.java -- the context for compositing graphics layers
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,55 +38,34 @@ exception statement from your version. */
 
 package java.awt;
 
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
+
 /**
- * This interface is for laying out containers in a particular sequence.
+ * This interface provides an optimized environment for compositing graphics.
+ * Several such contexts may exist for a given <code>Composite</code> object.
  *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @see Container
- * @since 1.0
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @see Composite
+ * @since 1.2
  * @status updated to 1.4
  */
-public interface LayoutManager
+public interface CompositeContext
 {
   /**
-   * Adds the specified component to the layout group.
-   *
-   * @param name the name of the component to add
-   * @param component the component to add
+   * Release resources allocated for the compositing.
    */
-  void addLayoutComponent(String name, Component component);
+  void dispose();
 
   /**
-   * Removes the specified component from the layout group.
+   * Compose the two source images into the composite image. The destination
+   * can be the same as one of the two inputs, and the destination must be
+   * compatible with the ColorModel chosen in {@link Composite#createContext}.
    *
-   * @param component the component to remove
+   * @param src the lower image source in compositing
+   * @param dstIn the upper image source in compositing
+   * @param dstOut the destination for the composite
+   * @see Composite
    */
-  void removeLayoutComponent(Component component);
-
-  /**
-   * Calculates the preferred size for this container, taking into account
-   * the components it contains.
-   *
-   * @param parent the parent container to lay out
-   * @return the preferred dimensions of this container
-   * @see #minimumLayoutSize(Container)
-   */
-  Dimension preferredLayoutSize(Container parent);
-
-  /**
-   * Calculates the minimum size for this container, taking into account
-   * the components it contains.
-   *
-   * @param parent the parent container to lay out
-   * @return the minimum dimensions of this container
-   * @see #preferredLayoutSize(Container)
-   */
-  Dimension minimumLayoutSize(Container parent);
-
-  /**
-   * Lays out the components in the given container.
-   *
-   * @param parent the container to lay out
-   */
-  void layoutContainer(Container parent);
-} // interface LayoutManager
+  void compose(Raster src, Raster dstIn, WritableRaster dstOut);
+} // interface CompositeContext

@@ -21,6 +21,8 @@ Choice.java \
 Color.java \
 Component.java \
 ComponentOrientation.java \
+Composite.java \
+CompositeContext.java \
 Container.java \
 Cursor.java \
 Dialog.java \
@@ -48,6 +50,8 @@ IllegalComponentStateException.java \
 Image.java \
 Insets.java \
 ItemSelectable.java \
+KeyEventDispatcher.java \
+KeyEventPostProcessor.java \
 Label.java \
 LayoutManager2.java \
 LayoutManager.java \
@@ -73,6 +77,7 @@ Scrollbar.java \
 ScrollPaneAdjustable.java \
 ScrollPane.java	\
 Shape.java \
+Stroke.java \
 SystemColor.java \
 TextArea.java \
 TextComponent.java \

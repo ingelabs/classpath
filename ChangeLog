@@ -1,3 +1,25 @@
+2002-03-19  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/awt/Makefile.am (EXTRA_DIST): Add new files.
+	* java/awt/AWTEvent.java: Update to 1.4.
+	* java/awt/ActiveEvent.java: Update to 1.4.
+	* java/awt/Adjustable.java: Update to 1.4.
+	* java/awt/Composite.java: New file.
+	* java/awt/CompositeContext.java: New file.
+	* java/awt/ItemSelectable.java: Update to 1.4.
+	* java/awt/KeyEventDispatcher.java: New file.
+	* java/awt/KeyEventPostProcessor.java: New file.
+	* java/awt/LayoutManager.java: Update to 1.4.
+	* java/awt/LayoutManager2.java: Update to 1.4.
+	* java/awt/MenuContainer.java: Update to 1.4.
+	* java/awt/Paint.java: Update to 1.4.
+	* java/awt/PaintContext.java: Update to 1.4.
+	* java/awt/Polygon.java: Update to 1.4, including new methods.
+	* java/awt/PrintGraphics.java: Update to 1.4.
+	* java/awt/Shape.java: Update to 1.4.
+	* java/awt/Stroke.java: New file.
+	* java/awt/Transparency.java: Update to 1.4.
+
 2002-03-19  Stephen Crawley  <crawley@dstc.edu.au>
 
 	* java/lang/String.java (regionMatches): Used wrong String, see
