@@ -37,6 +37,6 @@ EXTRA_DIST = \
 	GtkTextAreaPeer.java \
 	GtkTextComponentPeer.java \
 	GtkTextFieldPeer.java \
-	GtkToggleButtonPeer.java
+	GtkToggleButtonPeer.java \
 	GtkToolkit.java \
 	GtkWindowPeer.java
