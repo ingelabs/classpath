@@ -1,7 +1,8 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
 # lib first, to compile .class files before native code, last examples
-SUBDIRS = lib doc include native resource examples
+SUBDIRS = lib doc include native resource $(EXAMPLESDIR)
+DIST_SUBDIRS = lib doc include native resource examples
 
 native: lib
 

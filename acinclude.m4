@@ -251,7 +251,7 @@ dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_GLIBJ],
 [
   AC_ARG_WITH([glibj],
-              [AS_HELP_STRING([--with-glibj],[define what to install (zip|flat|both) [default=zip]])],
+              [AS_HELP_STRING([--with-glibj],[define what to install (zip|flat|both|none) [default=zip]])],
               [
                 if test "x${withval}" = xyes || test "x${withval}" = xzip; then
       		  AC_PATH_PROG(ZIP, zip)
@@ -273,11 +273,21 @@ AC_DEFUN([CLASSPATH_WITH_GLIBJ],
 		AC_PATH_PROG(ZIP, zip)
 		install_class_files=no
 	      ])
-  if test "x${ZIP}" = x && test "x${install_class_files}" = xno; then
-    AC_MSG_ERROR([you need to either install class files or glibj.zip])
-  fi
   AM_CONDITIONAL(INSTALL_GLIBJ_ZIP, test "x${ZIP}" != x)
   AM_CONDITIONAL(INSTALL_CLASS_FILES, test "x${install_class_files}" = xyes)
+
+  AC_ARG_ENABLE([examples],
+		[AS_HELP_STRING(--enable-examples,enable build of the examples [default=yes])],
+		[case "${enableval}" in
+		  yes) EXAMPLESDIR="examples" ;;
+		  no) EXAMPLESDIR="" ;;
+		  *) AC_MSG_ERROR(bad value ${enableval} for --enable-examples) ;;
+		esac],
+		[EXAMPLESDIR="examples"])
+  if test "x${ZIP}" = x && test "x${install_class_files}" = xno; then
+    EXAMPLESDIR=""
+  fi
+  AC_SUBST(EXAMPLESDIR)
 ])
 
 dnl -----------------------------------------------------------

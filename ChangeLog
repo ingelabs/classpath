@@ -1,3 +1,9 @@
+2004-11-15  Michael Koch  <konqueror@gmx.de>
+
+	* acinclude.m4 (CLASSPATH_WITH_GLIBJ): Added support to not build the
+	class files/glibj.zip. Handle --disable-examples argument.
+	* Makefile.am: Build examples subdir conditionally.
+
 2004-11-15  Craig Black  <craig.black@aonix.com>
  
 	* gnu/java/beans/BeanInfoEmbryo.java: Use TreeMap for proper sorting.
