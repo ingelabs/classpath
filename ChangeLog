@@ -1,3 +1,8 @@
+2003-09-18  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/event/KeyEvent.java: Some reformatting.
+	This merges KeyEvent with libgcj.
+
 2003-09-18  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* java/awt/Frame.java (Frame(String)): Initialize visible field

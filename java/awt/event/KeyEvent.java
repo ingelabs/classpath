@@ -1652,6 +1652,7 @@ public class KeyEvent extends InputEvent
   public String paramString()
   {
     StringBuffer s = new StringBuffer();
+
     switch (id)
       {
       case KEY_PRESSED:
@@ -1665,7 +1666,7 @@ public class KeyEvent extends InputEvent
         break;
       default:
         s.append("unknown type");
-          }
+      }
 
     s.append(",keyCode=").append(keyCode);
 
@@ -1698,6 +1699,7 @@ public class KeyEvent extends InputEvent
                                                         & CONVERT_MASK));
     if (modifiers != 0)
       s.append(",extModifiers=").append(getModifiersExText(modifiers));
+
     s.append(",keyLocation=KEY_LOCATION_");
     switch (keyLocation)
       {
@@ -1716,6 +1718,7 @@ public class KeyEvent extends InputEvent
       case KEY_LOCATION_NUMPAD:
         s.append("NUMPAD");
       }
+
     return s.toString();
   }
 
