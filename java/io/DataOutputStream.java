@@ -386,7 +386,7 @@ writeLong(long l) throws IOException
   * value is written by first calling the method <code>Float.floatToIntBits</code>
   * to retrieve an <code>int</code> representing the floating point number,
   * then writing this <code>int</code> value to the stream exactly the same
-  * as the <code>writeInt()<code> method does.
+  * as the <code>writeInt()</code> method does.
   *
   * @param f The floating point number to write to the stream.
   *
@@ -408,7 +408,7 @@ writeFloat(float f) throws IOException
   * value is written by first calling the method <code>Double.doubleToLongBits</code>
   * to retrieve an <code>long</code> representing the floating point number,
   * then writing this <code>long</code> value to the stream exactly the same
-  * as the <code>writeLong()<code> method does.
+  * as the <code>writeLong()</code> method does.
   *
   * @param d The double precision floating point number to write to the stream.
   *
@@ -432,14 +432,14 @@ writeDouble(double d) throws IOException
   * encoded <code>String</code> not the <code>String</code> length.  Next
   * come the encoded characters.  Each character in the <code>String</code>
   * is encoded as either one, two or three bytes.  For characters in the
-  * range of <xmp>\u0001</xmp> to <\u007F>, one byte is used.  The character
+  * range of <code>\u0001</code> to <\u007F>, one byte is used.  The character
   * value goes into bits 0-7 and bit eight is 0.  For characters in the range
-  * of <xmp>\u0080</xmp> to <xmp>\u007FF</code>, two bytes are used.  Bits
+  * of <code>\u0080</code> to <code>\u007FF</code>, two bytes are used.  Bits
   * 6-10 of the character value are encoded bits 0-4 of the first byte, with
   * the high bytes having a value of "110".  Bits 0-5 of the character value
   * are stored in bits 0-5 of the second byte, with the high bits set to
   * "10".  This type of encoding is also done for the null character
-  * <xmp>\u0000</xmp>.  This eliminates any C style NUL character values
+  * <code>\u0000</code>.  This eliminates any C style NUL character values
   * in the output.  All remaining characters are stored as three bytes.
   * Bits 12-15 of the character value are stored in bits 0-3 of the first
   * byte.  The high bits of the first bytes are set to "1110".  Bits 6-11

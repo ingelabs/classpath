@@ -372,7 +372,7 @@ readChar() throws EOFException, IOException
   * <p>
   * As an example, if <code>byte1</code> and <code>byte2</code> represent the first
   * and second byte read from the stream respectively, they will be
-  * transformed to a <code>short</code. in the following manner:
+  * transformed to a <code>short</code>. in the following manner:
   * <p>
   * <code>(short)(((byte1 & 0xFF) << 8) | (byte2 & 0xFF)</code>
   * <p>
