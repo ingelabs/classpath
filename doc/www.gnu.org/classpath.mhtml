@@ -66,10 +66,11 @@ appropriate link below.
   <package-item java.awt.image>
   <package-item java.awt.peer java.awt>
   <package-item java.beans>
+  <package-item java.beans.beancontext java.beans>
   <package-item java.io>
   <package-item java.lang>
-  <package-item java.lang.ref>
-  <package-item java.lang.reflect>
+  <package-item java.lang.ref java.lang>
+  <package-item java.lang.reflect java.lang>
   <package-item java.math>
   <package-item java.net>
   <package-item java.rmi>
