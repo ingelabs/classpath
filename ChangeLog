@@ -1,3 +1,13 @@
+2002-11-11  Sascha Brawer  <brawer@acm.org>
+
+	* java/util/logging/XMLFormatter.java (getHead): Use UTF-8 as
+	default if System.getProperty("file.encoding") returns null. Since
+	file.encoding is defined on Sun VMs, but not documented in the API
+	specification of java.lang.System.getProperties(), we cannot
+	depend on it. Comments in the source explain why UTF-8 is a safe
+	fallback unless the platform uses something really arcane (such as
+	EBCDIC) for its files.
+
 2002-11-10  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/Container.java (validate): Use tree lock.
