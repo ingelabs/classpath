@@ -18,7 +18,9 @@ propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java org -nam
 
 # handling source to bytecode compiler programs like gcj, jikes  and kjc
 if FOUND_GCJ
-JAVAC = $(GCJ) --bootclasspath '' --classpath $(top_srcdir):$(top_srcdir)/vm/reference:.:$(USER_CLASSLIB) -C -d . @classes
+JAVAC = $(GCJ) --bootclasspath '' --classpath $(top_srcdir):$(top_srcdir)/vm/reference:.:$(USER_CLASSLIB) -C -d . @classes.standard \
+&& $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(top_srcdir):$(top_srcdir)/vm/reference:.:$(USER_CLASSLIB) -C -d . @classes.awt \
+&& $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(top_srcdir):$(top_srcdir)/vm/reference:.:$(USER_CLASSLIB) -C -d . @classes.standardx
 else
 if FOUND_JIKES
 JAVAC = $(JIKES) +F -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(top_srcdir):$(top_srcdir)/vm/reference:.:$(USER_CLASSLIB) -d . @classes
@@ -86,7 +88,8 @@ compile-classes: classes $(JAVA_SRCS) Makefile
 	touch compile-classes
 
 EXTRA_DIST = standard.omit mkcollections.pl.in
-CLEANFILES = compile-classes resources classes glibj.zip classes.1 \
+CLEANFILES = compile-classes resources classes \
+	classes.standard classes.awt classes.standardx glibj.zip classes.1 \
 	$(JAVA_DEPEND)
 
 clean-local:

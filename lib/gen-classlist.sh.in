@@ -26,3 +26,9 @@ if test "$new" = "true"; then
     echo $i "\\" >> ${top_builddir}/lib/java.dep
   done
 fi
+
+# Split in multiple parts for gcj
+grep -v /javax/ classes | grep -v /awt/ | grep -v /beans/ > classes.standard
+grep /awt/ classes > classes.awt
+grep /beans/ classes >> classes.awt
+grep /javax/ classes > classes.standardx
