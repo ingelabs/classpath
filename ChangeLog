@@ -1,3 +1,8 @@
+2003-09-25  Michael Koch  <konqueror@gmx.de>
+
+	* java/rmi/server/RMIClassLoader.java:
+	Reindented and reformatted code, no functional changes.
+
 2003-09-23  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/ClassLoader.java: Don't import SystemClassLoader.
