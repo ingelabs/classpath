@@ -27,8 +27,7 @@
  */
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkButtonNewWithLabel
-    (JNIEnv *env, jobject obj, jobject parent_obj, 
-     jstring label, jboolean visible)
+    (JNIEnv *env, jobject obj, jobject parent_obj, jstring label)
 {
   GtkWidget *button;
   void *parent;
@@ -46,7 +45,6 @@ Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkButtonNewWithLabel
 
   gtk_widget_realize (button);
   connect_awt_hook (env, obj, button, 1, button->window);
-  set_visible (button, visible);
 
   gdk_threads_leave ();
 

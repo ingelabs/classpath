@@ -24,13 +24,15 @@
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextNew
-  (JNIEnv *env, jobject obj, jobject jedit, jstring contents, jint hscroll, 
-   jint vscroll, jboolean visible)
+  (JNIEnv *env, jobject obj, jobject parent_obj, jobject jedit, 
+   jstring contents, jint hscroll, jint vscroll)
 {
   GtkWidget *text, *sw;
   const char *str;
   int pos=0;
+  void *parent;
 
+  parent = NSA_GET_PTR (env, parent_obj);
   str = (*env)->GetStringUTFChars (env, contents, NULL);
 
   gdk_threads_enter ();
@@ -42,7 +44,6 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextNew
 			    strlen (str), &pos);
 
   sw = gtk_scrolled_window_new (NULL, NULL);
-  set_visible (sw, visible);
   gtk_container_add (GTK_CONTAINER (sw), text);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), 
 				  hscroll? GTK_POLICY_ALWAYS : 
@@ -50,7 +51,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkTextNew
 				  vscroll? GTK_POLICY_ALWAYS : 
 				  GTK_POLICY_NEVER);
 
-  gtk_widget_show (text);
+  set_parent (sw, GTK_CONTAINER (parent));
 
   gdk_threads_leave ();
 

@@ -29,7 +29,7 @@ static void connect_choice_item_selectable_hook (JNIEnv *env,
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuNew (JNIEnv *env, 
-    jobject obj, jobject parent_obj, jobjectArray items, jboolean visible)
+    jobject obj, jobject parent_obj, jobjectArray items)
 {
   GtkWidget *menu, *optionmenu, *parent;
   GtkWidget *menuitem;
@@ -70,7 +70,6 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuNew (JNIEnv *env,
   set_parent (optionmenu, GTK_CONTAINER (parent));
   gtk_widget_realize (optionmenu);
   connect_awt_hook (env, obj, optionmenu, 1, optionmenu->window);
-  set_visible (optionmenu, visible);
 
   gdk_threads_leave ();
 

@@ -35,7 +35,7 @@ connect_list_item_selectable_hook (JNIEnv *env, jobject peer_obj,
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListNew
   (JNIEnv *env, jobject obj, jobject parent_obj,
-   jobject jlist, jobjectArray items, jboolean mode, jboolean visible)
+   jobject jlist, jobjectArray items, jboolean mode)
 {
   GtkWidget *list, *listitem, *sw, *parent;
   jsize count;
@@ -53,7 +53,6 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListNew
   sw = gtk_scrolled_window_new (NULL, NULL);
   set_parent (sw, GTK_CONTAINER (parent));
   gtk_widget_realize (sw);
-  set_visible (sw, visible);
 
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), 
 				  GTK_POLICY_AUTOMATIC,

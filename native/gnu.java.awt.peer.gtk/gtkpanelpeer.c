@@ -27,7 +27,7 @@
  */
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkPanelPeer_gtkPanelNew
-    (JNIEnv *env, jobject obj, jobject parent_obj, jboolean visible)
+    (JNIEnv *env, jobject obj, jobject parent_obj)
 {
   GtkWidget *fixed;
   void *parent;
@@ -41,9 +41,10 @@ Java_gnu_java_awt_peer_gtk_GtkPanelPeer_gtkPanelNew
 
   gtk_widget_realize (fixed);
   connect_awt_hook (env, obj, fixed, 1, fixed->window);
-  set_visible (fixed, visible);
 
   gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, fixed);
 }
+
+

@@ -24,8 +24,7 @@
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryNew
-  (JNIEnv *env, jobject obj, jobject parent_obj,
-   jstring text, jboolean visible)
+  (JNIEnv *env, jobject obj, jobject parent_obj, jstring text)
 {
   GtkWidget *entry;
   const char *str;
@@ -44,7 +43,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryNew
   gtk_widget_realize (entry);
   connect_awt_hook (env, obj, entry, 2, 
 		    entry->window, GTK_ENTRY (entry)->text_area);
-  set_visible (entry, visible);
+
   gdk_threads_leave ();
 
   (*env)->ReleaseStringUTFChars (env, text, str);
@@ -69,7 +68,6 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryGetSize
   entry = GTK_ENTRY (ptr);
 
   gtk_signal_emit_by_name (GTK_OBJECT (entry), "size_request", &myreq);  
-  //  gtk_widget_size_request (GTK_WIDGET(entry), &myreq);
   
   dims[0]=myreq.width-150 + (cols * 
 			     gdk_char_width (GTK_WIDGET (entry)->style->font,

@@ -59,9 +59,8 @@ post_adjustment_event (GtkAdjustment *adj, struct range_scrollbar *rs)
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_gtkScrollbarNew
-    (JNIEnv *env, jobject obj, jobject parent_obj,
-     jint orientation, jint value, jint visible_amount, jint min, 
-     jint max, jboolean visible)
+(JNIEnv *env, jobject obj, jobject parent_obj, jint orientation, jint value, 
+ jint visible_amount, jint min, jint max)
 {
   GtkWidget *sb;
   GtkObject *adj;
@@ -84,7 +83,6 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_gtkScrollbarNew
 		    GTK_RANGE (sb)->slider,
 		    GTK_RANGE (sb)->step_forw,
 		    GTK_RANGE (sb)->step_back);
-  set_visible (sb, visible);
 
   rs->range = GTK_RANGE (sb);
   rs->scrollbar = (jobject *) malloc (sizeof (jobject));

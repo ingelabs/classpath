@@ -25,8 +25,7 @@
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowNew 
     (JNIEnv *env, jobject obj, jobject parent_obj, 
-     jint policy, jint width, jint height,
-     jintArray jdims, jboolean visible)
+     jint policy, jint width, jint height, jintArray jdims)
 {
   jint *dims = (*env)->GetIntArrayElements (env, jdims, 0);  
   GtkRequisition myreq;
@@ -63,15 +62,11 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowNew
    The grey lines that border the viewport. */
   gtk_signal_emit_by_name (GTK_OBJECT (GTK_SCROLLED_WINDOW(sw)->vscrollbar), 
 			   "size_request", &myreq);
-  //  gtk_widget_size_request(GTK_SCROLLED_WINDOW(sw)->vscrollbar,&myreq);
   dims[0]=myreq.width+GTK_SCROLLED_WINDOW_CLASS (GTK_OBJECT (sw)->klass)->scrollbar_spacing+4;
 
   gtk_signal_emit_by_name (GTK_OBJECT (GTK_SCROLLED_WINDOW(sw)->hscrollbar), 
 			   "size_request", &myreq);
-  //  gtk_widget_size_request(GTK_SCROLLED_WINDOW(sw)->hscrollbar,&myreq);
   dims[1]=myreq.height+GTK_SCROLLED_WINDOW_CLASS (GTK_OBJECT (sw)->klass)->scrollbar_spacing+4;
-
-  printf("sbsize: %i %i\n",dims[0],dims[1]);
 
   fixed = gtk_fixed_new ();
   gtk_widget_show (fixed);
@@ -80,7 +75,6 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowNew
   set_parent (sw, GTK_CONTAINER (parent));
   gtk_widget_realize (sw);
 
-  set_visible (sw, visible);
   gdk_threads_leave ();
 
   (*env)->ReleaseIntArrayElements (env, jdims, dims, 0);

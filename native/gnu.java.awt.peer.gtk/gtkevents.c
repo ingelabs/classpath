@@ -222,7 +222,6 @@ awt_event_handler (GdkEvent *event)
   static GdkWindow *button_window = NULL;
   static guint button_number = -1;
   static jint click_count = 1;
-  static int grab_counter = 0;
 
   /* keep synthetic AWT events from being processed recursively */
   if (event->type & SYNTHETIC_EVENT_MASK && event->type != GDK_NOTHING)
@@ -475,45 +474,6 @@ attach_jobject (GdkWindow *window, jobject *obj)
 		       GDK_PROP_MODE_REPLACE,
 		       (guchar *)obj,
 		       sizeof (jobject));
-}
-
-static gint
-awt_realize_hook (GtkWidget *widget, gpointer data)
-{
-  struct event_hook_info *hook_info = (struct event_hook_info *) data;
-  int i;
-  
-  for (i = 0; i < hook_info->nwindows; i++)
-    attach_jobject (*(hook_info->windows[i]), hook_info->peer_obj);
-  
-/*    attach_jobject (widget->window, obj); */
-/*    if (GTK_IS_ENTRY (widget)) */
-/*      attach_jobject (GTK_ENTRY (widget)->text_area, obj); */
-/*    if (GTK_IS_TOGGLE_BUTTON (widget)) */
-/*      attach_jobject (GTK_TOGGLE_BUTTON (widget)->event_window, obj); */
-/*    if (GTK_IS_CHECK_BUTTON (widget)) */
-/*      attach_jobject (GTK_CHECK_BUTTON (widget)->toggle_button.event_window, */
-/*  		    obj); */
-
-/*    gdk_threads_leave (); */
-/*    (*gdk_env)->CallVoidMethod (gdk_env, *(hook_info->peer_obj), syncAttrsID); */
-/*    gdk_threads_enter (); */
-
-  return FALSE;
-}
-
-static gint
-awt_unrealize_hook (GtkWidget *widget, gpointer data)
-{
-  struct event_hook_info *hook_info = (struct event_hook_info *) data;
-
-  (*gdk_env)->DeleteGlobalRef (gdk_env, *(hook_info->peer_obj));
-
-  free (hook_info->peer_obj);
-  free (hook_info->windows);
-  free (hook_info);
-
-  return FALSE;
 }
 
 void

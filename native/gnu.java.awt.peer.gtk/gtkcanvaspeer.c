@@ -3,7 +3,7 @@
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCanvasPeer_gtkCanvasNew
   (JNIEnv *env, jobject obj, jobject parent_obj, 
-   jint width, jint height, jboolean visible)
+   jint width, jint height)
 {
   GtkWidget *drawing_area;
   void *parent;
@@ -17,7 +17,6 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCanvasPeer_gtkCanvasNew
   gtk_widget_realize (drawing_area);
   connect_awt_hook (env, obj, drawing_area, 1, drawing_area->window);
   gtk_drawing_area_size (GTK_DRAWING_AREA (drawing_area), width, height);
-  set_visible (drawing_area, visible);
 
   gdk_threads_leave ();
   

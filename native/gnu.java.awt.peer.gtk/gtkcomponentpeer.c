@@ -134,7 +134,6 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setVisible
 {
   GtkWidget *widget;
   void *ptr;
-  GList *child;
 
   ptr = NSA_GET_PTR (env, obj);
 
@@ -342,6 +341,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setBounds
   void *ptr;
 
   ptr = NSA_GET_PTR (env, obj);
+
+  printf ("Cpeer.setBounds: %i, %i  %ix%i\n",
+	  x, y, width, height);
   
   gdk_threads_enter ();
 

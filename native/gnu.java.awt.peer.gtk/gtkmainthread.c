@@ -36,7 +36,6 @@ jmethodID postFocusEventID;
 jmethodID postAdjustmentEventID;
 jmethodID postItemEventID;
 jmethodID postListItemEventID;
-jmethodID syncAttrsID;
 JNIEnv *gdk_env;
 
 /*
@@ -121,10 +120,6 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
   postListItemEventID = (*env)->GetMethodID (env, gtklistpeer,
 					     "postItemEvent",
 					     "(II)V");
-  syncAttrsID = (*env)->GetMethodID (env, gtkcomponentpeer,
-				     "syncAttrs", "()V");
-
-
 }
 
 /*

@@ -57,8 +57,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonSetGroup
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonNew
   (JNIEnv *env, jobject obj, jobject parent_obj, 
-   jobject group, jboolean checked, jstring label,
-   jboolean visible)
+   jobject group, jboolean checked, jstring label)
 {
   GtkWidget *button;
   const char *str;
@@ -84,7 +83,6 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonNew
 		    GTK_TOGGLE_BUTTON (button)->event_window);
   connect_checkbox_item_selectable_hook (env, obj, GTK_TOGGLE_BUTTON (button),
 					 label);
-  set_visible (button, visible);
 
   if (checked)
     gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
@@ -101,7 +99,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonNew
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonNew
   (JNIEnv *env, jobject obj, jobject parent_obj,
-   jboolean checked, jstring label, jboolean visible)
+   jboolean checked, jstring label)
 {
   GtkWidget *button;
   const char *str;
@@ -123,7 +121,6 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonNew
 		    GTK_TOGGLE_BUTTON (button)->event_window);
   connect_checkbox_item_selectable_hook (env, obj, GTK_TOGGLE_BUTTON (button),
 					 label);
-  set_visible (button, visible);
   gdk_threads_leave ();
 
   (*env)->ReleaseStringUTFChars (env, label, str);
