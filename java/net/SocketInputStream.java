@@ -163,12 +163,7 @@ read() throws IOException
 public int
 read(byte[] buf) throws IOException
 {
-  int bytes = read(buf, 0, buf.length);
-
-  if (bytes == 0)
-    bytes = -1;
-
-  return(bytes);
+  return(read(buf, 0, buf.length));
 }
 
 /*************************************************************************/
@@ -184,7 +179,11 @@ read(byte[] buf) throws IOException
 public int
 read(byte[] buf, int offset, int len) throws IOException
 {
-  return(impl.read(buf, offset, len));
+  int bytes_read = impl.read(buf, offset, len);
+  if (bytes_read == 0)
+    return(-1);
+
+  return(bytes_read);
 }
 
 } // class SocketInputStream
