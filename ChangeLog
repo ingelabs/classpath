@@ -1,3 +1,10 @@
+2003-04-19  Tom Tromey  <tromey@redhat.com>
+
+	* java/sql/Timestamp.java: Formatting fix.
+	* java/sql/Time.java: Formatting fixes.
+	* java/sql/DriverManager.java: Formatting fix.
+	* java/sql/Date.java: Formatting fixes.
+
 2003-04-19  Scott Gilbertson  <scottg@mantatest.com>
 
 	* java/awt/Container.java (visitChild): Dispose gfx2 when
