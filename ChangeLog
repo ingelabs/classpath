@@ -1,3 +1,10 @@
+2003-06-19  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/plaf/basic/BasicBorders.java (ToggleButtonBorder):
+	Re-written.
+	* javax/swing/plaf/basic/doc-files/
+	BasicBorders.ToggleButtonBorder-1.png:New image.
+	
 2003-06-19  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/URL.java
