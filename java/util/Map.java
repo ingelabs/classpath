@@ -26,7 +26,7 @@ public interface Map {
   void clear();
   boolean containsKey(Object key);
   boolean containsValue(Object value);
-  Set entrySet();
+  Set entries();
   boolean equals(Object o);
   Object get(Object key);
   int hashCode();

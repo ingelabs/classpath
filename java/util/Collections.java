@@ -21,9 +21,10 @@
 // ~ Most of the inner classes are not yet implemented.
 // ~ The methods that would return unimplemented inner classes return their
 //   arguments - ie, the collection is NOT made synchronized or unmodifiable.
-// ~ Serialization is very much broken until JDK 1.2beta4, which will specify
-//   this properly, comes out.
+// ~ Serialization is very much broken. Blame Sun for not specifying it.
 // ~ The unimplemented methods don't have doc-comments.
+
+// Note: In as much as this is implemented, it is totally to beta4 spec.
 
 package java.util;
 
@@ -31,31 +32,71 @@ import java.io.Serializable;
 
 /**
  * Utility class consisting of static methods that operate on, or return
- * Collections. Contains methods to sort and search Collections, methods to
- * facilitate interoperability with legacy APIs that are unaware of collections,
- * a method to return a list which consists of multiple copies of one element,
- * and methods which "wrap" collections to give them extra properties, such as
- * thread-safety and unmodifiability.
+ * Collections. Contains methods to sort, search, reverse, fill and shuffle
+ * Collections, methods to facilitate interoperability with legacy APIs that
+ * are unaware of collections, a method to return a list which consists of
+ * multiple copies of one element, and methods which "wrap" collections to give
+ * them extra properties, such as thread-safety and unmodifiability.
  */
 public class Collections {
 
   /**
-   * A comparator that implements the reverse of natural ordering. This is
-   * intended to make it easy to sort into reverse order, by simply passing
-   * Collections.REVERSE_ORDER to the sort routine.
-   * Note: This implementation isn't Serializable. It should be, by the spec,
-   * but the serialization APIs of the collections classes aren't really clear
-   * at all (thanks Sun). They plan to sort them out by 1.2beta4, apparently.
+   * This class is non-instantiable.
    */
-  public static final Comparator REVERSE_ORDER = new Comparator() {
-    public int compare(Object a, Object b) {
-      return -((Comparable)a).compareTo(b);
+  private Collections() {
+  }
+
+  /**
+   * An immutable, empty Set.
+   * Note: This implementation isn't Serializable, although it should be by the
+   * spec.
+   */
+  public static final Set EMPTY_SET = new AbstractSet() {
+
+    public int size() {
+      return 0;
+    }
+
+    // This is really cheating! I think it's perfectly valid, though - the
+    // more conventional code is here, commented out, in case anyone disagrees.
+    public Iterator iterator() {
+      return EMPTY_LIST.iterator();
+    }
+
+    // public Iterator iterator() {
+    //   return new Iterator() {
+    // 
+    //     public boolean hasNext() {
+    //       return false;
+    //     }
+    // 
+    //     public Object next() {
+    //       throw new NoSuchElementException();
+    //     }
+    // 
+    //     public void remove() {
+    //       throw new UnsupportedOperationException();
+    //     }
+    //   };
+    // }
+
+  };
+
+  /**
+   * An immutable, empty List.
+   * Note: This implementation isn't serializable, although it should be by the
+   * spec.
+   */
+  public static final List EMPTY_LIST = new AbstractList() {
+
+    public int size() {
+      return 0;
+    }
+
+    public Object get(int index) {
+      throw new IndexOutOfBoundsException();
     }
   };
-  // Personally I'd like a public top-level class ReverseOrder that could either
-  // reverse the natural ordering or a given Comparator.
-  // This also blatantly fails to solve the reverse sorting problem for the
-  // primitive types.
 
   /**
    * Compare two objects with or without a Comparator. If c is null, uses the
@@ -120,16 +161,16 @@ public class Collections {
    * not, the behaviour of this method is undefined, and may be an infinite
    * loop. Further, the key must be comparable with every item in the list. If
    * the list contains the key more than once, any one of them may be found. To
-   * avoid pathological behaviour on sequential-access lists, a linear search is
-   * used if (l instanceof AbstractSequentialList). Note: although the
+   * avoid pathological behaviour on sequential-access lists, a linear search
+   * is used if (l instanceof AbstractSequentialList). Note: although the
    * specification allows for an infinite loop if the list is unsorted, it will
-   * not happen in this (JCL) implementation.
+   * not happen in this (Classpath) implementation.
    *
    * @param l the list to search (must be sorted)
    * @param key the value to search for
-   * @returns the index at which the key was found, or -n-1 if it was not found,
-   *   where n is the index of the first value higher than key or a.length if
-   *   there is no such value.
+   * @returns the index at which the key was found, or -n-1 if it was not
+   *   found, where n is the index of the first value higher than key or
+   *   a.length if there is no such value.
    * @exception ClassCastException if key could not be compared with one of the
    *   elements of l
    * @exception NullPointerException if a null element has compareTo called
@@ -144,17 +185,17 @@ public class Collections {
    * - if it is not, the behaviour of this method is undefined, and may be an
    * infinite loop. Further, the key must be comparable with every item in the
    * list. If the list contains the key more than once, any one of them may be
-   * found. To avoid pathological behaviour on sequential-access lists, a linear
-   * search is used if (l instanceof AbstractSequentialList). Note: although the
-   * specification allows for an infinite loop if the list is unsorted, it will
-   * not happen in this (JCL) implementation.
+   * found. To avoid pathological behaviour on sequential-access lists, a
+   * linear search is used if (l instanceof AbstractSequentialList). Note:
+   * although the specification allows for an infinite loop if the list is
+   * unsorted, it will not happen in this (Classpath) implementation.
    *
    * @param l the list to search (must be sorted)
    * @param key the value to search for
    * @param c the comparator by which the list is sorted
-   * @returns the index at which the key was found, or -n-1 if it was not found,
-   *   where n is the index of the first value higher than key or a.length if
-   *   there is no such value.
+   * @returns the index at which the key was found, or -n-1 if it was not
+   *   found, where n is the index of the first value higher than key or
+   *   a.length if there is no such value.
    * @exception ClassCastException if key could not be compared with one of the
    *   elements of l
    */
@@ -166,8 +207,30 @@ public class Collections {
   }
 
   /**
-   * Returns an Enumeration over a collection. This allows interoperability with
-   * legacy APIs that require an Enumeration as input.
+   * Copy one list to another. If the destination list is longer than the
+   * source list, the remaining elements are unaffected. This method runs in
+   * linear time.
+   *
+   * @param dest the destination list.
+   * @param source the source list.
+   * @exception IndexOutOfBoundsException if the destination list is shorter
+   *   than the source list (the elements that can be copied will be, prior to
+   *   the exception being thrown).
+   * @exception UnsupportedOperationException if dest.listIterator() does not
+   *   support the set operation.
+   */
+  public static void copy(List dest, List source) {
+    Iterator i1 = source.iterator();
+    ListIterator i2 = dest.listIterator();
+    while (i1.hasNext()) {
+      i2.next();
+      i2.set(i1.next());
+    }
+  }
+
+  /**
+   * Returns an Enumeration over a collection. This allows interoperability
+   * with legacy APIs that require an Enumeration as input.
    *
    * @param c the Collection to iterate over
    * @returns an Enumeration backed by an Iterator over c
@@ -185,9 +248,26 @@ public class Collections {
   }
 
   /**
-   * Find the maximum element in a Collection, according to the natural ordering
-   * of the elements. This implementation iterates over the Collection, so it
-   * works in linear time.
+   * Replace every element of a list with a given value. This method runs in
+   * linear time.
+   *
+   * @param l the list to fill.
+   * @param val the object to vill the list with.
+   * @exception UnsupportedOperationException if l.listIterator() does not
+   *   support the set operation.
+   */
+  public static void fill(List l, Object val) {
+    ListIterator i = l.listIterator();
+    while (i.hasNext()) {
+      i.next();
+      i.set(val);
+    }
+  }
+
+  /**
+   * Find the maximum element in a Collection, according to the natural
+   * ordering of the elements. This implementation iterates over the
+   * Collection, so it works in linear time.
    *
    * @param c the Collection to find the maximum element of
    * @returns the maximum element of c
@@ -197,7 +277,7 @@ public class Collections {
    */
   public static Object max(Collection c) {
     Iterator i = c.iterator();
-    Comparable max = (Comparable)i.next();
+    Comparable max = (Comparable)i.next(); // throws NoSuchElementException
     while (i.hasNext()) {
       Object o = i.next();
       if (max.compareTo(o) < 0) {
@@ -220,7 +300,7 @@ public class Collections {
    */
   public static Object max(Collection c, Comparator order) {
     Iterator i = c.iterator();
-    Object max = i.next();
+    Object max = i.next(); // throws NoSuchElementException
     while (i.hasNext()) {
       Object o = i.next();
       if (order.compare(max, o) < 0) {
@@ -231,9 +311,9 @@ public class Collections {
   }
 
   /**
-   * Find the minimum element in a Collection, according to the natural ordering
-   * of the elements. This implementation iterates over the Collection, so it
-   * works in linear time.
+   * Find the minimum element in a Collection, according to the natural
+   * ordering of the elements. This implementation iterates over the
+   * Collection, so it works in linear time.
    *
    * @param c the Collection to find the minimum element of
    * @returns the minimum element of c
@@ -243,7 +323,7 @@ public class Collections {
    */
   public static Object min(Collection c) {
     Iterator i = c.iterator();
-    Comparable min = (Comparable)i.next();
+    Comparable min = (Comparable)i.next(); // throws NoSuchElementException
     while (i.hasNext()) {
       Object o = i.next();
       if (min.compareTo(o) > 0) {
@@ -266,7 +346,7 @@ public class Collections {
    */
   public static Object min(Collection c, Comparator order) {
     Iterator i = c.iterator();
-    Object min = i.next();
+    Object min = i.next(); // throws NoSuchElementExcception
     while (i.hasNext()) {
       Object o = i.next();
       if (order.compare(min, o) > 0) {
@@ -279,13 +359,16 @@ public class Collections {
   /**
    * Creates an immutable list consisting of the same object repeated n times.
    * The returned object is tiny, consisting of only a single reference to the
-   * object and a count of the number of elements.
+   * object and a count of the number of elements. It is Serializable.
    *
    * @param n the number of times to repeat the object
    * @param o the object to repeat
    * @returns a List consisting of n copies of o
    * @throws IllegalArgumentException if n < 0
    */
+  // It's not Serializable, because the serialized form is unspecced.
+  // Also I'm only assuming that it should be because I don't think it's
+  // stated - I just would be amazed if it isn't...
   public static List nCopies(final int n, final Object o) {
 
     // Check for insane arguments
@@ -305,6 +388,140 @@ public class Collections {
           throw new IndexOutOfBoundsException();
         }
         return o;
+      }
+    };
+  }
+
+  /**
+   * Reverse a given list. This method works in linear time.
+   *
+   * @param l the list to reverse.
+   * @exception UnsupportedOperationException if l.listIterator() does not
+   *   support the set operation.
+   */
+  public static void reverse(List l) {
+    ListIterator i1 = l.listIterator();
+    ListIterator i2 = l.listIterator(l.size());
+    while (i1.nextIndex() < i2.previousIndex()) {
+      Object o = i1.next();
+      i1.set(i2.previous());
+      i2.set(o);
+    }
+  }
+
+  /**
+   * Get a comparator that implements the reverse of natural ordering. This is
+   * intended to make it easy to sort into reverse order, by simply passing
+   * Collections.reverseOrder() to the sort method. The return value of this
+   * method is Serializable.
+   */
+  // The return value isn't Serializable, because the spec is broken.
+  public static Comparator reverseOrder() {
+    return new Comparator() {
+      public int compare(Object a, Object b) {
+        return -((Comparable)a).compareTo(b);
+      }
+    };
+  }
+
+  /**
+   * Shuffle a list according to a default source of randomness. The algorithm
+   * used would result in a perfectly fair shuffle (that is, each element would
+   * have an equal chance of ending up in any position) with a perfect source
+   * of randomness; in practice the results are merely very close to perfect.
+   * <p>
+   * This method operates in linear time on a random-access list, but may take
+   * quadratic time on a sequential-access list.
+   * Note: this (classpath) implementation will never take quadratic time, but
+   * it does make a copy of the list. This is in line with the behaviour of the
+   * sort methods and seems preferable.
+   *
+   * @param l the list to shuffle.
+   * @exception UnsupportedOperationException if l.listIterator() does not
+   *   support the set operation.
+   */
+  public static void shuffle(List l) {
+    shuffle(l, new Random());
+  }
+
+  /**
+   * Shuffle a list according to a given source of randomness. The algorithm
+   * used iterates backwards over the list, swapping each element with an
+   * element randomly selected from the elements in positions less than or
+   * equal to it (using r.nextInt(int)).
+   * <p>
+   * This algorithm would result in a perfectly fair shuffle (that is, each
+   * element would have an equal chance of ending up in any position) if r were
+   * a perfect source of randomness. In practise (eg if r = new Random()) the
+   * results are merely very close to perfect.
+   * <p>
+   * This method operates in linear time on a random-access list, but may take
+   * quadratic time on a sequential-access list.
+   * Note: this (classpath) implementation will never take quadratic time, but
+   * it does make a copy of the list. This is in line with the behaviour of the
+   * sort methods and seems preferable.
+   *
+   * @param l the list to shuffle.
+   * @param r the source of randomness to use for the shuffle.
+   * @exception UnsupportedOperationException if l.listIterator() does not
+   *   support the set operation.
+   */
+  public static void shuffle(List l, Random r) {
+    Object[] a = l.toArray(); // Dump l into an array
+    ListIterator i = l.listIterator(l.size());
+
+    // Iterate backwards over l
+    while (i.hasPrevious()) {
+
+      // Obtain a random position to swap with. nextIndex is used so that the
+      // range of the random number includes the current position.
+      int swap = r.nextInt(i.nextIndex());
+
+      // Swap the swapth element of the array with the next element of the
+      // list.
+      Object o = i.previous();
+      i.set(a[swap]);
+      a[swap] = o;
+    }
+  }
+
+  /**
+   * Obtain an immutable Set consisting of a single element. The return value
+   * of this method is Serializable.
+   *
+   * @param o the single element.
+   * @returns an immutable Set containing only o.
+   */
+  // It's not serializable because the spec is broken.
+  public static Set singleton(final Object o) {
+
+    return new AbstractSet() {
+
+      public int size() {
+        return 1;
+      }
+
+      public Iterator iterator() {
+        return new Iterator() {
+
+          private boolean hasNext = true;
+
+          public boolean hasNext() {
+            return hasNext;
+          }
+
+          public Object next() {
+            if (hasNext) {
+              return o;
+            } else {
+              throw new NoSuchElementException();
+            }
+          }
+
+          public void remove() {
+            throw new UnsupportedOperationException();
+          }
+	};
       }
     };
   }
@@ -354,32 +571,9 @@ public class Collections {
     }
   }
 
-  /**
-   * Returns a sub-section of a List. The List returned is backed by the
-   * original list and represents the section from fromIndex, inclusive, to
-   * toIndex, exclusive. The size of the returned list is fixed at toIndex -
-   * fromIndex, but changes to the returned list write through to the original
-   * list, if it is modifiable. If the original list is later shortened such
-   * that the whole of the sub-list is no longer there, the behaviour is
-   * undefined.
-   *
-   * @param l the list to take a section from
-   * @param fromIndex the start (inclusive) of the section to take
-   * @param toIndex the end (exclusive) of the section to take
-   * @exception IllegalArgumentException if fromIndex > toIndex
-   * @exception IndexOutOfBoundsException if fromIndex < 0 || toIndex > l.size()
-   */
-  public static List subList(List l, int fromIndex, int toIndex) {
-    if (fromIndex > toIndex) {
-      throw new IllegalArgumentException();
-    } else if (fromIndex < 0 || toIndex >= l.size()) {
-      throw new IndexOutOfBoundsException();
-    }
-    return new SubList(l, fromIndex, toIndex);
-  }
-
-  // All methods from here on in do NOT work, but DO return something which will
-  // in most circumstances have similar behaviour to the correct return value.
+  // All methods from here on in do NOT work, but DO return something which
+  // will in most circumstances have similar behaviour to the correct return
+  // value.
   // They all simply return their argument, so they do not add synchronization
   // or unmodifiability. Absence of synchronization is a potential problem for
   // programs, which might be relying on it, but absence of unmodifiability is
@@ -402,10 +596,41 @@ public class Collections {
   public static SortedSet synchronizedSortedSet(SortedSet s) {
     return s;
   }
-  public static Collection unmodifiableCollection(Collection c) {
-    return c;
+  public static Collection unmodifiableCollection(final Collection c) {
+    return new AbstractCollection() {
+      public int size() {
+	return c.size();
+      }
+      public Iterator iterator() {
+	return new Iterator() {
+	  final Iterator i = c.iterator();
+	  public Object next() {
+	    return i.next();
+	  }
+	  public boolean hasNext() {
+	    return i.hasNext();
+	  }
+	  public void remove() {
+	    throw new UnsupportedOperationException();
+	  }
+	};
+      }
+      public boolean contains(Object o) {
+	return c.contains(o);
+      }
+      public boolean containsAll(Collection c) {
+	return c.containsAll(c1);
+      }
+      public Object[] toArray() {
+	return c.toArray();
+      }
+      public Object[] toArray(Object[] a) {
+	return c.toArray(a);
+      }
+    };
   }
-  public static List unmodifiableList(List l) {
+
+ public static List unmodifiableList(List l) {
     return l;
   }
   public static Map unmodifiableMap(Map m) {
@@ -420,238 +645,4 @@ public class Collections {
   public static SortedSet unmodifiableSortedSet(SortedSet s) {
     return s;
   }
-
-  // The class returned by subList().
-  static class SubList extends AbstractList {
-    private List list;
-    private int start;
-    private int len;
-
-    SubList(List l, int fromIndex, int toIndex) {
-      list = l;
-      start = fromIndex;
-      len = toIndex - fromIndex;
-    }
-
-    public Object get(int index) {
-      if (index < 0 || index >= len) {
-        throw new IndexOutOfBoundsException();
-      }
-      return list.get(start + index);
-    }
-
-    public int indexOf(Object o, int index) {
-      if (index < 0 || index >= len) {
-        throw new IndexOutOfBoundsException();
-      }
-      int i = list.indexOf(o, start + index) - start;
-      return i < len ? i : -1;
-    }
-
-    public Iterator iterator() {
-      return listIterator();
-    }
-
-    public int lastIndexOf(Object o, int index) {
-      if (index < 0 || index >= len) {
-        throw new IndexOutOfBoundsException();
-      }
-      int i = list.lastIndexOf(o, start + index) - start;
-      return i >= 0 ? i : -1;
-    }
-
-    public ListIterator listIterator(int index) {
-      if (index < 0 || index >= len) {
-        throw new IndexOutOfBoundsException();
-      }
-
-      final ListIterator i = list.listIterator(index + start);
-      return new ListIterator() {
-
-        public boolean hasNext() {
-          return i.hasNext() && nextIndex() < len;
-        }
-
-        public boolean hasPrevious() {
-          return i.hasPrevious() && previousIndex() >= 0;
-        }
-
-        public Object next() {
-          if (!hasNext()) {
-            throw new NoSuchElementException();
-          }
-          return i.next();
-        }
-
-        public Object previous() {
-          if (!hasPrevious()) {
-            throw new NoSuchElementException();
-          }
-          return i.previous();
-        }
-
-        public int nextIndex() {
-          return i.nextIndex() - start;
-        }
-
-        public int previousIndex() {
-          return i.previousIndex() - start;
-        }
-
-        public void remove() {
-          throw new UnsupportedOperationException();
-        }
-
-        public void set(Object o) {
-          i.set(o);
-        }
-
-        public void add(Object o) {
-          throw new UnsupportedOperationException();
-        }
-      };
-    }
-
-    public Object set(int index, Object o) {
-      if (index < 0 || index >= len) {
-        throw new IndexOutOfBoundsException();
-      }
-      return list.set(start + index, o);
-    }
-
-    public int size() {
-      return len;
-    }
-  }
-
-  /*
-  // All these classes are commented out until we're ready to actually implement
-  // them.
-  static class UnmodifiableCollection implements Collection, Serializable {
-    UnmodifiableCollection(Collection);
-    public boolean add(Object);
-    public boolean addAll(Collection);
-    public void clear();
-    public boolean contains(Object);
-    public boolean containsAll(Collection);
-    public boolean isEmpty();
-    public Iterator iterator();
-    public boolean remove(Object);
-    public boolean removeAll(Collection);
-    public boolean retainAll(Collection);
-    public int size();
-    public Object toArray()[];
-    public Object toArray(Object[])[];
-  }
-
-  static class UnmodifiableSet extends UnmodifiableCollection implements Set {
-    UnmodifiableSet(Set);
-    public boolean equals(Object);
-    public int hashCode();
-  }
-
-  static class UnmodifiableSortedSet extends UnmodifiableSet implements SortedSet {
-    UnmodifiableSortedSet(SortedSet);
-    public Comparator comparator();
-    public Object first();
-    public SortedSet headSet(Object);
-    public Object last();
-    public SortedSet subSet(Object, Object);
-    public SortedSet tailSet(Object);
-  }
-
-  static class UnmodifiableList extends UnmodifiableCollection implements List 
-  {
-    UnmodifiableList(List);
-    public void add(int, Object);
-    public boolean addAll(int, Collection);
-    public boolean equals(Object);
-    public Object get(int);
-    public int hashCode();
-    public int indexOf(Object);
-    public int indexOf(Object, int);
-    public int lastIndexOf(Object);
-    public int lastIndexOf(Object, int);
-    public ListIterator listIterator();
-    public ListIterator listIterator(int);
-    public Object remove(int);
-    public void removeRange(int, int);
-    public Object set(int, Object);
-  }
-
-  static class UnmodifiableSortedMap extends UnmodifiableMap implements SortedMap , Serializable {
-    UnmodifiableSortedMap(SortedMap);
-    public Comparator comparator();
-    public Object firstKey();
-    public SortedMap headMap(Object);
-    public Object lastKey();
-    public SortedMap subMap(Object, Object);
-    public SortedMap tailMap(Object);
-  }
-
-  static class SynchronizedCollection implements Collection, Serializable {
-    SynchronizedCollection(Collection);
-    SynchronizedCollection(Collection,Object);
-    public boolean add(Object);
-    public boolean addAll(Collection);
-    public void clear();
-    public boolean contains(Object);
-    public boolean containsAll(Collection);
-    public boolean isEmpty();
-    public Iterator iterator();
-    public boolean remove(Object);
-    public boolean removeAll(Collection);
-    public boolean retainAll(Collection);
-    public int size();
-    public Object toArray()[];
-    public Object toArray(Object[])[];
-  }
-
-  static class SynchronizedSet extends SynchronizedCollection implements Set {
-    SynchronizedSet(Set);
-    SynchronizedSet(Set,Object);
-    public boolean equals(Object);
-    public int hashCode();
-  }
-
-  static class SynchronizedSortedSet extends SynchronizedSet implements SortedSet {
-    SynchronizedSortedSet(SortedSet);
-    SynchronizedSortedSet(SortedSet,Object);
-    public Comparator comparator();
-    public Object first();
-    public SortedSet headSet(Object);
-    public Object last();
-    public SortedSet subSet(Object, Object);
-    public SortedSet tailSet(Object);
-  }
-
-static class SynchronizedList extends SynchronizedCollection implements List {
-    SynchronizedList(List);
-    public void add(int, Object);
-    public boolean addAll(int, Collection);
-    public boolean equals(Object);
-    public Object get(int);
-    public int hashCode();
-    public int indexOf(Object);
-    public int indexOf(Object, int);
-    public int lastIndexOf(Object);
-    public int lastIndexOf(Object, int);
-    public ListIterator listIterator();
-    public ListIterator listIterator(int);
-    public Object remove(int);
-    public void removeRange(int, int);
-    public Object set(int, Object);
-}
-
-static class SynchronizedSortedMap extends SynchronizedMap implements SortedMap {
-    SynchronizedSortedMap(SortedMap);
-    SynchronizedSortedMap(SortedMap,Object);
-    public Comparator comparator();
-    public Object firstKey();
-    public SortedMap headMap(Object);
-    public Object lastKey();
-    public SortedMap subMap(Object, Object);
-    public SortedMap tailMap(Object);
-  }
-  */
 }

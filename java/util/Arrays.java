@@ -25,24 +25,30 @@ package java.util;
 
 /**
  * This class contains various static utility methods performing operations on
- * arrays, and a method to provide a List "view" of an array to facilitate using
- * arrays with Collection-based APIs.
+ * arrays, and a method to provide a List "view" of an array to facilitate
+ * using arrays with Collection-based APIs.
  */
 public class Arrays {
 
   /**
-   * Perform a binary search of a byte array for a key. The array must be sorted
-   * (as by the sort() method) - if it is not, the behaviour of this method is
-   * undefined, and may be an infinite loop. If the array contains the key more
-   * than once, any one of them may be found. Note: although the specification
-   * allows for an infinite loop if the array is unsorted, it will not happen in
-   * this implementation.
+   * This class is non-instantiable.
+   */
+  private Arrays() {
+  }
+
+  /**
+   * Perform a binary search of a byte array for a key. The array must be
+   * sorted (as by the sort() method) - if it is not, the behaviour of this
+   * method is undefined, and may be an infinite loop. If the array contains
+   * the key more than once, any one of them may be found. Note: although the
+   * specification allows for an infinite loop if the array is unsorted, it
+   * will not happen in this implementation.
    *
    * @param a the array to search (must be sorted)
    * @param key the value to search for
-   * @returns the index at which the key was found, or -n-1 if it was not found,
-   *   where n is the index of the first value higher than key or a.length if
-   *   there is no such value.
+   * @returns the index at which the key was found, or -n-1 if it was not
+   *   found, where n is the index of the first value higher than key or
+   *   a.length if there is no such value.
    */
   public static int binarySearch(byte[] a, byte key) {
     int low = 0;
@@ -63,18 +69,18 @@ public class Arrays {
   }
 
   /**
-   * Perform a binary search of a char array for a key. The array must be sorted
-   * (as by the sort() method) - if it is not, the behaviour of this method is
-   * undefined, and may be an infinite loop. If the array contains the key more
-   * than once, any one of them may be found. Note: although the specification
-   * allows for an infinite loop if the array is unsorted, it will not happen in
-   * this implementation.
+   * Perform a binary search of a char array for a key. The array must be
+   * sorted (as by the sort() method) - if it is not, the behaviour of this
+   * method is undefined, and may be an infinite loop. If the array contains
+   * the key more than once, any one of them may be found. Note: although the
+   * specification allows for an infinite loop if the array is unsorted, it
+   * will not happen in this implementation.
    *
    * @param a the array to search (must be sorted)
    * @param key the value to search for
-   * @returns the index at which the key was found, or -n-1 if it was not found,
-   *   where n is the index of the first value higher than key or a.length if
-   *   there is no such value.
+   * @returns the index at which the key was found, or -n-1 if it was not
+   *   found, where n is the index of the first value higher than key or
+   *   a.length if there is no such value.
    */
   public static int binarySearch(char[] a, char key) {
     int low = 0;
@@ -97,17 +103,16 @@ public class Arrays {
   /**
    * Perform a binary search of a double array for a key. The array must be
    * sorted (as by the sort() method) - if it is not, the behaviour of this
-   * method is undefined, and may be an infinite loop. If the array contains the
-   * key more than once, any one of them may be found. Note: although the
-   * specification allows for an infinite loop if the array is unsorted, it will
-   * not happen in this implementation. Another note: this may have odd results
-   * if the key or any values are NaN, fixes are welcome
+   * method is undefined, and may be an infinite loop. If the array contains
+   * the key more than once, any one of them may be found. Note: although the
+   * specification allows for an infinite loop if the array is unsorted, it
+   * will not happen in this implementation.
    *
    * @param a the array to search (must be sorted)
    * @param key the value to search for
-   * @returns the index at which the key was found, or -n-1 if it was not found,
-   *   where n is the index of the first value higher than key or a.length if
-   *   there is no such value.
+   * @returns the index at which the key was found, or -n-1 if it was not
+   *   found, where n is the index of the first value higher than key or
+   *   a.length if there is no such value.
    */
   public static int binarySearch(double[] a, double key) {
     int low = 0;
@@ -130,17 +135,16 @@ public class Arrays {
   /**
    * Perform a binary search of a float array for a key. The array must be
    * sorted (as by the sort() method) - if it is not, the behaviour of this
-   * method is undefined, and may be an infinite loop. If the array contains the
-   * key more than once, any one of them may be found. Note: although the
-   * specification allows for an infinite loop if the array is unsorted, it will
-   * not happen in this implementation. Another note: this may have odd results
-   * if the key or any values are NaN, fixes are welcome
+   * method is undefined, and may be an infinite loop. If the array contains
+   * the key more than once, any one of them may be found. Note: although the
+   * specification allows for an infinite loop if the array is unsorted, it
+   * will not happen in this implementation.
    *
    * @param a the array to search (must be sorted)
    * @param key the value to search for
-   * @returns the index at which the key was found, or -n-1 if it was not found,
-   *   where n is the index of the first value higher than key or a.length if
-   *   there is no such value.
+   * @returns the index at which the key was found, or -n-1 if it was not
+   *   found, where n is the index of the first value higher than key or
+   *   a.length if there is no such value.
    */
   public static int binarySearch(float[] a, float key) {
     int low = 0;
@@ -161,18 +165,18 @@ public class Arrays {
   }
 
   /**
-   * Perform a binary search of an int array for a key. The array must be sorted
-   * (as by the sort() method) - if it is not, the behaviour of this method is
-   * undefined, and may be an infinite loop. If the array contains the key more
-   * than once, any one of them may be found. Note: although the specification
-   * allows for an infinite loop if the array is unsorted, it will not happen in
-   * this implementation.
+   * Perform a binary search of an int array for a key. The array must be
+   * sorted (as by the sort() method) - if it is not, the behaviour of this
+   * method is undefined, and may be an infinite loop. If the array contains
+   * the key more than once, any one of them may be found. Note: although the
+   * specification allows for an infinite loop if the array is unsorted, it
+   * will not happen in this implementation.
    *
    * @param a the array to search (must be sorted)
    * @param key the value to search for
-   * @returns the index at which the key was found, or -n-1 if it was not found,
-   *   where n is the index of the first value higher than key or a.length if
-   *   there is no such value.
+   * @returns the index at which the key was found, or -n-1 if it was not
+   *   found, where n is the index of the first value higher than key or
+   *   a.length if there is no such value.
    */
   public static int binarySearch(int[] a, int key) {
     int low = 0;
@@ -193,18 +197,18 @@ public class Arrays {
   }
 
   /**
-   * Perform a binary search of a long array for a key. The array must be sorted
-   * (as by the sort() method) - if it is not, the behaviour of this method is
-   * undefined, and may be an infinite loop. If the array contains the key more
-   * than once, any one of them may be found. Note: although the specification
-   * allows for an infinite loop if the array is unsorted, it will not happen in
-   * this implementation.
+   * Perform a binary search of a long array for a key. The array must be
+   * sorted (as by the sort() method) - if it is not, the behaviour of this
+   * method is undefined, and may be an infinite loop. If the array contains
+   * the key more than once, any one of them may be found. Note: although the
+   * specification allows for an infinite loop if the array is unsorted, it
+   * will not happen in this implementation.
    *
    * @param a the array to search (must be sorted)
    * @param key the value to search for
-   * @returns the index at which the key was found, or -n-1 if it was not found,
-   *   where n is the index of the first value higher than key or a.length if
-   *   there is no such value.
+   * @returns the index at which the key was found, or -n-1 if it was not
+   *   found, where n is the index of the first value higher than key or
+   *   a.length if there is no such value.
    */
   public static int binarySearch(long[] a, long key) {
     int low = 0;
@@ -227,16 +231,16 @@ public class Arrays {
   /**
    * Perform a binary search of a short array for a key. The array must be
    * sorted (as by the sort() method) - if it is not, the behaviour of this
-   * method is undefined, and may be an infinite loop. If the array contains the
-   * key more than once, any one of them may be found. Note: although the
-   * specification allows for an infinite loop if the array is unsorted, it will
-   * not happen in this implementation.
+   * method is undefined, and may be an infinite loop. If the array contains
+   * the key more than once, any one of them may be found. Note: although the
+   * specification allows for an infinite loop if the array is unsorted, it
+   * will not happen in this implementation.
    *
    * @param a the array to search (must be sorted)
    * @param key the value to search for
-   * @returns the index at which the key was found, or -n-1 if it was not found,
-   *   where n is the index of the first value higher than key or a.length if
-   *   there is no such value.
+   * @returns the index at which the key was found, or -n-1 if it was not
+   *   found, where n is the index of the first value higher than key or
+   *   a.length if there is no such value.
    */
   public static int binarySearch(short[] a, short key) {
     int low = 0;
@@ -296,16 +300,17 @@ public class Arrays {
    * Perform a binary search of an Object array for a key, using the natural
    * ordering of the elements. The array must be sorted (as by the sort()
    * method) - if it is not, the behaviour of this method is undefined, and may
-   * be an infinite loop. Further, the key must be comparable with every item in
-   * the array. If the array contains the key more than once, any one of them
-   * may be found. Note: although the specification allows for an infinite loop
-   * if the array is unsorted, it will not happen in this (JCL) implementation.
+   * be an infinite loop. Further, the key must be comparable with every item
+   * in the array. If the array contains the key more than once, any one of
+   * them may be found. Note: although the specification allows for an infinite
+   * loop if the array is unsorted, it will not happen in this (JCL)
+   * implementation.
    *
    * @param a the array to search (must be sorted)
    * @param key the value to search for
-   * @returns the index at which the key was found, or -n-1 if it was not found,
-   *   where n is the index of the first value higher than key or a.length if
-   *   there is no such value.
+   * @returns the index at which the key was found, or -n-1 if it was not
+   *   found, where n is the index of the first value higher than key or
+   *   a.length if there is no such value.
    * @exception ClassCastException if key could not be compared with one of the
    *   elements of a
    * @exception NullPointerException if a null element has compareTo called
@@ -316,20 +321,20 @@ public class Arrays {
 
   /**
    * Perform a binary search of an Object array for a key, using a supplied
-   * Comparator. The array must be sorted (as by the sort() method with the same
-   * Comparator) - if it is not, the behaviour of this method is undefined, and
-   * may be an infinite loop. Further, the key must be comparable with every
-   * item in the array. If the array contains the key more than once, any one of
-   * them may be found. Note: although the specification allows for an infinite
-   * loop if the array is unsorted, it will not happen in this (JCL)
-   * implementation.
+   * Comparator. The array must be sorted (as by the sort() method with the
+   * same Comparator) - if it is not, the behaviour of this method is
+   * undefined, and may be an infinite loop. Further, the key must be
+   * comparable with every item in the array. If the array contains the key
+   * more than once, any one of them may be found. Note: although the
+   * specification allows for an infinite loop if the array is unsorted, it
+   * will not happen in this (JCL) implementation.
    *
    * @param a the array to search (must be sorted)
    * @param key the value to search for
    * @param c the comparator by which the array is sorted
-   * @returns the index at which the key was found, or -n-1 if it was not found,
-   *   where n is the index of the first value higher than key or a.length if
-   *   there is no such value.
+   * @returns the index at which the key was found, or -n-1 if it was not
+   *   found, where n is the index of the first value higher than key or
+   *   a.length if there is no such value.
    * @exception ClassCastException if key could not be compared with one of the
    *   elements of a
    */
@@ -341,38 +346,33 @@ public class Arrays {
   }
 
   /**
-   * Compare a byte array with an Object for equality.
+   * Compare two byte arrays for equality.
    *
-   * @param a the array to compare
-   * @param o the object to compare with
-   * @returns true if o and a are both null, or if o is of type byte[], is of
-   *   the same length as a, and for each 0 <= i < a.length,
-   *   a[i] == ((byte[])o)[i]
+   * @param a1 the first array to compare
+   * @param a2 the second array to compare
+   * @returns true if a1 and a2 are both null, or if a2 is of the same length
+   *   as a1, and for each 0 <= i < a1.length, a1[i] == a2[i]
    */
-  public static boolean equals(byte[] a, Object o) {
+  public static boolean equals(byte[] a1, byte[] a2) {
 
     // Quick test which saves comparing elements of the same array, and also
     // catches the case that both are null.
-    if (a == o) {
+    if (a1 == a2) {
       return true;
     }
     try {
 
-      // This cast will throw a ClassCastException if o is not a byte[]
-      byte[] b = (byte[])o;
-
       // If they're the same length, test each element
-      if (a.length == b.length) {
-        for (int i = 0; i < a.length; i++) {
-          if (a[i] != b[i]) {
+      if (a1.length == a2.length) {
+        for (int i = 0; i < a1.length; i++) {
+          if (a1[i] != a2[i]) {
             return false;
           }
         }
         return true;
       }
 
-    // If a == null or o == null but not both then we will get a NullPointer
-    } catch (ClassCastException e) {
+    // If a1 == null or a2 == null but not both then we will get a NullPointer
     } catch (NullPointerException e) {
     }
 
@@ -380,38 +380,33 @@ public class Arrays {
   }
 
   /**
-   * Compare a char array with an Object for equality.
+   * Compare two char arrays for equality.
    *
-   * @param a the array to compare
-   * @param o the object to compare with
-   * @returns true if o and a are both null, or if o is of type char[], is of
-   *   the same length as a, and for each 0 <= i < a.length,
-   *   a[i] == ((char[])o)[i]
+   * @param a1 the first array to compare
+   * @param a2 the second array to compare
+   * @returns true if a1 and a2 are both null, or if a2 is of the same length
+   *   as a1, and for each 0 <= i < a1.length, a1[i] == a2[i]
    */
-  public static boolean equals(char[] a, Object o) {
+  public static boolean equals(char[] a1, char[] a2) {
 
     // Quick test which saves comparing elements of the same array, and also
     // catches the case that both are null.
-    if (a == o) {
+    if (a1 == a2) {
       return true;
     }
     try {
 
-      // This cast will throw a ClassCastException if o is not a byte[]
-      char[] b = (char[])o;
-
       // If they're the same length, test each element
-      if (a.length == b.length) {
-        for (int i = 0; i < a.length; i++) {
-          if (a[i] != b[i]) {
+      if (a1.length == a2.length) {
+        for (int i = 0; i < a1.length; i++) {
+          if (a1[i] != a2[i]) {
             return false;
           }
         }
         return true;
       }
 
-    // If a == null or o == null but not both then we will get a NullPointer
-    } catch (ClassCastException e) {
+    // If a1 == null or a2 == null but not both then we will get a NullPointer
     } catch (NullPointerException e) {
     }
 
@@ -419,38 +414,33 @@ public class Arrays {
   }
 
   /**
-   * Compare a double array with an Object for equality.
+   * Compare two double arrays for equality.
    *
-   * @param a the array to compare
-   * @param o the object to compare with
-   * @returns true if o and a are both null, or if o is of type double[], is of
-   *   the same length as a, and for each 0 <= i < a.length,
-   *   a[i] == ((double[])o)[i]
+   * @param a1 the first array to compare
+   * @param a2 the second array to compare
+   * @returns true if a1 and a2 are both null, or if a2 is of the same length
+   *   as a1, and for each 0 <= i < a1.length, a1[i] == a2[i]
    */
-  public static boolean equals(double[] a, Object o) {
+  public static boolean equals(double[] a1, double[] a2) {
 
     // Quick test which saves comparing elements of the same array, and also
     // catches the case that both are null.
-    if (a == o) {
+    if (a1 == a2) {
       return true;
     }
     try {
 
-      // This cast will throw a ClassCastException if o is not a byte[]
-      double[] b = (double[])o;
-
       // If they're the same length, test each element
-      if (a.length == b.length) {
-        for (int i = 0; i < a.length; i++) {
-          if (a[i] != b[i]) {
+      if (a1.length == a2.length) {
+        for (int i = 0; i < a1.length; i++) {
+          if (a1[i] != a2[i]) {
             return false;
           }
         }
         return true;
       }
 
-    // If a == null or o == null but not both then we will get a NullPointer
-    } catch (ClassCastException e) {
+    // If a1 == null or a2 == null but not both then we will get a NullPointer
     } catch (NullPointerException e) {
     }
 
@@ -458,38 +448,33 @@ public class Arrays {
   }
 
   /**
-   * Compare a float array with an Object for equality.
+   * Compare two float arrays for equality.
    *
-   * @param a the array to compare
-   * @param o the object to compare with
-   * @returns true if o and a are both null, or if o is of type float[], is of
-   *   the same length as a, and for each 0 <= i < a.length,
-   *   a[i] == ((float[])o)[i]
+   * @param a1 the first array to compare
+   * @param a2 the second array to compare
+   * @returns true if a1 and a2 are both null, or if a2 is of the same length
+   *   as a1, and for each 0 <= i < a1.length, a1[i] == a2[i]
    */
-  public static boolean equals(float[] a, Object o) {
+  public static boolean equals(float[] a1, float[] a2) {
 
     // Quick test which saves comparing elements of the same array, and also
     // catches the case that both are null.
-    if (a == o) {
+    if (a1 == a2) {
       return true;
     }
     try {
 
-      // This cast will throw a ClassCastException if o is not a byte[]
-      float[] b = (float[])o;
-
       // If they're the same length, test each element
-      if (a.length == b.length) {
-        for (int i = 0; i < a.length; i++) {
-          if (a[i] != b[i]) {
+      if (a1.length == a2.length) {
+        for (int i = 0; i < a1.length; i++) {
+          if (a1[i] != a2[i]) {
             return false;
           }
         }
         return true;
       }
 
-    // If a == null or o == null but not both then we will get a NullPointer
-    } catch (ClassCastException e) {
+    // If a1 == null or a2 == null but not both then we will get a NullPointer
     } catch (NullPointerException e) {
     }
 
@@ -497,38 +482,33 @@ public class Arrays {
   }
 
   /**
-   * Compare a long array with an Object for equality.
+   * Compare two long arrays for equality.
    *
-   * @param a the array to compare
-   * @param o the object to compare with
-   * @returns true if o and a are both null, or if o is of type long[], is of
-   *   the same length as a, and for each 0 <= i < a.length,
-   *   a[i] == ((long[])o)[i]
+   * @param a1 the first array to compare
+   * @param a2 the second array to compare
+   * @returns true if a1 and a2 are both null, or if a2 is of the same length
+   *   as a1, and for each 0 <= i < a1.length, a1[i] == a2[i]
    */
-  public static boolean equals(long[] a, Object o) {
+  public static boolean equals(long[] a1, long[] a2) {
 
     // Quick test which saves comparing elements of the same array, and also
     // catches the case that both are null.
-    if (a == o) {
+    if (a1 == a2) {
       return true;
     }
     try {
 
-      // This cast will throw a ClassCastException if o is not a byte[]
-      long[] b = (long[])o;
-
       // If they're the same length, test each element
-      if (a.length == b.length) {
-        for (int i = 0; i < a.length; i++) {
-          if (a[i] != b[i]) {
+      if (a1.length == a2.length) {
+        for (int i = 0; i < a1.length; i++) {
+          if (a1[i] != a2[i]) {
             return false;
           }
         }
         return true;
       }
 
-    // If a == null or o == null but not both then we will get a NullPointer
-    } catch (ClassCastException e) {
+    // If a1 == null or a2 == null but not both then we will get a NullPointer
     } catch (NullPointerException e) {
     }
 
@@ -536,38 +516,33 @@ public class Arrays {
   }
 
   /**
-   * Compare a short array with an Object for equality.
+   * Compare two short arrays for equality.
    *
-   * @param a the array to compare
-   * @param o the object to compare with
-   * @returns true if o and a are both null, or if o is of type short[], is of
-   *   the same length as a, and for each 0 <= i < a.length,
-   *   a[i] == ((short[])o)[i]
+   * @param a1 the first array to compare
+   * @param a2 the second array to compare
+   * @returns true if a1 and a2 are both null, or if a2 is of the same length
+   *   as a1, and for each 0 <= i < a1.length, a1[i] == a2[i]
    */
-  public static boolean equals(short[] a, Object o) {
+  public static boolean equals(short[] a1, short[] a2) {
 
     // Quick test which saves comparing elements of the same array, and also
     // catches the case that both are null.
-    if (a == o) {
+    if (a1 == a2) {
       return true;
     }
     try {
 
-      // This cast will throw a ClassCastException if o is not a byte[]
-      short[] b = (short[])o;
-
       // If they're the same length, test each element
-      if (a.length == b.length) {
-        for (int i = 0; i < a.length; i++) {
-          if (a[i] != b[i]) {
+      if (a1.length == a2.length) {
+        for (int i = 0; i < a1.length; i++) {
+          if (a1[i] != a2[i]) {
             return false;
           }
         }
         return true;
       }
 
-    // If a == null or o == null but not both then we will get a NullPointer
-    } catch (ClassCastException e) {
+    // If a1 == null or a2 == null but not both then we will get a NullPointer
     } catch (NullPointerException e) {
     }
 
@@ -575,38 +550,33 @@ public class Arrays {
   }
 
   /**
-   * Compare a boolean array with an Object for equality.
+   * Compare two boolean arrays for equality.
    *
-   * @param a the array to compare
-   * @param o the object to compare with
-   * @returns true if o and a are both null, or if o is of type boolean[], is of
-   *   the same length as a, and for each 0 <= i < a.length,
-   *   a[i] == ((boolean[])o)[i]
+   * @param a1 the first array to compare
+   * @param a2 the second array to compare
+   * @returns true if a1 and a2 are both null, or if a2 is of the same length
+   *   as a1, and for each 0 <= i < a1.length, a1[i] == a2[i]
    */
-  public static boolean equals(boolean[] a, Object o) {
+  public static boolean equals(boolean[] a1, boolean[] a2) {
 
     // Quick test which saves comparing elements of the same array, and also
     // catches the case that both are null.
-    if (a == o) {
+    if (a1 == a2) {
       return true;
     }
     try {
 
-      // This cast will throw a ClassCastException if o is not a byte[]
-      boolean[] b = (boolean[])o;
-
       // If they're the same length, test each element
-      if (a.length == b.length) {
-        for (int i = 0; i < a.length; i++) {
-          if (a[i] != b[i]) {
+      if (a1.length == a2.length) {
+        for (int i = 0; i < a1.length; i++) {
+          if (a1[i] != a2[i]) {
             return false;
           }
         }
         return true;
       }
 
-    // If a == null or o == null but not both then we will get a NullPointer
-    } catch (ClassCastException e) {
+    // If a1 == null or a2 == null but not both then we will get a NullPointer
     } catch (NullPointerException e) {
     }
 
@@ -614,38 +584,33 @@ public class Arrays {
   }
 
   /**
-   * Compare an int array with an Object for equality.
+   * Compare two int arrays for equality.
    *
-   * @param a the array to compare
-   * @param o the object to compare with
-   * @returns true if o and a are both null, or if o is of type int[], is of
-   *   the same length as a, and for each 0 <= i < a.length,
-   *   a[i] == ((int[])o)[i]
+   * @param a1 the first array to compare
+   * @param a2 the second array to compare
+   * @returns true if a1 and a2 are both null, or if a2 is of the same length
+   *   as a1, and for each 0 <= i < a1.length, a1[i] == a2[i]
    */
-  public static boolean equals(int[] a, Object o) {
+  public static boolean equals(int[] a1, int[] a2) {
 
     // Quick test which saves comparing elements of the same array, and also
     // catches the case that both are null.
-    if (a == o) {
+    if (a1 == a2) {
       return true;
     }
     try {
 
-      // This cast will throw a ClassCastException if o is not a byte[]
-      int[] b = (int[])o;
-
       // If they're the same length, test each element
-      if (a.length == b.length) {
-        for (int i = 0; i < a.length; i++) {
-          if (a[i] != b[i]) {
+      if (a1.length == a2.length) {
+        for (int i = 0; i < a1.length; i++) {
+          if (a1[i] != a2[i]) {
             return false;
           }
         }
         return true;
       }
 
-    // If a == null or o == null but not both then we will get a NullPointer
-    } catch (ClassCastException e) {
+    // If a1 == null or a2 == null but not both then we will get a NullPointer
     } catch (NullPointerException e) {
     }
 
@@ -653,42 +618,66 @@ public class Arrays {
   }
 
   /**
-   * Compare an Object array with an Object for equality.
+   * Compare two Object arrays for equality.
    *
-   * @param a the array to compare
-   * @param o the object to compare with
-   * @returns true if o and a are both null, or if o is of type Object[], is of
-   *   the same length as a, and for each 0 <= i < a.length,
-   *   a[i] == ((Object[])o)[i]
+   * @param a1 the first array to compare
+   * @param a2 the second array to compare
+   * @returns true if a1 and a2 are both null, or if a1 is of the same length
+   *   as a2, and for each 0 <= i < a.length, a1[i] == null ? a2[i] == null :
+   *   a1[i].equals(a2[i]).
    */
-  public static boolean equals(Object[] a, Object o) {
+  public static boolean equals(Object[] a1, Object[] a2) {
 
     // Quick test which saves comparing elements of the same array, and also
     // catches the case that both are null.
-    if (a == o) {
+    if (a1 == a2) {
       return true;
     }
     try {
 
-      // This cast will throw a ClassCastException if o is not a byte[]
-      Object[] b = (Object[])o;
-
       // If they're the same length, test each element
-      if (a.length == b.length) {
-        for (int i = 0; i < a.length; i++) {
-          if (!(a[i] == null ? b[i] == null : a[i].equals(b[i]))) {
+      if (a1.length == a2.length) {
+        for (int i = 0; i < a1.length; i++) {
+          if (!(a1[i] == null ? a2[i] == null : a1[i].equals(a2[i]))) {
             return false;
           }
         }
         return true;
       }
 
-    // If a == null or o == null but not both then we will get a NullPointer
-    } catch (ClassCastException e) {
+    // If a1 == null or a2 == null but not both then we will get a NullPointer
     } catch (NullPointerException e) {
     }
 
     return false;
+  }
+
+  /**
+   * Fill an array with a boolean value.
+   *
+   * @param a the array to fill
+   * @param val the value to fill it with
+   */
+  public static void fill(boolean[] a, boolean val) {
+    // This implementation is slightly inefficient timewise, but the extra
+    // effort over inlining it is O(1) and small, and I refuse to repeat code
+    // if it can be helped.
+    fill(a, 0, a.length, val);
+  }
+
+  /**
+   * Fill a range of an array with a boolean value.
+   *
+   * @param a the array to fill
+   * @param fromIndex the index to fill from, inclusive
+   * @param toIndex the index to fill to, exclusive
+   * @param val the value to fill with
+   */
+  public static void fill(boolean[] a, int fromIndex, int toIndex,
+                          boolean val) {
+    for (int i = fromIndex; i < toIndex; i++) {
+      a[i] = val;
+    }
   }
 
   /**
@@ -698,7 +687,22 @@ public class Arrays {
    * @param val the value to fill it with
    */
   public static void fill(byte[] a, byte val) {
-    for (int i = 0; i < a.length; i++) {
+    // This implementation is slightly inefficient timewise, but the extra
+    // effort over inlining it is O(1) and small, and I refuse to repeat code
+    // if it can be helped.
+    fill(a, 0, a.length, val);
+  }
+
+  /**
+   * Fill a range of an array with a byte value.
+   *
+   * @param a the array to fill
+   * @param fromIndex the index to fill from, inclusive
+   * @param toIndex the index to fill to, exclusive
+   * @param val the value to fill with
+   */
+  public static void fill(byte[] a, int fromIndex, int toIndex, byte val) {
+    for (int i = fromIndex; i < toIndex; i++) {
       a[i] = val;
     }
   }
@@ -710,7 +714,22 @@ public class Arrays {
    * @param val the value to fill it with
    */
   public static void fill(char[] a, char val) {
-    for (int i = 0; i < a.length; i++) {
+    // This implementation is slightly inefficient timewise, but the extra
+    // effort over inlining it is O(1) and small, and I refuse to repeat code
+    // if it can be helped.
+    fill(a, 0, a.length, val);
+  }
+
+  /**
+   * Fill a range of an array with a char value.
+   *
+   * @param a the array to fill
+   * @param fromIndex the index to fill from, inclusive
+   * @param toIndex the index to fill to, exclusive
+   * @param val the value to fill with
+   */
+  public static void fill(char[] a, int fromIndex, int toIndex, char val) {
+    for (int i = fromIndex; i < toIndex; i++) {
       a[i] = val;
     }
   }
@@ -722,7 +741,22 @@ public class Arrays {
    * @param val the value to fill it with
    */
   public static void fill(double[] a, double val) {
-    for (int i = 0; i < a.length; i++) {
+    // This implementation is slightly inefficient timewise, but the extra
+    // effort over inlining it is O(1) and small, and I refuse to repeat code
+    // if it can be helped.
+    fill(a, 0, a.length, val);
+  }
+
+  /**
+   * Fill a range of an array with a double value.
+   *
+   * @param a the array to fill
+   * @param fromIndex the index to fill from, inclusive
+   * @param toIndex the index to fill to, exclusive
+   * @param val the value to fill with
+   */
+  public static void fill(double[] a, int fromIndex, int toIndex, double val) {
+    for (int i = fromIndex; i < toIndex; i++) {
       a[i] = val;
     }
   }
@@ -734,7 +768,22 @@ public class Arrays {
    * @param val the value to fill it with
    */
   public static void fill(float[] a, float val) {
-    for (int i = 0; i < a.length; i++) {
+    // This implementation is slightly inefficient timewise, but the extra
+    // effort over inlining it is O(1) and small, and I refuse to repeat code
+    // if it can be helped.
+    fill(a, 0, a.length, val);
+  }
+
+  /**
+   * Fill a range of an array with a float value.
+   *
+   * @param a the array to fill
+   * @param fromIndex the index to fill from, inclusive
+   * @param toIndex the index to fill to, exclusive
+   * @param val the value to fill with
+   */
+  public static void fill(float[] a, int fromIndex, int toIndex, float val) {
+    for (int i = fromIndex; i < toIndex; i++) {
       a[i] = val;
     }
   }
@@ -746,7 +795,22 @@ public class Arrays {
    * @param val the value to fill it with
    */
   public static void fill(int[] a, int val) {
-    for (int i = 0; i < a.length; i++) {
+    // This implementation is slightly inefficient timewise, but the extra
+    // effort over inlining it is O(1) and small, and I refuse to repeat code
+    // if it can be helped.
+    fill(a, 0, a.length, val);
+  }
+
+  /**
+   * Fill a range of an array with an int value.
+   *
+   * @param a the array to fill
+   * @param fromIndex the index to fill from, inclusive
+   * @param toIndex the index to fill to, exclusive
+   * @param val the value to fill with
+   */
+  public static void fill(int[] a, int fromIndex, int toIndex, int val) {
+    for (int i = fromIndex; i < toIndex; i++) {
       a[i] = val;
     }
   }
@@ -758,21 +822,22 @@ public class Arrays {
    * @param val the value to fill it with
    */
   public static void fill(long[] a, long val) {
-    for (int i = 0; i < a.length; i++) {
-      a[i] = val;
-    }
+    // This implementation is slightly inefficient timewise, but the extra
+    // effort over inlining it is O(1) and small, and I refuse to repeat code
+    // if it can be helped.
+    fill(a, 0, a.length, val);
   }
 
   /**
-   * Fill an array with an Object value.
+   * Fill a range of an array with a long value.
    *
    * @param a the array to fill
-   * @param val the value to fill it with
-   * @exception ClassCastException if a value cannot be put in the array because
-   *   it is an incompatible type.
+   * @param fromIndex the index to fill from, inclusive
+   * @param toIndex the index to fill to, exclusive
+   * @param val the value to fill with
    */
-  public static void fill(Object[] a, Object val) {
-    for (int i = 0; i < a.length; i++) {
+  public static void fill(long[] a, int fromIndex, int toIndex, long val) {
+    for (int i = fromIndex; i < toIndex; i++) {
       a[i] = val;
     }
   }
@@ -784,19 +849,53 @@ public class Arrays {
    * @param val the value to fill it with
    */
   public static void fill(short[] a, short val) {
-    for (int i = 0; i < a.length; i++) {
+    // This implementation is slightly inefficient timewise, but the extra
+    // effort over inlining it is O(1) and small, and I refuse to repeat code
+    // if it can be helped.
+    fill(a, 0, a.length, val);
+  }
+
+  /**
+   * Fill a range of an array with a short value.
+   *
+   * @param a the array to fill
+   * @param fromIndex the index to fill from, inclusive
+   * @param toIndex the index to fill to, exclusive
+   * @param val the value to fill with
+   */
+  public static void fill(short[] a, int fromIndex, int toIndex, short val) {
+    for (int i = fromIndex; i < toIndex; i++) {
       a[i] = val;
     }
   }
 
   /**
-   * Fill an array with a boolean value.
+   * Fill an array with an Object value.
    *
    * @param a the array to fill
    * @param val the value to fill it with
+   * @exception ClassCastException if val is not an instance of the element
+   *   type of a.
    */
-  public static void fill(boolean[] a, boolean val) {
-    for (int i = 0; i < a.length; i++) {
+  public static void fill(Object[] a, Object val) {
+    // This implementation is slightly inefficient timewise, but the extra
+    // effort over inlining it is O(1) and small, and I refuse to repeat code
+    // if it can be helped.
+    fill(a, 0, a.length, val);
+  }
+
+  /**
+   * Fill a range of an array with an Object value.
+   *
+   * @param a the array to fill
+   * @param fromIndex the index to fill from, inclusive
+   * @param toIndex the index to fill to, exclusive
+   * @param val the value to fill with
+   * @exception ClassCastException if val is not an instance of the element
+   *   type of a.
+   */
+  public static void fill(Object[] a, int fromIndex, int toIndex, Object val) {
+    for (int i = fromIndex; i < toIndex; i++) {
       a[i] = val;
     }
   }
@@ -979,10 +1078,10 @@ public class Arrays {
   }
 
   /**
-   * Sort a double array into ascending order. The sort algorithm is an optimised
-   * quicksort, as described in Jon L. Bentley and M. Douglas McIlroy's
-   * "Engineering a Sort Function", Software-Practice and Experience, Vol.
-   * 23(11) P. 1249-1265 (November 1993). This algorithm gives nlog(n)
+   * Sort a double array into ascending order. The sort algorithm is an
+   * optimised quicksort, as described in Jon L. Bentley and M. Douglas
+   * McIlroy's "Engineering a Sort Function", Software-Practice and Experience,
+   * Vol. 23(11) P. 1249-1265 (November 1993). This algorithm gives nlog(n)
    * performance on many arrays that would take quadratic time with a standard
    * quicksort. Note that this implementation, like Sun's, has undefined
    * behaviour if the array contains any NaN values.
@@ -1067,10 +1166,10 @@ public class Arrays {
   }
 
   /**
-   * Sort a float array into ascending order. The sort algorithm is an optimised
-   * quicksort, as described in Jon L. Bentley and M. Douglas McIlroy's
-   * "Engineering a Sort Function", Software-Practice and Experience, Vol.
-   * 23(11) P. 1249-1265 (November 1993). This algorithm gives nlog(n)
+   * Sort a float array into ascending order. The sort algorithm is an
+   * optimised quicksort, as described in Jon L. Bentley and M. Douglas
+   * McIlroy's "Engineering a Sort Function", Software-Practice and Experience,
+   * Vol. 23(11) P. 1249-1265 (November 1993). This algorithm gives nlog(n)
    * performance on many arrays that would take quadratic time with a standard
    * quicksort. Note that this implementation, like Sun's, has undefined
    * behaviour if the array contains any NaN values.
@@ -1256,8 +1355,8 @@ public class Arrays {
   }
 
   // The "cmp" method has been removed from here and replaced with direct
-  // compares in situ, to avoid problems with overflow if the difference between
-  // two numbers is bigger than a long will hold.
+  // compares in situ, to avoid problems with overflow if the difference
+  // between two numbers is bigger than a long will hold.
   // One particular change as a result is the use of r1 and r2 in qsort
 
   private static int med3(int a, int b, int c, long[] d) {
@@ -1330,10 +1429,10 @@ public class Arrays {
   }
 
   /**
-   * Sort a short array into ascending order. The sort algorithm is an optimised
-   * quicksort, as described in Jon L. Bentley and M. Douglas McIlroy's
-   * "Engineering a Sort Function", Software-Practice and Experience, Vol.
-   * 23(11) P. 1249-1265 (November 1993). This algorithm gives nlog(n)
+   * Sort a short array into ascending order. The sort algorithm is an
+   * optimised quicksort, as described in Jon L. Bentley and M. Douglas
+   * McIlroy's "Engineering a Sort Function", Software-Practice and Experience,
+   * Vol. 23(11) P. 1249-1265 (November 1993). This algorithm gives nlog(n)
    * performance on many arrays that would take quadratic time with a standard
    * quicksort.
    *
@@ -1419,11 +1518,11 @@ public class Arrays {
   /**
    * The bulk of the work for the object sort routines. If c is null,
    * uses the natural ordering.
-   * In general, the code attempts to be simple rather than fast, the idea being
-   * that a good optimising JIT will be able to optimise it better than I can,
-   * and if I try it will make it more confusing for the JIT. The exception is
-   * in declaring values "final", which I do whenever there is no need for them
-   * ever to change - this may give slight speedups.
+   * In general, the code attempts to be simple rather than fast, the idea
+   * being that a good optimising JIT will be able to optimise it better than I
+   * can, and if I try it will make it more confusing for the JIT. The
+   * exception is in declaring values "final", which I do whenever there is no
+   * need for them ever to change - this may give slight speedups.
    */
   private static void mergeSort(Object[] a, final Comparator c) {
     final int n = a.length;
@@ -1466,9 +1565,9 @@ public class Arrays {
 	  int d2 = -1;
 
           // The main merge loop; terminates as soon as either half is ended
-          // You'd think you needed to use & rather than && to make sure d2 gets
-          // calculated even if d1 == 0, but in fact if this is the case, d2
-          // hasn't changed since the last iteration.
+          // You'd think you needed to use & rather than && to make sure d2
+          // gets calculated even if d1 == 0, but in fact if this is the case,
+          // d2 hasn't changed since the last iteration.
           while ((d1 = start + size - p1) > 0 &&
                  (d2 = start + size + size2 - p2) > 0) {
             y[i++] = x[(compare(x[p1], x[p2], c) <= 0) ? p1++ : p2++];
@@ -1493,14 +1592,14 @@ public class Arrays {
    * guaranteed to be stable, that is, equal elements will not be reordered.
    * The sort algorithm is a mergesort with the merge omitted if the last
    * element of one half comes before the first element of the other half. This
-   * algorithm gives guaranteed O(nlog(n)) time, at the expense of making a copy
-   * of the array.
+   * algorithm gives guaranteed O(nlog(n)) time, at the expense of making a
+   * copy of the array.
    *
    * @param a the array to be sorted
    * @exception ClassCastException if any two elements are not mutually
    *   comparable
-   * @exception NullPointerException if an element is null (since null.compareTo
-   *   cannot work)
+   * @exception NullPointerException if an element is null (since
+   *   null.compareTo cannot work)
    */
   public static void sort(Object[] a) {
     mergeSort(a, null);
@@ -1511,8 +1610,8 @@ public class Arrays {
    * guaranteed to be stable, that is, equal elements will not be reordered.
    * The sort algorithm is a mergesort with the merge omitted if the last
    * element of one half comes before the first element of the other half. This
-   * algorithm gives guaranteed O(nlog(n)) time, at the expense of making a copy
-   * of the array.
+   * algorithm gives guaranteed O(nlog(n)) time, at the expense of making a
+   * copy of the array.
    *
    * @param a the array to be sorted
    * @param c a Comparator to use in sorting the array
@@ -1537,23 +1636,26 @@ public class Arrays {
    * @param a the array to return a view of
    * @returns a fixed-size list, changes to which "write through" to the array
    */
-  public static List toList(final Object[] a) {
+  public static List asList(final Object[] a) {
 
     // Check for a null argument
     if (a == null) {
       throw new NullPointerException();
     }
 
-    // These methods are all simple enough to be self-documenting.
-    return new ArrayList( a );
+    return new ListImpl( a );
   }
 
 
-  // Inner class used by toList(Object[]) to provide a list interface
-  // to an array
-  static class ArrayList extends AbstractList {
+  /**
+   * Inner class used by asList(Object[]) to provide a list interface
+   * to an array. The methods are all simple enough to be self documenting.
+   * Note: When Sun fully specify serialized forms, this class will have to
+   * be renamed.
+   */
+  private static class ListImpl extends AbstractList {
 
-    ArrayList(Object[] a) {
+    ListImpl(Object[] a) {
       this.a = a;
     }
 

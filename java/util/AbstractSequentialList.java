@@ -94,19 +94,6 @@ public abstract class AbstractSequentialList extends AbstractList {
     return removed;
   }
 
-  public void removeRange(int fromIndex, int toIndex) {
-    if (fromIndex > toIndex) {
-      throw new IllegalArgumentException();
-    } else if (fromIndex < 0 || toIndex >= size()) {
-      throw new IndexOutOfBoundsException();
-    }
-    ListIterator i = listIterator(fromIndex);
-    for (int c = fromIndex; c < toIndex; c++) {
-      i.next();
-      i.remove();
-    }
-  }
-
   public Object set(int index, Object o) {
     ListIterator i = listIterator(index);
     if (!i.hasNext()) {

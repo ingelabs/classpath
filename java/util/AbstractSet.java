@@ -21,12 +21,12 @@ package java.util;
 
 /**
  * An abstract implementation of Set to make it easier to create your own
- * implementations. In order to create a Set, subclass AbstractSet and implement
- * the same methods that are required for AbstractCollection (although these
- * methods must of course follow the contracts that Set puts on them -
- * specifically, no element must be in the set more than once). This class
- * simply provides implementations of equals() and hashCode() to fulfil the
- * contracts required of them by the Set interface.
+ * implementations. In order to create a Set, subclass AbstractSet and
+ * implement the same methods that are required for AbstractCollection
+ * (although these methods must of course meet the requirements that Set puts
+ * on them - specifically, no element may be in the set more than once). This
+ * class simply provides implementations of equals() and hashCode() to fulfil
+ * the requirements placed on them by the Set interface.
  */
 public abstract class AbstractSet extends AbstractCollection implements Set {
 

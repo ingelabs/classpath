@@ -28,9 +28,12 @@ import java.lang.reflect.Array;
  * iterator() and size() methods. The Iterator returned by iterator() need only
  * provide implementations of hasNext() and next() (that is, it may throw an
  * UnsupportedOperationException if remove() is called). To create a modifiable
- * Collection, you must in addition provide an implementation of the add(Object)
- * method and the Iterator returned by iterator must provide an implementation
- * of remove().
+ * Collection, you must in addition provide an implementation of the
+ * add(Object) method and the Iterator returned by iterator() must provide an
+ * implementation of remove(). Other methods should be overridden if the
+ * backing data structure allows for a more efficient implementation. The
+ * precise implementation used by AbstractCollection is documented, so that
+ * subclasses can tell which methods could be implemented more efficiently.
  */
 public abstract class AbstractCollection implements Collection {
 
@@ -133,9 +136,9 @@ public abstract class AbstractCollection implements Collection {
 
   /**
    * Tests whether this collection contains all the elements in a given
-   * collection. This implementation iterates over the given collection, testing
-   * whether each element is contained in this collection. If any one is not,
-   * false is returned. Otherwise true is returned.
+   * collection. This implementation iterates over the given collection,
+   * testing whether each element is contained in this collection. If any one
+   * is not, false is returned. Otherwise true is returned.
    *
    * @param c the collection to test against
    * @return true if this collection contains all the elements in the given
@@ -162,22 +165,24 @@ public abstract class AbstractCollection implements Collection {
   }
 
   /**
-   * Remove all instances of an object from this collection. That is, remove
-   * all elements e such that (o == null ? e == null : o.equals(e)). This
-   * implementation obtains an iterator over the collection and iterates over
-   * it, testing each element for equality with the given object. If it is
-   * equal, it is removed by the iterator's remove method (thus this method will
-   * fail with an UnsupportedOperationException if the Iterator's remove method
-   * does).
+   * Remove a single instance of an object from this collection. That is,
+   * remove one element e such that (o == null ? e == null : o.equals(e)), if
+   * such an element exists. This implementation obtains an iterator over the
+   * collection and iterates over it, testing each element for equality with
+   * the given object. If it is equal, it is removed by the iterator's remove
+   * method (thus this method will fail with an UnsupportedOperationException
+   * if the Iterator's remove method does). After the first element has been
+   * removed, true is returned; if the end of the collection is reached, false
+   * is returned.
    *
    * @param o the object to remove from this collection
-   * @return true if the remove operation caused the Collection to change
-   * @exception UnsupportedOperationException if this collection's Iterator does
-   *   not support the remove method
+   * @return true if the remove operation caused the Collection to change, or
+   *   equivalently if the collection did contain o.
+   * @exception UnsupportedOperationException if this collection's Iterator
+   *   does not support the remove method
    */
   public boolean remove(Object o) {
     Iterator i = iterator();
-    boolean modified = false;
 
     // This looks crazily inefficient, but it takes the test o==null outside
     // the loop, saving time, and also saves needing to store the result of
@@ -186,31 +191,32 @@ public abstract class AbstractCollection implements Collection {
       while (i.hasNext()) {
         if (i.next() == null) {
           i.remove();
-          modified = true;
+	  return true;
         }
       }
     } else {
       while (i.hasNext()) {
         if (o.equals(i.next())) {
           i.remove();
-          modified = true;
+          return true;
         }
       }
     }
-    return modified;
+    return false;
   }
 
   /**
    * Remove from this collection all its elements that are contained in a given
-   * collection. This implementation iterates over this collection, and for each
-   * element tests if it is contained in the given collection. If so, it is
-   * removed by the Iterator's remove method (thus this method will fail with an
-   * UnsupportedOperationException if the Iterator's remove method does).
+   * collection. This implementation iterates over this collection, and for
+   * each element tests if it is contained in the given collection. If so, it
+   * is removed by the Iterator's remove method (thus this method will fail
+   * with an UnsupportedOperationException if the Iterator's remove method
+   * does).
    *
    * @param c the collection to remove the elements of
    * @return true if the remove operation caused the Collection to change
-   * @exception UnsupportedOperationException if this collection's Iterator does
-   *   not support the remove method
+   * @exception UnsupportedOperationException if this collection's Iterator
+   *   does not support the remove method
    */
   public boolean removeAll(Collection c) {
     Iterator i = iterator();
@@ -234,8 +240,8 @@ public abstract class AbstractCollection implements Collection {
    *
    * @param c the collection to retain the elements of
    * @return true if the remove operation caused the Collection to change
-   * @exception UnsupportedOperationException if this collection's Iterator does
-   *   not support the remove method
+   * @exception UnsupportedOperationException if this collection's Iterator
+   *   does not support the remove method
    */
   public boolean retainAll(Collection c) {
     Iterator i = iterator();
@@ -270,14 +276,14 @@ public abstract class AbstractCollection implements Collection {
    * Copy the collection into a given array if it will fit, or into a
    * dynamically created array of the same run-time type as the given array if
    * not. If there is space remaining in the array, the first element after the
-   * end of the collection is set to null (this is only useful if the collection
-   * is known to contain no null elements, however). This implementation first
-   * tests whether the given array is large enough to hold all the elements of
-   * the collection. If not, the reflection API is used to allocate a new array
-   * of the same run-time type. Next an iterator is obtained over the collection
-   * and the elements are placed in the array as they are returned by the
-   * iterator. Finally the first spare element, if any, of the array is set to
-   * null, and the created array is returned.
+   * end of the collection is set to null (this is only useful if the
+   * collection is known to contain no null elements, however). This
+   * implementation first tests whether the given array is large enough to hold
+   * all the elements of the collection. If not, the reflection API is used to
+   * allocate a new array of the same run-time type. Next an iterator is
+   * obtained over the collection and the elements are placed in the array as
+   * they are returned by the iterator. Finally the first spare element, if
+   * any, of the array is set to null, and the created array is returned.
    *
    * @param a the array to copy into, or of the correct run-time type
    * @return the array that was produced
