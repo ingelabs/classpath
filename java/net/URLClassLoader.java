@@ -294,6 +294,21 @@ public class URLClassLoader extends SecureClassLoader {
 
                 source = new CodeSource(url, certificates);
             }
+	  else if (url.getProtocol().equals("file"))
+	    {
+	      try
+		{
+		  String u = url.toExternalForm();
+		  // Skip "file:" and then get canonical directory name.
+		  File f = new File(u.substring(5));
+		  f = f.getCanonicalFile(); 
+		  url = new URL("file", "", f.getParent());
+		  source = new CodeSource (url, null);
+		}
+              catch (IOException ignore)
+		{
+		}
+	    }
 
             // And finally construct the class!
             return defineClass(className, classData,

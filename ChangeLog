@@ -1,4 +1,9 @@
-2002-09-02  Mark Wielaard  <mark@klomp.org>
+2002-09-10  Mark Wielaard  <mark@klomp.org>
+
+	* java/net/URLClassLoader.java (findClass): Also construct CodeSource
+	for "file" protocol.
+
+2002-09-10  Mark Wielaard  <mark@klomp.org>
 
 	Thanks to rzschech. Closes bug #1132.
 	* gnu/java/util/prefs/NodeReader.java (readRoot): Also use "system".
