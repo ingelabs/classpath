@@ -1,3 +1,10 @@
+2004-06-03  Michael Koch  <konqueror@gmx.de>
+
+	* java/security/AccessControlContext.java
+	(equals): Renamed protectionDomain to protectionDomains.
+	(hashCode): Likewise.
+	* vm/reference/java/security/.cvsignore: New file.
+
 2004-06-03  Casey Marshall  <csm@gnu.org>
 
 	* java/security/AccessController.java

@@ -139,7 +139,7 @@ public final class AccessControlContext
       {
 	AccessControlContext acc = (AccessControlContext) obj;
 
-	if (acc.protectionDomain.length != protectionDomain.length)
+	if (acc.protectionDomains.length != protectionDomains.length)
 	  return false;
 
         int i, j;
@@ -166,8 +166,8 @@ public final class AccessControlContext
   public int hashCode()
   {
     int h = 0;
-    for (int i = 0; i < protectionDomain.length; i++)
-      h ^= protectionDomain[i].hashCode();
+    for (int i = 0; i < protectionDomains.length; i++)
+      h ^= protectionDomains[i].hashCode();
 
     return h;
   }
