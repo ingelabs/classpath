@@ -225,7 +225,7 @@ toByteArray()
 public String
 toString()
 {
-  return("Implement Me!");
+  return(new String(toByteArray()));
 }
 
 /*************************************************************************/
@@ -238,11 +238,13 @@ toString()
   * @param encoding The name of the character encoding to use
   *
   * @return A <code>String</code> containing the data written to this stream so far
+  *
+  * @exception UnsupportedEncodingException If the named encoding is not available
   */
 public String
-toString(String encoding)
+toString(String encoding) throws UnsupportedEncodingException
 {
-  return("Implement Me!");
+  return(new String(toByteArray(), encoding));
 }
 
 /*************************************************************************/
@@ -259,6 +261,8 @@ toString(String encoding)
   * @param high_byte The high eight bits to use for each character in the <code>String</code>
   *
   * @return A <code>String</code> containing the data written to this stream so far
+  *
+  * @deprecrated
   */
 public String
 toString(int high_byte)
