@@ -271,14 +271,28 @@ public class URLClassLoader extends SecureClassLoader
     abstract InputStream getInputStream() throws IOException;
   }
 
+  /**
+   * Returns the given URL with a canonicalized file path name when it
+   * is has the file protocol. Otherwise (or when the file part of the
+   * URL couldn't be canonicalized) it returns the original String.
+   * It makes sure that if the original file part ended with a file
+   * separator that the new file part also ends with a separator.
+   */
   static URL getCanonicalFileURL(URL url)
   {
     if ("file".equals(url.getProtocol()))
       {
 	try
 	  {
-	    File f = new File(url.getFile()).getCanonicalFile();
-	    url = new URL("file", "", f.toString());
+	    String f = url.getFile();
+	    File file = new File(f).getCanonicalFile();
+	    String cf = file.toString();
+	    String sep = File.separator;
+	    if (f.endsWith(sep) && !cf.endsWith(sep))
+	      {
+	        cf += "/";
+	      }
+	    url = new URL("file", "", cf);
 	  }
 	catch (IOException ignore)
 	  {

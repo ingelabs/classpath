@@ -1,3 +1,9 @@
+2002-12-21  Mark Wielaard  <mark@klomp.org>
+
+	* java/net/URLClassLoader.java (getCanonicalFileURL): Make sure that
+	if the original file part of the URL ended with a separator that the
+	canonical version also ends with a separator.
+
 2002-12-21  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/TreeMap.java (fabricateTree): Fix off-by-one error.
