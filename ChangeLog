@@ -1,6 +1,11 @@
+2002-10-16  C. Brian Jones <cbj@gnu.org>
+
+	* doc/www.gnu.org/home.wml: Updated link to nightly japi results to
+	point to alpha.gnu.org.
+
 2002-10-10  C. Brian Jones <cbj@gnu.org>
 	
-	* configure.in: fix goof I made earlier when AC_DEFINE'd stuff
+	* configure.in: Fix goof I made earlier when AC_DEFINE'd stuff
 	was changed since acconfig.h went away.
 
 2002-10-10  Stephen Crawley  <crawley@dstc.edu.au>
@@ -29,7 +34,7 @@
 
 2002-10-06  C. Brian Jones <cbj@gnu.org>
 
-	* doc/www.gnu.org/status.wml: removed since it is no longer used
+	* doc/www.gnu.org/status.wml: Removed since it is no longer used.
 
 2002-10-06  Mark Wielaard  <mark@klomp.org>
 
@@ -95,7 +100,7 @@
 
 2002-10-04  C. Brian Jones <cbj@gnu.org>
 
-	* .cvsignore: ignore all automt4e*.cache files
+	* .cvsignore: Ignore all automt4e*.cache files
 
 2002-10-04  Mark Wielaard  <mark@klomp.org>
 
