@@ -1,3 +1,8 @@
+2004-01-21  Jeroen Frijters  <jeroen@frijters.net>
+
+	* gnu/java/io/PlatformHelper.java (isRootDirectory): Fixed, by
+	delegating to beginWithRootPathPrefix.
+
 2004-01-20  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* include/gnu_java_awt_peer_gtk_GtkTextFieldPeer.h: Regenerate.
