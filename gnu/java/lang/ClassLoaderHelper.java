@@ -15,12 +15,18 @@ public class ClassLoaderHelper
    * if the resource could not be found
    */
   public static final File getSystemResourceAsFile(String name) {
+    if (name.startsWith("/"))
+      name = name.substring(1);
     String path = System.getProperty("java.class.path", ".");
     StringTokenizer st = new StringTokenizer(path,
                			   System.getProperty("path.separator", ":"));
     while (st.hasMoreElements()) {
       String token = st.nextToken();
-      File file = new File(token, name);
+      File file;
+      if (token.endsWith(File.separator))
+        file = new File(token, name);
+      else
+        file = new File(token + File.separator + name);
       if (file.isFile())
 	return file;
     }
