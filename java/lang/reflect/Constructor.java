@@ -107,14 +107,6 @@ public final class Constructor implements Member {
 		this.modifiers = modifiers;
 		this.parameterTypes = parameterTypes;
 		this.exceptionTypes = exceptionTypes;
-
-		String className = declaringClass.getName();
-		int lastDot = className.lastIndexOf('.');
-		if(lastDot == -1) {
-			this.name = className;
-		} else {
-			this.name = className.substring(lastDot+1);
-		}
 	}
 
 	/** Gets the class that declared this constructor.
