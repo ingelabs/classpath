@@ -7,6 +7,11 @@
 
 2003-11-21  Mark Wielaard  <mark@klomp.org>
 
+	* java/io/InputStreamReader.java (getEncoding): Handle closed stream
+	(in == null) case.
+
+2003-11-21  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/plaf/basic/BasicDefaults.java (BasicDefaults): Put
 	AbstractUndoableEdit.undoText and AbstractUndoableEdit.redoText.
 

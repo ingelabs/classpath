@@ -154,7 +154,7 @@ public class InputStreamReader extends Reader
    */
   public String getEncoding()
   {
-    return in.getSchemeName();
+    return in != null ? in.getSchemeName() : null;
   }
 
   /**
