@@ -71,10 +71,10 @@ public class JarFile extends ZipFile
    */
   private Manifest manifest;
 
-  /** Wether to verify the manifest and all entries. */
+  /** Whether to verify the manifest and all entries. */
   private boolean verify;
 
-  /** Wether the has already been loaded. */
+  /** Whether the has already been loaded. */
   private boolean manifestRead = false;
 
   // Constructors
@@ -109,6 +109,10 @@ public class JarFile extends ZipFile
     FileNotFoundException, IOException
   {
     super(fileName);
+    if (verify) {
+	manifest = readManifest();
+	verify();
+    }
   }
 
   /**
@@ -141,6 +145,10 @@ public class JarFile extends ZipFile
     IOException
   {
     super(file);
+    if (verify) {
+	manifest = readManifest();
+	verify();
+    }
   }
 
   /**
@@ -165,6 +173,10 @@ public class JarFile extends ZipFile
     FileNotFoundException, IOException, IllegalArgumentException
   {
     super(file, mode);
+    if (verify) {
+	manifest = readManifest();
+	verify();
+    }
   }
 
   // Methods
@@ -196,15 +208,18 @@ public class JarFile extends ZipFile
 	if (manEntry != null)
 	  {
 	    InputStream in = super.getInputStream(manEntry);
+	    manifestRead = true;
 	    return new Manifest(in);
 	  }
 	else
 	  {
+	    manifestRead = true;
 	    return null;
 	  }
       }
     catch (IOException ioe)
       {
+	manifestRead = true;
 	return null;
       }
   }

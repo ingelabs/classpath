@@ -1,3 +1,9 @@
+2003-02-03  John Leuner  <jewel@debian.org>
+	* java/util/zip/InflaterInputStream.java: fix problem with 0-length 
+	reads from end of file
+	* java/util/zip/ZipInputStream.java: idem
+	* java/util/jar/JarFile.java: read manifest
+
 2003-02-02  C. Brian Jones  <cbj@gnu.org>
 
 	* doc/www.gnu.org/home.wml: add Jikes RVM to list of JVMs; update

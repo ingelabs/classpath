@@ -286,6 +286,8 @@ public class ZipInputStream extends InflaterInputStream implements ZipConstants
    */
   public int read(byte[] b, int off, int len) throws IOException
   {
+    if(len == 0)
+	return 0;
     if (crc == null)
       throw new IOException("Stream closed.");
     if (entry == null)

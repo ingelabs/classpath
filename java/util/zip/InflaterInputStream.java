@@ -182,6 +182,9 @@ public class InflaterInputStream extends FilterInputStream {
    */
   public int read(byte[] b, int off, int len) throws IOException
   {
+
+    if (len == 0) return 0;
+
     for (;;)
       {
 	int count;
