@@ -268,11 +268,11 @@ public class IntrospectionIncubator {
 		switch(funcType) {
 			case ADD:
 				type = method.getParameterTypes()[0];
-				newName = name.substring(3);
+				newName = name.substring(3,name.length()-8);
 				break;
 			case REMOVE:
 				type = method.getParameterTypes()[0];
-				newName = name.substring(6);
+				newName = name.substring(6,name.length()-8);
 				break;
 			default:
 				return;
