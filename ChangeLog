@@ -1,5 +1,15 @@
 2004-04-17  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/DataInput.java,
+	java/io/File.java,
+	java/io/InputStream.java,
+	java/io/InputStreamReader.java,
+	java/io/PushbackInputStream.java,
+	java/io/RandomAccessFile.java:
+	Fixed javadocs all over.
+
+2004-04-17  Michael Koch  <konqueror@gmx.de>
+
 	* java/lang/Byte.java
 	(parseByte): Fixed <code> tag in javadoc.
 	* java/lang/CharSequence.java

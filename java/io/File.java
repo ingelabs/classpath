@@ -207,7 +207,7 @@ public class File implements Serializable, Comparable
    * the path of this <code>File</code> object if an only if that file
    * does not already exist.
    * <p>
-   * A <code>SecurityManager</code>checkWrite</code> check is done prior
+   * A <code>SecurityManager.checkWrite</code> check is done prior
    * to performing this action.
    *
    * @return <code>true</code> if the file was created, <code>false</code> if
