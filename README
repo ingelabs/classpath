@@ -1,4 +1,4 @@
-GNU Classpath README - Last updated: December 23, 2002
+GNU Classpath README - Last updated: Arpil 30, 2004
 
 GNU Classpath, Essential Libraries for Java is a project to create
 a complete "clean room" implementation of the Java class libraries 
@@ -8,18 +8,29 @@ a number of free replacements for standard Java development tools like
 javadoc, javap, javah, and others.
 
 Eventually, these essential libraries for Java will work with as many 
-free JVMs as possible.  Virtual machines known to use GNU Classpath
-include:
-	* GCJ 		(http://gcc.gnu.org/java/)
-	* ORP		(http://orp.sourceforge.net/)
-	* Kissme	(http://kissme.sourceforge.net/)
-	* SableVM	(http://www.sablevm.org/)
-	* Jupiter	(http://www.eecg.toronto.edu/~doylep/jupiter/)
-	* Joas		(http://www.oberon.ethz.ch/jaos/)
-	* AegisVM	(http://aegisvm.sourceforge.net/)
+free JVMs as possible.  Complete development environments known to be
+based on GNU Classpath include (recommended for end users):
 
-This is a development release only and is not ready for general
-purpose use.
+	* GCC with GCJ 	(http://gcc.gnu.org/java/)
+	* Kaffe		(http://www.kaffe.org/)
+
+Smaller (runtime only) environments based on GNU Classpath includei
+(recommended for GNU Classpath hackers):
+
+	* JamVM		(http://www.jamvmv.org/)
+	* Jikes RVM	(http://www.ibm.com/developerworks/oss/jikesrvm/)
+	* Kissme	(http://kissme.sourceforge.net/)
+
+In general the latest releases of the above VMs will work out of the box
+with the latest GNU Classpath release (and in most cases directly with the
+development sources from CVS).
+
+See for other GNU Classpath based runtimes, compilers and tools the
+GNU Classpath website: http://www.gnu.org/software/classpath/stories.html
+
+This is a development snapshot release only and is not ready for general
+purpose use.  You need to combine it at least with one of the development
+environments mentioned above.
 
 Most JVMs come with their own customized version of GNU Classpath.
 Please check if there is a customised version available for the JVM you
@@ -32,7 +43,7 @@ See the file NEWS for details on what is included in this release.
 See the file TODO for the latest to do list.
 See the file HACKING for working on (non-released) CVS development versions.
 
-Homepage: http://www.classpath.org/ or http://www.gnu.org/software/classpath/
+Homepage: http://www.gnu.org/software/classpath/
 
 General Mailing List: classpath@gnu.org
   --> Bugs and patches can be reported via Savannah if you have a browser
@@ -42,19 +53,15 @@ General Mailing List: classpath@gnu.org
       only with a body and subject of "unsubscribe".  This is a
       smartlist managed mailing list.
 
-CVS Commit List: commit-classpath@gnu.org
+CVS Commit, Bugs and Patches List: commit-classpath@gnu.org
   --> To subscribe send email to commit-classpath-request@gnu.org with a 
       subject and body of "subscribe".  To unsubscribe do the same,
       only with a body and subject of "unsubscribe".  This is a
       smartlist managed mailing list.
 
-Anonymous CVSROOT: :pserver:anoncvs@subversions.gnu.org:/cvsroot/classpath 
+Anonymous CVSROOT: :pserver:anoncvs@savannah.gnu.org:/cvsroot/classpath 
   --> First do "cvs login".  Hit <Return> when prompted for a password
   --> More detailed instructions available on the Savannah project website.
-
-Other Java free software projects of note:
-
-Kaffe - http://www.kaffe.org/
+      http://savannah.gnu.org/projects/classpath/
 
 Happy Hacking!
-

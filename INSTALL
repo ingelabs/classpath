@@ -1,4 +1,4 @@
-Installing GNU Classpath - Last updated: December 23, 2002
+Installing GNU Classpath - Last updated: April 30, 2004
 
 First, this is a development release only! Unless you are interested in
 active development and debugging, or just like running random alpha code,
@@ -6,7 +6,8 @@ this release is probably not for you. Please see the README file for a
 list of VMs that work with GNU Classpath.
 
 Note that if you are building from a non-released (CVS) version of GNU
-classpath, installation instructions are found in the HACKING file.
+classpath, installation instructions are found in the doc/hacking.texi
+file. Or at http://www.gnu.org/software/classpath/docs/hacking.html
 
 ------------------------------------------------------------------
 Suggested Software
@@ -18,19 +19,19 @@ Suggested Software
         if changes are made that require rebuilding configure, Makefile.in,
         aclocal.m4, or config.h.in.
 
-        - GNU autoconf 2.59
-        - GNU automake 1.7
-        - GNU libtool 1.4.2
+        - GNU autoconf 2.59+
+        - GNU automake 1.7+
+        - GNU libtool 1.4.2+
+
+	When working from CVS you can run the above tools by executing
+	./autogen.sh in the source directory.
 
 	For building the Java bytecode (.class files), one of these
 	compilers are required.  You can select which compiler using
 	--with-jikes, --with-gcj or --with-kjc as argument to
-	configure; the present default is gcj.  The javac compiler
-	included in any of Sun's JDKs will not work, as it will not
-	compile java.lang.Object.
+	configure; the present default is gcj.
 
-        - GCJ 3.3+ (part of the GNU GCC package).  Note that GCC
-	  3.4 (from CVS) is currently unreleased.  
+        - GCJ 3.3+ (part of the GNU GCC package).
         - IBM jikes 1.18+.  
         - The kjc compiler is supported with configure but we have
           been unable to successfully compile with it.
@@ -38,9 +39,11 @@ Suggested Software
 	For building the JNI native libraries, the following are required
         unless --disable-gtk-peer is used as an argument to configure.
 
-        - GTK+ 2.x.x
+        - GTK+ 2.2.x (or higher)
         - libart_lgpl 2.1.0
-        - gdk-pixbuf (Only needed if you want to compile the native library)
+        - gdk-pixbuf
+
+	For building the documentation you will need texinfo 4.2 or higher.
 
 This package was designed to use the GNU standard for configuration
 and makefiles.  To build and install do the following:
@@ -84,8 +87,7 @@ CLASSPATH=/usr/local/classpath/share/classpath/glibj.zip:.
 export LD_LIBRARY_PATH CLASSPATH
 
 More information about the VMs that use GNU Classpath can be found in the
-README file. Information on using the above setup with the ORP VM can be
-found at <http://www.gnu.org/software/classpath/doc/orp.html>.
+README file.
 
 ------------------------------------------------------------------
 Misc. Notes

@@ -343,6 +343,8 @@ autoconf 2.59+
 libtool 1.4.2+
 @item
 GNU m4 1.4
+@item
+texinfo 4.2+
 @end itemize
 
 All of these tools are available from
@@ -394,6 +396,16 @@ work with autoconf.
 
 @item perl
 Larry Wall's scripting language.  It is used internally by automake.
+
+@item texinfo
+Manuals and documentation (like this guide) are written in texinfo.
+Texinfo is the official documentation format of the GNU project.
+Texinfo uses a single source file to produce output in a number of formats,
+both online and printed (dvi, info, html, xml, etc.). This means that
+instead of writing different documents for online information and another
+for a printed manual, you need write only one document. And when the work
+is revised, you need revise only that one document.
+
 @end table
 
 

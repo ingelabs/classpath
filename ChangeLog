@@ -1,3 +1,10 @@
+2004-04-30  Mark Wielaard  <mark@klomp.org>
+
+	* README: Update end user dev environments and hackers runtime lists.
+	* INSTALL: Update needed library versions, add texinfo version
+	requirement, mention website/hacker guide.
+	* doc/hacking.texinfo: Include item on texinfo.
+
 2004-04-30  Michael Koch  <konqueror@gmx.de>
 
 	* include/gnu_java_awt_peer_gtk_GdkFontMetrics.h,
