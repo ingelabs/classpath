@@ -1,5 +1,5 @@
 /* Toolkit.java -- AWT Toolkit superclass
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of the non-peer AWT libraries of GNU Classpath.
 
@@ -82,7 +82,7 @@ getDefaultToolkit()
     return(toolkit);
 
   String toolkit_name = System.getProperty("awt.toolkit",
-                          "gnu.java.awt.peer.gtk.GtkToolkit");
+					   default_toolkit_name);
 
   try
     {

@@ -1,3 +1,8 @@
+2001-05-10  Shane Nay  <shane@minirl.com>
+
+	* java/awt/Toolkit.java (getDefaultToolkit): Use
+	default_toolkit_name.
+
 2001-05-10  Tom Tromey  <tromey@redhat.com>
 
 	* java/text/SimpleDateFormat.java (computeCenturyStart): New
