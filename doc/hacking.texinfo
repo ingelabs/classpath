@@ -11,7 +11,7 @@
 This file contains important information you will need to know if you
 are going to hack on the GNU Classpath project code.
 
-Copyright (C) 1998,1999,2000,2001,2002,2003 Free Software Foundation, Inc.
+Copyright (C) 1998,1999,2000,2001,2002,2003, 2004 Free Software Foundation, Inc.
 
 @end ifinfo
 
@@ -349,6 +349,44 @@ formatting tool that closely matches those rules.
 For documentation comments, please follow
 @uref{http://java.sun.com/products/jdk/javadoc/writingdoccomments.html,How
 to Write Doc Comments for Javadoc}.
+
+
+Here is a list of some specific rules used when hacking on Classpath.
+
+@c FIXME for now there is only one, so just put it here
+@c really we need a new node, and a collected list of such rules
+@itemize
+
+@item
+Don't catch a @code{NullPointerException} as an alternative to simply
+checking for @code{null}.  It is clearer and usually more efficient
+to simply write an explicit check.
+
+For instance, don't write:
+
+@example
+try
+  @{
+    return foo.doit();
+  @}
+catch (NullPointerException _)
+  @{
+    return 7;
+  @}
+@end example
+
+If your intent above is to check whether @samp{foo} is @code{null},
+instead write:
+
+@example
+if (foo == null)
+  return 7;
+else
+  return foo.doit();
+@end example
+
+@end itemize
+
 
 @node Programming Goals, API Compatibility, Programming Standards, Top
 @comment node-name, next, previous, up
