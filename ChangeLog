@@ -1,3 +1,15 @@
+2004-11-11  Graydon Hoare  <graydon@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTextUI.java:
+	Listen to focus events, indicate focus via caret.
+	* javax/swing/text/GapContent.java (getString): Return substring.
+	* javax/swing/text/PlainDocument.java (reindex): New method.
+	(createDefaultRoot): Call it.
+	(insertUpdate): Likewise.
+	(removeUpdate): Likewise.
+	* javax/swing/text/Utilities.java (drawTabbedText): Always advance
+	on tab and newline, even if no painting happens.
+
 2004-11-11  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c (setFont):
