@@ -27,6 +27,7 @@ import java.util.Hashtable;
 import java.util.Locale;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
+import java.util.MissingResourceException;
 
 /**
   * This class is the abstract superclass of classes which perform 
