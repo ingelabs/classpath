@@ -174,6 +174,7 @@ public class Properties extends Hashtable
    *
    * @param in the input stream
    * @throws IOException if an error occurred when reading the input
+   * @throws NullPointerException if in is null
    */
   public void load(InputStream inStream) throws IOException
   {

@@ -386,7 +386,7 @@ public class Throwable extends Object implements Serializable
   }
 
   /**
-   * The implentation for printing a stack trace.
+   * The implementation for printing a stack trace.
    *
    * @param stream the destination stream
    */

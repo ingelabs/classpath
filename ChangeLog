@@ -1,3 +1,21 @@
+2002-03-20  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/lang/Cloneable.java: Improve Javadoc.
+	* java/lang/Comparable.java: Improve formatting.
+	* java/lang/Compiler.java: Improve formatting. Update to 1.4.
+	* java/lang/InheritableThreadLocal.java: Update to 1.4. This
+	includes much less object creation.
+	* java/lang/Process.java: Update to 1.4.
+	* java/lang/Runnable.java: Improve formatting.
+	* java/lang/SecurityManager.java: Partial update to 1.4.
+	* java/lang/ThreadGroup.java: Update to 1.4.
+	* java/lang/ThreadLocal.java: Update to 1.4. This includes much
+	less object creation.
+	* vm/reference/java/lang/Runtime.java: Check for dead Thread.
+	* vm/reference/java/lang/Thread.java: Update to 1.4.
+	* vm/reference/java/lang/Throwable.java: Fix typo.
+	* java/util/Properties.java: Fix comment.
+
 2002-03-20  Sascha Brawer  <brawer@acm.org>
 
 	* java/awt/Font.java: Add 1.3 and 1.4 constant values.

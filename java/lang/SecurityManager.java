@@ -38,10 +38,18 @@ exception statement from your version. */
 
 package java.lang;
 
+import java.awt.AWTPermission;
+import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FilePermission;
+import java.lang.reflect.Member;
 import java.net.InetAddress;
+import java.net.SocketPermission;
+import java.security.AllPermission;
 import java.security.Permission;
+import java.security.Security;
 import java.security.SecurityPermission;
+import java.util.PropertyPermission;
 
 /**
  * SecurityManager is a class you can extend to create your own Java
@@ -55,7 +63,7 @@ import java.security.SecurityPermission;
  * <pre>
  * SecurityManager sm = System.getSecurityManager();
  * if (sm != null)
- *   sm.checkXXX(<em>argument</em>, ...);
+ *   sm.checkABC(<em>argument</em>, ...);
  * </pre>
  * Note that this is thread-safe, by caching the security manager in a local
  * variable rather than risking a NullPointerException if the mangager is
@@ -179,10 +187,8 @@ public class SecurityManager
    */
   protected ClassLoader currentClassLoader()
   {
-    // XXX should be:
-    // Class c = currentLoadedClass();
-    // return c != null ? c.getClassLoader() : null;
-    return VMSecurityManager.currentClassLoader();
+    Class c = currentLoadedClass();
+    return c != null ? c.getClassLoader() : null;
   }
 
   /**
@@ -202,14 +208,8 @@ public class SecurityManager
    */
   protected Class currentLoadedClass()
   {
-    // XXX Should be:
-    // int i = classLoaderDepth();
-    // return i >= 0 ? getClassContext(i) : null;
-    Class[] c = getClassContext();
-    for (int i = 0; i < c.length; i++)
-      if (c[i].getClassLoader() != null)
-        return c[i];
-    return null;
+    int i = classLoaderDepth();
+    return i >= 0 ? getClassContext()[i] : null;
   }
 
   /**
@@ -245,12 +245,18 @@ public class SecurityManager
    */
   protected int classLoaderDepth()
   {
-    // XXX Check AllPermission first.
-    Class[] c = getClassContext();
-    for (int i = 0; i <c.length; i++)
-      if (c[i].getClassLoader() != null)
-        // XXX Check if c[i] is AccessController, or a system class.
-        return i;
+    try
+      {
+        checkPermission(new AllPermission());
+      }
+    catch (SecurityException e)
+      {
+        Class[] c = getClassContext();
+        for (int i = 0; i < c.length; i++)
+          if (c[i].getClassLoader() != null)
+            // XXX Check if c[i] is AccessController, or a system class.
+            return i;
+      }
     return -1;
   }
 
@@ -338,7 +344,6 @@ public class SecurityManager
     // if (! (context instanceof AccessControlContext))
     //   throw new SecurityException("Missing context");
     // ((AccessControlContext) context).checkPermission(perm);
-     
     throw new SecurityException("Operation not allowed");
   }
 
@@ -354,9 +359,7 @@ public class SecurityManager
    */
   public void checkCreateClassLoader()
   {
-    // XXX Should be:
-    // checkPermission(new RuntimePermission("createClassLoader"));
-    throw new SecurityException("Cannot create new ClassLoaders.");
+    checkPermission(new RuntimePermission("createClassLoader"));
   }
 
   /**
@@ -385,8 +388,8 @@ public class SecurityManager
    */
   public void checkAccess(Thread t)
   {
-    // XXX Implement this correctly.
-    throw new SecurityException("Cannot modify Threads.");
+    if (t.group != null && t.group.getParent() != null)
+      checkPermission(new RuntimePermission("modifyThread"));
   }
 
   /**
@@ -404,9 +407,9 @@ public class SecurityManager
    * <code>RuntimePermission("modifyThreadGroup")</code>, return silently,
    * so that core classes (the Classpath library!) can modify any thread.
    *
-   * @param t the other Thread to check
+   * @param g the ThreadGroup to check
    * @throws SecurityException if permission is denied
-   * @throws NullPointerException if t is null
+   * @throws NullPointerException if g is null
    * @see Thread#Thread()
    * @see ThreadGroup#ThreadGroup()
    * @see ThreadGroup#stop()
@@ -418,8 +421,8 @@ public class SecurityManager
    */
   public void checkAccess(ThreadGroup g)
   {
-    // XXX Implement this correctly.
-    throw new SecurityException("Cannot modify ThreadGroups.");
+    if (g.getParent() != null)
+      checkPermission(new RuntimePermission("modifyThreadGroup"));
   }
 
   /**
@@ -436,8 +439,7 @@ public class SecurityManager
    */
   public void checkExit(int status)
   {
-    // XXX Should be: checkPermission(new RuntimePermission("exitVM"));
-    throw new SecurityException("Cannot exit JVM.");
+    checkPermission(new RuntimePermission("exitVM"));
   }
 
   /**
@@ -456,8 +458,9 @@ public class SecurityManager
    */
   public void checkExec(String program)
   {
-    // XXX Implement this correctly.
-    throw new SecurityException("Cannot execute programs.");
+    if (! program.equals(new File(program).getAbsolutePath()))
+      program = "<<ALL FILES>>";
+    checkPermission(new FilePermission(program, "execute"));
   }
 
   /**
@@ -476,10 +479,8 @@ public class SecurityManager
   public void checkLink(String filename)
   {
     // Use the toString() hack to do the null check.
-    // XXX Should be:
-    // checkPermission(new RuntimePermission("loadLibrary."
-    //                                       + filename.toString()));
-    throw new SecurityException("Cannot link native libraries.");
+    checkPermission(new RuntimePermission("loadLibrary."
+                                          + filename.toString()));
   }
 
   /**
@@ -497,9 +498,9 @@ public class SecurityManager
    */
   public void checkRead(FileDescriptor desc)
   {
-    // XXX Should be:
-    // checkPermission(new RuntimePermission("readFileDescriptor"));
-    throw new SecurityException("Cannot read files via file descriptors.");
+    if (desc == null)
+      throw new NullPointerException();
+    checkPermission(new RuntimePermission("readFileDescriptor"));
   }
 
   /**
@@ -520,8 +521,7 @@ public class SecurityManager
    */
   public void checkRead(String filename)
   {
-    // XXX Should be: checkPermission(new FilePermission(filename, "read"));
-    throw new SecurityException("Cannot read files via file names.");
+    checkPermission(new FilePermission(filename, "read"));
   }
 
   /**
@@ -565,9 +565,9 @@ public class SecurityManager
    */
   public void checkWrite(FileDescriptor desc)
   {
-    // XXX Should be:
-    // checkPermission(new RuntimePermission("writeFileDescriptor"));
-    throw new SecurityException("Cannot write files via file descriptors.");
+    if (desc == null)
+      throw new NullPointerException();
+    checkPermission(new RuntimePermission("writeFileDescriptor"));
   }
 
   /**
@@ -590,8 +590,7 @@ public class SecurityManager
    */
   public void checkWrite(String filename)
   {
-    // XXX Should be: checkPermission(new FilePermission(filename, "write"));
-    throw new SecurityException("Cannot write files via file names.");
+    checkPermission(new FilePermission(filename, "write"));
   }
 
   /**
@@ -607,8 +606,7 @@ public class SecurityManager
    */
   public void checkDelete(String filename)
   {
-    // XXX Should be: checkPermission(new FilePermission(filename, "delete"));
-    throw new SecurityException("Cannot delete files.");
+    checkPermission(new FilePermission(filename, "delete"));
   }
 
   /**
@@ -630,12 +628,12 @@ public class SecurityManager
    */
   public void checkConnect(String host, int port)
   {
-    // XXX Should be:
-    // if (port == -1)
-    //   checkPermission(new SocketPermission(host, "resolve"));
-    // else
-    //   checkPermission(new SocketPermission(host + ":" + port, "connect"));
-    throw new SecurityException("Cannot make network connections.");
+    if (port == -1)
+      checkPermission(new SocketPermission(host, "resolve"));
+    else
+      // Use the toString() hack to do the null check.
+      checkPermission(new SocketPermission(host.toString() + ":" + port,
+                                           "connect"));
   }
 
   /**
@@ -668,7 +666,9 @@ public class SecurityManager
     // if (port == -1)
     //   ac.checkPermission(new SocketPermission(host, "resolve"));
     // else
-    //   ac.checkPermission(new SocketPermission(host + ":" +port, "connect"));
+    //   // Use the toString() hack to do the null check.
+    //   ac.checkPermission(new SocketPermission(host.toString + ":" +port,
+    //                                           "connect"));
     throw new SecurityException("Cannot make network connections.");
   }
 
@@ -686,11 +686,9 @@ public class SecurityManager
    */
   public void checkListen(int port)
   {
-    // XXX Should be:
-    // checkPermission(new SocketPermission("localhost:"
-    //                                      + (port == 0 ? "1024-" : "" +port),
-    //                                      "listen"));
-    throw new SecurityException("Cannot listen for connections.");
+    checkPermission(new SocketPermission("localhost:"
+                                         + (port == 0 ? "1024-" : "" +port),
+                                         "listen"));
   }
 
   /**
@@ -710,10 +708,8 @@ public class SecurityManager
   public void checkAccept(String host, int port)
   {
     // Use the toString() hack to do the null check.
-    // XXX Should be:
-    // checkPermission(new SocketPermission(host.toString() + ":" + port,
-    //                                      "accept"));
-    throw new SecurityException("Cannot accept connections.");
+    checkPermission(new SocketPermission(host.toString() + ":" + port,
+                                         "accept"));
   }
 
   /**
@@ -730,10 +726,8 @@ public class SecurityManager
    */
   public void checkMulticast(InetAddress addr)
   {
-    // XXX Should be:
-    // checkPermission(new SocketPermission(addr.getHostAddress(),
-    //                                      "accept,connect"));
-    throw new SecurityException("Cannot read or write multicast.");
+    checkPermission(new SocketPermission(addr.getHostAddress(),
+                                         "accept,connect"));
   }
 
   /**
@@ -753,10 +747,8 @@ public class SecurityManager
    */
   public void checkMulticast(InetAddress addr, byte ttl)
   {
-    // XXX Should be:
-    // checkPermission(new SocketPermission(addr.getHostAddress(),
-    //                                      "accept,connect"));
-    throw new SecurityException("Cannot read or write multicast.");
+    checkPermission(new SocketPermission(addr.getHostAddress(),
+                                         "accept,connect"));
   }
 
   /**
@@ -773,9 +765,7 @@ public class SecurityManager
    */
   public void checkPropertiesAccess()
   {
-    // XXX Should be:
-    // checkPermission(new PropertyPermission("*", "read,write"));
-    throw new SecurityException("Cannot access all system properties at once.");
+    checkPermission(new PropertyPermission("*", "read,write"));
   }
 
   /**
@@ -793,8 +783,7 @@ public class SecurityManager
    */
   public void checkPropertyAccess(String key)
   {
-    // XXX Should be: checkPermission(new PropertyPermission(key, "read"));
-    throw new SecurityException("Cannot access individual system properties.");
+    checkPermission(new PropertyPermission(key, "read"));
   }
 
   /**
@@ -815,19 +804,17 @@ public class SecurityManager
    */
   public boolean checkTopLevelWindow(Object window)
   {
-    // Should be:
-    // if (window == null)
-    //   throw new NullPointerException();
-    // try
-    //   {
-    //     checkPermission(new AWTPermission("showWindowWithoutWarningBanner"));
-    //     return true;
-    //   }
-    // catch (SecurityException e)
-    //   {
-    //     return false;
-    //   }
-    return false;
+    if (window == null)
+      throw new NullPointerException();
+    try
+      {
+        checkPermission(new AWTPermission("showWindowWithoutWarningBanner"));
+        return true;
+      }
+    catch (SecurityException e)
+      {
+        return false;
+      }
   }
 
   /**
@@ -843,8 +830,7 @@ public class SecurityManager
    */
   public void checkPrintJobAccess()
   {
-    // XXX Should be: checkPermission(new RuntimePermission("queuePrintJob"));
-    throw new SecurityException("Cannot create print jobs.");
+    checkPermission(new RuntimePermission("queuePrintJob"));
   }
 
   /**
@@ -860,8 +846,7 @@ public class SecurityManager
    */
   public void checkSystemClipboardAccess()
   {
-    // XXX Should be: checkPermission(new AWTPermission("accessClipboard"));
-    throw new SecurityException("Cannot access the system clipboard.");
+    checkPermission(new AWTPermission("accessClipboard"));
   }
 
   /**
@@ -899,8 +884,7 @@ public class SecurityManager
    */
   public void checkPackageAccess(String packageName)
   {
-    // XXX Implement this.
-    throw new SecurityException("Cannot access packages via the ClassLoader.");
+    checkPackageList(packageName, "access", "accessClassInPackage.");
   }
 
   /**
@@ -922,8 +906,7 @@ public class SecurityManager
    */
   public void checkPackageDefinition(String packageName)
   {
-    // XXX Implement this.
-    throw new SecurityException("Cannot load classes into any packages via the ClassLoader.");
+    checkPackageList(packageName, "definition", "defineClassInPackage.");
   }
 
   /**
@@ -941,8 +924,7 @@ public class SecurityManager
    */
   public void checkSetFactory()
   {
-    // XXX Should be: checkPermission(new RuntimePermission("setFactory"));
-    throw new SecurityException("Cannot set the socket factory.");
+    checkPermission(new RuntimePermission("setFactory"));
   }
 
   /**
@@ -970,8 +952,13 @@ public class SecurityManager
    */
   public void checkMemberAccess(Class c, int memberType)
   {
-    // XXX Implement this.
-    throw new SecurityException("Cannot access members of classes.");
+    if (c == null)
+      throw new NullPointerException();
+    if (memberType == Member.PUBLIC)
+      return;
+    // XXX Allow access to classes created by same classloader before next
+    // check.
+    checkPermission(new RuntimePermission("accessDeclaredMembers"));
   }
 
   /**
@@ -1005,6 +992,47 @@ public class SecurityManager
   public ThreadGroup getThreadGroup()
   {
     return Thread.currentThread().getThreadGroup();
+  }
+
+  /**
+   * Helper that checks a comma-separated list of restricted packages, from
+   * <code>Security.getProperty("package.definition")</code>, for the given
+   * package access permission. If packageName starts with or equals any
+   * restricted package, it checks
+   * <code>RuntimePermission(permission + packageName)</code>.
+   *
+   * @param packageName the package name to check access to
+   * @param restriction the list of restrictions, after "package."
+   * @param permission the base permission, including the '.'
+   * @throws SecurityException if permission is denied
+   * @throws NullPointerException if packageName is null
+   * @see #checkPackageAccess(String)
+   * @see #checkPackageDefinition(String)
+   */
+  void checkPackageList(String packageName, String restriction,
+                        String permission)
+  {
+    // Use the toString() hack to do the null check.
+    Permission p = new RuntimePermission(permission + packageName.toString());
+    String list = Security.getProperty("package." + restriction);
+    if (list == null)
+      return;
+    while (! "".equals(packageName))
+      {
+        for (int index = list.indexOf(packageName);
+             index != -1; index = list.indexOf(packageName, index + 1))
+          {
+            // Exploit package visibility for speed.
+            if (index + packageName.count == list.count
+                || list.charAt(index + packageName.count) == ',')
+              {
+                checkPermission(p);
+                return;
+              }
+          }
+        int index = packageName.lastIndexOf('.');
+        packageName = index < 0 ? "" : packageName.substring(0, index);
+      }
   }
 } // class SecurityManager
 

@@ -269,7 +269,7 @@ public class Runtime
     SecurityManager sm = securityManager; // Be thread-safe!
     if (sm != null)
       sm.checkPermission(new RuntimePermission("shutdownHooks"));
-    if (hook.isAlive())
+    if (hook.isAlive() || hook.getThreadGroup() == null)
       throw new IllegalArgumentException();
     synchronized (libpath)
       {
