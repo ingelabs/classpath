@@ -1,5 +1,5 @@
 /* java.lang.Object - The universal superclass in Java
-   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -46,9 +46,8 @@ import gnu.classpath.Configuration;
  * does not extend any other class, it implicitly extends
  * java.lang.Object.  Also, an anonymous class based on
  * an interface will extend Object.
- * <p>
  *
- * It provides general-purpose methods that every single
+ * <p>It provides general-purpose methods that every single
  * Object, regardless of race, sex or creed, implements.
  * All of the public methods may be invoked on arrays or
  * interfaces.  The protected methods <code>clone</code>
@@ -91,11 +90,9 @@ public class Object
   /**
    * Determine whether this Object is semantically equal
    * to another Object.
-   * <p>
    *
-   * There are some fairly strict requirements on this
+   * <p>There are some fairly strict requirements on this
    * method which subclasses must follow:<br>
-   *
    * <ul>
    * <li>It must be transitive.  If <code>a.equals(b)</code> and
    *     <code>b.equals(c)</code>, then <code>a.equals(c)</code>
@@ -114,26 +111,24 @@ public class Object
    *     The reverse is not true; two objects that are not
    *     equal may have the same hashcode, but that has
    *     the potential to harm hashing performance.</li>
-   * </ul><p>
+   * </ul>
    *
-   * This is typically overridden to throw a {@link ClassCastException}
+   * <p>This is typically overridden to throw a {@link ClassCastException}
    * if the argument is not comparable to the class performing
    * the comparison, but that is not a requirement.  It is legal
    * for <code>a.equals(b)</code> to be true even though
    * <code>a.getClass() != b.getClass()</code>.  Also, it
    * is typical to never cause a {@link NullPointerException}.
-   * <p>
    *
-   * In general, the Collections API ({@link java.util}) use the
+   * <p>In general, the Collections API ({@link java.util}) use the
    * <code>equals</code> method rather than the <code>==</code>
    * operator to compare objects.  However, {@link java.util.IdentityHashMap}
    * is an exception to this rule, for its own good reasons.
-   * <p>
    *
-   * The default implementation returns <code>this == o</code>.
+   * <p>The default implementation returns <code>this == o</code>.
    *
-   * @param o the Object to compare to.
-   * @return whether this Object is semantically equal to another.
+   * @param o the Object to compare to
+   * @return whether this Object is semantically equal to another
    * @see #hashCode()
    */
   public boolean equals(Object o)
@@ -144,9 +139,8 @@ public class Object
   /**
    * Get a value that represents this Object, as uniquely as
    * possible within the confines of an int.
-   * <p>
    *
-   * There are some requirements on this method which
+   * <p>There are some requirements on this method which
    * subclasses must follow:<br>
    *
    * <ul>
@@ -161,20 +155,19 @@ public class Object
    *     exists.  Notice, however, that the result of hashCode may
    *     change between separate executions of a Virtual Machine,
    *     because it is not invoked on the same object.</li>
-   * </ul><p>
+   * </ul>
    *
-   * Notice that since <code>hashCode</code> is used in
+   * <p>Notice that since <code>hashCode</code> is used in
    * {@link java.util.Hashtable} and other hashing classes,
    * a poor implementation will degrade the performance of hashing
    * (so don't blindly implement it as returning a constant!). Also,
    * if calculating the hash is time-consuming, a class may consider
    * caching the results.
-   * <p>
    *
-   * The default implementation returns
+   * <p>The default implementation returns
    * <code>System.identityHashCode(this)</code>
    *
-   * @return the hash code for this Object.
+   * @return the hash code for this Object
    * @see #equals(Object)
    * @see System#identityHashCode(Object)
    */
@@ -190,25 +183,22 @@ public class Object
    * make it as intuitive as possible to be able to place
    * it into {@link java.io.PrintStream#println() System.out.println()}
    * and such.
-   * <p>
    *
-   * It is typical, but not required, to ensure that this method
+   * <p>It is typical, but not required, to ensure that this method
    * never completes abruptly with a {@link RuntimeException}.
-   * <p>
    *
-   * This method will be called when performing string
+   * <p>This method will be called when performing string
    * concatenation with this object.  If the result is
    * <code>null</code>, string concatenation will instead
    * use <code>"null"</code>.
-   * <p>
    *
-   * The default implementation returns
+   * <p>The default implementation returns
    * <code>getClass().getName() + "@" +
    *      Integer.toHexString(hashCode())</code>.
    *
-   * @return the String representing this Object, which may be null.
+   * @return the String representing this Object, which may be null
    * @throws OutOfMemoryError The default implementation creates a new
-   *         String object, therefore it must allocate memory.
+   *         String object, therefore it must allocate memory
    * @see #getClass()
    * @see #hashCode()
    * @see Class#getName()
@@ -229,44 +219,38 @@ public class Object
    * Thus you cannot rely on this method to always work.
    * For finer control over garbage collection, use references
    * from the {@link java.lang.ref} package.
-   * <p>
    *
-   * Virtual Machines are free to not call this method if
+   * <p>Virtual Machines are free to not call this method if
    * they can determine that it does nothing important; for
    * example, if your class extends Object and overrides
    * finalize to do simply <code>super.finalize()</code>.
-   * <p>
    *
-   * finalize() will be called by a {@link Thread} that has no
+   * <p>finalize() will be called by a {@link Thread} that has no
    * locks on any Objects, and may be called concurrently.
    * There are no guarantees on the order in which multiple
    * objects are finalized.  This means that finalize() is
    * usually unsuited for performing actions that must be
    * thread-safe, and that your implementation must be
    * use defensive programming if it is to always work.
-   * <p>
    *
-   * If an Exception is thrown from finalize() during garbage
+   * <p>If an Exception is thrown from finalize() during garbage
    * collection, it will be patently ignored and the Object will
    * still be destroyed.
-   * <p>
    *
-   * It is allowed, although not typical, for user code to call
+   * <p>It is allowed, although not typical, for user code to call
    * finalize() directly.  User invocation does not affect whether
    * automatic invocation will occur.  It is also permitted,
    * although not recommended, for a finalize() method to "revive"
    * an object by making it reachable from normal code again.
-   * <p>
    *
-   * Unlike constructors, finalize() does not get called
+   * <p>Unlike constructors, finalize() does not get called
    * for an object's superclass unless the implementation
    * specifically calls <code>super.finalize()</code>.
-   * <p>
    *
-   * The default implementation does nothing.
+   * <p>The default implementation does nothing.
    *
    * @throws Throwable permits a subclass to throw anything in an
-   *         overridden version; but the default throws nothing.
+   *         overridden version; but the default throws nothing
    * @see System#gc()
    * @see System#runFinalizersOnExit(boolean)
    * @see java.lang.ref
@@ -278,35 +262,31 @@ public class Object
   /**
    * This method may be called to create a new copy of the
    * Object.  The typical behavior is as follows:<br>
-   *
    * <ul>
    *  <li><code>o == o.clone()</code> is false</li>
    *  <li><code>o.getClass() == o.clone().getClass()</code>
    *      is true</li>
    *  <li><code>o.equals(o)</code> is true</li>
-   * </ul><p>
+   * </ul>
    *
-   * However, these are not strict requirements, and may
+   * <p>However, these are not strict requirements, and may
    * be violated if necessary.  Of the three requirements, the
    * last is the most commonly violated, particularly if the
    * subclass does not override {@link #equals(Object)}.
-   * <p>
    *
-   * If the Object you call clone() on does not implement
+   * <p>If the Object you call clone() on does not implement
    * {@link Cloneable} (which is a placeholder interface), then
    * a CloneNotSupportedException is thrown.  Notice that
    * Object does not implement Cloneable; this method exists
    * as a convenience for subclasses that do.
-   * <p>
    *
-   * Object's implementation of clone allocates space for the
+   * <p>Object's implementation of clone allocates space for the
    * new Object using the correct class, without calling any
    * constructors, and then fills in all of the new field values
    * with the old field values.  Thus, it is a shallow copy.
    * However, subclasses are permitted to make a deep copy.
-   * <p>
    *
-   * All array types implement Cloneable, and override
+   * <p>All array types implement Cloneable, and override
    * this method as follows (it should never fail):<br>
    * <pre>
    * public Object clone()
@@ -322,32 +302,31 @@ public class Object
    * }
    * </pre>
    *
-   * @return a copy of the Object.
+   * @return a copy of the Object
    * @throws CloneNotSupportedException If this Object does not
-   *         implement Cloneable.
+   *         implement Cloneable
    * @throws OutOfMemoryError Since cloning involves memory allocation,
    *         even though it may bypass constructors, you might run
-   *         out of memory.
+   *         out of memory
    * @see Cloneable
    */
   protected Object clone() throws CloneNotSupportedException
   {
     if (this instanceof Cloneable)
-      return VMObject.clone(this);
+      return VMObject.clone((Cloneable) this);
     throw new CloneNotSupportedException("Object not cloneable");
   }
 
   /**
    * Returns the runtime {@link Class} of this Object.
-   * <p>
    *
-   * The class object can also be obtained without a runtime
+   * <p>The class object can also be obtained without a runtime
    * instance by using the class literal, as in:
    * <code>Foo.class</code>.  Notice that the class literal
    * also works on primitive types, making it useful for
    * reflection purposes.
    *
-   * @return the class of this Object.
+   * @return the class of this Object
    */
   public final native Class getClass();
 
@@ -356,23 +335,20 @@ public class Object
    * <code>wait</code> on this Object.  Only the owner
    * of a lock on this Object may call this method.  This lock
    * is obtained by a <code>synchronized</code> method or statement.
-   * <p>
    *
-   * The Thread to wake up is chosen arbitrarily.  The
+   * <p>The Thread to wake up is chosen arbitrarily.  The
    * awakened thread is not guaranteed to be the next thread
    * to actually obtain the lock on this object.
-   * <p>
    *
-   * This thread still holds a lock on the object, so it is
+   * <p>This thread still holds a lock on the object, so it is
    * typical to release the lock by exiting the synchronized
    * code, calling wait(), or calling {@link Thread#sleep()}, so
    * that the newly awakened thread can actually resume.  The
    * awakened thread will most likely be awakened with an
    * {@link InterruptedException}, but that is not guaranteed.
-   * <p>
    *
    * @throws IllegalMonitorStateException if this Thread
-   *         does not own the lock on the Object.
+   *         does not own the lock on the Object
    * @see #notifyAll()
    * @see #wait()
    * @see #wait(long)
@@ -389,13 +365,11 @@ public class Object
    * <code>wait</code> on this Object.  Only the owner
    * of a lock on this Object may call this method.  This lock
    * is obtained by a <code>synchronized</code> method or statement.
-   * <p>
    *
-   * There are no guarantees as to which thread will next
+   * <p>There are no guarantees as to which thread will next
    * obtain the lock on the object.
-   * <p>
    *
-   * This thread still holds a lock on the object, so it is
+   * <p>This thread still holds a lock on the object, so it is
    * typical to release the lock by exiting the synchronized
    * code, calling wait(), or calling {@link Thread#sleep()}, so
    * that one of the newly awakened threads can actually resume.
@@ -403,7 +377,7 @@ public class Object
    * {@link InterruptedException}, but that is not guaranteed.
    *
    * @throws IllegalMonitorStateException if this Thread
-   *         does not own the lock on the Object.
+   *         does not own the lock on the Object
    * @see #notify()
    * @see #wait()
    * @see #wait(long)
@@ -419,18 +393,16 @@ public class Object
    * Waits indefinitely for notify() or notifyAll() to be
    * called on the Object in question.  Implementation is
    * identical to wait(0).
-   * <p>
    *
-   * The Thread that calls wait must have a lock on this Object,
+   * <p>The Thread that calls wait must have a lock on this Object,
    * obtained by a <code>synchronized</code> method or statement.
    * After calling wait, the thread loses the lock on this
    * object until the method completes (abruptly or normally),
    * at which time it regains the lock.  All locks held on
    * other objects remain in force, even though the thread is
    * inactive. Therefore, caution must be used to avoid deadlock.
-   * <p>
    *
-   * While it is typical that this method will complete abruptly
+   * <p>While it is typical that this method will complete abruptly
    * with an {@link InterruptedException}, it is not guaranteed.  So,
    * it is typical to call wait inside an infinite loop:<br>
    *
@@ -446,9 +418,9 @@ public class Object
    * </pre>
    *
    * @throws IllegalMonitorStateException if this Thread
-   *         does not own a lock on this Object.
+   *         does not own a lock on this Object
    * @throws InterruptedException if some other Thread
-   *         interrupts this Thread.
+   *         interrupts this Thread
    * @see #notify()
    * @see #notifyAll()
    * @see #wait(long)
@@ -465,24 +437,21 @@ public class Object
    * Waits a specified amount of time (or indefinitely if
    * the time specified is 0) for someone to call notify()
    * or notifyAll() on this Object, waking up this Thread.
-   * <p>
    *
-   * The Thread that calls wait must have a lock on this Object,
+   * <p>The Thread that calls wait must have a lock on this Object,
    * obtained by a <code>synchronized</code> method or statement.
    * After calling wait, the thread loses the lock on this
    * object until the method completes (abruptly or normally),
    * at which time it regains the lock.  All locks held on
    * other objects remain in force, even though the thread is
    * inactive. Therefore, caution must be used to avoid deadlock.
-   * <p>
    *
-   * Usually, this call will complete normally if the time
+   * <p>Usually, this call will complete normally if the time
    * expires, or abruptly with {@link InterruptedException}
    * if another thread called notify, but neither result
    * is guaranteed.
-   * <p>
    *
-   * The waiting period is only *roughly* the amount of time
+   * <p>The waiting period is only *roughly* the amount of time
    * you requested.  It cannot be exact because of the overhead
    * of the call itself.  Most Virtual Machiness treat the
    * argument as a lower limit on the time spent waiting, but
@@ -492,12 +461,12 @@ public class Object
    * lock.
    *
    * @param ms the minimum number of milliseconds to wait (1000
-   *        milliseconds = 1 second), or 0 for an indefinite wait.
-   * @throws IllegalArgumentException if ms &lt; 0.
+   *        milliseconds = 1 second), or 0 for an indefinite wait
+   * @throws IllegalArgumentException if ms &lt; 0
    * @throws IllegalMonitorStateException if this Thread
-   *         does not own a lock on this Object.
+   *         does not own a lock on this Object
    * @throws InterruptedException if some other Thread
-   *         interrupts this Thread.
+   *         interrupts this Thread
    * @see #notify()
    * @see #notifyAll()
    * @see #wait()
@@ -514,39 +483,36 @@ public class Object
    * Waits a specified amount of time (or indefinitely if
    * the time specified is 0) for someone to call notify()
    * or notifyAll() on this Object, waking up this Thread.
-   * <p>
    *
-   * The Thread that calls wait must have a lock on this Object,
+   * <p>The Thread that calls wait must have a lock on this Object,
    * obtained by a <code>synchronized</code> method or statement.
    * After calling wait, the thread loses the lock on this
    * object until the method completes (abruptly or normally),
    * at which time it regains the lock.  All locks held on
    * other objects remain in force, even though the thread is
    * inactive. Therefore, caution must be used to avoid deadlock.
-   * <p>
    *
-   * Usually, this call will complete normally if the time
+   * <p>Usually, this call will complete normally if the time
    * expires, or abruptly with {@link InterruptedException}
    * if another thread called notify, but neither result
    * is guaranteed.
-   * <p>
    *
-   * The waiting period is nowhere near as precise as
+   * <p>The waiting period is nowhere near as precise as
    * nanoseconds; considering that even wait(int) is inaccurate,
    * how much can you expect?  But on supporting
    * implementations, this offers somewhat more granularity
    * than milliseconds.
    *
    * @param ms the number of milliseconds to wait (1,000
-   *        milliseconds = 1 second).
+   *        milliseconds = 1 second)
    * @param ns the number of nanoseconds to wait over and
-   *        above ms (1,000,000 nanoseconds = 1 millisecond).
+   *        above ms (1,000,000 nanoseconds = 1 millisecond)
    * @throws IllegalArgumentException if ms &lt; 0 or ns is not
    *         in the range 0 to 999,999
    * @throws IllegalMonitorStateException if this Thread
-   *         does not own a lock on this Object.
+   *         does not own a lock on this Object
    * @throws InterruptedException if some other Thread
-   *         interrupts this Thread.
+   *         interrupts this Thread
    * @see #notify()
    * @see #notifyAll()
    * @see #wait()

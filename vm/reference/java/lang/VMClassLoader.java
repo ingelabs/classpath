@@ -1,5 +1,6 @@
-/* VMClassLoader.java
-   Copyright (C) 1998, 2001 Free Software Foundation
+/* VMClassLoader.java -- Reference implementation of native interface
+   required by ClassLoader
+   Copyright (C) 1998, 2001, 2002 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -42,104 +43,139 @@ package java.lang;
  * on behalf of java.lang.ClassLoader.
  *
  * @author John Keiser
- * @author Mark Wielaard (mark@klomp.org)
- * @since CP1.1
+ * @author Mark Wielaard <mark@klomp.org>
+ * @author Eric Blake <ebb9@email.byu.edu>
  */
+final class VMClassLoader
+{
+  /**
+   * Helper to define a class using a string of bytes.
+   *
+   * @param name the name to give the class, or null if unknown
+   * @param data the data representing the classfile, in classfile format
+   * @param offset the offset into the data where the classfile starts
+   * @param len the length of the classfile data in the array
+   * @return the class that was defined
+   * @throws ClassFormatError if data is not in proper classfile format
+   * @XXX This should also have a ProtectionDomain argument.
+   */
+  static final native Class defineClass(ClassLoader cl, String name,
+                                        byte[] data, int offset, int len)
+    throws ClassFormatError;
 
-class VMClassLoader {
+  /**
+   * Helper to resolve all references to other classes from this class.
+   *
+   * @param c the class to resolve
+   */
+  static final native void resolveClass(Class c);
 
-    /** 
-     * Helper to define a class using a string of bytes.
-     * 
-     * @param name the name to give the class.  null if unknown.
-     * @param data the data representing the classfile, in classfile format.
-     * @param offset the offset into the data where the classfile starts.
-     * @param len the length of the classfile data in the array.
-     * @return the class that was defined.
-     * @exception ClassFormatError if the byte array is not in proper
-     *            classfile format.
-     */
-    final static native Class defineClass(ClassLoader cl, String name, 
-	     byte[] data, int offset, int len) throws ClassFormatError;
-    
-    /** 
-     * Helper to resolve all references to other classes from this class.
-     * @param c the class to resolve.
-     */
-    final static native void resolveClass(Class c);
-
-    /** 
-     * Helper for java.lang.Integer, Byte, etc to get the TYPE class
-     * at initialization time. The type code is one of the chars that
-     * represents the primitive type as in JNI.
-     *
-     * <ul>
-     * <li>'Z' - boolean</li>
-     * <li>'B' - byte</li>
-     * <li>'C' - char</li>
-     * <li>'D' - double</li>
-     * <li>'F' - float</li>
-     * <li>'I' - int</li>
-     * <li>'J' - long</li>
-     * <li>'S' - short</li>
-     * <li>'V' - void</li>
-     * </ul>
-     *
-     * Note that this is currently a java version that converts the type code
-     * to a string and calls the native <code>getPrimitiveClass(String)</code>
-     * method for backwards compatibility with VMs that used old versions of
-     * GNU Classpath. Please replace this method with a native method
-     * <code>final static native Class getPrimitiveClass(char type);</code>
-     * if your VM supports it. <strong>The java version of this method and
-     * the String version of this method will disappear in a future version
-     * of GNU Classpath</strong>.
-     *
-     * @param type the primitive type
-     * @return a "bogus" class representing the primitive type.
-     */
-    final static Class getPrimitiveClass(char type)
-    {
-      String t;
-      switch (type) {
-	case 'Z':
-	  t = "boolean";
-	  break;
-	case 'B':
-	  t = "byte";
-	  break;
-	case 'C':
-	  t = "char";
-	  break;
-	case 'D':
-	  t = "double";
-	  break;
-	case 'F':
-	  t = "float";
-	  break;
-	case 'I':
-	  t = "int";
-	  break;
-	case 'J':
-	  t = "long";
-	  break;
-	case 'S':
-	  t = "short";
-	  break;
-	case 'V':
-	  t = "void";
-	  break;
-	default:
-	  throw new NoClassDefFoundError("Invalid type specifier: " + type);
+  /**
+   * Helper for java.lang.Integer, Byte, etc to get the TYPE class
+   * at initialization time. The type code is one of the chars that
+   * represents the primitive type as in JNI.
+   *
+   * <ul>
+   * <li>'Z' - boolean</li>
+   * <li>'B' - byte</li>
+   * <li>'C' - char</li>
+   * <li>'D' - double</li>
+   * <li>'F' - float</li>
+   * <li>'I' - int</li>
+   * <li>'J' - long</li>
+   * <li>'S' - short</li>
+   * <li>'V' - void</li>
+   * </ul>
+   *
+   * Note that this is currently a java version that converts the type code
+   * to a string and calls the native <code>getPrimitiveClass(String)</code>
+   * method for backwards compatibility with VMs that used old versions of
+   * GNU Classpath. Please replace this method with a native method
+   * <code>final static native Class getPrimitiveClass(char type);</code>
+   * if your VM supports it. <strong>The java version of this method and
+   * the String version of this method will disappear in a future version
+   * of GNU Classpath</strong>.
+   *
+   * @param type the primitive type
+   * @return a "bogus" class representing the primitive type
+   */
+  static final Class getPrimitiveClass(char type)
+  {
+    String t;
+    switch (type)
+      {
+      case 'Z':
+        t = "boolean";
+        break;
+      case 'B':
+        t = "byte";
+        break;
+      case 'C':
+        t = "char";
+        break;
+      case 'D':
+        t = "double";
+        break;
+      case 'F':
+        t = "float";
+        break;
+      case 'I':
+        t = "int";
+        break;
+      case 'J':
+        t = "long";
+        break;
+      case 'S':
+        t = "short";
+        break;
+      case 'V':
+        t = "void";
+        break;
+      default:
+        throw new NoClassDefFoundError("Invalid type specifier: " + type);
       }
-      return getPrimitiveClass(t);
-    }
+    return getPrimitiveClass(t);
+  }
 
-    /**
-     * Old version of the interface, added here for backwards compatibility.
-     * Called by the java version of getPrimitiveClass(char) when no native
-     * version of that method is available.
-     * <strong>This method will be removed in a future version of GNU
-     * Classpath</strong>.
-     */
-    final static native Class getPrimitiveClass(String type);
+  /**
+   * Old version of the interface, added here for backwards compatibility.
+   * Called by the java version of getPrimitiveClass(char) when no native
+   * version of that method is available.
+   * <strong>This method will be removed in a future version of GNU
+   * Classpath</strong>.
+   * @param type the primitive type
+   * @return a "bogus" class representing the primitive type
+   */
+  static final native Class getPrimitiveClass(String type);
+
+  /**
+   * The system default for assertion status. This is used for all system
+   * classes (those with a null ClassLoader), as well as the initial value for
+   * every ClassLoader's default assertion status.
+   *
+   * @return the system-wide default assertion status
+   * @XXX Implement this for 1.4 compatibility.
+   static final native boolean defaultAssertionStatus();
+   */
+
+  /**
+   * The system default for package assertion status. This is used for all
+   * ClassLoader's packageAssertionStatus defaults. It must be a map of
+   * package names to Boolean.TRUE or Boolean.FALSE, with the unnamed package
+   * represented as a null key.
+   *
+   * @return a (read-only) map for the default packageAssertionStatus
+   * @XXX Implement this for 1.4 compatibility.
+   static final native Map packageAssertionStatus();
+   */
+
+  /**
+   * The system default for class assertion status. This is used for all
+   * ClassLoader's classAssertionStatus defaults. It must be a map of
+   * class names to Boolean.TRUE or Boolean.FALSE
+   *
+   * @return a (read-only) map for the default classAssertionStatus
+   * @XXX Implement this for 1.4 compatibility.
+   static final native Map classAssertionStatus();
+   */
 }
