@@ -448,12 +448,6 @@ public class Logger
   }
 
 
-  public String toString()
-  {
-    return "<java.util.logging.Logger \"" + name + "\">";
-  }
-
-
   /**
    * Passes a record to registered handlers, provided the record
    * is considered as loggable both by {@link #isLoggable(Level)}
