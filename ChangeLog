@@ -1,3 +1,7 @@
+2000-12-14  Tom Tromey  <tromey@redhat.com>
+
+	* java/io/SerializablePermission.java (legal_names): Now private.
+
 2000-12-14  Brian Jones  <cbj@gnu.org>
 	* acinclude.m4 : CLASSPATH_INTERNAL_CHECK_JAPHAR takes an optional 
 	argument such that specifying the prefix to Japhar now works, 
