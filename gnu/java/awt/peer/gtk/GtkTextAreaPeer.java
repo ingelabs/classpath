@@ -26,13 +26,19 @@ import java.awt.*;
 public class GtkTextAreaPeer extends GtkTextComponentPeer
   implements TextAreaPeer
 {
-  native void create (Object parent, String text, int scroll);
+  native void create (int scrollbarVisibility);
+
+  void create ()
+  {
+    create (((TextArea)awtComponent).getScrollbarVisibility ());
+  }
+
+  // native void create (Object parent, String text, int scroll);
   native void gtkTextGetSize (int rows, int cols, int dims[]);
 
-  public GtkTextAreaPeer (TextArea ta, ComponentPeer cp)
+  public GtkTextAreaPeer (TextArea ta)
   {
     super (ta);
-    create (cp, ta.getText (), ta.getScrollbarVisibility ());
   }
 
   public native void insert (String str, int pos);
