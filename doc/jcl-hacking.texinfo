@@ -143,7 +143,7 @@ a Java package, please be willing to do the following:
 @itemize @bullet
 @item
 Implement a complete drop-in replacement for the particular package.  That
-mean implementing any ''internal'' classes.  For example, in the java.net
+mean implementing any ``internal'' classes.  For example, in the java.net
 package, there are non-public classes for implementing sockets.  Without
 those classes, the public socket interface is useless.  But do not feel
 obligated to completely replace all of Sun's functionality at once.  For
@@ -239,6 +239,8 @@ libtool 1.2
 GNU m4 1.4
 @item
 perl 5.X
+@item
+GNU MP 2.0.2
 @end itemize
 
 All of these tools are available from  
@@ -282,6 +284,11 @@ m4 programs are broken and so GNU m4 is required for autoconf to work.
 
 @item perl
 Larry Wall's scripting language.  It is used internally by automake.
+
+@item MP
+Required for java.lang.Float, java.lang.Double, java.math.BigInter, and
+java.math.BigDecimal.
+
 @end table
 
 @node Programming Standards, Specification Sources, Programming Tools, Top
@@ -386,35 +393,35 @@ name and see what everybody else thinks.
 @item native
 This directory holds native code needed by the public
 Java packages.  Each package has its own subdirectory, which is the
-''flattened'' name of the package.  For example, native method implementations
+``flattened'' name of the package.  For example, native method implementations
 for java.util.zip should go in native/java.util.zip.
 
 @item test
 This directory contains test packages written for DejaGnu used
 to test releases of JCL.  The test scripts for a given package go in the
-subdirectory that is the same as the ''flattened'' name of the package.  For
+subdirectory that is the same as the ``flattened'' name of the package.  For
 example, test scripts for java.util.zip should go in test/java.util.zip
 
 @item compat
 This directory contains misc scripts designed not to
 test an implementation, but to determine various things about Sun's
 reference implementation that are needed in order to write a compatible
-pakcage.  Each package has its own directory which is the ''flattened''
+pakcage.  Each package has its own directory which is the ``flattened''
 package name.  For example, compatibility scripts for java.util.zip
 go in compat/java.util.zip
 @end table
 
-Each person working on a package get's his or her own "directory space" 
-underneath each of the toplevel directories.  In addition to the general
-guidelines above, the following standards should be followed:
+Each person working on a package get's his or her own ``directory
+space'' underneath each of the toplevel directories.  In addition to the
+general guidelines above, the following standards should be followed:
 
 @itemize @bullet
 
 @item
-Classes that need to load native code should load a library with 
-the same name as the flattened package name, with all periods removed.  For
-example, the native library name specified in LoadLibrary for java.util.zip
-would be "javautilzip".
+Classes that need to load native code should load a library with the
+same name as the flattened package name, with all periods removed.  For
+example, the native library name specified in LoadLibrary for
+java.util.zip would be ``javautilzip''.
 
 @item
 Each package has its own shared library for native code (if any).  The
@@ -422,10 +429,11 @@ actual library name to be built will depend on the target JVM.
 
 @item
 The main native method implementation for a given method in class should
-go in a file with the same name as the class with a ".c" extension.  For
-example, the implementation of the native methods in java.util.InetAddress
-would go in native/java.net/InetAddress.c.  "Internal" native functions
-called from the main native method can reside in files of any name.
+go in a file with the same name as the class with a ``.c'' extension.
+For example, the implementation of the native methods in
+java.util.InetAddress would go in native/java.net/InetAddress.c.
+``Internal'' native functions called from the main native method can
+reside in files of any name.
 @end itemize
 
 @bye
