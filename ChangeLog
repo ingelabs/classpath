@@ -1,3 +1,7 @@
+2002-07-31  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
+
+	* java/awt/Frame.java (Frame): Remove println calls.
+
 2002-07-30   Mark Wielaard  <mark@klomp.org>
 
 	* java/lang/String.java (equals): Also check offset when value is the
