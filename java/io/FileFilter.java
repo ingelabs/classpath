@@ -45,7 +45,7 @@ public interface FileFilter
   * @return <code>true</code> if the path should be included in the list, <code>false</code> otherwise.
   */
 public abstract boolean
-accept(String pathname);
+accept(File pathname);
 
 } // interface FileFilter
 
