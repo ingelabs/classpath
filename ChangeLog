@@ -1,5 +1,10 @@
 2004-12-13  Michael Koch  <konqueror@gmx.de>
 
+	* include/gnu_java_awt_peer_gtk_GtkWindowPeer.h:
+	Regenerated.
+
+2004-12-13  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JLayeredPane.java
 	(getLayer): Fixed return type, made public.
 	(getPosition): Use new getLayer().
