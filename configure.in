@@ -68,8 +68,11 @@ fi
 dnl Check for cthreads, w32 threads, pthreads
 dnl CLASSPATH_CHECK_THREADS
 
-dnl Check which jvm to compile for
-CLASSPATH_CHECK_JVM
+dnl --with-japhar
+CLASSPATH_CHECK_JAPHAR
+
+dnl --with-kaffe
+CLASSPATH_CHECK_KAFFE
 
 dnl for historic reasons of the moment...
 VMINCLUDE=$JAPHAR_CFLAGS
