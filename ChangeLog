@@ -1,5 +1,10 @@
 2004-10-15  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/charset/UTF_16Encoder.java
+	(UTF_16Encoder): Fixed maxBytesPerChar handling.
+
+2004-10-15  Michael Koch  <konqueror@gmx.de>
+
 	* java/lang/Object.java (equals): Rename 'o' to 'obj'.
 	* java/lang/Runtime.java, java/lang/Thread.java,
 	java/lang/ThreadLocal.java, java/lang/Void.java:
