@@ -38,8 +38,6 @@ exception statement from your version. */
 
 package java.lang;
 
-import gnu.classpath.VMStackWalker;
-
 import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
@@ -159,7 +157,7 @@ public final class Class implements Serializable
     Class result = VMClass.forName (name);
     if (result == null)
       result = Class.forName(name, true,
-	VMStackWalker.getCallingClassLoader());
+			     VMSecurityManager.getClassContext()[1].getClassLoader());
     return result;
   }
 
@@ -200,8 +198,9 @@ public final class Class implements Serializable
         SecurityManager sm = SecurityManager.current;
         if (sm != null)
           {
-            // Get the calling classloader
-            ClassLoader cl = VMStackWalker.getCallingClassLoader();
+            // Get the calling class and classloader
+            Class c = VMSecurityManager.getClassContext()[1];
+            ClassLoader cl = c.getClassLoader();
             if (cl != null)
               sm.checkPermission(new RuntimePermission("getClassLoader"));
           }
@@ -279,8 +278,9 @@ public final class Class implements Serializable
     SecurityManager sm = SecurityManager.current;
     if (sm != null)
       {
-        // Get the calling classloader
-	ClassLoader cl = VMStackWalker.getCallingClassLoader();
+        // Get the calling class and classloader
+        Class c = VMSecurityManager.getClassContext()[1];
+        ClassLoader cl = VMClass.getClassLoader(c);
         if (cl != null && !cl.isAncestorOf(loader))
           sm.checkPermission(new RuntimePermission("getClassLoader"));
       }
@@ -1132,9 +1132,8 @@ public final class Class implements Serializable
     int modifiers = constructor.getModifiers();
     if (!Modifier.isPublic(modifiers))
       {
-	Class caller = VMStackWalker.getCallingClass();
-	if (caller != null &&
-	    caller != this &&
+	Class caller = VMSecurityManager.getClassContext()[1];
+	if (caller != this &&
 	    (Modifier.isPrivate(modifiers)
 	     || getClassLoader() != caller.getClassLoader()
 	     || !getPackagePortion(getName())

@@ -38,8 +38,6 @@ exception statement from your version. */
 
 package java.lang;
 
-import gnu.classpath.VMStackWalker;
-
 import java.awt.AWTPermission;
 import java.io.File;
 import java.io.FileDescriptor;
@@ -181,10 +179,7 @@ public class SecurityManager
    */
   protected Class[] getClassContext()
   {
-    Class[] stack1 = VMStackWalker.getClassContext();
-    Class[] stack2 = new Class[stack1.length - 1];
-    System.arraycopy(stack1, 1, stack2, 0, stack1.length - 1);
-    return stack2;
+    return VMSecurityManager.getClassContext();
   }
 
   /**
@@ -206,8 +201,7 @@ public class SecurityManager
    */
   protected ClassLoader currentClassLoader()
   {
-    Class cl = currentLoadedClass();
-    return cl != null ? cl.getClassLoader() : null;
+    return VMSecurityManager.currentClassLoader();
   }
 
   /**

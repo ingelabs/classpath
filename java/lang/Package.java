@@ -37,8 +37,6 @@ exception statement from your version. */
 
 package java.lang;
 
-import gnu.classpath.VMStackWalker;
-
 import java.net.URL;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
@@ -275,7 +273,7 @@ public class Package
   public static Package getPackage(String name)
   {
     // Get the caller's classloader
-    ClassLoader cl = VMStackWalker.getCallingClassLoader();
+    ClassLoader cl = VMSecurityManager.currentClassLoader();
     return cl != null ? cl.getPackage(name) : null;
   }
 
@@ -288,7 +286,8 @@ public class Package
   public static Package[] getPackages()
   {
     // Get the caller's classloader
-    ClassLoader cl = VMStackWalker.getCallingClassLoader();
+    Class c = VMSecurityManager.getClassContext()[1];
+    ClassLoader cl = c.getClassLoader();
     // Sun's implementation returns the packages loaded by the bootstrap
     // classloader if cl is null, but right now our bootstrap classloader
     // does not create any Packages.

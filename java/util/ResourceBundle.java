@@ -39,7 +39,6 @@ exception statement from your version. */
 
 package java.util;
 
-import gnu.classpath.VMStackWalker;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.AccessController;
@@ -103,6 +102,48 @@ public abstract class ResourceBundle
    * <code>getBundle</code>.
    */
   private Locale locale;
+
+  /**
+   * We override SecurityManager in order to access getClassContext().
+   */
+  private static final class Security extends SecurityManager
+  {
+    /**
+     * Avoid accessor method of private constructor.
+     */
+    Security()
+    {
+    }
+
+    /**
+     * Return the ClassLoader of the class which called into this
+     * ResourceBundle, or null if it cannot be determined.
+     */
+    ClassLoader getCallingClassLoader()
+    {
+      Class[] stack = getClassContext();
+      for (int i = 0; i < stack.length; i++)
+       {
+	 if (stack[i] != Security.class && stack[i] != ResourceBundle.class)
+	   return stack[i].getClassLoader();
+       }
+
+      return null;
+    }
+  }
+
+  /** A security context for grabbing the correct class loader. */
+  private static final Security security
+    = (Security) AccessController.doPrivileged(new PrivilegedAction()
+      {
+	// This will always work since java.util classes have (all) system
+	// permissions.
+	public Object run()
+	{
+	  return new Security();
+	}
+      }
+    );
 
   /**
    * The resource bundle cache.
@@ -215,7 +256,7 @@ public abstract class ResourceBundle
    */
   public static ResourceBundle getBundle(String baseName)
   {
-    ClassLoader cl = VMStackWalker.getCallingClassLoader();
+    ClassLoader cl = security.getCallingClassLoader();
     if (cl == null)
       cl = ClassLoader.getSystemClassLoader();
     return getBundle(baseName, Locale.getDefault(), cl);
@@ -235,7 +276,7 @@ public abstract class ResourceBundle
    */
   public static ResourceBundle getBundle(String baseName, Locale locale)
   {
-    ClassLoader cl = VMStackWalker.getCallingClassLoader();
+    ClassLoader cl = security.getCallingClassLoader();
     if (cl == null)
       cl = ClassLoader.getSystemClassLoader();
     return getBundle(baseName, locale, cl);

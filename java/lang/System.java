@@ -39,7 +39,6 @@ exception statement from your version. */
 
 package java.lang;
 
-import gnu.classpath.VMStackWalker;
 import gnu.classpath.SystemProperties;
 
 import java.io.InputStream;
@@ -481,10 +480,6 @@ public final class System
    * check may be performed, <code>checkLink</code>. This just calls
    * <code>Runtime.getRuntime().load(filename)</code>.
    *
-   * <p>
-   * The library is loaded using the class loader associated with the
-   * class associated with the invoking method.
-   *
    * @param filename the code file to load
    * @throws SecurityException if permission is denied
    * @throws UnsatisfiedLinkError if the file cannot be loaded
@@ -492,17 +487,13 @@ public final class System
    */
   public static void load(String filename)
   {
-    Runtime.getRuntime().load(filename, VMStackWalker.getCallingClassLoader());
+    Runtime.getRuntime().load(filename);
   }
 
   /**
    * Load a library using its explicit system-dependent filename. A security
    * check may be performed, <code>checkLink</code>. This just calls
    * <code>Runtime.getRuntime().load(filename)</code>.
-   *
-   * <p>
-   * The library is loaded using the class loader associated with the
-   * class associated with the invoking method.
    *
    * @param libname the library file to load
    * @throws SecurityException if permission is denied
@@ -511,8 +502,7 @@ public final class System
    */
   public static void loadLibrary(String libname)
   {
-    Runtime.getRuntime().loadLibrary(libname,
-      VMStackWalker.getCallingClassLoader());
+    Runtime.getRuntime().loadLibrary(libname);
   }
 
   /**
