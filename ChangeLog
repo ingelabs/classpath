@@ -1,3 +1,11 @@
+2004-12-30  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/awt/peer/gtk/GtkToolkit.java:
+	Explicitely import used classes.
+	(getLocalGraphicsEnvironment): Simplify.
+	* java/awt/Window.java (Window):
+	Enable code to get the default GraphicsConfiguration.
+
 2004-12-30  Chris Burdess <dog@gnu.org>
 
 	* GnomeDocument.java,GnomeXPathNSResolver: Fixed XPathNSResolver
