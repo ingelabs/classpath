@@ -26,9 +26,10 @@ import java.awt.peer.*;
 
 class Test
 {
+  static int xs = 5, ys = 5;
+
   public static void main(String args[])
     {
-
       Properties prop=System.getProperties ();
       prop.put ("awt.toolkit","gnu.java.awt.peer.gtk.GtkToolkit");
 
@@ -53,10 +54,10 @@ class Test
       TextField tf = new TextField("Hello world!");
       pan.add(tf);
 
-      Canvas ch = new Canvas () { 
+      final Canvas ch = new Canvas () { 
 	public void paint (Graphics g) {
 	  g.setColor (Color.blue);
-	  g.drawLine (5,5,20,20);
+	  g.drawLine (xs,ys,xs+20,ys+20);
 	}
       };
       ch.setSize(50, 50);
@@ -142,11 +143,7 @@ class Test
 
       f.add(east_panel,"East");
 
-      Button wb=new Button() {
-        public void paint (Graphics g) {
-          System.out.println ("button paint called");
-	}
-      };
+      Button wb=new Button();
       wb.setLabel("Destroy Frame on Click");
       wb.addActionListener (new ActionListener () {
 	public void actionPerformed (ActionEvent e) {
@@ -158,6 +155,9 @@ class Test
       wb.addMouseListener(new MouseAdapter() {
 	public void mousePressed(MouseEvent e) {
 	  System.out.println("mouse pressed wb");
+	  xs++;
+	  ys++;
+	  ch.repaint ();
 	}
 	public void mouseReleased(MouseEvent e) {
 	  System.out.println("mouse released wb");
