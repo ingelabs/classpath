@@ -38,7 +38,6 @@ exception statement from your version. */
 package java.net;
 
 import java.io.*;
-import java.nio.channels.*;
 
 /* Written using on-line Java Platform 1.2 API Specification.
  * Status:  I believe all methods are implemented.
@@ -535,7 +534,7 @@ public class Socket
    *
    * @exception SocketException If an error occurs or Socket not connected
    *
-   * @since Java 1.2
+   * @since 1.2
    */
   public void setSendBufferSize (int size) throws SocketException
   {
@@ -557,7 +556,7 @@ public class Socket
    *
    * @exception SocketException If an error occurs or socket not connected
    *
-   * @since Java 1.2
+   * @since 1.2
    */
   public int getSendBufferSize () throws SocketException
   {
@@ -581,7 +580,7 @@ public class Socket
    *
    * @exception SocketException If an error occurs or Socket is not connected
    *
-   * @since Java 1.2
+   * @since 1.2
    */
   public void setReceiveBufferSize (int size) throws SocketException
   {
@@ -603,7 +602,7 @@ public class Socket
    *
    * @exception SocketException If an error occurs or Socket is not connected
    *
-   * @since Java 1.2
+   * @since 1.2
    */
   public int getReceiveBufferSize () throws SocketException
   {
@@ -668,26 +667,4 @@ public class Socket
 
     factory = fac;
   }
-
-  public void shutdownInput() throws IOException
-  {
-  }
-
-  public void shutdownOutput() throws IOException
-  {
-  }
-
-
-    /**
-     * returns the socket channel associated with 
-     * this socket.
-     * It returns null if no associated socket exists.
-     */
-    
-    SocketChannel ch; // this field must have been set if created by SocketChannel
-
-    public SocketChannel getChannel() 
-    {
-	return ch;
-    }
 }
