@@ -4,7 +4,7 @@ objects  = native_state.o  gdkjnithreads.o     gtkwindowpeer.o \
 	   gtkbuttonpeer.o gtkcomponentpeer.o  gtkfiledialogpeer.o \
 	   gtkmainthread.o gtkscrollpanepeer.o gtkcheckboxpeer.o \
 	   gtktoolkit.o	   gtkchoicepeer.o     gtktextcomponentpeer.o \
-	   gtktextfieldpeer.o  gtktextareapeer.o
+	   gtktextfieldpeer.o  gtktextareapeer.o gtklabelpeer.o
 CPPFLAGS = -I/usr/local/jdk/include -I/usr/local/jdk/include/genunix
 CFLAGS   = `gtk-config --cflags`
 LDFLAGS  = `gtk-config --libs`

@@ -161,12 +161,12 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected FramePeer createFrame (Frame f)
     {
-	return(new GtkFramePeer (f));
+      return(new GtkFramePeer (f));
     }
 
   protected LabelPeer createLabel (Label l) 
     {
-      return null;
+      return (new GtkLabelPeer (l, l.getParent().getPeer()));
     }
 
   protected ListPeer createList (List l) 

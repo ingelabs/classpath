@@ -37,6 +37,9 @@ class Test
 
       Panel pan=new Panel();
 
+      Label l = new Label ("Pithy Message:");
+      pan.add (l);
+
       TextField tf = new TextField("Hello world!");
       pan.add(tf);
 
