@@ -1,3 +1,8 @@
+2004-01-08  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/JLayeredPane.java: Revert changes to standard
+	boilerplate, reworked imports.
+
 2004-01-08  Graydon Hoare  <graydon@redhat.com>
 
 	* javax/swing/JLayeredPane.java: Fix semantics, add javadocs.
