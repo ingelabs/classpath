@@ -1,3 +1,7 @@
+2001-08-31  Tom Tromey  <tromey@redhat.com>
+
+	* java/io/ByteArrayInputStream.java: Merged with libgcj.
+
 2001-08-30  Tom Tromey  <tromey@redhat.com>
 
 	Re-merged classes with libgcj:
