@@ -1,5 +1,6 @@
 /* MulticastSocket.java -- Class for using multicast sockets
-   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2002, 2003
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -169,9 +170,9 @@ public class MulticastSocket extends DatagramSocket
    *
    * @since 1.4
    */
-  public void setInterface(InetAddress inf) throws SocketException
+  public void setInterface(InetAddress addr) throws SocketException
   {
-    impl.setOption(SocketOptions.IP_MULTICAST_IF, inf);
+    impl.setOption(SocketOptions.IP_MULTICAST_IF, addr);
   }
 
   /**

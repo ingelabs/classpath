@@ -1,3 +1,8 @@
+2003-01-14  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/MulticastSocket.java
+	(setInterface): Merged with libgcj, reindented.
+	
 2003-01-15  Scott Gilbertson  <scottg@mantatest.com>
 
 	* java/awt/CardLayout.java (show): Rewrote.
