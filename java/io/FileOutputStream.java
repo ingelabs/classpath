@@ -42,86 +42,22 @@ import gnu.classpath.Configuration;
 import java.nio.channels.FileChannel;
 import gnu.java.nio.FileChannelImpl;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * Status:  Complete to version 1.1.
+ */
+
 /**
-  * This classes allows a stream of data to be written to a disk file or
-  * any open <code>FileDescriptor</code>.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This classes allows a stream of data to be written to a disk file or
+ * any open <code>FileDescriptor</code>.
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ */
 public class FileOutputStream extends OutputStream
 {
   private FileDescriptor fd;
 
   private FileChannel ch; /* cached associated file-channel */
-
-  /**
-   * This method initializes a <code>FileOutputStream</code> object to write
-   * to the named file.  The file is created if it does not exist, and
-   * the bytes written are written starting at the beginning of the file.
-   * <p>
-   * Before opening a file, a security check is performed by calling the
-   * <code>checkWrite</code> method of the <code>SecurityManager</code> (if
-   * one exists) with the name of the file to be opened.  An exception is
-   * thrown if writing is not allowed. 
-   *
-   * @param name The name of the file this stream should write to
-   *
-   * @exception SecurityException If write access to the file is not allowed
-   * @exception FileNotFoundException If a non-security error occurs
-   */
-  public
-  FileOutputStream(String name) throws SecurityException, FileNotFoundException
-  {
-    this(name, false);
-  }
-
-  /**
-   * This method initializes a <code>FileOutputStream</code> object to write
-   * to the specified <code>File</code> object.  The file is created if it 
-   * does not exist, and the bytes written are written starting at the 
-   * beginning of the file.
-   * <p>
-   * Before opening a file, a security check is performed by calling the
-   * <code>checkWrite</code> method of the <code>SecurityManager</code> (if
-   * one exists) with the name of the file to be opened.  An exception is
-   * thrown if writing is not allowed. 
-   *
-   * @param file The <code>File</code> object this stream should write to
-   *
-   * @exception SecurityException If write access to the file is not allowed
-   * @exception FileNotFoundException If a non-security error occurs
-   */
-  public
-  FileOutputStream(File file) throws SecurityException, FileNotFoundException
-  {
-    this(file.getPath(), false);
-  }
-
-  /**
-   * This method initializes a <code>FileOutputStream</code> object to write
-   * to the specified <code>File</code> object.  The file is created if it 
-   * does not exist, and the bytes written are written starting at the 
-   * beginning of the file if the <code>append</code> parameter is 
-   * <code>false</code>.  Otherwise bytes are written at the end of the
-   * file.
-   * <p>
-   * Before opening a file, a security check is performed by calling the
-   * <code>checkWrite</code> method of the <code>SecurityManager</code> (if
-   * one exists) with the name of the file to be opened.  An exception is
-   * thrown if writing is not allowed. 
-   *
-   * @param file The <code>File</code> object this stream should write to
-   * @param append <code>true</code> to append bytes to the end of the file,
-   * or <code>false</code> to write bytes to the beginning
-   *
-   * @exception SecurityException If write access to the file is not allowed
-   * @exception FileNotFoundException If a non-security error occurs
-   */
-  public
-  FileOutputStream(File file, boolean append) throws FileNotFoundException
-  {
-    this(file.getPath(), append);
-  }
 
   /**
    * This method initializes a <code>FileOutputStream</code> object to write
@@ -142,7 +78,7 @@ public class FileOutputStream extends OutputStream
    * @exception SecurityException If write access to the file is not allowed
    * @exception FileNotFoundException If a non-security error occurs
    */
-  public FileOutputStream(String name, boolean append) 
+  public FileOutputStream (String name, boolean append) 
     throws SecurityException, FileNotFoundException
   {
     SecurityManager sm = System.getSecurityManager();
@@ -166,6 +102,75 @@ public class FileOutputStream extends OutputStream
 
   /**
    * This method initializes a <code>FileOutputStream</code> object to write
+   * to the named file.  The file is created if it does not exist, and
+   * the bytes written are written starting at the beginning of the file.
+   * <p>
+   * Before opening a file, a security check is performed by calling the
+   * <code>checkWrite</code> method of the <code>SecurityManager</code> (if
+   * one exists) with the name of the file to be opened.  An exception is
+   * thrown if writing is not allowed. 
+   *
+   * @param name The name of the file this stream should write to
+   *
+   * @exception SecurityException If write access to the file is not allowed
+   * @exception FileNotFoundException If a non-security error occurs
+   */
+  public
+  FileOutputStream(String name) throws SecurityException, FileNotFoundException
+  {
+    this (name, false);
+  }
+
+  /**
+   * This method initializes a <code>FileOutputStream</code> object to write
+   * to the specified <code>File</code> object.  The file is created if it 
+   * does not exist, and the bytes written are written starting at the 
+   * beginning of the file.
+   * <p>
+   * Before opening a file, a security check is performed by calling the
+   * <code>checkWrite</code> method of the <code>SecurityManager</code> (if
+   * one exists) with the name of the file to be opened.  An exception is
+   * thrown if writing is not allowed. 
+   *
+   * @param file The <code>File</code> object this stream should write to
+   *
+   * @exception SecurityException If write access to the file is not allowed
+   * @exception FileNotFoundException If a non-security error occurs
+   */
+  public FileOutputStream (File file)
+    throws SecurityException, FileNotFoundException
+  {
+    this (file.getPath(), false);
+  }
+
+  /**
+   * This method initializes a <code>FileOutputStream</code> object to write
+   * to the specified <code>File</code> object.  The file is created if it 
+   * does not exist, and the bytes written are written starting at the 
+   * beginning of the file if the <code>append</code> parameter is 
+   * <code>false</code>.  Otherwise bytes are written at the end of the
+   * file.
+   * <p>
+   * Before opening a file, a security check is performed by calling the
+   * <code>checkWrite</code> method of the <code>SecurityManager</code> (if
+   * one exists) with the name of the file to be opened.  An exception is
+   * thrown if writing is not allowed. 
+   *
+   * @param file The <code>File</code> object this stream should write to
+   * @param append <code>true</code> to append bytes to the end of the file,
+   * or <code>false</code> to write bytes to the beginning
+   *
+   * @exception SecurityException If write access to the file is not allowed
+   * @exception FileNotFoundException If a non-security error occurs
+   */
+  public FileOutputStream (File file, boolean append)
+    throws FileNotFoundException
+  {
+    this (file.getPath(), append);
+  }
+
+  /**
+   * This method initializes a <code>FileOutputStream</code> object to write
    * to the file represented by the specified <code>FileDescriptor</code>
    * object.  This method does not create any underlying disk file or
    * reposition the file pointer of the given descriptor.  It assumes that
@@ -180,7 +185,7 @@ public class FileOutputStream extends OutputStream
    *
    * @exception SecurityException If write access to the file is not allowed
    */
-  public FileOutputStream(FileDescriptor fd) throws SecurityException
+  public FileOutputStream (FileDescriptor fd) throws SecurityException
   {
     // Hmm, no other exception but this one to throw, but if the descriptor
     // isn't valid, we surely don't have "permission" to write to it.
@@ -204,7 +209,7 @@ public class FileOutputStream extends OutputStream
    */
   public final FileDescriptor getFD() throws IOException
   {
-    return(fd);
+    return fd;
   }
 
   /**
@@ -216,7 +221,7 @@ public class FileOutputStream extends OutputStream
    */
   public void write(int b) throws IOException
   {
-    fd.write(b);
+    fd.write (b);
   }
 
   /**
@@ -229,7 +234,7 @@ public class FileOutputStream extends OutputStream
    */
   public void write(byte[] buf) throws IOException
   {
-    write(buf, 0, buf.length);
+    write (buf, 0, buf.length);
   }
 
   /**
@@ -244,7 +249,7 @@ public class FileOutputStream extends OutputStream
    */
   public void write(byte[] buf, int offset, int len) throws IOException
   {
-    fd.write(buf, offset, len);
+    fd.write (buf, offset, len);
   }
 
   /**
@@ -254,9 +259,9 @@ public class FileOutputStream extends OutputStream
    *
    * @exception IOException If an error occurs
    */
-  public void close() throws IOException
+  public void close () throws IOException
   {
-    fd.close();
+    fd.close ();
   }
 
   /**

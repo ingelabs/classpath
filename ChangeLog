@@ -1,5 +1,21 @@
 2003-03-24  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/DataOutputStream.java:
+	Reordered methods to match libgcj, reformatting.
+	(writeBoolean): Replaced if ... else ... with a single line of code.
+	* java/io/FileInputStream.java:
+	Reordered methods to match libgcj, reformatting.
+	* java/io/FileOutputStream.java:
+	Reordered methods to match libgcj, reformatting.
+	* java/io/InputStreamReader.java:
+	Merged copyright years with libgcj.
+	* java/io/OutputStreamWriter.java:
+	Merged copyright years with libgcj.
+	* java/io/RandomAccessFile.java:
+	Merged copyright years with libgcj.
+
+2003-03-24  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/Frame.java
 	(DEFAULT_CURSOR): Fixed @deprecated tag.
 	(setCursor): Fixed @deprecated tag.

@@ -42,40 +42,26 @@ import gnu.classpath.Configuration;
 import java.nio.channels.FileChannel;
 import gnu.java.nio.FileChannelImpl;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete and correct.
+ */
+
 /**
  * This class is a stream that reads its bytes from a file. 
  *
- * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @author Warren Levy <warrenl@cygnus.com>
  */
 public class FileInputStream extends InputStream
 {
-  private FileChannel ch; /* cached associated file-channel */
-
   /**
    * This is the native file handle for the file this stream is reading from
    */
   private FileDescriptor fd;
 
-  /**
-   * This method initializes a <code>FileInputStream</code> to read from the
-   * specified <code>File</code> object.  A security check is first  
-   * made to determine
-   * whether or not access to this file is allowed.  This is done by
-   * calling the <code>checkRead()</code> method of the 
-   * <code>SecurityManager</code>
-   * (if one exists) with the name of this file.  An exception is thrown
-   * if reading is not allowed.  If the file does not exist, an exception
-   * is also thrown.
-   *
-   * @param file The <code>File</code> object this stream should read from
-   *
-   * @exception SecurityException If read access to the file is not allowed
-   * @exception FileNotFoundException If the file does not exist.
-   */
-  public FileInputStream(File file) throws FileNotFoundException
-  {
-    this(file.getPath());
-  }
+  private FileChannel ch;  /* cached associated file-channel */
 
   /**
    * This method initializes a <code>FileInputStream</code> to read from the
@@ -94,9 +80,9 @@ public class FileInputStream extends InputStream
    */
   public FileInputStream(String name) throws FileNotFoundException
   {
-    SecurityManager sm = System.getSecurityManager();
-    if (sm != null)
-      sm.checkRead(name);
+    SecurityManager s = System.getSecurityManager();
+    if (s != null)
+      s.checkRead(name);
 
     fd = new FileDescriptor();
  
@@ -112,8 +98,29 @@ public class FileInputStream extends InputStream
 
   /**
    * This method initializes a <code>FileInputStream</code> to read from the
-   * specified <code>FileDescriptor</code> object.  A security 
-   * check is first made to 
+   * specified <code>File</code> object.  A security check is first
+   * made to determine
+   * whether or not access to this file is allowed.  This is done by
+   * calling the <code>checkRead()</code> method of the
+   * <code>SecurityManager</code>
+   * (if one exists) with the name of this file.  An exception is thrown
+   * if reading is not allowed.  If the file does not exist, an exception
+   * is also thrown.
+   *
+   * @param file The <code>File</code> object this stream should read from
+   *
+   * @exception SecurityException If read access to the file is not allowed
+   * @exception FileNotFoundException If the file does not exist.
+   */
+  public FileInputStream(File file) throws FileNotFoundException
+  {
+    this(file.getPath());
+  }
+
+  /**
+   * This method initializes a <code>FileInputStream</code> to read from the
+   * specified <code>FileDescriptor</code> object.  A security
+   * check is first made to
    * determine whether or not access to this file is allowed.  This is done by
    * calling the <code>checkRead()</code> method of the 
    * <code>SecurityManager</code>
@@ -126,32 +133,18 @@ public class FileInputStream extends InputStream
    *
    * @exception SecurityException If read access to the file is not allowed
    */
-  public FileInputStream(FileDescriptor fd) throws SecurityException
+  public FileInputStream(FileDescriptor fdObj)
   {
     // Hmmm, no other exception but this one to throw, but if the descriptor
     // isn't valid, we surely don't have "permission" to read from it.
-    if (!fd.valid())
+    if (!fdObj.valid())
       throw new SecurityException("Invalid FileDescriptor");
 
-    SecurityManager sm = System.getSecurityManager();
-    if (sm != null)
-      sm.checkRead(fd);
+    SecurityManager s = System.getSecurityManager();
+    if (s != null)
+      s.checkRead(fdObj);
 
-    this.fd = fd;
-  }
-
-  /**
-   * This method returns a <code>FileDescriptor</code> object representing the
-   * underlying native file handle of the file this stream is reading
-   * from
-   *
-   * @return A <code>FileDescriptor</code> for this stream
-   *
-   * @exception IOException If an error occurs
-   */
-  public final FileDescriptor getFD() throws IOException
-  {
-    return(fd);
+    this.fd = fdObj;
   }
 
   /**
@@ -175,7 +168,98 @@ public class FileInputStream extends InputStream
    */
   public int available() throws IOException
   {
-    return(fd.available());
+    return fd.available();
+  }
+
+  /**
+   * This method closes the stream.  Any futher attempts to read from the
+   * stream will likely generate an IOException since the underlying file
+   * will be closed.
+   *
+   * @exception IOException If an error occurs.
+   */
+  public void close() throws IOException
+  {
+    fd.close();
+  }
+
+  /**
+   * This method returns a <code>FileDescriptor</code> object representing the
+   * underlying native file handle of the file this stream is reading
+   * from
+   *
+   * @return A <code>FileDescriptor</code> for this stream
+   *
+   * @exception IOException If an error occurs
+   */
+  public final FileDescriptor getFD() throws IOException
+  {
+    return fd;
+  }
+
+  /**
+   * This method reads an unsigned byte from the input stream and returns it
+   * as an int in the range of 0-255.  This method also will return -1 if
+   * the end of the stream has been reached.
+   * <p>
+   * This method will block until the byte can be read.
+   *
+   * @return The byte read or -1 if end of stream
+   *
+   * @exception IOException If an error occurs
+   */
+  public int read() throws IOException
+  {
+    return fd.read();
+  }
+
+  /**
+   * This method reads bytes from a stream and stores them into a caller
+   * supplied buffer.  This method attempts to completely fill the buffer,
+   * but can return before doing so.  The actual number of bytes read is
+   * returned as an int.  A -1 is returned to indicate the end of the stream.
+   * <p>
+   * This method will block until some data can be read.
+   * <p>
+   * This method operates by calling an overloaded read method like so:
+   * <code>read(buf, 0, buf.length)</code>
+   *
+   * @param buf The buffer into which the bytes read will be stored.
+   *
+   * @return The number of bytes read or -1 if end of stream.
+   *
+   * @exception IOException If an error occurs.
+   */
+  public int read(byte[] buf) throws IOException
+  {
+    return read(buf, 0, buf.length);
+  }
+
+  /**
+   * This method read bytes from a stream and stores them into a caller
+   * supplied buffer.  It starts storing the data at index 
+   * <code>offset</code> into
+   * the buffer and attempts to read <code>len</code> bytes.  This method can
+   * return before reading the number of bytes requested.  The actual number
+   * of bytes read is returned as an int.  A -1 is returned to indicate the
+   * end of the stream.
+   * <p>
+   * This method will block until some data can be read.
+   *
+   * @param buf The array into which the bytes read should be stored
+   * @param offset The offset into the array to start storing bytes
+   * @param len The requested number of bytes to read
+   *
+   * @return The actual number of bytes read, or -1 if end of stream.
+   *
+   * @exception IOException If an error occurs.
+   */
+  public int read(byte[] buf, int offset, int len) throws IOException
+  {
+    if (off < 0 || len < 0 || off + len > b.length)
+      throw new ArrayIndexOutOfBoundsException();
+
+    return fd.read(buf, offset, len);
   }
 
   /**
@@ -205,93 +289,15 @@ public class FileInputStream extends InputStream
   }
 
   /**
-   * This method reads an unsigned byte from the input stream and returns it
-   * as an int in the range of 0-255.  This method also will return -1 if
-   * the end of the stream has been reached.
-   * <p>
-   * This method will block until the byte can be read.
-   *
-   * @return The byte read or -1 if end of stream
-   *
-   * @exception IOException If an error occurs
-   */
-  public int read() throws IOException
-  {
-    return(fd.read());
-  }
-
-  /**
-   * This method reads bytes from a stream and stores them into a caller
-   * supplied buffer.  This method attempts to completely fill the buffer,
-   * but can return before doing so.  The actual number of bytes read is
-   * returned as an int.  A -1 is returned to indicate the end of the stream.
-   * <p>
-   * This method will block until some data can be read.
-   * <p>
-   * This method operates by calling an overloaded read method like so:
-   * <code>read(buf, 0, buf.length)</code>
-   *
-   * @param buf The buffer into which the bytes read will be stored.
-   *
-   * @return The number of bytes read or -1 if end of stream.
-   *
-   * @exception IOException If an error occurs.
-   */
-  public int read(byte[] buf) throws IOException
-  {
-    return(read(buf, 0, buf.length));
-  }
-
-  /**
-   * This method read bytes from a stream and stores them into a caller
-   * supplied buffer.  It starts storing the data at index 
-   * <code>offset</code> into
-   * the buffer and attempts to read <code>len</code> bytes.  This method can
-   * return before reading the number of bytes requested.  The actual number
-   * of bytes read is returned as an int.  A -1 is returned to indicate the
-   * end of the stream.
-   * <p>
-   * This method will block until some data can be read.
-   *
-   * @param buf The array into which the bytes read should be stored
-   * @param offset The offset into the array to start storing bytes
-   * @param len The requested number of bytes to read
-   *
-   * @return The actual number of bytes read, or -1 if end of stream.
-   *
-   * @exception IOException If an error occurs.
-   */
-  public int read(byte[] buf, int offset, int len) throws IOException
-  {
-    return(fd.read(buf, offset, len));
-  }
-
-  /**
-   * This method closes the stream.  Any futher attempts to read from the
-   * stream will likely generate an IOException since the underlying file
-   * will be closed.
-   *
-   * @exception IOException If an error occurs.
-   */
-  public void close() throws IOException
-  {
-    fd.close();
-  }
-
-  /**
    * This method creates a java.nio.channels.FileChannel.
    * Nio does not allow one to create a file channel directly.
    * A file channel must be created by first creating an instance of
    * Input/Output/RandomAccessFile and invoking the getChannel() method on it.
    */
-  public FileChannel getChannel() 
+  public synchronized FileChannel getChannel () 
   {
-    synchronized (this) 
-      {
-        // FIXME:  Convert NIO to 64 bit
-        if (ch == null)
-          ch = new FileChannelImpl ((int) (fd.getNativeFd () & 0xFFFF), this);
-      }
+    if (ch == null)
+      ch = new FileChannelImpl ((int) (fd.getNativeFd () & 0xFFFF), this);
     
     return ch;
   }
