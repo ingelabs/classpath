@@ -1,3 +1,9 @@
+2004-12-19  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/util/Currency.java
+	New implementation of this class so as to
+	use iso4271.properties.
+
 2004-12-19  Michael Koch  <konqueror@gmx.de>
 
 	* java/util/Locale.java: Make sure all locales get only created once.
