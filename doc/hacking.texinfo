@@ -1,0 +1,692 @@
+\input texinfo @c -*-texinfo-*-
+
+@c %**start of header
+@setfilename hacking.info
+@settitle GNU Classpath Hacker's Guide
+@c %**end of header
+
+@setchapternewpage none
+
+@ifinfo
+This file contains important information you will need to know if you
+are going to hack on the GNU Classpath project code.
+
+Copyright (C) 1998 Free Software Foundation, Inc.
+
+@end ifinfo
+
+@titlepage
+@title GNU Classpath Hacker's Guide
+@author Aaron M. Renn
+@author Paul N. Fisher
+@author John Keiser
+
+@page
+@vskip 0pt plus 1filll
+Copyright @copyright{} 1998 Free Software Foundation, Inc.
+@sp 2
+Permission is granted to make and distribute verbatim copies of
+this document provided the copyright notice and this permission notice
+are preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+document under the conditions for verbatim copying, provided that the
+entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions,
+except that this permission notice may be stated in a translation
+approved by the Free Software Foundation.
+
+@end titlepage
+
+@ifinfo
+@node Top, Introduction, , (dir)
+@top GNU Classpath Hacker's Guide
+
+This document contains important information you'll want to know if you
+want to hack on GNU Classpath, the free implementation of the Java standard
+class libraries.
+
+This document is definitely a work in progress.
+@end ifinfo
+
+@menu 
+* Introduction::            An introduction to the Classpath project
+* Requirements::            Very important rules that must be followed
+* Project Goals::           Goals of the Classpath project
+* Volunteering::            So you want to help out
+* Programming Tools::       A list of tools you will need for hacking
+* Programming Standards::   Standards to use when writing code for Classpath
+* Programming Goals::       What to consider when writing code for Classpath
+* Portability::             How to ensure your code is portable
+* Robustness::              How to make native code robust
+* Java Efficiency::         Tips for making Java code faster
+* Native Efficiency::       Tips for making native Java code faster
+* Specification Sources::   Where to find the Java class library specs
+* Naming Conventions::      How files and directories are named in Classpath
+@end menu
+
+@node Introduction, Requirements, Top, Top
+@comment node-name, next, previous, up
+@chapter Introduction
+
+The Classpath Project is a dedicated to providing a 100% free, clean
+room implementation of the standard Java class libraries.  Because there
+is currently no free implementation of the Java environment, no free
+operating system can ship with Java included.  Parts of a free Java
+implementation have already been written, including free Java virtual
+machines (JVM's) such as @uref{http://www.kaffe.org/,Kaffe} and
+@uref{http://www.hungry.com/products/japhar/,Japhar}, and Java compilers
+such as @uref{http://www.cs.berkeley.edu/~engberg/guavac/,Guavac}.
+However, there is currently no free replacement for Sun's proprietary
+libraries.  This Classpath project aims to correct this problem by
+supplying a free class library implementation that will allow a 100%
+free Java platform to be distributed.  Note that Kaffe now ships with a
+partial class library that is also free, so there is more than one group
+working towards a common goal.
+
+@node Requirements, Volunteering, Introduction, Top
+@comment node-name, next, previous, up
+@chapter Requirements
+
+Although Classpath is following an open development model where input
+from developers is welcome, there are certain base requirements that
+need to be met by anyone who wants to contribute code to this project.
+They are mostly unfortunately dictated by legal requirements and are not
+arbitrary restrictions chosen by the Classpath team.
+
+You will need to adhere to the following things if you want to donate
+code to the Classpath project:
+
+@itemize @bullet
+@item
+@b{Never under any circumstances refer to Sun's code while working on
+Classpath.}  It is best if you have never looked at Sun's code at all.
+To reduce temptation, it would be best if you deleted the @samp{src.zip}
+file from your JDK distribution.  If you have signed Sun's
+non-disclosure statement, then you unfortunately cannot work on
+Classpath code at all.  If you have any reason to believe that your code
+might be ``tainted'', please say something on the mailing list before
+writing anything.  If it turns out that your code was not developed in a
+clean room environment, we could be very embarrassed someday in court.
+Please don't let that happen.
+
+@item
+@b{Never decompile Sun's class libraries.}  While the wording of the
+license in Sun's JDK version 1.2 has changed, it not acceptable, under
+any circumstances, for a person working on Classpath to decompile Sun's
+class libraries.  Allowing the use of decompilation in the Classpath
+project would open up a giant can of legal worms, which we wish to
+avoid.
+
+@item
+Classpath is licensed under the terms of the
+@uref{http://www.fsf.org/copyleft/lgpl.html,GNU Library General Public
+License}.  To preserve freedom for all users and to maintain uniform
+licensing of Classpath, we will not accept code into the main
+distribution that is not licensed under these terms.
+
+@item
+Classpath is GNU software and this project is being officially sponsored
+by the @uref{http://www.fsf.org/,Free Software Foundation}.  Because of
+this, the FSF will hold copyright to all code developed as part of
+Classpath.  This will allow them to pursue copyright violators in court,
+something an individual developer may neither have the time nor
+resources to do.  Everyone contributing code to Classpath will need to
+sign a copyright assignment statement.  Additionally, if you are
+employed as a programmer, your employer may need to sign a copyright
+waiver disclaiming all interest in the software.  This may sound harsh,
+but unfortunately, it is the only way to ensure that the code you write
+is legally yours to distribute.
+@end itemize
+
+@node Volunteering, Project Goals, Requirements, Top
+@comment node-name, next, previous, up
+@chapter Volunteering to Help
+
+The Classpath project needs volunteers to help us out.  People are
+needed to write unimplemented Java packages, to test Classpath on
+various platforms, and to port it to platforms that are currently
+unsupported.
+
+While pretty much all contributions are welcome (but see 
+@pxref{Requirements}) it is always preferable that volunteers do the
+whole job when volunteering for a task.  So when you volunteer to write
+a Java package, please be willing to do the following:
+
+@itemize @bullet
+@item
+Implement a complete drop-in replacement for the particular package.
+That means implementing any ``internal'' classes.  For example, in the
+java.net package, there are non-public classes for implementing sockets.
+Without those classes, the public socket interface is useless.  But do
+not feel obligated to completely replace all of Sun's functionality at
+once.  For example, in the java.net package, there are different types
+of protocol handlers for different types of URL's.  Not all of these
+need to be written at once.
+
+@item
+Please write complete and thorough javadoc comments for every public and
+protected method and variable.  These should be superior to Sun's and
+cover everything about the item being documented.
+
+@item
+Please write a regression test package that can be used to run tests of
+your package's functionality.
+@end itemize
+
+Nobody likes to write documentation and test cases, but they are vital
+to a complete and robust product.  Writing them as you go is much easier
+than going back at the end and adding them.
+
+@node Project Goals, Programming Tools, Volunteering, Top
+@comment node-name, next, previous, up
+@chapter Project Goals
+
+The goal of the Classpath project is to produce a
+@uref{http://www.fsf.org/philosophy/free-sw.html,free} implementation of
+the standard class library for Java.  However, there are other more
+specific goals as to which platforms should be supported.
+
+Classpath is targeted to support the following operating systems:
+
+@enumerate
+@item
+Free operating systems.  This includes GNU/Linux, GNU/Hurd, and the free
+BSDs.
+
+@item
+Other Unix like operating systems.
+
+@item
+Platforms which currently have no Java support at all.
+
+@item 
+Other platforms such as MS-Windows.
+@end enumerate
+
+While free operating systems are the top priority, the other priorities
+can shift depending on whether or not there is a volunteer to port
+Classpath to those platforms and to test releases.
+
+Eventually we hope the Classpath will support all JVM's that provide JNI
+support.  However, the top priority is free JVM's.  The JVM support
+priority list is:
+
+@enumerate
+@item
+Japhar
+@item
+Kaffe
+@item
+Sun's JDK
+@item
+Other JNI Compliant JVM's.
+@end enumerate
+
+As with OS platform support, this priority list could change if a
+volunteer comes forward to port, maintain, and test releases for a
+particular JVM.  Kaffe is now developing its own class library, so the
+priority of supporting that platform is not as high as for Japhar.
+
+The initial target version for Classpath is Java 1.1.  Java 1.2 can be
+implemented if desired, but please do not create classes that depend on
+1.2 features in other packages.
+
+@node Programming Tools, Programming Standards, Project Goals, Top
+@comment node-name, next, previous, up
+@chapter Programming Tools
+
+If you want to hack on Classpath, you should download, install, and
+familiarize yourself with the following tools:
+
+@itemize @bullet
+@item
+CVS 1.9
+@item
+automake 1.3
+@item
+autoconf 2.12
+@item
+dejagnu 1.3
+@item
+libtool 1.2
+@item
+GNU m4 1.4
+@item
+perl 5.X
+@item
+GNU MP 2.0.2
+@end itemize
+
+All of these tools are available from
+@uref{ftp://prep.ai.mit.edu/pub/gnu/,prep.ai.mit.edu} via anonymous ftp.
+With the exception of perl, they are fully documented with texinfo
+manuals.  Texinfo can be browsed with the Emacs editor, or with the text
+editor of your choice.
+
+Here is a brief description of the purpose of those tools.
+
+@table @b
+
+@item CVS  
+A version control system that maintains a centralized Internet
+repository of all code in the Classpath system.  Access to the
+repository requires an account.  Contact Paul Fisher
+(@email{rao@@gnu.org}) for details.
+
+@item dejagnu  
+A package for automating regression test suites for programs.  Your
+regression test package should work with this.
+
+@item automake  
+This tool automatically creates Makefile.in files from Makefile.am
+files.  The Makefile.in is turned into a Makefile by autoconf.  Why use
+this?  Because it automatically generates every makefile target you
+would ever want (clean, install, dist, etc) in full compliance with the
+GNU coding standards.  It also simplifies Makefile creation in a ton of
+different ways I can't describe here.  Read the docs for more info.
+
+@item autoconf  
+Automatically configures a package for the platform on which it is being
+built and generates the Makefile for that platform.
+
+@item libtool  
+Handles all of the zillions of hairy platform specific options needed to
+build shared libraries.
+
+@item m4
+The free GNU replacement for the standard Unix macro processor.
+Proprietary m4 programs are broken and so GNU m4 is required for
+autoconf to work.
+
+@item perl
+Larry Wall's scripting language.  It is used internally by automake.
+
+@item MP
+Required for java.lang.Float, java.lang.Double, java.math.BigInteger,
+and java.math.BigDecimal.
+
+@end table
+
+@node Programming Standards, Programming Goals, Programming Tools, Top
+@comment node-name, next, previous, up
+@chapter Programming Standards
+
+For C code, follow the
+@uref{http://www.fsf.org/prep/standards_toc.html,GNU Coding Standards}.
+The standards also specify various things like the install directory
+structure.  These should be followed if possible.
+
+For Java code, please follow the
+@uref{http://java.sun.com/docs/codeconv/html/CodeConventionsTOC.doc.html,Sun
+programming standards}.  As an exception, do not feel obligated to
+following their bracket and indentation style if you consider it to be
+wrong.
+
+For documentation comments, please follow
+@uref{http://java.sun.com/products/jdk/javadoc/writingdoccomments.html,How
+to Write Doc Comments for Javadoc}.
+
+@node Programming Goals, Portability, Programming Standards, Top
+@comment node-name, next, previous, up
+@chapter Programming Goals
+
+When you write code for Classpath, write with three things in mind, and
+in the following order: portability, robustness, and efficiency.
+
+If efficiency breaks portability or robustness, then don't do it the
+efficient way.  If robustness breaks portability, then bye-bye robust
+code.  Of course, as a programmer you would probably like to find sneaky
+ways to get around the issue so that your code can be all three ... the
+following chapters will give some hints on how to do this.
+
+@node Portability, Robustness, Programming Goals, Top
+@comment node-name, next, previous, up
+@chapter Portability
+
+The ultimate portability goal would be to create:
+
+@enumerate
+@item
+a binary set for each platform that works across all VMs on that
+platform
+@item
+a single classfile set that work across all VMs on all platforms that
+support the binary set.
+@end enumerate
+
+With Java code, this is no problem.  You end up delegating VM- or
+platform-specific stuff to native code anyway.  Unfortunately, it is
+impossible to write native code that works out of the box on multiple
+VMs, even on a given platform.  The APIs Sun has created just do not
+give the flexibility required to do that if you are implementing the
+java.* hierarchy.
+
+The native libraries we use in Classpath are JNI, JVMDI, and VMI.  JNI
+you should be familiar with; introduced in Java 1.1, it is the basis for
+our native code.  JVMDI is a 1.2 concoction, and thus we can only
+support it on 1.1 VMs that we have source access to (i.e. Japhar and
+Kaffe).  VMI is our own invention entirely; it is where we push the
+VM-specific functionality that JNI and JVMDI do not support.
+
+However, using JVMDI and VMI in 1.1 breaks the "ideal goal" for the
+project.  With these two in the mix, Classpath's portability becomes:
+
+@enumerate
+@item
+a JVMDI and VMI lib per VM per platform;
+@item
+a binary set for each platform that works across all VM/platform combos
+supporting the JVMDI/VMI;
+@item
+a single classfile set that works across all VM / platform combos that
+support both of the above.
+@end enumerate
+
+When writing, therefore, you should always keep shy of anything
+VM-specific yourself, and talk to the VM using the VMI.  If you need a
+VM-specific function that is not supported by JNI or JVMDI, write a new
+VMI function!
+
+Note that the preferred method is not to use the JVMDI or VMI at
+@emph{all}, but to use only JNI.  If you can write it without the VMI,
+your code will be quicker to port to new VMs.
+
+There is another issue, however, and that is the efficiency issue.  Some
+things can be done using JNI only, but they are a ton slower than they
+would be if you used the VMI or talked directly to the VM.
+
+In these cases, the preferred method in Classpath is to create a
+@emph{library}.  Hide the implementation of the functions from the
+caller.  If the library can be written using only JNI, no matter how
+inefficient, you should write a version of it for that.  Portability,
+remember, is the ultimate goal, and the closer we are to it, the better
+off we are.
+
+@node Robustness, Java Efficiency, Portability, Top
+@comment node-name, next, previous, up
+@chapter Robustness
+
+Native code is very easy to make non-robust.  (That's one reason Java is
+so much better!)  Here are a few hints to make your native code more
+robust.
+
+Always check return values for standard functions.  It's sometimes easy
+to forget to check that malloc() return for an error.  Don't make that
+mistake.  (In fact, use JCL_malloc() in the jcl library instead--it will
+check the return value and throw an exception if necessary.)
+
+Always check the return values of JNI functions, or call
+@code{ExceptionOccurred} to check whether an error occurred.  You must
+do this after @emph{every} JNI call.  JNI does not work well when an
+exception has been raised, and can have unpredictable behavior.
+
+Throw exceptions using JCL_ThrowException.  This guarantees that if
+something is seriously wrong, the exception text will at least get out
+somewhere (even if it is stderr).
+
+Check for null values of jclasses before you send them to JNI functions.
+JNI does not behave nicely when you pass a null class to it: it
+terminates Java with a "JNI Panic."
+
+In general, try to use functions in native/lib/jcl.h.  They check
+exceptions and return values and throw appropriate exceptions.
+
+@node Java Efficiency, Native Efficiency, Robustness, Top
+@comment node-name, next, previous, up
+@chapter Java Efficiency
+
+For methods which explicitly throw a NullPointerException when an
+argument is passed which is null, per a Sun specification, do not write
+code like:
+
+@example
+int strlen(String foo) throws NullPointerException @{
+  if (foo == null)
+    throw new NullPointerException("foo is null");
+  return foo.length();
+@}
+@end example
+
+Instead, the code should be written as:
+
+@example
+int strlen(String foo) throws NullPointerException @{
+  return foo.length();
+@}
+@end example
+
+Explicitly comparing foo to null is unnecessary, as the virtual machine
+will throw a NullPointerException when length() is invoked.  Classpath
+is designed to be as fast as possible -- every optimization, no matter
+how small, is important.
+
+@node Native Efficiency, Specification Sources, Java Efficiency, Top
+@comment node-name, next, previous, up
+@chapter Native Efficiency
+
+You might think that using native methods all over the place would give
+our implementation of Java speed, speed, blinding speed.  You'd be
+thinking wrong.  Would you believe me if I told you that an
+@emph{interpreted} Java method is typically about three and a half times
+@emph{faster} than the equivalent native method?  This is true even for
+a totally blank method.
+
+Bottom line: JNI is overhead incarnate.  In Sun's implementation, even
+the JNI functions you use once you get into Java are slow.
+
+A final problem is efficiency of native code when it comes to things
+like method calls, fields, finding classes, etc.  Generally you should
+cache things like that in static C variables if you're going to use them
+over and over again.  GetMethodID(), GetFieldID(), and FindClass() are
+*slow*.
+
+Here are a few tips on writing native code efficiently:
+
+Make as few native method calls as possible.  Note that this is not the
+same thing as doing less in native method calls; it just means that, if
+given the choice between calling two native methods and writing a single
+native method that does the job of both, it will usually be better to
+write the single native method.  You can even call the other two native
+methods directly from your native code and not incur the overhead of a
+method call from Java to C.
+
+Cache methodIDs and fieldIDs wherever you can.  String lookups are
+expensive.  The best way to do this is to use the native/lib/jnilink.h
+library.  It will ensure that jmethodIDs are always valid, even if the
+class is unloaded at some point.  In 1.1, jnilink simply caches a
+NewGlobalRef() to the method's underlying class; however, when 1.2 comes
+along, it will use a weak reference to allow the class to be unloaded
+and then re-resolve the jmethodID the next time it is used.
+
+Cache classes that you need to access often.  jnilink will help with
+this as well.  The issue here is the same as the methodID and fieldID
+issue--how to make certain the class reference remains valid.
+
+If you need to associate native C data with your class, use Paul
+Fisher's native_state library (NSA).  It will allow you to get and set
+state fairly efficiently.  Note that there is no built-in mechanism to
+associate C data with instances of a class.  This is a library Paul
+built from scratch.
+
+@node Specification Sources, Naming Conventions, Native Efficiency, Top
+@comment node-name, next, previous, up
+@chapter Specification Sources
+
+There are a number of specification sources to use when working on
+Classpath.  In general, the only place you'll find your classes
+specified is in the JavaDoc documentation or possibly in the
+corresponding white paper.  In the case of java.lang, java.io and
+java.util, you should look at the Java Language Specification.
+
+Here, however, is a list of specs, in order of canonicality:
+
+@enumerate
+@item
+@uref{http://java.sun.com/docs/books/jls/clarify.html,Clarifications and Amendments to the JLS - 1.1}
+@item
+@uref{http://java.sun.com/docs/books/jls/html/1.1Update.html,JLS Updates
+- 1.1}
+@item
+@uref{http://java.sun.com/docs/books/jls/html/index.html,The 1.0 JLS}
+@item
+@uref{http://java.sun.com/docs/books/vmspec/index.html,JVM spec - 1.1}
+@item
+@uref{http://java.sun.com/products/jdk/1.1/docs/guide/jni/spec/jniTOC.doc.html,JNI spec - 1.1}
+@item
+@uref{http://java.sun.com/products/jdk/1.1/docs/api/packages.html,Sun's javadoc - 1.1}
+(since Sun's is the reference implementation, the javadoc is
+documentation for the Java platform itself.)
+@item
+@uref{http://java.sun.com/products/jdk/1.2/docs/guide/jvmdi/jvmdi.html,JVMDI spec - 1.2},
+@uref{http://java.sun.com/products/jdk/1.2/docs/guide/jni/jni-12.html,JNI spec - 1.2}
+(sometimes gives clues about unspecified things in 1.1; if
+it was not specified accurately in 1.1, then use the spec
+for 1.2; also, we are using JVMDI in this project.)
+@item
+@uref{http://java.sun.com/products/jdk/1.2/docs/api/frame.html,Sun's javadoc - 1.2}
+(sometimes gives clues about unspecified things in 1.1; if
+it was not specified accurately in 1.1, then use the spec
+for 1.2)
+@item
+@uref{http://developer.java.sun.com/developer/bugParade/index.html,The
+Bug Parade}: I have obtained a ton of useful information about how
+things do work and how they *should* work from the Bug Parade just by
+searching for related bugs.  The submitters are very careful about their
+use of the spec.  And if something is unspecified, usually you can find
+a request for specification or a response indicating how Sun thinks it
+should be specified here.
+@end enumerate
+
+You'll notice that in this document, white papers and specification
+papers are more canonical than the JavaDoc documentation.  This is true
+in general.
+
+
+@node Naming Conventions, , Specification Sources, Top
+@comment node-name, next, previous, up
+@chapter Directory and File Naming Conventions
+
+The Classpath directory structure is laid out in the following manner:
+
+@example
+jcl
+ |
+ |---->java
+ |       |
+ |       |-->awt
+ |       |-->io
+ |       |-->lang
+ |       |-->util
+ |       |     |
+ |       |     |--->zip
+ |       |     |--->jar
+ |       |-->net
+ |       |-->etc
+ |
+ |---->gnu
+ |       |
+ |       |-->java
+ |             |
+ |             |-->awt
+ |             |-->lang
+ |             |-->util
+ |             |     |
+ |             |     |-->zip
+ |             |-->etc
+ |
+ |---->native
+ |       |
+ |       |-->java.io
+ |       |-->java.lang
+ |       |-->java.net
+ |       |-->java.util.jar
+ |       |-->etc
+ |
+ |---->test
+ |       |
+ |       |-->java.io
+ |       |-->java.lang
+ |       |-->etc
+ |
+ |---->compat
+         |
+         |-->java.io
+         |-->java.lang
+         |-->etc
+
+@end example
+
+Here is a brief description of the toplevel directories and their contents.
+
+@table @b
+
+@item java
+Contains the source code to the Java packages that make up the core
+class library.  Because this is the public interface to Java, it is
+important that the public classes, interfaces, methods, and variables
+are exactly the same as specified in Sun's documentation.  The directory
+structure is laid out just like the java package names.  For example,
+the class java.util.zip would be in the directory java/util/zip.
+
+@item gnu/java
+Internal classes (roughly analogous to Sun's sun.* classes) should go
+under the gnu/java directory.  Classes related to a particular public
+Java package should go in a directory named like that package.  For
+example, classes related to java.util.zip should go under a directory
+gnu/java/util/zip.  Sub-packages under the main package name are
+allowed.  For classes spanning multiple public Java packages, pick an
+appropriate name and see what everybody else thinks.
+
+@item native
+This directory holds native code needed by the public Java packages.
+Each package has its own subdirectory, which is the ``flattened'' name
+of the package.  For example, native method implementations for
+java.util.zip should go in native/java.util.zip.
+
+@item test
+This directory contains test packages written for DejaGnu used to test
+releases of Classpath.  The test scripts for a given package go in the
+subdirectory that is the same as the ``flattened'' name of the package.
+For example, test scripts for java.util.zip should go in
+test/java.util.zip
+
+@item compat
+This directory contains misc scripts designed not to test an
+implementation, but to determine various things about Sun's reference
+implementation that are needed in order to write a compatible package.
+Each package has its own directory which is the ``flattened'' package
+name.  For example, compatibility scripts for java.util.zip go in
+compat/java.util.zip
+@end table
+
+Each person working on a package get's his or her own ``directory
+space'' underneath each of the toplevel directories.  In addition to the
+general guidelines above, the following standards should be followed:
+
+@itemize @bullet
+
+@item
+Classes that need to load native code should load a library with the
+same name as the flattened package name, with all periods removed.  For
+example, the native library name specified in LoadLibrary for
+java.util.zip would be ``javautilzip''.
+
+@item
+Each package has its own shared library for native code (if any).  The
+actual library name to be built will depend on the target JVM.
+
+@item
+The main native method implementation for a given method in class should
+go in a file with the same name as the class with a ``.c'' extension.
+For example, the implementation of the native methods in
+java.util.InetAddress would go in native/java.net/InetAddress.c.
+``Internal'' native functions called from the main native method can
+reside in files of any name.
+@end itemize
+
+@bye
+
