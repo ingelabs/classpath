@@ -118,6 +118,7 @@ public
 AttributedString(String str)
 {
   sci = new StringCharacterIterator(str);
+  attribs = new AttributeRange[0];
 }
 
 /*************************************************************************/
