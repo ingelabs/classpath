@@ -126,9 +126,9 @@ public class GtkSliderUI extends BasicSliderUI
 
 	g.setColor(Color.blue);
 	if (slider.getOrientation() == JSlider.HORIZONTAL)
-	    g.drawRect(x, y, x+w, y+h);
+	    g.drawRect(x, y, w, h);
 	else 
-	    g.drawRect(x, y, x+w, y+h);
+	    g.drawRect(x, y, w, h);
 
 	System.err.println("thumb " + thumbRect);
     }
@@ -137,20 +137,21 @@ public class GtkSliderUI extends BasicSliderUI
     
     public void paintTrack(Graphics g)
     {
-	int x = trackRect.x;
-	int y = trackRect.y;
-	int h = trackRect.height;
-	int w = trackRect.width;
+	super.paintTrack(g);
+//  	int x = trackRect.x;
+//  	int y = trackRect.y;
+//  	int h = trackRect.height;
+//  	int w = trackRect.width;
 
-	g.setColor(slider.getForeground());
+//  	g.setColor(slider.getForeground());
 
-	if (slider.getOrientation() == JSlider.HORIZONTAL)
-	    g.drawLine(x, y+h-1, x+w-1, y+h-1);
-	else
-	    g.drawLine(x+w-1, y, x+w-1, y+h-1);
+//  	if (slider.getOrientation() == JSlider.HORIZONTAL)
+//  	    g.drawLine(x, y+h-1, x+w-1, y+h-1);
+//  	else
+//  	    g.drawLine(x+w-1, y, x+w-1, y+h-1);
 
-	System.err.println("track " + trackRect);
-	System.err.println("content " + contentRect);
+//  	System.err.println("track " + trackRect);
+//  	System.err.println("content " + contentRect);
     }
 
     // the four methods below allow you to control tick painting without 
