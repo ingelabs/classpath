@@ -39,15 +39,15 @@ exception statement from your version. */
 
 package java.lang;
 
+import gnu.java.io.EncodingManager;
+import gnu.java.lang.CharData;
+
+import java.io.CharConversionException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Comparator;
 import java.util.Locale;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-import java.io.CharConversionException;
-import gnu.java.io.EncodingManager;
-import gnu.java.lang.CharData;
 
 /**
  * Strings represent an immutable set of characters.  All String literals

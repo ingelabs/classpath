@@ -548,25 +548,6 @@ public class URLClassLoader extends SecureClassLoader
   }
 
   /**
-   * Private constructor used by the static
-   * <code>newInstance(URL[])</code> method.  Creates an
-   * <code>URLClassLoader</code> without any <code>URL</code>s
-   * yet. This is used to bypass the normal security check for
-   * creating classloaders, but remembers the security context which
-   * will be used when defining classes.  The <code>URL</code>s to
-   * load from must be added by the <code>newInstance()</code> method
-   * in the security context of the caller.
-   *
-   * @param securityContext the security context of the unprivileged code.
-   */
-  private URLClassLoader(AccessControlContext securityContext)
-  {
-    super();
-    this.factory = null;
-    this.securityContext = securityContext;
-  }
-
-  /**
    * Creates a <code>URLClassLoader</code> that gets classes from the supplied
    * <code>URL</code>s.
    * To determine if this classloader may be created the constructor of
