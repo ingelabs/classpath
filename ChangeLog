@@ -1,5 +1,12 @@
 2003-05-10  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/RandomAccessFile.java
+	(RandomAccessFile): Reformatted.
+	(setLength): Likewise.
+	(length): Likewise.
+
+2003-05-10  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/File.java
 	(createTempFile): Only throws IOException.
 	(compareTo): Renamed argument to match libgcj, doesnt throws

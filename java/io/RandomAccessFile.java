@@ -141,7 +141,7 @@ public class RandomAccessFile implements DataOutput, DataInput
           s.checkWrite(fileName);
       }
 
-    fd = new FileDescriptor(fileName, fdmode);
+    fd = new FileDescriptor (fileName, fdmode);
   }
 
   /**
@@ -198,9 +198,9 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public void setLength(long newlen) throws IOException
+  public void setLength (long newLen) throws IOException
   {
-    fd.setLength(newlen);
+    fd.setLength (newLen);
   }
 
   /**
@@ -212,7 +212,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public long length () throws IOException
   {
-    return fd.getLength();
+    return fd.getLength ();
   }
 
   /**
