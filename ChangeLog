@@ -1,5 +1,11 @@
 2002-12-20  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/FileChannelImpl.java
+	(read): New method.
+	(write): New method.
+
+2002-12-20  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/CharBufferImpl.java
 	gnu/java/nio/DoubleBufferImpl.java
 	gnu/java/nio/FileChannelImpl.java
