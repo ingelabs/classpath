@@ -46,15 +46,15 @@ exception statement from your version. */
  * Signature: (D)J
  */
 JNIEXPORT jlong JNICALL Java_java_lang_VMDouble_doubleToLongBits
-  (JNIEnv * env, jclass cls, jdouble doubleValue)
+  (JNIEnv *env, jclass cls, jdouble doubleValue)
 {
   jvalue val;
   jlong e, f;
   val.d = doubleValue;
-  
+
   e = val.j & 0x7ff0000000000000LL;
   f = val.j & 0x000fffffffffffffLL;
-  
+
   if (e == 0x7ff0000000000000LL && f != 0L)
     val.j = 0x7ff8000000000000LL;
 
@@ -67,7 +67,7 @@ JNIEXPORT jlong JNICALL Java_java_lang_VMDouble_doubleToLongBits
  * Signature: (D)J
  */
 JNIEXPORT jlong JNICALL Java_java_lang_VMDouble_doubleToRawLongBits
-  (JNIEnv * env, jclass cls, jdouble doubleValue)
+  (JNIEnv *env, jclass cls, jdouble doubleValue)
 {
   jvalue val;
   val.d = doubleValue;
@@ -80,10 +80,9 @@ JNIEXPORT jlong JNICALL Java_java_lang_VMDouble_doubleToRawLongBits
  * Signature: (J)D
  */
 JNIEXPORT jdouble JNICALL Java_java_lang_VMDouble_longBitsToDouble
-  (JNIEnv * env, jclass cls, jlong longValue)
+  (JNIEnv *env, jclass cls, jlong longValue)
 {
   jvalue val;
   val.j = longValue;
   return val.d;
 }
-

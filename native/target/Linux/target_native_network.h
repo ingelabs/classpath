@@ -62,7 +62,8 @@ Systems    : all
 /***************************** Functions *******************************/
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #ifdef __cplusplus
@@ -73,7 +74,6 @@ extern "C" {
    another position!) */
 #include "target_generic_network.h"
 
-#endif /* __TARGET_NATIVE_NETWORK__ */
+#endif				/* __TARGET_NATIVE_NETWORK__ */
 
 /* end of file */
-

@@ -85,36 +85,42 @@ MATHREF
 #ifndef _DOUBLE_IS_32BITS
 
 #ifdef __STDC__
-	double asin(double x)		/* wrapper asin */
+double
+asin (double x)			/* wrapper asin */
 #else
-	double asin(x)			/* wrapper asin */
-	double x;
+double
+asin (x)			/* wrapper asin */
+     double x;
 #endif
 {
 #ifdef _IEEE_LIBM
-	return __ieee754_asin(x);
+  return __ieee754_asin (x);
 #else
-	double z;
-	struct exception exc;
-	z = __ieee754_asin(x);
-	if(_LIB_VERSION == _IEEE_ || isnan(x)) return z;
-	if(fabs(x)>1.0) {
-	    /* asin(|x|>1) */
-	    exc.type = DOMAIN;
-	    exc.name = "asin";
-	    exc.err = 0;
-	    exc.arg1 = exc.arg2 = x;
-	    exc.retval = 0.0;
-	    if(_LIB_VERSION == _POSIX_)
-	      errno = EDOM;
-	    else if (!matherr(&exc)) {
-	      errno = EDOM;
-	    }
-	    if (exc.err != 0)
-	      errno = exc.err;
-	    return exc.retval; 
-	} else
-	    return z;
+  double z;
+  struct exception exc;
+  z = __ieee754_asin (x);
+  if (_LIB_VERSION == _IEEE_ || isnan (x))
+    return z;
+  if (fabs (x) > 1.0)
+    {
+      /* asin(|x|>1) */
+      exc.type = DOMAIN;
+      exc.name = "asin";
+      exc.err = 0;
+      exc.arg1 = exc.arg2 = x;
+      exc.retval = 0.0;
+      if (_LIB_VERSION == _POSIX_)
+	errno = EDOM;
+      else if (!matherr (&exc))
+	{
+	  errno = EDOM;
+	}
+      if (exc.err != 0)
+	errno = exc.err;
+      return exc.retval;
+    }
+  else
+    return z;
 #endif
 }
 

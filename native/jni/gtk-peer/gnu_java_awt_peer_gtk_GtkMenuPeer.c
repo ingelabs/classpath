@@ -40,14 +40,15 @@ exception statement from your version. */
 #include "gnu_java_awt_peer_gtk_GtkMenuPeer.h"
 
 static void
-accel_attach (GtkMenuItem *menu_item,
-	      gpointer *user_data __attribute__((unused)))
+accel_attach (GtkMenuItem * menu_item,
+	      gpointer * user_data __attribute__ ((unused)))
 {
   GtkAccelGroup *accel;
 
   accel = gtk_menu_get_accel_group (GTK_MENU (menu_item->submenu));
-  _gtk_accel_group_attach (accel, 
-    G_OBJECT (gtk_widget_get_toplevel (GTK_WIDGET(menu_item))));
+  _gtk_accel_group_attach (accel,
+			   G_OBJECT (gtk_widget_get_toplevel
+				     (GTK_WIDGET (menu_item))));
 }
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuPeer_setupAccelGroup
@@ -60,28 +61,27 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuPeer_setupAccelGroup
   gdk_threads_enter ();
   if (!parent)
     {
-      gtk_menu_set_accel_group (GTK_MENU (GTK_MENU_ITEM (ptr1)->submenu), 
+      gtk_menu_set_accel_group (GTK_MENU (GTK_MENU_ITEM (ptr1)->submenu),
 				gtk_accel_group_new ());
 
       if (GTK_WIDGET_REALIZED (GTK_WIDGET (ptr1)))
 	accel_attach (GTK_MENU_ITEM (ptr1), NULL);
       else
 	g_signal_connect (G_OBJECT (ptr1),
-			    "realize",
-			    GTK_SIGNAL_FUNC (accel_attach), 
-			    NULL);
+			  "realize", GTK_SIGNAL_FUNC (accel_attach), NULL);
     }
   else
     {
       GtkAccelGroup *parent_accel;
 
       ptr2 = NSA_GET_PTR (env, parent);
-      parent_accel = gtk_menu_get_accel_group (GTK_MENU (GTK_MENU_ITEM (ptr2)->submenu));
-      
+      parent_accel =
+	gtk_menu_get_accel_group (GTK_MENU (GTK_MENU_ITEM (ptr2)->submenu));
+
       gtk_menu_set_accel_group (GTK_MENU (GTK_MENU_ITEM (ptr1)->submenu),
 				parent_accel);
     }
-      
+
   gdk_threads_leave ();
 }
 
@@ -98,9 +98,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuPeer_create
   str = (*env)->GetStringUTFChars (env, label, NULL);
 
   gdk_threads_enter ();
-  
+
   menu = gtk_menu_new ();
-  
+
   menu_title = gtk_menu_item_new_with_label (str);
   gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_title), menu);
 
@@ -131,9 +131,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuPeer_addItem
   if (key)
     {
       gtk_widget_add_accelerator (GTK_WIDGET (ptr2), "activate",
-				  gtk_menu_get_accel_group (menu), key, 
+				  gtk_menu_get_accel_group (menu), key,
 				  (GDK_CONTROL_MASK
-				   | ((shift) ? GDK_SHIFT_MASK : 0)), 
+				   | ((shift) ? GDK_SHIFT_MASK : 0)),
 				  GTK_ACCEL_VISIBLE);
     }
 
@@ -154,5 +154,3 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuPeer_delItem
   gtk_container_remove (GTK_CONTAINER (ptr), GTK_WIDGET (list->data));
   gdk_threads_leave ();
 }
-
-

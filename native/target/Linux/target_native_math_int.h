@@ -63,7 +63,8 @@ Systems    : all
 /***************************** Functions *******************************/
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #ifdef __cplusplus
@@ -74,7 +75,6 @@ extern "C" {
    another position!) */
 #include "target_generic_math_int.h"
 
-#endif /* __TARGET_NATIVE_MATH_INT__ */
+#endif				/* __TARGET_NATIVE_MATH_INT__ */
 
 /* end of file */
-

@@ -39,30 +39,30 @@ exception statement from your version. */
 #include "gtkpeer.h"
 #include "gnu_java_awt_peer_gtk_GtkToolkit.h"
 
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkToolkit_beep
-  (JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)))
+JNIEXPORT void JNICALL
+  Java_gnu_java_awt_peer_gtk_GtkToolkit_beep
+  (JNIEnv *env __attribute__ ((unused)), jobject obj __attribute__ ((unused)))
 {
   gdk_threads_enter ();
   gdk_beep ();
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkToolkit_sync
-  (JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)))
+JNIEXPORT void JNICALL
+  Java_gnu_java_awt_peer_gtk_GtkToolkit_sync
+  (JNIEnv *env __attribute__ ((unused)), jobject obj __attribute__ ((unused)))
 {
   gdk_threads_enter ();
   gdk_flush ();
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenSizeDimensions
-  (JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)),
+JNIEXPORT void JNICALL
+  Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenSizeDimensions
+  (JNIEnv *env __attribute__ ((unused)), jobject obj __attribute__ ((unused)),
    jintArray jdims)
 {
-  jint *dims = (*env)->GetIntArrayElements (env, jdims, 0);  
+  jint *dims = (*env)->GetIntArrayElements (env, jdims, 0);
 
   gdk_threads_enter ();
 
@@ -71,12 +71,12 @@ Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenSizeDimensions
 
   gdk_threads_leave ();
 
-  (*env)->ReleaseIntArrayElements(env, jdims, dims, 0);
+  (*env)->ReleaseIntArrayElements (env, jdims, dims, 0);
 }
 
-JNIEXPORT jint JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenResolution
-  (JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)))
+JNIEXPORT jint JNICALL
+  Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenResolution
+  (JNIEnv *env __attribute__ ((unused)), jobject obj __attribute__ ((unused)))
 {
   jint res;
 
@@ -87,4 +87,3 @@ Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenResolution
   gdk_threads_leave ();
   return res;
 }
-

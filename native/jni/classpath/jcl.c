@@ -43,106 +43,138 @@ exception statement from your version. */
 #include <jcl.h>
 
 #ifndef __GNUC__
-#define __attribute__(x) /* nothing */
+#define __attribute__(x)	/* nothing */
 #endif
 
-JNIEXPORT void JNICALL JCL_ThrowException(JNIEnv * env, char * className, char * errMsg) {
-	jclass excClass;
-	if((*env)->ExceptionOccurred(env)) {
-		(*env)->ExceptionClear(env);
-	}
-	excClass = (*env)->FindClass(env, className);
-	if(excClass == NULL) {
-		jclass errExcClass;
-		errExcClass = (*env)->FindClass(env, "java/lang/ClassNotFoundException");
-		if(errExcClass == NULL) {
-			errExcClass = (*env)->FindClass(env, "java/lang/InternalError");
-			if(errExcClass == NULL) {
-				fprintf(stderr, "JCL: Utterly failed to throw exeption ");
-				fprintf(stderr, className);
-				fprintf(stderr, " with message ");
-				fprintf(stderr, errMsg);
-				return;
-			}
-		}
-		/* Removed this (more comprehensive) error string to avoid the need for a 
-		 * static variable or allocation of a buffer for this message in this (unlikely) 
-		 * error case. --Fridi. 
-		 *
-		 * sprintf(errstr,"JCL: Failed to throw exception %s with message %s: could not find exception class.", className, errMsg); 
-		 */
-		(*env)->ThrowNew(env, errExcClass, className);
-	}
-	(*env)->ThrowNew(env, excClass, errMsg);
-}
-
-JNIEXPORT void * JNICALL JCL_malloc(JNIEnv * env, size_t size) {
-	void * mem = malloc(size);
-	if(mem == NULL) {
-		JCL_ThrowException(env, "java/lang/OutOfMemoryError", "malloc() failed.");
-		return NULL;
-	}
-	return mem;
-}
-
-JNIEXPORT void * JNICALL JCL_realloc(JNIEnv *env, void *ptr, size_t size)
+JNIEXPORT void JNICALL
+JCL_ThrowException (JNIEnv *env, char *className, char *errMsg)
 {
-  ptr = realloc(ptr, size);
-  if (ptr == 0)
+  jclass excClass;
+  if ((*env)->ExceptionOccurred (env))
     {
-      JCL_ThrowException(env, "java/lang/OutOfMemoryError",
-                             "malloc() failed.");
+      (*env)->ExceptionClear (env);
+    }
+  excClass = (*env)->FindClass (env, className);
+  if (excClass == NULL)
+    {
+      jclass errExcClass;
+      errExcClass =
+	(*env)->FindClass (env, "java/lang/ClassNotFoundException");
+      if (errExcClass == NULL)
+	{
+	  errExcClass = (*env)->FindClass (env, "java/lang/InternalError");
+	  if (errExcClass == NULL)
+	    {
+	      fprintf (stderr, "JCL: Utterly failed to throw exeption ");
+	      fprintf (stderr, className);
+	      fprintf (stderr, " with message ");
+	      fprintf (stderr, errMsg);
+	      return;
+	    }
+	}
+      /* Removed this (more comprehensive) error string to avoid the need for a 
+       * static variable or allocation of a buffer for this message in this (unlikely) 
+       * error case. --Fridi. 
+       *
+       * sprintf(errstr,"JCL: Failed to throw exception %s with message %s: could not find exception class.", className, errMsg); 
+       */
+      (*env)->ThrowNew (env, errExcClass, className);
+    }
+  (*env)->ThrowNew (env, excClass, errMsg);
+}
+
+JNIEXPORT void *JNICALL
+JCL_malloc (JNIEnv *env, size_t size)
+{
+  void *mem = malloc (size);
+  if (mem == NULL)
+    {
+      JCL_ThrowException (env, "java/lang/OutOfMemoryError",
+			  "malloc() failed.");
       return NULL;
     }
-  return(ptr);
+  return mem;
 }
 
-JNIEXPORT void JNICALL JCL_free(JNIEnv * env __attribute__((unused)),
-				void * p)
+JNIEXPORT void *JNICALL
+JCL_realloc (JNIEnv *env, void *ptr, size_t size)
 {
-	if(p != NULL) {
-		free(p);
-	}
+  ptr = realloc (ptr, size);
+  if (ptr == 0)
+    {
+      JCL_ThrowException (env, "java/lang/OutOfMemoryError",
+			  "malloc() failed.");
+      return NULL;
+    }
+  return (ptr);
 }
 
-JNIEXPORT const char * JNICALL JCL_jstring_to_cstring(JNIEnv * env, jstring s) {
-	const char* cstr;
-	if(s == NULL) {
-		JCL_ThrowException(env, "java/lang/NullPointerException","Null string");
-		return NULL;
-	}
-	cstr = (const char*)(*env)->GetStringUTFChars(env, s, NULL);
-	if(cstr == NULL) {
-		JCL_ThrowException(env, "java/lang/InternalError", "GetStringUTFChars() failed.");
-		return NULL;
-	}
-	return cstr;
+JNIEXPORT void JNICALL
+JCL_free (JNIEnv *env __attribute__ ((unused)), void *p)
+{
+  if (p != NULL)
+    {
+      free (p);
+    }
 }
 
-JNIEXPORT void JNICALL JCL_free_cstring(JNIEnv * env, jstring s, const char * cstr) {
-	(*env)->ReleaseStringUTFChars(env, s, cstr);
+JNIEXPORT const char *JNICALL
+JCL_jstring_to_cstring (JNIEnv *env, jstring s)
+{
+  const char *cstr;
+  if (s == NULL)
+    {
+      JCL_ThrowException (env, "java/lang/NullPointerException",
+			  "Null string");
+      return NULL;
+    }
+  cstr = (const char *) (*env)->GetStringUTFChars (env, s, NULL);
+  if (cstr == NULL)
+    {
+      JCL_ThrowException (env, "java/lang/InternalError",
+			  "GetStringUTFChars() failed.");
+      return NULL;
+    }
+  return cstr;
 }
 
-JNIEXPORT jint JNICALL JCL_MonitorEnter(JNIEnv * env, jobject o) {
-	jint retval = (*env)->MonitorEnter(env,o);
-	if(retval != 0) {
-		JCL_ThrowException(env, "java/lang/InternalError", "MonitorEnter() failed.");
-	}
-	return retval;
+JNIEXPORT void JNICALL
+JCL_free_cstring (JNIEnv *env, jstring s, const char *cstr)
+{
+  (*env)->ReleaseStringUTFChars (env, s, cstr);
 }
 
-JNIEXPORT jint JNICALL JCL_MonitorExit(JNIEnv * env, jobject o) {
-	jint retval = (*env)->MonitorExit(env,o);
-	if(retval != 0) {
-		JCL_ThrowException(env, "java/lang/InternalError", "MonitorExit() failed.");
-	}
-	return retval;
+JNIEXPORT jint JNICALL
+JCL_MonitorEnter (JNIEnv *env, jobject o)
+{
+  jint retval = (*env)->MonitorEnter (env, o);
+  if (retval != 0)
+    {
+      JCL_ThrowException (env, "java/lang/InternalError",
+			  "MonitorEnter() failed.");
+    }
+  return retval;
 }
 
-JNIEXPORT jclass JNICALL JCL_FindClass(JNIEnv * env, char * className) {
-	jclass retval = (*env)->FindClass(env,className);
-	if(retval == NULL) {
-		JCL_ThrowException(env, "java/lang/ClassNotFoundException", className);
-	}
-	return retval;
+JNIEXPORT jint JNICALL
+JCL_MonitorExit (JNIEnv *env, jobject o)
+{
+  jint retval = (*env)->MonitorExit (env, o);
+  if (retval != 0)
+    {
+      JCL_ThrowException (env, "java/lang/InternalError",
+			  "MonitorExit() failed.");
+    }
+  return retval;
+}
+
+JNIEXPORT jclass JNICALL
+JCL_FindClass (JNIEnv *env, char *className)
+{
+  jclass retval = (*env)->FindClass (env, className);
+  if (retval == NULL)
+    {
+      JCL_ThrowException (env, "java/lang/ClassNotFoundException", className);
+    }
+  return retval;
 }

@@ -53,19 +53,19 @@ exception statement from your version. */
  * Signature: (Ljava/lang/SecurityManager;)Ljava/lang/ClassLoader;
  */
 JNIEXPORT jobject JNICALL
-Java_java_io_ObjectInputStream_currentClassLoader( JNIEnv * env,
+Java_java_io_ObjectInputStream_currentClassLoader (JNIEnv *env,
 						   jclass clazz,
-						   jobject loader )
+						   jobject loader)
 {
-  jmethodID id = (*env)->GetMethodID( env,
-				      (*env)->GetObjectClass( env, loader ),
+  jmethodID id = (*env)->GetMethodID (env,
+				      (*env)->GetObjectClass (env, loader),
 				      "currentClassLoader",
-				      "()Ljava/lang/ClassLoader;" );
-  
-  if( id == NULL )
+				      "()Ljava/lang/ClassLoader;");
+
+  if (id == NULL)
     return NULL;
-  
-  return (*env)->CallObjectMethod( env, loader, id, clazz );
+
+  return (*env)->CallObjectMethod (env, loader, id, clazz);
 }
 
 
@@ -75,11 +75,10 @@ Java_java_io_ObjectInputStream_currentClassLoader( JNIEnv * env,
  * Signature: (Ljava/lang/Class;)Ljava/lang/Object;
  */
 JNIEXPORT jobject JNICALL
-Java_java_io_ObjectInputStream_allocateObject( JNIEnv * env,
-					       jobject self,
-					       jclass clazz )
+Java_java_io_ObjectInputStream_allocateObject (JNIEnv *env,
+					       jobject self, jclass clazz)
 {
-  return (*env)->AllocObject( env, clazz );
+  return (*env)->AllocObject (env, clazz);
 }
 
 
@@ -88,16 +87,16 @@ Java_java_io_ObjectInputStream_allocateObject( JNIEnv * env,
  * Method:    callConstructor
  * Signature: (Ljava/lang/Class;Ljava/lang/Object;)V
  */
-JNIEXPORT void JNICALL 
-Java_java_io_ObjectInputStream_callConstructor( JNIEnv * env,
+JNIEXPORT void JNICALL
+Java_java_io_ObjectInputStream_callConstructor (JNIEnv *env,
 						jclass clazz,
 						jclass constr_class,
-						jobject obj )
+						jobject obj)
 {
-  jmethodID id = (*env)->GetMethodID( env, constr_class,
-				      "<init>", "()V" );
-  if( id == NULL )
+  jmethodID id = (*env)->GetMethodID (env, constr_class,
+				      "<init>", "()V");
+  if (id == NULL)
     return;
-  
-  (*env)->CallNonvirtualVoidMethod( env, obj, constr_class, id );
+
+  (*env)->CallNonvirtualVoidMethod (env, obj, constr_class, id);
 }

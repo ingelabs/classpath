@@ -42,7 +42,7 @@ struct state_table *native_glyphvector_state_table;
 
 typedef struct _rect_t_struct rect_t;
 struct _rect_t_struct
-{ 
+{
   double x;
   double y;
   double width;
@@ -53,14 +53,15 @@ struct _rect_t_struct
 #define DOUBLE_FROM_26_6(t) ((double)(t) / 64.0)
 #define DOUBLE_TO_16_16(d) ((FT_Fixed)((d) * 65536.0))
 #define DOUBLE_FROM_16_16(t) ((double)(t) / 65536.0)
- 
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_initStaticState 
-  (JNIEnv *env, jclass clazz)
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GdkGlyphVector_initStaticState (JNIEnv *env,
+							   jclass clazz)
 {
   NSA_GV_INIT (env, clazz);
 }
 
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_initState 
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_initState
   (JNIEnv *env, jobject self, jobject font, jobject ctx)
 {
   struct glyphvec *vec = NULL;
@@ -68,7 +69,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_initState
 
   gdk_threads_enter ();
   g_assert (font != NULL);
-  pfont = (struct peerfont *)NSA_GET_FONT_PTR (env, font);
+  pfont = (struct peerfont *) NSA_GET_FONT_PTR (env, font);
   g_assert (pfont != NULL);
   g_assert (pfont->ctx != NULL);
   g_assert (pfont->desc != NULL);
@@ -77,12 +78,12 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_initState
   vec = (struct glyphvec *) g_malloc0 (sizeof (struct glyphvec));
   g_assert (vec != NULL);
 
-  vec->desc = pango_font_describe (pfont->font); 
+  vec->desc = pango_font_describe (pfont->font);
   g_assert (vec->desc != NULL);
 
   vec->font = pfont->font;
   g_object_ref (vec->font);
-    
+
   vec->ctx = pfont->ctx;
   g_object_ref (vec->ctx);
 
@@ -90,7 +91,8 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_initState
   gdk_threads_leave ();
 }
 
-static void free_glyphitems (GList *list)
+static void
+free_glyphitems (GList * list)
 {
   GList *i = NULL;
   PangoGlyphItem *gi = NULL;
@@ -98,21 +100,20 @@ static void free_glyphitems (GList *list)
   for (i = g_list_first (list); i != NULL; i = g_list_next (i))
     {
       g_assert (i->data != NULL);
-      gi = (PangoGlyphItem *)i->data;
+      gi = (PangoGlyphItem *) i->data;
 
       if (gi->glyphs != NULL)
 	pango_glyph_string_free (gi->glyphs);
 
       if (gi->item != NULL)
 	g_free (gi->item);
-    }      
+    }
   g_list_free (list);
 }
 
-static void seek_glyphstring_idx (GList *list, int idx, 
-				  int *nidx, 
-				  PangoGlyphString **gs,
-				  PangoFont **fnt)
+static void
+seek_glyphstring_idx (GList * list, int idx,
+		      int *nidx, PangoGlyphString ** gs, PangoFont ** fnt)
 {
   GList *i = NULL;
   PangoGlyphItem *gi = NULL;
@@ -125,12 +126,12 @@ static void seek_glyphstring_idx (GList *list, int idx,
   for (i = g_list_first (list); i != NULL; i = g_list_next (i))
     {
       g_assert (i->data != NULL);
-      gi = (PangoGlyphItem *)i->data;
+      gi = (PangoGlyphItem *) i->data;
 
       g_assert (gi->glyphs != NULL);
-      
+
       if (begin <= idx && idx < begin + gi->glyphs->num_glyphs)
-	{	  
+	{
 	  *gs = gi->glyphs;
 	  *nidx = idx - begin;
 	  if (fnt && gi->item)
@@ -146,9 +147,8 @@ static void seek_glyphstring_idx (GList *list, int idx,
   *nidx = -1;
 }
 
-static void seek_glyph_idx (GList *list, int idx, 
-			    PangoGlyphInfo **g,
-			    PangoFont **fnt)
+static void
+seek_glyph_idx (GList * list, int idx, PangoGlyphInfo ** g, PangoFont ** fnt)
 {
   PangoGlyphString *gs = NULL;
   int nidx = -1;
@@ -166,8 +166,8 @@ static void seek_glyph_idx (GList *list, int idx,
   *g = gs->glyphs + nidx;
 }
 
-static void union_rects (rect_t *r1, 
-			 const rect_t *r2)
+static void
+union_rects (rect_t * r1, const rect_t * r2)
 {
   rect_t r;
 
@@ -177,7 +177,7 @@ static void union_rects (rect_t *r1,
   /* 
      x is the left edge of the rect,
      y is the top edge of the rect
-  */
+   */
 
 #ifndef min
 #define min(x,y) ((x) < (y) ? (x) : (y))
@@ -187,20 +187,19 @@ static void union_rects (rect_t *r1,
 #define max(x,y) ((x) < (y) ? (y) : (x))
 #endif
 
-  r.x = min(r1->x, r2->x);
+  r.x = min (r1->x, r2->x);
 
-  r.y = min(r1->y, r2->y);
+  r.y = min (r1->y, r2->y);
 
-  r.width = max(r1->x + r1->width,
-		r2->x + r2->width) - r.x;
+  r.width = max (r1->x + r1->width, r2->x + r2->width) - r.x;
 
-  r.height = max(r1->y + r1->height,
-		 r2->y + r2->height) - r.y;
+  r.height = max (r1->y + r1->height, r2->y + r2->height) - r.y;
 
-  *r1 = r;  
+  *r1 = r;
 }
 
-static jdoubleArray rect_to_array (JNIEnv *env, const rect_t *r)
+static jdoubleArray
+rect_to_array (JNIEnv *env, const rect_t * r)
 {
   /* We often return rectangles as arrays : { x, y, w, h } */
   jdoubleArray ret;
@@ -226,7 +225,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_dispose
 
   gdk_threads_enter ();
   g_assert (self != NULL);
-  vec = (struct glyphvec *)NSA_DEL_GV_PTR (env, self);
+  vec = (struct glyphvec *) NSA_DEL_GV_PTR (env, self);
   g_assert (vec != NULL);
 
   if (vec->glyphitems != NULL)
@@ -234,7 +233,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_dispose
       free_glyphitems (vec->glyphitems);
       vec->glyphitems = NULL;
     }
-      
+
   if (vec->desc != NULL)
     pango_font_description_free (vec->desc);
 
@@ -246,25 +245,25 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_dispose
 }
 
 
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_setChars 
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_setChars
   (JNIEnv *env, jobject self, jstring chars)
 {
   struct glyphvec *vec = NULL;
   gchar *str = NULL;
   GList *items = NULL, *item = NULL;
   PangoGlyphItem *gi;
-  PangoAttrList *attrs = NULL; 
+  PangoAttrList *attrs = NULL;
   gint len = 0;
 
   gdk_threads_enter ();
   g_assert (self != NULL);
-  vec = (struct glyphvec *)NSA_GET_GV_PTR (env, self);
+  vec = (struct glyphvec *) NSA_GET_GV_PTR (env, self);
   g_assert (vec != NULL);
   g_assert (vec->desc != NULL);
   g_assert (vec->ctx != NULL);
-  
+
   len = (*gdk_env)->GetStringUTFLength (env, chars);
-  str = (gchar *)(*env)->GetStringUTFChars (env, chars, NULL);
+  str = (gchar *) (*env)->GetStringUTFChars (env, chars, NULL);
   g_assert (str != NULL);
 
   /* step 1: set our FontFescription in the context, then "itemize" the
@@ -272,18 +271,18 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_setChars
 
   attrs = pango_attr_list_new ();
   g_assert (attrs != NULL);
-  
+
   pango_context_set_font_description (vec->ctx, vec->desc);
 
   items = pango_itemize (vec->ctx, str, 0, len, attrs, NULL);
   g_assert (items != NULL);
-  
+
   /*
-    step 2: for each item:
-    - shape the item into a glyphstring
-    - store the (item, glyphstring) pair in the vec->glyphitems list
-  */
-  
+     step 2: for each item:
+     - shape the item into a glyphstring
+     - store the (item, glyphstring) pair in the vec->glyphitems list
+   */
+
   if (vec->glyphitems != NULL)
     {
       free_glyphitems (vec->glyphitems);
@@ -295,17 +294,15 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_setChars
       g_assert (item->data != NULL);
 
       gi = NULL;
-      gi = g_malloc0 (sizeof(PangoGlyphItem));
+      gi = g_malloc0 (sizeof (PangoGlyphItem));
       g_assert (gi != NULL);
 
-      gi->item = (PangoItem *)item->data;
+      gi->item = (PangoItem *) item->data;
       gi->glyphs = pango_glyph_string_new ();
       g_assert (gi->glyphs != NULL);
 
-      pango_shape (str + gi->item->offset, 
-		   gi->item->length, 
-		   &(gi->item->analysis), 
-		   gi->glyphs);
+      pango_shape (str + gi->item->offset,
+		   gi->item->length, &(gi->item->analysis), gi->glyphs);
 
       vec->glyphitems = g_list_append (vec->glyphitems, gi);
     }
@@ -313,7 +310,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_setChars
   /* 
      ownership of each item has been transferred to glyphitems, 
      but the list should be freed.
-  */
+   */
 
   g_list_free (items);
   pango_attr_list_unref (attrs);
@@ -323,19 +320,19 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_setChars
 }
 
 
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_setGlyphCodes 
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_setGlyphCodes
   (JNIEnv *env, jobject self, jintArray codes)
 {
   struct glyphvec *vec = NULL;
 
   gdk_threads_enter ();
   g_assert (self != NULL);
-  vec = (struct glyphvec *)NSA_GET_GV_PTR (env, self);
+  vec = (struct glyphvec *) NSA_GET_GV_PTR (env, self);
   g_assert (vec != NULL);
 
   /*
-    FIXME: setting glyph codes doesn't seem particularly plausible at the
-    moment. 
+     FIXME: setting glyph codes doesn't seem particularly plausible at the
+     moment. 
    */
 
   gdk_threads_leave ();
@@ -343,7 +340,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_setGlyphCodes
 }
 
 
-JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphCode 
+JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphCode
   (JNIEnv *env, jobject self, jint idx)
 {
   struct glyphvec *vec = NULL;
@@ -352,7 +349,7 @@ JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphCode
 
   gdk_threads_enter ();
   g_assert (self != NULL);
-  vec = (struct glyphvec *)NSA_GET_GV_PTR (env, self);
+  vec = (struct glyphvec *) NSA_GET_GV_PTR (env, self);
   g_assert (vec != NULL);
   g_assert (vec->glyphitems != NULL);
 
@@ -361,11 +358,11 @@ JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphCode
   ret = gi->glyph;
   gdk_threads_leave ();
 
-  return (jint)(ret);  
+  return (jint) (ret);
 }
 
 
-JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_numGlyphs 
+JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_numGlyphs
   (JNIEnv *env, jobject self)
 {
   GList *i = NULL;
@@ -375,24 +372,26 @@ JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_numGlyphs
 
   gdk_threads_enter ();
   g_assert (self != NULL);
-  vec = (struct glyphvec *)NSA_GET_GV_PTR (env, self);
+  vec = (struct glyphvec *) NSA_GET_GV_PTR (env, self);
   g_assert (vec != NULL);
 
   for (i = g_list_first (vec->glyphitems); i != NULL; i = g_list_next (i))
     {
       g_assert (i->data != NULL);
-      gi = (PangoGlyphItem *)i->data;
+      gi = (PangoGlyphItem *) i->data;
       g_assert (gi->glyphs != NULL);
       count += gi->glyphs->num_glyphs;
-    }      
+    }
   gdk_threads_leave ();
 
   return count;
 }
 
 
-JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphCharIndex 
-  (JNIEnv *env, jobject self, jint idx)
+JNIEXPORT jint JNICALL
+Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphCharIndex (JNIEnv *env,
+							  jobject self,
+							  jint idx)
 {
   /* 
      FIXME: this is not correct, rather it assumes a (broken) 1:1
@@ -400,35 +399,34 @@ JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphCharIndex
      broken) using pango's current interface, or perhaps in terms of
      characters if some better byte->character conversion operator is
      found. for the time being we leave it broken.
-  */
+   */
   return idx;
 }
 
-static void 
-assume_pointsize_and_identity_transform(double pointsize,
-					FT_Face face)
+static void
+assume_pointsize_and_identity_transform (double pointsize, FT_Face face)
 {
   FT_Matrix mat;
-  mat.xx = DOUBLE_TO_16_16(1);
-  mat.xy = DOUBLE_TO_16_16(0);
-  mat.yx = DOUBLE_TO_16_16(0);
-  mat.yy = DOUBLE_TO_16_16(1);    
-  FT_Set_Transform(face, &mat, NULL);
-  FT_Set_Char_Size( face, 
+  mat.xx = DOUBLE_TO_16_16 (1);
+  mat.xy = DOUBLE_TO_16_16 (0);
+  mat.yx = DOUBLE_TO_16_16 (0);
+  mat.yy = DOUBLE_TO_16_16 (1);
+  FT_Set_Transform (face, &mat, NULL);
+  FT_Set_Char_Size (face,
 		    DOUBLE_TO_26_6 (pointsize),
-		    DOUBLE_TO_26_6 (pointsize),
-		    0, 0);  
-}				    
+		    DOUBLE_TO_26_6 (pointsize), 0, 0);
+}
 
-JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_allInkExtents 
-  (JNIEnv *env, jobject self)
+JNIEXPORT jdoubleArray JNICALL
+Java_gnu_java_awt_peer_gtk_GdkGlyphVector_allInkExtents (JNIEnv *env,
+							 jobject self)
 {
   struct glyphvec *vec = NULL;
   int j;
   GList *i;
   PangoGlyphItem *gi = NULL;
-  rect_t rect = {0,0,0,0};
-  rect_t tmp;  
+  rect_t rect = { 0, 0, 0, 0 };
+  rect_t tmp;
   jdoubleArray ret;
   double x = 0, y = 0;
   double pointsize;
@@ -436,7 +434,7 @@ JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_allInkE
 
   gdk_threads_enter ();
   g_assert (self != NULL);
-  vec = (struct glyphvec *)NSA_GET_GV_PTR (env, self);
+  vec = (struct glyphvec *) NSA_GET_GV_PTR (env, self);
   g_assert (vec != NULL);
   g_assert (vec->glyphitems != NULL);
 
@@ -446,12 +444,12 @@ JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_allInkE
   for (i = g_list_first (vec->glyphitems); i != NULL; i = g_list_next (i))
     {
       g_assert (i->data != NULL);
-      gi = (PangoGlyphItem *)i->data;
+      gi = (PangoGlyphItem *) i->data;
       g_assert (gi->glyphs != NULL);
 
       face = pango_ft2_font_get_face (gi->item->analysis.font);
       assume_pointsize_and_identity_transform (pointsize, face);
-      
+
       for (j = 0; j < gi->glyphs->num_glyphs; ++j)
 	{
 	  FT_Load_Glyph (face, gi->glyphs->glyphs[j].glyph, FT_LOAD_DEFAULT);
@@ -464,7 +462,7 @@ JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_allInkE
 	  x += DOUBLE_FROM_26_6 (face->glyph->advance.x);
 	  y += DOUBLE_FROM_26_6 (face->glyph->advance.y);
 	}
-    }      
+    }
 
   ret = rect_to_array (env, &rect);
   gdk_threads_leave ();
@@ -472,15 +470,16 @@ JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_allInkE
 }
 
 
-JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_allLogicalExtents 
-  (JNIEnv *env, jobject self)
+JNIEXPORT jdoubleArray JNICALL
+Java_gnu_java_awt_peer_gtk_GdkGlyphVector_allLogicalExtents (JNIEnv *env,
+							     jobject self)
 {
   struct glyphvec *vec = NULL;
   int j;
   GList *i;
   PangoGlyphItem *gi = NULL;
-  rect_t rect = {0,0,0,0};
-  rect_t tmp;  
+  rect_t rect = { 0, 0, 0, 0 };
+  rect_t tmp;
   jdoubleArray ret;
   double x = 0, y = 0;
   double pointsize;
@@ -488,7 +487,7 @@ JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_allLogi
 
   gdk_threads_enter ();
   g_assert (self != NULL);
-  vec = (struct glyphvec *)NSA_GET_GV_PTR (env, self);
+  vec = (struct glyphvec *) NSA_GET_GV_PTR (env, self);
   g_assert (vec != NULL);
   g_assert (vec->glyphitems != NULL);
 
@@ -498,12 +497,12 @@ JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_allLogi
   for (i = g_list_first (vec->glyphitems); i != NULL; i = g_list_next (i))
     {
       g_assert (i->data != NULL);
-      gi = (PangoGlyphItem *)i->data;
+      gi = (PangoGlyphItem *) i->data;
       g_assert (gi->glyphs != NULL);
 
       face = pango_ft2_font_get_face (gi->item->analysis.font);
       assume_pointsize_and_identity_transform (pointsize, face);
-      
+
       for (j = 0; j < gi->glyphs->num_glyphs; ++j)
 	{
 	  FT_Load_Glyph (face, gi->glyphs->glyphs[j].glyph, FT_LOAD_DEFAULT);
@@ -521,7 +520,7 @@ JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_allLogi
 	  x += DOUBLE_FROM_26_6 (face->glyph->advance.x);
 	  y += DOUBLE_FROM_26_6 (face->glyph->advance.y);
 	}
-    }      
+    }
 
   ret = rect_to_array (env, &rect);
   gdk_threads_leave ();
@@ -529,11 +528,13 @@ JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_allLogi
 }
 
 
-JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphLogicalExtents 
-  (JNIEnv *env, jobject self, jint idx)
+JNIEXPORT jdoubleArray JNICALL
+Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphLogicalExtents (JNIEnv *env,
+							       jobject self,
+							       jint idx)
 {
   struct glyphvec *vec = NULL;
-  rect_t rect = {0,0,0,0};
+  rect_t rect = { 0, 0, 0, 0 };
   PangoGlyphInfo *gi = NULL;
   PangoFont *font = NULL;
   jdoubleArray ret;
@@ -542,10 +543,10 @@ JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphLo
 
   gdk_threads_enter ();
   g_assert (self != NULL);
-  vec = (struct glyphvec *)NSA_GET_GV_PTR (env, self);
+  vec = (struct glyphvec *) NSA_GET_GV_PTR (env, self);
   g_assert (vec != NULL);
   g_assert (vec->glyphitems != NULL);
- 
+
   seek_glyph_idx (vec->glyphitems, idx, &gi, &font);
   g_assert (gi != NULL);
   g_assert (font != NULL);
@@ -554,7 +555,7 @@ JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphLo
   pointsize /= (double) PANGO_SCALE;
   face = pango_ft2_font_get_face (font);
 
-  assume_pointsize_and_identity_transform (pointsize, face);  
+  assume_pointsize_and_identity_transform (pointsize, face);
 
   FT_Load_Glyph (face, gi->glyph, FT_LOAD_DEFAULT);
 
@@ -562,9 +563,9 @@ JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphLo
      the "logical bounds" are some fancy combination of hori
      advance and height such that it's good for inverting as a
      highlight. revisit. */
-  
-  rect.x = 0; 
-  rect.y = 0; 
+
+  rect.x = 0;
+  rect.y = 0;
   rect.width = DOUBLE_FROM_26_6 (face->glyph->advance.x);
   rect.height = DOUBLE_FROM_26_6 (face->glyph->advance.y);
 
@@ -574,23 +575,25 @@ JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphLo
 }
 
 
-JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphInkExtents 
-  (JNIEnv *env, jobject self, jint idx)
+JNIEXPORT jdoubleArray JNICALL
+Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphInkExtents (JNIEnv *env,
+							   jobject self,
+							   jint idx)
 {
   struct glyphvec *vec = NULL;
-  rect_t rect = {0,0,0,0};
+  rect_t rect = { 0, 0, 0, 0 };
   PangoGlyphInfo *gi = NULL;
   PangoFont *font = NULL;
   jdoubleArray ret;
   double pointsize;
   FT_Face face;
-  
+
   gdk_threads_enter ();
   g_assert (self != NULL);
-  vec = (struct glyphvec *)NSA_GET_GV_PTR (env, self);
+  vec = (struct glyphvec *) NSA_GET_GV_PTR (env, self);
   g_assert (vec != NULL);
   g_assert (vec->glyphitems != NULL);
- 
+
   seek_glyph_idx (vec->glyphitems, idx, &gi, &font);
   g_assert (gi != NULL);
   g_assert (font != NULL);
@@ -599,8 +602,8 @@ JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphIn
   pointsize /= (double) PANGO_SCALE;
   face = pango_ft2_font_get_face (font);
 
-  assume_pointsize_and_identity_transform (pointsize, face);  
-  
+  assume_pointsize_and_identity_transform (pointsize, face);
+
   FT_Load_Glyph (face, gi->glyph, FT_LOAD_DEFAULT);
   /* FIXME: this needs to change for vertical layouts */
   rect.x = DOUBLE_FROM_26_6 (face->glyph->metrics.horiBearingX);
@@ -614,15 +617,17 @@ JNIEXPORT jdoubleArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphIn
 }
 
 
-JNIEXPORT jboolean JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphIsHorizontal 
-  (JNIEnv *env, jobject self, jint idx)
+JNIEXPORT jboolean JNICALL
+Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphIsHorizontal (JNIEnv *env,
+							     jobject self,
+							     jint idx)
 {
   struct glyphvec *vec = NULL;
   PangoDirection dir;
 
   gdk_threads_enter ();
   g_assert (self != NULL);
-  vec = (struct glyphvec *)NSA_GET_GV_PTR (env, self);
+  vec = (struct glyphvec *) NSA_GET_GV_PTR (env, self);
   g_assert (vec != NULL);
   g_assert (vec->desc != NULL);
   g_assert (vec->ctx != NULL);
@@ -638,13 +643,11 @@ JNIEXPORT jboolean JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_glyphIsHori
 
   gdk_threads_leave ();
 
-  return 
-    ((dir == PANGO_DIRECTION_LTR) ||
-     (dir == PANGO_DIRECTION_RTL));    
+  return ((dir == PANGO_DIRECTION_LTR) || (dir == PANGO_DIRECTION_RTL));
 }
 
 
-JNIEXPORT jboolean JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_isEqual 
+JNIEXPORT jboolean JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_isEqual
   (JNIEnv *env, jobject self, jobject other)
 {
   struct glyphvec *vec1 = NULL, *vec2 = NULL;
@@ -652,17 +655,15 @@ JNIEXPORT jboolean JNICALL Java_gnu_java_awt_peer_gtk_GdkGlyphVector_isEqual
 
   gdk_threads_enter ();
   g_assert (self != NULL);
-  vec1 = (struct glyphvec *)NSA_GET_GV_PTR (env, self);
-  vec2 = (struct glyphvec *)NSA_GET_GV_PTR (env, other);
+  vec1 = (struct glyphvec *) NSA_GET_GV_PTR (env, self);
+  vec2 = (struct glyphvec *) NSA_GET_GV_PTR (env, other);
   g_assert (vec1 != NULL);
   g_assert (vec2 != NULL);
-  
+
   /* FIXME: is there some more advantageous definition of equality for
      glyph vectors? */
   eq = (vec1 == vec2);
-  
+
   gdk_threads_leave ();
   return eq;
 }
-
-

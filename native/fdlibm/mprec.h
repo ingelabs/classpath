@@ -51,24 +51,25 @@
 #endif
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /* ISO C99 int type declarations */
 
 #if !defined HAVE_INT32_DEFINED && defined HAVE_BSD_INT32_DEFINED
-typedef u_int32_t uint32_t;
+  typedef u_int32_t uint32_t;
 #endif
 
 #if !defined HAVE_BSD_INT32_DEFINED && !defined HAVE_INT32_DEFINED
 // FIXME -- this could have problems with systems that don't define SI to be 4
-typedef int int32_t __attribute__((mode(SI)));
+  typedef int int32_t __attribute__ ((mode (SI)));
 
 /* This is a blatant hack: on Solaris 2.5, pthread.h defines uint32_t
    in pthread.h, which we sometimes include.  We protect our
    definition the same way Solaris 2.5 does, to avoid redefining it.  */
 #  ifndef _UINT32_T
-typedef unsigned int uint32_t __attribute__((mode(SI)));
+  typedef unsigned int uint32_t __attribute__ ((mode (SI)));
 #  endif
 #endif
 
@@ -95,22 +96,21 @@ typedef unsigned int uint32_t __attribute__((mode(SI)));
 #ifdef Unsigned_Shifts
 #define Sign_Extend(a,b) if (b < 0) a |= (uint32_t)0xffff0000;
 #else
-#define Sign_Extend(a,b) /*no-op*/
+#define Sign_Extend(a,b)	/*no-op */
 #endif
 
 #if defined(IEEE_8087) + defined(IEEE_MC68k) + defined(VAX) + defined(IBM) != 1
-Exactly one of IEEE_8087, IEEE_MC68k, VAX, or IBM should be defined.
+  Exactly one of IEEE_8087, IEEE_MC68k, VAX, or IBM should be defined.
 #endif
-
 /* If we are going to examine or modify specific bits in a double using
    the word0 and/or word1 macros, then we must wrap the double inside
    a union.  This is necessary to avoid undefined behavior according to
    the ANSI C spec.  */
-union double_union
-{
-  double d;
-  uint32_t i[2];
-};
+    union double_union
+  {
+    double d;
+    uint32_t i[2];
+  };
 
 #ifdef IEEE_8087
 #define word0(x) (x.i[1])
@@ -148,7 +148,7 @@ union double_union
 #define P    	    24
 #define Bias 	    127
 #if 0
-#define IEEE_Arith  /* it is, but the code doesn't handle IEEE singles yet */
+#define IEEE_Arith		/* it is, but the code doesn't handle IEEE singles yet */
 #endif
 #define Emin        (-126)
 #define Exp_1       ((uint32_t)0x3f800000L)
@@ -202,7 +202,7 @@ union double_union
 #define Tiny1 1
 #define Quick_max 14
 #define Int_max 14
-#define Infinite(x) (word0(x) == ((uint32_t)0x7ff00000L)) /* sufficient test for here */
+#define Infinite(x) (word0(x) == ((uint32_t)0x7ff00000L))	/* sufficient test for here */
 #endif
 
 #else
@@ -218,7 +218,7 @@ union double_union
 #define Bias 65
 #define Exp_1  ((uint32_t)0x41000000L)
 #define Exp_11 ((uint32_t)0x41000000L)
-#define Ebits 8	/* exponent has 7 bits, but 8 is the right value in b2d */
+#define Ebits 8			/* exponent has 7 bits, but 8 is the right value in b2d */
 #define Frac_mask  ((uint32_t)0xffffffL)
 #define Frac_mask1 ((uint32_t)0xffffffL)
 #define Bletch 4
@@ -232,7 +232,7 @@ union double_union
 #define Tiny1 0
 #define Quick_max 14
 #define Int_max 15
-#else /* VAX */
+#else				/* VAX */
 #define Exp_shift  23
 #define Exp_shift1 7
 #define Exp_msk1    0x80
@@ -267,9 +267,9 @@ union double_union
 #define rounded_product(a,b) a = rnd_prod(a, b)
 #define rounded_quotient(a,b) a = rnd_quot(a, b)
 #ifdef KR_headers
-extern double rnd_prod(), rnd_quot();
+  extern double rnd_prod (), rnd_quot ();
 #else
-extern double rnd_prod(double, double), rnd_quot(double, double);
+  extern double rnd_prod (double, double), rnd_quot (double, double);
 #endif
 #else
 #define rounded_product(a,b) a *= b
@@ -297,12 +297,12 @@ extern double rnd_prod(double, double), rnd_quot(double, double);
 #define MAX_BIGNUMS 16
 #define MAX_BIGNUM_WDS 32
 
-struct _Jv_Bigint
-{
-  struct _Jv_Bigint *_next;
-  int _k, _maxwds, _sign, _wds;
-  unsigned long _x[MAX_BIGNUM_WDS];
-};
+  struct _Jv_Bigint
+  {
+    struct _Jv_Bigint *_next;
+    int _k, _maxwds, _sign, _wds;
+    unsigned long _x[MAX_BIGNUM_WDS];
+  };
 
 
 #define	_PTR		void *
@@ -319,24 +319,24 @@ struct _Jv_Bigint
 #define _CAST_VOID (void)
 
 
-struct _Jv_reent
-{
-  /* local copy of errno */
-  int _errno;
+  struct _Jv_reent
+  {
+    /* local copy of errno */
+    int _errno;
 
-  /* used by mprec routines */
-  struct _Jv_Bigint *_result;
-  int _result_k;
-  struct _Jv_Bigint *_p5s;
+    /* used by mprec routines */
+    struct _Jv_Bigint *_result;
+    int _result_k;
+    struct _Jv_Bigint *_p5s;
 
-  struct _Jv_Bigint _freelist[MAX_BIGNUMS];
-  int _allocation_map;
+    struct _Jv_Bigint _freelist[MAX_BIGNUMS];
+    int _allocation_map;
 
-  int num;
-};
+    int num;
+  };
 
 
-typedef struct _Jv_Bigint _Jv_Bigint;
+  typedef struct _Jv_Bigint _Jv_Bigint;
 
 #define Balloc  _Jv_Balloc
 #define Bfree   _Jv_Bfree
@@ -363,30 +363,38 @@ typedef struct _Jv_Bigint _Jv_Bigint;
 #define _dtoa_r _Jv_dtoa_r
 #define _strtod_r _Jv_strtod_r
 
-extern double _EXFUN(_strtod_r, (struct _Jv_reent *ptr, const char *s00, char **se));
-extern char* _EXFUN(_dtoa_r, (struct _Jv_reent *ptr, double d,
-			      int mode, int ndigits, int *decpt, int *sign,
-			      char **rve, int float_type));
-void _EXFUN(_dtoa, (double d, int mode, int ndigits, int *decpt, int *sign,
-		    char **rve, char *buf, int float_type));
+  extern double _EXFUN (_strtod_r,
+			(struct _Jv_reent * ptr, const char *s00, char **se));
+  extern char *_EXFUN (_dtoa_r,
+		       (struct _Jv_reent * ptr, double d, int mode,
+			int ndigits, int *decpt, int *sign, char **rve,
+			int float_type));
+  void _EXFUN (_dtoa,
+	       (double d, int mode, int ndigits, int *decpt, int *sign,
+		char **rve, char *buf, int float_type));
 
-double 		_EXFUN(ulp,(double x));
-double		_EXFUN(b2d,(_Jv_Bigint *a , int *e));
-_Jv_Bigint *	_EXFUN(Balloc,(struct _Jv_reent *p, int k));
-void 		_EXFUN(Bfree,(struct _Jv_reent *p, _Jv_Bigint *v));
-_Jv_Bigint *	_EXFUN(multadd,(struct _Jv_reent *p, _Jv_Bigint *, int, int));
-_Jv_Bigint *	_EXFUN(s2b,(struct _Jv_reent *, const char*, int, int, unsigned long));
-_Jv_Bigint *	_EXFUN(i2b,(struct _Jv_reent *,int));
-_Jv_Bigint *	_EXFUN(mult, (struct _Jv_reent *, _Jv_Bigint *, _Jv_Bigint *));
-_Jv_Bigint *	_EXFUN(pow5mult, (struct _Jv_reent *, _Jv_Bigint *, int k));
-int 		_EXFUN(hi0bits,(unsigned long));
-int 		_EXFUN(lo0bits,(unsigned long *));
-_Jv_Bigint *    _EXFUN(d2b,(struct _Jv_reent *p, double d, int *e, int *bits));
-_Jv_Bigint *    _EXFUN(lshift,(struct _Jv_reent *p, _Jv_Bigint *b, int k));
-_Jv_Bigint *    _EXFUN(diff,(struct _Jv_reent *p, _Jv_Bigint *a, _Jv_Bigint *b));
-int             _EXFUN(cmp,(_Jv_Bigint *a, _Jv_Bigint *b));
+  double _EXFUN (ulp, (double x));
+  double _EXFUN (b2d, (_Jv_Bigint * a, int *e));
+  _Jv_Bigint *_EXFUN (Balloc, (struct _Jv_reent * p, int k));
+  void _EXFUN (Bfree, (struct _Jv_reent * p, _Jv_Bigint * v));
+  _Jv_Bigint *_EXFUN (multadd,
+		      (struct _Jv_reent * p, _Jv_Bigint *, int, int));
+  _Jv_Bigint *_EXFUN (s2b,
+		      (struct _Jv_reent *, const char *, int, int,
+		       unsigned long));
+  _Jv_Bigint *_EXFUN (i2b, (struct _Jv_reent *, int));
+  _Jv_Bigint *_EXFUN (mult, (struct _Jv_reent *, _Jv_Bigint *, _Jv_Bigint *));
+  _Jv_Bigint *_EXFUN (pow5mult, (struct _Jv_reent *, _Jv_Bigint *, int k));
+  int _EXFUN (hi0bits, (unsigned long));
+  int _EXFUN (lo0bits, (unsigned long *));
+  _Jv_Bigint *_EXFUN (d2b,
+		      (struct _Jv_reent * p, double d, int *e, int *bits));
+  _Jv_Bigint *_EXFUN (lshift, (struct _Jv_reent * p, _Jv_Bigint * b, int k));
+  _Jv_Bigint *_EXFUN (diff,
+		      (struct _Jv_reent * p, _Jv_Bigint * a, _Jv_Bigint * b));
+  int _EXFUN (cmp, (_Jv_Bigint * a, _Jv_Bigint * b));
 
-double		_EXFUN(ratio,(_Jv_Bigint *a, _Jv_Bigint *b));
+  double _EXFUN (ratio, (_Jv_Bigint * a, _Jv_Bigint * b));
 #define Bcopy(x,y) memcpy((char *)&x->_sign, (char *)&y->_sign, y->_wds*sizeof(long) + 2*sizeof(int))
 
 #if defined(_DOUBLE_IS_32BITS) && defined(__v800)
@@ -395,12 +403,12 @@ double		_EXFUN(ratio,(_Jv_Bigint *a, _Jv_Bigint *b));
 #define n_bigtens 5
 #endif
 
-extern _CONST double tinytens[];
-extern _CONST double bigtens[];
-extern _CONST double tens[];
+  extern _CONST double tinytens[];
+  extern _CONST double bigtens[];
+  extern _CONST double tens[];
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __CLASSPATH_MPREC_H__ */
+#endif				/* __CLASSPATH_MPREC_H__ */

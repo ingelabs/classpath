@@ -46,8 +46,11 @@ exception statement from your version. */
 #define MAX_ADVANCE 4
 #define NUM_METRICS 5
 
-JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkFontMetrics_initState
-  (JNIEnv *env, jobject obj __attribute__((unused)), jstring fname, jint size)
+JNIEXPORT jintArray JNICALL
+Java_gnu_java_awt_peer_gtk_GdkFontMetrics_initState (JNIEnv *env,
+						     jobject obj
+						     __attribute__ ((unused)),
+						     jstring fname, jint size)
 {
   jintArray array;
   jint *metrics;
@@ -66,19 +69,20 @@ JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkFontMetrics_initState
   font_desc = pango_font_description_from_string (font_name);
   pango_font_description_set_size (font_desc, size * PANGO_SCALE);
 
-  context = gdk_pango_context_get();
+  context = gdk_pango_context_get ();
   pango_context_set_font_description (context, font_desc);
 
   pango_metrics = pango_context_get_metrics (context, font_desc, NULL);
 
   metrics[ASCENT] =
     pango_font_metrics_get_ascent (pango_metrics) / PANGO_SCALE;
-  metrics[MAX_ASCENT]  = metrics[ASCENT];
+  metrics[MAX_ASCENT] = metrics[ASCENT];
   metrics[DESCENT] =
     pango_font_metrics_get_descent (pango_metrics) / PANGO_SCALE;
   metrics[MAX_DESCENT] = metrics[DESCENT];
   metrics[MAX_ADVANCE] =
-    pango_font_metrics_get_approximate_char_width (pango_metrics) / PANGO_SCALE;
+    pango_font_metrics_get_approximate_char_width (pango_metrics) /
+    PANGO_SCALE;
 
   pango_font_metrics_unref (pango_metrics);
 
@@ -93,7 +97,7 @@ JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkFontMetrics_initState
 }
 
 JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GdkFontMetrics_stringWidth
-  (JNIEnv *env, jobject obj __attribute__((unused)),
+  (JNIEnv *env, jobject obj __attribute__ ((unused)),
    jstring fname, jint size, jstring str)
 {
   PangoFontDescription *font_desc;
@@ -111,7 +115,7 @@ JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GdkFontMetrics_stringWidth
   font_desc = pango_font_description_from_string (font_name);
   pango_font_description_set_size (font_desc, size * PANGO_SCALE);
 
-  context = gdk_pango_context_get();
+  context = gdk_pango_context_get ();
   pango_context_set_font_description (context, font_desc);
 
   layout = pango_layout_new (context);

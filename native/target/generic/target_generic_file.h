@@ -44,12 +44,13 @@ Systems    : all
 #define __TARGET_GENERIC_FILE__
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 /* check if target_native_file.h included */
 #ifndef __TARGET_NATIVE_FILE__
-  #error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
+#error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
 #endif
 
 /****************************** Includes *******************************/
@@ -67,57 +68,57 @@ extern "C" {
 
 /***************************** Constants *******************************/
 #ifndef TARGET_NATIVE_FILE_FILEFLAG_NONE
-  #define TARGET_NATIVE_FILE_FILEFLAG_NONE 0
+#define TARGET_NATIVE_FILE_FILEFLAG_NONE 0
 #endif
 #ifndef TARGET_NATIVE_FILE_FILEFLAG_CREATE
-  #define TARGET_NATIVE_FILE_FILEFLAG_CREATE O_CREAT
+#define TARGET_NATIVE_FILE_FILEFLAG_CREATE O_CREAT
 #endif
 #ifndef TARGET_NATIVE_FILE_FILEFLAG_CREATE_FORCE
-  #define TARGET_NATIVE_FILE_FILEFLAG_CREATE_FORCE (O_CREAT|O_EXCL)
+#define TARGET_NATIVE_FILE_FILEFLAG_CREATE_FORCE (O_CREAT|O_EXCL)
 #endif
 #ifndef TARGET_NATIVE_FILE_FILEFLAG_READ
-  #define TARGET_NATIVE_FILE_FILEFLAG_READ O_RDONLY
+#define TARGET_NATIVE_FILE_FILEFLAG_READ O_RDONLY
 #endif
 #ifndef TARGET_NATIVE_FILE_FILEFLAG_WRITE
-  #define TARGET_NATIVE_FILE_FILEFLAG_WRITE O_WRONLY
+#define TARGET_NATIVE_FILE_FILEFLAG_WRITE O_WRONLY
 #endif
 #ifndef TARGET_NATIVE_FILE_FILEFLAG_READWRITE
-  #define TARGET_NATIVE_FILE_FILEFLAG_READWRITE O_RDWR
+#define TARGET_NATIVE_FILE_FILEFLAG_READWRITE O_RDWR
 #endif
 #ifndef TARGET_NATIVE_FILE_FILEFLAG_TRUNCATE
-  #define TARGET_NATIVE_FILE_FILEFLAG_TRUNCATE O_TRUNC
+#define TARGET_NATIVE_FILE_FILEFLAG_TRUNCATE O_TRUNC
 #endif
 #ifndef TARGET_NATIVE_FILE_FILEFLAG_APPEND
-  #define TARGET_NATIVE_FILE_FILEFLAG_APPEND O_APPEND
+#define TARGET_NATIVE_FILE_FILEFLAG_APPEND O_APPEND
 #endif
 #ifndef TARGET_NATIVE_FILE_FILEFLAG_SYNC
-  #if !defined (O_SYNC) && defined (O_FSYNC)
-    #define TARGET_NATIVE_FILE_FILEFLAG_SYNC O_FSYNC
-  #else
-    #define TARGET_NATIVE_FILE_FILEFLAG_SYNC O_SYNC
-  #endif
+#if !defined (O_SYNC) && defined (O_FSYNC)
+#define TARGET_NATIVE_FILE_FILEFLAG_SYNC O_FSYNC
+#else
+#define TARGET_NATIVE_FILE_FILEFLAG_SYNC O_SYNC
+#endif
 #endif
 #ifndef TARGET_NATIVE_FILE_FILEFLAG_DSYNC
-  #ifdef O_DSYNC
-    #define TARGET_NATIVE_FILE_FILEFLAG_DSYNC 0
-  #else
-    #define TARGET_NATIVE_FILE_FILEFLAG_DSYNC TARGET_NATIVE_FILE_FILEFLAG_SYNC
-  #endif
+#ifdef O_DSYNC
+#define TARGET_NATIVE_FILE_FILEFLAG_DSYNC 0
+#else
+#define TARGET_NATIVE_FILE_FILEFLAG_DSYNC TARGET_NATIVE_FILE_FILEFLAG_SYNC
+#endif
 #endif
 #ifndef TARGET_NATIVE_FILE_FILEFLAG_BINARY
-  #define TARGET_NATIVE_FILE_FILEFLAG_BINARY O_BINARY
+#define TARGET_NATIVE_FILE_FILEFLAG_BINARY O_BINARY
 #endif
 
 #ifndef TARGET_NATIVE_FILE_FILEPERMISSION_NORMAL
-  #define TARGET_NATIVE_FILE_FILEPERMISSION_NORMAL (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH)
+#define TARGET_NATIVE_FILE_FILEPERMISSION_NORMAL (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH)
 #endif
 
-#ifndef TARGET_NATIVE_FILE_FILEPERMISSION_PRIVATE 
-  #define TARGET_NATIVE_FILE_FILEPERMISSION_PRIVATE (S_IRUSR | S_IWUSR)
+#ifndef TARGET_NATIVE_FILE_FILEPERMISSION_PRIVATE
+#define TARGET_NATIVE_FILE_FILEPERMISSION_PRIVATE (S_IRUSR | S_IWUSR)
 #endif
 
 #ifndef TARGET_NATIVE_FILE_FILEPERMISSION_READONLY
-  #define TARGET_NATIVE_FILE_FILEPERMISSION_READONLY (~(S_IWRITE|S_IWGRP|S_IWOTH))
+#define TARGET_NATIVE_FILE_FILEPERMISSION_READONLY (~(S_IWRITE|S_IWGRP|S_IWOTH))
 #endif
 
 /***************************** Datatypes *******************************/
@@ -137,10 +138,10 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_OPEN
-  #include <sys/types.h>
-  #include <sys/stat.h>
-  #include <fcntl.h>
-  #define TARGET_NATIVE_FILE_OPEN(filename,filedescriptor,flags,permissions,result) \
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#define TARGET_NATIVE_FILE_OPEN(filename,filedescriptor,flags,permissions,result) \
     do { \
       filedescriptor=open(filename, \
                           flags, \
@@ -163,7 +164,7 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_OPEN_CREATE
-  #define TARGET_NATIVE_FILE_OPEN_CREATE(filename,filedescriptor,result) \
+#define TARGET_NATIVE_FILE_OPEN_CREATE(filename,filedescriptor,result) \
     TARGET_NATIVE_FILE_OPEN(filename,\
                             filedescriptor,\
                             TARGET_NATIVE_FILE_FILEFLAG_CREATE_FORCE, \
@@ -183,7 +184,7 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_OPEN_READ
-  #define TARGET_NATIVE_FILE_OPEN_READ(filename,filedescriptor,result) \
+#define TARGET_NATIVE_FILE_OPEN_READ(filename,filedescriptor,result) \
     TARGET_NATIVE_FILE_OPEN(filename, \
                             filedescriptor,\
                             TARGET_NATIVE_FILE_FILEFLAG_READ, \
@@ -203,7 +204,7 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_OPEN_WRITE
-  #define TARGET_NATIVE_FILE_OPEN_WRITE(filename,filedescriptor,result) \
+#define TARGET_NATIVE_FILE_OPEN_WRITE(filename,filedescriptor,result) \
     TARGET_NATIVE_FILE_OPEN(filename, \
                             filedescriptor, \
                             TARGET_NATIVE_FILE_FILEFLAG_WRITE, \
@@ -223,7 +224,7 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_OPEN_READWRITE
-  #define TARGET_NATIVE_FILE_OPEN_READWRITE(filename,filedescriptor,result) \
+#define TARGET_NATIVE_FILE_OPEN_READWRITE(filename,filedescriptor,result) \
     TARGET_NATIVE_FILE_OPEN(filename, \
                             filedescriptor, \
                             TARGET_NATIVE_FILE_FILEFLAG_READWRITE, \
@@ -243,7 +244,7 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_OPEN_APPEND
-  #define TARGET_NATIVE_FILE_OPEN_APPEND(filename,filedescriptor,result) \
+#define TARGET_NATIVE_FILE_OPEN_APPEND(filename,filedescriptor,result) \
     TARGET_NATIVE_FILE_OPEN_APPEND(filename, \
                                    filedescriptor, \
                                    TARGET_NATIVE_FILE_FILEFLAG_CREATE_FORCE|TARGET_NATIVE_FILE_FILEFLAG_APPEND, \
@@ -263,8 +264,8 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_CLOSE
-  #include <unistd.h>
-  #define TARGET_NATIVE_FILE_CLOSE(filedescriptor,result) \
+#include <unistd.h>
+#define TARGET_NATIVE_FILE_CLOSE(filedescriptor,result) \
     do  { \
       result=(close(filedescriptor)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
    } while (0)
@@ -281,26 +282,26 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_VALID_FILE_DESCRIPTOR
-  #if   defined(HAVE_FCNTL)
-    #include <unistd.h>
-    #include <fcntl.h>
-    #define TARGET_NATIVE_FILE_VALID_FILE_DESCRIPTOR(filedescriptor,result) \
+#if   defined(HAVE_FCNTL)
+#include <unistd.h>
+#include <fcntl.h>
+#define TARGET_NATIVE_FILE_VALID_FILE_DESCRIPTOR(filedescriptor,result) \
       do { \
         result=(fcntl(filedescriptor,F_GETFL,0)!=-1)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       } while(0)
-  #elif defined(HAVE_FSTAT)
-    #include <sys/types.h>
-    #include <sys/stat.h>
-    #include <unistd.h>
-    #define TARGET_NATIVE_FILE_VALID_FILE_DESCRIPTOR(filedescriptor,result) \
+#elif defined(HAVE_FSTAT)
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#define TARGET_NATIVE_FILE_VALID_FILE_DESCRIPTOR(filedescriptor,result) \
       do { \
         struct stat __stat; \
         \
         result=(fstat(filedescriptor,&__stat)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       } while(0)
-  #else
-    #error fcntl() nor fstat() available for checking if file descriptor is valid
-  #endif
+#else
+#error fcntl() nor fstat() available for checking if file descriptor is valid
+#endif
 #endif
 
 /***********************************************************************\
@@ -314,9 +315,9 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_TELL
-  #include <sys/types.h>
-  #include <unistd.h>
-  #define TARGET_NATIVE_FILE_TELL(filedescriptor,offset,result) \
+#include <sys/types.h>
+#include <unistd.h>
+#define TARGET_NATIVE_FILE_TELL(filedescriptor,offset,result) \
     do { \
       offset=lseek(filedescriptor,TARGET_NATIVE_MATH_INT_INT64_CONST_0,SEEK_CUR); \
       result=((offset)!=(off_t)-1)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
@@ -334,27 +335,27 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_SEEK_BEGIN
-  #include <sys/types.h>
-  #include <unistd.h>
-  #define TARGET_NATIVE_FILE_SEEK_BEGIN(filedescriptor,offset,newoffset,result) \
+#include <sys/types.h>
+#include <unistd.h>
+#define TARGET_NATIVE_FILE_SEEK_BEGIN(filedescriptor,offset,newoffset,result) \
     do { \
       newoffset=lseek(filedescriptor,offset,SEEK_SET); \
       result=((newoffset)!=(off_t)-1)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
     } while (0)
 #endif
 #ifndef TARGET_NATIVE_FILE_SEEK_CURRENT
-  #include <sys/types.h>
-  #include <unistd.h>
-  #define TARGET_NATIVE_FILE_SEEK_CURRENT(filedescriptor,offset,newoffset,result) \
+#include <sys/types.h>
+#include <unistd.h>
+#define TARGET_NATIVE_FILE_SEEK_CURRENT(filedescriptor,offset,newoffset,result) \
     do { \
       newoffset=lseek(filedescriptor,offset,SEEK_CUR); \
       result=((newoffset)!=(off_t)-1)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
     } while (0)
 #endif
 #ifndef TARGET_NATIVE_FILE_SEEK_END
-  #include <sys/types.h>
-  #include <unistd.h>
-  #define TARGET_NATIVE_FILE_SEEK_END(filedescriptor,offset,newoffset,result) \
+#include <sys/types.h>
+#include <unistd.h>
+#define TARGET_NATIVE_FILE_SEEK_END(filedescriptor,offset,newoffset,result) \
     do { \
       newoffset=lseek(filedescriptor,offset,SEEK_END); \
       result=((newoffset)!=(off_t)-1)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
@@ -372,8 +373,8 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_TRUNCATE
-  #include <unistd.h>
-  #define TARGET_NATIVE_FILE_TRUNCATE(filedescriptor,offset,result) \
+#include <unistd.h>
+#define TARGET_NATIVE_FILE_TRUNCATE(filedescriptor,offset,result) \
     do { \
       result=(ftruncate(filedescriptor,offset)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
     } while (0)
@@ -390,10 +391,10 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_SIZE
-  #include <sys/types.h>
-  #include <sys/stat.h>
-  #include <unistd.h>
-  #define TARGET_NATIVE_FILE_SIZE(filedescriptor,length,result) \
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#define TARGET_NATIVE_FILE_SIZE(filedescriptor,length,result) \
     do { \
       struct stat __statBuffer; \
       \
@@ -413,26 +414,26 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_AVAILABLE
-  #if   defined(HAVE_FIONREAD)
-    #ifdef HAVE_SYS_IOCTL
-      #define BSD_COMP /* Get FIONREAD on Solaris2 */
-      #include <sys/ioctl.h>
-    #endif
-    #ifdef HAVE_SYS_FILIO /* Get FIONREAD on Solaris 2.5 */
-      #include <sys/filio.h>
-    #endif
-    #define TARGET_NATIVE_FILE_AVAILABLE(filedescriptor,length,result) \
+#if   defined(HAVE_FIONREAD)
+#ifdef HAVE_SYS_IOCTL
+#define BSD_COMP		/* Get FIONREAD on Solaris2 */
+#include <sys/ioctl.h>
+#endif
+#ifdef HAVE_SYS_FILIO		/* Get FIONREAD on Solaris 2.5 */
+#include <sys/filio.h>
+#endif
+#define TARGET_NATIVE_FILE_AVAILABLE(filedescriptor,length,result) \
       do { \
         ssize_t __n; \
         \
         result=(ioctl(filedescriptor,FIONREAD,(char*)&__n)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
         length=TARGET_NATIVE_MATH_INT_INT32_TO_INT64(__n); \
       } while (0)
-  #elif defined(HAVE_FSTAT)
-    #include <sys/types.h>
-    #include <sys/stat.h>
-    #include <unistd.h>
-    #define TARGET_NATIVE_FILE_AVAILABLE(filedescriptor,length,result) \
+#elif defined(HAVE_FSTAT)
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#define TARGET_NATIVE_FILE_AVAILABLE(filedescriptor,length,result) \
       do { \
         struct stat __statBuffer; \
         off_t       __n; \
@@ -457,10 +458,10 @@ extern "C" {
           result=TARGET_NATIVE_ERROR; \
         } \
       } while (0)
-  #elif defined(HAVE_SELECT)
-    #include <string.h>
-    #include <sys/select.h>
-    #define TARGET_NATIVE_FILE_AVAILABLE(filedescriptor,length,result) \
+#elif defined(HAVE_SELECT)
+#include <string.h>
+#include <sys/select.h>
+#define TARGET_NATIVE_FILE_AVAILABLE(filedescriptor,length,result) \
       do { \
         fd_set         __filedescriptset; \
         struct timeval __timeval; \
@@ -477,14 +478,14 @@ extern "C" {
           default: length=JNI_JLONG_CONST_1; result=TARGET_NATIVE_OK; break; \
         } \
       } while (0)
-  #else
-    #define TARGET_NATIVE_FILE_AVAILABLE(filedescriptor,length,result) \
+#else
+#define TARGET_NATIVE_FILE_AVAILABLE(filedescriptor,length,result) \
       do { \
         errno=TARGET_NATIVE_ERROR_OPERATION_NOT_PERMITTED; \
         length=0; \
         result=TARGET_NATIVE_ERROR; \
       } while (0)
-  #endif
+#endif
 #endif
 
 /***********************************************************************\
@@ -498,16 +499,16 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_READ
-  #include <unistd.h>
-  #define TARGET_NATIVE_FILE_READ(filedescriptor,buffer,length,bytesRead,result) \
+#include <unistd.h>
+#define TARGET_NATIVE_FILE_READ(filedescriptor,buffer,length,bytesRead,result) \
     do { \
       bytesRead=read(filedescriptor,buffer,length); \
       result=(bytesRead!=-1)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
     } while (0)
 #endif
 #ifndef TARGET_NATIVE_FILE_WRITE
-  #include <unistd.h>
-  #define TARGET_NATIVE_FILE_WRITE(filedescriptor,buffer,length,bytesWritten,result) \
+#include <unistd.h>
+#define TARGET_NATIVE_FILE_WRITE(filedescriptor,buffer,length,bytesWritten,result) \
     do { \
       bytesWritten=write(filedescriptor,buffer,length); \
       result=(bytesWritten!=-1)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
@@ -525,10 +526,10 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_SET_MODE_READONLY
-  #include <sys/types.h>
-  #include <sys/stat.h>
-  #include <unistd.h>
-  #define TARGET_NATIVE_FILE_SET_MODE_READONLY(filename,result) \
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#define TARGET_NATIVE_FILE_SET_MODE_READONLY(filename,result) \
     do { \
       struct stat __statBuffer; \
       \
@@ -551,10 +552,10 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_EXISTS
-  #include <sys/types.h>
-  #include <sys/stat.h>
-  #include <unistd.h>
-  #define TARGET_NATIVE_FILE_EXISTS(filename,result) \
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#define TARGET_NATIVE_FILE_EXISTS(filename,result) \
     do { \
       struct stat __statBuffer; \
       \
@@ -573,10 +574,10 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_IS_FILE
-  #include <sys/types.h>
-  #include <sys/stat.h>
-  #include <unistd.h>
-  #define TARGET_NATIVE_FILE_IS_FILE(filename,result) \
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#define TARGET_NATIVE_FILE_IS_FILE(filename,result) \
     do { \
       struct stat __statBuffer; \
       \
@@ -595,10 +596,10 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_IS_DIRECTORY
-  #include <sys/types.h>
-  #include <sys/stat.h>
-  #include <unistd.h>
-  #define TARGET_NATIVE_FILE_IS_DIRECTORY(filename,result) \
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#define TARGET_NATIVE_FILE_IS_DIRECTORY(filename,result) \
     do { \
       struct stat __statBuffer; \
       \
@@ -617,10 +618,10 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_GET_LAST_MODIFIED
-  #include <sys/types.h>
-  #include <sys/stat.h>
-  #include <unistd.h>
-  #define TARGET_NATIVE_FILE_GET_LAST_MODIFIED(filename,time,result) \
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#define TARGET_NATIVE_FILE_GET_LAST_MODIFIED(filename,time,result) \
     do { \
       struct stat __statBuffer; \
       \
@@ -647,17 +648,17 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_SET_LAST_MODIFIED
-  #include <sys/types.h>
-  #include <sys/stat.h>
-  #include <unistd.h>
-  #ifdef HAVE_UTIME_H
-    #include <utime.h>
-  #elif HAVE_SYS_UTIME_H
-    #include <sys/utime.h>
-  #else
-    #error utime.h not found. Please check configuration.
-  #endif
-  #define TARGET_NATIVE_FILE_SET_LAST_MODIFIED(filename,time,result) \
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#ifdef HAVE_UTIME_H
+#include <utime.h>
+#elif HAVE_SYS_UTIME_H
+#include <sys/utime.h>
+#else
+#error utime.h not found. Please check configuration.
+#endif
+#define TARGET_NATIVE_FILE_SET_LAST_MODIFIED(filename,time,result) \
     do { \
       struct stat    __statBuffer; \
       struct utimbuf __utimeBuffer; \
@@ -686,7 +687,7 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_DELETE
-  #define TARGET_NATIVE_FILE_DELETE(filename,result) \
+#define TARGET_NATIVE_FILE_DELETE(filename,result) \
     do { \
       result=((unlink(filename)==0) || (rmdir(filename)==0))?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
     } while (0)
@@ -703,7 +704,7 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_RENAME
-  #define TARGET_NATIVE_FILE_RENAME(oldfilename,newfilename,result) \
+#define TARGET_NATIVE_FILE_RENAME(oldfilename,newfilename,result) \
     do { \
       result=(rename(oldfilename,newfilename)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
     } while (0)
@@ -720,8 +721,8 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_MAKE_DIR
-  #include <sys/stat.h>
-  #define TARGET_NATIVE_FILE_MAKE_DIR(name,result) \
+#include <sys/stat.h>
+#define TARGET_NATIVE_FILE_MAKE_DIR(name,result) \
     do { \
       result=((mkdir(name,(S_IRWXO|S_IRWXG|S_IRWXU))==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR); \
     } while (0)
@@ -738,8 +739,8 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_GET_CWD
-  #include <unistd.h>
-  #define TARGET_NATIVE_FILE_GET_CWD(path,maxPathLength,result) \
+#include <unistd.h>
+#define TARGET_NATIVE_FILE_GET_CWD(path,maxPathLength,result) \
     do {\
       result=(getcwd(path,maxPathLength)!=NULL)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
     } while (0)
@@ -756,9 +757,9 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_OPEN_DIR
-  #include <sys/types.h>
-  #include <dirent.h>
-  #define TARGET_NATIVE_FILE_OPEN_DIR(filename,handle,result) \
+#include <sys/types.h>
+#include <dirent.h>
+#define TARGET_NATIVE_FILE_OPEN_DIR(filename,handle,result) \
     do { \
       handle=(void*)opendir(filename); \
       result=(handle!=NULL)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
@@ -776,9 +777,9 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_CLOSE_DIR
-  #include <sys/types.h>
-  #include <dirent.h>
-  #define TARGET_NATIVE_FILE_CLOSE_DIR(handle,result) \
+#include <sys/types.h>
+#include <dirent.h>
+#define TARGET_NATIVE_FILE_CLOSE_DIR(handle,result) \
     do { \
       closedir((DIR*)handle); \
       result=TARGET_NATIVE_OK; \
@@ -797,9 +798,9 @@ extern "C" {
 
 //??? name als buffer?
 #ifndef TARGET_NATIVE_FILE_READ_DIR
-  #include <sys/types.h>
-  #include <dirent.h>
-  #define TARGET_NATIVE_FILE_READ_DIR(handle,name,result) \
+#include <sys/types.h>
+#include <dirent.h>
+#define TARGET_NATIVE_FILE_READ_DIR(handle,name,result) \
     do { \
       struct dirent *__direntBuffer; \
       \
@@ -826,7 +827,7 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_FSYNC
-  #define TARGET_NATIVE_FILE_FSYNC(filedescriptor,result) \
+#define TARGET_NATIVE_FILE_FSYNC(filedescriptor,result) \
     do { \
       result=(fsync(filedescriptor)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
     } while(0)
@@ -838,7 +839,6 @@ extern "C" {
 }
 #endif
 
-#endif /* __TARGET_GENERIC_FILE__ */
+#endif				/* __TARGET_GENERIC_FILE__ */
 
 /* end of file */
-

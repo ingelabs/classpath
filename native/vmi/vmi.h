@@ -40,8 +40,8 @@ exception statement from your version. */
 
 #include <jni.h>
 
-typedef void * jframeID;
-typedef void * jthread;
+typedef void *jframeID;
+typedef void *jthread;
 
 typedef enum _vmiError_enum vmiError;
 enum _vmiError_enum
@@ -77,18 +77,17 @@ enum _vmiError_enum
 #define VMI_MOD_ABSTRACT     0x0400
 
 JNIEXPORT vmiError JNICALL
-VMI_GetFrameClass(JNIEnv *env, jframeID frame, jobject *obj);
+VMI_GetFrameClass (JNIEnv *env, jframeID frame, jobject *obj);
 
 JNIEXPORT vmiError JNICALL
-VMI_GetFrameObject(JNIEnv *env, jframeID frame, jobject *obj);
+VMI_GetFrameObject (JNIEnv *env, jframeID frame, jobject *obj);
+
+JNIEXPORT vmiError JNICALL VMI_GetThisFrame (JNIEnv *env, jframeID *frame);
 
 JNIEXPORT vmiError JNICALL
-VMI_GetThisFrame(JNIEnv *env, jframeID *frame);
-
-JNIEXPORT vmiError JNICALL
-VMI_GetThisThreadObject(JNIEnv *env, jthread *thread);
+VMI_GetThisThreadObject (JNIEnv *env, jthread *thread);
 
 JNIEXPORT void JNICALL
-VMI_ThrowAppropriateException(JNIEnv *env, vmiError err);
+VMI_ThrowAppropriateException (JNIEnv *env, vmiError err);
 
 #endif

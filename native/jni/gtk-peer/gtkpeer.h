@@ -55,7 +55,7 @@ exception statement from your version. */
 #define __GTKPEER_H__
 
 #ifndef __GNUC__
-#define __attribute__(x) /* nothing */
+#define __attribute__(x)	/* nothing */
 #endif
 
 #ifdef JVM_SUN
@@ -158,7 +158,7 @@ struct graphics
 
 #define AWT_ITEM_SELECTED 1
 #define AWT_ITEM_DESELECTED 2
-     
+
 #define AWT_KEY_TYPED    400
 #define AWT_KEY_PRESSED  401
 #define AWT_KEY_RELEASED 402
@@ -408,19 +408,18 @@ extern JNIEnv *gdk_env;
 
 extern GtkWindowGroup *global_gtk_window_group;
 
-void awt_event_handler (GdkEvent *event);
+void awt_event_handler (GdkEvent * event);
 
-gboolean pre_event_handler (GtkWidget *widget,
-                               GdkEvent *event,
-			       jobject peer);
+gboolean pre_event_handler (GtkWidget * widget,
+			    GdkEvent * event, jobject peer);
 
 void connect_awt_hook (JNIEnv *env, jobject peer_obj, int nwindows, ...);
 
-void set_visible (GtkWidget *widget, jboolean visible);
-void set_parent (GtkWidget *widget, GtkContainer *parent);
-GtkLayout *find_gtk_layout (GtkWidget *parent);
+void set_visible (GtkWidget * widget, jboolean visible);
+void set_parent (GtkWidget * widget, GtkContainer * parent);
+GtkLayout *find_gtk_layout (GtkWidget * parent);
 
-jint keyevent_state_to_awt_mods (GdkEvent *event);
+jint keyevent_state_to_awt_mods (GdkEvent * event);
 
 struct item_event_hook_info
 {

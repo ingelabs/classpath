@@ -40,7 +40,7 @@ exception statement from your version. */
 #include "gnu_java_awt_peer_gtk_GtkLabelPeer.h"
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkLabelPeer_create
+  Java_gnu_java_awt_peer_gtk_GtkLabelPeer_create
   (JNIEnv *env, jobject obj, jstring text, jfloat xalign)
 {
   GtkWidget *label;
@@ -54,7 +54,7 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_create
   str = (*env)->GetStringUTFChars (env, text, 0);
 
   gdk_threads_enter ();
-  
+
   ebox = gtk_event_box_new ();
   ebox_container = GTK_CONTAINER (ebox);
   label = gtk_label_new (str);
@@ -70,7 +70,7 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_create
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkSetFont
+  Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkSetFont
   (JNIEnv *env, jobject obj, jstring name, jint style, jint size)
 {
   const char *font_name;
@@ -80,14 +80,14 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkSetFont
 
   ptr = NSA_GET_PTR (env, obj);
 
-  label = gtk_bin_get_child (GTK_BIN(ptr));
+  label = gtk_bin_get_child (GTK_BIN (ptr));
 
   if (!label)
-      return;
+    return;
 
   font_name = (*env)->GetStringUTFChars (env, name, NULL);
 
-  gdk_threads_enter();
+  gdk_threads_enter ();
 
   font_desc = pango_font_description_from_string (font_name);
   pango_font_description_set_size (font_desc, size * PANGO_SCALE);
@@ -98,17 +98,17 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkSetFont
   if (style & AWT_STYLE_ITALIC)
     pango_font_description_set_style (font_desc, PANGO_STYLE_OBLIQUE);
 
-  gtk_widget_modify_font (GTK_WIDGET(label), font_desc);
+  gtk_widget_modify_font (GTK_WIDGET (label), font_desc);
 
   pango_font_description_free (font_desc);
 
-  gdk_threads_leave();
+  gdk_threads_leave ();
 
   (*env)->ReleaseStringUTFChars (env, name, font_name);
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setText
+  Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setText
   (JNIEnv *env, jobject obj, jstring text)
 {
   const char *str;
@@ -121,7 +121,7 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setText
 
   gdk_threads_enter ();
 
-  label = gtk_bin_get_child (GTK_BIN(ptr));
+  label = gtk_bin_get_child (GTK_BIN (ptr));
 
   gtk_label_set_label (GTK_LABEL (label), str);
 
@@ -131,7 +131,7 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setText
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkLabelPeer_nativeSetAlignment
+  Java_gnu_java_awt_peer_gtk_GtkLabelPeer_nativeSetAlignment
   (JNIEnv *env, jobject obj, jfloat xalign)
 {
   void *ptr;
@@ -141,7 +141,7 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_nativeSetAlignment
 
   gdk_threads_enter ();
 
-  label = gtk_bin_get_child (GTK_BIN(ptr));
+  label = gtk_bin_get_child (GTK_BIN (ptr));
 
   gtk_misc_set_alignment (GTK_MISC (label), xalign, 0.5);
 

@@ -45,7 +45,7 @@ Systems    : all
 
 /* check if target_native_network.h included */
 #ifndef __TARGET_NATIVE__
-  #error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
+#error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
 #endif
 
 /****************************** Includes *******************************/
@@ -62,46 +62,46 @@ Systems    : all
 #define TARGET_NATIVE_ERROR 0
 
 #ifndef TARGET_NATIVE_ERROR_PERMISION_DENIED
-  #define TARGET_NATIVE_ERROR_PERMISION_DENIED        EACCES
+#define TARGET_NATIVE_ERROR_PERMISION_DENIED        EACCES
 #endif
 #ifndef TARGET_NATIVE_ERROR_BAD_FILE_DESCRIPTOR
-  #define TARGET_NATIVE_ERROR_BAD_FILE_DESCRIPTOR     EBADF
+#define TARGET_NATIVE_ERROR_BAD_FILE_DESCRIPTOR     EBADF
 #endif
 #ifndef TARGET_NATIVE_ERROR_FILE_EXISTS
-  #define TARGET_NATIVE_ERROR_FILE_EXISTS             EEXIST
+#define TARGET_NATIVE_ERROR_FILE_EXISTS             EEXIST
 #endif
 #ifndef TARGET_NATIVE_ERROR_INPUT_OUTPUT
-  #define TARGET_NATIVE_ERROR_INPUT_OUTPUT            EIO
+#define TARGET_NATIVE_ERROR_INPUT_OUTPUT            EIO
 #endif
 #ifndef TARGET_NATIVE_ERROR_TOO_MANY_OPEN_FILES
-  #define TARGET_NATIVE_ERROR_TOO_MANY_OPEN_FILES     EMFILE
+#define TARGET_NATIVE_ERROR_TOO_MANY_OPEN_FILES     EMFILE
 #endif
 #ifndef TARGET_NATIVE_ERROR_FILENAME_TO_LONG
-  #define TARGET_NATIVE_ERROR_FILENAME_TO_LONG        ENAMETOOLONG
+#define TARGET_NATIVE_ERROR_FILENAME_TO_LONG        ENAMETOOLONG
 #endif
 #ifndef TARGET_NATIVE_ERROR_NO_SUCH_DEVICE
-  #define TARGET_NATIVE_ERROR_NO_SUCH_DEVICE          ENODEV
+#define TARGET_NATIVE_ERROR_NO_SUCH_DEVICE          ENODEV
 #endif
 #ifndef TARGET_NATIVE_ERROR_NO_SUCH_FILE
-  #define TARGET_NATIVE_ERROR_NO_SUCH_FILE            ENOENT
+#define TARGET_NATIVE_ERROR_NO_SUCH_FILE            ENOENT
 #endif
 #ifndef TARGET_NATIVE_ERROR_NO_SPACE_LEFT
-  #define TARGET_NATIVE_ERROR_NO_SPACE_LEFT           ENOSPC
+#define TARGET_NATIVE_ERROR_NO_SPACE_LEFT           ENOSPC
 #endif
 #ifndef TARGET_NATIVE_ERROR_DIRECTORY_NOT_EMPTY
-  #define TARGET_NATIVE_ERROR_DIRECTORY_NOT_EMPTY     ENOTEMPTY
+#define TARGET_NATIVE_ERROR_DIRECTORY_NOT_EMPTY     ENOTEMPTY
 #endif
 #ifndef TARGET_NATIVE_ERROR_OPERATION_NOT_PERMITTED
-  #define TARGET_NATIVE_ERROR_OPERATION_NOT_PERMITTED EPERM
+#define TARGET_NATIVE_ERROR_OPERATION_NOT_PERMITTED EPERM
 #endif
 #ifndef TARGET_NATIVE_ERROR_READ_ONLY_FILE_SYSTEM
-  #define TARGET_NATIVE_ERROR_READ_ONLY_FILE_SYSTEM   EROFS
+#define TARGET_NATIVE_ERROR_READ_ONLY_FILE_SYSTEM   EROFS
 #endif
 #ifndef TARGET_NATIVE_ERROR_INVALID_SEEK
-  #define TARGET_NATIVE_ERROR_INVALID_SEEK            ESPIPE
+#define TARGET_NATIVE_ERROR_INVALID_SEEK            ESPIPE
 #endif
 #ifndef TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL
-  #define TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL EINTR
+#define TARGET_NATIVE_ERROR_INTERRUPT_FUNCTION_CALL EINTR
 #endif
 
 /***************************** Datatypes *******************************/
@@ -121,8 +121,8 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_LAST_ERROR
-  #include <errno.h>
-  #define TARGET_NATIVE_LAST_ERROR() \
+#include <errno.h>
+#define TARGET_NATIVE_LAST_ERROR() \
     errno
 #endif
 
@@ -137,16 +137,16 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_LAST_ERROR_STRING
-  #include <string.h>
-  #include <errno.h>
-  #define TARGET_NATIVE_LAST_ERROR_STRING() \
+#include <string.h>
+#include <errno.h>
+#define TARGET_NATIVE_LAST_ERROR_STRING() \
     strerror(errno)
 #endif
 
 #ifndef TARGET_NATIVE_LAST_ERROR_STRING_FORMAT
-  #include <string.h>
-  #include <errno.h>
-  #define TARGET_NATIVE_LAST_ERROR_STRING_FORMAT(buffer,bufferSize,format) \
+#include <string.h>
+#include <errno.h>
+#define TARGET_NATIVE_LAST_ERROR_STRING_FORMAT(buffer,bufferSize,format) \
     do { \
       sprintf(buffer,format); \
       strcat(" (error: "); \
@@ -158,14 +158,14 @@ Systems    : all
 /***************************** Functions *******************************/
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __TARGET_GENERIC__ */
+#endif				/* __TARGET_GENERIC__ */
 
 /* end of file */
-

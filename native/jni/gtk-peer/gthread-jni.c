@@ -88,30 +88,36 @@ JavaVM *gdk_vm;
  * case some calling piece of code does not expect the exception being
  * thrown) and to include the given extra message.
  */
-static void maybe_rethrow(JNIEnv *gdk_env, char *message, char *file, int line) {
+static void
+maybe_rethrow (JNIEnv *gdk_env, char *message, char *file, int line)
+{
   jthrowable cause;
 
   /* rethrow if an exception happened */
-  if ((cause = (*gdk_env)->ExceptionOccurred(gdk_env)) != NULL) {
-    jstring jmessage;
-  jclass obj_class;
-    jobject obj;
-    jmethodID ctor;
+  if ((cause = (*gdk_env)->ExceptionOccurred (gdk_env)) != NULL)
+    {
+      jstring jmessage;
+      jclass obj_class;
+      jobject obj;
+      jmethodID ctor;
 
-    /* allocate local message in Java */
-    int len = strlen(message) + strlen(file) + 25;
-    char buf[ len ];
-    bzero(buf, len);
-    sprintf(buf, "%s (at %s:%d)", message, file, line);
-    jmessage = (*gdk_env)->NewStringUTF(gdk_env, buf);
-    
-    /* create RuntimeException wrapper object */
-    obj_class = (*gdk_env)->FindClass (gdk_env, "java/lang/RuntimeException");
-    ctor = (*gdk_env)->GetMethodID(gdk_env, obj_class, "<init>", "(Ljava/langString;Ljava/lang/Throwable)V");
-    obj = (*gdk_env)->NewObject (gdk_env, obj_class, ctor, jmessage, cause);
+      /* allocate local message in Java */
+      int len = strlen (message) + strlen (file) + 25;
+      char buf[len];
+      bzero (buf, len);
+      sprintf (buf, "%s (at %s:%d)", message, file, line);
+      jmessage = (*gdk_env)->NewStringUTF (gdk_env, buf);
 
-    /* throw it */
-    (*gdk_env)->Throw(gdk_env, (jthrowable)obj);
+      /* create RuntimeException wrapper object */
+      obj_class =
+	(*gdk_env)->FindClass (gdk_env, "java/lang/RuntimeException");
+      ctor =
+	(*gdk_env)->GetMethodID (gdk_env, obj_class, "<init>",
+				 "(Ljava/langString;Ljava/lang/Throwable)V");
+      obj = (*gdk_env)->NewObject (gdk_env, obj_class, ctor, jmessage, cause);
+
+      /* throw it */
+      (*gdk_env)->Throw (gdk_env, (jthrowable) obj);
     }
 }
 
@@ -128,42 +134,47 @@ maybe_rethrow(_class, _message, __FILE__, __LINE__)
  * which this method allocates and returns a global ref.  Note that global
  * refs must be explicitly freed (isn't C fun?).
  */
-static jobject *allocatePlainObject() {
+static jobject *
+allocatePlainObject ()
+{
   jclass obj_class;
   jobject *obj;
   JNIEnv *gdk_env;
   jmethodID ctor;
 
-  (*gdk_vm)->GetEnv(gdk_vm, (void **)&gdk_env, JNI_VERSION_1_1);
+  (*gdk_vm)->GetEnv (gdk_vm, (void **) &gdk_env, JNI_VERSION_1_1);
 
   obj_class = (*gdk_env)->FindClass (gdk_env, "java/lang/Object");
-  MAYBE_RETHROW(gdk_env, "cannot find Object");
+  MAYBE_RETHROW (gdk_env, "cannot find Object");
 
-  ctor = (*gdk_env)->GetMethodID(gdk_env, obj_class, "<init>", "()V");
-  MAYBE_RETHROW(gdk_env, "cannot find constructor");
+  ctor = (*gdk_env)->GetMethodID (gdk_env, obj_class, "<init>", "()V");
+  MAYBE_RETHROW (gdk_env, "cannot find constructor");
 
   obj = (jobject *) g_malloc (sizeof (jobject));
   *obj = (*gdk_env)->NewObject (gdk_env, obj_class, ctor);
-  MAYBE_RETHROW(gdk_env, "cannot allocate object");
-  
+  MAYBE_RETHROW (gdk_env, "cannot allocate object");
+
   *obj = (*gdk_env)->NewGlobalRef (gdk_env, *obj);
-  MAYBE_RETHROW(gdk_env, "cannot make global ref");
+  MAYBE_RETHROW (gdk_env, "cannot make global ref");
 
   return obj;
 }
 
 /*  Frees a Java object given a global ref (isn't C fun?) */
-static void freePlainObject(jobject *obj) {
+static void
+freePlainObject (jobject *obj)
+{
   JNIEnv *gdk_env;
 
-  if (obj) {
-    (*gdk_vm)->GetEnv(gdk_vm, (void **)&gdk_env, JNI_VERSION_1_1);
+  if (obj)
+    {
+      (*gdk_vm)->GetEnv (gdk_vm, (void **) &gdk_env, JNI_VERSION_1_1);
 
-    (*gdk_env)->DeleteGlobalRef (gdk_env, *obj);
-    MAYBE_RETHROW(gdk_env, "cannot delete global ref");
-  
-    g_free (obj);
-  }
+      (*gdk_env)->DeleteGlobalRef (gdk_env, *obj);
+      MAYBE_RETHROW (gdk_env, "cannot delete global ref");
+
+      g_free (obj);
+    }
 }
 
 
@@ -172,29 +183,37 @@ static void freePlainObject(jobject *obj) {
 /************************************************************************/
 
 /* Lock a Java object */
-static void takeLock(JNIEnv *gdk_env, void *mutex) {
-  (*gdk_env)->MonitorEnter (gdk_env, *((jobject *)mutex));
-  MAYBE_RETHROW(gdk_env, "cannot get lock");
+static void
+takeLock (JNIEnv *gdk_env, void *mutex)
+{
+  (*gdk_env)->MonitorEnter (gdk_env, *((jobject *) mutex));
+  MAYBE_RETHROW (gdk_env, "cannot get lock");
 }
 
 /* Unlock a Java object */
-static void releaseLock(JNIEnv *gdk_env, void *mutex) {
-    (*gdk_env)->MonitorExit (gdk_env, *((jobject *)mutex));
-  MAYBE_RETHROW(gdk_env, "cannot release lock");
+static void
+releaseLock (JNIEnv *gdk_env, void *mutex)
+{
+  (*gdk_env)->MonitorExit (gdk_env, *((jobject *) mutex));
+  MAYBE_RETHROW (gdk_env, "cannot release lock");
 }
 
 /* Create a mutex, which is a java.lang.Object for us */
-static GMutex *g_mutex_new_jni_impl (void) {
-  return (GMutex*) allocatePlainObject();
+static GMutex *
+g_mutex_new_jni_impl (void)
+{
+  return (GMutex *) allocatePlainObject ();
 }
 
 /* Lock a mutex. */
-static void g_mutex_lock_jni_impl (GMutex *mutex __attribute__((unused))) {
+static void
+g_mutex_lock_jni_impl (GMutex * mutex __attribute__ ((unused)))
+{
   JNIEnv *gdk_env;
 
-  (*gdk_vm)->GetEnv(gdk_vm, (void **)&gdk_env, JNI_VERSION_1_1);
+  (*gdk_vm)->GetEnv (gdk_vm, (void **) &gdk_env, JNI_VERSION_1_1);
 
-  takeLock(gdk_env, mutex);
+  takeLock (gdk_env, mutex);
 }
 
 /*  Try to lock a mutex.  Actually, do not try because Java objects
@@ -202,25 +221,28 @@ static void g_mutex_lock_jni_impl (GMutex *mutex __attribute__((unused))) {
  * pretend we tried and failed.
  */
 static gboolean g_mutex_trylock_jni_impl
-  (GMutex *mutex __attribute__((unused)))
+  (GMutex * mutex __attribute__ ((unused)))
 {
   // Shall we implement this in a JikesRVM-specific way under a flag?
   return FALSE;
 }
 
 /* Unlock a mutex. */
-static void g_mutex_unlock_jni_impl (GMutex *mutex) {
+static void
+g_mutex_unlock_jni_impl (GMutex * mutex)
+{
   JNIEnv *gdk_env;
 
-  (*gdk_vm)->GetEnv(gdk_vm, (void **)&gdk_env, JNI_VERSION_1_1);
+  (*gdk_vm)->GetEnv (gdk_vm, (void **) &gdk_env, JNI_VERSION_1_1);
 
-  releaseLock(gdk_env, mutex);
+  releaseLock (gdk_env, mutex);
 }
 
 /* Free a mutex (isn't C fun?) */
-static void g_mutex_free_jni_impl (GMutex *mutex)
+static void
+g_mutex_free_jni_impl (GMutex * mutex)
 {
-  freePlainObject( (jobject*)mutex );
+  freePlainObject ((jobject *) mutex);
 }
 
 
@@ -229,58 +251,65 @@ static void g_mutex_free_jni_impl (GMutex *mutex)
 /************************************************************************/
 
 /* Create a new condition variable.  This is a java.lang.Object for us. */
-static GCond *g_cond_new_jni_impl () {
-  return (GCond*)allocatePlainObject();
+static GCond *
+g_cond_new_jni_impl ()
+{
+  return (GCond *) allocatePlainObject ();
 }
 
 /*  Signal on a condition variable.  This is simply calling Object.notify
  * for us.
  */
-static void g_cond_signal_jni_impl (GCond *cond) {
+static void
+g_cond_signal_jni_impl (GCond * cond)
+{
   jclass lcl_class;
   jmethodID signal_mth;
   JNIEnv *gdk_env;
 
-  (*gdk_vm)->GetEnv(gdk_vm, (void **)&gdk_env, JNI_VERSION_1_1);
+  (*gdk_vm)->GetEnv (gdk_vm, (void **) &gdk_env, JNI_VERSION_1_1);
 
   lcl_class = (*gdk_env)->FindClass (gdk_env, "java.lang.Object");
-  MAYBE_RETHROW(gdk_env, "cannot find Object");
-  
-  signal_mth = (*gdk_env)->GetMethodID(gdk_env, lcl_class, "notify", "()V");
-  MAYBE_RETHROW(gdk_env, "cannot find Object.<notify>");
+  MAYBE_RETHROW (gdk_env, "cannot find Object");
+
+  signal_mth = (*gdk_env)->GetMethodID (gdk_env, lcl_class, "notify", "()V");
+  MAYBE_RETHROW (gdk_env, "cannot find Object.<notify>");
 
   /* Must have locked an object to call notify */
-  takeLock(gdk_env, cond);
+  takeLock (gdk_env, cond);
 
-  (*gdk_env)->CallVoidMethod(gdk_env, *(jobject*)cond, signal_mth);
-  MAYBE_RETHROW(gdk_env, "cannot signal mutex");
+  (*gdk_env)->CallVoidMethod (gdk_env, *(jobject *) cond, signal_mth);
+  MAYBE_RETHROW (gdk_env, "cannot signal mutex");
 
-  releaseLock(gdk_env, cond);
+  releaseLock (gdk_env, cond);
 }
 
 /*  Broadcast to all waiting on a condition variable.  This is simply 
  * calling Object.notifyAll for us.
  */
-static void g_cond_broadcast_jni_impl (GCond *cond) {
+static void
+g_cond_broadcast_jni_impl (GCond * cond)
+{
   jclass lcl_class;
   jmethodID bcast_mth;
   JNIEnv *gdk_env;
 
-  (*gdk_vm)->GetEnv(gdk_vm, (void **)&gdk_env, JNI_VERSION_1_1);
+  (*gdk_vm)->GetEnv (gdk_vm, (void **) &gdk_env, JNI_VERSION_1_1);
 
   lcl_class = (*gdk_env)->FindClass (gdk_env, "java.lang.Object");
-  MAYBE_RETHROW(gdk_env, "cannot find Object");
-  
-  bcast_mth = (*gdk_env)->GetMethodID(gdk_env, lcl_class, "notifyAll", "()V");
-  MAYBE_RETHROW(gdk_env, "cannot find Object.<notifyAll>");
+  MAYBE_RETHROW (gdk_env, "cannot find Object");
+
+  bcast_mth =
+    (*gdk_env)->GetMethodID (gdk_env, lcl_class, "notifyAll", "()V");
+  MAYBE_RETHROW (gdk_env, "cannot find Object.<notifyAll>");
 
   /* Must have locked an object to call notifyAll */
-  takeLock(gdk_env, cond);
+  takeLock (gdk_env, cond);
 
-  (*gdk_env)->CallVoidMethod(gdk_env, *(jobject*)cond, bcast_mth);
-  MAYBE_RETHROW(gdk_env, "cannot broadcast to mutex");
+  (*gdk_env)->CallVoidMethod (gdk_env, *(jobject *) cond, bcast_mth);
+  MAYBE_RETHROW (gdk_env, "cannot broadcast to mutex");
 
-  releaseLock(gdk_env, cond);
+  releaseLock (gdk_env, cond);
 }
 
 
@@ -288,27 +317,27 @@ static void g_cond_broadcast_jni_impl (GCond *cond) {
  * Object.wait.
  */
 static void g_cond_wait_jni_impl
-  (GCond *cond, GMutex *mutex __attribute__((unused)))
+  (GCond * cond, GMutex * mutex __attribute__ ((unused)))
 {
   jclass lcl_class;
   jmethodID wait_mth;
   JNIEnv *gdk_env;
 
-  (*gdk_vm)->GetEnv(gdk_vm, (void **)&gdk_env, JNI_VERSION_1_1);
+  (*gdk_vm)->GetEnv (gdk_vm, (void **) &gdk_env, JNI_VERSION_1_1);
 
   lcl_class = (*gdk_env)->FindClass (gdk_env, "java.lang.Object");
-  MAYBE_RETHROW(gdk_env, "cannot find Object");
-  
-  wait_mth = (*gdk_env)->GetMethodID(gdk_env, lcl_class, "wait", "()V");
-  MAYBE_RETHROW(gdk_env, "cannot find Object.<wait>");
+  MAYBE_RETHROW (gdk_env, "cannot find Object");
+
+  wait_mth = (*gdk_env)->GetMethodID (gdk_env, lcl_class, "wait", "()V");
+  MAYBE_RETHROW (gdk_env, "cannot find Object.<wait>");
 
   /* Must have locked an object to call wait */
-  takeLock(gdk_env, cond);
+  takeLock (gdk_env, cond);
 
-  (*gdk_env)->CallVoidMethod(gdk_env, *(jobject*)cond, wait_mth);
-  MAYBE_RETHROW(gdk_env, "cannot wait on mutex");
+  (*gdk_env)->CallVoidMethod (gdk_env, *(jobject *) cond, wait_mth);
+  MAYBE_RETHROW (gdk_env, "cannot wait on mutex");
 
-  releaseLock(gdk_env, cond);
+  releaseLock (gdk_env, cond);
 }
 
 /*  Wait on a condition vairable until a timeout.  This is a little tricky
@@ -317,9 +346,8 @@ static void g_cond_wait_jni_impl
  * so, that is Java-speak for wait timing out.
  */
 static gboolean
-g_cond_timed_wait_jni_impl
-  (GCond *cond, GMutex *mutex __attribute__((unused)),
-   GTimeVal *end_time)
+  g_cond_timed_wait_jni_impl
+  (GCond * cond, GMutex * mutex __attribute__ ((unused)), GTimeVal * end_time)
 {
   jclass lcl_class;
   jmethodID wait_mth;
@@ -327,40 +355,47 @@ g_cond_timed_wait_jni_impl
   jlong time;
   jthrowable cause;
 
-  (*gdk_vm)->GetEnv(gdk_vm, (void **)&gdk_env, JNI_VERSION_1_1);
+  (*gdk_vm)->GetEnv (gdk_vm, (void **) &gdk_env, JNI_VERSION_1_1);
 
   lcl_class = (*gdk_env)->FindClass (gdk_env, "java.lang.Object");
-  MAYBE_RETHROW(gdk_env, "cannot find Object");
-  
-  wait_mth = (*gdk_env)->GetMethodID(gdk_env, lcl_class, "wait", "(J)V");
-  MAYBE_RETHROW(gdk_env, "cannot find Object.<wait(J)>");
-  
-  time = end_time->tv_sec*1000;
-  time += end_time->tv_usec/1000;
+  MAYBE_RETHROW (gdk_env, "cannot find Object");
+
+  wait_mth = (*gdk_env)->GetMethodID (gdk_env, lcl_class, "wait", "(J)V");
+  MAYBE_RETHROW (gdk_env, "cannot find Object.<wait(J)>");
+
+  time = end_time->tv_sec * 1000;
+  time += end_time->tv_usec / 1000;
 
   /* Must have locked an object to call wait */
-  takeLock(gdk_env, cond);
+  takeLock (gdk_env, cond);
 
-  (*gdk_env)->CallVoidMethod(gdk_env, *(jobject*)cond, wait_mth, time);
+  (*gdk_env)->CallVoidMethod (gdk_env, *(jobject *) cond, wait_mth, time);
 
-  if ((cause = (*gdk_env)->ExceptionOccurred(gdk_env)) != NULL) {
-    jclass intr = (*gdk_env)->FindClass (gdk_env, "java.lang.InterruptedException");
-    if ( (*gdk_env)->IsInstanceOf(gdk_env, cause, intr) ) {
-      releaseLock(gdk_env, cond);
-  return FALSE;
-    } else {
-      MAYBE_RETHROW(gdk_env, "error in timed wait");
+  if ((cause = (*gdk_env)->ExceptionOccurred (gdk_env)) != NULL)
+    {
+      jclass intr =
+	(*gdk_env)->FindClass (gdk_env, "java.lang.InterruptedException");
+      if ((*gdk_env)->IsInstanceOf (gdk_env, cause, intr))
+	{
+	  releaseLock (gdk_env, cond);
+	  return FALSE;
+	}
+      else
+	{
+	  MAYBE_RETHROW (gdk_env, "error in timed wait");
+	}
     }
-  }
 
-  releaseLock(gdk_env, cond);
+  releaseLock (gdk_env, cond);
 
   return TRUE;
 }
 
 /* Free a condition variable.  (isn't C fun?) */
-static void g_cond_free_jni_impl (GCond *cond) {
-  freePlainObject( (jobject*)cond );
+static void
+g_cond_free_jni_impl (GCond * cond)
+{
+  freePlainObject ((jobject *) cond);
 }
 
 
@@ -372,35 +407,37 @@ static void g_cond_free_jni_impl (GCond *cond) {
  * for this.
  */
 static GPrivate *g_private_new_jni_impl
-  (GDestroyNotify notify __attribute__((unused)))
+  (GDestroyNotify notify __attribute__ ((unused)))
 {
   jclass lcl_class;
   jobject *local;
   JNIEnv *gdk_env;
   jmethodID ctor;
 
-  (*gdk_vm)->GetEnv(gdk_vm, (void **)&gdk_env, JNI_VERSION_1_1);
+  (*gdk_vm)->GetEnv (gdk_vm, (void **) &gdk_env, JNI_VERSION_1_1);
 
   lcl_class = (*gdk_env)->FindClass (gdk_env, "java.lang.ThreadLocal");
-  MAYBE_RETHROW(gdk_env, "cannot find ThreadLocal");
+  MAYBE_RETHROW (gdk_env, "cannot find ThreadLocal");
 
-  ctor = (*gdk_env)->GetMethodID(gdk_env, lcl_class, "<init>", "()V");
-  MAYBE_RETHROW(gdk_env, "cannot find ThreadLocal.<init>");
+  ctor = (*gdk_env)->GetMethodID (gdk_env, lcl_class, "<init>", "()V");
+  MAYBE_RETHROW (gdk_env, "cannot find ThreadLocal.<init>");
 
   local = (jobject *) g_malloc (sizeof (jobject));
-  *local = (*gdk_env)->NewObject(gdk_env, lcl_class, ctor);
-  MAYBE_RETHROW(gdk_env, "cannot allocate a ThreadLocal");
-  
-  *local = ((*gdk_env)->NewGlobalRef (gdk_env, *local));
-  MAYBE_RETHROW(gdk_env, "cannot create a GlobalRef");
+  *local = (*gdk_env)->NewObject (gdk_env, lcl_class, ctor);
+  MAYBE_RETHROW (gdk_env, "cannot allocate a ThreadLocal");
 
-  return (GPrivate*) local;
+  *local = ((*gdk_env)->NewGlobalRef (gdk_env, *local));
+  MAYBE_RETHROW (gdk_env, "cannot create a GlobalRef");
+
+  return (GPrivate *) local;
 }
 
 /*  Get this thread's value for a thread-local key.  This is simply
  * ThreadLocal.get for us.
  */
-static gpointer g_private_get_jni_impl (GPrivate *private) {
+static gpointer
+g_private_get_jni_impl (GPrivate * private)
+{
   jclass lcl_class;
   jobject lcl_obj;
   JNIEnv *gdk_env;
@@ -409,25 +446,28 @@ static gpointer g_private_get_jni_impl (GPrivate *private) {
   jmethodID val_mth;
   jint int_val;
 
-  (*gdk_vm)->GetEnv(gdk_vm, (void **)&gdk_env, JNI_VERSION_1_1);
+  (*gdk_vm)->GetEnv (gdk_vm, (void **) &gdk_env, JNI_VERSION_1_1);
 
   lcl_class = (*gdk_env)->FindClass (gdk_env, "java.lang.ThreadLocal");
-  MAYBE_RETHROW(gdk_env, "cannot find ThreadLocal");
+  MAYBE_RETHROW (gdk_env, "cannot find ThreadLocal");
 
-  get_mth = (*gdk_env)->GetMethodID(gdk_env, lcl_class, "get", "()Ljava/lang/Object;");
-  MAYBE_RETHROW(gdk_env, "cannot find ThreadLocal.<get>");
+  get_mth =
+    (*gdk_env)->GetMethodID (gdk_env, lcl_class, "get",
+			     "()Ljava/lang/Object;");
+  MAYBE_RETHROW (gdk_env, "cannot find ThreadLocal.<get>");
 
-  lcl_obj = (*gdk_env)->CallObjectMethod(gdk_env, *(jobject*)private, get_mth);
-  MAYBE_RETHROW(gdk_env, "cannot find thread-local object");
+  lcl_obj =
+    (*gdk_env)->CallObjectMethod (gdk_env, *(jobject *) private, get_mth);
+  MAYBE_RETHROW (gdk_env, "cannot find thread-local object");
 
   int_class = (*gdk_env)->FindClass (gdk_env, "java.lang.Integer");
-  MAYBE_RETHROW(gdk_env, "cannot find Integer");
+  MAYBE_RETHROW (gdk_env, "cannot find Integer");
 
-  val_mth = (*gdk_env)->GetMethodID(gdk_env, int_class, "intValue", "()I");
-  MAYBE_RETHROW(gdk_env, "cannot find Integer.<intValue>");
+  val_mth = (*gdk_env)->GetMethodID (gdk_env, int_class, "intValue", "()I");
+  MAYBE_RETHROW (gdk_env, "cannot find Integer.<intValue>");
 
-  int_val = (*gdk_env)->CallIntMethod(gdk_env, lcl_obj, val_mth);
-  MAYBE_RETHROW(gdk_env, "cannot get thread local value");
+  int_val = (*gdk_env)->CallIntMethod (gdk_env, lcl_obj, val_mth);
+  MAYBE_RETHROW (gdk_env, "cannot get thread local value");
 
   return (gpointer) int_val;
 }
@@ -435,31 +475,36 @@ static gpointer g_private_get_jni_impl (GPrivate *private) {
 /*  Set this thread's value for a thread-local key.  This is simply
  * ThreadLocal.set for us.
  */
-static void g_private_set_jni_impl (GPrivate *private, gpointer data) {
+static void
+g_private_set_jni_impl (GPrivate * private, gpointer data)
+{
   jclass lcl_class, int_class;
   jobject lcl_obj;
   JNIEnv *gdk_env;
   jmethodID new_int, set_mth;
 
-  (*gdk_vm)->GetEnv(gdk_vm, (void **)&gdk_env, JNI_VERSION_1_1);
+  (*gdk_vm)->GetEnv (gdk_vm, (void **) &gdk_env, JNI_VERSION_1_1);
 
   int_class = (*gdk_env)->FindClass (gdk_env, "java.lang.Integer");
-  MAYBE_RETHROW(gdk_env, "cannot find Integer");
+  MAYBE_RETHROW (gdk_env, "cannot find Integer");
 
-  new_int = (*gdk_env)->GetMethodID(gdk_env, int_class, "<init>", "(I)V");
-  MAYBE_RETHROW(gdk_env, "cannot find Integer.<init>");
+  new_int = (*gdk_env)->GetMethodID (gdk_env, int_class, "<init>", "(I)V");
+  MAYBE_RETHROW (gdk_env, "cannot find Integer.<init>");
 
-  lcl_obj = (*gdk_env)->NewObject(gdk_env, int_class, new_int, (jint)data);
-  MAYBE_RETHROW(gdk_env, "cannot create an Integer");
+  lcl_obj = (*gdk_env)->NewObject (gdk_env, int_class, new_int, (jint) data);
+  MAYBE_RETHROW (gdk_env, "cannot create an Integer");
 
   lcl_class = (*gdk_env)->FindClass (gdk_env, "java.lang.ThreadLocal");
-  MAYBE_RETHROW(gdk_env, "cannot find ThreadLocal");
+  MAYBE_RETHROW (gdk_env, "cannot find ThreadLocal");
 
-  set_mth = (*gdk_env)->GetMethodID(gdk_env, lcl_class, "set", "(Ljava/lang/Object;)V");
-  MAYBE_RETHROW(gdk_env, "cannot find ThreadLocal.<set>");
+  set_mth =
+    (*gdk_env)->GetMethodID (gdk_env, lcl_class, "set",
+			     "(Ljava/lang/Object;)V");
+  MAYBE_RETHROW (gdk_env, "cannot find ThreadLocal.<set>");
 
-  (*gdk_env)->CallVoidMethod(gdk_env, *(jobject*)private, set_mth, lcl_obj);
-  MAYBE_RETHROW(gdk_env, "cannot set thread local value");
+  (*gdk_env)->CallVoidMethod (gdk_env, *(jobject *) private, set_mth,
+			      lcl_obj);
+  MAYBE_RETHROW (gdk_env, "cannot set thread local value");
 }
 
 
@@ -468,22 +513,21 @@ static void g_private_set_jni_impl (GPrivate *private, gpointer data) {
 /************************************************************************/
 
 /* set of function pointers to give to glib. */
-GThreadFunctions g_thread_jni_functions =
-{
-  g_mutex_new_jni_impl,	      /* mutex_new */
-  g_mutex_lock_jni_impl,      /* mutex_lock */
-  g_mutex_trylock_jni_impl,   /* mutex_try_lock */
-  g_mutex_unlock_jni_impl,    /* mutex_unlock */
-  g_mutex_free_jni_impl,      /* mutex_free */
-  g_cond_new_jni_impl,        /* cond_new */
-  g_cond_signal_jni_impl,     /* cond_signal */
-  g_cond_broadcast_jni_impl,  /* cond_broadcast */
-  g_cond_wait_jni_impl,       /* cond_wait */
-  g_cond_timed_wait_jni_impl, /* cond_timed_wait */
-  g_cond_free_jni_impl,       /* cond_free */
-  g_private_new_jni_impl,     /* private_new */
-  g_private_get_jni_impl,     /* private_get */
-  g_private_set_jni_impl,     /* private_set */
+GThreadFunctions g_thread_jni_functions = {
+  g_mutex_new_jni_impl,		/* mutex_new */
+  g_mutex_lock_jni_impl,	/* mutex_lock */
+  g_mutex_trylock_jni_impl,	/* mutex_try_lock */
+  g_mutex_unlock_jni_impl,	/* mutex_unlock */
+  g_mutex_free_jni_impl,	/* mutex_free */
+  g_cond_new_jni_impl,		/* cond_new */
+  g_cond_signal_jni_impl,	/* cond_signal */
+  g_cond_broadcast_jni_impl,	/* cond_broadcast */
+  g_cond_wait_jni_impl,		/* cond_wait */
+  g_cond_timed_wait_jni_impl,	/* cond_timed_wait */
+  g_cond_free_jni_impl,		/* cond_free */
+  g_private_new_jni_impl,	/* private_new */
+  g_private_get_jni_impl,	/* private_get */
+  g_private_set_jni_impl,	/* private_set */
   NULL,
   NULL,
   NULL,
@@ -494,6 +538,8 @@ GThreadFunctions g_thread_jni_functions =
 };
 
 /* ??? */
-void gdk_threads_wake () {
+void
+gdk_threads_wake ()
+{
 
 }

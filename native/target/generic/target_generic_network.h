@@ -45,7 +45,7 @@ Systems    : all
 
 /* check if target_native_network.h included */
 #ifndef __TARGET_NATIVE_NETWORK__
-  #error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
+#error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
 #endif
 
 /****************************** Includes *******************************/
@@ -79,7 +79,7 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_IPADDRESS_BYTES_TO_INT
-  #define TARGET_NATIVE_NETWORK_IPADDRESS_BYTES_TO_INT(n0,n1,n2,n3,i) \
+#define TARGET_NATIVE_NETWORK_IPADDRESS_BYTES_TO_INT(n0,n1,n2,n3,i) \
     do { \
       i=(((unsigned char)n0) << 24) | \
         (((unsigned char)n1) << 16) | \
@@ -100,7 +100,7 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_INT_TO_IPADDRESS_BYTES
-  #define TARGET_NATIVE_NETWORK_INT_TO_IPADDRESS_BYTES(i,n0,n1,n2,n3) \
+#define TARGET_NATIVE_NETWORK_INT_TO_IPADDRESS_BYTES(i,n0,n1,n2,n3) \
     do { \
       n0=(i & 0xFF000000) >> 24; \
       n1=(i & 0x00FF0000) >> 16; \
@@ -122,8 +122,8 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_GET_HOSTNAME
-  #include <unistd.h>
-  #define TARGET_NATIVE_NETWORK_GET_HOSTNAME(name,maxNameLen,result) \
+#include <unistd.h>
+#define TARGET_NATIVE_NETWORK_GET_HOSTNAME(name,maxNameLen,result) \
     do { \
       result=(gethostname(name,maxNameLen-1)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       name[maxNameLen-1]='\0'; \
@@ -145,8 +145,8 @@ Systems    : all
 
 //NYI??? reentrant?
 #ifndef TARGET_NATIVE_NETWORK_GET_HOSTNAME_BY_ADDRESS
-  #include <netdb.h>
-  #define TARGET_NATIVE_NETWORK_GET_HOSTNAME_BY_ADDRESS(address,name,maxNameLen,result) \
+#include <netdb.h>
+#define TARGET_NATIVE_NETWORK_GET_HOSTNAME_BY_ADDRESS(address,name,maxNameLen,result) \
     do { \
       int            __networkAddress; \
       struct hostent *__hostEntry; \
@@ -183,8 +183,8 @@ Systems    : all
 
 //NYI??? reentrant?
 #ifndef TARGET_NATIVE_NETWORK_GET_HOSTNAME_BY_NAME
-  #include <netdb.h>
-  #define TARGET_NATIVE_NETWORK_GET_HOSTNAME_BY_NAME(name,addresses,maxAddressSize,addressCount,result) \
+#include <netdb.h>
+#define TARGET_NATIVE_NETWORK_GET_HOSTNAME_BY_NAME(name,addresses,maxAddressSize,addressCount,result) \
     do { \
       struct hostent *__hostEntry; \
       \
@@ -220,10 +220,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <fcntl.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM(socketDescriptor,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <fcntl.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_OPEN_STREAM(socketDescriptor,result) \
     do { \
       socketDescriptor=socket(AF_INET,SOCK_STREAM,0); \
       fcntl(socketDescriptor,F_SETFD,FD_CLOEXEC); \
@@ -244,10 +244,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_OPEN_DATAGRAM
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <fcntl.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_OPEN_DATAGRAM(socketDescriptor,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <fcntl.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_OPEN_DATAGRAM(socketDescriptor,result) \
     do { \
       socketDescriptor=socket(AF_INET,SOCK_DGRAM,0); \
       fcntl(socketDescriptor,F_SETFD,FD_CLOEXEC); \
@@ -267,8 +267,8 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_CLOSE
-  #include <unistd.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_CLOSE(socketDescriptor,result) \
+#include <unistd.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_CLOSE(socketDescriptor,result) \
     do { \
       result=(close(socketDescriptor)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
     } while (0)
@@ -288,10 +288,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_CONNECT
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_CONNECT(socketDescriptor,address,port,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_CONNECT(socketDescriptor,address,port,result) \
     do { \
       struct sockaddr_in __socketAddress; \
       \
@@ -319,10 +319,10 @@ Systems    : all
 
 //??? address in network byte order?
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_BIND
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_BIND(socketDescriptor,address,port,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_BIND(socketDescriptor,address,port,result) \
     do { \
       struct sockaddr_in __socketAddress; \
       \
@@ -349,8 +349,8 @@ Systems    : all
 
 //??? address in network byte order?
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_LISTEN
-  #include <sys/socket.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_LISTEN(socketDescriptor,maxQueueLength,result) \
+#include <sys/socket.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_LISTEN(socketDescriptor,maxQueueLength,result) \
     do { \
       result=(listen(socketDescriptor,maxQueueLength)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
     } while (0)
@@ -369,10 +369,10 @@ Systems    : all
 
 //??? address in network byte order?
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_ACCEPT
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_ACCEPT(socketDescriptor,newSocketDescriptor,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_ACCEPT(socketDescriptor,newSocketDescriptor,result) \
     do { \
       struct sockaddr_in __socketAddress; \
       socklen_t          __socketAddressLength; \
@@ -398,9 +398,9 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_LOCAL_INFO
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_GET_LOCAL_INFO(socketDescriptor,localAddress,localPort,result) \
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_GET_LOCAL_INFO(socketDescriptor,localAddress,localPort,result) \
     do { \
       struct sockaddr_in __socketAddress; \
       socklen_t          __socketAddressLength; \
@@ -433,9 +433,9 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_REMOTE_INFO
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_GET_REMOTE_INFO(socketDescriptor,remoteAddress,remotePort,result) \
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_GET_REMOTE_INFO(socketDescriptor,remoteAddress,remotePort,result) \
     do { \
       struct sockaddr_in __socketAddress; \
       socklen_t          __socketAddressLength; \
@@ -467,8 +467,8 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_AVAILABLE
-  #include <sys/ioctl.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_AVAILABLE(socketDescriptor,bytesAvailable,result) \
+#include <sys/ioctl.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_AVAILABLE(socketDescriptor,bytesAvailable,result) \
     do { \
       int __value; \
       \
@@ -495,10 +495,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_RECEIVE
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_RECEIVE(socketDescriptor,buffer,maxLength,bytesReceived) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_RECEIVE(socketDescriptor,buffer,maxLength,bytesReceived) \
     do { \
       struct sockaddr_in __socketAddress; \
       socklen_t          __socketAddressLength; \
@@ -524,10 +524,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_WITH_ADDRESS_PORT
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_WITH_ADDRESS_PORT(socketDescriptor,buffer,maxLength,address,port,bytesReceived) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_WITH_ADDRESS_PORT(socketDescriptor,buffer,maxLength,address,port,bytesReceived) \
     do { \
       struct sockaddr_in __socketAddress; \
       socklen_t          __socketAddressLength; \
@@ -557,10 +557,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_SEND
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_SEND(socketDescriptor,buffer,length,bytesSent) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_SEND(socketDescriptor,buffer,length,bytesSent) \
     do { \
       bytesSent=send(socketDescriptor,buffer,length,0); \
     } while (0)
@@ -580,10 +580,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_SEND_WITH_ADDRESS_PORT
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_SEND_WITH_ADDRESS_PORT(socketDescriptor,buffer,length,address,port,bytesSent) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_SEND_WITH_ADDRESS_PORT(socketDescriptor,buffer,length,address,port,bytesSent) \
     do { \
       struct sockaddr_in __socketAddress; \
       \
@@ -608,10 +608,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_TCP_NODELAY
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/tcp.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_TCP_NODELAY(socketDescriptor,flag,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/tcp.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_TCP_NODELAY(socketDescriptor,flag,result) \
     do { \
       int __value; \
       \
@@ -634,9 +634,9 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_LINGER
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_LINGER(socketDescriptor,flag,value,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_LINGER(socketDescriptor,flag,value,result) \
     do { \
       struct linger __linger; \
       \
@@ -667,9 +667,9 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_TIMEOUT
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_TIMEOUT(socketDescriptor,flag,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_TIMEOUT(socketDescriptor,flag,result) \
     do { \
       int __value; \
       \
@@ -691,9 +691,9 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_SNDBUF
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_SNDBUF(socketDescriptor,size,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_SNDBUF(socketDescriptor,size,result) \
     do { \
       int __value; \
       \
@@ -715,9 +715,9 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_RCDBUF
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_RCDBUF(socketDescriptor,size,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_SO_RCDBUF(socketDescriptor,size,result) \
     do { \
       int __value; \
       \
@@ -739,10 +739,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_IP_TTL
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_IP_TTL(socketDescriptor,value,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_IP_TTL(socketDescriptor,value,result) \
     do { \
       int __value; \
       \
@@ -764,10 +764,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_IP_MULTICAST_IF
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_IP_MULTICAST_IF(socketDescriptor,address,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_IP_MULTICAST_IF(socketDescriptor,address,result) \
     do { \
       struct sockaddr_in __socketAddress; \
       \
@@ -791,10 +791,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_REUSE_ADDRESS
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_REUSE_ADDRESS(socketDescriptor,flag,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_REUSE_ADDRESS(socketDescriptor,flag,result) \
     do { \
       int __value; \
       \
@@ -816,10 +816,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_ADD_MEMBERSHIP
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_ADD_MEMBERSHIP(socketDescriptor,address,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_ADD_MEMBERSHIP(socketDescriptor,address,result) \
     do { \
       struct ip_mreq __request; \
       \
@@ -843,10 +843,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_DROP_MEMBERSHIP
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_DROP_MEMBERSHIP(socketDescriptor,address,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_DROP_MEMBERSHIP(socketDescriptor,address,result) \
     do { \
       struct ip_mreq __request; \
       \
@@ -870,10 +870,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_KEEP_ALIVE
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_KEEP_ALIVE(socketDescriptor,flag,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_KEEP_ALIVE(socketDescriptor,flag,result) \
     do { \
       int __value; \
       \
@@ -894,11 +894,11 @@ Systems    : all
 * Notes      : -
 \***********************************************************************/
 
-#ifndef TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_BROADCAST 
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/tcp.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_BROADCAST(socketDescriptor,flag,result) \
+#ifndef TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_BROADCAST
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/tcp.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_BROADCAST(socketDescriptor,flag,result) \
     do { \
       int __value; \
       \
@@ -922,10 +922,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_TCP_NODELAY
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/tcp.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_TCP_NODELAY(socketDescriptor,flag,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/tcp.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_TCP_NODELAY(socketDescriptor,flag,result) \
     do { \
       int       __value; \
       socklen_t __len; \
@@ -956,9 +956,9 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_LINGER
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_LINGER(socketDescriptor,flag,value,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_LINGER(socketDescriptor,flag,value,result) \
     do { \
       struct linger __linger; \
       socklen_t     __len; \
@@ -990,9 +990,9 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_TIMEOUT
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_TIMEOUT(socketDescriptor,flag,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_TIMEOUT(socketDescriptor,flag,result) \
     do { \
       int       __value; \
       socklen_t __len; \
@@ -1022,9 +1022,9 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_SNDBUF
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_SNDBUF(socketDescriptor,size,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_SNDBUF(socketDescriptor,size,result) \
     do { \
       int       __value; \
       socklen_t __len; \
@@ -1054,9 +1054,9 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_RCDBUF
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_RCDBUF(socketDescriptor,size,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_RCDBUF(socketDescriptor,size,result) \
     do { \
       int       __value; \
       socklen_t __len; \
@@ -1086,10 +1086,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_IP_TTL
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_IP_TTL(socketDescriptor,flag,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_IP_TTL(socketDescriptor,flag,result) \
     do { \
       int       __value; \
       socklen_t __len; \
@@ -1119,10 +1119,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_IP_MULTICAST_IF
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_IP_MULTICAST_IF(socketDescriptor,address,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_IP_MULTICAST_IF(socketDescriptor,address,result) \
     do { \
       struct sockaddr_in __socketAddress; \
       socklen_t          __socketAddressLength; \
@@ -1155,10 +1155,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BIND_ADDRESS
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BIND_ADDRESS(socketDescriptor,address,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BIND_ADDRESS(socketDescriptor,address,result) \
     do { \
       struct sockaddr_in __socketAddress; \
       socklen_t          __socketAddressLength; \
@@ -1189,10 +1189,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_REUSE_ADDRESS
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_REUSE_ADDRESS(socketDescriptor,flag,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_REUSE_ADDRESS(socketDescriptor,flag,result) \
     do { \
       int       __value; \
       socklen_t __len; \
@@ -1222,10 +1222,10 @@ Systems    : all
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_KEEP_ALIVE
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_KEEP_ALIVE(socketDescriptor,flag,result) \
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_KEEP_ALIVE(socketDescriptor,flag,result) \
     do { \
       int       __value; \
       socklen_t __len; \
@@ -1254,11 +1254,11 @@ Systems    : all
 * Notes      : -
 \***********************************************************************/
 
-#ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BROADCAST 
-  #include <sys/types.h>
-  #include <sys/socket.h>
-  #include <netinet/tcp.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BROADCAST(socketDescriptor,flag,result) \
+#ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BROADCAST
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/tcp.h>
+#define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BROADCAST(socketDescriptor,flag,result) \
     do { \
       int __value; \
       socklen_t __len; \
@@ -1278,14 +1278,14 @@ Systems    : all
 /***************************** Functions *******************************/
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __TARGET_GENERIC_NETWORK__ */
+#endif				/* __TARGET_GENERIC_NETWORK__ */
 
 /* end of file */
-

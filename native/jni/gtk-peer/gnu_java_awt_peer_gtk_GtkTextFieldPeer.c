@@ -39,11 +39,10 @@ exception statement from your version. */
 #include "gtkpeer.h"
 #include "gnu_java_awt_peer_gtk_GtkTextFieldPeer.h"
 
-static jint
-get_border_width (GtkWidget *entry);
+static jint get_border_width (GtkWidget * entry);
 
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_create
+JNIEXPORT void JNICALL
+  Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_create
   (JNIEnv *env, jobject obj, jint text_width)
 {
   GtkWidget *entry;
@@ -63,7 +62,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_create
 }
 
 JNIEXPORT jint JNICALL
-Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryGetBorderWidth
+  Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryGetBorderWidth
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
@@ -85,7 +84,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryGetBorderWidth
 #define INNER_BORDER 2
 
 static jint
-get_border_width (GtkWidget *entry)
+get_border_width (GtkWidget * entry)
 {
   gint focus_width;
   gboolean interior_focus;
@@ -93,8 +92,7 @@ get_border_width (GtkWidget *entry)
 
   gtk_widget_style_get (entry,
 			"interior-focus", &interior_focus,
-			"focus-line-width", &focus_width,
-			NULL);
+			"focus-line-width", &focus_width, NULL);
 
   if (GTK_ENTRY (entry)->has_frame)
     x_border_width += entry->style->xthickness;
@@ -107,8 +105,8 @@ get_border_width (GtkWidget *entry)
 
 #undef INNER_BORDER
 
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_setEchoChar
+JNIEXPORT void JNICALL
+  Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_setEchoChar
   (JNIEnv *env, jobject obj, jchar c)
 {
   void *ptr;
@@ -123,8 +121,8 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_setEchoChar
   if (c != 0)
     {
       /* FIXME: use gtk_entry_set_invisible_char (GtkEntry *entry,
-	 gunichar ch) here.  That means we must convert from jchar
-	 (utf16) to gunichar (ucs4). */
+         gunichar ch) here.  That means we must convert from jchar
+         (utf16) to gunichar (ucs4). */
       gtk_entry_set_visibility (entry, FALSE);
     }
   else
@@ -134,7 +132,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_setEchoChar
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkSetFont
+  Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkSetFont
   (JNIEnv *env, jobject obj, jstring name, jint style, jint size)
 {
   const char *font_name;
@@ -147,7 +145,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkSetFont
   entry = GTK_WIDGET (ptr);
   font_name = (*env)->GetStringUTFChars (env, name, NULL);
 
-  gdk_threads_enter();
+  gdk_threads_enter ();
 
   font_desc = pango_font_description_from_string (font_name);
   pango_font_description_set_size (font_desc, size * PANGO_SCALE);
@@ -158,11 +156,11 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkSetFont
   if (style & AWT_STYLE_ITALIC)
     pango_font_description_set_style (font_desc, PANGO_STYLE_OBLIQUE);
 
-  gtk_widget_modify_font (GTK_WIDGET(entry), font_desc);
+  gtk_widget_modify_font (GTK_WIDGET (entry), font_desc);
 
   pango_font_description_free (font_desc);
 
-  gdk_threads_leave();
+  gdk_threads_leave ();
 
   (*env)->ReleaseStringUTFChars (env, name, font_name);
 }

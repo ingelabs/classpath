@@ -50,19 +50,19 @@ gint selection_clear (GtkWidget *, GdkEventSelection *);
 GtkWidget *clipboard;
 jobject cb_obj;
 
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkClipboard_initNativeState (JNIEnv *env, 
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkClipboard_initNativeState (JNIEnv *env,
 							 jobject obj)
 {
   if (!stringSelectionReceivedID)
     {
       jclass gtkclipboard;
 
-      gtkclipboard = (*env)->FindClass (env, 
+      gtkclipboard = (*env)->FindClass (env,
 					"gnu/java/awt/peer/gtk/GtkClipboard");
       stringSelectionReceivedID = (*env)->GetMethodID (env, gtkclipboard,
-						    "stringSelectionReceived",
-						    "(Ljava/lang/String;)V");
+						       "stringSelectionReceived",
+						       "(Ljava/lang/String;)V");
       stringSelectionHandlerID = (*env)->GetMethodID (env, gtkclipboard,
 						      "stringSelectionHandler",
 						      "()Ljava/lang/String;");
@@ -75,36 +75,38 @@ Java_gnu_java_awt_peer_gtk_GtkClipboard_initNativeState (JNIEnv *env,
   gdk_threads_enter ();
   clipboard = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 
-  g_signal_connect (G_OBJECT(clipboard), "selection_received",
-		      GTK_SIGNAL_FUNC (selection_received), NULL);
+  g_signal_connect (G_OBJECT (clipboard), "selection_received",
+		    GTK_SIGNAL_FUNC (selection_received), NULL);
 
-  g_signal_connect (G_OBJECT(clipboard), "selection_clear_event",
-		      GTK_SIGNAL_FUNC (selection_clear), NULL);
+  g_signal_connect (G_OBJECT (clipboard), "selection_clear_event",
+		    GTK_SIGNAL_FUNC (selection_clear), NULL);
 
-  gtk_selection_add_target (clipboard, GDK_SELECTION_PRIMARY, 
+  gtk_selection_add_target (clipboard, GDK_SELECTION_PRIMARY,
 			    GDK_TARGET_STRING, 0);
 
-  g_signal_connect (G_OBJECT(clipboard), "selection_get",
-                      GTK_SIGNAL_FUNC (selection_get), NULL);
+  g_signal_connect (G_OBJECT (clipboard), "selection_get",
+		    GTK_SIGNAL_FUNC (selection_get), NULL);
 
   gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkClipboard_requestStringConversion
-  (JNIEnv *env __attribute__((unused)), jclass clazz __attribute__((unused)))
+  Java_gnu_java_awt_peer_gtk_GtkClipboard_requestStringConversion
+  (JNIEnv *env __attribute__ ((unused)), jclass clazz
+   __attribute__ ((unused)))
 {
   gdk_threads_enter ();
-  gtk_selection_convert (clipboard, GDK_SELECTION_PRIMARY, 
+  gtk_selection_convert (clipboard, GDK_SELECTION_PRIMARY,
 			 GDK_TARGET_STRING, GDK_CURRENT_TIME);
   gdk_threads_leave ();
 }
 
 void
-selection_received (GtkWidget *widget __attribute__((unused)),
-		    GtkSelectionData *selection_data __attribute__((unused)),
-		    guint time __attribute__((unused)),
-		    gpointer data __attribute__((unused)))
+selection_received (GtkWidget * widget __attribute__ ((unused)),
+		    GtkSelectionData * selection_data
+		    __attribute__ ((unused)), guint time
+		    __attribute__ ((unused)), gpointer data
+		    __attribute__ ((unused)))
 {
   /* Check to see if retrieval succeeded  */
   if (selection_data->length < 0
@@ -116,7 +118,7 @@ selection_received (GtkWidget *widget __attribute__((unused)),
   else
     {
       char *str = (char *) selection_data->data;
-      
+
       (*gdk_env)->CallVoidMethod (gdk_env, cb_obj, stringSelectionReceivedID,
 				  (*gdk_env)->NewStringUTF (gdk_env, str));
     }
@@ -125,38 +127,37 @@ selection_received (GtkWidget *widget __attribute__((unused)),
 }
 
 void
-selection_get (GtkWidget *widget __attribute__((unused)), 
-               GtkSelectionData *selection_data,
-               guint      info __attribute__((unused)),
-               guint      time __attribute__((unused)),
-               gpointer   data __attribute__((unused)))
+selection_get (GtkWidget * widget __attribute__ ((unused)),
+	       GtkSelectionData * selection_data,
+	       guint info __attribute__ ((unused)),
+	       guint time __attribute__ ((unused)),
+	       gpointer data __attribute__ ((unused)))
 {
   jstring jstr;
   const char *utf;
   jsize utflen;
 
-  jstr = (*gdk_env)->CallObjectMethod (gdk_env, cb_obj, 
+  jstr = (*gdk_env)->CallObjectMethod (gdk_env, cb_obj,
 				       stringSelectionHandlerID);
 
   if (!jstr)
     {
-      gtk_selection_data_set (selection_data, 
-			      GDK_TARGET_STRING, 8, NULL, 0);
+      gtk_selection_data_set (selection_data, GDK_TARGET_STRING, 8, NULL, 0);
       return;
     }
 
   utflen = (*gdk_env)->GetStringUTFLength (gdk_env, jstr);
   utf = (*gdk_env)->GetStringUTFChars (gdk_env, jstr, NULL);
 
-  gtk_selection_data_set (selection_data, GDK_TARGET_STRING, 8, 
-			  (char *)utf, utflen);
+  gtk_selection_data_set (selection_data, GDK_TARGET_STRING, 8,
+			  (char *) utf, utflen);
 
   (*gdk_env)->ReleaseStringUTFChars (gdk_env, jstr, utf);
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkClipboard_selectionGet
-  (JNIEnv *env, jclass clazz __attribute__((unused)))
+  Java_gnu_java_awt_peer_gtk_GtkClipboard_selectionGet
+  (JNIEnv *env, jclass clazz __attribute__ ((unused)))
 {
   GdkWindow *owner;
 
@@ -167,15 +168,16 @@ Java_gnu_java_awt_peer_gtk_GtkClipboard_selectionGet
   owner = gdk_selection_owner_get (GDK_SELECTION_PRIMARY);
   if (owner && owner == clipboard->window)
     (*env)->CallVoidMethod (env, cb_obj, selectionClearID);
-    
-  gtk_selection_owner_set (clipboard, GDK_SELECTION_PRIMARY, GDK_CURRENT_TIME);
+
+  gtk_selection_owner_set (clipboard, GDK_SELECTION_PRIMARY,
+			   GDK_CURRENT_TIME);
 
   gdk_threads_leave ();
 }
 
 gint
-selection_clear (GtkWidget *widget __attribute__((unused)),
-		 GdkEventSelection *event __attribute__((unused)))
+selection_clear (GtkWidget * widget __attribute__ ((unused)),
+		 GdkEventSelection * event __attribute__ ((unused)))
 {
   (*gdk_env)->CallVoidMethod (gdk_env, cb_obj, selectionClearID);
 

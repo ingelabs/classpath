@@ -46,13 +46,19 @@ exception statement from your version. */
 #define AWT_EXCEPTION "java/awt/AWTException"
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer_create__J (JNIEnv *env, jobject obj, jlong socket_id)
+Java_gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer_create__J (JNIEnv *env,
+							    jobject obj,
+							    jlong socket_id)
 {
-  JCL_ThrowException (env, AWT_EXCEPTION, "gnu.java.awt.peer.gtk.GtkEmbbeddedWindowPeer.create(): not implemented");
+  JCL_ThrowException (env, AWT_EXCEPTION,
+		      "gnu.java.awt.peer.gtk.GtkEmbbeddedWindowPeer.create(): not implemented");
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer_construct (JNIEnv *env, jobject obj, jlong socket_id)
+Java_gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer_construct (JNIEnv *env,
+							    jobject obj,
+							    jlong socket_id)
 {
-  JCL_ThrowException (env, AWT_EXCEPTION, "gnu.java.awt.peer.gtk.GtkEmbbeddedWindowPeer.construct(): not implemented");
+  JCL_ThrowException (env, AWT_EXCEPTION,
+		      "gnu.java.awt.peer.gtk.GtkEmbbeddedWindowPeer.construct(): not implemented");
 }

@@ -56,38 +56,37 @@ static jdouble POSITIVE_INFINITY;
  * Method:    initIDs
  * Signature: ()V
  */
-JNIEXPORT void JNICALL Java_java_lang_Double_initIDs
-  (JNIEnv *env, jclass cls)
+JNIEXPORT void JNICALL
+Java_java_lang_Double_initIDs (JNIEnv *env, jclass cls)
 {
   jfieldID negInfID;
   jfieldID posInfID;
 
-  isNaNID = (*env)->GetStaticMethodID(env, cls, "isNaN", "(D)Z");
+  isNaNID = (*env)->GetStaticMethodID (env, cls, "isNaN", "(D)Z");
   if (isNaNID == NULL)
     {
-      DBG("unable to determine method id of isNaN\n")
-      return;
+      DBG ("unable to determine method id of isNaN\n") return;
     }
-  negInfID = (*env)->GetStaticFieldID(env, cls, "NEGATIVE_INFINITY", "D");
+  negInfID = (*env)->GetStaticFieldID (env, cls, "NEGATIVE_INFINITY", "D");
   if (negInfID == NULL)
     {
-      DBG("unable to determine field id of NEGATIVE_INFINITY\n")
-      return;
+      DBG ("unable to determine field id of NEGATIVE_INFINITY\n") return;
     }
-  posInfID = (*env)->GetStaticFieldID(env, cls, "POSITIVE_INFINITY", "D");
+  posInfID = (*env)->GetStaticFieldID (env, cls, "POSITIVE_INFINITY", "D");
   if (posInfID == NULL)
     {
-      DBG("unable to determine field id of POSITIVE_INFINITY\n")
-      return;
+      DBG ("unable to determine field id of POSITIVE_INFINITY\n") return;
     }
-  POSITIVE_INFINITY = (*env)->GetStaticDoubleField(env, cls, posInfID);
-  NEGATIVE_INFINITY = (*env)->GetStaticDoubleField(env, cls, negInfID);
+  POSITIVE_INFINITY = (*env)->GetStaticDoubleField (env, cls, posInfID);
+  NEGATIVE_INFINITY = (*env)->GetStaticDoubleField (env, cls, negInfID);
 
 #ifdef DEBUG
-  fprintf(stderr, "java.lang.Double.initIDs() POSITIVE_INFINITY = %g\n", POSITIVE_INFINITY);
-  fprintf(stderr, "java.lang.Double.initIDs() NEGATIVE_INFINITY = %g\n", NEGATIVE_INFINITY);
+  fprintf (stderr, "java.lang.Double.initIDs() POSITIVE_INFINITY = %g\n",
+	   POSITIVE_INFINITY);
+  fprintf (stderr, "java.lang.Double.initIDs() NEGATIVE_INFINITY = %g\n",
+	   NEGATIVE_INFINITY);
 #endif
-} 
+}
 
 /*
  * Class:     java_lang_Double
@@ -95,7 +94,7 @@ JNIEXPORT void JNICALL Java_java_lang_Double_initIDs
  * Signature: (DZ)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
-  (JNIEnv * env, jclass cls, jdouble value, jboolean isFloat)
+  (JNIEnv *env, jclass cls, jdouble value, jboolean isFloat)
 {
   char buffer[50], result[50];
   int decpt, sign;
@@ -106,16 +105,16 @@ JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
   fprintf (stderr, "java.lang.Double.toString (%g)\n", value);
 #endif
 
-  if ((*env)->CallStaticBooleanMethod(env, cls, isNaNID, value))
-    return (*env)->NewStringUTF(env, "NaN");
-  
+  if ((*env)->CallStaticBooleanMethod (env, cls, isNaNID, value))
+    return (*env)->NewStringUTF (env, "NaN");
+
   if (value == POSITIVE_INFINITY)
-    return (*env)->NewStringUTF(env, "Infinity");
+    return (*env)->NewStringUTF (env, "Infinity");
 
   if (value == NEGATIVE_INFINITY)
-    return (*env)->NewStringUTF(env, "-Infinity");
+    return (*env)->NewStringUTF (env, "-Infinity");
 
-  _dtoa (value, 0, 20, &decpt, &sign, NULL, buffer, (int)isFloat);
+  _dtoa (value, 0, 20, &decpt, &sign, NULL, buffer, (int) isFloat);
 
   value = fabs (value);
 
@@ -145,22 +144,22 @@ JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
 	  *d++ = '0';
 	  decpt++;
 	}
-	  
+
       while (decpt++ < 0)
-	*d++ = '0';      
-      
+	*d++ = '0';
+
       while (*s)
 	*d++ = *s++;
 
       *d = 0;
 
-      return (*env)->NewStringUTF(env, result);
+      return (*env)->NewStringUTF (env, result);
     }
 
   *d++ = *s++;
   decpt--;
   *d++ = '.';
-  
+
   if (*s == 0)
     *d++ = '0';
 
@@ -168,7 +167,7 @@ JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
     *d++ = *s++;
 
   *d++ = 'E';
-  
+
   if (decpt < 0)
     {
       *d++ = '-';
@@ -178,7 +177,7 @@ JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
   {
     char exp[4];
     char *e = exp + sizeof exp;
-    
+
     *--e = 0;
     do
       {
@@ -190,10 +189,10 @@ JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
     while (*e)
       *d++ = *e++;
   }
-  
+
   *d = 0;
 
-  return (*env)->NewStringUTF(env, result);
+  return (*env)->NewStringUTF (env, result);
 }
 
 /*
@@ -202,7 +201,7 @@ JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
  * Signature: (Ljava/lang/String;)D
  */
 JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
-  (JNIEnv * env, jclass cls, jstring str)
+  (JNIEnv *env, jclass cls, jstring str)
 {
   jboolean isCopy;
   char *buf, *endptr;
@@ -214,7 +213,7 @@ JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
       return val;
     }
 
-  buf = (char *) (*env)->GetStringUTFChars(env, str, &isCopy);
+  buf = (char *) (*env)->GetStringUTFChars (env, str, &isCopy);
   if (buf == NULL)
     {
       /* OutOfMemoryError already thrown */
@@ -223,29 +222,29 @@ JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
     {
       unsigned char *p = buf, *end, *last_non_ws;
       int ok = 1;
- 
+
 #ifdef DEBUG
       fprintf (stderr, "java.lang.Double.parseDouble (%s)\n", buf);
 #endif
 
       /* Trim the buffer, similar to String.trim().  First the leading
-	 characters.  */
+         characters.  */
       while (*p && *p <= ' ')
- 	++p;
+	++p;
 
       /* Find the last non-whitespace character.  This method is safe
- 	 even with multi-byte UTF-8 characters.  */
+         even with multi-byte UTF-8 characters.  */
       end = p;
       last_non_ws = NULL;
       while (*end)
- 	{
- 	  if (*end > ' ')
- 	    last_non_ws = end;
- 	  ++end;
- 	}
+	{
+	  if (*end > ' ')
+	    last_non_ws = end;
+	  ++end;
+	}
 
       if (last_non_ws == NULL)
- 	last_non_ws = p + strlen (p);
+	last_non_ws = p + strlen (p);
       else
 	{
 	  /* Skip past the last non-whitespace character.  */
@@ -256,19 +255,18 @@ JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
       if (last_non_ws > p
 	  && (last_non_ws[-1] == 'f'
 	      || last_non_ws[-1] == 'F'
-	      || last_non_ws[-1] == 'd'
-	      || last_non_ws[-1] == 'D'))
+	      || last_non_ws[-1] == 'd' || last_non_ws[-1] == 'D'))
 	--last_non_ws;
 
       if (last_non_ws > p)
- 	{
- 	  struct _Jv_reent reent;  
- 	  memset (&reent, 0, sizeof reent);
+	{
+	  struct _Jv_reent reent;
+	  memset (&reent, 0, sizeof reent);
 
 #ifdef KISSME_LINUX_USER
- 	  val = strtod (p, &endptr);
+	  val = strtod (p, &endptr);
 #else
- 	  val = _strtod_r (&reent, p, &endptr);
+	  val = _strtod_r (&reent, p, &endptr);
 #endif
 
 #ifdef DEBUG
@@ -276,19 +274,19 @@ JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
 	  fprintf (stderr, "java.lang.Double.parseDouble %i != %i ???\n",
 		   endptr, last_non_ws);
 #endif
- 	  if ((unsigned char *) endptr != last_non_ws)
- 	    ok = 0;
- 	}
+	  if ((unsigned char *) endptr != last_non_ws)
+	    ok = 0;
+	}
       else
- 	ok = 0;
+	ok = 0;
 
-      if (! ok)
- 	{
- 	  val = 0.0;
- 	  JCL_ThrowException (env,
- 			      "java/lang/NumberFormatException",
- 			      "unable to parse double");
- 	}
+      if (!ok)
+	{
+	  val = 0.0;
+	  JCL_ThrowException (env,
+			      "java/lang/NumberFormatException",
+			      "unable to parse double");
+	}
 
       (*env)->ReleaseStringUTFChars (env, str, buf);
     }

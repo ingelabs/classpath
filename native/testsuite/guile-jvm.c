@@ -35,9 +35,8 @@ abort_test (SCM name, char *exception)
 {
   (*env)->ExceptionClear (env);
   return gh_list (name,
-		  gh_symbol2scm ("ERROR"), 
-		  gh_str02scm (exception),
-		  SCM_UNDEFINED);
+		  gh_symbol2scm ("ERROR"),
+		  gh_str02scm (exception), SCM_UNDEFINED);
 }
 
 SCM
@@ -56,10 +55,10 @@ handle_test_exception (jobject test_name_obj)
   (*env)->ExceptionClear (env);
 
   if (obj_toString_mid == NULL)
-    obj_toString_mid = (*env)->GetMethodID (env, 
-					    (*env)->FindClass (env, 
-							  "java/lang/Object"), 
-					    "toString", 
+    obj_toString_mid = (*env)->GetMethodID (env,
+					    (*env)->FindClass (env,
+							       "java/lang/Object"),
+					    "toString",
 					    "()Ljava/lang/String;");
 
   err_msg_obj = (*env)->CallObjectMethod (env, throwable, obj_toString_mid);
@@ -78,7 +77,7 @@ handle_test_exception (jobject test_name_obj)
   free (test_name);
 
   return result;
-}   
+}
 
 SCM
 perform_test (SCM clazz_scm_name)
@@ -117,9 +116,9 @@ perform_test (SCM clazz_scm_name)
 
   /* Handle an exception if one occurred */
   if ((*env)->ExceptionOccurred (env))
-      return handle_test_exception (test_name_obj);
+    return handle_test_exception (test_name_obj);
 
-  result_name_obj = (*env)->CallObjectMethod (env, result_obj, 
+  result_name_obj = (*env)->CallObjectMethod (env, result_obj,
 					      result_name_mid);
   msg_obj = (*env)->CallObjectMethod (env, result_obj, result_msg_mid);
 
@@ -147,9 +146,7 @@ perform_test (SCM clazz_scm_name)
   free (msg);
 
   return gh_list (scm_test_name,
-		  scm_result_name,
-		  scm_result_msg,
-		  SCM_UNDEFINED);
+		  scm_result_name, scm_result_msg, SCM_UNDEFINED);
 }
 
 int
@@ -180,9 +177,9 @@ init_testing_framework ()
     }
   result_class = (*env)->NewGlobalRef (env, result_class);
 
-  test_mid = (*env)->GetMethodID (env, test_class, "test", 
+  test_mid = (*env)->GetMethodID (env, test_class, "test",
 				  "()Lgnu/test/Result;");
-  test_name_mid = (*env)->GetMethodID (env, test_class, "getName", 
+  test_name_mid = (*env)->GetMethodID (env, test_class, "getName",
 				       "()Ljava/lang/String;");
   if (test_mid == NULL || test_name_mid == NULL)
     {
@@ -190,9 +187,9 @@ init_testing_framework ()
       return -1;
     }
 
-  result_name_mid = (*env)->GetMethodID (env, result_class, "getName", 
+  result_name_mid = (*env)->GetMethodID (env, result_class, "getName",
 					 "()Ljava/lang/String;");
-  result_msg_mid = (*env)->GetMethodID (env, result_class, "getMsg", 
+  result_msg_mid = (*env)->GetMethodID (env, result_class, "getMsg",
 					"()Ljava/lang/String;");
   if (result_name_mid == NULL || result_msg_mid == NULL)
     {

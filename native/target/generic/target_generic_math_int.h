@@ -46,7 +46,7 @@ Systems    : all
 
 /* check if target_native_math_int.h included */
 #ifndef __TARGET_NATIVE_MATH_INT__
-  #error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
+#error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
 #endif
 
 /****************************** Includes *******************************/
@@ -60,13 +60,13 @@ Systems    : all
 
 /***************************** Constants *******************************/
 #ifndef TARGET_NATIVE_MATH_INT_INT64_CONST_0
-  #define TARGET_NATIVE_MATH_INT_INT64_CONST_0 0LL
+#define TARGET_NATIVE_MATH_INT_INT64_CONST_0 0LL
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_CONST_1
-  #define TARGET_NATIVE_MATH_INT_INT64_CONST_1 1LL
+#define TARGET_NATIVE_MATH_INT_INT64_CONST_1 1LL
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1
-  #define TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1 -1LL
+#define TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1 -1LL
 #endif
 
 /***************************** Datatypes *******************************/
@@ -77,167 +77,167 @@ Systems    : all
 
 /* math operations */
 #ifndef TARGET_NATIVE_MATH_INT_INT64_ADD
-  #define TARGET_NATIVE_MATH_INT_INT64_ADD(v1,v2) ((v1)+(v2))
+#define TARGET_NATIVE_MATH_INT_INT64_ADD(v1,v2) ((v1)+(v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_SUB
-  #define TARGET_NATIVE_MATH_INT_INT64_SUB(v1,v2) ((v1)-(v2))
+#define TARGET_NATIVE_MATH_INT_INT64_SUB(v1,v2) ((v1)-(v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_MUL
-  #define TARGET_NATIVE_MATH_INT_INT64_MUL(v1,v2) ((v1)*(v2))
+#define TARGET_NATIVE_MATH_INT_INT64_MUL(v1,v2) ((v1)*(v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_DIV
-  #define TARGET_NATIVE_MATH_INT_INT64_DIV(v1,v2) ((v1)/(v2))
+#define TARGET_NATIVE_MATH_INT_INT64_DIV(v1,v2) ((v1)/(v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_MOD
-  #define TARGET_NATIVE_MATH_INT_INT64_MOD(v1,v2) ((v1)%(v2))
+#define TARGET_NATIVE_MATH_INT_INT64_MOD(v1,v2) ((v1)%(v2))
 #endif
 
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_ADD
-  #define TARGET_NATIVE_MATH_INT_UINT64_ADD(v1,v2) ((v1)+(v2))
+#define TARGET_NATIVE_MATH_INT_UINT64_ADD(v1,v2) ((v1)+(v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_SUB
-  #define TARGET_NATIVE_MATH_INT_UINT64_SUB(v1,v2) ((v1)-(v2))
+#define TARGET_NATIVE_MATH_INT_UINT64_SUB(v1,v2) ((v1)-(v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_MUL
-  #define TARGET_NATIVE_MATH_INT_UINT64_MUL(v1,v2) ((v1)*(v2))
+#define TARGET_NATIVE_MATH_INT_UINT64_MUL(v1,v2) ((v1)*(v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_DIV
-  #define TARGET_NATIVE_MATH_INT_UINT64_DIV(v1,v2) ((v1)/(v2))
+#define TARGET_NATIVE_MATH_INT_UINT64_DIV(v1,v2) ((v1)/(v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_MOD
-  #define TARGET_NATIVE_MATH_INT_UINT64_MOD(v1,v2) ((v1)%(v2))
+#define TARGET_NATIVE_MATH_INT_UINT64_MOD(v1,v2) ((v1)%(v2))
 #endif
 
 /* bit operations */
 #ifndef TARGET_NATIVE_MATH_INT_INT64_AND
-  #define TARGET_NATIVE_MATH_INT_INT64_AND(v1,v2) ((v1)&(v2))
+#define TARGET_NATIVE_MATH_INT_INT64_AND(v1,v2) ((v1)&(v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_OR
-  #define TARGET_NATIVE_MATH_INT_INT64_OR(v1,v2)  ((v1)|(v2))
+#define TARGET_NATIVE_MATH_INT_INT64_OR(v1,v2)  ((v1)|(v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_XOR
-  #define TARGET_NATIVE_MATH_INT_INT64_XOR(v1,v2) ((v1)^(v2))
+#define TARGET_NATIVE_MATH_INT_INT64_XOR(v1,v2) ((v1)^(v2))
 #endif
 
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_AND
-  #define TARGET_NATIVE_MATH_INT_UINT64_AND(v1,v2) ((v1)&(v2))
+#define TARGET_NATIVE_MATH_INT_UINT64_AND(v1,v2) ((v1)&(v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_OR
-  #define TARGET_NATIVE_MATH_INT_UINT64_OR(v1,v2)  ((v1)|(v2))
+#define TARGET_NATIVE_MATH_INT_UINT64_OR(v1,v2)  ((v1)|(v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_XOR
-  #define TARGET_NATIVE_MATH_INT_UINT64_XOR(v1,v2) ((v1)^(v2))
+#define TARGET_NATIVE_MATH_INT_UINT64_XOR(v1,v2) ((v1)^(v2))
 #endif
 
 /* shift operations */
 #ifndef TARGET_NATIVE_MATH_INT_INT64_SHIFTL
-  #define TARGET_NATIVE_MATH_INT_INT64_SHIFTL(v,l)  ((v)<<(l))
+#define TARGET_NATIVE_MATH_INT_INT64_SHIFTL(v,l)  ((v)<<(l))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_SHIFTR
-  #define TARGET_NATIVE_MATH_INT_INT64_SHIFTR(v,l)  (((v)>>(l)) |  (((v)>=0) ? 0 : (0xffffFFFFffffFFFFLL << (64-(l)))))
+#define TARGET_NATIVE_MATH_INT_INT64_SHIFTR(v,l)  (((v)>>(l)) |  (((v)>=0) ? 0 : (0xffffFFFFffffFFFFLL << (64-(l)))))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_SHIFTR
-  #define TARGET_NATIVE_MATH_INT_UINT64_SHIFTR(v,l) (((v)>>(l)) & ~(((v)>=0) ? 0 : (0xffffFFFFffffFFFFLL << (64-(l)))))
+#define TARGET_NATIVE_MATH_INT_UINT64_SHIFTR(v,l) (((v)>>(l)) & ~(((v)>=0) ? 0 : (0xffffFFFFffffFFFFLL << (64-(l)))))
 #endif
 
 /* negation */
 #ifndef TARGET_NATIVE_MATH_INT_INT64_NEG
-  #define TARGET_NATIVE_MATH_INT_INT64_NEG(v) (-(v))
+#define TARGET_NATIVE_MATH_INT_INT64_NEG(v) (-(v))
 #endif
 
 /* increment/decrement routines */
 #ifndef TARGET_NATIVE_MATH_INT_INT64_INC
-  #define TARGET_NATIVE_MATH_INT_INT64_INC(v) { v++; } 
+#define TARGET_NATIVE_MATH_INT_INT64_INC(v) { v++; }
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_DEC
-  #define TARGET_NATIVE_MATH_INT_INT64_DEC(v) { v--; }
+#define TARGET_NATIVE_MATH_INT_INT64_DEC(v) { v--; }
 #endif
 
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_INC
-  #define TARGET_NATIVE_MATH_INT_UINT64_INC(v) { v++; }
+#define TARGET_NATIVE_MATH_INT_UINT64_INC(v) { v++; }
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_DEC
-  #define TARGET_NATIVE_MATH_INT_UINT64_DEC(v) { v--; } 
+#define TARGET_NATIVE_MATH_INT_UINT64_DEC(v) { v--; }
 #endif
 
 /* comparison routines */
 #ifndef TARGET_NATIVE_MATH_INT_INT64_EQ
-  #define TARGET_NATIVE_MATH_INT_INT64_EQ(v1,v2) ((v1) == (v2))
+#define TARGET_NATIVE_MATH_INT_INT64_EQ(v1,v2) ((v1) == (v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_NE
-  #define TARGET_NATIVE_MATH_INT_INT64_NE(v1,v2) ((v1) != (v2))
+#define TARGET_NATIVE_MATH_INT_INT64_NE(v1,v2) ((v1) != (v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_LT
-  #define TARGET_NATIVE_MATH_INT_INT64_LT(v1,v2) ((v1) <  (v2))
+#define TARGET_NATIVE_MATH_INT_INT64_LT(v1,v2) ((v1) <  (v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_LE
-  #define TARGET_NATIVE_MATH_INT_INT64_LE(v1,v2) ((v1) <= (v2))
+#define TARGET_NATIVE_MATH_INT_INT64_LE(v1,v2) ((v1) <= (v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_GT
-  #define TARGET_NATIVE_MATH_INT_INT64_GT(v1,v2) ((v1) >  (v2))
+#define TARGET_NATIVE_MATH_INT_INT64_GT(v1,v2) ((v1) >  (v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_GE
-  #define TARGET_NATIVE_MATH_INT_INT64_GE(v1,v2) ((v1) >= (v2))
+#define TARGET_NATIVE_MATH_INT_INT64_GE(v1,v2) ((v1) >= (v2))
 #endif
 
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_EQ
-  #define TARGET_NATIVE_MATH_INT_UINT64_EQ(v1,v2) ((v1) == (v2))
+#define TARGET_NATIVE_MATH_INT_UINT64_EQ(v1,v2) ((v1) == (v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_NE
-  #define TARGET_NATIVE_MATH_INT_UINT64_NE(v1,v2) ((v1) != (v2))
+#define TARGET_NATIVE_MATH_INT_UINT64_NE(v1,v2) ((v1) != (v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_LT
-  #define TARGET_NATIVE_MATH_INT_UINT64_LT(v1,v2) ((v1) <  (v2))
+#define TARGET_NATIVE_MATH_INT_UINT64_LT(v1,v2) ((v1) <  (v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_LE
-  #define TARGET_NATIVE_MATH_INT_UINT64_LE(v1,v2) ((v1) <= (v2))
+#define TARGET_NATIVE_MATH_INT_UINT64_LE(v1,v2) ((v1) <= (v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_GT
-  #define TARGET_NATIVE_MATH_INT_UINT64_GT(v1,v2) ((v1) >  (v2))
+#define TARGET_NATIVE_MATH_INT_UINT64_GT(v1,v2) ((v1) >  (v2))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_GE
-  #define TARGET_NATIVE_MATH_INT_UINT64_GE(v1,v2) ((v1) >= (v2))
+#define TARGET_NATIVE_MATH_INT_UINT64_GE(v1,v2) ((v1) >= (v2))
 #endif
 
 /* type conversion routines */
 #ifndef TARGET_NATIVE_MATH_INT_INT32_TO_INT64
-  #define TARGET_NATIVE_MATH_INT_INT32_TO_INT64(v)   ((jlong)(v))
+#define TARGET_NATIVE_MATH_INT_INT32_TO_INT64(v)   ((jlong)(v))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT32_TO_UINT64
-  #define TARGET_NATIVE_MATH_INT_UINT32_TO_UINT64(v) ((jlong)(v))
+#define TARGET_NATIVE_MATH_INT_UINT32_TO_UINT64(v) ((jlong)(v))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_TO_INT32
-  #define TARGET_NATIVE_MATH_INT_INT64_TO_INT32(v)   ((jint )(v))
+#define TARGET_NATIVE_MATH_INT_INT64_TO_INT32(v)   ((jint )(v))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_TO_UINT32
-  #define TARGET_NATIVE_MATH_INT_UINT64_TO_UINT32(v) ((jint)(v))
+#define TARGET_NATIVE_MATH_INT_UINT64_TO_UINT32(v) ((jint)(v))
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_TO_DOUBLE
-  #define TARGET_NATIVE_MATH_INT_INT64_TO_DOUBLE(v)  ((jdouble)(v))
+#define TARGET_NATIVE_MATH_INT_INT64_TO_DOUBLE(v)  ((jdouble)(v))
 #endif
 
 /* combine/split int32 low/high values <-> int64 values */
 #ifndef TARGET_NATIVE_MATH_INT_INT32_LOW_HIGH_TO_INT64
-  #define TARGET_NATIVE_MATH_INT_INT32_LOW_HIGH_TO_INT64(low,high,v) \
+#define TARGET_NATIVE_MATH_INT_INT32_LOW_HIGH_TO_INT64(low,high,v) \
     do { \
       (v)=((((jlong)(high)) << 32) | ((((jlong)(low)) <<  0) & 0x00000000ffffFFFFLL)); \
     } while (0)
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT32_LOW_HIGH_TO_UINT64
-  #define TARGET_NATIVE_MATH_INT_UINT32_LOW_HIGH_TO_UINT64(low,high,v) \
+#define TARGET_NATIVE_MATH_INT_UINT32_LOW_HIGH_TO_UINT64(low,high,v) \
     do { \
       (v)=((((jlong)(high)) << 32) | ((((jlong)(low)) <<  0) & 0x00000000ffffFFFFLL)); \
     } while (0)
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_INT64_TO_INT32_LOW_HIGH
-  #define TARGET_NATIVE_MATH_INT_INT64_TO_INT32_LOW_HIGH(v,low,high) \
+#define TARGET_NATIVE_MATH_INT_INT64_TO_INT32_LOW_HIGH(v,low,high) \
     do { \
       (high)=((v) & 0xFFFFffff00000000L) >> 32; \
       (low) =((v) & 0x00000000FFFFffffL) >>  0; \
     } while (0)
 #endif
 #ifndef TARGET_NATIVE_MATH_INT_UINT64_TO_UINT32_LOW_HIGH
-  #define TARGET_NATIVE_MATH_INT_UINT64_TO_UINT32_LOW_HIGH(v,low,high) \
+#define TARGET_NATIVE_MATH_INT_UINT64_TO_UINT32_LOW_HIGH(v,low,high) \
     do { \
       (high)=((v) & 0xFFFFffff00000000L) >> 32; \
       (low) =((v) & 0x00000000FFFFffffL) >>  0; \
@@ -248,13 +248,13 @@ Systems    : all
 
 #ifdef __cplusplus
 extern "C"
+{
 #endif
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __TARGET_GENERIC_MATH_INT__ */
+#endif				/* __TARGET_GENERIC_MATH_INT__ */
 
 /* end of file */
-

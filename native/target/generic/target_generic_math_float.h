@@ -46,7 +46,7 @@ Systems    : all
 
 /* check if target_native_math_float.h included */
 #ifndef __TARGET_NATIVE_MATH_FLOAT__
-  #error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
+#error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
 #endif
 
 /****************************** Includes *******************************/
@@ -70,61 +70,61 @@ Systems    : all
 
 /* test float/double values for NaN,Inf */
 #ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_ISNAN
-  #include <math.h>
-  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_ISNAN(f) isnan(f)
+#include <math.h>
+#define TARGET_NATIVE_MATH_FLOAT_FLOAT_ISNAN(f) isnan(f)
 #endif
 #ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_ISINF
-  #include <math.h>
-  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_ISINF(f) isinf(f)
+#include <math.h>
+#define TARGET_NATIVE_MATH_FLOAT_FLOAT_ISINF(f) isinf(f)
 #endif
 #ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_FINITE
-  #include <math.h>
-  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_FINITE(f) finite(f)
+#include <math.h>
+#define TARGET_NATIVE_MATH_FLOAT_FLOAT_FINITE(f) finite(f)
 #endif
 
 #ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_ISNAN
-  #include <math.h>
-  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_ISNAN(d) isnan(d)
+#include <math.h>
+#define TARGET_NATIVE_MATH_FLOAT_DOUBLE_ISNAN(d) isnan(d)
 #endif
 #ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_ISINF
-  #include <math.h>
-  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_ISINF(d) isinf(d)
+#include <math.h>
+#define TARGET_NATIVE_MATH_FLOAT_DOUBLE_ISINF(d) isinf(d)
 #endif
 #ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_FINITE
-  #include <math.h>
-  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_FINITE(d) finite(d)
+#include <math.h>
+#define TARGET_NATIVE_MATH_FLOAT_DOUBLE_FINITE(d) finite(d)
 #endif
 
 /* division, modulo operations (used to avoid unexcepted exceptions on some
    targets; generic codes are direct operations without checks)
 */
 #ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_DIV
-  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_DIV(f0,f1) ((f0)/(f1))
+#define TARGET_NATIVE_MATH_FLOAT_FLOAT_DIV(f0,f1) ((f0)/(f1))
 #endif
 #ifndef TARGET_NATIVE_MATH_FLOAT_FLOAT_MOD
-  #include <math.h>
-  #define TARGET_NATIVE_MATH_FLOAT_FLOAT_MOD(f0,f1) ((jfloat)fmod((jdouble)(f0),(jdouble)(f1)))
+#include <math.h>
+#define TARGET_NATIVE_MATH_FLOAT_FLOAT_MOD(f0,f1) ((jfloat)fmod((jdouble)(f0),(jdouble)(f1)))
 #endif
 
 #ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_DIV
-  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_DIV(d0,d1) ((d0)/(d1))
+#define TARGET_NATIVE_MATH_FLOAT_DOUBLE_DIV(d0,d1) ((d0)/(d1))
 #endif
 #ifndef TARGET_NATIVE_MATH_FLOAT_DOUBLE_MOD
-  #include <math.h>
-  #define TARGET_NATIVE_MATH_FLOAT_DOUBLE_MOD(d0,d1) fmod(d0,d1)
+#include <math.h>
+#define TARGET_NATIVE_MATH_FLOAT_DOUBLE_MOD(d0,d1) fmod(d0,d1)
 #endif
 
 /***************************** Functions *******************************/
 
 #ifdef __cplusplus
 extern "C"
+{
 #endif
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __TARGET_GENERIC_MATH_FLOAT__ */
+#endif				/* __TARGET_GENERIC_MATH_FLOAT__ */
 
 /* end of file */
-

@@ -47,15 +47,20 @@
 #define MAX_ADVANCE 4
 #define NUM_METRICS 5
 
-JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics_initState
-  (JNIEnv *env, jobject self, jobject font)
+JNIEXPORT jintArray JNICALL
+Java_gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics_initState (JNIEnv
+								  *env,
+								  jobject
+								  self,
+								  jobject
+								  font)
 {
   jintArray array;
   jint *metrics;
   struct peerfont *pf = NULL;
   FT_Matrix mat;
 
-  pf = NSA_GET_FONT_PTR(env, font);
+  pf = NSA_GET_FONT_PTR (env, font);
   g_assert (pf != NULL);
 
   array = (*env)->NewIntArray (env, NUM_METRICS);
@@ -71,25 +76,25 @@ JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetri
   double pointsize = pango_font_description_get_size (pf->desc);
   pointsize /= (double) PANGO_SCALE;
 
-  mat.xx = DOUBLE_TO_16_16(1);
-  mat.xy = DOUBLE_TO_16_16(0);
-  mat.yx = DOUBLE_TO_16_16(0);
-  mat.yy = DOUBLE_TO_16_16(1);  
-  
-  FT_Face face = pango_ft2_font_get_face (pf->font);  
-  FT_Set_Transform(face, &mat, NULL);
-  FT_Set_Char_Size( face, 
-		    DOUBLE_TO_26_6 (pointsize),
-		    DOUBLE_TO_26_6 (pointsize),
-		    0, 0);
+  mat.xx = DOUBLE_TO_16_16 (1);
+  mat.xy = DOUBLE_TO_16_16 (0);
+  mat.yx = DOUBLE_TO_16_16 (0);
+  mat.yy = DOUBLE_TO_16_16 (1);
 
-  metrics[ASCENT]      = ceil (DOUBLE_FROM_26_6(face->size->metrics.ascender));
-  metrics[MAX_ASCENT]  = metrics[ASCENT];
-  metrics[DESCENT]     = floor (DOUBLE_FROM_26_6(face->size->metrics.descender));
+  FT_Face face = pango_ft2_font_get_face (pf->font);
+  FT_Set_Transform (face, &mat, NULL);
+  FT_Set_Char_Size (face,
+		    DOUBLE_TO_26_6 (pointsize),
+		    DOUBLE_TO_26_6 (pointsize), 0, 0);
+
+  metrics[ASCENT] = ceil (DOUBLE_FROM_26_6 (face->size->metrics.ascender));
+  metrics[MAX_ASCENT] = metrics[ASCENT];
+  metrics[DESCENT] = floor (DOUBLE_FROM_26_6 (face->size->metrics.descender));
   if (metrics[DESCENT] < 0)
-    metrics[DESCENT] = - metrics[DESCENT];
+    metrics[DESCENT] = -metrics[DESCENT];
   metrics[MAX_DESCENT] = metrics[DESCENT];
-  metrics[MAX_ADVANCE] = ceil (DOUBLE_FROM_26_6(face->size->metrics.max_advance));
+  metrics[MAX_ADVANCE] =
+    ceil (DOUBLE_FROM_26_6 (face->size->metrics.max_advance));
 
   gdk_threads_leave ();
 
@@ -97,4 +102,3 @@ JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetri
 
   return array;
 }
-

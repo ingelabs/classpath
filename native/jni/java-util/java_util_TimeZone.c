@@ -59,20 +59,19 @@ exception statement from your version. */
  * Signature: ()Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL
-Java_java_util_TimeZone_getDefaultTimeZoneId(JNIEnv *env, jclass clazz)
+Java_java_util_TimeZone_getDefaultTimeZoneId (JNIEnv *env, jclass clazz)
 {
 #ifdef HAVE_TZNAME
-  char    buffer[128];
-  int     result;
+  char buffer[128];
+  int result;
   jstring retval;
 
-  TARGET_NATIVE_MISC_GET_TIMEZONE_STRING(buffer,sizeof(buffer),result);
+  TARGET_NATIVE_MISC_GET_TIMEZONE_STRING (buffer, sizeof (buffer), result);
 
-  retval = (*env)->NewStringUTF(env, buffer);
- 
-  return(retval);
+  retval = (*env)->NewStringUTF (env, buffer);
+
+  return (retval);
 #else
-  return(0); /* added this statement (crashes without..:-) --Fridi. */
+  return (0);			/* added this statement (crashes without..:-) --Fridi. */
 #endif /* HAVE_TZNAME */
 }
-

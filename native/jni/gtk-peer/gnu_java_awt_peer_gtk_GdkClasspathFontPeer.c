@@ -56,26 +56,31 @@ pango text objects:
 
 */
 
-enum java_awt_font_style {
+enum java_awt_font_style
+{
   java_awt_font_PLAIN = 0,
   java_awt_font_BOLD = 1,
   java_awt_font_ITALIC = 2
 };
 
-enum java_awt_font_baseline {
+enum java_awt_font_baseline
+{
   java_awt_font_ROMAN_BASELINE = 0,
   java_awt_font_CENTER_BASELINE = 1,
   java_awt_font_HANGING_BASELINE = 2
 };
 
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkClasspathFontPeer_initStaticState 
-  (JNIEnv *env, jclass clazz)
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GdkClasspathFontPeer_initStaticState (JNIEnv
+								 *env,
+								 jclass clazz)
 {
   NSA_FONT_INIT (env, clazz);
 }
 
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkClasspathFontPeer_initState
-  (JNIEnv *env, jobject self)
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GdkClasspathFontPeer_initState (JNIEnv *env,
+							   jobject self)
 {
   struct peerfont *pfont = NULL;
 
@@ -94,7 +99,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkClasspathFontPeer_dispose
   struct peerfont *pfont = NULL;
 
   gdk_threads_enter ();
-  pfont = (struct peerfont *)NSA_DEL_FONT_PTR (env, self);
+  pfont = (struct peerfont *) NSA_DEL_FONT_PTR (env, self);
   g_assert (pfont != NULL);
   if (pfont->ctx != NULL)
     g_object_unref (pfont->ctx);
@@ -107,17 +112,18 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkClasspathFontPeer_dispose
 }
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkClasspathFontPeer_setFont
-  (JNIEnv *env, jobject self, jstring family_name_str, jint style_int, jint size)
+  (JNIEnv *env, jobject self, jstring family_name_str, jint style_int,
+   jint size)
 {
   struct peerfont *pfont = NULL;
-  PangoFontMap *map = NULL; 
+  PangoFontMap *map = NULL;
   char const *family_name = NULL;
 
   gdk_threads_enter ();
   enum java_awt_font_style style = (enum java_awt_font_style) style_int;
 
   g_assert (self != NULL);
-  pfont = (struct peerfont *)NSA_GET_FONT_PTR (env, self);
+  pfont = (struct peerfont *) NSA_GET_FONT_PTR (env, self);
   g_assert (pfont != NULL);
 
   if (pfont->ctx != NULL)
@@ -130,19 +136,19 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkClasspathFontPeer_setFont
   pfont->desc = pango_font_description_new ();
   g_assert (pfont->desc != NULL);
 
-  family_name = (*env)->GetStringUTFChars(env, family_name_str, 0);
+  family_name = (*env)->GetStringUTFChars (env, family_name_str, 0);
   g_assert (family_name != NULL);
   pango_font_description_set_family (pfont->desc, family_name);
-  (*env)->ReleaseStringUTFChars(env, family_name_str, family_name);
+  (*env)->ReleaseStringUTFChars (env, family_name_str, family_name);
 
-  pango_font_description_set_size (pfont->desc, size * PANGO_SCALE);  
+  pango_font_description_set_size (pfont->desc, size * PANGO_SCALE);
 
   if (style & java_awt_font_BOLD)
     pango_font_description_set_weight (pfont->desc, PANGO_WEIGHT_BOLD);
 
   if (style & java_awt_font_ITALIC)
     pango_font_description_set_style (pfont->desc, PANGO_STYLE_ITALIC);
-  
+
   /* 
      FIXME: these are possibly wrong, and should in any case
      probably be cached between calls.
@@ -150,9 +156,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkClasspathFontPeer_setFont
 
   map = pango_ft2_font_map_for_display ();
   g_assert (map != NULL);
-  
+
   if (pfont->ctx == NULL)
-    pfont->ctx = pango_ft2_font_map_create_context (PANGO_FT2_FONT_MAP (map));  
+    pfont->ctx = pango_ft2_font_map_create_context (PANGO_FT2_FONT_MAP (map));
   g_assert (pfont->ctx != NULL);
 
   if (pfont->font != NULL)
@@ -163,5 +169,3 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkClasspathFontPeer_setFont
 
   gdk_threads_leave ();
 }
-
-

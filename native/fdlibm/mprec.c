@@ -104,12 +104,12 @@ _DEFUN (Balloc, (ptr, k), struct _Jv_reent *ptr _AND int k)
 
   JvAssert (i < MAX_BIGNUMS);
 
-  if (i >= MAX_BIGNUMS) 
+  if (i >= MAX_BIGNUMS)
     return NULL;
 
   ptr->_allocation_map |= j;
   rv = &ptr->_freelist[i];
-      
+
   rv->_k = k;
   rv->_maxwds = 32;
 
@@ -127,16 +127,13 @@ _DEFUN (Bfree, (ptr, v), struct _Jv_reent *ptr _AND _Jv_Bigint * v)
   JvAssert (i >= 0 && i < MAX_BIGNUMS);
 
   if (i >= 0 && i < MAX_BIGNUMS)
-    ptr->_allocation_map &= ~ (1 << i);
+    ptr->_allocation_map &= ~(1 << i);
 }
 
 
 _Jv_Bigint *
 _DEFUN (multadd, (ptr, b, m, a),
-	struct _Jv_reent *ptr _AND
-	_Jv_Bigint * b _AND
-	int m _AND
-	int a)
+	struct _Jv_reent *ptr _AND _Jv_Bigint * b _AND int m _AND int a)
 {
   int i, wds;
   unsigned long *x, y;
@@ -181,10 +178,7 @@ _DEFUN (multadd, (ptr, b, m, a),
 _Jv_Bigint *
 _DEFUN (s2b, (ptr, s, nd0, nd, y9),
 	struct _Jv_reent * ptr _AND
-	_CONST char *s _AND
-	int nd0 _AND
-	int nd _AND
-	unsigned long y9)
+	_CONST char *s _AND int nd0 _AND int nd _AND unsigned long y9)
 {
   _Jv_Bigint *b;
   int i, k;
@@ -219,8 +213,7 @@ _DEFUN (s2b, (ptr, s, nd0, nd, y9),
 }
 
 int
-_DEFUN (hi0bits,
-	(x), register unsigned long x)
+_DEFUN (hi0bits, (x), register unsigned long x)
 {
   register int k = 0;
 
@@ -315,7 +308,8 @@ _DEFUN (i2b, (ptr, i), struct _Jv_reent * ptr _AND int i)
 }
 
 _Jv_Bigint *
-_DEFUN (mult, (ptr, a, b), struct _Jv_reent * ptr _AND _Jv_Bigint * a _AND _Jv_Bigint * b)
+_DEFUN (mult, (ptr, a, b),
+	struct _Jv_reent * ptr _AND _Jv_Bigint * a _AND _Jv_Bigint * b)
 {
   _Jv_Bigint *c;
   int k, wa, wb, wc;
@@ -412,7 +406,7 @@ _DEFUN (pow5mult,
 {
   _Jv_Bigint *b1, *p5, *p51;
   int i;
-  static _CONST int p05[3] = {5, 25, 125};
+  static _CONST int p05[3] = { 5, 25, 125 };
 
   if ((i = k & 3))
     b = multadd (ptr, b, p05[i - 1], 0);
@@ -446,7 +440,8 @@ _DEFUN (pow5mult,
 }
 
 _Jv_Bigint *
-_DEFUN (lshift, (ptr, b, k), struct _Jv_reent * ptr _AND _Jv_Bigint * b _AND int k)
+_DEFUN (lshift, (ptr, b, k),
+	struct _Jv_reent * ptr _AND _Jv_Bigint * b _AND int k)
 {
   int i, k1, n, n1;
   _Jv_Bigint *b1;
@@ -666,8 +661,7 @@ _DEFUN (ulp, (_x), double _x)
 }
 
 double
-_DEFUN (b2d, (a, e),
-	_Jv_Bigint * a _AND int *e)
+_DEFUN (b2d, (a, e), _Jv_Bigint * a _AND int *e)
 {
   unsigned long *xa, *xa0, w, y, z;
   int k;
@@ -745,11 +739,7 @@ ret_d:
 _Jv_Bigint *
 _DEFUN (d2b,
 	(ptr, _d, e, bits),
-	struct _Jv_reent * ptr _AND
-	double _d _AND
-	int *e _AND
-	int *bits)
-
+	struct _Jv_reent * ptr _AND double _d _AND int *e _AND int *bits)
 {
   union double_union d;
   _Jv_Bigint *b;
@@ -888,12 +878,12 @@ _DEFUN (d2b,
 #endif
   return b;
 }
+
 #undef d0
 #undef d1
 
 double
 _DEFUN (ratio, (a, b), _Jv_Bigint * a _AND _Jv_Bigint * b)
-
 {
   union double_union da, db;
   int k, ka, kb;
@@ -932,27 +922,18 @@ _DEFUN (ratio, (a, b), _Jv_Bigint * a _AND _Jv_Bigint * b)
 }
 
 
-_CONST double
-  tens[] =
-{
+_CONST double tens[] = {
   1e0, 1e1, 1e2, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9,
   1e10, 1e11, 1e12, 1e13, 1e14, 1e15, 1e16, 1e17, 1e18, 1e19,
   1e20, 1e21, 1e22, 1e23, 1e24
-
 };
 
 #if !defined(_DOUBLE_IS_32BITS) && !defined(__v800)
-_CONST double bigtens[] =
-{1e16, 1e32, 1e64, 1e128, 1e256};
+_CONST double bigtens[] = { 1e16, 1e32, 1e64, 1e128, 1e256 };
 
-_CONST double tinytens[] =
-{1e-16, 1e-32, 1e-64, 1e-128, 1e-256};
+_CONST double tinytens[] = { 1e-16, 1e-32, 1e-64, 1e-128, 1e-256 };
 #else
-_CONST double bigtens[] =
-{1e16, 1e32};
+_CONST double bigtens[] = { 1e16, 1e32 };
 
-_CONST double tinytens[] =
-{1e-16, 1e-32};
+_CONST double tinytens[] = { 1e-16, 1e-32 };
 #endif
-
-

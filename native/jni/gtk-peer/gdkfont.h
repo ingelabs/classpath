@@ -80,7 +80,7 @@ struct peerfont
   PangoContext *ctx;
 };
 
-struct glyphvec 
+struct glyphvec
 {
   /* the GList is list of PangoGlyphItems, each of which is a pair of 1
      PangoItem and 1 PangoGlyphString. */

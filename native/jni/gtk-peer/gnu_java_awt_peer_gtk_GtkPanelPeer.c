@@ -40,9 +40,8 @@ exception statement from your version. */
 #include "gnu_java_awt_peer_gtk_GtkComponentPeer.h"
 #include "gnu_java_awt_peer_gtk_GtkPanelPeer.h"
 
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkPanelPeer_create
-  (JNIEnv *env, jobject obj)
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkPanelPeer_create (JNIEnv *env, jobject obj)
 {
   gpointer widget;
 
@@ -50,7 +49,7 @@ Java_gnu_java_awt_peer_gtk_GtkPanelPeer_create
   NSA_SET_GLOBAL_REF (env, obj);
 
   gdk_threads_enter ();
-  
+
   widget = gtk_layout_new (NULL, NULL);
 
   gdk_threads_leave ();
@@ -58,16 +57,17 @@ Java_gnu_java_awt_peer_gtk_GtkPanelPeer_create
   NSA_SET_PTR (env, obj, widget);
 }
 
-typedef struct _GtkLayoutChild   GtkLayoutChild;
+typedef struct _GtkLayoutChild GtkLayoutChild;
 
-struct _GtkLayoutChild {
+struct _GtkLayoutChild
+{
   GtkWidget *widget;
   gint x;
   gint y;
 };
 
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkPanelPeer_connectJObject
+JNIEXPORT void JNICALL
+  Java_gnu_java_awt_peer_gtk_GtkPanelPeer_connectJObject
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
@@ -81,8 +81,8 @@ Java_gnu_java_awt_peer_gtk_GtkPanelPeer_connectJObject
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkPanelPeer_connectSignals
+JNIEXPORT void JNICALL
+  Java_gnu_java_awt_peer_gtk_GtkPanelPeer_connectSignals
   (JNIEnv *env, jobject obj)
 {
   void *ptr = NSA_GET_PTR (env, obj);
@@ -106,9 +106,9 @@ Java_gnu_java_awt_peer_gtk_GtkPanelPeer_connectSignals
 /*
  * Make a new panel.
  */
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkPanelPeer_gtkPanelNew
-    (JNIEnv *env, jobject obj, jobject parent_obj)
+JNIEXPORT void JNICALL
+  Java_gnu_java_awt_peer_gtk_GtkPanelPeer_gtkPanelNew
+  (JNIEnv *env, jobject obj, jobject parent_obj)
 {
   GtkWidget *layout;
   void *parent;
@@ -121,7 +121,7 @@ Java_gnu_java_awt_peer_gtk_GtkPanelPeer_gtkPanelNew
   gdk_threads_enter ();
 
   layout = gtk_layout_new (NULL, NULL);
-  
+
   set_parent (layout, GTK_CONTAINER (parent));
 
   gtk_widget_realize (layout);
@@ -134,5 +134,3 @@ Java_gnu_java_awt_peer_gtk_GtkPanelPeer_gtkPanelNew
 
   NSA_SET_PTR (env, obj, layout);
 }
-
-

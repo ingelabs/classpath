@@ -46,7 +46,7 @@ exception statement from your version. */
 
 #include "target_native.h"
 #ifndef WITHOUT_FILESYSTEM
-  #include "target_native_file.h"
+#include "target_native_file.h"
 #endif
 #include "target_native_math_int.h"
 
@@ -65,34 +65,34 @@ exception statement from your version. */
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_createInternal(JNIEnv *env, jclass clazz, jstring name)
+Java_java_io_File_createInternal (JNIEnv *env, jclass clazz, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
-  int        fd;
-  int        result;
+  int fd;
+  int result;
 
-  filename = JCL_jstring_to_cstring(env, name);
+  filename = JCL_jstring_to_cstring (env, name);
   if (filename == NULL)
     {
-      return(0);
+      return (0);
     }
 
-  TARGET_NATIVE_FILE_OPEN_CREATE(filename,fd,result);
+  TARGET_NATIVE_FILE_OPEN_CREATE (filename, fd, result);
   if (result != TARGET_NATIVE_OK)
     {
 //??? NYI
       if (errno != EEXIST)
-        JCL_ThrowException(env,
-                           "java/io/IOException",
-                           TARGET_NATIVE_LAST_ERROR_STRING());
-      return(0);
+	JCL_ThrowException (env,
+			    "java/io/IOException",
+			    TARGET_NATIVE_LAST_ERROR_STRING ());
+      return (0);
     }
-  TARGET_NATIVE_FILE_CLOSE(fd,result);
+  TARGET_NATIVE_FILE_CLOSE (fd, result);
 
-  return(1);
+  return (1);
 #else /* not WITHOUT_FILESYSTEM */
-  return(0);
+  return (0);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
@@ -107,36 +107,36 @@ Java_java_io_File_createInternal(JNIEnv *env, jclass clazz, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_canReadInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_File_canReadInternal (JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
-  int        fd;
-  int        result;
+  int fd;
+  int result;
 
   /* Don't use the JCL convert function because it throws an exception
      on failure */
-  filename = (*env)->GetStringUTFChars(env, name, 0);
+  filename = (*env)->GetStringUTFChars (env, name, 0);
   if (filename == NULL)
     {
-      return(0);
+      return (0);
     }
- 
+
   /* The lazy man's way out.  We actually do open the file for reading
-     briefly to verify it can be done */  
-  TARGET_NATIVE_FILE_OPEN_READ(filename,fd,result);
-  (*env)->ReleaseStringUTFChars(env, name, filename);
+     briefly to verify it can be done */
+  TARGET_NATIVE_FILE_OPEN_READ (filename, fd, result);
+  (*env)->ReleaseStringUTFChars (env, name, filename);
   if (result != TARGET_NATIVE_OK)
     {
-      return(0);
+      return (0);
     }
-  TARGET_NATIVE_FILE_CLOSE(fd,result);
+  TARGET_NATIVE_FILE_CLOSE (fd, result);
 
-  return(1);
+  return (1);
 #else /* not WITHOUT_FILESYSTEM */
-  return(0);
+  return (0);
 #endif /* not WITHOUT_FILESYSTEM */
-}  
+}
 
 /*************************************************************************/
 
@@ -149,36 +149,36 @@ Java_java_io_File_canReadInternal(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_canWriteInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_File_canWriteInternal (JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
-  int        fd;
-  int        result;
+  int fd;
+  int result;
 
   /* Don't use the JCL convert function because it throws an exception
      on failure */
-  filename = (*env)->GetStringUTFChars(env, name, 0);
+  filename = (*env)->GetStringUTFChars (env, name, 0);
   if (filename == NULL)
     {
-      return(0);
+      return (0);
     }
- 
+
   /* The lazy man's way out.  We actually do open the file for writing
-     briefly to verify it can be done */  
-  TARGET_NATIVE_FILE_OPEN_READWRITE(filename,fd,result);
-  (*env)->ReleaseStringUTFChars(env, name, filename);
+     briefly to verify it can be done */
+  TARGET_NATIVE_FILE_OPEN_READWRITE (filename, fd, result);
+  (*env)->ReleaseStringUTFChars (env, name, filename);
   if (result != TARGET_NATIVE_OK)
     {
-      return(0);
+      return (0);
     }
-  TARGET_NATIVE_FILE_CLOSE(fd,result);
+  TARGET_NATIVE_FILE_CLOSE (fd, result);
 
-  return(1);
+  return (1);
 #else /* not WITHOUT_FILESYSTEM */
-  return(0);
+  return (0);
 #endif /* not WITHOUT_FILESYSTEM */
-}  
+}
 
 /*************************************************************************/
 
@@ -191,28 +191,28 @@ Java_java_io_File_canWriteInternal(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_setReadOnlyInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_File_setReadOnlyInternal (JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
-  int        result;
+  int result;
 
   /* Don't use the JCL convert function because it throws an exception
      on failure */
-  filename = (*env)->GetStringUTFChars(env, name, 0);
+  filename = (*env)->GetStringUTFChars (env, name, 0);
   if (filename == NULL)
     {
-      return(0);
+      return (0);
     }
 
-  TARGET_NATIVE_FILE_SET_MODE_READONLY(filename,result);
-  (*env)->ReleaseStringUTFChars(env, name, filename);
+  TARGET_NATIVE_FILE_SET_MODE_READONLY (filename, result);
+  (*env)->ReleaseStringUTFChars (env, name, filename);
 
-  return ((result == TARGET_NATIVE_OK)?1:0);
+  return ((result == TARGET_NATIVE_OK) ? 1 : 0);
 #else /* not WITHOUT_FILESYSTEM */
-  return(0);
+  return (0);
 #endif /* not WITHOUT_FILESYSTEM */
-}  
+}
 
 /*************************************************************************/
 
@@ -225,26 +225,26 @@ Java_java_io_File_setReadOnlyInternal(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_existsInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_File_existsInternal (JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
-  int        result;
-  
+  int result;
+
   /* Don't use the JCL convert function because it throws an exception
      on failure */
-  filename = (*env)->GetStringUTFChars(env, name, 0);
+  filename = (*env)->GetStringUTFChars (env, name, 0);
   if (filename == NULL)
     {
-      return(0);
+      return (0);
     }
- 
-  TARGET_NATIVE_FILE_EXISTS(filename,result);
-  (*env)->ReleaseStringUTFChars(env, name, filename);
 
-  return ((result == TARGET_NATIVE_OK)?1:0);
+  TARGET_NATIVE_FILE_EXISTS (filename, result);
+  (*env)->ReleaseStringUTFChars (env, name, filename);
+
+  return ((result == TARGET_NATIVE_OK) ? 1 : 0);
 #else /* not WITHOUT_FILESYSTEM */
-  return(0);
+  return (0);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
@@ -260,26 +260,26 @@ Java_java_io_File_existsInternal(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_isFileInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_File_isFileInternal (JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
-  int        result;
-  
+  int result;
+
   /* Don't use the JCL convert function because it throws an exception
      on failure */
-  filename = (*env)->GetStringUTFChars(env, name, 0);
+  filename = (*env)->GetStringUTFChars (env, name, 0);
   if (filename == NULL)
     {
-      return(0);
+      return (0);
     }
 
-  TARGET_NATIVE_FILE_IS_FILE(filename,result);
-  (*env)->ReleaseStringUTFChars(env, name, filename);
+  TARGET_NATIVE_FILE_IS_FILE (filename, result);
+  (*env)->ReleaseStringUTFChars (env, name, filename);
 
-  return ((result == TARGET_NATIVE_OK)?1:0);
+  return ((result == TARGET_NATIVE_OK) ? 1 : 0);
 #else /* not WITHOUT_FILESYSTEM */
-  return(0);
+  return (0);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
@@ -294,26 +294,26 @@ Java_java_io_File_isFileInternal(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_isDirectoryInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_File_isDirectoryInternal (JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
-  int        result;
-  
+  int result;
+
   /* Don't use the JCL convert function because it throws an exception
      on failure */
-  filename = (*env)->GetStringUTFChars(env, name, 0);
+  filename = (*env)->GetStringUTFChars (env, name, 0);
   if (filename == NULL)
     {
-      return(0);
+      return (0);
     }
 
-  TARGET_NATIVE_FILE_IS_DIRECTORY(filename,result);
-  (*env)->ReleaseStringUTFChars(env, name, filename);
+  TARGET_NATIVE_FILE_IS_DIRECTORY (filename, result);
+  (*env)->ReleaseStringUTFChars (env, name, filename);
 
-  return ((result == TARGET_NATIVE_OK)?1:0);
+  return ((result == TARGET_NATIVE_OK) ? 1 : 0);
 #else /* not WITHOUT_FILESYSTEM */
-  return(0);
+  return (0);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
@@ -328,40 +328,41 @@ Java_java_io_File_isDirectoryInternal(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jlong JNICALL
-Java_java_io_File_lengthInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_File_lengthInternal (JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
-  int        tmpfd;
-  jlong      length;
-  int        result;
-  
+  int tmpfd;
+  jlong length;
+  int result;
+
   /* Don't use the JCL convert function because it throws an exception
      on failure */
-  filename = (*env)->GetStringUTFChars(env, name, 0);
+  filename = (*env)->GetStringUTFChars (env, name, 0);
   if (filename == NULL)
     {
-      return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
+      return (TARGET_NATIVE_MATH_INT_INT64_CONST_0);
     }
- 
-  /* open file for reading, get size and close file */
-  TARGET_NATIVE_FILE_OPEN_READ(filename,tmpfd,result);
-  if (result != TARGET_NATIVE_OK)
-    {
-      return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
-    }
-  TARGET_NATIVE_FILE_SIZE(tmpfd,length,result);  
-  if (result != TARGET_NATIVE_OK)
-    {
-      TARGET_NATIVE_FILE_CLOSE(tmpfd,result);
-      return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
-    }
-  TARGET_NATIVE_FILE_CLOSE(tmpfd,result);
-  (*env)->ReleaseStringUTFChars(env, name, filename);
 
-  return ((result == TARGET_NATIVE_OK)?length:TARGET_NATIVE_MATH_INT_INT64_CONST_0);
+  /* open file for reading, get size and close file */
+  TARGET_NATIVE_FILE_OPEN_READ (filename, tmpfd, result);
+  if (result != TARGET_NATIVE_OK)
+    {
+      return (TARGET_NATIVE_MATH_INT_INT64_CONST_0);
+    }
+  TARGET_NATIVE_FILE_SIZE (tmpfd, length, result);
+  if (result != TARGET_NATIVE_OK)
+    {
+      TARGET_NATIVE_FILE_CLOSE (tmpfd, result);
+      return (TARGET_NATIVE_MATH_INT_INT64_CONST_0);
+    }
+  TARGET_NATIVE_FILE_CLOSE (tmpfd, result);
+  (*env)->ReleaseStringUTFChars (env, name, filename);
+
+  return ((result ==
+	   TARGET_NATIVE_OK) ? length : TARGET_NATIVE_MATH_INT_INT64_CONST_0);
 #else /* not WITHOUT_FILESYSTEM */
-  return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
+  return (TARGET_NATIVE_MATH_INT_INT64_CONST_0);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
@@ -376,27 +377,29 @@ Java_java_io_File_lengthInternal(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jlong JNICALL
-Java_java_io_File_lastModifiedInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_File_lastModifiedInternal (JNIEnv *env, jobject obj,
+					jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
-  jlong      mtime;
-  int        result;
- 
+  jlong mtime;
+  int result;
+
   /* Don't use the JCL convert function because it throws an exception
      on failure */
-  filename = (*env)->GetStringUTFChars(env, name, 0);
+  filename = (*env)->GetStringUTFChars (env, name, 0);
   if (filename == NULL)
     {
-      return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
+      return (TARGET_NATIVE_MATH_INT_INT64_CONST_0);
     }
- 
-  TARGET_NATIVE_FILE_GET_LAST_MODIFIED(filename,mtime,result);
-  (*env)->ReleaseStringUTFChars(env, name, filename);
 
-  return ((result == TARGET_NATIVE_OK)?mtime:TARGET_NATIVE_MATH_INT_INT64_CONST_0);
+  TARGET_NATIVE_FILE_GET_LAST_MODIFIED (filename, mtime, result);
+  (*env)->ReleaseStringUTFChars (env, name, filename);
+
+  return ((result ==
+	   TARGET_NATIVE_OK) ? mtime : TARGET_NATIVE_MATH_INT_INT64_CONST_0);
 #else /* not WITHOUT_FILESYSTEM */
-  return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
+  return (TARGET_NATIVE_MATH_INT_INT64_CONST_0);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
@@ -411,27 +414,27 @@ Java_java_io_File_lastModifiedInternal(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_setLastModifiedInternal(JNIEnv *env, jobject obj,
-                                          jstring name, jlong newtime)
+Java_java_io_File_setLastModifiedInternal (JNIEnv *env, jobject obj,
+					   jstring name, jlong newtime)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
-  int        result;
-  
+  int result;
+
   /* Don't use the JCL convert function because it throws an exception
      on failure */
-  filename = (*env)->GetStringUTFChars(env, name, 0);
+  filename = (*env)->GetStringUTFChars (env, name, 0);
   if (filename == NULL)
     {
-      return(0);
+      return (0);
     }
- 
-  TARGET_NATIVE_FILE_SET_LAST_MODIFIED(filename,newtime,result); 
-  (*env)->ReleaseStringUTFChars(env, name, filename);
 
-  return ((result == TARGET_NATIVE_OK)?1:0);
+  TARGET_NATIVE_FILE_SET_LAST_MODIFIED (filename, newtime, result);
+  (*env)->ReleaseStringUTFChars (env, name, filename);
+
+  return ((result == TARGET_NATIVE_OK) ? 1 : 0);
 #else /* not WITHOUT_FILESYSTEM */
-  return(0);
+  return (0);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
@@ -447,26 +450,26 @@ Java_java_io_File_setLastModifiedInternal(JNIEnv *env, jobject obj,
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_deleteInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_File_deleteInternal (JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *filename;
-  int        result;
-  
+  int result;
+
   /* Don't use the JCL convert function because it throws an exception
      on failure */
-  filename = (*env)->GetStringUTFChars(env, name, 0);
+  filename = (*env)->GetStringUTFChars (env, name, 0);
   if (filename == NULL)
     {
-      return(0);
+      return (0);
     }
- 
-  TARGET_NATIVE_FILE_DELETE(filename,result); 
-  (*env)->ReleaseStringUTFChars(env, name, filename);
 
-  return ((result == TARGET_NATIVE_OK)?1:0);
+  TARGET_NATIVE_FILE_DELETE (filename, result);
+  (*env)->ReleaseStringUTFChars (env, name, filename);
+
+  return ((result == TARGET_NATIVE_OK) ? 1 : 0);
 #else /* not WITHOUT_FILESYSTEM */
-  return(0);
+  return (0);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
@@ -481,26 +484,26 @@ Java_java_io_File_deleteInternal(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_mkdirInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_File_mkdirInternal (JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *pathname;
-  int        result;
-  
+  int result;
+
   /* Don't use the JCL convert function because it throws an exception
      on failure */
-  pathname = (*env)->GetStringUTFChars(env, name, 0);
+  pathname = (*env)->GetStringUTFChars (env, name, 0);
   if (pathname == NULL)
     {
-      return(0);
+      return (0);
     }
- 
-  TARGET_NATIVE_FILE_MAKE_DIR(pathname,result);
-  (*env)->ReleaseStringUTFChars(env, name, pathname);
 
-  return ((result == TARGET_NATIVE_OK)?1:0);
+  TARGET_NATIVE_FILE_MAKE_DIR (pathname, result);
+  (*env)->ReleaseStringUTFChars (env, name, pathname);
+
+  return ((result == TARGET_NATIVE_OK) ? 1 : 0);
 #else /* not WITHOUT_FILESYSTEM */
-  return(0);
+  return (0);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
@@ -515,34 +518,35 @@ Java_java_io_File_mkdirInternal(JNIEnv *env, jobject obj, jstring name)
  */
 
 JNIEXPORT jboolean JNICALL
-Java_java_io_File_renameToInternal(JNIEnv *env, jobject obj, jstring t, jstring d)
+Java_java_io_File_renameToInternal (JNIEnv *env, jobject obj, jstring t,
+				    jstring d)
 {
 #ifndef WITHOUT_FILESYSTEM
   const char *old_filename, *new_filename;
-  int        result;
-  
+  int result;
+
   /* Don't use the JCL convert function because it throws an exception
      on failure */
-  old_filename = (*env)->GetStringUTFChars(env, t, 0);
+  old_filename = (*env)->GetStringUTFChars (env, t, 0);
   if (old_filename == NULL)
     {
-      return(0);
+      return (0);
     }
 
-  new_filename = (*env)->GetStringUTFChars(env, d, 0);
+  new_filename = (*env)->GetStringUTFChars (env, d, 0);
   if (new_filename == NULL)
     {
-      (*env)->ReleaseStringUTFChars(env, t, old_filename);
-      return(0);
+      (*env)->ReleaseStringUTFChars (env, t, old_filename);
+      return (0);
     }
- 
-  TARGET_NATIVE_FILE_RENAME(old_filename,new_filename,result);
-  (*env)->ReleaseStringUTFChars(env, d, new_filename);
-  (*env)->ReleaseStringUTFChars(env, t, old_filename);
 
-  return ((result == TARGET_NATIVE_OK)?1:0);
+  TARGET_NATIVE_FILE_RENAME (old_filename, new_filename, result);
+  (*env)->ReleaseStringUTFChars (env, d, new_filename);
+  (*env)->ReleaseStringUTFChars (env, t, old_filename);
+
+  return ((result == TARGET_NATIVE_OK) ? 1 : 0);
 #else /* not WITHOUT_FILESYSTEM */
-  return(0);
+  return (0);
 #endif /* not WITHOUT_FILESYSTEM */
 }
 
@@ -558,145 +562,147 @@ Java_java_io_File_renameToInternal(JNIEnv *env, jobject obj, jstring t, jstring 
  */
 
 JNIEXPORT jobjectArray JNICALL
-Java_java_io_File_listInternal(JNIEnv *env, jobject obj, jstring name)
+Java_java_io_File_listInternal (JNIEnv *env, jobject obj, jstring name)
 {
 #ifndef WITHOUT_FILESYSTEM
   const int REALLOC_SIZE = 10;
 
-  const char        *dirname;
-  int               result;
-  char              **filelist;
-  void              *handle;
-  const char        *filename;
-  unsigned long int filelist_count,max_filelist_count;
-  char              **tmp_filelist;
-  jclass            str_clazz;
-  jobjectArray      filearray;
+  const char *dirname;
+  int result;
+  char **filelist;
+  void *handle;
+  const char *filename;
+  unsigned long int filelist_count, max_filelist_count;
+  char **tmp_filelist;
+  jclass str_clazz;
+  jobjectArray filearray;
   unsigned long int i;
-  jstring           str;
+  jstring str;
 
   /* Don't use the JCL convert function because it throws an exception
      on failure */
-  dirname = (*env)->GetStringUTFChars(env, name, 0);
+  dirname = (*env)->GetStringUTFChars (env, name, 0);
   if (dirname == NULL)
     {
-      return(0);
+      return (0);
     }
 
   /* open directory for reading */
-  TARGET_NATIVE_FILE_OPEN_DIR(dirname,handle,result);
+  TARGET_NATIVE_FILE_OPEN_DIR (dirname, handle, result);
 
-  (*env)->ReleaseStringUTFChars(env, name, dirname);
+  (*env)->ReleaseStringUTFChars (env, name, dirname);
 
   if (result != TARGET_NATIVE_OK)
     {
-      return(0);
+      return (0);
     }
 
   /* allocate filelist */
-  filelist = (char **)JCL_malloc(env, sizeof(char *) * REALLOC_SIZE);
-  if (filelist==NULL)
+  filelist = (char **) JCL_malloc (env, sizeof (char *) * REALLOC_SIZE);
+  if (filelist == NULL)
     {
-      TARGET_NATIVE_FILE_CLOSE_DIR(handle,result);
-      return(0);
+      TARGET_NATIVE_FILE_CLOSE_DIR (handle, result);
+      return (0);
     }
-  filelist_count=0;
-  max_filelist_count=REALLOC_SIZE;
+  filelist_count = 0;
+  max_filelist_count = REALLOC_SIZE;
 
   /* read the files from the directory */
-  TARGET_NATIVE_FILE_READ_DIR(handle,filename,result);
+  TARGET_NATIVE_FILE_READ_DIR (handle, filename, result);
   while (result == TARGET_NATIVE_OK)
     {
-      if ((strcmp(filename, ".")!=0) && (strcmp(filename, "..")!=0))
-        {
-          /* allocate more memory if necessary */
-          if (filelist_count >= max_filelist_count)
-            {
-              tmp_filelist = (char**)JCL_realloc(env,
-                                                 filelist,
-                                                 (max_filelist_count + REALLOC_SIZE) * sizeof(char*));
-              if (tmp_filelist==NULL)
-                {
-                  for (i = 0; i < filelist_count; i++)
-                    {
-                      JCL_free(env,filelist[i]);
-                    }
-                  JCL_free(env,filelist);
-                  TARGET_NATIVE_FILE_CLOSE_DIR(handle,result);
-                  return(0);
-                }
-              filelist           = tmp_filelist;
-              max_filelist_count += REALLOC_SIZE;
-            }
+      if ((strcmp (filename, ".") != 0) && (strcmp (filename, "..") != 0))
+	{
+	  /* allocate more memory if necessary */
+	  if (filelist_count >= max_filelist_count)
+	    {
+	      tmp_filelist = (char **) JCL_realloc (env,
+						    filelist,
+						    (max_filelist_count +
+						     REALLOC_SIZE) *
+						    sizeof (char *));
+	      if (tmp_filelist == NULL)
+		{
+		  for (i = 0; i < filelist_count; i++)
+		    {
+		      JCL_free (env, filelist[i]);
+		    }
+		  JCL_free (env, filelist);
+		  TARGET_NATIVE_FILE_CLOSE_DIR (handle, result);
+		  return (0);
+		}
+	      filelist = tmp_filelist;
+	      max_filelist_count += REALLOC_SIZE;
+	    }
 
-            /* save entry in list (avoid strdup, because it is not ANSI C, thus difficult to port) */
-            filelist[filelist_count]=(char*)JCL_malloc(env,strlen(filename)+1);
-            assert(filelist[filelist_count]!=NULL);
-            strcpy(filelist[filelist_count],filename);
-            filelist_count++;
-          }
+	  /* save entry in list (avoid strdup, because it is not ANSI C, thus difficult to port) */
+	  filelist[filelist_count] =
+	    (char *) JCL_malloc (env, strlen (filename) + 1);
+	  assert (filelist[filelist_count] != NULL);
+	  strcpy (filelist[filelist_count], filename);
+	  filelist_count++;
+	}
 
       /* read next directory entry */
-      TARGET_NATIVE_FILE_READ_DIR(handle,filename,result);
+      TARGET_NATIVE_FILE_READ_DIR (handle, filename, result);
     }
 
   /* close directory */
-  TARGET_NATIVE_FILE_CLOSE_DIR(handle,result); 
+  TARGET_NATIVE_FILE_CLOSE_DIR (handle, result);
 
   /* put the list of files into a Java String array and return it */
-  str_clazz = (*env)->FindClass(env, "java/lang/String"); 
-  if (str_clazz==NULL)
+  str_clazz = (*env)->FindClass (env, "java/lang/String");
+  if (str_clazz == NULL)
     {
       for (i = 0; i < filelist_count; i++)
-        {
-          JCL_free(env,filelist[i]);
-        }
-      JCL_free(env,filelist);
-      return(0);
+	{
+	  JCL_free (env, filelist[i]);
+	}
+      JCL_free (env, filelist);
+      return (0);
     }
-  filearray = (*env)->NewObjectArray(env, filelist_count, str_clazz, 0);
-  if (filearray==NULL)
+  filearray = (*env)->NewObjectArray (env, filelist_count, str_clazz, 0);
+  if (filearray == NULL)
     {
       for (i = 0; i < filelist_count; i++)
-        {
-          JCL_free(env,filelist[i]);
-        }
-      JCL_free(env,filelist);
-      return(0);
+	{
+	  JCL_free (env, filelist[i]);
+	}
+      JCL_free (env, filelist);
+      return (0);
     }
   for (i = 0; i < filelist_count; i++)
     {
       /* create new string */
-      str = (*env)->NewStringUTF(env, filelist[i]);
-      if (str==NULL) 
-        {
-          /* We don't clean up everything here, but if this failed,
-              something serious happened anyway */
-          for (i = 0; i < filelist_count; i++)
-            {
-              JCL_free(env,filelist[i]);
-            }
-          JCL_free(env,filelist);
-          return(0);
-        }
+      str = (*env)->NewStringUTF (env, filelist[i]);
+      if (str == NULL)
+	{
+	  /* We don't clean up everything here, but if this failed,
+	     something serious happened anyway */
+	  for (i = 0; i < filelist_count; i++)
+	    {
+	      JCL_free (env, filelist[i]);
+	    }
+	  JCL_free (env, filelist);
+	  return (0);
+	}
 
       /* save into array */
-      (*env)->SetObjectArrayElement(env, filearray, i, str);
+      (*env)->SetObjectArrayElement (env, filearray, i, str);
 
       /* delete local reference */
-      (*env)->DeleteLocalRef(env, str);
+      (*env)->DeleteLocalRef (env, str);
     }
 
   /* free resources */
   for (i = 0; i < filelist_count; i++)
     {
-      JCL_free(env,filelist[i]);
+      JCL_free (env, filelist[i]);
     }
-  JCL_free(env,filelist);
+  JCL_free (env, filelist);
 
-  return(filearray);
+  return (filearray);
 #else /* not WITHOUT_FILESYSTEM */
-  return(0);
+  return (0);
 #endif /* not WITHOUT_FILESYSTEM */
 }
-

@@ -54,9 +54,11 @@ exception statement from your version. */
  * Returns all local network interfaces as vector
  */
 JNIEXPORT jobject JNICALL
-Java_java_net_NetworkInterface_getRealNetworkInterfaces (JNIEnv* env, jclass class)
+Java_java_net_NetworkInterface_getRealNetworkInterfaces (JNIEnv *env,
+							 jclass class)
 {
-  JCL_ThrowException (env, IO_EXCEPTION, "java.net.NetworkInterface.getRealNetworkInterfaces(): not implemented");
+  JCL_ThrowException (env, IO_EXCEPTION,
+		      "java.net.NetworkInterface.getRealNetworkInterfaces(): not implemented");
   return 0;
 }
 

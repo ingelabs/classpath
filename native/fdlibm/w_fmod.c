@@ -67,40 +67,46 @@ PORTABILITY
 #ifndef _DOUBLE_IS_32BITS
 
 #ifdef __STDC__
-	double fmod(double x, double y)	/* wrapper fmod */
+double
+fmod (double x, double y)	/* wrapper fmod */
 #else
-	double fmod(x,y)		/* wrapper fmod */
-	double x,y;
+double
+fmod (x, y)			/* wrapper fmod */
+     double x, y;
 #endif
 {
 #ifdef _IEEE_LIBM
-	return __ieee754_fmod(x,y);
+  return __ieee754_fmod (x, y);
 #else
-	double z;
-	struct exception exc;
-	z = __ieee754_fmod(x,y);
-	if(_LIB_VERSION == _IEEE_ ||isnan(y)||isnan(x)) return z;
-	if(y==0.0) {
-            /* fmod(x,0) */
-            exc.type = DOMAIN;
-            exc.name = "fmod";
-	    exc.arg1 = x;
-	    exc.arg2 = y;
-	    exc.err = 0;
-            if (_LIB_VERSION == _SVID_)
-               exc.retval = x;
-	    else
-	       exc.retval = 0.0/0.0;
-            if (_LIB_VERSION == _POSIX_)
-               errno = EDOM;
-            else if (!matherr(&exc)) {
-                  errno = EDOM;
-            }
-	    if (exc.err != 0)
-	       errno = exc.err;
-            return exc.retval; 
-	} else
-	    return z;
+  double z;
+  struct exception exc;
+  z = __ieee754_fmod (x, y);
+  if (_LIB_VERSION == _IEEE_ || isnan (y) || isnan (x))
+    return z;
+  if (y == 0.0)
+    {
+      /* fmod(x,0) */
+      exc.type = DOMAIN;
+      exc.name = "fmod";
+      exc.arg1 = x;
+      exc.arg2 = y;
+      exc.err = 0;
+      if (_LIB_VERSION == _SVID_)
+	exc.retval = x;
+      else
+	exc.retval = 0.0 / 0.0;
+      if (_LIB_VERSION == _POSIX_)
+	errno = EDOM;
+      else if (!matherr (&exc))
+	{
+	  errno = EDOM;
+	}
+      if (exc.err != 0)
+	errno = exc.err;
+      return exc.retval;
+    }
+  else
+    return z;
 #endif
 }
 

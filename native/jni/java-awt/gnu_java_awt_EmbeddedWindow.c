@@ -46,22 +46,30 @@ exception statement from your version. */
 #define AWT_EXCEPTION "java/awt/AWTException"
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_EmbeddedWindow_setWindowPeer (JNIEnv *env, jobject obj, jobject peer)
+Java_gnu_java_awt_EmbeddedWindow_setWindowPeer (JNIEnv *env, jobject obj,
+						jobject peer)
 {
   jclass clazz;
   jfieldID fid;
-  
-  if (!peer) {
-    clazz = (*env)->FindClass (env, "java.awt.Component");
-    if (clazz == NULL) {
-      JCL_ThrowException (env, AWT_EXCEPTION, "gnu.java.awt.EmbbeddedWindow.setWindowPeer(): Error");
-    }
 
-    fid = (*env)->GetFieldID (env, clazz, "peer", "[java.awt.peer.ComponentPeer");
-    if (fid == NULL) {
-      JCL_ThrowException (env, AWT_EXCEPTION, "gnu.java.awt.EmbbeddedWindow.setWindowPeer(): Error");
-    }
+  if (!peer)
+    {
+      clazz = (*env)->FindClass (env, "java.awt.Component");
+      if (clazz == NULL)
+	{
+	  JCL_ThrowException (env, AWT_EXCEPTION,
+			      "gnu.java.awt.EmbbeddedWindow.setWindowPeer(): Error");
+	}
 
-    (*env)->SetObjectField (env, obj, fid, peer);
-  }
+      fid =
+	(*env)->GetFieldID (env, clazz, "peer",
+			    "[java.awt.peer.ComponentPeer");
+      if (fid == NULL)
+	{
+	  JCL_ThrowException (env, AWT_EXCEPTION,
+			      "gnu.java.awt.EmbbeddedWindow.setWindowPeer(): Error");
+	}
+
+      (*env)->SetObjectField (env, obj, fid, peer);
+    }
 }

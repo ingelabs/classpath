@@ -40,7 +40,7 @@ exception statement from your version. */
 #include "gnu_java_awt_peer_gtk_GtkMenuItemPeer.h"
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer_create
+  Java_gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer_create
   (JNIEnv *env, jobject obj, jstring label)
 {
   GtkWidget *widget;
@@ -52,7 +52,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer_create
   str = (*env)->GetStringUTFChars (env, label, NULL);
 
   gdk_threads_enter ();
-  
+
   widget = gtk_check_menu_item_new_with_label (str);
   gtk_check_menu_item_set_show_toggle (GTK_CHECK_MENU_ITEM (widget), 1);
   gtk_widget_show (widget);
@@ -65,13 +65,13 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer_create
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer_setState
+  Java_gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer_setState
   (JNIEnv *env, jobject obj, jboolean state)
 {
   void *ptr;
 
   ptr = NSA_GET_PTR (env, obj);
-  
+
   gdk_threads_enter ();
   gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (ptr), state);
   gdk_threads_leave ();

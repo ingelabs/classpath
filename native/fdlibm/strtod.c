@@ -104,13 +104,11 @@ Supporting OS subroutines required: <<close>>, <<fstat>>, <<isatty>>,
 
 double
 _DEFUN (_strtod_r, (ptr, s00, se),
-	struct _Jv_reent *ptr _AND
-	_CONST char *s00 _AND
-	char **se)
+	struct _Jv_reent *ptr _AND _CONST char *s00 _AND char **se)
 {
   int bb2, bb5, bbe, bd2, bd5, bbbits, bs2, c, dsign, e1, esign, i, j,
     k, nd, nd0, nf, nz, nz0, sign;
-  int digits = 0;  /* Number of digits found in fraction part. */
+  int digits = 0;		/* Number of digits found in fraction part. */
   long e;
   _CONST char *s, *s0, *s1;
   double aadj, aadj1, adj;
@@ -295,8 +293,8 @@ dig_done:
 	  if (e <= Ten_pmax + i)
 	    {
 	      /* A fancier test would sometimes let us do
-				 * this for larger i values.
-				 */
+	       * this for larger i values.
+	       */
 	      e -= i;
 	      rv.d *= tens[i];
 #ifdef VAX
@@ -383,7 +381,7 @@ dig_done:
 	{
 	  e1 >>= 4;
 	  if (e1 >= 1 << n_bigtens)
-            goto undfl;
+	    goto undfl;
 	  for (j = 0; e1 > 1; j++, e1 >>= 1)
 	    if (e1 & 1)
 	      rv.d *= tinytens[j];
@@ -416,7 +414,7 @@ dig_done:
 	}
     }
 
-  /* Now the hard part -- adjusting rv to the correct value.*/
+  /* Now the hard part -- adjusting rv to the correct value. */
 
   /* Put digits into bd: true value = bd * 10^e */
 
@@ -507,9 +505,8 @@ dig_done:
 	      if ((word0 (rv) & Bndry_mask1) == Bndry_mask1
 		  && word1 (rv) == 0xffffffff)
 		{
-		  /*boundary case -- increment exponent*/
-		  word0 (rv) = (word0 (rv) & Exp_mask)
-		    + Exp_msk1
+		  /*boundary case -- increment exponent */
+		  word0 (rv) = (word0 (rv) & Exp_mask) + Exp_msk1
 #ifdef IBM
 		    | Exp_msk1 >> 4
 #endif
@@ -618,8 +615,7 @@ dig_done:
 	  word0 (rv) -= P * Exp_msk1;
 	  adj = aadj1 * ulp (rv.d);
 	  rv.d += adj;
-	  if ((word0 (rv) & Exp_mask) >=
-	      Exp_msk1 * (DBL_MAX_EXP + Bias - P))
+	  if ((word0 (rv) & Exp_mask) >= Exp_msk1 * (DBL_MAX_EXP + Bias - P))
 	    {
 	      if (word0 (rv0) == Big0 && word1 (rv0) == Big1)
 		goto ovfl;
@@ -649,8 +645,7 @@ dig_done:
 	      if ((word0 (rv) & Exp_mask) <= P * Exp_msk1)
 #endif
 		{
-		  if (word0 (rv0) == Tiny0
-		      && word1 (rv0) == Tiny1)
+		  if (word0 (rv0) == Tiny0 && word1 (rv0) == Tiny1)
 		    goto undfl;
 		  word0 (rv) = Tiny0;
 		  word1 (rv) = Tiny1;
@@ -716,4 +711,3 @@ ret:
     ptr->_errno = EINVAL;
   return sign ? -rv.d : rv.d;
 }
-
