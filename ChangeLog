@@ -1,3 +1,8 @@
+2005-02-17  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	* gnu/java/nio/channels/FileChannelImpl.java (write(ByteBuffer)):
+	Move the position of the source buffer forward.
+
 2005-02-16  Andrew Haley  <aph@redhat.com>
 
 	* javax/security/auth/Subject.java (doAsPrivileged): If acc is
