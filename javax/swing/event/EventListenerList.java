@@ -38,12 +38,54 @@ exception statement from your version. */
 package javax.swing.event;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.EventListener;
 
 
 /**
- * EventListenerList
- * @author Andrew Selkirk
+ * A utility class for keeping track of {@link EventListener}s.
+ *
+ * <p><b>Example for using this class:</b>
+ *
+ * <blockquote><pre> import java.util.EventListener;
+ * import javax.swing.event.EventListenerList;
+ *
+ * class Foo
+ * {
+ *   protected final EventListenerList listeners = new EventListenerList();
+ *   protected BarClosedEvent barClosedEvent = null;
+ *
+ *   public void addBarListener(BarListener l)
+ *   {
+ *     listeners.<a href="#add(java.lang.Class, java.util.EventListener)"
+ *               >add</a>(BarListener.class, l);
+ *   }
+ *
+ *   public void removeBarListener(BarListener l)
+ *   {
+ *     listeners.<a href="#remove(java.lang.Class, java.util.EventListener)"
+ *               >remove</a>(BarListener.class, l);
+ *   }
+ *
+ *   protected void fireBarClosedEvent()
+ *   {
+ *     Object[] l = listeners.<a href="#getListenerList()"
+ *                            >getListenerList()</a>;
+ *
+ *     for (int i = l.length - 2; i >= 0; i -= 2)
+ *       if (l[i] == BarListener.class)
+ *         {
+ *           // Create the event on demand, when it is needed the first time.
+ *           if (barClosedEvent == null)
+ *             barClosedEvent = new BarClosedEvent(this);
+ *
+ *           ((BarClosedListener) l[i + 1]).barClosed(barClosedEvent);
+ *         }
+ *   }
+ * }</pre></blockquote>
+ *
+ * @author <a href="mailto:aselkirk@sympatico.ca">Andrew Selkirk</a>
+ * @author <a href="mailto:brawer@dandelis.ch">Sascha Brawer</a>
  */
 public class EventListenerList
   implements Serializable
@@ -154,36 +196,42 @@ public class EventListenerList
 
 
   /**
-   * Get list of listeners of a particular type
-   * @param c Class type
-   * @returns List of listeners of the specified type
+   * Retrieves the currently subscribed listeners of a particular
+   * type.  For a listener to be returned, it must have been
+   * registered with exactly the type <code>c</code>; subclasses are
+   * not considered equal.
+   *
+   * <p>The returned array can always be cast to <code>c[]</code>.
+   * Since it is a newly allocated copy, the caller may arbitrarily
+   * modify the array.
+   *
+   * @param c the class which was passed to {@link #add}.
+   *
+   * @throws ClassCastException if <code>c</code> does not implement
+   * the {@link EventListener} interface.
+   *
+   * @throws NullPointerException if <code>c</code> is
+   * <code>null</code>.
+   *
+   * @returns an array of <code>c</code> whose elements are the
+   * currently subscribed listeners of the specified type.  If there
+   * are no such listeners, an empty array is returned.
+   *
+   * @since 1.3
    */
   public EventListener[] getListeners(Class c)
   {
-    int count;
-    EventListener[] list;
-    String name;
-    int index;
+    int count, f;
+    EventListener[] result;
 
-    // Get count of listeners
     count = getListenerCount(c);
-
-    // Create Event Listener list
-    list = new EventListener[count];
-
-    // Construct List
-    count = 0;
-    name  = c.getName();
-    for (index = 0; index < listenerList.length; index += 2)
-      {
-        if (((Class) listenerList[index]).getName().equals(name))
-          {
-            list[count] = (EventListener) listenerList[index];
-            count += 1;
-          }
-      }
-
-    return list;
+    result = (EventListener[]) Array.newInstance(c, count);
+    f = 0;
+    for (int i = 0; i < listenerList.length; i += 2)
+      if (listenerList[i] == c)
+        result[f++] = (EventListener) listenerList[i + 1];
+    
+    return result;
   }
 
 
