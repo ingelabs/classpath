@@ -1,3 +1,8 @@
+2001-10-01  Mark Wielaard  <mark@klomp.org>
+
+	* java/lang/InheritableThreadLocal.java (addToHeritage): check if this
+	local is already contained in the heritage before adding it.
+
 2001-10-01  Jochen Hoenicke  <jochen@gnu.org>
 
 	* java/util/zip/ZipFile.java: Return -1 in 

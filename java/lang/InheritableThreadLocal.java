@@ -122,7 +122,9 @@ public class InheritableThreadLocal extends ThreadLocal {
 				threadMap.put(currentThread, heritage);
 			}
 		}
-		heritage.add(this);
+		if (!heritage.contains(this)) {
+			heritage.add(this);
+		}
 	}
 	
 	/**
