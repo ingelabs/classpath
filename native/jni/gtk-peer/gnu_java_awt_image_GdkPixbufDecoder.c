@@ -1,5 +1,5 @@
 /* gdkpixbufdecoder.c
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -76,16 +76,12 @@ Java_gnu_java_awt_image_GdkPixbufDecoder_initState (JNIEnv *env, jclass clazz)
   getFDID = (*env)->GetFieldID (env, filedescriptor, "fd", "I"); 
 }
 
-void
+static void
 area_prepared (GdkPixbufLoader *loader, struct loader_vector *lv)
 {
   ArtPixBuf *pixbuf;
 
   //  pixbuf = GDK_PIXBUF_LOADER(gdk_pixbuf_loader_get_pixbuf (loader))->art_pixbuf;
-
-  printf ("AREA PREPARED\n");
-
-  return;
 
   gdk_threads_leave ();
   (*gdk_env)->CallVoidMethod (gdk_env,
@@ -97,7 +93,7 @@ area_prepared (GdkPixbufLoader *loader, struct loader_vector *lv)
   gdk_threads_enter ();
 }
 
-void
+static void
 area_updated (GdkPixbufLoader *loader, 
 	      gint x, gint y, 
 	      gint width, gint height,
@@ -106,8 +102,6 @@ area_updated (GdkPixbufLoader *loader,
   ArtPixBuf *pixbuf;
   jintArray jpixels;
   jint *pixels, scansize, num_pixels;
-
-  printf ("AREA UPDATED\n");
 
   /*  pixbuf = gdk_pixbuf_loader_get_pixbuf (loader)->art_pixbuf;
 
@@ -166,11 +160,9 @@ area_updated (GdkPixbufLoader *loader,
   gdk_threads_enter ();
 }
 
-void
+static void
 closed (GdkPixbufLoader *loader, struct loader_vector *lv)
 {
-  printf ("IN CLOSED CALLBACK\n");
-
   gdk_threads_leave ();
 
   (*gdk_env)->DeleteGlobalRef (gdk_env, *(lv->loader)); 

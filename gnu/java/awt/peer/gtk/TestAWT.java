@@ -1,5 +1,5 @@
 /* TestAWT.java -- Tests the AWT like testgtk
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -51,7 +51,9 @@ class TestAWT
 	prop.put ("awt.toolkit", "gnu.java.awt.peer.gtk.GtkToolkit");
       }
     MainWindow f = new MainWindow();
+    System.out.println(f.isDisplayable());
     f.show();
+    System.out.println(f.isDisplayable());
   }
 }
 
@@ -122,8 +124,6 @@ class MainWindow extends PrettyFrame implements ActionListener
 
   MainWindow () 
   {
-    System.out.println ("INSET:" + getInsets ());
-
     MenuBar mb = new MenuBar ();
     Menu menu = new Menu ("File");
     Menu submenu = new Menu ("Testing");
@@ -164,7 +164,6 @@ class MainWindow extends PrettyFrame implements ActionListener
     sp.add (p);
     add (sp, "Center");
 
-    System.out.println (86 + (windows.size ()*22));
     setSize (200, 86 + (windows.size ()*22));
     setTitle ("TestAWT");
   }
@@ -173,13 +172,8 @@ class MainWindow extends PrettyFrame implements ActionListener
   {
     Button source = (Button) evt.getSource ();
       
-    System.out.println (source);
-    System.out.println (closeButton);
-
     if (source==closeButton)
       {
-	System.out.println ("INSET:" + getInsets ());
-	System.out.println ("BOUNDS:" + getBounds ());
 	System.getProperties ().list (System.out);
 	dispose();
 	System.exit (0);
@@ -189,7 +183,10 @@ class MainWindow extends PrettyFrame implements ActionListener
     if (w.isVisible ())
       w.dispose ();
     else 
-      w.setVisible (true);
+      {
+	w.setVisible (true);
+	w.show();
+      }
   }
 }
 
@@ -229,7 +226,6 @@ class ButtonsWindow extends SubFrame implements ActionListener
     });
     add (cb, "South");
     setTitle ("Buttons");
-    pack ();
   }
 
   public void actionPerformed (ActionEvent evt)
@@ -371,7 +367,6 @@ class CursorsWindow extends SubFrame implements ItemListener
 
   public void itemStateChanged (ItemEvent e)
   {
-    System.out.println (cursorChoice.getSelectedIndex());
     cursorCanvas.setCursor (Cursor.getPredefinedCursor (cursorChoice.getSelectedIndex()));
   }
 }
@@ -550,5 +545,3 @@ class RadioWindow extends SubFrame
     setSize (85, 167);
   }
 }
-
-

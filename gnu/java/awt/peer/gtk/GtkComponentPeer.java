@@ -151,7 +151,6 @@ public class GtkComponentPeer extends GtkGenericPeer
     int dim[]=new int[2];
     gtkWidgetGetDimensions (dim);
     Dimension d = new Dimension (dim[0],dim[1]);
-    System.out.println ("min: " + this + d);
     return (d);
   }
 
@@ -160,7 +159,6 @@ public class GtkComponentPeer extends GtkGenericPeer
     int dim[]=new int[2];
     gtkWidgetGetDimensions (dim);
     Dimension d = new Dimension (dim[0],dim[1]);
-    System.out.println ("pref: " + this + d);
     return (d);
   }
 
@@ -242,7 +240,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void setBackground (Color c) 
   {
-    System.out.println ("setBackground [UNIMPLEMENTED");
+    // System.out.println ("setBackground [UNIMPLEMENTED");
   }
 
   native public void setNativeBounds (int x, int y, int width, int height);
@@ -277,7 +275,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void setForeground (Color c) 
   {
-    System.out.println ("setForeground [UNIMPLEMENTED");
+    // System.out.println ("setForeground [UNIMPLEMENTED");
   }
 
   public Color getForeground ()
@@ -349,7 +347,6 @@ public class GtkComponentPeer extends GtkGenericPeer
     do
       {
 	component = component.getParent ();
-	System.out.println ("COMPONPEER: " + component);
 	p = component.getPeer ();
       } while (p instanceof java.awt.peer.LightweightPeer);
     

@@ -1,5 +1,5 @@
 /* GtkImage.java
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -73,9 +73,6 @@ public class GtkImage extends Image implements ImageConsumer
   {
     source = producer;
     this.g = g;
-
-    System.out.println (source);
-    System.out.println (this);
 
     source.addConsumer (this);
   }

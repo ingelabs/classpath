@@ -1,3 +1,61 @@
+2002-11-09  Tom Tromey  <tromey@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java (postConfigureEvent):
+	Removed println.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java (static): Removed
+	println.
+	(createImage): Likewise.
+	(setComponentState): Likewise.
+	(createLabel): Likewise.
+	* gnu/java/awt/peer/gtk/GtkTextFieldPeer.java (getMinimumSize):
+	Removed println.
+	(getPreferredSize): Likewise.
+	* gnu/java/awt/peer/gtk/GtkTextAreaPeer.java (getMinimumSize):
+	Removed println.
+	(getPreferredSize): Likewise.
+	* gnu/java/awt/peer/gtk/GtkImage.java (GtkImage): Removed
+	println.
+	* gnu/java/awt/peer/gtk/GtkDialogPeer.java (handleEvent): Removed
+	println.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (getMinimumSize):
+	Removed println.
+	(getPreferredSize): Likewise.
+	(setBackground): Likewise.
+	(setForeground): Likewise.
+	(getArgs): Likewise.
+	* gnu/java/awt/peer/gtk/GdkGraphics.java (clipRect): Removed
+	println.
+	(drawRoundRect): Likewise.
+	(fillRoundRect): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextFieldPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryGetSize):
+	Removed printf.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkScrollPanePeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getHScrollbarHeight): Removed printf.
+	(Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getVScrollbarWidth):
+	Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkPanelPeer.c (sr):
+	Removed printf.  Now static.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMainThread.c
+	(Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit): Removed
+	printf.
+	(Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkMain): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedPut): Removed
+	printf.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedMove):
+	Likewise.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setNativeBounds):
+	Likewise.
+	(find_gtk_layout): Likewise.
+	(set_parent): Likewise.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_Object_2): Likewise.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_create): Likewise.
+	* native/jni/gtk-peer/gnu_java_awt_image_GdkPixbufDecoder.c
+	(area_prepared): Remove printf.  Now static.
+	(area_updated): Likewise.
+	(closed): Likewise.
+
 2002-11-08  Michael Koch <konqueror@gmx.de>
 
 	* gnu/java/nio/charset/ISO_8859_1.java,

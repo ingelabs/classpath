@@ -1,5 +1,5 @@
 /* gtkpanelpeer.c -- Native implementation of GtkPanelPeer
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -60,8 +60,8 @@ struct _GtkLayoutChild {
   gint y;
 };
 
-void sr (GtkWidget *widget, GtkRequisition *requisition,
-	 gpointer user_data)
+static
+void sr (GtkWidget *widget, GtkRequisition *requisition, gpointer user_data)
 {
   GtkLayout *layout;
   GtkLayoutChild *child;
@@ -70,13 +70,6 @@ void sr (GtkWidget *widget, GtkRequisition *requisition,
   layout = GTK_LAYOUT (widget);
   requisition->width = GTK_WIDGET (widget)->allocation.width;
   requisition->height = GTK_WIDGET (widget)->allocation.height;
-
-  if (user_data)
-    {
-      printf ("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11\n");
-      printf ("%i, %i\n",   requisition->width,   requisition->height);
-    }
-  return;
 
   children = layout->children;
   while (children)
@@ -97,8 +90,6 @@ void sr (GtkWidget *widget, GtkRequisition *requisition,
 
   requisition->height += GTK_CONTAINER (layout)->border_width * 2;
   requisition->width += GTK_CONTAINER (layout)->border_width * 2;
-
-  printf ("width, height %i, %i\n", requisition->width, requisition->height);
 }
 
 JNIEXPORT void JNICALL 

@@ -1,5 +1,5 @@
 /* gtktextfieldpeer.c -- Native implementation of GtkTextFieldPeer
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -120,8 +120,6 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryGetSize
 					    'W'));
   dims[1]=myreq.height;
   
-  printf("native: %i x %i\n", dims[0], dims[1]);
-
   gdk_threads_leave ();
   
   (*env)->ReleaseIntArrayElements (env, jdims, dims, 0);

@@ -1,5 +1,5 @@
 /* GtkTextAreaPeer.java -- Implements TextAreaPeer with GTK
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -67,9 +67,6 @@ public class GtkTextAreaPeer extends GtkTextComponentPeer
 
     gtkTextGetSize (rows, cols, dims);
 
-    System.out.println ("TAP: getMinimumSize " + cols + " = " + dims[0] + 
-			" x " + dims[1]);
-      
     return (new Dimension (dims[0], dims[1]));
   }
 
@@ -79,9 +76,6 @@ public class GtkTextAreaPeer extends GtkTextComponentPeer
 
     gtkTextGetSize (rows, cols, dims);
 
-    System.out.println ("TAP: getPreferredSize " + cols + " = " + dims[0] + 
-			" x " + dims[1]);
-      
     return (new Dimension (dims[0], dims[1]));
   }
 

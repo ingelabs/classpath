@@ -1,5 +1,5 @@
 /* gtkcomponentpeer.c -- Native implementation of GtkComponentPeer
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -269,19 +269,12 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedPut
   gdk_threads_enter ();
   if (GTK_IS_WINDOW(GTK_OBJECT(containerptr)))
     {
-      printf("fixedput: container is window\n");
-
       child=gtk_container_children (GTK_CONTAINER(containerptr));
       
-      if (!child)
-	printf("No children in window!\n");
       while (child && !GTK_IS_FIXED(child->data))
 	{
-	  printf("Child\n");
 	  child=g_list_next(child);
 	}
-      if(!child)
-	printf("Child is not fixed!\n");
       
       fix=GTK_WIDGET(child->data);
       g_list_free(child);
@@ -289,19 +282,12 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedPut
   else
     if (GTK_IS_SCROLLED_WINDOW(GTK_OBJECT(containerptr)))
     {
-      printf("fixedput: container is scrolled window\n");
-
       child=gtk_container_children (GTK_CONTAINER (GTK_BIN(containerptr)->child));
       
-      if (!child)
-	printf("No children in window!\n");
       while (child && !GTK_IS_FIXED(child->data))
 	{
-	  printf("Child\n");
 	  child=g_list_next(child);
 	}
-      if(!child)
-	printf("Child is not fixed!\n");
       
       fix=GTK_WIDGET(child->data);
 
@@ -309,12 +295,9 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedPut
     }
   else
     {
-      printf("fixedput: container is fixed\n");
       fix=GTK_WIDGET(containerptr);
     }
   
-  printf("fixedput: fixed found: %p\n",fix);
-
   gtk_fixed_put(GTK_FIXED(fix),GTK_WIDGET(objptr),x,y);
   gtk_widget_realize (GTK_WIDGET (objptr));
   gtk_widget_show (GTK_WIDGET (objptr));
@@ -334,8 +317,6 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedMove (JNIEnv *env,
      nice fast scrolling, we try to second guess it here.  This
      might cause problems later.  */
   
-  printf ("GTKFIXED MOVE CALLED\n");
-
   if (x >= 0 && y >= 0) 
     {
       ptr = NSA_GET_PTR (env, obj);
@@ -355,9 +336,6 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setNativeBoun
   void *ptr;
 
   ptr = NSA_GET_PTR (env, obj);
-
-  printf ("Cpeer.setBounds: %i, %i  %ix%i\n",
-	  x, y, width, height);
 
   gdk_threads_enter ();
 
@@ -439,14 +417,10 @@ set_visible (GtkWidget *widget, jboolean visible)
 GtkLayout *
 find_gtk_layout (GtkWidget *parent)
 {
-  printf ("FINDGTKLAYTOU BEGIN\n");
   if (GTK_IS_WINDOW (parent))
     {
       GList *children = gtk_container_children 
 	                  (GTK_CONTAINER (GTK_BIN (parent)->child));
-
-  printf ("FINDGTKLAYTOU END\n");
-
 
       if (GTK_IS_MENU_BAR (children->data))
 	return GTK_LAYOUT (children->next->data);
@@ -462,14 +436,10 @@ find_gtk_layout (GtkWidget *parent)
 void
 set_parent (GtkWidget *widget, GtkContainer *parent)
 {
-  printf ("SET PARENT START\n");
-
   if (GTK_IS_WINDOW (parent))
     {
       GList *children = gtk_container_children 
 	                  (GTK_CONTAINER (GTK_BIN (parent)->child));
-
-  printf ("SET PARENT ENDISH\n");
 
       if (GTK_IS_MENU_BAR (children->data))
 	gtk_layout_put (GTK_LAYOUT (children->next->data), widget, 0, 0);
@@ -628,14 +598,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_O
   if (!strcmp (name, "parent"))
     {
       gdk_threads_enter ();
-      printf ("CON CHECK\n");
-      printf ("we have a %s\n", gtk_type_name (GTK_OBJECT_TYPE (ptr1)));
-      if (GTK_IS_WINDOW (ptr1))
-	printf ("we have a window!\n");
-      if (!ptr2)
-	printf ("ptr2 is null!\n");
       set_parent (GTK_WIDGET (ptr1), GTK_CONTAINER (ptr2));
-      printf ("CON END\n");
       gdk_threads_leave ();
 
       (*env)->ReleaseStringUTFChars (env, jname, name);
@@ -661,8 +624,6 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_create
 
   gdk_threads_enter ();
   gtk_button_get_type ();
-  printf ("typename: %s\n", typename);
-  printf ("%i\n", gtk_type_from_name (typename));
   widget = gtk_object_newv (gtk_type_from_name (typename),
 			    0, NULL);
 /*    widget = gtk_type_new (gtk_type_from_name (typename)); */

@@ -1,5 +1,5 @@
 /* GdkGraphics.java
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -92,10 +92,6 @@ public class GdkGraphics extends Graphics
 
   public void clipRect (int x, int y, int width, int height)
   {
-    if (!clip.intersects (new Rectangle (x, y, width, height)))
-      {
-	System.out.println ("DONT' INTERSETCT");
-      }
     clip = clip.intersection (new Rectangle (x, y, width, height));
     setClipRectangle (clip.x, clip.y, clip.width, clip.height);
   }
@@ -218,13 +214,13 @@ public class GdkGraphics extends Graphics
   public void drawRoundRect(int x, int y, int width, int height, 
 			    int arcWidth, int arcHeight)
   {
-    System.out.println ("drawRoundRect called [UNIMPLEMENTED]");
+    // System.out.println ("drawRoundRect called [UNIMPLEMENTED]");
   }
 
   public void fillRoundRect (int x, int y, int width, int height, 
 			     int arcWidth, int arcHeight)
   {
-    System.out.println ("fillRoundRect called [UNIMPLEMENTED]");
+    // System.out.println ("fillRoundRect called [UNIMPLEMENTED]");
   }
 
   public Shape getClip ()

@@ -1,5 +1,5 @@
 /* gtkmainthread.c -- Native implementation of GtkMainThread
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -69,8 +69,6 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
   char *homedir, *rcpath = NULL;
 /*    jclass gtkgenericpeer; */
   jclass gtkcomponentpeer, gtkwindowpeer, gtkscrollbarpeer, gtklistpeer, gtkmenuitempeer;
-
-  printf ("init\n");
 
   NSA_INIT (env, clazz);
 
@@ -159,9 +157,7 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkMain (JNIEnv *env, jobject obj)
 {
-  printf ("TRYING TO GET INTO GTKMAIN\n");
   gdk_threads_enter ();
-  printf ("ACQUIRED LOCK TO RUN GTKMAIN\n");
   gtk_main ();
   gdk_threads_leave ();
 }

@@ -69,11 +69,7 @@ public class GtkToolkit extends java.awt.Toolkit
 
   static 
   {
-      /*    if (Configuration.INIT_LOAD_LIBRARY)
-	    {*/
-	  System.out.println("loading gtkpeer");
-	System.loadLibrary("gtkpeer");
-	//      }
+    System.loadLibrary("gtkpeer");
   }
 
   public GtkToolkit ()
@@ -113,7 +109,7 @@ public class GtkToolkit extends java.awt.Toolkit
   public Image createImage (byte[] imagedata, int imageoffset,
 			    int imagelength) 
   {
-    System.out.println ("createImage byte[] NOT SUPPORTED");
+    // System.out.println ("createImage byte[] NOT SUPPORTED");
     return null;
   }
 
@@ -189,9 +185,6 @@ public class GtkToolkit extends java.awt.Toolkit
 	
 	Rectangle bounds = c.getBounds ();
 	cp.setBounds (bounds.x, bounds.y, bounds.width, bounds.height);
-	if (c instanceof Canvas)
-	  System.out.println ("width " + bounds.width + " height " + bounds.height);
-	
 	cp.setVisible (c.isVisible ());
       }
   }
@@ -241,9 +234,7 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected LabelPeer createLabel (Label label) 
   {
-    LabelPeer lp =  new GtkLabelPeer (label);
-    System.out.println("Returning " + lp);
-    return lp;
+    return new GtkLabelPeer (label);
   }
 
   protected ListPeer createList (List list)

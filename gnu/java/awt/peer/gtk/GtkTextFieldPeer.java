@@ -1,5 +1,5 @@
 /* GtkTextFieldPeer.java -- Implements TextFieldPeer with GTK
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -65,9 +65,6 @@ public class GtkTextFieldPeer extends GtkTextComponentPeer
 
     gtkEntryGetSize (cols, dims);
 
-    System.out.println ("TFP: getMinimumSize " + cols + " = " + dims[0] + 
-			" x " + dims[1]);
-      
     return (new Dimension (dims[0], dims[1]));
   }
 
@@ -77,9 +74,6 @@ public class GtkTextFieldPeer extends GtkTextComponentPeer
 
     gtkEntryGetSize (cols, dims);
 
-    System.out.println ("TFP: getPreferredSize " + cols + " = " + dims[0] + 
-			" x " + dims[1]);
-      
     return (new Dimension (dims[0], dims[1]));
   }
   

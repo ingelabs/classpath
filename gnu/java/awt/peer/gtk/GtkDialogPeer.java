@@ -1,5 +1,5 @@
 /* GtkDialogPeer.java -- Implements DialogPeer with GTK
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -67,10 +67,10 @@ public class GtkDialogPeer extends GtkWindowPeer
 
   public void handleEvent (AWTEvent event)
   {
-    int id = event.getID();
+//     int id = event.getID();
     
-    if (id == WindowEvent.WINDOW_CLOSING)
-      System.out.println ("got a closing event");
+//     if (id == WindowEvent.WINDOW_CLOSING)
+//       System.out.println ("got a closing event");
   }
 
 }

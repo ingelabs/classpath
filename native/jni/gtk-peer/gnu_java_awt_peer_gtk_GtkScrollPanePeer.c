@@ -1,5 +1,5 @@
 /* gtkscrollpanepeer.c -- Native implementation of GtkScrollPanePeer
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -140,7 +140,6 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getHScrollbarHeight
   gdk_threads_enter ();
   sw = GTK_SCROLLED_WINDOW (ptr);
   height = (sw->hscrollbar_visible) ? sw->hscrollbar->allocation.height : 0;
-  printf ("height: %i\n", height);
   gdk_threads_leave ();
 
   return height;
@@ -159,7 +158,6 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getVScrollbarWidth
   gdk_threads_enter ();
   sw = GTK_SCROLLED_WINDOW (ptr);
   width = (sw->vscrollbar_visible) ? sw->vscrollbar->allocation.width : 0;
-  printf ("width: %i\n", width);
   gdk_threads_leave ();
 
   return width;
