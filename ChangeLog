@@ -1,5 +1,12 @@
 2005-03-13  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/javax/swing/text/html/parser/HTML_401F.java,
+	gnu/javax/swing/text/html/parser/gnuDTD.java,
+	gnu/javax/swing/text/html/parser/models/node.java:
+	Reworked import statements.
+
+2005-03-13  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/xml/aelfred2/XmlParser.java: Fixed typo.
 
 2005-03-12  Audrius Meskauskas  <audriusa@bluewin.ch>
