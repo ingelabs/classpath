@@ -1,4 +1,4 @@
-/* ListDataListener.java --
+/* TreeModelListener.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,29 +38,34 @@ exception statement from your version. */
 package javax.swing.event;
 
 /**
- * ListDataListener interface
+ * TreeModelListener interface
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public interface ListDataListener extends EventListener {
+public interface TreeModelListener extends EventListener {
 
 	/**
-	 * Contents Changed
-	 * @param event ListDataEvent Event
+	 * Tree nodes changed
+	 * @param event Tree Model Event
 	 */
-	public void contentsChanged(ListDataEvent event);
+	public void treeNodesChanged(TreeModelEvent event);
 
 	/**
-	 * Interval Added
-	 * @param event ListDataEvent Event
+	 * Tree nodes inserted
+	 * @param event Tree Model Event
 	 */
-	public void intervalAdded(ListDataEvent event);
+	public void treeNodesInserted(TreeModelEvent event);
 
 	/**
-	 * Interval Removed
-	 * @param event ListDataEvent Event
+	 * Tree nodes removed
+	 * @param event Tree Model Event
 	 */
-	public void intervalRemoved(ListDataEvent event);
+	public void treeNodesRemoved(TreeModelEvent event);
+
+	/**
+	 * Tree structured changed
+	 * @param event Tree Model Event
+	 */
+	public void treeStructureChanged(TreeModelEvent event);
 
 
-} // ListDataListener
+} // TreeModelListener

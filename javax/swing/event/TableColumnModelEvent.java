@@ -1,4 +1,4 @@
-/* ListDataListener.java --
+/* TableColumnModelEvent.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,30 +37,68 @@ exception statement from your version. */
 
 package javax.swing.event;
 
+// Imports
+import java.util.EventObject;
+import javax.swing.table.TableColumnModel;
+
 /**
- * ListDataListener interface
+ * TableColumnModelEvent
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public interface ListDataListener extends EventListener {
+public class TableColumnModelEvent extends EventObject {
+
+	//-------------------------------------------------------------
+	// Variables --------------------------------------------------
+	//-------------------------------------------------------------
 
 	/**
-	 * Contents Changed
-	 * @param event ListDataEvent Event
+	 * fromIndex
 	 */
-	public void contentsChanged(ListDataEvent event);
+	protected	int	fromIndex		= 0;
 
 	/**
-	 * Interval Added
-	 * @param event ListDataEvent Event
+	 * toIndex
 	 */
-	public void intervalAdded(ListDataEvent event);
+	protected	int	toIndex			= 0;
+
+
+	//-------------------------------------------------------------
+	// Initialization ---------------------------------------------
+	//-------------------------------------------------------------
 
 	/**
-	 * Interval Removed
-	 * @param event ListDataEvent Event
+	 * Constructor TableColumnModelEvent
+	 * @param source Source TableColumnModel
+	 * @param from From index
+	 * @param to To index
 	 */
-	public void intervalRemoved(ListDataEvent event);
+	public TableColumnModelEvent(TableColumnModel source,
+								int from, int to) {
+		super(source);
+		fromIndex = from;
+		toIndex   = to;
+	} // TableColumnModelEvent()
 
 
-} // ListDataListener
+	//-------------------------------------------------------------
+	// Methods ----------------------------------------------------
+	//-------------------------------------------------------------
+
+	/**
+	 * getFromIndex.
+	 * @returns From index
+	 */
+	public int getFromIndex() {
+		return fromIndex;
+	} // getFromIndex()
+
+	/**
+	 * getToIndex.
+	 * @returns To index
+	 */
+	public int getToIndex() {
+		return toIndex;
+	} // getToIndex()
+
+
+} // TableColumnModelEvent

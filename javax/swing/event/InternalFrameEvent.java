@@ -1,4 +1,4 @@
-/* ListDataListener.java --
+/* InternalFrameEvent.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,30 +37,78 @@ exception statement from your version. */
 
 package javax.swing.event;
 
+// Imports
+import java.awt.AWTEvent;
+import javax.swing.JInternalFrame;
+
 /**
- * ListDataListener interface
+ * InternalFrameEvent
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public interface ListDataListener extends EventListener {
+public class InternalFrameEvent extends AWTEvent {
+
+	//-------------------------------------------------------------
+	// Constants --------------------------------------------------
+	//-------------------------------------------------------------
 
 	/**
-	 * Contents Changed
-	 * @param event ListDataEvent Event
+	 * Internal frame activated event
 	 */
-	public void contentsChanged(ListDataEvent event);
+	public static	int	INTERNAL_FRAME_ACTIVATED	= 25554;
 
 	/**
-	 * Interval Added
-	 * @param event ListDataEvent Event
+	 * Internal frame closed event
 	 */
-	public void intervalAdded(ListDataEvent event);
+	public static	int	INTERNAL_FRAME_CLOSED		= 25551;
 
 	/**
-	 * Interval Removed
-	 * @param event ListDataEvent Event
+	 * Internal frame closing event
 	 */
-	public void intervalRemoved(ListDataEvent event);
+	public static	int	INTERNAL_FRAME_CLOSING		= 25550;
+
+	/**
+	 * Internal frame deactivated event
+	 */
+	public static	int	INTERNAL_FRAME_DEACTIVATED	= 25555;
+
+	/**
+	 * Internal frame deiconifed event
+	 */
+	public static	int	INTERNAL_FRAME_DEICONIFIED	= 25553;
+
+	/**
+	 * Internal frame frame first event
+	 */
+	public static	int	INTERNAL_FRAME_FIRST		= 25549;
+
+	/**
+	 * Internal frame iconified event
+	 */
+	public static	int	INTERNAL_FRAME_ICONIFIED	= 2552;
+
+	/**
+	 * Internal frame last event
+	 */
+	public static	int	INTERNAL_FRAME_LAST			= 25555;
+
+	/**
+	 * Internal frame opened event
+	 */
+	public static	int	INTERNAL_FRAME_OPENED		= 25550;
 
 
-} // ListDataListener
+	//-------------------------------------------------------------
+	// Initialization ---------------------------------------------
+	//-------------------------------------------------------------
+
+	/**
+	 * Constructor InternalFrameEvent
+	 * @param source JInternalFrame
+	 * @param id Event ID
+	 */
+	public InternalFrameEvent(JInternalFrame source, int id) {
+		super(source, id);
+	} // InternalFrameEvent()
+
+
+} // InternalFrameEvent

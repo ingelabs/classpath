@@ -1,4 +1,4 @@
-/* ListDataListener.java --
+/* InternalFrameListener.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,29 +38,52 @@ exception statement from your version. */
 package javax.swing.event;
 
 /**
- * ListDataListener interface
+ * InternalFrameListener interface
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public interface ListDataListener extends EventListener {
+public interface InternalFrameListener extends EventListener {
 
 	/**
-	 * Contents Changed
-	 * @param event ListDataEvent Event
+	 * Internal frame activated
+	 * @param event Internal Frame Event
 	 */
-	public void contentsChanged(ListDataEvent event);
+	public void internalFrameActivated(InternalFrameEvent event);
 
 	/**
-	 * Interval Added
-	 * @param event ListDataEvent Event
+	 * Internal frame closed
+	 * @param event Internal Frame Event
 	 */
-	public void intervalAdded(ListDataEvent event);
+	public void internalFrameClosed(InternalFrameEvent event);
 
 	/**
-	 * Interval Removed
-	 * @param event ListDataEvent Event
+	 * Internal frame closing
+	 * @param event Internal Frame Event
 	 */
-	public void intervalRemoved(ListDataEvent event);
+	public void internalFrameClosing(InternalFrameEvent event);
+
+	/**
+	 * Internal frame deactivated
+	 * @param event Internal Frame Event
+	 */
+	public void internalFrameDeactivated(InternalFrameEvent event);
+
+	/**
+	 * Internal frame deiconified
+	 * @param event Internal Frame Event
+	 */
+	public void internalFrameDeiconified(InternalFrameEvent event);
+
+	/**
+	 * Internal frame iconified
+	 * @param event Internal Frame Event
+	 */
+	public void internalFrameIconified(InternalFrameEvent event);
+
+	/**
+	 * Internal frame opened
+	 * @param event Internal Frame Event
+	 */
+	public void internalFrameOpened(InternalFrameEvent event);
 
 
-} // ListDataListener
+} // InternalFrameListener

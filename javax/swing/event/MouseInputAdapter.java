@@ -1,4 +1,4 @@
-/* ListDataListener.java --
+/* MouseInputAdapter.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,30 +37,79 @@ exception statement from your version. */
 
 package javax.swing.event;
 
+// Imports
+import java.awt.event.MouseEvent;
+
 /**
- * ListDataListener interface
+ * MouseInputAdapter
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public interface ListDataListener extends EventListener {
+public class MouseInputAdapter	extends		Object
+								implements	MouseInputListener {
+
+	//-------------------------------------------------------------
+	// Initialization ---------------------------------------------
+	//-------------------------------------------------------------
 
 	/**
-	 * Contents Changed
-	 * @param event ListDataEvent Event
+	 * Constructor MouseInputAdapter
 	 */
-	public void contentsChanged(ListDataEvent event);
+	public MouseInputAdapter() {
+	} // MouseInputAdapter()
+
+
+	//-------------------------------------------------------------
+	// Methods ----------------------------------------------------
+	//-------------------------------------------------------------
 
 	/**
-	 * Interval Added
-	 * @param event ListDataEvent Event
+	 * Mouse clicked
+	 * @param event Mouse event
 	 */
-	public void intervalAdded(ListDataEvent event);
+	public void mouseClicked(MouseEvent event) {
+	} // mouseClicked()
 
 	/**
-	 * Interval Removed
-	 * @param event ListDataEvent Event
+	 * Mouse dragged
+	 * @param event Mouse event
 	 */
-	public void intervalRemoved(ListDataEvent event);
+	public void mouseDragged(MouseEvent event) {
+	} // mouseDragged()
+
+	/**
+	 * Mouse entered
+	 * @param event Mouse event
+	 */
+	public void mouseEntered(MouseEvent event) {
+ 	} // mouseEntered()
+
+	/**
+	 * Mouse exited
+	 * @param event Mouse event
+	 */
+	public void mouseExited(MouseEvent event) {
+	} // mouseExited()
+
+	/**
+	 * Mouse moved
+	 * @param event Mouse event
+	 */
+	public void mouseMoved(MouseEvent event) {
+	} // mouseMoved()
+
+	/**
+	 * Mouse pressed
+	 * @param event Mouse event
+	 */
+	public void mousePressed(MouseEvent event) {
+	} // mousePressed()
+
+	/**
+	 * Mouse released
+	 * @param event Mouse event
+	 */
+	public void mouseReleased(MouseEvent event) {
+	} // mouseReleased()
 
 
-} // ListDataListener
+} // MouseInputAdapterEvent

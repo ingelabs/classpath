@@ -1,4 +1,4 @@
-/* ListDataListener.java --
+/* CaretEvent.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,30 +37,43 @@ exception statement from your version. */
 
 package javax.swing.event;
 
+// Imports
+import java.util.EventObject;
+
 /**
- * ListDataListener interface
+ * CaretEvent
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public interface ListDataListener extends EventListener {
+public abstract class CaretEvent extends EventObject {
+
+	//-------------------------------------------------------------
+	// Initialization ---------------------------------------------
+	//-------------------------------------------------------------
+	
+	/**
+	 * CaretEvent constructor
+	 * @param source Source object
+	 */
+	public CaretEvent(Object source) {
+		super(source);
+	} // CaretEvent()
+
+	
+	//-------------------------------------------------------------
+	// Methods ----------------------------------------------------
+	//-------------------------------------------------------------
+	
+	/**
+	 * Get caret location
+	 * @returns the dot
+	 */
+	public abstract int getDot();
 
 	/**
-	 * Contents Changed
-	 * @param event ListDataEvent Event
+	 * Get mark
+	 * @returns the mark
 	 */
-	public void contentsChanged(ListDataEvent event);
-
-	/**
-	 * Interval Added
-	 * @param event ListDataEvent Event
-	 */
-	public void intervalAdded(ListDataEvent event);
-
-	/**
-	 * Interval Removed
-	 * @param event ListDataEvent Event
-	 */
-	public void intervalRemoved(ListDataEvent event);
+	public abstract int getMark();
 
 
-} // ListDataListener
+} // CaretEvent

@@ -1,4 +1,4 @@
-/* ListDataListener.java --
+/* PopupMenuEvent.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,30 +37,22 @@ exception statement from your version. */
 
 package javax.swing.event;
 
+// Imports
+import java.util.EventObject;
+
 /**
- * ListDataListener interface
+ * PopupMenuEvent
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public interface ListDataListener extends EventListener {
+public class PopupMenuEvent extends EventObject {
 
 	/**
-	 * Contents Changed
-	 * @param event ListDataEvent Event
+	 * Constructor PopupMenuEvent
+	 * @param source Source
 	 */
-	public void contentsChanged(ListDataEvent event);
-
-	/**
-	 * Interval Added
-	 * @param event ListDataEvent Event
-	 */
-	public void intervalAdded(ListDataEvent event);
-
-	/**
-	 * Interval Removed
-	 * @param event ListDataEvent Event
-	 */
-	public void intervalRemoved(ListDataEvent event);
+	public PopupMenuEvent(Object source) {
+		super(source);
+	} // PopupMenuEvent()
 
 
-} // ListDataListener
+} // PopupMenuEvent

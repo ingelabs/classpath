@@ -1,4 +1,4 @@
-/* ListDataListener.java --
+/* CellEditorListener.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,29 +38,22 @@ exception statement from your version. */
 package javax.swing.event;
 
 /**
- * ListDataListener interface
+ * CellEditorListener interface
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public interface ListDataListener extends EventListener {
+public interface CellEditorListener extends EventListener {
 
 	/**
-	 * Contents Changed
-	 * @param event ListDataEvent Event
+	 * Editing has been canceled
+	 * @param event Change Event
 	 */
-	public void contentsChanged(ListDataEvent event);
+	public void editingCanceled(ChangeEvent event);
 
 	/**
-	 * Interval Added
-	 * @param event ListDataEvent Event
+	 * Editing has been stopped
+	 * @param event Change Event
 	 */
-	public void intervalAdded(ListDataEvent event);
-
-	/**
-	 * Interval Removed
-	 * @param event ListDataEvent Event
-	 */
-	public void intervalRemoved(ListDataEvent event);
+	public void editingStopped(ChangeEvent event);
 
 
-} // ListDataListener
+} // CellEditorListener

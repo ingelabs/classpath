@@ -1,4 +1,4 @@
-/* ListDataListener.java --
+/* MenuListener.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,29 +38,28 @@ exception statement from your version. */
 package javax.swing.event;
 
 /**
- * ListDataListener interface
+ * MenuListener interface
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public interface ListDataListener extends EventListener {
+public interface MenuListener extends EventListener {
 
 	/**
-	 * Contents Changed
-	 * @param event ListDataEvent Event
+	 * Menu canceled
+	 * @param event Menu Event
 	 */
-	public void contentsChanged(ListDataEvent event);
+	public void menuCanceled(MenuEvent event);
 
 	/**
-	 * Interval Added
-	 * @param event ListDataEvent Event
+	 * Menu deselected
+	 * @param event Menu Event
 	 */
-	public void intervalAdded(ListDataEvent event);
+	public void menuDeselected(MenuEvent event);
 
 	/**
-	 * Interval Removed
-	 * @param event ListDataEvent Event
+	 * Menu selected
+	 * @param event Menu Event
 	 */
-	public void intervalRemoved(ListDataEvent event);
+	public void menuSelected(MenuEvent event);
 
 
-} // ListDataListener
+} // MenuListener

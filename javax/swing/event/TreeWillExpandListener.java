@@ -1,4 +1,4 @@
-/* ListDataListener.java --
+/* TreeWillExpandListener.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,29 +38,22 @@ exception statement from your version. */
 package javax.swing.event;
 
 /**
- * ListDataListener interface
+ * TreeWillExpandListener interface
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public interface ListDataListener extends EventListener {
+public interface TreeWillExpandListener extends EventListener {
 
 	/**
-	 * Contents Changed
-	 * @param event ListDataEvent Event
+	 * Tree will collapse
+	 * @param event Tree Expansion Event
 	 */
-	public void contentsChanged(ListDataEvent event);
+	public void treeWillCollapse(TreeExpansionEvent event);
 
 	/**
-	 * Interval Added
-	 * @param event ListDataEvent Event
+	 * Tree will expand
+	 * @param event Tree Expansion Event
 	 */
-	public void intervalAdded(ListDataEvent event);
-
-	/**
-	 * Interval Removed
-	 * @param event ListDataEvent Event
-	 */
-	public void intervalRemoved(ListDataEvent event);
+	public void treeWillExpand(TreeExpansionEvent event);
 
 
-} // ListDataListener
+} // TreeWillExpandListener

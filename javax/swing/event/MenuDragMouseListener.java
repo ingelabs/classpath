@@ -1,4 +1,4 @@
-/* ListDataListener.java --
+/* MenuDragMouseListener.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,29 +38,34 @@ exception statement from your version. */
 package javax.swing.event;
 
 /**
- * ListDataListener interface
+ * MenuDragMouseListener interface
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public interface ListDataListener extends EventListener {
+public interface MenuDragMouseListener extends EventListener {
 
 	/**
-	 * Contents Changed
-	 * @param event ListDataEvent Event
+	 * Menu drag mouse dragged
+	 * @param event Menu Drag Mouse Event
 	 */
-	public void contentsChanged(ListDataEvent event);
+	public void menuDragMouseDragged(MenuDragMouseEvent event);
 
 	/**
-	 * Interval Added
-	 * @param event ListDataEvent Event
+	 * Menu drag mouse entered
+	 * @param event Menu Drag Mouse Event
 	 */
-	public void intervalAdded(ListDataEvent event);
+	public void menuDragMouseEntered(MenuDragMouseEvent event);
 
 	/**
-	 * Interval Removed
-	 * @param event ListDataEvent Event
+	 * Menu drag mouse exited
+	 * @param event Menu Drag Mouse Event
 	 */
-	public void intervalRemoved(ListDataEvent event);
+	public void menuDragMouseExited(MenuDragMouseEvent event);
+
+	/**
+	 * Menu drag mouse released
+	 * @param event Menu Drag Mouse Event
+	 */
+	public void menuDragMouseReleased(MenuDragMouseEvent event);
 
 
-} // ListDataListener
+} // MenuDragMouseListener

@@ -1,4 +1,4 @@
-/* ListDataListener.java --
+/* MouseInputListener.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,30 +37,16 @@ exception statement from your version. */
 
 package javax.swing.event;
 
+// Imports
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+
 /**
- * ListDataListener interface
+ * MouseInputListener interface
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public interface ListDataListener extends EventListener {
+public interface MouseInputListener extends MouseListener,
+											MouseMotionListener {
 
-	/**
-	 * Contents Changed
-	 * @param event ListDataEvent Event
-	 */
-	public void contentsChanged(ListDataEvent event);
+} // MouseInputListener
 
-	/**
-	 * Interval Added
-	 * @param event ListDataEvent Event
-	 */
-	public void intervalAdded(ListDataEvent event);
-
-	/**
-	 * Interval Removed
-	 * @param event ListDataEvent Event
-	 */
-	public void intervalRemoved(ListDataEvent event);
-
-
-} // ListDataListener

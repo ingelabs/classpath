@@ -1,4 +1,4 @@
-/* ListDataListener.java --
+/* MenuKeyEvent.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,30 +37,76 @@ exception statement from your version. */
 
 package javax.swing.event;
 
+// Imports
+import java.awt.Component;
+import java.awt.event.KeyEvent;
+import javax.swing.MenuElement;
+import javax.swing.MenuSelectionManager;
+
 /**
- * ListDataListener interface
+ * MenuKeyEvent
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public interface ListDataListener extends EventListener {
+public class MenuKeyEvent extends KeyEvent {
+
+	//-------------------------------------------------------------
+	// Variables --------------------------------------------------
+	//-------------------------------------------------------------
 
 	/**
-	 * Contents Changed
-	 * @param event ListDataEvent Event
+	 * path
 	 */
-	public void contentsChanged(ListDataEvent event);
+	private	MenuElement[]			path		= null;
+	
+	/**
+	 * manager
+	 */
+	private	MenuSelectionManager	manager		= null;
+
+
+	//-------------------------------------------------------------
+	// Initialization ---------------------------------------------
+	//-------------------------------------------------------------
 
 	/**
-	 * Interval Added
-	 * @param event ListDataEvent Event
+	 * Constructor MenuKeyEvent
+	 * @param source Source
+	 * @param id KeyEvent ID
+	 * @param when Time
+	 * @param modifiers Modifier keys
+	 * @param keyCode Key code
+	 * @param keyhar Key char
+	 * @param path Path
+	 * @param manager MenuSelectionManager
 	 */
-	public void intervalAdded(ListDataEvent event);
+	public MenuKeyEvent(Component source, int id, long when, int modifiers,
+						int keyCode, char keyChar, MenuElement[] path,
+						MenuSelectionManager manager) {
+		super(source, id, when, modifiers, keyCode, keyChar);
+		this.path = path;
+		this.manager = manager;
+	} // MenuKeyEvent()
+
+
+	//-------------------------------------------------------------
+	// Methods ----------------------------------------------------
+	//-------------------------------------------------------------
 
 	/**
-	 * Interval Removed
-	 * @param event ListDataEvent Event
+	 * getPath
+	 * @returns path
 	 */
-	public void intervalRemoved(ListDataEvent event);
+	public MenuElement[] getPath() {
+		return path;
+	} // getPath()
+
+	/**
+	 * getMenuSelectionManager
+	 * @returns MenuSelectionManager
+	 */
+	public MenuSelectionManager getMenuSelectionManager() {
+		return manager;
+	} // getMenuSelectionManager()
 
 
-} // ListDataListener
+} // MenuKeyEvent

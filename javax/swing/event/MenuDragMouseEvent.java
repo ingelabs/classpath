@@ -1,4 +1,4 @@
-/* UndoableEditEvent.java --
+/* MenuDragMouseEvent.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,24 +38,30 @@ exception statement from your version. */
 package javax.swing.event;
 
 // Imports
-import java.util.*;
-import javax.swing.undo.*;
+import java.awt.event.MouseEvent;
+import java.awt.Component;
+import javax.swing.MenuElement;
+import javax.swing.MenuSelectionManager;
 
 /**
- * UndoableEditEvent
+ * MenuDragMouseEvent
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public class UndoableEditEvent extends EventObject {
+public class MenuDragMouseEvent extends MouseEvent {
 
 	//-------------------------------------------------------------
 	// Variables --------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * edit
+	 * path
 	 */
-	private UndoableEdit edit;
+	private	MenuElement[]			path		= null;
+	
+	/**
+	 * manager
+	 */
+	private	MenuSelectionManager	manager		= null;
 
 
 	//-------------------------------------------------------------
@@ -63,14 +69,25 @@ public class UndoableEditEvent extends EventObject {
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor UndoableEditEvent
-	 * @param source TODO
-	 * @param edit TODO
+	 * Constructor MenuDragMouseEvent
+	 * @param source Source
+	 * @param id MouseEvent type
+	 * @param when Time
+	 * @param modifiers Key modifiers
+	 * @param x Horizontal position
+	 * @param y Vertical position
+	 * @param clickCount Click count
+	 * @param popupTrigger Popup trigger?
+	 * @param path Path
+	 * @param manager MenuSelectionManager
 	 */
-	public UndoableEditEvent(Object source, UndoableEdit edit) {
-		super(source);
-		this.edit = edit;
-	} // UndoableEditEvent()
+	public MenuDragMouseEvent(Component source, int id, long when, int modifiers,
+						int x, int y, int clickCount, boolean popupTrigger,
+						MenuElement[] path, MenuSelectionManager manager) {
+		super(source, id, when, modifiers, x, y, clickCount, popupTrigger);
+		this.path = path;
+		this.manager = manager;
+	} // MenuDragMouseEvent()
 
 
 	//-------------------------------------------------------------
@@ -78,12 +95,20 @@ public class UndoableEditEvent extends EventObject {
 	//-------------------------------------------------------------
 
 	/**
-	 * getEdit
-	 * @returns UndoableEdit
+	 * Get path
+	 * @returns path
 	 */
-	public UndoableEdit getEdit() {
-		return edit;
-	} // getEdit()
+	public MenuElement[] getPath() {
+		return path;
+	} // getPath()
+
+	/**
+	 * Get menu selection manager
+	 * @returns manager
+	 */
+	public MenuSelectionManager getMenuSelectionManager() {
+		return manager;
+	} // getMenuSelectionManager()
 
 
-} // UndoableEditEvent
+} // MenuDragMouseEvent

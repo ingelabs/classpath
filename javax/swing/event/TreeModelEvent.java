@@ -1,4 +1,4 @@
-/* UndoableEditEvent.java --
+/* TreeModelEvent.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,39 +38,88 @@ exception statement from your version. */
 package javax.swing.event;
 
 // Imports
-import java.util.*;
-import javax.swing.undo.*;
+import java.util.EventObject;
+import javax.swing.tree.TreePath;
 
 /**
- * UndoableEditEvent
+ * TreeModelEvent
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public class UndoableEditEvent extends EventObject {
+public class TreeModelEvent extends EventObject {
 
 	//-------------------------------------------------------------
 	// Variables --------------------------------------------------
 	//-------------------------------------------------------------
+	
+	/**
+	 * childIndices
+	 */
+	protected int[]		childIndices	= new int[0];
 
 	/**
-	 * edit
+	 * children
 	 */
-	private UndoableEdit edit;
+	protected Object[]	children		= new Object[0];
+
+	/**
+	 * path
+	 */
+	protected TreePath	path			= null;
 
 
 	//-------------------------------------------------------------
 	// Initialization ---------------------------------------------
 	//-------------------------------------------------------------
+	
+	/**
+	 * Constructor TreeModelEvent
+	 * @param source Source object
+	 * @param path
+	 */
+	public TreeModelEvent(Object source, Object[] path) {
+		super(source);
+		this.path = new TreePath(path);
+	} // TreeModelEvent()
 
 	/**
-	 * Constructor UndoableEditEvent
-	 * @param source TODO
-	 * @param edit TODO
+	 * Constructor TreeModelEvent
+	 * @param source Source object
+	 * @param path path
+	 * @param childIndices Child indices
+	 * @param children Children
 	 */
-	public UndoableEditEvent(Object source, UndoableEdit edit) {
+	public TreeModelEvent(Object source, Object[] path,
+						int[] childIndices, Object[] children) {
 		super(source);
-		this.edit = edit;
-	} // UndoableEditEvent()
+		this.path		 	= new TreePath(path);
+		this.childIndices	= childIndices;
+		this.children		= children;
+	} // TreeModelEvent()
+
+	/**
+	 * Constructor TreeModelEvent
+	 * @param source Source object
+	 * @param path Path
+	 */
+	public TreeModelEvent(Object source, TreePath path) {
+		super(source);
+		this.path = path;
+	} // TreeModelEvent()
+
+	/**
+	 * Constructor TreeModelEvent
+	 * @param source Source object
+	 * @param path Path
+	 * @param childIndices Child indices
+	 * @param children Children
+	 */
+	public TreeModelEvent(Object source, TreePath path,
+						int[] childIndices, Object[] children) {
+		super(source);
+		this.path		 	= path;
+		this.childIndices	= childIndices;
+		this.children		= children;
+	} // TreeModelEvent()
 
 
 	//-------------------------------------------------------------
@@ -78,12 +127,44 @@ public class UndoableEditEvent extends EventObject {
 	//-------------------------------------------------------------
 
 	/**
-	 * getEdit
-	 * @returns UndoableEdit
+	 * getChildIndices
+	 * @returns child indices
 	 */
-	public UndoableEdit getEdit() {
-		return edit;
-	} // getEdit()
+	public int[] getChildIndices() {
+		return childIndices;
+	} // getChildIndices()
+
+	/**
+	 * getChildren
+	 * @returns children
+	 */
+	public Object[] getChildren() {
+		return children;
+	} // getChildren()
+
+	/**
+	 * getPath
+	 * @returns path
+	 */
+	public Object[] getPath() {
+		return path.getPath();
+	} // getPath()
+
+	/**
+	 * getTreePath
+	 * @returns TreePath
+	 */
+	public TreePath getTreePath() {
+		return path;
+	} // getTreePath()
+
+	/**
+	 * String representation
+	 * @returns String representation
+	 */
+	public String toString() {
+		return null; // TODO
+	} // toString()
 
 
-} // UndoableEditEvent
+} // TreeModelEvent

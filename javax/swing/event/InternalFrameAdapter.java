@@ -1,4 +1,4 @@
-/* UndoableEditEvent.java --
+/* InternalFrameAdapter.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,53 +37,76 @@ exception statement from your version. */
 
 package javax.swing.event;
 
-// Imports
-import java.util.*;
-import javax.swing.undo.*;
-
 /**
- * UndoableEditEvent
+ * InternalFrameAdapter
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public class UndoableEditEvent extends EventObject {
-
-	//-------------------------------------------------------------
-	// Variables --------------------------------------------------
-	//-------------------------------------------------------------
-
-	/**
-	 * edit
-	 */
-	private UndoableEdit edit;
-
+public class InternalFrameAdapter	extends		Object
+									implements	InternalFrameListener {
 
 	//-------------------------------------------------------------
 	// Initialization ---------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor UndoableEditEvent
-	 * @param source TODO
-	 * @param edit TODO
+	 * InternalFrameAdapter constructor
 	 */
-	public UndoableEditEvent(Object source, UndoableEdit edit) {
-		super(source);
-		this.edit = edit;
-	} // UndoableEditEvent()
+	public InternalFrameAdapter() {
+	} // InternalFrameAdapter()
 
 
 	//-------------------------------------------------------------
-	// Methods ----------------------------------------------------
+	// Interface: InternalFrameListener ---------------------------
 	//-------------------------------------------------------------
+	
+	/**
+	 * Internal frame activated
+	 * @param event Internal frame event
+	 */
+	public void internalFrameActivated(InternalFrameEvent event) {
+	} // internalFrameActivated()
 
 	/**
-	 * getEdit
-	 * @returns UndoableEdit
+	 * Internal frame closed
+	 * @param event Internal frame event
 	 */
-	public UndoableEdit getEdit() {
-		return edit;
-	} // getEdit()
+	public void internalFrameClosed(InternalFrameEvent event) {
+	} // internalFrameClosed()
+
+	/**
+	 * Internal frame closing
+	 * @param event Internal frame event
+	 */
+	public void internalFrameClosing(InternalFrameEvent event) {
+	} // internalFrameClosing()
+
+	/**
+	 * Internal frame deactivated
+	 * @param event Internal frame event
+	 */
+	public void internalFrameDeactivated(InternalFrameEvent event) {
+	} // internalFrameDeactivated()
+
+	/**
+	 * Internal frame deiconified
+	 * @param event Internal frame event
+	 */
+	public void internalFrameDeiconified(InternalFrameEvent event) {
+	} // internalFrameDeiconified()
+
+	/**
+	 * Internal frame iconified
+	 * @param event Internal frame event
+	 */
+	public void internalFrameIconified(InternalFrameEvent event) {
+	} // internalFrameIconified()
+
+	/**
+	 * Internal frame opened
+	 * @param event Internal frame event
+	 */
+	public void internalFrameOpened(InternalFrameEvent event) {
+	} // internalFrameOpened()
 
 
-} // UndoableEditEvent
+} // InternalFrameAdapter

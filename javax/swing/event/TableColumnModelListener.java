@@ -1,4 +1,4 @@
-/* ListDataListener.java --
+/* TableColumnModelListener.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,29 +38,40 @@ exception statement from your version. */
 package javax.swing.event;
 
 /**
- * ListDataListener interface
+ * TableColumnModelListener interface
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public interface ListDataListener extends EventListener {
+public interface TableColumnModelListener extends EventListener {
 
 	/**
-	 * Contents Changed
-	 * @param event ListDataEvent Event
+	 * Column added
+	 * @param event Table Column Model Event
 	 */
-	public void contentsChanged(ListDataEvent event);
+	public void columnAdded(TableColumnModelEvent event);
 
 	/**
-	 * Interval Added
-	 * @param event ListDataEvent Event
+	 * Column margin changed
+	 * @param event Change Event
 	 */
-	public void intervalAdded(ListDataEvent event);
+	public void columnMarginChanged(ChangeEvent event);
 
 	/**
-	 * Interval Removed
-	 * @param event ListDataEvent Event
+	 * Column moved
+	 * @param event Table Column Model Event
 	 */
-	public void intervalRemoved(ListDataEvent event);
+	public void columnMoved(TableColumnModelEvent event);
+
+	/**
+	 * Column removed
+	 * @param event Table Column Model Event
+	 */
+	public void columnRemoved(TableColumnModelEvent event);
+
+	/**
+	 * Column selection changed
+	 * @param event List Selection Event
+	 */
+	public void columnSelectionChanged(ListSelectionEvent event);
 
 
-} // ListDataListener
+} // TableColumnModelListener

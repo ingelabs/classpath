@@ -1,4 +1,4 @@
-/* ListDataListener.java --
+/* TableModelListener.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,30 +37,19 @@ exception statement from your version. */
 
 package javax.swing.event;
 
+import java.util.EventListener;
+
 /**
- * ListDataListener interface
+ * TableModelListener interface
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public interface ListDataListener extends EventListener {
+public interface TableModelListener extends EventListener {
 
 	/**
-	 * Contents Changed
-	 * @param event ListDataEvent Event
+	 * Table changed
+	 * @param event Table Model Event
 	 */
-	public void contentsChanged(ListDataEvent event);
-
-	/**
-	 * Interval Added
-	 * @param event ListDataEvent Event
-	 */
-	public void intervalAdded(ListDataEvent event);
-
-	/**
-	 * Interval Removed
-	 * @param event ListDataEvent Event
-	 */
-	public void intervalRemoved(ListDataEvent event);
+	public void tableChanged(TableModelEvent event);
 
 
-} // ListDataListener
+} // TableModelListener

@@ -1,4 +1,4 @@
-/* ListDataEvent.java --
+/* TableModelEvent.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -39,32 +39,42 @@ package javax.swing.event;
 
 // Imports
 import java.util.EventObject;
+import javax.swing.table.TableModel;
 
 /**
- * ListDataEvent
+ * TableModelEvent
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public class ListDataEvent extends EventObject {
+public class TableModelEvent extends EventObject {
 
 	//-------------------------------------------------------------
 	// Constants --------------------------------------------------
 	//-------------------------------------------------------------
-	
-	/**
-	 * Contents changed
-	 */
-	public static	int	CONTENTS_CHANGED	= 0;
 
 	/**
-	 * Internal added
+	 * ALL_COLUMNS
 	 */
-	public static	int	INTERVAL_ADDED		= 1;
+	public static	int	ALL_COLUMNS		= -1;
 
 	/**
-	 * Interval removed
+	 * DELETE
 	 */
-	public static	int	INTERVAL_REMOVED	= 2;
+	public static	int	DELETE			= -1;
+
+	/**
+	 * HEADER_ROW
+	 */
+	public static	int	HEADER_ROW		= -1;
+
+	/**
+	 * INSERT
+	 */
+	public static	int	INSERT			= 1;
+
+	/**
+	 * UPDATE
+	 */
+	public static	int	UPDATE			= 0;
 
 
 	//-------------------------------------------------------------
@@ -72,68 +82,123 @@ public class ListDataEvent extends EventObject {
 	//-------------------------------------------------------------
 
 	/**
+	 * column
+	 */
+	protected		int	column			= 0;
+	
+	/**
+	 * firstRow
+	 */
+	protected		int firstRow		= 0;
+	
+	/**
+	 * lastRow
+	 */
+	protected		int	lastRow			= 0;
+
+	/**
 	 * type
 	 */
-	private 		int	type	= 0;
-	
-	/**
-	 * index0
-	 */
-	private 		int	index0	= 0;
-	
-	/**
-	 * index1
-	 */
-	private 		int	index1	= 0;
+	protected		int	type			= 0;
 
 
 	//-------------------------------------------------------------
 	// Initialization ---------------------------------------------
 	//-------------------------------------------------------------
-	
+
 	/**
-	 * Constructor ListDataEvent
-	 * @param source Source
-	 * @param type Event type
-	 * @param index0 Bottom of range
-	 * @param index1 Top of range
+	 * Constructor TableModelEvent
+	 * @param source Source object
 	 */
-	public ListDataEvent(Object source, int type,
-							int index0, int index1) {
+	public TableModelEvent(TableModel source) {
+		this(source, 0, source.getRowCount(), ALL_COLUMNS, UPDATE);
+	} // TableModelEvent()
+
+	/**
+	 * Constructor TableModelEvent
+	 * @param source Source table model
+	 * @param row Updated row
+	 */
+	public TableModelEvent(TableModel source, int row) {
+		this(source, row, row, ALL_COLUMNS, UPDATE);
+	} // TableModelEvent()
+
+	/**
+	 * Constructor TableModelEvent
+	 * @param source Source table model
+	 * @param firstRow First row of update
+	 * @param lastRow Last row of update
+	 */
+	public TableModelEvent(TableModel source, int firstRow,
+							int lastRow) {
+		this(source, firstRow, lastRow, ALL_COLUMNS, UPDATE);
+	} // TableModelEvent()
+
+	/**
+	 * Constructor TableModelEvent
+	 * @param source Source table model
+	 * @param firstRow First row of update
+	 * @param lastRow Last row of update
+	 * @param column Affected column
+	 */
+	public TableModelEvent(TableModel source, int firstRow,
+							int lastRow, int column) {
+		this(source, firstRow, lastRow, column, UPDATE);
+	} // TableModelEvent()
+
+	/**
+	 * Constructor TableModelEvent
+	 * @param source Source table model
+	 * @param firstRow First row of update
+	 * @param lastRow Last row of update
+	 * @param column Affected column
+	 * @param type Type of change
+	 */
+	public TableModelEvent(TableModel source, int firstRow,
+							int lastRow, int column, int type) {
 		super(source);
-		this.type	= type;
-		this.index0	= index0;
-		this.index1	= index1;
-	} // ListDataEvent()
+		this.firstRow	= firstRow;
+		this.lastRow	= lastRow;
+		this.column		= column;
+		this.type		= type;
+	} // TableModelEvent()
 
 
 	//-------------------------------------------------------------
 	// Methods ----------------------------------------------------
 	//-------------------------------------------------------------
-	
-	/**
-	 * getIndex0
-	 * @returns index0
-	 */
-	public int getIndex0() {
-		return index0;
-	} // getIndex0()
 
 	/**
-	 * getIndex1
-	 * @returns index1
+	 * getColumn
+	 * @returns column
 	 */
-	public int getIndex1() {
-		return index1;
-	} // getIndex1()
+	public int getColumn() {
+		return column;
+	} // getColumn()
 
 	/**
-	 * Event type
-	 * @returns Event type
+	 * getFirstRow
+	 * @returns row
+	 */
+	public int getFirstRow() {
+		return firstRow;
+	} // getFirstRow()
+
+	/**
+	 * getLastRow
+	 * @returns row
+	 */
+	public int getLastRow() {
+		return lastRow;
+	} // getLastRow()
+
+	/**
+	 * Get type
+	 * @returns Type of event
 	 */
 	public int getType() {
 		return type;
 	} // getType()
 
 
-} // ListDataEvent
+} // TableModelEvent

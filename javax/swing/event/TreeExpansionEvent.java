@@ -1,4 +1,4 @@
-/* ListDataListener.java --
+/* TreeExpansionEvent.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,30 +37,52 @@ exception statement from your version. */
 
 package javax.swing.event;
 
+// Imports
+import java.util.EventObject;
+import javax.swing.tree.TreePath;
+
 /**
- * ListDataListener interface
+ * TreeExpansionEvent
  * @author Andrew Selkirk
- * @author Ronald Veldema
  */
-public interface ListDataListener extends EventListener {
+public class TreeExpansionEvent extends EventObject {
+
+	//-------------------------------------------------------------
+	// Variables --------------------------------------------------
+	//-------------------------------------------------------------
 
 	/**
-	 * Contents Changed
-	 * @param event ListDataEvent Event
+	 * path
 	 */
-	public void contentsChanged(ListDataEvent event);
+	protected TreePath	path		= null;
+
+
+	//-------------------------------------------------------------
+	// Initialization ---------------------------------------------
+	//-------------------------------------------------------------
 
 	/**
-	 * Interval Added
-	 * @param event ListDataEvent Event
+	 * Constructor TreeExpansionEvent
+	 * @param source Source object
+	 * @param path Path
 	 */
-	public void intervalAdded(ListDataEvent event);
+	public TreeExpansionEvent(Object source, TreePath path) {
+		super(source);
+		this.path = path;
+	} // TreeExpansionEvent()
 
+
+	//-------------------------------------------------------------
+	// Methods ----------------------------------------------------
+	//-------------------------------------------------------------
+	
 	/**
-	 * Interval Removed
-	 * @param event ListDataEvent Event
+	 * getPath
+	 * @returns Tree path
 	 */
-	public void intervalRemoved(ListDataEvent event);
+	public TreePath getPath() {
+		return path;
+	} // getPath()
 
 
-} // ListDataListener
+} // TreeExpansionEvent
