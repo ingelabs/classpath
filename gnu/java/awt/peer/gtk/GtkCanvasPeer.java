@@ -23,4 +23,10 @@ public class GtkCanvasPeer extends GtkComponentPeer implements CanvasPeer
   {
     return new GdkGraphics (this);
   }
+
+  public void repaint (long tm, int x, int y, int width, int height)
+  {
+    q.postEvent (new PaintEvent (awtComponent, PaintEvent.UPDATE,
+				 new Rectangle (x, y, width, height)));
+  }
 }

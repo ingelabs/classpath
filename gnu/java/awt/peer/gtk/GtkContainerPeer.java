@@ -20,9 +20,8 @@
  */
 
 package gnu.java.awt.peer.gtk;
-import java.awt.Graphics;
-import java.awt.Insets;
-import java.awt.Container;
+import java.awt.*;
+import java.awt.event.*;
 import java.awt.peer.ContainerPeer;
 
 public class GtkContainerPeer extends GtkComponentPeer
@@ -72,5 +71,11 @@ public class GtkContainerPeer extends GtkComponentPeer
   public Graphics getGraphics ()
   {
     return new GdkGraphics (this);
+  }
+
+  public void repaint (long tm, int x, int y, int width, int height)
+  {
+    q.postEvent (new PaintEvent (awtComponent, PaintEvent.UPDATE,
+				 new Rectangle (x, y, width, height)));
   }
 }
