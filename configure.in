@@ -5,8 +5,10 @@ AC_CANONICAL_HOST
 
 PACKAGE="classpath"
 VERSION="0.0"
+LIBVERSION="0:0"
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
+AC_SUBST(LIBVERSION)
 AM_INIT_AUTOMAKE(${PACKAGE}, ${VERSION})
 
 # this file is empty, is this supposed to be here? -gcb
@@ -65,6 +67,21 @@ fi
 # and others can be found
 AC_SUBST(VMINCLUDE)
 
+dnl AC_ARG_WITH(japhar, Install as class library for Japhar, 
+dnl             AC_PREFIX_PROGRAM(japhar))
+dnl AC_ARG_WITH(sunjdk, Install as class library for Sun's JDK,
+dnl             AC_PREFIX_PROGRAM(java))
+
+dnl if test prefix = ""
+dnl then
+dnl   AC_PREFIX_PROGRAM(japhar)
+dnl fi
+
+if test prefix = ""
+then
+  AC_MSG_ERROR(Unable to locate Virtual Machine to configure for)
+fi
+
 AC_ARG_WITH(javac,
   [  --with-javac	Specify the path to the javac-like program to use],
   [
@@ -110,22 +127,6 @@ AC_ARG_WITH(javac,
   ])
 
 AC_SUBST(JAVAC)
-
-
-dnl AC_ARG_WITH(japhar, Install as class library for Japhar, 
-dnl             AC_PREFIX_PROGRAM(japhar))
-dnl AC_ARG_WITH(sunjdk, Install as class library for Sun's JDK,
-dnl             AC_PREFIX_PROGRAM(java))
-
-dnl if test prefix = ""
-dnl then
-dnl   AC_PREFIX_PROGRAM(japhar)
-dnl fi
-
-if test prefix = ""
-then
-  AC_MSG_ERROR(Unable to locate Virtual Machine to configure for)
-fi
 
 AC_OUTPUT(compat/java.net/Makefile
 compat/Makefile
