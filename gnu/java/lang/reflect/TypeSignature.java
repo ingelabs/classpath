@@ -178,6 +178,9 @@ public class TypeSignature
      "(" + type-encodings of parameter types + ")" 
      + type-encoding of return type
   */
+  /** 
+    If we implement this method in native, it would no doubt help performance.
+   */
   public static String getEncodingOfMethod( Method m )
   {
     String returnEncoding = getEncodingOfClass( m.getReturnType() );
@@ -205,7 +208,6 @@ public class TypeSignature
     
     buf.append( ')' );
     buf.append( returnEncoding );
-    
     return buf.toString();
   }
 
@@ -216,6 +218,9 @@ public class TypeSignature
 
      "(" + type-encodings of parameter types + ")V" 
   */
+  /** 
+    If we implement this method in native, it would no doubt help performance.
+   */
   public static String getEncodingOfConstructor( Constructor c )
   {
     Class[] paramTypes = c.getParameterTypes();

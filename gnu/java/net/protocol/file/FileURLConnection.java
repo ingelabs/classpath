@@ -63,27 +63,37 @@ public class FileURLConnection extends java.net.URLConnection
    */
   private java.io.FileOutputStream out_stream;
 
-  
 
+  
   /**
    * Calls superclass constructor to initialize.
    */
-  protected FileURLConnection (java.net.URL url)
+  protected FileURLConnection(java.net.URL url)
   {
     super(url);
+    
     /* Set up some variables */
     doOutput = false;
   }
-
+  
+  /*************************************************************************/
+  
+  /*
+   * Instance Methods
+   */
+  
   /**
    * "Connects" to the file by opening it.
    */
-  public void connect ()
-    throws java.io.IOException
+  public void connect() throws java.io.IOException
   {
+    if(connected)return;
     file = new java.io.File(getURL().getFile());
+    if(!file.exists())
+      throw new java.io.FileNotFoundException(file.getPath());
+    connected = true;
   }
-
+  
   /**
    * Opens the file for reading and returns a stream for it.
    *

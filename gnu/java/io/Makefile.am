@@ -6,5 +6,6 @@ EXTRA_DIST = \
 ClassLoaderObjectInputStream.java \
 EncodingManager.java \
 NullOutputStream.java \
-ObjectIdentityWrapper.java
+ObjectIdentityWrapper.java \
+PlatformHelper.java
 

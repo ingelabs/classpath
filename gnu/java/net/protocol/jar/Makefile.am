@@ -1,4 +1,5 @@
 # this file used by automake to generate Makefile.in
 
-SUBDIRS = file http jar
-
+EXTRA_DIST = \
+Handler.java \
+JarURLConnection.java

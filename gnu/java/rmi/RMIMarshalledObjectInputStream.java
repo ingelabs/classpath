@@ -1,5 +1,5 @@
-/* DefaultPolicy.java 
-   Copyright (C) 2001 Free Software Foundation, Inc.
+/* gnu.java.rmi.RMIMarshalledObjectInputStream
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,37 +35,36 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package gnu.java.security.provider;
 
-import java.security.*;
+package gnu.java.rmi;
 
-/** 
-  * This is just a stub policy implementation which grants all permissions
-  * to any code source. FIXME: This should be replaced with a real
-  * implementation that reads the policy configuration from a file, like
-  * $JAVA_HOME/jre/lib/security/java.security.
-  */
-public class DefaultPolicy extends Policy
+import gnu.java.rmi.server.RMIObjectInputStream;
+import java.io.ObjectInputStream;
+import java.io.IOException;
+import java.io.ByteArrayInputStream;
+
+/**
+ * This class is only for java.rmi.MarshalledObject to deserialize object from 
+ * objBytes and locBytes
+ */
+
+public class RMIMarshalledObjectInputStream extends RMIObjectInputStream
 {
-  /*
-  static Permissions allPermissions = new Permissions();
+  private ObjectInputStream locStream;
   
-  static
+  public RMIMarshalledObjectInputStream(byte[] objBytes, byte[] locBytes) throws IOException
   {
-    allPermissions.add(new AllPermission());
-  }
-  */
-  static Permission allPermission = new AllPermission();
-
-  public PermissionCollection getPermissions(CodeSource codesource)
-  {
-    Permissions perms = new Permissions();
-    perms.add(allPermission);
-    return perms;
+    super(new ByteArrayInputStream(objBytes));
+    if(locBytes != null)
+      locStream = new ObjectInputStream(new ByteArrayInputStream(locBytes));
   }
   
-  public void refresh()
+  //This method overrides RMIObjectInputStream's
+  protected Object getAnnotation() throws IOException, ClassNotFoundException
   {
-    // Nothing.
+    if(locStream == null)
+      return null;
+    return locStream.readObject();
   }
-}
+  
+} // End of RMIMarshalledObjectInputStream

@@ -49,12 +49,16 @@ import gnu.java.rmi.server.UnicastServerRef;
 public class DGCImpl
 	extends UnicastRemoteObject implements DGC {
 
+private static final long leaseValue = 600000L;
+
 public DGCImpl() throws RemoteException {
 	super(new UnicastServerRef(new ObjID(ObjID.DGC_ID), 0, RMISocketFactory.getSocketFactory()));
 }
 
 public Lease dirty(ObjID[] ids, long sequenceNum, Lease lease) throws RemoteException {
-	System.out.println("DGCImpl.dirty - not implemented");
+	VMID vmid = lease.getVMID();
+    lease = new Lease(vmid, leaseValue);
+	System.out.println("DGCImpl.dirty - not completely implemented");
 	return (lease);
 }
 

@@ -1,3 +1,79 @@
+2002-03-21  C. Brian Jones <cbj@gnu.org>
+
+	The following changes are all from patch submissions from Intel's
+	ORP team to get Classpath into a JBOSS compatible state.  This 
+	is primarily just the non-public API patches.  The rest will be
+	committed within a few days.
+	* gnu/java/io/PlatformHelper.java: new file
+	* gnu/java/io/Makefile.am: add new file to EXTRA_DIST
+	* gnu/java/lang/ClassLoaderHelper.java (getSystemResourceAsFile):
+	add support for .zip/.jar archive loading
+	* gnu/java/lang/reflect/TypeSignature.java: additional comments
+	* gnu/java/net/protocol/file/FileURLConnection.java (connect): if
+	file does not exist, throw FileNotFoundException
+	* gnu/java/net/protocol/file/Handler.java (parseURL): override
+	method from URLStreamHandler for parsing file URL
+	* gnu/java/net/protocol/jar/JarURLConnection.java: new file
+	* gnu/java/net/protocol/jar/Handler.java: new file
+	* gnu/java/net/protocol/jar/.cvsignore: new file
+	* gnu/java/net/protocol/jar/Makefile.am: new file
+	* gnu/java/net/protocol/Makefile.am: add jar to SUBDIRS
+	* gnu/java/rmi/RMIMarshalledObjectInputStream.java: new file
+	* gnu/java/rmi/RMIMarshalledObjectOutputStream.java: new file
+	* gnu/java/rmi/Makefile.am: add new file to EXTRA_DIST
+	* gnu/java/rmi/dgc/DGCImpl.java (dirty): partially implemented
+	* gnu/java/rmi/server/Makefile.am: add new file to EXTRA_DIST
+	* gnu/java/rmi/server/ConnectionRunnerPool.java: new file
+	* gnu/java/rmi/server/RMIHashes.java (getMethodHash): conformance
+	to object serialization specification 8.3
+	* gnu/java/rmi/server/RMIObjectInputStream.java 
+	(RMIObjectInputStream): new constructor
+	(resolveClass): try additional method of loading class and catch
+	exception from super.resolveClass
+	(getAnnotation): new method
+	(resolveProxyClass): new method
+	(readValue): new method
+	* gnu/java/rmi/server/RMIObjectOutputStream.java 
+	(setAnnotation): new method
+	(annotateClass): use new setAnnotation method
+	(annotateProxyClass): new method
+	(replaceObject): new method
+	(writeValue): new method
+	* gnu/java/rmi/server/UnicastConnection.java 
+	(acceptConnection): use buffered streams to improve efficiency
+	(makeConnection): ditto
+	(disconnect): close oout stream if needed
+	* gnu/java/rmi/server/UnicastConnectionManager.java 
+	(static): use host address instead of host name
+	(getInstance): ditto
+	(stopServer): new method
+	(run): exit thread if server thread is null
+	* gnu/java/rmi/server/UnicastRef.java (invokeCommon): handle 
+	primitive types and null return type
+	(writeExternal): remove write of RETURN_ACK because it confuses Sun's
+	implementation when interoperating
+	(readExternal): similarly read of RETURN_ACK or Sun's value ok
+	* gnu/java/rmi/server/UnicastServer.java 
+	(unexportObject): new method
+	(incomingMessageCall): check for primitive type and write it out
+	correctly
+	* gnu/java/rmi/server/UnicastServerRef.java: implements ServerRef
+	(exportObject): call new exportObject method with argument
+	(exportObject): new method, not completely implemented
+	(unexportObject): new method
+	(getHelperClass): remove use of Class.forName
+	(buildMethodHash): boolean argument allows build up or tear down
+	of method hash
+	(getMethodReturnType): new method
+	(incomingMessageCall): handle exceptions from meth.invoke differently
+	* gnu/java/security/provider/DefaultPolicy.java
+	(getPermissions): do not maintain static class variable of Permissions
+	* gnu/java/security/provider/SHA.java 
+	(engineUpdate): algorithm change
+	(engineDigest): algorithm change
+	* java/io/ObjectInputStream.java (resolveProxyClass): new method
+	* configure.in: add new Makefiles to AC_OUTPUT
+
 2002-03-20  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/lang/Cloneable.java: Improve Javadoc.
