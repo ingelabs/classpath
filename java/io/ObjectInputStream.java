@@ -1,22 +1,29 @@
-/*
-  ObjectInputStream.java -- Class used to read serialized objects
+/* ObjectInputStream.java -- Class used to read serialized objects
+   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
 
-  Copyright (c) 1998 by Free Software Foundation, Inc.
-  Written by Geoff Berry <gcb@gnu.org>.
+This file is part of GNU Classpath.
 
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU Library General Public License as published
-  by the Free Software Foundation, version 2. (see COPYING.LIB)
+GNU Classpath is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
+ 
+GNU Classpath is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
 
-  This program is distributed in the hope that it will be useful, but
-  WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with GNU Classpath; see the file COPYING.  If not, write to the
+Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+02111-1307 USA.
 
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software Foundation
-  Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
-*/
+As a special exception, if you link this library with other files to
+produce an executable, this library does not by itself cause the
+resulting executable to be covered by the GNU General Public License.
+This exception does not however invalidate any other reasons why the
+executable file might be covered by the GNU General Public License. */
+
 
 package java.io;
 
@@ -30,59 +37,7 @@ import gnu.java.io.ObjectIdentityWrapper;
 import gnu.java.lang.reflect.TypeSignature;
 
 
-/**
-   An <code>ObjectInputStream</code> can be used to read objects
-   as well as primitive data in a platform-independent manner from an
-   <code>InputStream</code>.
 
-   The data produced by an <code>ObjectOutputStream</code> can be read
-   and reconstituted by an <code>ObjectInputStream</code>.
-
-   <code>readObject (Object)</code> is used to read Objects, the
-   <code>read&lt;type&gt;</code> methods are used to read primitive
-   data (as in <code>DataInputStream</code>). Strings can be read
-   as objects or as primitive data, depending on how they were
-   written.
-
-   Example usage:
-     <pre>
-     Hashtable map = new Hashtable ();
-     map.put ("one", new Integer (1));
-     map.put ("two", new Integer (2));
-
-     ObjectOutputStream oos =
-       new ObjectOutputStream (new FileOutputStream ("numbers"));
-     oos.writeObject (map);
-     oos.close ();
-
-     ObjectInputStream ois =
-       new ObjectInputStream (new FileInputStream ("numbers"));
-     Hashtable newmap = (Hashtable)ois.readObject ();
-
-     System.out.println (newmap);
-     </pre>
-
-   The default deserialization can be overriden in two ways.
-
-   By defining a method <code>private void
-   readObject (ObjectInputStream)</code>, a class can dictate exactly
-   how information about itself is reconstituted.
-   <code>defaultReadObject ()</code> may be called from this method to
-   carry out default deserialization.  This method is not
-   responsible for dealing with fields of super-classes or subclasses.
-
-   By implementing <code>java.io.Externalizable</code>.  This gives
-   the class complete control over the way it is read from the
-   stream.  If this approach is used the burden of reading superclass
-   and subclass data is transfered to the class implementing
-   <code>java.io.Externalizable</code>.
-
-   @see java.io.DataInputStream
-   @see java.io.Externalizable
-   @see java.io.ObjectOutputStream
-   @see java.io.Serializable
-   @see XXX: java serialization spec
-*/
 public class ObjectInputStream extends InputStream
   implements ObjectInput, ObjectStreamConstants
 {

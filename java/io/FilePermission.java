@@ -1,78 +1,34 @@
-/*
- * java.lang.FilePermission: part of the Java Class Libraries project.
- * Copyright (C) 1998 Free Software Foundation
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Library General Public
- * License as published by the Free Software Foundation; either
- * version 2 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Library General Public License for more details.
- *
- * You should have received a copy of the GNU Library General Public
- * License along with this library; if not, write to the
- * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
- * Boston, MA  02111-1307, USA.
- */
+/* java.lang.FilePermission
+   Copyright (C) 1998 Free Software Foundation, Inc.
+
+This file is part of GNU Classpath.
+
+GNU Classpath is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
+ 
+GNU Classpath is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with GNU Classpath; see the file COPYING.  If not, write to the
+Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+02111-1307 USA.
+
+As a special exception, if you link this library with other files to
+produce an executable, this library does not by itself cause the
+resulting executable to be covered by the GNU General Public License.
+This exception does not however invalidate any other reasons why the
+executable file might be covered by the GNU General Public License. */
+
 
 package java.io;
 
 import java.security.*;
 
-/**
- ** FilePermission represents permission on files and directories.
- ** You specify a file (or set of files), and the desired set of actions on
- ** that file.<P>
- **
- ** When you specify a file, you may use <code>*</code> as a wildcard
- ** to specify "all files in a directory," and you may use <code>-</code>
- ** to specify "all files in a directory or in any of its subdirectories."
- ** If you do not place a file separator at the beginning of the path, it is
- ** relative to the current directory.  You may not add a <code>*</code> or a
- ** <code>-</code> to the end of a filename.  You may only place it after a
- ** file separator character.  <code>&lt;&lt;ALL FILES&gt;&gt;</code> is a
- ** special value that signifies all files on all filesystems.<P>
- **
- ** Examples from a Unix system (all path and filenames are system dependent):<P>
- ** <UL>
- ** <LI><code>/home/shalom/filename.txt</code> (access to the specific file)</LI>
- ** <LI><code>/home/shalom</code> (specifies access to the directory itself)</LI>
- ** <LI><code>/home/shalom/</code> (also specifies access to the directory itself)</LI>
- ** <LI><code>/home/shalom/*</code> (everything in <code>/home/shalom</code>)</LI>
- ** <LI><code>/home/shalom/-</code> (everything in <code>/home/shalom</code> and subdirectories)</LI>
- ** <LI><code>mysubdir/*</code> (everything in <code>&lt;current directory&gt;/mysubdir</code>)</LI>
- ** <LI><code>mysubdir/-</code> (everything in <code>&lt;current directory&gt;/mysubdir</code> and subdirectories)</LI>
- ** <LI><code>*</code> (everything in current directory)</LI>
- ** <LI><code>-</code> (everything in current directory and subdirectories)</LI>
- ** <LI><code>&lt;&lt;ALL FILES&gt;&gt;</code> (all files)</LI>
- ** </UL>
- **
- ** The supported actions are <code>read</code>, <code>write</code>,
- ** <code>execute</code> and <code>delete</code>.  You may specify multiple
- ** actions in the actions string, separated by commas.<P>
- **
- ** <STRONG>Where various permissions are checked in the core system:</STRONG><P>
- ** <TABLE>
- ** <TR><TH>Action</TH><TH>Location Called</TH></TR>
- ** <TR><TD><code>read</code></TD>    <TD><code></code></TD></TR>
- ** <TR><TD><code>write</code></TD>   <TD><code></code></TD></TR>
- ** <TR><TD><code>execute</code></TD> <TD><code>Runtime.exec()</code>, <code>System.checkExec()</code></TD></TR>
- ** <TR><TD><code>delete</code></TD>  <TD><code>File.delete()</code>, <code>System.checkDelete()</code></TD></TR>
- ** </TABLE>
- **
- ** @specnote Do <code>dir/*</code> and <code>dir/-</code> imply access to dir
- **           itself or just files and folders under it?  I am assuming
- **           <code>-</code> does and <code>*</code> does not.
- ** @XXX I did not implement newPermissionCollection() because no optimizations
- **      could be made that I could think of.  Sun did.  This needs to be looked
- **      over carefully to see what is different.
- **
- ** @author John Keiser
- ** @version 1.1.0, Nov 5 1998
- **/
 
 public class FilePermission extends Permission implements Serializable {
   private static final String CURRENT_DIRECTORY = System.getProperty("user.dir");
