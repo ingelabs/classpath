@@ -56,7 +56,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetShowChildren (JNIEnv *env,
  * Show a widget
  */
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetVisible (JNIEnv *env, 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setVisible (JNIEnv *env, 
     jobject obj, jboolean visible)
 {
   GtkWidget *widget;

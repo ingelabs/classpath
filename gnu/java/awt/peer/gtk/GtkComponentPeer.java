@@ -27,7 +27,6 @@ import java.awt.peer.ComponentPeer;
 public class GtkComponentPeer extends GtkGenericPeer
   implements ComponentPeer
 {
-  native void gtkWidgetSetVisible(boolean b);
   native void gtkWidgetShowChildren();
   native void gtkWidgetGetDimensions(int[] dim);
   native void gtkWidgetGetLocationOnScreen(int[] point);
@@ -141,8 +140,6 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void paint(Graphics g)
     {
-      System.out.println("componentpeer: paint");
-      gtkWidgetSetVisible (true);
     }
 
   public Dimension preferredSize()
@@ -200,19 +197,7 @@ public class GtkComponentPeer extends GtkGenericPeer
     {
     }
 
-  public void setVisible (boolean b) 
-    {
-      if (b)
-	{
-	  System.out.println ("componentpeer: setting visible: "+ this);
-	  gtkWidgetSetVisible (b);
-	}
-      else
-	{
-	  System.out.println ("componentpeer: setting invisible: " + this);
-	  gtkWidgetSetVisible (b);
-	}
-    }
+  native public void setVisible (boolean b);
   
   public void hide () 
     {
