@@ -36,12 +36,23 @@ Suggested Software
         - The kjc compiler is supported with configure but we have
           been unable to successfully compile with it.
 
-	For building the JNI native libraries, the following are required
-        unless --disable-gtk-peer is used as an argument to configure.
+	For building the gtk+ AWT peer JNI native libraries, the following
+	are required unless --disable-gtk-peer is used as an argument to
+	configure.
 
         - GTK+ 2.4.x (or higher)
         - libart_lgpl 2.1.0
         - gdk-pixbuf
+
+	For building the xmlj JAXP implementation (dsabled by default, use
+	configure --enable-xmlj) you need the following installed:
+	- The XML C library for Gnome (libxml2)
+	  http://www.xmlsoft.org/
+	  Minimum version of libxml2 required: 2.6.8
+
+	- The XSLT C library for Gnome (libxslt)
+	  http://www.xmlsoft.org/XSLT/
+	  Minimum version of libxslt required: 1.1.11
 
 	For building the documentation you will need
 

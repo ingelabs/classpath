@@ -1,5 +1,17 @@
 2005-01-02  Mark Wielaard  <mark@klomp.org>
 
+	* ChangeLog.gnujaxp.1: New (historic) ChangeLog file.
+	* ChangeLog.gnujaxp.2: Likewise.
+	* ChangeLog.libxmlj: Likewise.
+	* Makefile.am (EXTRA_DIST): List new ChangeLog files.
+	* INSTALL: Add libxml2 and libxslt requirements for --enable-xmlj.
+	* doc/README.jaxp: New file.
+	* doc/Makefile.am (EXTRA_DIST): List new README.jaxp
+	* native/jni/xmlj/BUGS: New file.
+	* native/jni/xmlj/Makefile.am (EXTRA_DIST): List new BUGS file.
+
+2005-01-02  Mark Wielaard  <mark@klomp.org>
+
 	* lib/gen-classlist.sh.in: Use test -ef and echo top_srcdir and
 	top_builddir locations.
 
