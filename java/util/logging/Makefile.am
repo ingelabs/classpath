@@ -1,9 +1,7 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-SUBDIRS = 
-
 propertiesdir = $(libdir)
-properties_DATA = logging.properties
+dist_properties_DATA = logging.properties
 
 EXTRA_DIST = \
 ConsoleHandler.java \

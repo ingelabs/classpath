@@ -1,16 +1,13 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
+if CREATE_CNI_LIBRARIES
+  CNIDIR = cni
+endif
+
 if CREATE_JNI_LIBRARIES
-
-if CREATE_CNI_LIBRARIES
-SUBDIRS = fdlibm cni jni target
-else
-SUBDIRS = fdlibm jni target
+  JNIDIR = jni
 endif
 
-else
-if CREATE_CNI_LIBRARIES
-SUBDIRS = fdlibm cni target
-endif
-endif
+SUBDIRS = fdlibm $(CNIDIR) $(JNIDIR) target
+DIST_SUBDIRS = fdlibm cni jni target
 

@@ -1,5 +1,14 @@
 2004-01-30  Michael Koch  <konqueror@gmx.de>
 
+	* java/util/logging/Makefile.am: Include logging.properties in dist
+	tarball.
+	* native/jni/Makefile.am: Reworked subdir handling.
+	* native/Makefile.am: Likewise.
+	* resource/java/security/Makefile.am: Simplified classpath.security
+	handling.
+
+2004-01-30  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/net/protocol/http/Connection.java
 	(getOutputStream): Fixed typo.
 
