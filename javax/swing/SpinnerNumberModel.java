@@ -46,6 +46,7 @@ import java.io.Serializable;
  * @version 1.0
  */
 public class SpinnerNumberModel extends AbstractSpinnerModel
+  implements Serializable
 {
   /**
    * For compatability with Sun's JDK
