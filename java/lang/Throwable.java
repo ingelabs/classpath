@@ -115,7 +115,7 @@ public class Throwable extends Object implements Serializable {
   /**
    * Serialize the object in a manner binary compatible with the JDK 1.2
    */
-  private void writeObject(ObjectOutputStream s) 
+  private void writeObject(java.io.ObjectOutputStream s) 
     throws IOException
     {
       ObjectOutputStream.PutField oFields;
@@ -127,11 +127,11 @@ public class Throwable extends Object implements Serializable {
   /**
    * Deserialize the object in a manner binary compatible with the JDK 1.2
    */    
-  private void readObject(java.io.ObjectInputStream stream)
+  private void readObject(java.io.ObjectInputStream s)
     throws IOException, ClassNotFoundException
     {
       ObjectInputStream.GetField oFields;
       oFields = s.readFields();
-      message = oFields.get("detailMessage", (String)null);
+      message = (String)oFields.get("detailMessage", (String)null);
     }
 }
