@@ -1,5 +1,15 @@
 2004-05-21  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/beans/BeanInfoEmbryo.java,
+	java/awt/im/InputContext.java,
+	java/io/SequenceInputStream.java,
+	java/util/zip/ZipOutputStream.java,
+	javax/swing/plaf/basic/BasicLookAndFeel.java,
+	javax/swing/tree/DefaultMutableTreeNode.java:
+	Rename enum to e because enum is a keyword in Java 1.5.
+
+2004-05-21  Michael Koch  <konqueror@gmx.de>
+
 	* acinclude.m4 (CLASSPATH_WITH_INCLUDEDIR): Removed.
 	* configure.ac (EXTRA_INCLUDES): Removed.
 	(AM_CPPFLAGS): New variable to store needed includes.
