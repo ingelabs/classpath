@@ -1,3 +1,10 @@
+2003-11-21  Jeroen Frijters <jeroen@frijters.net>
+	* java/lang/Thread.java (start): Throw IllegalThreadStateException
+	instead of IllegalStateException.
+        * vm/reference/java/lang/Runtime.java (exit): Moved shutdown hook
+        processing to new method.
+        (runShutdownHooks): New method.
+
 2003-11-21  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/plaf/basic/BasicDefaults.java (BasicDefaults): Put
@@ -48,6 +55,7 @@
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics.c: 
 	New file.
 
+>>>>>>> 1.1620
 2003-11-19  Dalibor Topic <robilad@kaffe.org>
 
 	* java/text/FieldPosition.java (equals): Adapted to handle

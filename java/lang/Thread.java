@@ -1,5 +1,5 @@
 /* Thread -- an independent thread of executable code
-   Copyright (C) 1998, 2001, 2002 Free Software Foundation
+   Copyright (C) 1998, 2001, 2002, 2003 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -388,7 +388,7 @@ public class Thread implements Runnable
   public synchronized void start()
   {
     if (vmThread != null || group == null)
-	throw new IllegalStateException();
+	throw new IllegalThreadStateException();
 
     VMThread.create(this, stacksize);
   }

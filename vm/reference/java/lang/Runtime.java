@@ -194,6 +194,39 @@ public class Runtime
     SecurityManager sm = securityManager; // Be thread-safe!
     if (sm != null)
       sm.checkExit(status);
+
+    if(runShutdownHooks())
+      halt(status);
+
+    synchronized (libpath)
+      {
+        if (shutdownHooks != null)
+          {
+            shutdownHooks.remove(Thread.currentThread());
+          }
+      }
+    
+    while (true)
+      try
+        {
+          exitSequence.join();
+        }
+      catch (InterruptedException e)
+        {
+          // Ignore, we've suspended indefinitely to let all shutdown
+          // hooks complete, and to let any non-zero exits through, because
+          // this is a duplicate call to exit(0).
+        }
+  }
+
+  /**
+   * On first invocation, run all the shutdown hooks and return true.
+   * Any subsequent invocations will simply return false.
+   * 
+   * @return was the current thread the first one to call this method?
+   */
+  private boolean runShutdownHooks()
+  {
     boolean first = false;
     synchronized (libpath) // Synch on libpath, not this, to avoid deadlock.
       {
@@ -258,29 +291,7 @@ public class Runtime
         // this should be run on every object.
         runFinalization();
       }
-    else
-      synchronized (libpath)
-        {
-          if (shutdownHooks != null)
-            {
-              shutdownHooks.remove(Thread.currentThread());
-              status = 0; // Change status to enter indefinite wait.
-            }
-        }
-    
-    if (first || status > 0)
-      halt(status);
-    while (true)
-      try
-        {
-          exitSequence.join();
-        }
-      catch (InterruptedException e)
-        {
-          // Ignore, we've suspended indefinitely to let all shutdown
-          // hooks complete, and to let any non-zero exits through, because
-          // this is a duplicate call to exit(0).
-        }
+    return first;
   }
 
   /**
