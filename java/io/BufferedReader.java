@@ -48,7 +48,7 @@ public class BufferedReader extends Reader
 /**
   * This is the default buffer size
   */
-protected static final int DEFAULT_BUFFER_SIZE = 512;
+private static final int DEFAULT_BUFFER_SIZE = 512;
 
 /*************************************************************************/
 
@@ -84,7 +84,7 @@ private int markpos = -1;
   * call to <code>mark()</code> before the mark can be discarded.  After this may
   * chars are read, the <code>reset()</code> method may not be called successfully.
   */
-protected int marklimit;
+private int marklimit;
 
 /**
   * This buffer is used to hold marked data if the underlying stream does
