@@ -22,6 +22,17 @@
 #include "gtkpeer.h"
 #include "GtkChoicePeer.h"
 
+struct item_event_hook_info
+{
+  jobject peer_obj;
+  jobject item_obj;
+};
+
+static void connect_choice_item_selectable_hook (JNIEnv *env, 
+						 jobject peer_obj, 
+						 GtkItem *item, 
+						 jobject item_obj);
+
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuNew (JNIEnv *env, 
     jobject obj, jobject parent_obj, jobjectArray items, jboolean visible)
@@ -29,9 +40,7 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuNew (JNIEnv *env,
   GtkWidget *menu, *optionmenu, *parent;
   GtkWidget *menuitem;
   jsize count;
-  jobject item;
   int i;
-  const char *label;
 
   parent = NSA_GET_PTR (env, parent_obj);
   count = (*env)->GetArrayLength (env, items);
@@ -43,14 +52,21 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuNew (JNIEnv *env,
 
   for (i = 0; i < count; i++) 
     {
+      jobject item;
+      const char *label;
+
       item = (*env)->GetObjectArrayElement (env, items, i);
       label = (*env)->GetStringUTFChars (env, item, NULL);
 
       menuitem = gtk_menu_item_new_with_label (label);
+
+      (*env)->ReleaseStringUTFChars (env, item, label);
+
       gtk_menu_append (GTK_MENU (menu), menuitem);
       gtk_widget_show (menuitem);
 
-      (*env)->ReleaseStringUTFChars (env, item, label);
+      connect_choice_item_selectable_hook (env, obj, 
+					   GTK_ITEM (menuitem), item);
     }
 
   optionmenu = gtk_option_menu_new ();
@@ -87,6 +103,8 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuAdd (JNIEnv *env,
   menuitem = gtk_menu_item_new_with_label (label);
   gtk_menu_insert (GTK_MENU (menu), menuitem, index);
   gtk_widget_show (menuitem);
+
+  connect_choice_item_selectable_hook (env, obj, GTK_ITEM (menuitem), item);
 
   gdk_threads_leave ();
   (*env)->ReleaseStringUTFChars (env, item, label);
@@ -133,5 +151,27 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuSelect (JNIEnv *env,
 }
 
 
+static void
+item_activate (GtkItem *item, struct item_event_hook_info *ie)
+{
+  (*gdk_env)->CallVoidMethod (gdk_env, ie->peer_obj,
+			      postItemEventID,
+			      ie->item_obj,
+			      (jint) AWT_ITEM_SELECTED);
+}
 
+static void
+connect_choice_item_selectable_hook (JNIEnv *env, jobject peer_obj, 
+				     GtkItem *item, jobject item_obj)
+{
+  struct item_event_hook_info *ie;
 
+  ie = (struct item_event_hook_info *) 
+    malloc (sizeof (struct item_event_hook_info));
+
+  ie->peer_obj = (*env)->NewGlobalRef (env, peer_obj);
+  ie->item_obj = (*env)->NewGlobalRef (env, item_obj);
+
+  gtk_signal_connect (GTK_OBJECT (item), "activate", 
+		      GTK_SIGNAL_FUNC (item_activate), ie);
+}

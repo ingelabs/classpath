@@ -288,4 +288,11 @@ public class GtkComponentPeer extends GtkGenericPeer
   {
     q.postEvent (new FocusEvent (awtComponent, id, temporary));
   }
+
+  protected void postItemEvent (Object item, int stateChange)
+  {
+    q.postEvent (new ItemEvent ((ItemSelectable)awtComponent, 
+				ItemEvent.ITEM_STATE_CHANGED,
+				item, stateChange));
+  }
 }

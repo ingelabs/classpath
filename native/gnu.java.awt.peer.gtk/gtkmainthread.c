@@ -34,6 +34,7 @@ jmethodID postExposeEventID;
 jmethodID postKeyEventID;
 jmethodID postFocusEventID;
 jmethodID postAdjustmentEventID;
+jmethodID postItemEventID;
 jmethodID syncAttrsID;
 JNIEnv *gdk_env;
 
@@ -112,6 +113,9 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
   postAdjustmentEventID = (*env)->GetMethodID (env, gtkscrollbarpeer,
 					       "postAdjustmentEvent", 
 					       "(II)V");
+  postItemEventID = (*env)->GetMethodID (env, gtkcomponentpeer,
+					 "postItemEvent", 
+					 "(Ljava/lang/Object;I)V");
   syncAttrsID = (*env)->GetMethodID (env, gtkcomponentpeer,
 				     "syncAttrs", "()V");
 

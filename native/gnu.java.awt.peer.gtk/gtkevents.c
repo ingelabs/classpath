@@ -22,6 +22,7 @@
 #include <X11/Xlib.h>
 #include <gdk/gdkkeysyms.h>
 #include <stdarg.h>
+#include <assert.h>
 
 /* A widget can be composed of multipled windows, so we need to hook
    events on all of them. */
@@ -510,4 +511,3 @@ connect_awt_hook (JNIEnv *env, jobject peer_obj, GtkWidget *widget,
     attach_jobject (va_arg (ap, GdkWindow *), obj);
   va_end (ap);
 }
-

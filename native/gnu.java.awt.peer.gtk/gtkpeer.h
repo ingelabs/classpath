@@ -100,6 +100,9 @@ extern struct state_table *native_state_table;
 #define AWT_LABEL_LEFT 0
 #define AWT_LABEL_CENTER 1
 #define AWT_LABEL_RIGHT 2
+
+#define AWT_ITEM_SELECTED 1
+#define AWT_ITEM_DESELECTED 2
      
 #define AWT_KEY_TYPED    400
 #define AWT_KEY_PRESSED  401
@@ -226,12 +229,14 @@ extern jmethodID postExposeEventID;
 extern jmethodID postKeyEventID;
 extern jmethodID postFocusEventID;
 extern jmethodID postAdjustmentEventID;
+extern jmethodID postItemEventID;
 extern jmethodID syncAttrsID;
 extern jclass gdkColor;
 extern jmethodID gdkColorID;
 extern JNIEnv *gdk_env;
 
 void awt_event_handler (GdkEvent *event);
+
 void connect_awt_hook (JNIEnv *env, jobject peer_obj, GtkWidget *widget,
 		       int nwindows, ...);
 
