@@ -79,28 +79,23 @@ endif
 # the javac-like program
 #-----------------------------------------------------------------
 if USER_SPECIFIED_CLASSLIB
-USER_CLASSLIB_TMP = @USER_CLASSLIB@
+USER_CLASSLIB = @USER_CLASSLIB@
 else
 
 if JAPHAR
-USER_CLASSLIB_TMP = @JAPHAR_CLASSLIB@
+USER_CLASSLIB = @JAPHAR_CLASSLIB@
 else
 
 if KAFFE
-USER_CLASSLIB_TMP = @KAFFE_CLASSLIB@
+USER_CLASSLIB = @KAFFE_CLASSLIB@
 else
-USER_CLASSLIB_TMP = /usr/local/java/lib/classes.zip
+USER_CLASSLIB = /usr/local/java/lib/classes.zip
 endif
 
 endif
 
 endif
 
-if USER_SPECIFIED_KJC
-USER_CLASSLIB = @KJC_CLASSPATH@:$(USER_CLASSLIB_TMP)
-else
-USER_CLASSLIB = $(USER_CLASSLIB_TMP)
-endif
 #-----------------------------------------------------------------
 
 
@@ -108,7 +103,7 @@ endif
 # handling javac definition including programs like jikes here
 #-----------------------------------------------------------------
 if USER_SPECIFIED_KJC
-JAVAC = $(USER_JABBA) $(ARG_CLASSPATH_VM) $(USER_CLASSLIB) $(JAVAC_MAIN) $(ARG_CLASSPATH_JAVAC) .:$(USER_CLASSLIB) -d . @classes
+JAVAC = $(USER_JABBA) $(ARG_CLASSPATH_VM) @KJC_CLASSPATH@:$(USER_CLASSLIB) $(JAVAC_MAIN) $(ARG_CLASSPATH_JAVAC) .:$(USER_CLASSLIB) -d . @classes
 else
 
 if USER_SPECIFIED_JIKES
