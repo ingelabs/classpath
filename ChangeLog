@@ -1,5 +1,13 @@
 2004-10-01  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/image/AffineTransformOp.java
+	(TYPE_BILINEAR): Initialize with 2.
+	* java/awt/print/Printable.java: Jalopied.
+	(PAGE_EXISTS): Initialize with 0;
+	(NO_SUCH_PAGE): Initialized with 1.
+
+2004-10-01  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/DataInputStream.java
 	(readFully): Throw IndexOutOfBoundsException if len is negative.
 
