@@ -1,3 +1,9 @@
+2004-04-09  Mark Wielaard  <mark@klomp.org>
+
+	* config.guess: Removed automatically generated file.
+	* config.sub: Likewise.
+	* .cvsignore: Ignore config.guess and config.sub.
+
 2004-04-09  Michael Koch  <konqueror@gmx.de>
 
 	* include/gnu_java_nio_PipeImpl.h,
