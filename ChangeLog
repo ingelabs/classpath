@@ -1,5 +1,10 @@
 2005-02-01  Sven de Marothy  <sven@physto.se>
 	
+        * java/util/GregorianCalendar.java
+        (computeTime): Fixed handling of time zones.
+
+2005-02-01  Sven de Marothy  <sven@physto.se>
+	
         * java/util/Calendar.java
         (clear): Set values to Epoch instead of zero.
         (set): Set isSet to the relevant field pattern instead of just the

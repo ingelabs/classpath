@@ -492,11 +492,6 @@ public class GregorianCalendar extends Calendar
    */
   protected synchronized void computeTime()
   {
-    // 1  YEAR + MONTH + DAY_OF_MONTH
-    // 2  YEAR + MONTH + WEEK_OF_MONTH + DAY_OF_WEEK
-    // 3  YEAR + MONTH + DAY_OF_WEEK_IN_MONTH + DAY_OF_WEEK
-    // 4  YEAR + DAY_OF_YEAR
-    // 5  YEAR + DAY_OF_WEEK + WEEK_OF_YEAR
     int millisInDay = 0;
     int era = fields[ERA];
     int year = fields[YEAR];
@@ -515,8 +510,9 @@ public class GregorianCalendar extends Calendar
 
     if (! isSet[MONTH])
       {
+	// 5: YEAR + DAY_OF_WEEK + WEEK_OF_YEAR
 	if (isSet[DAY_OF_WEEK] || isSet[WEEK_OF_YEAR])
-	  { // case 5
+	  {
 	    int first = getFirstDayOfMonth(year, 0);
 	    int offs;
 	    if ((8 - first) >= getMinimalDaysInFirstWeek())
@@ -530,7 +526,8 @@ public class GregorianCalendar extends Calendar
 	    day += fields[DAY_OF_WEEK] - first;
 	  }
 	else
-	  { // case 4
+	  {
+	    // 4:  YEAR + DAY_OF_YEAR
 	    month = 0;
 	    day = fields[DAY_OF_YEAR];
 	  }
@@ -541,8 +538,9 @@ public class GregorianCalendar extends Calendar
 	  {
 	    int first = getFirstDayOfMonth(year, month);
 
+	    // 3: YEAR + MONTH + DAY_OF_WEEK_IN_MONTH + DAY_OF_WEEK
 	    if (isSet[DAY_OF_WEEK_IN_MONTH])
-	      { // case 3
+	      {
 		int offs = fields[DAY_OF_WEEK] - first;
 		if (offs < 0)
 		  offs += 7;
@@ -550,13 +548,13 @@ public class GregorianCalendar extends Calendar
 		day += offs;
 	      }
 	    else
-	      { // case 2
+	      { // 2: YEAR + MONTH + WEEK_OF_MONTH + DAY_OF_WEEK
 		day = 1 + 7 * (fields[WEEK_OF_MONTH] - 1);
 		day += fields[DAY_OF_WEEK] - first;
 	      }
 	  }
 
-	// case 1
+	// 1:  YEAR + MONTH + DAY_OF_MONTH
       }
     if (era == BC && year > 0)
       year = 1 - year;
@@ -640,24 +638,19 @@ public class GregorianCalendar extends Calendar
 
     time = relativeDay * (24 * 60 * 60 * 1000L) + millisInDay;
 
-    TimeZone zone = getTimeZone();
-    int rawOffset = isSet[ZONE_OFFSET] ? fields[ZONE_OFFSET]
-                                       : zone.getRawOffset();
-
     // the epoch was a Thursday.
     int weekday = (int) (relativeDay + THURSDAY) % 7;
     if (weekday <= 0)
       weekday += 7;
     fields[DAY_OF_WEEK] = weekday;
 
-    int dstOffset = isSet[DST_OFFSET] ? fields[DST_OFFSET]
-                                      : (zone.getOffset((year < 1) ? BC : AD,
-                                                        (year < 1) ? 1 - year
-                                                                   : year,
-                                                        month, day, weekday,
-                                                        millisInDay)
-                                      - zone.getRawOffset());
+    TimeZone zone = getTimeZone();
+    int rawOffset = zone.getRawOffset();
+    int dstOffset = zone.getOffset((year < 1) ? BC : AD,
+                                   (year < 1) ? 1 - year : year, month, day,
+                                   weekday, millisInDay) - zone.getRawOffset();
     time -= (rawOffset + dstOffset);
+
     isTimeSet = true;
   }
 
