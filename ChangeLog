@@ -1,3 +1,15 @@
+2003-06-24  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/Timer.java
+	(listenerList): New member variable.
+	(actions): Removed.
+	(addActionListener): Use listenerList.
+	(removeActionListener): Likewise.
+	(getListeners): New method.
+	(getActionListeners): New method.
+	(fireActionPerformed): Made protected.
+	(fireActionPerformed): Reimplemented.
+
 2003-06-23  John Leuner  <jewel@debian.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c: cosmetic changes
