@@ -1,9 +1,12 @@
-Installing GNU Classpath - Last updated: May. 05, 2002
+Installing GNU Classpath - Last updated: Sep. 10, 2002
 
 First, this is a development release only! Unless you are interested in
 active development and debugging, or just like running random alpha code,
 this release is probably not for you. Please see the README file for a
 list of VMs that work with GNU Classpath.
+
+Note that if you are building from a non-released (CVS) version of GNU
+classpath, installation instructions are found in the HACKING file.
 
 ------------------------------------------------------------------
 Suggested Software
