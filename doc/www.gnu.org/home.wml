@@ -210,7 +210,7 @@ instructions for using Classpath are provided in the Jikes RVM user's
 guide as of the Jikes RVM 4/7/03 release (2.2.1). Nightly regression
 tests are run against Classpath 0.05 and the 
 Classpath CVS head.   The results are posted on the jikesrvm-regression 
-mailing list, which is archived and available the Jikes RVM home page.
+mailing list, which is archived and available on the Jikes RVM home page.
 </td>
 </tr>
 <tr>
