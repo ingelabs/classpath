@@ -1,5 +1,9 @@
 2002-03-03 Mark Wielaard <mark@klomp.org>
 
+	* java/awt/Font.java (decode): Catch NumberFormatException.
+
+2002-03-03 Mark Wielaard <mark@klomp.org>
+
 	* java/util/Timer (TaskQueue.stop): set elements to zero.
 	* THANKYOU: Add Shuhua Zhang
 

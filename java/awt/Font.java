@@ -162,7 +162,7 @@ decode(String fontspec)
         {
           tokenval = Integer.parseInt(token);
         }
-      catch(Exception e) { ; }
+      catch(NumberFormatException e) { ; }
 
       if (tokenval != 0)
         size = tokenval;
