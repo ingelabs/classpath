@@ -1,5 +1,12 @@
 2004-09-26  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/text/DefaultHighlighter.java
+	(drawsLayeredHighlights): New field.
+	(getDrawsLayeredHighlights): New method.
+	(setDrawsLayeredHighlights): Likewise.
+
+2004-09-26  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/SpringLayout.java
 	(Constraints): May not be final.
 
