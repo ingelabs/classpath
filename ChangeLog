@@ -1,3 +1,8 @@
+2003-03-09  Raif S. Naffah  <raif@fl.net.au>
+
+	* java.security.AlgorithmParameterGenerator.java: formatting +
+	documentation
+
 2003-03-08  Raif S. Naffah  <raif@fl.net.au>
 
 	* java.security.AlgorithmParameters.java: formatting + documentation
