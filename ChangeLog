@@ -1,5 +1,10 @@
 2003-08-12  Ingo Proetel  <proetel@aicas.com>
 
+	* java/util/logging/Logger.java: provide class and method information 
+	* java/util/logging/LogManager.java: create handlers  
+
+2003-08-12  Ingo Proetel  <proetel@aicas.com>
+
 	* java/io/ObjectOutputStream.java : allow putFields be called more than once 
 
 2003-08-12  Sascha Brawer  <brawer@dandelis.ch>
