@@ -1,3 +1,8 @@
+2003-03-03  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/URLStreamHandler.java:
+	Merged Win32 fixes from libgcj.
+
 2003-03-02  Aaron M. Renn <arenn@urbanophile.com>
 
 	* java/io/File.java
@@ -57,6 +62,7 @@
 	(writeShort)
 	(writeInt)
 	(writeLong)
+
 2003-03-02  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/Properties.java (load): Only skip line if the first

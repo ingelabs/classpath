@@ -39,6 +39,7 @@ exception statement from your version. */
 package java.net;
 
 import java.io.IOException;
+import java.io.File;
 
 /*
  * Written using on-line Java Platform 1.2 API Specification, as well
@@ -175,9 +176,33 @@ public abstract class URLStreamHandler
       } 
     else if (start < end)
       {
-	// Context is available, but only override it if there is a new file.
-	file = file.substring(0, file.lastIndexOf('/'))
-		+ '/' + spec.substring(start, end);
+        // Context is available, but only override it if there is a new file.
+        char sepChar = '/';
+        int lastSlash = file.lastIndexOf (sepChar);
+        if (lastSlash < 0 && File.separatorChar != sepChar
+            && url.getProtocol ().equals ("file"))
+          {
+            // On Windows, even '\' is allowed in a "file" URL.
+            sepChar = File.separatorChar;
+            lastSlash = file.lastIndexOf (sepChar);
+          }
+        
+        file = file.substring(0, lastSlash)
+                + sepChar + spec.substring (start, end);
+
+        if (url.getProtocol ().equals ("file"))
+          {
+            // For "file" URLs constructed relative to a context, we
+            // need to canonicalise the file path.
+            try
+              {
+                file = new File (file).getCanonicalPath ();
+              }
+            catch (IOException e)
+              {
+              }
+          }
+
 	ref = null;
       }
 
