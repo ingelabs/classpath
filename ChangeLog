@@ -1,5 +1,12 @@
 2003-06-20  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/swing/border/SoftBevelBorder.java (serialVersionUID):
+	Use value from JDK 1.4.1_01 on GNU/Linux. The old value was
+	determined using Apple/Sun JDK 1.3.1. This value should not have
+	changed between JDK releases.  Since it did, Classpath better
+	uses the value from the newer JDK.  Thanks to Michael Koch
+	<konqueror@gmx.de> for noticing.
+	
 	* javax/swing/plaf/basic/BasicBorders.java (MenuBarBorder): Re-written.
 	(getMenuBarBorder): New method.
 
