@@ -78,22 +78,12 @@ private static int buffer_increment_size;
 
 static
 {
-  String ibs_str = System.getProperty(
-                      "gnu.java.io.CharArrayWriter.initialBufferSize");
-  String bis_str = System.getProperty(
-                      "gnu.java.io.CharArrayWriter.bufferIncrementSize");
-
-  try
-    {
-      initial_buffer_size = Integer.parseInt(ibs_str);
-    }
-  catch (NumberFormatException e) { ; }
-
-  try
-    {
-      buffer_increment_size = Integer.parseInt(bis_str);
-    }
-  catch (NumberFormatException e) { ; }
+  initial_buffer_size = Integer.getInteger(
+                      "gnu.java.io.CharArrayWriter.initialBufferSize",
+                      DEFAULT_INITIAL_BUFFER_SIZE).intValue();
+  buffer_increment_size = Integer.getInteger(
+                      "gnu.java.io.CharArrayWriter.bufferIncrementSize",
+                      DEFAULT_BUFFER_INCREMENT_SIZE).intValue();
 
   if (initial_buffer_size <= 0)
     initial_buffer_size = DEFAULT_INITIAL_BUFFER_SIZE;

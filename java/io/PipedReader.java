@@ -72,23 +72,8 @@ private static boolean try_not_to_block = false;
 
 static
 {
-  String pipe_prop = System.getProperty("gnu.java.io.PipedReader.pipe_size");
-
-  if (pipe_prop == null)
-    {
-      pipe_size = PIPE_SIZE;
-    }
-  else
-    {
-      try
-        {
-          pipe_size = Integer.parseInt(pipe_prop);
-        }
-      catch (NumberFormatException e)
-        {
-          pipe_size = PIPE_SIZE;
-        }
-    }
+  pipe_size =  Integer.getInteger("gnu.java.io.PipedReader.pipe_size",
+                                  PIPE_SIZE).intValue();
 
   String block_prop = System.getProperty("gnu.java.io.try_not_to_block");
   if (block_prop != null)
