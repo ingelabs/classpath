@@ -1,3 +1,12 @@
+2002-10-04  Mark Wielaard  <mark@klomp.org>
+
+	* NEWS: Mention the new VMThrowable interface.
+	* doc/vmintegration.texinfo: Update Throwable documentation.
+	* java/lang/StackTraceElement (toString): Add whitespace.
+	* java/lang/Throwable.java: New file.
+	* vm/reference/java/lang/Throwable.java: Removed file.
+	* vm/reference/java/lang/VMThrowable.java: New file.
+
 2002-10-04  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/URI.java: New stub file, by request of Giannis Georgalis.
