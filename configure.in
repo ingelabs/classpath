@@ -310,6 +310,7 @@ java/text/Makefile
 java/util/Makefile
 java/util/jar/Makefile
 java/util/zip/Makefile
+javax/Makefile
 native/Makefile
 native/gnu.java.awt.peer.gtk/Makefile
 native/java.io/Makefile
