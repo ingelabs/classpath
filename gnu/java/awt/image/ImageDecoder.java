@@ -1,5 +1,5 @@
 /* ImageDecoder.java
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of the non-peer AWT libraries of GNU Classpath.
 
@@ -35,9 +35,10 @@ public abstract class ImageDecoder implements ImageProducer
 
   static
   {
-    String endian = System.getProperties ().getProperty ("gnu.cpu.endian");
-    if (endian == null)
-      cm = 
+    // FIXME: there was some broken code here that looked like
+    // it wanted to rely on this property.  I don't have any idea
+    // what it was intended to do.
+    // String endian = System.getProperties ().getProperty ("gnu.cpu.endian");
   }
 
   public ImageDecoder (String filename)
