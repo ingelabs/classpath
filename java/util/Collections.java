@@ -102,6 +102,18 @@ public class Collections {
   };
 
   /**
+   * An immutable, empty Map.
+   * Note: This implementation isn't serializable, although it should be by the
+   * spec.
+   */
+  public static final Map EMPTY_MAP = new AbstractMap() {
+
+    public Set entrySet() {
+      return EMPTY_SET;
+    }
+  };
+
+  /**
    * Compare two objects with or without a Comparator. If c is null, uses the
    * natural ordering. Slightly slower than doing it inline if the JVM isn't
    * clever, but worth it for removing a duplicate of the search code.
@@ -530,6 +542,50 @@ public class Collections {
             throw new UnsupportedOperationException();
           }
 	};
+      }
+    };
+  }
+
+  /**
+   * Obtain an immutable List consisting of a single element. The return value
+   * of this method is Serializable.
+   *
+   * @param o the single element.
+   * @returns an immutable List containing only o.
+   */
+  // It's not serializable because the spec is broken.
+  public static List singletonList(final Object o) {
+
+    return new AbstractList() {
+
+      public int size() {
+        return 1;
+      }
+
+      public Object get(int index) {
+	if (index == 0) {
+          throw new IndexOutOfBoundsException();
+        } else {
+          return o;
+        }
+      }
+    };
+  }
+	
+  /**
+   * Obtain an immutable Map consisting of a single key value pair.
+   * The return value of this method is Serializable.
+   *
+   * @param key the single key.
+   * @param value the single value.
+   * @returns an immutable Map containing only the single key value pair.
+   */
+  // It's not serializable because the spec is broken.
+  public static Map singletonMap(final Object key, final Object value) {
+
+    return new AbstractMap() {
+      public Set entrySet() {
+        return singleton(new BasicMapEntry(key, value));
       }
     };
   }
