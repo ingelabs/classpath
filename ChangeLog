@@ -1,3 +1,8 @@
+2002-02-06  Eric Blake  <ebb9@email.byu.edu>
+
+	* native/jni/java-lang/Makefile.am: Clean up automake problems
+	in cygwin caused by trailing '\'.
+
 2002-02-04  Mark Wielaard  <mark@klomp.org>
 
 	* include/jni.h.in: Add GPL license exception clarification

@@ -1,10 +1,7 @@
 SUBDIRS = 
-pkglib_LTLIBRARIES = \
-			libjavalang.la \
-			libjavalangreflect.la 
+pkglib_LTLIBRARIES = 	libjavalang.la 	libjavalangreflect.la
 
-libjavalang_la_SOURCES := \
-			java_lang_System.c \
+libjavalang_la_SOURCES = java_lang_System.c \
 			java_lang_Object.c \
 			java_lang_Float.c \
 			java_lang_Double.c \
