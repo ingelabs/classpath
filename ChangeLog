@@ -16,9 +16,9 @@
 	New files
 
 	* java/awt/color/ICC_ColorSpace.java
-	* java/awt/color/ICC_ColorSpaceICC_Profile.java
-	* java/awt/color/ICC_ColorSpaceICC_ProfileGray.java
-	* java/awt/color/ICC_ColorSpaceICC_ProfileRGB.java
+	* java/awt/color/ICC_Profile.java
+	* java/awt/color/ICC_ProfileGray.java
+	* java/awt/color/ICC_ProfileRGB.java
 	Implemented (sans PhotoYCC color space)
 	
 2004-10-28  Michael Koch  <konqueror@gmx.de>
