@@ -191,6 +191,7 @@ java/lang/Makefile
 java/Makefile
 java/math/Makefile
 java/net/Makefile
+java/security/Makefile
 java/util/Makefile
 native/Makefile
 native/java.io/Makefile
