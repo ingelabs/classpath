@@ -17,11 +17,8 @@
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
-// TODO: test suite
-
 package java.io;
 
-import java.lang.reflect.Field;
 import java.util.Hashtable;
 
 import gnu.java.io.ObjectIdentityWrapper;
@@ -62,12 +59,12 @@ import gnu.java.lang.reflect.TypeSignature;
      map.put( "two", new Integer( 2 ) );
 
      ObjectOutputStream oos =
-     new ObjectOutputStream( new FileOutputStream( "numbers" ) );
+       new ObjectOutputStream( new FileOutputStream( "numbers" ) );
      oos.writeObject( map );
      oos.close();
 
      ObjectInputStream ois =
-     new ObjectInputStream( new FileInputStream( "numbers" ) );
+       new ObjectInputStream( new FileInputStream( "numbers" ) );
      Hashtable newmap = (Hashtable)ois.readObject();
      
      System.out.println( newmap );
@@ -76,10 +73,10 @@ import gnu.java.lang.reflect.TypeSignature;
    The default serialization can be overriden in two ways.
 
    By defining a method <code>private void
-   writeObject(ObjectStreamClass)</code>, a class can dictate exactly
+   writeObject(ObjectOutputStream)</code>, a class can dictate exactly
    how information about itself is written.
    <code>defaultWriteObject()</code> may be called from this method to
-   build use augment the custom serialization.  This method is not
+   carry out default serialization.  This method is not
    responsible for dealing with fields of super-classes or subclasses.
 
    By implementing <code>java.io.Externalizable</code>.  This gives
@@ -117,8 +114,10 @@ public class ObjectOutputStream extends OutputStream
     setBlockDataMode( true );
     myReplacementEnabled = false;
     myIsSerializing = false;
-    myNextOID = FIRST_OID;
-    myOIDLookupTable = new Hashtable();  //TODO: initial size?
+    myNextOID = baseWireHandle;
+    myOIDLookupTable = new Hashtable();
+    myProtocolVersion = ourDefaultProtocolVersion;
+    myUseSubclassMethod = false;
     writeStreamHeader();
   }
 
@@ -144,6 +143,12 @@ public class ObjectOutputStream extends OutputStream
   */
   public final void writeObject( Object obj ) throws IOException
   {
+    if( myUseSubclassMethod )
+    {
+      writeObjectOverride( obj );
+      return;
+    }
+
     boolean was_serializing = myIsSerializing;
 
     if( ! was_serializing )
@@ -187,12 +192,19 @@ public class ObjectOutputStream extends OutputStream
 	  myRealOutput.writeUTF( osc.getName() );
 	  myRealOutput.writeLong( osc.getSerialVersionUID() );
 	  assignNewHandle( obj );
-	  myRealOutput.writeByte( osc.getFlags() );
 
-	  Field[] fields = osc.getFields();
+	  int flags = osc.getFlags();
+	  
+	  if( myProtocolVersion == PROTOCOL_VERSION_2 
+	      && osc.isExternalizable() )
+	    flags |= SC_BLOCK_DATA;
+	  
+	  myRealOutput.writeByte( flags );
+
+	  OSCField[] fields = osc.getFields();
 	  myRealOutput.writeShort( fields.length );
 
-	  Field field;
+	  OSCField field;
 	  Class clazz;
 	  for( int i=0; i < fields.length; i++ )
 	  {
@@ -200,16 +212,40 @@ public class ObjectOutputStream extends OutputStream
 	    myRealOutput.writeByte( TypeSignature.getEncodingOfClass( 
 	      field.getType() ).charAt( 0 ) );
 	    myRealOutput.writeUTF( field.getName() );
-
+	    
 	    clazz = field.getType();
 	    if( ! clazz.isPrimitive() )
 	      writeObject( TypeSignature.getEncodingOfClass( clazz ) );
 	  }
 
+	  setBlockDataMode( true );
 	  annotateClass( osc.forClass() );
+	  setBlockDataMode( false );
 	  myRealOutput.writeByte( TC_ENDBLOCKDATA );
-	  writeObject(ObjectStreamClass.lookup(osc.forClass().getSuperclass()));
+
+	  if( osc.isSerializable() )
+	    writeObject(ObjectStreamClass.lookup(osc.forClass().getSuperclass()));
+	  else
+	    writeObject( null );
 	  break;
+	}
+
+
+	Object replacedObject = null;
+
+	if( (myReplacementEnabled || obj instanceof Replaceable)
+	    && ! replaceDone )
+	{
+	  replacedObject = obj;
+
+	  if( obj instanceof Replaceable )
+	    obj = ((Replaceable)obj).writeReplace();
+	  
+	  if( myReplacementEnabled )
+	    obj = replaceObject( obj );
+
+	  replaceDone = true;
+	  continue;
 	}
 
 	if( obj instanceof String )
@@ -236,16 +272,6 @@ public class ObjectOutputStream extends OutputStream
 	  break;
 	}
 
-	Object replacedObject = null;
-
-	if( myReplacementEnabled && ! replaceDone )
-	{
-	  replacedObject = obj;
-	  obj = replaceObject( obj );
-	  replaceDone = true;
-	  continue;
-	}
-
 	myRealOutput.writeByte( TC_OBJECT );
 	writeObject( osc );
 
@@ -256,14 +282,25 @@ public class ObjectOutputStream extends OutputStream
 
 	if( obj instanceof Externalizable )
 	{
+	  if( myProtocolVersion == PROTOCOL_VERSION_2 )
+	    setBlockDataMode( true );
+
 	  ((Externalizable)obj).writeExternal( this );
+
+	  if( myProtocolVersion == PROTOCOL_VERSION_2 )
+	  {
+	    setBlockDataMode( false );
+	    drain();
+	  }
+	  
 	  break;
 	}
 
 	if( obj instanceof Serializable )
 	{
 	  myCurrentObject = obj;
-	  ObjectStreamClass[] hierarchy = getObjectStreamClasses( clazz );
+	  ObjectStreamClass[] hierarchy =
+	    ObjectStreamClass.getObjectStreamClasses( clazz );
 
 	  // TODO: rewrite this loop natively??
 	  boolean has_write;
@@ -292,11 +329,20 @@ public class ObjectOutputStream extends OutputStream
 					    + " are not Serializable" );
       } // end pseudo-loop
     }
-    catch( ObjectStreamException e )
+    catch( IOException e )
     {
       myRealOutput.writeByte( TC_EXCEPTION );
       reset( true );
-      writeObject( e );
+      
+      try
+      {
+	writeObject( e );
+      }
+      catch( IOException ioe )
+      {
+	throw new StreamCorruptedException( "Exception " + ioe + " thrown while exception was being written to stream." );
+      }
+      
       reset( true );
     }
     finally
@@ -355,13 +401,70 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
-  private void reset( boolean force ) throws IOException
+  private void reset( boolean internal ) throws IOException
   {
-    if( !force && myIsSerializing )
-      throw new IOException("Reset called while serialization in progress");
+    if( !internal )
+    {
+      if( myIsSerializing )
+	throw new IOException("Reset called while serialization in progress");
 
-    myRealOutput.writeByte( TC_RESET );
+      myRealOutput.writeByte( TC_RESET );
+    }
+    
     clearHandles();
+  }
+  
+
+  /**
+     Informs this <code>ObjectOutputStream</code> to write data
+     according to the specified protocol.  There are currently two
+     different protocols, specified by <code>PROTOCOL_VERSION_1</code>
+     and <code>PROTOCOL_VERSION_2</code>.  This implementation writes
+     data using <code>PROTOCOL_VERSION_1</code> by default, as is done
+     by the JDK 1.1.
+
+     A non-portable method, <code>setDefaultProtocolVersion(int
+     version)</code> is provided to change the default protocol
+     version.
+
+     For an explination of the differences beween the two protocols
+     see TODO: the Java ObjectSerialization Specification.
+
+     @exception IOException if <code>version</code> is not a valid
+     protocol
+
+     @see setDefaultProtocolVersion(int)
+  */
+  public void useProtocolVersion( int version ) throws IOException
+  {
+    if( version != PROTOCOL_VERSION_1 && version != PROTOCOL_VERSION_2 )
+      throw new IOException( "Invalid protocol version requested." );
+    
+    myProtocolVersion = version;
+  }
+  
+
+  /**
+     <em>GNU $classpath specific</em>
+
+     Changes the default stream protocol used by all
+     <code>ObjectOutputStream</code>s.  There are currently two
+     different protocols, specified by <code>PROTOCOL_VERSION_1</code>
+     and <code>PROTOCOL_VERSION_2</code>.  The default default is
+     <code>PROTOCOL_VERSION_1</code>.
+
+     @exception IOException if <code>version</code> is not a valid
+     protocol
+
+     @see useProtocolVersion(int)     
+  */
+  public static void setDefaultProtocolVersion( int version )
+    throws IOException
+  {
+    if( version != PROTOCOL_VERSION_1 && version != PROTOCOL_VERSION_2 )
+      throw new IOException( "Invalid protocol version requested." );
+    
+    ourDefaultProtocolVersion = version;
   }
   
 
@@ -374,7 +477,7 @@ public class ObjectOutputStream extends OutputStream
      @exception IOException Exception from underlying
      <code>OutputStream</code>.
 
-     @see java.io.ObjectInputStream#resolveClass(java.lang.Class)
+     @see java.io.ObjectInputStream#resolveClass(java.io.ObjectStreamClass)
   */
   protected void annotateClass( Class cl ) throws IOException
   {}
@@ -434,6 +537,44 @@ public class ObjectOutputStream extends OutputStream
     myRealOutput.writeShort( STREAM_VERSION );
   }
 
+
+
+  /**
+     Protected constructor that allows subclasses to override
+     serialization.  This constructor should be called by subclasses
+     that wish to override <code>writeObject(Object)</code>.  This
+     method does a security check <i>NOTE: currently not
+     implemented</i>, then sets a flag that informs
+     <code>writeObject(Object)</code> to call the subclasses
+     <code>writeObjectOverride(Object)</code> method.
+
+     @see writeObjectOverride(Object)
+  */
+  protected ObjectOutputStream() throws IOException
+  {
+    //TODO: security check
+    myUseSubclassMethod = true;
+  }
+  
+
+  /**
+     This method allows subclasses to override the default
+     serialization mechanism provided by
+     <code>ObjectOutputStream</code>.  To make this method be used for
+     writing objects, subclasses must invoke the 0-argument
+     constructor on this class from there constructor.
+
+     @see ObjectOutputStream()
+
+     @exception NotActiveException Subclass has arranged for this
+     method to be called, but did not implement this method.
+  */
+  protected void writeObjectOverride( Object obj ) throws NotActiveException,
+    IOException
+  {
+    throw new NotActiveException( "Subclass of ObjectOutputStream must implement writeObjectOverride" );
+  }
+  
 
   /**
      @see java.io.DataOutputStream#write(int)
@@ -662,7 +803,7 @@ public class ObjectOutputStream extends OutputStream
   // resets mapping from objects to handles
   private void clearHandles()
   {
-    myNextOID = FIRST_OID;
+    myNextOID = baseWireHandle;
     myOIDLookupTable.clear();
   }
 
@@ -748,36 +889,10 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
-  // returns an array of ObjectStreamClasses that represent the super
-  // classes of CLAZZ and CLAZZ itself in order from most super to
-  // CLAZZ.  ObjectStreamClass[0] is the highest superclass of CLAZZ
-  // that is serializable.
-  private ObjectStreamClass[] getObjectStreamClasses( Class clazz )
-  {
-    ObjectStreamClass osc = ObjectStreamClass.lookup( clazz );
-
-    if( osc == null )
-      return new ObjectStreamClass[0];
-    else
-    {
-      ObjectStreamClass[] oscs =
-	new ObjectStreamClass[ osc.getDistanceFromTop() + 1 ];
-
-      for( int i = oscs.length - 1; i >= 0; i-- )
-      {
-	oscs[i] = osc;
-	osc = osc.getSuper();
-      }
-
-      return oscs;
-    }
-  }
-
-
   // writes out FIELDS of OBJECT.  If CALL_WRITE_METHOD is true, use
   // object's writeObject(ObjectOutputStream), otherwise use default
   // serialization.  FIELDS are already in canonical order.
-  private void writeFields( Object obj, Field[] fields, boolean call_write_method )
+  private void writeFields( Object obj, OSCField[] fields, boolean call_write_method )
     throws IOException
   {
     if( call_write_method )
@@ -843,9 +958,11 @@ public class ObjectOutputStream extends OutputStream
 					String type_code );
 
 
-  // these values come from 1.2 spec, but are used in 1.1 as well
-  private final static int FIRST_OID = 0x7e0000;
+  // this value comes from 1.2 spec, but is used in 1.1 as well
   private final static int BUFFER_SIZE = 1024;
+  private final static int PROTOCOL_VERSION_1 = 1;
+  private final static int PROTOCOL_VERSION_2 = 2;
+  private static int ourDefaultProtocolVersion = PROTOCOL_VERSION_1;
 
   private DataOutputStream myDataOutput;
   private boolean myWriteDataAsBlocks;
@@ -859,7 +976,8 @@ public class ObjectOutputStream extends OutputStream
   private boolean myIsSerializing;
   private int myNextOID;
   private Hashtable myOIDLookupTable;
-
+  private int myProtocolVersion;
+  private boolean myUseSubclassMethod;
 
   static
   {
