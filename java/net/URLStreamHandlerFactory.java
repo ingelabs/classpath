@@ -1,5 +1,5 @@
 /* URLStreamHandlerFactory.java -- Maps protocols to URLStreamHandlers
-   Copyright (C) 1998,2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,12 +27,19 @@ executable file might be covered by the GNU General Public License. */
 package java.net;
 
 /**
-  * This interface contains one method which maps the protocol portion of
-  * a URL (eg, "http" in "http://www.urbanophile.com/arenn/") to a 
-  * URLStreamHandler object.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * Written using on-line Java Platform 1.2 API Specification, as well
+ * as "The Java Class Libraries", 2nd edition (Addison-Wesley, 1998).
+ * Status:  Believed complete and correct.
+ */
+
+/**
+ * This interface contains one method which maps the protocol portion of
+ * a URL (eg, "http" in "http://www.urbanophile.com/arenn/") to a 
+ * URLStreamHandler object.
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Warren Levy <warrenl@cygnus.com>
+ */
 public interface URLStreamHandlerFactory
 {
 /**
@@ -43,7 +50,7 @@ public interface URLStreamHandlerFactory
   *
   * @return The URLStreamHandler for the specified protocol
   */
-public abstract URLStreamHandler
+URLStreamHandler
 createURLStreamHandler(String protocol);
 
 } // interface URLStreamHandlerFactory

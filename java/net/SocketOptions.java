@@ -1,5 +1,5 @@
 /* SocketOptions.java -- Implements options for sockets (duh!)
-   Copyright (C) 1998,2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,6 +27,11 @@ executable file might be covered by the GNU General Public License. */
 package java.net;
 
 /**
+ * Written using on-line Java Platform 1.2 API Specification.
+ * Status:  Believed complete and correct.
+ */
+
+/**
   * This interface is used by <code>SocketImpl</code> and 
   * <code>DatagramSocketImpl</code> to implement options
   * on sockets.  
@@ -34,6 +39,7 @@ package java.net;
   * @since 1.2
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Warren Levy <warrenl@cygnus.com>
   */
 public interface SocketOptions
 {
@@ -47,48 +53,44 @@ public interface SocketOptions
 /**
   * Option id for the SO_LINGER value
   */
-public static final int SO_LINGER = 0x80; // 128
+static final int SO_LINGER = 0x80; // 128
 
 /**
   * Option id for the SO_TIMEOUT value
   */
-public static final int SO_TIMEOUT = 0x1006; // 4102
+static final int SO_TIMEOUT = 0x1006; // 4102
 
 /**
   * Retrieve the local address to which the socket is bound.
   */
-public static final int SO_BINDADDR = 0x0F; // 15
+static final int SO_BINDADDR = 0x0F; // 15
 
 /**
   * Option id for the send buffer size
+  * @since 1.2
   */
-public static final int SO_SNDBUF = 0x1001; // 4097
+static final int SO_SNDBUF = 0x1001; // 4097
 
 /**
   * Option id for the receive buffer size
+  * @since 1.2
   */
-public static final int SO_RCVBUF = 0x1002; // 4098
+static final int SO_RCVBUF = 0x1002; // 4098
 
 /**
   * Sets the SO_REUSEADDR parameter on a socket
   */
-public static final int SO_REUSEADDR = 0x04; // 4
+static final int SO_REUSEADDR = 0x04; // 4
 
 /**
   * Option id for the TCP_NODELAY value
   */
-public static final int TCP_NODELAY = 0x01; // 1
-
-/**
-  * Option id for the IP_TTL (time to live) value.  Not public or
-  * standardized value.
-  */
-static final int IP_TTL = 0x1E61; // 7777
+static final int TCP_NODELAY = 0x01; // 1
 
 /**
   * Options id for the IP_MULTICAST_IF value
   */
-public static final int IP_MULTICAST_IF = 0x10; // 16
+static final int IP_MULTICAST_IF = 0x10; // 16
 
 /*************************************************************************/
 
@@ -108,7 +110,7 @@ public static final int IP_MULTICAST_IF = 0x10; // 16
   *
   * @exception SocketException If an error occurs
   */
-public abstract void
+void
 setOption(int option_id, Object val) throws SocketException;
 
 /*************************************************************************/
@@ -126,7 +128,7 @@ setOption(int option_id, Object val) throws SocketException;
   *
   * @exception SocketException If an error occurs
   */
-public abstract Object
+Object
 getOption(int option_id) throws SocketException;
 
 } // interface SocketOptions

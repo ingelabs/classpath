@@ -1,5 +1,5 @@
 /* FilenameFilter.java -- Filter a list of filenames
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,6 +27,11 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * Status:  Complete to 1.1.
+ */
+
 /**
   * This interface has one method which is used for filtering filenames
   * returned in a directory listing.  It is currently used by the 
@@ -35,9 +40,8 @@ package java.io;
   * The method in this interface determines if a particular file should
   * or should not be included in the file listing.
   *
-  * @version 0.0
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Tom Tromey <tromey@cygnus.com>
   */
 public interface FilenameFilter
 {
@@ -49,10 +53,10 @@ public interface FilenameFilter
   * @param dir The <code>File</code> instance for the directory being read
   * @param name The name of the file to test
   *
-  * @return <code>true</code> if the file should be included in the list, <code>false</code> otherwise.
+  * @return <code>true</code> if the file should be included in the list,
+  * <code>false</code> otherwise.
   */
-public abstract boolean
+boolean
 accept(File dir, String name);
 
 } // interface FilenameFilter
-

@@ -1,5 +1,5 @@
 /* DataOutput.java -- Interface for writing data from a stream
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,13 +27,17 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * Status:  Complete to version 1.1.
+ */
+
 /**
   * This interface is implemented by classes that can wrte data to streams 
   * from Java primitive types.
   *
-  * @version 0.0
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Tom Tromey <tromey@cygnus.com>
   */
 public interface DataOutput
 {
@@ -45,7 +49,7 @@ public interface DataOutput
   *
   * @exception IOException If an error occurs
   */
-public abstract void
+void
 writeBoolean(boolean value) throws IOException;
 
 /*************************************************************************/
@@ -57,7 +61,7 @@ writeBoolean(boolean value) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-public abstract void
+void
 writeByte(int value) throws IOException;
 
 /*************************************************************************/
@@ -69,7 +73,7 @@ writeByte(int value) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-public abstract void
+void
 writeChar(int value) throws IOException;
 
 /*************************************************************************/
@@ -81,7 +85,7 @@ writeChar(int value) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-public abstract void
+void
 writeShort(int value) throws IOException;
 
 /*************************************************************************/
@@ -93,7 +97,7 @@ writeShort(int value) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-public abstract void
+void
 writeInt(int value) throws IOException;
 
 /*************************************************************************/
@@ -105,7 +109,7 @@ writeInt(int value) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-public abstract void
+void
 writeLong(long value) throws IOException;
 
 /*************************************************************************/
@@ -117,7 +121,7 @@ writeLong(long value) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-public abstract void
+void
 writeFloat(float value) throws IOException;
 
 /*************************************************************************/
@@ -129,7 +133,7 @@ writeFloat(float value) throws IOException;
   *
   * @exception IOException If any other error occurs
   */
-public abstract void
+void
 writeDouble(double value) throws IOException;
 
 /*************************************************************************/
@@ -141,7 +145,7 @@ writeDouble(double value) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-public abstract void
+void
 writeBytes(String value) throws IOException;
 
 /*************************************************************************/
@@ -153,7 +157,7 @@ writeBytes(String value) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-public abstract void
+void
 writeChars(String value) throws IOException;
 
 /*************************************************************************/
@@ -166,7 +170,7 @@ writeChars(String value) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-public abstract void
+void
 writeUTF(String value) throws IOException;
 
 /*************************************************************************/
@@ -179,7 +183,7 @@ writeUTF(String value) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-public abstract void
+void
 write(int value) throws IOException;
 
 /*************************************************************************/
@@ -191,7 +195,7 @@ write(int value) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-public abstract void
+void
 write(byte[] buf) throws IOException;
 
 /*************************************************************************/
@@ -207,8 +211,7 @@ write(byte[] buf) throws IOException;
   *
   * @exception IOException If any other error occurs
   */
-public abstract void
+void
 write(byte[] buf, int offset, int len) throws IOException;
 
 } // interface DataOutput
-

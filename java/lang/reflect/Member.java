@@ -1,5 +1,5 @@
 /* java.lang.reflect.Member
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,40 +27,55 @@ executable file might be covered by the GNU General Public License. */
 
 package java.lang.reflect;
 
+/* Written using "Java Class Libraries", 2nd edition.
+ * Status:  Believed complete and correct.
+ */
+
 /**
- ** Member is an interface that represents any member of a class; i.e. a field, a method or a constructor.
- ** You can get information about the declaring class, name or modifiers of the member with this interface.
- ** @author  John Keiser
- ** @version 1.1.0, 31 May 1998
- **/
+ * Member is an interface that represents any member of a class.
+ * i.e. a field, a method or a constructor.
+ * You can get information about the declaring class, name or modifiers of
+ * the member with this interface.
+ *
+ * @author  John Keiser
+ * @author Per Bothner <bothner@cygnus.com> 
+ */
 public interface Member {
-	/** Represents all members, whether public, private, protected or package-protected.
-	 ** Used in java.lang.SecurityManager.checkMemberAccess() to determine the type of members
-	 ** to access.
-	 **/
-	public static final int DECLARED = 0;
+    /**
+     * Represents all members, whether public, private, protected or
+     * package-protected.
+     * Used in java.lang.SecurityManager.checkMemberAccess() to determine the
+     * type of members to access.
+     */
+    static final int DECLARED = 1;
 
-	/** Represents public members only.  Used in java.lang.SecurityManager.checkMemberAccess()
-	 ** to determine the type of members to access.
-	 **/
-	public static final int PUBLIC = 1;
+    /**
+     * Represents public members only.  Used inr
+     * java.lang.SecurityManager.checkMemberAccess() to determine the type of
+     * members to access.
+     */
+    static final int PUBLIC = 0;
 
-	/** Gets the class that declared this member.
-	 ** <STRONG>It is unclear whether this returns the class that actually syntactically declared
-	 ** the member, or the class where the <code>Member</code> object was gotten from.</STRONG>
-	 ** @return the class that declared this member.
-	 **/
-	public abstract Class getDeclaringClass();
+    /**
+     * Gets the class that declared this member.
+     * <STRONG>It is unclear whether this returns the class that actually
+     * syntactically declared the member, or the class where the
+     * <code>Member</code> object was gotten from.</STRONG>
+     * @return the class that declared this member.
+     */
+    Class getDeclaringClass();
 
-	/** Gets the modifiers this member uses.  Use the <code>Modifier</code>
-	 ** class to interpret the values.
-	 ** @see Modifier
-	 ** @return an integer representing the modifiers to this Member.
-	 **/
-	public abstract int getModifiers();
+    /**
+     * Gets the modifiers this member uses.  Use the <code>Modifier</code>
+     * class to interpret the values.
+     * @see Modifier
+     * @return an integer representing the modifiers to this Member.
+     */
+    int getModifiers();
 
-	/** Gets the name of this member.
-	 ** @return the name of this member.
-	 **/
-	public abstract String getName();
+    /**
+     * Gets the name of this member.
+     * @return the name of this member.
+     */
+    String getName();
 }

@@ -1,3 +1,21 @@
+2001-09-30  Mark Wielaard  <mark@klomp.org>
+
+	* java/io/DataInput.java: Merged with libgcj.
+	* java/io/DataOutput.java: Idem.
+	* java/io/FilenameFilter.java: Idem.
+	* java/io/Serializable.java: Idem. Remove explicit serialVersionUID.
+	* java/lang/Cloneable.java: Merged with libgcj.
+	* java/lang/Comparable.java: Idem.
+	* java/lang/Runnable.java: Idem.
+	* java/lang/reflect/Member.java: Idem.
+	Note that the values of DECLARED and PUBLIC were switched.
+	* java/net/ContentHandlerFactory.java: Merged with libgcj.
+	* java/net/FileNameMap.java: Idem.
+	* java/net/PlainDatagramSocketImpl.java: Added IP_TTL field.
+	* java/net/SocketOptions.java: Removed IP_TTL field. Merged with libgcj.
+	* java/net/SocketImplFactory.java: Merged with libgcj.
+	* java/net/URLStreamHandlerFactory.java: Idem.
+
 2001-09-27  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/IdentityHashMap.java (containsKey): Use getHash.

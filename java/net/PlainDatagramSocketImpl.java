@@ -1,5 +1,5 @@
 /* PlainDatagramSocketImpl.java -- Default DatagramSocket implementation
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -47,6 +47,12 @@ public class PlainDatagramSocketImpl extends DatagramSocketImpl
 /*
  * Static Variables
  */
+
+/**
+  * Option id for the IP_TTL (time to live) value.
+  */
+private static final int IP_TTL = 0x1E61; // 7777
+
 
 // Static initializer to load native library
   static
@@ -201,7 +207,7 @@ protected native synchronized void leave(InetAddress addr) throws IOException;
 protected synchronized byte
 getTTL() throws IOException
 {
-  Object obj = getOption(SocketOptions.IP_TTL);
+  Object obj = getOption(IP_TTL);
 
   if (!(obj instanceof Integer))
     throw new IOException("Internal Error");
@@ -221,7 +227,7 @@ getTTL() throws IOException
 protected synchronized void
 setTTL(byte ttl) throws IOException
 {
-  setOption(SocketOptions.IP_TTL, new Integer(ttl));
+  setOption(IP_TTL, new Integer(ttl));
 }
 
 /*************************************************************************/
@@ -236,7 +242,7 @@ setTTL(byte ttl) throws IOException
 protected synchronized int
 getTimeToLive() throws IOException
 {
-  Object obj = getOption(SocketOptions.IP_TTL);
+  Object obj = getOption(IP_TTL);
 
   if (!(obj instanceof Integer))
     throw new IOException("Internal Error");
@@ -256,7 +262,7 @@ getTimeToLive() throws IOException
 protected synchronized void
 setTimeToLive(int ttl) throws IOException
 {
-  setOption(SocketOptions.IP_TTL, new Integer(ttl));
+  setOption(IP_TTL, new Integer(ttl));
 }
 
 /*************************************************************************/

@@ -1,5 +1,5 @@
 /* Serializable.java -- Interface to indicate a class may be serialized
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,25 +27,17 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * Status:  Believed complete
+ */
+
 /**
   * This interface has no methods. It simply serves to indicate that
   * the implementing class may be serialized.
   *
-  * @version 0.0
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Warren Levy <warrenl@cygnus.com>
   */
 public interface Serializable
 {
-
-/*
- * Class Variables
- */
-
-/**
-  * This is the version id for serialization
-  */
-public static final long serialVersionUID = 1196656838076753133L;
-
 } // interface Serializable
-

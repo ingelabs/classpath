@@ -1,5 +1,5 @@
 /* java.lang.Runnable
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,21 +27,28 @@ executable file might be covered by the GNU General Public License. */
 
 package java.lang;
 
-/**
- ** Runnable is an interface you implement to indicate that your class can be
- ** executed as the main part of a Thread, among other places.  When you want
- ** an entry point to run a piece of code, implement this interface and
- ** override run.
- **
- ** @author Paul Fisher
- ** @version 1.1.0, 5 Feb 1998
- ** @since JDK1.0
- **/
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Complete.
+ */
 
-public interface Runnable {
-  /** This method will be called by whoever wishes to run your class
-   ** implementing Runnable.
-   ** @since JDK1.0
-   **/
-  public abstract void run();
+/**
+ * Runnable is an interface you implement to indicate that your class can be
+ * executed as the main part of a Thread, among other places.  When you want
+ * an entry point to run a piece of code, implement this interface and
+ * override run.
+ *
+ * @author Paul Fisher
+ * @author Tom Tromey <tromey@cygnus.com>
+ */
+
+public interface Runnable
+{
+  /**
+   * This method will be called by whoever wishes to run your class
+   * implementing Runnable.
+   * @since JDK1.0
+   */
+  void run();
 }
