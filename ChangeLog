@@ -1,3 +1,9 @@
+2003-07-20  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/URL.java
+	(handlers): Removed member variable, unused.
+	I think this came in with a libgcj merge.
+
 2003-07-19  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/URL.java:

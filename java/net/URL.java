@@ -163,12 +163,6 @@ public final class URL implements Serializable
   transient URLStreamHandler ph;
 
   /**
-   * This a table where we cache protocol handlers to avoid the overhead
-   * of looking them up each time.
-   */
-  private static Hashtable handlers = new Hashtable();
-
-  /**
    * If an application installs its own protocol handler factory, this is
    * where we keep track of it.
    */
