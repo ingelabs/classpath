@@ -33,7 +33,7 @@ package java.io;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public interface FilenameFilter
+public abstract interface FilenameFilter
 {
 
 /**
