@@ -352,8 +352,10 @@ public class URLClassLoader extends SecureClassLoader {
         }
 
         // Check if the resource is actually at that location
+        // we MUST open the connection to ensure the location gets checked
         try {
-            resourceURL.openConnection();
+            URLConnection u = resourceURL.openConnection();
+            u.connect();
         } catch (IOException ioe) {
             return null;
         }
