@@ -74,6 +74,10 @@ public class Thread implements Runnable {
 	boolean daemon;
 	int priority;
 
+	/** The context classloader for this Thread. **/
+	private ClassLoader contextClassLoader
+				= ClassLoader.getSystemClassLoader();
+
 	/** The maximum priority for a Thread.
 	 ** @XXX find out the value for this.
 	 **/
@@ -228,6 +232,7 @@ public class Thread implements Runnable {
 
 		priority = currentThread().getPriority();
 		daemon = currentThread().isDaemon();
+		contextClassLoader = currentThread().getContextClassLoader();
 		nativeInit();
 
 		this.group.addThread(this);
@@ -285,6 +290,8 @@ public class Thread implements Runnable {
 	 ** If you stop a Thread that has not yet started, it will stop
 	 ** immediately when it is actually started.<P>
 	 **
+	 ** @deprecated unsafe operation.
+	 **
 	 ** @exception SecurityException if you cannot modify this Thread.
 	 ** @XXX it doesn't yet implement that second requirement.
 	 **/
@@ -297,6 +304,8 @@ public class Thread implements Runnable {
 	 **
 	 ** If you stop a Thread that has not yet started, it will stop
 	 ** immediately when it is actually started.<P>
+	 **
+	 ** @deprecated unsafe operation.
 	 **
 	 ** @param t the Throwable to throw when the Thread dies.
 	 ** @exception SecurityException if you cannot modify this Thread.
@@ -336,6 +345,9 @@ public class Thread implements Runnable {
 	/** Suspend this Thread.  It will not come back, ever, unless
 	 ** it is resumed.  It is not clear whether locks should be
 	 ** released until resumption, but it is likely.
+	 **
+	 ** @deprecated depends on <code>suspend()</code>.
+	 **
 	 ** @exception SecurityException if you cannot modify this Thread.
 	 **/
 	public final synchronized void suspend() {
@@ -345,6 +357,9 @@ public class Thread implements Runnable {
 	
 	/** Resume this Thread.  If the thread is not suspended, this
 	 ** method does nothing.
+	 **
+	 ** @deprecated depends on <code>suspend()</code>.
+	 **
 	 ** @exception SecurityException if you cannot modify this Thread.
 	 **/
 	public final synchronized void resume() {
@@ -494,6 +509,7 @@ public class Thread implements Runnable {
 	/** Count the number of stack frames in this Thread.  The Thread
 	 ** in question must be suspended when this occurs.
 	 **
+	 ** @deprecated depends on <code>suspend</code>.
 	 ** @return the number of stack frames in this Thread.
 	 ** @exception IllegalThreadStateException if this Thread is
 	 **            not suspended.
@@ -524,7 +540,7 @@ public class Thread implements Runnable {
 	 ** @exception SecurityException if the current Thread cannot
 	 **            modify this Thread.
 	 **/
-	public void checkAccess() {
+	public final void checkAccess() {
 		SecurityManager sm = System.getSecurityManager();
 		if(sm != null) {
 			sm.checkAccess(this);
@@ -548,7 +564,39 @@ public class Thread implements Runnable {
 	final native void nativeResume();
 	final native void nativeSetPriority(int newPriority);
 
-	public ClassLoader getContextClassLoader() {
-		return(this.getClass().getClassLoader()); // For now
+	/**
+	 * Returns the context classloader of this Thread. The context
+	 * classloader can be used by code that want to load classes depending
+	 * on the current thread. Normally classes are loaded depending on
+	 * the classloader of the current class.
+	 * 
+	 * @exception SecurityException when the calling code does not have
+	 * <code>RuntimePermission("getClassLoader")</code>.
+	 */
+	public ClassLoader getContextClassLoader()
+	{
+	  SecurityManager sm = System.getSecurityManager();
+	  if (sm != null)
+	    sm.checkPermission(new RuntimePermission("getClassLoader"));
+
+	  return contextClassLoader;
+	}
+
+	/**
+	 * Sets the context classloader for this Thread. When not explicitly
+	 * set the context classloader for a thread is the same as the context
+	 * classloader of the thread that created this thread. The first
+	 * thread has as context classloader the system classloader.
+	 *
+	 * @exception SecurityException when the calling code does not have
+	 * <code>RuntimePermission("setContextClassLoader")</code>.
+	 */
+	public void setContextClassLoader(ClassLoader classloader)
+	{
+	  SecurityManager sm = System.getSecurityManager();
+	  if (sm != null)
+	    sm.checkPermission(new RuntimePermission("setContextClassLoader"));
+
+	  this.contextClassLoader = classloader;
 	}
 }
