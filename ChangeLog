@@ -1,3 +1,9 @@
+2003-07-28  Torsten Rupp  <rupp@lisa.aicas.com>
+
+	* native/jni/java-net/java_net_PlainDatagramSocketImpl.c:
+	improved some exception messages in Java_java_net_PlainDatagramSocketImpl_receive,
+        Java_java_net_PlainDatagramSocketImpl_sendto
+
 2003-07-28  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/border/BevelBorder.java,
