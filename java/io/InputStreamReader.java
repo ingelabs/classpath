@@ -43,6 +43,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 
 import gnu.java.io.EncodingManager;
+import gnu.java.io.decode.Decoder;
 
 /**
  * This class reads characters from a byte input stream.   The characters
@@ -97,6 +98,8 @@ public class InputStreamReader extends Reader
    */
   private Reader in;
 
+  private String encoding;
+  
   /**
    * This method initializes a new instance of <code>InputStreamReader</code>
    * to read from the specified stream using the default encoding.
@@ -107,7 +110,11 @@ public class InputStreamReader extends Reader
   {
     if (in == null)
       throw new NullPointerException();
-    this.in = EncodingManager.getDecoder(in);
+    
+    Decoder decoder =  EncodingManager.getDecoder(in);
+    encoding = decoder.getSchemeName();
+    
+    this.in = decoder;
   }
 
   /**
@@ -129,7 +136,11 @@ public class InputStreamReader extends Reader
         || encoding_name == null)
       throw new NullPointerException();
     
-    this.in = EncodingManager.getDecoder(in, encoding_name);
+    Decoder decoder = EncodingManager.getDecoder(in, encoding_name);
+    encoding = decoder.getSchemeName();
+    
+    this.in = decoder;
+    
   }
 
   /**
@@ -144,6 +155,8 @@ public class InputStreamReader extends Reader
      * encoding/decoding.
      */
     this.in = Channels.newReader(Channels.newChannel(in), charset.newDecoder(), -1);
+    
+    encoding = charset.name();
   }
 
   /**
@@ -153,6 +166,8 @@ public class InputStreamReader extends Reader
   public InputStreamReader(InputStream in, CharsetDecoder decoder) {
     // FIXME: see {@link InputStreamReader(InputStream, Charset)
     this.in = Channels.newReader(Channels.newChannel(in), decoder, -1);
+    
+    encoding = decoder.charset().name();
   }
   
   /**
@@ -180,7 +195,7 @@ public class InputStreamReader extends Reader
    */
   public String getEncoding()
   {
-    return in != null ? in.getSchemeName() : null;
+    return in != null ? encoding : null;
   }
 
   /**
