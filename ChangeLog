@@ -1,5 +1,10 @@
 2001-10-26  Mark Wielaard  <mark@klomp.org>
 
+	* lib/standard.omit: DataFlavor.java and AWTEvent.java should and must
+	be compiled by default
+
+2001-10-26  Mark Wielaard  <mark@klomp.org>
+
 	* java/lang/reflect/Proxy.java (getProxyClass):
 	Workaround for bug in gcj
 	* java/util/TreeMap.java (TreeIterator (int)): likewise

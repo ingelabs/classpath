@@ -2,8 +2,6 @@
 ../gnu/java/awt/peer/gtk/TestAWT.java$
 ../gnu/java/awt/peer/gtk/Test.java$
 ../gnu/javax/swing/plaf/gtk/.*$
-../java/awt/datatransfer/DataFlavor.java$
-../java/awt/AWTEvent.java$
 ../java/awt/ImageMediaEntry.java$
 ../java/awt/MediaEntry.java$
 ../java/awt/MediaTracker.java$
