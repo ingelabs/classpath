@@ -369,7 +369,8 @@ public final class PlainSocketImpl extends SocketImpl
    * This class contains an implementation of <code>InputStream</code> for 
    * sockets.  It in an internal only class used by <code>PlainSocketImpl</code>.
    */
-  class SocketInputStream extends InputStream
+  final class SocketInputStream
+    extends InputStream
   {
     /**
      * The PlainSocketImpl object this stream is associated with
@@ -451,18 +452,6 @@ public final class PlainSocketImpl extends SocketImpl
     }
 
     /**
-     * Reads up to buf.length bytes of data into the caller supplied buffer.
-     *
-     * @return The actual number of bytes read or -1 if end of stream
-     *
-     * @exception IOException If an error occurs.
-     */
-    public int read (byte[] buf) throws IOException
-    {
-      return read (buf, 0, buf.length);
-    }
-
-    /**
      * Reads up to len bytes of data into the caller supplied buffer starting
      * at offset bytes from the start of the buffer
      *
@@ -479,8 +468,7 @@ public final class PlainSocketImpl extends SocketImpl
 
       return bytes_read;
     }
-
-  } // class SocketInputStream
+  }
 
   /**
    * This class is used internally by <code>PlainSocketImpl</code> to be the 
@@ -488,7 +476,8 @@ public final class PlainSocketImpl extends SocketImpl
    * <code>getOutputStream method</code>.  It expects only to  be used in that
    * context.
    */
-  class SocketOutputStream extends OutputStream
+  final class SocketOutputStream
+    extends OutputStream
   {
     /**
      * The PlainSocketImpl object this stream is associated with
@@ -542,18 +531,6 @@ public final class PlainSocketImpl extends SocketImpl
     }
 
     /**
-     * Write an array of bytes to the output stream
-     *
-     * @param buf The array of bytes to write
-     *
-     * @exception IOException If an error occurs
-     */
-    public void write (byte[] buf) throws IOException
-    {
-      write (buf, 0, buf.length);
-    }
-
-    /**
      * Writes len number of bytes from the array buf to the stream starting
      * at offset bytes into the buffer.
      *
@@ -565,7 +542,5 @@ public final class PlainSocketImpl extends SocketImpl
     {
       impl.write (buf, offset, len);
     }
-
-  } // class SocketOutputStream
-
-} // class PlainSocketImpl
+  }
+}

@@ -1,5 +1,13 @@
 2004-03-03  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/PlainSocketImpl.java
+	(SocketInputStream): Made final.
+	(read(byte[] buf)): Removed, redundant.
+	(SocketOutputStream): Made final.
+	(write(byte[] buf)): Removed, redundant.
+
+2004-03-03  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/File.java: Reformated.
 	(isAbsolute): Simplified code.
 	(isHidden): Likewise.
