@@ -1,3 +1,9 @@
+2004-07-31  Mark Wielaard  <mark@klomp.org>
+
+	* java/awt/image/DirectColorModel.java: Reindent.
+	* java/awt/image/MemoryImageSource.java: Likewise.
+	* java/awt/image/RGBImageFilter.java: Likewise.
+
 2004-07-31  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	PR AWT/16040
