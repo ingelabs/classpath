@@ -2153,7 +2153,7 @@ public abstract class Component
   }
 
   /**
-   * Removes the specified listener from the component. This is harmless is
+   * Removes the specified listener from the component. This is harmless if
    * the listener was not previously registered.
    *
    * @param listener the listener to remove
@@ -2201,7 +2201,7 @@ public abstract class Component
   }
 
   /**
-   * Removes the specified listener from the component. This is harmless is
+   * Removes the specified listener from the component. This is harmless if
    * the listener was not previously registered.
    *
    * @param listener the listener to remove
@@ -2248,7 +2248,7 @@ public abstract class Component
   }
 
   /**
-   * Removes the specified listener from the component. This is harmless is
+   * Removes the specified listener from the component. This is harmless if
    * the listener was not previously registered.
    *
    * @param listener the listener to remove
@@ -2298,7 +2298,7 @@ public abstract class Component
   }
 
   /**
-   * Removes the specified listener from the component. This is harmless is
+   * Removes the specified listener from the component. This is harmless if
    * the listener was not previously registered.
    *
    * @param listener the listener to remove
@@ -2348,7 +2348,7 @@ public abstract class Component
   }
 
   /**
-   * Removes the specified listener from the component. This is harmless is
+   * Removes the specified listener from the component. This is harmless if
    * the listener was not previously registered.
    *
    * @param listener the listener to remove
@@ -2395,7 +2395,7 @@ public abstract class Component
   }
 
   /**
-   * Removes the specified listener from the component. This is harmless is
+   * Removes the specified listener from the component. This is harmless if
    * the listener was not previously registered.
    *
    * @param listener the listener to remove
@@ -2442,7 +2442,7 @@ public abstract class Component
   }
 
   /**
-   * Removes the specified listener from the component. This is harmless is
+   * Removes the specified listener from the component. This is harmless if
    * the listener was not previously registered.
    *
    * @param listener the listener to remove
@@ -2491,7 +2491,7 @@ public abstract class Component
   }
 
   /**
-   * Removes the specified listener from the component. This is harmless is
+   * Removes the specified listener from the component. This is harmless if
    * the listener was not previously registered.
    *
    * @param listener the listener to remove
@@ -2541,7 +2541,7 @@ public abstract class Component
   }
 
   /**
-   * Removes the specified listener from the component. This is harmless is
+   * Removes the specified listener from the component. This is harmless if
    * the listener was not previously registered.
    *
    * @param listener the listener to remove
@@ -3429,13 +3429,13 @@ public abstract class Component
   }
 
   /**
-   * Requests that this component be given focus. The <code>gotFocus()</code>
-   * method on this event will be called when and if this request was
-   * successful. To be successful, the component must be displayable, visible,
-   * and focusable, and the top-level Window must be able to receive focus.
-   * Thus, this request may fail, or be delayed until the window receives
-   * focus. It is recommended that <code>requestFocusInWindow</code> be used
-   * where possible to be more platform-independent.
+   * Requests that this component be given focus. A <code>FOCUS_GAINED</code>
+   * event will be fired if and only if this request is successful. To be
+   * successful, the component must be displayable, visible, and focusable,
+   * and the top-level Window must be able to receive focus. Thus, this
+   * request may fail, or be delayed until the window receives focus. It is
+   * recommended that <code>requestFocusInWindow</code> be used where
+   * possible to be more platform-independent.
    *
    * @see #requestFocusInWindow()
    * @see FocusEvent
@@ -3452,8 +3452,30 @@ public abstract class Component
       peer.requestFocus();
   }
 
-  //XXX Below here, I have not yet had time to document things --EBB
   /**
+   * Requests that this component be given focus. A <code>FOCUS_GAINED</code>
+   * event will be fired if and only if this request is successful. To be
+   * successful, the component must be displayable, visible, and focusable,
+   * and the top-level Window must be able to receive focus. Thus, this
+   * request may fail, or be delayed until the window receives focus. It is
+   * recommended that <code>requestFocusInWindow</code> be used where
+   * possible to be more platform-independent.
+   *
+   * <p>If the return value is false, the request is guaranteed to fail. If
+   * it is true, it will likely succeed unless the action is vetoed or
+   * something in the native windowing system intervenes. The temporary flag,
+   * and thus this method in general, is not designed for public use; rather
+   * it is a hook for lightweight components to notify their container in
+   * an attempt to reduce the amount of repainting necessary.
+   *
+   * @param temporary true if the focus request is temporary
+   * @return true if the request has a chance of success
+   * @see #requestFocusInWindow()
+   * @see FocusEvent
+   * @see #addFocusListener(FocusListener)
+   * @see #isFocusable()
+   * @see #isDisplayable()
+   * @see KeyboardFocusManager#clearGlobalFocusOwner()
    * @since 1.4
    */
   protected boolean requestFocus(boolean temporary)
@@ -3464,6 +3486,26 @@ public abstract class Component
   }
 
   /**
+   * Requests that this component be given focus, if it resides in the
+   * top-level window which already has focus. A <code>FOCUS_GAINED</code>
+   * event will be fired if and only if this request is successful. To be
+   * successful, the component must be displayable, visible, and focusable,
+   * and the top-level Window must be focused.
+   *
+   * <p>If the return value is false, the request is guaranteed to fail. If
+   * it is true, it will likely succeed unless the action is vetoed or
+   * something in the native windowing system intervenes. The temporary flag,
+   * and thus this method in general, is not designed for public use; rather
+   * it is a hook for lightweight components to notify their container in
+   * an attempt to reduce the amount of repainting necessary.
+   *
+   * @return true if the request has a chance of success
+   * @see #requestFocus()
+   * @see FocusEvent
+   * @see #addFocusListener(FocusListener)
+   * @see #isFocusable()
+   * @see #isDisplayable()
+   * @see KeyboardFocusManager#clearGlobalFocusOwner()
    * @since 1.4
    */
   public boolean requestFocusInWindow()
@@ -3474,6 +3516,27 @@ public abstract class Component
   }
 
   /**
+   * Requests that this component be given focus, if it resides in the
+   * top-level window which already has focus. A <code>FOCUS_GAINED</code>
+   * event will be fired if and only if this request is successful. To be
+   * successful, the component must be displayable, visible, and focusable,
+   * and the top-level Window must be focused.
+   *
+   * <p>If the return value is false, the request is guaranteed to fail. If
+   * it is true, it will likely succeed unless the action is vetoed or
+   * something in the native windowing system intervenes. The temporary flag,
+   * and thus this method in general, is not designed for public use; rather
+   * it is a hook for lightweight components to notify their container in
+   * an attempt to reduce the amount of repainting necessary.
+   *
+   * @param temporary true if the focus request is temporary
+   * @return true if the request has a chance of success
+   * @see #requestFocus()
+   * @see FocusEvent
+   * @see #addFocusListener(FocusListener)
+   * @see #isFocusable()
+   * @see #isDisplayable()
+   * @see KeyboardFocusManager#clearGlobalFocusOwner()
    * @since 1.4
    */
   protected boolean requestFocusInWindow(boolean temporary)
@@ -3484,7 +3547,11 @@ public abstract class Component
   }
 
   /**
-   * Transfers focus to the next component in the focus traversal order.
+   * Transfers focus to the next component in the focus traversal order, as
+   * though this were the current focus owner.
+   *
+   * @see #requestFocus()
+   * @since 1.1
    */
   public void transferFocus()
   {
@@ -3498,6 +3565,11 @@ public abstract class Component
   }
 
   /**
+   * Returns the root container that owns the focus cycle where this component
+   * resides. A focus cycle root is in two cycles, one as the ancestor, and
+   * one as the focusable element; this call always returns the ancestor.
+   *
+   * @return the ancestor container that owns the focus cycle
    * @since 1.4
    */
   public Container getFocusCycleRootAncestor()
@@ -3507,18 +3579,22 @@ public abstract class Component
   }
 
   /**
+   * Tests if the container is the ancestor of the focus cycle that this
+   * component belongs to.
+   *
+   * @param c the container to test
+   * @return true if c is the focus cycle root
    * @since 1.4
    */
-  public boolean isFocusCycleRoot()
+  public boolean isFocusCycleRoot(Container c)
   {
-    // XXX Implement.
-    throw new Error("not implemented");
+    return c == getFocusCycleRootAncestor();
   }
 
   /**
    * AWT 1.0 focus event processor.
    *
-   * @deprecated Deprecated in favor of <code>transferFocus()</code>.
+   * @deprecated use {@link #transferFocus()} instead
    */
   public void nextFocus()
   {
@@ -3526,6 +3602,10 @@ public abstract class Component
   }
 
   /**
+   * Transfers focus to the previous component in the focus traversal order, as
+   * though this were the current focus owner.
+   *
+   * @see #requestFocus()
    * @since 1.4
    */
   public void transferFocusBackward()
@@ -3535,6 +3615,12 @@ public abstract class Component
   }
 
   /**
+   * Transfers focus to the focus cycle root of this component. However, if
+   * this is a Window, the default focus owner in the window in the current
+   * focus cycle is focused instead.
+   *
+   * @see #requestFocus()
+   * @see #isFocusCycleRoot()
    * @since 1.4
    */
   public void transferFocusUpCycle()
@@ -3543,13 +3629,22 @@ public abstract class Component
     throw new Error("not implemented");
   }
 
-  /** @since 1.2 */
+  /**
+   * Tests if this component is the focus owner. Use {@link #isFocusOwner()}
+   * instead.
+   *
+   * @return true if this component owns focus
+   * @since 1.2
+   */
   public boolean hasFocus()
   {
     return isFocusOwner();
   }
 
   /**
+   * Tests if this component is the focus owner.
+   *
+   * @return true if this component owns focus
    * @since 1.4
    */
   public boolean isFocusOwner()
@@ -3561,7 +3656,9 @@ public abstract class Component
   /**
    * Adds the specified popup menu to this component.
    *
-   * @param menu The popup menu to be added.
+   * @param menu the popup menu to be added
+   * @see #remove(MenuComponent)
+   * @since 1.1
    */
   public synchronized void add(PopupMenu popup)
   {
@@ -3573,7 +3670,9 @@ public abstract class Component
   /**
    * Removes the specified popup menu from this component.
    *
-   * @param menu The popup menu to remove.
+   * @param menu the popup menu to remove
+   * @see #add(PopupMenu)
+   * @since 1.1
    */
   public synchronized void remove(MenuComponent popup)
   {
@@ -3582,19 +3681,17 @@ public abstract class Component
   }
 
   /**
-   * Returns a debugging string representing this component.
+   * Returns a debugging string representing this component. The string may
+   * be empty but not null.
    *
-   * @return A string representing this component.
+   * @return a string representing this component
    */
   protected String paramString()
   {
     StringBuffer param = new StringBuffer();
     String name = getName();
     if (name != null)
-      {
-        param.append(name);
-        param.append(",");
-      }
+      param.append(name).append(",");
     param.append(width).append("x").append(height).append("+").append(x)
       .append("+").append(y);
     if (! isValid())
@@ -3611,17 +3708,20 @@ public abstract class Component
   }
 
   /**
-   * Returns a string representation of this component.
+   * Returns a string representation of this component. This is implemented
+   * as <code>getClass().getName() + '[' + paramString() + ']'</code>.
    *
-   * @return A string representation of this component
+   * @return a string representation of this component
    */
   public String toString()
   {
-    return getClass().getName() + "[" + paramString() + "]";
+    return getClass().getName() + '[' + paramString() + ']';
   }
 
   /**
-   * Prints a listing of this component to the standard output.
+   * Prints a listing of this component to <code>System.out</code>.
+   *
+   * @see #list(PrintStream)
    */
   public void list()
   {
@@ -3631,7 +3731,7 @@ public abstract class Component
   /**
    * Prints a listing of this component to the specified print stream.
    *
-   * @param stream The <code>PrintStream</code> to print to.
+   * @param stream the <code>PrintStream</code> to print to
    */
   public void list(PrintStream out)
   {
@@ -3642,8 +3742,8 @@ public abstract class Component
    * Prints a listing of this component to the specified print stream,
    * starting at the specified indentation point.
    *
-   * @param stream The <code>PrintStream</code> to print to.
-   * @param indent The indentation point.
+   * @param stream the <code>PrintStream</code> to print to
+   * @param indent the indentation point
    */
   public void list(PrintStream out, int indent)
   {
@@ -3655,7 +3755,8 @@ public abstract class Component
   /**
    * Prints a listing of this component to the specified print writer.
    *
-   * @param writer The <code>PrintWrinter</code> to print to.
+   * @param writer the <code>PrintWrinter</code> to print to
+   * @since 1.1
    */
   public void list(PrintWriter out)
   {
@@ -3666,8 +3767,9 @@ public abstract class Component
    * Prints a listing of this component to the specified print writer,
    * starting at the specified indentation point.
    *
-   * @param writer The <code>PrintWriter</code> to print to.
-   * @param indent The indentation point.
+   * @param writer the <code>PrintWriter</code> to print to
+   * @param indent the indentation point
+   * @since 1.1
    */
   public void list(PrintWriter out, int indent)
   {
@@ -3676,6 +3778,32 @@ public abstract class Component
     out.println(toString());
   }
 
+  /**
+   * Adds the specified property listener to this component. This is harmless
+   * if the listener is null, but if the listener has already been registered,
+   * it will now be registered twice. The property listener ignores inherited
+   * properties. Recognized properties include:<br>
+   * <ul>
+   * <li>the font (<code>"font"</code>)</li>
+   * <li>the background color (<code>"background"</code>)</li>
+   * <li>the foreground color (<code>"foreground"</code>)</li>
+   * <li>the focusability (<code>"focusable"</code>)</li>
+   * <li>the focus key traversal enabled state
+   *     (<code>"focusTraversalKeysEnabled"</code>)</li>
+   * <li>the set of forward traversal keys
+   *     (<code>"forwardFocusTraversalKeys"</code>)</li>
+   * <li>the set of backward traversal keys
+   *     (<code>"backwardFocusTraversalKeys"</code>)</li>
+   * <li>the set of up-cycle traversal keys
+   *     (<code>"upCycleFocusTraversalKeys"</code>)</li>
+   * </ul>
+   *
+   * @param listener the new listener to add
+   * @see #removePropertyChangeListener(PropertyChangeListener)
+   * @see #getPropertyChangeListeners()
+   * @see #addPropertyChangeListener(String, PropertyChangeListener)
+   * @since 1.1
+   */
   public void addPropertyChangeListener(PropertyChangeListener listener)
   {
     if (changeSupport == null)
@@ -3683,6 +3811,16 @@ public abstract class Component
     changeSupport.addPropertyChangeListener(listener);
   }
 
+  /**
+   * Removes the specified property listener from the component. This is
+   * harmless if the listener was not previously registered.
+   *
+   * @param listener the listener to remove
+   * @see #addPropertyChangeListener(PropertyChangeListener)
+   * @see #getPropertyChangeListeners()
+   * @see #removePropertyChangeListener(String, PropertyChangeListener)
+   * @since 1.1
+   */
   public void removePropertyChangeListener(PropertyChangeListener listener)
   {
     if (changeSupport != null)
@@ -3690,6 +3828,12 @@ public abstract class Component
   }
 
   /**
+   * Returns an array of all specified listeners registered on this component.
+   *
+   * @return an array of listeners
+   * @see #addPropertyChangeListener(PropertyChangeListener)
+   * @see #removePropertyChangeListener(PropertyChangeListener)
+   * @see #getPropertyChangeListeners(String)
    * @since 1.4
    */
   public PropertyChangeListener[] getPropertyChangeListeners()
@@ -3698,6 +3842,34 @@ public abstract class Component
       : changeSupport.getPropertyChangeListeners();
   }
 
+  /**
+   * Adds the specified property listener to this component. This is harmless
+   * if the listener is null, but if the listener has already been registered,
+   * it will now be registered twice. The property listener ignores inherited
+   * properties. The listener is keyed to a single property. Recognized
+   * properties include:<br>
+   * <ul>
+   * <li>the font (<code>"font"</code>)</li>
+   * <li>the background color (<code>"background"</code>)</li>
+   * <li>the foreground color (<code>"foreground"</code>)</li>
+   * <li>the focusability (<code>"focusable"</code>)</li>
+   * <li>the focus key traversal enabled state
+   *     (<code>"focusTraversalKeysEnabled"</code>)</li>
+   * <li>the set of forward traversal keys
+   *     (<code>"forwardFocusTraversalKeys"</code>)</li>
+p   * <li>the set of backward traversal keys
+   *     (<code>"backwardFocusTraversalKeys"</code>)</li>
+   * <li>the set of up-cycle traversal keys
+   *     (<code>"upCycleFocusTraversalKeys"</code>)</li>
+   * </ul>
+   *
+   * @param propertyName the property name to filter on
+   * @param listener the new listener to add
+   * @see #removePropertyChangeListener(String, PropertyChangeListener)
+   * @see #getPropertyChangeListeners(String)
+   * @see #addPropertyChangeListener(PropertyChangeListener)
+   * @since 1.1
+   */
   public void addPropertyChangeListener(String propertyName,
                                         PropertyChangeListener listener)
   {
@@ -3706,6 +3878,18 @@ public abstract class Component
     changeSupport.addPropertyChangeListener(propertyName, listener);
   }
 
+  /**
+   * Removes the specified property listener on a particular property from
+   * the component. This is harmless if the listener was not previously
+   * registered.
+   *
+   * @param propertyName the property name to filter on
+   * @param listener the listener to remove
+   * @see #addPropertyChangeListener(String, PropertyChangeListener)
+   * @see #getPropertyChangeListeners(String)
+   * @see #removePropertyChangeListener(PropertyChangeListener)
+   * @since 1.1
+   */
   public void removePropertyChangeListener(String propertyName,
                                            PropertyChangeListener listener)
   {
@@ -3714,6 +3898,13 @@ public abstract class Component
   }
 
   /**
+   * Returns an array of all specified listeners on the named property that
+   * are registered on this component.
+   *
+   * @return an array of listeners
+   * @see #addPropertyChangeListener(String, PropertyChangeListener)
+   * @see #removePropertyChangeListener(String, PropertyChangeListener)
+   * @see #getPropertyChangeListeners()
    * @since 1.4
    */
   public PropertyChangeListener[] getPropertyChangeListeners(String property)
@@ -3722,6 +3913,13 @@ public abstract class Component
       : changeSupport.getPropertyChangeListeners(property);
   }
 
+  /**
+   * Report a change in a bound property to any registered property listeners.
+   *
+   * @param propertyName the property that changed
+   * @param oldValue the old property value
+   * @param newValue the new property value
+   */
   protected void firePropertyChange(String propertyName, Object oldValue,
                                     Object newValue)
   {
@@ -3729,6 +3927,13 @@ public abstract class Component
       changeSupport.firePropertyChange(propertyName, oldValue, newValue);
   }
 
+  /**
+   * Report a change in a bound property to any registered property listeners.
+   *
+   * @param propertyName the property that changed
+   * @param oldValue the old property value
+   * @param newValue the new property value
+   */
   protected void firePropertyChange(String propertyName, boolean oldValue,
                                     boolean newValue)
   {
@@ -3736,6 +3941,13 @@ public abstract class Component
       changeSupport.firePropertyChange(propertyName, oldValue, newValue);
   }
 
+  /**
+   * Report a change in a bound property to any registered property listeners.
+   *
+   * @param propertyName the property that changed
+   * @param oldValue the old property value
+   * @param newValue the new property value
+   */
   protected void firePropertyChange(String propertyName, int oldValue,
                                     int newValue)
   {
@@ -3743,21 +3955,60 @@ public abstract class Component
       changeSupport.firePropertyChange(propertyName, oldValue, newValue);
   }
 
+  /**
+   * Sets the text layout orientation of this component. New components default
+   * to UNKNOWN (which behaves like LEFT_TO_RIGHT). This method affects only
+   * the current component, while
+   * {@link #applyComponentOrientation(ComponentOrientation)} affects the
+   * entire hierarchy.
+   *
+   * @param o the new orientation
+   * @throws NullPointerException if o is null
+   * @see #getComponentOrientation()
+   */
   public void setComponentOrientation(ComponentOrientation o)
   {
+    if (o == null)
+      throw new NullPointerException();
     orientation = o;
   }
 
+  /**
+   * Determines the text layout orientation used by this component.
+   *
+   * @return the component orientation
+   * @see #setComponentOrientation(ComponentOrientation)
+   */
   public ComponentOrientation getComponentOrientation()
   {
     return orientation;
   }
 
+  /**
+   * Sets the text layout orientation of this component. New components default
+   * to UNKNOWN (which behaves like LEFT_TO_RIGHT). This method affects the
+   * entire hierarchy, while
+   * {@link #setComponentOrientation(ComponentOrientation)} affects only the
+   * current component.
+   *
+   * @param o the new orientation
+   * @throws NullPointerException if o is null
+   * @see #getComponentOrientation()
+   * @since 1.4
+   */
   public void applyComponentOrientation(ComponentOrientation o)
   {
     setComponentOrientation(o);
   }
 
+  /**
+   * Returns the accessibility framework context of this class. Component is
+   * not accessible, so the default implementation returns null. Subclasses
+   * must override this behavior, and return an appropriate subclass of
+   * {@link AccessibleAWTComponent}.
+   *
+   * @return the accessibility context
+   */
   public AccessibleContext getAccessibleContext()
   {
     return null;
@@ -3778,15 +4029,22 @@ public abstract class Component
     return null;
   }
 
-  // Sets the peer for this component.
+  /**
+   * Sets the peer for this component.
+   *
+   * @param peer the new peer
+   */
   final void setPeer(ComponentPeer peer)
   {
     this.peer = peer;
   }
 
-  /** Implementation method that allows classes such as Canvas and
-      Window to override the graphics configuration without violating
-      the published API. */
+  /**
+   * Implementation method that allows classes such as Canvas and Window to
+   * override the graphics configuration without violating the published API.
+   *
+   * @return the graphics configuration
+   */
   GraphicsConfiguration getGraphicsConfigurationImpl()
   {
     if (peer != null)
@@ -3802,6 +4060,12 @@ public abstract class Component
     return null;
   }
 
+  /**
+   * Implementation of dispatchEvent. Allows trusted package classes to
+   * dispatch additional events first.
+   *
+   * @param e the event to dispatch
+   */
   void dispatchEventImpl(AWTEvent e)
   {
     // Make use of event id's in order to avoid multiple instanceof tests.
@@ -3867,6 +4131,10 @@ public abstract class Component
    *                 |  |
    *                 +--+
    * </pre>
+   *
+   * @param queuedEvent the first paint event
+   * @param newEvent the second paint event
+   * @return the combined paint event, or null
    */
   private PaintEvent coalescePaintEvents(PaintEvent queuedEvent,
                                          PaintEvent newEvent)
@@ -3888,6 +4156,11 @@ public abstract class Component
     return newEvent;
   }
 
+  /**
+   * Does the work for a paint event.
+   *
+   * @param event the event to process
+   */
   private void processPaintEvent(PaintEvent event)
   {
     // Can't do graphics without peer
@@ -3911,15 +4184,27 @@ public abstract class Component
       }
   }
 
-  // This method is used to implement transferFocus().
-  // CHILD is the child making the request.
-  // This is overridden by Container; when called for an ordinary
-  // component there is no child and so we always return null.
+  /**
+   * This method is used to implement transferFocus(). CHILD is the child
+   * making the request. This is overridden by Container; when called for an
+   * ordinary component there is no child and so we always return null.
+   *
+   * @param child the component making the request
+   * @return the next component to focus on
+   */
   Component findNextFocusComponent(Component child)
   {
     return null;
   }
 
+  /**
+   * Deserializes this component. This regenerates all serializable listeners
+   * which were registered originally.
+   *
+   * @param s the stream to read from
+   * @throws ClassNotFoundException if deserialization fails
+   * @throws IOException if the stream fails
+   */
   private void readObject(ObjectInputStream s)
     throws ClassNotFoundException, IOException
   {
@@ -3950,6 +4235,13 @@ public abstract class Component
       }
   }
 
+  /**
+   * Serializes this component. This ignores all listeners which do not
+   * implement Serializable, but includes those that do.
+   *
+   * @param s the stream to write to
+   * @throws IOException if the stream fails
+   */
   private void writeObject(ObjectOutputStream s) throws IOException
   {
     s.defaultWriteObject();

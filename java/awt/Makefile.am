@@ -19,11 +19,12 @@ BufferCapabilities.java \
 Button.java \
 Canvas.java \
 CardLayout.java \
-CheckboxGroup.java \
 Checkbox.java \
+CheckboxGroup.java \
 CheckboxMenuItem.java \
 Choice.java \
 Color.java \
+ColorPaintContext.java \
 Component.java \
 ComponentOrientation.java \
 Composite.java \
@@ -36,8 +37,8 @@ DefaultKeyboardFocusManager.java \
 Dialog.java \
 Dimension.java \
 DisplayMode.java \
-EventDispatchThread.java \
 Event.java \
+EventDispatchThread.java \
 EventQueue.java	\
 FileDialog.java	\
 FlowLayout.java	\
@@ -47,12 +48,12 @@ FontFormatException.java \
 FontMetrics.java \
 Frame.java \
 GradientPaint.java \
+Graphics.java \
 Graphics2D.java \
 GraphicsConfigTemplate.java \
 GraphicsConfiguration.java \
 GraphicsDevice.java \
 GraphicsEnvironment.java \
-Graphics.java \
 GridBagConstraints.java \
 GridLayout.java	\
 HeadlessException.java \
@@ -66,19 +67,19 @@ KeyboardFocusManager.java \
 KeyEventDispatcher.java \
 KeyEventPostProcessor.java \
 Label.java \
-LayoutManager2.java \
 LayoutManager.java \
+LayoutManager2.java \
 List.java \
 MediaTracker.java \
 MenuBar.java \
 MenuComponent.java \
 MenuContainer.java \
-MenuItem.java \
 Menu.java \
+MenuItem.java \
 MenuShortcut.java \
 PageAttributes.java \
-PaintContext.java \
 Paint.java \
+PaintContext.java \
 Panel.java \
 Point.java \
 Polygon.java \
@@ -102,4 +103,3 @@ Toolkit.java \
 Transparency.java \
 Window.java \
 package.html
-

@@ -42,7 +42,6 @@ import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
-import java.awt.image.Raster;
 import java.io.Serializable;
 
 /**
@@ -206,21 +205,24 @@ public class Color implements Paint, Serializable
   /** Internal mask for blue. */
   private static final int BLUE_MASK = 255;
 
-  /** Internal mask for alpha. */
-  private static final int ALPHA_MASK = 255 << 24;
+  /** Internal mask for alpha. Package visible for use in subclass. */
+  static final int ALPHA_MASK = 255 << 24;
 
   /** Amount to scale a color by when brightening or darkening. */
   private static final float BRIGHT_SCALE = 0.7f;
 
   /**
    * The color value, in sRGB. Note that the actual color may be more
-   * precise if frgbvalue or fvalue is non-null. This stores alpha, red,
-   * green, and blue, each 0-255, packed in an int.
+   * precise if frgbvalue or fvalue is non-null. This class stores alpha, red,
+   * green, and blue, each 0-255, packed in an int. However, the subclass
+   * SystemColor stores an index into an array. Therefore, for serial
+   * compatibility (and because of poor design on Sun's part), this value
+   * cannot be used directly; instead you must use <code>getRGB()</code>.
    *
    * @see #getRGB()
-   * @serial the RGB value of the color
+   * @serial the value of the color, whether an RGB literal or array index
    */
-  private final int value;
+  final int value;
 
   /**
    * The color value, in sRGB. This may be null if the color was constructed
@@ -247,11 +249,12 @@ public class Color implements Paint, Serializable
   private float[] fvalue;
 
   /**
-   * The alpha value. This is in the range 0.0f - 1.0f.
+   * The alpha value. This is in the range 0.0f - 1.0f, but is invalid if
+   * deserialized as 0.0 when frgbvalue is null.
    *
    * @see #getRGBComponents(float[])
    * @see #getComponents(float[])
-   * @serial the alpha component of this color.
+   * @serial the alpha component of this color
    * @since 1.2
    */
   private final float falpha;
@@ -267,8 +270,11 @@ public class Color implements Paint, Serializable
    */
   private final ColorSpace cs;
 
-  /** The paint context for this solid color. */
-  private transient PaintContext context;
+  /**
+   * The paint context for this solid color. Package visible for use in
+   * subclass.
+   */
+  transient ColorPaintContext context;
 
   /**
    * Initializes a new instance of <code>Color</code> using the specified
@@ -357,6 +363,9 @@ public class Color implements Paint, Serializable
    */
   public Color(int value, boolean hasalpha)
   {
+    // Note: SystemColor calls this constructor, setting falpha to 0; but
+    // code in getRGBComponents correctly reports falpha as 1.0 to the user
+    // for all instances of SystemColor since frgbvalue is left null here.
     if (hasalpha)
       falpha = ((value & ALPHA_MASK) >> 24) / 255f;
     else
@@ -448,7 +457,8 @@ public class Color implements Paint, Serializable
    */
   public int getRed()
   {
-    return (value & RED_MASK) >> 16;
+    // Do not inline getRGB() to value, because of SystemColor.
+    return (getRGB() & RED_MASK) >> 16;
   }
 
   /**
@@ -460,7 +470,8 @@ public class Color implements Paint, Serializable
    */
   public int getGreen()
   {
-    return (value & GREEN_MASK) >> 8;
+    // Do not inline getRGB() to value, because of SystemColor.
+    return (getRGB() & GREEN_MASK) >> 8;
   }
 
   /**
@@ -472,7 +483,8 @@ public class Color implements Paint, Serializable
    */
   public int getBlue()
   {
-    return value & BLUE_MASK;
+    // Do not inline getRGB() to value, because of SystemColor.
+    return getRGB() & BLUE_MASK;
   }
 
   /**
@@ -483,7 +495,8 @@ public class Color implements Paint, Serializable
    */
   public int getAlpha()
   {
-    return (value & ALPHA_MASK) >> 24;
+    // Do not inline getRGB() to value, because of SystemColor.
+    return (getRGB() & ALPHA_MASK) >> 24;
   }
 
   /**
@@ -514,10 +527,12 @@ public class Color implements Paint, Serializable
    */
   public Color brighter()
   {
-    // We have to special case 0-2 because they won't scale by division.
+    // Do not inline getRGB() to this.value, because of SystemColor.
+    int value = getRGB();
     int red = (value & RED_MASK) >> 16;
     int green = (value & GREEN_MASK) >> 8;
     int blue = value & BLUE_MASK;
+    // We have to special case 0-2 because they won't scale by division.
     red = red < 3 ? 3 : (int) Math.min(255, red / BRIGHT_SCALE);
     green = green < 3 ? 3 : (int) Math.min(255, green / BRIGHT_SCALE);
     blue = blue < 3 ? 3 : (int) Math.min(255, blue / BRIGHT_SCALE);
@@ -535,6 +550,8 @@ public class Color implements Paint, Serializable
    */
   public Color darker()
   {
+    // Do not inline getRGB() to this.value, because of SystemColor.
+    int value = getRGB();
     return new Color((int) (((value & RED_MASK) >> 16) * BRIGHT_SCALE),
                      (int) (((value & GREEN_MASK) >> 8) * BRIGHT_SCALE),
                      (int) ((value & BLUE_MASK) * BRIGHT_SCALE), 255);
@@ -556,10 +573,12 @@ public class Color implements Paint, Serializable
    * be true if and only if the specified object is an instance of
    * <code>Color</code> and has the same 8-bit integer red, green, and blue
    * values as this object. Note that two colors may be slightly different
-   * as float values, but round to the same integer values.
+   * as float values, but round to the same integer values. Also note that
+   * this does not accurately compare SystemColors, since that class does
+   * not store its internal data in RGB format like regular colors.
    *
    * @param obj the object to compare to
-   * @return true if the specified object is equal to this one
+   * @return true if the specified object is semantically equal to this one
    */
   public boolean equals(Object obj)
   {
@@ -788,7 +807,9 @@ public class Color implements Paint, Serializable
     if (array == null)
       array = new float[4];
     getRGBColorComponents(array);
-    array[3] = falpha;
+    // Stupid serialization issues require this check.
+    array[3] = (falpha == 0 && frgbvalue == null
+                ? ((getRGB() & ALPHA_MASK) >> 24) / 255f : falpha);
     return array;
   }
 
@@ -809,6 +830,8 @@ public class Color implements Paint, Serializable
       return array; // Optimization for getColorComponents(float[]).
     if (frgbvalue == null)
       {
+        // Do not inline getRGB() to this.value, because of SystemColor.
+        int value = getRGB();
         frgbvalue = new float[] { ((value & RED_MASK) >> 16) / 255f,
                                   ((value & GREEN_MASK) >> 8) / 255f,
                                   (value & BLUE_MASK) / 255f };
@@ -836,7 +859,9 @@ public class Color implements Paint, Serializable
     if (array == null)
       array = new float[1 + numComponents];
     getColorComponents(array);
-    array[numComponents] = falpha;
+    // Stupid serialization issues require this check.
+    array[numComponents] = (falpha == 0 && frgbvalue == null
+                            ? ((getRGB() & ALPHA_MASK) >> 24) / 255f : falpha);
     return array;
   }
 
@@ -880,7 +905,9 @@ public class Color implements Paint, Serializable
     if (array == null)
       array = new float[1 + numComponents];
     getColorComponents(space, array);
-    array[numComponents] = falpha;
+    // Stupid serialization issues require this check.
+    array[numComponents] = (falpha == 0 && frgbvalue == null
+                            ? ((getRGB() & ALPHA_MASK) >> 24) / 255f : falpha);
     return array;
   }
 
@@ -919,14 +946,16 @@ public class Color implements Paint, Serializable
   /**
    * Returns a paint context, used for filling areas of a raster scan with
    * this color. Since the color is constant across the entire rectangle, and
-   * since it is always in sRGB space, this returns the same object, regardless
-   * of the parameters.
+   * since it is always in sRGB space, this implementation returns the same
+   * object, regardless of the parameters. Subclasses, however, may have a
+   * mutable result.
    *
    * @param cm the requested color model, ignored
    * @param deviceBounds the bounding box in device coordinates, ignored
    * @param userBounds the bounding box in user coordinates, ignored
    * @param xform the bounds transformation, ignored
    * @param hints any rendering hints, ignored
+   * @return a context for painting this solid color
    */
   public PaintContext createContext(ColorModel cm, Rectangle deviceBounds,
                                     Rectangle2D userBounds,
@@ -934,7 +963,7 @@ public class Color implements Paint, Serializable
                                     RenderingHints hints)
   {
     if (context == null)
-      context = new ColorPaintContext(this);
+      context = new ColorPaintContext(value);
     return context;
   }
 
@@ -945,7 +974,8 @@ public class Color implements Paint, Serializable
    */
   public int getTransparency()
   {
-    int alpha = value & ALPHA_MASK;
+    // Do not inline getRGB() to this.value, because of SystemColor.
+    int alpha = getRGB() & ALPHA_MASK;
     return alpha == (255 << 24) ? OPAQUE : alpha == 0 ? BITMASK : TRANSLUCENT;
   }
 
@@ -971,58 +1001,3 @@ public class Color implements Paint, Serializable
     return (alphaval << 24) | (redval << 16) | (greenval << 8) | blueval;
   }
 } // class Color
-
-/**
- * This class provides a paint context which will fill a rectanglar region of
- * a raster scan with the given color. However, it is not yet implemented.
- *
- * @author Eric Blake <ebb9@email.byu.edu>
- */
-class ColorPaintContext implements PaintContext
-{
-  /** The color to fill any raster with. */
-  private final Color color;
-
-  /**
-   * Create the context for a given color.
-   */
-  ColorPaintContext(Color c)
-  {
-    color = c;
-  }
-
-  /**
-   * Release the resources allocated for the paint. As the color is constant,
-   * there aren't any resources.
-   */
-  public void dispose()
-  {
-  }
-
-  /**
-   * Return the color model of this context. This ignores the model passed
-   * in the request, since colors are always in sRGB.
-   *
-   * @return the context color model
-   */
-  public ColorModel getColorModel()
-  {
-    return ColorModel.getRGBdefault();
-  }
-
-  /**
-   * Return a raster containing the colors for the graphics operation.
-   *
-   * @param x the x-coordinate, in device space
-   * @param y the y-coordinate, in device space
-   * @param w the width, in device space
-   * @param h the height, in device space
-   * @return a raster for the given area and color
-   */
-  public Raster getRaster(int x, int y, int w, int h)
-  {
-    // XXX Implement. Sun uses undocumented implementation class
-    // sun.awt.image.IntegerInterleavedRaster.
-    throw new Error("not implemented");
-  }
-} // class ColorPaintContext

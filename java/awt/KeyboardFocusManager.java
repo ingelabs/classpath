@@ -549,7 +549,8 @@ public abstract class KeyboardFocusManager
 
   public final void downFocusCycle()
   {
-    if (focusOwner instanceof Container && focusOwner.isFocusCycleRoot())
+    if (focusOwner instanceof Container
+        && ((Container) focusOwner).isFocusCycleRoot())
       downFocusCycle((Container) focusOwner);
   }
 } // class KeyboardFocusManager

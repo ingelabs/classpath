@@ -1,3 +1,16 @@
+2002-05-07  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/awt/Color.java: Tweak to work with SystemColor.
+	* java/awt/ColorPaintContext.java: New file (split out from
+	Color.java).
+	* java/awt/Component.java: More javadoc.
+	* java/awt/Container.java: Formatting, stub 1.4 methods.
+	(LightweightDispatcher): Add class.
+	* java/awt/Image.java: Update to 1.4.
+	* java/awt/KeyboardFocusManager.java (downFocusCycle): Fix typo.
+	* java/awt/Makefile.am (EXTRA_DIST): Add ColorPaintContext.
+	* java/awt/SystemColor.java: Update to 1.4.
+
 2002-05-07  Mark Wielaard  <mark@klomp.org>
 
 	* javax/accessibility/AccessibleContext.java: Fix javadoc to fully
