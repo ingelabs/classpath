@@ -1,5 +1,10 @@
 2003-07-13  Jeroen Frijters <jeroen@sumatra.nl>
 
+	* java/util/zip/ZipFile.java (finalize): Check raf for null to prevent
+	NullPointerException if the file was never constructed.
+
+2003-07-13  Jeroen Frijters <jeroen@sumatra.nl>
+
 	* javax/naming/CompoundName.java (CompoundName(String,Properties)):
 	guard against beginQuote and beginQuote2 being null
 
