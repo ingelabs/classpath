@@ -4,6 +4,12 @@
 	getRowForPath, getRowCount, getClosesPathForLocation,
 	isEditing, stopEditing, cancelEditing, startEditingAtPath,
 	getEditingPath): New abstract methods.
+
+	* javax/swing/plaf/basic/BasicTreeUI.java (getPathBounds,
+	getPathForRow, getRowForPath, getRowCount,
+	getClosesPathForLocation, isEditing, stopEditing, cancelEditing,
+	startEditingAtPath, getEditingPath): Stubbed implementations
+	for methods required by abstract superclass.
 	
 	* javax/swing/plaf/doc-files/TreeUI-1.png: New image.
 	
