@@ -1,5 +1,8 @@
 Runtime interface changes:
 
+* The java.lang.Class constructor now automatically sets the protection
+  domain for array classes, based on the protection domain of the component
+  type class.
 * New gnu.classpath.VMSystemProperties class. This replaces the
   system properties initialization in VMRuntime. Note that it is
   now the VMs responsibility to set one additional property:

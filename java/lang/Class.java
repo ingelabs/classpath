@@ -129,7 +129,14 @@ public final class Class implements Serializable
   Class(Object vmdata, ProtectionDomain pd)
   {
     this.vmdata = vmdata;
-    this.pd = pd;
+    // If the VM didn't supply a protection domain and the class is an array,
+    // we "inherit" the protection domain from the component type class. This
+    // saves the VM from having to worry about protection domains for array
+    // classes.
+    if (pd == null && isArray())
+      this.pd = getComponentType().pd;
+    else
+      this.pd = pd;
   }
 
   /**

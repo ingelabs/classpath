@@ -1,3 +1,10 @@
+2004-12-27  Jeroen Frijters  <jeroen@frijters.net>
+
+	* NEWS: Added entry about class change.
+	* java/lang/Class.java
+	(Class(Object,Object)): Added protection domain "inheriting" for
+	array classes.
+
 2004-12-27  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/AbstractAction.java,
