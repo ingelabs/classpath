@@ -1,3 +1,8 @@
+2005-03-26  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/dom/DomNode.java (notifyNode): grow listener array as
+	required.
+
 2005-03-26  Jeroen Frijters  <jeroen@frijters.net>
 
 	* javax/imageio/spi/IIORegistry.java (IIORegistry):
