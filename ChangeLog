@@ -1,3 +1,8 @@
+2004-11-01  Andrew John Hughes <gnu_andrew@member.fsf.org>
+
+	* java/util/GregorianCalendar.java
+	Added/amended documentation.
+	
 2004-11-01  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/lang/ClassLoader.java:
