@@ -65,7 +65,7 @@ AC_DEFUN(CLASSPATH_INTERNAL_CHECK_JAPHAR,
   elif test -e $_t_datadir/rt.zip; then
     JAPHAR_CLASSLIB=$_t_datadir/rt.zip
   else
-    AC_MSG_ERROR(no)
+    AC_MSG_RESULT(no)
   fi
   AC_MSG_RESULT(yes)
   AC_SUBST(JAPHAR_CLASSLIB)
@@ -136,7 +136,7 @@ AC_DEFUN(CLASSPATH_INTERNAL_CHECK_KAFFE,
   elif test -e $_t_datadir/kaffe/Klasses.jar; then
     KAFFE_CLASSLIB=$_t_datadir/kaffe/Klasses.jar
   else
-    AC_MSG_ERROR(no)
+    AC_MSG_RESULT(no)
   fi
   AC_MSG_RESULT(yes)
   if test -e $_t_datadir/rmi.jar; then
