@@ -1,3 +1,12 @@
+2005-01-11  Michael Koch  <konqueror@gmx.de>
+
+	* java/beans/XMLDecoder.java: Reworked imports, fixed class javadoc.
+	* java/io/File.java,
+	java/lang/System.java,
+	java/net/Inet4Address.java,
+	java/util/Currency.java,
+	java/util/ResourceBundle.java: Reworked imports.
+
 2005-01-10  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/BufferedInputStream.java: Fixed indentation.

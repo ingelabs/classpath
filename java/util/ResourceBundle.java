@@ -1,5 +1,5 @@
 /* ResourceBundle -- aids in loading resource bundles
-   Copyright (C) 1998, 1999, 2001, 2002, 2003, 2004
+   Copyright (C) 1998, 1999, 2001, 2002, 2003, 2004, 2005
    Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -40,10 +40,9 @@ exception statement from your version. */
 package java.util;
 
 import gnu.classpath.VMStackWalker;
+
 import java.io.IOException;
 import java.io.InputStream;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 
 /**
  * A resource bundle contains locale-specific data. If you need localized
