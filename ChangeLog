@@ -1,3 +1,14 @@
+2004-04-28  Ingo Proetel  <proetel@aicas.com>
+
+	* java/awt/ColorPaintContext.java (<init>): Added ColorModel to signature.
+	(getColorModel): Return the actual color model.
+	(getRaster): Implemented.
+	(ColorRaster): New inner class.
+	* java/awt/SystemColor.java (createContext): Use ColorModel when creating
+	a PaintContext.
+	* java/awt/Color.java (<init>): Make exception more verbose.
+	(createContext): Use ColorModel when creating a PaintContext.
+
 2004-04-27  Archie Cobbs  <archie@dellroad.org>
 
 	* include/Makefile.am: add java_lang_VMProcess.h
