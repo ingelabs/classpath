@@ -1,3 +1,37 @@
+2003-04-21  Tom Tromey  <tromey@redhat.com>
+
+	* include/java_io_FileDescriptor.h: Rebuilt.
+	* java/io/FileInputStream.java (FileInputStream): Updated for
+	changes to FileDescriptor.
+	(FileInputStream(FileDescriptor)): Don't throw SecurityException
+	if fd is invalid.
+	* java/io/FileOutputStream.java (FileOutputStream): Updated for
+	changes to FileDescriptor.  Don't throw SecurityException if fd
+	is invalid.
+	* java/io/RandomAccessFile.java (RandomAccessFile): Updated for
+	changes to FileDescriptor.
+	(readOnly): Removed; updated all users.
+	* java/io/FileDescriptor.java (SET, CUR, END): Now constants.
+	(READ, WRITE, APPEND, EXCL, SYNC): New constants.
+	(in, out, err): Require nativeInit to initialize.
+	(FileDescriptor(String,int)): New constructor.
+	(open): Changed argument type of `mode'.  Allow empty paths.
+	Only throw runtime errors or FileNotFoundException.
+	(nativeValid): Don't throw IOException.
+	(valid): Simplified.
+	(nativeOpen): Throw FileNotFoundException.  Changed type of
+	`mode' argument.
+	* native/jni/java-io/FileDescriptor.c
+	(Java_java_io_FileDescriptor_nativeValid): Updated comment.
+	(SET, CUR, END, READ, WRITE, APPEND, EXCL, SYNC): New defines.
+	(Java_java_io_FileDescriptor_nativeOpen): Changed type of mode
+	argument.
+	(true): Don't define; use JNI_TRUE.
+	(false): Don't define; use JNI_FALSE.
+	(INIT_FIELD): New define.
+	(Java_java_io_FileDescriptor_nativeInit): Rewrote.
+	* native/jni/java-io/java_io_FileDescriptor.c: Removed.
+
 2003-04-20  Scott Gilbertson  <scottg@mantatest.com>
 
 	* java/awt/Container.java (addImpl): Enable paint events if adding

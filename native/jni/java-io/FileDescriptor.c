@@ -42,7 +42,7 @@ exception statement from your version. */
  *
  * Aaron M. Renn (arenn@urbanophile.com)
  *
- * Some of this coded adoped from the gcj native libraries
+ * Some of this coded adopted from the gcj native libraries
  */
 
 #include <config.h>
@@ -78,9 +78,6 @@ exception statement from your version. */
 #include "jcl.h"
 #include "java_io_FileDescriptor.h"
 
-#define true (1)
-#define false (0)
-
 // FIXME: This can't be right.  Need converter macros
 #define CONVERT_JLONG_TO_INT(x) ((int)(x & 0xFFFF))
 
@@ -90,10 +87,16 @@ exception statement from your version. */
 // FIXME: This can't be right.  Need converter macros
 #define CONVERT_JINT_TO_INT(x) ((int)(x & 0xFFFF))
 
-/* These are initialized in nativeInit() */
-static jint SET;
-static jint CUR;
-static jint END;
+/* These values must be kept in sync with FileDescriptor.java.  */
+#define SET 0
+#define CUR 1
+#define END 2
+#define READ 1
+#define WRITE 2
+#define APPEND 4
+#define EXCL 8
+#define SYNC 16
+
 
 /*************************************************************************/
 
@@ -104,14 +107,29 @@ static jint END;
 JNIEXPORT void JNICALL
 Java_java_io_FileDescriptor_nativeInit(JNIEnv *env, jclass clazz)
 {
-  /* FIXME: Should set these to same values as in the FileDescriptor java
-   * code */
-  SET = 0;
-  CUR = 1;
-  END = 2;
+  jmethodID init_method;
+  jfieldID field;
+  jobject filedes;
 
-  /* FIXME: If stdin, stdout, and stderr not fd 0, 1, 2, then set
-   * appropriate values to the static native fields in, out, err. */
+  init_method = (*env)->GetStaticMethodID (env, clazz, "<init>", "J");
+  if (! init_method)
+    return;
+
+#define INIT_FIELD(FIELDNAME, FDVALUE)					\
+  field = (*env)->GetStaticFieldID (env, clazz, FIELDNAME,		\
+				    "Ljava/io/FileDescriptor;");	\
+  if (! field)								\
+    return;								\
+  filedes = (*env)->NewObject (env, clazz, init_method, (jlong) FDVALUE); \
+  if (! filedes)							\
+    return;								\
+  (*env)->SetStaticObjectField (env, clazz, field, filedes);		\
+  if ((*env)->ExceptionCheck (env))					\
+    return;
+
+  INIT_FIELD ("in", 0);
+  INIT_FIELD ("out", 1);
+  INIT_FIELD ("err", 2);
 }
 
 /*************************************************************************/
@@ -120,49 +138,59 @@ Java_java_io_FileDescriptor_nativeInit(JNIEnv *env, jclass clazz)
  */
 JNIEXPORT jlong JNICALL
 Java_java_io_FileDescriptor_nativeOpen(JNIEnv *env, jobject obj, jstring name, 
-                                       jstring mode)
+                                       jint jflags)
 {
   int rc;
-  char *cname, *cmode;
+  char *cname;
+  int flags;
+  int mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH;
 
   cname = JCL_jstring_to_cstring(env, name);
-  cmode = JCL_jstring_to_cstring(env, mode);
-  if (!cname || !cmode)
+  if (!cname)
     return(-1); /* Exception will already have been thrown */
 
-  // FIXME: Do we have the right permission mode?
-  if (!strcmp(cmode,"r"))
-    rc = open(cname, O_RDONLY);
-  else if (!strcmp(cmode,"w"))
-    rc = open(cname, O_WRONLY | O_CREAT,
-              S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
-  else if (!strcmp(cmode,"a"))
-    rc = open(cname, O_WRONLY | O_CREAT | O_APPEND,
-              S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
-  else if (!strcmp(cmode, "rw"))
-    rc = open(cname, O_RDWR | O_CREAT, 
-              S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
-  else if (!strcmp(cmode, "rwa"))
-    rc = open(cname, O_RDWR | O_CREAT | O_APPEND,
-              S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
-  else if (!strcmp(cmode, "rws") || !strcmp(cmode,"rwd"))
-    rc = open(cname, O_RDWR | O_CREAT | O_SYNC,
-              S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH|S_IWOTH);
+  flags = 0;
+#ifdef O_BINARY
+  flags |= O_BINARY;
+#endif
+
+  /* We don't have to do any checking of the flags, as it is all done
+     in FileDescriptor.  We can assume everything is ok.  */
+  if ((jflags & READ) && (jflags & WRITE))
+    flags |= O_RDWR | O_CREAT;
+  else if ((jflags & READ))
+    flags |= O_RDONLY;
   else
-    rc = -1; /* Invalid mode */
+    {
+      flags |= O_WRONLY | O_CREAT;
+
+      if ((jflags & APPEND))
+	flags |= O_APPEND;
+      else
+	flags |= O_TRUNC;
+
+      if ((jflags & EXCL))
+	{
+	  /* In this case we are making a temp file.  */
+	  flags |= O_EXCL;
+	  mode = S_IRUSR | S_IWUSR;
+	}
+    }
+
+  if ((jflags & SYNC))
+    flags |= O_SYNC;
+
+  rc = open (cname, flags, mode);
 
   (*env)->ReleaseStringUTFChars(env, name, cname);
-  (*env)->ReleaseStringUTFChars(env, mode, cmode);
 
-  if (rc != -1)
-    return(rc);
+  if (rc == -1)
+    {
+      /* We can only throw FileNotFoundException.  */
+      JCL_ThrowException(env,"java/io/FileNotFoundException", strerror(errno));
+    }
 
-  if (errno == ENOENT)
-    JCL_ThrowException(env,"java/io/FileNotFoundException", strerror(errno));
-  else
-    JCL_ThrowException(env,"java/io/IOException", strerror(errno)); 
-
-  return(rc);
+  return rc;
 }
 
 /*************************************************************************/
@@ -629,7 +657,6 @@ Java_java_io_FileDescriptor_nativeSetLength(JNIEnv *env, jobject obj,
 /*************************************************************************/
 /*
  * Test file descriptor for validity
- * Exception on error
  */
 JNIEXPORT jboolean JNICALL
 Java_java_io_FileDescriptor_nativeValid(JNIEnv *env, jobject obj, jlong fd)
@@ -641,9 +668,9 @@ Java_java_io_FileDescriptor_nativeValid(JNIEnv *env, jobject obj, jlong fd)
 
   rc = fstat(native_fd, &sb);
   if (rc == -1)
-    return(false);
+    return JNI_FALSE;
   else
-    return(true);
+    return JNI_TRUE;
 }
 
 /*************************************************************************/

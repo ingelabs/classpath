@@ -65,11 +65,6 @@ public class RandomAccessFile implements DataOutput, DataInput
   
   private FileChannel ch; /* cached associated file-channel */
   
-  /**
-   * Whether or not this file is open in read only mode
-   */
-  private boolean readOnly;
-  
   // Used for DataOutput methods writing values to the underlying file
   private byte[] buf = new byte[8];
   
@@ -101,15 +96,17 @@ public class RandomAccessFile implements DataOutput, DataInput
   /**
    * This method initializes a new instance of <code>RandomAccessFile</code>
    * to read from the specified file name with the specified access mode.
-   * The access mode is either "r" for read only access or "rw" for read
-   * write access.
+   * The access mode is either "r" for read only access, "rw" for read
+   * write access, "rws" for synchronized read/write access of both
+   * content and metadata, or "rwd" for read/write access
+   * where only content is required to be synchronous.
    * <p>
    * Note that a <code>SecurityManager</code> check is made prior to
    * opening the file to determine whether or not this file is allowed to
    * be read or written.
    *
    * @param fileName The name of the file to read and/or write
-   * @param mode "r" for read only or "rw" for read-write access to the file
+   * @param mode "r", "rw", "rws", or "rwd"
    *
    * @exception IllegalArgumentException If <code>mode</code> has an 
    * illegal value
@@ -120,33 +117,31 @@ public class RandomAccessFile implements DataOutput, DataInput
   public RandomAccessFile (String fileName, String mode)
     throws FileNotFoundException
   {
-    // Check the mode
-    if (!mode.equals("r") && !mode.equals("rw") && !mode.equals("rws") &&
-        !mode.equals("rwd"))
+    int fdmode;
+    if (mode.equals("r"))
+      fdmode = FileDescriptor.READ;
+    else if (mode.equals("rw"))
+      fdmode = FileDescriptor.READ | FileDescriptor.WRITE;
+    else if (mode.equals("rws") || mode.equals("rwd"))
+      {
+	// FIXME: for now we treat rws and rwd and synonyms.
+	fdmode = (FileDescriptor.READ | FileDescriptor.WRITE
+		  | FileDescriptor.SYNC);
+      }
+    else
       throw new IllegalArgumentException("Bad mode value: " + mode);
-  
+
     // The obligatory SecurityManager stuff
     SecurityManager s = System.getSecurityManager();
     if (s != null)
       {
         s.checkRead(fileName);
 
-        if (!mode.equals("r"))
+        if ((fdmode & FileDescriptor.WRITE) != 0)
           s.checkWrite(fileName);
       }
-  
-    if (mode.equals("r"))
-      readOnly = true;
-  
-    fd = new FileDescriptor();
-    try
-      {
-        fd.open(fileName, mode);
-      }
-    catch(IOException e)
-      {
-        throw new FileNotFoundException(e.getMessage()); 
-      }
+
+    fd = new FileDescriptor(fileName, fdmode);
   }
 
   /**
@@ -205,9 +200,6 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public void setLength(long newlen) throws IOException
   {
-    if (readOnly)
-      throw new IOException("File is open read only");
-  
     fd.setLength(newlen);
   }
 
@@ -824,9 +816,6 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public void write (int oneByte) throws IOException
   {
-    if (readOnly)
-      throw new IOException("File is open read only");
-  
     fd.write (oneByte);
   }
 
@@ -853,9 +842,6 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public void write (byte[] buffer, int offset, int len) throws IOException
   {
-    if (readOnly)
-      throw new IOException("File is open read only");
-  
     fd.write (buffer, offset, len);
   }
 

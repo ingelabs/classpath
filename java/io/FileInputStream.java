@@ -83,16 +83,7 @@ public class FileInputStream extends InputStream
     if (s != null)
       s.checkRead(name);
 
-    fd = new FileDescriptor();
- 
-    try
-      {
-        fd.open(name, "r");
-      }
-    catch(IOException e)
-      {
-        throw new FileNotFoundException(name + ": " + e.getMessage());
-      }
+    fd = new FileDescriptor(name, FileDescriptor.READ);
   }
 
   /**
@@ -134,11 +125,6 @@ public class FileInputStream extends InputStream
    */
   public FileInputStream(FileDescriptor fdObj)
   {
-    // Hmmm, no other exception but this one to throw, but if the descriptor
-    // isn't valid, we surely don't have "permission" to read from it.
-    if (!fdObj.valid())
-      throw new SecurityException("Invalid FileDescriptor");
-
     SecurityManager s = System.getSecurityManager();
     if (s != null)
       s.checkRead(fdObj);

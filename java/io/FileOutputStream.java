@@ -85,19 +85,10 @@ public class FileOutputStream extends OutputStream
     if (s != null)
       s.checkWrite(path);
 
-    fd = new FileDescriptor();
-
-    try 
-      {
-        if (append)
-          fd.open(path, "a");
-        else
-          fd.open(path, "w");
-      }
-    catch(IOException e)
-      {
-        throw new FileNotFoundException(path + ": " + e.getMessage());
-      }
+    int flags = FileDescriptor.WRITE;
+    if (append)
+      flags |= FileDescriptor.APPEND;
+    fd = new FileDescriptor(path, flags);
   }
 
   /**
@@ -188,11 +179,6 @@ public class FileOutputStream extends OutputStream
   public FileOutputStream (FileDescriptor fdObj)
     throws SecurityException
   {
-    // Hmm, no other exception but this one to throw, but if the descriptor
-    // isn't valid, we surely don't have "permission" to write to it.
-    if (!fdObj.valid())
-      throw new SecurityException("Invalid FileDescriptor");
-
     SecurityManager s = System.getSecurityManager();
     if (s != null)
       s.checkWrite(fdObj);

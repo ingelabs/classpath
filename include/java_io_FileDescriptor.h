@@ -11,7 +11,7 @@ extern "C"
 #endif
 
 extern void Java_java_io_FileDescriptor_nativeInit (JNIEnv *env, jclass);
-extern jlong Java_java_io_FileDescriptor_nativeOpen (JNIEnv *env, jobject, jstring, jstring);
+extern jlong Java_java_io_FileDescriptor_nativeOpen (JNIEnv *env, jobject, jstring, jint);
 extern jlong Java_java_io_FileDescriptor_nativeClose (JNIEnv *env, jobject, jlong);
 extern jlong Java_java_io_FileDescriptor_nativeWriteByte (JNIEnv *env, jobject, jlong, jint);
 extern jlong Java_java_io_FileDescriptor_nativeWriteBuf (JNIEnv *env, jobject, jlong, jbyteArray, jint, jint);

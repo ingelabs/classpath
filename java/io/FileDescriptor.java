@@ -56,43 +56,42 @@ public final class FileDescriptor
           System.loadLibrary ("javaio");
         }
 
-      // nativeInit() should override these values if appropriate
-      in = new FileDescriptor(0);
-      out = new FileDescriptor(1);
-      err = new FileDescriptor(2);
-
-      SET = 0;
-      CUR = 1;
-      END = 2;
-
       nativeInit();
     }
 
   // Use for seeking
-  static final int SET;
-  static final int CUR;
-  static final int END;
+  static final int SET = 0;
+  static final int CUR = 1;
+  static final int END = 2;
+
+  // These are mode values for open().
+  static final int READ   = 1;
+  static final int WRITE  = 2;
+  static final int APPEND = 4;
+  // EXCL is used only when making a temp file.
+  static final int EXCL   = 8;
+  static final int SYNC   = 16;
 
   /**
    * A <code>FileDescriptor</code> representing the system standard input
    * stream.  This will usually be accessed through the 
    * <code>System.in</code>variable.
    */
-  public static final FileDescriptor in;
+  public static final FileDescriptor in = null;
 
   /**
    * A <code>FileDescriptor</code> representing the system standard output
    * stream.  This will usually be accessed through the 
    * <code>System.out</code>variable.
    */
-  public static final FileDescriptor out;
+  public static final FileDescriptor out = null;
 
   /**
    * A <code>FileDescriptor</code> representing the system standard error
    * stream.  This will usually be accessed through the 
    * <code>System.err</code>variable.
    */
-  public static final FileDescriptor err;
+  public static final FileDescriptor err = null;
 
   /**
    * This is the actual native file descriptor value
@@ -109,6 +108,11 @@ public final class FileDescriptor
   private FileDescriptor(long nativeFd)
   {
     this.nativeFd = nativeFd;
+  }
+
+  FileDescriptor(String path, int mode) throws FileNotFoundException
+  {
+    open(path, mode);
   }
 
   /**
@@ -140,30 +144,22 @@ public final class FileDescriptor
     if (nativeFd == -1L)
       return(false);
 
-    try
-      {
-        return(nativeValid(nativeFd));
-      }
-    catch (IOException e)
-      {
-        return(false);
-      }
+    return nativeValid(nativeFd);
   }
 
-  void open(String path, String mode) throws IOException
+  void open(String path, int mode) throws FileNotFoundException
   {
     // We don't want fd leakage.
     if (nativeFd != -1L)
-      throw new IOException("FileDescriptor already open");
+      throw new InternalError("FileDescriptor already open");
 
-    if ((path == null) || path.equals(""))
-      throw new IllegalArgumentException("Path cannot be null");
+    // Note that it can be ok to have an empty path.
+    // FIXME: verify
+    if (path == null)
+      throw new NullPointerException("Path cannot be null");
 
-    if (!mode.equals("r") && !mode.equals("rw") && !mode.equals("rws") &&
-        !mode.equals("rwd") && !mode.equals("rwa") && !mode.equals("w") &&
-        !mode.equals("a"))
-      throw new IllegalArgumentException("Invalid mode value: " + mode);
-    // Note above implicitly checks mode for null value
+    if ((mode & (READ | WRITE)) == 0)
+      throw new InternalError("Invalid mode value: " + mode);
 
     nativeFd = nativeOpen(path, mode);
   }
@@ -332,7 +328,8 @@ public final class FileDescriptor
    *
    * @exception IOException If an error occurs.
    */
-  private native long nativeOpen(String path, String mode) throws IOException;
+  private native long nativeOpen(String path, int mode)
+    throws FileNotFoundException;
 
   /**
    * Closes this specified file descriptor
@@ -472,10 +469,8 @@ public final class FileDescriptor
    *
    * @return <code>true</code> if the fd is valid, <code>false</code> 
    * otherwise
-   *
-   * @exception IOException If an error occurs
    */
-  private native boolean nativeValid(long fd) throws IOException;
+  private native boolean nativeValid(long fd);
 
   /**
    * Flushes any buffered contents to disk
@@ -487,4 +482,3 @@ public final class FileDescriptor
   private native void nativeSync(long fd) throws SyncFailedException;
 
 } // class FileDescriptor
-
