@@ -9,6 +9,7 @@ BasicPermission.java \
 Certificate.java \
 CodeSource.java \
 DigestException.java \
+DigestOutputStream.java \
 GeneralSecurityException.java \
 Guard.java \
 GuardedObject.java \
@@ -19,6 +20,8 @@ Key.java \
 KeyException.java \
 KeyManagementException.java \
 KeyStoreException.java \
+MessageDigest.java \
+MessageDigestSpi.java \
 NoSuchAlgorithmException.java \
 NoSuchProviderException.java \
 Permission.java \
@@ -33,6 +36,7 @@ ProtectionDomain.java \
 Provider.java \
 ProviderException.java \
 PublicKey.java \
+Security.java \
 SecurityPermission.java \
 SignatureException.java \
 UnrecoverableKeyException.java \
