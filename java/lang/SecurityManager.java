@@ -553,12 +553,10 @@ public class SecurityManager {
 	 ** SecurityManager's implementation always denies access.
 	 **
 	 ** @param window the window to create
-	 ** @exception SecurityException if the operation is not
-	 **            permitted.
 	 ** @see java.awt.Window#Window(java.awt.Frame)
 	 **/
-	public void checkTopLevelWindow(Object window) {
-		throw new SecurityException("Not trusted to create top-level window.");
+	public boolean checkTopLevelWindow(Object window) {
+	  return false;
 	}
 
 	/** Check if the current thread is allowed to create a
