@@ -614,6 +614,11 @@ Programming for Linux and Unix HOWTO}.
 @comment  node-name,  next,  previous,  up
 @chapter API Compatibility
 
+@menu
+* Serialization::		Serialization
+* Deprecated Methods::		Deprecated methods
+@end menu
+
 @node Serialization, Deprecated Methods, , API Compatibility
 @comment  node-name,  next,  previous,  up
 @section Serialization

@@ -1,5 +1,10 @@
 2004-02-04  Michael Koch  <konqueror@gmx.de>
 
+	* configure.ac: Fixed little bug (s/gthread/gthread-2.0/).
+	* doc/hacking.texinfo (API COmpatibility): Added menu to make makeinfo silent.
+
+2004-02-04  Michael Koch  <konqueror@gmx.de>
+
 	* java/lang/Thread.java
 	(Thread): Merged extensive javadoc from libgcj.
 	(setName): Do explicit null pointer check.
