@@ -1,3 +1,11 @@
+2005-02-27  Roman Kennke  <roman@ontographics.com>
+
+	* javax/swing/CellRendererPane.java:
+	implemented all methods of this class.
+	reformatted all wrong formatted code.
+	* javax/swing/plaf/basic/BasicListUI.java
+	(paintCell): use CellRendererPane for painting the cells.
+
 2005-02-27  Audrius Meskauskas  <audriusa@bluewin.ch>
 
 	* javax/swing/JComboBox.java (constructors): selecting the 
