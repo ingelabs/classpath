@@ -138,7 +138,6 @@ public class ObjectInputStream extends InputStream
       return readObjectOverride();
     
     boolean was_deserializing;    
-    boolean first_time = true;
 
     Object ret_val;
     was_deserializing = this.isDeserializing;
