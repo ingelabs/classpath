@@ -1,3 +1,7 @@
+2004-06-18  Steven Augart  <augart@watson.ibm.com>
+
+	* configure.ac: Complain if user types --enable-gtk-peers.
+
 2003-06-15  Dalibor Topic  <robilad@kaffe.org>
 
         * java/nio/Buffer.java,

@@ -68,6 +68,10 @@ AC_ARG_ENABLE([gtk-peer],
               [COMPILE_GTK_PEER=yes])
 AM_CONDITIONAL(CREATE_GTK_PEER_LIBRARIES, test "x${COMPILE_GTK_PEER}" = xyes)
 
+dnl GTK native peer error checking 
+AC_ARG_ENABLE([gtk-peers],,AC_MSG_ERROR([No --enable-gtk-peers (or --disable-gtk-peers) option; you want --enable-gtk-peer]))
+
+
 dnl -----------------------------------------------------------
 dnl Regenerate headers at build time (disabled by default)
 dnl -----------------------------------------------------------
