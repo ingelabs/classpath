@@ -1,3 +1,8 @@
+2005-02-02  Sven de Marothy  <sven@physto.se>
+
+	* java/util/Calendar.java 
+	(set) Invalidate all fields on first call to set().
+	
 2005-02-02  Mark Wielaard  <mark@klomp.org>
 
 	* vm/reference/java/lang/VMClassLoader.java: Remove SystemClassLoader

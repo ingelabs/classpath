@@ -676,15 +676,19 @@ public abstract class Calendar implements Serializable, Cloneable
    */
   public void set(int field, int value)
   {
+    if (isTimeSet)
+      for (int i = 0; i < FIELD_COUNT; i++)
+	isSet[i] = false;
     isTimeSet = false;
     fields[field] = value;
     isSet[field] = true;
 
-// 1  YEAR + MONTH + DAY_OF_MONTH
-// 2  YEAR + MONTH + WEEK_OF_MONTH + DAY_OF_WEEK
-// 3  YEAR + MONTH + DAY_OF_WEEK_IN_MONTH + DAY_OF_WEEK
-// 4  YEAR + DAY_OF_YEAR
-// 5  YEAR + DAY_OF_WEEK + WEEK_OF_YEAR
+    // The five valid date patterns, in order of validity
+    // 1  YEAR + MONTH + DAY_OF_MONTH
+    // 2  YEAR + MONTH + WEEK_OF_MONTH + DAY_OF_WEEK
+    // 3  YEAR + MONTH + DAY_OF_WEEK_IN_MONTH + DAY_OF_WEEK
+    // 4  YEAR + DAY_OF_YEAR
+    // 5  YEAR + DAY_OF_WEEK + WEEK_OF_YEAR
     switch (field)
       {
       case MONTH: // pattern 1,2 or 3
