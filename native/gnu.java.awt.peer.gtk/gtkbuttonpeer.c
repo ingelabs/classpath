@@ -27,18 +27,27 @@
  */
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkButtonNewWithLabel
-    (JNIEnv *env, jobject obj, jstring label, jboolean visible)
+    (JNIEnv *env, jobject obj, jobject parent_obj, 
+     jstring label, jboolean visible)
 {
   GtkWidget *button;
+  void *parent;
   const char *str;
+
+  parent = NSA_GET_PTR (env, parent_obj);
 
   str = (*env)->GetStringUTFChars (env, label, NULL);
 
   /* All buttons get a label, even if it is blank.  This is okay for java. */
   gdk_threads_enter ();
   button = gtk_button_new_with_label (str);
-  connect_awt_hook (env, obj, button, 1, &button->window);
+  
+  set_parent (button, GTK_CONTAINER (parent));
+
+  gtk_widget_realize (button);
+  connect_awt_hook (env, obj, button, 1, button->window);
   set_visible (button, visible);
+
   gdk_threads_leave ();
 
   (*env)->ReleaseStringUTFChars (env, label, str);

@@ -24,10 +24,11 @@
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelNew
-(JNIEnv *env, jobject obj, jstring text, jint just, jboolean visible)
+(JNIEnv *env, jobject obj, jobject parent_obj, jstring text, jint just, jboolean visible)
 {
   GtkWidget *label, *box;
   const char *str;
+  void *parent;
   GtkJustification j = GTK_JUSTIFY_CENTER;
  
   switch (just)
@@ -35,29 +36,34 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelNew
     case 0:
       j = GTK_JUSTIFY_LEFT;
       break;
-    case 1:
+    case 2:
       j = GTK_JUSTIFY_RIGHT;
       break;
     }
  
+  parent = NSA_GET_PTR (env, parent_obj);
   str = (*env)->GetStringUTFChars (env, text, NULL);
 
   gdk_threads_enter ();
 
   box = gtk_event_box_new ();
-  connect_awt_hook (env, obj, box, 1, &box->window);
 
   label = gtk_label_new (str);
-  gtk_widget_show (label);
   gtk_container_add (GTK_CONTAINER (box), label);
-  gtk_label_set_justify (GTK_LABEL (label), j);
+  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  gtk_widget_show (label);
 
+  set_parent (box, GTK_CONTAINER (parent));
+
+  gtk_widget_realize (box);
+  connect_awt_hook (env, obj, box, 1, box->window);
   set_visible (box, visible);
+
   gdk_threads_leave ();
 
-  NSA_SET_PTR (env, obj, box);
-
   (*env)->ReleaseStringUTFChars (env, text, str);
+
+  NSA_SET_PTR (env, obj, box);
 }
 
 JNIEXPORT void JNICALL 
@@ -94,7 +100,7 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelSetJustify
     case 0:
       j = GTK_JUSTIFY_LEFT;
       break;
-    case 1:
+    case 2:
       j = GTK_JUSTIFY_RIGHT;
       break;
     }
@@ -104,7 +110,7 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelSetJustify
   gdk_threads_enter ();
 
   label = GTK_LABEL (GTK_BIN (ptr)->child);
-  gtk_label_set_justify (label, j);
+  gtk_label_set_justify (label, GTK_JUSTIFY_LEFT);
 
   gdk_threads_leave ();
 }

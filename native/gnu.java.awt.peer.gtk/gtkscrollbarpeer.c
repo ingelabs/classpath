@@ -24,23 +24,29 @@
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_gtkScrollbarNew
-    (JNIEnv *env, jobject obj, jint orientation, jint value, jint min, 
+    (JNIEnv *env, jobject obj, jobject parent_obj,
+     jint orientation, jint value, jint min, 
      jint max, jboolean visible)
 {
   GtkWidget *sb;
   GtkObject *adj;
+  void *parent;
+
+  parent = NSA_GET_PTR (env, parent_obj);
 
   gdk_threads_enter ();
   adj = gtk_adjustment_new (value, min, max, 1, 10, 10);
-  if (orientation) 
-    sb = gtk_hscrollbar_new (GTK_ADJUSTMENT (adj));
-  else
-    sb = gtk_vscrollbar_new (GTK_ADJUSTMENT (adj));
+
+  sb = (orientation) ? gtk_hscrollbar_new (GTK_ADJUSTMENT (adj)) :
+                       gtk_vscrollbar_new (GTK_ADJUSTMENT (adj));
+
+  set_parent (sb, GTK_CONTAINER (parent));
+  gtk_widget_realize (sb);
   connect_awt_hook (env, obj, sb, 4, 
-		    &(GTK_RANGE (sb)->trough),
-		    &(GTK_RANGE (sb)->slider),
-		    &(GTK_RANGE (sb)->step_forw),
-		    &(GTK_RANGE (sb)->step_back));
+		    GTK_RANGE (sb)->trough,
+		    GTK_RANGE (sb)->slider,
+		    GTK_RANGE (sb)->step_forw,
+		    GTK_RANGE (sb)->step_back);
   set_visible (sb, visible);
   gdk_threads_leave ();
 

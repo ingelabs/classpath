@@ -105,5 +105,6 @@ void connect_awt_hook (JNIEnv *env, jobject peer_obj, GtkWidget *widget,
 		       int nwindows, ...);
 
 void set_visible (GtkWidget *widget, jboolean visible);
+void set_parent (GtkWidget *widget, GtkContainer *parent);
 
 #endif /* __GTKPEER_H */

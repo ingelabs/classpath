@@ -51,15 +51,18 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonSetGroup
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonNew
-  (JNIEnv *env, jobject obj, jobject group, jboolean checked, jstring label,
+  (JNIEnv *env, jobject obj, jobject parent_obj, 
+   jobject group, jboolean checked, jstring label,
    jboolean visible)
 {
   GtkWidget *button;
   const char *str;
   void *native_group;
+  void *parent;
 
   str = (*env)->GetStringUTFChars (env, label, NULL);
   native_group = NSA_GET_PTR (env, group);
+  parent = NSA_GET_PTR (env, parent_obj);
 
   gdk_threads_enter ();
 
@@ -70,8 +73,10 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonNew
   else
     button=gtk_radio_button_new_with_label_from_widget (GTK_RADIO_BUTTON 
 							(native_group), str);
+  set_parent (button, GTK_CONTAINER (parent));
+  gtk_widget_realize (button);
   connect_awt_hook (env, obj, button, 1, 
-		    &GTK_TOGGLE_BUTTON (button)->event_window);
+		    GTK_TOGGLE_BUTTON (button)->event_window);
   set_visible (button, visible);
 
   if (checked)
@@ -88,11 +93,14 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonNew
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonNew
-  (JNIEnv *env, jobject obj, jboolean checked, jstring label, jboolean visible)
+  (JNIEnv *env, jobject obj, jobject parent_obj,
+   jboolean checked, jstring label, jboolean visible)
 {
   GtkWidget *button;
   const char *str;
+  void *parent;
 
+  parent = NSA_GET_PTR (env, parent_obj);
   str = (*env)->GetStringUTFChars (env, label, NULL);
 
   gdk_threads_enter ();
@@ -101,8 +109,11 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonNew
   button=gtk_check_button_new_with_label (str);
   if (checked)
     gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (button), TRUE);
+  
+  set_parent (button, GTK_CONTAINER (parent));
+  gtk_widget_realize (button);
   connect_awt_hook (env, obj, button, 1, 
-		    &GTK_TOGGLE_BUTTON (button)->event_window);
+		    GTK_TOGGLE_BUTTON (button)->event_window);
   set_visible (button, visible);
   gdk_threads_leave ();
 

@@ -30,7 +30,7 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env, 
   jobject obj, jint type, jint width, jint height, jboolean visible)
 {
-  GtkWidget *window, *fix;
+  GtkWidget *window, *fixed;
 
   gdk_threads_enter ();
   switch (type)
@@ -46,25 +46,25 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env,
       break;
     }
   gtk_window_set_policy (GTK_WINDOW (window), 1, 1, 1);
+  gtk_widget_set_usize (window, width, height);
+  
+  fixed = gtk_fixed_new ();
+  gtk_container_add (GTK_CONTAINER (window), fixed);
+  gtk_widget_realize (fixed);
+  connect_awt_hook (env, obj, fixed, 1, fixed->window);
+  gtk_widget_show (fixed);
 
-  connect_awt_hook (env, obj, window, 1, &window->window);
+  gtk_widget_realize (window);
+  connect_awt_hook (env, obj, window, 1, window->window);
   set_visible (window, visible);
 
   /* Every window needs a fixed widget to support absolute positioning. */
 
-  fix = gtk_fixed_new();
-  connect_awt_hook (env, obj, fix, 1, &fix->window);
-  gtk_widget_show (fix);
-
-  gtk_widget_set_usize (window, width, height);
-  
   printf("c: requisition: %i x %i allocation:%i x %i\n",
 	 GTK_WIDGET(window)->requisition.width,
 	 GTK_WIDGET(window)->requisition.height,
 	 GTK_WIDGET(window)->allocation.width,
 	 GTK_WIDGET(window)->allocation.height);
-  
-  gtk_container_add (GTK_CONTAINER (window), fix);
 
   gdk_threads_leave ();
 

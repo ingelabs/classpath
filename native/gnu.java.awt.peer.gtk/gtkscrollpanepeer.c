@@ -24,12 +24,14 @@
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowNew 
-    (JNIEnv *env, jobject obj, jint policy, jint width, jint height,
+    (JNIEnv *env, jobject obj, jobject parent_obj, 
+     jint policy, jint width, jint height,
      jintArray jdims, jboolean visible)
 {
   jint *dims = (*env)->GetIntArrayElements (env, jdims, 0);  
   GtkRequisition myreq;
-  GtkWidget *sw, *fix;
+  GtkWidget *sw, *fixed;
+  void *parent;
   guint mypolicy;
 
   switch (policy)
@@ -45,6 +47,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowNew
       break;
     }
 
+  parent = NSA_GET_PTR (env, parent_obj);
   gdk_threads_enter ();
 
   sw = gtk_scrolled_window_new (NULL, NULL);
@@ -70,14 +73,17 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowNew
 
   printf("sbsize: %i %i\n",dims[0],dims[1]);
 
-  fix = gtk_fixed_new();
-  gtk_widget_show (fix);
-  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), fix);
+  fixed = gtk_fixed_new ();
+  gtk_widget_show (fixed);
+  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), fixed);
+
+  set_parent (sw, GTK_CONTAINER (parent));
+  gtk_widget_realize (sw);
 
   set_visible (sw, visible);
   gdk_threads_leave ();
 
-  (*env)->ReleaseIntArrayElements(env, jdims, dims, 0);
+  (*env)->ReleaseIntArrayElements (env, jdims, dims, 0);
 
   NSA_SET_PTR (env, obj, sw);
 }

@@ -314,27 +314,16 @@ void
 connect_awt_hook (JNIEnv *env, jobject peer_obj, GtkWidget *widget,
 		  int nwindows, ...)
 {
-  struct event_hook_info *hook_info;
   int i;
   va_list ap;
+  jobject *obj;
 
-  hook_info = (struct event_hook_info *) malloc (sizeof 
-						 (struct event_hook_info));
-  hook_info->peer_obj = (jobject *) malloc (sizeof (jobject));
-  *(hook_info->peer_obj) = (*env)->NewGlobalRef (env, peer_obj);
-  hook_info->nwindows = nwindows;
-  hook_info->windows = (GdkWindow ***) malloc (sizeof (GdkWindow **) 
-					       * nwindows);
+  obj = (jobject *) malloc (sizeof (jobject));
+  *obj = (*env)->NewGlobalRef (env, peer_obj);
+
   va_start (ap, nwindows);
   for (i = 0; i < nwindows; i++)
-    hook_info->windows[i] = va_arg (ap, GdkWindow **);
+    attach_jobject (va_arg (ap, GdkWindow *), obj);
   va_end (ap);
-
-  gtk_signal_connect_after (GTK_OBJECT(widget), "realize", 
-			    GTK_SIGNAL_FUNC(awt_realize_hook), 
-			    hook_info);
-  gtk_signal_connect (GTK_OBJECT(widget), "unrealize",
-		      GTK_SIGNAL_FUNC(awt_unrealize_hook),
-		      hook_info);
 }
 

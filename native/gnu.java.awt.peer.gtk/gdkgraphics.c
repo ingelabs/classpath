@@ -25,11 +25,8 @@ JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState
   gdk_threads_enter ();
 
   widget = GTK_WIDGET (ptr);
-  if (GTK_WIDGET_DRAWABLE (widget))
-    g->drawable = (GdkDrawable *) widget->window;
-  else
-    g->drawable = NULL;
 
+  g->drawable = (GdkDrawable *) widget->window;
   g->cm = gtk_widget_get_colormap (widget);
   g->gc = gdk_gc_new (g->drawable);
   gdk_gc_copy (g->gc, widget->style->fg_gc[GTK_STATE_NORMAL]);

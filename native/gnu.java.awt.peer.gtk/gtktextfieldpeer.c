@@ -24,20 +24,26 @@
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryNew
-  (JNIEnv *env, jobject obj, jstring text, jboolean visible)
+  (JNIEnv *env, jobject obj, jobject parent_obj,
+   jstring text, jboolean visible)
 {
   GtkWidget *entry;
   const char *str;
+  void *parent;
+
+  parent = NSA_GET_PTR (env, parent_obj);
 
   str = (*env)->GetStringUTFChars (env, text, NULL);
-
   gdk_threads_enter ();
 
   entry = gtk_entry_new ();
-  connect_awt_hook (env, obj, entry, 2, 
-		    &entry->window, &GTK_ENTRY (entry)->text_area);
   gtk_entry_set_text (GTK_ENTRY (entry), str);
 
+  set_parent (entry, GTK_CONTAINER (parent));
+
+  gtk_widget_realize (entry);
+  connect_awt_hook (env, obj, entry, 2, 
+		    entry->window, GTK_ENTRY (entry)->text_area);
   set_visible (entry, visible);
   gdk_threads_leave ();
 
