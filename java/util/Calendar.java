@@ -19,43 +19,40 @@
  */
 
 package java.util;
-
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * This class is an abstract base class for Calendars, which can be
  * used to convert between <code>Date</code> objects and a set of
  * integer fields which represent <code>YEAR</code>,
  * <code>MONTH</code>, <code>DAY</code>, etc.  The <code>Date</code>
- * object represents a time in milliseconds since the Epoch.
+ * object represents a time in milliseconds since the Epoch. <br>
  * 
  * This class is locale sensitive.  To get the Object matching the
  * current locale you can use <code>getInstance</code>.  You can even provide
  * a locale or a timezone.  <code>getInstance</code> returns currently
- * a <code>GregorianCalendar</code> for the current date.
+ * a <code>GregorianCalendar</code> for the current date. <br>
  *
  * If you want to convert a date from the Year, Month, Day, DayOfWeek,
  * etc.  Representation to a <code>Date</code>-Object, you can create
  * a new Calendar with <code>getInstance()</code>,
  * <code>clear()</code> all fields, <code>set(int,int)</code> the
- * fields you need and convert it with <code>getTime()</code>.
+ * fields you need and convert it with <code>getTime()</code>. <br>
  *
  * If you want to convert a <code>Date</code>-object to the Calendar
  * representation, create a new Calendar, assign the
  * <code>Date</code>-Object with <code>setTime()</code>, and read the
- * fields with <code>get(int)</code>
+ * fields with <code>get(int)</code>. <br>
  *
  * When computing the date from time fields, it may happen, that there
  * are either two few fields set, or some fields are inconsistent.  This
  * cases will handled in a calender specific way.  Missing fields are
- * replaced by the fields of the epoch: 1970 January 1 00:00.  
+ * replaced by the fields of the epoch: 1970 January 1 00:00. <br>
  *
  * To understand, how the day of year is computed out of the fields
  * look at the following table.  It is traversed from top to bottom,
  * and for the first line all fields are set, that line is used to
- * compute the day.
+ * compute the day. <br>
  *
  * <pre>
  * month + day_of_month
@@ -66,15 +63,15 @@ import java.io.IOException;
  * </pre>
  * 
  * The hour_of_day-field takes precedence over the ampm and
- * hour_of_ampm fields.
+ * hour_of_ampm fields. <br>
  *
- * <STRONG>Note:</STRONG> This can differ for non-Gregorian calendar.
+ * <STRONG>Note:</STRONG> This can differ for non-Gregorian calendar. <br>
  *
  * To convert a calendar to a human readable form and vice versa,  use
- * the <code>java.text.DateFormat</code> class.
+ * the <code>java.text.DateFormat</code> class. <br>
  * 
  * Other useful things you can do with an calendar, is
-* <code>roll</code>ing fields (that means increase/decrease a
+ * <code>roll</code>ing fields (that means increase/decrease a
  * specific field by one, propagating overflows), or
  * <code>add</code>ing/substracting a fixed amount to a field.
  *
@@ -83,7 +80,7 @@ import java.io.IOException;
  * @see TimeZone
  * @see java.text.DateFormat 
  */
-public abstract class Calendar implements java.io.Serializable, Cloneable {
+public abstract class Calendar implements Serializable, Cloneable {
     /**
      * Constant representing the era time field.
      */
@@ -99,12 +96,12 @@ public abstract class Calendar implements java.io.Serializable, Cloneable {
     public static final int MONTH = 2;
     /**
      * Constant representing the week of the year field.
-     * @see setFirstDayOfWeak
+     * @see #setFirstDayOfWeek(int)
      */
     public static final int WEEK_OF_YEAR = 3;
     /**
      * Constant representing the week of the month time field.
-     * @see setFirstDayOfWeak
+     * @see #setFirstDayOfWeek(int)
      */
     public static final int WEEK_OF_MONTH = 4;
     /**
@@ -636,7 +633,7 @@ public abstract class Calendar implements java.io.Serializable, Cloneable {
      * Rolls the specified time field up or down.  This means add one
      * to the specified field, but don't change the other fields.  If
      * the maximum for this field is reached, start over with the 
-     * minimum value.  
+     * minimum value.  <br>
      *
      * <strong>Note:</strong> There may be situation, where the other
      * fields must be changed, e.g rolling the month on May, 31. 
@@ -715,7 +712,7 @@ public abstract class Calendar implements java.io.Serializable, Cloneable {
     /**
      * Gets how many days are required in the first week of the year.
      * @return the minimal days required in the first week.
-     * @see setMinimalDaysInFirstWeek
+     * @see #setMinimalDaysInFirstWeek
      */
     public int getMinimalDaysInFirstWeek() {
         return minimalDaysInFirstWeek;
@@ -783,7 +780,7 @@ public abstract class Calendar implements java.io.Serializable, Cloneable {
     /**
      * Saves the state of the object to the stream.  Ideally we would
      * only write the time field, but we need to be compatible with
-     * earlier versions.
+     * earlier versions. <br>
      *
      * This doesn't write the JDK1.1 field nextStamp to the stream, as
      * I don't know what it is good for, and because the documentation

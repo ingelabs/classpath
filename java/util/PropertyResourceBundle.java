@@ -79,7 +79,7 @@ package java.util;
  *
  * @see ResourceBundle
  * @see ListResourceBundle
- * @see Properties.load
+ * @see Properties#load()
  * @author Jochen Hoenicke */
 public class PropertyResourceBundle extends ResourceBundle {
 
@@ -100,7 +100,7 @@ public class PropertyResourceBundle extends ResourceBundle {
      * returns the resource given by the key or throws an exception.
      * @param key The key of the resource.
      * @return The resource for the key.
-     * @throws MissingResourceException if the key didn't exists in the file.
+     * @exception MissingResourceException if the key didn't exists in the file.
      * @XXX How can we get the className???
      */
     protected Object handleGetObject(String key) 

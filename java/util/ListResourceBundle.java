@@ -55,7 +55,7 @@ public abstract class ListResourceBundle extends ResourceBundle {
      * called by <code>getObject</code>.
      * @param key The key of the resource.
      * @return The resource for the key.
-     * @throws MissingResourceException
+     * @exception MissingResourceException
      *   if that particular object could not be found in this bundle.
      */
     protected Object handleGetObject(String key)
@@ -86,6 +86,3 @@ public abstract class ListResourceBundle extends ResourceBundle {
         };
     }
 }
-
-
-

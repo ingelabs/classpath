@@ -21,32 +21,103 @@
 package java.util;
 
 /**
- * blah blah
+ * This class splits a string into tokens.  The caller can set on which 
+ * delimiters the string should be split and if the delimiters should be
+ * returned.
  *
- * @author Jochen Hoenicke
- */
+ * You may change the delimiter set on the fly by calling
+ * nextToken(String).  But the semantic is quite difficult; it even
+ * depends on calling <code>hasMoreTokens()</code>.  You should call
+ * <code>hasMoreTokens()</code> before, otherwise the old delimiters
+ * after the last token are returned.
+ *
+ * If you want to get the delimiters, you have to use the three argument
+ * constructor.  The delimiters are returned as token consisting of a
+ * single character.  
+ *
+ * @author Jochen Hoenicke */
 public class StringTokenizer implements Enumeration {
 
+    /**
+     * The position in the str, where we currently are.
+     */
     private int pos;
+    /**
+     * The string that should be split into tokens.
+     */
     private String str;
+    /**
+     * The string containing the delimiter characters.
+     */
     private String delim;
+    /**
+     * Tells, if we should return the delimiters.
+     */
     private boolean retDelims;
 
-    public StringTokenizer(String str) {
+    /*{ 
+        invariant {
+            pos >= 0 :: "position is negative";
+	    pos <= str.length() :: "position is out of string";
+	    str != null :: "String is null";
+	    delim != null :: "Delimiters are null";
+        }
+    }*/
+
+
+    /**
+     * Creates a new StringTokenizer for the string <code>str</code>,
+     * that should split on the default delimiter set (space, tap,
+     * newline, return and formfeed), and which doesn't return the
+     * delimiters.
+     * @param str The string to split.
+     */
+    public StringTokenizer(String str)
+        /*{ require { str != null :: "str must not be null"; } }*/
+    {
         this(str, " \t\n\r\f", false);
     }
 
-    public StringTokenizer(String str, String delim) {
+    /**
+     * Create a new StringTokenizer, that splits the given string on 
+     * the given delimiter characters.  It doesn't return the delimiter
+     * characters.
+     *
+     * @param str The string to split.
+     * @param delim A string containing all delimiter characters.
+     */
+    public StringTokenizer(String str, String delim)
+        /*{ require { str != null :: "str must not be null";
+	              delim != null :: "delim must not be null"; } }*/
+    {
         this(str, delim, false);
     }
 
-    public StringTokenizer(String str, String delim, boolean returnDelims) {
+    /**
+     * Create a new StringTokenizer, that splits the given string on
+     * the given delimiter characters.  If you set
+     * <code>returnDelims</code> to <code>true</code>, the delimiter
+     * characters are returned as tokens of their own.  The delimiter
+     * tokens always consist of a single character.
+     *
+     * @param str The string to split.
+     * @param delim A string containing all delimiter characters.
+     * @param returnDelims Tells, if you want to get the delimiters.
+     */
+    public StringTokenizer(String str, String delim, boolean returnDelims)
+        /*{ require { str != null :: "str must not be null";
+	              delim != null :: "delim must not be null"; } }*/
+    {
         this.str = str;
         this.delim = delim;
         this.retDelims = returnDelims;
         this.pos = 0;
     }
 
+    /**
+     * Tells if there are more tokens.
+     * @return True, if the next call of nextToken() succeeds, false otherwise.
+     */
     public boolean hasMoreTokens() {
         if (!retDelims) {
             while (pos < str.length()
@@ -57,12 +128,33 @@ public class StringTokenizer implements Enumeration {
         return pos < str.length();
     }
 
-    public String nextToken(String delim) throws NoSuchElementException {
+    /**
+     * Returns the nextToken, changing the delimiter set to the given
+     * <code>delim</code>.  The change of the delimiter set is
+     * permanent, ie. the next call of nextToken(), uses the same
+     * delimiter set.
+     * @param delim a string containing the new delimiter characters.
+     * @return the next token with respect to the new delimiter characters.
+     * @exception NoSuchElementException if there are no more tokens.
+     */
+    public String nextToken(String delim) throws NoSuchElementException 
+        /*{ require { hasMoreTokens() :: "no more Tokens available";
+	    ensure { $return != null && $return.length() > 0; } }*/
+    {
         this.delim = delim;
         return nextToken();
     }
 
-    public String nextToken() throws NoSuchElementException {
+    /**
+     * Returns the nextToken of the string.
+     * @param delim a string containing the new delimiter characters.
+     * @return the next token with respect to the new delimiter characters.
+     * @exception NoSuchElementException if there are no more tokens.
+     */
+    public String nextToken() throws NoSuchElementException
+        /*{ require { hasMoreTokens() :: "no more Tokens available";
+	    ensure { $return != null && $return.length() > 0; } }*/
+    {
         if (pos < str.length() 
             && delim.indexOf(str.charAt(pos)) > -1) {
             if (retDelims)
@@ -84,39 +176,58 @@ public class StringTokenizer implements Enumeration {
 	throw new NoSuchElementException();
     }
 
+    /**
+     * This does the same as hasMoreTokens. This is the
+     * <code>Enumeration</code interface method.
+     * @return True, if the next call of nextElement() succeeds, false
+     * otherwise.  
+     * @see #hasMoreTokens
+     */
     public boolean hasMoreElements() {
         return hasMoreTokens();
     }
 
+    /**
+     * This does the same as nextTokens. This is the
+     * <code>Enumeration</code interface method.
+     * @return the next token with respect to the new delimiter characters.
+     * @exception NoSuchElementException if there are no more tokens.
+     * @see #nextToken
+     */
     public Object nextElement() throws NoSuchElementException {
         return nextToken();
     }
 
+    /**
+     * This counts the number of remaining tokens in the string, with
+     * respect to the current delimiter set.
+     * @return the number of times <code>nextTokens()</code> will
+     * succeed.  
+     * @see #nextToken
+     */
     public int countTokens() {
         int count = 0;
-        int savepos = pos;
-        while (pos < str.length()) {
-            if (delim.indexOf(str.charAt(pos)) > -1) {
+        int tmpPos = pos;
+        while (tmpPos < str.length()) {
+            if (delim.indexOf(str.charAt(tmpPos)) > -1) {
                 if (retDelims) {
                     count++;
                     continue;
                 }
                 
-                while (++pos < str.length() 
-                       && delim.indexOf(str.charAt(pos)) > -1) {
+                while (++tmpPos < str.length() 
+                       && delim.indexOf(str.charAt(tmpPos)) > -1) {
                     /* empty */
                 }
             }
-            if (pos < str.length()) {
-                int start = pos;
-                while (++pos < str.length()
-                       && delim.indexOf(str.charAt(pos)) == -1) {
+            if (tmpPos < str.length()) {
+                while (++tmpPos < str.length()
+                       && delim.indexOf(str.charAt(tmpPos)) == -1) {
                     /* empty */
                 }
                 count++;
             }
         }
-        pos = savepos;
         return count;
     }
 }

@@ -88,7 +88,7 @@ public abstract class ResourceBundle {
      * Objects are Strings, this method provides a convenient way to get
      * them without casting.
      * @param key the name of the resource.
-     * @throws MissingResourceException
+     * @exception MissingResourceException
      *   if that particular object could not be found in this bundle nor
      *   the parent bundle.
      */
@@ -100,7 +100,7 @@ public abstract class ResourceBundle {
      * Get an array of Strings from this resource bundle.  This method
      * provides a convenient way to get it without casting.
      * @param key the name of the resource.
-     * @throws MissingResourceException
+     * @exception MissingResourceException
      *   if that particular object could not be found in this bundle nor
      *   the parent bundle.
      */
@@ -112,7 +112,7 @@ public abstract class ResourceBundle {
     /**
      * Get an object from this resource bundle.
      * @param key the name of the resource.
-     * @throws MissingResourceException
+     * @exception MissingResourceException
      *   if that particular object could not be found in this bundle nor
      *   the parent bundle.
      */
@@ -153,7 +153,7 @@ public abstract class ResourceBundle {
      * a name of a Class or a properties-File.  See the class
      * description for details.  
      * @return the desired resource bundle
-     * @throws MissingResourceException 
+     * @exception MissingResourceException 
      *    if the resource bundle couldn't be found.  */
     public static final ResourceBundle getBundle(String baseName) 
         throws MissingResourceException {
@@ -168,7 +168,7 @@ public abstract class ResourceBundle {
      * description for details.  
      * @param locale A locale.
      * @return the desired resource bundle
-     * @throws MissingResourceException 
+     * @exception MissingResourceException 
      *    if the resource bundle couldn't be found.
      */
     public static final ResourceBundle getBundle(String baseName, 
@@ -256,7 +256,7 @@ public abstract class ResourceBundle {
      * @param locale A locale.
      * @param classloader a ClassLoader.
      * @return the desired resource bundle
-     * @throws MissingResourceException 
+     * @exception MissingResourceException 
      *    if the resource bundle couldn't be found.
      */
     public static final ResourceBundle getBundle(String baseName, 
@@ -344,7 +344,7 @@ public abstract class ResourceBundle {
      * called by <code>getObject</code>.
      * @param key The key of the resource.
      * @return The resource for the key.
-     * @throws MissingResourceException
+     * @exception MissingResourceException
      *   if that particular object could not be found in this bundle.
      */
     protected abstract Object handleGetObject(String key)

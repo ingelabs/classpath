@@ -42,6 +42,7 @@ public class BitSet implements Cloneable,java.io.Serializable {
      * </pre>
      */
     private long bits[];
+    /*{ invariant { bits != null :: "bit field is null"; } }*/
 
     /* The serialized format is compatible to the the sun classes.
      */
@@ -59,8 +60,9 @@ public class BitSet implements Cloneable,java.io.Serializable {
      * constructor reserves enough space to represent the integers
      * from <code>0</code> to <code>nbits-1</code>.  
      * @param nbits the initial size of the bit set.
-     * @throws NegativeArraySizeException if the specified initial
+     * @exception NegativeArraySizeException if the specified initial
      * size is negative.  
+     * @require nbits >= 0
      */
     public BitSet(int nbits) {
         bits = new long[nbits>>6];
@@ -70,6 +72,7 @@ public class BitSet implements Cloneable,java.io.Serializable {
      * Grows the bits array.  You should make sure, that the array is indeed
      * smaller than necessary.
      * @param toSize The minimum size we need.
+     * @require toSize > bits.length
      */
     private void grow(int toSize) {
         int nextSize = Math.max(bits.length*2, toSize);
@@ -84,9 +87,10 @@ public class BitSet implements Cloneable,java.io.Serializable {
      * the set, this method does nothing.  The size of this structure
      * is automatically increased as necessary.
      * @param bitIndex a nonnegative integer.
-     * @throws ArrayIndexOutOfBoundsException if the specified bit index
+     * @exception ArrayIndexOutOfBoundsException if the specified bit index
      * is negative.
-     * @throws OutOfMemoryError if the specified bit index is too big.
+     * @exception OutOfMemoryError if the specified bit index is too big.
+     * @require bitIndex >= 0
      */
     public synchronized void set(int bitIndex) {
         int intNr = bitIndex >> 6;
@@ -100,8 +104,9 @@ public class BitSet implements Cloneable,java.io.Serializable {
      * the corresponding bit is cleared.  If the index is not in the set,
      * this method does nothing.
      * @param bitIndex a nonnegative integer.
-     * @throws ArrayIndexOutOfBoundsException if the specified bit index
+     * @exception ArrayIndexOutOfBoundsException if the specified bit index
      * is negative.
+     * @require bitIndex >= 0
      */
     public synchronized void clear(int bitIndex) {
         int intNr = bitIndex >> 6;
@@ -117,8 +122,9 @@ public class BitSet implements Cloneable,java.io.Serializable {
      * set, otherwise false.
      * @param bitIndex a nonnegative integer
      * @return the value of the bit at the specified index.
-     * @throws ArrayIndexOutOfBoundsException if the specified bit index
+     * @exception ArrayIndexOutOfBoundsException if the specified bit index
      * is negative.
+     * @require bitIndex >= 0
      */
     public boolean get(int bitIndex) {
         /* No need to synchronize.  If the bit is changed just in
@@ -138,6 +144,7 @@ public class BitSet implements Cloneable,java.io.Serializable {
      * given <code>set</code>.  This means it builds the intersection
      * of the two sets.  The result is stored into this bit set.
      * @param set the second bit set.
+     * @require set != null
      */
     public void and(BitSet set) {
         BitSet first, second;
@@ -172,7 +179,8 @@ public class BitSet implements Cloneable,java.io.Serializable {
      * of the two sets.  The result is stored into this bit set, which
      * grows as necessary.
      * @param set the second bit set.
-     * @throws OutOfMemoryError if the current set can't grow.
+     * @exception OutOfMemoryError if the current set can't grow.
+     * @require set != null
      */
     public void or(BitSet set) {
         BitSet first, second;
@@ -207,7 +215,8 @@ public class BitSet implements Cloneable,java.io.Serializable {
      * but not in the other).  The result is stored into this bit set,
      * which grows as necessary.  
      * @param set the second bit set.
-     * @throws OutOfMemoryError if the current set can't grow.  
+     * @exception OutOfMemoryError if the current set can't grow.  
+     * @require set != null
      */
     public synchronized void xor(BitSet set) {
         BitSet first, second;
@@ -305,24 +314,24 @@ public class BitSet implements Cloneable,java.io.Serializable {
             second = this;
         }
         synchronized(first) {
+            int i;
             synchronized(second) {
                 int length = Math.min(first.bits.length, second.bits.length);
-                int i;
                 for (i=0; i<length; i++) {
                     if (first.bits[i] != second.bits[i])
-                        return false;
-                }
-                for (; i<first.bits.length; i++) {
-                    if (first.bits[i] != 0)
                         return false;
                 }
                 for (; i<second.bits.length; i++) {
                     if (second.bits[i] != 0)
                         return false;
                 }
-                return true;
+            }
+            for (; i<first.bits.length; i++) {
+                if (first.bits[i] != 0)
+                    return false;
             }
         }
+        return true;
     }
 
     /**

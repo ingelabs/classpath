@@ -106,7 +106,7 @@ public class SimpleTimeZone extends TimeZone {
 
     /**
      * This variable can have different meanings.  See startMode for details
-     * @see startMode;
+     * @see #startMode;
      * @serial
      */
     private int startDay;
@@ -114,7 +114,7 @@ public class SimpleTimeZone extends TimeZone {
      * This variable specifies the day of week the change takes place.  If 
      * startMode == DOM_MODE, this is undefined.
      * @serial
-     * @see startMode;
+     * @see #startMode;
      */
     private int startDayOfWeek;
     /**
@@ -135,21 +135,21 @@ public class SimpleTimeZone extends TimeZone {
      * This variable gives the mode for the end of daylight savings rule.
      * It can take the same values as startMode.
      * @serial
-     * @see startMode
+     * @see #startMode
      */
     private int endMode;
 
     /**
      * This variable can have different meanings.  See startMode for details
      * @serial
-     * @see startMode;
+     * @see #startMode;
      */
     private int endDay;
     /**
      * This variable specifies the day of week the change takes place.  If 
      * endMode == DOM_MODE, this is undefined.
      * @serial
-     * @see startMode;
+     * @see #startMode;
      */
     private int endDayOfWeek;
     /**
@@ -359,7 +359,7 @@ public class SimpleTimeZone extends TimeZone {
      * @param day A day in month, or a day of week in month.
      * @param DayOfWeek A day of week, when daylight savings ends.
      * @param Time A time in millis in standard time.
-     * @see setStartRule */
+     * @see #setStartRule */
     public void setEndRule(int month, int day, 
                            int dayOfWeek, int time) {
         if (dayOfWeek == 0)
@@ -629,7 +629,7 @@ public class SimpleTimeZone extends TimeZone {
 
     /**
      * Reads a serialized simple time zone from stream.
-     * @see writeObject
+     * @see #writeObject
      */
     private void readObject(java.io.ObjectInputStream input) 
         throws java.io.IOException, ClassNotFoundException {
