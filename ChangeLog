@@ -1,3 +1,16 @@
+2003-07-07  Torsten Rupp  <rupp@lisa.aicas.com>
+
+	* native/target/generic/target_generic.h,
+        native/target/generic/target_generic_file.h,
+        native/target/generic/target_generic_math_float.h,
+        native/target/generic/target_generic_math_int.h,
+        native/target/generic/target_generic_misc.h,
+        native/target/generic/target_generic_network.h:
+	Small fixes for target native layer
+
+	* native/target/generic/target_generic_io.h:
+	Target native layer I/O functions
+
 2003-07-03  Torsten Rupp  <rupp@lisa.aicas.com>
 
         * native/jni/java-nio/java_nio_FileChannelImpl.c:
