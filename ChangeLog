@@ -1,3 +1,8 @@
+2004-03-28  Etienne M. Gagnon <gagnon.etienne_m@uqam.ca>
+
+	* doc/vmintegration.texinfo, doc/www.gnu.org/stories.wml: Update
+	SableVM related descriptions.
+
 2004-03-28  Grzegorz B. Prokopski <gadek@debian.org>
 
         * Merged vm/reference implementation of these reflection elements,

@@ -127,8 +127,12 @@ mailing list archives.
 </JVM>
 
 <JVM url="http://www.sablevm.org/" name="SableVM">
-This VM provides a repackaged version of GNU Classpath that aims to
-be the easiest to install and use.
+SableVM is a robust, extremely portable, efficient, and
+specifications-compliant Java Virtual Machine that aims to be easy to
+maintain and to extend. It features a state-of-the-art, efficient
+interpreter engine. Its source code is very accessible and easy to
+understand, and has many robustness features that have been the object
+of careful design.
 </JVM>
 
 </table>
@@ -199,14 +203,20 @@ analyze, and change the code for one's purposes.</p>
 </entry>
 
 <entry name="SableVM">
-<createlink url="http://www.sablevm.org/" name="SableVM"> is a portable
-bytecode interpreter written in C, and implementing the Java virtual machine
-specification, second edition.  Its goals are to be reasonably small, fast,
-and efficient, as well as providing a well-designed and robust platform for
-conducting research.
+<createlink url="http://www.sablevm.org/" name="SableVM"> SableVM is a
+highly portable and efficient Java virtual machine, using
+state-of-the-art interpratation techniques. Its goals are to be
+reasonably small, fast, and compliant with the various specifications
+(JVM specification, JNI, invocation interface, etc.).
 
-<p>
-The initial development of SableVM was done as part of the Ph.D. research project of Etienne Gagnon. Continuing development of SableVM project involves the <createlink name="Sable Research Group" url="http://www.sable.mcgill.ca/"> of McGill University, a new research group of the <createlink name="computer science department of UQAM" url="http://www.info.uqam.ca/"> , and other generous <createlink name="Free software contributors" url="http://sourceforge.net/project/memberlist.php?group_id=5523">.
+<p> The initial development of SableVM was done as part of the
+Ph.D. research project of <createlink name="Etienne Gagnon"
+url="http://www.info.uqam.ca/~egagnon">. Continuing development of
+SableVM project involves the <createlink name="Sable Research Group"
+url="http://www.sable.mcgill.ca/"> (McGill University and Universite
+du Quebec a Montreal), and other generous <createlink name="Free
+software contributors"
+url="http://devel.sablevm.org/svn/repository/sablevm/branches/staging/AUTHORS">.
 
 <p>[<createlink name="SableVM Documents" url="http://www.sablevm.org/docs.html">]
 <br>[<createlink name="Sable Publications (Papers)" url="http://www.sable.mcgill.ca/publications/papers/">]
