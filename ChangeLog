@@ -1,5 +1,7 @@
 2001-08-31  Tom Tromey  <tromey@redhat.com>
 
+	* java/util/zip/ZipException.java: Re-merged with libgcj.
+
 	* java/util/zip/Checksum.java: Re-merged with libgcj.
 	* java/util/zip/DataFormatException.java: Likewise.
 
