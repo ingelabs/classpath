@@ -1,5 +1,10 @@
 2003-06-20  Sascha Brawer  <brawer@dandelis.ch>
 
+	* AUTHORS (Sascha Brawer): Changed e-mail address.
+	* ChangeLog.usermap (brawer): Added myself.
+
+2003-06-20  Sascha Brawer  <brawer@dandelis.ch>
+
 	* javax/swing/border/LineBorder.java (getLineColor): New method.
 	Thanks to Michael Koch for having noticed the omission.
 	
