@@ -1,5 +1,20 @@
 2005-03-03  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/lang/InheritableThreadLocal.java
+	(threadMap): Removed.
+	(InheritableThreadLocal): Removed code.
+	(newChildThread): Changed to use locals map in Thread.
+	* java/lang/Thread.java
+	(locals): New field.
+	(die): Clear locals field.
+	(getThreadLocals): New method.
+	* java/lang/ThreadLocal.java
+	(value): Removed.
+	(valueMap): Removed.
+	(get,set): Changed to use locals map in Thread.
+
+2005-03-03  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/io/FileInputStream.java (FileInputStream(File)),
 	java/io/FileOutputStream.java (FileOutputStream(File)):
 	Removed unnecessary File.isDirectory() check.
