@@ -58,26 +58,25 @@ import java.io.OutputStreamWriter;
  * and put it in the CLASSPATH.  (The character
  * <code>\</code><code>u00e4</code> is the german &auml;)
  *
- * <pre>
- * s1=3
- * s2=MeineDisk
- * s3=3. M\<code></code>u00e4rz 96
- * s4=Die Diskette ''{1}'' enth\<code></code>u00e4lt {0} in {2}.
- * s5=0
- * s6=keine Dateien
- * s7=1
- * s8=eine Datei
- * s9=2
- * s10={0,number} Dateien
- * s11=Das Formatieren schlug fehl mit folgender Exception: {0}
- * s12=FEHLER
- * s13=Ergebnis
- * s14=Dialog
- * s15=Auswahlkriterium
- * s16=1,3
- * </pre>
+ * 
+<pre>s1=3
+s2=MeineDisk
+s3=3. M\<code></code>u00e4rz 96
+s4=Die Diskette ''{1}'' enth\<code></code>u00e4lt {0} in {2}.
+s5=0
+s6=keine Dateien
+s7=1
+s8=eine Datei
+s9=2
+s10={0,number} Dateien
+s11=Das Formatieren schlug fehl mit folgender Exception: {0}
+s12=FEHLER
+s13=Ergebnis
+s14=Dialog
+s15=Auswahlkriterium
+s16=1,3</pre>
  *
- * Although this is a sub class of a hash table, you should never
+ * <p>Although this is a sub class of a hash table, you should never
  * insert anything other than strings to this property, or several
  * methods, that need string keys and values, will fail.  To ensure
  * this, you should use the <code>get/setProperty</code> method instead
@@ -163,17 +162,16 @@ public class Properties extends Hashtable
    * <code>\\u</code><em>xxxx</em> notation are detected, and
    * converted to the corresponding single character. <br>
    *
-   * <pre>
-   * # This is a comment
-   * key     = value
-   * k\:5      \ a string starting with space and ending with newline\n
-   * # This is a multiline specification; note that the value contains
-   * # no white space.
-   * weekdays: Sunday,Monday,Tuesday,Wednesday,\
-   *           Thursday,Friday,Saturday
-   * # The safest way to include a space at the end of a value:
-   * label   = Name:\\u0020
-   * </pre>
+   * 
+<pre># This is a comment
+key     = value
+k\:5      \ a string starting with space and ending with newline\n
+# This is a multiline specification; note that the value contains
+# no white space.
+weekdays: Sunday,Monday,Tuesday,Wednesday,\\
+          Thursday,Friday,Saturday
+# The safest way to include a space at the end of a value:
+label   = Name:\\u0020</pre>
    *
    * @param in the input stream
    * @throws IOException if an error occurred when reading the input
