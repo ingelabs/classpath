@@ -287,6 +287,23 @@ AC_ARG_ENABLE([load-library],
               [INIT_LOAD_LIBRARY="true"])
 AC_SUBST(INIT_LOAD_LIBRARY)
 
+
+dnl -----------------------------------------------------------
+dnl Should the VM explicitly run class initialization subfunctions for
+dnl java.lang.System?   (default is false -- the subfunctions will be run 
+dnl automatically by the class initializer)
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE([java-lang-system-explicit-initialization],
+              [AS_HELP_STRING(--enable-java-lang-system-explicit-initialization,will the VM explicitly invoke java.lang.System's static initialization methods [default=no])],
+              [case "${enableval}" in 
+                yes|true) JAVA_LANG_SYSTEM_EXPLICIT_INITIALIZATION="true" ;;
+                no|false) JAVA_LANG_SYSTEM_EXPLICIT_INITIALIZATION="false" ;;
+                *) AC_MSG_ERROR(bad value ${enableval} for --enable-java-lang-system-explicit-initialization) ;;
+              esac],
+              [JAVA_LANG_SYSTEM_EXPLICIT_INITIALIZATION="false"])
+AC_SUBST(JAVA_LANG_SYSTEM_EXPLICIT_INITIALIZATION)
+
+
 dnl -----------------------------------------------------------
 dnl avoiding automake complaints
 dnl -----------------------------------------------------------
