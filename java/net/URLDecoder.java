@@ -1,5 +1,5 @@
 /* URLDecoder.java -- Class to decode URL's from encoded form.
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998-2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -24,13 +24,14 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.net;
+
+import java.io.UnsupportedEncodingException;
 
 /**
   * This utility class contains one static method that converts a 
-  * string into a decoded string from a string encoded in 
-  * in x-www-form-urlencoded  format.  The x-www-form-urlencoded format 
+  * string encoded in the x-www-form-urlencoded format to the original
+  * text.  The x-www-form-urlencoded format 
   * replaces certain disallowed characters with
   * encoded equivalents.  All upper case and lower case letters in the
   * US alphabet remain as is, the space character (' ') is replaced with
@@ -38,42 +39,20 @@ package java.net;
   * where XX is the hexadecimal representation of that character.  Note
   * that since unicode characters are 16 bits, and this method encodes only
   * 8 bits of information, the lower 8 bits of the character are used.
-  * All encoded information is converted back to its original form.
   * <p>
   * This method is very useful for decoding strings sent to CGI scripts
   *
-  * @version 1.2
+  * Written using on-line Java Platform 1.2 API Specification.
+  * Status:  Believed complete and correct.
   *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @since 1.2
+  *
+  * @author Warren Levy <warrenl@cygnus.com>
+  * @author Aaron M. Renn (arenn@urbanophile.com) (documentation comments)
+  * @date April 22, 1999.
   */
 public class URLDecoder
 {
-
-/*************************************************************************/
-
-/*
- * Class Methods
- */
-
-/**
-  * Unhex-ify a number
-  */
-private static final int
-unhex(char c)
-{
-  c = Character.toUpperCase(c);
-  int i;
-
-  if ((c >= '0') && (c <= '9'))
-    i = c - '0';
-  else if ((c >= 'A') && (c <= 'F'))
-    i = 10 + (c - 'A');
-  else
-    i = 0;
-   
-  return(i);
-}
-
 /**
   * This method translates the passed in string into x-www-form-urlencoded
   * format and returns it.
@@ -82,73 +61,23 @@ unhex(char c)
   *
   * @return The converted String
   */
-public static String
-decode(String source) throws Exception
-{
-  StringBuffer result = new StringBuffer("");
+  public static String decode(String s) throws Exception
+  {
+    String str = s.replace('+', ' ');
+    String result = "";
+    int i;
+    int start = 0;
+    while ((i = str.indexOf('%', start)) >= 0)
+      {
+	result = result + str.substring(start, i) +
+		 (char) Integer.parseInt(str.substring(i + 1, i + 3), 16);
+	start = i + 3;
+      }
 
-  for (int i = 0; i < source.length(); i++)
-    {
-      // Get the low 8 bits of the next char
-      char c = source.charAt(i);
+    if (start < str.length())
+      result = result + str.substring(start);
 
-      // Handle regular characters
-      if ((c >= 'A') && (c <= 'Z'))
-        {
-          result.append(c);
-          continue;
-        }
-
-      if ((c >= 'a') && (c <= 'z'))
-        {
-          result.append(c);
-          continue;
-        }
-
-      // Handle spaces
-      if (c == '+')
-        {
-          result.append(' ');
-          continue;
-        }
-
-      // Handle everything else
-      if (c == '%')
-        {
-          if ((i + 2) > (source.length() - 1))
-            throw new Exception("Invalid encoded URL: " + source);
-
-          ++i;
-          char c1 = source.charAt(i);
-          ++i;
-          char c2 = source.charAt(i);
-
-          char r = (char)(unhex(c1)*16 + unhex(c2));
-          result.append(r);
-        }
-
-      // Still here
-      throw new Exception("Unexpected character in encoded URL");
-    }
-
-  return(result.toString());
-}
-
-/*************************************************************************/
-
-/*
- * Constructors
- */
-
-/**
-  * Private constructor that does nothing. Included to avoid a default
-  * public constructor being created by the compiler.
-  */
-private
-URLDecoder()
-{
-  ;
-}
-
+    return result;
+  }
 } // class URLDecoder
 
