@@ -71,7 +71,9 @@ endif
 ## endif
 endif
 
-data_DATA = glibj.zip
+#data_DATA = glibj.zip
+install-data-local :
+	unzip -d $(datadir) glibj.zip
 
 #default: all
 include .deps
