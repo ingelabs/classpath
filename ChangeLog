@@ -1,3 +1,8 @@
+2002-10-04  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/URI.java: New stub file, by request of Giannis Georgalis.
+	* java/net/Makefile.am: Added URI.java.
+
 2002-10-03  C. Scott Ananian <cananian@lesser-magoo.lcs.mit.edu>
 
 	* java/lang/Character.java (zeroBasedStringValue): Removed.
