@@ -57,6 +57,7 @@ import java.lang.reflect.Array;
  * sets that cause other quicksorts to degrade to quadratic performance.
  *
  * @author Original author unknown
+ * @author Bryce McKinlay
  * @author Eric Blake <ebb9@email.byu.edu>
  * @see Comparable
  * @see Comparator
@@ -2345,8 +2346,6 @@ public class Arrays
       }
   }
 
-
-// asList
   /**
    * Returns a list "view" of the specified array. This method is intended to
    * make it easy to use the Collections API with existing array-based APIs and

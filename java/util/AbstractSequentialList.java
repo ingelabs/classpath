@@ -60,6 +60,7 @@ package java.util;
  * Unfortunately, there is no way to enforce this in Java.
  *
  * @author Original author unknown
+ * @author Bryce McKinlay
  * @author Eric Blake <ebb9@email.byu.edu>
  * @see Collection
  * @see List

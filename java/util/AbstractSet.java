@@ -126,7 +126,7 @@ public abstract class AbstractSet extends AbstractCollection implements Set
     Iterator i;
     if (oldsize < count)
       {
-        for (i = iterator(), count = oldsize; count > 0; count--)
+	for (i = iterator(), count = oldsize; count > 0; count--)
           if (c.contains(i.next()))
             i.remove();
       }

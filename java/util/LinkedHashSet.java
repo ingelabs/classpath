@@ -1,5 +1,5 @@
 /* LinkedHashSet.java -- a set backed by a LinkedHashMap, for linked
-   list traversal
+   list traversal.
    Copyright (C) 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.

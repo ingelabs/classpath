@@ -66,6 +66,7 @@ import java.io.ObjectOutputStream;
  * non-deterministic behavior.
  *
  * @author Jon Zeppieri
+ * @author Bryce McKinlay
  * @author Eric Blake <ebb9@email.byu.edu>
  * @see Collection
  * @see Set

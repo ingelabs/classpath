@@ -52,6 +52,7 @@ package java.util;
  * efficient implementation.
  *
  * @author Original author unknown
+ * @author Bryce McKinlay
  * @author Eric Blake <ebb9@email.byu.edu>
  * @see Map
  * @see Collection

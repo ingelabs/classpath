@@ -69,6 +69,7 @@ import java.io.Serializable;
  * directly specify this subclass.
  *
  * @author Scott G. Miller
+ * @author Bryce McKinlay
  * @author Eric Blake <ebb9@email.byu.edu>
  * @see Collection
  * @see List

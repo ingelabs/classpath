@@ -71,6 +71,7 @@ import java.io.ObjectOutputStream;
  * non-deterministic behavior.
  *
  * @author Jon A. Zeppieri
+ * @author Bryce McKinlay
  * @author Eric Blake <ebb9@email.byu.edu>
  * @see Collection
  * @see List
@@ -463,7 +464,7 @@ public class ArrayList extends AbstractList
     // use of a negative index will cause an ArrayIndexOutOfBoundsException,
     // a subclass of the required exception, with no effort on our part.
     if (index > size)
-      throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+      throw new IndexOutOfBoundsException("Index: " + index + ", Size: "
                                           + size);
   }
 
@@ -479,7 +480,7 @@ public class ArrayList extends AbstractList
     // use of a negative index will cause an ArrayIndexOutOfBoundsException,
     // a subclass of the required exception, with no effort on our part.
     if (index >= size)
-      throw new IndexOutOfBoundsException("Index: " + index + ", Size:"
+      throw new IndexOutOfBoundsException("Index: " + index + ", Size: "
                                           + size);
   }
 
