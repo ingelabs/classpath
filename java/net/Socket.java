@@ -429,7 +429,7 @@ public class Socket
 
     try
       {
-        getImpl().connect(endpoint, timeout);
+        getImpl().connect (endpoint, timeout);
       }
     catch (IOException exception)
       {
@@ -1006,12 +1006,11 @@ public class Socket
       throw new SocketException("socket is closed");
     
     getImpl().close();
+    impl = null;
+    bound = false;
 
     if (getChannel() != null)
       getChannel().close();
-    
-    impl = null;
-    bound = false;
   }
 
   /**
