@@ -1,7 +1,7 @@
 lib_LTLIBRARIES = libgtkpeer.la
 
 libgtkpeer_la_SOURCES = \
-gdkgraphics.c       gtkdialogpeer.c      gtkscrollpanepeer.c \
+gdkgraphics.c	    gtkscrollpanepeer.c \
 gthread-jni.c       gtkevents.c          gtktextareapeer.c \
 gtkbuttonpeer.c     gtkfiledialogpeer.c  gtktextcomponentpeer.c \
 gtkcanvaspeer.c     gtkimagepainter.c    gtktextfieldpeer.c \
