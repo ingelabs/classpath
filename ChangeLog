@@ -1,3 +1,10 @@
+2003-06-24  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/plaf/ComponentUI.java: Re-written from scratch.
+	* javax/swing/plaf/doc-files/ComponentUI-1.png: Dotted line and
+	new wording for comments.
+	* javax/swing/plaf/doc-files/ComponentUI-1.dia: Likewise.
+
 2003-06-24  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/LineNumberReader.java:
