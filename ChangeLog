@@ -1,5 +1,16 @@
 2003-03-14  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/SelectionKeyImpl.java:
+	Merged with libgcj.
+	* gnu/java/nio/SelectorProviderImpl.java:
+	Merged with libgcj.
+	* gnu/java/nio/ServerSocketChannelImpl.java:
+	Partly merged with libgcj.
+	* gnu/java/nio/SocketChannelImpl.java:
+	Merged with libgcj.
+
+2003-03-14  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/CharBufferImpl.java:
 	Merged with libgcj.
 	* gnu/java/nio/DatagramChannelImpl.java:
