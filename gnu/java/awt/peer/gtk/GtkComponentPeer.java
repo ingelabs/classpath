@@ -108,14 +108,12 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public ColorModel getColorModel () 
   {
-    System.out.println("componentpeer: getcolormodel");
-    return null;
+    return ColorModel.getRGBdefault ();
   }
 
   public FontMetrics getFontMetrics (Font f)
   {
-    System.out.println("componentpeer: getfontmetrics");
-    return null;
+    return new GdkFontMetrics (font);
   }
 
   public Graphics getGraphics ()
@@ -298,11 +296,6 @@ public class GtkComponentPeer extends GtkGenericPeer
     q.postEvent (new ItemEvent ((ItemSelectable)awtComponent, 
 				ItemEvent.ITEM_STATE_CHANGED,
 				item, stateChange));
-  }
-
-  String getType ()
-  {
-    return null;
   }
 
   public void getArgs (Component component, GtkArgList args)
