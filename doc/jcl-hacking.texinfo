@@ -318,19 +318,19 @@ argument is passed which is null, per a Sun specification, do not write
 code like:
 
 @example
-int strlen(String foo) throws NullPointerException {
+int strlen(String foo) throws NullPointerException @{
   if (foo == null)
     throw new NullPointerException("foo is null");
   return foo.length();
-}
+@}
 @end example
 
 Instead, the code should be written as:
 
 @example
-int strlen(String foo) throws NullPointerException {
+int strlen(String foo) throws NullPointerException @{
   return foo.length();
-}
+@}
 @end example
 
 Explicitly comparing foo to null is unnecessary, as the virtual machine
