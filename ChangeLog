@@ -1,5 +1,9 @@
 2003-12-26  Michael Koch  <konqueror@gmx.de>
 
+	* java/util/TimeZone.java (getOffset): New method.
+
+2003-12-26  Michael Koch  <konqueror@gmx.de>
+
 	* javax/naming/event/EventDirContext.java: Jalopied.
 	(addNamingListener): Fixed typo in method name.
 
