@@ -202,188 +202,34 @@ public final class Class implements Serializable
   }
   
   /**
-   * Get a new instance of this class by calling the no-argument constructor.
-   * The class is initialized if it has not been already. A security check
-   * may be performed, with <code>checkMemberAccess(this, Member.PUBLIC)</code>
-   * as well as <code>checkPackageAccess</code> both having to succeed.
+   * Get all the public member classes and interfaces declared in this
+   * class or inherited from superclasses. This returns an array of length
+   * 0 if there are no member classes, including for primitive types. A
+   * security check may be performed, with
+   * <code>checkMemberAccess(this, Member.PUBLIC)</code> as well as
+   * <code>checkPackageAccess</code> both having to succeed.
    *
-   * @return a new instance of this class
-   * @throws InstantiationException if there is not a no-arg constructor
-   *         for this class, including interfaces, abstract classes, arrays,
-   *         primitive types, and void; or if an exception occurred during
-   *         the constructor
-   * @throws IllegalAccessException if you are not allowed to access the
-   *         no-arg constructor because of scoping reasons
+   * @return all public member classes in this class
    * @throws SecurityException if the security check fails
-   * @throws ExceptionInInitializerError if class initialization caused by
-   *         this call fails with an exception
+   * @since 1.1
    */
-  public Object newInstance()
-    throws InstantiationException, IllegalAccessException
+  public Class[] getClasses()
   {
     memberAccessCheck(Member.PUBLIC);
-    Constructor constructor;
-    synchronized(this)
-      {
-	constructor = this.constructor;
-      }
-    if (constructor == null)
-      {
-	Constructor[] constructors = getDeclaredConstructors(false);
-	for (int i = 0; i < constructors.length; i++)
-	  {
-	    if (constructors[i].getParameterTypes().length == 0)
-	      {
-		constructor = constructors[i];
-		break;
-	      }
-	  }
-	if (constructor == null)
-	  throw new InstantiationException(getName());
-	if (!Modifier.isPublic(constructor.getModifiers()))
-	  {
-	    final Constructor finalConstructor = constructor;
-	    AccessController.doPrivileged(new PrivilegedAction() {
-		public Object run() {
-		  finalConstructor.setAccessible(true);
-		  return null;
-		}
-	      });
-	  }
-	synchronized(this)
-	  {
-	    if (this.constructor == null)
-	      this.constructor = constructor;
-	  }	    
-      }
-    int modifiers = constructor.getModifiers();
-    if (!Modifier.isPublic(modifiers))
-      {
-	Class caller = VMSecurityManager.getClassContext()[1];
-	if (caller != this &&
-	    (Modifier.isPrivate(modifiers)
-	     || getClassLoader() != caller.getClassLoader()
-	     || !getPackagePortion(getName())
-	     .equals(getPackagePortion(caller.getName()))))
-	  throw new IllegalAccessException(getName()
-					   + " has an inaccessible constructor");
-      }
-    try
-      {
-        return constructor.newInstance(null);
-      }
-    catch (InvocationTargetException e)
-      {
-	VMClass.throwException(e.getTargetException());
-	throw (InternalError) new InternalError
-	  ("VMClass.throwException returned").initCause(e);
-      }
+    return internalGetClasses();
   }
 
   /**
-   * Discover whether an Object is an instance of this Class.  Think of it
-   * as almost like <code>o instanceof (this class)</code>.
-   *
-   * @param o the Object to check
-   * @return whether o is an instance of this class
-   * @since 1.1
+   * Like <code>getClasses()</code> but without the security checks.
    */
-  public boolean isInstance(Object o)
+  private Class[] internalGetClasses()
   {
-    return vmClass.isInstance (o);
-  }
-  
-  /**
-   * Discover whether an instance of the Class parameter would be an
-   * instance of this Class as well.  Think of doing
-   * <code>isInstance(c.newInstance())</code> or even
-   * <code>c.newInstance() instanceof (this class)</code>. While this
-   * checks widening conversions for objects, it must be exact for primitive
-   * types.
-   *
-   * @param c the class to check
-   * @return whether an instance of c would be an instance of this class
-   *         as well
-   * @throws NullPointerException if c is null
-   * @since 1.1
-   */
-  public boolean isAssignableFrom(Class c)
-  {
-    return vmClass.isAssignableFrom (c);
-  }
-
-  /**
-   * Check whether this class is an interface or not.  Array types are not
-   * interfaces.
-   *
-   * @return whether this class is an interface or not
-   */
-  public boolean isInterface()
-  {
-    return vmClass.isInterface ();
-  }
-
-  /**
-   * Return whether this class is an array type.
-   *
-   * @return whether this class is an array type
-   * @since 1.1
-   */
-  public boolean isArray()
-  {
-    int result = -1;
-    if ((result = vmClass.isArray ()) < 0)
-      return getName().charAt(0) == '[';
-
-    return result == 1;
-  }
-
-  /**
-   * Return whether this class is a primitive type.  A primitive type class
-   * is a class representing a kind of "placeholder" for the various
-   * primitive types, or void.  You can access the various primitive type
-   * classes through java.lang.Boolean.TYPE, java.lang.Integer.TYPE, etc.,
-   * or through boolean.class, int.class, etc.
-   *
-   * @return whether this class is a primitive type
-   * @see Boolean#TYPE
-   * @see Byte#TYPE
-   * @see Character#TYPE
-   * @see Short#TYPE
-   * @see Integer#TYPE
-   * @see Long#TYPE
-   * @see Float#TYPE
-   * @see Double#TYPE
-   * @see Void#TYPE
-   * @since 1.1
-   */
-  public boolean isPrimitive()
-  {
-    return vmClass.isPrimitive ();
-  }
-
-  /**
-   * Get the name of this class, separated by dots for package separators.
-   * Primitive types and arrays are encoded as:
-   * <pre>
-   * boolean             Z
-   * byte                B
-   * char                C
-   * short               S
-   * int                 I
-   * long                J
-   * float               F
-   * double              D
-   * void                V
-   * array type          [<em>element type</em>
-   * class or interface, alone: &lt;dotted name&gt;
-   * class or interface, as element type: L&lt;dotted name&gt;;
-   *
-   * @return the name of this class
-   */
-  public String getName()
-  { 
-    return vmClass.getName ();
+    ArrayList list = new ArrayList();
+    list.addAll(Arrays.asList(getDeclaredClasses(true)));
+    Class superClass = getSuperclass();
+    if (superClass != null)
+      list.addAll(Arrays.asList(superClass.internalGetClasses()));
+    return (Class[])list.toArray(new Class[list.size()]);
   }
 
   /**
@@ -422,48 +268,6 @@ public final class Class implements Serializable
   }
   
   /**
-   * Get the direct superclass of this class.  If this is an interface,
-   * Object, a primitive type, or void, it will return null. If this is an
-   * array type, it will return Object.
-   *
-   * @return the direct superclass of this class
-   */
-  public Class getSuperclass()
-  {
-    return vmClass.getSuperclass ();
-  }
-
-  /**
-   * Returns the <code>Package</code> in which this class is defined
-   * Returns null when this information is not available from the
-   * classloader of this class or when the classloader of this class
-   * is null.
-   *
-   * @return the package for this class, if it is available
-   * @since 1.2
-   */
-  public Package getPackage()
-  {
-    ClassLoader cl = getClassLoader();
-    if (cl != null)
-      return cl.getPackage(getPackagePortion(getName()));
-    return null;
-  }
-
-  /**
-   * Get the interfaces this class <EM>directly</EM> implements, in the
-   * order that they were declared. This returns an empty array, not null,
-   * for Object, primitives, void, and classes or interfaces with no direct
-   * superinterface. Array types return Cloneable and Serializable.
-   *
-   * @return the interfaces this class directly implements
-   */
-  public Class[] getInterfaces()
-  {
-    return vmClass.getInterfaces ();
-  }
-
-  /**
    * If this is an array, get the Class representing the type of array.
    * Examples: "[[Ljava.lang.String;" would return "[Ljava.lang.String;", and
    * calling getComponentType on that would give "java.lang.String".  If
@@ -479,60 +283,230 @@ public final class Class implements Serializable
   }
 
   /**
-   * Get the modifiers of this class.  These can be decoded using Modifier,
-   * and is limited to one of public, protected, or private, and any of
-   * final, static, abstract, or interface. An array class has the same
-   * public, protected, or private modifier as its component type, and is
-   * marked final but not an interface. Primitive types and void are marked
-   * public and final, but not an interface.
+   * Get a public constructor declared in this class. If the constructor takes
+   * no argument, an array of zero elements and null are equivalent for the
+   * types argument. A security check may be performed, with
+   * <code>checkMemberAccess(this, Member.PUBLIC)</code> as well as
+   * <code>checkPackageAccess</code> both having to succeed.
    *
-   * @return the modifiers of this class
-   * @see Modifer
+   * @param types the type of each parameter
+   * @return the constructor
+   * @throws NoSuchMethodException if the constructor does not exist
+   * @throws SecurityException if the security check fails
+   * @see #getConstructors()
    * @since 1.1
    */
-  public int getModifiers()
+  public Constructor getConstructor(Class[] args) throws NoSuchMethodException
   {
-    return vmClass.getModifiers ();
-  }
-
-  /**
-   * Get the signers of this class. This returns null if there are no signers,
-   * such as for primitive types or void.
-   *
-   * @return the signers of this class
-   * @since 1.1
-   */
-  public Object[] getSigners()
-  {
-    return signers == null ? null : (Object[]) signers.clone ();
-  }
-
-  /**
-   * Set the signers of this class.
-   *
-   * @param signers the signers of this class
-   */
-  void setSigners(Object[] signers)
-  {
-    this.signers = signers;
-  }
-
-  /**
-   * Perform security checks common to all of the methods that
-   * get members of this Class.
-   */
-  private void memberAccessCheck(int which)
-  {
-    SecurityManager sm = System.getSecurityManager();
-    if (sm != null)
+    memberAccessCheck(Member.PUBLIC);
+    Constructor[] constructors = getDeclaredConstructors(true);
+    for (int i = 0; i < constructors.length; i++)
       {
-	sm.checkMemberAccess(this, which);
-	Package pkg = getPackage();
-	if (pkg != null)
-	  sm.checkPackageAccess(pkg.getName());
+	Constructor constructor = constructors[i];
+	if (matchParameters(args, constructor.getParameterTypes()))
+	  return constructor;
       }
+    throw new NoSuchMethodException();
   }
 
+  /**
+   * Get all the public constructors of this class. This returns an array of
+   * length 0 if there are no constructors, including for primitive types,
+   * arrays, and interfaces. It does, however, include the default
+   * constructor if one was supplied by the compiler. A security check may
+   * be performed, with <code>checkMemberAccess(this, Member.PUBLIC)</code>
+   * as well as <code>checkPackageAccess</code> both having to succeed.
+   *
+   * @return all public constructors in this class
+   * @throws SecurityException if the security check fails
+   * @since 1.1
+   */
+  public Constructor[] getConstructors()
+  {
+    memberAccessCheck(Member.PUBLIC);
+    return getDeclaredConstructors(true);
+  }
+
+  /**
+   * Get a constructor declared in this class. If the constructor takes no
+   * argument, an array of zero elements and null are equivalent for the
+   * types argument. A security check may be performed, with
+   * <code>checkMemberAccess(this, Member.DECLARED)</code> as well as
+   * <code>checkPackageAccess</code> both having to succeed.
+   *
+   * @param types the type of each parameter
+   * @return the constructor
+   * @throws NoSuchMethodException if the constructor does not exist
+   * @throws SecurityException if the security check fails
+   * @see #getDeclaredConstructors()
+   * @since 1.1
+   */
+  public Constructor getDeclaredConstructor(Class[] args)
+    throws NoSuchMethodException
+  {
+    memberAccessCheck(Member.DECLARED);
+    Constructor[] constructors = getDeclaredConstructors(false);
+    for (int i = 0; i < constructors.length; i++)
+      {
+	Constructor constructor = constructors[i];
+	if (matchParameters(args, constructor.getParameterTypes()))
+	  return constructor;
+      }
+    throw new NoSuchMethodException();
+  }
+  
+  /**
+   * Get all the declared member classes and interfaces in this class, but
+   * not those inherited from superclasses. This returns an array of length
+   * 0 if there are no member classes, including for primitive types. A
+   * security check may be performed, with
+   * <code>checkMemberAccess(this, Member.DECLARED)</code> as well as
+   * <code>checkPackageAccess</code> both having to succeed.
+   *
+   * @return all declared member classes in this class
+   * @throws SecurityException if the security check fails
+   * @since 1.1
+   */
+  public Class[] getDeclaredClasses()
+  {
+    memberAccessCheck(Member.DECLARED);
+    return getDeclaredClasses(false);
+  }
+
+  Class[] getDeclaredClasses (boolean publicOnly)
+  {
+    return vmClass.getDeclaredClasses (publicOnly);
+  }
+
+  /**
+   * Get all the declared constructors of this class. This returns an array of
+   * length 0 if there are no constructors, including for primitive types,
+   * arrays, and interfaces. It does, however, include the default
+   * constructor if one was supplied by the compiler. A security check may
+   * be performed, with <code>checkMemberAccess(this, Member.DECLARED)</code>
+   * as well as <code>checkPackageAccess</code> both having to succeed.
+   *
+   * @return all constructors in this class
+   * @throws SecurityException if the security check fails
+   * @since 1.1
+   */
+  public Constructor[] getDeclaredConstructors()
+  {
+    memberAccessCheck(Member.DECLARED);
+    return getDeclaredConstructors(false);
+  }
+
+  Constructor[] getDeclaredConstructors (boolean publicOnly)
+  {
+    return vmClass.getDeclaredConstructors (publicOnly);
+  }
+  
+  /**
+   * Get a field declared in this class, where name is its simple name. The
+   * implicit length field of arrays is not available. A security check may
+   * be performed, with <code>checkMemberAccess(this, Member.DECLARED)</code>
+   * as well as <code>checkPackageAccess</code> both having to succeed.
+   *
+   * @param name the name of the field
+   * @return the field
+   * @throws NoSuchFieldException if the field does not exist
+   * @throws SecurityException if the security check fails
+   * @see #getDeclaredFields()
+   * @since 1.1
+   */
+  public Field getDeclaredField(String name) throws NoSuchFieldException
+  {
+    memberAccessCheck(Member.DECLARED);
+    Field[] fields = getDeclaredFields(false);
+    for (int i = 0; i < fields.length; i++)
+      {
+	if (fields[i].getName().equals(name))
+	  return fields[i];
+      }
+    throw new NoSuchFieldException();
+  }
+ 
+  /**
+   * Get all the declared fields in this class, but not those inherited from
+   * superclasses. This returns an array of length 0 if there are no fields,
+   * including for primitive types. This does not return the implicit length
+   * field of arrays. A security check may be performed, with
+   * <code>checkMemberAccess(this, Member.DECLARED)</code> as well as
+   * <code>checkPackageAccess</code> both having to succeed.
+   *
+   * @return all declared fields in this class
+   * @throws SecurityException if the security check fails
+   * @since 1.1
+   */
+  public Field[] getDeclaredFields()
+  {
+    memberAccessCheck(Member.DECLARED);
+    return getDeclaredFields(false);
+  }
+
+  Field[] getDeclaredFields (boolean publicOnly)
+  {
+    return vmClass.getDeclaredFields (publicOnly);
+  }
+
+  /**
+   * Get a method declared in this class, where name is its simple name. The
+   * implicit methods of Object are not available from arrays or interfaces.
+   * Constructors (named "<init>" in the class file) and class initializers
+   * (name "<clinit>") are not available.  The Virtual Machine allows
+   * multiple methods with the same signature but differing return types; in
+   * such a case the most specific return types are favored, then the final
+   * choice is arbitrary. If the method takes no argument, an array of zero
+   * elements and null are equivalent for the types argument. A security
+   * check may be performed, with
+   * <code>checkMemberAccess(this, Member.DECLARED)</code> as well as
+   * <code>checkPackageAccess</code> both having to succeed.
+   *
+   * @param name the name of the method
+   * @param types the type of each parameter
+   * @return the method
+   * @throws NoSuchMethodException if the method does not exist
+   * @throws SecurityException if the security check fails
+   * @see #getDeclaredMethods()
+   * @since 1.1
+   */
+  public Method getDeclaredMethod(String name, Class[] args)
+    throws NoSuchMethodException
+  {
+    memberAccessCheck(Member.DECLARED);
+    Method match = matchMethod(getDeclaredMethods(false), name, args);
+    if (match != null)
+      return match;
+    throw new NoSuchMethodException();
+  }
+  
+  /**
+   * Get all the declared methods in this class, but not those inherited from
+   * superclasses. This returns an array of length 0 if there are no methods,
+   * including for primitive types. This does include the implicit methods of
+   * arrays and interfaces which mirror methods of Object, nor does it
+   * include constructors or the class initialization methods. The Virtual
+   * Machine allows multiple methods with the same signature but differing
+   * return types; all such methods are in the returned array. A security
+   * check may be performed, with
+   * <code>checkMemberAccess(this, Member.DECLARED)</code> as well as
+   * <code>checkPackageAccess</code> both having to succeed.
+   *
+   * @return all declared methods in this class
+   * @throws SecurityException if the security check fails
+   * @since 1.1
+   */
+  public Method[] getDeclaredMethods()
+  {
+    memberAccessCheck(Member.DECLARED);
+    return getDeclaredMethods(false);
+  }
+
+  Method[] getDeclaredMethods (boolean publicOnly)
+  {
+    return vmClass.getDeclaredMethods (publicOnly);
+  }
+  
   /**
    * If this is a nested or inner class, return the class that declared it.
    * If not, return null.
@@ -546,34 +520,27 @@ public final class Class implements Serializable
   }
 
   /**
-   * Get all the public member classes and interfaces declared in this
-   * class or inherited from superclasses. This returns an array of length
-   * 0 if there are no member classes, including for primitive types. A
-   * security check may be performed, with
+   * Get a public field declared or inherited in this class, where name is
+   * its simple name. If the class contains multiple accessible fields by
+   * that name, an arbitrary one is returned. The implicit length field of
+   * arrays is not available. A security check may be performed, with
    * <code>checkMemberAccess(this, Member.PUBLIC)</code> as well as
    * <code>checkPackageAccess</code> both having to succeed.
    *
-   * @return all public member classes in this class
+   * @param name the name of the field
+   * @return the field
+   * @throws NoSuchFieldException if the field does not exist
    * @throws SecurityException if the security check fails
+   * @see #getFields()
    * @since 1.1
    */
-  public Class[] getClasses()
+  public Field getField(String name) throws NoSuchFieldException
   {
     memberAccessCheck(Member.PUBLIC);
-    return internalGetClasses();
-  }
-
-  /**
-   * Like <code>getClasses()</code> but without the security checks.
-   */
-  private Class[] internalGetClasses()
-  {
-    ArrayList list = new ArrayList();
-    list.addAll(Arrays.asList(getDeclaredClasses(true)));
-    Class superClass = getSuperclass();
-    if (superClass != null)
-      list.addAll(Arrays.asList(superClass.internalGetClasses()));
-    return (Class[])list.toArray(new Class[list.size()]);
+    Field field = internalGetField(name);
+    if(field != null)
+      return field;
+    throw new NoSuchFieldException();
   }
 
   /**
@@ -611,62 +578,33 @@ public final class Class implements Serializable
   }
 
   /**
-   * Get all the public methods declared in this class or inherited from
-   * superclasses. This returns an array of length 0 if there are no methods,
-   * including for primitive types. This does not include the implicit
-   * methods of interfaces which mirror methods of Object, nor does it
-   * include constructors or the class initialization methods. The Virtual
-   * Machine allows multiple methods with the same signature but differing
-   * return types; all such methods are in the returned array. A security
-   * check may be performed, with
-   * <code>checkMemberAccess(this, Member.PUBLIC)</code> as well as
-   * <code>checkPackageAccess</code> both having to succeed.
+   * Returns the <code>Package</code> in which this class is defined
+   * Returns null when this information is not available from the
+   * classloader of this class or when the classloader of this class
+   * is null.
    *
-   * @return all public methods in this class
-   * @throws SecurityException if the security check fails
-   * @since 1.1
+   * @return the package for this class, if it is available
+   * @since 1.2
    */
-  public Method[] getMethods()
+  public Package getPackage()
   {
-    memberAccessCheck(Member.PUBLIC);
-    // NOTE the API docs claim that no methods are returned for arrays,
-    // but Sun's implementation *does* return the public methods of Object
-    // (as would be expected), so we follow their implementation instead
-    // of their documentation.
-    return internalGetMethods();
+    ClassLoader cl = getClassLoader();
+    if (cl != null)
+      return cl.getPackage(getPackagePortion(getName()));
+    return null;
   }
 
   /**
-   * Like <code>getMethods()</code> but without the security checks.
+   * Get the interfaces this class <EM>directly</EM> implements, in the
+   * order that they were declared. This returns an empty array, not null,
+   * for Object, primitives, void, and classes or interfaces with no direct
+   * superinterface. Array types return Cloneable and Serializable.
+   *
+   * @return the interfaces this class directly implements
    */
-  private Method[] internalGetMethods()
+  public Class[] getInterfaces()
   {
-    HashMap map = new HashMap();
-    Method[] methods;
-    Class[] interfaces = getInterfaces();
-    for(int i = 0; i < interfaces.length; i++)
-      {
-	methods = interfaces[i].internalGetMethods();
-	for(int j = 0; j < methods.length; j++)
-	  {
-	    map.put(new MethodKey(methods[j]), methods[j]);
-	  }
-      }
-    Class superClass = getSuperclass();
-    if(superClass != null)
-      {
-	methods = superClass.internalGetMethods();
-	for(int i = 0; i < methods.length; i++)
-	  {
-	    map.put(new MethodKey(methods[i]), methods[i]);
-	  }
-      }
-    methods = getDeclaredMethods(true);
-    for(int i = 0; i < methods.length; i++)
-      {
-	map.put(new MethodKey(methods[i]), methods[i]);
-      }
-    return (Method[])map.values().toArray(new Method[map.size()]);
+    return vmClass.getInterfaces ();
   }
 
   private static final class MethodKey
@@ -714,74 +652,6 @@ public final class Class implements Serializable
     }
   }
   
-  /**
-   * Get all the public constructors of this class. This returns an array of
-   * length 0 if there are no constructors, including for primitive types,
-   * arrays, and interfaces. It does, however, include the default
-   * constructor if one was supplied by the compiler. A security check may
-   * be performed, with <code>checkMemberAccess(this, Member.PUBLIC)</code>
-   * as well as <code>checkPackageAccess</code> both having to succeed.
-   *
-   * @return all public constructors in this class
-   * @throws SecurityException if the security check fails
-   * @since 1.1
-   */
-  public Constructor[] getConstructors()
-  {
-    memberAccessCheck(Member.PUBLIC);
-    return getDeclaredConstructors(true);
-  }
-
-  /**
-   * Get a public field declared or inherited in this class, where name is
-   * its simple name. If the class contains multiple accessible fields by
-   * that name, an arbitrary one is returned. The implicit length field of
-   * arrays is not available. A security check may be performed, with
-   * <code>checkMemberAccess(this, Member.PUBLIC)</code> as well as
-   * <code>checkPackageAccess</code> both having to succeed.
-   *
-   * @param name the name of the field
-   * @return the field
-   * @throws NoSuchFieldException if the field does not exist
-   * @throws SecurityException if the security check fails
-   * @see #getFields()
-   * @since 1.1
-   */
-  public Field getField(String name) throws NoSuchFieldException
-  {
-    memberAccessCheck(Member.PUBLIC);
-    Field field = internalGetField(name);
-    if(field != null)
-      return field;
-    throw new NoSuchFieldException();
-  }
-
-  /**
-   * Like <code>getField(String)</code> but without the security checks and returns null
-   * instead of throwing NoSuchFieldException.
-   */
-  private Field internalGetField(String name)
-  {
-    Field[] fields = getDeclaredFields(true);
-    for (int i = 0; i < fields.length; i++)
-      {
-	Field field = fields[i];
-	if (field.getName().equals(name))
-	  return field;
-      }
-    Class[] interfaces = getInterfaces();
-    for (int i = 0; i < interfaces.length; i++)
-      {
-	Field field = interfaces[i].internalGetField(name);
-	if(field != null)
-	  return field;
-      }
-    Class superClass = getSuperclass();
-    if (superClass != null)
-      return superClass.internalGetField(name);
-    return null;
-  }
-
   /**
    * Get a public method declared or inherited in this class, where name is
    * its simple name. The implicit methods of Object are not available from
@@ -891,212 +761,134 @@ public final class Class implements Serializable
   }
   
   /**
-   * Get a public constructor declared in this class. If the constructor takes
-   * no argument, an array of zero elements and null are equivalent for the
-   * types argument. A security check may be performed, with
-   * <code>checkMemberAccess(this, Member.PUBLIC)</code> as well as
-   * <code>checkPackageAccess</code> both having to succeed.
-   *
-   * @param types the type of each parameter
-   * @return the constructor
-   * @throws NoSuchMethodException if the constructor does not exist
-   * @throws SecurityException if the security check fails
-   * @see #getConstructors()
-   * @since 1.1
-   */
-  public Constructor getConstructor(Class[] args) throws NoSuchMethodException
-  {
-    memberAccessCheck(Member.PUBLIC);
-    Constructor[] constructors = getDeclaredConstructors(true);
-    for (int i = 0; i < constructors.length; i++)
-      {
-	Constructor constructor = constructors[i];
-	if (matchParameters(args, constructor.getParameterTypes()))
-	  return constructor;
-      }
-    throw new NoSuchMethodException();
-  }
-
-  /**
-   * Get all the declared member classes and interfaces in this class, but
-   * not those inherited from superclasses. This returns an array of length
-   * 0 if there are no member classes, including for primitive types. A
-   * security check may be performed, with
-   * <code>checkMemberAccess(this, Member.DECLARED)</code> as well as
-   * <code>checkPackageAccess</code> both having to succeed.
-   *
-   * @return all declared member classes in this class
-   * @throws SecurityException if the security check fails
-   * @since 1.1
-   */
-  public Class[] getDeclaredClasses()
-  {
-    memberAccessCheck(Member.DECLARED);
-    return getDeclaredClasses(false);
-  }
-
-  Class[] getDeclaredClasses (boolean publicOnly)
-  {
-    return vmClass.getDeclaredClasses (publicOnly);
-  }
-
-  /**
-   * Get all the declared fields in this class, but not those inherited from
-   * superclasses. This returns an array of length 0 if there are no fields,
-   * including for primitive types. This does not return the implicit length
-   * field of arrays. A security check may be performed, with
-   * <code>checkMemberAccess(this, Member.DECLARED)</code> as well as
-   * <code>checkPackageAccess</code> both having to succeed.
-   *
-   * @return all declared fields in this class
-   * @throws SecurityException if the security check fails
-   * @since 1.1
-   */
-  public Field[] getDeclaredFields()
-  {
-    memberAccessCheck(Member.DECLARED);
-    return getDeclaredFields(false);
-  }
-
-  Field[] getDeclaredFields (boolean publicOnly)
-  {
-    return vmClass.getDeclaredFields (publicOnly);
-  }
-
-  /**
-   * Get all the declared methods in this class, but not those inherited from
+   * Get all the public methods declared in this class or inherited from
    * superclasses. This returns an array of length 0 if there are no methods,
-   * including for primitive types. This does include the implicit methods of
-   * arrays and interfaces which mirror methods of Object, nor does it
+   * including for primitive types. This does not include the implicit
+   * methods of interfaces which mirror methods of Object, nor does it
    * include constructors or the class initialization methods. The Virtual
    * Machine allows multiple methods with the same signature but differing
    * return types; all such methods are in the returned array. A security
    * check may be performed, with
-   * <code>checkMemberAccess(this, Member.DECLARED)</code> as well as
+   * <code>checkMemberAccess(this, Member.PUBLIC)</code> as well as
    * <code>checkPackageAccess</code> both having to succeed.
    *
-   * @return all declared methods in this class
+   * @return all public methods in this class
    * @throws SecurityException if the security check fails
    * @since 1.1
    */
-  public Method[] getDeclaredMethods()
+  public Method[] getMethods()
   {
-    memberAccessCheck(Member.DECLARED);
-    return getDeclaredMethods(false);
+    memberAccessCheck(Member.PUBLIC);
+    // NOTE the API docs claim that no methods are returned for arrays,
+    // but Sun's implementation *does* return the public methods of Object
+    // (as would be expected), so we follow their implementation instead
+    // of their documentation.
+    return internalGetMethods();
   }
 
-  Method[] getDeclaredMethods (boolean publicOnly)
-  {
-    return vmClass.getDeclaredMethods (publicOnly);
-  }
-  
   /**
-   * Get all the declared constructors of this class. This returns an array of
-   * length 0 if there are no constructors, including for primitive types,
-   * arrays, and interfaces. It does, however, include the default
-   * constructor if one was supplied by the compiler. A security check may
-   * be performed, with <code>checkMemberAccess(this, Member.DECLARED)</code>
-   * as well as <code>checkPackageAccess</code> both having to succeed.
-   *
-   * @return all constructors in this class
-   * @throws SecurityException if the security check fails
-   * @since 1.1
+   * Like <code>getMethods()</code> but without the security checks.
    */
-  public Constructor[] getDeclaredConstructors()
+  private Method[] internalGetMethods()
   {
-    memberAccessCheck(Member.DECLARED);
-    return getDeclaredConstructors(false);
+    HashMap map = new HashMap();
+    Method[] methods;
+    Class[] interfaces = getInterfaces();
+    for(int i = 0; i < interfaces.length; i++)
+      {
+	methods = interfaces[i].internalGetMethods();
+	for(int j = 0; j < methods.length; j++)
+	  {
+	    map.put(new MethodKey(methods[j]), methods[j]);
+	  }
+      }
+    Class superClass = getSuperclass();
+    if(superClass != null)
+      {
+	methods = superClass.internalGetMethods();
+	for(int i = 0; i < methods.length; i++)
+	  {
+	    map.put(new MethodKey(methods[i]), methods[i]);
+	  }
+      }
+    methods = getDeclaredMethods(true);
+    for(int i = 0; i < methods.length; i++)
+      {
+	map.put(new MethodKey(methods[i]), methods[i]);
+      }
+    return (Method[])map.values().toArray(new Method[map.size()]);
   }
 
-  Constructor[] getDeclaredConstructors (boolean publicOnly)
-  {
-    return vmClass.getDeclaredConstructors (publicOnly);
-  }
-  
   /**
-   * Get a field declared in this class, where name is its simple name. The
-   * implicit length field of arrays is not available. A security check may
-   * be performed, with <code>checkMemberAccess(this, Member.DECLARED)</code>
-   * as well as <code>checkPackageAccess</code> both having to succeed.
+   * Get the modifiers of this class.  These can be decoded using Modifier,
+   * and is limited to one of public, protected, or private, and any of
+   * final, static, abstract, or interface. An array class has the same
+   * public, protected, or private modifier as its component type, and is
+   * marked final but not an interface. Primitive types and void are marked
+   * public and final, but not an interface.
    *
-   * @param name the name of the field
-   * @return the field
-   * @throws NoSuchFieldException if the field does not exist
-   * @throws SecurityException if the security check fails
-   * @see #getDeclaredFields()
+   * @return the modifiers of this class
+   * @see Modifer
    * @since 1.1
    */
-  public Field getDeclaredField(String name) throws NoSuchFieldException
+  public int getModifiers()
   {
-    memberAccessCheck(Member.DECLARED);
-    Field[] fields = getDeclaredFields(false);
-    for (int i = 0; i < fields.length; i++)
-      {
-	if (fields[i].getName().equals(name))
-	  return fields[i];
-      }
-    throw new NoSuchFieldException();
+    return vmClass.getModifiers ();
   }
- 
+
   /**
-   * Get a method declared in this class, where name is its simple name. The
-   * implicit methods of Object are not available from arrays or interfaces.
-   * Constructors (named "<init>" in the class file) and class initializers
-   * (name "<clinit>") are not available.  The Virtual Machine allows
-   * multiple methods with the same signature but differing return types; in
-   * such a case the most specific return types are favored, then the final
-   * choice is arbitrary. If the method takes no argument, an array of zero
-   * elements and null are equivalent for the types argument. A security
-   * check may be performed, with
-   * <code>checkMemberAccess(this, Member.DECLARED)</code> as well as
-   * <code>checkPackageAccess</code> both having to succeed.
+   * Get the name of this class, separated by dots for package separators.
+   * Primitive types and arrays are encoded as:
+   * <pre>
+   * boolean             Z
+   * byte                B
+   * char                C
+   * short               S
+   * int                 I
+   * long                J
+   * float               F
+   * double              D
+   * void                V
+   * array type          [<em>element type</em>
+   * class or interface, alone: &lt;dotted name&gt;
+   * class or interface, as element type: L&lt;dotted name&gt;;
    *
-   * @param name the name of the method
-   * @param types the type of each parameter
-   * @return the method
-   * @throws NoSuchMethodException if the method does not exist
-   * @throws SecurityException if the security check fails
-   * @see #getDeclaredMethods()
+   * @return the name of this class
+   */
+  public String getName()
+  { 
+    return vmClass.getName ();
+  }
+
+  /**
+   * Get a resource URL using this class's package using the
+   * getClassLoader().getResource() method.  If this class was loaded using
+   * the system classloader, ClassLoader.getSystemResource() is used instead.
+   *
+   * <p>If the name you supply is absolute (it starts with a <code>/</code>),
+   * then it is passed on to getResource() as is.  If it is relative, the
+   * package name is prepended, and <code>.</code>'s are replaced with
+   * <code>/</code>.
+   *
+   * <p>The URL returned is system- and classloader-dependent, and could
+   * change across implementations.
+   *
+   * @param name the name of the resource, generally a path
+   * @return the URL to the resource
+   * @throws NullPointerException if name is null
    * @since 1.1
    */
-  public Method getDeclaredMethod(String name, Class[] args)
-    throws NoSuchMethodException
+  public URL getResource(String name)
   {
-    memberAccessCheck(Member.DECLARED);
-    Method match = matchMethod(getDeclaredMethods(false), name, args);
-    if (match != null)
-      return match;
-    throw new NoSuchMethodException();
+    if(name.length() > 0 && name.charAt(0) != '/')
+      name = getPackagePortion(getName()).replace('.','/')
+        + "/" + name;
+    ClassLoader c = getClassLoader();
+    if (c == null)
+      return ClassLoader.getSystemResource(name);
+    return c.getResource(name);
   }
-  
-  /**
-   * Get a constructor declared in this class. If the constructor takes no
-   * argument, an array of zero elements and null are equivalent for the
-   * types argument. A security check may be performed, with
-   * <code>checkMemberAccess(this, Member.DECLARED)</code> as well as
-   * <code>checkPackageAccess</code> both having to succeed.
-   *
-   * @param types the type of each parameter
-   * @return the constructor
-   * @throws NoSuchMethodException if the constructor does not exist
-   * @throws SecurityException if the security check fails
-   * @see #getDeclaredConstructors()
-   * @since 1.1
-   */
-  public Constructor getDeclaredConstructor(Class[] args)
-    throws NoSuchMethodException
-  {
-    memberAccessCheck(Member.DECLARED);
-    Constructor[] constructors = getDeclaredConstructors(false);
-    for (int i = 0; i < constructors.length; i++)
-      {
-	Constructor constructor = constructors[i];
-	if (matchParameters(args, constructor.getParameterTypes()))
-	  return constructor;
-      }
-    throw new NoSuchMethodException();
-  }
-  
+
   /**
    * Get a resource using this class's package using the
    * getClassLoader().getResourceAsStream() method.  If this class was loaded
@@ -1128,32 +920,198 @@ public final class Class implements Serializable
   }
   
   /**
-   * Get a resource URL using this class's package using the
-   * getClassLoader().getResource() method.  If this class was loaded using
-   * the system classloader, ClassLoader.getSystemResource() is used instead.
+   * Get the signers of this class. This returns null if there are no signers,
+   * such as for primitive types or void.
    *
-   * <p>If the name you supply is absolute (it starts with a <code>/</code>),
-   * then it is passed on to getResource() as is.  If it is relative, the
-   * package name is prepended, and <code>.</code>'s are replaced with
-   * <code>/</code>.
-   *
-   * <p>The URL returned is system- and classloader-dependent, and could
-   * change across implementations.
-   *
-   * @param name the name of the resource, generally a path
-   * @return the URL to the resource
-   * @throws NullPointerException if name is null
+   * @return the signers of this class
    * @since 1.1
    */
-  public URL getResource(String name)
+  public Object[] getSigners()
   {
-    if(name.length() > 0 && name.charAt(0) != '/')
-      name = getPackagePortion(getName()).replace('.','/')
-        + "/" + name;
-    ClassLoader c = getClassLoader();
-    if (c == null)
-      return ClassLoader.getSystemResource(name);
-    return c.getResource(name);
+    return signers == null ? null : (Object[]) signers.clone ();
+  }
+
+  /**
+   * Set the signers of this class.
+   *
+   * @param signers the signers of this class
+   */
+  void setSigners(Object[] signers)
+  {
+    this.signers = signers;
+  }
+
+  /**
+   * Get the direct superclass of this class.  If this is an interface,
+   * Object, a primitive type, or void, it will return null. If this is an
+   * array type, it will return Object.
+   *
+   * @return the direct superclass of this class
+   */
+  public Class getSuperclass()
+  {
+    return vmClass.getSuperclass ();
+  }
+
+  /**
+   * Return whether this class is an array type.
+   *
+   * @return whether this class is an array type
+   * @since 1.1
+   */
+  public boolean isArray()
+  {
+    int result = -1;
+    if ((result = vmClass.isArray ()) < 0)
+      return getName().charAt(0) == '[';
+
+    return result == 1;
+  }
+
+  /**
+   * Discover whether an instance of the Class parameter would be an
+   * instance of this Class as well.  Think of doing
+   * <code>isInstance(c.newInstance())</code> or even
+   * <code>c.newInstance() instanceof (this class)</code>. While this
+   * checks widening conversions for objects, it must be exact for primitive
+   * types.
+   *
+   * @param c the class to check
+   * @return whether an instance of c would be an instance of this class
+   *         as well
+   * @throws NullPointerException if c is null
+   * @since 1.1
+   */
+  public boolean isAssignableFrom(Class c)
+  {
+    return vmClass.isAssignableFrom (c);
+  }
+
+  /**
+   * Discover whether an Object is an instance of this Class.  Think of it
+   * as almost like <code>o instanceof (this class)</code>.
+   *
+   * @param o the Object to check
+   * @return whether o is an instance of this class
+   * @since 1.1
+   */
+  public boolean isInstance(Object o)
+  {
+    return vmClass.isInstance (o);
+  }
+  
+  /**
+   * Check whether this class is an interface or not.  Array types are not
+   * interfaces.
+   *
+   * @return whether this class is an interface or not
+   */
+  public boolean isInterface()
+  {
+    return vmClass.isInterface ();
+  }
+
+  /**
+   * Return whether this class is a primitive type.  A primitive type class
+   * is a class representing a kind of "placeholder" for the various
+   * primitive types, or void.  You can access the various primitive type
+   * classes through java.lang.Boolean.TYPE, java.lang.Integer.TYPE, etc.,
+   * or through boolean.class, int.class, etc.
+   *
+   * @return whether this class is a primitive type
+   * @see Boolean#TYPE
+   * @see Byte#TYPE
+   * @see Character#TYPE
+   * @see Short#TYPE
+   * @see Integer#TYPE
+   * @see Long#TYPE
+   * @see Float#TYPE
+   * @see Double#TYPE
+   * @see Void#TYPE
+   * @since 1.1
+   */
+  public boolean isPrimitive()
+  {
+    return vmClass.isPrimitive ();
+  }
+
+  /**
+   * Get a new instance of this class by calling the no-argument constructor.
+   * The class is initialized if it has not been already. A security check
+   * may be performed, with <code>checkMemberAccess(this, Member.PUBLIC)</code>
+   * as well as <code>checkPackageAccess</code> both having to succeed.
+   *
+   * @return a new instance of this class
+   * @throws InstantiationException if there is not a no-arg constructor
+   *         for this class, including interfaces, abstract classes, arrays,
+   *         primitive types, and void; or if an exception occurred during
+   *         the constructor
+   * @throws IllegalAccessException if you are not allowed to access the
+   *         no-arg constructor because of scoping reasons
+   * @throws SecurityException if the security check fails
+   * @throws ExceptionInInitializerError if class initialization caused by
+   *         this call fails with an exception
+   */
+  public Object newInstance()
+    throws InstantiationException, IllegalAccessException
+  {
+    memberAccessCheck(Member.PUBLIC);
+    Constructor constructor;
+    synchronized(this)
+      {
+	constructor = this.constructor;
+      }
+    if (constructor == null)
+      {
+	Constructor[] constructors = getDeclaredConstructors(false);
+	for (int i = 0; i < constructors.length; i++)
+	  {
+	    if (constructors[i].getParameterTypes().length == 0)
+	      {
+		constructor = constructors[i];
+		break;
+	      }
+	  }
+	if (constructor == null)
+	  throw new InstantiationException(getName());
+	if (!Modifier.isPublic(constructor.getModifiers()))
+	  {
+	    final Constructor finalConstructor = constructor;
+	    AccessController.doPrivileged(new PrivilegedAction() {
+		public Object run() {
+		  finalConstructor.setAccessible(true);
+		  return null;
+		}
+	      });
+	  }
+	synchronized(this)
+	  {
+	    if (this.constructor == null)
+	      this.constructor = constructor;
+	  }	    
+      }
+    int modifiers = constructor.getModifiers();
+    if (!Modifier.isPublic(modifiers))
+      {
+	Class caller = VMSecurityManager.getClassContext()[1];
+	if (caller != this &&
+	    (Modifier.isPrivate(modifiers)
+	     || getClassLoader() != caller.getClassLoader()
+	     || !getPackagePortion(getName())
+	     .equals(getPackagePortion(caller.getName()))))
+	  throw new IllegalAccessException(getName()
+					   + " has an inaccessible constructor");
+      }
+    try
+      {
+        return constructor.newInstance(null);
+      }
+    catch (InvocationTargetException e)
+      {
+	VMClass.throwException(e.getTargetException());
+	throw (InternalError) new InternalError
+	  ("VMClass.throwException returned").initCause(e);
+      }
   }
 
   /**
@@ -1259,6 +1217,48 @@ public final class Class implements Serializable
           return status.equals(Boolean.TRUE);
       }
     return c.defaultAssertionStatus;
+  }
+
+  /**
+   * Like <code>getField(String)</code> but without the security checks and returns null
+   * instead of throwing NoSuchFieldException.
+   */
+  private Field internalGetField(String name)
+  {
+    Field[] fields = getDeclaredFields(true);
+    for (int i = 0; i < fields.length; i++)
+      {
+	Field field = fields[i];
+	if (field.getName().equals(name))
+	  return field;
+      }
+    Class[] interfaces = getInterfaces();
+    for (int i = 0; i < interfaces.length; i++)
+      {
+	Field field = interfaces[i].internalGetField(name);
+	if(field != null)
+	  return field;
+      }
+    Class superClass = getSuperclass();
+    if (superClass != null)
+      return superClass.internalGetField(name);
+    return null;
+  }
+
+  /**
+   * Perform security checks common to all of the methods that
+   * get members of this Class.
+   */
+  private void memberAccessCheck(int which)
+  {
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null)
+      {
+	sm.checkMemberAccess(this, which);
+	Package pkg = getPackage();
+	if (pkg != null)
+	  sm.checkPackageAccess(pkg.getName());
+      }
   }
 
   /**

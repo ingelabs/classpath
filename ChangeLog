@@ -1,5 +1,10 @@
 2004-01-25  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/Class.java: Moved all methods to get it in order with
+	libgcj.
+
+2004-01-25  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/lang/ClassHelper.java
 	(getPackagePortion): Moved to java.lang.Class.
 	* java/lang/Class.java: Merged more with libgcj, renamed some
