@@ -42,6 +42,7 @@ $(top_srcdir)/include/gnu_java_nio_NIOServerSocket.h \
 $(top_srcdir)/include/java_io_FileDescriptor.h \
 $(top_srcdir)/include/java_io_File.h \
 $(top_srcdir)/include/java_io_ObjectInputStream.h \
+$(top_srcdir)/include/java_io_VMObjectStreamClass.h \
 $(top_srcdir)/include/java_lang_Double.h \
 $(top_srcdir)/include/java_lang_Math.h \
 $(top_srcdir)/include/java_lang_Object.h \
@@ -138,6 +139,8 @@ $(top_srcdir)/include/java_io_File.h: $(top_srcdir)/java/io/File.java
 	$(JAVAH) -o $@ java.io.File
 $(top_srcdir)/include/java_io_ObjectInputStream.h: $(top_srcdir)/java/io/ObjectInputStream.java
 	$(JAVAH) -o $@ java.io.ObjectInputStream
+$(top_srcdir)/include/java_io_VMObjectStreamClass.h: ../vm/current/java/io/VMObjectStreamClass.java
+	$(JAVAH) -o $@ java.io.VMObjectStreamClass
 $(top_srcdir)/include/java_lang_Double.h: $(top_srcdir)/java/lang/Double.java
 	$(JAVAH) -o $@ java.lang.Double
 $(top_srcdir)/include/java_lang_Math.h: $(top_srcdir)/java/lang/Math.java

@@ -1,3 +1,10 @@
+2004-03-15  Mark Wielaard  <mark@klomp.org>
+
+	* include/Makefile.am: Add java_io_VMObjectStreamClass.h generation.
+	* include/java_io_VMObjectStreamClass.h: New file.
+	* native/jni/java-io/Makefile.am (SOURCES): Add new file.
+	* native/jni/java-io/java_io_VMObjectStreamClass.c: New file.
+
 2004-03-15  Patrik Reali  <reali@acm.org>
 	* doc/hacking.texinfo doc/www.gnu.org/benchmarks.wml: link to japitools
 	fixed
