@@ -375,9 +375,9 @@ public class SecurityManager
    * <code>RuntimePermission("modifyThread")</code>, return silently, so that
    * core classes (the Classpath library!) can modify any thread.
    *
-   * @param t the other Thread to check
+   * @param thread the other Thread to check
    * @throws SecurityException if permission is denied
-   * @throws NullPointerException if t is null
+   * @throws NullPointerException if thread is null
    * @see Thread#stop()
    * @see Thread#suspend()
    * @see Thread#resume()
@@ -385,9 +385,10 @@ public class SecurityManager
    * @see Thread#setName(String)
    * @see Thread#setDaemon(boolean)
    */
-  public void checkAccess(Thread t)
+  public void checkAccess(Thread thread)
   {
-    if (t.group != null && t.group.getParent() != null)
+    if (thread.getThreadGroup() != null 
+	&& thread.getThreadGroup().getParent() != null)
       checkPermission(new RuntimePermission("modifyThread"));
   }
 
