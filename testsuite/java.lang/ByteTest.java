@@ -1,17 +1,15 @@
-import gnu.test;
-import java.lang;
+import gnu.test.*;
 
 /**
  * Test the Byte object wrapper class.
  *
- * @author Brian Jones (brian.jones@oryxsoft.com)
+ * @author Brian Jones (cbj@gnu.org)
  */
 public class ByteTest
 {
   public static class constructorTest1 implements Test
   {
     byte b = 1;
-    Byte byteObject = null;
     
     public String getName() {
       return "Byte(byte)";
@@ -57,19 +55,11 @@ public class ByteTest
     
     public Result test() {
       byte b = 1;
-      Byte byteObject = null;
-      try {
-	byteObject = new Byte(b);
-	if (byteObject.byteValue() == b)
-	  return new Pass();
-	else
-	  return new Fail();
-      } catch (Exception e) {
-	return new Fail(e.getMessage());
-      } catch (Error err) {
-	return new Fail(err.getMessage());
-      }
-      return new Fail();  // shouldn't get here
+      Byte byteObject = new Byte(b);
+      if (byteObject.byteValue() == b)
+	return new Pass();
+      else
+	return new Fail();
     }
   }
 
@@ -80,18 +70,11 @@ public class ByteTest
     }
     
     public Result test() {
-      try {
-	Byte obj = Byte.decode("1");
-	if (obj.byteValue() == 1)
-	  return new Pass();
-	else
-	  return new Fail();
-      } catch (Exception e) {
-	return new Fail(e.getMessage());
-      } catch (Error err) {
-	return new Fail(err.getMessage());
-      }
-      return new Fail();  // shouldn't get here
+      Byte obj = Byte.decode("1");
+      if (obj.byteValue() == 1)
+	return new Pass();
+      else
+	return new Fail();
     }
   }
     
@@ -102,20 +85,13 @@ public class ByteTest
     }
     
     public Result test() {
-      try {
-	byte b = 4;
-	double d = b;
-	Byte obj = new Byte(b);
-	if (obj.doubleValue() == d)
-	  return new Pass();
-	else
-	  return new Fail();
-      } catch (Exception e) {
-	return new Fail(e.getMessage());
-      } catch (Error err) {
-	return new Fail(err.getMessage());
-      }
-      return new Fail();  // shouldn't get here
+      byte b = 4;
+      double d = b;
+      Byte obj = new Byte(b);
+      if (obj.doubleValue() == d)
+	return new Pass();
+      else
+	return new Fail();
     }
   }
   
@@ -126,20 +102,13 @@ public class ByteTest
     }
 
     public Result test() {
-      try {
-	Byte obj1 = null, obj2 = null;
-	obj1 = new Byte((byte)1);
-	obj2 = new Byte((byte)2);
-	if (obj1.equals(obj2))
-	  return new Fail("1 != 2");
-	else
-	  return new Pass("1 != 2");
-      } catch (Exception e) {
-	return new Fail(e.getMessage());
-      } catch (Error err) {
-	return new Fail(err.getMessage());
-      }
-      return new Fail();  // shouldn't get here
+      Byte obj1 = null, obj2 = null;
+      obj1 = new Byte((byte)1);
+      obj2 = new Byte((byte)2);
+      if (obj1.equals(obj2))
+	return new Fail("1 != 2");
+      else
+	return new Pass("1 != 2");
     }
   }	
 
@@ -150,21 +119,14 @@ public class ByteTest
     }
 
     public Result test() {
-      try {
-	Byte obj1 = null, obj2 = null;
-	obj1 = new Byte((byte)1);
-	obj2 = new Byte((byte)2);
-	obj2 = obj1;
-	if (obj1.equals(obj2))
-	  return new Pass("1 == 1");
-	else
-	  return new Fail("1 == 1");
-      } catch (Exception e) {
-	return new Fail(e.getMessage());
-      } catch (Error err) {
-	return new Fail(err.getMessage());
-      }
-      return new Fail();  // shouldn't get here
+      Byte obj1 = null, obj2 = null;
+      obj1 = new Byte((byte)1);
+      obj2 = new Byte((byte)2);
+      obj2 = obj1;
+      if (obj1.equals(obj2))
+	return new Pass("1 == 1");
+      else
+	return new Fail("1 == 1");
     }
   }
   
@@ -175,20 +137,13 @@ public class ByteTest
     }
 
     public Result test() {
-      try {
-	byte b = 4;
-	float f = b;
-	Byte obj = new Byte(b);
-	if (obj.floatValue() == f)
-	  return new Pass();
-	else
-	  return new Fail();
-      } catch (Exception e) {
-	return new Fail(e.getMessage());
-      } catch (Error err) {
-	return new Fail(err.getMessage());
-      }
-      return new Fail();  // shouldn't get here
+      byte b = 4;
+      float f = b;
+      Byte obj = new Byte(b);
+      if (obj.floatValue() == f)
+	return new Pass();
+      else
+	return new Fail();
     }
   }
 
@@ -199,16 +154,13 @@ public class ByteTest
     }
 
     public Result test() {
-      try {
-	boolean caught = false;
-	Byte obj = new Byte((byte)1);
-	int i = obj.hashCode();
-      } catch (Exception e) {
-	return new Fail(e.getMessage());
-      } catch (Error err) {
-	return new Fail(err.getMessage());
-      }
-      return new Pass();
+      boolean caught = false;
+      Byte obj = new Byte((byte)1);
+      int i = obj.hashCode();
+      if (i == 1)
+	return new Pass();
+      else
+	return new Fail("hash is " + i + ".  It should be 1.");
     }
   }
       
@@ -219,20 +171,13 @@ public class ByteTest
     }
 
     public Result test() {
-      try {
-	byte b = 4;
-	int i = b;
-	Byte obj = new Byte(b);
-	if (obj.intValue() == i)
-	  return new Pass();
-	else
-	  return new Fail();
-      } catch (Exception e) {
-	return new Fail(e.getMessage());
-      } catch (Error err) {
-	return new Fail(err.getMessage());
-      }
-      return new Fail();  // shouldn't get here
+      byte b = 4;
+      int i = b;
+      Byte obj = new Byte(b);
+      if (obj.intValue() == i)
+	return new Pass();
+      else
+	return new Fail();
     }
   }
   
@@ -243,20 +188,13 @@ public class ByteTest
     }
 
     public Result test() {
-      try {
-	byte b = 4;
-	long l = b;
-	Byte obj = new Byte(b);
-	if (obj.longValue() == l)
-	  return new Pass();
-	else
-	  return new Fail();
-      } catch (Exception e) {
-	return new Fail(e.getMessage());
-      } catch (Error err) {
-	return new Fail(err.getMessage());
-      }
-      return new Fail();  // shouldn't get here
+      byte b = 4;
+      long l = b;
+      Byte obj = new Byte(b);
+      if (obj.longValue() == l)
+	return new Pass();
+      else
+	return new Fail();
     }
   }    
 
@@ -267,18 +205,11 @@ public class ByteTest
     }
 
     public Result test() {
-      try {
-	byte b = Byte.parseByte("1");
-	if (b == (byte)1)
-	  return new Pass();
-	else
-	  return new Fail();
-      } catch (Exception e) {
-	return new Fail(e.getMessage());
-      } catch (Error err) {
-	return new Fail(err.getMessage());
-      }
-      return new Fail();  // shouldn't get here
+      byte b = Byte.parseByte("1");
+      if (b == (byte)1)
+	return new Pass();
+      else
+	return new Fail();
     }
   }      
 
@@ -289,18 +220,11 @@ public class ByteTest
     }
 
     public Result test() {
-      try {
-	b = Byte.parseByte("-4", 10);
-	if (b == (byte)-4)
-	  return new Pass();
-	else
-	  return new Fail();
-      } catch (Exception e) {
-	return new Fail(e.getMessage());
-      } catch (Error err) {
-	return new Fail(err.getMessage());
-      }
-      return new Fail();  // shouldn't get here
+      byte b = Byte.parseByte("-4", 10);
+      if (b == (byte)-4)
+	return new Pass();
+      else
+	return new Fail();
     }
   }
 
@@ -311,20 +235,13 @@ public class ByteTest
     }
 
     public Result test() {
-      try {
-	byte b = 4;
-	short s = b;
-	Byte obj = new Byte(b);
-	if (obj.shortValue() == s)
-	  return new Pass();
-	else
-	  return new Fail();
-      } catch (Exception e) {
-	return new Fail(e.getMessage());
-      } catch (Error err) {
-	return new Fail(err.getMessage());
-      }
-      return new Fail();  // shouldn't get here
+      byte b = 4;
+      short s = b;
+      Byte obj = new Byte(b);
+      if (obj.shortValue() == s)
+	return new Pass();
+      else
+	return new Fail();
     }
   }
 
@@ -335,19 +252,12 @@ public class ByteTest
     }
 
     public Result test() {
-      try {
-	Byte obj = new Byte((byte)-2);
-	String x = obj.toString();
-	if (x.equals("-2"))
-	  return new Pass();
-	else
-	  return new Fail();
-      } catch (Exception e) {
-	return new Fail(e.getMessage());
-      } catch (Error err) {
-	return new Fail(err.getMessage());
-      }
-      return new Fail();  // shouldn't get here
+      Byte obj = new Byte((byte)-2);
+      String x = obj.toString();
+      if (x.equals("-2"))
+	return new Pass();
+      else
+	return new Fail();
     }
   }
 	
@@ -358,18 +268,11 @@ public class ByteTest
     }
 
     public Result test() {
-      try {
-	x = Byte.toString((byte)-2);
-	if (x.equals("-2"))
-	  return new Pass();
-	else
-	  return new Fail();
-      } catch (Exception e) {
-	return new Fail(e.getMessage());
-      } catch (Error err) {
-	return new Fail(err.getMessage());
-      }
-      return new Fail();  // shouldn't get here
+      String x = Byte.toString((byte)-2);
+      if (x.equals("-2"))
+	return new Pass();
+      else
+	return new Fail();
     }
   }
 
@@ -380,19 +283,12 @@ public class ByteTest
     }
 
     public Result test() {
-      try {
-	Byte obj1 = Byte.valueOf("2",10);
-	Byte obj2 = new Byte((byte)2);
-	if (obj1.intValue() == obj2.intValue())
-	  return new Pass();
-	else
-	  return new Fail();
-      } catch (Exception e) {
-	return new Fail(e.getMessage());
-      } catch (Error err) {
-	return new Fail(err.getMessage());
-      }
-      return new Fail();  // shouldn't get here
+      Byte obj1 = Byte.valueOf("2",10);
+      Byte obj2 = new Byte((byte)2);
+      if (obj1.intValue() == obj2.intValue())
+	return new Pass();
+      else
+	return new Fail();
     }
   }
 
@@ -403,18 +299,11 @@ public class ByteTest
     }
 
     public Result test() {
-      try {
-	obj1 = Byte.valueOf("2");
-	if (obj1.intValue() == obj2.intValue())
+      Byte obj1 = Byte.valueOf("2");
+      if (obj1.intValue() == 2)
 	  return new Pass();
 	else
 	  return new Fail();
-      } catch (Exception e) {
-	return new Fail(e.getMessage());
-      } catch (Error err) {
-	return new Fail(err.getMessage());
-      }
-      return new Fail();  // shouldn't get here
     }
   }
   
@@ -459,18 +348,11 @@ public class ByteTest
     }
 
     public Result test() {
-      try {
-	String x = Byte.TYPE.getName();
-	if (x.equals("byte") != true)
-	  return new Fail("Byte.TYPE.getName() is " + x + " != byte");
-	else
-	  return new Pass("Byte.TYPE.getName() is byte");
-      } catch (Exception e) {
-	return new Fail(e.getMessage());
-      } catch (Error err) {
-	return new Fail(err.getMessage());
-      }
-      return new Fail();  // shouldn't get here
+      String x = Byte.TYPE.getName();
+      if (x.equals("byte") != true)
+	return new Fail("Byte.TYPE.getName() is " + x + " != byte");
+      else
+	return new Pass("Byte.TYPE.getName() is byte");
     }
   }
 
@@ -486,12 +368,13 @@ public class ByteTest
         return new Fail("Byte.TYPE.newInstance succeeded.");
       }
       catch (InstantiationException e) {
-	return new Pass("Byte.TYPE.newInstance failed with exception '" + e.toString() + "'");
+	return new Pass("Byte.TYPE.newInstance failed with exception '" + 
+			e.toString() + "'");
       }
       catch (Exception ex) {
-        return new Fail("Byte.TYPE.newInstance threw incorrect exception '" + ex.toString() + "'");
+        return new Fail("Byte.TYPE.newInstance threw incorrect exception '" 
+			+ ex.toString() + "'");
       }
-      return new Fail();  // shouldn't get here
     }
   }
 }
