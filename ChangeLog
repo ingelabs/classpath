@@ -1,6 +1,8 @@
 2005-01-11  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/text/DefaultEditorKit.java
+	(deinstall): Removed.
+	(install): Likewise.
 
 2005-01-11  Michael Koch  <konqueror@gmx.de>
 
