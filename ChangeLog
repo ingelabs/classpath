@@ -1,3 +1,8 @@
+2004-07-16  Michael Koch  <konqueror@gmx.de>
+
+	* java/util/zip/GZIPOutputStream.java:
+	Fixed javadocs.
+
 2004-07-16  Michael Koch  <konqueror@gmx.de> 
 	    Matthias Klose  <doko@debian.org> 
 
