@@ -2,3 +2,5 @@
 
 SUBDIRS = gtk
 
+EXTRA_DIST = \
+GLightweightPeer.java

@@ -6,5 +6,4 @@ EXTRA_DIST = \
 BitMaskExtent.java \
 Buffers.java \
 ComponentDataBlitOp.java \
-EventModifier.java \
-GLightweightPeer.java
+EventModifier.java

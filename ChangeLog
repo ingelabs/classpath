@@ -1,3 +1,17 @@
+2003-08-22  Scott Gilbertson  <scottg@mantatest.com>
+            Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/GLightweightPeer.java: Remove file.
+	* gnu/java/awt/Makefile.am (EXTRA_DIST): Remove
+	GLightweightPeer.java.
+	* gnu/java/awt/peer/GLightweightPeer.java: New file.
+	* gnu/java/awt/peer/Makefile.am (EXTRA_DIST): Add
+	GLightweightPeer.java.
+	* java/awt/Component.java (getToolkit): Add comment about
+	lightweight components.
+	* java/awt/Toolkit.java (createComponent): Return
+	gnu.java.awt.peer.GLightweightPeer.
+
 2003-08-22  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkDialogPeer.java (create): Create
