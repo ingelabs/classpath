@@ -138,7 +138,7 @@ $(top_srcdir)/include/gnu_java_net_PlainSocketImpl.h: $(top_srcdir)/gnu/java/net
 	$(JAVAH) -o $@ gnu.java.net.PlainSocketImpl
 $(top_srcdir)/include/gnu_java_nio_NIOServerSocket.h: $(top_srcdir)/gnu/java/nio/NIOServerSocket.java
 	$(JAVAH) -o $@ gnu.java.nio.NIOServerSocket
-$(top_srcdir)/include/gnu_java_nio_VMPipeImpl.h: $(top_srcdir)/gnu/java/nio/VMPipeImpl.java
+$(top_srcdir)/include/gnu_java_nio_VMPipeImpl.h: ../vm/current/gnu/java/nio/VMPipeImpl.java
 	$(JAVAH) -o $@ gnu.java.nio.VMPipeImpl
 $(top_srcdir)/include/gnu_java_nio_SelectorImpl.h: $(top_srcdir)/gnu/java/nio/SelectorImpl.java
 	$(JAVAH) -o $@ gnu.java.nio.SelectorImpl

@@ -1,3 +1,7 @@
+2004-07-21  Michael Koch  <konqueror@gmx.de>
+
+	* include/Makefile.am: Fixed generation of VMPipeImpl.h
+
 2004-07-20  Patrik Reali  <reali@acm.org>
 
 	* doc/www.gnu.org/faq/faq.wml: entry on lib/standard.omit
