@@ -1,3 +1,21 @@
+2002-09-27  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/dnd/DragSourceAdapter.java: 
+	(dragExit, dragDropEnd): Fixed argument types.
+	* java/awt/dnd/DropTarget.java:
+	Added stubs for all methods and the subclass.
+	* java/awt/dnd/Autoscroll.java: New file.
+	* java/awt/dnd/DragSourceDropEvent.java: New file.
+	* java/awt/dnd/DropTargetAdapter.java: New file.
+	* java/awt/dnd/DropTargetContext.java: New file.
+	* java/awt/dnd/DropTargetDragEvent.java: New file.
+	* java/awt/dnd/DropTargetDropEvent.java: New file.
+	* java/awt/dnd/DropTargetEvent.java: New file.
+	* java/awt/dnd/DropTargetListener.java: New file.
+	* java/awt/dnd/MouseDragGestureRecognizer.java: New file.
+	* java/awt/dnd/peer/DropTargetContextPeer.java: New file.
+	* java/awt/dnd/Makefile.am: Adding all the new files.
+
 2002-09-26  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/applet/AppletContext.java (setStream): Fix signature typo.
