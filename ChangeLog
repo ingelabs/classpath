@@ -1,5 +1,8 @@
 2001-09-04  Tom Tromey  <tromey@redhat.com>
 
+	* java/util/IdentityHashMap.java (clone): Make a copy of the
+	table.
+
 	* java/text/SimpleDateFormat.java
 	(SimpleDateFormat(String,DateFormatSymbols)): Call
 	computeCenturyStart().

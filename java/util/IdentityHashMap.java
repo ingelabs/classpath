@@ -88,18 +88,16 @@ public class IdentityHashMap extends AbstractMap
    */
   public Object clone ()
   {
-    IdentityHashMap copy = null;
     try 
       {
-        copy = (IdentityHashMap) super.clone ();
+        IdentityHashMap copy = (IdentityHashMap) super.clone ();
+	copy.table = (Object[]) table.clone ();
       }
     catch (CloneNotSupportedException e) 
       {
-        copy = new IdentityHashMap (size);
+	// Can't happen.
+	return null;
       }
-
-    // copy.table = (Object[]) table.clone (); 
-    return copy;
   }
 
   public boolean containsKey (Object key)
