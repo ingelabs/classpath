@@ -1,5 +1,9 @@
 2004-12-01  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/print/Book.java: Reformatted.
+
+2004-12-01  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/geom/Area.java
 	(QuadSegment.curveArea): Remove unused variables.
 	(CubicSegment.curveArea): Likewise.
