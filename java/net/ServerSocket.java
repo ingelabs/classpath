@@ -50,7 +50,7 @@ public class ServerSocket
 /**
   * This is the user defined SocketImplFactory, if one is supplied
   */
-protected static SocketImplFactory factory;
+private static SocketImplFactory factory;
 
 /*************************************************************************/
 
@@ -62,7 +62,7 @@ protected static SocketImplFactory factory;
   * This is the SocketImp object to which most instance methods in this
   * class are redirected
   */
-protected SocketImpl impl;
+private SocketImpl impl;
 
 /*************************************************************************/
 
@@ -116,10 +116,8 @@ setSocketFactory(SocketImplFactory factory) throws IOException
 /*************************************************************************/
 
 /**
-  * This protected constructor is used by subclasses of ServerSocket.  It
-  * simply load the implementation and returns
+  * This constructor simply load the implementation and returns.  
   */
-protected
 ServerSocket()
 {
   if (factory != null)
