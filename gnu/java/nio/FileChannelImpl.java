@@ -45,6 +45,7 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.MappedByteBuffer;
+import java.nio.MappedByteFileBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.FileChannel;
 import java.nio.channels.FileLock;
@@ -64,7 +65,8 @@ import gnu.classpath.RawData;
 
 public class FileChannelImpl extends FileChannel
 {
-  RawData map_address;
+  // FIXME: This should not be public
+  public RawData map_address;
   
   int length;
   FileDescriptor fd;

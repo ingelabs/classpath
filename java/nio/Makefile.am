@@ -25,6 +25,13 @@ LongBuffer.java \
 LongBufferImpl.java \
 LongViewBuffer.java \
 MappedByteBuffer.java \
+MappedByteFileBuffer.java \
+MappedCharFileBuffer.java \
+MappedDoubleFileBuffer.java \
+MappedFloatFileBuffer.java \
+MappedIntFileBuffer.java \
+MappedLongFileBuffer.java \
+MappedShortFileBuffer.java \
 ReadOnlyBufferException.java \
 ShortBuffer.java \
 ShortBufferImpl.java \
