@@ -46,15 +46,30 @@ import java.util.EventListener;
  * @author Andrew Selkirk
  */
 public class EventListenerList
-  extends Object
   implements Serializable
 {
+  /**
+   * An ID for serializing instances of this class; verified with the
+   * serialver tool of Sun J2SE 1.4.1_01.
+   */
   static final long serialVersionUID = -5677132037850737084L;
 
+
   /**
-   * Listener list
+   * An empty array that is shared by all instances of this class that
+   * have no listeners.
    */
-  protected Object[] listenerList = null;
+  private static final Object[] NO_LISTENERS = new Object[0];
+  
+  
+  /**
+   * An array with all currently registered listeners.  The array has
+   * twice as many elements as there are listeners.  For an even
+   * integer <code>i</code>, <code>listenerList[i]</code> indicates
+   * the registered class, and <code>listenerList[i+1]</code> is the
+   * listener.
+   */
+  protected transient Object[] listenerList = NO_LISTENERS;
 
   
   /**
@@ -62,7 +77,6 @@ public class EventListenerList
    */
   public EventListenerList()
   {
-    listenerList = new Object[0];
   }
 
 
