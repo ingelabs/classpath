@@ -1,3 +1,9 @@
+2005-02-25  Sven de Marothy  <sven@physto.se>
+
+	* java/net/InetAddress.java
+	(toString): Don't print empty hostnames.
+	Fixes bug #11956
+
 2005-02-24  Mark Wielaard  <mark@klomp.org>
 
 	* doc/www.gnu.org/Makefile (SUBDIRS): Add cp-tools.
