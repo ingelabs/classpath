@@ -38,6 +38,8 @@
 
 package org.omg.CORBA;
 
+import gnu.CORBA.primitiveArrayTypeCode;
+
 import org.omg.CORBA.portable.InputStream;
 import org.omg.CORBA.portable.OutputStream;
 import org.omg.CORBA.portable.Streamable;
@@ -81,7 +83,7 @@ public final class OctetSeqHolder
   public OctetSeqHolder(byte[] initial_value)
   {
     value = initial_value;
-    typecode.length = value.length;
+    typecode.setLength(value.length);
   }
 
   /**
@@ -96,7 +98,7 @@ public final class OctetSeqHolder
   {
     value = new byte[ input.read_long() ];
     input.read_octet_array(value, 0, value.length);
-    typecode.length = value.length;
+    typecode.setLength(value.length);
   }
 
   /**

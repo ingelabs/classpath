@@ -36,8 +36,13 @@
  exception statement from your version. */
 
 
-package org.omg.CORBA;
+package gnu.CORBA;
 
+import org.omg.CORBA.Any;
+import org.omg.CORBA.IDLEntity;
+import org.omg.CORBA.NO_IMPLEMENT;
+import org.omg.CORBA.TCKind;
+import org.omg.CORBA.TypeCode;
 import org.omg.CORBA.TypeCodePackage.BadKind;
 
 import java.io.Serializable;
@@ -53,7 +58,7 @@ import java.io.Serializable;
  *
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-class primitiveTypeCode
+public class primitiveTypeCode
   extends TypeCode
   implements IDLEntity, Serializable
 {

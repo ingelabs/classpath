@@ -38,6 +38,8 @@
 
 package org.omg.CORBA;
 
+import gnu.CORBA.primitiveTypeCode;
+
 import org.omg.CORBA.portable.InputStream;
 import org.omg.CORBA.portable.OutputStream;
 import org.omg.CORBA.portable.Streamable;

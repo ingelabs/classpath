@@ -36,15 +36,17 @@
  exception statement from your version. */
 
 
-package org.omg.CORBA;
+package gnu.CORBA;
 
+import org.omg.CORBA.TCKind;
+import org.omg.CORBA.TypeCode;
 import org.omg.CORBA.TypeCodePackage.BadKind;
 
 /**
  * A TypeCode for arrays.
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
-class primitiveArrayTypeCode
+public class primitiveArrayTypeCode
   extends primitiveTypeCode
 {
   /**
@@ -56,7 +58,7 @@ class primitiveArrayTypeCode
    * The length of the array, must be updated when setting
    * a new value.
    */
-  int length;
+  private int length;
 
   public primitiveArrayTypeCode(TCKind array_of)
   {
@@ -219,7 +221,7 @@ class primitiveArrayTypeCode
   }
 
   /**
-   * Return the array lenght.
+   * Return the array length.
    * @return the length of the array.
    * @throws org.omg.CORBA.TypeCodePackage.BadKind
    */
@@ -228,4 +230,15 @@ class primitiveArrayTypeCode
   {
     return length;
   }
+
+  /**
+   * Sets the array length to the supplied value.
+   *
+   * @param l the new length.
+   */
+  public void setLength(int l)
+  {
+    this.length = l;
+  }
+
 }

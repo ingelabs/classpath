@@ -1,5 +1,37 @@
 2005-03-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
+	* gnu/CORBA/primitiveArrayTypeCode.java:
+	Moved from org.omg.CORBA.
+	* gnu/CORBA/primitiveTypeCode.java: Likewise.
+	* org/omg/CORBA/BooleanHolder.java,
+	org/omg/CORBA/ByteHolder.java,
+	org/omg/CORBA/CharHolder.java,
+	org/omg/CORBA/DoubleHolder.java,
+	org/omg/CORBA/FixedHolder.java,
+	org/omg/CORBA/FloatHolder.java,
+	org/omg/CORBA/IntHolder.java,
+	org/omg/CORBA/LongHolder.java,
+	org/omg/CORBA/ShortHolder.java,
+	org/omg/CORBA/StringHolder.java,
+	org/omg/CORBA/TypeCodeHolder.java:
+	Added necessary imports.
+	* org/omg/CORBA/BooleanSeqHolder.java,
+	org/omg/CORBA/CharSeqHolder.java,
+	org/omg/CORBA/DoubleSeqHolder.java,
+	org/omg/CORBA/FloatSeqHolder.java,
+	org/omg/CORBA/LongLongSeqHolder.java,
+	org/omg/CORBA/LongSeqHolder.java,
+	org/omg/CORBA/OctetSeqHolder.java,
+	org/omg/CORBA/ShortSeqHolder.java,
+	org/omg/CORBA/ULongLongSeqHolder.java,
+	org/omg/CORBA/ULongSeqHolder.java,
+	org/omg/CORBA/UShortSeqHolder.java,
+	org/omg/CORBA/WCharSeqHolder.java:
+	Likewise and changed direct value
+	assignments to setValue calls.
+	
+2005-03-06  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
 	* org/omg/CORBA/CompletionStatus.java,
 	org/omg/CORBA/TypeCode.java,
 	org/omg/CORBA/primitiveTypeCode.java:
