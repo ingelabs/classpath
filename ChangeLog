@@ -1,5 +1,17 @@
 2004-12-01  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/AbstractListModel.java
+	(fireContentsChanged): Simplified.
+	(fireIntervalAdded): Likewise.
+	(fireIntervalRemoved): Likewise.
+	* javax/swing/DefaultSingleSelectionModel.java:
+	Reformatted.
+	(fireStateChanged): Simplified.
+	* javax/swing/JPopupMenu.java
+	(setSelectionModel): Set property.
+
+2004-12-01  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/SelectorImpl.java
 	(register): Removed redundant code.
 
