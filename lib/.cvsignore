@@ -11,3 +11,5 @@ errors.txt
 headers.dep
 classes.dep
 makefile.dep
+java.dep
+compile-classes
