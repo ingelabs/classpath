@@ -1,5 +1,9 @@
 2004-05-19  Michael Koch  <konqueror@gmx.de>
 
+	* native/testsuite/Makefile.am: Removed more dead Japhar code.
+
+2004-05-19  Michael Koch  <konqueror@gmx.de>
+
 	* acinclude.m4: Removed all Japhar specific stuff. Japhar is dead
 	since a long time. This also includes the macro
 	CLASSPATH_CHECK_THREADS.
