@@ -1,5 +1,14 @@
 2002-12-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/SocketPermission.java:
+	Reindented.
+	* java/net/URLDecoder.java
+	(decode): Added throws IOException.
+	* java/nio/channels/FileLock.java
+	(release): Added throws IOException.
+	
+2002-12-21  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/HttpURLConnection.java
 	(HTTP_NOT_IMPLEMENTED): Must be public.
 	* java/net/ServerSocket.java
