@@ -1,7 +1,7 @@
 /*
  * gtkpeer.h -- Some global variables and #defines
  *
- * Copyright (c) 1998 Free Software Foundation, Inc.
+ * Copyright (c) 1998, 1999 Free Software Foundation, Inc.
  * Written by James E. Blair <corvus@gnu.org>
  *
  * This library is free software; you can redistribute it and/or modify
@@ -106,5 +106,7 @@ void connect_awt_hook (JNIEnv *env, jobject peer_obj, GtkWidget *widget,
 
 void set_visible (GtkWidget *widget, jboolean visible);
 void set_parent (GtkWidget *widget, GtkContainer *parent);
+void setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width, 
+		   jint height, jboolean visible);
 
 #endif /* __GTKPEER_H */
