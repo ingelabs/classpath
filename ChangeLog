@@ -1,3 +1,7 @@
+2003-08-15  Mark Wielaard  <mark@klomp.org>
+
+	* HACKING: Updated known working/not-working versions of auto-tools.
+
 2003-08-14  Archie Cobbs  <archie@dellroad.org>
 
 	* java/lang/reflect/Constructor.java (equals):

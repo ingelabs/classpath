@@ -1,4 +1,4 @@
-HACKING GNU Classpath - Last updated: December 23, 2002
+HACKING GNU Classpath - Last updated: August 15, 2003
 Please read the README and INSTALL files first.
 
 You only need the information in this file when working on non-released (CVS)
@@ -12,13 +12,16 @@ For any build environment involving native libraries, these new versions of
 autoconf, automake, and libtool are required.
 
         - GNU autoconf 2.53
+	(2.57 also works)
         - GNU automake 1.6
+	(1.7 also works)
         - GNU libtool 1.4.2
+	(1.4.3 also works, but 1.5a is known not to work at the moment)
 
 For building the Java bytecode (.class files), one of these compilers
 is required.
 
-        - GNU GCJ 3.2+
+        - GNU GCJ 3.3+
         - IBM jikes 1.18+
 
 For building the JNI native libraries, the following are required.
