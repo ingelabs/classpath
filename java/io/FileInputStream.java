@@ -412,7 +412,8 @@ open(String name) throws FileNotFoundException;
 public synchronized void
 close() throws IOException
 {
-  closeInternal(native_fd);
+  if (native_fd != -1)
+    closeInternal(native_fd);
   native_fd = -1; // Ensures we don't pick up a stray file descriptor later on
 }
 

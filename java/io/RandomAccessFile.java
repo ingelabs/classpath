@@ -182,7 +182,10 @@ open(String name, boolean read_only) throws IOException;
 public void
 close() throws IOException
 {
-  closeInternal(native_fd);
+  if (native_fd != -1)
+    closeInternal(native_fd);
+
+  native_fd = -1;
 }
 
 /*************************************************************************/

@@ -1,5 +1,11 @@
 2002-10-27  Mark Wielaard  <mark@klomp.org>
 
+	* java/io/FileInputStream (close): Check native_fd != -1.
+	* java/io/FileOutputStream.java (close): Likewise.
+	* java/io/RandomAccessFile.java (close): Likewise.
+
+2002-10-27  Mark Wielaard  <mark@klomp.org>
+
 	* java/util/zip/ZipFile.java (readLeShort): Take and use DataInput as
 	argument.
 	(readLeShort): Likewise and use byte[].

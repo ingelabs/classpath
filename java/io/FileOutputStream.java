@@ -325,7 +325,8 @@ open(String name, boolean append) throws IOException;
 public synchronized void
 close() throws IOException
 {
-  closeInternal(native_fd);
+  if (native_fd != -1)
+    closeInternal(native_fd);
   native_fd = -1;
 }
 
