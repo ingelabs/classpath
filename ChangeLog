@@ -1,3 +1,8 @@
+2000-12-03  Warren Levy  <warrenl@redhat.com>
+
+	* java/io/FilePermission.java: Made class final per spec.
+	* java/util/LinkedList.java: Implements List.
+
 2000-12-03 01:00  Brian Jones <cbj@gnu.org>
 
         * gnu/java/beans/ChangeLog: removed
