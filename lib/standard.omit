@@ -7,6 +7,9 @@
 ^../gnu/javax/swing/plaf/gtk/.*$
 ^../java/awt/datatransfer/DataFlavor.java$
 ^../java/awt/AWTEvent.java$
+^../java/awt/ImageMediaEntry.java$
+^../java/awt/MediaEntry.java$
+^../java/awt/MediaTracker.java$
 ^../java/awt/event/InputMethodEvent.java$
 ^../java/awt/event/InputMethodListener.java$
 ^../java/awt/event/InvocationEvent.java$
