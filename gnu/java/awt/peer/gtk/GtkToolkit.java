@@ -243,8 +243,7 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected ScrollbarPeer createScrollbar (Scrollbar sb) 
   {
-    return null;
-//      return new GtkScrollbarPeer (sb);
+    return new GtkScrollbarPeer (sb);
   }
 
   protected TextAreaPeer createTextArea (TextArea ta) 
