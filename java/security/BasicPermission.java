@@ -22,7 +22,8 @@
 package java.security;
 
 import java.io.Serializable;
-import java.util.StringTokenizer;
+import java.util.Hashtable;
+import java.util.Enumeration;
 
 /**
   * This class implements a simple model for named permissions without an
@@ -65,7 +66,16 @@ public abstract class BasicPermission extends Permission implements Serializable
 public 
 BasicPermission(String name) throws IllegalArgumentException
 {
-  this(name, null);
+  super(name);
+
+  if (name.indexOf("*") != -1)
+    {
+       if (!name.endsWith(".*") && !name.equals("*"))
+          throw new IllegalArgumentException("Bad wildcard: " + name);
+
+       if (name.indexOf("*") != name.lastIndexOf("*"))
+          throw new IllegalArgumentException("Bad wildcard: " + name);
+    }
 }
 
 /*************************************************************************/
@@ -84,16 +94,8 @@ BasicPermission(String name) throws IllegalArgumentException
 public
 BasicPermission(String name, String actions) throws IllegalArgumentException
 {
-  super(name);
-
-  if (name.indexOf("*") != -1)
-    {
-       if (!name.endsWith(".*") && !name.equals("*"))
-          throw new IllegalArgumentException("Bad wildcard: " + name);
-
-       if (name.indexOf("*") != name.lastIndexOf("*"))
-          throw new IllegalArgumentException("Bad wildcard: " + name);
-    }
+  // ignore actions
+  this(name);
 }
 
 /*************************************************************************/
@@ -118,30 +120,20 @@ public boolean
 implies(Permission perm)
 {
   if (!(perm instanceof BasicPermission))
-    return(false);
+    return false;
 
-  if (perm.equals(this))
-    return(true);
+  String otherName = perm.getName();
+  String name = getName();
 
-  StringTokenizer st_perm = new StringTokenizer(perm.getName(), ".");
-  StringTokenizer st_this = new StringTokenizer(getName(), ".");
+  if (name.equals(otherName))
+    return true;
 
-  while(st_this.hasMoreTokens())
-    {
-      String term_this = st_this.nextToken();
+  int last = name.length() - 1;
+  if (name.charAt(last) == '*'
+      && otherName.startsWith(name.substring(0, last)))
+    return true;
 
-      if (term_this.equals("*"))
-        return(true);
-
-      if (!st_perm.hasMoreTokens())
-        return(false);
-      String term_perm = st_perm.nextToken();
-        
-      if (!term_this.equals(term_perm))
-        return(false);
-    }
-
-  return(false); // We already failed an equality test, remember.
+  return false;
 }
 
 /*************************************************************************/
@@ -206,18 +198,67 @@ getActions()
 
 /**
   * This method returns an instance of <code>PermissionCollection</code>
-  * suitable for storing <code>BasicPermission</code> objects.  This will
-  * be an instance of <code>BasicPermissionCollection</code>, an internal
-  * class that allows for an efficient and consistent implementation of
-  * the <code>implies</code> method.
+  * suitable for storing <code>BasicPermission</code> objects.  This returns
+  * be a sub class of <code>PermissionCollection</code>
+  * that allows for an efficient and consistent implementation of
+  * the <code>implies</code> method.  The collection doesn't handle subclasses
+  * of BasicPermission correctly; they must override this method. 
   *
-  * @return A new <code>PermissionCollection</code> object.
+  * @return A new empty <code>PermissionCollection</code> object.
   */
 public PermissionCollection
 newPermissionCollection()
 {
-  return(null);
+  return new PermissionCollection() 
+    {
+      Hashtable permissions = new Hashtable();
+      boolean allAllowed = false;
+      
+      public void add(Permission permission) 
+	{
+	  if (isReadOnly())
+	    throw new IllegalStateException("readonly");
+
+	  BasicPermission bp = (BasicPermission) permission;
+	  String name = bp.getName();
+	  if (name.equals("*"))
+	    allAllowed = true;
+	  permissions.put(name, bp);
+	}
+      
+      public boolean implies(Permission permission)
+	{
+	    if (!(permission instanceof BasicPermission))
+	      return false;
+	    
+	    if (allAllowed)
+	      return true;
+
+	    BasicPermission toImply = (BasicPermission) permission;
+	    String name = toImply.getName();
+	    if (name.equals("*"))
+	      return false;
+
+	    int prefixLength = name.length();
+	    if (name.endsWith("*"))
+	      prefixLength -= 2;
+
+	    while (true) {
+	      if (permissions.get(name) != null)
+		return true;
+	      
+	      prefixLength = name.lastIndexOf('.', prefixLength);
+	      if (prefixLength < 0)
+		return false;
+	      name = name.substring(0, prefixLength + 1) + '*';
+	    }
+	}
+      
+      public Enumeration elements()
+	{
+	  return permissions.elements();
+	}
+    };
 }
 
 } // class BasicPermission
-
