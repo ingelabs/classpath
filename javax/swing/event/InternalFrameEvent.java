@@ -46,7 +46,7 @@ import javax.swing.JInternalFrame;
  */
 public class InternalFrameEvent extends AWTEvent
 {
-  private static final long serialVersionUID = 9195444901064686684L;
+  private static final long serialVersionUID = -5204823611874873183L;
 
   /**
    * Internal frame activated event
