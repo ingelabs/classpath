@@ -1,0 +1,5 @@
+Sun Aug 9 10:40:29 MDT 1998: John Keiser (jkeiser@iname.com)
+
+     Initial ChangeLog.  Most things are done now, Beans class itself is
+     untested, and Introspector needs an efficiency overhaul now that I have
+     got it compliant.  It performs 50-100% slower than Sun's on Sun's JDK.

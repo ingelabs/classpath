@@ -1,1 +1,3 @@
-add AppletStub and AppletContext to java.beans.Beans.instantiate().
+- add AppletStub and AppletContext to java.beans.Beans.instantiate().
+- make Introspector more efficient.
+- write tests for Beans.*
