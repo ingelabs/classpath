@@ -22,16 +22,16 @@ server.  CVSROOT is
 <!-- 
 <H4>Announcements</H4>
 <UL>
-  <LI><link announce/19981204.html "Initial GNU Classpath
-  announcement"> (1998-12-04)</LI>
+  <LI><link /software/classpath/announce/19981204.html 
+       "Initial GNU Classpath announcement"> (1998-12-04)</LI>
 </UL>
 -->
 
 <H4>Documentation</H4>
 <UL>
-  <LI><link doc/hacking.html 
+  <LI><link /software/classpath/doc/hacking.html 
        "GNU Classpath Hacker's Guide"></LI>
-  <LI><link doc/vmintegration.html
+  <LI><link /software/classpath/doc/vmintegration.html
        "Virtual Machine Integration Guide"></LI>
 </UL>
 
