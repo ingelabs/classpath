@@ -39,6 +39,10 @@ public class System {
 	private static SecurityManager securityManager;
 	private static Properties properties;
 
+	static {
+		properties = VMSystem.getSystemProperties();
+	}
+
 	/** The standard InputStream.  This is assigned at
 	 ** startup and starts its life perfectly valid.<P>
 	 ** This corresponds to the C stdin and C++ cin
@@ -148,7 +152,9 @@ public class System {
 	 **            The array will not be modified if this
 	 **            exception is thrown.
 	 **/
-	public static native void arraycopy(Object src, int srcStart, Object dest, int destStart, int len);
+	public static void arraycopy(Object src, int srcStart, Object dest, int destStart, int len) {
+		VMSystem.arraycopy(src,srcStart,dest,destStart,len);
+	}
 
 	/** Get a hash code computed by the VM for the Object.
 	 ** This hash code will be the same as Object's hashCode()
@@ -159,7 +165,9 @@ public class System {
 	 ** @param o the Object to get the hash code for
 	 ** @return the VM-dependent hash code for this Object
 	 **/
-	public static native int identityHashCode(Object o);
+	public static int identityHashCode(Object o) {
+		return VMSystem.identityHashCode(o);
+	}
 
 	/** Get all the system properties at once.
 	 ** @XXX list the standard system properties

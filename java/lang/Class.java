@@ -53,11 +53,6 @@ public class Class {
 	String name;
 	Object[] signers;
 
-	private Class(Class superclass, String name) {
-		this.superclass = superclass;
-		this.name = name.replace('/','.');
-	}
-
 	/** Return the human-readable form of this Object.  For
 	 ** class, that means "interface " or "class " plus the
 	 ** classname.
@@ -74,7 +69,10 @@ public class Class {
 	 ** @since JDK1.0
 	 **/ 
 	public String getName() {
-		return name;
+		if(name != null)
+			return name;
+		else
+			return VMClass.getName(this);
 	}
 
 	/** Get whether this class is an interface or not.  Array
@@ -83,7 +81,7 @@ public class Class {
 	 ** @since JDK1.0
 	 **/
 	public boolean isInterface() {
-		return !java.lang.Object.class.isAssignableFrom(this);
+		return VMClass.isInterface(this);
 	}
 
 	/** Get the direct superclass of this class.  If this is
@@ -92,7 +90,10 @@ public class Class {
 	 ** @since JDK1.0
 	 **/
 	public Class getSuperclass() {
-		return superclass;
+		if(superclass != null)
+			return superclass;
+		else
+			return VMClass.getSuperclass(this);
 	}
 
 	/** Get the interfaces this class <EM>directly</EM>
@@ -102,20 +103,36 @@ public class Class {
 	 ** @return the interfaces this class directly implements.
 	 ** @since JDK1.0
 	 **/
-	public native Class[] getInterfaces();
+	public Class[] getInterfaces() {
+		return VMClass.getInterfaces(this);
+	}
 
 	/** Get a new instance of this class by calling the
 	 ** no-argument constructor.
 	 ** @return a new instance of this class.
 	 ** @exception InstantiationException if there is not a
 	 **            no-arg constructor for this class, or if
-	 **            an exception occurred during instantiation.
+	 **            an exception occurred during instantiation,
+	 **            or if the target constructor throws an
+	 **            exception.
 	 ** @exception IllegalAccessException if you are not
 	 **            allowed to access the no-arg constructor of
 	 **            this Class for whatever reason.
 	 ** @since JDK1.0
 	 **/
-	public native Object newInstance() throws InstantiationException, IllegalAccessException;
+	public Object newInstance() throws InstantiationException, IllegalAccessException {
+		try {
+			return getConstructor(new Class[0]).newInstance(new Object[0]);
+		} catch(SecurityException e) {
+			throw new IllegalAccessException("Cannot access no-arg constructor");
+		} catch(IllegalArgumentException e) {
+			throw new UnknownError("IllegalArgumentException thrown from Constructor.newInstance().  Something is rotten in Denmark.");
+		} catch(InvocationTargetException e) {
+			throw new InstantiationException("Target threw an exception.");
+		} catch(NoSuchMethodException e) {
+			throw new InstantiationException("Method not found");
+		}
+	}
 
 	/** Get the ClassLoader that loaded this class.  If it was
 	 ** loaded by the system classloader, this method will
@@ -123,7 +140,9 @@ public class Class {
 	 ** @return the ClassLoader that loaded this class.
 	 ** @since JDK1.0
 	 **/
-	public native ClassLoader getClassLoader();
+	public ClassLoader getClassLoader() {
+		return VMClass.getClassLoader(this);
+	}
 
 	/** Use the system classloader to load and link a class.
 	 ** @param name the name of the class to find.
@@ -132,7 +151,9 @@ public class Class {
 	 **            found by the system classloader.
 	 ** @since JDK1.0
 	 **/
-	public static native Class forName(String name) throws ClassNotFoundException;
+	public static Class forName(String name) throws ClassNotFoundException {
+		return VMClass.forName(name);
+	}
 
 	/** Discover whether an Object is an instance of this
 	 ** Class.  Think of it as almost like
@@ -141,7 +162,9 @@ public class Class {
 	 ** @return whether o is an instance of this class.
 	 ** @since JDK1.1
 	 **/
-	public native boolean isInstance(Object o);
+	public boolean isInstance(Object o) {
+		return VMClass.isInstance(this,o);
+	}
 
 	/** Discover whether an instance of the Class parameter
 	 ** would be an instance of this Class as well.  Think of
@@ -152,7 +175,9 @@ public class Class {
 	 **         of this class as well.
 	 ** @since JDK1.1
 	 **/
-	public native boolean isAssignableFrom(Class c);
+	public boolean isAssignableFrom(Class c) {
+		return VMClass.isAssignableFrom(this,c);
+	}
 
 	/** Return whether this class is an array type.
 	 ** @return whether this class is an array type.
@@ -171,15 +196,7 @@ public class Class {
 	 ** @since JDK1.1
 	 **/
 	public boolean isPrimitive() {
-		return this == java.lang.Boolean.TYPE
-		       || this == java.lang.Byte.TYPE
-		       || this == java.lang.Short.TYPE
-		       || this == java.lang.Character.TYPE
-		       || this == java.lang.Integer.TYPE
-		       || this == java.lang.Long.TYPE
-		       || this == java.lang.Float.TYPE
-		       || this == java.lang.Double.TYPE
-		       || this == java.lang.Void.TYPE;
+		return VMClass.isPrimitive(this);
 	}
 
 	/** If this is an array, get the Class representing the
@@ -283,28 +300,38 @@ public class Class {
 	 ** @see java.lang.reflect.Modifer
 	 ** @since JDK1.1
 	 **/
-	public native int getModifiers();
+	public int getModifiers() {
+		return VMClass.getModifiers(this);
+	}
 
 	/** If this is an inner class, return the class that
 	 ** declared it.  If not, return null.
 	 ** @return the declaring class of this class.
 	 ** @since JDK1.1
 	 **/
-	public native Class getDeclaringClass();
+	public Class getDeclaringClass() {
+		return VMClass.getDeclaringClass(this);
+	}
 
 	/** Get all the public inner classes, declared in this
 	 ** class or inherited from superclasses, that are
 	 ** members of this class.
 	 ** @return all public inner classes in this class.
 	 **/
-	public native Class[] getClasses();
+	public Class[] getClasses() {
+		System.getSecurityManager().checkMemberAccess(this,Member.PUBLIC);
+		return VMClass.getClasses(this);
+	}
 
 	/** Get all the inner classes declared in this class.
 	 ** @return all inner classes declared in this class.
 	 ** @exception SecurityException if you do not have access
 	 **            to non-public inner classes of this class.
 	 **/
-	public native Class[] getDeclaredClasses() throws SecurityException;
+	public Class[] getDeclaredClasses() throws SecurityException {
+		System.getSecurityManager().checkMemberAccess(this,Member.DECLARED);
+		return VMClass.getDeclaredClasses(this);
+	}
 
 	/** Get a public constructor from this class.
 	 ** @param args the argument types for the constructor.
@@ -314,7 +341,10 @@ public class Class {
 	 ** @exception SecurityException if you do not have access to public
 	 **            members of this class.
 	 **/
-	public native Constructor getConstructor(Class[] args) throws NoSuchMethodException, SecurityException;
+	public Constructor getConstructor(Class[] args) throws NoSuchMethodException, SecurityException {
+		System.getSecurityManager().checkMemberAccess(this,Member.PUBLIC);
+		return VMClass.getConstructor(this,args);
+	}
 
 	/** Get a constructor declared in this class.
 	 ** @param args the argument types for the constructor.
@@ -324,21 +354,30 @@ public class Class {
 	 ** @exception SecurityException if you do not have access to
 	 **            non-public members of this class.
 	 **/
-	public native Constructor getDeclaredConstructor(Class[] args) throws NoSuchMethodException, SecurityException;
+	public Constructor getDeclaredConstructor(Class[] args) throws NoSuchMethodException, SecurityException {
+		System.getSecurityManager().checkMemberAccess(this,Member.DECLARED);
+		return VMClass.getDeclaredConstructor(this,args);
+	}
 
 	/** Get all public constructors from this class.
 	 ** @return all public constructors in this class.
 	 ** @exception SecurityException if you do not have access to public
 	 **            members of this class.
 	 **/
-	public native Constructor[] getConstructors() throws SecurityException;
+	public Constructor[] getConstructors() throws SecurityException {
+		System.getSecurityManager().checkMemberAccess(this,Member.PUBLIC);
+		return VMClass.getConstructors(this);
+	}
 
 	/** Get all constructors declared in this class.
 	 ** @return all constructors declared in this class.
 	 ** @exception SecurityException if you do not have access to
 	 **            non-public members of this class.
 	 **/
-	public native Constructor[] getDeclaredConstructors() throws SecurityException;
+	public Constructor[] getDeclaredConstructors() throws SecurityException {
+		System.getSecurityManager().checkMemberAccess(this,Member.DECLARED);
+		return VMClass.getDeclaredConstructors(this);
+	}
 
 
 	/** Get a public method from this class.
@@ -350,7 +389,10 @@ public class Class {
 	 ** @exception SecurityException if you do not have access to public
 	 **            members of this class.
 	 **/
-	public native Method getMethod(String name, Class[] args) throws NoSuchMethodException, SecurityException;
+	public Method getMethod(String name, Class[] args) throws NoSuchMethodException, SecurityException {
+		System.getSecurityManager().checkMemberAccess(this,Member.PUBLIC);
+		return VMClass.getMethod(this,name,args);
+	}
 
 	/** Get a method declared in this class.
 	 ** @param name the name of the method.
@@ -361,21 +403,30 @@ public class Class {
 	 ** @exception SecurityException if you do not have access to
 	 **            non-public members of this class.
 	 **/
-	public native Method getDeclaredMethod(String name, Class[] args) throws NoSuchMethodException, SecurityException;
+	public Method getDeclaredMethod(String name, Class[] args) throws NoSuchMethodException, SecurityException {
+		System.getSecurityManager().checkMemberAccess(this,Member.DECLARED);
+		return VMClass.getDeclaredMethod(this,name,args);
+	}
 
 	/** Get all public methods from this class.
 	 ** @return all public methods in this class.
 	 ** @exception SecurityException if you do not have access to public
 	 **            members of this class.
 	 **/
-	public native Method[] getMethods() throws SecurityException;
+	public Method[] getMethods() throws SecurityException {
+		System.getSecurityManager().checkMemberAccess(this,Member.PUBLIC);
+		return VMClass.getMethods(this);
+	}
 
 	/** Get all methods declared in this class.
 	 ** @return all methods declared in this class.
 	 ** @exception SecurityException if you do not have access to
 	 **            non-public members of this class.
 	 **/
-	public native Method[] getDeclaredMethods() throws SecurityException;
+	public Method[] getDeclaredMethods() throws SecurityException {
+		System.getSecurityManager().checkMemberAccess(this,Member.DECLARED);
+		return VMClass.getDeclaredMethods(this);
+	}
 
 
 	/** Get a public field from this class.
@@ -386,7 +437,10 @@ public class Class {
 	 ** @exception SecurityException if you do not have access to public
 	 **            members of this class.
 	 **/
-	public native Field getField(String name) throws NoSuchFieldException, SecurityException;
+	public Field getField(String name) throws NoSuchFieldException, SecurityException {
+		System.getSecurityManager().checkMemberAccess(this,Member.PUBLIC);
+		return VMClass.getField(this,name);
+	}
 
 	/** Get a field declared in this class.
 	 ** @param name the name of the field.
@@ -396,21 +450,29 @@ public class Class {
 	 ** @exception SecurityException if you do not have access to
 	 **            non-public members of this class.
 	 **/
-	public native Field getDeclaredField(String name) throws NoSuchFieldException, SecurityException;
+	public Field getDeclaredField(String name) throws NoSuchFieldException, SecurityException {
+		System.getSecurityManager().checkMemberAccess(this,Member.DECLARED);
+		return VMClass.getDeclaredField(this,name);
+	}
 
 	/** Get all public fields from this class.
 	 ** @return all public fields in this class.
 	 ** @exception SecurityException if you do not have access to public
 	 **            members of this class.
 	 **/
-	public native Field[] getFields() throws SecurityException;
+	public Field[] getFields() throws SecurityException {
+		System.getSecurityManager().checkMemberAccess(this,Member.PUBLIC);
+		return VMClass.getFields(this);
+	}
 
 	/** Get all fields declared in this class.
 	 ** @return all fieilds declared in this class.
 	 ** @exception SecurityException if you do not have access to
 	 **            non-public members of this class.
 	 **/
-	public native Field[] getDeclaredFields() throws SecurityException;
-
+	public Field[] getDeclaredFields() throws SecurityException {
+		System.getSecurityManager().checkMemberAccess(this,Member.DECLARED);
+		return VMClass.getDeclaredFields(this);
+	}
 }
 

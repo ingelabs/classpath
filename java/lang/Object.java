@@ -128,7 +128,7 @@ public class Object {
 	 **/
 	public Object clone() throws CloneNotSupportedException {
 		if(this instanceof Cloneable) {
-			return nativeClone();
+			return VMObject.clone(this);
 		} else {
 			throw new CloneNotSupportedException();
 		}
@@ -154,7 +154,9 @@ public class Object {
 	 ** @exception IllegalMonitorStateException if this Thread
 	 **            does not own the lock on the Object.
 	 **/
-	public final native void notify() throws IllegalMonitorStateException;
+	public final void notify() throws IllegalMonitorStateException {
+		VMObject.notify(this);
+	}
 
 	/** Wakes up all of the threads waiting on this Object's
 	 ** monitor.  Only the owner of the lock on this Object
@@ -169,7 +171,9 @@ public class Object {
 	 ** @exception IllegalMonitorStateException if this Thread
 	 **            does not own the lock on the Object.
 	 **/
-	public final native void notifyAll() throws IllegalMonitorStateException;
+	public final void notifyAll() throws IllegalMonitorStateException {
+		VMObject.notifyAll(this);
+	}
 
 	/** Waits indefinitely for notify() or notifyAll() to be
 	 ** called on the Object in question.  Implementation is
@@ -182,7 +186,7 @@ public class Object {
 	 **            interrupts this Thread.
 	 **/
 	public final void wait() throws IllegalMonitorStateException, InterruptedException {
-		wait(0);
+		VMObject.wait(this,0,0);
 	}
 
 	/** Waits a specified amount of time (or indefinitely if
@@ -211,7 +215,9 @@ public class Object {
 	 ** @exception InterruptedException if some other Thread
 	 **            interrupts this Thread.
 	 **/
-	public final native void wait(long ms) throws IllegalMonitorStateException, InterruptedException;
+	public final void wait(long ms) throws IllegalMonitorStateException, InterruptedException {
+		VMObject.wait(this,ms,0);
+	}
 
 	/** Waits a specified amount of time for notify() or
 	 ** notifyAll() to be called on this Object.  This call
@@ -229,7 +235,7 @@ public class Object {
 	 ** @exception InterruptedException if some other Thread
 	 **            interrupts this Thread.
 	 **/
-	public final native void wait(long ms, int ns) throws IllegalMonitorStateException, InterruptedException;
-
-	private native Object nativeClone();
+	public final void wait(long ms, int ns) throws IllegalMonitorStateException, InterruptedException {
+		VMObject.wait(this,ms,ns);
+	}
 }

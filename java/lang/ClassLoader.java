@@ -24,6 +24,7 @@ import java.lang.reflect.*;
 import gnu.java.lang.*;
 import java.io.*;
 import java.net.*;
+import java.util.*;
 
 /**
  ** The ClassLoader is a way of customizing the way Java
@@ -39,24 +40,30 @@ import java.net.*;
  **/
 
 public abstract class ClassLoader {
+	/* Each instance gets a list of these. */
+	private Hashtable loadedClasses = new Hashtable();
+
 	/** Create a new ClassLoader.
 	 ** @exception SecurityException if you do not have permission
 	 **            to create a ClassLoader.
 	 **/
-	public ClassLoader() throws SecurityException {
+	protected ClassLoader() throws SecurityException {
 		try {
 			System.getSecurityManager().checkCreateClassLoader();
 		} catch(NullPointerException e) {
 		}
 	}
 
-	/** Load a class using this ClassLoader.
+	/** Load a class using this ClassLoader.  Does not resolve it.
 	 ** @param name the name of the class relative to this ClassLoader.
 	 ** @exception ClassNotFoundException if the class cannot be found to
 	 **            be loaded.
 	 ** @return the loaded class.
+	 ** @XXX should this resolve the class or not?  I assume so ...
 	 **/
-	public native Class loadClass(String name) throws ClassNotFoundException;
+	public Class loadClass(String name) throws ClassNotFoundException {
+		return loadClass(name,true);
+	}
 
 	/** Load a class using this ClassLoader, possibly resolving it as well
 	 ** using resolveClass().
@@ -66,13 +73,7 @@ public abstract class ClassLoader {
 	 **            be loaded.
 	 ** @return the loaded class.
 	 **/
-	protected Class loadClass(String name, boolean resolve) throws ClassNotFoundException {
-		Class c = loadClass(name);
-		if(resolve) {
-			resolveClass(c);
-		}
-		return c;
-	}
+	protected abstract Class loadClass(String name, boolean resolve) throws ClassNotFoundException;
 
 	/** Get the URL to a resource using this classloader.
 	 ** @param name the name of the resource relative to this
@@ -100,29 +101,40 @@ public abstract class ClassLoader {
 	 ** @return the class that was defined.
 	 ** @deprecated use defineClass(String,...) instead.
 	 **/
-	protected final native Class defineClass(byte[] data, int offset, int len) throws ClassFormatError;
+	protected final Class defineClass(byte[] data, int offset, int len) throws ClassFormatError {
+		return defineClass(null,data,offset,len);
+	}
 
 	/** Helper to define a class using a string of bytes.
-	 ** @param name the name to give the class.
+	 ** @param name the name to give the class.  null if unknown.
 	 ** @param data the data representing the classfile, in classfile format.
 	 ** @param offset the offset into the data where the classfile starts.
 	 ** @param len the length of the classfile data in the array.
 	 ** @return the class that was defined.
 	 ** @exception ClassFormatError if the byte array is not in proper classfile format.
 	 **/
-	protected final native Class defineClass(String name, byte[] data, int offset, int len) throws ClassFormatError;
+	protected final Class defineClass(String name, byte[] data, int offset, int len) throws ClassFormatError {
+		Class retval = VMClassLoader.defineClass(name,data,offset,len);
+		loadedClasses.put(retval.getName(),retval);
+		return retval;
+	}
 
 	/** Helper to resolve all references to other classes from this class.
 	 ** @param c the class to resolve.
 	 **/
-	protected final native void resolveClass(Class c);
+	protected final void resolveClass(Class c) {
+		VMClassLoader.resolveClass(c);
+	}
 
-	/** Helper to find a Class using the system classloader.
+	/** Helper to find a Class using the system classloader,
+	 ** possibly loading it.
 	 ** @param name the name of the class to find.
 	 ** @return the found class
 	 ** @exception ClassNotFoundException if the class cannot be found.
 	 **/
-	protected final native Class findSystemClass(String name) throws ClassNotFoundException;
+	protected final Class findSystemClass(String name) throws ClassNotFoundException {
+		return Class.forName(name);
+	}
 
 	/** Helper to set the signers of a class.
 	 ** @param c the Class to set signers of
@@ -136,20 +148,34 @@ public abstract class ClassLoader {
 	 ** @param name the name of the class to find.
 	 ** @return the found Class, or null if it is not found.
 	 **/
-	protected final native Class findLoadedClass(String name);
+	protected final Class findLoadedClass(String name) {
+		return (Class)loadedClasses.get(name);
+	}
 
 	/** Get the URL to a resource using the system classloader.
 	 ** @param name the name of the resource relative to the
 	 **        system classloader.
 	 ** @return the URL to the resource.
 	 **/
-	public static final native URL getSystemResource(String name);
+	public static final URL getSystemResource(String name) {
+		try {
+			return new URL("classpath:" + name);
+		} catch(MalformedURLException e) {
+			return null;
+		}
+	}
 
 	/** Get a resource using the system classloader.
 	 ** @param name the name of the resource relative to the
 	 **        system classloader.
 	 ** @return the resource.
 	 **/
-	public static final native InputStream getSystemResourceAsStream(String name);
+	public static final InputStream getSystemResourceAsStream(String name) {
+		try {
+			return getSystemResource(name).openStream();
+		} catch(IOException e) {
+			return null;
+		}
+	}
 }
 

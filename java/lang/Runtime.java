@@ -31,17 +31,14 @@ import java.io.*;
  **/
 
 public class Runtime {
-	private static Runtime currentRuntime = new Runtime();
-
-	/* This class is only instantiable by the VM */
-	private Runtime() {
-	}
+	/* This class cannot be instantiated. */
+	private Runtime() { }
 
 	/** Get the current Runtime object for this JVM.
 	 ** @return the current Runtime object
 	 **/
 	public static Runtime getRuntime() {
-		return currentRuntime;
+		return VMRuntime.getRuntime();
 	}
 
 	/** Exit the Java runtime. This method will either throw
@@ -52,11 +49,7 @@ public class Runtime {
 	 **            fails.
 	 **/
 	public void exit(int status) {
-		try {
-			System.getSecurityManager().checkExit(status);
-		} catch(NullPointerException e) {
-		}
-		nativeExit(status);
+		throw new UnsupportedOperationException();
 	}
 
 	/** Run the garbage collector.
@@ -65,13 +58,17 @@ public class Runtime {
 	 ** collector will have "done its best" by the time
 	 ** it returns.
 	 **/
-	public native void gc();
+	public void gc() {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Run finalization on all Objects that are waiting to be
 	 ** finalized.  Again, a suggestion, though a stronger
 	 ** one.
 	 **/
-	public native void runFinalization();
+	public void runFinalization() {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Tell the VM to run the finalize() method on every
 	 ** single Object before it exits.  Note that the JVM may
@@ -81,7 +78,9 @@ public class Runtime {
 	 ** @param finalizeOnExit whether to finalize all Objects
 	 **        before the JVM exits
 	 **/
-	public native void runFinalizersOnExit(boolean finalizeOnExit);
+	public void runFinalizersOnExit(boolean finalizeOnExit) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Load a native library using the system-dependent
 	 ** filename.
@@ -96,7 +95,7 @@ public class Runtime {
 			System.getSecurityManager().checkLink(filename);
 		} catch(NullPointerException e) {
 		}
-		nativeLoad(filename);
+		throw new UnsupportedOperationException();
 	}
 
 	/** Load a native library using a system-independent "short
@@ -111,7 +110,7 @@ public class Runtime {
 	 **            found.
 	 **/
 	public void loadLibrary(String libname) {
-		load(getLibFilename(libname));
+		throw new UnsupportedOperationException();
 	}
 
 	/** Create a new subprocess with the specified command
@@ -121,7 +120,7 @@ public class Runtime {
 	 **            command
 	 **/
 	public Process exec(String cmdline) {
-		return exec(cmdline, null);
+		return exec(cmdline,null);
 	}
 
 	/** Create a new subprocess with the specified command
@@ -164,20 +163,24 @@ public class Runtime {
 			System.getSecurityManager().checkExec(cmd[0]);
 		} catch(NullPointerException e) {
 		}
-		return nativeExec(cmd,env);
+		throw new UnsupportedOperationException();
 	}
 
 	/** Find out how much memory is still free for allocating
 	 ** Objects on the heap.
 	 ** @return the amount of free memory for more Objects.
 	 **/
-	public native long freeMemory();
+	public long freeMemory() {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Find out how much memory total is available on the
 	 ** heap for allocating Objects.
 	 ** @return the total amount of memory for Objects.
 	 **/
-	public native long totalMemory();
+	public long totalMemory() {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Tell the VM to trace every bytecode instruction that
 	 ** executes (print out a trace of it).  No guarantees
@@ -185,7 +188,9 @@ public class Runtime {
 	 ** allowed to ignore this request.
 	 ** @param on whether to turn instruction tracing on
 	 **/
-	public native void traceInstructions(boolean on);
+	public void traceInstructions(boolean on) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Tell the VM to trace every method call that executes
 	 ** (print out a trace of it).  No guarantees are made as
@@ -193,7 +198,9 @@ public class Runtime {
 	 ** ignore this request.
 	 ** @param on whether to turn method tracing on
 	 **/
-	public native void traceMethodCalls(boolean on);
+	public void traceMethodCalls(boolean on) {
+		throw new UnsupportedOperationException();
+	}
 
 	/** Return a localized version of this InputStream,
 	 ** meaning all characters are localized before they come
@@ -216,9 +223,4 @@ public class Runtime {
 	public OutputStream getLocalizedOutputStream(OutputStream out) {
 		return out;
 	}
-
-	private native void nativeExit(int status);
-	private native void nativeLoad(String filename);
-	private native Process nativeExec(String[] cmd, String[] env);
-	private native String getLibFilename(String libname);
 }
