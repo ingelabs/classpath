@@ -20,7 +20,8 @@ libjavanet_la_SOURCES = InetAddress.c PlainDatagramSocketImpl.c \
 
 endif
 
-INCLUDES += @JAPHAR_CFLAGS@
+INCLUDES += @JAPHAR_CFLAGS@ \
+	    -I$(top_srcdir)/include
 
 libjaphar_javanet_la_LDFLAGS = -version-info 0:0:0
 libjavanet_la_LDFLAGS = -version-info 0:0:0

@@ -28,4 +28,4 @@ libjavalang_la_LDFLAGS = -version-info 0:0:0
 libjava_lang_Math_la_LDFLAGS = -version-info 0:0:0
 
 INCLUDES += @JAPHAR_CFLAGS@ \
-            -I$(top_srcdir)
+            -I$(top_srcdir)/include

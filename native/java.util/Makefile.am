@@ -19,5 +19,5 @@ endif
 libjaphar_javautil_la_LDFLAGS = -version-info 0:0:0 
 libjavautil_la_LDFLAGS = -version-info 0:0:0 
 
-INCLUDES +=  @JAPHAR_CFLAGS@ -I$(top_srcdir)
+INCLUDES +=  @JAPHAR_CFLAGS@ -I$(top_srcdir)/include
 
