@@ -1,4 +1,13 @@
 2005-03-06  Audrius Meskauskas  <audriusa@bluewin.ch>
+
+	* org/omg/CORBA/portable/InputStream: new file
+	* org/omg/CORBA/portable/OutputStream: new file
+	* org/omg/CORBA/portable/IDLEntity: new file
+	* org/omg/CORBA/portable/Streamable: new file	
+	* org/omg/CORBA/Object.java: new file (just to keep code compilable)
+	* org/omg/CORBA/ORB: new file (just to keep code compilable)
+ 
+2005-03-06  Audrius Meskauskas  <audriusa@bluewin.ch>
 	* org/omg/CORBA/TypeCodePackage/BadKind.java: add serialVersionUID v1.4
 	* org/omg/CORBA/SystemException.java: add serialVersionUID v1.4
 	* org/omg/CORBA/TypeCode.java: add serialVersionUID v1.4
