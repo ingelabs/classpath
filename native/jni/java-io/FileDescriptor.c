@@ -111,7 +111,7 @@ Java_java_io_FileDescriptor_nativeInit(JNIEnv *env, jclass clazz)
   jfieldID field;
   jobject filedes;
 
-  init_method = (*env)->GetStaticMethodID (env, clazz, "<init>", "J");
+  init_method = (*env)->GetStaticMethodID (env, clazz, "<init>", "(J)V");
   if (! init_method)
     return;
 

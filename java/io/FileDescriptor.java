@@ -49,6 +49,27 @@ import gnu.classpath.Configuration;
  */
 public final class FileDescriptor
 {
+  /**
+   * A <code>FileDescriptor</code> representing the system standard input
+   * stream.  This will usually be accessed through the
+   * <code>System.in</code>variable.
+   */
+  public static final FileDescriptor in = null;
+
+  /**
+   * A <code>FileDescriptor</code> representing the system standard output
+   * stream.  This will usually be accessed through the
+   * <code>System.out</code>variable.
+   */
+  public static final FileDescriptor out = null;
+
+  /**
+   * A <code>FileDescriptor</code> representing the system standard error
+   * stream.  This will usually be accessed through the
+   * <code>System.err</code>variable.
+   */
+  public static final FileDescriptor err = null;
+
   static
     {
       if (Configuration.INIT_LOAD_LIBRARY)
@@ -71,27 +92,6 @@ public final class FileDescriptor
   // EXCL is used only when making a temp file.
   static final int EXCL   = 8;
   static final int SYNC   = 16;
-
-  /**
-   * A <code>FileDescriptor</code> representing the system standard input
-   * stream.  This will usually be accessed through the 
-   * <code>System.in</code>variable.
-   */
-  public static final FileDescriptor in = null;
-
-  /**
-   * A <code>FileDescriptor</code> representing the system standard output
-   * stream.  This will usually be accessed through the 
-   * <code>System.out</code>variable.
-   */
-  public static final FileDescriptor out = null;
-
-  /**
-   * A <code>FileDescriptor</code> representing the system standard error
-   * stream.  This will usually be accessed through the 
-   * <code>System.err</code>variable.
-   */
-  public static final FileDescriptor err = null;
 
   /**
    * This is the actual native file descriptor value

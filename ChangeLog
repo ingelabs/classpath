@@ -1,3 +1,11 @@
+2003-04-25  Stephen Crawley  <crawley@dstc.edu.au>
+
+	* java/io/FileDescriptor.java : do dummy initialisation of
+          the in/out/err statics before calling nativeInit, not after
+	* native/jni/java-io/FileDescriptor.c (nativeInit) : correct
+          the method signature for the FileDescriptor constructor used
+          to create the in/out/err FileDescriptor objects
+
 2003-04-23  Casey Marshall  <rsdio@metastatic.org>
 
 	Removed files:
