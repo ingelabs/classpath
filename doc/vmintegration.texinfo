@@ -80,7 +80,7 @@ that actually runs Java.
 There are several VMs out there, here is a small list.
 
 @itemize @bullet
-@item @uref{http://www.japhar.org,Japhar}
+@item @uref{http://www.hungry.com/old-hungry/products/japhar/,Japhar}
 Japhar was the first VM to use GNU Classpath.  Today you can see that
 sort of relationship in the source tree which denotes several Japhar
 specific files as a reference implementation of those pieces.  This VM

@@ -11,7 +11,7 @@
 <en>
 <p>
 The primary target for GNU Classpath was originally <createlink
-url="http://www.japhar.org/" name="Japhar">.  Japhar-0.07 works out-of-the-box with
+url="http://www.hungry.com/old-hungry/products/japhar/" name="Japhar">.  Japhar-0.07 works out-of-the-box with
 GNU Classpath-0.00.  Current Japhar versions do not work with current versions
 of GNU Classpath.
 </p>

@@ -84,8 +84,8 @@ implemented classes are already up to the Java 1.2 spec.
 <en>
 GNU Classpath requires that Japhar 0.09 be installed along with a
 single patch to Japhar 0.09 included with the release.  Information on
-obtaining Japhar is available from <createlink url="http://www.japhar.org/"
-name="http://www.japhar.org/">.  A working C compiler is also required.  You
+obtaining Japhar is available from <createlink url="http://www.hungry.com/old-hungry/products/japhar/"
+name="http://www.hungry.com/old-hungry/products/japhar/">.  A working C compiler is also required.  You
 will need IBM's Jikes Java compiler installed if you elect to
 recompile the Java classes and Sun's 1.1.8 JDK javah installed to
 create native header files.  RPMs compatible with Red Hat 7 have been

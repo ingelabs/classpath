@@ -1,3 +1,14 @@
+2004-11-25  Mark Wielaard  <mark@klomp.org>
+
+	* doc/vmintegration.texinfo: Fix link to Japhar.
+	* doc/www.gnu.org/stories.wml: Likewise.
+	* doc/www.gnu.org/announce/19990206.wml: Likewise.
+	* doc/www.gnu.org/announce/20001120.wml: Likewise.
+	* doc/www.gnu.org/announce/20010106.wml: Likewise.
+	* doc/www.gnu.org/downloads/19990206.wml: Likewise.
+	* doc/www.gnu.org/downloads/20001120.wml: Likewise.
+	* doc/www.gnu.org/downloads/20010106.wml: Likewise.
+
 2004-11-23 Jerry Quinn <jlquinn@optonline.net>
 
 	* java/awt/Menu.java (AccessibleAWTMenu

@@ -78,8 +78,8 @@ already up to the Java 1.2 spec.
 <p>
 <en>
 GNU Classpath requires that Japhar 0.07 be installed.  Information on
-obtaining Japhar is available from <createlink url="http://www.japhar.org/"
-name="http://www.japhar.org/">.  A working C compiler is also required.  You
+obtaining Japhar is available from <createlink url="http://www.hungry.com/old-hungry/products/japhar/"
+name="http://www.hungry.com/old-hungry/products/japhar/">.  A working C compiler is also required.  You
 will need the Sun JDK installed if you elect to recompile the Java
 classes.
 </en>
