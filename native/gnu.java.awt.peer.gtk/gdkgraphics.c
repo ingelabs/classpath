@@ -1,5 +1,35 @@
 #include "gtkpeer.h"
 #include "GdkGraphics.h"
+#include <gdk/gdkprivate.h>
+
+#define GDK_STABLE_IS_PIXMAP(d) (((GdkWindowPrivate *)d)->window_type == GDK_WINDOW_PIXMAP)
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_copyState
+  (JNIEnv *env, jobject obj, jobject old)
+{
+  struct graphics *g, *g_old;
+
+  g = (struct graphics *) malloc (sizeof (struct graphics));
+  g_old = (struct graphics *) NSA_GET_PTR (env, old);
+
+  *g = *g_old;
+
+  gdk_threads_enter ();
+
+  g->gc = gdk_gc_new (g->drawable);
+  gdk_gc_copy (g->gc, g_old->gc);
+
+  if (GDK_STABLE_IS_PIXMAP (g->drawable))
+    gdk_pixmap_ref (g->drawable);
+  else /* GDK_IS_WINDOW (g->drawable) */
+    gdk_window_ref (g->drawable);
+
+  gdk_colormap_ref (g->cm);
+
+  gdk_threads_leave ();
+
+  NSA_SET_PTR (env, obj, g);
+}
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState__II
   (JNIEnv *env, jobject obj, jint width, jint height)
@@ -13,6 +43,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState__II
   g->drawable = (GdkDrawable *) gdk_pixmap_new (NULL, width, height, 
 						gdk_rgb_get_visual ()->depth);
   g->cm = gdk_rgb_get_cmap ();
+  gdk_colormap_ref (g->cm);
   g->gc = gdk_gc_new (g->drawable);
   gdk_threads_leave ();
 
@@ -51,7 +82,9 @@ JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState__Lg
       g->drawable = (GdkDrawable *) widget->window;
     }
 
+  gdk_window_ref (g->drawable);
   g->cm = gtk_widget_get_colormap (widget);
+  gdk_colormap_ref (g->cm);
   g->gc = gdk_gc_new (g->drawable);
   gdk_gc_copy (g->gc, widget->style->fg_gc[GTK_STATE_NORMAL]);
   color = widget->style->fg[GTK_STATE_NORMAL];
@@ -80,13 +113,23 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_dispose
   if (!g) return;		/* dispose has been called more than once */
   
   gdk_threads_enter ();
+  gdk_flush ();
+
   gdk_gc_destroy (g->gc);
+
+  if (GDK_STABLE_IS_PIXMAP (g->drawable))
+    gdk_pixmap_unref (g->drawable);
+  else /* GDK_IS_WINDOW (g->drawable) */
+    gdk_window_unref (g->drawable);
+
+  gdk_colormap_unref (g->cm);
+
   gdk_threads_leave ();
 
   free (g);
 }
 
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_translate
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_translateNative
   (JNIEnv *env, jobject obj, jint x, jint y)
 {
   struct graphics *g;
@@ -195,7 +238,8 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_copyPixmap
 			g1->gc,
 			x + g1->x_offset, y + g1->y_offset,
 			(GdkWindow *)g2->drawable,
-			0, 0, width, height);
+			0 + g2->x_offset, 0 + g2->y_offset, 
+			width, height);
   gdk_threads_leave ();
 }
   
@@ -404,34 +448,5 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_setClipRectangle
 
   gdk_threads_enter ();
   gdk_gc_set_clip_rectangle (g->gc, &rectangle);
-  gdk_threads_leave ();
-}
-
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_clipRect
-  (JNIEnv *env, jobject obj, jint x1, jint y1, jint width1, jint height1, 
-   jint x2, jint y2, jint width2, jint height2)
-{
-  struct graphics *g;
-  GdkRectangle cur_clip, req_clip, new_clip;
-
-  g = (struct graphics *) NSA_GET_PTR (env, obj);
-
-  cur_clip.x = x1;
-  cur_clip.y = y1;
-  cur_clip.width = width1;
-  cur_clip.height = height1;
-  
-  req_clip.x = x2;
-  req_clip.y = y2;
-  req_clip.width = width2;
-  req_clip.height = height2;
-
-  gdk_rectangle_intersect (&cur_clip, &req_clip, &new_clip);
-  
-  new_clip.x += g->x_offset;
-  new_clip.y += g->y_offset;
-
-  gdk_threads_enter ();
-  gdk_gc_set_clip_rectangle (g->gc, &new_clip);
   gdk_threads_leave ();
 }

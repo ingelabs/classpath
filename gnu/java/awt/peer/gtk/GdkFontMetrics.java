@@ -33,13 +33,14 @@ public class GdkFontMetrics extends FontMetrics
   }
 
   /* 
-     Sun's Motif implementation always returns 0 here, but
+     Sun's Motif implementation always returns 0 or 1 here (???), but
      going by the X11 man pages, it seems as though we should return
      font.ascent + font.descent.
   */
   public int getLeading ()
   {
-    return metrics[ASCENT] + metrics[DESCENT];
+    return 1;
+//      return metrics[ASCENT] + metrics[DESCENT];
   }
 
   public int getAscent ()

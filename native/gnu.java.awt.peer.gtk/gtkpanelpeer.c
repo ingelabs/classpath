@@ -40,7 +40,8 @@ Java_gnu_java_awt_peer_gtk_GtkPanelPeer_gtkPanelNew
   set_parent (layout, GTK_CONTAINER (parent));
 
   gtk_widget_realize (layout);
-  connect_awt_hook (env, obj, layout, 1, layout->window);
+  connect_awt_hook (env, obj, layout, 1, GTK_LAYOUT (layout)->bin_window);
+  set_visible (layout, 1);
 
   NSA_SET_PTR (env, obj, layout);
   gdk_threads_leave ();

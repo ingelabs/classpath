@@ -71,16 +71,6 @@ public class GtkWindowPeer extends GtkContainerPeer
   protected void postConfigureEvent (int x, int y, int width, int height,
 				     int top, int left, int bottom, int right)
   {
-//      if (top < 0
-//  	|| left < 0
-//  	|| bottom < 0
-//  	|| right < 0)
-//        {
-//  	System.out.println ("GOT HEREEEEEEEEEEEEE!\n");
-//  	return;
-//        }
-
-
     /* 
        If our borders change (which often happens when we opaque resize),
        we need to make sure that a new layout will happen, since Sun
@@ -91,6 +81,7 @@ public class GtkWindowPeer extends GtkContainerPeer
 	|| insets.bottom != bottom
 	|| insets.right != right)
       {
+	System.out.println ("invalidating");
 	awtComponent.invalidate ();
       }
     

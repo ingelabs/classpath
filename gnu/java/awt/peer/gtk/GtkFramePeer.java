@@ -22,10 +22,12 @@
 package gnu.java.awt.peer.gtk;
 import java.awt.*;
 import java.awt.peer.FramePeer;
+import java.awt.event.*;
 
 public class GtkFramePeer extends GtkWindowPeer
     implements FramePeer
 {
+  int menuBarHeight = 0;
   native int getMenuBarHeight ();
 
   public GtkFramePeer (Frame f)
@@ -39,13 +41,18 @@ public class GtkFramePeer extends GtkWindowPeer
       /* TODO: Waiting on Toolkit Image routines */
   }
 
+  public Graphics getGraphics ()
+  {
+    GdkGraphics g = new GdkGraphics (this);
+    g.translateNative (-insets.left, -insets.top);
+    return g;
+  }
+
   public void setBounds (int x, int y, int width, int height)
   {
-    Insets insets = ((Frame)awtComponent).getInsets ();
-    super.setBounds (x, y, 
-		     width - insets.left - insets.right, 
-		     height - insets.top - insets.bottom + 
-		     getMenuBarHeight ());
+    super.setBounds (0, 0, width - insets.left - insets.right,
+		     height - insets.top - insets.bottom 
+		     + getMenuBarHeight ());
   }
 
   protected void postConfigureEvent (int x, int y, int width, int height,
@@ -53,13 +60,32 @@ public class GtkFramePeer extends GtkWindowPeer
   {
     if (((Frame)awtComponent).getMenuBar () != null)
       {
-	top += getMenuBarHeight ();
+	menuBarHeight = getMenuBarHeight ();
+	top += menuBarHeight;
       }
 
-    super.postConfigureEvent (x, y, 
+    super.postConfigureEvent (0, 0,
 			      width + left + right,
-			      height + top + bottom - getMenuBarHeight(), 
+			      height + top + bottom - menuBarHeight,
 			      top, left, bottom, right);
+  }
+
+  protected void postMouseEvent(int id, long when, int mods, int x, int y, 
+				int clickCount, boolean popupTrigger)
+  {
+    super.postMouseEvent (id, when, mods, 
+			  x + insets.left, y + insets.top, 
+			  clickCount, popupTrigger);
+  }
+
+  protected void postExposeEvent (int x, int y, int width, int height)
+  {
+//      System.out.println ("x + insets.left:" + (x + insets.left));
+//      System.out.println ("y + insets.top :" + (y + insets.top));
+    q.postEvent (new PaintEvent (awtComponent, PaintEvent.PAINT,
+				 new Rectangle (x + insets.left, 
+						y + insets.top, 
+						width, height)));
   }
 }
 

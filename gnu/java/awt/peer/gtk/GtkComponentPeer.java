@@ -175,6 +175,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void setBackground (Color c) 
   {
+    System.out.println ("setBackground [UNIMPLEMENTED");
   }
 
   native public void setNativeBounds (int x, int y, int width, int height);
@@ -206,6 +207,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void setForeground (Color c) 
   {
+    System.out.println ("setForeground [UNIMPLEMENTED");
   }
 
   public Color getForeground ()

@@ -59,6 +59,7 @@ struct graphics
   GdkDrawable *drawable;
   GdkGC *gc;
   GdkColormap *cm;
+  jint x_offset, y_offset;
 };
 
 #define AWT_DEFAULT_CURSOR 0

@@ -74,6 +74,7 @@ setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width,
   gtk_widget_show (vbox);
 
   gtk_widget_realize (window);
+/*    setBounds (window, x, y, width, height); */
 
   connect_awt_hook (env, obj, window, 1, window->window);
   set_visible (window, visible);
@@ -177,8 +178,6 @@ setBounds (GtkWidget *widget, jint x, jint y, jint width, jint height)
 {
   gint current_x, current_y;
   gint origin_x, origin_y;
-
-  /* XXX: Need to be able to eventually re-enable this */
 
 /*    gdk_window_get_root_origin (widget->window, &current_x, &current_y); */
 

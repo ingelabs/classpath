@@ -12,10 +12,25 @@ public class GdkGraphics extends Graphics
   Font font;
   Rectangle clip;
 
+  int xOffset = 0;
+  int yOffset = 0;
+
   static final int GDK_COPY = 0, GDK_XOR = 2;
 
   native int[] initState (GtkComponentPeer component);
   native void initState (int width, int height);
+  native void copyState (GdkGraphics g);
+
+  GdkGraphics (GdkGraphics g)
+  {
+    color = g.color;
+    xorColor = g.xorColor;
+    font = g.font;
+    clip = new Rectangle (g.clip);
+    component = g.component;
+
+    copyState (g);
+  }
 
   GdkGraphics (int width, int height)
   {
@@ -37,18 +52,14 @@ public class GdkGraphics extends Graphics
 
   public native void clearRect (int x, int y, int width, int height);
 
-  native void clipRect (int x1, int y1, int width1, int height1,
-			int x2, int y2, int width2, int height2);
-
   public void clipRect (int x, int y, int width, int height)
   {
-    clipRect (clip.x, clip.y, clip.width, clip.height,
-	      x, y, width, height);
-
-    clip.x = x;
-    clip.y = y;
-    clip.width = width;
-    clip.height = height;
+    if (!clip.intersects (new Rectangle (x, y, width, height)))
+      {
+	System.out.println ("DONT' INTERSETCT");
+      }
+    clip = clip.intersection (new Rectangle (x, y, width, height));
+    setClipRectangle (clip.x, clip.y, clip.width, clip.height);
   }
 
   native public void copyArea (int x, int y, int width, int height, 
@@ -56,10 +67,19 @@ public class GdkGraphics extends Graphics
 
   public Graphics create ()
   {
-    System.out.println ("create new graphics");
-    return new GdkGraphics (component);
+    return new GdkGraphics (this);
   }
 
+//    public Graphics create (int x, int y, int width, int height)
+//    {
+//      GdkGraphics g = new GdkGraphics (this);
+//      System.out.println ("translating by: " + x +" " + y);
+//      g.translate (x, y);
+//      g.clipRect (0, 0, width, height);
+
+//      return g;
+//    }
+  
   native public void dispose ();
 
   native void copyPixmap (Graphics g, int x, int y, int width, int height);
@@ -80,6 +100,13 @@ public class GdkGraphics extends Graphics
 
   public boolean drawImage (Image img, int x, int y, ImageObserver observer)
   {
+    if (img instanceof GtkOffScreenImage)
+      {
+	copyPixmap (img.getGraphics (), 
+		    x, y, img.getWidth (null), img.getHeight (null));
+	return true;
+      }
+
     return drawImage (img, x, y, component.getBackground(), observer);
   }
 
@@ -152,7 +179,8 @@ public class GdkGraphics extends Graphics
 
   public Rectangle getClipBounds ()
   {
-    return new Rectangle (clip); // Rectangles are not immutable
+//      System.out.println ("returning CLIP: " + clip);
+    return new Rectangle (clip.x, clip.y, clip.width, clip.height);
   }
 
   public Color getColor ()
@@ -231,5 +259,13 @@ public class GdkGraphics extends Graphics
 		color.getBlue  () ^ xorColor.getBlue ());
   }
 
-  native public void translate (int x, int y);
+  native public void translateNative (int x, int y);
+
+  public void translate (int x, int y)
+  {
+    clip.x -= x;
+    clip.y -= y;
+
+    translateNative (x, y);
+  }
 }

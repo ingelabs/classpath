@@ -280,7 +280,9 @@ awt_event_handler (GdkEvent *event)
 				    button_to_awt_mods (event->button.button), 
 				      (jint)event->button.x,
 				      (jint)event->button.y, 
-				      click_count, JNI_FALSE);
+				      click_count, 
+				      (event->button.button == 3) ? JNI_TRUE :
+				                                    JNI_FALSE);
 
 	  /*	  grab_counter++;
 	  gdk_pointer_grab (event->any.window,
@@ -348,7 +350,7 @@ awt_event_handler (GdkEvent *event)
 	      (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr, postMouseEventID,
 					  AWT_MOUSE_DRAGGED,
 					  (jlong)event->motion.time,
-				       state_to_awt_mods (event->motion.state),
+				      state_to_awt_mods (event->motion.state),
 					  (jint)event->motion.x,
 					  (jint)event->motion.y,
 					  0, JNI_FALSE);
@@ -379,13 +381,13 @@ awt_event_handler (GdkEvent *event)
 
 	    gdk_window_get_user_data (event->any.window, (void **) &widget);
 	    
-	    if (widget && GTK_IS_WINDOW (widget))
+	    if (widget && GTK_WIDGET_TOPLEVEL (widget))
 	      {
 		gint top, left, right, bottom;
 		gint x, y, w, h, wb, d;
 
 		/* calculate our insets */
-		gdk_window_get_root_geometry (widget->window, 
+		gdk_window_get_root_geometry (event->any.window, 
 					      &x, &y, &w, &h, &wb, &d);
 
 		top = event->configure.y - y;

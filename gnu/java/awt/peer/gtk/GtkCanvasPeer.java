@@ -13,8 +13,6 @@ public class GtkCanvasPeer extends GtkComponentPeer implements CanvasPeer
     super (c);
     Dimension d = c.getSize();
     gtkCanvasNew (cp, d.width, d.height);
-
-    Point p = c.getLocation ();
   }
 
   public Graphics getGraphics ()
@@ -34,6 +32,7 @@ public class GtkCanvasPeer extends GtkComponentPeer implements CanvasPeer
 	  try 
 	    {
 	      Graphics g = getGraphics ();
+	      g.setClip (((PaintEvent)event).getUpdateRect());
 		
 	      if (id == PaintEvent.PAINT)
 		awtComponent.paint (g);
