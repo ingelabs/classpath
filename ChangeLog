@@ -1,3 +1,8 @@
+2004-10-28  Noa Resare  <noa@resare.com>
+
+ 	* java/awt/geom/GeneralPath.java (currentSegment):
+ 	Fix typo in transform.transform() invocation.
+
 2004-10-27  Mark Wielaard  <mark@klomp.org>
 
 	* java/security/cert/X509Certificate.java: Fully qualify extends to
