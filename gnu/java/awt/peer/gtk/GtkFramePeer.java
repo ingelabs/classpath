@@ -85,25 +85,37 @@ public class GtkFramePeer extends GtkWindowPeer
         insets.top -= menuBarHeight;
       }
       menuBar = (MenuBarPeer) ((MenuBar) bar).getPeer();
-      setMenuBarPeer(menuBar);     
+      setMenuBarPeer(menuBar);
       menuBarHeight = getMenuBarHeight (menuBar);
       if (oldHeight != menuBarHeight)
-        moveLayout(oldHeight-menuBarHeight);
+        moveLayout(oldHeight - menuBarHeight);
       insets.top += menuBarHeight;
-      awtComponent.doLayout(); 
+      awtComponent.doLayout();
     }
   }
-  
+
   public void setBounds (int x, int y, int width, int height)
   {
     nativeSetBounds (x, y,
-                    width - insets.left - insets.right,
-		    height - insets.top - insets.bottom
-		    + menuBarHeight);
-  }
+		     width - insets.left - insets.right,
+		     height - insets.top - insets.bottom
+		     + menuBarHeight);
+  }  
+  
+  public void setResizable (boolean resizable)
+  {
+    // Call setSize; otherwise when resizable is changed from true to
+    // false the frame will shrink to the dimensions it had before it
+    // was resizable.
+    setSize (awtComponent.getWidth() - insets.left - insets.right,
+             awtComponent.getHeight() - insets.top - insets.bottom
+             + menuBarHeight);
+    set ("allow_shrink", resizable);
+    set ("allow_grow", resizable);
+  }  
   
   protected void postInsetsChangedEvent (int top, int left,
-                                         int bottom, int right)
+					 int bottom, int right)
   {
     insets.top = top + menuBarHeight;
     insets.left = left;
@@ -149,19 +161,7 @@ public class GtkFramePeer extends GtkWindowPeer
     g.translate (-insets.left, -insets.top);
     return g;
   }
-
-  public void setResizable (boolean resizable)
-  {
-    // Call setSize; otherwise when resizable is changed from true to
-    // false the frame will shrink to the dimensions it had before it
-    // was resizable.
-    setSize (awtComponent.getWidth() - insets.left - insets.right,
-             awtComponent.getHeight() - insets.top - insets.bottom
-             + menuBarHeight);
-    set ("allow_shrink", resizable);
-    set ("allow_grow", resizable);
-  }
-
+  
   protected void postConfigureEvent (int x, int y, int width, int height)
   {
     int frame_x = x - insets.left;
