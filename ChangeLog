@@ -1,5 +1,18 @@
 2004-10-02  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/CharArrayWriter.java
+	(resize): Remove redundant final modifier.
+	* java/io/FileDescriptor.java,
+	java/io/FileInputStream.java,
+	java/io/FileOutputStream.java,
+	java/io/ObjectOutputStream.java,
+	java/io/ObjectStreamClass.java,
+	java/io/PipedInputStream.java,
+	java/io/RandomAccessFile.java:
+	Reworked import statements.
+
+2004-10-02  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/rmi/rmic/RMIC.java,
 	gnu/java/rmi/server/RMIHashes.java,
 	gnu/java/rmi/server/RMIObjectInputStream.java,
