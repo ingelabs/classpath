@@ -14,14 +14,14 @@ public abstract class Selector
 	return SelectorProvider.provider().openSelector();
     }
 
-    abstract  void close();
-    abstract  boolean isOpen();
-    abstract  Set keys();
-    abstract  SelectorProvider provider();
-    abstract  int select();
-    abstract  int select(long timeout);
-    abstract  Set selectedKeys();
-    abstract  Set cancelledKeys();
-    abstract  int selectNow();
-    abstract  Selector wakeup();
+    public abstract  void close();
+    public abstract  boolean isOpen();
+    public abstract  Set keys();
+    public abstract  SelectorProvider provider();
+    public abstract  int select();
+    public abstract  int select(long timeout);
+    public abstract  Set selectedKeys();
+    public abstract  Set cancelledKeys();
+    public abstract  int selectNow();
+    public abstract  Selector wakeup();
 }

@@ -16,28 +16,28 @@ public class JEditorPane extends JTextComponent
     boolean manages_focus;
 
 
-    JEditorPane()
+    public JEditorPane()
     {
     }
 
-    JEditorPane(String url)
+    public JEditorPane(String url)
     {
 	this();
 	setPage(url);
     }
     
-    JEditorPane(String type, String text)
+    public JEditorPane(String type, String text)
     {
 	ctype = text;
 	setText(text);
     }
     
-    JEditorPane(URL url)
+    public JEditorPane(URL url)
     {
 	setPage(url);
     }
 
-  void addHyperlinkListener(HyperlinkListener listener)
+    void addHyperlinkListener(HyperlinkListener listener)
     {  }
     
     protected  EditorKit createDefaultEditorKit()
@@ -50,7 +50,7 @@ public class JEditorPane extends JTextComponent
   {
   }
 
-  AccessibleContext getAccessibleContext()
+  public AccessibleContext getAccessibleContext()
   {      return null;  }
 
   String getContentType()
@@ -92,13 +92,13 @@ public class JEditorPane extends JTextComponent
     public String getText()
     { return super.getText();    }
     
-    String getUIClassID()
-  {    return "JEditorPane";  }
+    public String getUIClassID()
+    {    return "JEditorPane";  }
 
-  boolean isFocusCycleRoot()
-    { return focus_root;
-  }
-  boolean isManagingFocus()
+    public boolean isFocusCycleRoot()
+    { return focus_root;    }
+
+    public boolean isManagingFocus()
     { return manages_focus;  }
 
   protected  String paramString()
@@ -174,7 +174,7 @@ public class JEditorPane extends JTextComponent
 	//    Sets the current URL being displayed.  
     }
     
-    void setText(String t)
+    public void setText(String t)
     {	
 	super.setText(t);
     }

@@ -26,7 +26,7 @@ public class BasicOptionPaneUI extends OptionPaneUI
 
 	System.out.println("     -------------: " + pane);
 
-	JLabel  message   = pane.msg != null ? new JLabel(pane.msg) : null;
+	JLabel  message   = pane.msg != null ? new JLabel((String)pane.msg) : null;
 	JButton ok_button = new JButton("Ok");	
 
 	ok_button.addActionListener(new ActionListener()

@@ -6,6 +6,8 @@ import javax.swing.border.*;
 
 class BasicBorder extends MatteBorder
 {
+    static Color BtnPointClr = new Color( 180, 180, 180);
+
 	BasicBorder()
 	{
 	    super(5,5,5,5, null);
@@ -22,7 +24,7 @@ class BasicBorder extends MatteBorder
 
 	    if (g != null)
 		{
-		    g.setColor( Defaults.BtnPointClr);
+		    g.setColor( BtnPointClr);
 		    g.draw3DRect( 0, 0, width-1, height-1, true);
 		}
 	}
@@ -49,8 +51,7 @@ class PanelBorder extends MatteBorder
 
 public class BasicDefaults extends UIDefaults
 {
-
-    BasicDefaults()
+    public BasicDefaults()
     {
 	//	System.out.println("BasicDefaults !!!!!!!!!!!!!!!!!!!!!!!!!");
 	put("JButton", new BasicButtonUI());

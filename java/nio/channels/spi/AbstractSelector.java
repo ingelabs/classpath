@@ -19,7 +19,7 @@ public abstract class AbstractSelector extends Selector
     {
     }
 
-    void close()
+    public void close()
     {
 	if (closed)
 	    return;
@@ -41,8 +41,8 @@ public abstract class AbstractSelector extends Selector
     {
 	return ! closed;
     }
-
-    SelectorProvider provider()
+    
+    public SelectorProvider provider()
     {
 	return provider;
     }

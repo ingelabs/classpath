@@ -12,6 +12,15 @@ import javax.swing.plaf.*;
 import java.util.*;
 import java.beans.*;
 
+/**
+ * Every component in swing inherits from this class (JLabel, JButton, etc).
+ * It contains generic methods to manage events, properties and sizes.
+ * Actual drawing of the component is channeled to a look-and-feel class
+ * that is implemented elsewhere.
+ *
+ * @author Ronald Veldema (rveldema@cs.vu.nl)
+ */
+
 public abstract class JComponent extends Container implements Serializable
 {
 	Dimension pref,min,max;
@@ -26,13 +35,13 @@ public abstract class JComponent extends Container implements Serializable
 	Vector change_list;
 	Hashtable prop_hash;
 
-	JComponent()
+        public JComponent()
 	{
 		super();
 		super.setLayout(new FlowLayout());
-
+		
 		//eventMask |= AWTEvent.COMP_KEY_EVENT_MASK;
-		eventMask |= AWTEvent.KEY_EVENT_MASK;
+		enableEvents( AWTEvent.KEY_EVENT_MASK );
 
 		//updateUI(); // get a proper ui
 	}
@@ -59,99 +68,99 @@ public abstract class JComponent extends Container implements Serializable
 			prop_hash = new Hashtable();
 		return prop_hash;
 	}
-	Vector get_veto_list()
+	public Vector get_veto_list()
 	{
 		if (veto_list == null)
 			veto_list = new Vector();
 		return veto_list;
 	}
-	Vector get_change_list()
+	public Vector get_change_list()
 	{
 		if (change_list == null)
 			change_list = new Vector();
 		return change_list;
 	}
-	Vector get_ancestor_list()
+	public Vector get_ancestor_list()
 	{
 		if (ancestor_list == null)
 			ancestor_list = new Vector();
 		return ancestor_list;
 	}
 
-	Object getClientProperty(Object key)
-{	return get_prop_hash().get(key);    }
+	public Object getClientProperty(Object key)
+        {	return get_prop_hash().get(key);    }
 
-	void putClientProperty(Object key, Object value)
+	public void putClientProperty(Object key, Object value)
 	{    get_prop_hash().put(key, value);   }
 
 
-	void removeAncestorListener(AncestorListener listener)
+	public void removeAncestorListener(AncestorListener listener)
 	{  get_ancestor_list().removeElement(listener);  }
 
-	void removePropertyChangeListener(PropertyChangeListener listener)
+        public void removePropertyChangeListener(PropertyChangeListener listener)
 	{  get_change_list().removeElement(listener);   }
 
-	void removePropertyChangeListener(String propertyName, PropertyChangeListener listener)
+	public void removePropertyChangeListener(String propertyName, PropertyChangeListener listener)
 	{  /* FIXME */   get_change_list().removeElement(listener);   }
 
-	void removeVetoableChangeListener(VetoableChangeListener listener)
+	public void removeVetoableChangeListener(VetoableChangeListener listener)
 	{  get_veto_list().removeElement(listener);   }
 
-	void addAncestorListener(AncestorListener listener)
+	public void addAncestorListener(AncestorListener listener)
 	{   get_ancestor_list().addElement(listener);  }
 
-	void addPropertyChangeListener(PropertyChangeListener listener)
+	public void addPropertyChangeListener(PropertyChangeListener listener)
 	{  get_change_list().addElement(listener);   }
 
-	void addPropertyChangeListener(String propertyName, PropertyChangeListener listener)
+	public void addPropertyChangeListener(String propertyName, PropertyChangeListener listener)
 	{ /* FIXME */ get_change_list().addElement(listener);   }
 
-	void addVetoableChangeListener(VetoableChangeListener listener)
+	public void addVetoableChangeListener(VetoableChangeListener listener)
 	{  get_veto_list().addElement(listener);    }
 
-	void computeVisibleRect(Rectangle rect)
+	public void computeVisibleRect(Rectangle rect)
 	{
 		//Returns the Component's "visible rect rectangle" - the intersection of the visible rectangles for this component and all of its ancestors.
 		//super.computeVisibleRect(rect);
 	}
 
 
-	void firePropertyChange(String propertyName, boolean oldValue, boolean newValue)
+	public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue)
 	{
 		//Reports a bound property change.
 	}
-	void firePropertyChange(String propertyName, byte oldValue, byte newValue)
+	public void firePropertyChange(String propertyName, byte oldValue, byte newValue)
 	{
 		//    Reports a bound property change.
 	}
-	void firePropertyChange(String propertyName, char oldValue, char newValue)
+	public void firePropertyChange(String propertyName, char oldValue, char newValue)
 	{
 		//Reports a bound property change.
 	}
 
-	void firePropertyChange(String propertyName, double oldValue, double newValue)
+	public void firePropertyChange(String propertyName, double oldValue, double newValue)
 	{
 		//Reports a bound property change.
 	}
 
-	void firePropertyChange(String propertyName, float oldValue, float newValue)
+	public void firePropertyChange(String propertyName, float oldValue, float newValue)
 	{
 		//       Reports a bound property change.
 	}
-	void firePropertyChange(String propertyName, int oldValue, int newValue)
+	public void firePropertyChange(String propertyName, int oldValue, int newValue)
 	{
 		//       Reports a bound property change.
 	}
-	void firePropertyChange(String propertyName, long oldValue, long newValue)
+	public void firePropertyChange(String propertyName, long oldValue, long newValue)
 	{
 		//Reports a bound property change. protected
 	}
 
-	void firePropertyChange(String propertyName, Object oldValue, Object newValue)
+	public void firePropertyChange(String propertyName, Object oldValue, Object newValue)
 	{
 		//       Support for reporting bound property changes.
 	}
-	void firePropertyChange(String propertyName, short oldValue, short newValue)
+	public void firePropertyChange(String propertyName, short oldValue, short newValue)
 	{
 		//       Reports a bound property change.
 	}
@@ -162,12 +171,13 @@ public abstract class JComponent extends Container implements Serializable
 		//       Support for reporting constrained property changes.
 	}
 
-	AccessibleContext getAccessibleContext()
+        public AccessibleContext getAccessibleContext()
 	{
 		//       Get the AccessibleContext associated with this JComponent
 		return null;
 	}
-	ActionListener getActionForKeyStroke(KeyStroke aKeyStroke)
+	
+        public ActionListener getActionForKeyStroke(KeyStroke aKeyStroke)
 	{
 		//Return the object that will perform the action registered for a given keystroke.
 		return null;
@@ -183,7 +193,7 @@ public abstract class JComponent extends Container implements Serializable
 		//       Overrides Container.getAlignmentY to return the horizontal alignment.
 		return 0;
 	}
-	boolean getAutoscrolls()
+	public boolean getAutoscrolls()
 	{
 		//Returns true if this component automatically scrolls its contents when dragged, (when contained in a component that supports scrolling, like JViewport
 		return false;
@@ -201,13 +211,13 @@ public abstract class JComponent extends Container implements Serializable
 	{	return border;    }
 
 
-	Rectangle getBounds(Rectangle rv)
+        public Rectangle getBounds(Rectangle rv)
 	{
 		if (rv == null)
-			return new Rectangle(x,y,width,height);
+			return new Rectangle(getX(),getY(),getWidth(),getHeight());
 		else
 		{
-			rv.setBounds(x,y,width, height);
+			rv.setBounds(getX(),getY(),getWidth(),getHeight());
 			return rv;
 		}
 	}
@@ -215,12 +225,12 @@ public abstract class JComponent extends Container implements Serializable
 	protected  Graphics getComponentGraphics(Graphics g)
 	{      return g;       }
 
-	int getConditionForKeyStroke(KeyStroke aKeyStroke)
+	public int getConditionForKeyStroke(KeyStroke aKeyStroke)
 	{
 		//Return the condition that determines whether a registered action occurs in response to the specified keystroke.
 		return 0;
 	}
-	int getDebugGraphicsOptions()
+	public int getDebugGraphicsOptions()
 	{
 		return 0;
 	}
@@ -246,21 +256,26 @@ public abstract class JComponent extends Container implements Serializable
 		return getBorder().getBorderInsets(this);
 	}
 
-	Insets getInsets(Insets insets)
+	public Insets getInsets(Insets insets)
 	{
-		if (insets == null)
-			return getInsets();
-		return new Insets(getInsets());
+	    Insets t = getInsets();
+
+	    if (insets == null)
+		return t;
+	    
+	    
+	    return new Insets(t.top, t.left, t.bottom, t.right);
 	}
-	Point getLocation(Point rv)
+	public Point getLocation(Point rv)
 	{
 		//Store the x,y origin of this component into "return value" rv and return rv.
 
 		if (rv == null)
-			return new Point(x,y);
+			return new Point(getX(),
+					 getY());
 
-		rv.setLocation(x,
-		               y);
+		rv.setLocation(getX(),
+		               getY());
 		return rv;
 	}
 
@@ -273,8 +288,8 @@ public abstract class JComponent extends Container implements Serializable
 		}
 		if (ui != null)
 		{
-			Dimension s = ui.getMaximumSize(this);
-			if (s != null)
+		    Dimension s = ui.getMaximumSize(this);
+		    if (s != null)
 			{
 				//System.out.println("        UI-MAX = " + s + ", UI = " + ui + ", IM="+this);
 				return s;
@@ -328,27 +343,27 @@ public abstract class JComponent extends Container implements Serializable
 		return p;
 	}
 
-	Component getNextFocusableComponent()
+	public Component getNextFocusableComponent()
 	{
 		//          Return the next focusable component or null if the focus manager should choose the next focusable component automatically
 		return null;
 	}
 
 
-	KeyStroke[] getRegisteredKeyStrokes()
+	public KeyStroke[] getRegisteredKeyStrokes()
 	{
 		//          Return the KeyStrokes that will initiate registered actions.
 		return null;
 	}
 
-	JRootPane getRootPane()
+	public JRootPane getRootPane()
 	{
 		JRootPane p = SwingUtilities.getRootPane(this);
 		System.out.println("root = " + p);
 		return p;
 	}
 
-	Dimension getSize(Dimension rv)
+	public Dimension getSize(Dimension rv)
 	{
 		//	System.out.println("JComponent, getsize()");
 		if (rv == null)
@@ -372,7 +387,7 @@ public abstract class JComponent extends Container implements Serializable
 	 *
 	 **************************************/
 
-	JToolTip createToolTip()
+	public JToolTip createToolTip()
 	{
 		if (tooltip == null)
 			tooltip = new JToolTip(tool_tip_text);
@@ -380,12 +395,12 @@ public abstract class JComponent extends Container implements Serializable
 	}
 
 	public Point getToolTipLocation(MouseEvent event)
-{	return null;    }
+        {	return null;    }
 
-	void setToolTipText(String text)
+	public void setToolTipText(String text)
 	{	tool_tip_text = text;    }
 
-	String getToolTipText()
+	public String getToolTipText()
 	{	return tool_tip_text;    }
 
 	public String getToolTipText(MouseEvent event)
@@ -400,51 +415,26 @@ public abstract class JComponent extends Container implements Serializable
 	 **************************************/
 
 
-	Container getTopLevelAncestor()
+	public Container getTopLevelAncestor()
 	{
 		//      Returns the top-level ancestor of this component (either the containing Window or Applet), or null if this component has not been added to any container.
 		System.out.println("JComponent, getTopLevelAncestor()");
 		return null;
 	}
 
-	Rectangle getVisibleRect()
+	public Rectangle getVisibleRect()
 	{
 		///    Returns the Component's "visible rectangle" - the intersection of this components visible rectangle:
 		System.out.println("JComponent, getVisibleRect()");
 		return null;
 	}
 
-
-	int getHeight()
-	{
-		//System.out.println("JComponent, getHeight()");
-		return height;
-	}
-
-	int getWidth()
-	{
-		//System.out.println("JComponent, getWidth()");
-		return width;
-	}
-
-	int getX()
-	{
-		//System.out.println("JComponent, getX()");
-		return x;
-	}
-
-	int getY()
-	{
-		//System.out.println("JComponent, getY()");
-		return y;
-	}
-
-	void grabFocus()
+	public void grabFocus()
 	{
 		//      Set the focus on the receiving component.
 	}
 
-	boolean hasFocus()
+	public boolean hasFocus()
 	{
 		//      Returns true if this Component has the keyboard focus.
 		return false;
@@ -453,7 +443,7 @@ public abstract class JComponent extends Container implements Serializable
 	public boolean isDoubleBuffered()
 	{	return use_double_buffer;    }
 
-	boolean isFocusCycleRoot()
+	public boolean isFocusCycleRoot()
 	{
 		//      Override this method and return true if your component is the root of of a component tree with its own focus cycle.
 		return false;
@@ -465,39 +455,39 @@ public abstract class JComponent extends Container implements Serializable
 		return false;
 	}
 
-	static boolean isLightweightComponent(Component c)
+	public static boolean isLightweightComponent(Component c)
 	{
 		return c.getPeer() instanceof LightweightPeer;
 	}
 
-	boolean isManagingFocus()
+	public boolean isManagingFocus()
 	{
 		//      Override this method and return true if your JComponent manages focus.
 		return false;
 	}
 
-	boolean isOpaque()
+        public boolean isOpaque()
 	{	return opaque;    }
 
-	boolean isOptimizedDrawingEnabled()
+	public boolean isOptimizedDrawingEnabled()
 	{
 		//      Returns true if this component tiles its children,
 		return true;
 	}
 
-	boolean isPaintingTile()
+	public boolean isPaintingTile()
 	{
 		//      Returns true if the receiving component is currently painting a tile.
 		return false;
 	}
 
-	boolean isRequestFocusEnabled()
+	public boolean isRequestFocusEnabled()
 	{
 		//      Return whether the receiving component can obtain the focus by calling requestFocus
 		return false;
 	}
 
-	boolean isValidateRoot()
+	public boolean isValidateRoot()
 	{
 		//      If this method returns true, revalidate() calls by descendants of this component will cause the entire tree beginning with this root to be validated.
 		return false;
@@ -532,8 +522,8 @@ public abstract class JComponent extends Container implements Serializable
 
 	protected  void paintChildren(Graphics g)
 	{
-		//      Paint this component's children.
-		super.paintChildren(g);
+	    //      Paint this component's children.
+	    //super.paintChildren(g);
 	}
 
 	protected  void paintComponent(Graphics g)
@@ -544,19 +534,24 @@ public abstract class JComponent extends Container implements Serializable
 			ui.paint(g, this);
 		}
 	}
-
-	void paintImmediately(int x, int y, int w, int h)
-	{
-		//      Paint the specified region in this component and all of its descendants that overlap the region, immediately.
+    
+    /**
+     * Paint the specified region in this component and all of 
+     * its descendants that overlap the region, immediately.
+     */
+	public void paintImmediately(int x, int y, int w, int h)
+        {
+	
+	    //Ronald: this shoudld probably redirect to the PLAF ....
 	}
 
-	void paintImmediately(Rectangle r)
+	public void paintImmediately(Rectangle r)
 	{
-		///      Paint the specified region now.
-		paintImmediately(r.x,
-		                 r.y,
-		                 r.width,
-		                 r.height);
+	    ///      Paint the specified region now.
+	    paintImmediately((int)r.getX(),
+			     (int)r.getY(),
+			     (int)r.getWidth(),
+			     (int)r.getHeight());
 	}
 	protected  String paramString()
 	{
@@ -586,7 +581,7 @@ public abstract class JComponent extends Container implements Serializable
 	    //System.out.println("COMP_MOUSE-EVENT: " + e + ", MEMORY = " + Runtime.getRuntime().freeMemory());
 	}
 
-	void registerKeyboardAction(ActionListener anAction,
+	public void registerKeyboardAction(ActionListener anAction,
 	                            KeyStroke aKeyStroke,
 	                            int aCondition)
 	{
@@ -596,7 +591,7 @@ public abstract class JComponent extends Container implements Serializable
 		                       aCondition);
 	}
 
-	void registerKeyboardAction(ActionListener anAction,
+	public void registerKeyboardAction(ActionListener anAction,
 	                            String aCommand,
 	                            KeyStroke aKeyStroke,
 	                            int aCondition)
@@ -617,17 +612,17 @@ public abstract class JComponent extends Container implements Serializable
 		super.repaint(tm, x,y,width,height);
 	}
 
-	void repaint(Rectangle r)
+	public void repaint(Rectangle r)
 	{
 		//      Adds the specified region to the dirty region list if the component is showing.
-		repaint(0,
-		        r.x,
-		        r.y,
-		        r.width,
-		        r.height);
+		repaint((long)0,
+		        (int)r.getX(),
+		        (int)r.getY(),
+		        (int)r.getWidth(),
+		        (int)r.getHeight());
 	}
 
-	boolean requestDefaultFocus()
+	public boolean requestDefaultFocus()
 	{
 		//      Request the focus for the component that should have the focus by default.
 		return false;
@@ -639,7 +634,7 @@ public abstract class JComponent extends Container implements Serializable
 		super.requestFocus();
 	}
 
-	void resetKeyboardActions()
+	public void resetKeyboardActions()
 	{
 		//      Unregister all keyboard actions
 	}
@@ -650,40 +645,40 @@ public abstract class JComponent extends Container implements Serializable
 		super.reshape(x,y,w,h);
 	}
 
-	void revalidate()
+	public void revalidate()
 	{
 		//     Support for deferred automatic layout.
 		if (getParent() == null)
 			invalidate();
 	}
 
-	void scrollRectToVisible(Rectangle aRect)
+	public void scrollRectToVisible(Rectangle aRect)
 	{
 		//      Forwards the scrollRectToVisible() message to the JComponent's parent.
 	}
 
-	void setAlignmentX(float alignmentX)
+	public void setAlignmentX(float alignmentX)
 	{
 		//      Set the the vertical alignment.
 	}
 
-	void setAlignmentY(float alignmentY)
+	public void setAlignmentY(float alignmentY)
 	{
 		//      Set the the horizontal alignment.
 	}
 
-	void setAutoscrolls(boolean autoscrolls)
+	public void setAutoscrolls(boolean autoscrolls)
 	{
 		//      If true this component will automatically scroll its contents when dragged, if contained in a component that supports scrolling, such as JViewport
 	}
 
 
-	void setDebugGraphicsOptions(int debugOptions)
+	public void setDebugGraphicsOptions(int debugOptions)
 	{
 		//      Enables or disables diagnostic information about every graphics operation performed within the component or one of its children.
 	}
 
-	void setDoubleBuffered(boolean aFlag)
+	public void setDoubleBuffered(boolean aFlag)
 	{
 		use_double_buffer = aFlag;
 	}
@@ -714,21 +709,21 @@ public abstract class JComponent extends Container implements Serializable
 		repaint();
 	}
 
-	void setMaximumSize(Dimension maximumSize)
+	public void setMaximumSize(Dimension maximumSize)
 	{	max = maximumSize;    }
 
-	void setMinimumSize(Dimension minimumSize)
+	public void setMinimumSize(Dimension minimumSize)
 	{   min = minimumSize; }
 
-	void setPreferredSize(Dimension preferredSize)
+	public void setPreferredSize(Dimension preferredSize)
 	{   pref = preferredSize;   }
 
-	void setNextFocusableComponent(Component aComponent)
+	public void setNextFocusableComponent(Component aComponent)
 	{
 		//       Specifies the next component to get the focus after this one, for example, when the tab key is pressed.
 	}
 
-	void setOpaque(boolean isOpaque)
+	public void setOpaque(boolean isOpaque)
 	{
 		opaque = isOpaque;
 		revalidate();
@@ -736,7 +731,7 @@ public abstract class JComponent extends Container implements Serializable
 	}
 
 
-	void setRequestFocusEnabled(boolean aFlag)
+	public void setRequestFocusEnabled(boolean aFlag)
 	{
 	}
 
@@ -749,14 +744,14 @@ public abstract class JComponent extends Container implements Serializable
 		if (getParent() != null)
 		{
 			Rectangle dims = getBounds();
-			getParent().repaint(dims.x,
-			                    dims.y,
-			                    dims.width,
-			                    dims.height);
+			getParent().repaint((int)dims.getX(),
+			                    (int)dims.getY(),
+			                    (int)dims.getWidth(),
+			                    (int)dims.getHeight());
 		}
 	}
 
-	void unregisterKeyboardAction(KeyStroke aKeyStroke)
+	public void unregisterKeyboardAction(KeyStroke aKeyStroke)
 	{
 		//          Unregister a keyboard action.
 	}
@@ -777,7 +772,7 @@ public abstract class JComponent extends Container implements Serializable
 	 *
 	 *********/
 
-	String getUIClassID()
+        public String getUIClassID()
 	{
 		///          Return the UIDefaults key used to look up the name of the swing.
 		return "JComponent";
@@ -802,7 +797,7 @@ public abstract class JComponent extends Container implements Serializable
 		repaint();
 	}
 
-	void updateUI()
+	public void updateUI()
 	{
 		//        Resets the UI property to a value from the current look and feel.
 		System.out.println("update UI not overwritten in class: " + this);

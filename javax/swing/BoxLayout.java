@@ -2,6 +2,16 @@ package javax.swing;
 
 import java.awt.*;
 
+
+/**
+ * A layout for swing components.
+ * This implementation delegates its methods to
+ * java.awt.GridLayout to do its work.
+ *
+ * @author Ronald Veldema (rveldema@cs.vu.nl)
+ */
+
+
 public class BoxLayout implements LayoutManager2
 {
     GridLayout      gridbag;

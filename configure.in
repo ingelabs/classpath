@@ -113,7 +113,7 @@ if test "${COMPILE_JNI}" = "yes"; then
 
   dnl XXX Fix me when libart.m4 has the compile test fixed!
   enable_libarttest=no
-  AM_PATH_LIBART(2.1.0,,exit 1)
+dnl  AM_PATH_LIBART(2.1.0,,exit 1)
 
   CLASSPATH_WITH_JAVAH
 

@@ -10,6 +10,14 @@ import java.util.*;
 import java.beans.*;
 
 
+
+/**
+ * Provides basic button functionality
+ *
+ * @author Ronald Veldema (rveldema@cs.vu.nl)
+ */
+
+
 public abstract class AbstractButton extends JComponent
 			implements ItemSelectable, SwingConstants
 {
@@ -94,24 +102,24 @@ public abstract class AbstractButton extends JComponent
 	 *
 	 ****************/
 
-	ButtonModel getModel()
+	public ButtonModel getModel()
 	{	return model;    }
-	void setModel(ButtonModel newModel)
+	public void setModel(ButtonModel newModel)
 	{	model = newModel;    }
 
-	String getActionCommand()
+	public String getActionCommand()
 	{	return getModel().getActionCommand();    }
-	void setActionCommand(String aCommand)
+	public void setActionCommand(String aCommand)
 	{   getModel().setActionCommand(aCommand);   }
 
-	void addActionListener(ActionListener l)
+	public void addActionListener(ActionListener l)
 	{	getModel().addActionListener(l);    }
-	void removeActionListener(ActionListener l)
+	public void removeActionListener(ActionListener l)
 	{	getModel().removeActionListener(l);    }
 
-	void addChangeListener(ChangeListener l)
+	public void addChangeListener(ChangeListener l)
 	{   getModel().addChangeListener(l);     }
-	void removeChangeListener(ChangeListener l)
+	public void removeChangeListener(ChangeListener l)
 	{  getModel().removeChangeListener(l);    }
 
         public void addItemListener(ItemListener l)
@@ -119,13 +127,13 @@ public abstract class AbstractButton extends JComponent
         public void removeItemListener(ItemListener l)
 	{  getModel().removeItemListener(l);  }
 
-	int getHorizontalAlignment()
+	public int getHorizontalAlignment()
 	{	return hori_align;    }
-	int getHorizontalTextPosition()
+	public int getHorizontalTextPosition()
 	{	return hori_text_pos;    }
-	int getVerticalAlignment()
+	public int getVerticalAlignment()
 	{	return vert_align;   }
-	int getVerticalTextPosition()
+	public int getVerticalTextPosition()
 	{	return vert_text_pos;  }
 
 
@@ -136,31 +144,31 @@ public abstract class AbstractButton extends JComponent
 	protected void fireActionPerformed(ActionEvent event)
 	{	getModel().fireActionPerformed(event);    }
 
-	void setVerticalAlignment(int alignment)
+	public void setVerticalAlignment(int alignment)
 	{	vert_align = alignment;    }
-	void setHorizontalAlignment(int alignment)
+	public void setHorizontalAlignment(int alignment)
 	{   hori_align = alignment;   }
-	void setVerticalTextPosition(int textPosition)
+	public void setVerticalTextPosition(int textPosition)
 	{	vert_text_pos = textPosition;    }
-	void setHorizontalTextPosition(int textPosition)
+	public void setHorizontalTextPosition(int textPosition)
 	{   hori_text_pos = textPosition;   }
 
-	int getMnemonic()
+	public int getMnemonic()
 	{	return getModel().getMnemonic();    }
-	void setMnemonic(char mne)
+	public void setMnemonic(char mne)
 	{	getModel().setMnemonic(mne);    }
-	void setMnemonic(int mne)
+	public void setMnemonic(int mne)
 	{	getModel().setMnemonic(mne);    }
 
-	void setRolloverEnabled(boolean b)
+	public void setRolloverEnabled(boolean b)
 	{    getModel().setRollover(b);    }
-	boolean isRolloverEnabled()
+	public boolean isRolloverEnabled()
 	{    return getModel().isRollover();     }
 
 
-	boolean isBorderPainted()
+	public boolean isBorderPainted()
 	{	return paint_border;    }
-	void setBorderPainted(boolean b)
+	public void setBorderPainted(boolean b)
 	{
 		if (b != paint_border)
 		{
@@ -170,24 +178,24 @@ public abstract class AbstractButton extends JComponent
 		}
 	}
 
-	Action getAction()
+	public Action getAction()
 	{	return action_taken;    }
-	void setAction(Action a)
+	public void setAction(Action a)
 	{
 		action_taken = a;
 		revalidate();
 		repaint();
 	}
 
-	void setSelected(boolean b)
+	public void setSelected(boolean b)
 	{	getModel().setSelected(b);    }
-	boolean isSelected()
+	public boolean isSelected()
 	{	return getModel().isSelected();     }
 
 
-	Icon getIcon()
+        public Icon getIcon()
 	{	return default_icon;    }
-	void setIcon(Icon defaultIcon)
+	public void setIcon(Icon defaultIcon)
 	{
 		if (default_icon == defaultIcon)
 			return;
@@ -201,13 +209,13 @@ public abstract class AbstractButton extends JComponent
 		repaint();
 	}
 
-	String getText()
+	public String getText()
 	{	return text;    }
-	void setLabel(String label)
+	public void setLabel(String label)
 	{	setText(label);    }
-	String getLabel()
+	public String getLabel()
 	{	return getText();    }
-	void setText(String text)
+	public void setText(String text)
 	{
 		this.text = text;
 		revalidate();
@@ -215,9 +223,9 @@ public abstract class AbstractButton extends JComponent
 	}
 
 
-	Insets getMargin()
+        public 	Insets getMargin()
 	{      return margin; }
-	void setMargin(Insets m)
+	public void setMargin(Insets m)
 	{
 		margin = m;
 		revalidate();
@@ -231,9 +239,9 @@ public abstract class AbstractButton extends JComponent
 		repaint();
 	}
 
-	Icon getPressedIcon()
+	public Icon getPressedIcon()
 	{	return pressed_button;    }
-	void setPressedIcon(Icon pressedIcon)
+	public void setPressedIcon(Icon pressedIcon)
 	{
 		pressed_button = pressedIcon;
 		revalidate();
@@ -241,9 +249,9 @@ public abstract class AbstractButton extends JComponent
 	}
 
 
-	Icon getDisabledIcon()
+	public Icon getDisabledIcon()
 	{	return disabled_button;    }
-	void setDisabledIcon(Icon disabledIcon)
+	public void setDisabledIcon(Icon disabledIcon)
 	{
 		disabled_button = disabledIcon;
 		revalidate();
@@ -320,25 +328,25 @@ public abstract class AbstractButton extends JComponent
 	}
 
 
-	void doClick()
+	public void doClick()
 	{
 		doClick(100);
 	}
-	void doClick(int pressTime)
+	public void doClick(int pressTime)
 	{
-		Toolkit.tlkBeep ();
+	    //Toolkit.tlkBeep ();
 		//Programmatically perform a "click".
 	}
 
 
-	Icon getDisabledSelectedIcon()
+	public Icon getDisabledSelectedIcon()
 	{
 		//Returns the icon used by the button when it's disabled and selected.
 		return disabled_selected_button;
 	}
 
 
-	Icon getRolloverIcon()
+	public Icon getRolloverIcon()
 	{
 		//       Returns the rollover icon for the button.
 		return null;
@@ -369,7 +377,7 @@ public abstract class AbstractButton extends JComponent
 		return current_icon == img;
 	}
 
-	boolean isContentAreaFilled()
+        public boolean isContentAreaFilled()
 	{
 		//       Checks whether the "content area" of the button should be filled.
 		return false;
@@ -390,28 +398,28 @@ public abstract class AbstractButton extends JComponent
 	}
 
 
-	void setContentAreaFilled(boolean b)
+	public void setContentAreaFilled(boolean b)
 	{
 		//Sets whether the button should paint the content area or leave it transparent.
 	}
 
 
-	void setDisabledSelectedIcon(Icon disabledSelectedIcon)
+	public void setDisabledSelectedIcon(Icon disabledSelectedIcon)
 	{
 		//          Sets the disabled selection icon for the button.
 	}
 
-	void setRolloverIcon(Icon rolloverIcon)
+	public void setRolloverIcon(Icon rolloverIcon)
 	{
 		//       Sets the rollover icon for the button.
 	}
-	void setRolloverSelectedIcon(Icon rolloverSelectedIcon)
+        public void setRolloverSelectedIcon(Icon rolloverSelectedIcon)
 	{
 		//       Sets the rollover selected icon for the button.
 	}
 
 
-	void setSelectedIcon(Icon selectedIcon)
+	public void setSelectedIcon(Icon selectedIcon)
 	{
 		//       Sets the selected icon for the button.
 	}
@@ -422,13 +430,13 @@ public abstract class AbstractButton extends JComponent
 		super.setUI(ui);
 	}
 
-	ButtonUI getUI()
+	public ButtonUI getUI()
 	{
 		//Returns the L&F object that renders this component.
 		return (ButtonUI) ui;
 	}
 
-	void updateUI()
+        public void updateUI()
 	{
 		/*
 		  //          Notification from the UIFactory that the L&F has changed.

@@ -13,7 +13,7 @@ public abstract class AbstractSelectionKey
     {
     }
  
-    void cancel()
+    public void cancel()
     {
 	if (ok)
 	    {
@@ -22,7 +22,7 @@ public abstract class AbstractSelectionKey
 	ok = false;
     }
 
-    boolean isValid()
+    public boolean isValid()
     {
 	return ok;
     }

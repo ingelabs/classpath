@@ -25,7 +25,7 @@ public class BasicGraphicsUtils
 
 	Font f = c.getFont();
 
-        FontMetrics fm = FontMetrics.getFontMetrics(f);
+        FontMetrics fm = SwingUtilities.getFontMetrics(f);
 
         Insets i = c.getInsets();
 

@@ -17,32 +17,32 @@ public class JLabel extends JComponent implements SwingConstants
     int vert_align;
     int vert_text_pos;
 
-    JLabel()
+    public JLabel()
     {
 	this("", null, 0);
     }
 
-    JLabel(Icon image)
+    public JLabel(Icon image)
     {
 	this("", image, 0);
     }
 
-    JLabel(Icon image, int horizontalAlignment)
+    public JLabel(Icon image, int horizontalAlignment)
     {
 	this("", image, horizontalAlignment);
     }
 
-    JLabel(String text)
+    public JLabel(String text)
     {
 	this(text, null, 0);
     }
 
-    JLabel(String text, int horizontalAlignment)
+    public JLabel(String text, int horizontalAlignment)
     {
 	this(text, null, horizontalAlignment);
     }
 
-    JLabel(String text, Icon icon, int horizontalAlignment)
+    public JLabel(String text, Icon icon, int horizontalAlignment)
     {
 	// do the work.....
 	this.text = text;
@@ -63,57 +63,57 @@ public class JLabel extends JComponent implements SwingConstants
 	//      Verify that key is a legal value for the verticalAlignment or verticalTextPosition properties.  
 	return 0;
     }
-    AccessibleContext getAccessibleContext()
+    public AccessibleContext getAccessibleContext()
     {
 	//          Get the AccessibleContext of this object 
 	return null;
     }
-    Icon getDisabledIcon()
+    public Icon getDisabledIcon()
     {
 	//          Returns the value of the disabledIcon property if it's been set, If it hasn't been set and the value of the icon property is an ImageIcon, we compute a "grayed out" version of the icon and update the disabledIcon property with that.  
 	return null;
     }
-    int getDisplayedMnemonic()
+    public int getDisplayedMnemonic()
     {
 	//          Return the keycode that indicates a mnemonic key.   
 	return 0;
     }
-    int getHorizontalAlignment()
+    public int getHorizontalAlignment()
     {
 	//          Returns the alignment of the label's contents along the X axis.   
 	return hor_align;
     }
-    int getHorizontalTextPosition()
+    public int getHorizontalTextPosition()
     {
 	//          Returns the horizontal position of the label's text, relative to its image.    
 	return hor_text_pos;
     }
 
-    Icon getIcon()
+    public Icon getIcon()
     {	return icon;    }
 
-    int getIconTextGap()
+    public int getIconTextGap()
     {
 	//          Returns the amount of space between the text and the icon displayed in this label.   
 	return 0;
     }
-    Component getLabelFor()
+    public Component getLabelFor()
     {
 	//          Get the component this is labelling.  
 	return null;
     }
-    String getText()
+    public String getText()
     {	return text;    }
 
-    String getUIClassID()
+    public String getUIClassID()
     {	return "JLabel";    }
 
-    int getVerticalAlignment()
+    public int getVerticalAlignment()
     {
 	//          Returns the alignment of the label's contents along the Y axis. 
 	return vert_align;
     }
-    int getVerticalTextPosition()
+    public int getVerticalTextPosition()
     {
 	//          Returns the vertical position of the label's text, relative to its image. 
 	return vert_text_pos;
@@ -129,29 +129,29 @@ public class JLabel extends JComponent implements SwingConstants
 	//          Returns a string representation of this JLabel.  
 	return "JLabel";
     }
-    void setDisabledIcon(Icon disabledIcon)
+    public void setDisabledIcon(Icon disabledIcon)
     {
 	//          Set the icon to be displayed if this JLabel is "disabled" (JLabel.setEnabled(false)).  
     }
-    void setDisplayedMnemonic(char aChar)
+    public void setDisplayedMnemonic(char aChar)
     {
 	//          Specifies the displayedMnemonic as a char value.  
     }
-    void setDisplayedMnemonic(int key)
+    public void setDisplayedMnemonic(int key)
     {
 	//          Specify a keycode that indicates a mnemonic key.  
     }
-    void setHorizontalAlignment(int alignment)
+    public void setHorizontalAlignment(int alignment)
     {
 	//          Sets the alignment of the label's contents along the X axis.  
 	hor_align = alignment;
     }
-    void setHorizontalTextPosition(int textPosition)
+    public void setHorizontalTextPosition(int textPosition)
     {
 	//          Sets the horizontal position of the label's text, relative to its image.  
 	hor_text_pos = textPosition;
     }
-    void setIcon(Icon icon)
+    public void setIcon(Icon icon)
     {
 	this.icon = icon;
 	if (icon != null)
@@ -162,33 +162,33 @@ public class JLabel extends JComponent implements SwingConstants
 	repaint();
     }
 
-    void setIconTextGap(int iconTextGap)
+    public void setIconTextGap(int iconTextGap)
     {
 	gap = iconTextGap;
     }
   
-    void setLabelFor(Component c)
+    public void setLabelFor(Component c)
     {
 	//          Set the component this is labelling.  
     }
-    void setText(String text)
+    public void setText(String text)
     {
 	this.text = text;
 	revalidate();
 	repaint();
     }
   
-    void setVerticalAlignment(int alignment)
+    public void setVerticalAlignment(int alignment)
     {
 	//          Sets the alignment of the label's contents along the Y axis.  
 	vert_align = alignment;
     }
-    void setVerticalTextPosition(int textPosition)
+    public void setVerticalTextPosition(int textPosition)
     {
 	//          Sets the vertical position of the label's text, relative to its image.  
 	vert_text_pos = textPosition;
     }
-    void updateUI()
+    public void updateUI()
     {	
 	LabelUI b = (LabelUI)UIManager.getUI(this);
 	setUI(b);

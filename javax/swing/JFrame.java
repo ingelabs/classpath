@@ -3,6 +3,12 @@ package javax.swing;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * Unlike JComponent derivatives, JFrame inherits from
+ * java.awt.Frame. But also lets a look-and-feel component to its work.
+ *
+ * @author Ronald Veldema (rveldema@cs.vu.nl)
+ */
 
 public class JFrame extends Frame
 {

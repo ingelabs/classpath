@@ -9,7 +9,7 @@ public class CompoundBorder extends AbstractBorder
 				  Insets s)
     {
 	if (s == null)
-	    s = new Insets();
+	    s = new Insets(0,0,0,0);
 	
 	s.left = s.right = s.top = s.bottom = 5;
 	

@@ -5,17 +5,17 @@ import javax.swing.*;
 
 public class TabbedPaneUI extends ComponentUI
 {
-    Rectangle getTabBounds(JTabbedPane pane, int index)
+    public Rectangle getTabBounds(JTabbedPane pane, int index)
     {
 	return null;
     }
 
-    int getTabRunCount(JTabbedPane pane)
+    public int getTabRunCount(JTabbedPane pane)
     {
 	return 0;
     }
 
-    int tabForCoordinate(JTabbedPane pane, int x, int y)
+    public int tabForCoordinate(JTabbedPane pane, int x, int y)
     {
 	return 0;
     }

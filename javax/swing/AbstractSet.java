@@ -2,6 +2,13 @@ package javax.swing;
 
 import java.util.*;
 
+
+/**
+ * Empty
+ *
+ * @author Ronald Veldema (rveldema@cs.vu.nl)
+ */
+
 public abstract class AbstractSet extends AbstractCollection implements Set
 {
 	boolean contained(Object []a1, Object b)

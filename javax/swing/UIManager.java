@@ -44,12 +44,12 @@ public class UIManager implements Serializable
     {
     }
 
-    static  void addPropertyChangeListener(PropertyChangeListener listener)
+    public static  void addPropertyChangeListener(PropertyChangeListener listener)
     {
 	//      Add a PropertyChangeListener to the listener list. 
     }
 
-    static  void addAuxiliaryLookAndFeel(LookAndFeel l)
+    public static  void addAuxiliaryLookAndFeel(LookAndFeel l)
     {
 	//          Add a LookAndFeel to the list of auxiliary look and feels. 
 	if (aux_installed == null)
@@ -67,7 +67,7 @@ public class UIManager implements Serializable
 	aux_installed[aux_installed.length-1] = l;
     }
     
-    static  boolean removeAuxiliaryLookAndFeel(LookAndFeel laf)
+    public static  boolean removeAuxiliaryLookAndFeel(LookAndFeel laf)
     {
 	if (aux_installed == null)
 	    return false;
@@ -89,38 +89,49 @@ public class UIManager implements Serializable
 	return false;
     }
 
-    static  LookAndFeel[] getAuxiliaryLookAndFeels()
+    public static  LookAndFeel[] getAuxiliaryLookAndFeels()
     {	return aux_installed;    }
 
 
-    static  Object get(Object key)
+    public static  Object get(Object key)
     {	return getLookAndFeel().getDefaults().get(key);    }
     
-    static  Border getBorder(Object key)
-    //      Returns a border from the defaults table. 
+    /**
+     * Returns a border from the defaults table. 
+     */
+    public static  Border getBorder(Object key)
     {
 	return (Border) getLookAndFeel().getDefaults().get(key);
     }
-
-    static  Color getColor(Object key)
-    //      Returns a drawing color from the defaults table. 
+    
+    /**
+     * Returns a drawing color from the defaults table. 
+     */
+    public static  Color getColor(Object key)
     {
 	return (Color) getLookAndFeel().getDefaults().get(key);
     }
-    static  String getCrossPlatformLookAndFeelClassName()
-    {
-	// this string can be passed to Class.forName()
+
+    /**
+     * this string can be passed to Class.forName()
+     */
+    public static  String getCrossPlatformLookAndFeelClassName()
+    {	
 	return "javax.swing.plaf.metal.MetalLookAndFeel";
     }
 
+    /**
+     * Returns the default values for this look and feel. 
+     */
     static  UIDefaults getDefaults()
     {
-	//      Returns the default values for this look and feel. 
 	return getLookAndFeel().getDefaults();
     }
 
+    /**
+     * Returns a dimension from the defaults table. 
+     */
     static  Dimension getDimension(Object key)
-    //      Returns a dimension from the defaults table. 
     {
 	System.out.println("UIManager.getDim");
 	return new Dimension(200,100);
@@ -175,7 +186,7 @@ public class UIManager implements Serializable
     }
 
 
-    static  ComponentUI getUI(JComponent target)
+    public static  ComponentUI getUI(JComponent target)
     //      Returns the L&F object that renders the target component. 
     {
 	ComponentUI ui = getDefaults().getUI(target);
@@ -184,28 +195,28 @@ public class UIManager implements Serializable
     }
 
 
-    static  void installLookAndFeel(String name, String className)
+    public static  void installLookAndFeel(String name, String className)
     //      Creates a new look and feel and adds it to the current array. 
     {
     }
-    static  void installLookAndFeel(LookAndFeelInfo info)
+    public static  void installLookAndFeel(LookAndFeelInfo info)
     //      Adds the specified look and feel to the current array and then calls setInstalledLookAndFeels(javax.swing.UIManager.LookAndFeelInfo[]). 
     {
     }
-    static  Object put(Object key, Object value)
+    public static  Object put(Object key, Object value)
     //      Stores an object in the defaults table. 
     {
 	return getLookAndFeel().getDefaults().put(key,value);
     }
-    static  void removePropertyChangeListener(PropertyChangeListener listener)
+    public static  void removePropertyChangeListener(PropertyChangeListener listener)
     //      Remove a PropertyChangeListener from the listener list. 
     {
     }
-    static  void setInstalledLookAndFeels(UIManager.LookAndFeelInfo[] infos)
+    public static  void setInstalledLookAndFeels(UIManager.LookAndFeelInfo[] infos)
     //      Replaces the current array of installed LookAndFeelInfos. 
     {
     }
-    static  void setLookAndFeel(LookAndFeel newLookAndFeel)
+    public static  void setLookAndFeel(LookAndFeel newLookAndFeel)
     {
 	if (look_and_feel != null)
 	    look_and_feel.uninitialize();
@@ -217,7 +228,8 @@ public class UIManager implements Serializable
 	//	revalidate();
 	//	repaint();
     }
-    static  void setLookAndFeel(String className)
+
+    public static  void setLookAndFeel(String className)
         throws ClassNotFoundException, 
                InstantiationException, 
                IllegalAccessException,

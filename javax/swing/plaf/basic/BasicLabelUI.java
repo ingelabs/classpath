@@ -29,18 +29,18 @@ public class BasicLabelUI extends LabelUI
 	JLabel b = (JLabel)c;
 	Dimension d = BasicGraphicsUtils.getPreferredSize(b, 
 							  gap,
-							  b.text,
-							  b.icon,
-							  b.vert_align,
-							  b.hor_align,
-							  b.hor_text_pos,
-							  b.vert_text_pos);
-	System.out.println("JLABEL->^^^^^^^^^^^^^^^^^^^^^^   BASIC-PREF="+d + ",T="+b.text);
+							  b.getText(),
+							  b.getIcon(),
+							  b.getVerticalAlignment(),
+							  b.getHorizontalAlignment(),
+							  b.getHorizontalTextPosition(),
+							  b.getVerticalTextPosition());
+	System.out.println("JLABEL->^^^^^^^^^^^^^^^^^^^^^^   BASIC-PREF="+d + ",T="+b.getText());
 	return d;
     }
     
 
-    void paint(Graphics g, JComponent c)
+    public void paint(Graphics g, JComponent c)
     {      
 	JLabel b = (JLabel) c;
 
@@ -52,13 +52,13 @@ public class BasicLabelUI extends LabelUI
 
         g.setFont(f);
 
-        FontMetrics fm = FontMetrics.getFontMetrics(f);
+        FontMetrics fm = SwingUtilities.getFontMetrics(f);
 
         Insets i = c.getInsets();
 
 	Rectangle bound = c.getBounds();
 	
-	System.out.println("BOUND=" + bound + ", insets = " + i + ", " + b.text);
+	System.out.println("BOUND=" + bound + ", insets = " + i + ", " + b.getText());
 	
 	if (bound == null)
 	    {
@@ -91,7 +91,7 @@ public class BasicLabelUI extends LabelUI
 							 gap);
 
 	paintIcon(g, c, ir);
-	paintText(g, c, tr, b.text);
+	paintText(g, c, tr, b.getText());
 	paintFocus(g, c, vr, tr, ir);
     }
 
@@ -109,14 +109,14 @@ public class BasicLabelUI extends LabelUI
 			     Rectangle iconRect)
     {
 	JLabel b = (JLabel) c;
-	if (b.icon != null)
+	if (b.getIcon() != null)
 	    {
 		int x = iconRect.x;
 		int y = iconRect.y;
 
-		System.out.println("WE HAVE AN ICON: " + b.icon);
+		System.out.println("WE HAVE AN ICON: " + b.getIcon());
  
-		b.icon.paintIcon(c, g, x, y);
+		b.getIcon().paintIcon(c, g, x, y);
 	    }
 	else
 	    {
@@ -135,7 +135,7 @@ public class BasicLabelUI extends LabelUI
 	System.out.println("JLabel: drawing string: " + text + ", at:" + textRect);
 	
 	g.setColor(foreground);
-	g.setBackColor(new Color(190,190,190));
+	//g.setBackColor(new Color(190,190,190));
 
 	g.drawLine(0,0,100,100);
 	

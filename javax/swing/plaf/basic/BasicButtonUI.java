@@ -14,6 +14,7 @@ public class BasicButtonUI extends ButtonUI
     Color pressedBackgroundColor;
     Color normalBackgroundColor;
 
+
     public static ComponentUI createUI(final JComponent c) 
     {
 	return new BasicButtonUI();
@@ -37,18 +38,18 @@ public class BasicButtonUI extends ButtonUI
 	AbstractButton b = (AbstractButton)c;
 	Dimension d = BasicGraphicsUtils.getPreferredSize(b, 
 							  gap,
-							  b.text,
+							  b.getText(),
 							  b.getIcon(),
-							  b.vert_align,
-							  b.hori_align,
-							  b.hori_text_pos,
-							  b.vert_text_pos);
+							  b.getVerticalAlignment(),
+							  b.getHorizontalAlignment(),
+							  b.getHorizontalTextPosition(),
+							  b.getVerticalTextPosition());
 	//	System.out.println("^^^^^^^^^^^^^^^^^^^^^^   BASIC-PREF="+d + ",T="+b.text);
 	return d;
     }
     
 
-    void paint(Graphics g, JComponent c)
+    public void paint(Graphics g, JComponent c)
     {      
 	AbstractButton b = (AbstractButton) c;
 
@@ -60,7 +61,7 @@ public class BasicButtonUI extends ButtonUI
 
         g.setFont(f);
 
-        FontMetrics fm = FontMetrics.getFontMetrics(f);
+        FontMetrics fm = SwingUtilities.getFontMetrics(f);
 
         Insets i = c.getInsets();
 
@@ -97,7 +98,7 @@ public class BasicButtonUI extends ButtonUI
 	    }
 	
 	paintIcon(g, c, ir);
-	paintText(g, c, tr, b.text);
+	paintText(g, c, tr, b.getText());
 	paintFocus(g, c, vr, tr, ir);
     }
 
@@ -115,14 +116,14 @@ public class BasicButtonUI extends ButtonUI
 			     Rectangle iconRect)
     {
 	AbstractButton b = (AbstractButton) c;
-	if (b.default_icon != null)
+	if (b.getIcon() != null)
 	    {
 		int x = iconRect.x;
 		int y = iconRect.y;
 
-		System.out.println("WE HAVE AN ICON: " + b.default_icon);
+		System.out.println("WE HAVE AN ICON: " + b.getIcon());
  
-		b.default_icon.paintIcon(c, g, x, y);
+		b.getIcon().paintIcon(c, g, x, y);
 	    }
 	else
 	    {
@@ -159,7 +160,7 @@ public class BasicButtonUI extends ButtonUI
 
         g.setFont(f);
 
-        FontMetrics fm = FontMetrics.getFontMetrics(f);
+        FontMetrics fm = SwingUtilities.getFontMetrics(f);
 
 	g.setColor(c.isEnabled() ? textColor : disabledTextColor);
 

@@ -5,7 +5,7 @@ import java.io.*;
 
 public class ClosedChannelException extends IOException
 {
-    ClosedChannelException()
+    public ClosedChannelException()
     {
     }
 }

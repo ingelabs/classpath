@@ -1,7 +1,7 @@
 package java.nio;
 
 
-abstract class Buffer
+public abstract class Buffer
 {
     int cap, limit, pos, mark;
 
@@ -9,12 +9,19 @@ abstract class Buffer
     {
     }
 
-    final int capacity()
+    public final int capacity()
     {
 	return cap;
     }
 
-    final Buffer clear()
+    public final int capacity(int c)
+    {
+	int old = cap;
+	cap = c;
+	return old;
+    }
+
+    public final Buffer clear()
     {
 	limit = cap;
 	mark = 0;
@@ -22,7 +29,7 @@ abstract class Buffer
 	return this;
     }
     
-    final Buffer flip()
+    public final Buffer flip()
     {
 	limit = pos;
 	pos = 0;
@@ -32,20 +39,20 @@ abstract class Buffer
 	return this;
     }
     
-    final boolean hasRemaining()
+    public final boolean hasRemaining()
     {
 	return limit > pos;
     }
 
-    abstract  boolean isReadOnly();    
+    public abstract  boolean isReadOnly();    
     
     
-    final int limit()
+    public final int limit()
     {
 	return limit;
     }
 
-    final Buffer limit(int newLimit)
+    public final Buffer limit(int newLimit)
     {
 	if (newLimit <= mark)
 	    mark = 0;
@@ -57,19 +64,19 @@ abstract class Buffer
 	return this;
     }
 
-    final Buffer mark()
+    public final Buffer mark()
     {
 	mark = pos;
 	return this;
     }
 
-    final int position()
+    public final int position()
     {
 	return pos;
     }
     
 
-    final Buffer position(int newPosition)
+    public final Buffer position(int newPosition)
     {
 	/// If the mark is defined and larger than the new 
 
@@ -80,12 +87,12 @@ abstract class Buffer
 	return this;
     }
 
-    final int remaining()
+    public final int remaining()
     {
 	return limit - pos;
     }
 
-    final Buffer reset()
+    public final Buffer reset()
     {
 	pos = mark;
 	return this;

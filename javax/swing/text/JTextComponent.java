@@ -7,7 +7,7 @@ import javax.swing.plaf.*;
 
 public class JTextComponent extends JComponent
 {
-    class KeyBinding
+    public class KeyBinding
     {
 	char from, to;
     }
@@ -17,32 +17,32 @@ public class JTextComponent extends JComponent
     int align;
     Document doc;
 
-    JTextComponent()
+    public JTextComponent()
     {
 	this("", null, 0);
     }
 
-    JTextComponent(Icon image)
+    public JTextComponent(Icon image)
     {
 	this("", image, 0);
     }
 
-    JTextComponent(Icon image, int horizontalAlignment)
+    public JTextComponent(Icon image, int horizontalAlignment)
     {
 	this("", image, horizontalAlignment);
     }
 
-    JTextComponent(String text)
+    public JTextComponent(String text)
     {
 	this(text, null, 0);
     }
 
-    JTextComponent(String text, int horizontalAlignment)
+    public JTextComponent(String text, int horizontalAlignment)
     {
 	this(text, null, horizontalAlignment);
     }
 
-    JTextComponent(String text, Icon icon, int horizontalAlignment)
+    public JTextComponent(String text, Icon icon, int horizontalAlignment)
     {
 	setDocument(new PlainDocument());
 
@@ -56,14 +56,14 @@ public class JTextComponent extends JComponent
         updateUI();
     }
 
-    void setDocument(Document s)
+    public void setDocument(Document s)
     {
 	doc = s;
 	revalidate();
 	repaint();
     }
 
-    Document getDocument()
+    public Document getDocument()
     {
 	if (doc == null)
 	    System.out.println("doc == null !!!");
@@ -80,34 +80,34 @@ public class JTextComponent extends JComponent
 	//      Verify that key is a legal value for the verticalAlignment or verticalTextPosition properties.  
 	return 0;
     }
-    AccessibleContext getAccessibleContext()
+    public AccessibleContext getAccessibleContext()
     {
 	//          Get the AccessibleContext of this object 
 	return null;
     }
-    Icon getDisabledIcon()
+    public Icon getDisabledIcon()
     {
 	return null;
     }
-    int getDisplayedMnemonic()
+    public int getDisplayedMnemonic()
     {
 	//          Return the keycode that indicates a mnemonic key.   
 	return 0;
     }
-    int getHorizontalAlignment()
+    public int getHorizontalAlignment()
     {
 	//          Returns the alignment of the label's contents along the X axis.   
 	return 0;
     }
-    int getHorizontalTextPosition()
+    public int getHorizontalTextPosition()
     {
 	//          Returns the horizontal position of the label's text, relative to its image.    
 	return 0;
     }
 
-    Icon getIcon()
+    public Icon getIcon()
     {	return icon;    }
-    int getIconTextGap()
+    public int getIconTextGap()
     {	return icon_gap;    }
 
 
@@ -117,7 +117,7 @@ public class JTextComponent extends JComponent
 	return null;
     }
 
-    void setText(String text)
+    public void setText(String text)
     {
 	getDocument().remove(0,doc.getLength());
 	getDocument().insertString(0, text, null);
@@ -129,17 +129,17 @@ public class JTextComponent extends JComponent
 				     getDocument().getLength());
     }
 
-    String getUIClassID()
+    public String getUIClassID()
     {
 	//          Returns a string that specifies the name of the l&f class that renders this component.  
 	return "JTextComponent";
     }
-    int getVerticalAlignment()
+    public int getVerticalAlignment()
     {
 	//          Returns the alignment of the label's contents along the Y axis. 
 	return 0;
     }
-    int getVerticalTextPosition()
+    public int getVerticalTextPosition()
     {
 	//          Returns the vertical position of the label's text, relative to its image. 
 	return 0;
@@ -179,30 +179,30 @@ public class JTextComponent extends JComponent
     {
 	//          Defines the icon this component will display.  
     }
-    void setIconTextGap(int iconTextGap)
+    public void setIconTextGap(int iconTextGap)
     {
 	//          If both the icon and text properties are set, this property defines the space between them.  
     }
   
-    void setLabelFor(Component c)
+    public void setLabelFor(Component c)
     {
 	//          Set the component this is labelling.  
     }
     
-    void setVerticalAlignment(int alignment)
+    public void setVerticalAlignment(int alignment)
     {
 	//          Sets the alignment of the label's contents along the Y axis.  
     }
-    void setVerticalTextPosition(int textPosition)
+    public void setVerticalTextPosition(int textPosition)
     {
 	//          Sets the vertical position of the label's text, relative to its image.  
     }
 
-    TextUI getUI()
+    public TextUI getUI()
     {	return (TextUI) ui;
     }
 
-    void updateUI()
+    public void updateUI()
     {
 	TextUI b = (TextUI)UIManager.getUI(this);
 	setUI(b);

@@ -41,7 +41,7 @@ package javax.swing;
 import java.awt.Image;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.RGBImageFilter;
-
+import java.awt.Toolkit;
 
 public class GrayFilter extends RGBImageFilter
 {
@@ -67,10 +67,10 @@ public class GrayFilter extends RGBImageFilter
 
        @return a grayed image
      */
-    public static Image createDisabledImage(Image i)
+    public static Image createDisabledImage(Image src)
     {
-        return img = createImage( new FilteredImageSource(src.getSource(),
-							  new GrayFilter(false, 100);));
+	return Toolkit.getDefaultToolkit().createImage( new FilteredImageSource(src.getSource(),
+										new GrayFilter(false, 100)));
     }
 
     /**
@@ -80,6 +80,6 @@ public class GrayFilter extends RGBImageFilter
 			 int y,
 			 int rgb)
     {
-	  return ( p * ( 0.299 * ( (0xff0000 & rgb) >> 16) + 0.587 * ( (0xff00 & rgb) >> 8 ) + 0.114 * (0xff & rgb ) ) );
+	return (int) ( ( p * ( 0.299 * ( (0xff0000 & rgb) >> 16) + 0.587 * ( (0xff00 & rgb) >> 8 ) + 0.114 * (0xff & rgb ) ) ));
     }
 }

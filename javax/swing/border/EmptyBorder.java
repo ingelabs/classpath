@@ -8,12 +8,11 @@ public class EmptyBorder extends AbstractBorder
     
     protected int l,r,b,t;
 
-    
-    EmptyBorder()
+    public EmptyBorder()
     {
     }
 
-    EmptyBorder(int left,
+    public EmptyBorder(int left,
 		int right,
 		int top, 
 		int bottom)
@@ -29,7 +28,7 @@ public class EmptyBorder extends AbstractBorder
 				  Insets s)
     {
 	if (s == null)
-	    s = new Insets();
+	    s = new Insets(0,0,0,0);
 
 	s.left = l;
 	s.right = r;

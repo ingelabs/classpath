@@ -16,26 +16,26 @@ public class JList extends JComponent implements Scrollable
     ListModel          model;
     ListSelectionModel sel_model;
 
-    JList()
+    public JList()
     {	
 	init();
     }
 
-    JList(Object[] listData)
+    public JList(Object[] listData)
     {
 	init();
 	setListData(listData);
     }
 
 
-    JList(Vector listData)
+    public JList(Vector listData)
     {
 	init();
 	setListData(listData);
     }
 
 
-    JList(ListModel listData)
+    public JList(ListModel listData)
     {
 	init();
 	setModel(listData);
@@ -159,7 +159,7 @@ public class JList extends JComponent implements Scrollable
     }
 
 
-    AccessibleContext getAccessibleContext()
+    public AccessibleContext getAccessibleContext()
     {
       return null;
     }

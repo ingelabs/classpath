@@ -7,20 +7,20 @@ import javax.swing.plaf.basic.*;
 
 public class MetalLookAndFeel extends LookAndFeel
  {	   
-     boolean isNativeLookAndFeel()        { return true; }
-     boolean isSupportedLookAndFeel()     { return true; }
-     String getDescription()              { return "Metal look and feel"; }
-     String getID()                       { return "MetalLookAndFeel"; }
-     String getName()                     { return "MetalLookAndFeel"; }
+     public boolean isNativeLookAndFeel()        { return true; }
+     public boolean isSupportedLookAndFeel()     { return true; }
+     public String getDescription()              { return "Metal look and feel"; }
+     public String getID()                       { return "MetalLookAndFeel"; }
+     public String getName()                     { return "MetalLookAndFeel"; }
      
      
      UIDefaults LAF_defaults;
-
-     MetalLookAndFeel()
+     
+     public MetalLookAndFeel()
      {
      }
 
-     UIDefaults getDefaults()
+     public UIDefaults getDefaults()
 	 {
 	   if (LAF_defaults == null)
 	     LAF_defaults = new BasicDefaults();

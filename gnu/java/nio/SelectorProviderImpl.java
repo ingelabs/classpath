@@ -1,4 +1,4 @@
-package manta.runtime;
+package gnu.java.nio;
 
 import java.nio.channels.spi.*;
 import java.nio.channels.*;
@@ -6,27 +6,31 @@ import java.nio.channels.*;
 
 public class SelectorProviderImpl extends SelectorProvider
 {
-    DatagramChannel openDatagramChannel()
+    public SelectorProviderImpl()
+    {
+    }
+
+    public DatagramChannel openDatagramChannel()
     {
 	return new DatagramChannelImpl(this);
     }
 
-    Pipe openPipe()
+    public Pipe openPipe()
     {
 	return new PipeImpl();
     }
     
-    AbstractSelector openSelector()
+    public AbstractSelector openSelector()
     {
 	return new SelectorImpl(this);
     }
 
-    ServerSocketChannel openServerSocketChannel()
+    public ServerSocketChannel openServerSocketChannel()
     {
 	return new ServerSocketChannelImpl(this);
     }
 
-    SocketChannel openSocketChannel()
+    public SocketChannel openSocketChannel()
     {
 	return new SocketChannelImpl(this);
     }	      

@@ -1,4 +1,4 @@
-package manta.runtime;
+package gnu.java.nio;
 
 import java.io.*;
 import java.nio.channels.spi.*;
@@ -45,7 +45,7 @@ class ServerSocketChannelImpl extends ServerSocketChannel
     {
     }
 
-    SocketChannel accept()
+    public SocketChannel accept()
     {
 	SocketChannelImpl result = new SocketChannelImpl(provider());
 	    
@@ -56,7 +56,7 @@ class ServerSocketChannelImpl extends ServerSocketChannel
 	return result;
     }
 
-    ServerSocket socket()
+    public ServerSocket socket()
     {
 	return null;
     }

@@ -6,9 +6,20 @@ import javax.swing.plaf.*;
 
 import java.awt.*;
 
+
+/**
+ * UIDefaults is a database where all settings and interface bindings are
+ * stored into. An PLAF implementation fills one of these (see for example
+ * plaf/basic/BasicDefaults.java) with "JButton" -> new BasicButtonUI().
+ *
+ * @author Ronald Veldema (rveldema@cs.vu.nl)
+ */
+
+
+
 public class UIDefaults extends Hashtable
 {
-    ComponentUI getUI(JComponent a)
+    public ComponentUI getUI(JComponent a)
     {
 	String pp = a.getUIClassID(); //a.getClass().getName();
 

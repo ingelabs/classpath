@@ -7,16 +7,16 @@ public abstract class SelectableChannel extends AbstractInterruptibleChannel
     protected SelectableChannel()
     {
     }
-    abstract  Object blockingLock();
-    abstract  SelectableChannel configureBlocking(boolean block);
-    abstract  boolean isBlocking();
-    abstract  boolean isRegistered();
-    abstract  SelectionKey keyFor(Selector sel);
-    abstract  SelectorProvider provider();
-    SelectionKey register(Selector sel, int ops)
+    public abstract  Object blockingLock();
+    public abstract  SelectableChannel configureBlocking(boolean block);
+    public abstract  boolean isBlocking();
+    public abstract  boolean isRegistered();
+    public abstract  SelectionKey keyFor(Selector sel);
+    public abstract  SelectorProvider provider();
+    public SelectionKey register(Selector sel, int ops) throws java.nio.channels.ClosedChannelException
     {
 	return register(sel, ops, null);
     }
-    abstract  SelectionKey register(Selector sel, int ops, Object att);
-    abstract  int validOps();  
+    public abstract  SelectionKey register(Selector sel, int ops, Object att) throws java.nio.channels.ClosedChannelException;
+    public abstract  int validOps();  
 }

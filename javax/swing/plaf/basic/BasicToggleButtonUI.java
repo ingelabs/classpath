@@ -22,12 +22,13 @@ public class BasicToggleButtonUI extends BasicButtonUI
 	AbstractButton b = (AbstractButton)c;
 	Dimension d = BasicGraphicsUtils.getPreferredSize(b, 
 							  gap,
-							  b.text,
+							  b.getText(),
 							  b.getIcon(),
-							  b.vert_align,
-							  b.hori_align,
-							  b.hori_text_pos,
-							  b.vert_text_pos);
+							  b.getVerticalAlignment(),
+							  b.getHorizontalAlignment(),
+							  b.getHorizontalTextPosition(),
+							  b.getVerticalTextPosition());
+							  
 	//System.out.println("^^^^^^^^^^^^^^^^^^^^^^   BASIC-PREF="+d + ",T="+b.text);
 	return d;
     }

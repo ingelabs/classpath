@@ -3,20 +3,20 @@ package java.nio;
 
 public abstract class MappedByteBuffer extends ByteBuffer
 {
-    private static MantaNative void sync();
+    private static native void sync();
 
-    MappedByteBuffer force()
+    public MappedByteBuffer force()
     {
 	sync();
 	return this;
     }
     
-    boolean isLoaded()
+    public boolean isLoaded()
     {
 	return true;
     }
     
-    MappedByteBuffer load()
+    public MappedByteBuffer load()
     {
 	sync();
 	return this;

@@ -13,8 +13,6 @@ package java.nio;
      */
 
 
-
-
 public abstract class BUFFER extends Buffer
 { 
     private ByteOrder endian = ByteOrder.BIG_ENDIAN;
@@ -31,7 +29,7 @@ public abstract class BUFFER extends Buffer
 	return b;
     }
 
-    public static BUFFER wrap(ELT[] array,
+   final public static BUFFER wrap(ELT[] array,
 			      int offset,
 			      int length)
     {
@@ -39,7 +37,7 @@ public abstract class BUFFER extends Buffer
 	return b;
     }
 
-    public static BUFFER wrap(String a)
+  final  public static BUFFER wrap(String a)
     {
 #if SIZE == 1
 	return wrap(a.getBytes(), 0, a.length());
@@ -48,18 +46,18 @@ public abstract class BUFFER extends Buffer
 	ELT[] buffer = new ELT[len];
 	for (int i=0;i<len;i++)
 	    {
-		buffer[i] = a.charAt(i);
+		buffer[i] = (ELT) a.charAt(i);
 	    }
 	return wrap(buffer, 0, len);
 #endif
     }
 
-    public static BUFFER wrap(ELT[] array)
+   final public static BUFFER wrap(ELT[] array)
     {
 	return wrap(array, 0, array.length);
     }
     
-    public BUFFER get(ELT[] dst,
+    final public BUFFER get(ELT[] dst,
 		      int offset,
 		      int length)
     {
@@ -71,33 +69,33 @@ public abstract class BUFFER extends Buffer
 	  return this;
     }
 
-    public BUFFER get(ELT[] dst)
+  final  public BUFFER get(ELT[] dst)
     {
 	return get(dst, 0, dst.length);
     }
 
-    public BUFFER put(BUFFER src)
+  final  public BUFFER put(BUFFER src)
     {
 	while (src.hasRemaining())
 	    put(src.get());
 	return this;
     }
 
-    public BUFFER put(ELT[] src,
-		      int offset,
-		      int length)
+  final public BUFFER put(ELT[] src,
+			  int offset,
+			  int length)
     {
 	  for (int i = offset; i < offset + length; i++)
 	      put(src[i]); 
 	  return this;
     }
 
-    public final BUFFER put(ELT[] src)
+public final BUFFER put(ELT[] src)
     {
 	return put(src, 0, src.length);
     }
 
-    public final boolean hasArray()
+public final boolean hasArray()
     {
 	return false;
     }
@@ -143,7 +141,7 @@ public abstract class BUFFER extends Buffer
 	int i2 = a.pos;
 	for (int i=0;i<r;i++)
 	    {
-		ELT t = (ELT)(get(i1)- a.get(i2));
+		int t = (int) (get(i1)- a.get(i2));
 		if (t != 0)
 		    {
 			return (int) t;

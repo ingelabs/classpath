@@ -6,39 +6,39 @@ import javax.swing.plaf.*;
 
 public class JRadioButton extends JToggleButton
 {
-    JRadioButton()
+    public JRadioButton()
     {
 	this(null, null);
     }
-    JRadioButton(Action a)
+    public JRadioButton(Action a)
     {
 	this();
 	setAction(a);
     }
 
-    JRadioButton(Icon icon)
+    public JRadioButton(Icon icon)
     { 
 	this(null, icon);
     }    
   
-    JRadioButton(String text)
+    public JRadioButton(String text)
     {
 	this(text, null);
     }
       
-    JRadioButton(String text, Icon icon)
+    public JRadioButton(String text, Icon icon)
     {
 	super(text, icon);
     }
 
     
-    AccessibleContext getAccessibleContext()
+    public AccessibleContext getAccessibleContext()
     {
 	//Gets the AccessibleContext associated with this JRadioButton. 
 	return null;
     }
   
-    String getUIClassID()
+    public String getUIClassID()
     {
 	//Returns a string that specifies the name of the L&F class that renders this component.  
 	return "JRadioButton";

@@ -4,31 +4,41 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.plaf.*;
 
+
+/**
+ * An instance of JButton can be added to a panel, frame etc
+ *
+ * @author Ronald Veldema (rveldema@cs.vu.nl)
+ */
+
+
 public class JButton extends AbstractButton implements Accessible 
 {
     boolean def, is_def;
 
-    JButton()
+    
+    public JButton()
     {
 	this(null, null);
     }
-    JButton(Action a)
+
+    public JButton(Action a)
     {
 	this();
 	setAction(a);
     }
 
-    JButton(Icon icon)
+    public JButton(Icon icon)
     { 
 	this(null, icon);
     }    
   
-    JButton(String text)
+    public JButton(String text)
     {
 	this(text, null);
     }
       
-    JButton(String text, Icon icon)
+    public JButton(String text, Icon icon)
     {
 	super(text, icon);
     }
@@ -49,19 +59,19 @@ public class JButton extends AbstractButton implements Accessible
 	return null;
     }
   
-    String getUIClassID()
+    public String getUIClassID()
     {
 	//Returns a string that specifies the name of the L&F class that renders this component.  
 	return "JButton";
     }
   
-    boolean isDefaultButton()
+    public boolean isDefaultButton()
     {
 	//Returns whether or not this button is the default button on the RootPane.  
 	return is_def;
     }
   
-    boolean isDefaultCapable()
+    public boolean isDefaultCapable()
     {
 	//Returns whether or not this button is capable of being the default button on the RootPane. 
 	return def;
@@ -77,10 +87,10 @@ public class JButton extends AbstractButton implements Accessible
 	//Overrides JComponent.removeNotify to check if this button is currently set as the default button on the RootPane, and if so, sets the RootPane's default button to null to ensure the RootPane doesn't hold onto an invalid button reference.  
     }
     
-    void setDefaultCapable(boolean defaultCapable)
+    public void setDefaultCapable(boolean defaultCapable)
     {	def = defaultCapable;    }
     
-    void updateUI()
+    public void updateUI()
     {
 	ButtonUI b = (ButtonUI)UIManager.getUI(this);
 	setUI(b);

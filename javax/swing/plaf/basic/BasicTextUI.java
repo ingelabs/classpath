@@ -24,14 +24,14 @@ public class BasicTextUI extends TextUI
 		{
 		    Rectangle r = s.getBounds();
 
-		    view.setSize(r.width,
-				 r.height);
+		    view.setSize((int)r.getWidth(),
+				 (int)r.getHeight());
 		    view.paint(g, s);
 		}
         }
     }
 
-    BasicTextUI()
+    public BasicTextUI()
     {
     }
 
@@ -59,33 +59,33 @@ public class BasicTextUI extends TextUI
 	float w = v.getPreferredSpan(View.X_AXIS);
 	float h = v.getPreferredSpan(View.Y_AXIS);
 
-	return new Dimension(w, h);
+	return new Dimension((int)w, (int) h);
     }
     
 
-    void paint(Graphics g, JComponent c)
+    public void paint(Graphics g, JComponent c)
     {      
 	//	view.paint(
     }
 
-    void damageRange(JTextComponent t, int p0, int p1)
+    public void damageRange(JTextComponent t, int p0, int p1)
     {
 	damageRange(t, p0, p1, null, null);
     }    
 
-    void damageRange(JTextComponent t, 
+    public void damageRange(JTextComponent t, 
 		     int p0, int p1, 
 		     Position.Bias firstBias,
 		     Position.Bias secondBias)
     {
     }
 
-    EditorKit getEditorKit(JTextComponent t)
+    public EditorKit getEditorKit(JTextComponent t)
     {
 	return kit;
     }
     
-    int getNextVisualPositionFrom(JTextComponent t, 
+    public int getNextVisualPositionFrom(JTextComponent t, 
 				  int pos,
 				  Position.Bias b, 
 				  int direction,
@@ -94,27 +94,27 @@ public class BasicTextUI extends TextUI
 	return 0;
     }
     
-    View getRootView(JTextComponent t)
+    public View getRootView(JTextComponent t)
     {
 	return view;
     }
     
-    Rectangle modelToView(JTextComponent t, int pos)
+    public Rectangle modelToView(JTextComponent t, int pos)
     {
 	return modelToView(t, pos, null);
     }
     
-    Rectangle modelToView(JTextComponent t, int pos, Position.Bias bias)
+    public Rectangle modelToView(JTextComponent t, int pos, Position.Bias bias)
     {
 	return null;
     }
     
-    int viewToModel(JTextComponent t, Point pt)
+    public int viewToModel(JTextComponent t, Point pt)
     {
 	return viewToModel(t, pt, null);
     }
     
-    int viewToModel(JTextComponent t, Point pt, Position.Bias[] biasReturn)
+    public int viewToModel(JTextComponent t, Point pt, Position.Bias[] biasReturn)
     {
 	return 0;
     } 

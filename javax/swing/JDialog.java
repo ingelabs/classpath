@@ -4,6 +4,13 @@ import java.awt.*;
 import java.awt.event.*;
 
 
+/**
+ * Unlike JComponent derivatives, JDialog inherits from
+ * java.awt.Dialog. But also lets a look-and-feel component to its work.
+ *
+ * @author Ronald Veldema (rveldema@cs.vu.nl)
+ */
+
 
 public class JDialog extends Dialog implements Accessible
 {

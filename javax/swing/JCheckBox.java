@@ -4,43 +4,49 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.plaf.*;
 
+/**
+ * An instance of JCheckbox can be added to a panel, frame etc
+ *
+ * @author Ronald Veldema (rveldema@cs.vu.nl)
+ */
+
 
 
 public class JCheckBox extends JToggleButton
 {
-    JCheckBox()
+    public JCheckBox()
     {
 	this(null, null);
     }
-    JCheckBox(Action a)
+    public JCheckBox(Action a)
     {
 	this();
 	setAction(a);
     }
 
-    JCheckBox(Icon icon)
+    public JCheckBox(Icon icon)
     { 
 	this(null, icon);
     }    
   
-    JCheckBox(String text)
+    public JCheckBox(String text)
     {
 	this(text, null);
     }
       
-    JCheckBox(String text, Icon icon)
+    public JCheckBox(String text, Icon icon)
     {
 	super(text, icon);
     }
 
     
-    AccessibleContext getAccessibleContext()
+    public AccessibleContext getAccessibleContext()
     {
 	//Gets the AccessibleContext associated with this JCheckBox. 
 	return null;
     }
   
-    String getUIClassID()
+    public String getUIClassID()
     {
 	//Returns a string that specifies the name of the L&F class that renders this component.  
 	return "JCheckBox";

@@ -5,7 +5,8 @@ import javax.swing.border.*;
 import javax.swing.*;
 
 
-public abstract class ComponentUI
+public abstract class ComponentUI 
+    implements UIResource // ??
 {
     boolean contains(JComponent c, int x, int y)
     {
@@ -13,7 +14,7 @@ public abstract class ComponentUI
     }
 
     // this SHOULD thow an error:
-    static ComponentUI createUI(JComponent c)
+    public static ComponentUI createUI(JComponent c)
     {
 	Exception e = new Exception("createUI from ComponentUI should never be called");
 	e.printStackTrace();
@@ -21,34 +22,34 @@ public abstract class ComponentUI
 	return null;
     }
 
-    Accessible getAccessibleChild(JComponent c, int i)
+    public Accessible getAccessibleChild(JComponent c, int i)
     {
 	//Return the nth Accessible child of the object. 
 	return null;
     }
   
-    int getAccessibleChildrenCount(JComponent c)
+    public int getAccessibleChildrenCount(JComponent c)
     {
 	//Returns the number of accessible children in the object. 
 	return 0;
     }
   
-    Dimension getMaximumSize(JComponent c)
+    public Dimension getMaximumSize(JComponent c)
     {
 	return getPreferredSize(c);
     }
 
-    Dimension getMinimumSize(JComponent c)
+    public Dimension getMinimumSize(JComponent c)
     {
 	return getPreferredSize(c);
     }
 
-    Dimension getPreferredSize(JComponent c)
+    public Dimension getPreferredSize(JComponent c)
     {
 	return null;
     }
 
-    void installUI(JComponent c)
+    public void installUI(JComponent c)
     {
 	String id = c.getUIClassID() + ".border";
 
@@ -65,16 +66,16 @@ public abstract class ComponentUI
 	    }	
     }
 
-    void paint(Graphics g, JComponent c)
+    public void paint(Graphics g, JComponent c)
     {
 	//  System.out.println("UI-COMPONENT-> unimplemented paint: " + c + ", UI="+this);
     }
 
-    void uninstallUI(JComponent c)
+    public void uninstallUI(JComponent c)
     {	
     }
 
-    void update(Graphics g, JComponent c) {
+    public void update(Graphics g, JComponent c) {
         if (c.isOpaque()) {
             g.setColor(c.getBackground());
             g.fillRect(0, 0, c.getWidth(),c.getHeight());

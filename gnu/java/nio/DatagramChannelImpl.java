@@ -1,5 +1,4 @@
-package manta.runtime;
-
+package gnu.java.nio;
 
 import java.nio.channels.*;
 import java.nio.channels.spi.*;
@@ -7,7 +6,7 @@ import java.io.*;
 import java.net.*;
 import java.nio.*;
 
-class DatagramChannelImpl extends DatagramChannel
+public class DatagramChannelImpl extends DatagramChannel
 {
     
     protected DatagramChannelImpl(SelectorProvider provider)
@@ -39,37 +38,37 @@ class DatagramChannelImpl extends DatagramChannel
 	return 0;
     }
     
-    DatagramChannel connect(java.net.SocketAddress  remote)
+    public DatagramChannel connect(java.net.SocketAddress  remote)
     {
 	return null;
     }
     
-    DatagramChannel disconnect()
+    public DatagramChannel disconnect()
     {
         return null;
     }
     
-    boolean isConnected()
+    public boolean isConnected()
     {
 	return false;
     }
     
-    long read(ByteBuffer[]  dsts, int  offset, int  length)
+    public long read(ByteBuffer[]  dsts, int  offset, int  length)
     {
 	return 0;
     }
     
-    SocketAddress receive(java.nio.ByteBuffer  dst)
+    public SocketAddress receive(java.nio.ByteBuffer  dst)
     {
 	return null;
     }
     
-    int send(java.nio.ByteBuffer  src, java.net.SocketAddress  target)
+    public int send(java.nio.ByteBuffer  src, java.net.SocketAddress  target)
     {
 	return 0;
     }
     
-    DatagramSocket socket()
+    public DatagramSocket socket()
     {
 	return null;
     }

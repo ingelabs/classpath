@@ -26,14 +26,15 @@ public class JOptionPane extends JComponent
     
     final static String UNINITIALIZED_VALUE = "uninit";
 
-    Object msg;
-    int mtype;
-    int otype;
-    Icon icon;
-    Object []args;
-    Object init;
+    // Ronald: shouldnt by public ?
+    public Object msg;
+    public int mtype;
+    public int otype;
+    public Icon icon;
+    public Object []args;
+    public Object init;
 
-    JDialog dialog;
+    public JDialog dialog;
 
     /*****************************************************************************
      *
@@ -111,12 +112,12 @@ public class JOptionPane extends JComponent
      ***********************************/
 
     Object val;
-    void setValue(Object v)  
+    public void setValue(Object v)  
     {   val = v;       }
-    Object getValue()
+    public Object getValue()
     {	return val;    }
 
-    String getUIClassID()
+    public String getUIClassID()
     {	return "JOptionPane";    }
 
 
@@ -133,17 +134,17 @@ public class JOptionPane extends JComponent
     }
 
 
-  AccessibleContext getAccessibleContext()
+    public AccessibleContext getAccessibleContext()
     {
 	return null;
     }
     
-   protected  String paramString()
+    protected  String paramString()
     {
 	return "JOptionPane";
     }
     
-    static void showMessageDialog(Component frame,
+    public static void showMessageDialog(Component frame,
 				  String msg,
 				  String title,
 				  int bla)
@@ -157,7 +158,8 @@ public class JOptionPane extends JComponent
 			  null,
 			  null);
     }
-    static void showMessageDialog(Component frame,
+
+    public static void showMessageDialog(Component frame,
 				 String msg,
 				 String title,
 				 int bla,
@@ -172,7 +174,8 @@ public class JOptionPane extends JComponent
 				 null,
 				 null);
     }
-    static void showMessageDialog(Component frame,
+
+    public static void showMessageDialog(Component frame,
 				  String msg)
     {
 	showMessageDialog(frame,
@@ -181,7 +184,7 @@ public class JOptionPane extends JComponent
     }
     
 
-    static void showMessageDialog(Component frame,
+    public static void showMessageDialog(Component frame,
 				  String msg,
 				  Icon icon)
     {	
@@ -196,7 +199,7 @@ public class JOptionPane extends JComponent
 				null);
     }
 
-    static int showConfirmDialog(JFrame frame,
+    public static int showConfirmDialog(JFrame frame,
 				 String yes,
 				 String no, 
 				 int bla)
@@ -204,7 +207,7 @@ public class JOptionPane extends JComponent
 	return 0;
     }
 
-  static String showInputDialog(JFrame frame,
+    public static String showInputDialog(JFrame frame,
 			     String msg, 
 			     String title, 
 			     int opt_type, 
@@ -223,7 +226,7 @@ public class JOptionPane extends JComponent
 				init);
     }
 
-  static Object showInputDialog(JFrame frame,
+    public static Object showInputDialog(JFrame frame,
 			     String msg, 
 			     String title, 
 			     int opt_type, 
@@ -243,7 +246,7 @@ public class JOptionPane extends JComponent
 
 
     // everybody comes here eventually
-    static int showOptionDialog(Component frame,
+    public static int showOptionDialog(Component frame,
 				String msg, 
 				String title, 
 				int opt_type, 
@@ -265,7 +268,7 @@ public class JOptionPane extends JComponent
 	return a.intValue();
     }
     
-  static Object DoShowOptionDialog(Component frame,
+    public static Object DoShowOptionDialog(Component frame,
 				   String msg, 
 				   String title, 
 				   int opt_type, 

@@ -1,3 +1,9 @@
+
+2002-03-12  Ronald Veldema <rveldema@cs.vu.nl>
+
+	* Removes dependencies on manta; javax.swing, 
+	  gnu.java.nio and java.nio now compile with jikes;
+
 2002-03-11  C. Brian Jones <cbj@gnu.org>
 
 	* acinclude.m4: moved AM_CONDITIONAL statements out of conditionals

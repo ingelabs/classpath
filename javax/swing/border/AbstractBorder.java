@@ -23,16 +23,16 @@ public abstract class AbstractBorder implements Border, Serializable
     public Insets getBorderInsets(Component c, Insets insets) 
     {
 	if (insets == null)
-	    insets = new Insets();
-
-        insets.left = insets.top = insets.right = insets.bottom = 5;
+	    insets = new Insets(0,0,0,0);
+        
+	insets.left = insets.top = insets.right = insets.bottom = 5;
 
         return insets;
     }
 
     public Insets getBorderInsets(Component c)
     {
-        return getBorderInsets(c, new Insets());
+        return getBorderInsets(c, new Insets(0,0,0,0));
     }
 
 

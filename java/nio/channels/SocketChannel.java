@@ -49,19 +49,19 @@ abstract public class SocketChannel extends AbstractSelectableChannel
 	return b;
     }    
     
-    int validOps()
+    public int validOps()
     {
         return SelectionKey.OP_CONNECT  | SelectionKey.OP_READ | SelectionKey.OP_WRITE;
     }
 
 
-    abstract  int read(ByteBuffer dst);
-    abstract  boolean connect(SocketAddress remote);
-    abstract  boolean finishConnect();
-    abstract  boolean isConnected();
-    abstract  boolean isConnectionPending();
-    abstract  long read(ByteBuffer[] dsts, int offset, int length);
-    abstract  Socket socket();
-    abstract  int write(ByteBuffer src);
-    abstract  long write(ByteBuffer[] srcs, int offset, int length);
+    public abstract  int read(ByteBuffer dst);
+    public abstract  boolean connect(SocketAddress remote) throws IOException;
+    public abstract  boolean finishConnect();
+    public abstract  boolean isConnected();
+    public abstract  boolean isConnectionPending();
+    public abstract  long read(ByteBuffer[] dsts, int offset, int length);
+    public abstract  Socket socket();
+    public abstract  int write(ByteBuffer src);
+    public abstract  long write(ByteBuffer[] srcs, int offset, int length);
 }

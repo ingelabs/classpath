@@ -5,6 +5,12 @@ import java.awt.event.*;
 import java.beans.PropertyChangeListener;
 
 
+/**
+ * Empty
+ *
+ * @author Ronald Veldema (rveldema@cs.vu.nl)
+ */
+
 public abstract 
 interface Action extends ActionListener
 {

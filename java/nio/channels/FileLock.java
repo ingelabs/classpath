@@ -19,19 +19,21 @@ public abstract class FileLock
 	this.shared = shared;
     }
  
-    abstract  boolean isValid();
-    abstract  void release();
+    public abstract  boolean isValid();
+    public abstract  void release();
 
- FileChannel channel()
+
+    public FileChannel channel()
     {
 	return channel;
     }
- boolean isShared()
+
+    public boolean isShared()
     {
 	return shared;
     }    
 
- boolean overlaps(long position, long size)
+    public boolean overlaps(long position, long size)
     {
 	if (position > this.position+this.size)
 	    return false;
@@ -41,12 +43,13 @@ public abstract class FileLock
 
 	return true;
     }
- long position()
+
+    public long position()
     {
 	return position;
     }
     
- long size()
+    public long size()
     {
 	return size;
     }

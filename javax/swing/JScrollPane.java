@@ -22,46 +22,46 @@ public class JScrollPane extends JComponent
     protected JViewport  viewport;
 
 
-    JScrollPane() 
+    public JScrollPane() 
     {
 	this(null, 0, 0);
     }
     
-    JScrollPane(Component view) 
+    public JScrollPane(Component view) 
     {
 	this(view, 0, 0);
     }
     
     
-    JScrollPane(int vsbPolicy, int hsbPolicy) 
+    public JScrollPane(int vsbPolicy, int hsbPolicy) 
     {
 	this(null, 0, 0);
     }
 
-    JScrollPane(Component view, int vsbPolicy, int hsbPolicy) 
+    public JScrollPane(Component view, int vsbPolicy, int hsbPolicy) 
     {
 	setViewportView(view);
         setOpaque(true);
 	updateUI();
     }
 
-    String getUIClassID()
+    public String getUIClassID()
     {
 	//Returns a string that specifies the name of the L&F class that renders this component.  
 	return "JScrollPane";
     }
 
-    JViewport getViewport()
+    public JViewport getViewport()
     {
 	return viewport;
     }
 
-    JViewport createViewport()
+    public JViewport createViewport()
     {
 	return new JViewport();
     }
     
-    void setViewport(JViewport v)
+    public void setViewport(JViewport v)
     {
 	if (viewport != null)
 	    remove(viewport);
@@ -74,7 +74,7 @@ public class JScrollPane extends JComponent
 	repaint();
     }
     
-    void updateUI()
+   public  void updateUI()
     {
 	ScrollPaneUI b = (ScrollPaneUI)UIManager.getUI(this);
 	setUI(b);

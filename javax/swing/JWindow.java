@@ -5,6 +5,16 @@ import java.awt.event.*;
 
 
 
+/**
+ * Unlike JComponent derivatives, JWindow inherits from
+ * java.awt.Window. But also lets a look-and-feel component to its work.
+ *
+ * @author Ronald Veldema (rveldema@cs.vu.nl)
+ */
+
+
+
+
 public class JWindow extends Window implements Accessible
 {
     public final static int HIDE_ON_CLOSE        = 0;
@@ -25,8 +35,10 @@ public class JWindow extends Window implements Accessible
      *
      *************/
 
-    JWindow()
+    // huuu ?
+    public JWindow(Frame f)
     {
+	super(f);
     }
     
     /***************************************************
@@ -41,7 +53,7 @@ public class JWindow extends Window implements Accessible
     private boolean checking;
     protected  JRootPane         rootPane;
 
-
+    
     protected  void frameInit()
     {
       super.setLayout(new BorderLayout(1, 1));

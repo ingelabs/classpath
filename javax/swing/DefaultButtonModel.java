@@ -72,7 +72,7 @@ class DefaultButtonModel implements ButtonModel, java.io.Serializable
     public void removeActionListener(ActionListener l) { actions.removeElement(l); }
     public void addActionListener(ActionListener l)    
     {	
-	comp.eventMask |= AWTEvent.ACTION_EVENT_MASK;
+	//	comp.enableEvents( AWTEvent.ACTION_EVENT_MASK );
 	actions.addElement(l);    
     }
 

@@ -3,28 +3,36 @@ package javax.swing;
 import java.awt.*;
 import javax.swing.plaf.*;
 
+/**
+ * An instance of JPanel can be added to a panel, frame etc
+ *
+ * @author Ronald Veldema (rveldema@cs.vu.nl)
+ */
+
+
+
 public class JPanel extends JComponent
 {
-    JPanel()
+    public JPanel()
     {
 	this(new FlowLayout(),
 	     true);
     }
     
-    JPanel(boolean double_buffered)
+    public JPanel(boolean double_buffered)
     {
 	this(new FlowLayout(),
 	     double_buffered);
     }
     
-    JPanel(LayoutManager layout)
+    public JPanel(LayoutManager layout)
     {
 	this(layout,
 	     true);
     }
     
     
-    JPanel(LayoutManager layout,
+    public JPanel(LayoutManager layout,
 	   boolean isDoubleBuffered)
     {
 	if (layout == null)
@@ -38,7 +46,7 @@ public class JPanel extends JComponent
 	updateUI();	
     } 
 
-    String getUIClassID()
+    public String getUIClassID()
     {	return "JPanel";    }
 
 
@@ -55,7 +63,7 @@ public class JPanel extends JComponent
     }
 
 
-  AccessibleContext getAccessibleContext()
+    public AccessibleContext getAccessibleContext()
     {
 	return null;
     }

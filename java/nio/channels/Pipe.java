@@ -32,6 +32,6 @@ public abstract class Pipe
 	return null;
     }
     
-    abstract  SinkChannel sink();
-    abstract  SourceChannel source();   
+    public abstract  SinkChannel sink();
+    public abstract  SourceChannel source();   
 }

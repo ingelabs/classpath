@@ -5,6 +5,12 @@ import java.awt.*;
 
 public class SwingUtilities
 {
+    
+    public static FontMetrics getFontMetrics ( Font font ) {
+	return Toolkit.getDefaultToolkit().getFontMetrics(font);
+    }
+
+
     static JRootPane getRootPane(Component a)
     {
 	if (a instanceof JRootPane)

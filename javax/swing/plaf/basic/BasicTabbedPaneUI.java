@@ -28,8 +28,8 @@ public class BasicTabbedPaneUI  extends TabbedPaneUI
 		
 		Dimension pr = comp.getPreferredSize();
 
-		d.width = Math.max(d.width, comp.width);
-		d.height = Math.max(d.height, comp.height);
+		d.width = Math.max(d.width, comp.getWidth());
+		d.height = Math.max(d.height, comp.getHeight());
 	    }
 	
 	Insets i = p.getInsets();
@@ -46,17 +46,17 @@ public class BasicTabbedPaneUI  extends TabbedPaneUI
     }
     
 
-    Rectangle getTabBounds(JTabbedPane pane, int index)
+    public Rectangle getTabBounds(JTabbedPane pane, int index)
     {
 	return null;
     }
 
-    int getTabRunCount(JTabbedPane pane)
+    public int getTabRunCount(JTabbedPane pane)
     {
 	return 0;
     }
 
-    int tabForCoordinate(JTabbedPane pane, int x, int y)
+    public int tabForCoordinate(JTabbedPane pane, int x, int y)
     {
 	return 0;
     }

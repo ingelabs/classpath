@@ -1,4 +1,4 @@
-package manta.runtime;
+package gnu.java.nio;
 
 import java.net.*;
 import java.io.*;
@@ -24,8 +24,7 @@ public class SocketChannelImpl extends SocketChannel
     static native int SocketRead(int fd, byte b[], int off, int len);
     static native int SocketWrite(int fd, byte b[], int off, int len);
 
-
-    SocketChannelImpl(SelectorProvider provider)		      
+    public SocketChannelImpl(SelectorProvider provider)		      
     {
 	super(provider);
 
@@ -45,8 +44,7 @@ public class SocketChannelImpl extends SocketChannel
 	    }
     }
 
-
-    int validOps()
+    public int validOps()
     {
     	return SelectionKey.OP_READ | SelectionKey.OP_WRITE | SelectionKey.OP_CONNECT;
     }
@@ -64,7 +62,7 @@ public class SocketChannelImpl extends SocketChannel
 	    return;
     }   
 
-    boolean connect(SocketAddress  remote)
+    public boolean connect(SocketAddress  remote)
 	throws IOException
     {
 	if (connected)
@@ -95,33 +93,34 @@ public class SocketChannelImpl extends SocketChannel
 	return blocking;
     }
     
-    boolean finishConnect()
+    public boolean finishConnect()
     {
 	return false;
     }
 
-    boolean isConnected()
+    public boolean isConnected()
     {
 	return connected;
     }
     
-    boolean isConnectionPending()
+    public boolean isConnectionPending()
     {
 	if (blocking)
 	    return false;
 	return false;
     }
-    Socket socket()
+    
+    public Socket socket()
     {
 	if (sock_object != null)
 	    {
-		sock_object.ch = this;
+		//sock_object.ch = this;
 	    }
 	return sock_object;
     }
 
 
-    int read(ByteBuffer  dst)
+    public int read(ByteBuffer  dst)
     {
 	int bytes = 0;
 	
@@ -143,7 +142,7 @@ public class SocketChannelImpl extends SocketChannel
     }
     
     
-    long read(ByteBuffer[]  dsts, int  offset, int  length)
+    public long read(ByteBuffer[]  dsts, int  offset, int  length)
     {
 	long bytes = 0;
 	for (int i=offset; i<length; i++)
@@ -154,7 +153,7 @@ public class SocketChannelImpl extends SocketChannel
     }
      
 	
-    int write(ByteBuffer  src)
+    public int write(ByteBuffer  src)
     {
 	int bytes = 0;
 	
@@ -182,7 +181,7 @@ public class SocketChannelImpl extends SocketChannel
 	return bytes;
     }
 
-    long write(ByteBuffer[]  srcs, int  offset, int  length)
+    public long write(ByteBuffer[]  srcs, int  offset, int  length)
     {
 	long bytes = 0;
 	for (int i=offset; i<length; i++)

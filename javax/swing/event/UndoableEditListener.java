@@ -1,5 +1,6 @@
 package javax.swing.event;
 
+import java.util.*;
 import javax.swing.text.*;
 
 

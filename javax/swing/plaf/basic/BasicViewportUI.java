@@ -26,7 +26,7 @@ public class BasicViewportUI extends ViewportUI
 	return d;
     }
 
-    void paint(Graphics g, JComponent c)
+    public void paint(Graphics g, JComponent c)
     {      
 	System.out.println("BasicViewportUI->paint->"+c);
     }

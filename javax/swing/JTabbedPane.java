@@ -26,22 +26,22 @@ public class JTabbedPane extends JComponent
     
     private Vector tabs = new Vector();
 
-    JTabbedPane()
+    public JTabbedPane()
     {
     }
 
-    void addTab(String name,
+    public void addTab(String name,
 		Component panel)		
     {
 	addTab(name, null, panel, null);
     }
-    void addTab(String name,
+    public void addTab(String name,
 		Icon icon,
 		Component panel)		
     {
 	addTab(name, icon, panel, null);
     }
-    void addTab(String name,
+    public void addTab(String name,
 		Icon icon,
 		Component panel,
 		String descr)
@@ -49,17 +49,17 @@ public class JTabbedPane extends JComponent
 	tabs.addElement(new Tab(name, icon, panel, descr));
     }
 
-    int getTabCount()
+    public int getTabCount()
     {
 	return tabs.size();
     }
-    Component getComponentAt(int i)
+    public Component getComponentAt(int i)
     {
 	Tab t = (Tab) tabs.elementAt(i);
 	return t.tab;
     }
     
-    String getUIClassID()
+    public String getUIClassID()
     {	return "JTabbedPane";    }
 
 
@@ -76,7 +76,7 @@ public class JTabbedPane extends JComponent
         setUI((TabbedPaneUI)UIManager.getUI(this));
     }
     
-  AccessibleContext getAccessibleContext()
+    public AccessibleContext getAccessibleContext()
     {
 	return null;
     }

@@ -1,4 +1,4 @@
-package manta.runtime;
+package gnu.java.nio;
 
 import java.util.*;
 import java.nio.channels.*;
@@ -9,25 +9,25 @@ public class SelectorImpl extends AbstractSelector
 {
     Set keys, selected, canceled;
 
-    SelectorImpl(SelectorProvider provider)
+    public SelectorImpl(SelectorProvider provider)
     {
 	super(provider);
     }
 
-    Set keys()
+    public Set keys()
     {
 	return keys;
     }
     
-    int selectNow()    { return select(1);                }
-    int select()       { return select(Long.MAX_VALUE);   }
+    public int selectNow()    { return select(1);                }
+    public int select()       { return select(Long.MAX_VALUE);   }
 
-    private static MantaNative int java_do_select(int []read,
-						  int []write,
-						  int []except,
-						  long timeout);
+    private static native int java_do_select(int []read,
+					     int []write,
+					     int []except,
+					     long timeout);
 
-    int select(long  timeout)
+    public int select(long  timeout)
     {
 	if (keys == null)
 	    {
@@ -72,24 +72,23 @@ public class SelectorImpl extends AbstractSelector
 	return ret;
     }
     
-
-    Set selectedKeys()    {	return selected;    }
-    Set cancelledKeys()   {	return canceled;    }
-
-
     
-    Selector wakeup()
+    public Set selectedKeys()    {	return selected;    }
+    public Set cancelledKeys()   {	return canceled;    }
+
+    public Selector wakeup()
     {
 	return null;
     }
 
-    void add(SelectionKeyImpl k)
+    public void add(SelectionKeyImpl k)
     {
 	if (keys == null)
 	    keys = new HashSet();
 
 	keys.add(k);
     }
+
     void add_selected(SelectionKeyImpl k)
     {
 	if (selected == null)
@@ -118,7 +117,7 @@ public class SelectorImpl extends AbstractSelector
     {
 	/*
 	  // filechannel is not selectable ?
-	if (ch instanceof manta.runtime.FileChannelImpl)
+	if (ch instanceof gnu.java.nio.FileChannelImpl)
 	    {
 		FileChannelImpl fc = (FileChannelImpl) ch;
 
@@ -133,7 +132,7 @@ public class SelectorImpl extends AbstractSelector
 	else
 	*/
 	
-	if (ch instanceof manta.runtime.SocketChannelImpl)
+	if (ch instanceof gnu.java.nio.SocketChannelImpl)
 	    {
 		SocketChannelImpl fc = (SocketChannelImpl) ch;
 

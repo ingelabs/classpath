@@ -25,7 +25,7 @@ public abstract class AbstractDocument implements Document
 	Vector kids = new Vector();
 	TreeNode tree_parent;
 	
-	AbstractElement(Element p, AttributeSet s)
+	public AbstractElement(Element p, AttributeSet s)
 	{ parent = p; attr = s; }
 
 	public Enumeration children()         { return kids.elements(); }
@@ -37,7 +37,7 @@ public abstract class AbstractDocument implements Document
 
 	public AttributeSet getAttributes()      { return attr; }
 	public Document getDocument()            { return AbstractDocument.this; }
-	public Element getElement(int index)     { return elts.elementAt(index); }
+	public Element getElement(int index)     { return (Element)elts.elementAt(index); }
 	public String getName()                  { return name; }
 	public Element getParentElement()        { return parent; }
 
@@ -53,9 +53,9 @@ public abstract class AbstractDocument implements Document
     }
 
     
-    static class BranchElement extends AbstractElement
+    class BranchElement extends AbstractElement
     {
-	BranchElement(Element e, AttributeSet a, int s, int end)
+	public BranchElement(Element e, AttributeSet a, int s, int end)
 	{  super(e, a);	}
 
 	public boolean isLeaf() { return false; }

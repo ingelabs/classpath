@@ -6,12 +6,12 @@ public class MatteBorder extends EmptyBorder
 {
     Color c;
 
-    MatteBorder()
+    public MatteBorder()
     {
     }
 
     
-    MatteBorder(int top,
+    public MatteBorder(int top,
 		int left,
 		int bottom, 
 		int right,

@@ -9,20 +9,20 @@ public abstract class SelectorProvider
     {
     }
     
-    abstract  DatagramChannel openDatagramChannel();
-    abstract  Pipe openPipe();
-    abstract  AbstractSelector openSelector();
-    abstract  ServerSocketChannel openServerSocketChannel();
-    abstract  SocketChannel openSocketChannel();
+    public abstract  DatagramChannel openDatagramChannel();
+    public abstract  Pipe openPipe();
+    public abstract  AbstractSelector openSelector();
+    public abstract  ServerSocketChannel openServerSocketChannel();
+    public abstract  SocketChannel openSocketChannel();
     
     
     static SelectorProvider pr;
     
-    static SelectorProvider provider()
+    public static SelectorProvider provider()
     {
 	if (pr == null)
 	    {
-		pr = new manta.runtime.SelectorProviderImpl();
+		pr = new gnu.java.nio.SelectorProviderImpl();
 	    }
 	return pr;
     }

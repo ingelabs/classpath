@@ -37,7 +37,7 @@ public class JApplet extends Applet
   public Dimension getPreferredSize()
   {
     Dimension d = super.getPreferredSize();
-    System.out.println("JFrame.getPrefSize(): " + d + " , comp="+countComponents() + ", layout=" + layoutm);
+    System.out.println("JFrame.getPrefSize(): " + d + " , comp="+countComponents() + ", layout=" + getLayout());
     return d;
   }
 
@@ -107,10 +107,11 @@ public class JApplet extends Applet
     {   super.processKeyEvent(e);    }
 
     protected  void processWindowEvent(WindowEvent e)
-
     {
         //      System.out.println("PROCESS_WIN_EV-1: " + e);
-        super.processWindowEvent(e); 
+
+	//        super.processWindowEvent(e); 
+
         //      System.out.println("PROCESS_WIN_EV-2: " + e);
         switch (e.getID())
             {

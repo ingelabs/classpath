@@ -11,76 +11,81 @@ public abstract class View implements SwingConstants
     static int ForcedBreakWeight;
     static int GoodBreakWeight;
 
-    final static int X_AXIS = 0;
-    final static int Y_AXIS = 1;
+    public final static int X_AXIS = 0;
+    public final static int Y_AXIS = 1;
     
     float width, height;
     Element elt;
     View parent;
 
-
+    /** 
+     * this vector contains the views ordered at offsets...
+     */
     Vector v = new Vector();
 
-    int getViewCount() 
+
+    public View(Element elem)
+    {
+	elt = elem;
+    }
+
+    public int getViewCount() 
     {
 	return v.size();
     }
 
-    View getView(int a)
+    public View getView(int a)
     {
 	return (View) v.get(a);
     }
     
-    void remove(int i)
+    public void remove(int i)
     {
 	v.removeElementAt(i);
     }
     
-    void insert(int off, View view)
+    public void insert(int off, View view)
     {
 	v.insertElementAt(view, off);	
-    }	    
-    void append(View view)
+    }	   
+    
+    public void append(View view)
     {
 	v.addElement(view);
     }
 	
-    void paint(Graphics g, Shape allocation)
+    public void paint(Graphics g, Shape allocation)
     {
 	System.out.println("view.paint() !!!!");
     }
 
-    void setParent(View a)
+    public void setParent(View a)
     {
 	parent = a;
     }
-    View getParent()
+    
+    public View getParent()
     {
 	return parent;
     }
     
-    void setSize(int w, int h)
+    public void setSize(int w, int h)
     {
 	width  = w;
 	height = h;
     }
 
-    View(Element elem)
-    {
-	elt = elem;
-    }
-
-    Document getDocument()
+    public Document getDocument()
     {
 	return getElement().getDocument();
     }
     
-    Element getElement()
+    public Element getElement()
     {
         return elt;
     }
 
-    float getPreferredSpan(int a)
+    public float getPreferredSpan(int a)
     {
 	switch (a)
 	    {

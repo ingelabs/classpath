@@ -15,12 +15,12 @@ public abstract class DatagramChannel
     {
     }
  
-static DatagramChannel open() throws IOException
+    public static DatagramChannel open() throws IOException
     {
 	return SelectorProvider.provider().openDatagramChannel();
     }
-
- long read(ByteBuffer[] dsts)
+    
+    public long read(ByteBuffer[] dsts)
     {
 	long b = 0;
 	for (int i=0;i<dsts.length;i++)
@@ -28,28 +28,28 @@ static DatagramChannel open() throws IOException
 	return b;
     }
     
-    abstract  DatagramChannel connect(SocketAddress remote);
-    abstract  DatagramChannel disconnect();
-    abstract  boolean isConnected();
-    abstract  public int read(ByteBuffer dst);
-    abstract  long read(ByteBuffer[] dsts, int offset, int length);
-    abstract  SocketAddress receive(ByteBuffer dst);
-    abstract  int send(ByteBuffer src, SocketAddress target);
-    abstract  DatagramSocket socket();
-    abstract  public int write(ByteBuffer src);
-    abstract  public long write(ByteBuffer[] srcs, int offset, int length);
+    public abstract  DatagramChannel connect(SocketAddress remote);
+    public abstract  DatagramChannel disconnect();
+    public abstract  boolean isConnected();
+    public abstract  int read(ByteBuffer dst);
+    public abstract  long read(ByteBuffer[] dsts, int offset, int length);
+    public abstract  SocketAddress receive(ByteBuffer dst);
+    public abstract  int send(ByteBuffer src, SocketAddress target);
+    public abstract  DatagramSocket socket();
+    public abstract  int write(ByteBuffer src);
+    public abstract  long write(ByteBuffer[] srcs, int offset, int length);
 
-    int validOps()
+    public int validOps()
     {
 	return SelectionKey.OP_READ | SelectionKey.OP_WRITE;
     }    
     
-    public long write(ByteBuffer[] dsts)
+    public int write(ByteBuffer[] dsts)
     {
 	long b = 0;
 	for (int i=0;i<dsts.length;i++)
 	    b += write(dsts[i]);
-	return b;	
+	return (int)b;	
     }
 }
 

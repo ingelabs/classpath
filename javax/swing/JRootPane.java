@@ -3,6 +3,23 @@ package javax.swing;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * This class is where JComponents are added to.
+ * Unlike awt where you could just say frame.add(),
+ * with swing you need to say frame.getRootPane() 
+ * (which delivers an instance of this class)
+ * and add your components to that.
+ *
+ * It is implemented by several 'layers' (pane() should be read as plane()) 
+ * each on top of the others
+ * where you can add components to. 
+ * (getContentPane(), getGlassPane(), getLayeredPane())
+ *
+ * @author Ronald Veldema (rveldema@cs.vu.nl)
+ */
+
+
+
 public class JRootPane extends JComponent
 {
     //  The class used to obtain the accessible role for this object.
@@ -24,7 +41,7 @@ public class JRootPane extends JComponent
     /***********************************************************/
 
   
-  //The glass pane that overlays the menu bar and content pane, so it can intercept mouse movements and such.
+    //The glass pane that overlays the menu bar and content pane, so it can intercept mouse movements and such.
     protected  Component glassPane;
   
     //The layered pane that manages the menu bar and content pane.
@@ -37,7 +54,7 @@ public class JRootPane extends JComponent
 
     /********************************************************/
 
-    String getUIClassID()
+    public String getUIClassID()
     {	return "JPanel";    }
 
     

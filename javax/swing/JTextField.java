@@ -8,21 +8,21 @@ public class JTextField extends JEditorPane
 {
     Vector actions = new Vector();
 
-    JTextField(int a)
+    public JTextField(int a)
     {
     }
 
-    void addActionListener(ActionListener l)
+    public void addActionListener(ActionListener l)
     {
 	actions.addElement(l);
     }
 
-    void removeActionListener(ActionListener l)
+    public void removeActionListener(ActionListener l)
     {
 	actions.removeElement(l);
     }
 
-    void selectAll()
+    public void selectAll()
     {
     }
 }

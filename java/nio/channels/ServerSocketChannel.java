@@ -13,15 +13,15 @@ public abstract class ServerSocketChannel
     }
  
 
-    abstract  SocketChannel accept();
-    abstract  ServerSocket socket();
+    public abstract  SocketChannel accept();
+    public abstract  ServerSocket socket();
     
-    static ServerSocketChannel open() throws IOException
+    public static ServerSocketChannel open() throws IOException
     {
 	return SelectorProvider.provider().openServerSocketChannel();
     }
 
-    int validOps()
+    public int validOps()
     {
 	return SelectionKey.OP_ACCEPT;
     } 

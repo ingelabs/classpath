@@ -1,17 +1,17 @@
-package manta.runtime;
+package gnu.java.nio;
 
 import java.nio.channels.*;
 import java.nio.channels.spi.*;
 
-class SelectionKeyImpl extends  AbstractSelectionKey
+public class SelectionKeyImpl extends  AbstractSelectionKey
 {
     int fd, ops;
     SelectorImpl impl;
     SelectableChannel ch;
 
-    SelectionKeyImpl(SelectableChannel ch,
-		     SelectorImpl impl,
-		     int fd)
+    public SelectionKeyImpl(SelectableChannel ch,
+			    SelectorImpl impl,
+			    int fd)
     {
 	this.ch   = ch;
 	this.impl = impl;
@@ -19,29 +19,29 @@ class SelectionKeyImpl extends  AbstractSelectionKey
     }
 
 
-    SelectableChannel channel()
+    public SelectableChannel channel()
     {
 	return ch;
     }
 
 
-    int readyOps()
+    public int readyOps()
     {
 	return 0;
     }
 
-    int interestOps()
+    public int interestOps()
     {
 	return ops;    
     }
-    SelectionKey interestOps(int  ops)
+
+    public SelectionKey interestOps(int  ops)
     {
 	this.ops = ops;
 	return this;
     }
-
     
-    Selector selector()
+    public Selector selector()
     {
 	return impl;
     }

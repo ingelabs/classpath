@@ -44,7 +44,7 @@ public class BasicScrollPaneUI extends ScrollPaneUI
 	return d;
     }
 
-    void paint(Graphics g, JComponent c)
+    public void paint(Graphics g, JComponent c)
     {      
 	System.out.println("BasicScrollPaneUI->paint()->"+c);
 

@@ -10,12 +10,12 @@ public class GapContent implements AbstractDocument.Content
 {
     StringBuffer buf = new StringBuffer();
 
-    GapContent()
+    public GapContent()
     {
 	this(10);
     }
     
-    GapContent(int size)
+    public GapContent(int size)
     {
     }
 
@@ -57,7 +57,7 @@ public class GapContent implements AbstractDocument.Content
     {
 	txt.array = new char[len];
 		
-	System.arraycopy(buf.getValue(), where, 
+	System.arraycopy(buf.toString().toCharArray(), where, 
 			 txt.array, 0,
 			 len);
 	

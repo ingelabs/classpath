@@ -63,7 +63,7 @@ public class BasicListUI extends ListUI
 			     a.height * rows);
     }
 
-    void paintBackground(Graphics g,
+    public void paintBackground(Graphics g,
 			 JComponent c)
     {
 	Dimension size = getPreferredSize(c);
@@ -72,8 +72,8 @@ public class BasicListUI extends ListUI
 	g.fillRect(0,0,size.width, size.height);  
     }
 
-    void paint(Graphics g, 
-	       JComponent c)
+    public void paint(Graphics g, 
+		      JComponent c)
     {      
 	JList l = (JList) c;
 

@@ -17,13 +17,13 @@ public abstract class AbstractSelectableChannel extends SelectableChannel
     protected abstract  void implConfigureBlocking(boolean block);
 
 
-    Object blockingLock()
+    public Object blockingLock()
     {
 	return LOCK;
 	//Retrieves the object upon which the configureBlocking and register methods synchronize. 
     }
     
- SelectableChannel configureBlocking(boolean block)
+    public SelectableChannel configureBlocking(boolean block)
     {
 	synchronized(LOCK)
 	    {
@@ -34,21 +34,21 @@ public abstract class AbstractSelectableChannel extends SelectableChannel
 	return this;
     }
 
-protected  void implCloseChannel()
+    protected  void implCloseChannel()
     {
 	//     Closes this channel. 
 	implCloseSelectableChannel();
     }
 
 
-boolean isBlocking()
+    public boolean isBlocking()
     {
 	return blocking;
 	//Tells whether or not every I/O operation on this channel will block until it completes.  
     }
 
 
-boolean isRegistered()
+    public boolean isRegistered()
     {
 	//Tells whether or not this channel is currently registered with any selectors. 
 	return registered > 0;
@@ -64,7 +64,7 @@ boolean isRegistered()
 	}
     }
 
-    SelectorProvider provider()
+    public SelectorProvider provider()
     {
 	//     Returns the provider that created this channel.  
 	return sprovider;
@@ -95,9 +95,9 @@ boolean isRegistered()
 	keys.add(k);
     }
 
-    SelectionKey register(Selector selin, 
-			  int ops,
-			  Object att) throws ClosedChannelException
+    public SelectionKey register(Selector selin, 
+				 int ops,
+				 Object att) throws java.nio.channels.ClosedChannelException
 
 
     {

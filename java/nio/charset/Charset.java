@@ -1,5 +1,6 @@
 package java.nio.charset;
 
+
 import java.nio.*;
 
 public class Charset
@@ -36,7 +37,7 @@ public class Charset
 		    while (in.hasRemaining())
 			{
 			    char a = in.get();
-			    out.put(a);
+			    out.put((byte)a);
 
 			    //int len = out.position();
 			    //System.out.println("pos="+len);

@@ -1,4 +1,4 @@
-package manta.runtime;
+package gnu.java.nio;
 
 import java.io.*;
 import java.nio.*;
@@ -7,24 +7,37 @@ import java.nio.channels.*;
 
 public class FileChannelImpl  extends FileChannel
 {
-    long address;
-    int fd;
-    MappedByteBuffer buf;
-    Object file_obj; // just to keep it live...
+    public long address, length;
+    public int fd;
+    public MappedByteBuffer buf;
+    public Object file_obj; // just to keep it live...
     
-    FileChannelImpl(int fd,
-		    Object obj)
+    public FileChannelImpl(int fd,
+			   Object obj)
     {
 	this.fd       = fd;
 	this.file_obj = obj;
     }
 
-    FileChannelImpl(FileDescriptor fd,
-		    Object obj)
+    public FileChannelImpl(FileDescriptor fd,
+			   Object obj)
     {
-	this(fd.file_des, obj);
+	//this(fd.getNativeFD(), obj);
+	this(0, obj);
+	
+	System.err.println("we need to get the native file-des here !\n");
     }
+    
+    
+    public boolean isOpen()
+    {
+	// FIXME
+	return fd != 0;
+    }    
 
+    public void close()
+    {
+    }
 
     public int read(java.nio.ByteBuffer  dst) throws IOException
     {
@@ -38,7 +51,7 @@ public class FileChannelImpl  extends FileChannel
 	return 0;
     }
     
-    public int write(java.nio.ByteBuffer[]  srcs, 
+    public long write(java.nio.ByteBuffer[]  srcs, 
 		     int  offset,
 		     int  length) throws IOException
     {
@@ -46,12 +59,12 @@ public class FileChannelImpl  extends FileChannel
 	return 0;
     }
 
-    static MantaNative long nio_mmap_file(int fd,
+    static native long nio_mmap_file(int fd,
 					  long pos,
 					  int size,
 					  int mode);
 
-    static MantaNative void nio_unmmap_file(int fd,
+    static native void nio_unmmap_file(int fd,
 					    long pos,
 					    int size);
         
@@ -65,6 +78,18 @@ public class FileChannelImpl  extends FileChannel
 
 	buf = new MappedByteFileBuffer(this);
 	return buf;
+    }
+
+    static MappedByteBuffer create_direct_mapped_buffer(long address,
+							long length)
+    {
+	FileChannelImpl ch = new FileChannelImpl(-1, null);
+		
+	ch.address = address;
+	ch.length  = length;
+
+	ch.buf = new MappedByteFileBuffer(ch);
+	return ch.buf;			 
     }
 }
 

@@ -5,11 +5,11 @@ import java.io.*;
 
 public class PlainEditorKit extends EditorKit
 {
-    PlainEditorKit()
+    public PlainEditorKit()
     {
     }
 
-    PlainEditorKit(PlainEditorKit kit)
+    public PlainEditorKit(PlainEditorKit kit)
     {
 	super(kit);
     }

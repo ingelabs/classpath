@@ -24,12 +24,13 @@ public class BasicRadioButtonUI extends BasicToggleButtonUI
 	AbstractButton b = (AbstractButton)c;
 	Dimension d = BasicGraphicsUtils.getPreferredSize(b, 
 							  gap,
-							  b.text,
+							  b.getText(),
 							  b.getIcon(),
-							  b.vert_align,
-							  b.hori_align,
-							  b.hori_text_pos,
-							  b.vert_text_pos);
+							  b.getVerticalAlignment(),
+							  b.getHorizontalAlignment(),
+							  b.getHorizontalTextPosition(),
+							  b.getVerticalTextPosition());
+	
 	// and add a little something for the circles:
 
 	d.width += large_circle_width;

@@ -1,4 +1,4 @@
-package manta.runtime;
+package gnu.java.nio;
 
 import java.nio.*;
 
@@ -11,30 +11,33 @@ final public class MappedTYPEFileBuffer
  extends TYPEBuffer
 #endif
 {
+  public long address;
   boolean ro;
   boolean direct;
-  FileChannelImpl ch;
+  public FileChannelImpl ch;
 
-  MappedTYPEFileBuffer(FileChannelImpl ch)
+  public MappedTYPEFileBuffer(FileChannelImpl ch)
   {
     this.ch = ch;
+    address = ch.address;
   }
 
-  MappedTYPEFileBuffer(MappedTYPEFileBuffer b)
+  public MappedTYPEFileBuffer(MappedTYPEFileBuffer b)
   {
     this.ro = b.ro;
     this.ch = b.ch;
+    address = b.address;
   }
 
-  boolean isReadOnly()
+  public boolean isReadOnly()
   {
     return ro;
   }
 
 #if SIZE == 1
 #define GO(TYPE,ELT) \
- static MantaNative ELT nio_read_ ## TYPE ## _file_channel(FileChannelImpl ch, int index); \
- static MantaNative void nio_write_ ## TYPE ## _file_channel(FileChannelImpl ch, int index, ELT value)
+ public static native ELT nio_read_ ## TYPE ## _file_channel(FileChannelImpl ch, int index); \
+ public static native void nio_write_ ## TYPE ## _file_channel(FileChannelImpl ch, int index, ELT value)
     
   GO(Byte,byte);
   GO(Short,short);
@@ -45,43 +48,43 @@ final public class MappedTYPEFileBuffer
   GO(Double,double);
 #endif
 
-public ELT get()
+final public ELT get()
   {
-    ELT a = MappedByteFileBuffer.nio_read_TYPE_file_channel(ch, pos);
-    pos += SIZE;
+    ELT a = MappedByteFileBuffer.nio_read_TYPE_file_channel(ch, position());
+    position(position() + SIZE);
     return a;
   }
 
-public TYPEBuffer put(ELT b)
+final public TYPEBuffer put(ELT b)
   {
-    MappedByteFileBuffer.nio_write_TYPE_file_channel(ch, pos, b);
-    pos += SIZE;
+    MappedByteFileBuffer.nio_write_TYPE_file_channel(ch, position(), b);
+    position(position() + SIZE);
     return this;
   }
 
-public ELT get(int index)
+final public ELT get(int index)
   {
     ELT a = MappedByteFileBuffer.nio_read_TYPE_file_channel(ch, index);
     return a;
   }
 
-public TYPEBuffer put(int index, ELT b)
+final public TYPEBuffer put(int index, ELT b)
   {
     MappedByteFileBuffer.nio_write_TYPE_file_channel(ch, index, b);
     return this;
   }
 
-public TYPEBuffer compact()
+final public TYPEBuffer compact()
   {
     return this;
   }
 
-public  boolean isDirect()
+final public  boolean isDirect()
   {
     return direct;
   }
 
-public TYPEBuffer slice()
+final public TYPEBuffer slice()
   {
     MappedTYPEFileBuffer A = new MappedTYPEFileBuffer(this);
     return A;
@@ -99,28 +102,28 @@ public  TYPEBuffer asReadOnlyBuffer()
   }
 
 #define CONVERT(TYPE,STYPE)					\
-    public  TYPE ## Buffer as ## TYPE ## Buffer()		\
+final    public  TYPE ## Buffer as ## TYPE ## Buffer()		\
     {								\
 	return new Mapped ## TYPE ## FileBuffer(ch);		\
     }								\
-public  STYPE get ## TYPE()					\
+final public  STYPE get ## TYPE()					\
   {								\
-    STYPE a = MappedByteFileBuffer.nio_read_ ## TYPE ## _file_channel(ch, pos);	\
-    pos += SIZE;						\
+    STYPE a = MappedByteFileBuffer.nio_read_ ## TYPE ## _file_channel(ch, position());	\
+    position(position() + SIZE);						\
     return a;							\
   }								\
-public TYPEBuffer put ## TYPE(STYPE value)				\
+final public TYPEBuffer put ## TYPE(STYPE value)				\
   {								\
-    MappedByteFileBuffer.nio_write_ ## TYPE ## _file_channel(ch, pos, value);	\
-    pos += SIZE;						\
+    MappedByteFileBuffer.nio_write_ ## TYPE ## _file_channel(ch, position(), value);	\
+    position(position() + SIZE);						\
     return this;						\
   }								\
-public STYPE get ## TYPE(int index)					\
+final public STYPE get ## TYPE(int index)					\
   {								\
     STYPE a = MappedByteFileBuffer.nio_read_ ## TYPE ## _file_channel(ch, index);	\
     return a;							\
   }								\
-public  TYPEBuffer put ## TYPE(int index, STYPE value)		\
+final public  TYPEBuffer put ## TYPE(int index, STYPE value)		\
   {								\
     MappedByteFileBuffer.nio_write_ ## TYPE ## _file_channel(ch, index, value);	\
     return this;						\

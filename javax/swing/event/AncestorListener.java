@@ -1,5 +1,6 @@
 package javax.swing.event;
 
+import java.util.*;
 
 public interface AncestorListener extends EventListener
 {

@@ -1,4 +1,4 @@
-package manta.runtime;
+package gnu.java.nio;
 
 import java.nio.*;
 
@@ -13,42 +13,43 @@ public final class BUFFERImpl extends java.nio.  BUFFER
     ELT [] backing_buffer;
     private boolean ro;
 
-    BUFFERImpl(int cap, int off, int lim)
+  public BUFFERImpl(int cap, int off, int lim)
     {
       this.backing_buffer = new ELT[cap];
-      this.cap = cap;
-      this.pos = off;
-      this.limit = lim;
+      this.capacity(cap);
+      this.position(off);
+      this.limit(lim);
     }
 
-    BUFFERImpl(ELT[] array, int off, int lim)
+  public BUFFERImpl(ELT[] array, int off, int lim)
     {
       this.backing_buffer = array;
-      this.cap = array.length;
-      this.pos = off;
-      this.limit = lim;
+      this.capacity(array.length);
+      this.position(off);
+      this.limit(lim);
     }
 
-    BUFFERImpl(BUFFERImpl copy)
+  public BUFFERImpl(BUFFERImpl copy)
     {
 	backing_buffer = copy.backing_buffer;
 	ro             = copy.ro;
-	pos            = copy.pos;
-	limit          = copy.limit;
+
+	position(copy.position());
+	limit(copy.limit());
     }
 
     void inc_pos(int a)
     {
-	pos += a;
+      position(position() + a);
     }
 
-  private static MantaNative ELT[] nio_cast(byte[]copy);
-  private static MantaNative ELT[] nio_cast(char[]copy);
-  private static MantaNative ELT[] nio_cast(short[]copy);
-  private static MantaNative ELT[] nio_cast(long[]copy);
-  private static MantaNative ELT[] nio_cast(int[]copy);
-  private static MantaNative ELT[] nio_cast(float[]copy);
-  private static MantaNative ELT[] nio_cast(double[]copy);
+  private static native ELT[] nio_cast(byte[]copy);
+  private static native ELT[] nio_cast(char[]copy);
+  private static native ELT[] nio_cast(short[]copy);
+  private static native ELT[] nio_cast(long[]copy);
+  private static native ELT[] nio_cast(int[]copy);
+  private static native ELT[] nio_cast(float[]copy);
+  private static native ELT[] nio_cast(double[]copy);
 
 #define CAST_CTOR(ELT,TO_TYPE) \
     BUFFERImpl(ELT[] copy) \
@@ -58,15 +59,15 @@ public final class BUFFERImpl extends java.nio.  BUFFER
 \
 \
 \
-    private static MantaNative ELT nio_get_ ## TO_TYPE(BUFFERImpl b, int index); \
+    private static native ELT nio_get_ ## TO_TYPE(BUFFERImpl b, int index); \
 \
 \
-    private static MantaNative void nio_put_ ## TO_TYPE(BUFFERImpl b, int index, ELT value);\
+    private static native void nio_put_ ## TO_TYPE(BUFFERImpl b, int index, ELT value);\
 \
 \
    public java.nio. TO_TYPE ## Buffer as ## TO_TYPE ## Buffer() \
   { \
-    return new manta.runtime. TO_TYPE ## BufferImpl(backing_buffer); \
+    return new gnu.java.nio. TO_TYPE ## BufferImpl(backing_buffer); \
   } 
 
 
@@ -87,7 +88,7 @@ public final class BUFFERImpl extends java.nio.  BUFFER
     public  java.nio. BUFFER slice() 
     {
 	BUFFERImpl A = new BUFFERImpl(this);
-	A.array_offset = pos;
+	A.array_offset = position();
 	return A;
     }
 
@@ -113,24 +114,25 @@ public final class BUFFERImpl extends java.nio.  BUFFER
 	return backing_buffer != null; 
     }
 
-    public ELT get()
+  final  public ELT get()
     {
-	ELT e = backing_buffer[pos];
-	pos++;
+	ELT e = backing_buffer[position()];
+	position(position()+1);
 	return e;
     }
     
-    public java.nio. BUFFER put(ELT  b)
+  final  public java.nio. BUFFER put(ELT  b)
     {
-	backing_buffer[pos] = b;
-	pos++;
+	backing_buffer[position()] = b;
+	position(position()+1);
 	return this;
     }
-    public ELT get(int index)
+  final  public ELT get(int index)
     {
 	return backing_buffer[index];
     }
-    public java.nio. BUFFER put(int index, ELT  b)
+
+   final  public java.nio. BUFFER put(int index, ELT  b)
     {
       backing_buffer[index] = b;
       return this;
@@ -138,45 +140,45 @@ public final class BUFFERImpl extends java.nio.  BUFFER
     
 
 #define NATIVE_GET_PUT(TYPE,SIZE,ELT)					\
-    public  ELT get ## TYPE()                        			\
+    final public  ELT get ## TYPE()                        			\
     {									\
-	ELT a = nio_get_ ## TYPE(this, pos); 				\
+	ELT a = nio_get_ ## TYPE(this, position()); 				\
 	inc_pos(SIZE);							\
 	return a;							\
     }									\
-    public  java.nio. BUFFER put ## TYPE(ELT  value) 			\
+    final public  java.nio. BUFFER put ## TYPE(ELT  value) 			\
     {									\
-        nio_put_ ## TYPE(this, pos, value);				\
+        nio_put_ ## TYPE(this, position(), value);				\
 	inc_pos(SIZE);							\
 	return this; 							\
     }									\
-    public  ELT get ## TYPE(int  index)					\
+    final public  ELT get ## TYPE(int  index)					\
     {									\
 	ELT a = nio_get_ ## TYPE(this, index); 				\
-	inc_pos(SIZE);							\
+	/*inc_pos(SIZE);*/							\
 	return a;							\
     }									\
-    public  java.nio. BUFFER put ## TYPE(int  index, ELT  value)	\
+    final public  java.nio. BUFFER put ## TYPE(int  index, ELT  value)	\
     {									\
 	nio_put_ ## TYPE(this, index, value); 			\
-	inc_pos(SIZE);							\
+	/* inc_pos(SIZE);*/							\
 	return this;							\
     }
 
 #define INLINE_GET_PUT(TYPE,ELT)				\
-    public  ELT get ## TYPE() 					\
+    final public  ELT get ## TYPE() 					\
     {								\
 	return get();						\
     }								\
-    public  java.nio. BUFFER put ## TYPE(ELT  value)		\
+    final public  java.nio. BUFFER put ## TYPE(ELT  value)		\
     {								\
 	return put(value);					\
     }								\
-    public  ELT get ## TYPE(int  index)				\
+    final public  ELT get ## TYPE(int  index)				\
     {								\
 	return get(index);					\
     }								\
-    public  java.nio. BUFFER put ## TYPE(int  index, ELT  value)	\
+    final public  java.nio. BUFFER put ## TYPE(int  index, ELT  value)	\
     {								\
 	return put(index, value);				\
     }

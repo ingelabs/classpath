@@ -6,32 +6,32 @@ import javax.swing.plaf.*;
 
 public class JToggleButton extends AbstractButton
 {
-    JToggleButton()
+    public JToggleButton()
     {
 	this(null, null);
     }
-    JToggleButton(Action a)
+    public JToggleButton(Action a)
     {
 	this();
 	setAction(a);
     }
 
-    JToggleButton(Icon icon)
+    public JToggleButton(Icon icon)
     { 
 	this(null, icon);
     }    
   
-    JToggleButton(String text)
+    public JToggleButton(String text)
     {
 	this(text, null);
     }
       
-    JToggleButton(String text, Icon icon)
+    public JToggleButton(String text, Icon icon)
     {
 	this(text, icon, false);
     }
 
-    JToggleButton (String text, Icon icon, boolean selected) 
+    public JToggleButton (String text, Icon icon, boolean selected) 
     {
 	super(text, icon);
 
@@ -43,13 +43,13 @@ public class JToggleButton extends AbstractButton
 
 
     
-    AccessibleContext getAccessibleContext()
+    public AccessibleContext getAccessibleContext()
     {
 	//Gets the AccessibleContext associated with this JToggleButton. 
 	return null;
     }
   
-    String getUIClassID()
+    public String getUIClassID()
     {
 	//Returns a string that specifies the name of the L&F class that renders this component.  
 	return "JToggleButton";
@@ -61,7 +61,7 @@ public class JToggleButton extends AbstractButton
     }
   
   
-    void updateUI()
+    public void updateUI()
     {	
 	ButtonUI b = (ButtonUI)UIManager.getUI(this);
 	setUI(b);

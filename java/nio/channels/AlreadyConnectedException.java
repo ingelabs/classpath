@@ -5,7 +5,7 @@ import java.io.*;
 
 public class AlreadyConnectedException extends IOException
 {
-    AlreadyConnectedException()
+    public AlreadyConnectedException()
     {
     }
 }

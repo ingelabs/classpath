@@ -44,6 +44,7 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Font;
+import java.awt.Color;
 
 /**
  * @serial
@@ -69,19 +70,27 @@ public class BorderUIResource
 
     /**
      */
-    public static Border getEtchedBorderUIResource() { }
+    public static Border getEtchedBorderUIResource() { 
+	return null;
+    }
 
     /**
      */
-    public static Border getLoweredBevelBorderUIResource() { }
+    public static Border getLoweredBevelBorderUIResource() { 
+	return null;
+    }
 
     /**
      */
-    public static Border getRaisedBevelBorderUIResource() { }
+    public static Border getRaisedBevelBorderUIResource() { 
+	return null;
+    }
 
     /**
      */
-    public static Border getBlackLineBorderUIResource() { }
+    public static Border getBlackLineBorderUIResource() { 
+	return null;
+    }
 
     /**
      */
@@ -90,11 +99,15 @@ public class BorderUIResource
 
     /**
      */
-    public Insets getBorderInsets(Component c) { }
+    public Insets getBorderInsets(Component c) { 
+	return null;
+    }
 
     /**
      */
-    public boolean isBorderOpaque() { }
+    public boolean isBorderOpaque() { 
+	return false;
+    }
 
     /**
      * @serial
@@ -112,7 +125,7 @@ public class BorderUIResource
 				     Color highlight, 
 				     Color shadow) 
 	{
-	    this();
+	    this(bevelType);
 	}
 	public BevelBorderUIResource(int bevelType,
 				     Color highlightOuter,
