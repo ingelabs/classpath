@@ -1,0 +1,8 @@
+^../java/security
+^../java/net/Authenticator.java$
+^../java/net/JarURLConnection.java$
+^../java/net/NetPermission.java$
+^../java/net/SocketPermission.java$
+^../java/io/FilePermission$
+^../java/io/SerializablePermission.java$
+^../gnu/java/security/DefaultPermissionCollection.java$
