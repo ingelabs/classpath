@@ -75,11 +75,13 @@ endif
 install-data-local :
 	unzip -d $(datadir) glibj.zip
 
-#default: all
 include .deps
-#all: .deps $(CLASSES) $(STUBS) glibj.zip
+#all: .deps $(CLASSES) glibj.zip
 
 if DEVELOPER_BUILD
+default: all
+all: glibj.zip
+
 glibj.zip: .deps $(CLASSES) Makefile
 	cp $(top_srcdir)/gnu/java/locale/*.properties gnu/java/locale/
 	cp $(top_srcdir)/gnu/java/locale/*.uni gnu/java/locale/
@@ -87,6 +89,9 @@ glibj.zip: .deps $(CLASSES) Makefile
 endif
 
 if MAINTAINER_BUILD
+default : all
+all: glib.zip
+
 glibj.zip: .deps $(CLASSES) Makefile
 	cp $(top_srcdir)/gnu/java/locale/*.properties gnu/java/locale/
 	cp $(top_srcdir)/gnu/java/locale/*.uni gnu/java/locale/
