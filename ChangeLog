@@ -5,6 +5,11 @@
 
 2004-04-20  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/SecurityManager.java
+	(checkAWTEventQueueAccess): Implemented.
+
+2004-04-20  Michael Koch  <konqueror@gmx.de>
+
 	* java/security/AccessController.java:
 	Merged coypright year from libgcj.
 
