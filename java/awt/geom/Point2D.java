@@ -122,7 +122,7 @@ public abstract class Point2D implements Cloneable
    */
   static public double distance(double x1, double y1, double x2, double y2)
   {
-    return Math.sqrt(distance(x1, y1, x2, y2));
+    return Math.sqrt(distanceSq(x1, y1, x2, y2));
   }
 
   /**
