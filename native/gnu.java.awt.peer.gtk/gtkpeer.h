@@ -90,8 +90,10 @@ extern struct state_table *native_state_table;
 
 extern jmethodID postActionEventID;
 extern jmethodID postMouseEventID;
-extern jmethodID syncAttrsID;
 extern jmethodID postConfigureEventID;
+extern jmethodID postExposeEventID;
+extern jmethodID syncAttrsID;
+
 extern JNIEnv *gdk_env;
 
 void awt_event_handler (GdkEvent *event);
