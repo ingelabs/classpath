@@ -1,5 +1,10 @@
 2002-10-25  Mark Wielaard  <mark@klomp.org>
 
+	* vm/reference/java/lang/Class.java (getClassLoader): Return null for
+	classes starting with "java." or "gnu.java.".
+
+2002-10-25  Mark Wielaard  <mark@klomp.org>
+
 	* java/net/URLDecoder.java (decode): Initialize Stringbuffer size to
 	length of String.
 	* java/net/URLEncoder.java (encode): Likewise.

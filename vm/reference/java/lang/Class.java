@@ -333,8 +333,13 @@ public final class Class implements Serializable
    */
   public ClassLoader getClassLoader()
   {
+    // Check some common cases.
     if (isPrimitive())
       return null;
+    String name = getName();
+    if (name.startsWith("java.") || name.startsWith("gnu.java."))
+      return null;
+
     ClassLoader loader = getClassLoader0();
     // Check if we may get the classloader
     SecurityManager sm = System.getSecurityManager();
