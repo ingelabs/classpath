@@ -1,3 +1,11 @@
+2001-11-05  C. Brian Jones <cbj@gnu.org>
+	* configure.in: changed AC_CANONICAL_SYSTEM to AC_CANONICAL_TARGET.
+	Modify usage of target_vendor to target_cpu to link jni_md.h.
+	Modify target_cpu to be x86 where it matches regex .*86.
+	Modify target_cpu and target_os to be x86 and linux-gnu where 
+	jni_md-$target_cpu-$target_os.h does not exist and print a warning.
+	* include/jni_md-pc-linux-gnu.h: renamed include/jni_md-x86-linux-gnu.h
+
 2001-11-05  John Leuner  <jewel@debian.org>
 
 	* java/awt/Window.java: sets is_notified flag

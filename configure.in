@@ -6,7 +6,8 @@ dnl define([AC_CACHE_SAVE], )dnl
 
 AC_INIT(java/lang/System.java)
 
-AC_CANONICAL_SYSTEM
+AC_CANONICAL_TARGET
+if expr match ${target_cpu} .*86 > /dev/null; then target_cpu=x86; fi
 
 PACKAGE="classpath"
 VERSION="0.03"
@@ -117,7 +118,15 @@ if test "${COMPILE_JNI}" = "yes"; then
 
   CLASSPATH_WITH_INCLUDEDIR
 
-  AC_LINK_FILES(include/jni_md-${target_vendor}-${target_os}.h, include/jni_md.h)
+  AC_MSG_CHECKING("jni_md.h support")
+  if test -f ${srcdir}/include/jni_md-${target_cpu}-${target_os}.h; then
+    AC_MSG_RESULT("yes")
+  else
+    target_cpu=x86
+    target_os=linux-gnu 
+    AC_MSG_WARN("no, using x86-linux-gnu")
+  fi
+  AC_LINK_FILES(include/jni_md-${target_cpu}-${target_os}.h, include/jni_md.h)
 fi
 
 CLASSPATH_FIND_JAVAC
