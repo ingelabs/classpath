@@ -1,5 +1,10 @@
 2003-06-11  Stephen Crawley  <crawley@dstc.edu.au>
 
+	* configure.in: Allow building when glib 2.0 / gtk 2.0 are not
+	present.
+
+2003-06-11  Stephen Crawley  <crawley@dstc.edu.au>
+
 	* java/text/DateFormat.java (equals): The JDK behaviour is not to
 	include the Calendar object in the equality predicate.
 	* java/text/DateFormat.java (hashCode): Ditto.
