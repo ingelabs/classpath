@@ -62,7 +62,7 @@ public synchronized class ImageFilter implements ImageConsumer, Cloneable
      *
      * @see java.lang.Object#clone ()
      */
-    public Object clone()
+    public Object clone() throws CloneNotSupportedException
     {
 	return (super.clone());
     }
