@@ -220,7 +220,7 @@ dnl According to the GNU coding guide, we shouldn't require find,
 dnl zip, and perl, however it should be okay since it is only used 
 dnl in maintainer mode.
 AC_PATH_PROG(FIND, find)
-AC_PATH_PROG(ZIP, zip)
+dnl AC_PATH_PROG(ZIP, zip)
 dnl AC_PATH_PROG(UNZIP, unzip)
 dnl AC_PATH_PROG(PERL, perl)
 
