@@ -29,18 +29,16 @@ public class GtkDialogPeer extends GtkWindowPeer
   native void gtkDialogNew(int width, int height, boolean visible,
 			   boolean resizable, String title, boolean modal,
 			   Object parent);
-  
-  public GtkDialogPeer (Dialog w, ComponentPeer parent)
-  {
-    super (bogusType, w);
-      
-    Dimension d = w.getSize();
-    gtkDialogNew (d.width, d.height, w.isVisible (), w.isResizable (),
-		  w.getTitle (), w.isModal(), parent);
-  }
 
-  public GtkDialogPeer (int type, Dialog w)
+  native void create (String title);
+
+  public GtkDialogPeer (Dialog d, ComponentPeer parent)
   {
-    super (bogusType, w);
+    super (bogusType, d);
+
+    create (d.getTitle ());
+//      Dimension d = w.getSize();
+//      gtkDialogNew (d.width, d.height, w.isVisible (), w.isResizable (),
+//  		  w.getTitle (), w.isModal(), parent);
   }
 }

@@ -56,8 +56,11 @@ public class GtkContainerPeer extends GtkComponentPeer
     gtkContainerCheckResize ();
 
     Graphics gc = getGraphics ();
-    c.paintComponents (gc);
-    gc.dispose ();
+    if (gc != null)
+      {
+	c.paintComponents (gc);
+	gc.dispose ();
+      }
   }
 
   public Insets getInsets() 
