@@ -81,7 +81,7 @@ public final class Boolean implements Serializable
     }
 
     /**
-     * Calls <code>Boolean(String s)</code> to create the new object.
+     * Calls <code>Boolean(String)</code> to create the new object.
      * @see #Boolean(java.lang.String)
      */
     public static Boolean valueOf(String s) {
