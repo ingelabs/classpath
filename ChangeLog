@@ -1,3 +1,9 @@
+2004-10-09  Mark Wielaard  <mark@klomp.org>
+
+	* include/gnu_java_awt_peer_gtk_GdkClasspathFontPeer.h: Removed.
+	* include/gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics.h:
+	Removed.
+
 2004-10-09  Michael Koch  <konqueror@gmx.de>
 
 	* javax/imageio/stream/ImageInputStreamImpl.java,
