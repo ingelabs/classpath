@@ -4439,9 +4439,11 @@ p   * <li>the set of backward traversal keys
    */
   public void setComponentOrientation(ComponentOrientation o)
   {
+    ComponentOrientation oldOrientation = orientation;
     if (o == null)
       throw new NullPointerException();
     orientation = o;
+    firePropertyChange("componentOrientation", oldOrientation, o);
   }
 
   /**
