@@ -77,6 +77,8 @@ public class ServerSocket
    */
   private ServerSocketChannel ch;
 
+  private boolean closed = false;
+  
   /**
    * Constructor that simply sets the implementation.
    * 
@@ -200,6 +202,9 @@ public class ServerSocket
    */
   public void bind (SocketAddress endpoint, int backlog) throws IOException
   {
+    if (closed)
+      throw new SocketException ("ServerSocket is closed");
+    
     if (impl == null)
       throw new IOException ("Cannot initialize Socket implementation");
 
@@ -315,7 +320,13 @@ public class ServerSocket
    */
   public void close () throws IOException
   {
-    impl.close();
+    if (impl != null)
+      impl.close ();
+
+    if (ch != null)
+      ch.close ();
+    
+    closed = true;
   }
 
   /**
@@ -345,10 +356,20 @@ public class ServerSocket
       }
     catch (SocketException e)
       {
-	return false;
+        return false;
       }
     
     return true;
+  }
+
+  /**
+   * Returns true if the socket is closed, otherwise false
+   * 
+   * @since 1.4
+   */
+  public boolean isClosed()
+  {
+    return closed;
   }
 
   /**

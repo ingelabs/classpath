@@ -1,3 +1,55 @@
+2002-12-21  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/HttpURLConnection.java
+	(HTTP_NOT_IMPLEMENTED): Must be public.
+	* java/net/ServerSocket.java
+	(closed): New member variable.
+	(bind): Throw exception if socket is closed.
+	(close): Set new member variable, close associated channel too.
+	(isClosed): New method.
+	* java/net/Socket.java
+	(closed): New member variable.
+	(bind): Throw exception if socket is closed.
+	(connect): Throw exception if socket is closed.
+	(close): Set new member variable, close associated channel too.
+	(isClosed): New method.
+	* java/nio/channels/DatagramChannel.java
+	(connect): Added throws IOException.
+	(disconnect): Added throws IOException.
+	(read): Added throws IOException.
+	(write): Added throws IOException.
+	(receive): Added throws IOException.
+	* java/nio/channels/Pipe.java
+	(open): Added throws IOException.
+	* java/nio/channels/SelectableChannel.java
+	(configureBlocking): Added throws IOException.
+	* java/nio/channels/SelectionKey.java
+	(OP_ACCEPT): Fix constant value.
+	(OP_CONNECT): Fix constant value.
+	(OP_READ): Fix constant value.
+	(OP_WRITE): Fix constant value.
+	* java/nio/channels/ServerSocketChannel.java
+	(accept): Added throws IOException.
+	* java/nio/channels/SocketChannel.java
+	(SocketChannel): Fixed implements.
+	(read): Added throws IOException.
+	(write): Added throws IOException.
+	(finishConnect): Added throws IOException.
+	* java/nio/channels/spi/AbstractInterruptibleChannel.java
+	(end): Added throws AsynchronousCloseException.
+	* java/nio/channels/spi/AbstractSelectableChannel.java
+	(configureBlocking): Added throws IOException.
+	(implCloseChannel): Added throws IOException.
+	(implCloseSelectableChannel): Added throws IOException.
+	(implConfigureBlocking): Added throws IOException.
+	* java/nio/channels/spi/SelectorProvider.java
+	(openDatagramChannel): Added throws IOException.
+	(openPipe): Added throws IOException.
+	(openSelector): Added throws IOException.
+	(openServerSocketChannel): Added throws IOException.
+	(openSocketChannel): Added throws IOException.
+	(provider): Merge with libgcj.
+
 2002-12-20  C. Brian Jones  <cbj@gnu.org>
 
 	* BUGS: updated Savannah URL

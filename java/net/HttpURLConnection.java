@@ -255,7 +255,7 @@ public abstract class HttpURLConnection extends URLConnection
    * The server does not support the requested functionality.  
    * @since 1.3
    */
-  static final int HTTP_NOT_IMPLEMENTED = 501;
+  public static final int HTTP_NOT_IMPLEMENTED = 501;
 
   /**
    * The proxy encountered a bad response from the server it was proxy-ing for
