@@ -81,7 +81,7 @@ management, dynamic module loading, and object-oriented model. This makes the
 implementation of a JVM particularly attractive and simple.
 </JVM>
 
-<JVM url="http://jcvm.sourceforge.net/" name="JCVM">
+<JVM url="http://jcvm.sourceforge.net/" name="JC">
 JC is a Java virtual machine implementation that converts class 
 files into C source files using the Soot Java bytecode analysis
 framework, compiles them with GCC, and loads them using a built-in
