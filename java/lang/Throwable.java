@@ -16,7 +16,10 @@ import gnu.vm.stack.StackFrame;
  * @author Brian Jones
  * @author John Keiser
  */
-public class Throwable extends Object implements Serializable {
+public class Throwable extends Object implements Serializable 
+{
+  static final long serialVersionUID = -3042686055658047285L;
+
   private String message = null;
   private StackTrace st;
   
