@@ -19,10 +19,16 @@
 
 package java.lang;
 
+
 /**
- * Instances of class <code>Double</code> represent primitive 
+ * Instances of class <code>Double</code> represent primitive
  * <code>double</code> values.
  *
+ * Additionally, this class provides various helper functions and variables
+ * related to doubles.
+ *
+ * @author Paul Fisher
+ * @author John Keiser
  * @since JDK 1.0
  */
 public final class Double extends Number implements Comparable
@@ -89,7 +95,7 @@ public final class Double extends Number implements Comparable
     {
 	value = parseDouble(s);
     }
-    
+
     /**
      * Convert the <code>double</code> value of this <code>Double</code>
      * to a <code>String</code>
@@ -104,7 +110,7 @@ public final class Double extends Number implements Comparable
      * <code>instanceof</code> <code>Double</code>, and represents
      * the same primitive <code>double</code> value return 
      * <code>true</code>.  Otherwise <code>false</code> is returned.
-     */    
+     */
     public boolean equals(Object obj) 
     {
 	return (obj instanceof Double && ((Double)obj).value == value);

@@ -15,6 +15,7 @@ import gnu.vm.stack.StackFrame;
  * @version 1.1.0, Oct 5 1998
  * @author Brian Jones
  * @author John Keiser
+ * @since JDK1.0
  */
 public class Throwable extends Object implements Serializable 
 {

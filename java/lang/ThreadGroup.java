@@ -38,6 +38,7 @@ import java.util.Vector;
  **           the daemon status of its parent.  I assume it to be so.
  ** @author John Keiser
  ** @version 1.1.0, Oct 5 1998
+ ** @since JDK1.0
  **/
 
 public class ThreadGroup {

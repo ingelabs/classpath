@@ -27,6 +27,7 @@ package java.lang;
  ** @author Paul Fisher
  ** @author John Keiser
  ** @version 1.1.0, 5 Feb 1998
+ ** @since JDK1.1
  **/
 
 public final class Void {

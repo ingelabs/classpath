@@ -1,6 +1,6 @@
 /*
  * java.lang.Object: part of the Java Class Libraries project.
- * Copyright (C) 1998 John Keiser
+ * Copyright (C) 1998 Free Software Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -31,6 +31,7 @@ package java.lang;
  **
  ** @author John Keiser
  ** @version 1.1.0, Aug 6 1998
+ ** @since JDK1.0
  **/
 
 public class Object {
@@ -57,6 +58,7 @@ public class Object {
 	 ** @param o the Object to compare to.
 	 ** @return whether this Object is semantically equal to
 	 **         another.
+	 ** @since JDK1.0
 	 **/
 	public boolean equals(Object o) {
 		return this == o;
@@ -67,6 +69,7 @@ public class Object {
 	 **
 	 ** The Object implementation returns System.identityHashCode(this);
 	 ** @return the hash code for this Object.
+	 ** @since JDK1.0
 	 **/
 	public int hashCode() {
 		return System.identityHashCode(this);
@@ -82,6 +85,7 @@ public class Object {
 	 ** <CODE>getClass().getName() + "@" + Integer.toHexString(hashCode())</CODE>.
 	 **
 	 ** @return the String representing this Object.
+	 ** @since JDK1.0
 	 **/
 	public String toString() {
 		return getClass().getName() + "@" + Integer.toHexString(hashCode());
@@ -104,6 +108,7 @@ public class Object {
 	 ** destroyed.<P>
 	 **
 	 ** The Object implementation of finalize() does nothing.
+	 ** @since JDK1.0
 	 **/
 	protected void finalize() throws Throwable {
 	}
@@ -125,6 +130,7 @@ public class Object {
 	 **
 	 ** @exception CloneNotSupportedException
 	 ** @return a copy of the Object.
+	 ** @since JDK1.0
 	 **/
 	protected Object clone() throws CloneNotSupportedException {
 		if(this instanceof Cloneable) {
@@ -137,6 +143,7 @@ public class Object {
 	/** Returns the class of this Object as a Class object.
 	 ** @return the class of this Object.
 	 ** @see java.lang.Class
+	 ** @since JDK1.0
 	 **/
 	public final native Class getClass();
 
@@ -153,6 +160,7 @@ public class Object {
 	 **
 	 ** @exception IllegalMonitorStateException if this Thread
 	 **            does not own the lock on the Object.
+	 ** @since JDK1.0
 	 **/
 	public final void notify() throws IllegalMonitorStateException {
 		VMObject.notify(this);
@@ -170,6 +178,7 @@ public class Object {
 	 **
 	 ** @exception IllegalMonitorStateException if this Thread
 	 **            does not own the lock on the Object.
+	 ** @since JDK1.0
 	 **/
 	public final void notifyAll() throws IllegalMonitorStateException {
 		VMObject.notifyAll(this);
@@ -184,6 +193,7 @@ public class Object {
 	 **            does not own a lock on this Object.
 	 ** @exception InterruptedException if some other Thread
 	 **            interrupts this Thread.
+	 ** @since JDK1.0
 	 **/
 	public final void wait() throws IllegalMonitorStateException, InterruptedException {
 		VMObject.wait(this,0,0);
@@ -214,6 +224,7 @@ public class Object {
 	 **            does not own a lock on this Object.
 	 ** @exception InterruptedException if some other Thread
 	 **            interrupts this Thread.
+	 ** @since JDK1.0
 	 **/
 	public final void wait(long ms) throws IllegalMonitorStateException, InterruptedException {
 		VMObject.wait(this,ms,0);
@@ -234,6 +245,7 @@ public class Object {
 	 **            does not own a lock on this Object.
 	 ** @exception InterruptedException if some other Thread
 	 **            interrupts this Thread.
+	 ** @since JDK1.0
 	 **/
 	public final void wait(long ms, int ns) throws IllegalMonitorStateException, InterruptedException {
 		VMObject.wait(this,ms,ns);

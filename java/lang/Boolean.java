@@ -24,6 +24,9 @@ import java.io.Serializable;
 /**
  * Instances of class <code>Boolean</code> represent primitive 
  * <code>boolean</code> values.
+ *
+ * @author Paul Fisher
+ * @since JDK1.0
  */ 
 public final class Boolean implements Serializable
 {

@@ -20,23 +20,24 @@
 package java.lang;
 
 /** 
-    Interface for objects that can be ordering among other
-    objects. The ordering can be <EM>total</EM>, such that two objects
-    only compare equal if they are equal by the equals method, or
-    <EM>partial</EM> such that this is not necessarily true. For
-    example, a case-sensitive dictionary order comparison of Strings
-    is total, but if it is case-insensitive it is partial, because
-    "abc" and "ABC" compare as equal even though "abc".equals("ABC")
-    returns false.
-
-    @see java.util.Comparator
-*/
+ ** Interface for objects that can be ordering among other
+ ** objects. The ordering can be <EM>total</EM>, such that two objects
+ ** only compare equal if they are equal by the equals method, or
+ ** <EM>partial</EM> such that this is not necessarily true. For
+ ** example, a case-sensitive dictionary order comparison of Strings
+ ** is total, but if it is case-insensitive it is partial, because
+ ** "abc" and "ABC" compare as equal even though "abc".equals("ABC")
+ ** returns false.
+ **
+ ** @since JDK1.2
+ ** @see java.util.Comparator
+ **/
 public abstract interface Comparable
 {
   /**
-     @return a negative integer if this object is less than
-     <code>o<code>, zero if this object is equal to <code>o</code>, or
-     a positive integer if this object is greater than <code>o</code>
-  */
+   ** @return a negative integer if this object is less than
+   ** <code>o<code>, zero if this object is equal to <code>o</code>, or
+   ** a positive integer if this object is greater than <code>o</code>
+   **/
   public int compareTo( Object o );
 }

@@ -23,7 +23,12 @@ package java.lang;
  * Instances of class <code>Byte</code> represent primitive <code>byte</code>
  * values.
  *
- * @since JDK 1.1
+ * Additionally, this class provides various helper functions and variables
+ * useful to bytes.
+ *
+ * @author Paul Fisher
+ * @author John Keiser
+ * @since JDK 1.0
  */
 public final class Byte extends Number implements Comparable 
 {
@@ -56,6 +61,8 @@ public final class Byte extends Number implements Comparable
     /**
      * Create a <code>Byte</code> object representing the value of the 
      * <code>byte</code> argument.
+     *
+      * @param value the value to use
      */     
     public Byte(byte value) 
     {
@@ -65,6 +72,8 @@ public final class Byte extends Number implements Comparable
     /**
      * Create a <code>Byte</code> object representing the value specified 
      * by the <code>String</code> argument.
+     *
+     * @param s the string to convert.
      */
     public Byte(String s) throws NumberFormatException 
     {
@@ -72,8 +81,13 @@ public final class Byte extends Number implements Comparable
     }
 
     /**
-     * Return a hashcode representing this <code>Byte</code>.
-     */    
+     * Return a hashcode representing this Object.
+     *
+     * <code>Byte</code>'s hash code is calculated by simply returning its
+     * value.
+     *
+     * @return this Object's hash code.
+     */
     public int hashCode() 
     {
 	return value;
@@ -82,6 +96,7 @@ public final class Byte extends Number implements Comparable
     /**
      * Returns <code>true</code> if <code>obj</code> is an instance of
      * <code>Byte</code> and represents the same byte value.
+     * @return whether these Objects are semantically equal.
      */    
     public boolean equals(Object obj) 
     {
@@ -91,6 +106,8 @@ public final class Byte extends Number implements Comparable
     /**
      * Converts the <code>byte</code> to a <code>String</code> and assumes
      * a radix of 10.
+     * @param i the <code>byte</code> to convert to <code>String</code>
+     * @return the <code>String</code> representation of the argument.
      */    
     public static String toString(byte i) 
     {
@@ -98,9 +115,10 @@ public final class Byte extends Number implements Comparable
     }
 
     /**
-     * Converts the <code>Byte</code> to a <code>String</code> and assumes
-     * a radix of 10.
-     */
+     * Converts the <code>Byte</code> value to a <code>String</code> and
+     * assumes a radix of 10.
+     * @return the <code>String</code> representation of this <code>Byte</code>.
+     */    
     public String toString() 
     {
 	return toStringStatic(value);
@@ -119,20 +137,30 @@ public final class Byte extends Number implements Comparable
     }
 
     /**
-     * Calls <code>Byte(String)</code> and assumes a radix of 10.
+     * Creates a new <code>Byte</code> object using the <code>String</code>,
+     * assuming a radix of 10.
+     * @param s the <code>String</code> to convert.
+     * @return the new <code>Byte</code>.
      * @see #Byte(java.lang.String)
      * @see #parseByte(java.lang.String)
-     */    
+     * @exception NumberFormatException thrown if the <code>String</code> 
+     * cannot be parsed as a <code>byte</code>.
+     */
     public static Byte valueOf(String s) throws NumberFormatException 
     {
 	return new Byte(parseByte(s));
     }
 
     /**
-     * Calls <code>Byte(String</code> but uses the specified radix.
-     * @see #Byte(java.lang.String)
-     * @see #parseByte(java.lang.String, int)
-     */    
+     * Creates a new <code>Byte</code> object using the <code>String</code>
+     * and specified radix (base).
+     * @param s the <code>String</code> to convert.
+     * @param radix the radix (base) to convert with.
+     * @return the new <code>Byte</code>.
+     * @see #parseByte(java.lang.String,int)
+     * @exception NumberFormatException thrown if the <code>String</code> 
+     * cannot be parsed as a <code>byte</code>.
+     */
     public static Byte valueOf(String s, int radix) 
 	throws NumberFormatException 
     {
@@ -144,22 +172,26 @@ public final class Byte extends Number implements Comparable
      * This function assumes a radix of 10.
      *
      * @param s the <code>String</code> to convert
+     * @return the <code>byte</code> value of the <code>String</code>
+     *         argument.
      * @exception NumberFormatException thrown if the <code>String</code> 
      * cannot be parsed as a <code>byte</code>.
-     */    
+     */
     public static byte parseByte(String s) throws NumberFormatException 
     {
 	return parseByte(s, 10);
     }
 
     /**
-     * Converts the specified <code>String</code> into a <code>byte</code>.
+     * Converts the specified <code>String</code> into a <code>byte</code>
+     * using the specified radix (base).
      *
      * @param s the <code>String</code> to convert
-     * @param radix the radix to use in the conversion
+     * @param radix the radix (base) to use in the conversion
+     * @return the <code>String</code> argument converted to </code>byte</code>.
      * @exception NumberFormatException thrown if the <code>String</code> 
      * cannot be parsed as a <code>byte</code>.    
-     */ 
+     */
     public static byte parseByte(String s, int radix) 
 	throws NumberFormatException 
     {
@@ -170,7 +202,25 @@ public final class Byte extends Number implements Comparable
      * Convert the specified <code>String</code> into a <code>Byte</code>.
      * The <code>String</code> may represent decimal, hexadecimal, or 
      * octal numbers.
-     */    
+     *
+     * The <code>String</code> argument is interpreted based on the leading
+     * characters.  Depending on what the String begins with, the base will be
+     * interpreted differently:
+     *
+     * <table>
+     * <tr><th>Leading<br>Characters</th><th>Base</th></tr>
+     * <tr><td>#</td><td>16</td></tr>
+     * <tr><td>0x</td><td>16</td></tr>
+     * <tr><td>0X</td><td>16</td></tr>
+     * <tr><td>0</td><td>8</td></tr>
+     * <tr><td>Anything<br>Else</td><td>10</td></tr>
+     * </table>
+     *
+     * @param s the <code>String</code> to interpret.
+     * @return the value of the String as a <code>Byte</code>.
+     * @exception NumberFormatException thrown if the <code>String</code> 
+     * cannot be parsed as a <code>byte</code>.    
+     */
     public static Byte decode(String s) throws NumberFormatException 
     {
 	return new Byte(parseByte(s, 10, true));
@@ -246,53 +296,47 @@ public final class Byte extends Number implements Comparable
 	return (byte) ((negative) ? -result : result);
     }
 
-    /**
-     * Return the value of this <code>Byte</code> as a <code>byte</code>.
-     */    
-    public byte byteValue() 
-    {
-	return value;
-    }
-    
-    /**
-     * Return the value of this <code>Byte</code> as a <code>short</code>.
-     */    
-    public short shortValue() 
-    {
-	return value;
-    }
-    
-    /**
-     * Return the value of this <code>Byte</code> as a <code>int</code>.
-     */    
-    public int intValue() 
-    {
-	return value;
-    }
-    
-    /**
-     * Return the value of this <code>Byte</code> as a <code>long</code>.
-     */    
-    public long longValue() 
-    {
-	return value;
-    }
-    
-    /**
-     * Return the value of this <code>Byte</code> as a <code>float</code>.
-     */    
-    public float floatValue() 
-    {
-	return value;
-    }
-    
-    /**
-     * Return the value of this <code>Byte</code> as a <code>double</code>.
-     */    
-    public double doubleValue() 
-    {
-	return value;
-    }
+  /** Return the value of this <code>Byte</code> as an <code>short</code>.
+   ** @return the value of this <code>Byte</code> as an <code>short</code>.
+   **/
+  public byte byteValue() {
+    return value;
+  }
+
+  /** Return the value of this <code>Byte</code> as an <code>short</code>.
+   ** @return the value of this <code>Byte</code> as an <code>short</code>.
+   **/
+  public short shortValue() {
+    return value;
+  }
+
+  /** Return the value of this <code>Byte</code> as an <code>int</code>.
+   ** @return the value of this <code>Byte</code> as an <code>int</code>.
+   **/
+  public int intValue() {
+    return value;
+  }
+
+  /** Return the value of this <code>Byte</code> as a <code>long</code>.
+   ** @return the value of this <code>Byte</code> as a <code>long</code>.
+   **/
+  public long longValue() {
+    return value;
+  }
+
+  /** Return the value of this <code>Byte</code> as a <code>float</code>.
+   ** @return the value of this <code>Byte</code> as a <code>float</code>.
+   **/
+  public float floatValue() {
+    return value;
+  }
+
+  /** Return the value of this <code>Byte</code> as a <code>double</code>.
+   ** @return the value of this <code>Byte</code> as a <code>double</code>.
+   **/
+  public double doubleValue() {
+    return value;
+  }
     
     /**
      * Compare two Bytes numerically by comparing their

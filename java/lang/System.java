@@ -1,6 +1,6 @@
 /*
  * java.lang.System: part of the Java Class Libraries project.
- * Copyright (C) 1998 John Keiser
+ * Copyright (C) 1998 Free Software Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -30,6 +30,7 @@ import java.util.*;
  **
  ** @author John Keiser
  ** @version 1.1.0, Aug 8 1998
+ ** @since JDK1.0
  **/
 
 public class System {
