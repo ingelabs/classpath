@@ -336,7 +336,6 @@ public class Vector extends AbstractList implements List,
 	(index >= elementCount)) 
       throw new ArrayIndexOutOfBoundsException(index);
 
-    modCount++;
     elementData[index] = obj;
   }
 
@@ -353,7 +352,6 @@ public class Vector extends AbstractList implements List,
     if (index >= elementCount)
       throw new ArrayIndexOutOfBoundsException(index);
     
-    modCount++;
     Object temp = elementData[index];
     elementData[index] = element;
     return temp;
@@ -670,12 +668,25 @@ public class Vector extends AbstractList implements List,
   }
 
   /**
-   * Returns an Enumeration of the elements of this List
+   * Returns an Enumeration of the elements of this List.
+   * The Enumeration returned is compatible behavior-wise with
+   * the 1.1 elements() method, in that it does not check for
+   * concurrent modification.
    *
    * @returns an Enumeration
    */
   public Enumeration elements() {
-    return java.util.Collections.enumeration(this);
+    return new Enumeration() {
+    	int i=0;
+      public final boolean hasMoreElements() {
+        return (i<size());
+      }
+      public final Object nextElement() {
+        if (i>=size())
+          throw new NoSuchElementException();
+        return (elementAt(i++));
+      }
+    };
   }
 
 } // Vector

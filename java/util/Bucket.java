@@ -25,8 +25,8 @@ package java.util;
  * objects as its linked nodes; this is used by Hashtable and HashMap
  *
  * @author        Jon Zeppieri
- * @version       $Revision: 1.1 $
- * @modified      $Id: Bucket.java,v 1.1 1998-10-13 00:38:34 jaz Exp $
+ * @version       $Revision: 1.2 $
+ * @modified      $Id: Bucket.java,v 1.2 2000-03-03 13:01:06 jochen Exp $
  */
 class Bucket
 {
@@ -40,9 +40,11 @@ class Bucket
     
     /** add this key / value pair to the list
      *
-     * @param    entry    a Map.Entry object to be added to this list
+     * @param    newNode    a Node object to be added to this list
+     * @return the old value mapped to the key if there was one, 
+     *  otherwise null.
      */
-    Map.Entry add(Node newNode)
+    Object add(Node newNode)
     {
 	Object oKey;
 	Object oTestKey = newNode.getKey();
@@ -61,12 +63,9 @@ class Bucket
 			if ((oKey == null) ? (oTestKey == null) :
 			    oKey.equals(oTestKey))
 			    {
-				if (prev != null)
-				    prev.next = newNode;
-				else
-				    first = newNode;
-				newNode.next = it.next;
-				return it;
+			        Object oldValue = it.value;
+				it.value = newNode.getValue();
+				return oldValue;
 			    }
 			prev = it;  
 			it = it.next;
@@ -172,8 +171,8 @@ class Bucket
      * class:  we want to eliminate runtime typechecks.
      *
      * @author       Jon Zeppieri
-     * @version      $Revision: 1.1 $
-     * @modified     $Id: Bucket.java,v 1.1 1998-10-13 00:38:34 jaz Exp $
+     * @version      $Revision: 1.2 $
+     * @modified     $Id: Bucket.java,v 1.2 2000-03-03 13:01:06 jochen Exp $
      */
     static class Node extends BasicMapEntry implements Map.Entry
     {

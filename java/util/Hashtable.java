@@ -53,8 +53,8 @@ import java.io.ObjectStreamField;
  * changes while the Enumeration is open.
  *
  * @author      Jon Zeppieri
- * @version     $Revision: 1.4 $
- * @modified    $Id: Hashtable.java,v 1.4 1999-12-28 16:31:45 jochen Exp $
+ * @version     $Revision: 1.5 $
+ * @modified    $Id: Hashtable.java,v 1.5 2000-03-03 13:01:14 jochen Exp $
  */
 public class Hashtable extends Dictionary 
     implements Map, Cloneable, Serializable
@@ -407,7 +407,7 @@ public class Hashtable extends Dictionary
 	    }
 	else
 	    {
-		return ((Map.Entry) oResult).getValue();
+		return oResult;
 	    }
     }
 
@@ -663,8 +663,8 @@ public class Hashtable extends Dictionary
      * Simply, a key / value pair
      *
      * @author      Jon Zeppieri
-     * @version     $Revision: 1.4 $
-     * @modified    $Id: Hashtable.java,v 1.4 1999-12-28 16:31:45 jochen Exp $
+     * @version     $Revision: 1.5 $
+     * @modified    $Id: Hashtable.java,v 1.5 2000-03-03 13:01:14 jochen Exp $
      */
     private static class HashtableEntry extends Bucket.Node implements Map.Entry
     {
@@ -697,8 +697,8 @@ public class Hashtable extends Dictionary
      * provide access either to the keys or to the values in the Hashtable
      *
      * @author       Jon Zeppieri
-     * @version      $Revision: 1.4 $
-     * @modified     $Id: Hashtable.java,v 1.4 1999-12-28 16:31:45 jochen Exp $
+     * @version      $Revision: 1.5 $
+     * @modified     $Id: Hashtable.java,v 1.5 2000-03-03 13:01:14 jochen Exp $
      */
     private class HashtableEnumeration implements Enumeration
     {
@@ -781,8 +781,8 @@ public class Hashtable extends Dictionary
      * overriding a number of them.  And so I did.
      *
      * @author      Jon Zeppieri
-     * @version     $Revision: 1.4 $
-     * @modified    $Id: Hashtable.java,v 1.4 1999-12-28 16:31:45 jochen Exp $
+     * @version     $Revision: 1.5 $
+     * @modified    $Id: Hashtable.java,v 1.5 2000-03-03 13:01:14 jochen Exp $
      */
     private class HashtableSet extends AbstractSet
     {
@@ -880,8 +880,8 @@ public class Hashtable extends Dictionary
      * in the Hashtable
      *
      * @author       Jon Zeppieri
-     * @version      $Revision: 1.4 $
-     * @modified     $Id: Hashtable.java,v 1.4 1999-12-28 16:31:45 jochen Exp $
+     * @version      $Revision: 1.5 $
+     * @modified     $Id: Hashtable.java,v 1.5 2000-03-03 13:01:14 jochen Exp $
      */
     private class HashtableCollection extends AbstractCollection
     {
@@ -955,8 +955,8 @@ public class Hashtable extends Dictionary
      * as per the Javasoft spec.
      *
      * @author       Jon Zeppieri
-     * @version      $Revision: 1.4 $
-     * @modified     $Id: Hashtable.java,v 1.4 1999-12-28 16:31:45 jochen Exp $
+     * @version      $Revision: 1.5 $
+     * @modified     $Id: Hashtable.java,v 1.5 2000-03-03 13:01:14 jochen Exp $
      */
     class HashtableIterator implements Iterator
     {

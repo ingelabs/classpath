@@ -37,7 +37,7 @@ import java.io.ObjectStreamField;
  * to or removing from the end of a list, checking the size, &c.
  *
  * @author        Jon A. Zeppieri
- * @version       $Id: ArrayList.java,v 1.2 1999-04-25 00:51:22 jaz Exp $
+ * @version       $Id: ArrayList.java,v 1.3 2000-03-03 13:00:59 jochen Exp $
  * @see           java.util.AbstractList
  * @see           java.util.List
  */
@@ -403,7 +403,7 @@ public class ArrayList extends AbstractList
                                           String.valueOf(_iSize) + "; " +
                                           "index=" + String.valueOf(iIndex));
     oResult = _arData[iIndex];
-    modCount++;
+    // SEH: no structural change, so don't update modCount
     _arData[iIndex] = oElement;
 
     return oResult;
