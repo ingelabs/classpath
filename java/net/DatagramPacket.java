@@ -1,5 +1,5 @@
 /* DatagramPacket.java -- Class to model a packet to be sent via UDP
-   Copyright (C) 1998-2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -25,6 +25,12 @@ This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
 package java.net;
+
+/*
+ * Written using on-line Java Platform 1.2 API Specification, as well
+ * as "The Java Class Libraries", 2nd edition (Addison-Wesley, 1998).
+ * Status:  Believed complete and correct.
+ */
 
 /**
   * This class models a packet of data that is to be sent across the network

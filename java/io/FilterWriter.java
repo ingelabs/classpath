@@ -1,5 +1,5 @@
 /* FilterWriter.java -- Parent class for output streams that filter
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,6 +27,11 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * Status:  Complete to version 1.1.
+ */
+
 /**
   * This class is the common superclass of output character stream classes 
   * that filter the output they write.  These classes typically transform the
@@ -35,9 +40,8 @@ package java.io;
   * methods in <code>Writer</code> to redirect them to the
   * underlying stream.  Subclasses provide actual filtering.
   *
-  * @version 0.0
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Tom Tromey <tromey@cygnus.com>
   */
 public abstract class FilterWriter extends Writer
 {
@@ -63,12 +67,15 @@ protected Writer out;
 /**
   * This method initializes an instance of <code>FilterWriter</code>
   * to write to the specified subordinate <code>Writer</code>.
+  * The given <code>Writer</code> will be used as <code>lock</code> for
+  * the newly created <code>FilterWriter</code>.
   *
   * @param out The <code>Writer</code> to write to
   */
 protected
 FilterWriter(Writer out)
 {
+  super(out);
   this.out = out;
 }
 

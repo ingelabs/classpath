@@ -1,5 +1,5 @@
 /* FilterReader.java -- Base class for char stream classes that filter input
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,6 +27,12 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete and correct.
+ */
+
 /**
   * This is the common superclass of all standard classes that filter 
   * input.  It acts as a layer on top of an underlying <code>Reader</code>
@@ -41,9 +47,8 @@ package java.io;
   * <code>read(yte[], int, int)</code> instead of to the subordinate
   * <code>Reader} read(yte[])</code> method.
   *
-  * @version 0.0
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Warren Levy <warrenl@cygnus.com>
   */
 public abstract class FilterReader extends Reader
 {
@@ -69,12 +74,15 @@ protected Reader in;
 /**
   * Create a <code>FilterReader</code> with the specified subordinate
   * <code>Reader</code>.
+  * The <code>lock</code> of the new <code>FilterReader</code> will be set
+  * to <code>in.lock</code>.
   *
   * @param in The subordinate <code>Reader</code>
   */
 protected 
 FilterReader(Reader in)
 {
+  super(in.lock);
   this.in = in;
 }
 
@@ -204,4 +212,3 @@ close() throws IOException
 }
 
 } // class FilterReader
-

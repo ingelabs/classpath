@@ -1,5 +1,5 @@
 /* ContentHandler.java -- Abstract class for handling content from URL's
-   Copyright (C) 1998,2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -29,6 +29,12 @@ package java.net;
 import java.io.IOException;
 
 /**
+ * Written using on-line Java Platform 1.2 API Specification, as well
+ * as "The Java Class Libraries", 2nd edition (Addison-Wesley, 1998).
+ * Status:  Believed complete and correct.
+ */
+
+/**
   * This is an abstract class that is the superclass for classes that read
   * objects from URL's.  Calling the <code>getContent()</code> method in the 
   * <code>URL</code> class or the <code>URLConnection</code> class will cause 
@@ -38,6 +44,7 @@ import java.io.IOException;
   * indirectly through methods in other classes.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Warren Levy <warrenl@cygnus.com>
   */
 public abstract class ContentHandler
 {
@@ -51,10 +58,7 @@ public abstract class ContentHandler
 /**
   * Default, no-argument constructor.
   */
-public
-ContentHandler()
-{
-}
+public ContentHandler() { }
 
 /*************************************************************************/
 
@@ -65,14 +69,12 @@ ContentHandler()
   * file, this method might return an <code>Image</code> object.  This method 
   * must be implemented by subclasses.
   *
-  * @param urlcon A <code>URLConnection</code> object to read data from.
+  * @param urlc A <code>URLConnection</code> object to read data from.
   *
   * @return An object representing the data read
   *
   * @exception IOException If an error occurs
   */
-public abstract Object
-getContent(URLConnection urlcon) throws IOException;
+public abstract Object getContent(URLConnection urlc) throws IOException;
 
 } // class ContentHandler
-

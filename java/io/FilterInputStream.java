@@ -1,5 +1,5 @@
 /* FilterInputStream.java -- Base class for classes that filter input
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,6 +27,12 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete and correct.
+ */
+
 /**
   * This is the common superclass of all standard classes that filter 
   * input.  It acts as a layer on top of an underlying <code>InputStream</code>
@@ -35,8 +41,8 @@ package java.io;
   * functions in addition to simply redirecting the call.
   * <p>
   * This class is not abstract.  However, since it only redirects calls
-  * to a subordinate <code>InputStream</code> without adding any functionality on top
-  * of it, this class should not be used directly.  Instead, various
+  * to a subordinate <code>InputStream</code> without adding any functionality
+  * on top of it, this class should not be used directly.  Instead, various
   * subclasses of this class should be used.  This is enforced with a
   * protected constructor.  Do not try to hack around it.
   * <p>
@@ -47,9 +53,8 @@ package java.io;
   * <code>read(byte[], int, int)</code> instead of to the subordinate
   * <code>InputStream read(byte[])</code> method.
   *
-  * @version 0.0
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Warren Levy <warrenl@cygnus.com>
   */
 public class FilterInputStream extends InputStream
 {
@@ -106,7 +111,8 @@ mark(int readlimit)
 /**
   * Calls the <code>in.markSupported()</code> method.
   *
-  * @return <code>true</code> if mark/reset is supported, <code>false</code> otherwise
+  * @return <code>true</code> if mark/reset is supported, <code>false</code>
+  *         otherwise
   */
 public boolean
 markSupported()
@@ -229,4 +235,3 @@ close() throws IOException
 }
 
 } // class FilterInputStream
-

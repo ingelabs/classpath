@@ -1,5 +1,24 @@
 2001-09-30  Mark Wielaard  <mark@klomp.org>
 
+	* java/io/FileWriter.java: Merged with libgcj.
+	* java/io/FilterInputStream.java: Ditto.
+	* java/io/FilterOutputStream.java: Ditto.
+	(write (byte[],int,int): Explicitly call write(int) on every byte.
+	* java/io/FilterReader.java: Ditto.
+	(FilterReader): call super(in.lock).
+	* java/io/FilterWriter.java: Merged with libgcj.
+	(FilterWriter): call super(in).
+	* java/io/Writer.java: Merged with libgcj.
+	* java/lang/Compiler.java: Ditto.
+	* java/lang/Process.java: Ditto.
+	* java/lang/Void.java: Ditto.
+	* java/net/ContentHandler.java: Ditto.
+	* java/net/DatagramPacket.java: Ditto.
+	* java/net/MulticastSocket.java: Merged (almost) with libgcj.
+	Note that the contructor super() calls are still different
+
+2001-09-30  Mark Wielaard  <mark@klomp.org>
+
 	* java/io/DataInput.java: Merged with libgcj.
 	* java/io/DataOutput.java: Idem.
 	* java/io/FilenameFilter.java: Idem.

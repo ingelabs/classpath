@@ -1,5 +1,5 @@
 /* FilterOutputStream.java -- Parent class for output streams that filter
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,6 +27,11 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * Status:  Complete to version 1.1.
+ */
+
 /**
   * This class is the common superclass of output stream classes that 
   * filter the output they write.  These classes typically transform the
@@ -35,9 +40,8 @@ package java.io;
   * methods in <code>OutputStream</code> to redirect them to the
   * underlying stream.  Subclasses provide actual filtering.
   *
-  * @version 0.0
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Tom Tromey <tromey@cygnus.com>
   */
 public class FilterOutputStream extends OutputStream
 {
@@ -137,15 +141,17 @@ write(int b) throws IOException
 public void
 write(byte[] buf) throws IOException
 {
+  // Don't do checking here, per Java Lang Spec.
   write(buf, 0, buf.length);
 }
 
 /*************************************************************************/
 
 /**
-  * This method writes <code>len</code> bytes from the array <code>buf</code>
-  * starting at index <code>offset</code> to the underlying
-  * <code>OutputStream</code>.
+  * This method calls the <code>write(int)</code> method <code>len</code>
+  * times for all bytes from the array <code>buf</code> starting at index
+  * <code>offset</code>. Subclasses should overwrite this method to get a
+  * more efficient implementation.
   *
   * @param buf The byte array to write bytes from
   * @param offset The index into the array to start writing bytes from
@@ -156,8 +162,10 @@ write(byte[] buf) throws IOException
 public void
 write(byte[] buf, int offset, int len) throws IOException
 {
-  out.write(buf, offset, len);
+  // Don't do checking here, per Java Lang Spec.
+  for (int i=0; i < len; i++) 
+    write(buf[offset + i]);
+
 }
 
 } // class FilterOutputStream
-

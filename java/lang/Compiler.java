@@ -1,6 +1,6 @@
 /* Compiler.java -- Interface for implementing a method to override 
    Object.clone()comparaing objects to obtain an ordering
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -28,6 +28,9 @@ executable file might be covered by the GNU General Public License. */
 
 package java.lang;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ */
+
 /**
  * The <code>Compiler</code> class is a place holder for a JIT
  * compiler implementation does nothing unless there is such a 
@@ -39,6 +42,10 @@ package java.lang;
  * then a function by the name of <code>java_lang_Compiler_start()</code> 
  * in that library is called.
  *
+ * Note that a VM might not have implemented any of this.
+ *
+ * @author Tom Tromey <tromey@cygnus.com>
+ *
  * @since JDK 1.0
  * @see System#getProperty(java.lang.String)
  * @see System#getProperty(java.lang.String,java.lang.String)
@@ -47,26 +54,35 @@ package java.lang;
 public final class Compiler 
 {
     /**
-     * Compile the class named by <code>clazz</code>.
+     * Don't allow new `Compiler's to be made.
+     */
+    private Compiler ()
+    {
+    }
+
+    /**
+     * Compile the class named by <code>oneClass</code>.
      * 
-     * @param clazz the class to compile
+     * @param oneClass the class to compile
      * @return <code>false</code> if no compiler is available or 
      * compilation failed and <code>true</code> if compilation succeeded.
      */
-    public static boolean compileClass(Class clazz) 
+    public static boolean compileClass (Class oneClass) 
     {
+ 	// Never succeed.
 	return false;
     }
     
     /**
-     * Compile the classes whose name matches <code>string</code>.
+     * Compile the classes whose name matches <code>classNames/code>.
      *
-     * @param string the name of classes to compile
+     * @param classNames the name of classes to compile
      * @return <code>false</code> if no compiler is available or 
      * compilation failed and <code>true</code> if compilation succeeded.
      */
-    public static boolean compileClasses(String string) 
+    public static boolean compileClasses (String classNames) 
     {
+	// Note the incredibly lame interface.  Always fail.
 	return false;
     }
 
@@ -75,8 +91,9 @@ public final class Compiler
      * according to the compilers documentation.  No specific operation
      * is required.
      */
-    public static Object command(Object any) 
+    public static Object command (Object arg) 
     {
+	// Our implementation defines this to a no-op.
 	return null;
     }
 
@@ -84,11 +101,11 @@ public final class Compiler
      * Calling <code>Compiler.enable()</code> will cause the compiler
      * to resume operation if it was previously disabled.  
      */
-    public static void enable() { }
+    public static void enable () { }
 
     /**
      * Calling <code>Compiler.disable()</code> will cause the compiler
      * to be suspended.
      */
-    public static void disable() { }
+    public static void disable () { }
 }

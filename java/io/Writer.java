@@ -1,5 +1,5 @@
 /* Writer.java -- Base class for character output streams
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,6 +27,11 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
+/* Written using "Java Class Libraries", 2nd edition, plus online
+ * API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete and correct.
+ */
+
 /**
   * This abstract class forms the base of the hierarchy of classes that 
   * write output as a stream of chars.  It provides a common set of methods
@@ -34,9 +39,8 @@ package java.io;
   * methods to write chars in a particular manner or to a particular 
   * destination such as a file on disk or network connection.
   *
-  * @version 0.0
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Per Bothner <bothner@cygnus.com>
   */
 public abstract class Writer
 {
@@ -72,7 +76,8 @@ Writer()
   * This method initializes a <code>Writer</code> that will synchronize
   * on the specified <code>Object</code>.
   *
-  * @param obj The <code>Object</code> to use for synchronizing critical sections
+  * @param obj The <code>Object</code> to use for synchronizing critical
+  *            sections
   */
 protected
 Writer(Object lock)
@@ -187,7 +192,8 @@ write(String str) throws IOException
   * starting at position <code>offset</code>.
   *
   * @param str The <code>String</code> that is to be written
-  * @param offset The character offset into the <code>String</code> to start writing from
+  * @param offset The character offset into the <code>String</code> to start
+  *               writing from
   * @param len The number of chars to write
   *
   * @exception IOException If an error occurs
@@ -195,11 +201,11 @@ write(String str) throws IOException
 public void
 write(String str, int offset, int len) throws IOException
 {
+  // FIXME - for libgcj re-write using native code to not require copied buffer.
   char[] buf = new char[len];
 
   str.getChars(offset, offset + len, buf, 0);
-  write(buf, 0, buf.length);
+  write(buf, 0, len);
 }
 
 } // class Writer
-

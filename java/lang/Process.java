@@ -1,5 +1,5 @@
-/* Process.java
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* Process.java - Represent spawned system process.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -30,6 +30,9 @@ package java.lang;
 import java.io.OutputStream;
 import java.io.InputStream;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ */
+
 /**
  * An instance of a subclass of <code>Process</code> is created by the
  * <code>Runtime.exec</code> methods.  Methods in <code>Process</code>
@@ -40,8 +43,9 @@ import java.io.InputStream;
  * @since JDK 1.0
  * 
  * @author Brian Jones
+ * @author Tom Tromey <tromey@cygnus.com>
  */
-public abstract class Process extends Object
+public abstract class Process
 {
   /**
    * Empty constructor does nothing.

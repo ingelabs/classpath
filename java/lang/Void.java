@@ -1,5 +1,5 @@
 /* java.lang.Void
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,21 +27,30 @@ executable file might be covered by the GNU General Public License. */
 
 package java.lang;
 
-/**
- ** Void is a placeholder class so that the variable Void.TYPE can be
- ** supported for reflection return types.
- **
- ** @author Paul Fisher
- ** @author John Keiser
- ** @version 1.1.0, 5 Feb 1998
- ** @since JDK1.1
- **/
+/* Written using "Java Class Libraries", 2nd edition, plus online
+ * API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Complete.
+ */
 
-public final class Void {
-    /**
-     * The return type <code>void</code> is represented by this 
-     * <code>Class</code> object.
-     */
+/**
+ * Void is a placeholder class so that the variable Void.TYPE can be
+ * supported for reflection return types.
+ *
+ * @author Paul Fisher
+ * @author John Keiser
+ * @author Per Bothner <bothner@cygnus.com>
+ * @since JDK1.1
+ */
+public final class Void
+{
+  /**
+   * The return type <code>void</code> is represented by this 
+   * <code>Class</code> object.
+   */
   public static final Class TYPE = VMClassLoader.getPrimitiveClass("void");
+
+  /**
+   * Don't allow Void objects to be made.
+   */
   private Void() { }
 }
