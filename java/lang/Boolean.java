@@ -45,11 +45,7 @@ public final class Boolean implements Serializable
    * Returns "true" if the value of this object is <code>true</code> and
    * returns "false" if the value of this object is <code>false</code>.
    */
-  public String toString()
-    {
-      if (value) 
-	return "true";
-      return "false";
-    }
-
+  public String toString() {
+    return (value) ? "true" : "false";
+  }
 }
