@@ -28,25 +28,25 @@ package java.io;
    The values for these constants are specified in Javasoft's "Object
    Serialization Specification" TODO: add reference
 */
-interface ObjectStreamConstants
+public interface ObjectStreamConstants
 {
-  final static short STREAM_MAGIC = (short)0xaced;
-  final static short STREAM_VERSION = 5;
-  final static byte TC_NULL = (byte)112;
-  final static byte TC_REFERENCE = (byte)113;
-  final static byte TC_CLASSDESC = (byte)114;
-  final static byte TC_OBJECT = (byte)115;
-  final static byte TC_STRING = (byte)116;
-  final static byte TC_ARRAY = (byte)117;
-  final static byte TC_CLASS = (byte)118;
-  final static byte TC_BLOCKDATA = (byte)119;
-  final static byte TC_ENDBLOCKDATA = (byte)120;
-  final static byte TC_RESET = (byte)121;
-  final static byte TC_BLOCKDATALONG = (byte)122;
-  final static byte TC_EXCEPTION = (byte)123;
-  final static int baseWireHandle = 0x7e0000;
-  final static byte SC_WRITE_METHOD = (byte)1;
-  final static byte SC_BLOCK_DATA = (byte)1;
-  final static byte SC_SERIALIZABLE = (byte)2;
-  final static byte SC_EXTERNALIZABLE = (byte)4;
+  public final static short STREAM_MAGIC = (short)0xaced;
+  public final static short STREAM_VERSION = 5;
+  public final static byte TC_NULL = (byte)112;
+  public final static byte TC_REFERENCE = (byte)113;
+  public final static byte TC_CLASSDESC = (byte)114;
+  public final static byte TC_OBJECT = (byte)115;
+  public final static byte TC_STRING = (byte)116;
+  public final static byte TC_ARRAY = (byte)117;
+  public final static byte TC_CLASS = (byte)118;
+  public final static byte TC_BLOCKDATA = (byte)119;
+  public final static byte TC_ENDBLOCKDATA = (byte)120;
+  public final static byte TC_RESET = (byte)121;
+  public final static byte TC_BLOCKDATALONG = (byte)122;
+  public final static byte TC_EXCEPTION = (byte)123;
+  public final static int baseWireHandle = 0x7e0000;
+  public final static byte SC_WRITE_METHOD = (byte)1;
+  public final static byte SC_BLOCK_DATA = (byte)1;
+  public final static byte SC_SERIALIZABLE = (byte)2;
+  public final static byte SC_EXTERNALIZABLE = (byte)4;
 }
