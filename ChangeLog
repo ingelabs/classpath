@@ -1,9 +1,15 @@
+2002-02-09  Eric Blake  <ebb9@email.byu.edu>
+
+	* INSTALL: Update instructions for using jikes 1.15b.
+	* HACKING: Ditto.
+	* ChangeLog: Clean up some whitespace.
+
 2002-02-09  C. Brian Jones <cbj@gnu.org>
 
-        * lib/Makefile.am: without zip, try copying class files instead
-        during install, and avoid zip during make
-        * configure.in: new automake conditional to handle presence or
-        absence of zip
+	* lib/Makefile.am: without zip, try copying class files instead
+	during install, and avoid zip during make
+	* configure.in: new automake conditional to handle presence or
+	absence of zip
 
 2002-02-09  Mark Wielaard <mark@klomp.org>
 
@@ -1289,14 +1295,14 @@
 	non-null.
 
 2002-01-19  Mark Wielaard <mark@klomp.org>
-	
+
 	* native/jni/java-net/javanet.c (_javanet_get_option): make exception
 	message more clear.
 	* native/jni/java-net/javanet.h
 	(SOCKOPT_SO_SNDBUF,SOCKOPT_SO_REUSEADDR): swap definitions.
 
 2002-01-17  C. Brian Jones <cbj@gnu.org>
-	
+
 	* include/.cvsignore: updated to not ignore jni files
 
 2002-01-17  Tom Tromey  <tromey@redhat.com>
@@ -1912,7 +1918,7 @@
 	ORP+Classpath
 
 2001-11-25  C. Brian Jones <cbj@gnu.org>
-	
+
 	* java/net/DatagramSocket (getLocalAddress): return local address
 	used in creating socket instead of calling a native method to retrieve
 	a value that cannot be changed (fixes Mauve regression).
@@ -1981,17 +1987,19 @@
 	explicitly in the case of a null argument in keeping with JDK 1.3.
 
 2001-11-14  C. Brian Jones
+	
 	* java/lang/Integer.java (getInteger): Attempt to decode the value
 	of the system property instead of the name of the system property.
 	* java/lang/Double.java (valueOf): Throw NullPointerException
 	explicitly in the case of a null argument in keeping with JDK 1.3.
 
 2001-11-14  Tom Tromey  <tromey@redhat.com>
-        * java/lang/Double.java (parseDouble): Now native.
-        (parseDouble0): Removed.
-        * native/jni/java-lang/java_lang_Double.c
-        (Java_java_lang_Double_parseDouble): Renamed.  Rewrote to trim
-        String internally.  Free the UTF buffer at end.
+
+	* java/lang/Double.java (parseDouble): Now native.
+	(parseDouble0): Removed.
+	* native/jni/java-lang/java_lang_Double.c
+	(Java_java_lang_Double_parseDouble): Renamed.  Rewrote to trim
+	String internally.  Free the UTF buffer at end.
 
 2001-11-13  Tom Tromey  <tromey@redhat.com>
 
@@ -2000,11 +2008,13 @@
 	stopped.
 
 2001-11-12  C. Brian Jones <cbj@gnu.org>
+
 	* native/jni/java-lang/java_lang_Double.c (parseDouble0): 
 	handle 'f', 'F', 'd', 'D' per JLS 3.10.2, fixes problems found using
 	Mauve
 
 2001-11-12  C. Brian Jones <cbj@gnu.org>
+
 	* native/jni/java-io/javaio.c (_javaio_open): use 
 	JCL_jstring_to_cstring instead of old undefined method
 	* acconfig.h: changed #define DEBUG 0 to #undef DEBUG to match
@@ -2021,6 +2031,7 @@
 	texi2html 1.65
 
 2001-11-11  C. Brian Jones <cbj@gnu.org>
+
 	* native/jni/java-io/Makefile.am: missing javaio.c, javaio.h in 
 	libjavaio
 
@@ -2060,6 +2071,7 @@
 	java/util/jar/JarOutputStream.java: Fix spelling errors.
 
 2001-11-05  C. Brian Jones <cbj@gnu.org>
+
 	* configure.in: changed AC_CANONICAL_SYSTEM to AC_CANONICAL_TARGET.
 	Modify usage of target_vendor to target_cpu to link jni_md.h.
 	Modify target_cpu to be x86 where it matches regex .*86.
@@ -2077,12 +2089,15 @@
 	to print class
 
 2001-11-4  C. Brian Jones <cbj@gnu.org>
+
 	* THANKYOU: added Fred Gray
 
 2001-11-4   Fred Gray <fegray@npl.uiuc.edu>
+
 	* java/util/ResourceBundle.java: add static modifier to class Security
 
 2001-11-04  C. Brian Jones <cbj@gnu.org>
+
 	* native/jni/awt: renamed native/jni/gtk-peer
 	* native/jni/javaio.h: moved to native/jni/java-io
 	* native/jni/javaio.c: moved to native/jni/java-io
@@ -2257,12 +2272,14 @@
 	* java/util/WeakHashMap.java: Fix spelling errors.
 
 2001-10-27  C. Brian Jones <cbj@gnu.org>
+
 	* include/jni.h.in: added largely from gcj with edits based on 
 	published specification in ISBN 0-201-32557-2, sablepath-0.1.7,
 	and Japhar.
 	* include/jni_md-pc-gnu-linux.h: new file
 
 2001-10-27  C. Brian Jones <cbj@gnu.org>
+
 	* gnu/java/text/.cvsignore: new file
 	* lib/.cvsignore: added com
 	* acinclude.m4: renamed CLASSPATH_INTERNAL_CHECK_JAPHAR to 
@@ -2274,7 +2291,7 @@
 	  support for gcj added
 	added CLASSPATH_FIND_JAVA and supporting functions
 	added CLASSPATH_WITH_JAVAH and supporting functions
-        added CLASSPATH_WITH_CLASSLIB
+	added CLASSPATH_WITH_CLASSLIB
 	added CLASSPATH_WITH_INCLUDEDIR
 	* configure.in: use AC_CANONICAL_SYSTEM instead of AC_CANONICAL_HOST
 	version changed to 0.03
@@ -2316,8 +2333,8 @@
 
 2001-10-26  Mark Wielaard  <mark@klomp.org>
 
-        * lib/standard.omit: DataFlavor.java and AWTEvent.java should and must
-        be compiled by default
+	* lib/standard.omit: DataFlavor.java and AWTEvent.java should and
+	must be compiled by default
 
 2001-10-25  John Leuner  <jewel@debian.org>
 
@@ -2731,6 +2748,7 @@
 	* java/util/SortedSet.java: Updated javadoc.
 
 2001-10-13  C. Brian Jones <cbj@gnu.org>
+
 	* doc/www.gnu.org/include/macros.wml: fixed missing blockquote 
 	affecting status.wml
 	* doc/www.gnu.org/status.wml: changed maintainer of java.math to 
@@ -2738,18 +2756,22 @@
 	* doc/www.gnu.org/home.wml: removed link to japhar+classpath doc
 
 2001-10-13  C. Brian Jones <cbj@gnu.org>
+
 	* gnu/classpath/tools: removed and added to cp-tools sister project
 
 2001-10-13  C. Brian Jones <cbj@gnu.org>
+
 	* doc/www.gnu.org/home.wml: added Savannah information
 
 2001-10-13  C. Brian Jones <cbj@gnu.org>
+
 	* doc/www.gnu.org/README: updated
 	* doc/www.gnu.org/Makefile: add publish target
 	* doc/www.gnu.org/announce/Makefile: add publish target
 	* doc/www.gnu.org/doc/Makefile: add publish target
 
 2001-10-13  C. Brian Jones <cbj@gnu.org>
+
 	* doc/www.gnu.org/home.wml: new file
 	* doc/www.gnu.org/status.wml: new file
 	* doc/www.gnu.org/announce/announcements.wml: new file
@@ -2855,6 +2877,7 @@
 	* java/io/StringBufferInputStream.java: Ditto
 
 2001-10-01  Mark Wielaard  <mark@klomp.org>
+
 	* java/lang/InheritableThreadLocal.java (addToHeritage): check if this
 	local is already contained in the heritage before adding it.
 
@@ -2952,6 +2975,7 @@
 	get_pixbuf to allow code to compile
 
 2001-09-21  C. Brian Jones <cbj@gnu.org>
+
 	* gnu/Makefile.am: removed tools from SUBDIRS
 	* gnu/java/awt/image/GdkPixbufDecoder.java: wrapped loadLibrary
 	call within if (Configuration.INIT_LOAD_LIBRARY)
@@ -3006,21 +3030,22 @@
 	pointed out to me, recursion is worse than looping.
 
 2001-09-16  C. Brian Jones  <cbj@gnu.org>
-        * gnu/tools/serialver/Main.java: moved to 
-        gnu/classpath/tools/SerialVer.java
-        * gnu/tools/: removed because it is empty
-        * gnu/classpath/Makefile.am: added tools to SUBDIRS
-        * gnu/classpath/tools/Makefile.am: new file
-        * gnu/classpath/tools/.cvsignore: new file
-        * configure.in: update Makefile output
-        * lib/standard.omit: avoid compiling gnu/classpath/tools because it
-        depends on gnu.bytecode 
-        * gnu/classpath/tools/Util.java: new file
-        * gnu/classpath/tools/Javap.java: new file
-        * gnu/classpath/tools/JavapMain.java: new file
-        * gnu/classpath/tools/JavahMain.java: new file
-        * gnu/classpath/tools/tester.j: new file, helps test tools
-        * gnu/classpath/tools/README: new file
+
+	* gnu/tools/serialver/Main.java: moved to 
+	gnu/classpath/tools/SerialVer.java
+	* gnu/tools/: removed because it is empty
+	* gnu/classpath/Makefile.am: added tools to SUBDIRS
+	* gnu/classpath/tools/Makefile.am: new file
+	* gnu/classpath/tools/.cvsignore: new file
+	* configure.in: update Makefile output
+	* lib/standard.omit: avoid compiling gnu/classpath/tools because
+	it depends on gnu.bytecode 
+	* gnu/classpath/tools/Util.java: new file
+	* gnu/classpath/tools/Javap.java: new file
+	* gnu/classpath/tools/JavapMain.java: new file
+	* gnu/classpath/tools/JavahMain.java: new file
+	* gnu/classpath/tools/tester.j: new file, helps test tools
+	* gnu/classpath/tools/README: new file
 
 2001-09-15  Eric Blake  <ebb9@email.byu.edu>
 
@@ -3066,16 +3091,18 @@
 	Serializable
 
 2001-09-07  C. Brian Jones <cbj@gnu.org>
-        * native/cni: added for CNI native files
-        * native/common: added for common JNI/CNI files
+
+	* native/cni: added for CNI native files
+	* native/common: added for common JNI/CNI files
 
 2001-09-07  C. Brian Jones <cbj@gnu.org>
-        * native/gnu.java.awt.peer.gtk: removed
-        * native/java.lang: removed
-        * native/java.lang.reflect: removed
-        * native/java.math: removed
-        * native/java.net: removed
-        * native/java.util: removed
+
+	* native/gnu.java.awt.peer.gtk: removed
+	* native/java.lang: removed
+	* native/java.lang.reflect: removed
+	* native/java.math: removed
+	* native/java.net: removed
+	* native/java.util: removed
 
 2001-09-06  Anthony Green  <green@redhat.com>
 
@@ -3240,15 +3267,14 @@
 
 2001-08-31  C. Brian Jones <cbj@gnu.org>
 
-        * java/io/BufferedReader.java (DEFAULT_BUFFER_SIZE): Restored.
-        (BufferedReader): Use it.
-        * java/io/LineNumberReader.java: comment change to note buffer size
+	* java/io/BufferedReader.java (DEFAULT_BUFFER_SIZE): Restored.
+	(BufferedReader): Use it.
+	* java/io/LineNumberReader.java: comment change to note buffer size
 
-        Uncertain about clone() implementations given JDK 1.4 docs
-        * java/util/AbstractMap.java (clone): new method to conform to API
-        * java/util/IdentityHashMap.java (clone): don't throw
-        CloneNotSupportedException
-
+	Uncertain about clone() implementations given JDK 1.4 docs
+	* java/util/AbstractMap.java (clone): new method to conform to API
+	* java/util/IdentityHashMap.java (clone): don't throw
+	CloneNotSupportedException
 
 2001-08-31  Tom Tromey  <tromey@redhat.com>
 
@@ -3379,8 +3405,8 @@
 
 2001-08-21  Jeff Sturm  <jsturm@one-point.com>
 
-        * java/util/IdentityHashMap.java (get): Fix off-by-one error.
-        (put): Likewise.
+	* java/util/IdentityHashMap.java (get): Fix off-by-one error.
+	(put): Likewise.
 
 2001-08-19  John Leuner  <jewel@debian.org>
 
@@ -3396,7 +3422,7 @@
 	* java/util/Makefile.am (EXTRA_DIST): Added IdentityHashMap.java.
 
 2001-08-11  John Leuner  <jewel@debian.org>
-	
+
 	* java/awt/ActiveEvent.java: added this file (new interface)
 	* gnu/java/awt/peer/gtk/Test.java (new MouseAdapter): changed event name from e to me
 	* gnu/java/awt/peer/gtk/TestAWT.java:  fixed ambiguous references to getSize()
@@ -3517,6 +3543,7 @@
 	* vm/reference/java/lang/Class.java: documentation fix
 
 2001-07-26  Julian Scheid <julian.scheid@sektor37.de>
+
 	* native/jni/awt/gnu_java_awt_peer_gtk_GtkScrollBarPeer.c
 	(Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setValues):
 	changed argument type from int to jint
@@ -3530,7 +3557,7 @@
 2001-07-25  Etienne M. Gagnon <etienne.gagnon@uqam.ca>
 
 	* native/jni/java_io_FileDescriptor.c: added 
-        #include "java_io_FileDescriptor.h"
+	#include "java_io_FileDescriptor.h"
 	* native/jni/java_io_ObjectInputStream.c: return 0 changed to 
 	return NULL
 	* native/jni/javaio.c (_javaio_read): change 0 to JNI_FALSE
@@ -3660,6 +3687,7 @@
 	* java/io/FilenameFilter.java: idem
 
 2001-07-10  Mark Wielaard <mark@klomp.org>
+
 	* java/lang/CharSequence.java: new 1.4 interface
 	* java/lang/String.java: implements Serializable, CharSequence
 	(contentEquals StringBuffer): new 1.4 method
@@ -3668,6 +3696,7 @@
 	(subSequence): new 1.4 method needed for CharSequence
 
 2001-07-10  Mark Wielaard <mark@klomp.org>
+
 	* java/lang/Boolean.java (valueOf boolean): new 1.4 method
 	(toString boolean): idem
 	(valueOf String): return one of the predefined Boolean instances
@@ -3677,25 +3706,30 @@
 	(compareTo Float): call new method
 
 2001-07-10  Mark Wielaard <mark@klomp.org>
+
 	* java/io/File.java (String,String constructor): compile fix
 
 2001-07-05  Julian Scheid <julian.scheid@sektor37.de>
+
 	* com/sun/javadoc/Doc.java (getRawCommentText): previously
 	mistakenly said setRawCommentText.
 	* com/sun/javadoc/DocErrorReporter.java (printNotice): missing
 	argument has been added.
 
 2001-07-05  Gansha Wu <gansha.wu@intel.com>
-	* java/net/PlainSocketImpl.java (read): remove synchronized keyword
-        to avoid deadlock between readers and writers using the same socket.
+
+	* java/net/PlainSocketImpl.java (read): remove synchronized
+	keyword to avoid deadlock between readers and writers using the
+	same socket.
 	(write): remove synchronized keyword to avoid deadlock betweeen 
-        readers and writers using the same socket.
+	readers and writers using the same socket.
 	* java/io/File.java (File): in File (String, String) ignore null
 	first argument which then assumes current working directory.
 	
 2001-06-25  Takashi Okamoto <tora@debian.org>
+
 	* gnu/java/io/encode/EncoderUTF8.java (convertToBytes): create 
-        valid UTF8 encoding.
+	valid UTF8 encoding.
 
 2001-06-25  Brian Jones <cbj@gnu.org>
 
@@ -3712,7 +3746,7 @@
 	* configure.in: rename --enable-libgcj-debug to --enable-debug.
 	Created new option --enable-load-library potentially to be used
 	to limit all System.loadLibrary() calls in class initializers.
-        Added more header checks and define HAVE_INT32_DEFINED
+	Added more header checks and define HAVE_INT32_DEFINED
 	or HAVE_BSD_INT32_DEFINED similarly to gcj.  Renamed libgcj-debug
 	to the neutral sounding debug.  Checks for more headers.
 	* gnu/classpath/Configuration.java.in: INIT_LOAD_LIBRARY added.
@@ -3976,9 +4010,9 @@
 2001-02-21  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	Disable libgcjx by default.
-        * configure.in: Add support for --enable-java-awt configure option. 
+	* configure.in: Add support for --enable-java-awt configure option. 
 	Use --enable-java-awt=xlib to build the xlib peers (libgcjx).
-        * Makefile.am: Make libgcjx conditional on XLIB_AWT, instead of NO_X.
+	* Makefile.am: Make libgcjx conditional on XLIB_AWT, instead of NO_X.
 	* Makefile.in: Rebuilt.
 	* configure: Rebuilt.
 
@@ -4099,6 +4133,7 @@
 	sort. Fix for PR java/1895.
 
 2001-01-25  Mark Wielaard <mark@klomp.org>
+
 	* java/io/DataInputStream.java: update copyright notice
 	* java/io/PrintWriter.java: idem
 	* java/io/Reader.java: idem
@@ -4107,9 +4142,11 @@
 	* java/lang/reflect/ReflectPermission.java: idem
 
 2001-01-23  Mark Wielaard <mark@klomp.org>
+
 	* java/security/AccessController.java: new file (stub implementation)
 
 2001-01-23  Brian Jones <cbj@gnu.org>
+
 	* configure.in: generate Makefiles for proper native directories
 	* native/Makefile.am: modify SUBDIRS to build from jni directory
 	* native/jni/.cvsignore: new file
@@ -4237,10 +4274,12 @@
 	correctly.  Adjust properly from 0-23 clock hour.
 
 2001-01-14  Mark Wielaard  <mark@klomp.org>
+
 	* java/net/URLDecoder.java: Thanks Edgar Villanueva (edgarvil@home.com)
 	(decode): fix comment, don't throw Exception
 
 2001-01-12  Mark Wielaard  <mark@klomp.org>
+
 	* java/awt/datatransfer/Clibboard.java:
 	(getContents, setContents): synchronized, add comment
 	* java/awt/datatransfer/DataFlavor.java:
@@ -4261,6 +4300,7 @@
 	* java/awt/datatransfer/SystemFlavorMap.java: new class XXX
 
 2001-01-10  Mark Wielaard  <mark@klomp.org>
+
 	* java/lang/ClassLoader.java: 1.2 updates
 	(loadClass(String)): now calls loadClass with resolve set to false not true
 	(loadClass(String,boolean)): no longer abstract
@@ -4283,6 +4323,7 @@
 	(setScale (int,int)): New public method.
 
 2001-01-08  Mark Wielaard  <mark@klomp.org>
+
 	* vm/reference/java/lang/Class.java: 1.2 updates
 	(forName(String,boolean,ClassLoader)): new method
 	(getPackage): Ditto
@@ -4309,10 +4350,10 @@
 
 2001-01-09  Andrew Haley  <aph@redhat.com>
 
-        * java/io/StreamTokenizer.java: Don't throw a
-        NumberFormatException if a field is numeric as far as the
-        StreamTokenizer is concerned but not as far as Double.valueOf() is
-        concerned: return a zero instead.	
+	* java/io/StreamTokenizer.java: Don't throw a
+	NumberFormatException if a field is numeric as far as the
+	StreamTokenizer is concerned but not as far as Double.valueOf() is
+	concerned: return a zero instead.	
 
 2001-01-09  Warren Levy  <warrenl@redhat.com>
 
@@ -4321,6 +4362,7 @@
 	should be removed after java.lang.System is merged with libgcj.
 
 2001-01-08  Mark Wielaard  <mark@klomp.org>
+
 	* java/lang/ClassLoader.java: 1.2 updates
 	(definedPackages, parent, systemClassLoader): new private fields
 	(ClassLoader): new constructor that takes a parent classloader
@@ -4334,6 +4376,7 @@
 	(runFinalizersOnExit): deprecated
 
 2001-01-07  Mark Wielaard  <mark@klomp.org>
+
 	* java/lang/Float.java: implements Comparable, new method compareTo()
 	* java/lang/Integer.java: Ditto
 	* java/lang/Long.java: Ditto
@@ -4347,9 +4390,11 @@
 	* java/lang/StringBuffer.java: Fix comments.
 
 2001-01-06  Brian Jones  <cbj@gnu.org>
+
 	* mauve-classpath: Mauve testing file can be used with Japhar.
 
 2001-01-06  Brian Jones  <cbj@gnu.org>
+
 	* Release classpath-0.02
 	* doc/www.gnu.org/announce/20010106.mhtml: New file.
 	* resource/japhar-0.09.patch.1: patch for Japhar 0.09 for 
@@ -4381,13 +4426,13 @@
 
 2001-01-06  Anthony Green  <green@redhat.com>
 
-        * java/beans/PropertyDescriptor.java: Fix comment.
-        * java/io/PushbackReader.java: Fix comment.
-        * java/io/ObjectStreamClass.java: Fix comment.
-        * java/io/DataInputStream.java: Fix comment.
-        * java/io/PipedInputStream.java: Fix comments.
-        * java/io/PipedReader.java: Fix comments.
-        * java/sql/DatabaseMetaData.java: Fix comments.
+	* java/beans/PropertyDescriptor.java: Fix comment.
+	* java/io/PushbackReader.java: Fix comment.
+	* java/io/ObjectStreamClass.java: Fix comment.
+	* java/io/DataInputStream.java: Fix comment.
+	* java/io/PipedInputStream.java: Fix comments.
+	* java/io/PipedReader.java: Fix comments.
+	* java/sql/DatabaseMetaData.java: Fix comments.
 
 2000-12-17  Brian Jones  <cbj@gnu.org>
 
@@ -4447,6 +4492,7 @@
 	(writeObject): Use defaultWriteObject(), not writeFields().
 
 2000-12-17  Brian Jones  <cbj@gnu.org>
+
 	* java/util/ArrayList.java: Changes made to let a given Perl script
 	produce the correct collections api in a different package for
 	Java 1.1. 
@@ -4466,20 +4512,24 @@
 	* java/io/SerializablePermission.java (legal_names): Now private.
 
 2000-12-14  Brian Jones  <cbj@gnu.org>
+
 	* acinclude.m4 : CLASSPATH_INTERNAL_CHECK_JAPHAR takes an optional 
 	argument such that specifying the prefix to Japhar now works, 
 	allowing the user to have multiple installations of Japhar and yet 
 	configure for a specific installation.
 
 2000-12-10  Brian Jones  <cbj@gnu.org>
+
 	* configure.in : commented out code to assume Japhar if not 
 	otherwise specified.  Compiling without Japhar is almost 
 	easy now.
 
 2000-12-10  Brian Jones  <cbj@gnu.org>
+
 	* configure.in : fixed a small syntax error
 
 2000-12-10  Brian Jones  <cbj@gnu.org>
+
 	* gnu/classpath/.cvsignore : Ignore Configuration.java
 	* native/java.lang/System.c (Java_java_lang_System_setIn) : fixed 
 	call to GetStaticFieldID().
@@ -4535,26 +4585,26 @@
 
 2000-12-03 01:00  Brian Jones <cbj@gnu.org>
 
-        * gnu/java/beans/ChangeLog: removed
-        * gnu/java/beans/editors/ChangeLog: removed
-        * gnu/java/beans/info/ChangeLog: removed
-        * gnu/java/io/ChangeLog: removed
-        * gnu/java/io/decode/ChangeLog: removed
-        * gnu/java/io/encode/ChangeLog: removed
-        * gnu/java/lang/ChangeLog: removed
-        * gnu/java/lang/reflect/ChangeLog: removed
-        * gnu/java/net/content/text/ChangeLog: removed
-        * java/beans/ChangeLog: removed
-        * java/io/ChangeLog: removed
-        * java/lang/reflect/ChangeLog: removed
-        * java/net/ChangeLog: removed
-        * java/util/ChangeLog: removed
-        * native/java.io/ChangeLog: removed
-        * native/java.lang.reflect/ChangeLog: removed
-        * native/java.net/ChangeLog: removed
-        * native/lib/ChangeLog: removed
-        * native/vmi/ChangeLog: removed
-        * test/java.io/ChangeLog: removed
+	* gnu/java/beans/ChangeLog: removed
+	* gnu/java/beans/editors/ChangeLog: removed
+	* gnu/java/beans/info/ChangeLog: removed
+	* gnu/java/io/ChangeLog: removed
+	* gnu/java/io/decode/ChangeLog: removed
+	* gnu/java/io/encode/ChangeLog: removed
+	* gnu/java/lang/ChangeLog: removed
+	* gnu/java/lang/reflect/ChangeLog: removed
+	* gnu/java/net/content/text/ChangeLog: removed
+	* java/beans/ChangeLog: removed
+	* java/io/ChangeLog: removed
+	* java/lang/reflect/ChangeLog: removed
+	* java/net/ChangeLog: removed
+	* java/util/ChangeLog: removed
+	* native/java.io/ChangeLog: removed
+	* native/java.lang.reflect/ChangeLog: removed
+	* native/java.net/ChangeLog: removed
+	* native/lib/ChangeLog: removed
+	* native/vmi/ChangeLog: removed
+	* test/java.io/ChangeLog: removed
 	
 2000-12-02 04:16  Tom Tromey <tromey@cygnus.com>
 
