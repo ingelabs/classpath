@@ -1,3 +1,14 @@
+2001-02-07  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* java/util/Arrays.java: Removed "cmp" methods.
+	(qsort): Don't use "cmp".
+	(med3): Likewise.
+
+2001-02-07  Mark Benvenuto  <mcb54@columbia.edu>
+
+	* java/util/Arrays.java (qsort): Handle N value of 7 with insertion
+	sort. Fix for PR java/1895.
+
 2001-01-25  Mark Wielaard <mark@klomp.org>
 	* java/io/DataInputStream.java: update copyright notice
 	* java/io/PrintWriter.java: idem
