@@ -1,5 +1,17 @@
 2004-04-26  Michael Koch  <konqueror@gmx.de>
 
+	* javax/print/CancelablePrintJob.java,
+	javax/print/Doc.java,
+	javax/print/DocFlavor.java,
+	javax/print/DocPrintJob.java,
+	javax/print/FlavorException.java,
+	javax/print/PrintException.java,
+	javax/print/PrintService.java,
+	javax/print/ServiceUIFactory.java: New files.
+	* javax/print/Makefile.am (EXTRA_DIST): Added all new files.
+
+2004-04-26  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/File.java: Moved all native methods to the new class
 	VMFile and removed the "Internal" suffix.
 	* vm/reference/java/io/VMFile.java: New file.
