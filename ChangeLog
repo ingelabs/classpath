@@ -1,5 +1,22 @@
 2005-01-28  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/Container.java
+	(paramString): Implemented.
+	* javax/swing/AbstractButton.java
+	(paramString): Implemented.
+	* javax/swing/JComponent.java
+	(paramString): Implemented.
+	* javax/swing/JMenu.java
+	(paramString): Implemented.
+	* javax/swing/JMenuBar.java
+	(paramString): Implemented.
+	* javax/swing/JMenuItem.java
+	(paramString): Implemented.
+	* javax/swing/JPopupMenu.java
+	(paramString): Implemented.
+
+2005-01-28  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JMenu.java
 	(uiClassID): Removed.
 	(JMenu): Set invoker on popup menu.
