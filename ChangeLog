@@ -1,3 +1,12 @@
+2002-08-18  Mark Wielaard <mark@klomp.org>
+
+	* gnu/classpath/Configuration.java.in: Add CLASSPATH_HOME field.
+	* java/lang/System.java: Set gnu.classpath.home property.
+	* java/security/Security.java: Use java.home are gnu.classpath.home
+	to load providers.
+	(loadProviders): Extra dir argument.
+	(getProvider): Return null when not found.
+
 2002-08-19  Tom Tromey  <tromey@redhat.com>
 
 	* NEWS: Updated for Runtime change.
