@@ -1,5 +1,15 @@
 2004-04-30  Michael Koch  <konqueror@gmx.de>
 
+	* include/java_nio_channels_Channels.h,
+	native/jni/java-nio/java_nio_channels_Channels.c:
+	New files.
+	* include/Makefile.am:
+	Generate include/java_nio_channels_Channels.h.
+	* native/jni/java-nio/Makefile.am:
+	Compile java_nio_channels_Channels.c.
+
+2004-04-30  Michael Koch  <konqueror@gmx.de>
+
 	* java/util/prefs/AbstractPreferences.java
 	(AbstractPreferences): Added parenthesis for clarity. Closes bug #7940.
 
