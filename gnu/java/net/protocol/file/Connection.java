@@ -54,10 +54,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.Permission;
 import java.security.AccessController;
-import java.util.AbstractSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.NoSuchElementException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * This subclass of java.net.URLConnection models a URLConnection via
@@ -73,6 +72,13 @@ public class Connection extends URLConnection
    * Default permission for a file
    */
   private static final String DEFAULT_PERMISSION = "read";
+
+  /**
+   * HTTP-style DateFormat, used to format the last-modified header.
+   */
+  private static SimpleDateFormat dateFormat
+    = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss 'GMT'",
+                           new Locale ("En", "Us", "Unix"));
 
   private static String lineSeparator;
   
@@ -211,6 +217,35 @@ public class Connection extends URLConnection
 	return -1;
       }
   }
+  
+  /**
+   *  Get an http-style header field. Just handle a few common ones. 
+   */
+  public String getHeaderField(String field)
+  {
+    try
+      {
+	if (!connected)
+	  connect();
+
+	if (field.equals("content-type"))
+          return guessContentTypeFromName(file.getName());
+	else if (field.equals("content-length"))
+          return Long.toString(file.length());
+	else if (field.equals("last-modified"))
+	  {
+	    synchronized (dateFormat)
+	      {
+        	return dateFormat.format(new Date(file.lastModified()));
+	      }
+	  }
+      }
+    catch (IOException e)
+      {
+        // Fall through.
+      }
+    return null;
+  }
 
   /**
    * Get the length of content.
@@ -243,106 +278,5 @@ public class Connection extends URLConnection
   public Permission getPermission() throws IOException
   {
     return permission;
-  }
-
-  /**
-   * Does the resource pointed to actually exist?
-   */
-  public final boolean exists()
-  {
-    if (file == null)
-      return false;
-
-    return file.exists();
-  }
-
-  /**
-   * Is the resource pointed to a directory?
-   */
-  public final boolean isDirectory()
-  {
-    return file.isDirectory();
-  }
-  
-  /**
-   * Get a listing of the directory, if it is a directory.
-   *
-   * @return a set which can supply an iteration of the
-   * contents of the directory.
-   *
-   * @throws IllegalStateException if this is not pointing
-   * to a directory.
-   */
-  public Set getListing()
-  {
-    if (!file.isDirectory())
-      throw new IllegalStateException ("this is not a directory");
-    
-    final File[] directoryList = file.listFiles();
-    return new AbstractSet()
-      {
-	File[] dirList = directoryList;
-
-	public int size()
-	{
-	  return dirList.length;
-	}
-
-	public Iterator iterator()
-	{
-	  return new Iterator()
-	    {
-	      int index = 0;
-
-	      public boolean hasNext()
-	      {
-		return index < dirList.length;
-	      }
-
-	      public Object next()
-	      {
-		try
-		  {
-		    String value = dirList [index++].getName();
-		    return value;
-		  }
-		catch (ArrayIndexOutOfBoundsException e)
-		  {
-		    throw new NoSuchElementException ("no more content");
-		  }
-	      }
-
-	      public void remove()
-	      {
-		try
-		  {
-		    File[] newDirList = new File [dirList.length - 1];
-		    int realIndex = index - 1;
-                    
-		    if (realIndex < 1)
-		      {
-			System.arraycopy (dirList, 1, newDirList, 0,
-                                          dirList.length - 1);
-			index--;
-		      }
-		    else
-		      {
-			System.arraycopy (dirList, 0, newDirList, 0, realIndex);
-                        
-			if (index < dirList.length - 1)
-			  System.arraycopy (dirList, index,
-					    newDirList, realIndex,
-                                            dirList.length - realIndex);
-		      }
-		    dirList = newDirList;
-		  }
-		catch (ArrayIndexOutOfBoundsException e)
-		  {
-		    throw new NoSuchElementException("no more content");
-		  }
-	      }
-	    };
-	}
-      };
   }
 }

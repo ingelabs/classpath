@@ -1,3 +1,16 @@
+2004-09-10  Bryce McKinlay  <mckinlay@redhat.com>
+
+	* gnu/java/net/protocol/file/Connection.java
+	(dateFormat): New static field.
+	(getHeaderField): Implemented.
+
+2004-09-10  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/net/protocol/file/Connection.java
+	(exists): Removed.
+	(isDirectory): Likewise.
+	(getListing): Likewise.
+
 2004-09-09  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #8991.
