@@ -259,7 +259,7 @@ $(JAVA_DEPEND): classes
 
 ##endif
 
-EXTRA_DIST = glibj.zip standard.omit
+EXTRA_DIST = glibj.zip standard.omit mkcollections.pl.in
 ## not sure if we want to let the user easily get rid of glibj.zip
 ## CLEANFILES = glibj.zip
 DISTCLEANFILES = $(CLASSES) $(CP_HEADERS)

@@ -1,3 +1,16 @@
+2000-12-17  Brian Jones  <cbj@gnu.org>
+	* java/util/ArrayList.java: Changes made to let a given Perl script
+	produce the correct collections api in a different package for
+	Java 1.1. 
+	writeObject(): renamed variable to oFields
+	readObject(): renamed variable to iFields
+	* configure.in: create lib/mkcollections.pl
+	* lib/Makefile.am: distribute mkcollections.pl.in
+	* lib/mkcollections.pl.in: creates copies of collections classes
+	in a new user defined package name space for use in Java 1.1 
+	projects, contributed by Jochen Hoenicke 
+	<Jochen.Hoenicke@Informatik.Uni-Oldenburg.de>.
+
 2000-12-14  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/RuntimePermission.java: Class now final.
