@@ -3,6 +3,9 @@ SUBDIRS 	:= announce docs
 ifndef WMK
   export WMK=wmk
 endif
+ifndef WML
+  export WML=wml
+endif
 
 WML_SRC = $(wildcard *.wml)
 WML_EN_OBJS = $(patsubst %.wml,%.en.html,$(WML_SRC))
@@ -11,8 +14,8 @@ WML_EN_OBJS = $(patsubst %.wml,%.en.html,$(WML_SRC))
 	cp ../$(notdir $(@)) docs
 
 %.en.html: %.wml include/macros.wml
-	$(WMK) -f $<
-	-rm -f $(patsubst %.wml,%.html,$<)
+	$(WML) -o $@ $<
+#	-rm -f $(patsubst %.wml,%.html,$<)
 
 all : $(WML_EN_OBJS) subdirs
 

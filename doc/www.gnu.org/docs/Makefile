@@ -3,6 +3,9 @@ SUBDIRS=
 ifndef WMK
   export WMK=wmk
 endif
+ifndef WML
+  export WML=wml
+endif
 
 TEXI_SRC	:= $(wildcard ../../*.texinfo)
 VPATH = ../..
@@ -13,12 +16,12 @@ WML_EN_OBJS = $(patsubst %.wml,%.en.html,$(WML_SRC))
 	texi2html -monolithic $<;
 	echo '#!wml --include=..' > $@
 	sed -e 's/<HTML>/\^\#use wml::std::lang\^\#use wml::fmt::isolatin\^\#use wml::std::case global=upper\^<lang:new id=en short>\^<lang:star:slice:>\^\#include <include\/macros.wml>\^<HTML>/' -e 's/<BODY>/<BODY BGCOLOR="#FFFFFF" TEXT="#000000" LINK="#1F00FF" ALINK="#FF0000" VLINK="#9900DD">/' -e 's/<\/BODY>/<footer>\^<\/BODY>/' $(subst .wml,.html,$(@)) > $@.sed;
-	tr "\^" "\n" < $@.sed >> $@
+	tr "\\^" "\n" < $@.sed >> $@
 	-rm -f $(subst .wml,.html,$(@)) $@.sed
 
 %.en.html: %.wml ../include/macros.wml
-	$(WMK) -f $<
-	-rm -f $(patsubst %.wml,%.html,$<)
+	$(WML) -o $@ $<
+#	-rm -f $(patsubst %.wml,%.html,$<)
 
 .PHONY : all
 all : $(WML_EN_OBJS) subdirs

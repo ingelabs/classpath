@@ -19,6 +19,7 @@ MenuItemPeer.java \
 MenuPeer.java \
 PanelPeer.java \
 PopupMenuPeer.java \
+RobotPeer.java \
 ScrollPanePeer.java \
 ScrollbarPeer.java \
 TextAreaPeer.java \

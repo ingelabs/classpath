@@ -1,3 +1,182 @@
+2003-02-25  C. Brian Jones  <cbj@gnu.org>
+
+	* java/awt/dnd/peer/DragSourceContextPeer.java
+	(startDrag): mark public; throws InvalidDnDOperationException
+	(setCursor): ditto
+	(transferablesFlavorsChanges: mark public
+	(getCursor): mark public
+	* java/awt/dnd/peer/DropTargetPeer.java: new file
+	* java/awt/dnd/peer/DropTargetContextPeer.java:
+	(setTargetActions): added method
+	(getTargetActions): ditto
+	(getDropTarget): ditto
+	(getTransferDataFlavors): ditto
+	(getTransferable): ditto
+	(isTransferableJVMLocal): ditto
+	(acceptDrag): ditto
+	(rejectDrag): ditto
+	(acceptDrop): ditto
+	(rejectDrop): ditto
+	(dropComplete): ditto
+	* java/awt/peer/ButtonPeer.java: reformatted
+	* java/awt/peer/CheckboxMenuItemPeer.java: reformatted
+	(setState): remove unneeded abstract keyword
+	* java/awt/peer/CheckboxPeer.java: reformatted
+	* java/awt/peer/ChoicePeer.java: reformatted
+	(removeAll): added method
+	* java/awt/peer/ComponentPeer.java:
+	(isFocusable): added method
+	(requestFocus): ditto
+	(getGraphicsConfiguration): mark public 
+	(isObscured): added method
+	(canDetermineObscurity): ditto
+	(coalescePaintEvent): ditto
+	(updateCursorImmediately): ditto
+	(createVolatileImage): ditto
+	(handlesWheelScrolling): ditto
+	(createBuffers): ditto
+	(getBackBuffer): ditto
+	(flip): ditto
+	(destroyBuffers): ditto
+	* java/awt/peer/ContainerPeer.java
+	(insets): remove unneeded abstract keyword
+	(getInsets): ditto
+	(beginValidate): ditto
+	(endValidate): ditto
+	(beginLayout): added method
+	(endLayout): ditto
+	(isPaintPending): ditto
+	* java/awt/peer/DialogPeer.java: reformatted
+	(setResizable): remove unneeded abstract keyword
+	(setTitle): ditto
+	* java/awt/peer/FileDialogPeer.java: reformatted
+	(setFile): remove unneeded abstract keyword
+	(setDirectory): ditto
+	(setFilenameFilter): ditto
+	* java/awt/peer/FramePeer.java: reformatted
+	(setIconImage): remove unneeded abstract keyword
+	(setMenuBar): ditto
+	(setResizable): ditto
+	(setTitle): ditto
+	(getState): added method
+	(setState): ditto
+	(setMaximizedBounds): ditto
+	* java/awt/peer/LabelPeer.java: reformatted
+	* java/awt/peer/ListPeer.java: reformatted
+	(add): remove unneeded abstract keyword
+	(addItem): ditto
+	(clear): ditto
+	(delItems): ditto
+	(deselect): ditto
+	(getSelectedIndexes): ditto
+	(makeVisible): ditto
+	(minimumSize): ditto
+	(preferredSize): ditto
+	(removeAll): ditto
+	(select): ditto
+	(setMultipleMode): ditto
+	(setMultipleSelections): ditto
+	(getPreferredSize): added method
+	(getMinimumSize): ditto
+	* java/awt/peer/MenuBarPeer.java: reformatted
+	* java/awt/peer/MenuComponentPeer.java: reformatted
+	(dispose): remove unneeded abstract keyword
+	* java/awt/peer/MenuItemPeer.java: reformatted
+	* java/awt/peer/MenuPeer.java
+	(addItem): remove unneeded abstract keyword
+	(addSeparator): ditto
+	(delItem): ditto
+	* java/awt/peer/PopupMenuPeer.java: 
+	(show)(Component, int, int): remove unneeded abstract keyword
+	(show(Event)): added method
+	* java/awt/peer/RobotPeer.java: new file
+	* java/awt/peer/ScrollbarPeer.java: reformatted
+	* java/awt/peer/ScrollPanePeer.java: reformmatted
+	(getHScrollbarHeight): remove unneeded abstract keyword
+	(getVScrollbarWidth): ditto
+	(setScrollPosition): ditto
+	(childResized): ditto
+	(setUnitIncrement): ditto
+	(setValue): ditto
+	* java/awt/peer/TextAreaPeer.java: reformatted
+	(insert): remove unneeded abstract keyword
+	(insertText): ditto
+	(minimumSize): ditto
+	(getMinimumSize): ditto
+	(preferredSize): ditto
+	(getPreferredSize): ditto
+	(replaceRange): ditto
+	(replaceText): ditto
+	* java/awt/peer/TextComponentPeer.java: reformatted
+	(getSelectionEnd): remove unneeded abstract keyword
+	(getSelectionStart): ditto
+	(getText): ditto
+	(setText): ditto
+	(select): ditto
+	(setEditable): ditto
+	(getCaretPosition): ditto
+	(setCaretPosition): ditto
+	(getIndexAtPoint): added method
+	(getCharacterBounds): ditto
+	(filterEvents): ditto
+	* java/awt/peer/TextFieldPeer.java: reformatted
+	(minimumSize): remove unneeded abstract keyword
+	(preferredSize): ditto
+	(getMinimumSize): ditto
+	(getPreferredSize): ditto
+	(setEchoChar): ditto
+	(setEchoCharacter): ditto
+	* java/awt/peer/WindowPeer.java: reformatted
+	(toBack): remove unneeded abstract keyword
+	(toFront): ditto
+	* gnu/java/awt/GLightweightPeer.java 
+	(isFocusable): added method
+	(requestFocus): ditto
+	(isObscured): ditto
+	(canDetermineObscurity): ditto
+	(coalescePaintEvent): ditto
+	(updateCursorImmediately): ditto
+	(createVolatileImage): ditto
+	(handlesWheelScrolling): ditto
+	(createBuffers): ditto
+	(getBackBuffer): ditto
+	(flip): ditto
+	(destroyBuffers): ditto
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(isFocusable): added method
+	(requestFocus): ditto
+	(isObscured): ditto
+	(canDetermineObscurity): ditto
+	(coalescePaintEvent): ditto
+	(updateCursorImmediately): ditto
+	(createVolatileImage): ditto
+	(handlesWheelScrolling): ditto
+	(createBuffers): ditto
+	(getBackBuffer): ditto
+	(flip): ditto
+	(destroyBuffers): ditto
+	* gnu/java/awt/peer/gtk/GtkChoicePeer.java
+	(removeAll): new method
+	* gnu/java/awt/peer/gtk/GtkContainerPeer.java
+	(beginLayout): added method
+	(endLayout): ditto
+	(isPaintPending): ditto
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java
+	(setState): added method
+	(getState): ditto
+	(setMaximizedBounds): ditto
+	* gnu/java/awt/peer/gtk/GtkPopupMenuPeer.java
+	(show): added method
+	* gnu/java/awt/peer/gtk/GtkTextComponentPeer.java
+	(getIndexAtPoint): added method
+	(getCharacterBounds): ditto
+        (filterEvents): ditto
+	* doc/www.gnu.org/Makefile: fix wml invocation
+	* doc/www.gnu.org/home.wml: fix link to japitools, link to providers
+	of core packages not yet part of Classpath
+	* doc/www.gnu.org/announce/Makefile: fix wml invocation
+	* doc/www.gnu.org/docs/Makefile: fix wml invocation
+
 2003-02-24  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/ByteArrayOutputStream.java (toString(int)): Fixed typo
