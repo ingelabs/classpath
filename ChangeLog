@@ -1,3 +1,15 @@
+2003-02-27  C. Brian Jones  <cbj@gnu.org>
+
+	* java/lang/Math.java
+	(min(float,float)): check Float.isNaN(a) and return a
+	(max(float,float)): ditto 
+	(round(float)): ditto
+	(min(double,double)): check Double.isNaN(a) and return a
+	(max(double,double)): ditto
+	(round(double)): ditto
+	(toRadians): multiply before dividing to reduce decimal error
+	(toDegrees): ditto
+
 2003-02-25  C. Brian Jones  <cbj@gnu.org>
 
 	* java/awt/dnd/peer/DragSourceContextPeer.java
