@@ -71,7 +71,17 @@ public class Runtime extends Object {
 	 **            System.getSecurityManager().checkExit(status)
 	 **            fails.
 	 **/
-	public native void exit(int status);
+	public void exit(int status) {
+		SecurityManager sm = System.getSecurityManager();
+		if (sm != null)
+			sm.checkExit(status);
+		exitInternal(status);
+	}
+
+	/**
+	 ** Native method that actually shuts down the virtual machine
+	 **/
+	public native void exitInternal(int status); 
 
 	/** Run the garbage collector.
 	 ** This method is more of a suggestion than anything.
@@ -95,7 +105,17 @@ public class Runtime extends Object {
 	 ** @param finalizeOnExit whether to finalize all Objects
 	 **        before the JVM exits
 	 **/
-	public static native void runFinalizersOnExit(boolean finalizeOnExit);
+	public static void runFinalizersOnExit(boolean finalizeOnExit) {
+		SecurityManager sm = System.getSecurityManager();
+		if (sm != null)
+			sm.checkExit(0);
+		runFinalizersOnExitInternal(finalizeOnExit);
+	}
+
+	/**
+	 ** Native method that actually sets the finalizer setting.
+	 **/
+	public static native void runFinalizersOnExitInternal(boolean value);
 
 	/** Load a native library using the system-dependent
 	 ** filename.
@@ -182,8 +202,10 @@ public class Runtime extends Object {
 	 **            <CODE>System.getSecuritymanager().checkExec(cmd[0])</CODE>.
 	 **/
 	public Process exec(String[] cmd, String[] env) {
-		System.getSecurityManager().checkExec(cmd[0]);
-		return nativeExec(cmd,env);
+		SecurityManager sm = System.getSecurityManager();
+                if (sm != null)
+                  sm.checkExec(cmd[0]);
+		return execInternal(cmd,env);
 	}
 
 	/** Find out how much memory is still free for allocating
@@ -238,6 +260,6 @@ public class Runtime extends Object {
 
 	native void nativeLoad(String filename);
 	native String nativeGetLibname(String pathname, String libname);
-	native Process nativeExec(String[] cmd, String[] env);
+	native Process execInternal(String[] cmd, String[] env);
 	static native String getLibraryPath();
 }
