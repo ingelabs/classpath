@@ -38,6 +38,9 @@ exception statement from your version. */
 
 package javax.imageio.metadata;
 
+import java.util.Locale;
+import javax.imageio.ImageTypeSpecifier;
+
 /**
  * @author Michael Koch (konqueror@gmx.de)
  */
@@ -65,4 +68,56 @@ public interface IIOMetadataFormat
   int VALUE_RANGE_MIN_INCLUSIVE = 6;
   int VALUE_RANGE_MIN_INCLUSIVE_MASK = 4;
   int VALUE_RANGE_MIN_MAX_INCLUSIVE = 14;
+
+  boolean canNodeAppear (String elementName, ImageTypeSpecifier imageType);
+
+  int getAttributeDataType (String elementName, String attrName);
+
+  String getAttributeDefaultValue (String elementName, String attrName);
+
+  String getAttributeDescription (String elementName, String attrName, Locale locale);
+
+  String[] getAttributeEnumerations (String elementName, String attrName);
+
+  int getAttributeListMaxLength (String elementName, String attrName);
+
+  int getAttributeListMinLength (String elementName, String attrName);
+
+  String getAttributeMaxValue (String elementName, String attrName);
+
+  String getAttributeMinValue (String elementName, String attrName);
+
+  String[] getAttributeNames (String elementName);
+
+  int getAttributeValueType (String elementName, String attrName);
+
+  String[] getChildNames (String elementName);
+
+  int getChildPolicy (String elementName);
+
+  String getElementDescription (String elementName, Locale locale);
+
+  int getElementMaxChildren (String elementName);
+
+  int getElementMinChildren (String elementName);
+
+  int getObjectArrayMaxLength (String elementName);
+
+  int getObjectArrayMinLength (String elementName);
+
+  Class getObjectClass (String elementName);
+
+  Object getObjectDefaultValue (String elementName);
+
+  Object[] getObjectEnumerations (String elementName);
+
+  Comparable getObjectMaxValue (String elementName);
+
+  Comparable getObjectMinValue (String elementName);
+
+  int getObjectValueType (String elementName);
+
+  String getRootName();
+
+  boolean isAttributeRequired (String elementName, String attrName);
 }
