@@ -348,6 +348,16 @@ format(double number, StringBuffer sb, FieldPosition status)
 
 /*************************************************************************/
 
+// Method I need
+
+public StringBuffer
+format(Object obj, StringBuffer sb, FieldPosition status)
+{
+  return(null);
+}
+
+/*************************************************************************/
+
 /**
   * I'm not sure what this method is really supposed to do, as it is
   * not documented.
