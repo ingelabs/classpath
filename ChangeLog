@@ -1,5 +1,10 @@
 2003-12-30  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/ObjectStreamClass.java
+	(getSerialPersistentFields): Little reformating.
+
+2003-12-30  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/net/protocol/http/Connection.java
 	(outputStream): New field.
 	(bufferedOutputStream): New field.

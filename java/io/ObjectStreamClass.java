@@ -710,7 +710,7 @@ public class ObjectStreamClass implements Serializable
   }
 
   /**
-   *  Returns the value of CLAZZ's private static final field named
+   * Returns the value of CLAZZ's private static final field named
    * `serialPersistentFields'. It performs some sanity checks before
    * returning the real array. Besides, the returned array is a clean
    * copy of the original. So it can be modified.
