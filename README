@@ -13,15 +13,31 @@ purpose use.
 
 See the file INSTALL for details on installing GNU Classpath.
 See the file NEWS for details on what is included in this release.
-See the various TODO and BUGS files in subdirectories for things that
-might not work right or that need to be implemented.
+See the file TODO for the latest to do list.
 
-Send comments/bug reports to classpath@gnu.org.  There is a website
-devoted to GNU Classpath at http://www.classpath.org/.
+Homepage: http://www.classpath.org/
+
+General Mailing List: classpath@gnu.org
+  --> Send bugs and patches to this address
+  --> To subscribe send email to classpath-request@gnu.org with a 
+      subject and body of "subscribe".  To unsubscribe do the same,
+      only with a body and subject of "unsubscribe".  This is a
+      smartlist managed mailing list.
+
+CVS Commit List: <no outside mailing address>
+  --> To subscribe send email to commit-classpath-request@gnu.org with a 
+      subject and body of "subscribe".  To unsubscribe do the same,
+      only with a body and subject of "unsubscribe".  This is a
+      smartlist managed mailing list.
+
+Anonymous CVSROOT: :pserver:anoncvs@subversions.gnu.org:/cvs
+  --> First do "cvs login".  Hit <Return> when prompted for a password
 
 Other Java free software projects of note:
 
 Japhar - http://www.japhar.org/
-Kaffe - http://www.transvirtual.com/kaffe.html
+Kaffe - http://www.kaffe.org/
 Cygnus gjc - http://sourceware.cygnus.com/java/
+
+Happy Hacking!
 
