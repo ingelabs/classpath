@@ -106,6 +106,7 @@ public class JList extends JComponent implements Scrollable
     
     public void setListData(final Vector listData)
     {
+	// XXX - FIXME Don't also name this AL, workaround for gcj 3.1.
 	class ALData extends AbstractListModel 
 	{
 	    public int getSize()              { return listData.size(); }

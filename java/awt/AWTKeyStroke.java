@@ -91,7 +91,7 @@ public class AWTKeyStroke implements Serializable
 
     /** Prune stale entries. */
     protected boolean removeEldestEntry(Map.Entry eldest)
-    {
+    {	// XXX - FIXME Use Map.Entry, not just Entry  as gcj 3.1 workaround.
       return size() > MAX_CACHE_SIZE;
     }
   };

@@ -1,5 +1,13 @@
 2002-04-21  Mark Wielaard  <mark@klomp.org>
 
+	* java/awt/AWTKeyStroke.java (removeEldestEntry): Add comment
+	describing the workaround needed for gcj 3.1.
+	* java/awt/im/InputSubset.java: Likewise.
+	* java/util/AbstractMap.java (BasicMapEntry): Likewise.
+	* javax/swing/JList.java (setListData): Likewise.
+
+2002-04-21  Mark Wielaard  <mark@klomp.org>
+
 	* java/awt/AWTKeyStroke.java (removeEldestEntry): Use fully qualified
 	Map.Entry as argument (gcj 3.1 workaround).
 	* java/awt/im/InputSubset.java: extends fully qualified

@@ -528,7 +528,7 @@ public abstract class AbstractMap implements Map
    * @author Eric Blake <ebb9@email.byu.edu>
    */
   static class BasicMapEntry implements Map.Entry
-  {
+  {	// XXX - FIXME Use fully qualified implements as gcj 3.1 workaround.
     /**
      * The key. Package visible for direct manipulation.
      */

@@ -47,7 +47,7 @@ package java.awt.im;
  * @status updated to 1.4
  */
 public final class InputSubset extends java.lang.Character.Subset
-{
+{	// XXX - FIXME Use fully qualified extends as gcj 3.1 workaround.
   /**
    * Constant for all Latin characters, including the characters in the
    * BASIC_LATIN, LATIN_1_SUPPLEMENT, LATIN_EXTENDED_A, LATIN_EXTENDED_B
