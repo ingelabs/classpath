@@ -520,12 +520,16 @@ public class PixelGrabber implements ImageConsumer
 		  {
 		    ints_delivered = true;
 
+		    assert (i >= 0 && i < int_pixel_buffer.length);
+		    assert (p >= 0 && p < pixels.length);
 		    int_pixel_buffer[i] = currentModel.getRGB (pixels[p]);
 		  }
 		else
 		  {
 		    bytes_delivered = true;
 
+		    assert (i >= 0 && i < byte_pixel_buffer.length);
+		    assert (p >= 0 && p < pixels.length);
 		    byte_pixel_buffer[i] = pixels[p];
 		  }
 	      }
@@ -578,6 +582,8 @@ public class PixelGrabber implements ImageConsumer
 	      {
 		int i = (yp - this.y) * this.scansize + (xp - this.x) + this.offset;
 		int p = (yp - y) * scansize + (xp - x) + offset;
+		assert (i >= 0 && i < int_pixel_buffer.length);
+		assert (p >= 0 && p < pixels.length);
 		if (forceRGB)
 		  int_pixel_buffer[i] = currentModel.getRGB (pixels[p]);
 		else

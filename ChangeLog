@@ -1,5 +1,9 @@
 2003-12-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* java/awt/image/PixelGrabber.java:
+	Fix implementation and update javadocs.
+2003-12-26  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* java/awt/FlowLayout.java (layoutContainer): Let components
 	assume their preferred height.  Centre components vertically.
 
