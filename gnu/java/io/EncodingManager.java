@@ -38,6 +38,10 @@ exception statement from your version. */
 
 package gnu.java.io;
 
+import gnu.java.io.decode.Decoder;
+import gnu.java.io.encode.Encoder;
+import gnu.java.security.action.GetPropertyAction;
+
 import java.lang.reflect.Constructor;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -45,9 +49,6 @@ import java.io.UnsupportedEncodingException;
 import java.security.AccessController;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
-import gnu.java.io.decode.Decoder;
-import gnu.java.io.encode.Encoder;
-import gnu.java.security.action.GetPropertyAction;
 
 /**
   * This class is used to create new instances of Decoders for a specified

@@ -38,16 +38,15 @@ exception statement from your version. */
 
 package gnu.java.net;
 
+import gnu.classpath.Configuration;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocketImpl;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.SocketAddress;
 import java.net.SocketException;
-import java.net.SocketOptions;
-import gnu.classpath.Configuration;
 
 /**
  * Written using on-line Java Platform 1.2 API Specification, as well
