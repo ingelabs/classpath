@@ -1,5 +1,5 @@
 /* JFrame.java --
-   Copyright (C) 2002 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -57,13 +57,8 @@ import javax.accessibility.AccessibleContext;
  *
  * @author Ronald Veldema (rveldema@cs.vu.nl)
  */
-public class JFrame extends Frame
+public class JFrame extends Frame implements WindowConstants
 {
-    public final static int HIDE_ON_CLOSE        = 0;
-    public final static int EXIT_ON_CLOSE        = 1;
-    public final static int DISPOSE_ON_CLOSE     = 2;
-    public final static int DO_NOTHING_ON_CLOSE  = 3;
-
     protected  AccessibleContext accessibleContext;
 
     private int close_action = HIDE_ON_CLOSE;    
