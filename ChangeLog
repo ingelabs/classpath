@@ -1,3 +1,11 @@
+2003-07-09  Torsten Rupp  <rupp@lisa.aicas.com>
+
+        *  native/jni/java-io/FileDescriptor.c,
+        native/jni/java-io/java_io_File.c,
+        native/jni/java-io/java_io_ObjectInputStream.c,
+        native/jni/java-io/javaio.c:
+        Implemented target native layer macros for all native OS functions
+
 2003-07-08  Torsten Rupp  <rupp@lisa.aicas.com>
 
         * native/target/generic/target_generic_file.h:
@@ -26,7 +34,11 @@
 
 2003-07-07  Torsten Rupp  <rupp@lisa.aicas.com>
 
-	* native/target/Linux/target_native.h,
+	* native/tar2003-07-09  Torsten Rupp  <rupp@lisa.aicas.com>
+
+        * /cvsroot/classpath/classpath/native/jni/java-io/FileDescriptor.c:
+        Implemented target native layer macros for all native OS functions
+get/Linux/target_native.h,
         native/target/Linux/target_native_file.h,
         native/target/Linux/target_native_math_float.h,
         native/target/Linux/target_native_math_int.h,

@@ -39,8 +39,12 @@ exception statement from your version. */
 /*  TODO: check exceptions */
 /*        comments */
 
+/* do not move; needed here because of some macro definitions */
+#include <config.h>
+
 #include <jni.h>
 #include <jcl.h>
+
 #include "java_io_ObjectInputStream.h"
 
 /*
