@@ -143,11 +143,8 @@ public final class DisplayMode
    * @param o the object to compare to
    * @return true if it is equal
    */
-  public boolean equals(Object o)
+  public boolean equals(DisplayMode m)
   {
-    if (! (o instanceof DisplayMode))
-      return false;
-    DisplayMode m = (DisplayMode) o;
     return width == m.width && height == m.height && bitDepth == m.bitDepth
       && refreshRate == m.refreshRate;
   }

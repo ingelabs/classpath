@@ -1,3 +1,14 @@
+2002-09-26  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/Choice.java
+	(remove): Fix exception documentation.
+	(select): Fix exception documentation.
+	* java/awt/Container.java
+	(add): Fix exception documentation.
+	(addImpl): Fix exception documentation.
+	* java/awt/DisplayMode.java
+	(equals): Fix argument type.
+
 2002-09-25  Jesse Rosenstock  <jmr@ugcs.caltech.edu>
 
 	* java/util/TimeZone.java (getDSTSavings): New method.
