@@ -1,3 +1,20 @@
+2005-03-02  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/awt/color/CieXyzConverter.java,
+	gnu/java/awt/color/ClutProfileConverter.java,
+	gnu/java/awt/color/ColorLookUpTable.java,
+	gnu/java/awt/color/ColorSpaceConverter.java,
+	gnu/java/awt/color/GrayProfileConverter.java,
+	gnu/java/awt/color/GrayScaleConverter.java,
+	gnu/java/awt/color/LinearRGBConverter.java,
+	gnu/java/awt/color/ProfileHeader.java,
+	gnu/java/awt/color/PyccConverter.java,
+	gnu/java/awt/color/RgbProfileConverter.java,
+	gnu/java/awt/color/SrgbConverter.java,
+	gnu/java/awt/color/TagEntry.java,
+	gnu/java/awt/color/ToneReproductionCurve.java:
+	Use standard copyright header.
+
 2005-03-02  Mark Wielaard  <mark@klomp.org>
 
 	* doc/www.gnu.org/cp-tools/cp-tools.wml: Fix createlink to
