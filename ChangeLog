@@ -1,5 +1,10 @@
 2005-02-14  Sven de Marothy  <sven@physto.se>
 
+        * java/util/Calendar.java 
+        (Calendar): Constructor should clear fields.
+
+2005-02-14  Sven de Marothy  <sven@physto.se>
+
 	* javax/swing/SpinnerDateModel.java: Implemented.
 
 2005-02-14  Sven de Marothy  <sven@physto.se>

@@ -454,6 +454,7 @@ public abstract class Calendar implements Serializable, Cloneable
     firstDayOfWeek = ((Integer) rb.getObject("firstDayOfWeek")).intValue();
     minimalDaysInFirstWeek = ((Integer) rb.getObject("minimalDaysInFirstWeek"))
                              .intValue();
+    clear();
   }
 
   /**
