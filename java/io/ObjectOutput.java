@@ -30,8 +30,49 @@ package java.io;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public interface ObjectOutput extends DataOutput
+public abstract interface ObjectOutput extends DataOutput
 {
+
+
+/**
+  * This method writes the specified byte to the output stream.
+  *
+  * @param b The byte to write.
+  *
+  * @exception IOException If an error occurs.
+  */
+public abstract void
+write(int b) throws IOException;
+
+/*************************************************************************/
+
+/**
+  * This method writes all the bytes in the specified byte array to the
+  * output stream.
+  *
+  * @param buf The array of bytes to write.
+  * 
+  * @exception IOException If an error occurs.
+  */
+public abstract void
+write(byte[] buf) throws IOException;
+
+/*************************************************************************/
+
+/**
+  * This method writes <code>len</code> bytes from the specified array
+  * starting at index <code>offset</code> into that array.
+  *
+  * @param buf The byte array to write from.
+  * @param offset The index into the byte array to start writing from.
+  * @param len The number of bytes to write.
+  *
+  * @exception IOException If an error occurs.
+  */
+public abstract void
+write(byte[] buf, int offset, int len) throws IOException;
+
+/*************************************************************************/
 
 /**
   * This method writes a object instance to a stream.  The format of the
