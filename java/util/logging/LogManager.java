@@ -100,7 +100,8 @@ import java.lang.ref.WeakReference;
  *
  * @author Sascha Brawer (brawer@acm.org)
  */
-public class LogManager {
+public class LogManager
+{
   /**
    * The singleton LogManager instance.
    */
@@ -281,6 +282,10 @@ public class LogManager {
       loggers.remove(ref);
     }
 
+    /* Adding a named logger requires a security permission. */
+    if ((name != null) && !name.equals(""))
+      checkAccess();
+
     Logger parent = findAncestor(logger);
     loggers.put(name, new WeakReference(logger));
     if (parent != logger.getParent())
@@ -417,7 +422,12 @@ public class LogManager {
   public synchronized void reset()
     throws SecurityException
   {
+    /* Throw a SecurityException if the caller does not have the
+     * permission to control the logging infrastructure.
+     */
     checkAccess();
+
+    properties = new Properties();
 
     Iterator iter = loggers.values().iterator();
     while (iter.hasNext())
@@ -541,7 +551,10 @@ public class LogManager {
     pcs.firePropertyChange(null, null, null);
   }
 
-
+  
+  /**
+   * Returns the value of a configuration property as a String.
+   */
   public synchronized String getProperty(String name)
   {
     if (properties != null)
