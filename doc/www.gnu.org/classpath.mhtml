@@ -16,7 +16,7 @@ Classpath is a work in progress.  There have been no public releases;
 however, pre-release source code is available via GNU's anonymous CVS
 server, and a <link /software/classpath/announce/19990206.html
 snapshot> of the Classpath tree was released on 1999-02-06.  CVSROOT is
-<tt>:pserver:anoncvs@anoncvs.gnu.org:/gd/gnu/anoncvsroot</tt>; Module
+<tt>:pserver:anoncvs@subversions.gnu.org:/cvs</tt>; Module
 is <tt>classpath</tt>.  There is no password.
 </plain-text>
 
