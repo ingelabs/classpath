@@ -36,9 +36,9 @@ JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState
 
   array = (*env)->NewIntArray (env, 3);
   rgb = (*env)->GetIntArrayElements (env, array, NULL);
-  rgb[0] = color.red   * 0xFF / 0xFFFF;
-  rgb[1] = color.green * 0xFF / 0xFFFF;
-  rgb[2] = color.blue  * 0xFF / 0xFFFF;
+  rgb[0] = color.red >> 8;
+  rgb[1] = color.green >> 8;
+  rgb[2] = color.blue >> 8;
   (*env)->ReleaseIntArrayElements (env, array, rgb, 0);
 
   NSA_SET_PTR (env, obj, g);
@@ -102,9 +102,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_setColorNative
   GdkColor color;
   struct graphics *g;
 
-  color.red = red * 0xFFFF / 0xFF;
-  color.green = green * 0xFFFF / 0xFF;
-  color.blue = blue * 0xFFFF / 0xFF;
+  color.red = red << 8;
+  color.green = green << 8;
+  color.blue = blue << 8;
 
   g = (struct graphics *) NSA_GET_PTR (env, obj);
   
