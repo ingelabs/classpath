@@ -1,6 +1,6 @@
 /*
  * gnu.java.beans.editors.NativeFloatEditor: part of the Java Class Libraries project.
- * Copyright (C) 1998 John Keiser
+ * Copyright (C) 1998 Free Software Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public

@@ -1,6 +1,6 @@
 /*
  * gnu.java.io.ClassLoaderObjectInputStream: part of the Java Class Libraries project.
- * Copyright (C) 1998 John Keiser
+ * Copyright (C) 1998 Free Software Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -23,30 +23,29 @@ package gnu.java.io;
 import java.io.*;
 
 /**
- ** ClassLoaderObjectInputStream is ObjectInputStream, with
- ** the ability to use a specific ClassLoader.
- **
- ** @author John Keiser
- ** @author Geoff Berry
- ** @version 1.1.0, 29 Jul 1998
- **/
+ * ClassLoaderObjectInputStream is ObjectInputStream, with
+ * the ability to use a specific ClassLoader.
+ *
+ * @author Geoff Berry
+ * @version 1.1.0, 29 Jul 1998
+ */
 
 public class ClassLoaderObjectInputStream extends ObjectInputStream {
 	ClassLoader myClassLoader;
 
 	/** Create the new ClassLoaderObjectInputStream.
-	 ** @param in the InputStream to read the Objects from.
-	 ** @param myClassLoader the ClassLoader to load classes
-	 **        with.
-	 **/
+	 * @param in the InputStream to read the Objects from.
+	 * @param myClassLoader the ClassLoader to load classes
+	 *        with.
+	 */
 	public ClassLoaderObjectInputStream(InputStream in, ClassLoader myClassLoader) throws IOException,StreamCorruptedException {
 		super(in);
 		this.myClassLoader = myClassLoader;
 	}
 
 	/** Overriden method to use the loadClass() method from
-	 ** the ClassLoader.
-	 **/
+	 * the ClassLoader.
+	 */
 	public Class resolveClass(String name) throws IOException, ClassNotFoundException {
 		return myClassLoader.loadClass(name);
 	}
