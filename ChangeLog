@@ -1,3 +1,9 @@
+2004-09-20  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/StackTraceElement.java
+	(className): Renamed field to declaringClass to be compatible
+	with Sun serialization format.
+
 2004-09-20  Ilya Perminov  <iperminov@logicalsoft.com>
 
 	* gnu/java/rmi/server/UnicastServer.java
