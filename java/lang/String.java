@@ -81,11 +81,17 @@ public final class String implements Comparable, CharSequence, Serializable {
 
   /**
    * An implementation for {@link CASE_INSENSITIVE_ORDER}.
-   * This must be {@link Serializable}.
+   * This must be {@link Serializable}. The class name is dictated by
+   * compatibility with Sun's JDK.
    */
   private static final class CaseInsensitiveComparator
     implements Comparator, Serializable
   {
+    /**
+     * Compatible with JDK 1.2.
+     */
+    private static final long serialVersionUID = 8575799808933029326L;
+
     /**
      * The default private constructor generates unnecessary overhead
      */
