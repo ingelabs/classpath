@@ -54,7 +54,7 @@ protected Object lock;
   * This is the default no-argument constructor for this class.  This method
   * will set up the class to synchronize criticial sections on itself.
   */
-public
+protected
 Writer()
 {
   lock = this;
