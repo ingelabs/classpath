@@ -1,10 +1,11 @@
 2001-09-05  Tom Tromey  <tromey@redhat.com>
 
+	Report from Gansha Wu:
 	* java/io/DataOutputStream.java (write(int)): Update `written'.
 	(write(byte[],int,int)): Likewise.
 
+	Report from Gansha Wu:
 	* java/util/Date.java (weekNames, monthNames): Now final.
-
 	* java/util/Date.java (weekNames, monthNames): Now static.
 
 	* java/text/DateFormatSymbols.java: Updated license info.
