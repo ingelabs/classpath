@@ -1,3 +1,9 @@
+2004-08-29  Mark Wielaard  <mark@klomp.org>
+
+	* resource/org/.cvsignore: New file.
+	* resource/org/ietf/.cvsignore: Likewise.
+	* resource/org/ietf/jgss/.cvsignore: Likewise.
+
 2004-08-29  Michael Koch  <konqueror@gmx.de>
 
 	* configure.ac: Depend on automake 1.9.
