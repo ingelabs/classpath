@@ -1,3 +1,16 @@
+2004-08-13  Tom Tromey  <tromey@redhat.com>
+
+	* java/nio/CharBuffer.java (put): Fix typo.
+	* java/nio/DoubleBuffer.java (put): Fix typo.
+	* java/nio/FloatBuffer.java (put): Fix typo.
+	* java/nio/IntBuffer.java (put): Fix typo.
+	* java/nio/LongBuffer.java (put): Fix typo.
+	* java/nio/ShortBuffer.java (put): Fix typo.
+
+2004-08-09  Florian Weimer  <fw@deneb.enyo.de>
+
+	* java/nio/ByteBuffer.java (put): Fix typo.
+
 2004-08-12  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* java/net/URL.java (URL): Delete whitespaces in the protocol string.
