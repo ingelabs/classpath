@@ -1,5 +1,20 @@
 2004-01-07  Michael Koch  <konqueror@gmx.de>
 
+	* java/text/CollationElementIterator.java
+	(collator): Made package-private.
+	(text): Likewise.
+	(index): Likewise.
+	(textIndex): Likewise.
+	(setText): Fixed documentation.
+	(setText): Renamed some variables to match libgcj's version.
+	(getOffset): Added @since tag to documentation.
+	* java/text/CollationKey.java
+	(hashCode): Reimplemented.
+	* java/text/RuleBasedCollator.java:
+	Some Reformating to match libgcj's version more.
+
+2004-01-07  Michael Koch  <konqueror@gmx.de>
+
 	* java/lang/reflect/Array.java:
 	Reformated to match libgcj's version more.
 

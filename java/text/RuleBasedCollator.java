@@ -180,8 +180,7 @@ public class RuleBasedCollator extends Collator
     {
       return (primary << 16) + (secondary << 8) + tertiary;
     }
-
-  } // inner class CollationElement
+  }
 
   /**
    * Basic collation instruction (internal format) to build the series of
@@ -210,6 +209,56 @@ public class RuleBasedCollator extends Collator
   }
 
   /**
+   * This the the original rule string.
+   */
+  private String rules;
+
+  /**
+   * This is the table of collation element values
+   */
+  private Object[] ce_table;
+
+  /**
+   * Quick-prefix finder.
+   */
+  HashMap prefix_tree;
+
+  /**
+   * This is the value of the last sequence entered into
+   * <code>ce_table</code>. It is used to compute the
+   * ordering value of unspecified character.
+   */
+  private int last_primary_value;
+
+  /**
+   * This variable is true if accents need to be sorted
+   * in the other direction.
+   */
+  private boolean inverseAccentComparison;
+  
+  /**
+   * This method initializes a new instance of <code>RuleBasedCollator</code>
+   * with the specified collation rules.  Note that an application normally
+   * obtains an instance of <code>RuleBasedCollator</code> by calling the
+   * <code>getInstance</code> method of <code>Collator</code>.  That method
+   * automatically loads the proper set of rules for the desired locale.
+   *
+   * @param rules The collation rule string.
+   *
+   * @exception ParseException If the rule string contains syntax errors.
+   */
+  public RuleBasedCollator(String rules) throws ParseException
+  {
+    if (rules.equals(""))
+      throw new ParseException("empty rule set", 0);
+    
+    this.rules = rules;
+
+    buildCollationVector(parseString(rules));
+    buildPrefixAccess();
+  }
+
+  /**
    * This method returns the number of common characters at the beginning
    * of the string of the two parameters.
    *
@@ -220,14 +269,17 @@ public class RuleBasedCollator extends Collator
    */
   static int findPrefixLength(String prefix, String s)
   {
-    int i;
+    int index;
+    int len = prefix.length();
 
-    for (i = 0; i < prefix.length() && i < s.length(); i++)
+    for (index = 0; index < len && index < s.length(); ++index)
       {
-	if (prefix.charAt(i) != s.charAt(i))
-	  return i;
+	if (prefix.charAt(index) != s.charAt(index))
+	  return index;
       }
-    return i;
+
+
+    return index;
   }
 
   /**
@@ -514,6 +566,16 @@ main_parse_loop:
   }
 
   /**
+   * This method creates a copy of this object.
+   *
+   * @return A copy of this object.
+   */
+  public Object clone()
+  {
+    return super.clone();
+  }
+
+  /**
    * This method completely parses a string 'rules' containing sorting rules.
    *
    * @param rules String containing the rules to be parsed. 
@@ -531,66 +593,6 @@ main_parse_loop:
     subParseString(false, v, 0, rules);
     
     return v;
-  }
-
-  /**
-   * This the the original rule string.
-   */
-  private String rules;
-
-  /**
-   * This is the table of collation element values
-   */
-  private Object[] ce_table;
-
-  /**
-   * Quick-prefix finder.
-   */
-  HashMap prefix_tree;
-
-  /**
-   * This is the value of the last sequence entered into
-   * <code>ce_table</code>. It is used to compute the
-   * ordering value of unspecified character.
-   */
-  private int last_primary_value;
-
-  /**
-   * This variable is true if accents need to be sorted
-   * in the other direction.
-   */
-  private boolean inverseAccentComparison;
-
-  /**
-   * This method initializes a new instance of <code>RuleBasedCollator</code>
-   * with the specified collation rules.  Note that an application normally
-   * obtains an instance of <code>RuleBasedCollator</code> by calling the
-   * <code>getInstance</code> method of <code>Collator</code>.  That method
-   * automatically loads the proper set of rules for the desired locale.
-   *
-   * @param rules The collation rule string.
-   *
-   * @exception ParseException If the rule string contains syntax errors.
-   */
-  public RuleBasedCollator(String rules) throws ParseException
-  {
-    this.rules = rules;
-
-    if (rules.equals(""))
-      throw new ParseException("Empty rule set", 0);
-
-    buildCollationVector(parseString(rules));
-    buildPrefixAccess();
-  }
-
-  /**
-   * This method creates a copy of this object.
-   *
-   * @return A copy of this object.
-   */
-  public Object clone()
-  {
-    return super.clone();
   }
 
   /**
@@ -718,13 +720,15 @@ element_loop:
    */
   public int compare(String source, String target)
   {
-    CollationElementIterator cei1 = getCollationElementIterator(source);
-    CollationElementIterator cei2 = getCollationElementIterator(target);
+    CollationElementIterator cs, ct;
+
+    cs = getCollationElementIterator(source);
+    ct = getCollationElementIterator(target);
 
     for(;;)
       {
-        CollationElement ord1block = cei1.nextBlock(); 
-        CollationElement ord2block = cei2.nextBlock(); 
+        CollationElement ord1block = cs.nextBlock(); 
+        CollationElement ord2block = ct.nextBlock(); 
 	int ord1;
 	int ord2;
 
@@ -752,8 +756,8 @@ element_loop:
 	  }
 
         // Check for primary strength differences
-        int prim1 = cei1.primaryOrder(ord1); 
-        int prim2 = cei2.primaryOrder(ord2); 
+        int prim1 = cs.primaryOrder(ord1); 
+        int prim2 = ct.primaryOrder(ord2); 
 
         if (prim1 < prim2)
           return -1;
@@ -763,8 +767,8 @@ element_loop:
           continue;
 
         // Check for secondary strength differences
-        int sec1 = cei1.secondaryOrder(ord1);
-        int sec2 = cei2.secondaryOrder(ord2);
+        int sec1 = cs.secondaryOrder(ord1);
+        int sec2 = ct.secondaryOrder(ord2);
 
         if (sec1 < sec2)
           return -1;
@@ -774,8 +778,8 @@ element_loop:
           continue;
 
         // Check for tertiary differences
-        int tert1 = cei1.tertiaryOrder(ord1);
-        int tert2 = cei2.tertiaryOrder(ord2);
+        int tert1 = cs.tertiaryOrder(ord1);
+        int tert2 = ct.tertiaryOrder(ord2);
 
         if (tert1 < tert2)
           return -1;
@@ -856,17 +860,15 @@ element_loop:
    */
   public CollationElementIterator getCollationElementIterator(CharacterIterator source)
   {
-    StringBuffer sb = new StringBuffer("");
-
+    StringBuffer expand = new StringBuffer("");
+    
     // Right now we assume that we will read from the beginning of the string.
-    char c = source.first();
-    while (c != CharacterIterator.DONE) 
-      {
-        sb.append(c);
-        c = source.next();
-      }
+    for (char c = source.first();
+	 c != CharacterIterator.DONE;
+	 c = source.next())
+      decomposeCharacter(c, expand);
 
-    return getCollationElementIterator(sb.toString());
+    return getCollationElementIterator(expand.toString());
   }
 
   /**

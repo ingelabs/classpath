@@ -71,22 +71,22 @@ public final class CollationElementIterator
   /**
    * This is the RuleBasedCollator this object was created from.
    */
-  private RuleBasedCollator collator;
+  RuleBasedCollator collator;
 
   /**
    * This is the String that is being iterated over.
    */
-  private String text;
+  String text;
 
   /**
    * This is the index into the collation decomposition where we are currently scanning.
    */
-  private int index;
+  int index;
 
   /**
    * This is the index into the String where we are currently scanning.
    */
-  private int textIndex;
+  int textIndex;
 
   /**
    * Array containing the collation decomposition of the
@@ -227,14 +227,16 @@ public final class CollationElementIterator
    * This method sets the <code>String</code> that it is iterating over
    * to the specified <code>String</code>.
    *
-   * @param The new <code>String</code> to iterate over.
+   * @param text The new <code>String</code> to iterate over.
+   *
+   * @since 1.2
    */
   public void setText(String text)
   {
     int idx = 0;
 
     this.text = text;
-    index = 0;
+    this.index = 0;
 
     String work_text = text.intern();
 
@@ -300,19 +302,17 @@ public final class CollationElementIterator
    *
    * @param ci The <code>CharacterIterator</code> containing the new <code>String</code> to iterate over.
    */
-  public void setText(CharacterIterator ci)
+  public void setText(CharacterIterator source)
   {
-    StringBuffer sb = new StringBuffer("");
+    StringBuffer expand = new StringBuffer();
 
     // For now assume we read from the beginning of the string.
-    char c = ci.first();
-    while (c != CharacterIterator.DONE)
-      {
-        sb.append(c);
-        c = ci.next();
-      }
+    for (char c = source.first();
+	 c != CharacterIterator.DONE;
+	 c = source.next())
+      expand.append(c);
 
-    setText(sb.toString());
+    setText(expand.toString());
   }
 
   /**
@@ -320,6 +320,8 @@ public final class CollationElementIterator
    * that is being iterated over.
    *
    * @return The iteration index position.
+   *
+   * @since 1.2
    */
   public int getOffset()
   {
