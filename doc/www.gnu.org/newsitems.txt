@@ -1,5 +1,13 @@
+<newsitem date="29 Mar 2004">
+JamVM-1.1.2 released (<createlink name="announcement" url="http://mail.gnu.org/archive/html/classpath/2004-03/msg00267.html">) 
+</newsitem>
+
 <newsitem date="26 Mar. 2004">
 <createlink name="Planet Classpath" url="http://classpath.wildebeest.org/planet/"> launched; it aggregates the blogs of most Classpath's developers
+</nextitem>
+
+<newsitem date="19 Mar. 2004">
+Sascha has released <createlink name="ServiceFactory" url="http://mail.gnu.org/archive/html/classpath/2004-03/msg00153.html">
 </nextitem>
 
 <newsitem date="13 Mar. 2004">
