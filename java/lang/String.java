@@ -769,7 +769,7 @@ Character.toLowerCase(value[i]) == Character.toLowerCase(anotherString.value[i])
     System.arraycopy(value, 0, newStr, 0, count);
     for (int i = index; i < count; i++)
       if (value[i] == oldChar)
-	value[i] = newChar;
+	newStr[i] = newChar;
     return new String(newStr);
   }
 
