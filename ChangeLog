@@ -1,3 +1,14 @@
+2002-11-16  Michael Koch <konqueror@gmx.de>
+
+	* gnu/java/nio/ByteBufferImpl.java,
+	gnu/java/nio/CharBufferImpl.java,
+	gnu/java/nio/DoubleBufferImpl.java,
+	gnu/java/nio/FloatBufferImpl.java,
+	gnu/java/nio/IntBufferImpl.java,
+	gnu/java/nio/LongBufferImpl.java,
+	gnu/java/nio/ShortBufferImpl.java:
+	Reindented.
+
 2002-11-16  Mark Wielaard  <mark@klomp.org>
 
 	Integrate work by Raif S. Naffah (raif@fl.net.au)

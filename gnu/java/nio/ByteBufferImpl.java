@@ -36,43 +36,57 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 package gnu.java.nio;
-import java.nio.*;
-public final class ByteBufferImpl extends java.nio. ByteBuffer
+
+import java.nio.ByteBuffer;
+
+public final class ByteBufferImpl extends ByteBuffer
 {
   private byte[] backing_buffer;
-    private int array_offset;
-    private boolean ro;
-  public ByteBufferImpl(int cap, int off, int lim)
-    {
-      this.backing_buffer = new byte[cap];
-      this.cap = cap;
-      this.position(off);
-      this.limit(lim);
-    }
-  public ByteBufferImpl(byte[] array, int off, int lim)
-    {
-      this.backing_buffer = array;
-      this.cap = array.length;
-      this.position(off);
-      this.limit(lim);
-    }
-  public ByteBufferImpl(ByteBufferImpl copy)
-    {
-        backing_buffer = copy.backing_buffer;
-        ro = copy.ro;
-        position(copy.position());
-        limit(copy.limit());
-    }
-    void inc_pos(int a)
-    {
-      position(position() + a);
-    }
+  private int array_offset;
+  private boolean ro;
+
+  public ByteBufferImpl (int cap, int off, int lim)
+  {
+    this.cap = cap;
+    position (off);
+    limit (lim);
+    this.backing_buffer = new byte[cap];
+  }
+
+  public ByteBufferImpl (byte[] array, int off, int lim)
+  {
+    this.cap = array.length;
+    position (off);
+    limit (lim);
+    this.backing_buffer = array;
+  }
+
+  public ByteBufferImpl (ByteBufferImpl copy)
+  {
+    this.cap = copy.capacity ();
+    position (copy.position ());
+    limit (copy.limit ());
+    ro = copy.ro;
+    backing_buffer = copy.backing_buffer;
+  }
+
+  void inc_pos (int toAdd)
+  {
+    position (position () + toAdd);
+  }
+
   private static native byte[] nio_cast(byte[]copy);
+  
   private static native byte[] nio_cast(char[]copy);
+  
   private static native byte[] nio_cast(short[]copy);
+  
   private static native byte[] nio_cast(long[]copy);
+  
   private static native byte[] nio_cast(int[]copy);
+  
   private static native byte[] nio_cast(float[]copy);
+  
   private static native byte[] nio_cast(double[]copy);
   ByteBufferImpl(byte[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native byte nio_get_Byte(ByteBufferImpl b, int index, int limit); private static native void nio_put_Byte(ByteBufferImpl b, int index, int limit, byte value); public java.nio. ByteBuffer asByteBuffer() { gnu.java.nio. ByteBufferImpl res = new gnu.java.nio. ByteBufferImpl(backing_buffer); res.limit((limit()*1)/1); return res; }
   ByteBufferImpl(char[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native char nio_get_Char(ByteBufferImpl b, int index, int limit); private static native void nio_put_Char(ByteBufferImpl b, int index, int limit, char value); public java.nio. CharBuffer asCharBuffer() { gnu.java.nio. CharBufferImpl res = new gnu.java.nio. CharBufferImpl(backing_buffer); res.limit((limit()*2)/1); return res; }
@@ -110,17 +124,19 @@ public final class ByteBufferImpl extends java.nio. ByteBuffer
         return backing_buffer != null;
     }
   final public byte get()
-    {
-        byte e = backing_buffer[position()];
-        position(position()+1);
-        return e;
-    }
-  final public java.nio. ByteBuffer put(byte b)
-    {
-        backing_buffer[position()] = b;
-        position(position()+1);
-        return this;
-    }
+  {
+    byte e = backing_buffer[position()];
+    position(position()+1);
+    return e;
+  }
+  
+  final public ByteBuffer put(byte b)
+  {
+    backing_buffer[position()] = b;
+    position(position()+1);
+    return this;
+  }
+  
   final public byte get(int index)
     {
         return backing_buffer[index];

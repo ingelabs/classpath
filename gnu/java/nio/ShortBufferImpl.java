@@ -36,36 +36,43 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 package gnu.java.nio;
-import java.nio.*;
-public final class ShortBufferImpl extends java.nio. ShortBuffer
+
+import java.nio.ShortBuffer;
+
+public final class ShortBufferImpl extends ShortBuffer
 {
-    private int array_offset;
-    private boolean ro;
+  private int array_offset;
+  private boolean ro;
+
   public ShortBufferImpl(int cap, int off, int lim)
-    {
-      this.backing_buffer = new short[cap];
-      this.cap = cap;
-      this.position(off);
-      this.limit(lim);
-    }
+  {
+    this.backing_buffer = new short[cap];
+    this.cap = cap ;
+    this.position(off);
+    this.limit(lim);
+  }
+
   public ShortBufferImpl(short[] array, int off, int lim)
-    {
-      this.backing_buffer = array;
-      this.cap = array.length;
-      this.position(off);
-      this.limit(lim);
-    }
+  {
+    this.backing_buffer = array;
+    this.cap = array.length;
+    this.position(off);
+    this.limit(lim);
+  }
+
   public ShortBufferImpl(ShortBufferImpl copy)
-    {
-        backing_buffer = copy.backing_buffer;
-        ro = copy.ro;
-        position(copy.position());
-        limit(copy.limit());
-    }
-    void inc_pos(int a)
-    {
-      position(position() + a);
-    }
+  {
+    backing_buffer = copy.backing_buffer;
+    ro = copy.ro;
+    position(copy.position());
+    limit(copy.limit());
+  }
+
+  void inc_pos(int a)
+  {
+    position(position() + a);
+  }
+
   private static native short[] nio_cast(byte[]copy);
   private static native short[] nio_cast(char[]copy);
   private static native short[] nio_cast(short[]copy);
@@ -73,6 +80,7 @@ public final class ShortBufferImpl extends java.nio. ShortBuffer
   private static native short[] nio_cast(int[]copy);
   private static native short[] nio_cast(float[]copy);
   private static native short[] nio_cast(double[]copy);
+
   ShortBufferImpl(byte[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native byte nio_get_Byte(ShortBufferImpl b, int index, int limit); private static native void nio_put_Byte(ShortBufferImpl b, int index, int limit, byte value); public java.nio. ByteBuffer asByteBuffer() { gnu.java.nio. ByteBufferImpl res = new gnu.java.nio. ByteBufferImpl(backing_buffer); res.limit((limit()*1)/2); return res; }
   ShortBufferImpl(char[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native char nio_get_Char(ShortBufferImpl b, int index, int limit); private static native void nio_put_Char(ShortBufferImpl b, int index, int limit, char value); public java.nio. CharBuffer asCharBuffer() { gnu.java.nio. CharBufferImpl res = new gnu.java.nio. CharBufferImpl(backing_buffer); res.limit((limit()*2)/2); return res; }
   ShortBufferImpl(short[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native short nio_get_Short(ShortBufferImpl b, int index, int limit); private static native void nio_put_Short(ShortBufferImpl b, int index, int limit, short value); public java.nio. ShortBuffer asShortBuffer() { gnu.java.nio. ShortBufferImpl res = new gnu.java.nio. ShortBufferImpl(backing_buffer); res.limit((limit()*2)/2); return res; }
@@ -80,55 +88,66 @@ public final class ShortBufferImpl extends java.nio. ShortBuffer
   ShortBufferImpl(long[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native long nio_get_Long(ShortBufferImpl b, int index, int limit); private static native void nio_put_Long(ShortBufferImpl b, int index, int limit, long value); public java.nio. LongBuffer asLongBuffer() { gnu.java.nio. LongBufferImpl res = new gnu.java.nio. LongBufferImpl(backing_buffer); res.limit((limit()*8)/2); return res; }
   ShortBufferImpl(float[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native float nio_get_Float(ShortBufferImpl b, int index, int limit); private static native void nio_put_Float(ShortBufferImpl b, int index, int limit, float value); public java.nio. FloatBuffer asFloatBuffer() { gnu.java.nio. FloatBufferImpl res = new gnu.java.nio. FloatBufferImpl(backing_buffer); res.limit((limit()*4)/2); return res; }
   ShortBufferImpl(double[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native double nio_get_Double(ShortBufferImpl b, int index, int limit); private static native void nio_put_Double(ShortBufferImpl b, int index, int limit, double value); public java.nio. DoubleBuffer asDoubleBuffer() { gnu.java.nio. DoubleBufferImpl res = new gnu.java.nio. DoubleBufferImpl(backing_buffer); res.limit((limit()*8)/2); return res; }
-    public boolean isReadOnly()
-    {
-        return ro;
-    }
-    public java.nio. ShortBuffer slice()
-    {
-        ShortBufferImpl A = new ShortBufferImpl(this);
-        A.array_offset = position();
-        return A;
-    }
-    public java.nio. ShortBuffer duplicate()
-    {
-        return new ShortBufferImpl(this);
-    }
-    public java.nio. ShortBuffer asReadOnlyBuffer()
-    {
-        ShortBufferImpl a = new ShortBufferImpl(this);
-        a.ro = true;
-        return a;
-    }
-    public java.nio. ShortBuffer compact()
-    {
-        return this;
-    }
-    public boolean isDirect()
-    {
-        return backing_buffer != null;
-    }
+
+  public boolean isReadOnly()
+  {
+    return ro;
+  }
+
+  public java.nio. ShortBuffer slice()
+  {
+    ShortBufferImpl A = new ShortBufferImpl(this);
+    A.array_offset = position();
+    return A;
+  }
+
+  public java.nio. ShortBuffer duplicate()
+  {
+    return new ShortBufferImpl(this);
+  }
+
+  public java.nio. ShortBuffer asReadOnlyBuffer()
+  {
+    ShortBufferImpl a = new ShortBufferImpl(this);
+    a.ro = true;
+    return a;
+  }
+
+  public java.nio. ShortBuffer compact()
+  {
+    return this;
+  }
+
+  public boolean isDirect()
+  {
+    return backing_buffer != null;
+  }
+
   final public short get()
-    {
-        short e = backing_buffer[position()];
-        position(position()+1);
-        return e;
-    }
+  {
+    short e = backing_buffer[position()];
+    position(position()+1);
+    return e;
+  }
+
   final public java.nio. ShortBuffer put(short b)
-    {
-        backing_buffer[position()] = b;
-        position(position()+1);
-        return this;
-    }
+  {
+    backing_buffer[position()] = b;
+    position(position()+1);
+    return this;
+  }
+
   final public short get(int index)
-    {
-        return backing_buffer[index];
-    }
-   final public java.nio. ShortBuffer put(int index, short b)
-    {
-      backing_buffer[index] = b;
-      return this;
-    }
+  {
+    return backing_buffer[index];
+  }
+
+  final public java.nio. ShortBuffer put(int index, short b)
+  {
+    backing_buffer[index] = b;
+    return this;
+  }
+
   final public char getChar() { char a = nio_get_Char(this, position(), limit()); inc_pos(2); return a; } final public java.nio. ShortBuffer putChar(char value) { nio_put_Char(this, position(), limit(), value); inc_pos(2); return this; } final public char getChar(int index) { char a = nio_get_Char(this, index, limit()); return a; } final public java.nio. ShortBuffer putChar(int index, char value) { nio_put_Char(this, index, limit(), value); return this; };
   final public short getShort() { return get(); } final public java.nio. ShortBuffer putShort(short value) { return put(value); } final public short getShort(int index) { return get(index); } final public java.nio. ShortBuffer putShort(int index, short value) { return put(index, value); };
   final public int getInt() { int a = nio_get_Int(this, position(), limit()); inc_pos(4); return a; } final public java.nio. ShortBuffer putInt(int value) { nio_put_Int(this, position(), limit(), value); inc_pos(4); return this; } final public int getInt(int index) { int a = nio_get_Int(this, index, limit()); return a; } final public java.nio. ShortBuffer putInt(int index, int value) { nio_put_Int(this, index, limit(), value); return this; };

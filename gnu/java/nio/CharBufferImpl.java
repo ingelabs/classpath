@@ -36,36 +36,45 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 package gnu.java.nio;
-import java.nio.*;
-public final class CharBufferImpl extends java.nio. CharBuffer
+
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.CharBuffer;
+
+public final class CharBufferImpl extends CharBuffer
 {
-    private int array_offset;
-    private boolean ro;
+  private int array_offset;
+  private boolean ro;
+  
   public CharBufferImpl(int cap, int off, int lim)
-    {
-      this.backing_buffer = new char[cap];
-      this.cap = cap;
-      this.position(off);
-      this.limit(lim);
-    }
+  {
+    this.backing_buffer = new char[cap];
+    this.cap = cap;
+    this.position(off);
+    this.limit(lim);
+  }
+  
   public CharBufferImpl(char[] array, int off, int lim)
-    {
-      this.backing_buffer = array;
-      this.cap = array.length;
-      this.position(off);
-      this.limit(lim);
-    }
+  {
+    this.backing_buffer = array;
+    this.cap = array.length;
+    this.position(off);
+    this.limit(lim);
+  }
+  
   public CharBufferImpl(CharBufferImpl copy)
-    {
-        backing_buffer = copy.backing_buffer;
-        ro = copy.ro;
-        position(copy.position());
-        limit(copy.limit());
-    }
-    void inc_pos(int a)
-    {
-      position(position() + a);
-    }
+  {
+    backing_buffer = copy.backing_buffer;
+    ro = copy.ro;
+    position(copy.position());
+    limit(copy.limit());
+  }
+  
+  void inc_pos(int a)
+  {
+    position(position() + a);
+  }
+  
   private static native char[] nio_cast(byte[]copy);
   private static native char[] nio_cast(char[]copy);
   private static native char[] nio_cast(short[]copy);
@@ -80,27 +89,27 @@ public final class CharBufferImpl extends java.nio. CharBuffer
   CharBufferImpl(long[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native long nio_get_Long(CharBufferImpl b, int index, int limit); private static native void nio_put_Long(CharBufferImpl b, int index, int limit, long value); public java.nio. LongBuffer asLongBuffer() { gnu.java.nio. LongBufferImpl res = new gnu.java.nio. LongBufferImpl(backing_buffer); res.limit((limit()*8)/2); return res; }
   CharBufferImpl(float[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native float nio_get_Float(CharBufferImpl b, int index, int limit); private static native void nio_put_Float(CharBufferImpl b, int index, int limit, float value); public java.nio. FloatBuffer asFloatBuffer() { gnu.java.nio. FloatBufferImpl res = new gnu.java.nio. FloatBufferImpl(backing_buffer); res.limit((limit()*4)/2); return res; }
   CharBufferImpl(double[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native double nio_get_Double(CharBufferImpl b, int index, int limit); private static native void nio_put_Double(CharBufferImpl b, int index, int limit, double value); public java.nio. DoubleBuffer asDoubleBuffer() { gnu.java.nio. DoubleBufferImpl res = new gnu.java.nio. DoubleBufferImpl(backing_buffer); res.limit((limit()*8)/2); return res; }
-    public boolean isReadOnly()
+  public boolean isReadOnly()
     {
         return ro;
     }
-    public java.nio. CharBuffer slice()
+    public CharBuffer slice()
     {
         CharBufferImpl A = new CharBufferImpl(this);
         A.array_offset = position();
         return A;
     }
-    public java.nio. CharBuffer duplicate()
+    public CharBuffer duplicate()
     {
         return new CharBufferImpl(this);
     }
-    public java.nio. CharBuffer asReadOnlyBuffer()
+    public CharBuffer asReadOnlyBuffer()
     {
         CharBufferImpl a = new CharBufferImpl(this);
         a.ro = true;
         return a;
     }
-    public java.nio. CharBuffer compact()
+    public CharBuffer compact()
     {
         return this;
     }
@@ -114,7 +123,7 @@ public final class CharBufferImpl extends java.nio. CharBuffer
         position(position()+1);
         return e;
     }
-  final public java.nio. CharBuffer put(char b)
+  final public CharBuffer put(char b)
     {
         backing_buffer[position()] = b;
         position(position()+1);
