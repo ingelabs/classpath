@@ -1,5 +1,10 @@
 2003-09-24  Sascha Brawer  <brawer@dandelis.ch>
 
+	* java/awt/geom/Rectangle2D.java (getPathIterator): Use the same
+	winding rule as Sun J2SE.
+
+2003-09-24  Sascha Brawer  <brawer@dandelis.ch>
+
 	* javax/swing/border/MatteBorder.java (MatteBorder(Icon)): Docfix.
 
 2003-09-24  Bryce McKinlay  <bryce@mckinlay.net.nz>
