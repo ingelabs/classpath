@@ -1,5 +1,10 @@
 2005-01-08  Michael Koch  <konqueror@gmx.de>
 
+	* java/util/SimpleTimeZone.java (checkRule):
+	Throw IllegalArgumentException on invalid month values.
+
+2005-01-08  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/net/protocol/http/HTTPConnection.java
 	(newRequest): Use "/" as path if no path given in URL.
 
