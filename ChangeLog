@@ -1,3 +1,9 @@
+2003-10-15  Michael Koch  <konqueror@gmx.de>
+
+	* java/util/Map.java,
+	java/util/Observer.java:
+	Removed redundant modifiers.
+
 2003-10-13  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/rmi/server/ProtocolConstants.java,
