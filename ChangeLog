@@ -1,3 +1,17 @@
+2000-11-02  Warren Levy  <warrenl@cygnus.com>
+
+	* java/io/ObjectInputStream.java (readObject): Added code to
+	conditionally dump out the serialized data.
+	Handle ENDBLOCKDATA case a bit more gracefully since the current
+	behavior doesn't seem to work as expected.
+	(readStreamHeader): Added code for serialized data dumper.
+	(readNextBlock): Ditto.
+	(readFields): Ditto.
+	(dump): New private static field for turning on/off dumper.
+	(setDump): New method.
+	(dumpElement): New method.
+	(dumpElementln): New method.
+
 2000-11-03  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	* java/util/AbstractList.java (SubList): Make it a top-level private
