@@ -1,5 +1,5 @@
 ## Input file for automake to generate the Makefile.in used by configure
-SUBDIRS = tools
+SUBDIRS = 
 
 EXTRA_DIST = \
 Configuration.java.in
