@@ -77,35 +77,43 @@ JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) .:$(USER_CLASSLIB)
 
 
 if HAVE_ZIP
-pkgdata_DATA = glibj.zip
-noinst_DATA = genclasses classes
+dist_pkgdata_DATA = glibj.zip
+noinst_DATA = genclasses
 else
-noinst_DATA = genclasses classes glibj.zip
+noinst_DATA = genclasses compile-classes resources
 endif
 
 install-data-local :
-	-$(top_srcdir)/mkinstalldirs $(pkgdatadir)
-	if ! [ -e glibj.zip ]; then cp -R gnu $(pkgdatadir); fi
-	if ! [ -e glibj.zip ]; then cp -R java $(pkgdatadir); fi
-	if ! [ -e glibj.zip ]; then cp -R javax $(pkgdatadir); fi
+	-$(top_srcdir)/mkinstalldirs $(DESTDIR)$(pkgdatadir)
+	if ! [ -e glibj.zip ]; then cp -R gnu $(DESTDIR)$(pkgdatadir); fi
+	if ! [ -e glibj.zip ]; then cp -R java $(DESTDIR)$(pkgdatadir); fi
+	if ! [ -e glibj.zip ]; then cp -R javax $(DESTDIR)$(pkgdatadir); fi
 
-glibj.zip: classes compile-classes
+# FIXME - should mimic doc/api/Makefile.am instead...
+uninstall-local:
+	rm -rf $(DESTDIR)$(pkgdatadir)/gnu
+	rm -rf $(DESTDIR)$(pkgdatadir)/java
+	rm -rf $(DESTDIR)$(pkgdatadir)/javax
+
+.PHONY: genclasses
+
+glibj.zip: classes compile-classes resources
+	if test "$(ZIP)" != ""; then $(ZIP) -r -D glibj.zip gnu java javax > /dev/null; fi
+
+resources:
 	if ! [ -e gnu ]; then mkdir gnu; fi
 	if ! [ -e gnu/java ]; then mkdir gnu/java; fi
 	if ! [ -e gnu/java/locale ]; then mkdir gnu/java/locale; fi
 	cp $(top_srcdir)/gnu/java/locale/*.properties gnu/java/locale/
-	if test "$(ZIP)" != ""; then $(ZIP) -r -D glibj.zip gnu java javax > /dev/null; fi
+	touch resources
 
-.PHONY: genclasses
+classes: genclasses
 
-classes: gen-classlist.sh standard.omit
+genclasses: gen-classlist.sh standard.omit
 	top_builddir=$(top_builddir) $(SHELL) ./gen-classlist.sh standard
 
 gennio:
 	top_builddir=$(top_builddir) $(SHELL) ./gen_nio.sh
-
-genclasses: gen-classlist.sh standard.omit
-	top_builddir=$(top_builddir) $(SHELL) ./gen-classlist.sh standard
 
 $(JAVA_DEPEND): genclasses
 
@@ -117,10 +125,9 @@ EXTRA_DIST = standard.omit mkcollections.pl.in
 ## not sure if we want to let the user easily get rid of glibj.zip
 ## CLEANFILES = glibj.zip
 DISTCLEANFILES = 
-MAINTAINERCLEANFILES = classes $(JAVA_DEPEND)
+MAINTAINERCLEANFILES = compile-classes resources classes $(JAVA_DEPEND)
 
 maintainer-clean-local:
 	-rm -rf gnu
 	-rm -rf java
 	-rm -rf javax
-	-rm -rf kaffe

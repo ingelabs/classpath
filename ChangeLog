@@ -1,3 +1,45 @@
+2002-12-24  C. Brian Jones  <cbj@gnu.org>
+
+	* INSTALL: updated link to bugs, tool version numbers
+	* TODO: removed easy HTML API generation todo item, it's done now;
+	mention that CNI code won't be included in Classpath CVS for now
+	since only gcj is using it
+	* README: remove special mention of ORP
+	* NEWS: add blurb about infrastructure improvements
+	* HACKING: update automake, autoconf version numbers; remove
+	mention of gcjh for compiling JNI libraries; updated gcj/jikes
+	version numbers
+	* lib/Makefile.am: distribute glibj.zip; uninstall no-zip case; 
+	separate resources target; avoid extra gen-classlist.sh calls; 
+	support DESTDIR
+	* doc/api/Makefile.am: distribute HTML API documentation; install
+	documentation in pkgdatadir/api; uninstall appropriately; support
+	DESTDIR
+	* resource/gnu/java/awt/peer/gtk/Makefile.am: add uninstall-local
+	target; support DESTDIR
+	* resource/java/security/Makefile.am: add uninstall-local target;
+	support DESTDIR
+	* javax/swing/Makefile.am: BoundedRangeModel missing .java extension
+	* javax/transaction/xa/Makefile.am: Removed xa/ from filenames
+	* java/awt/dnd/Makefile.am: added missing .java files to dist
+	* java/net/Makefile.am: added missing .java files to dist
+	* java/nio/channels/Makefile.am: added missing .java files to dist
+	* javax/naming/Makefile.am: added missing .java files to dist
+	* javax/naming/directory/Makefile.am: added missing .java files to dist
+	* javax/naming/event/Makefile.am: new file
+	* javax/naming/event/.cvsignore: new file
+	* javax/naming/ldap/Makefile.am: new file
+	* javax/naming/ldap/.cvsignore: new file
+	* javax/naming/spi/Makefile.am: added missing .java files to dist
+	* javax/sql/Makefile.am: added missing .java files to dist
+	* javax/sql/.cvsignore: new file
+	* javax/swing/plaf/Makefile.am: added missing .java files to dist
+	* javax/swing/Makefile.am: added missing .java files to dist
+	* Makefile.am: ignore errors during dist-hook
+	* configure.in: add missing directory Makefiles to output; add
+	check for 'date', 'cp', and 'mkdir'
+	* acinclude.m4: remove check for 'find' and 'cp'
+
 2002-12-23  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/Adjustable.java

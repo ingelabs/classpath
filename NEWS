@@ -1,4 +1,8 @@
 New in release 0.05 [ no date yet ]
+* There have been numerous infrastructure improvements
+  * Configure option --enable-gjdoc to generate javadoc-like output 
+  * Gjdoc output is included with distribution, see doc/api/html/
+  * DESTDIR fully supported for install and uninstall
 * Runtime.execInternal contract changed to allow for null `env'
   and to accept `dir' argument.
 * VMObject.getClass() removed. It was never used.

@@ -1,10 +1,46 @@
 if CREATE_API_DOCS
-all: Makefile create_xml create_catalog create_html
-else
-all: Makefile
+noinst_DATA = html
 endif
 
-.PHONY: create_xml create_catalog create_html
+EXTRA_DIST = classpath-copyright.xml
+
+dist-hook: 
+	-$(mkinstalldirs) $(distdir)
+	@if [ -d $(srcdir)/xslt ]; then \
+	  echo $(CP) -R $(srcdir)/xslt $(distdir); \
+	  $(CP) -R $(srcdir)/xslt $(distdir); \
+	fi
+	@if [ -d html ]; then \
+	  echo $(CP) -R html $(distdir); \
+	  $(CP) -R html $(distdir); \
+	else \
+	  echo "Error: did not configure --enable-gjdoc"; exit 1; \
+	fi
+
+htmllist := $(shell $(FIND) html | grep -v "^html$$")
+
+install-data-local:
+	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/api
+	@for p in $(htmllist); do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if test -f "$$p"; then \
+	    echo " $(INSTALL_DATA) $$p $(DESTDIR)$(pkgdatadir)/api/$$f"; \
+	    $(INSTALL_DATA) $$p $(DESTDIR)$(pkgdatadir)/api/$$f; \
+	  elif test -d "$$p"; then \
+	    $(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/api/$$f; \
+          fi; \
+        done
+
+uninstall-local:
+	@for p in $(htmllist); do \
+	  f="`echo $$p | sed -e 's|^.*/||'`"; \
+	  if test -f "$$p"; then \
+	    echo " rm -f $(DESTDIR)$(pkgdatadir)/api/$$f"; \
+	    rm -f $(DESTDIR)$(pkgdatadir)/api/$$f; \
+          fi; \
+        done
+
+html: create_xml create_catalog create_html
 
 packages := $(shell cd $(top_srcdir) && $(FIND) java javax -type d ! -regex .*CVS | tr '/' '.' )
 #| grep -v "^java\$" )
@@ -17,11 +53,12 @@ clean:
 	-rm -f gjdoc_rawcomment.cache
 
 create_xml:
-	-mkdir xml
+	-$(MKDIR) xml > /dev/null 2>&1
 	$(GJDOC) -sourcepath \
 		"$(top_srcdir):$(top_srcdir)/vm/reference" \
 		-doclet gnu.classpath.tools.doclets.xmldoclet.Driver \
 		-d xml $(packages) 
+	-touch create_xml
 
 create_catalog:
 	$(XMLCATALOG) --noout --create \
@@ -32,9 +69,10 @@ create_catalog:
 		http://www.gnu.org/software/cp-tools/dtd/ \
 		file:///usr/local/share/gjdoc/dtd/ \
 		gjdoccatalog.xml 
+	-touch create_catalog
 
 create_html:
-	-mkdir html
+	-$(MKDIR) html > /dev/null 2>&1
 	-$(CP) -Ru $(srcdir)/xslt/common html
 	$(XSLTPROC) \
 		--novalid \
@@ -45,4 +83,5 @@ create_html:
 		--param targetdir "'html'" \
 		"$(srcdir)/xslt/gjdocxml2html.xsl" \
 		"xml/index.xml"
+	-touch create_html
 

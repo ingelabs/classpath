@@ -1,4 +1,4 @@
-Installing GNU Classpath - Last updated: Sep. 10, 2002
+Installing GNU Classpath - Last updated: December 23, 2002
 
 First, this is a development release only! Unless you are interested in
 active development and debugging, or just like running random alpha code,
@@ -16,8 +16,8 @@ Suggested Software
         if changes are made that require rebuilding configure, Makefile.in,
         aclocal.m4, or config.h.in.
 
-        - GNU autoconf 2.52
-        - GNU automake 1.5
+        - GNU autoconf 2.53
+        - GNU automake 1.6
         - GNU libtool 1.4.2
 
 	For building the Java bytecode (.class files), one of these
@@ -27,19 +27,9 @@ Suggested Software
 	included in any of Sun's JDKs will not work, as it will not
 	compile java.lang.Object.
 
-        - GCJ 3.1+ (part of the GNU GCC package).  Note that GCC
-	  3.1 (from CVS) is currently unreleased.  If you do want to use it
-          look at the status of the following bug:
-	<http://gcc.gnu.org/cgi-bin/gnatsweb.pl?cmd=view&database=gcc&pr=4715>
-	  Applying the patch in that report to gcc/jva/parse.y does
-          seem to solve/work around the problem.  It may not be needed
-	  for GCJ 3.1 however.
-        - IBM jikes 1.15b+.  You may have success with 1.13, but other
-          versions will fail.  Until jikes 1.16 is released, you will
-          have to use CVS access and build jikes 1.15b yourself:
-          cvs -d :pserver:anoncvs@www-124.ibm.com:/usr/cvs/jikes login
-            (password anoncvs)
-          cvs co -r v1-15b jikes
+        - GCJ 3.2+ (part of the GNU GCC package).  Note that GCC
+	  3.3 (from CVS) is currently unreleased.  
+        - IBM jikes 1.18+.  
         - The kjc compiler is supported with configure but we have
           been unable to successfully compile with it.
 
@@ -61,7 +51,7 @@ gives a complete list.
   --enable-java           compile Java source default=yes
   --enable-jni            compile JNI source default=no
   --enable-cni            compile CNI source default=no
-  --enable-gtk-peer       compile GTK native peers default=yes
+  --enable-gtk-peer       compile GTK native peers default=no
   --enable-load-library   enable to use JNI native methods default=yes
                           (disabled automatically using --enable-cni)
 
@@ -73,7 +63,7 @@ being the superuser. The default install path is /usr/local/classpath
 you may change it by giving configure the --prefix=<path> option.
 
 Report bugs to classpath@gnu.org or much better via Savannah at this
-URL: http://savannah.gnu.org/support/?func=addsupport&group_id=85
+URL: http://savannah.gnu.org/support/?func=addsupport&group=classpath
 
 Happy Hacking!
 

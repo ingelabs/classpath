@@ -8,6 +8,7 @@ Channel.java \
 Channels.java \
 ClosedByInterruptException.java \
 ClosedChannelException.java \
+ClosedSelectorException.java \
 ConnectionPendingException.java \
 DatagramChannel.java \
 FileChannel.java \

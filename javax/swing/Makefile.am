@@ -11,7 +11,7 @@ AbstractSet.java \
 Action.java \
 ActionMap.java \
 BorderFactory.java \
-BoundedRangeModel \
+BoundedRangeModel.java \
 Box.java \
 BoxLayout.java \
 ButtonGroup.java \
@@ -111,5 +111,6 @@ UIDefaults.java \
 UIManager.java \
 UnsupportedLookAndFeelException.java \
 ViewportLayout.java \
+WindowConstants.java \
 package.html
 

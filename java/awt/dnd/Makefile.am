@@ -8,7 +8,11 @@ DragGestureEvent.java \
 DragGestureListener.java \
 DragGestureRecognizer.java \
 DragSource.java \
+DragSourceAdapter.java \
+DragSourceContext.java \
+DragSourceDragEvent.java \
 DragSourceDropEvent.java \
+DragSourceEvent.java \
 DragSourceListener.java \
 DragSourceMotionListener.java \
 DropTarget.java \

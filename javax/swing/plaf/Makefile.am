@@ -31,6 +31,7 @@ ScrollBarUI.java \
 ScrollPaneUI.java \
 SeparatorUI.java \
 SliderUI.java \
+SplitPaneUI.java \
 TabbedPaneUI.java \
 TableHeaderUI.java \
 TableUI.java \

@@ -14,15 +14,15 @@ The Classpath TODO list as of 2002/05/05
 
    Current status: http://gcc.gnu.org/java/libgcj-classpath-compare.html
 
-   Please keep in mind that Cygnus wishes to continue to use CNI
+   Please keep in mind that Red Hat wishes to continue to use CNI
    as their preferred native interface.  See:
 
    http://sourceware.cygnus.com/java/papers/cni/t1.html
 
 -- No resolution was identified for generating JNI compatible code from 
    CNI source.  The simple solution has been adopted to include
-   both in GNU Classpath.  Provisions for compiling CNI correctly need
-   to be implemented.
+   both in GNU Classpath if and only if another JVM chooses to use CNI.  
+   Provisions for compiling CNI correctly need to be implemented.
 
 -- Update the GNU Classpath Hacker's Guide.  There is a master texinfo
    file in the doc/ directory in Classpath CVS.
@@ -32,9 +32,6 @@ The Classpath TODO list as of 2002/05/05
 
 -- Write Java 2 packages not currently included or improve existing 
    ones.
-
--- Figure out an easy method of generating online Javadocs from our
-   code.  This will probably involve lots of misc HTML fixes.
 
 -- Audit the code to identify methods that do not have Javadoc comments
    and/or comments that are incomplete.  All input parameters, return

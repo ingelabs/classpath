@@ -575,8 +575,6 @@ AC_DEFUN(CLASSPATH_ENABLE_GJDOC,
     esac
     if test "x${ENABLE_GJDOC}" = xyes; then
       AC_PATH_PROG(GJDOC, gjdoc)
-      AC_PATH_PROG(FIND, find)
-      AC_PATH_PROG(CP, cp)
       AC_PATH_PROG(XMLCATALOG, xmlcatalog)
       AC_PATH_PROG(XSLTPROC, xsltproc)
     fi

@@ -233,6 +233,9 @@ AC_SUBST(REMOVE)
 
 dnl This is probably useless.
 AC_PATH_PROG(SH, sh)
+AC_PATH_PROG(MKDIR, mkdir)
+AC_PATH_PROG(CP, cp)
+AC_PATH_PROG(DATE, date)
 
 dnl According to the GNU coding guide, we shouldn't require find, 
 dnl and zip, however GNU provides both so it should be okay 
@@ -340,9 +343,12 @@ javax/Makefile
 javax/accessibility/Makefile
 javax/naming/Makefile
 javax/naming/directory/Makefile
+javax/naming/event/Makefile
+javax/naming/ldap/Makefile
 javax/naming/spi/Makefile
 javax/rmi/Makefile
 javax/rmi/CORBA/Makefile
+javax/sql/Makefile
 javax/swing/Makefile
 javax/swing/border/Makefile
 javax/swing/colorchooser/Makefile

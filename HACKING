@@ -1,4 +1,4 @@
-HACKING GNU Classpath - Last updated: May 05, 2002
+HACKING GNU Classpath - Last updated: December 23, 2002
 Please read the README and INSTALL files first.
 
 You only need the information in this file when working on non-released (CVS)
@@ -11,24 +11,18 @@ have the following installed:
 For any build environment involving native libraries, these new versions of 
 autoconf, automake, and libtool are required.
 
-        - GNU autoconf 2.52
-        - GNU automake 1.5
+        - GNU autoconf 2.53
+        - GNU automake 1.6
         - GNU libtool 1.4.2
 
 For building the Java bytecode (.class files), one of these compilers
 is required.
 
-        - GNU GCJ 3.1+.
-        - IBM jikes 1.15b+.  Until jikes 1.16 is released, you will
-          have to use CVS access and build jikes 1.15b yourself:
-          cvs -d :pserver:anoncvs@www-124.ibm.com:/usr/cvs/jikes login
-            (password anoncvs)
-          cvs co -r v1-15b jikes
+        - GNU GCJ 3.2+
+        - IBM jikes 1.18+
 
 For building the JNI native libraries, the following are required.
 
-	- gcjh from GCJ 2.96+, others can be specified with --with-javah=kaffeh
-          but have not been tested and may not work
         - GTK+ 1.2.x
 	- libart_lgpl 2.1.0
 	- gdk-pixbuf (Only needed if you want to compile the native library)

@@ -1,4 +1,4 @@
-GNU Classpath README - Last updated: May 05, 2002
+GNU Classpath README - Last updated: December 23, 2002
 
 GNU Classpath, Essential Libraries for Java is a project to create
 a complete "clean room" implementation of the Java class libraries 
@@ -21,9 +21,6 @@ include:
 This is a development release only and is not ready for general
 purpose use.
 
-GNU Classpath has been tested NOT to work out of the box with ORP 1.0.9.
-Instructions for building ORP with this GNU Classpath release can
-be found at <http://www.gnu.org/software/classpath/doc/orp.html>.
 Most JVMs come with their own customized version of GNU Classpath.
 Please check if there is a customised version available for the JVM you
 use before trying the bare bones GNU Classpath release. We are working with
