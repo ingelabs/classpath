@@ -33,12 +33,15 @@ Graphics.java \
 GridLayout.java \
 IllegalComponentStateException.java \
 Image.java \
+ImageMediaEntry.java \
 Insets.java \
 ItemSelectable.java \
 Label.java \
 LayoutManager.java \
 LayoutManager2.java \
 List.java \
+MediaEntry.java \
+MediaTracker.java \
 Menu.java \
 MenuBar.java \
 MenuComponent.java \

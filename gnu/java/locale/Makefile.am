@@ -1,6 +1,10 @@
 # this file used by automake to generate Makefile.in
 
 EXTRA_DIST = \
+Calendar.java \
+Calendar_de.java \
+Calendar_en.java \
+Calendar_nl.java \
 LocaleInformation.java \
 LocaleInformation_de.java \
 LocaleInformation_en.java \
