@@ -42,7 +42,5 @@ class VMSecurityManager {
 	 ** @return an array containing all the methods on classes
 	 **         on the Java execution stack.
 	 **/
-	protected static Class[] getClassContext() {
-		throw new UnsupportedOperationException();
-	}
+	protected static native Class[] getClassContext();
 }

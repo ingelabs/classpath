@@ -38,7 +38,7 @@ class VMClassLoader {
 	 ** @return the class that was defined.
 	 ** @exception ClassFormatError if the byte array is not in proper classfile format.
 	 **/
-	final static native Class defineClass(String name, byte[] data, int offset, int len) throws ClassFormatError;
+	final static native Class defineClass(ClassLoader cl, String name, byte[] data, int offset, int len) throws ClassFormatError;
 
 	/** Helper to resolve all references to other classes from this class.
 	 ** @param c the class to resolve.

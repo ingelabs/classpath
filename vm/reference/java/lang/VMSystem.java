@@ -31,9 +31,33 @@ import java.util.Properties;
  **/
 
 class VMSystem {
-	static Properties getSystemProperties() {
-		return new Properties();
-	}
+	/** Get the system properties.
+	 ** <dl>
+	 ** <dt>java.version         <dd>Java version number
+	 ** <dt>java.vendor          <dd>Java vendor specific string
+	 ** <dt>java.vendor.url      <dd>Java vendor URL
+	 ** <dt>java.home            <dd>Java installation directory
+	 ** <dt>java.class.version   <dd>Java class version number
+	 ** <dt>java.class.path      <dd>Java classpath
+	 ** <dt>os.name              <dd>Operating System Name
+	 ** <dt>os.arch              <dd>Operating System Architecture
+	 ** <dt>os.version           <dd>Operating System Version
+	 ** <dt>file.separator       <dd>File separator ("/" on Unix)
+	 ** <dt>path.separator       <dd>Path separator (":" on Unix)
+	 ** <dt>line.separator       <dd>Line separator ("\n" on Unix)
+	 ** <dt>user.name            <dd>User account name
+	 ** <dt>user.home            <dd>User home directory
+	 ** <dt>user.dir             <dd>User's current working directory
+	 ** </dl>
+	 ** It will also define the java.compiler if env(JAVA_COMPILER) is defined.<P>
+	 ** 
+	 ** <STRONG>Copyright Note:</STRONG> The above text was taken from
+	 ** Japhar, by the Hungry Programmers (http://www.japhar.org).
+	 **
+	 ** @param p the Properties object to insert the system
+	 **        properties into.
+	 **/
+	static native void insertSystemProperties(Properties p);
 
 	/** Copy one array onto another from
 	 ** <CODE>src[srcStart] ... src[srcStart+len]</CODE> to
@@ -61,9 +85,7 @@ class VMSystem {
 	 **            The array will not be modified if this
 	 **            exception is thrown.
 	 **/
-	static void arraycopy(Object src, int srcStart, Object dest, int destStart, int len) {
-		throw new UnsupportedOperationException();
-	}
+	static native void arraycopy(Object src, int srcStart, Object dest, int destStart, int len);
 
 	/** Get a hash code computed by the VM for the Object.
 	 ** This hash code will be the same as Object's hashCode()
@@ -74,7 +96,5 @@ class VMSystem {
 	 ** @param o the Object to get the hash code for
 	 ** @return the VM-dependent hash code for this Object
 	 **/
-	static int identityHashCode(Object o) {
-		throw new UnsupportedOperationException();
-	}
+	static native int identityHashCode(Object o);
 }

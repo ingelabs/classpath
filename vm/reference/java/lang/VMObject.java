@@ -52,17 +52,13 @@ class VMObject {
 	 ** @exception CloneNotSupportedException
 	 ** @return a copy of the Object.
 	 **/
-	static Object clone(Object o) throws CloneNotSupportedException {
-		throw new UnsupportedOperationException();
-	}
+	static native Object clone(Object o) throws CloneNotSupportedException;
 
 	/** Returns the class of this Object as a Class object.
 	 ** @return the class of this Object.
 	 ** @see java.lang.Class
 	 **/
-	static Class getClass(Object o) {
-		throw new UnsupportedOperationException();
-	}
+	static native Class getClass(Object o);
 
 	/** Wakes up one of the threads that is waiting on this
 	 ** Object's monitor.  Only the owner of a lock on the
@@ -78,9 +74,7 @@ class VMObject {
 	 ** @exception IllegalMonitorStateException if this Thread
 	 **            does not own the lock on the Object.
 	 **/
-	static void notify(Object o) throws IllegalMonitorStateException {
-		throw new UnsupportedOperationException();
-	}
+	static native void notify(Object o) throws IllegalMonitorStateException;
 
 	/** Wakes up all of the threads waiting on this Object's
 	 ** monitor.  Only the owner of the lock on this Object
@@ -95,9 +89,7 @@ class VMObject {
 	 ** @exception IllegalMonitorStateException if this Thread
 	 **            does not own the lock on the Object.
 	 **/
-	static void notifyAll(Object o) throws IllegalMonitorStateException {
-		throw new UnsupportedOperationException();
-	}
+	static native void notifyAll(Object o) throws IllegalMonitorStateException;
 
 	/** Waits a specified amount of time for notify() or
 	 ** notifyAll() to be called on this Object.  This call
@@ -115,7 +107,5 @@ class VMObject {
 	 ** @exception InterruptedException if some other Thread
 	 **            interrupts this Thread.
 	 **/
-	static void wait(Object o,long ms, int ns) throws IllegalMonitorStateException, InterruptedException {
-		throw new UnsupportedOperationException();
-	}
+	static native void wait(Object o,long ms, int ns) throws IllegalMonitorStateException, InterruptedException;
 }
