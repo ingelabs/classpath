@@ -1,3 +1,7 @@
+2001-08-19  John Leuner  <jewel@debian.org>
+
+	* java/lang/Math.java (various methods): applied fixes from Eric Blake 
+
 2001-08-17  John Leuner  <jewel@debian.org>
 
 	* vm/reference/java/lang/Runtime.java (setSecurityManager): Fixed reference to wrong 'securityManager'

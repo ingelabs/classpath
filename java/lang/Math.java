@@ -1,5 +1,5 @@
 /* java.lang.Math
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,9 +38,17 @@ import java.util.Random;
  *
  * @author Paul Fisher
  * @author John Keiser
- * @since JDK1.1
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @since 1.0
  */
-public final class Math {
+public final class Math
+{
+  /**
+   * Math is non-instantiable
+   */
+  private Math()
+  {
+  }
 
   static {
     System.loadLibrary("javalangmath");
@@ -104,8 +112,11 @@ public final class Math {
    * @param a the number to take the absolute value of.
    * @return the absolute value.
    */
-  public static float abs(float a) {
-    return Float.intBitsToFloat(0x7fffffff & Float.floatToIntBits(a));
+  public static float abs(float a)
+  {
+    // avoid method call overhead, but treat -0.0 correctly
+    // return Float.intBitsToFloat(0x7fffffff & Float.floatToIntBits(a));
+    return (a <= 0) ? 0 - a : a;
   }
 
   /**
@@ -115,7 +126,9 @@ public final class Math {
    * @return the absolute value.
    */
   public static double abs(double a) {
-    return Double.longBitsToDouble((Double.doubleToLongBits(a) << 1) >>> 1);
+    // avoid method call overhead, but treat -0.0 correctly
+    // return Double.longBitsToDouble((Double.doubleToLongBits(a)<<1)>>>1);
+    return (a <= 0) ? 0 - a : a;
   }
 
   /**
@@ -140,25 +153,42 @@ public final class Math {
 
   /**
    * Return whichever argument is smaller.
+   * Return whichever argument is smaller. If either argument is NaN, the
+   * result is NaN, and when comparing 0 and -0, -0 is always smaller.
+   *
    * @param a the first number
    * @param b a second number
    * @return the smaller of the two numbers.
    */
-  public static float min(float a, float b) {
-    if (a == 0.0f && b == 0.0f)	// return -0.0f, if a or b is -0.0f
-      return ((Float.floatToIntBits(a) >> 31) == 1) ? a : b;
+  public static float min(float a, float b)
+  {
+    // this check for NaN, from JLS 15.21.1, saves a method call
+    if (a != a)
+      return a;
+    // no need to check if b is NaN; < will work correctly
+    // recall that -0.0 == 0.0, but [+-]0.0 - [+-]0.0 behaves special
+    if (a == 0 && b == 0)
+      return -(-a - b);
     return (a < b) ? a : b;
   }
 
   /**
-   * Return whichever argument is smaller.
+   * Return whichever argument is smaller. If either argument is NaN, the
+   * result is NaN, and when comparing 0 and -0, -0 is always smaller.
+   *
    * @param a the first number
    * @param b a second number
    * @return the smaller of the two numbers.
    */
-  public static double min(double a, double b) {
-    if (a == 0.0d && b == 0.0d)	// return -0.0d, if a or b is -0.0d
-      return ((Double.doubleToLongBits(a) >> 63) == 1) ? a : b;
+  public static double min(double a, double b)
+  {
+    // this check for NaN, from JLS 15.21.1, saves a method call
+    if (a != a)
+      return a;
+    // no need to check if b is NaN; < will work correctly
+    // recall that -0.0 == 0.0, but [+-]0.0 - [+-]0.0 behaves special
+    if (a == 0 && b == 0)
+      return -(-a - b);
     return (a < b) ? a : b;
   }
 
@@ -183,26 +213,42 @@ public final class Math {
   }
 
   /**
-   * Return whichever argument is larger.
+   * Return whichever argument is larger. If either argument is NaN, the
+   * result is NaN, and when comparing 0 and -0, 0 is always larger.
+   *
    * @param a the first number
    * @param b a second number
    * @return the larger of the two numbers.
    */
-  public static float max(float a, float b) {
-    if (a == 0.0f && b == 0.0f)	// return +0.0f, if a or b is +0.0f
-      return ((Float.floatToIntBits(a) >> 31) == 0) ? a : b;
+  public static float max(float a, float b)
+  {
+    // this check for NaN, from JLS 15.21.1, saves a method call
+    if (a != a)
+      return a;
+    // no need to check if b is NaN; > will work correctly
+    // recall that -0.0 == 0.0, but [+-]0.0 - [+-]0.0 behaves special
+    if (a == 0 && b == 0)
+      return a - -b;
     return (a > b) ? a : b;
   }
 
   /**
-   * Return whichever argument is larger.
+   * Return whichever argument is larger. If either argument is NaN, the
+   * result is NaN, and when comparing 0 and -0, 0 is always larger.
+   *
    * @param a the first number
    * @param b a second number
    * @return the larger of the two numbers.
    */
-  public static double max(double a, double b) {
-    if (a == 0.0d && b == 0.0d)	// return +0.0d, if a or b is +0.0d
-      return ((Double.doubleToLongBits(a) >> 63) == 0) ? a : b;
+  public static double max(double a, double b)
+  {
+    // this check for NaN, from JLS 15.21.1, saves a method call
+    if (a != a)
+      return a;
+    // no need to check if b is NaN; > will work correctly
+    // recall that -0.0 == 0.0, but [+-]0.0 - [+-]0.0 behaves special
+    if (a == 0 && b == 0)
+      return a - -b;
     return (a > b) ? a : b;
   }
 
