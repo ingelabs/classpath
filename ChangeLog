@@ -1,5 +1,10 @@
 2002-10-31  Mark Wielaard  <mark@klomp.org>:
 
+	* java/net/URLDecoder.java: Indentation and documentation update.
+	* java/net/URLEncoder.java: Likewise.
+
+2002-10-31  Mark Wielaard  <mark@klomp.org>:
+
 	* java/util/zip/ZipFile.java: Indentation fixes.
 
 2002-10-31  Mark Anderson  <mark@panonet.net>
