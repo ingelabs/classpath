@@ -1,0 +1,210 @@
+\input texinfo @c -*-texinfo-*-
+
+@c %**start of header
+@setfilename vmintegration.info
+@settitle GNU Classpath VM Integration Guide
+@c %**end of header
+
+@setchapternewpage none
+
+@ifinfo
+This file contains important information you will need to know if you
+are going to write an interface between GNU Classpath and a Virtual
+Machine.
+
+Copyright (C) 1998 Free Software Foundation, Inc.
+
+@end ifinfo
+
+@titlepage
+@title GNU Classpath VM Integration Guide
+@author John Keiser
+
+@page
+@vskip 0pt plus 1filll
+Copyright @copyright{} 1998 Free Software Foundation, Inc.
+@sp 2
+Permission is granted to make and distribute verbatim copies of
+this document provided the copyright notice and this permission notice
+are preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+document under the conditions for verbatim copying, provided that the
+entire resulting derived work is distributed under the terms of a
+permission notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions,
+except that this permission notice may be stated in a translation
+approved by the Free Software Foundation.
+
+@end titlepage
+
+@ifinfo
+@node Top, Introduction, , (dir)
+@top GNU Classpath Hacker's Guide
+
+This file contains important information you will need to know if you
+are going to write an interface between GNU Classpath and a Virtual
+Machine.
+
+This document is incomplete, as we are still in alpha with the interface.
+
+@end ifinfo
+
+@menu 
+* Introduction::            An introduction to the Classpath project
+* Initialization::          Initializing the classes
+* Classpath Hooks::         Hooks from Classpath to the VM
+* VM Hooks::                Hooks from the underlying VM to Classpath
+* JNI Hooks::               Hooks from the JNI to Classpath
+* JVMDI Hooks::             Hooks from the JVMDI to Classpath
+@end menu
+
+@node Introduction, Initialization, Top, Top
+@comment node-name, next, previous, up
+@chapter Introduction
+
+The Classpath Project's ambition to be a 100% clean room implementation
+of the standard Java class libraries cannot be fulfilled without some
+level of integration with the Virtual Machine, the underlying machinery
+that actually runs Java.
+
+There are several VMs out there, including
+@uref{http://www.japhar.org,Japhar} and
+@uref{http://www.kaffe.org,Kaffe}.  Current integration efforts are
+focused solely on Japhar, in order to get the basic interface down, and
+all information contained in this document is gleaned from these
+efforts.
+
+
+@node Initialization, Classpath Hooks, Introduction, Top
+@comment node-name, next, previous, up
+@chapter Initialization
+
+The order of initialization of classes is not so crucial to the Virtual
+Machine, but is absolutely critical to Classpath itself.  This section
+shows the order in which classes should be loaded and initialized in
+order for things to work properly.
+
+XXX Not ready yet.
+
+
+@node Classpath Hooks, VM Hooks, Initialization, Top
+@comment node-name, next, previous, up
+@chapter Classpath Hooks
+
+Several core classes must be implemented by the VM for Classpath to
+work.  These classes are java.lang.Runtime, java.lang.Thread,
+java.lang.Class, java.lang.reflect.Constructor,
+java.lang.reflect.Method, and java.lang.reflect.Field.
+
+You also need to implement some helper classes in java.lang that classes
+from Classpath call out to to get certain VM-specific dirty work done:
+
+@itemize @bullet
+@item VMObject
+@item VMClassLoader
+@item VMSystem
+@item VMSecurityManager
+@item StackFrame
+@item StackTrace
+@end itemize
+
+Some of the classes you implement for the VM will need to call back to
+package-private methods in Classpath:
+
+@itemize @bullet
+@item java.lang.ThreadGroup.addThread(Thread)
+Call this method from Thread when a new Thread is created, to add it to
+the group.
+
+@item java.lang.ThreadGroup.removeThread(Thread)
+Call this method from Thread when a Thread is stopped or destroyed.
+
+@end itemize
+
+
+@node VM Hooks, JNI Hooks, Classpath Hooks, Top
+@comment node-name, next, previous, up
+@chapter Introduction
+
+VMs need to do some dirty work; there are some things in the VM that
+unfortunately are dependent on the internal structure of various
+classes.  This is a guide to all of the things the VM itself needs to
+know about classes.
+
+@itemize @bullet
+@item java.lang.Class
+You, the VM, get to create this Class, so you may define the internal
+structure any way you wish.  You probably have code somewhere to
+translate your internal class structure into a Class object.  That is
+the only known place where this matters.  Some VMs do not create the
+Class object at the point where the class is defined; instead, they wait
+until a Class object is actually used.
+
+@item array classes
+When you are creating an array class, you should set the ClassLoader of
+the array class to the ClassLoader of its component type.  Whenever you
+add a class to a ClassLoader, you need to notify the ClassLoader and
+add the new Class to its internal cache of classes.  To do this, call
+ClassLoader.addVMCreatedClass(Class).
+
+@item primordial class loader
+When the primordial class loader loads a class, it needs to tell
+Classpath what it has done in order for security stuff to work right.
+To do this, call the static method
+ClassLoader.newPrimordialClass(Class).
+
+Even the first few core classes need to do this; in order to do it,
+simply call this method @emph{after} the initial class loading has been
+done.  No harm will come, as long as you follow the guidelines in the
+@pxref{Initialization} section.
+
+@item throwing exceptions
+You do not need to fill in the stack trace or anything when throwing an
+exception; this is all handled automatically with Classpath when the
+constructor is called.
+
+@item top-level exception handler
+Exceptions take care of themselves in Classpath; all you need to do in
+the top-level exception handler is call Throwable.printStackTrace().
+
+XXX I think this was a bad design on my part.  It takes up memory and
+CPU cycles that do not need to be taken up for exceptions which are
+simply caught.  This portion of the VM interface will be changed so that
+VMs must associate native stacktrace data with the Throwable itself or
+even do some sort of lazy stacktrace information addition to the
+Throwable, only copying stacktrace data as it is lost (as functions are
+exited) to preserve memory and cycles.  The usual case is the one where
+an exception is caught.  The top-level exception handler is, well, an
+exception.
+
+@item Security and traces
+There will eventually be a feature in the 1.2 security that keeps the
+AccessController from having to evaluate @emph{all} of the
+ProtectionDomains every time a security check is made.  I think a common
+case is a single method doing a lot of things that require security
+checks.  However, I don't want to bog down the method stack too much, so
+this feature of the VM will have the AccessController for a thread
+calling out to the VM to tell it how high it was on the stack when it
+made the last security request.  Every time the stack goes lower than
+that number, the VM will decrement the number.  The AccessController
+will remember what the accumulated protection status was at every stack
+level (an AccessControlContext) and use that aggregated information to
+do the check.  I am not sure, however, whether the savings are
+substantial enough to outweigh the integer check and set after every
+method call.  I will investigate.
+
+@item java.lang.Thread
+You should not need to mess with the internal structure of this class,
+even though threading is native to the VM, because there is typically
+a native thread structure that you are using.  The Thread object will,
+of course, have to be linked to that native thread structure, and how
+you do that is up to you.
+
+@end itemize
+
+
+@bye
+
