@@ -46,6 +46,8 @@ import javax.swing.Icon;
  */
 public class IconUIResource implements Icon, UIResource, Serializable
 {
+  static final long serialVersionUID = 3327049506004830542L;
+
   public IconUIResource(Icon delegate)
   {
   }

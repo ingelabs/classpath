@@ -57,6 +57,7 @@ import gnu.java.io.PlatformHelper;
   */
 public class File implements Serializable, Comparable
 {
+  static final long serialVersionUID = 301077366599181567L;
 
 /*************************************************************************/
 

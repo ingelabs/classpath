@@ -44,9 +44,10 @@ import java.io.Serializable;
  * AbstractUndoableEdit
  * @author Andrew Selkirk
  */
-public class AbstractUndoableEdit	extends		Object
-									implements	UndoableEdit,
-												Serializable {
+public class AbstractUndoableEdit extends Object
+  implements UndoableEdit, Serializable
+{
+  static final long serialVersionUID = 580150227676302096L;
 
 	//-------------------------------------------------------------
 	// Constants --------------------------------------------------

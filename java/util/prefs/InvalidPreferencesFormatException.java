@@ -57,6 +57,8 @@ import java.io.NotSerializableException;
  */
 public class InvalidPreferencesFormatException extends Exception
 {
+  static final long serialVersionUID = -791715184232119669L;
+
   /**
    * Creates a new exception with a descriptive message. The cause remains
    * uninitialized.

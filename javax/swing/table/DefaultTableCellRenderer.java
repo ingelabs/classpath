@@ -47,6 +47,8 @@ import javax.swing.JTable;
 public class DefaultTableCellRenderer extends JLabel
   implements TableCellRenderer, Serializable
 {
+  static final long serialVersionUID = 7878911414715528324L;
+
   public static class UIResource extends DefaultTableCellRenderer
     implements javax.swing.plaf.UIResource
   {

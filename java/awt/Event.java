@@ -45,6 +45,8 @@ package java.awt;
 
 public class Event implements java.io.Serializable
 {
+  static final long serialVersionUID = 5488922509400504703L;
+
   public static final int SHIFT_MASK = 1,
 			  CTRL_MASK = 2,
 			  META_MASK = 4,

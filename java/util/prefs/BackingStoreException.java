@@ -58,6 +58,8 @@ import java.io.NotSerializableException;
  */
 public class BackingStoreException extends Exception
 {
+  static final long serialVersionUID = 859796500401108469L;
+
   /**
    * Creates a new exception with a descriptive message.
    *

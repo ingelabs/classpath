@@ -45,6 +45,8 @@ import javax.swing.Icon;
  */
 public class BasicIconFactory implements Serializable
 {
+  static final long serialVersionUID = 5605588811185324383L;
+
   public BasicIconFactory()
   {
   }

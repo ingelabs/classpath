@@ -1,3 +1,86 @@
+2002-10-02  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/CardLayout.java: Added serialVersionUID.
+	* java/awt/ContainerOrderFocusTraversalPolicy.java:
+	Added serialVersionUID.
+	* java/awt/Cursor.java: Added serialVersionUID.
+	* java/awt/Event.java: Added serialVersionUID.
+	* java/awt/GridBagConstraints.java: Added serialVersionUID.
+	* java/awt/GridBagLayout.java: Added serialVersionUID.
+	* java/awt/GridLayout.java: Added serialVersionUID.
+	* java/awt/datatransfer/DataFlavor.java: Added serialVersionUID.
+	* java/awt/dnd/DragSourceContext.java: Added serialVersionUID.
+	* java/awt/dnd/DropTargetContext.java: Added serialVersionUID.
+	* java/beans/beancontext/BeanContextChildSupport.java:
+	Added serialVersionUID.
+	* java/io/Externalizable.java: Added serialVersionUID.
+	* java/io/File.java: Added serialVersionUID.
+	* java/io/FilePermission.java: Added serialVersionUID.
+	* java/io/Serializable.java: Added serialVersionUID.
+	* java/io/SerializablePermission.java: Added serialVersionUID.
+	* java/net/DatagramPacket.java: New intendation.
+	* java/rmi/activation/ActivationDesc.java: Added serialVersionUID.
+	* java/rmi/activation/ActivationGroupDesc.java: Added serialVersionUID.
+	* java/rmi/activation/ActivationID.java: Added serialVersionUID.
+	* java/rmi/activation/ActivationGroupID.java: Added serialVersionUID.
+	* java/security/Identity.java: Added serialVersionUID.
+	* java/security/KeyPair.java: Added serialVersionUID.
+	* java/security/Provider.java: Added serialVersionUID.
+	* java/security/SecureRandom.java: Added serialVersionUID.
+	* java/security/SecureRandomSpi.java: Added serialVersionUID.
+	* java/security/SignedObject.java: Added serialVersionUID.
+	* java/security/cert/Certificate.java: Added serialVersionUID.
+	* java/text/Format.java: Added serialVersionUID.
+	* java/util/prefs/BackingStoreException.java: Added serialVersionUID.
+	* java/util/prefs/InvalidPreferencesFormatException.java:
+	Added serialVersionUID.
+	* javax/naming/BinaryRefAddr.java: Added serialVersionUID.
+	* javax/naming/Name.java: Added serialVersionUID.
+	* javax/swing/AbstractAction.java: Added serialVersionUID.
+	* javax/swing/AbstractCellEditor.java: Added serialVersionUID.
+	* javax/swing/AbstractListModel.java: Added serialVersionUID.
+	* javax/swing/ActionMap.java: Added serialVersionUID.
+	* javax/swing/ButtonGroup.java: Added serialVersionUID.
+	* javax/swing/DefaultBoundedRangeModel.java: Added serialVersionUID.
+	* javax/swing/DefaultButtonModel.java: Added serialVersionUID.
+	* javax/swing/DefaultCellEditor.java: Added serialVersionUID.
+	* javax/swing/DefaultComboBoxModel.java: Added serialVersionUID.
+	* javax/swing/DefaultDesktopManager.java: Added serialVersionUID.
+	* javax/swing/DefaultListCellRenderer.java: Added serialVersionUID.
+	* javax/swing/DefaultSingleSelectionModel.java: Added serialVersionUID.
+	* javax/swing/InputMap.java: Added serialVersionUID.
+	* javax/swing/JComponent.java: Added serialVersionUID.
+	* javax/swing/JMenu.java: Added serialVersionUID.
+	* javax/swing/JSlider.java: Added serialVersionUID.
+	* javax/swing/KeyStroke.java: Added serialVersionUID.
+	* javax/swing/OverlayLayout.java: Added serialVersionUID.
+	* javax/swing/ScrollPaneLayout.java: Added serialVersionUID.
+	* javax/swing/SizeRequirements.java: Added serialVersionUID.
+	* javax/swing/UIManager.java: Added serialVersionUID.
+	* javax/swing/ViewportLayout.java: Added serialVersionUID.
+	* javax/swing/border/AbstractBorder.java: Added serialVersionUID.
+	* javax/swing/colorchooser/DefaultColorSelectionModel.java:
+	Added serialVersionUID.
+	* javax/swing/event/EventListenerList.java: Added serialVersionUID.
+	* javax/swing/plaf/BorderUIResource.java: Added serialVersionUID.
+	* javax/swing/plaf/IconUIResource.java: Added serialVersionUID.
+	* javax/swing/plaf/basic/BasicIconFactory.java: Added serialVersionUID.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java: Added serialVersionUID.
+	* javax/swing/table/AbstractTableModel.java: Added serialVersionUID.
+	* javax/swing/table/DefaultTableCellRenderer.java:
+	Added serialVersionUID.
+	* javax/swing/table/DefaultTableColumnModel.java:
+	Added serialVersionUID.
+	* javax/swing/table/DefaultTableModel.java: Added serialVersionUID.
+	* javax/swing/table/TableColumn.java: Added serialVersionUID.
+	* javax/swing/text/StyledEditorKit.java: Added serialVersionUID.
+	* javax/swing/tree/DefaultMutableTreeNode.java: Added serialVersionUID.
+	* javax/swing/tree/DefaultTreeModel.java: Added serialVersionUID.
+	* javax/swing/tree/DefaultTreeSelectionModel.java:
+	Added serialVersionUID.
+	* javax/swing/tree/TreePath.java: Added serialVersionUID.
+	* javax/swing/undo/AbstractUndoableEdit.java: Added serialVersionUID.
+
 2002-09-30  Michael Koch  <konqueror@gmx.de>
 
 	* javax/naming/RefAddr:
@@ -66,15 +149,15 @@
 	* java/awt/dnd/DropTargetListener.java: New file.
 	* java/awt/dnd/MouseDragGestureRecognizer.java: New file.
 	* java/awt/dnd/peer/DropTargetContextPeer.java: New file.
-	* java/awt/dnd/Makefile.am: Adding all the new files.
+        * java/awt/dnd/Makefile.am: Adding all the new files.
 
 2002-09-26  Eric Blake  <ebb9@email.byu.edu>
 
-	* java/applet/AppletContext.java (setStream): Fix signature typo.
-	* javax/accessibility/AccessibleEditableText.java (cut, delete):
-	Ditto.
-	* javax/accessibility/AccessibleHyperlink.java
-	(getAccessibleActionAnchor, getAccessibleActionObject): Ditto.
+        * java/applet/AppletContext.java (setStream): Fix signature typo.
+        * javax/accessibility/AccessibleEditableText.java (cut, delete):
+        Ditto.
+        * javax/accessibility/AccessibleHyperlink.java
+        (getAccessibleActionAnchor, getAccessibleActionObject): Ditto.
 
 2002-09-26  Michael Koch  <konqueror@gmx.de>
 
