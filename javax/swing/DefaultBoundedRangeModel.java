@@ -437,7 +437,7 @@ public class DefaultBoundedRangeModel
     if (changeEvent == null)
       changeEvent = new ChangeEvent(this);
 
-    for (int i = listeners.length; i >= 0; --i)
+    for (int i = listeners.length - 1; i >= 0; --i)
       listeners[i].stateChanged(changeEvent);
   }
 
