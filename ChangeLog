@@ -1,3 +1,8 @@
+2003-07-14  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/ServerSocket.java,
+	java/net/Socket.java: New versions from libgcj.
+
 2003-07-13  Jeroen Frijters <jeroen@sumatra.nl>
 
 	* java/util/zip/ZipFile.java (finalize): Check raf for null to prevent
