@@ -89,13 +89,18 @@ package java.lang.reflect;
  **/
 
 public final class Constructor implements Member {
-	private Class declaringClass;
+	private Class clazz;
 	private int slot;
+	private Class[] parameterTypes;
+	private Class[] exceptionTypes;
 
 	/* This class is uninstantiable except from native code. */
 	private Constructor(Class declaringClass,int slot) {
-		this.declaringClass = declaringClass;
+		this.clazz = declaringClass;
 		this.slot = slot;
+	}
+
+        private Constructor() {
 	}
 
 	/** Gets the class that declared this constructor.
@@ -105,7 +110,7 @@ public final class Constructor implements Member {
 	 ** @return the class that declared this member.
 	 **/
 	public Class getDeclaringClass() {
-		return declaringClass;
+		return clazz;
 	}
 
 	/** Gets the modifiers this constructor uses.  Use the <code>Modifier</code>
@@ -126,12 +131,20 @@ public final class Constructor implements Member {
 	/** Get the parameter list for this constructor.
 	 ** @return a list of classes representing the names of the constructor's parameters.
 	 **/
-	public native Class[] getParameterTypes();
+	public Class[] getParameterTypes() {
+		if (parameterTypes == null)
+			return(new Class[0]);
+		return(parameterTypes);
+	}
 
 	/** Get the exception types this constructor says it throws.
 	 ** @return a list of classes representing the exception types.
 	 **/
-	public native Class[] getExceptionTypes();
+	public Class[] getExceptionTypes() {
+		if (exceptionTypes == null)
+			return(new Class[0]);
+		return(exceptionTypes);
+	}
 
 	/** Compare two objects to see if they are semantically equivalent.
 	 ** Two Constructors are semantically equivalent if they have the same declaring class and the
@@ -192,7 +205,7 @@ public final class Constructor implements Member {
 		       IllegalAccessException,
 		       IllegalArgumentException,
 		       InvocationTargetException {
-		return constructNative(args, declaringClass, slot);
+		return constructNative(args, clazz, slot);
 	}
 
 	private native Object constructNative(Object[] args, Class declaringClass, int slot);
