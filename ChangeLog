@@ -1,5 +1,10 @@
 2004-07-01  Mark Wielaard  <mark@klomp.org>
 
+	* java/awt/event/InvocationEvent.java (dispatch): Synchronize
+	on notifier object before calling notifyAll().
+
+2004-07-01  Mark Wielaard  <mark@klomp.org>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
 	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_addExposeFilter):
 	Define hid at start of function.
