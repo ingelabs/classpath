@@ -1,3 +1,7 @@
+2001-01-14  Mark Wielaard  <mark@klomp.org>
+	* java/net/URLDecoder.java: Thanks Edgar Villanueva (edgarvil@home.com)
+	(decode): fix comment, don't throw Exception
+
 2001-01-12  Mark Wielaard  <mark@klomp.org>
 	* java/awt/datatransfer/Clibboard.java:
 	(getContents, setContents): synchronized, add comment

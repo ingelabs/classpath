@@ -1,5 +1,5 @@
 /* URLDecoder.java -- Class to decode URL's from encoded form.
-   Copyright (C) 1998-2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -54,14 +54,14 @@ import java.io.UnsupportedEncodingException;
 public class URLDecoder
 {
 /**
-  * This method translates the passed in string into x-www-form-urlencoded
+  * This method translates the passed in string from x-www-form-urlencoded
   * format and returns it.
   *
   * @param source The String to convert
   *
   * @return The converted String
   */
-  public static String decode(String s) throws Exception
+  public static String decode(String s)
   {
     String str = s.replace('+', ' ');
     String result = "";
