@@ -99,7 +99,7 @@ public class Collections {
       int hi = l.size() - 1;
       while (low <= hi) {
         pos = (low + hi) >> 1;
-        final int d = compare(key, a.get(pos), c);
+        final int d = compare(key, l.get(pos), c);
         if (d == 0) {
           return pos;
         } else if (d < 0) {
@@ -223,7 +223,7 @@ public class Collections {
     Object max = i.next();
     while (i.hasNext()) {
       Object o = i.next();
-      if (c.compare(max, o) < 0) {
+      if (order.compare(max, o) < 0) {
         max = o;
       }
     }
@@ -269,7 +269,7 @@ public class Collections {
     Object min = i.next();
     while (i.hasNext()) {
       Object o = i.next();
-      if (c.compare(min, o) > 0) {
+      if (order.compare(min, o) > 0) {
         min = o;
       }
     }
