@@ -1,3 +1,25 @@
+2003-08-24  Mark Wielaard  <mark@klomp.org>
+
+	* configure.in (AC_INIT): Use four argument version.
+	(AC_CONFIG_SRCDIR): New to explicitly set src dir.
+	(AM_INIT_AUTOMAKE): Use zero argument version.
+	(AC_SUBST): Only set LIBVERSION explicitly. Removed variables
+	PACKAGE, VERSION which are substituted implicitly.
+	(AM_DISABLE_STATIC): Renamed to AC_DISABLE_STATIC.
+	(AC_DISABLE_STATIC): Renamed from AM_DISABLE_STATIC.
+	(AM_PROG_LIBTOOL): Renamed to AC_PROG_LIBTOOL.
+	(AC_PROG_LIBTOOL: Renamed from AM_PROG_LIBTOOL.
+	(--enable-jni): Default to yes.
+	* config.guess: New version from libtoolize --force --copy.
+	* config.sub: Likewise.
+	* ltmain.sh: Likewise.
+	* HACKING: Document that libtool 1.5a works.
+	* lib/Makefile.am (MAINTAINERCLEANFILES): Renamed to CLEANFILES.
+	(CLEANFILES): New variable renamed from MAINTAINERCLEANFILES with
+	glibj.zip and classes.1 added.
+	(maintainer-clean-local): Renamed to clean-local.
+	(clean-local): Renamed from maintainer-clean-local.
+	
 2003-08-22  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics.java (drawString): Pass font

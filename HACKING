@@ -16,7 +16,7 @@ autoconf, automake, and libtool are required.
         - GNU automake 1.6
 	(1.7 also works)
         - GNU libtool 1.4.2
-	(1.4.3 also works, but 1.5a is known not to work at the moment)
+	(1.4.3 and 1.5a also work)
 
 For building the Java bytecode (.class files), one of these compilers
 is required.

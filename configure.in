@@ -4,20 +4,17 @@ dnl Turning off cache for debug reasons
 dnl define([AC_CACHE_LOAD], )dnl
 dnl define([AC_CACHE_SAVE], )dnl
 
-AC_INIT(java/lang/System.java)
+AC_INIT([GNU Classpath], [0.06+cvs], [classpath@gnu.org], [classpath])
+AC_CONFIG_SRCDIR(java/lang/System.java)
 
 AC_CANONICAL_TARGET
 if expr match ${target_cpu} .*86 > /dev/null; then target_cpu=x86; fi
 
-PACKAGE="classpath"
-VERSION="0.06+cvs"
 dnl We will not track/change lib version until we reach version 1.0
 dnl at which time we'll have to be more anal about such things
-LIBVERSION="0:0:0"
-AC_SUBST(PACKAGE)
-AC_SUBST(VERSION)
-AC_SUBST(LIBVERSION)
-AM_INIT_AUTOMAKE(${PACKAGE}, ${VERSION})
+AC_SUBST(LIBVERSION, "0:0:0")
+
+AM_INIT_AUTOMAKE
 
 AM_CONFIG_HEADER(include/config.h)
 
@@ -36,17 +33,13 @@ esac],
 [COMPILE_JAVA=yes])
 
 AC_ARG_ENABLE(jni,
-[  --enable-jni            compile JNI source [default=no]],
+[  --enable-jni            compile JNI source [default=yes]],
 [case "${enableval}" in 
-  yes) 
-    COMPILE_JNI=yes
-    COMPILE_JAVA=yes
-
-    ;;
+  yes) COMPILE_JNI=yes; COMPILE_JAVA=yes ;;
   no) COMPILE_JNI=no ;;
   *) COMPILE_JNI=yes; COMPILE_JAVA=yes ;;
 esac],
-[COMPILE_JNI=no])
+[COMPILE_JNI=yes])
 
 AC_ARG_ENABLE(cni,
 [  --enable-cni            compile CNI source [default=no]],
@@ -92,8 +85,8 @@ dnl Checks for programs.
 
   dnl AC_PROG_CXX
   dnl Initialize libtool
-  AM_DISABLE_STATIC
-  AM_PROG_LIBTOOL
+  AC_DISABLE_STATIC
+  AC_PROG_LIBTOOL
   dnl AC_PROG_AWK
   AC_PROG_CC
   AC_PROG_CPP

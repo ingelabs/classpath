@@ -1,6 +1,3 @@
-# We do not really support building with javac anymore but we can
-# resurrect this...
-# --cbj
 ## used by automake to generate Makefile.in
 
 ##PERL = @PERL@
@@ -124,12 +121,10 @@ compile-classes: classes $(JAVA_SRCS) Makefile
 	touch compile-classes
 
 EXTRA_DIST = standard.omit mkcollections.pl.in
-## not sure if we want to let the user easily get rid of glibj.zip
-## CLEANFILES = glibj.zip
-DISTCLEANFILES = 
-MAINTAINERCLEANFILES = compile-classes resources classes $(JAVA_DEPEND)
+CLEANFILES = compile-classes resources classes glibj.zip classes.1 \
+	$(JAVA_DEPEND)
 
-maintainer-clean-local:
+clean-local:
 	-rm -rf gnu
 	-rm -rf java
 	-rm -rf javax
