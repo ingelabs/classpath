@@ -1,5 +1,16 @@
 2003-06-08  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/BorderFactory.java:
+	Reformatted.
+	* javax/swing/JTable.java:
+	Import javax.swing.table.JTableHeader.
+	* javax/swing/table/JTableHeader.java:
+	New file.
+	* javax/swing/table/Makefile.am
+	(EXTRA_DIST): Added JTableHeader.java.
+
+2003-06-08  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JButton.java
 	(serialVersionUID): New member variable.
 	* javax/swing/JComboBox.java
