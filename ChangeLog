@@ -1,5 +1,12 @@
 2004-11-23  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/DefaultSingleSelectionModel.java,
+	javax/swing/JPasswordField.java,
+	javax/swing/tree/AbstractLayoutCache.java:
+	Reformatted and javadocs cleaned up.
+
+2004-11-23  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/channels/spi/AbstractSelectableChannel.java
 	(register): Only reuse valid selection keys.
 
