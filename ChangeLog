@@ -1,3 +1,38 @@
+2003-06-19  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/JInternalFrame.java
+	(serialVersionUID): New member variable.
+	(CONTENT_PANE_PROPERTY): Likewise.
+	(MENU_BAR_PROPERTY): Likewise.
+	(TITLE_PROPERTY): Likewise.
+	(LAYERED_PANE_PROPERTY): Likewise.
+	(ROOT_PANE_PROPERTY): Likewise.
+	(GLASS_PANE_PROPERTY): Likewise.
+	(FRAME_ICON_PROPERTY): Likewise.
+	(IS_SELECTED_PROPERTY): Likewise.
+	(IS_CLOSED_PROPERTY): Likewise.
+	(IS_MAXIMUM_PROPERTY): Likewise.
+	(IS_ICON_PROPERTY): Likewise.
+	* javax/swing/MenuSelectionManager.java
+	(changeEvent): New member variable.
+	(listenerList): Likewise.
+	(fireStateChanged): New method.
+	(addChangeListener): Likewise.
+	(removeChangeListener): Likewise.
+	(getChangeListeners): Likewise.
+	* javax/swing/SwingUtilities.java:
+	Reformatted.
+	(SwingUtilities): Implements SwingConstants.
+	(getRootPane): Must be public.
+	(updateComponentTreeUI): Likewise.
+	* javax/swing/JComponent.java,
+	javax/swing/ToggleButtonModel.java:
+	Reformatted.
+	* javax/swing/SpinnerModel.java:
+	New file.
+	* javax/swing/Makefile.am
+	(EXTRA_DIST): Added SpinnelModel.java.
+
 2003-06-19  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/plaf/basic/BasicBorders.java (RadioButtonBorder,
