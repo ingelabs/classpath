@@ -1,5 +1,10 @@
 2004-12-07  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/util/Timer.java
+	(run): Stop the queue if a task throws an exception.
+
+2004-12-07  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/beans/PropertyDescriptor.java
 	(PropertyDescriptor,setReadMethod): Set propertyType.
 
