@@ -242,6 +242,7 @@ JNIEXPORT jboolean JNICALL PRIMLIB_UnwrapBoolean(JNIEnv * env, jobject obj) {
 		return PRIMLIB_GetBooleanObjectValue(env, obj);
 	} else {
 		JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Argument not of correct type.");
+		return JNI_FALSE;
 	}
 }
 
@@ -250,6 +251,7 @@ JNIEXPORT jbyte JNICALL PRIMLIB_UnwrapByte(JNIEnv * env, jobject obj) {
 		return PRIMLIB_GetByteObjectValue(env, obj);
 	} else {
 		JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Argument not of correct type.");
+		return 0;
 	}
 }
 
@@ -260,6 +262,7 @@ JNIEXPORT jshort JNICALL PRIMLIB_UnwrapShort(JNIEnv * env, jobject obj) {
 		return (jshort)PRIMLIB_GetByteObjectValue(env, obj);
 	} else {
 		JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Argument not of correct type.");
+		return 0;
 	}
 }
 
@@ -268,6 +271,7 @@ JNIEXPORT jchar JNICALL PRIMLIB_UnwrapChar(JNIEnv * env, jobject obj) {
 		return PRIMLIB_GetCharObjectValue(env, obj);
 	} else {
 		JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Argument not of correct type.");
+		return 0;
 	}
 }
 
@@ -282,6 +286,7 @@ JNIEXPORT jint JNICALL PRIMLIB_UnwrapInt(JNIEnv * env, jobject obj) {
 		return (jint)PRIMLIB_GetByteObjectValue(env, obj);
 	} else {
 		JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Argument not of correct type.");
+		return 0;
 	}
 }
 
@@ -298,6 +303,7 @@ JNIEXPORT jlong JNICALL PRIMLIB_UnwrapLong(JNIEnv * env, jobject obj) {
 		return (jlong)PRIMLIB_GetByteObjectValue(env, obj);
 	} else {
 		JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Argument not of correct type.");
+		return 0;
 	}
 }
 
@@ -316,6 +322,7 @@ JNIEXPORT jfloat JNICALL PRIMLIB_UnwrapFloat(JNIEnv * env, jobject obj) {
 		return (jfloat)PRIMLIB_GetByteObjectValue(env, obj);
 	} else {
 		JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Argument not of correct type.");
+		return 0;
 	}
 }
 
@@ -336,6 +343,7 @@ JNIEXPORT jdouble JNICALL PRIMLIB_UnwrapDouble(JNIEnv * env, jobject obj) {
 		return (jdouble)PRIMLIB_GetByteObjectValue(env, obj);
 	} else {
 		JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Argument not of correct type.");
+		return 0;
 	}
 }
 
