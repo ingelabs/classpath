@@ -1,3 +1,11 @@
+2003-09-19  Michael Koch  <konqueror@gmx.de>
+
+	* java/nio/channels/FileChannelImpl.java
+	(read): Set position before actually reading.
+	(write): Set position before acturally writing.
+	(transferTo): Flip buffer before writing.
+	(transferFrom): Likewise.
+
 2003-09-19  Tom Tromey  <tromey@redhat.com>
 
 	* java/net/URLClassLoader.java: Some documentation fixes.
