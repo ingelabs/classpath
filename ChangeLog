@@ -1,3 +1,9 @@
+2004-11-06  Robert Schuster  <theBohemian@gmx.net>
+ 
+ 	Fixes bug #10908
+ 	* gnu/java/beans/IntrospectionIncubator.java:
+ 	(addMethod): static methods are discarded now, too.
+
 2004-11-06  Sven de Marothy  <sven@physto.se>
 
 	* java/awt/image/ConvolveOp.java: Added missing copyright notice.
@@ -46,20 +52,20 @@
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
 	(createImage): Created bitmap should be filled with bg color
 
-2004-11-04  Torsten Rupp  rupp@aicas.com
+2004-11-04  Torsten Rupp  <rupp@aicas.com>
 
 	* native/jni/java-net/gnu_java_net_PlainDatagramSocketImpl.c:
 	Replaced 'this' arguments by 'obj' to make source compatible with
 	C++ compilers.
 
-2004-11-04  Torsten Rupp  rupp@aicas.com
+2004-11-04  Torsten Rupp  <rupp@aicas.com>
 
 	* native/jni/java-net/gnu_java_net_PlainDatagramSocketImpl.c:
 	Add dummy return values for WITHOUT_NETWORK code path.
 	(Java_gnu_java_net_PlainDatagramSocketImpl_receive0): Check fid not
 	NULL for maxlen field id.
 
-2004-11-04  Torsten Rupp  rupp@aicas.com
+2004-11-04  Torsten Rupp  <rupp@aicas.com>
 
         * native/jni/java-net/gnu_java_net_PlainSocketImpl.c: Added missing
 	return values for WITHOUT_NETWORK code path.
