@@ -48,4 +48,12 @@ public class StringIndexOutOfBoundsException extends IndexOutOfBoundsException
     {
       super(s);
     }
+
+  /**
+   * Create an exception noting the illegal index.
+   */
+  public StringIndexOutOfBoundsException(int index)
+    {
+      super(String.valueOf(index));
+    }
 }
