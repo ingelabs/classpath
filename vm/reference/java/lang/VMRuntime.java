@@ -39,7 +39,6 @@ package java.lang;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Properties;
 
 /**
  * VMRuntime represents the interface to the Virtual Machine.

@@ -39,7 +39,6 @@ exception statement from your version. */
 package gnu.java.io.decode;
 
 import java.io.InputStream;
-import java.io.CharConversionException;
 import java.io.IOException;
 
 /**

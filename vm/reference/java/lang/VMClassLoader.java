@@ -40,11 +40,8 @@ exception statement from your version. */
 package java.lang;
 
 import gnu.classpath.SystemProperties;
-import gnu.java.util.EmptyEnumeration;
 
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.ProtectionDomain;

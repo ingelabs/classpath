@@ -46,7 +46,6 @@ import java.lang.reflect.Constructor;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
-import java.security.AccessController;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
