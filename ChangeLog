@@ -1,3 +1,10 @@
+2003-06-23  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/plaf/ButtonUI.java: Made abstract; reformatted; added JavaDoc.
+	* javax/swing/plaf/ColorChooserUI.java: Reformatted; added JavaDoc.
+	* javax/swing/plaf/ColorUIResource.java: Re-written.
+	* javax/swing/plaf/ComboBoxUI.java: Reformatted; added JavaDoc.
+	
 2003-06-23  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/Font.java:
