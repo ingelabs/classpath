@@ -189,7 +189,7 @@ public class DataInputStream extends FilterInputStream implements DataInput
    *
    * @see DataOutput#writeChar
    */
-  public synchronized final char readChar() throws IOException
+  public synchronized final char readChar () throws IOException
   {
     readFully (buf, 0, 2);
     return (char) ((buf[0] << 8) | (buf[1] & 0xff));
@@ -254,7 +254,7 @@ public class DataInputStream extends FilterInputStream implements DataInput
    * In this case, the method will return immediately without reading any
    * bytes from the stream.
    *
-   * @param buf The buffer into which to read the data
+   * @param b The buffer into which to read the data
    *
    * @exception EOFException If end of file is reached before filling the
    * buffer
@@ -324,11 +324,13 @@ public class DataInputStream extends FilterInputStream implements DataInput
    *
    * @see DataOutput#writeInt
    */
-  public synchronized final int readInt() throws IOException
+  public synchronized final int readInt () throws IOException
   {
     readFully (buf, 0, 4);
-    return (((buf[0] & 0xff) << 24) | ((buf[1] & 0xff) << 16) |
-            ((buf[2] & 0xff) << 8) | (buf[3] & 0xff));
+    return (((buf[0] & 0xff) << 24) |
+            ((buf[1] & 0xff) << 16) |
+            ((buf[2] & 0xff) << 8) |
+            (buf[3] & 0xff));
   }
 
   /**
@@ -346,10 +348,14 @@ public class DataInputStream extends FilterInputStream implements DataInput
    * <code>\r\n</code>.  These termination charaters are discarded and
    * are not returned as part of the string.
    * <p>
+   * This method can read data that was written by an object implementing the
+   * <code>writeLine()</code> method in <code>DataOutput</code>.
    *
    * @return The line read as a <code>String</code>
    *
    * @exception IOException If an error occurs
+   *
+   * @see DataOutput
    *
    * @deprecated
    */
@@ -471,7 +477,7 @@ public class DataInputStream extends FilterInputStream implements DataInput
    *
    * @see DataOutput#writeLong
    */
-  public synchronized final long readLong() throws IOException
+  public synchronized final long readLong () throws IOException
   {
     readFully (buf, 0, 8);
     return (((long)(buf[0] & 0xff) << 56) |
@@ -523,7 +529,7 @@ public class DataInputStream extends FilterInputStream implements DataInput
    * 255.
    * <p>
    * This method can read an unsigned byte written by an object
-   * implementing the <code>writeByte()</code> method in the
+   * implementing the <code>writeUnsignedByte()</code> method in the
    * <code>DataOutput</code> interface.
    *
    * @return The unsigned bytes value read as a Java <code>int</code>.
@@ -599,7 +605,7 @@ public class DataInputStream extends FilterInputStream implements DataInput
    * The value returned is in the range of 0 to 65535.
    * <p>
    * This method can read an unsigned short written by an object
-   * implementing the <code>writeShort()</code> method in the
+   * implementing the <code>writeUnsignedShort()</code> method in the
    * <code>DataOutput</code> interface.
    *
    * @return The unsigned short value read as a Java <code>int</code>
@@ -736,7 +742,7 @@ public class DataInputStream extends FilterInputStream implements DataInput
    * This method will not skip any bytes if passed a negative number of bytes 
    * to skip. 
    *
-   * @param numBytes The requested number of bytes to skip.
+   * @param n The requested number of bytes to skip.
    *
    * @return The requested number of bytes to skip.
    *

@@ -88,7 +88,7 @@ import gnu.java.io.decode.Decoder;
  */
 public class InputStreamReader extends Reader
 {
-  /* 
+  /*
    * This is the byte-character decoder class that does the reading and
    * translation of bytes from the underlying stream.
    */
@@ -169,21 +169,21 @@ public class InputStreamReader extends Reader
   }
 
   /**
-   * This method reads up to <code>len</code> characters from the stream into
+   * This method reads up to <code>length</code> characters from the stream into
    * the specified array starting at index <code>offset</code> into the
    * array.
    *
    * @param buf The character array to recieve the data read
    * @param offset The offset into the array to start storing characters
-   * @param len The requested number of characters to read.
+   * @param length The requested number of characters to read.
    *
    * @return The actual number of characters read, or -1 if end of stream.
    *
    * @exception IOException If an error occurs
    */
-  public int read(char[] buf, int offset, int len) throws IOException
+  public int read (char[] buf, int offset, int length) throws IOException
   {
-    return(in.read(buf, offset, len));
+    return in.read(buf, offset, length);
   }
 
   /**

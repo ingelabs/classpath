@@ -1,5 +1,27 @@
 2003-05-09  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/BufferedOutputStream.java
+	(close): New method merged from libgcj.
+	(finalize): Likewise.
+	* java/io/DataInputStream.java
+	(readChar): Reformatted.
+	(readInt): Likewise.
+	(readLine): Merged documentation from libgcj.
+	(readUnsignedByte): Likewise.
+	(readUnsignedShort): Likewise.
+	(skip): Likewise.
+	* java/io/InputStreamReader.java
+	(read): Merged documentation from libgcj, reformatted.
+	* java/io/OutputStreamWriter.java
+	(OutputStreamWriter): Merged class documentation with libgcj.
+	(OutputStreamWriter): Reformatted.
+	(close): Likewise.
+	(getEncoding): Likewise.
+	(flush): Likewise.
+	(write): Merged with libgcj.
+
+2003-05-09  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/InetAddress.java
 	(InetAddress): Merged documentation with libgcj.
 	* java/net/JarURLConnection.java

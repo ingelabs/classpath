@@ -112,6 +112,31 @@ public class BufferedOutputStream extends FilterOutputStream
   }
 
   /**
+   * This method flushes any remaining buffered bytes then closes the 
+   * underlying output stream.  Any further attempts to write to this stream
+   * may throw an exception
+   *
+  public synchronized void close() throws IOException
+  {
+    flush();
+    out.close();
+  }
+  */
+
+  /**
+   * This method runs when the object is garbage collected.  It is 
+   * responsible for ensuring that all buffered bytes are written and
+   * for closing the underlying stream.
+   *
+   * @exception IOException If an error occurs (ignored by the Java runtime)
+   *
+  protected void finalize() throws IOException
+  {
+    close();
+  }
+  */
+
+  /**
    * This method writes a single byte of data.  This will be written to the
    * buffer instead of the underlying data source.  However, if the buffer
    * is filled as a result of this write request, it will be flushed to the

@@ -71,6 +71,8 @@ import gnu.java.io.encode.Encoder;
  * </ul>
  *
  * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Per Bothner <bothner@cygnus.com>
+ * @date April 17, 1998.  
  */
 public class OutputStreamWriter extends Writer
 {
@@ -95,10 +97,10 @@ public class OutputStreamWriter extends Writer
    * @exception UnsupportedEncodingException If the named encoding is 
    * not available.
    */
-  public OutputStreamWriter(OutputStream out, String encoding_scheme) 
+  public OutputStreamWriter (OutputStream out, String encoding_scheme) 
     throws UnsupportedEncodingException
   {
-    this.out = EncodingManager.getEncoder(out, encoding_scheme);
+    this.out = EncodingManager.getEncoder (out, encoding_scheme);
   }
 
   /**
@@ -107,9 +109,9 @@ public class OutputStreamWriter extends Writer
    *
    * @param out The <code>OutputStream</code> to write to
    */
-  public OutputStreamWriter(OutputStream out)
+  public OutputStreamWriter (OutputStream out)
   {
-    this.out = EncodingManager.getEncoder(out);
+    this.out = EncodingManager.getEncoder (out);
   }
 
   /**
@@ -118,9 +120,9 @@ public class OutputStreamWriter extends Writer
    *
    * @exception IOException If an error occurs
    */
-  public void close() throws IOException
+  public void close () throws IOException
   {
-    out.close();
+    out.close ();
   }
 
   /**
@@ -130,9 +132,9 @@ public class OutputStreamWriter extends Writer
    *
    * @return The encoding scheme name
    */
-  public String getEncoding()
+  public String getEncoding ()
   {
-    return(out.getSchemeName());
+    return out.getSchemeName ();
   }
 
   /**
@@ -140,42 +142,42 @@ public class OutputStreamWriter extends Writer
    *
    * @exception IOException If an error occurs
    */
-  public void flush() throws IOException
+  public void flush () throws IOException
   {
-    out.flush();
+    out.flush ();
   }
 
   /**
-   * This method writes <code>len</code> characters from the specified
+   * This method writes <code>count</code> characters from the specified
    * array to the output stream starting at position <code>offset</code>
    * into the array.
    *
    * @param buf The array of character to write from
    * @param offset The offset into the array to start writing chars from
-   * @param len The number of chars to write.
+   * @param count The number of chars to write.
    *
    * @exception IOException If an error occurs
    */
-  public void write(char[] buf, int offset, int len) throws IOException
+  public void write (char[] buf, int offset, int count) throws IOException
   {
-    out.write(buf, offset, len);
+    out.write (buf, offset, count);
   }
 
   /**
-   * This method writes <code>len</code> bytes from the specified 
+   * This method writes <code>count</code> bytes from the specified 
    * <code>String</code> starting at position <code>offset</code> into the
    * <code>String</code>.
    *
    * @param str The <code>String</code> to write chars from
    * @param offset The position in the <code>String</code> to start 
    * writing chars from
-   * @param len The number of chars to write
+   * @param count The number of chars to write
    *
    * @exception IOException If an error occurs
    */
-  public void write(String str, int offset, int len) throws IOException
+  public void write (String str, int offset, int count) throws IOException
   {
-    out.write(str, offset, len);
+    out.write (str, offset, count);
   }
 
   /**
@@ -185,9 +187,9 @@ public class OutputStreamWriter extends Writer
    *
    * @exception IOException If an error occurs
    */
-  public void write(int ch) throws IOException
+  public void write (int ch) throws IOException
   {
-    out.write(ch);
+    out.write (ch);
   }
 
 } // class OutputStreamWriter
