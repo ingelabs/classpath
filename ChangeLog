@@ -1,3 +1,12 @@
+2004-04-29  Michael Koch  <konqueror@gmx.de>
+
+	* include/gnu_java_net_PlainSocketImpl.h
+	(connect): Fixed signature of method.
+	* include/gnu_java_nio_channels_FileChannelImpl.h
+	(lock): Likewise.
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
+	(lock): Likewise.
+
 2004-04-29  Tom Tromey  <tromey@redhat.com>
 
 	* .classpath: New file.

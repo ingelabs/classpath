@@ -648,7 +648,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_write___3BII (JNIEnv *env, jobject ob
 }
 
 JNIEXPORT jboolean JNICALL
-Java_gnu_java_nio_channels_FileChannelImpl_lock__JJZZ (JNIEnv *env, jobject obj, jlong position, jlong size, jboolean shared, jboolean wait)
+Java_gnu_java_nio_channels_FileChannelImpl_lock (JNIEnv *env, jobject obj, jlong position, jlong size, jboolean shared, jboolean wait)
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.lock(): not implemented");
   return 0;
