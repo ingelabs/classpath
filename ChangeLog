@@ -1,3 +1,10 @@
+2000-12-02  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	From Adam Welc <welc@cs.purdue.edu>:
+	* java/util/LinkedList.java (removeFirst): Update `first' field.
+	Handle the last == first case.
+	(removeLast): Update `last' field. Handle the last == first case.
+
 2000-11-30  Warren Levy <warrenl@cygnus.com>
 
 	* java/sql/Array.java: Adjusted class signature to match spec.
