@@ -1612,7 +1612,7 @@ public abstract class AbstractButton extends JComponent
    *
    * @return The current rollover selected icon
    */
-  Icon getRolloverSelectedIcon()
+  public Icon getRolloverSelectedIcon()
   {
     return rollover_selected_icon;
   }
@@ -1648,7 +1648,7 @@ public abstract class AbstractButton extends JComponent
    *
    * @return The current selected icon
    */
-  Icon getSelectedIcon()
+  public Icon getSelectedIcon()
   {
     return selected_icon;
   }

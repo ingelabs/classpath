@@ -1,3 +1,8 @@
+2004-02-14  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/AbstractButton.java (getSelectedIcon): Make public
+	(getRolloverSelectedIcon): Likewise.
+
 2004-02-14  Graydon Hoare  <graydon@redhat.com>
 
 	* javax/swing/ToggleButtonModel.java: Remove dead class.
