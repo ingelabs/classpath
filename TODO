@@ -159,6 +159,8 @@ standard.
 -- Do real life serialization compatibility tests of our code with Kaffe 
    and the JDK.
 
+-- Audit code for thread safety. 
+
 -- Update the packaging of Classpath to make sure that we can build
    good distribution tarballs.
 
