@@ -11,4 +11,6 @@ log.c pow.c remainder.c rint.c s_fabs.c sin.c sqrt.c tan.c
 
 libjava_lang_Math_la_LDFLAGS = -version-info 0:0:0
 
-INCLUDES += @VMINCLUDE@
+if JAPHAR
+INCLUDES += @JAPHAR_CFLAGS@
+endif

@@ -7,7 +7,9 @@ libjaphar_javanet_la_SOURCES = InetAddress.c PlainDatagramSocketImpl.c \
 
 libjaphar_javanet_la_LDFLAGS = -version-info 0:0:0
 
-INCLUDES += @VMINCLUDE@
+if JAPHAR
+INCLUDES += @JAPHAR_CFLAGS@
+endif
 
 InetAddress.c: java_net_InetAddress.h
 

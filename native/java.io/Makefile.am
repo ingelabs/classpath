@@ -17,7 +17,9 @@ libjavaio_la_SOURCES = File.c FileDescriptor.c FileInputStream.c FileOutputStrea
 
 libjavaio_la_LDFLAGS = -version-info 0:0:0
 
-INCLUDES += -I ../lib @VMINCLUDE@
+if JAPHAR
+INCLUDES += -I ../lib @JAPHAR_CFLAGS@
+endif
 
 #File.c: java_io_File.h
 #FileDescriptor.c: java_io_FileDescriptor.h
