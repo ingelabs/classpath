@@ -1,5 +1,9 @@
 2004-06-03  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/lang/MainThread.java: Reformated to match our coding style.
+
+2004-06-03  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
 	(requestFocus): Call gtkWidgetFocus() and post focus event.
 	(gtkRequestFocus): Removed.
