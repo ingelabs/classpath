@@ -1,3 +1,9 @@
+2003-07-22  Torsten Rupp  <rupp@lisa.aicas.com>
+
+        * native/target/generic/target_generic_math_float.h:
+        added macro TARGET_NATIVE_MATH_FLOAT_FLOAT_FINITE(),
+        TARGET_NATIVE_MATH_FLOAT_DOUBLE_FINITE()
+
 2003-07-21  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
