@@ -64,10 +64,12 @@ AC_DEFUN(CLASSPATH_INTERNAL_CHECK_JAPHAR,
     JAPHAR_CLASSLIB=$_t_datadir/rt.jar
   elif test -e $_t_datadir/rt.zip; then
     JAPHAR_CLASSLIB=$_t_datadir/rt.zip
+  fi
+  if test $JAPHAR_CLASSLIB ; then
+    AC_MSG_RESULT(yes)
   else
     AC_MSG_RESULT(no)
   fi
-  AC_MSG_RESULT(yes)
   AC_SUBST(JAPHAR_CLASSLIB)
 ])
 
