@@ -4,3 +4,4 @@ stamp-h.in
 config.h.in
 jni.h
 jni_md.h
+stamp-h1

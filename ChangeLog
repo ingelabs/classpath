@@ -1,3 +1,22 @@
+2002-04-24  Eric Blake  <ebb9@email.byu.edu>
+
+	PR 100787:
+	* gnu/java/rmi/.cvsignore: Ignore Makefile.
+	* gnu/java/rmi/dgc/.cvsignore: Ditto.
+	* gnu/java/rmi/registry/.cvsignore: Ditto.
+	* gnu/java/rmi/rmic/.cvsignore: Ditto.
+	* gnu/java/rmi/server/.cvsignore: Ditto.
+	* include/.cvsignore: Ignore stamp-h1
+	* java/awt/im/.cvsignore: Ignore Makefile.
+	* java/awt/im/spi/.cvsignore: Ditto.
+	* java/rmi/.cvsignore: Ditto.
+	* java/rmi/activation/.cvsignore: Ditto.
+	* java/rmi/dgc/.cvsignore: Ditto.
+	* java/rmi/registry/.cvsignore: Ditto.
+	* java/rmi/server/.cvsignore: Ditto.
+	* javax/accessibility/.cvsignore: Ditto.
+	* lib/.cvsignore: Ignore classes.1
+
 2002-04-21  Mark Wielaard  <mark@klomp.org>
 
 	* java/awt/AWTKeyStroke.java (removeEldestEntry): Add comment
@@ -69,7 +88,7 @@
 
 2002-04-06  Mark Wielaard <mark@klomp.org>
 
-	* java/lang/Character,java (isDefined): getType() != UNASSIGNED.
+	* java/lang/Character.java (isDefined): getType() != UNASSIGNED.
 
 2002-04-06  Mark Wielaard <mark@klomp.org>
 

@@ -18,3 +18,4 @@ java.dep
 compile-classes
 mkcollections.pl
 gen_nio.sh
+classes.1
