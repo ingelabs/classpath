@@ -26,6 +26,7 @@ executable file might be covered by the GNU General Public License. */
 
 #include "java_lang_System.h"
 #include <sys/time.h>
+#include <stdlib.h>
 
 /*
  * Class:     java_lang_System

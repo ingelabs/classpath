@@ -17,6 +17,7 @@
  */
 
 #include "java_lang_Math.h"
+#include <stdlib.h>
 
 #define sqrt(x) Java_java_lang_Math_sqrt(NULL, NULL, x)
 

@@ -15,18 +15,19 @@ JAVA_DEPEND = java.dep
 sinclude $(JAVA_DEPEND)
 sinclude $(HEADERS_DEPEND)
 
+KJC_CLASSPATH=@KJC_CLASSPATH@
+
+USER_CLASSLIB = @USER_CLASSLIB@
+
+GCJ = @GCJ@
+JIKES = @JIKES@
+USER_JABBA = @USER_JABBA@
+USER_JAVAH = @USER_JAVAH@
 
 #-----------------------------------------------------------------
 # defining a javac program written in java
 #-----------------------------------------------------------------
 KJC_MAIN = at.dms.kjc.Main
-SUN_JAVAC_MAIN = sun.tools.javac.Main
-
-if USER_SPECIFIED_KJC
-JAVAC_MAIN = $(KJC_MAIN)
-else
-JAVAC_MAIN = $(SUN_JAVAC_MAIN)
-endif
 #-----------------------------------------------------------------
 
 
@@ -34,15 +35,7 @@ endif
 # defining how to designate classpath for a vm and a javac type 
 # program
 #-----------------------------------------------------------------
-if JAPHAR
-if USER_SPECIFIED_JABBA
 ARG_CLASSPATH_VM = -classpath
-else
-ARG_CLASSPATH_VM = --classpath
-endif
-else
-ARG_CLASSPATH_VM = -classpath
-endif
 
 if USER_SPECIFIED_KJC
 ARG_CLASSPATH_JAVAC = --classpath
@@ -53,73 +46,20 @@ endif
 
 
 #-----------------------------------------------------------------
-# defining a java-like program
-#-----------------------------------------------------------------
-if USER_SPECIFIED_JABBA
-USER_JABBA = @USER_JABBA@
-else
-
-if JAPHAR
-USER_JABBA = @JAPHAR_JABBA@
-else
-
-if KAFFE
-USER_JABBA = @KAFFE_JABBA@
-else
-USER_JABBA = java
-endif
-
-endif
-
-endif
-#-----------------------------------------------------------------
-
-
-#-----------------------------------------------------------------
-# defining the classpath for the java-like program, and 
-# the javac-like program
-#-----------------------------------------------------------------
-if USER_SPECIFIED_CLASSLIB
-USER_CLASSLIB = @USER_CLASSLIB@
-else
-
-if JAPHAR
-USER_CLASSLIB = @JAPHAR_CLASSLIB@
-else
-
-if KAFFE
-USER_CLASSLIB = @KAFFE_CLASSLIB@
-else
-USER_CLASSLIB = /usr/local/java/lib/classes.zip
-endif
-
-endif
-
-endif
-
-#-----------------------------------------------------------------
-
-
-#-----------------------------------------------------------------
 # handling javac definition including programs like jikes here
 #-----------------------------------------------------------------
-if USER_SPECIFIED_KJC
-JAVAC = $(USER_JABBA) $(ARG_CLASSPATH_VM) @KJC_CLASSPATH@:$(USER_CLASSLIB) $(JAVAC_MAIN) $(ARG_CLASSPATH_JAVAC) .:$(USER_CLASSLIB) -d . @classes
+if FOUND_JIKES
+JAVAC = $(JIKES) -nowarn +F $(ARG_CLASSPATH_JAVAC) $(top_srcdir):$(top_builddir)/vm/current:.:$(USER_CLASSLIB) -d . @classes
 else
-
-if USER_SPECIFIED_JIKES
-
-if USER_SPECIFIED_CLASSLIB
-JAVAC = @JIKES@ -nowarn +F $(ARG_CLASSPATH_JAVAC) $(top_srcdir):$(top_builddir)/vm/current:.:@USER_CLASSLIB@ -d . @classes
+if FOUND_GCJ
+JAVAC = $(GCJ) -C -d . @classes
 else
-JAVAC = @JIKES@ -nowarn +F $(ARG_CLASSPATH_JAVAC) $(top_srcdir):$(top_builddir)/vm/current:. -d . @classes
+if FOUND_KJC
+JAVAC = $(USER_JABBA) $(ARG_CLASSPATH_VM) $(KJC_CLASSPATH):$(USER_CLASSLIB) $(KJC_MAIN) $(ARG_CLASSPATH_JAVAC) .:$(USER_CLASSLIB) -d . @classes
+endif 
+endif
 endif
 
-else
-JAVAC = $(USER_JABBA) $(ARG_CLASSPATH_VM) $(USER_CLASSLIB) $(JAVAC_MAIN) $(ARG_CLASSPATH_JAVAC) .:$(USER_CLASSLIB) -d . $(JAVA_SRCS)
-endif
-
-endif
 #-----------------------------------------------------------------
 
 
@@ -127,57 +67,14 @@ endif
 # defining how to designate classpath for a vm and a javac type 
 # program
 #-----------------------------------------------------------------
-if JAPHAR
-
-if USER_SPECIFIED_JAVAH
 ARG_JNI_JAVAH = -jni
-else
-ARG_JNI_JAVAH = --jni
-endif
-
-else
-ARG_JNI_JAVAH = -jni
-endif
-#-----------------------------------------------------------------
-
-
-#-----------------------------------------------------------------
-# defining a javah-like program
-#-----------------------------------------------------------------
-if USER_SPECIFIED_JAVAH
-USER_JAVAH = @USER_JAVAH@
-else
-
-if JAPHAR
-USER_JAVAH = @JAPHAR_JAVAH@
-else
-
-if KAFFE
-USER_JAVAH = @KAFFE_JAVAH@
-else
-USER_JAVAH = javah
-endif
-
-endif
-
-endif
 #-----------------------------------------------------------------
 
 
 #-----------------------------------------------------------------
 # defining classpath arg for javah-like program
 #-----------------------------------------------------------------
-if JAPHAR
-
-if USER_SPECIFIED_JAVAH
 ARG_CLASSPATH_JAVAH = -classpath
-else
-ARG_CLASSPATH_JAVAH = --classpath
-endif
-
-else
-ARG_CLASSPATH_JAVAH = -classpath
-endif
 #-----------------------------------------------------------------
 
 JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) .:$(USER_CLASSLIB)
@@ -188,7 +85,12 @@ install-data-local :
 	if ! [ -e $(pkgdatadir) ]; then mkdir -p $(pkgdatadir); fi
 	unzip -d $(pkgdatadir) glibj.zip
 
+if CREATE_JNI_HEADERS
 all: $(HEADERS_DEPEND) glibj.zip $(CP_HEADERS)
+else
+all: glibj.zip
+endif
+
 #jar-classes
 
 # this makes headers always generate after making glibj.zip
@@ -201,10 +103,9 @@ glibj.zip: classes compile-classes $(MAKEFILE_DEPEND)
 	if ! [ -e gnu/java/locale ]; then mkdir gnu/java/locale; fi
 	cp $(top_srcdir)/gnu/java/locale/*.properties gnu/java/locale/
 	cp $(top_srcdir)/gnu/java/locale/*.uni gnu/java/locale/
-	# do something with all the .u files from jikes
 	$(ZIP) -r -D glibj.zip gnu java javax > /dev/null
 
-classes: gen-classlist.sh standard.omit $(top_srcdir)/java $(top_srcdir)/javax $(top_srcdir)/gnu
+classes: gen-classlist.sh standard.omit
 	top_builddir=$(top_builddir) $(SHELL) ./gen-classlist.sh standard
 
 .PHONY: dep
@@ -218,7 +119,7 @@ compile-classes: classes $(JAVA_DEPEND) $(JAVA_SRCS) Makefile
 
 $(MAKEFILE_DEPEND): compile-classes
 	top_srcdir=@top_srcdir@ $(PERL) ./mkdep.pl -d
-	$(SHELL) -c find -regex ".*\.u$$" -exec rm \{\} \; > /dev/null
+#	$(SHELL) -c find -regex ".*\.u$$" -exec rm \{\} \; > /dev/null
 
 $(HEADERS_DEPEND): classes
 	if ! [ -e $(top_builddir)/include ]; then -mkdir $(top_builddir)/include; fi	
@@ -264,9 +165,10 @@ EXTRA_DIST = glibj.zip standard.omit mkcollections.pl.in
 ## not sure if we want to let the user easily get rid of glibj.zip
 ## CLEANFILES = glibj.zip
 DISTCLEANFILES = $(CLASSES) $(CP_HEADERS)
-MAINTAINERCLEANFILES = makefile.dep $(JAVA_DEPEND) $(HEADERS_DEPEND)
+MAINTAINERCLEANFILES = classes makefile.dep $(JAVA_DEPEND) $(HEADERS_DEPEND)
 
 maintainer-clean-local:
+	-rm -rf com
 	-rm -rf gnu
 	-rm -rf java
 	-rm -rf javax

@@ -61,15 +61,5 @@ INCLUDES +=  @EXTRA_INCLUDES@ \
              -I$(top_srcdir)/native/lib/ \
 	     -I$(top_builddir)/include 
 
-if JAPHAR
-install-data-local : 
-	-cd $(pkglibdir) && ln -s libjavaio.so libjaphar_javaio.so
-	-cd $(pkglibdir) && ln -s libjavalang.so libjaphar_javalang.so
-	-cd $(pkglibdir) && ln -s libjavalangmath.so libjaphar_javalangmath.so
-	-cd $(pkglibdir) && ln -s libjavalangreflect.so libjaphar_javalangreflect.so
-	-cd $(pkglibdir) && ln -s libjavanet.so libjaphar_javanet.so
-	-cd $(pkglibdir) && ln -s libjavautil.so libjaphar_javautil.so
-endif
-
 clean-local:
 	-rm -rf .deps

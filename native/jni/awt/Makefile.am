@@ -41,11 +41,6 @@ INCLUDES += @EXTRA_INCLUDES@ \
 	    @LIBART_CFLAGS@ \
 	    -I$(top_builddir)/include
 
-if JAPHAR
-install-data-local : 
-	-cd $(pkglibdir) && ln -s libgtkpeer.so libjaphar_gtkpeer.so
-endif
-
 clean-local:
 	-rm -rf .deps
 
