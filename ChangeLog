@@ -1,3 +1,7 @@
+2003-03-22  Tom Tromey  <tromey@redhat.com>
+
+	* java/io/FileDescriptor.java (close): Simplify with `finally'.
+
 2003-03-20  John Leuner  <jewel@debian.org>
 
 	Patches from Stephen Crawley

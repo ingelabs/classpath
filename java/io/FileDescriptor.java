@@ -200,12 +200,10 @@ public final class FileDescriptor
     try
       {
         nativeClose(nativeFd);
-	nativeFd = -1L;
       }
-    catch (IOException e)
+    finally
       {
         nativeFd = -1L;
-        throw new IOException(e.getMessage());
       }
   }
 
