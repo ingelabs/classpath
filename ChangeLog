@@ -1,3 +1,23 @@
+2004-08-29  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac: Check for sys/time.h, localtime_r, tm_gmtoff in
+	struct tm and for for global timezone variable.
+	* include/Makefile.am: Generate include/java_util_VMTimeZone.h.
+	* include/java_util_TimeZone.h: Removed.
+	* include/java_util_VMTimeZone.h: Added.
+	* java/util/TimeZone.java (defaultZone): Use VMTimeZone.
+	(getDefaultTimeZone): Make package private. Check that GMToffset
+	contains at least one digit.
+	(getDefaultTimeZoneId, readTimeZoneFile, readtzFile): (Re)Moved to
+	VMTimeZone.
+	* vm/reference/java/util/VMTimeZone.java: New file with above methods.
+	* native/jni/java-util/Makefile.am: Compile new java_util_VMTimeZone.c.
+	* native/jni/java-util/java_util_TimeZone.c: Removed.
+	* native/jni/java-util/java_util_VMTimeZone.c: New file.
+	* native/target/generic/target_generic_misc.h
+	(TARGET_NATIVE_MISC_GET_TIMEZONE_STRING): Removed unused macro.
+	* NEWS: Mention TimeZone/VMTimeZone split.
+	
 2004-08-31  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/DefaultListSelectionModel.java

@@ -187,57 +187,6 @@ Systems    : all
     } while (0)
 #endif
 
-/***********************************************************************\
-* Name       : TARGET_NATIVE_MISC_GET_TIMEZONE_STRING
-* Purpose    : get timezone string
-* Input      : string          - buffer for timezone string
-*              maxStringLength - max. string length
-* Output     : string - timezone string
-*              result - TARGET_NATIVE_OK or TARGET_NATIVE_ERROR
-* Return     : -
-* Side-effect: unknown
-* Notes      : set WITH_TIMEZONE_VARIABLE to timezone variable if not
-*              'timezone' (e. g. Cygwin)
-\***********************************************************************/
-
-#ifndef TARGET_NATIVE_MISC_GET_TIMEZONE_STRING
-  #if TIME_WITH_SYS_TIME
-     #include <sys/time.h>
-     #include <time.h>
-   #else
-     #if HAVE_SYS_TIME_H
-       #include <sys/time.h>
-     #else
-       #include <time.h>
-     #endif
-  #endif
-  #include <string.h>
-  #ifndef WITH_TIMEZONE_VARIABLE
-    #define WITH_TIMEZONE_VARIABLE timezone
-  #endif
-  #define TARGET_NATIVE_MISC_GET_TIMEZONE_STRING(string,maxStringLength,result) \
-    do { \
-      tzset(); \
-      \
-      if (strcmp(tzname[0],tzname[1])!=0) \
-      { \
-        result=((strlen(tzname[0])+6)<=maxStringLength)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
-        if (result==TARGET_NATIVE_OK) \
-        { \
-          snprintf(string,maxStringLength,"%s%ld",tzname[0],((WITH_TIMEZONE_VARIABLE%3600)==0)?WITH_TIMEZONE_VARIABLE/3600:WITH_TIMEZONE_VARIABLE); \
-        } \
-      } \
-      else \
-      { \
-        result=((strlen(tzname[0])+strlen(tzname[1])+6)<=maxStringLength)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
-        if (result==TARGET_NATIVE_OK) \
-        { \
-          snprintf(string,maxStringLength,"%s%ld%s",tzname[0],((WITH_TIMEZONE_VARIABLE%3600)==0)?WITH_TIMEZONE_VARIABLE/3600:WITH_TIMEZONE_VARIABLE,tzname[1]); \
-        } \
-      } \
-    } while (0)
-#endif
-
 /***************************** Functions *******************************/
 
 #ifdef __cplusplus

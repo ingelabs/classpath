@@ -122,22 +122,47 @@ if test "x${COMPILE_JNI}" = xyes; then
   dnl We check for sys/filio.h because Solaris 2.5 defines FIONREAD there.
   dnl On that system, sys/ioctl.h will not include sys/filio.h unless
   dnl BSD_COMP is defined; just including sys/filio.h is simpler.
-  AC_CHECK_HEADERS(unistd.h sys/types.h sys/config.h sys/ioctl.h asm/ioctls.h)
-  AC_CHECK_HEADERS(inttypes.h stdint.h utime.h sys/utime.h sys/filio.h)
+  AC_CHECK_HEADERS([unistd.h sys/types.h sys/config.h sys/ioctl.h asm/ioctls.h])
+  AC_CHECK_HEADERS([inttypes.h stdint.h utime.h sys/utime.h sys/filio.h])
+  AC_CHECK_HEADERS([sys/time.h])
 
   AC_EGREP_HEADER(uint32_t, stdint.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))
   AC_EGREP_HEADER(uint32_t, inttypes.h, AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t]))
   AC_EGREP_HEADER(u_int32_t, sys/types.h, AC_DEFINE(HAVE_BSD_INT32_DEFINED, 1, [Define to 1 if you have BSD u_int32_t]))
   AC_EGREP_HEADER(u_int32_t, sys/config.h, AC_DEFINE(HAVE_BSD_INT32_DEFINED, 1, [Define to 1 if you have BSD u_int32_t]))
 
-  AC_CHECK_FUNCS(ftruncate fsync select)
-  AC_CHECK_FUNCS(gethostname socket strerror fork pipe execve open close lseek \
-	fstat read write htonl memset htons connect getsockname sizeof getpeername \
-  	bind listen accept recvfrom send sendto setsockopt getsockopt time mktime)
+  AC_CHECK_FUNCS([ftruncate fsync select])
+  AC_CHECK_FUNCS([gethostname socket strerror fork pipe execve open close])
+  AC_CHECK_FUNCS([lseek fstat read write htonl memset htons connect])
+  AC_CHECK_FUNCS([getsockname sizeof getpeername bind listen accept])
+  AC_CHECK_FUNCS([recvfrom send sendto setsockopt getsockopt time mktime])
+  AC_CHECK_FUNCS([localtime_r])
 
   AC_HEADER_TIME
   AC_STRUCT_TM
   AC_STRUCT_TIMEZONE
+
+  AC_MSG_CHECKING([for tm_gmtoff in struct tm])
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <time.h>]],[[struct tm tim; tim.tm_gmtoff = 0;]])],
+  [AC_DEFINE(STRUCT_TM_HAS_GMTOFF, 1, [Define if struct tm has tm_gmtoff field.])
+   AC_MSG_RESULT(yes)],
+  [AC_MSG_RESULT(no)
+   AC_MSG_CHECKING([for global timezone variable])
+   dnl FIXME: we don't want a link check here because that won't work
+   dnl when cross-compiling.  So instead we make an assumption that
+   dnl the header file will mention timezone if it exists.
+   dnl Don't find the win32 function timezone
+   AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <time.h>]], [[void i(){long z2 = 2*timezone;}]])],
+     [AC_DEFINE(HAVE_TIMEZONE, 1, [Define if global 'timezone' exists.])
+      AC_MSG_RESULT(yes)],
+     [AC_MSG_RESULT(no)
+       AC_MSG_CHECKING([for global _timezone variable])
+       dnl FIXME: As above, don't want link check
+       AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[#include <time.h>]], [[long z2 = _timezone;]])],
+         [AC_DEFINE(HAVE_UNDERSCORE_TIMEZONE, 1,
+            [Define if your platform has the global _timezone variable.])
+          AC_MSG_RESULT(yes)],
+          [AC_MSG_RESULT(no)])])])
 
   AC_C_CONST
 

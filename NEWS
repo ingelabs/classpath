@@ -20,6 +20,9 @@ Runtime interface Changes:
   a reference implementation that most VMs can use.
 * java.lang.VMSystem has a new getenv(String) method and a reference C/JNI
   implementation that should work on most Posix like systems.
+* java.util.TimeZone has been split into a platform independent class and
+  a platform dependent class VMTimeZone.  GNU Classpath comes with a generic
+  way to get at the default time zone for Posix/GNU-like platforms.
 
 New in release 0.10 (Jul 9, 2004)
 
