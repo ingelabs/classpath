@@ -1,5 +1,18 @@
 2004-04-14  Sascha Brawer  <brawer@dandelis.ch>
 
+	* java/awt/image/DataBufferShort.java,
+	java/awt/image/DataBufferFloat.java,
+	java/awt/image/DataBufferDouble.java: New files.
+
+	* java/awt/image/Makefile.am (EXTRA_DIST): Added
+	DataBufferShort.java, DataBufferFloat.java, and
+	DataBufferDouble.java.
+
+	* gnu/java/awt/Buffers.java (createBuffer, createBufferFromData,
+	getData): Added support	for TYPE_SHORT, TYPE_FLOAT and TYPE_DOUBLE.
+
+2004-04-14  Sascha Brawer  <brawer@dandelis.ch>
+
 	* java/awt/image/Makefile.am (EXTRA_DIST):
 	Added PixelInterleavedSampleModel.java
 

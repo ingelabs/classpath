@@ -12,7 +12,10 @@ ComponentSampleModel.java \
 CropImageFilter.java \
 DataBuffer.java	\
 DataBufferByte.java \
+DataBufferDouble.java \
+DataBufferFloat.java \
 DataBufferInt.java \
+DataBufferShort.java \
 DataBufferUShort.java \
 DirectColorModel.java \
 FilteredImageSource.java \
