@@ -1,3 +1,11 @@
+2002-10-25  Mark Wielaard  <mark@klomp.org>
+
+	* java/io/File.java: Remove all commented out security checks.
+	(listFiles(FilenameFilter)): Return null when filelist == null.
+	(listFiles(FileFilter)): Return null when fobjlist == null, return
+	filelist when filter == null.
+	* native/jni/java-io/java_io_File.c: Return empty array for empty dir.
+
 2002-10-18  Mark Wielaard  <mark@klomp.org>
 
 	Merged patches from Wu Gansha <gansha.wu@intel.com>:

@@ -224,16 +224,7 @@ createTempFile(String prefix, String suffix, File directory)
   // Verify that we are allowed to create this file
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-//      try
-//        {
-          sm.checkWrite(f.getAbsolutePath());
-//        }
-//      catch(AccessControlException e)
-//        {
-//          throw new SecurityException(e.getMessage())
-//        }
-    } 
+    sm.checkWrite(f.getAbsolutePath());
 
   // Now create the file and return our file object
   createInternal(f.getAbsolutePath()); 
@@ -572,25 +563,16 @@ private synchronized native boolean canReadInternal(String path);
 public boolean
 canWrite() throws SecurityException
 {
-  // Test for existence.  This is required by the spec
-  if (!exists())
-    return(false);
-
   // We still need to do a SecurityCheck since exists() only checks
   // for read access
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-//      try
-//        {
-            sm.checkWrite(path);
-//        }
-//      catch(AccessControlException e)
-//        {
-//          throw new SecurityException(e.getMessage())
-//        }
-    } 
+    sm.checkWrite(path);
    
+  // Test for existence.  This is required by the spec
+  if (!exists())
+    return(false);
+
   return(canWriteInternal(path));
 }
 
@@ -626,16 +608,7 @@ setReadOnly() throws SecurityException
   // for read access
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-//      try
-//        {
-            sm.checkWrite(path);
-//        }
-//      catch(AccessControlException e)
-//        {
-//          throw new SecurityException(e.getMessage())
-//        }
-    } 
+    sm.checkWrite(path);
    
   return(setReadOnlyInternal(path));
 }
@@ -663,16 +636,7 @@ exists() throws SecurityException
   // Check the SecurityManager
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-//      try
-//        {
-            sm.checkRead(path);
-//        }
-//      catch(AccessControlException e)
-//        {
-//          throw new SecurityException(e.getMessage())
-//        }
-    } 
+    sm.checkRead(path);
    
   return(existsInternal(path));
 }
@@ -700,16 +664,7 @@ public boolean isFile() throws SecurityException
   // Check the SecurityManager
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-//      try
-//        {
-            sm.checkRead(path);
-//        }
-//      catch(AccessControlException e)
-//        {
-//          throw new SecurityException(e.getMessage())
-//        }
-    } 
+    sm.checkRead(path);
 
   return(isFileInternal(path)); 
 }
@@ -739,16 +694,7 @@ public boolean isDirectory() throws SecurityException
   // Check the SecurityManager
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-//      try
-//        {
-            sm.checkRead(path);
-//        }
-//      catch(AccessControlException e)
-//        {
-//          throw new SecurityException(e.getMessage())
-//        }
-    } 
+    sm.checkRead(path);
 
   return(isDirectoryInternal(path)); 
 }
@@ -798,16 +744,7 @@ length() throws SecurityException
   // Check the SecurityManager
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-//      try
-//        {
-            sm.checkRead(path);
-//        }
-//      catch(AccessControlException e)
-//        {
-//          throw new SecurityException(e.getMessage())
-//        }
-    } 
+    sm.checkRead(path);
 
   return(lengthInternal(path));
 }
@@ -841,16 +778,7 @@ lastModified() throws SecurityException
   // Check the SecurityManager
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-//      try
-//        {
-            sm.checkRead(path);
-//        }
-//      catch(AccessControlException e)
-//        {
-//          throw new SecurityException(e.getMessage())
-//        }
-    } 
+    sm.checkRead(path);
 
   return(lastModifiedInternal(path));
 }
@@ -889,16 +817,7 @@ setLastModified(long time) throws IllegalArgumentException, SecurityException
   // Check the SecurityManager
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-//      try
-//        {
-            sm.checkWrite(path);
-//        }
-//      catch(AccessControlException e)
-//        {
-//          throw new SecurityException(e.getMessage())
-//        }
-    } 
+    sm.checkWrite(path);
   
   return(setLastModifiedInternal(path, time));
 }
@@ -932,16 +851,7 @@ createNewFile() throws IOException, SecurityException
 {
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-//      try
-//        {
-            sm.checkWrite(path);
-//        }
-//      catch(AccessControlException e)
-//        {
-//          throw new SecurityException(e.getMessage())
-//        }
-    } 
+    sm.checkWrite(path);
    
   return(createInternal(getPath()));
 }
@@ -962,16 +872,7 @@ delete() throws SecurityException
   // Check the SecurityManager
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-//      try
-//        {
-            sm.checkDelete(path);
-//        }
-//      catch(AccessControlException e)
-//        {
-//          throw new SecurityException(e.getMessage())
-//        }
-    } 
+    sm.checkDelete(path);
 
   return(deleteInternal(path));
 }
@@ -999,16 +900,7 @@ deleteOnExit() throws SecurityException
   // Check the SecurityManager
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-//      try
-//        {
-            sm.checkDelete(path);
-//        }
-//      catch(AccessControlException e)
-//        {
-//          throw new SecurityException(e.getMessage())
-//        }
-    } 
+    sm.checkDelete(path);
 
   // Sounds like we need to do some VM specific stuff here. We could delete
   // the file in finalize() and set FinalizeOnExit to true, but delete on
@@ -1033,16 +925,7 @@ mkdir() throws SecurityException
   // Check the SecurityManager
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-//      try
-//        {
-            sm.checkWrite(path);
-//        }
-//      catch(AccessControlException e)
-//        {
-//          throw new SecurityException(e.getMessage())
-//        }
-    } 
+    sm.checkWrite(path);
 
   String mk_path;
   mk_path = PlatformHelper.removeTailSeparator(path);
@@ -1105,16 +988,7 @@ renameTo(File dest) throws SecurityException
   // Check the SecurityManager
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-//      try
-//        {
-            sm.checkWrite(path);
-//        }
-//      catch(AccessControlException e)
-//        {
-//          throw new SecurityException(e.getMessage())
-//        }
-    } 
+    sm.checkWrite(path);
 
   // Call our native rename method
   boolean rc = renameToInternal(path, dest.getPath());
@@ -1186,21 +1060,11 @@ list(FilenameFilter filter)
   // Check the SecurityManager
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-//      try
-//        {
-            sm.checkRead(path);
-//        }
-//      catch(AccessControlException e)
-//        {
-//          throw new SecurityException(e.getMessage())
-//        }
-    } 
+    sm.checkRead(path);
 
   // Get the list of files
   String list_path = PlatformHelper.removeTailSeparator(path);
 
-  
   String files[] = listInternal(list_path);
   if (files == null)
     return(null);
@@ -1286,6 +1150,9 @@ public File[]
 listFiles(FilenameFilter filter)
 {
   String[] filelist = list(filter);
+  if (filelist == null)
+    return(null);
+
   File[] fobjlist = new File[filelist.length];
 
   for (int i = 0; i < filelist.length; i++)
@@ -1322,6 +1189,12 @@ public File[]
 listFiles(FileFilter filter)
 {
   File[] fobjlist = listFiles((FilenameFilter)null);
+
+  if (fobjlist == null)
+    return(null);
+
+  if (filter == null)
+    return(fobjlist);
 
   int count = 0;
   for (int i = 0; i < fobjlist.length; i++)

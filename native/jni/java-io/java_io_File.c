@@ -582,13 +582,6 @@ Java_java_io_File_listInternal(JNIEnv *env, jobject obj, jstring name)
     }
   closedir(dir); 
 
-  /* Did we find anything? */
-  if (i == 0)
-    {
-      free(filelist);
-      return(0);
-    }
-
   /* Now put the list of files into a Java String array and return it */
   str_clazz = (*env)->FindClass(env, "java/lang/String"); 
   if (!str_clazz)
