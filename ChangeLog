@@ -1,3 +1,8 @@
+2000-12-21  Tom Tromey  <tromey@redhat.com>
+
+	* java/beans/PropertyChangeListener.java: Extends EventListener.
+	* java/beans/VetoableChangeListener.java: Extends EventListener.
+
 2000-12-17  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	* java/util/ArrayList.java (data): Declare transient.
