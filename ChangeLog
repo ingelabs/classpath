@@ -1,3 +1,10 @@
+2001-01-09  Mark Wielaard <mark@klomp.org>
+
+	* gnu/java/util/DoubleEnumeration.java: new class, adapted from
+	java/util/DoubleEnumeration. Clears references earlier, handles null
+	and/or empty enumerations better.
+	* gnu/java/util/EmptyEnumeration.java: new class.
+
 2001-01-09  Oskar Liljeblad <osk@hem.passagen.se>
 
 	* java/io/StreamTokenizer.java (nextToken): Handle // and /* before
