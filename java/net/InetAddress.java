@@ -388,8 +388,7 @@ public class InetAddress implements Serializable
    *
    * @param ipaddr The IP number of this address as an array of bytes
    */
-  //private
-  public InetAddress (byte[]ipaddr)
+  InetAddress (byte[]ipaddr)
   {
     this (ipaddr, null, null);
   }
@@ -402,8 +401,7 @@ public class InetAddress implements Serializable
    * @param ipaddr The IP number of this address as an array of bytes
    * @param hostname The hostname of this IP address.
    */
-  //private
-  public InetAddress (byte[]ipaddr, String hostname)
+  InetAddress (byte[]ipaddr, String hostname)
   {
     this (ipaddr, hostname, null);
   }
@@ -418,8 +416,7 @@ public class InetAddress implements Serializable
    * @param hostname_alias A backup hostname to use if hostname is null to
    * prevent reverse lookup failures
    */
-  //private
-  public InetAddress (byte[]ipaddr, String hostname, String hostname_alias)
+  InetAddress (byte[]ipaddr, String hostname, String hostname_alias)
   {
     addr = new byte[ipaddr.length];
 

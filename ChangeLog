@@ -1,5 +1,10 @@
 2003-03-11  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/InetAddress.java
+	(InetAddress): Constructors must be package-private, not public.
+
+2003-03-11  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/InetAddress.java: Reformated, no code changes.
 
 2003-03-11  Michael Koch  <konqueror@gmx.de>
