@@ -1,3 +1,8 @@
+2004-11-11  Paul Jenner  <psj.home@ntlworld.com>
+
+	* java/awt/image/Raster.java
+	(createPackedRaster): Implemented.
+
 2004-11-11  Mark Wielaard  <mark@klomp.org>
 
 	* javax/swing/plaf/basic/BasicTableHeaderUI.java: Indentation fixups.
