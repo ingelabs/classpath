@@ -872,13 +872,17 @@ install_font_peer(cairo_t *cr,
       ft = cairo_ft_font_create_for_ft_face (face);
       g_assert (ft != NULL);
       
-      if (debug) printf ("install_font_peer made new cairo font for '%s'\n", face->family_name);
+      if (debug) printf ("install_font_peer made new cairo font for '%s' at %f\n", 
+			 face->family_name,
+			 (pango_font_description_get_size (pfont->desc) / 
+			  (double)PANGO_SCALE) * (96.0 / 72.0));
     
       cairo_set_font (cr, ft); 
+      cairo_font_destroy (ft);
       cairo_scale_font (cr, 
 			(pango_font_description_get_size (pfont->desc) / 
 			 (double)PANGO_SCALE) * (96.0 / 72.0));
-      
+      ft = cairo_current_font (cr);
       pfont->graphics_resource = ft;
     }
   else
@@ -886,9 +890,6 @@ install_font_peer(cairo_t *cr,
       if (debug) printf ("install_font_peer reused existing font resource\n");
       ft = (cairo_font_t *) pfont->graphics_resource;
       cairo_set_font (cr, ft);       
-      cairo_scale_font (cr, 
-			(pango_font_description_get_size (pfont->desc) / 
-			 (double)PANGO_SCALE) * (96.0 / 72.0));
     }
 }
 

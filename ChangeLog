@@ -1,3 +1,9 @@
+2004-10-09  Graydon Hoare  <graydon@redhat.com>
+
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
+	(install_font_peer): Minor bug fixes to track cairo font
+	semantics.
+
 2004-10-08  Michael Koch  <konqueror@gmx.de>
 
 	* examples/.cvsignore,
