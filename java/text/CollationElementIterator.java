@@ -29,8 +29,6 @@ package java.text;
   * <code>getCollationElementIterator</code> method on 
   * <code>RuleBasedCollator</code>.
   *
-  * @version 0.0
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
 public final class CollationElementIterator

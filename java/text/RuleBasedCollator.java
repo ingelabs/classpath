@@ -108,8 +108,6 @@ import java.util.Vector;
   * the previous rule string section.
   * </ul>
   *
-  * @version 0.0
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
 public class RuleBasedCollator extends Collator
@@ -204,6 +202,7 @@ RuleBasedCollator(String rules) throws ParseException
                                                     tertiary_seq);
           v.add(e);
           sb.setLength(0);
+          continue;
         }
 
       // Secondary difference
@@ -220,6 +219,7 @@ RuleBasedCollator(String rules) throws ParseException
                                                     tertiary_seq);
           v.add(e);
           sb.setLength(0);
+          continue;
         }
 
       // Tertiary difference
@@ -235,6 +235,7 @@ RuleBasedCollator(String rules) throws ParseException
                                                     tertiary_seq);
           v.add(e);
           sb.setLength(0);
+          continue;
         }
 
       // Is equal to
@@ -248,6 +249,7 @@ RuleBasedCollator(String rules) throws ParseException
                                                     tertiary_seq);
           v.add(e);
           sb.setLength(0);
+          continue;
         }
 
       // Sort accents backwards
@@ -268,6 +270,7 @@ RuleBasedCollator(String rules) throws ParseException
           CollationElement e = new CollationElement(c + "", 0, (short)0, 
                                                     (short)0);
           v.add(e);
+          continue;
         }
 
       sb.append(c);
