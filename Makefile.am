@@ -18,7 +18,7 @@ ChangeLog:
 	cvs2cl.pl -b --gmt --log-opts "-d'1998-06-30< now'" --window 7200 --usermap ChangeLog.usermap --ignore ChangeLog --fsf
 
 indent:
-	find .  | \
+	find native/ -type f | \
 	grep \\.[ch]$$ | \
 	awk ' \
 	{print "indent " $$1 " -o " $$1 ".indented && \
