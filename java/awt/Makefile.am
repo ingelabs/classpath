@@ -42,14 +42,12 @@ GridLayout.java	\
 HeadlessException.java \
 IllegalComponentStateException.java \
 Image.java \
-ImageMediaEntry.java \
 Insets.java \
 ItemSelectable.java \
 Label.java \
 LayoutManager2.java \
 LayoutManager.java \
 List.java \
-MediaEntry.java \
 MediaTracker.java \
 MenuBar.java \
 MenuComponent.java \
