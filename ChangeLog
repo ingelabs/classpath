@@ -1,5 +1,10 @@
 2002-05-20  Andrew Selkirk  <aselkirk@sympatico.ca>
 
+	* javax/swing/AbstractListModel.java: Updated.
+	* javax/swing/BoundedRangeModel.java: Compile fix.
+
+2002-05-20  Andrew Selkirk  <aselkirk@sympatico.ca>
+
 	* javax/swing/Action.java: Updated.
 	* javax/swing/ActionMap.java: New file.
 	* javax/swing/BoundedRangeModel.java: New file.

@@ -1,4 +1,4 @@
-/* AbstractListModel.java -- 
+/* AbstractListModel.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,88 +37,168 @@ exception statement from your version. */
 
 package javax.swing;
 
-import javax.swing.event.*;
+// Imports
+import java.io.*;
 import java.util.*;
+import javax.swing.event.*;
 
-// fire up change events before or after
-// the element removed/added ?
+/**
+ * AbstractListModel
+ * A2uthor	Ronald Veldema
+ * @author	Andrew Selkirk
+ * @version	1.0
+ */
+public abstract class AbstractListModel implements ListModel, Serializable {
 
-public class AbstractListModel implements ListModel
-{
-    Vector elts      = new Vector();
-    
-    public int getSize()
-    {
-	return elts.size();
-    }
-    
-    public Object getElementAt(int index)
-    {
-	return elts.elementAt(index);
-    }
-    
-    public void addElement(Object a)
-    {
-	int q = elts.size();
-	elts.addElement(a);
-	fire_up_change_events(ListDataEvent.INTERVAL_ADDED,
-			      q,
-			      q);
-    }
+	//-------------------------------------------------------------
+	// Variables --------------------------------------------------
+	//-------------------------------------------------------------
 
-    public void insertElementAt(Object a, int index)
-    {
-	elts.insertElementAt(a, index);
-	fire_up_change_events(ListDataEvent.INTERVAL_ADDED,
-			      index, index);
-    }
-    
-    void remove(int a)
-    {
-	elts.removeElementAt(a);
-	fire_up_change_events(ListDataEvent.INTERVAL_REMOVED,
-			      a, a);
-    }
-
-    /*********************************************
-     *
-     *  handle data change events
-     *
-     ************/
-
-    Vector listeners = new Vector();
-
-    void fire_up_change_events(int type,
-			       int lower,
-			       int upper)
-    {
-	for (int i=0; i<listeners.size(); i++)
-	    {
-		ListDataListener l = (ListDataListener) listeners.get(i);
-
-		l.contentsChanged(new ListDataEvent(this,
-						    type,
-						    lower,
-						    upper));
-	    }
-    }
-
-    public void addListDataListener(ListDataListener l)
-    {
-	listeners.addElement(l);
-    }
-
-    public void removeListDataListener(ListDataListener l)
-    {
-	listeners.removeElement(l);
-    }
-}
+	/**
+	 * listenerList
+	 */
+	protected EventListenerList listenerList = new EventListenerList();
 
 
+	//-------------------------------------------------------------
+	// Initialization ---------------------------------------------
+	//-------------------------------------------------------------
+
+	/**
+	 * Constructor AbstractListModel
+	 */
+	public AbstractListModel() {
+	} // AbstractListModel()
 
 
+	//-------------------------------------------------------------
+	// Methods ----------------------------------------------------
+	//-------------------------------------------------------------
+
+	/**
+	 * addListDataListener
+	 * @param listener TODO
+	 */
+	public void addListDataListener(ListDataListener listener) {
+		listenerList.add(ListDataListener.class, (EventListener) listener);
+	} // addListDataListener()
+
+	/**
+	 * removeListDataListener
+	 * @param listener TODO
+	 */
+	public void removeListDataListener(ListDataListener listener) {
+		listenerList.remove(ListDataListener.class, (EventListener) listener);
+	} // removeListDataListener()
+
+	/**
+	 * fireContentsChanged
+	 * @param source TODO
+	 * @param startIndex TODO
+	 * @param endIndex TODO
+	 */
+	protected void fireContentsChanged(Object source, int startIndex, int endIndex) {
+
+		// Variables
+		ListDataEvent	event;
+		EventListener[]		listeners;
+		ListDataListener	listener;
+		int					index;
+
+		// Create Event
+		event = new ListDataEvent(source, ListDataEvent.CONTENTS_CHANGED,
+					startIndex, endIndex);
+
+		// Get Listeners
+		listeners = listenerList.getListeners(ListDataListener.class);
+
+		// Process Listeners
+		for (index = 0; index < listeners.length; index++) {
+			listener = (ListDataListener) listeners[index];
+			listener.contentsChanged(event);
+		} // for
+
+	} // fireContentsChanged()
+
+	/**
+	 * fireIntervalAdded
+	 * @param source TODO
+	 * @param startIndex TODO
+	 * @param endIndex TODO
+	 */
+	protected void fireIntervalAdded(Object source, int startIndex, int endIndex) {
+
+		// Variables
+		ListDataEvent	event;
+		EventListener[]		listeners;
+		ListDataListener	listener;
+		int					index;
+
+		// Create Event
+		event = new ListDataEvent(source, ListDataEvent.INTERVAL_ADDED,
+					startIndex, endIndex);
+
+		// Get Listeners
+		listeners = listenerList.getListeners(ListDataListener.class);
+
+		// Process Listeners
+		for (index = 0; index < listeners.length; index++) {
+			listener = (ListDataListener) listeners[index];
+			listener.intervalAdded(event);
+		} // for
+
+	} // fireIntervalAdded()
+
+	/**
+	 * fireIntervalRemoved
+	 * @param source TODO
+	 * @param startIndex TODO
+	 * @param endIndex TODO
+	 */
+	protected void fireIntervalRemoved(Object source, int startIndex, int endIndex) {
+
+		// Variables
+		ListDataEvent		event;
+		EventListener[]		listeners;
+		ListDataListener	listener;
+		int					index;
+
+		// Create Event
+		event = new ListDataEvent(source, ListDataEvent.INTERVAL_REMOVED,
+					startIndex, endIndex);
+
+		// Get Listeners
+		listeners = listenerList.getListeners(ListDataListener.class);
+
+		// Process Listeners
+		for (index = 0; index < listeners.length; index++) {
+			listener = (ListDataListener) listeners[index];
+			listener.intervalRemoved(event);
+		} // for
+
+	} // fireIntervalRemoved()
+
+	/**
+	 * getListeners
+	 * @param listenerType TODO
+	 * @returns EventListener[]
+	 */
+	public EventListener[] getListeners(Class listenerType) {
+		return listenerList.getListeners(listenerType);
+	} // getListeners()
+
+	/**
+	 * getElementAt
+	 * @param index TODO
+	 * @returns Object
+	 */
+	public abstract Object getElementAt(int index);
+
+	/**
+	 * getSize
+	 * @returns int
+	 */
+	public abstract int getSize();
 
 
-
-
-
+} // AbstractListModel

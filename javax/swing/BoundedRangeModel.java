@@ -79,7 +79,7 @@ public interface BoundedRangeModel {
 	 * getMaximum
 	 * @returns int
 	 */
-	public absint getMaximum();
+	public int getMaximum();
 
 	/**
 	 * setMaximum
