@@ -105,10 +105,4 @@ public interface Configuration
    * @see java.lang.reflect.Proxy
    */
   boolean HAVE_NATIVE_GENERATE_PROXY_CLASS = false;
-
-  /**
-   * The name of the default AWT toolkit to use.
-   * @see java.awt.Toolkit
-   */
-  String AWT_TOOLKIT = "gnu.java.awt.peer.gtk.GtkToolkit";
 }
