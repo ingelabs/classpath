@@ -9,6 +9,7 @@ AWTError.java \
 AWTEvent.java \
 AWTEventMulticaster.java \
 AWTException.java \
+AWTKeyStroke.java \
 AWTPermission.java \
 BorderLayout.java \
 Button.java \

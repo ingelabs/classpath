@@ -1,5 +1,11 @@
 2002-03-30  Eric Blake  <ebb9@email.byu.edu>
 
+	* java/awt/Makefile.am (EXTRA_DIST): Add AWTKeyStroke.java.
+	* java/awt/AWTKeyStroke.java: New file.
+	* java/awt/AWTEventMulticaster.java: Update to 1.4.
+
+2002-03-30  Eric Blake  <ebb9@email.byu.edu>
+
 	* java/awt/EventQueue.java (getMostRecentEventTime): New method.
 	* java/util/EventListenerProxy.java: Fix typos.
 	* java/util/EventObject.java: Fix typos.
