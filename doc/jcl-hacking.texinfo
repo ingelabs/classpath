@@ -320,7 +320,11 @@ install directory structure.  These should be followed if possible.
 For Java code, please follow the
 @uref{http://java.sun.com/docs/codeconv/html/CodeConventionsTOC.doc.html,Sun programming standards}.
 As an exception, do not feel obligated to following their bracket and
-indentation style if you consider it wrong as I do.
+indentation style if you consider it to be wrong.
+
+For documentation comments, please follow
+@uref{http://java.sun.com/products/jdk/javadoc/writingdoccomments.html,How
+to Write Doc Comments for Javadoc}.
 
 @node Programming Goals, Portability, Programming Standards, Top
 @comment node-name, next, previous, up
