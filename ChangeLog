@@ -1,4 +1,22 @@
-2002-11-23  Michael Koch <konqueror@gmx.de>
+2002-11-25  Michael Koch <konqueror@gmx.de>
+
+	* gnu/java/nio/ByteBufferImpl.java
+	(ByteBufferImpl): Call position() after limit().
+	* gnu/java/nio/CharBufferImpl.java
+	(CharBufferImpl): Call position() after limit().
+	* gnu/java/nio/DoubleBufferImpl.java
+	(Thanks to Ito Kazumitsu <ito.kazumitsu@hitachi-cable.co.jp>)
+	(DoubleBufferImpl): Call position() after limit().
+	* gnu/java/nio/FloatBufferImpl.java
+	(FloatBufferImpl): Call position() after limit().
+	* gnu/java/nio/IntBufferImpl.java
+	(IntBufferImpl): Call position() after limit().
+	* gnu/java/nio/LongBufferImpl.java
+	(LongBufferImpl): Call position() after limit().
+	* gnu/java/nio/ShortBufferImpl.java
+	(ShortBufferImpl): Call position() after limit().
+	
+2002-11-25  Michael Koch <konqueror@gmx.de>
 
 	* gnu/java/nio/CharBufferImpl.java
 	(array_offset): Removed.
@@ -52,7 +70,7 @@
 	(getFloat): Removed.
 	(putFloat): Removed.
 	
-2002-11-23  Mark Wielaard  <mark@klomp.org>
+cvs up2002-11-23  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/net/protocol/jar/JarURLConnection.java (READBUFSIZE): 4K.
 	(get): Only write out as much bytes as we actaully read in.

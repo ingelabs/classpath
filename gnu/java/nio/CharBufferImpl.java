@@ -56,24 +56,24 @@ public final class CharBufferImpl extends CharBuffer
   {
     this.backing_buffer = new char[cap];
     this.cap = cap;
-    this.position(off);
     this.limit(lim);
+    this.position(off);
   }
   
   public CharBufferImpl(char[] array, int off, int lim)
   {
     this.backing_buffer = array;
     this.cap = array.length;
-    this.position(off);
     this.limit(lim);
+    this.position(off);
   }
   
   public CharBufferImpl (CharBufferImpl copy)
   {
     backing_buffer = copy.backing_buffer;
     ro = copy.ro;
-    position (copy.position ());
     limit (copy.limit());
+    position (copy.position ());
   }
   
   void inc_pos (int a)
