@@ -832,7 +832,7 @@ public final class Character implements Serializable, Comparable
    *
    * @return true if ch is a Java space, else false
    * 
-   * @deprecated Replaced by isWhiteSpace()
+   * @deprecated Replaced by isWhitespace()
    */
   public static boolean isSpace(char ch) {
     return ((ch == ' ') || (ch == '\t') || (ch == '\n') || (ch == '\f') || 
@@ -848,7 +848,7 @@ public final class Character implements Serializable, Comparable
    *
    * @return true if ch is Java whitespace, else false
    */
-  public static boolean isWhiteSpace(char ch) {
+  public static boolean isWhitespace(char ch) {
     CharAttr attr = readChar(ch);
     int category = attr.getType();
     return ((category == SPACE_SEPARATOR && !attr.isNoBreakSpace()) ||
