@@ -1,5 +1,9 @@
 2002-12-08  Mark Wielaard  <mark@klomp.org>
 
+	* java/net/URLClassLoader.java: Reindent and other formatting fixes.
+
+2002-12-08  Mark Wielaard  <mark@klomp.org>
+
 	* java/util/ResourceBundle.java (resourceBundleCache): Not final.
 	(lastDefaultLocale): New field.
 	(getBundle): When Locale.getDefault != lastDefaultLocale reset

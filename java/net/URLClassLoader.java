@@ -120,8 +120,8 @@ import java.util.zip.ZipException;
  * @author Wu Gansha (gansha.wu@intel.com)
  */
  
-public class URLClassLoader extends SecureClassLoader {
-
+public class URLClassLoader extends SecureClassLoader
+{
   // Class Variables
 
   /**
@@ -277,8 +277,8 @@ public class URLClassLoader extends SecureClassLoader {
    */
   final static class JarURLLoader extends URLLoader
   {
-    final JarFile jarfile;   // The canonical jar file for this url
-    final URL baseJarURL; // Base jar: url for all resources loaded from jar
+    final JarFile jarfile; // The canonical jar file for this url
+    final URL baseJarURL;  // Base jar: url for all resources loaded from jar
 
     public JarURLLoader(URLClassLoader classloader, URL baseURL)
     {
@@ -290,17 +290,18 @@ public class URLClassLoader extends SecureClassLoader {
       sb.append("jar:");
       sb.append(external);
       sb.append("!/");
+      String jarURL = sb.toString();
 
       URL baseJarURL = null;
       JarFile jarfile = null;
       try
 	{
-	  baseJarURL = new URL(null, sb.toString(),
-				    classloader.getURLStreamHandler("jar")) ;
+	  baseJarURL
+	    = new URL(null, jarURL, classloader.getURLStreamHandler("jar"));
 	  jarfile
 	    = ((JarURLConnection) baseJarURL.openConnection()).getJarFile();
 	}
-      catch (IOException ioe) { ioe.printStackTrace(); /* ignored */ }
+      catch (IOException ioe) { /* ignored */ }
 
       this.baseJarURL = baseJarURL;
       this.jarfile = jarfile;
@@ -433,7 +434,7 @@ public class URLClassLoader extends SecureClassLoader {
     final private int length;
 
     RemoteResource(RemoteURLLoader loader, String name, URL url,
-		 InputStream stream, int length)
+		   InputStream stream, int length)
     {
       super(loader, name);
       this.url = url;
@@ -508,7 +509,7 @@ public class URLClassLoader extends SecureClassLoader {
       try
 	{
 	  return new URL(loader.baseURL, name,
-			  loader.classloader.getURLStreamHandler("file"));
+			 loader.classloader.getURLStreamHandler("file"));
 	}
       catch(MalformedURLException e)
 	{
@@ -652,27 +653,29 @@ public class URLClassLoader extends SecureClassLoader {
    * Adds a new location to the end of the internal URL store.
    * @param newUrl the location to add
    */
-  protected void addURL(URL newUrl) {
+  protected void addURL(URL newUrl)
+  {
     synchronized(urlloaders)
       {
 	if (newUrl == null)
 	  return; // Silently ignore...
         
 	// check global cache to see if there're already url loader
-	//   for this url
+	// for this url
 	URLLoader loader = (URLLoader)urlloaders.get(newUrl);
 	if (loader == null)
 	  {
 	    String file = newUrl.getFile();
-	    if (!file.endsWith("/")) // it's a jar url
+	    // Check that it is not a directory
+	    if (!(file.endsWith("/") || file.endsWith(File.separator)))
 	      loader = new JarURLLoader(this, newUrl);
-	    else // it's a file url
+	    else // it's a url that point to a jar file
 	      if ("file".equals(newUrl.getProtocol()))
 		loader = new FileURLLoader(this, newUrl);
 	      else
 		loader = new RemoteURLLoader(this, newUrl);
 
-	    //cache it
+	    // cache it
 	    urlloaders.put(newUrl, loader);
 	  }
 
@@ -685,8 +688,10 @@ public class URLClassLoader extends SecureClassLoader {
    * Adds an array of new locations to the end of the internal URL store.
    * @param newUrls the locations to add
    */
-  private void addURLs(URL[] newUrls) {
-    for (int i = 0; i < newUrls.length; i++) {
+  private void addURLs(URL[] newUrls)
+  {
+    for (int i = 0; i < newUrls.length; i++)
+    {
       addURL(newUrls[i]);
     }
   }
@@ -729,7 +734,8 @@ public class URLClassLoader extends SecureClassLoader {
     // http://java.sun.com/products/jdk/1.4/docs/guide/extensions/spec.html#bundled
     // But how do we get that jar manifest here?
     String sealed = attr.getValue(Attributes.Name.SEALED);
-    if ("false".equals(sealed)) {
+    if ("false".equals(sealed))
+    {
       // make sure that the URL is null so the package is not sealed
       url = null;
     }
@@ -798,7 +804,6 @@ public class URLClassLoader extends SecureClassLoader {
 	// Now get the CodeSource
 	final CodeSource source = resource.getCodeSource();
 	
-	
 	// Find out package name
 	String packageName = null;
 	int lastDot = className.lastIndexOf('.');
@@ -838,8 +843,7 @@ public class URLClassLoader extends SecureClassLoader {
       }
     catch (IOException ioe)
       {
-	throw (ClassNotFoundException)
-	  (new ClassNotFoundException(className, ioe));
+	throw new ClassNotFoundException(className, ioe);
       }
   }
 
@@ -953,7 +957,8 @@ public class URLClassLoader extends SecureClassLoader {
    * @return the collection of permissions needed to access the code resource
    * @see java.security.SecureClassLoader#getPermissions()
    */
-  protected PermissionCollection getPermissions(CodeSource source) {
+  protected PermissionCollection getPermissions(CodeSource source)
+  {
     // XXX - This implementation does exactly as the Javadoc describes.
     // But maybe we should/could use URLConnection.getPermissions()?
 
@@ -963,22 +968,30 @@ public class URLClassLoader extends SecureClassLoader {
     // Now add the any extra permissions depending on the URL location
     URL url = source.getLocation();
     String protocol = url.getProtocol();
-    if (protocol.equals("file")) {
-      String file = url.getFile();
-      // If the file end in / it must be an directory
-      if (file.endsWith("/")) {
-	// Grant permission to read everything in that directory and
-	// all subdirectories
-	permissions.add(new FilePermission(file + "-", "read"));
-      } else { // It is a 'normal' file
-	// Grant permission to access that file
-	permissions.add(new FilePermission(file, "read"));
+    if (protocol.equals("file"))
+      {
+	String file = url.getFile();
+	// If the file end in / it must be an directory
+	if (file.endsWith("/") || file.endsWith(File.separator))
+	  {
+	    // Grant permission to read everything in that directory and
+	    // all subdirectories
+	    permissions.add(new FilePermission(file + "-", "read"));
+	  }
+	else
+	  {
+	    // It is a 'normal' file
+	    // Grant permission to access that file
+	    permissions.add(new FilePermission(file, "read"));
+	  }
       }
-    } else {
-      // Grant permission to connect to and accept connections from host
-      String host = url.getHost();
-      permissions.add(new SocketPermission(host, "connect,accept"));
-    }
+    else
+      {
+	// Grant permission to connect to and accept connections from host
+	String host = url.getHost();
+	if (host != null)
+	  permissions.add(new SocketPermission(host, "connect,accept"));
+      }
 
     return permissions;
   }
@@ -989,7 +1002,8 @@ public class URLClassLoader extends SecureClassLoader {
    * URLs as any URLs added later by the loader.
    * @return All the currently used URLs
    */
-  public URL[] getURLs() {
+  public URL[] getURLs()
+  {
     return (URL[]) urls.toArray(new URL[urls.size()]);
   }
 
