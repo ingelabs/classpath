@@ -1,5 +1,11 @@
 2005-01-20  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/print/PrinterJob.java
+	(pageDialog): Throws java.awt.HeadlessException.
+	(printDialog): Likewise.
+
+2005-01-20  Michael Koch  <konqueror@gmx.de>
+
 	* doc/hacking.texinfo: Fixed one typo and the paragraph about time
 	formats.
 
