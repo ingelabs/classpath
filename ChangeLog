@@ -1,3 +1,9 @@
+2005-02-27  Roman Kennke  <roman@ontographics.com>
+
+	* javax/swing/plaf/basic/BasicListUI:
+	fixed modifiers of several fields, methods and inner
+	classes to match the 'spec'
+
 2005-02-27  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/aelfred2/JAXPFactory.java,
