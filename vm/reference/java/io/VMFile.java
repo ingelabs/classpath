@@ -194,7 +194,7 @@ final class VMFile
 
   /**
    * This method returns a canonical representation of the pathname of
-   * this file.  The actual form of the canonical representation is
+   * the given path.  The actual form of the canonical representation is
    * different.  On the GNU system, the canonical form differs from the
    * absolute form in that all relative file references to "." and ".."
    * are resolved and removed.
@@ -205,7 +205,7 @@ final class VMFile
    *
    * @exception IOException If an error occurs
    */
-  public String toCanonicalForm(String path) throws IOException
+  public static String toCanonicalForm(String path) throws IOException
   {
 	// FIXME: this only works on UNIX
 	return PlatformHelper.toCanonicalForm(path);

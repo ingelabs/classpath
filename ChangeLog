@@ -1,3 +1,8 @@
+2004-07-28  Mark Wielaard  <mark@klomp.org>
+
+	* vm/reference/java/io/VMFile.java (toCanonicalForm): Made
+	static.
+
 2004-07-27  Jeroen Frijters  <jeroen@frijters.net>
 
 	* vm/reference/java/io/VMFile.java (toCanonicalForm): New method.
