@@ -41,6 +41,8 @@ import java.io.Serializable;
 import java.util.Random;
 import java.util.Enumeration;
 
+import gnu.java.security.Engine;
+
 /**
  * An interface to a cryptographically secure pseudo-random number
  * generator (PRNG). Random (or at least unguessable) numbers are used
@@ -233,6 +235,10 @@ public class SecureRandom extends Random
         return new SecureRandom((SecureRandomSpi)
           Engine.getInstance(SECURE_RANDOM, algorithm, provider),
           provider);
+      }
+    catch (java.lang.reflect.InvocationTargetException ite)
+      {
+	throw new NoSuchAlgorithmException(algorithm);
       }
     catch (ClassCastException cce)
       {

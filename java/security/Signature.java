@@ -38,8 +38,11 @@ exception statement from your version. */
 package java.security;
 
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.spec.AlgorithmParameterSpec;
+
+import gnu.java.security.Engine;
 
 /**
  * <p>This <code>Signature</code> class is used to provide applications the
@@ -237,7 +240,15 @@ public abstract class Signature extends SignatureSpi
       throw new IllegalArgumentException("Illegal provider");
 
     Signature result = null;
-    Object o = Engine.getInstance(SIGNATURE, algorithm, provider);
+    Object o = null;
+    try
+      {
+        o = Engine.getInstance(SIGNATURE, algorithm, provider);
+      }
+    catch (java.lang.reflect.InvocationTargetException ite)
+      {
+	throw new NoSuchAlgorithmException(algorithm);
+      }
 
     if (o instanceof SignatureSpi)
       {
@@ -308,7 +319,26 @@ public abstract class Signature extends SignatureSpi
 	  throw new InvalidKeyException(
               "KeyUsage of this Certificate indicates it cannot be used for digital signing");
       }
-    this.initVerify(certificate.getPublicKey());
+    try
+      {
+        this.initVerify(certificate.getPublicKey());
+      }
+    catch (SignatureException se)
+      {
+        throw new InvalidKeyException(se.getMessage());
+      }
+    catch (NoSuchAlgorithmException nsae)
+      {
+        throw new InvalidKeyException(nsae.getMessage());
+      }
+    catch (NoSuchProviderException nspe)
+      {
+        throw new InvalidKeyException(nspe.getMessage());
+      }
+    catch (CertificateException ce)
+      {
+        throw new InvalidKeyException(ce.getMessage());
+      }
   }
 
   /**
