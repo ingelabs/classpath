@@ -408,7 +408,7 @@
 	New files.
 
 2005-03-08  Audrius Meskauskas  <audriusa@bluewin.ch>
-	* org/omg/CORBA/.java: New file.
+	* org/omg/CORBA/AnyHolder.java: New file.
 
 2005-03-08 David Gilbert <david.gilbert@object-refinery.com>
 
