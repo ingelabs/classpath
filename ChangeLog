@@ -1,5 +1,11 @@
 2005-01-06  Mark Wielaard  <mark@klomp.org>
 
+	* configure.ac: Update version to 0.13.
+	* NEWS: Add news about 0.13.
+	* INSTALL: Mention new dependencies and configure flags.
+
+2005-01-06  Mark Wielaard  <mark@klomp.org>
+
 	* configure.ac: Add explicit X and libXtst tests when gtk+ peers are
 	enabled.
 

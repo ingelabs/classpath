@@ -1,4 +1,4 @@
-Installing GNU Classpath - Last updated: April 30, 2004
+Installing GNU Classpath - Last updated: January 6, 2005
 
 First, this is a development release only! Unless you are interested in
 active development and debugging, or just like running random alpha code,
@@ -44,6 +44,8 @@ Suggested Software
         - libart_lgpl 2.1.0
         - gdk-pixbuf
 
+	- XTest Extension (libXtst) for GdkRobot support in java.awt.
+
 	For building the xmlj JAXP implementation (dsabled by default, use
 	configure --enable-xmlj) you need the following installed:
 	- The XML C library for Gnome (libxml2)
@@ -67,11 +69,22 @@ package is built.  Consider the following options, "configure --help"
 gives a complete list.  
 
   --enable-java           compile Java source default=yes
-  --enable-jni            compile JNI source default=no
-  --enable-cni            compile CNI source default=no
-  --enable-gtk-peer       compile GTK native peers default=no
+  --enable-jni            compile JNI source default=yes
+  --enable-gtk-peer       compile GTK native peers default=yes
+  --enable-gtk-cairo      compile cairo based Graphics2D default=no
   --enable-load-library   enable to use JNI native methods default=yes
-                          (disabled automatically using --enable-cni)
+  --with-jikes            to compile the class library using jikes
+                          the default is to use gcj
+  --with-glibj            define what to install (zip|flat|both|none)
+                          default=zip
+  --enable-Werror         whether to compile C code with -Werror which turns
+                          any compiler warning into a compilation failure
+                          default=no
+  --enable-xmlj           compile native libxml/xslt library default=no
+  --with-jay              Regenerate the parsers with jay must be given the
+                          path to the jay executable
+
+For more flags run configure --help.
 
 2).  Type "gmake" to build the package.  There is no longer a
 dependency problem and we aim to keep it that way.

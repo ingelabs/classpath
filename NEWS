@@ -1,3 +1,39 @@
+New in release 0.13 (Jan 6, 2005)
+
+* The http url protocol handler has been replaced with a full HTTP/1.1
+  version from GNU inetlib.
+* A new ftp url protocol handler has been added also from GNU inetlib.
+* java.beans has been updated to 1.4 including support for XMLEncoder
+  and XMLDecoder.
+* The java.util.Locale support is now based on the Common Locale Data
+  Repository (CLDR) Project (see http://www.unicode.org/cldr/).
+  GNU Classpath provides support for more than 250 locales now.
+  This new support is experimental and the GNU Classpath hackers are
+  working together with runtime developers and the unicode consortium
+  to improve them in the future.
+  If your runtime misdetects your locale or if the default locale gives
+  problems please try running with -Duser.language=en and -Duser.region=US
+  to fall back on a known good locale.
+* Added implementations of javax.xml (JAXP 1.3), org.xml.sax (SAX2) and
+  org.w3c.dom (DOM Level 3) interfaces. It is possible to switch between
+  different implementations AElfred2, GNU DOM, GNU XSL, libxmlj SAX,
+  libxmlj DOM and libxmlj XSL by setting different system properties.
+  Also provided is a preliminary XPath 1.0 implementation.
+  The libxmlj versions are build around libxml2 and libxslt and have to
+  be enabled during build time by the --enable-xmlj configure flag.
+  The current support is equal to the last released GNU JAXP 1.3 release.
+  These packages will be maintained as part of the GNU Classpath core classes
+  in the future. For more information, conformance results and documentation
+  on selecting different implementations see doc/README.jaxp.
+* More AWT accessible support.
+* AWT gtk+ peers component layout, dialog placement, keyboard focus
+  handling and text positioning have been improved.
+* ImageIO interfaces are more complete.
+* JList, JTable and JTree have been hugely improved.
+* java.awt.Robot support with GdkRobot in the gtk+ awt peers.
+  Needs XTest Extension (libXtst) XServer support.
+* New --disable-examples configure argument.
+
 Runtime interface changes:
 
 * Added a new method (VMRuntime.enableShutdownHooks) that enables the VM
@@ -19,6 +55,9 @@ Runtime interface changes:
   implementation, but it is a generic implementation that ignores the
   nano-seconds argument. Runtime hackers are encouraged to provide a more
   efficient version.
+* There is prelimenary support for nio direct byte buffers.
+  See VMDirectByteBuffer. Please contact the GNU Classpath mailinglist when
+  you add support for this to your runtime.
 
 New in release 0.12 (Nov 14, 2004)
 
