@@ -101,7 +101,12 @@ show(Component component, int x, int y)
 {
   PopupMenuPeer pmp = (PopupMenuPeer)getPeer();
   if (pmp != null)
-    pmp.show(component, x, y);
+    {
+      Event e = new Event (component, Event.ACTION_EVENT, component);
+      e.x = x;
+      e.y = y;
+      pmp.show (e);
+    }
 }
 
 } // class PopupMenu
