@@ -1,5 +1,5 @@
 /* Signature.java --- Signature Class
-   Copyright (C) 1999, 2002, 2003, Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -107,11 +107,17 @@ import java.security.spec.AlgorithmParameterSpec;
  */
 public abstract class Signature extends SignatureSpi
 {
+  /** Service name for signatures. */
+  private static final String SIGNATURE = "Signature";
+
   /**
    * Possible <code>state</code> value, signifying that this signature object
    * has not yet been initialized.
    */
   protected static final int UNINITIALIZED = 0;
+
+  // Constructor.
+  // ------------------------------------------------------------------------
 
   /**
    * Possible <code>state</code> value, signifying that this signature object
@@ -196,6 +202,9 @@ public abstract class Signature extends SignatureSpi
   public static Signature getInstance(String algorithm, String provider)
     throws NoSuchAlgorithmException, NoSuchProviderException
   {
+    if (provider == null || provider.length() == 0)
+      throw new IllegalArgumentException("Illegal provider");
+    
     Provider p = Security.getProvider(provider);
     if (p == null)
       throw new NoSuchProviderException(provider);
@@ -225,62 +234,26 @@ public abstract class Signature extends SignatureSpi
     throws NoSuchAlgorithmException
   {
     if (provider == null)
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Illegal provider");
 
-    // try the name as is
-    String className = provider.getProperty("Signature." + algorithm);
-    if (className == null) // try all uppercase
-      {
-        String upper = algorithm.toUpperCase();
-        className = provider.getProperty("Signature." + upper);
-        if (className == null) // try if it's an alias
-          {
-            String alias = provider.getProperty("Alg.Alias.Signature." + algorithm);
-            if (alias == null)
-              {
-                alias = provider.getProperty("Alg.Alias.Signature." + upper);
-                if (alias == null) // spit the dummy
-                  throw new NoSuchAlgorithmException(algorithm);
-              }
-            className = provider.getProperty("Signature." + alias);
-            if (className == null)
-              throw new NoSuchAlgorithmException(algorithm);
-          }
-      }
-    return getInstance(className, algorithm, provider);
-  }
+    Signature result = null;
+    Object o = Engine.getInstance(SIGNATURE, algorithm, provider);
 
-  private static Signature getInstance(String classname, String algorithm,
-                                       Provider provider)
-    throws NoSuchAlgorithmException
-  {
-    try
+    if (o instanceof SignatureSpi)
       {
-        Object o = Class.forName(classname).newInstance();
-        Signature sig;
-        if (o instanceof SignatureSpi)
-          sig = new DummySignature((SignatureSpi) o, algorithm);
-        else
-          {
-            sig = (Signature) o;
-            sig.algorithm = algorithm;
-          }
-
-        sig.provider = provider;
-        return sig;
+	result = new DummySignature((SignatureSpi) o, algorithm);
       }
-    catch (ClassNotFoundException cnfe)
+    else if (o instanceof Signature)
       {
-        throw new NoSuchAlgorithmException("Class not found");
+	result = (Signature) o;
+	result.algorithm = algorithm;
       }
-    catch (InstantiationException ie)
+    else
       {
-        throw new NoSuchAlgorithmException("Class instantiation failed");
+	throw new NoSuchAlgorithmException(algorithm);
       }
-    catch (IllegalAccessException iae)
-      {
-        throw new NoSuchAlgorithmException("Illegal Access");
-      }
+    result.provider = provider;
+    return result;
   }
 
   /**

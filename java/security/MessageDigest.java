@@ -84,11 +84,15 @@ package java.security;
  * the superclass are intended for cryptographic service providers who wish to
  * supply their own implementations of message digest algorithms.</p>
  *
- * @see DigestInputStream
- * @see DigestOutputStream
+ * @see MessageDigestSpi
+ * @see Provider
+ * @since JDK 1.1
  */
 public abstract class MessageDigest extends MessageDigestSpi
 {
+  /** The service name for message digests. */
+  private static final String MESSAGE_DIGEST = "MessageDigest";
+
   private String algorithm;
   Provider provider;
   private byte[] lastDigest;
@@ -96,9 +100,10 @@ public abstract class MessageDigest extends MessageDigestSpi
   /**
    * Creates a message digest with the specified algorithm name.
    *
-   * @param algorithm the standard name of the digest algorithm. See Appendix A
-   * in the Java Cryptography Architecture API Specification &amp; Reference for
-   * information about standard algorithm names.
+   * @param algorithm the standard name of the digest algorithm. 
+   * See Appendix A in the Java Cryptography Architecture API 
+   * Specification &amp; Reference for information about standard 
+   * algorithm names.
    */
   protected MessageDigest(String algorithm)
   {
@@ -157,8 +162,10 @@ public abstract class MessageDigest extends MessageDigestSpi
   public static MessageDigest getInstance(String algorithm, String provider)
     throws NoSuchAlgorithmException, NoSuchProviderException
   {
-    Provider p = Security.getProvider(provider);
+    if (provider == null || provider.length() == 0)
+      throw new IllegalArgumentException("Illegal provider");
 
+    Provider p = Security.getProvider(provider);
     if (p == null)
       throw new NoSuchProviderException(provider);
 
@@ -187,71 +194,26 @@ public abstract class MessageDigest extends MessageDigestSpi
     throws NoSuchAlgorithmException
   {
     if (provider == null)
-      throw new IllegalArgumentException();
-
-    // try the name as is
-    String className = provider.getProperty("MessageDigest." + algorithm);
-    if (className == null) // try all uppercase
-      {
-        String upper = algorithm.toUpperCase();
-        className = provider.getProperty("MessageDigest." + upper);
-        if (className == null) // try if it's an alias
-          {
-            String alias = provider.getProperty(
-                "Alg.Alias.MessageDigest." +algorithm);
-            if (alias == null) // try all-uppercase alias name
-              {
-                alias = provider.getProperty("Alg.Alias.MessageDigest." +upper);
-                if (alias == null) // spit the dummy
-                  throw new NoSuchAlgorithmException(algorithm);
-              }
-            className = provider.getProperty("MessageDigest." + alias);
-            if (className == null)
-              throw new NoSuchAlgorithmException(algorithm);
-          }
-      }
-    return getInstance(className, algorithm, provider);
-  }
-
-  private static MessageDigest getInstance(String classname,
-					   String algorithm,
-					   Provider provider)
-    throws NoSuchAlgorithmException
-  {
-    if (classname == null)
-      throw new NoSuchAlgorithmException(algorithm);
+      throw new IllegalArgumentException("Illegal provider");
 
     MessageDigest result = null;
-    try
+    Object o = Engine.getInstance(MESSAGE_DIGEST, algorithm, provider);
+     
+    if (o instanceof MessageDigestSpi)
       {
-        Object obj = Class.forName(classname).newInstance();
-        if (obj instanceof MessageDigest)
-          {
-            result = (MessageDigest) obj;
-            result.algorithm = algorithm;
-          }
-        else if (obj instanceof MessageDigestSpi)
-          result = new DummyMessageDigest((MessageDigestSpi) obj, algorithm);
-        else
-          throw new ClassCastException("Class "+classname+" from Provider "
-              +provider.getName()
-              +" does not extend java.security.MessageDigestSpi");
-        result.provider = provider;
-        return result;
+	result = new DummyMessageDigest((MessageDigestSpi) o, algorithm);
       }
-    catch (ClassNotFoundException cnfe)
+    else if (o instanceof MessageDigest)
       {
-        throw new NoSuchAlgorithmException(algorithm + ": Class not found.");
+	result = (MessageDigest) o;
+	result.algorithm = algorithm;
       }
-    catch (InstantiationException ie)
+    else
       {
-        throw new NoSuchAlgorithmException(
-            algorithm + ": Class instantiation failed.");
+        throw new NoSuchAlgorithmException(algorithm);
       }
-    catch (IllegalAccessException iae)
-      {
-        throw new NoSuchAlgorithmException(algorithm + ": Illegal Access");
-      }
+    result.provider = provider;
+    return result;
   }
 
   /**
@@ -312,10 +274,10 @@ public abstract class MessageDigest extends MessageDigestSpi
    * Completes the hash computation by performing final operations such as
    * padding. The digest is reset after this call is made.
    *
-   * @param buf output buffer for the computed digest.
-   * @param offset offset into the output buffer to begin storing the digest.
-   * @param len number of bytes within buf allotted for the digest.
-   * @return the number of bytes placed into buf.
+   * @param buf An output buffer for the computed digest.
+   * @param offset The offset into the output buffer to begin storing the digest.
+   * @param len The number of bytes within buf allotted for the digest.
+   * @return The number of bytes placed into buf.
    * @throws DigestException if an error occurs.
    */
   public int digest(byte[] buf, int offset, int len) throws DigestException

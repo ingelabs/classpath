@@ -1,3 +1,44 @@
+2003-03-26  C. Brian Jones  <cbj@gnu.org>
+
+	* configure.in: VERSION changed to 0.05+cvs
+	* THANKYOU: added Casey Marshall
+
+2003-03-26  Casey Marshall  <rsdio@metastatic.org> 
+
+	* java/security/AlgorithmParameterGenerator.java 
+	(getInstance (String)): add missing return statement
+	(getInstance (String,String)): check for improper provider argument
+	(getInstance (String,Provider)): reuse common Engine code
+	(getInstance (String,String,Provider)): removed
+	* java/security/AlgorithmParameters.java
+	(getInstance (String,String)): check for improper provider argument
+	(getInstance (String,Provider)): reuse common Engine code
+	(getInstance (String,String,Provider)): removed
+	* java/security/Engine.java: new file
+	* java/security/KeyFactory.java
+	(getInstance (String)): add missing return statement
+	(getInstance (String,String)): check for improper provider argument
+	(getInstance (String,Provider)): reuse common Engine code
+	(getInstance (String,String,Provider)): removed
+	* java/security/KeyPairGenerator.java
+	(getInstance (String,Provider)): reuse common Engine code
+	(getInstance (String,String,Provider)): removed
+	* java/security/KeyStore.java
+	(getInstance (String)): use getInstance(String,Provider) instead
+	(getInstance (String,String)): use getInstance(String,Provider) instead
+	(getInstance (String,Provider): reuse common Engine code
+	* java/security/MessageDigest.java
+	(getInstance (String,String)): check for improper provider argument
+	(getInstance (String,Provider)): reuse common Engine code
+	* java/security/SecureRandom.java
+	(getInstance (String): formatting
+	(getInstance (String,String)): check for improper provider argument
+	(getInstance (String,Provider)): reuse common Engine code
+	* java/security/Signature.java
+	(getInstance (String,String)): check for improper provider argument
+	(getInstance (String,Provider)): reuse common Engine code
+	(getInstance (String,String,Provider)): removed
+
 2003-03-25  Michael Koch <konqueror@gmx.de>
 
 	* java/io/RandomAccessFile.java

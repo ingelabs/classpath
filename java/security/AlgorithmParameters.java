@@ -1,5 +1,5 @@
 /* AlgorithmParameters.java --- Algorithm Parameters Implementation Class
-   Copyright (C) 1999, 2003, Free Software Foundation, Inc.
+   Copyright (C) 1999, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -81,6 +81,9 @@ import java.io.IOException;
  */
 public class AlgorithmParameters
 {
+  /** Service name for algorithm parameters. */
+  private static final String ALGORITHM_PARAMETERS = "AlgorithmParameters";
+
   private AlgorithmParametersSpi paramSpi;
   private Provider provider;
   private String algorithm;
@@ -163,6 +166,9 @@ public class AlgorithmParameters
   public static AlgorithmParameters getInstance(String algorithm, String provider)
     throws NoSuchAlgorithmException, NoSuchProviderException
   {
+    if (provider == null || provider.length() == 0)
+      throw new IllegalArgumentException("Illegal provider");
+    
     Provider p = Security.getProvider(provider);
     if (p == null)
       throw new NoSuchProviderException();
@@ -190,55 +196,17 @@ public class AlgorithmParameters
     throws NoSuchAlgorithmException
   {
     if (provider == null)
-      throw new IllegalArgumentException();
+      throw new IllegalArgumentException("Illegal provider");
 
-    // try the name as is
-    String className = provider.getProperty("AlgorithmParameters." + algorithm);
-    if (className == null) // try all uppercase
-      {
-        String upper = algorithm.toUpperCase();
-        className = provider.getProperty("AlgorithmParameters." + upper);
-        if (className == null) // try if it's an alias
-          {
-            String alias =
-                provider.getProperty("Alg.Alias.AlgorithmParameters." + algorithm);
-            if (alias == null) // try all-uppercase alias name
-              {
-                alias = provider.getProperty("Alg.Alias.AlgorithmParameters." + upper);
-                if (alias == null) // spit the dummy
-                  throw new NoSuchAlgorithmException(algorithm);
-              }
-            className = provider.getProperty("AlgorithmParameters." + alias);
-            if (className == null)
-              throw new NoSuchAlgorithmException(algorithm);
-          }
-      }
-    return getInstance(className, algorithm, provider);
-  }
-
-  private static AlgorithmParameters getInstance(String classname,
-                                                 String algorithm,
-						 Provider provider)
-    throws NoSuchAlgorithmException
-  {
     try
       {
-        return new AlgorithmParameters(
-            (AlgorithmParametersSpi) Class.forName(classname).newInstance(),
-            provider,
-            algorithm);
+	return new AlgorithmParameters((AlgorithmParametersSpi)
+	  Engine.getInstance(ALGORITHM_PARAMETERS, algorithm, provider),
+	  provider, algorithm);
       }
-    catch (ClassNotFoundException cnfe)
+    catch (ClassCastException cce)
       {
-        throw new NoSuchAlgorithmException("Class not found");
-      }
-    catch (InstantiationException ie)
-      {
-        throw new NoSuchAlgorithmException("Class instantiation failed");
-      }
-    catch (IllegalAccessException iae)
-      {
-        throw new NoSuchAlgorithmException("Illegal Access");
+	throw new NoSuchAlgorithmException(algorithm);
       }
   }
 
