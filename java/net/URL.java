@@ -1,5 +1,5 @@
 /* URL.java -- Uniform Resource Locator Class
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -327,7 +327,7 @@ public
 URL(String protocol, String host, int port, String file) 
     throws MalformedURLException
 {
-  this(protocol.toLowerCase(), host, port, file, null);
+  this(protocol, host, port, file, null);
 }
 
 /*************************************************************************/
@@ -345,7 +345,7 @@ URL(String protocol, String host, int port, String file)
 public
 URL(String protocol, String host, String file) throws MalformedURLException
 {
-  this(protocol.toLowerCase(), host, -1, file, null);
+  this(protocol, host, -1, file, null);
 }
 
 /*************************************************************************/

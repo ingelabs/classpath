@@ -1,3 +1,36 @@
+2002-10-18  Mark Wielaard  <mark@klomp.org>
+
+	Merged patches from Wu Gansha <gansha.wu@intel.com>:
+	* gnu/java/io/PlatformHelper.java (INITIAL_MAX_PATH): new constant.
+	(toCanonicalForm): Use new constant to optimize StringBuffer usage.
+	Return lowercase path when isWindows == true.
+        * gnu/java/lang/SystemClassLoader.java (classpath): New static field.
+	(pathinfos): Likewise.
+	(getSystemResource): Refactored, cache partial result for each path
+	item in classpath.
+	* gnu/java/net/protocol/file/Handler.java (toExternalForm): New
+	method implementation specific to file protocol.
+        * gnu/java/net/protocol/http/HttpURLConnection.java
+	(buffered_out_stream): New field.
+	(connect): Don't set in_stream, wrap out_stream BufferedOutputStream.
+	Move sending request and receiveing reesponce to new methods.
+	(sendRequest): New method.
+	(receiveReply): Likewise.
+	(setRequestMethod): Accept "POST".
+	(getInputStream): When in_stream == null, call SendRequest() and
+	ReceiveReply().
+	(getOutputStream): New method.
+	* gnu/java/net/protocol/jar/Handler.java (toExternalForm): New
+	optimized method.
+	* gnu/java/net/protocol/jar/JarURLConnection.java (getContentLength):
+	New method.
+	* java/net/URL.java (URL): Remove toLowerCase() when calling this().
+	* java/net/URLConnection.java (req_props): Made final, set in
+	constructor using Hashtable(Map).
+	(setRequestProperty): Not synchronized.
+	(getRequestProperties): New method.
+	* java/net/URLStreamHandler (toExternalForm): Use StringBuffer.
+
 2002-10-16  C. Brian Jones <cbj@gnu.org>
 
 	* doc/www.gnu.org/home.wml: Updated link to nightly japi results to

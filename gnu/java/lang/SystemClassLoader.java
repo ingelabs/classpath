@@ -42,8 +42,11 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.StringTokenizer;
+import java.util.Vector;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipEntry;
+import gnu.java.io.PlatformHelper;
+import gnu.java.net.protocol.jar.JarURLConnection.JarFileCache;
 
 /**
  * The default system class loader. VMs may wish to replace this with a
@@ -64,6 +67,17 @@ public class SystemClassLoader extends ClassLoader
 
   /** Flag to avoid infinite loops. */
   private static boolean is_trying;
+
+  /** value of classpath property */
+  private static String classpath = null;
+  
+  /** A vector contains information for each path in classpath,
+    * the item of the vector can be:
+    *   null:           if corresponding path isn't valid;
+    *   ZipFile object: if corresponding path is a zip/jar file;
+    *   String object:  if corresponding path is a directory.
+    */
+  private static Vector pathinfos = new Vector();
 
   /**
    * Creates a class loader. Note that the parent may be null, when this is
@@ -97,68 +111,148 @@ public class SystemClassLoader extends ClassLoader
   {
     if (name.charAt(0) == '/')
       name = name.substring(1);
+    
     String cp = System.getProperty("java.class.path", ".");
-    StringTokenizer st = new StringTokenizer(cp, File.pathSeparator);
-    while (st.hasMoreTokens())
+    
+    Vector bak_pathinfos = null; // the backup of pathinfos
+    
+    /* if is_trying is true, it's called recursively and in 
+     * a transient status, so we backup pathinfos into a temp
+     * variable, and when all are done, restore pathinfos to 
+     * backup state. That means, this call won't persistent 
+     * its state, it's just a fall through to get out of 
+     * transient state. And when next time it's called again
+     * and is_trying is false, pathinfos will be re-calculated.
+     */
+    if (is_trying)
       {
-        String path = st.nextToken();
-        if (path.toLowerCase().endsWith(".zip") ||
-            path.toLowerCase().endsWith(".jar"))
-          {
-            if (is_trying) // Avoid infinite loop.
-              continue;
-            File f = new File(path);
-            if (! f.exists())
-              continue;
-            path = f.getAbsolutePath();
-            ZipFile zf;
-            try
-              {
-                synchronized (NO_SUCH_ARCHIVE)
-                  {
-                    is_trying = true;
-                    zf = gnu.java.net.protocol.jar.JarURLConnection
-                      .JarFileCache.get(new URL("file://" + path));
-                    is_trying = false;
-                  }
-                if (zf == null)
-                  continue;
-              }
-            catch (Exception e)
-              {
-                continue;
-              }
+	bak_pathinfos = pathinfos;
+	pathinfos = new Vector();
+      }
+    
+    // if classpath property has been changed
+    if (!cp.equals(classpath))
+      {
+	pathinfos.clear();
+	StringTokenizer st = new StringTokenizer(cp, File.pathSeparator);
+	while (st.hasMoreTokens())
+	  {
+	    String path = st.nextToken();
+	    // check if path exists, if not, cache failure 
+	    File f = new File(path);
+	    if(!f.exists())
+	      {
+		pathinfos.add(null);
+		continue;
+	      }
+	    
+	    String lc_path = path.toLowerCase();
+	    path = f.getAbsolutePath();
+	    
+	    if (lc_path.endsWith(".zip") ||
+		lc_path.endsWith(".jar")) //whether it's zip/jar file
+	      {
+		if (is_trying) // Avoid infinite loop.
+		  continue;
+		
+		path = f.getAbsolutePath();
+		ZipFile zf;
+		try
+		  {
+		    // Construct URL object for the parth
+		    StringBuffer sb = 
+		      new StringBuffer(PlatformHelper.INITIAL_MAX_PATH);
+		    sb.append("file://");
+		    sb.append(path);
+		    URL url = new URL(sb.toString());
+		    // class-level critical section
+		    synchronized (NO_SUCH_ARCHIVE)
+		      {
+			is_trying = true;
+			zf = JarFileCache.get(url);
+			is_trying = false;
+		      }
+		  }
+		catch (Exception e)
+		  {
+		    zf = null;
+		  }
+		pathinfos.add(zf);
+	      }
+	    else //not zip/jar file
+	      {
+		if ( !PlatformHelper.endWithSeparator(path) )
+		  pathinfos.add(path + File.separator);
+		else
+		  pathinfos.add(path);      
+	      }
+	  } // while more paths
+      } // if classpath property has been changed
+    
+    URL result = null;
+    for (int i = 0; i < pathinfos.size(); i++)
+      {
+	Object o = pathinfos.elementAt(i);
+	if (o == null )
+	  continue; //it's not a valid path
+	
+	if (o instanceof ZipFile)
+	  { //it's a zip/jar file
+	    ZipFile zf = (ZipFile)o;
             ZipEntry ze = zf.getEntry(name);
+
+	    // if the resource doesn't reside in this zip/jar file
             if (ze == null)
               continue;
+
             try
               {
-                if (path.charAt(0) == '/')
-                  return new URL("jar:file:/" + path + "!/" + name);
-                else
-                  return new URL("jar:file://" + path + "!/" + name);
+		StringBuffer sb = 
+		  new StringBuffer(PlatformHelper.INITIAL_MAX_PATH);
+		sb.append("jar:file://");
+		sb.append(zf.getName());
+		sb.append("!/");
+		sb.append(name);
+		result = new URL(sb.toString());        
               }
             catch (MalformedURLException e)
               {
-                continue;
+		result = null;
               }
+	    break;
           }
-        File f;
-        if (path.endsWith(File.separator))
-          f = new File(path + name);
-        else
-          f = new File(path + File.separator + name);
-
+	// otherwise o is string
+	String path = (String)o;
+	File f = new File(path + name);
         if (f.exists())
-          try
-            {
-              return new URL("file://" + f.getAbsolutePath());
-            }
-          catch (MalformedURLException e)
-            {
-              continue;
-            }
+	  {
+	    try
+	      {
+		result = new URL("file://" + f.getAbsolutePath());
+	      }
+	    catch (MalformedURLException e)
+	      {
+		result = null;
+	      }
+	    break;
+	  }
+      } //for each paths
+    
+    // Restore pathinfos
+    if (is_trying)
+      {
+	pathinfos = bak_pathinfos;
       }
-    return null;
-  }
+    else
+      {
+	/* update classpath, hopefully next time classpath is
+	 * not changed, so pathinfos will not be re-calcualted.
+	 */
+	classpath = cp;
+      }
+    
+    return result;
+    
+  } //End of systemGetResource
+  
 }

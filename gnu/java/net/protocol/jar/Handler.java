@@ -150,7 +150,15 @@ toExternalForm(URL url)
 {
   String file = url.getFile();
 
-  return "jar:" + file;
+  // return "jar:" + file;
+  // Performance!!: 
+  //  Do the concatenation mannually to avoid resize StringBuffer's 
+  //  internal buffer.
+  StringBuffer sb = new StringBuffer(file.length() + 5);
+  sb.append("jar:");
+  sb.append(file);
+
+  return sb.toString();
 }
 
 

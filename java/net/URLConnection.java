@@ -1,5 +1,5 @@
 /* URLConnection.java -- Abstract superclass for reading from URL's
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -45,9 +45,11 @@ import java.security.Permission;
 import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Map;
 import java.util.Locale;
 
 /**
@@ -178,7 +180,7 @@ protected URL url;
 /**
   * The list of request properties for this connection
   */
-private Hashtable req_props = new Hashtable(10);
+private final Hashtable req_props;
 
 /*************************************************************************/
 
@@ -355,14 +357,7 @@ URLConnection(URL url)
   allowUserInteraction = def_allow_user_inter;
   useCaches = def_use_caches;
 
-  Enumeration e = def_req_props.keys();
-  while (e.hasMoreElements())
-    {
-      String key = (String)e.nextElement();
-      String value = (String)def_req_props.get(key);
-
-      req_props.put(key, value);
-    }
+  req_props = new Hashtable(def_req_props);
 }
 
 /*************************************************************************/
@@ -571,10 +566,21 @@ getRequestProperty(String key)
   * @param key The name of the property
   * @param value The value of the property
   */
-public synchronized void
+public void
 setRequestProperty(String key, String value)
 {
   req_props.put(key.toLowerCase(), value);
+}
+
+/**
+ * Returns an unmodifiable Map containing the request properties.
+ *
+ * @since 1.4
+ */
+public Map
+getRequestProperties()
+{
+  return Collections.unmodifiableMap(req_props);
 }
 
 /*************************************************************************/

@@ -134,5 +134,13 @@ public class JarURLConnection extends java.net.JarURLConnection
     
   }
   
+public int
+getContentLength()
+{
+  if(!connected)
+    return -1;
+
+  return (int)jar_entry.getSize();
+}
 } // class JarURLConnection
 

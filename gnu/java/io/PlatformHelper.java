@@ -1,5 +1,5 @@
 /* PlatformHelper.java -- Isolate OS-specific IO helper methods and variables
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -41,15 +41,16 @@ import java.io.*;
 import java.util.StringTokenizer;
 
 /**
- * We have many submissions in File.java, URLStreamHandler.java etc. to handle path
- * representations on different platforms (Windows/Unix-family). Finally we'd like 
- * to collect all these ad hoc codes into this utility class.
+ * We had many cahnges in File.java, URLStreamHandler.java etc. to handle
+ * path representations on different platforms (Windows/Unix-family).
+ * Finally we'd like to collect all these ad hoc codes into this utility class.
  *       --Gansha
  */
  
 public class PlatformHelper{
 
-public static final boolean isWindows = System.getProperty("os.name").indexOf("Windows") >= 0;
+public static final boolean isWindows
+	= System.getProperty("os.name").indexOf("Windows") >= 0;
 
 public static final String separator = System.getProperty("file.separator");
 public static final char separatorChar = separator.charAt(0);
@@ -57,7 +58,15 @@ public static final String pathSeparator = System.getProperty("path.separator");
 public static final char pathSeparatorChar = pathSeparator.charAt(0);
 
 /**
- * This routine checks the input param "path" whether it begins with root path prefix.
+  * On most platforms 260 is equal or greater than a max path value, 
+  * so we can set the initial buffer size of StringBuffer to half of this value
+  * to improve performance.
+  */
+public static final int INITIAL_MAX_PATH = 260/2;
+
+/**
+ * This routine checks the input param "path" whether it begins with root path
+ * prefix.
  * if not, return 0;
  * if yes, return the len of root path prefix;
  *   --for Unix-family platform, root path begins with "/" and len is 1
@@ -106,10 +115,22 @@ public static final String toCanonicalForm(String path){
     */
     String tmppath = path.replace('/', separatorChar);
     StringBuffer canonpath;
+    // We found it'll be more efficient and easy to handle to
+    // return a lowercased canonical path
+    if(isWindows)
+        tmppath = tmppath.toLowerCase();
     int i;
     if ((i = beginWithRootPathPrefix(tmppath)) == 0 )
         return path;
-    canonpath = new StringBuffer(tmppath.substring(0, i));
+    
+    /* The original 
+           "canonpath = new StringBuffer(tmppath.substring(0, i))"
+       isn't very efficient because StringBuffer's 
+       ensureCapacity_unsynchronized will fail definitely each time 
+       and will enlarge buffer and copy contents.       .
+    */
+    canonpath = new StringBuffer(INITIAL_MAX_PATH);
+    canonpath.append(tmppath.substring(0, i));
     tmppath = tmppath.substring(i);
     // pathdepth==0 indicates there're only root path in the buffer
     int pathdepth = 0;

@@ -1,5 +1,5 @@
 /* HttpURLConnection.java -- URLConnection class for HTTP protocol
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -44,10 +44,15 @@ import java.net.Socket;
 import java.net.ProtocolException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
   * This subclass of java.net.URLConnection models a URLConnection via
@@ -80,6 +85,12 @@ private DataInputStream in_stream;
   * The OutputStream for this connection
   */
 private OutputStream out_stream;
+
+/**
+  * buffered_out_stream is a buffer to contain content of the HTTP request,
+  * and will be written to out_stream all at once
+  */
+private ByteArrayOutputStream buffered_out_stream;
 
 /**
   * The PrintWriter for this connection (used internally)
@@ -129,37 +140,69 @@ connect() throws IOException
   else
     socket = new Socket(url.getHost(), url.getPort());
 
-  out_stream = socket.getOutputStream();
-  in_stream = new DataInputStream(socket.getInputStream());
-
+  out_stream = new BufferedOutputStream(socket.getOutputStream());
   out_writer = new PrintWriter(new OutputStreamWriter(out_stream, "8859_1")); 
 
+  connected = true;
+}
+
+/**
+  * write HTTP request header and content to out_writer
+  */
+void SendRequest() throws IOException
+{
   // Send the request
   out_writer.print(getRequestMethod() + " " + getURL().getFile() + 
                    " HTTP/1.1\r\n");
 
-  String propval = getRequestProperty("host");
-  if (propval == null)
-    out_writer.print("Host: " + getURL().getHost() + "\r\n");
-  else
-    out_writer.print("Host: " + propval + "\r\n");
-  out_writer.print("Connection: close" + "\r\n");
+  if (getRequestProperty("host") == null){
+    setRequestProperty("Host", getURL().getHost());
+  }
+  if (getRequestProperty("Connection") == null){
+    setRequestProperty("Connection", "Close");
+  }
+  if (getRequestProperty("user-agent") == null){
+    setRequestProperty("user-agent",
+		"gnu-classpath/" + System.getProperty("classpath.version"));
+  }
+  if (getRequestProperty("accept") == null){
+    setRequestProperty("accept", "*/*");
+  }
+  if (getRequestProperty("Content-type") == null){
+    setRequestProperty("Content-type", "application/x-www-form-urlencoded");
+  }
 
-  propval = getRequestProperty("user-agent");
-  if (propval == null)
-    out_writer.print("User-Agent: jcl/0.0\r\n");
-  else
-    out_writer.print("User-Agent: " + propval + "\r\n");
+  // Write all req_props name-value pairs to the output writer
+  Iterator itr = getRequestProperties().entrySet().iterator();
+  while(itr.hasNext()){
+    Map.Entry e = (Map.Entry) itr.next();
+    out_writer.print(e.getKey() + ": " + e.getValue() + "\r\n");
+  }
 
-  propval = getRequestProperty("accept");
-  if (propval == null)
-    out_writer.print("Accept: */*\r\n");
-  else
-    out_writer.print("Accept: " + propval + "\r\n");
 
+  // Write Content-type and length
+  if(buffered_out_stream != null){
+    out_writer.print("Content-type: application/x-www-form-urlencoded\r\n");
+    out_writer.print("Content-length: "
+		    + String.valueOf(buffered_out_stream.size()) + "\r\n");
+  }
+
+  // One more CR-LF indicates end of header
   out_writer.print("\r\n");
   out_writer.flush();
 
+  // Write content
+  if(buffered_out_stream != null){
+    buffered_out_stream.writeTo(out_stream);
+    out_stream.flush();
+  }
+}
+
+/**
+  * Read HTTP reply from in_stream
+  */
+void ReceiveReply() throws IOException
+{
   // Parse the reply
   String line = in_stream.readLine();
   String saveline = line;
@@ -195,8 +238,8 @@ connect() throws IOException
           do
             {
               if (line.length() == 1)
-                throw new IOException("Server header lines were unparseable: " + 
-                                      line);
+                throw new IOException("Server header lines were unparseable: "
+				+ line);
 
               line = line.substring(1);
             }
@@ -216,7 +259,8 @@ connect() throws IOException
           // Parse out key and value
           idx = line.indexOf(":");
           if ((idx == -1) || (line.length() < (idx + 2)))
-            throw new IOException("Server header lines were unparseable: " + line);
+            throw new IOException("Server header lines were unparseable: "
+			    + line);
 
           key = line.substring(0, idx);
           value = line.substring(idx + 1);
@@ -225,8 +269,8 @@ connect() throws IOException
           while (value.startsWith(" ") || value.startsWith("\t"))
             {
               if (value.length() == 1)
-                throw new IOException("Server header lines were unparseable: " + 
-                                      line);
+                throw new IOException("Server header lines were unparseable: "
+				+ line);
 
               value = value.substring(1);
             }
@@ -237,7 +281,6 @@ connect() throws IOException
       headers.addHeaderField(key, value);
     }
 }
-
 /*************************************************************************/
 
 /**
@@ -267,7 +310,7 @@ public void
 setRequestMethod(String method) throws ProtocolException
 {
   method = method.toUpperCase();
-  if (method.equals("GET") || method.equals("HEAD"))
+  if (method.equals("GET") || method.equals("HEAD") || method.equals("POST"))
     super.setRequestMethod(method);
   else
     throw new ProtocolException("Unsupported or unknown request method " +
@@ -336,10 +379,37 @@ getHeaderField(int n)
 public InputStream
 getInputStream() throws IOException
 {
+  if(in_stream != null)
+     return in_stream;
+
   if (!connected)
     connect();
 
+  in_stream
+	= new DataInputStream(new BufferedInputStream(socket.getInputStream()));
+  
+  SendRequest();
+  ReceiveReply();
+
   return(in_stream);
+}
+
+public java.io.OutputStream
+getOutputStream() throws java.io.IOException
+{
+  if(!doOutput)
+      throw new ProtocolException
+	      ("Want output stream while haven't setDoOutput(true)");
+  if(!method.equals("POST")) //But we might support "PUT" in future
+      setRequestMethod("POST");
+  
+  if (!connected)
+    connect();
+  
+  if(buffered_out_stream == null)
+    buffered_out_stream = new ByteArrayOutputStream(256); //default is too small
+    
+  return buffered_out_stream;
 }
 
 } // class HttpURLConnection

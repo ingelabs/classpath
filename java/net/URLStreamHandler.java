@@ -271,11 +271,33 @@ toExternalForm(URL url)
   String file = url.getFile();
   String anchor = url.getRef();
 
-  return(((protocol != null) ? (protocol + "://") : "") + 
-         ((host != null) ? host : "") + 
-         ((port != -1) ? (":" + port) : "") + 
-         ((file != null) ? file : "/") +
-         ((anchor != null) ? ("#" + anchor) : ""));
+  StringBuffer sb = new StringBuffer(PlatformHelper.INITIAL_MAX_PATH);
+  
+  if (protocol != null){
+    sb.append(protocol);
+    sb.append("://");
+  }
+  
+  if (host != null)
+    sb.append(host);
+    
+  if (port != -1){
+    sb.append(':');
+    sb.append(port);
+  }
+  
+  if (file != null)
+    sb.append(file);
+  else
+    sb.append('/');
+    
+  if (anchor != null){
+    sb.append('#');
+    sb.append(anchor);
+  }
+  
+  return sb.toString();
+
 }
 
 /*************************************************************************/
