@@ -1,3 +1,8 @@
+2005-02-18  Sven de Marothy <sven@physto.se>
+
+	* java/util/TimeZone.java,
+	(getDefaultDisplayName): Don't print zero offsets.
+
 2005-02-18  Robert Schuster <thebohemian@gmx.net>
 
         * java/nio/charset/Charset.java (forName): Throws
