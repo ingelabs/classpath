@@ -1,3 +1,8 @@
+2001-10-22  Tom Tromey  <tromey@redhat.com>
+
+	* java/util/GregorianCalendar.java (getGregorianChange): Removed
+	`date' argument.
+
 2001-10-21  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/ArrayList.java (checkBoundExclusive),
