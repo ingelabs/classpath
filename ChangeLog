@@ -1,4 +1,11 @@
-2004-09-09  Casey Marshall <csm@gnu.org>
+2004-09-09  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug #8991.
+	* java/net/URLConnection.java (getContent): Add support for
+	explicit mime types. Call getInputStream() if no handler found.
+	* gnu/java/net/content/text/plain.java: Removed
+
+2004-09-09  Casey Marshall  <csm@gnu.org>
 
 	* java/io/ObjectInputStream.java (callReadMethod): re-throw
 	`ClassNotFoundException'.
