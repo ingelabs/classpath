@@ -1,3 +1,8 @@
+2002-02-15  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/Collections.java (list): Update the API to reflect
+	change from JDK 1.4 beta documentation.
+
 2002-02-15  Mark Wielaard <mark@klomp.org>
 
 	* THANKYOU: Add Isaac Jones and Patrick Doyle

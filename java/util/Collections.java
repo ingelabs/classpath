@@ -1,5 +1,5 @@
 /* Collections.java -- Utility class with methods to operate on collections
-   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -726,7 +726,7 @@ public class Collections
   }
 
   /**
-   * Returns an array list holding the elements visited by a given
+   * Returns an ArrayList holding the elements visited by a given
    * Enumeration. This method exists for interoperability between legacy
    * APIs and the new Collection API.
    *
@@ -735,9 +735,9 @@ public class Collections
    * @see ArrayList
    * @since 1.4
    */
-  public static List list(Enumeration e)
+  public static ArrayList list(Enumeration e)
   {
-    List l = new ArrayList();
+    ArrayList l = new ArrayList();
     while (e.hasMoreElements())
       l.add(e.nextElement());
     return l;
