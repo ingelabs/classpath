@@ -103,9 +103,11 @@ sub writeClassFile
 	foreach $i (0 .. $#natives-1)
 	{
 	    $j = $natives[$i];
+	    $j =~ s/\.java$/\.class/;
 	    print MAKEDEP "           ", $j, " \\", "\n"; 
 	}
 	$j = $natives[$#natives];
+	$j =~ s/\.java$/\.class/;
 	print MAKEDEP "           ", $j, "\n\n";
     }
     close(MAKEDEP);
