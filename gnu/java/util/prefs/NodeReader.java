@@ -101,7 +101,7 @@ public class NodeReader {
         Preferences root;
         if ("user".equals(type)) {
             root = factory.userRoot();
-        } else if ("user".equals(type)) {
+        } else if ("system".equals(type)) {
             root = factory.systemRoot();
         } else {
             throw new InvalidPreferencesFormatException("Unknown type: "

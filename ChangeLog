@@ -1,3 +1,8 @@
+2002-09-02  Mark Wielaard  <mark@klomp.org>
+
+	Thanks to rzschech. Closes bug #1132.
+	* gnu/java/util/prefs/NodeReader.java (readRoot): Also use "system".
+
 2002-09-09  John Leuner  <jewel@debian.org>
 
 	* native/fdlibm/ieeefp.h: added check for S390 arch
