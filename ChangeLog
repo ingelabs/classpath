@@ -1,3 +1,8 @@
+2004-12-07  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/io/BufferedInputStream.java
+	(skip): Don't return -1 on EOF.
+
 2004-12-06  Chris Burdess  <dog@gnu.org>
 
 	* gnu/java/net/LineInputStream.java: (read) fixed possible infinite
