@@ -22,7 +22,6 @@
 package java.net;
 
 import java.io.IOException;
-//import java.security.AccessControlException;
 
 /**
   * This class models server side sockets.  The basic model is that the
@@ -85,6 +84,8 @@ InetAddress addr;
   * setting the factory.  If insufficient privileges exist to set the factory,
   * an IOException will be thrown
   *
+  * @exception SecurityException If this operation is not allowed by the
+  * <code>SecurityManager</code>.
   * @exception SocketException If the factory object is already defined
   * @exception IOException If any other error occurs
   */
@@ -98,17 +99,7 @@ setSocketFactory(SocketImplFactory factory) throws IOException
   // Check permission to perform this operation
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-      try
-        {
-          sm.checkSetFactory();
-        }
-//      catch (AccessControlException e)
-      catch (SecurityException e)
-        {
-          throw new IOException(e.toString());
-        }
-    }
+    sm.checkSetFactory();
 
   ServerSocket.factory = factory;
 }
@@ -183,6 +174,10 @@ ServerSocket(int port, int queuelen, InetAddress addr) throws IOException
   this();
   if (impl == null)
     throw new IOException("Cannot initialize Socket implementation");
+
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    sm.checkListen(port);
 
   impl.create(true);
   impl.bind(addr, port);

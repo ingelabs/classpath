@@ -85,6 +85,8 @@ InetAddress local_addr;
   * insufficient privileges exist to set the factory, then an IOException
   * will be thrown.
   *
+  * @exception SecurityException If the <code>SecurityManager</code> does
+  * not allow this operation.
   * @exception SocketException If the SocketImplFactory is already defined
   * @exception IOException If any other error occurs
   */
@@ -98,17 +100,7 @@ setSocketImplFactory(SocketImplFactory factory) throws IOException
   // Check permissions
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-      try
-        {
-          sm.checkSetFactory();
-        }
-//      catch (AccessControlException e)
-      catch (SecurityException e)
-        {
-          throw new IOException(e.toString());
-        }
-    }
+    sm.checkSetFactory();
 
   Socket.factory = factory;
 }
@@ -286,7 +278,6 @@ Socket(String host, int port, InetAddress localAddr, int localPort)
   * otherwise use the local host and port passed in.  Create as stream or
   * datagram based on "stream" argument.
   * <p>
-  * ******* Check security *************
   *
   * @param raddr The remote address to connect to
   * @param rport The remote port to connect to
@@ -303,6 +294,10 @@ Socket(InetAddress raddr, int rport, InetAddress laddr, int lport,
   this();
   if (impl == null)
     throw new IOException("Cannot initialize Socket implementation");
+
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    sm.checkConnect(raddr.getHostName(), rport);
 
   impl.create(stream);
 
