@@ -1,5 +1,20 @@
 2003-03-03  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/channels/DatagramChannel.java:
+	Merged from libgcj.
+	* java/nio/channels/spi/SelectorProvider.java:
+	Merged from libgcj.
+	* java/nio/charset/Charset.java:
+	Merged from libgcj.
+	* java/nio/charset/CharsetEncoder.java:
+	Merged from libgcj.
+	* java/nio/charset/IllegalCharsetNameException.java:
+	Merged from libgcj.
+	* java/nio/charset/UnsupportedCharsetExeption.java:
+	Merged from libgcj.
+
+2003-03-03  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/URLStreamHandler.java:
 	Merged Win32 fixes from libgcj.
 
