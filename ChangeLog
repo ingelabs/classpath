@@ -1,5 +1,14 @@
 2004-04-12  Michael Koch  <konqueror@gmx.de>
 
+	* native/jni/java-io/FileDescriptor.c: Removed.
+	* native/jni/java-io/Makefile.am: Don't compile FileDescriptor.c
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c:
+	Dont include java_io_FileDescriptor.h.
+	* native/jni/java-nio/java_nio_DirectByteBufferImpl.c
+	(shiftDown): Method signature fixed.
+
+2004-04-12  Michael Koch  <konqueror@gmx.de>
+
 	* java/lang/ClassLoader.java,
 	java/lang/Compiler.java,
 	java/lang/Double.java,

@@ -50,9 +50,6 @@ exception statement from your version. */
 #endif
 #include "target_native_math_int.h"
 
-#include "java_io_FileDescriptor.h"
-
-
 #include "gnu_java_nio_channels_FileChannelImpl.h"
 
 /* These values must be kept in sync with FileChannelImpl.java.  */

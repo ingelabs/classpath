@@ -81,7 +81,7 @@ Java_java_nio_DirectByteBufferImpl_getImpl__Lgnu_classpath_RawData_2I_3BII
 }
 
 JNIEXPORT void JNICALL
-Java_java_nio_DirectByteBufferImpl_shiftDown (JNIEnv *env, jobject obj, jint dst_offset, jint src_offset, jint count)
+Java_java_nio_DirectByteBufferImpl_shiftDown (JNIEnv *env, jclass clazz, jobject address, jint dst_offset, jint src_offset, jint count)
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.shiftDown(): not implemented");
 }
