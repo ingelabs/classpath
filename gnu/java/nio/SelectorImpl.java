@@ -1,5 +1,5 @@
 /* SelectorImpl.java -- 
-   Copyright (C) 2002 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2003  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package gnu.java.nio;
 
+import java.io.IOException;
 import java.nio.channels.ClosedSelectorException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
@@ -44,23 +45,39 @@ import java.nio.channels.Selector;
 import java.nio.channels.spi.AbstractSelectableChannel;
 import java.nio.channels.spi.AbstractSelector;
 import java.nio.channels.spi.SelectorProvider;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 public class SelectorImpl extends AbstractSelector
 {
-  boolean closed = false;
-  Set keys, selected, canceled;
+  private Set keys;
+  private Set selected;
 
   public SelectorImpl (SelectorProvider provider)
   {
     super (provider);
+    
+    keys = new HashSet ();
+    selected = new HashSet ();
   }
 
-  public Set keys ()
+  protected void finalize() throws Throwable
   {
-    return keys;
+    close();
+  }
+
+  protected final void implCloseSelector()
+    throws IOException
+  {
+    // FIXME: We surely need to do more here.
+    wakeup();
+  }
+
+  public final Set keys()
+  {
+    return Collections.unmodifiableSet (keys);
   }
     
   public int selectNow ()
@@ -70,64 +87,133 @@ public class SelectorImpl extends AbstractSelector
 
   public int select ()
   {
-    return select (Long.MAX_VALUE);
+    return select (-1);
   }
 
-//   private static native int java_do_select(int[] read, int[] write,
-//                                            int[] except, long timeout);
+  // A timeout value of -1 means block forever.
+  private static native int java_do_select (int[] read, int[] write,
+                                            int[] except, long timeout);
 
-  private static int java_do_select (int[] read, int[] write,
-                                     int[] except, long timeout)
+  private int[] getFDsAsArray (int ops)
   {
-    return 0;
+    int[] result;
+    int counter = 0;
+    Iterator it = keys.iterator ();
+
+    // Count the number of file descriptors needed
+    while (it.hasNext ())
+      {
+        SelectionKeyImpl key = (SelectionKeyImpl) it.next ();
+
+        if ((key.interestOps () & ops) != 0)
+          {
+            counter++;
+          }
+      }
+
+    result = new int[counter];
+
+    counter = 0;
+    it = keys.iterator ();
+
+    // Fill the array with the file descriptors
+    while (it.hasNext ())
+      {
+        SelectionKeyImpl key = (SelectionKeyImpl) it.next ();
+
+        if ((key.interestOps () & ops) != 0)
+          {
+            result[counter] = key.fd;
+            counter++;
+          }
+      }
+
+    return result;
   }
 
   public int select (long timeout)
   {
-    if (closed)
-      {
-        throw new ClosedSelectorException ();
-      }
+    if (!isOpen())
+      throw new ClosedSelectorException ();
 
     if (keys == null)
 	    {
         return 0;
 	    }
 
-    int[] read = new int[keys.size ()];
-    int[] write = new int[keys.size ()];
-    int[] except = new int[keys.size ()];
-    int i = 0;
+    int ret = 0;
+
+    deregisterCancelledKeys();
+
+    // Set only keys with the needed interest ops into the arrays.
+    int[] read = getFDsAsArray (SelectionKey.OP_READ | SelectionKey.OP_ACCEPT);
+    int[] write = getFDsAsArray (SelectionKey.OP_WRITE | SelectionKey.OP_CONNECT);
+    int[] except = new int [0]; // FIXME: We dont need to check this yet
+
+    // Call the native select () on all file descriptors.
+    int anzahl = read.length + write.length + except.length;
+    ret = java_do_select (read, write, except, timeout);
+
     Iterator it = keys.iterator ();
 
     while (it.hasNext ())
-	    {
-        SelectionKeyImpl k = (SelectionKeyImpl) it.next ();
-        read[i] = k.fd;
-        write[i] = k.fd;
-        except[i] = k.fd;
-        i++;
-	    }
+      {
+        int ops = 0;
+        SelectionKeyImpl key = (SelectionKeyImpl) it.next ();
 
-    int ret = java_do_select (read, write, except, timeout);
-
-    i = 0;
-    it = keys.iterator ();
-
-    while (it.hasNext ())
-	    {
-        SelectionKeyImpl k = (SelectionKeyImpl) it.next ();
-
-        if (read[i] != -1 ||
-            write[i] != -1 ||
-            except[i] != -1)
+        // If key is already selected retrieve old ready ops.
+        if (selected.contains (key))
           {
-            add_selected (k);
+            ops = key.readyOps ();
           }
 
-        i++;
-	    }
+        // Set new ready read/accept ops
+        for (int i = 0; i < read.length; i++)
+          {
+            if (key.fd == read[i])
+              {
+                if (key.channel () instanceof ServerSocketChannelImpl)
+                  {
+                    ops = ops | SelectionKey.OP_ACCEPT;
+                  }
+                else
+                  {
+                    ops = ops | SelectionKey.OP_READ;
+                  }
+              }
+          }
 
+        // Set new ready write ops
+        for (int i = 0; i < write.length; i++)
+          {
+            if (key.fd == write[i])
+              {
+                ops = ops | SelectionKey.OP_WRITE;
+                
+//                 if (key.channel ().isConnected ())
+//                   {
+//                     ops = ops | SelectionKey.OP_WRITE;
+//                   }
+//                 else
+//                   {
+//                     ops = ops | SelectionKey.OP_CONNECT;
+//                   }
+             }
+          }
+
+        // FIXME: We dont handle exceptional file descriptors yet.
+
+        // If key is not yet selected add it.
+        if (!selected.contains (key))
+          {
+            add_selected (key);
+          }
+
+        // Set new ready ops
+        key.readyOps (key.interestOps () & ops);
+      }
+
+    deregisterCancelledKeys();
     return ret;
   }
     
@@ -143,25 +229,25 @@ public class SelectorImpl extends AbstractSelector
 
   public void add (SelectionKeyImpl k)
   {
-    if (keys == null)
-	    keys = new HashSet ();
-
     keys.add (k);
   }
 
   void add_selected (SelectionKeyImpl k)
   {
-    if (selected == null)
-	    selected = new HashSet ();
-
-    selected.add(k);
+    selected.add (k);
   }
 
-  protected void implCloseSelector ()
+  private void deregisterCancelledKeys ()
   {
-    closed = true;
+    Iterator it = cancelledKeys().iterator();
+
+    while (it.hasNext ())
+      {
+        keys.remove ((SelectionKeyImpl) it.next ());
+        it.remove ();
+      }
   }
-    
+
   protected SelectionKey register (SelectableChannel ch, int ops, Object att)
   {
     return register ((AbstractSelectableChannel) ch, ops, att);
