@@ -1,5 +1,5 @@
-/* WindowAdapter.java -- Convenience class for writing window listeners.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* WindowAdapter.java -- convenience class for writing window listeners
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,114 +39,118 @@ exception statement from your version. */
 package java.awt.event;
 
 /**
-  * This is a convenience class for writing window listeners.  It implements
-  * the <code>WindowListener</code> interface with empty method bodies.  This
-  * allows a subclass to override only those methods of interest.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public class WindowAdapter implements WindowListener
-{
-
-/*
- * Constructors
+ * This class implements <code>WindowListener</code>,
+ * <code>WindowStateListener</code>, and <code>WindowFocusListener</code>, and
+ * implements all methods with empty bodies.  This allows a listener
+ * interested in listening to only a subset of any <code>WindowEvent</code>
+ * actions to extend this class and override only the desired methods.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see ComponentEvent
+ * @see ComponentListener
+ * @since 1.1
+ * @status updated to 1.4
  */
-
-/**
-  * Do nothing default constructor for subclasses.
-  */
-public
-WindowAdapter()
+public class WindowAdapter
+  implements WindowListener, WindowStateListener, WindowFocusListener
 {
-}
+  /**
+   * Do nothing default constructor for subclasses.
+   */
+  public WindowAdapter()
+  {
+  }
 
-/*************************************************************************/
+  /**
+   * Implements this method from the interface with an empty method body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void windowOpened(WindowEvent event)
+  {
+  }
 
-/*
- * Instance Methods
- */
+  /**
+   * Implements this method from the interface with an empty method body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void windowClosing(WindowEvent event)
+  {
+  }
 
-/**
-  * Implements this method from the interface with an empty method body.
-  *
-  * @param event Ignored.
-  */
-public void
-windowActivated(WindowEvent event)
-{
-}
+  /**
+   * Implements this method from the interface with an empty method body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void windowClosed(WindowEvent event)
+  {
+  }
 
-/*************************************************************************/
+  /**
+   * Implements this method from the interface with an empty method body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void windowIconified(WindowEvent event)
+  {
+  }
 
-/**
-  * Implements this method from the interface with an empty method body.
-  *
-  * @param event Ignored.
-  */
-public void
-windowDeactivated(WindowEvent event)
-{
-}
+  /**
+   * Implements this method from the interface with an empty method body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void windowDeiconified(WindowEvent event)
+  {
+  }
 
-/*************************************************************************/
+  /**
+   * Implements this method from the interface with an empty method body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void windowActivated(WindowEvent event)
+  {
+  }
 
-/**
-  * Implements this method from the interface with an empty method body.
-  *
-  * @param event Ignored.
-  */
-public void
-windowOpened(WindowEvent event)
-{
-}
+  /**
+   * Implements this method from the interface with an empty method body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void windowDeactivated(WindowEvent event)
+  {
+  }
 
-/*************************************************************************/
+  /**
+   * Implements this method from the interface with an empty method body.
+   *
+   * @param event the event, ignored in this implementation
+   * @since 1.4
+   */
+  public void windowStateChanged(WindowEvent event)
+  {
+  }
 
-/**
-  * Implements this method from the interface with an empty method body.
-  *
-  * @param event Ignored.
-  */
-public void
-windowClosing(WindowEvent event)
-{
-}
+  /**
+   * Implements this method from the interface with an empty method body.
+   *
+   * @param event the event, ignored in this implementation
+   * @since 1.4
+   */
+  public void windowGainedFocus(WindowEvent event)
+  {
+  }
 
-/*************************************************************************/
-
-/**
-  * Implements this method from the interface with an empty method body.
-  *
-  * @param event Ignored.
-  */
-public void
-windowClosed(WindowEvent event)
-{
-}
-
-/*************************************************************************/
-
-/**
-  * Implements this method from the interface with an empty method body.
-  *
-  * @param event Ignored.
-  */
-public void
-windowIconified(WindowEvent event)
-{
-}
-
-/*************************************************************************/
-
-/**
-  * Implements this method from the interface with an empty method body.
-  *
-  * @param event Ignored.
-  */
-public void
-windowDeiconified(WindowEvent event)
-{
-}
-
-} // class WindowAdapter 
-
+  /**
+   * Implements this method from the interface with an empty method body.
+   *
+   * @param event the event, ignored in this implementation
+   * @since 1.4
+   */
+  public void windowLostFocus(WindowEvent event)
+  {
+  }
+} // class WindowAdapter

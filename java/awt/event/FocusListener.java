@@ -1,5 +1,5 @@
-/* FocusListener.java -- Listen for focus changes.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* FocusListener.java -- listen for focus changes
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,32 +38,32 @@ exception statement from your version. */
 
 package java.awt.event;
 
+import java.util.EventListener;
+
 /**
-  * This interface is for classes that wish to be notified of changes of
-  * keyboard focus for a component.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public interface FocusListener extends java.util.EventListener
+ * This interface is for classes that wish to be notified of changes of
+ * keyboard focus for a component. To watch a subset of these events, use a
+ * FocusAdapter.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see FocusAdapter
+ * @see FocusEvent
+ * @since 1.1
+ * @status updated to 1.4
+ */
+public interface FocusListener extends EventListener
 {
+  /**
+   * This method is called when a component gains the keyboard focus.
+   *
+   * @param event the <code>FocusEvent</code> indicating that focus was gained
+   */
+  void focusGained(FocusEvent event);
 
-/**
-  * This method is called when a component gains the keyboard focus.
-  *
-  * @param event The <code>FocusEvent</code> indicating that focus was gained.
-  */
-public abstract void
-focusGained(FocusEvent event);
-
-/*************************************************************************/
-
-/**
-  * This method is invoked when a component loses the keyboard focus.
-  *
-  * @param event The <code>FocusEvent</code> indicating that focus was lost.
-  */
-public abstract void
-focusLost(FocusEvent event);
-
+  /**
+   * This method is invoked when a component loses the keyboard focus.
+   *
+   * @param event the <code>FocusEvent</code> indicating that focus was lost
+   */
+  void focusLost(FocusEvent event);
 } // interface FocusListener
-

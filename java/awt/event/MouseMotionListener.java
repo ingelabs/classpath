@@ -1,5 +1,5 @@
-/* MouseMotionListener.java -- Listen to mouse motion events.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* MouseMotionListener.java -- listen to mouse motion events
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,33 +38,35 @@ exception statement from your version. */
 
 package java.awt.event;
 
+import java.util.EventListener;
+
 /**
-  * This interface is for classes that wish to be notified of mouse movements.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public interface MouseMotionListener extends java.util.EventListener
+ * This interface is for classes that wish to be notified of mouse movements.
+ * This includes moves and drags, but not crossing component boundaries. To
+ * track other mouse events, use MouseListener or MouseWheelListener. To
+ * watch a subset of these events, use a MouseMotionAdapter.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see MouseMotionAdapter
+ * @see MouseEvent
+ * @since 1.1
+ * @status updated to 1.4
+ */
+public interface MouseMotionListener extends EventListener
 {
+  /**
+   * This method is called when the mouse is moved over a component
+   * while a button has been pressed.
+   *
+   * @param event the <code>MouseEvent</code> indicating the motion
+   */
+  void mouseDragged(MouseEvent event);
 
-/**
-  * This method is called when the mouse is moved over a component
-  * while the button has been pressed.
-  *
-  * @param event The <code>MouseEvent</code> indicating the motion.
-  */
-public abstract void
-mouseDragged(MouseEvent event);
-
-/*************************************************************************/
-
-/**
-  * This method is called when the mouse is moved over a component
-  * while the button is not pressed.
-  *
-  * @param event The <code>MouseEvent</code> indicating the motion.
-  */
-public abstract void
-mouseMoved(MouseEvent event);
-
+  /**
+   * This method is called when the mouse is moved over a component
+   * while no button is pressed.
+   *
+   * @param event the <code>MouseEvent</code> indicating the motion
+   */
+  void mouseMoved(MouseEvent event);
 } // interface MouseMotionListener
-

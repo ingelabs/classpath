@@ -1,5 +1,6 @@
 EXTRA_DIST = \
 AWTEventListener.java \
+AWTEventListenerProxy.java \
 ActionEvent.java \
 ActionListener.java \
 AdjustmentEvent.java \
@@ -31,9 +32,13 @@ MouseEvent.java \
 MouseListener.java \
 MouseMotionAdapter.java \
 MouseMotionListener.java \
+MouseWheelEvent.java \
+MouseWheelListener.java \
 PaintEvent.java \
 TextEvent.java \
 TextListener.java \
 WindowAdapter.java \
 WindowEvent.java \
-WindowListener.java
+WindowFocusListener.java \
+WindowListener.java \
+WindowStateListener.java

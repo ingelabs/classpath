@@ -1,5 +1,5 @@
-/* ItemListener.java -- Listen for item events.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* ItemListener.java -- listen for item events
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,22 +38,24 @@ exception statement from your version. */
 
 package java.awt.event;
 
+import java.util.EventListener;
+
 /**
-  * This interface is for classes that wish to receive events when an
-  * item's state changes.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public interface ItemListener extends java.util.EventListener
+ * This interface is for classes that wish to receive events when an
+ * item's selection state changes.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see ItemSelectable
+ * @see ItemEvent
+ * @since 1.1
+ * @status updated to 1.4
+ */
+public interface ItemListener extends EventListener
 {
-
-/**
-  * This method is called when an item's state is changed.
-  *
-  * @param event The <code>ItemEvent</code> indicating the change.
-  */
-public abstract void
-itemStateChanged(ItemEvent event);
-
+  /**
+   * This method is called when an item's state is changed.
+   *
+   * @param event the <code>ItemEvent</code> indicating the change
+   */
+  void itemStateChanged(ItemEvent event);
 } // interface ItemListener
-

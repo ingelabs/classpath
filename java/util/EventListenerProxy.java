@@ -68,8 +68,8 @@ public abstract class EventListenerProxy implements EventListener
    *
    * @return the listener associated with this proxy
    */
-  public EventListener getLitener()
+  public EventListener getListener()
   {
     return listener;
   }
-}
+} // class EventListenerProxy

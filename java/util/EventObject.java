@@ -1,4 +1,4 @@
-/* EventObject.java -- Represent events fired by objects
+/* EventObject.java -- represents an event on an object
    Copyright (C) 1999, 2000, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -90,12 +90,12 @@ public class EventObject implements Serializable
   /**
    * Converts the event to a String. The format is not specified, but by
    * observation, the JDK uses:
-   * <code>getClass() + "[source=" + source + "]";</code>.
+   * <code>getClass().getName() + "[source=" + source + "]";</code>.
    *
    * @return String representation of the Event
    */
   public String toString()
   {
-    return getClass() + "[source=" + source + "]";
+    return getClass().getName() + "[source=" + source + "]";
   }
-}
+} // class EventObject

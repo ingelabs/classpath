@@ -1,5 +1,5 @@
-/* KeyListener.java -- Listen for keyboard presses.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* KeyListener.java -- listen for keyboard presses
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,42 +38,40 @@ exception statement from your version. */
 
 package java.awt.event;
 
+import java.util.EventListener;
+
 /**
-  * This interface is for classes that wish to receive keyboard events.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public interface KeyListener extends java.util.EventListener
+ * This interface is for classes that wish to receive keyboard events. To
+ * watch a subset of these events, use a KeyAdapter.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see KeyAdapter
+ * @see KeyEvent
+ * @since 1.1
+ * @status updated to 1.4
+ */
+public interface KeyListener extends EventListener
 {
+  /**
+   * This method is called when a key is typed.  A key is considered typed
+   * when it and all modifiers have been pressed and released, mapping to
+   * a single virtual key.
+   *
+   * @param event the <code>KeyEvent</code> indicating that a key was typed
+   */
+  void keyTyped(KeyEvent event);
 
-/**
-  * This method is called when a key is pressed.
-  *
-  * @param event The <code>KeyEvent</code> indicating the key press.
-  */
-public abstract void
-keyPressed(KeyEvent event);
+  /**
+   * This method is called when a key is pressed.
+   *
+   * @param event the <code>KeyEvent</code> indicating the key press
+   */
+  void keyPressed(KeyEvent event);
 
-/*************************************************************************/
-
-/**
-  * This method is called when a key is released.
-  *
-  * @param event The <code>KeyEvent</code> indicating the key release.
-  */
-public abstract void
-keyReleased(KeyEvent event);
-
-/*************************************************************************/
-
-/**
-  * This method is called when a key is typed.  A key is considered typed
-  * when it is pressed and released.
-  *
-  * @param event The <code>KeyEvent</code> indicating that a key was typed.
-  */
-public abstract void
-keyTyped(KeyEvent event);
-
+  /**
+   * This method is called when a key is released.
+   *
+   * @param event the <code>KeyEvent</code> indicating the key release
+   */
+  void keyReleased(KeyEvent event);
 } // interface KeyListener
-

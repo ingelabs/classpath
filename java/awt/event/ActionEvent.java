@@ -1,5 +1,5 @@
-/* ActionEvent.java -- An action has been triggered
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* ActionEvent.java -- an action has been triggered
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,155 +38,189 @@ exception statement from your version. */
 
 package java.awt.event;
 
-/**
-  * This event is generated when an action on a component (such as a
-  * button press) occurs.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public class ActionEvent extends java.awt.AWTEvent 
-             implements java.io.Serializable
-{
+import java.awt.AWTEvent;
+import java.awt.EventQueue;
 
-/*
- * Static Variables
+/**
+ * This event is generated when an action on a component (such as a
+ * button press) occurs.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see ActionListener
+ * @since 1.1
+ * @status updated to 1.4
  */
-
-/**
-  * The first id number in the range of action id's.
-  */
-public static final int ACTION_FIRST = 1001;
-
-/**
-  * The last id number in the range of action id's.
-  */
-public static final int ACTION_LAST = 1001;
-
-/**
-  * An event id indicating that an action has occurred.
-  */
-public static final int ACTION_PERFORMED = 1001;
-
-/**
-  * Bit mask indicating the shift key was pressed.
-  */
-public static final int SHIFT_MASK = 1;
-
-/**
-  * Bit mask indicating the control key was pressed.
-  */
-public static final int CTRL_MASK = 1;
-
-/**
-  * Bit mask indicating the that meta key was pressed.
-  */
-public static final int META_MASK = 1;
-
-/**
-  * Bit mask indicating that the alt key was pressed.
-  */
-public static final int ALT_MASK = 1;
-
-/*************************************************************************/
-
-/*
- * Instance Variables
- */
-
-/**
-  * @serial Modifiers for this event
-  */
-private int modifiers;
-
-/**
-  * @serial The command for this event
-  */
-private String actionCommand;
-
-/*************************************************************************/
-
-/*
- * Constructors
- */
-
-/**
-  * Initializes a new instance of <code>ActionEvent</code> with the
-  * specified source, id, and command.
-  *
-  * @param source The event source.
-  * @param id The event id.
-  * @param command The command string for this action.
-  */
-public
-ActionEvent(Object source, int id, String command)
+public class ActionEvent extends AWTEvent
 {
-  super(source, id);
-  this.actionCommand = command;
-}
+  /**
+   * Compatible with JDK 1.1+.
+   */
+  private static final long serialVersionUID = -7671078796273832149L;
 
-/*************************************************************************/
+  /** Bit mask indicating the shift key was pressed. */
+  public static final int SHIFT_MASK = InputEvent.SHIFT_MASK;
 
-/**
-  * Initializes a new instance of <code>ActionEvent</code> with the
-  * specified source, id, command, and modifiers.
-  *
-  * @param source The event source.
-  * @param id The event id.
-  * @param command The command string for this action.
-  * @param modifiers The keys held down during the action, which is 
-  * combination of the bit mask constants defined in this class.
-  */
-public
-ActionEvent(Object source, int id, String command, int modifiers)
-{
-  this(source, id, command);
-  this.modifiers = modifiers;
-}
+  /** Bit mask indicating the control key was pressed. */
+  public static final int CTRL_MASK = InputEvent.CTRL_MASK;
 
-/*************************************************************************/
+  /** Bit mask indicating the that meta key was pressed. */
+  public static final int META_MASK = InputEvent.META_MASK;
 
-/*
- * Instance Methods
- */
+  /** Bit mask indicating that the alt key was pressed. */
+  public static final int ALT_MASK = InputEvent.ALT_MASK;
 
-/**
-  * Returns the command string associated with this action.
-  *
-  * @return The command string associated with this action.
-  */
-public String
-getActionCommand()
-{
-  return(actionCommand);
-}
+  /** The first id number in the range of action id's. */
+  public static final int ACTION_FIRST = 1001;
 
-/*************************************************************************/
+  /** The last id number in the range of action id's. */
+  public static final int ACTION_LAST = 1001;
 
-/**
-  * Returns the keys held down during the action.  This value will be a
-  * combination of the bit mask constants defined in this class.
-  *
-  * @return The modifier bits.
-  */
-public int
-getModifiers()
-{
-  return(modifiers);
-}
+  /** An event id indicating that an action has occurred. */
+  public static final int ACTION_PERFORMED = 1001;
 
-/*************************************************************************/
+  /**
+   * A nonlocalized string that gives more specific details of the event cause.
+   *
+   * @see #getActionCommand()
+   * @serial the command for this event
+   */
+  private final String actionCommand;
 
-/**
-  * Returns a string that identifies the action event.
-  *
-  * @return A string identifying the event.
-  */
-public String
-paramString()
-{
-  return("ActionEvent: source=" + getSource().toString() + " id=" + getID() +
-         " command=" + getActionCommand() + " modifiers=" + getModifiers());
-}
+  /**
+   * The bitmask of the modifiers that were pressed during the action.
+   *
+   * @see #getModifiers()
+   * @serial modifiers for this event
+   */
+  private final int modifiers;
 
+  /**
+   * The timestamp of this event; usually the same as the underlying input
+   * event.
+   *
+   * @see #getWhen()
+   * @serial the timestamp of the event
+   * @since 1.4
+   */
+  private final long when;
+
+  /**
+   * Initializes a new instance of <code>ActionEvent</code> with the
+   * specified source, id, and command. Note that an invalid id leads to
+   * unspecified results.
+   *
+   * @param source the event source
+   * @param id the event id
+   * @param command the command string for this action
+   * @throws IllegalArgumentException if source is null
+   */
+  public ActionEvent(Object source, int id, String command)
+  {
+    this(source, id, command, EventQueue.getMostRecentEventTime(), 0);
+  }
+
+  /**
+   * Initializes a new instance of <code>ActionEvent</code> with the
+   * specified source, id, command, and modifiers. Note that an invalid id
+   * leads to unspecified results.
+   *
+   * @param source the event source
+   * @param id the event id
+   * @param command the command string for this action
+   * @param modifiers the bitwise or of modifier keys down during the action
+   * @throws IllegalArgumentException if source is null
+   */
+  public ActionEvent(Object source, int id, String command, int modifiers)
+  {
+    this(source, id, command, EventQueue.getMostRecentEventTime(), modifiers);
+  }
+
+  /**
+   * Initializes a new instance of <code>ActionEvent</code> with the
+   * specified source, id, command, and modifiers, and timestamp. Note that
+   * an invalid id leads to unspecified results.
+   *
+   * @param source the event source
+   * @param id the event id
+   * @param command the command string for this action
+   * @param when the timestamp of the event
+   * @param modifiers the bitwise or of modifier keys down during the action
+   * @throws IllegalArgumentException if source is null
+   * @since 1.4
+   */
+  public ActionEvent(Object source, int id, String command, long when,
+                     int modifiers)
+  {
+    super(source, id);
+    actionCommand = command;
+    this.when = when;
+    this.modifiers = modifiers;
+  }
+
+  /**
+   * Returns the command string associated with this action.
+   *
+   * @return the command string associated with this action
+   */
+  public String getActionCommand()
+  {
+    return actionCommand;
+  }
+
+  /**
+   * Gets the timestamp of when this action took place. Usually, this
+   * corresponds to the timestamp of the underlying InputEvent.
+   *
+   * @return the timestamp of this action
+   * @since 1.4
+   */
+  public long getWhen()
+  {
+    return when;
+  }
+
+  /**
+   * Returns the keys held down during the action.  This value will be a
+   * combination of the bit mask constants defined in this class, or 0 if no
+   * modifiers were pressed.
+   *
+   * @return the modifier bits
+   */
+  public int getModifiers()
+  {
+    return modifiers;
+  }
+
+  /**
+   * Returns a string that identifies the action event. This is in the format
+   * <code>"ACTION_PERFORMED,cmd=" + getActionCommand() + ",when=" + getWhen()
+   * + ",modifiers=" + &lt;modifier string&gt;</code>, where the modifier
+   * string is in the order "Meta", "Ctrl", "Alt", "Shift", "Alt Graph", and
+   * "Button1", separated by '+', according to the bits set in getModifiers().
+   *
+   * @return a string identifying the event
+   */
+  public String paramString()
+  {
+    StringBuffer s = new StringBuffer(id == ACTION_PERFORMED
+                                      ? "ACTION_PERFORMED,cmd="
+                                      : "unknown type,cmd=");
+    s.append(actionCommand).append(",when=").append(when).append("modifiers");
+    int len = s.length();
+    s.setLength(len + 1);
+    if ((modifiers & META_MASK) != 0)
+      s.append("+Meta");
+    if ((modifiers & CTRL_MASK) != 0)
+      s.append("+Ctrl");
+    if ((modifiers & ALT_MASK) != 0)
+      s.append("+Alt");
+    if ((modifiers & SHIFT_MASK) != 0)
+      s.append("+Shift");
+    if ((modifiers & InputEvent.ALT_GRAPH_MASK) != 0)
+      s.append("+Alt Graph");
+    if ((modifiers & InputEvent.BUTTON1_MASK) != 0)
+      s.append("+Button1");
+    s.setCharAt(len, '=');
+    return s.toString();
+  }
 } // class ActionEvent 
-

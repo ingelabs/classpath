@@ -1,3 +1,53 @@
+2002-03-30  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/awt/EventQueue.java (getMostRecentEventTime): New method.
+	* java/util/EventListenerProxy.java: Fix typos.
+	* java/util/EventObject.java: Fix typos.
+	* java/awt/event/AWTEventListener.java: Update to 1.4.
+	* java/awt/event/AWTEventListenerProxy.java: New file.
+	* java/awt/event/ActionEvent.java: Update to 1.4.
+	* java/awt/event/ActionListener.java: Update to 1.4.
+	* java/awt/event/AdjustmentEvent.java: Update to 1.4.
+	* java/awt/event/AdjustmentListener.java: Update to 1.4.
+	* java/awt/event/ComponentAdapter.java: Update to 1.4.
+	* java/awt/event/ComponentEvent.java: Update to 1.4.
+	* java/awt/event/ComponentListener.java: Update to 1.4.
+	* java/awt/event/ContainerAdapter.java: Update to 1.4.
+	* java/awt/event/ContainerEvent.java: Update to 1.4.
+	* java/awt/event/ContainerListener.java: Update to 1.4.
+	* java/awt/event/FocusAdapter.java: Update to 1.4.
+	* java/awt/event/FocusEvent.java: Update to 1.4.
+	* java/awt/event/FocusListener.java: Update to 1.4.
+	* java/awt/event/HierarchyBoundsAdapter.java: Update to 1.4.
+	* java/awt/event/HierarchyBoundsListener.java: Update to 1.4.
+	* java/awt/event/HierarchyEvent.java: Update to 1.4.
+	* java/awt/event/HierarchyListener.java: Update to 1.4.
+	* java/awt/event/InputEvent.java: Update to 1.4.
+	* java/awt/event/InputMethodEvent.java: Update to 1.4.
+	* java/awt/event/InputMethodListener.java: Update to 1.4.
+	* java/awt/event/InvocationEvent.java: Update to 1.4.
+	* java/awt/event/ItemEvent.java: Update to 1.4.
+	* java/awt/event/ItemListener.java: Update to 1.4.
+	* java/awt/event/KeyAdapter.java: Update to 1.4.
+	* java/awt/event/KeyEvent.java: Update to 1.4.
+	* java/awt/event/KeyListener.java: Update to 1.4.
+	* java/awt/event/Makefile.am (EXTRA_DIST): Add new files.
+	* java/awt/event/MouseAdapter.java: Update to 1.4.
+	* java/awt/event/MouseEvent.java: Update to 1.4.
+	* java/awt/event/MouseListener.java: Update to 1.4.
+	* java/awt/event/MouseMotionAdapter.java: Update to 1.4.
+	* java/awt/event/MouseMotionListener.java: Update to 1.4.
+	* java/awt/event/MouseWheelEvent.java: New file.
+	* java/awt/event/MouseWheelListener.java: New file.
+	* java/awt/event/PaintEvent.java: Update to 1.4.
+	* java/awt/event/TextEvent.java: Update to 1.4.
+	* java/awt/event/TextListener.java: Update to 1.4.
+	* java/awt/event/WindowAdapter.java: Update to 1.4.
+	* java/awt/event/WindowEvent.java: Update to 1.4.
+	* java/awt/event/WindowFocusListener.java: New file.
+	* java/awt/event/WindowListener.java: Update to 1.4.
+	* java/awt/event/WindowStateListener.java: New file.
+
 2002-03-29  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/security/AllPermission.java: Update to 1.4.

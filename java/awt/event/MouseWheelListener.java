@@ -1,5 +1,5 @@
-/* AdjustmentListener.java -- listen for adjustment events
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+/* MouseWheelListener.java -- listen for mouse wheel events
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -41,18 +41,20 @@ package java.awt.event;
 import java.util.EventListener;
 
 /**
- * Interface for classes that listen for adjustment events.
+ * This interface is for classes that wish to receive mouse wheel events. For
+ * other events, use MouseListener or MouseMotionListener.
  *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @since 1.1
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @see MouseWheelEvent
+ * @since 1.4
  * @status updated to 1.4
  */
-public interface AdjustmentListener extends EventListener
+public interface MouseWheelListener extends EventListener
 {
   /**
-   * This method is called when an adjustable value changes.
+   * This method is called when the mouse wheel is rotated.
    *
-   * @param event the <code>AdjustmentEvent</code> that occurred
+   * @param event the <code>MouseWheelEvent</code> indicating the rotation
    */
-  void adjustmentValueChanged(AdjustmentEvent event);
-} // interface AdjustmentListener
+  void mouseWheelMoved(MouseWheelEvent event);
+} // interface MouseWheelListener

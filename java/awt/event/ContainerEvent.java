@@ -1,5 +1,5 @@
-/* ContainerEvent.java -- Components added/removed from a container
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* ContainerEvent.java -- components added/removed from a container
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -42,117 +42,94 @@ import java.awt.Component;
 import java.awt.Container;
 
 /**
-  * This event is generated when a component is added or removed from
-  * a container.  Applications do not ordinarily need to received these
-  * events since the AWT system handles them internally.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This event is generated when a component is added or removed from a
+ * container.  Applications do not ordinarily need to handle these events
+ * since the AWT system handles them internally.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see ContainerAdapter
+ * @see ContainerListener
+ * @since 1.1
+ * @status updated to 1.4
+ */
 public class ContainerEvent extends ComponentEvent
-             implements java.io.Serializable
 {
+  /**
+   * Compatible with JDK 1.1+.
+   */
+  private static final long serialVersionUID = -4114942250539772041L;
 
-/*
- * Static Variables
- */
+  /** This is the first id in the id range used by this class. */
+  public static final int CONTAINER_FIRST = 300;
 
-/**
-  * This is the first id in the id range used by this class.
-  */
-public static final int CONTAINER_FIRST = 300;
+  /** This is the last id in the id range used by this class. */
+  public static final int CONTAINER_LAST = 301;
 
-/**
-  * This is the last id in the id range used by this class.
-  */
-public static final int CONTAINER_LAST = 301;
+  /** This id indicates a component was added to the container. */
+  public static final int COMPONENT_ADDED = 300;
 
-/**
-  * This id indicates a component was added to the container.
-  */
-public static final int COMPONENT_ADDED = 300;
+  /** This id indicates a component was removed from the container. */
+  public static final int COMPONENT_REMOVED = 301;
 
-/**
-  * This id indicates a component was removed from the container.
-  */
-public static final int COMPONENT_REMOVED = 301;
+  /**
+   * The non-null child component that was added or removed.
+   *
+   * @serial the child component that changed
+   */
+  private final Component child;
 
-/*************************************************************************/
+  /**
+   * Initializes a new instance of <code>ContainerEvent</code> with the
+   * specified source and id.  Additionally, the affected child component
+   * is also passed as a parameter. Note that an invalid id leads to
+   * unspecified results.
+   *
+   * @param source the source container of the event
+   * @param id the event id
+   * @param child the child component affected by this event
+   * @throws IllegalArgumentException if source is null
+   */
+  public ContainerEvent(Component source, int id, Component child)
+  {
+    super(source, id);
+    this.child = child;
+  }
 
-/*
- * Instance Variables
- */
+  /**
+   * Returns the source of this event as a <code>Container</code>.
+   *
+   * @return the source of the event
+   * @throws ClassCastException if the source is changed to a non-Container
+   */
+  public Container getContainer()
+  {
+    return (Container) source;
+  }
 
-/**
-  * @serial This is the child component that was added or removed
-  */
-private Component child;
+  /**
+   * This method returns the child object that was added or removed from
+   * the container.
+   *
+   * @return the child object added or removed
+   */
+  public Component getChild()
+  {
+    return child;
+  }
 
-/*************************************************************************/
-
-/*
- * Constructors
- */
-
-/**
-  * Initializes a new instance of <code>ContainerEvent</code> with the
-  * specified source and id.  Additionally, the affected child component
-  * is also passed as a parameter.
-  *
-  * @param source The source container of the event.
-  * @param id The event id.
-  * @param child The child component affected by this event.
-  */
-public
-ContainerEvent(Component source, int id, Component child)
-{
-  super(source, id);
-  this.child = child;
-}
-
-/*************************************************************************/
-
-/*
- * Instance Methods
- */
-
-/**
-  * This method returns the child object that was added or removed from
-  * the container.
-  *
-  * @return The child object added or removed.
-  */
-public Component
-getChild()
-{
-  return(child);
-}
-
-/*************************************************************************/
-
-/**
-  * Returns the source of this event as a <code>Container</code>.
-  *
-  * @return The source of the event.
-  */
-public Container
-getContainer()
-{
-  return((Container)getSource());
-}
-
-/*************************************************************************/
-
-/**
-  * This method returns a string identifying this event.
-  *
-  * @return A string identifying this event.
-  */
-public String
-paramString()
-{
-  return(getClass().getName() + " source=" + getSource() + " id=" + getID() +
-         " child=" + getChild());
-}
-
-} // class ContainerEvent 
-
+  /**
+   * This method returns a string identifying this event. It is formatted as:
+   * <code>(getID() == COMPONENT_ADDED ? "COMPONENT_ADDED"
+   * : "COMPONENT_REMOVED") + ",child=" + getChild().getName()</code>.
+   *
+   * @return a string identifying this event
+   */
+  public String paramString()
+  {
+    // Unlike Sun, we don't throw NullPointerException if child is illegally
+    // null.
+    return (id == COMPONENT_ADDED ? "COMPONENT_ADDED,child="
+            : id == COMPONENT_REMOVED ? "COMPONENT_REMOVED,child="
+            : "unknown type,child=") + (child == null ? "" : child.getName());
+  }
+} // class ContainerEvent

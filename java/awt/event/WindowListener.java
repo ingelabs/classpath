@@ -1,5 +1,5 @@
-/* WindowListener.java -- Class for listening for window events.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* WindowListener.java -- listens for window events
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,83 +38,70 @@ exception statement from your version. */
 
 package java.awt.event;
 
+import java.util.EventListener;
+
 /**
-  * This interface is for classes that wish to monitor events for
-  * window changes.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public interface WindowListener extends java.util.EventListener
+ * This interface is for classes that wish to monitor events for window
+ * changes. To watch a subset of these events, use a WindowAdapter.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see WindowAdapter
+ * @see WindowEvent
+ * @since 1.1
+ * @status updated to 1.4
+ */
+public interface WindowListener extends EventListener
 {
+  /**
+   * This method is called when the window is made visible.
+   *
+   * @param event the <code>WindowEvent</code> indicating the change
+   */
+  void windowOpened(WindowEvent event);
 
-/**
-  * This method is called when a window is activated.
-  *
-  * @param event The <code>WindowEvent</code> indicating the activation.
-  */
-public abstract void
-windowActivated(WindowEvent event);
+  /**
+   * This method is called when the user calls the system menu close
+   * function, giving the program a chance to cancel the close.
+   *
+   * @param event the <code>WindowEvent</code> indicating the close attempt
+   */
+  void windowClosing(WindowEvent event);
 
-/*************************************************************************/
+  /**
+   * This method is called when the window is closed.
+   *
+   * @param event the <code>WindowEvent</code> indicating the dispose
+   */
+  void windowClosed(WindowEvent event);
 
-/**
-  * This method is called when the window is deactivated.
-  *
-  * @param event The <code>WindowEvent</code> indicating the deactivation.
-  */
-public abstract void
-windowDeactivated(WindowEvent event);
+  /**
+   * This method is called when the window is iconified.
+   *
+   * @param event the <code>WindowEvent</code> indicating the iconification
+   * @see Frame#setIconImage(Image)
+   */
+  void windowIconified(WindowEvent event);
 
-/*************************************************************************/
+  /**
+   * This method is called when the window is deiconified.
+   *
+   * @param event the <code>WindowEvent</code> indicating the deiconification
+   */
+  void windowDeiconified(WindowEvent event);
 
-/**
-  * This method is called when the window is made visible.
-  *
-  * @param event The <code>WindowEvent</code> indicating the visibility change.
-  */
-public abstract void
-windowOpened(WindowEvent event);
+  /**
+   * This method is called when a window is activated. Only Frames and Dialogs
+   * can be active, and the active window always contains the component with
+   * focus.
+   *
+   * @param event the <code>WindowEvent</code> indicating the activation
+   */
+  void windowActivated(WindowEvent event);
 
-/*************************************************************************/
-
-/**
-  * This method is called when the user calls the system menu close
-  * function.
-  *
-  * @param event The <code>WindowEvent</code> indicating the close attempt.
-  */
-public abstract void
-windowClosing(WindowEvent event);
-
-/*************************************************************************/
-
-/**
-  * This method is called when the window is closed.
-  *
-  * @param event The <code>WindowEvent</code> indicating the closing.
-  */
-public abstract void
-windowClosed(WindowEvent event);
-
-/*************************************************************************/
-
-/**
-  * This method is called when the window is iconified.
-  *
-  * @param event The <code>WindowEvent</code> indicating the iconification.
-  */
-public abstract void
-windowIconified(WindowEvent event);
-
-/*************************************************************************/
-
-/**
-  * This method is called when the window is deiconified.
-  *
-  * @param event The <code>WindowEvent</code> indicating the deiconification.
-  */
-public abstract void
-windowDeiconified(WindowEvent event);
-
+  /**
+   * This method is called when the window is deactivated.
+   *
+   * @param event the <code>WindowEvent</code> indicating the deactivation
+   */
+  void windowDeactivated(WindowEvent event);
 } // interface WindowListener
-

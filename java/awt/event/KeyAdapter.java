@@ -1,5 +1,5 @@
-/* KeyAdapter.java -- Convenience class for writing key listeners.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* KeyAdapter.java -- convenience class for writing key listeners
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,66 +39,50 @@ exception statement from your version. */
 package java.awt.event;
 
 /**
-  * This is a convenience class for writing key listeners.  It implements
-  * The <code>KeyListener</code> interface with empty method bodies.  This
-  * allows a subclass to override just those methods of interest.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This class implements <code>KeyListener</code> and implements all methods
+ * with empty bodies.  This allows a listener interested in implementing only
+ * a subset of the <code>KeyListener</code> interface to extend this class
+ * and override only the desired methods.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see KeyEvent
+ * @see KeyListener
+ * @since 1.1
+ * @status updated to 1.4
+ */
 public abstract class KeyAdapter implements KeyListener
 {
+  /**
+   * Do nothing default constructor for subclasses.
+   */
+  public KeyAdapter()
+  {
+  }
 
-/*
- * Constructors
- */
+  /**
+   * Implements this method in the interface with an empty body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void keyTyped(KeyEvent event)
+  {
+  }
 
-/**
-  * Do nothing default constructor for subclasses.
-  */
-public 
-KeyAdapter()
-{
-}
+  /**
+   * Implements this method in the interface with an empty body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void keyPressed(KeyEvent event)
+  {
+  }
 
-/*************************************************************************/
-
-/*
- * Instance Methods
- */
-
-/**
-  * Implements this method in the interface with an empty body.
-  *
-  * @param event ignored.
-  */
-public void
-keyPressed(KeyEvent event)
-{
-}
-
-/*************************************************************************/
-
-/**
-  * Implements this method in the interface with an empty body.
-  *
-  * @param event ignored.
-  */
-public void
-keyReleased(KeyEvent event)
-{
-}
-
-/*************************************************************************/
-
-/**
-  * Implements this method in the interface with an empty body.
-  *
-  * @param event ignored.
-  */
-public void
-keyTyped(KeyEvent event)
-{
-}
-
+  /**
+   * Implements this method in the interface with an empty body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void keyReleased(KeyEvent event)
+  {
+  }
 } // class KeyAdapter
-

@@ -1,5 +1,5 @@
-/* InputEvent.java -- Common superclass of component input events.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* InputEvent.java -- common superclass of component input events
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -41,225 +41,384 @@ package java.awt.event;
 import java.awt.Component;
 
 /**
-  * This is the common superclass for all component input classes.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This is the common superclass for all component input classes. These are
+ * passed to listeners before the component, so that listeners can consume
+ * the event before it does its default behavior.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see KeyEvent
+ * @see KeyAdapter
+ * @see MouseEvent
+ * @see MouseAdapter
+ * @see MouseMotionAdapter
+ * @see MouseWheelEvent
+ * @since 1.1
+ * @status updated to 1.4
+ */
 public abstract class InputEvent extends ComponentEvent
-                      implements java.io.Serializable
 {
+  /**
+   * Compatible with JDK 1.1+.
+   */
+  private static final long serialVersionUID = -2482525981698309786L;
 
-/*
- * Static Variables
- */
+  /**
+   * This is the bit mask which indicates the shift key is down. It is
+   * recommended that SHIFT_DOWN_MASK be used instead.
+   *
+   * @see #SHIFT_DOWN_MASK
+   */
+  public static final int SHIFT_MASK = 1;
 
-/**
-  * This is the bit mask which indicates the shift key is down.
-  */
-public static final int SHIFT_MASK = 1;
+  /**
+   * This is the bit mask which indicates the control key is down. It is
+   * recommended that CTRL_DOWN_MASK be used instead.
+   *
+   * @see #CTRL_DOWN_MASK
+   */
+  public static final int CTRL_MASK = 2;
 
-/**
-  * This is the bit mask which indicates the control key is down.
-  */
-public static final int CTRL_MASK = 2;
+  /**
+   * This is the bit mask which indicates the meta key is down. It is
+   * recommended that META_DOWN_MASK be used instead.
+   *
+   * @see #META_DOWN_MASK
+   */
+  public static final int META_MASK = 4;
 
-/**
-  * This is the bit mask which indicates the meta key is down.
-  */
-public static final int META_MASK = 4;
+  /**
+   * This is the bit mask which indicates the alt key is down. It is
+   * recommended that ALT_DOWN_MASK be used instead.
+   *
+   * @see #ALT_DOWN_MASK
+   */
+  public static final int ALT_MASK = 8;
 
-/**
-  * This is the bit mask which indicates the alt key is down.
-  */
-public static final int ALT_MASK = 8;
+  /**
+   * This is the bit mask which indicates the alt-graph modifier is in effect.
+   * It is recommended that ALT_GRAPH_DOWN_MASK be used instead.
+   *
+   * @see #ALT_GRAPH_DOWN_MASK
+   */
+  public static final int ALT_GRAPH_MASK = 0x20;
 
-/**
-  * This is the bit mask which indicates the alt-graph modifier is in effect.
-  */
-public static final int ALT_GRAPH_MASK = 32;
+  /**
+   * This bit mask indicates mouse button one is down. It is recommended that
+   * BUTTON1_DOWN_MASK be used instead.
+   *
+   * @see #BUTTON1_DOWN_MASK
+   */
+  public static final int BUTTON1_MASK = 0x10;
 
-/**
-  * This bit mask indicates mouse button one is down.
-  */
-public static final int BUTTON1_MASK = 16;
+  /**
+   * This bit mask indicates mouse button two is down. It is recommended that
+   * BUTTON2_DOWN_MASK be used instead.
+   *
+   * @see #BUTTON2_DOWN_MASK
+   */
+  public static final int BUTTON2_MASK = 8;
 
-/**
-  * This bit mask indicates mouse button two is down.
-  */
-public static final int BUTTON2_MASK = 8;
+  /**
+   * This bit mask indicates mouse button three is down. It is recommended
+   * that BUTTON3_DOWN_MASK be used instead.
+   *
+   * @see #BUTTON3_DOWN_MASK
+   */
+  public static final int BUTTON3_MASK = 4;
 
-/**
-  * This bit mask indicates mouse button three is down.
-  */
-public static final int BUTTON3_MASK = 4;
+  /**
+   * The SHIFT key extended modifier.
+   *
+   * @since 1.4
+   */
+  public static final int SHIFT_DOWN_MASK = 0x0040;
 
-/*************************************************************************/
+  /**
+   * The CTRL key extended modifier.
+   *
+   * @since 1.4
+   */
+  public static final int CTRL_DOWN_MASK = 0x0080;
 
-/*
- * Instance Variables
- */
+  /**
+   * The META key extended modifier.
+   *
+   * @since 1.4
+   */
+  public static final int META_DOWN_MASK = 0x0100;
 
-/**
-  * @serial The timestamp when this event occurred.
-  */
-private long when;
+  /**
+   * The ALT key extended modifier.
+   *
+   * @since 1.4
+   */
+  public static final int ALT_DOWN_MASK = 0x0200;
 
-/**
-  * @serial The modifiers in effect for this event.
-  */
-protected int modifiers;
+  /**
+   * The mouse button1 key extended modifier.
+   *
+   * @since 1.4
+   */
+  public static final int BUTTON1_DOWN_MASK = 0x0400;
 
-/*************************************************************************/
+  /**
+   * The mouse button2 extended modifier.
+   *
+   * @since 1.4
+   */
+  public static final int BUTTON2_DOWN_MASK = 0x0800;
 
-/*
- * Constructors
- */
+  /**
+   * The mouse button3 extended modifier.
+   *
+   * @since 1.4
+   */
+  public static final int BUTTON3_DOWN_MASK = 0x1000;
 
-/**
-  * Initializes a new instance of <code>InputEvent</code> with the 
-  * specified source, id, timestamp, and modifiers.
-  *
-  * @param source The source of the event.
-  * @param id The event id.
-  * @param when The timestamp when the event occurred
-  * @param modifiers The modifiers in effect for this event, which will be the 
-  * union of the constant bitmasks in this class.
-  */
-protected
-InputEvent(Component source, int id, long when, int modifiers)
-{
-  super(source, id);
-  this.when = when;
-  this.modifiers = modifiers;
-}
+  /**
+   * The ALT_GRAPH key extended modifier.
+   *
+   * @since 1.4
+   */
+  public static final int ALT_GRAPH_DOWN_MASK = 0x2000;
 
-/*************************************************************************/
+  /** The mask for old events, package visible for use in subclasses. */
+  static final int OLD_MASK = 0x3f;
 
-/*
- * Instance Methods
- */
+  /** The mask for new events, package visible for use in subclasses. */
+  static final int NEW_MASK = 0x3fc0;
 
-/**
-  * This method returns the modifiers in effect for this event.  This will
-  * be a union of the bit masks defined in this class that are applicable
-  * to the event.
-  *
-  * @return The modifiers in effect for this event.
-  */
-public int
-getModifiers()
-{
-  return(modifiers);
-} 
-  
-/*************************************************************************/
+  /** The mask to convert new to old, package visible for use in subclasses. */
+  static final int CONVERT_MASK
+    = NEW_MASK & ~(BUTTON2_DOWN_MASK | BUTTON3_DOWN_MASK);
 
-/**
-  * This method returns the timestamp when this event occurred.
-  *
-  * @return The timestamp when this event occurred.
-  */
-public long
-getWhen()
-{
-  return(when);
-}
+  /**
+   * The timestamp when this event occurred.
+   *
+   * @see #getWhen()
+   * @serial the timestamp
+   */
+  private final long when;
 
-/*************************************************************************/
+  /**
+   * The modifiers in effect for this event. Package visible for use by
+   * subclasses. The old style (bitmask 0x3f) should not be mixed with the
+   * new style (bitmasks 0xffffffc0).
+   *
+   * @see #getModifiers()
+   * @see MouseEvent
+   * @serial the modifier state, stored in the new style
+   */
+  int modifiers;
 
-/**
-  * This method tests whether or not the shift key is down.
-  *
-  * @return <code>true</code> if the shift key is down, <code>false</code>
-  * otherwise.
-  */
-public boolean
-isShiftDown()
-{
-  return((getModifiers() & SHIFT_MASK) > 0);
-}
+  /**
+   * Initializes a new instance of <code>InputEvent</code> with the specified
+   * source, id, timestamp, and modifiers. Note that an invalid id leads to
+   * unspecified results.
+   *
+   * @param source the source of the event
+   * @param id the event id
+   * @param when the timestamp when the event occurred
+   * @param modifiers the modifiers in effect for this event, old or new style
+   * @throws IllegalArgumentException if source is null
+   */
+  InputEvent(Component source, int id, long when, int modifiers)
+  {
+    super(source, id);
+    this.when = when;
+    this.modifiers = extend(modifiers);
+  }
 
-/*************************************************************************/
+  /**
+   * This method tests whether or not the shift key was down during the event.
+   *
+   * @return true if the shift key is down
+   */
+  public boolean isShiftDown()
+  {
+    return (modifiers & SHIFT_DOWN_MASK) != 0;
+  }
 
-/**
-  * This method tests whether or not the control key is down.
-  *
-  * @return <code>true</code> if the control key is down, <code>false</code>
-  * otherwise.
-  */
-public boolean
-isControlDown()
-{
-  return((getModifiers() & CTRL_MASK) > 0);
-}
+  /**
+   * This method tests whether or not the control key was down during the
+   * event.
+   *
+   * @return true if the control key is down
+   */
+  public boolean isControlDown()
+  {
+    return (modifiers & CTRL_DOWN_MASK) != 0;
+  }
 
-/*************************************************************************/
+  /**
+   * This method tests whether or not the meta key was down during the event.
+   *
+   * @return true if the meta key is down
+   */
+  public boolean isMetaDown()
+  {
+    return (modifiers & META_DOWN_MASK) != 0;
+  }
 
-/**
-  * This method tests whether or not the meta key is down.
-  *
-  * @return <code>true</code> if the meta key is down, <code>false</code>
-  * otherwise.
-  */
-public boolean
-isMetaDown()
-{
-  return((getModifiers() & META_MASK) > 0);
-}
+  /**
+   * This method tests whether or not the alt key was down during the event.
+   *
+   * @return true if the alt key is down
+   */
+  public boolean isAltDown()
+  {
+    return (modifiers & ALT_DOWN_MASK) != 0;
+  }
 
-/*************************************************************************/
+  /**
+   * This method tests whether or not the alt-graph modifier was in effect
+   * during the event.
+   *
+   * @return true if the alt-graph modifier is down
+   */
+  public boolean isAltGraphDown()
+  {
+    return (modifiers & ALT_GRAPH_DOWN_MASK) != 0;
+  }
 
-/**
-  * This method tests whether or not the alt key is down.
-  *
-  * @return <code>true</code> if the alt key is down, <code>false</code>
-  * otherwise.
-  */
-public boolean
-isAltDown()
-{
-  return((getModifiers() & ALT_MASK) > 0);
-}
+  /**
+   * This method returns the timestamp when this event occurred.
+   *
+   * @return the timestamp when this event occurred
+   */
+  public long getWhen()
+  {
+    return when;
+  }
 
-/*************************************************************************/
+  /**
+   * This method returns the old-style modifiers in effect for this event. 
+   * Note that this is ambiguous between button2 and alt, and between
+   * button3 and meta. Also, code which generated these modifiers tends to
+   * only list the modifier that just changed, even if others were down at
+   * the time. Consider using getModifiersEx instead. This will be a union
+   * of the bit masks defined in this class that are applicable to the event.
+   *
+   * @return the modifiers in effect for this event
+   * @see #getModifiersEx()
+   */
+  public int getModifiers()
+  {
+    int mod = modifiers;
+    if ((mod & SHIFT_DOWN_MASK) != 0)
+      mod |= SHIFT_MASK;
+    if ((mod & CTRL_DOWN_MASK) != 0)
+      mod |= CTRL_MASK;
+    if ((mod & META_DOWN_MASK) != 0)
+      mod |= META_MASK;
+    if ((mod & ALT_DOWN_MASK) != 0)
+      mod |= ALT_MASK;
+    if ((mod & ALT_GRAPH_DOWN_MASK) != 0)
+      mod |= ALT_GRAPH_MASK;
+    if ((mod & BUTTON1_DOWN_MASK) != 0)
+      mod |= BUTTON1_MASK;
+    return mod & OLD_MASK;
+  }
 
-/**
-  * This method tests whether or not the alt-graph modifier is in effect.
-  *
-  * @return <code>true</code> if the alt-graph modifier is in effect,
-  * <code>false</code> otherwise.
-  */
-public boolean
-isAltGraphDown()
-{
-  return((getModifiers() & ALT_GRAPH_MASK) > 0);
-}
+  /**
+   * Returns the extended modifiers (new-style) for this event. This represents
+   * the state of all modal keys and mouse buttons at the time of the event,
+   * and does not suffer from the problems mentioned in getModifiers.
+   *
+   * <p>For an example of checking multiple modifiers, this code will return
+   * true only if SHIFT and BUTTON1 were pressed and CTRL was not:
+   * <pre>
+   * int onmask = InputEvent.SHIFT_DOWN_MASK | InputEvent.BUTTON1_DOWN_MASK;
+   * int offmask = InputEvent.CTRL_DOWN_MASK;
+   * return (event.getModifiersEx() & (onmask | offmask)) == onmask;
+   * </pre>
+   *
+   * @return the bitwise or of all modifiers pressed during the event
+   * @since 1.4
+   */
+  public int getModifiersEx()
+  {
+    return modifiers;
+  }
 
-/*************************************************************************/
+  /**
+   * Consumes this event.  A consumed event is not processed further by the AWT
+   * system.
+   */
+  public void consume()
+  {
+    consumed = true;
+  }
 
-/**
-  * Consumes this event.  A consumed event is not processed by the AWT
-  * system.
-  */
-public void
-consume()
-{
-  super.consume();
-}
- 
-/*************************************************************************/
+  /**
+   * This method tests whether or not this event has been consumed.
+   *
+   * @return true if this event has been consumed
+   */
+  public boolean isConsumed()
+  {
+    return consumed;
+  }
 
-/**
-  * This method tests whether or not this event has been consumed.
-  *
-  * @return <code>true</code> if this event has been consumed, 
-  * <code>false</code> otherwise.
-  */
-public boolean
-isConsumed()
-{
-  return(super.isConsumed());
-}
+  /**
+   * Convert the extended modifier bitmask into a String, such as "Shift" or
+   * "Ctrl+Button1".
+   *
+   * XXX Sun claims this can be localized via the awt.properties file - how
+   * do we implement that?
+   *
+   * @return a string representation of the modifiers in this bitmask
+   * @since 1.4
+   */
+  public static String getModifiersExText(int modifiers)
+  {
+    modifiers &= NEW_MASK;
+    if (modifiers == 0)
+      return "";
+    StringBuffer s = new StringBuffer();
+    if ((modifiers & META_DOWN_MASK) != 0)
+      s.append("Meta+");
+    if ((modifiers & CTRL_DOWN_MASK) != 0)
+      s.append("Ctrl+");
+    if ((modifiers & ALT_DOWN_MASK) != 0)
+      s.append("Alt+");
+    if ((modifiers & SHIFT_DOWN_MASK) != 0)
+      s.append("Shift+");
+    if ((modifiers & ALT_GRAPH_DOWN_MASK) != 0)
+      s.append("Alt Graph+");
+    if ((modifiers & BUTTON1_DOWN_MASK) != 0)
+      s.append("Button1+");
+    if ((modifiers & BUTTON2_DOWN_MASK) != 0)
+      s.append("Button2+");
+    if ((modifiers & BUTTON3_DOWN_MASK) != 0)
+      s.append("Button3+");
+    return s.substring(0, s.length() - 1);
+  }
 
+  /**
+   * Converts the old style modifiers (0x3f) to the new style (0xffffffc0).
+   * Package visible for use by subclasses.
+   *
+   * @param mod the modifiers to convert
+   * @return the adjusted modifiers
+   */
+  static int extend(int mod)
+  {
+    // Favor what we hope will be the common case.
+    if ((mod & OLD_MASK) == 0)
+      return mod;
+    if ((mod & SHIFT_MASK) != 0)
+      mod |= SHIFT_DOWN_MASK;
+    if ((mod & CTRL_MASK) != 0)
+      mod |= CTRL_DOWN_MASK;
+    if ((mod & META_MASK) != 0)
+      mod |= META_DOWN_MASK;
+    if ((mod & ALT_MASK) != 0)
+      mod |= ALT_DOWN_MASK;
+    if ((mod & BUTTON1_MASK) != 0)
+      mod |= BUTTON1_DOWN_MASK;
+    if ((mod & ALT_GRAPH_MASK) != 0)
+      mod |= ALT_GRAPH_DOWN_MASK;
+    return mod & ~OLD_MASK;
+  }
 } // class InputEvent
-

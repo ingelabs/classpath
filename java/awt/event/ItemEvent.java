@@ -1,5 +1,5 @@
-/* ItemEvent.java -- Event for item state changes.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* ItemEvent.java -- event for item state changes
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,142 +38,118 @@ exception statement from your version. */
 
 package java.awt.event;
 
+import java.awt.AWTEvent;
 import java.awt.ItemSelectable;
 
 /**
-  * This event is generated when an item changes state.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public class ItemEvent extends java.awt.AWTEvent implements java.io.Serializable
-{
-
-/*
- * Static Variables
+ * This event is generated when a selection item changes state. This is an
+ * abstraction that distills a large number of individual mouse or keyboard
+ * events into a simpler "item selected" and "item deselected" events.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see ItemSelectable
+ * @see ItemListener
+ * @since 1.1
+ * @status updated to 1.4
  */
-
-/**
-  * This is the first id in the event id range used by this class.
-  */
-public static final int ITEM_FIRST = 701;
-
-/**
-  * This is the last id in the event id range used by this class.
-  */
-public static final int ITEM_LAST = 701;
-
-/**
-  * This event id indicates a state change occurred.
-  */
-public static final int ITEM_STATE_CHANGED = 701;
-
-/**
-  * This type indicates that the item was selected.
-  */
-public static final int SELECTED = 1;
-
-/**
-  * This type indicates that the item was deselected.
-  */
-public static final int DESELECTED = 2;
-
-/*************************************************************************/
-
-/*
- * Instance Variables
- */
-
-/**
-  * @serial The item affected by this event
-  */
-private Object item;
-
-/**
-  * @serial  The state change direction
-  */
-private int stateChange;
-
-/*************************************************************************/
-
-/*
- * Constructors
- */
-
-/**
-  * Initializes a new instance of <code>ItemEvent</code> with the specified
-  * source, id, and state change constant.
-  *
-  * @param source The source of the event.
-  * @param id The event id.
-  * @param item The item affected by the state change.
-  * @param stateChange The state change, either <code>SELECTED</code> or
-  * <code>DESELECTED</code>.
-  */
-public 
-ItemEvent(ItemSelectable source, int id, Object item, int stateChange)
+public class ItemEvent extends AWTEvent
 {
-  super(source, id);
-  this.item = item;
-  this.stateChange = stateChange;
-}
-  
-/*************************************************************************/
+  /**
+   * Compatible with JDK 1.1+.
+   */
+  private static final long serialVersionUID = -608708132447206933L;
 
-/*
- * Instance Methods
- */
+  /** This is the first id in the event id range used by this class. */
+  public static final int ITEM_FIRST = 701;
 
-/**
-  * This method returns the event source as an <code>ItemSelectable</code>.
-  * 
-  * @return The event source as an <code>ItemSelected</code>.
-  */
-public ItemSelectable
-getItemSelectable()
-{
-  return((ItemSelectable)getSource());
-}
+  /** This is the last id in the event id range used by this class. */
+  public static final int ITEM_LAST = 701;
 
-/*************************************************************************/
+  /** This event id indicates a state change occurred. */
+  public static final int ITEM_STATE_CHANGED = 701;
 
-/**
-  * Returns the item affected by this state change.
-  *
-  * @return The item affected by this state change.
-  */
-public Object
-getItem()
-{
-  return(item);
-}
+  /** This type indicates that the item was selected. */
+  public static final int SELECTED = 1;
 
-/*************************************************************************/
+  /** This type indicates that the item was deselected. */
+  public static final int DESELECTED = 2;
 
-/**
-  * Returns the type of state change, ether <code>SELECTED</code> or
-  * <code>DESELECTED</code>.
-  *
-  * @return The type of state change.
-  */
-public int
-getStateChange()
-{
-  return(stateChange);
-}
+  /**
+   * The item affected by this event.
+   *
+   * @serial the item of the selection
+   */
+  private final Object item;
 
-/*************************************************************************/
+  /**
+   * The state change direction, one of {@link #SELECTED} or
+   * {@link #DESELECTED}.
+   *
+   * @serial the selection state
+   */
+  private final int stateChange;
 
-/**
-  * Returns a string identifying this event.
-  *
-  * @param A string identifying this event.
-  */
-public String
-paramString()
-{
-  return(getClass().getName() + " source=" + getSource() + " id=" + getID() +
-         " item=" + getItem() + " stateChange=" + getStateChange());
-}
+  /**
+   * Initializes a new instance of <code>ItemEvent</code> with the specified
+   * source, id, and state change constant. Note that an invalid id leads to
+   * unspecified results.
+   *
+   * @param source the source of the event
+   * @param id the event id
+   * @param item the item affected by the state change
+   * @param stateChange one of {@link #SELECTED} or {@link #DESELECTED}
+   */
+  public ItemEvent(ItemSelectable source, int id, Object item, int stateChange)
+  {
+    super(source, id);
+    this.item = item;
+    this.stateChange = stateChange;
+  }
 
+  /**
+   * This method returns the event source as an <code>ItemSelectable</code>.
+   *
+   * @return the event source as an <code>ItemSelected</code>
+   * @throws ClassCastException if source is changed to a non-ItemSelectable
+   */
+  public ItemSelectable getItemSelectable()
+  {
+    return (ItemSelectable) source;
+  }
+
+  /**
+   * Returns the item affected by this state change.
+   *
+   * @return the item affected by this state change
+   */
+  public Object getItem()
+  {
+    return item;
+  }
+
+  /**
+   * Returns the type of state change, either {@link #SELECTED} or
+   * {@link #DESELECTED}.
+   *
+   * @return the type of state change
+   */
+  public int getStateChange()
+  {
+    return stateChange;
+  }
+
+  /**
+   * Returns a string identifying this event. This is in the format:
+   * <code>"ITEM_STATE_CHANGED,item=" + item + ",stateChange="
+   * + (getStateChange() == DESELECTED ? "DESELECTED" : "SELECTED")</code>.
+   *
+   * @return a string identifying this event
+   */
+  public String paramString()
+  {
+    return (id == ITEM_STATE_CHANGED ? "ITEM_STATE_CHANGED,item="
+            : "unknown type,item=") + item + ",stateChange="
+      + (stateChange == SELECTED ? "SELECTED"
+         : stateChange == DESELECTED ? "DESELECTED" : "unknown type");
+  }
 } // class ItemEvent
-

@@ -1,5 +1,5 @@
-/* AdjustmentEvent.java -- An adjustable value was changed.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* AdjustmentEvent.java -- an adjustable value was changed
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,164 +39,184 @@ exception statement from your version. */
 package java.awt.event;
 
 import java.awt.Adjustable;
+import java.awt.AWTEvent;
 
 /**
-  * This class represents an event that is generated when an adjustable
-  * value is changed.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public class AdjustmentEvent extends java.awt.AWTEvent
-             implements java.io.Serializable
-{
-
-/*
- * Static Variables
+ * This class represents an event that is generated when an adjustable
+ * value is changed.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see Adjustable
+ * @see AdjustmentListener
+ * @since 1.1
+ * @status updated to 1.4
  */
-
-/**
-  * This is the first id in the range of ids used by adjustment events.
-  */
-public static final int ADJUSTMENT_FIRST = 601;
-
-/**
-  * This is the last id in the range of ids used by adjustment events.
-  */
-public static final int ADJUSTMENT_LAST = 601;
-
-/**
-  * This is the id indicating an adjustment value changed.
-  */
-public static final int ADJUSTMENT_VALUE_CHANGED = 601;
-
-/**
-  * Adjustment type for unit increments
-  */
-public static final int UNIT_INCREMENT = 1;
-
-/**
-  * Adjustment type for unit decrements
-  */
-public static final int UNIT_DECREMENT = 2;
-
-/**
-  * Adjustment type for block decrements
-  */
-public static final int BLOCK_DECREMENT = 3;
-
-/**
-  * Adjustment type for block increments
-  */
-public static final int BLOCK_INCREMENT = 4;
-
-/**
-  * Adjustment type for tracking adjustments
-  */
-public static final int TRACK = 5;
-
-/*************************************************************************/
-
-/*
- * Instance Variables
- */
-
-/**
-  * @serial The object that caused the event.
-  */ 
-private Adjustable adjustable;
-
-/**
-  * @serial The adjustment type
-  */
-private int adjustmentType;
-
-/**
-  * @serial The adjustment value
-  */ 
-private int value;
-
-/*************************************************************************/
-
-/*
- * Constructors
- */
-
-/**
-  * Initializes an instance of <code>AdjustmentEvent</code> with the
-  * specified source, id, type, and value.
-  *
-  * @param source The source of the event.
-  * @param id The event id
-  * @param type The event type, which will be one of the constants in
-  * this class.
-  * @param value The value of the adjustment.
-  */
-public
-AdjustmentEvent(Adjustable source, int id, int type, int value)
+public class AdjustmentEvent extends AWTEvent
 {
-  super(source, id);
-  this.adjustmentType = type;
-  this.value = value;
-  this.adjustable = source;
-}
+  /**
+   * Compatible with JDK 1.1+.
+   */
+  private static final long serialVersionUID = 5700290645205279921L;
 
-/*************************************************************************/
+  /** This is the first id in the range of ids used by adjustment events. */
+  public static final int ADJUSTMENT_FIRST = 601;
 
-/*
- * Instance Methods
- */
+  /** This is the last id in the range of ids used by adjustment events. */
+  public static final int ADJUSTMENT_LAST = 601;
 
-/**
-  * This method returns the source of the event as an <code>Adjustable</code>.
-  *
-  * @return The source of the event as an <code>Adjustable</code>.
-  */
-public Adjustable
-getAdjustable()
-{
-  return((Adjustable)getSource());
-}
+  /** This is the id indicating an adjustment value changed. */
+  public static final int ADJUSTMENT_VALUE_CHANGED = 601;
 
-/*************************************************************************/
+  /** Adjustment type for unit increments. */
+  public static final int UNIT_INCREMENT = 1;
 
-/**
-  * Returns the type of the event, which will be one of the constants
-  * defined in this class.
-  *
-  * @return The type of the event.
-  */
-public int
-getAdjustmentType()
-{
-  return(adjustmentType);
-}
+  /** Adjustment type for unit decrements. */
+  public static final int UNIT_DECREMENT = 2;
 
-/*************************************************************************/
+  /** Adjustment type for block decrements. */
+  public static final int BLOCK_DECREMENT = 3;
 
-/**
-  * Returns the value of the event.
-  *
-  * @return The value of the event.
-  */
-public int
-getValue()
-{
-  return(value);
-}
+  /** Adjustment type for block increments. */
+  public static final int BLOCK_INCREMENT = 4;
 
-/*************************************************************************/
+  /** Adjustment type for tracking adjustments. */
+  public static final int TRACK = 5;
 
-/**
-  * Returns a string that describes the event.
-  *
-  * @param A string that describes the event.
-  */
-public String
-paramString()
-{
-  return(getClass().getName() + " source= " + getSource() + " id=" + getID() +
-         " type=" + getAdjustmentType() + " value=" + getValue());
-}
+  /**
+   * The adjustable object that caused the event.
+   *
+   * @see #getAdjustable()
+   * @serial the cause
+   */
+  private final Adjustable adjustable;
 
+  /**
+   * The type of adjustment, one of {@link #UNIT_INCREMENT},
+   * {@link #UNIT_DECREMENT}, {@link #BLOCK_INCREMENT},
+   * {@link #BLOCK_DECREMENT}, or {@link #TRACK}.
+   *
+   * @see #getAdjustmentType()
+   * @serial the adjustment type
+   */
+  private final int adjustmentType;
+
+  /**
+   * The new value of the adjustable; it should be in the range of the
+   * adjustable cause.
+   *
+   * @see #getValue()
+   * @serial the adjustment value
+   */
+  private final int value;
+
+  /**
+   * True if this is in a series of multiple adjustment events.
+   *
+   * @see #getValueIsAdjusting()
+   * @serial true if this is not the last adjustment
+   * @since 1.4
+   */
+  private final boolean isAdjusting;
+
+  /**
+   * Initializes an instance of <code>AdjustmentEvent</code> with the
+   * specified source, id, type, and value. Note that an invalid id leads to
+   * unspecified results.
+   *
+   * @param source the source of the event
+   * @param id the event id
+   * @param type the event type, one of the constants of this class
+   * @param value the value of the adjustment
+   * @throws IllegalArgumentException if source is null
+   */
+  public AdjustmentEvent(Adjustable source, int id, int type, int value)
+  {
+    this(source, id, type, value, false);
+  }
+
+  /**
+   * Initializes an instance of <code>AdjustmentEvent</code> with the
+   * specified source, id, type, and value. Note that an invalid id leads to
+   * unspecified results.
+   *
+   * @param source the source of the event
+   * @param id the event id
+   * @param type the event type, one of the constants of this class
+   * @param value the value of the adjustment
+   * @param isAdjusting if this event is in a chain of adjustments
+   * @throws IllegalArgumentException if source is null
+   * @since 1.4
+   */
+  public AdjustmentEvent(Adjustable source, int id, int type, int value,
+                         boolean isAdjusting)
+  {
+    super(source, id);
+    this.adjustmentType = type;
+    this.value = value;
+    adjustable = source;
+    this.isAdjusting = isAdjusting;
+  }
+
+  /**
+   * This method returns the source of the event as an <code>Adjustable</code>.
+   *
+   * @return the <code>Adjustable</code> source of the event
+   */
+  public Adjustable getAdjustable()
+  {
+    return adjustable;
+  }
+
+  /**
+   * Returns the new value of the adjustable object.
+   *
+   * @return the value of the event
+   */
+  public int getValue()
+  {
+    return value;
+  }
+
+  /**
+   * Returns the type of the event, which will be one of
+   * {@link #UNIT_INCREMENT}, {@link #UNIT_DECREMENT},
+   * {@link #BLOCK_INCREMENT}, {@link #BLOCK_DECREMENT}, or {@link #TRACK}.
+   *
+   * @return the type of the event
+   */
+  public int getAdjustmentType()
+  {
+    return adjustmentType;
+  }
+
+  /**
+   * Test if this event is part of a sequence of multiple adjustements.
+   *
+   * @return true if this is not the last adjustment
+   * @since 1.4
+   */
+  public boolean getValueIsAdjusting()
+  {
+    return isAdjusting;
+  }
+
+  /**
+   * Returns a string that describes the event. This is in the format
+   * <code>"ADJUSTMENT_VALUE_CHANGED,adjType=" + &lt;type&gt; + ",value="
+   * + getValue() + ",isAdjusting=" + getValueIsAdjusting()</code>, where
+   * type is the name of the constant returned by getAdjustmentType().
+   *
+   * @return a string that describes the event
+   */
+  public String paramString()
+  {
+    return (id == ADJUSTMENT_VALUE_CHANGED
+            ? "ADJUSTMENT_VALUE_CHANGED,adjType=" : "unknown type,adjType=")
+      + (adjustmentType == UNIT_INCREMENT ? "UNIT_INCREMENT,value="
+         : adjustmentType == UNIT_DECREMENT ? "UNIT_DECREMENT,value="
+         : adjustmentType == BLOCK_INCREMENT ? "BLOCK_INCREMENT,value="
+         : adjustmentType == BLOCK_DECREMENT ? "BLOCK_DECREMENT,value="
+         : adjustmentType == TRACK ? "TRACK,value=" : "unknown type,value=")
+      + value + ",isAdjusting=" + isAdjusting;
+  }
 } // class AdjustmentEvent
-

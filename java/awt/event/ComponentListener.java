@@ -1,5 +1,5 @@
-/* ComponentListener.java -- Receive all events for a component.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* ComponentListener.java -- receive all events for a component
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,55 +38,47 @@ exception statement from your version. */
 
 package java.awt.event;
 
+import java.util.EventListener;
+
 /**
-  * This interface is for classes that receive all events from a component.
-  * Normally it is not necessary to process these events since the AWT
-  * handles them internally, taking all appropriate actions.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public interface ComponentListener extends java.util.EventListener
+ * This interface is for classes that receive all events from a component.
+ * Normally it is not necessary to process these events since the AWT
+ * handles them internally, taking all appropriate actions. To watch a subset
+ * of these events, use a ComponentAdapter.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see ComponentAdapter
+ * @see ComponentEvent
+ * @since 1.1
+ * @status updated to 1.4
+ */
+public interface ComponentListener extends EventListener
 {
+  /**
+   * This method is called when the component is resized.
+   *
+   * @param event the <code>ComponentEvent</code> indicating the resize
+   */
+  void componentResized(ComponentEvent event);
 
-/**
-  * This method is called when the component is resized.
-  *
-  * @param event The <code>ComponentEvent</code> indicating the resize.
-  */
-public abstract void 
-componentResized(ComponentEvent event);
+  /**
+   * This method is called when the component is moved.
+   *
+   * @param event the <code>ComponentEvent</code> indicating the move
+   */
+  void componentMoved(ComponentEvent event);
 
-/*************************************************************************/
+  /**
+   * This method is called when the component is made visible.
+   *
+   * @param event the <code>ComponentEvent</code> indicating the visibility
+   */
+  void componentShown(ComponentEvent event);
 
-/**
-  * This method is called when the component is moved.
-  *
-  * @param event The <code>ComponentEvent</code> indicating the move.
-  */
-public abstract void
-componentMoved(ComponentEvent event);
-
-/*************************************************************************/
-
-/**
-  * This method is called when the component is made visible.
-  *
-  * @param event The <code>ComponentEvent</code> indicating the visibility
-  * change.
-  */
-public abstract void
-componentShown(ComponentEvent event);
- 
-/*************************************************************************/
-
-/**
-  * This method is called when the component is hidden.
-  *
-  * @param event The <code>ComponentEvent</code> indicating the visibility
-  * change.
-  */
-public abstract void
-componentHidden(ComponentEvent event);
-
-} // interface ComponentListener 
-
+  /**
+   * This method is called when the component is hidden.
+   *
+   * @param event the <code>ComponentEvent</code> indicating the visibility
+   */
+  void componentHidden(ComponentEvent event);
+} // interface ComponentListener

@@ -1,5 +1,5 @@
-/* FocusAdapter.java -- Convenience class for writing focus listeners.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* FocusAdapter.java -- convenience class for writing focus listeners
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,55 +39,41 @@ exception statement from your version. */
 package java.awt.event;
 
 /**
-  * This is a convenience class for writing focus listeners.  It implements
-  * the <code>FocusListener</code> interface with empty method bodies.  A
-  * subclass simply overrides those methods for the events it is interested
-  * in.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This class implements <code>FocusListener</code> and implements all
+ * methods with empty bodies.  This allows a listener interested in
+ * implementing only a subset of the <code>FocusListener</code> interface to
+ * extend this class and override only the desired methods.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see FocusEvent
+ * @see FocusListener
+ * @since 1.1
+ * @status updated to 1.4
+ */
 public abstract class FocusAdapter implements FocusListener
 {
+  /**
+   * Do nothing default constructor for subclasses.
+   */
+  public FocusAdapter()
+  {
+  }
 
-/*
- * Constructors
- */
+  /**
+   * Implements this method from the interface with an empty body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void focusGained(FocusEvent event)
+  {
+  }
 
-/**
-  * Do nothing default constructor for subclasses.
-  */
-public
-FocusAdapter()
-{
-}
-
-/*************************************************************************/
-
-/*
- * Instance Methods
- */
-
-/**
-  * Implements this method from the interface with an empty body.
-  *
-  * @param event Ignored.
-  */
-public void
-focusGained(FocusEvent event)
-{
-}
-
-/*************************************************************************/
-
-/**
-  * Implements this method from the interface with an empty body.
-  *
-  * @param event Ignored.
-  */
-public void
-focusLost(FocusEvent event)
-{
-}
-
+  /**
+   * Implements this method from the interface with an empty body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void focusLost(FocusEvent event)
+  {
+  }
 } // class FocusAdapter
-

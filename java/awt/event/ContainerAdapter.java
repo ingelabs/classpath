@@ -1,5 +1,5 @@
-/* ContainerAdapter.java -- Convenience class for writing container listeners
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* ContainerAdapter.java -- convenience class for writing container listeners
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,55 +39,41 @@ exception statement from your version. */
 package java.awt.event;
 
 /**
-  * This is a convenience class for writing container listeners.  It
-  * implements the <code>ContainerListner</code> interface with empty
-  * method bodies.  This allows a listener to subclass this class and
-  * override only the methods of interest.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This class implements <code>ContainerListener</code> and implements
+ * all methods with empty bodies.  This allows a listener interested in
+ * implementing only a subset of the <code>ContainerListener</code>
+ * interface to extend this class and override only the desired methods.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see ContainerEvent
+ * @see ContainerListener
+ * @since 1.1
+ * @status updated to 1.4
+ */
 public abstract class ContainerAdapter implements ContainerListener
 {
+  /**
+   * Do nothing default constructor for subclasses.
+   */
+  public ContainerAdapter()
+  {
+  }
 
-/*
- * Constructors
- */
+  /**
+   * Implements this method from the interface with an empty body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void componentAdded(ContainerEvent event)
+  {
+  }
 
-/**
-  * Do nothing default constructor for subclasses.
-  */
-public
-ContainerAdapter()
-{
-}
-
-/*************************************************************************/
-
-/*
- * Instance Methods
- */
-
-/**
-  * Implements this method from the interface with an empty body.
-  *
-  * @param event Ignored
-  */
-public void
-componentAdded(ContainerEvent event)
-{
-}
-
-/*************************************************************************/
-
-/**
-  * Implements this method from the interface with an empty body.
-  *
-  * @param event Ignored
-  */
-public void
-componentRemoved(ContainerEvent event)
-{
-}
-
-} // class ContainerAdapter 
-
+  /**
+   * Implements this method from the interface with an empty body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void componentRemoved(ContainerEvent event)
+  {
+  }
+} // class ContainerAdapter

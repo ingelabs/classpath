@@ -1,5 +1,5 @@
-/* MouseAdapter.java -- Convenience class for writing mouse listeners
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* MouseAdapter.java -- convenience class for writing mouse listeners
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,90 +39,68 @@ exception statement from your version. */
 package java.awt.event;
 
 /**
-  * This is a convenience class for writing mouse listeners.  It implements
-  * the <code>MouseListener</code> interface with empty method bodies.  This
-  * allows a subclass to override just those methods of interest.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This class implements <code>MouseListener</code> and implements all methods
+ * with empty bodies.  This allows a listener interested in implementing only
+ * a subset of the <code>MouseListener</code> interface to extend this class
+ * and override only the desired methods.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see MouseEvent
+ * @see MouseListener
+ * @since 1.1
+ * @status updated to 1.4
+ */
 public abstract class MouseAdapter implements MouseListener
 {
+  /**
+   * Do nothing default constructor for subclasses.
+   */
+  public MouseAdapter()
+  {
+  }
 
-/*
- * Constructors
- */
+  /**
+   * Implements this method in the interface with an empty method body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void mouseClicked(MouseEvent event)
+  {
+  }
 
-/**
-  * Do nothing default constructor for subclasses.
-  */
-public 
-MouseAdapter()
-{
-}
+  /**
+   * Implements this method in the interface with an empty method body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void mousePressed(MouseEvent event)
+  {
+  }
 
-/*************************************************************************/
+  /**
+   * Implements this method in the interface with an empty method body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void mouseReleased(MouseEvent event)
+  {
+  }
 
-/*
- * Instance Methods
- */
+  /**
+   * Implements this method in the interface with an empty method body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void mouseEntered(MouseEvent event)
+  {
+  }
 
-/**
-  * Implements this method in the interface with an empty method body.
-  *
-  * @param event Ignored.
-  */
-public void
-mouseClicked(MouseEvent event)
-{
-}
-
-/*************************************************************************/
-
-/**
-  * Implements this method in the interface with an empty method body.
-  *
-  * @param event Ignored.
-  */
-public void
-mouseEntered(MouseEvent event)
-{
-}
-
-/*************************************************************************/
-
-/**
-  * Implements this method in the interface with an empty method body.
-  *
-  * @param event Ignored.
-  */
-public void
-mouseExited(MouseEvent event)
-{
-}
-
-/*************************************************************************/
-
-/**
-  * Implements this method in the interface with an empty method body.
-  *
-  * @param event Ignored.
-  */
-public void
-mousePressed(MouseEvent event)
-{
-}
-
-/*************************************************************************/
-
-/**
-  * Implements this method in the interface with an empty method body.
-  *
-  * @param event Ignored.
-  */
-public void
-mouseReleased(MouseEvent event)
-{
-}
-
+  /**
+   * Implements this method in the interface with an empty method body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void mouseExited(MouseEvent event)
+  {
+  }
 } // class MouseAdapter
-

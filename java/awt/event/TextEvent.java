@@ -1,5 +1,5 @@
-/* TextEvent.java -- Event for text changes
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* TextEvent.java -- event for text changes
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,68 +38,55 @@ exception statement from your version. */
 
 package java.awt.event;
 
-/**
-  * This event is generated when text changes for an object.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public class TextEvent extends java.awt.AWTEvent implements java.io.Serializable
-{
+import java.awt.AWTEvent;
 
-/*
- * Static Variables
+/**
+ * This event is generated when a text box changes contents. This is an
+ * abstraction that distills a large number of individual mouse or keyboard
+ * events into a simpler "text changed" event.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see TextComponent
+ * @see TextListener
+ * @since 1.1
+ * @status updated to 1.4
  */
-
-/**
-  * This is the first id in the range of event ids used by this class.
-  */
-public static final int TEXT_FIRST = 900;
-
-/**
-  * This is the last id in the range of event ids used by this class.
-  */
-public static final int TEXT_LAST = 900;
-
-/**
-  * This event id indicates that the text of an object has changed.
-  */
-public static final int TEXT_VALUE_CHANGED = 900;
-
-/*************************************************************************/
-
-/*
- * Constructors
- */
-
-/**
-  * Initializes a new instance of <code>TextEvent</code> with the
-  * specified source and id.
-  *
-  * @param source The object that generated this event.
-  * @param id The event id for this event.
-  */
-public
-TextEvent(Object source, int id)
+public class TextEvent extends AWTEvent
 {
-  super(source, id);
-}
+  /**
+   * Compatible with JDK 1.1+.
+   */
+  private static final long serialVersionUID = 6269902291250941179L;
 
-/*************************************************************************/
+  /** This is the first id in the range of event ids used by this class. */
+  public static final int TEXT_FIRST = 900;
 
-/*
- * Instance Variables
- */
+  /** This is the last id in the range of event ids used by this class. */
+  public static final int TEXT_LAST = 900;
 
-/**
-  * Returns a string identifying this event.
-  *
-  * @return A string identifying this event.
-  */
-public String
-paramString()
-{
-  return(getClass().getName() + " source=" + getSource() + " id=" + getID());
-}
+  /** This event id indicates that the text of an object has changed. */
+  public static final int TEXT_VALUE_CHANGED = 900;
 
+  /**
+   * Initializes a new instance of <code>TextEvent</code> with the specified
+   * source and id. Note that an invalid id leads to unspecified results.
+   *
+   * @param source the (TextComponent) object that generated this event
+   * @param id the event id
+   * @throws IllegalArgumentException if source is null
+   */
+  public TextEvent(Object source, int id)
+  {
+    super(source, id);
+  }
+
+  /**
+   * Returns a string identifying this event. This is "TEXT_VALUE_CHANGED".
+   *
+   * @return a string identifying this event
+   */
+  public String paramString()
+  {
+    return id == TEXT_VALUE_CHANGED ? "TEXT_VALUE_CHANGED" : "unknown type";
+  }
 } // class TextEvent
-

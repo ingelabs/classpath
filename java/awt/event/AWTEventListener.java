@@ -1,5 +1,5 @@
-/* AWTEventListener.java -- Listen for all events in the AWT system.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* AWTEventListener.java -- listen for all events in the AWT system
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,22 +38,27 @@ exception statement from your version. */
 
 package java.awt.event;
 
+import java.awt.AWTEvent;
+import java.util.EventListener;
+
 /**
-  * This listener is for classes that need to listen to all events in
-  * the AWT system.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public interface AWTEventListener extends java.util.EventListener
+ * This listener is for classes that need to listen to all events in the AWT
+ * system. In general, this should not be used except for classes like
+ * javax.accessibility or by event recorders.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see AWTEvent
+ * @see Toolkit#addAWTEventListener(AWTEventListener, long)
+ * @see Toolkit#removeAWTEventListener(AWTEventListener)
+ * @since 1.2
+ * @status updated to 1.4
+ */
+public interface AWTEventListener extends EventListener
 {
-
-/**
-  * This method is called when any event in the AWT system is dispatched.
-  *
-  * @param event The AWTEvent that was dispatched.
-  */
-public abstract void 
-eventDispatched(java.awt.AWTEvent event);
-
+  /**
+   * This method is called when any event in the AWT system is dispatched.
+   *
+   * @param event the AWTEvent that was dispatched
+   */
+  void eventDispatched(AWTEvent event);
 } // interface AWTEventListener 
-

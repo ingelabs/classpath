@@ -1,5 +1,5 @@
-/* InvocationEvent.java -- Call a runnable when dispatched.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* InvocationEvent.java -- call a runnable when dispatched
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -40,192 +40,193 @@ package java.awt.event;
 
 import java.awt.ActiveEvent;
 import java.awt.AWTEvent;
+import java.awt.EventQueue;
 
 /**
-  * This event executes the <code>run()</code> method of a <code>Runnable</code>
-  * when it is dispatched.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public class InvocationEvent extends AWTEvent implements ActiveEvent,
-             java.io.Serializable
-{
-
-/*
- * Static Variables
+ * This event executes {@link Runnable#run()} of a target object when it is
+ * dispatched. This class is used by calls to <code>invokeLater</code> and
+ * <code>invokeAndWait</code>, so client code can use this fact to avoid
+ * writing special-casing AWTEventListener objects.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see ActiveEvent
+ * @see EventQueue#invokeLater(Runnable)
+ * @see EventQueue#invokeAndWait(Runnable)
+ * @see AWTEventListener
+ * @since 1.2
+ * @status updated to 1.4
  */
-
-/**
-  * This is the first id in the range of event ids used by this class.
-  */
-public static final int INVOCATION_FIRST = 3838;
-
-/**
-  * This is the last id in the range of event ids used by this class.
-  */
-public static final int INVOCATION_LAST = 3838;
-
-/**
-  * This is the default id for this event type.
-  */
-public static final int INVOCATION_DEFAULT = 3838;
-
-/*************************************************************************/
-
-/*
- * Instance Methods
- */
-
-/**
-  * @serial This is the <code>Runnable</code> object to call when dispatched.
-  */
-protected Runnable runnable;
-
-/**
-  * @serial This is the object to call <code>notifyAll()</code> on when 
-  * the call to <code>run()</code> returns, or <code>null</code> if no 
-  * object is to be notified.
-  */
-protected Object notifier;
-
-/**
-  * @serial This variable is set to <code>true</code> if exceptions are caught 
-  * and stored in a variable during the call to <code>run()</code>, otherwise
-  * exceptions are ignored and propagate up.
-  */
-protected boolean catchExceptions;
-
-/**
-  * @serial This is the caught exception thrown in the <code>run()</code> 
-  * method.
-  */
-private Exception exception;
-
-/*************************************************************************/
-
-/*
- * Constructors
- */
-
-/**
-  * Initializes a new instance of <code>InvocationEvent</code> that has
-  * the specified source, id, runnable object, and notification object.
-  * It will also catch exceptions if that behavior is specified.
-  *
-  * @param source The source of the event.
-  * @param id The parameter id.
-  * @param runnable The <code>Runnable</code> object to invoke.
-  * @param notifier The object to call <code>notifyAll</code> on when
-  * the invocation of the runnable object is complete.
-  * @param catchExceptions <code>true</code> if exceptions are caught when 
-  * the runnable is running, <code>false</code> otherwise.
-  */
-public
-InvocationEvent(Object source, int id, Runnable runnable, Object notifier,
-                boolean catchExceptions)
+public class InvocationEvent extends AWTEvent implements ActiveEvent
 {
-  super(source, id);
-  this.runnable = runnable;
-  this.notifier = notifier;
-  this.catchExceptions = catchExceptions;
-}
+  /**
+   * Compatible with JDK 1.2+.
+   */
+  private static final long serialVersionUID = 436056344909459450L;
 
-/*************************************************************************/
+  /** This is the first id in the range of event ids used by this class. */
+  public static final int INVOCATION_FIRST = 1200;
 
-/**
-  * Initializes a new instance of <code>InvocationEvent</code> with the
-  * specified source, runnable, and notifier.  It will also catch
-  * exceptions if specified.
-  *
-  * @param source The source of the event.
-  * @param runnable The <code>Runnable</code> object to invoke.
-  * @param notifier The object to call <code>notifyAll</code> on when
-  * the invocation of the runnable object is complete.
-  * @param catchExceptions <code>true</code> if exceptions are caught when 
-  * the runnable is running, <code>false</code> otherwise.
-  */
-public
-InvocationEvent(Object source, Runnable runnable, Object notifier,
-                boolean catchExceptions)
-{
-  this(source, INVOCATION_DEFAULT, runnable, notifier, catchExceptions);
-}
+  /** This is the default id for this event type. */
+  public static final int INVOCATION_DEFAULT = 1200;
 
-/*************************************************************************/
+  /** This is the last id in the range of event ids used by this class. */
+  public static final int INVOCATION_LAST = 1200;
 
-/**
-  * Initializes a new instance of <code>InvocationEvent</code> with the
-  * specified source and runnable.
-  *
-  * @param source The source of the event.
-  * @param runnable The <code>Runnable</code> object to invoke.
-  */
-public
-InvocationEvent(Object source, Runnable runnable)
-{
-  this(source, INVOCATION_DEFAULT, runnable, null, false);
-}
-  
-/*************************************************************************/
+  /**
+   * This is the <code>Runnable</code> object to call when dispatched.
+   *
+   * @serial the runnable to execute
+   */
+  protected Runnable runnable;
 
-/*
- * Instance Variables
- */
+  /**
+   * This is the object to call <code>notifyAll()</code> on when
+   * the call to <code>run()</code> returns, or <code>null</code> if no
+   * object is to be notified.
+   *
+   * @serial the object to notify
+   */
+  protected Object notifier;
 
-/**
-  * This method calls the <code>run()</code> method of the runnable and
-  * performs any other functions specified in the constructor.
-  */
-public void
-dispatch()
-{
-  if (catchExceptions)
-    {
+  /**
+   * This variable is set to <code>true</code> if exceptions are caught
+   * and stored in a variable during the call to <code>run()</code>, otherwise
+   * exceptions are ignored and propagate up.
+   *
+   * @serial true to catch exceptions
+   */
+  protected boolean catchExceptions;
+
+  /**
+   * This is the caught exception thrown in the <code>run()</code> method. It
+   * is null if exceptions are ignored, the run method hasn't completed, or
+   * there were no exceptions.
+   *
+   * @serial the caught exception, if any
+   */
+  private Exception exception;
+
+  /**
+   * The timestamp when this event was created.
+   *
+   * @see #getWhen()
+   * @serial the timestamp
+   * @since 1.4
+   */
+  private final long when = EventQueue.getMostRecentEventTime();
+
+  /**
+   * Initializes a new instance of <code>InvocationEvent</code> with the
+   * specified source and runnable.
+   *
+   * @param source the source of the event
+   * @param runnable the <code>Runnable</code> object to invoke
+   * @throws IllegalArgumentException if source is null
+   */
+  public InvocationEvent(Object source, Runnable runnable)
+  {
+    this(source, INVOCATION_DEFAULT, runnable, null, false);
+  }
+
+  /**
+   * Initializes a new instance of <code>InvocationEvent</code> with the
+   * specified source, runnable, and notifier.  It will also catch exceptions
+   * if specified. If notifier is non-null, this will call notifyAll() on
+   * the object when the runnable is complete. If catchExceptions is true,
+   * this traps any exception in the runnable, otherwise it lets the exception
+   * propagate up the Event Dispatch thread.
+   *
+   * @param source the source of the event
+   * @param runnable the <code>Runnable</code> object to invoke
+   * @param notifier the object to notify, or null
+   * @param catchExceptions true to catch exceptions from the runnable
+   */
+  public InvocationEvent(Object source, Runnable runnable, Object notifier,
+                         boolean catchExceptions)
+  {
+    this(source, INVOCATION_DEFAULT, runnable, notifier, catchExceptions);
+  }
+
+  /**
+   * Initializes a new instance of <code>InvocationEvent</code> with the
+   * specified source, runnable, and notifier.  It will also catch exceptions
+   * if specified. If notifier is non-null, this will call notifyAll() on
+   * the object when the runnable is complete. If catchExceptions is true,
+   * this traps any exception in the runnable, otherwise it lets the exception
+   * propagate up the Event Dispatch thread. Note that an invalid id leads to
+   * unspecified results.
+   *
+   * @param source the source of the event
+   * @param id the event id
+   * @param runnable the <code>Runnable</code> object to invoke
+   * @param notifier the object to notify, or null
+   * @param catchExceptions true to catch exceptions from the runnable
+   */
+  protected InvocationEvent(Object source, int id, Runnable runnable,
+                            Object notifier, boolean catchExceptions)
+  {
+    super(source, id);
+    this.runnable = runnable;
+    this.notifier = notifier;
+    this.catchExceptions = catchExceptions;
+  }
+
+  /**
+   * This method calls the <code>run()</code> method of the runnable, traps
+   * exceptions if instructed to do so, and calls <code>notifyAll()</code>
+   * on any notifier if all worked successfully.
+   */
+  public void dispatch()
+  {
+    if (catchExceptions)
       try
         {
           runnable.run();
         }
-      catch(Exception e)
+      catch (Exception e)
         {
-          this.exception = e;
+          exception = e;
         }
-    }
-  else
-    {
+    else
       runnable.run();
-    }
+    if (notifier != null)
+      notifier.notifyAll();
+  }
 
-  if (notifier != null)
-    notifier.notifyAll();
-}
+  /**
+   * This method returns the exception that occurred during the execution of
+   * the runnable, or <code>null</code> if not exception was thrown or
+   * exceptions were not caught.
+   *
+   * @return the exception thrown by the runnable
+   */
+  public Exception getException()
+  {
+    return exception;
+  }
 
-/*************************************************************************/
+  /**
+   * Gets the timestamp of when this event was created.
+   *
+   * @return the timestamp of this event
+   * @since 1.4
+   */
+  public long getWhen()
+  {
+    return when;
+  }
 
-/**
-  * This method returns the exception that occurred during the execution of
-  * the runnable, or <code>null</code> if not exception was thrown or
-  * exceptions were not caught.
-  *
-  * @return The exception thrown by the runnable.
-  */
-public Exception
-getException()
-{
-  return(exception);
-}
-
-/*************************************************************************/
-
-/**
-  * This method returns a string identifying this event.
-  *
-  * @return A string identifying this event.
-  */
-public String
-paramString()
-{
-  return(getClass().getName());
-}
-
+  /**
+   * This method returns a string identifying this event. This is formatted as:
+   * <code>"INVOCATION_DEFAULT,runnable=" + runnable + ",notifier=" + notifier
+   * + ",catchExceptions=" + catchExceptions + ",when=" + getWhen()</code>.
+   *
+   * @return a string identifying this event
+   */
+  public String paramString()
+  {
+    return (id == INVOCATION_DEFAULT ? "INVOCATION_DEFAULT,runnable="
+            : "unknown type,runnable=") + runnable + ",notifier=" + notifier
+      + ",catchExceptions=" + catchExceptions + ",when=" + when;
+  }
 } // class InvocationEvent
-

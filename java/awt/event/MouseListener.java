@@ -1,5 +1,5 @@
-/* MouseListener.java -- Listen for mouse events other than motion
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* MouseListener.java -- listen for mouse clicks and crossing component edges
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,62 +38,57 @@ exception statement from your version. */
 
 package java.awt.event;
 
+import java.util.EventListener;
+
 /**
-  * This interface is for classes that wish to receive mouse events other
-  * than simple motion events.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public interface MouseListener extends java.util.EventListener
+ * This interface is for classes that wish to receive mouse events other than
+ * simple motion events. This includes clicks (but not mouse wheel events),
+ * and crossing component boundaries without change in button status. To
+ * track moves and drags, use MouseMotionListener, and to track wheel events,
+ * use MouseWheelListener. To watch a subset of these events, use a
+ * MouseAdapter.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see MouseAdapter
+ * @see MouseEvent
+ * @since 1.1
+ * @status updated to 1.4
+ */
+public interface MouseListener extends EventListener
 {
+  /**
+   * This method is called when the mouse is clicked (pressed and released
+   * in short succession) on a component.
+   *
+   * @param event the <code>MouseEvent</code> indicating the click
+   */
+  void mouseClicked(MouseEvent event);
 
-/**
-  * This method is called when the mouse is clicked on a component.
-  *
-  * @param event The <code>MouseEvent</code> indicating the click.
-  */
-public abstract void
-mouseClicked(MouseEvent event);
+  /**
+   * This method is called when the mouse is pressed over a component.
+   *
+   * @param event the <code>MouseEvent</code> for the press
+   */
+  void mousePressed(MouseEvent event);
 
-/*************************************************************************/
+  /**
+   * This method is called when the mouse is released over a component.
+   *
+   * @param event the <code>MouseEvent</code> for the release
+   */
+  void mouseReleased(MouseEvent event);
 
-/**
-  * This method is called when the mouse enters a component.
-  *
-  * @param event The <code>MouseEvent</code> for the entry.
-  */
-public abstract void
-mouseEntered(MouseEvent event);
+  /**
+   * This method is called when the mouse enters a component.
+   *
+   * @param event the <code>MouseEvent</code> for the entry
+   */
+  void mouseEntered(MouseEvent event);
 
-/*************************************************************************/
-
-/** 
-  * This method is called when the mouse exits a component.
-  *
-  * @param event The <code>MouseEvent</code> for the exit.
-  */
-public abstract void
-mouseExited(MouseEvent event);
-
-/*************************************************************************/
-
-/**
-  * This method is called when the mouse is pressed over a component.
-  *
-  * @param event The <code>MouseEvent</code> for the press.
-  */
-public abstract void
-mousePressed(MouseEvent event);
-
-/*************************************************************************/
-
-/**
-  * This method is called when the mouse is released over a component.
-  *
-  * @param event The <code>MouseEvent</code> for the release.
-  */
-public abstract void
-mouseReleased(MouseEvent event);
-
+  /** 
+   * This method is called when the mouse exits a component.
+   *
+   * @param event the <code>MouseEvent</code> for the exit
+   */
+  void mouseExited(MouseEvent event);
 } // interface MouseListener
-

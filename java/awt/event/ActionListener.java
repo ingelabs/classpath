@@ -1,5 +1,5 @@
-/* ActionListener.java -- Listens for action events
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* ActionListener.java -- listens for action events
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,21 +38,22 @@ exception statement from your version. */
 
 package java.awt.event;
 
+import java.util.EventListener;
+
 /**
-  * This interface is for classes that listen for action events.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public interface ActionListener extends java.util.EventListener
+ * This interface is for classes that listen for action events.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see ActionEvent
+ * @since 1.1
+ * @status updated to 1.4
+ */
+public interface ActionListener extends EventListener
 {
-
-/**
-  * This method is invokes when an action occurs.
-  *
-  * @param event The <code>ActionEvent</code> that occurred.
-  */
-public abstract void
-actionPerformed(ActionEvent e);
-
+  /**
+   * This method is invoked when an action occurs.
+   *
+   * @param event the <code>ActionEvent</code> that occurred
+   */
+  void actionPerformed(ActionEvent e);
 } // interface ActionListener
-

@@ -1,5 +1,5 @@
-/* ContainerListener.java -- Listen for container events.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* ContainerListener.java -- listen for container events
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,35 +38,33 @@ exception statement from your version. */
 
 package java.awt.event;
 
+import java.util.EventListener;
+
 /**
-  * This interface is for classes that wish to listen for all events from
-  * container objects.  This is normally not necessary since the AWT system
-  * listens for and processes these events.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public interface ContainerListener extends java.util.EventListener
+ * This interface is for classes that wish to listen for all events from
+ * container objects.  This is normally not necessary since the AWT system
+ * listens for and processes these events. To watch a subset of these events,
+ * use a ContainerAdapter.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see ContainerAdapter
+ * @see ContainerEvent
+ * @since 1.1
+ * @status updated to 1.4
+ */
+public interface ContainerListener extends EventListener
 {
+  /**
+   * This method is called when a component is added to the container.
+   *
+   * @param event the <code>ContainerEvent</code> indicating component addition
+   */
+  void componentAdded(ContainerEvent event);
 
-/**
-  * This method is called when a component is added to the container.
-  *
-  * @param event The <code>ContainerEvent</code> indicating that the 
-  * component was added.
-  */
-public abstract void
-componentAdded(ContainerEvent event);
-
-/*************************************************************************/
-
-/**
-  * This method is called when a component is removed from the container.
-  *
-  * @param event The <code>ContainerEvent</code> indicating that the 
-  * component was removed.
-  */
-public abstract void
-componentRemoved(ContainerEvent event); 
-
+  /**
+   * This method is called when a component is removed from the container.
+   *
+   * @param event the <code>ContainerEvent</code> indicating component removal
+   */
+  void componentRemoved(ContainerEvent event);
 } // interface ContainerListener
-

@@ -1,5 +1,5 @@
-/* MouseMotionAdapter.java -- Convenience class for mouse motion listeners
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* MouseMotionAdapter.java -- convenience class for mouse motion listeners
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,55 +39,41 @@ exception statement from your version. */
 package java.awt.event;
 
 /**
-  * This is a convenience class for writing mouse motion listeners.  It
-  * implements the <code>MouseMotionListener</code> interface with empty
-  * method bodies.  This allows a subclass to override only those methods
-  * of interest.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This class implements <code>MouseMotionListener</code> and implements all
+ * methods with empty bodies.  This allows a listener interested in
+ * implementing only a subset of the <code>MouseMotionListener</code>
+ * interface to extend this class and override only the desired methods.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see MouseEvent
+ * @see MouseMotionListener
+ * @since 1.1
+ * @status updated to 1.4
+ */
 public abstract class MouseMotionAdapter implements MouseMotionListener
 {
+  /**
+   * Do nothing default constructor for subclasses.
+   */
+  public MouseMotionAdapter()
+  {
+  }
 
-/*
- * Constructor
- */
+  /**
+   * Implement this method in the interface with an empty body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void mouseDragged(MouseEvent event)
+  {
+  }
 
-/**
-  * Do nothing default constructor for subclasses.
-  */
-public
-MouseMotionAdapter()
-{
-}
-
-/*************************************************************************/
-
-/*
- * Instance Methods 
- */
-
-/**
-  * Implement this method in the interface with an empty body.
-  *
-  * @param event Ignored.
-  */
-public void
-mouseDragged(MouseEvent event)
-{
-}
-
-/*************************************************************************/
-
-/**
-  * Implement this method in the interface with an empty body.
-  *
-  * @param event Ignored.
-  */
-public void
-mouseMoved(MouseEvent event)
-{
-}
-
+  /**
+   * Implement this method in the interface with an empty body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void mouseMoved(MouseEvent event)
+  {
+  }
 } // class MouseMotionAdapter
-

@@ -1,5 +1,5 @@
-/* AdjustmentListener.java -- listen for adjustment events
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+/* WindowFocusListener.java -- listens for window focus events
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -41,18 +41,28 @@ package java.awt.event;
 import java.util.EventListener;
 
 /**
- * Interface for classes that listen for adjustment events.
+ * This interface is for classes that wish to monitor events for window
+ * focus changes. To watch a subset of these events, use a WindowAdapter.
  *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @since 1.1
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @see WindowAdapter
+ * @see WindowEvent
+ * @since 1.4
  * @status updated to 1.4
  */
-public interface AdjustmentListener extends EventListener
+public interface WindowFocusListener extends EventListener
 {
   /**
-   * This method is called when an adjustable value changes.
+   * This method is called when a window gains focus.
    *
-   * @param event the <code>AdjustmentEvent</code> that occurred
+   * @param event the <code>WindowEvent</code> indicating the focus change
    */
-  void adjustmentValueChanged(AdjustmentEvent event);
-} // interface AdjustmentListener
+  void windowGainedFocus(WindowEvent event);
+
+  /**
+   * This method is called when a window loses focus.
+   *
+   * @param event the <code>WindowEvent</code> indicating the focus change
+   */
+  void windowLostFocus(WindowEvent event);
+} // interface WindowFocusListener

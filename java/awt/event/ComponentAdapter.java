@@ -1,5 +1,5 @@
-/* ComponentAdapter.java -- Convenience class for writing component listeners
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* ComponentAdapter.java -- convenience class for writing component listeners
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,79 +39,59 @@ exception statement from your version. */
 package java.awt.event;
 
 /**
-  * This class implements <code>ComponentListener</code> and implements
-  * all methods with empty bodies.  This allows a listener interested in 
-  * implementing only a subset of the <code>ComponentListener</code>
-  * interface to extend this class and override only the desired methods.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This class implements <code>ComponentListener</code> and implements
+ * all methods with empty bodies.  This allows a listener interested in
+ * implementing only a subset of the <code>ComponentListener</code>
+ * interface to extend this class and override only the desired methods.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see ComponentEvent
+ * @see ComponentListener
+ * @since 1.1
+ * @status updated to 1.4
+ */
 public abstract class ComponentAdapter implements ComponentListener
 {
+  /**
+   * Do nothing default constructor for subclasses.
+   */
+  public ComponentAdapter()
+  {
+  }
 
-/*
- * Constructors
- */
+  /**
+   * Implements this method from the interface with an empty body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void componentResized(ComponentEvent event)
+  {
+  }
 
-/**
-  * Do nothing default constructor for subclasses.
-  */
-public
-ComponentAdapter()
-{
-}
+  /**
+   * Implements this method from the interface with an empty body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void componentMoved(ComponentEvent event)
+  {
+  }
 
-/*************************************************************************/
+  /**
+   * Implements this method from the interface with an empty body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void componentShown(ComponentEvent event)
+  {
+  }
 
-/*
- * Instance Methods
- */
-
-/**
-  * Implements this method from the interface with an empty body.
-  *
-  * @param event Ignored
-  */
-public void
-componentResizes(ComponentEvent event)
-{
-}
-
-/*************************************************************************/
-
-/**
-  * Implements this method from the interface with an empty body.
-  *
-  * @param event Ignored
-  */
-public void
-componentMoved(ComponentEvent event)
-{
-}
-
-/*************************************************************************/
-
-/**
-  * Implements this method from the interface with an empty body.
-  *
-  * @param event Ignored
-  */
-public void
-componentShown(ComponentEvent event)
-{
-}
-
-/*************************************************************************/
-
-/**
-  * Implements this method from the interface with an empty body.
-  *
-  * @param event Ignored
-  */
-public void
-componentHidden(ComponentEvent event)
-{
-}
-
+  /**
+   * Implements this method from the interface with an empty body.
+   *
+   * @param event the event, ignored in this implementation
+   */
+  public void componentHidden(ComponentEvent event)
+  {
+  }
 } // class ComponentAdapter 
-

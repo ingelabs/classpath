@@ -1,5 +1,5 @@
-/* InputMethodListener.java -- Listen for input method events
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* InputMethodListener.java -- listen for input method events
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,33 +38,32 @@ exception statement from your version. */
 
 package java.awt.event;
 
+import java.util.EventListener;
+
 /**
-  * This interface is for classes that wish to receive events from an
-  * input method.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public interface InputMethodListener extends java.util.EventListener
+ * This interface is for classes that wish to receive events from an input
+ * method. For a text component to use input methods, it must also install
+ * an InputMethodRequests handler.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see InputMethodEvent
+ * @see InputMethodRequests
+ * @since 1.2
+ * @status updated to 1.4
+ */
+public interface InputMethodListener extends EventListener
 {
+  /**
+   * This method is called when the text is changed.
+   *
+   * @param event the <code>InputMethodEvent</code> indicating the text change
+   */
+  void inputMethodTextChanged(InputMethodEvent event);
 
-/**
-  * This method is called when the cursor position within the text is changed.
-  *
-  * @param event The <code>InputMethodEvent</code> indicating the 
-  * position change.
-  */
-public abstract void
-caretPositionChanged(InputMethodEvent event);
-
-/*************************************************************************/
-
-/**
-  * This method is called when the text is changed.
-  *
-  * @param event The <code>InputMethodEvent</code> indicating the text change.
-  */
-public abstract void
-inputMethodTextChanged(InputMethodEvent event);
-
+  /**
+   * This method is called when the cursor position within the text is changed.
+   *
+   * @param event the <code>InputMethodEvent</code> indicating the change
+   */
+  void caretPositionChanged(InputMethodEvent event);
 } // interface InputMethodListener
-

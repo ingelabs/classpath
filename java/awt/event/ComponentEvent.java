@@ -1,5 +1,5 @@
-/* ComponentEvent.java -- Notification events for components
-   Copyright (C) 1999 Free Software Foundation, Inc.
+/* ComponentEvent.java -- notification of events for components
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,102 +38,100 @@ exception statement from your version. */
 
 package java.awt.event;
 
+import java.awt.AWTEvent;
 import java.awt.Component;
 
 /**
-  * This class is for events generated when a component is moved,
-  * resized, hidden, or shown.  These events normally do not need to be
-  * handled by the application, since the AWT system automatically takes
-  * care of them.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public class ComponentEvent extends java.awt.AWTEvent
-             implements java.io.Serializable
-{
-
-/*
- * Static Variables
+ * This class is for events generated when a component is moved, resized,
+ * hidden, or shown.  These events normally do not need to be handled by the
+ * application, since the AWT system automatically takes care of them. This
+ * is also the superclass for other events on components, but
+ * ComponentListeners ignore such subclasses.
+ *
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @see ComponentAdapter
+ * @see ComponentListener
+ * @since 1.1
+ * @status updated to 1.4
  */
-
-/**
-  * This is the first id in the range of ids used by this class.
-  */
-public static final int COMPONENT_FIRST = 100;
-
-/**
-  * This is the last id in the range of ids used by this class.
-  */
-public static final int COMPONENT_LAST = 103;
-
-/**
-  * This id indicates that a component was moved.
-  */
-public static final int COMPONENT_MOVED = 100;
-
-/**
-  * This id indicates that a component was resized.
-  */
-public static final int COMPONENT_RESIZED = 101;
-
-/**
-  * This id indicates that a component was shown.
-  */
-public static final int COMPONENT_SHOWN = 102;
-
-/**
-  * This id indicates that a component was hidden.
-  */
-public static final int COMPONENT_HIDDEN = 103;
-
-/*************************************************************************/
-
-/*
- * Constructors
- */
-
-/**
-  * Initializes a new instance of <code>ComponentEvent</code> with the
-  * specified source and id.
-  *
-  * @param source The source of the event.
-  * @param id The event id.
-  */
-public
-ComponentEvent(Component source, int id)
+public class ComponentEvent extends AWTEvent
 {
-  super(source, id);
-}
+  /**
+   * Compatible with JDK 1.1+.
+   */
+  private static final long serialVersionUID = 8101406823902992965L;
 
-/*************************************************************************/
+  /** This is the first id in the range of ids used by this class. */
+  public static final int COMPONENT_FIRST = 100;
 
-/*
- * Instance Variables
- */
+  /** This is the last id in the range of ids used by this class. */
+  public static final int COMPONENT_LAST = 103;
 
-/**
-  * This method returns the event source as a <code>Component</code>.
-  *
-  * @return The event source as a <code>Component</code>.
-  */
-public Component
-getComponent()
-{
-  return((Component)getSource());
-}
+  /** This id indicates that a component was moved. */
+  public static final int COMPONENT_MOVED = 100;
 
-/*************************************************************************/
+  /** This id indicates that a component was resized. */
+  public static final int COMPONENT_RESIZED = 101;
 
-/**
-  * This method returns a string identifying this event.
-  *
-  * @return A string identifying this event.
-  */
-public String
-paramString()
-{
-  return(getClass().getName() + " source= " + getSource() + " id=" + getID());
-}
+  /** This id indicates that a component was shown. */
+  public static final int COMPONENT_SHOWN = 102;
 
+  /** This id indicates that a component was hidden. */
+  public static final int COMPONENT_HIDDEN = 103;
+
+  /**
+   * Initializes a new instance of <code>ComponentEvent</code> with the
+   * specified source and id. Note that an invalid id leads to unspecified
+   * results.
+   *
+   * @param source the source of the event
+   * @param id the event id
+   * @throws IllegalArgumentException if source is null
+   */
+  public ComponentEvent(Component source, int id)
+  {
+    super(source, id);
+  }
+
+  /**
+   * This method returns the event source as a <code>Component</code>. If the
+   * source has subsequently been modified to a non-Component, this returns
+   * null.
+   *
+   * @return the event source as a <code>Component</code>, or null
+   */
+  public Component getComponent()
+  {
+    return source instanceof Component ? (Component) source : null;
+  }
+
+  /**
+   * This method returns a string identifying this event. This is the field
+   * name of the id type, and for COMPONENT_MOVED or COMPONENT_RESIZED, the
+   * new bounding box of the component.
+   *
+   * @return a string identifying this event
+   */
+  public String paramString()
+  {
+    // Unlike Sun, we don't throw NullPointerException or ClassCastException
+    // when source was illegally changed.
+    switch (id)
+      {
+      case COMPONENT_MOVED:
+        return "COMPONENT_MOVED "
+          + (source instanceof Component
+             ? ((Component) source).getBounds() : (Object) "");
+      case COMPONENT_RESIZED:
+        return "COMPONENT_RESIZED "
+          + (source instanceof Component
+             ? ((Component) source).getBounds() : (Object) "");
+      case COMPONENT_SHOWN:
+        return "COMPONENT_SHOWN";
+      case COMPONENT_HIDDEN:
+        return "COMPONENT_HIDDEN";
+      default:
+        return "unknown type";
+      }
+  }
 } // class ComponentEvent
-

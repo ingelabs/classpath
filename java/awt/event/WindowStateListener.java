@@ -1,5 +1,5 @@
-/* AdjustmentListener.java -- listen for adjustment events
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+/* WindowStateListener.java -- listens for window state changes
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -41,18 +41,22 @@ package java.awt.event;
 import java.util.EventListener;
 
 /**
- * Interface for classes that listen for adjustment events.
+ * This interface is for classes that wish to monitor events for window
+ * state changes.
  *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @since 1.1
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @see WindowAdapter
+ * @see WindowEvent
+ * @since 1.4
  * @status updated to 1.4
  */
-public interface AdjustmentListener extends EventListener
+public interface WindowStateListener extends EventListener
 {
   /**
-   * This method is called when an adjustable value changes.
+   * This method is called when the window state is changed, because of
+   * iconification or maximization.
    *
-   * @param event the <code>AdjustmentEvent</code> that occurred
+   * @param event the <code>WindowEvent</code> indicating the change
    */
-  void adjustmentValueChanged(AdjustmentEvent event);
-} // interface AdjustmentListener
+  void windowStateChanged(WindowEvent event);
+} // interface WindowStateListener
