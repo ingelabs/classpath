@@ -1,5 +1,18 @@
 2004-03-19  Michael Koch  <konqueror@gmx.de>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGlyphVector.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEvents.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkLabelPeer.c,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c:
+	Merged from libgcj. I actually forgot this in my last commit.
+
+2004-03-19  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/HttpURLConnection.java:
 	Fixed typos in javadoc.
 

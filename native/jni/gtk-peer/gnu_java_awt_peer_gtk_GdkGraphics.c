@@ -188,7 +188,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_translateNative
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawString
   (JNIEnv *env, jobject obj, jstring str, jint x, jint y, 
-   jstring fname, jint size)
+   jstring fname, jint style, jint size)
 {
   struct graphics *g;
   const char *cstr;
@@ -208,6 +208,12 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawString
 
   font_desc = pango_font_description_from_string (font_name);
   pango_font_description_set_size (font_desc, size * PANGO_SCALE);
+
+  if (style & AWT_STYLE_BOLD)
+    pango_font_description_set_weight (font_desc, PANGO_WEIGHT_BOLD);
+
+  if (style & AWT_STYLE_ITALIC)
+    pango_font_description_set_style (font_desc, PANGO_STYLE_OBLIQUE);
 
   context = gdk_pango_context_get();
   pango_context_set_font_description (context, font_desc);
@@ -316,12 +322,24 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_clearRect
   (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)
 {
   struct graphics *g;
+  GdkGCValues saved;
 
   g = (struct graphics *) NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  gdk_window_clear_area ((GdkWindow *)g->drawable, 
-			 x + g->x_offset, y + g->y_offset, width, height);
+  if (GDK_IS_WINDOW (g->drawable))
+    {
+      gdk_window_clear_area ((GdkWindow *)g->drawable, 
+			     x + g->x_offset, y + g->y_offset, width, height);
+    }
+  else
+    {
+      gdk_gc_get_values (g->gc, &saved);
+      gdk_gc_set_foreground (g->gc, &(saved.background));
+      gdk_draw_rectangle (g->drawable, g->gc, TRUE, 
+			  x + g->x_offset, y + g->y_offset, width, height);
+      gdk_gc_set_foreground (g->gc, &(saved.foreground));
+    }
   gdk_threads_leave ();
 }
 
