@@ -100,15 +100,15 @@ public class Package
    * the <code>name</code> of the package may be <code>null</code>.
    * There are no public constructors defined for Package; this is a package
    * local constructor that is used by java.lang.Classloader.definePackage().
-   *
-   * @param name the name of the Package
-   * @param specTitle the name of the specification
-   * @param specVendor the name of the specification designer
-   * @param specVersion the version of this specification
-   * @param implTitle the name of the implementation
-   * @param implVendor the vendor that wrote this implementation
-   * @param implVersion the version of this implementation
-   * @param sealed if sealed the origin of the package classes
+   * 
+   * @param name The name of the Package
+   * @param specTitle The name of the specification
+   * @param specVendor The name of the specification designer
+   * @param specVersion The version of this specification
+   * @param implTitle The name of the implementation
+   * @param implVendor The vendor that wrote this implementation
+   * @param implVersion The version of this implementation
+   * @param sealed If sealed the origin of the package classes
    */
   Package(String name,
 	  String specTitle, String specVendor, String specVersion,
@@ -116,6 +116,7 @@ public class Package
   {
     if (name == null)
       throw new IllegalArgumentException("null Package name");
+
     this.name = name;
     this.implTitle = implTitle;
     this.implVendor = implVendor;

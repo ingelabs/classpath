@@ -1,5 +1,9 @@
 2003-03-02  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/Package.java: Little merge with libgcj.
+
+2003-03-02  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/DatagramSocket.java
 	(connected): Removed.
 	(closed): New member variable.
