@@ -1,5 +1,14 @@
 2002-11-07  Michael Koch <konqueror@gmx.de>
 
+	* java/awt/Event.java:
+	Made constants more readable (at least for jdiff.sh).
+	* java/awt/Frame.java:
+	Added some missing constants.
+	* java/awt/event/KeyEvent.java:
+	Fixed typos in constants (s/MARK/POINT/).
+	
+2002-11-07  Michael Koch <konqueror@gmx.de>
+
 	* java/awt/color/ICC_Profile.java:
 	Added missing constants.
 	* java/awt/color/ICC_ColorSpace.java
