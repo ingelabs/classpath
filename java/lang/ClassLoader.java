@@ -31,6 +31,7 @@ import java.lang.reflect.*;
 import gnu.java.lang.*;
 import java.io.*;
 import java.net.*;
+import java.security.*;
 import java.util.*;
 import gnu.java.util.DoubleEnumeration;
 import gnu.java.util.EmptyEnumeration;
@@ -45,8 +46,58 @@ import gnu.java.util.EmptyEnumeration;
  **
  ** XXX - Not all support has been written for the new 1.2 methods yet!
  **
+ ** <p>
+ ** Every classloader has a parent classloader that is consulted before
+ ** the 'child' classloader when classes or resources should be loaded.
+ ** This is done to make sure that classes can be loaded from an hierarchy of
+ ** multiple classloaders and classloaders do not accidentially redefine
+ ** already loaded classes by classloaders higher in the hierarchy.
+ ** <p>
+ ** The grandparent of all classloaders is the bootstrap classloader.
+ ** It is one of two special classloaders.
+ ** The bootstrap classloader loads all the standard system classes as
+ ** implemented by GNU Classpath. The other special classloader is the
+ ** system classloader (also called application classloader) that loads
+ ** all classes from the classpath (<code>java.class.path</code> system
+ ** property). The system classloader is responsible for finding the
+ ** application classes from the classpath, and delegates all requests for
+ ** the standard library classes to its parent the bootstrap classloader.
+ ** Most programs will load all their classes through the system classloaders.
+ ** <p>
+ ** The bootstrap classloader in GNU Classpath is implemented as a couple of
+ ** static (native) methods on the package private class
+ ** <code>java.lang.VMClassLoader</code>, the system classloader is an
+ ** instance of <code>gnu.java.lang.SystemClassloader</code>
+ ** (which is a subclass of <code>java.net.URLClassLoader</code>).
+ ** <p>
+ ** Users of a <code>ClassLoader</code> will normally just use the methods
+ ** <ul>
+ ** <li> <code>loadClass()</code> to load a class.
+ ** <li> <code>getResource()</code> or <code>getResourceAsStream()</code>
+ ** to access a resource.
+ ** <li> <code>getResources()</code> to get an Enumeration of URLs to all
+ ** the resources provided by the classloader and its parents with the same
+ ** name.
+ ** </ul>
+ ** <p>
+ ** Subclasses should implement the methods
+ ** <ul>
+ ** <li> <code>findClass()</code> which is called by <code>loadClass()</code>
+ ** when the parent classloader cannot provide a named class.
+ ** <li> <code>findResource()</code> which is called by
+ ** <code>getResource()</code> when the parent classloader cannot provide
+ ** a named resource.
+ ** <li> <code>findResources()</code> which is called by
+ ** <code>getResource()</code> to combine all the resources with the same name
+ ** from the classloader and its parents.
+ ** <li> <code>findLibrary()</code> which is called by
+ ** <code>Runtime.loadLibrary()</code> when a class defined by the classloader
+ ** wants to load a native library.
+ ** </ul>
+ **
  ** @author John Keiser
- ** @version 1.1.0, Aug 6 1998
+ ** @author Mark Wielaard
+ ** @version 1.1.99, Jan 2000
  ** @since JDK1.0
  **/
 
@@ -98,45 +149,124 @@ public abstract class ClassLoader {
         this.parent = parent;
     }
     
-	/** Load a class using this ClassLoader, resolving it as well.
+	/** Load a class using this ClassLoader or its parent,
+	 ** without resolving it. Calls <code>loadClass(name, false)</code>.
+	 ** <p>
+	 ** Subclasses should not override this method but should override
+	 ** <code>findClass()</code> which is called by this method.
+	 **
 	 ** @param name the name of the class relative to this ClassLoader.
 	 ** @exception ClassNotFoundException if the class cannot be found to
 	 **            be loaded.
 	 ** @return the loaded class.
 	 **/
 	public Class loadClass(String name) throws ClassNotFoundException {
-		return loadClass(name,true);
+		return loadClass(name,false);
 	}
 
-	/** Load a class using this ClassLoader, possibly resolving it as well
-	 ** using resolveClass().
-	 ** @param name the name of the class relative to this ClassLoader.
+	/** Load a class using this ClassLoader or its parent,
+	 ** possibly resolving it as well using <code>resolveClass()</code>.
+	 ** It first tries to find out if the class has already been loaded
+	 ** through this classloader by calling <code>findLoadedClass()</code>.
+	 ** Then it calls <code>loadClass()</code> on the parent classloader
+	 ** (or when there is no parent on the bootstrap classloader).
+	 ** When the parent could not load the class it tries to create
+	 ** a new class by calling <code>findClass()</code>. Finally when
+	 ** <code>resolve</code> is <code>true</code> it also calls
+	 ** <code>resolveClass()</code> on the newly loaded class.
+	 ** <p>
+	 ** Subclasses should not override this method but should override
+	 ** <code>findClass()</code> which is called by this method.
+	 **
+	 ** @param name the fully qualified name of the class to load.
 	 ** @param resolve whether or not to resolve the class.
 	 ** @exception ClassNotFoundException if the class cannot be found to
 	 **            be loaded.
 	 ** @return the loaded class.
 	 **/
-	protected abstract Class loadClass(String name, boolean resolve) throws ClassNotFoundException;
-
-	/** Get the URL to a resource using this classloader.
-	 ** @param name the name of the resource relative to this
-	 **        classloader.
-	 ** @return the URL to the resource.
-	 **/
-	public URL getResource(String name) {
-		return ClassLoader.getSystemResource(name);
+    protected synchronized Class loadClass(String name, boolean resolve)
+        throws ClassNotFoundException
+    {
+        // Have we already loaded this class?
+        Class c = findLoadedClass(name);
+        if (c != null)
+            return c;
+        
+        // Can the class be loaded by one of our parent?
+        try {
+            if (parent == null)
+                // XXX - use the bootstrap classloader
+                // return VMClassLoader.loadClass(name, resolve);
+                return findSystemClass(name);
+            else
+                return parent.loadClass(name, resolve);
+        } catch (ClassNotFoundException e) { /* ignore use findClass() */ }
+        
+        // Still not found, we have to do it ourselfs.
+        c = findClass(name);
+        
+        // resolve if necessary
+        if (resolve)
+            resolveClass(c);
+        
+        return c;
+    }
+    
+    /** Get the URL to a resource using this classloader
+     ** or one of its parents. First tries to get the resource by calling
+     ** <code>getResource()</code> on the parent classloader.
+     ** If the parent classloader returns null then it tries finding the
+     ** resource by calling <code>findResource()</code> on this
+     ** classloader.
+     ** <p>
+     ** Subclasses should not override this method but should override
+     ** <code>findResource()</code> which is called by this method.
+     **
+     ** @param name the name of the resource relative to this
+     **        classloader.
+     ** @return the URL to the resource or null when not found.
+     **/
+    public URL getResource(String name) {
+        URL result;
+        
+        if (parent == null)
+            // XXX - try bootstrap classloader;
+            // result = VMClassLoader.getResource(name);
+            return ClassLoader.getSystemResource(name);
+        else
+            result = parent.getResource(name);
+        
+        if (result == null)
+            result = findResource(name);
+        
+        return result;
 	}
 
-	/** Get a resource using this classloader.
-	 ** @param name the name of the resource relative to this
-	 **        classloader.
-	 ** @return the resource.
-	 **/
-	public InputStream getResourceAsStream(String name) {
-		return ClassLoader.getSystemResourceAsStream(name);
-	}
-
-
+    /** Get a resource as stream using this classloader or one of its
+     ** parents. First calls <code>getResource()</code> and if that
+     ** returns a URL to the resource then it calls and returns the
+     ** InputStream given by <code>URL.openStream()</code>.
+     ** <p>
+     ** Subclasses should not override this method but should override
+     ** <code>findResource()</code> which is called by this method.
+     **
+     ** @param name the name of the resource relative to this
+     **        classloader.
+     ** @return An InputStream to the resource or null when the resource
+     ** could not be found or when the stream could not be opened.
+     **/
+    public InputStream getResourceAsStream(String name) {
+        URL url = getResource(name);
+        if (url == null)
+            return(null);
+        
+        try {
+            return url.openStream();
+        } catch(IOException e) {
+            return null;
+        }
+    }
+    
 	/** Helper to define a class using a string of bytes.
 	 ** @param data the data representing the classfile, in classfile format.
 	 ** @param offset the offset into the data where the classfile starts.
@@ -148,7 +278,11 @@ public abstract class ClassLoader {
 		return defineClass(null,data,offset,len);
 	}
 
-	/** Helper to define a class using a string of bytes.
+	/** Helper to define a class using a string of bytes without a
+	 ** ProtectionDomain.
+	 ** <p>
+	 ** Subclasses should call this method from their
+	 ** <code>findClass()</code> implementation.
 	 ** @param name the name to give the class.  null if unknown.
 	 ** @param data the data representing the classfile, in classfile format.
 	 ** @param offset the offset into the data where the classfile starts.
@@ -157,10 +291,44 @@ public abstract class ClassLoader {
 	 ** @exception ClassFormatError if the byte array is not in proper classfile format.
 	 **/
 	protected final Class defineClass(String name, byte[] data, int offset, int len) throws ClassFormatError {
+        // XXX - return defineClass(name,data,offset,len,null);
 		Class retval = VMClassLoader.defineClass(this,name,data,offset,len);
 		loadedClasses.put(retval.getName(),retval);
 		return retval;
 	}
+
+    /** Helper to define a class using a string of bytes.
+     ** <p>
+     ** Subclasses should call this method from their
+     ** <code>findClass()</code> implementation.
+     **
+     ** XXX - not implemented yet. Needs native support.
+     **
+     ** @param name the name to give the class.  null if unknown.
+     ** @param data the data representing the classfile, in classfile format.
+     ** @param offset the offset into the data where the classfile starts.
+     ** @param len the length of the classfile data in the array.
+     ** @param domain the ProtectionDomain to give to the class.
+     ** null if unknown (the class will get the default protection domain).
+     ** @return the class that was defined.
+     ** @exception ClassFormatError if the byte array is not in proper
+     ** classfile format.
+     **
+     ** @since 1.2
+     **/
+    protected final Class defineClass(String name, byte[] data, int offset,
+                                      int len, ProtectionDomain domain)
+        throws ClassFormatError
+    {
+        /*
+          XXX - needs native support.
+          Class retval
+          = VMClassLoader.defineClass(this,name,data,offset,len,domain);
+            loadedClasses.put(retval.getName(),retval);
+          return retval;
+        */
+        return defineClass(name, data, offset, len, domain);
+    }
 
 	/** Helper to resolve all references to other classes from this class.
 	 ** @param c the class to resolve.
@@ -513,6 +681,45 @@ public abstract class ClassLoader {
             parentResources = parent.getResources(name);
 
         return new DoubleEnumeration(parentResources, findResources(name));
+    }
+
+    /**
+     * Called by <code>Runtime.loadLibrary()</code> to get an absolute path
+     * to a (system specific) library that was requested by a class loaded
+     * by this classloader. The default implementation returns
+     * <code>null</code>. It should be implemented by subclasses when they
+     * have a way to find the absolute path to a library. If this method
+     * returns null the library is searched for in the default locations
+     * (the directories listed in the <code>java.library.path</code> system
+     * property).
+     *
+     * @param name the (system specific) name of the requested library.
+     * @return the full pathname to the requested library
+     * or null when not found
+     *
+     * @see Runtime#loadLibrary()
+     * @since 1.2
+     */
+    protected String findLibrary(String name)
+    {
+        return null;
+    }
+
+    /** Get an Enumeration of URLs to resources with a given name using
+     ** the system classloader. The enumeration firsts lists the resources
+     ** with the given name that can be found by the bootstrap classloader
+     ** followed by the resources with the given name that can be found
+     ** on the classpath.
+     ** @param name the name of the resource relative to the
+     **        system classloader.
+     ** @return an Enumeration of URLs to the resources.
+     **
+     ** @since 1.2
+     **/
+    public static Enumeration getSystemResources(String name)
+        throws IOException
+    {
+        return systemClassLoader.getResources(name);
     }
 
 }

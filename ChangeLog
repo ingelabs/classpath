@@ -1,3 +1,14 @@
+2001-01-10  Mark Wielaard  <mark@klomp.org>
+	* java/lang/ClassLoader.java: 1.2 updates
+	(loadClass(String)): now calls loadClass with resolve set to false not true
+	(loadClass(String,boolean)): no longer abstract
+	(getResource): now calls parent classloader first
+	(getResourceAsStream): Ditto
+	(defineClass): There is now a version which takes a ProtectionDomain,
+	but that needs native support
+	(findLibrary): new method
+	(getSystemResources):Ditto
+
 2001-01-10  Warren Levy  <warrenl@redhat.com>
 
 	* java/math/BigDecimal.java (divide): Fixed comment.
