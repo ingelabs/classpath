@@ -299,7 +299,10 @@ public class Runtime
         if (exitSequence != null)
           throw new IllegalStateException("The Virtual Machine is exiting. It is not possible anymore to add any hooks");
         if (shutdownHooks == null)
-          shutdownHooks = new HashSet(); // Lazy initialization.
+          {
+            VMRuntime.enableShutdownHooks();
+            shutdownHooks = new HashSet(); // Lazy initialization.
+          }
         if (! shutdownHooks.add(hook))
           throw new IllegalArgumentException(hook.toString() + " had already been inserted");
       }

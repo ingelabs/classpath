@@ -180,4 +180,13 @@ final class VMRuntime
 	throws IOException {
       return VMProcess.exec(cmd, env, dir);
     }
+
+    /**
+     * This method is called by Runtime.addShutdownHook() when it is
+     * called for the first time. It enables the VM to lazily setup
+     * an exit handler, should it so desire.
+     */
+    static void enableShutdownHooks()
+    {
+    }
 } // class VMRuntime

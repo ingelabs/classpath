@@ -1,5 +1,7 @@
 Runtime interface changes:
 
+* Added a new method (VMRuntime.enableShutdownHooks) that enables the VM
+  to lazily register an exit handler.
 * The java.lang.Class constructor now automatically sets the protection
   domain for array classes, based on the protection domain of the component
   type class.
