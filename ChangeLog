@@ -1,3 +1,9 @@
+2003-03-24  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/Frame.java
+	(DEFAULT_CURSOR): Fixed @deprecated tag.
+	(setCursor): Fixed @deprecated tag.
+
 2003-03-23  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/FileInputStream.java
