@@ -1,3 +1,11 @@
+2001-09-01  Tom Tromey  <tromey@redhat.com>
+
+	More conformance with spec; plus merge with libgcj:
+	* java/lang/SecurityManager.java (checkSecurityAccess):
+	Implemented.
+	(SecurityManager): New constructor.
+	(checkPermission(Permission,Object)): New method.
+
 2001-08-31  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/zip/ZipException.java: Re-merged with libgcj.

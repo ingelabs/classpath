@@ -1,5 +1,5 @@
 /* java.lang.SecurityManager
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,7 +37,7 @@ import java.io.*;
  ** no SecurityManager installed in 1.1, which means that
  ** all things are permitted to all people.<P>
  **
- ** The default methods in this abstract class deny all
+ ** The default methods in this class deny all
  ** things to all people.
  **
  ** @author  John Keiser
@@ -527,6 +527,20 @@ public class SecurityManager {
 		throw new SecurityException("Operation not allowed");
 	}
 
+        /**
+         ** Check if the current thread is allowed to perform an
+         ** operation that requires the specified <code>Permission</code>.
+         **
+         ** @param perm The <code>Permission</code> required.
+	 ** @param context A security context
+         ** @exception SecurityException If the operation is not allowed.
+	 ** @since 1.2
+         **/
+         public void checkPermission(java.security.Permission perm,
+				     Object context) {
+		throw new SecurityException("Operation not allowed");
+	}
+
 	/** Check if the current thread is allowed to read or
 	 ** write all the system properties at once.<P>
 	 **
@@ -715,6 +729,7 @@ public class SecurityManager {
 	 **      or where.
 	 **/
 	public void checkSecurityAccess(String action) {
+		checkPermission (new java.security.SecurityPermission (action));
 	}
 
 	/** Get the ThreadGroup that a new Thread should belong
@@ -734,6 +749,11 @@ public class SecurityManager {
 	 **/
 	public ThreadGroup getThreadGroup() {
 		return Thread.currentThread().getThreadGroup();
+	}
+
+	protected SecurityManager () {
+		if (System.getSecurityManager () != null)
+			throw new SecurityException ();
 	}
 }
 
