@@ -62,6 +62,7 @@ class Test
       p.add(new Button("hoarders"));
       p.add(new Button("use"));
       p.add(new Button("GNU"));
+      p.add(new Scrollbar(Scrollbar.HORIZONTAL));
 
       sp.add(p);
       f.add(sp,"South");
