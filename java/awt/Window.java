@@ -75,6 +75,7 @@ Window(Frame parent)
   // FIXME: SecurityManager check for toplevel window.
   // FIXME: How should we add to parent/create peer?  This is not really
   // a child component of the parent container.
+  parent.ownedWindows.addElement(this);
   setParent(parent);
   addNotify();
 }
@@ -344,7 +345,13 @@ addNotify()
 public void
 dispose()
 {
-  getPeer().dispose();
+  // Destroy all component peers.
+  Component[] c = getComponents();
+  if (c.length > 0)
+    for (int i = 0; i < c.length; i++)
+      c[i].removeNotify();
+
+  removeNotify();
 }
 
 } // class Window 
