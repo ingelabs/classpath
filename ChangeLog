@@ -1,3 +1,13 @@
+2004-01-06  Sascha Brawer  <brawer@dandelis.ch>
+
+	Fix for Classpath bug #7107.
+	* javax/swing/DefaultBoundedRangeModel.java: Documented API.
+	(changeEvent): Create event object on demand.
+	(DefaultBoundedRangeModel, toString, setValue, setExtent,
+	setMinimum, setMaximum, setValueIsAdjusting, setRangeProperties,
+	fireStateChanged): Re-written.
+	* NEWS: Mention fixed bug.
+	
 2004-01-06  Michael Koch  <konqueror@gmx.de>
 
 	* include/Makefile.am: Generate gnu_java_nio_NIOServerSocket.h.
@@ -5,6 +15,7 @@
 	native/jni/java-nio/gnu_java_nio_NIOServerSocket.c: New files.
 	* native/jni/java-nio/Makefile.am: Compile
 	gnu_java_nio_NIOServerSocket.c.
+	
 2004-01-06  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/event/EventListenerList.java: Document typical usage.

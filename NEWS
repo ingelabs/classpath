@@ -9,6 +9,7 @@ New since last release
   #7099 EventListenerList.getListenerCount should accept null argument
   #7104 EventListenerList.add does not work
   #7105 EventListenerList.remove does not work
+  #7107 DefaultBoundedRangeModel.setValue and friends should not throw
 
 New in release 0.07 (2003/30/11)
 
