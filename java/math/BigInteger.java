@@ -39,8 +39,8 @@ public class BigInteger implements Comparable {
     while (i < buf.length)
       if ((buf[i++] = 
            Character.forDigit(Character.digit(str.charAt(i), radix), radix))
-	  == \u0000)
-	throw new NumberFormatException(str " not valid in radix " + radix);
+	  == '\u0000')
+	throw new NumberFormatException(str + " not valid in radix " + radix);
 
     return new String(buf);
   }
@@ -156,6 +156,7 @@ public class BigInteger implements Comparable {
   native public boolean isProbablePrime(int certainty);
 
   native public BigInteger negate();
+  native public BigInteger subtract(BigInteger val);
   native public int compareTo(BigInteger val);
   public int compareTo(Object o) throws ClassCastException {
     return compareTo((BigInteger)o);
