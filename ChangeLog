@@ -1,6 +1,8 @@
 2004-10-24  Casey Marshall  <csm@gnu.org>
 
 	* gnu/java/security/action/GetSecurityPropertyAction.java: new file.
+	* javax/security/auth/login/Configuration.java
+	(getConfig): new method.
 	* javax/security/auth/login/LoginContext.java: implemented.
 	* javax/security/auth/spi/LoginModule.java: new file.
 
