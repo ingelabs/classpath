@@ -111,6 +111,7 @@ public final class PropertyPermission extends BasicPermission
    *
    * @param name the name of the property
    * @param actions the action string
+   * @throws NullPointerException if name is null
    * @throws IllegalArgumentException if name string contains an
    *         illegal wildcard or actions string contains an illegal action
    *         (this includes a null actions string)
@@ -187,16 +188,14 @@ public final class PropertyPermission extends BasicPermission
    */
   public boolean implies(Permission p)
   {
-    if (! (p instanceof PropertyPermission))
-      return false;
-
-    // We have to check the actions.
-    PropertyPermission pp = (PropertyPermission) p;
-    if ((pp.actions & ~actions) != 0)
-      return false;
-
-    // BasicPermission checks for name.
-    return super.implies(p);
+    // BasicPermission checks for name and type.
+    if (super.implies(p))
+      {
+        // We have to check the actions.
+        PropertyPermission pp = (PropertyPermission) p;
+        return (pp.actions & ~actions) == 0;
+      }
+    return false;
   }
 
   /**
@@ -209,10 +208,7 @@ public final class PropertyPermission extends BasicPermission
    */
   public boolean equals(Object obj)
   {
-    if (! (obj instanceof PropertyPermission))
-      return false;
-    PropertyPermission p = (PropertyPermission) obj;
-    return actions == p.actions && super.equals(p);
+    return super.equals(obj) && actions == ((PropertyPermission) obj).actions;
   }
 
   /**

@@ -37,8 +37,14 @@ exception statement from your version. */
 
 package java.lang;
 
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.StringTokenizer;
+import java.util.Set;
+import java.util.Iterator;
+import java.util.HashSet;
 
 /**
  * Runtime represents the Virtual Machine.
@@ -55,15 +61,32 @@ public class Runtime
   private static final Runtime current = new Runtime();
 
   /**
-   * The library path, to search when loading libraries.
+   * The library path, to search when loading libraries. We can also safely use
+   * this as a lock for synchronization.
    */
-  private String[] libpath;
+  private final String[] libpath;
 
   /**
    * The current security manager. This is located here instead of in
    * Runtime, to avoid security problems, as well as bootstrap issues.
+   * Make sure to access it in a thread-safe manner.
    */
   private static SecurityManager securityManager;
+
+  /**
+   * The thread that started the exit sequence. Access to this field must
+   * be thread-safe; lock on libpath to avoid deadlock with user code.
+   * <code>runFinalization()</code> may want to look at this to see if ALL
+   * finalizers should be run, because the virtual machine is about to halt.
+   */
+  private Thread exitSequence;
+
+  /**
+   * All shutdown hooks. This is initialized lazily, and set to null once all
+   * shutdown hooks have run. Access to this field must be thread-safe; lock
+   * on libpath to avoid deadlock with user code.
+   */
+  private Set shutdownHooks;
 
   /**
    * Not instantiable by a user, this should only create one instance.
@@ -72,33 +95,16 @@ public class Runtime
   {
     if (current != null)
       throw new InternalError("Attempt to recreate Runtime");
-    String path = getLibraryPath();
+    // XXX Does this need special privileges?
+    String path = System.getProperty("java.library.path");
     if (path == null)
       libpath = new String[0];
     else
       {
-        // XXX Use StringTokenizer to make this nicer.
-        int numColons = 0;
-        int pathLength = path.length();
-        for (int i = 0; i < pathLength; i++)
-          // XXX Use path.separator property.
-          if (path.charAt(i) == ':')
-            numColons++;
-        libpath = new String[numColons + 1];
-        int current = 0;
-        int libpathIndex = 0;
-        while (true)
-          {
-            int next = path.indexOf(File.pathSeparatorChar, current);
-            if (next == -1)
-              {
-                libpath[libpathIndex] = path.substring(current);
-                break;
-              }
-            libpath[libpathIndex] = path.substring(current, next);
-            libpathIndex++;
-            current = next + 1;
-          }
+        StringTokenizer t = new StringTokenizer(path, File.pathSeparator);
+        libpath = new String[t.countTokens()];
+        for (int i = 0; i < libpath.length; i++)
+          libpath[i] = t.nextToken();
       }
   }
 
@@ -119,7 +125,7 @@ public class Runtime
    * a non-zero status code indicates an abnormal exit. Of course, there is a
    * security check, <code>checkExit(status)</code>.
    *
-   * <p>First, all shutdown hooks are run, in unspecified order, and possibly
+   * <p>First, all shutdown hooks are run, in unspecified order, and
    * concurrently. Next, if finalization on exit has been enabled, all pending
    * finalizers are run. Finally, the system calls <code>halt</code>.
    *
@@ -141,9 +147,87 @@ public class Runtime
     SecurityManager sm = securityManager; // Be thread-safe!
     if (sm != null)
       sm.checkExit(status);
-    //XXX Check if we are already finalizing.
-    //XXX Don't use exitInternal. Instead, run shutdown hooks, then call halt.
-    exitInternal(status);
+    boolean first = false;
+    synchronized (libpath) // Synch on libpath, not this, to avoid deadlock.
+      {
+        if (exitSequence == null)
+          {
+            first = true;
+            exitSequence = Thread.currentThread();
+            Iterator i = shutdownHooks.iterator();
+            while (i.hasNext()) // Start all shutdown hooks.
+              try
+                {
+                  ((Thread) i.next()).start();
+                }
+              catch (IllegalThreadStateException e)
+                {
+                  i.remove();
+                }
+          }
+      }
+    if (first)
+      {
+        // Check progress of all shutdown hooks. As a hook completes, remove
+        // it from the set. If a hook calls exit, it removes itself from the
+        // set, then waits indefinitely on the exitSequence thread. Once
+        // the set is empty, set it to null to signal all finalizer threads
+        // that halt may be called.
+        while (! shutdownHooks.isEmpty())
+          {
+            Thread[] hooks;
+            synchronized (libpath)
+              {
+                hooks = new Thread[shutdownHooks.size()];
+                shutdownHooks.toArray(hooks);
+              }
+            for (int i = hooks.length; --i >= 0; )
+              if (! hooks[i].isAlive())
+                synchronized (libpath)
+                  {
+                    shutdownHooks.remove(hooks[i]);
+                  }
+            try
+              {
+                exitSequence.sleep(1); // Give other threads a chance.
+              }
+            catch (InterruptedException e)
+              {
+                // Ignore, the next loop just starts sooner.
+              }
+          }
+        synchronized (libpath)
+          {
+            shutdownHooks = null;
+          }
+        // XXX Right now, it is the VM that knows whether runFinalizersOnExit
+        // is true; so the VM must look at exitSequence to decide whether
+        // this should be run on every object.
+        runFinalization();
+      }
+    else
+      synchronized (libpath)
+        {
+          if (shutdownHooks != null)
+            {
+              shutdownHooks.remove(Thread.currentThread());
+              status = 0; // Change status to enter indefinite wait.
+            }
+        }
+    
+    if (first || status > 0)
+      halt(status);
+    while (true)
+      try
+        {
+          exitSequence.join();
+        }
+      catch (InterruptedException e)
+        {
+          // Ignore, we've suspended indefinitely to let all shutdown
+          // hooks complete, and to let any non-zero exits through, because
+          // this is a duplicate call to exit(0).
+        }
   }
 
   /**
@@ -179,12 +263,24 @@ public class Runtime
    * @see #removeShutdownHook(Thread)
    * @see #exit(int)
    * @see #halt(int)
-   * @XXX Add this method.
+   */
   public void addShutdownHook(Thread hook)
   {
-    //XXX Implement me!
+    SecurityManager sm = securityManager; // Be thread-safe!
+    if (sm != null)
+      sm.checkPermission(new RuntimePermission("shutdownHooks"));
+    if (hook.isAlive())
+      throw new IllegalArgumentException();
+    synchronized (libpath)
+      {
+        if (exitSequence != null)
+          throw new IllegalStateException();
+        if (shutdownHooks == null)
+          shutdownHooks = new HashSet(); // Lazy initialization.
+        if (! shutdownHooks.add(hook))
+          throw new IllegalArgumentException();
+      }
   }
-   */
 
   /**
    * De-register a shutdown hook. As when you registered it, there is a
@@ -201,13 +297,21 @@ public class Runtime
    * @see #addShutdownHook(Thread)
    * @see #exit(int)
    * @see #halt(int)
-   * @XXX Add this method.
+   */
   public boolean removeShutdownHook(Thread hook)
   {
-    // Implement me!
+    SecurityManager sm = securityManager; // Be thread-safe!
+    if (sm != null)
+      sm.checkPermission(new RuntimePermission("shutdownHooks"));
+    synchronized (libpath)
+      {
+        if (exitSequence != null)
+          throw new IllegalStateException();
+        if (shutdownHooks != null)
+          return shutdownHooks.remove(hook);
+      }
     return false;
   }
-   */
 
   /**
    * Forcibly terminate the virtual machine. This call never returns. It is
@@ -220,7 +324,7 @@ public class Runtime
    * @since 1.3
    * @see #exit(int)
    * @see #addShutdownHook(Thread)
-   * XXX Add this method.
+   */
   public void halt(int status)
   {
     SecurityManager sm = securityManager; // Be thread-safe!
@@ -228,14 +332,6 @@ public class Runtime
       sm.checkExit(status);
     exitInternal(status);
   }
-   */
-
-  /**
-   * Native method that actually shuts down the virtual machine.
-   *
-   * @param status the status to end the process with
-   */
-  native void exitInternal(int status);
 
   /**
    * Tell the VM to run the finalize() method on every single Object before
@@ -275,8 +371,7 @@ public class Runtime
    */
   public Process exec(String cmdline) throws IOException
   {
-    //XXX Use this:    return exec(cmdline, null, null);
-    return exec(cmdline, null);
+    return exec(cmdline, null, null);
   }
 
   /**
@@ -295,14 +390,7 @@ public class Runtime
    */
   public Process exec(String cmdline, String[] env) throws IOException
   {
-    //XXX Use this:    return exec(cmdline, env, null);
-    StringTokenizer t = new StringTokenizer(cmdline);
-    Vector v = new Vector();
-    while (t.hasMoreTokens())
-      v.addElement(t.nextElement());
-    String[] cmd = new String[v.size()];
-    v.copyInto(cmd);
-    return exec(cmd, env);
+    return exec(cmdline, env, null);
   }
 
   /**
@@ -323,7 +411,7 @@ public class Runtime
    * @throws NullPointerException if cmdline is null, or env has null entries
    * @throws IndexOutOfBoundsException if cmdline is ""
    * @since 1.3
-   * @XXX Add this method.
+   */
   public Process exec(String cmdline, String[] env, File dir)
     throws IOException
   {
@@ -333,7 +421,6 @@ public class Runtime
       cmd[i] = t.nextToken();
     return exec(cmd, env, dir);
   }
-   */
 
   /**
    * Create a new subprocess with the specified command line, already
@@ -349,8 +436,7 @@ public class Runtime
    */
   public Process exec(String[] cmd) throws IOException
   {
-    //XXX Use this:    return exec(cmd, null, null);
-    return exec(cmd, null);
+    return exec(cmd, null, null);
   }
 
   /**
@@ -371,11 +457,7 @@ public class Runtime
    */
   public Process exec(String[] cmd, String[] env) throws IOException
   {
-    //XXX Use this:    return exec(cmd, env, null);
-    SecurityManager sm = securityManager; // Be thread-safe!
-    if (sm != null)
-      sm.checkExec(cmd[0]);
-    return execInternal(cmd, env);
+    return exec(cmd, env, null);
   }
 
   /**
@@ -395,7 +477,8 @@ public class Runtime
    *         entries
    * @throws IndexOutOfBoundsException if cmd is length 0
    * @since 1.3
-   * @XXX Add this method.
+   * @XXX Ignores dir, for now
+   */
   public Process exec(String[] cmd, String[] env, File dir)
     throws IOException
   {
@@ -404,9 +487,9 @@ public class Runtime
       sm.checkExec(cmd[0]);
     if (env == null)
       env = new String[0];
-    return execInternal(cmd, env, dir);
+    //XXX Should be:    return execInternal(cmd, env, dir);
+    return execInternal(cmd, env);
   }
-   */
 
   /**
    * Returns the number of available processors currently available to the
@@ -414,9 +497,8 @@ public class Runtime
    * program want to poll this to determine maximal resource usage.
    *
    * @return the number of processors available, at least 1
-   * @XXX Add this method
-  public native int availableProcessors();
    */
+  public native int availableProcessors();
 
   /**
    * Find out how much memory is still free for allocating Objects on the heap.
@@ -440,9 +522,8 @@ public class Runtime
    *
    * @return the maximum number of bytes the virtual machine will attempt
    *         to allocate
-   * @XXX Add this method.
-  public native long maxMemory();
    */
+  public native long maxMemory();
 
   /**
    * Run the garbage collector. This method is more of a suggestion than
@@ -501,33 +582,45 @@ public class Runtime
   /**
    * Load a native library using a system-independent "short name" for the
    * library.  It will be transformed to a correct filename in a
-   * system-dependent manner, via <code>System.mapLibraryName</code> (for
-   * example, in Windows, "mylib" will be turned into "mylib.dll"), and then
-   * passed to load(filename). There may be a security check, of
-   * <code>checkLink</code>.
+   * system-dependent manner (for example, in Windows, "mylib" will be turned
+   * into "mylib.dll").  This is done as follows: if the context that called
+   * load has a ClassLoader cl, then <code>cl.findLibrary(libpath)</code> is
+   * used to convert the name. If that result was null, or there was no class
+   * loader, this searches each directory of the system property
+   * <code>java.library.path</code> for a file named
+   * <code>System.mapLibraryName(libname)</code>. There may be a security
+   * check, of <code>checkLink</code>.
    *
    * @param filename the file to load
    * @throws SecurityException if permission is denied
    * @throws UnsatisfiedLinkError if the library is not found
+   * @see System#mapLibraryName(String)
+   * @see ClassLoader#findLibrary(String)
    */
   public void loadLibrary(String libname)
   {
-    // XXX First, check ClassLoader.findLibrary(libname)
-    for (int i = 0; i < libpath.length; i++)
+    String filename;
+    ClassLoader cl = VMSecurityManager.currentClassLoader();
+    if (cl != null)
       {
-        try
+        filename = cl.findLibrary(libname);
+        if (filename != null)
           {
-            // XXX use this:
-            // load(libpath[i] + System.mapLibraryName(libname));
-            String filename = nativeGetLibname(libpath[i],libname);
             load(filename);
             return;
           }
-        catch(UnsatisfiedLinkError e)
-          {
-            // Try next path element.
-          }
       }
+    filename = System.mapLibraryName(libname);
+    for (int i = 0; i < libpath.length; i++)
+      try
+        {
+          load(libpath[i] + filename);
+          return;
+        }
+      catch (UnsatisfiedLinkError e)
+        {
+          // Try next path element.
+        }
     throw new UnsatisfiedLinkError("Could not find library " + libname + ".");
   }
 
@@ -577,12 +670,11 @@ public class Runtime
    * @param manager the new security manager
    * @throws SecurityException if permission is denied
    */
-  static void setSecurityManager(SecurityManager manager)
+  static synchronized void setSecurityManager(SecurityManager manager)
   {
-    // XXX Synchronize, for thread safety
     if (securityManager != null)
-      // XXX Check RuntimePermission("setSecurityManager")
-      throw new SecurityException("Security Manager already set");
+      securityManager.checkPermission
+        (new RuntimePermission("setSecurityManager"));
     securityManager = manager;
   }
 
@@ -596,6 +688,13 @@ public class Runtime
   {
     return securityManager;
   }
+
+  /**
+   * Native method that actually shuts down the virtual machine.
+   *
+   * @param status the status to end the process with
+   */
+  native void exitInternal(int status);
 
   /**
    * Load a file. If it has already been loaded, do nothing. The name has
@@ -615,7 +714,7 @@ public class Runtime
    * @param libname the short version of the library name
    * @return the full filename
    */
-  native String nativeGetLibname(String pathname, String libname);
+  static native String nativeGetLibname(String pathname, String libname);
 
   /**
    * Execute a process. The command line has already been tokenized, and
@@ -628,15 +727,8 @@ public class Runtime
    * @param env the non-null environment setup
    * @param dir the directory to use, may be null
    * @return the newly created process
+   * @throws NullPointerException if cmd or env have null elements
    */
   //  native Process execInternal(String[] cmd, String[] env, File dir);
   native Process execInternal(String[] cmd, String[] env);
-
-  /**
-   * Get the library path.
-   *
-   * @return the library path
-   * XXX Use the java.library.path property
-   */
-  static native String getLibraryPath();
 }

@@ -1,5 +1,5 @@
-/* System.c
-   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
+/* System.c -- native code for java.lang.System
+   Copyright (C) 1998, 1999, 2000, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -41,35 +41,41 @@ exception statement from your version. */
 
 /*
  * Class:     java_lang_System
- * Method:    setIn
+ * Method:    setIn0
  * Signature: (Ljava/io/InputStream;)V
  */
-JNIEXPORT void JNICALL Java_java_lang_System_setIn
-  (JNIEnv * env, jclass thisClass, jobject in) {
-	jfieldID inField = (*env)->GetStaticFieldID(env,thisClass,"in","Ljava/io/InputStream;");
-	(*env)->SetStaticObjectField(env,thisClass,inField,in);
+JNIEXPORT void JNICALL
+Java_java_lang_System_setIn0 (JNIEnv * env, jclass thisClass, jobject in)
+{
+  jfieldID inField = (*env)->GetStaticFieldID(env, thisClass, "in",
+                                              "Ljava/io/InputStream;");
+  (*env)->SetStaticObjectField(env, thisClass, inField, in);
 }
 
 /*
  * Class:     java_lang_System
- * Method:    setOut
+ * Method:    setOut0
  * Signature: (Ljava/io/PrintStream;)V
  */
-JNIEXPORT void JNICALL Java_java_lang_System_setOut
-  (JNIEnv * env, jclass thisClass, jobject out) {
-	jfieldID outField = (*env)->GetStaticFieldID(env,thisClass,"out","Ljava/io/PrintStream;");
-	(*env)->SetStaticObjectField(env,thisClass,outField,out);
+JNIEXPORT void JNICALL
+Java_java_lang_System_setOut0 (JNIEnv * env, jclass thisClass, jobject out)
+{
+  jfieldID outField = (*env)->GetStaticFieldID(env, thisClass, "out",
+                                               "Ljava/io/PrintStream;");
+  (*env)->SetStaticObjectField(env, thisClass, outField, out);
 }
 
 /*
  * Class:     java_lang_System
- * Method:    setErr
+ * Method:    setErr0
  * Signature: (Ljava/io/PrintStream;)V
  */
-JNIEXPORT void JNICALL Java_java_lang_System_setErr
-  (JNIEnv * env, jclass thisClass, jobject err) {
-	jfieldID errField = (*env)->GetStaticFieldID(env,thisClass,"err","Ljava/io/PrintStream;");
-	(*env)->SetStaticObjectField(env,thisClass,errField,err);
+JNIEXPORT void JNICALL
+Java_java_lang_System_setErr0 (JNIEnv * env, jclass thisClass, jobject err)
+{
+  jfieldID errField = (*env)->GetStaticFieldID(env, thisClass, "err",
+                                               "Ljava/io/PrintStream;");
+  (*env)->SetStaticObjectField(env, thisClass, errField, err);
 }
 
 /*
@@ -77,8 +83,9 @@ JNIEXPORT void JNICALL Java_java_lang_System_setErr
  * Method:    currentTimeMillis
  * Signature: ()J
  */
-JNIEXPORT jlong JNICALL Java_java_lang_System_currentTimeMillis
-  (JNIEnv * env, jclass thisClass) {
+JNIEXPORT jlong JNICALL
+Java_java_lang_System_currentTimeMillis (JNIEnv * env, jclass thisClass)
+{
   /* Note: this implementation copied directly from Japhar's, by Chris Toshok. */
   jlong result;
   struct timeval tp;

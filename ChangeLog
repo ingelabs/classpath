@@ -1,3 +1,21 @@
+2002-03-06  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/lang/RuntimePermission.java: Improve Javadoc.
+	* java/lang/SecurityManager.java: Improve Javadoc and formatting.
+	* java/lang/System.java (setIn, setOut, setErr): Add required
+	security check.
+	(defaultProperties): Add a default, to allow clean resetting of
+	properties back to the VM startup state.
+	(setProperties): Correctly reset properties to default state.
+	* native/jni/java-lang/java_lang_System.c: Update method
+	signatures for changing I/O.
+	* include/java_lang_System.h: Ditto.
+	* vm/reference/java/lang/Runtime.java: Add shutdown hook
+	capability, as well as updating the exec calls.
+	* vm/reference/java/lang/VMSecurityManager.java: Improve Javadoc.
+	* java/util/PropertyPermission.java: Fix implication bugs.
+	* java/util/PropertyPermissionCollection.java: Ditto.
+
 2002-03-03 Mark Wielaard <mark@klomp.org>
 
 	* THANKYOU: Add Sascha Brawer

@@ -38,8 +38,13 @@ exception statement from your version. */
 
 package java.lang;
 
-import java.io.*;
-import java.util.*;
+import java.io.FileInputStream;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.util.Properties;
+import java.util.PropertyPermission;
 import gnu.classpath.Configuration;
 
 /**
@@ -72,9 +77,128 @@ public class System
   }
 
   /**
-   * Stores the system properties.
+   * The default properties. Read them in once, then stuff them as defaults
+   * into future properties to save time when recreating properties via
+   * <code>setProperties(null)</code>. This should not be modified.
    */
-  private static Properties properties;
+  private static final Properties defaultProperties = new Properties();
+  static
+  {
+    VMSystem.insertSystemProperties(defaultProperties);
+    defaultProperties.put("gnu.cpu.endian",
+                          isWordsBigEndian() ? "big" : "little");
+
+    // Common encoding aliases. See gnu.java.io.EncodingManager.
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-1",
+                          "8859_1");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-2",
+                          "8859_2");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-3",
+                          "8859_3");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-4",
+                          "8859_4");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-5",
+                          "8859_5");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-6",
+                          "8859_6");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-7",
+                          "8859_7");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-8",
+                          "8859_8");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-9",
+                          "8859_9");
+
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-8859-1",
+                          "8859_1");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-8859-2",
+                          "8859_2");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-8859-3",
+                          "8859_3");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-8859-4",
+                          "8859_4");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-8859-5",
+                          "8859_5");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-8859-6",
+                          "8859_6");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-8859-7",
+                          "8859_7");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-8859-8",
+                          "8859_8");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-8859-9",
+                          "8859_9");
+
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso8859_1",
+                          "8859_1");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso8859_2",
+                          "8859_2");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso8859_3",
+                          "8859_3");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso8859_4",
+                          "8859_4");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso8859_5",
+                          "8859_5");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso8859_6",
+                          "8859_6");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso8859_7",
+                          "8859_7");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso8859_8",
+                          "8859_8");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso8859_9",
+                          "8859_9");
+
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-latin-1",
+                          "8859_1");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-latin-2",
+                          "8859_2");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-latin-3",
+                          "8859_3");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-latin-4",
+                          "8859_4");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-latin-5",
+                          "8859_5");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-latin-6",
+                          "8859_6");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-latin-7",
+                          "8859_7");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-latin-8",
+                          "8859_8");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.iso-latin-9",
+                          "8859_9");
+
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.latin1",
+                          "8859_1");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.latin2",
+                          "8859_2");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.latin3",
+                          "8859_3");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.latin4",
+                          "8859_4");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.latin5",
+                          "8859_5");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.latin6",
+                          "8859_6");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.latin7",
+                          "8859_7");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.latin8",
+                          "8859_8");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.latin9",
+                          "8859_9");
+
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.UTF-8", "UTF8");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.utf-8", "UTF8");
+
+    // XXX FIXME - Temp hack for old systems that set the wrong property
+    if (defaultProperties.get("java.io.tmpdir") == null)
+      defaultProperties.put("java.io.tmpdir",
+                            defaultProperties.get("java.tmpdir"));
+  }
+    
+  /**
+   * Stores the current system properties. This can be modified by
+   * {@link #setProperties(Properties)}, but will never be null, because
+   * setProperties(null) sucks in the default properties.
+   */
+  private static Properties properties = new Properties(defaultProperties);
 
   /**
    * The standard InputStream. This is assigned at startup and starts its
@@ -86,8 +210,8 @@ public class System
    * other processes or files.  That should all be transparent to you,
    * however.
    */
-  public static final InputStream in;
-
+  public static final InputStream in
+    = new FileInputStream(FileDescriptor.in);
   /**
    * The standard output PrintStream.  This is assigned at startup and
    * starts its life perfectly valid. Although it is marked final, you can
@@ -98,8 +222,8 @@ public class System
    * output to other processes or files.  That should all be transparent to
    * you, however.
    */
-  public static final PrintStream out;
-
+  public static final PrintStream out
+    = new PrintStream(new FileOutputStream(FileDescriptor.out));
   /**
    * The standard output PrintStream.  This is assigned at startup and
    * starts its life perfectly valid. Although it is marked final, you can
@@ -110,25 +234,8 @@ public class System
    * output to other processes or files.  That should all be transparent to
    * you, however.
    */
-  public static final PrintStream err;
-
-  /**
-   * Initialize the properties and I/O streams.
-   */
-  static
-  {
-    properties = new Properties();
-    VMSystem.insertSystemProperties(properties);
-
-    // XXX FIXME - Temp hack for old systems that set the wrong property
-    if (properties.get("java.io.tmpdir") == null)
-      properties.put("java.io.tmpdir", properties.get("java.tmpdir"));
-    
-    insertGNUProperties();
-    in = new FileInputStream(FileDescriptor.in);
-    out = new PrintStream(new FileOutputStream(FileDescriptor.out));
-    err = new PrintStream(new FileOutputStream(FileDescriptor.err));
-  }
+  public static final PrintStream err
+    = new PrintStream(new FileOutputStream(FileDescriptor.err));
 
   /**
    * Set {@link #in} to a new InputStream. This uses some VM magic to change
@@ -138,10 +245,14 @@ public class System
    * @param in the new InputStream
    * @throws SecurityException if permission is denied
    * @since 1.1
-   * @XXX Perform security check (which means setIn should probably be in
-   *      Java, and add setIn0 as native).
    */
-  public static native void setIn(InputStream in);
+  public static void setIn(InputStream in)
+  {
+    SecurityManager sm = Runtime.getSecurityManager();
+    if (sm != null)
+      sm.checkPermission(new RuntimePermission("setIO"));
+    setIn0(in);
+  }
 
   /**
    * Set {@link #out} to a new PrintStream. This uses some VM magic to change
@@ -151,10 +262,14 @@ public class System
    * @param out the new PrintStream
    * @throws SecurityException if permission is denied
    * @since 1.1
-   * @XXX Perform security check (which means setOut should probably be in
-   *      Java, and add setOut0 as native).
    */
-  public static native void setOut(PrintStream out);
+  public static void setOut(PrintStream out)
+  {
+    SecurityManager sm = Runtime.getSecurityManager();
+    if (sm != null)
+      sm.checkPermission(new RuntimePermission("setIO"));
+    setOut0(out);
+  }
 
   /**
    * Set {@link #err} to a new PrintStream. This uses some VM magic to change
@@ -164,10 +279,14 @@ public class System
    * @param err the new PrintStream
    * @throws SecurityException if permission is denied
    * @since 1.1
-   * @XXX Perform security check (which means setErr should probably be in
-   *      Java, and add setErr0 as native).
    */
-  public static native void setErr(PrintStream err);
+  public static void setErr(PrintStream err)
+  {
+    SecurityManager sm = Runtime.getSecurityManager();
+    if (sm != null)
+      sm.checkPermission(new RuntimePermission("setIO"));
+    setErr0(err);
+  }
 
   /**
    * Set the current SecurityManager. If a security manager already exists,
@@ -263,7 +382,7 @@ public class System
    * <code>checkPropertiesAccess</code>. Note that a security manager may
    * allow getting a single property, but not the entire group.
    *
-   * <p>The default properties include:
+   * <p>The required properties include:
    * <dl>
    * <dt>java.version         <dd>Java version number
    * <dt>java.vendor          <dd>Java vendor specific string
@@ -295,6 +414,19 @@ public class System
    * <dt>user.dir             <dd>User's current working directory
    * </dl>
    *
+   * In addition, gnu defines several other properties, where ? stands for
+   * each character in '0' through '9':
+   * <dl>
+   * <dt> gnu.cpu.endian      <dd>big or little
+   * <dt> gnu.java.io.encoding_scheme_alias.ISO-8859-?   <dd>8859_?
+   * <dt> gnu.java.io.encoding_scheme_alias.iso-8859-?   <dd>8859_?
+   * <dt> gnu.java.io.encoding_scheme_alias.iso8859_?    <dd>8859_?
+   * <dt> gnu.java.io.encoding_scheme_alias.iso-latin-_? <dd>8859_?
+   * <dt> gnu.java.io.encoding_scheme_alias.latin?       <dd>8859_?
+   * <dt> gnu.java.io.encoding_scheme_alias.UTF-8        <dd>UTF8
+   * <dt> gnu.java.io.encoding_scheme_alias.utf-8        <dd>UTF8
+   * </dl>
+   *
    * @return the system properties, will never be null
    * @throws SecurityException if permission is denied
    */
@@ -303,7 +435,6 @@ public class System
     SecurityManager sm = Runtime.getSecurityManager();
     if (sm != null)
       sm.checkPropertiesAccess();
-    //XXX Make sure this is not null, and be thread-safe
     return properties;
   }
 
@@ -321,7 +452,8 @@ public class System
     SecurityManager sm = Runtime.getSecurityManager();
     if (sm != null)
       sm.checkPropertiesAccess();
-    // XXX Special case null
+    if (properties == null)
+      properties = new Properties(defaultProperties);
     System.properties = properties;
   }
 
@@ -340,7 +472,6 @@ public class System
     SecurityManager sm = Runtime.getSecurityManager();
     if (sm != null)
       sm.checkPropertyAccess(key);
-    // XXX ensure properties is not null, and be thread-safe
     return properties.getProperty(key);
   }
 
@@ -360,7 +491,6 @@ public class System
     SecurityManager sm = Runtime.getSecurityManager();
     if (sm != null)
       sm.checkPropertyAccess(key);
-    // XXX ensure properties is not null, and be thread-safe
     return properties.getProperty(key, def);
   }
 
@@ -381,23 +511,22 @@ public class System
     SecurityManager sm = Runtime.getSecurityManager();
     if (sm != null)
       sm.checkPermission(new PropertyPermission(key, "write"));
-    // XXX ensure properties is not null, and be thread-safe
     return (String) properties.setProperty(key, value);
   }
 
   /**
-   * Get an environment variable. <b>WARNING</b>: This is not the preferred
-   * way to check properties, nor is it guaranteed to work across all
-   * implementations. Use <code>getProperty</code> instead.
+   * This used to get an environment variable, but following Sun's lead,
+   * it now throws an Error. Use <code>getProperty</code> instead.
    *
    * @param name the name of the environment variable
-   * @return the value of the variable, or null
-   * @deprecated use {@link #getProperty(String)}
+   * @return this does not return
+   * @throws Error this is not supported
+   * @deprecated use {@link #getProperty(String)}; getenv is not supported
    */
   public static String getenv(String name)
   {
-    //XXX This should be a native method, which actually uses getenv(3).
-    return getProperty(name);
+    throw new Error("getenv no longer supported, use properties instead: "
+                    + name);
   }
 
   /**
@@ -498,88 +627,11 @@ public class System
    * @param libname the library name, as used in <code>loadLibrary</code>
    * @return the platform-specific mangling of the name
    * @since 1.2
-   * @XXX Add this method, and its support in VMSystem.
+   */
   public static String mapLibraryName(String libname)
   {
-    return VMSystem.mapLibraryName(libname);
-  }
-   */
-
-  /**
-   * Add Classpath specific system properties.
-   * <br>
-   * Current properties:
-   * <br>
-   * <ul>
-   *   <li> gnu.cpu.endian - big or little</li>
-   *   <li> gnu.java.io.encoding_scheme_alias.ISO-8859-? - 8859_?</li>
-   *   <li> gnu.java.io.encoding_scheme_alias.iso-8859-? - 8859_?</li>
-   *   <li> gnu.java.io.encoding_scheme_alias.iso8859_? - 8859_?</li>
-   *   <li> gnu.java.io.encoding_scheme_alias.iso-latin-_? - 8859_?</li>
-   *   <li> gnu.java.io.encoding_scheme_alias.latin? - 8859_?</li>
-   *   <li> gnu.java.io.encoding_scheme_alias.UTF-8 - UTF8</li>
-   *   <li> gnu.java.io.encoding_scheme_alias.utf-8 - UTF8</li>
-   * </ul>
-   * @see gnu.java.io.EncodingManager
-   */
-  static void insertGNUProperties()
-  {
-    properties.put("gnu.cpu.endian",
-                   isWordsBigEndian() ? "big" : "little");
-
-    // Common encoding aliases. See gnu.java.io.EncodingManager.
-    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-1", "8859_1");
-    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-2", "8859_2");
-    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-3", "8859_3");
-    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-4", "8859_4");
-    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-5", "8859_5");
-    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-6", "8859_6");
-    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-7", "8859_7");
-    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-8", "8859_8");
-    properties.put("gnu.java.io.encoding_scheme_alias.ISO-8859-9", "8859_9");
-
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-1", "8859_1");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-2", "8859_2");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-3", "8859_3");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-4", "8859_4");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-5", "8859_5");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-6", "8859_6");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-7", "8859_7");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-8", "8859_8");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-8859-9", "8859_9");
-
-    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_1", "8859_1");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_2", "8859_2");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_3", "8859_3");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_4", "8859_4");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_5", "8859_5");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_6", "8859_6");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_7", "8859_7");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_8", "8859_8");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso8859_9", "8859_9");
-
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-1", "8859_1");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-2", "8859_2");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-3", "8859_3");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-4", "8859_4");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-5", "8859_5");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-6", "8859_6");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-7", "8859_7");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-8", "8859_8");
-    properties.put("gnu.java.io.encoding_scheme_alias.iso-latin-9", "8859_9");
-
-    properties.put("gnu.java.io.encoding_scheme_alias.latin1", "8859_1");
-    properties.put("gnu.java.io.encoding_scheme_alias.latin2", "8859_2");
-    properties.put("gnu.java.io.encoding_scheme_alias.latin3", "8859_3");
-    properties.put("gnu.java.io.encoding_scheme_alias.latin4", "8859_4");
-    properties.put("gnu.java.io.encoding_scheme_alias.latin5", "8859_5");
-    properties.put("gnu.java.io.encoding_scheme_alias.latin6", "8859_6");
-    properties.put("gnu.java.io.encoding_scheme_alias.latin7", "8859_7");
-    properties.put("gnu.java.io.encoding_scheme_alias.latin8", "8859_8");
-    properties.put("gnu.java.io.encoding_scheme_alias.latin9", "8859_9");
-
-    properties.put("gnu.java.io.encoding_scheme_alias.UTF-8", "UTF8");
-    properties.put("gnu.java.io.encoding_scheme_alias.utf-8", "UTF8");
+    // XXX Fix this!!!!
+    return Runtime.nativeGetLibname("", libname);
   }
 
   /**
@@ -588,4 +640,28 @@ public class System
    * @return true if the system is big-endian.
    */
   static native boolean isWordsBigEndian();
+
+  /**
+   * Set {@link #in} to a new InputStream.
+   *
+   * @param in the new InputStream
+   * @see #setIn(InputStream)
+   */
+  private static native void setIn0(InputStream in);
+
+  /**
+   * Set {@link #out} to a new PrintStream.
+   *
+   * @param out the new PrintStream
+   * @see #setOut(PrintStream)
+   */
+  private static native void setOut0(PrintStream out);
+
+  /**
+   * Set {@link #err} to a new PrintStream.
+   *
+   * @param err the new PrintStream
+   * @see #setErr(PrintStream)
+   */
+  private static native void setErr0(PrintStream err);
 }

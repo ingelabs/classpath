@@ -10,9 +10,9 @@ extern "C"
 {
 #endif
 
-extern void Java_java_lang_System_setIn (JNIEnv *env, jclass, jobject);
-extern void Java_java_lang_System_setOut (JNIEnv *env, jclass, jobject);
-extern void Java_java_lang_System_setErr (JNIEnv *env, jclass, jobject);
+extern void Java_java_lang_System_setIn0 (JNIEnv *env, jclass, jobject);
+extern void Java_java_lang_System_setOut0 (JNIEnv *env, jclass, jobject);
+extern void Java_java_lang_System_setErr0 (JNIEnv *env, jclass, jobject);
 extern jlong Java_java_lang_System_currentTimeMillis (JNIEnv *env, jclass);
 extern jboolean Java_java_lang_System_isWordsBigEndian (JNIEnv *env, jclass);
 

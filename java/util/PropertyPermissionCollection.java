@@ -92,16 +92,22 @@ class PropertyPermissionCollection extends PermissionCollection
     if (old != null)
       {
         if ((pp.actions | old.actions) == old.actions)
-          pp = old; // Old includes pp.
+          pp = old; // Old implies pp.
         else if ((pp.actions | old.actions) != pp.actions)
-          // Here pp doesn't include old; the only case left is both actions.
+          // Here pp doesn't imply old; the only case left is both actions.
           pp = new PropertyPermission(name, "read,write");
       }
     permissions.put(name, pp);
   }
 
   /**
-   * Returns true if this collection implies the given permission.
+   * Returns true if this collection implies the given permission. This even
+   * returns true for this case:
+   * <pre>
+   * collection.add(new PropertyPermission("a.*", "read"));
+   * collection.add(new PropertyPermission("a.b.*", "write"));
+   * collection.implies(new PropertyPermission("a.b.c", "read,write"));
+   * <pre>
    *
    * @param permission the permission to check
    * @return true if it is implied by this
@@ -111,10 +117,13 @@ class PropertyPermissionCollection extends PermissionCollection
     if (! (permission instanceof PropertyPermission))
       return false;
     PropertyPermission toImply = (PropertyPermission) permission;
+    int actions = toImply.actions;
+
     if (all_allowed)
       {
         int all_actions = ((PropertyPermission) permissions.get("*")).actions;
-        if ((toImply.actions & ~all_actions) == 0)
+        actions &= ~all_actions;
+        if (actions == 0)
           return true;
       }
 
@@ -130,8 +139,12 @@ class PropertyPermissionCollection extends PermissionCollection
       {
         PropertyPermission forName =
           (PropertyPermission) permissions.get(name);
-        if (forName != null && (toImply.actions & ~forName.actions) == 0)
-          return true;
+        if (forName != null)
+          {
+            actions &= ~forName.actions;
+            if (actions == 0)
+              return true;
+          }
 
         prefixLength = name.lastIndexOf('.', prefixLength);
         if (prefixLength < 0)

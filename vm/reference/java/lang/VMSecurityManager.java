@@ -60,7 +60,12 @@ final class VMSecurityManager
   static native Class[] getClassContext();
 
   /**
-   * Get the current ClassLoader--the one nearest to the top of the stack.
+   * Get the current ClassLoader. This is the first non-null class loader
+   * on the stack, if one exists, stopping either at the end of the stack
+   * or the first instance of a PrivilegedAction. In other words, this call
+   * automatically unwinds past all classes loaded by the bootstrap loader,
+   * where getClassLoader() returns null, to get to the user class that
+   * really invoked the call that needs a classloader.
    *
    * @return the current ClassLoader
    */
