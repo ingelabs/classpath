@@ -224,6 +224,41 @@ setTTL(byte ttl) throws IOException
 /*************************************************************************/
 
 /**
+  * Gets the Time to Live value for the socket
+  *
+  * @return The TTL value
+  *
+  * @exception IOException If an error occurs
+  */
+protected synchronized int
+getTimeToLive() throws IOException
+{
+  Object obj = getOption(SocketOptions.IP_TTL);
+
+  if (!(obj instanceof Integer))
+    throw new IOException("Internal Error");
+
+  return(((Integer)obj).intValue());
+}
+
+/*************************************************************************/
+
+/**
+  * Sets the Time to Live value for the socket
+  *
+  * @param ttl The new TTL value
+  *
+  * @exception IOException If an error occurs
+  */
+protected synchronized void
+setTimeToLive(int ttl) throws IOException
+{
+  setOption(SocketOptions.IP_TTL, new Integer(ttl));
+}
+
+/*************************************************************************/
+
+/**
   * Retrieves the value of an option on the socket
   *
   * @param option_id The identifier of the option to retrieve
