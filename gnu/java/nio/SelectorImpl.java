@@ -111,7 +111,6 @@ public class SelectorImpl extends AbstractSelector
     
     
     public Set selectedKeys()    {	return selected;    }
-    public Set cancelledKeys()   {	return canceled;    }
 
     public Selector wakeup()
     {
@@ -133,7 +132,6 @@ public class SelectorImpl extends AbstractSelector
 
 	selected.add(k);
     }
-
 
     protected  void implCloseSelector()
     {

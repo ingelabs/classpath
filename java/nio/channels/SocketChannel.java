@@ -48,6 +48,7 @@ abstract public class SocketChannel extends AbstractSelectableChannel
 
     protected SocketChannel(SelectorProvider provider)
     {
+      super (provider);
     }
  
     public static SocketChannel open() throws IOException

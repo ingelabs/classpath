@@ -1,4 +1,4 @@
-/* AbstractInterruptibleChannel.java
+/* AbstractInterruptibleChannel.java -- 
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,43 +35,43 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
 package java.nio.channels.spi;
 
-import java.nio.channels.*;
-import java.io.*;
+import java.io.IOException;
+import java.nio.channels.Channel;
+import java.nio.channels.InterruptibleChannel;
 
-abstract public class AbstractInterruptibleChannel implements Channel, InterruptibleChannel
+public abstract class AbstractInterruptibleChannel
+  implements Channel, InterruptibleChannel
 {
-    boolean opened = false;
+  boolean opened = false;
 
-    protected AbstractInterruptibleChannel()
-    {
-    }
- 
+  protected AbstractInterruptibleChannel()
+  {
+  }
 
-    protected  void begin()
-    {
-	//	Marks the beginning of an I/O operation that might block indefinitely.
-    }
+  protected final void begin()
+  {
+    // Marks the beginning of an I/O operation that might block indefinitely.
+  }
     
-    public void close() throws IOException
-    {
-	//Closes this channel.
-	implCloseChannel();
-    }
+  public final void close() throws IOException
+  {
+    // Closes this channel.
+    implCloseChannel();
+  }
 
-    protected  void end(boolean completed)
-    {
-	//Marks the end of an I/O operation that might block indefinitely.
-    }
+  protected final void end(boolean completed)
+  {
+    // Marks the end of an I/O operation that might block indefinitely.
+  }   
 
-    protected abstract  void implCloseChannel()  throws IOException;
+  protected abstract void implCloseChannel() throws IOException;
 
-    public boolean isOpen()
-    {
-	//Tells whether or not this channel is open.
-	return opened;
-    }
+  public final boolean isOpen()
+  {
+    // Tells whether or not this channel is open.
+    return opened;
+  }
 }
 

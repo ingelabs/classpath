@@ -37,28 +37,35 @@ exception statement from your version. */
 
 package java.nio.channels;
 
-import java.util.*;
-import java.nio.channels.spi.*;
+import java.util.Set;
+import java.nio.channels.spi.SelectorProvider;
 
 public abstract class Selector
 {
-    protected Selector()
-    {
-    }
+  protected Selector()
+  {
+  }
  
-    static Selector open()
-    {
-	return SelectorProvider.provider().openSelector();
-    }
+  public static Selector open()
+  {
+    return SelectorProvider.provider().openSelector();
+  }
 
-    public abstract  void close();
-    public abstract  boolean isOpen();
-    public abstract  Set keys();
-    public abstract  SelectorProvider provider();
-    public abstract  int select();
-    public abstract  int select(long timeout);
-    public abstract  Set selectedKeys();
-    public abstract  Set cancelledKeys();
-    public abstract  int selectNow();
-    public abstract  Selector wakeup();
+  public abstract void close();
+  
+  public abstract boolean isOpen();
+  
+  public abstract Set keys();
+  
+  public abstract SelectorProvider provider();
+  
+  public abstract int select();
+  
+  public abstract int select(long timeout);
+  
+  public abstract Set selectedKeys();
+  
+  public abstract int selectNow();
+  
+  public abstract Selector wakeup();
 }

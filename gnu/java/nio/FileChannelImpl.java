@@ -77,13 +77,6 @@ public class FileChannelImpl  extends FileChannel
 
     }
     
-    public boolean isOpen()
-    {
-	// FIXME
-	return fd != 0;
-    }    
-
-    
     protected void implCloseChannel()  throws IOException
     {
 	//System.out.println("length in Java ="+length);

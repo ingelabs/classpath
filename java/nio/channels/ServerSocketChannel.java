@@ -47,6 +47,7 @@ public abstract class ServerSocketChannel
 {
     protected ServerSocketChannel(SelectorProvider provider)
     {
+      super (provider);
     }
  
 

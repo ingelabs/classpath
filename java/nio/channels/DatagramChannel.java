@@ -49,6 +49,7 @@ public abstract class DatagramChannel
 {
   protected DatagramChannel (SelectorProvider provider)
   {
+    super (provider);
   }
  
   public static DatagramChannel open () throws IOException
@@ -56,11 +57,19 @@ public abstract class DatagramChannel
     return SelectorProvider.provider ().openDatagramChannel ();
   }
     
-  public long read (ByteBuffer[] dsts)
+  public final long read (ByteBuffer[] dsts)
   {
     long b = 0;
     for (int i=0;i<dsts.length;i++)
       b += read(dsts[i]);
+    return b;
+  }
+    
+  public final long write (ByteBuffer[] srcs)
+  {
+    long b = 0;
+    for (int i=0;i<srcs.length;i++)
+      b += write(srcs[i]);
     return b;
   }
     
@@ -75,7 +84,7 @@ public abstract class DatagramChannel
   public abstract int write (ByteBuffer src);
   public abstract long write (ByteBuffer[] srcs, int offset, int length);
 
-  public int validOps()
+  public final int validOps()
   {
     return SelectionKey.OP_READ | SelectionKey.OP_WRITE;
   }    

@@ -37,38 +37,40 @@ exception statement from your version. */
 
 package java.nio.channels;
 
-import java.nio.channels.spi.*;
+import java.nio.channels.spi.AbstractSelectableChannel;
+import java.nio.channels.spi.SelectorProvider;
 
 public abstract class Pipe
 {
-    public abstract static class SinkChannel
-	extends AbstractSelectableChannel
-	implements WritableByteChannel, GatheringByteChannel
+  public abstract static class SinkChannel
+    extends AbstractSelectableChannel
+    implements WritableByteChannel, GatheringByteChannel
+  {
+    protected SinkChannel(SelectorProvider provider)
     {
-	protected SinkChannel(SelectorProvider provider)
-	    {
-	    }
+      super (provider);
     }
+  }
 
-    public abstract static class SourceChannel
-	extends AbstractSelectableChannel
-	implements ReadableByteChannel, ScatteringByteChannel
+  public abstract static class SourceChannel
+    extends AbstractSelectableChannel
+    implements ReadableByteChannel, ScatteringByteChannel
+  {
+    protected SourceChannel(SelectorProvider provider)
     {
-	protected SourceChannel(SelectorProvider provider)
-	{
-	}
+      super (provider);
     }
+  }
     
+  protected Pipe()
+  {
+  }
 
-    protected Pipe()
-    {
-    }
+  public static Pipe open()
+  {
+    return null;
+  }
     
-    static Pipe open()
-    {
-	return null;
-    }
-    
-    public abstract  SinkChannel sink();
-    public abstract  SourceChannel source();   
+  public abstract Pipe.SinkChannel sink();
+  public abstract Pipe.SourceChannel source();   
 }

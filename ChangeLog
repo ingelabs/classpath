@@ -1,5 +1,38 @@
 2002-11-11  Michael Koch <konqueror@gmx.de>
 
+	* gnu/java/nio/FileChannelImpl.java
+	(isOpen): Removed.
+	* gnu/java/nio/SelectorImpl.java
+	(cancelledKeys): Removed.
+	* java/nio/MappedByteBuffer.java
+	(force): Must be final.
+	(isLoaded): Must be final.
+	(load): Must be final.
+	* java/nio/channels/DatagramChannel.java:
+	(DatagramChannel): Call parent constructor.
+	(read): Must be final.
+	(write): New method.
+	(validOps): Must be final.
+	* java/nio/channels/Pipe.java: Reindented.
+	* java/nio/channels/SelectableChannel.java: Reindented.
+	* java/nio/channels/SelectionKey.java: Reindented.
+	* java/nio/channels/Selector.java: Reindented.
+	* java/nio/channels/ServerSocketChannel.java
+	(ServerSocketChannel): Call parent constructor.
+	* java/nio/channels/SocketChannel.java
+	(SocketChannel): Call parent constructor.
+	* java/nio/channels/spi/AbstractChannel.java:
+	Removed inexistant class.
+	* java/nio/channels/spi/AbstractInterruptibleChannel.java:
+	Reindented.
+	* java/nio/channels/spi/AbstractSelectableChannel.java:
+	Reindented.
+	(AbstractSelectableChannel): New method.
+	* java/nio/channels/spi/AbstractSelector.java: Reindented.
+	* java/nio/channels/spi/Makefile.am: Removed AbstractChannel.java.
+
+2002-11-11  Michael Koch <konqueror@gmx.de>
+
 	* java/nio/channels/AlreadyConnectedException.java:
 	Removed unneeded import.
 	(AlreadyConnectedException): Added documentation.
