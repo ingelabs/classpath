@@ -1,7 +1,11 @@
 TEXI_SRC	:= $(wildcard ../../*.texinfo)
-MHTML_SRC	:= $(patsubst ../../%, %, $(TEXI_SRC:.texinfo=.mhtml))
+MHTML_SRC	:= $(patsubst ../../%, %, $(TEXI_SRC:.texinfo=.mhtml)) $(wildcard *.mhtml)
 HTML_OBJS	:= $(MHTML_SRC:.mhtml=.html)
 VPATH = ../..
+
+ifndef MHC
+  export MHC=mhc
+endif
 
 %.mhtml : %.texinfo
 	texi2html -monolithic $<;
