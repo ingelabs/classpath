@@ -65,11 +65,12 @@ public class FileCacheImageInputStream
     if (stream != null)
       {
 	stream.close();
-	stream == null;
+	stream = null;
       }
   }
 
   private void checkStreamClosed()
+    throws IOException
   {
     if (stream == null)
       throw new IOException("stream closed");

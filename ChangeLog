@@ -1,5 +1,15 @@
 2004-10-20  Michael Koch  <konqueror@gmx.de>
 
+	* javax/imageio/ImageWriter.java
+	(convertImageMetadata): New abstract method.
+	(convertStreamMetadata): Likewise.
+	(write): Likewise.
+	* javax/imageio/stream/FileCacheImageInputStream.java
+	(close): Fixed setting of stream to null.
+	(checkStreamClosed): Throws IOException.
+
+2004-10-20  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/rmi/rmic/RMIC.java: Reformatted.
 
 2004-10-20  Michael Koch  <konqueror@gmx.de>
