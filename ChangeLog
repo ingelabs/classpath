@@ -61,12 +61,21 @@
         * lib/standard.omit: DataFlavor.java and AWTEvent.java should and must
         be compiled by default
 
+2001-10-25  John Leuner  <jewel@debian.org>
+
+	* lib/jazzlib/index.html: Added this directory.
+	Added the html file for the jazzlib project.
+	Moved the dist generation script to this directory.
+	Changed the dist generation script to generate files
+	in the java.util.zip and net.sf.jazzlib namespaces.
+
 2001-10-26  Mark Wielaard  <mark@klomp.org>
 
 	* java/lang/reflect/Proxy.java (getProxyClass):
 	Workaround for bug in gcj
 	* java/util/TreeMap.java (TreeIterator (int)): likewise
 
+>>>>>>> 1.270
 2001-10-25  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/AbstractCollection.java (removeAllInternal),
