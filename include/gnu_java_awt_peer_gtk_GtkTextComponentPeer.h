@@ -10,12 +10,15 @@ extern "C"
 {
 #endif
 
-extern jint Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getCaretPosition (JNIEnv *env, jobject);
-extern jint Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getSelectionStart (JNIEnv *env, jobject);
-extern jint Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getSelectionEnd (JNIEnv *env, jobject);
-extern jstring Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getText (JNIEnv *env, jobject);
-extern void Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_select (JNIEnv *env, jobject, jint, jint);
-extern void Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_setText (JNIEnv *env, jobject, jstring);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_connectHooks (JNIEnv *env, jobject);
+extern JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getCaretPosition (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_setCaretPosition (JNIEnv *env, jobject, jint);
+extern JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getSelectionStart (JNIEnv *env, jobject);
+extern JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getSelectionEnd (JNIEnv *env, jobject);
+extern JNIEXPORT jstring JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getText (JNIEnv *env, jobject);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_select (JNIEnv *env, jobject, jint, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_setEditable (JNIEnv *env, jobject, jboolean);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_setText (JNIEnv *env, jobject, jstring);
 
 #ifdef __cplusplus
 }

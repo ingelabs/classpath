@@ -52,7 +52,6 @@ public class GtkTextFieldPeer extends GtkTextComponentPeer
 //    native void create (ComponentPeer parent, String text);
 
   native void create ();
-  native void createHooks ();
 
   native void gtkEntryGetSize (int cols, int dims[]);
 
@@ -106,5 +105,19 @@ public class GtkTextFieldPeer extends GtkTextComponentPeer
   public void setFont (Font f)
   {
     gtkSetFont(((GtkFontPeer)f.getPeer()).getXLFD(), f.getSize());
+  }
+
+  public void handleEvent (AWTEvent e)
+  {
+    if (e.getID () == KeyEvent.KEY_PRESSED)
+      {
+        KeyEvent ke = (KeyEvent)e;
+
+        if (!ke.isConsumed()
+            && ke.getKeyCode() == KeyEvent.VK_ENTER)
+          postActionEvent (getText(), ke.getModifiers ());
+      }
+
+    super.handleEvent (e);
   }
 }

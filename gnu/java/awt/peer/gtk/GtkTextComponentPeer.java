@@ -56,33 +56,16 @@ public class GtkTextComponentPeer extends GtkComponentPeer
     setText (tc.getText ());
   }
   
+  public native void connectHooks ();
   public native int getCaretPosition ();
-  public void setCaretPosition (int pos)
-  {
-    set ("text_position", pos);
-  }
+  public native void setCaretPosition (int pos);
   public native int getSelectionStart ();
   public native int getSelectionEnd ();
   public native String getText ();
   public native void select (int start, int end);
-
-  public void setEditable (boolean state)
-  {
-    set ("editable", state);
-  }
-
+  public native void setEditable (boolean state);
   public native void setText (String text);
-
-  public void getArgs (Component component, GtkArgList args)
-  {
-    super.getArgs (component, args);
-
-    TextComponent tc = (TextComponent) component;
-
-    args.add ("text_position", tc.getCaretPosition ());
-    args.add ("editable", tc.isEditable ());
-  }
-
+  
   public int getIndexAtPoint(int x, int y)
   {
     return 0;  // FIXME
@@ -96,5 +79,10 @@ public class GtkTextComponentPeer extends GtkComponentPeer
   public long filterEvents (long filter)
   {
     return filter;  // FIXME
+  }
+
+  protected void postTextEvent ()
+  {
+    q.postEvent (new TextEvent (awtComponent, TextEvent.TEXT_VALUE_CHANGED));
   }
 }

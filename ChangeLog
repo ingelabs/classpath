@@ -1,5 +1,10 @@
 2003-07-24  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkLabelPeer.c (create):
+	Don't pack label in an event box.
+
+2003-07-24  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* Makefile.am (SUBDIRS): Add include.
 	* configure.in: Add --enable-regen-headers flag.
 	(AC_OUTPUT): Add include/Makefile.

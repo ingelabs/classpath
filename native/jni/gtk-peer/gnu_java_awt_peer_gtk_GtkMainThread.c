@@ -116,7 +116,7 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
       rcpath = (char *) malloc (strlen (homedir) + strlen (RC_FILE) + 2);
       sprintf (rcpath, "%s/%s", homedir, RC_FILE);
     }
-
+  
   gtk_rc_parse ((rcpath) ? rcpath : RC_FILE);
 
   if (rcpath)
@@ -129,18 +129,13 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 /*  				      "gnu/java/awt/peer/gtk/GtkGenericPeer"); */
   gtkcomponentpeer = (*env)->FindClass (env,
 				     "gnu/java/awt/peer/gtk/GtkComponentPeer");
-
   gtkwindowpeer = (*env)->FindClass (env,
 				     "gnu/java/awt/peer/gtk/GtkWindowPeer");
-
   gtkscrollbarpeer = (*env)->FindClass (env, 
 				     "gnu/java/awt/peer/gtk/GtkScrollbarPeer");
-
   gtklistpeer = (*env)->FindClass (env, "gnu/java/awt/peer/gtk/GtkListPeer");
-
   gtkmenuitempeer = (*env)->FindClass (env,
                                      "gnu/java/awt/peer/gtk/GtkMenuItemPeer");
-
   gtktextcomponentpeer = (*env)->FindClass (env,
                                      "gnu/java/awt/peer/gtk/GtkTextComponentPeer");
 /*    gdkColor = (*env)->FindClass (env, */
