@@ -146,7 +146,7 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected ChoicePeer createChoice (Choice c) 
     {
-      return null;
+      return (new GtkChoicePeer (c, c.getParent().getPeer()));
     }
 
   protected DialogPeer createDialog (Dialog d)

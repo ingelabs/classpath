@@ -40,12 +40,15 @@ class Test
       Button nb=new Button();
       nb.setLabel("Hello World!");
 
-      Button nb2=new Button();
-      nb2.setLabel("Hello World two!");
-
+      Choice ch=new Choice();
+      ch.add("Ding");
+      ch.add("September");
+      ch.add("Red");
+      ch.add("Quassia");
+      ch.add("Pterodactyl");
 
       pan.add(nb);
-      pan.add(nb2);
+      pan.add(ch);
       f.add(pan,"North");
 
       ScrollPane sp=new ScrollPane(ScrollPane.SCROLLBARS_ALWAYS);
@@ -55,7 +58,6 @@ class Test
       p.add(new Button("hoarders"));
       p.add(new Button("use"));
       p.add(new Button("GNU"));
-      p.add(new Button("Linux"));
 
       sp.add(p);
       f.add(sp,"South");
