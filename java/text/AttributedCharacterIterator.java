@@ -238,8 +238,7 @@ toString()
   *
   * @return A list of keys 
   */
-public abstract Set
-getAllAttributeKeys();
+Set getAllAttributeKeys();
 
 /*************************************************************************/
 
@@ -249,8 +248,7 @@ getAllAttributeKeys();
   *
   * @return A <code>Map</code> of the attributes for the current character.
   */
-public abstract Map
-getAttributes();
+Map getAttributes();
 
 /*************************************************************************/
 
@@ -263,8 +261,7 @@ getAttributes();
   *
   * @return The value of the specified attribute
   */
-public abstract Object
-getAttribute(AttributedCharacterIterator.Attribute attrib);
+Object getAttribute (AttributedCharacterIterator.Attribute attrib);
 
 /*************************************************************************/
 
@@ -274,8 +271,7 @@ getAttribute(AttributedCharacterIterator.Attribute attrib);
   *
   * @return The start index of the run
   */
-public abstract int
-getRunStart();
+int getRunStart();
 
 /*************************************************************************/
 
@@ -288,8 +284,7 @@ getRunStart();
   *
   * @return The start index of the run.
   */
-public abstract int
-getRunStart(Set attribs);
+int getRunStart (Set attribs);
 
 /*************************************************************************/
 
@@ -301,8 +296,7 @@ getRunStart(Set attribs);
   *
   * @return The start index of the run.
   */
-public abstract int
-getRunStart(AttributedCharacterIterator.Attribute attrib);
+int getRunStart (AttributedCharacterIterator.Attribute attrib);
 
 /*************************************************************************/
 
@@ -312,8 +306,7 @@ getRunStart(AttributedCharacterIterator.Attribute attrib);
   *
   * @return The end index of the run.
   */
-public abstract int
-getRunLimit();
+int getRunLimit();
 
 /*************************************************************************/
 
@@ -326,8 +319,7 @@ getRunLimit();
   *
   * @return The end index of the run.
   */
-public abstract int
-getRunLimit(Set attribs);
+int getRunLimit (Set attribs);
 
 /*************************************************************************/
 
@@ -339,8 +331,6 @@ getRunLimit(Set attribs);
   * 
   * @return The end index of the run.
   */
-public abstract int
-getRunLimit(AttributedCharacterIterator.Attribute attrib);
+int getRunLimit (AttributedCharacterIterator.Attribute attrib);
 
 } // interface AttributedCharacterIterator
-

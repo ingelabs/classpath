@@ -1,5 +1,11 @@
 2003-10-15  Michael Koch  <konqueror@gmx.de>
 
+	* java/text/AttributedCharacterIterator.java,
+	java/text/CharacterIterator.java:
+	Removed redundant modifiers.
+
+2003-10-15  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/NIOSocket.java
 	(setChannel): Initialize impl.
 	* gnu/java/nio/ServerSocketChannelImpl.java

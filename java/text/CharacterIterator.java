@@ -62,7 +62,7 @@ public interface CharacterIterator extends Cloneable
    * This is a special constant value that is returned when the beginning or
    * end of the character range has been reached.
    */
-  public static final char DONE = '\uFFFF';
+  char DONE = '\uFFFF';
 
   /*************************************************************************/
 
@@ -75,7 +75,7 @@ public interface CharacterIterator extends Cloneable
    *
    * @return The character at the current index position.
    */
-  public abstract char current ();
+  char current();
 
   /*************************************************************************/
 
@@ -86,7 +86,7 @@ public interface CharacterIterator extends Cloneable
    *
    * @return The character at the position of the incremented index value, or <code>DONE</code> if the index has reached getEndIndex() - 1
    */
-  public abstract char next ();
+  char next();
 
   /*************************************************************************/
 
@@ -97,7 +97,7 @@ public interface CharacterIterator extends Cloneable
    *
    * @return The character at the position of the decremented index value, or <code>DONE</code> if index was already equal to the beginning index value.
    */
-  public abstract char previous ();
+  char previous();
 
   /*************************************************************************/
 
@@ -107,7 +107,7 @@ public interface CharacterIterator extends Cloneable
    *
    * @return The character at the beginning of the range, or <code>DONE</code> if the range is empty.
    */
-  public abstract char first ();
+  char first();
 
   /*************************************************************************/
 
@@ -118,7 +118,7 @@ public interface CharacterIterator extends Cloneable
    *
    * @return The character at the end of the range, or <code>DONE</code> if the range is empty.
    */
-  public abstract char last ();  
+  char last();  
 
   /*************************************************************************/
 
@@ -127,7 +127,7 @@ public interface CharacterIterator extends Cloneable
    *
    * @return The current index value
    */
-  public abstract int getIndex ();
+  int getIndex();
 
   /*************************************************************************/
 
@@ -139,7 +139,7 @@ public interface CharacterIterator extends Cloneable
    *
    * @return The character at the new index value or <code>DONE</code> if the index value is equal to <code>getEndIndex</code>.
    */
-  public abstract char setIndex (int index) throws IllegalArgumentException;
+  char setIndex (int index) throws IllegalArgumentException;
 
   /*************************************************************************/
 
@@ -149,7 +149,7 @@ public interface CharacterIterator extends Cloneable
    *
    * @return The index of the first character in the range.
    */
-  public abstract int getBeginIndex ();
+  int getBeginIndex();
 
   /*************************************************************************/
 
@@ -161,7 +161,7 @@ public interface CharacterIterator extends Cloneable
    *
    * @return The index of the end of the range.
    */
-  public abstract int getEndIndex ();
+  int getEndIndex();
 
   /*************************************************************************/
 
@@ -170,5 +170,6 @@ public interface CharacterIterator extends Cloneable
    *
    * @return A copy of this <code>CharacterIterator</code>.
    */
-  public abstract Object clone ();
-}
+  Object clone();
+
+} // interface CharacterIterator
