@@ -1,8 +1,13 @@
 2001-09-14  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 
+	Fixes for specjvm javac benchmark, reports from Gansha Wu:
+
 	* java/util/Hashtable.java (Enumerator): Ensure that if 
 	hasMoreElements() returns true, nextElement() will always return
 	something even if the table has been modified.
+
+	* java/io/File.java (File(String, String)): Permit a null dirName
+	parameter.
 
 2001-09-10  Tom Tromey  <tromey@redhat.com>
 
