@@ -1,4 +1,5 @@
-/* Copyright (C) 2000, 2002, 2004  Free Software Foundation
+/* ComponentColorModel.java --
+   Copyright (C) 2000, 2002, 2004  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -37,9 +38,10 @@ exception statement from your version. */
 
 package java.awt.image;
 
+import gnu.java.awt.Buffers;
+
 import java.awt.Point;
 import java.awt.color.ColorSpace;
-import gnu.java.awt.Buffers;
 
 public class ComponentColorModel extends ColorModel
 {
