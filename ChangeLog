@@ -1,5 +1,9 @@
 2004-10-25  Michael Koch  <konqueror@gmx.de>
 
+	* javax/security/auth/spi/package.html: New file.
+
+2004-10-25  Michael Koch  <konqueror@gmx.de>
+
 	* scripts/checkstyle.css,
 	scripts/checkstyle2html.xsl:
 	New files
