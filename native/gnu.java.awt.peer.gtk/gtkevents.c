@@ -273,9 +273,9 @@ awt_realize_hook (GtkWidget *widget, gpointer data)
 /*      attach_jobject (GTK_CHECK_BUTTON (widget)->toggle_button.event_window, */
 /*  		    obj); */
 
-  gdk_threads_leave ();
-  (*gdk_env)->CallVoidMethod (gdk_env, *(hook_info->peer_obj), syncAttrsID);
-  gdk_threads_enter ();
+/*    gdk_threads_leave (); */
+/*    (*gdk_env)->CallVoidMethod (gdk_env, *(hook_info->peer_obj), syncAttrsID); */
+/*    gdk_threads_enter (); */
 
   return FALSE;
 }

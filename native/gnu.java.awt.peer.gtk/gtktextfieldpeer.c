@@ -24,7 +24,7 @@
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryNew
-  (JNIEnv *env, jobject obj, jstring text)
+  (JNIEnv *env, jobject obj, jstring text, jboolean visible)
 {
   GtkWidget *entry;
   const char *str;
@@ -38,7 +38,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryNew
 		    &entry->window, &GTK_ENTRY (entry)->text_area);
   gtk_entry_set_text (GTK_ENTRY (entry), str);
 
-
+  set_visible (entry, visible);
   gdk_threads_leave ();
 
   (*env)->ReleaseStringUTFChars (env, text, str);

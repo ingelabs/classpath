@@ -24,7 +24,7 @@
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelNew
-(JNIEnv *env, jobject obj, jstring text, jint just)
+(JNIEnv *env, jobject obj, jstring text, jint just, jboolean visible)
 {
   GtkWidget *label, *box;
   const char *str;
@@ -45,12 +45,14 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelNew
   gdk_threads_enter ();
 
   box = gtk_event_box_new ();
+  connect_awt_hook (env, obj, box, 1, &box->window);
+
   label = gtk_label_new (str);
   gtk_widget_show (label);
   gtk_container_add (GTK_CONTAINER (box), label);
   gtk_label_set_justify (GTK_LABEL (label), j);
 
-  connect_awt_hook (env, obj, box, 1, &box->window);
+  set_visible (box, visible);
   gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, box);

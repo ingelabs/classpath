@@ -24,7 +24,7 @@
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuNew (JNIEnv *env, 
-    jobject obj, jobjectArray items)
+    jobject obj, jobjectArray items, jboolean visible)
 {
   GtkWidget *menu, *optionmenu;
   GtkWidget *menuitem;
@@ -38,6 +38,7 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuNew (JNIEnv *env,
   gdk_threads_enter ();
 
   menu = gtk_menu_new();
+  gtk_widget_show (menu);
 
   for (i = 0; i < count; i++) 
     {
@@ -53,6 +54,7 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuNew (JNIEnv *env,
 
   optionmenu = gtk_option_menu_new ();
   connect_awt_hook (env, obj, optionmenu, 1, &optionmenu->window);
+  set_visible (optionmenu, visible);
 
   gtk_option_menu_set_menu (GTK_OPTION_MENU (optionmenu), menu);
 

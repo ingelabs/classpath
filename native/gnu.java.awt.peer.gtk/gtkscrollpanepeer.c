@@ -25,7 +25,7 @@
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowNew 
     (JNIEnv *env, jobject obj, jint policy, jint width, jint height,
-     jintArray jdims)
+     jintArray jdims, jboolean visible)
 {
   jint *dims = (*env)->GetIntArrayElements (env, jdims, 0);  
   GtkRequisition myreq;
@@ -70,9 +70,11 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowNew
 
   printf("sbsize: %i %i\n",dims[0],dims[1]);
 
-  fix=gtk_fixed_new();
+  fix = gtk_fixed_new();
+  gtk_widget_show (fix);
   gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), fix);
-  
+
+  set_visible (sw, visible);
   gdk_threads_leave ();
 
   (*env)->ReleaseIntArrayElements(env, jdims, dims, 0);

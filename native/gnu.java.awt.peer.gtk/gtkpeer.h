@@ -98,4 +98,6 @@ void awt_event_handler (GdkEvent *event);
 void connect_awt_hook (JNIEnv *env, jobject peer_obj, GtkWidget *widget,
 		       int nwindows, ...);
 
+void set_visible (GtkWidget *widget, jboolean visible);
+
 #endif /* __GTKPEER_H */

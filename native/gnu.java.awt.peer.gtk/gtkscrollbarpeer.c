@@ -25,7 +25,7 @@
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_gtkScrollbarNew
     (JNIEnv *env, jobject obj, jint orientation, jint value, jint min, 
-     jint max)
+     jint max, jboolean visible)
 {
   GtkWidget *sb;
   GtkObject *adj;
@@ -41,6 +41,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_gtkScrollbarNew
 		    &(GTK_RANGE (sb)->slider),
 		    &(GTK_RANGE (sb)->step_forw),
 		    &(GTK_RANGE (sb)->step_back));
+  set_visible (sb, visible);
   gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, sb);

@@ -37,7 +37,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetShowChildren (JNIEnv *env,
   gdk_threads_enter ();
   widget=GTK_WIDGET (ptr);
   
-  gtk_widget_show_all (GTK_WIDGET (widget));
+/*    gtk_widget_show_all (GTK_WIDGET (widget)); */
   gtk_container_check_resize (GTK_CONTAINER (widget));
 
   gdk_threads_leave ();
@@ -164,17 +164,17 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setVisible
   
   /* Windows are a special case; they have a fixed widget
      which needs to be shown/hidden as well. */
-  if (GTK_IS_WINDOW (GTK_OBJECT (ptr)))
-    {
-      child = gtk_container_children (GTK_CONTAINER (widget));
+/*    if (GTK_IS_WINDOW (GTK_OBJECT (ptr))) */
+/*      { */
+/*        child = gtk_container_children (GTK_CONTAINER (widget)); */
 
-      if (visible)
-	gtk_widget_show (GTK_WIDGET (child->data));
-      else
-	gtk_widget_hide (GTK_WIDGET (child->data));
+/*        if (visible) */
+/*  	gtk_widget_show (GTK_WIDGET (child->data)); */
+/*        else */
+/*  	gtk_widget_hide (GTK_WIDGET (child->data)); */
 
-      g_list_free (child);
-    }
+/*        g_list_free (child); */
+/*      } */
 
   if (visible)
     gtk_widget_show (GTK_WIDGET (widget));
@@ -270,13 +270,14 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetUsize (JNIEnv *env,
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedNew (JNIEnv *env, 
-    jobject obj, jint width, jint height)
+    jobject obj, jint width, jint height, jboolean visible)
 {
   GtkWidget *fix;
 
   gdk_threads_enter ();
   fix = gtk_fixed_new ();
   connect_awt_hook (env, obj, fix, 1, &fix->window);
+  set_visible (fix, visible);
   gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, fix);
@@ -352,7 +353,6 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedPut
 
   gtk_fixed_put(GTK_FIXED(fix),GTK_WIDGET(objptr),x,y);
   
-  
   gdk_threads_leave ();
 }
 
@@ -398,5 +398,24 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setBounds
   gdk_threads_leave ();
 }
 
-
+void
+set_visible (GtkWidget *widget, jboolean visible)
+{
+  if (visible)
+    gtk_widget_show (widget);
+  else
+    if (GTK_WIDGET_REALIZED (widget))
+      gtk_widget_hide (widget);
+    else
+      gtk_widget_realize (widget);
+      
+  visible ? gtk_widget_show (widget) : gtk_widget_hide (widget);
+/*    if (visible) */
+/*      gtk_widget_map (widget); */
+/*    else */
+/*      if (GTK_WIDGET_MAPPED (widget)) */
+/*        gtk_widget_unmap (widget); */
+/*      else */
+/*        gtk_widget_realize (widget); */
+}
 

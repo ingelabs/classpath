@@ -24,7 +24,8 @@
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListNew
-  (JNIEnv *env, jobject obj, jobject jlist, jobjectArray items, int mode)
+  (JNIEnv *env, jobject obj, jobject jlist, jobjectArray items, int mode,
+   jboolean visible)
 {
   GtkWidget *list, *listitem, *sw;
   jsize count;
@@ -36,7 +37,11 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListNew
 
   list = gtk_list_new ();
   connect_awt_hook (env, obj, list, 1, &list->window);
+  gtk_widget_show (list);
+
   sw = gtk_scrolled_window_new (NULL, NULL);
+  set_visible (sw, visible);
+
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), 
 				  GTK_POLICY_AUTOMATIC,
 				  GTK_POLICY_AUTOMATIC);

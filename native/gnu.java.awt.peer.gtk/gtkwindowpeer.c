@@ -28,7 +28,7 @@
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env, 
-  jobject obj, jint type, jint width, jint height)
+  jobject obj, jint type, jint width, jint height, jboolean visible)
 {
   GtkWidget *window, *fix;
 
@@ -48,12 +48,14 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env,
   gtk_window_set_policy (GTK_WINDOW (window), 1, 1, 1);
 
   connect_awt_hook (env, obj, window, 1, &window->window);
+  set_visible (window, visible);
 
   /* Every window needs a fixed widget to support absolute positioning. */
 
   fix = gtk_fixed_new();
   connect_awt_hook (env, obj, fix, 1, &fix->window);
-  
+  gtk_widget_show (fix);
+
   gtk_widget_set_usize (window, width, height);
   
   printf("c: requisition: %i x %i allocation:%i x %i\n",
