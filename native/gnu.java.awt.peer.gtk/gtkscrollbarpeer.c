@@ -103,18 +103,3 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setValues
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_dispose
-  (JNIEnv *env, jobject obj)
-{
-  void *ptr;
-  GtkAdjustment *adj;
-
-  ptr = NSA_GET_PTR (env, obj);
-
-  gdk_threads_enter ();
-  adj = GTK_RANGE(ptr)->adjustment;
-  gtk_widget_destroy (GTK_WIDGET (ptr));
-  gtk_object_destroy (GTK_OBJECT (adj));
-  gdk_threads_leave ();
-}

@@ -31,7 +31,6 @@ public class GtkScrollbarPeer extends GtkComponentPeer
   native public void setLineIncrement (int amount);
   native public void setPageIncrement (int amount);
   native public void setValues (int value, int size, int min, int max);
-  native public void dispose ();
 
   public GtkScrollbarPeer (Scrollbar s, ComponentPeer cp)
   {
