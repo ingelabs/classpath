@@ -1,5 +1,10 @@
 2003-06-12  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/swing/UIManager.java (getFont): Made public in conformance with
+	the API spec.
+
+2003-06-12  Sascha Brawer  <brawer@dandelis.ch>
+
 	* javax/swing/border/AbstractBorder.java (getBorderInsets): Revised Javadoc
 	better explains the purpose of the method.
 	* javax/swing/border/TitledBorder.java (getBorderInsets): Likewise.
