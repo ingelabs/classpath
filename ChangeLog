@@ -1,5 +1,9 @@
 2004-11-14  Mark Wielaard  <mark@klomp.org>
 
+	* configure.ac: Set version to 0.12+cvs.
+
+2004-11-14  Mark Wielaard  <mark@klomp.org>
+
 	* configure.ac: Set version to 0.12.
 	* NEWS: Add new items for this release.
 
