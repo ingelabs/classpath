@@ -37,7 +37,7 @@ JNIEXPORT jfloat JNICALL Java_java_lang_Float_parseFloat
  * Signature: (F)Ljava/lang/String
  */
 JNIEXPORT jstring JNICALL Java_java_lang_Float_toString
-  (JNIEnv * env, jclass thisClass, jfloat f);
+  (JNIEnv *, jclass, jfloat);
 
 #ifdef __cplusplus
 }

@@ -2,7 +2,7 @@
  * Float.c - java.lang.Float native functions
  *
  * Copyright (c) 1998 Free Software Foundation, Inc.
- * Written by Aaron M. Renn (arenn@urbanophile.com)
+ * Written by Brian Jones (cbj@gnu.org)
  *
  * This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Library General Public License as published 
@@ -82,14 +82,14 @@ JNIEXPORT jfloat JNICALL Java_java_lang_Float_parseFloat
 
     if (s == NULL)
 	{
-	    _javalang_ThrowException(env, "java/lang/NullPointerException", "null string");
+	    _javalang_ThrowException(env, "java/lang/NullPointerException", "null argument");
 	    return 0.0;
 	}
 
     nptr = (char*)((*env)->GetStringUTFChars(env, s, 0));
     if (nptr == NULL)
 	{
-	    _javalang_ThrowException(env, "java/lang/NumberFormatException", "null not allowed");
+	    _javalang_ThrowException(env, "java/lang/NullPointerException", "null returned by GetStringUTFChars");
 	    return 0.0;
 	}
 #if defined(HAVE_STRTOD)
