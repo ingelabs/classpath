@@ -134,11 +134,11 @@ $(MAKEFILE_DEPEND): Makefile classes $(CLASSES)
 	./mkdep.pl -d
 	include $(MAKEFILE_DEPEND)
 
-classes: gen-classlist.sh
+classes: gen-classlist.sh standard.omit
 	$(SHELL) -c "cd ${top_srcdir}/lib; ./gen-classlist.sh standard"
 
 $(CLASSES):
-	@JIKES@ -classpath ..:../vm/reference:. +M -d . @classes 2>errors.txt
+	@JIKES@ -classpath ..:../vm/reference:. +CSO +M -d . @classes 2>errors.txt
 
 else
 ## neither developer nor maintainer...
