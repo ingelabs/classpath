@@ -61,6 +61,15 @@ public class ProtectionDomain
   /** This is the set of permissions granted to this domain. */
   private PermissionCollection perms;
 
+  /** The {@link ClassLoader} associated with this domain. */
+  private ClassLoader classloader;
+
+  /** The array of Principals associated with this domain.. */
+  private Principal[] principals;
+
+  /** Post 1.4 the policy may be refreshed! use false for pre 1.4. */
+  private boolean staticBinding;
+
   /**
    * Creates a new <code>ProtectionDomain</code> with the given {@link
    * CodeSource} and {@link Permissions}. If the permissions object is not
@@ -74,10 +83,57 @@ public class ProtectionDomain
    */
   public ProtectionDomain(CodeSource codesource, PermissionCollection permissions)
   {
-    this.code_source = codesource;
-    this.perms = permissions;
+    this(codesource, permissions, null, null, false);
+  }
+
+  /**
+   * <p>Creates a new ProtectionDomain qualified by the given CodeSource,
+   * Permissions, ClassLoader and array of Principals. If the permissions
+   * object is not null, then <code>setReadOnly()</code> will be called on the
+   * passed in Permissions object. The permissions granted to this domain are
+   * dynamic; they include both the static permissions passed to this
+   * constructor, and any permissions granted to this domain by the current
+   * Policy at the time a permission is checked.</p>
+   *
+   * <p>This constructor is typically used by {@link ClassLoader}s and {@link
+   * DomainCombiner}s which delegate to <code>Policy</code> to actively
+   * associate the permissions granted to this domain. This constructor affords
+   * the Policy provider the opportunity to augment the supplied
+   * PermissionCollection to reflect policy changes.</p>
+   *
+   * @param codesource the CodeSource associated with this domain.
+   * @param permissions the permissions granted to this domain.
+   * @param classloader the ClassLoader associated with this domain.
+   * @param principals the array of Principals associated with this domain.
+   * @since 1.4
+   * @see Policy#refresh()
+   * @see Policy#getPermissions(ProtectionDomain)
+  */
+  public ProtectionDomain(CodeSource codesource,
+                          PermissionCollection permissions,
+                          ClassLoader classloader, Principal[] principals)
+  {
+    this(codesource, permissions, classloader, principals, false);
+  }
+
+  private ProtectionDomain(CodeSource codesource,
+                           PermissionCollection permissions,
+                           ClassLoader classloader, Principal[] principals,
+                           boolean staticBinding)
+  {
+    super();
+
+    code_source = codesource;
     if (permissions != null)
-      permissions.setReadOnly();
+      {
+        perms = permissions;
+        perms.setReadOnly();
+      }
+
+    this.classloader = classloader;
+    this.principals =
+        (principals != null ? (Principal[]) principals.clone() : new Principal[0]);
+    this.staticBinding = staticBinding;
   }
 
   /**
@@ -89,6 +145,30 @@ public class ProtectionDomain
   public final CodeSource getCodeSource()
   {
     return code_source;
+  }
+
+  /**
+   * Returns the {@link ClassLoader} of this domain.
+   *
+   * @return the {@link ClassLoader} of this domain which may be
+   * <code>null</code>.
+   * @since 1.4
+   */
+  public final ClassLoader getClassLoader()
+  {
+    return this.classloader;
+  }
+
+  /**
+   * Returns an array of principals for this domain.
+   *
+   * @return returns a non-null array of principals for this domain. Changes to
+   * this array will have no impact on the <code>ProtectionDomain</code>.
+   * @since 1.4
+   */
+  public final Principal[] getPrincipals()
+  {
+    return (Principal[]) principals.clone();
   }
 
   /**
@@ -128,11 +208,11 @@ public class ProtectionDomain
    */
   public boolean implies(Permission permission)
   {
-    PermissionCollection pc = getPermissions();
-    if (pc == null)
-      return (false);
-
-    return pc.implies(permission);
+    if (staticBinding)
+      return (perms == null ? false : perms.implies(permission));
+    // else dynamically bound.  do we have it?
+    // NOTE: this will force loading of Policy.currentPolicy
+    return Policy.getCurrentPolicy().implies(this, permission);
   }
 
   /**
@@ -143,15 +223,47 @@ public class ProtectionDomain
   public String toString()
   {
     String linesep = System.getProperty("line.separator");
-    StringBuffer sb = new StringBuffer("");
-    sb.append("ProtectionDomain (" + linesep);
-    if (code_source == null)
-      sb.append("CodeSource:null" + linesep);
-    else
-      sb.append(code_source + linesep);
-    sb.append(perms);
-    sb.append(linesep + ")" + linesep);
+    StringBuffer sb = new StringBuffer("ProtectionDomain (").append(linesep);
 
-    return sb.toString();
+    if (code_source == null)
+      sb.append("CodeSource:null");
+    else
+      sb.append(code_source);
+
+    sb.append(linesep);
+    if (classloader == null)
+      sb.append("ClassLoader:null");
+    else
+      sb.append(classloader);
+
+    sb.append(linesep);
+    sb.append("Principals:");
+    if (principals != null && principals.length > 0)
+      {
+        sb.append("[");
+        Principal pal;
+        for (int i = 0; i < principals.length; i++)
+          {
+            pal = principals[i];
+            sb.append("'").append(pal.getName())
+                .append("' of type ").append(pal.getClass().getName());
+            if (i < principals.length-1)
+              sb.append(", ");
+          }
+        sb.append("]");
+      }
+    else
+      sb.append("none");
+
+    sb.append(linesep);
+    if (!staticBinding) // include all but dont force loading Policy.currentPolicy
+      if (Policy.isLoaded())
+        sb.append(Policy.getCurrentPolicy().getPermissions(this));
+      else // fallback on this one's permissions
+        sb.append(perms);
+    else
+      sb.append(perms);
+
+    return sb.append(linesep).append(")").append(linesep).toString();
   }
 }
