@@ -1,3 +1,34 @@
+2003-06-27  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/RandomAccessFile.java,
+	java/nio/ByteBufferImpl.java,
+	java/nio/CharBufferImpl.java,
+	java/nio/DirectByteBufferImpl.java,
+	java/nio/DoubleBufferImpl.java,
+	java/nio/FloatBufferImpl.java,
+	java/nio/IntBufferImpl.java,
+	java/nio/LongBufferImpl.java,
+	java/nio/MappedByteBufferImpl.java,
+	java/nio/ShortBufferImpl.java,
+	java/rmi/server/SkeletonNotFoundException.java,
+	java/rmi/server/UnicastRemoteObject.java,
+	java/security/Certificate.java,
+	java/security/cert/PolicyQualifierInfo.java,
+	java/text/Format.java,
+	javax/naming/CompositeName.java,
+	javax/naming/CompoundName.java,
+	javax/naming/InitialContext.java,
+	javax/naming/LinkRef.java,
+	javax/naming/NamingException.java,
+	javax/naming/NamingSecurityException.java,
+	javax/naming/ReferralException.java,
+	javax/naming/StringRefAddr.java,
+	javax/naming/directory/BasicAttribute.java,
+	javax/naming/directory/BasicAttributes.java,
+	javax/naming/ldap/UnsolicitedNotificationEvent.java,
+	javax/security/auth/x500/X500Principal.java:
+	New versions from libgcj.
+
 2003-06-26  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/nio/FileChannelImpl.java
