@@ -75,6 +75,7 @@ JSlider.java \
 JSplitPane.java \
 JTabbedPane.java \
 JTable.java \
+JTextArea.java \
 JTextField.java \
 JTextPane.java \
 JToggleButton.java \
