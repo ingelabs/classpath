@@ -27,7 +27,6 @@ public class GtkWindowPeer extends GtkContainerPeer
 {
   static final int bogusType=0;
   static final int toplevelType=1;
-  static final int dialogType=2;
   static final int popupType=3;
 
   native void gtkWindowNew(int type, int width, int height, boolean visible);
