@@ -1113,7 +1113,8 @@ public final class Class implements Serializable
 	  }
 	if (constructor == null)
 	  throw new InstantiationException(getName());
-	if (!Modifier.isPublic(constructor.getModifiers()))
+	if (!Modifier.isPublic(constructor.getModifiers())
+            || !Modifier.isPublic(getModifiers()))
 	  {
 	    final Constructor finalConstructor = constructor;
 	    AccessController.doPrivileged(new PrivilegedAction()

@@ -1,3 +1,8 @@
+2005-03-11  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/Class.java (newInstance): Fix bug related to package
+	private classes.
+
 2005-03-10  Andrew Haley  <aph@redhat.com>
 
 	* gnu/java/nio/channels/FileChannelImpl.java (smallTransferFrom):
