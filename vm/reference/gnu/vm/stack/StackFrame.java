@@ -29,13 +29,21 @@ import java.lang.reflect.*;
  ** @author John Keiser
  ** @version 1.1.0, Aug 11 1998
  **/
-public class StackFrame {
+public final class StackFrame {
 	StackFrame caller;
 	Object obj;
 	Method method;
 	int lineNum;
 	String filename;
 
+        /**
+	 * Constructs a new stack frame.  This is only called by the virtual
+	 * machine.
+	 * @param obj the this reference of that frame, null for static classes.
+	 * @param method the called method.
+	 * @param lineNum the line number or -1 if unknown.
+	 * @param filename the filename of the source of the method, null if unknown.
+	 */
 	private StackFrame(Object obj, Method method, int lineNum, String filename) {
 		this.caller = caller;
 		this.obj = obj;
@@ -52,6 +60,10 @@ public class StackFrame {
 		return obj;
 	}
 
+	public Class getCalledClass() {
+		return method.getDeclaringClass();
+	}
+
 	public Method getCalledMethod() {
 		return method;
 	}
@@ -59,4 +71,13 @@ public class StackFrame {
 	public int getSourceLineNumber() {
 		return lineNum;
 	}
+
+        public String toString() {
+	        return getCalledClass().getName() + "."
+			+ getCalledMethod().getName()
+			+ (getSourceFilename() != null ?
+			   " at " + getSourceFilename()
+			   + ":" + getSourceLineNumber()
+			   : " (compiled code)");
+        }
 }
