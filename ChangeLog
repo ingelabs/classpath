@@ -3,6 +3,10 @@
 	* javax/swing/plaf/basic/BasicBorders.java (MenuBarBorder): Re-written.
 	(getMenuBarBorder): New method.
 
+        * javax/swing/plaf/basic/doc-files/
+        BasicBorders.SplitPaneBorder-1.png,
+        BasicBorders.SplitPaneDividerBorder-1.png: New image.
+
 2003-06-20  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/nio/DatagramChannelImpl.java,
