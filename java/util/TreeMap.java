@@ -53,8 +53,8 @@ import java.io.IOException;
  * always allowed.
  *
  * @author           Jon Zeppieri
- * @version          $Revision: 1.1 $
- * @modified         $Id: TreeMap.java,v 1.1 1999-03-13 23:05:07 jaz Exp $
+ * @version          $Revision: 1.2 $
+ * @modified         $Id: TreeMap.java,v 1.2 1999-03-16 08:04:59 jaz Exp $
  */ 
 public class TreeMap extends AbstractMap 
   implements SortedMap, Cloneable, Serializable
@@ -65,6 +65,8 @@ public class TreeMap extends AbstractMap
 
   private static final int RED = -1;
   private static final int BLACK = 1;
+
+  private static final RBNode NIL = new RBNode(null, null);
 
   /** The root node of this TreeMap */
   RBNode _oRoot;
@@ -102,7 +104,7 @@ public class TreeMap extends AbstractMap
    */
   public TreeMap(Comparator oComparator)
   {
-    _oRoot = null;
+    _oRoot = NIL;
     _iSize = 0;
     _iModCount = 0;
     _oComparator = oComparator;
@@ -150,7 +152,7 @@ public class TreeMap extends AbstractMap
 
   public void clear()
   {
-    _oRoot = null;
+    _oRoot = NIL;
     _iSize = 0;
     _iModCount++;
   }
@@ -182,7 +184,7 @@ public class TreeMap extends AbstractMap
 
   public boolean containsKey(Object oKey)
   {
-    return (treeSearch(_oRoot, _oComparator, oKey) != null);
+    return (treeSearch(_oRoot, _oComparator, oKey) != NIL);
   }
 
   public boolean containsValue(Object oValue)
@@ -190,7 +192,7 @@ public class TreeMap extends AbstractMap
     RBNode oNode = _oRoot;
     Object oCurrentValue;
 
-    while (oNode != null)
+    while (oNode != NIL)
     {
       oCurrentValue = oNode.getValue();
 
@@ -223,12 +225,12 @@ public class TreeMap extends AbstractMap
   public Object get(Object oKey)
   {
     RBNode oNode = treeSearch(_oRoot, _oComparator, oKey);
-    return (oNode != null) ? oNode.getValue() : null;
+    return (oNode != NIL) ? oNode.getValue() : null;
   }
 
   public SortedMap headMap(Object oToKey)
   {
-    if (keyInRange(_oComparator, oToKey, null, null))
+    if (keyInClosedMaxRange(_oComparator, oToKey, null))
       return new SubTreeMap(null, oToKey);
     else
       throw new IllegalArgumentException(getArgumentError("create a headMap",
@@ -255,10 +257,10 @@ public class TreeMap extends AbstractMap
   public Object put(Object oKey, Object oValue)
   {
     Map.Entry oEntry = rbInsert(this, _oComparator, new RBNode(oKey, oValue));
-    if (oEntry == null)
+    if (oEntry == NIL)
       _iSize++;
     _iModCount++;
-    return ((oEntry == null) ? null : oEntry.getValue());
+    return ((oEntry == NIL) ? null : oEntry.getValue());
   }
 
   public void putAll(Map oMap)
@@ -277,9 +279,9 @@ public class TreeMap extends AbstractMap
   {
     RBNode oResult = treeSearch(_oRoot, _oComparator, oKey);
 
-    if (oResult != null)
+    if (oResult != NIL)
     {
-      rbDelete(this, oResult);
+      oResult = rbDelete(this, oResult);
       _iSize--;
       _iModCount++;
       return oResult.getValue();
@@ -306,7 +308,7 @@ public class TreeMap extends AbstractMap
 
   public SortedMap tailMap(Object oFromKey)
   {
-    if (keyInRange(_oComparator, oFromKey, null, null))
+    if (keyInMinRange(_oComparator, oFromKey, null))
       return new SubTreeMap(oFromKey, null);
     else
       throw new IllegalArgumentException(getArgumentError("create a tailMap",
@@ -340,7 +342,7 @@ public class TreeMap extends AbstractMap
 
     oOut.writeInt(_iSize);
 
-    while (oNode != null)
+    while (oNode != NIL)
     {
       oOut.writeObject(oNode.getKey());
       oOut.writeObject(oNode.getValue());
@@ -375,7 +377,7 @@ public class TreeMap extends AbstractMap
 
     if (iStart == iStop)
     {
-      return null;
+      return NIL;
     }
     else
     {
@@ -396,9 +398,9 @@ public class TreeMap extends AbstractMap
       else
         oNewTree._iColor = ((iCurrentTier % 2) == 1) ? RED : BLACK;
 
-      if (oNewTree._oLeft != null)
+      if (oNewTree._oLeft != NIL)
         oNewTree._oLeft._oParent = oNewTree;
-      if (oNewTree._oRight != null)
+      if (oNewTree._oRight != NIL)
         oNewTree._oRight._oParent = oNewTree;
       return oNewTree;
     }
@@ -427,6 +429,14 @@ public class TreeMap extends AbstractMap
             (compare(oComparator, oMaxKey, oKey) > 0));
   }
 
+  static final boolean keyInClosedMaxRange(Comparator oComparator,
+                                           Object oKey,
+                                           Object oMaxKey)
+  {
+    return ((oMaxKey == null) || 
+            (compare(oComparator, oMaxKey, oKey) >= 0));
+  }
+
   static final boolean keyInRange(Comparator oComparator,
                                   Object oKey,
                                   Object oMinKey,
@@ -436,13 +446,22 @@ public class TreeMap extends AbstractMap
             keyInMaxRange(oComparator, oKey, oMaxKey));
   }
 
+  static final boolean keyInClosedRange(Comparator oComparator,
+                                        Object oKey,
+                                        Object oMinKey,
+                                        Object oMaxKey)
+  {
+    return (keyInMinRange(oComparator, oKey, oMinKey) &&
+            keyInClosedMaxRange(oComparator, oKey, oMaxKey));
+  }
+
   static final RBNode treeSearch(RBNode oRoot, 
                                  Comparator oComparator, 
                                  Object oKey)
   {
     int iCompareResult;
 
-    while (oRoot != null)
+    while (oRoot != NIL)
     {
       iCompareResult = compare(oComparator, oKey, oRoot.getKey());
       if (iCompareResult == 0)
@@ -457,7 +476,7 @@ public class TreeMap extends AbstractMap
 
   static final RBNode treeMin(RBNode oRoot)
   {
-    while (oRoot._oLeft != null)
+    while (oRoot._oLeft != NIL)
       oRoot = oRoot._oLeft;
 
     return oRoot;
@@ -481,19 +500,17 @@ public class TreeMap extends AbstractMap
       else
         oRoot = (iCompare < 0) ? oCurrent._oLeft : oCurrent._oRight;
     }
-    while (oRoot != null);
+    while (oRoot != NIL);
 
     if (iCompare > 0)
       oCurrent = treeSuccessor(oCurrent);
 
-    return ((!keyInRange(oComparator, oCurrent.getKey(), oMinKey, oMaxKey))
-            ? null
-            : oCurrent);
+    return oCurrent;
   }
 
   static final RBNode treeMax(RBNode oRoot)
   {
-    while (oRoot._oRight != null)
+    while (oRoot._oRight != NIL)
       oRoot = oRoot._oRight;
 
     return oRoot;
@@ -512,16 +529,17 @@ public class TreeMap extends AbstractMap
       oCurrent = oRoot;
       iCompare = compare(oComparator, oMaxKey, oCurrent.getKey());
 
-      oRoot = (iCompare <= 0) ? oCurrent._oLeft : oCurrent._oRight;
+      if (iCompare == 0)
+        return oRoot;
+      else
+        oRoot = (iCompare < 0) ? oCurrent._oLeft : oCurrent._oRight;
     }
-    while (oRoot != null);
+    while (oRoot != NIL);
 
-    if (iCompare <= 0)
+    if (iCompare < 0)
       oCurrent = treePredecessor(oCurrent);
 
-    return ((!keyInRange(oComparator, oCurrent.getKey(), oMinKey, oMaxKey))
-            ? null
-            : oCurrent);  
+    return oCurrent;
   }
 
   static RBNode lowerBound(RBNode oRoot, Comparator oComparator,
@@ -537,18 +555,18 @@ public class TreeMap extends AbstractMap
   {
     return ((oMaxKey != null)
             ? treeMaxConstrained(oRoot, oComparator, oMinKey, oMaxKey)
-            : treeMax(oRoot));
+            : NIL);
   }
 
   static final RBNode treeSuccessor(RBNode oNode)
   {
     RBNode oParent;
 
-    if (oNode._oRight != null)
+    if (oNode._oRight != NIL)
       return treeMin(oNode._oRight);
 
     oParent = oNode._oParent;
-    while ((oParent != null) && (oNode == oParent._oRight))
+    while ((oParent != NIL) && (oNode == oParent._oRight))
     {
       oNode = oParent;
       oParent = oParent._oParent;
@@ -561,11 +579,11 @@ public class TreeMap extends AbstractMap
   {
     RBNode oParent;
 
-    if (oNode._oLeft != null)
+    if (oNode._oLeft != NIL)
       return treeMax(oNode._oLeft);
 
     oParent = oNode._oParent;
-    while ((oParent != null) && (oNode == oParent._oLeft))
+    while ((oParent != NIL) && (oNode == oParent._oLeft))
     {
       oNode = oParent;
       oParent = oParent._oParent;
@@ -582,57 +600,37 @@ public class TreeMap extends AbstractMap
             oMinKey.toString() + ", " + oMaxKey.toString() + ").");
   }
 
-  private static final RBNode replaceNode(TreeMap oTree, 
-                                          RBNode oNewNode,
-                                          RBNode oOldNode)
-  {
-    if (oOldNode._oParent == null)
-    {
-      oTree._oRoot = oNewNode;
-    }
-    else
-    {
-      oNewNode._oParent = oOldNode._oParent;
-      if (oOldNode == oOldNode._oParent._oLeft)
-        oOldNode._oParent._oLeft = oNewNode;
-      else
-        oOldNode._oParent._oRight = oNewNode;
-    }
-    oNewNode._iColor = oOldNode._iColor;
-    oNewNode._oLeft = oOldNode._oLeft;
-    oNewNode._oRight = oOldNode._oRight;
-
-    if (oNewNode._oLeft != null)
-      oNewNode._oLeft._oParent = oNewNode;
-    if (oNewNode._oRight != null)
-      oNewNode._oRight._oParent = oNewNode;
-
-    return oOldNode;
-  }
-
   private static final RBNode treeInsert(TreeMap oTree, 
                                          Comparator oComparator, 
                                          RBNode oNewNode)
   {
     int iCompareResult;
     Object oNewKey = oNewNode.getKey();
-    RBNode oParent = null;
+    RBNode oParent = NIL;
     RBNode oRoot = oTree._oRoot;
+    RBNode oResult;
 
-    while (oRoot != null)
+    while (oRoot != NIL)
     {
       oParent = oRoot;
       
       iCompareResult = compare(oComparator, oNewKey, oRoot.getKey());
 
       if (iCompareResult == 0)
-        return replaceNode(oTree, oNewNode, oRoot);
+      {
+        oResult = new RBNode(oRoot.getKey(), oRoot.getValue());
+        oRoot.key = oNewNode.key;
+        oRoot.value = oNewNode.value;
+        return oResult;
+      }
       else
+      {
         oRoot = (iCompareResult < 0) ? oRoot._oLeft : oRoot._oRight;
+      }
     }
 
     oNewNode._oParent = oParent;
-    if (oParent == null)
+    if (oParent == NIL)
       oTree._oRoot = oNewNode;
     else if (compare(oComparator, oNewKey, oParent.getKey()) < 0)
       oParent._oLeft = oNewNode;
@@ -647,12 +645,12 @@ public class TreeMap extends AbstractMap
     RBNode oChild = oNode._oRight;
     oNode._oRight = oChild._oLeft;
 
-    if (oChild._oLeft != null)
+    if (oChild._oLeft != NIL)
       oChild._oLeft._oParent = oNode;
 
     oChild._oParent = oNode._oParent;
 
-    if (oNode._oParent == null)
+    if (oNode._oParent == NIL)
       oTree._oRoot = oChild;
     else if (oNode == oNode._oParent._oLeft)
       oNode._oParent._oLeft = oChild;
@@ -668,12 +666,12 @@ public class TreeMap extends AbstractMap
     RBNode oChild = oNode._oLeft;
     oNode._oLeft = oChild._oRight;
 
-    if (oChild._oRight != null)
+    if (oChild._oRight != NIL)
       oChild._oRight._oParent = oNode;
 
     oChild._oParent = oNode._oParent;
 
-    if (oNode._oParent == null)
+    if (oNode._oParent == NIL)
       oTree._oRoot = oChild;
     else if (oNode == oNode._oParent._oRight)
       oNode._oParent._oRight = oChild;
@@ -688,89 +686,78 @@ public class TreeMap extends AbstractMap
                                        Comparator oComparator,
                                        RBNode oNode)
   {
+    RBNode oUncle;
     RBNode oResult = treeInsert(oTree, oComparator, oNode);
-    if (oResult != null)
-    {
-      return oResult;
-    }
-    else
+
+    if (oResult == NIL)
     {
       oNode._iColor = RED;
-    
       while ((oNode != oTree._oRoot) && (oNode._oParent._iColor == RED))
-        oNode = ((oNode._oParent == oNode._oParent._oParent._oLeft)
-                 ? rbInsertLeft(oTree, oNode)
-                 : rbInsertRight(oTree, oNode));
-
-      oTree._oRoot._iColor = BLACK;
-      return null;
+      {
+        if (oNode._oParent == oNode._oParent._oParent._oRight)
+        {
+          oUncle = oNode._oParent._oParent._oRight;
+          if (oUncle._iColor == RED)
+          {
+            oNode._oParent._iColor = BLACK;
+            oUncle._iColor = BLACK;
+            oNode._oParent._oParent._iColor = RED;
+            oNode = oNode._oParent._oParent;
+          }
+          else
+          {
+            if (oNode == oNode._oParent._oRight)
+            {
+              oNode = oNode._oParent;
+              leftRotate(oTree, oNode);
+            }
+            oNode._oParent._iColor = BLACK;
+            oNode._oParent._oParent._iColor = RED;
+            rightRotate(oTree, oNode._oParent._oParent);
+          }
+        }
+        else
+        {
+          oUncle = oNode._oParent._oParent._oLeft;
+          if (oUncle._iColor == RED)
+          {
+            oNode._oParent._iColor = BLACK;
+            oUncle._iColor = BLACK;
+            oNode._oParent._oParent._iColor = RED;
+            oNode = oNode._oParent._oParent;
+          }
+          else
+          {
+            if (oNode == oNode._oParent._oLeft)
+            {
+              oNode = oNode._oParent;
+              rightRotate(oTree, oNode);
+            }
+            oNode._oParent._iColor = BLACK;
+            oNode._oParent._oParent._iColor = RED;
+            leftRotate(oTree, oNode._oParent._oParent);
+          }
+        }
+      }
     }
+    oTree._oRoot._iColor = BLACK;
+    return oResult;
   }
   
-  private static final RBNode rbInsertLeft(TreeMap oTree, RBNode oNode)
-  {
-    RBNode oAncestor = oNode._oParent._oParent._oRight;
-    if ((oAncestor != null) && (oAncestor._iColor == RED))
-    {
-      oNode._oParent._iColor = BLACK;
-      oAncestor._iColor = BLACK;
-      oNode._oParent._oParent._iColor = RED;
-      oNode = oNode._oParent._oParent;
-    }
-    else
-    {
-      if (oNode == oNode._oParent._oRight)
-      {
-        oNode = oNode._oParent;
-        leftRotate(oTree, oNode);
-      }
-      oNode._oParent._iColor = BLACK;
-      oNode._oParent._oParent._iColor = RED;
-      rightRotate(oTree, oNode._oParent._oParent);
-    }
-    return oNode;
-  }
-
-  private static final RBNode rbInsertRight(TreeMap oTree, RBNode oNode)
-  {
-    RBNode oAncestor = oNode._oParent._oParent._oLeft;
-    if ((oAncestor != null) && (oAncestor._iColor == RED))
-    {
-      oNode._oParent._iColor = BLACK;
-      oAncestor._iColor = BLACK;
-      oNode._oParent._oParent._iColor = RED;
-      oNode = oNode._oParent._oParent;
-    }
-    else
-    {
-      if (oNode == oNode._oParent._oLeft)
-      {
-        oNode = oNode._oParent;
-        rightRotate(oTree, oNode);
-      }
-      oNode._oParent._iColor = BLACK;
-      oNode._oParent._oParent._iColor = RED;
-      leftRotate(oTree, oNode._oParent._oParent);
-    }
-    return oNode;
-  }
-
-  private static final void rbDelete(TreeMap oTree, RBNode oNode)
+  private static final RBNode rbDelete(TreeMap oTree, RBNode oNode)
   {
     RBNode oSplice;
     RBNode oChild;
-    RBNode oSentinelParent = null;
+    RBNode oSentinelParent = NIL;
+    RBNode oResult = oNode;
 
-    oSplice = (((oNode._oLeft == null) || (oNode._oRight == null))
+    oSplice = (((oNode._oLeft == NIL) || (oNode._oRight == NIL))
                ? oNode : treeSuccessor(oNode));
-    oChild = (oSplice._oLeft != null) ? oSplice._oLeft : oSplice._oRight;
+    oChild = (oSplice._oLeft != NIL) ? oSplice._oLeft : oSplice._oRight;
 
-    if (oChild == null)
-      oSentinelParent = oSplice._oParent;
-    else
-      oChild._oParent = oSplice._oParent;
+    oChild._oParent = oSplice._oParent;
 
-    if (oSplice._oParent == null)
+    if (oSplice._oParent == NIL)
       oTree._oRoot = oChild;
     else if (oSplice == oSplice._oParent._oLeft)
       oSplice._oParent._oLeft = oChild;
@@ -778,122 +765,92 @@ public class TreeMap extends AbstractMap
       oSplice._oParent._oRight = oChild;
 
     if (oSplice != oNode)
-      replaceNode(oTree, oSplice, oNode);
+    {
+      oResult = new RBNode(oNode.getKey(), oNode.getValue());
+      oNode.key = oSplice.key;
+      oNode.value = oSplice.value;
+    }
 
     if (oSplice._iColor == BLACK)
-      rbDeleteFixup(oTree, oChild, oSentinelParent);
-  }
+      rbDeleteFixup(oTree, oChild);
 
-  private static final void rbDeleteFixup(TreeMap oTree, RBNode oNode,
-                                          RBNode oSentinelParent)
-  {
-    
-    int iNodeColor;
-    RBNode oParent;
-    boolean boForceLeft;
-
-    if (oNode != null)
-    {
-      iNodeColor = oNode._iColor;
-      oParent = oNode._oParent;
-      boForceLeft = false;
-    }
-    else
-    {
-      iNodeColor = BLACK;
-      oParent = oSentinelParent;
-      boForceLeft = true;
-    }
-
-    while ((oNode != oTree._oRoot) && (iNodeColor == BLACK))
-    {
-      oNode = (((boForceLeft) || (oNode == oParent._oLeft))
-               ? rbDeleteFixupLeft(oTree, oParent)
-               : rbDeleteFixupRight(oTree, oParent));
-      boForceLeft = false;
-      oParent = oNode._oParent;
-      iNodeColor = oNode._iColor;
-    }
-
-    if (oNode != null)
-      oNode._iColor = BLACK;
-  }
-
-  private static final RBNode rbDeleteFixupLeft(TreeMap oTree, RBNode oParent)
-  {
-    RBNode oResult;
-    RBNode oSibling = oParent._oRight;
-
-    if (oSibling._iColor == RED)
-    {
-      oSibling._iColor = BLACK;
-      oParent._iColor = RED;
-      leftRotate(oTree, oParent);
-      oSibling = oParent._oRight;
-    }
-
-    if (((oSibling._oLeft == null) || (oSibling._oLeft._iColor == BLACK)) &&
-        ((oSibling._oRight == null) || (oSibling._oRight._iColor == BLACK)))
-    {
-      oSibling._iColor = RED;
-      oResult = oParent;
-    }
-    else
-    {
-      if ((oSibling._oRight == null) || (oSibling._oRight._iColor == BLACK))
-      {
-        oSibling._oLeft._iColor = BLACK;
-        oSibling._iColor = RED;
-        rightRotate(oTree, oSibling);
-        oSibling = oParent._oRight;
-      }
-      oSibling._iColor = oParent._iColor;
-      oParent._iColor = BLACK;
-      oSibling._oRight._iColor = BLACK;
-      leftRotate(oTree, oParent);
-      oResult = oTree._oRoot;
-    }
     return oResult;
   }
 
-  private static final RBNode rbDeleteFixupRight(TreeMap oTree, RBNode oParent)
+  private static final void rbDeleteFixup(TreeMap oTree, RBNode oNode)
   {
-    RBNode oResult;
-    RBNode oSibling = oParent._oLeft;
+    RBNode oSibling;
 
-    if (oSibling._iColor == RED)
+    while ((oNode != oTree._oRoot) && (oNode._iColor == BLACK))
     {
-      oSibling._iColor = BLACK;
-      oParent._iColor = RED;
-      rightRotate(oTree, oParent);
-      oSibling = oParent._oLeft;
-    }
-
-    if (((oSibling._oRight == null) || (oSibling._oRight._iColor == BLACK)) &&
-        ((oSibling._oLeft == null) || (oSibling._oLeft._iColor == BLACK)))
-    {
-      oSibling._iColor = RED;
-      oResult = oParent;
-    }
-    else
-    {
-      if ((oSibling._oLeft == null) || (oSibling._oLeft._iColor == BLACK))
+      if (oNode == oNode._oParent._oLeft)
       {
-        oSibling._oRight._iColor = BLACK;
-        oSibling._iColor = RED;
-        leftRotate(oTree, oSibling);
-        oSibling = oParent._oLeft;
+        oSibling = oNode._oParent._oRight;
+        if (oSibling._iColor == RED)
+        {
+          oSibling._iColor = BLACK;
+          oNode._oParent._iColor = RED;
+          leftRotate(oTree, oNode._oParent);
+          oSibling = oNode._oParent._oRight;
+        }
+        if ((oSibling._oLeft._iColor == BLACK) && 
+            (oSibling._oRight._iColor == BLACK))
+        {
+          oSibling._iColor = RED;
+          oNode = oNode._oParent;
+        }
+        else
+        {
+          if (oSibling._oRight._iColor == BLACK)
+          {
+            oSibling._oLeft._iColor = BLACK;
+            oSibling._iColor = RED;
+            rightRotate(oTree, oSibling);
+            oSibling = oNode._oParent._oRight;
+          }
+          oSibling._iColor = oNode._oParent._iColor;
+          oNode._oParent._iColor = BLACK;
+          oSibling._oRight._iColor = BLACK;
+          leftRotate(oTree, oNode._oParent);
+          oNode = oTree._oRoot;
+        }
       }
-      oSibling._iColor = oParent._iColor;
-      oParent._iColor = BLACK;
-      oSibling._oLeft._iColor = BLACK;
-      rightRotate(oTree, oParent);
-      oResult = oTree._oRoot;
+      else
+      {
+        oSibling = oNode._oParent._oLeft;
+        if (oSibling._iColor == RED)
+        {
+          oSibling._iColor = BLACK;
+          oNode._oParent._iColor = RED;
+          rightRotate(oTree, oNode._oParent);
+          oSibling = oNode._oParent._oLeft;
+        }
+        if ((oSibling._oRight._iColor == BLACK) && 
+            (oSibling._oLeft._iColor == BLACK))
+        {
+          oSibling._iColor = RED;
+          oNode = oNode._oParent;
+        }
+        else
+        {
+          if (oSibling._oLeft._iColor == BLACK)
+          {
+            oSibling._oRight._iColor = BLACK;
+            oSibling._iColor = RED;
+            leftRotate(oTree, oSibling);
+            oSibling = oNode._oParent._oLeft;
+          }
+          oSibling._iColor = oNode._oParent._iColor;
+          oNode._oParent._iColor = BLACK;
+          oSibling._oLeft._iColor = BLACK;
+          rightRotate(oTree, oNode._oParent);
+          oNode = oTree._oRoot;
+        }
+      }
     }
-    return oResult;
+
+    oNode._iColor = BLACK;
   }
-
-
 
   private static class RBNode extends BasicMapEntry implements Map.Entry
   {
@@ -905,6 +862,10 @@ public class TreeMap extends AbstractMap
     RBNode(Object oKey, Object oValue)
     {
       super(oKey, oValue);
+      _oLeft = NIL;
+      _oRight = NIL;
+      _oParent = NIL;
+      _iColor = BLACK;
     }
   }
 
@@ -1110,11 +1071,11 @@ public class TreeMap extends AbstractMap
       _oMap = oMap;
       _iType = iType;
       _iKnownMods = oBackingMap._iModCount;
-      _oPrev = null;
+      _oPrev = NIL;
 
       if (_oMap.isEmpty())
       {
-        _oFirst = null;
+        _oFirst = NIL;
       }
       else
       {
@@ -1145,7 +1106,7 @@ public class TreeMap extends AbstractMap
     public boolean hasNext()
     {
       checkMod();
-      return (_oFirst != null);
+      return (_oFirst != NIL);
     }
 
     public Object next()
@@ -1154,10 +1115,10 @@ public class TreeMap extends AbstractMap
 
       RBNode oResult = _oFirst;
       
-      if (oResult == null)
+      if (oResult == NIL)
         throw new NoSuchElementException();
       else if (oResult == _oLast)
-        _oFirst = null;
+        _oFirst = NIL;
       else
         _oFirst = TreeMap.treeSuccessor(_oFirst);
 
@@ -1176,7 +1137,7 @@ public class TreeMap extends AbstractMap
 
       Object oKey;
 
-      if (_oPrev == null)
+      if (_oPrev == NIL)
       {
         throw new IllegalStateException("No previous call to next(), " +
                                         "or remove() has already been " +
@@ -1190,7 +1151,7 @@ public class TreeMap extends AbstractMap
           _oMap.remove(oKey);
           _iKnownMods++;
         }
-        _oPrev = null;
+        _oPrev = NIL;
       }
     }
   }
@@ -1209,20 +1170,21 @@ public class TreeMap extends AbstractMap
 
     public void clear()
     {
+      Object oMaxKey;
       RBNode oMin = TreeMap.lowerBound(TreeMap.this._oRoot, 
                                        TreeMap.this._oComparator,
                                        _oMinKey, _oMaxKey);
       RBNode oMax = TreeMap.upperBound(TreeMap.this._oRoot, 
                                        TreeMap.this._oComparator,
                                        _oMinKey, _oMaxKey);
-      if (oMin != null)
+      oMaxKey = oMax.getKey();
+      while ((oMin != NIL) && 
+             ((oMax == NIL) || 
+              (TreeMap.compare(TreeMap.this._oComparator, 
+                               oMin.getKey(), oMaxKey) < 0)))
       {
-        while (oMin != oMax)
-        {
-          TreeMap.this.remove(oMin.getKey());
-          oMin = TreeMap.treeSuccessor(oMin);
-        }
         TreeMap.this.remove(oMin.getKey());
+        oMin = TreeMap.treeSuccessor(oMin);
       }
     }
 
@@ -1236,6 +1198,7 @@ public class TreeMap extends AbstractMap
     public boolean containsValue(Object oValue)
     {
       Object oCurrentValue;
+      Object oMaxKey;
       RBNode oMin = TreeMap.lowerBound(TreeMap.this._oRoot, 
                                        TreeMap.this._oComparator,
                                        _oMinKey, _oMaxKey);
@@ -1243,17 +1206,18 @@ public class TreeMap extends AbstractMap
                                        TreeMap.this._oComparator,
                                        _oMinKey, _oMaxKey);
       
-      if (oMin != null)
+      oMaxKey = oMax.getKey();
+      while ((oMin != NIL) && 
+             ((oMax == NIL) || 
+              (TreeMap.compare(TreeMap.this._oComparator, 
+                               oMin.getKey(), oMaxKey) < 0)))
       {
-        while (oMin != oMax)
-        {
-          oCurrentValue = oMin.getValue();
-          
-          if (((oValue == null) && (oCurrentValue == null))
-               || oValue.equals(oCurrentValue))
-            return true;
-          oMin = treeSuccessor(oMin);        
-        }
+        oCurrentValue = oMin.getValue();
+        
+        if (((oValue == null) && (oCurrentValue == null))
+            || oValue.equals(oCurrentValue))
+          return true;
+        oMin = treeSuccessor(oMin);        
       }
       return false;
     }
@@ -1301,6 +1265,7 @@ public class TreeMap extends AbstractMap
     public int size()
     {
       int iCount = 0;
+      Object oMaxKey;
       RBNode oMin = TreeMap.lowerBound(TreeMap.this._oRoot, 
                                        TreeMap.this._oComparator,
                                        _oMinKey, _oMaxKey);
@@ -1308,15 +1273,16 @@ public class TreeMap extends AbstractMap
                                        TreeMap.this._oComparator,
                                        _oMinKey, _oMaxKey);
 
-      if (oMin != null)
+      oMaxKey = oMax.getKey();
+      while ((oMin != NIL) && 
+             ((oMax == NIL) || 
+              (TreeMap.compare(TreeMap.this._oComparator, 
+                               oMin.getKey(), oMaxKey) < 0)))
       {
-        while (oMin != oMax)
-        {
-          iCount++;
-          oMin = TreeMap.treeSuccessor(oMin);
-        }
         iCount++;
+        oMin = TreeMap.treeSuccessor(oMin);
       }
+
       return iCount;
     }
 
@@ -1346,25 +1312,38 @@ public class TreeMap extends AbstractMap
                                          TreeMap.this._oComparator,
                                          _oMinKey, _oMaxKey);
 
-      return (oFirst != null) ? oFirst.getKey() : null;
+      return (oFirst != NIL) ? oFirst.getKey() : null;
     }
 
     public Object lastKey()
     {
-      RBNode oLast = TreeMap.upperBound(TreeMap.this._oRoot, 
-                                        TreeMap.this._oComparator,
-                                        _oMinKey, _oMaxKey);
+      RBNode oLast;
 
-      return (oLast != null) ? oLast.getKey() : null;
+      if (_oMaxKey == null)
+      {
+        oLast = TreeMap.treeMax(TreeMap.this._oRoot);
+        return (oLast != NIL) ? oLast.getKey() : null;
+      }
+      else
+      {
+        oLast = TreeMap.treeMaxConstrained(TreeMap.this._oRoot,
+                                           TreeMap.this._oComparator,
+                                           _oMinKey, _oMaxKey);
+        return (oLast != NIL) ? TreeMap.treePredecessor(oLast).getKey() : null;
+      }
     }
 
     public SortedMap subMap(Object oFromKey, Object oToKey)
     {
       if ((compare(_oComparator, oFromKey, oToKey) < 0) &&
-          keyInRange(TreeMap.this._oComparator, 
-                     oFromKey, _oMinKey, _oMaxKey) &&
-          keyInRange(TreeMap.this._oComparator,
-                      oToKey, _oMinKey, _oMaxKey))
+          keyInMinRange(TreeMap.this._oComparator, 
+                        oFromKey, _oMinKey) &&
+          keyInClosedMaxRange(TreeMap.this._oComparator,
+                              oFromKey, _oMaxKey) &&
+          keyInMinRange(TreeMap.this._oComparator, 
+                        oToKey, _oMinKey) &&
+          keyInClosedMaxRange(TreeMap.this._oComparator,
+                              oToKey, _oMaxKey))
         return new SubTreeMap(oFromKey, oToKey);
       else
         throw new IllegalArgumentException(getArgumentError("create a subMap",
@@ -1374,8 +1353,10 @@ public class TreeMap extends AbstractMap
 
     public SortedMap headMap(Object oToKey)
     {
-      if (keyInRange(TreeMap.this._oComparator,
-                      oToKey, _oMinKey, _oMaxKey))
+      if (keyInMinRange(TreeMap.this._oComparator,
+                        oToKey, _oMinKey) &&
+          keyInClosedMaxRange(TreeMap.this._oComparator,
+                              oToKey, _oMaxKey))
         return new SubTreeMap(_oMinKey, oToKey);
       else
         throw new IllegalArgumentException(getArgumentError("create a subMap",
@@ -1385,8 +1366,10 @@ public class TreeMap extends AbstractMap
 
     public SortedMap tailMap(Object oFromKey)
     {
-      if (keyInRange(TreeMap.this._oComparator,
-                      oFromKey, _oMinKey, _oMaxKey))
+      if (keyInMinRange(TreeMap.this._oComparator,
+                        oFromKey, _oMinKey) &&
+          keyInClosedMaxRange(TreeMap.this._oComparator,
+                              oFromKey, _oMaxKey))
         return new SubTreeMap(oFromKey, _oMaxKey);
       else
         throw new IllegalArgumentException(getArgumentError("create a subMap",
