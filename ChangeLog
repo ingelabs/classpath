@@ -1,5 +1,16 @@
 2003-05-18  Michael Koch  <konqueror@gmx.de>
 
+	* java/security/Key.java
+	(Key): Fixed declaration of serialVersionUID.
+	* java/security/PrivateKey.java
+	(PrivateKey): Likewise.
+	* java/security/Provider.java
+	(Provider): Likewise.
+	* java/security/PublicKey.java
+	(PublicKey): Likewise.
+
+2003-05-18  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/channels/FileLock.java:
 	New version from libgcj.
 	* java/nio/charset/Charset.java:
