@@ -1,3 +1,30 @@
+2002-02-18  Eric Blake  <ebb9@email.byu.edu>
+
+	* doc/unicode/unicode-blocks.pl: Minor updates, to avoid warnings.
+	* doc/unicode/unicode-muncher.pl: Rewrite, to incorporate ideas
+	from Artur Biesiadowski: use a 2-level lookup of fixed-length
+	blocks instead of a 1-level lookup of variable-length blocks, and
+	store the data in String literals in a Java interface instead of
+	in binary files.
+	* doc/unicode/unicode.database.format: Remove, as
+	gnu/java/lang/CharData is self-documenting.
+	* gnu/java/locale/block.uni: Remove, replaced by
+	gnu/java/lang/CharData.java.
+	* gnu/java/locale/character.uni: Ditto.
+	* gnu/java/locale/titlecase.uni: Ditto.
+	* gnu/java/lang/Makefile.am (EXTRA_DIST): Add CharData.java.
+	* gnu/java/lang/CharData.java: New file, holding the Unicode
+	database for java.lang.Character.
+	* java/lang/Character.java (blocks, data, numValue, upper, lower),
+	(direction, title): Replace blocks, tcs, and unicodeData as the
+	Unicode database used in all other methods; initialized by
+	gnu.java.lang.CharData.
+	(<clinit>, getBlock, class Block, class CharAttr): Delete;
+	character attribute lookup now uses char[] instead of objects.
+	(readChar): Update to use new database.
+	(Various others): Reduce multiple comparisons to just one when
+	checking a character's type.
+
 2002-02-18  Mark Wielaard  <mark@klomp.org>
 
 	Thanks to Orp developers

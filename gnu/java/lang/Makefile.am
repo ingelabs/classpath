@@ -4,6 +4,7 @@ SUBDIRS = reflect
 
 EXTRA_DIST = \
 ArrayHelper.java \
+CharData.java \
 ClassHelper.java \
 ClassLoaderHelper.java \
 ExecutionStack.java \

@@ -1,5 +1,5 @@
-#!/usr/bin/perl
-# unicode-muncher -- Script to generate Unicode data for java.lang.Character
+#!/usr/bin/perl -w
+# unicode-muncher.pl -- generate Unicode database for java.lang.Character
 # Copyright (C) 1998, 2002 Free Software Foundation, Inc.
 #
 # This file is part of GNU Classpath.
@@ -36,273 +36,496 @@
 # obligated to do so.  If you do not wish to do so, delete this
 # exception statement from your version.
 
+# Inspired by code from Artur Biesiadowski.
+# author Eric Blake <ebb9@email.byu.edu>
+#
+# Usage: ./unicode-muncher <UnicodeData.txt> <CharData.java>
+#   where <UnicodeData.txt> is obtained from www.unicode.org (named
+#   UnicodeData-3.0.0.txt for Unicode version 3.0.0), and <CharData.java>
+#   is the final location for the Java interface gnu.java.lang.CharData.
+#   As of JDK 1.4, use Unicode version 3.0.0 for best results.
 
-# This is lots of really ugly hacked up Perl code.
-# It works.  Don't touch it, or it'll break.
-# I'm far from proud of it.  If you want to fix it so it
-# works with strict mode, please do so.
-# See unicode.database.format for information on the files
-# this program generates.
-
-# usage: unicode-muncher.pl UnicodeData-3.0.0.txt
-
-sub write_char {
-    my $wnum = ($jnum < 65534) ? $hex - $jnum : $jnum;
-    $buf = pack ("Cn3c", ($jmirrored << 6) | ($jnobreakspace << 5) | $cat,
-                 $wnum, $jupper, $jlower, $jdir);
-    print CHAR $buf;
-    if (! defined $hash{$buf}) {
-        $hash{$buf} = $offset;
-    }
-    $offset += 8;
+##
+## Convert a 16-bit integer to a Java source code String literal character
+##
+sub javaChar($) {
+    my ($char) = @_;
+    die "Out of range: $char\n" if $char < -0x8000 or $char > 0xffff;
+    $char += 0x10000 if $char < 0;
+    # Special case characters that must be escaped, or are shorter as ASCII
+    return sprintf("\\%03o", $char) if $char < 0x20;
+    return "\\\"" if $char == 0x22;
+    return "\\\\" if $char == 0x5c;
+    return pack("C", $char) if $char < 0x7f;
+    return sprintf("\\u%04x", $char);
 }
 
-sub end_block {
-    my $joffset;
-    print BLOCK (pack ("n", $start));
-    print BLOCK (pack ("n", $lhex));
-    $characters += $lhex - $start + 1;
-    $blocks++;
+##
+## Convert the text UnicodeData file from www.unicode.org into a Java
+## interface with string constants holding the compressed information.
+##
+@TYPECODES = qw(Cn Lu Ll Lt Lm Lo Mn Me Mc Nd Nl No Zs Zl Zp Cc Cf
+                SKIPPED Co Cs Pd Ps Pe Pc Po Sm Sc Sk So Pi Pf);
+@DIRCODES = qw(L R AL EN ES ET AN CS NSM BN B S WS ON LRE LRO RLE RLO PDF);
 
-    # calculate next offset
-    if ($comp == 1) {
-        $joffset = $hash{$buf};
-        if ($joffset + 8 < $offset) { # Reuse a previous attribute
-            $offset -= 8;
-            seek CHAR, $offset, SEEK_SET;
-        }
-    } else {
-        $joffset = $offset - 8 * ($lhex - $start + 1);
-        $comp = 0; # Create a string of uncompressed attributes
-    }
-    die "sanity: offset out of range!\n" if ($joffset >= 32768);
-    print BLOCK (pack ("n", ($comp << 15) | $joffset));
+$NOBREAK_FLAG  = 32;
+$MIRRORED_FLAG = 64;
 
-    # setup next starting block
-    $start = $hex;
-    # default to unknown compression
-    $comp = 2;
-}
+my @info = ();
+my $titlecase = "";
+my $count = 0;
+my $range = 0;
 
-open (DATA, $ARGV[0]) || die "Can't open Unicode attribute file: $!\n";
+die "Usage: $0 <UnicodeData.txt> <CharData.java>" unless @ARGV == 2;
+open (UNICODE, "< $ARGV[0]") || die "Can't open Unicode attribute file: $!\n";
 
-open (TITLECASE, ">titlecase.uni") || die ("Can't open titlecase file: $!\n");
-binmode TITLECASE;
-open (CHAR, ">character.uni") || die ("Can't open character file: $!\n");
-binmode CHAR;
-open (BLOCK, ">block.uni") || die ("Can't open block file: $!\n");
-binmode BLOCK;
-
+# Stage 1: Parse the attribute file
 $| = 1;
-print "GNU Classpath Unicode Attribute Database Generator 1.1\n";
+print "GNU Classpath Unicode Attribute Database Generator 2.0\n";
 print "Copyright (C) 1998, 2002 Free Software Foundation, Inc.\n";
-print "Creating";
+print "Parsing attributes file";
+while(<UNICODE>) {
+    print "." unless $count++ % 1000;
+    chomp;
+    s/\r//g;
+    my ($ch, $name, $category, undef, $bidir, $decomp, undef, undef, $numeric,
+        $mirrored, undef, undef, $upcase, $lowcase, $title) = split ';';
+    $ch = hex($ch);
+    next if $ch > 0xffff; # Ignore surrogate pairs, since Java does
 
-$offset = 0;
-$hex = -1;
-$buf = "";
-$characters = 0;
-$blocks = 0;
-$ignored = 0;
-while (<DATA>) {
-    $llhex = $lhex;
-    $lhex = $hex;
-    ($hex, $name, $category, $comb_class, $bidir, $decomp, $decimal, $digit,
-     $numeric, $mirrored, $unicode1n, $comment, $upcase, $lowcase, $titlecase)
-	= split(/;/);
+    my ($type, $numValue, $upperchar, $lowerchar, $direction);
 
-    print "." if (++$count % 1000 == 0);
-	
-    # convert unicode index strings to hex
-    $hex = hex($hex);
-    if ($hex > 0xffff) { # Ignore surrogates, since Java does
-        $ignored++;
-        $lhex = $llhex;
-        $hex = $lhex;
-        next;
+    $type = 0;
+    while ($category !~ /^$TYPECODES[$type]$/) {
+        if (++$type == @TYPECODES) {
+            die "$ch: Unknown type: $category";
+        }
     }
-    $upcase = hex($upcase);
-    $lowcase = hex($lowcase);
-    $titlecase = hex($titlecase);
+    $type |= $NOBREAK_FLAG if ($decomp =~ /noBreak/);
+    $type |= $MIRRORED_FLAG if ($mirrored =~ /Y/);
 
-    $jnobreakspace = ($category eq "Zs" && $decomp =~ /noBreak/) ? 1 : 0;
-
-    # handle getNumericValue(). $jnum is either -1 for no value, -2 for
-    # non-positive integer value, or the offset of the value from $hex
-    if ($numeric eq "") {
-	$jnum = 65535;		# does not have a numeric value
+    if ($numeric =~ /^[0-9]+$/) {
+        $numValue = $numeric;
+        die "numValue too big: $ch, $numValue\n" if $numValue >= 0x7fff;
+    } elsif ($numeric eq "") {
         # Special case sequences of 'a'-'z'
-        if ($hex >= 0x0041 && $hex <= 0x005a) {
-            $jnum = 0x0037;
-        } elsif ($hex >= 0x0061 && $hex <= 0x007a) {
-            $jnum = 0x0057;
-        } elsif ($hex >= 0xff21 && $hex <= 0xff3a) {
-            $jnum = 0xff17;
-        } elsif ($hex >= 0xff41 && $hex <= 0xff5a) {
-            $jnum = 0xff37;
+        if ($ch >= 0x0041 && $ch <= 0x005a) {
+            $numValue = $ch - 0x0037;
+        } elsif ($ch >= 0x0061 && $ch <= 0x007a) {
+            $numValue = $ch - 0x0057;
+        } elsif ($ch >= 0xff21 && $ch <= 0xff3a) {
+            $numValue = $ch - 0xff17;
+        } elsif ($ch >= 0xff41 && $ch <= 0xff5a) {
+            $numValue = $ch - 0xff37;
+        } else {
+            $numValue = -1;
         }
     } else {
-	if ($numeric =~ /^[0-9]+$/) {
-	    $jnum = $hex - $numeric;	# nonnegative integer value
-	    die "sanity: numeric out of range!\n" if ($jnum >= 65534 ||
-                                                      $jnum <= -65534);
-	} else {
-	    $jnum = 65534;	# other integer value
-	}
+        $numValue = -2;
     }
 
-    # handle uppercase mapping - use the offset from $hex
-    $jupper = ($upcase == 0) ? 0 : ($hex - $upcase);
-
-    # handle lowercase mapping - use the offset from $hex
-    $jlower = ($lowcase == 0) ? 0 : ($hex - $lowcase);
-
-    # handle titlecase mapping - go ahead and output to file
-    if ($titlecase != $upcase) {
-        $titlecase = $hex if ($titlecase == 0);
-	print TITLECASE (pack ("n2", $hex, $titlecase));
+    $upperchar = $upcase ? hex($upcase) - $ch : 0;
+    $lowerchar = $lowcase ? hex($lowcase) - $ch : 0;
+    if ($title ne $upcase) {
+        my $titlechar = $title ? hex($title) : $ch;
+        $titlecase .= pack("n2", $ch, $titlechar);
     }
 
-    # handle category
-    $_ = $category;
-    CAT: {
-	if (/Cn/) { $cat = 0; last CAT; } # unassigned
-	if (/Lu/) { $cat = 1; last CAT; } # letter, uppercase
-	if (/Ll/) { $cat = 2; last CAT; } # letter, lowercase
-	if (/Lt/) { $cat = 3; last CAT; } # letter, titlecase
-	if (/Lm/) { $cat = 4; last CAT; } # letter, modifier
-	if (/Lo/) { $cat = 5; last CAT; } # letter, other
-	if (/Mn/) { $cat = 6; last CAT; } # mark, non-spacing
-	if (/Me/) { $cat = 7; last CAT; } # mark, enclosing
-	if (/Mc/) { $cat = 8; last CAT; } # mark, spacing combining
-	if (/Nd/) { $cat = 9; last CAT; } # number, decimal digit
-	if (/Nl/) { $cat = 10; last CAT; } # number, letter
-	if (/No/) { $cat = 11; last CAT; } # number, other
-	if (/Zs/) { $cat = 12; last CAT; } # separator, space
-	if (/Zl/) { $cat = 13; last CAT; } # separator, line
-	if (/Zp/) { $cat = 14; last CAT; } # separator, paragraph
-	if (/Cc/) { $cat = 15; last CAT; } # other, control
-	if (/Cf/) { $cat = 16; last CAT; } # other, format
-	# Sun skipped 17 - don't ask me why -- rao
-	if (/Co/) { $cat = 18; last CAT; } # other, private use
-	if (/Cs/) { $cat = 19; last CAT; } # other, surrogate
-	if (/Pd/) { $cat = 20; last CAT; } # punctuation, dash
-	if (/Ps/) { $cat = 21; last CAT; } # punctuation, open
-	if (/Pe/) { $cat = 22; last CAT; } # punctuation, close
-	if (/Pc/) { $cat = 23; last CAT; } # punctuation, connector
-	if (/Po/) { $cat = 24; last CAT; } # punctuation, other
-	if (/Sm/) { $cat = 25; last CAT; } # symbol, math
-	if (/Sc/) { $cat = 26; last CAT; } # symbol, currency
-	if (/Sk/) { $cat = 27; last CAT; } # symbol, modifier
-	if (/So/) { $cat = 28; last CAT; } # symbol, other
-        if (/Pi/) { $cat = 29; last CAT; } # punctuation, initial quote
-        if (/Pf/) { $cat = 30; last CAT; } # punctuation, final quote
-        $cat = 0; # unassigned
+    $direction = 0;
+    while ($bidir !~ /^$DIRCODES[$direction]$/) {
+        if (++$direction == @DIRCODES) {
+            $direction = -1;
+            last;
+        }
     }
 
-    # handle mirrored characters
-    $jmirrored = ($mirrored eq "Y") ? 1 : 0;
-
-    # handle directionality
-    $_ = $bidir;
-    BIDIR: {
-	if (/^L$/) { $jdir = 0; last BIDIR; } # Left-to-Right
-	if (/^R$/) { $jdir = 1; last BIDIR; } # Right-to-Left
-	if (/^AL$/) { $jdir = 2; last BIDIR; } # Right-to-Left Arabic
-	if (/^EN$/) { $jdir = 3; last BIDIR; } # European Number
-	if (/^ES$/) { $jdir = 4; last BIDIR; } # European Numer Separator
-	if (/^ET$/) { $jdir = 5; last BIDIR; } # European Numer Terminator
-	if (/^AN$/) { $jdir = 6; last BIDIR; } # Arabic Number
-	if (/^CS$/) { $jdir = 7; last BIDIR; } # Common Number Separator
-	if (/^NSM$/) { $jdir = 8; last BIDIR; } # Non-Spacing Mark
-	if (/^BN$/) { $jdir = 9; last BIDIR; } # Boundary Neutral
-	if (/^B$/) { $jdir = 10; last BIDIR; } # Paragraph Separator
-	if (/^S$/) { $jdir = 11; last BIDIR; } # Segment Separator
-	if (/^WS$/) { $jdir = 12; last BIDIR; } # Whitespace
-	if (/^ON$/) { $jdir = 13; last BIDIR; } # Other Neutral
-	if (/^LRE$/) { $jdir = 14; last BIDIR; } # Left-to-Right Embedding
-	if (/^LRO$/) { $jdir = 15; last BIDIR; } # Left-to-Right Override
-	if (/^RLE$/) { $jdir = 16; last BIDIR; } # Right-to-Left Embedding
-	if (/^RLO$/) { $jdir = 17; last BIDIR; } # Right-to-Left Override
-	if (/^PDF$/) { $jdir = 18; last BIDIR; } # Pop Directional Format
-        $jdir = -1; # undefined
+    if ($range) {
+        die "Expecting end of range at $ch\n" unless $name =~ /Last>$/;
+        for ($range + 1 .. $ch - 1) {
+            $info[$_] = pack("n5", $type, $numValue, $upperchar,
+                             $lowerchar, $direction);
+        }
+        $range = 0;
+    } elsif ($name =~ /First>$/) {
+        $range = $ch;
     }
-
-  CHAR: {
-      # starting point
-      if ($hex == 0) {
-	  &write_char;
-	  $comp = 2;		# compressed block state unknown until next ch
-	  $start = 0;
-	  last CHAR;
-      }
-
-      # handle mandatory blocks
-      if ($name =~ /First>$/) {
-	  &end_block;
-	  &write_char;
-	  $comp = 1;
-	  $mand_block = 1;
-	  last CHAR;
-      }
-      # end mandatory block
-      if ($mand_block) {
-	  $mand_block = 0;
-	  last CHAR;
-      }
-
-      # not sequential, end block.
-      if (($lhex+1) != $hex) {
-	  &end_block;
-	  &write_char;
-	  last CHAR;
-      }
-
-      # check to see if we can compress this character into the current block
-      if ($cat == $lcat &&
-	  $jnum == $ljnum &&
-	  $jnobreakspace == $ljnobreakspace &&
-	  $jupper == $ljupper &&
-	  $jlower == $ljlower &&
-          $jmirrored == $ljmirrored &&
-          $jdir == $ljdir) {
-	  if ($comp == 2) { $comp = 1; } # start compressing
-	  # end uncompressed block
-	  if ($comp == 0) {
-	      $tmp = $lhex;
-	      $lhex = $llhex;
-              $offset -= 8;
-	      &end_block;
-	      $start = $lhex = $tmp;
-              $offset += 8;
-	      $comp = 1;
-	  }
-      } else {
-  	  if ($comp == 2) { $comp = 0; };
-  	  if ($comp == 1) { &end_block; }
-  	  &write_char;
-      }
-  }
-
-    # copy over all the variables to their "last" counterparts
-    $lcat = $cat;
-    $ljnum = $jnum;
-    $ljnobreakspace = $jnobreakspace;
-    $ljupper = $jupper;
-    $ljlower = $jlower;
-    $ljmirrored = $jmirrored;
-    $ljdir = $jdir;
+    $info[$ch] = pack("n5", $type, $numValue, $upperchar, $lowerchar,
+                      $direction);
 }
-$lhex = $hex;			# setup final block write
-&end_block;			# write final block
-truncate CHAR, $offset + 8;     # remove final duplicate record, if it exists
+close UNICODE;
 
-close(DATA);
-close(TITLECASE);
-close(CHAR);
-close(BLOCK);
+# Stage 2: Compress the data structures
+printf "\nCompressing data structures";
+$count = 0;
+my $info = ();
+my %charhash = ();
+my @charinfo = ();
 
-print "ok\n";
-print "Created " . ($offset + 8)/8 . " attributes for $characters "
-    . "Unicode characters in $blocks blocks.\n"
-    . "(Ignored $ignored surrogates.)\n";
+for $ch (0 .. 0xffff) {
+    print "." unless $count++ % 0x1000;
+    if (! defined $info[$ch]) {
+        $info[$ch] = pack("n5", 0, -1, 0, 0, -1);
+    }
+
+    my ($type, $numVal, $upper, $lower, $direction) = unpack("n5", $info[$ch]);
+    if (! exists $charhash{$info[$ch]}) {
+        push @charinfo, [ $numVal, $upper, $lower, $direction ];
+        $charhash{$info[$ch]} = $#charinfo;
+    }
+    $info .= pack("n", ($charhash{$info[$ch]} << 7) | $type);
+}
+
+my $charlen = @charinfo;
+my $bestshift;
+my $bestest = 1000000;
+my $bestblkstr;
+die "Too many unique character entrie: $charlen\n" if $charlen > 512;
+print "\nUnique character entries: $charlen\n";
+
+for $i (3 .. 8) {
+    my $blksize = 1 << $i;
+    my %blocks = ();
+    my @blkarray = ();
+    my ($j, $k);
+    print "shift: $i";
+
+    for ($j = 0; $j < 0x10000; $j += $blksize) {
+        my $blkkey = substr $info, 2 * $j, 2 * $blksize;
+        if (! exists $blocks{$blkkey}) {
+            push @blkarray, $blkkey;
+            $blocks{$blkkey} = $#blkarray;
+        }
+    }
+    my $blknum = @blkarray;
+    my $blocklen = $blknum * $blksize;
+    printf " before %5d", $blocklen;
+
+    # Now we try to pack the blkarray as tight as possible by finding matching
+    # heads and tails.
+    for ($j = $blksize - 1; $j > 0; $j--) {
+        my %tails = ();
+        for $k (0 .. $#blkarray) {
+            next if ! defined $blkarray[$k];
+            my $len = length $blkarray[$k];
+            my $tail = substr $blkarray[$k], $len - $j * 2;
+            if (exists $tails{$tail}) {
+                push @{$tails{$tail}}, $k;
+            } else {
+                $tails{$tail} = [ $k ];
+            }
+        }
+
+        # tails are calculated, now calculate the heads and merge.
+      BLOCK:
+        for $k (0 .. $#blkarray) {
+            next if ! defined $blkarray[$k];
+            my $tomerge = $k;
+            while (1) {
+                my $head = substr($blkarray[$tomerge], 0, $j * 2);
+                my $entry = $tails{$head};
+                next BLOCK if ! defined $entry;
+
+                my $other = shift @{$entry};
+                if ($other == $tomerge) {
+                    if (@{$entry}) {
+                        push @{$entry}, $other;
+                        $other = shift @{$entry};
+                    } else {
+                        push @{$entry}, $other;
+                        next BLOCK;
+                    }
+                }
+                if (@{$entry} == 0) {
+                    delete $tails{$head};
+                }
+
+                # a match was found
+                my $merge = $blkarray[$other]
+                    . substr($blkarray[$tomerge], $j * 2);
+                $blocklen -= $j;
+                $blknum--;
+
+                if ($other < $tomerge) {
+                    $blkarray[$tomerge] = undef;
+                    $blkarray[$other] = $merge;
+                    my $len = length $merge;
+                    my $tail = substr $merge, $len - $j * 2;
+                    $tails{$tail} = [ map { $_ == $tomerge ? $other : $_ }
+                                      @{$tails{$tail}} ];
+                    next BLOCK;
+                }
+                $blkarray[$tomerge] = $merge;
+                $blkarray[$other] = undef;
+            }
+        }
+    }
+    my $blockstr;
+    for $k (0 .. $#blkarray) {
+        $blockstr .= $blkarray[$k] if defined $blkarray[$k];
+    }
+
+    die "Unexpected $blocklen" if length($blockstr) != 2 * $blocklen;
+    my $estimate = 2 * $blocklen + (0x20000 >> $i) + 8 * $charlen;
+
+    printf " after merge %5d: %6d bytes\n", $blocklen, $estimate;
+    if ($estimate < $bestest) {
+        $bestest = $estimate;
+        $bestshift = $i;
+        $bestblkstr = $blockstr;
+    }
+}
+
+my @blocks;
+my $blksize = 1 << $bestshift;
+for ($j = 0; $j < 0x10000; $j += $blksize) {
+    my $blkkey = substr $info, 2 * $j, 2 * $blksize;
+    my $index = index $bestblkstr, $blkkey;
+    while ($index & 1) {
+        die "not found: $j" if $index == -1;
+        $index = index $bestblkstr, $blkkey, $index + 1;
+    }
+    push @blocks, ($index / 2);
+}
+
+# Phase 3: Generate the file
+die "UTF-8 limit of blocks may be exceeded: " . scalar(@blocks) . "\n"
+    if @blocks > 0xffff / 3;
+die "UTF-8 limit of data may be exceeded: " . length($bestblkstr) . "\n"
+    if length($bestblkstr) > 0xffff / 3;
+{
+    print "Generating $ARGV[1] with shift of $bestshift";
+    open OUTPUT, "> $ARGV[1]" or die "Failed creating output file: $!\n";
+    print OUTPUT <<EOF;
+/* gnu/java/lang/CharData -- Database for java.lang.Character Unicode info
+   Copyright (C) 2002 Free Software Foundation, Inc.
+   *** This file is generated by doc/unicode/unicode-muncher.pl ***
+
+This file is part of GNU Classpath.
+
+GNU Classpath is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
+
+GNU Classpath is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with GNU Classpath; see the file COPYING.  If not, write to the
+Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+02111-1307 USA.
+
+Linking this library statically or dynamically with other modules is
+making a combined work based on this library.  Thus, the terms and
+conditions of the GNU General Public License cover the whole
+combination.
+
+As a special exception, the copyright holders of this library give you
+permission to link this library with independent modules to produce an
+executable, regardless of the license terms of these independent
+modules, and to copy and distribute the resulting executable under
+terms of your choice, provided that you also meet, for each linked
+independent module, the terms and conditions of the license of that
+module.  An independent module is a module which is not derived from
+or based on this library.  If you modify this library, you may extend
+this exception to your version of the library, but you are not
+obligated to do so.  If you do not wish to do so, delete this
+exception statement from your version. */
+
+package gnu.java.lang;
+
+/**
+ * This contains the info about the unicode characters, that
+ * java.lang.Character needs.  It is generated automatically from
+ * <code>$ARGV[0]</code>, by some perl scripts.  This Unicode
+ * definition file can be found on the <a href="http://www.unicode.org">
+ * http://www.unicode.org</a> website.  JDK 1.4 uses Unicode version 3.0.0.
+ *
+ * The data is stored as string constants, but Character will convert these
+ * Strings to their respective <code>char[]</code> components.  The field
+ * <code>BLOCKS</code> stores the offset of a block of 2<sup>SHIFT</sup>
+ * characters within <code>DATA</code>.  The DATA field, in turn, stores
+ * information about each character in the low order bits, and an offset
+ * into the attribute tables <code>UPPER</code>, <code>LOWER</code>,
+ * <code>NUM_VALUE</code>, and <code>DIRECTION</code>.  Notice that the
+ * attribute tables are much smaller than 0xffff entries; as many characters
+ * in Unicode share common attributes.  Finally, there is a listing for
+ * <code>TITLE</code> exceptions (most characters just have the same
+ * title case as upper case).
+ *
+ * \@author doc/unicode/unicode-muncher.pl (written by Artur Biesiadowski,
+ *         Eric Blake)
+ * \@see Character
+ */
+public interface CharData
+{
+  /**
+   * The character shift amount to look up the block offset. In other
+   * words, <code>BLOCKS.value[ch >> SHIFT] + (ch & ~(-1 << SHIFT))</code>
+   * is the index where <code>ch</code> is described in <code>DATA</code>.
+   */
+  int SHIFT = $bestshift;
+
+  /**
+   * The mapping of character blocks to their location in <code>DATA</code>.
+   */
+  String BLOCKS
+EOF
+
+    for ($i = 0; $i < @blocks / 11; $i++) {
+        print OUTPUT $i ? "\n    + \"" : "    = \"";
+        for $j (0 .. 10) {
+            last if @blocks <= $i * 11 + $j;
+            my $val = $blocks[$i * 11 + $j];
+            print OUTPUT javaChar($val);
+        }
+        print OUTPUT "\"";
+    }
+
+    print OUTPUT <<EOF;
+;
+
+  /**
+   * Information about each character.  The low order 5 bits form the
+   * character type, the next bit is a flag for non-breaking spaces, and the
+   * next bit is a flag for mirrored directionality.  The high order 9 bits
+   * form the offset into the attribute tables.  Note that this limits the
+   * number of unique character attributes to 512, which is not a problem
+   * as of Unicode version 3.2.0, but may soon become one.
+   */
+  String DATA
+EOF
+
+    my $len = length($bestblkstr) / 2;
+    for ($i = 0; $i < $len / 11; $i++) {
+        print OUTPUT $i ? "\n    + \"" : "    = \"";
+        for $j (0 .. 10) {
+            last if $len <= $i * 11 + $j;
+            my $val = unpack "n", substr($bestblkstr, 2 * ($i*11 + $j), 2);
+            print OUTPUT javaChar($val);
+        }
+        print OUTPUT "\"";
+    }
+
+    print OUTPUT <<EOF;
+;
+
+  /**
+   * This is the attribute table for computing the numeric value of a
+   * character.  The value is -1 if Unicode does not define a value, -2
+   * if the value is not a positive integer, otherwise it is the value.
+   * Note that this is a signed value, but stored as an unsigned char
+   * since this is a String literal.
+   */
+  String NUM_VALUE
+EOF
+
+    $len = @charinfo;
+    for ($i = 0; $i < $len / 11; $i++) {
+        print OUTPUT $i ? "\n    + \"" : "    = \"";
+        for $j (0 .. 10) {
+            last if $len <= $i * 11 + $j;
+            my $val = $charinfo[$i * 11 + $j][0];
+            print OUTPUT javaChar($val);
+        }
+        print OUTPUT "\"";
+    }
+
+    print OUTPUT <<EOF;
+;
+
+  /**
+   * This is the attribute table for computing the uppercase representation
+   * of a character.  The value is the signed difference between the
+   * character and its uppercase version.  Note that this is stored as an
+   * unsigned char since this is a String literal.
+   */
+  String UPPER
+EOF
+
+    $len = @charinfo;
+    for ($i = 0; $i < $len / 11; $i++) {
+        print OUTPUT $i ? "\n    + \"" : "    = \"";
+        for $j (0 .. 10) {
+            last if $len <= $i * 11 + $j;
+            my $val = $charinfo[$i * 11 + $j][1];
+            print OUTPUT javaChar($val);
+        }
+        print OUTPUT "\"";
+    }
+
+    print OUTPUT <<EOF;
+;
+
+  /**
+   * This is the attribute table for computing the lowercase representation
+   * of a character.  The value is the signed difference between the
+   * character and its lowercase version.  Note that this is stored as an
+   * unsigned char since this is a String literal.
+   */
+  String LOWER
+EOF
+
+    $len = @charinfo;
+    for ($i = 0; $i < $len / 11; $i++) {
+        print OUTPUT $i ? "\n    + \"" : "    = \"";
+        for $j (0 .. 10) {
+            last if $len <= $i * 11 + $j;
+            my $val = $charinfo[$i * 11 + $j][2];
+            print OUTPUT javaChar($val);
+        }
+        print OUTPUT "\"";
+    }
+
+    print OUTPUT <<EOF;
+;
+
+  /**
+   * This is the attribute table for computing the directionality class
+   * of a character.  At present, the value is in the range 0 - 18 if the
+   * character has a direction, otherwise it is -1.  Note that this is
+   * stored as an unsigned char since this is a String literal.
+   */
+  String DIRECTION
+EOF
+
+    $len = @charinfo;
+    for ($i = 0; $i < $len / 11; $i++) {
+        print OUTPUT $i ? "\n    + \"" : "    = \"";
+        for $j (0 .. 10) {
+            last if $len <= $i * 11 + $j;
+            my $val = $charinfo[$i * 11 + $j][3];
+            print OUTPUT javaChar($val);
+        }
+        print OUTPUT "\"";
+    }
+
+    print OUTPUT <<EOF;
+;
+
+  /**
+   * This is the listing of titlecase special cases (all other character
+   * can use <code>UPPER</code> to determine their titlecase).  The listing
+   * is a sequence of character pairs; converting the first character of the
+   * pair to titlecase produces the second character.
+   */
+  String TITLE
+EOF
+
+    $len = length($titlecase) / 2;
+    for ($i = 0; $i < $len / 11; $i++) {
+        print OUTPUT $i ? "\n    + \"" : "    = \"";
+        for $j (0 .. 10) {
+            last if $len <= $i * 11 + $j;
+            my $val = unpack "n", substr($titlecase, 2 * ($i*11 + $j), 2);
+            print OUTPUT javaChar($val);
+        }
+        print OUTPUT "\"";
+    }
+
+    print OUTPUT ";\n}\n";
+    close OUTPUT;
+}
+print "\nDone.\n";
