@@ -1,5 +1,10 @@
 2005-01-12  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/security/x509/X509Certificate.java
+	(parse): Handle val == null case.
+
+2005-01-12  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/channels/Channels.java
 	(newInputStream(ReadableByteChannel)):
 	Call VMChannels.newInputStream(ReadableByteChannel).
