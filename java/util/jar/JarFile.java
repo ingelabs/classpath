@@ -130,27 +130,27 @@ public class JarFile extends ZipFile
   }
 
   /**
-   * XXX - not yet implemented in java.util.zip.ZipFile
+   * Creates a new JarFile with the indicated mode, tries to read the
+   * manifest and if the manifest exists and verify is true verfies it.
    *
    * @param file the file to open to open as a jar file
    * @param verify checks manifest and entries when true and a manifest
    * exists, when false no checks are made
-   * @param mode XXX - see ZipFile
-   * @exception FileNotFoundException XXX
-   * @exception IOException XXX
-   * @exception IllegalArgumentException XXX
+   * @param mode either ZipFile.OPEN_READ or
+   *             (ZipFile.OPEN_READ | ZipFile.OPEN_DELETE)
+   * @exception FileNotFoundException if the file does not exist
+   * @exception IOException if another IO exception occurs while reading
+   * @exception IllegalArgumentException when given an illegal mode
    * 
    * @since 1.3
    */
   public JarFile(File file, boolean verify, int mode) throws
     FileNotFoundException, IOException, IllegalArgumentException
   {
-    // XXX - For now don't use super(file, mode)
-    this(file, verify);
-    /* super(file, mode);
-       manifest = readManifest();
-       if (verify)
-       verify(); */
+    super(file, mode);
+    manifest = readManifest();
+    if (verify)
+      verify();
   }
 
   // Methods
@@ -249,7 +249,7 @@ public class JarFile extends ZipFile
     ZipEntry entry = super.getEntry(name);
     if (entry != null)
       {
-	JarEntry jarEntry = new JarEntry(getEntry(name));
+	JarEntry jarEntry = new JarEntry(entry);
 	if (manifest != null)
 	  {
 	    jarEntry.attr = manifest.getAttributes(name);

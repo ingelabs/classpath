@@ -1,3 +1,10 @@
+2000-11-17  Mark Wielaard  <mark@klomp.org>
+
+	Merge with libgcj (fixes by Anthony Green and Mark Wielaard)
+	* java/util/jar/Attributes.java: Correct comment spelling.
+	* java/util/jar/JarFile.java: Constructor that takes mode now
+	calls super. Don't call java.util.zip.ZipFile.getEntry twice.
+
 2000-11-16  Tom Tromey  <tromey@cygnus.com>
 
 	Fixes for Java 2 compatibility:
