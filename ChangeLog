@@ -1,3 +1,11 @@
+2002-09-30  Michael Koch  <konqueror@gmx.de>
+
+	* javax/naming/RefAddr:
+	(addrType): addrType was never final.
+	(equals): Fix typo in method name.
+	* javax/naming/BinaryRefAddr:
+	(equals): Fix typo in method name.
+
 2002-09-30  Sascha Brawer  <brawer@acm.org>
 
 	* java/util/logging/LogManager.java (pcs): Pass the LogManager
