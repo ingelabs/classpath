@@ -1,5 +1,5 @@
 /* SocketPermission.java -- Class modeling permissions for socket operations
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -23,7 +23,6 @@ produce an executable, this library does not by itself cause the
 resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
-
 
 package java.net;
 
@@ -84,12 +83,15 @@ import java.security.PermissionCollection;
   *   Can accept connections from 197.197.20.1
   * </pre><p>
   *
-  * @version 0.5
+  * @since 1.2
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public final class SocketPermission extends Permission
+public final class SocketPermission extends Permission 
+                                    implements java.io.Serializable
 {
+
+// FIXME: Needs serialization work, including readObject/writeObject methods.
   
 /*************************************************************************/
 
@@ -100,51 +102,55 @@ public final class SocketPermission extends Permission
 /**
   * A hostname/port combination as described above
   */
-protected String hostport;
+protected transient String hostport;
 
 /**
   * A comma separated list of actions for which we have permission
   */
-protected String perms;
+protected String actions;
 
 /*************************************************************************/
 
 /**
-  * Creates a SocketPermission with the specified host/port combination
-  * and permissions string.
+  * Initializes a new instance of <code>SocketPermission</code> with the 
+  * specified host/port combination and actions string.
   *
   * @param hostport The hostname/port number combination
-  * @param perms The permissions string
+  * @param perms The actions string
   */
 public
-SocketPermission(String hostport, String perms)
+SocketPermission(String hostport, String actions)
 {
   super(hostport);
 
   this.hostport = hostport;
-  this.perms = perms;
+  this.actions = actions;
 }
 
 /*************************************************************************/
 
 /**
   * Tests this object for equality against another.  This will be true if
-  * and only if the passed object is an instance of SocketPermission and
-  * both its hostname/port combination and permissions string are 
-  * identical.  Overrides Permission.equals()
+  * and only if the passed object is an instance of 
+  * <code>SocketPermission</code> and both its hostname/port combination 
+  * and permissions string are identical.
   *
   * @param obj The object to test against for equality
   *
-  * @return true if object is equal to this object, false otherwise
+  * @return <code>true</code> if object is equal to this object, 
+  *         <code>false</code> otherwise.
   */
 public boolean
 equals(Object obj)
 {
+  if (obj == null)
+    return(false);
+
   if (!(obj instanceof SocketPermission))
     return(false);
 
   if (((SocketPermission)obj).hostport.equals(hostport))
-    if (((SocketPermission)obj).perms.equals(perms))
+    if (((SocketPermission)obj).actions.equals(actions))
       return(true);
 
   return(false);
@@ -163,7 +169,7 @@ hashCode()
 {
   int hash = 100;
 
-  //*** Get a real hash function
+  // FIXME: Get a real hash function
   for (int i = 0; i < hostport.length(); i++)
     hash = hash + (int)hostport.charAt(i) * 7;
 
@@ -176,7 +182,7 @@ hashCode()
   * Returns the list of permission actions in this object in canonical
   * order.  The canonical order is "connect,listen,accept,resolve"
   *
-  * @return The permitted action string
+  * @return The permitted action string.
   */
 public String
 getActions()
@@ -184,13 +190,13 @@ getActions()
   boolean found = false;
   StringBuffer sb = new StringBuffer("");
 
-  if (perms.indexOf("connect") != -1)
+  if (actions.indexOf("connect") != -1)
     {
       sb.append("connect");
       found = true;
     }
 
-  if (perms.indexOf("listen") != -1)
+  if (actions.indexOf("listen") != -1)
     if (found)
       sb.append(",listen");
     else
@@ -199,7 +205,7 @@ getActions()
         found = true;
       }
 
-  if (perms.indexOf("accept") != -1)
+  if (actions.indexOf("accept") != -1)
     if (found)
       sb.append(",accept");
     else
@@ -210,7 +216,7 @@ getActions()
 
   if (found)
     sb.append(",resolve");
-  else if (perms.indexOf("resolve") != -1)
+  else if (actions.indexOf("resolve") != -1)
     sb.append("resolve");
 
   return(sb.toString());
@@ -219,15 +225,16 @@ getActions()
 /*************************************************************************/
 
 /**
-  * Returns a new PermissionCollection object that can hold
-  * SocketPermission's.  Overrides Permission.newPermissionCollection
+  * Returns a new <code>PermissionCollection</code> object that can hold
+  * <code>SocketPermission</code>'s.
   *
-  * @return A new PermissionCollection
+  * @return A new <code>PermissionCollection</code>.
   */
 public PermissionCollection
 newPermissionCollection()
 {
-  //***Implement
+  // FIXME: Implement
+
   return(null);
 }
 
@@ -238,7 +245,7 @@ newPermissionCollection()
   * this permission.  This will be true if 
   * <p><ul>
   * <li>The argument is of type SocketPermission
-  * <li>The permission list of the argument are in this object's permissions
+  * <li>The actions list of the argument are in this object's actions
   * <li>The port range of the argument is within this objects port range
   * <li>The hostname is equal to or a subset of this objects hostname
   * </ul>
@@ -252,7 +259,8 @@ newPermissionCollection()
   *
   * @param perm The Permission to check against
   *
-  * @return True if the Permission is implied by this object, false otherwise
+  * @return <code>true</code> if the <code>Permission</code> is implied by 
+  * this object, <code>false</code> otherwise.
   */
 public boolean
 implies(Permission perm)
@@ -283,6 +291,7 @@ implies(Permission perm)
     }
   else
     {
+      // FIXME:  Needs bulletproofing.
       // This will dump if hostport if all sorts of bad data was passed to
       // the constructor
       String range = hostport.substring(hostport.indexOf(":")+1);
