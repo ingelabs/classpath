@@ -1,5 +1,16 @@
 2004-01-06  Sascha Brawer  <brawer@dandelis.ch>
 
+	Fix for Classpath bug #7099.
+	* javax/swing/event/EventListenerList.java (getListenerCount(Class)):
+	More efficient implementation, also accepts null argument.
+	Improve Javadoc.
+	* NEWS: Mention fixed bug.
+	
+	* javax/swing/event/EventListenerList.java (getListenerCount()):
+	Remove unnecessary cast; docfix.
+
+2004-01-06  Sascha Brawer  <brawer@dandelis.ch>
+
 	* javax/swing/event/EventListenerList.java: Reformatted.
 
 2004-01-05  Sascha Brawer  <brawer@dandelis.ch>

@@ -6,6 +6,7 @@ New since last release
 * Fixed Classpath bugs:
   #6095 java.awt.geom.QuadCurve2D.solveQuadratic sometimes gives
         wrong results
+  #7099 EventListenerList.getListenerCount should accept null argument
 
 New in release 0.07 (2003/30/11)
 

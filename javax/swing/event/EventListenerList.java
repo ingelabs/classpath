@@ -101,36 +101,30 @@ public class EventListenerList
 
 
   /**
-   * Gets the total number of listeners.
-   * @return Count of listeners
+   * Determines the number of listeners.
    */
   public int getListenerCount()
   {
-    return (int) listenerList.length / 2;
+    return listenerList.length / 2;
   }
 
 
   /**
-   * Get the number of listeners of a particular type
-   * @param t Class type to count
-   * @returns Count of the specified listeners
+   * Determines the number of listeners of a particular class.
+   *
+   * @param t the type of listeners to be counted. In order to get
+   * counted, a subscribed listener must be exactly of class
+   * <code>t</code>. Thus, subclasses of <code>t</code> will not be
+   * counted.
    */
   public int getListenerCount(Class t)
   {
-    int index;
-    int count;
-    String name;
+    int result = 0;
+    for (int i = 0; i < listenerList.length; i += 2)
+      if (t == listenerList[i])
+        ++result;
 
-    // Loop through entire list
-    count = 0;
-    name  = t.getName();
-    for (index = 0; index < listenerList.length; index += 2)
-      {
-        if (((Class) listenerList[index]).getName().equals(name) == true)
-          count += 1;
-      }
-
-    return count;
+    return result;
   }
 
 
