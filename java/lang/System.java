@@ -592,6 +592,8 @@ public final class System
    * @throws NullPointerException
    * @throws SecurityException if permission is denied
    * @since 1.5
+   * @specnote This method was deprecated in some JDK releases, but
+   *           was restored in 1.5.
    */
   public static String getenv(String name)
   {
