@@ -256,7 +256,8 @@ awt_event_handler (GdkEvent *event)
        || event->type == GDK_LEAVE_NOTIFY
        || event->type == GDK_CONFIGURE
        || event->type == GDK_EXPOSE
-       || event->type == GDK_KEY_PRESS)
+       || event->type == GDK_KEY_PRESS
+       || event->type == GDK_FOCUS_CHANGE)
       && gdk_property_get (event->any.window,
 			   gdk_atom_intern ("_GNU_GTKAWT_ADDR", FALSE),
 			   gdk_atom_intern ("CARDINAL", FALSE),
@@ -410,6 +411,13 @@ awt_event_handler (GdkEvent *event)
 	      }
 	  }
 	  break;
+	case GDK_FOCUS_CHANGE:
+	  (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr,
+				      postFocusEventID,
+				      (jint) (event->focus_change.in) ? 
+				      AWT_FOCUS_GAINED : AWT_FOCUS_LOST,
+				      JNI_FALSE);
+	  break;
 	default:
 	}
       g_free (obj_ptr);
@@ -435,7 +443,8 @@ attach_jobject (GdkWindow *window, jobject *obj)
 			 | GDK_ENTER_NOTIFY_MASK
 			 | GDK_LEAVE_NOTIFY_MASK
 			 | GDK_STRUCTURE_MASK
-			 | GDK_KEY_PRESS_MASK);
+			 | GDK_KEY_PRESS_MASK
+			 | GDK_FOCUS_CHANGE_MASK);
 
   gdk_property_change (window,
 		       addr_atom,

@@ -206,11 +206,15 @@ extern struct state_table *native_state_table;
 #define VK_Y 89
 #define VK_Z 90
 
+#define AWT_FOCUS_LOST 1004
+#define AWT_FOCUS_GAINED 1005
+
 extern jmethodID postActionEventID;
 extern jmethodID postMouseEventID;
 extern jmethodID postConfigureEventID;
 extern jmethodID postExposeEventID;
 extern jmethodID postKeyEventID;
+extern jmethodID postFocusEventID;
 extern jmethodID syncAttrsID;
 extern jclass gdkColor;
 extern jmethodID gdkColorID;

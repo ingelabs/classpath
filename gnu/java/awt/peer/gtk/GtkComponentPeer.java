@@ -280,4 +280,9 @@ public class GtkComponentPeer extends GtkGenericPeer
     q.postEvent (new KeyEvent (awtComponent, id, when, mods, 
 			       keyCode, keyChar));
   }
+  
+  protected void postFocusEvent (int id, boolean temporary)
+  {
+    q.postEvent (new FocusEvent (awtComponent, id, temporary));
+  }
 }

@@ -32,6 +32,7 @@ jmethodID postMouseEventID;
 jmethodID postConfigureEventID;
 jmethodID postExposeEventID;
 jmethodID postKeyEventID;
+jmethodID postFocusEventID;
 jmethodID syncAttrsID;
 JNIEnv *gdk_env;
 
@@ -103,6 +104,8 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 					  "postExposeEvent", "(IIII)V");
   postKeyEventID = (*env)->GetMethodID (env, gtkcomponentpeer,
 					"postKeyEvent", "(IJIIC)V");
+  postFocusEventID = (*env)->GetMethodID (env, gtkcomponentpeer,
+					  "postFocusEvent", "(IZ)V");
   syncAttrsID = (*env)->GetMethodID (env, gtkcomponentpeer,
 				     "syncAttrs", "()V");
 
