@@ -151,15 +151,15 @@ public class DomHTMLParser
     AttributeSet hatts = getAttributes();
     NamedNodeMap natts = new_node.getAttributes();
 
-    Enumeration enum = hatts.getAttributeNames();
+    Enumeration enumeration = hatts.getAttributeNames();
     Object key;
     Node attribute;
 
     while (hatts != null)
       {
-        while (enum.hasMoreElements())
+        while (enumeration.hasMoreElements())
           {
-            key = enum.nextElement();
+            key = enumeration.nextElement();
             attribute = document.createAttribute(key.toString());
             attribute.setNodeValue(hatts.getAttribute(key).toString());
             natts.setNamedItem(attribute);
