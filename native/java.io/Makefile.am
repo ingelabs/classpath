@@ -13,4 +13,4 @@ libjava_io_ObjectInputStream_la_SOURCES = java_io_ObjectInputStream.c
 
 libjava_io_ObjectInputStream_la_LDFLAGS = -version-info 0:0:0
 
-INCLUDES += -I ../lib -I @VMINCLUDE@
+INCLUDES += -I ../lib @VMINCLUDE@
