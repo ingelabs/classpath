@@ -1,3 +1,129 @@
+2002-12-29  Michael Koch  <konqueror@gmx.de>
+
+	* java/nio/ByteBuffer.java:
+	Implements Comparable.
+	(get): Must not be final.
+	(put): Must not be final.
+	* java/nio/CharBuffer.java:
+	Implements Comparable.
+	(get): Must not be final.
+	(put): Must not be final.
+	* java/nio/DoubleBuffer.java:
+	Implements Comparable.
+	(get): Must not be final.
+	(put): Must not be final.
+	(order): Must not be final.
+	(asShortBuffer): Removed.
+	(asCharBuffer): Removed.
+	(asIntBuffer): Removed.
+	(asLongBuffer): Removed.
+	(asFloatBuffer): Removed.
+	(asDoubleBuffer): Removed.
+	(getChar): Removed.
+	(putChar): Removed.
+	(getShort): Removed.
+	(putShort): Removed.
+	(getInt): Removed.
+	(putInt): Removed.
+	(getLong): Removed.
+	(putLong): Removed.
+	(getFloat): Removed.
+	(putFloat): Removed.
+	(getDouble): Removed.
+	(putDouble): Removed.
+	* java/nio/FloatBuffer.java:
+	Implements Comparable.
+	(get): Must not be final.
+	(put): Must not be final.
+	(order): Must not be final.
+	(asShortBuffer): Removed.
+	(asCharBuffer): Removed.
+	(asIntBuffer): Removed.
+	(asLongBuffer): Removed.
+	(asFloatBuffer): Removed.
+	(asDoubleBuffer): Removed.
+	(getChar): Removed.
+	(putChar): Removed.
+	(getShort): Removed.
+	(putShort): Removed.
+	(getInt): Removed.
+	(putInt): Removed.
+	(getLong): Removed.
+	(putLong): Removed.
+	(getFloat): Removed.
+	(putFloat): Removed.
+	(getDouble): Removed.
+	(putDouble): Removed.
+	* java/nio/IntBuffer.java:
+	Implements Comparable.
+	(get): Must not be final.
+	(put): Must not be final.
+	(order): Must not be final.
+	(asShortBuffer): Removed.
+	(asCharBuffer): Removed.
+	(asIntBuffer): Removed.
+	(asLongBuffer): Removed.
+	(asFloatBuffer): Removed.
+	(asDoubleBuffer): Removed.
+	(getChar): Removed.
+	(putChar): Removed.
+	(getShort): Removed.
+	(putShort): Removed.
+	(getInt): Removed.
+	(putInt): Removed.
+	(getLong): Removed.
+	(putLong): Removed.
+	(getFloat): Removed.
+	(putFloat): Removed.
+	(getDouble): Removed.
+	(putDouble): Removed.
+	* java/nio/LongBuffer.java:
+	Implements Comparable.
+	(get): Must not be final.
+	(put): Must not be final.
+	(order): Must not be final.
+	(asShortBuffer): Removed.
+	(asCharBuffer): Removed.
+	(asIntBuffer): Removed.
+	(asLongBuffer): Removed.
+	(asFloatBuffer): Removed.
+	(asDoubleBuffer): Removed.
+	(getChar): Removed.
+	(putChar): Removed.
+	(getShort): Removed.
+	(putShort): Removed.
+	(getInt): Removed.
+	(putInt): Removed.
+	(getLong): Removed.
+	(putLong): Removed.
+	(getFloat): Removed.
+	(putFloat): Removed.
+	(getDouble): Removed.
+	(putDouble): Removed.
+	* java/nio/ShortBuffer.java:
+	Implements Comparable.
+	(get): Must not be final.
+	(put): Must not be final.
+	(order): Must not be final.
+	(asShortBuffer): Removed.
+	(asCharBuffer): Removed.
+	(asIntBuffer): Removed.
+	(asLongBuffer): Removed.
+	(asFloatBuffer): Removed.
+	(asDoubleBuffer): Removed.
+	(getChar): Removed.
+	(putChar): Removed.
+	(getShort): Removed.
+	(putShort): Removed.
+	(getInt): Removed.
+	(putInt): Removed.
+	(getLong): Removed.
+	(putLong): Removed.
+	(getFloat): Removed.
+	(putFloat): Removed.
+	(getDouble): Removed.
+	(putDouble): Removed.
+	
 2002-12-19  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/DatagramSocket.java
