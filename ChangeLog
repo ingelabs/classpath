@@ -1,5 +1,9 @@
 2003-12-26  Michael Koch  <konqueror@gmx.de>
 
+	* java/text/Format.java (serialVersionUID): Fixed value.
+
+2003-12-26  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/DatagramPacket.java
 	(length): Made package-private to make it accessible via CNI.
 	(maxlen): New field.
