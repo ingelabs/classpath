@@ -1,3 +1,16 @@
+2002-10-26  Mark Wielaard  <mark@klomp.org>
+
+	* vm/reference/java/lang/Class.java (forName): Use VMClassLoader as
+	bootstrap classloader when classloader == null.
+	* vm/reference/java/lang/VMClassLoader.java: Indicate methods that
+	should be implemented by the VM and don't rely on the
+	application/system classloader to prevent circular class call
+	chains.
+	* java/lang/ClassLoader.java (ClassLoader): Use systemClassLoader
+	directly.
+	(findSystemClass): Likewise.
+	(getSystemResources): Likewise.
+
 2002-10-25  Mark Wielaard  <mark@klomp.org>
 
 	* vm/reference/java/lang/Class.java (getClassLoader): Return null for

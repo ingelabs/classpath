@@ -177,17 +177,17 @@ public final class Class implements Serializable
   {
     if (classloader == null)
       {
-        // Check if we may get the system classloader
+        // Check if we may access the bootstrap classloader
         SecurityManager sm = System.getSecurityManager();
         if (sm != null)
           {
             // Get the calling class and classloader
             Class c = VMSecurityManager.getClassContext()[1];
             ClassLoader cl = c.getClassLoader();
-            if (cl != null && cl != ClassLoader.systemClassLoader)
+            if (cl != null)
               sm.checkPermission(new RuntimePermission("getClassLoader"));
           }
-        classloader = ClassLoader.systemClassLoader;
+	return VMClassLoader.loadClass(name, initialize);
       }
     return classloader.loadClass(name, initialize);
   }

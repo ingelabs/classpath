@@ -61,8 +61,6 @@ import gnu.java.util.EmptyEnumeration;
  * matter, a custom ClassLoader can perform on-the-fly code generation or
  * modification!
  *
- * XXX - Not all support has been written for the new 1.2 methods yet!
- *
  * <p>Every classloader has a parent classloader that is consulted before
  * the 'child' classloader when classes or resources should be loaded.
  * This is done to make sure that classes can be loaded from an hierarchy of
@@ -210,7 +208,7 @@ public abstract class ClassLoader
    */
   protected ClassLoader() throws SecurityException
   {
-    this(getSystemClassLoader());
+    this(systemClassLoader);
   }
 
   /**
@@ -258,8 +256,8 @@ public abstract class ClassLoader
    * out if the class has already been loaded through this classloader by
    * calling <code>findLoadedClass()</code>. Then it calls
    * <code>loadClass()</code> on the parent classloader (or when there is
-   * no parent on the bootstrap classloader). When the parent could not load
-   * the class it tries to create a new class by calling
+   * no parent it uses the VM bootclassloader)</code>). If the class is still
+   * not loaded it tries to create a new class by calling
    * <code>findClass()</code>. Finally when <code>resolve</code> is
    * <code>true</code> it also calls <code>resolveClass()</code> on the
    * newly loaded class.
@@ -397,8 +395,6 @@ public abstract class ClassLoader
    * in that package must have the same set of certificates or a
    * SecurityException is thrown.
    *
-   * XXX - protection domain is not implemented yet; it needs native support.
-   *
    * @param name the name to give the class.  null if unknown
    * @param data the data representing the classfile, in classfile format
    * @param offset the offset into the data where the classfile starts
@@ -450,7 +446,7 @@ public abstract class ClassLoader
   protected final Class findSystemClass(String name)
     throws ClassNotFoundException
   {
-    return Class.forName(name, false, getSystemClassLoader());
+    return Class.forName(name, false, systemClassLoader);
   }
 
   /**
@@ -611,7 +607,7 @@ public abstract class ClassLoader
    */
   public static final URL getSystemResource(String name)
   {
-    return getSystemClassLoader().getResource(name);
+    return systemClassLoader.getResource(name);
   }
 
   /**
@@ -627,7 +623,7 @@ public abstract class ClassLoader
    */
   public static Enumeration getSystemResources(String name) throws IOException
   {
-    return getSystemClassLoader().getResources(name);
+    return systemClassLoader.getResources(name);
   }
 
   /**

@@ -45,6 +45,8 @@ import java.util.Enumeration;
 import java.util.Map;
 import java.util.HashMap;
 
+import gnu.java.util.EmptyEnumeration;
+
 /**
  * java.lang.VMClassLoader is a package-private helper for VMs to implement
  * on behalf of java.lang.ClassLoader.
@@ -109,7 +111,7 @@ final class VMClassLoader
   /**
    * Helper to load a class from the bootstrap class loader.
    *
-   * XXX - Not implemented yet; this requires native help.
+   * XXX - Not implemented; this requires native help.
    *
    * @param name the class name to load
    * @param resolve whether to resolve it
@@ -118,26 +120,26 @@ final class VMClassLoader
   static final Class loadClass(String name, boolean resolve)
     throws ClassNotFoundException
   {
-    return Class.forName(name, resolve, ClassLoader.getSystemClassLoader());
+    throw new ClassNotFoundException(name);
   }
 
   /**
    * Helper to load a resource from the bootstrap class loader.
    *
-   * XXX - Not implemented yet; this requires native help.
+   * XXX - Not implemented; this requires native help.
    *
    * @param name the resource to find
    * @return the URL to the resource
    */
   static URL getResource(String name)
   {
-    return ClassLoader.getSystemResource(name);
+    return null;
   }
 
   /**
    * Helper to get a list of resources from the bootstrap class loader.
    *
-   * XXX - Not implemented yet; this requires native help.
+   * XXX - Not implemented; this requires native help.
    *
    * @param name the resource to find
    * @return an enumeration of resources
@@ -145,7 +147,7 @@ final class VMClassLoader
    */
   static Enumeration getResources(String name) throws IOException
   {
-    return ClassLoader.getSystemResources(name);
+    return EmptyEnumeration.getInstance();
   }
 
   /**
