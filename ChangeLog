@@ -1,5 +1,11 @@
 2003-06-20  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/DatagramChannelImpl.java,
+	gnu/java/nio/SocketChannelImpl.java:
+	New versions from libgcj.
+
+2003-06-20  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/HttpURLConnection.java,
 	java/net/Inet4Address.java,
 	java/net/Inet6Address.java,
