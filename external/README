@@ -8,7 +8,7 @@ jaxp - http://www.gnu.org/software/classpathx/jaxp/
 
 	* SAX Parser API
 	* DOM Level 2 generic XML data structures
-	* Sun's JAXP v1.1 interfaces
+	* JAXP v1.1 interface implementation
 
 	Import method:
 
@@ -16,3 +16,6 @@ jaxp - http://www.gnu.org/software/classpathx/jaxp/
 	import -m "import classpathx jaxp 20030123" \
 	classpath/external/jaxp Classpathx JAXP_CVS_20030123
 
+	You need to add the output of the following command to the
+	jaxp_FILES in Makefile.am (remove the last \ from the last entry): 
+	$ for i in $(find jaxp -type f | grep -v CVS); do echo $i \\; done

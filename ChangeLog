@@ -1,3 +1,10 @@
+2003-08-17  Mark Wielaard  <mark@klomp.org>
+
+	* Makefile.am (SUBDIRS): Add external.
+	* configure.in (AC_OUTPUT): Add external/Makefile.
+	* external/README: Add how to update Makefile.am jaxp_FILES entry.
+	* external/Makefile.am: New file.
+
 2003-08-16  Mark Wielaard  <mark@klomp.org>
 
 	* java/security/Security.java: Don't use &nbsp; in the api

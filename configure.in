@@ -295,6 +295,7 @@ dnl -----------------------------------------------------------
 AC_OUTPUT(Makefile
 doc/Makefile
 doc/api/Makefile
+external/Makefile
 gnu/Makefile
 gnu/classpath/Makefile
 gnu/classpath/Configuration.java
