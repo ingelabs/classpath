@@ -1,3 +1,10 @@
+2005-01-24  Graydon Hoare  <graydon@redhat.com>
+	    Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/LayoutFocusTraversalPolicy.java,
+	javax/swing/SortingFocusTraversalPolicy.java:
+	New classes.
+
 2005-01-23  Sven de Marothy <sven@physto.se>
 
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java:
