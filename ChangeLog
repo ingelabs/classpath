@@ -1,5 +1,11 @@
 2004-10-15  Michael Koch  <konqueror@gmx.de>
 
+	* configure.ac: Removed CNI "support".
+	* native/Makefile.am (SUBDIRS): Don't compile cni subdir
+	* native/cni/.cvsignore, native/cni/Makefile.am: Removed.
+
+2004-10-15  Michael Koch  <konqueror@gmx.de>
+
 	* autogen.sh: Replaced with a GNOME-like script that aborts when the
 	versions of autoconf, automake or libtool are not sufficient.
 

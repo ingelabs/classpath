@@ -43,19 +43,6 @@ AC_ARG_ENABLE([jni],
 AM_CONDITIONAL(CREATE_JNI_LIBRARIES, test "x${COMPILE_JNI}" = xyes)
 
 dnl -----------------------------------------------------------
-dnl Enable CNI libraries (disabled by default)
-dnl -----------------------------------------------------------
-AC_ARG_ENABLE([cni],
-              [AS_HELP_STRING(--enable-cni,compile CNI source [default=no])],
-              [case "${enableval}" in 
-                yes) COMPILE_CNI=yes; COMPILE_JAVA=yes ;;
-                no) COMPILE_CNI=no ;;
-                *) COMPILE_CNI=yes; COMPILE_JAVA=yes ;;
-              esac],
-              [COMPILE_CNI=no])
-AM_CONDITIONAL(CREATE_CNI_LIBRARIES, test "x${COMPILE_CNI}" = xyes)
-
-dnl -----------------------------------------------------------
 dnl GTK native peer (enabled by default)
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([gtk-peer],
@@ -264,20 +251,13 @@ dnl want to disable this, but some VMs (gcj) don't need or want
 dnl them.
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([load-library],
-              [AS_HELP_STRING(--enable-load-library,enable to use JNI native methods [default=yes]
-                                        (disabled automatically using --enable-cni))],
+              [AS_HELP_STRING(--enable-load-library,enable to use JNI native methods [default=yes])],
               [case "${enableval}" in 
                 yes) INIT_LOAD_LIBRARY="true" ;;
                 no) INIT_LOAD_LIBRARY="false" ;;
                 *) AC_MSG_ERROR(bad value ${enableval} for --enable-load-library) ;;
               esac],
-              [
-                if test "x${COMPILE_CNI}" = xyes; then
-                  INIT_LOAD_LIBRARY="false"
-                else
-                  INIT_LOAD_LIBRARY="true"
-                fi
-              ])
+              [INIT_LOAD_LIBRARY="true"])
 AC_SUBST(INIT_LOAD_LIBRARY)
 
 dnl -----------------------------------------------------------
@@ -338,7 +318,6 @@ gnu/classpath/Configuration.java
 include/Makefile
 native/Makefile
 native/fdlibm/Makefile
-native/cni/Makefile
 native/jni/Makefile
 native/jni/classpath/Makefile
 native/jni/java-io/Makefile
