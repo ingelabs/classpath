@@ -1,5 +1,43 @@
 2004-04-30  Michael Koch  <konqueror@gmx.de>
 
+	* include/gnu_java_awt_peer_gtk_GdkFontMetrics.h,
+	include/gnu_java_awt_peer_gtk_GdkGraphics.h,
+	include/gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.h,
+	include/gnu_java_awt_peer_gtk_GtkLabelPeer.h,
+	include/gnu_java_awt_peer_gtk_GtkMenuBarPeer.h,
+	include/gnu_java_awt_peer_gtk_GtkMenuPeer.h,
+	include/gnu_java_awt_peer_gtk_GtkPopupMenuPeer.h,
+	include/gnu_java_awt_peer_gtk_GtkScrollPanePeer.h,
+	include/gnu_java_awt_peer_gtk_GtkScrollbarPeer.h,
+	include/gnu_java_awt_peer_gtk_GtkTextAreaPeer.h,
+	include/gnu_java_awt_peer_gtk_GtkTextFieldPeer.h,
+	include/gnu_java_awt_peer_gtk_GtkWindowPeer.h:
+	Fixed stange method signatures produced by buggy gcjh.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer.c:
+	Include gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer.h
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c
+	(dispose): Removed.
+	(remove): Removed.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(dispose): Removed.
+	(requestFocus): Removed.
+	(gtkWidgetSetUSize): Removed.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(setTitle): Removed.
+	* native/jni/gtk-peer/gthread-jni.c
+	(gdk_threads_wake): Removed
+	* native/jni/java-io/javaio.h
+	(_javaio_open_read): Added prototype.
+	(_javaio_open_readwrite): Likewise.
+	* native/jni/java-lang/java_lang_VMDouble.c:
+	Include java_lang_VMDouble.h.
+	* native/jni/java-lang/java_lang_reflect_Array.c
+	(getLength): Removed.
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
+	(nativeGetLength): Removed.
+
+2004-04-30  Michael Koch  <konqueror@gmx.de>
+
 	* include/java_nio_channels_Channels.h,
 	native/jni/java-nio/java_nio_channels_Channels.c:
 	New files.

@@ -39,6 +39,7 @@ exception statement from your version. */
 #include <config.h>
 
 #include "java_lang_Double.h"
+#include "java_lang_VMDouble.h"
 
 /*
  * Class:     java_lang_VMDouble

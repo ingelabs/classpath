@@ -10,7 +10,7 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_create__IZIILgnu_java_awt_peer_gtk_GtkWindowPeer_2_3I (JNIEnv *env, jobject, jint, jboolean, jint, jint, jobject, jintArray);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_create (JNIEnv *env, jobject, jint, jboolean, jint, jint, jobject, jintArray);
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_connectJObject (JNIEnv *env, jobject);
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_connectSignals (JNIEnv *env, jobject);
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_toBack (JNIEnv *env, jobject);

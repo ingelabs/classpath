@@ -10,7 +10,7 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_create__II (JNIEnv *env, jobject, jint, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_create (JNIEnv *env, jobject, jint, jint);
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetScrollPosition (JNIEnv *env, jobject, jint, jint);
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetHScrollIncrement (JNIEnv *env, jobject, jint);
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetVScrollIncrement (JNIEnv *env, jobject, jint);

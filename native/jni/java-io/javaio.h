@@ -48,6 +48,8 @@ exception statement from your version. */
 extern jlong _javaio_get_file_length(JNIEnv *, jint);
 extern jlong _javaio_skip_bytes(JNIEnv *, jint, jlong);
 extern jint _javaio_open(JNIEnv *, jstring, int);
+extern jint _javaio_open_read(JNIEnv *, jstring);
+extern jint _javaio_open_readwrite(JNIEnv *, jstring);
 extern void _javaio_close(JNIEnv *, jint fd);
 extern jint _javaio_read(JNIEnv *, jobject obj, jint, jarray, jint, jint);
 extern jint _javaio_write(JNIEnv *, jobject obj, jint, jarray, jint, jint);

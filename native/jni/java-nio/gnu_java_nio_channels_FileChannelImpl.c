@@ -279,30 +279,6 @@ Java_gnu_java_nio_channels_FileChannelImpl_size (JNIEnv *env, jobject obj)
 
   return file_size;
 }
-/*************************************************************************/
-/*
- * Return the length of the file
- * Exception on error
- */
-JNIEXPORT jlong JNICALL
-Java_java_io_FileDescriptor_nativeGetLength(JNIEnv *env, jobject obj, jlong fd)
-{
-  int   native_fd;
-  jlong file_size;
-  int   result;
-
-  native_fd = get_native_fd(env, obj);
-
-  TARGET_NATIVE_FILE_SIZE(native_fd, file_size, result);
-  if (result != TARGET_NATIVE_OK)
-    {
-      JCL_ThrowException(env, IO_EXCEPTION,
-                         TARGET_NATIVE_LAST_ERROR_STRING());
-      return TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1;
-    }
-
-  return file_size;
-}
 
 /*
  * Return the current position of the file pointer

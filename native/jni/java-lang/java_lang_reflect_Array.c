@@ -1,5 +1,5 @@
 /* java.lang.reflect.Array native functions
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2004  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -41,18 +41,10 @@ exception statement from your version. */
  * Version: 1.1.0
  * Date: 2 Jun 1998
  */
-#include <stddef.h>
-#include "java_lang_reflect_Array.h"
 
-/*
- * Class:     java_lang_reflect_Array
- * Method:    getLength
- * Signature: (Ljava/lang/Object;)I
- */
-JNIEXPORT jint JNICALL Java_java_lang_reflect_Array_getLength
-  (JNIEnv * env, jclass thisClass, jobject arr) {
-	return (*env)->GetArrayLength(env, arr);
-}
+#include <stddef.h>
+
+#include "java_lang_reflect_Array.h"
 
 /*
  * Class:     java_lang_reflect_Array

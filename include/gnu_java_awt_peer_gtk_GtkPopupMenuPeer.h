@@ -11,7 +11,7 @@ extern "C"
 #endif
 
 extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkPopupMenuPeer_setupAccelGroup (JNIEnv *env, jobject, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkPopupMenuPeer_show__IIJ (JNIEnv *env, jobject, jint, jint, jlong);
+extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkPopupMenuPeer_show (JNIEnv *env, jobject, jint, jint, jlong);
 
 #ifdef __cplusplus
 }
