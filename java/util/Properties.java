@@ -322,10 +322,10 @@ public class Properties extends Hashtable {
         Properties prop = this;
         // Eliminate tail recursion.
         do {
-            String value = (String) get(key);
+            String value = (String) prop.get(key);
             if (value != null)
                 return value;
-            prop = defaults;
+            prop = prop.defaults;
         } while (prop != null);
         return defaultValue;
     }
