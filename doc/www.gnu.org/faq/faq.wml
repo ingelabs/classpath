@@ -258,7 +258,7 @@ maintainer of GNU Classpath, Mark Wielaard <mark@klomp.org>.
 <faq question="How do I install Mauve?">
 
 <commented-code>
-<code-line code="export CVSROOT=:pserver:anoncvs@bogus.example.com:/cvs/mauve" />
+<code-line code="export CVSROOT=:ext:anoncvs@bogus.example.com:/cvs/mauve" />
 <code-line code="cvs login">password is anoncvs</code-line>
 <code-line code="cvs checkout mauve" />
 <code-line code="cd mauve" />
@@ -336,13 +336,14 @@ Beware: generating the complete API Documentation non-trivial and the generation
 twice so much in your obj build dir.
 
 <ol>
+<br><li>set the CVS_RSH environment variable to ssh<br>
 <br><li>install gcj 3.3.2 (or higher)<br>
 <code>
-gjdoc CVS :pserver:anoncvs@subversions.gnu.org:/cvsroot/cp-tools module gjdoc
+gjdoc CVS :ext:anoncvs@savannah.gnu.org:/cvsroot/cp-tools module gjdoc
 </code>
 <br><li>install libxmlj<br>
 <code>
-libxmlj CVS :pserver:anoncvs@subversions.gnu.org:/cvsroot/classpathx module libxmlj<br>
+libxmlj CVS :ext:anoncvs@savannah.gnu.org:/cvsroot/classpathx module libxmlj<br>
 make && make install
 </code>
 
