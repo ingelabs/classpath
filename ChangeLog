@@ -1,3 +1,12 @@
+2003-09-21  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/nio/NIODatagramSocket.java,
+	gnu/java/nio/NIOSocket.java: New files,
+	merged from libgcj.
+	* gnu/java/nio/Makefile.am
+	(EXTRA_DIST): Added new files NIODatagramSocket.java
+	and NIOSocket.java.
+
 2003-09-20  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/DatagramSocket.java
