@@ -1,3 +1,60 @@
+2004-04-28  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* gnu/java/text/FormatBuffer.java,
+	gnu/java/text/AttributedFormatBuffer.java,
+	gnu/java/text/StringFormatBuffer.java: New classes to implement
+	attributed iterators in java.text.
+
+	* gnu/java/text/FormatCharacterIterator.java: Moved 
+	from java/text as it is an internal class.
+
+	* gnu/java/text/Makefile.am: Added new files to EXTRA_DIST.
+
+	* java/text/Makefile.am: Removed moved classes from EXTRA_DIST.
+	
+2004-04-28  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* java/text/MessageFormat.java:
+	(class Field): New class.
+	(formatToCharacterIterator): New method.
+	(format): Use formatInternal now.
+	(formatInternal): New method. String formatter should
+	be done here (with attributes). Attributes merging supported.
+	(parse): More documentation.
+	(getFormatsByArgumentIndex): New method.
+	(setFormatByArgumentIndex): New method.
+	(setFormatsByArgumentIndex): New method.
+
+2004-04-28  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* java/text/SimpleDateFormat.java:
+	(formatWithAttribute): New method. It implements
+	the formatting process with attributes.
+	(format): Use formatWithAttribute.
+	(formatToCharacterIterator): New method. Use
+	formatWithAttribute.
+
+2004-04-28  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* java/text/DecimalFormat.java
+	(scanFix): Build attribute array. Fixed error reporting.
+	(applyPatternWithSymbols): Store attributes for the prefix and
+	suffix.
+	(formatInternal): New method. Changed the way the string is
+	computed. Implemented attributes. Cleant up rounding in
+	exponential notation.
+	(format): Use formatInternal.
+	(formatToCharacterIterator): New method.
+	(exponentRound, negativePrefixRanges, positivePrefixRanges,
+	negativePrefixAttrs, positivePrefixAttrs, negativeSuffixRanges,
+	positiveSuffixRanges, negativeSuffixAttrs, positiveSuffixAttrs):
+	New fields.
+
+2004-04-11  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* java/text/Format.java: Updated importations. Removed unnecessary
+	classes.
+
 2004-04-28  Ingo Proetel  <proetel@aicas.com>
 
 	* java/awt/image/ColorModel.java (getRGBdefault): Default ColorModel has

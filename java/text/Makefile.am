@@ -17,7 +17,6 @@ DecimalFormat.java \
 DecimalFormatSymbols.java \
 FieldPosition.java \
 Format.java \
-FormatCharacterIterator.java \
 MessageFormat.java \
 NumberFormat.java \
 ParseException.java \

@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package java.text;
 
+import gnu.java.text.FormatCharacterIterator;
 import java.io.Serializable;
 
 /**
