@@ -46,6 +46,17 @@ public class TypeSignatureTest
     System.out.println( "class encoding of " + clazz );
   }
 
+  public static void testGetClass( Class clazz, String type_code )
+    throws ClassNotFoundException
+  {
+    if( TypeSignature.getClassForEncoding( type_code ).equals( clazz ) )
+      pass();
+    else
+      fail();
+    
+    System.out.println( "class from encoding " + type_code );
+  }
+
   public static void testConstructor( Constructor c, String type_code )
   {
     if( TypeSignature.getEncodingOfConstructor( c ).equals( type_code ) )
@@ -101,9 +112,8 @@ public class TypeSignatureTest
 		 "LTypeSignatureTest$Inner;" );
 
       // test anonymous inner-class
-      testClass( 
-	(new Anon() { public void f() {} }).getClass(),
-	"LTypeSignatureTest$1;" );
+      Anon anon = new Anon() { public void f() {} };
+      testClass( anon.getClass(), "LTypeSignatureTest$1;" );
 
       //test getEncodingOfConstructor
       testConstructor( String.class.getConstructor( new Class[] {} ),
@@ -142,6 +152,27 @@ public class TypeSignatureTest
       testMember(
 	TypeSignatureTest.class.getField( "o" ),
 	"[[Ljava/lang/Object;" );      
+
+      // test getClassForEncoding
+      testGetClass( Boolean.TYPE, "Z" );
+      testGetClass( Byte.TYPE, "B" );
+      testGetClass( Character.TYPE, "C" );
+      testGetClass( Double.TYPE, "D" );
+      testGetClass( Float.TYPE, "F" );
+      testGetClass( Integer.TYPE, "I" );
+      testGetClass( Long.TYPE, "J" );
+      testGetClass( Short.TYPE, "S" );
+      testGetClass( (new int[] {}).getClass(), "[I" );
+      testGetClass( (new float[][][] {}).getClass(), "[[[F" );
+      testGetClass( String.class, "Ljava/lang/String;" );
+      testGetClass( TypeSignatureTest.class, "LTypeSignatureTest;" );
+
+      // test named inner-class
+      testGetClass( i.getClass(),
+		 "LTypeSignatureTest$Inner;" );
+
+      // test anonymous inner-class
+      testGetClass( anon.getClass(), "LTypeSignatureTest$1;" );
     }
     catch( Exception e )
     {
