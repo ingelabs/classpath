@@ -367,12 +367,6 @@ final class VMThread
      * because some other thread may be active.  So don't expect real-time
      * performance.
      *
-     * <p>
-     * A zero length sleep is equivalent to <code>Thread.yield()</code>.
-     * This is simply for compatibility with Sun's JDK. See also
-     * <a href="http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6213203">JDK
-     * Bug #6213203</a>.
-     *
      * @param ms the number of milliseconds to sleep.
      * @param ns the number of extra nanoseconds to sleep (0-999999)
      * @throws InterruptedException if the Thread is (or was) interrupted;
@@ -384,10 +378,14 @@ final class VMThread
       // Round up
       ms += (ns != 0) ? 1 : 0;
 
-      // JDK compatibility: sleep(0) is equivalent to Thread.yield()
+      // Note: JDK treats a zero length sleep is like Thread.yield(),
+      // without checking the interrupted status of the thread.
+      // It's unclear if this is a bug in the implementation or the spec.
+      // See http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6213203
       if (ms == 0)
 	{
-	  Thread.yield();
+	  if (Thread.interrupted())
+	    throw new InterruptedException();
 	  return;
 	}
 

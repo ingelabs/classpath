@@ -1,3 +1,8 @@
+2005-01-02  Archie Cobbs  <archie@dellroad.org>
+
+	* vm/reference/java/lang/VMThread.java (sleep()): revert behavior
+	of sleep(0,0) to previous, where we check for InterruptedException.
+
 2005-01-02  Mark Wielaard  <mark@klomp.org>
 
 	* ChangeLog.gnujaxp.1: New (historic) ChangeLog file.
