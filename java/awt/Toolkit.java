@@ -661,7 +661,8 @@ getSystemClipboard();
 public int
 getMenuShortcutKeyMask()
 {
-  return(Event.CTRL_MASK);
+  return java.awt.event.KeyEvent.VK_CONTROL;
+  //  return(Event.CTRL_MASK);
 }
 
 /*************************************************************************/

@@ -204,13 +204,13 @@ processWindowEvent(WindowEvent event)
   * Post a Java 1.0 event to the event queue.
   *
   * @param event The event to post.
-  */
+
 public boolean
 postEvent(Event event)
 {
   return(false);
 }
-
+  */
 /*************************************************************************/
 
 /**

@@ -20,12 +20,11 @@ Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA. */
 
 package java.awt.peer;
 
-import java.awt.Event;
-
+import java.awt.Component;
 public interface PopupMenuPeer extends MenuPeer
 {
 
-public abstract void show (Event e);
+public abstract void show (Component origin, int x, int y);
 
 } // interface PopupMenuPeer
 

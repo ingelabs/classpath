@@ -55,9 +55,10 @@ remove(MenuComponent component);
   * @param event The event to dispatch.
   *
   * @deprecated
-  */
+  
 public abstract boolean
 postEvent(Event event);
+*/
 
 } // interface MenuContainer
 

@@ -1,5 +1,32 @@
 2001-08-11  John Leuner  <jewel@debian.org>
 
+	* java/awt/font/TextHitInfo.java: added this file (no implementation)
+	* java/awt/Window.java (postEvent): commented out this 1.0 method
+	* java/awt/Toolkit.java (getMenuShortcutKeyMask): Just guessed VK_CONTROL instead
+	of Event.CTRL_MASK
+	* java/awt/peer/PopupMenuPeer.java (show): doesn't use 1.0 Event anymore 
+	* java/awt/PopupMenu.java (show): doesn't create 1.0 Event anymore 
+	* java/awt/MenuContainer.java (postEvent): commented out this 1.0 method
+	* java/awt/MenuComponent.java (postEvent): commented out this 1.0 method
+	* java/awt/Container.java (deliverEvent): commented out this 1.0 method
+	* java/awt/Component.java (getFocus): commented out this 1.0 method
+	(lostFocus): idem
+	(handleEvent): idem
+	(action): idem
+	(deliverEvent): idem
+	(postEvent): idem
+	(keyDown): idem
+	(keyUp): idem
+	(mouseDown): idem
+	(mouseUp): idem
+	(mouseEnter): idem
+	(mouseExit): idem
+	(mouseDrag): idem
+	(mouseMove): idem
+	* java/awt/AWTEvent.java (AWTEvent(Event)): commented out this constructor
+
+2001-08-11  John Leuner  <jewel@debian.org>
+
 	* java/net/URLConnection.java (getDefaultUseCaches): made non-static
 	(setDefaultUseCaches): made non-static
 

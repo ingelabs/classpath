@@ -542,12 +542,12 @@ processEvent(AWTEvent event)
   *
   * @deprecated This method is deprecated in favor of 
   * <code>dispatchEvent()</code>.
-  */
+
 public void
 deliverEvent(Event event)
 {
 }
-
+  */
 /*************************************************************************/
 
 /**

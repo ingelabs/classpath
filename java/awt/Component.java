@@ -1093,12 +1093,13 @@ inside(int x, int y)
   * AWT 1.0 focus event processor.
   *
   * @deprecated Deprecated in favor of <code>processFocusEvent</code>.
-  */
+  
 public boolean
 gotFocus(Event event, Object what)
 {
   return(true);
 }
+*/
 
 /*************************************************************************/
 
@@ -1106,13 +1107,13 @@ gotFocus(Event event, Object what)
   * AWT 1.0 focus event processor.
   *
   * @deprecated Deprecated in favor of <code>processFocusEvent</code>.
-  */
+  
 public boolean
 lostFocus(Event event, Object what)
 {
   return(true);
 }
-
+*/
 /*************************************************************************/
 
 /**
@@ -1171,13 +1172,13 @@ nextFocus()
   * AWT 1.0 event processor.
   *
   * @deprecated Deprecated in favor of <code>processEvent</code>.
-  */
+  
 public boolean 
 handleEvent(Event event)
 {
   return(true);
 }
-
+*/
 /*************************************************************************/
 
 /**
@@ -1185,142 +1186,142 @@ handleEvent(Event event)
   *
   * @deprecated Deprecated in favor of the <code>ActionListener</code>
   * interface.
-  */
+  
 public boolean
 action(Event event, Object what)
 {
   return(true);
 }
-
+*/
 /*************************************************************************/
 
 /**
   * AWT 1.0 event dispatcher.
   *
   * @deprecated Deprecated in favor of <code>dispatchEvent()</code>.
-  */
+
 public void
 deliverEvent(Event event)
 {
 }
-
+  */
 /*************************************************************************/
 
 /**
   * AWT 1.0 event dispatcher.
   *
   * @deprecated Deprecated in favor of <code>dispatchEvent()</code>.
-  */
+
 public boolean
 postEvent(Event event)
 {
   return(true);
 }
-
+  */
 /*************************************************************************/
 
 /**
   * AWT 1.0 key press event.
   *
   * @deprecated Deprecated in favor of <code>processKeyEvent</code>.
-  */
+
 public boolean
 keyDown(Event event, int key)
 {
   return(true);
 }
-
+  */
 /*************************************************************************/
 
 /**
   * AWT 1.0 key press event.
   *
   * @deprecated Deprecated in favor of <code>processKeyEvent</code>.
-  */
+
 public boolean
 keyUp(Event event, int key)
 {
   return(true);
 }
-
+  */
 /*************************************************************************/
 
 /**
   * AWT 1.0 mouse event.
   *
   * @deprecated Deprecated in favor of <code>processMouseEvent()</code>.
-  */
+
 public boolean
 mouseDown(Event event, int x, int y)
 {
   return(true);
 }
-
+  */
 /*************************************************************************/
 
 /**
   * AWT 1.0 mouse event.
   *
   * @deprecated Deprecated in favor of <code>processMouseEvent()</code>.
-  */
+
 public boolean
 mouseUp(Event event, int x, int y)
 {
   return(true);
 }
-
+  */
 /*************************************************************************/
 
 /**
   * AWT 1.0 mouse event.
   *
   * @deprecated Deprecated in favor of <code>processMouseEvent()</code>.
-  */
+
 public boolean
 mouseEnter(Event event, int x, int y)
 {
   return(true);
 }
-
+  */
 /*************************************************************************/
 
 /**
   * AWT 1.0 mouse event.
   *
   * @deprecated Deprecated in favor of <code>processMouseEvent()</code>.
-  */
+
 public boolean
 mouseExit(Event event, int x, int y)
 {
   return(true);
 }
-
+  */
 /*************************************************************************/
 
 /**
   * AWT 1.0 mouse event.
   *
   * @deprecated Deprecated in favor of <code>processMouseMotionEvent()</code>.
-  */
+
 public boolean
 mouseDrag(Event event, int x, int y)
 {
   return(true);
 }
-
+  */
 /*************************************************************************/
 
 /**
   * AWT 1.0 mouse event.
   *
   * @deprecated Deprecated in favor of <code>processMouseMotionEvent()</code>.
-  */
+
 public boolean
 mouseMove(Event event, int x, int y)
 {
   return(true);
 }
-
+  */
 /*************************************************************************/
 
 /**

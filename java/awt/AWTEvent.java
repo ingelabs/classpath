@@ -124,12 +124,17 @@ AWTEvent next;
   * specified Java 1.0 event object.
   *
   * @param event The Java 1.0 event to initialize from.
-  */
+  *
+  *
+  * Removed this method because we no longer support Java 1.0
+  *
+  
 public
 AWTEvent(Event event)
 {
   this(event.target, event.id);
 }
+*/
 
 /*************************************************************************/
 
