@@ -1,3 +1,10 @@
+2002-02-09  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/net/DatagramSocketImpl.java: Reformat (no code changes).
+	* java/net/SocketImpl.java: Ditto.
+	* java/rmi/server/RMIClassLoader.java: Ditto.
+	* gnu/java/rmi/server/UnicastRemoteCall.java: Ditto.
+
 2002-02-09  C. Brian Jones <cbj@gnu.org>
 
 	* INSTALL: removed mention of needing gcjh and edited compilation

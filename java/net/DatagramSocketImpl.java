@@ -1,5 +1,5 @@
 /* DatagramSocketImpl.java -- Abstract class for UDP socket implementations
-   Copyright (C) 1998, 1999 2000, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -45,10 +45,8 @@ import java.io.FileDescriptor;
  * Written using on-line Java Platform 1.2 API Specification, as well
  * as "The Java Class Libraries", 2nd edition (Addison-Wesley, 1998).
  * Status:  Believed complete and correct.
- */
-
-/**
- * This abstract class models a datagram socket implementation.  An
+ *
+ * <p>This abstract class models a datagram socket implementation.  An
  * actual implementation class would implement these methods, probably
  * via redirecting them to native code.
  *
@@ -64,7 +62,7 @@ public abstract class DatagramSocketImpl implements SocketOptions
   protected int localPort;
 
   /**
-   * The FileDescriptor object for this object. 
+   * The FileDescriptor object for this object.
    */
   protected FileDescriptor fd;
 
@@ -84,7 +82,7 @@ public abstract class DatagramSocketImpl implements SocketOptions
    * @exception SocketException If an error occurs
    */
   protected abstract void bind(int lport, InetAddress laddr)
-  	throws SocketException;
+    throws SocketException;
 
   /**
    * This methods closes the socket
@@ -123,7 +121,7 @@ public abstract class DatagramSocketImpl implements SocketOptions
 
   /**
    * Receives a packet of data from the network  Will block until a packet
-   * arrives.  The packet info in populated into the passed in 
+   * arrives.  The packet info in populated into the passed in
    * DatagramPacket object.
    *
    * @param p A place to store the incoming packet.
@@ -152,7 +150,7 @@ public abstract class DatagramSocketImpl implements SocketOptions
    */
   protected abstract byte getTTL() throws IOException;
 
- /**
+  /**
    * Sets the Time to Live (TTL) setting on this socket to the specified
    * value.
    *
@@ -179,7 +177,7 @@ public abstract class DatagramSocketImpl implements SocketOptions
    */
   protected abstract void join(InetAddress inetaddr) throws IOException;
 
- /**
+  /**
    * Causes the socket to leave the specified multicast group.
    *
    * @param inetaddr The multicast address to leave
