@@ -21,6 +21,7 @@ Dictionary.java \
 EmptyStackException.java \
 Enumeration.java \
 EventListener.java \
+EventListenerProxy.java \
 EventObject.java \
 GregorianCalendar.java \
 HashMap.java \

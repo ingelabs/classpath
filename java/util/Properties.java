@@ -1,5 +1,5 @@
-/* java.util.Properties
-   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
+/* Properties.java -- a set of persistent properties
+   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -40,12 +40,16 @@ package java.util;
 import java.io.*;
 
 /**
+ * A set of persistent properties, which can be saved or loaded from a stream.
+ * A property list may also contain defaults, searched if the main list
+ * does not contain a property for a given key.
+ *
  * An example of a properties file for the german language is given
  * here.  This extends the example given in ListResourceBundle.
  * Create a file MyResource_de.properties with the following contents
  * and put it in the CLASSPATH.  (The character
  * <code>\</code><code>u00e4</code> is the german &auml;)
- * 
+ *
  * <pre>
  * s1=3
  * s2=MeineDisk
@@ -71,21 +75,31 @@ import java.io.*;
  * this, you should use the <code>get/setProperty</code> method instead
  * of <code>get/put</code>.
  *
- * @see PropertyResourceBundle
+ * Properties are saved in ISO 8859-1 encoding, using Unicode escapes with
+ * a single <code>u</code> for any character which cannot be represented.
+ *
  * @author Jochen Hoenicke
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @see PropertyResourceBundle
+ * @status updated to 1.4
  */
 public class Properties extends Hashtable
 {
   /**
    * The property list that contains default values for any keys not
-   * in this property list.  
+   * in this property list.
+   *
+   * @serial the default properties
    */
   protected Properties defaults;
 
+  /**
+   * Compatible with JDK 1.0+.
+   */
   private static final long serialVersionUID = 4112578634029874840L;
 
   /**
-   * Creates a new empty property list.
+   * Creates a new empty property list with no default values.
    */
   public Properties()
   {
@@ -94,11 +108,27 @@ public class Properties extends Hashtable
 
   /**
    * Create a new empty property list with the specified default values.
-   * @param defaults a Properties object containing the default values.
+   *
+   * @param defaults a Properties object containing the default values
    */
   public Properties(Properties defaults)
   {
     this.defaults = defaults;
+  }
+
+  /**
+   * Adds the given key/value pair to this properties.  This calls
+   * the hashtable method put.
+   *
+   * @param key the key for this property
+   * @param value the value for this property
+   * @return The old value for the given key
+   * @see #getProperty(String)
+   * @since 1.2
+   */
+  public Object setProperty(String key, String value)
+  {
+    return put(key, value);
   }
 
   /**
@@ -120,7 +150,7 @@ public class Properties extends Hashtable
    *
    * Escape sequences <code>\t, \n, \r, \\, \", \', \!, \#, \ </code>(a
    * space), and unicode characters with the
-   * <code>\</code><code>u</code>xxxx notation are detected, and 
+   * <code>\\u</code><em>xxxx</em> notation are detected, and
    * converted to the corresponding single character. <br>
    *
    * <pre>
@@ -132,161 +162,164 @@ public class Properties extends Hashtable
    * weekdays: Sunday,Monday,Tuesday,Wednesday,\
    *           Thursday,Friday,Saturday
    * # The safest way to include a space at the end of a value:
-   * label   = Name:\<code></code>u0020
+   * label   = Name:\\u0020
    * </pre>
    *
    * @param in the input stream
-   * @exception IOException if an error occurred when reading
-   * from the input.  */
+   * @throws IOException if an error occurred when reading the input
+   */
   public void load(InputStream inStream) throws IOException
   {
     // The spec says that the file must be encoded using ISO-8859-1.
     BufferedReader reader =
       new BufferedReader(new InputStreamReader(inStream, "ISO-8859-1"));
     String line;
-    
+
     while ((line = reader.readLine()) != null)
       {
-	char c = 0;
-	int pos = 0;
-	while (pos < line.length()
-	       && Character.isWhitespace(c = line.charAt(pos)))
-	  pos++;
+        char c = 0;
+        int pos = 0;
+        while (pos < line.length()
+               && Character.isWhitespace(c = line.charAt(pos)))
+          pos++;
 
-	// If line is empty or begins with a comment character,
-	// skip this line.
-	if (pos == line.length() || c == '#' || c == '!')
-	  continue;
+        // If line is empty or begins with a comment character,
+        // skip this line.
+        if (pos == line.length() || c == '#' || c == '!')
+          continue;
 
-	// The characters up to the next Whitespace, ':', or '='
-	// describe the key.  But look for escape sequences.
-	StringBuffer key = new StringBuffer();
-	while (pos < line.length()
-	       && !Character.isWhitespace(c = line.charAt(pos++))
-	       && c != '=' && c != ':')
-	  {
-	    if (c == '\\')
-	      {
-		if (pos == line.length())
-		  {
-		    // The line continues on the next line.
-		    line = reader.readLine();
-		    pos = 0;
-		    while (pos < line.length()
-			   && Character.isWhitespace(c = line.charAt(pos)))
-		      pos++;
-		  }
-		else
-		  {
-		    c = line.charAt(pos++);
-		    switch (c)
-		      {
-		      case 'n':
-			key.append('\n');
-			break;
-		      case 't':
-			key.append('\t');
-			break;
-		      case 'r':
-			key.append('\r');
-			break;
-		      case 'u':
-			if (pos + 4 <= line.length())
-			  {
-			    char uni = (char) Integer.parseInt
-			      (line.substring(pos, pos + 4), 16);
-			    key.append(uni);
-			    pos += 4;
-			  }	// else throw exception?
-			break;
-		      default:
-			key.append(c);
-			break;
-		      }
-		  }
-	      }
-	    else
-	      key.append(c);
-	  }
+        // The characters up to the next Whitespace, ':', or '='
+        // describe the key.  But look for escape sequences.
+        StringBuffer key = new StringBuffer();
+        while (pos < line.length()
+               && ! Character.isWhitespace(c = line.charAt(pos++))
+               && c != '=' && c != ':')
+          {
+            if (c == '\\')
+              {
+                if (pos == line.length())
+                  {
+                    // The line continues on the next line.
+                    line = reader.readLine();
+                    pos = 0;
+                    while (pos < line.length()
+                           && Character.isWhitespace(c = line.charAt(pos)))
+                      pos++;
+                  }
+                else
+                  {
+                    c = line.charAt(pos++);
+                    switch (c)
+                      {
+                      case 'n':
+                        key.append('\n');
+                        break;
+                      case 't':
+                        key.append('\t');
+                        break;
+                      case 'r':
+                        key.append('\r');
+                        break;
+                      case 'u':
+                        if (pos + 4 <= line.length())
+                          {
+                            char uni = (char) Integer.parseInt
+                              (line.substring(pos, pos + 4), 16);
+                            key.append(uni);
+                            pos += 4;
+                          }        // else throw exception?
+                        break;
+                      default:
+                        key.append(c);
+                        break;
+                      }
+                  }
+              }
+            else
+              key.append(c);
+          }
 
-	boolean isDelim = (c == ':' || c == '=');
-	while (pos < line.length()
-	       && Character.isWhitespace(c = line.charAt(pos)))
-	  pos++;
+        boolean isDelim = (c == ':' || c == '=');
+        while (pos < line.length()
+               && Character.isWhitespace(c = line.charAt(pos)))
+          pos++;
 
-	if (!isDelim && (c == ':' || c == '='))
-	  {
-	    pos++;
-	    while (pos < line.length()
-		   && Character.isWhitespace(c = line.charAt(pos)))
-	      pos++;
-	  }
+        if (! isDelim && (c == ':' || c == '='))
+          {
+            pos++;
+            while (pos < line.length()
+                   && Character.isWhitespace(c = line.charAt(pos)))
+              pos++;
+          }
 
-	StringBuffer element = new StringBuffer(line.length() - pos);
-	while (pos < line.length())
-	  {
-	    c = line.charAt(pos++);
-	    if (c == '\\')
-	      {
-		if (pos == line.length())
-		  {
-		    // The line continues on the next line.
-		    line = reader.readLine();
-		    pos = 0;
-		    while (pos < line.length()
-			   && Character.isWhitespace(c = line.charAt(pos)))
-		      pos++;
-		    element.ensureCapacity(line.length() - pos +
-					   element.length());
-		  }
-		else
-		  {
-		    c = line.charAt(pos++);
-		    switch (c)
-		      {
-		      case 'n':
-			element.append('\n');
-			break;
-		      case 't':
-			element.append('\t');
-			break;
-		      case 'r':
-			element.append('\r');
-			break;
-		      case 'u':
-			if (pos + 4 <= line.length())
-			  {
-			    char uni = (char) Integer.parseInt
-			      (line.substring(pos, pos + 4), 16);
-			    element.append(uni);
-			    pos += 4;
-			  }	// else throw exception?
-			break;
-		      default:
-			element.append(c);
-			break;
-		      }
-		  }
-	      }
-	    else
-	      element.append(c);
-	  }
-	put(key.toString(), element.toString());
+        StringBuffer element = new StringBuffer(line.length() - pos);
+        while (pos < line.length())
+          {
+            c = line.charAt(pos++);
+            if (c == '\\')
+              {
+                if (pos == line.length())
+                  {
+                    // The line continues on the next line.
+                    line = reader.readLine();
+                    pos = 0;
+                    while (pos < line.length()
+                           && Character.isWhitespace(c = line.charAt(pos)))
+                      pos++;
+                    element.ensureCapacity(line.length() - pos +
+                                           element.length());
+                  }
+                else
+                  {
+                    c = line.charAt(pos++);
+                    switch (c)
+                      {
+                      case 'n':
+                        element.append('\n');
+                        break;
+                      case 't':
+                        element.append('\t');
+                        break;
+                      case 'r':
+                        element.append('\r');
+                        break;
+                      case 'u':
+                        if (pos + 4 <= line.length())
+                          {
+                            char uni = (char) Integer.parseInt
+                              (line.substring(pos, pos + 4), 16);
+                            element.append(uni);
+                            pos += 4;
+                          }        // else throw exception?
+                        break;
+                      default:
+                        element.append(c);
+                        break;
+                      }
+                  }
+              }
+            else
+              element.append(c);
+          }
+        put(key.toString(), element.toString());
       }
   }
 
   /**
    * Calls <code>store(OutputStream out, String header)</code> and
    * ignores the IOException that may be thrown.
-   * @deprecated use store instead.
-   * @exception ClassCastException if this property contains any key or
-   * value that isn't a string.
+   *
+   * @param out the stream to write to
+   * @param header a description of the property list
+   * @throws ClassCastException if this property contains any key or
+   *         value that are not strings
+   * @deprecated use {@link #store(OutputStream, String)} instead
    */
   public void save(OutputStream out, String header)
   {
     try
       {
-	store(out, header);
+        store(out, header);
       }
     catch (IOException ex)
       {
@@ -294,7 +327,8 @@ public class Properties extends Hashtable
   }
 
   /**
-   * Writes the key/value pairs to the given output stream. <br>
+   * Writes the key/value pairs to the given output stream, in a format
+   * suitable for <code>load</code>. <br>
    *
    * If header is not null, this method writes a comment containing
    * the header as first line to the stream.  The next line (or first
@@ -308,47 +342,42 @@ public class Properties extends Hashtable
    * preceeded by a backslash.  Spaces are preceded with a backslash,
    * if and only if they are at the beginning of the key.  Characters
    * that are not in the ascii range 33 to 127 are written in the
-   * <code>\</code><code>u</code>xxxx Form.
+   * <code>\</code><code>u</code>xxxx Form.<br>
+   *
+   * Following the listing, the output stream is flushed but left open.
    *
    * @param out the output stream
-   * @param header the header written in the first line, may be null.
-   * @exception ClassCastException if this property contains any key or
-   * value that isn't a string.
+   * @param header the header written in the first line, may be null
+   * @throws ClassCastException if this property contains any key or
+   *         value that isn't a string
+   * @throws IOException if writing to the stream fails
+   * @throws NullPointerException if out is null
+   * @since 1.2
    */
   public void store(OutputStream out, String header) throws IOException
   {
     // The spec says that the file must be encoded using ISO-8859-1.
     PrintWriter writer
-      = new PrintWriter(new OutputStreamWriter (out, "ISO-8859-1"));
+      = new PrintWriter(new OutputStreamWriter(out, "ISO-8859-1"));
     if (header != null)
       writer.println("#" + header);
-    writer.println("#" + new Date().toString());
+    writer.println("#" + new Date());
     list(writer);
     writer.flush();
   }
 
   /**
-   * Adds the given key/value pair to this properties.  This calls
-   * the hashtable method put.
-   * @param key the key for this property
-   * @param value the value for this property
-   * @return The old value for the given key.
-   * @since JDK1.2 */
-  public Object setProperty(String key, String value)
-  {
-    return put(key, value);
-  }
-
-  /**
    * Gets the property with the specified key in this property list.
    * If the key is not found, the default property list is searched.
-   * If the property is not found in default or the default of
-   * default, null is returned.
-   * @param key The key for this property.
-   * @param defaulValue A default value
-   * @return The value for the given key, or null if not found. 
-   * @exception ClassCastException if this property contains any key or
-   * value that isn't a string.
+   * If the property is not found in the default, null is returned.
+   *
+   * @param key The key for this property
+   * @return the value for the given key, or null if not found
+   * @throws ClassCastException if this property contains any key or
+   *         value that isn't a string
+   * @see #defaults
+   * @see #setProperty(String, String)
+   * @see #getProperty(String, String)
    */
   public String getProperty(String key)
   {
@@ -358,13 +387,16 @@ public class Properties extends Hashtable
   /**
    * Gets the property with the specified key in this property list.  If
    * the key is not found, the default property list is searched.  If the
-   * property is not found in default or the default of default, the 
-   * specified defaultValue is returned.
-   * @param key The key for this property.
+   * property is not found in the default, the specified defaultValue is
+   * returned.
+   *
+   * @param key The key for this property
    * @param defaulValue A default value
-   * @return The value for the given key.
-   * @exception ClassCastException if this property contains any key or
-   * value that isn't a string.
+   * @return The value for the given key
+   * @throws ClassCastException if this property contains any key or
+   *         value that isn't a string
+   * @see #defaults
+   * @see #setProperty(String, String)
    */
   public String getProperty(String key, String defaultValue)
   {
@@ -372,27 +404,20 @@ public class Properties extends Hashtable
     // Eliminate tail recursion.
     do
       {
-	String value = (String) prop.get(key);
-	if (value != null)
-	  return value;
-	prop = prop.defaults;
+        String value = (String) prop.get(key);
+        if (value != null)
+          return value;
+        prop = prop.defaults;
       }
     while (prop != null);
     return defaultValue;
   }
 
-  private final void addHashEntries(Hashtable base)
-  {
-    if (defaults != null)
-      defaults.addHashEntries(base);
-    Enumeration keys = keys();
-    while (keys.hasMoreElements())
-      base.put(keys.nextElement(), base);
-  }
-
   /**
    * Returns an enumeration of all keys in this property list, including
    * the keys in the default property list.
+   *
+   * @return an Enumeration of all defined keys
    */
   public Enumeration propertyNames()
   {
@@ -408,11 +433,59 @@ public class Properties extends Hashtable
   }
 
   /**
+   * Writes the key/value pairs to the given print stream.  They are
+   * written in the way described in the method store. This does not visit
+   * the keys in the default properties.
+   *
+   * @param out the stream, where the key/value pairs are written to
+   * @throws ClassCastException if this property contains any key or
+   *         value that isn't a string
+   * @see #store(OutputStream, String)
+   */
+  public void list(PrintStream out)
+  {
+    Enumeration keys = keys();
+    Enumeration elts = elements();
+    while (keys.hasMoreElements())
+      {
+        String key = (String) keys.nextElement();
+        String elt = (String) elts.nextElement();
+        String output = formatForOutput(key, elt);
+        out.println(output);
+      }
+  }
+
+  /**
+   * Writes the key/value pairs to the given print writer.  They are
+   * written in the way, described in the method store.
+   *
+   * @param out the writer, where the key/value pairs are written to
+   * @throws ClassCastException if this property contains any key or
+   *         value that isn't a string
+   * @see #store(OutputStream, String)
+   * @see #list(PrintStream)
+   * @since 1.1
+   */
+  public void list(PrintWriter out)
+  {
+    Enumeration keys = keys();
+    Enumeration elts = elements();
+    while (keys.hasMoreElements())
+      {
+        String key = (String) keys.nextElement();
+        String elt = (String) elts.nextElement();
+        String output = formatForOutput(key, elt);
+        out.println(output);
+      }
+  }
+
+  /**
    * Formats a key/value pair for output in a properties file.
    * See store for a description of the format.
-   * @param key the key.
-   * @param value the value.
-   * @see #store
+   *
+   * @param key the key
+   * @param value the value
+   * @see #store(OutputStream, String)
    */
   private String formatForOutput(String key, String value)
   {
@@ -422,134 +495,104 @@ public class Properties extends Hashtable
     boolean head = true;
     for (int i = 0; i < key.length(); i++)
       {
-	char c = key.charAt(i);
-	switch (c)
-	  {
-	  case '\n':
-	    result.append("\\n");
-	    break;
-	  case '\r':
-	    result.append("\\r");
-	    break;
-	  case '\t':
-	    result.append("\\t");
-	    break;
-	  case '\\':
-	    result.append("\\\\");
-	    break;
-	  case '!':
-	    result.append("\\!");
-	    break;
-	  case '#':
-	    result.append("\\#");
-	    break;
-	  case '=':
-	    result.append("\\=");
-	    break;
-	  case ':':
-	    result.append("\\:");
-	    break;
-	  case ' ':
-	    result.append("\\ ");
-	    break;
-	  default:
-	    if (c < 32 || c > '~')
-	      {
-		String hex = Integer.toHexString(c);
-		result.append("\\u0000".substring(0, 6 - hex.length()));
-		result.append(hex);
-	      }
-	    else
-	        result.append(c);
-	  }
-	if (c != 32)
-	  head = false;
+        char c = key.charAt(i);
+        switch (c)
+          {
+          case '\n':
+            result.append("\\n");
+            break;
+          case '\r':
+            result.append("\\r");
+            break;
+          case '\t':
+            result.append("\\t");
+            break;
+          case '\\':
+            result.append("\\\\");
+            break;
+          case '!':
+            result.append("\\!");
+            break;
+          case '#':
+            result.append("\\#");
+            break;
+          case '=':
+            result.append("\\=");
+            break;
+          case ':':
+            result.append("\\:");
+            break;
+          case ' ':
+            result.append("\\ ");
+            break;
+          default:
+            if (c < 32 || c > '~')
+              {
+                String hex = Integer.toHexString(c);
+                result.append("\\u0000".substring(0, 6 - hex.length()));
+                result.append(hex);
+              }
+            else
+                result.append(c);
+          }
+        if (c != 32)
+          head = false;
       }
     result.append('=');
     head = true;
     for (int i = 0; i < value.length(); i++)
       {
-	char c = value.charAt(i);
-	switch (c)
-	  {
-	  case '\n':
-	    result.append("\\n");
-	    break;
-	  case '\r':
-	    result.append("\\r");
-	    break;
-	  case '\t':
-	    result.append("\\t");
-	    break;
-	  case '\\':
-	    result.append("\\\\");
-	    break;
-	  case '!':
-	    result.append("\\!");
-	    break;
-	  case '#':
-	    result.append("\\#");
-	    break;
-	  case ' ':
-	    result.append(head ? "\\ " : " ");
-	    break;
-	  default:
-	    if (c < 32 || c > '~')
-	      {
-		String hex = Integer.toHexString(c);
-		result.append("\\u0000".substring(0, 6 - hex.length()));
-		result.append(hex);
-	      }
-	    else
-	      result.append(c);
-	  }
-	if (c != 32)
-	  head = false;
+        char c = value.charAt(i);
+        switch (c)
+          {
+          case '\n':
+            result.append("\\n");
+            break;
+          case '\r':
+            result.append("\\r");
+            break;
+          case '\t':
+            result.append("\\t");
+            break;
+          case '\\':
+            result.append("\\\\");
+            break;
+          case '!':
+            result.append("\\!");
+            break;
+          case '#':
+            result.append("\\#");
+            break;
+          case ' ':
+            result.append(head ? "\\ " : " ");
+            break;
+          default:
+            if (c < 32 || c > '~')
+              {
+                String hex = Integer.toHexString(c);
+                result.append("\\u0000".substring(0, 6 - hex.length()));
+                result.append(hex);
+              }
+            else
+              result.append(c);
+          }
+        if (c != 32)
+          head = false;
       }
     return result.toString();
   }
 
   /**
-   * Writes the key/value pairs to the given print stream.  They are
-   * written in the way, described in the method store.
-   * @param out the stream, where the key/value pairs are written to.
-   * @exception ClassCastException if this property contains any key or
-   * value that isn't a string.
-   * @see #store
+   * Recursively grabs the keys from the default properties.
+   *
+   * @param base the hashtable to place the keys in
    */
-  public void list(PrintStream out)
+  private final void addHashEntries(Hashtable base)
   {
+    if (defaults != null)
+      defaults.addHashEntries(base);
     Enumeration keys = keys();
-    Enumeration elts = elements();
     while (keys.hasMoreElements())
-      {
-	String key = (String) keys.nextElement();
-	String elt = (String) elts.nextElement();
-	String output = formatForOutput(key, elt);
-	out.println(output);
-      }
-  }
-
-  /**
-   * Writes the key/value pairs to the given print writer.  They are
-   * written in the way, described in the method store.
-   * @param out the writer, where the key/value pairs are written to.
-   * @exception ClassCastException if this property contains any key or
-   * value that isn't a string.
-   * @see #store
-   * @see #list(java.io.PrintStream)
-   * @since JDK1.1
-   */
-  public void list(PrintWriter out)
-  {
-    Enumeration keys = keys();
-    Enumeration elts = elements();
-    while (keys.hasMoreElements())
-      {
-	String key = (String) keys.nextElement();
-	String elt = (String) elts.nextElement();
-	String output = formatForOutput(key, elt);
-	out.println(output);
-      }
+      base.put(keys.nextElement(), base);
   }
 }

@@ -1,6 +1,5 @@
-/* TooManyListenersException.java -- thrown when a unicast event can't accept
-   another Listener
-   Copyright (C) 1998, 1999, 2001, 2002 Free Software Foundation, Inc.
+/* EventListenerProxy.java -- abstract wrapper for event listeners
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -40,39 +39,37 @@ exception statement from your version. */
 package java.util;
 
 /**
- * This exception is part of the java event model.  It is thrown if an
- * event listener is added via the addXyzEventListener method, but the
- * object doesn't support any more listeners, e.g. it only supports a
- * single event listener.
+ * An abstract wrapper for event listeners.  This allows subclasses to
+ * attach additional parameters to an existing event listener to create
+ * a new one.  Subclasses are expected to add methods to set and retrieve
+ * any attached properties.
  *
- * @author Jochen Hoenicke
- * @author Warren Levy <warrenl@cygnus.com>
- * @see EventListener
- * @see EventObject
- * @since 1.1
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @since 1.4
  * @status updated to 1.4
  */
-public class TooManyListenersException extends Exception
+public abstract class EventListenerProxy implements EventListener
 {
-  /**
-   * Compatible with JDK 1.1+.
-   */
-  private static final long serialVersionUID = 5074640544770687831L;
+  /** The listener that this proxy wraps. */
+  private final EventListener listener;
 
   /**
-   * Constructs a TooManyListenersException with no detail message.
+   * Construct a proxy event listener, given an existing one to augment.
+   *
+   * @param listener the listener to wrap
    */
-  public TooManyListenersException()
+  public EventListenerProxy(EventListener listener)
   {
+    this.listener = listener;
   }
 
   /**
-   * Constructs a TooManyListenersException with a detail message.
+   * Return the wrapped event listener.
    *
-   * @param detail the detail message
+   * @return the listener associated with this proxy
    */
-  public TooManyListenersException(String detail)
+  public EventListener getLitener()
   {
-    super(detail);
+    return listener;
   }
 }
