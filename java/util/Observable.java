@@ -107,13 +107,13 @@ public class Observable
    */
   public void notifyObservers (Object obj)
   {
-    if (!changed) return;
+    if (!hasChanged ()) return;
     Vector ob1 = (Vector) observers.clone ();
     
     for (int i = 0; i < ob1.size (); i++)
       ((Observer)ob1.elementAt (i)).update (this, obj);
     
-    changed = false;
+    clearChanged ();
   }
 	
   /**
@@ -124,4 +124,3 @@ public class Observable
     changed = true; 
   }
 }
-
