@@ -1,3 +1,8 @@
+2002-04-08  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/lang/Character.java: Revert improper changes made by Mark's
+	re-merge with gcj.
+
 2002-04-08  Sascha Brawer  <brawer@acm.org>
 
 	* java/util/zip/GZIPInputStream.java: Re-indentation, minor
