@@ -823,7 +823,9 @@ public final class URL implements Serializable
 
     // If a non-default factory has been set, use it to find the protocol.
     if (factory != null)
-      ph = factory.createURLStreamHandler(protocol);
+      {
+	ph = factory.createURLStreamHandler(protocol);
+      }
 
     // Non-default factory may have returned null or a factory wasn't set.
     // Use the default search algorithm to find a handler for this protocol.

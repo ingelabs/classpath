@@ -1,3 +1,9 @@
+2004-04-23  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/URL.java,
+	java/net/URLConnection.java:
+	Fixed coding style.
+
 2004-04-23  Guilhem Lavaux <guilhem@kaffe.org>
 
 	* gnu/java/net/protocol/file/Handler.java: 

@@ -161,6 +161,7 @@ public abstract class URLConnection
    * This is the URL associated with this connection
    */
   protected URL url;
+
   private static SimpleDateFormat dateFormat1;
   private static SimpleDateFormat dateFormat2;
   private static SimpleDateFormat dateFormat3;
