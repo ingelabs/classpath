@@ -1,11 +1,18 @@
+2002-12-08  Mark Wielaard  <mark@klomp.org>
+
+	* java/util/ResourceBundle.java (resourceBundleCache): Not final.
+	(lastDefaultLocale): New field.
+	(getBundle): When Locale.getDefault != lastDefaultLocale reset
+	resourceBundleCache.
+
 2002-12-05  Dalibor Topic  <robilad@yahoo.com>
 
 	* gnu/java/nio/SocketChannelImpl.java: Removed unused import.
 
 2002-12-05  John Leuner  <jewel@debian.org>
 
-	* gnu/java/net/protocol/file/Handler.java (toExternalForm): make URL format like that
-	produced by SUN JVM
+	* gnu/java/net/protocol/file/Handler.java (toExternalForm): make URL
+	format like that produced by SUN JVM
 	* java/net/URLStreamHandler.java: ditto
 
 2002-12-03  Jeroen Frijters  <jeroen@sumatra.nl>
