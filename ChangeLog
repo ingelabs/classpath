@@ -1,5 +1,25 @@
 2003-02-17  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/font/Makefile.am: Added new files:
+	java/awt/font/FontRenderContext.java
+	java/awt/font/ShapeGraphicAttribute.java
+	java/awt/font/MultipleMaster.java
+	java/awt/font/TransformAttribute.java
+	java/awt/font/GlyphJustificationInfo.java
+	java/awt/font/LineBreakMeasurer.java
+	java/awt/font/TextMeasurer.java
+	java/awt/font/TextLayout.java
+	java/awt/font/LineMetrics.java
+	java/awt/font/TextAttribute.java
+	java/awt/font/GlyphMetrics.java
+	java/awt/font/OpenType.java
+	java/awt/font/GlyphVector.java
+	java/awt/font/GraphicAttribute.java
+	java/awt/font/ImageGraphicAttribute.java
+	java/awt/font/NumericShaper.java
+	
+2003-02-17  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/dnd/DragSourceContext.java
 	(addDragSourceListener): Added documentation.
 	* java/awt/dnd/DragSourceDragEvent.java
