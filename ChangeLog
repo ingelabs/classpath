@@ -1,3 +1,8 @@
+2003-06-21  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/ObjectStreamField.java:
+	New version from libgcj.
+
 2003-06-21  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/plaf/BorderUIResource.java (LineBorderUIResource):
