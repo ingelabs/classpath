@@ -1,3 +1,8 @@
+2005-02-13  Tom Tromey  <tromey@redhat.com>
+
+	* gnu/xml/aelfred2/SAXDriver.java: Ensure that null is returned when
+	attribute index is out of bounds.
+
 2005-02-12  Mark Wielaard  <mark@klomp.org>
 
 	Fixes bug #11949
