@@ -1,5 +1,27 @@
 2004-06-21  Steven Augart <augart@watson.ibm.com>
 
+	* native/jni/classpath/jcl.c, native/jni/classpath/jcl.h
+	(JCL_FindClass): Fixed const/non-const warning in function prototype.
+	(JCL_ThrowException): Idem.
+	(JCL_free_cstring): Fixed logical const/non-const problem in
+	function prototype.
+
+	* native/jni/classpath/jnilink.c, native/jni/classpath/jnilink.h
+	(LINK_ReallyLinkClass): Fix const/non-const warning in function
+	prototype. 
+	(LINK_RelinkClass): Idem.
+	(LINK_RelinkMethod): Idem.
+	(LINK_RelinkStaticMethod): Idem.
+	(LINK_RelinkField): Idem.
+	(LINK_RelinkStaticField): Idem.
+	
+	* native/jni/classpath/primlib.c (nativeWrapClassName): Make const.
+	(nativeWrapClassConstructorSig): Idem.
+	(nativeWrapClassAccessorName): Idem.
+	(nativeWrapClassAccessorSig): Idem.
+	
+2004-06-21  Steven Augart <augart@watson.ibm.com>
+
 	* native/jni/classpath/jcl.c, native/jni/classpath/jcl.h,
 	native/jni/classpath/jnilink.c, native/jni/classpath/jnilink.h,
 	native/jni/classpath/native_state.c, 
