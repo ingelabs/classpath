@@ -19,6 +19,9 @@ AC_PREFIX_DEFAULT(/usr/local/classpath)
 dnl Initialize libtool
 AM_PROG_LIBTOOL
 
+dnl required if SUBDIRS is used
+AC_PROG_MAKE_SET
+
 dnl Checks for programs.
 dnl AC_PROG_CXX
 AC_PROG_AWK
@@ -26,11 +29,67 @@ AC_PROG_CC
 AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
-AC_PROG_MAKE_SET
 AC_HEADER_STDC
 AC_CHECK_HEADERS(unistd.h)
 AC_C_CONST
 AC_CHECK_FUNCS(gethostname socket strerror)
+
+dnl guile checks
+GUILE_FLAGS
+
+dnl threads packages (stolen from Japhar)
+threads=no
+
+if test "x${threads}" = xno; then
+    AC_CHECK_LIB(threads, cthread_fork)
+    if test "x${ac_cv_lib_threads_cthread_fork}" = xyes; then
+        AC_DEFINE(USE_CTHREADS, )
+        threads=yes
+    fi
+fi
+
+if test "x${threads}" = xno; then
+    AC_CHECK_FUNCS(_beginthreadex)
+    if test "x${ac_cv_CreateThread}" = xyes; then
+        AC_DEFINE(USE_WIN32_THREADS, )
+        AC_CHECK_FUNCS(CloseHandle SetThreadPriority ExitThread Sleep \
+                GetCurrentThreadId TlsAlloc TlsSetValue TlsGetValue)
+        threads=yes
+    fi
+fi
+
+if test "x${threads}" = xno; then
+    AC_CHECK_LIB(pthread, pthread_create)
+    if test "x${ac_cv_lib_pthread_pthread_create}" = xyes; then
+      threads=yes
+    fi
+
+    if test "x${threads}" = xno; then
+      AC_CHECK_LIB(c_r, pthread_create)
+      if test "x${ac_cv_lib_c_r_pthread_create}" = xyes; then
+        threads=yes
+      fi
+    fi
+
+    if test "x${threads}" = xno; then
+      # HP/UX 10.20 uses -lcma
+      AC_CHECK_LIB(cma, pthread_create)
+      if test "x${ac_cv_lib_cma_pthread_create}" = xyes; then
+        threads=yes
+      fi
+    fi
+
+    if test "x${threads}" = xno; then
+      AC_CHECK_LIB(c, pthread_create)
+      if test "x${ac_cv_lib_c_pthread_create}" = xyes; then
+        threads=yes
+      fi
+    fi
+
+    if test "x${threads}" = xyes; then
+      AC_DEFINE(USE_PTHREADS, )
+    fi
+fi
 
 #AC_ARG_WITH(sun-jdk,
 #[  --with-sun-jdk          Specify the path to the JDK installation directory],
@@ -56,17 +115,17 @@ AC_ARG_WITH(japhar,
   AC_MSG_CHECKING("for japhar includes")
   if test -f ${withval}/include/japhar/jni.h; then
     AC_MSG_RESULT(using JNI headers in ${withval}/include/japhar)
-    VMINCLUDE=${withval}/include/japhar
+    JAPHAR_CFLAGS="-I${withval}/include/japhar -I${withval}/include/japhar/private"
 #   AC_PREFIX_PROGRAM(japhar)   this sets the prefix to the program's dir
-    AC_SUBST(VMINCLUDE)
+    AC_SUBST(JAPHAR_CFLAGS)
   else
     AC_MSG_ERROR(could not find ${withval}/include/japhar/jni.h. Use --with-japhar)
   fi
   AC_MSG_CHECKING("for japhar libs")
   if test -f ${withval}/lib/libjni.so; then
-    VMLIB=${withval}/lib
+    JAPHAR_LDFLAGS="-L${withval}/lib"
     AC_MSG_RESULT("using vm libs from $VMLIB")
-    AC_SUBST(VMLIB)
+    AC_SUBST(JAPHAR_LDFLAGS)
   else
     AC_MSG_ERROR(could not find libjni.so.  Try using --with-japhar)
   fi
@@ -74,37 +133,46 @@ AC_ARG_WITH(japhar,
 [
   AC_MSG_CHECKING("for japhar includes")
   if test -f /usr/local/japhar/include/japhar/jni.h; then
-    VMINCLUDE=/usr/local/japhar/include/japhar
+    JAPHAR_CFLAGS="-I/usr/local/japhar/include/japhar -I/usr/local/japhar/include/japhar/private"
   elif test -f /usr/local/include/japhar/jni.h; then
-    VMINCLUDE=/usr/local/include/japhar
+    JAPHAR_CLFAGS="-I/usr/local/include/japhar -I/usr/local/include/japhar/private"
   elif test -f /usr/japhar/include/japhar/jni.h; then
-    VMINCLUDE=/usr/japhar/include/japhar
+    JAPHAR_CFLAGS="-I/usr/japhar/include/japhar -I/usr/japhar/include/japhar/private"
   elif test -f /usr/include/japhar/jni.h; then
-    VMINCLUDE=/usr/include/japhar
+    JAPHAR_CFLAGS="-I/usr/include/japhar -I/usr/include/japhar/private"
   fi
-  if test -n "$VMINCLUDE"; then
-    AC_SUBST(VMINCLUDE)
-    AC_MSG_RESULT("using JNI headers in $VMINCLUDE")
+  if test -n "$JAPHAR_CFLAGS"; then
+    AC_SUBST(JAPHAR_CFLAGS)
+    AC_MSG_RESULT("using JNI headers in $JAPHAR_CFLAGS")
   else
     AC_MSG_ERROR(could not find include directory with jni.h.  Try using --with-japhar)    
   fi
   AC_MSG_CHECKING("for japhar libs")
   if test -f /usr/local/japhar/lib/libjni.so; then 
-    VMLIB=/usr/local/japhar/lib
+    JAPHAR_LDFLAGS="-L/usr/local/japhar/lib"
   elif test -f /usr/local/lib/libjni.so; then
-    VMLIB=/usr/local/lib
+    JAPHAR_LDFLAGS="-L/usr/local/lib"
   elif test -f /usr/japhar/lib/libjni.so; then
-    VMLIB=/usr/japhar/lib
+    JAPHAR_LDFLAGS="-L/usr/japhar/lib"
   elif test -f /usr/lib/libjni.so; then
-    VMLIB=/usr/lib
+    JAPHAR_LDFLAGS="-L/usr/lib"
   fi
-  if test -n "$VMLIB"; then
-    AC_SUBST(VMLIB)
-    AC_MSG_RESULT("using vm libs from $VMLIB")
+  if test -n "$JAPHAR_LDFLAGS"; then
+    AC_SUBST(JAPHAR_LDFLAGS)
+    AC_MSG_RESULT("using vm libs from $JAPHAR_LDFLAGS")
   else
     AC_MSG_ERROR(could not find libjni.so.  Try using --with-japhar)
   fi
 ])
+
+AC_SUBST(JAPHAR_CFLAGS)
+AC_SUBST(JAPHAR_LDFLAGS)
+
+dnl for historic reasons of the moment...
+VMINCLUDE=$JAPHAR_CFLAGS
+VMLIB=$JAPHAR_LDFLAGS
+AC_SUBST(VMINCLUDE)
+AC_SUBST(VMLIB)
 
 if test -z "$VMINCLUDE"; then 
   AC_MSG_ERROR(could not find include directory with jni.h.  Try using --with-japhar)
@@ -133,6 +201,9 @@ dnl fi
 #then
 #  AC_MSG_ERROR(Unable to locate Virtual Machine to configure for)
 #fi
+
+dnl this is temporary
+AM_CONDITIONAL(VMJAPHAR, test -n "$JAPHAR_CFLAGS")
 
 AC_ARG_WITH(javac,
   [  --with-javac	Specify the path to the javac-like program to use],
