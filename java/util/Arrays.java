@@ -1545,21 +1545,33 @@ public class Arrays {
     }
 
     // These methods are all simple enough to be self-documenting.
-    return new AbstractList() {
-
-      public Object get(int index) {
-        return a[index];
-      }
-
-      public int size() {
-        return a.length;
-      }
-
-      public Object set(int index, Object element) {
-        Object old = a[index];
-        a[index] = element;
-        return old;
-      }
-    };
+    return new ArrayList( a );
   }
+
+
+  // Inner class used by toList(Object[]) to provide a list interface
+  // to an array
+  static class ArrayList extends AbstractList {
+
+    ArrayList(Object[] a) {
+      this.a = a;
+    }
+
+    public Object get(int index) {
+      return a[index];
+    }
+
+    public int size() {
+      return a.length;
+    }
+
+    public Object set(int index, Object element) {
+      Object old = a[index];
+      a[index] = element;
+      return old;
+    }
+
+    private Object[] a;
+  }
+    
 }
