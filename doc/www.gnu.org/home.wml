@@ -99,10 +99,6 @@ name="ftp://alpha.gnu.org/gnu/classpath/">.
 <H4>Documentation</H4>
 <UL>
   <LI><createlink url="docs/" name="Current Documentation"></LI>
-  <LI><createlink url="docs/orp.html" name="Using GNU
-  Classpath with ORP"></LI>
-  <LI><createlink url="docs/jikesrvm.html" name="Using GNU
-  Classpath with Jikes RVM"></LI>
   <LI><createlink url="announce/announcements.html" 
        name="Old News"></LI>
 </UL>
@@ -209,9 +205,12 @@ A JVM for the .NET platform.
 <tr>
 <td><createlink url="http://www-124.ibm.com/developerworks/oss/jikesrvm/" name="Jikes RVM"></td>
 <td>
-This VM now uses GNU Classpath for most of the core libraries. 
-Instructions for using this JVM with GNU Classpath CVS have been posted
-to the mailing list.
+Jikes RVM now uses GNU Classpath for all of its libraries.   Also, 
+instructions for using Classpath are provided in the Jikes RVM user's 
+guide as of the Jikes RVM 4/7/03 release (2.2.1). Nightly regression
+tests are run against Classpath 0.05 and the 
+Classpath CVS head.   The results are posted on the jikesrvm-regression 
+mailing list, which is archived and available the Jikes RVM home page.
 </td>
 </tr>
 <tr>
