@@ -1,3 +1,15 @@
+2002-03-31  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/beans/ExceptionListener.java: New file.
+	* java/beans/Makefile.am (EXTRA_DIST): Add 3 new files.
+	* java/beans/PropertyChangeEvent.java: Update to 1.4.
+	* java/beans/PropertyChangeListener.java: Update to 1.4.
+	* java/beans/PropertyChangeListenerProxy.java: New file.
+	* java/beans/PropertyChangeSupport.java: Update to 1.4.
+	* java/beans/VetoableChangeListener.java: Update to 1.4.
+	* java/beans/VetoableChangeListenerProxy.java: New file.
+	* java/beans/VetoableChangeSupport.java: Update to 1.4.
+
 2002-03-30  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/awt/Makefile.am (EXTRA_DIST): Add AWTKeyStroke.java.
