@@ -2,9 +2,9 @@ if CREATE_API_DOCS
 noinst_DATA = html
 endif
 
-EXTRA_DIST = classpath-copyright.xml
+sourcepath = $(top_builddir):$(top_srcdir):$(top_srcdir)/vm/reference:$(top_srcdir)/external/w3c_dom:$(top_srcdir)/external/sax
 
-htmllist := $(shell $(FIND) html -print | grep -v "^html$$")
+classpathbox = "<span class='navbar item enabled'><a href='http://www.gnu.org/software/classpath'>GNU Classpath</a> ($(VERSION))"
 
 install-data-local:
 	$(mkinstalldirs) $(DESTDIR)$(pkgdatadir)/api
@@ -27,47 +27,23 @@ uninstall-local:
           fi; \
         done
 
-#html: create_xml create_catalog create_html
 html: create_html
 
-core := $(shell cd $(top_srcdir) && $(FIND) java javax -type d ! -name CVS ! -name doc-files -print | tr '/' '.' | grep -v "java.awt.dnd.peer" | grep -v "java.awt.peer")
-
-# Just generate api doc for the core packages.
-# Adding the external ones takes a lot more time and we should reference
-# them anyway since we will place out own copyright notive on the generated
-# pages.
-packages = $(core)
-#| grep -v "^java\$" )
-date := $(shell $(DATE))
-
 clean:
-#	-rm -rf xml
-	-rm -rf html
-#	-rm -f gjdoccatalog.xml
-#	-rm -f gjdoc_rawcomment.cache
-
-#create_xml:
-#	-$(MKDIR) xml > /dev/null 2>&1
-#	$(GJDOC) -sourcepath \
-#		"$(top_srcdir):$(top_srcdir)/vm/reference" \
-#		-doclet gnu.classpath.tools.doclets.xmldoclet.Driver \
-#		-d xml $(packages) 
-#	-touch create_xml
-
-#create_catalog:
-#	$(XMLCATALOG) --noout --create \
-#		--add "public" \
-#		"-//GNU//DTD Gjdoc XML V0.1.1//EN" \
-#		http://www.gnu.org/software/cp-tools/dtd/gjdoc.dtd \
-#		--add "rewriteSystem" \
-#		http://www.gnu.org/software/cp-tools/dtd/ \
-#		file:///usr/local/share/gjdoc/dtd/ \
-#		gjdoccatalog.xml 
-#	-touch create_catalog
+	-rm -rf html create_html
 
 create_html:
 	-$(MKDIR) html > /dev/null 2>&1
-	$(GJDOC) -sourcepath "$(top_srcdir):$(top_srcdir)/vm/reference" \
-	-d html -bottomnote "$(srcdir)/classpath-copyright.xml" \
-	$(packages)
-	-touch create_html
+	$(GJDOC) -public -use \
+	-sourcepath "$(sourcepath)" \
+	-encoding UTF-8 \
+	-breakiterator \
+	-licensetext \
+	-linksource \
+	-splitindex \
+	-d html \
+	-doctitle "GNU Classpath $(VERSION)" \
+	-windowtitle "GNU Classpath $(VERSION) Documentation" \
+	-header $(classpathbox) -footer $(classpathbox) \
+	-subpackages java:javax:org
+	touch create_html

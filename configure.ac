@@ -366,7 +366,7 @@ CLASSPATH_WITH_GLIBJ
 dnl -----------------------------------------------------------
 dnl Enable API documentation generation (disabled by default)
 dnl -----------------------------------------------------------
-CLASSPATH_ENABLE_GJDOC
+CLASSPATH_WITH_GJDOC
 
 dnl -----------------------------------------------------------
 dnl Whether to use jay to regenerate parsers.

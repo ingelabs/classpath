@@ -5,6 +5,8 @@ New in release 0.14
   methods with non-native implementations. VM implementors are encouraged
   to provide more efficient versions.
 * VMRuntime.nativeLoad() now takes an additional ClassLoader parameter.
+* Full documentation for all classes can be generated (again) by using
+  the --with-gjdoc configure option.
 
 New in release 0.13 (Jan 6, 2005)
 

@@ -1,3 +1,21 @@
+2005-01-09  Mark Wielaard  <mark@klomp.org>
+
+	* acinclude.m4 (CLASSPATH_WITH_GJDOC): Renamed from
+	CLASSPATH_ENABLE_GJDOC. Can now take argument to use as gjdoc program.
+	Doesn't depend on xml tools.
+	* configure.ac: Use CLASSPATH_WITH_GJDOC.
+	* INSTALL: Mention --with-gjdoc option.
+	* NEWS: Add --with-gjdoc addition.
+	* doc/api/Makefile.am (EXTRA_DIST): Removed.
+	(sourcepath): New variable.
+	(htmllist): Removed.
+	(core): Removed.
+	(packages): Removed.
+	(date): Removed.
+	(clean): Also remove create_html file.
+	(create_html): Rewritten.
+	* doc/api/classpath-copyright.xml: Removed.
+
 2005-01-09  Patrik Reali  <reali@acm.org>
 
 	* doc/www.gnu.org/newsitems.txt doc/www.gnu.org/announce/20050107.wml 

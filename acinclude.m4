@@ -346,29 +346,32 @@ AC_DEFUN([CLASSPATH_WITH_GLIBJ],
 ])
 
 dnl -----------------------------------------------------------
-dnl Enable generation of API documentation, assumes gjdoc
-dnl has been compiled to an executable or a suitable script
-dnl is in your PATH
+dnl Enable generation of API documentation, with gjdoc if it
+dnl has been compiled to an executable (or a suitable script
+dnl is in your PATH) or using the argument as gjdoc executable.
 dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_ENABLE_GJDOC],
+AC_DEFUN([CLASSPATH_WITH_GJDOC],
 [
-  AC_ARG_ENABLE([gjdoc],
-                [AS_HELP_STRING([--enable-gjdoc],[enable API doc. generation [default=no]])],
-                [
-                  case "${enableval}" in
-                    yes) ENABLE_GJDOC=yes ;;
-                    no) ENABLE_GJDOC=no ;;
-                    *) ENABLE_GJDOC=yes ;;
-                  esac
-                  if test "x${ENABLE_GJDOC}" = xyes; then
-                    AC_PATH_PROG(GJDOC, gjdoc)
-                    AC_PATH_PROG(XMLCATALOG, xmlcatalog)
-                    AC_PATH_PROG(XSLTPROC, xsltproc)
-                  fi
-                ],
-                [ENABLE_GJDOC=no])
+  AC_ARG_WITH([gjdoc],
+              AS_HELP_STRING([--with-gjdoc],
+			     [generate documentation using gjdoc (default is NO)]),
+              [if test "x${withval}" = xno; then
+	         WITH_GJDOC=no;
+	       elif test "x${withval}" = xyes -o "x{withval}" = x; then
+	         WITH_GJDOC=yes;
+	         AC_PATH_PROG(GJDOC, gjdoc, "no")
+		 if test "x${JAY}" = xno; then
+		   AC_MSG_ERROR("jay executable not found");
+		 fi
+	       else
+	         WITH_GJDOC=yes
+		 GJDOC="${withval}"
+		 AC_CHECK_FILE(${GJDOC}, AC_SUBST(GJDOC),
+		               AC_MSG_ERROR("Cannot use ${withval} as gjdoc executable since it doesn't exist"))
+	       fi],
+              [WITH_GJDOC=no])
 
-  AM_CONDITIONAL(CREATE_API_DOCS, test "x${ENABLE_GJDOC}" = xyes)
+  AM_CONDITIONAL(CREATE_API_DOCS, test "x${WITH_GJDOC}" = xyes)
 ])
 
 dnl -----------------------------------------------------------
