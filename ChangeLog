@@ -1,3 +1,7 @@
+2001-11-23  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/TreeMap.java (removeNode): Fix bug in node removal.
+
 2001-11-23  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 
 	* java/util/AbstractCollection.java (containsAll): Use size of the

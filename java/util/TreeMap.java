@@ -1210,9 +1210,9 @@ public class TreeMap extends AbstractMap
       }
     else if (node.right == nil)
       {
-        // Node to be deleted has 0 children.
+        // Node to be deleted has 1 child.
         splice = node;
-        child = nil;
+        child = node.left;
       }
     else
       {
