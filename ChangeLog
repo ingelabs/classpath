@@ -1,3 +1,8 @@
+2002-11-07  Mark Wielaard  <mark@klomp.org>
+
+	* java/nio/charset/CodingErrorAction.java: New private constructor to
+	initialize final static fields.
+
 2002-11-07  Michael Koch <konqueror@gmx.de>
 
 	* java/net/InetAddress.java: Made it conform to Inet4Address and
