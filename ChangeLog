@@ -1,3 +1,18 @@
+2005-03-26  Dalibor Topic  <robilad@kaffe.org>
+
+        * native/jni/java-nio/gnu_java_nio_VMSelector.c:
+        Moved include statement for config.h to the top to
+        fix the build on Darwin6.
+
+        Reported by:  Riccardo Mottola <zuse@libero.it>
+
+2005-03-26  Dalibor Topic  <robilad@kaffe.org>
+
+        * native/jni/java-nio/gnu_java_nio_VMSelector.c:
+        Include <sys/types.h> to fix build on OS X.
+
+        Reported by: Michael Franz <mvfranz@gmail.com>
+
 2005-03-26  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
         * java/text/DecimalFormat.java (parse):
