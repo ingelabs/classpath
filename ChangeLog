@@ -1,3 +1,9 @@
+2001-10-01  Jochen Hoenicke  <jochen@gnu.org>
+
+	* java/util/zip/ZipFile.java: Return -1 in 
+	PartialInputStream.read(byte[],int,int) when end of stream reached.
+	Reported by Bernd Mösli <bmoesli@esmertec.com>.
+
 2001-10-01  Mark Wielaard  <mark@klomp.org>
 
 	* java/lang/CharSequence.java: Fix javadoc comment.

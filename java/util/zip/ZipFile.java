@@ -415,7 +415,11 @@ public class ZipFile implements ZipConstants
     public int read(byte[] b, int off, int len) throws IOException
     {
       if (len > end - filepos)
-	len = (int) (end - filepos);
+	{
+	  len = (int) (end - filepos);
+	  if (len == 0)
+	    return -1;
+	}
       synchronized (raf)
 	{
 	  raf.seek(filepos);
