@@ -43,7 +43,7 @@ import gnu.java.lang.ClassLoaderHelper;
  * For predicates, boundaries are used to describe
  * the set of characters for which the method will return true.
  * This syntax uses fairly normal regular expression notation.
- * See §5.13 of the Unicode Standard, Version 2.0, for the
+ * See 5.13 of the Unicode Standard, Version 2.0, for the
  * boundary specification.<br>
  * <br>
  * See http://www.unicode.org for more information on the Unicode Standard.
