@@ -1,5 +1,54 @@
 2004-04-17  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/Byte.java
+	(parseByte): Fixed <code> tag in javadoc.
+	* java/lang/CharSequence.java
+	(subSequence): Likewise.
+	* java/lang/Class.java
+	(forName): Added @return tag.
+	(getConstructor): Fixed argument name.
+	(getDeclaredConstructor): Likewise.
+	(getDeclaredMethod): Fixed argument name and HTML tag in javadoc.
+	(getMethod): Likewise.
+	(getName): Added missing </pre> tag.
+	* java/lang/ClassLoader.java
+	(getParent): Added @return tag.
+	* java/lang/Double.java
+	(parseDouble): Fixed argument name.
+	* java/lang/Float.java
+	(parseFloat): Likewise.
+	* java/lang/Integer.java
+	(parseInt): Fixed javadoc.
+	(getInteger): Likewise.
+	(decode): Likewise.
+	* java/lang/Long.java
+	(parseLong): Likewise.
+	(decode): Likewise.
+	(getLong): Likewise.
+	* java/lang/Number.java
+	(digits): Added comma to array definition.
+	* java/lang/Object.java
+	(equals): Fixed HTML tag.
+	* java/lang/Package.java
+	(isCompatibleWith): Added @return tag.
+	* java/lang/Runtime.java
+	(loadLibrary): Fixed @param tag.
+	* java/lang/SecurityManager.java:
+	Fixed javadocs all over.
+	* java/lang/String.java
+	(regionMatches): Fixed @param tag.
+	(startsWith): Likewise.
+	(substring): Likewise.
+	* java/lang/StringBuffer.java
+	(append): Likewise.
+	* java/lang/ThreadGroup.java
+	(parentOf): Use group as argument name.
+	(uncaughtException): Fixed @param tag.
+	* java/lang/Throwable.java
+	(printStackTrace): Likewise.
+
+2004-04-17  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/AWTPermission.java,
 	java/awt/Component.java,
 	java/awt/ComponentOrientation.java,

@@ -240,11 +240,11 @@ public final class Float extends Number implements Comparable
    * @see #NEGATIVE_INFINITY
    * @since 1.2
    */
-  public static float parseFloat(String s)
+  public static float parseFloat(String str)
   {
     // XXX Rounding parseDouble() causes some errors greater than 1 ulp from
     // the infinitely precise decimal.
-    return (float) Double.parseDouble(s);
+    return (float) Double.parseDouble(str);
   }
 
   /**

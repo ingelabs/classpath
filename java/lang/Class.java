@@ -154,6 +154,9 @@ public final class Class implements Serializable
    * @param initialize whether or not to initialize the class at this time
    * @param classloader the classloader to use to find the class; null means
    *        to use the bootstrap class loader
+   *
+   * @return the class object for the given class
+   *
    * @throws ClassNotFoundException if the class was not found by the
    *         classloader
    * @throws LinkageError if linking the class fails
@@ -296,14 +299,14 @@ public final class Class implements Serializable
    * @see #getConstructors()
    * @since 1.1
    */
-  public Constructor getConstructor(Class[] args) throws NoSuchMethodException
+  public Constructor getConstructor(Class[] types) throws NoSuchMethodException
   {
     memberAccessCheck(Member.PUBLIC);
     Constructor[] constructors = getDeclaredConstructors(true);
     for (int i = 0; i < constructors.length; i++)
       {
 	Constructor constructor = constructors[i];
-	if (matchParameters(args, constructor.getParameterTypes()))
+	if (matchParameters(types, constructor.getParameterTypes()))
 	  return constructor;
       }
     throw new NoSuchMethodException();
@@ -341,7 +344,7 @@ public final class Class implements Serializable
    * @see #getDeclaredConstructors()
    * @since 1.1
    */
-  public Constructor getDeclaredConstructor(Class[] args)
+  public Constructor getDeclaredConstructor(Class[] types)
     throws NoSuchMethodException
   {
     memberAccessCheck(Member.DECLARED);
@@ -349,7 +352,7 @@ public final class Class implements Serializable
     for (int i = 0; i < constructors.length; i++)
       {
 	Constructor constructor = constructors[i];
-	if (matchParameters(args, constructor.getParameterTypes()))
+	if (matchParameters(types, constructor.getParameterTypes()))
 	  return constructor;
       }
     throw new NoSuchMethodException();
@@ -452,8 +455,8 @@ public final class Class implements Serializable
   /**
    * Get a method declared in this class, where name is its simple name. The
    * implicit methods of Object are not available from arrays or interfaces.
-   * Constructors (named "<init>" in the class file) and class initializers
-   * (name "<clinit>") are not available.  The Virtual Machine allows
+   * Constructors (named "&lt;init&gt;" in the class file) and class initializers
+   * (name "&lt;clinit&gt;") are not available.  The Virtual Machine allows
    * multiple methods with the same signature but differing return types; in
    * such a case the most specific return types are favored, then the final
    * choice is arbitrary. If the method takes no argument, an array of zero
@@ -470,11 +473,11 @@ public final class Class implements Serializable
    * @see #getDeclaredMethods()
    * @since 1.1
    */
-  public Method getDeclaredMethod(String methodName, Class[] args)
+  public Method getDeclaredMethod(String methodName, Class[] types)
     throws NoSuchMethodException
   {
     memberAccessCheck(Member.DECLARED);
-    Method match = matchMethod(getDeclaredMethods(false), methodName, args);
+    Method match = matchMethod(getDeclaredMethods(false), methodName, types);
     if (match == null)
       throw new NoSuchMethodException(methodName);
     return match;
@@ -656,8 +659,8 @@ public final class Class implements Serializable
   /**
    * Get a public method declared or inherited in this class, where name is
    * its simple name. The implicit methods of Object are not available from
-   * interfaces.  Constructors (named "<init>" in the class file) and class
-   * initializers (name "<clinit>") are not available.  The Virtual
+   * interfaces.  Constructors (named "&lt;init&gt;" in the class file) and class
+   * initializers (name "&lt;clinit&gt;") are not available.  The Virtual
    * Machine allows multiple methods with the same signature but differing
    * return types, and the class can inherit multiple methods of the same
    * return type; in such a case the most specific return types are favored,
@@ -675,11 +678,11 @@ public final class Class implements Serializable
    * @see #getMethods()
    * @since 1.1
    */
-  public Method getMethod(String methodName, Class[] args)
+  public Method getMethod(String methodName, Class[] types)
     throws NoSuchMethodException
   {
     memberAccessCheck(Member.PUBLIC);
-    Method method = internalGetMethod(methodName, args);
+    Method method = internalGetMethod(methodName, types);
     if (method == null)
       throw new NoSuchMethodException(methodName);
     return method;
@@ -853,6 +856,7 @@ public final class Class implements Serializable
    * array type          [<em>element type</em>
    * class or interface, alone: &lt;dotted name&gt;
    * class or interface, as element type: L&lt;dotted name&gt;;
+   * </pre>
    *
    * @return the name of this class
    */

@@ -243,7 +243,7 @@ public final class Double extends Number implements Comparable
    * @see #NEGATIVE_INFINITY
    * @since 1.2
    */
-  public static native double parseDouble(String s);
+  public static native double parseDouble(String str);
 
   /**
    * Return <code>true</code> if the <code>double</code> has the same

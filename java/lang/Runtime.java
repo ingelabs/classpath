@@ -689,9 +689,11 @@ public class Runtime
    * <code>System.mapLibraryName(libname)</code>. There may be a security
    * check, of <code>checkLink</code>.
    *
-   * @param filename the file to load
+   * @param libname the library to load
+   *
    * @throws SecurityException if permission is denied
    * @throws UnsatisfiedLinkError if the library is not found
+   *
    * @see System#mapLibraryName(String)
    * @see ClassLoader#findLibrary(String)
    */

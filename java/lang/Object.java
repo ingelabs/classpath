@@ -113,7 +113,7 @@ public class Object
    *     returned on all later invocations.</li>
    * <li><code>a.equals(null)</code> must be false.</li>
    * <li>It must be consistent with hashCode().  That is,
-   *     <code>a.equals(b)<code> must imply
+   *     <code>a.equals(b)</code> must imply
    *     <code>a.hashCode() == b.hashCode()</code>.
    *     The reverse is not true; two objects that are not
    *     equal may have the same hashcode, but that has

@@ -766,7 +766,7 @@ public final class String implements Serializable, Comparable, CharSequence
    *
    * @param toffset index to start comparison at for this String
    * @param other String to compare region to this String
-   * @param oofset index to start comparison at for other
+   * @param ooffset index to start comparison at for other
    * @param len number of characters to compare
    * @return true if regions match (case sensitive)
    * @throws NullPointerException if other is null
@@ -788,7 +788,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * @param ignoreCase true if case should be ignored in comparision
    * @param toffset index to start comparison at for this String
    * @param other String to compare region to this String
-   * @param oofset index to start comparison at for other
+   * @param ooffset index to start comparison at for other
    * @param len number of characters to compare
    * @return true if regions match, false otherwise
    * @throws NullPointerException if other is null
@@ -838,7 +838,7 @@ public final class String implements Serializable, Comparable, CharSequence
    * Predicate which determines if this String starts with a given prefix.
    * If the prefix is an empty String, true is returned.
    *
-   * @param prefex String to compare
+   * @param prefix String to compare
    * @return true if this String starts with the prefix
    * @throws NullPointerException if prefix is null
    * @see #startsWith(String, int)
@@ -1034,8 +1034,8 @@ public final class String implements Serializable, Comparable, CharSequence
    * Creates a substring of this String, starting at a specified index
    * and ending at one character before a specified index.
    *
-   * @param begin index to start substring (inclusive, base 0)
-   * @param end index to end at (exclusive)
+   * @param beginIndex index to start substring (inclusive, base 0)
+   * @param endIndex index to end at (exclusive)
    * @return new String which is a substring of this String
    * @throws IndexOutOfBoundsException if begin &lt; 0 || end &gt; length()
    *         || begin > end (while unspecified, this is a

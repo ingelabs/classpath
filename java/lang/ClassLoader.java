@@ -475,6 +475,7 @@ public abstract class ClassLoader
    * <code>null</code>. A security check may be performed on
    * <code>RuntimePermission("getClassLoader")</code>.
    *
+   * @return the parent <code>ClassLoader</code>
    * @throws SecurityException if the security check fails
    * @since 1.2
    */
