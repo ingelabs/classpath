@@ -1,6 +1,3 @@
-## used by automake to generate Makefile.in
-
-##PERL = @PERL@
 JAVA_DEPEND = java.dep
 
 ## silently try to include these, if it fails gnu make
@@ -17,7 +14,6 @@ JIKES = @JIKES@
 USER_JABBA = @USER_JABBA@
 USER_JAVAH = @USER_JAVAH@
 
-
 propertydirs :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java -type d ! -regex .*CVS)
 propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java -name \*\.properties)
 
@@ -25,8 +21,6 @@ propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java -name \*
 # defining a javac program written in java
 #-----------------------------------------------------------------
 KJC_MAIN = at.dms.kjc.Main
-#-----------------------------------------------------------------
-
 
 #-----------------------------------------------------------------
 # defining how to designate classpath for a vm and a javac type 
@@ -39,8 +33,6 @@ ARG_CLASSPATH_JAVAC = --classpath
 else
 ARG_CLASSPATH_JAVAC = -classpath
 endif
-#-----------------------------------------------------------------
-
 
 #-----------------------------------------------------------------
 # handling javac definition including programs like jikes here
@@ -53,43 +45,39 @@ JAVAC = $(GCJ) --bootclasspath '' $(ARG_CLASSPATH_JAVAC) $(top_srcdir):$(top_src
 else
 if FOUND_KJC
 JAVAC = $(USER_JABBA) $(ARG_CLASSPATH_VM) $(KJC_CLASSPATH):$(USER_CLASSLIB) $(KJC_MAIN) $(ARG_CLASSPATH_JAVAC) .:$(USER_CLASSLIB) -d . @classes
-endif 
-endif
-endif
-
-#-----------------------------------------------------------------
-
+endif # FOUND_KJC
+endif # FOUND_GCJ
+endif # FOUND_JIKES
 
 #-----------------------------------------------------------------
 # defining how to designate classpath for a vm and a javac type 
 # program
 #-----------------------------------------------------------------
 ARG_JNI_JAVAH = -jni
-#-----------------------------------------------------------------
-
 
 #-----------------------------------------------------------------
 # defining classpath arg for javah-like program
 #-----------------------------------------------------------------
 ARG_CLASSPATH_JAVAH = -classpath
-#-----------------------------------------------------------------
 
 JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) .:$(USER_CLASSLIB)
 
-if BUILD_GLIBJ_ZIP
-if HAVE_ZIP
-dist_pkgdata_DATA = glibj.zip
-noinst_DATA = genclasses
-else
-noinst_DATA = genclasses compile-classes resources
-endif
+if CREATE_GLIBJ
 
-install-data-local :
+dist_pkgdata_DATA = glibj.zip
+
+endif # CREATE_GLIBJ
+
+if INSTALL_CLASSFILES
+
+noinst_DATA = genclasses compile-classes resources
+
+install-data-local: genclasses compile-classes
 	-$(top_srcdir)/mkinstalldirs $(DESTDIR)$(pkgdatadir)
-	if ! [ -e glibj.zip ]; then cp -R gnu $(DESTDIR)$(pkgdatadir); fi
-	if ! [ -e glibj.zip ]; then cp -R java $(DESTDIR)$(pkgdatadir); fi
-	if ! [ -e glibj.zip ]; then cp -R javax $(DESTDIR)$(pkgdatadir); fi
-	if ! [ -e glibj.zip ]; then cp -R org $(DESTDIR)$(pkgdatadir); fi
+	cp -R gnu $(DESTDIR)$(pkgdatadir)
+	cp -R java $(DESTDIR)$(pkgdatadir)
+	cp -R javax $(DESTDIR)$(pkgdatadir)
+	cp -R org $(DESTDIR)$(pkgdatadir)
 
 # FIXME - should mimic doc/api/Makefile.am instead...
 uninstall-local:
@@ -98,7 +86,7 @@ uninstall-local:
 	rm -rf $(DESTDIR)$(pkgdatadir)/javax
 	rm -rf $(DESTDIR)$(pkgdatadir)/org
 
-endif # BUILD_GLIBJ_ZIP
+endif # INSTALL_CLASSFILES
 
 .PHONY: genclasses
 

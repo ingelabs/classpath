@@ -1,6 +1,8 @@
 dnl Used by aclocal to generate configure
 
+dnl -----------------------------------------------------------
 dnl JAPHAR_GREP_CFLAGS(flag, cmd_if_missing, cmd_if_present)
+dnl -----------------------------------------------------------
 AC_DEFUN([JAPHAR_GREP_CFLAGS],
 [case "$CFLAGS" in
 "$1" | "$1 "* | *" $1" | *" $1 "* )
@@ -12,7 +14,9 @@ AC_DEFUN([JAPHAR_GREP_CFLAGS],
 esac
 ])
 
+dnl -----------------------------------------------------------
 dnl CLASSPATH_CHECK_JAPHAR
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_CHECK_JAPHAR],
 [
   if test "x$1" = x; then
@@ -69,7 +73,9 @@ AC_DEFUN([CLASSPATH_CHECK_JAPHAR],
   AC_SUBST(JAPHAR_CLASSLIB)
 ])
 
+dnl -----------------------------------------------------------
 dnl CLASSPATH_CHECK_KAFFE
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_CHECK_KAFFE],
 [
   AC_PATH_PROG(KAFFE_CONFIG, kaffe-config, "", $PATH:/usr/local/kaffe/bin:/usr/kaffe/bin)
@@ -153,7 +159,9 @@ AC_DEFUN([CLASSPATH_CHECK_KAFFE],
   AC_SUBST(KAFFE_CLASSLIB)
 ])
 
+dnl -----------------------------------------------------------
 dnl CLASSPATH_WITH_JAPHAR - checks for japhar
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_JAPHAR],
 [
   AC_ARG_WITH(japhar, 
@@ -172,7 +180,9 @@ AC_DEFUN([CLASSPATH_WITH_JAPHAR],
   ])
 ])
 
+dnl -----------------------------------------------------------
 dnl CLASSPATH_WITH_KAFFE - checks for which java virtual machine to use
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_KAFFE],
 [
   AC_ARG_WITH(kaffe, 
@@ -188,8 +198,10 @@ AC_DEFUN([CLASSPATH_WITH_KAFFE],
   ])
 ])
 
+dnl -----------------------------------------------------------
 dnl threads packages (mostly stolen from Japhar)
 dnl given that japhar-config gives -lpthread, may not need this (cbj)
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_CHECK_THREADS],
 [
   threads=no
@@ -246,7 +258,7 @@ AC_DEFUN([CLASSPATH_CHECK_THREADS],
   fi
 ])
 
-
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_FIND_JAVAC],
 [
   user_specified_javac=
@@ -270,7 +282,7 @@ AC_DEFUN([CLASSPATH_FIND_JAVAC],
   fi
 ])
 
-
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_GCJ],
 [
   AC_ARG_WITH(gcj,
@@ -292,7 +304,7 @@ AC_DEFUN([CLASSPATH_WITH_GCJ],
   AC_SUBST(GCJ)
 ])
 
-
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_CHECK_GCJ],
 [
   if test "x$1" != x; then
@@ -327,7 +339,7 @@ AC_DEFUN([CLASSPATH_CHECK_GCJ],
   fi 
 ])
 
-
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_JIKES],
 [
   AC_ARG_WITH(jikes,
@@ -349,7 +361,7 @@ AC_DEFUN([CLASSPATH_WITH_JIKES],
   AC_SUBST(JIKES)
 ])
 
-
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_CHECK_JIKES],
 [
   if test "x$1" != x; then
@@ -363,7 +375,7 @@ AC_DEFUN([CLASSPATH_CHECK_JIKES],
   fi
 ])
 
-
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_KJC],
 [
   AC_ARG_WITH(kjc, 
@@ -395,7 +407,7 @@ AC_DEFUN([CLASSPATH_WITH_KJC],
   fi
 ])
 
-
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_JAVA],
 [
   AC_ARG_WITH(java,
@@ -416,7 +428,7 @@ AC_DEFUN([CLASSPATH_WITH_JAVA],
   AC_SUBST(USER_JABBA)
 ])
 
-
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_CHECK_JAVA],
 [
   if test "x$1" != x; then
@@ -430,7 +442,7 @@ AC_DEFUN([CLASSPATH_CHECK_JAVA],
   fi
 ])
 
-
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_FIND_JAVA],
 [
   dnl Place additional bytecode interpreter checks here
@@ -438,7 +450,7 @@ AC_DEFUN([CLASSPATH_FIND_JAVA],
   CLASSPATH_WITH_JAVA
 ])
 
-
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_JAVAH],
 [
   AC_ARG_WITH(javah,
@@ -457,7 +469,9 @@ AC_DEFUN([CLASSPATH_WITH_JAVAH],
   AC_SUBST(USER_JAVAH)
 ])
 
+dnl -----------------------------------------------------------
 dnl Checking for a javah like program 
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_CHECK_JAVAH],
 [
   if test "x$1" != x; then
@@ -481,7 +495,9 @@ AC_DEFUN([CLASSPATH_CHECK_JAVAH],
 #  fi
 ])
 
+dnl -----------------------------------------------------------
 dnl CLASSPATH_WITH_CLASSLIB - checks for user specified classpath additions
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_CLASSLIB],
 [
   AC_ARG_WITH(classpath,
@@ -507,8 +523,9 @@ AC_DEFUN([CLASSPATH_WITH_CLASSLIB],
   AM_CONDITIONAL(USER_SPECIFIED_CLASSLIB, test "x${conditional_with_classlib}" = xtrue)
 ])
 
-
+dnl -----------------------------------------------------------
 dnl CLASSPATH_WITH_INCLUDEDIR - checks for user specified extra include directories
+dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_INCLUDEDIR],
 [
   AC_ARG_WITH(includedir,
@@ -537,25 +554,48 @@ AC_DEFUN([CLASSPATH_WITH_INCLUDEDIR],
   ])
 ])
 
-dnl CLASSPATH_WITH_ZIP - allow user to specify without zip
-AC_DEFUN([CLASSPATH_WITH_ZIP],
+dnl -----------------------------------------------------------
+dnl CLASSPATH_ENABLE_GLIBJ - allow user to specify without zip
+dnl -----------------------------------------------------------
+AC_DEFUN([CLASSPATH_ENABLE_GLIBJ],
 [
-  AC_ARG_WITH(zip, 
-  [  --with-zip		  create glibj.zip [default=yes]],
-  [
-    if test "x${withval}" = xyes || test "x${withval}" = x; then
-      AC_PATH_PROG(ZIP, zip)
-    elif test "x${withval}" = xno || test "x${withval}" = xfalse; then
-      ZIP=
-    else
-      ZIP="${withval}"
-    fi
-  ],
-  [ 
-    AC_PATH_PROG(ZIP, zip)
-  ])
+  AC_ARG_ENABLE([glibj],
+                [AS_HELP_STRING([--enable-glibj],[enable creation of glibj.zip [default=yes]])],
+                [
+                  if test "x${enableval}" = xyes; then
+      		    AC_PATH_PROG(ZIP, zip)
+                  elif test "x${enableval}" = xno; then
+                    ZIP=
+                  else
+                   ZIP="${enableval}"
+                  fi
+		],
+  		[
+                  ZIP=
+		])
+
   AC_SUBST(ZIP)
-  AM_CONDITIONAL(HAVE_ZIP, test "x${ZIP}" != x)
+  AM_CONDITIONAL(CREATE_GLIBJ, test "x${ZIP}" != x)
+])
+
+dnl -----------------------------------------------------------
+dnl CLASSPATH_ENABLE_CLASS_INSTALL
+dnl   - allow user to install all classfiles
+dnl -----------------------------------------------------------
+AC_DEFUN([CLASSPATH_ENABLE_CLASS_INSTALL],
+[
+  AC_ARG_ENABLE([class-install],
+		[AS_HELP_STRING([--enable-class-install],[enable installation of class files [default=no]])],
+		[
+                  case "${enableval}" in
+                    yes) ENABLE_CLASS_INSTALL=yes ;;
+                    no) ENABLE_CLASS_INSTALL=no ;;
+                    *) ENABLE_CLASS_INSTALL=no ;;
+                  esac
+		],
+		[ENABLE_CLASS_INSTALL=no])
+
+  AM_CONDITIONAL(INSTALL_CLASSFILES, test "x${ENABLE_CLASS_INSTALL}" = xyes)
 ])
 
 dnl -----------------------------------------------------------

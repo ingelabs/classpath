@@ -1,5 +1,11 @@
 2004-04-08  Michael Koch  <konqueror@gmx.de>
 
+	* ChangeLog, acinclude.m4, lib/Makefile.am:
+	Added support for building and installing glibj.zip and separate
+	class files.
+
+2004-04-08  Michael Koch  <konqueror@gmx.de>
+
 	* autogen.sh: New script to generate configure and friends.
 	* ltmain.sh: Removed. This gets added now by calling libtoolize.
 
