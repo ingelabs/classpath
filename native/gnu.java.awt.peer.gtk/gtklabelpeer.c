@@ -24,80 +24,85 @@
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelNew
-    (JNIEnv *env, jobject obj, jstring text, jint just)
+(JNIEnv *env, jobject obj, jstring text, jint just)
 {
-  GtkWidget *label;
+  GtkWidget *label, *box;
   char *str;
-  GtkJustification j=GTK_JUSTIFY_CENTER;
-
+  GtkJustification j = GTK_JUSTIFY_CENTER;
+ 
   switch (just)
     {
     case 0:
-      j=GTK_JUSTIFY_LEFT;
+      j = GTK_JUSTIFY_LEFT;
       break;
     case 1:
-      j=GTK_JUSTIFY_RIGHT;
+      j = GTK_JUSTIFY_RIGHT;
       break;
     }
 
-  str=(char *)(*env)->GetStringUTFChars (env, text, 0);      
+  str = (char *)(*env)->GetStringUTFChars (env, text, 0);      
 
-  (*env)->MonitorEnter (env,java_mutex);
+  (*env)->MonitorEnter (env, java_mutex);
 
-  label=gtk_label_new (str);
+  box = gtk_event_box_new ();
+  label = gtk_label_new (str);
+  gtk_widget_show (label);
+
+  gtk_container_add (GTK_CONTAINER (box), label);
+
   gtk_label_set_justify (GTK_LABEL (label), j);
 
   gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  (*env)->MonitorExit (env, java_mutex);
 
-  NSA_SET_PTR (env, obj, label);
+  NSA_SET_PTR (env, obj, box);
 
   (*env)->ReleaseStringUTFChars (env, text, str);
 }
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelSet
-    (JNIEnv *env, jobject obj, jstring text)
+(JNIEnv *env, jobject obj, jstring text)
 {
   char *str;
   GtkLabel *label;
 
-  label = GTK_LABEL (NSA_GET_PTR (env, obj));
+  label = GTK_LABEL (GTK_BIN (NSA_GET_PTR (env, obj))->child);
   
-  str=(char *)(*env)->GetStringUTFChars (env, text, 0);      
-  (*env)->MonitorEnter (env,java_mutex);
+  str = (char *)(*env)->GetStringUTFChars (env, text, 0);      
+  (*env)->MonitorEnter (env, java_mutex);
   
   gtk_label_set (label, str);
 
   gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  (*env)->MonitorExit (env, java_mutex);
   (*env)->ReleaseStringUTFChars (env, text, str);
 }
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelSetJustify
-    (JNIEnv *env, jobject obj, jint just)
+(JNIEnv *env, jobject obj, jint just)
 {
   GtkLabel *label;
-  GtkJustification j=GTK_JUSTIFY_CENTER;
+  GtkJustification j = GTK_JUSTIFY_CENTER;
 
   switch (just)
     {
     case 0:
-      j=GTK_JUSTIFY_LEFT;
+      j = GTK_JUSTIFY_LEFT;
       break;
     case 1:
-      j=GTK_JUSTIFY_RIGHT;
+      j = GTK_JUSTIFY_RIGHT;
       break;
     }
 
-  label = GTK_LABEL (NSA_GET_PTR (env, obj));
+  label = GTK_LABEL (GTK_BIN (NSA_GET_PTR (env, obj))->child);
   
-  (*env)->MonitorEnter (env,java_mutex);
+  (*env)->MonitorEnter (env, java_mutex);
 
   gtk_label_set_justify (label, j);
   
   gdk_threads_wake();
-  (*env)->MonitorExit (env,java_mutex);
+  (*env)->MonitorExit (env, java_mutex);
 }
 
