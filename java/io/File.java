@@ -263,9 +263,6 @@ public class File implements Serializable, Comparable
    */
   public boolean equals (Object obj)
   {
-    if (obj == null)
-      return false;
-    
     if (! (obj instanceof File))
       return false;
     

@@ -1,5 +1,10 @@
 2003-10-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/File.java
+	(equals): Removed redundant obj == null check.
+
+2003-10-21  Michael Koch  <konqueror@gmx.de>
+
 	* native/target/generic/target_generic_file.h
 	(TARGET_NATIVE_OPEN_FILE): Set close-on-exec flag.
 	* native/target/generic/target_generic_network.h
