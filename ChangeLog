@@ -1,5 +1,14 @@
 2004-04-18  Michael Koch  <konqueror@gmx.de>
 
+	* java/rmi/Naming.java,
+	java/rmi/RemoteException.java,
+	java/rmi/activation/ActivationException.java,
+	java/rmi/server/ServerCloneException.java,
+	javax/naming/NamingException.java:
+	Fixed HTML tags in javadocs.
+
+2004-04-18  Michael Koch  <konqueror@gmx.de>
+
 	* java/sql/Array.java,
 	java/sql/DatabaseMetaData.java,
 	java/sql/ResultSet.java:
