@@ -1,3 +1,11 @@
+2004-01-15  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/File.java
+	(list): Return null in error case.
+	* native/jni/java-io/java_io_File.c
+	(Java_java_io_File_listInternal): release local reference.
+	This fixes classpath bug #6898.
+
 2004-01-14  Michael Koch  <konqueror@gmx.de>
 
 	* java/text/MessageFormat.java:

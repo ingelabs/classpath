@@ -670,8 +670,10 @@ public class File implements Serializable, Comparable
     
     String files[] = listInternal(list_path);
     
+    // Check if an error occured in listInternal().
     if (files == null)
-      return new String[0];
+      return null;
+
     if (filter == null)
       return files;
     

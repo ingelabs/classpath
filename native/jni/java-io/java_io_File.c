@@ -682,6 +682,9 @@ Java_java_io_File_listInternal(JNIEnv *env, jobject obj, jstring name)
 
       /* save into array */
       (*env)->SetObjectArrayElement(env, filearray, i, str);
+
+      /* delete local reference */
+      (*env)->DeleteLocalRef(env, str);
     }
 
   /* free resources */
