@@ -53,6 +53,8 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_dispose
 
   g = (struct graphics *) NSA_DEL_PTR (env, obj);
 
+  if (!g) return;		/* dispose has been called more than once */
+  
   gdk_threads_enter ();
   gdk_gc_destroy (g->gc);
   gdk_threads_leave ();
