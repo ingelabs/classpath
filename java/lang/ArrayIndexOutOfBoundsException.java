@@ -14,16 +14,18 @@ public class ArrayIndexOutOfBoundsException extends IndexOutOfBoundsException
   /**
    * Create an exception without a message.
    */
-  public ArrayIndexOutOfBoundsException()
-    {
-      super();
-    }
+  public ArrayIndexOutOfBoundsException() {
+    super();
+  }
 
   /**
    * Create an exception with a message.
    */
-  public ArrayIndexOutOfBoundsException(String s)
-    {
-      super(s);
-    }
+  public ArrayIndexOutOfBoundsException(String s) {
+    super(s);
+  }
+
+  public ArrayIndexOutOfBoundsException(int index) {
+    super(String.valueOf(index));
+  }
 }
