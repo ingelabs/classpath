@@ -215,6 +215,7 @@ native/java.lang/Makefile
 native/java.lang.reflect/Makefile
 native/java.net/Makefile
 native/lib/Makefile
+native/vmi/Makefile
 resource/java/util/Makefile
 resource/java/Makefile
 resource/Makefile
