@@ -43,7 +43,9 @@ Suggested Software
         - libart_lgpl 2.1.0
         - gdk-pixbuf
 
-	For building the documentation you will need texinfo 4.2 or higher.
+	For building the documentation you will need
+
+	- texinfo 4.2 or higher.
 
 This package was designed to use the GNU standard for configuration
 and makefiles.  To build and install do the following:

@@ -1,5 +1,9 @@
 2004-07-04  Mark Wielaard  <mark@klomp.org>
 
+	* INSTALL: Make needed texinfo version (4.2+) more explicit.
+
+2004-07-04  Mark Wielaard  <mark@klomp.org>
+
 	* java/beans/Expression.java: New class from libgcj.
 	* java/beans/Statement.java: Likewise.
 	* java/beans/Makefile.am (EXTRA_DIST): Add new files.
