@@ -15,7 +15,7 @@
 /* GNU Library General Public License for more details.
 /*
 /* You should have received a copy of the GNU Library General Public License
-/* along with this library; if not, write to the Free Software Foundation
+/* along with this library; if not, wprivate to the Free Software Foundation
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
@@ -24,7 +24,7 @@ package java.net;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
-//import java.security.Permission;
+import java.security.Permission;
 import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.text.ParseException;
@@ -80,7 +80,7 @@ public abstract class URLConnection
   * to do this is implemented by this class, so just create an empty
   * instance and store it here.
   */
-public static FileNameMap fileNameMap = new MimeTypeMapper();
+private static FileNameMap fileNameMap = new MimeTypeMapper();
 
 /**
   * This is the ContentHandlerFactory set by the caller, if any
@@ -229,34 +229,6 @@ setDefaultAllowUserInteraction(boolean allow)
 /*************************************************************************/
 
 /**
-  * Returns the default value used to determine whether or not caching
-  * of documents will be done when possible.
-  *
-  * @return true if caches will be used, false otherwise
-  */
-public static boolean
-getDefaultUseCaches()
-{
-  return(def_use_caches);
-}
-
-/*************************************************************************/
-
-/**
-  * Sets the default value used to determine whether or not caching
-  * of documents will be done when possible.
-  *
-  * @param use true to use caches if possible by default, false otherwise
-  */
-public static synchronized void
-setDefaultUseCaches(boolean use)
-{
-  def_use_caches = use;
-}
-
-/*************************************************************************/
-
-/**
   * Returns the default value of a request property.  This will be used
   * for all connections unless the value of the property is manually
   * overridden.
@@ -331,6 +303,34 @@ guessContentTypeFromStream(InputStream is) throws IOException
 
 /*************************************************************************/
 
+/**
+  * This method returns the <code>FileNameMap</code> object being used
+  * to decode MIME types by file extension.
+  *
+  * @return The <code>FileNameMap</code>.
+  */
+public static FileNameMap
+getFileNameMap()
+{
+  return(fileNameMap);
+}
+
+/*************************************************************************/
+
+/**
+  * This method set the <code>FileNameMap</code> object being used
+  * to decode MIME types by file extension.
+  *
+  * @param fileNameMap The <code>FileNameMap</code>.
+  */
+public static void
+setFileNameMap(FileNameMap fileNameMap)
+{
+  URLConnection.fileNameMap = fileNameMap;  
+}
+
+/*************************************************************************/
+
 /*
  * Constructors
  */
@@ -356,6 +356,38 @@ URLConnection(URL url)
 
       req_props.put(key, value);
     }
+}
+
+/*************************************************************************/
+
+/*
+ * Instance Methods
+ */
+
+/**
+  * Returns the default value used to determine whether or not caching
+  * of documents will be done when possible.
+  *
+  * @return true if caches will be used, false otherwise
+  */
+public static boolean
+getDefaultUseCaches()
+{
+  return(def_use_caches);
+}
+
+/*************************************************************************/
+
+/**
+  * Sets the default value used to determine whether or not caching
+  * of documents will be done when possible.
+  *
+  * @param use true to use caches if possible by default, false otherwise
+  */
+public static synchronized void
+setDefaultUseCaches(boolean use)
+{
+  def_use_caches = use;
 }
 
 /*************************************************************************/
@@ -828,20 +860,25 @@ getHeaderFieldInt(String key, int def)
 /*************************************************************************/
 
 /**
-  * What is this method supposed to do?  It's not documented, so just
-  * throw an exception if called.
+  * This method returns a <code>Permission</code> object representing the
+  * permissions required to access this URL.  This method returns
+  * <code>java.security.AllPermission</code> by default.  Subclasses should
+  * override it to return a more specific permission.  For example, an
+  * HTTP URL should return an instance of <code>SocketPermission</code>
+  * for the appropriate host and port.
+  * <p>
+  * Note that because of items such as HTTP redirects, the permission
+  * object returned might be different before and after connecting.
   *
   * @return A Permission object
   *
   * @exception IOException If an error occurs
   */
-/*
 public Permission
 getPermission() throws IOException
 {
-  throw new IOException("I don't know what this method is supposed to do");
+  return(new java.security.AllPermission());
 }
-*/
 
 /*************************************************************************/
 
