@@ -1,5 +1,12 @@
 2003-06-16  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/swing/border/SoftBevelBorder.java: Initial check-in.
+	* javax/swing/border/doc-files/SoftBevelBorder-1.png,
+	* javax/swing/border/doc-files/SoftBevelBorder-2.png,
+	* javax/swing/border/doc-files/SoftBevelBorder-3.png: New image.
+
+2003-06-16  Sascha Brawer  <brawer@dandelis.ch>
+
 	* javax/swing/border/LineBorder.java: Re-written from scratch.
 	* javax/swing/border/doc-files/LineBorder-1.png: New image.
 
