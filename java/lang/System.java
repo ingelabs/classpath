@@ -73,6 +73,7 @@ public class System {
 	static {
 		properties = new Properties();
 		VMSystem.insertSystemProperties(properties);
+		insertGNUProperties ();
 		in = new FileInputStream(FileDescriptor.in);
 		out = new PrintStream(new FileOutputStream(FileDescriptor.out));
 		err = new PrintStream(new FileOutputStream(FileDescriptor.err));
@@ -292,4 +293,20 @@ public class System {
 	public static void loadLibrary(String libname) {
 		Runtime.getRuntime().loadLibrary(libname);
 	}
+
+  /** Add Classpath specific system properties.
+   ** <br>
+   ** Current properties:
+   ** <br>
+   ** <ul>
+   **   <li> gnu.cpu.endian - big or little</li>
+   ** </ul>
+   **/
+  static void insertGNUProperties ()
+  {
+    properties.put ("gnu.cpu.endian", 
+		    (isWordsBigEndian ()) ? "big" : "little");
+  }
+
+  static native boolean isWordsBigEndian ();
 }
