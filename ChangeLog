@@ -1,3 +1,11 @@
+2004-03-03  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/File.java: Reformated.
+	(isAbsolute): Simplified code.
+	(isHidden): Likewise.
+	(mkdir): Likewise.
+	(compareTo): Handle case sensitiveness.
+
 2004-02-28    Guilhem Lavaux <guilhem@kaffe.org>
 
 	* java/text/AttributedStringIterator.java
