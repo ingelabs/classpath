@@ -769,7 +769,7 @@ public final class URL implements Serializable
   private static synchronized URLStreamHandler
     getURLStreamHandler (String protocol)
   {
-    URLStreamHandler ph;
+    URLStreamHandler ph = null;
 
     // First, see if a protocol handler is in our cache.
     if (cache_handlers)
@@ -792,7 +792,7 @@ public final class URL implements Serializable
     // If a non-default factory has been set, use it to find the protocol.
     if (factory != null)
       {
-        ph = factory.createURLStreamHandler (protocol);
+	ph = factory.createURLStreamHandler (protocol);
       }
 
     // Non-default factory may have returned null or a factory wasn't set.
@@ -802,7 +802,7 @@ public final class URL implements Serializable
 	// Finally loop through our search path looking for a match.
 	StringTokenizer pkgPrefix = new StringTokenizer (ph_search_path, "|");
         
-        while (pkgPrefix.hasMoreTokens())
+	do
           {
             String clsName = pkgPrefix.nextToken() + "." + protocol + ".Handler";
          
@@ -820,6 +820,9 @@ public final class URL implements Serializable
                 // Can't instantiate; handler still null, go on to next element.
               }
           }
+	while ((ph == null ||
+		!(ph instanceof URLStreamHandler))
+               && pkgPrefix.hasMoreTokens());
       }
 
     // Update the hashtable with the new protocol handler.

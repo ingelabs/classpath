@@ -1,5 +1,11 @@
 2003-09-27  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/URL.java (getURLStreamHandler):
+	Initialize ph, make loop over StringTokenizer more efficient
+	a.k.a. do eventually less loops.
+
+2003-09-27  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/image/IndexColorModel.java: Reformated.
 
 2003-09-27  Michael Koch  <konqueror@gmx.de>
