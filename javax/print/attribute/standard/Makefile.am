@@ -1,11 +1,16 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
 EXTRA_DIST = \
+ColorSupported.java \
+Compression.java \
 Copies.java \
+CopiesSupported.java \
 DateTimeAtCompleted.java \
 DateTimeAtCreation.java \
 DateTimeAtProcessing.java \
 DocumentName.java \
+Fidelity.java \
+Finishings.java \
 JobHoldUntil.java \
 JobImpressions.java \
 JobImpressionsCompleted.java \
@@ -18,17 +23,42 @@ JobName.java \
 JobOriginatingUserName.java \
 JobPriority.java \
 JobPrioritySupported.java \
+JobSheets.java \
+JobState.java \
+JobStateReason.java \
+JobStateReasons.java \
+Media.java \
+MediaSizeName.java \
+MultipleDocumentHandling.java \
 NumberOfDocuments.java \
 NumberOfInterveningJobs.java \
 NumberUp.java \
+NumberUpSupported.java \
+OrientationRequested.java \
 OutputDeviceAssigned.java \
 PagesPerMinute.java \ \
 PagesPerMinuteColor.java \
+PageRanges.java \
+PDLOverrideSupported.java \
+PresentationDirection.java \
 PrinterInfo.java \
+PrinterIsAcceptingJobs.java \
 PrinterLocation.java \
 PrinterMakeAndModel.java \
 PrinterMessageFromOperator.java \
+PrinterMoreInfo.java \
+PrinterMoreInfoManufacturer.java \
 PrinterName.java \
+PrinterResolution.java \
+PrinterState.java \
+PrinterStateReason.java \
+PrinterStateReasons.java \
+PrinterURI.java \
+PrintQuality.java \
 QueuedJobCount.java \
+ReferenceUriSchemeSupported.java \
 RequestingUserName.java \
+Severity.java \
+SheetCollate.java \
+Sides.java \
 package.html
