@@ -1,3 +1,8 @@
+2003-06-05  Jeff Sturm	<jsturm@one-point.com>
+
+	* java/io/ObjectInputStream (enableResolveObject):
+	Fixed spelling of permission name.
+
 2003-06-05  Ito Kazumitsu  <ito.kazumitsu@hitachi-cable.co.jp>
 
 	* java/awt/image/ColorModel.java (ColorModel): Compute sRGB.
