@@ -1,3 +1,33 @@
+2004-12-21  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/JApplet.java
+	(HIDE_ON_CLOSE): Removed.
+	(EXIT_ON_CLOSE): Likewise.
+	(DISPOSE_ON_CLOSE): Likewise.
+	(DO_NOTHING_ON_CLOSE): Likewise.
+	(close_action): Likewise.
+	(getDefaultCloseOperation): Likewise.
+	(setDefaultCloseOperation): Likewise.
+	(processWindowEvent): Likewise.
+	(getPreferredSize): Simplified.
+	* javax/swing/JDialog.java
+	(setDefaultLookAndFeelDecorated): Throw exception on wrong argument
+	value.
+	* javax/swing/JFrame.java
+	(setDefaultLookAndFeelDecorated): Likewise.
+	* javax/swing/JInternalFrame.java
+	(setDefaultCloseOperation): Fixed throwing exception on wrong argument
+	value.
+	* javax/swing/JWindow.java
+	(HIDE_ON_CLOSE): Removed.
+	(EXIT_ON_CLOSE): Likewise.
+	(DISPOSE_ON_CLOSE): Likewise.
+	(DO_NOTHING_ON_CLOSE): Likewise.
+	(close_action): Likewise.
+	(processKeyEvent): Likewise.
+	(setDefaultCloseOperation): Likewise.
+	(getPreferredSize): Simplified.
+
 2004-12-21  Chris Burdess  <dog@gnu.org>
 
 	* configure.ac: Check for presence of crt_externs.h on Darwin.
