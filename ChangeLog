@@ -1,3 +1,12 @@
+2004-01-18  Michael Koch  <konqueror@gmx.de>
+
+	* HACKING: Updated autoconf and automake prerequisite descriptions.
+	* acinclude.m4 (CLASSPATH_ENABLE_GJDOC): Use AS_HELP_STRING,
+	fix quotation.
+	* configure.in: Rewrote AC_ARG_ENABLE usage to use AC_HELP_STRING and
+	to use a correct quotation. Use pkgconfig to search for glib, gtk and
+	libart. Ported AC_OUTPUT() to new AC_CONFIG_FILES()/AC_OUTPUT.
+
 2004-01-16  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/Container.java: Typo and indentation fixes.
