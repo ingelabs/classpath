@@ -53,6 +53,7 @@ import javax.swing.JToolBar;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.border.AbstractBorder;
+import javax.swing.border.BevelBorder;
 import javax.swing.border.Border;
 import javax.swing.plaf.UIResource;
 import javax.swing.plaf.BorderUIResource;
@@ -356,7 +357,70 @@ public class BasicBorders
       defaults.getColor("TextField.highlight"));
   }
   
-  
+
+  /**
+   * Returns a two-pixel thick, green
+   * <code>LineBorderUIResource</code>.  This is so ugly that look and
+   * feels better use different borders for their progress bars, or
+   * they will look really terrible.
+   *
+   * <p><img src="BasicBorders-1.png" width="120" height="80"
+   * alt="[A screen shot of a border returned by this method]" />
+   */
+  public static Border getProgressBarBorder()
+  {
+    /* There does not seem to exist a way to parametrize the color
+     * or thickness of the border through UIDefaults.
+     */
+    return new BorderUIResource.LineBorderUIResource(Color.green, 2);
+  }
+
+
+  /**
+   * Returns a border that is composed of a raised bevel border and a
+   * one-pixel thick line border.
+   *
+   * <p><img src="BasicBorders-2.png" width="300" height="200"
+   * alt="[A screen shot of a border returned by this method]" />
+   *
+   * <p>The colors of the border are retrieved from the
+   * <code>UIDefaults</code> of the currently active look and feel
+   * using the keys <code>&#x201c;InternalFrame.borderShadow&#x201d;</code>,
+   * <code>&#x201c;InternalFrame.borderDarkShadow&#x201d;</code>,
+   * <code>&#x201c;InternalFrame.borderLight&#x201d;</code>,
+   * <code>&#x201c;InternalFrame.borderHighlight&#x201d;</code>, and
+   * (for the inner one-pixel thick line)
+   * <code>&#x201c;InternalFrame.borderColor&#x201d;</code>.
+   */
+  public static Border getInternalFrameBorder()
+  {
+    UIDefaults defaults;
+    Color shadow, darkShadow, highlight, lightHighlight, line;
+
+    /* See comment in methods above for why this border is not shared. */
+    defaults = UIManager.getLookAndFeelDefaults();
+    
+    shadow = defaults.getColor("InternalFrame.borderShadow");
+    darkShadow = defaults.getColor("InternalFrame.borderDarkShadow");
+    highlight = defaults.getColor("InternalFrame.borderLight");
+    lightHighlight = defaults.getColor("InternalFrame.borderHighlight");
+    line = defaults.getColor("InternalFrame.borderColor");
+
+    return new BorderUIResource.CompoundBorderUIResource(
+      /* outer border */
+      new BorderUIResource.BevelBorderUIResource(
+        BevelBorder.RAISED,
+        (highlight != null) ? highlight : Color.lightGray,
+        (lightHighlight != null) ? lightHighlight : Color.white,
+        (darkShadow != null) ? darkShadow : Color.black,
+        (shadow != null) ? shadow : Color.gray),
+
+      /* inner border */
+      new BorderUIResource.LineBorderUIResource(
+        (line != null) ? line : Color.lightGray));
+  }
+
+
   /**
    * Returns a shared MarginBorder.
    */
