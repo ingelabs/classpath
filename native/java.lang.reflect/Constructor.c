@@ -10,7 +10,6 @@
 #include <jcl.h>
 #include <native_state.h>
 #include <jnilink.h>
-#include <jvmdi.h>
 #include <vmi.h>
 #include <primlib.h>
 
@@ -98,6 +97,7 @@ static jvalue * DoInitialCheckingAndConverting(JNIEnv * env, jobjectArray args,
 			return NULL;
 		}
 	}
+	return retval;
 }
 
 

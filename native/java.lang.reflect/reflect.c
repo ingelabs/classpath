@@ -1,9 +1,12 @@
 #include "reflect.h"
 #include <primlib.h>
 #include <string.h>
-#include <jvmdi.h>
-#include <vmi.h>
 #include <jcl.h>
+#include <vmi.h>
+
+#ifndef NO_VMI
+#include <jvmdi.h>
+#endif
 
 #define SAME_CLASS       1
 #define SAME_PACKAGE     2
@@ -177,6 +180,7 @@ static jint StartMethodSignature(JNIEnv * env, char * signatureBuf, jobjectArray
 
 	signatureBuf[pos] = ')';
 	pos++;
+	return pos;
 }
 
 JNIEXPORT jint JNICALL REFLECT_GetMethodSignature(JNIEnv * env, char * signatureBuf,

@@ -141,6 +141,7 @@ static jvalue * DoInitialCheckingAndConverting(JNIEnv * env, jobject invokeObj, 
 			return NULL;
 		}
 	}
+	return retval;
 }
 
 static jmethodID GetTheStaticMethodID(JNIEnv * env, jobject thisObj, jclass declarer, jstring name, jobjectArray targetArgTypes, jclass retType) {

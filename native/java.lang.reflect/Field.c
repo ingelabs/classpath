@@ -5,7 +5,6 @@
 #include <jcl.h>
 #include <jnilink.h>
 #include <vmi.h>
-#include <jvmdi.h>
 
 #include <malloc.h>
 static struct state_table* table;
