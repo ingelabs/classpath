@@ -1,4 +1,10 @@
 2003-12-26  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* java/io/FileInputStream.java (FileInputStream(String)): Call
+	FileInputStream(File).
+	(FileInputStream(File)): Check whether the argument is a directory.
+
+2003-12-26  Guilhem Lavaux  <guilhem@kaffe.org>
             Mark Wielaard  <mark@klomp.org>
 
 	* java/io/BufferedReader.java (BufferedReader): Throw
