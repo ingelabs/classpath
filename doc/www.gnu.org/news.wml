@@ -7,7 +7,7 @@
 
 <boxtitle><a name="ShortNews">Classpath::News</a></boxtitle>
 <boxitem>
-<news>
+<news newscount="9999">
 #include "newsitems.txt"
 </news>
 </boxitem>
