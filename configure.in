@@ -114,6 +114,9 @@ dnl define JIKES for Makefile.am if --with-jikes specified to configure
 CLASSPATH_CHECK_JIKES
 AM_CONDITIONAL(USER_SPECIFIED_JIKES, test x$conditional_with_jikes = xtrue)
 
+dnl define KJC_CLASSPATH for Makefile.am if --with-kjc specified to configure
+CLASSPATH_CHECK_KJC
+
 AC_ARG_WITH(classlib,
   [  --with-classlib	  specify path to a classes.zip like file ],
   [
@@ -211,6 +214,9 @@ fi
 dnl must check our conditionals from vm checks
 AM_CONDITIONAL(JAPHAR, test x$conditional_with_japhar = xtrue)
 AM_CONDITIONAL(KAFFE, test x$conditional_with_kaffe = xtrue)
+dnl can be defined by kaffe check, should be here should we autodetect
+dnl kaffe in the future
+AM_CONDITIONAL(USER_SPECIFIED_KJC, test x$conditional_with_kjc = xtrue)
 
 dnl -----------------------------------------------------------
 

@@ -10,3 +10,6 @@ INCLUDES += @EXTRA_INCLUDES@ \
 
 libjavanet_la_LDFLAGS = -version-info @LIBVERSION@
 
+clean-local:
+	-rm -rf .deps
+

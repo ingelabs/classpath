@@ -1,4 +1,4 @@
 #! @SH@
 # @configure_input@
-@FIND@ @top_srcdir@/java @top_srcdir@/gnu @top_srcdir@/vm/current -type f -print | grep '\.java$' > @top_srcdir@/lib/classes
+@FIND@ @top_srcdir@/java @top_srcdir@/gnu @top_srcdir@/vm/current -follow -type f -print | grep '\.java$' > @top_srcdir@/lib/classes
 for filexp in `cat @top_srcdir@/lib/$1.omit` ; do { grep -v ${filexp} < @top_srcdir@/lib/classes > @top_srcdir@/lib/classes.new ; mv @top_srcdir@/lib/classes.new @top_srcdir@/lib/classes ; } ; done

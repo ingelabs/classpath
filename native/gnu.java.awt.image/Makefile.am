@@ -9,3 +9,7 @@ INCLUDES += @EXTRA_INCLUDES@ \
 	    @GTK_CFLAGS@ \
 	    @LIBART_CFLAGS@ \
 	    -I$(top_srcdir)/include
+
+clean-local:
+	-rm -rf .deps
+

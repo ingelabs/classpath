@@ -92,7 +92,7 @@ AC_DEFUN(CLASSPATH_INTERNAL_CHECK_KAFFE,
   AC_SUBST(JVM)
   AC_SUBST(JVM_REFERENCE)
 
-  dnl conditional_with_kaffe
+  conditional_with_kaffe=true
   AC_MSG_RESULT(yes)
 
   dnl define WITH_KAFFE for native compilation
@@ -106,7 +106,23 @@ AC_DEFUN(CLASSPATH_INTERNAL_CHECK_KAFFE,
   _t_bindir=`$KAFFE_CONFIG info bindir`
   _t_datadir=`$KAFFE_CONFIG info datadir`
   AC_PATH_PROG(KAFFE_JABBA, kaffe, "", $_t_bindir:$PATH)
-  AC_PATH_PROG(KAFFE_JAVAC, kjc, "", $_t_bindir:$PATH)
+
+  AC_MSG_CHECKING(for kjc)
+  if test -e $_t_datadir/kaffe/kjc.jar; then
+    KJC_CLASSPATH=$_t_datadir/kaffe/kjc.jar
+    AC_SUBST(KJC_CLASSPATH)
+    conditional_with_kjc=true
+    AC_MSG_RESULT(${withval})
+  elif test -e $_t_datadir/kjc.jar; then
+    KJC_CLASSPATH=$_t_datadir/kjc.jar
+    AC_SUBST(KJC_CLASSPATH)
+    conditional_with_kjc=true
+    AC_MSG_RESULT(${withval})
+  else
+    conditional_with_kjc=false
+    AC_MSG_RESULT(no)
+  fi
+  
   AC_PATH_PROG(KAFFE_JAVAH, kaffeh, "", $_t_bindir:$PATH)
 
   AC_MSG_CHECKING(for Kaffe classes)
@@ -123,12 +139,6 @@ AC_DEFUN(CLASSPATH_INTERNAL_CHECK_KAFFE,
     AC_MSG_ERROR(no)
   fi
   AC_MSG_RESULT(yes)
-  if test -e $_t_datadir/kjc.jar; then
-    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$_t_datadir/kjc.jar
-  fi
-  if test -e $_t_datadir/kaffe/kjc.jar; then
-    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$_t_datadir/kaffe/kjc.jar
-  fi
   if test -e $_t_datadir/rmi.jar; then
     KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$_t_datadir/rmi.jar
   fi

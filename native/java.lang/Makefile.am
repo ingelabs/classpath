@@ -12,3 +12,7 @@ libjavalangmath_la_LDFLAGS = -version-info @LIBVERSION@
 
 INCLUDES += @EXTRA_INCLUDES@ \
             -I$(top_srcdir)/include
+
+clean-local:
+	-rm -rf .deps
+
