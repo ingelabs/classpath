@@ -44,6 +44,7 @@ import java.util.MissingResourceException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
+import java.io.InvalidObjectException;
 
 /**
  * This is the abstract superclass of all classes which format and 
@@ -196,11 +197,12 @@ public abstract class NumberFormat extends Format implements Cloneable
     protected Object readResolve() throws InvalidObjectException
     {
       String s = getName();
-      for (int i=0;i<allFields.length;i++)
+      for (int i = 0; i < allFields.length; i++)
 	if (s.equals(allFields[i].getName()))
 	  return allFields[i];
 
-      throw new InvalidObjectException("no such NumberFormat field called " + s);
+      throw new InvalidObjectException("no such NumberFormat field called "
+				       + s);
     }
   }
 

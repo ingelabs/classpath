@@ -1,5 +1,10 @@
 2003-11-23  Mark Wielaard  <mark@klomp.org>
 
+	* java/text/NumberFormat.java: Import java.io.InvalidObjectException.
+	(readResolve): Reformat.
+
+2003-11-23  Mark Wielaard  <mark@klomp.org>
+
 	* native/jni/java-net/javanet.c: Plain[Datagram]SocketImpl moved from
 	java/net to gnu/java/net.
 
