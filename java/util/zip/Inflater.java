@@ -572,13 +572,16 @@ public class Inflater
    * @return the number of bytes written to the buffer, 0 if no further
    * output can be produced.  
    * @exception DataFormatException if deflated stream is invalid.
-   * @exception IllegalArgumentException if len is lt;eq; 0.
    * @exception IndexOutOfBoundsException if the off and/or len are wrong.
    */
   public int inflate(byte[] buf, int off, int len) throws DataFormatException
   {
-    if (len <= 0)
-      throw new IllegalArgumentException("len <= 0");
+    /* Special case: len may be zero */
+    if (len == 0)
+      return 0;
+    /* Check for correct buff, off, len triple */
+    if (0 > off || off > off + len || off + len > buf.length)
+      throw new ArrayIndexOutOfBoundsException();
     int count = 0;
     int more;
     do

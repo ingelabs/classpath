@@ -1,3 +1,16 @@
+2002-07-05  Jochen Hoenicke <jochen@gnu.org>
+
+	* java/util/zip/Inflater.java
+	(inflate): Handle zero length.  Fully check for
+	ArrayIndexOutOfBoundsException.
+
+	* java/util/zip/DeflaterEngine.java
+	(slideWindow): New function, takes out some code from fillWindow.
+	Slide the prev array too, and handle head/prev values as unsigned.
+	(deflateFast): Always slide window when strstart + MIN_LOOKAHEAD
+	falls out of window.  This is needed when we are flushing.
+	(deflateSlow): Likewise.
+
 2002-07-02  Tom Tromey  <tromey@redhat.com>
             David Hovemeyer  <daveho@cs.umd.edu>
 

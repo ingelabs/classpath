@@ -42,13 +42,45 @@ class DeflaterEngine implements DeflaterConstants {
 
   private int ins_h;
   private byte[] buffer;
+
+  /**
+   * Hashtable, hashing three characters to an index for window, so
+   * that window[index]..window[index+2] have this hash code.  
+   * Note that the array should really be unsigned short, so you need
+   * to and the values with 0xffff.
+   */
   private short[] head;
+
+  /**
+   * prev[index & WMASK] points to the previous index that has the
+   * same hash code as the string starting at index.  This way 
+   * entries with the same hash code are in a linked list.
+   * Note that the array should really be unsigned short, so you need
+   * to and the values with 0xffff.
+   */
   private short[] prev;
 
   private int matchStart, matchLen;
   private boolean prevAvailable;
   private int blockStart;
-  private int strstart, lookahead;
+
+  /**
+   * strstart points to the current character in window.
+   */
+  private int strstart;
+
+  /**
+   * lookahead is the number of characters starting at strstart in
+   * window that are valid.
+   * So window[strstart] until window[strstart+lookahead-1] are valid
+   * characters.
+   */
+  private int lookahead;
+
+  /**
+   * This array contains the part of the uncompressed stream that 
+   * is of relevance.  The current character is indexed by strstart.
+   */
   private byte[] window;
 
   private int strategy, max_chain, max_lazy, niceLength, goodLength;
@@ -73,6 +105,22 @@ class DeflaterEngine implements DeflaterConstants {
 
   /** The adler checksum */
   private Adler32 adler;
+
+  /* DEFLATE ALGORITHM:
+   *
+   * The uncompressed stream is inserted into the window array.  When
+   * the window array is full the first half is thrown away and the
+   * second half is copied to the beginning.
+   *
+   * The head array is a hash table.  Three characters build a hash value
+   * and they the value points to the corresponding index in window of 
+   * the last string with this hash.  The prev array implements a
+   * linked list of matches with the same hash: prev[index & WMASK] points
+   * to the previous index with the same hash.
+   * 
+   * 
+   */
+
 
   DeflaterEngine(DeflaterPending pending) {
     this.pending = pending;
@@ -179,6 +227,10 @@ class DeflaterEngine implements DeflaterConstants {
     ins_h = (window[strstart] << HASH_SHIFT) ^ window[strstart + 1];
   }    
 
+  /**
+   * Inserts the current string in the head hash and returns the previous
+   * value for this hash.
+   */
   private final int insertString() {
     short match;
     int hash = ((ins_h << HASH_SHIFT) ^ window[strstart + (MIN_MATCH -1)])
@@ -199,35 +251,55 @@ class DeflaterEngine implements DeflaterConstants {
     head[hash] = (short) strstart;
     ins_h = hash;
     return match & 0xffff;
-  }    
+  }
 
-  public void fillWindow()
+  private void slideWindow()
   {
+    System.arraycopy(window, WSIZE, window, 0, WSIZE);
+    matchStart -= WSIZE;
+    strstart -= WSIZE;
+    blockStart -= WSIZE;
+    
+    /* Slide the hash table (could be avoided with 32 bit values
+     * at the expense of memory usage).
+     */
+    for (int i = 0; i < HASH_SIZE; i++) 
+      {
+	int m = head[i] & 0xffff;
+	head[i] = m >= WSIZE ? (short) (m - WSIZE) : 0;
+      }
+
+    /* Slide the prev table.
+     */
+    for (int i = 0; i < WSIZE; i++) 
+      {
+	int m = prev[i] & 0xffff;
+	prev[i] = m >= WSIZE ? (short) (m - WSIZE) : 0;
+      }
+  }
+
+  /**
+   * Fill the window when the lookahead becomes insufficient.
+   * Updates strstart and lookahead.
+   *
+   * OUT assertions: strstart + lookahead <= 2*WSIZE
+   *    lookahead >= MIN_LOOKAHEAD or inputOff == inputEnd
+   */
+  private void fillWindow()
+  {
+    /* If the window is almost full and there is insufficient lookahead,
+     * move the upper half to the lower one to make room in the upper half.
+     */
+    if (strstart >= WSIZE + MAX_DIST)
+      slideWindow();
+
+    /* If there is not enough lookahead, but still some input left,
+     * read in the input
+     */
     while (lookahead < DeflaterConstants.MIN_LOOKAHEAD && inputOff < inputEnd)
       {
 	int more = 2*WSIZE - lookahead - strstart;
 	
-	/* If the window is almost full and there is insufficient lookahead,
-	 * move the upper half to the lower one to make room in the upper half.
-	 */
-	if (strstart >= WSIZE + MAX_DIST)
-	  {
-	    System.arraycopy(window, WSIZE, window, 0, WSIZE);
-	    matchStart -= WSIZE;
-	    strstart -= WSIZE;
-	    blockStart -= WSIZE;
-	    
-            /* Slide the hash table (could be avoided with 32 bit values
-	     * at the expense of memory usage).
-	     */
-	    for (int i = 0; i < HASH_SIZE; i++) 
-	      {
-		int m = head[i];
-		head[i] = m >= WSIZE ? (short) (m - WSIZE) : 0;
-	      }
-	    more += WSIZE;
-	  }
-
 	if (more > inputEnd - inputOff)
 	  more = inputEnd - inputOff;
 
@@ -237,12 +309,22 @@ class DeflaterEngine implements DeflaterConstants {
 	inputOff += more;
 	totalIn  += more;
 	lookahead += more;
-
-	if (lookahead >= MIN_MATCH) 
-	  updateHash();
       }
+
+    if (lookahead >= MIN_MATCH) 
+      updateHash();
   }
 
+  /**
+   * Find the best (longest) string in the window matching the 
+   * string starting at strstart.
+   *
+   * Preconditions:
+   *    strstart + MAX_MATCH <= window.length.
+   *    
+   *
+   * @param curMatch
+   */
   private boolean findLongestMatch(int curMatch) {
     int chainLength = this.max_chain;
     int niceLength = this.niceLength;
@@ -254,10 +336,10 @@ class DeflaterEngine implements DeflaterConstants {
     
     int limit = Math.max(strstart - MAX_DIST, 0);
 
-    int strend = strstart + MAX_MATCH - 1;
+    int strend = scan + MAX_MATCH - 1;
     byte scan_end1 = window[best_end - 1];
     byte scan_end  = window[best_end];
-    
+
     /* Do not waste too much time if we already have a good match: */
     if (best_len >= this.goodLength)
       chainLength >>= 2;
@@ -390,6 +472,15 @@ class DeflaterEngine implements DeflaterConstants {
 	    return false;
 	  }
 
+	if (strstart > 2 * WSIZE - MIN_LOOKAHEAD)
+	  {
+	    /* slide window, as findLongestMatch need this.
+	     * This should only happen when flushing and the window
+	     * is almost full.
+	     */
+	    slideWindow();
+	  }
+
 	int hashHead;
 	if (lookahead >= MIN_MATCH 
 	    && (hashHead = insertString()) != 0
@@ -467,6 +558,15 @@ class DeflaterEngine implements DeflaterConstants {
 			       finish);
 	    blockStart = strstart;
 	    return false;
+	  }
+
+	if (strstart >= 2 * WSIZE - MIN_LOOKAHEAD)
+	  {
+	    /* slide window, as findLongestMatch need this.
+	     * This should only happen when flushing and the window
+	     * is almost full.
+	     */
+	    slideWindow();
 	  }
 
 	int prevMatch = matchStart;
