@@ -1,3 +1,8 @@
+2002-10-10  C. Brian Jones <cbj@gnu.org>
+	
+	* configure.in: fix goof I made earlier when AC_DEFINE'd stuff
+	was changed since acconfig.h went away.
+
 2002-10-10  Stephen Crawley  <crawley@dstc.edu.au>
 
 	* java/lang/Double.java (valueOf): Return new Double(parseDouble(s)).
