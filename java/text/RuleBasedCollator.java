@@ -1,5 +1,5 @@
 /* RuleBasedCollator.java -- Concrete Collator Class
-   Copyright (C) 1998, 1999, 2000, 2001, 2003  Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2003, 2004  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,7 +37,6 @@ exception statement from your version. */
 
 package java.text;
 
-import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Vector;
