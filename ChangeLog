@@ -1,3 +1,9 @@
+2002-09-29  C. Brian Jones <cbj@gnu.org>
+
+	* configure.in: use AC_DEFINE templates instead of acconfig.h
+	* acconfig.h: removed
+	* lib/Makefile.am: make use of -target 1.1 when using Jikes
+
 2002-09-28  C. Brian Jones <cbj@gnu.org>
 
 	* doc/home.wml: add information on API testing with japitools and

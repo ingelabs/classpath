@@ -19,6 +19,9 @@ AM_INIT_AUTOMAKE(${PACKAGE}, ${VERSION})
 
 AM_CONFIG_HEADER(include/config.h)
 
+AC_DEFINE(HAVE_INT32_DEFINED, 1, [Define to 1 if you have uint32_t])
+AC_DEFINE(HAVE_BSD_INT32_DEFINED, 1, [Define to 1 if you have BSD u_int32_t])
+AC_DEFINE(DEBUG, 1, [Define to 1 if you want native library runtime debugging code enabled]) 
 AC_PREFIX_DEFAULT(/usr/local/classpath)
 
 dnl required if SUBDIRS is used
@@ -169,7 +172,7 @@ AC_ARG_ENABLE(debug,
 [case "${enableval}" in 
   yes) 
 	LIBDEBUG="true"
-	AC_DEFINE(DEBUG) 
+	AC_DEFINE(DEBUG)
 	;;
   no)   LIBDEBUG="false" ;;
   *) 	AC_MSG_ERROR(bad value ${enableval} for --enable-debug) ;;
