@@ -1,5 +1,7 @@
 2002-11-09  Tom Tromey  <tromey@redhat.com>
 
+	* java/awt/ScrollPane.java (ScrollPane): Fixed indentation.
+
 	* java/awt/List.java (processEvent): Added missing `else's.
 
 	* java/awt/Window.java (show): validate() before showing.  Make
