@@ -850,17 +850,17 @@ Be precise in what changed, not the effect of the change (which should
 be clear from the code/patch).  So don't write:
 
 @example
-        * java/io/ObjectOutputStream.java : Allow putFields be called more 
-        than once.
+ * java/io/ObjectOutputStream.java : Allow putFields be called more 
+ than once.
 @end example
 
 But explain what changed and in which methods it was changed:
 
 @example
-        * java/io/ObjectOutputStream.java (putFields): Don't call
-        markFieldsWritten(). Only create new PutField when
-        currentPutField is null.
-        (writeFields): Call markFieldsWritten().
+ * java/io/ObjectOutputStream.java (putFields): Don't call
+ markFieldsWritten(). Only create new PutField when
+ currentPutField is null.
+ (writeFields): Call markFieldsWritten().
 @end example
 
 @end itemize
