@@ -40,14 +40,9 @@ package java.util;
  * compliant Collection object.
  * 
  */
-public class Vector extends AbstractList implements
-  List, Cloneable, java.io.Serializable {
-  
-  //In order to be able to fail any iterators if the Vector (rather than
-  // ListIterator) is modified, we need to keep track of modifications
-
-  transient int modifies;
-  
+public class Vector extends AbstractList implements List, 
+    Cloneable, java.io.Serializable {
+    
   /**
    * The amount the Vector's internal array should be increased in size when
    * a new element is added that exceeds the current size of the array,
@@ -101,7 +96,7 @@ public class Vector extends AbstractList implements
    * increased if necessary
    */
   public Vector(int initialCapacity, int capacityIncrement) {
-    modifies=0;
+    modCount=0;
     elementData = new Object[initialCapacity];
     this.capacityIncrement = capacityIncrement;
     elementCount = 0;
@@ -178,7 +173,7 @@ public class Vector extends AbstractList implements
    */
   public void setSize(int newSize) {
     if (newSize<elementCount) {
-      modifies++;
+      modCount++;
       elementCount=newSize;
     }
     Object[] newArray = new Object[newSize];
@@ -342,7 +337,7 @@ public class Vector extends AbstractList implements
 	(index >= elementCount)) 
       throw new ArrayIndexOutOfBoundsException(index);
 
-    modifies++;
+    modCount++;
     elementData[index] = obj;
   }
 
@@ -360,7 +355,7 @@ public class Vector extends AbstractList implements
 	(index >= elementCount)) 
       throw new ArrayIndexOutOfBoundsException(index);
     
-    modifies++;
+    modCount++;
     Object temp = elementData[index];
     elementData[index] = element;
     return temp;
@@ -375,7 +370,7 @@ public class Vector extends AbstractList implements
   public void removeElementAt(int index) {
     if (index >= elementCount) 
       throw new ArrayIndexOutOfBoundsException(index);    
-    modifies++;
+    modCount++;
     if (index < elementCount - 1) 
       System.arraycopy(elementData, index + 1, elementData, index, 
 		       elementCount - (index + 1));
@@ -392,18 +387,19 @@ public class Vector extends AbstractList implements
    * @param index The index at which the object is inserted
    */
   public void insertElementAt(Object obj, int index) {
-    ensureCapacity(elementCount + 1);
-    modifies++;
+    if ((index < 0) ||
+	(index > elementCount)) 
+      throw new ArrayIndexOutOfBoundsException(index);
 
-    //If we're inserting at the end, no need to move the other entries.
-    if (index == elementCount) {
-      elementCount++;
+    if (index == elementCount - 1) {
+      addElement(obj);
     } else {
+      ensureCapacity(++elementCount);
+      modCount++;
       System.arraycopy(elementData, index, elementData, index + 1, 
-		       elementCount - index);
-      elementCount++;
+		       (elementCount - index) - 1);
+      elementData[index] = obj;
     }
-    elementData[index] = obj;
   }
 
   /**
@@ -416,7 +412,7 @@ public class Vector extends AbstractList implements
    */
   public void addElement(Object obj) {
     ensureCapacity(elementCount + 1);
-    modifies++;
+    modCount++;
     elementData[elementCount++] = obj;
   }
 
@@ -443,7 +439,7 @@ public class Vector extends AbstractList implements
    * resize the internal data array.
    */
   public void removeAllElements() {
-    if (size()!=0) modifies++;
+    if (size()!=0) modCount++;
     else return;
 
     for (int i = 0; i < elementData.length; i++) {
@@ -524,19 +520,6 @@ public class Vector extends AbstractList implements
   }
 
   /**
-   * Adds an Object to the Vector.  Like addElement, if the capacity 
-   * of the Vector is not sufficient, it grows to accomodate the new Object
-   *
-   * @param o An object to add to the Vector
-   * @returns true per the Collections specification
-   */
-  public boolean add(Object o) {
-    modifies++;
-    addElement(o);
-    return true;
-  }
-
-  /**
    * Removes the given Object from the Vector.  If it exists, true
    * is returned, if not, false is returned.
    *
@@ -555,7 +538,7 @@ public class Vector extends AbstractList implements
    * @param element The element to add to the Vector
    */
   public void add(int index, Object element) {
-    modifies++;
+    modCount++;
     insertElementAt(element, index);
   }
 
@@ -568,7 +551,7 @@ public class Vector extends AbstractList implements
    * of the Vector
    */
   public Object remove(int index) {
-    modifies++;
+    modCount++;
     Object temp=elementData[index];
     removeElementAt(index);
     return temp;
@@ -597,13 +580,14 @@ public class Vector extends AbstractList implements
 
   /**
    * Adds every element of the provided Collection to the Vector, in the
-   * order provided by the Collection's iterator
+   * order provided by the Collection's iterator.  This overrides the
+   * addAll in the AbstractList class in order to optimize for Vectors.
    *
    * @param c A collection to add to this Vector
    * @returns true per the Collections specification
    */
   public boolean addAll(Collection c) {
-    modifies++;
+    modCount++;
     ensureCapacity(c.size());
     for (Iterator i=c.iterator(); i.hasNext();) {
       addElement(i.next());
@@ -619,7 +603,7 @@ public class Vector extends AbstractList implements
    * @param c The collection to add to the Vector
    */
   public boolean addAll(int index, Collection c) {
-    modifies++;
+    modCount++;
     int idx=index;
     ensureCapacity(size() + c.size());
     if (index < elementCount) {
@@ -645,7 +629,7 @@ public class Vector extends AbstractList implements
     for (Iterator i=c.iterator(); i.hasNext();) {
       result=remove(i.next()) || result;
     }
-    if (result) modifies++;
+    if (result) modCount++;
     return result;
   }
 
@@ -666,57 +650,10 @@ public class Vector extends AbstractList implements
 	result=true;
       }
     }
-    if (result) modifies++;
+    if (result) modCount++;
     return result;
   }
 
-  /**
-   * Compares this Vector with another Object.  If the other Object
-   * is a subtype of List, and the elements of the List are identical
-   * to the elements of this Vector according to the equal() method,
-   * and are in the same order, true is returned.
-   *
-   * @param o The object to test for equality
-   * @returns true if this Vector and the Object are equal
-   */
-  public boolean equals(Object o) {
-    if (!(o instanceof List) ||
-	(((List)o).size() != size())) return false;
-    
-    List temp=(List)o;
-    int index=0;
-    Object tempObj=null;
-    for (Iterator i=temp.iterator(); i.hasNext();) {
-      tempObj=i.next();
-      if (! (((elementData[index] == null) &&
-	      (tempObj == null)) ||
-	     ((elementData[index] != null) &&
-	      (tempObj != null) &&
-	      (elementData[index].equals(tempObj))))) 
-	return false;
-    }
-    return true;
-  }
-	
-  /**
-   * Returns the hashCode for this Vector.  This number is calculated
-   * using the following pseudocode:
-   *
-   * hashCode = 1
-   * for all elements in the Vector
-   *   hashCode = 31*hashCode + hashCode of object or 0 if null
-   * 
-   * @returns the computed Hash Code for this Vector
-   */
-  public int hashCode() {
-    int code = 1;
-    for (int i = 0; i < elementCount; i++) {
-      Object obj = elementData[i];
-      code = 31*code + (obj==null ? 0 : obj.hashCode());
-    }
-    return code;
-  }
-    
   /**
    * Returns a string representation of this Vector in the form 
    * [element0, element1, ... elementN]
@@ -733,30 +670,12 @@ public class Vector extends AbstractList implements
   }
 
   /**
-   * Returns a ListIterator over the elements in this Vector
-   *
-   * @returns a ListIterator
-   */
-  public ListIterator listIterator() {
-    return new VectorListIterator(this);
-  }
-
-  /**
-   * Returns an Iterator over the elements in this Vector
-   *
-   * @returns an Iterator
-   */
-  public Iterator iterator() {
-    return new VectorIterator(this);
-  }
-
-  /**
-   * Returns an Enumeration of the elements of this Vector
+   * Returns an Enumeration of the elements of this List
    *
    * @returns an Enumeration
    */
   public Enumeration elements() {
-    return new ArrayEnumeration(toArray());
+    return java.util.Collections.enumeration(this);
   }
 
 } // Vector
