@@ -209,24 +209,25 @@ sub findDepFiles
     my (@local_deps) = ();
     my (@entries) = ();
     my ($i, $local_dep) = "";
-    opendir(DIR, $dir) || die "Could not open directory ", $dir, "\n";
-    @entries = grep(-d "$dir/$_" && !/^\.\.?$/, readdir(DIR));
-    foreach $i (@entries)
-    {
-	push @dirs, "$dir/$i";
+    if (opendir(DIR, $dir))
+    { 
+      @entries = grep(-d "$dir/$_" && !/^\.\.?$/, readdir(DIR));
+      foreach $i (@entries)
+      {
+      	  push @dirs, "$dir/$i";
+      }
+      rewinddir(DIR);
+      @entries= grep(/\.u$/, readdir(DIR));
+      closedir(DIR);
+      foreach $i (@entries)
+      {
+	  push @local_deps, "$dir/$i";
+      }
+      push @deps, @local_deps;
+      foreach $i (@dirs)
+      {
+	  findDepFiles($i);
+      }
     }
-    rewinddir(DIR);
-    @entries= grep(/\.u$/, readdir(DIR));
-    closedir(DIR);
-    foreach $i (@entries)
-    {
-	push @local_deps, "$dir/$i";
-    }
-    push @deps, @local_deps;
-    foreach $i (@dirs)
-    {
-	findDepFiles($i);
-    }
-
 }
 
