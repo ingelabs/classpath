@@ -1,3 +1,7 @@
+2004-07-04  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac: Set version to 0.10-pre1.
+
 2004-07-04  Stephen Crawley <crawley@dstc.edu.au>
 
 	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
