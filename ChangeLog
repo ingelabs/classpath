@@ -1,3 +1,8 @@
+2003-10-06  Michael Koch  <konqueror@gmx.de>
+
+	* java/nio/ByteBufferHelper.java:
+	Rewrote all methods by suggestions from Eric Blake.
+
 2003-10-02  Arnaud Vandyck <arnaud.vandyck@ulg.ac.be>
 
 	* javax/swing/table/AbstractTableModel.java
