@@ -1,5 +1,5 @@
 /* DatagramSocketImpl.java -- Abstract class for UDP socket implementations
-   Copyright (C) 1998,2000 Free Software Foundation, Inc.
+   Copyright (C) 1998,, 1999 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,221 +27,169 @@ executable file might be covered by the GNU General Public License. */
 
 package java.net;
 
-import java.io.FileDescriptor;
 import java.io.IOException;
+import java.io.FileDescriptor;
 
 /**
-  * This abstract class models a datagram socket implementation.  An
-  * actual implementation class would implement these methods, probably
-  * via redirecting them to native code.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * Written using on-line Java Platform 1.2 API Specification, as well
+ * as "The Java Class Libraries", 2nd edition (Addison-Wesley, 1998).
+ * Status:  Believed complete and correct.
+ */
+
+/**
+ * This abstract class models a datagram socket implementation.  An
+ * actual implementation class would implement these methods, probably
+ * via redirecting them to native code.
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Warren Levy <warrenl@cygnus.com>
+ */
 public abstract class DatagramSocketImpl implements SocketOptions
 {
 
-/*************************************************************************/
+  /**
+   * The local port to which this socket is bound
+   */
+  protected int localPort;
 
-/*
- * Instance Variables
- */
+  /**
+   * The FileDescriptor object for this object. 
+   */
+  protected FileDescriptor fd;
 
-/**
-  * The FileDescriptor object for this object. 
-  */
-protected FileDescriptor fd;
+  /**
+   * Default, no-argument constructor for subclasses to call.
+   */
+  public DatagramSocketImpl()
+  {
+  }
 
-/**
-  * The local port to which this socket is bound
-  */
-protected int localPort;
+  /**
+   * This method binds the socket to the specified local port and address.
+   *
+   * @param lport The port number to bind to
+   * @param laddr The address to bind to
+   *
+   * @exception SocketException If an error occurs
+   */
+  protected abstract void bind(int lport, InetAddress laddr)
+  	throws SocketException;
 
-/*************************************************************************/
+  /**
+   * This methods closes the socket
+   */
+  protected abstract void close();
 
-/*
- * Constructors
- */
+  /**
+   * Creates a new datagram socket.
+   *
+   * @exception SocketException If an error occurs
+   */
+  protected abstract void create() throws SocketException;
 
-/**
-  * Default, no-argument constructor for subclasses to call.
-  */
-public
-DatagramSocketImpl()
-{
+  /**
+   * Takes a peek at the next packet received in order to retrieve the
+   * address of the sender
+   *
+   * @param i The InetAddress to fill in with the information about the
+   *          sender if the next packet
+   *
+   * @return The port number of the sender of the packet
+   *
+   * @exception IOException If an error occurs
+   */
+  protected abstract int peek(InetAddress i) throws IOException;
+
+  /**
+   * Transmits the specified packet of data to the network.  The destination
+   * host and port should be encoded in the packet.
+   *
+   * @param packet The packet to send
+   *
+   * @exception IOException If an error occurs
+   */
+  protected abstract void send(DatagramPacket p) throws IOException;
+
+  /**
+   * Receives a packet of data from the network  Will block until a packet
+   * arrives.  The packet info in populated into the passed in 
+   * DatagramPacket object.
+   *
+   * @param p A place to store the incoming packet.
+   *
+   * @exception IOException If an error occurs
+   */
+  protected abstract void receive(DatagramPacket p) throws IOException;
+
+  /**
+   * Sets the Time to Live (TTL) setting on this socket to the specified
+   * value. <b>Use <code>setTimeToLive(int)</code></b> instead.
+   *
+   * @param ttl The new Time to Live value
+   *
+   * @exception IOException If an error occurs
+   * @deprecated
+   */
+  protected abstract void setTTL(byte ttl) throws IOException;
+
+  /**
+   * This method returns the current Time to Live (TTL) setting on this
+   * socket.  <b>Use <code>getTimeToLive()</code></b> instead.
+   *
+   * @exception IOException If an error occurs
+   * @deprecated
+   */
+  protected abstract byte getTTL() throws IOException;
+
+ /**
+   * Sets the Time to Live (TTL) setting on this socket to the specified
+   * value.
+   *
+   * @param ttl The new Time to Live value
+   *
+   * @exception IOException If an error occurs
+   */
+  protected abstract void setTimeToLive(int ttl) throws IOException;
+
+  /**
+   * This method returns the current Time to Live (TTL) setting on this
+   * socket.
+   *
+   * @exception IOException If an error occurs
+   */
+  protected abstract int getTimeToLive() throws IOException;
+
+  /**
+   * Causes this socket to join the specified multicast group
+   *
+   * @param inetaddr The multicast address to join with
+   *
+   * @exception IOException If an error occurs
+   */
+  protected abstract void join(InetAddress inetaddr) throws IOException;
+
+ /**
+   * Causes the socket to leave the specified multicast group.
+   *
+   * @param inetaddr The multicast address to leave
+   *
+   * @exception IOException If an error occurs
+   */
+  protected abstract void leave(InetAddress inetaddr) throws IOException;
+
+  /**
+   * Returns the FileDescriptor for this socket
+   */
+  protected FileDescriptor getFileDescriptor()
+  {
+    return fd;
+  }
+
+  /**
+   * Returns the local port this socket is bound to
+   */
+  protected int getLocalPort()
+  {
+    return localPort;
+  }
 }
-
-/*************************************************************************/
-
-/*
- * Instance Methods
- */ 
-
-/**
-  * This method binds the socket to the specified local port and address.
-  *
-  * @param port The port number to bind to
-  * @param addr The address to bind to
-  *
-  * @exception SocketException If an error occurs
-  */
-protected abstract void
-bind(int port, InetAddress addr) throws SocketException;
-
-/*************************************************************************/
-
-/**
-  * This methods closes the socket
-  */
-protected abstract void
-close();
-
-/*************************************************************************/
-
-/**
-  * Creates a new datagram socket.
-  *
-  * @exception SocketException If an error occurs
-  */
-protected abstract void
-create() throws SocketException;
-
-/*************************************************************************/
-
-/**
-  * Returns the FileDescriptor for this socket
-  */
-protected FileDescriptor
-getFileDescriptor()
-{
-  return(fd);
-}
-
-/*************************************************************************/
-
-/**
-  * Returns the local port this socket is bound to
-  */
-protected int
-getLocalPort()
-{
-  return(localPort);
-}
-
-/*************************************************************************/
-
-/**
-  * This method returns the current Time to Live (TTL) setting on this
-  * socket.  <b>Use <code>getTimeToLive()</code></b> instead.
-  *
-  * @exception IOException If an error occurs
-  * @deprecated
-  */
-protected abstract byte
-getTTL() throws IOException;
-
-/*************************************************************************/
-
-/**
-  * Sets the Time to Live (TTL) setting on this socket to the specified
-  * value. <b>Use <code>setTimeToLive(int)</code><b> instead.
-  *
-  * @param ttl The new Time to Live value
-  *
-  * @exception IOException If an error occurs
-  * @deprecated
-  */
-protected abstract void
-setTTL(byte ttl) throws IOException;
-
-/*************************************************************************/
-
-/**
-  * This method returns the current Time to Live (TTL) setting on this
-  * socket.
-  *
-  * @exception IOException If an error occurs
-  */
-protected abstract int
-getTimeToLive() throws IOException;
-
-/*************************************************************************/
-
-/**
-  * Sets the Time to Live (TTL) setting on this socket to the specified
-  * value.
-  *
-  * @param ttl The new Time to Live value
-  *
-  * @exception IOException If an error occurs
-  */
-protected abstract void
-setTimeToLive(int ttl) throws IOException;
-
-/*************************************************************************/
-
-/**
-  * Causes this socket to join the specified multicast group
-  *
-  * @param addr The multicast address to join with
-  *
-  * @exception IOException If an error occurs
-  */
-protected abstract void
-join(InetAddress addr) throws IOException;
-
-/*************************************************************************/
-
-/**
-  * Causes the socket to leave the specified multicast group.
-  *
-  * @param addr The multicast address to leave
-  *
-  * @exception IOException If an error occurs
-  */
-protected abstract void
-leave(InetAddress addr) throws IOException;
-
-/*************************************************************************/
-
-/**
-  * Takes a peek at the next packet received in order to retrieve the
-  * address of the sender
-  *
-  * @param ********** Wish I knew what this was for ************
-  *
-  * @return ******* Wish I knew ************
-  *
-  * @exception IOException If an error occurs
-  */
-protected abstract int
-peek(InetAddress addr) throws IOException;
-
-/*************************************************************************/
-
-/**
-  * Receives a packet of data from the network  Will block until a packet
-  * arrives.  The packet info in populated into the passed in 
-  * DatagramPacket object.
-  *
-  * @param packet A place to store the incoming packet.
-  *
-  * @exception IOException If an error occurs
-  */
-protected abstract void
-receive(DatagramPacket packet) throws IOException;
-
-/*************************************************************************/
-
-/**
-  * Transmits the specified packet of data to the network.  The destination
-  * host and port should be encoded in the packet.
-  *
-  * @param packet The packet to send
-  *
-  * @exception IOException If an error occurs
-  */
-protected abstract void
-send(DatagramPacket packet) throws IOException;
-
-} // class DatagramSocketImpl 
-
