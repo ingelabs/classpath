@@ -29,7 +29,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowNew
 {
   jint *dims = (*env)->GetIntArrayElements (env, jdims, 0);  
   GtkRequisition myreq;
-  GtkWidget *sw, *fixed;
+  GtkWidget *sw, *layout;
   void *parent;
   guint mypolicy;
 
@@ -68,9 +68,9 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowNew
 			   "size_request", &myreq);
   dims[1]=myreq.height+GTK_SCROLLED_WINDOW_CLASS (GTK_OBJECT (sw)->klass)->scrollbar_spacing+4;
 
-  fixed = gtk_fixed_new ();
-  gtk_widget_show (fixed);
-  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), fixed);
+  layout = gtk_layout_new (NULL, NULL);
+  gtk_widget_show (layout);
+  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), layout);
 
   set_parent (sw, GTK_CONTAINER (parent));
   gtk_widget_realize (sw);
@@ -147,7 +147,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetSize
   (JNIEnv *env, jobject obj, jint w, jint h)
 {
   GtkScrolledWindow *sw;
-  GtkWidget *fix;
+  GtkWidget *layout;
   GList *child;
   void *ptr;
 
@@ -159,14 +159,14 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetSize
   child = gtk_container_children (GTK_CONTAINER 
 				  (GTK_BIN(sw)->child));
       
-  while (child && !GTK_IS_FIXED(child->data))
+  while (child && !GTK_IS_LAYOUT(child->data))
     child = g_list_next (child);
   
-  fix = GTK_WIDGET(child->data);
+  layout = GTK_WIDGET(child->data);
   
   g_list_free (child);
 
-  gtk_widget_set_usize (fix, w, h);
+  gtk_widget_set_usize (layout, w, h);
 
   gdk_threads_leave ();
 }

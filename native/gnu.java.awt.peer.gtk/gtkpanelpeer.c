@@ -29,22 +29,21 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkPanelPeer_gtkPanelNew
     (JNIEnv *env, jobject obj, jobject parent_obj)
 {
-  GtkWidget *fixed;
+  GtkWidget *layout;
   void *parent;
 
   parent = NSA_GET_PTR (env, parent_obj);
 
   gdk_threads_enter ();
-  fixed = gtk_fixed_new ();
+  layout = gtk_layout_new (NULL, NULL);
   
-  set_parent (fixed, GTK_CONTAINER (parent));
+  set_parent (layout, GTK_CONTAINER (parent));
 
-  gtk_widget_realize (fixed);
-  connect_awt_hook (env, obj, fixed, 1, fixed->window);
+  gtk_widget_realize (layout);
+  connect_awt_hook (env, obj, layout, 1, layout->window);
 
+  NSA_SET_PTR (env, obj, layout);
   gdk_threads_leave ();
-
-  NSA_SET_PTR (env, obj, fixed);
 }
 
 

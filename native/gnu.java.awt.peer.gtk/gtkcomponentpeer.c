@@ -211,16 +211,16 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedNew (JNIEnv *env, 
     jobject obj, jint width, jint height, jboolean visible)
 {
-  GtkWidget *fix;
+  GtkWidget *layout;
 
   gdk_threads_enter ();
-  fix = gtk_fixed_new ();
-  gtk_widget_realize (fix);
-  connect_awt_hook (env, obj, fix, 1, fix->window);
-  set_visible (fix, visible);
+  layout = gtk_layout_new (NULL, NULL);
+  gtk_widget_realize (layout);
+  connect_awt_hook (env, obj, layout, 1, layout->window);
+  set_visible (layout, visible);
   gdk_threads_leave ();
 
-  NSA_SET_PTR (env, obj, fix);
+  NSA_SET_PTR (env, obj, layout);
 }
 
 /*
@@ -339,7 +339,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setNativeBoun
 
   widget = GTK_WIDGET (ptr);
   gtk_widget_set_usize (widget, width, height);
-  gtk_fixed_move (GTK_FIXED (widget->parent), widget, x, y);
+  gtk_layout_move (GTK_LAYOUT (widget->parent), widget, x, y);
 
   gdk_threads_leave ();
 }
@@ -414,16 +414,16 @@ set_parent (GtkWidget *widget, GtkContainer *parent)
 	                  (GTK_CONTAINER (GTK_BIN (parent)->child));
 
       if (GTK_IS_MENU_BAR (children->data))
-	gtk_container_add (GTK_CONTAINER (children->next->data), widget);
-      else /* GTK_IS_FIXED (children->data) */
-	gtk_container_add (GTK_CONTAINER (children->data), widget);
+	gtk_layout_put (GTK_LAYOUT (children->next->data), widget, 0, 0);
+      else /* GTK_IS_LAYOUT (children->data) */
+	gtk_layout_put (GTK_LAYOUT (children->data), widget, 0, 0);
     }
   else
     if (GTK_IS_SCROLLED_WINDOW (parent))
-      gtk_container_add 
-	(GTK_CONTAINER (GTK_BIN (GTK_BIN (parent)->child)->child), widget);
+      gtk_layout_put 
+	(GTK_LAYOUT (GTK_BIN (GTK_BIN (parent)->child)->child), widget, 0, 0);
     else
-      gtk_container_add (parent, widget);
+      gtk_layout_put (GTK_LAYOUT (parent), widget, 0, 0);
 }
 
 JNIEXPORT jboolean JNICALL 

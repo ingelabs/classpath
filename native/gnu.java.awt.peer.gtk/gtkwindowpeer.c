@@ -58,19 +58,19 @@ void
 setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width, 
 	      jint height, jboolean visible)
 {
-  GtkWidget *fixed, *vbox;
+  GtkWidget *layout, *vbox;
   gint x, y;
 
   gtk_window_set_policy (GTK_WINDOW (window), 1, 1, 0);
   gtk_widget_set_usize (window, width, height);
 
   vbox = gtk_vbox_new (0, 0);
-  fixed = gtk_fixed_new ();
-  gtk_box_pack_end (GTK_BOX (vbox), fixed, 1, 1, 0);
+  layout = gtk_layout_new (NULL, NULL);
+  gtk_box_pack_end (GTK_BOX (vbox), layout, 1, 1, 0);
   gtk_container_add (GTK_CONTAINER (window), vbox);
-  gtk_widget_realize (fixed);
-/*    connect_awt_hook (env, obj, fixed, 1, fixed->window); */
-  gtk_widget_show (fixed);
+  gtk_widget_realize (layout);
+/*    connect_awt_hook (env, obj, layout, 1, layout->window); */
+  gtk_widget_show (layout);
   gtk_widget_show (vbox);
 
   gtk_widget_realize (window);

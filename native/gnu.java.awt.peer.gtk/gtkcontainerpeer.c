@@ -31,9 +31,25 @@ Java_gnu_java_awt_peer_gtk_GtkContainerPeer_gtkContainerCheckResize
 {
   void *ptr;
 
+  return;
   ptr = NSA_GET_PTR (env, obj);
   
   gdk_threads_enter ();
-  gtk_container_check_resize (GTK_CONTAINER (ptr));
+  gtk_layout_thaw (GTK_LAYOUT (ptr));
+/*    gtk_container_check_resize (GTK_CONTAINER (ptr)); */
+  gdk_threads_leave ();
+}
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkContainerPeer_gtkContainerStartResize
+  (JNIEnv *env, jobject obj)
+{
+  void *ptr;
+
+  return;
+  ptr = NSA_GET_PTR (env, obj);
+  
+  gdk_threads_enter ();
+  gtk_layout_freeze (GTK_LAYOUT (ptr));
   gdk_threads_leave ();
 }
