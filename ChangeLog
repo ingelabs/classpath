@@ -1,82 +1,79 @@
 2005-03-06  Audrius Meskauskas  <audriusa@bluewin.ch>
-	* org/omg/CORBA/TypeCodePackage/BadKind.java: documenting 
-	that serialVersionUID is from v1.4
-	* org/omg/CORBA/SystemException.java: documenting 
-	that serialVersionUID is from v1.4
-	* org/omg/CORBA/TypeCode.java: documenting 
-	that serialVersionUID is from v1.4
-	* org/omg/CORBA/UserException.java:documenting 
-	that serialVersionUID is from v1.4
-	* org/omg/CORBA/CompletionStatus.java:documenting 
-	that serialVersionUID is from v1.4
+	* org/omg/CORBA/TypeCodePackage/BadKind.java,
+	org/omg/CORBA/SystemException.java,
+	org/omg/CORBA/TypeCode.java,
+	org/omg/CORBA/UserException.java,
+	org/omg/CORBA/CompletionStatus.java:
+	Documenting that serialVersionUID is from v1.4.
 	
 2005-04-06  Audrius Meskauskas  <audriusa@bluewin.ch>
-	* org/omg/CORBA/Context.java: new file
-	* org/omg/CORBA/ContextList.java: new file
+	* org/omg/CORBA/Context.java,
+	org/omg/CORBA/ContextList.java: New files.
 
 2005-04-06  Audrius Meskauskas  <audriusa@bluewin.ch>
-	* org/omg/CORBA/TCKind.java: making fields final
+	* org/omg/CORBA/TCKind.java: Making fields final.
 
 2005-04-06  Audrius Meskauskas  <audriusa@bluewin.ch>
 
-	* org/omg/CORBA/Any.java: new file
-	* org/omg/CORBA/Principal.java: new file
-	* org/omg/CORBA/TypeCodePackage/Bounds.java: new file
-	* org/omg/CORBA/TypeCodePackage/package.html: new file
+	* org/omg/CORBA/Any.java,
+	org/omg/CORBA/Principal.java,
+	org/omg/CORBA/TypeCodePackage/Bounds.java,
+	org/omg/CORBA/TypeCodePackage/package.html: New files.
 
 2005-03-06 Audrius Meskauskas  <audriusa@bluewin.ch>
 
-	* org/omg/CORBA/ULongSeqHolder.java: new file.
-	* org/omg/CORBA/UShortSeqHolder.java: new file.
-	* org/omg/CORBA/WCharSeqHolder.java: new file.
-	* org/omg/CORBA/BooleanSeqHolder.java: new file.
-	* org/omg/CORBA/CharSeqHolder.java: new file.
-	* org/omg/CORBA/DoubleSeqHolder.java: new file.
-	* org/omg/CORBA/FloatSeqHolder.java: new file.
-	* org/omg/CORBA/LongLongSeqHolder.java: new file.
-	* org/omg/CORBA/LongSeqHolder.java: new file.
-	* org/omg/CORBA/OctetSeqHolder.java: new file.
-	* org/omg/CORBA/ShortSeqHolder.java: new file.
-	* org/omg/CORBA/ULongLongSeqHolder.java: new file.
+	* org/omg/CORBA/ULongSeqHolder.java,
+	org/omg/CORBA/UShortSeqHolder.java,
+	org/omg/CORBA/WCharSeqHolder.java,
+	org/omg/CORBA/BooleanSeqHolder.java,
+	org/omg/CORBA/CharSeqHolder.java,
+	org/omg/CORBA/DoubleSeqHolder.java,
+	org/omg/CORBA/FloatSeqHolder.java,
+	org/omg/CORBA/LongLongSeqHolder.java,
+	org/omg/CORBA/LongSeqHolder.java,
+	org/omg/CORBA/OctetSeqHolder.java,
+	org/omg/CORBA/ShortSeqHolder.java,
+	org/omg/CORBA/ULongLongSeqHolder.java: New files.
 
 2005-03-06  Audrius Meskauskas  <audriusa@bluewin.ch>
 
-	* org/omg/CORBA/IntHolder.java: new file
-	* org/omg/CORBA/LongHolder.java: new file
-	* org/omg/CORBA/ShortHolder.java: new file
-	* org/omg/CORBA/StringHolder.java: new file
-	* org/omg/CORBA/TypeCodeHolder.java: new file
-	* org/omg/CORBA/BooleanHolder.java: new file
-	* org/omg/CORBA/ByteHolder.java: new file
-	* org/omg/CORBA/CharHolder.java: new file
-	* org/omg/CORBA/DoubleHolder.java: new file
-	* org/omg/CORBA/FixedHolder.java: new file
-	* org/omg/CORBA/FloatHolder.java: new file
-	* org/omg/CORBA/primitiveTypeCode.java: new file
-	* org/omg/CORBA/primitiveArrayTypeCode.java: new file
+	* org/omg/CORBA/IntHolder.java,
+	org/omg/CORBA/LongHolder.java,
+	org/omg/CORBA/ShortHolder.java,
+	org/omg/CORBA/StringHolder.java,
+	org/omg/CORBA/TypeCodeHolder.java,
+	org/omg/CORBA/BooleanHolder.java,
+	org/omg/CORBA/ByteHolder.java,
+	org/omg/CORBA/CharHolder.java,
+	org/omg/CORBA/DoubleHolder.java,
+	org/omg/CORBA/FixedHolder.java,
+	org/omg/CORBA/FloatHolder.java,
+	org/omg/CORBA/primitiveTypeCode.java,
+	org/omg/CORBA/primitiveArrayTypeCode.java: New files.
  
 2005-03-06  Audrius Meskauskas  <audriusa@bluewin.ch>
 
-	* org/omg/CORBA/portable/InputStream: new file
-	* org/omg/CORBA/portable/OutputStream: new file
-	* org/omg/CORBA/portable/IDLEntity: new file
-	* org/omg/CORBA/portable/Streamable: new file	
-	* org/omg/CORBA/Object.java: new file (just to keep code compilable)
-	* org/omg/CORBA/ORB: new file (just to keep code compilable)
+	* org/omg/CORBA/portable/InputStream.java,
+	org/omg/CORBA/portable/OutputStream.java,
+	org/omg/CORBA/portable/IDLEntity.java,
+	org/omg/CORBA/portable/Streamable.java: New files.
+	* org/omg/CORBA/Object.java,
+	org/omg/CORBA/ORB.java: New files (just to keep code compilable).
  
 2005-03-06  Audrius Meskauskas  <audriusa@bluewin.ch>
-	* org/omg/CORBA/TypeCodePackage/BadKind.java: add serialVersionUID v1.4
-	* org/omg/CORBA/SystemException.java: add serialVersionUID v1.4
-	* org/omg/CORBA/TypeCode.java: add serialVersionUID v1.4
-	* org/omg/CORBA/UserException.java: add serialVersionUID v1.4
-	* org/omg/CORBA/CompletionStatus.java: add serialVersionUID v1.4
+	* org/omg/CORBA/TypeCodePackage/BadKind.java,
+	org/omg/CORBA/SystemException.java,
+	org/omg/CORBA/TypeCode.java,
+	org/omg/CORBA/UserException.java,
+	org/omg/CORBA/CompletionStatus.java: 
+	Replacing serialVersionUID v1.2 into v1.4.
 	
 2005-03-06  Audrius Meskauskas  <audriusa@bluewin.ch>
-	* org/omg/CORBA/TypeCodePackage/BadKind.java: add serialVersionUID 
-	* org/omg/CORBA/SystemException.java: add serialVersionUID
-	* org/omg/CORBA/TypeCode.java: add serialVersionUID
-	* org/omg/CORBA/UserException.java: add serialVersionUID
-	* org/omg/CORBA/CompletionStatus.java: add serialVersionUID
+	* org/omg/CORBA/TypeCodePackage/BadKind.java,
+	org/omg/CORBA/SystemException.java,
+	org/omg/CORBA/TypeCode.java,
+	org/omg/CORBA/UserException.java,
+	org/omg/CORBA/CompletionStatus.java: Adding serialVersionUID.
 	
 2005-03-05  Andreas Tobler  <a.tobler@schweiz.ch>
 
@@ -91,7 +88,7 @@
 	uninitialized variable z.
 
 2005-03-05  Audrius Meskauskas  <audriusa@bluewin.ch>
-	* org/omg/CORBA/BAD_OPERATION.java: formatting change
+	* org/omg/CORBA/BAD_OPERATION.java: Formatting change
 	(replacing CR CR LF by CR LF).
 	
 2005-03-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
@@ -104,33 +101,33 @@
 
 2005-03-05  Audrius Meskauskas  <audriusa@bluewin.ch>
 
-	* org/omg/CORBA/INV_POLICY.java: new file.
-	* org/omg/CORBA/NO_PERMISSION.java: new file.
-	* org/omg/CORBA/BAD_INV_ORDER.java: new file.
-	* org/omg/CORBA/INTF_REPOS.java: new file.
-	* org/omg/CORBA/INV_IDENT.java: new file.
-	* org/omg/CORBA/NO_IMPLEMENT.java: new file.
-	* org/omg/CORBA/UNKNOWN.java: new file.
-	* org/omg/CORBA/INV_FLAG.java: new file.
-	* org/omg/CORBA/BAD_TYPECODE.java: new file.
-	* org/omg/CORBA/NO_MEMORY.java: new file.
-	* org/omg/CORBA/INVALID_TRANSACTION.java: new file.
-	* org/omg/CORBA/INTERNAL.java: new file.
-	* org/omg/CORBA/COMM_FAILURE.java: new file.
-	* org/omg/CORBA/PERSIST_STORE.java: new file.
-	* org/omg/CORBA/BAD_CONTEXT.java: new file.
-	* org/omg/CORBA/INV_OBJREF.java: new file.
-	* org/omg/CORBA/TRANSACTION_REQUIRED.java: new file.
-	* org/omg/CORBA/TRANSACTION_ROLLEDBACK.java: new file.
-	* org/omg/CORBA/FREE_MEM.java: new file.
-	* org/omg/CORBA/OBJECT_NOT_EXIST.java: new file.
-	* org/omg/CORBA/TRANSIENT.java: new file.
-	* org/omg/CORBA/OBJ_ADAPTER.java: new file.
-	* org/omg/CORBA/IMP_LIMIT.java: new file.
-	* org/omg/CORBA/INITIALIZE.java: new file.
-	* org/omg/CORBA/NO_RESPONSE.java: new file.
-	* org/omg/CORBA/DATA_CONVERSION.java: new file.
-	* org/omg/CORBA/MARSHAL.java: new file.
+	* org/omg/CORBA/INV_POLICY.java,
+	org/omg/CORBA/NO_PERMISSION.java,
+	org/omg/CORBA/BAD_INV_ORDER.java,
+	org/omg/CORBA/INTF_REPOS.java,
+	org/omg/CORBA/INV_IDENT.java,
+	org/omg/CORBA/NO_IMPLEMENT.java,
+	org/omg/CORBA/UNKNOWN.java,
+	org/omg/CORBA/INV_FLAG.java,
+	org/omg/CORBA/BAD_TYPECODE.java,
+	org/omg/CORBA/NO_MEMORY.java,
+	org/omg/CORBA/INVALID_TRANSACTION.java,
+	org/omg/CORBA/INTERNAL.java,
+	org/omg/CORBA/COMM_FAILURE.java,
+	org/omg/CORBA/PERSIST_STORE.java,
+	org/omg/CORBA/BAD_CONTEXT.java,
+	org/omg/CORBA/INV_OBJREF.java,
+	org/omg/CORBA/TRANSACTION_REQUIRED.java,
+	org/omg/CORBA/TRANSACTION_ROLLEDBACK.java,
+	org/omg/CORBA/FREE_MEM.java,
+	org/omg/CORBA/OBJECT_NOT_EXIST.java,
+	org/omg/CORBA/TRANSIENT.java,
+	org/omg/CORBA/OBJ_ADAPTER.java,
+	org/omg/CORBA/IMP_LIMIT.java,
+	org/omg/CORBA/INITIALIZE.java,
+	org/omg/CORBA/NO_RESPONSE.java,
+	org/omg/CORBA/DATA_CONVERSION.java,
+	org/omg/CORBA/MARSHAL.java: New files.
 
 2005-03-04  Roman Kennke  <roman@ontographics.com>
 
@@ -144,17 +141,17 @@
 	
 2005-03-02  Audrius Meskauskas  <audriusa@bluewin.ch>
 
-        * org/omg/CORBA/TypeCode.java: new file 
-        * org/omg/CORBA/UserException.java: new file 
-        * org/omg/CORBA/TypeCodePackage/BadKind.java: new file 
+        * org/omg/CORBA/TypeCode.java,
+        org/omg/CORBA/UserException.java,
+        org/omg/CORBA/TypeCodePackage/BadKind.java: New files. 
 	
 2005-03-02  Audrius Meskauskas  <audriusa@bluewin.ch>
 
-	* org/omg/CORBA/TCKind.java
-	* org/omg/CORBA/BAD_PARAM.java
-	* org/omg/CORBA/CompletionStatus.java
-	* org/omg/CORBA/IDLEntity.java
-	* org/omg/CORBA/SystemException.java
+	* org/omg/CORBA/TCKind.java,
+	org/omg/CORBA/BAD_PARAM.java,
+	org/omg/CORBA/CompletionStatus.java,
+	org/omg/CORBA/IDLEntity.java,
+	org/omg/CORBA/SystemException.java: New files.
 
 2005-03-03  Roman Kennke  <roman@ontographics.com>
 
