@@ -1,3 +1,16 @@
+2004-12-27  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/nio/ByteBufferImpl.java,
+	java/nio/CharBufferImpl.java,
+	java/nio/DirectByteBufferImpl.java,
+	java/nio/DoubleBufferImpl.java,
+	java/nio/FloatBufferImpl.java,
+	java/nio/IntBufferImpl.java,
+	java/nio/LongBufferImpl.java,
+	java/nio/MappedByteBufferImpl.java,
+	java/nio/ShortBufferImpl.java
+	(compact): Added explicit read-only check and invalidate mark.
+
 2004-12-27  Michael Koch  <konqueror@gmx.de>
 
 	* javax/imageio/IIOParam.java
