@@ -1,3 +1,8 @@
+2004-04-30  Ingo Proetel  <proetel@aicas.com>
+
+	* java/util/zip/InflaterInputStream.java (skip): Copied implementation
+	from java.io.InputStream.
+
 2004-04-30  Grzegorz B. Prokopski <gadek@debian.org>
 
 	* java/lang/Object.java (static): Remove static initializer.
