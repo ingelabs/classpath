@@ -1,3 +1,9 @@
+2004-07-15  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* java/text/CollationElementIterator.java
+	(text_decomposition): Changed type to RuleBasedCollator.CollationElement[]
+	(setText): Use ArrayList instead of Vector.
+
 2004-07-15  Michael Koch  <konqueror@gmx.de>
 
 	* include/Makefile.am: Distclean jni_md.h.
