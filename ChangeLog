@@ -1,3 +1,7 @@
+2002-11-04  Anthony Green  <green@redhat.com>
+
+	* java/util/jar/Attributes.java (Name): Fix name check.
+
 2002-11-03  Tom Tromey  <tromey@redhat.com>
 
 	* java/nio/channels/AlreadyConnectedException.java: Extend
