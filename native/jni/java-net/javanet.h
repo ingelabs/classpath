@@ -63,6 +63,7 @@ exception statement from your version. */
 #define SOCKOPT_SO_RCVBUF 4098
 #define SOCKOPT_SO_REUSEADDR 4
 #define SOCKOPT_IP_MULTICAST_IF 16
+#define SOCKOPT_SO_KEEPALIVE 8
 
 /* Internal option identifiers. Not needed for JDK compatibility */
 #define SOCKOPT_IP_TTL 7777

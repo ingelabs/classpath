@@ -1,5 +1,12 @@
 2003-01-30  C. Brian Jones  <cbj@gnu.org>
 
+	* java/net/SocketImpl.java (localport): set to -1 by default
+	* native/jni/java-net/javanet.h (SOCKOPT_SO_KEEPALIVE): new #define
+	* native/jni/java-net/javanet.c (_javanet_set_option): case SO_KEEPALIVE
+	(_javanet_get_option): case SO_KEEPALIVE
+
+2003-01-30  C. Brian Jones  <cbj@gnu.org>
+
 	* native/jni/java-net/javanet.c (_javanet_bind): following gcj's 
 	example and setting SO_REUSEADDR before binding the port, testing 
 	with JDK seems to indicate it does this as well

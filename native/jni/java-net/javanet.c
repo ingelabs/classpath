@@ -1024,6 +1024,21 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
 			sizeof(int));
         break;
 
+    case SOCKOPT_SO_KEEPALIVE:
+        mid = (*env)->GetMethodID(env, cls, "booleanValue", "()Z");
+        if (mid == NULL)
+          { JCL_ThrowException(env, IO_EXCEPTION, 
+                                     "Internal error: _javanet_set_option()"); return; }
+
+        /* Should be a 0 or a 1 */
+        optval = (*env)->CallBooleanMethod(env, val, mid);
+	if ((*env)->ExceptionOccurred(env))
+	  return;
+
+        rc = setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, (void*)&optval, 
+			sizeof(int));      
+      break;
+
       default:
         JCL_ThrowException(env, SOCKET_EXCEPTION, "Unrecognized option");
         return;
@@ -1170,6 +1185,22 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
       case SOCKOPT_SO_REUSEADDR:
         optlen = sizeof(int);
         rc = getsockopt(fd, SOL_SOCKET, SO_REUSEADDR, (void*)&optval, &optlen);
+        if (rc == -1)
+          {
+            JCL_ThrowException(env, SOCKET_EXCEPTION, strerror(errno)); 
+            return(0);
+          }
+
+        if (optval)
+          return(_javanet_create_boolean(env, JNI_TRUE));
+        else
+          return(_javanet_create_boolean(env, JNI_FALSE));
+
+        break;
+
+      case SOCKOPT_SO_KEEPALIVE:
+        optlen = sizeof(int);
+        rc = getsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, (void*)&optval, &optlen);
         if (rc == -1)
           {
             JCL_ThrowException(env, SOCKET_EXCEPTION, strerror(errno)); 
