@@ -42,6 +42,7 @@ import java.util.Hashtable;
 import java.util.Vector;
 import gnu.java.io.NullOutputStream;
 import gnu.java.lang.reflect.TypeSignature;
+import gnu.classpath.Configuration;
 
 public class ObjectStreamClass implements Serializable
 {
@@ -630,7 +631,10 @@ public class ObjectStreamClass implements Serializable
 
   static
   {
-    System.loadLibrary ("javaio");
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+        System.loadLibrary ("javaio");
+      }
   }
 }
 

@@ -27,6 +27,8 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
+import gnu.classpath.Configuration;
+
 /**
   * This class allows reading and writing of files at random locations.
   * Most Java I/O classes are either pure sequential input or output.  This
@@ -42,10 +44,13 @@ package java.io;
 public class RandomAccessFile implements DataOutput, DataInput
 {
 
-static
-{
-  System.loadLibrary("javaio");
-}
+  static
+  {
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+        System.loadLibrary ("javaio");
+      }
+  }
 
 /*************************************************************************/
 

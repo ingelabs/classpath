@@ -31,6 +31,8 @@ import java.io.Serializable;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
+import gnu.classpath.Configuration;
+
 /**
   * This class models an Internet address.  It does not have a public
   * constructor.  Instead, new instances of this objects are created 
@@ -55,10 +57,13 @@ public final class InetAddress implements Serializable
  */
 
 // Static Initializer to load the shared library needed for name resolution
-static
-{
-  System.loadLibrary("javanet");
-}
+  static
+  {
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+	System.loadLibrary("javanet");
+      }
+  }
 
 /**
   * The default DNS hash table size

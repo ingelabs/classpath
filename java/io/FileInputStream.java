@@ -27,6 +27,8 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
+import gnu.classpath.Configuration;
+
 /**
   * This class is a stream that reads its bytes from a file. 
   *
@@ -43,10 +45,13 @@ public class FileInputStream extends InputStream
  * Class Variables and Initializers
  */
 
-static
-{
-  System.loadLibrary("javaio");
-}
+  static
+  {
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+        System.loadLibrary ("javaio");
+      }
+  }
 
 /*************************************************************************/
 

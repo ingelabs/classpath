@@ -31,6 +31,8 @@ import java.util.StringTokenizer;
 import java.net.URL;
 import java.net.MalformedURLException;
 
+import gnu.classpath.Configuration;
+
 /**
   * This class represents a file or directory on a local disk.  It provides
   * facilities for dealing with a variety of systems that use various
@@ -50,40 +52,43 @@ public class File implements Serializable, Comparable
  * Class Variables
  */
 
-/**
-  * This is the path separator string for the current host. This field
-  * contains the value of the <code>file.separator</code> system property.
-  * An example separator string would be "/" on the GNU system.
-  */
-public static final String separator = System.getProperty("file.separator");
+  /**
+   * This is the path separator string for the current host. This field
+   * contains the value of the <code>file.separator</code> system property.
+   * An example separator string would be "/" on the GNU system.
+   */
+  public static final String separator = System.getProperty("file.separator");
 
-/**
-  * This is the first character of the file separator string.  On many
-  * hosts (for example, on the GNU system), this represents the entire 
-  * separator string.  The complete separator string is obtained from the
-  * <code>file.separator</code>system property.
-  */
-public static final char separatorChar = separator.charAt(0);
+  /**
+   * This is the first character of the file separator string.  On many
+   * hosts (for example, on the GNU system), this represents the entire 
+   * separator string.  The complete separator string is obtained from the
+   * <code>file.separator</code>system property.
+   */
+  public static final char separatorChar = separator.charAt(0);
 
-/**
-  * This is the string that is used to separate the host name from the
-  * path name in paths than include the host name.  It is the value of
-  * the <code>path.separator</code> system property.
-  */
-public static final String pathSeparator = System.getProperty("path.separator");
-
-/**
-  * This is the first character of the string used to separate the host name
-  * from the path name in paths that include a host.  The separator string
-  * is taken from the <code>path.separator</code> system property.
-  */
-public static final char pathSeparatorChar = pathSeparator.charAt(0);
-
-static
-{
-  System.loadLibrary("javaio");
-}
-
+  /**
+   * This is the string that is used to separate the host name from the
+   * path name in paths than include the host name.  It is the value of
+   * the <code>path.separator</code> system property.
+   */
+  public static final String pathSeparator = System.getProperty("path.separator");
+  
+  /**
+   * This is the first character of the string used to separate the host name
+   * from the path name in paths that include a host.  The separator string
+   * is taken from the <code>path.separator</code> system property.
+   */
+  public static final char pathSeparatorChar = pathSeparator.charAt(0);
+  
+  static
+  {
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+        System.loadLibrary ("javaio");
+      }
+  }
+  
 /*************************************************************************/
 
 /*

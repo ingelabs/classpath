@@ -28,6 +28,7 @@ executable file might be covered by the GNU General Public License. */
 package java.lang;
 
 import java.util.Random;
+import gnu.classpath.Configuration;
 
 /**
  * Helper class containing useful mathematical functions and constants.
@@ -46,12 +47,16 @@ public final class Math
   /**
    * Math is non-instantiable
    */
-  private Math()
+  private Math ()
   {
   }
 
-  static {
-    System.loadLibrary("javalangmath");
+  static
+  {
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+	System.loadLibrary ("javalangmath");
+      }
   }
 
   static Random rand;
@@ -62,7 +67,7 @@ public final class Math
    * @see #log(double)
    * @see #exp(double)
    */
-  public static final double E = 2.7182818284590452354; 
+  public static final double E = 2.7182818284590452354;
 
   /**
    * The mathematical constant <em>pi</em>.
@@ -84,7 +89,8 @@ public final class Math
    * @return the absolute value.
    * @see java.lang.Integer#MIN_VALUE
    */
-  public static int abs(int a) {
+  public static int abs (int a)
+  {
     return (a < 0) ? -a : a;
   }
 
@@ -102,7 +108,8 @@ public final class Math
    * @return the absolute value.
    * @see java.lang.Long#MIN_VALUE
    */
-  public static long abs(long a) {
+  public static long abs (long a)
+  {
     return (a < 0) ? -a : a;
   }
 
@@ -112,7 +119,7 @@ public final class Math
    * @param a the number to take the absolute value of.
    * @return the absolute value.
    */
-  public static float abs(float a)
+  public static float abs (float a)
   {
     // avoid method call overhead, but treat -0.0 correctly
     // return Float.intBitsToFloat(0x7fffffff & Float.floatToIntBits(a));
@@ -125,7 +132,8 @@ public final class Math
    * @param a the number to take the absolute value of.
    * @return the absolute value.
    */
-  public static double abs(double a) {
+  public static double abs (double a)
+  {
     // avoid method call overhead, but treat -0.0 correctly
     // return Double.longBitsToDouble((Double.doubleToLongBits(a)<<1)>>>1);
     return (a <= 0) ? 0 - a : a;
@@ -137,7 +145,8 @@ public final class Math
    * @param b a second number
    * @return the smaller of the two numbers.
    */
-  public static int min(int a, int b) {
+  public static int min (int a, int b)
+  {
     return (a < b) ? a : b;
   }
 
@@ -147,7 +156,8 @@ public final class Math
    * @param b a second number
    * @return the smaller of the two numbers.
    */
-  public static long min(long a, long b) {
+  public static long min (long a, long b)
+  {
     return (a < b) ? a : b;
   }
 
@@ -160,7 +170,7 @@ public final class Math
    * @param b a second number
    * @return the smaller of the two numbers.
    */
-  public static float min(float a, float b)
+  public static float min (float a, float b)
   {
     // this check for NaN, from JLS 15.21.1, saves a method call
     if (a != a)
@@ -180,7 +190,7 @@ public final class Math
    * @param b a second number
    * @return the smaller of the two numbers.
    */
-  public static double min(double a, double b)
+  public static double min (double a, double b)
   {
     // this check for NaN, from JLS 15.21.1, saves a method call
     if (a != a)
@@ -198,7 +208,8 @@ public final class Math
    * @param b a second number
    * @return the larger of the two numbers.
    */
-  public static int max(int a, int b) {
+  public static int max (int a, int b)
+  {
     return (a > b) ? a : b;
   }
 
@@ -208,7 +219,8 @@ public final class Math
    * @param b a second number
    * @return the larger of the two numbers.
    */
-  public static long max(long a, long b) {
+  public static long max (long a, long b)
+  {
     return (a > b) ? a : b;
   }
 
@@ -220,7 +232,7 @@ public final class Math
    * @param b a second number
    * @return the larger of the two numbers.
    */
-  public static float max(float a, float b)
+  public static float max (float a, float b)
   {
     // this check for NaN, from JLS 15.21.1, saves a method call
     if (a != a)
@@ -240,7 +252,7 @@ public final class Math
    * @param b a second number
    * @return the larger of the two numbers.
    */
-  public static double max(double a, double b)
+  public static double max (double a, double b)
   {
     // this check for NaN, from JLS 15.21.1, saves a method call
     if (a != a)
@@ -257,21 +269,21 @@ public final class Math
    * @param a the angle (in radians).
    * @return sin(a).
    */
-  public native static double sin(double a);
+  public native static double sin (double a);
 
   /**
    * The trigonometric function <em>cos</em>.
    * @param a the angle (in radians).
    * @return cos(a).
    */
-  public native static double cos(double a);
+  public native static double cos (double a);
 
   /**
    * The trigonometric function <em>tan</em>.
    * @param a the angle (in radians).
    * @return tan(a).
    */
-  public native static double tan(double a);
+  public native static double tan (double a);
 
   /**
    * The trigonometric function <em>arcsin</em>.
@@ -279,7 +291,7 @@ public final class Math
    * @param a the sin to turn back into an angle.
    * @return arcsin(a).
    */
-  public native static double asin(double a);
+  public native static double asin (double a);
 
   /**
    * The trigonometric function <em>arccos</em>.
@@ -287,7 +299,7 @@ public final class Math
    * @param a the cos to turn back into an angle.
    * @return arccos(a).
    */
-  public native static double acos(double a);
+  public native static double acos (double a);
 
   /**
    * The trigonometric function <em>arctan</em>.
@@ -296,8 +308,8 @@ public final class Math
    * @return arcsin(a).
    * @see #atan(double,double)
    */
-  public native static double atan(double a);
- 
+  public native static double atan (double a);
+
   /**
    * A special version of the trigonometric function <em>arctan</em>.
    * Given a position (x,y), this function will give you the angle of
@@ -310,7 +322,7 @@ public final class Math
    * @return arcsin(a).
    * @see #atan(double)
    */
-  public native static double atan2(double y, double x);
+  public native static double atan2 (double y, double x);
 
   /**
    * Take <em>e</em><sup>a</sup>.  The opposite of <code>log()</code>.
@@ -319,7 +331,7 @@ public final class Math
    * @see #log(double)
    * @see #pow(double,double)
    */
-  public native static double exp(double a);
+  public native static double exp (double a);
 
   /**
    * Take ln(a) (the natural log).  The opposite of <code>exp()</code>.
@@ -329,7 +341,7 @@ public final class Math
    * @return the natural log of <code>a</code>.
    * @see #exp(double)
    */
-  public native static double log(double a);
+  public native static double log (double a);
 
   /**
    * Take a square root.
@@ -338,7 +350,7 @@ public final class Math
    * @return the square root of the argument.
    * @see #pow(double,double)
    */
-  public native static double sqrt(double a);
+  public native static double sqrt (double a);
 
   /**
    * Take a number to a power.
@@ -346,7 +358,7 @@ public final class Math
    * @param b the power to raise it to.
    * @return a<sup>b</sup>.
    */
-  public native static double pow(double a, double b);
+  public native static double pow (double a, double b);
 
   /**
    * Get the floating point remainder on two numbers,
@@ -372,7 +384,7 @@ public final class Math
    * @return the IEEE 754-defined floating point remainder of x/y.
    * @see #rint(double)
    */
-  public native static double IEEEremainder(double x, double y);
+  public native static double IEEEremainder (double x, double y);
 
   /**
    * Take the nearest integer that is that is greater than or equal to the
@@ -380,7 +392,7 @@ public final class Math
    * @param a the value to act upon.
    * @return the nearest integer >= <code>a</code>.
    */
-  public native static double ceil(double a);
+  public native static double ceil (double a);
 
   /**
    * Take the nearest integer that is that is less than or equal to the
@@ -388,7 +400,7 @@ public final class Math
    * @param a the value to act upon.
    * @return the nearest integer <= <code>a</code>.
    */
-  public native static double floor(double a);
+  public native static double floor (double a);
 
   /**
    * Take the nearest integer to the argument.  If it is exactly between
@@ -396,7 +408,7 @@ public final class Math
    * @param a the value to act upon.
    * @return the nearest integer to <code>a</code>.
    */
-  public native static double rint(double a);
+  public native static double rint (double a);
 
   /**
    * Take the nearest integer to the argument.  If it is exactly between
@@ -410,8 +422,9 @@ public final class Math
    * @see java.lang.Integer#MIN_VALUE
    * @see java.lang.Integer#MAX_VALUE
    */
-  public static int round(float a) {
-    return (int)floor(a + 0.5f);
+  public static int round (float a)
+  {
+    return (int) floor (a + 0.5f);
   }
 
   /**
@@ -426,8 +439,9 @@ public final class Math
    * @see java.lang.Long#MIN_VALUE
    * @see java.lang.Long#MAX_VALUE
    */
-  public static long round(double a) {
-    return (long)floor(a + 0.5d);
+  public static long round (double a)
+  {
+    return (long) floor (a + 0.5d);
   }
 
   /**
@@ -435,10 +449,11 @@ public final class Math
    * @return a random number.
    * @see java.lang.Random#nextDouble()
    */
-  public static synchronized double random() {
+  public static synchronized double random ()
+  {
     if (rand == null)
-      rand = new Random();
-    return rand.nextDouble();
+      rand = new Random ();
+    return rand.nextDouble ();
   }
 
   /**
@@ -447,8 +462,9 @@ public final class Math
    * @param degrees an angle in degrees
    * @return the angle in radians
    */
-  public static double toRadians(double degrees) {
-    return degrees * 0.017453292519943295; /* (degrees * (PI/180)) */
+  public static double toRadians (double degrees)
+  {
+    return degrees * 0.017453292519943295;	/* (degrees * (PI/180)) */
   }
 
   /**
@@ -457,7 +473,8 @@ public final class Math
    * @param rads an angle in radians
    * @return the angle in degrees
    */
-  public static double toDegrees(double rads) {
-    return rads / 0.017453292519943295; /* (rads / (PI/180)) */
+  public static double toDegrees (double rads)
+  {
+    return rads / 0.017453292519943295;	/* (rads / (PI/180)) */
   }
 }

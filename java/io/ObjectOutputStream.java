@@ -35,6 +35,7 @@ import java.util.Hashtable;
 
 import gnu.java.io.ObjectIdentityWrapper;
 import gnu.java.lang.reflect.TypeSignature;
+import gnu.classpath.Configuration;
 
 /**
    An <code>ObjectOutputStream</code> can be used to write objects
@@ -1210,7 +1211,10 @@ public class ObjectOutputStream extends OutputStream
 
   static
   {
-    System.loadLibrary ("javaio");
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+        System.loadLibrary ("javaio");
+      }
   }
 }
 

@@ -1,3 +1,31 @@
+2001-09-21  C. Brian Jones <cbj@gnu.org>
+	* gnu/Makefile.am: removed tools from SUBDIRS
+	* gnu/java/awt/image/GdkPixbufDecoder.java: wrapped loadLibrary
+	call within if (Configuration.INIT_LOAD_LIBRARY)
+	* gnu/java/awt/peer/gtk/GtkToolkit.java: same
+	* java/io/File.java: same
+	* java/io/FileDescriptor.java: same
+	* java/io/FileInputStream.java: same
+	* java/io/FileOutputStream.java: same
+	* java/io/ObjectInputStream.java: same
+	* java/io/ObjectOutputStream.java: same
+	* java/io/ObjectStreamClass.java: same
+	* java/io/RandomAccessFile.java: same
+	* java/lang/Double.java: same
+	* java/lang/Float.java: same
+	* java/lang/Math.java: same
+	* java/lang/Object.java: same
+	* java/lang/System.java: same
+	* java/lang/reflect/Array.java: same
+	* java/math/BigInteger.java: same
+	* java/net/InetAddress.java: same
+	* java/net/PlainDatagramSocketImpl.java: same
+	* java/net/PlainSocketImpl.java: same
+	* java/util/ResourceBundle.java: same
+	* java/util/TimeZone.java: same
+	* vm/reference/java/lang/Throwable.java: remove unused loadLibrary
+	call, VMs typically statically link these native methods instead.
+
 2001-09-20  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/Makefile.am: Added LinkedHashMap.java.

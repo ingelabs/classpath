@@ -39,7 +39,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
-
+import gnu.classpath.Configuration;
 
 public class ObjectInputStream extends InputStream
   implements ObjectInput, ObjectStreamConstants
@@ -1396,9 +1396,11 @@ public class ObjectInputStream extends InputStream
 
   static
   {
-    System.loadLibrary ("javaio");
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+        System.loadLibrary ("javaio");
+      }
   }
-
 
   private void DEBUG (String msg)
   {

@@ -28,6 +28,7 @@ executable file might be covered by the GNU General Public License. */
 package java.net;
 
 import java.io.IOException;
+import gnu.classpath.Configuration;
 
 /**
   * This is the default socket implementation for datagram sockets.
@@ -48,10 +49,13 @@ public class PlainDatagramSocketImpl extends DatagramSocketImpl
  */
 
 // Static initializer to load native library
-static
-{
-  System.loadLibrary("javanet");
-}
+  static
+  {
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+	System.loadLibrary("javanet");
+      }
+  }
 
 /*************************************************************************/
 

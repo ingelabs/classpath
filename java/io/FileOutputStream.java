@@ -27,6 +27,8 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
+import gnu.classpath.Configuration;
+
 /**
   * This classes allows a stream of data to be written to a disk file or
   * any open <code>FileDescriptor</code>.
@@ -44,10 +46,13 @@ public class FileOutputStream extends OutputStream
  * Class Variables and Initializers
  */
 
-static
-{
-  System.loadLibrary("javaio");
-}
+  static
+  {
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+        System.loadLibrary ("javaio");
+      }
+  }
 
 /*************************************************************************/
 

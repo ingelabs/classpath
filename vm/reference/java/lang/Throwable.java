@@ -48,11 +48,6 @@ public class Throwable extends Object implements Serializable
 
   private String message = null;
 
-  static 
-  {
-    System.loadLibrary ("runtime");
-  }  
-
   /** 
    * Instantiate this Throwable with an empty message. 
    */

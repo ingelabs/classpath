@@ -47,49 +47,49 @@ public final class Double extends Number implements Comparable
    * is 5e-324.
    */
   public static final double MIN_VALUE = 5e-324;
-  
+
   /**
    * The maximum positive value a <code>double</code> may represent
    * is 1.7976931348623157e+308.
    */
   public static final double MAX_VALUE = 1.7976931348623157e+308;
-    
+
   /**
    * The value of a double representation -1.0/0.0, negative
    * infinity.  
    */
-  public static final double NEGATIVE_INFINITY = -1.0d/0.0d;
-    
+  public static final double NEGATIVE_INFINITY = -1.0d / 0.0d;
+
   /**
    * The value of a double representing 1.0/0.0, positive infinity.
    */
-  public static final double POSITIVE_INFINITY = 1.0d/0.0d;
-    
+  public static final double POSITIVE_INFINITY = 1.0d / 0.0d;
+
   /**
    * All IEEE 754 values of NaN have the same value in Java.
    */
-  public static final double NaN = 0.0d/0.0d;
-    
+  public static final double NaN = 0.0d / 0.0d;
+
   /**
    * The primitive type <code>double</code> is represented by this
    * <code>Class</code> object.
    */
-  public static final Class TYPE = VMClassLoader.getPrimitiveClass("double");
-    
+  public static final Class TYPE = VMClassLoader.getPrimitiveClass ("double");
+
   /**
    * The immutable value of this Double.
    */
   private final double value;
-    
+
   /**
    * Load native routines necessary for this class.  
    */
-  static 
+  static
   {
     if (Configuration.INIT_LOAD_LIBRARY)
       {
-	System.loadLibrary("javalang");
-	initIDs();
+	System.loadLibrary ("javalang");
+	initIDs ();
       }
   }
 
@@ -98,11 +98,12 @@ public final class Double extends Number implements Comparable
    * specified.
    *
    * @param value the <code>double</code> argument
-   */ 
-  public Double(double value) {
+   */
+  public Double (double value)
+  {
     this.value = value;
   }
-    
+
   /**
    * Create a <code>Double</code> from the specified
    * <code>String</code>.
@@ -114,12 +115,12 @@ public final class Double extends Number implements Comparable
    * @param s the <code>String</code> to convert
    * @see #parseDouble(java.lang.String) 
    */
-  public Double(String s) throws NumberFormatException
+  public Double (String s) throws NumberFormatException
   {
-    value = parseDouble(s);
+    value = parseDouble (s);
   }
 
-    
+
   /**
    * Convert the <code>double</code> value of this <code>Double</code>
    * to a <code>String</code>.  This method calls
@@ -128,11 +129,11 @@ public final class Double extends Number implements Comparable
    * @return the <code>String</code> representation of this <code>Double</code>.
    * @see #toString(double)
    */
-  public String toString() 
+  public String toString ()
   {
-    return toString(value);
+    return toString (value);
   }
-    
+
   /**
    * If the <code>Object</code> is not <code>null</code>, is an
    * <code>instanceof</code> <code>Double</code>, and represents
@@ -142,7 +143,7 @@ public final class Double extends Number implements Comparable
    * @param obj the object to compare to
    * @return whether the objects are semantically equal.
    */
-  public boolean equals(Object obj) 
+  public boolean equals (Object obj)
   {
     if (!(obj instanceof Double))
       return false;
@@ -160,44 +161,44 @@ public final class Double extends Number implements Comparable
    * where v is defined by: <br>
    * <code>long v = Double.doubleToLongBits(this.longValue());</code><br>
    */
-  public int hashCode() 
+  public int hashCode ()
   {
-    long v = doubleToLongBits(value);
-    return (int)(v ^ (v >>> 32));
+    long v = doubleToLongBits (value);
+    return (int) (v ^ (v >>> 32));
   }
-    
+
   /**
    * Return the value of this <code>Double</code> when cast to an 
    * <code>int</code>.
    */
-  public int intValue() 
+  public int intValue ()
   {
-    return (int)value;
+    return (int) value;
   }
 
   /**
    * Return the value of this <code>Double</code> when cast to a
    * <code>long</code>.
-   */    
-  public long longValue() 
+   */
+  public long longValue ()
   {
-    return (long)value;
+    return (long) value;
   }
-    
+
   /**
    * Return the value of this <code>Double</code> when cast to a
    * <code>float</code>.
    */
-  public float floatValue() 
+  public float floatValue ()
   {
-    return (float)value;
+    return (float) value;
   }
 
   /**
    * Return the primitive <code>double</code> value represented by this
    * <code>Double</code>.
-   */    
-  public double doubleValue() 
+   */
+  public double doubleValue ()
   {
     return value;
   }
@@ -205,7 +206,7 @@ public final class Double extends Number implements Comparable
   /**
    * Return the value of this <code>Double</code> when cast to a 
    * <code>byte</code>.
-   */  
+   */
   public byte byteValue ()
   {
     return (byte) value;
@@ -214,12 +215,12 @@ public final class Double extends Number implements Comparable
   /**
    * Return the value of this <code>Double</code> when cast to a 
    * <code>short</code>.
-   */  
+   */
   public short shortValue ()
   {
     return (short) value;
   }
-    
+
   /**
    * Return the result of calling <code>new Double(java.lang.String)</code>.
    *
@@ -234,10 +235,9 @@ public final class Double extends Number implements Comparable
    * @see #Double(java.lang.String)
    * @see #parseDouble(java.lang.String)
    */
-  public static Double valueOf(String s)
-    throws NumberFormatException
+  public static Double valueOf (String s) throws NumberFormatException
   {
-    return new Double(s);
+    return new Double (s);
   }
 
   /**
@@ -245,11 +245,11 @@ public final class Double extends Number implements Comparable
    * is the same as <code>NaN</code>, otherwise return <code>false</code>.
    * @return whether this <code>Double</code> is <code>NaN</code>.
    */
-  public boolean isNaN() 
+  public boolean isNaN ()
   {
-    return isNaN(value);
+    return isNaN (value);
   }
-    
+
   /**
    * Return <code>true</code> if the <code>double</code> has the same
    * value as <code>NaN</code>, otherwise return <code>false</code>.
@@ -257,9 +257,9 @@ public final class Double extends Number implements Comparable
    * @param d the <code>double</code> to compare
    * @return whether the argument is <code>NaN</code>.
    */
-  public static boolean isNaN(double d) 
+  public static boolean isNaN (double d)
   {
-    return (doubleToLongBits(d) == 0x7ff8000000000000L);
+    return (doubleToLongBits (d) == 0x7ff8000000000000L);
   }
 
   /**
@@ -269,11 +269,11 @@ public final class Double extends Number implements Comparable
    *
    * @return whether this <code>Double</code> is (-/+) infinity.
    */
-  public boolean isInfinite() 
+  public boolean isInfinite ()
   {
-    return isInfinite(value);
+    return isInfinite (value);
   }
-    
+
   /**
    * Return <code>true</code> if the <code>double</code> has a value 
    * equal to either <code>NEGATIVE_INFINITY</code> or 
@@ -282,7 +282,7 @@ public final class Double extends Number implements Comparable
    * @param d the <code>double</code> to compare
    * @return whether the argument is (-/+) infinity.
    */
-  public static boolean isInfinite(double d) 
+  public static boolean isInfinite (double d)
   {
     return (d == POSITIVE_INFINITY || d == NEGATIVE_INFINITY);
   }
@@ -306,11 +306,11 @@ public final class Double extends Number implements Comparable
    *          in question, or &gt; 0 if it is greater.
    * @since 1.2
    */
-  public int compareTo(Double d)
+  public int compareTo (Double d)
   {
-    return compare(value, d.value);
+    return compare (value, d.value);
   }
-    
+
   /**
    * Returns 0 if the first argument is equal to the second argument.
    * Returns a number less than zero if the first argument is less than the
@@ -329,10 +329,10 @@ public final class Double extends Number implements Comparable
    *          in question, or &gt; 0 if it is greater.
    * @since 1.4
    */
-  public static int compare(double x, double y)
+  public static int compare (double x, double y)
   {
     if (isNaN (x))
-      return isNaN(y) ? 0 : 1;
+      return isNaN (y) ? 0 : 1;
     if (isNaN (y))
       return -1;
     if ((x == 0.0d) && (y == -0.0d))
@@ -356,9 +356,9 @@ public final class Double extends Number implements Comparable
    *          in question, or &gt; 0 if it is greater.
    * @throws ClassCastException if the argument is not a <code>Double</code>
    */
-  public int compareTo(Object o)
+  public int compareTo (Object o)
   {
-    return compareTo((Double)o);
+    return compareTo ((Double) o);
   }
 
   /**
@@ -408,12 +408,12 @@ public final class Double extends Number implements Comparable
    * @param d the <code>double</code> to convert
    * @return the <code>String</code> representing the <code>double</code>.
    */
-  public static String toString(double d)
+  public static String toString (double d)
   {
     return toString (d, false);
   }
 
-  static native String toString(double d, boolean isFloat);
+  static native String toString (double d, boolean isFloat);
 
   /**
    * Return the long bits of the specified <code>double</code>.
@@ -424,7 +424,7 @@ public final class Double extends Number implements Comparable
    * @param value the <code>double</code> to convert
    * @return the bits of the <code>double</code>.
    */
-  public static native long doubleToLongBits(double value);
+  public static native long doubleToLongBits (double value);
 
   /**
    * Return the long bits of the specified <code>double</code>.
@@ -437,8 +437,8 @@ public final class Double extends Number implements Comparable
    * @param value the <code>double</code> to convert
    * @return the bits of the <code>double</code>.
    */
-  public static native long doubleToRawLongBits(double value);
-  
+  public static native long doubleToRawLongBits (double value);
+
   /**
    * Return the <code>double</code> represented by the long
    * bits specified.
@@ -446,7 +446,7 @@ public final class Double extends Number implements Comparable
    * @param bits the long bits representing a <code>double</code>
    * @return the <code>double</code> represented by the bits.
    */
-  public static native double longBitsToDouble(long bits);
+  public static native double longBitsToDouble (long bits);
 
   /**
    * Parse the specified <code>String</code> as a <code>double</code>.
@@ -508,11 +508,10 @@ public final class Double extends Number implements Comparable
    * @see #NEGATIVE_INFINITY
    * @since 1.2
    */
-  public static double parseDouble (String s) 
-    throws NumberFormatException
+  public static double parseDouble (String s) throws NumberFormatException
   {
-    String t = s.trim();
-    return parseDouble0 (t);
+    String t = s.trim ();
+      return parseDouble0 (t);
   }
 
   private static native double parseDouble0 (String s)

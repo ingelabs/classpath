@@ -28,6 +28,7 @@ import java.awt.datatransfer.*;
 import java.awt.image.*;
 import java.awt.peer.*;
 import gnu.java.awt.image.*;
+import gnu.classpath.Configuration;
 
 /* This class uses a deprecated method java.awt.peer.ComponentPeer.getPeer().
    This merits comment.  We are basically calling Sun's bluff on this one.
@@ -45,8 +46,10 @@ public class GtkToolkit extends java.awt.Toolkit
 
   static 
   {
-    System.out.println("loading library");	
-    System.loadLibrary("gtkpeer");
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+	System.loadLibrary("gtkpeer");
+      }
   }
 
   public GtkToolkit ()

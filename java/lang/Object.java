@@ -27,6 +27,8 @@ executable file might be covered by the GNU General Public License. */
 
 package java.lang;
 
+import gnu.classpath.Configuration;
+
 /**
  * Object is the ultimate superclass of every class
  * (excepting interfaces).  When you define a class that
@@ -49,6 +51,14 @@ package java.lang;
  */
 public class Object
 {
+  static
+  {
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+	System.loadLibrary("javalang");
+      }
+  }
+
   // Some VM's rely on the order that these methods appear when laying
   // out their internal structure.  Therefore, do not haphazardly
   // rearrange these methods.

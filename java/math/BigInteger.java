@@ -28,16 +28,21 @@ package java.math;
 
 import java.util.Random;
 
+import gnu.classpath.Configuration;
+
 public class BigInteger implements Comparable {
   final int native_state = System.identityHashCode(this);
 
   public static final BigInteger ZERO;
   public static final BigInteger ONE;
 
-  static {
-    System.loadLibrary("bigint");
-    initNativeState();
-
+  static
+  {
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+        System.loadLibrary ("bigint");
+	initNativeState();
+      }
     ZERO = new BigInteger();
     ONE = new BigInteger(1L);
   }

@@ -30,6 +30,7 @@ package java.net;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
+import gnu.classpath.Configuration;
 
 /**
   * Unless the application installs its own SocketImplFactory, this is the
@@ -51,10 +52,13 @@ class PlainSocketImpl extends SocketImpl
  */
 
 // Static initializer to load native library
-static
-{
-  System.loadLibrary("javanet");
-}
+  static
+  {
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+	System.loadLibrary("javanet");
+      }
+  }
 
 /*************************************************************************/
 

@@ -25,6 +25,7 @@ import java.awt.image.*;
 import java.util.*;
 import java.io.*;
 import java.net.URL;
+import gnu.classpath.Configuration;
 
 public class GdkPixbufDecoder extends ImageDecoder
 {
@@ -32,9 +33,11 @@ public class GdkPixbufDecoder extends ImageDecoder
 
   static 
   {
-    System.out.println ("loading gdkpixbuf library");	
-    System.loadLibrary ("cpgdkpixbuf");
-    initState ();
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+	System.loadLibrary ("cpgdkpixbuf");
+	initState ();
+      }
   }
 
   /* gdk-pixbuf provids data in RGBA format */

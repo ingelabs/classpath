@@ -27,6 +27,7 @@ executable file might be covered by the GNU General Public License. */
 
 package java.util;
 import java.text.DateFormatSymbols;
+import gnu.classpath.Configuration;
 
 /**
  * This class represents a time zone offset and handles daylight savings.
@@ -742,8 +743,10 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable
   /* Look up default timezone */
   static
   {
-    System.loadLibrary("javautil");
-
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+	System.loadLibrary("javautil");
+      }
     String tzid = System.getProperty("user.timezone");
 
     // XXX: Remove call to getDefaultTimeZoneId after java.lang.System

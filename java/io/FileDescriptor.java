@@ -27,6 +27,8 @@ executable file might be covered by the GNU General Public License. */
 
 package java.io;
 
+import gnu.classpath.Configuration;
+
 /**
   * This class represents an opaque file handle as a Java class.  It should
   * be used only to pass to other methods that expect an object of this
@@ -63,10 +65,13 @@ public static final FileDescriptor out = new FileDescriptor(1);
   */
 public static final FileDescriptor err = new FileDescriptor(2);
 
-static
-{
-  System.loadLibrary("javaio");
-}
+  static
+  {
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+        System.loadLibrary ("javaio");
+      }
+  }
 
 /*************************************************************************/
 
