@@ -90,7 +90,7 @@ public class ObjectStreamClass implements Serializable
     if (cl == null)
       return null;
 
-    ObjectStreamClass osc = (ObjectStreamClass)classLookupTable.get(cl);
+    ObjectStreamClass osc = (ObjectStreamClass) classLookupTable.get(cl);
 
     if (osc != null)
       return osc;
@@ -265,7 +265,7 @@ public class ObjectStreamClass implements Serializable
 	ObjectStreamClass[] sorted_oscs = new ObjectStreamClass[ count ];
 
 	for (int i = count - 1; i >= 0; i--)
-	  sorted_oscs[ count - i - 1 ] = (ObjectStreamClass)oscs.elementAt(i);
+	  sorted_oscs[ count - i - 1 ] = (ObjectStreamClass) oscs.elementAt(i);
 
 	return sorted_oscs;
       }
@@ -412,7 +412,6 @@ public class ObjectStreamClass implements Serializable
   {
     superClass = osc;
   }
-
 
   void calculateOffsets()
   {
@@ -694,7 +693,7 @@ public class ObjectStreamClass implements Serializable
 	long result = 0;
 	int len = sha.length < 8 ? sha.length : 8;
 	for (int i = 0; i < len; i++)
-	  result += (long)(sha[i] & 0xFF) << (8 * i);
+	  result += (long) (sha[i] & 0xFF) << (8 * i);
 
 	return result;
       }
@@ -736,7 +735,7 @@ public class ObjectStreamClass implements Serializable
 	  Modifier.isPrivate(modifiers)))
       return null;
     
-    o = (ObjectStreamField[])f.get(null);
+    o = (ObjectStreamField[]) f.get(null);
     
     if (o == null)
       return null;
@@ -784,7 +783,7 @@ class InterfaceComparator implements Comparator
 {
   public int compare(Object o1, Object o2)
   {
-    return ((Class)o1).getName().compareTo(((Class)o2).getName());
+    return ((Class) o1).getName().compareTo(((Class) o2).getName());
   }
 }
 
@@ -795,8 +794,8 @@ class MemberComparator implements Comparator
 {
   public int compare(Object o1, Object o2)
   {
-    Member m1 = (Member)o1;
-    Member m2 = (Member)o2;
+    Member m1 = (Member) o1;
+    Member m2 = (Member) o2;
 
     int comp = m1.getName().compareTo(m2.getName());
 
