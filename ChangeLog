@@ -1,3 +1,8 @@
+2004-07-11  Mohan Embar  <gnustuff@thisiscool.com>
+
+	* java/net/URLStreamHandler.java (parseURL): Canonicalize
+	file portion of URL in addition to spec for file: protocol.
+
 2004-07-12  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac: Set version to 0.10+cvs.
