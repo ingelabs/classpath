@@ -224,7 +224,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public FontMetrics getFontMetrics (Font font)
   {
-    return new GdkFontMetrics (font);
+    return getToolkit().getFontMetrics(font);
   }
 
   public Graphics getGraphics ()

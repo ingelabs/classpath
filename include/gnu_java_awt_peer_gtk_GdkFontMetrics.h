@@ -10,8 +10,8 @@ extern "C"
 {
 #endif
 
-JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkFontMetrics_initState (JNIEnv *env, jobject, jstring, jint, jint);
-JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GdkFontMetrics_stringWidth (JNIEnv *env, jobject, jstring, jint, jint, jstring);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkFontMetrics_getPeerFontMetrics (JNIEnv *env, jclass, jobject, jdoubleArray);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkFontMetrics_getPeerTextMetrics (JNIEnv *env, jclass, jobject, jstring, jdoubleArray);
 
 #ifdef __cplusplus
 }

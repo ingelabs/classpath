@@ -1,3 +1,104 @@
+2004-10-08  Graydon Hoare  <graydon@redhat.com>
+
+	* gnu/java/awt/ClasspathToolkit.java
+	(getClasspathTextLayoutPeer) Add.
+	* gnu/java/awt/peer/ClasspathFontPeer.java
+	(copyStyleToAttrs)
+	(copySizeToAttrs): Make public.
+	* gnu/java/awt/peer/ClasspathTextLayoutPeer.java: New file.
+	* gnu/java/awt/peer/gtk/GdkClasspathFontPeer.java: Remove.
+	* gnu/java/awt/peer/gtk/GdkClasspathFontPeerMetrics.java: Remove.
+	* gnu/java/awt/peer/gtk/GdkFontMetrics.java: Rewrite.
+	* gnu/java/awt/peer/gtk/GdkFontPeer.java: New file.
+	* gnu/java/awt/peer/gtk/GdkGlyphVector.java: Adjust type names.
+	* gnu/java/awt/peer/gtk/GdkGraphics.java
+	(getFontPeer): New function.
+	(drawString): Pass font peer to native side.
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java
+	(cairoSetFont)
+	(cairoShowGlyphs)
+	(PainterThread): Remove.
+	(GdkGraphics2D): Set hints during construction.
+	(shifted)
+	(walkPath)
+	(draw)
+	(setRenderingHint)
+	(setRenderingHints): Reimplement normalization logic.
+	(getDefaultHints)
+	(updateBufferedImage)
+	(isBufferedImageGraphics)
+	(updateImagePixels)
+	(drawImage): Make final.
+	(drawImage): Always paint synchronously.
+	(drawString)
+	(drawGlyphVector): Rewrite.
+	(releasePeerGraphicResource)
+	(getPeerTextMetrics)
+	(getPeerFontMetrics)
+	(drawGdkGlyphVector)
+	(drawGdkTextLayout)
+	(cairoDrawGdkGlyphVector)
+	(cairoDrawGdkTextLayout)
+	(cairoDrawString)
+	(getFontPeer): New functions.
+	* gnu/java/awt/peer/gtk/GdkTextLayout.java: New file.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(getFontMetrics): Get metrics via toolkit, to hit cache.
+	* gnu/java/awt/peer/gtk/GtkTextAreaPeer.java: Use getFontMetrics.
+	* gnu/java/awt/peer/gtk/GtkTextFieldPeer.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java (LRUCache): New class.
+	(fontCache)
+	(metricsCache)
+	(imageCache): New members.
+	(getFontMetrics)
+	(getImage)
+	(getClasspathFontPeer): Use caches.
+	(getFontPeer): Route through getClasspathFontPeer.
+	* java/awt/Font.java (attrsToMap): Remove, adjust ctors.
+	* java/awt/font/TextLayout.java: Implement in terms of peer.
+	* javax/swing/plaf/basic/BasicSliderUI.java
+	(paintThumb): Use polyline rather than polygon.
+	* javax/swing/plaf/basic/BasicGraphicsUtils.java:
+	Update comment but, alas, still do not switch to using TextLayouts.
+	* javax/swing/text/Utilities.java (drawTabbedText):
+	Draw text run-at-a-time, not char-at-a-time.
+	* jni/gtk-peer/gdkfont.h: Publicize some of the font interface, add
+	layout table.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkClasspathFontPeer.c:
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkClasspathFontPeerMetrics.c:
+	Remove files.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontMetrics.c: Rewrite to
+	incorporate brains of old GdkClasspathFontPeerMetrics.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkFontPeer.c: Rewrite to
+	incorporate brains of old GdkClasspathFontPeer.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkTextLayout.c: New file.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c
+	(drawString): Rewrite to use persistent layout in peer font.
+	Comment out extraneous gdk_flush calls.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
+	(metrics_cairo)
+	(metrics_surface): New static variables.
+	(paint_glyph_run)
+	(install_font_peer): New helper functions.
+	(releasePeerGraphicResource)
+	(getPeerTextMetrics)
+	(getPeerFontMetrics)
+	(cairoDrawGdkTextLayout)
+	(cairoDrawGdkGlyphVector): New native methods.
+	(cairoDrawString): Rewrite, leaving layout-based version
+	commented out for the time being.
+	* jni/gtk-peer/gtkpeer.h (graphics): Add fields for pango stuff.
+
+2004-10-08  Michael Koch  <konqueror@gmx.de>
+
+	* include/gnu_java_awt_peer_gtk_GdkFontMetrics.h
+	include/gnu_java_awt_peer_gtk_GdkGraphics.h
+	include/gnu_java_awt_peer_gtk_GdkGraphics2D.h: Regenerated.
+	* include/gnu_java_awt_peer_gtk_GdkFontPeer.h
+	include/gnu_java_awt_peer_gtk_GdkTextLayout.h: New files
+	* include/Makefile.am: Added new files.
+	* native/jni/gtk-peer/Makefile.am: Added new files.
+
 2004-10-08 Andreas Tobler <a.tobler@schweiz.ch>
 
 	* configure.ac: Introduce AC_C_BIGENDIAN_CROSS for WORDS_BIGENDIAN.

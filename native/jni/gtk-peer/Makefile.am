@@ -14,8 +14,10 @@ endif
 libgtkpeer_la_SOURCES = $(gtk_cairo_c_source_files) \
 			gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.c \
 			gnu_java_awt_peer_gtk_GdkFontMetrics.c \
+			gnu_java_awt_peer_gtk_GdkFontPeer.c \
 			gnu_java_awt_peer_gtk_GdkGraphics.c \
 			gnu_java_awt_peer_gtk_GdkPixbufDecoder.c \
+			gnu_java_awt_peer_gtk_GdkTextLayout.c \
 			gnu_java_awt_peer_gtk_GtkButtonPeer.c \
 			gnu_java_awt_peer_gtk_GtkCanvasPeer.c \
 			gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer.c \

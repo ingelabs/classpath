@@ -115,6 +115,9 @@ struct graphics
   GdkDrawable *drawable;
   GdkGC *gc;
   GdkColormap *cm;
+  PangoFontDescription *pango_font;
+  PangoContext *pango_context;
+  PangoLayout *pango_layout;
   jint x_offset, y_offset;
 };
 
