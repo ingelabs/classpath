@@ -82,94 +82,75 @@ endif
 MAKEFILE_DEPEND = makefile.dep
 HEADERS_DEPEND = headers.dep
 CLASSES_DEPEND = classes.dep
+JAVA_DEPEND = java.dep
 
 #data_DATA = glibj.zip
 install-data-local :
 	unzip -d $(datadir) glibj.zip
 
-#all: $(CLASSES) glibj.zip
+include $(JAVA_DEPEND)
 
-if DEVELOPER_BUILD
-%.class: %.java
-	$(JAVAC) $<
+all: jar-classes $(MAKEFILE_DEPEND)
 
-%.h: $(subst _, /, %.class)
-	$(JAVAH) $<
-
-default: all
-all: glibj.zip
-
-glibj.zip: $(MAKEFILE_DEPEND) $(CLASSES)
-	-mkdir gnu
-	-mkdir gnu/java
-	-mkdir gnu/java/locale
-	cp $(top_srcdir)/gnu/java/locale/*.properties gnu/java/locale/
-	cp $(top_srcdir)/gnu/java/locale/*.uni gnu/java/locale/
-	zip -r -D glibj.zip gnu java javax
-
-$(MAKEFILE_DEPEND) : 
-	touch makefile.depend
-else
-
-if MAINTAINER_BUILD
-
-JUNK = $(SHELL) -c "cd $top_builddir/lib && ./mkdep.pl -h"
-include $(HEADERS_DEPEND)
-JUNK2 = $(SHELL) -c "cd $top_builddir/lib && ./mkdep.pl -c"
-include $(CLASSES_DEPEND)
-
-default : all
-all: $(CLASSES) glibj.zip $(MAKEFILE_DEPEND)
-
-glibj.zip: Makefile $(CLASSES)
+.PHONY: jar-classes
+jar-classes glibj.zip: classes compile-classes
 	-mkdir gnu
 	-mkdir gnu/java
 	-mkdir gnu/java/locale
 	cp $(top_srcdir)/gnu/java/locale/*.properties gnu/java/locale/
 	cp $(top_srcdir)/gnu/java/locale/*.uni gnu/java/locale/
 	# do something with all the .u files from jikes
-	zip -r -D glibj.zip gnu java javax
-
-$(MAKEFILE_DEPEND): Makefile classes $(CLASSES)
-	./mkdep.pl -d
-	include $(MAKEFILE_DEPEND)
+	$(ZIP) -r -D glibj.zip gnu java javax
 
 classes: gen-classlist.sh standard.omit
-	$(SHELL) -c "cd ${top_srcdir}/lib; ./gen-classlist.sh standard"
+	$(SHELL) -c "cd $(top_srcdir)/lib; ./gen-classlist.sh standard"
 
-$(CLASSES):
+.PHONY: dep
+dep: classes
+	$(SHELL) -c "cd $(top_srcdir)/lib; ./mkdep.pl -s"
+
+.PHONY: compile-classes
+compile-classes: $(JAVA_SRCS)
 	@JIKES@ -classpath ..:../vm/reference:. +CSO +M -d . @classes 2>errors.txt
 
-else
+$(MAKEFILE_DEPEND): classes $(HEADERS_DEPEND) $(CLASSES_DEPEND)
+	$(SHELL) -c "cd $top_builddir/lib && ./mkdep.pl -d"
+
+$(HEADERS_DEPEND): classes
+	$(SHELL) -c "cd $top_builddir/lib && ./mkdep.pl -h"
+
+$(CLASSES_DEPEND): classes
+	$(SHELL) -c "cd $top_builddir/lib && ./mkdep.pl -c"
+
 ## neither developer nor maintainer...
 
-MDEPEND = $(SHELL test -r $(MAKEFILE_DEPEND) && echo "true")
-@REMOVE@ifeq ($(MDEPEND),true)
-@REMOVE@	include $(MAKEFILE_DEPEND)
-@REMOVE@else
-@REMOVE@	$(SHELL) -c "cd $(top_srcdir)/lib; ./mkdep.pl -d"
-@REMOVE@	include $(MAKEFILE_DEPEND)
-@REMOVE@endif
+##MDEPEND = $(SHELL test -r $(MAKEFILE_DEPEND) && echo "true")
+##@REMOVE@ifeq ($(MDEPEND),true)
+##@REMOVE@	include $(MAKEFILE_DEPEND)
+##@REMOVE@else
+##@REMOVE@	$(SHELL) -c "cd $(top_srcdir)/lib; ./mkdep.pl -d"
+##@REMOVE@	include $(MAKEFILE_DEPEND)
+##@REMOVE@endif
 
-HDEPEND = $(SHELL test -r $(HEADERS_DEPEND) && echo "true")
-@REMOVE@ifeq ($(HDEPEND),true)
-@REMOVE@	include $(HEADERS_DEPEND)
-@REMOVE@else
-@REMOVE@	$(SHELL) -c "cd $(top_srcdir)/lib; ./mkdep.pl -h"
-@REMOVE@	include $(HEADERS_DEPEND)
-@REMOVE@endif
+##HDEPEND = $(SHELL test -r $(HEADERS_DEPEND) && echo "true")
+##@REMOVE@ifeq ($(HDEPEND),true)
+##@REMOVE@	include $(HEADERS_DEPEND)
+##@REMOVE@else
+##@REMOVE@	$(SHELL) -c "cd $(top_srcdir)/lib; ./mkdep.pl -h"
+##@REMOVE@	include $(HEADERS_DEPEND)
+##@REMOVE@endif
 
-CDEPEND = $(SHELL test -r $(CLASSES_DEPEND) && echo "true")
-@REMOVE@ifeq ($(CDEPEND),true)
-@REMOVE@	include $(CLASSES_DEPEND)
-@REMOVE@else
-@REMOVE@	$(SHELL) -c "cd $(top_srcdir)/lib; ./mkdep.pl -c"
-@REMOVE@	include $(CLASSES_DEPEND)
-@REMOVE@endif
+##CDEPEND = $(SHELL test -r $(CLASSES_DEPEND) && echo "true")
+##@REMOVE@ifeq ($(CDEPEND),true)
+##@REMOVE@	include $(CLASSES_DEPEND)
+##@REMOVE@else
+##@REMOVE@	$(SHELL) -c "cd $(top_srcdir)/lib; ./mkdep.pl -c"
+##@REMOVE@	include $(CLASSES_DEPEND)
+##@REMOVE@endif
 
-endif
+##endif
 
-endif
+##endif
 
 EXTRA_DIST = glibj.zip standard.omit
 ## not sure if we want to let the user easily get rid of glibj.zip
