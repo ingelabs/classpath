@@ -144,6 +144,14 @@ CLASSPATH_WITH_JAVAH
 
 CLASSPATH_WITH_INCLUDEDIR
 
+dnl ----------------------------------------------------------- 
+dnl add the include files for the native abstraction layer
+dnl -----------------------------------------------------------
+
+EXTRA_INCLUDES="${EXTRA_INCLUDES} -I\$(top_srcdir)/native/target/Linux -I\$(top_srcdir)/native/target/generic"
+
+dnl -----------------------------------------------------------
+
 if test "x${COMPILE_JNI}" = xyes; then
   AC_MSG_CHECKING("jni_md.h support")
   if test -f ${srcdir}/include/jni_md-${target_cpu}-${target_os}.h; then
