@@ -9,6 +9,7 @@ AbstractList.java \
 AbstractMap.java \
 AbstractSequentialList.java \
 AbstractSet.java \
+ArrayList.java \
 Arrays.java \
 BasicMapEntry.java \
 BitSet.java \
@@ -23,6 +24,8 @@ Dictionary.java \
 DoubleEnumeration.java \
 EmptyStackException.java \
 Enumeration.java \
+EventListener.java \
+EventObject.java \
 GregorianCalendar.java \
 HashMap.java \
 HashSet.java \
@@ -36,7 +39,10 @@ Locale.java \
 Map.java \
 MissingResourceException.java \
 NoSuchElementException.java \
+Observable.java \
+Observer.java \
 Properties.java \
+PropertyPermission.java \
 PropertyResourceBundle.java \
 Random.java \
 ResourceBundle.java \
@@ -46,8 +52,11 @@ SortedMap.java \
 SortedSet.java \
 Stack.java \
 StringTokenizer.java \
-TimeZone.java \
 Timer.java \
 TimerTask.java \
+TimeZone.java \
+TooManyListenersException.java \
+TreeMap.java \
+TreeSet.java \
 Vector.java \
 WeakHashMap.java
