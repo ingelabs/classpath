@@ -51,6 +51,9 @@ public static final int CENTER = 1;
   */
 public static final int RIGHT = 2;
 
+// Serialization version constant:
+private static final long serialVersionUID = 3094126758329070636L;
+
 /*************************************************************************/
 
 /*
