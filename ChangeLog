@@ -1,5 +1,8 @@
 2001-09-05  Tom Tromey  <tromey@redhat.com>
 
+	* java/util/Properties.java (load): Use ISO-8859-1 encoding.
+	(store): Likewise.
+
 	* java/lang/Character.java: Replaced non-ASCII characters in
 	comments.  Report from Etienne M. Gagnon.
 
