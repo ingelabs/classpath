@@ -103,6 +103,7 @@ ScrollPaneLayout.java \
 SizeRequirements.java \
 SizeSequence.java \
 SingleSelectionModel.java \
+SpinnerModel.java \
 SwingConstants.java \
 SwingUtilities.java \
 Timer.java \
