@@ -15,4 +15,4 @@ libgtkpeer_la_LDFLAGS = -version-info 0:0:0 @GTK_LIBS@ @GLIB_LIBS@
 
 INCLUDES += @JAPHAR_CFLAGS@ \
 	    @GTK_CFLAGS@ \
-	    -I$(top_srcdir)
+	    -I$(top_srcdir)/include
