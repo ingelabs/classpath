@@ -4,8 +4,14 @@ if CREATE_GTK_PEER_LIBRARIES
   GTKDIR = gtk-peer
 endif
 
-SUBDIRS = classpath java-io java-lang java-net java-nio java-util $(GTKDIR)
-DIST_SUBDIRS = classpath java-io java-lang java-net java-nio java-util gtk-peer
+if CREATE_XMLJ_LIBRARY
+  XMLJDIR = xmlj
+endif
+
+SUBDIRS = classpath java-io java-lang java-net java-nio java-util \
+          $(GTKDIR) $(XMLJDIR)
+DIST_SUBDIRS = classpath java-io java-lang java-net java-nio java-util \
+               gtk-peer xmlj
 
 all-local:
 	cd $(top_srcdir) && scripts/check_jni_methods.sh

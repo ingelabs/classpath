@@ -55,6 +55,19 @@ AC_ARG_ENABLE([Werror],
               [ENABLE_WERROR=no])
 
 dnl -----------------------------------------------------------
+dnl Native libxml/xslt library (disabled by default)
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE([xmlj],
+              [AS_HELP_STRING(--enable-xmlj,compile native libxml/xslt library [default=no])],
+              [case "${enableval}" in
+                yes) COMPILE_XMLJ=yes ;;
+                no) COMPILE_XMLJ=no ;;
+                *) COMPILE_XMLJ=no ;;
+              esac],
+              [COMPILE_XMLJ=no])
+AM_CONDITIONAL(CREATE_XMLJ_LIBRARY, test "x${COMPILE_XMLJ}" = xyes)
+
+dnl -----------------------------------------------------------
 dnl GTK native peer (enabled by default)
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([gtk-peer],
@@ -196,6 +209,17 @@ if test "x${COMPILE_JNI}" = xyes; then
        ERROR_CFLAGS='-Werror'
     fi
     AC_SUBST(ERROR_CFLAGS)
+  fi
+
+  dnl Check for libxml and libxslt libraries (when xmlj is enabled).
+  if test "x${COMPILE_XMLJ}" = xyes
+  then
+    PKG_CHECK_MODULES(XML, xml2 >= 2-2.6.8)
+    PKG_CHECK_MODULES(XSLT, xslt >= 1.1.11)
+    AC_SUBST(XML_LIBS)
+    AC_SUBST(XML_CFLAGS)
+    AC_SUBST(XSLT_LIBS)
+    AC_SUBST(XSLT_CFLAGS)
   fi
 
   dnl Check for AWT related gthread/gtk/libart_lgpl
@@ -375,6 +399,7 @@ native/jni/java-net/Makefile
 native/jni/java-nio/Makefile
 native/jni/java-util/Makefile
 native/jni/gtk-peer/Makefile
+native/jni/xmlj/Makefile
 native/target/Makefile
 native/target/Linux/Makefile
 native/target/generic/Makefile

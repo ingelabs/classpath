@@ -1,3 +1,14 @@
+2004-12-29  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac: Add --enable-xmlj option. Check for libxml2 and
+	libxslt libraries when enabled. Add native/jni/xmlj/Makefile.
+	* gnu/xml/libxmlj/*: New files.
+	* include/Makefile.am: Add XMLJ_H_FILES. Group awt gtk peer headers
+	under GTKPEER_H_FILES. Generate new headers.
+	* include/gnu_xml_libxmlj_*.h: New generated files.
+	* native/jni/Makefile.am: Conditionally add xmlj dir.
+	* native/jni/xmlj/*: New files.
+
 2004-12-29  Jerry Quinn  <jlquinn@optonline.net>
 
 	* java/awt/CheckboxMenuItem.java (getAccessibleContext,

@@ -4,7 +4,29 @@ ARG_JNI_JAVAH = -jni
 ARG_CLASSPATH_JAVAH = -bootclasspath
 JAVAH = $(USER_JAVAH) $(ARG_JNI_JAVAH) $(ARG_CLASSPATH_JAVAH) ../lib:$(USER_CLASSLIB)
 
-H_FILES = \
+XMLJ_H_FILES = \
+$(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeDocument.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeXPathNodeList.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeDocumentType.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeProcessingInstruction.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeXPathNSResolver.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeTypeInfo.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeNodeList.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeNotation.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeXPathResult.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeElement.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeEntity.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeNode.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeXPathExpression.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeNamedNodeMap.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeDocumentBuilder.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_dom_GnomeAttr.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_sax_GnomeLocator.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_sax_GnomeXMLReader.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_transform_GnomeTransformer.h \
+$(top_srcdir)/include/gnu_xml_libxmlj_transform_GnomeTransformerFactory.h
+
+GTKPEER_H_FILES = \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkFontMetrics.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkFontPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGlyphVector.h \
@@ -42,7 +64,11 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkTextComponentPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkTextFieldPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkToolkit.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkWindowPeer.h \
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.h \
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.h
+
+H_FILES = \
+$(XMLJ_H_FILES) \
+$(GTKPEER_H_FILES) \
 $(top_srcdir)/include/gnu_java_net_PlainDatagramSocketImpl.h \
 $(top_srcdir)/include/gnu_java_net_PlainSocketImpl.h \
 $(top_srcdir)/include/gnu_java_nio_VMPipe.h \
@@ -70,82 +96,18 @@ if CREATE_JNI_HEADERS
 
 all-local: $(H_FILES)
 
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkFontMetrics.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkFontMetrics.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkFontMetrics
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkFontPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkFontPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkFontPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGlyphVector.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkGlyphVector.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkGlyphVector
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkGraphics.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkGraphics
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphics2D.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkGraphics2D.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkGraphics2D
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkGraphicsEnvironment.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkGraphicsEnvironment
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkPixbufDecoder.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkPixbufDecoder.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkPixbufDecoder
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GdkTextLayout.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GdkTextLayout.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GdkTextLayout
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkButtonPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkButtonPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkButtonPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkCanvasPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkCanvasPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkCanvasPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkCheckboxGroupPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkCheckboxGroupPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkCheckboxMenuItemPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkCheckboxMenuItemPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkCheckboxPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkCheckboxPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkCheckboxPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkChoicePeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkChoicePeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkChoicePeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkClipboard.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkClipboard.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkClipboard
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkComponentPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkComponentPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkComponentPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkEmbeddedWindowPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkEmbeddedWindowPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkFileDialogPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkFileDialogPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkFileDialogPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkFramePeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkFramePeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkFramePeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkGenericPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkGenericPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkGenericPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkImagePainter.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkImagePainter.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkImagePainter
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkLabelPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkLabelPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkLabelPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkListPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkListPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkListPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMainThread.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkMainThread.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkMainThread
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMenuBarPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkMenuBarPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkMenuBarPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMenuComponentPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkMenuComponentPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkMenuComponentPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMenuItemPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkMenuItemPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkMenuItemPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkMenuPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkMenuPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkMenuPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkPanelPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkPanelPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkPanelPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkPopupMenuPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkPopupMenuPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkPopupMenuPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkScrollPanePeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkScrollPanePeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkScrollPanePeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkScrollbarPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkScrollbarPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkScrollbarPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkTextAreaPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkTextAreaPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkTextAreaPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkTextComponentPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkTextComponentPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkTextComponentPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkTextFieldPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkTextFieldPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkTextFieldPeer
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkToolkit.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkToolkit.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkToolkit
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GThreadNativeMethodRunner.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GThreadNativeMethodRunner
-$(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkWindowPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkWindowPeer.java
-	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkWindowPeer
+$(top_srcdir)/include/gnu_xml_libxmlj_dom_%.h: $(top_builddir)/lib/gnu/xml/libxmlj/dom/%.class
+	$(JAVAH) -o $@ gnu.xml.libxmlj.dom.$*
+
+$(top_srcdir)/include/gnu_xml_libxmlj_sax_%.h: $(top_builddir)/lib/gnu/xml/libxmlj/sax/%.class
+	$(JAVAH) -o $@ gnu.xml.libxmlj.sax.$*
+
+$(top_srcdir)/include/gnu_xml_libxmlj_transform_%.h: $(top_builddir)/lib/gnu/xml/libxmlj/transform/%.class
+	$(JAVAH) -o $@ gnu.xml.libxmlj.transform.$*
+
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_%.h: $(top_builddir)/lib/gnu/java/awt/peer/gtk/%.class
+	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.$*
+
 $(top_srcdir)/include/gnu_java_net_PlainDatagramSocketImpl.h: $(top_srcdir)/gnu/java/net/PlainDatagramSocketImpl.java
 	$(JAVAH) -o $@ gnu.java.net.PlainDatagramSocketImpl
 $(top_srcdir)/include/gnu_java_net_PlainSocketImpl.h: $(top_srcdir)/gnu/java/net/PlainSocketImpl.java
