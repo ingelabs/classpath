@@ -1,3 +1,8 @@
+2004-07-15  Michael Koch  <konqueror@gmx.de>
+
+	* java/nio/charset/CharsetDecoder.java
+	(decode): Fix for bug #9177: Reset state before flipping.
+
 2004-07-15  Guilhem Lavaux <guilhem@kaffe.org>
 
 	* java/text/CollationElementIterator.java
