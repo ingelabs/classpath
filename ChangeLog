@@ -1,3 +1,35 @@
+2003-01-19  Mark Wielaard  <mark@klomp.org>
+
+	* java/io/ObjectInputStream.java (ObjectInputStream): Set dump flag
+	according to System property.
+	(resolveObject): Moved to allign with libgcj version.
+	(read): Make sure result is positive.
+	(getField): New method.
+	(getMethod): Likewise.
+	(callReadMethod): No longer native.
+	(setBooleanField): Likewise.
+	(setByteField): Likewise.
+	(setCharField): Likewise.
+	(setDoubleField): Likewise.
+	(setFloatField): Likewise.
+	(setIntField): Likewise.
+	(setLongField): Likewise.
+	(setShortField): Likewise.
+	(setObjectField): Likewise.
+	(setDump): Removed.
+	* native/jni/java-io/java_io_ObjectInputStream.c (callReadMethod):
+	removed.
+	(setBooleanField): removed.
+	(setByteField): removed.
+	(setCharField): Removed.
+	(setDoubleField): Removed.
+	(setFloatField): Removed.
+	(setIntField): Removed.
+	(setLongField): Removed.
+	(setShortField): Removed.
+	(setObjectField): Removed.
+	* include/java_io_ObjectInputStream.h: Regenerated.
+
 2003-01-18  Archie Cobbs <archie@dellroad.org>
 
 	* gnu/java/io/encode/EncoderUTF8.java (bytesInCharArray): Use offset.

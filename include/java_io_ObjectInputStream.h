@@ -11,18 +11,8 @@ extern "C"
 #endif
 
 extern jobject Java_java_io_ObjectInputStream_currentClassLoader (JNIEnv *env, jclass, jobject);
-extern void Java_java_io_ObjectInputStream_callReadMethod (JNIEnv *env, jobject, jobject, jclass);
 extern jobject Java_java_io_ObjectInputStream_allocateObject (JNIEnv *env, jobject, jclass);
 extern void Java_java_io_ObjectInputStream_callConstructor (JNIEnv *env, jobject, jclass, jobject);
-extern void Java_java_io_ObjectInputStream_setBooleanField (JNIEnv *env, jobject, jobject, jstring, jboolean);
-extern void Java_java_io_ObjectInputStream_setByteField (JNIEnv *env, jobject, jobject, jstring, jbyte);
-extern void Java_java_io_ObjectInputStream_setCharField (JNIEnv *env, jobject, jobject, jstring, jchar);
-extern void Java_java_io_ObjectInputStream_setDoubleField (JNIEnv *env, jobject, jobject, jstring, jdouble);
-extern void Java_java_io_ObjectInputStream_setFloatField (JNIEnv *env, jobject, jobject, jstring, jfloat);
-extern void Java_java_io_ObjectInputStream_setIntField (JNIEnv *env, jobject, jobject, jstring, jint);
-extern void Java_java_io_ObjectInputStream_setLongField (JNIEnv *env, jobject, jobject, jstring, jlong);
-extern void Java_java_io_ObjectInputStream_setShortField (JNIEnv *env, jobject, jobject, jstring, jshort);
-extern void Java_java_io_ObjectInputStream_setObjectField (JNIEnv *env, jobject, jobject, jstring, jstring, jobject);
 
 #ifdef __cplusplus
 }
