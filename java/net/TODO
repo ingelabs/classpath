@@ -18,8 +18,6 @@
 -- Fix call to Date(String) in URLConnection.getHeaderFieldDate() when
    I figure out why DateFormat isn't working.
 
--- Implement URLConnection.getPermission()
-
 -- Finish off all JDK 1.2 permissions stuff
 
 -- Write URLClassLoader
