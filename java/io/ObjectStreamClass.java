@@ -1,22 +1,23 @@
-/*************************************************************************
-/* ObjectStreamClass.java -- Class used to write class information
-/*                           about serialized objects 
 /*
-/* Copyright (c) 1998 by Free Software Foundation, Inc.
-/*
-/* This program is free software; you can redistribute it and/or modify
-/* it under the terms of the GNU Library General Public License as published 
-/* by the Free Software Foundation, version 2. (see COPYING.LIB)
-/*
-/* This program is distributed in the hope that it will be useful, but
-/* WITHOUT ANY WARRANTY; without even the implied warranty of
-/* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-/* GNU General Public License for more details.
-/*
-/* You should have received a copy of the GNU General Public License
-/* along with this program; if not, write to the Free Software Foundation
-/* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
-/*************************************************************************/
+  ObjectStreamClass.java -- Class used to write class information
+  about serialized objects.
+
+  Copyright (c) 1998 by Free Software Foundation, Inc.
+  Written by Geoff Berry <gcb@gnu.org>.
+
+  This program is free software; you can redistribute it and/or modify
+  it under the terms of the GNU Library General Public License as published
+  by the Free Software Foundation, version 2. (see COPYING.LIB)
+
+  This program is distributed in the hope that it will be useful, but
+  WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program; if not, write to the Free Software Foundation
+  Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
+*/
 
 package java.io;
 
@@ -31,7 +32,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Hashtable;
-import java.util.Vector;import gnu.java.io.NullOutputStream;
+import java.util.Vector;
+import gnu.java.io.NullOutputStream;
 import gnu.java.lang.reflect.TypeSignature;
 
 public class ObjectStreamClass implements Serializable
@@ -42,39 +44,39 @@ public class ObjectStreamClass implements Serializable
      null is returned.  <code>ObjectStreamClass</code>'s are memoized;
      later calls to this method with the same class will return the
      same <code>ObjectStreamClass</code> object and no recalculation
-     will be done. 
-     
+     will be done.
+
      @see java.io.Serializable
   */
-  public static ObjectStreamClass lookup( Class cl )
+  public static ObjectStreamClass lookup (Class cl)
   {
-    if( cl == null )
+    if (cl == null)
       return null;
 
-    ObjectStreamClass osc = (ObjectStreamClass)ourClassLookupTable.get( cl );
+    ObjectStreamClass osc = (ObjectStreamClass)classLookupTable.get (cl);
 
-    if( osc != null )
+    if (osc != null)
       return osc;
-    else if( ! (Serializable.class).isAssignableFrom( cl ) )
+    else if (! (Serializable.class).isAssignableFrom (cl))
       return null;
     else
     {
-      osc = new ObjectStreamClass( cl );
-      ourClassLookupTable.put( cl, osc );
+      osc = new ObjectStreamClass (cl);
+      classLookupTable.put (cl, osc);
       return osc;
     }
   }
-  
+
 
   /**
      Returns the name of the class that this
      <code>ObjectStreamClass</code> represents.
   */
-  public String getName()
+  public String getName ()
   {
-    return myName;
+    return name;
   }
-  
+
 
   /**
      Returns the class that this <code>ObjectStreamClass</code>
@@ -85,131 +87,131 @@ public class ObjectStreamClass implements Serializable
 
      @see java.io.ObjectInputStream
   */
-  public Class forClass()
+  public Class forClass ()
   {
-    return myClass;
+    return clazz;
   }
-  
-  
+
+
   /**
      Returns the serial version stream-unique identifier for the class
      represented by this <code>ObjectStreamClass</code>.  This SUID is
      either defined by the class as <code>static final long
      serialVersionUID</code> or is calculated as specified in
-     Javasoft's "Object Serialization Specification" TODO: add reference
+     Javasoft's "Object Serialization Specification" XXX: add reference
   */
-  public long getSerialVersionUID()
+  public long getSerialVersionUID ()
   {
-    return myUID;
+    return uid;
   }
-  
+
 
   // Returns the serializable (non-static and non-transient) Fields
   // of the class represented by this ObjectStreamClass.  The Fields
   // are sorted by name.
   // XXX doc
-  public ObjectStreamField[] getFields()
+  public ObjectStreamField[] getFields ()
   {
-    ObjectStreamField[] copy = new ObjectStreamField[ myFields.length ];
-    System.arraycopy( myFields, 0, copy, 0, myFields.length );
+    ObjectStreamField[] copy = new ObjectStreamField[ fields.length ];
+    System.arraycopy (fields, 0, copy, 0, fields.length);
     return copy;
   }
 
 
   // XXX doc
-  // Can't do binary search since myFields is sorted by name and
+  // Can't do binary search since fields is sorted by name and
   // primitiveness.
-  public ObjectStreamField getField( String name )
+  public ObjectStreamField getField (String name)
   {
-    for( int i=0; i < myFields.length; i++ )
-      if( myFields[i].getName().equals( name ) )
-	return myFields[i];
+    for (int i=0; i < fields.length; i++)
+      if (fields[i].getName ().equals (name))
+	return fields[i];
     return null;
   }
-  
-  
+
+
   /**
      Returns a textual representation of this
      <code>ObjectStreamClass</code> object including the name of the
      class it represents as well as that class's serial version
      stream-unique identifier.
 
-     @see getSerialVersionUID()
-     @see getName()
+     @see getSerialVersionUID ()
+     @see getName ()
   */
-  public String toString()
+  public String toString ()
   {
-    return "java.io.ObjectStreamClass< " + myName + ", " + myUID + " >";
+    return "java.io.ObjectStreamClass< " + name + ", " + uid + " >";
   }
 
 
   // Returns true iff the class that this ObjectStreamClass represents
   // has the following method:
   //
-  // private void writeObject( ObjectOutputStream )
+  // private void writeObject (ObjectOutputStream)
   //
   // This method is used by the class to override default
   // serialization behaivior.
-  boolean hasWriteMethod()
+  boolean hasWriteMethod ()
   {
-    return (myFlags & ObjectStreamConstants.SC_WRITE_METHOD) != 0;
+    return (flags & ObjectStreamConstants.SC_WRITE_METHOD) != 0;
   }
-  
+
 
   // Returns true iff the class that this ObjectStreamClass represents
   // implements Serializable but does *not* implement Externalizable.
-  boolean isSerializable()
+  boolean isSerializable ()
   {
-    return (myFlags & ObjectStreamConstants.SC_SERIALIZABLE) != 0;
+    return (flags & ObjectStreamConstants.SC_SERIALIZABLE) != 0;
   }
-  
+
 
   // Returns true iff the class that this ObjectStreamClass represents
   // implements Externalizable.
-  boolean isExternalizable()
+  boolean isExternalizable ()
   {
-    return (myFlags & ObjectStreamConstants.SC_EXTERNALIZABLE) != 0;
+    return (flags & ObjectStreamConstants.SC_EXTERNALIZABLE) != 0;
   }
-  
+
 
   // Returns the <code>ObjectStreamClass</code> that represents the
   // class that is the superclass of the class this
   // <code>ObjectStreamClass</cdoe> represents.  If the superclass is
   // not Serializable, null is returned.
-  ObjectStreamClass getSuper()
+  ObjectStreamClass getSuper ()
   {
-    return mySuper;
+    return superClass;
   }
 
-  
+
   // returns an array of ObjectStreamClasses that represent the super
   // classes of CLAZZ and CLAZZ itself in order from most super to
   // CLAZZ.  ObjectStreamClass[0] is the highest superclass of CLAZZ
   // that is serializable.
-  static ObjectStreamClass[] getObjectStreamClasses( Class clazz )
+  static ObjectStreamClass[] getObjectStreamClasses (Class clazz)
   {
-    ObjectStreamClass osc = ObjectStreamClass.lookup( clazz );
+    ObjectStreamClass osc = ObjectStreamClass.lookup (clazz);
 
     ObjectStreamClass[] ret_val;
 
-    if( osc == null )
+    if (osc == null)
       return new ObjectStreamClass[0];
     else
     {
-      Vector oscs = new Vector();
+      Vector oscs = new Vector ();
 
-      while( osc != null )
+      while (osc != null)
       {
-	oscs.addElement( osc );
-	osc = osc.getSuper();
+	oscs.addElement (osc);
+	osc = osc.getSuper ();
       }
 
-      int count = oscs.size();
+      int count = oscs.size ();
       ObjectStreamClass[] sorted_oscs = new ObjectStreamClass[ count ];
-      
-      for( int i = count - 1; i >= 0; i-- )
-	sorted_oscs[ count - i - 1 ] = (ObjectStreamClass)oscs.elementAt( i );
-      
+
+      for (int i = count - 1; i >= 0; i--)
+	sorted_oscs[ count - i - 1 ] = (ObjectStreamClass)oscs.elementAt (i);
+
       return sorted_oscs;
     }
   }
@@ -219,352 +221,347 @@ public class ObjectStreamClass implements Serializable
   // properties of the class represented by this ObjectStreamClass.
   // The bit-flags that could be present are those defined in
   // ObjectStreamConstants that begin with `SC_'
-  int getFlags()
+  int getFlags ()
   {
-    return myFlags;
+    return flags;
   }
 
 
-  ObjectStreamClass( String name, long uid, byte flags,
-		     ObjectStreamField[] fields )
+  ObjectStreamClass (String name, long uid, byte flags,
+		     ObjectStreamField[] fields)
   {
-    myName = name;
-    myUID = uid;
-    myFlags = flags;
-    myFields = fields;
+    this.name = name;
+    this.uid = uid;
+    this.flags = flags;
+    this.fields = fields;
   }
-  
 
-  void setClass( Class clazz )
-  {
-    myClass = clazz;
-  }
-  
-  
-  void setSuperclass( ObjectStreamClass osc )
-  {
-    mySuper = osc;
-  }
-  
 
-  void calculateOffsets()
-  {     
+  void setClass (Class clazz)
+  {
+    this.clazz = clazz;
+  }
+
+
+  void setSuperclass (ObjectStreamClass osc)
+  {
+    superClass = osc;
+  }
+
+
+  void calculateOffsets ()
+  {
     int i;
     ObjectStreamField field;
-    myDataFieldSize = 0;
-    for( i=0; true; i++ )
+    primFieldSize = 0;
+    int fcount = fields.length;
+    for (i = 0; i < fcount; ++ i)
     {
-      field = myFields[i];
+      field = fields[i];
 
-      if( ! field.isPrimitive() )
+      if (! field.isPrimitive ())
 	break;
 
-      field.setOffset( myDataFieldSize );
-      switch( field.getTypeCode() )
+      field.setOffset (primFieldSize);
+      switch (field.getTypeCode ())
       {
 	case 'B':
 	case 'Z':
-	  myDataFieldSize++;
+	  ++ primFieldSize;
 	  break;
 	case 'C':
 	case 'S':
-	  myDataFieldSize += 2;
+	  primFieldSize += 2;
 	  break;
 	case 'I':
 	case 'F':
-	  myDataFieldSize += 4;
+	  primFieldSize += 4;
 	  break;
 	case 'D':
 	case 'J':
-	  myDataFieldSize += 8;
+	  primFieldSize += 8;
 	  break;
       }
     }
 
-    for( myObjectFieldCount = 0; i < myFields.length; i++ )
-      myFields[i].setOffset( myObjectFieldCount++ );
-  }
-  
-  
-  private ObjectStreamClass( Class cl )
-  {
-    myUID = 0;
-    myFlags = 0;
-    
-    myClass = cl;
-    myName = cl.getName();
-    setFlags( cl );
-    setFields( cl );
-    setUID( cl );
-    mySuper = lookup( cl.getSuperclass() );
+    for (objectFieldCount = 0; i < fcount; ++ i)
+      fields[i].setOffset (objectFieldCount++);
   }
 
 
-  // Sets bits in myFlags according to features of CL.
-  private void setFlags( Class cl )
+  private ObjectStreamClass (Class cl)
   {
-    if( (java.io.Externalizable.class).isAssignableFrom( cl ) )
-      myFlags |= ObjectStreamConstants.SC_EXTERNALIZABLE;
-    else if( (java.io.Serializable.class).isAssignableFrom( cl ) )
+    uid = 0;
+    flags = 0;
+
+    clazz = cl;
+    name = cl.getName ();
+    setFlags (cl);
+    setFields (cl);
+    setUID (cl);
+    superClass = lookup (cl.getSuperclass ());
+  }
+
+
+  // Sets bits in flags according to features of CL.
+  private void setFlags (Class cl)
+  {
+    if ((java.io.Externalizable.class).isAssignableFrom (cl))
+      flags |= ObjectStreamConstants.SC_EXTERNALIZABLE;
+    else if ((java.io.Serializable.class).isAssignableFrom (cl))
       // only set this bit if CL is NOT Externalizable
-      myFlags |= ObjectStreamConstants.SC_SERIALIZABLE;
+      flags |= ObjectStreamConstants.SC_SERIALIZABLE;
 
     try
     {
-      Method writeMethod = cl.getDeclaredMethod( "writeObject",
-						 ourWriteMethodArgTypes );
-      int modifiers = writeMethod.getModifiers();
+      Method writeMethod = cl.getDeclaredMethod ("writeObject",
+						 writeMethodArgTypes);
+      int modifiers = writeMethod.getModifiers ();
 
-      if( writeMethod.getReturnType() == Void.TYPE
-	  && Modifier.isPrivate( modifiers )
-	  && !Modifier.isStatic( modifiers ) )
-	myFlags |= ObjectStreamConstants.SC_WRITE_METHOD;
+      if (writeMethod.getReturnType () == Void.TYPE
+	  && Modifier.isPrivate (modifiers)
+	  && !Modifier.isStatic (modifiers))
+	flags |= ObjectStreamConstants.SC_WRITE_METHOD;
     }
-    catch( NoSuchMethodException oh_well )
+    catch (NoSuchMethodException oh_well)
     {}
   }
-  
 
-  // Sets myFields to be a sorted array of the serializable fields of
-  // myClass.
-  private void setFields( Class cl )
+
+  // Sets fields to be a sorted array of the serializable fields of
+  // clazz.
+  private void setFields (Class cl)
   {
-    if( ! isSerializable() || isExternalizable() )
+    if (! isSerializable () || isExternalizable ())
     {
-      myFields = NO_FIELDS;
+      fields = NO_FIELDS;
       return;
     }
 
     try
     {
       Field serialPersistantFields
-	= cl.getDeclaredField( "serialPersistantFields" );
-      int modifiers = serialPersistantFields.getModifiers();
+	= cl.getDeclaredField ("serialPersistantFields");
+      int modifiers = serialPersistantFields.getModifiers ();
 
-      if( Modifier.isStatic( modifiers )
-	  && Modifier.isFinal( modifiers )
-	  && Modifier.isPrivate( modifiers ) )
+      if (Modifier.isStatic (modifiers)
+	  && Modifier.isFinal (modifiers)
+	  && Modifier.isPrivate (modifiers))
       {
-	myFields = getSerialPersistantFields( cl );
-	Arrays.sort( myFields );
-	calculateOffsets();
+	fields = getSerialPersistantFields (cl);
+	Arrays.sort (fields);
+	calculateOffsets ();
 	return;
       }
     }
-    catch( NoSuchFieldException ignore )
-    {}    
+    catch (NoSuchFieldException ignore)
+    {}
 
     int num_good_fields = 0;
-    Field[] all_fields = cl.getDeclaredFields();
+    Field[] all_fields = cl.getDeclaredFields ();
 
     int modifiers;
     // set non-serializable fields to null in all_fields
-    for( int i=0; i < all_fields.length; i++ )
+    for (int i=0; i < all_fields.length; i++)
     {
-      modifiers = all_fields[i].getModifiers();
-      if( Modifier.isTransient( modifiers )
-	  || Modifier.isStatic( modifiers ) )
+      modifiers = all_fields[i].getModifiers ();
+      if (Modifier.isTransient (modifiers)
+	  || Modifier.isStatic (modifiers))
 	all_fields[i] = null;
       else
 	num_good_fields++;
     }
-    
+
     // make a copy of serializable (non-null) fields
-    myFields = new ObjectStreamField[ num_good_fields ];
-    for( int from=0, to=0; from < all_fields.length; from++ )
-      if( all_fields[from] != null )
+    fields = new ObjectStreamField[ num_good_fields ];
+    for (int from=0, to=0; from < all_fields.length; from++)
+      if (all_fields[from] != null)
       {
 	Field f = all_fields[from];
-	myFields[to] = new ObjectStreamField( f.getName(), f.getType() );
+	fields[to] = new ObjectStreamField (f.getName (), f.getType ());
 	to++;
       }
 
-    Arrays.sort( myFields );
-    calculateOffsets();
+    Arrays.sort (fields);
+    calculateOffsets ();
   }
 
-  // Sets myUID be serial version UID defined by class, or if that
+  // Sets uid be serial version UID defined by class, or if that
   // isn't present, calculates value of serial version UID.
-  private void setUID( Class cl )
+  private void setUID (Class cl)
   {
     try
     {
-      Field suid = cl.getDeclaredField( "serialVersionUID" );
-      int modifiers = suid.getModifiers();
+      Field suid = cl.getDeclaredField ("serialVersionUID");
+      int modifiers = suid.getModifiers ();
 
-      if( Modifier.isStatic( modifiers )
-	  && Modifier.isFinal( modifiers ) )
+      if (Modifier.isStatic (modifiers)
+	  && Modifier.isFinal (modifiers))
       {
-	myUID = getDefinedSUID( cl );
+	uid = getDefinedSUID (cl);
 	return;
       }
     }
-    catch( NoSuchFieldException ignore )
+    catch (NoSuchFieldException ignore)
     {}
 
     // cl didn't define serialVersionUID, so we have to compute it
     try
     {
-      MessageDigest md = MessageDigest.getInstance( "SHA" );
+      MessageDigest md = MessageDigest.getInstance ("SHA");
       DigestOutputStream digest_out =
-	new DigestOutputStream( ourNullOutputStream, md );
-      DataOutputStream data_out = new DataOutputStream( digest_out );
+	new DigestOutputStream (nullOutputStream, md);
+      DataOutputStream data_out = new DataOutputStream (digest_out);
 
-      data_out.writeUTF( cl.getName() );
+      data_out.writeUTF (cl.getName ());
 
-      int modifiers = cl.getModifiers();
+      int modifiers = cl.getModifiers ();
       // just look at interesting bits
-      modifiers = modifiers & ( Modifier.ABSTRACT | Modifier.FINAL
-  				| Modifier.INTERFACE | Modifier.PUBLIC );
-      data_out.writeInt( modifiers );
-    
-      Class[] interfaces = cl.getInterfaces();
-      Arrays.sort( interfaces, ourInterfaceComparartor );
-      for( int i=0; i < interfaces.length; i++ )
-	data_out.writeUTF( interfaces[i].getName() );
-      
-    
+      modifiers = modifiers & (Modifier.ABSTRACT | Modifier.FINAL
+  				| Modifier.INTERFACE | Modifier.PUBLIC);
+      data_out.writeInt (modifiers);
+
+      Class[] interfaces = cl.getInterfaces ();
+      Arrays.sort (interfaces, interfaceComparator);
+      for (int i=0; i < interfaces.length; i++)
+	data_out.writeUTF (interfaces[i].getName ());
+
+
       Field field;
-      Field[] fields = cl.getDeclaredFields();
-      Arrays.sort( fields, ourMemberComparator );
-      for( int i=0; i < fields.length; i++ )
+      Field[] fields = cl.getDeclaredFields ();
+      Arrays.sort (fields, memberComparator);
+      for (int i=0; i < fields.length; i++)
       {
 	field = fields[i];
-	modifiers = field.getModifiers();
-	if( Modifier.isPrivate( modifiers )
-	    && ( Modifier.isStatic( modifiers )
-		 || Modifier.isTransient( modifiers ) ) )
+	modifiers = field.getModifiers ();
+	if (Modifier.isPrivate (modifiers)
+	    && (Modifier.isStatic (modifiers)
+		 || Modifier.isTransient (modifiers)))
 	  continue;
-      
-	data_out.writeUTF( field.getName() );
-	data_out.writeInt( modifiers );
-	data_out.writeUTF( TypeSignature.getEncodingOfClass(field.getType()));
+
+	data_out.writeUTF (field.getName ());
+	data_out.writeInt (modifiers);
+	data_out.writeUTF (TypeSignature.getEncodingOfClass (field.getType ()));
       }
 
       // write class initializer method if present
       boolean has_init;
       try
       {
-	has_init = hasClassInitializer( cl );
+	has_init = hasClassInitializer (cl);
       }
-      catch( NoSuchMethodError e )
+      catch (NoSuchMethodError e)
       {
 	has_init = false;
       }
-      
-      if( has_init )
+
+      if (has_init)
       {
-	data_out.writeUTF( "<clinit>" );
-	data_out.writeInt( Modifier.STATIC );
-	data_out.writeUTF( "()V" );
+	data_out.writeUTF ("<clinit>");
+	data_out.writeInt (Modifier.STATIC);
+	data_out.writeUTF ("()V");
       }
 
       Constructor constructor;
-      Constructor[] constructors = cl.getDeclaredConstructors();
-      Arrays.sort( constructors, ourMemberComparator );
-      for( int i=0; i < constructors.length; i++ )
+      Constructor[] constructors = cl.getDeclaredConstructors ();
+      Arrays.sort (constructors, memberComparator);
+      for (int i=0; i < constructors.length; i++)
       {
 	constructor = constructors[i];
-	modifiers = constructor.getModifiers();
-	if( Modifier.isPrivate( modifiers ) )
+	modifiers = constructor.getModifiers ();
+	if (Modifier.isPrivate (modifiers))
 	  continue;
-      
-	data_out.writeUTF( "<init>" );
-	data_out.writeInt( modifiers );
+
+	data_out.writeUTF ("<init>");
+	data_out.writeInt (modifiers);
 
 	// the replacement of '/' with '.' was needed to make computed
 	// SUID's agree with those computed by JDK
-	data_out.writeUTF(
-	  TypeSignature.getEncodingOfConstructor(constructor).replace('/','.'));
-      }    
-
-      Method method;
-      Method[] methods = cl.getDeclaredMethods();
-      Arrays.sort( methods, ourMemberComparator );
-      for( int i=0; i < methods.length; i++ )
-      {
-	method = methods[i];
-	modifiers = method.getModifiers();
-	if( Modifier.isPrivate( modifiers ) )
-	  continue;
-      
-	data_out.writeUTF( method.getName() );
-	data_out.writeInt( modifiers );
-
-	// the replacement of '/' with '.' was needed to make computed
-	// SUID's agree with those computed by JDK
-	data_out.writeUTF(
-	  TypeSignature.getEncodingOfMethod( method ).replace( '/', '.' ) );
+	data_out.writeUTF (
+	  TypeSignature.getEncodingOfConstructor (constructor).replace ('/','.'));
       }
 
-      data_out.close();
-      byte[] sha = md.digest();
+      Method method;
+      Method[] methods = cl.getDeclaredMethods ();
+      Arrays.sort (methods, memberComparator);
+      for (int i=0; i < methods.length; i++)
+      {
+	method = methods[i];
+	modifiers = method.getModifiers ();
+	if (Modifier.isPrivate (modifiers))
+	  continue;
+
+	data_out.writeUTF (method.getName ());
+	data_out.writeInt (modifiers);
+
+	// the replacement of '/' with '.' was needed to make computed
+	// SUID's agree with those computed by JDK
+	data_out.writeUTF (
+	  TypeSignature.getEncodingOfMethod (method).replace ('/', '.'));
+      }
+
+      data_out.close ();
+      byte[] sha = md.digest ();
       long result = 0;
-      for( int i=0; i < (sha.length < 8 ? sha.length : 8); i++ )
+      int len = sha.length < 8 ? sha.length : 8;
+      for (int i=0; i < len; i++)
 	result += (long)(sha[i] & 0xFF) << (8 * i);
-      
-      myUID = result;
+
+      uid = result;
     }
-    catch( NoSuchAlgorithmException e )
+    catch (NoSuchAlgorithmException e)
     {
-      throw new RuntimeException( "The SHA algorithm was not found to use in computing the Serial Version UID for class "
-				  + cl.getName() );
+      throw new RuntimeException ("The SHA algorithm was not found to use in computing the Serial Version UID for class "
+				  + cl.getName ());
     }
-    catch( IOException ioe )
+    catch (IOException ioe)
     {
-      throw new RuntimeException( ioe.getMessage() );
+      throw new RuntimeException (ioe.getMessage ());
     }
   }
-  
+
 
   // Returns the value of CLAZZ's final static long field named
   // `serialVersionUID'.
-  private native long getDefinedSUID( Class clazz );
+  private native long getDefinedSUID (Class clazz);
 
   // Returns the value of CLAZZ's private static final field named
   // `serialPersistantFields'.
-  private native ObjectStreamField[] getSerialPersistantFields( Class clazz );
-    
+  private native ObjectStreamField[] getSerialPersistantFields (Class clazz);
+
   // Returns true if CLAZZ has a static class initializer
   // (a.k.a. <clinit>).
   //
   // A NoSuchMethodError is raised if CLAZZ has no such method.
-  private static native boolean hasClassInitializer( Class clazz );
-  
+  private static native boolean hasClassInitializer (Class clazz);
+
 
   public static final ObjectStreamField[] NO_FIELDS = {};
 
-  private static Hashtable ourClassLookupTable;  
-  private static final NullOutputStream ourNullOutputStream;
-  private static final Comparator ourInterfaceComparartor;
-  private static final Comparator ourMemberComparator;
+  private static Hashtable classLookupTable = new Hashtable ();
+  private static final NullOutputStream nullOutputStream = new NullOutputStream ();
+  private static final Comparator interfaceComparator = new InterfaceComparator ();
+  private static final Comparator memberComparator = new MemberComparator ();
   private static final
-    Class[] ourWriteMethodArgTypes = { java.io.ObjectOutputStream.class };
+    Class[] writeMethodArgTypes = { java.io.ObjectOutputStream.class };
 
-  private ObjectStreamClass mySuper;
-  private Class myClass;
-  private String myName;
-  private long myUID;
-  private byte myFlags;
+  private ObjectStreamClass superClass;
+  private Class clazz;
+  private String name;
+  private long uid;
+  private byte flags;
 
-  // XXX possible optimization: make this field package protected so
-  // that ObjectInputStream and ObjectOutputStream can acces directly
-  // (make sure they don't change it)
-  private ObjectStreamField[] myFields;
-  
-  private int myDataFieldSize = -1;  // -1 if not yet calculated
-  private int myObjectFieldCount;
+  // this field is package protected so that ObjectInputStream and
+  // ObjectOutputStream can access it directly
+  ObjectStreamField[] fields;
+
+  // these are accessed by ObjectIn/OutputStream
+  int primFieldSize = -1;  // -1 if not yet calculated
+  int objectFieldCount;
 
   static
   {
-    //System.out.println( "Using ObjectStreamClass" ); // DEBUG
-
-    System.loadLibrary( "javaio" );
-
-    ourClassLookupTable = new Hashtable();
-    ourNullOutputStream = new NullOutputStream();
-    ourInterfaceComparartor = new InterfaceComparator();
-    ourMemberComparator = new MemberComparator();
+    System.loadLibrary ("javaio");
   }
 }
 
@@ -572,27 +569,27 @@ public class ObjectStreamClass implements Serializable
 // interfaces are compared only by name
 class InterfaceComparator implements Comparator
 {
-  public int compare( Object o1, Object o2 )
+  public int compare (Object o1, Object o2)
   {
-    return ((Class)o1).getName().compareTo( ((Class)o2).getName() );
+    return ((Class)o1).getName ().compareTo (((Class)o2).getName ());
   }
 }
 
 
 // Members (Methods and Constructors) are compared first by name,
-// conflicts are resolved by comparing type signatures 
+// conflicts are resolved by comparing type signatures
 class MemberComparator implements Comparator
 {
-  public int compare( Object o1, Object o2 )
+  public int compare (Object o1, Object o2)
   {
     Member m1 = (Member)o1;
     Member m2 = (Member)o2;
-    
-    int comp = m1.getName().compareTo( m2.getName() );
-    
-    if( comp == 0 )
-      return TypeSignature.getEncodingOfMember( m1 ).
-	compareTo( TypeSignature.getEncodingOfMember( m2 ) );
+
+    int comp = m1.getName ().compareTo (m2.getName ());
+
+    if (comp == 0)
+      return TypeSignature.getEncodingOfMember (m1).
+	compareTo (TypeSignature.getEncodingOfMember (m2));
     else
       return comp;
   }
