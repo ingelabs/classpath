@@ -22,8 +22,8 @@
 package java.io;
 
 /**
-  * This subclass of @code{FilteredInputStream} implements the
-  * @code{DataInput} interface that provides method for reading primitive
+  * This subclass of <code>FilteredInputStream</code> implements the
+  * <code>DataInput</code> interface that provides method for reading primitive
   * Java data types from a stream.
   *
   * @see DataInput
@@ -228,10 +228,10 @@ convertFromUTF(byte[] buf) throws EOFException, UTFDataFormatException
  */
 
 /**
-  * This method initializes a new @code{DataInputStream} to read from
+  * This method initializes a new <code>DataInputStream</code> to read from
   * the specified subordinate stream.
   *
-  * @param in The subordinate @code{InputStream} to read from
+  * @param in The subordinate <code>InputStream</code> to read from
   */
 public
 DataInputStream(InputStream in)
@@ -250,13 +250,13 @@ DataInputStream(InputStream in)
 /**
   * This method reads a Java boolean value from an input stream.  It does
   * so by reading a single byte of data.  If that byte is zero, then the
-  * value returned is @code{false}.  If the byte is non-zero, then
-  * the value returned is @code{true}.
+  * value returned is <code>false</code>.  If the byte is non-zero, then
+  * the value returned is <code>true</code>.
+  * <p>
+  * This method can read a <code>boolean</code> written by an object implementing the
+  * <code>writeBoolean()</code> method in the <code>DataOutput</code> interface.
   *
-  * This method can read a @code{boolean} written by an object implementing the
-  * @code{writeBoolean()} method in the @code{DataOutput} interface.
-  *
-  * @return The @code{boolean} value read
+  * @return The <code>boolean</code> value read
   *
   * @exception EOFException If end of file is reached before reading the boolean
   * @exception IOException If any other error occurs
@@ -277,11 +277,11 @@ readBoolean() throws EOFException, IOException
 /**
   * This method reads a Java byte value from an input stream.  The value
   * is in the range of -128 to 127.
+  * <p>
+  * This method can read a <code>byte</code> written by an object implementing the 
+  * <code>writeByte()</code> method in the <code>DataOutput</code> interface.
   *
-  * This method can read a @code{byte} written by an object implementing the 
-  * @code{writeByte()} method in the @code{DataOutput} interface.
-  *
-  * @return The @code{byte} value read
+  * @return The <code>byte</code> value read
   *
   * @exception EOFException If end of file is reached before reading the byte
   * @exception IOException If any other error occurs
@@ -302,13 +302,13 @@ readByte() throws EOFException, IOException
 /*************************************************************************/
 
 /**
-  * This method reads 8 unsigned bits into a Java @code{int} value from the 
+  * This method reads 8 unsigned bits into a Java <code>int</code> value from the 
   * stream. The value returned is in the range of 0 to 255.
-  *
+  * <p>
   * This method can read an unsigned byte written by an object implementing the
-  * @code{writeUnsignedByte()} method in the @code{DataOutput} interface.
+  * <code>writeUnsignedByte()</code> method in the <code>DataOutput</code> interface.
   *
-  * @return The unsigned bytes value read as a Java @code{int}.
+  * @return The unsigned bytes value read as a Java <code>int</code>.
   *
   * @exception EOFException If end of file is reached before reading the value
   * @exception IOException If any other error occurs
@@ -329,22 +329,22 @@ readUnsignedByte() throws EOFException, IOException
 /*************************************************************************/
 
 /**
-  * This method reads a Java @code{char} value from an input stream.  
+  * This method reads a Java <code>char</code> value from an input stream.  
   * It operates by reading two bytes from the stream and converting them to 
-  * a single 16-bit Java @code{char}.  The two bytes are stored most
+  * a single 16-bit Java <code>char</code>.  The two bytes are stored most
   * significant byte first (i.e., "big endian") regardless of the native
   * host byte ordering. 
-  *
-  * As an example, if @code{byte1} and code{byte2} represent the first
+  * <p>
+  * As an example, if <code>byte1</code> and <code>byte2</code> represent the first
   * and second byte read from the stream respectively, they will be
-  * transformed to a @code{char} in the following manner:
+  * transformed to a <code>char</code> in the following manner:
+  * <p>
+  * <code>(char)(((byte1 & 0xFF) << 8) | (byte2 & 0xFF)</code>
+  * <p>
+  * This method can read a <code>char</code> written by an object implementing the
+  * <code>writeChar()</code> method in the <code>DataOutput</code> interface.
   *
-  * @code{(char)(((byte1 & 0xFF) << 8) | (byte2 & 0xFF)}
-  *
-  * This method can read a @code{char} written by an object implementing the
-  * @code{writeChar()} method in the @code{DataOutput} interface.
-  *
-  * @return The @code{char} value read 
+  * @return The <code>char</code> value read 
   *
   * @exception EOFException If end of file is reached before reading the char
   * @exception IOException If any other error occurs
@@ -366,22 +366,22 @@ readChar() throws EOFException, IOException
 /**
   * This method reads a signed 16-bit value into a Java in from the stream.
   * It operates by reading two bytes from the stream and converting them to 
-  * a single 16-bit Java @code{short}.  The two bytes are stored most
+  * a single 16-bit Java <code>short</code>.  The two bytes are stored most
   * significant byte first (i.e., "big endian") regardless of the native
   * host byte ordering. 
-  *
-  * As an example, if @code{byte1} and code{byte2} represent the first
+  * <p>
+  * As an example, if <code>byte1</code> and <code>byte2</code> represent the first
   * and second byte read from the stream respectively, they will be
-  * transformed to a @code{short} in the following manner:
-  *
-  * @code{(short)(((byte1 & 0xFF) << 8) | (byte2 & 0xFF)}
-  *
+  * transformed to a <code>short</code. in the following manner:
+  * <p>
+  * <code>(short)(((byte1 & 0xFF) << 8) | (byte2 & 0xFF)</code>
+  * <p>
   * The value returned is in the range of -32768 to 32767.
+  * <p>
+  * This method can read a <code>short</code> written by an object implementing the
+  * <code>writeShort()</code> method in the <code>DataOutput</code> interface.
   *
-  * This method can read a @code{short} written by an object implementing the
-  * @code{writeShort()} method in the @code{DataOutput} interface.
-  *
-  * @return The @code{short} value read
+  * @return The <code>short</code> value read
   *
   * @exception EOFException If end of file is reached before reading the value
   * @exception IOException If any other error occurs
@@ -403,22 +403,22 @@ readShort() throws EOFException, IOException
 /**
   * This method reads 16 unsigned bits into a Java int value from the stream.
   * It operates by reading two bytes from the stream and converting them to 
-  * a single Java @code{int}.  The two bytes are stored most
+  * a single Java <code>int</code>  The two bytes are stored most
   * significant byte first (i.e., "big endian") regardless of the native
   * host byte ordering. 
-  *
-  * As an example, if @code{byte1} and code{byte2} represent the first
+  * <p>
+  * As an example, if <code>byte1</code> and code{byte2</code> represent the first
   * and second byte read from the stream respectively, they will be
-  * transformed to an @code{int} in the following manner:
-  *
-  * @code{(int)(((byte1 & 0xFF) << 8) + (byte2 & 0xFF))}
-  *
+  * transformed to an <code>int</code> in the following manner:
+  * <p>
+  * <code>(int)(((byte1 & 0xFF) << 8) + (byte2 & 0xFF))</code>
+  * <p>
   * The value returned is in the range of 0 to 65535.
-  *
+  * <p>
   * This method can read an unsigned short written by an object implementing
-  * the @code{writeUnsignedShort()} method in the @code{DataOutput} interface.
+  * the <code>writeUnsignedShort()</code> method in the <code>DataOutput</code> interface.
   *
-  * @return The unsigned short value read as a Java @code{int}.
+  * @return The unsigned short value read as a Java <code>int</code>
   *
   * @exception EOFException If end of file is reached before reading the value
   * @exception IOException If any other error occurs
@@ -436,25 +436,25 @@ readUnsignedShort() throws EOFException, IOException
 /*************************************************************************/
 
 /**
-  * This method reads a Java @code{int} value from an input stream
+  * This method reads a Java <code>int</code> value from an input stream
   * It operates by reading four bytes from the stream and converting them to 
-  * a single Java @code{int}.  The bytes are stored most
+  * a single Java <code>int</code>  The bytes are stored most
   * significant byte first (i.e., "big endian") regardless of the native
   * host byte ordering. 
-  *
-  * As an example, if @code{byte1} through @code{byte4} represent the first
+  * <p>
+  * As an example, if <code>byte1</code> through <code>byte4</code> represent the first
   * four bytes read from the stream, they will be
-  * transformed to an @code{int} in the following manner:
-  *
-  * @code{(int)(((byte1 & 0xFF) << 24) + ((byte2 & 0xFF) << 16) + 
-  * ((byte3 & 0xFF) << 8) + (byte4 & 0xFF)))}
-  *
+  * transformed to an <code>int</code> in the following manner:
+  * <p>
+  * <code>(int)(((byte1 & 0xFF) << 24) + ((byte2 & 0xFF) << 16) + 
+  * ((byte3 & 0xFF) << 8) + (byte4 & 0xFF)))</code>
+  * <p>
   * The value returned is in the range of 0 to 65535.
+  * <p>
+  * This method can read an <code>int</code> written by an object implementing the
+  * <code>writeInt()</code> method in the <code>DataOutput</code> interface.
   *
-  * This method can read an @code{int} written by an object implementing the
-  * @code{writeInt()} method in the @code{DataOutput} interface.
-  *
-  * @return The @code{int} value read
+  * @return The <code>int</code> value read
   *
   * @exception EOFException If end of file is reached before reading the int
   * @exception IOException If any other error occurs
@@ -476,25 +476,25 @@ readInt() throws EOFException, IOException
 /**
   * This method reads a Java long value from an input stream
   * It operates by reading eight bytes from the stream and converting them to 
-  * a single Java @code{long}.  The bytes are stored most
+  * a single Java <code>long</code>  The bytes are stored most
   * significant byte first (i.e., "big endian") regardless of the native
   * host byte ordering. 
-  *
-  * As an example, if @code{byte1} through @code{byte8} represent the first
+  * <p>
+  * As an example, if <code>byte1</code> through <code>byte8</code> represent the first
   * eight bytes read from the stream, they will be
-  * transformed to an @code{long} in the following manner:
-  *
-  * @code{(long)((((long)byte1 & 0xFF) << 56) + (((long)byte2 & 0xFF) << 48) + 
+  * transformed to an <code>long</code> in the following manner:
+  * <p>
+  * <code>(long)((((long)byte1 & 0xFF) << 56) + (((long)byte2 & 0xFF) << 48) + 
   * (((long)byte3 & 0xFF) << 40) + (((long)byte4 & 0xFF) << 32) + 
   * (((long)byte5 & 0xFF) << 24) + (((long)byte6 & 0xFF) << 16) + 
-  * (((long)byte7 & 0xFF) << 8) + ((long)byte9 & 0xFF)))}
-  *
+  * (((long)byte7 & 0xFF) << 8) + ((long)byte9 & 0xFF)))</code>
+  * <p>
   * The value returned is in the range of 0 to 65535.
+  * <p>
+  * This method can read an <code>long</code> written by an object implementing the
+  * <code>writeLong()</code> method in the <code>DataOutput</code> interface.
   *
-  * This method can read an @code{long} written by an object implementing the
-  * @code{writeLong()} method in the @code{DataOutput} interface.
-  *
-  * @return The @code{long} value read
+  * @return The <code>long</code> value read
   *
   * @exception EOFException If end of file is reached before reading the long
   * @exception IOException If any other error occurs
@@ -515,15 +515,15 @@ readLong() throws EOFException, IOException
 
 /**
   * This method reads a Java float value from an input stream.  It operates
-  * by first reading an @code{int} value from the stream by calling the
-  * @code{readInt()} method in this interface, then converts that @code{int}
-  * to a @code{float} using the @code{intBitsToFloat} method in 
-  * the class @{java.lang.Float}.
+  * by first reading an <code>int</code> value from the stream by calling the
+  * <code>readInt()</code> method in this interface, then converts that <code>int</code>
+  * to a <code>float</code> using the <code>intBitsToFloat</code> method in 
+  * the class <code>java.lang.Float</code>
+  * <p>
+  * This method can read a <code>float</code> written by an object implementing the
+  * <code>writeFloat()</code> method in the <code>DataOutput</code> interface.
   *
-  * This method can read a @code{float} written by an object implementing the
-  * @code{writeFloat()} method in the @code{DataOutput} interface.
-  *
-  * @return The @code{float} value read
+  * @return The <code>float</code> value read
   *
   * @exception EOFException If end of file is reached before reading the float
   * @exception IOException If any other error occurs
@@ -543,15 +543,15 @@ readFloat() throws EOFException, IOException
 
 /**
   * This method reads a Java double value from an input stream.  It operates
-  * by first reading a @code{logn} value from the stream by calling the
-  * @code{readLong()} method in this interface, then converts that @code{long}
-  * to a @code{double} using the @code{longBitsToDouble} method in 
-  * the class @{java.lang.Double}.
+  * by first reading a <code>long</code> value from the stream by calling the
+  * <code>readLong()</code> method in this interface, then converts that <code>long</code>
+  * to a <code>double</code> using the <code>longBitsToDouble</code> method in 
+  * the class <code>java.lang.Double</code>
+  * <p>
+  * This method can read a <code>double</code> written by an object implementing the
+  * <code>writeDouble()</code> method in the <code>DataOutput</code> interface.
   *
-  * This method can read a @code{double} written by an object implementing the
-  * @code{writeDouble()} method in the @code{DataOutput} interface.
-  *
-  * @return The @code{double} value read
+  * @return The <code>double</code> value read
   *
   * @exception EOFException If end of file is reached before reading the double
   * @exception IOException If any other error occurs
@@ -571,21 +571,21 @@ readDouble() throws EOFException, IOException
 
 /**
   * This method reads the next line of text data from an input stream.
-  * It operates by reading bytes and converting those bytes to @{char}
-  * values by treating the byte read as the low eight bits of the @{char}
-  * and using @code{0} as the high eight bits.  Because of this, it does
+  * It operates by reading bytes and converting those bytes to <code>char</code>
+  * values by treating the byte read as the low eight bits of the <code>char</code>
+  * and using 0 as the high eight bits.  Because of this, it does
   * not support the full 16-bit Unicode character set.
-  *
+  * <p>
   * The reading of bytes ends when either the end of file or a line terminator
-  * is encountered.  The bytes read are then returned as a @code{String}.
+  * is encountered.  The bytes read are then returned as a <code>String</code>
   * A line terminator is a byte sequence consisting of either 
-  * @samp{\r}, @samp{\n} or @samp{\r\n}.  These termination charaters are
+  * <code>\r</code>, <code>\n</code> or <code>\r\n</code>.  These termination charaters are
   * discarded and are not returned as part of the string.
-  *
+  * <p>
   * This method can read data that was written by an object implementing the
-  * @code{writeLine()} method in @code{DataOutput}.
+  * <code>writeLine()</code> method in <code>DataOutput</code>.
   *
-  * @return The line read as a @code{String}
+  * @return The line read as a <code>String</code>
   *
   * @exception IOException If an error occurs
   *
@@ -626,64 +626,64 @@ readLine() throws IOException
 /*************************************************************************/
 
 /**
-  * This method reads a @code{String} from an input stream that is encoded in
+  * This method reads a <code>String</code> from an input stream that is encoded in
   * a modified UTF-8 format.  This format has a leading two byte sequence
   * that contains the remaining number of bytes to read.  This two byte
-  * sequence is read using the @code{readUnsignedShort()} method of this
+  * sequence is read using the <code>readUnsignedShort()</code> method of this
   * interface.
-  *
+  * <p>
   * After the number of remaining bytes have been determined, these bytes
-  * are read an transformed into @{char} values.  These @code{char} values
+  * are read an transformed into <code>char</code> values.  These <code>char</code> values
   * are encoded in the stream using either a one, two, or three byte format.
   * The particular format in use can be determined by examining the first
   * byte read.  
-  *
-  * If the first byte has a high order bit of @samp{0}, then
+  * <p>
+  * If the first byte has a high order bit of 0, then
   * that character consists on only one byte.  This character value consists
   * of seven bits that are at positions 0 through 6 of the byte.  As an
-  * example, if @code{byte1} is the byte read from the stream, it would
-  * be converted to a @code{char} like so:
-  *
-  * @code{(char)byte1}
-  *
-  * If the first byte has @code{110} as its high order bits, then the 
+  * example, if <code>byte1</code> is the byte read from the stream, it would
+  * be converted to a <code>char</code> like so:
+  * <p>
+  * <code>(char)byte1</code>
+  * <p>
+  * If the first byte has 110 as its high order bits, then the 
   * character consists of two bytes.  The bits that make up the character
   * value are in positions 0 through 4 of the first byte and bit positions
   * 0 through 5 of the second byte.  (The second byte should have 
-  * @samp{10} as its high order bits).  These values are in most significant
+  * 10 as its high order bits).  These values are in most significant
   * byte first (i.e., "big endian") order.
-  *
-  * As an example, if @code{byte1} and @code{byte2} are the first two bytes
+  * <p>
+  * As an example, if <code>byte1</code> and <code>byte2</code> are the first two bytes
   * read respectively, and the high order bits of them match the patterns
   * which indicate a two byte character encoding, then they would be
-  * converted to a Java @code{char} like so:
-  *
-  * @code{(char)(((byte1 & 0x1F) << 6) | (byte2 & 0x3F))}
-  *
-  * If the first byte has a @code{1110} as its high order bits, then the
+  * converted to a Java <code>char</code> like so:
+  * <p>
+  * <code>(char)(((byte1 & 0x1F) << 6) | (byte2 & 0x3F))</code>
+  * <p>
+  * If the first byte has a 1110 as its high order bits, then the
   * character consists of three bytes.  The bits that make up the character
   * value are in positions 0 through 3 of the first byte and bit positions
   * 0 through 5 of the other two bytes.  (The second and third bytes should
-  * have @code{10} as their high order bits).  These values are in most
+  * have 10 as their high order bits).  These values are in most
   * significant byte first (i.e., "big endian") order.
-  *
-  * As an example, if @code{byte1}, @code{byte2}, and @code{byte3} are the
+  * <p>
+  * As an example, if <code>byte1</code> <code>byte2</code> and <code>byte3</code> are the
   * three bytes read, and the high order bits of them match the patterns
   * which indicate a three byte character encoding, then they would be
-  * converted to a Java @code{char} like so:
-  *
-  * @code{(char)(((byte1 & 0x0F) << 12) | ((byte2 & 0x3F) << 6) | (byte3 & 0x3F))}
-  *
+  * converted to a Java <code>char</code> like so:
+  * <p>
+  * <code>(char)(((byte1 & 0x0F) << 12) | ((byte2 & 0x3F) << 6) | (byte3 & 0x3F))</code>
+  * <p>
   * Note that all characters are encoded in the method that requires the
   * fewest number of bytes with the exception of the character with the
-  * value of @samp{\u0000} which is encoded as two bytes.  This is a 
+  * value of <code>\u<llll>0000</code> which is encoded as two bytes.  This is a 
   * modification of the UTF standard used to prevent C language style
-  * @samp{NUL} values from appearing in the byte stream.
-  *
+  * <code>NUL</code> values from appearing in the byte stream.
+  * <p>
   * This method can read data that was written by an object implementing the
-  * @code{writeUTF()} method in @code{DataOutput}.
+  * <code>writeUTF()</code> method in <code>DataOutput</code>
   * 
-  * @returns The @code{String} read
+  * @returns The <code>String</code> read
   *
   * @exception EOFException If end of file is reached before reading the String
   * @exception UTFDataFormatException If the data is not in UTF-8 format
@@ -725,11 +725,11 @@ readFully(byte[] buf) throws EOFException, IOException
 /*************************************************************************/
 
 /**
-  * This method reads raw bytes into the passed array @code{buf} starting
-  * @code{offset} bytes into the buffer.  The number of bytes read will be
-  * exactly @code{len}.  Note that this method blocks until the data is 
+  * This method reads raw bytes into the passed array <code>buf</code> starting
+  * <code>offset</code> bytes into the buffer.  The number of bytes read will be
+  * exactly <code>len</code>  Note that this method blocks until the data is 
   * available and * throws an exception if there is not enough data left in 
-  * the stream to read @code{len} bytes.
+  * the stream to read <code>len</code> bytes.
   *
   * @param buf The buffer into which to read the data
   * @param offset The offset into the buffer to start storing data
