@@ -1,5 +1,13 @@
 2004-10-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* java/awt/Component.java (static): Don't set default keyboard
+	focus manager.
+	* java/awt/KeyboardFocusManager.java
+	(getCurrentKeyboardFocusManager): If current keyboard focus
+	manager is null set a default.
+
+2004-10-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* gnu/java/awt/peer/gtk/GtkButtonPeer.java,
 	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c
 	(gtkWidgetSetBackground): New method.
