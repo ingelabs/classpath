@@ -175,7 +175,7 @@ import gnu.java.lang.*;
  **/
 
 public class Introspector {
-	static String[] beanInfoSearchPath = {"gnu.java.beans.info", "sun.beans.infos"};
+	static String[] beanInfoSearchPath = {"gnu.java.beans.info"};
 	static Hashtable beanInfoCache = new Hashtable();
 
 	private Introspector() {}

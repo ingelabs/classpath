@@ -1,3 +1,10 @@
+2002-02-20  C. Brian Jones <cbj@gnu.org>
+
+	* java/beans/Introspector.java: default beanInfoSearchPath will 
+	not include sun.beans.infos given we provide no such package and
+	the API doesn't really require it; gnu.java.beans.info is the
+	default.
+
 2002-02-20  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/BasicMapEntry.java: Delete; top-level classes in
