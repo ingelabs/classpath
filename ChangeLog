@@ -1,3 +1,10 @@
+2003-08-22  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkDialogPeer.java (create): Create
+	GTK_WINDOW_POPUP window.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java: Remove
+	GTK_WINDOW_DIALOG.  Set GTK_WINDOW_POPUP to 1.
+
 2003-08-22  Mark Wielaard  <mark@klomp.org>
 
 	* configure.in (VERSION): Set to 0.06+cvs.
