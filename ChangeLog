@@ -1,3 +1,8 @@
+2004-10-29  Jerry Quinn  <jlquinn@optonline.net>
+
+	* java/awt/image/ColorConvertOp.java: New class.
+	* java/awt/image/ColorModel.java (cloneColorModel): New method.
+
 2004-10-29  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
