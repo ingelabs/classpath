@@ -1,5 +1,11 @@
 2003-10-02  Michael Koch  <konqueror@gmx.de>
 
+	* java/util/prefs/Preferences.java
+	(defaultFactoryClass): Fixed default factory class name.
+	(getFactory): Instantiate factory class.
+
+2003-10-02  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/InetAddress.java
 	(isSiteLocalAddress): New method.
 	(isMCLinkLocal): New method.
