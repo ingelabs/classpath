@@ -1,5 +1,9 @@
 2002-09-10  Mark Wielaard  <mark@klomp.org>
 
+	* vm/reference//java/lang/VMObject.java (getClass): Removed.
+
+2002-09-10  Mark Wielaard  <mark@klomp.org>
+
 	* java/net/URLClassLoader.java (findClass): Also construct CodeSource
 	for "file" protocol.
 

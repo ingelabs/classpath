@@ -58,14 +58,6 @@ final class VMObject
   static native Object clone(Cloneable c);
 
   /**
-   * Returns the class of this Object as a Class object.
-   *
-   * @param o the object to look up
-   * @return the class of this Object
-   */
-  static native Class getClass(Object o);
-
-  /**
    * Wakes up one of the threads that is waiting on this Object's monitor.
    * Only the owner of a lock on the Object may call this method. The Thread
    * to wake up is chosen arbitrarily.
