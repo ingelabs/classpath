@@ -507,6 +507,7 @@ public class Collections {
 
           public Object next() {
             if (hasNext) {
+	      hasNext = false;
               return o;
             } else {
               throw new NoSuchElementException();
