@@ -459,4 +459,19 @@ struct item_event_hook_info
   const char *label;
 };
 
+#define DEBUG_LOCKING 0
+
+#if DEBUG_LOCKING
+#define gdk_threads_enter()                       \
+{                                                 \
+  g_print ("lock: %s, %d\n", __FILE__, __LINE__); \
+  gdk_threads_enter ();                           \
+}
+#define gdk_threads_leave()                         \
+{                                                   \
+  g_print ("unlock: %s, %d\n", __FILE__, __LINE__); \
+  gdk_threads_leave ();                             \
+}
+#endif
+
 #endif /* __GTKPEER_H */

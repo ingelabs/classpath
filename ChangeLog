@@ -1,5 +1,67 @@
 2004-07-30  Mark Wielaard  <mark@klomp.org>
 
+	* include/gnu_java_awt_peer_gtk_GtkButtonPeer.h: Regenerated.
+	* include/gnu_java_awt_peer_gtk_GtkCheckboxPeer.h: Likewise.
+	* include/gnu_java_awt_peer_gtk_GtkComponentPeer.h: Likewise.
+	* include/gnu_java_awt_peer_gtk_GtkWindowPeer.h: Likewise.
+
+	* include/gnu_java_nio_VMPipe.h: Regenerated.
+
+2004-07-30  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkArg.java: Remove file.
+	* gnu/java/awt/peer/gtk/GtkArgList.java: Remove file.
+
+	* gnu/java/awt/peer/gtk/GtkButtonPeer.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c
+	(create(String)): New method.
+	(create): Call new create method.
+	(getArgs): Remove method.
+	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c 
+	(nativeCreate): Rename to create.
+	(gtkSetLabel): Rename to gtkButtonSetLabel.
+	(gtkToggleButtonSetActive): New method.
+	(create): Call gtkToggleButtonSetActive and gtkButtonSetLabel.
+	(setState): Replace set call with gtkToggleButtonSetActive.
+	(setLabel): Replace gtkSetLabel call with gtkButtonSetLabel.
+	(getArgs): Remove method.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(gtkWidgetSetSensitive): New method.
+	(gtkWidgetSetParent): Likewise.
+	(GtkComponentPeer): Call setParent, setComponentBounds and
+	setVisibleAndEnabled.
+	(setParent): New method.
+	(setComponentBounds): New method.
+	(setVisibleAndEnabled): New method.
+	(setEnabled): Call gtkWidgetSetSensitive.
+	(getArgs): Remove method.
+	Remove all set methods.
+	* gnu/java/awt/peer/gtk/GtkDialogPeer.java (create): Call
+	gtkWindowSetModal, setTitle and setResizable.
+	(getArgs): Remove method.
+	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java
+	(setComponentBounds): New method.
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java (setResizable):
+	Replace set call with gtkWindowSetResizable.
+	(getArgs): Remove method.
+	(create): Call setTitle and setResizable.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java,
+	native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(gtkWindowSetTitle): New method.
+	(gtkWindowSetResizable): New method.
+	(gtkWindowSetModal): New method.
+	(setParent): New method.
+	(setVisibleAndEnabled): New method.
+	(getArgs): Remove method.
+	(setTitle): Call gtkWindowSetTitle.
+	(setResizable): Call gtkWindowSetResizable.
+	* native/jni/gtk-peer/gtkpeer.h [DEBUG_LOCKING]: New define to turn on
+	and off locking instrumentation.
+
+2004-07-30  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/AbstractButton.java: Reformat.
 	* javax/swing/ActionMap.java: Likewise.
 	* javax/swing/ComponentInputMap.java: Likewise.

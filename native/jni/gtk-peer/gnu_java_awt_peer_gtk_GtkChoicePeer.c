@@ -52,7 +52,6 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_create
   GtkOptionMenu *option_menu;
   GtkRequisition child_requisition;
 
-  /* Create global reference and save it for future use */
   NSA_SET_GLOBAL_REF (env, obj);
 
   gdk_threads_enter ();
@@ -291,4 +290,61 @@ connect_choice_item_selectable_hook (JNIEnv *env,
   g_signal_connect_data (G_OBJECT (menuitem), "activate", 
 		      GTK_SIGNAL_FUNC (item_activate), ie,
 		      (GClosureNotify) item_removed, 0);
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetParent
+(JNIEnv *env, jobject obj, jobject parent)
+{
+  void *ptr;
+  void *parent_ptr;
+  GtkWidget *widget;
+  GtkWidget *parent_widget;
+  
+  ptr = NSA_GET_PTR (env, obj);
+  parent_ptr = NSA_GET_PTR (env, parent);
+  
+  gdk_threads_enter ();
+  
+  widget = GTK_WIDGET (ptr);
+  parent_widget = GTK_WIDGET (parent_ptr);
+  
+  if (GTK_IS_WINDOW (parent_widget))
+    {
+      GList *children = gtk_container_children
+        (GTK_CONTAINER (GTK_BIN (parent_widget)->child));
+
+      if (GTK_IS_MENU_BAR (children->data))
+	gtk_layout_put (GTK_LAYOUT (children->next->data), widget, 0, 0);
+      else
+	gtk_layout_put (GTK_LAYOUT (children->data), widget, 0, 0);
+    }
+  else
+    if (GTK_IS_SCROLLED_WINDOW (parent_widget))
+      {
+	gtk_scrolled_window_add_with_viewport
+	  (GTK_SCROLLED_WINDOW (parent_widget), widget);
+	gtk_viewport_set_shadow_type (GTK_VIEWPORT (widget->parent),
+				      GTK_SHADOW_NONE);
+	
+      }
+    else
+      gtk_layout_put (GTK_LAYOUT (parent_widget), widget, 0, 0);
+  
+  gdk_threads_leave ();
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetSensitive
+(JNIEnv *env, jobject obj, jboolean sensitive)
+{
+  void *ptr;
+  
+  ptr = NSA_GET_PTR (env, obj);
+  
+  gdk_threads_enter ();
+  
+  gtk_widget_set_sensitive (GTK_WIDGET (ptr), sensitive);
+  
+  gdk_threads_leave ();
 }
