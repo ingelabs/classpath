@@ -26,7 +26,8 @@ import java.awt.peer.*;
 public class GtkListPeer extends GtkComponentPeer
     implements ListPeer
 {
-  native void gtkListNew (Object list, String [] items, int mode, 
+  native void gtkListNew (ComponentPeer parent,
+			  Object list, String [] items, int mode, 
 			  boolean visible);
   native void gtkListInsert (Object list, String item, int index);    
   native void gtkListClearItems (Object list, int start, int end);
@@ -46,10 +47,9 @@ public class GtkListPeer extends GtkComponentPeer
       
       myGtkList = new Object();
 
-      gtkListNew (myGtkList, items, l.isMultipleMode()? 1 : 0, l.isVisible ());
-      Point p=l.getLocation();
-      
-      gtkFixedPut (cp,p.x,p.y);
+      gtkListNew (cp, myGtkList, items, 
+		  l.isMultipleMode() ? 1 : 0, 
+		  l.isVisible ());
     }
   
   public void add (String item, int index)

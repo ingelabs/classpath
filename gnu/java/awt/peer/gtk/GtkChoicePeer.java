@@ -27,7 +27,8 @@ public class GtkChoicePeer extends GtkComponentPeer
   implements ChoicePeer
 {
 
-  native void gtkOptionMenuNew (String [] items, boolean visible);
+  native void gtkOptionMenuNew (ComponentPeer parent,
+				String [] items, boolean visible);
   native void gtkOptionMenuAdd (String item, int index);
   native void gtkOptionMenuRemove (int index);
   native void gtkOptionMenuSelect (int index);
@@ -35,20 +36,17 @@ public class GtkChoicePeer extends GtkComponentPeer
   public GtkChoicePeer (Choice c, ComponentPeer parent)
   {
     super (c);
-    Point p = c.getLocation();
     
-    System.out.println("choicepeer: location: "+p.x+","+p.y);
+    System.out.println("choicepeer: <init>");
     
     int count = c.getItemCount();
     
     String [] items=new String[count];
     
-    for (int i=0; i<count; i++)
-      items[i]=c.getItem(i);
+    for (int i = 0; i < count; i++)
+      items[i] = c.getItem(i);
 	  
-    gtkOptionMenuNew (items, c.isVisible ());
-
-    gtkFixedPut (parent, p.x, p.y);
+    gtkOptionMenuNew (parent, items, c.isVisible ());
   }
 
   public void add (String item, int index)
