@@ -1,5 +1,16 @@
 2004-11-23 Jerry Quinn <jlquinn@optonline.net>
 
+	* java/awt/Menu.java (AccessibleAWTMenu
+	getAccessibleContext): Implement.
+	* java/awt/PopupMenu.java (AccessibleAWTPopupMenu
+	getAccessibleContext): Implement.
+	* java/awt/TextComponent.java (AccessibleAWTTextComponent
+	getAccessibleContext): Implement.
+	(TextComponent): Extends Accessible.
+	(getIndexAtPoint, getCharacterBounds): New methods.
+
+2004-11-23 Jerry Quinn <jlquinn@optonline.net>
+
 	* java/awt/Button.java
 	(AccessibleAWTButton.getAccessibleActionDescription): Explain the
 	source of 'click'.
