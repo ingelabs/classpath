@@ -1,5 +1,11 @@
 2003-07-16  Torsten Rupp  <rupp@lisa.aicas.com>
 
+        * native/jni/classpath/jcl.h,
+        native/jni/classpath/jcl.c:
+        Fixed some prototypes
+
+2003-07-16  Torsten Rupp  <rupp@lisa.aicas.com>
+
         * native/jni/java-io/FileDescriptor.c:
         Renamed some internal constants to avoid conflicts with existing
         constants in some OS (e. g. vxWorks)
