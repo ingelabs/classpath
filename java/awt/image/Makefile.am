@@ -25,6 +25,7 @@ IndexColorModel.java \
 MemoryImageSource.java \
 PackedColorModel.java \
 PixelGrabber.java \
+PixelInterleavedSampleModel.java \
 RGBImageFilter.java \
 Raster.java \
 RasterFormatException.java \
