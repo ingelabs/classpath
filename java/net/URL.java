@@ -241,13 +241,13 @@ getURLStreamHandler(String protocol)
   if (factory != null)
     {
       ph = factory.createURLStreamHandler(protocol);
-      if (ph == null)
-        return null;
+      if (ph != null)
+	{
+	  if (cache_handlers)
+	    ph_cache.put(protocol, ph.getClass());
 
-      if (cache_handlers)
-        ph_cache.put(protocol, ph.getClass());
-
-      return(ph);
+	  return(ph);
+	}
     }
 
   // Finally loop through our search path looking for a match
@@ -587,8 +587,8 @@ getURLStreamHandler(String protocol)
    */
   public String getPath()
   {
-    int quest = file.indexOf('?');
-    return quest < 0 ? file : file.substring(0, quest);
+    int quest = (file == null) ? -1 : file.indexOf('?');
+    return quest < 0 ? getFile() : file.substring(0, quest);
   }
 
   /**
@@ -659,7 +659,7 @@ getURLStreamHandler(String protocol)
    */
   public String getUserInfo ()
   {
-    int at = host.indexOf('@');
+    int at = (host == null) ? -1 : host.indexOf('@');
     return at < 0 ? null : host.substring(0, at);
   }
 
@@ -671,7 +671,7 @@ getURLStreamHandler(String protocol)
    */
   public String getQuery ()
   {
-    int quest = file.indexOf('?');
+    int quest = (file == null) ? -1 : file.indexOf('?');
     return quest < 0 ? null : file.substring(quest + 1, file.length());
   }
 

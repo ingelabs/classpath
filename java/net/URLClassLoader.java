@@ -61,7 +61,6 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.zip.ZipException;
-import gnu.java.io.PlatformHelper;
 
 /**
  * A secure class loader that can load classes and resources from
@@ -284,9 +283,10 @@ public class URLClassLoader extends SecureClassLoader {
       super(classloader, baseURL);
         
       // cache url prefix for all resources in this jar url
-      StringBuffer sb = new StringBuffer(PlatformHelper.INITIAL_MAX_PATH);
+      String external = baseURL.toExternalForm();
+      StringBuffer sb = new StringBuffer(external.length() + 6);
       sb.append("jar:");
-      sb.append(baseURL.toExternalForm());
+      sb.append(external);
       sb.append("!/");
 
       URL baseJarURL = null;

@@ -1,3 +1,14 @@
+2002-11-22  Mark Wielaard  <mark@klomp.org>
+
+	* java/net/URL.java (getURLStreamHandler): Fall through to standard
+	handlers when a stream factory doesn't handle a protocol.
+	(getPath): Handle file == null case.
+	(getQuery): Likewise.
+	(getUserInfo): Handle host == null case.
+
+	* java/net/URLClassLoader.java (JarLoader): More efficient use of
+	StringBuffer.
+
 2002-11-22  Michael Koch <konqueror@gmx.de>
 
 	* gnu/java/nio/CharBufferImpl.java
@@ -22,7 +33,6 @@
 	(newReader): JDK 1.4 conform implementation, documentation added.
 	(newWriter: JDK 1.4 conform implementation, documentation added.
 	
-
 2002-11-21  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/jar/JarFile.java (getManifest): Throws IOException.
