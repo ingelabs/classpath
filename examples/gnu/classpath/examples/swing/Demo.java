@@ -754,10 +754,18 @@ public class Demo
 		    mkSpinner(),
 		    panel);
 
+    new PopUpAction("TextField",
+		    mkTextField("Hello, World!"),
+		    panel);
+
     JButton exitDisposer = mkDisposerButton(frame);
     panel.add(exitDisposer);
 
     return panel;
   }
 
+  public static JTextField mkTextField(String sometext)
+  {
+    return new JTextField(sometext, 40);
+  }
 }

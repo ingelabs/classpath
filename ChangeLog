@@ -1,3 +1,8 @@
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* examples/gnu/classpath/examples/swing/Demo.java:
+	Added demo for JTextField.
+
 2004-09-03  Mark Wielaard  <mark@klomp.org>
 
 	* Makefile.am (SUBDIRS): Remove external.
