@@ -1,3 +1,9 @@
+2003-11-28  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+	* java/text/SimpleDateFormat.java (compileFormat):
+	isLowerCase() and isUpperCase() allow too many characters.
+	Just use >= 'A' && <= 'Z' || >= 'a' && <= 'z'.
+
 2003-11-28  Mark Wielaard  <mark@klomp.org>
 
 	Reported by Archie Cobbs:
