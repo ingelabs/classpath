@@ -1,3 +1,33 @@
+2005-03-05  Audrius Meskauskas  <audriusa@bluewin.ch>
+
+	* org/omg/CORBA/INV_POLICY.java: new file.
+	* org/omg/CORBA/NO_PERMISSION.java: new file.
+	* org/omg/CORBA/BAD_INV_ORDER.java: new file.
+	* org/omg/CORBA/INTF_REPOS.java: new file.
+	* org/omg/CORBA/INV_IDENT.java: new file.
+	* org/omg/CORBA/NO_IMPLEMENT.java: new file.
+	* org/omg/CORBA/UNKNOWN.java: new file.
+	* org/omg/CORBA/INV_FLAG.java: new file.
+	* org/omg/CORBA/BAD_TYPECODE.java: new file.
+	* org/omg/CORBA/NO_MEMORY.java: new file.
+	* org/omg/CORBA/INVALID_TRANSACTION.java: new file.
+	* org/omg/CORBA/INTERNAL.java: new file.
+	* org/omg/CORBA/COMM_FAILURE.java: new file.
+	* org/omg/CORBA/PERSIST_STORE.java: new file.
+	* org/omg/CORBA/BAD_CONTEXT.java: new file.
+	* org/omg/CORBA/INV_OBJREF.java: new file.
+	* org/omg/CORBA/TRANSACTION_REQUIRED.java: new file.
+	* org/omg/CORBA/TRANSACTION_ROLLEDBACK.java: new file.
+	* org/omg/CORBA/FREE_MEM.java: new file.
+	* org/omg/CORBA/OBJECT_NOT_EXIST.java: new file.
+	* org/omg/CORBA/TRANSIENT.java: new file.
+	* org/omg/CORBA/OBJ_ADAPTER.java: new file.
+	* org/omg/CORBA/IMP_LIMIT.java: new file.
+	* org/omg/CORBA/INITIALIZE.java: new file.
+	* org/omg/CORBA/NO_RESPONSE.java: new file.
+	* org/omg/CORBA/DATA_CONVERSION.java: new file.
+	* org/omg/CORBA/MARSHAL.java: new file.
+
 2005-03-04  Roman Kennke  <roman@ontographics.com>
 
 	* javax/swing/text/rtf/ControlWordToken.java: New file.
