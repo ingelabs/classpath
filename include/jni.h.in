@@ -161,7 +161,14 @@ typedef union jvalue
 /* Used for jboolean type  */
 #define JNI_TRUE  1
 #define JNI_FALSE 0
-  
+
+/* Specific jlong values
+   FIXME: preliminary implementation!
+*/
+#define JNI_JLONG_CONST_1        1LL
+#define JNI_JLONG_CONST_MINUS_1 -1LL
+#define JNI_JLONG_CONST_0        0LL
+
 /* Used when releasing array elements.  */
 #define JNI_COMMIT 1
 #define JNI_ABORT  2
