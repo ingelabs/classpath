@@ -16,14 +16,12 @@ FIND = @FIND@
 propertydirs :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java -type d ! -regex .*CVS)
 propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java -name \*\.properties)
 
-#-----------------------------------------------------------------
-# handling javac definition including programs like jikes here
-#-----------------------------------------------------------------
-if FOUND_JIKES
-JAVAC = $(JIKES) +F -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(top_srcdir):$(top_srcdir)/external/jaxp/source:$(top_builddir)/vm/current:.:$(USER_CLASSLIB) -d . @classes
-else
+# handling source to bytecode compiler programs like gcj, jikes  and kjc
 if FOUND_GCJ
 JAVAC = $(GCJ) --bootclasspath '' --classpath $(top_srcdir):$(top_srcdir)/external/jaxp/source:$(top_builddir)/vm/current:.:$(USER_CLASSLIB) -C -d . @classes
+else
+if FOUND_JIKES
+JAVAC = $(JIKES) +F -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(top_srcdir):$(top_srcdir)/external/jaxp/source:$(top_builddir)/vm/current:.:$(USER_CLASSLIB) -d . @classes
 else
 if FOUND_KJC
 JAVAC = $(KJC) -classpath .:$(USER_CLASSLIB) -d . @classes
