@@ -28,7 +28,7 @@ executable file might be covered by the GNU General Public License. */
 package java.net;
 
 import java.io.IOException;
-import java.security.Identity;
+import java.security.cert.Certificate;
 import java.util.jar.*;
 
 /**
@@ -228,17 +228,17 @@ getMainAttributes() throws IOException
 /*************************************************************************/
 
 /**
-  * Returns an array of Identity objects for the jar file entry specified
+  * Returns an array of Certificate objects for the jar file entry specified
   * by this URL or null if there are none
   *
-  * @return An Identity array
+  * @return A Certificate array
   *
   * @exception IOException If an error occurs
   */
-public Identity[]
-getIdentities() throws IOException
+public Certificate[]
+getCertificates() throws IOException
 {
-  return(getJarEntry().getIdentities());
+  return(getJarEntry().getCertificates());
 }
 
 } // class JarURLConnection
