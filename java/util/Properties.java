@@ -37,7 +37,15 @@ exception statement from your version. */
 
 
 package java.util;
-import java.io.*;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.io.PrintStream;
+import java.io.OutputStreamWriter;
 
 /**
  * A set of persistent properties, which can be saved or loaded from a stream.
@@ -103,7 +111,6 @@ public class Properties extends Hashtable
    */
   public Properties()
   {
-    this.defaults = null;
   }
 
   /**
@@ -328,13 +335,13 @@ public class Properties extends Hashtable
 
   /**
    * Writes the key/value pairs to the given output stream, in a format
-   * suitable for <code>load</code>. <br>
+   * suitable for <code>load</code>.<br>
    *
    * If header is not null, this method writes a comment containing
    * the header as first line to the stream.  The next line (or first
    * line if header is null) contains a comment with the current date.
    * Afterwards the key/value pairs are written to the stream in the
-   * following format. <br>
+   * following format.<br>
    *
    * Each line has the form <code>key = value</code>.  Newlines,
    * Returns and tabs are written as <code>\n,\t,\r</code> resp.
@@ -421,15 +428,19 @@ public class Properties extends Hashtable
    */
   public Enumeration propertyNames()
   {
-    // We make a new Hashtable that holds all the keys.  Then we
-    // return an enumeration for this hash.  We do this because we
-    // don't want modifications to be reflected in the enumeration
-    // (per JCL), and because there doesn't seem to be a
-    // particularly better way to ensure that duplicates are
-    // ignored.
-    Hashtable t = new Hashtable();
-    addHashEntries(t);
-    return t.keys();
+    // We make a new Set that holds all the keys, then return an enumeration
+    // for that. This prevents modifications from ruining the enumeration,
+    // as well as ignoring duplicates.
+    Properties prop = this;
+    Set s = new HashSet();
+    // Eliminate tail recursion.
+    do
+      {
+        s.addAll(prop.keySet());
+        prop = prop.defaults;
+      }
+    while (prop != null);
+    return Collections.enumeration(s);
   }
 
   /**
@@ -444,14 +455,16 @@ public class Properties extends Hashtable
    */
   public void list(PrintStream out)
   {
-    Enumeration keys = keys();
-    Enumeration elts = elements();
-    while (keys.hasMoreElements())
+    Iterator iter = entrySet().iterator();
+    int i = size();
+    StringBuffer s = new StringBuffer(); // Reuse the same buffer.
+    while (--i >= 0)
       {
-        String key = (String) keys.nextElement();
-        String elt = (String) elts.nextElement();
-        String output = formatForOutput(key, elt);
-        out.println(output);
+        Map.Entry entry = (Map.Entry) iter.next();
+        formatForOutput((String) entry.getKey(), s, true);
+        s.append('=');
+        formatForOutput((String) entry.getValue(), s, false);
+        out.println(s);
       }
   }
 
@@ -468,131 +481,75 @@ public class Properties extends Hashtable
    */
   public void list(PrintWriter out)
   {
-    Enumeration keys = keys();
-    Enumeration elts = elements();
-    while (keys.hasMoreElements())
+    Iterator iter = entrySet().iterator();
+    int i = size();
+    StringBuffer s = new StringBuffer(); // Reuse the same buffer.
+    while (--i >= 0)
       {
-        String key = (String) keys.nextElement();
-        String elt = (String) elts.nextElement();
-        String output = formatForOutput(key, elt);
-        out.println(output);
+        Map.Entry entry = (Map.Entry) iter.next();
+        formatForOutput((String) entry.getKey(), s, true);
+        s.append('=');
+        formatForOutput((String) entry.getValue(), s, false);
+        out.println(s);
       }
   }
 
   /**
-   * Formats a key/value pair for output in a properties file.
+   * Formats a key or value for output in a properties file.
    * See store for a description of the format.
    *
-   * @param key the key
-   * @param value the value
+   * @param str the string to format
+   * @param buffer the buffer to add it to
+   * @param key true if all ' ' must be escaped for the key, false if only
+   *        leading spaces must be escaped for the value
    * @see #store(OutputStream, String)
    */
-  private String formatForOutput(String key, String value)
+  private void formatForOutput(String str, StringBuffer buffer, boolean key)
   {
-    // This is a simple approximation of the expected line size.
-    StringBuffer result =
-      new StringBuffer(key.length() + value.length() + 16);
+    if (key)
+      {
+        buffer.setLength(0);
+        buffer.ensureCapacity(str.length());
+      }
+    else
+      buffer.ensureCapacity(buffer.length() + str.length());
     boolean head = true;
-    for (int i = 0; i < key.length(); i++)
+    int size = str.length();
+    for (int i = 0; i < size; i++)
       {
-        char c = key.charAt(i);
+        char c = str.charAt(i);
         switch (c)
           {
           case '\n':
-            result.append("\\n");
+            buffer.append("\\n");
             break;
           case '\r':
-            result.append("\\r");
+            buffer.append("\\r");
             break;
           case '\t':
-            result.append("\\t");
+            buffer.append("\\t");
+            break;
+          case ' ':
+            buffer.append(head ? "\\ " : " ");
             break;
           case '\\':
-            result.append("\\\\");
-            break;
           case '!':
-            result.append("\\!");
-            break;
           case '#':
-            result.append("\\#");
-            break;
           case '=':
-            result.append("\\=");
-            break;
           case ':':
-            result.append("\\:");
-            break;
-          case ' ':
-            result.append("\\ ");
-            break;
+            buffer.append('\\').append(c);
           default:
-            if (c < 32 || c > '~')
+            if (c < ' ' || c > '~')
               {
                 String hex = Integer.toHexString(c);
-                result.append("\\u0000".substring(0, 6 - hex.length()));
-                result.append(hex);
+                buffer.append("\\u0000".substring(0, 6 - hex.length()));
+                buffer.append(hex);
               }
             else
-                result.append(c);
+              buffer.append(c);
           }
-        if (c != 32)
-          head = false;
+        if (c != ' ')
+          head = key;
       }
-    result.append('=');
-    head = true;
-    for (int i = 0; i < value.length(); i++)
-      {
-        char c = value.charAt(i);
-        switch (c)
-          {
-          case '\n':
-            result.append("\\n");
-            break;
-          case '\r':
-            result.append("\\r");
-            break;
-          case '\t':
-            result.append("\\t");
-            break;
-          case '\\':
-            result.append("\\\\");
-            break;
-          case '!':
-            result.append("\\!");
-            break;
-          case '#':
-            result.append("\\#");
-            break;
-          case ' ':
-            result.append(head ? "\\ " : " ");
-            break;
-          default:
-            if (c < 32 || c > '~')
-              {
-                String hex = Integer.toHexString(c);
-                result.append("\\u0000".substring(0, 6 - hex.length()));
-                result.append(hex);
-              }
-            else
-              result.append(c);
-          }
-        if (c != 32)
-          head = false;
-      }
-    return result.toString();
-  }
-
-  /**
-   * Recursively grabs the keys from the default properties.
-   *
-   * @param base the hashtable to place the keys in
-   */
-  private final void addHashEntries(Hashtable base)
-  {
-    if (defaults != null)
-      defaults.addHashEntries(base);
-    Enumeration keys = keys();
-    while (keys.hasMoreElements())
-      base.put(keys.nextElement(), base);
   }
 }

@@ -70,6 +70,10 @@ public class EventObject implements Serializable
    */
   public EventObject(Object source)
   {
+    // This check for null is stupid, if you ask me, since source is
+    // protected and non-final, so a subclass can set it to null later on.
+    if (source == null)
+      throw new IllegalArgumentException();
     this.source = source;
   }
 

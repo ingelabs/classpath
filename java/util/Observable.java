@@ -58,23 +58,14 @@ public class Observable
   private boolean changed;
 
   /* List of the Observers registered as interested in this Observable. */
-  private Vector observers;
-
-  /* TBD: This might be better implemented as an Observer[]
-   * but that would mean writing more code rather than making use of
-   * the existing Vector class (this also implies a larger text code
-   * space in resulting executables).  The tradeoff is one of speed
-   * (manipulating the Observer[] directly) vs. size/reuse.  In the future,
-   * we may decide to make the tradeoff and reimplement with an Observer[].
-   */
+  private LinkedHashSet observers;
 
   /**
    * Constructs an Observable with zero Observers.
    */
   public Observable()
   {
-    changed = false;
-    observers = new Vector();
+    observers = new LinkedHashSet();
   }
 
   /**
@@ -86,8 +77,7 @@ public class Observable
    */
   public synchronized void addObserver(Observer observer)
   {
-    if (! observers.contains(observer))
-      observers.addElement(observer);
+    observers.add(observer);
   }
 
   /**
@@ -118,7 +108,7 @@ public class Observable
    */
   public synchronized void deleteObserver(Observer victim)
   {
-    observers.removeElement(victim);
+    observers.remove(victim);
   }
 
   /**
@@ -126,7 +116,7 @@ public class Observable
    */
   public synchronized void deleteObservers()
   {
-    observers.removeAllElements();
+    observers.clear();
   }
 
   /**
@@ -165,11 +155,18 @@ public class Observable
   {
     if (! hasChanged())
       return;
-    Vector ob1 = (Vector) observers.clone();
-
-    for (int i = 0; i < ob1.size(); i++)
-      ((Observer) ob1.elementAt(i)).update(this, obj);
-
+    // Create clone inside monitor, as that is relatively fast and still
+    // important to keep threadsafe, but update observers outside of the
+    // lock since update() can call arbitrary code.
+    Set s;
+    synchronized (this)
+      {
+        s = (Set) observers.clone();
+      }
+    int i = s.size();
+    Iterator iter = s.iterator();
+    while (--i >= 0)
+      ((Observer) iter.next()).update(this, obj);
     clearChanged();
   }
 
