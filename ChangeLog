@@ -1,5 +1,16 @@
 2004-07-17  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/DatagramSocket.java
+	(getLocalAddress): Check if socket is bound or not.
+	* java/net/Socket.java
+	(getLocalAddrss): Check if socket is bound or not.
+	(getPort): Return -1 when not connected. Dont check getImpl() for
+	null.
+	(setReuseAddress): Check if socket is closed.
+	(isConnected): Check if getImpl() returns null.
+
+2004-07-17  Michael Koch  <konqueror@gmx.de>
+
 	* java/beans/EventHandler.java: New file.
 	* java/beans/Makefile.am
 	(EXTRA_DIST): Added EventHandler.java.
