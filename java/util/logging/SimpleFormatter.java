@@ -42,6 +42,9 @@ exception statement from your version.
 
 package java.util.logging;
 
+import java.util.Date;
+import java.text.DateFormat;
+
 /**
  * A <code>SimpleFormatter</code> formats log records into
  * short human-readable messages, typically one or two lines.
@@ -59,7 +62,27 @@ public class SimpleFormatter
   }
 
 
-  private static final String lineSep = System.getProperty("line.separator");
+  /**
+   * An instance of a DateFormatter that is used for formatting
+   * the time of a log record into a human-readable string,
+   * according to the rules of the current locale.  The value
+   * is set after the first invocation of format, since it is
+   * common that a JVM will instantiate a SimpleFormatter without
+   * ever using it.
+   */
+  private DateFormat dateFormat;
+
+  /**
+   * The character sequence that is used to separate lines in the
+   * generated stream. Somewhat surprisingly, the Sun J2SE 1.4
+   * reference implementation always uses UNIX line endings, even on
+   * platforms that have different line ending conventions (i.e.,
+   * DOS). The GNU implementation does not replicate this bug.
+   *
+   * @see Sun bug parade, bug #4462871,
+   * "java.util.logging.SimpleFormatter uses hard-coded line separator".
+   */
+  static final String lineSep = System.getProperty("line.separator");
 
 
   /**
@@ -67,8 +90,9 @@ public class SimpleFormatter
    *
    * @param the log record to be formatted.
    *
-   * @return a short human-readable message, typically one or two lines.
-   *         Lines are separated using the default platform line separator.
+   * @return a short human-readable message, typically one or two
+   *   lines.  Lines are separated using the default platform line
+   *   separator.
    *
    * @throws NullPointerException if <code>record</code>
    *         is <code>null</code>.
@@ -76,19 +100,20 @@ public class SimpleFormatter
   public String format(LogRecord record)
   {
     StringBuffer buf = new StringBuffer(180);
+
+    if (dateFormat == null)
+      dateFormat = DateFormat.getDateTimeInstance();
+
+    buf.append(dateFormat.format(new Date(record.getMillis())));
+    buf.append(' ');
+    buf.append(record.getLoggerName());
+    buf.append(lineSep);
+
     buf.append(record.getLevel());
     buf.append(": ");
     buf.append(formatMessage(record));
 
     buf.append(lineSep);
-    buf.append("  time=");
-    buf.append(new java.util.Date(record.getMillis()));
-    buf.append(", thread=");
-    buf.append(record.getThreadID());
-
-    buf.append(lineSep);
-
-    /* FIXME: Emulate whatever the Sun reference implementation does. */
 
     return buf.toString();
   }
