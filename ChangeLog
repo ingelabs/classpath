@@ -1,8 +1,10 @@
 2003-06-13  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/border/BevelBorder.java: Re-written from scratch.
+	* javax/swing/border/EmptyBorder.java: Re-written from scratch.
 	* javax/swing/border/doc-files/: New directory for JavaDoc images.
 	* javax/swing/border/doc-files/BevelBorder-1/2/3.png: New images.
+	* javax/swing/border/doc-files/EmptyBorder-1.png: New image.
 	* javax/swing/border/.cvsignore: Added *.class to ignored files.
 
 2003-06-12  Michael Koch  <konqueror@gmx.de>
