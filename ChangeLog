@@ -1,5 +1,15 @@
 2004-01-04  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/JarURLConnection.java
+	(jarFileURLConnection): New field.
+	* gnu/java/net/protocol/jar/Connection.java
+	(Connection): Made class final.
+	(Connection): Made constructor protected.
+	(getJarFile): Check doInput.
+	(getInputStream): Likewise.
+
+2004-01-04  Michael Koch  <konqueror@gmx.de>
+
 	* java/util/HashMap.java (HashMap(Map)): As above.
 	(putAllInternal): As above.
 	* java/util/Hashtable.java (Hashtable(Map)): Use putAll, not

@@ -79,6 +79,13 @@ public abstract class JarURLConnection extends URLConnection
   private final URL jarFileURL;
 
   /**
+   * The connection to the jar file itself. A JarURLConnection
+   * can represent an entry in a jar file or an entire jar file.  In
+   * either case this describes just the jar file itself.
+   */
+  protected URLConnection jarFileURLConnection;
+
+  /**
    * This is the jar file "entry name" or portion after the "!/" in the
    * URL which represents the pathname inside the actual jar file.
    */
