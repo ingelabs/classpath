@@ -1,5 +1,10 @@
 2003-11-14  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/swing/undo/StateEdit.java: Re-format, document.
+	(undo, redo): Also call inherited implementation.
+
+2003-11-14  Sascha Brawer  <brawer@dandelis.ch>
+
 	* javax/swing/undo/StateEditable.java: Re-format, document.
 
 2003-11-14  Sascha Brawer  <brawer@dandelis.ch>
