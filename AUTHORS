@@ -1,82 +1,9 @@
 Paul Fisher (rao@gnu.org)
-	first version of java/math/BigInteger.java
-	first version of java/lang/Character.java
-	first version of java/lang/String.java
-
-Initial versions of java.math, parts of java.lang, and gtk peers.
-
 Aaron M. Renn (arenn@urbanophile.com)
-	Initial versions of packages java.net, java.security, and 
-	java.text.  Initial versions of parts of java.io.
-
 Brian Jones (cbj@gnu.org)
-	first version of java/lang/AbstractMethodError.java
-	first version of java/lang/ArithmeticException.java
-	first version of java/lang/ArrayIndexOutOfBoundsException.java
-	first version of java/lang/ArrayStoreException.java
-	first version of java/lang/ClassCastException.java
-	first version of java/lang/ClassCircularityError.java
-	first version of java/lang/ClassFormatError.java
-	first version of java/lang/ClassNotFoundException.java
-	first version of java/lang/CloneNotSupportedException.java
-	first version of java/lang/Error.java
-	first version of java/lang/Exception.java
-	first version of java/lang/ExceptionInInitializerError.java
-	first version of java/lang/IllegalAccessError.java
-	first version of java/lang/IllegalAccessException.java
-	first version of java/lang/IllegalArgumentException.java
-	first version of java/lang/IllegalMonitorStateException.java
-	first version of java/lang/IllegalStateException.java
-	first version of java/lang/IllegalThreadStateException.java
-	first version of java/lang/IncompatiableClassChangeError.java
-	first version of java/lang/IndexOutOfBoundsException.java
-	first version of java/lang/InstantiationError.java
-	first version of java/lang/InstantiationException.java
-	first version of java/lang/InternalError.java
-	first version of java/lang/InterruptedException.java
-	first version of java/lang/LinkageError.java
-	first version of java/lang/NegativeArraySizeException.java
-	first version of java/lang/NoClassDefFoundError.java
-	first version of java/lang/NoSuchFieldError.java
-	first version of java/lang/NoSuchFieldException.java
-	first version of java/lang/NoSuchMethodError.java
-	first version of java/lang/NoSuchMethodException.java
-	first version of java/lang/NullPointerException.java
-	first version of java/lang/NumberFormatException
-	first version of java/lang/OutOfMemoryError.java
-	first version of java/lang/Process.java
-	first version of java/lang/RuntimeException.java
-	first version of java/lang/RuntimePermission.java
-	first version of java/lang/SecurityException.java
-	first version of java/lang/StackOverflowError.java
-	first version of java/lang/StringIndexOutOfBoundsException.java
-	first version of java/lang/UnknownError.java
-	first version of java/lang/UnsatisfiedLinkError.java
-	first version of java/lang/UnsupportedClassVersionError.java
-	first version of java/lang/VerifyError.java
-	first version of java/lang/VirtualMachineError.java
-	revision of java/lang/Throwable.java functions 
-		writeObject(java.io.ObjectOutputStream) and 
-		readObject(java.io.ObjectInputStream).
-
 Geoff Berry (gcb@gnu.org)
-	Initial versions of parts of java.io.
-
 John Keiser (jkeiser@iname.com)
-	Initial versions of vm dependent parts of java.lang and all of 
-	java.beans and java.lang.reflect.
-	first version of java/lang/ClassLoader.java
-	first version of java/lang/Object.java
-	first version of java/lang/SecurityManager.java
-	first version of java/lang/System.java
-	first version of java/lang/ThreadGroup.java
-	first version of java/lang/Throwable.java
-
 Jim Blair (jeblair@eos.ncsu.edu)
-	Initial versions of gtk peers.
-
 Stuart Ballard (stuart.ballard@mcmail.com)
-	Initial versions of parts of java.util.
-
 Jocehn Hoenicke (Jochen.Hoenicke@Informatik.Uni-Oldenburg.de)
 Jon A. Zeppieri (jon@eease.com)
