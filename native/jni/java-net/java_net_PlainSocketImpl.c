@@ -1,5 +1,5 @@
 /* PlainSocketImpl.c - Native methods for PlainSocketImpl class
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,7 +36,13 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
+#include <errno.h>
+#include <sys/ioctl.h>
+#include <asm/ioctls.h>
+#include <string.h>
+ 
 #include <jni.h>
+#include <jcl.h>
 
 #include "java_net_PlainSocketImpl.h"
 
@@ -120,6 +126,41 @@ JNIEXPORT void JNICALL
 Java_java_net_PlainSocketImpl_accept(JNIEnv *env, jobject this, jobject impl)
 {
   _javanet_accept(env, this, impl);
+}
+
+/*************************************************************************/
+
+JNIEXPORT jint JNICALL
+Java_java_net_PlainSocketImpl_available(JNIEnv *env, jobject this)
+{
+  int fd;
+  int count = 0;
+  jclass cls;
+  jfieldID fid;
+  
+  cls = (*env)->GetObjectClass(env, this);
+  if (cls == 0)
+    {
+      JCL_ThrowException(env, IO_EXCEPTION, "internal error");
+      return 0;
+    }
+  
+  fid = (*env)->GetFieldID(env, cls, "native_fd", "I"); 
+  if (fid == 0)
+    {
+      JCL_ThrowException(env, IO_EXCEPTION, "internal error");
+      return 0;
+    }
+
+  fd = (*env)->GetIntField(env, this, fid);
+  
+  if (ioctl(fd, FIONREAD, &count) == -1)
+    {
+      JCL_ThrowException(env, IO_EXCEPTION, strerror(errno));
+      return 0;
+    }
+  else
+    return count;
 }
 
 /*************************************************************************/

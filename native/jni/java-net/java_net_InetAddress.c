@@ -1,5 +1,5 @@
 /* InetAddress.c - Native methods for InetAddress class
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -178,7 +178,7 @@ Java_java_net_InetAddress_getHostByName(JNIEnv *env, jclass class, jstring host)
   hp = gethostbyname(hostname);
   if (!hp)
     {
-      JCL_ThrowException(env, UNKNOWN_HOST_EXCEPTION, host);
+      JCL_ThrowException(env, UNKNOWN_HOST_EXCEPTION, hostname);
       return (jobjectArray)NULL;
     }
   (*env)->ReleaseStringUTFChars(env, host, hostname);

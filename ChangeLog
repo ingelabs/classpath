@@ -1,3 +1,21 @@
+2002-12-01  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/java-net/java_net_InetAddress.c (getHostByName):
+	JCL_ThrowException takes hostname, not host.
+	* native/jni/java-net/javanet.c (_javanet_set_remhost_addr): New
+	method.
+	(_javanet_set_remhost): Use new method.
+	(_javanet_connect): Likewise.
+	* java/net/InetAddress.java (toString): Include hostname or alias if
+	known, but don't lookup.
+	* java/net/Socket.java (setSocketImplFactory): Throw SocketException
+	when fac == null.
+
+2002-12-01  Julian Dolby  <dolby@us.ibm.com>
+
+	* native/jni/java-net/java_net_PlainSocketImpl.c (available):
+	Implement.
+
 2002-12-01  Tom Tromey  <tromey@redhat.com>
 
 	Bug compatibility:

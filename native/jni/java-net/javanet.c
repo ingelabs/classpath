@@ -1,5 +1,5 @@
 /* javanet.c - Common internal functions for the java.net package
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -272,6 +272,8 @@ _javanet_create_inetaddress(JNIEnv *env, int netaddr)
 
 /*************************************************************************/
 
+static void _javanet_set_remhost_addr(JNIEnv*, jobject, jobject);
+
 /*
  * Set's the value of the "addr" field in PlainSocketImpl with a new
  * InetAddress for the specified addr
@@ -279,8 +281,6 @@ _javanet_create_inetaddress(JNIEnv *env, int netaddr)
 static void
 _javanet_set_remhost(JNIEnv *env, jobject this, int netaddr)
 {
-  jclass this_cls;
-  jfieldID fid;
   jobject ia;
 
   DBG("_javanet_set_remhost(): Entered _javanet_set_remhost\n");
@@ -289,6 +289,15 @@ _javanet_set_remhost(JNIEnv *env, jobject this, int netaddr)
   ia = _javanet_create_inetaddress(env, netaddr);
   if (ia == NULL)
     return;
+
+  _javanet_set_remhost_addr(env, this, ia);
+}
+
+static void
+_javanet_set_remhost_addr(JNIEnv *env, jobject this, jobject ia)
+{
+  jclass this_cls;
+  jfieldID fid;
 
   /* Set the variable in the object */
   this_cls = (*env)->FindClass(env, "java/net/SocketImpl");
@@ -299,10 +308,10 @@ _javanet_set_remhost(JNIEnv *env, jobject this, int netaddr)
   if (fid == NULL)
     return;
 
-  DBG("_javanet_set_remhost(): Found address field\n");
+  DBG("_javanet_set_remhost_addr(): Found address field\n");
 
   (*env)->SetObjectField(env, this, fid, ia);
-  DBG("_javanet_set_remhost(): Set field\n");
+  DBG("_javanet_set_remhost_addr(): Set field\n");
 }
 
 /*************************************************************************/
@@ -496,7 +505,7 @@ _javanet_connect(JNIEnv *env, jobject this, jobject addr, jint port)
       return;
     }
 
-  _javanet_set_remhost(env, this, ntohl(si.sin_addr.s_addr));
+  _javanet_set_remhost_addr(env, this, addr);
   if ((*env)->ExceptionOccurred(env))
     {
       close(fd);

@@ -1,5 +1,5 @@
 /* InetAddress.java -- Class to model an Internet address
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -640,7 +640,16 @@ isMulticastAddress()
 public String
 toString()
 {
-  return(getHostAddress());
+  StringBuffer sb;
+  if (hostName != null)
+    sb = new StringBuffer(hostName).append('/');
+  else if (hostname_alias != null)
+    sb = new StringBuffer(hostname_alias).append('/');
+  else
+    sb = new StringBuffer();
+
+  sb.append(getHostAddress());
+  return(sb.toString());
 }
 
   /**
