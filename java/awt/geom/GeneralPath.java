@@ -195,7 +195,7 @@ public final class GeneralPath implements Shape, Cloneable
 
   public Point2D getCurrentPoint()
   {
-    if (subpathstart < 0)
+    if (subpath < 0)
       return null;
     return new Point2D.Float(points[subpath], points[subpath + 1]);
   }
