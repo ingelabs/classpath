@@ -1,3 +1,11 @@
+2003-11-02  Mark Wielaard  <mark@klomp.org>
+
+	* configure.in (AC_CHECK_FUNC): Add ftruncate, fsync and select.
+
+	* native/target/generic/target_generic_file.h
+	(TARGET_NATIVE_FILE_OPEN): Check filedescriptor >= 0 before calling
+	fcntl.
+
 2003-10-30  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextAreaPeer.c (create): Turn on

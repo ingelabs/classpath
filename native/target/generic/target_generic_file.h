@@ -141,7 +141,8 @@ extern "C" {
                           flags, \
                           permissions \
                           ); \
-      fcntl (filedescriptor,F_SETFD,FD_CLOEXEC); \
+      if (filedescriptor >= 0) \
+        fcntl (filedescriptor,F_SETFD,FD_CLOEXEC); \
       result=(filedescriptor>=0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
    } while (0)
 #endif
