@@ -1,0 +1,167 @@
+/*************************************************************************
+ * Double.c - java.lang.Double native functions
+ *
+ * Copyright (c) 1998 Free Software Foundation, Inc.
+ * Written by Brian Jones (cbj@gnu.org)
+ *
+ * This library is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Library General Public License as published 
+ * by the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public License
+ * along with this library; if not, write to the Free Software Foundation
+ * Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
+ *************************************************************************/
+
+#include <config.h>
+#include <stdlib.h>  /* for strtod() */
+#include <huge_val.h>  /* for HUGE_VAL */
+
+#include "javalang.h"
+#include "java_lang_Double.h"
+
+/*
+ * Class:     java_lang_Double
+ * Method:    doubleToLongBits
+ * Signature: (D)J
+ */
+JNIEXPORT jlong JNICALL Java_java_lang_Double_doubleToLongBits
+  (JNIEnv * env, jclass thisClass, jdouble doubleValue)
+{
+    jvalue val;
+    val.d = doubleValue;
+    return val.j;
+}
+
+/*
+ * Class:     java_lang_Double
+ * Method:    longBitsToDouble
+ * Signature: (J)D
+ */
+JNIEXPORT jdouble JNICALL Java_java_lang_Double_longBitsToDouble
+  (JNIEnv * env, jclass thisClass, jlong longValue)
+{
+    jvalue val;
+    val.j = longValue;
+    return val.d;
+}
+
+/*
+ * Class:    java_lang_Double
+ * Method:   toString(double d)
+ * Signature: (D)Ljava/lang/String
+ */
+JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
+  (JNIEnv * env, jclass thisClass, jdouble d)
+{
+  char buf[1024];
+  jstring retval;
+
+  sprintf((char*)&buf, "%G", d);
+  retval = (*env)->NewStringUTF(env, buf);
+  return retval;
+}
+
+/*
+ * Class:     java_lang_Double
+ * Method:    parseDouble
+ * Signature: (Ljava/lang/String)D
+ */
+JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
+  (JNIEnv * env, jclass thisClass, jstring s)
+{
+    const char *nptr;
+    char *endptr, *myptr;
+    jvalue val;
+
+    if (s == NULL)
+	{
+	    _javalang_ThrowException(env, "java/lang/NullPointerException", "null argument");
+	    return 0.0;
+	}
+
+    nptr = (char*)((*env)->GetStringUTFChars(env, s, 0));
+    if (nptr == NULL)
+	{
+	    _javalang_ThrowException(env, "java/lang/NullPointerException", "null returned by GetStringUTFChars");
+	    return 0.0;
+	}
+#if defined(HAVE_STRTOD)
+    val.d = strtod(nptr, &endptr);
+
+
+    /* to catch non-white space characters after conversion */
+    myptr = endptr;
+    while ((myptr) && (*myptr != 0))  /* the null character */
+	{
+	    switch (*myptr)
+		{
+		case ' ':
+		case '\t':
+		case '\r':
+		case '\n':
+		    myptr++;
+		    break;
+		case 'f':
+		case 'F':
+		case 'd':
+		case 'D':
+#if defined(WITH_JAPHAR)
+		    (*env)->ReleaseStringUTFChars(env, s, (const jbyte*)nptr);
+#else
+		    (*env)->ReleaseStringUTFChars(env, s, nptr);
+#endif		    
+		    _javalang_ThrowException(env, "java/lang/NumberFormatException", "cannot use suffixes 'f', 'F', 'd', or 'D' in string for conversion");
+		    return 0.0;
+		    break;
+		default:
+#if defined(WITH_JAPHAR)
+		    (*env)->ReleaseStringUTFChars(env, s, (const jbyte*)nptr);
+#else
+		    (*env)->ReleaseStringUTFChars(env, s, nptr);
+#endif
+		    _javalang_ThrowException(env, "java/lang/NumberFormatException", "bad number format for floating point literal");
+		    return 0.0;
+		    break;
+		}
+	}
+
+    if ((val.d == 0) && (nptr == endptr))
+	{
+#if defined(WITH_JAPHAR)
+		    (*env)->ReleaseStringUTFChars(env, s, (const jbyte*)nptr);
+#else
+	    (*env)->ReleaseStringUTFChars(env, s, nptr);
+#endif
+	    _javalang_ThrowException(env, "java/lang/NumberFormatException", "no conversion performed, possible underflow");
+	    return 0.0;
+	}
+    if ((val.d == -HUGE_VAL) || (val.d == HUGE_VAL))
+	{
+#if defined(WITH_JAPHAR)
+		    (*env)->ReleaseStringUTFChars(env, s, (const jbyte*)nptr);
+#else
+	    (*env)->ReleaseStringUTFChars(env, s, nptr);
+#endif
+	    _javalang_ThrowException(env, "java/lang/NumberFormatException", "conversion would cause overflow");
+	    return 0.0;
+	}
+#else
+    val.d = atof(nptr);
+#endif
+
+#if defined(WITH_JAPHAR)
+		    (*env)->ReleaseStringUTFChars(env, s, (const jbyte*)nptr);
+#else
+    (*env)->ReleaseStringUTFChars(env, s, nptr);
+#endif
+    return val.d;
+}
+
+
