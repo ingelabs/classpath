@@ -776,9 +776,7 @@ public class TreeMap extends AbstractMap
 
   private void writeObject(ObjectOutputStream out) throws IOException
   {
-    ObjectOutputStream.PutField fields = out.putFields();
-    fields.put("comparator", comparator);
-    out.writeFields();
+    out.defaultWriteObject();
 
     Node node = firstNode();
     out.writeInt(size);
@@ -794,8 +792,7 @@ public class TreeMap extends AbstractMap
   private void readObject(ObjectInputStream in)
     throws IOException, ClassNotFoundException
   {
-    ObjectInputStream.GetField fields = in.readFields();
-    comparator = (Comparator) fields.get("comparator", null);
+    in.defaultReadObject();
     int size = in.readInt();
     putFromObjStream(in, size, true);
   }

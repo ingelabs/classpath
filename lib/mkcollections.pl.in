@@ -33,7 +33,6 @@ my @javautilclasses=qw(AbstractCollection
 		       ArrayList
 		       Arrays
 		       BasicMapEntry
-		       Bucket
 		       List
 		       Collection
 		       Collections
@@ -63,15 +62,20 @@ my %imports = ( "Collections" => [ "Enumeration" ],
 		"Vector" => [ "Enumeration" ]);
 
 
-sub mymkdir ($) {
+sub mymkdir ($)
+  {
     my ($dir) = @_;
-    $dir =~ /^(.*)\/\w+$/ and
-	$dir = "$1";
-    if (! (-d "$dir")) { 
-	my $ret = mkdir ("$dir");
-	if (!($ret)) { mymkdir ("$dir"); mkdir ("$dir"); }
-    }
-}
+    if ($dir =~ /^(.*)\/\w+$/)
+      {
+	$parentdir = "$1";
+	if (! (-d $parentdir))
+	  { 
+	    mymkdir ($parentdir);
+	  }
+      }
+    print "$dir";
+    mkdir ($dir, 0777);
+  }
 
 sub convert($$$) {
     my ($file, $infile, $outfile) = @_;
@@ -81,9 +85,8 @@ sub convert($$$) {
     my $dir = "$outfile";
     $dir =~ /^(.*)\/\S+\.java$/ and
 	$dir = "$1";
-    if (! (-d "$dir")) { 
-	my $ret = mkdir("$dir"); 
-	if (!($ret)) { mymkdir ("$dir"); mkdir ("$dir"); }
+    if (! (-d $dir)) { 
+	mymkdir ($dir); 
     }
  
     open (OUTPUT, ">$outfile") || die "Could not open ", $outfile, " for writing\n";
@@ -106,39 +109,6 @@ EOF
 	}
 
 	$_ =~ s/abstract (interface)/$1/g;
-
-	if ($file eq "ArrayList") {
-	    # ArrayList makes heavy use of PutField/GetField.
-	    # change it.
-	    $_ =~ s/_iSize/size/g;
-	    $_ =~ s/_arData/data/g;
-	}
-	if ($file eq "TreeMap") {
-	    $_ =~ s/_oComparator/comparator/g;
-	    $_ =~ s/(RBNode _oRoot|int _iSize|int _iModCount)/transient $1/;
-	}
-	if ($file eq "Vector") {
-	    $_ =~ s/(\s+)return (\w+)\.delete\((.*), x\)\./$1$2.setLength($3);\n${1}return $2./g;
-	}
-
-	if ($file eq "ArrayList"
-	    || $file eq "TreeMap"
-	    || $file eq "Hashtable") {
-	    if ($_ =~ /serialPersistentFields/) {
-		$_ = <INPUT> while !($_ =~ /\}/);
-		next;
-	    }
-
-	    $_ =~ /^(\s+)(.*\W)?(\w+).readFields/ and
-		$_ = "$1$3.defaultReadObject();\n";
-	    $_ =~ /^(\s+)(.*\W)?(\w+).writeFields/ and
-		$_ = "$1$3.defaultWriteObject();\n";
-
-	    if ($_ =~ /[io]Fields/) {
-		$_ = <INPUT> while !($_ =~ /;/);
-		next;
-	    }
-	}
 
 	print OUTPUT $_;
 	if ($_ =~ /^package $destPkg;$/

@@ -1,3 +1,14 @@
+2001-03-05  Jochen Hoenicke  <jochen@gnu.org>
+
+	* java/util/TreeMap.java (writeObject): Use defaultWriteObject()
+	instead of the new JDK1.2 API.  This is simpler and makes 
+	back-porting the classes to JDK1.1 trivial.
+	(readObject): likewise.
+	* lib/mkcollections.pl.in (mymkdir): Give the permission parameter 
+	to mkdir.  Simplified the method.
+	(convert): Removed the hacks to convert the JDK1.2 api to 1.1, as 
+	they are no longer necessary.
+
 2001-02-22  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	Fix for PR java/2040:
