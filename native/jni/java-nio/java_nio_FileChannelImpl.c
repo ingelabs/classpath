@@ -41,6 +41,9 @@ exception statement from your version. */
 #include <jni.h>
 #include <jcl.h>
 
+#include "target_native.h"
+#include "target_native_math_int.h"
+
 #include "java_nio_channels_FileChannelImpl.h"
 
 #define IO_EXCEPTION "java/io/IOException"
