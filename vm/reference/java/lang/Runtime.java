@@ -726,7 +726,7 @@ public class Runtime
    * already been mapped to a true filename.
    *
    * @param filename the file to load
-   * @return 0 on success, nonzero on failure
+   * @return 0 on failure, nonzero on success
    */
   native int nativeLoad(String filename);
 

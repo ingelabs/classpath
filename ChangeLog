@@ -1,5 +1,11 @@
 2002-04-28  C. Brian Jones <cbj@gnu.org>
 
+	* vm/reference/java/lang/Runtime.java (nativeLoad): comment fix, 
+	@return 0 on failure, nonzero on success: this matches current VM
+	implementations using Classpath
+
+2002-04-28  C. Brian Jones <cbj@gnu.org>
+
 * lib/standard.omit: disable javax.swing
 
 2002-04-28  C. Brian Jones <cbj@gnu.org>
