@@ -23,6 +23,7 @@ package java.net;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PushbackInputStream;
 import java.security.Permission;
 
 /**
@@ -225,7 +226,7 @@ public static final int HTTP_UNSUPPORTED_TYPE = 415;
 /**
   * This error code indicates that some sort of server error occurred
   */
-public static final int HTTP_SERVER_ERROR = XXX;
+public static final int HTTP_SERVER_ERROR = 500;
 
 /**
   * The server encountered an unexpected error (such as a CGI script crash)
@@ -436,20 +437,37 @@ getErrorStream()
   if (!connected)
     return(null);
 
-  int code = getResponseCode();
+  int code;
+  try
+    {
+      code = getResponseCode();
+    }
+  catch(IOException e)
+    {
+      code = -1;
+    }
+
   if (code == -1)
     return(null);
 
   if (((code/100) != 4) || ((code/100) != 5))
     return(null);
 
-  PushbackInputStream pbis = new PushbackInputStream(getInputStream());
-  int i = pbis.read();
-  if (i == -1)
-    return(null);
+  try
+    {
+      PushbackInputStream pbis = new PushbackInputStream(getInputStream());
 
-  pbis.unread(i);
-  return(pbis);
+     int i = pbis.read();
+     if (i == -1)
+       return(null);
+ 
+     pbis.unread(i);
+     return(pbis);
+    }
+  catch(IOException e)
+    {
+      return(null);
+    }
 }
 
 /*************************************************************************/
