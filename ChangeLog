@@ -1,3 +1,13 @@
+2004-01-04  Michael Koch  <konqueror@gmx.de>
+
+	* java/util/HashMap.java (HashMap(Map)): As above.
+	(putAllInternal): As above.
+	* java/util/Hashtable.java (Hashtable(Map)): Use putAll, not
+	putAllInternal.
+	(putAllInternal): Correct comment.
+	(internalContainsValue): Removed.
+	(containsValue): Don't delegate to internalContainsValue.
+
 2003-12-31  Fernando Nasser  <fnasser@redhat.com>
 
 	* java/awt/Choice.java
