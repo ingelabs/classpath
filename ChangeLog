@@ -1,3 +1,10 @@
+2004-12-17  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/JTable.java
+	(addColumn): New method.
+	(getColumnClass): Likewise.
+	(getColumnName): Likewise.
+
 2004-12-17  Paul Jenner  <psj.home@ntlworld.com>
 
 	* javax/swing/TransferHandler.java
