@@ -1,3 +1,17 @@
+2004-04-17  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/AWTPermission.java,
+	java/awt/Component.java,
+	java/awt/ComponentOrientation.java,
+	java/awt/Dialog.java,
+	java/awt/FontMetrics.java,
+	java/awt/datatransfer/DataFlavor.java,
+	java/beans/Introspector.java,
+	java/beans/PropertyEditor.java,
+	java/beans/PropertyEditorManager.java,
+	java/beans/beancontext/BeanContextServiceProvider.java:
+	Fixed HTML tags in javadocs.
+
 2004-04-16  Guilhem Lavaux <guilhem@kaffe.org>
 
         Reported by Nektarios Papadopoulos <npapadop@inaccessnetworks.com>
