@@ -5,7 +5,9 @@
 	(MarginBorder.getBorderInsets): Amended to also retrieve the margin
 	of javax.swing.text.JTextComponent.
 	
-	* javax/swing/plaf/basic/doc-files/BasicBorders.FieldBorder.png:
+	* javax/swing/plaf/basic/doc-files/BasicBorders.FieldBorder.png,
+	javax/swing/plaf/basic/doc-files/BasicBorders-1.png,
+	javax/swing/plaf/basic/doc-files/BasicBorders-2.png,
 	New image.
 
 	* javax/swing/text/JTextComponent.java (getMargin): Added stub
