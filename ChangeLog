@@ -1,3 +1,9 @@
+2004-05-07  Stephen Crawley <crawley@dstc.edu.au>
+
+	* vm/reference/java/lang/VMProcess.java (destroy) :
+	fix the infinite loop that occurs if you try to destroy a Process
+	that hasn't terminated yet.
+
 09-20-03 Guilhem Lavaux <guilhem@kaffe.org>
 
 	 * java/io/File.java:

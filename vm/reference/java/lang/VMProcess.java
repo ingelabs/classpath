@@ -316,11 +316,12 @@ final class VMProcess extends Process
       return;
 
     nativeKill(pid);
-    while (true)
+    
+    while (state != TERMINATED)
       {
 	try
 	  {
-	    waitFor();
+	    wait();
 	  }
 	catch (InterruptedException e)
 	  {
