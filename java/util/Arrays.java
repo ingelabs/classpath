@@ -2207,7 +2207,7 @@ public class Arrays
    *         null.compareTo cannot work)
    * @throws ArrayIndexOutOfBoundsException, if fromIndex and toIndex
    *         are not in range.
-   * @throws IllegalArgumentException if fromIndex > toIndex
+   * @throws IllegalArgumentException if fromIndex &gt; toIndex
    */
   public static void sort(Object[] a, int fromIndex, int toIndex)
   {
@@ -2231,7 +2231,7 @@ public class Arrays
    *         comparable by the Comparator provided
    * @throws ArrayIndexOutOfBoundsException, if fromIndex and toIndex
    *         are not in range.
-   * @throws IllegalArgumentException if fromIndex > toIndex
+   * @throws IllegalArgumentException if fromIndex &gt; toIndex
    * @throws NullPointerException if a null element is compared with natural
    *         ordering (only possible when c is null)
    */
