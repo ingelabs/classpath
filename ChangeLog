@@ -1,5 +1,10 @@
 2003-11-30  Mark Wielaard  <mark@klomp.org>
 
+	* configure.in: Set version to 0.07.
+	* NEWS: Set release date to today.
+
+2003-11-30  Mark Wielaard  <mark@klomp.org>
+
 	* java/security/Security.java: Don't use &nbsp; in the api doc.
 
 2003-11-30  Mark Wielaard  <mark@klomp.org>
