@@ -1,3 +1,7 @@
+2004-09-04  Tom Tromey  <tromey@redhat.com>
+
+	* java/awt/dnd/package.html: Fixed typo.
+
 2004-09-04  Graydon Hoare  <graydon@redhat.com>
 
 	* javax/swing/Box.java: Fix setting of layout in ctor.
