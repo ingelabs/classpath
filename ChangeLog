@@ -1,5 +1,20 @@
 2004-07-27  Jeroen Frijters  <jeroen@frijters.net>
 
+	* vm/reference/java/io/VMFile.java (toCanonicalForm): New method.
+	* java/io/File.java (dupSeparator): New field. (File(String)):
+	Modified to use new normalizePath method. (normalizePath): New method
+	merged from libgcj.
+	(File(String,String)): Modified to use new normalizePath method.
+	(File(File,String)): Modified to forward to File(String,String).
+	(File(URI)): New constructor. (getAbsolutePath): Merged from libgcj.
+	(getCanonicalPath): New implementation that forwards to VMFile.
+	(getParent): Merged from libgcj. (isAbsolute): Merged from libgcj.
+	(list(FilenameFilter)): Removed unnecessary path normalization.
+	(toURL): Merged from libgcj. (mkdir): Removed unnecessary path
+	normalization. (compareTo): Removed incorrect canonicalization.
+
+2004-07-27  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/lang/Class.java (getClassLoader): Removed special case for
 	java. and gnu.java. classes and fixed class loader security rule.
 
