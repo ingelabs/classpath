@@ -1,5 +1,13 @@
 2004-11-17  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/image/AffineTransformOp.java,
+	java/awt/image/ColorConvertOp.java,
+	java/awt/image/LookupOp.java,
+	java/awt/image/RescaleOp.java:
+	Added final keywords where they belong.
+
+2004-11-17  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/CardLayout.java,
 	java/awt/Component.java,
 	java/awt/Font.java,
