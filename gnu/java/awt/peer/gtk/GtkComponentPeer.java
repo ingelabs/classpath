@@ -111,7 +111,7 @@ public class GtkComponentPeer extends GtkGenericPeer
     return ColorModel.getRGBdefault ();
   }
 
-  public FontMetrics getFontMetrics (Font f)
+  public FontMetrics getFontMetrics (Font font)
   {
     return new GdkFontMetrics (font);
   }
