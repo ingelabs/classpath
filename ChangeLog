@@ -1,5 +1,42 @@
 2004-03-07  Mark Wielaard  <mark@klomp.org>
 
+	* configure.ac: Add gnu/regexp/Makefile and
+	resource/gnu/regexp/Makefile
+	* gnu/Makefile.am (SUBDIRS): Add regexp.
+	* gnu/regexp/Makefile.am: New file.
+	* gnu/regexp/CharIndexed.java: Imported.
+	* gnu/regexp/CharIndexedCharArray.java: Likewise.
+	* gnu/regexp/CharIndexedInputStream.java: Likewise.
+	* gnu/regexp/CharIndexedString.java: Likewise.
+	* gnu/regexp/CharIndexedStringBuffer.java: Likewise.
+	* gnu/regexp/RE.java: Likewise.
+	* gnu/regexp/REException.java: Likewise.
+	* gnu/regexp/REFilterInputStream.java: Likewise.
+	* gnu/regexp/REMatch.java: Likewise.
+	* gnu/regexp/REMatchEnumeration.java: Likewise.
+	* gnu/regexp/RESyntax.java: Likewise.
+	* gnu/regexp/REToken.java: Likewise.
+	* gnu/regexp/RETokenAny.java: Likewise.
+	* gnu/regexp/RETokenBackRef.java: Likewise.
+	* gnu/regexp/RETokenChar.java: Likewise.
+	* gnu/regexp/RETokenEnd.java: Likewise.
+	* gnu/regexp/RETokenEndSub.java: Likewise.
+	* gnu/regexp/RETokenOneOf.java: Likewise.
+	* gnu/regexp/RETokenPOSIX.java: Likewise.
+	* gnu/regexp/RETokenRange.java: Likewise.
+	* gnu/regexp/RETokenRepeated.java: Likewise.
+	* gnu/regexp/RETokenStart.java: Likewise.
+	* gnu/regexp/RETokenWordBoundary.java: Likewise.
+	* gnu/regexp/UncheckedRE.java: Likewise.
+	* java/util/regex/Matcher.java: Add gnu.regexp wrappers.
+	* java/util/regex/Pattern.java: Likewise.
+	* resource/gnu/Makefile.am (SUBDIRS): Add regexp.
+	* resource/gnu/regexp/Makefile.am: New file.
+	* resource/gnu/regexp/MessagesBundle.properties: Imported.
+	* resource/gnu/regexp/MessagesBundle_fr.properties: Likewise.
+
+2004-03-07  Mark Wielaard  <mark@klomp.org>
+
 	* lib/Makefile.am (propertydirs, propertyfiles): New variables.
 	(resources): Create dirs and install property files.
 

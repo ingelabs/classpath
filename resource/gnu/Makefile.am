@@ -1,4 +1,4 @@
 ## used by automake to generate Makefile.in
 
-SUBDIRS = java
+SUBDIRS = java regexp
 

@@ -327,6 +327,7 @@ gnu/java/util/prefs/Makefile
 gnu/javax/Makefile
 gnu/javax/rmi/Makefile
 gnu/javax/rmi/CORBA/Makefile
+gnu/regexp/Makefile
 include/Makefile
 include/jni.h
 java/Makefile
@@ -428,6 +429,7 @@ resource/gnu/java/Makefile
 resource/gnu/java/awt/Makefile
 resource/gnu/java/awt/peer/Makefile
 resource/gnu/java/awt/peer/gtk/Makefile
+resource/gnu/regexp/Makefile
 resource/java/Makefile
 resource/java/util/Makefile
 resource/java/security/Makefile
