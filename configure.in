@@ -130,6 +130,7 @@ if test "${COMPILE_JNI}" = "yes"; then
   AC_LINK_FILES(include/jni_md-${target_cpu}-${target_os}.h, include/jni_md.h)
 fi
 
+CLASSPATH_FIND_JAVA
 CLASSPATH_FIND_JAVAC
 
 CLASSPATH_WITH_CLASSLIB

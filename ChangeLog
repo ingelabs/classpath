@@ -1,18 +1,20 @@
+2002-03-11  C. Brian Jones <cbj@gnu.org>
+
+	* acinclude.m4: moved AM_CONDITIONAL statements out of conditionals
+	to avoid warning from autoconf 2.53
+	* configure.in: explicitly call CLASSPATH_FIND_JAVA outside of a 
+	conditional to avoid AM_CONDITIONAL warning
 
 2002-03-11  Ronald Veldema <rveldema@cs.vu.nl>
 
-	* added java.nio.*      <abstract classes>	
-	* added gnu.java.nio.*  <implements java.nio>
-             - still need to add the native side
-	* added javax.swing.*   
-	     - embryonic still	
-	     - swing builds ontop of java.awt, so needs awt
-	     - needs makefile support
-	* added lib/gen_nio.sh 
-	  It generates all those java.nio.TYPEBuffer.java and	
-	  gnu.java.nio.TYPEBuffer.java files
-	  where TYPE={Byte,Long,Float,etc}
-	
+	* java.nio.*: new files
+	* gnu.java.nio.*: new files; provides java.nio.* implementation; 
+	the native side is not yet done
+	* javax.swing.*: new files; embryonic state;swing builds ontop of 
+	java.awt, so needs awt; needs makefile support
+	* added lib/gen_nio.sh: new file; it generates all those 
+	java.nio.TYPEBuffer.java and gnu.java.nio.TYPEBuffer.java files 
+	where TYPE={Byte,Long,Float,etc}
 
 2002-03-11  Mark Wielaard <mark@klomp.org>
 

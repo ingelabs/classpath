@@ -261,8 +261,8 @@ AC_DEFUN(CLASSPATH_FIND_JAVAC,
   else
     AM_CONDITIONAL(FOUND_GCJ, test "$user_specified_javac" = "gcj")
     AM_CONDITIONAL(FOUND_JIKES, test "$user_specified_javac" = "jikes")
-    AM_CONDITIONAL(FOUND_KJC, test "$user_specified_javac" = "kjc")
   fi
+  AM_CONDITIONAL(FOUND_KJC, test "$user_specified_javac" = "kjc")
 
   if test "$GCJ" = "" && test "$JIKES" = "" && test "$user_specified_javac" != "kjc"; then
       echo "configure: cannot find javac, try --with-gcj, --with-jikes, or --with-kjc" 1>&2
@@ -284,11 +284,11 @@ AC_DEFUN(CLASSPATH_WITH_GCJ,
       fi
     fi
     user_specified_javac=gcj
-    AM_CONDITIONAL(USER_SPECIFIED_GCJ, test "$GCJ" != "")
   ],
   [
     CLASSPATH_CHECK_GCJ
   ])
+  AM_CONDITIONAL(USER_SPECIFIED_GCJ, test "$GCJ" != "")
   AC_SUBST(GCJ)
 ])
 
@@ -320,11 +320,11 @@ AC_DEFUN(CLASSPATH_WITH_JIKES,
       fi
     fi
     user_specified_javac=jikes
-    AM_CONDITIONAL(USER_SPECIFIED_JIKES, test "$JIKES" != "")
   ],
   [ 
     CLASSPATH_CHECK_JIKES
   ])
+  AM_CONDITIONAL(USER_SPECIFIED_JIKES, test "$JIKES" != "")
   AC_SUBST(JIKES)
 ])
 
@@ -359,15 +359,14 @@ AC_DEFUN(CLASSPATH_WITH_KJC,
       AC_MSG_RESULT(${withval})
     fi
     user_specified_javac=kjc
-    AM_CONDITIONAL(USER_SPECIFIED_KJC, test x$conditional_with_kjc = xtrue)
   ],
   [ 
     conditional_with_kjc=false
   ])
 
 
+  AM_CONDITIONAL(USER_SPECIFIED_KJC, test x$conditional_with_kjc = xtrue)
   if test x$conditional_with_kjc = xtrue && test "$USER_JABBA" = ""; then
-    CLASSPATH_FIND_JAVA
     if test "$USER_JABBA" = ""; then
       echo "configure: cannot find java, try --with-java" 1>&2
       exit 1
@@ -388,11 +387,11 @@ AC_DEFUN(CLASSPATH_WITH_JAVA,
         CLASSPATH_CHECK_JAVA
       fi
     fi
-    AM_CONDITIONAL(USER_SPECIFIED_JABBA, test "$USER_JABBA" != "")
   ],
   [ 
     CLASSPATH_CHECK_JAVA
   ])
+  AM_CONDITIONAL(USER_SPECIFIED_JABBA, test "$USER_JABBA" != "")
   AC_SUBST(USER_JABBA)
 ])
 
@@ -429,11 +428,11 @@ AC_DEFUN(CLASSPATH_WITH_JAVAH,
     else
       CLASSPATH_CHECK_JAVAH
     fi
-    AM_CONDITIONAL(USER_SPECIFIED_JAVAH, test "$USER_JAVAH" != "")
   ],
   [ 
     CLASSPATH_CHECK_JAVAH
   ])
+  AM_CONDITIONAL(USER_SPECIFIED_JAVAH, test "$USER_JAVAH" != "")
   AC_SUBST(USER_JAVAH)
 ])
 
