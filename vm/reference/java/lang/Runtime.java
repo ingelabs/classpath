@@ -43,6 +43,12 @@ public class Runtime {
 
 	private Runtime() {
 		String path = getLibraryPath();
+                if (path == null)
+                  {
+                    libpath = new String[0];
+                  }
+                else
+                  {
 		int numColons = 0;
 		int pathLength = path.length();
 		for(int i=0;i<pathLength;i++) {
@@ -54,7 +60,7 @@ public class Runtime {
 		int current = 0;
 		int libpathIndex = 0;
 		while(true) {
-			int next = path.indexOf(':',current);
+			int next = path.indexOf(File.pathSeparatorChar,current);
 			if(next == -1) {
 				libpath[libpathIndex] = path.substring(current);
 				break;
@@ -63,6 +69,7 @@ public class Runtime {
 			libpathIndex++;
 			current = next+1;
 		}
+                }
 	}
 
 	/** Get the current Runtime object for this JVM.

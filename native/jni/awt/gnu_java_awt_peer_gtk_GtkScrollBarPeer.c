@@ -145,7 +145,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setPageIncrement
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setValues
-    (JNIEnv *env, jobject obj, jint value, int visible, int min, int max)
+    (JNIEnv *env, jobject obj, jint value, jint visible, jint min, jint max)
 {
   void *ptr;
   GtkAdjustment *adj;

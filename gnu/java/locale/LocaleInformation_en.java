@@ -67,7 +67,7 @@ private static final String[] word_breaks = { " ", "\t", "\r\n", "\n" };
   * This is the list of sentence break sequences used by 
   * java.text.BreakIterator
   */
-private static final String[] sentence_breaks = { ". " };
+private static final String[] sentence_breaks = { ". ", ".\t", ".\r\n", ".\r", ".\n" };
 
 /**
   * This is the list of potential line break locations.

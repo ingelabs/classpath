@@ -51,6 +51,36 @@ private static final String collation_rules =
   "<l,L<m,M<n,N<o,O<p,P<q,Q<r,R<s,S<t,T<u,U<v,V<w,W<x,X<y,Y,z<Z" + 
   "&ae,\u00e4&Ae,\u00c4&oe,\u00f6&Oe,\u00d6&ue,\u00fc&Ue,\u00dc&ss,\u00df";
 
+/*
+ * For the followings lists, strings that are subsets of other break strings
+ * must be listed first.  For example, if "\r" and "\r\n" are sequences,
+ * the "\r" must be first or it will never be used.
+ */
+
+/**
+  * This is the list of word separator characters used by
+  * java.text.BreakIterator
+  * <p>
+  * This is the same list as used in the English local
+  */
+private static final String[] word_breaks = { " ", "\t", "\r\n", "\n" };
+
+/**
+  * This is the list of sentence break sequences used by
+  * java.text.BreakIterator
+  * <p>
+  * This is the same list as used in the English local
+  */
+private static final String[] sentence_breaks = { ". ", ".\t", ".\r\n", ".\r", ".\n" };
+
+/**
+  * This is the list of potential line break locations.
+  * <p>
+  * This is the same list as used in the English local
+  */
+private static final String[] line_breaks = { "\t", "-", "\r\n",
+  "\n", ".  ", ". ", ".",  "?  ", "? ", "?",  "!  ", "! ", "!", ", ", " " };
+
 /**
   * This is the list of months, fully spelled out
   */

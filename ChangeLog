@@ -1,3 +1,23 @@
+2001-07-26  C. Brian Jones
+	* vm/reference/java/lang/Runtime.java (Runtime): use 
+	File.pathSeparatorChar instead of ':'
+
+2001-07-26  Patrick Doyle
+	* vm/reference/java/lang/Runtime.java (Runtime): deal with
+	null library path
+	* vm/reference/java/lang/Class.java: documentation fix
+
+2001-07-26  Julian Scheid <julian.scheid@sektor37.de>
+	* native/jni/awt/gnu_java_awt_peer_gtk_GtkScrollBarPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setValues):
+	changed argument type from int to jint
+	* gnu/java/locale/LocaleInformation_en.java: sentence_breaks 
+	updated
+	* gnu/java/locale/LocaleInformation_nl.java: sentence_breaks 
+	updated
+	* gnu/java/locale/LocaleInformation_de.java: Added word_breaks, 
+	sentence_breaks, and line_breaks.
+
 2001-07-25  Etienne M. Gagnon <etienne.gagnon@uqam.ca>
 
 	* native/jni/java_io_FileDescriptor.c: added 

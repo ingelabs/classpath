@@ -32,8 +32,8 @@ import gnu.java.lang.*;
  * Arrays with identical type and number of dimensions
  * share the same class (and null "system" ClassLoader,
  * incidentally).  The name of an array class is
- * <CODE>[&lt;type name&gt;</CODE> ... for example,
- * String[]'s class is <CODE>[java.lang.String</CODE>.
+ * <CODE>[&lt;signature format&gt;;</CODE> ... for example,
+ * String[]'s class is <CODE>[Ljava.lang.String;</CODE>.
  * boolean, byte, short, char, int, long, float and double
  * have the "type name" of Z,B,S,C,I,J,F,D for the
  * purposes of array classes.  If it's a multidimensioned

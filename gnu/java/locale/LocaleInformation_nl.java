@@ -73,7 +73,7 @@ private static final String[] word_breaks = { " ", "\t", "\r\n", "\n" };
   * <p>
   * This is the same list as used in the English local
   */
-private static final String[] sentence_breaks = { ". " };
+private static final String[] sentence_breaks = { ". ", ".\t", ".\r\n", ".\r", ".\n" };
 
 /**
   * This is the list of potential line break locations.
