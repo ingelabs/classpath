@@ -388,7 +388,7 @@ Java_java_io_File_lastModifiedInternal(JNIEnv *env, jobject obj, jstring name)
   filename = (*env)->GetStringUTFChars(env, name, 0);
   if (filename == NULL)
     {
-      return(0);
+      return(TARGET_NATIVE_MATH_INT_INT64_CONST_0);
     }
  
   TARGET_NATIVE_FILE_GET_LAST_MODIFIED(filename,mtime,result);
