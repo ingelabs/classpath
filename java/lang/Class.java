@@ -42,11 +42,14 @@ import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Member;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.security.AllPermission;
 import java.security.Permissions;
 import java.security.ProtectionDomain;
+import java.util.ArrayList;
+import java.util.Arrays;
 import gnu.java.lang.ClassHelper;
 
 /*
@@ -102,12 +105,15 @@ public final class Class implements Serializable
     unknownProtectionDomain = new ProtectionDomain(null, permissions);
   }
 
+  private transient final VMClass vmClass;
+
   /**
    * Class is non-instantiable from Java code; only the VM can create
    * instances of this class.
    */
   private Class()
   {
+    this.vmClass = VMClass.getInstance ();
   }
 
   /**
@@ -137,15 +143,14 @@ public final class Class implements Serializable
    * @throws ExceptionInInitializerError if the class loads, but an exception
    *         occurs during initialization
    */
-  //XXX This does not need to be native.
-  public static native Class forName(String name)
-    throws ClassNotFoundException;
-  /*
+  public static Class forName(String name) throws ClassNotFoundException
   {
-    return forName(name, true,
-                   VMSecurityManager.getClassContext()[1].getClassLoader());
+    Class result = vmClass.forName (name);
+    if (result == null)
+      result = Class.forName(name, true,
+        VMSecurityManager.getClassContext()[1].getClassLoader());
+    return result;
   }
-  */
 
   /**
    * Use the specified classloader to load and link a class. If the loader
@@ -243,7 +248,10 @@ public final class Class implements Serializable
    * @return whether o is an instance of this class
    * @since 1.1
    */
-  public native boolean isInstance(Object o);
+  public boolean isInstance(Object o)
+  {
+    return vmClass.isInstance (o);
+  }
 
   /**
    * Discover whether an instance of the Class parameter would be an
@@ -259,7 +267,10 @@ public final class Class implements Serializable
    * @throws NullPointerException if c is null
    * @since 1.1
    */
-  public native boolean isAssignableFrom(Class c);
+  public boolean isAssignableFrom(Class c)
+  {
+    return vmClass.isAssignableFrom (c);
+  }
 
   /**
    * Check whether this class is an interface or not.  Array types are not
@@ -267,7 +278,10 @@ public final class Class implements Serializable
    *
    * @return whether this class is an interface or not
    */
-  public native boolean isInterface();
+  public boolean isInterface()
+  {
+    return vmClass.isInterface ();
+  }
 
   /**
    * Return whether this class is an array type.
@@ -277,7 +291,11 @@ public final class Class implements Serializable
    */
   public boolean isArray()
   {
-    return getName().charAt(0) == '[';
+    int result = -1;
+    if ((result = vmClass.isArray ()) < 0)
+      return getName().charAt(0) == '[';
+
+    return (result == 1) ? true : false;
   }
 
   /**
@@ -299,7 +317,10 @@ public final class Class implements Serializable
    * @see Void#TYPE
    * @since 1.1
    */
-  public native boolean isPrimitive();
+  public boolean isPrimitive()
+  {
+    return vmClass.isPrimitive ();
+  }
 
   /**
    * Get the name of this class, separated by dots for package separators.
@@ -316,11 +337,14 @@ public final class Class implements Serializable
    * void                V
    * array type          [<em>element type</em>
    * class or interface, alone: &lt;dotted name&gt;
-   * class or interface, as element type: L&lt;dotten name&gt;;
+   * class or interface, as element type: L&lt;dotted name&gt;;
    *
    * @return the name of this class
    */
-  public native String getName();
+  public String getName()
+  { 
+    return vmClass.getName ();
+  }
 
   /**
    * Get the ClassLoader that loaded this class.  If it was loaded by the
@@ -343,7 +367,7 @@ public final class Class implements Serializable
     if (name.startsWith("java.") || name.startsWith("gnu.java."))
       return null;
 
-    ClassLoader loader = getClassLoader0();
+    ClassLoader loader = vmClass.getClassLoader();
     // Check if we may get the classloader
     SecurityManager sm = System.getSecurityManager();
     if (sm != null)
@@ -364,7 +388,10 @@ public final class Class implements Serializable
    *
    * @return the direct superclass of this class
    */
-  public native Class getSuperclass();
+  public Class getSuperclass()
+  {
+    return vmClass.getSuperClass ();
+  }
 
   /**
    * Returns the <code>Package</code> in which this class is defined
@@ -391,7 +418,10 @@ public final class Class implements Serializable
    *
    * @return the interfaces this class directly implements
    */
-  public native Class[] getInterfaces();
+  public Class[] getInterfaces()
+  {
+    return vmClass.getInterfaces ();
+  }
 
   /**
    * If this is an array, get the Class representing the type of array.
@@ -405,43 +435,7 @@ public final class Class implements Serializable
    */
   public Class getComponentType()
   {
-    if (isArray())
-      try
-        {
-          String name = getName();
-          switch (name.charAt(1))
-            {
-            case 'B':
-              return byte.class;
-            case 'C':
-              return char.class;
-            case 'D':
-              return double.class;
-            case 'F':
-              return float.class;
-            case 'I':
-              return int.class;
-            case 'J':
-              return long.class;
-            case 'S':
-              return short.class;
-            case 'Z':
-              return boolean.class;
-            default:
-              return null;
-            case '[':
-              name = name.substring(1);
-              break;
-            case 'L':
-              name = name.substring(2, name.length() - 1);
-            }
-          return Class.forName(name, false, getClassLoader());
-        }
-      catch(ClassNotFoundException e)
-        {
-          // Shouldn't happen, but ignore it anyway.
-        }
-    return null;
+    return vmClass.getComponentType ();
   }
 
   /**
@@ -456,7 +450,10 @@ public final class Class implements Serializable
    * @see Modifer
    * @since 1.1
    */
-  public native int getModifiers();
+  public int getModifiers()
+  {
+    return vmClass.getModifiers ();
+  }
 
   /**
    * Get the signers of this class. This returns null if there are no signers,
@@ -467,7 +464,7 @@ public final class Class implements Serializable
    */
   public Object[] getSigners()
   {
-    return signers;
+    return signers.clone ();
   }
 
   /**
@@ -481,13 +478,30 @@ public final class Class implements Serializable
   }
 
   /**
+   * Perform security checks common to all of the methods that
+   * get members of this Class.
+   */
+  private void memberAccessCheck(int which) {
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null) {
+      sm.checkMemberAccess(this, which);
+      Package pkg = getPackage();
+      if (pkg != null)
+	sm.checkPackageAccess(pkg.getName());
+    }
+  }
+
+  /**
    * If this is a nested or inner class, return the class that declared it.
    * If not, return null.
    *
    * @return the declaring class of this class
    * @since 1.1
    */
-  public native Class getDeclaringClass();
+  public Class getDeclaringClass()
+  {
+    return vmClass.getDeclaringClass ();
+  }
 
   /**
    * Get all the public member classes and interfaces declared in this
@@ -501,7 +515,22 @@ public final class Class implements Serializable
    * @throws SecurityException if the security check fails
    * @since 1.1
    */
-  public native Class[] getClasses();
+  public Class[] getClasses() {
+    memberAccessCheck(Member.PUBLIC);
+    return internalGetClasses();
+  }
+
+  /**
+   * Like <code>getClasses()</code> but without the security checks.
+   */
+  private Class[] internalGetClasses() {
+    ArrayList list = new ArrayList();
+    list.add(Arrays.asList(getDeclaredClasses(true)));
+    Class superClass = getSuperclass();
+    if (superClass != null)
+      list.add(Arrays.asList(superClass.internalGetClasses()));
+    return (Class[])list.toArray(new Class[list.size()]);
+  }
 
   /**
    * Get all the public fields declared in this class or inherited from
@@ -515,7 +544,28 @@ public final class Class implements Serializable
    * @throws SecurityException if the security check fails
    * @since 1.1
    */
-  public native Field[] getFields();
+  public Field[] getFields() {
+    memberAccessCheck(Member.PUBLIC);
+    return internalGetFields();
+  }
+
+  /**
+   * Like <code>getFields()</code> but without the security checks.
+   */
+  private Field[] internalGetFields() {
+    ArrayList list = new ArrayList();
+    list.add(Arrays.asList(getDeclaredFields(true)));
+    if (isInterface()) {
+      Class[] interfaces = getInterfaces();
+      for (int i = 0; i < interfaces.length; i++)
+	list.add(Arrays.asList(interfaces[i].internalGetFields()));
+    } else {
+      Class superClass = getSuperclass();
+      if (superClass != null)
+	list.add(Arrays.asList(superClass.internalGetFields()));
+    }
+    return (Field[])list.toArray(new Field[list.size()]);
+  }
 
   /**
    * Get all the public methods declared in this class or inherited from
@@ -533,7 +583,89 @@ public final class Class implements Serializable
    * @throws SecurityException if the security check fails
    * @since 1.1
    */
-  public native Method[] getMethods();
+  public Method[] getMethods() {
+    memberAccessCheck(Member.PUBLIC);
+    return internalGetMethods();
+  }
+
+  /**
+   * Like <code>getMethods()</code> but without the security checks.
+   */
+  private Method[] internalGetMethods()
+  {
+    java.util.HashMap map = new java.util.HashMap();
+    Method[] methods;
+    Class[] interfaces = getInterfaces();
+    for(int i = 0; i < interfaces.length; i++)
+      {
+	methods = interfaces[i].internalGetMethods();
+	for(int j = 0; j < methods.length; j++)
+	  {
+	    map.put(new MethodKey(methods[j]), methods[j]);
+	  }
+      }
+    Class superClass = getSuperclass();
+    if(superClass != null)
+      {
+	methods = superclass.internalGetMethods();
+	for(int i = 0; i < methods.length; i++)
+	  {
+	    map.put(new MethodKey(methods[i]), methods[i]);
+	  }
+      }
+    methods = getDeclaredMethods(true);
+    for(int i = 0; i < methods.length; i++)
+      {
+	map.put(new MethodKey(methods[i]), methods[i]);
+      }
+    return (Method[])map.values().toArray(new Method[map.size()]);
+  }
+  
+  private static final class MethodKey
+  {
+    private String name;
+    private Class[] params;
+    private Class returnType;
+    private int hash;
+    
+    MethodKey(Method m)
+    {
+      name = m.getName();
+      params = m.getParameterTypes();
+      returnType = m.getReturnType();
+      hash = name.hashCode() ^ returnType.hashCode();
+      for(int i = 0; i < params.length; i++)
+	{
+	  hash ^= params[i].hashCode();
+	}
+    }
+    
+    public boolean equals(Object o)
+    {
+      if(o instanceof MethodKey)
+	{
+	  MethodKey m = (MethodKey)o;
+	  if(m.name.equals(name) && m.params.length == params.length && m.returnType == returnType)
+	    {
+	      for(int i = 0; i < params.length; i++)
+		{
+		  if(m.params[i] != params[i])
+		    {
+		      return false;
+		    }
+		}
+	      return true;
+	    }
+	}
+      return false;
+    }
+    
+    public int hashCode()
+    {
+      return hash;
+    }
+  }
+  
 
   /**
    * Get all the public constructors of this class. This returns an array of
@@ -547,7 +679,10 @@ public final class Class implements Serializable
    * @throws SecurityException if the security check fails
    * @since 1.1
    */
-  public native Constructor[] getConstructors();
+  public Constructor[] getConstructors() {
+    memberAccessCheck(Member.PUBLIC);
+    return getDeclaredConstructors(true);
+  }
 
   /**
    * Get a public field declared or inherited in this class, where name is
@@ -564,7 +699,26 @@ public final class Class implements Serializable
    * @see #getFields()
    * @since 1.1
    */
-  public native Field getField(String name) throws NoSuchFieldException;
+  public Field getField(String name) throws NoSuchFieldException {
+    memberAccessCheck(Member.PUBLIC);
+    Field[] fields = getDeclaredFields(true);
+    for (int i = 0; i < fields.length; i++) {
+      Field field = fields[i];
+      if (field.getName().equals(name))
+	return field;
+    }
+    Class[] interfaces = getInterfaces();
+    for (int i = 0; i < interfaces.length; i++) {
+      try {
+	return interfaces[i].getField(name);
+      } catch (NoSuchFieldException e) {
+      }
+    }
+    Class superclass = getSuperclass();
+    if (superclass != null)
+      return superclass.getField(name);
+    throw new NoSuchFieldException();
+  }
 
   /**
    * Get a public method declared or inherited in this class, where name is
@@ -588,8 +742,62 @@ public final class Class implements Serializable
    * @see #getMethods()
    * @since 1.1
    */
-   public native Method getMethod(String name, Class[] args)
-     throws NoSuchMethodException;
+  public Method getMethod(String name, Class[] args)
+	throws NoSuchMethodException {
+    memberAccessCheck(Member.PUBLIC);
+    for (Class c = this; c != null; c = c.getSuperclass()) {
+      Method match = matchMethod(c.getDeclaredMethods(true), name, args);
+      if (match != null)
+	return match;
+    }
+    throw new NoSuchMethodException();
+  }
+
+  /** 
+   * Find the best matching method in <code>list</code> according to
+   * the definition of ``best matching'' used by <code>getMethod()</code>
+   *
+   * <p>
+   * Returns the method if any, otherwise <code>null</code>.
+   *
+   * @param list List of methods to search
+   * @param name Name of method
+   * @param args Method parameter types
+   * @see #getMethod()
+   */
+  private static Method matchMethod(Method[] list, String name, Class[] args) {
+    Method match = null;
+    for (int i = 0; i < list.length; i++) {
+      Method method = list[i];
+      if (!method.getName().equals(name))
+	continue;
+      if (!matchParameters(args, method.getParameterTypes()))
+	continue;
+      if (match == null
+	  || match.getReturnType().isAssignableFrom(method.getReturnType()))
+	match = method;
+    }
+    return match;
+  }
+
+  /**
+   * Check for an exact match between parameter type lists.
+   * Either list may be <code>null</code> to mean a list of
+   * length zero.
+   */
+  private static boolean matchParameters(Class[] types1, Class[] types2) {
+    if (types1 == null)
+      return types2 == null || types2.length == 0;
+    if (types2 == null)
+      return types1 == null || types1.length == 0;
+    if (types1.length != types2.length)
+      return false;
+    for (int i = 0; i < types1.length; i++) {
+      if (!types1[i].equals(types2[i]))
+	return false;
+    }
+    return true;
+  }
 
   /**
    * Get a public constructor declared in this class. If the constructor takes
@@ -605,8 +813,16 @@ public final class Class implements Serializable
    * @see #getConstructors()
    * @since 1.1
    */
-  public native Constructor getConstructor(Class[] args)
-    throws NoSuchMethodException;
+  public Constructor getConstructor(Class[] args) throws NoSuchMethodException {
+    memberAccessCheck(Member.PUBLIC);
+    Constructor[] constructors = getDeclaredConstructors(true);
+    for (int i = 0; i < constructors.length; i++) {
+      Constructor constructor = constructors[i];
+      if (matchParameters(args, constructor.getParameterTypes()))
+	return constructor;
+    }
+    throw new NoSuchMethodException();
+  }
 
   /**
    * Get all the declared member classes and interfaces in this class, but
@@ -620,7 +836,15 @@ public final class Class implements Serializable
    * @throws SecurityException if the security check fails
    * @since 1.1
    */
-  public native Class[] getDeclaredClasses();
+  public Class[] getDeclaredClasses() {
+    memberAccessCheck(Member.DECLARED);
+    return getDeclaredClasses(false);
+  }
+
+  Class[] getDeclaredClasses (boolean publicOnly)
+  {
+    return vmClass.getDeclaredClasses (publicOnly);
+  }
 
   /**
    * Get all the declared fields in this class, but not those inherited from
@@ -634,7 +858,15 @@ public final class Class implements Serializable
    * @throws SecurityException if the security check fails
    * @since 1.1
    */
-  public native Field[] getDeclaredFields();
+  public Field[] getDeclaredFields() {
+    memberAccessCheck(Member.DECLARED);
+    return getDeclaredFields(false);
+  }
+
+  Field[] getDeclaredFields (boolean publicOnly)
+  {
+    return vmClass.getDeclaredFields (publicOnly);
+  }
 
   /**
    * Get all the declared methods in this class, but not those inherited from
@@ -652,7 +884,15 @@ public final class Class implements Serializable
    * @throws SecurityException if the security check fails
    * @since 1.1
    */
-  public native Method[] getDeclaredMethods();
+  public Method[] getDeclaredMethods() {
+    memberAccessCheck(Member.DECLARED);
+    return getDeclaredMethods(false);
+  }
+
+  Method[] getDeclaredMethods (boolean publicOnly)
+  {
+    return vmClass.getDeclaredMethods (publicOnly);
+  }
 
   /**
    * Get all the declared constructors of this class. This returns an array of
@@ -666,7 +906,15 @@ public final class Class implements Serializable
    * @throws SecurityException if the security check fails
    * @since 1.1
    */
-  public native Constructor[] getDeclaredConstructors();
+  public Constructor[] getDeclaredConstructors() {
+    memberAccessCheck(Member.DECLARED);
+    return getDeclaredConstructors(false);
+  }
+
+  Constructor[] getDeclaredConstructors (boolean publicOnly)
+  {
+    return vmClass.getDeclaredConstructors (publicOnly);
+  }
 
   /**
    * Get a field declared in this class, where name is its simple name. The
@@ -681,8 +929,15 @@ public final class Class implements Serializable
    * @see #getDeclaredFields()
    * @since 1.1
    */
-  public native Field getDeclaredField(String name)
-    throws NoSuchFieldException;
+  public Field getDeclaredField(String name) throws NoSuchFieldException {
+    memberAccessCheck(Member.DECLARED);
+    Field[] fields = getDeclaredFields(false);
+    for (int i = 0; i < fields.length; i++) {
+      if (fields[i].getName().equals(name))
+	return fields[i];
+    }
+    throw new NoSuchFieldException();
+  }
 
   /**
    * Get a method declared in this class, where name is its simple name. The
@@ -705,8 +960,14 @@ public final class Class implements Serializable
    * @see #getDeclaredMethods()
    * @since 1.1
    */
-   public native Method getDeclaredMethod(String name, Class[] args)
-     throws NoSuchMethodException;
+   public Method getDeclaredMethod(String name, Class[] args)
+		throws NoSuchMethodException {
+    memberAccessCheck(Member.DECLARED);
+    Method match = matchMethod(getDeclaredMethods(false), name, args);
+    if (match != null)
+      return match;
+    throw new NoSuchMethodException();
+  }
 
   /**
    * Get a constructor declared in this class. If the constructor takes no
@@ -722,8 +983,17 @@ public final class Class implements Serializable
    * @see #getDeclaredConstructors()
    * @since 1.1
    */
-  public native Constructor getDeclaredConstructor(Class[] args)
-    throws NoSuchMethodException;
+  public Constructor getDeclaredConstructor(Class[] args)
+		throws NoSuchMethodException {
+    memberAccessCheck(Member.DECLARED);
+    Constructor[] constructors = getDeclaredConstructors(false);
+    for (int i = 0; i < constructors.length; i++) {
+      Constructor constructor = constructors[i];
+      if (matchParameters(args, constructor.getParameterTypes()))
+	return constructor;
+    }
+    throw new NoSuchMethodException();
+  }
 
   /**
    * Get a resource using this class's package using the
@@ -874,10 +1144,4 @@ public final class Class implements Serializable
     return c.defaultAssertionStatus;
   }
 
-  /**
-   * Return the class loader of this class.
-   *
-   * @return the class loader
-   */
-  native ClassLoader getClassLoader0();
 } // class Class

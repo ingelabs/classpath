@@ -12,6 +12,7 @@ Boolean.java \
 Byte.java \
 Character.java \
 CharSequence.java \
+Class.java \
 ClassCastException.java \
 ClassCircularityError.java \
 ClassFormatError.java \

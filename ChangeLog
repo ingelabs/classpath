@@ -1,3 +1,55 @@
+2003-04-03  C. Brian Jones  <cbj@gnu.org>
+
+	* vm/reference/java/lang/VMClass.java: new file
+	* vm/reference/java/lang/Class.java: moved to java/lang
+	* java/lang/Class.java: added transient reference to VMClass
+	(Class): added call to static VMClass.getInstance()
+	(forName(String)): calls VMClass.forName and if that returns null
+	then performs the previous method call instead
+	(isInstance): moved to VMClass
+	(isAssignableFrom): moved to VMClass
+	(isInterface): moved to VMClass
+	(isArray): calls VMClass.isArray before returning to getName()
+	based implementation
+	(isPrimitive): moved to VMClass
+	(getName): moved to VMClass
+	(getSuperclass): moved to VMClass
+	(getInterfaces): moved to VMClass
+	(getComponentType): moved to VMClass
+	(getModifiers): moved to VMClass
+	(getSigners): return a clone of the signers array
+	(memberAccessCheck): new method
+	(getDeclaringClass): moved to VMClass
+	(getClasses): calls internalGetClasses
+	(internalGetClasses): new method
+	(getFields): calls internalGetFields
+	(internalGetFields): new method
+	(getMethods): calls internalGetMethods
+	(internalGetMethods): new method
+	(getConstructors): calls getDeclaredConstructors
+	(getField): calls getDeclaredFields
+	(getMethod): calls getDeclaredMethods
+	(matchMethod): new method
+	(matchParameters): new method
+	(getConstructor): calls getDeclaredConstructors
+	(getDeclaredClasses): calls getDeclaredClasses(boolean)
+	(getDeclaredClasses(boolean)): new method
+	(getDeclaredFields): calls getDeclaredFields(boolean)
+	(getDeclaredFields(boolean)): new method
+	(getDeclaredMethods): calls getDeclaredMethods(boolean)
+	(getDeclaredMethods(boolean)): new method
+	(getDeclaredConstructors): calls getDeclaredConstructors(boolean)
+	(getDeclaredConstructors(boolean)): new method
+	(getDeclaredField): calls getDeclaredFields
+	(getDeclaredMethod): calls getDeclaredMethods
+	(getDeclaredConstructor): calls getDeclaredConstructors
+	(getClassLoader0): removed
+	* NEWS: note changes to Class
+	* gnu/classpath/RawData: new file (from libgcj)
+	* java/lang/Makefile.am: add Class.java to dist
+	* vm/reference/java/lang/Makefile.am: add VMClass.java to dist, 
+	remove Class.java
+
 2003-03-31  Michael Koch  <konqueror@gmx.de>
 
 	* java/rmi/dgc/VMID.java,
