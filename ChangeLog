@@ -1,5 +1,20 @@
 2003-06-11  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/ByteBuffer.java,
+	java/nio/CharBuffer.java,
+	java/nio/DoubleBuffer.java,
+	java/nio/FloatBuffer.java,
+	java/nio/IntBuffer.java,
+	java/nio/LongBuffer.java,
+	java/nio/MappedByteBuffer.java,
+	java/nio/ShortBuffer.java,
+	java/nio/channels/Channels.java,
+	java/nio/channels/ServerSocketChannel.java,
+	java/nio/channels/spi/AbstractSelector.java:
+	New versions from libgcj.
+
+2003-06-11  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/FileChannelImpl.java:
 	Imported import java.nio.MappedByteFileBuffer.
 	(map_address): made public for now.
