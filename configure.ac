@@ -59,7 +59,7 @@ dnl -----------------------------------------------------------
 dnl GTK native peer (enabled by default)
 dnl -----------------------------------------------------------
 AC_ARG_ENABLE([gtk-peer],
-              [AS_HELP_STRING(--enable-gtk-peer,compile GTK native peers [default=yes])],
+              [AS_HELP_STRING(--enable-gtk-peer,compile GTK native peers,disabled by --disable-jni [default=yes])],
               [case "${enableval}" in
                 yes) COMPILE_GTK_PEER=yes ;;
                 no) COMPILE_GTK_PEER=no ;;
@@ -395,6 +395,7 @@ javax/naming/ldap/Makefile
 javax/naming/spi/Makefile
 javax/print/Makefile
 javax/print/attribute/Makefile
+javax/print/event/Makefile
 javax/rmi/Makefile
 javax/rmi/CORBA/Makefile
 javax/security/Makefile

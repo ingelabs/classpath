@@ -1,5 +1,19 @@
 2004-04-26  Michael Koch  <konqueror@gmx.de>
 
+	* javax/print/event/PrintEvent.java,
+	javax/print/event/PrintJobAdapter.java,
+	javax/print/event/PrintJobAttributeEvent.java,
+	javax/print/event/PrintJobAttributeListener.java,
+	javax/print/event/PrintJobEvent.java,
+	javax/print/event/PrintJobListener.java,
+	javax/print/event/PrintServiceAttributeEvent.java,
+	javax/print/event/PrintServiceAttributeListener.java,
+	javax/print/event/Makefile.am: New files.
+	* configure.ac: Generate javax/print/event/Makefile.
+	* javax/print/Makefile.am (SUBDIRS): Added event.
+
+2004-04-26  Michael Koch  <konqueror@gmx.de>
+
 	* javax/print/attribute/AttributeSetUtilities.java
 	(verifyCategoryForValue): Fixed typo in javadoc.
 	* javax/print/attribute/HashAttributeSet.java

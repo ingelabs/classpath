@@ -1,8 +1,8 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-SUBDIRS = attribute
+SUBDIRS = attribute event
 
-EXTRA_DIST =
+EXTRA_DIST = \
 CancelablePrintJob.java \
 Doc.java \
 DocFlavor.java \
