@@ -1,3 +1,27 @@
+2002-02-07  C. Brian Jones <cbj@gnu.org>
+
+	* configure.in: fixed broken make dist by moving some of the checks
+	out of an if statement wrapping functionality needed only for 
+	compiling JNI libraries, so unfortunately yes you probably must 
+	have a C compiler even if just compiling the Java source
+	* Makefile.am: dist-hook to use $(distdir) instead of $(top_distdir)
+	* native/gnu.java.awt.image: removed directory, needed file was
+	already part of native/jni/gtk-peer/ directory and library.
+	* resource/java/util/Makefile.am: updated properties files to
+	include in distribution
+	* resource/Makefile.am: include gnu in SUBDIRS
+	* resource/gnu/Makefile.am: new file
+	* resource/gnu/.cvsignore: ditto
+	* resource/gnu/java/Makefile.am: ditto
+	* resource/gnu/java/.cvsignore: ditto
+	* resource/gnu/java/awt/Makefile.am: ditto
+	* resource/gnu/java/awt/.cvsignore: ditto
+	* resource/gnu/java/awt/peer/Makefile.am: ditto
+	* resource/gnu/java/awt/peer/.cvsignore: ditto
+	* resource/gnu/java/awt/peer/gtk/Makefile.am: ditto
+	* resource/gnu/java/awt/peer/gtk/.cvsignore: ditto
+	* configure.in: added above Makefiles to output
+	
 2002-02-07  Mark Wielaard  <mark@klomp.org>
 
 	* doc/www.gnu.org/announce/20020208.wml: new file, 0.03 announcement.

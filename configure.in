@@ -63,7 +63,6 @@ AC_PROG_LN_S
 AC_PROG_INSTALL
 
 dnl Checks for programs.
-if test "${COMPILE_JNI}" = "yes"; then
   AC_PREREQ(2.52)
 
   dnl AC_PROG_CXX
@@ -73,6 +72,8 @@ if test "${COMPILE_JNI}" = "yes"; then
   dnl AC_PROG_AWK
   AC_PROG_CC
   AC_PROG_CPP
+
+if test "${COMPILE_JNI}" = "yes"; then
   AC_HEADER_STDC
   AC_CHECK_HEADERS(unistd.h sys/types.h sys/config.h inttypes.h stdint.h)
   AC_EGREP_HEADER(uint32_t, stdint.h, AC_DEFINE(HAVE_INT32_DEFINED))
@@ -314,6 +315,11 @@ native/jni/java-net/Makefile
 native/jni/java-util/Makefile
 native/jni/gtk-peer/Makefile
 resource/Makefile
+resource/gnu/Makefile
+resource/gnu/java/Makefile
+resource/gnu/java/awt/Makefile
+resource/gnu/java/awt/peer/Makefile
+resource/gnu/java/awt/peer/gtk/Makefile
 resource/java/Makefile
 resource/java/util/Makefile
 resource/java/security/Makefile
