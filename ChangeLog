@@ -1,3 +1,19 @@
+2002-03-28  Eric Blake  <ebb9@email.byu.edu>
+
+	* configure.in: Add java/awt/im, java/awt/im/spi.
+	* java/awt/Makefile.am (SUBDIRS): Add java/awt/im.
+	* java/awt/im/.cvsignore: New file.
+	* java/awt/im/InputContext.java: New file.
+	* java/awt/im/InputMethodHighlight.java: New file.
+	* java/awt/im/InputMethodRequests.java: New file.
+	* java/awt/im/InputSubset.java: New file.
+	* java/awt/im/Makefile.am: New file.
+	* java/awt/im/spi/.cvsignore: New file.
+	* java/awt/im/spi/InputMethod.java: New file.
+	* java/awt/im/spi/InputMethodContext.java: New file.
+	* java/awt/im/spi/InputMethodDescriptor.java: New file.
+	* java/awt/im/spi/Makefile.am: New file.
+
 2002-03-28  John Leuner  <jewel@debian.org>
 
 	* java/lang/ClassLoader.java (getSystemClassLoader): Break

@@ -1,6 +1,6 @@
 ## Input file for automake
 
-SUBDIRS = color datatransfer event font geom image peer print
+SUBDIRS = color datatransfer event font geom im image peer print
 
 EXTRA_DIST = \
 ActiveEvent.java \
