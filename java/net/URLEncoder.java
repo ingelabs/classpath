@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.net;
 
 /**
@@ -39,8 +38,6 @@ package java.net;
   * 8 bits of information, the lower 8 bits of the character are used.
   * <p>
   * This method is very useful for encoding strings to be sent to CGI scripts
-  *
-  * @version 0.5
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
@@ -127,7 +124,6 @@ encode(String source)
 private
 URLEncoder()
 {
-  ;
 }
 
 } // class URLEncoder

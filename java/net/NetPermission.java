@@ -1,5 +1,5 @@
 /* NetPermission.java -- A class for basic miscellaneous network permission
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.net;
 
 import java.security.BasicPermission;
@@ -35,11 +34,10 @@ import java.security.BasicPermission;
   * permission.  One that you either have or do not have.  Thus there is
   * no permitted action list associated with this object. 
   *
-  * @version 0.5
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
 public final class NetPermission extends BasicPermission
+                                 implements java.io.Serializable
 {
 
 /*************************************************************************/
@@ -49,10 +47,10 @@ public final class NetPermission extends BasicPermission
  */
 
 /**
-  * Creates a new NetPermission with the specified name which is any valid
-  * String.
+  * Initializes a new instance of <code>NetPermission</code> with the
+  * specified name.
   *
-  * @param name The name of this permission
+  * @param name The name of this permission.
   */
 public
 NetPermission(String name)
@@ -63,9 +61,9 @@ NetPermission(String name)
 /*************************************************************************/
 
 /**
-  * Creates a new NetPermission with the specified name and value.  Note that
-  * the value field is irrelevant and is ignored.  This constructor should
-  * never need to be used.
+  * Initializes a new instance of <code>NetPermission</code> with the 
+  * specified name and value.  Note that the value field is irrelevant and is 
+  * ignored.  This constructor should never need to be used.
   *
   * @param name The name of this permission
   * @param perms The permitted actions of this permission (ignored)

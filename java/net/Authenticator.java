@@ -1,5 +1,5 @@
 /* Authenticator.java -- Abstract class for obtaining authentication info
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.net;
 
 /**
@@ -40,7 +39,7 @@ package java.net;
   * method of this class is called to set up that instance as the object
   * to use on subsequent calls to obtain authorization.
   *
-  * @version 1.2
+  * @since 1.2
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
@@ -123,20 +122,23 @@ setDefault(Authenticator def_auth)
   * network operation is required.  First, a security check is made to see
   * if the caller has the "requestPasswordAuthentication"
   * permission.  If not, the method thows an exception.  If there is no
-  * default Authenticator object, the method then returns null.  Otherwise,
-  * the default authenticators's instance variables are initialized and
-  * it's getPasswordAuthentication method is called to get the actual
-  * authentication information to return.
+  * default <code>Authenticator</code> object, the method then returns 
+  * <code>null</code>.  Otherwise, the default authenticators's instance 
+  * variables are initialized and it's <code>getPasswordAuthentication</code>
+  *  method is called to get the actual authentication information to return.
   *
   * @param addr The address requesting authentication
   * @param port The port requesting authentication
   * @param protocol The protocol requesting authentication
-  * @param prompt The prompt to display to the user when requesting authentication info
+  * @param prompt The prompt to display to the user when requesting 
+           authentication info
   * @param scheme The authentication scheme in use
   * 
-  * @return A PasswordAuthentication object with the user's authentication info
+  * @return A <code>PasswordAuthentication</code> object with the user's 
+  *         authentication info.
   *
-  * @exception SecurityException If the caller does not have permission to perform this operation
+  * @exception SecurityException If the caller does not have permission to 
+  *         perform this operation
   */ 
 public static PasswordAuthentication
 requestPasswordAuthentication(InetAddress addr, int port, String protocol,
@@ -165,12 +167,11 @@ requestPasswordAuthentication(InetAddress addr, int port, String protocol,
  */
 
 /**
-  * Do nothing constructor for subclasses to call
+  * Default, no-argument constructor for subclasses to call.
   */
 public
 Authenticator()
 {
-  ;
 }
 
 /*************************************************************************/
@@ -252,7 +253,7 @@ getRequestingScheme()
   * This method is called whenever a request for authentication is made.  It
   * can call the other getXXX methods to determine the information relevant
   * to this request.  Subclasses should override this method, which returns
-  * null by default.
+  * <code>null</code> by default.
   *
   * @return The PasswordAuthentication information
   */

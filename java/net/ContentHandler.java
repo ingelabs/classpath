@@ -1,5 +1,5 @@
 /* ContentHandler.java -- Abstract class for handling content from URL's
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -24,21 +24,18 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.net;
 
 import java.io.IOException;
 
 /**
   * This is an abstract class that is the superclass for classes that read
-  * objects from URL's.  Calling the getContent() method in the URL class
-  * or the URLConnection class will cause an instance of a subclass of
-  * ContentHandler to be created for the MIME type of the object being
-  * downloaded from the URL.  Thus, this class is seldom needed by 
-  * applications/applets directly, but only indirectly through methods in
-  * other classes.
-  *
-  * @version 0.5
+  * objects from URL's.  Calling the <code>getContent()</code> method in the 
+  * <code>URL</code> class or the <code>URLConnection</code> class will cause 
+  * an instance of a subclass of <code>ContentHandler</code> to be created for 
+  * the MIME type of the object being downloaded from the URL.  Thus, this 
+  * class is seldom needed by applications/applets directly, but only 
+  * indirectly through methods in other classes.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
@@ -52,24 +49,23 @@ public abstract class ContentHandler
  */
 
 /**
-  * Do nothing constructor
+  * Default, no-argument constructor.
   */
 public
 ContentHandler()
 {
-  ;
 }
 
 /*************************************************************************/
 
 /**
-  * This method reads from the InputStream of the passed in URL connection
-  * and uses the data downloaded to create an Object represening the
-  * content.  For example, if the URL is pointing to a GIF file, this 
-  * method might return an Image object.  This method should be overridden
-  * by subclasses.
+  * This method reads from the <code>InputStream</code> of the passed in URL 
+  * connection and uses the data downloaded to create an <code>Object</code> 
+  * represening the content.  For example, if the URL is pointing to a GIF 
+  * file, this method might return an <code>Image</code> object.  This method 
+  * must be implemented by subclasses.
   *
-  * @param urlcon A URLConnection object to read data from
+  * @param urlcon A <code>URLConnection</code> object to read data from.
   *
   * @return An object representing the data read
   *
