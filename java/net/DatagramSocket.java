@@ -72,7 +72,12 @@ public class DatagramSocket
   /**
    * This is the implementation object used by this socket.
    */
-  DatagramSocketImpl impl;
+  private DatagramSocketImpl impl;
+
+  /**
+   * True if socket implementation was created.
+   */
+  private boolean implCreated;
 
   /**
    * This is the address we are "connected" to
@@ -83,6 +88,11 @@ public class DatagramSocket
    * This is the port we are "connected" to
    */
   private int remotePort = -1;
+
+  /**
+   * True if socket is bound.
+   */
+  private boolean bound;
 
   /**
    * Creates a <code>DatagramSocket</code> from a specified 
@@ -176,12 +186,31 @@ public class DatagramSocket
 	    propVal + "DatagramSocketImpl");
 	  impl = new PlainDatagramSocketImpl();
 	}
-    impl.create();
 
     if (address != null)
       bind(address);
   }
+  
+  // This needs to be accessible from java.net.MulticastSocket
+  DatagramSocketImpl getImpl()
+    throws SocketException
+  {
+    try
+      {
+	if (!implCreated)
+	  {
+	    impl.create();
+	    implCreated = true;
+	  }
 
+	return impl;
+      }
+    catch (IOException e)
+      {
+	throw new SocketException(e.getMessage());
+      }
+  }
+  
   /**
    * Closes this datagram socket.
    */
@@ -189,10 +218,20 @@ public class DatagramSocket
   {
     if (!isClosed())
       {
-        impl.close();
-        remoteAddress = null;
-        remotePort = -1;
-	impl = null;
+	try
+	  {
+	    getImpl().close();
+	  }
+	catch (SocketException e)
+	  {
+	    // Ignore this case, just close the socket in finally clause.
+	  }
+	finally
+	  {
+	    remoteAddress = null;
+	    remotePort = -1;
+	    impl = null;
+	  }
       }
   }
 
@@ -238,7 +277,7 @@ public class DatagramSocket
     
     try
       {
-	localAddr = (InetAddress) impl.getOption (SocketOptions.SO_BINDADDR);
+	localAddr = (InetAddress) getImpl().getOption(SocketOptions.SO_BINDADDR);
 
 	SecurityManager s = System.getSecurityManager();
 	if (s != null)
@@ -250,6 +289,7 @@ public class DatagramSocket
       }
     catch (SocketException e)
       {
+	// This cannot happen as we are bound.
         return null;
       }
 
@@ -266,7 +306,15 @@ public class DatagramSocket
     if (isClosed())
       return -1;
 	      
-    return impl.getLocalPort();
+    try
+      {
+	return getImpl().getLocalPort();
+      }
+    catch (SocketException e)
+      {
+	// This cannot happen as we are bound.
+	return 0;
+      }
   }
 
   /**
@@ -284,13 +332,12 @@ public class DatagramSocket
     if (isClosed())
       throw new SocketException("socket is closed");
 
+    Object buf = getImpl().getOption(SocketOptions.SO_TIMEOUT);
 
-    Object timeout = impl.getOption(SocketOptions.SO_TIMEOUT);
+    if (buf instanceof Integer) 
+      return ((Integer) buf).intValue();
 
-    if (timeout instanceof Integer) 
-      return ((Integer)timeout).intValue();
-    else
-      return 0;
+    throw new SocketException("unexpected type");
   }
 
   /**
@@ -312,7 +359,7 @@ public class DatagramSocket
     if (timeout < 0)
       throw new IllegalArgumentException("Invalid timeout: " + timeout);
 
-    impl.setOption(SocketOptions.SO_TIMEOUT, new Integer(timeout));
+    getImpl().setOption(SocketOptions.SO_TIMEOUT, new Integer(timeout));
   }
 
   /**
@@ -331,13 +378,12 @@ public class DatagramSocket
     if (isClosed())
       throw new SocketException("socket is closed");
     
+    Object buf = getImpl().getOption(SocketOptions.SO_SNDBUF);
 
-    Object obj = impl.getOption(SocketOptions.SO_SNDBUF);
+    if (buf instanceof Integer)
+      return ((Integer) buf).intValue();
 
-    if (obj instanceof Integer)
-      return(((Integer)obj).intValue());
-    else
-      throw new SocketException("Unexpected type");
+    throw new SocketException("unexpected type");
   }
 
   /**
@@ -360,7 +406,7 @@ public class DatagramSocket
     if (size < 0)
       throw new IllegalArgumentException("Buffer size is less than 0");
   
-    impl.setOption(SocketOptions.SO_SNDBUF, new Integer(size));
+    getImpl().setOption(SocketOptions.SO_SNDBUF, new Integer(size));
   }
 
   /**
@@ -379,12 +425,12 @@ public class DatagramSocket
     if (isClosed())
       throw new SocketException("socket is closed");
 
-    Object obj = impl.getOption(SocketOptions.SO_RCVBUF);
+    Object buf = getImpl().getOption(SocketOptions.SO_RCVBUF);
   
-    if (obj instanceof Integer)
-      return(((Integer)obj).intValue());
-    else 
-      throw new SocketException("Unexpected type");
+    if (buf instanceof Integer)
+      return ((Integer) buf).intValue();
+
+    throw new SocketException("unexpected type");
   }
 
   /**
@@ -407,7 +453,7 @@ public class DatagramSocket
     if (size < 0)
       throw new IllegalArgumentException("Buffer size is less than 0");
 
-    impl.setOption(SocketOptions.SO_RCVBUF, new Integer(size));
+    getImpl().setOption(SocketOptions.SO_RCVBUF, new Integer(size));
   }
 
   /**
@@ -440,7 +486,7 @@ public class DatagramSocket
 
     try
       {
-        impl.connect (address, port);
+        getImpl().connect (address, port);
         remoteAddress = address;
         remotePort = port;
       }
@@ -459,9 +505,22 @@ public class DatagramSocket
    */
   public void disconnect()
   {
-    impl.disconnect();
-    remoteAddress = null;
-    remotePort = -1;
+    if (!isConnected())
+      return;
+
+    try
+      {
+	getImpl().disconnect();
+      }
+    catch (SocketException e)
+      {
+	// This cannot happen as we are connected.
+      }
+    finally
+      {
+	remoteAddress = null;
+	remotePort = -1;
+      }
   }
 
   /**
@@ -488,15 +547,16 @@ public class DatagramSocket
     if (isClosed())
       throw new SocketException("socket is closed");
     
-    if (remoteAddress != null && remoteAddress.isMulticastAddress ())
-      throw new IOException (
-        "Socket connected to a multicast address my not receive");
+    if (remoteAddress != null
+        && remoteAddress.isMulticastAddress())
+      throw new IOException
+        ("Socket connected to a multicast address my not receive");
 
     if (getChannel() != null
         && !getChannel().isBlocking ())
       throw new IllegalBlockingModeException ();
 
-    impl.receive(p);
+    getImpl().receive(p);
 
     SecurityManager s = System.getSecurityManager();
     if (s != null && isConnected ())
@@ -549,7 +609,7 @@ public class DatagramSocket
         && !getChannel().isBlocking ())
       throw new IllegalBlockingModeException ();
 
-    impl.send(p);
+    getImpl().send(p);
   }
 
   /**
@@ -588,21 +648,22 @@ public class DatagramSocket
     
     try
       {
-        impl.bind (port, addr);
+        getImpl().bind(port, addr);
+	bound = true;
       }
     catch (SocketException exception)
       {
-        impl.close ();
+        getImpl().close();
         throw exception;
       }
     catch (RuntimeException exception)
       {
-        impl.close ();
+        getImpl().close();
         throw exception;
       }
     catch (Error error)
       {
-        impl.close ();
+        getImpl().close();
         throw error;
       }
   }
@@ -649,7 +710,7 @@ public class DatagramSocket
 		      "SocketAddress is not InetSocketAddress");
 
     InetSocketAddress tmp = (InetSocketAddress) address;
-    connect( tmp.getAddress(), tmp.getPort());
+    connect(tmp.getAddress(), tmp.getPort());
   }
   
   /**
@@ -659,16 +720,7 @@ public class DatagramSocket
    */
   public boolean isBound()
   {
-    try
-      {
-        Object bindaddr = impl.getOption (SocketOptions.SO_BINDADDR);
-      }
-    catch (SocketException e)
-      {
-        return false;
-      }
-
-    return true;
+    return bound;
   }
 
   /**
@@ -703,18 +755,10 @@ public class DatagramSocket
    */
   public SocketAddress getLocalSocketAddress()
   {
-    InetAddress addr;
+    if (!isBound())
+      return null;
     
-    try
-      {
-        addr = (InetAddress) impl.getOption (SocketOptions.SO_BINDADDR);
-      }
-    catch (SocketException e)
-      {
-        return null;
-      }
-
-    return new InetSocketAddress (addr, impl.localPort);
+    return new InetSocketAddress (getLocalAddress(), getLocalPort());
   }
 
   /**
@@ -731,7 +775,7 @@ public class DatagramSocket
     if (isClosed())
       throw new SocketException("socket is closed");
 
-    impl.setOption (SocketOptions.SO_REUSEADDR, new Boolean (on));
+    getImpl().setOption (SocketOptions.SO_REUSEADDR, new Boolean (on));
   }
 
   /**
@@ -746,12 +790,12 @@ public class DatagramSocket
     if (isClosed())
       throw new SocketException("socket is closed");
 
-    Object obj = impl.getOption (SocketOptions.SO_REUSEADDR);
+    Object buf = getImpl().getOption (SocketOptions.SO_REUSEADDR);
   
-    if (obj instanceof Boolean)
-      return(((Boolean) obj).booleanValue ());
-    else 
-      throw new SocketException ("Unexpected type");
+    if (buf instanceof Boolean)
+      return ((Boolean) buf).booleanValue();
+
+    throw new SocketException("unexpected type");
   }
 
   /**
@@ -768,7 +812,7 @@ public class DatagramSocket
     if (isClosed())
       throw new SocketException("socket is closed");
 
-    impl.setOption (SocketOptions.SO_BROADCAST, new Boolean (on));
+    getImpl().setOption(SocketOptions.SO_BROADCAST, new Boolean(on));
   }
 
   /**
@@ -783,12 +827,12 @@ public class DatagramSocket
     if (isClosed())
       throw new SocketException("socket is closed");
 
-    Object obj = impl.getOption (SocketOptions.SO_BROADCAST);
+    Object buf = getImpl().getOption(SocketOptions.SO_BROADCAST);
   
-    if (obj instanceof Boolean)
-      return ((Boolean) obj).booleanValue ();
-    else 
-      throw new SocketException ("Unexpected type");
+    if (buf instanceof Boolean)
+      return ((Boolean) buf).booleanValue();
+
+    throw new SocketException("unexpected type");
   }
 
   /**
@@ -812,7 +856,7 @@ public class DatagramSocket
     if (tc < 0 || tc > 255)
       throw new IllegalArgumentException();
 
-    impl.setOption (SocketOptions.IP_TOS, new Integer (tc));
+    getImpl().setOption (SocketOptions.IP_TOS, new Integer (tc));
   }
   
   /**
@@ -829,13 +873,12 @@ public class DatagramSocket
     if (isClosed())
       throw new SocketException("socket is closed");
     
+    Object buf = getImpl().getOption(SocketOptions.IP_TOS);
 
-    Object obj = impl.getOption(SocketOptions.IP_TOS);
+    if (buf instanceof Integer)
+      return ((Integer) buf).intValue();
 
-    if (obj instanceof Integer)
-      return ((Integer) obj).intValue ();
-    else
-      throw new SocketException ("Unexpected type");
+    throw new SocketException("unexpected type");
   }
   
   /**
