@@ -1,5 +1,10 @@
 2002-02-07  Mark Wielaard  <mark@klomp.org>
 
+	* doc/www.gnu.org/announce/20020208.wml: new file, 0.03 announcement.
+	* doc/www.gnu.org/announce/announcements.wml: add new announcement.
+
+2002-02-07  Mark Wielaard  <mark@klomp.org>
+
 	* HACKING: add "last updated" and some new information.
 	* INSTALL: add information on different byte code compilers.
 	* README: add "last updated"

@@ -8,7 +8,7 @@
 <lang:new id=en short>
 <lang:star:slice:>
 
-<set-var last-modified-author="cbj">
+<set-var last-modified-author="mjw">
 
 #include <include/macros.wml>
 
@@ -16,7 +16,8 @@
 
 <H4><en>Announcements</en></H4>
 <UL>
-<LI><link url="/software/classpath/announce/20010106.html" name="GNU Classpath Version 0.00"> (2001-01-06)</LI>
+<LI><link url="/software/classpath/announce/20020208.html" name="GNU Classpath Version 0.03"> (2002-02-08)</LI>
+<LI><link url="/software/classpath/announce/20010106.html" name="GNU Classpath Version 0.02"> (2001-01-06)</LI>
 <LI><link url="/software/classpath/announce/20001120.html" name="GNU Classpath Version 0.01"> (2000-11-20)</LI>
 <LI><link url="/software/classpath/announce/19990206.html" name="GNU Classpath Version 0.00"> (1999-02-06)</LI>
 </UL>
