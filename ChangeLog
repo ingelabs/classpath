@@ -1,5 +1,19 @@
 2004-10-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/Container.java,
+	java/awt/Font.java,
+	java/awt/font/TextLayout.java,
+	java/lang/ClassLoader.java,
+	java/lang/Process.java,
+	java/lang/System.java,
+	java/util/zip/CheckedInputStream.java,
+	java/util/zip/InflaterInputStream.java,
+	java/util/zip/ZipFile.java,
+	java/util/zip/ZipInputStream.java:
+	Import cleanups.
+
+2004-10-21  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/NetworkInterface.java,
 	java/text/Format.java,
 	javax/security/auth/x500/X500Principal.java,
