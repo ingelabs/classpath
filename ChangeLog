@@ -8,6 +8,7 @@
 	* java/jar/Attributes.java: new 1.2 class
 	* java/jar/JarException.java: new 1.2 class
 	* java/jar/Manifest.java: new 1.2 class
+	* configure.in: java/util/jar/Makefile and java/util/zip Makefile added
 
 2000-05-30  Mark Wielaard <mark@klomp.org>
 

@@ -303,6 +303,8 @@ java/security/interfaces/Makefile
 java/security/spec/Makefile
 java/text/Makefile
 java/util/Makefile
+java/util/jar/Makefile
+java/util/zip/Makefile
 native/Makefile
 native/gnu.java.awt.image/Makefile
 native/gnu.java.awt.peer.gtk/Makefile
