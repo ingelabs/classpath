@@ -18,10 +18,10 @@ propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java org -nam
 
 # handling source to bytecode compiler programs like gcj, jikes  and kjc
 if FOUND_GCJ
-JAVAC = $(GCJ) --bootclasspath '' --classpath $(top_srcdir):$(top_builddir)/vm/current:.:$(USER_CLASSLIB) -C -d . @classes
+JAVAC = $(GCJ) --bootclasspath '' --classpath $(top_srcdir):$(top_srcdir)/vm/reference:.:$(USER_CLASSLIB) -C -d . @classes
 else
 if FOUND_JIKES
-JAVAC = $(JIKES) +F -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(top_srcdir):$(top_builddir)/vm/current:.:$(USER_CLASSLIB) -d . @classes
+JAVAC = $(JIKES) +F -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(top_srcdir):$(top_srcdir)/vm/reference:.:$(USER_CLASSLIB) -d . @classes
 else
 if FOUND_KJC
 JAVAC = $(KJC) -classpath .:$(USER_CLASSLIB) -d . @classes

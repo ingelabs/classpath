@@ -84,7 +84,7 @@ sub writeNativeFile
 	    $j = $natives[$i];
 	    $j =~ s/^$top_srcdir_regex//;   # remove ../ or similar
 	    $j =~ s/^(\.\.\/)+//g;          # remove all preceding ../
-	    $j =~ s/^vm\/current\///;   # remove vm/current/
+	    $j =~ s/^vm\/reference\///;   # remove vm/reference/
 	    $j =~ s/\//_/g;             # replace / with _
 	    $j =~ s/\.java$/\.h/;       # replace .java with .h
 	    print MAKEDEP "          \$(top_builddir)/include/", $j, " \\", "\n";	    
@@ -92,7 +92,7 @@ sub writeNativeFile
 	$j = $natives[$#natives];
 	$j =~ s/^$top_srcdir_regex//;   # remove ../
 	$j =~ s/^(\.\.\/)+//g;          # remove all preceding ../
-	$j =~ s/^vm\/current\///;   # remove vm/current/
+	$j =~ s/^vm\/reference\///;   # remove vm/reference/
 	$j =~ s/\//_/g;             # replace / with _
 	$j =~ s/\.java/\.h/;        # replace .java with .h
 	print MAKEDEP "          \$(top_builddir)/include/", $j, "\n\n";
@@ -112,7 +112,7 @@ sub writeNativeFile
 	    $j = $natives[$i];
 	    $j =~ s/^$top_srcdir_regex//;   # remove ../
 	    $j =~ s/^(\.\.\/)+//g;          # remove all preceding ../
-	    $j =~ s/^vm\/current\///;   # remove vm/current/
+	    $j =~ s/^vm\/reference\///;   # remove vm/reference/
 #	    $k = $l = $j;
 	    $l = $j;
 	    $j =~ s/\//_/g;             # replace / with _
@@ -131,7 +131,7 @@ sub writeNativeFile
 	$j = $natives[$#natives];
 	$j =~ s/^$top_srcdir_regex//;          # remove ../
 	$j =~ s/^(\.\.\/)+//g;          # remove all preceding ../
-	$j =~ s/^vm\/current\///; # remove vm/current/
+	$j =~ s/^vm\/reference\///; # remove vm/reference/
 #	$k = $l = $j;
 	$l = $j;
 	$j =~ s/\//_/g;             # replace / with _

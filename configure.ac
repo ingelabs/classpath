@@ -281,21 +281,6 @@ AC_ARG_ENABLE([load-library],
 AC_SUBST(INIT_LOAD_LIBRARY)
 
 dnl -----------------------------------------------------------
-dnl Create a link to the VM specific files we're compiling with
-dnl -----------------------------------------------------------
-if test "x${JVM_REFERENCE}" = x; then
-  JVM_REFERENCE=reference
-fi
-ac_sources="vm/$JVM_REFERENCE"
-ac_dests="vm/current"
-while test -n "$ac_sources"; do
-  set $ac_dests; ac_dest=$1; shift; ac_dests=$*
-  set $ac_sources; ac_source=$1; shift; ac_sources=$*
-  ac_config_links_2="$ac_config_links_2 $ac_dest:$ac_source"
-done
-AC_CONFIG_LINKS([$ac_config_links_2])
-
-dnl -----------------------------------------------------------
 dnl avoiding automake complaints
 dnl -----------------------------------------------------------
 REMOVE=""

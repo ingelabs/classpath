@@ -1,9 +1,9 @@
 #! @SH@
 # @configure_input@
 if test "@top_srcdir@" = "${top_builddir}"; then
-  @FIND@ @top_srcdir@/java @top_srcdir@/javax @top_srcdir@/gnu @top_srcdir@/org ${top_builddir}/vm/current -follow -type f -print | grep '\.java$' > ${top_builddir}/lib/classes.1
+  @FIND@ @top_srcdir@/java @top_srcdir@/javax @top_srcdir@/gnu @top_srcdir@/org @top_srcdir@/vm/reference -follow -type f -print | grep '\.java$' > ${top_builddir}/lib/classes.1
 else
-  @FIND@ @top_srcdir@/java @top_srcdir@/javax @top_srcdir@/gnu @top_srcdir@/org ${top_builddir}/gnu ${top_builddir}/vm/current -follow -type f -print | grep '\.java$' > ${top_builddir}/lib/classes.1
+  @FIND@ @top_srcdir@/java @top_srcdir@/javax @top_srcdir@/gnu @top_srcdir@/org ${top_builddir}/gnu @top_srcdir@/vm/reference -follow -type f -print | grep '\.java$' > ${top_builddir}/lib/classes.1
 fi
 
 for filexp in `cat @top_srcdir@/lib/$1.omit` ; do { grep -v ${filexp} < ${top_builddir}/lib/classes.1 > ${top_builddir}/lib/classes.2 ; mv ${top_builddir}/lib/classes.2 ${top_builddir}/lib/classes.1 ; } ; done
