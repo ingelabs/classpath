@@ -1,3 +1,13 @@
+2003-02-21  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/ScrollPaneAdjustable.java: Reformated.
+
+2003-02-21  Michael Koch <konqueror@gmx.de>
+
+	* java/awt/Graphics2D.java
+	(getFontRenderContext): New abstract method.
+	(drawGlyphVector): New abstract method.
+	
 2003-02-21  Tom Tromey  <tromey@redhat.com>
 
 	* vm/reference/java/lang/Runtime.java: Reverted previous patch.
