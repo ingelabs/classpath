@@ -135,6 +135,11 @@ import java.io.IOException;
  * implemented, but may be if so desired.
  * <P>
  *
+ * Similarly, <code>Visibility</code> and <code>DesignMode</code> methods
+ * should propagate changed values to children that implement interfaces
+ * of the same name.
+ * <P>
+ *
  * A hierarchy of beans is mainly useful so that different sets of beans
  * can be established, each with their own set of resources.
  *

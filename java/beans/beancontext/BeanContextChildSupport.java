@@ -29,36 +29,17 @@ import java.beans.VetoableChangeSupport;
 import java.io.Serializable;
 
 /**
- * Beans implement this to get information about the execution environment and its services and to be placed in the hierarchy.
- * <P>
+ * Support for creating a <code>BeanContextChild</code>.
+ * This class contains the most common implementations of the methods in
+ * the <code>BeanContextChild</code>
  *
- * The difference between a <code>BeanContext</code> and a
- * <code>BeanContextChild</code>, mainly, is that a
- * <code>BeanContext</code> may be a parent.
- * <P>
- *
- * <code>BeanContextChild</code> instances will be serialized at some
- * point in their life, but you need to make sure your bean context does
- * not contain a serializable reference (directly or indirectly) to the
- * parent <code>BeanContext</code>, to any of the other
- * <code>BeanContext</code>s in the tree, or to any resources obtained
- * via the <code>BeanContextServices</code> interface.  One way to do this
- * is to mark any fields that contain such references as
- * <code>transient</code>.  Another way is to use a custom serializer.
- * <P>
- *
- * If you do not do this, when the <code>BeanContext</code> is serialized,
- * all the other <code>BeanContext</code>s and other unnecessary things
- * will be serialized along with it.
- * <P>
- *
- * Before dying, a <code>BeanContextChild</code> should call
- * <code>getBeanContext().remove(this)</code> to detach from the
- * hierarchy and exit cleanly.
+ * @specnote This class is not very well specified.  I had to "fill in the
+ *           blanks" in most places with what I thought was reasonable
+ *           behavior.  If there are problems, let me know.
  *
  * @author John Keiser
  * @since JDK1.2
- * @see java.beans.beancontext.BeanContext
+ * @see java.beans.beancontext.BeanContextChild
  */
 
 public class BeanContextChildSupport implements BeanContextChild, BeanContextServicesListener, Serializable {
@@ -101,16 +82,19 @@ public class BeanContextChildSupport implements BeanContextChild, BeanContextSer
 	 * <code>BeanContextChildSupport</code> to create your child.
 	 */
 	public BeanContextChildSupport() {
-		beanContextChildPeer = this;
-		pcSupport = new PropertyChangeSupport(this);
-		vcSupport = new VetoableChangeSupport(this);
+		this(null);
 	};
 
 	/**
 	 * Create a new <code>BeanContextChildSupport</code> with the specified peer.
-	 * @param peer the peer to use.
+	 * @param peer the peer to use, or <code>null</code> to specify
+	 *        <code>this</code>.
 	 */
 	public BeanContextChildSupport(BeanContextChild peer) {
+		if(peer == null) {
+			peer = this;
+		}
+
 		beanContextChildPeer = peer;
 		pcSupport = new PropertyChangeSupport(peer);
 		vcSupport = new VetoableChangeSupport(peer);

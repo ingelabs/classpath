@@ -29,13 +29,16 @@ import java.awt.Container;
  * would conflict with <code>Component</code> and <code>Container</code>
  * if you tried to extend.
  *
+ * @specnote It is unclear whether anything besides <code>BeanContext</code>s
+ *           are allowed to implement this interface.
  * @author John Keiser
  * @since JDK1.2
  */
 
 public interface BeanContextContainerProxy {
 	/**
-	 * Get the <code>Container</code> associated with this
+	 * Get the <code>Container</code> associated with this <code>BeanContext</code>.
+	 * @return the <code>Container</code> associated with this
 	 * <code>BeanContext</code>.
 	 */
 	public Container getContainer();

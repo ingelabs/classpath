@@ -34,7 +34,8 @@ import java.awt.Component;
 
 public interface BeanContextChildComponentProxy {
 	/**
-	 * Get the <code>Component</code> associated with this
+	 * Get the <code>Component</code> associated with this <code>BeanContextChild</code>.
+	 * @return the <code>Component</code> associated with this
 	 * <code>BeanContextChild</code>.
 	 */
 	public Component getComponent();
