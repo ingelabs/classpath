@@ -1,3 +1,9 @@
+2005-02-27  Roman Kennke  <roman@ontographics.com>
+
+	* javax/swing/plaf/basic/BasicListUI:
+	make BasicListUI capable of wrapping lists
+	(layoutOrientation property of javax.swing.JList)
+
 2005-02-26  Audrius Meskauskas  <audriusa@bluewin.ch>
 
 	* javax/swing/Timer.java: documenting and some
