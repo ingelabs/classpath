@@ -31,7 +31,7 @@ import java.util.Properties;
  **/
 
 class VMSystem {
-	Properties getSystemProperties() {
+	static Properties getSystemProperties() {
 		return new Properties();
 	}
 
