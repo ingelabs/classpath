@@ -15,6 +15,7 @@
 	(BorderUIResource.EtchedBorderUIResource): Add Javadoc.
 	(BorderUIResource.LineBorderUIResource): Add Javadoc.
 	(BorderUIResource.MatteBorderUIResource): Add Javadoc.
+	(BorderUIResource.TitledBorderUIResource): Add Javadoc.
 
 	(BorderUIResource.LineBorderUIResource): Add comment for noting
 	that there is no constructor which would take a value for
@@ -27,6 +28,9 @@
 	.MatteBorderUIResource.MatteBorderUIResource(int, int, int, int, Icon):
 	Call inherited constructor without allocating a new Insets object.
 
+	(BorderUIResource.TitledBorderUIResource.TitledBorderUIResource(
+	[all variants])): Accessibility made public.
+	
 	* javax/swing/border/CompoundBorder.java
 	(CompoundBorder(Border, Border)): Fix typos in API documentation.
 	
