@@ -2507,5 +2507,5 @@ GThreadFunctions portable_native_sync_jni_functions = {
    "GPrivate" "GThreadFunc" "GThreadFunctions" "GThreadPriority" 
    "gulong" 
    "JNIEnv" 
-   "jboolean" "jclass" "jint" "jlong" "jobject" "jstring" "jthrowable" ) */
+   "jboolean" "jclass" "jfieldID" "jint" "jlong" "jmethodID" "jobject" "jstring" "jthrowable" ) */
 /* End: */

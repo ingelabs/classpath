@@ -1413,4 +1413,14 @@ typedef struct JavaVMInitArgs
   jboolean ignoreUnrecognized;
 } JavaVMInitArgs;
 
+
+/* Keep c-font-lock-extra-types in alphabetical order. */
+/* Local Variables: */
+/* c-font-lock-extra-types: ("\\sw+_t" 
+   "JNIEnv" "JNINativeMethod" "JavaVM" "JavaVMOption" "jarray"
+   "jboolean" "jbooleanArray" "jbyte" "jbyteArray" "jchar"  "jcharArray" 
+   "jclass" "jdouble" "jdoubleArray" "jfieldID" "jfloat" "jfloatArray"
+   "jint" "jintArray" "jlong" "jlongArray" "jmethodID" "jobject" "jstring" "jthrowable" 
+   "jvalue" "jweak") */
+/* End: */
 #endif /* __CLASSPATH_JNI_H__ */

@@ -1,7 +1,8 @@
 2004-06-07  Steven Augart  <augart@watson.ibm.com>
 
-	* native/jni/gtk-peer/gthread-jni.c (c-font-lock-extra-types):
+	* native/jni/gtk-peer/gthread-jni.c (c-font-lock-extra-types): 
 	  Added jfieldID, jmethodID.
+	* include/jni.h (c-font-lock-extra-types): Added.
 
 2004-06-06  Steven Augart  <augart@watson.ibm.com>
 
