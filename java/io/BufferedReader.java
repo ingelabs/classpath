@@ -48,7 +48,7 @@ public class BufferedReader extends Reader
 /**
   * This is the default buffer size
   */
-private static final int DEFAULT_BUFFER_SIZE = 512;
+static final int DEFAULT_BUFFER_SIZE = 512;
 
 /*************************************************************************/
 
