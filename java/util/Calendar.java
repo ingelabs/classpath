@@ -644,7 +644,10 @@ public abstract class Calendar implements Serializable, Cloneable
     isTimeSet = false;
     areFieldsSet = false;
     for (int i = 0; i < FIELD_COUNT; i++)
-      isSet[i] = false;
+      {
+	isSet[i] = false;
+	fields[i] = 0;
+      }
   }
 
   /**
@@ -656,6 +659,7 @@ public abstract class Calendar implements Serializable, Cloneable
     isTimeSet = false;
     areFieldsSet = false;
     isSet[field] = false;
+    fields[field] = 0;
   }
 
   /**
