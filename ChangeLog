@@ -1,7 +1,3 @@
-2003-09-19  Michael Koch  <konqueror@gmx.de>
-
-	* include/.cvsignore: Added Makefile and Makefile.in.
-
 2003-09-18  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/Toolkit.java: Added missing "in" in javadoc.
