@@ -28,7 +28,7 @@ package java.io;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public interface ObjectInputValidation
+public abstract interface ObjectInputValidation
 {
 
 /**
