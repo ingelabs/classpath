@@ -1,4 +1,5 @@
-JCL Native State API - Version 0.99.1
+GNU Classpath Native State API - Version 0.99.1
+Written by Paul Fisher (rao@gnu.org)
 
 For all function calls, if an error occurs, such that `NULL' or a
 negative value is returned, it's very possible that an exception has
