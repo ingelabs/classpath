@@ -145,15 +145,54 @@ extends AccessibleObject implements Member
    * Compare two objects to see if they are semantically equivalent.
    * Two Methods are semantically equivalent if they have the same declaring
    * class, name, and parameter list.  This ignores different exception
-   * clauses, but since you can't create a Method except through the VM,
-   * this is just the == relation.
+   * clauses or return types.
    *
    * @param o the object to compare to
    * @return <code>true</code> if they are equal; <code>false</code> if not
    */
   public boolean equals(Object o)
   {
-    return this == o;
+      // Implementation note:
+      // The following is a correct but possibly slow implementation.
+      //
+      // This class has a private field 'slot' that could be used by
+      // the VM implementation to "link" a particular method to a Class.
+      // In that case equals could be simply implemented as:
+      //
+      // if (o instanceof Method)
+      // {
+      //    Method m = (Method)o;
+      //    return m.declaringClass == this.declaringClass
+      //           && m.slot == this.slot;
+      // }
+      // return false;
+      //
+      // If a VM uses the Method class as their native/internal representation
+      // then just using the following would be optimal:
+      //
+      // return return this == o;
+      //
+
+      if (!(o instanceof Method))
+        return false;
+
+      Method m = (Method)o;
+      if(!name.equals(m.name))
+	  return false;
+
+      if(declaringClass != m.declaringClass)
+	  return false;
+
+      Class[] params1 = getParameterTypes();
+      Class[] params2 = m.getParameterTypes();
+      if(params1.length != params2.length)
+	  return false;
+
+      for(int i = 0; i < params1.length; i++)
+	  if(params1[i] != params2[i])
+	      return false;
+
+      return true;
   }
 
   /**

@@ -13,3 +13,4 @@
 ../gnu/classpath/tools/.*$
 ../javax/accessibility/.*$
 ../javax/swing/.*$
+../java/security/cert/CertPathValidatorException.java

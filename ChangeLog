@@ -1,3 +1,12 @@
+2002-03-02 Mark Wielaard <mark@klomp.org>
+
+	* lib/standard.omit: java/security/cert/CertPathValidatorException.java
+	added.
+
+2002-03-02 Wu Gansha <gansha.wu@intel.com>
+
+	* vm/reference/java/lang/reflect/Method.java (equals): reimplement.
+
 2002-02-26  Eric Blake  <ebb9@email.byu.edu>
 
 	* vm/reference/java/lang/Runtime.java: Formatting and Javadoc.
