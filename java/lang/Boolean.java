@@ -28,7 +28,6 @@ public final class Boolean implements Serializable
     return new Boolean(s);
   }
 
-  /* return the same values as the JDK */
   public int hashCode() {
     return (value) ? 1231 : 1237;
   }
