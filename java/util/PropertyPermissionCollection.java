@@ -145,7 +145,7 @@ collection.implies(new PropertyPermission("a.b.c", "read,write"));</pre>
               return true;
           }
 
-        prefixLength = name.lastIndexOf('.', prefixLength);
+        prefixLength = name.lastIndexOf('.', prefixLength - 1);
         if (prefixLength < 0)
           return false;
         name = name.substring(0, prefixLength + 1) + '*';

@@ -1,5 +1,5 @@
 /* AccessControlContext.java --- Access Control Context Class
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,6 +37,8 @@ exception statement from your version. */
 
 package java.security;
 
+import java.util.HashSet;
+
 /**
    AccessControlContext makes system resource access decsion 
    based on permission rights.  
@@ -53,8 +55,8 @@ package java.security;
  */
 public final class AccessControlContext
 {
-  private ProtectionDomain protectionDomain[];
-  private DomainCombiner combiner;
+  private final ProtectionDomain[] protectionDomains;
+  private final DomainCombiner combiner;
 
   /**
      Construct a new AccessControlContext with the specified
@@ -65,29 +67,12 @@ public final class AccessControlContext
    */
   public AccessControlContext(ProtectionDomain[]context)
   {
-    int i, j, k, count = context.length, count2 = 0;
-    for (i = 0, j = 0; i < count; i++)
-      {
-	for (k = 0; k < i; k++)
-	  if (context[k] == protectionDomain[i])
-	    break;
-	if (k != i)		//it means previous loop did not complete
-	  continue;
-
-	count2++;
-      }
-
-    protectionDomain = new ProtectionDomain[count2];
-    for (i = 0, j = 0; i < count2; i++)
-      {
-	for (k = 0; k < i; k++)
-	  if (context[k] == protectionDomain[i])
-	    break;
-	if (k != i)		//it means previous loop did not complete
-	  continue;
-
-	protectionDomain[j++] = context[i];
-      }
+    HashSet domains = new HashSet (context.length);
+    for (int i = 0; i < context.length; i++)
+      domains.add (context[i]);
+    protectionDomains = (ProtectionDomain[])
+      domains.toArray (new ProtectionDomain[domains.size()]);
+    combiner = null;
   }
 
   /**
@@ -101,7 +86,17 @@ public final class AccessControlContext
   public AccessControlContext(AccessControlContext acc,
 			      DomainCombiner combiner)
   {
-    this(acc.protectionDomain);
+    // XXX check permission to call this.
+    AccessControlContext acc2 = AccessController.getContext();
+    protectionDomains = combiner.combine (acc2.protectionDomains,
+                                          acc.protectionDomains);
+    this.combiner = combiner;
+  }
+
+  AccessControlContext (ProtectionDomain[] domains, AccessControlContext acc,
+                        DomainCombiner combiner)
+  {
+    protectionDomains = combiner.combine (domains, acc.protectionDomains);
     this.combiner = combiner;
   }
 
@@ -125,11 +120,9 @@ public final class AccessControlContext
    */
   public void checkPermission(Permission perm) throws AccessControlException
   {
-    for (int i = 0; i < protectionDomain.length; i++)
-      if (protectionDomain[i].implies(perm) == true)
-	return;
-
-    throw new AccessControlException("Permission not granted");
+    for (int i = 0; i < protectionDomains.length; i++)
+      if (!protectionDomains[i].implies(perm))
+        throw new AccessControlException ("permission not granted");
   }
 
   /**
@@ -151,10 +144,18 @@ public final class AccessControlContext
 	if (acc.protectionDomain.length != protectionDomain.length)
 	  return false;
 
-	for (int i = 0; i < protectionDomain.length; i++)
-	  if (acc.protectionDomain[i] != protectionDomain[i])
-	    return false;
-	return true;
+        int i, j;
+        for (i = 0; i < protectionDomains.length; i++)
+          {
+            for (j = 0; j < acc.protectionDomains.length; j++)
+              {
+                if (acc.protectionDomains[j].equals (protectionDomains[i]))
+                  break;
+              }
+            if (j == acc.protectionDomains.length)
+              return false;
+          }
+        return true;
       }
     return false;
   }

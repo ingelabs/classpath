@@ -1,3 +1,24 @@
+2004-06-03  Casey Marshall <csm@gnu.org>
+
+	* java/security/AccessControlContext.java
+	(protectionDomain): mark final.
+	(combiner): likewise.
+	(<init>(ProtectionDomain[])): use HashSet to uniquify domains.
+	(<init>(ProtectionDomain[],AccessControlContext,DomainCombiner)):
+	new constructor.
+	(checkPermission): only succeed if `perm' is implied by all
+	protection domains.
+	(equal): do unordered comparison.
+	* java/security/ProtectionDomain.java
+	(<init>(CodeSource,PermissionCollection)): set `staticBinding' to
+	`true'.
+	* java/security/SecureClassLoader.java
+	(defineClass): make protection domain dynamically bound.
+	(getPermissions): call `getCurrentPolicy' to avoid permission
+	check.
+	* java/util/PropertyPermissionCollection.java
+	(implies): avoid infinite loop.
+
 2004-06-03  Olga Rodimina  <rodimina@redhat.com>
 
 	* javax/swing/JCheckBoxMenuItem.java: Removed CVS tags.
