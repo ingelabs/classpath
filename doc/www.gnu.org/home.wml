@@ -192,6 +192,17 @@ of GNU Classpath.
 <table border="1">
 <tr><th>JVM</th><th>Description</th></tr>
 <tr>
+<td><createlink url="http://aegisvm.sourceforge.net/" name="AegisVM"></td>
+<td>
+The Aegis VM Project is an on-going effort to develop a lightweight,
+secure virtual machine for executing Java bytecode.  The Aegis VM will
+eventually feature a modular bytecode verification architecture that
+allows user-defined static verification procedures to be integrated
+into the VM's dynamic linking process through pluggable verification
+modules.
+</td>
+</tr>
+<tr>
 <td><createlink url="http://sources.redhat.com/java/" name="GCJ"></td>
 <td>
 Although GNU Classpath cannot be directly compiled for use with
@@ -203,10 +214,9 @@ name="located here">.
 </td>
 </tr>
 <tr>
-<td><createlink url="http://kissme.sourceforge.net/" name="Kissme"></td>
+<td><createlink url="http://sourceforge.net/projects/ikvm/" name="IKVM.NET">
 <td>
-This VM is almost always guaranteed to work with GNU Classpath CVS 
-source code.
+A JVM for the .NET platform.
 </td>
 </tr>
 <tr>
@@ -218,10 +228,16 @@ to the mailing list.
 </td>
 </tr>
 <tr>
-<td><createlink url="http://www.sablevm.org/" name="SableVM"></td>
+<td><createlink url="http://www.eecg.toronto.edu/~doylep/jupiter/" name="Jupiter"></td>
 <td>
-This VM provides a repackaged version of GNU Classpath that aims to
-be the easiest to install and use.
+This VM also uses a modified version of the GNU Classpath libraries.
+</td>
+</tr>
+<tr>
+<td><createlink url="http://kissme.sourceforge.net/" name="Kissme"></td>
+<td>
+This VM is almost always guaranteed to work with GNU Classpath CVS 
+source code.
 </td>
 </tr>
 <tr>
@@ -235,27 +251,10 @@ mailing list archives.
 </td>
 </tr>
 <tr>
-<td><createlink url="http://www.eecg.toronto.edu/~doylep/jupiter/" name="Jupiter"></td>
+<td><createlink url="http://www.sablevm.org/" name="SableVM"></td>
 <td>
-This VM also uses a modified version of the GNU Classpath libraries.
-</td>
-</tr>
-<tr>
-<td><createlink url="http://aegisvm.sourceforge.net/" name="AegisVM"></td>
-<td>
-The Aegis VM Project is an on-going effort to develop a lightweight,
-secure virtual machine for executing Java bytecode.  The Aegis VM will
-eventually feature a modular bytecode verification architecture that
-allows user-defined static verification procedures to be integrated
-into the VM's dynamic linking process through pluggable verification
-modules.
-</td>
-</tr>
-<tr>
-<td><createlink url="http://www.e-leos.net/" name="E-LEOS"></td>
-<td>
-GNU Classpath is used as part of this project to create a Java operating
-system.
+This VM provides a repackaged version of GNU Classpath that aims to
+be the easiest to install and use.
 </td>
 </tr>
 </table>
@@ -267,6 +266,13 @@ system.
 <table border="1">
 <tr><th>Project</th><th>Description</th></tr>
 <tr>
+<td><createlink url="http://www.e-leos.net/" name="E-LEOS"></td>
+<td>
+GNU Classpath is used as part of this project to create a Java operating
+system.
+</td>
+</tr>
+<tr>
 <td><createlink url="http://www.flex-compiler.lcs.mit.edu/" name="Flex Compiler"></td>
 <td>
 FLEX is a compiler infrastructure written in Java for Java. Applications 
@@ -277,19 +283,19 @@ platform with gcc.
 </td>
 </tr>
 <tr>
-<td><createlink url="http://www.aicas.com/jamaica.html" name="JamaicaVM"></td>
-<td>
-JamaicaVM provides realtime execution, garbage collection, sophisticated
-static optimizations and targets many real-time operating systems and 
-processor architectures.
-</td>
-</tr>
-<tr>
 <td><createlink url="http://www.svtehs.com/ipjv.htm" name="IPJV"></td>
 <td>
 The IPJVM virtual machine for Java is a clean room implementation, 
 that has been specially optimized to run on device with limited amount 
 of internal memory.  IPJV-ES evaluation board is available.
+</td>
+</tr>
+<tr>
+<td><createlink url="http://www.aicas.com/jamaica.html" name="JamaicaVM"></td>
+<td>
+JamaicaVM provides realtime execution, garbage collection, sophisticated
+static optimizations and targets many real-time operating systems and 
+processor architectures.
 </td>
 </tr>
 </table>
