@@ -1,5 +1,16 @@
 2002-10-27  Mark Wielaard  <mark@klomp.org>
 
+	* java/util/zip/ZipInputStream.java (getNextEntry): Throw IOException
+	when stream is closed.
+	(closeEntry): Likewise.
+	(read): Likewise.
+	* java/util/zip/ZipOutputStream.java (putNextEntry): Throw ZipException
+	when no entry active.
+	(closeEntry): Likewise.
+	(write): Likewise.
+
+2002-10-27  Mark Wielaard  <mark@klomp.org>
+
 	* java/io/FileInputStream (close): Check native_fd != -1.
 	* java/io/FileOutputStream.java (close): Likewise.
 	* java/io/RandomAccessFile.java (close): Likewise.
