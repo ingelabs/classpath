@@ -23,7 +23,11 @@ esac
 dnl CLASSPATH_INTERNAL_CHECK_JAPHAR
 AC_DEFUN(CLASSPATH_INTERNAL_CHECK_JAPHAR,
 [
-  AC_PATH_PROG(JAPHAR_CONFIG, japhar-config, "", $PATH:/usr/local/japhar/bin:/usr/japhar/bin)
+  if test "$1" = ""; then
+    AC_PATH_PROG(JAPHAR_CONFIG, japhar-config, "", $PATH:/usr/local/japhar/bin:/usr/japhar/bin)
+  else
+    AC_PATH_PROG(JAPHAR_CONFIG, japhar-config, "", $1/bin:$PATH)
+  fi
   if test "$JAPHAR_CONFIG" = ""; then
     echo "configure: cannot find japhar-config: is Japhar installed?" 1>&2
     exit 1
@@ -165,6 +169,8 @@ AC_DEFUN(CLASSPATH_CHECK_JAPHAR,
   [
     if test ${withval} = "yes" || test ${withval} = ""; then
       CLASSPATH_INTERNAL_CHECK_JAPHAR
+    elif test ${withval} != "no" || test ${withval} != "false"; then
+      CLASSPATH_INTERNAL_CHECK_JAPHAR(${withval})
     fi
   ],
   [ 

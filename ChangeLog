@@ -1,3 +1,9 @@
+2000-12-14  Brian Jones  <cbj@gnu.org>
+	* acinclude.m4 : CLASSPATH_INTERNAL_CHECK_JAPHAR takes an optional 
+	argument such that specifying the prefix to Japhar now works, 
+	allowing the user to have multiple installations of Japhar and yet 
+	configure for a specific installation.
+
 2000-12-10  Brian Jones  <cbj@gnu.org>
 	* configure.in : commented out code to assume Japhar if not 
 	otherwise specified.  Compiling without Japhar is almost 
