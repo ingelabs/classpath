@@ -1,5 +1,8 @@
 2001-09-05  Tom Tromey  <tromey@redhat.com>
 
+	* java/io/DataOutputStream.java (write(int)): Update `written'.
+	(write(byte[],int,int)): Likewise.
+
 	* java/util/Date.java (weekNames, monthNames): Now final.
 
 	* java/util/Date.java (weekNames, monthNames): Now static.

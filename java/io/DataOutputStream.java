@@ -1,5 +1,5 @@
 /* DataOutputStream.java -- Writes primitive Java datatypes to streams
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -483,6 +483,7 @@ public void
 write(int b) throws IOException
 {
   out.write(b);
+  ++written;
 }
 
 /*************************************************************************/
@@ -502,6 +503,7 @@ public void
 write(byte[] buf, int offset, int len) throws IOException
 {
   out.write(buf, offset, len);
+  written += len - offset;
 }
 
 /*************************************************************************/
