@@ -1,4 +1,5 @@
 aclocal.m4
+compile
 configure
 config.guess
 config.log
