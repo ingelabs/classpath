@@ -1,3 +1,9 @@
+2004-04-09  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/io/FileDescriptor.java (FileDescriptor): Added public
+	constructor. (valid): Added null check.
+
+
 2004-04-09  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac: Set AM_CFLAGS to ISO C90 pedantic ansi, but with
