@@ -47,8 +47,12 @@ public class StackTrace {
 	}
 
 	public synchronized StackFrame pop() {
-		if(len == 0)
-			throw new ArrayIndexOutOfBoundsException("stack trace empty.");
+		if(len <= 0)
+			return null;
+			//Note: cannot throw exception here, since this method
+			//is used in exception throwing itself and could cause
+			//an infinite loop.
+			//throw new ArrayIndexOutOfBoundsException("stack trace empty.");
 		len--;
 		return frames[len];
 	}
