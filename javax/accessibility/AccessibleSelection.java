@@ -40,7 +40,7 @@ package javax.accessibility;
  *
  * @see AccessibleContext.getAccessibleText()
  */
-public abstract interface AccessibleSelection {
+public interface AccessibleSelection {
 
     /**
      * Select the specified child if it is not already 

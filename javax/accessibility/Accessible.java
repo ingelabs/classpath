@@ -32,7 +32,7 @@ package javax.accessibility;
  * for the Accessibility API which must be implemented by all user
  * interface components.
  */
-public abstract interface Accessible {
+public interface Accessible {
 
     /**
      * If a component supports the Accessibility API then this 

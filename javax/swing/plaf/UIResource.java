@@ -41,4 +41,4 @@ package javax.swing.plaf;
  * @author Brian Jones
  * @see java.lang.ComponentUI 
  */
-public abstract interface UIResource { }
+public interface UIResource { }

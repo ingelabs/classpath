@@ -24,7 +24,7 @@ package com.sun.javadoc;
   * This interface provides a mechanism for a doclet to log messages
   * during its run.
   */
-public abstract interface DocErrorReporter
+public interface DocErrorReporter
 {
 
 /**

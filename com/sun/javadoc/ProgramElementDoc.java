@@ -25,7 +25,7 @@ package com.sun.javadoc;
   * elements".  This includes classes, interfaces, fields, constructors,
   * and methods.
   */
-public abstract interface ProgramElementDoc extends Doc
+public interface ProgramElementDoc extends Doc
 {
 
 /**

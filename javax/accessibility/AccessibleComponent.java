@@ -48,7 +48,7 @@ import java.awt.Cursor;
  *
  * @see AccessibleContext#getAccessibleComponent() 
  */
-public abstract interface AccessibleComponent {
+public interface AccessibleComponent {
 
     /**
      * Adds the specified listener to this component.

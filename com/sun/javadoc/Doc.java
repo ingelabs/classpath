@@ -24,7 +24,7 @@ package com.sun.javadoc;
   * This interface is the super-interface of all items that can have
   * Javadoc comments associated with them.
   */
-public abstract interface Doc extends java.io.Serializable, Comparable
+public interface Doc extends java.io.Serializable, Comparable
 {
 
 /**

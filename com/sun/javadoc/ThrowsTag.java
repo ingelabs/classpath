@@ -23,7 +23,7 @@ package com.sun.javadoc;
 /**
   * This interface models an "@exception" or "@throws" tag.
   */
-public abstract interface ThrowsTag extends Tag
+public interface ThrowsTag extends Tag
 {
 
 /**

@@ -37,7 +37,7 @@ package javax.accessibility;
  *.
  * @see AccessibleContext.getAccessibleText()
  */
-public abstract interface AccessibleHypertext extends AccessibleText {
+public interface AccessibleHypertext extends AccessibleText {
 
     /**
      * Returns link object denoted by the number <code>i</code> in this

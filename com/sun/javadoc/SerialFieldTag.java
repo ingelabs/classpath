@@ -23,7 +23,7 @@ package com.sun.javadoc;
 /**
   * This interface models the "@serialField" tag.
   */
-public abstract interface SerialFieldTag extends Tag, Comparable
+public interface SerialFieldTag extends Tag, Comparable
 {
 
 /**

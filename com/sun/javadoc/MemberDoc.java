@@ -24,7 +24,7 @@ package com.sun.javadoc;
   * This is the common super-interface for documentation about fields,
   * methods, and constructors.
   */
-public abstract interface MemberDoc extends ProgramElementDoc
+public interface MemberDoc extends ProgramElementDoc
 {
 
 /**

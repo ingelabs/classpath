@@ -23,7 +23,7 @@ package com.sun.javadoc;
 /**
   * This package is used for documenting fields.
   */
-public abstract interface FieldDoc extends MemberDoc
+public interface FieldDoc extends MemberDoc
 {
 
 /**

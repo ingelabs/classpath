@@ -24,7 +24,7 @@ package com.sun.javadoc;
   * This class is used for holding information about Java types needed for
   * documentation.
   */
-public abstract interface Type extends java.io.Serializable
+public interface Type extends java.io.Serializable
 {
 
 /**

@@ -39,7 +39,7 @@ package javax.accessibility;
  * 
  * @see AccessibleContext#getAccessibleAction()
  */
-public abstract interface AccessibleAction {
+public interface AccessibleAction {
 
     /**
      * Perform the specified action.

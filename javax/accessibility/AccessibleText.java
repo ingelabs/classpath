@@ -31,7 +31,7 @@ import javax.swing.text.AttributeSet;
 import java.awt.Rectangle;
 import java.awt.Point;
 
-public abstract interface AccessibleText {
+public interface AccessibleText {
     public static final int CHARACTER = 1;
     public static final int WORD = 2;
     public static final int SENTENCE = 3;

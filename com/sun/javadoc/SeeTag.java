@@ -23,7 +23,7 @@ package com.sun.javadoc;
 /**
   * This interface models an "@see" tag.
   */
-public abstract interface SeeTag extends Tag
+public interface SeeTag extends Tag
 {
 
 /**

@@ -23,7 +23,7 @@ package com.sun.javadoc;
 /**
   * This interface is used for documenting constructors.
   */
-public abstract interface ConstructorDoc extends ExecutableMemberDoc
+public interface ConstructorDoc extends ExecutableMemberDoc
 {
 
 /**

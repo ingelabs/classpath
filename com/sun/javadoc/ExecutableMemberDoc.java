@@ -24,7 +24,7 @@ package com.sun.javadoc;
   * This is the super-interface for interfaces describing constructors and
   * methods.
   */
-public abstract interface ExecutableMemberDoc extends MemberDoc
+public interface ExecutableMemberDoc extends MemberDoc
 {
 
 /**

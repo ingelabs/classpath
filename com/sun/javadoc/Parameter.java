@@ -23,7 +23,7 @@ package com.sun.javadoc;
 /**
   * This interface models a parameter to a method.
   */
-public abstract interface Parameter extends java.io.Serializable
+public interface Parameter extends java.io.Serializable
 {
 
 /**

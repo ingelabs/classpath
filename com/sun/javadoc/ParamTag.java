@@ -23,7 +23,7 @@ package com.sun.javadoc;
 /**
   * This interface represents an "@param" tag.
   */
-public abstract interface ParamTag extends Tag
+public interface ParamTag extends Tag
 {
 
 /**

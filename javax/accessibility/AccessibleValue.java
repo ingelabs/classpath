@@ -1,6 +1,6 @@
 package javax.accessibility;
 
-public abstract interface AccessibleValue {
+public interface AccessibleValue {
     public abstract Number getCurrentAccessibleValue();
     public abstract Number getMaximumAccessibleValue();
     public abstract Number getMinimumAccessibleValue();

@@ -23,7 +23,7 @@ package com.sun.javadoc;
 /**
   * This is the super-interface for all Javadoc tags.
   */
-public abstract interface Tag extends java.io.Serializable
+public interface Tag extends java.io.Serializable
 {
 /**
   * This method returns the name of the tag.

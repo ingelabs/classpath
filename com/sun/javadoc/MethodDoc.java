@@ -24,7 +24,7 @@ package com.sun.javadoc;
   * This interface is used for documenting ordinary (ie, non-constructor)
   * methods.
   */
-public abstract interface MethodDoc extends ExecutableMemberDoc
+public interface MethodDoc extends ExecutableMemberDoc
 {
 
 /**
