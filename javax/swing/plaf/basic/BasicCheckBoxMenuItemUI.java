@@ -1,4 +1,4 @@
-/* JToggleButton.java -- 
+/* BasicCheckBoxMenuItemUI.java
    Copyright (C) 2002, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,93 +35,43 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+package javax.swing.plaf.basic;
 
-package javax.swing;
+import java.awt.event.MouseEvent;
 
-import javax.accessibility.Accessible;
-import javax.accessibility.AccessibleContext;
-import javax.swing.plaf.ButtonUI;
+import javax.swing.AbstractButton;
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JMenuItem;
+import javax.swing.MenuElement;
+import javax.swing.MenuSelectionManager;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+import javax.swing.plaf.ComponentUI;
 
-public class JToggleButton extends AbstractButton implements Accessible
+
+public class BasicCheckBoxMenuItemUI extends BasicMenuItemUI
 {
-
-  public static class ToggleButtonModel extends DefaultButtonModel
+  public static ComponentUI createUI(final JComponent c)
   {
-    public void setPressed(boolean b)  
-    {
-      if (! isEnabled())
-        return;
-      
-      super.setPressed(b);
-      
-      // setPressed(false) == mouse release on us,
-      // if we were armed, we flip the selected state.
-      if (!b && isArmed())
-        setSelected(! isSelected());
-    }
+    return new BasicCheckBoxMenuItemUI();
   }
 
-
-  public JToggleButton()
+  protected String getPropertyPrefix()
   {
-    this(null, null);
-  }
-  public JToggleButton(Action a)
-  {
-    this();
-    setAction(a);
+    return null; // TODO
   }
 
-  public JToggleButton(Icon icon)
-  { 
-    this(null, icon);
-  }    
-  
-  public JToggleButton(String text)
+  protected void installDefaults()
   {
-    this(text, null);
-  }
-      
-  public JToggleButton(String text, Icon icon)
-  {
-    this(text, icon, false);
+    super.installDefaults();
+
+    UIDefaults defaults = UIManager.getLookAndFeelDefaults();
+    checkIcon = defaults.getIcon("CheckBoxMenuItem.checkIcon");
   }
 
-  public JToggleButton (String text, Icon icon, boolean selected) 
+  void processMouseEvent(JMenuItem item, MouseEvent e, MenuElement[] path,
+                         MenuSelectionManager manager)
   {
-    super(text, icon);
-
-    hori_align = LEADING;
-    setModel(new ToggleButtonModel());	
-    model.setSelected(selected);
-  }
-
-
-    
-  public AccessibleContext getAccessibleContext()
-  {
-    //Gets the AccessibleContext associated with this JToggleButton. 
-    return null;
-  }
-  
-  public String getUIClassID()
-  {
-    //Returns a string that specifies the name of the L&F class that renders this component.  
-    return "ToggleButtonUI";
-  }
-  
-  protected  String paramString()
-  {
-    return "JToggleButton";
-  }
-  
-  
-  public void updateUI()
-  {	
-    ButtonUI b = (ButtonUI)UIManager.getUI(this);
-    setUI(b);
   }
 }
-
-
-

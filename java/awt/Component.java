@@ -3817,6 +3817,12 @@ public abstract class Component
     if (popups == null)
       popups = new Vector();
     popups.add(popup);
+
+    if (popup.parent != null)
+      popup.parent.remove(popup);
+    popup.parent = this;
+    if (peer != null)
+      popup.addNotify();
   }
 
   /**

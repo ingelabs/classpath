@@ -1,3 +1,220 @@
+2004-04-17  Mark Wielaard  <mark@klomp.org>
+
+	* javax/swing/plaf/basic/Makefile.am: Add BasicArrowButton.java,
+	BasicCheckBoxMenuItemUI.java, BasicMenuItemUI.java and
+	BasicRadioButtonMenuItemUI.java.
+
+	* javax/swing/JToggleButton.java (ToggleButtonModel):
+	Make public static inner class.
+	* javax/swing/JTabbedPane.java (setComponentAt):
+	Call Page.setComponent().
+	(SCROLL_TAB_LAYOUT): Make public, value is 1.
+	(WRAP_TAB_LAYOUT): Make public, value is 0.
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java (ScrollingButton):
+	Make private static inner class.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c:
+	Changed C++ comments into C comments.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuPeer.c:
+	Likewise.
+
+2004-04-17  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkPanelPeer.java (connectSignals):
+	Remove method.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkPanelPeer.c: Remove
+	unused code.
+
+2004-04-17  Olga Rodimina  <rodimina@redhat.com>
+
+	* javax/swing/ImageIcon.java: 
+	(ImageIcon(file)): set description of the icon 
+	to the file name
+	* javax/swing/JCheckBoxMenuItem.java:
+	Mostly Implemented. Work in progress.
+	* javax/swing/JRadioButtonMenuItem.java:
+ 	Reimplement constructors to use JToggleButtonModel.
+	* javax/swing/plaf/basic/BasicIconFactory.java:
+	(getCheckBoxMenuItemIcon): return check box
+	icon.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java:
+	paint menu item selected only when it is armed and 
+	pressed. 
+ 
+2004-04-17  David Jee  <djee@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkMenuItemPeer.java
+	(GtkMenuItemPeer): Only connect signals if this isn't a Menu peer.
+	* java/awt/Component.java
+	(add): Set the parent of the popup as this component.
+	* java/awt/PopupMenu.java
+	(addNotify): Create popup menu when peer is null.
+	(show): Call addNotify() if peer is null.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkPopupMenuPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkPopupMenuPeer_show): Set the button
+	argument for gtk_menu_popup() as zero. This causes the popup menu to
+	respond to any mouse button.
+
+2004-04-17  Olga Rodimina  <rodimina@redhat.com>
+
+	* javax/swing/JRadioButtonMenuItem.java:
+	Implemented.
+	* javax/swing/plaf/basic/BasicIconFactory.java:
+	(getRadioButtonMenuItemIcon): Return
+	radio button icon.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java:
+	(getPreferredSize): Add size of checkIcon if it
+	exists.
+	(installDefaults): Don't initialize checkIcon.
+	It's value will be set in subclasses. 
+	(uninstallDefaults): remove uninstallation of 
+	checkIcon.
+	(paint): Moved code to paintMenuItem().
+	(paintMenuItem): Implemented.
+	* javax/swing/plaf/basic/BasicRadioButtonMenuItemUI.java:
+	UI delegate for JRadioButtonMenuItem.
+	
+2004-04-17  Olga Rodimina  <rodimina@redhat.com>
+
+	* javax/swing/plaf/basic/BasicMenuItemUI.java:
+	Corrected position of the accelerator.
+
+2004-04-17  Olga Rodimina  <rodimina@redhat.com>
+
+	* javax/swing/JMenuItem.java: Partly 
+	implemented. Work in progress
+	* javax/swing/plaf/basic/BasicLookAndFeel.java:
+	Changed default value of acceleratorDelimiter.
+	* javax/swing/plaf/basic/BasicMenuItemUI.java:
+	New class. Partly implemented.
+		
+2004-04-17  David Jee  <djee@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkMenuPeer.java
+	(addSeparator): Remove.
+	* java/awt/Menu.java
+	(separator): Remove static final MenuItem field.
+	(separatorLabel): New static final String field.
+	(addSeparator): Do not use peer method; use add(MenuItem) instead.
+	Use separatorLabel to denote that it is a separator.
+	(insertSeparator): Create a new MenuItem with separatorLabel, instead
+	of reusing the static separator instance, because a MenuItem instance
+	can't be added more than once without being cloned.
+	* java/awt/peer/MenuPeer.java
+	(addSeparator): Remove from interface.
+
+2004-04-17  David Jee  <djee@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkMenuItemPeer.java
+	(connectSignals): New native method declaration.
+	(GtkMenuItemPeer): Connect signals if the parent is a Menu.
+	* java/awt/MenuItem.java
+	(getActionCommand): Return the label if the action command is not set.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuBarPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkMenuBarPeer_addMenu): Use
+	gtk_menu_shell_append().
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuItemPeer.c
+	(item_activate): Fix argument type.
+	(Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_create): Do not connect
+	signal here.
+	(Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_connectSignals): New
+	method.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkMenuPeer_create): Check if a label is
+	given. Add the menu widget's top-level GtkWindow to the global window
+	group, so it can grab the pointer.
+	(Java_gnu_java_awt_peer_gtk_GtkMenuPeer_addItem): Use
+	gtk_menu_shell_append().
+
+2004-04-17  Kim Ho  <kho@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java:
+	(calculateSizes): Return real width and height.
+
+2004-04-17  Kim Ho  <kho@redhat.com>
+
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(calculateTabRects): Set the selectedRun before
+	trying to rotate tabs.
+
+2004-04-17  Kim Ho  <kho@redhat.com>
+
+	* javax/swing/DefaultSingleSelectionModel.java
+	(isSelected): Return true if the selected index
+	is not -1.
+	* javax/swing/JLabel.java: Do not change mnemonic
+	index if text is null.
+	* javax/swing/JProgressBar.java: Use JComponent's
+	EventListenerList.
+	* javax/swing/JScrollBar.java: Ditto.
+	* javax/swing/JSlider.java: Ditto.
+	* javax/swing/JTabbedPane.java: Reimplement.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java:
+	Add defaults for TabbedPane.
+	* javax/swing/plaf/basic/BasicArrowButton.java:
+	Implement
+	* javax/swing/plaf/basic/BasicProgressBarUI.java:
+	(paintDeterminate): Don't paint String if it's
+	empty.
+	(paintIndeterminate): ditto.
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java:
+	Reimplement.
+
+2004-04-17  Graydon Hoare  <graydon@redhat.com>
+
+	* javax/swing/JComponent.java: Turn off double buffer by default.
+	* javax/swing/plaf/basic/BasicViewportUI.java: Clear rects before
+	painting.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_gdkDrawDrawable): 
+	Use cairo to copy areas.
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoClip):
+	Initialize and set clip region.
+
+2004-04-17  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* java/applet/Applet.java (preferredSize): Override deprecated
+	variant of getPreferredSize.
+	(minimumSize): Override deprecated variant of getMinimumSize.
+
+2004-04-17  Olga Rodimina  <rodimina@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java
+	(drawImage(img,xform,bgcolor,obs)): New Method.
+	Helper function that every drawImage method will
+	use.
+	(drawRaster): Added new parameter, bgcolor. All
+	transparent pixels are changed to bgcolor before 
+	image is drawn.
+	(drawRenderedImage): Fixed to use changed drawRaster().
+	(drawImage(image,xform,obs): Fixed to use new helper function 
+	(drawImage(image,op,x,y)): Ditto.
+	(drawImage (img,x,y,observer)): Ditto.
+	((PainterThread) bgcolor): New Field.
+	((PainterThread) (setPixels)): Changed all transparent pixels 
+	to bgcolor.	
+	(drawImage(img,x,y,width,height,bgcolor,observer)): 
+	Fixed FIXME - all the transparent pixels are 
+	changed to the specified bgcolor. 
+	(drawImage(img, x, y, width, height, observer): Changed to 
+	use function above.
+	(drawImage (img,dx1,dy1,dx2,dy2,sx1,sy1,sx2,sy2,bgcolor,observer)): 
+	Fixed FIXME- changed all transparent pixels to bgcolor.
+	(drawImage (img, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer)):
+	Changed to use function above. 
+
+2004-04-17  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* java/applet/Applet.java (dimensions): New field.
+	(getDimensions): New method.
+	(getPreferredSize): Call getDimensions.
+	(getMinimumSize): Likewise.
+
+2004-04-17  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* java/applet/Applet.java (getPreferredSize): New method.
+	(getMinimumSize): New method.
+
 2004-04-17  Michael Koch  <konqueror@gmx.de>
 
 	* java/util/Collections.java,
