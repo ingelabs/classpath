@@ -1,5 +1,5 @@
 /* URLStreamHandler.java -- Abstract superclass for all protocol handlers
-   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -426,11 +426,12 @@ public abstract class URLStreamHandler
     int size = protocol.length() + host.length() + file.length() + 24;
     StringBuffer sb = new StringBuffer(size);
 
-    if (protocol != null && protocol.length() > 0){
+    if (protocol != null && protocol.length() > 0)
+      {
 	sb.append(protocol);
 	sb.append(":");
-    }
-  
+      }
+
     if (host.length() != 0)
       sb.append("//").append(host);
 

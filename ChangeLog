@@ -1,3 +1,8 @@
+2003-02-16  Tom Tromey  <tromey@redhat.com>
+
+	* java/net/URLStreamHandler.java (toExternalForm): Fixed
+	indentation.
+
 2003-02-16  C. Brian Jones  <cbj@gnu.org>
 
 	* doc/api/Makefile.am: remove non-public packages from output
