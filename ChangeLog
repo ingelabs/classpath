@@ -1,3 +1,11 @@
+2003-09-29  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/InetAddress.java: Reformatted.
+	* java/net/URL.java
+	(DEFAULT_SEARCH_PATH): New constant for default handler search path.
+	(static): Use DEFAULT_SEARCH_PATH instead of static string.
+	(getURLStreamHandler): Put instances of the handlers into the cache.
+
 2003-09-28  Bryce McKinlay  <bryce@mckinlay.net.nz>
 
 	* java/text/DateFormat.java (format): Throw IllegalArgumentException

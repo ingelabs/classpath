@@ -119,6 +119,8 @@ import java.util.StringTokenizer;
   */
 public final class URL implements Serializable
 {
+  private static final String DEFAULT_SEARCH_PATH = "gnu.java.net.protocol";
+  
   /**
    * The name of the protocol for this URL.
    * The protocol is always stored in lower case.
@@ -188,19 +190,20 @@ public final class URL implements Serializable
 
   static
     {
-      String s = System.getProperty("gnu.java.net.nocache_protocol_handlers");
+      String s = System.getProperty ("gnu.java.net.nocache_protocol_handlers");
+      
       if (s == null)
         cache_handlers = true;
       else
         cache_handlers = false;
 
-      ph_search_path = System.getProperty("java.protocol.handler.pkgs");
+      ph_search_path = System.getProperty ("java.protocol.handler.pkgs");
 
       // Tack our default package on at the ends
       if (ph_search_path != null)
-        ph_search_path = ph_search_path + "|" + "gnu.java.net.protocol";
+        ph_search_path = ph_search_path + "|" + DEFAULT_SEARCH_PATH;
       else
-        ph_search_path = "gnu.java.net.protocol";
+        ph_search_path = DEFAULT_SEARCH_PATH;
     }
 
   /**
@@ -774,19 +777,8 @@ public final class URL implements Serializable
     // First, see if a protocol handler is in our cache.
     if (cache_handlers)
       {
-        Class cls = (Class) ph_cache.get (protocol);
-        
-        if (cls != null)
-          {
-            try
-              {
-                return (URLStreamHandler) cls.newInstance();
-              }
-            catch (Exception e)
-              {
-                // Can't instantiate; handler still null.
-              }
-          }
+        if ((ph = (URLStreamHandler) ph_cache.get (protocol)) != null)
+          return ph;
       }
 
     // If a non-default factory has been set, use it to find the protocol.
@@ -829,7 +821,7 @@ public final class URL implements Serializable
     if (ph != null
         && cache_handlers)
       if (ph instanceof URLStreamHandler)
-	ph_cache.put (protocol, ph.getClass());
+	ph_cache.put (protocol, ph);
       else
 	ph = null;
 

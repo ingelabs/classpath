@@ -86,7 +86,7 @@ public class InetAddress implements Serializable
    * The special IP address INADDR_ANY.
    */
   private static InetAddress inaddr_any;
-
+  
   /**
    * Dummy InetAddress, used to bind socket to any (all) network interfaces.
    */
@@ -180,7 +180,7 @@ public class InetAddress implements Serializable
    * The time this address was looked up.
    */
   transient long lookup_time;
-
+  
   /**
    * The field 'family' seems to be the AF_ value.
    * FIXME: Much of the code in the other java.net classes does not make
@@ -241,7 +241,6 @@ public class InetAddress implements Serializable
     address |= ((addr [2] << 8) & 0xff00);
     address |= ((addr [1] << 16) & 0xff0000);
     address |= ((addr [0] << 24) & 0xff000000);
-
   }
 
   /**
@@ -250,17 +249,19 @@ public class InetAddress implements Serializable
    * also known as "Class D" addresses.
    *
    * @return true if mulitcast, false if not
+   *
+   * @since 1.1
    */
-  public boolean isMulticastAddress ()
+  public boolean isMulticastAddress()
   {
-    if (addr.length == 0)
-      return (false);
-
     // Mask against high order bits of 1110
-    if ((addr[0] & 0xF0) == 224)
-      return (true);
+    if (addr.length == 4)
+      return (addr [0] & 0xF0) == 0xE0;
+    
+    return false;
+  }
 
-    return (false);
+    return false;
   }
 
   /**
@@ -289,7 +290,7 @@ public class InetAddress implements Serializable
   }
 
   /**
-   * Returns the IP address of this object as a int array.
+   * Returns the IP address of this object as a byte array.
    *
    * @return IP address
    */
@@ -310,11 +311,13 @@ public class InetAddress implements Serializable
    * the dotted octet notation, for example, "127.0.0.1".
    *
    * @return The IP address of this object in String form
+   *
+   * @since 1.0.2
    */
   public String getHostAddress()
   {
-    StringBuffer sb = new StringBuffer();
-
+    StringBuffer sb = new StringBuffer (40);
+    
     for (int i = 0; i < addr.length; i++)
       {
         sb.append (addr [i] & 0xff);
@@ -322,7 +325,7 @@ public class InetAddress implements Serializable
         if (i < (addr.length - 1))
           sb.append (".");
       }
-
+    
     return sb.toString();
   }
 
@@ -361,18 +364,19 @@ public class InetAddress implements Serializable
    */
   public boolean equals (Object obj)
   {
-    if (!(obj instanceof InetAddress))
+    if (obj == null
+        || ! (obj instanceof InetAddress))
       return false;
-
+    
     byte[] test_ip = ((InetAddress) obj).getAddress();
 
     if (test_ip.length != addr.length)
       return false;
-
+    
     for (int i = 0; i < addr.length; i++)
       if (test_ip [i] != (byte) addr [i])
         return false;
-
+    
     return true;
   }
 
@@ -453,9 +457,9 @@ public class InetAddress implements Serializable
    * default.  This method is equivalent to returning the first element in
    * the InetAddress array returned from GetAllByName.
    *
-   * @param hostname The name of the desired host, or null for the local machine
-   *
-   * @return The address of the host as an InetAddress
+   * @param hostname The name of the desired host, or null for the local machine.
+   * 
+   * @return The address of the host as an InetAddress object.
    *
    * @exception UnknownHostException If no IP address can be found for the
    * given hostname
@@ -498,10 +502,9 @@ public class InetAddress implements Serializable
             return new InetAddress (ip);
           }
       }
-
+   
     // Wasn't an IP, so try the lookup
     InetAddress[] addresses = getAllByName (hostname);
-
     return addresses [0];
   }
 
@@ -512,10 +515,11 @@ public class InetAddress implements Serializable
    * dotted decimal format such as "127.0.0.1".  If the value is null, the
    * hostname of the local machine is supplied by default.
    *
-   * @param hostname The name of the desired host, or null for the local machine
+   * @param @param hostname The name of the desired host, or null for the
+   * local machine.
    *
-   * @return All addresses of the host as an array of InetAddress's
-   *
+   * @return All addresses of the host as an array of InetAddress objects.
+   * 
    * @exception UnknownHostException If no IP address can be found for the
    * given hostname
    */
@@ -609,7 +613,7 @@ public class InetAddress implements Serializable
   {
     if (cache_size == 0)
       return;
-
+    
     // Check to see if hash table is full
     if (cache_size != -1)
       if (cache.size () == cache_size)
@@ -696,7 +700,7 @@ public class InetAddress implements Serializable
   private void readObject (ObjectInputStream ois)
     throws IOException, ClassNotFoundException
   {
-    ois.defaultReadObject ();
+    ois.defaultReadObject();
     addr = new byte [4];
     addr [3] = (byte) address;
     
@@ -716,6 +720,6 @@ public class InetAddress implements Serializable
     for (; i < len; i++)
       address = address << 8 | (((int) addr [i]) & 0xFF);
     
-    oos.defaultWriteObject ();
+    oos.defaultWriteObject();
   }
 }
