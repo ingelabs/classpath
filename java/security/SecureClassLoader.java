@@ -49,7 +49,7 @@ protected SecureClassLoader(ClassLoader parent)
 {
 	SecurityManager sm = System.getSecurityManager();
 	if(sm != null)
-		sm.checkCreateClassLoader()
+		sm.checkCreateClassLoader();
 	this.parent = parent;
 }
 
@@ -68,7 +68,7 @@ protected SecureClassLoader()
 {
 	SecurityManager sm = System.getSecurityManager();
 	if(sm != null)
-		sm.checkCreateClassLoader()
+		sm.checkCreateClassLoader();
 	this.parent = ClassLoader.getSystemClassLoader();
 }
 
