@@ -5,7 +5,7 @@ SUBDIRS = lib doc include native resource examples
 
 native: lib
 
-EXTRA_DIST = HACKING BUGS THANKYOU mauve-classpath LICENSE
+EXTRA_DIST = HACKING BUGS THANKYOU mauve-classpath LICENSE ChangeLog-2003
 
 #DISTCHECK_CONFIGURE_FLAGS = --enable-gjdoc
 
