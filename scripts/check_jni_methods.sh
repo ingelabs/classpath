@@ -8,14 +8,14 @@ TMPFILE3=`mktemp $pattern` || { echo >&2 "$0: Unable to make temp file; aborting
 # Find all methods defined in the header files generated
 # from the java source files.
 grep -h '^JNIEXPORT .* Java_' include/*.h | \
-	sed -e 's,^JNIEXPORT .* JNICALL \(Java_\w*\) (.*$,\1,' | \
+        sed -e 's,.*JNICALL \(Java_[a-z_A-Z0-9]*\).*$,\1,' | \
 	sort > $TMPFILE
 
 # Find all methods in the JNI C source files.
 find native/jni -name \*.c | \
 	xargs grep -h '^Java_' | \
-	sed -e 's,^\(Java_\w*\) *(.*$,\1,' \
-	| sort > $TMPFILE2
+        sed -e 's,^\(Java_[a-z_A-Z0-9]*\) *(.*$,\1,' | \
+	sort > $TMPFILE2
 
 # Write temporary ignore file.
 cat > $TMPFILE3 << EOF
