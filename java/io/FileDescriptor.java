@@ -40,19 +40,19 @@ public final class FileDescriptor
  */
 
 /**
-  * This is a @code{FileDescriptor} object representing the standard
+  * This is a <code>FileDescriptor</code> object representing the standard
   * input stream.
   */
 public static final FileDescriptor in = new FileDescriptor(0);
 
 /**
-  * This is a @code{FileDescriptor} object representing the standard
+  * This is a <code>FileDescriptor</code> object representing the standard
   * output stream.
   */
 public static final FileDescriptor out = new FileDescriptor(1);
 
 /**
-  * This is a @code{FileDescriptor} object representing the standard
+  * This is a <code>FileDescriptor</code> object representing the standard
   * error stream.
   */
 public static final FileDescriptor err = new FileDescriptor(2);
@@ -86,7 +86,7 @@ FileDescriptor()
 /*************************************************************************/
 
 /**
-  * This method is used to initialize a @code{FileDescriptor} that will
+  * This method is used to initialize a <code>FileDescriptor</code> that will
   * represent the specified native file handle. 
   *
   * @param native_fd The native file handle this object should represent
@@ -104,7 +104,7 @@ FileDescriptor(int native_fd)
 
 /**
   * This method forces all data that has not yet been physically written to
-  * the underlying storage medium associated with this @code{FileDescriptor}
+  * the underlying storage medium associated with this <code>FileDescriptor</code>
   * to be written out.  This method will not return until all data has
   * been fully written to the underlying device.  If the device does not
   * support this functionality or if an error occurs, then an exception
@@ -135,7 +135,7 @@ syncInternal(int native_fd);
   * This methods tests whether or not this object represents a valid open
   * native file handle.
   *
-  * @return @code{true} if this object represents a valid native file handle, @code{false} otherwise
+  * @return <code>true</code> if this object represents a valid native file handle, <code>false</code> otherwise
   */
 public boolean
 valid()
@@ -151,7 +151,7 @@ valid()
   *
   * @param native_fd The native file handle
   *
-  * @return @code{true} if this object represents a valid native file handle, @code{false} otherwise
+  * @return <code>true</code> if this object represents a valid native file handle, <code>false</code> otherwise
   */
 native boolean
 validInternal(int native_fd);

@@ -59,7 +59,7 @@ private int native_fd;
   * This method initializes a <code>FileOutputStream</code> object to write
   * to the named file.  The file is created if it does not exist, and
   * the bytes written are written starting at the beginning of the file.
-  *
+  * <p>
   * Before opening a file, a security check is performed by calling the
   * <code>checkWrite</code> method of the <code>SecurityManager</code> (if
   * one exists) with the name of the file to be opened.  An exception is
@@ -82,8 +82,8 @@ FileOutputStream(String name) throws SecurityException, IOException
   * This method initializes a <code>FileOutputStream</code> object to write
   * to the specified <code>File</code> object.  The file is created if it 
   * does not exist, and the bytes written are written starting at the 
-  *  beginning of the file.
-  *
+  * beginning of the file.
+  * <p>
   * Before opening a file, a security check is performed by calling the
   * <code>checkWrite</code> method of the <code>SecurityManager</code> (if
   * one exists) with the name of the file to be opened.  An exception is
@@ -108,7 +108,7 @@ FileOutputStream(File file) throws SecurityException, IOException
   * the bytes written are written starting at the beginning of the file if
   * the <code>append</code> argument is <code>false</code> or at the end
   * of the file if the <code>append</code> argument is true.
-  *
+  * <p>
   * Before opening a file, a security check is performed by calling the
   * <code>checkWrite</code> method of the <code>SecurityManager</code> (if
   * one exists) with the name of the file to be opened.  An exception is
@@ -148,7 +148,7 @@ FileOutputStream(String name, boolean append) throws SecurityException,
   * object.  This method does not create any underlying disk file or
   * reposition the file pointer of the given descriptor.  It assumes that
   * this descriptor is ready for writing as is.
-  *
+  * <p>
   * Before opening a file, a security check is performed by calling the
   * <code>checkWrite</code> method of the <code>SecurityManager</code> (if
   * one exists) with the specified <code>FileDescriptor</code> as an argument.

@@ -61,10 +61,10 @@ long grand_total_read;
  */
 
 /**
-  * This method initializes a @code{FileInputStream} to read from the
+  * This method initializes a <code>FileInputStream</code> to read from the
   * specified named file.  A security check is first made to determine
   * whether or not access to this file is allowed.  This is done by
-  * calling the @code{checkRead()} method of the @code{SecurityManager}
+  * calling the <code>checkRead()</code> method of the <code>SecurityManager</code>
   * (if one exists) with the name of this file.  An exception is thrown
   * if reading is not allowed.  If the file does not exist, an exception
   * is also thrown.
@@ -83,15 +83,15 @@ FileInputStream(String name) throws SecurityException, FileNotFoundException
 /*************************************************************************/
 
 /**
-  * This method initializes a @code{FileInputStream} to read from the
-  * specified @code{File} object.  A security check is first made to determine
+  * This method initializes a <code>FileInputStream</code> to read from the
+  * specified <code>File</code> object.  A security check is first made to determine
   * whether or not access to this file is allowed.  This is done by
-  * calling the @code{checkRead()} method of the @code{SecurityManager}
+  * calling the <code>checkRead()</code> method of the <code>SecurityManager</code>
   * (if one exists) with the name of this file.  An exception is thrown
   * if reading is not allowed.  If the file does not exist, an exception
   * is also thrown.
   *
-  * @param file The @code{File} object this stream should read from
+  * @param file The <code>File</code> object this stream should read from
   *
   * @exception SecurityException If read access to the file is not allowed
   * @exception FileNotFoundException If the file does not exist.
@@ -110,14 +110,14 @@ FileInputStream(File file) throws SecurityException, FileNotFoundException
 /*************************************************************************/
 
 /**
-  * This method initializes a @code{FileInputStream} to read from the
-  * specified @code{FileDescriptor} object.  A security check is first made to 
+  * This method initializes a <code>FileInputStream</code> to read from the
+  * specified <code>FileDescriptor</code> object.  A security check is first made to 
   * determine whether or not access to this file is allowed.  This is done by
-  * calling the @code{checkRead()} method of the @code{SecurityManager}
-  * (if one exists) with the specified @code{FileDescriptor}.  An exception is 
+  * calling the <code>checkRead()</code> method of the <code>SecurityManager</code>
+  * (if one exists) with the specified <code>FileDescriptor</code>  An exception is 
   * thrown if reading is not allowed.
   *
-  * @param fd The @code{FileDescriptor} object this stream should read from
+  * @param fd The <code>FileDescriptor</code> object this stream should read from
   *
   * @exception SecurityException If read access to the file is not allowed
   */
@@ -153,11 +153,11 @@ FileInputStream(FileDescriptor fd) throws SecurityException
  */
 
 /**
-  * This method returns a @code{FileDescriptor} object representing the
+  * This method returns a <code>FileDescriptor</code> object representing the
   * underlying native file handle of the file this stream is reading
   * from
   *
-  * @return A @code{FileDescriptor} for this stream
+  * @return A <code>FileDescriptor</code> for this stream
   *
   * @exception IOException If an error occurs
   */
@@ -173,12 +173,12 @@ getFD() throws IOException
   * This method returns the number of bytes that can be read from this
   * stream before a read can block.  A return of 0 indicates that blocking
   * might (or might not) occur on the very next read attempt.
-  *
+  * <p>
   * This method returns the number of unread bytes remaining in the file if
   * the descriptor being read from is an actual file.  If this method is
   * reading from a ''special'' file such a the standard input, this method
   * will return the appropriate value for the stream being read.
-  *
+  * <p>
   * Be aware that reads on plain files that do not reside locally might
   * possibly block even if this method says they should not.  For example,
   * a remote server might crash, preventing an NFS mounted file from being
@@ -217,7 +217,7 @@ getFileLength(int native_fd) throws IOException;
   * This method skips the specified number of bytes in the stream.  It
   * returns the actual number of bytes skipped, which may be less than the
   * requested amount.
-  *
+  * <p>
   * This method reads and discards bytes into a 256 byte array until the
   * specified number of bytes were skipped or until either the end of stream
   * is reached or a read attempt returns a short count.  Subclasses can
@@ -267,7 +267,7 @@ skipInternal(int native_fd, long num_bytes) throws IOException;
   * This method reads an unsigned byte from the input stream and returns it
   * as an int in the range of 0-255.  This method also will return -1 if
   * the end of the stream has been reached.
-  *
+  * <p>
   * This method will block until the byte can be read.
   *
   * @return The byte read or -1 if end of stream
@@ -295,11 +295,11 @@ read() throws IOException
   * supplied buffer.  This method attempts to completely fill the buffer,
   * but can return before doing so.  The actual number of bytes read is
   * returned as an int.  A -1 is returned to indicate the end of the stream.
-  *
+  * <p>
   * This method will block until some data can be read.
-  *
+  * <p>
   * This method operates by calling an overloaded read method like so:
-  * @code{read(buf, 0, buf.length)}
+  * <code>read(buf, 0, buf.length)</code>
   *
   * @param buf The buffer into which the bytes read will be stored.
   *
@@ -317,12 +317,12 @@ read(byte[] buf) throws IOException
 
 /**
   * This method read bytes from a stream and stores them into a caller
-  * supplied buffer.  It starts storing the data at index @code{offset} into
-  * the buffer and attempts to read @code{len} bytes.  This method can
+  * supplied buffer.  It starts storing the data at index <code>offset</code> into
+  * the buffer and attempts to read <code>len</code> bytes.  This method can
   * return before reading the number of bytes requested.  The actual number
   * of bytes read is returned as an int.  A -1 is returned to indicate the
   * end of the stream.
-  * 
+  * <p>
   * This method will block until some data can be read.
   *
   * @param buf The array into which the bytes read should be stored

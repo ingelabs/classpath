@@ -44,7 +44,7 @@ public class File implements Serializable //, Comparable // Only in 1.2
 
 /**
   * This is the path separator string for the current host. This field
-  * contains the value of the <xmp>file.separator</xmp> system property.
+  * contains the value of the <code>file.separator</code> system property.
   * An example separator string would be "/" on the GNU system.
   */
 public static final String separator = System.getProperty("file.separator");
@@ -53,21 +53,21 @@ public static final String separator = System.getProperty("file.separator");
   * This is the first character of the file separator string.  On many
   * hosts (for example, on the GNU system), this represents the entire 
   * separator string.  The complete separator string is obtained from the
-  * <xmp>file.separator</xmp>system property.
+  * <code>file.separator</code>system property.
   */
 public static final char separatorChar = separator.charAt(0);
 
 /**
   * This is the string that is used to separate the host name from the
   * path name in paths than include the host name.  It is the value of
-  * the <xmp>path.separator</xmp> system property.
+  * the <code>path.separator</code> system property.
   */
 public static final String pathSeparator = System.getProperty("path.separator");
 
 /**
   * This is the first character of the string used to separate the host name
   * from the path name in paths that include a host.  The separator string
-  * is taken from the <xmp>path.separator</xmp> system property.
+  * is taken from the <code>path.separator</code> system property.
   */
 public static final char pathSeparatorChar = pathSeparator.charAt(0);
 
@@ -94,24 +94,24 @@ private String path;
   * files created are guaranteed not to currently exist and the same file name
   * will never be used twice in the same virtual machine instance.  The
   * system temporary directory is determined by examinging the 
-  * <xmp>java.tmpdir</xmp> system property.
-  *
+  * <code>java.tmpdir</code> system property.
+  * <p>
   * The <code>pattern</code>argument determines a portion of the filename
-  * created.  It should follow a format of <xmp>prefix[#suffix]</xmp> where
+  * created.  It should follow a format of <code>prefix[#suffix]</code> where
   * prefix is a character string of at least three characters that will
   * be used to prefix the temporary file name and suffix is an optional
   * string that will be used as the suffix of the temporary file name.  The
-  * suffix must be separated from the prefix by a <xmp>#</xmp> char. The
+  * suffix must be separated from the prefix by a <code>#</code> char. The
   * brackets in the format example are to indicate that the suffix is 
   * optional and should not be included.  The case of the prefix and suffix 
   * is not guaranteed to be preserved.  Additionally, the suffix may be
-  * truncated to a minimum of three characters.  A <xmp>#</xmp>
-  * character in the prefix or suffix must be escaped with a <xmp>\</xmp>.
-  * If no suffix is specified, the suffix defaults to <xmp>.tmp</code>.
-  *
+  * truncated to a minimum of three characters.  A <code>#</code>
+  * character in the prefix or suffix must be escaped with a <code>\ </code>.
+  * If no suffix is specified, the suffix defaults to <code>.tmp</code>.
+  * <p>
   * If a <code>SecurityManager</code> exists, then its <code>checkWrite</code>
   * method is used to verify that this operation is permitted.
-  *
+  * <p>
   * This method is identical to calling 
   * <code>createTempFile("pattern", null)</code>.
   *
@@ -136,21 +136,21 @@ createTempFile(String pattern) throws IllegalArgumentException,
   * directory. The files created are guaranteed not to currently exist and the 
   * same file name will never be used twice in the same virtual machine instance.  
   * The system temporary directory is determined by examinging the 
-  * <xmp>java.tmpdir</xmp> system property.
-  *
+  * <code>java.tmpdir</code> system property.
+  * <p>
   * The <code>pattern</code>argument determines a portion of the filename
-  * created.  It should follow a format of <xmp>prefix[#suffix]</xmp> where
+  * created.  It should follow a format of <code>prefix[#suffix]</code> where
   * prefix is a character string of at least three characters that will
   * be used to prefix the temporary file name and suffix is an optional
   * string that will be used as the suffix of the temporary file name.  The
-  * suffix must be separated from the prefix by a <xmp>#</xmp> char. The
+  * suffix must be separated from the prefix by a <code>#</code> char. The
   * brackets in the format example are to indicate that the suffix is 
   * optional and should not be included.  The case of the prefix and suffix 
   * is not guaranteed to be preserved.  Additionally, the suffix may be
-  * truncated to a minimum of three characters.  A <xmp>#</xmp>
-  * character in the prefix or suffix must be escaped with a <xmp>\</xmp>.
-  * If no suffix is specified, the suffix defaults to <xmp>.tmp</code>.
-  *
+  * truncated to a minimum of three characters.  A <code>#</code>
+  * character in the prefix or suffix must be escaped with a <code>\</code>.
+  * If no suffix is specified, the suffix defaults to <code>.tmp</code>.
+  * <p>
   * If a <code>SecurityManager</code> exists, then its <code>checkWrite</code>
   * method is used to verify that this operation is permitted.
   *
@@ -261,7 +261,7 @@ createInternal(String name) throws IOException;
   * This method initializes a new <code>File</code> object to represent
   * a file in the specified directory.  If the <code>directory</code>
   * argument is <code>null</code>, the file is assumed to be in the
-  * current directory as specified by the <xmp>user.dir</xmp> system
+  * current directory as specified by the <code>user.dir</code> system
   * property
   *
   * @param directory The directory this file resides in
@@ -365,7 +365,7 @@ getPath()
   * If the path name is already absolute, then it is returned.  Otherwise
   * the value returned is the current directory plus the separatory
   * string plus the path of the file.  The current directory is determined
-  * from the <xmp>user.dir</xmp> system property.
+  * from the <code>user.dir</code> system property.
   *
   * @return The absolute path of this file
   */
@@ -386,7 +386,7 @@ getAbsolutePath()
   * different.  On the GNU system, the canonical form differs from the
   * absolute form in that all relative file references to "." and ".."
   * are resolved and removed.
-  *
+  * <p>
   * Note that this method, unlike the other methods which return path
   * names, can throw an IOException.  This is because native method 
   * might be required in order to resolve the canonical path
@@ -477,6 +477,8 @@ getParent()
   * path and false if it does not.  The definition of an absolute path varies
   * by system.  As an example, on GNU systems, a path is absolute if it starts
   * with a "/".
+  *
+  * @return <code>true</code> if this object represents an absolute file name, <code>false</code> otherwise.
   */
 public boolean
 isAbsolute()
@@ -730,7 +732,7 @@ lengthInternal(String path);
   * as a specified time value.  It is only useful for comparing to other
   * such time values returned on the same system.  In that case, the larger
   * value indicates a more recent modification time. 
-  *
+  * <p>
   * If the file does not exist, then a value of 0 is returned.
   *
   * @return The last modification time of the file
@@ -921,7 +923,7 @@ mkdirs() throws SecurityException
   *
   * @param dest The <code>File</code> object representing the target name
   *
-  * @return <code>true<code> if the rename succeeds, <code>false</code> otherwise.
+  * @return <code>true</code> if the rename succeeds, <code>false</code> otherwise.
   *
   * @exception SecurityException If write access is not allowed to the file by the <code>SecurityMananger</code>.
   */
@@ -967,7 +969,7 @@ renameToInternal(String target, String dest);
   * <code>null</code> is returned.  The list of files will not contain
   * any names such as "." or ".." which indicate the current or parent
   * directory.  Also, the names are not guaranteed to be sorted.
-  *
+  * <p>
   * A <code>SecurityManager</code> check is made prior to reading the
   * directory.  If read access to the directory is denied, an exception
   * will be thrown.
@@ -991,13 +993,13 @@ list()
   * <code>null</code> is returned.  The list of files will not contain
   * any names such as "." or ".." which indicate the current or parent
   * directory.  Also, the names are not guaranteed to be sorted.
-  *
+  * <p>
   * In this form of the <code>list()</code> method, a filter is specified
   * that allows the caller to control which files are returned in the
   * list.  The <code>FilenameFilter</code> specified is called for each
   * file returned to determine whether or not that file should be included
   * in the list.
-  *
+  * <p>
   * A <code>SecurityManager</code> check is made prior to reading the
   * directory.  If read access to the directory is denied, an exception
   * will be thrown.
@@ -1077,10 +1079,10 @@ listInternal(String dirname);
   * of the files.  This method is identical to <code>compareTo(File)</code>
   * except that if the <code>Object</code> passed to it is not a 
   * <code>File</code>, it throws a <code>ClassCastException</code>
-  *
+  * <p>
   * The canonical paths of the files are determined by calling the
   * <code>getCanonicalPath</code> method on each object.
-  *
+  * <p>
   * This method returns a 0 if the specified <code>Object</code> is equal
   * to this one, a negative value if it is less than this one 
   * a positive value if it is greater than this one.
@@ -1101,10 +1103,10 @@ compareTo(Object obj) throws ClassCastException
   * This method compares the specified <code>File</code> to this one
   * to test for equality.  It does this by comparing the canonical path names
   * of the files. 
-  *
+  * <p>
   * The canonical paths of the files are determined by calling the
   * <code>getCanonicalPath</code> method on each object.
-  *
+  * <p>
   * This method returns a 0 if the specified <code>Object</code> is equal
   * to this one, a negative value if it is less than this one 
   * a positive value if it is greater than this one.
@@ -1142,7 +1144,7 @@ compareTo(File file)
   * argument is not null 2) The argument is a <code>File</code> object and
   * 3) The path of the <code>File</code>argument is equal to the path
   * of this object.
-  *
+  * <p>
   * The paths of the files are determined by calling the <code>getPath()</code>
   * method on each object.
   *
