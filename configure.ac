@@ -14,7 +14,7 @@ AC_CANONICAL_TARGET
 dnl -----------------------------------------------------------
 dnl Fold all IA-32 CPU architectures into "x86"
 dnl -----------------------------------------------------------
-if expr ${target_cpu} : .*86 > /dev/null; then target_cpu=x86; fi
+if expr ${target_cpu} : '.*86' > /dev/null; then target_cpu=x86; fi
 
 dnl -----------------------------------------------------------
 dnl We will not track/change lib version until we reach version 1.0
@@ -98,6 +98,9 @@ AC_PROG_CPP
 if test "x${COMPILE_JNI}" = xyes; then
   AC_HEADER_STDC
 
+  dnl Checking sizeof void * is needed for fdlibm to work properly on ppc64, 
+  dnl at least. 
+  AC_CHECK_SIZEOF(void *)
   dnl We check for sys/filio.h because Solaris 2.5 defines FIONREAD there.
   dnl On that system, sys/ioctl.h will not include sys/filio.h unless
   dnl BSD_COMP is defined; just including sys/filio.h is simpler.

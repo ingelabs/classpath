@@ -1,3 +1,7 @@
+2004-06-09  Steven Augart  <augart@watson.ibm.com>
+
+	* configure.ac: Add SIZEOF_VOID_P to include/config.h.
+
 2004-06-07  Archie Cobbs  <archie@dellroad.org>
 
 	* gnu/java/io/EncodingManager.java, java/util/ResourceBundle.java:
