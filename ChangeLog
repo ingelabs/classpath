@@ -1,5 +1,11 @@
 2003-06-25  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/swing/plaf/TabbedPaneUI.java: Made abstract, reformatted,
+	wrote JavaDoc.
+	(tabForCoordinate, getTabBounds, getTabRunCount): Made abstract.
+
+2003-06-25  Sascha Brawer  <brawer@dandelis.ch>
+
 	* javax/swing/plaf/PopupMenuUI.java (isPopupTrigger, getPopup):
 	New methods.
 
