@@ -1,13 +1,6 @@
 #include "gtkpeer.h"
 #include "GdkGraphics.h"
 
-struct graphics
-{
-  GdkDrawable *drawable;
-  GdkGC *gc;
-  GdkColormap *cm;
-};
-
 /* copy the native state of the peer (GtkWidget *) to the native state
    of the graphics object */
 JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState

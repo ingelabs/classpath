@@ -54,6 +54,13 @@ extern struct state_table *native_state_table;
 
 #endif /* JVM_SUN */
 
+struct graphics
+{
+  GdkDrawable *drawable;
+  GdkGC *gc;
+  GdkColormap *cm;
+};
+
 #define AWT_DEFAULT_CURSOR 0
 #define AWT_CROSSHAIR_CURSOR 1
 #define AWT_TEXT_CURSOR 2
