@@ -1,5 +1,10 @@
 2004-04-14  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/imageio/spi/ImageReaderWriterSpi.java (getFormatNames):
+	Return cloned names, for compatibility with JDK.
+
+2004-04-14  Sascha Brawer  <brawer@dandelis.ch>
+
 	* java/awt/image/PixelInterleavedSampleModel.java: New class.
 
 2004-04-13  Patrik Reali  <reali@acm.org>

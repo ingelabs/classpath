@@ -300,7 +300,7 @@ public abstract class ImageReaderWriterSpi
    */
   public String[] getFormatNames()
   {
-    return names;
+    return (String[]) names.clone();
   }
 
 
