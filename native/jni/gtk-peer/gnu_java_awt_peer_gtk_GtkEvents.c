@@ -544,9 +544,14 @@ connect_awt_hook (JNIEnv *env, jobject peer_obj, int nwindows, ...)
 
   obj = (jobject *) malloc (sizeof (jobject));
   *obj = (*env)->NewGlobalRef (env, peer_obj);
-
+  printf("Connection obj %p\n", peer_obj);
+  
   va_start (ap, nwindows);
   for (i = 0; i < nwindows; i++)
-    attach_jobject (va_arg (ap, GdkWindow *), obj);
+    {
+      GdkWindow* attach = (va_arg (ap, GdkWindow *));
+      printf("attach peer obj %p and %p\n", peer_obj, attach);
+      attach_jobject(attach, obj);
+    }
   va_end (ap);
 }

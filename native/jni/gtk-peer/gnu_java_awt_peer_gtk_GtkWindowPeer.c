@@ -56,6 +56,7 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_create
   GtkWidget *vbox, *layout;
 
   gdk_threads_enter ();
+
   window = gtk_window_new (type);
 
   vbox = gtk_vbox_new (0, 0);
@@ -94,14 +95,20 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_connectHooks
 {
   void *ptr;
   GtkWidget *layout;
+  GList* children;
 
   ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  layout = GTK_WIDGET (gtk_container_children (GTK_CONTAINER (GTK_BIN (ptr)->child))->data);
+
+  children = gtk_container_get_children(GTK_CONTAINER(ptr));
+  layout = children->data;
+  if(!GTK_IS_LAYOUT(layout))
+    {
+      printf("*** widget is not a layout ***");
+    }
   gtk_widget_realize (layout);
   connect_awt_hook (env, obj, 1, GTK_LAYOUT (layout)->bin_window);
-  
   gtk_widget_realize (GTK_WIDGET (ptr));
   connect_awt_hook (env, obj, 1, GTK_WIDGET (ptr)->window);
   gdk_threads_leave ();
@@ -113,6 +120,7 @@ setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width,
 {
   GtkWidget *layout, *vbox;
 
+  gdk_threads_enter();
   gtk_window_set_policy (GTK_WINDOW (window), 1, 1, 0);
   gtk_widget_set_usize (window, width, height);
 
@@ -130,6 +138,7 @@ setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width,
 
   connect_awt_hook (env, obj, 1, window->window);
   set_visible (window, visible);
+  gdk_threads_leave ();
 }
 
 /*

@@ -1,3 +1,9 @@
+2003-06-09  John Leuner  <jewel@debian.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c,
+	GtkEvents.c, GtkWindowPeer.c: removed SETV macro
+	changed gtk_object_get to g_object_get
+	
 2003-06-08  Tom Tromey  <tromey@redhat.com>
 
 	* java/text/SimpleDateFormat.java (parse(String,ParsePosition)):

@@ -40,61 +40,6 @@ exception statement from your version. */
 #include "gnu_java_awt_peer_gtk_GtkComponentPeer.h"
 #include <gtk/gtkprivate.h>
 
-#define GTK_OBJECT_SETV(ptr, arg)                \
-  gdk_threads_enter ();                          \
-  {                                              \
-    char *error;                                 \
-    GtkArg test_arg;                             \
-                                                 \
-    gtk_object_get (GTK_OBJECT_TYPE (ptr), arg.name, GTK_VALUE_POINTER (test_arg)); \
-    if (GTK_VALUE_POINTER (test_arg) == NULL)                               \
-      {                                          \
-	/* assume the argument is destined for the container's only child */ \
-	ptr = gtk_container_children (GTK_CONTAINER (ptr))->data;            \
-      }                                          \
-    switch (arg.type)                                                       \
-    {                                                                       \
-    case GTK_TYPE_CHAR:                                                     \
-      gtk_object_set (GTK_OBJECT (ptr), arg.name, GTK_VALUE_CHAR (arg));    \
-      break;                                                                \
-    case GTK_TYPE_UCHAR:                                                    \
-      gtk_object_set (GTK_OBJECT (ptr), arg.name, GTK_VALUE_UCHAR (arg));   \
-      break;                                                                \
-    case GTK_TYPE_BOOL:                                                     \
-      gtk_object_set (GTK_OBJECT (ptr), arg.name, GTK_VALUE_BOOL (arg));    \
-      break;                                                                \
-    case GTK_TYPE_INT:                                                      \
-      gtk_object_set (GTK_OBJECT (ptr), arg.name, GTK_VALUE_INT (arg));     \
-      break;                                                                \
-    case GTK_TYPE_UINT:                                                     \
-      gtk_object_set (GTK_OBJECT (ptr), arg.name, GTK_VALUE_UINT (arg));    \
-      break;                                                                \
-    case GTK_TYPE_LONG:                                                     \
-      gtk_object_set (GTK_OBJECT (ptr), arg.name, GTK_VALUE_LONG (arg));    \
-      break;                                                                \
-    case GTK_TYPE_ULONG:                                                    \
-      gtk_object_set (GTK_OBJECT (ptr), arg.name, GTK_VALUE_ULONG (arg));   \
-      break;                                                                \
-    case GTK_TYPE_FLOAT:                                                    \
-      gtk_object_set (GTK_OBJECT (ptr), arg.name, GTK_VALUE_FLOAT (arg));   \
-      break;                                                                \
-    case GTK_TYPE_DOUBLE:                                                   \
-      gtk_object_set (GTK_OBJECT (ptr), arg.name, GTK_VALUE_DOUBLE (arg));  \
-      break;                                                                \
-    case GTK_TYPE_STRING:                                                   \
-      gtk_object_set (GTK_OBJECT (ptr), arg.name, GTK_VALUE_STRING (arg));  \
-      break;                                                                \
-    case GTK_TYPE_BOXED:                                                    \
-      gtk_object_set (GTK_OBJECT (ptr), arg.name, GTK_VALUE_BOXED (arg));   \
-      break;                                                                \
-    case GTK_TYPE_POINTER:                                                  \
-      gtk_object_set (GTK_OBJECT (ptr), arg.name, GTK_VALUE_POINTER (arg)); \
-      break;                                                                \
-    }                                                                       \
-  }                                                                         \
-  gdk_threads_leave (); \
-
-
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkGenericPeer_dispose
   (JNIEnv *env, jobject obj)
 {
@@ -558,8 +503,9 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_S
   arg.type = GTK_TYPE_STRING;
   arg.name = (char *) name;
   GTK_VALUE_STRING (arg) = (char *) value;
-
-  GTK_OBJECT_SETV (ptr, arg);  
+  gdk_threads_enter();                          
+  g_object_set(ptr, name, value, NULL);
+  gdk_threads_leave();
 
   (*env)->ReleaseStringUTFChars (env, jname, name);
   (*env)->ReleaseStringUTFChars (env, jvalue, value);
@@ -579,7 +525,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_la
   arg.name = (char *) name;
   GTK_VALUE_BOOL (arg) = value;
 
-  GTK_OBJECT_SETV (ptr, arg);  
+  gdk_threads_enter();                          
+  g_object_set(ptr, name, GTK_VALUE_BOOL(arg), NULL);
+  gdk_threads_leave();
 
   (*env)->ReleaseStringUTFChars (env, jname, name);
 }
@@ -598,7 +546,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_la
   arg.name = (char *) name;
   GTK_VALUE_INT (arg) = value;
   
-  GTK_OBJECT_SETV (ptr, arg);  
+  gdk_threads_enter();                          
+  g_object_set(ptr, name, value, NULL);
+  gdk_threads_leave();
 
   (*env)->ReleaseStringUTFChars (env, jname, name);
 }
@@ -616,8 +566,10 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_la
   arg.type = GTK_TYPE_FLOAT;
   arg.name = (char *) name;
   GTK_VALUE_FLOAT (arg) = value;
-  
-  GTK_OBJECT_SETV (ptr, arg);  
+
+  gdk_threads_enter();                          
+  g_object_set(ptr, name, value, NULL);
+  gdk_threads_leave();
 
   (*env)->ReleaseStringUTFChars (env, jname, name);
 }
@@ -650,7 +602,9 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_O
   arg.name = (char *) name;
   GTK_VALUE_OBJECT (arg) = GTK_OBJECT (ptr2);
   
-  GTK_OBJECT_SETV (ptr1, arg);  
+  gdk_threads_enter();                          
+  g_object_set(ptr1, name, ptr2, NULL);
+  gdk_threads_leave();
 
   (*env)->ReleaseStringUTFChars (env, jname, name);
 }
