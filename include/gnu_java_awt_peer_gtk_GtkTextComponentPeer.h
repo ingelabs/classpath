@@ -10,15 +10,15 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_connectSignals (JNIEnv *env, jobject);
-extern JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getCaretPosition (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_setCaretPosition (JNIEnv *env, jobject, jint);
-extern JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getSelectionStart (JNIEnv *env, jobject);
-extern JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getSelectionEnd (JNIEnv *env, jobject);
-extern JNIEXPORT jstring JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getText (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_select (JNIEnv *env, jobject, jint, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_setEditable (JNIEnv *env, jobject, jboolean);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_setText (JNIEnv *env, jobject, jstring);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_connectSignals (JNIEnv *env, jobject);
+JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getCaretPosition (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_setCaretPosition (JNIEnv *env, jobject, jint);
+JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getSelectionStart (JNIEnv *env, jobject);
+JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getSelectionEnd (JNIEnv *env, jobject);
+JNIEXPORT jstring JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_getText (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_select (JNIEnv *env, jobject, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_setEditable (JNIEnv *env, jobject, jboolean);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextComponentPeer_setText (JNIEnv *env, jobject, jstring);
 
 #ifdef __cplusplus
 }

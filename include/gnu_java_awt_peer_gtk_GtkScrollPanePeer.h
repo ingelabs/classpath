@@ -10,14 +10,14 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_create (JNIEnv *env, jobject, jint, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetScrollPosition (JNIEnv *env, jobject, jint, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetHScrollIncrement (JNIEnv *env, jobject, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetVScrollIncrement (JNIEnv *env, jobject, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_setPolicy (JNIEnv *env, jobject, jint);
-extern JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getHScrollbarHeight (JNIEnv *env, jobject);
-extern JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getVScrollbarWidth (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_setScrollPosition (JNIEnv *env, jobject, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_create (JNIEnv *env, jobject, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetScrollPosition (JNIEnv *env, jobject, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetHScrollIncrement (JNIEnv *env, jobject, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetVScrollIncrement (JNIEnv *env, jobject, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_setPolicy (JNIEnv *env, jobject, jint);
+JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getHScrollbarHeight (JNIEnv *env, jobject);
+JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getVScrollbarWidth (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_setScrollPosition (JNIEnv *env, jobject, jint, jint);
 
 #ifdef __cplusplus
 }

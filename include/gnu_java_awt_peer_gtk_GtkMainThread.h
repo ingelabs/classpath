@@ -10,8 +10,8 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkMain (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkMain (JNIEnv *env, jobject);
 
 #ifdef __cplusplus
 }

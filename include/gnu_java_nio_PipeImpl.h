@@ -10,7 +10,7 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT void JNICALL Java_gnu_java_nio_PipeImpl_nativeInit (JNIEnv *env, jobject, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_nio_PipeImpl_nativeInit (JNIEnv *env, jobject, jobject);
 
 #ifdef __cplusplus
 }

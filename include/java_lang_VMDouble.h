@@ -10,9 +10,9 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT jlong JNICALL Java_java_lang_VMDouble_doubleToLongBits (JNIEnv *env, jclass, jdouble);
-extern JNIEXPORT jlong JNICALL Java_java_lang_VMDouble_doubleToRawLongBits (JNIEnv *env, jclass, jdouble);
-extern JNIEXPORT jdouble JNICALL Java_java_lang_VMDouble_longBitsToDouble (JNIEnv *env, jclass, jlong);
+JNIEXPORT jlong JNICALL Java_java_lang_VMDouble_doubleToLongBits (JNIEnv *env, jclass, jdouble);
+JNIEXPORT jlong JNICALL Java_java_lang_VMDouble_doubleToRawLongBits (JNIEnv *env, jclass, jdouble);
+JNIEXPORT jdouble JNICALL Java_java_lang_VMDouble_longBitsToDouble (JNIEnv *env, jclass, jlong);
 
 #ifdef __cplusplus
 }

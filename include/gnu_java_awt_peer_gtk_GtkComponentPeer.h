@@ -10,30 +10,30 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT jboolean JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_isEnabled (JNIEnv *env, jobject);
-extern JNIEXPORT jboolean JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_modalHasGrab (JNIEnv *env, jclass);
-extern JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetForeground (JNIEnv *env, jobject);
-extern JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetBackground (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetVisible (JNIEnv *env, jobject, jboolean);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetDimensions (JNIEnv *env, jobject, jintArray);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetPreferredDimensions (JNIEnv *env, jobject, jintArray);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetLocationOnScreen (JNIEnv *env, jobject, jintArray);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursor (JNIEnv *env, jobject, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetBackground (JNIEnv *env, jobject, jint, jint, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetForeground (JNIEnv *env, jobject, jint, jint, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkSetFont (JNIEnv *env, jobject, jstring, jint, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetQueueDrawArea (JNIEnv *env, jobject, jint, jint, jint, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_addExposeFilter (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_removeExposeFilter (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectJObject (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectSignals (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_requestFocus__ (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setNativeBounds (JNIEnv *env, jobject, jint, jint, jint, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv *env, jobject, jstring, jstring);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Z (JNIEnv *env, jobject, jstring, jboolean);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2I (JNIEnv *env, jobject, jstring, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2F (JNIEnv *env, jobject, jstring, jfloat);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_Object_2 (JNIEnv *env, jobject, jstring, jobject);
+JNIEXPORT jboolean JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_isEnabled (JNIEnv *env, jobject);
+JNIEXPORT jboolean JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_modalHasGrab (JNIEnv *env, jclass);
+JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetForeground (JNIEnv *env, jobject);
+JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetBackground (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetVisible (JNIEnv *env, jobject, jboolean);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetDimensions (JNIEnv *env, jobject, jintArray);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetPreferredDimensions (JNIEnv *env, jobject, jintArray);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetLocationOnScreen (JNIEnv *env, jobject, jintArray);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursor (JNIEnv *env, jobject, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetBackground (JNIEnv *env, jobject, jint, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetForeground (JNIEnv *env, jobject, jint, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkSetFont (JNIEnv *env, jobject, jstring, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetQueueDrawArea (JNIEnv *env, jobject, jint, jint, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_addExposeFilter (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_removeExposeFilter (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectJObject (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectSignals (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkRequestFocus (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setNativeBounds (JNIEnv *env, jobject, jint, jint, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_String_2 (JNIEnv *env, jobject, jstring, jstring);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Z (JNIEnv *env, jobject, jstring, jboolean);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2I (JNIEnv *env, jobject, jstring, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2F (JNIEnv *env, jobject, jstring, jfloat);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_Object_2 (JNIEnv *env, jobject, jstring, jobject);
 
 #ifdef __cplusplus
 }

@@ -110,7 +110,8 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursor
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_requestFocus__
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkRequestFocus
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
@@ -576,7 +577,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_O
   (*env)->ReleaseStringUTFChars (env, jname, name);
 }
 
-gboolean
+static gboolean
 filter_expose_event_handler (GtkWidget *widget, GdkEvent *event, jobject peer)
 {
   /*

@@ -10,10 +10,10 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT void JNICALL Java_java_nio_MappedByteBufferImpl_unmapImpl (JNIEnv *env, jobject);
-extern JNIEXPORT jboolean JNICALL Java_java_nio_MappedByteBufferImpl_isLoadedImpl (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_java_nio_MappedByteBufferImpl_loadImpl (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_java_nio_MappedByteBufferImpl_forceImpl (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_java_nio_MappedByteBufferImpl_unmapImpl (JNIEnv *env, jobject);
+JNIEXPORT jboolean JNICALL Java_java_nio_MappedByteBufferImpl_isLoadedImpl (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_java_nio_MappedByteBufferImpl_loadImpl (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_java_nio_MappedByteBufferImpl_forceImpl (JNIEnv *env, jobject);
 
 #ifdef __cplusplus
 }

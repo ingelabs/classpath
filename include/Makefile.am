@@ -48,9 +48,9 @@ $(top_srcdir)/include/java_io_VMObjectStreamClass.h \
 $(top_srcdir)/include/java_lang_Double.h \
 $(top_srcdir)/include/java_lang_Math.h \
 $(top_srcdir)/include/java_lang_Object.h \
+$(top_srcdir)/include/java_lang_VMDouble.h \
 $(top_srcdir)/include/java_lang_VMFloat.h \
 $(top_srcdir)/include/java_lang_VMProcess.h \
-$(top_srcdir)/include/java_lang_VMRuntime.h \
 $(top_srcdir)/include/java_lang_VMSystem.h \
 $(top_srcdir)/include/java_lang_reflect_Array.h \
 $(top_srcdir)/include/java_net_InetAddress.h \
@@ -152,12 +152,12 @@ $(top_srcdir)/include/java_lang_Math.h: $(top_srcdir)/java/lang/Math.java
 	$(JAVAH) -o $@ java.lang.Math
 $(top_srcdir)/include/java_lang_Object.h: $(top_srcdir)/java/lang/Object.java
 	$(JAVAH) -o $@ java.lang.Object
+$(top_srcdir)/include/java_lang_VMDouble.h: $(top_srcdir)/vm/reference/java/lang/VMDouble.java
+	$(JAVAH) -o $@ java.lang.VMDouble
 $(top_srcdir)/include/java_lang_VMFloat.h: $(top_srcdir)/vm/reference/java/lang/VMFloat.java
 	$(JAVAH) -o $@ java.lang.VMFloat
 $(top_srcdir)/include/java_lang_VMProcess.h: $(top_srcdir)/vm/reference/java/lang/VMProcess.java
 	$(JAVAH) -o $@ java.lang.VMProcess
-$(top_srcdir)/include/java_lang_VMRuntime.h: $(top_srcdir)/vm/reference/java/lang/VMRuntime.java
-	$(JAVAH) -o $@ java.lang.VMRuntime
 $(top_srcdir)/include/java_lang_VMSystem.h: $(top_srcdir)/vm/reference/java/lang/VMSystem.java
 	$(JAVAH) -o $@ java.lang.VMSystem
 $(top_srcdir)/include/java_lang_reflect_Array.h: $(top_srcdir)/java/lang/reflect/Array.java

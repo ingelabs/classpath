@@ -10,21 +10,21 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT void JNICALL Java_gnu_java_nio_channels_FileChannelImpl_init (JNIEnv *env, jclass);
-extern JNIEXPORT jint JNICALL Java_gnu_java_nio_channels_FileChannelImpl_open (JNIEnv *env, jobject, jstring, jint);
-extern JNIEXPORT jint JNICALL Java_gnu_java_nio_channels_FileChannelImpl_available (JNIEnv *env, jobject);
-extern JNIEXPORT jlong JNICALL Java_gnu_java_nio_channels_FileChannelImpl_implPosition (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_nio_channels_FileChannelImpl_seek (JNIEnv *env, jobject, jlong);
-extern JNIEXPORT void JNICALL Java_gnu_java_nio_channels_FileChannelImpl_implTruncate (JNIEnv *env, jobject, jlong);
-extern JNIEXPORT void JNICALL Java_gnu_java_nio_channels_FileChannelImpl_unlock (JNIEnv *env, jobject, jlong, jlong);
-extern JNIEXPORT jlong JNICALL Java_gnu_java_nio_channels_FileChannelImpl_size (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_nio_channels_FileChannelImpl_implCloseChannel (JNIEnv *env, jobject);
-extern JNIEXPORT jint JNICALL Java_gnu_java_nio_channels_FileChannelImpl_read__ (JNIEnv *env, jobject);
-extern JNIEXPORT jint JNICALL Java_gnu_java_nio_channels_FileChannelImpl_read___3BII (JNIEnv *env, jobject, jbyteArray, jint, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_nio_channels_FileChannelImpl_write___3BII (JNIEnv *env, jobject, jbyteArray, jint, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_nio_channels_FileChannelImpl_write__I (JNIEnv *env, jobject, jint);
-extern JNIEXPORT jobject JNICALL Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv *env, jobject, jchar, jlong, jint);
-extern JNIEXPORT jboolean JNICALL Java_gnu_java_nio_channels_FileChannelImpl_lock (JNIEnv *env, jobject, jlong, jlong, jboolean, jboolean);
+JNIEXPORT void JNICALL Java_gnu_java_nio_channels_FileChannelImpl_init (JNIEnv *env, jclass);
+JNIEXPORT jint JNICALL Java_gnu_java_nio_channels_FileChannelImpl_open (JNIEnv *env, jobject, jstring, jint);
+JNIEXPORT jint JNICALL Java_gnu_java_nio_channels_FileChannelImpl_available (JNIEnv *env, jobject);
+JNIEXPORT jlong JNICALL Java_gnu_java_nio_channels_FileChannelImpl_implPosition (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_nio_channels_FileChannelImpl_seek (JNIEnv *env, jobject, jlong);
+JNIEXPORT void JNICALL Java_gnu_java_nio_channels_FileChannelImpl_implTruncate (JNIEnv *env, jobject, jlong);
+JNIEXPORT void JNICALL Java_gnu_java_nio_channels_FileChannelImpl_unlock (JNIEnv *env, jobject, jlong, jlong);
+JNIEXPORT jlong JNICALL Java_gnu_java_nio_channels_FileChannelImpl_size (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_nio_channels_FileChannelImpl_implCloseChannel (JNIEnv *env, jobject);
+JNIEXPORT jint JNICALL Java_gnu_java_nio_channels_FileChannelImpl_read__ (JNIEnv *env, jobject);
+JNIEXPORT jint JNICALL Java_gnu_java_nio_channels_FileChannelImpl_read___3BII (JNIEnv *env, jobject, jbyteArray, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_nio_channels_FileChannelImpl_write___3BII (JNIEnv *env, jobject, jbyteArray, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_nio_channels_FileChannelImpl_write__I (JNIEnv *env, jobject, jint);
+JNIEXPORT jobject JNICALL Java_gnu_java_nio_channels_FileChannelImpl_mapImpl (JNIEnv *env, jobject, jchar, jlong, jint);
+JNIEXPORT jboolean JNICALL Java_gnu_java_nio_channels_FileChannelImpl_lock (JNIEnv *env, jobject, jlong, jlong, jboolean, jboolean);
 
 #ifdef __cplusplus
 }

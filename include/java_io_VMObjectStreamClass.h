@@ -10,16 +10,16 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT jboolean JNICALL Java_java_io_VMObjectStreamClass_hasClassInitializer (JNIEnv *env, jclass, jclass);
-extern JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setDoubleNative (JNIEnv *env, jclass, jobject, jobject, jdouble);
-extern JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setFloatNative (JNIEnv *env, jclass, jobject, jobject, jfloat);
-extern JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setLongNative (JNIEnv *env, jclass, jobject, jobject, jlong);
-extern JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setIntNative (JNIEnv *env, jclass, jobject, jobject, jint);
-extern JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setShortNative (JNIEnv *env, jclass, jobject, jobject, jshort);
-extern JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setCharNative (JNIEnv *env, jclass, jobject, jobject, jchar);
-extern JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setByteNative (JNIEnv *env, jclass, jobject, jobject, jbyte);
-extern JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setBooleanNative (JNIEnv *env, jclass, jobject, jobject, jboolean);
-extern JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setObjectNative (JNIEnv *env, jclass, jobject, jobject, jobject);
+JNIEXPORT jboolean JNICALL Java_java_io_VMObjectStreamClass_hasClassInitializer (JNIEnv *env, jclass, jclass);
+JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setDoubleNative (JNIEnv *env, jclass, jobject, jobject, jdouble);
+JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setFloatNative (JNIEnv *env, jclass, jobject, jobject, jfloat);
+JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setLongNative (JNIEnv *env, jclass, jobject, jobject, jlong);
+JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setIntNative (JNIEnv *env, jclass, jobject, jobject, jint);
+JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setShortNative (JNIEnv *env, jclass, jobject, jobject, jshort);
+JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setCharNative (JNIEnv *env, jclass, jobject, jobject, jchar);
+JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setByteNative (JNIEnv *env, jclass, jobject, jobject, jbyte);
+JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setBooleanNative (JNIEnv *env, jclass, jobject, jobject, jboolean);
+JNIEXPORT void JNICALL Java_java_io_VMObjectStreamClass_setObjectNative (JNIEnv *env, jclass, jobject, jobject, jobject);
 
 #ifdef __cplusplus
 }

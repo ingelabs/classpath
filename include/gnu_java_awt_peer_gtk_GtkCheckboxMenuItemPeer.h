@@ -10,8 +10,8 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer_create (JNIEnv *env, jobject, jstring);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer_setState (JNIEnv *env, jobject, jboolean);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer_create (JNIEnv *env, jobject, jstring);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer_setState (JNIEnv *env, jobject, jboolean);
 
 #ifdef __cplusplus
 }

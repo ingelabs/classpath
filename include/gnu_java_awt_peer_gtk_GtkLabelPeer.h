@@ -10,10 +10,10 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkLabelPeer_create (JNIEnv *env, jobject, jstring, jfloat);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkSetFont (JNIEnv *env, jobject, jstring, jint, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkLabelPeer_nativeSetAlignment (JNIEnv *env, jobject, jfloat);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setText (JNIEnv *env, jobject, jstring);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkLabelPeer_create (JNIEnv *env, jobject, jstring, jfloat);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkSetFont (JNIEnv *env, jobject, jstring, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkLabelPeer_nativeSetAlignment (JNIEnv *env, jobject, jfloat);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setText (JNIEnv *env, jobject, jstring);
 
 #ifdef __cplusplus
 }

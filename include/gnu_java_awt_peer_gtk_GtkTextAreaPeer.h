@@ -10,12 +10,12 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_create (JNIEnv *env, jobject, jint, jint, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkSetFont (JNIEnv *env, jobject, jstring, jint, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_insert (JNIEnv *env, jobject, jstring, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_replaceRange (JNIEnv *env, jobject, jstring, jint, jint);
-extern JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_getHScrollbarHeight (JNIEnv *env, jobject);
-extern JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_getVScrollbarWidth (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_create (JNIEnv *env, jobject, jint, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkSetFont (JNIEnv *env, jobject, jstring, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_insert (JNIEnv *env, jobject, jstring, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_replaceRange (JNIEnv *env, jobject, jstring, jint, jint);
+JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_getHScrollbarHeight (JNIEnv *env, jobject);
+JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_getVScrollbarWidth (JNIEnv *env, jobject);
 
 #ifdef __cplusplus
 }

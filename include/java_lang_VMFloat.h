@@ -10,9 +10,9 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT jint JNICALL Java_java_lang_VMFloat_floatToIntBits (JNIEnv *env, jclass, jfloat);
-extern JNIEXPORT jint JNICALL Java_java_lang_VMFloat_floatToRawIntBits (JNIEnv *env, jclass, jfloat);
-extern JNIEXPORT jfloat JNICALL Java_java_lang_VMFloat_intBitsToFloat (JNIEnv *env, jclass, jint);
+JNIEXPORT jint JNICALL Java_java_lang_VMFloat_floatToIntBits (JNIEnv *env, jclass, jfloat);
+JNIEXPORT jint JNICALL Java_java_lang_VMFloat_floatToRawIntBits (JNIEnv *env, jclass, jfloat);
+JNIEXPORT jfloat JNICALL Java_java_lang_VMFloat_intBitsToFloat (JNIEnv *env, jclass, jint);
 
 #ifdef __cplusplus
 }

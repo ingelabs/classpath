@@ -10,20 +10,20 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT jlong JNICALL Java_java_io_VMFile_lastModified (JNIEnv *env, jclass, jstring);
-extern JNIEXPORT jboolean JNICALL Java_java_io_VMFile_setReadOnly (JNIEnv *env, jclass, jstring);
-extern JNIEXPORT jboolean JNICALL Java_java_io_VMFile_create (JNIEnv *env, jclass, jstring);
-extern JNIEXPORT jobjectArray JNICALL Java_java_io_VMFile_list (JNIEnv *env, jclass, jstring);
-extern JNIEXPORT jboolean JNICALL Java_java_io_VMFile_renameTo (JNIEnv *env, jclass, jstring, jstring);
-extern JNIEXPORT jlong JNICALL Java_java_io_VMFile_length (JNIEnv *env, jclass, jstring);
-extern JNIEXPORT jboolean JNICALL Java_java_io_VMFile_exists (JNIEnv *env, jclass, jstring);
-extern JNIEXPORT jboolean JNICALL Java_java_io_VMFile_delete (JNIEnv *env, jclass, jstring);
-extern JNIEXPORT jboolean JNICALL Java_java_io_VMFile_setLastModified (JNIEnv *env, jclass, jstring, jlong);
-extern JNIEXPORT jboolean JNICALL Java_java_io_VMFile_mkdir (JNIEnv *env, jclass, jstring);
-extern JNIEXPORT jboolean JNICALL Java_java_io_VMFile_isFile (JNIEnv *env, jclass, jstring);
-extern JNIEXPORT jboolean JNICALL Java_java_io_VMFile_canWrite (JNIEnv *env, jclass, jstring);
-extern JNIEXPORT jboolean JNICALL Java_java_io_VMFile_canRead (JNIEnv *env, jclass, jstring);
-extern JNIEXPORT jboolean JNICALL Java_java_io_VMFile_isDirectory (JNIEnv *env, jclass, jstring);
+JNIEXPORT jlong JNICALL Java_java_io_VMFile_lastModified (JNIEnv *env, jclass, jstring);
+JNIEXPORT jboolean JNICALL Java_java_io_VMFile_setReadOnly (JNIEnv *env, jclass, jstring);
+JNIEXPORT jboolean JNICALL Java_java_io_VMFile_create (JNIEnv *env, jclass, jstring);
+JNIEXPORT jobjectArray JNICALL Java_java_io_VMFile_list (JNIEnv *env, jclass, jstring);
+JNIEXPORT jboolean JNICALL Java_java_io_VMFile_renameTo (JNIEnv *env, jclass, jstring, jstring);
+JNIEXPORT jlong JNICALL Java_java_io_VMFile_length (JNIEnv *env, jclass, jstring);
+JNIEXPORT jboolean JNICALL Java_java_io_VMFile_exists (JNIEnv *env, jclass, jstring);
+JNIEXPORT jboolean JNICALL Java_java_io_VMFile_delete (JNIEnv *env, jclass, jstring);
+JNIEXPORT jboolean JNICALL Java_java_io_VMFile_setLastModified (JNIEnv *env, jclass, jstring, jlong);
+JNIEXPORT jboolean JNICALL Java_java_io_VMFile_mkdir (JNIEnv *env, jclass, jstring);
+JNIEXPORT jboolean JNICALL Java_java_io_VMFile_isFile (JNIEnv *env, jclass, jstring);
+JNIEXPORT jboolean JNICALL Java_java_io_VMFile_canWrite (JNIEnv *env, jclass, jstring);
+JNIEXPORT jboolean JNICALL Java_java_io_VMFile_canRead (JNIEnv *env, jclass, jstring);
+JNIEXPORT jboolean JNICALL Java_java_io_VMFile_isDirectory (JNIEnv *env, jclass, jstring);
 
 #ifdef __cplusplus
 }

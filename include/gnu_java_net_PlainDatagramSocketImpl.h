@@ -10,15 +10,15 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_bind (JNIEnv *env, jobject, jint, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_create (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_sendto (JNIEnv *env, jobject, jobject, jint, jbyteArray, jint, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_receive0 (JNIEnv *env, jobject, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_setOption (JNIEnv *env, jobject, jint, jobject);
-extern JNIEXPORT jobject JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_getOption (JNIEnv *env, jobject, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_close (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_join (JNIEnv *env, jobject, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_leave (JNIEnv *env, jobject, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_bind (JNIEnv *env, jobject, jint, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_create (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_sendto (JNIEnv *env, jobject, jobject, jint, jbyteArray, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_receive0 (JNIEnv *env, jobject, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_setOption (JNIEnv *env, jobject, jint, jobject);
+JNIEXPORT jobject JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_getOption (JNIEnv *env, jobject, jint);
+JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_close (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_join (JNIEnv *env, jobject, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_leave (JNIEnv *env, jobject, jobject);
 
 #ifdef __cplusplus
 }

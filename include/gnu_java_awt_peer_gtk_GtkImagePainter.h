@@ -10,7 +10,7 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImagePainter_drawPixels (JNIEnv *env, jobject, jobject, jint, jint, jint, jint, jint, jint, jint, jintArray, jint, jint, jdoubleArray);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImagePainter_drawPixels (JNIEnv *env, jobject, jobject, jint, jint, jint, jint, jint, jint, jint, jintArray, jint, jint, jdoubleArray);
 
 #ifdef __cplusplus
 }

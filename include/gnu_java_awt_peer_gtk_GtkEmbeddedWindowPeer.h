@@ -10,8 +10,8 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer_create (JNIEnv *env, jobject, jlong);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer_construct (JNIEnv *env, jobject, jlong);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer_create (JNIEnv *env, jobject, jlong);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer_construct (JNIEnv *env, jobject, jlong);
 
 #ifdef __cplusplus
 }

@@ -10,7 +10,7 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT jobject JNICALL Java_gnu_java_nio_NIOServerSocket_getPlainSocketImpl (JNIEnv *env, jobject);
+JNIEXPORT jobject JNICALL Java_gnu_java_nio_NIOServerSocket_getPlainSocketImpl (JNIEnv *env, jobject);
 
 #ifdef __cplusplus
 }

@@ -10,7 +10,7 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT jint JNICALL Java_gnu_java_nio_SelectorImpl_implSelect (JNIEnv *env, jclass, jintArray, jintArray, jintArray, jlong);
+JNIEXPORT jint JNICALL Java_gnu_java_nio_SelectorImpl_implSelect (JNIEnv *env, jclass, jintArray, jintArray, jintArray, jlong);
 
 #ifdef __cplusplus
 }

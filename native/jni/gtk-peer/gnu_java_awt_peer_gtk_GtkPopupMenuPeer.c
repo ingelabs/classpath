@@ -45,7 +45,7 @@ struct pos
   gint y;
 };
 
-void 
+static void 
 menu_pos (GtkMenu *menu __attribute__((unused)),
 	  gint *x, gint *y,
 	  gboolean *push_in,

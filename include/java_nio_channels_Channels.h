@@ -10,8 +10,8 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT jobject JNICALL Java_java_nio_channels_Channels_newInputStream (JNIEnv *env, jclass, jobject);
-extern JNIEXPORT jobject JNICALL Java_java_nio_channels_Channels_newOutputStream (JNIEnv *env, jclass, jobject);
+JNIEXPORT jobject JNICALL Java_java_nio_channels_Channels_newInputStream (JNIEnv *env, jclass, jobject);
+JNIEXPORT jobject JNICALL Java_java_nio_channels_Channels_newOutputStream (JNIEnv *env, jclass, jobject);
 
 #ifdef __cplusplus
 }
