@@ -1,7 +1,65 @@
+2001-10-27  C. Brian Jones <cbj@gnu.org>
+	* include/jni.h.in: added largely from gcj with edits based on 
+	published specification in ISBN 0-201-32557-2, sablepath-0.1.7,
+	and Japhar.
+	* include/jni_md-pc-gnu-linux.h: new file
+
+2001-10-27  C. Brian Jones <cbj@gnu.org>
+	* gnu/java/text/.cvsignore: new file
+	* lib/.cvsignore: added com
+	* acinclude.m4: renamed CLASSPATH_INTERNAL_CHECK_JAPHAR to 
+	CLASSPATH_CHECK_JAPHAR
+	renamed CLASSPATH_INTERNAL_CHECK_KAFFE to CLASSPATH_CHECK_KAFFE
+	renamed CLASSPATH_CHECK_JAPHAR to CLASSPATH_WITH_JAPHAR
+	renamed CLASSPATH_CHECK_KAFFE to CLASSPATH_WITH_KAFFE
+	added CLASSPATH_FIND_JAVAC and supporting functions re-arranged,
+	  support for gcj added
+	added CLASSPATH_FIND_JAVA and supporting functions
+	added CLASSPATH_WITH_JAVAH and supporting functions
+        added CLASSPATH_WITH_CLASSLIB
+	added CLASSPATH_WITH_INCLUDEDIR
+	* configure.in: use AC_CANONICAL_SYSTEM instead of AC_CANONICAL_HOST
+	version changed to 0.03
+	added --enable-java (always by default)
+	added --enable-jni (not built by default)
+	added --enable-cni (not built by default, currently not implemented)
+	added automake conditional CREATE_JNI_HEADERS, if true then build 
+	  JNI headers
+	added automake conditional CREATE_JNI_LIBRARIES, if true then build 
+	  JNI native libraries
+	added automake conditional CREATE_CNI_LIBRARIES, if true then build
+	  CNI native libraries, currently not implemented
+	moved checks related to building JNI libraries so they are avoided
+	  when not building JNI libraries
+	added AC_CYGWIN and AC_MINGW32 tests when building JNI libraries
+	removed JVM specific checks
+	moved --with-java, --with-javah, --with-classlib, --with-includedir
+	  macros to acinclude.m4
+	removed --enable-developer-mode
+	added macro call to link jni_md.h
+	added jni.h to OUTPUT to place it in ${top_builddir}/include easily
+	handled INIT_LOAD_LIBRARY appropriately when --enable-cni is used
+	* lib/Makefile.am: centralized definition of configured variables
+	remove Sun's javac cruft
+	simply definition of various tool argument definitions
+	added gcj support
+	avoid creating JNI headers unless --enable-jni used with configure
+	fixup maintainer clean target
+	* lib/genclasslist.sh.in: added com, avoid duplicates when top_srcdir
+	equals top_builddir, causes gcj problems otherwise
+	* native/Makefile.am: redefine subdirs in terms of --enable-jni or
+	--enable-cni
+	* native/jni/Makefile.am: removed JVM specific rules
+	* native/jni/fdlibm.h: include stdlib.h (for NULL)
+	* native/jni/java_lang_System.c: include stdlib.h (for NULL)
+	* native/jni/awt/Makefile.am: removed JVM specific rules
+	* native/lib/Makefile.am: removed JVM specific rules
+	* vm/Makefile.am: removed JVM specific SUBDIRS definition
+
 2001-10-26  Mark Wielaard  <mark@klomp.org>
 
-	* lib/standard.omit: DataFlavor.java and AWTEvent.java should and must
-	be compiled by default
+        * lib/standard.omit: DataFlavor.java and AWTEvent.java should and must
+        be compiled by default
 
 2001-10-26  Mark Wielaard  <mark@klomp.org>
 
@@ -406,6 +464,39 @@
 	* java/util/SortedMap.java: Updated javadoc.
 	* java/util/SortedSet.java: Updated javadoc.
 
+2001-10-13  C. Brian Jones <cbj@gnu.org>
+	* doc/www.gnu.org/include/macros.wml: fixed missing blockquote 
+	affecting status.wml
+	* doc/www.gnu.org/status.wml: changed maintainer of java.math to 
+	Various
+	* doc/www.gnu.org/home.wml: removed link to japhar+classpath doc
+
+2001-10-13  C. Brian Jones <cbj@gnu.org>
+	* gnu/classpath/tools: removed and added to cp-tools sister project
+
+2001-10-13  C. Brian Jones <cbj@gnu.org>
+	* doc/www.gnu.org/home.wml: added Savannah information
+
+2001-10-13  C. Brian Jones <cbj@gnu.org>
+	* doc/www.gnu.org/README: updated
+	* doc/www.gnu.org/Makefile: add publish target
+	* doc/www.gnu.org/announce/Makefile: add publish target
+	* doc/www.gnu.org/doc/Makefile: add publish target
+
+2001-10-13  C. Brian Jones <cbj@gnu.org>
+	* doc/www.gnu.org/home.wml: new file
+	* doc/www.gnu.org/status.wml: new file
+	* doc/www.gnu.org/announce/announcements.wml: new file
+	* doc/www.gnu.org/announce/1990206.wml: new file
+	* doc/www.gnu.org/announce/20001120.wml: new file
+	* doc/www.gnu.org/announce/20010106.wml: new file
+	* doc/www.gnu.org/*.mhtml: removed
+	* doc/www.gnu.org/announce/*.mhtml: removed
+	* doc/www.gnu.org/doc/*.mhtml: removed
+	* doc/www.gnu.org/Makefile: updated to use WML toolset
+	* doc/www.gnu.org/announce/Makefile: updated to use WML toolset
+	* doc/www.gnu.org/doc/Makefile: updated to use WML toolset
+	
 2001-10-13  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/SecurityManager.java (SecurityManager): Now public.
