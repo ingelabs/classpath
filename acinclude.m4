@@ -35,6 +35,29 @@ AC_DEFUN(CLASSPATH_INTERNAL_CHECK_JAPHAR,
   AC_SUBST(JVM)
   AM_CONDITIONAL(JAPHAR, test x = x)
   AC_MSG_RESULT(yes)
+
+  dnl programs we probably need somewhere
+  bindir=`$JAPHAR_CONFIG info bindir`
+  datadir=`$JAPHAR_CONFIG info datadir`
+  AC_PATH_PROG(JAVA, japhar, "", $bindir:$PATH)
+  AC_PATH_PROG(JAVAC, javac, "", $bindir:$PATH)
+  AC_PATH_PROG(JAVAH, japharh, "", $bindir:$PATH)
+  AC_MSG_CHECKING(for Japhar classes)
+  if test -e $datadir/classes.zip; then
+    CLASSLIB=$datadir/classes.zip
+  elif test -e $datadir/classes.jar; then
+    CLASSLIB=$datadir/classes.jar
+  elif test -e $datadir/rt.jar; then
+    CLASSLIB=$datadir/rt.jar
+  elif test -e $datadir/rt.zip; then
+    CLASSLIB=$datadir/rt.zip
+  else
+    AC_MSG_ERROR(no)
+  fi
+  AC_MSG_RESULT(yes)
+dnl  if test -n "$CLASSLIB"; then
+    AC_SUBST(CLASSLIB)
+dnl  fi
 ])
 
 dnl CLASSPATH_INTERNAL_CHECK_KAFFE
