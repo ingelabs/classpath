@@ -66,4 +66,33 @@ extern struct state_table *native_state_table;
 #define AWT_HAND_CURSOR 12
 #define AWT_MOVE_CURSOR 13
 
+#define SYNTHETIC_EVENT_MASK (1 << 10)
+
+#define AWT_SHIFT_MASK   (1 << 0)
+#define AWT_CTRL_MASK    (1 << 1)
+#define AWT_META_MASK    (1 << 2)
+#define AWT_ALT_MASK     (1 << 3)
+
+#define AWT_BUTTON1_MASK (1 << 4)
+#define AWT_BUTTON2_MASK AWT_ALT_MASK
+#define AWT_BUTTON3_MASK AWT_META_MASK
+
+#define MULTI_CLICK_TIME   250
+/* as opposed to a MULTI_PASS_TIME :) */
+
+#define AWT_MOUSE_CLICKED  500
+#define AWT_MOUSE_PRESSED  501
+#define AWT_MOUSE_RELEASED 502
+#define AWT_MOUSE_MOVED    503
+#define AWT_MOUSE_ENTERED  504
+#define AWT_MOUSE_EXITED   505
+#define AWT_MOUSE_DRAGGED  506
+
+extern jmethodID postActionEventID;
+extern jmethodID postMouseEventID;
+extern JNIEnv *gdk_env;
+
+void awt_event_handler (GdkEvent *event);
+void connect_awt_hook (JNIEnv *env, jobject peer_obj, GtkWidget *widget);
+
 #endif /* __GTKPEER_H */

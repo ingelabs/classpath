@@ -38,6 +38,7 @@ public class GtkToolkit extends java.awt.Toolkit
 {
   GtkMainThread main;
   Hashtable containers = new Hashtable();
+  static EventQueue q = new EventQueue();
   
   static 
     {
@@ -47,7 +48,8 @@ public class GtkToolkit extends java.awt.Toolkit
 
   public GtkToolkit ()
     {
-      main=new GtkMainThread();
+      main = new GtkMainThread();
+      GtkGenericPeer.enableQueue(q);
     }
   
   native public void beep();
@@ -231,7 +233,7 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected EventQueue getSystemEventQueueImpl() 
     {
-      return null;
+      return q;
     }
 
   protected void loadSystemColors (int[] systemColors) 

@@ -37,6 +37,8 @@ Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkButtonNewWithLabel
   /* All buttons get a label, even if it is blank.  This is okay for java. */
   gdk_threads_enter ();
   button=gtk_button_new_with_label (str);
+  connect_awt_hook (env, obj, button);
+
   gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, button);

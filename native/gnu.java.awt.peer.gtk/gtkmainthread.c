@@ -27,6 +27,10 @@
   struct state_table *native_state_table;
 #endif
 
+jmethodID postActionEventID;
+jmethodID postMouseEventID;
+JNIEnv *gdk_env;
+
 /*
  * Call gtk_init.  It is very important that this happen before any other
  * gtk calls.
@@ -38,6 +42,7 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
   int argc = 1;
   char **argv;
   char *homedir, *rcpath = NULL;
+  jclass gtkgenericpeer;
 
   printf ("init\n");
 
@@ -56,6 +61,9 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 
   gtk_init (&argc, &argv);
 
+  gdk_env = env;
+  gdk_event_handler_set ((GdkEventFunc)awt_event_handler, NULL, NULL);
+
   if ((homedir = getenv ("HOME")))
     {
       rcpath = (char *) malloc (strlen (homedir) + strlen (RC_FILE) + 2);
@@ -68,6 +76,17 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
     free (rcpath);
 
   free (argv);
+
+  /* setup cached IDs for posting GTK events to Java */
+  gtkgenericpeer = (*env)->FindClass (env, 
+				      "gnu/java/awt/peer/gtk/GtkGenericPeer");
+/*    postActionEventID = (*env)->GetMethodID (env, gtkgenericpeer,  */
+/*  					   "postActionEvent",  */
+/*  					   "(Ljava/lang/String;I)V"); */
+  postMouseEventID = (*env)->GetMethodID (env, gtkgenericpeer, 
+					  "postMouseEvent", "(IJIIIIZ)V");
+
+
 }
 
 /*

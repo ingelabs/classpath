@@ -19,6 +19,8 @@
  * Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  */
 package gnu.java.awt.peer.gtk;
+import java.awt.*;
+import java.awt.event.*;
 
 /* This class will go away with Japhar integration.  For use with Sun's JDK
    this may be required, unless another method of associating Java objects
@@ -28,9 +30,21 @@ public class GtkGenericPeer
 {
   final int native_state=java.lang.System.identityHashCode(this);
   protected Object awtWidget;
+  protected static EventQueue q = null;
 
   protected GtkGenericPeer (Object awtWidget)
     {
       this.awtWidget = awtWidget;
     }
+
+  protected void postMouseEvent(int id, long when, int mods, int x, int y, 
+				int clickCount, boolean popupTrigger) {
+    q.postEvent(new MouseEvent((Component)awtWidget, id, when, mods, x, y, 
+			       clickCount, popupTrigger));
+  }
+
+  public static void enableQueue(EventQueue sq) {
+    if (q == null)
+      q = sq;
+  }
 }
