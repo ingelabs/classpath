@@ -295,18 +295,20 @@ public class File implements Serializable, Comparable
    */
   public File(File directory, String name)
   {
+    if (name == null)
+      throw new NullPointerException("filename is null");
+
+    String dirpath;
+    
     if (directory == null)
-      {
-        String dirname = System.getProperty("user.dir");
-        if (dirname == null)
-          throw new IllegalArgumentException
-  		("Cannot determine default user directory");
+      dirpath = "";
+    else if (directory.getPath() == "")
+      dirpath = "/";
+    else
+      dirpath = directory.getPath();
 
-        directory = new File(dirname);
-      }
-
-    String dirpath = directory.path;
-    if (PlatformHelper.isRootDirectory(dirpath))
+    if (PlatformHelper.isRootDirectory(dirpath)
+	|| dirpath.equals(""))
       path = dirpath + name;
     else
       path = dirpath + separator + name;

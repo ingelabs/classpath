@@ -1,3 +1,11 @@
+09-20-03 Guilhem Lavaux <guilhem@kaffe.org>
+
+	 * java/io/File.java:
+	(File(File,String)): fixed the behaviour according to JDK 1.4.1.
+	dirPath should not be initialized to the full path if directory
+	is null, but to "/" if directory.getPath() is "" and the full path
+	in the other cases. A null name should throw a NullPointerException.
+
 2004-05-06  Michael Koch  <konqueror@gmx.de>
 
 	* javax/imageio/spi/ImageReaderWriterSpi.java
