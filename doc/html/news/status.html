@@ -1,10 +1,9 @@
-<h3>Classpath Project Status as of November 1, 1998</h3>
+<h3>Classpath Project Status as of December 1, 1998</h3>
 <p>
 Progress continues.  John Kesier has successfully integrated the classpath
 libraries with Japhar.  We now are able to run "Hello, World" using a
-Japhar/Classpath combo.  Kudos to John.  There is still work to do on this,
-but we appear to be well on our way.  This integration requires a set of
-patches to Japhar that will hopefully be incorporated soon.
+Japhar/Classpath combo.  Kudos to John.  John is working on a second patch
+to Japhar which will hopefully be more easily incorporated in the near future.
 <p>
 As for the first public release, things are changing a bit.  Once we have
 something buildable and runnable with Japhar, we will probably put out a
@@ -30,7 +29,8 @@ an addition to our original list.
 In other big news, the Classpath project is going to be cooperating
 with Cygnus Solutions and Transvirtual Technologies in order to produce
 a unified free test suite for Java.  This has developed into <a
-href="http://sourceware.cygnus.com/mauve/">project Mauve</a>.
+href="http://sourceware.cygnus.com/mauve/">project Mauve</a>.  There isn't
+much at the website just yet, but there is a mailing list and some code!
 <p>
 Here is the status on a package by package basis.  Note that there are
 still several package that aren't being worked on and so we still need
@@ -42,11 +42,8 @@ an appletviewer program for Classpath.
 
 <p>
 <h3>java.awt</h3>
-Chris Toshok, master GUI hacker and Japhar developer is working on putting
-together a set of GTK peers to provide awt support for Japhar on an
-accelerated basis.  This is needed now that Japhar is integrated with
-Mozilla.  We will be able to use these as our peer implementation.  Paul
-Fisher is also doing work on the awt.
+Jim Blair and Paul Fisher continue to work on the GTK peers.  The current
+work is progessing nicely.
 <p>
 <h3>java.beans</h3>
 <p>
@@ -56,16 +53,19 @@ John Keiser has completed this package.
 Geoff Berry has basically finished off a 1.2 compatible serialization.
 <p>
 <h3>java.io</h3>
-A mostly Java 1.2 compatible version of this package is complete.  It is
-only missing permission classes and a few new changes in JDK 1.2beta4.  Aaron
-Renn plans on completing those once it becomes clear that Java 1.2 is stable.
+This class has gone through a cleanup for specification compliance and
+doc generation.  A mostly Java 1.2 compatible version of this package 
+is complete.  It is only missing permission classes and a few new changes 
+in JDK 1.2beta4.  Aaron Renn plans on completing those once it becomes 
+clear that Java 1.2 is stable.
 <p>
 <h3>java.lang</h3>
 <p>
-Paul Fisher and John Keiser continue to plug away at this.  Many of the
-difficult classes such as Character and String are complete. Brian Jones
-wiped out the many small and tedious exception and error classes.  A major
-recent addition is java.lang.Math by Paul.
+John Keiser and Brian Jones continue to plug away at this.  Many of the
+difficult classes such as Character and String are complete.  Some work
+has gone into bringing parts of java.lang up to 1.2 specification.  In the
+near future we hope to have the native parts of Runtime.exec, Float, and
+Double complete.
 <p>
 <h3>java.lang.reflect</h3>
 <p>
