@@ -56,17 +56,16 @@ import gnu.classpath.Configuration;
  * is searched in following order (<i>def. language<i> stands for the
  * two letter ISO language code of the default locale (see
  * <code>Locale.getDefault()</code>).
- * <pre>
- * baseName_<i>language code</i>_<i>country code</i>_<i>variant</i>
- * baseName_<i>language code</i>_<i>country code</i>
- * baseName_<i>language code</i>
- * baseName_<i>def. language</i>_<i>def. country</i>_<i>def. variant</i>
- * baseName_<i>def. language</i>_<i>def. country</i>
- * baseName_<i>def. language</i>
- * baseName
- * </pre>
  *
- * A bundle is backed up by less specific bundles (omiting variant, country
+<pre>baseName_<i>language code</i>_<i>country code</i>_<i>variant</i>
+baseName_<i>language code</i>_<i>country code</i>
+baseName_<i>language code</i>
+baseName_<i>def. language</i>_<i>def. country</i>_<i>def. variant</i>
+baseName_<i>def. language</i>_<i>def. country</i>
+baseName_<i>def. language</i>
+baseName</pre>
+ *
+ * <p>A bundle is backed up by less specific bundles (omiting variant, country
  * or language). But it is not backed up by the default language locale.
  *
  * <p>If you provide a bundle for a given locale, say
@@ -84,7 +83,7 @@ import gnu.classpath.Configuration;
  * be compatible to the standard JDK.)
  *
  * @author Jochen Hoenicke
- * @author Eric Blake <ebb9@email.byu.edu>
+ * @author Eric Blake (ebb9@email.byu.edu)
  * @see Locale
  * @see ListResourceBundle
  * @see PropertyResourceBundle
