@@ -1,3 +1,9 @@
+2002-11-17  Mark Wielaard <mark@klomp.org>
+
+	* java/net/HttpURLConnection.java (getPermission): Take port
+	into consideration.
+	(getErrorStream): Implement.
+
 2002-11-17  Mark Wielaard  <mark@klomp.org>
 
 	* java/net/HttpURLConnection.java: Merge with libgcj.
