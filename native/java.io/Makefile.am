@@ -35,4 +35,5 @@ endif
 libjaphar_javaio_la_LDFLAGS = -version-info 0:0:0 
 libjavaio_la_LDFLAGS = -version-info 0:0:0 
 
-INCLUDES +=  @JAPHAR_CFLAGS@
+INCLUDES +=  @JAPHAR_CFLAGS@ \
+	     -I$(top_srcdir)/include
