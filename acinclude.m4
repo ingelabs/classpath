@@ -4,6 +4,8 @@ dnl JAPHAR_GREP_CFLAGS
 dnl CLASSPATH_CHECK_JAPHAR
 dnl CLASSPATH_CHECK_KAFFE
 dnl CLASSPATH_CHECK_THREADS
+dnl CLASSPATH_CHECK_GLIB
+dnl CLASSPATH_CHECK_GTK
 dnl
 
 dnl JAPHAR_GREP_CFLAGS(flag, cmd_if_missing, cmd_if_present)
@@ -50,7 +52,7 @@ AC_DEFUN(CLASSPATH_INTERNAL_CHECK_JAPHAR,
   datadir=`$JAPHAR_CONFIG info datadir`
   AC_PATH_PROG(JAPHAR_JABBA, japhar, "", $bindir:$PATH)
   AC_PATH_PROG(JAPHAR_JAVAC, javac, "", $bindir:$PATH)
-  AC_PATH_PROG(JAPHAR_JAVAH, japharh, "", $bindir:$PATH)
+  AC_PATH_PROG(JAPHAR_JAVAH, javah, "", $bindir:$PATH)
   AC_MSG_CHECKING(for Japhar classes)
   if test -e $datadir/classes.zip; then
     JAPHAR_CLASSLIB=$datadir/classes.zip
@@ -166,3 +168,37 @@ AC_DEFUN(CLASSPATH_CHECK_THREADS,
     fi
   fi
 ])
+
+dnl CLASSPATH_CHECK_GTK
+AC_DEFUN(CLASSPATH_CHECK_GTK,
+[
+  AC_PATH_PROG(GTK_CONFIG, gtk-config, "", $PATH)
+  if test "$GTK_CONFIG" = ""; then
+    echo "configure: cannot find gtk-config: is gtklib-dev installed?" 1>&2
+    exit 1
+  fi
+  AC_MSG_CHECKING(for gtk compile options)
+  GTK_CFLAGS="`$GTK_CONFIG --cflags`"
+  GTK_LIBS="`$GTK_CONFIG --libs`"
+  AC_SUBST(GTK_CFLAGS)
+  AC_SUBST(GTK_LIBS)
+  AC_MSG_RESULT(yes)
+])
+
+dnl CLASSPATH_CHECK_GLIB
+AC_DEFUN(CLASSPATH_CHECK_GLIB,
+[
+  AC_PATH_PROG(GLIB_CONFIG, glib-config, "", $PATH)
+  if test "$GLIB_CONFIG" = ""; then
+    echo "configure: cannot find glib-config: is glib-dev installed?" 1>&2
+    exit 1
+  fi
+  AC_MSG_CHECKING(for glib compile options)
+  GLIB_CFLAGS="`$GLIB_CONFIG --cflags`"
+  GLIB_LIBS="`$GLIB_CONFIG --libs gthread`"
+  AC_SUBST(GLIB_CFLAGS)
+  AC_SUBST(GLIB_LIBS)
+  AC_MSG_RESULT(yes)
+])
+
+
