@@ -148,6 +148,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_getOption(JNIEnv *env, jobject this,
 #ifndef WITHOUT_NETWORK
   return(_javanet_get_option(env, this, option_id));
 #else /* not WITHOUT_NETWORK */
+  return NULL;
 #endif /* not WITHOUT_NETWORK */
 }
 
@@ -227,7 +228,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this,
 
   /* Now get the maximal available length from the packet */
   fid = (*env)->GetFieldID(env, cls, "maxlen", "I");
-  if (mid == NULL)
+  if (fid == NULL)
     {
       JCL_ThrowException(env, IO_EXCEPTION, "Internal error: maxlen");
       return;
