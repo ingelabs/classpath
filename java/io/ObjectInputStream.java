@@ -41,9 +41,12 @@ package java.io;
 import java.lang.reflect.Array;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
+import java.security.PrivilegedAction;
+import java.security.AccessController;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Vector;
+
 
 import gnu.java.io.ObjectIdentityWrapper;
 import gnu.java.lang.reflect.TypeSignature;
@@ -1162,9 +1165,7 @@ public class ObjectInputStream extends InputStream
 	try
 	  {
 	    Class classArgs[] = {};
-	    m = obj.getClass ().getDeclaredMethod ("readResolve", classArgs);
-	    // m can't be null by definition since an exception would
-	    // have been thrown so a check for null is not needed.
+	    m = getMethod(obj.getClass(), "readResolve", classArgs);
 	    obj = m.invoke (obj, new Object[] {});	
 	  }
 	catch (NoSuchMethodException ignore)
@@ -1499,13 +1500,31 @@ public class ObjectInputStream extends InputStream
   private static Field getField (Class klass, String name)
     throws java.lang.NoSuchFieldException
   {
-    return klass.getDeclaredField(name);
+    final Field f = klass.getDeclaredField(name);
+    AccessController.doPrivileged(new PrivilegedAction()
+      {
+	public Object run()
+	{
+	  f.setAccessible(true);
+	  return null;
+	}
+      });
+    return f;
   }
 
   private static Method getMethod (Class klass, String name, Class args[])
     throws java.lang.NoSuchMethodException
   {
-    return klass.getDeclaredMethod(name, args);
+    final Method m = klass.getDeclaredMethod(name, args);
+    AccessController.doPrivileged(new PrivilegedAction()
+      {
+	public Object run()
+	{
+	  m.setAccessible(true);
+	  return null;
+	}
+      });
+    return m;
   }
 
   private void callReadMethod (Object obj, ObjectStreamClass osc) throws IOException
@@ -1515,10 +1534,12 @@ public class ObjectInputStream extends InputStream
       {
 	Class classArgs[] = {ObjectInputStream.class};
 	Method m = getMethod (klass, "readObject", classArgs);
-	if (m == null)
-	  return;
 	Object args[] = {this};
 	m.invoke (obj, args);
+      }
+    catch (NoSuchMethodException nsme)
+      {
+	// Nothing.
       }
     catch (InvocationTargetException x)
       {
@@ -1550,7 +1571,6 @@ public class ObjectInputStream extends InputStream
     try
       {
 	Field f = getField (klass, field_name);
-	f.setAccessible(true);
 	f.setBoolean (obj, val);
       }
     catch (Exception _)
@@ -1564,7 +1584,6 @@ public class ObjectInputStream extends InputStream
     try
       {
 	Field f = getField (klass, field_name);
-	f.setAccessible(true);
 	f.setByte (obj, val);
       }
     catch (Exception _)
@@ -1578,7 +1597,6 @@ public class ObjectInputStream extends InputStream
     try
       {
 	Field f = getField (klass, field_name);
-	f.setAccessible(true);
 	f.setChar (obj, val);
       }
     catch (Exception _)
@@ -1592,7 +1610,6 @@ public class ObjectInputStream extends InputStream
     try
       {
 	Field f = getField (klass, field_name);
-	f.setAccessible(true);
 	f.setDouble (obj, val);
       }
     catch (Exception _)
@@ -1606,7 +1623,6 @@ public class ObjectInputStream extends InputStream
     try
       {
 	Field f = getField (klass, field_name);
-	f.setAccessible(true);
 	f.setFloat (obj, val);
       }
     catch (Exception _)
@@ -1620,7 +1636,6 @@ public class ObjectInputStream extends InputStream
     try
       {
 	Field f = getField (klass, field_name);
-	f.setAccessible(true);
 	f.setInt (obj, val);
       }
     catch (Exception _)
@@ -1635,7 +1650,6 @@ public class ObjectInputStream extends InputStream
     try
       {
 	Field f = getField (klass, field_name);
-	f.setAccessible(true);
 	f.setLong (obj, val);
       }
     catch (Exception _)
@@ -1650,7 +1664,6 @@ public class ObjectInputStream extends InputStream
     try
       {
 	Field f = getField (klass, field_name);
-	f.setAccessible(true);
 	f.setShort (obj, val);
       }
     catch (Exception _)
@@ -1659,13 +1672,12 @@ public class ObjectInputStream extends InputStream
   }
 
 
-  private void setObjectField (Object obj, Class klass, String field_name, String type_code,
-			       Object val)
+  private void setObjectField (Object obj, Class klass, String field_name,
+			       String type_code, Object val)
   {
     try
       {
 	Field f = getField (klass, field_name);
-	f.setAccessible(true);
 	// FIXME: We should check the type_code here
 	f.set (obj, val);
       }
