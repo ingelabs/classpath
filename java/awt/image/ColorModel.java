@@ -89,7 +89,9 @@ public abstract class ColorModel
      * FIXME - What else should be done here?
      */
     public void finalize() {
-	super.finalize();
+	try {
+	    super.finalize();
+	} catch ( Throwable t ) { } 
     }
 
 }

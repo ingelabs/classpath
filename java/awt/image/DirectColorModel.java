@@ -27,10 +27,10 @@ package java.awt.image;
  */
 public class DirectColorModel extends ColorModel
 {
-    private red_mask;
-    private green_mask;
-    private alpha_mask;
-    private blue_mask;
+    private int red_mask;
+    private int green_mask;
+    private int alpha_mask;
+    private int blue_mask;
 
     /**
      * For the color model created with this constructor the pixels
