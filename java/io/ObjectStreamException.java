@@ -30,7 +30,8 @@ package java.io;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public class ObjectStreamException extends IOException
+public abstract class ObjectStreamException extends IOException 
+                                            implements Serializable
 {
 
 /*
@@ -40,7 +41,7 @@ public class ObjectStreamException extends IOException
 /**
   * Create a new ObjectStreamException without a descriptive error message
   */
-public
+protected
 ObjectStreamException()
 {
   super();
@@ -53,7 +54,7 @@ ObjectStreamException()
   *
   * @param message The descriptive error message
   */
-public
+protected
 ObjectStreamException(String message)
 {
   super(message);
