@@ -1,6 +1,7 @@
 <set-var last-modified-author="rao">
+<set-var MHTML::INCLUDE-PREFIX="../">
 
-<include ../macros.mhtml>
+<include macros.mhtml>
 <header "GNU Classpath Annoucement (1999-02-06)">
 <plain-text>
 I am pleased to announce the first development release of GNU Classpath,
