@@ -165,30 +165,6 @@ public class DataInputStream extends FilterInputStream implements DataInput
   }
 
   /**
-   * This method reads 8 unsigned bits into a Java <code>int</code>
-   * value from the stream. The value returned is in the range of 0 to
-   * 255.
-   * <p>
-   * This method can read an unsigned byte written by an object
-   * implementing the <code>writeByte()</code> method in the
-   * <code>DataOutput</code> interface.
-   *
-   * @return The unsigned bytes value read as a Java <code>int</code>.
-   *
-   * @exception EOFException If end of file is reached before reading the value
-   * @exception IOException If any other error occurs
-   *
-   * @see DataOutput#writeByte
-   */
-  public final int readUnsignedByte() throws IOException
-  {
-    int i = in.read();
-    if (i < 0)
-      throw new EOFException();
-    return (i & 0xFF);
-  }
-
-  /**
    * This method reads a Java <code>char</code> value from an input stream.  
    * It operates by reading two bytes from the stream and converting them to 
    * a single 16-bit Java <code>char</code>.  The two bytes are stored most
@@ -217,150 +193,6 @@ public class DataInputStream extends FilterInputStream implements DataInput
   {
     readFully (buf, 0, 2);
     return (char) ((buf[0] << 8) | (buf[1] & 0xff));
-  }
-
-  /**
-   * This method reads a signed 16-bit value into a Java in from the
-   * stream.  It operates by reading two bytes from the stream and
-   * converting them to a single 16-bit Java <code>short</code>.  The
-   * two bytes are stored most significant byte first (i.e., "big
-   * endian") regardless of the native host byte ordering.
-   * <p>
-   * As an example, if <code>byte1</code> and <code>byte2</code>
-   * represent the first and second byte read from the stream
-   * respectively, they will be transformed to a <code>short</code>. in
-   * the following manner:
-   * <p>
-   * <code>(short)(((byte1 & 0xFF) << 8) | (byte2 & 0xFF))</code>
-   * <p>
-   * The value returned is in the range of -32768 to 32767.
-   * <p>
-   * This method can read a <code>short</code> written by an object
-   * implementing the <code>writeShort()</code> method in the
-   * <code>DataOutput</code> interface.
-   *
-   * @return The <code>short</code> value read
-   *
-   * @exception EOFException If end of file is reached before reading the value
-   * @exception IOException If any other error occurs
-   *
-   * @see DataOutput#writeShort
-   */
-  public synchronized final short readShort() throws IOException
-  {
-    readFully (buf, 0, 2);
-    return (short) ((buf[0] << 8) | (buf[1] & 0xff));
-  }
-
-  /**
-   * This method reads 16 unsigned bits into a Java int value from the stream.
-   * It operates by reading two bytes from the stream and converting them to 
-   * a single Java <code>int</code>  The two bytes are stored most
-   * significant byte first (i.e., "big endian") regardless of the native
-   * host byte ordering. 
-   * <p>
-   * As an example, if <code>byte1</code> and <code>byte2</code>
-   * represent the first and second byte read from the stream
-   * respectively, they will be transformed to an <code>int</code> in
-   * the following manner:
-   * <p>
-   * <code>(int)(((byte1 & 0xFF) << 8) + (byte2 & 0xFF))</code>
-   * <p>
-   * The value returned is in the range of 0 to 65535.
-   * <p>
-   * This method can read an unsigned short written by an object
-   * implementing the <code>writeShort()</code> method in the
-   * <code>DataOutput</code> interface.
-   *
-   * @return The unsigned short value read as a Java <code>int</code>
-   *
-   * @exception EOFException If end of file is reached before reading the value
-   * @exception IOException If any other error occurs
-   *
-   * @see DataOutput#writeShort
-   */
-  public final synchronized int readUnsignedShort() throws IOException
-  {
-    readFully (buf, 0, 2);
-    return (((buf[0] & 0xff) << 8) | (buf[1] & 0xff));
-  }
-
-  /**
-   * This method reads a Java <code>int</code> value from an input stream
-   * It operates by reading four bytes from the stream and converting them to
-   * a single Java <code>int</code>.  The bytes are stored most
-   * significant byte first (i.e., "big endian") regardless of the native
-   * host byte ordering.
-   * <p>
-   * As an example, if <code>byte1</code> through <code>byte4</code> represent
-   * the first four bytes read from the stream, they will be
-   * transformed to an <code>int</code> in the following manner:
-   * <p>
-   * <code>(int)(((byte1 & 0xFF) << 24) + ((byte2 & 0xFF) << 16) +
-   * ((byte3 & 0xFF)<< 8) + (byte4 & 0xFF)))</code>
-   * <p>
-   * The value returned is in the range of -2147483648 to 2147483647.
-   * <p>
-   * This method can read an <code>int</code> written by an object
-   * implementing the <code>writeInt()</code> method in the
-   * <code>DataOutput</code> interface.
-   *
-   * @return The <code>int</code> value read
-   *
-   * @exception EOFException If end of file is reached before reading the int
-   * @exception IOException If any other error occurs
-   *
-   * @see DataOutput#writeInt
-   */
-  public synchronized final int readInt() throws IOException
-  {
-    readFully (buf, 0, 4);
-    return (((buf[0] & 0xff) << 24) | ((buf[1] & 0xff) << 16) |
-            ((buf[2] & 0xff) << 8) | (buf[3] & 0xff));
-  }
-
-  /**
-   * This method reads a Java <code>long</code> value from an input stream
-   * It operates by reading eight bytes from the stream and converting them to
-   * a single Java <code>long</code>.  The bytes are stored most
-   * significant byte first (i.e., "big endian") regardless of the native
-   * host byte ordering.
-   * <p>
-   * As an example, if <code>byte1</code> through <code>byte8</code> represent
-   * the first eight bytes read from the stream, they will be
-   * transformed to an <code>long</code> in the following manner:
-   * <p>
-   * <code>(long)(((byte1 & 0xFF) << 56) + ((byte2 & 0xFF) << 48) +
-   * ((byte3 & 0xFF) << 40) + ((byte4 & 0xFF) << 32) +
-   * ((byte5 & 0xFF) << 24) + ((byte6 & 0xFF) << 16) +
-   * ((byte7 & 0xFF) << 8) + (byte8 & 0xFF)))
-   * </code>
-   * <p>
-   * The value returned is in the range of -9223372036854775808 to
-   * 9223372036854775807.
-   * <p>
-   * This method can read an <code>long</code> written by an object
-   * implementing the <code>writeLong()</code> method in the
-   * <code>DataOutput</code> interface.
-   *
-   * @return The <code>long</code> value read
-   *
-   * @exception EOFException If end of file is reached before reading the long
-   * @exception IOException If any other error occurs
-   *
-   * @see DataOutput#writeLong
-   */
-  public synchronized final long readLong() throws IOException
-  {
-    readFully (buf, 0, 8);
-    return (((long)(buf[0] & 0xff) << 56) |
-            ((long)(buf[1] & 0xff) << 48) |
-            ((long)(buf[2] & 0xff) << 40) |
-            ((long)(buf[3] & 0xff) << 32) |
-            ((long)(buf[4] & 0xff) << 24) |
-            ((long)(buf[5] & 0xff) << 16) |
-            ((long)(buf[6] & 0xff) <<  8) |
-            ((long)(buf[7] & 0xff)));
   }
 
   /**
@@ -463,6 +295,40 @@ public class DataInputStream extends FilterInputStream implements DataInput
 	len -= numread;
 	off += numread;
       }
+  }
+
+  /**
+   * This method reads a Java <code>int</code> value from an input stream
+   * It operates by reading four bytes from the stream and converting them to
+   * a single Java <code>int</code>.  The bytes are stored most
+   * significant byte first (i.e., "big endian") regardless of the native
+   * host byte ordering.
+   * <p>
+   * As an example, if <code>byte1</code> through <code>byte4</code> represent
+   * the first four bytes read from the stream, they will be
+   * transformed to an <code>int</code> in the following manner:
+   * <p>
+   * <code>(int)(((byte1 & 0xFF) << 24) + ((byte2 & 0xFF) << 16) +
+   * ((byte3 & 0xFF)<< 8) + (byte4 & 0xFF)))</code>
+   * <p>
+   * The value returned is in the range of -2147483648 to 2147483647.
+   * <p>
+   * This method can read an <code>int</code> written by an object
+   * implementing the <code>writeInt()</code> method in the
+   * <code>DataOutput</code> interface.
+   *
+   * @return The <code>int</code> value read
+   *
+   * @exception EOFException If end of file is reached before reading the int
+   * @exception IOException If any other error occurs
+   *
+   * @see DataOutput#writeInt
+   */
+  public synchronized final int readInt() throws IOException
+  {
+    readFully (buf, 0, 4);
+    return (((buf[0] & 0xff) << 24) | ((buf[1] & 0xff) << 16) |
+            ((buf[2] & 0xff) << 8) | (buf[3] & 0xff));
   }
 
   /**
@@ -572,6 +438,181 @@ public class DataInputStream extends FilterInputStream implements DataInput
       }
 
     return strb.length() > 0 ? strb.toString() : "";
+  }
+
+  /**
+   * This method reads a Java <code>long</code> value from an input stream
+   * It operates by reading eight bytes from the stream and converting them to
+   * a single Java <code>long</code>.  The bytes are stored most
+   * significant byte first (i.e., "big endian") regardless of the native
+   * host byte ordering.
+   * <p>
+   * As an example, if <code>byte1</code> through <code>byte8</code> represent
+   * the first eight bytes read from the stream, they will be
+   * transformed to an <code>long</code> in the following manner:
+   * <p>
+   * <code>(long)(((byte1 & 0xFF) << 56) + ((byte2 & 0xFF) << 48) +
+   * ((byte3 & 0xFF) << 40) + ((byte4 & 0xFF) << 32) +
+   * ((byte5 & 0xFF) << 24) + ((byte6 & 0xFF) << 16) +
+   * ((byte7 & 0xFF) << 8) + (byte8 & 0xFF)))
+   * </code>
+   * <p>
+   * The value returned is in the range of -9223372036854775808 to
+   * 9223372036854775807.
+   * <p>
+   * This method can read an <code>long</code> written by an object
+   * implementing the <code>writeLong()</code> method in the
+   * <code>DataOutput</code> interface.
+   *
+   * @return The <code>long</code> value read
+   *
+   * @exception EOFException If end of file is reached before reading the long
+   * @exception IOException If any other error occurs
+   *
+   * @see DataOutput#writeLong
+   */
+  public synchronized final long readLong() throws IOException
+  {
+    readFully (buf, 0, 8);
+    return (((long)(buf[0] & 0xff) << 56) |
+            ((long)(buf[1] & 0xff) << 48) |
+            ((long)(buf[2] & 0xff) << 40) |
+            ((long)(buf[3] & 0xff) << 32) |
+            ((long)(buf[4] & 0xff) << 24) |
+            ((long)(buf[5] & 0xff) << 16) |
+            ((long)(buf[6] & 0xff) <<  8) |
+            ((long)(buf[7] & 0xff)));
+  }
+
+  /**
+   * This method reads a signed 16-bit value into a Java in from the
+   * stream.  It operates by reading two bytes from the stream and
+   * converting them to a single 16-bit Java <code>short</code>.  The
+   * two bytes are stored most significant byte first (i.e., "big
+   * endian") regardless of the native host byte ordering.
+   * <p>
+   * As an example, if <code>byte1</code> and <code>byte2</code>
+   * represent the first and second byte read from the stream
+   * respectively, they will be transformed to a <code>short</code>. in
+   * the following manner:
+   * <p>
+   * <code>(short)(((byte1 & 0xFF) << 8) | (byte2 & 0xFF))</code>
+   * <p>
+   * The value returned is in the range of -32768 to 32767.
+   * <p>
+   * This method can read a <code>short</code> written by an object
+   * implementing the <code>writeShort()</code> method in the
+   * <code>DataOutput</code> interface.
+   *
+   * @return The <code>short</code> value read
+   *
+   * @exception EOFException If end of file is reached before reading the value
+   * @exception IOException If any other error occurs
+   *
+   * @see DataOutput#writeShort
+   */
+  public synchronized final short readShort() throws IOException
+  {
+    readFully (buf, 0, 2);
+    return (short) ((buf[0] << 8) | (buf[1] & 0xff));
+  }
+  
+  /**
+   * This method reads 8 unsigned bits into a Java <code>int</code>
+   * value from the stream. The value returned is in the range of 0 to
+   * 255.
+   * <p>
+   * This method can read an unsigned byte written by an object
+   * implementing the <code>writeByte()</code> method in the
+   * <code>DataOutput</code> interface.
+   *
+   * @return The unsigned bytes value read as a Java <code>int</code>.
+   *
+   * @exception EOFException If end of file is reached before reading the value
+   * @exception IOException If any other error occurs
+   *
+   * @see DataOutput#writeByte
+   */
+  public final int readUnsignedByte() throws IOException
+  {
+    int i = in.read();
+    if (i < 0)
+      throw new EOFException();
+    return (i & 0xFF);
+  }
+
+  // FIXME: This method should be re-thought.  I suspect we have multiple
+  // UTF-8 decoders floating around.  We should use the standard charset
+  // converters, maybe and adding a direct call into one of the new
+  // NIO converters for a super-fast UTF8 decode.
+  static String convertFromUTF(byte[] buf) 
+    throws EOFException, UTFDataFormatException
+  {
+    // Give StringBuffer an initial estimated size to avoid 
+    // enlarge buffer frequently
+    StringBuffer strbuf = new StringBuffer(buf.length/2 + 2);
+
+    for (int i = 0; i < buf.length; )
+      {
+	if ((buf[i] & 0x80) == 0)		// bit pattern 0xxxxxxx
+	  strbuf.append((char) (buf[i++] & 0xFF));
+	else if ((buf[i] & 0xE0) == 0xC0)	// bit pattern 110xxxxx
+	  {
+	    if (i + 1 >= buf.length || (buf[i+1] & 0xC0) != 0x80)
+	      throw new UTFDataFormatException();
+
+	    strbuf.append((char) (((buf[i++] & 0x1F) << 6) |
+				  (buf[i++] & 0x3F)));
+	  }
+	else if ((buf[i] & 0xF0) == 0xE0)	// bit pattern 1110xxxx
+	  {
+	    if (i + 2 >= buf.length ||
+		(buf[i+1] & 0xC0) != 0x80 || (buf[i+2] & 0xC0) != 0x80)
+	      throw new UTFDataFormatException();
+
+	    strbuf.append((char) (((buf[i++] & 0x0F) << 12) |
+				  ((buf[i++] & 0x3F) << 6) |
+				  (buf[i++] & 0x3F)));
+	  }
+	else // must be ((buf[i] & 0xF0) == 0xF0 || (buf[i] & 0xC0) == 0x80)
+	  throw new UTFDataFormatException();	// bit patterns 1111xxxx or
+						// 		10xxxxxx
+      }
+
+    return strbuf.toString();
+  }
+
+  /**
+   * This method reads 16 unsigned bits into a Java int value from the stream.
+   * It operates by reading two bytes from the stream and converting them to 
+   * a single Java <code>int</code>  The two bytes are stored most
+   * significant byte first (i.e., "big endian") regardless of the native
+   * host byte ordering. 
+   * <p>
+   * As an example, if <code>byte1</code> and <code>byte2</code>
+   * represent the first and second byte read from the stream
+   * respectively, they will be transformed to an <code>int</code> in
+   * the following manner:
+   * <p>
+   * <code>(int)(((byte1 & 0xFF) << 8) + (byte2 & 0xFF))</code>
+   * <p>
+   * The value returned is in the range of 0 to 65535.
+   * <p>
+   * This method can read an unsigned short written by an object
+   * implementing the <code>writeShort()</code> method in the
+   * <code>DataOutput</code> interface.
+   *
+   * @return The unsigned short value read as a Java <code>int</code>
+   *
+   * @exception EOFException If end of file is reached before reading the value
+   * @exception IOException If any other error occurs
+   *
+   * @see DataOutput#writeShort
+   */
+  public final synchronized int readUnsignedShort() throws IOException
+  {
+    readFully (buf, 0, 2);
+    return (((buf[0] & 0xff) << 8) | (buf[1] & 0xff));
   }
 
   /**
@@ -718,46 +759,5 @@ public class DataInputStream extends FilterInputStream implements DataInput
         // do nothing.
       }         
     return n;
-  }
-  
-  // FIXME: This method should be re-thought.  I suspect we have multiple
-  // UTF-8 decoders floating around.  We should use the standard charset
-  // converters, maybe and adding a direct call into one of the new
-  // NIO converters for a super-fast UTF8 decode.
-  static String convertFromUTF(byte[] buf) 
-    throws EOFException, UTFDataFormatException
-  {
-    // Give StringBuffer an initial estimated size to avoid 
-    // enlarge buffer frequently
-    StringBuffer strbuf = new StringBuffer(buf.length/2 + 2);
-
-    for (int i = 0; i < buf.length; )
-      {
-	if ((buf[i] & 0x80) == 0)		// bit pattern 0xxxxxxx
-	  strbuf.append((char) (buf[i++] & 0xFF));
-	else if ((buf[i] & 0xE0) == 0xC0)	// bit pattern 110xxxxx
-	  {
-	    if (i + 1 >= buf.length || (buf[i+1] & 0xC0) != 0x80)
-	      throw new UTFDataFormatException();
-
-	    strbuf.append((char) (((buf[i++] & 0x1F) << 6) |
-				  (buf[i++] & 0x3F)));
-	  }
-	else if ((buf[i] & 0xF0) == 0xE0)	// bit pattern 1110xxxx
-	  {
-	    if (i + 2 >= buf.length ||
-		(buf[i+1] & 0xC0) != 0x80 || (buf[i+2] & 0xC0) != 0x80)
-	      throw new UTFDataFormatException();
-
-	    strbuf.append((char) (((buf[i++] & 0x0F) << 12) |
-				  ((buf[i++] & 0x3F) << 6) |
-				  (buf[i++] & 0x3F)));
-	  }
-	else // must be ((buf[i] & 0xF0) == 0xF0 || (buf[i] & 0xC0) == 0x80)
-	  throw new UTFDataFormatException();	// bit patterns 1111xxxx or
-						// 		10xxxxxx
-      }
-
-    return strbuf.toString();
   }
 }
