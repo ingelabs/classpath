@@ -1,3 +1,10 @@
+2004-11-17  Jerry Quinn  <jlquinn@optonline.net>
+
+	* java/awt/print/PrinterJob.java (lookupPrintServices,
+	getPrintService, setPrintService): Implement.
+	(lookupStreamPrintServices): Add commented out implementation.
+	(printer): New field.
+
 2004-11-17  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/Socket.java (getPort): Return 0 in error case.

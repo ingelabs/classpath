@@ -37,6 +37,7 @@ exception statement from your version. */
 
 
 package java.awt.print;
+import javax.print.PrintService;
 import javax.print.attribute.PrintRequestAttributeSet;
 
 /**
@@ -46,6 +47,8 @@ import javax.print.attribute.PrintRequestAttributeSet;
   */
 public abstract class PrinterJob
 {
+  // The print service associated with this job
+  private PrintService printer = null;
 
 /*
  * Class Methods
@@ -257,6 +260,73 @@ setPrintable(Printable printable, PageFormat page_format);
   */
 public abstract PageFormat
 validatePage(PageFormat page);
+
+  /**
+   * Find and return 2D image print services.
+   * 
+   * This is the same as calling PrintServiceLookup.lookupPrintServices()
+   * with Pageable service-specified DocFlavor.
+   * @return Array of PrintService objects, could be empty.
+   * @since 1.4
+   */
+  public static PrintService[] lookupPrintServices()
+  {
+    return new PrintService[0];
+    // FIXME:
+    // Enable this when javax.print has this implemented.
+//    return PrintServiceLookup.lookupPrintServices(
+//          new DocFlavor("application/x-java-jvm-local-objectref",
+//                        "java.awt.print.Pageable"),
+//          null);
+  }
+
+  /**
+   * Find and return 2D image stream print services.
+   * 
+   * This is the same as calling
+   * StreamPrintServiceFactory.lookupStreamPrintServices()
+   * with Pageable service-specified DocFlavor.
+   * @param mimeType The output format mime type, or null for any type.
+   * @return Array of stream print services, could be empty.
+   * @since 1.4
+   */
+  	// FIXME:
+  	// Enable when javax.print has StreamPrintServiceFactory 
+//  public static StreamPrintServiceFactory[] lookupStreamPrintServices(String mimeType)
+//  {
+//    return StreamPrintServiceFactory.lookupStreamServiceFactories(
+//      new DocFlavor("application/x-java-jvm-local-objectref",
+//      "java.awt.print.Pageable"),
+//    	mimeType);
+//  }
+
+  /**
+   * Return the printer for this job.  If print services aren't supported by
+   * the subclass, returns null.
+   * 
+   * @return The associated PrintService.
+   * @since 1.4
+   */
+  public PrintService getPrintService()
+  {
+    return null;
+  }
+
+  
+  /**
+   * Change the printer for this print job to service.  Subclasses that
+   * support setting the print service override this method.  Throws
+   * PrinterException when the class doesn't support setting the printer,
+   * the service doesn't support Pageable or Printable interfaces for 2D
+   * print output.
+   * @param service The new printer to use.
+   * @throws PrinterException if service is not valid.
+   */
+  public void setPrintService(PrintService service)
+    throws PrinterException
+  {
+    throw new PrinterException();
+  }
 
 } // class PrinterJob
 
