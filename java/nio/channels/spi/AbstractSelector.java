@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package java.nio.channels.spi;
 
+import java.io.IOException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.util.List;
@@ -44,26 +45,41 @@ import java.util.Set;
 
 public abstract class AbstractSelector extends Selector
 {
-  boolean closed = true;
+  boolean closed = false;
   SelectorProvider provider;
 
+  /**
+   * Initializes the slector.
+   */
   protected AbstractSelector (SelectorProvider provider)
   {
     this.provider = provider;
   }
  
+  /**
+   * Marks the beginning of an I/O operation that might block indefinitely.
+   */
   protected final void begin ()
   {
   }
 
-  public final void close ()
+  /**
+   * Closes the channel.
+   * 
+   * @exception IOException If an error occurs
+   */
+  public final void close () throws IOException
   {
     if (closed)
       return;
+    
     closed = true;
     implCloseSelector ();
   }
 
+  /**
+   * Tells whether this channel is open or not.
+   */
   public final boolean isOpen ()
   {
     return ! closed;
@@ -88,7 +104,11 @@ public abstract class AbstractSelector extends Selector
     return null;
   }
 
-  protected abstract void implCloseSelector ();	
+  /**
+   * Closes the channel.
+   */
+  protected abstract void implCloseSelector () throws IOException;
+
   protected abstract SelectionKey register (AbstractSelectableChannel ch,
                                             int ops, Object att);   
 }

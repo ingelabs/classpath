@@ -1,6 +1,79 @@
 2002-11-13  Michael Koch <konqueror@gmx.de>
 
 	* ChangeLog.usermap: Added myself.
+	* java/nio/channels/Pipe.java
+	(SinkChannel.SinkChannel): Documentation added.
+	(SinkChannel.validOps): New method.
+	(SourceChannel.SourceChannel): Documentation added.
+	(SourceChannek.validOps): New method.
+	(open): Implemented, documentation added.
+	(SinkChannel.sink): Documentation added.
+	(SourceChannel.source): Documentation added.
+	* java/nio/channels/SelectableChannel.java
+	(SelectableChannel): Documentation added.
+	(blockingLock): Documentation added.
+	(configureBlocking): Documentation added.
+	(isBlocking): Documentation added.
+	(isRegistered): Documentation added.
+	(keyFor): Documentation added.
+	(provider): Documentation added.
+	(register): Documentation added.
+	(validOps): Documentation added.
+	* java/nio/channels/SelectionKey.java
+	(SelectionKey): Documentation added.
+	(attach): Documentation added.
+	(attachment): Documentation added.
+	(isAcceptable): Documentation added.
+	(isConnectable): Documentation added.
+	(isReadable): Documentation added.
+	(isWritable): Documentation added.
+	(cancel): Documentation added.
+	(interestOps): Documentation added.
+	(isValid): Documentation added.
+	(readyOps): Documentation added.
+	(selector): Documentation added.
+	* java/nio/channels/Selector.java
+	(Selector): Documentation added.
+	(open): Documentation added.
+	(close): Documentation added.
+	(isOpen): Documentation added.
+	(keys): Documentation added.
+	(provider): Documentation added.
+	(select): Documentation added.
+	(selectedKeys): Documentation added.
+	(selectNow): Documentation added.
+	(wakeup): Documentation added.
+	* java/nio/channels/spi/AbstractInterruptibleChannel.java
+	(opened): Default to true.
+	(AbstractInterruptibleChannel): Documentation added.
+	(begin): Documentation added.
+	(close): Set opened, Documentation added.
+	(end): Documentation added.
+	(implCloseChannel): Documentation added.
+	(isOpen): Documentation added.
+	* java/nio/channels/spi/AbstractSelectableChannel.java
+	(AbstractSelectableChannel): Documentation added.
+	(blockingLock): Documentation added.
+	(configureBlocking): Documentation added.
+	(implCloseChannel): Documentation added.
+	(implCloseSelectableChannel): Documentation added.
+	(implConfigureBlocking): Documentation added.
+	(isBlocking): Documentation added.
+	(isRegistered): Documentation added.
+	(keyFor): Documentation added.
+	(provider): Documentation added.
+	(register): Documentation added.
+	* java/nio/channels/spi/AbstractSelectionKey.java
+	(AbstractSelectionKey): Documentation added.
+	(cancel): Documentation added.
+	(isValid): Documentation added.
+	* java/nio/channels/spi/AbstractSelector.java
+	(closed): Default to false.
+	(AbstractSelector): Documentation added.
+	(begin): Documentation added.
+	(close): Documentation added.
+	(isOpen): Documentation added.
+	(implCloseSelector): Documentation added.
 
 2002-11-12  Eric Blake  <ebb9@email.byu.edu>
 

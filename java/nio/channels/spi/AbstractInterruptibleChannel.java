@@ -41,37 +41,64 @@ import java.io.IOException;
 import java.nio.channels.Channel;
 import java.nio.channels.InterruptibleChannel;
 
+/**
+ * @author Michael Koch
+ * @since 1.4
+ */
 public abstract class AbstractInterruptibleChannel
   implements Channel, InterruptibleChannel
 {
-  boolean opened = false;
+  boolean opened = true;
 
-  protected AbstractInterruptibleChannel()
+  /**
+   * Initializes the channel.
+   */
+  protected AbstractInterruptibleChannel ()
   {
   }
 
-  protected final void begin()
+  /**
+   * Marks the beginning of an I/O operation that might block indefinitely.
+   */
+  protected final void begin ()
   {
-    // Marks the beginning of an I/O operation that might block indefinitely.
   }
     
-  public final void close() throws IOException
+  /**
+   * Closes the channel.
+   * 
+   * @exception IOException If an error occurs
+   */
+  public final void close () throws IOException
   {
-    // Closes this channel.
-    implCloseChannel();
+    opened = false;
+    implCloseChannel ();
   }
 
-  protected final void end(boolean completed)
+  /**
+   * Marks the end of an I/O operation that might block indefinitely.
+   * 
+   * @exception AsynchronousCloseException If the channel was asynchronously
+   * closed.
+   * @exception ClosedByInterruptException If the thread blocked in the
+   * I/O operation was interrupted.
+   */
+  protected final void end (boolean completed)
   {
-    // Marks the end of an I/O operation that might block indefinitely.
   }   
 
-  protected abstract void implCloseChannel() throws IOException;
+  /**
+   * Closes the channel.
+   * 
+   * @exception IOException If an error occurs
+   */
+  protected abstract void implCloseChannel () throws IOException;
 
-  public final boolean isOpen()
+  /**
+   * Tells whether or not this channel is open.
+   */
+  public final boolean isOpen ()
   {
-    // Tells whether or not this channel is open.
     return opened;
   }
 }
-

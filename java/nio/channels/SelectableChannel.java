@@ -40,33 +40,99 @@ package java.nio.channels;
 import java.nio.channels.spi.AbstractInterruptibleChannel;
 import java.nio.channels.spi.SelectorProvider;
 
+/**
+ * @author Michael Koch
+ * @since 1.4
+ */
 public abstract class SelectableChannel
   extends AbstractInterruptibleChannel
 {
-  protected SelectableChannel()
+  /**
+   * Initializes the channel.
+   */
+  protected SelectableChannel ()
   {
   }
-  
-  public abstract  Object blockingLock();
+ 
+  /**
+   * Returns the lock of this channel.
+   */
+  public abstract Object blockingLock ();
 
-  public abstract  SelectableChannel configureBlocking(boolean block);
+  /**
+   * Adjusts this channel's blocking mode.
+   * 
+   * @exception ClosedChannelException If this channel is closed.
+   * @exception IllegalBlockingModeException If block is true and this channel
+   * is registered with one or more selectors.
+   * @exception IOException If an error occurs.
+   */
+  public abstract SelectableChannel configureBlocking (boolean block);
   
-  public abstract  boolean isBlocking();
+  /**
+   * Tells whether this channel is blocking or not.
+   */
+  public abstract boolean isBlocking ();
   
-  public abstract  boolean isRegistered();
+  /**
+   * Tells whether or not this channel is currently registered with
+   * any selectors.
+   */
+  public abstract boolean isRegistered ();
   
-  public abstract  SelectionKey keyFor(Selector sel);
+  /**
+   * Retrieves the key representing the channel's registration with
+   * the given selector.
+   */
+  public abstract SelectionKey keyFor (Selector sel);
   
-  public abstract  SelectorProvider provider();
+  /**
+   * Returns the provider that created this channel.
+   */
+  public abstract SelectorProvider provider ();
   
-  public final SelectionKey register(Selector sel, int ops)
+  /**
+   * Registers this channel with the given selector,
+   * returning a selection key.
+   * 
+   * @exception CancelledKeyException If this channel is currently registered
+   * with the given selector but the corresponding key has already been cancelled
+   * @exception ClosedChannelException If this channel is closed.
+   * @exception IllegalArgumentException If a bit in ops does not correspond
+   * to an operation that is supported by this channel, that is, if
+   * set &amp; ~validOps() != 0.
+   * @exception IllegalBlockingModeException If block is true and this channel
+   * is registered with one or more selectors.
+   * @exception IllegalSelectorException If this channel was not created by
+   * the same provider as the given selector.
+   */
+  public final SelectionKey register (Selector sel, int ops)
     throws ClosedChannelException
   {
-    return register(sel, ops, null);
+    return register (sel, ops, null);
   }
   
-  public abstract  SelectionKey register(Selector sel, int ops, Object att)
+  /**
+   * Registers this channel with the given selector,
+   * returning a selection key.
+   *
+   * @exception CancelledKeyException If this channel is currently registered
+   * with the given selector but the corresponding key has already been
+   * cancelled.
+   * @exception ClosedChannelException If this channel is closed.
+   * @exception IllegalArgumentException If a bit in ops does not correspond
+   * to an operation that is supported by this channel, that is, if
+   * set &amp; ~validOps() != 0.
+   * @exception IllegalBlockingModeException If block is true and this channel
+   * is registered with one or more selectors.
+   * @exception IllegalSelectorException If this channel was not created by
+   * the same provider as the given selector.
+   */
+  public abstract SelectionKey register (Selector sel, int ops, Object att)
     throws ClosedChannelException;
   
-  public abstract  int validOps();  
+  /**
+   * Returns a set of valid operations on this channel.
+   */
+  public abstract int validOps();
 }

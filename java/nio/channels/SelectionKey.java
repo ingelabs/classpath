@@ -37,6 +37,10 @@ exception statement from your version. */
 
 package java.nio.channels;
 
+/**
+ * @author Michael Koch
+ * @since 1.4
+ */
 public abstract class SelectionKey
 {
   public static final int OP_ACCEPT  = 1<<0;
@@ -45,54 +49,116 @@ public abstract class SelectionKey
   public static final int OP_WRITE   = 1<<3;
     
   Object attached;
-    
-  protected SelectionKey()
+   
+  /**
+   * Initializes the selection key.
+   */
+  protected SelectionKey ()
   {
   }
 
-  public final Object attach(Object obj)
+  /**
+   * Attaches obj to the key and returns the old attached object.
+   */
+  public final Object attach (Object obj)
   {
     Object old = attached;
     attached = obj;
     return old;
   }
-    
-  public final Object attachment()
+   
+  /**
+   * Returns the object attached to the key.
+   */
+  public final Object attachment ()
   {
     return attached;
   }    
 
-  public final boolean isAcceptable()
+  /**
+   * Tests if the channel attached to this key is ready to accept
+   * a new socket connection.
+   * 
+   * @exception CancelledKeyException If this key has been cancelled
+   */
+  public final boolean isAcceptable ()
   { 
-    return (readyOps() & OP_ACCEPT) != 0;
+    return (readyOps () & OP_ACCEPT) != 0;
   }
 
-  public final boolean isConnectable()
+  /**
+   * Tests whether this key's channel has either finished,
+   * or failed to finish, its socket-connection operation.
+   * 
+   * @exception CancelledKeyException If this key has been cancelled
+   */
+  public final boolean isConnectable ()
   {
-    return (readyOps() & OP_CONNECT) != 0;  
+    return (readyOps () & OP_CONNECT) != 0;  
   }        
   
-  public final boolean isReadable()
+  /**
+   * Tests if the channel attached to the key is readable.
+   * 
+   * @exception CancelledKeyException If this key has been cancelled
+   */
+  public final boolean isReadable ()
   {
-    return (readyOps() & OP_READ) != 0; 
+    return (readyOps () & OP_READ) != 0; 
   }
   
-  public final boolean isWritable()
+  /**
+   * Tests if the channel attached to the key is writable.
+   *
+   * @exception CancelledKeyException If this key has been cancelled
+   */
+  public final boolean isWritable ()
   {
-    return (readyOps() & OP_WRITE) != 0;
+    return (readyOps () & OP_WRITE) != 0;
   }
 
-  public abstract void cancel(); 
-  
-  public abstract SelectableChannel channel();
-  
-  public abstract int interestOps();
-  
-  public abstract SelectionKey interestOps(int ops);
-  
-  public abstract boolean isValid();
+  /**
+   * Requests that the registration of this key's channel with
+   * its selector be cancelled.
+   */
+  public abstract void cancel (); 
  
-  public abstract int readyOps();
+  /**
+   * return the channel attached to the key.
+   */
+  public abstract SelectableChannel channel ();
   
-  public abstract Selector selector();
+  /**
+   * Returns the key's interest set.
+   * 
+   * @exception CancelledKeyException If this key has been cancelled
+   */
+  public abstract int interestOps ();
+  
+  /**
+   * Sets this key's interest set to the given value.
+   * 
+   * @exception CancelledKeyException If this key has been cancelled
+   * @exception IllegalArgumentException If a bit in the set does not
+   * correspond to an operation that is supported by this key's channel,
+   * that is, if set &amp; ~(channel().validOps()) != 0
+   */
+  public abstract SelectionKey interestOps (int ops);
+ 
+  /**
+   * Tells whether or not this key is valid.
+   */
+  public abstract boolean isValid ();
+ 
+  /**
+   * Retrieves this key's ready-operation set.
+   * 
+   * @exception CancelledKeyException If this key has been cancelled
+   */
+  public abstract int readyOps ();
+  
+  /**
+   * Returns the selector for which this key was created.
+   */
+  public abstract Selector selector ();
 }

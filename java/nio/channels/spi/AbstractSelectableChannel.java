@@ -46,123 +46,155 @@ public abstract class AbstractSelectableChannel extends SelectableChannel
 {
   int registered;
   boolean blocking = true;
-  Object LOCK = new Object();
-  SelectorProvider sprovider;
-
+  Object LOCK = new Object ();
+  SelectorProvider provider;
   List keys;
 
-  protected abstract  void implCloseSelectableChannel();
-  protected abstract  void implConfigureBlocking(boolean block);
-
-  protected AbstractSelectableChannel(SelectorProvider provider)
+  /**
+   * Initializes the channel
+   */
+  protected AbstractSelectableChannel (SelectorProvider provider)
   {
+    this.provider = provider;
   }
 
-  public final Object blockingLock()
+  /**
+   * Retrieves the object upon which the configureBlocking and register
+   * methods synchronize.
+   */
+  public final Object blockingLock ()
   {
     return LOCK;
-    //Retrieves the object upon which the configureBlocking and register methods synchronize. 
   }
     
-  public final SelectableChannel configureBlocking(boolean block)
+  /**
+   * Adjusts this channel's blocking mode.
+   */
+  public final SelectableChannel configureBlocking (boolean block)
   {
-    synchronized(LOCK)
+    synchronized (LOCK)
       {
     	blocking = true;
-    	implConfigureBlocking(block);
+    	implConfigureBlocking (block);
       }
     
-    //	Adjusts this channel's blocking mode. 
     return this;
   }
 
-  protected final void implCloseChannel()
+  /**
+   * Closes this channel.
+   */
+  protected final void implCloseChannel ()
   {
-    //     Closes this channel. 
-    implCloseSelectableChannel();
+    implCloseSelectableChannel ();
   }
 
+  /**
+   * Closes this selectable channel.
+   */
+  protected abstract void implCloseSelectableChannel ();
+  
+  /**
+   * Adjusts this channel's blocking mode.
+   */
+  protected abstract void implConfigureBlocking (boolean block);
+
+  /**
+   * Tells whether or not every I/O operation on this channel will block
+   * until it completes.
+   */
   public final boolean isBlocking()
   {
     return blocking;
-    //Tells whether or not every I/O operation on this channel will block until it completes.  
   }
 
+  /**
+   * Tells whether or not this channel is currently registered with
+   * any selectors.
+   */
   public final boolean isRegistered()
   {
-    //Tells whether or not this channel is currently registered with any selectors. 
     return registered > 0;
   }
 
-  public final SelectionKey keyFor(Selector sel)
+  /**
+   * Retrieves the key representing the channel's registration with the
+   * given selector.
+   */
+  public final SelectionKey keyFor(Selector selector)
   {
-    //Retrieves the key representing the channel's registration with the given selector.  
-    try {
-      return register(sel, 0, null);
-    } catch (Exception e) {
-      return null;
-    }
+    try
+      {
+        return register (selector, 0, null);
+      }
+    catch (Exception e)
+      {
+        return null;
+      }
   }
 
-  public final SelectorProvider provider()
+  /**
+   * Returns the provider that created this channel.
+   */
+  public final SelectorProvider provider ()
   {
-    //     Returns the provider that created this channel.  
-    return sprovider;
+    return provider;
   }
 
-  private SelectionKey locate(Selector sel)
+  private SelectionKey locate (Selector selector)
   {
     if (keys == null)
       return null;
+    
     SelectionKey k = null;
-    ListIterator it = keys.listIterator();
-    while (it.hasNext())
+    ListIterator it = keys.listIterator ();
+    
+    while (it.hasNext ())
       {
-    	k = (SelectionKey) it.next();
-    	if (k.selector() == sel)
+    	k = (SelectionKey) it.next ();
+    	if (k.selector () == selector)
           {
             return k;
           }
       }
+    
     return k;
   }
 
-  private void add(SelectionKey k)
+  private void add (SelectionKey key)
   {
     if (keys == null)
-      keys = new LinkedList();
-    keys.add(k);
+      keys = new LinkedList ();
+    
+    keys.add (key);
   }
 
-  public final SelectionKey register(Selector selin, int ops, Object att) throws ClosedChannelException
+  /**
+   * Registers this channel with the given selector, returning a selection key.
+   */
+  public final SelectionKey register (Selector selin, int ops, Object att)
+    throws ClosedChannelException
   {
-    if (!isOpen())
-      {
-    	System.out.println("not open, throwing exception");
-    	throw new ClosedChannelException();
-      }
-
-    System.out.println("Registers this channel with the given selector, returning a selection key.");
+    if (!isOpen ())
+      throw new ClosedChannelException();
 
     SelectionKey k = null;
-    AbstractSelector sel = (AbstractSelector) selin;
+    AbstractSelector selector = (AbstractSelector) selin;
 
     synchronized (LOCK)
       {
-    	k = locate(sel);
+    	k = locate (selector);
 
     	if (k != null)
           {
-            k.attach(att);
+            k.attach (att);
           }
     	else
           {
-            k = sel.register(this, ops, att);
+            k = selector.register (this, ops, att);
     		
             if (k != null)
-              {
-                add(k);
-    	      }
+              add (k);
     	  }
       }
 
