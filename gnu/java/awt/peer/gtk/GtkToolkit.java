@@ -135,12 +135,15 @@ public class GtkToolkit extends java.awt.Toolkit
     //  	c.setFont (cp.getFont ());
       
     /* Make the Peer reflect the state of the Component */
-    cp.setCursor (c.getCursor ());
-    
-    Rectangle bounds = c.getBounds ();
-    cp.setBounds (bounds.x, bounds.y, bounds.width, bounds.width);
-      
-    cp.setVisible (c.isVisible ());
+    if (! (c instanceof Window))
+      {
+	cp.setCursor (c.getCursor ());
+	
+	Rectangle bounds = c.getBounds ();
+	cp.setBounds (bounds.x, bounds.y, bounds.width, bounds.height);
+	
+	cp.setVisible (c.isVisible ());
+      }
   }
 
   protected ButtonPeer createButton (Button b)
