@@ -60,26 +60,12 @@ public class JFrame extends Frame
   implements WindowConstants, RootPaneContainer
 {
   private static final long serialVersionUID = -3362141868504252139L;
-  protected AccessibleContext accessibleContext;
-  private int close_action = HIDE_ON_CLOSE;
   private static boolean defaultLookAndFeelDecorated = false;
+  private int close_action = HIDE_ON_CLOSE;
+  protected AccessibleContext accessibleContext;
+  protected JRootPane rootPane;
+  protected boolean rootPaneCheckingEnabled;
 
-  public static void setDefaultLookAndFeelDecorated(boolean d)
-  {
-    defaultLookAndFeelDecorated = d;
-  }
-
-  public static boolean isDefaultLookAndFeelDecorated()
-  {
-    return defaultLookAndFeelDecorated;
-  }
-
-  /***************************************************
-   *
-   *  initia
-   *
-   *
-   *************/
   public JFrame()
   {
     super("JFrame");
@@ -92,16 +78,6 @@ public class JFrame extends Frame
     frameInit();
   }
 
-  /***************************************************
-   *
-   *
-   *  methods, this part is shared with JDialog, JFrame
-   *
-   *
-   *************/
-  private boolean checking;
-  protected JRootPane rootPane;
-
   protected void frameInit()
   {
     super.setLayout(new BorderLayout(1, 1));
@@ -111,8 +87,7 @@ public class JFrame extends Frame
 
   public Dimension getPreferredSize()
   {
-    Dimension d = super.getPreferredSize();
-    return d;
+    return super.getPreferredSize();
   }
 
   public JMenuBar getJMenuBar()
@@ -193,12 +168,12 @@ public class JFrame extends Frame
 
   protected boolean isRootPaneCheckingEnabled()
   {
-    return checking;
+    return rootPaneCheckingEnabled;
   }
 
   protected void setRootPaneCheckingEnabled(boolean enabled)
   {
-    checking = enabled;
+    rootPaneCheckingEnabled = enabled;
   }
 
   public void update(Graphics g)
@@ -211,7 +186,16 @@ public class JFrame extends Frame
     super.processKeyEvent(e);
   }
 
-  /////////////////////////////////////////////////////////////////////////////////
+  public static void setDefaultLookAndFeelDecorated(boolean decorated)
+  {
+    defaultLookAndFeelDecorated = decorated;
+  }
+
+  public static boolean isDefaultLookAndFeelDecorated()
+  {
+    return defaultLookAndFeelDecorated;
+  }
+
   public AccessibleContext getAccessibleContext()
   {
     return accessibleContext;
