@@ -33,8 +33,8 @@ package java.io;
   * following two properties:
   * <p>
   * <ul>
-  * <li><xmp>gnu.java.io.ByteArrayOutputStream.initialBufferSize</xmp>
-  * <li><xmp>gnu.java.io.ByteArrayOutputStream.bufferIncrementSize</xmp>
+  * <li><code>gnu.java.io.ByteArrayOutputStream.initialBufferSize</code>
+  * <li><code>gnu.java.io.ByteArrayOutputStream.bufferIncrementSize</code>
   * </ul>
   * <p>
   * There is a constructor that specified the initial buffer size and
@@ -133,7 +133,7 @@ protected int count;
   * size is desired, see the constructor <code>ByteArrayOutputStream(int size)</code>.
   * For applications where the source code is not available, the default buffer
   * size can be set using the system property
-  * <xmp>gnu.java.io.ByteArrayOutputStream.initialBufferSize</xmp>
+  * <code>gnu.java.io.ByteArrayOutputStream.initialBufferSize</code>
   */
 public
 ByteArrayOutputStream()
@@ -160,6 +160,20 @@ ByteArrayOutputStream(int size)
 /*
  * Instance Methods
  */
+
+/**
+  * This method closes this output stream and releases any resources
+  * associated with it.
+  *
+  * @exception IOException If an error occurs.
+  */
+public void
+close() throws IOException
+{
+  super.close();
+}
+
+/*************************************************************************/
 
 /**
   * This method discards all of the bytes that have been written to the

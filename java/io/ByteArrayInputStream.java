@@ -118,6 +118,20 @@ ByteArrayInputStream(byte[] buf, int offset, int length)
  */
 
 /**
+  * This method closes this stream and releases any resources associated
+  * with it.
+  *
+  * @exception IOException If an error occurs.
+  */
+public void
+close() throws IOException
+{
+  super.close();
+}
+
+/*************************************************************************/
+
+/**
   * This method returns the number of bytes available to be read from this
   * stream.  The value returned will be equal to <code>count - pos</code>.
   *
