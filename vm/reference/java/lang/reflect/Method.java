@@ -212,15 +212,15 @@ extends AccessibleObject implements Member
     // 128 is a reasonable buffer initial size for constructor
     StringBuffer sb = new StringBuffer(128);
     Modifier.toString(getModifiers(), sb).append(' ');
-    sb.append(getReturnType().getName()).append(' ');
+    sb.append(getUserTypeName(getReturnType().getName())).append(' ');
     sb.append(getDeclaringClass().getName()).append('.');
     sb.append(getName()).append('(');
     Class[] c = getParameterTypes();
     if (c.length > 0)
       {
-        sb.append(c[0].getName());
+        sb.append(getUserTypeName(c[0].getName()));
         for (int i = 1; i < c.length; i++)
-          sb.append(',').append(c[i].getName());
+          sb.append(',').append(getUserTypeName(c[i].getName()));
       }
     sb.append(')');
     c = getExceptionTypes();
@@ -231,6 +231,55 @@ extends AccessibleObject implements Member
           sb.append(',').append(c[i].getName());
       }
     return sb.toString();
+  }
+
+  private static String getUserTypeName(String typeSpec)
+  {
+    int pos = 0;
+    String typeName = "";
+    String arrayPart = "";
+
+    while (typeSpec.charAt(pos) == '[')
+      {
+	arrayPart += "[]";
+	++pos;
+      }
+
+    switch (typeSpec.charAt(pos))
+      {
+      case 'Z':
+	typeName = "boolean";
+	break;
+      case 'B':
+	typeName = "byte";
+	break;
+      case 'C':
+	typeName = "char";
+	break;
+      case 'D':
+	typeName = "double";
+	break;
+      case 'F':
+	typeName = "float";
+	break;
+      case 'I':
+	typeName = "int";
+	break;
+      case 'J':
+	typeName = "long";
+	break;
+      case 'S':
+	typeName = "short";
+	break;
+      case 'L':
+	typeName = typeSpec.substring(pos + 1, typeSpec.length() - 1);
+	break;
+      default:
+	typeName = typeSpec;
+	break;
+      }
+
+    return typeName + arrayPart;
   }
 
   /**

@@ -1,5 +1,11 @@
 2004-10-16  Michael Koch  <konqueror@gmx.de>
 
+	* vm/reference/java/lang/reflect/Method.java
+	(toString): Fix names of arguments.
+	(getUserTypeName): New Method.
+
+2004-10-16  Michael Koch  <konqueror@gmx.de>
+
 	* autogen.sh: Fixed check for AUTOGEN_SUBDIR_MODE.
 
 2004-10-15  Michael Koch  <konqueror@gmx.de>
