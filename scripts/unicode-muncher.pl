@@ -1,6 +1,6 @@
 #!/usr/bin/perl -w
 # unicode-muncher.pl -- generate Unicode database for java.lang.Character
-# Copyright (C) 1998, 2002 Free Software Foundation, Inc.
+# Copyright (C) 1998, 2002, 2004  Free Software Foundation, Inc.
 #
 # This file is part of GNU Classpath.
 #
@@ -370,7 +370,7 @@ package gnu.java.lang;
  * java.lang.Character needs.  It is generated automatically from
  * <code>$ARGV[0]</code> and
  * <code>$ARGV[1]</code>, by some
- * perl scripts. These Unicode definition file can be found on the
+ * perl scripts. These Unicode definition files can be found on the
  * <a href="http://www.unicode.org">http://www.unicode.org</a> website.
  * JDK 1.4 uses Unicode version 3.0.0.
  *

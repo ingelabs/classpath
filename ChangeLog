@@ -1,5 +1,9 @@
 2004-04-23  Michael Koch  <konqueror@gmx.de>
 
+	* scripts/unicode-muncher.pl: Fixed typo.
+
+2004-04-23  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/channels/spi/AbstractInterruptibleChannel.java
 	(end): Throw AsynchronousCloseException if stream is close.
 
