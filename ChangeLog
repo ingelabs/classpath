@@ -1,10 +1,12 @@
-2005-03-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+2005-03-04  Roman Kennke  <roman@ontographics.com>
 
-	* org/omg/CORBA/Bounds.java: New file.
-	* org/omg/CORBA/TypeCode.java: Commented
-	out Any to fix build.
-	From Audrius Meskauskas:
-	* org/omg/CORBA/BAD_OPERATION.java: New file.
+	* javax/swing/text/rtf/ControlWordToken.java: New file.
+	* javax/swing/text/rtf/RTFEditorKit.java: New file.
+	* javax/swing/text/rtf/RTFParseException.java: New file.
+	* javax/swing/text/rtf/RTFParser.java: New file.
+	* javax/swing/text/rtf/RTFScanner.java: New file.
+	* javax/swing/text/rtf/TextToken.java: New file.
+	* javax/swing/text/rtf/Token.java: New file.
 	
 2005-03-02  Audrius Meskauskas  <audriusa@bluewin.ch>
 
