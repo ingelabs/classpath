@@ -1,27 +1,27 @@
-/*
- * gtkcomponentpeer.c -- Native implementation of GtkComponentPeer
- *
- * Copyright (c) 1998 Free Software Foundation, Inc.
- * Written by James E. Blair <corvus@gnu.org>
- *
- * This library is free software; you can redistribute it and/or modify
- * it under the terms of the GNU Library General Public License as published 
- * by the Free Software Foundation, either version 2 of the License, or
- * (at your option) any later verion.
- *
- * This library is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Library General Public License for more details.
- *
- * You should have received a copy of the GNU Library General Public License
- * along with this library; if not, write to the Free Software Foundation
- * Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
- */
+/* gtkcomponentpeer.c -- Native implementation of GtkComponentPeer
+   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+
+This file is part of the peer AWT libraries of GNU Classpath.
+
+This library is free software; you can redistribute it and/or modify
+it under the terms of the GNU Library General Public License as published 
+by the Free Software Foundation, either version 2 of the License, or
+(at your option) any later verion.
+
+This library is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU Library General Public License for more details.
+
+You should have received a copy of the GNU Library General Public License
+along with this library; if not, write to the Free Software Foundation
+Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA. */
+
 
 #include "gtkpeer.h"
 #include "gnu_java_awt_peer_gtk_GtkComponentPeer.h"
 #include <gtk/gtkprivate.h>
+
 #define GTK_OBJECT_SETV(ptr, arg)                \
   gdk_threads_enter ();                          \
   {                                              \
@@ -421,10 +421,14 @@ set_visible (GtkWidget *widget, jboolean visible)
 GtkLayout *
 find_gtk_layout (GtkWidget *parent)
 {
+  printf ("FINDGTKLAYTOU BEGIN\n");
   if (GTK_IS_WINDOW (parent))
     {
       GList *children = gtk_container_children 
 	                  (GTK_CONTAINER (GTK_BIN (parent)->child));
+
+  printf ("FINDGTKLAYTOU END\n");
+
 
       if (GTK_IS_MENU_BAR (children->data))
 	return GTK_LAYOUT (children->next->data);
@@ -440,10 +444,14 @@ find_gtk_layout (GtkWidget *parent)
 void
 set_parent (GtkWidget *widget, GtkContainer *parent)
 {
+  printf ("SET PARENT START\n");
+
   if (GTK_IS_WINDOW (parent))
     {
       GList *children = gtk_container_children 
 	                  (GTK_CONTAINER (GTK_BIN (parent)->child));
+
+  printf ("SET PARENT ENDISH\n");
 
       if (GTK_IS_MENU_BAR (children->data))
 	gtk_layout_put (GTK_LAYOUT (children->next->data), widget, 0, 0);
@@ -459,8 +467,8 @@ set_parent (GtkWidget *widget, GtkContainer *parent)
 /*  	  { */
 	    gtk_scrolled_window_add_with_viewport 
 	      (GTK_SCROLLED_WINDOW (parent), widget);
-/*  	    gtk_viewport_set_shadow_type (GTK_VIEWPORT (widget->parent),  */
-/*  					  GTK_SHADOW_NONE); */
+	    gtk_viewport_set_shadow_type (GTK_VIEWPORT (widget->parent), 
+					  GTK_SHADOW_NONE);
 /*  	  } */
 
       }
@@ -602,7 +610,14 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_O
   if (!strcmp (name, "parent"))
     {
       gdk_threads_enter ();
+      printf ("CON CHECK\n");
+      printf ("we have a %s\n", gtk_type_name (GTK_OBJECT_TYPE (ptr1)));
+      if (GTK_IS_WINDOW (ptr1))
+	printf ("we have a window!\n");
+      if (!ptr2)
+	printf ("ptr2 is null!\n");
       set_parent (GTK_WIDGET (ptr1), GTK_CONTAINER (ptr2));
+      printf ("CON END\n");
       gdk_threads_leave ();
 
       (*env)->ReleaseStringUTFChars (env, jname, name);
