@@ -39,6 +39,9 @@ exception statement from your version. */
 package java.text;
 
 import java.util.Vector;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Comparator;
 
 /* Written using "Java Class Libraries", 2nd edition, plus online
  * API docs for JDK 1.2 from http://www.javasoft.com.
@@ -60,7 +63,10 @@ import java.util.Vector;
  * <li> Reset: '&amp;' : <text>
  * </ul>
  * The modifier character indicates that accents sort backward as is the
- * case with French.  The relational operators specify how the text 
+ * case with French.  The modifier applies to all rules <b>after</b>
+ * the modifier but before the next primary sequence. If placed at the end
+ * of the sequence if applies to all unknown accented character.
+ * The relational operators specify how the text 
  * argument relates to the previous term.  The relation characters have
  * the following meanings:
  * <ul>
@@ -111,6 +117,9 @@ import java.util.Vector;
  * anywhere in the previous rule string segment so the rule following the
  * reset rule cannot be inserted.
  * <p>
+ * "&lt; a &amp; A @ &lt e &amp; E &lt f&amp; F" - This sequence is equivalent to the following
+ * "&lt; a &amp; A &lt E &amp; e &lt f &amp; F".
+ * <p>
  * For a description of the various comparison strength types, see the
  * documentation for the <code>Collator</code> class.
  * <p>
@@ -132,26 +141,398 @@ import java.util.Vector;
  *
  * @author Aaron M. Renn <arenn@urbanophile.com>
  * @author Tom Tromey <tromey@cygnus.com>
- * @date March 25, 1999
+ * @author Guilhem Lavaux <guilhem@kaffe.org>
  */
 public class RuleBasedCollator extends Collator
 {
+  /**
+   * This class describes what rank has a character (or a sequence of characters) 
+   * in the lexicographic order. Each element in a rule has a collation element.
+   */
   final class CollationElement
   {
     String char_seq;
     int primary;
     short secondary;
     short tertiary;
+    short equality;
+    boolean ignore;
+    String expansion;
 
-    CollationElement (String char_seq, int primary, short secondary, short tertiary)
+    CollationElement(String char_seq, int primary, short secondary, short tertiary,
+		     short equality, String expansion)
     {
       this.char_seq = char_seq;
       this.primary = primary;
       this.secondary = secondary;
       this.tertiary = tertiary;
+      this.equality = equality;
+      this.ignore = false;
+      this.expansion = expansion;
+    }
+    
+    CollationElement(String char_seq)
+    {
+      this.char_seq = char_seq;
+      this.ignore = true;
+    }
+
+    final int getValue()
+    {
+      return (primary << 16) + (secondary << 8) + tertiary;
     }
 
   } // inner class CollationElement
+
+  /**
+   * Basic collation instruction (internal format) to build the series of
+   * collation elements. It contains an instruction which specifies the new
+   * state of the generator. The sequence of instruction should not contain
+   * RESET (it is used by
+   * {@link #mergeRules(int,java.lang.String,java.util.Vector,java.util.Vector)})
+   * as a temporary state while merging two sets of instructions.
+   */
+  final class CollationSorter
+  {
+    static final int GREATERP = 0;
+    static final int GREATERS = 1;
+    static final int GREATERT = 2;
+    static final int EQUAL = 3;
+    static final int RESET = 4;
+    static final int IGNORE = 5;
+    static final int INVERSE_SECONDARY = 6;
+    
+    int comparisonType;
+    String textElement;
+    int hashText;
+    int offset;
+
+    String expansionOrdering;
+  }
+
+  /**
+   * This method returns the number of common characters at the beginning
+   * of the string of the two parameters.
+   *
+   * @param prefix A string considered as a prefix to test against
+   * the other string.
+   * @param s A string to test the prefix against.
+   * @return The number of common characters.
+   */
+  static int findPrefixLength(String prefix, String s)
+  {
+    int i;
+
+    for (i = 0; i < prefix.length() && i < s.length(); i++)
+      {
+	if (prefix.charAt(i) != s.charAt(i))
+	  return i;
+      }
+    return i;
+  }
+
+  /**
+   * Here we are merging two sets of sorting instructions: 'patch' into 'main'. This methods
+   * checks whether it is possible to find an anchor point for the rules to be merged and
+   * then insert them at that precise point.
+   *
+   * @param offset Offset in the string containing rules of the beginning of the rules
+   * being merged in.
+   * @param starter Text of the rules being merged.
+   * @param main Repository of all already parsed rules.
+   * @param patch Rules to be merged into the repository.
+   * @throws ParseException if it is impossible to find an anchor point for the new rules.
+   */
+  private void mergeRules(int offset, String starter, Vector main, Vector patch)
+    throws ParseException 
+  {
+    Enumeration elements = main.elements();
+    int insertion_point = -1;
+    int max_length = 0;
+    
+    /* We must check that no rules conflict with another already present. If it
+     * is the case delete the old rule. 
+     */
+    
+    /* For the moment good old O(N^2) algorithm.
+     */
+    for (int i = 0; i < patch.size(); i++)
+      {
+	int j = 0;
+	
+	while (j < main.size())
+	  {
+	    CollationSorter rule1 = (CollationSorter) patch.elementAt(i);
+	    CollationSorter rule2 = (CollationSorter) main.elementAt(j);
+	    
+	    if (rule1.textElement.equals(rule2.textElement))
+	      main.removeElementAt(j);
+	    else
+	      j++;
+	  }
+      }
+
+    // Find the insertion point... O(N)
+    for (int i = 0; i < main.size(); i++)
+      {
+	CollationSorter sorter = (CollationSorter) main.elementAt(i);
+	int length = findPrefixLength(starter, sorter.textElement);
+		
+	if (length > max_length)
+	  {
+	    max_length = length;
+	    insertion_point = i+1;
+	  }
+      }
+
+    if (insertion_point < 0)
+      throw new ParseException("no insertion point found for " + starter, offset);
+
+    if (max_length < starter.length())
+      {
+	/*
+	 * We need to expand the first entry. It must be sorted
+	 * like if it was the reference key itself (like the spec
+	 * said. So the first entry is special: the element is
+	 * replaced by the specified text element for the sorting.
+	 * This text replace the old one for comparisons. However
+	 * to preserve the behaviour we replace the first key (corresponding
+	 * to the found prefix) by a new code rightly ordered in the
+	 * sequence. The rest of the subsequence must be appended
+	 * to the end of the sequence.
+	 */
+	CollationSorter sorter = (CollationSorter) patch.elementAt(0);
+	CollationSorter expansionPrefix =
+	  (CollationSorter) main.elementAt(insertion_point-1);
+	
+	sorter.expansionOrdering = starter.substring(max_length); // Skip the first good prefix element
+	
+	main.insertElementAt(sorter, insertion_point);
+	
+	/*
+	 * This is a new set of rules. Append to the list.
+	 */
+	patch.removeElementAt(0);
+	insertion_point = main.size();
+      }
+
+    // Now insert all elements of patch at the insertion point.
+    for (int i = 0; i < patch.size(); i++)
+      main.insertElementAt(patch.elementAt(i), i+insertion_point);
+  }
+
+  /**
+   * This method parses a string and build a set of sorting instructions. The parsing
+   * may only be partial on the case the rules are to be merged sometime later.
+   * 
+   * @param stop_on_reset If this parameter is true then the parser stops when it
+   * encounters a reset instruction. In the other case, it tries to parse the subrules
+   * and merged it in the same repository.
+   * @param v Output vector for the set of instructions.
+   * @param base_offset Offset in the string to begin parsing.
+   * @param rules Rules to be parsed.
+   * @return -1 if the parser reached the end of the string, an integer representing the
+   * offset in the string at which it stopped parsing. 
+   * @throws ParseException if something turned wrong during the parsing. To get details
+   * decode the message.
+   */
+  private int subParseString(boolean stop_on_reset, Vector v,
+			     int base_offset, String rules)
+    throws ParseException
+  {
+    boolean ignoreChars = (base_offset == 0);
+    int operator = -1;
+    StringBuffer sb = new StringBuffer("");
+    boolean doubleQuote = false;
+    boolean eatingChars = false;
+    boolean nextIsModifier = false;
+    boolean isModifier = false;
+    int i;
+    
+main_parse_loop:
+    for (i = 0; i < rules.length(); i++)
+      {
+	char c = rules.charAt(i);
+	int type = -1;
+	
+	if (!eatingChars &&
+	    ((c >= 0x09 && c <= 0x0D) || (c == 0x20)))
+	      continue;
+
+	isModifier = nextIsModifier;
+	nextIsModifier = false;
+
+	if (eatingChars && c != '\'')
+	  {
+	    doubleQuote = false;
+	    sb.append(c);
+	    continue;
+	  }
+	if (doubleQuote && eatingChars)
+	  {
+	    sb.append(c);
+	    doubleQuote = false;
+	    continue;
+	  }
+
+	switch (c) {
+	case '!':
+	  throw new ParseException
+	    ("Modifier '!' is not yet supported by Classpath", i+base_offset);
+	case '<':
+	  ignoreChars = false;
+	  type = CollationSorter.GREATERP;
+	  break;
+	case ';':
+	  if (!ignoreChars)
+	    type = CollationSorter.GREATERS;
+	  else
+	    type = CollationSorter.IGNORE;
+	  break;
+	case ',':
+	  if (!ignoreChars)
+	    type = CollationSorter.GREATERT;
+	  else
+	    type = CollationSorter.IGNORE;
+	  break;
+	case '=':
+	  if (!ignoreChars)
+	    type = CollationSorter.EQUAL;
+	  else
+	    type = CollationSorter.IGNORE;
+	  break;
+	case '\'':
+	  eatingChars = !eatingChars;
+	  doubleQuote = true;
+	  break;
+	case '@':
+	  if (ignoreChars)
+	    throw new ParseException
+	      ("comparison list has not yet been started. You may only use"
+	       + "(<,;=&)", i+base_offset);
+	  // Inverse the order of secondaries from now on.
+	  nextIsModifier = true;
+	  type = CollationSorter.INVERSE_SECONDARY;
+	  break;
+	case '&':
+	  type = CollationSorter.RESET;
+	  if (stop_on_reset)
+	    break main_parse_loop;
+	  break;
+	default:
+	  if (operator < 0)
+	    throw new ParseException
+	      ("operator missing at " + (i+base_offset), i+base_offset);
+	  if (!eatingChars &&
+	      ((c >= 0x21 && c <= 0x2F) 
+	       || (c >= 0x3A && c <= 0x40)
+	       || (c >= 0x5B && c <= 0x60)
+	       || (c >= 0x7B && c <= 0x7E)))
+	    throw new ParseException
+	      ("unquoted punctuation character '"+c+"'", i+base_offset);
+
+	  //type = ignoreChars ? CollationSorter.IGNORE : -1;
+	  sb.append(c);
+	  break;
+	}
+
+	if (type  < 0)
+	  continue;
+
+	if (operator < 0)
+	  {
+	    operator = type;
+	    continue;
+	  }
+
+	if (sb.length() == 0 && !isModifier)
+	  throw new ParseException
+	    ("text element empty at " + (i+base_offset), i+base_offset);
+
+	if (operator == CollationSorter.RESET)
+	  {
+	    /* Reposition in the sorting list at the position
+	     * indicated by the text element.
+	     */
+	    String subrules = rules.substring(i);
+	    Vector sorted_rules = new Vector();
+	    int idx;
+
+	    // Parse the subrules but do not iterate through all
+	    // sublist. This is the priviledge of the first call.
+	    idx = subParseString(true, sorted_rules, base_offset+i, subrules);
+    
+	    // Merge new parsed rules into the list.
+	    mergeRules(base_offset+i, sb.toString(), v, sorted_rules);
+	    sb.setLength(0);
+	    
+	    // Reset state to none.
+	    operator = -1;
+	    type = -1;
+	    // We have found a new subrule at 'idx' but it has not been parsed.
+	    if (idx >= 0)
+	      {
+		i += idx-1;
+		continue main_parse_loop;
+	      }
+	    else
+		// No more rules.
+		break main_parse_loop;
+	  }
+
+	CollationSorter sorter = new CollationSorter();
+	
+	sorter.comparisonType = operator;
+	sorter.textElement = sb.toString();
+	sorter.hashText = sorter.textElement.hashCode();
+	sorter.offset = base_offset+rules.length();
+	sb.setLength(0);
+
+	v.add(sorter);
+	operator = type;
+      }
+
+    if (operator >= 0)
+      {
+	CollationSorter sorter = new CollationSorter();
+	int pos = rules.length() + base_offset;
+
+	if ((sb.length() != 0 && nextIsModifier)
+	    || (sb.length() == 0 && !nextIsModifier && !eatingChars))
+	  throw new ParseException("text element empty at " + pos, pos);
+
+	sorter.comparisonType = operator;
+	sorter.textElement = sb.toString();
+ 	sorter.hashText = sorter.textElement.hashCode();
+	sorter.offset = base_offset+pos;
+	v.add(sorter);
+      }
+
+    if (i == rules.length())
+      return -1;
+    else
+      return i;
+  }
+
+  /**
+   * This method completely parses a string 'rules' containing sorting rules.
+   *
+   * @param rules String containing the rules to be parsed. 
+   * @return A set of sorting instructions stored in a Vector.
+   * @throws ParseException if something turned wrong during the parsing. To get details
+   * decode the message.
+   */
+  private Vector parseString(String rules) 
+    throws ParseException
+  {
+    Vector v = new Vector();
+
+    // result of the first subParseString is not absolute (may be -1 or a
+    // positive integer). But we do not care.
+    subParseString(false, v, 0, rules);
+    
+    return v;
+  }
 
   /**
    * This the the original rule string.
@@ -162,7 +543,136 @@ public class RuleBasedCollator extends Collator
    * This is the table of collation element values
    */
   private Object[] ce_table;
-  
+
+  /**
+   * Quick-prefix finder.
+   */
+  HashMap prefix_tree;
+
+  /**
+   * This is the value of the last sequence entered into
+   * <code>ce_table</code>. It is used to compute the
+   * ordering value of unspecified character.
+   */
+  private int last_primary_value;
+
+  /**
+   * This variable is true if accents need to be sorted
+   * in the other direction.
+   */
+  private boolean inverseAccentComparison;
+
+  /**
+   * This method uses the sorting instructions built by {@link #parseString}
+   * to build collation elements which can be directly used to sort strings.
+   *
+   * @param parsedElements Parsed instructions stored in a Vector.
+   * @throws ParseException if the order of the instructions are not valid.
+   */
+  private void buildCollationVector(Vector parsedElements)
+    throws ParseException
+  {
+    int primary_seq = 0;
+    short secondary_seq = 0;
+    short tertiary_seq = 0;
+    short equality_seq = 0;
+    boolean inverseComparisons = false;
+    final boolean DECREASING = false;
+    final boolean INCREASING = true;
+    boolean secondaryType = INCREASING;
+    Vector v = new Vector();
+
+    // elts is completely sorted.
+element_loop:
+    for (int i = 0; i < parsedElements.size(); i++)
+      {
+	CollationSorter elt = (CollationSorter) parsedElements.elementAt(i);
+	boolean ignoreChar = false;
+
+	switch (elt.comparisonType)
+	  {
+	  case CollationSorter.GREATERP:
+	    primary_seq++;
+	    if (inverseComparisons)
+	      {
+		secondary_seq = Short.MAX_VALUE;
+		secondaryType = DECREASING;
+	      }
+	    else
+	      {
+		secondary_seq = 0;
+		secondaryType = INCREASING;
+	      }
+	    tertiary_seq = 0;
+	    equality_seq = 0;
+	    inverseComparisons = false;
+	    break;
+	  case CollationSorter.GREATERS:
+	    if (secondaryType == DECREASING)
+	      secondary_seq--;
+	    else
+	      secondary_seq++;
+	    tertiary_seq = 0;
+	    equality_seq = 0;
+	    break;
+	  case CollationSorter.INVERSE_SECONDARY:
+	    inverseComparisons = true;
+	    continue element_loop;
+	  case CollationSorter.GREATERT:
+	    tertiary_seq++;
+	    equality_seq = 0;
+	    break;
+	  case CollationSorter.IGNORE:
+	    ignoreChar = true;
+	  case CollationSorter.EQUAL:
+	    equality_seq++;
+	    break;
+	  case CollationSorter.RESET:
+	    throw new ParseException
+	      ("Invalid reached state 'RESET'. Internal error", elt.offset);
+	  default:
+	    throw new ParseException
+	      ("Invalid unknown state '" + elt.comparisonType + "'", elt.offset);
+	  }
+
+	CollationElement e;
+
+	if (!ignoreChar)
+	  {
+	    e = new CollationElement(elt.textElement, primary_seq,
+				     secondary_seq, tertiary_seq,
+				     equality_seq, elt.expansionOrdering);
+	  }
+	else
+	  e = new CollationElement(elt.textElement);
+
+	v.add(e);
+      }
+
+    this.inverseAccentComparison = inverseComparisons; 
+
+    ce_table = v.toArray();
+
+    last_primary_value = primary_seq+1;
+  }
+
+  /**
+   * Build a tree where all keys are the texts of collation elements and data is
+   * the collation element itself. The tree is used when extracting all prefix
+   * for a given text.
+   */
+  private void buildPrefixAccess()
+  {
+    prefix_tree = new HashMap();
+
+    for (int i = 0; i < ce_table.length; i++)
+      {
+	CollationElement e = (CollationElement) ce_table[i];
+
+	prefix_tree.put(e.char_seq, e);
+      }
+  }
+
   /**
    * This method initializes a new instance of <code>RuleBasedCollator</code>
    * with the specified collation rules.  Note that an application normally
@@ -174,317 +684,15 @@ public class RuleBasedCollator extends Collator
    *
    * @exception ParseException If the rule string contains syntax errors.
    */
-  public RuleBasedCollator (String rules) throws ParseException
+  public RuleBasedCollator(String rules) throws ParseException
   {
-    if (rules.equals (""))
-      throw new ParseException ("empty rule set", 0);
-    
     this.rules = rules;
-    Vector vec = new Vector();
-    boolean ignore_chars = true;
-    int primary_seq = 0;
-    short secondary_seq = 0;
-    short tertiary_seq = 0;
-    StringBuffer argument = new StringBuffer();
-    int len = rules.length();
-    
-    for (int index = 0; index < len; ++index)
-      {
-	char c = rules.charAt (index);
 
-	// Just skip whitespace.
-	if (Character.isWhitespace (c))
-	  continue;
+    if (rules.equals(""))
+      throw new ParseException("Empty rule set", 0);
 
-        // Primary difference
-        if (c == '<')
-          {
-            ignore_chars = false;
-            CollationElement e = new CollationElement (argument.toString(), primary_seq,
-                                                       secondary_seq,
-                                                       tertiary_seq);
-            secondary_seq = 0;
-            tertiary_seq = 0;
-            ++primary_seq;
-
-            vec.add (e);
-            argument.setLength (0);
-            continue;
-          }
-
-        // Secondary difference
-        if (c == ';')
-          {
-            if (primary_seq == 0)
-              throw new ParseException (rules, index);
-
-            CollationElement e = new CollationElement (argument.toString(), primary_seq,
-                                                       secondary_seq,
-                                                       tertiary_seq);
-            ++secondary_seq;
-            tertiary_seq = 0;
-
-            vec.add (e);
-            argument.setLength (0);
-            continue;
-          }
-
-        // Tertiary difference
-        if (c == ',')
-          {
-            if (primary_seq == 0)
-              throw new ParseException (rules, index);
-
-            CollationElement e = new CollationElement (argument.toString(), primary_seq,
-                                                       secondary_seq,
-                                                       tertiary_seq);
-            ++tertiary_seq;
-
-            vec.add (e);
-            argument.setLength (0);
-            continue;
-          }
-
-        // Is equal to
-        if (c == '=')
-          {
-            if (primary_seq == 0)
-              throw new ParseException (rules, index);
-
-            CollationElement e = new CollationElement (argument.toString(), primary_seq,
-                                                       secondary_seq,
-                                                       tertiary_seq);
-            vec.add (e);
-            argument.setLength (0);
-            continue;
-          }
-
-        // Sort accents backwards
-        if (c == '@')
-          {
-            throw new ParseException("French style accents not implemented yet", 0);
-          }
-
-        // Reset command
-        if (c == '&')
-          {
-            throw new ParseException("Reset not implemented yet", 0);
-          }
-
-        // See if we are still reading characters to skip
-        if (ignore_chars == true)
-          {
-            CollationElement e = new CollationElement (c + "", 0, (short)0, 
-                                                       (short)0);
-            vec.add(e);
-            continue;
-          }
-
-        argument.append (c);
-      }
-
-    if (argument.length() > 0)
-      {
-	CollationElement e = new CollationElement (argument.toString(), primary_seq,
-						   secondary_seq, tertiary_seq);
-	vec.add (e);
-      }
-
-    ce_table = vec.toArray();
-  }
-
-  /**
-   * This method creates a copy of this object.
-   *
-   * @return A copy of this object.
-   */
-  public Object clone()
-  {
-    RuleBasedCollator c = (RuleBasedCollator) super.clone ();
-    return c;
-  }
-
-  /**
-   * This method returns an integer which indicates whether the first
-   * specified <code>String</code> is less than, greater than, or equal to
-   * the second.  The value depends not only on the collation rules in
-   * effect, but also the strength and decomposition settings of this object.
-   *
-   * @param source The first <code>String</code> to compare.
-   * @param target A second <code>String</code> to compare to the first.
-   *
-   * @return A negative integer if source &lt; target, a positive integer
-   * if source &gt; target, or 0 if source == target.
-   */
-  public int compare (String source, String target)
-  {
-    CollationElementIterator cs = getCollationElementIterator (source);
-    CollationElementIterator ct = getCollationElementIterator (target);
-
-    while (true)
-      {
-	int os = cs.next();
-	int ot = ct.next();
-
-	// Check for end of string
-	if (os == CollationElementIterator.NULLORDER
-	    && ot == CollationElementIterator.NULLORDER)
-	  {
-	    // Source and target string are equal.
-	    return 0;
-	  }
-	else if (os == CollationElementIterator.NULLORDER)
-	  {
-	    // Source string is shorter, so return "less than".
-	    return -1;
-	  }
-	else if (ot == CollationElementIterator.NULLORDER)
-	  {
-	    // Target string is shorter, so return "greater than".
-	    return 1;
-	  }
-
-        // We know chars are totally equal, so skip
-        if (os == ot)
-          continue;
-
-        // Check for primary strength differences
-        int prim1 = cs.primaryOrder (os); 
-        int prim2 = ct.primaryOrder (ot); 
-
-        if (prim1 < prim2)
-          return -1;
-        else if (prim1 > prim2)
-          return 1;
-        else if (getStrength() == PRIMARY)
-          continue;
-
-        // Check for secondary strength differences
-        int sec1 = cs.secondaryOrder (os);
-        int sec2 = ct.secondaryOrder (ot);
-
-        if (sec1 < sec2)
-          return -1;
-        else if (sec1 > sec2)
-          return 1;
-        else if (getStrength() == SECONDARY)
-          continue;
-
-        // Check for tertiary differences
-        int tert1 = cs.tertiaryOrder (os);
-        int tert2 = ct.tertiaryOrder (ot);
-
-        if (tert1 < tert2)
-          return -1;
-        else if (tert1 > tert2)
-          return 1;
-      }
-  }
-
-  /**
-   * This method tests this object for equality against the specified 
-   * object.  This will be true if and only if the specified object is
-   * another reference to this object.
-   *
-   * @param obj The <code>Object</code> to compare against this object.
-   *
-   * @return <code>true</code> if the specified object is equal to this object, <code>false</code> otherwise.
-   */
-  public boolean equals (Object obj)
-  {
-    if (obj == this)
-      return true;
-
-    return false;
-  }
-
-  /**
-   * This method returns an instance for <code>CollationElementIterator</code>
-   * for the specified <code>String</code> under the collation rules for this
-   * object.
-   *
-   * @param source The <code>String</code> to return the <code>CollationElementIterator</code> instance for.
-   *
-   * @return A <code>CollationElementIterator</code> for the specified <code>String</code>.
-   */
-  public CollationElementIterator getCollationElementIterator (String source)
-  {
-    return new CollationElementIterator (source, this);
-  }
-
-  /**
-   * This method returns an instance of <code>CollationElementIterator</code>
-   * for the <code>String</code> represented by the specified
-   * <code>CharacterIterator</code>.
-   *
-   * @param source The <code>CharacterIterator</code> with the desired <code>String</code>.
-   *
-   * @return A <code>CollationElementIterator</code> for the specified <code>String</code>.
-   */
-  public CollationElementIterator getCollationElementIterator (CharacterIterator source)
-  {
-    StringBuffer sb = new StringBuffer();
-
-    // Right now we assume that we will read from the beginning of the string.
-    for (char c = source.first(); c != CharacterIterator.DONE; c = source.next()) 
-      {
-        sb.append (c);
-      }
-
-    return getCollationElementIterator (sb.toString());
-  }
-
-  /**
-   * This method returns an instance of <code>CollationKey</code> for the
-   * specified <code>String</code>.  The object returned will have a
-   * more efficient mechanism for its comparison function that could
-   * provide speed benefits if multiple comparisons are performed, such
-   * as during a sort.
-   *
-   * @param source The <code>String</code> to create a <code>CollationKey</code> for.
-   *
-   * @return A <code>CollationKey</code> for the specified <code>String</code>.
-   */
-  public CollationKey getCollationKey (String source)
-  {
-    CollationElementIterator cei = getCollationElementIterator (source);
-    Vector vec = new Vector (25);
-
-    int ord = cei.next();
-    cei.reset(); //set to start of string
-
-    while (ord != CollationElementIterator.NULLORDER)
-      {
-        switch (getStrength())
-          {
-            case PRIMARY:
-               ord = cei.primaryOrder (ord);
-               break;
-
-            case SECONDARY:
-               ord = cei.secondaryOrder (ord);
-
-            default:
-               break;
-          }
-
-        vec.add (new Integer (ord)); 
-	ord = cei.next(); //increment to next key
-      }
-
-    Object[] objarr = vec.toArray();
-    byte[] key = new byte [objarr.length * 4];
-
-    for (int i = 0; i < objarr.length; i++)
-      {
-        int j = ((Integer) objarr [i]).intValue();
-        key [i * 4] = (byte) ((j & 0xFF000000) >> 24);
-        key [i * 4 + 1] = (byte) ((j & 0x00FF0000) >> 16);
-        key [i * 4 + 2] = (byte) ((j & 0x0000FF00) >> 8);
-        key [i * 4 + 3] = (byte) (j & 0x000000FF);
-      }
-
-    return new CollationKey (this, source, key);
+    buildCollationVector(parseString(rules));
+    buildPrefixAccess();
   }
 
   /**
@@ -499,37 +707,237 @@ public class RuleBasedCollator extends Collator
   }
 
   /**
+   * This method builds a default collation element without invoking
+   * the database created from the rules passed to the constructor.
+   *
+   * @param c Character which needs a collation element.
+   * @return A valid brand new CollationElement instance.
+   */
+  CollationElement getDefaultElement(char c)
+  {
+    int v;
+
+    // Preliminary support for generic accent sorting inversion (I don't know if all
+    // characters in the range should be sorted backward). This is the place
+    // to fix this if needed.
+    if (inverseAccentComparison && (c >= 0x02B9 && c <= 0x0361))
+      v = 0x0361 - ((int)c - 0x02B9);
+    else
+      v = (short)c;
+    return new CollationElement(""+c, last_primary_value + v,
+				(short)0, (short)0, (short) 0, null);
+  }
+
+  /**
+   * This method returns an instance for <code>CollationElementIterator</code>
+   * for the specified <code>String</code> under the collation rules for this
+   * object.
+   *
+   * @param str The <code>String</code> to return the <code>CollationElementIterator</code> instance for.
+   *
+   * @return A <code>CollationElementIterator</code> for the specified <code>String</code>.
+   */
+  public CollationElementIterator getCollationElementIterator(String str)
+  {
+    return new CollationElementIterator(this, str);
+  }  
+
+  /**
+   * This method returns an instance of <code>CollationElementIterator</code>
+   * for the <code>String</code> represented by the specified
+   * <code>CharacterIterator</code>.
+   *
+   * @param ci The <code>CharacterIterator</code> with the desired <code>String</code>.
+   *
+   * @return A <code>CollationElementIterator</code> for the specified <code>String</code>.
+   */
+  public CollationElementIterator getCollationElementIterator(CharacterIterator ci)
+  {
+    StringBuffer sb = new StringBuffer("");
+
+    // Right now we assume that we will read from the beginning of the string.
+    char c = ci.first();
+    while (c != CharacterIterator.DONE) 
+      {
+        sb.append(c);
+        c = ci.next();
+      }
+
+    return getCollationElementIterator(sb.toString());
+  }
+
+  /**
+   * This method returns an integer which indicates whether the first
+   * specified <code>String</code> is less than, greater than, or equal to
+   * the second.  The value depends not only on the collation rules in
+   * effect, but also the strength and decomposition settings of this object.
+   *
+   * @param s1 The first <code>String</code> to compare.
+   * @param s2 A second <code>String</code> to compare to the first.
+   *
+   * @return A negative integer if s1 &lt; s2, a positive integer
+   * if s1 &gt; s2, or 0 if s1 == s2.
+   */
+  public int compare(String s1, String s2)
+  {
+    CollationElementIterator cei1 = getCollationElementIterator(s1);
+    CollationElementIterator cei2 = getCollationElementIterator(s2);
+
+    for(;;)
+      {
+        CollationElement ord1block = cei1.nextBlock(); 
+        CollationElement ord2block = cei2.nextBlock(); 
+	int ord1;
+	int ord2;
+
+	if (ord1block != null)
+	  ord1 = ord1block.getValue();
+	else
+	  {
+	    if (ord2block == null)
+	      return 0;
+	    return -1;
+	  }
+
+	if (ord2block == null)
+	  return 1;
+	
+	ord2 = ord2block.getValue();
+	
+	// We know chars are totally equal, so skip
+        if (ord1 == ord2)
+	  {
+	    if (getStrength() == IDENTICAL)
+	      if (!ord1block.char_seq.equals(ord2block.char_seq))
+		return ord1block.char_seq.compareTo(ord2block.char_seq);
+	    continue;
+	  }
+
+        // Check for primary strength differences
+        int prim1 = cei1.primaryOrder(ord1); 
+        int prim2 = cei2.primaryOrder(ord2); 
+
+        if (prim1 < prim2)
+          return -1;
+        else if (prim1 > prim2)
+          return 1;
+        else if (getStrength() == PRIMARY)
+          continue;
+
+        // Check for secondary strength differences
+        int sec1 = cei1.secondaryOrder(ord1);
+        int sec2 = cei2.secondaryOrder(ord2);
+
+        if (sec1 < sec2)
+          return -1;
+        else if (sec1 > sec2)
+          return 1;
+        else if (getStrength() == SECONDARY)
+          continue;
+
+        // Check for tertiary differences
+        int tert1 = cei1.tertiaryOrder(ord1);
+        int tert2 = cei2.tertiaryOrder(ord2);
+
+        if (tert1 < tert2)
+          return -1;
+        else if (tert1 > tert2)
+          return 1;
+	else if (getStrength() == TERTIARY)
+	  continue;
+
+	// Apparently JDK does this (at least for my test case).
+	return ord1block.char_seq.compareTo(ord2block.char_seq);    
+      }
+  }
+
+  /**
+   * This method returns an instance of <code>CollationKey</code> for the
+   * specified <code>String</code>.  The object returned will have a
+   * more efficient mechanism for its comparison function that could
+   * provide speed benefits if multiple comparisons are performed, such
+   * as during a sort.
+   *
+   * @param str The <code>String</code> to create a <code>CollationKey</code> for.
+   *
+   * @return A <code>CollationKey</code> for the specified <code>String</code>.
+   */
+  public CollationKey getCollationKey(String str)
+  {
+    CollationElementIterator cei = getCollationElementIterator(str);
+    Vector vect = new Vector(25);
+
+    int ord = cei.next();
+    cei.reset(); //set to start of string
+
+    while (ord != CollationElementIterator.NULLORDER)
+      {
+        switch (getStrength())
+          {
+            case PRIMARY:
+               ord = cei.primaryOrder(ord);
+               break;
+
+            case SECONDARY:
+               ord = cei.secondaryOrder(ord);
+
+            default:
+               break;
+          }
+
+        vect.add(new Integer(ord)); 
+	ord = cei.next(); //increment to next key
+      }
+
+    Object[] objarr = vect.toArray();
+    byte[] key = new byte[objarr.length * 4];
+
+    for (int i = 0; i < objarr.length; i++)
+      {
+        int j = ((Integer)objarr[i]).intValue();
+        key [i * 4] = (byte)((j & 0xFF000000) >> 24);
+        key [i * 4 + 1] = (byte)((j & 0x00FF0000) >> 16);
+        key [i * 4 + 2] = (byte)((j & 0x0000FF00) >> 8);
+        key [i * 4 + 3] = (byte)(j & 0x000000FF);
+      }
+
+    return new CollationKey(this, str, key);
+  }
+
+  /**
+   * This method tests this object for equality against the specified 
+   * object.  This will be true if and only if the specified object is
+   * another reference to this object.
+   *
+   * @param obj The <code>Object</code> to compare against this object.
+   *
+   * @return <code>true</code> if the specified object is equal to this object, <code>false</code> otherwise.
+   */
+  public boolean equals(Object obj)
+  {
+    if (obj == this)
+      return true;
+    else
+      return false;
+  }
+
+  /**
    * This method returns a hash value for this object.
    *
    * @return A hash value for this object.
    */
   public int hashCode()
   {
-    return System.identityHashCode (this);
+    return System.identityHashCode(this);
   }
 
   /**
-   * This method calculates the collation element value for the specified
-   * character(s).
+   * This method creates a copy of this object.
+   *
+   * @return A copy of this object.
    */
-  int getCollationElementValue (String source)
+  public Object clone()
   {
-    CollationElement e = null;
-
-    // The table is sorted.  Change to a binary search later.
-    for (int i = 0; i < ce_table.length; i++) 
-      if (((CollationElement) ce_table [i]).char_seq.equals (source))
-        {
-          e = (CollationElement) ce_table [i];
-          break;
-        }
-
-    if (e == null)
-      e = new CollationElement (source, 0xFFFF, (short)0xFF, (short)0xFF);
-
-    int retval = (e.primary << 16) + (e.secondary << 8) + e.tertiary;
-
-    return retval;
+    return super.clone();
   }
-
-} // class RuleBaseCollator
+}
