@@ -53,36 +53,5 @@ There should be no compiling errors within Java source code which is
 checked in.  Code should be compiled in the build process before
 checking it in.
 
-
-The following is a rough list of tasks which need to be completed:
-
-        * Port to new platforms.  Most of us develop on GNU/Linux so
-          our platform support may not be up to par.
-
-	* We no longer are able to cross-compile Classpath because
-	  we are using configure to determine the endian-ness of
-	  the platform.
-
-        * java.awt does not work yet.        
-
-        * java.math needs some work.  This includes one missing 
-	  function and setting up BigInteger.c in the native compile.
-
-        * GNU Classpath needs to work with Kaffe.  There is
-          documentation on the efforts made to originally make
-          Classpath work with Japhar in docs/ and on the web-site.
-
-        * Update the web-site
-
-        * Make multiple 'dist' or 'install' targets for different 
-	  packages including java.awt, java.lang, etc. but also for
-          gnu.java.awt.peer.gtk.
-
-        * Fix the build so that distributions won't have the same high
-          requirements as CVS.  Shouldn't be much left to do this.  Some
-	  more work can be done to make builds from CVS easier.
-
-        * Create configure, etc. for the swing project.
-
 If you have any questions, suggestions, etc., send them to
 classpath@gnu.org.
