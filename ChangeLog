@@ -1,3 +1,10 @@
+2003-07-18  Jerry Quinn  <jlquinn@optonline.net>
+	    Mark Wielaard  <mark@klomp.org>
+
+	* java/math/BigDecimal (divide): Correctly handle
+	ROUND_HALF_EVEN when amount is greater than 0.5.
+	Simplify code.
+
 2003-07-17  Jeroen Frijters <jeroen@sumatra.nl>
 
 	* java/net/URLClassLoader.java (addURL): Moved implementation to
