@@ -151,7 +151,7 @@ a Java package, please be willing to do the following:
 @itemize @bullet
 @item
 Implement a complete drop-in replacement for the particular package.  That
-mean implementing any ``internal'' classes.  For example, in the java.net
+means implementing any ``internal'' classes.  For example, in the java.net
 package, there are non-public classes for implementing sockets.  Without
 those classes, the public socket interface is useless.  But do not feel
 obligated to completely replace all of Sun's functionality at once.  For
@@ -300,7 +300,7 @@ java.math.BigDecimal.
 
 @end table
 
-@node Programming Standards, Specification Sources, Programming Tools, Top
+@node Programming Standards, Programming Goals, Programming Tools, Top
 @comment node-name, next, previous, up
 @chapter Programming Standards
 
@@ -309,9 +309,119 @@ For C code, follow the
 The standards also specify various things like the
 install directory structure.  These should be followed if possible.
 
-For Java code, please follow the Sun programming standards.  As an
-exception, do not feel obligated to following their bracket and 
+For Java code, please follow the
+@uref{http://java.sun.com/docs/codeconv/html/CodeConventionsTOC.doc.html,Sun programming standards}.
+As an exception, do not feel obligated to following their bracket and
 indendation style if you consider it wrong.
+
+@node Programming Goals, Portability, Programming Standards, Top
+@comment node-name, next, previous, up
+@chapter Programming Goals
+
+When you write code for JCL, write with three things in mind, and in the
+following order: portability, robustness, and efficiency.
+
+If efficiency breaks portability or robustness, then don't do it the
+efficient way.  If robustness breaks portability, then bye-bye robust code.
+Of course, as a programmer you would probably like to find sneaky ways to
+get around the issue so that your code can be all three ... the following
+chapters will give some hints on how to do this.
+
+@node Portability, Java Efficiency, Programming Goals, Top
+@comment node-name, next, previous, up
+@chapter Portability
+
+The ultimate portability goal would be to create:
+
+@enumerate
+@item
+a binary set for each platform that works across all VMs on that
+platform
+@item
+a single classfile set that work across all VMs on all platforms that
+support the binary set.
+@end enumerate
+
+With Java code, this is no problem.  You end up delegating VM- or
+platform-specific stuff to native code anyway.  Unfortunately, it is
+impossible to write native code that works out of the box on multiple
+VMs, even on a given platform.  The APIs Sun has created just do not
+give the flexibility required to do that if you are implementing the
+java.* hierarchy.
+
+The native libraries we use in JCL are JNI, JVMDI, and VMI.  JNI you
+should be familiar with; introduced in Java 1.1, it is the basis for
+our native code.  JVMDI is a 1.2 concoction, and thus we can only
+support it on 1.1 VMs that we have source access to (i.e. Japhar and
+Kaffe).  VMI is our own invention entirely; it is where we push the
+VM-specific functionality that JNI and JVMDI do not support.
+
+However, using JVMDI and VMI in 1.1 breaks the "ideal goal" for the project.
+With these two in the mix, JCL's portability becomes:
+
+@enumerate
+@item
+a JVMDI and VMI lib per VM per platform;
+@item
+a binary set for each platform that works across all VM/platform
+combos supporting the JVMDI/VMI;
+@item
+a single classfile set that works across all VM / platform combos
+that support both of the above.
+@end enumerate
+
+When writing, therefore, you should always keep shy of anything
+VM-specific yourself, and talk to the VM using the VMI.  If you need a
+VM-specific function that is not supported by JNI or JVMDI, write a new VMI
+function!
+
+Note that the preferred method is not to use the JVMDI or VMI at @em{all},
+but to use only JNI.  If you can write it without the VMI, your code will be
+quicker to port to new VMs.
+
+There is another issue, however, and that is the efficiency issue.  Some
+things can be done using JNI only, but they are a ton slower than they would
+be if you used the VMI or talked directly to the VM.
+
+In these cases, the preferred method in JCL is to create a @em{library}.
+Hide the implementation of the functions from the caller.  If the library
+can be written using only JNI, no matter how inefficient, you should write a
+version of it for that.  Portability, remember, is the ultimate goal, and
+the closer we are to it, the better off we are.
+
+
+@node Robustness, Java Efficiency, Portability, Top
+@comment node-name, next, previous, up
+@chapter Robustness
+
+Native code is very easy to make non-robust.  (That's one reason Java is so
+much better!)  Here are a few hints to make your native code more robust.
+
+Always check return values for standard functions.  It's sometimes easy to
+forget to check that malloc() return for an error.  Don't make that mistake.
+(In fact, use JCL_malloc() in the jcl library instead--it will check the
+return value and throw an exception if necessary.)
+
+Always check the return values of JNI functions, or call @code{ExceptionOccurred}
+to check whether an error occurred.  You must do this after @em{every} JNI call.
+JNI does not work well when an exception has been raised, and can have unpredictable
+behavior.
+
+Throw exceptions using JCL_ThrowException.  This guarantees that if something is
+seriously wrong, the exception text will at least get out somewhere (even if it is
+stderr).
+
+Check for null values of jclasses before you send them to JNI functions.  JNI
+does not behave nicely when you pass a null class to it: it terminates Java with
+a "JNI Panic."
+
+In general, try to use functions in native/lib/jcl.h.  They check exceptions and
+return values and throw appropriate exceptions.
+
+
+@node Java Efficiency, Native Efficiency, Robustness, Top
+@comment node-name, next, previous, up
+@chapter Java Efficiency
 
 For methods which explicitly throw a NullPointerException when an
 argument is passed which is null, per a Sun specification, do not write
@@ -338,15 +448,104 @@ will throw a NullPointerException when length() is invoked.  JCL is
 designed to be as fast as possible -- every optimization, no matter how
 small, is important.
 
-@node Specification Sources, Naming Conventions, Programming Standards, Top
+
+@node Native Efficiency, Specification Sources, Java Efficiency, Top
+@comment node-name, next, previous, up
+@chapter Native Efficiency
+
+You might think that using native methods all over the place would give
+our implementation of Java speed, speed, blinding speed.  You'd be thinking
+wrong.  Would you believe me if I told you that an @em{interpreted} Java method
+is typically about three and a half times @em{faster} than the equivalent
+native method?  This is true even for a totally blank method.
+
+Bottom line: JNI is overhead incarnate.  In Sun's implementation, even
+the JNI functions you use once you get into Java are slow.
+
+A final problem is efficiency of native code when it comes to things
+like method calls, fields, finding classes, etc.  Generally you should cache
+things like that in static C variables if you're going to use them over and
+over again.  GetMethodID(), GetFieldID(), and FindClass() are *slow*.
+
+Here are a few tips on writing native code efficiently:
+
+Make as few native method calls as possible.  Note that this is not the same
+thing as doing less in native method calls; it just means that, if given the
+choice between calling two native methods and writing a single native method
+that does the job of both, it will usually be better to write the single
+native method.  You can even call the other two native methods directly from
+your native code and not incur the overhead of a method call from Java to C.
+
+Cache methodIDs and fieldIDs wherever you can.  String lookups are expenseive.
+The best way to do this is to use the native/lib/jnilink.h library.  It will
+ensure that jmethodIDs are always valid, even if the class is unloaded at
+some point.  In 1.1, jnilink simply caches a NewGlobalRef() to the method's
+underlying class; however, when 1.2 comes along, it will use a weak reference
+to allow the class to be unloaded and then re-resolve the jmethodID the next
+time it is used.
+
+Cache classes that you need to access often.  jnilink will help with this as
+well.  The issue here is the same as the methodID and fieldID issue--how to
+make certain the class reference remains valid.
+
+If you need to associate native C data with your class, use Paul
+Fisher's native_state library (NSA).  It will allow you to get and set state
+fairly efficiently.  Note that there is no built-in mechanism to associate C
+data with instances of a class.  This is a library Paul built from scratch.
+
+
+@node Specification Sources, Naming Conventions, Native Efficiency, Top
 @comment node-name, next, previous, up
 @chapter Specification Sources
 
-All classes should be implemented from the specification as provided in 
-Sun's javadocs.  The exceptions are the packages java.lang, java.io, and
-java.util, where the 
-@uref{http://java.sun.com/docs/books/jls/html/index.html,Java Language Specification} 
-should be used instead where possible.
+There are a number of specification sources to use when working on JCL.
+In general, the only place you'll find your classes specified is in the
+JavaDoc documentation or possibly in the corresponding white paper.  In
+the case of java.lang, java.io and java.util, you should look at the
+Java Language Specification.
+
+Here, however, is a list of specs, in order of canonicality:
+
+@enumerate
+@item
+@uref{http://java.sun.com/docs/books/jls/clarify.html,Clarifications and Amendments to the JLS - 1.1}
+@item
+@uref{http://java.sun.com/docs/books/jls/html/1.1Update.html,JLS Updates - 1.1}
+@item
+@uref{http://java.sun.com/docs/books/jls/html/index.html,The 1.0 JLS}
+@item
+@uref{http://java.sun.com/docs/books/vmspec/index.html,JVM spec - 1.1}
+@item
+@uref{http://java.sun.com/products/jdk/1.1/docs/guide/jni/spec/jniTOC.doc.html,JNI spec - 1.1}
+@item
+@uref{http://java.sun.com/products/jdk/1.1/docs/api/packages.html,Sun's javadoc - 1.1}
+(since Sun's is the reference implementation, the javadoc is
+documentation for the Java platform itself.)
+@item
+@uref{http://java.sun.com/products/jdk/1.2/docs/guide/jvmdi/jvmdi.html,JVMDI spec - 1.2},
+@uref{http://java.sun.com/products/jdk/1.2/docs/guide/jni/jni-12.html,JNI spec - 1.2}
+(sometimes gives clues about unspecified things in 1.1; if
+it was not specified accurately in 1.1, then use the spec
+for 1.2; also, we are using JVMDI in this project.)
+@item
+@uref{http://java.sun.com/products/jdk/1.2/docs/api/frame.html,Sun's javadoc - 1.2}
+(sometimes gives clues about unspecified things in 1.1; if
+it was not specified accurately in 1.1, then use the spec
+for 1.2)
+@item
+@uref{http://developer.java.sun.com/developer/bugParade/index.html,The Bug Parade}:
+I have obtained a ton of useful information about how things
+do work and how they *should* work from the Bug Parade just
+by searching for related bugs.  The submitters are very
+careful about their use of the spec.  And if something is
+unspecified, usually you can find a request for specification
+or a response indicating how Sun thinks it should be
+specified here.
+@end enumerate
+
+You'll notice that in this document, white papers and
+specification papers are more canonical than the JavaDoc
+documentation.  This is true in general.
 
 
 @node Naming Conventions, , Specification Sources, Top
