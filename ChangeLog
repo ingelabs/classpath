@@ -1,3 +1,8 @@
+2004-11-07  Sven de Marothy  <sven@physto.se>
+
+	* java/awt/geom/GeneralPath.java (evaluateCrossings):
+	Fixed epsilon value, should always be nonzero.
+
 2004-11-07  Jerry Quinn  <jlquinn@optonline.net>
 
 	* java/awt/image/BandedSampleModel.java (scanlineStride): Remove
