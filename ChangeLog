@@ -1,3 +1,8 @@
+2004-08-31  Michael Koch  <konqueror@gmx.de>
+
+	* vm/reference/java/io/VMFile.java:
+	Reindented.
+
 2004-08-29  Mark Wielaard  <mark@klomp.org>
 
 	* resource/org/.cvsignore: New file.
