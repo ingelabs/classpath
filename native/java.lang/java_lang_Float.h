@@ -31,6 +31,14 @@ JNIEXPORT jfloat JNICALL Java_java_lang_Float_intBitsToFloat
 JNIEXPORT jfloat JNICALL Java_java_lang_Float_parseFloat
   (JNIEnv *, jclass, jstring);
 
+/*
+ * Class:    java_lang_Float
+ * Method:   toString(float f)
+ * Signature: (F)Ljava/lang/String
+ */
+JNIEXPORT jstring JNICALL Java_java_lang_Float_toString
+  (JNIEnv * env, jclass thisClass, jfloat f);
+
 #ifdef __cplusplus
 }
 #endif
