@@ -1,3 +1,14 @@
+2003-06-11  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/border/AbstractBorder.java: Numerous fixes for making
+	the implementaton comply with the API specification. Added Javadoc.
+	
+	(paintBorder): Removed warning because calling this method is perfectly
+	feasible for some subclasses, for instance EmptyBorder.
+
+	* javax/swing/border/CompoundBorder.java (serialVersionUID): Added.
+	(paintBorder): Docfix.
+	
 2003-06-10  Tom Tromey  <tromey@redhat.com>
 
 	* javax/swing/JList.java (setListData): Remove gcj workaround.
