@@ -122,7 +122,7 @@ class Test
       f.add(east_panel,"East");
 
       Button wb=new Button();
-      wb.setLabel("Destroy Frame on Press");
+      wb.setLabel("Destroy Frame on Click");
 
       wb.addMouseListener(new MouseAdapter() {
 	public void mousePressed(MouseEvent e) {
@@ -136,13 +136,14 @@ class Test
 	  System.out.println("clickcount = " + e.getClickCount());
 	  System.out.println("when = " + e.getWhen());
 	  System.out.println();
-	  f.dispose ();
 	}
 	public void mouseReleased(MouseEvent e) {
 	  System.out.println("mouse released wb");
 	}
 	public void mouseClicked(MouseEvent e) {
 	  System.out.println("mouse clicked wb");
+	  f.dispose ();
+	  System.exit (0);
 	}
       });
 
