@@ -1,6 +1,7 @@
 #include "gtkpeer.h"
 #include "gnu_java_awt_peer_gtk_GdkGraphics.h"
 #include <gdk/gdkprivate.h>
+#include <gdk/gdkx.h>
 
 #define GDK_STABLE_IS_PIXMAP(d) (((GdkWindowPrivate *)d)->window_type == GDK_WINDOW_PIXMAP)
 
@@ -117,7 +118,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_dispose
   if (!g) return;		/* dispose has been called more than once */
   
   gdk_threads_enter ();
-  gdk_flush ();
+  XFlush (GDK_DISPLAY ());
 
   gdk_gc_destroy (g->gc);
 
