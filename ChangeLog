@@ -1,3 +1,26 @@
+2004-10-28  Sven de Marothy  <sven@physto.se>
+
+	* gnu/java/awt/color/CieXyzConverter.java       
+	* gnu/java/awt/color/GrayScaleConverter.java
+	* gnu/java/awt/color/SrgbConverter.java
+	* gnu/java/awt/color/ClutProfileConverter.java
+	* gnu/java/awt/color/LinearRGBConverter.java
+	* gnu/java/awt/color/TagEntry.java
+	* gnu/java/awt/color/ColorLookUpTable.java      
+	* gnu/java/awt/color/ProfileHeader.java
+	* gnu/java/awt/color/ToneReproductionCurve.java
+	* gnu/java/awt/color/ColorSpaceConverter.java
+	* gnu/java/awt/color/PyccConverter.java
+	* gnu/java/awt/color/GrayProfileConverter.java
+	* gnu/java/awt/color/RgbProfileConverter.java
+	New files
+
+	* java/awt/color/ICC_ColorSpace.java
+	* java/awt/color/ICC_ColorSpaceICC_Profile.java
+	* java/awt/color/ICC_ColorSpaceICC_ProfileGray.java
+	* java/awt/color/ICC_ColorSpaceICC_ProfileRGB.java
+	Implemented (sans PhotoYCC color space)
+	
 2004-10-28  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/font/TextAttribute.java
