@@ -1,5 +1,5 @@
 /*
- * $Id: TransformerFactory.java,v 1.1 2003-02-01 02:10:28 cbj Exp $
+ * $Id: TransformerFactory.java,v 1.2 2003-08-17 22:10:34 mark Exp $
  * Copyright (C) 2001 Andrew Selkirk
  * Copyright (C) 2001 David Brownell
  * 
@@ -54,7 +54,7 @@ public abstract class TransformerFactory {
 	//-------------------------------------------------------------
 
 	/**
-	 * Returns an object encapsulating the &lt;?xml-stylesheet&nbsp;?&gt;
+	 * Returns an object encapsulating the &lt;?xml-stylesheet?&gt;
 	 * processing instruction from the document that matches the
 	 * specified criteria.
 	 */

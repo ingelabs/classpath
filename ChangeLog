@@ -1,5 +1,11 @@
 2003-08-17  Mark Wielaard  <mark@klomp.org>
 
+	* external/jaxp/source/javax/xml/transform/TransformerFactory.java:
+	Don't use &nbsp; in the api documentation.
+	external/jaxp/source/org/xml/sax/ext/Locator2.java: Likewise.
+
+2003-08-17  Mark Wielaard  <mark@klomp.org>
+
 	* doc/api/Makefile.am (core): Don't include doc-files in package list.
 	(jaxp): Don't include gnu packages.
 	(create_html): Add classpath-copyright.xml as -bottomnote.
