@@ -29,7 +29,7 @@ package java.io;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public interface DataInput
+public abstract interface DataInput
 {
 
 /**
