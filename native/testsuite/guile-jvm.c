@@ -41,6 +41,46 @@ abort_test (SCM name, char *exception)
 }
 
 SCM
+handle_test_exception (jobject test_name_obj)
+{
+  jthrowable throwable;
+  jclass object_class;
+  jobject err_msg_obj;
+  char *err_msg, *test_name;
+  const char *utf;
+  SCM result;
+  jboolean is_copy;
+  static jmethodID obj_toString_mid = NULL;
+
+  throwable = (*env)->ExceptionOccurred (env);
+  (*env)->ExceptionClear (env);
+
+  if (obj_toString_mid == NULL)
+    obj_toString_mid = (*env)->GetMethodID (env, 
+					    (*env)->FindClass (env, 
+							  "java/lang/Object"), 
+					    "toString", 
+					    "()Ljava/lang/String;");
+
+  err_msg_obj = (*env)->CallObjectMethod (env, throwable, obj_toString_mid);
+
+  utf = (*env)->GetStringUTFChars (env, err_msg_obj, &is_copy);
+  err_msg = strdup (utf);
+  (*env)->ReleaseStringUTFChars (env, err_msg_obj, utf);
+
+  utf = (*env)->GetStringUTFChars (env, test_name_obj, &is_copy);
+  test_name = strdup (utf);
+  (*env)->ReleaseStringUTFChars (env, test_name_obj, utf);
+
+  result = abort_test (gh_str02scm (test_name), err_msg);
+
+  free (err_msg);
+  free (test_name);
+
+  return result;
+}   
+
+SCM
 perform_test (SCM clazz_scm_name)
 {
   char *clazz_name, *test_name, *result_name, *msg;
@@ -74,6 +114,10 @@ perform_test (SCM clazz_scm_name)
   /* Call all the Java testing methods */
   test_name_obj = (*env)->CallObjectMethod (env, test_obj, test_name_mid);
   result_obj = (*env)->CallObjectMethod (env, test_obj, test_mid);
+
+  /* Handle an exception if one occurred */
+  if ((*env)->ExceptionOccurred (env))
+      return handle_test_exception (test_name_obj);
 
   result_name_obj = (*env)->CallObjectMethod (env, result_obj, 
 					      result_name_mid);
