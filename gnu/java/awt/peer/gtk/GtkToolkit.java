@@ -211,12 +211,12 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected TextAreaPeer createTextArea (TextArea ta) 
     {
-      return null;
+      return (new GtkTextAreaPeer (ta, ta.getParent().getPeer()));
     }
 
   protected TextFieldPeer createTextField (TextField tf) 
     {
-      return null;
+      return (new GtkTextFieldPeer (tf, tf.getParent().getPeer()));
     }
 
   protected WindowPeer createWindow(Window w)

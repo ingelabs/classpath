@@ -27,18 +27,18 @@ class Test
 {
   public static void main(String args[])
     {
+
       Properties prop=System.getProperties ();
       prop.put ("awt.toolkit","gnu.java.awt.peer.gtk.GtkToolkit");
-      System.setProperties (prop);
-      
+
       Frame f=new Frame();
       
       f.setSize(200,200);
 
       Panel pan=new Panel();
 
-      Button nb=new Button();
-      nb.setLabel("Hello World!");
+      TextField tf = new TextField("Hello world!");
+      pan.add(tf);
 
       Choice ch=new Choice();
       ch.add("Ding");
@@ -47,7 +47,6 @@ class Test
       ch.add("Quassia");
       ch.add("Pterodactyl");
 
-      pan.add(nb);
       pan.add(ch);
       f.add(pan,"North");
 
