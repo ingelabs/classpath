@@ -1,3 +1,15 @@
+2001-09-07  C. Brian Jones <cbj@gnu.org>
+        * native/cni: added for CNI native files
+        * native/common: added for common JNI/CNI files
+
+2001-09-07  C. Brian Jones <cbj@gnu.org>
+        * native/gnu.java.awt.peer.gtk: removed
+        * native/java.lang: removed
+        * native/java.lang.reflect: removed
+        * native/java.math: removed
+        * native/java.net: removed
+        * native/java.util: removed
+
 2001-09-06  Anthony Green  <green@redhat.com>
 
 	* java/util/ResourceBundle.java (tryLocalBundle): Eliminate
