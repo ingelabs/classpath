@@ -1,3 +1,8 @@
+2004-09-25  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/JApplet.java, javax/swing/JFrame.java:
+	Re-indented.
+
 2004-09-24  Andrew Haley  <aph@redhat.com>
 
 	* java/security/BasicPermission.java: Don't check wildcards.
