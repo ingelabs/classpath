@@ -43,10 +43,6 @@ Systems    : all
 #ifndef __TARGET_GENERIC_NETWORK__
 #define __TARGET_GENERIC_NETWORK__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 /* check if target_native_network.h included */
 #ifndef __TARGET_NATIVE_NETWORK__
   #error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
@@ -129,7 +125,7 @@ extern "C" {
   #include <unistd.h>
   #define TARGET_NATIVE_NETWORK_GET_HOSTNAME(name,maxNameLen,result) \
     do { \
-      result=(gethostname(name,maxNameLen-1)!=0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
+      result=(gethostname(name,maxNameLen-1)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       name[maxNameLen-1]='\0'; \
     } while (0)
 #endif
@@ -1276,6 +1272,10 @@ extern "C" {
 #endif
 
 /***************************** Functions *******************************/
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifdef __cplusplus
 }
