@@ -1,5 +1,10 @@
 2003-10-06  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/ServerSocket.java
+	(ServerSocket): New package-private constructor used by java.nio.
+
+2003-10-06  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/ByteBufferHelper.java:
 	Rewrote all methods by suggestions from Eric Blake.
 
