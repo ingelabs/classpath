@@ -36,15 +36,25 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 package gnu.java.nio;
-import java.nio.*;
+
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.nio.LongBuffer;
+import java.nio.ShortBuffer;
+import java.nio.MappedByteBuffer;
+
 final public class MappedByteFileBuffer
- extends MappedByteBuffer
+  extends MappedByteBuffer
 {
   public long address;
-  boolean ro;
+  boolean readOnly;
   boolean direct;
   public FileChannelImpl ch;
+  
   public MappedByteFileBuffer(FileChannelImpl ch)
   {
     // FIXME
@@ -52,17 +62,19 @@ final public class MappedByteFileBuffer
     this.ch = ch;
     address = ch.address;
   }
+  
   public MappedByteFileBuffer(MappedByteFileBuffer b)
   {
     // FIXME
     super (0, 0, 0, 0);
-    this.ro = b.ro;
+    this.readOnly = b.readOnly;
     this.ch = b.ch;
     address = b.address;
   }
-  public boolean isReadOnly()
+  
+  public boolean isReadOnly ()
   {
-    return ro;
+    return readOnly;
   }
   public static native byte nio_read_Byte_file_channel(FileChannelImpl ch, int index, int limit, long address); public static native void nio_write_Byte_file_channel(FileChannelImpl ch, int index, int limit, byte value, long address);
   public static native short nio_read_Short_file_channel(FileChannelImpl ch, int index, int limit, long address); public static native void nio_write_Short_file_channel(FileChannelImpl ch, int index, int limit, short value, long address);
@@ -71,51 +83,61 @@ final public class MappedByteFileBuffer
   public static native long nio_read_Long_file_channel(FileChannelImpl ch, int index, int limit, long address); public static native void nio_write_Long_file_channel(FileChannelImpl ch, int index, int limit, long value, long address);
   public static native float nio_read_Float_file_channel(FileChannelImpl ch, int index, int limit, long address); public static native void nio_write_Float_file_channel(FileChannelImpl ch, int index, int limit, float value, long address);
   public static native double nio_read_Double_file_channel(FileChannelImpl ch, int index, int limit, long address); public static native void nio_write_Double_file_channel(FileChannelImpl ch, int index, int limit, double value, long address);
-final public byte get()
+
+  final public byte get()
   {
     byte a = MappedByteFileBuffer.nio_read_Byte_file_channel(ch, position(), limit(), address);
     position(position() + 1);
     return a;
   }
-final public ByteBuffer put(byte b)
+
+  final public ByteBuffer put(byte b)
   {
     MappedByteFileBuffer.nio_write_Byte_file_channel(ch, position(), limit(), b, address);
     position(position() + 1);
     return this;
   }
-final public byte get(int index)
+
+  final public byte get(int index)
   {
     byte a = MappedByteFileBuffer.nio_read_Byte_file_channel(ch, index, limit(), address);
     return a;
   }
-final public ByteBuffer put(int index, byte b)
+
+  final public ByteBuffer put(int index, byte b)
   {
     MappedByteFileBuffer.nio_write_Byte_file_channel(ch, index, limit(), b, address);
     return this;
   }
-final public ByteBuffer compact()
+
+  final public ByteBuffer compact()
   {
     return this;
   }
-final public boolean isDirect()
+
+  final public boolean isDirect()
   {
     return direct;
   }
-final public ByteBuffer slice()
+
+  final public ByteBuffer slice()
   {
     MappedByteFileBuffer A = new MappedByteFileBuffer(this);
     return A;
   }
-public ByteBuffer duplicate()
+
+  public ByteBuffer duplicate()
   {
     return new MappedByteFileBuffer(this);
   }
-public ByteBuffer asReadOnlyBuffer()
+
+  public ByteBuffer asReadOnlyBuffer()
   {
     MappedByteFileBuffer b = new MappedByteFileBuffer(this);
-    b.ro = true;
+    b.readOnly = true;
     return b;
   }
+
   final public ByteBuffer asByteBuffer() { ByteBuffer res = new MappedByteFileBuffer(ch); res.limit((limit()*1)/1); return res; } final public byte getByte() { byte a = MappedByteFileBuffer.nio_read_Byte_file_channel(ch, position(), limit(), address); position(position() + 1); return a; } final public ByteBuffer putByte(byte value) { MappedByteFileBuffer.nio_write_Byte_file_channel(ch, position(), limit(), value, address); position(position() + 1); return this; } final public byte getByte(int index) { byte a = MappedByteFileBuffer.nio_read_Byte_file_channel(ch, index, limit(), address); return a; } final public ByteBuffer putByte(int index, byte value) { MappedByteFileBuffer.nio_write_Byte_file_channel(ch, index, limit(), value, address); return this; };
   final public CharBuffer asCharBuffer() { CharBuffer res = new MappedCharFileBuffer(ch); res.limit((limit()*1)/2); return res; } final public char getChar() { char a = MappedByteFileBuffer.nio_read_Char_file_channel(ch, position(), limit(), address); position(position() + 1); return a; } final public ByteBuffer putChar(char value) { MappedByteFileBuffer.nio_write_Char_file_channel(ch, position(), limit(), value, address); position(position() + 1); return this; } final public char getChar(int index) { char a = MappedByteFileBuffer.nio_read_Char_file_channel(ch, index, limit(), address); return a; } final public ByteBuffer putChar(int index, char value) { MappedByteFileBuffer.nio_write_Char_file_channel(ch, index, limit(), value, address); return this; };
   final public ShortBuffer asShortBuffer() { ShortBuffer res = new MappedShortFileBuffer(ch); res.limit((limit()*1)/2); return res; } final public short getShort() { short a = MappedByteFileBuffer.nio_read_Short_file_channel(ch, position(), limit(), address); position(position() + 1); return a; } final public ByteBuffer putShort(short value) { MappedByteFileBuffer.nio_write_Short_file_channel(ch, position(), limit(), value, address); position(position() + 1); return this; } final public short getShort(int index) { short a = MappedByteFileBuffer.nio_read_Short_file_channel(ch, index, limit(), address); return a; } final public ByteBuffer putShort(int index, short value) { MappedByteFileBuffer.nio_write_Short_file_channel(ch, index, limit(), value, address); return this; };

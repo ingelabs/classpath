@@ -58,7 +58,6 @@ public final class CharBufferImpl extends CharBuffer
   
   public CharBufferImpl(char[] array, int offset, int length)
   {
-    // FIXME: check if IndexOutOfBoundsException is thrown correctly
     super (array.length, length, offset, 0);
     this.backing_buffer = array;
     readOnly = false;
