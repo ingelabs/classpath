@@ -827,6 +827,11 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
           }
         else
           {
+            /* Clear exception if thrown for failure to do method lookup
+               above */
+            if ((*env)->ExceptionOccurred(env))
+              (*env)->ExceptionClear(env);
+ 
             mid = (*env)->GetMethodID(env, cls, "intValue", "()I");
             if (!mid)
               { _javanet_throw_exception(env, IO_EXCEPTION, 
