@@ -1093,6 +1093,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_addExposeFilt
   GList *children;
   void *ptr = NSA_GET_PTR (env, obj);
   jobject *gref = NSA_GET_GLOBAL_REF (env, obj);
+  gulong hid;
 
   g_assert (gref);
 
@@ -1126,10 +1127,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_addExposeFilt
     {
       filterobj = GTK_OBJECT(ptr);
     }
-
-  gulong hid = g_signal_handler_find(filterobj,
-                                     G_SIGNAL_MATCH_FUNC,
-                                     0, 0, NULL, *pre_event_handler, NULL);
+  hid = g_signal_handler_find(filterobj,
+                              G_SIGNAL_MATCH_FUNC,
+                              0, 0, NULL, *pre_event_handler, NULL);
   if (hid > 0)
   {
     g_signal_handler_block(filterobj, hid);
@@ -1148,6 +1148,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_removeExposeF
   GList *children;
   void *ptr = NSA_GET_PTR (env, obj);
   jobject *gref = NSA_GET_GLOBAL_REF (env, obj);
+  gulong hid;
 
   g_assert (gref);
 
@@ -1184,9 +1185,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_removeExposeF
 
   g_signal_handlers_disconnect_by_func (filterobj,
                                         *filter_expose_event_handler, *gref);
-  gulong hid = g_signal_handler_find(filterobj,
-                                     G_SIGNAL_MATCH_FUNC,
-                                     0, 0, NULL, *pre_event_handler, NULL);
+  hid = g_signal_handler_find(filterobj,
+                              G_SIGNAL_MATCH_FUNC,
+                              0, 0, NULL, *pre_event_handler, NULL);
   if (hid > 0)
   {
     g_signal_handler_unblock(filterobj, hid);
