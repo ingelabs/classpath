@@ -113,7 +113,7 @@ public final class FileChannelImpl extends FileChannel
   }
 
   /* Used by init() (native code) */
-  private FileChannelImpl (int fd, int mode)
+  FileChannelImpl (int fd, int mode)
   {
     this.fd = fd;
     this.mode = mode;

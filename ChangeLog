@@ -1,3 +1,8 @@
+2004-04-13  Jeroen Frijters <jeroen@frijters.net>
+
+	* gnu/java/nio/channels/FileChannelImpl.java:
+	(FileChannelImpl(int,int)) Made package private instead of private.
+
 2004-04-12  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/CharArrayWriter.java,
