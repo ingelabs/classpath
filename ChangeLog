@@ -1,5 +1,20 @@
 2003-12-27  Michael Koch  <konqueror@gmx.de>
 
+	* javax/print/attribute/standard/Copies.java,
+	javax/print/attribute/standard/JobImpressions.java,
+	javax/print/attribute/standard/JobMediaSheets.java,
+	javax/print/attribute/standard/JobPriority.java,
+	javax/print/attribute/standard/NumberOfDocuments.java,
+	javax/print/attribute/standard/NumberOfInterveningJobs.java,
+	javax/print/attribute/standard/NumberUp.java,
+	javax/print/attribute/standard/PagesPerMinuteColor.java,
+	javax/print/attribute/standard/PagesPerMinute.java,
+	javax/print/attribute/standard/QueuedJobCount.java,
+	javax/print/attribute/standard/Makefile.am,
+	javax/print/attribute/standard/package.html: New files
+
+2003-12-27  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/channels/spi/AbstractSelector.java:
 	Added import for java.nio.channels.ClosedSelectorException.
 	(close): Added synchronized to method declaration.
