@@ -867,9 +867,9 @@ public final class Class implements Serializable
    * the system classloader, ClassLoader.getSystemResource() is used instead.
    *
    * <p>If the name you supply is absolute (it starts with a <code>/</code>),
-   * then it is passed on to getResource() as is.  If it is relative, the
-   * package name is prepended, and <code>.</code>'s are replaced with
-   * <code>/</code>.
+   * then the leading <code>/</code> is removed and it is passed on to
+   * getResource(). If it is relative, the package name is prepended, and
+   * <code>.</code>'s are replaced with <code>/</code>.
    *
    * <p>The URL returned is system- and classloader-dependent, and could
    * change across implementations.
@@ -895,9 +895,9 @@ public final class Class implements Serializable
    * instead.
    *
    * <p>If the name you supply is absolute (it starts with a <code>/</code>),
-   * then it is passed on to getResource() as is.  If it is relative, the
-   * package name is prepended, and <code>.</code>'s are replaced with
-   * <code>/</code>.
+   * then the leading <code>/</code> is removed and it is passed on to
+   * getResource(). If it is relative, the package name is prepended, and
+   * <code>.</code>'s are replaced with <code>/</code>.
    *
    * <p>The URL returned is system- and classloader-dependent, and could
    * change across implementations.
@@ -918,9 +918,19 @@ public final class Class implements Serializable
 
   private String resourcePath(String resourceName)
   {
-    if (resourceName.length() > 0 && resourceName.charAt(0) != '/')
-      resourceName = getPackagePortion(getName()).replace('.','/')
-        + "/" + resourceName;
+    if (resourceName.length() > 0)
+    {
+      if (resourceName.charAt(0) != '/')
+      {
+        String pkg = getPackagePortion(getName());
+        if (pkg.length() > 0)
+          resourceName = pkg.replace('.','/') + '/' + resourceName;
+      }
+      else
+      {
+        resourceName = resourceName.substring(1);
+      }
+    }
     return resourceName;
   }
 

@@ -1,5 +1,11 @@
 2004-03-13  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/lang/Class.java (resourcePath): If the resource path is
+	absolute chop off the leading / and if it is relative, but the
+	class doesn't have a package, don't prepend the /.
+
+2004-03-13  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/lang/Thread.java: Removed unnecessary initialization of
 	static field.
 	* java/lang/ThreadGroup.java (list): Changed print to println.
