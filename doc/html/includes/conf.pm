@@ -86,6 +86,7 @@ $news_status{'file'} = "status.shtml";
 
 $docs_child[$#docs_child+1] = "hacking";
 $docs_child[$#docs_child+1] = "japhar";
+$docs_child[$#docs_child+1] = "vmintegration";
 
 $docs_hacking{'label'} = "Hacker's Guide";
 $docs_hacking{'file'} = "hacking.shtml";
@@ -93,4 +94,6 @@ $docs_hacking{'file'} = "hacking.shtml";
 $docs_japhar{'label'} = "Japhar Integration";
 $docs_japhar{'file'} = "japhar.shtml";
 
+$docs_vmintegration{'label'} = "VM Integration Docs";
+$docs_vmintegration{'file'} = "vmintegration.shtml";
 1;
