@@ -1,3 +1,13 @@
+2003-06-20  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/HttpURLConnection.java,
+	java/net/Inet4Address.java,
+	java/net/Inet6Address.java,
+	java/net/ServerSocket.java,
+	java/net/SocketImpl.java,
+	java/net/URLClassLoader.java:
+	New versions from libgcj.
+
 2003-06-19  C. Brian Jones  <cbj@gnu.org>
 
 	* configure.in: uncomment m4_pattern_allow to avoid autoconf warning
