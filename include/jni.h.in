@@ -1,5 +1,5 @@
 /* jni.h
-   Copyright (C) 2001 Free Software Foundation, Inc.
+   Copyright (C) 2001, 2004  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -392,7 +392,7 @@ struct JNINativeInterface
   void     (JNICALL *ReleaseStringChars)           (JNIEnv *, jstring, const jchar *);              /* 166 */
   jstring  (JNICALL *NewStringUTF)                 (JNIEnv *, const char *);                        /* 167 */
   jsize    (JNICALL *GetStringUTFLength)           (JNIEnv *, jstring);                             /* 168 */
-  const jbyte * (JNICALL *GetStringUTFChars)       (JNIEnv *, jstring, jboolean *);                 /* 169 */
+  const char * (JNICALL *GetStringUTFChars)       (JNIEnv *, jstring, jboolean *);                 /* 169 */
   void     (JNICALL *ReleaseStringUTFChars)        (JNIEnv *, jstring, const char *);               /* 170 */
   jsize    (JNICALL *GetArrayLength)               (JNIEnv *, jarray);                              /* 171 */
   jarray   (JNICALL *NewObjectArray)               (JNIEnv *, jsize, jclass, jobject);              /* 172 */
@@ -1157,7 +1157,7 @@ struct _Jv_JNIEnv
   jsize GetStringUTFLength (jstring val0)
   { return p->GetStringUTFLength (this, val0); }
 
-  const jbyte * GetStringUTFChars (jstring val0, jboolean * val1)
+  const char * GetStringUTFChars (jstring val0, jboolean * val1)
   { return p->GetStringUTFChars (this, val0, val1); }
 
   void ReleaseStringUTFChars (jstring val0, const char * val1)

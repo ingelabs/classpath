@@ -1,3 +1,8 @@
+2004-04-28  Michael Koch  <konqueror@gmx.de>
+
+	* include/jni.h.in (GetStringUTFChars):
+	Made it return const char * instead of const jbyte *.
+
 2004-04-28  Guilhem Lavaux <guilhem@kaffe.org>
 
 	* gnu/java/text/FormatBuffer.java,
