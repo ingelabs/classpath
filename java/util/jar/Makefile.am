@@ -2,5 +2,5 @@
 
 EXTRA_DIST = \
 Attributes.java \
-JarException.jar \
+JarException.java \
 Manifest.java
