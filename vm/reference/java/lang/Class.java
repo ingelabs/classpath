@@ -21,6 +21,7 @@
 package java.lang;
 
 import java.lang.reflect.*;
+import java.security.*;
 import gnu.java.lang.*;
 
 /**
@@ -50,7 +51,21 @@ import gnu.java.lang.*;
 
 public class Class {
     private Object[] signers = null;
+    private ProtectionDomain protectionDomain = null;
     
+    // The unknown protection domain.
+    private final static ProtectionDomain unknownProtectionDomain;
+
+    static {
+        Permissions permissions = new Permissions();
+        permissions.add(new AllPermission());
+        unknownProtectionDomain = new ProtectionDomain(null, permissions);
+    }
+
+    // Permission needed to get the protection domain
+    private final static Permission protectionDomainPermission
+        = new RuntimePermission("getProtectionDomain");
+
     private Class() {
     }
 
@@ -145,6 +160,47 @@ public class Class {
      * @since JDK1.0
      */
     public static native Class forName(String name) throws ClassNotFoundException;
+
+    /**
+     * Use the specified classloader to load and link a class.
+     * Calls <code>classloader.loadclass(name, initialize)</code>.
+     * @param name the name of the class to find.
+     * @param initialize wether or not to initialize the class.
+     * This is only a hint for optimization. Set this to false if the class
+     * will not (immediatly) be used to initialize objects.
+     * @param classloader the classloader to use to find the class.
+     * When classloader is <code>null</code> this methods acts the
+     * same as <code>forName(String)</code> (and uses the system class loader).
+     * @exception ClassNotFoundException if the class was not
+     *            found by the specified classloader.
+     * @exception SecurityException if the <code>classloader</code> argument
+     *            is <code>null</code> and the caller does not have the
+     *            <code>RuntimePermission("getClassLoader")</code>
+     *            (to get the system classloader) and was not loaded by the
+     *            system classloader (or bootstrap classloader).
+     * @since 1.2
+     */
+    public static Class forName(String name,
+				boolean initialize,
+				ClassLoader classloader)
+	throws ClassNotFoundException
+    {
+        if (classloader == null) {
+            // Check if we may get the system classloader
+            SecurityManager sm = System.getSecurityManager();
+            if (sm != null) {
+                // Get the calling class and classloader
+                Class c = VMSecurityManager.getClassContext()[1];
+                ClassLoader cl = c.getClassLoader();
+                if (cl != null && cl != ClassLoader.systemClassLoader)
+                    sm.checkPermission
+                        (new RuntimePermission("getClassLoader"));
+            }
+            classloader = ClassLoader.systemClassLoader;
+        }
+
+        return classloader.loadClass(name, initialize);
+    }
 
     /** 
      * Discover whether an Object is an instance of this
@@ -440,6 +496,44 @@ public class Class {
      *            non-public members of this class.
      */
     public native Field[] getDeclaredFields() throws SecurityException;
+
+    /**
+     * Returns the <code>Package</code> in which this class is defined
+     * Returns null when this information is not available from the
+     * classloader of this class or when the classloader of this class
+     * is null.
+     *
+     * @since 1.2
+     */
+    public Package getPackage() {
+        ClassLoader cl = getClassLoader();
+        if (cl != null)
+            return cl.getPackage(ClassHelper.getPackagePortion(getName()));
+        else
+            return null;
+    }
+
+    /**
+     * Returns the protection domain of this class. If the classloader
+     * did not record the protection domain when creating this class
+     * the unknown protection domain is returned which has a <code>null</code>
+     * code source and all permissions.
+     *
+     * @exception SecurityException if a security manager exists and the caller
+     * does not have <code>RuntimePermission("getProtectionDomain")</code>.
+     *
+     * @since 1.2
+     */
+    public ProtectionDomain getProtectionDomain() {
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null)
+            sm.checkPermission(protectionDomainPermission);
+
+        if (protectionDomain == null)
+            return unknownProtectionDomain;
+        else
+            return protectionDomain;
+    }
 
 }
 

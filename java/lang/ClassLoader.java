@@ -32,6 +32,8 @@ import gnu.java.lang.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+import gnu.java.util.DoubleEnumeration;
+import gnu.java.util.EmptyEnumeration;
 
 /**
  ** The ClassLoader is a way of customizing the way Java
@@ -40,6 +42,8 @@ import java.util.*;
  ** the ClassLoader is allowed great flexibility in
  ** determining where to get the classfiles and when to
  ** load and resolve them.
+ **
+ ** XXX - Not all support has been written for the new 1.2 methods yet!
  **
  ** @author John Keiser
  ** @version 1.1.0, Aug 6 1998
@@ -344,6 +348,171 @@ public abstract class ClassLoader {
             allPackages = packages;
         
         return allPackages;
+    }
+
+    /**
+     * Returns the parent of this classloader.
+     * If the parent of this classloader is the bootstrap classloader then
+     * this method returns <code>null</code>.
+     *
+     * @exception SecurityException thrown when the classloader of the calling
+     * class is not the bootstrap (null) or the current classloader and the
+     * caller also doesn't have the
+     * <code>RuntimePermission("getClassLoader")</code>.
+     *
+     * @since 1.2
+     */
+    public final ClassLoader getParent() {
+        // Check if we may return the parent classloader
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            Class c = VMSecurityManager.getClassContext()[1];
+            ClassLoader cl = c.getClassLoader();
+            if (cl != null && cl != this)
+                sm.checkPermission(new RuntimePermission("getClassLoader"));
+        }
+        return parent;
+    }
+
+    /**
+     * Returns the system classloader. The system classloader (also called
+     * the application classloader) is the classloader that was used to
+     * load the application classes on the classpath (given by the system
+     * property <code>java.class.path</code>.
+     * <p>
+     * Note that this is different from the bootstrap classloader that
+     * actually loads all the real "system" classes (the bootstrap classloader
+     * is the parent of the returned system classloader).
+     *
+     * @exception SecurityException thrown when the classloader of the calling
+     * class is not the bootstrap (null) or system classloader and the caller
+     * also doesn't have the <code>RuntimePermission("getClassLoader")</code>.
+     *
+     * @since 1.2
+     */
+    public static ClassLoader getSystemClassLoader() {
+        // Check if we may return the system classloader
+        SecurityManager sm = System.getSecurityManager();
+        if (sm != null) {
+            Class c = VMSecurityManager.getClassContext()[1];
+            ClassLoader cl = c.getClassLoader();
+            if (cl != null && cl != systemClassLoader)
+                sm.checkPermission(new RuntimePermission("getClassLoader"));
+        }
+        return systemClassLoader;
+    }
+
+    /**
+     * Called for every class name that is needed but has not yet been
+     * defined by this classloader or one of its parents. It is called by
+     * <code>loadClass()</code> after both <code>findLoadedClass()</code> and
+     * <code>parent.loadClass()</code> couldn't provide the requested class.
+     * <p>
+     * The default implementation throws a <code>ClassNotFoundException</code>.
+     * Subclasses should override this method. An implementation of this
+     * method in a subclass should get the class bytes of the class (if it can
+     * find them), if the package of the requested class doesn't exist it
+     * should define the package and finally it should call define the actual
+     * class. It does not have to resolve the class. It should look something
+     * like the following:
+     * <p>
+     <pre>
+         // Get the bytes that describe the requested class
+         byte[] classBytes = classLoaderSpecificWayToFindClassBytes(name);
+         // Get the package name
+         int lastDot = name.lastIndexOf('.');
+         if (lastDot != -1) {
+             String packageName = name.substring(0,lastDot);
+             // Look if the package already exists
+             if (getPackage(pkg) == null) {
+                 // define the package
+                 definePackage(packageName, ...);
+             }
+         // Define and return the class
+         return defineClass(name, classBytes, 0, classBytes.length);
+     </pre>
+     * <p>
+     * <code>loadClass()</code> makes sure that the <code>Class</code>
+     * returned by <code>findClass()</code> will later be returned by
+     * <code>findLoadedClass()</code> when the same class name is
+     * requested.
+     *
+     * @param name class name to find (including the package name)
+     * @return the requested Class
+     * @exception ClassNotFoundException when the class can not be found
+     *
+     * @since 1.2
+     */
+    protected Class findClass(String name) throws ClassNotFoundException {
+        throw new ClassNotFoundException(name);
+    }
+
+    /**
+     * Called whenever a resource is needed that could not be provided by
+     * one of the parents of this classloader. It is called by
+     * <code>getResource()</code> after <code>parent.getResource()</code>
+     * couldn't provide the requested resource.
+     * <p>
+     * The default implementation always returns null. Subclasses should
+     * override this method when they can provide a way to return a URL
+     * to a named resource.
+     *
+     * @param name the name of the resource to be found.
+     * @return a URL to the named resource or null when not found.
+     *
+     * @since 1.2
+     */
+    protected URL findResource(String name) {
+        return null;
+    }
+
+    /**
+     * Called whenever all locations of a named resource are needed.
+     * It is called by <code>getResources()</code> after it has called
+     * <code>parent.getResources()</code>. The results are combined by
+     * the <code>getResources()</code> method.
+     * <p>
+     * The default implementation always returns an empty Enumeration.
+     * Subclasses should override it when they can provide an Enumeration of
+     * URLS (possibly just one element) to the named resource.
+     * The first URL of the Enumeration should be the same as the one
+     * returned by <code>findResource</code>.
+     *
+     * @param name the name of the resource to be found.
+     * @return a possibly empty Enumeration of URLs to the named resource.
+     *
+     * @since 1.2
+     */
+    protected Enumeration findResources(String name) throws IOException {
+        return EmptyEnumeration.getInstance();
+    }
+
+    /**
+     * Returns an Enumeration of all resources with a given name that can
+     * be found by this classloader and its parents. Certain classloaders
+     * (such as the URLClassLoader when given multiple jar files) can have
+     * multiple resources with the same name that come from multiple locations.
+     * It can also occur that a parent classloader offers a resource with a
+     * certain name and the child classloader also offers a resource with that
+     * same name. <code>getResource() only offers the first resource (of the
+     * parent) with a given name. This method lists all resources with the
+     * same name.
+     * <p>
+     * The Enumeration is created by first calling <code>getResources()</code>
+     * on the parent classloader and then calling <code>findResources()</code>
+     * on this classloader.
+     *
+     * @since 1.2
+     */
+    public final Enumeration getResources(String name) throws IOException {
+        Enumeration parentResources;
+        if (parent == null)
+            // XXX - Should use the bootstrap classloader
+            parentResources = EmptyEnumeration.getInstance();
+        else
+            parentResources = parent.getResources(name);
+
+        return new DoubleEnumeration(parentResources, findResources(name));
     }
 
 }

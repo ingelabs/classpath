@@ -1,3 +1,16 @@
+2001-01-08  Mark Wielaard  <mark@klomp.org>
+	* vm/reference/java/lang/Class.java: 1.2 updates
+	(forName(String,boolean,ClassLoader)): new method
+	(getPackage): Ditto
+	(getProtectionDomain): Ditto
+	* java/lang/ClassLoader.java: 1.2 updates
+	(getParent): new method
+	(getSystemClassLoader): Ditto
+	(findClass): Ditto
+	(findResource): Ditto
+	(findResources): Ditto
+	(getResources): Ditto
+
 2001-01-09  Mark Wielaard <mark@klomp.org>
 
 	* gnu/java/util/DoubleEnumeration.java: new class, adapted from
