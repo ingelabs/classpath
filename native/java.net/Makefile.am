@@ -8,5 +8,5 @@ libjavanet_la_SOURCES = InetAddress.c PlainDatagramSocketImpl.c \
 INCLUDES += @EXTRA_INCLUDES@ \
 	    -I$(top_srcdir)/include
 
-libjavanet_la_LDFLAGS = -version-info @LIBVERSION
+libjavanet_la_LDFLAGS = -version-info @LIBVERSION@
 
