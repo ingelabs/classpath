@@ -19,6 +19,11 @@ Runtime interface changes:
   implementation, but it is a generic implementation that ignores the
   nano-seconds argument. Runtime hackers are encouraged to provide a more
   efficient version.
+* VMRuntime.nativeLoad() now takes an additional ClassLoader parameter.
+* VMSecurityManager has been replaced by gnu.classpath.VMStackWalker.
+  currentClassLoader() is no longer needed, and there are also two new
+  methods with non-native implementations. VM implementors are encouraged
+  to provide more efficient versions.
 
 New in release 0.12 (Nov 14, 2004)
 
