@@ -47,12 +47,22 @@ public class DatagramSocket
 /**
   * This is the implementation object used by this socket.
   */
-protected DatagramSocketImpl impl;
+private DatagramSocketImpl impl;
 
 /**
   * This is the address we are bound to
   */
-protected InetAddress local_addr;
+private InetAddress local_addr;
+
+/**
+  * This is the address we are "connected" to
+  */
+private InetAddress remote_addr;
+
+/**
+  * This is the port we are "connected" to
+  */
+private int remote_port = -1;
 
 /*************************************************************************/
 
@@ -139,6 +149,36 @@ close()
 /*************************************************************************/
 
 /**
+  * This method returns the remote address to which this socket is 
+  * connected.  If this socket is not connected, then this method will
+  * return <code>null</code>.
+  *
+  * @return The remote address.
+  */
+public InetAddress
+getInetAddress()
+{
+  return(remote_address);
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns the remote port to which this socket is
+  * connected.  If this socket is not connected, then this method will
+  * return -1.
+  *
+  * @return The remote port
+  */
+public int
+getPort()
+{
+  return(remote_port);
+}
+
+/*************************************************************************/
+
+/**
   * Returns the local address this socket is bound to
   */
 public InetAddress
@@ -192,6 +232,132 @@ public synchronized void
 setSoTimeout(int timeout) throws SocketException
 {
   impl.setOption(SocketOptions.SO_TIMEOUT, new Integer(timeout));
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns the value of the system level socket option
+  * SO_SNDBUF, which is used by the operating system to tune buffer
+  * sizes for data transfers.
+  *
+  * @return The send buffer size.
+  *
+  * @exception SocketException If an error occurs.
+  */
+public synchronized int
+getSendBufferSize() throws SocketException
+{
+  Object obj = impl.getOption(SocketOptions.SO_SNDBUF);
+
+  if (obj instanceof Integer)
+    return(((Integer)obj).intValue());
+  else
+    throw new SocketException("Unexpected type");
+}
+
+/*************************************************************************/
+
+/**
+  * This method sets the value for the system level socket option
+  * SO_SNDBUF to the specified value.  Note that valid values for this
+  * option are specific to a given operating system.
+  *
+  * @param size The new send buffer size.
+  *
+  * @exception SocketException If an error occurs.
+  */
+public synchronized void
+setSendBufferSize(int size)
+{
+  impl.setOption(SocketOptions.SO_SNDBUF, new Integer(size));
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns the value of the system level socket option
+  * SO_RCVBUF, which is used by the operating system to tune buffer
+  * sizes for data transfers.
+  *
+  * @return The receive buffer size.
+  *
+  * @exception SocketException If an error occurs.
+  */
+public synchronized int
+getReceiveBufferSize() throws SocketException
+{
+  Object obj = impl.getOption(SocketOptions.SO_RCVBUF);
+
+  if (obj instanceof Integer)
+    return(((Integer)obj).intValue());
+  else
+    throw new SocketException("Unexpected type");
+}
+
+/*************************************************************************/
+
+/**
+  * This method sets the value for the system level socket option
+  * SO_RCVBUF to the specified value.  Note that valid values for this
+  * option are specific to a given operating system.
+  *
+  * @param size The new receive buffer size.
+  *
+  * @exception SocketException If an error occurs.
+  */
+public synchronized void
+setReceiveBufferSize(int size)
+{
+  impl.setOption(SocketOptions.SO_RCVBUF, new Integer(size));
+}
+
+/*************************************************************************/
+
+/**
+  * This method connects this socket to the specified address and port.
+  * When a datagram socket is connected, it will only send or receive
+  * packate to and from the host to which it is connected.  A multicast
+  * socket that is connected may only send and not receive packets.
+  *
+  * @param addr The address to connect this socket to.
+  * @param port The port to connect this socket to.
+  *
+  * @exception SecurityException If connections to this addr/port are not allowed.
+  * @exception IllegalArgumentException If the addr or port are invalid.
+  */
+public void
+connect(InetAddress addr, int port) throws SecurityException, 
+                                           IllegalArgumentException
+{
+  if ((port < 1) || (port > 65535))
+    throw new IllegalArgumentException("Bad port number: " + port);
+
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    sm.checkConnect(addr, port);
+
+  this.remote_addr = addr;
+  this.remote_port = port;
+
+  /* Shit, we can't do this even though the OS supports it since this method
+  isn't in DatagramSocketImpl.  What was Sun thinking? */
+//  impl.connect(addr, port);
+} 
+
+/*************************************************************************/
+
+/**
+  * This method disconnects this socket from the addr/port it was 
+  * connected to.  If the socket was not connected in the first place,
+  * this method does nothing.
+  */
+public void
+disconnect()
+{
+  // See my comments on connect()
+  this.remote_addr = null;
+  this.remote_port = -1;
 }
 
 /*************************************************************************/

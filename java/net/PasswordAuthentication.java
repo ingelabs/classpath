@@ -40,12 +40,12 @@ public final class PasswordAuthentication
 /**
   * The username 
   */
-protected String username;
+private String username;
 
 /**
   * The password
   */
-protected String password;
+private char[] password;
 
 /*************************************************************************/
 
@@ -61,7 +61,7 @@ protected String password;
   * @param password The password for this object
   */
 public
-PasswordAuthentication(String username, String password)
+PasswordAuthentication(String username, char[] password)
 {
   this.username = username;
   this.password = password;
@@ -79,7 +79,7 @@ PasswordAuthentication(String username, String password)
   * @return The username
   */
 public String
-getUsername()
+getUserName()
 {
   return(username);
 }
@@ -91,7 +91,7 @@ getUsername()
   *
   * @return The password
   */
-public String
+public char[]
 getPassword()
 {
   return(password);

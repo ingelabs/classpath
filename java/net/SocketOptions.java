@@ -22,17 +22,15 @@
 package java.net;
 
 /**
-  * This internal interface is used by SocketImpl to implement options
-  * on sockets.  At least I think.  The javadocs for SocketImpl show it
-  * implementing this interface and the Networking Enhancements description
-  * for Java 1.1 show two methods that aren't in the public javadocs, so
-  * I'll assume this is where they live.
+  * This interface is used by <code>SocketImpl</code> and 
+  * <code>DatagramSocketImpl</code> to implement options
+  * on sockets.  
   *
-  * @version 0.5
+  * @version 1.2
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-interface SocketOptions
+public abstract interface SocketOptions
 {
 
 /*************************************************************************/
@@ -41,34 +39,51 @@ interface SocketOptions
  * Static Variables
  */
 
-// Note that these contant values were determined by experimentation and
-// there is no way to currently know if the symbolic names are the
-// same as in the JDK.
 
 /**
   * Option id for the SO_LINGER value
   */
-static final int SO_LINGER = 128;
+public static final int SO_LINGER = 128;
 
 /**
   * Option id for the SO_TIMEOUT value
   */
-static final int SO_TIMEOUT = 4102;
+public static final int SO_TIMEOUT = 4102;
+
+/**
+  * Retrieve the local address to which the socket is bound.
+  */
+public static final int SO_BINDADDR = XXX;
+
+/**
+  * Option id for the send buffer size
+  */
+public static final int SO_SNDBUF = XXX;
+
+/**
+  * Option id for the receive buffer size
+  */
+public static final int SO_RCVBUF = XXX;
+
+/**
+  * Sets the SO_REUSEADDR parameter on a socket
+  */
+public static final int SO_REUSEADDR = XXX;
 
 /**
   * Option id for the TCP_NODELAY value
   */
-static final int TCP_NODELAY = 1;
+public static final int TCP_NODELAY = 1;
 
 /**
-  * Option id for the IP_TTL (time to live) value. 
+  * Option id for the IP_TTL (time to live) value.  Not public
   */
 static final int IP_TTL = 7777;
 
 /**
   * Options id for the IP_MULTICAST_IF value
   */
-static final int IP_MULTICAST_IF = 7778;
+public static final int IP_MULTICAST_IF = 7778;
 
 /*************************************************************************/
 
@@ -79,8 +94,9 @@ static final int IP_MULTICAST_IF = 7778;
 /**
   * Sets the specified option on a socket to the passed in object.  For
   * options that take an integer argument, the passed in object is an
-  * Integer.  The option_id parameter is one of the defined constants in
-  * this interface.
+  * <code>Integer</code>.  For options that are set to on or off, the
+  * value passed will be a <code>Boolean</code>.   The <code>option_id</code> 
+  * parameter is one of the defined constants in this interface.
   *
   * @param option_id The identifier of the option
   * @param val The value to set the option to
@@ -93,8 +109,10 @@ setOption(int option_id, Object val) throws SocketException;
 /*************************************************************************/
 
 /**
-  * Returns the current setting of the specified option.  The Object returned
-  * will be an Integer for options that have integer values.  The option_id
+  * Returns the current setting of the specified option.  The 
+  * <code>Object</code> returned will be an <code>Integer</code> for options 
+  * that have integer values.  For options that are set to on or off, a 
+  * <code>Boolean</code> will be returned.   The <code>option_id</code>
   * is one of the defined constants in this interface.
   *
   * @param option_id The option identifier

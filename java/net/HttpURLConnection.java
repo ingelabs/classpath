@@ -22,6 +22,8 @@
 package java.net;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.security.Permission;
 
 /**
   * This class provides a common abstract implementation for those 
@@ -51,7 +53,7 @@ public abstract class HttpURLConnection extends URLConnection
   * is specified as part of RFC 2068 but was not included in Sun's JDK, so
   * beware of using this value
   */
-public static final int HTTP_CONTINUE = 100;
+static final int HTTP_CONTINUE = 100;
 
 /**
   * Indicates that the server received and is willing to comply with a 
@@ -59,7 +61,7 @@ public static final int HTTP_CONTINUE = 100;
   * specified as part of RFC 2068 but was not included in Sun's JDK as of
   * release 1.2, so beware of using this value.
   */
-public static final int HTTP_SWITCHING_PROTOCOLS = 101;
+static final int HTTP_SWITCHING_PROTOCOLS = 101;
 
 /**
   * Indicates the request succeeded
@@ -221,6 +223,11 @@ public static final int HTTP_REQ_TOO_LONG = 414;
 public static final int HTTP_UNSUPPORTED_TYPE = 415;
 
 /**
+  * This error code indicates that some sort of server error occurred
+  */
+public static final int HTTP_SERVER_ERROR = XXX;
+
+/**
   * The server encountered an unexpected error (such as a CGI script crash)
   * that prevents the request from being fulfilled
   */
@@ -231,7 +238,7 @@ public static final int HTTP_INTERNAL_ERROR = 500;
   * is specified in RFC 2068, but is not in Sun's JDK 1.2  Beware of using
   * this variable.
   */
-public static final int HTTP_NOT_IMPLEMENTED = 501;
+static final int HTTP_NOT_IMPLEMENTED = 501;
 
 /**
   * The proxy encountered a bad response from the server it was proxy-ing for
@@ -303,7 +310,7 @@ protected String responseMessage = null;
   * @param follow true if redirects should be followed, false otherwise
   */
 public static void
-setFollowRedirectes(boolean follow)
+setFollowRedirects(boolean follow)
 {
   follow_redirects = follow;
 }
@@ -410,6 +417,61 @@ public String
 getResponseMessage() throws IOException
 {
   return(responseMessage);
+}
+
+/*************************************************************************/
+
+/**
+  * This method allows the caller to retrieve any data that might have
+  * been sent despite the fact that an error occurred.  For example, the
+  * HTML page sent along with a 404 File Not Found error.  If the socket
+  * is not connected, or if no error occurred or no data was returned,
+  * this method returns <code>null</code>.
+  *
+  * @return An <code>InputStream</code> for reading error data.
+  */
+public InputStream
+getErrorStream()
+{
+  if (!connected)
+    return(null);
+
+  int code = getResponseCode();
+  if (code == -1)
+    return(null);
+
+  if (((code/100) != 4) || ((code/100) != 5))
+    return(null);
+
+  PushbackInputStream pbis = new PushbackInputStream(getInputStream());
+  int i = pbis.read();
+  if (i == -1)
+    return(null);
+
+  pbis.unread(i);
+  return(pbis);
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns a <code>Permission</code> object that represents
+  * the permission needed in order to access this URL.
+  *
+  * @param The needed permissions for accessing this URL.
+  */
+public Permission
+getPermission() throws IOException
+{
+  URL url = getURL();
+  String host = url.getHost();
+  int port = url.getPort();
+  if (port == -1)
+    port = 80;
+
+  host = host + ":" + port;
+
+  return(new SocketPermission(host, "connect"));
 }
 
 /*************************************************************************/
