@@ -209,12 +209,16 @@ getRunLimit(Set attribute_set)
 
       Map attribute_map = getAttributes();
 
+      boolean found = false;
       Iterator iter = attribute_set.iterator();
-      while(iter.hasNext())
+      while(iter.hasNext()) 
         if (!attribute_map.containsKey(iter.next()))
-          break;
+          {
+            found = true;
+            break;
+          }
 
-      if (iter.hasNext())
+      if (found)
         break;
     }
   while (ci.next() != CharacterIterator.DONE);
@@ -225,8 +229,8 @@ getRunLimit(Set attribute_set)
 
   if (run_limit == orig_index)
     return(-1); // No characters match the given attributes
-  else if (!hit_end)
-    --run_limit;
+//  else if (!hit_end)
+//    --run_limit;
 
   return(run_limit); 
 }
