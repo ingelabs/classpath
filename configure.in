@@ -34,6 +34,9 @@ AC_HEADER_STDC
 AC_CHECK_HEADERS(unistd.h)
 AC_C_CONST
 AC_CHECK_FUNCS(gethostname socket strerror fork pipe execve strtod atof)
+AC_HEADER_TIME
+AC_STRUCT_TM
+AC_STRUCT_TIMEZONE
 
 dnl guile checks - shouldn't need now that mauve exists
 dnl GUILE_FLAGS
@@ -236,6 +239,7 @@ native/java.io/Makefile
 native/java.lang/Makefile
 native/java.lang.reflect/Makefile
 native/java.net/Makefile
+native/java.util/Makefile
 native/lib/Makefile
 native/vmi/Makefile
 resource/java/util/Makefile
