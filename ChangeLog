@@ -1,3 +1,11 @@
+2005-03-02  Audrius Meskauskas  <audriusa@bluewin.ch>
+
+	* org/omg/CORBA/TCKind.java
+	* org/omg/CORBA/BAD_PARAM.java
+	* org/omg/CORBA/CompletionStatus.java
+	* org/omg/CORBA/IDLEntity.java
+	* org/omg/CORBA/SystemException.java
+
 2005-03-03  Roman Kennke  <roman@ontographics.com>
 
 	* javax/swing/BoxLayout.java:
