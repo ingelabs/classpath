@@ -21,12 +21,15 @@
 
 package gnu.java.awt.peer.gtk;
 import java.awt.*;
+import java.awt.event.*;
 import java.awt.image.*;
 import java.awt.peer.ComponentPeer;
 
 public class GtkComponentPeer extends GtkGenericPeer
   implements ComponentPeer
 {
+  Component awtComponent;
+
   native void gtkWidgetShowChildren();
   native void gtkWidgetGetDimensions(int[] dim);
   native void gtkWidgetGetLocationOnScreen(int[] point);
@@ -40,12 +43,19 @@ public class GtkComponentPeer extends GtkGenericPeer
   protected GtkComponentPeer (Component awtComponent)
     {
       super (awtComponent);
+      this.awtComponent = awtComponent;
     }
+
+  protected void postMouseEvent(int id, long when, int mods, int x, int y, 
+				int clickCount, boolean popupTrigger) {
+    q.postEvent(new MouseEvent(awtComponent, id, when, mods, x, y, 
+			       clickCount, popupTrigger));
+  }
 
   /* this method should be called from a gtk-realize hook */
   protected void syncAttrs ()
     {
-      setCursor (((Component)awtWidget).getCursor ());
+      setCursor (awtComponent.getCursor ());
     }
     
   public int checkImage (Image image, int width, int height, 
@@ -66,7 +76,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void disable () 
     {
-      System.out.println("componentpeer: disable");
+      setEnable (false);
     }
 
   public void dispose () 
@@ -76,7 +86,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void enable () 
     {
-      System.out.println("componentpeer: enable");
+      setEnable (true);
     }
 
   public ColorModel getColorModel () 
