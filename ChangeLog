@@ -1,3 +1,9 @@
+2000-10-10  Warren Levy  <warrenl@cygnus.com>
+
+	* java/sql/Date.java (serialVersionUID): New field.
+	* java/sql/Time.java (serialVersionUID): New field.
+	* java/sql/Timestamp.java (serialVersionUID): New field.
+
 2000-10-07  Tom Tromey  <tromey@cygnus.com>
 
 	* java/util/Properties.java (addHashEntries): New method from
