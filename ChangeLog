@@ -1,5 +1,30 @@
 2003-07-02  Michael Koch  <konqueror@gmx.de>
 
+	* configure.in:
+	Added native/jni/java-nio/Makefile to AC_OUTPUT call.
+	* include/gnu_java_nio_FileChannelImpl.h:
+	Regenrated.
+	* include/gnu_java_nio_FileLockImpl.h,
+	include/java_nio_DirectByteBufferImpl.h:
+	New files.
+	* native/jni/Makefile.am
+	(SUBDIRS): Added new java-nio subdir.
+	* native/jni/java-io/Makefile.am:
+	Removed java_nio.c from compilation.
+	* native/jni/java-io/java_nio.c:
+	Removed.
+	* native/jni/java-net/java_net_NetworkInterface.c
+	(getRealNetworkInterfaces): Fixed arguments.
+	* native/jni/java-nio/.cvsignore,
+	native/jni/java-nio/Makefile.am,
+	native/jni/java-nio/java_nio.c,
+	native/jni/java-nio/java_nio_DirectByteBufferImpl.c,
+	native/jni/java-nio/java_nio_FileChannelImpl.c,
+	native/jni/java-nio/java_nio_FileLockImpl.c:
+	New files.
+
+2003-07-02  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/awt/peer/gtk/GtkToolkit.java:
 	Reworked imports.
 

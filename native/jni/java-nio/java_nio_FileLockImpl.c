@@ -38,30 +38,16 @@ exception statement from your version. */
 #include <config.h>
 #include <errno.h>
 
-#ifdef HAVE_SYS_IOCTL_H
-#include <sys/ioctl.h>
-#endif
-
-#ifdef HAVE_ASM_IOCTLS_H
-#include <asm/ioctls.h>
-#endif
-
-#include <string.h>
- 
 #include <jni.h>
 #include <jcl.h>
 
-#include "java_net_NetworkInterface.h"
+#include "gnu_java_nio_FileLockImpl.h"
 
-#include "javanet.h"
+#define IO_EXCEPTION "java/io/IOException"
 
-/*
- * Returns all local network interfaces as vector
- */
-JNIEXPORT jobject JNICALL
-Java_java_net_NetworkInterface_getRealNetworkInterfaces (JNIEnv* env, jclass class)
+JNIEXPORT void JNICALL
+Java_gnu_java_nio_FileLockImpl_releaseImpl (JNIEnv *env, jclass class)
 {
-  JCL_ThrowException (env, IO_EXCEPTION, "java.net.NetworkInterface.getRealNetworkInterfaces(): not implemented");
-  return 0;
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.(): not implemented");
 }
 

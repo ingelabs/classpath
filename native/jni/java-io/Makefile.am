@@ -4,9 +4,7 @@ libjavaio_la_SOURCES = 	javaio.h \
 			javaio.c \
 			java_io_File.c \
 			FileDescriptor.c \
-			java_io_ObjectInputStream.c \
-			java_nio.c
-
+			java_io_ObjectInputStream.c
 
 libjavaio_la_LDFLAGS = -module -version-info @LIBVERSION@ 
 

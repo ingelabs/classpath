@@ -38,30 +38,52 @@ exception statement from your version. */
 #include <config.h>
 #include <errno.h>
 
-#ifdef HAVE_SYS_IOCTL_H
-#include <sys/ioctl.h>
-#endif
-
-#ifdef HAVE_ASM_IOCTLS_H
-#include <asm/ioctls.h>
-#endif
-
-#include <string.h>
- 
 #include <jni.h>
 #include <jcl.h>
 
-#include "java_net_NetworkInterface.h"
+#include "gnu_java_nio_FileChannelImpl.h"
 
-#include "javanet.h"
+#define IO_EXCEPTION "java/io/IOException"
 
-/*
- * Returns all local network interfaces as vector
- */
-JNIEXPORT jobject JNICALL
-Java_java_net_NetworkInterface_getRealNetworkInterfaces (JNIEnv* env, jclass class)
+JNIEXPORT jlong JNICALL
+Java_gnu_java_nio_FileChannelImpl_size (JNIEnv *env, jclass class)
 {
-  JCL_ThrowException (env, IO_EXCEPTION, "java.net.NetworkInterface.getRealNetworkInterfaces(): not implemented");
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.(): not implemented");
+  return 0;
+}
+
+JNIEXPORT jlong JNICALL
+Java_gnu_java_nio_FileChannelImpl_implPosition (JNIEnv *env, jclass class)
+{
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.implPosition(): not implemented");
+  return 0;
+}
+
+JNIEXPORT jobject JNICALL
+Java_gnu_java_nio_FileChannelImpl_implPosition__J (JNIEnv *env, jclass class, jlong newPosition)
+{
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.implPosition(): not implemented");
+  return 0;
+}
+
+JNIEXPORT jobject JNICALL
+Java_gnu_java_nio_FileChannelImpl_implTruncate (JNIEnv *env, jclass class, jlong size)
+{
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.implTruncate(): not implemented");
+  return 0;
+}
+
+JNIEXPORT jint JNICALL
+Java_gnu_java_nio_FileChannelImpl_implRead (JNIEnv *env, jclass class, jbyteArray buffer, jint offset, jint length)
+{
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.implRead(): not implemented");
+  return 0;
+}
+
+JNIEXPORT jint JNICALL
+Java_gnu_java_nio_FileChannelImpl_implWrite (JNIEnv *env, jclass class, jbyteArray buffer, jint offset, jint length)
+{
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.implWrite(): not implemented");
   return 0;
 }
 

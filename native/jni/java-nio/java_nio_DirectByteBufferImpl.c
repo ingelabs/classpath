@@ -38,30 +38,36 @@ exception statement from your version. */
 #include <config.h>
 #include <errno.h>
 
-#ifdef HAVE_SYS_IOCTL_H
-#include <sys/ioctl.h>
-#endif
-
-#ifdef HAVE_ASM_IOCTLS_H
-#include <asm/ioctls.h>
-#endif
-
-#include <string.h>
- 
 #include <jni.h>
 #include <jcl.h>
 
-#include "java_net_NetworkInterface.h"
+#include "java_nio_DirectByteBufferImpl.h"
 
-#include "javanet.h"
+#define IO_EXCEPTION "java/io/IOException"
 
-/*
- * Returns all local network interfaces as vector
- */
 JNIEXPORT jobject JNICALL
-Java_java_net_NetworkInterface_getRealNetworkInterfaces (JNIEnv* env, jclass class)
+Java_java_nio_DirectByteBufferImpl_allocateImpl (JNIEnv *env, jclass class, jint size)
 {
-  JCL_ThrowException (env, IO_EXCEPTION, "java.net.NetworkInterface.getRealNetworkInterfaces(): not implemented");
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.allocateImpl(): not implemented");
   return 0;
+}
+
+JNIEXPORT void JNICALL
+Java_java_nio_DirectByteBufferImpl_freeImpl (JNIEnv *env, jclass class, jobject address)
+{
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.freeImpl(): not implemented");
+}
+
+JNIEXPORT jbyte JNICALL
+Java_java_nio_DirectByteBufferImpl_getImpl (JNIEnv *env, jclass class, jint index)
+{
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.getImpl(): not implemented");
+  return 0;
+}
+
+JNIEXPORT void JNICALL
+Java_java_nio_DirectByteBufferImpl_putImpl (JNIEnv *env, jclass class, jint index, jbyte value)
+{
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.putImpl(): not implemented");
 }
 
