@@ -1,3 +1,7 @@
+2004-07-25 Patrik Reali  <reali@acm.org>
+
+	* INSTALL: gtk+2.4 requirement updated (was 2.2)
+
 2004-07-25 Dalibor Topic <robilad@kaffe.org>
 
 	* gnu/java/awt/ComponentDataBlitOp.java,
