@@ -1,3 +1,8 @@
+2001-09-18  John Leuner  <jewel@debian.org>
+
+	* java/util/zip/*.java: Changed headers of files imported from 
+	jazzlib to reflect new Classpath home.
+
 2001-09-17  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/Collections.java (SynchronizedCollection)
