@@ -208,7 +208,8 @@ public class FileHandler
   /**
    * The pattern for the location and name of the produced log files.
    * See the section on <a href="#filePatterns">file name patterns</a>
-   * for details.  */
+   * for details.
+   */
   private final String pattern;
 
 
@@ -403,7 +404,7 @@ public class FileHandler
    *         <code>"file.separator"</code>,
    *         <code>"java.io.tmpdir"</code>, or
    *         <code>"user.home"</code> has no value and the
-   *         corresponding * escape sequence appears in
+   *         corresponding escape sequence appears in
    *         <code>pattern</code>.
    */
   private static String replaceFileNameEscapes(String pattern,
