@@ -1,5 +1,12 @@
 2003-07-22  Torsten Rupp  <rupp@lisa.aicas.com>
 
+        * native/target/generic/target_generic_network.h:
+        removed double defined macros, added
+        TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_BROADCAST(),
+        TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BROADCAST()
+
+2003-07-22  Torsten Rupp  <rupp@lisa.aicas.com>
+
         * native/target/generic/target_generic_math_float.h:
         added macro TARGET_NATIVE_MATH_FLOAT_FLOAT_FINITE(),
         TARGET_NATIVE_MATH_FLOAT_DOUBLE_FINITE()
