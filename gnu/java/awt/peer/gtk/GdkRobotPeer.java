@@ -1,5 +1,5 @@
-/* GdkGraphicsEnvironment.java -- information about the graphics environment
-   Copyright (C) 2004 Free Software Foundation, Inc.
+/* GdkRobot.java -- an XTest implementation of RobotPeer
+   Copyright (C) 2004  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,65 +35,61 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
 package gnu.java.awt.peer.gtk;
 
-import java.awt.Font;
-import java.awt.Graphics2D;
+import java.awt.AWTException;
+import java.awt.Color;
 import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.HeadlessException;
+import java.awt.image.ColorModel;
+import java.awt.image.DirectColorModel;
 import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.image.BufferedImage;
-import java.util.Locale;
+import java.awt.peer.RobotPeer;
 
-public class GdkGraphicsEnvironment extends GraphicsEnvironment
+/**
+ * Implements the RobotPeer interface using the XTest extension.
+ *
+ * @author Thomas Fitzsimmons
+ */
+public class GdkRobotPeer implements RobotPeer
 {
-  public GdkGraphicsEnvironment ()
+  // gdk-pixbuf provides data in RGBA format
+  static final ColorModel cm = new DirectColorModel (32, 0xff000000,
+						     0x00ff0000,
+						     0x0000ff00,
+						     0x000000ff);
+
+  public GdkRobotPeer (GraphicsDevice screen) throws AWTException
   {
-    super();
+    // FIXME: make use of screen parameter when GraphicsDevice is
+    // implemented.
+    if (!initXTest ())
+      throw new AWTException ("XTest extension not supported");
   }
 
-  public GraphicsDevice[] getScreenDevices ()
+  native boolean initXTest ();
+
+  // RobotPeer methods
+  public native void mouseMove (int x, int y);
+  public native void mousePress (int buttons);
+  public native void mouseRelease (int buttons);
+  public native void mouseWheel (int wheelAmt);
+  public native void keyPress (int keycode);
+  public native void keyRelease (int keycode);
+  native int[] nativeGetRGBPixels (int x, int y, int width, int height);
+
+  public int getRGBPixel (int x, int y)
   {
-    throw new java.lang.UnsupportedOperationException ();
+    return cm.getRGB (nativeGetRGBPixels (x, y, 1, 1)[0]);
   }
 
-  public GraphicsDevice getDefaultScreenDevice ()
+  public int[] getRGBPixels (Rectangle r)
   {
-    if (GraphicsEnvironment.isHeadless ())
-      throw new HeadlessException ();
+    int[] gdk_pixels = nativeGetRGBPixels (r.x, r.y, r.width, r.height);
+    int[] pixels = new int[r.width * r.height];
 
-    return new GdkScreenGraphicsDevice ();
-  }
+    for (int i = 0; i < r.width * r.height; i++)
+      pixels[i] = cm.getRGB (gdk_pixels[i]);
 
-  public Graphics2D createGraphics (BufferedImage image)
-  {
-    return new GdkGraphics2D (image);
-  }
-    native private int nativeGetNumFontFamilies ();
-    native private void nativeGetFontFamilies (String[] family_names);
-
-  public Font[] getAllFonts ()
-  {
-    throw new java.lang.UnsupportedOperationException ();
-  }
-
-    public String[] getAvailableFontFamilyNames ()
-    {
-	String[] family_names;
-	int array_size;
-
-	array_size = nativeGetNumFontFamilies();
-	family_names = new String[array_size];
-
-	nativeGetFontFamilies(family_names);
-	return family_names;
-    }
-
-  public String[] getAvailableFontFamilyNames (Locale l)
-  {
-    throw new java.lang.UnsupportedOperationException ();
+    return pixels;
   }
 }

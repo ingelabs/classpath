@@ -1,5 +1,5 @@
-/* RobotPeer.java -- Interface for programatically driving GUI
-   Copyright (C) 2003 Free Software Foundation, Inc.
+/* GdkScreenGraphicsDevice.java -- information about a screen device
+   Copyright (C) 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,19 +36,38 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package java.awt.peer;
+package gnu.java.awt.peer.gtk;
 
-import java.awt.Rectangle;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsConfiguration;
 
-public interface RobotPeer
+public class GdkScreenGraphicsDevice extends GraphicsDevice
 {
-  void mouseMove (int x, int y);
-  void mousePress (int buttons);
-  void mouseRelease (int buttons);
-  void mouseWheel (int wheelAmt);
-  void keyPress (int keycode);
-  void keyRelease (int keycode);
-  int getRGBPixel (int x, int y);
-  int[] getRGBPixels (Rectangle screen);
-} // interface RobotPeer
+  public GdkScreenGraphicsDevice ()
+  {
+    super ();
+  }
 
+  public int getType ()
+  {
+    return GraphicsDevice.TYPE_RASTER_SCREEN;
+  }
+
+  public String getIDstring ()
+  {
+    // FIXME: query X for this string
+    return "default GDK device ID string";
+  }
+
+  public GraphicsConfiguration[] getConfigurations ()
+  {
+    // FIXME: query X for the list of possible configurations
+    return null;
+  }
+
+  public GraphicsConfiguration getDefaultConfiguration ()
+  {
+    // FIXME: query X for default configuration
+    return null;
+  }
+}

@@ -16,6 +16,7 @@ libgtkpeer_la_SOURCES = $(gtk_cairo_c_source_files) \
 			gnu_java_awt_peer_gtk_GdkGraphics.c \
 			gnu_java_awt_peer_gtk_GdkGraphicsEnvironment.c \
 			gnu_java_awt_peer_gtk_GdkPixbufDecoder.c \
+			gnu_java_awt_peer_gtk_GdkRobotPeer.c \
 			gnu_java_awt_peer_gtk_GdkTextLayout.c \
 			gnu_java_awt_peer_gtk_GtkButtonPeer.c \
 			gnu_java_awt_peer_gtk_GtkCanvasPeer.c \
@@ -55,7 +56,7 @@ libgtkpeer_la_SOURCES = $(gtk_cairo_c_source_files) \
 
 libgtkpeer_la_LIBADD = $(top_builddir)/native/jni/classpath/native_state.lo
 
-AM_LDFLAGS = @CLASSPATH_MODULE@ @GTK_LIBS@ @CAIRO_LIBS@ @PANGOFT2_LIBS@
+AM_LDFLAGS = @CLASSPATH_MODULE@ @GTK_LIBS@ @CAIRO_LIBS@ @PANGOFT2_LIBS@ @X_LIBS@ -lXtst
 AM_CPPFLAGS = @CLASSPATH_INCLUDES@
 
 # Just the WARNING_CFLAGS. We cannot use the strict flags since the gtk
