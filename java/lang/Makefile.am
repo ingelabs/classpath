@@ -1,6 +1,6 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-SUBDIRS = reflect
+SUBDIRS = ref reflect
 
 EXTRA_DIST = \
 AbstractMethodError.java \
