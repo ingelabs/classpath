@@ -38,7 +38,6 @@
         java/util/WeakHashMap.java:
 	Cleaned up imports.
 
->>>>>>> 1.2087
 2004-04-22  Dalibor Topic  <robilad@kaffe.org>
 
 	* java/util/logging/FileHandler.java,
