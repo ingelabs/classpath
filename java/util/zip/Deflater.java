@@ -146,9 +146,6 @@ public class Deflater
   /** should we include a header. */
   private boolean noHeader;
 
-  /** Compression strategy. */
-  private int strategy;
-
   /** The current state. */
   private int state;
 
