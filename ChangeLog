@@ -1,3 +1,8 @@
+2003-09-09  Guilhem Lavaux  <guilhem@kaffe.org>
+
+	* java/text/SimpleDateFormat.java (parse): Don't use class calendar
+	field.
+
 2003-09-09  Mark Wielaard  <mark@klomp.org>
 
 	* java/lang/reflect/Array.java (set): Allow null for Object arrays.
