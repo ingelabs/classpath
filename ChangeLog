@@ -1,5 +1,14 @@
 2003-08-16  Mark Wielaard  <mark@klomp.org>
 
+	Reported by Patrik Reali
+	* gnu/java/io/decode/DecoderUTF8.java (charsInByteArray): Take offset
+	into account.
+	(convertToChars): Take buf_offset into account.
+	(read): Take offset into account. Break loop early when
+	in.avaiable() <= 0.
+
+2003-08-16  Mark Wielaard  <mark@klomp.org>
+
 	Reported by Julian Dolby
 	* java/lang/Package.java (getPackage): Use currentClassLoader() not
 	VMSecurityManager.getClassContext()[1].getClassLoader().

@@ -1,5 +1,5 @@
 /* DecoderUTF8.java -- Decoder for the UTF-8 character encoding.
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -88,7 +88,7 @@ charsInByteArray(byte[] buf, int offset, int len) throws CharConversionException
   int num_chars = 0;
 
   // Scan the buffer with minimal validation checks
-  for (int i = offset; i < len; i++)
+  for (int i = offset; i < offset + len; i++)
     {
       // Three byte encoding case.
       if ((buf[i] & 0xE0) == 0xE0) // 224
@@ -134,7 +134,7 @@ convertToChars(byte[] buf, int buf_offset, int len, char cbuf[],
   int val;
 
   // Scan the buffer with full validation checks
-  for (int i = buf_offset; i < len; i++)
+  for (int i = buf_offset; i < buf_offset + len; i++)
     {
       // Three byte encoding case.
       if ((buf[i] & 0xE0) == 0xE0) // 224
@@ -197,7 +197,7 @@ read(char[] cbuf, int offset, int len) throws IOException
   // Note that this method of reading a single byte at a time is 
   // inefficient and should probably be replaced
 
-  for (int i = offset; i < len; i++)
+  for (int i = offset; i < offset + len; i++)
     {
       // Read a byte
       int b = in.read();
@@ -249,6 +249,13 @@ read(char[] cbuf, int offset, int len) throws IOException
         }
 
       cbuf[i] = (char)val;
+
+      // if no more bytes available, terminate loop early, instead of
+      // blocking in in.read().
+      // Do not test this in the for condition: it must call in.read() at
+      // least once (and thus block if "in" is empty).
+      if (in.available() <= 0)
+      	return (1 + i - offset);
     }
 
   return(len);
