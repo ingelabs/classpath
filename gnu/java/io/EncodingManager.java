@@ -531,7 +531,7 @@ public static Encoder
 getEncoder(OutputStream out, String encoding, boolean cache) 
                               throws UnsupportedEncodingException
 {
-  Constructor cons = findDecoderConstructor(encoding, cache);
+  Constructor cons = findEncoderConstructor(encoding, cache);
   Object[] params = new Object[1];
   params[0] = out;
 

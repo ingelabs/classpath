@@ -1,3 +1,8 @@
+Sat Aug  1 21:53:46 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* EncodingManager.java: Fixed a booboo where what was supposed
+	to be "encode" was actually "decode".
+
 Sun Jul 26 19:16:25 1998  arenn's Development Account  <devel@larissa.foo.com>
 
 	* EncodingManager.java: Added the Encoder portion to this class
