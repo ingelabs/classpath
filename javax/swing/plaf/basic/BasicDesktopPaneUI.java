@@ -267,24 +267,35 @@ public class BasicDesktopPaneUI extends DesktopPaneUI
     }
   }
 
-  /** The KeyStroke associated with closing JInternalFrames. */
+  /**
+   * The KeyStroke associated with closing JInternalFrames.
+   * @deprecated
+   */
   protected KeyStroke closeKey;
 
-  /** The KeyStroke associated with maximizing JInternalFrames. */
+  /**
+   * The KeyStroke associated with maximizing JInternalFrames.
+   * @deprecated
+   */
   protected KeyStroke maximizeKey;
 
-  /** The KeyStroke associated with minimizing JInternalFrames. */
+  /**
+   * The KeyStroke associated with minimizing JInternalFrames.
+   * @deprecated
+   */
   protected KeyStroke minimizeKey;
 
   /**
    * The KeyStroke associated with navigating (forward?) through
    * JInternalFrames.
+   * @deprecated
    */
   protected KeyStroke navigateKey;
 
   /**
    * The KeyStroke associated with navigating (backward?) through
    * JInternalFrames.
+   * @deprecated
    */
   protected KeyStroke navigateKey2;
 

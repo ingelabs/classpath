@@ -1261,16 +1261,32 @@ public class BasicTabbedPaneUI extends TabbedPaneUI implements SwingConstants
   /** This array keeps track of which tabs are in which run. See above. */
   protected int[] tabRuns;
 
-  /** Deprecated. This is the keystroke for moving down. */
+  /**
+   * This is the keystroke for moving down.
+   *
+   * @deprecated 1.3
+   */
   protected KeyStroke downKey;
 
-  /** Deprecated. This is the keystroke for moving left. */
+  /**
+   * This is the keystroke for moving left.
+   *
+   * @deprecated 1.3
+   */
   protected KeyStroke leftKey;
 
-  /** Deprecated. This is the keystroke for moving right. */
+  /**
+   * This is the keystroke for moving right.
+   *
+   * @deprecated 1.3
+   */
   protected KeyStroke rightKey;
 
-  /** Deprecated. This is the keystroke for moving up. */
+  /**
+   * This is the keystroke for moving up.
+   *
+   * @deprecated 1.3
+   */
   protected KeyStroke upKey;
 
   /** The listener that listens for focus events. */

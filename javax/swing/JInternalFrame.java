@@ -389,7 +389,7 @@ public class JInternalFrame extends JComponent implements Accessible,
    * The property fired in a PropertyChangeEvent when the jMenuBar property
    * changes.
    */
-  public static final String MENU_BAR_PROPERTY = "jMenuBar";
+  public static final String MENU_BAR_PROPERTY = "JMenuBar";
 
   /**
    * The property fired in a PropertyChangeEvent when the rootPane property
@@ -879,6 +879,8 @@ public class JInternalFrame extends JComponent implements Accessible,
    * JInternalFrame.
    *
    * @return The JMenuBar for this JInternalFrame.
+   *
+   * @deprecated 1.0.3
    */
   public JMenuBar getMenuBar()
   {
@@ -1482,6 +1484,8 @@ public class JInternalFrame extends JComponent implements Accessible,
    * JInternalFrame.
    *
    * @param m The JMenuBar to use with this JInternalFrame.
+   *
+   * @deprecated 1.0.3
    */
   public void setMenuBar(JMenuBar m)
   {

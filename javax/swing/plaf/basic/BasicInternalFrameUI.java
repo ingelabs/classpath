@@ -1053,7 +1053,10 @@ public class BasicInternalFrameUI extends InternalFrameUI
   /** The JComponent placed at the west region of the JInternalFrame. */
   protected JComponent westPane;
 
-  /** The Keystroke bound to open the menu. */
+  /**
+   * The Keystroke bound to open the menu.
+   * @deprecated
+   */
   protected KeyStroke openMenuKey;
 
   /** The TitlePane displayed at the top of the JInternalFrame. */

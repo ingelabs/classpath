@@ -1131,6 +1131,8 @@ public abstract class AbstractButton extends JComponent
    * "text" property.
    *
    * @param label The new "label" property
+   *
+   * @deprecated use <code>setText(text)</code>
    */
   public void setLabel(String label)
   {
@@ -1142,6 +1144,8 @@ public abstract class AbstractButton extends JComponent
    * the "text" property.
    *
    * @return The current "label" property
+   *
+   * @deprecated use <code>getText()</code>
    */
   public String getLabel()
   {

@@ -214,11 +214,17 @@ public class JViewport extends JComponent
                          getExtentSize());
   }
 
+  /**
+   * @deprecated 1.4
+   */
   public boolean isBackingStoreEnabled()
   {
     return scrollMode == BACKINGSTORE_SCROLL_MODE;
   }
 
+  /**
+   * @deprecated 1.4
+   */
   public void setBackingStoreEnabled(boolean b)
   {
     if (b && scrollMode != BACKINGSTORE_SCROLL_MODE)
