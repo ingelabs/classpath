@@ -1,9 +1,8 @@
+pkglib_LTLIBRARIES = libjavalangreflect.la
 
-lib_LTLIBRARIES = libjavalangreflect.la
+libjavalangreflect_la_SOURCES = Array.c
 
-libjavalangreflect_la_SOURCES = Array.c Array.h
+libjavalangreflect_la_LDFLAGS = -version-info @LIBVERSION@
 
-libjavalangreflect_la_LDFLAGS = -version-info 0:0:0
-
-INCLUDES += -I ../lib -I ../vmi -I ../nsa -DNO_VMI @JAPHAR_CFLAGS@ \
+INCLUDES += -I ../lib -I ../vmi -I ../nsa -DNO_VMI @EXTRA_INCLUDES@ \
 	    -I$(top_srcdir)/include
