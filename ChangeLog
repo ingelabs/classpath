@@ -1,3 +1,10 @@
+2004-10-10  Sven de Marothy  <sven@physto.se>
+
+        * native/jni/java-lang/java_lang_Double.c
+        (parseDouble): Add handling of NaN/Infinity (bug #10491)
+        * java/nio/ByteBufferHelper.java
+        (putDouble): Use Double.toRawLongBits instead (bug #9106)
+
 2004-10-10  Andreas Tobler  <a.tobler@schweiz.ch>
 
 	* jni/gtk-peer/gdkfont.h: Mark native_text_layout_state_table extern.

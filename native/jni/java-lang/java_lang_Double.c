@@ -50,6 +50,7 @@ exception statement from your version. */
 static jmethodID isNaNID;
 static jdouble NEGATIVE_INFINITY;
 static jdouble POSITIVE_INFINITY;
+static jdouble NaN;
 
 /*
  * Class:     java_lang_Double
@@ -61,6 +62,7 @@ JNIEXPORT void JNICALL Java_java_lang_Double_initIDs
 {
   jfieldID negInfID;
   jfieldID posInfID;
+  jfieldID nanID;
 
   isNaNID = (*env)->GetStaticMethodID(env, cls, "isNaN", "(D)Z");
   if (isNaNID == NULL)
@@ -80,12 +82,20 @@ JNIEXPORT void JNICALL Java_java_lang_Double_initIDs
       DBG("unable to determine field id of POSITIVE_INFINITY\n")
       return;
     }
+  nanID = (*env)->GetStaticFieldID(env, cls, "NaN", "D");
+  if (posInfID == NULL)
+    {
+      DBG("unable to determine field id of NaN\n")
+      return;
+    }
   POSITIVE_INFINITY = (*env)->GetStaticDoubleField(env, cls, posInfID);
   NEGATIVE_INFINITY = (*env)->GetStaticDoubleField(env, cls, negInfID);
+  NaN = (*env)->GetStaticDoubleField(env, cls, nanID);
 
 #ifdef DEBUG
   fprintf(stderr, "java.lang.Double.initIDs() POSITIVE_INFINITY = %g\n", POSITIVE_INFINITY);
   fprintf(stderr, "java.lang.Double.initIDs() NEGATIVE_INFINITY = %g\n", NEGATIVE_INFINITY);
+  fprintf(stderr, "java.lang.Double.initIDs() NaN = %g\n", NaN);
 #endif
 } 
 
@@ -252,6 +262,19 @@ JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
 	  ++last_non_ws;
 	}
 
+      /* Check for infinity and NaN */
+      unsigned char *temp = p;
+      if(temp[0] == '+' || temp[0] == '-')
+	temp++;
+      if(strncmp("Infinity", temp, (size_t) 8) == 0)
+	{
+	  if(p[0] == '-')
+	    return NEGATIVE_INFINITY;
+	  return POSITIVE_INFINITY;
+	}
+      if(strncmp("NaN", temp, (size_t) 3) == 0)
+	return NaN;
+
       /* Skip a trailing `f' or `d'.  */
       if (last_non_ws > p
 	  && (last_non_ws[-1] == 'f'
@@ -266,6 +289,7 @@ JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
  	  memset (&reent, 0, sizeof reent);
 
 #ifdef KISSME_LINUX_USER
+	  /* FIXME: The libc strtod may not be reliable. */	     
  	  val = strtod (p, &endptr);
 #else
  	  val = _strtod_r (&reent, p, &endptr);
