@@ -1,5 +1,5 @@
 /* JarURLConnection.java -- Class for manipulating remote jar files
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -76,13 +76,13 @@ public abstract class JarURLConnection extends URLConnection
    * This is the actual URL that points the remote jar file.  This is parsed
    * out of the jar URL by the constructor.
    */
-  private URL jarFileURL;
+  private final URL jarFileURL;
 
   /**
    * This is the jar file "entry name" or portion after the "!/" in the
-   * URL which represents the pathname inside the actual jar file
+   * URL which represents the pathname inside the actual jar file.
    */
-  private String entry_name;
+  private final String entryName;
 
   /**
    * Creates a JarURLConnection from an URL object
@@ -93,16 +93,15 @@ public abstract class JarURLConnection extends URLConnection
    *
    * @specnote This constructor is protected since JDK 1.4
    */
-  protected JarURLConnection(URL url)
+  protected JarURLConnection (URL url)
     throws MalformedURLException
   {
-    super(url);
+    super (url);
 
     if (!url.getProtocol().equals ("jar"))
       throw new MalformedURLException (url + ": Not jar protocol.");
 
     String spec = url.getFile();
-
     int bang = spec.indexOf ("!/");
     if (bang == -1)
       throw new MalformedURLException (url + ": No `!/' in spec.");
@@ -110,8 +109,8 @@ public abstract class JarURLConnection extends URLConnection
     // Extract the url for the jar itself.
     jarFileURL = new URL (spec.substring (0, bang));
 
-    // Get the name of the element, if any.
-    entry_name = spec.length() == (bang + 1) ? "" : spec.substring (bang + 2);
+    // Get the name of the entry, if any.
+    entryName = spec.length() == (bang + 1) ? "" : spec.substring (bang + 2);
   }
 
   /**
@@ -134,7 +133,7 @@ public abstract class JarURLConnection extends URLConnection
    */
   public String getEntryName ()
   {
-    return entry_name;
+    return entryName;
   }
 
   /**
@@ -146,9 +145,9 @@ public abstract class JarURLConnection extends URLConnection
    */
   public JarEntry getJarEntry () throws IOException
   {
-    JarFile file = getJarFile();
+    JarFile jarFile = getJarFile();
 
-    return file != null ? file.getJarEntry (entry_name) : null;
+    return jarFile != null ? jarFile.getJarEntry (entryName) : null;
   }
 
   /**
@@ -170,7 +169,9 @@ public abstract class JarURLConnection extends URLConnection
    */
   public Certificate[] getCertificates () throws IOException
   {
-    return getJarEntry ().getCertificates ();
+    JarEntry entry = getJarEntry();
+    
+    return entry != null ? entry.getCertificates() : null;
   }
 
   /**
@@ -183,7 +184,9 @@ public abstract class JarURLConnection extends URLConnection
    */
   public Attributes getMainAttributes () throws IOException
   {
-    return getManifest ().getMainAttributes ();
+    Manifest manifest = getManifest();
+    
+    return manifest != null ? manifest.getMainAttributes() : null;
   }
 
   /**
@@ -198,7 +201,7 @@ public abstract class JarURLConnection extends URLConnection
   public Attributes getAttributes () throws IOException
   {
     JarEntry entry = getJarEntry();
-    
+
     return entry != null ? entry.getAttributes() : null;
   }
 

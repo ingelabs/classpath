@@ -1,5 +1,5 @@
 /* URLConnection.java -- Abstract superclass for reading from URL's
-   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -44,8 +44,8 @@ import java.io.OutputStream;
 import java.security.Permission;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Hashtable;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -111,11 +111,6 @@ public abstract class URLConnection
    * store the data returned from a server
    */
   private static boolean defaultUseCaches = true;
-
-  /**
-   * This is a Hashable for setting default request properties
-   */
-  private static Hashtable def_req_props = new Hashtable();
 
   /**
    * This variable determines whether or not interaction is allowed with
@@ -184,7 +179,7 @@ public abstract class URLConnection
     this.url = url;
     allowUserInteraction = defaultAllowUserInteraction;
     useCaches = defaultUseCaches;
-    req_props = new Hashtable(def_req_props);
+    req_props = new Hashtable();
   }
 
   /**
@@ -375,16 +370,16 @@ public abstract class URLConnection
     
     // This needs to change since Date(String) is deprecated, but DateFormat
     // doesn't seem to be working for some reason
-    //DateFormat df = DateFormat.getDateInstance(DateFormat.FULL, Locale.US);
-    //df.setLenient(true);
+    //DateFormat df = DateFormat.getDateInstance (DateFormat.FULL, Locale.US);
+    //df.setLenient (true);
 
-    //Date d = df.parse(value, new ParsePosition(0));
-    Date d = new Date (str);
+    //Date date = df.parse (value, new ParsePosition (0));
+    Date date = new Date (str);
 
-    if (d == null)
+    if (date == null)
       return defaultValue;
        
-    return (d.getTime() / 1000);
+    return (date.getTime() / 1000);
   }
 
   /**
@@ -537,7 +532,7 @@ public abstract class URLConnection
    */
   public String toString()
   {
-    return(url.toString());
+    return this.getClass().getName() + ":" + url.toString();
   }
 
   /**
@@ -735,6 +730,9 @@ public abstract class URLConnection
    * @param key The name of the property
    * @param value The value of the property
    * 
+   * @exception IllegalStateException If already connected
+   * @exception NullPointerException If key is null
+   *
    * @see URLConnection#getRequestProperty(String key)
    * @see URLConnection#addRequestProperty(String key, String value)
    * 
@@ -742,11 +740,18 @@ public abstract class URLConnection
    */
   public void setRequestProperty(String key, String value)
   {
-    req_props.put(key.toLowerCase(), value);
+    if (connected)
+      throw new IllegalStateException ("Already connected");
+
+    if (key == null)
+      throw new NullPointerException ("key is null");
+    
+    req_props.put (key.toLowerCase(), value);
   }
 
   /**
-   * Sets the value of the named request property
+   * Adds a new request property by a key/value pair.
+   * This method does not overwrite existing properties with the same key.
    *
    * @param key Key of the property to add
    * @param value Value of the Property to add
@@ -764,6 +769,9 @@ public abstract class URLConnection
     if (connected)
       throw new IllegalStateException ("Already connected");
 
+    if (key == null)
+      throw new NullPointerException ("key is null");
+    
     if (getRequestProperty (key) == null)
       {
         setRequestProperty (key, value);
@@ -784,6 +792,9 @@ public abstract class URLConnection
    */
   public String getRequestProperty(String key)
   {
+    if (connected)
+      throw new IllegalStateException ("Already connected");
+
     return((String)req_props.get(key.toLowerCase()));
   }
 
@@ -798,6 +809,9 @@ public abstract class URLConnection
    */
   public Map getRequestProperties()
   {
+    if (connected)
+      throw new IllegalStateException ("Already connected");
+
     return Collections.unmodifiableMap(req_props);
   }
 
@@ -813,10 +827,9 @@ public abstract class URLConnection
    *
    * @see URLConnectionr#setRequestProperty(String key, String value)
    */
-  public static synchronized void setDefaultRequestProperty (String key,
-                                                             String value)
+  public static void setDefaultRequestProperty (String key, String value)
   {
-    def_req_props.put(key.toLowerCase(), value);
+    // This method does nothing since JDK 1.3.
   }
 
   /**
@@ -832,9 +845,10 @@ public abstract class URLConnection
    *
    * @see URLConnection#getRequestProperty(String key)
    */
-  public static String getDefaultRequestProperty(String key)
+  public static String getDefaultRequestProperty (String key)
   {
-    return((String)def_req_props.get(key.toLowerCase()));
+    // This method does nothing since JDK 1.3.
+    return null;
   }
 
   /**
