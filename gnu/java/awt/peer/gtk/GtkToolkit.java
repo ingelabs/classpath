@@ -52,8 +52,8 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.Properties;
-import gnu.java.awt.peer.gtk.GdkPixbufDecoder;
 import gnu.classpath.Configuration;
+import gnu.java.awt.peer.gtk.GdkPixbufDecoder;
 
 /* This class uses a deprecated method java.awt.peer.ComponentPeer.getPeer().
    This merits comment.  We are basically calling Sun's bluff on this one.
@@ -88,10 +88,7 @@ public class GtkToolkit extends Toolkit
   public int checkImage (Image image, int width, int height, 
 			 ImageObserver observer) 
   {
-    return ImageObserver.ALLBITS;
-
-//      GtkImage i = (GtkImage) image;
-//      return i.checkImage ();
+    return ((GtkImage) image).checkImage ();
   }
 
   public Image createImage (String filename)
@@ -110,10 +107,12 @@ public class GtkToolkit extends Toolkit
   }
 
   public Image createImage (byte[] imagedata, int imageoffset,
-			    int imagelength) 
+			    int imagelength)
   {
-    // System.out.println ("createImage byte[] NOT SUPPORTED");
-    return null;
+    return new GtkImage (new GdkPixbufDecoder (imagedata,
+					       imageoffset,
+					       imagelength),
+			 null);
   }
 
   public ColorModel getColorModel () 
@@ -166,6 +165,28 @@ public class GtkToolkit extends Toolkit
   public boolean prepareImage (Image image, int width, int height, 
 			       ImageObserver observer) 
   {
+    GtkImage i = (GtkImage) image;
+
+    if (i.isLoaded ()) return true;
+
+    class PrepareImage extends Thread
+    {
+      GtkImage image;
+      ImageObserver observer;
+
+      PrepareImage (GtkImage image, ImageObserver observer)
+      {
+	this.image = image;
+	image.setObserver (observer);
+      }
+      
+      public void run ()
+      {
+	image.source.startProduction (image);
+      }
+    }
+
+    new PrepareImage (i, observer).start ();
     return false;
   }
 

@@ -41,6 +41,7 @@ package gnu.java.awt.peer.gtk;
 import java.awt.image.*;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Vector;
@@ -85,6 +86,12 @@ public class GdkPixbufDecoder extends gnu.java.awt.image.ImageDecoder
     initState ();
   }
 
+  public GdkPixbufDecoder (byte[] imagedata, int imageoffset, int imagelength)
+  {
+    super (imagedata, imageoffset, imagelength);
+    initState ();
+  }
+
   // called back by native side
   void areaPrepared (int width, int height)
   {
@@ -122,7 +129,7 @@ public class GdkPixbufDecoder extends gnu.java.awt.image.ImageDecoder
   // this object, feeding back decoded pixel blocks, which we pass to each
   // of the ImageConsumers in the provided Vector.
 
-  public void produce (Vector v, FileInputStream is) throws IOException
+  public void produce (Vector v, InputStream is) throws IOException
   {
     curr = v;
 
@@ -145,7 +152,7 @@ public class GdkPixbufDecoder extends gnu.java.awt.image.ImageDecoder
   // this ought to be fairly straightforward, but it does not appear
   // anywhere else I can find.
 
-  private class BufferedImageBuilder implements ImageConsumer
+  private static class BufferedImageBuilder implements ImageConsumer
   {
     BufferedImage bufferedImage;
     ColorModel defaultModel;
@@ -208,13 +215,9 @@ public class GdkPixbufDecoder extends gnu.java.awt.image.ImageDecoder
 
   public static BufferedImage createBufferedImage (String filename)
   {
-    /*
     BufferedImageBuilder bb = new BufferedImageBuilder ();
     GdkPixbufDecoder dec = new GdkPixbufDecoder (filename);
     dec.startProduction (bb);
     return bb.getBufferedImage ();
-    */
-    throw new Error ("not implemented");
   }
-
 }

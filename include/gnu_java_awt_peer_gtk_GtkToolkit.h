@@ -10,10 +10,10 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkToolkit_beep (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenSizeDimensions (JNIEnv *env, jobject, jintArray);
-extern JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenResolution (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkToolkit_sync (JNIEnv *env, jobject);
+extern void Java_gnu_java_awt_peer_gtk_GtkToolkit_beep (JNIEnv *env, jobject);
+extern void Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenSizeDimensions (JNIEnv *env, jobject, jintArray);
+extern jint Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenResolution (JNIEnv *env, jobject);
+extern void Java_gnu_java_awt_peer_gtk_GtkToolkit_sync (JNIEnv *env, jobject);
 
 #ifdef __cplusplus
 }

@@ -242,13 +242,12 @@ public class GtkComponentPeer extends GtkGenericPeer
       PrepareImage (GtkImage image, ImageObserver observer)
       {
 	this.image = image;
-	this.observer = observer;
+	image.setObserver (observer);
       }
       
       public void run ()
       {
-	// XXX: need to return data to image observer
-	image.source.startProduction (null);
+	image.source.startProduction (image);
       }
     }
 

@@ -10,10 +10,10 @@ extern "C"
 {
 #endif
 
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_initStaticState (JNIEnv *env, jclass);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_initState (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_pumpBytes (JNIEnv *env, jobject, jbyteArray, jint);
-extern JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_finish (JNIEnv *env, jobject);
+extern void Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_initStaticState (JNIEnv *env, jclass);
+extern void Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_initState (JNIEnv *env, jobject);
+extern void Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_pumpBytes (JNIEnv *env, jobject, jbyteArray, jint);
+extern void Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_finish (JNIEnv *env, jobject);
 
 #ifdef __cplusplus
 }
