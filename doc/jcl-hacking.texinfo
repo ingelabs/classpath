@@ -19,6 +19,7 @@ Copyright (C) 1998 Aaron M. Renn
 
 @title{JCL Hacking Guide}
 @author{Aaron M. Renn}
+@author{Paul N. Fisher}
 @page
 @vskip 0pt plus 1filll
 Copyright @copyright{} 1998 Aaron M. Renn
@@ -52,32 +53,32 @@ This document is definitely a work in progress.
 @end ifinfo
 
 @menu 
-* Introduction::                        An introduction to the JCL project
-* Requirements::                        Very important rules that must be followed
-* Project Goals::                       Goals of the JCL project
-* Volunteering::                        So you want to help out
-* Programming Tools::                   A list of tools you will need to hack on the JCL code
-* Programming Standards::               The programming standards the project is following
-* Specification Sources::               Where to find the Java class library specs
-* Directory and File Naming Conventions:: How files and directories are named in JCL
+* Introduction::            An introduction to the JCL project
+* Requirements::            Very important rules that must be followed
+* Project Goals::           Goals of the JCL project
+* Volunteering::            So you want to help out
+* Programming Tools::       A list of tools you will neededed for hacking
+* Programming Standards::   Standards to use when writing code for JCL
+* Specification Sources::   Where to find the Java class library specs
+* Naming Conventions::      How files and directories are named in JCL
 @end menu
 
 @node Introduction, Requirements, Top, Top
 @comment node-name, next, previous, up
 @chapter Introduction
 
-The JCL Project is a dedicated to providing a 100% free, clean room 
+The JCL Project is a dedicated to providing a 100% free, clean room
 implementation of the standard Java class libraries.  Because there is
-currently no free implementation of the Java environment, no free operating
-system can ship with Java included.  Parts of a free Java implementation
-hava already been written, including free Java virtual machines (JVM's) such
-as @uref{http://www.kaffe.org/,Kaffe} and 
-@uref{http://www.hungry.com/products/japhar/,Japhar}, and Java compilers such
-as @uref{http://www.cs.berkeley.edu/~engberg/guavac/,Guavac}.  However,
-there is currently no free replacement for Sun's proprietary libraries.
-This JCL project aims to correct this problem by supplying a free class
-library implementation that will allow a 100% free Java platform to
-be distributed.
+currently no free implementation of the Java environment, no free
+operating system can ship with Java included.  Parts of a free Java
+implementation hava already been written, including free Java virtual
+machines (JVM's) such as @uref{http://www.kaffe.org/,Kaffe} and
+@uref{http://www.hungry.com/products/japhar/,Japhar}, and Java compilers
+such as @uref{http://www.cs.berkeley.edu/~engberg/guavac/,Guavac}.
+However, there is currently no free replacement for Sun's proprietary
+libraries.  This JCL project aims to correct this problem by supplying a
+free class library implementation that will allow a 100% free Java
+platform to be distributed.
 
 Yes, we know that JCL also stands for Job Control Language.  Think of it
 as a joke.  Or better yet, think up a better name.
@@ -86,10 +87,10 @@ as a joke.  Or better yet, think up a better name.
 @comment node-name, next, previous, up
 @chapter Requirements
 
-Although JCL is following an open development model where input from 
+Although JCL is following an open development model where input from
 developers is welcome, there are certain base requirements that need to
-be met by anyone who wants to contribute code to this project.  They
-are mostly unfortunately dictated by legal requirements and are not
+be met by anyone who wants to contribute code to this project.  They are
+mostly unfortunately dictated by legal requirements and are not
 arbitrary restrictions chosen by the JCL team.
 
 You will need to adhere to the following things if you want to donate
@@ -97,15 +98,16 @@ code to the JCL project:
 
 @itemize @bullet
 @item
-@b{Never under any circumstances refer to Sun's code while working on JCL}.  It
-is best if you have never looked at Sun's code at all.  To reduce temptation,
-it would be best if you deleted the @samp{src.zip} file from your JDK
-distribution.  If you have signed Sun's non-disclosure statement, then you
-unfortunately cannot work on JCL code at all.  If you have any reason to
-believe that your code might be ''tainted'', please say something on the
-mailing list before writing anything.  If it turns out that your code
-was not developed in a clean room environment, we could be very embarrassed
-someday in court.  Please don't let that happen.
+@b{Never under any circumstances refer to Sun's code while working on
+JCL}.  It is best if you have never looked at Sun's code at all.  To
+reduce temptation, it would be best if you deleted the @samp{src.zip}
+file from your JDK distribution.  If you have signed Sun's
+non-disclosure statement, then you unfortunately cannot work on JCL code
+at all.  If you have any reason to believe that your code might be
+''tainted'', please say something on the mailing list before writing
+anything.  If it turns out that your code was not developed in a clean
+room environment, we could be very embarrassed someday in court.  Please
+don't let that happen.
 
 @item
 JCL is licensed under the terms of the 
@@ -305,7 +307,7 @@ For Java code, please follow the Sun programming standards.  As an
 exception, do not feel obligated to following their bracket and 
 indendation style if you consider it wrong.
 
-@node Specification Sources, Directory and File Naming Conventions, Programming Standards, Top
+@node Specification Sources, Naming Conventions, Programming Standards, Top
 @comment node-name, next, previous, up
 @chapter Specification Sources
 
@@ -316,13 +318,13 @@ java.util, where the
 should be used instead where possible.
 
 
-@node Directory and File Naming Conventions, ,Specification Sources, Top
+@node Naming Conventions, ,Specification Sources, Top
 @comment node-name, next, previous, up
 @chapter Directory and File Naming Conventions
 
 The JCL directory structure is laid out in the following manner:
 
-@lisp
+@example
 jcl
  |
  |---->java
@@ -368,7 +370,7 @@ jcl
          |-->java.lang
          |-->etc
 
-@end lisp
+@end example
 
 Here is a brief description of the toplevel directories and their contents.
 
