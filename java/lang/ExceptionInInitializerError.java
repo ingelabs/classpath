@@ -22,6 +22,8 @@ package java.lang;
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
 import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 
 /**
  * An <code>ExceptionInInitializerError</code> is thrown when an 
@@ -35,6 +37,7 @@ import java.io.IOException;
 public class ExceptionInInitializerError extends LinkageError
 {
   static final long serialVersionUID = 1521711792217232256L;
+
   private Throwable t = null;
 
   /**
@@ -63,6 +66,64 @@ public class ExceptionInInitializerError extends LinkageError
     {
       super();
       this.t = t;
+    }
+
+  /** 
+   * Return the exception that caused this error to be created.
+   * @return the stored <code>Throwable</code> object or <code>null</code>
+   * if this <code>ExceptionInInitializerError</code> has no stored
+   * <code>Throwable</code> object.
+   */
+  public Throwable getException()
+    {
+      return t;
+    }
+
+  /**
+   * Print a stack trace of the exception that occurred.
+   */
+  public void printStackTrace()
+    {
+      if (t == null)
+	{
+	  super.printStackTrace();
+	}
+      else
+	{
+	  t.printStackTrace();
+	}
+    }
+
+  /**
+   * Print a stack trace of the exception that occurred to 
+   * the specified <code>PrintStream</code>.
+   */
+  public void printStackTrace(PrintStream ps)
+    {
+      if (t == null)
+	{
+	  super.printStackTrace(ps);
+	}
+      else
+	{
+	  t.printStackTrace(ps);
+	}
+    }
+
+  /**
+   * Print a stack trace of the exception that occurred to 
+   * the specified <code>PrintWriter</code>.
+   */
+  public void printStackTrace(PrintWriter pw)
+    {
+      if (t == null)
+	{
+	  super.printStackTrace(pw);
+	}
+      else
+	{
+	  t.printStackTrace(pw);
+	}
     }
 
   /**
