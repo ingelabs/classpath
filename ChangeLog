@@ -1,5 +1,10 @@
 2003-03-22  Tom Tromey  <tromey@redhat.com>
 
+	* java/awt/dnd/DropTarget.java
+	(DropTarget.DropTargetAutoScroller): Now public.
+	* java/awt/dnd/DropTargetContext.java
+	(DropTargetContext.TransferableProxy): Now public.
+
 	* java/io/ObjectOutputStream.java (PutField.write): Deprecate.
 	(PutField.put): Don't declare any exceptions.
 	(putFields): Update.
