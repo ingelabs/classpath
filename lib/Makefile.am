@@ -95,7 +95,6 @@ glibj.zip: classes compile-classes
 	if ! [ -e gnu/java ]; then mkdir gnu/java; fi
 	if ! [ -e gnu/java/locale ]; then mkdir gnu/java/locale; fi
 	cp $(top_srcdir)/gnu/java/locale/*.properties gnu/java/locale/
-	cp $(top_srcdir)/gnu/java/locale/*.uni gnu/java/locale/
 	if test "$(ZIP)" != ""; then $(ZIP) -r -D glibj.zip com gnu java javax > /dev/null; fi
 
 .PHONY: genclasses

@@ -1,3 +1,9 @@
+2002-02-18  Mark Wielaard  <mark@klomp.org>
+
+	* configure.in: Reenable ZIP.
+	* lib/Makefile.am: Don't copy gnu/java/locale/*.uni, they no longer
+	exist.
+
 2002-02-18  Eric Blake  <ebb9@email.byu.edu>
 
 	* doc/unicode/unicode-blocks.pl: Minor updates, to avoid warnings.
