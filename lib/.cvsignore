@@ -2,6 +2,7 @@ Makefile
 Makefile.in
 gnu
 java
+kaffe
 classes
 glibj.zip
 deps.sh
