@@ -253,7 +253,7 @@ Java_java_io_File_isFileInternal(JNIEnv *env, jobject obj, jstring name)
   if (!fname)
     return(0);
  
-  rc = lstat(fname, &buf);
+  rc = stat(fname, &buf);
   (*env)->ReleaseStringUTFChars(env, name, fname);
 
   if (rc == -1)
@@ -287,7 +287,7 @@ Java_java_io_File_isDirectoryInternal(JNIEnv *env, jobject obj, jstring name)
   if (!fname)
     return(0);
  
-  rc = lstat(fname, &buf);
+  rc = stat(fname, &buf);
   (*env)->ReleaseStringUTFChars(env, name, fname);
 
   if (rc == -1)
