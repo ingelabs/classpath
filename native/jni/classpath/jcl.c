@@ -42,8 +42,6 @@ exception statement from your version. */
 #include <stdio.h>
 #include <jcl.h>
 
-static char errstr[4098]; // this way the memory is pre-allocated, so that we do not have to worry if we are out of memory.
-
 JNIEXPORT void JNICALL JCL_ThrowException(JNIEnv * env, char * className, char * errMsg) {
 	jclass excClass;
 	if((*env)->ExceptionOccurred(env)) {
@@ -56,13 +54,20 @@ JNIEXPORT void JNICALL JCL_ThrowException(JNIEnv * env, char * className, char *
 		if(errExcClass == NULL) {
 			errExcClass = (*env)->FindClass(env, "java/lang/InternalError");
 			if(errExcClass == NULL) {
-				sprintf(errstr,"JCL: Utterly failed to throw exeption %s with message %s.",className,errMsg);
-				fprintf(stderr, errstr);
+				fprintf(stderr, "JCL: Utterly failed to throw exeption ");
+				fprintf(stderr, className);
+				fprintf(stderr, " with message ");
+				fprintf(stderr, errMsg);
 				return;
 			}
 		}
-		sprintf(errstr,"JCL: Failed to throw exception %s with message %s: could not find exception class.", className, errMsg);
-		(*env)->ThrowNew(env, errExcClass, errstr);
+		/* Removed this (more comprehensive) error string to avoid the need for a 
+		 * static variable or allocation of a buffer for this message in this (unlikely) 
+		 * error case. --Fridi. 
+		 *
+		 * sprintf(errstr,"JCL: Failed to throw exception %s with message %s: could not find exception class.", className, errMsg); 
+		 */
+		(*env)->ThrowNew(env, errExcClass, className);
 	}
 	(*env)->ThrowNew(env, excClass, errMsg);
 }

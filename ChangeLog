@@ -1,3 +1,9 @@
+2003-08-11  Ingo Proetel <proetel@aicas.com>
+
+	* native/jni/classpath/jcl.c: removed static array for error string.
+	The use of this static array made the code non-reentrant and wasted 
+	memory when it was not needed. 
+
 2003-08-11 Ingo Proetel <proetel@aicas.com>
 
 	* java/util/class-dependencies.conf,
