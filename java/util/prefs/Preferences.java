@@ -214,8 +214,8 @@ public abstract class Preferences {
 	      {
                 try
 		  {
-                    Object o = Class.forName (defaultFactoryClass);
-                    factory = (PreferencesFactory) o.newInstance();
+                    Class cls = Class.forName (defaultFactoryClass);
+                    factory = (PreferencesFactory) cls.newInstance();
                   }
 		catch (Exception e)
 		  {

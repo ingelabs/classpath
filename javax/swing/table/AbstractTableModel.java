@@ -78,6 +78,7 @@ public abstract class AbstractTableModel implements TableModel, Serializable
   public String getColumnName (int columnIndex)
   {
     int index = columnIndex + 1;
+    StringBuffer buffer = new StringBuffer();
 
     while (index > 0)
       {
