@@ -9,11 +9,13 @@ public class GdkGraphics extends Graphics
 
   int xOrigin = 0, yOrigin = 0;
   Color color;
+  GtkComponentPeer component;
 
   native int[] initState (GtkComponentPeer component);
 
   GdkGraphics (GtkComponentPeer component)
   {
+    this.component = component;
     int rgb[] = initState (component);
     color = new Color (rgb[0], rgb[1], rgb[2]);
   }
@@ -34,7 +36,7 @@ public class GdkGraphics extends Graphics
 
   public Graphics create ()
   {
-    return null;
+    return new GdkGraphics (component);
   }
 
   native public void dispose ();
@@ -51,12 +53,14 @@ public class GdkGraphics extends Graphics
   public boolean drawImage (Image img, int x, int y, 
 			    Color bgcolor, ImageObserver observer)
   {
-    return false;
+    GtkImage image = (GtkImage) img;
+    new GtkImagePainter (image, this, x, y, bgcolor);
+    return image.isLoaded ();
   }
 
   public boolean drawImage (Image img, int x, int y, ImageObserver observer)
   {
-    return false;
+    return drawImage (img, x, y, component.getBackground (), observer);
   }
 
   public boolean drawImage (Image img, int x, int y, int width, int height, 

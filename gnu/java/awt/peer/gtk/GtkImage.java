@@ -1,0 +1,213 @@
+package gnu.java.awt.peer.gtk;
+
+import java.awt.*;
+import java.util.*;
+import java.awt.image.*;
+
+public class GtkImage extends Image implements ImageConsumer
+{
+  int width = -1, height = -1;
+  Hashtable props = null;
+  boolean isLoaded = false;
+  boolean isCacheable = true;
+
+  Vector widthObservers = new Vector ();
+  Vector heightObservers = new Vector ();
+  Vector propertyObservers = new Vector ();
+
+  ImageProducer source;
+  Graphics g;
+
+  /* Variables in which we stored cached data, if possible.
+
+     An image is cached if the following properties are true:
+     1. The ColorModel passed into setColorModel is the same ColorModel
+        passed to all invocations of setPixels.
+     2. The image contains a single frame.
+
+  */
+  int[] pixelCache;
+  ColorModel model;
+
+  public 
+  GtkImage (ImageProducer producer, Graphics g)
+  {
+    source = producer;
+    this.g = g;
+    
+    source.addConsumer (this);
+  }
+  
+  public synchronized int 
+  getWidth (ImageObserver observer)
+  {
+    if (width == -1)
+      widthObservers.addElement (observer);
+    
+    return width;
+  }
+  
+  public synchronized int 
+  getHeight (ImageObserver observer)
+  {
+    if (height == -1)
+      heightObservers.addElement (observer);
+    
+    return height;
+  }
+  
+  public ImageProducer 
+  getSource ()
+  {
+    return source;
+  }
+
+  public Graphics 
+  getGraphics ()
+  {
+    return g;
+  }
+  
+  public synchronized Object 
+  getProperty (String name, ImageObserver observer)
+  {
+    if (props == null)
+      {
+	propertyObservers.addElement (observer);
+	return null;
+      }
+    
+    Object value = props.get (name);
+    return (value == null) ? UndefinedProperty : value;
+  }
+
+  public synchronized void 
+  flush ()
+  {
+    isLoaded = false;
+    isCacheable = true;
+    width = height = -1;
+    props = null;
+    pixelCache = null;
+    model = null;
+
+    source.removeConsumer (this);
+    source.addConsumer (this);
+  }
+
+  public boolean
+  isLoaded ()
+  {
+    return isLoaded;
+  }
+
+  /* ImageConsumer methods */
+
+  public synchronized void 
+  setDimensions (int width, int height)
+  {
+    pixelCache = new int[width*height];
+
+    this.width = width;
+    this.height = height;
+    
+    for (int i = 0; i < widthObservers.size (); i++)
+      {
+	ImageObserver io = (ImageObserver) widthObservers.elementAt (i);
+	io.imageUpdate (this, ImageObserver.WIDTH, -1, -1, width, height);
+      }
+
+    for (int i = 0; i < heightObservers.size (); i++)
+      {
+	ImageObserver io = (ImageObserver) heightObservers.elementAt (i);
+	io.imageUpdate (this, ImageObserver.HEIGHT, -1, -1, width, height);
+      }
+  }
+
+  public synchronized void 
+  setProperties (Hashtable props)
+  {
+    this.props = props;
+    
+    for (int i = 0; i < propertyObservers.size (); i++)
+      {
+	ImageObserver io = (ImageObserver) propertyObservers.elementAt (i);
+	io.imageUpdate (this, ImageObserver.PROPERTIES, -1, -1, width, height);
+      }
+  }
+
+  public synchronized void 
+  setColorModel (ColorModel model)
+  {
+    if (this.model == null || this.model == model)
+      this.model = model;
+    else
+      isCacheable = false;
+  }
+
+  public synchronized void 
+  setHints (int flags)
+  {
+  }
+
+  public synchronized void 
+  setPixels (int x, int y, int width, int height, ColorModel cm, byte[] pixels,
+	     int offset, int scansize)
+  {
+    setPixels (x, y, width, height, cm, convertPixels (pixels), offset,
+	       scansize);
+  }
+
+  public synchronized void 
+  setPixels (int x, int y, int width, int height, ColorModel cm, int[] pixels,
+	     int offset, int scansize)
+  {
+    if (!isCacheable)
+      return;
+
+    if (cm != model || pixelCache == null)
+      {
+	isCacheable = false;
+	return;
+      }
+
+    System.arraycopy (pixels, offset, 
+		      pixelCache, y * this.width + x,
+		      pixels.length - offset);
+  }
+
+  public synchronized void 
+  imageComplete (int status)
+  {
+    if (status == ImageConsumer.STATICIMAGEDONE && isCacheable)
+      isLoaded = true;
+
+    if (status == ImageConsumer.SINGLEFRAMEDONE)
+      isCacheable = false;
+
+    source.removeConsumer (this);
+  }
+
+  public synchronized void
+  startProduction (GtkImagePainter painter)
+  {
+    if (isLoaded)
+      painter.setPixels (0, 0, width, height, model, pixelCache, 0, width);
+    else
+      {
+	source.startProduction (painter);
+	source.removeConsumer (painter);
+      }
+  }
+
+  private int[]
+  convertPixels (byte[] pixels)
+  {
+    int ret[] = new int[pixels.length];
+
+    for (int i = 0; i < pixels.length; i++)
+      ret[i] = pixels[i];
+    
+    return ret;
+  }
+}

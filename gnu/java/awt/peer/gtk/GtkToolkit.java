@@ -63,7 +63,7 @@ public class GtkToolkit extends java.awt.Toolkit
 
   public Image createImage (ImageProducer producer) 
   {
-    return null;
+    return new GtkImage (producer, null);
   }
 
   public Image createImage (byte[] imagedata, int imageoffset, 

@@ -23,6 +23,8 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.peer.*;
+import gnu.java.awt.image.*;
+import java.io.*;
 
 class Test
 {
@@ -54,13 +56,23 @@ class Test
       TextField tf = new TextField("Hello world!");
       pan.add(tf);
 
+      final Image img;
+      try {
+      img = Toolkit.getDefaultToolkit ().createImage (new XBMDecoder (new FileInputStream ("/home/rao/fvwm.xbm")));
+      } catch (FileNotFoundException ex) { img = null; }
+
+
       final Canvas ch = new Canvas () { 
 	public void paint (Graphics g) {
-	  g.setColor (Color.blue);
-	  g.drawLine (xs,ys,xs+20,ys+20);
+//  	  g.setColor (Color.blue);
+//  	  g.drawLine (xs,ys,xs+20,ys+20);
+
+
+      System.out.println (g.drawImage (img, 0, 0, this));
 	}
       };
-      ch.setSize(50, 50);
+
+      ch.setSize(60, 60);
 //        List ch=new List();
 //        ch.add("Ding");
 //        ch.add("September");
