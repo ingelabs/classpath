@@ -1,5 +1,30 @@
 2003-06-08  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JButton.java
+	(serialVersionUID): New member variable.
+	* javax/swing/JComboBox.java
+	(serialVersionUID): New member variable.
+	(isFocusTraversable): Added @deprecated tag.
+	* javax/swing/JPasswordField.java
+	(getText): Added @deprecated tag.
+	* javax/swing/JScrollPane.java:
+	Reworked imports and class declaration.
+	* javax/swing/JTable.java:
+	Reworked imports.
+	* javax/swing/JViewport.java:
+	Reworked imports.
+	* javax/swing/UIDefaults.java
+	(UIDefaults): Implements LazyValue.
+	(serialVersionUID): New member variable.
+	* javax/swing/event/SwingPropertyChangeSupport.java
+	(serialVersionUID): New member variable.
+	* javax/swing/event/UndoableEditEvent.java
+	(serialVersionUID): New member variable.
+	* javax/swing/plaf/basic/BasicDefaults.java:
+	Reworked imports.
+
+2003-06-08  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/colorchooser/AbstractColorChooserPanel.java,
 	javax/swing/colorchooser/ColorChooserComponentFactory.java,
 	javax/swing/colorchooser/ColorSelectionModel.java,

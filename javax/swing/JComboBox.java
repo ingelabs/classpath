@@ -55,6 +55,8 @@ import javax.swing.plaf.*;
 public class JComboBox extends JComponent
   implements ItemSelectable, ListDataListener, ActionListener, Accessible
 {
+  private static final long serialVersionUID = 5654585963292734470L;
+
 
 	//-------------------------------------------------------------
 	// Classes ----------------------------------------------------
@@ -767,6 +769,7 @@ public class JComboBox extends JComponent
 	/**
 	 * isFocusTraversable
 	 * @returns boolean
+         * @deprecated
 	 */
 	public boolean isFocusTraversable() {
 		return false; // TODO
