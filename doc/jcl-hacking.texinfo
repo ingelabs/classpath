@@ -2,14 +2,14 @@
 
 @c %**start of header
 @setfilename jcl-hacking.info
-@settitle GNU $classpath Hacker's Guide
+@settitle GNU Classpath Hacker's Guide
 @c %**end of header
 
 @setchapternewpage none
 
 @ifinfo
 This file contains important information you will need to know if you
-are going to hack on the GNU $classpath project code.
+are going to hack on the GNU Classpath project code.
 
 Copyright (C) 1998 Free Software Foundation, Inc.
 
@@ -17,7 +17,7 @@ Copyright (C) 1998 Free Software Foundation, Inc.
 
 @titlepage
 
-@title{GNU $classpath Hacker's Guide}
+@title{GNU Classpath Hacker's Guide}
 @author{Aaron M. Renn}
 @author{Paul N. Fisher}
 @author{John Keiser}
@@ -44,36 +44,36 @@ approved by the Free Software Foundation.
 
 @ifinfo
 @node Top, Introduction, , (dir)
-@top GNU $classpath Hacker's Guide
+@top GNU Classpath Hacker's Guide
 
 This document contains important information you'll want to know if you
-want to hack on GNU $classpath, the free implementation of the Java standard
+want to hack on GNU Classpath, the free implementation of the Java standard
 class libraries.
 
 This document is definitely a work in progress.
 @end ifinfo
 
 @menu 
-* Introduction::            An introduction to the $classpath project
+* Introduction::            An introduction to the Classpath project
 * Requirements::            Very important rules that must be followed
-* Project Goals::           Goals of the $classpath project
+* Project Goals::           Goals of the Classpath project
 * Volunteering::            So you want to help out
 * Programming Tools::       A list of tools you will need for hacking
-* Programming Standards::   Standards to use when writing code for $classpath
-* Programming Goals::       What to consider when writing code for $classpath
+* Programming Standards::   Standards to use when writing code for Classpath
+* Programming Goals::       What to consider when writing code for Classpath
 * Portability::             How to ensure your code is portable
 * Robustness::              How to make native code robust
 * Java Efficiency::         Tips for making Java code faster
 * Native Efficiency::       Tips for making native Java code faster
 * Specification Sources::   Where to find the Java class library specs
-* Naming Conventions::      How files and directories are named in $classpath
+* Naming Conventions::      How files and directories are named in Classpath
 @end menu
 
 @node Introduction, Requirements, Top, Top
 @comment node-name, next, previous, up
 @chapter Introduction
 
-The $classpath Project is a dedicated to providing a 100% free, clean room
+The Classpath Project is a dedicated to providing a 100% free, clean room
 implementation of the standard Java class libraries.  Because there is
 currently no free implementation of the Java environment, no free
 operating system can ship with Java included.  Parts of a free Java
@@ -82,7 +82,7 @@ machines (JVM's) such as @uref{http://www.kaffe.org/,Kaffe} and
 @uref{http://www.hungry.com/products/japhar/,Japhar}, and Java compilers
 such as @uref{http://www.cs.berkeley.edu/~engberg/guavac/,Guavac}.
 However, there is currently no free replacement for Sun's proprietary
-libraries.  This $classpath project aims to correct this problem by supplying a
+libraries.  This Classpath project aims to correct this problem by supplying a
 free class library implementation that will allow a 100% free Java
 platform to be distributed.  Note that Kaffe now ships with a partial
 class library that is also free, so there is more than one group working
@@ -92,22 +92,22 @@ towards a common goal.
 @comment node-name, next, previous, up
 @chapter Requirements
 
-Although $classpath is following an open development model where input from
+Although Classpath is following an open development model where input from
 developers is welcome, there are certain base requirements that need to
 be met by anyone who wants to contribute code to this project.  They are
 mostly unfortunately dictated by legal requirements and are not
-arbitrary restrictions chosen by the $classpath team.
+arbitrary restrictions chosen by the Classpath team.
 
 You will need to adhere to the following things if you want to donate
-code to the $classpath project:
+code to the Classpath project:
 
 @itemize @bullet
 @item
 @b{Never under any circumstances refer to Sun's code while working on
-$classpath.}  It is best if you have never looked at Sun's code at all.  To
+Classpath.}  It is best if you have never looked at Sun's code at all.  To
 reduce temptation, it would be best if you deleted the @samp{src.zip}
 file from your JDK distribution.  If you have signed Sun's
-non-disclosure statement, then you unfortunately cannot work on $classpath code
+non-disclosure statement, then you unfortunately cannot work on Classpath code
 at all.  If you have any reason to believe that your code might be
 ``tainted'', please say something on the mailing list before writing
 anything.  If it turns out that your code was not developed in a clean
@@ -117,24 +117,24 @@ don't let that happen.
 @item
 @b{Never decompile Sun's class libraries.}  While the wording of the
 license in Sun's JDK version 1.2 has changed, it not acceptable, under
-any circumstances, for a person working on $classpath to decompile Sun's class
-libraries.  Allowing the use of decompilation in the $classpath project would
+any circumstances, for a person working on Classpath to decompile Sun's class
+libraries.  Allowing the use of decompilation in the Classpath project would
 open up a giant can of legal worms, which we wish to avoid.
 
 @item
-$classpath is licensed under the terms of the
+Classpath is licensed under the terms of the
 @uref{http://www.fsf.org/copyleft/lgpl.html,GNU Library General Public
 License}.  To preserve freedom for all users and to maintain uniform
-licensing of $classpath, we will not accept code into the main distribution
+licensing of Classpath, we will not accept code into the main distribution
 that is not licensed under these terms.
 
 @item
-$classpath is GNU software and this project is being officially sponsored by
+Classpath is GNU software and this project is being officially sponsored by
 the @uref{http://www.fsf.org/,Free Software Foundation}.  Because of this,
-the FSF will hold copyright to all code developed as part of $classpath.  This
+the FSF will hold copyright to all code developed as part of Classpath.  This
 will allow them to pursue copyright violators in court, something an
 individual developer may neither have the time nor resources to do.
-Everyone contributing code to $classpath will need to sign a copyright assignment
+Everyone contributing code to Classpath will need to sign a copyright assignment
 statement.  Additionally, if you are employed as a programmer, your
 employer may need to sign a copyright waiver disclaiming all interest in
 the software.  This may sound harsh, but unfortunately, it is the only
@@ -145,8 +145,8 @@ way to ensure that the code you write is legally yours to distribute.
 @comment node-name, next, previous, up
 @chapter Volunteering to Help
 
-The $classpath project needs volunteers to help us out.  People are needed to
-write unimplemented Java packages, to test $classpath on various platforms, and to
+The Classpath project needs volunteers to help us out.  People are needed to
+write unimplemented Java packages, to test Classpath on various platforms, and to
 port it to platforms that are currently unsupported.
 
 While pretty much all contributions are welcome (but see 
@@ -183,12 +183,12 @@ going back at the end and adding them.
 @comment node-name, next, previous, up
 @chapter Project Goals
 
-The goal of the $classpath project is to produce a  
+The goal of the Classpath project is to produce a  
 @uref{http://www.fsf.org/philosophy/free-sw.html,free} implementation
 of the standard class library for Java.  However, there are other more
 specific goals as to which platforms should be supported.
 
-$classpath is targeted to support the following operating systems:
+Classpath is targeted to support the following operating systems:
 
 @enumerate
 @item
@@ -206,10 +206,10 @@ Other platform such as MS-Windows.
 @end enumerate
 
 While free operating systems are the top priority, the other priorities 
-can shift depending on whether or not there is a volunteer to port $classpath
+can shift depending on whether or not there is a volunteer to port Classpath
 to those platforms and to test releases.
 
-Eventually we hope the $classpath will support all JVM's that provide JNI
+Eventually we hope the Classpath will support all JVM's that provide JNI
 support.  However, the top priority is free JVM's.  The JVM support
 priority list is:
 
@@ -229,7 +229,7 @@ comes forward to port, maintain, and test releases for a particular JVM.
 Kaffe is now developing its own class library, so the priority of supporting
 that platform is not nearly as high as for Japhar.
 
-The initial target version for $classpath is Java 1.1.  Java 1.2 can be 
+The initial target version for Classpath is Java 1.1.  Java 1.2 can be 
 implemented if desired, but please do not create classes that depend
 on 1.2 features in other packages.
 
@@ -237,7 +237,7 @@ on 1.2 features in other packages.
 @comment node-name, next, previous, up
 @chapter Programming Tools
 
-If you want to hack on $classpath, you should download, install,
+If you want to hack on Classpath, you should download, install,
 and familiarize yourself with the following tools:
 
 @itemize @bullet
@@ -271,7 +271,7 @@ Here is a brief description of the purpose of those tools.
 
 @item CVS  
 A version control system that maintains a centralized Internet
-repository of all code in the $classpath system.  Access to the repository
+repository of all code in the Classpath system.  Access to the repository
 requires an account.  Contact Paul Fisher (@email{rao@@gnu.org}) for
 details.
 
@@ -326,7 +326,7 @@ indentation style if you consider it wrong as I do.
 @comment node-name, next, previous, up
 @chapter Programming Goals
 
-When you write code for $classpath, write with three things in mind, and in the
+When you write code for Classpath, write with three things in mind, and in the
 following order: portability, robustness, and efficiency.
 
 If efficiency breaks portability or robustness, then don't do it the
@@ -357,7 +357,7 @@ VMs, even on a given platform.  The APIs Sun has created just do not
 give the flexibility required to do that if you are implementing the
 java.* hierarchy.
 
-The native libraries we use in $classpath are JNI, JVMDI, and VMI.  JNI you
+The native libraries we use in Classpath are JNI, JVMDI, and VMI.  JNI you
 should be familiar with; introduced in Java 1.1, it is the basis for
 our native code.  JVMDI is a 1.2 concoction, and thus we can only
 support it on 1.1 VMs that we have source access to (i.e. Japhar and
@@ -365,7 +365,7 @@ Kaffe).  VMI is our own invention entirely; it is where we push the
 VM-specific functionality that JNI and JVMDI do not support.
 
 However, using JVMDI and VMI in 1.1 breaks the "ideal goal" for the project.
-With these two in the mix, $classpath's portability becomes:
+With these two in the mix, Classpath's portability becomes:
 
 @enumerate
 @item
@@ -391,7 +391,7 @@ There is another issue, however, and that is the efficiency issue.  Some
 things can be done using JNI only, but they are a ton slower than they would
 be if you used the VMI or talked directly to the VM.
 
-In these cases, the preferred method in $classpath is to create a @emph{library}.
+In these cases, the preferred method in Classpath is to create a @emph{library}.
 Hide the implementation of the functions from the caller.  If the library
 can be written using only JNI, no matter how inefficient, you should write a
 version of it for that.  Portability, remember, is the ultimate goal, and
@@ -452,7 +452,7 @@ int strlen(String foo) throws NullPointerException @{
 @end example
 
 Explicitly comparing foo to null is unnecessary, as the virtual machine
-will throw a NullPointerException when length() is invoked.  $classpath is
+will throw a NullPointerException when length() is invoked.  Classpath is
 designed to be as fast as possible -- every optimization, no matter how
 small, is important.
 
@@ -506,7 +506,7 @@ data with instances of a class.  This is a library Paul built from scratch.
 @comment node-name, next, previous, up
 @chapter Specification Sources
 
-There are a number of specification sources to use when working on $classpath.
+There are a number of specification sources to use when working on Classpath.
 In general, the only place you'll find your classes specified is in the
 JavaDoc documentation or possibly in the corresponding white paper.  In
 the case of java.lang, java.io and java.util, you should look at the
@@ -560,7 +560,7 @@ documentation.  This is true in general.
 @comment node-name, next, previous, up
 @chapter Directory and File Naming Conventions
 
-The $classpath directory structure is laid out in the following manner:
+The Classpath directory structure is laid out in the following manner:
 
 @example
 jcl
@@ -639,7 +639,7 @@ for java.util.zip should go in native/java.util.zip.
 
 @item test
 This directory contains test packages written for DejaGnu used
-to test releases of $classpath.  The test scripts for a given package go in the
+to test releases of Classpath.  The test scripts for a given package go in the
 subdirectory that is the same as the ``flattened'' name of the package.  For
 example, test scripts for java.util.zip should go in test/java.util.zip
 
