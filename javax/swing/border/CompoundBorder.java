@@ -51,6 +51,9 @@ import java.awt.Insets;
 public class CompoundBorder
   extends AbstractBorder
 {
+  static final long serialVersionUID = 9054540377030555103L;
+
+
   /**
    * The inside border, which is painted between the bordered
    * Component and the outside border. It is valid for
@@ -142,7 +145,7 @@ public class CompoundBorder
                           int x, int y, int width, int height)
   {
     /* If there is an outside border, paint it and reduce the
-     * boundig box by its insets.
+     * bounding box by its insets.
      */
     if (outsideBorder != null)
     {
