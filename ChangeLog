@@ -1,3 +1,8 @@
+2004-11-26  Sven de Marothy  <sven@physto.se>
+
+        * gnu/java/awt/peer/gtk/GdkGraphics2D.java
+        (drawRaster): Set alpha component to opaque if image has no alpha
+	
 2004-11-26  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/io/File.java
