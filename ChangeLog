@@ -1,4 +1,10 @@
+2002-12-24  Mark Wielaard  <mark@klomp.org>
+
+	* java/net/URLStreamHandler.java (toExternalForm): Ignore port
+	if zero or smaller.
+
 2002-12-24  Daryl Lee <dolee@sources.redhat.com>
+
 	* java/io/PipedWriter.java: corrected connect(); test to check if
 	already connected was invalid.
 
