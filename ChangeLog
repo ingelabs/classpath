@@ -1,5 +1,14 @@
 2001-10-18  Eric Blake  <ebb9@email.byu.edu>
 
+	* java/util/BitSet.java: Improve javadoc.
+	(cardinality(), clear(), clear(int, int), flip(int)),
+	(flip(int, int), get(int, int), intersects(BitSet), isEmpty()),
+	(nextClearBit(int), nextSetBit(int), set(int, boolean)),
+	(set(int, int), set(int, int, boolean)): Add new JDK 1.4 methods.
+	(clone): Fix so subclasses clone correctly.
+
+2001-10-18  Eric Blake  <ebb9@email.byu.edu>
+
 	* java/util/AbstractCollection.java: Improve javadoc.
 	(AbstractCollection()): Make constructor protected.
 	(equals(Object, Object), hashCode(Object)): Add utility methods.
