@@ -1,3 +1,8 @@
+2002-03-26  Sascha Brawer  <brawer@acm.org>
+
+	* java/util/logging/Level.java (SEVERE, WARNING, INFO, CONFIG,
+	FINE, FINER, FINEST): Same intValue as Sun J2SE 1.4.
+
 2002-03-25  Eric Blake  <ebb9@email.byu.edu>
 	    Fred Gray  <fegray@npl.uiuc.edu>
 
@@ -333,7 +338,7 @@
 	* java/awt/geom/Rectangle2D.java: Update to 1.4.
 	* java/awt/geom/RectangularShape.java: Update to 1.4.
 
-2002-03-21  Sascha Brawer  <brawer@localhost>
+2002-03-21  Sascha Brawer  <brawer@acm.org>
 
 	* java/util/zip/ZipFile.java (OPEN_DELETE): Match constant
 	value given by Sun J2SE 1.4 Javadoc.
@@ -753,6 +758,25 @@
 	* java/util/PropertyPermission.java: Fix implication bugs.
 	* java/util/PropertyPermissionCollection.java: Ditto.
 
+2002-03-04  Sascha Brawer  <brawer@acm.org>
+
+	* java/util/logging/ConsoleHandler.java: Initial check-in.
+	* java/util/logging/ErrorManager.java: Initial check-in.
+	* java/util/logging/FileHandler.java: Initial check-in.
+	* java/util/logging/Filter.java: Initial check-in.
+	* java/util/logging/Formatter.java: Initial check-in.
+	* java/util/logging/Handler.java: Initial check-in.
+	* java/util/logging/Level.java: Initial check-in.
+	* java/util/logging/LogManager.java: Initial check-in.
+	* java/util/logging/LogRecord.java: Initial check-in.
+	* java/util/logging/Logger.java: Initial check-in.
+	* java/util/logging/LoggingPermission.java: Initial check-in.
+	* java/util/logging/MemoryHandler.java: Initial check-in.
+	* java/util/logging/SimpleFormatter.java: Initial check-in.
+	* java/util/logging/SocketHandler.java: Initial check-in.
+	* java/util/logging/StreamHandler.java: Initial check-in.
+	* java/util/logging/XMLFormatter.java: Initial check-in.
+	
 2002-03-03 Mark Wielaard <mark@klomp.org>
 
 	* THANKYOU: Add Sascha Brawer
