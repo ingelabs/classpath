@@ -49,7 +49,7 @@ _javaio_open(JNIEnv *env, jstring name, int flags)
   char *str_name;
   int fd;
 
-  str_name = _javaio_jstring_to_cstring(env, name); 
+  str_name = JCL_jstring_to_cstring(env, name); 
   if (!str_name)
     return(-1);
 

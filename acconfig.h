@@ -18,8 +18,8 @@
 /* #undef PACKAGE */
 /* #undef VERSION */
 
-/* Define as 1 if building with debugging code included, this is not -g */
-#define DEBUG 0
+/* Define if building with debugging code included, this is not -g */
+#undef DEBUG
 
 /* Define if you have int32_t and uint32_t */
 #undef HAVE_INT32_DEFINED

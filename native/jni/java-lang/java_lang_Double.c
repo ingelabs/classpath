@@ -27,6 +27,7 @@ executable file might be covered by the GNU General Public License. */
 
 #include <config.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 
 #include "mprec.h"
@@ -35,16 +36,15 @@ executable file might be covered by the GNU General Public License. */
 
 #include "java_lang_Double.h"
 
+static jmethodID isNaNID;
+static jdouble NEGATIVE_INFINITY;
+static jdouble POSITIVE_INFINITY;
 
 /*
  * Class:     java_lang_Double
  * Method:    initIDs
  * Signature: ()
  */
-jmethodID isNaNID;
-jdouble NEGATIVE_INFINITY;
-jdouble POSITIVE_INFINITY;
-
 JNIEXPORT void JNICALL Java_java_lang_Double_initIDs
   (JNIEnv *env, jclass cls)
 {
@@ -71,6 +71,11 @@ JNIEXPORT void JNICALL Java_java_lang_Double_initIDs
     }
   POSITIVE_INFINITY = (*env)->GetStaticDoubleField(env, cls, posInfID);
   NEGATIVE_INFINITY = (*env)->GetStaticDoubleField(env, cls, negInfID);
+
+#ifdef DEBUG
+  fprintf(stderr, "java.lang.Double.initIDs() POSITIVE_INFINITY = %g\n", POSITIVE_INFINITY);
+  fprintf(stderr, "java.lang.Double.initIDs() NEGATIVE_INFINITY = %g\n", NEGATIVE_INFINITY);
+#endif
 } 
 
 /*
@@ -133,10 +138,14 @@ JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
   char *s, *d;
   int i;
 
+#ifdef DEBUG
+  fprintf (stderr, "java.lang.Double.toString (%g)\n", value);
+#endif
+
   if ((*env)->CallStaticBooleanMethod(env, cls, isNaNID, value))
     return (*env)->NewStringUTF(env, "NaN");
   
-  if ( ((jlong) value) == ((jlong)POSITIVE_INFINITY))
+  if (value == POSITIVE_INFINITY)
     return (*env)->NewStringUTF(env, "Infinity");
 
   if (value == NEGATIVE_INFINITY)

@@ -1,3 +1,14 @@
+2001-11-12  C. Brian Jones <cbj@gnu.org>
+	* native/jni/java-io/javaio.c (_javaio_open): use 
+	JCL_jstring_to_cstring instead of old undefined method
+	* acconfig.h: changed #define DEBUG 0 to #undef DEBUG to match
+	current usage in C source
+	* native/jni/java-lang/java_lang_Double.c: isNaNID, 
+	NEGATIVE_INFINITY, POSITIVE_INFINITY all made static
+	(initIDs): add debugging aids
+	(toString): add debugging aids; compare value and POSITIVE_INFINITY
+	directly to fix bug found using Mauve
+
 2001-11-11  Mark Wielaard  <mark@klomp.org>
 
 	* doc/www.gnu.org/Makefile: Make it work with GNU sed 3.02 and
