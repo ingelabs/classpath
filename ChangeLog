@@ -1,5 +1,26 @@
 2004-04-26  Michael Koch  <konqueror@gmx.de>
 
+	* javax/print/attribute/AttributeSetUtilities.java
+	(verifyCategoryForValue): Fixed typo in javadoc.
+	* javax/print/attribute/HashAttributeSet.java
+	(containsKey): Fixed @return tag.
+	(comtainsValue): Likewise.
+	(equals): Likewise.
+	* javax/print/attribute/IntegerSyntax.java
+	(equals): Likewise.
+	* javax/print/attribute/ResolutionSyntax.java
+	(equals): Likewise.
+	(getCrossFeedResolution): Removed unused code.
+	(getFeedResolution): Likewise.
+	* javax/print/attribute/SetOfIntegerSyntax.java
+	(SetOfIntegerSyntax): Fixed HTML entities in javadoc.
+	(equals): Fixed @return tag.
+	* javax/print/attribute/TextSyntax.java
+	(TextSyntax): Take locale into account.
+	(hashCode): Better implementation.
+
+2004-04-26  Michael Koch  <konqueror@gmx.de>
+
 	* javax/print/CancelablePrintJob.java,
 	javax/print/Doc.java,
 	javax/print/DocFlavor.java,

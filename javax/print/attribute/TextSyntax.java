@@ -57,12 +57,12 @@ public abstract class TextSyntax implements Cloneable, Serializable
    * @param value the value for this syntax
    * @param locale the locale to use
    *
-   * @exception NullPointerException if value is null
+   * @exception NullPointerException if value and/or locale is null
    */
   protected TextSyntax(String value, Locale locale)
   {
-    if (value == null)
-      throw new NullPointerException("value may not be null");
+    if (value == null || locale == null)
+      throw new NullPointerException("value and/or locale may not be null");
 
     this.value = value;
     this.locale = locale;
@@ -95,7 +95,7 @@ public abstract class TextSyntax implements Cloneable, Serializable
    */
   public int hashCode()
   {
-    return value.hashCode() + locale.hashCode();
+    return value.hashCode() ^ locale.hashCode();
   }
 
   /**
