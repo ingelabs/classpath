@@ -185,12 +185,20 @@ public abstract class TextUI
    *        javax.swing.SwingConstants#NORTH} for the up arrow
    *        key, or {@link javax.swing.SwingConstants#SOUTH}
    *        for the down arrow key.
+   *
+   * @throws BadLocationException if <code>pos</code> does not
+   *         designate a valid position in the document model.
+   *
+   * @throws IllegalArgumentException if <code>direction</code>
+   *         is not one of <code>Position.Bias.Forward</code>
+   *         or <code>Position.Biad.Backward</code>.
    */
   public abstract int getNextVisualPositionFrom(JTextComponent tc,
                                                 int pos,
                                                 Position.Bias bias,
                                                 int direction,
-                                                Position.Bias[] outBias);
+                                                Position.Bias[] outBias)
+    throws BadLocationException;
 
 
   /**

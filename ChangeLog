@@ -1,5 +1,9 @@
 2003-06-26  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/swing/plaf/TextUI.java (getNextVisualPositionFrom):
+	Declare to throw BadLocationException. Documented in JavaDoc.
+	* javax/swing/plaf/basic/BasicTextUI.java: Likewise.
+
 	* javax/swing/plaf/TreeUI.java (getClosesPathForLocation): Method
 	renamed to getClosestPathForLocation.
 	* javax/swing/plaf/basic/BasicTreeUI.java (getClosesPathForLocation):
