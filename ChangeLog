@@ -1,6 +1,13 @@
+2005-02-06  Mark Wielaard  <mark@klomp.org>
+
+	Fix suggested by Timo Lindfors <timo.lindfors@iki.fi>
+	* java/util/regex/Pattern.java (split(CharSequence,int)):
+	Fix while empties > 0 loops.
+
 2005-02-05  C. Brian Jones  <cbj@gnu.org>
 
-	* gnu/java/rmi/registry/: added back to classpath again, used by core library
+	* gnu/java/rmi/registry/: Added back to classpath again, used by core
+	library.
 	* gnu/java/rmi/registry/RegistryImpl.java: ditto
 	* gnu/java/rmi/registry/RegistryImpl_Skel.java: ditto
 	* gnu/java/rmi/registry/RegistryImpl_Stub.java: ditto
