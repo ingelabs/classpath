@@ -17,6 +17,10 @@ New in release 0.10 (in preparation)
 * Double.toString() and Float.toString() now work properly on 64-bit 
   Linux/PowerPC systems.
 
+* The reference implementation of VMThread.holdsLock(Object) now has
+  a default implementation written in java. For efficiency and to
+  prevent spurious wakeups a real 'native' runtime version can be supplied.
+
 New in release 0.09 (2004/02/02)
 
 * Includes updated GNU JAXP version from 2004-02-01.

@@ -1,5 +1,5 @@
 /* VMThread -- VM interface for Thread of executable code
-   Copyright (C) 2003 Free Software Foundation
+   Copyright (C) 2003, 2004 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -58,7 +58,6 @@ package java.lang;
  * <li>static native void yield();
  * <li>static native void sleep(long ms, int ns) throws InterruptedException;
  * <li>static native boolean interrupted();
- * <li>static native boolean holdsLock(Object obj);
  * </ul>
  * All other methods may be implemented to make Thread handling more efficient
  * or to implement some optional (and sometimes deprecated) behaviour. Default
@@ -66,6 +65,7 @@ package java.lang;
  * for a specific VM.
  * 
  * @author Jeroen Frijters (jeroen@frijters.net)
+ * @author Dalibor Topic (robilad@kaffe.org)
  */
 final class VMThread
 {
@@ -389,5 +389,22 @@ final class VMThread
      * @return true if the current thread is currently synchronized on obj
      * @throws NullPointerException if obj is null
      */
-    static native boolean holdsLock(Object obj);
+    static boolean holdsLock(Object obj) 
+    {
+      /* Use obj.notify to check if the current thread holds
+       * the monitor of the object.
+       * If it doesn't, notify will throw an exception.
+       */
+      try 
+	{
+	  obj.notify();
+	  // okay, current thread holds lock
+	  return true;
+	}
+      catch (IllegalMonitorStateException e)
+	{
+	  // it doesn't hold the lock
+	  return false;
+	}
+    }
 }
