@@ -4,6 +4,11 @@ Runtime interface changes:
   system properties initialization in VMRuntime. Note that it is
   now the VMs responsibility to set one additional property:
   gnu.cpu.endian should be set to "big" or "little".
+* VMRuntime.nativeGetLibname() has been renamed to VMRuntime.mapLibraryName()
+  and has only one argument, the name of the library.
+* String and StringBuffer now call VMSystem.arraycopy() directly and don't
+  go through java.lang.System. Be careful to not initialize java.lang.System
+  early in the bootstrap sequence in your VM runtime interface classes.
 
 New in release 0.12 (Nov 14, 2004)
 

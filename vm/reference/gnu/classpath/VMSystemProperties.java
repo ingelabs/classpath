@@ -91,5 +91,7 @@ class VMSystemProperties
      * a good idea to process the properties specified on the command
      * line here.
      */
-    static native void postInit(Properties properties);
+    static void postInit(Properties properties)
+    {
+    }
 }

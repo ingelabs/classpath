@@ -1,5 +1,16 @@
 2004-12-07  Mark Wielaard  <mark@klomp.org>
 
+	* NEWS: Clarify VMRuntime and String/StringBuffer VMSystem usage.
+
+	* vm/reference/gnu/classpath/VMSystemProperties.java (postInit):
+	Provide empty default implementation.
+
+	* java/lang/String.java: Replace all usage of System.arraycopy() with
+	VMSystem.arraycopy().
+	* java/lang/StringBuffer.java: Likewise.
+
+2004-12-07  Mark Wielaard  <mark@klomp.org>
+
 	* LICENSE: Add text about org.ietf.jgss documentation.
 	* org/ietf/jgss/ChannelBinding.java: Merge top two comment blocks.
 	* org/ietf/jgss/GSSCredential.java: Likewise.
