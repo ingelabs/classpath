@@ -406,6 +406,22 @@ remove(WindowListener lis, WindowListener old)
   *
   * @return The resulting listener after the remove operation.
   */
+public static TextListener
+remove(TextListener lis, TextListener old)
+{
+  return((TextListener)removeInternal(lis, old));
+}
+
+/*************************************************************************/
+
+/**
+  * Removes the listener <code>old</code> from the listener <code>lis</code>.
+  *
+  * @param lis The listener to remove <code>old</code> from.
+  * @param old The listener to remove.
+  *
+  * @return The resulting listener after the remove operation.
+  */
 public static ActionListener
 remove(ActionListener lis, ActionListener old)
 {
