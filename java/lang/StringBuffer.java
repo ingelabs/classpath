@@ -45,10 +45,7 @@ public final class StringBuffer implements java.io.Serializable {
     //  capacity, just return
     if (minimumCapacity <= 0 || str.length >= minimumCapacity) return;
 
-    // Commented out until Math comes back
-    // int newSize = Math.max(minimumCapacity, str.length * 2 + 2);
-    int currentCapacity = str.length * 2 + 2;
-    int newSize = minimumCapacity > currentCapacity ? minimumCapacity : currentCapacity;
+    int newSize = Math.max(minimumCapacity, str.length * 2 + 2);
     char newArray[] = new char[newSize];
     System.arraycopy(str, 0, newArray, 0, len);
     str = newArray;
