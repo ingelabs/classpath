@@ -7,3 +7,4 @@
 ^../gnu/javax/swing/plaf/gtk/.*$
 ^../java/awt/datatransfer/DataFlavor.java$
 ^../java/awt/AWTEvent.java$
+^../gnu/java/awt/peer/gtk/.*$
