@@ -1,3 +1,8 @@
+2004-03-21  Ito Kazumitsu <kaz@maczuka.gcd.org>
+
+        * libraries/javalib/java/net/ServerSocket.java
+        (accept): Close the socket when error occured.
+
 2004-03-21  Norbert Frese  <postfach@nfrese.net>
 
 	* gnu/java/rmi/server/RMIIncomingThread.java: New file.
