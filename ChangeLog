@@ -1,3 +1,8 @@
+2005-03-16  Archie Cobbs  <archie@dellroad.org>
+
+	* native/jni/java-nio/java_nio_VMDirectByteBuffer.c: use
+	global native reference to wrap persistent jclass variable.
+
 2005-03-16  Mark Wielaard  <mark@klomp.org>
 
 	* doc/vmintegration.texinfo: Change input start to \input.
