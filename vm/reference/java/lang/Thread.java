@@ -252,12 +252,18 @@ public class Thread implements Runnable
   {
     // Bypass System.getSecurityManager, for bootstrap efficiency.
     SecurityManager sm = Runtime.securityManager;
+    Thread current = currentThread();
     if (group == null)
       {
         if (sm != null)
           group = sm.getThreadGroup();
         if (group == null)
-          group = currentThread().group;
+        {
+          if (current == null)
+            group = ThreadGroup.root;
+          else
+            group = current.group;
+        }
       }
     else if (sm != null)
       sm.checkAccess(group);
@@ -266,9 +272,16 @@ public class Thread implements Runnable
     // Use toString hack to detect null.
     this.name = name.toString();
     this.toRun = toRun;
-    Thread current = currentThread();
-    priority = current.priority;
-    daemon = current.daemon;
+    if (current == null)
+      {
+      priority = NORM_PRIORITY;
+      daemon = false;
+      }
+    else
+      {
+      priority = current.priority;
+      daemon = current.daemon;
+      }
     nativeInit(size);
 
     group.addThread(this);

@@ -1,10 +1,14 @@
+2002-10-03  Stephen Crawley  <crawley@dstc.edu.au>
+
+	* vm/reference/java/lang/Thread.java (Thread): Use root ThreadGroup,
+	NORM_PRIORITY and set daemon flag to false when currentThread == null.
+
 2002-10-03  Mark Wielaard  <mark@klomp.org>
 
 	* configure.in: Set VERSION to 0.04+cvs.
 	* gnu/classpath/Configuration.java (CLASSPATH_VERSION): New field.
 	* java/lang/System.java (static): Set gnu.classpath.version property.
 
-	* java/awt/CardLayout.java: Added serialVersionUID.
 2002-10-02  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/CardLayout.java: Added serialVersionUID.
