@@ -1,5 +1,10 @@
 2005-01-20  Mark Wielaard  <mark@klomp.org>
 
+	* java/util/Currency.java (Currency(Locale)): Add Locale to
+	IllegalArgumentException message.
+
+2005-01-20  Mark Wielaard  <mark@klomp.org>
+
 	* java/awt/BasicStroke.java (hashCode): Implement.
 	(equals): Document.
 
