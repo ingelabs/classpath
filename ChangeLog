@@ -1,6 +1,6 @@
 2003-07-01  Michael Koch  <konqueror@gmx.de>
 
-	* java/awt/Component.java
+	* java/awt/Container.java
 	(add): Revised documentation.
 	* java/awt/GridBagLayout.java:
 	Yippie, 90% are done. Now are comming the 10% work which take 90% of
