@@ -1,5 +1,10 @@
 2003-07-28  Torsten Rupp  <rupp@lisa.aicas.com>
 
+	* include/jni.h.in:
+	removed obsoleted constants JNI_JLONG_CONST*
+
+2003-07-28  Torsten Rupp  <rupp@lisa.aicas.com>
+
 	* native/jni/java-net/java_net_PlainDatagramSocketImpl.c:
 	improved some exception messages in Java_java_net_PlainDatagramSocketImpl_receive,
         Java_java_net_PlainDatagramSocketImpl_sendto
