@@ -21,21 +21,32 @@
 package java.util;
 
 /**
- * VectorListEnumerator provides an Enumeration for Vectors
+ * ArrayEnumeration provides an Enumeration datatype that can be constructed
+ * from any array
  */
 public class ArrayEnumeration implements Enumeration {
   protected int index;
   protected Object[] elements;
 
+  /**
+   * Constructs a new ArrayEnumeration based on the data in the array 
+   * </b>data</b>.
+   */
   public ArrayEnumeration(Object[] data) {
     elements=data;
     index=0;
   }
 
+  /**
+   * @see java.util.Enumeration#hasMoreElements
+   */
   public boolean hasMoreElements() {
     return index < elements.length - 1;
   }
 
+  /**
+   * @see java.util.Enumeration#nextElement
+   */
   public Object nextElement() {
     if (index >= elements.length) throw new NoSuchElementException();
     return elements[index++];
