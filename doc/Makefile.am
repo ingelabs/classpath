@@ -1,3 +1,5 @@
+SUBDIRS = api
+
 info_TEXINFOS = hacking.texinfo vmintegration.texinfo
 
 %.dvi : %.texinfo

@@ -1,3 +1,24 @@
+2002-12-20  C. Brian Jones  <cbj@gnu.org>
+
+	* BUGS: updated Savannah URL
+	* doc/api: new directory
+	* doc/api/.cvsignore: new file
+	* doc/api/classpath-copyright.xml: new directory
+	* doc/api/Makefile.am: new file
+	* configure.in: added doc/api/Makefile to output, include
+	CLASSPATH_ENABLE_GJDOC
+	* acinclude.m4: added function CLASSPATH_ENABLE_GJDOC
+	* doc/Makefile.am: added api to SUBDIRS
+	* doc/xslt: new directory
+	* doc/xslt/gjdocxml2html.xsl: new file
+	* doc/xslt/common: new directory
+	* doc/xslt/common/gjdochtml.css: new file
+	* doc/xslt/common/images: new directory
+	* doc/xslt/common/images/tree-branch.png: new file
+	* doc/xslt/common/images/tree-empty.png: new file
+	* doc/xslt/common/images/tree-final-node.png: new file
+	* doc/xslt/common/images/tree-node.png: new file
+
 2002-12-20  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/nio/FileChannelImpl.java

@@ -557,3 +557,32 @@ AC_DEFUN(CLASSPATH_WITH_ZIP,
   AC_SUBST(ZIP)
   AM_CONDITIONAL(HAVE_ZIP, test "x${ZIP}" != x)
 ])
+
+dnl -----------------------------------------------------------
+dnl Enable generation of API documentation, assumes gjdoc
+dnl has been compiled to an executable or a suitable script
+dnl is in your PATH
+dnl -----------------------------------------------------------
+AC_DEFUN(CLASSPATH_ENABLE_GJDOC,
+[
+  AC_ARG_ENABLE(gjdoc,
+  [  --enable-gjdoc           enable API doc. generation [default=no]],
+  [
+    case "${enableval}" in
+      yes) ENABLE_GJDOC=yes ;;
+      no) ENABLE_GJDOC=no ;;
+      *) ENABLE_GJDOC=yes ;;
+    esac
+    if test "x${ENABLE_GJDOC}" = xyes; then
+      AC_PATH_PROG(GJDOC, gjdoc)
+      AC_PATH_PROG(FIND, find)
+      AC_PATH_PROG(CP, cp)
+      AC_PATH_PROG(XMLCATALOG, xmlcatalog)
+      AC_PATH_PROG(XSLTPROC, xsltproc)
+    fi
+  ],
+  [ENABLE_GJDOC=no])
+
+  AM_CONDITIONAL(CREATE_API_DOCS, test "x${ENABLE_GJDOC}" = xyes)
+])
+
