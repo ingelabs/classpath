@@ -1,3 +1,8 @@
+2002-11-25  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/ref/Reference.java (enqueue): Return false if already
+	enqueued.
+
 2002-11-25  Michael Koch <konqueror@gmx.de>
 
 	* gnu/java/nio/ByteBufferImpl.java
@@ -70,7 +75,7 @@
 	(getFloat): Removed.
 	(putFloat): Removed.
 	
-cvs up2002-11-23  Mark Wielaard  <mark@klomp.org>
+2002-11-23  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/net/protocol/jar/JarURLConnection.java (READBUFSIZE): 4K.
 	(get): Only write out as much bytes as we actaully read in.
