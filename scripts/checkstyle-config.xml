@@ -26,11 +26,11 @@ mailing list first and probably documented in the hacking guide.
     <module name="JavadocVariable">
       <property name="scope" value="protected"/>
     </module>
+    -->
     <module name="JavadocStyle">
       <property name="checkFirstSentence" value="false"/>
       <property name="checkHtml" value="true"/>
     </module>
-    -->
 
     <!-- File header checks -->
     <module name="RegexpHeader">
@@ -81,9 +81,11 @@ mailing list first and probably documented in the hacking guide.
     <module name="EmptyStatement"/>
     <module name="EqualsHashCode"/>
     <module name="HiddenField"/>
+    -->
     <module name="IllegalInstantiation">
       <property name="classes" value="java.lang.Boolean"/>
     </module>
+    <!--
     <module name="InnerAssignment"/>
     <module name="MagicNumber"/>
     <module name="RedundantThrows"/>

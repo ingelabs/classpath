@@ -9,6 +9,15 @@ mailing list first and probably documented in the hacking guide.
 
 -->
 <suppressions>
+  <suppress checks="AvoidStarImport"
+            files="gnu/java/awt/peer/gtk/GtkToolkit.java"
+	    lines="48,59"/>
+  <suppress checks="IllegalInstantiation"
+            files="java/lang/Boolean.java"
+	    lines="65,73"/>
+  <suppress checks="IllegalInstantiation"
+            files="java/util/logging/LogManager.java"
+	    lines="674"/>
   <suppress checks="RegexpHeader"
 	    files="javax/rmi/CORBA/SystemException.java"
 	    lines="1"/>

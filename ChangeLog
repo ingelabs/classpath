@@ -1,5 +1,11 @@
 2005-02-16  Michael Koch  <konqueror@gmx.de>
 
+	* scripts/checkstyle-config.xml: Activate JavadocStyle and
+	IllegalInstantiation tests.
+	* scripts/checkstyle-suppressions.xml: Suppress some more errors.
+
+2005-02-16  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/awt/peer/gtk/GThreadNativeMethodRunner.java,
 	gnu/java/awt/peer/gtk/GdkFontPeer.java,
 	gnu/java/awt/peer/gtk/GdkGlyphVector.java,
