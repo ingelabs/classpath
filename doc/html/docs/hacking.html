@@ -1,3 +1,11 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.52
+     from hacking.texinfo on 3 January 1999 -->
+
+<TITLE>GNU Classpath Hacker's Guide</TITLE>
+</HEAD>
+<BODY bgcolor="#FFFFFF">
 <H1>GNU Classpath Hacker's Guide</H1>
 <ADDRESS>Aaron M. Renn</ADDRESS>
 <ADDRESS>Paul N. Fisher</ADDRESS>
@@ -6,24 +14,25 @@
 <P><HR><P>
 <H1>Table of Contents</H1>
 <UL>
-<LI><A NAME="TOC1" HREF="hacking.shtml#SEC1">Introduction</A>
-<LI><A NAME="TOC2" HREF="hacking.shtml#SEC2">Requirements</A>
-<LI><A NAME="TOC3" HREF="hacking.shtml#SEC3">Volunteering to Help</A>
-<LI><A NAME="TOC4" HREF="hacking.shtml#SEC4">Project Goals</A>
-<LI><A NAME="TOC5" HREF="hacking.shtml#SEC5">Programming Tools</A>
-<LI><A NAME="TOC6" HREF="hacking.shtml#SEC6">Programming Standards</A>
-<LI><A NAME="TOC7" HREF="hacking.shtml#SEC7">Programming Goals</A>
-<LI><A NAME="TOC8" HREF="hacking.shtml#SEC8">Portability</A>
-<LI><A NAME="TOC9" HREF="hacking.shtml#SEC9">Robustness</A>
-<LI><A NAME="TOC10" HREF="hacking.shtml#SEC10">Java Efficiency</A>
-<LI><A NAME="TOC11" HREF="hacking.shtml#SEC11">Native Efficiency</A>
-<LI><A NAME="TOC12" HREF="hacking.shtml#SEC12">Specification Sources</A>
-<LI><A NAME="TOC13" HREF="hacking.shtml#SEC13">Directory and File Naming Conventions</A>
+<LI><A NAME="TOC1" HREF="hacking.html#SEC1">Introduction</A>
+<LI><A NAME="TOC2" HREF="hacking.html#SEC2">Requirements</A>
+<LI><A NAME="TOC3" HREF="hacking.html#SEC3">Volunteering to Help</A>
+<LI><A NAME="TOC4" HREF="hacking.html#SEC4">Project Goals</A>
+<LI><A NAME="TOC5" HREF="hacking.html#SEC5">Programming Tools</A>
+<LI><A NAME="TOC6" HREF="hacking.html#SEC6">Programming Standards</A>
+<LI><A NAME="TOC7" HREF="hacking.html#SEC7">Programming Goals</A>
+<LI><A NAME="TOC8" HREF="hacking.html#SEC8">Portability</A>
+<LI><A NAME="TOC9" HREF="hacking.html#SEC9">Robustness</A>
+<LI><A NAME="TOC10" HREF="hacking.html#SEC10">Java Efficiency</A>
+<LI><A NAME="TOC11" HREF="hacking.html#SEC11">Native Efficiency</A>
+<LI><A NAME="TOC12" HREF="hacking.html#SEC12">Specification Sources</A>
+<LI><A NAME="TOC13" HREF="hacking.html#SEC13">Directory and File Naming Conventions</A>
+<LI><A NAME="TOC14" HREF="hacking.html#SEC14">Character Conversions</A>
 </UL>
 <P><HR><P>
 
 <P>
-Copyright (C) 1998 Free Software Foundation, Inc.
+Copyright (C) 1998, 1999 Free Software Foundation, Inc.
 <P>
 Permission is granted to make and distribute verbatim copies of
 this document provided the copyright notice and this permission notice
@@ -47,7 +56,7 @@ approved by the Free Software Foundation.
 
 
 
-<H1><A NAME="SEC1" HREF="hacking.shtml#TOC1">Introduction</A></H1>
+<H1><A NAME="SEC1" HREF="hacking.html#TOC1">Introduction</A></H1>
 
 <P>
 The Classpath Project is a dedicated to providing a 100% free, clean
@@ -68,7 +77,7 @@ working towards a common goal.
 </P>
 
 
-<H1><A NAME="SEC2" HREF="hacking.shtml#TOC2">Requirements</A></H1>
+<H1><A NAME="SEC2" HREF="hacking.html#TOC2">Requirements</A></H1>
 
 <P>
 Although Classpath is following an open development model where input
@@ -132,7 +141,7 @@ is legally yours to distribute.
 
 
 
-<H1><A NAME="SEC3" HREF="hacking.shtml#TOC3">Volunteering to Help</A></H1>
+<H1><A NAME="SEC3" HREF="hacking.html#TOC3">Volunteering to Help</A></H1>
 
 <P>
 The Classpath project needs volunteers to help us out.  People are
@@ -143,7 +152,7 @@ unsupported.
 </P>
 <P>
 While pretty much all contributions are welcome (but see 
-see section <A HREF="hacking.shtml#SEC2">Requirements</A>) it is always preferable that volunteers do the
+see section <A HREF="hacking.html#SEC2">Requirements</A>) it is always preferable that volunteers do the
 whole job when volunteering for a task.  So when you volunteer to write
 a Java package, please be willing to do the following:
 
@@ -181,7 +190,7 @@ than going back at the end and adding them.
 </P>
 
 
-<H1><A NAME="SEC4" HREF="hacking.shtml#TOC4">Project Goals</A></H1>
+<H1><A NAME="SEC4" HREF="hacking.html#TOC4">Project Goals</A></H1>
 
 <P>
 The goal of the Classpath project is to produce a
@@ -257,7 +266,7 @@ implemented if desired, but please do not create classes that depend on
 </P>
 
 
-<H1><A NAME="SEC5" HREF="hacking.shtml#TOC5">Programming Tools</A></H1>
+<H1><A NAME="SEC5" HREF="hacking.html#TOC5">Programming Tools</A></H1>
 
 <P>
 If you want to hack on Classpath, you should download, install, and
@@ -356,7 +365,7 @@ and java.math.BigDecimal.
 
 
 
-<H1><A NAME="SEC6" HREF="hacking.shtml#TOC6">Programming Standards</A></H1>
+<H1><A NAME="SEC6" HREF="hacking.html#TOC6">Programming Standards</A></H1>
 
 <P>
 For C code, follow the
@@ -381,7 +390,7 @@ to Write Doc Comments for Javadoc</A>.
 </P>
 
 
-<H1><A NAME="SEC7" HREF="hacking.shtml#TOC7">Programming Goals</A></H1>
+<H1><A NAME="SEC7" HREF="hacking.html#TOC7">Programming Goals</A></H1>
 
 <P>
 When you write code for Classpath, write with three things in mind, and
@@ -398,7 +407,7 @@ following chapters will give some hints on how to do this.
 </P>
 
 
-<H1><A NAME="SEC8" HREF="hacking.shtml#TOC8">Portability</A></H1>
+<H1><A NAME="SEC8" HREF="hacking.html#TOC8">Portability</A></H1>
 
 <P>
 The ultimate portability goal would be to create:
@@ -484,7 +493,7 @@ off we are.
 </P>
 
 
-<H1><A NAME="SEC9" HREF="hacking.shtml#TOC9">Robustness</A></H1>
+<H1><A NAME="SEC9" HREF="hacking.html#TOC9">Robustness</A></H1>
 
 <P>
 Native code is very easy to make non-robust.  (That's one reason Java is
@@ -525,7 +534,7 @@ exceptions and return values and throw appropriate exceptions.
 </P>
 
 
-<H1><A NAME="SEC10" HREF="hacking.shtml#TOC10">Java Efficiency</A></H1>
+<H1><A NAME="SEC10" HREF="hacking.html#TOC10">Java Efficiency</A></H1>
 
 <P>
 For methods which explicitly throw a NullPointerException when an
@@ -562,7 +571,7 @@ how small, is important.
 </P>
 
 
-<H1><A NAME="SEC11" HREF="hacking.shtml#TOC11">Native Efficiency</A></H1>
+<H1><A NAME="SEC11" HREF="hacking.html#TOC11">Native Efficiency</A></H1>
 
 <P>
 You might think that using native methods all over the place would give
@@ -626,7 +635,7 @@ built from scratch.
 </P>
 
 
-<H1><A NAME="SEC12" HREF="hacking.shtml#TOC12">Specification Sources</A></H1>
+<H1><A NAME="SEC12" HREF="hacking.html#TOC12">Specification Sources</A></H1>
 
 <P>
 There are a number of specification sources to use when working on
@@ -696,7 +705,7 @@ in general.
 
 
 
-<H1><A NAME="SEC13" HREF="hacking.shtml#TOC13">Directory and File Naming Conventions</A></H1>
+<H1><A NAME="SEC13" HREF="hacking.html#TOC13">Directory and File Naming Conventions</A></H1>
 
 <P>
 The Classpath directory structure is laid out in the following manner:
@@ -832,7 +841,129 @@ java.util.InetAddress would go in native/java.net/InetAddress.c.
 reside in files of any name.
 </UL>
 
+
+
+<H1><A NAME="SEC14" HREF="hacking.html#TOC14">Character Conversions</A></H1>
+
+<P>
+Java uses the Unicode character encoding system internally.  This is a
+sixteen bit (two byte) collection of characters encompassing most of the
+world's written languages.  However, Java programs must often deal with
+outside interfaces that are byte (eight bit) oriented.  For example, a
+Unix file, a stream of data from a network socket, etc.  Beginning with
+Java 1.1, the <CODE>Reader</CODE> and <CODE>Writer</CODE> classes provide functionality
+for dealing with character oriented streams.  The classes 
+<CODE>InputStreamReader</CODE> and <CODE>OutputStreamWriter</CODE> bridge the gap
+between byte streams and character streams by converting bytes to 
+Unicode characters and vice versa.
+
+</P>
+<P>
+In Classpath, <CODE>InputStreamReader</CODE> and <CODE>OutputStreamWriter</CODE>
+rely on an internal class called <CODE>gnu.java.io.EncodingManager</CODE> to load
+translaters that perform the actual conversion.  There are two types of
+converters, encoders and decoders.  Encoders are subclasses of
+<CODE>gnu.java.io.encoder.Encoder</CODE>.  This type of converter takes a Java
+(Unicode) character stream or buffer and converts it to bytes using
+a specified encoding scheme.  Decoders are a subclass of 
+<CODE>gnu.java.io.decoder.Decoder</CODE>.  This type of converter takes a 
+byte stream or buffer and converts it to Unicode characters.  The
+<CODE>Encoder</CODE> and <CODE>Decoder</CODE> classes are subclasses of
+<CODE>Writer</CODE> and <CODE>Reader</CODE> respectively, and so can be used in
+contexts that require character streams, but the Classpath implementation
+currently does not make use of them in this fashion.
+
+</P>
+<P>
+The <CODE>EncodingManager</CODE> class searches for requested encoders and
+decoders by name.  Since encoders and decoders are separate in Classpath,
+it is possible to have a decoder without an encoder for a particular 
+encoding scheme, or vice versa.  <CODE>EncodingManager</CODE> searches the
+package path specified by the <CODE>file.encoding.pkg</CODE> property.  The
+name of the encoder or decoder is appended to the search path to
+produce the required class name.  Note that <CODE>EncodingManager</CODE> knows
+about the default system encoding scheme, which it retrieves from the
+system property <CODE>file.encoding</CODE>, and it will return the proper
+translator for the default encoding if no scheme is specified.  Also, the 
+Classpath standard translator library, which is the <CODE>gnu.java.io</CODE> package, 
+is automatically appended to the end of the path.
+
+</P>
+<P>
+For efficiency, <CODE>EncodingManager</CODE> maintains a cache of translators
+that it has loaded.  This eliminates the need to search for a commonly
+used translator each time it is requested.
+
+</P>
+<P>
+Finally, <CODE>EncodingManager</CODE> supports aliasing of encoding scheme names.
+For example, the ISO Latin-1 encoding scheme can be referred to as
+"8859_1" or "ISO-8859-1".  <CODE>EncodingManager</CODE> searches for 
+aliases by looking for the existence of a system property called
+<CODE>gnu.java.io.encoding_scheme_alias.&#60;encoding name&#62;</CODE>.  If such a
+property exists.  The value of that property is assumed to be the
+canonical name of the encoding scheme, and a translator with that name is 
+looked up instead of one with the original name.
+
+</P>
+<P>
+Here is an example of how <CODE>EncodingManager</CODE> works.  A class requests
+a decoder for the "UTF-8" encoding scheme by calling
+<CODE>EncodingManager.getDecoder("UTF-8")</CODE>.  First, an alias is searched
+for by looking for the system property 
+<CODE>gnu.java.io.encoding_scheme_alias.UTF-8</CODE>.  In our example, this
+property exists and has the value "UTF8".  That is the actual
+decoder that will be searched for.  Next, <CODE>EncodingManager</CODE> looks
+in its cache for this translator.  Assuming it does not find it, it
+searches the translator path, which is this example consists only of
+the default <CODE>gnu.java.io</CODE>.  The "decoder" package name is 
+appended since we are looking for a decoder.  ("encoder" would be 
+used if we were looking for an encoder).  Then name name of the translator
+is appended.  So <CODE>EncodingManager</CODE> attempts to load a translator
+class called <CODE>gnu.java.io.decoder.UTF8</CODE>.  If that class is found,
+an instance of it is returned.  If it is not found, a
+<CODE>UnsupportedEncodingException</CODE>.
+
+</P>
+<P>
+To write a new translator, it is only necessary to subclass 
+<CODE>Encoder</CODE> and/or <CODE>Decoder</CODE>.  Only a handful of abstract
+methods need to be implemented.  In general, no methods need to be
+overridden.  The needed methods calculate the number of bytes/chars
+that the translation will generate, convert buffers to/from bytes,
+and read/write a requested number of characters to/from a stream.
+
+</P>
+<P>
+Many common encoding schemes use only eight bits to encode characters.
+Writing a translator for these encodings is very easy.  There are 
+abstract translator classes <CODE>gnu.java.io.decode.DecoderEightBitLookup</CODE>
+and <CODE>gnu.java.io.encode.EncoderEightBitLookup</CODE>.  These classes
+implement all of the necessary methods.  All that is necessary to
+create a lookup table array that maps bytes to Unicode characters and
+set the class variable <CODE>lookup_table</CODE> equal to it in a static
+initializer.  Also, a single constructor that takes an appropriate
+stream as an argument must be supplied.  These translators are
+exceptionally easy to create and there are several of them supplied
+in the Classpath distribution.
+
+</P>
+<P>
+Writing multi-byte or variable-byte encodings is more difficult, but
+often not especially challenging.  The Classpath distribution ships with
+translators for the UTF8 encoding scheme which uses from one to three
+bytes to encode Unicode characters.  This can serve as an example of
+how to write such a translator.
+
+</P>
+<P>
+Many more translators are needed.  All major character encodings should
+eventually be supported.
+
+</P>
 <P><HR><P>
-This document was generated on 21 November 1998 using the
+This document was generated on 3 January 1999 using the
 <A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>
 translator version 1.52.</P>
+</BODY>
+</HTML>
