@@ -709,43 +709,199 @@ public class BorderUIResource
       super(tileIcon);
     }
   }
+  
+  
+  /**
+   * A {@link javax.swing.border.TitledBorder} that also implements the
+   * {@link UIResource} marker interface.  This is useful for
+   * implementing pluggable look-and-feels: When switching the current
+   * LookAndFeel, only those borders are replaced that are marked as
+   * {@link UIResource}.  For this reason, a look-and-feel should
+   * always install borders that implement <code>UIResource</code>,
+   * such as the borders provided by this class.
+   *
+   * @author Brian Jones (cbj@gnu.org)
+   * @author Sascha Brawer (brawer@dandelis.ch)
+   */
+  public static class TitledBorderUIResource
+    extends TitledBorder
+    implements UIResource, Serializable
+  {
+    /**
+     * Constructs a TitledBorderUIResource given the text of its title.
+     *
+     * @param title the title text, or <code>null</code> to use no
+     *        title text.
+     */
+    public TitledBorderUIResource(String title)
+    {
+      super(title);
+    }
+    
+    
+    /**
+     * Constructs an initially untitled TitledBorderUIResource
+     * given another border.
+     *
+     * @param border the border underneath the title, or
+     *        <code>null</code> to use a default from
+     *        the current look and feel.
+     */
+    public TitledBorderUIResource(Border border)
+    {
+      super(border);
+    }
+    
+    
+    /**
+     * Constructs a TitledBorder given its border and title text.
+     *
+     * @param border the border underneath the title, or
+     *        <code>null</code> to use a default from
+     *        the current look and feel.
+     *
+     * @param title the title text, or <code>null</code>
+     *        to use no title text.
+     */
+    public TitledBorderUIResource(Border border, String title)
+    {
+      super(border, title);
+    }
+
 
     /**
-     * @serial
+     * Constructs a TitledBorderUIResource given its border, title
+     * text, horizontal alignment, and vertical position.
+     *
+     * @param border the border underneath the title, or
+     *        <code>null</code> to use a default
+     *        from the current look and feel.
+     *
+     * @param title the title text, or <code>null</code>
+     *        to use no title text.
+     *
+     * @param titleJustification the horizontal alignment of the title
+     *        text in relation to the border. The value must be one of
+     *        {@link javax.swing.border.TitledBorder#LEFT},
+     *        {@link javax.swing.border.TitledBorder#CENTER},
+     *        {@link javax.swing.border.TitledBorder#RIGHT},
+     *        {@link javax.swing.border.TitledBorder#LEADING},
+     *        {@link javax.swing.border.TitledBorder#TRAILING}, or
+     *        {@link javax.swing.border.TitledBorder#DEFAULT_JUSTIFICATION}.
+     *
+     * @param titlePosition the vertical position of the title text
+     *        in relation to the border. The value must be one of
+     *        {@link javax.swing.border.TitledBorder#ABOVE_TOP},
+     *        {@link javax.swing.border.TitledBorder#TOP},
+     *        {@link javax.swing.border.TitledBorder#BELOW_TOP},
+     *        {@link javax.swing.border.TitledBorder#ABOVE_BOTTOM},
+     *        {@link javax.swing.border.TitledBorder#BOTTOM},
+     *        {@link javax.swing.border.TitledBorder#BELOW_BOTTOM},
+     *        or {@link javax.swing.border.TitledBorder#DEFAULT_POSITION}.
+     *
+     * @throws IllegalArgumentException if <code>titleJustification</code>
+     *         or <code>titlePosition</code> have an unsupported value.
      */
-    public static class TitledBorderUIResource
-	extends TitledBorder
-	implements UIResource, Serializable
+    public TitledBorderUIResource(Border border, String title,
+                                  int titleJustification,
+                                  int titlePosition)
     {
-	TitledBorderUIResource(String title)
-	{
-	  super (title);
-	}
-	TitledBorderUIResource(Border border)
-	{
-          super (border);
-	}
-	TitledBorderUIResource(Border border, String title)
-	{
-          super (border, title);
-	}
-	TitledBorderUIResource(Border border, String title,
-			       int titleJustification, int titlePosition)
-	{
-          super (border, title, titleJustification, titlePosition);
-	}
-	TitledBorderUIResource(Border border, String title,
-			       int titleJustification, int titlePosition,
-			       Font titleFont)
-	{
-          super (border, title, titleJustification, titlePosition, titleFont);
-	}
-	TitledBorderUIResource(Border border, String title,
-			       int titleJustification, int titlePosition,
-			       Font titleFont, Color titleColor)
-	{
-          super (border, title, titleJustification, titlePosition, titleFont, titleColor);
-	}
+      super(border, title, titleJustification, titlePosition);
     }
+
+
+    /**
+     * Constructs a TitledBorder given its border, title text,
+     * horizontal alignment, vertical position, and font.
+     *
+     * @param border the border underneath the title, or
+     *        <code>null</code> to use a default
+     *        from the current look and feel.
+     *
+     * @param title the title text, or <code>null</code>
+     *        to use no title text.
+     *
+     * @param titleJustification the horizontal alignment of the title
+     *        text in relation to the border. The value must be one of
+     *        {@link javax.swing.border.TitledBorder#LEFT},
+     *        {@link javax.swing.border.TitledBorder#CENTER},
+     *        {@link javax.swing.border.TitledBorder#RIGHT},
+     *        {@link javax.swing.border.TitledBorder#LEADING},
+     *        {@link javax.swing.border.TitledBorder#TRAILING}, or
+     *        {@link javax.swing.border.TitledBorder#DEFAULT_JUSTIFICATION}.
+     *
+     * @param titlePosition the vertical position of the title text
+     *        in relation to the border. The value must be one of
+     *        {@link javax.swing.border.TitledBorder#ABOVE_TOP},
+     *        {@link javax.swing.border.TitledBorder#TOP},
+     *        {@link javax.swing.border.TitledBorder#BELOW_TOP},
+     *        {@link javax.swing.border.TitledBorder#ABOVE_BOTTOM},
+     *        {@link javax.swing.border.TitledBorder#BOTTOM},
+     *        {@link javax.swing.border.TitledBorder#BELOW_BOTTOM},
+     *        or {@link javax.swing.border.TitledBorder#DEFAULT_POSITION}.
+     *
+     * @param titleFont the font for the title text, or <code>null</code>
+     *        to use a default from the current look and feel.
+     *
+     * @throws IllegalArgumentException if <code>titleJustification</code>
+     *         or <code>titlePosition</code> have an unsupported value.
+     */
+    public TitledBorderUIResource(Border border, String title,
+                                  int titleJustification,
+                                  int titlePosition,
+                                  Font titleFont)
+    {
+      super(border, title, titleJustification, titlePosition,
+            titleFont);
+    }
+    
+    
+    /**
+     * Constructs a TitledBorder given its border, title text,
+     * horizontal alignment, vertical position, font, and color.
+     *
+     * @param border the border underneath the title, or
+     *        <code>null</code> to use a default
+     *        from the current look and feel.
+     *
+     * @param title the title text, or <code>null</code>
+     *        to use no title text.
+     *
+     * @param titleJustification the horizontal alignment of the title
+     *        text in relation to the border. The value must be one of
+     *        {@link javax.swing.border.TitledBorder#LEFT},
+     *        {@link javax.swing.border.TitledBorder#CENTER},
+     *        {@link javax.swing.border.TitledBorder#RIGHT},
+     *        {@link javax.swing.border.TitledBorder#LEADING},
+     *        {@link javax.swing.border.TitledBorder#TRAILING}, or
+     *        {@link javax.swing.border.TitledBorder#DEFAULT_JUSTIFICATION}.
+     *
+     * @param titlePosition the vertical position of the title text
+     *        in relation to the border. The value must be one of
+     *        {@link javax.swing.border.TitledBorder#ABOVE_TOP},
+     *        {@link javax.swing.border.TitledBorder#TOP},
+     *        {@link javax.swing.border.TitledBorder#BELOW_TOP},
+     *        {@link javax.swing.border.TitledBorder#ABOVE_BOTTOM},
+     *        {@link javax.swing.border.TitledBorder#BOTTOM},
+     *        {@link javax.swing.border.TitledBorder#BELOW_BOTTOM},
+     *        or {@link javax.swing.border.TitledBorder#DEFAULT_POSITION}.
+     *
+     * @param titleFont the font for the title text, or <code>null</code>
+     *        to use a default from the current look and feel.
+     *
+     * @param titleColor the color for the title text, or <code>null</code>
+     *        to use a default from the current look and feel.
+     *
+     * @throws IllegalArgumentException if <code>titleJustification</code>
+     *         or <code>titlePosition</code> have an unsupported value.
+     */
+    public TitledBorderUIResource(Border border, String title,
+                                  int titleJustification, int titlePosition,
+                                  Font titleFont, Color titleColor)
+    {
+      super(border, title, titleJustification, titlePosition,
+            titleFont, titleColor);
+    }
+  }
 }
 
