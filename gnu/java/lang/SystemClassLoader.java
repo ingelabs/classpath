@@ -64,6 +64,17 @@ public class SystemClassLoader extends ClassLoader
 
   /** Flag to avoid infinite loops. */
   private static boolean is_trying;
+
+  /**
+   * Creates a class loader. Note that the parent may be null, when this is
+   * created as the system class loader by ClassLoader.getSystemClassLoader.
+   *
+   * @param parent the parent class loader
+   */
+  public SystemClassLoader(ClassLoader parent)
+  {
+    super(parent);
+  }
     
   /**
    * Get the URL to a resource.

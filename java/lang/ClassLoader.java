@@ -40,6 +40,7 @@ package java.lang;
 
 import java.io.InputStream;
 import java.io.IOException;
+import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.security.CodeSource;
 import java.security.PermissionCollection;
@@ -48,6 +49,7 @@ import java.security.ProtectionDomain;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import gnu.java.lang.SystemClassLoader;
 import gnu.java.util.DoubleEnumeration;
 import gnu.java.util.EmptyEnumeration;
 
@@ -685,7 +687,8 @@ public abstract class ClassLoader
    * property <code>java.class.path</code>. This is set as the context
    * class loader for a thread. The system property
    * <code>java.system.class.loader</code>, if defined, is taken to be the
-   * name of the class to use as the system class loader, otherwise this
+   * name of the class to use as the system class loader, which must have
+   * a public constructor which takes a ClassLoader as a parent; otherwise this
    * uses gnu.java.lang.SystemClassLoader.
    *
    * <p>Note that this is different from the bootstrap classloader that
@@ -713,12 +716,28 @@ public abstract class ClassLoader
                                            "gnu.java.lang.SystemClassLoader");
         try
           {
-            return (ClassLoader) Class.forName(loader).newInstance();
+            // Give the new system class loader a null parent.
+            Constructor c = Class.forName(loader).getConstructor
+              ( new Class[] { ClassLoader.class } );
+            return (ClassLoader) c.newInstance(new Object[1]);
           }
         catch (Exception e)
           {
-            throw (Error) new InternalError
-              ("System class loader could not be found: " + e).initCause(e);
+            try
+              {
+                System.err.println("Requested system classloader "
+                                   + loader + " failed, trying "
+                                   + "gnu.java.lang.SystemClassLoader");
+                e.printStackTrace();
+                // Fallback to gnu.java.lang.SystemClassLoader.
+                return new SystemClassLoader(null);
+              }
+            catch (Exception e1)
+              {
+                throw (Error) new InternalError
+                  ("System class loader could not be found: " + e1)
+                  .initCause(e1);
+              }
           }
       }
     // Check if we may return the system classloader
