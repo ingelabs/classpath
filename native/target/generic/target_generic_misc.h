@@ -131,7 +131,7 @@ extern "C" {
 #endif
 #ifndef TARGET_NATIVE_MISC_FORMAT_STRING1
   #include <stdarg.h>
-  #define TARGET_NATIV_MISCE_FORMAT_STRING1(buffer,bufferSize,format,arg1) \
+  #define TARGET_NATIVE_MISC_FORMAT_STRING1(buffer,bufferSize,format,arg1) \
     do { \
       snprintf(buffer,bufferSize,format,arg1); \
     } while (0)
@@ -251,7 +251,7 @@ extern "C" {
   #ifndef WITH_TIMEZONE_VARIABLE
     #define WITH_TIMEZONE_VARIABLE timezone
   #endif
-  #define TARGET_NATIVE_UTIL_GET_TIMEZONE_STRING(string,maxStringLength,result) \
+  #define TARGET_NATIVE_MISC_GET_TIMEZONE_STRING(string,maxStringLength,result) \
     do { \
       tzset(); \
       \
