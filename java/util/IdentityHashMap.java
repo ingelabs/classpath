@@ -162,9 +162,9 @@ public class IdentityHashMap extends AbstractMap
     // Need at least two slots, or hash() will break.
     if (max < 2)
       max = 2;
-    table = new Object[2 * max];
+    table = new Object[max << 1];
     Arrays.fill(table, emptyslot);
-    threshold = max / 4 * 3;
+    threshold = (max >> 2) * 3;
   }
 
   /**
@@ -176,7 +176,7 @@ public class IdentityHashMap extends AbstractMap
    */
   public IdentityHashMap(Map m)
   {
-    this(Math.max(m.size() * 2, DEFAULT_CAPACITY));
+    this(Math.max(m.size() << 1, DEFAULT_CAPACITY));
     putAll(m);
   }
 
@@ -487,10 +487,10 @@ public class IdentityHashMap extends AbstractMap
         Object[] old = table;
         // This isn't necessarily prime, but it is an odd number of key/value
         // slots, which has a higher probability of fewer collisions.
-        table = new Object[old.length * 2 + 2];
+        table = new Object[old.length << 1 + 2];
         Arrays.fill(table, emptyslot);
         size = 0;
-        threshold = (table.length / 2) / 4 * 3;
+        threshold = (table.length >>> 3) * 3;
 
         for (int i = old.length - 2; i >= 0; i -= 2)
           {
@@ -642,7 +642,7 @@ public class IdentityHashMap extends AbstractMap
     // By requiring at least 2 key/value slots, and rehashing at 75%
     // capacity, we guarantee that there will always be either an emptyslot
     // or a tombstone somewhere in the table.
-    int h = 2 * Math.abs(System.identityHashCode(key) % (table.length / 2));
+    int h = Math.abs(System.identityHashCode(key) % (table.length >> 1)) << 1;
     int del = -1;
     int save = h;
 
@@ -894,7 +894,7 @@ public class IdentityHashMap extends AbstractMap
     s.defaultReadObject();
 
     int num = s.readInt();
-    table = new Object[2 * Math.max(num * 2, DEFAULT_CAPACITY)];
+    table = new Object[Math.max(num << 1, DEFAULT_CAPACITY) << 1];
     // Read key/value pairs.
     while (--num >= 0)
       put(s.readObject(), s.readObject());

@@ -1,3 +1,9 @@
+2002-04-02  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/IdentityHashMap.java (put, IdentityHashMap, hash),
+	(readObject): Strength reduction.
+	* java/awt/Color.java: Update to 1.4.
+
 2002-04-02  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 
 	* java/util/IdentityHashMap.java (put): Set new threshold correctly
@@ -5,14 +11,14 @@
 
 2002-04-01  Mark Wielaard  <mark@klomp.org>
 
-        * java/util/BitSet.java (BitSet(int)): if nbits < 0 throw
-        NegativeArraySizeException
-        (clear(int)): Use sign extended shift.
-        (flip(int)): Likewise.
-        (get(int)): Likewise.
-        (nextClearBit(int)): Likewise.
-        (nextSetBit(int)): Likewise.
-        (set(int)): Likewise.
+	* java/util/BitSet.java (BitSet(int)): if nbits < 0 throw
+	NegativeArraySizeException
+	(clear(int)): Use sign extended shift.
+	(flip(int)): Likewise.
+	(get(int)): Likewise.
+	(nextClearBit(int)): Likewise.
+	(nextSetBit(int)): Likewise.
+	(set(int)): Likewise.
 
 2002-04-01  Eric Blake  <ebb9@email.byu.edu>
 
