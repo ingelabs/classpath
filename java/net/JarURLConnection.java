@@ -101,17 +101,17 @@ public abstract class JarURLConnection extends URLConnection
     if (!url.getProtocol().equals ("jar"))
       throw new MalformedURLException (url + ": Not jar protocol.");
 
-    String str = url.getFile();
+    String spec = url.getFile();
 
-    int bang = str.indexOf ("!/");
+    int bang = spec.indexOf ("!/");
     if (bang == -1)
       throw new MalformedURLException (url + ": No `!/' in spec.");
 
     // Extract the url for the jar itself.
-    jarFileURL = new URL (str.substring (0, bang));
+    jarFileURL = new URL (spec.substring (0, bang));
 
     // Get the name of the element, if any.
-    entry_name = str.length() == (bang + 1) ? "" : str.substring (bang + 2);
+    entry_name = spec.length() == (bang + 1) ? "" : spec.substring (bang + 2);
   }
 
   /**

@@ -1,6 +1,12 @@
 2003-09-21  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/JarURLConnection.java
+	(JarURLConnection): Rename "str" (again) to "spec" to match libgcj
+	better.
+
+2003-09-21  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/JarURLConnection.java
 	(JarURLConnection): Added some comments.
 	(getAttributes): Reimplements because getJarEntry() can return null.
 
