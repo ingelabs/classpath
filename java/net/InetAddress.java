@@ -45,16 +45,18 @@ import gnu.classpath.Configuration;
 
 /**
  * This class models an Internet address.  It does not have a public
- * constructor.  Instead, new instances of this objects are created 
+ * constructor.  Instead, new instances of this objects are created
  * using the static methods getLocalHost(), getByName(), and
  * getAllByName().
  * <p>
- * This class fulfills the function of the C style functions gethostname(), 
+ * This class fulfills the function of the C style functions gethostname(),
  * gethostbyname(), and gethostbyaddr().  It resolves Internet DNS names
  * into their corresponding numeric addresses and vice versa.
  *
  * @author Aaron M. Renn <arenn@urbanophile.com>
  * @author Per Bothner
+ *
+ * @specnote This class is not final since JK 1.4
  */
 public class InetAddress implements Serializable
 {

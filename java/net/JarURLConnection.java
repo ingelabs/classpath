@@ -186,7 +186,7 @@ public abstract class JarURLConnection extends URLConnection
    * Returns the main Attributes for the jar file specified in the URL or
    * null if there are none
    *
-   * @return The main Attributes
+   * @return The main Attributes for the JAR file for this connection
    *
    * @exception IOException If an error occurs
    */
@@ -199,7 +199,8 @@ public abstract class JarURLConnection extends URLConnection
    * Returns the Attributes for the Jar entry specified by the URL or null
    * if none
    *
-   * @return The Attributes
+   * @return The Attributes object for this connection if the URL for it points
+   * to a JAR file entry, null otherwise
    *
    * @exception IOException If an error occurs
    */
@@ -212,7 +213,7 @@ public abstract class JarURLConnection extends URLConnection
    * Returns a Manifest object for this jar file, or null if there is no
    * manifest.
    *
-   * @return The Manifest
+   * @return The Manifest for this connection, or null if none
    *
    * @exception IOException If an error occurs
    */

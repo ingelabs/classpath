@@ -1,3 +1,12 @@
+2003-05-09  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/InetAddress.java
+	(InetAddress): Merged documentation with libgcj.
+	* java/net/JarURLConnection.java
+	(getMainAttributes): Merged documentation with libgcj.
+	(getAttributes): Likewise.
+	(getManifest): Likewise.
+
 2003-05-06  Matt Kraai  <kraai@alumni.cmu.edu>
 
 	* java/security/Key.java: Fix misspelling of "version".
