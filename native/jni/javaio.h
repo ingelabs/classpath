@@ -28,6 +28,8 @@ executable file might be covered by the GNU General Public License. */
 #ifndef JAVAIO_H_INCLUDED
 #define JAVAIO_H_INCLUDED
 
+#include <stddef.h>
+
 /*
  * Function Prototypes
  */

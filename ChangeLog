@@ -1,3 +1,19 @@
+2001-07-25  Etienne M. Gagnon <etienne.gagnon@uqam.ca>
+
+	* native/jni/java_io_FileDescriptor.c: added 
+        #include "java_io_FileDescriptor.h"
+	* native/jni/java_io_ObjectInputStream.c: return 0 changed to 
+	return NULL
+	* native/jni/javaio.c (_javaio_read): change 0 to JNI_FALSE
+	* native/jni/javaio.h: add #include <stddef.h>
+	* native/jni/java_lang_reflect_Array.c: added #include <stddef.h>
+	* native/jni/java_math_BigInteger.c: modify #include 
+	statements for compilation
+	* native/jni/jcl.c: #include <stdio.h>
+	* native/lib/jcl.c: #include <stdio.h>
+	* native/jni/jcl.h: #include <stddef.h>
+	* native/lib/jcl.h: #include <stddef.h>
+
 2001-07-23  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/Short.java: Reindented.

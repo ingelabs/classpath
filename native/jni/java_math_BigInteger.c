@@ -26,13 +26,13 @@ executable file might be covered by the GNU General Public License. */
 
 
 #include <stdlib.h>
-#define __USE_GNU
 #include <stdio.h>
 #include <unistd.h>
 #include <endian.h>
-#include <gmp2/gmp.h>
 #include <math.h>
-#include "BigInteger.h"
+#define __USE_GNU
+#include <gmp.h>
+#include "java_math_BigInteger.h"
 #include "native_state.h"
 
 /* maximum value a jdouble can hold */

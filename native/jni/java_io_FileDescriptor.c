@@ -33,6 +33,7 @@ executable file might be covered by the GNU General Public License. */
 #include <unistd.h>
 
 #include <jni.h>
+#include "java_io_FileDescriptor.h"
 #include "javaio.h"
 
 /*************************************************************************/

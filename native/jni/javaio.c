@@ -234,7 +234,7 @@ _javaio_read(JNIEnv *env, jobject obj, jint fd, jarray buf, jint offset,
   jbyte *bufptr;
   int rc;
 
-  bufptr = (*env)->GetByteArrayElements(env, buf, 0);
+  bufptr = (*env)->GetByteArrayElements(env, buf, JNI_FALSE);
   if (!bufptr)
     {
       _javaio_ThrowException(env, "java/io/IOException", "Internal Error");

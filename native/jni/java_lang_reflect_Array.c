@@ -30,6 +30,7 @@ executable file might be covered by the GNU General Public License. */
  * Version: 1.1.0
  * Date: 2 Jun 1998
  */
+#include <stddef.h>
 #include "java_lang_reflect_Array.h"
 
 /*
