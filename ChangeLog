@@ -1,5 +1,16 @@
 2004-04-19  Dalibor Topic  <robilad@kaffe.org>
 
+	* javax/rmi/CORBA/PortableRemoteObjectDelegate.java,
+	javax/rmi/CORBA/Stub.java,
+	javax/rmi/CORBA/Util.java,
+	javax/rmi/CORBA/ValueHandler.java,
+	javax/rmi/CORBA/ValueHandler.java,
+	javax/rmi/PortableRemoteObject.java,
+	javax/security/auth/x500/X500Principal.java:
+	Added 2004 to copyright notices.
+
+2004-04-19  Dalibor Topic  <robilad@kaffe.org>
+
 	* javax/rmi/CORBA/PortableRemoteObjectDelegate.java:
 	Cleaned up imports.
 
