@@ -1,3 +1,8 @@
+2000-07-28  Warren Levy  <warrenl@cygnus.com>
+
+	* ObjectOutputStream.java (writeObject): Per spec, call
+	NotSerializableException with just the class name.
+
 2000-07-27  Warren Levy  <warrenl@cygnus.com>
 
 	* ObjectOutputStream.java: Fixed typo in comment.
