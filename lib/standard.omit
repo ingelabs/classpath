@@ -1,8 +1,3 @@
-../java/net/Authenticator.java$
-../java/net/JarURLConnection.java$
-../java/net/URLClassLoader.java$
-../java/lang/RuntimePermission.java$
-../java/text/MessageFormat.java$
 ../gnu/test/.*$
 ../gnu/java/awt/peer/gtk/TestAWT.java$
 ../gnu/java/awt/peer/gtk/Test.java$
@@ -15,10 +10,8 @@
 ../java/awt/event/InputMethodEvent.java$
 ../java/awt/event/InputMethodListener.java$
 ../java/awt/event/InvocationEvent.java$
-../java/util/jar/JarEntry.java$
-../java/util/jar/JarFile.java$
-../java/util/jar/JarInputStream.java$
-../java/util/jar/JarOutputStream.java$
 ../java/util/prefs/.*$
 ../gnu/java/util/prefs/.*$
 ../gnu/classpath/tools/.*$
+../javax/accessibility/.*$
+../javax/swing/.*$

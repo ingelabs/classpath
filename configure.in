@@ -316,7 +316,6 @@ doc/Makefile
 gnu/Makefile
 gnu/classpath/Makefile
 gnu/classpath/Configuration.java
-gnu/classpath/tools/Makefile
 gnu/java/Makefile
 gnu/java/awt/Makefile
 gnu/java/awt/image/Makefile
@@ -382,6 +381,9 @@ java/util/jar/Makefile
 java/util/prefs/Makefile
 java/util/zip/Makefile
 javax/Makefile
+javax/naming/Makefile
+javax/naming/directory/Makefile
+javax/naming/spi/Makefile
 native/Makefile
 native/jni/Makefile
 native/jni/awt/Makefile

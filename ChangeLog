@@ -1,3 +1,27 @@
+2001-10-19  Mark Wielaard  <mark@klomp.org>
+
+	* configure.in (AC_OUTPUT): removed gnu/classpath/tools/Makefile,
+	added javax/naming/Makefile, javax/naming/directory/Makefile and
+	javax/naming/spi/Makefile
+	* gnu/java/text/Makefile.in: removed
+	* javax/Makefile.am (SUBDIRS): add naming
+	* javax/naming/.cvsignore: new file
+	* javax/naming/BinaryRefAddr.java: ditto
+	* javax/naming/InvalidNameException.java: ditto
+	* javax/naming/Makefile.am: ditto
+	* javax/naming/Name.java: ditto
+	* javax/naming/NamingException.java: ditto
+	* javax/naming/RefAddr.java: ditto
+	* javax/naming/StringRefAddr.java: ditto
+	* javax/naming/directory/.cvsignore: ditto
+	* javax/naming/directory/Makefile.am: ditto
+	* javax/naming/spi/.cvsignore: ditto
+	* javax/naming/spi/Makefile.am: ditto
+	* lib/.cvsignore: add javax
+	* lib/gen-classlist.sh.in: ditto
+	* lib/standard.omit: removed java/net, java/lang, java/text and
+	java/util/jar classes, added javax/accessibility and javax/swing
+
 2001-10-19  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/IdentityHashMap.java: Improve javadoc, fix member
