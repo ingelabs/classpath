@@ -58,8 +58,7 @@ public class DomHTMLTableCellElement
 
   public int getCellIndex()
   {
-    // TODO
-    return -1;
+    return getIndex();
   }
 
   public String getAbbr()

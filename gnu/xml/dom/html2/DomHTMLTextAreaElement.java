@@ -165,17 +165,17 @@ public class DomHTMLTextAreaElement
 
   public void blur()
   {
-    // TODO
+    dispatchUIEvent("blur");
   }
 
   public void focus()
   {
-    // TODO
+    dispatchUIEvent("focus");
   }
   
   public void select()
   {
-    // TODO
+    dispatchUIEvent("select");
   }
   
 }

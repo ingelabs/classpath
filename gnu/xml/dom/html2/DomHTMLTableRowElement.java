@@ -37,6 +37,9 @@ exception statement from your version. */
 
 package gnu.xml.dom.html2;
 
+import gnu.xml.dom.DomDOMException;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Node;
 import org.w3c.dom.html2.HTMLCollection;
 import org.w3c.dom.html2.HTMLElement;
 import org.w3c.dom.html2.HTMLTableRowElement;
@@ -60,14 +63,56 @@ public class DomHTMLTableRowElement
 
   public int getRowIndex()
   {
-    // TODO
-    return -1;
+    return getIndex();
   }
 
   public int getSectionRowIndex()
   {
-    // TODO
-    return -1;
+    int index = 0;
+    DomHTMLElement parent = (DomHTMLElement) getParentElement("table");
+    if (parent != null)
+      {
+        Node thead = parent.getChildElement("thead");
+        if (thead != null)
+          {
+            for (Node ctx = thead.getFirstChild(); ctx != null;
+                 ctx = ctx.getNextSibling())
+              {
+                if (ctx == this)
+                  {
+                    return index;
+                  }
+                index++;
+              }
+          }
+        Node tbody = parent.getChildElement("tbody");
+        if (tbody != null)
+          {
+            for (Node ctx = tbody.getFirstChild(); ctx != null;
+                 ctx = ctx.getNextSibling())
+              {
+                if (ctx == this)
+                  {
+                    return index;
+                  }
+                index++;
+              }
+          }
+        Node tfoot = parent.getChildElement("tfoot");
+        if (tfoot != null)
+          {
+            for (Node ctx = tfoot.getFirstChild(); ctx != null;
+                 ctx = ctx.getNextSibling())
+              {
+                if (ctx == this)
+                  {
+                    return index;
+                  }
+                index++;
+              }
+          }
+      }
+    throw new DomDOMException(DOMException.NOT_FOUND_ERR);
   }
 
   public HTMLCollection getCells()
@@ -132,13 +177,48 @@ public class DomHTMLTableRowElement
 
   public HTMLElement insertCell(int index)
   {
-    // TODO
-    return null;
+    Node ref = getCell(index);
+    Node cell = getOwnerDocument().createElement("td");
+    if (ref == null)
+      {
+        appendChild(cell);
+      }
+    else
+      {
+        insertBefore(cell, ref);
+      }
+    return (HTMLElement) cell;
   }
 
   public void deleteCell(int index)
   {
-    // TODO
+    Node ref = getCell(index);
+    if (ref == null)
+      {
+        throw new DomDOMException(DOMException.INDEX_SIZE_ERR);
+      }
+    removeChild(ref);
+  }
+  
+  Node getCell(final int index)
+  { 
+    int i = 0;
+    for (Node ctx = getFirstChild(); ctx != null;
+         ctx = ctx.getNextSibling())
+      {
+        String name = ctx.getLocalName();
+        if (!"td".equalsIgnoreCase(name) &&
+            !"th".equalsIgnoreCase(name))
+          {
+            continue;
+          }
+        if (index == i)
+          {
+            return ctx;
+          }
+        i++;
+      }
+    return null;
   }
   
 }

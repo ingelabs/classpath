@@ -1,3 +1,24 @@
+2005-03-14  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/dom/DomImpl.java,
+	gnu/xml/dom/html2/DomHTMLAnchorElement.java,
+	gnu/xml/dom/html2/DomHTMLDocument.java,
+	gnu/xml/dom/html2/DomHTMLElement.java,
+	gnu/xml/dom/html2/DomHTMLFormElement.java,
+	gnu/xml/dom/html2/DomHTMLFrameElement.java,
+	gnu/xml/dom/html2/DomHTMLIFrameElement.java,
+	gnu/xml/dom/html2/DomHTMLImpl.java,
+	gnu/xml/dom/html2/DomHTMLInputElement.java,
+	gnu/xml/dom/html2/DomHTMLObjectElement.java,
+	gnu/xml/dom/html2/DomHTMLOptionElement.java,
+	gnu/xml/dom/html2/DomHTMLSelectElement.java,
+	gnu/xml/dom/html2/DomHTMLTableCellElement.java,
+	gnu/xml/dom/html2/DomHTMLTableElement.java,
+	gnu/xml/dom/html2/DomHTMLTableRowElement.java,
+	gnu/xml/dom/html2/DomHTMLTableSectionElement.java,
+	gnu/xml/dom/html2/DomHTMLTextAreaElement.java: JAXP integration,
+	UI events, and tree utility functions.
+
 2005-03-14  Patrik Reali  <reali@acm.org>
 
 	* doc/www.gnu.org/newsitems.txt: news on gui branch and calientra

@@ -37,6 +37,9 @@ exception statement from your version. */
 
 package gnu.xml.dom.html2;
 
+import gnu.xml.dom.DomDOMException;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Node;
 import org.w3c.dom.html2.HTMLCollection;
 import org.w3c.dom.html2.HTMLElement;
 import org.w3c.dom.html2.HTMLTableSectionElement;
@@ -109,13 +112,46 @@ public class DomHTMLTableSectionElement
 
   public HTMLElement insertRow(int index)
   {
-    // TODO
-    return null;
+    Node ref = getRow(index);
+    Node row = getOwnerDocument().createElement("tr");
+    if (ref == null)
+      {
+        appendChild(row);
+      }
+    else
+      {
+        insertBefore(row, ref);
+      }
+    return (HTMLElement) row;
   }
 
   public void deleteRow(int index)
   {
-    // TODO
+    Node ref = getRow(index);
+    if (ref == null)
+      {
+        throw new DomDOMException(DOMException.INDEX_SIZE_ERR);
+      }
+    removeChild(ref);
+  }
+  
+  Node getRow(final int index)
+  { 
+    int i = 0;
+    for (Node ctx = getFirstChild(); ctx != null;
+         ctx = ctx.getNextSibling())
+      {
+        if (!"tr".equalsIgnoreCase(ctx.getLocalName()))
+          {
+            continue;
+          }
+        if (index == i)
+          {
+            return ctx;
+          }
+        i++;
+      }
+    return null;
   }
   
 }

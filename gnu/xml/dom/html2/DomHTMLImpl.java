@@ -1,4 +1,4 @@
-/* DomHTMLOptionElement.java -- 
+/* DomHTMLImpl.java -- 
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,95 +37,31 @@ exception statement from your version. */
 
 package gnu.xml.dom.html2;
 
-import org.w3c.dom.html2.HTMLFormElement;
-import org.w3c.dom.html2.HTMLOptionElement;
+import gnu.xml.dom.DomImpl;
+import org.w3c.dom.Document;
 
 /**
- * An HTML 'OPTION' element node.
+ * Specialised DOMImplementation for creating HTML documents.
  *
  * @author <a href='mailto:dog@gnu.org'>Chris Burdess</a>
  */
-public class DomHTMLOptionElement
-  extends DomHTMLElement
-  implements HTMLOptionElement
+public class DomHTMLImpl
+  extends DomImpl
 {
-
-  protected Boolean selected;
-
-  protected DomHTMLOptionElement(DomHTMLDocument owner, String namespaceURI,
-                                 String name)
-  {
-    super(owner, namespaceURI, name);
-  }
-
-  public HTMLFormElement getForm()
-  {
-    return (HTMLFormElement) getParentElement("form");
-  }
-
-  public boolean getDefaultSelected()
-  {
-    return getBooleanHTMLAttribute("selected");
-  }
-
-  public void setDefaultSelected(boolean defaultSelected)
-  {
-    setBooleanHTMLAttribute("selected", defaultSelected);
-  }
-
-  public String getText()
-  {
-    return getTextContent();
-  }
-
-  public int getIndex()
-  {
-    return super.getIndex();
-  }
   
-  public boolean getDisabled()
+  protected Document createDocument()
   {
-    return getBooleanHTMLAttribute("disabled");
+    return new DomHTMLDocument(this);
   }
 
-  public void setDisabled(boolean disabled)
+  public Object getFeature(String feature, String version)
   {
-    setBooleanHTMLAttribute("disabled", disabled);
-  }
-  
-  public String getLabel()
-  {
-    return getHTMLAttribute("label");
-  }
-
-  public void setLabel(String label)
-  {
-    setHTMLAttribute("label", label);
-  }
-  
-  public boolean getSelected()
-  {
-    if (selected == null)
+    if (hasFeature(feature, version))
       {
-        selected = Boolean.valueOf(getDefaultSelected());
+        return this;
       }
-    return selected.booleanValue();
+    return null;
   }
 
-  public void setSelected(boolean selected)
-  {
-    this.selected = Boolean.valueOf(selected);
-  }
-  
-  public String getValue()
-  {
-    return getHTMLAttribute("value");
-  }
-
-  public void setValue(String value)
-  {
-    setHTMLAttribute("value", value);
-  }
-  
 }
 

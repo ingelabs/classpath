@@ -138,12 +138,12 @@ public class DomHTMLFormElement
 
   public void submit()
   {
-    // TODO
+    dispatchUIEvent("submit");
   }
 
   public void reset()
   {
-    // TODO
+    dispatchUIEvent("reset");
   }
   
 }

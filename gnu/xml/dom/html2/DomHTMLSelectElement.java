@@ -199,12 +199,12 @@ public class DomHTMLSelectElement
 
   public void blur()
   {
-    // TODO
+    dispatchUIEvent("blur");
   }
 
   public void focus()
   {
-    // TODO
+    dispatchUIEvent("focus");
   }
   
 }

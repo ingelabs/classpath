@@ -37,6 +37,9 @@ exception statement from your version. */
 
 package gnu.xml.dom.html2;
 
+import gnu.xml.dom.DomDOMException;
+import org.w3c.dom.DOMException;
+import org.w3c.dom.Node;
 import org.w3c.dom.html2.HTMLCollection;
 import org.w3c.dom.html2.HTMLElement;
 import org.w3c.dom.html2.HTMLTableCaptionElement;
@@ -61,35 +64,56 @@ public class DomHTMLTableElement
 
   public HTMLTableCaptionElement getCaption()
   {
-    // TODO
-    return null;
+    return (HTMLTableCaptionElement) getChildElement("caption");
   }
 
   public void setCaption(HTMLTableCaptionElement caption)
   {
-    // TODO
+    HTMLTableCaptionElement ref = getCaption();
+    if (ref == null)
+      {
+        appendChild(caption);
+      }
+    else
+      {
+        replaceChild(caption, ref);
+      }
   }
   
   public HTMLTableSectionElement getTHead()
   {
-    // TODO
-    return null;
+    return (HTMLTableSectionElement) getChildElement("thead");
   }
 
   public void setTHead(HTMLTableSectionElement tHead)
   {
-    // TODO
+    HTMLTableSectionElement ref = getTHead();
+    if (ref == null)
+      {
+        appendChild(tHead);
+      }
+    else
+      {
+        replaceChild(tHead, ref);
+      }
   }
 
   public HTMLTableSectionElement getTFoot()
   {
-    // TODO
-    return null;
+    return (HTMLTableSectionElement) getChildElement("tfoot");
   }
 
   public void setTFoot(HTMLTableSectionElement tFoot)
   {
-    // TODO
+    HTMLTableSectionElement ref = getTFoot();
+    if (ref == null)
+      {
+        appendChild(tFoot);
+      }
+    else
+      {
+        replaceChild(tFoot, ref);
+      }
   }
 
   public HTMLCollection getRows()
@@ -202,47 +226,158 @@ public class DomHTMLTableElement
 
   public HTMLElement createTHead()
   {
-    // TODO
-    return null;
+    HTMLTableSectionElement ref = getTHead();
+    if (ref == null)
+      {
+        return (HTMLElement) getOwnerDocument().createElement("thead");
+      }
+    else
+      {
+        return ref;
+      }
   }
 
   public void deleteTHead()
   {
-    // TODO
+    HTMLTableSectionElement ref = getTHead();
+    if (ref != null)
+      {
+        removeChild(ref);
+      }
   }
 
   public HTMLElement createTFoot()
   {
-    // TODO
-    return null;
+    HTMLTableSectionElement ref = getTFoot();
+    if (ref == null)
+      {
+        return (HTMLElement) getOwnerDocument().createElement("tfoot");
+      }
+    else
+      {
+        return ref;
+      }
   }
 
   public void deleteTFoot()
   {
-    // TODO
+    HTMLTableSectionElement ref = getTFoot();
+    if (ref != null)
+      {
+        removeChild(ref);
+      }
   }
 
   public HTMLElement createCaption()
   {
-    // TODO
-    return null;
+    HTMLTableCaptionElement ref = getCaption();
+    if (ref == null)
+      {
+        return (HTMLElement) getOwnerDocument().createElement("caption");
+      }
+    else
+      {
+        return ref;
+      }
   }
 
   public void deleteCaption()
   {
-    // TODO
+    HTMLTableCaptionElement ref = getCaption();
+    if (ref != null)
+      {
+        removeChild(ref);
+      }
   }
 
   public HTMLElement insertRow(int index)
   {
-    // TODO
-    return null;
+    Node ref = getRow(index);
+    Node row = getOwnerDocument().createElement("tr");
+    if (ref == null)
+      {
+        Node tbody = getChildElement("tbody");
+        if (tbody == null)
+          {
+            tbody = getOwnerDocument().createElement("tfoot");
+            appendChild(tbody);
+          }
+        tbody.appendChild(row);
+      }
+    else
+      {
+        ref.getParentNode().insertBefore(row, ref);
+      }
+    return (HTMLElement) row;
   }
 
   public void deleteRow(int index)
   {
-    // TODO
+    Node ref = getRow(index);
+    if (ref == null)
+      {
+        throw new DomDOMException(DOMException.INDEX_SIZE_ERR);
+      }
+    ref.getParentNode().removeChild(ref);
   }
-  
+ 
+  Node getRow(final int index)
+  { 
+    int i = 0;
+    Node thead = getChildElement("thead");
+    if (thead != null)
+      {
+        for (Node ctx = thead.getFirstChild(); ctx != null;
+             ctx = ctx.getNextSibling())
+          {
+            if (!"tr".equalsIgnoreCase(ctx.getLocalName()))
+              {
+                continue;
+              }
+            if (index == i)
+              {
+                return ctx;
+              }
+            i++;
+          }
+      }
+    Node tbody = getChildElement("tbody");
+    if (tbody == null)
+      {
+        tbody = this;
+      }
+    for (Node ctx = tbody.getFirstChild(); ctx != null;
+         ctx = ctx.getNextSibling())
+      {
+        if (!"tr".equalsIgnoreCase(ctx.getLocalName()))
+          {
+            continue;
+          }
+        if (index == i)
+          {
+            return ctx;
+          }
+        i++;
+      }
+    Node tfoot = getChildElement("tfoot");
+    if (tfoot != null)
+      {
+        for (Node ctx = tfoot.getFirstChild(); ctx != null;
+             ctx = ctx.getNextSibling())
+          {
+            if (!"tr".equalsIgnoreCase(ctx.getLocalName()))
+              {
+                continue;
+              }
+            if (index == i)
+              {
+                return ctx;
+              }
+            i++;
+          }
+      }
+    return null;
+  }
+
 }
 

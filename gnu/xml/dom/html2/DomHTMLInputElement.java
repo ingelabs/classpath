@@ -244,22 +244,22 @@ public class DomHTMLInputElement
 
   public void blur()
   {
-    // TODO
+    dispatchUIEvent("blur");
   }
 
   public void focus()
   {
-    // TODO
+    dispatchUIEvent("focus");
   }
 
   public void select()
   {
-    // TODO
+    dispatchUIEvent("select");
   }
 
   public void click()
   {
-    // TODO
+    dispatchUIEvent("click");
   }
   
 }

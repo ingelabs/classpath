@@ -133,8 +133,19 @@ public class DomHTMLDocument
     map.put("thead", DomHTMLTableSectionElement.class);
     map.put("tfoot", DomHTMLTableSectionElement.class);
     map.put("tbody", DomHTMLTableSectionElement.class);
-    // TODO others
+    map.put("textarea", DomHTMLTextAreaElement.class);
+    map.put("title", DomHTMLTitleElement.class);
+    map.put("ul", DomHTMLUListElement.class);
     ELEMENT_CLASSES = Collections.unmodifiableMap(map);
+  }
+
+  /**
+   * Constructor.
+   * This is called by the implementation.
+   */
+  protected DomHTMLDocument(DomHTMLImpl impl)
+  {
+    super(impl);
   }
 
   private Node getChildNodeByName(Node parent, String name)
@@ -209,7 +220,7 @@ public class DomHTMLDocument
 
   public String getReferrer()
   {
-    // TODO
+    // TODO getReferrer
     return null;
   }
 
@@ -248,7 +259,21 @@ public class DomHTMLDocument
 
   public void setBody(HTMLElement body)
   {
-    // TODO
+    Node html = getDocumentElement();
+    if (html == null)
+      {
+        html = createElement("html");
+        appendChild(html);
+      }
+    Node ref = getBody();
+    if (ref == null)
+      {
+        html.appendChild(body);
+      }
+    else
+      {
+        html.replaceChild(body, ref);
+      }
   }
 
   public HTMLCollection getImages()
@@ -296,33 +321,33 @@ public class DomHTMLDocument
 
   public String getCookie()
   {
-    // TODO
+    // TODO getCookie
     return null;
   }
 
   public void setCookie(String cookie)
   {
-    // TODO
+    // TODO setCookie
   }
 
   public void open()
   {
-    // TODO
+    // TODO open
   }
 
   public void close()
   {
-    // TODO
+    // TODO close
   }
 
   public void write(String text)
   {
-    // TODO
+    // TODO write
   }
 
   public void writeln(String text)
   {
-    // TODO
+    // TODO write
   }
 
   public NodeList getElementsByName(String name)

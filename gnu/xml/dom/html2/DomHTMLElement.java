@@ -37,9 +37,13 @@ exception statement from your version. */
 
 package gnu.xml.dom.html2;
 
+import gnu.xml.dom.DomDOMException;
 import gnu.xml.dom.DomElement;
+import gnu.xml.dom.DomEvent;
+import org.w3c.dom.DOMException;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
+import org.w3c.dom.events.UIEvent;
 import org.w3c.dom.html2.HTMLElement;
 
 /**
@@ -164,6 +168,51 @@ public abstract class DomHTMLElement
           }
       }
     return null;
+  }
+
+  /**
+   * Returns the first child element with the specified name.
+   */
+  protected Node getChildElement(String name)
+  {
+    for (Node child = getFirstChild(); child != null;
+         child = child.getNextSibling())
+      {
+        if (name.equalsIgnoreCase(child.getLocalName()))
+          {
+            return child;
+          }
+      }
+    return null;
+  }
+
+  /**
+   * Returns the index of this element among elements of the same name,
+   * relative to its parent.
+   */
+  protected int getIndex()
+  {
+    int index = 0;
+    Node parent = getParentNode();
+    if (parent != null)
+      {
+        for (Node ctx = parent.getFirstChild(); ctx != null;
+             ctx = ctx.getNextSibling())
+          {
+            if (ctx == this)
+              {
+                return index;
+              }
+            index++;
+          }
+      }
+    throw new DomDOMException(DOMException.NOT_FOUND_ERR);
+  }
+
+  protected void dispatchUIEvent(String name)
+  {
+    UIEvent event = new DomEvent.DomUIEvent(name);
+    dispatchEvent(event);
   }
 
   public String getId()
