@@ -1,5 +1,5 @@
 /* FileOutputStream.java -- Writes to a file on disk.
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -258,7 +258,7 @@ write(byte[] buf) throws IOException
 public synchronized void
 write(byte[] buf, int offset, int len) throws IOException
 {
-  writeInternal(native_fd, buf, 0, len);
+  writeInternal(native_fd, buf, offset, len);
 }
 
 /*************************************************************************/
