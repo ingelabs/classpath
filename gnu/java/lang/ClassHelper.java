@@ -95,7 +95,7 @@ public class ClassHelper {
 	 ** their point of declaration.
 	 **/
 	public static Method[] getAllMethodsAtDeclaration(Class clazz) {
-		Method[] retval = (Method[])allMethods.get(clazz);
+		Method[] retval = (Method[])allMethodsAtDeclaration.get(clazz);
 		if(retval == null) {
 			Method[] superMethods;
 			if(clazz.getSuperclass() != null) {
@@ -119,7 +119,7 @@ public class ClassHelper {
 
 			retval = new Method[v.size()];
 			v.copyInto(retval);
-			allMethods.put(clazz,retval);
+			allMethodsAtDeclaration.put(clazz,retval);
 		}
 		return retval;
 	}
