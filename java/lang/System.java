@@ -42,6 +42,9 @@ public class System {
 	static {
 		properties = new Properties();
 		VMSystem.insertSystemProperties(properties);
+		in = new FileInputStream(FileDescriptor.in);
+		out = new PrintStream(new FileOutputStream(FileDescriptor.out));
+		err = new PrintStream(new FileOutputStream(FileDescriptor.err));
 	}
 
 	/** The standard InputStream.  This is assigned at
@@ -52,7 +55,7 @@ public class System {
 	 ** or files.  That should all be transparent to you,
 	 ** however.
 	 **/
-	public static final InputStream in = new FileInputStream(FileDescriptor.in);
+	public static final InputStream in;
 
 	/** The standard output PrintStream.  This is assigned at
 	 ** startup and starts its life perfectly valid.<P>
@@ -62,7 +65,7 @@ public class System {
 	 ** or files.  That should all be transparent to you,
 	 ** however.
 	 **/
-	public static final PrintStream out = new PrintStream(new FileOutputStream(FileDescriptor.out));
+	public static final PrintStream out;
 
 	/** The standard error PrintStream.  This is assigned at
 	 ** startup and starts its life perfectly valid.<P>
@@ -72,7 +75,7 @@ public class System {
 	 ** or files.  That should all be transparent to you,
 	 ** however.
 	 **/
-	public static final PrintStream err = new PrintStream(new FileOutputStream(FileDescriptor.err));
+	public static final PrintStream err;
 
 	/** Set in to a new InputStream.
 	 ** @param in the new InputStream.
@@ -197,6 +200,7 @@ public class System {
 		System.properties = properties;
 	}
 
+
 	/** Get a single system property by name.
 	 ** @param name the name of the system property to get
 	 ** @return the property, or null if not found.
@@ -204,8 +208,9 @@ public class System {
 	 **            getSecurityManager().checkPropertyAccess(name)
 	 **/
 	public static String getProperty(String name) {
+		SecurityManager sm = getSecurityManager();
 		try {
-			getSecurityManager().checkPropertyAccess(name);			
+			sm.checkPropertyAccess(name);
 		} catch(NullPointerException e) {
 		}
 		return properties.getProperty(name);
