@@ -63,27 +63,28 @@ public class XMLFormatter
   {
   }
 
+
+  /**
+   * The character sequence that is used to separate lines in the
+   * generated XML stream. Somewhat surprisingly, the Sun J2SE 1.4
+   * reference implementation always uses UNIX line endings, even on
+   * platforms that have different line ending conventions (i.e.,
+   * DOS). The GNU Classpath implementation does not replicates this
+   * bug.
+   *
+   * See also the Sun bug parade, bug #4462871,
+   * "java.util.logging.SimpleFormatter uses hard-coded line separator".
+   */
+  private static final String lineSep = SimpleFormatter.lineSep;
+
     
   /**
-   * The value of the system property <code>line.separator</code>.
-   */
-  private static final String lineSep = System.getProperty("line.separator");
-
-
-  /**
    * A DateFormat for emitting time in the ISO 8601 format.
+   * Since the API specification of SimpleDateFormat does not talk
+   * about its thread-safety, we cannot share a singleton instance.
    */
   private final SimpleDateFormat iso8601
     = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
-  /* FIXME: If SimpleDateFormat was thread-safe, we could share a
-   *        singleton instance in all XMLFormatters. Check this.
-   */
-
-  /* FIXME: Does this really emit the date and time in ISO-8601?
-   *        (Pattern taken from Brian Jones's implementation, not
-   *        verified).
-   */
 
 
   /**
@@ -106,19 +107,61 @@ public class XMLFormatter
 				      String tag,
 				      String content)
   {
+    int i;
+
     if (content == null)
       return;
 
-    for (int i = 0; i < indent * 2; i++)
+    for (i = 0; i < indent * 2; i++)
       buf.append(' ');
 
     buf.append("<");
     buf.append(tag);
     buf.append('>');
-    buf.append(content);
+
+    /* Append the content, but escape for XML by replacing
+     * '&', '<', '>' and all non-ASCII characters with
+     * appropriate escape sequences.
+     * The Sun J2SE 1.4 reference implementation does not
+     * escape non-ASCII characters. This is a bug in their
+     * implementation which has been reported in the Java
+     * bug parade as bug number (FIXME: Insert number here).
+     */
+    for (i = 0; i < content.length(); i++)
+    {
+      char c = content.charAt(i);
+      switch (c)
+      {
+      case '&':
+	buf.append("&amp;");
+	break;
+
+      case '<':
+	buf.append("&lt;");
+	break;
+
+      case '>':
+	buf.append("&gt;");
+	break;
+
+      default:
+	if (((c >= 0x20) && (c <= 0x7e))
+	    || (c == /* line feed */ 10)
+	    || (c == /* carriage return */ 13))
+	  buf.append(c);
+	else
+	{
+	  buf.append("&#");
+	  buf.append((int) c);
+	  buf.append(';');
+	}
+	break;
+      } /* switch (c) */
+    } /* for i */
+
     buf.append("</");
     buf.append(tag);
-    buf.append('>');
+    buf.append(">");
     buf.append(lineSep);
   }
 
@@ -145,26 +188,6 @@ public class XMLFormatter
   }
 
 
-  /**
-   * Determines whether or not a Level is one of the standard
-   * levels specified in the Logging API.  Since the constructor
-   * of Level is protected, custom levels must be an instance
-   * of a <em>sub-class</em> of java.util.logging.Level.
-   *
-   * <p>Actually, this is not entirely true: Someone could write
-   * a sub-class of Level with a static method that creates a
-   * new Level instance. Does this need fixing? FIXME: Review.
-   *
-   * <p>FIXME: Should this be a package-private method of Level?
-   *
-   * @param level the level in question.
-   */
-  private static final boolean isStandardLevel(Level level)
-  {
-    return level.getClass() == Level.class;
-  }
-
-
   public String format(LogRecord record)
   {
     StringBuffer    buf = new StringBuffer(400);
@@ -183,7 +206,7 @@ public class XMLFormatter
     appendTag(buf, 1, "sequence", record.getSequenceNumber());
     appendTag(buf, 1, "logger", record.getLoggerName());
 
-    if (isStandardLevel(level))
+    if (level.isStandardLevel())
       appendTag(buf, 1, "level", level.toString());
     else
       appendTag(buf, 1, "level", level.intValue());
@@ -192,37 +215,55 @@ public class XMLFormatter
     appendTag(buf, 1, "method", record.getSourceMethodName());
     appendTag(buf, 1, "thread", record.getThreadID());
 
-    key = record.getMessage();
-    if (key == null)
-      key = "";
-
-    message = formatMessage(record);
-
-    /* FIXME: We have to emit the localized message, but before or after
-     * parameter substitution?  The API specification is unclear. Need
-     * to reverse-engineer the reference implementation; file a bug
-     * report with Sun afterwards, asking for spec clarification.
+    /* The Sun J2SE 1.4 reference implementation does not emit the
+     * message in localized form. This is in violation of the API
+     * specification. The GNU Classpath implementation intentionally
+     * replicates the buggy behavior of the Sun implementation, as
+     * different log files might be a big nuisance to users.
      */
+    try
+    {
+      record.setResourceBundle(null);
+      message = formatMessage(record);
+    }
+    finally
+    {
+      record.setResourceBundle(bundle);
+    }
     appendTag(buf, 1, "message", message);
 
-    if ((bundle != null) && !key.equals(message))
-    {
-      appendTag(buf, 1, "key", key);
-      appendTag(buf, 1, "catalog", record.getResourceBundleName());
-    }
+    /* The Sun J2SE 1.4 reference implementation does not
+     * emit key, catalog and param tags. This is in violation
+     * of the API specification.  The Classpath implementation
+     * intentionally replicates the buggy behavior of the
+     * Sun implementation, as different log files might be
+     * a big nuisance to users.
+     *
+     * FIXME: File a bug report with Sun. Insert bug number here.
+     *
+     *
+     * key = record.getMessage();
+     * if (key == null)
+     *   key = "";
+     *
+     * if ((bundle != null) && !key.equals(message))
+     * {
+     *   appendTag(buf, 1, "key", key);
+     *   appendTag(buf, 1, "catalog", record.getResourceBundleName());
+     * }
+     *
+     * if (params != null)
+     * {
+     *   for (int i = 0; i < params.length; i++)
+     *     appendTag(buf, 1, "param", params[i].toString());
+     * }
+     */
 
-    if (params != null)
-    {
-      for (int i = 0; i < params.length; i++)
-	appendTag(buf, 1, "param", params[i].toString());
-    }
-
-    /* FIXME: We have no way to obtain the stacktrace before
-     * free JVMs support the corresponding method in
-     * java.lang.Throwable.  Well, it would be possible to
-     * parse the output of printStackTrace, but this would
-     * be pretty kludgy. Instead, we postpose the implementation
-     * until Throwable has made progress.
+    /* FIXME: We have no way to obtain the stacktrace before free JVMs
+     * support the corresponding method in java.lang.Throwable.  Well,
+     * it would be possible to parse the output of printStackTrace,
+     * but this would be pretty kludgy. Instead, we postpose the
+     * implementation until Throwable has made progress.
      */
     Throwable thrown = record.getThrown();
     if (thrown != null)
@@ -230,16 +271,18 @@ public class XMLFormatter
       buf.append("  <exception>");
       buf.append(lineSep);
 
-      /* There is a Mauve test that checks whether the result of
-       * getMessage() or getLocalizedMessage() is to be emitted.
-       * Since the API specification is not clear about this,
-       * it is necessary to re-engineer the Sun J2SE 1.4 reference
-       * implementation.
+      /* The API specification is not clear about what exactly
+       * goes into the XML record for a thrown exception: It
+       * could be the result of getMessage(), getLocalizedMessage(),
+       * or toString(). Therefore, it was necessary to write a
+       * Mauve testlet and run it with the Sun J2SE 1.4 reference
+       * implementation. It turned out that the we need to call
+       * toString().
        *
        * FIXME: File a bug report with Sun, asking for clearer
        * specs.
        */
-      appendTag(buf, 2, "message", thrown.getLocalizedMessage());
+      appendTag(buf, 2, "message", thrown.toString());
 
       /* FIXME: The Logging DTD specifies:
        *
@@ -264,6 +307,19 @@ public class XMLFormatter
   }
 
 
+  /**
+   * Returns a string that handlers are supposed to emit before
+   * the first log record.  The base implementation returns an
+   * empty string, but subclasses such as {@link XMLFormatter}
+   * override this method in order to provide a suitable header.
+   *
+   * @return a string for the header.
+   *
+   * @param handler the handler which will prepend the returned
+   *     string in front of the first log record.  This method
+   *     will inspect certain properties of the handler, for
+   *     example its encoding, in order to construct the header.
+   */
   public String getHead(Handler h)
   {
     StringBuffer  buf;
@@ -275,15 +331,32 @@ public class XMLFormatter
     encoding = h.getEncoding();
     if (encoding == null)
       encoding = System.getProperty("file.encoding");
+
+    /* On Windows XP localized for Swiss German (this is one of
+     * my [Sascha Brawer's] test machines), the default encoding
+     * has the canonical name "windows-1252". The "historical" name
+     * of this encoding is "Cp1252" (see the Javadoc for the class
+     * java.nio.charset.Charset for the distinction). Now, that class
+     * does have a method for mapping historical to canonical encoding
+     * names. However, if we used it here, we would be come dependent
+     * on java.nio.*, which was only introduced with J2SE 1.4.
+     * Thus, we do this little hack here. As soon as Classpath supports
+     * java.nio.charset.CharSet, this hack should be replaced by
+     * code that correctly canonicalizes the encoding name.
+     */
+    if ((encoding.length() > 2) && encoding.startsWith("Cp"))
+      encoding = "windows-" + encoding.substring(2);
+
     buf.append(encoding);
 
     buf.append("\" standalone=\"no\"?>");
     buf.append(lineSep);
 
-    /* FIXME: In my (Sascha Brawer's) opinion, SYSTEM should
-     * be a fully qualified URL.  We currently emulate what
-     * the Sun reference implementation does and will submit
-     * a bug report to Sun for having this changed.
+    /* SYSTEM is not a fully qualified URL so that validating
+     * XML parsers do not need to connect to the Internet in
+     * order to read in a log file.  See also the Sun Bug Parade,
+     * bug #4372790, "Logging APIs: need to use relative URL for XML
+     * doctype".
      */
     buf.append("<!DOCTYPE log SYSTEM \"logger.dtd\">");
     buf.append(lineSep);
