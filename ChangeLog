@@ -1,5 +1,10 @@
 2003-05-18  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/NetworkInterface.java:
+	New version from libgcj.
+
+2003-05-18  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/DataOutputStream.java:
 	New version from libgcj.
 	* java/io/PrintWriter.java:
