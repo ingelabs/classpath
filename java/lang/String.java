@@ -38,14 +38,16 @@ exception statement from your version. */
 
 package java.lang;
 
+import java.lang.ref.WeakReference;
 import java.util.Comparator;
-import java.util.Hashtable;
+import java.util.WeakHashMap;
 import java.util.Locale;
 import java.util.regex.Pattern;
-import gnu.java.io.EncodingManager;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.io.CharConversionException;
+import gnu.java.io.EncodingManager;
+import gnu.java.lang.CharData;
 
 /**
  * Strings represent an immutable set of characters.  All String literals
@@ -70,8 +72,7 @@ import java.io.CharConversionException;
  * @author Paul N. Fisher
  * @author Eric Blake <ebb9@email.byu.edu>
  * @since 1.0
- * @status updated to 1.3, waiting on java.util.regex, and could use better
- *    data sharing
+ * @status updated to 1.4; but could use better data sharing via offset field
  */
 public final class String implements Serializable, Comparable, CharSequence
 {
@@ -82,12 +83,25 @@ public final class String implements Serializable, Comparable, CharSequence
   private static final long serialVersionUID = -6849794470754667710L;
 
   /**
-   * Holds the references for each intern()'d String.
-   * Once a String has been intern()'d it cannot be GC'd.
-   *
-   * @XXX Replace with a weak reference structure for 1.2
+   * Holds the references for each intern()'d String. If all references to
+   * the string disappear, and the VM properly supports weak references,
+   * the String will be GC'd.
    */
-  private static final Hashtable internTable = new Hashtable();
+  private static final WeakHashMap internTable = new WeakHashMap();
+
+  /**
+   * Stores unicode multi-character uppercase expansion table.
+   * @see #toUpperCase(char)
+   * @see CharData#UPPER_EXPAND
+   */
+  private static final char[] upperExpand = CharData.UPPER_EXPAND.value;
+
+  /**
+   * Stores unicode multi-character uppercase special casing table.
+   * @see #upperCaseExpansion(char)
+   * @see CharData#UPPER_SPECIAL
+   */
+  private static final char[] upperSpecial = CharData.UPPER_SPECIAL.value;
 
   /**
    * Characters which make up the String.
@@ -186,6 +200,7 @@ public final class String implements Serializable, Comparable, CharSequence
     // Since Strings are immutable, don't copy value.
     value = str.value;
     count = str.count;
+    cachedHashCode = str.cachedHashCode;
   }
 
   /**
@@ -253,8 +268,10 @@ public final class String implements Serializable, Comparable, CharSequence
       throw new StringIndexOutOfBoundsException();
     this.count = count;
     value = new char[count];
-    for (int i = 0; i < count; i++)
-      value[i] = (char) (((hibyte & 0xff) << 8) | (ascii[i + offset] & 0xff));
+    hibyte <<= 8;
+    offset += count;
+    while (count > 0)
+      value[--count] = (char) (hibyte | (ascii[--offset] & 0xff));
   }
 
   /**
@@ -305,12 +322,11 @@ public final class String implements Serializable, Comparable, CharSequence
   public String(byte[] data, int offset, int count, String encoding)
     throws UnsupportedEncodingException
   {
-    // XXX Sun checks encoding for null, then checks negative bounds, then
-    // checks data for null, and finally searches for encoding.
     if (offset < 0 || count < 0 || offset + count > data.length)
       throw new StringIndexOutOfBoundsException();
     try
       {
+        // XXX Consider using java.nio here.
         value = EncodingManager.getDecoder(encoding)
           .convertToChars(data, offset, count);
       }
@@ -368,6 +384,7 @@ public final class String implements Serializable, Comparable, CharSequence
       throw new StringIndexOutOfBoundsException();
     try
       {
+        // XXX Consider using java.nio here.
         value = EncodingManager.getDecoder()
           .convertToChars(data, offset, count);
       }
@@ -407,15 +424,26 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public String(StringBuffer buf)
   {
-    // XXX Synchronize on buf.
-    count = buf.length();
-    value = new char[count];
-    buf.getChars(0, buf.length(), value, 0);
+    synchronized (buf)
+      {
+        count = buf.count;
+        // Share unless buf is 3/4 empty.
+        if ((count << 2) < buf.value.length)
+          {
+            value = new char[count];
+            System.arraycopy(buf.value, 0, value, 0, count);
+          }
+        else
+          {
+            buf.shared = true;
+            value = buf.value;
+          }
+      }
   }
 
   /**
    * Special constructor used when data can safely be shared, rather than
-   * cloning it now (such as from StringBuffer).
+   * cloning it.
    *
    * @param data the characters, not modifiable by users, non-null
    * @param length number of characters in data
@@ -462,16 +490,15 @@ public final class String implements Serializable, Comparable, CharSequence
    * @param dstBegin index to start writing characters into dst
    * @throws NullPointerException if dst is null
    * @throws IndexOutOfBoundsException if any indices are out of bounds
-   *         (while unspecified, this is a StringIndexOutOfBoundsException)
+   *         (while unspecified, source problems cause a
+   *         StringIndexOutOfBoundsException, and dst problems cause an
+   *         ArrayIndexOutOfBoundsException)
    */
   public void getChars(int srcBegin, int srcEnd, char dst[], int dstBegin)
   {
-    if (srcBegin < 0 || srcBegin > srcEnd || srcEnd > count
-        || dstBegin < 0 || dstBegin + srcEnd - srcBegin > dst.length)
+    if (srcBegin < 0 || srcBegin > srcEnd || srcEnd > count)
       throw new StringIndexOutOfBoundsException();
-    // XXX System.arraycopy this.
-    for (int i = srcBegin; i < srcEnd; i++)
-      dst[dstBegin + i - srcBegin] = value[i];
+    System.arraycopy(value, srcBegin, dst, dstBegin, srcEnd - srcBegin);
   }
 
   /**
@@ -483,20 +510,22 @@ public final class String implements Serializable, Comparable, CharSequence
    * @param srcEnd index after the last character to be copied from this String
    * @param dst byte array which each low byte of this String is copied into
    * @param dstBegin index to start writing characters into dst
-   * @throws NullPointerException if dst is null
+   * @throws NullPointerException if dst is null and copy length is non-zero
    * @throws IndexOutOfBoundsException if any indices are out of bounds
-   *         (while unspecified, this is a StringIndexOutOfBoundsException)
+   *         (while unspecified, source problems cause a
+   *         StringIndexOutOfBoundsException, and dst problems cause an
+   *         ArrayIndexOutOfBoundsException)
    * @see #getBytes()
    * @see #getBytes(String)
    * @deprecated use {@link #getBytes()}, which uses a char to byte encoder
    */
   public void getBytes(int srcBegin, int srcEnd, byte dst[], int dstBegin)
   {
-    if (srcBegin < 0 || srcBegin > srcEnd || srcEnd > count ||
-        dstBegin < 0 || dstBegin + srcEnd - srcBegin > dst.length)
+    if (srcBegin < 0 || srcBegin > srcEnd || srcEnd > count)
       throw new StringIndexOutOfBoundsException();
-    for (int i = srcBegin; i < srcEnd; i++)
-      dst[dstBegin + i - srcBegin] = (byte) value[i];
+    dstBegin -= srcBegin;
+    while (srcBegin < srcEnd)
+      dst[dstBegin++] = (byte) value[srcBegin++];
   }
 
   /**
@@ -517,6 +546,7 @@ public final class String implements Serializable, Comparable, CharSequence
   {
     try
       {
+        // XXX Consider using java.nio here.
         return EncodingManager.getEncoder(enc)
           .convertToBytes(value, offset, count);
       }
@@ -533,16 +563,14 @@ public final class String implements Serializable, Comparable, CharSequence
    * {@link java.nio.charset.CharsetEncoder}.  The behavior is not specified if
    * the encoder encounters a problem; this implementation returns null.
    *
-   * @param enc encoding name
    * @return the resulting byte array, or null on a problem
-   * @throws NullPointerException if enc is null
-   * @throws UnsupportedEncodingException if encoding is not supported
    * @since 1.1
    */
   public byte[] getBytes()
   {
     try
       {
+        // XXX Consider using java.nio here.
         return EncodingManager.getEncoder()
           .convertToBytes(value, offset, count);
       }
@@ -568,7 +596,10 @@ public final class String implements Serializable, Comparable, CharSequence
     String str2 = (String) anObject;
     if (count != str2.count)
       return false;
-    for (int i = 0; i < count; i++)
+    if (value == str2.value)
+      return true;
+    int i = count;
+    while (--i >= 0)
       if (value[i] != str2.value[i])
         return false;
     return true;
@@ -585,13 +616,18 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public boolean contentEquals(StringBuffer buffer)
   {
-    // XXX Synchronize on buffer.
-    if (count != buffer.count)
-      return false;
-    for (int i = 0; i < count; i++)
-      if (value[i] != buffer.value[i])
-        return false;
-    return true;
+    synchronized (buffer)
+      {
+        if (count != buffer.count)
+          return false;
+        if (value == buffer.value)
+          return true; // Possible if shared.
+        int i = count;
+        while (--i >= 0)
+          if (value[i] != buffer.value[i])
+            return false;
+        return true;
+      }
   }
 
   /**
@@ -615,14 +651,17 @@ public final class String implements Serializable, Comparable, CharSequence
   {
     if (anotherString == null || count != anotherString.count)
       return false;
-    for (int i = 0; i < count; i++)
-      // Note that checking c1 != c2 is redundant, but avoids method calls.
-      if (value[i] != anotherString.value[i]
-          && (Character.toUpperCase(value[i])
-              != Character.toUpperCase(anotherString.value[i]))
-          && (Character.toLowerCase(value[i])
-              != Character.toLowerCase(anotherString.value[i])))
-        return false;
+    int i = count;
+    while (--i >= 0)
+      {
+        char c1 = value[i];
+        char c2 = anotherString.value[i];
+        // Note that checking c1 != c2 is redundant, but avoids method calls.
+        if (c1 != c2
+            && Character.toUpperCase(c1) != Character.toUpperCase(c2)
+            && Character.toLowerCase(c1) != Character.toLowerCase(c2))
+          return false;
+      }
     return true;
   }
 
@@ -642,8 +681,8 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public int compareTo(String anotherString)
   {
-    int min = Math.min(count, anotherString.count);
-    for (int i = 0; i < min; i++)
+    int i = Math.min(count, anotherString.count);
+    while (--i >= 0)
       {
         int result = value[i] - anotherString.value[i];
         if (result != 0)
@@ -729,16 +768,19 @@ public final class String implements Serializable, Comparable, CharSequence
     if (toffset < 0 || ooffset < 0 || toffset + len > count ||
         ooffset + len > other.count)
       return false;
-    for (int i = 0; i < len; i++)
-      // Note that checking c1 != c2 is redundant when ignoreCase is true,
-      // but it avoids method calls.
-      if (value[toffset + i] != other.value[ooffset + i]
-          && (! ignoreCase
-              || ((Character.toLowerCase(value[toffset + i])
-                   != Character.toLowerCase(other.value[ooffset + i]))
-                  && (Character.toUpperCase(value[toffset + i])
-                      != Character.toUpperCase(other.value[ooffset + i])))))
-        return false;
+    while (--len >= 0)
+      {
+        char c1 = value[toffset++];
+        char c2 = value[ooffset++];
+        // Note that checking c1 != c2 is redundant when ignoreCase is true,
+        // but it avoids method calls.
+        if (c1 != c2
+            && (! ignoreCase
+                || (Character.toLowerCase(c1) != Character.toLowerCase(c2)
+                    && (Character.toUpperCase(c1)
+                        != Character.toUpperCase(c2)))))
+          return false;
+      }
     return true;
   }
 
@@ -756,10 +798,7 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public boolean startsWith(String prefix, int toffset)
   {
-    if (toffset < 0 || toffset > count)
-      return false;
-    return prefix.count == 0
-      || regionMatches(toffset, prefix, 0, prefix.count);
+    return regionMatches(false, toffset, prefix, 0, prefix.count);
   }
 
   /**
@@ -773,8 +812,7 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public boolean startsWith(String prefix)
   {
-    return prefix.count == 0
-      || regionMatches(0, prefix, 0, prefix.count);
+    return regionMatches(false, 0, prefix, 0, prefix.count);
   }
 
   /**
@@ -788,8 +826,7 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public boolean endsWith(String suffix)
   {
-    return suffix.count == 0
-      || regionMatches(count - suffix.count, suffix, 0, suffix.count);
+    return regionMatches(false, count - suffix.count, suffix, 0, suffix.count);
   }
 
   /**
@@ -836,9 +873,9 @@ public final class String implements Serializable, Comparable, CharSequence
   {
     if (fromIndex < 0)
       fromIndex = 0;
-    for (int i = fromIndex; i < count; i++)
-      if (value[i] == ch)
-        return i;
+    for ( ; fromIndex < count; fromIndex++)
+      if (value[fromIndex] == ch)
+        return fromIndex;
     return -1;
   }
 
@@ -867,9 +904,9 @@ public final class String implements Serializable, Comparable, CharSequence
   {
     if (fromIndex >= count)
       fromIndex = count - 1;
-    for (int i = fromIndex; i >= 0; i--)
-      if (value[i] == ch)
-        return i;
+    for ( ; fromIndex >= 0; fromIndex--)
+      if (value[fromIndex] == ch)
+        return fromIndex;
     return -1;
   }
 
@@ -900,9 +937,10 @@ public final class String implements Serializable, Comparable, CharSequence
   {
     if (fromIndex < 0)
       fromIndex = 0;
-    for (int i = fromIndex; i <= count; i++)
-      if (regionMatches(i, str, 0, str.count))
-        return i;
+    int limit = count - str.count;
+    for ( ; fromIndex <= limit; fromIndex++)
+      if (regionMatches(fromIndex, str, 0, str.count))
+        return fromIndex;
     return -1;
   }
 
@@ -931,11 +969,10 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public int lastIndexOf(String str, int fromIndex)
   {
-    if (fromIndex >= count)
-      fromIndex = count - str.count;
-    for (int i = fromIndex; i >= 0; i--)
-      if (regionMatches(i, str, 0, str.count))
-        return i;
+    fromIndex = Math.min(fromIndex, count - str.count);
+    for ( ; fromIndex >= 0; fromIndex--)
+      if (regionMatches(fromIndex, str, 0, str.count))
+        return fromIndex;
     return -1;
   }
 
@@ -968,9 +1005,14 @@ public final class String implements Serializable, Comparable, CharSequence
   {
     if (beginIndex < 0 || endIndex > count || beginIndex > endIndex)
       throw new StringIndexOutOfBoundsException();
-    char[] newStr = new char[endIndex - beginIndex];
-    System.arraycopy(value, beginIndex, newStr, 0, endIndex - beginIndex);
-    return new String(newStr);
+    if (beginIndex == 0)
+      // Package constructor avoids an array copy.
+      return endIndex == count ? this : new String(value, endIndex);
+    int len = endIndex - beginIndex;
+    char[] newStr = new char[len];
+    System.arraycopy(value, beginIndex, newStr, 0, len);
+    // Package constructor avoids an array copy.
+    return new String(newStr, len);
   }
 
   /**
@@ -1002,10 +1044,13 @@ public final class String implements Serializable, Comparable, CharSequence
   {
     if (str.count == 0)
       return this;
+    if (count == 0)
+      return str;
     char[] newStr = new char[count + str.count];
-    System.arraycopy(this.value, 0, newStr, 0, count);
+    System.arraycopy(value, 0, newStr, 0, count);
     System.arraycopy(str.value, 0, newStr, count, str.count);
-    return new String(newStr);
+    // Package constructor avoids an array copy.
+    return new String(newStr, newStr.length);
   }
 
   /**
@@ -1018,17 +1063,21 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public String replace(char oldChar, char newChar)
   {
-    int index = 0;
-    for (; index < count; index++)
+    if (oldChar == newChar)
+      return this;
+    int index = count;
+    while (--index >= 0)
       if (value[index] == oldChar)
         break;
-    if (index == count) return this;
-    char[] newStr = new char[count];
-    System.arraycopy(value, 0, newStr, 0, count);
-    for (int i = index; i < count; i++)
-      if (value[i] == oldChar)
-        newStr[i] = newChar;
-    return new String(newStr);
+    if (index < 0)
+      return this;
+    char[] newStr = (char[]) value.clone();
+    do
+      if (value[index] == oldChar)
+        value[index] = newChar;
+    while (--index >= 0);
+    // Package constructor avoids an array copy.
+    return new String(newStr, count);
   }
 
   /**
@@ -1039,13 +1088,13 @@ public final class String implements Serializable, Comparable, CharSequence
    * @return true if the pattern matches
    * @throws NullPointerException if regex is null
    * @throws PatternSyntaxExceptions if regex is invalid
+   * @see Pattern#matches(String, CharSequence)
    * @since 1.4
-   * @XXX Add this method.
+   */
   public boolean matches(String regex)
   {
     return Pattern.matches(regex, this);
   }
-   */
 
   /**
    * Replaces the first substring match of the regular expression with a
@@ -1057,13 +1106,16 @@ public final class String implements Serializable, Comparable, CharSequence
    * @return the modified string
    * @throws NullPointerException if regex or replacement is null
    * @throws PatternSyntaxExceptions if regex is invalid
+   * @see #replaceAll(String, String)
+   * @see Pattern#compile(String)
+   * @see Pattern#matcher(CharSequence)
+   * @see Matcher#replaceFirst(String)
    * @since 1.4
-   * @XXX Add this method.
+   */
   public String replaceFirst(String regex, String replacement)
   {
     return Pattern.compile(regex).matcher(this).replaceFirst(replacement);
   }
-   */
 
   /**
    * Replaces all matching substrings of the regular expression with a
@@ -1075,13 +1127,16 @@ public final class String implements Serializable, Comparable, CharSequence
    * @return the modified string
    * @throws NullPointerException if regex or replacement is null
    * @throws PatternSyntaxExceptions if regex is invalid
+   * @see #replaceFirst(String, String)
+   * @see Pattern#compile(String)
+   * @see Pattern#matcher(CharSequence)
+   * @see Matcher#replaceAll(String)
    * @since 1.4
-   * @XXX Add this method.
+   */
   public String replaceAll(String regex, String replacement)
   {
-    return Pattern.compile(regex).matcher(this).replaceFirst(replacement);
+    return Pattern.compile(regex).matcher(this).replaceAll(replacement);
   }
-   */
 
   /**
    * Split this string around the matches of a regular expression. Each
@@ -1113,13 +1168,14 @@ public final class String implements Serializable, Comparable, CharSequence
    * @return the array of split strings
    * @throws NullPointerException if regex or replacement is null
    * @throws PatternSyntaxExceptions if regex is invalid
+   * @see Pattern#compile(String)
+   * @see Pattern#split(CharSequence, int)
    * @since 1.4
-   * @XXX Add this method.
+   */
   public String[] split(String regex, int limit)
   {
     return Pattern.compile(regex).split(this, limit);
   }
-   */
 
   /**
    * Split this string around the matches of a regular expression. Each
@@ -1133,13 +1189,14 @@ public final class String implements Serializable, Comparable, CharSequence
    * @throws NullPointerException if regex or replacement is null
    * @throws PatternSyntaxExceptions if regex is invalid
    * @see #split(String, int)
+   * @see Pattern#compile(String)
+   * @see Pattern#split(CharSequence, int)
    * @since 1.4
-   * @XXX Add this method.
+   */
   public String[] split(String regex)
   {
     return Pattern.compile(regex).split(this, 0);
   }
-   */
 
   /**
    * Lowercases this String according to a particular locale. This uses
@@ -1148,19 +1205,38 @@ public final class String implements Serializable, Comparable, CharSequence
    *
    * @param loc locale to use
    * @return new lowercased String, or this if no characters were lowercased
+   * @throws NullPointerException if loc is null
    * @see #toUpperCase(Locale)
    * @since 1.1
    */
   public String toLowerCase(Locale loc)
   {
-    // XXX Fix this to follow Unicode rules.
-    char[] newStr = new char[count];
-    for (int i = 0; i < count; i++)
-      newStr[i] = Character.toLowerCase(value[i]);
-    for (int i = 0; i < count; i++)
-      if (value[i] != newStr[i])
-        return new String(newStr);
-    return this;
+    // First, see if the current string is already lower case.
+    boolean turkish = "tr".equals(loc.getLanguage());
+    int i = count;
+    while (--i >= 0)
+      {
+        char ch = value[i];
+        if ((turkish && ch == '\u0049')
+            || ch != Character.toLowerCase(ch))
+          break;
+      }
+    if (i < 0)
+      return this;
+
+    // Now we perform the conversion. Fortunately, there are no multi-character
+    // lowercase expansions in Unicode 3.0.0.
+    char[] newStr = (char[]) value.clone();
+    do
+      {
+        char ch = value[i];
+        // Hardcoded special case.
+        newStr[i] = (turkish && ch == '\u0049') ? '\u0131'
+          : Character.toLowerCase(ch);
+      }
+    while (--i >= 0);
+    // Package constructor avoids an array copy.
+    return new String(newStr, count);
   }
 
   /**
@@ -1168,8 +1244,9 @@ public final class String implements Serializable, Comparable, CharSequence
    * applied to the platform's default Locale, so the resulting string may
    * be a different length.
    *
-   * @return new lowercased String, or this if no characters where lowercased
+   * @return new lowercased String, or this if no characters were lowercased
    * @see #toLowerCase(Locale)
+   * @see #toUpperCase()
    */
   public String toLowerCase()
   {
@@ -1183,19 +1260,66 @@ public final class String implements Serializable, Comparable, CharSequence
    *
    * @param loc locale to use
    * @return new uppercased String, or this if no characters were uppercased
+   * @throws NullPointerException if loc is null
    * @see #toLowerCase(Locale)
    * @since 1.1
    */
   public String toUpperCase(Locale loc)
   {
-    // XXX Fix this to follow Unicode rules.
-    char[] newStr = new char[count];
-    for (int i = 0; i < count; i++)
-      newStr[i] = Character.toUpperCase(value[i]);
-    for (int i = 0; i < count; i++)
-      if (value[i] != newStr[i])
-        return new String(newStr);
-    return this;
+    // First, see how many characters we have to grow by, as well as if the
+    // current string is already upper case.
+    boolean turkish = "tr".equals(loc.getLanguage());
+    int expand = 0;
+    boolean unchanged = true;
+    for (int i = count; --i >= 0; )
+      {
+        char ch = value[i];
+        expand += upperCaseExpansion(ch);
+        unchanged = (unchanged && expand == 0
+                     && ! (turkish && ch == '\u0069')
+                     && ch == Character.toUpperCase(ch));
+      }
+    if (unchanged)
+      return this;
+
+    // Now we perform the conversion.
+    if (expand == 0)
+      {
+        char[] newStr = (char[]) value.clone();
+        for (int i = count; --i >= 0; )
+          {
+            char ch = value[i];
+            // Hardcoded special case.
+            newStr[i] = (turkish && ch == '\u0069') ? '\u0130'
+              : Character.toUpperCase(ch);
+          }
+        // Package constructor avoids an array copy.
+        return new String(newStr, count);
+      }
+
+    // Expansion is necessary.
+    char[] newStr = new char[count + expand];
+    for (int i = 0, j = 0; i < count; )
+      {
+        char ch = value[i++];
+        // Hardcoded special case.
+        if (turkish && ch == '\u0069')
+          {
+            newStr[j++] = '\u0130';
+            continue;
+          }
+        expand = upperCaseExpansion(ch);
+        if (expand > 0)
+          {
+            int offset = upperCaseIndex(ch);
+            while (expand-- >= 0)
+              newStr[j++] = upperExpand[offset++];
+          }
+        else
+          newStr[j++] = Character.toUpperCase(ch);
+      }
+    // Package constructor avoids an array copy.
+    return new String(newStr, newStr.length);
   }
 
   /**
@@ -1203,8 +1327,9 @@ public final class String implements Serializable, Comparable, CharSequence
    * applied to the platform's default Locale, so the resulting string may
    * be a different length.
    *
-   * @return new uppercased String, or this if no characters where uppercased
+   * @return new uppercased String, or this if no characters were uppercased
    * @see #toUpperCase(Locale)
+   * @see #toLowerCase()
    */
   public String toUpperCase()
   {
@@ -1212,9 +1337,10 @@ public final class String implements Serializable, Comparable, CharSequence
   }
 
   /**
-   * Trims all characters less than or equal to ' ' (many ASCII control
-   * characters, and all {@link Character#whitespace(char)}) from the
-   * beginning and end of this String.
+   * Trims all characters less than or equal to <code>'\u0020'</code>
+   * (<code>' '</code>) from the beginning and end of this String. This
+   * includes many, but not all, ASCII control characters, and all
+   * {@link Character#whitespace(char)}.
    *
    * @return new trimmed String, or this if nothing trimmed
    */
@@ -1224,10 +1350,8 @@ public final class String implements Serializable, Comparable, CharSequence
       return this;
     int begin = 0;
     do
-      {
-        if (begin == count)
-          return "";
-      }
+      if (begin == count)
+        return "";
     while (value[begin++] <= '\u0020');
     int end = count;
     while (value[--end] <= '\u0020');
@@ -1253,6 +1377,8 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public char[] toCharArray()
   {
+    if (count == value.length)
+      return (char[]) value.clone();
     char[] copy = new char[count];
     System.arraycopy(value, 0, copy, 0, count);
     return copy;
@@ -1283,7 +1409,7 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public static String valueOf(char[] data)
   {
-    return new String(data, 0, data.length);
+    return new String(data);
   }
 
   /**
@@ -1338,7 +1464,7 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public static String copyValueOf(char[] data)
   {
-    return new String(data, 0, data.length);
+    return new String(data);
   }
 
   /**
@@ -1360,8 +1486,8 @@ public final class String implements Serializable, Comparable, CharSequence
    */
   public static String valueOf(char c)
   {
-    // XXX Share this array.
-    return new String(new char[] { c });
+    // Package constructor avoids an array copy.
+    return new String(new char[] { c }, 1);
   }
 
   /**
@@ -1420,15 +1546,73 @@ public final class String implements Serializable, Comparable, CharSequence
    * (s1.intern() == s2.intern()). All string literals and string-valued
    * constant expressions are already interned.
    *
-   * @return intern'd String
+   * @return the interned String
    */
   public String intern()
   {
-    // XXX Synchronize access to the table, to avoid races.
-    Object o = internTable.get(this);
-    if (o != null)
-      return (String) o;
-    internTable.put(this, this);
+    synchronized (internTable)
+      {
+        WeakReference ref = (WeakReference) internTable.get(this);
+        if (ref != null)
+          {
+            String s = (String) ref.get();
+            // If s is null, then no strong references exist to the String;
+            // the weak hash map will soon delete the key.
+            if (s != null)
+              return s;
+          }
+        internTable.put(this, new WeakReference(this));
+      }
     return this;
   }
-}
+
+  /**
+   * Helper function used to detect which characters have a multi-character
+   * uppercase expansion. Note that this is only used in locations which
+   * track one-to-many capitalization (java.lang.Character does not do this).
+   * As of Unicode 3.0.0, the result is limited in the range 0 to 2, as the
+   * longest uppercase expansion is three characters (a growth of 2 from the
+   * lowercase character).
+   *
+   * @param ch the char to check
+   * @return the number of characters to add when converting to uppercase
+   * @see CharData#DIRECTION
+   * @see CharData#UPPER_SPECIAL
+   * @see #toUpperCase(Locale)
+   */
+  private static int upperCaseExpansion(char ch)
+  {
+    return Character.direction[Character.readChar(ch) >> 7] & 3;
+  }
+
+  /**
+   * Helper function used to locate the offset in upperExpand given a
+   * character with a multi-character expansion. The binary search is
+   * optimized under the assumption that this method will only be called on
+   * characters which exist in upperSpecial.
+   *
+   * @param ch the char to check
+   * @return the index where its expansion begins
+   * @see CharData#UPPER_SPECIAL
+   * @see CharData#UPPER_EXPAND
+   * @see #toUpperCase(Locale)
+   */
+  private static int upperCaseIndex(char ch)
+  {
+    // Simple binary search for the correct character.
+    int low = 0;
+    int hi = upperSpecial.length - 2;
+    int mid = ((low + hi) >> 2) << 1;
+    char c = upperSpecial[mid];
+    while (ch != c)
+      {
+        if (ch < c)
+          hi = mid - 2;
+        else
+          low = mid + 2;
+        mid = ((low + hi) >> 2) << 1;
+        c = upperSpecial[mid];
+      }
+    return upperSpecial[mid + 1];
+  }
+} // class String

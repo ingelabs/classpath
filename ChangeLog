@@ -1,3 +1,35 @@
+2002-03-08  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/regex/Pattern.java (split): Add missing stubs.
+	* java/util/regex/Matcher.java (replace*): Ditto.
+	* doc/unicode/SpecialCasing-2.txt: New file from unicode.org.
+	* scripts/unicode-muncher.pl: Add special casing rules for
+	multi-character uppercase expansions.
+	* gnu/java/lang/CharData.java: Regenerate.
+	* java/util/WeakHashMap.java: Improve Javadoc.
+	* java/lang/CharSequence.java: Ditto.
+	* java/lang/Character.java (getDirectionality): Update to new
+	CharData format.
+	(direction, readChar): Change visibility.
+	(toString): One less method call.
+	* java/lang/String.java: General code cleanup, optimizations, and
+	better exception matching to Sun's implementation.
+	(internTable, intern): Switch to use weak references.
+	(String(StringBuffer), String(char[], int)): Implement array
+	sharing when the array comes from a trusted source.
+	(matches, replace*, split): New methods, that call unimplemented
+	stubs in java.util.regex.
+	(toUpperCase, toLowerCase): Correctly implement one-to-many case
+	conversions, and special casing based on locale.
+	(upperExpand, upperSpecial, upperCaseExpansion, upperCaseIndex):
+	New tables and methods, to implement toUpperCase.
+	* java/lang/StringBuffer.java: General code cleanup,
+	optimizations, and better exception matching.
+	(substring): Use array sharing.
+	(append(StringBuffer), indexOf, lastIndexOf): Avoid object
+	creation.
+	(regionMatches): New method, used by indexOf.
+
 2002-03-08  Mark Wielaard <mark@klomp.org>
 
 	* lib/Makefile.am: Add -bootclasspath '' -extdirs '' -sourcepath '' to

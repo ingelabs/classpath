@@ -1422,7 +1422,8 @@ public final class Character implements Serializable, Comparable
    * of String.value to avoid copying the array.
    * @see CharData#DIRECTION
    */
-  private static final char[] direction = CharData.DIRECTION.value;
+  // Package visible for use by String.
+  static final char[] direction = CharData.DIRECTION.value;
 
   /**
    * Stores unicode titlecase table. Exploit package visibility of
@@ -1461,7 +1462,8 @@ public final class Character implements Serializable, Comparable
    * @see CharData#DATA
    * @see CharData#SHIFT
    */
-  private static char readChar(char ch)
+  // Package visible for use in String.
+  static char readChar(char ch)
   {
     // Perform 16-bit addition to find the correct entry in data.
     return data[(char) (blocks[ch >> CharData.SHIFT] + ch)];
@@ -1518,9 +1520,8 @@ public final class Character implements Serializable, Comparable
    */
   public String toString()
   {
-    // This assumes that String.valueOf(char) can create a single-character
-    // String more efficiently than through the public API.
-    return String.valueOf(value);
+    // Package constructor avoids an array copy.
+    return new String(new char[] { value }, 1);
   }
 
   /**
@@ -1532,9 +1533,8 @@ public final class Character implements Serializable, Comparable
    */
   public String toString(char ch)
   {
-    // This assumes that String.valueOf(char) can create a single-character
-    // String more efficiently than through the public API.
-    return String.valueOf(ch);
+    // Package constructor avoids an array copy.
+    return new String(new char[] { value }, 1);
   }
 
   /**
@@ -2195,7 +2195,7 @@ public final class Character implements Serializable, Comparable
   public static byte getDirectionality(char ch)
   {
     // The result will correctly be signed.
-    return (byte) direction[readChar(ch) >> 7];
+    return (byte) (direction[readChar(ch) >> 7] >> 2);
   }
 
   /**

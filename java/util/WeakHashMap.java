@@ -43,34 +43,33 @@ import java.lang.ref.WeakReference;
 import java.lang.ref.ReferenceQueue;
 
 /**
- * A weak hash map has only weak references to the key.  This means
- * that it allows the key to be garbage collected if they are not used
- * otherwise.  If this happens, the weak hash map will eventually
- * remove the whole entry from this map. <br>
+ * A weak hash map has only weak references to the key. This means that it
+ * allows the key to be garbage collected if it is not used otherwise. If
+ * this happens, the entry will eventually disappear from the map,
+ * asynchronously.
  *
- * A weak hash map makes most sense, if the keys doesn't override the
- * <code>equals</code>-method: If there is no other reference to the
+ * <p>A weak hash map makes most sense when the keys doesn't override the
+ * <code>equals</code> method: If there is no other reference to the
  * key nobody can ever look up the key in this table and so the entry
- * can be removed.  This table also works, if the <code>equals</code>
- * method is overloaded, e.g. with Strings as keys, but you should be
- * prepared that some entries disappear spontaneously. <br>
+ * can be removed.  This table also works when the <code>equals</code>
+ * method is overloaded, such as String keys, but you should be prepared
+ * to deal with some entries disappearing spontaneously.
  *
- * You should also be prepared that this hash map behaves very
- * strange: The size of this map may spontaneously shrink (even if you
- * use a synchronized map and synchronize it); it behaves as if
- * another thread removes entries from this table without
- * synchronizations.  The entry set returned by <code>entrySet</code>
+ * <p>Other strange behaviors to be aware of: The size of this map may
+ * spontaneously shrink (even if you use a synchronized map and synchronize
+ * it); it behaves as if another thread removes entries from this table
+ * without synchronization.  The entry set returned by <code>entrySet</code>
  * has similar phenomenons: The size may spontaneously shrink, or an
- * entry, that was in the set before, suddenly disappears. <br>
+ * entry, that was in the set before, suddenly disappears.
  *
- * A weak hash map is not meant for caches; use a normal map, with
- * soft references as values instead, or try {@link LinkedHashMap}.  <br>
+ * <p>A weak hash map is not meant for caches; use a normal map, with
+ * soft references as values instead, or try {@link LinkedHashMap}.
  *
- * The weak hash map supports null values and null keys.  The null key
- * is never deleted from the map (except explictly of course).
- * The performance of the methods are similar to that of a hash map. <br>
+ * <p>The weak hash map supports null values and null keys.  The null key
+ * is never deleted from the map (except explictly of course). The
+ * performance of the methods are similar to that of a hash map.
  *
- * The value objects are strongly referenced by this table.  So if a
+ * <p>The value objects are strongly referenced by this table.  So if a
  * value object maintains a strong reference to the key (either direct
  * or indirect) the key will never be removed from this map.  According
  * to Sun, this problem may be fixed in a future release.  It is not
