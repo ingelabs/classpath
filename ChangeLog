@@ -1,5 +1,9 @@
 2003-07-22  Tom Tromey  <tromey@redhat.com>
 
+	* java/awt/Window.java (getWarningString): Just return the
+	string.
+	(Window): Set warningString; check with security manager.
+
 	* java/net/URLEncoder.java (encode(String)): Use platform default
 	encoding.
 	(encode(String,String)): Convert to 2-digit upper-case hex
