@@ -53,6 +53,20 @@ public class ClassHelper {
 		}
 	}
 
+	/** Strip the last portion of the name (after the last
+	 ** dot).
+	 ** @param name the name to get package of.
+	 ** @return the package name.  "" if no package.
+	 **/
+	public static String getPackagePortion(String name) {
+		int lastInd = name.lastIndexOf('.');
+		if(lastInd == -1) {
+			return "";
+		} else {
+			return name.substring(0,lastInd);
+		}
+	}
+
 	static Hashtable allMethods = new Hashtable();
 	static Hashtable allMethodsAtDeclaration = new Hashtable();
 
