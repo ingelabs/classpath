@@ -145,6 +145,7 @@ if test "x${COMPILE_JNI}" = xyes; then
   AC_CHECK_HEADERS([unistd.h sys/types.h sys/config.h sys/ioctl.h asm/ioctls.h])
   AC_CHECK_HEADERS([inttypes.h stdint.h utime.h sys/utime.h sys/filio.h])
   AC_CHECK_HEADERS([sys/time.h])
+  AC_CHECK_HEADERS([sys/select.h])
   dnl Check for crt_externs.h on Darwin.
   AC_CHECK_HEADERS([crt_externs.h])
 
@@ -159,6 +160,7 @@ if test "x${COMPILE_JNI}" = xyes; then
   AC_CHECK_FUNCS([getsockname sizeof getpeername bind listen accept])
   AC_CHECK_FUNCS([recvfrom send sendto setsockopt getsockopt time mktime])
   AC_CHECK_FUNCS([localtime_r])
+  AC_CHECK_FUNCS([strerror_r])
 
   AC_HEADER_TIME
   AC_STRUCT_TM

@@ -1,3 +1,9 @@
+2005-03-18  Robert Schuster  <thebohemian@gmx>
+
+	* native/jni/java-nio/gnu_java_nio_VMSelector.c: Implemented
+    Java_gnu_java_nio_VMSelector_select.
+	* configure.ac: Added check for sys/select.h and strerro_r().
+
 2005-03-17  Mark Wielaard  <mark@klomp.org>
 
 	* doc/www.gnu.org/newsitems.txt: Add 0.14 release announcement
