@@ -571,6 +571,20 @@ setLocation(int x, int y)
   * Moves this component to the specified location.  The coordinates are
   * the new upper left corner of this component.
   *
+  * @param p New coordinates for this component.
+  */
+public void
+setLocation(Point p)
+{
+  setBounds(p.x, p.y, getBounds().width, getBounds().y);
+}
+
+/*************************************************************************/
+
+/**
+  * Moves this component to the specified location.  The coordinates are
+  * the new upper left corner of this component.
+  *
   * @param x The new X coordinate of this component.
   * @param y The new Y coordinate of this component.
   *

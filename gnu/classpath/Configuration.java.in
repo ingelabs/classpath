@@ -35,20 +35,21 @@ public interface Configuration
   /**
    * The value of DEBUG is substituted according to whether the
    * "--enable-debug" argument was passed to configure. Code
-   * which is made conditional based on the value of this flag will
-   * be removed by the optimizer in a non-debug build.
+   * which is made conditional based on the value of this flag - typically 
+   * code that generates debugging output - will be removed by the optimizer 
+   * in a non-debug build.
    */
   boolean DEBUG = @LIBDEBUG@;
 
   /**
    * The value of LOAD_LIBRARY is substituted according to whether the
-   * "--enable-load-library" argument was passed to configure.  By
-   * default, configure should define this is as true and typically a
-   * user would use "--disable-load-library" to avert loading
-   * libraries static initializers of all classes.  Code which is made
-   * conditional based on the value of this flag will be removed by
-   * the optimizer in a non-debug build.  
+   * "--enable-load-library" or "--disable-load-library" argument was passed 
+   * to configure.  By default, configure should define this is as true.
+   * If set to false, loadLibrary() calls to load native function
+   * implementations, typically found in static initializers of classes
+   * which contain native functions, will be omitted.  This is useful for
+   * runtimes which pre-link their native function implementations and do
+   * not require additional shared libraries to be loaded.
    */
   boolean INIT_LOAD_LIBRARY = @INIT_LOAD_LIBRARY@;
-
 }
