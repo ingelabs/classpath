@@ -20,6 +20,7 @@ Copyright (C) 1998-2001 Free Software Foundation, Inc.
 @title GNU Classpath VM Integration Guide
 @author John Keiser
 @author C. Brian Jones
+@author Mark Wielaard
 
 @page
 @vskip 0pt plus 1filll
@@ -106,11 +107,31 @@ This VM project so far supports only Sun UltraSparc processors using the
 proprietary Solaris 2.5.1 or higher operating system.  LaTTe was derived
 from Kaffe but claims a number of improvements.
 
+@item @uref{http://gcc.gnu.org/java/,GNU Compiler for Java (GCJ)}
+This is a portable, optimizing, ahead-of-time compiler for the Java
+Programming Language. It can compile Java source code directly to native
+machine code, Java source code to Java bytecode (class files), and Java
+bytecode to native machine code. Compiled applications are linked with the
+GCJ runtime, libgcj which is based on the GNU Classpath code, which provides
+the core class libraries, a garbage collector, and a bytecode interpreter.
+libgcj can dynamically load and interpret class files, resulting in mixed
+compiled/interpreted applications.
+GCJ is part of the GNU Compiler Collection (@uref{http://gcc.gnu.org/,GCC}).
+On march 6 2000 the libgcj and GNU Classpath projects were officially merged
+and there is active work on merging all the classes between the projects.
+
+@item @uref{http://kissme.sourceforge.net/,Kissme}
+This is a free Java Virtual Machine that is being developed on GNU/Linux
+and can run console java applications.  kissme also provides support for
+orthogonally persistent java.
+
 @end itemize
 
-Current integration efforts are focused mainly on Japhar with an eye
-towards getting Electrical Fire to work.  All information contained in
-this document is gleaned from these efforts.
+In the past integration efforts were focused mainly on Japhar with an eye
+towards getting Electrical Fire to work.  Most information contained in
+this document is gleaned from these efforts. Recently more work has been
+done on getting gcj, orp and kissme to work out of the box with GNU Classpath
+but there is much to do before that becomes a reality.
 
 
 @node Initialization, Classpath Hooks, Introduction, Top
@@ -143,9 +164,17 @@ from Classpath call out to to get certain VM-specific dirty work done:
 
 @itemize @bullet
 @item java.lang.VMObject
+is the bridge between the low level Object facilities such
+as makeing a clone, getting the class of the object and the wait/notify
+semantics.
 @item java.lang.VMClassLoader
+provides methods for defining and resolving core and primitive classes.
 @item java.lang.VMSystem
+is used to initialize the System properties, the System.arraycopy
+method and the identityHashCode of an Object.
 @item java.lang.VMSecurityManager
+provides the class context (stack trace) of the currently
+executing thread and a way to get the currently active ClassLoader.
 @end itemize
 
 Some of the classes you implement for the VM will need to call back to

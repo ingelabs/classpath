@@ -1,3 +1,19 @@
+2001-11-11  Mark Wielaard  <mark@klomp.org>
+
+	* doc/vmintegration.texinfo: Add gcj, kissme and small explanation of
+	VMObject, VMClassLoader, VMSystem and VMSecurityManager
+	* java/lang/Boolean.java (TYPE): VMClassLoader.getPrimitiveClass(char)
+	* java/lang/Byte.java (TYPE): Likewise
+	* java/lang/Character.java (TYPE): Likewise
+	* java/lang/Double.java (TYPE): Likewise
+	* java/lang/Float.java (TYPE): Likewise
+	* java/lang/Integer.java (TYPE): Likewise
+	* java/lang/Long.java (TYPE): Likewise
+	* java/lang/Short.java (TYPE): Likewise
+	* java/lang/Void.java (TYPE): Likewise
+	* vm/reference/java/lang/VMClassLoader.java (getPrimitiveClass(char)):
+	new method
+
 2001-11-06  Joseph S. Myers  <jsm28@cam.ac.uk>
 
 	* java/io/ByteArrayOutputStream.java,
