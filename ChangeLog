@@ -1,5 +1,10 @@
 2003-06-18  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/image/IndexColorModel.java:
+	Reformatted.
+
+2003-06-18  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/FileChannelImpl.java,
 	gnu/java/nio/SelectorImpl.java,
 	gnu/java/nio/ServerSocketChannelImpl.java,
