@@ -141,37 +141,28 @@ public class ObjectInputStream extends InputStream
     boolean first_time = true;
 
     Object ret_val;
-    while( true )
+    was_deserializing = this.isDeserializing;
+
+    if( ! was_deserializing )
+      setBlockDataMode( false );
+
+    this.isDeserializing = true;
+
+    DEBUG( "MARKER " );
+    byte marker = this.realInputStream.readByte();
+
+    switch (marker)
     {
-      //DEBUG
-      if( !first_time )
-	throw new RuntimeException( "Help me!! I'm in an infinite loop." );
-      first_time = false;
-      //eDEBUG
-      
-      was_deserializing = this.isDeserializing;
-
-      if( ! was_deserializing )
-	setBlockDataMode( false );
-
-      this.isDeserializing = true;
-
-      DEBUG( "MARKER " );
-      byte marker = this.realInputStream.readByte();
-
-      if( marker == TC_BLOCKDATA || marker == TC_BLOCKDATALONG )
-      {
+      case TC_BLOCKDATA:
+      case TC_BLOCKDATALONG:
 	readNextBlock( marker );
 	throw new BlockDataException( this.blockDataBytes );
-      }
     
-      if( marker == TC_NULL )
-      {
+      case TC_NULL:
 	ret_val = null;
 	break;
-      }      
 
-      if( marker == TC_REFERENCE )
+      case TC_REFERENCE:
       {
 	DEBUG( "REFERENCE " );
 	Integer oid = new Integer( this.realInputStream.readInt() );
@@ -179,8 +170,8 @@ public class ObjectInputStream extends InputStream
 		   this.objectLookupTable.get(oid)).object;
 	break;
       }
-    
-      if( marker == TC_CLASS )
+      
+      case TC_CLASS:
       {
 	ObjectStreamClass osc = (ObjectStreamClass)readObject();
 	Class clazz = osc.forClass();
@@ -188,8 +179,8 @@ public class ObjectInputStream extends InputStream
 	ret_val = clazz;
 	break;
       }
-
-      if( marker == TC_CLASSDESC )
+      
+      case TC_CLASSDESC:
       {
 	DEBUG( "CLASSDESC NAME " );
 	String name = this.realInputStream.readUTF();
@@ -236,16 +227,16 @@ public class ObjectInputStream extends InputStream
 	ret_val = osc;
 	break;
       }
-    
-      if( marker == TC_STRING )
+      
+      case TC_STRING:
       {
 	DEBUG( "STRING " );
 	String s = this.realInputStream.readUTF();
 	ret_val = processResoultion( s, assignNewHandle( s ) );
 	break;
       }
-    
-      if( marker == TC_ARRAY )
+      
+      case TC_ARRAY:
       {
 	ObjectStreamClass osc = (ObjectStreamClass)readObject();
 	Class componenetType = osc.forClass().getComponentType();
@@ -257,8 +248,8 @@ public class ObjectInputStream extends InputStream
 	ret_val = processResoultion( array, handle );
 	break;
       }
-
-      if( marker == TC_OBJECT )
+      
+      case TC_OBJECT:
       {
 	ObjectStreamClass osc = (ObjectStreamClass)readObject();
 	Class clazz = osc.forClass();
@@ -304,7 +295,7 @@ public class ObjectInputStream extends InputStream
 
 	  ret_val = processResoultion( obj, handle );
 	  break;
-	}
+	} // end if( Externalizable.class.isAssignableFrom( clazz ) )
 
 	// find the first non-serializable, non-abstract
 	// class in clazz's inheritance hierarchy
@@ -371,22 +362,21 @@ public class ObjectInputStream extends InputStream
 	ret_val = processResoultion( obj, handle );
 	break;
       }
-
-      if( marker == TC_RESET )
-      {
+      
+      case TC_RESET:
 	clearHandles();
 	ret_val = readObject();
 	break;
-      }
     
-      if( marker == TC_EXCEPTION )
+      case TC_EXCEPTION:
       {
 	Exception e = (Exception)readObject();
 	clearHandles();
 	throw new WriteAbortedException( "Exception thrown during writing of stream", e );
       }
-
-      throw new IOException( "Unknown marker on stream" );
+      
+      default:
+	throw new IOException( "Unknown marker on stream" );
     }
     
     this.isDeserializing = was_deserializing;
