@@ -304,6 +304,27 @@ AC_DEFUN(CLASSPATH_CHECK_GCJ,
   else
     AC_PATH_PROG(GCJ, "gcj")
   fi  
+
+  if test "x$GCJ" != x; then
+    AC_MSG_CHECKING(gcj version)
+    GCJ_VERSION=`$GCJ --version`
+    GCJ_VERSION_MAJOR=`echo "$GCJ_VERSION" | cut -d '.' -f 1`
+    GCJ_VERSION_MINOR=`echo "$GCJ_VERSION" | cut -d '.' -f 2`
+
+    if expr "$GCJ_VERSION_MAJOR" \< 3 > /dev/null; then
+      GCJ=""
+    fi
+    if expr "$GCJ_VERSION_MAJOR" = 3 > /dev/null; then
+      if expr "$GCJ_VERSION_MINOR" \< 1; then
+        GCJ=""
+      fi
+    fi
+    if test "x$GCJ" != x; then
+      AC_MSG_RESULT($GCJ_VERSION)
+    else
+      AC_MSG_WARN($GCJ_VERSION: gcj 3.1 or higher required)
+    fi
+  fi 
 ])
 
 
