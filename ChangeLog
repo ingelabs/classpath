@@ -1,5 +1,25 @@
 2004-04-27  Michael Koch  <konqueror@gmx.de>
 
+	* javax/print/Doc.java
+	(getPrintData): Throws IOException.
+	(getReaderForText): Likewise.
+	(getStreamForBytes): Likewise.
+	* javax/print/DocFlavor.java:
+	Fixed filename in copyright.
+	(serialVersionUID): New field.
+	* javax/print/ServiceUIFactory.java:
+	Made all constants final.
+	* javax/print/AttributeException.java
+	javax/print/MultiDoc.java
+	javax/print/MultiDocPrintJob.java
+	javax/print/MultiDocPrintService.java
+	javax/print/StreamPrintService.java
+	javax/print/URIException.java: New files.
+	* javax/print/Makefile.am
+	(EXTRA_DIST): Added all new files.
+
+2004-04-27  Michael Koch  <konqueror@gmx.de>
+
 	* javax/print/attribute/standard/Copies.java,
 	javax/print/attribute/standard/DateTimeAtCompleted.java,
 	javax/print/attribute/standard/DateTimeAtCreation.java,

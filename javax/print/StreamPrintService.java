@@ -1,4 +1,4 @@
-/* Doc.java --
+/* StreamPrintService.java --
    Copyright (C) 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,58 +38,60 @@ exception statement from your version. */
 
 package javax.print;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
+import java.io.OutputStream;
 
-import javax.print.attribute.DocAttributeSet;
 
 /**
  * @author Michael Koch (konqueror@gmx.de)
  */
-public interface Doc
+public abstract class StreamPrintService implements PrintService
 {
+  private boolean disposed;
+  private OutputStream out;
+  
   /**
-   * Returns a set of attributes applying to this document.
+   * Constructs a <code>StreamPrintService</code> object.
    * 
-   * @return the attributes
+   * @param out the <code>OutputStream</code> to use
    */
-  DocAttributeSet getAttributes();
+  protected StreamPrintService(OutputStream out)
+  {
+    this.out = out;
+  }
 
   /**
-   * Returns the flavor in which this document will provide its print data.
-   *  
-   * @return the document flavor for printing
+   * Dispose this <code>StreamPrintService</code> object.
    */
-  DocFlavor getDocFlavor();
+  public void dispose()
+  {
+    disposed = true;
+  }
 
   /**
-   * Returns the print data of this document represented in a format that supports
-   * the document flavor.
+   * Returns the document format emited by this print service.
    * 
-   * @return the print data
-   * 
-   * @throws IOException if an error occurs
+   * @return the document format
    */
-  Object getPrintData() throws IOException;
+  public abstract String getOutputFormat();
 
   /**
-   * Returns a <code>Reader</code> object for extracting character print data
-   * from this document.
+   * Returns the <code>OutputStream</code> of this object.
    * 
-   * @return the <code>Reader</code> object
-   * 
-   * @throws IOException if an error occurs
+   * @return the <code>OutputStream</code>
    */
-  Reader getReaderForText() throws IOException;
+  public OutputStream getOutputStream()
+  {
+    return out;
+  }
 
   /**
-   * Returns an <code>InputStream</code> object for extracting byte print data
-   * from this document.
+   * Determines if this <code>StreamPrintService</code> object is disposed.
    * 
-   * @return the <code>InputStream</code> object
-   * 
-   * @throws IOException if an error occurs
+   * @return <code>true</code> if disposed already,
+   * otherwise <code>false</code>
    */
-  InputStream getStreamForBytes() throws IOException;
+  public boolean isDisposed()
+  {
+    return disposed;
+  }
 }

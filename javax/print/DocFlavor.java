@@ -1,4 +1,4 @@
-/* Doc.java --
+/* DocFlavor.java --
    Copyright (C) 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -48,6 +48,8 @@ import java.util.Map;
  */
 public class DocFlavor implements Cloneable, Serializable
 {
+  private static final long serialVersionUID = -4512080796965449721L;
+  
   public static final String hostEncoding = "US-ASCII";
 
   private String mediaSubtype;

@@ -3,12 +3,18 @@
 SUBDIRS = attribute event
 
 EXTRA_DIST = \
+AttributeException.java \
 CancelablePrintJob.java \
 Doc.java \
 DocFlavor.java \
 DonPrintJob.java \
 FlavorException.java \
+MultiDoc.java \
+MultiDocPrintJob.java \
+MultiDocPrintService.java \
 PrintException.java \
 PrintService.java \
-ServiceUIFactory.java
+ServiceUIFactory.java \
+StreamPrintService.java \
+URIException.java
 

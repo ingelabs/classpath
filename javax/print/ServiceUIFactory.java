@@ -43,15 +43,15 @@ package javax.print;
  */
 public abstract class ServiceUIFactory
 {
-  public static int ABOUT_UIROLE = 1;
-  public static int ADMIN_UIROLE = 2;
-  public static int MAIN_UIROLE = 3;
-  public static int RESERVED_UIROLE = 99;
+  public static final int ABOUT_UIROLE = 1;
+  public static final int ADMIN_UIROLE = 2;
+  public static final int MAIN_UIROLE = 3;
+  public static final int RESERVED_UIROLE = 99;
 
-  public static String DIALOG_UIROLE = "java.awt.Dialog";
-  public static String JCOMPONENT_UIROLE = "javax.swing.JComponent";
-  public static String JDIALOG_UIROLE = "javax.swing.JDialog";
-  public static String PANEL_UIROLE = "java.awt.Panel";
+  public static final String DIALOG_UI = "java.awt.Dialog";
+  public static final String JCOMPONENT_UI = "javax.swing.JComponent";
+  public static final String JDIALOG_UI = "javax.swing.JDialog";
+  public static final String PANEL_UI = "java.awt.Panel";
 
   /**
    * Constructs a <code>ServiceUIFactory</code> object.

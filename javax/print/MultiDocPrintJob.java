@@ -1,4 +1,4 @@
-/* Doc.java --
+/* MultiDocPrintJob.java --
    Copyright (C) 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,58 +38,23 @@ exception statement from your version. */
 
 package javax.print;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
+import javax.print.attribute.PrintRequestAttributeSet;
 
-import javax.print.attribute.DocAttributeSet;
 
 /**
  * @author Michael Koch (konqueror@gmx.de)
  */
-public interface Doc
+public interface MultiDocPrintJob extends DocPrintJob
 {
   /**
-   * Returns a set of attributes applying to this document.
+   * Request a print of a <code>MultiDoc</code> object.
    * 
-   * @return the attributes
+   * @param multiDoc the document to print
+   * @param attributes the printing attributes to apply
+   * 
+   * @throws PrintExeption if an error occurs
    */
-  DocAttributeSet getAttributes();
-
-  /**
-   * Returns the flavor in which this document will provide its print data.
-   *  
-   * @return the document flavor for printing
-   */
-  DocFlavor getDocFlavor();
-
-  /**
-   * Returns the print data of this document represented in a format that supports
-   * the document flavor.
-   * 
-   * @return the print data
-   * 
-   * @throws IOException if an error occurs
-   */
-  Object getPrintData() throws IOException;
-
-  /**
-   * Returns a <code>Reader</code> object for extracting character print data
-   * from this document.
-   * 
-   * @return the <code>Reader</code> object
-   * 
-   * @throws IOException if an error occurs
-   */
-  Reader getReaderForText() throws IOException;
-
-  /**
-   * Returns an <code>InputStream</code> object for extracting byte print data
-   * from this document.
-   * 
-   * @return the <code>InputStream</code> object
-   * 
-   * @throws IOException if an error occurs
-   */
-  InputStream getStreamForBytes() throws IOException;
+  void print(MultiDoc multiDoc, PrintRequestAttributeSet attributes)
+    throws PrintException;
 }
+ 
