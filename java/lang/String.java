@@ -122,7 +122,7 @@ public final class String implements Serializable, Comparable, CharSequence
   private int cachedHashCode;
 
   /**
-   * Holds the starting position for characters in str[].  Since
+   * Holds the starting position for characters in value[].  Since
    * substring()'s are common, the use of offset allows the operation
    * to perform in O(1). Package access is granted for use by StringBuffer.
    */

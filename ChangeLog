@@ -1,3 +1,7 @@
+2004-06-12  Steven Augart  <augart@watson.ibm.com>
+
+	* java/lang/String.java: Doc fix.
+
 2004-06-11  Steven Augart  <augart@watson.ibm.com>
 
 	* NEWS: Added info on bug fix.
