@@ -33,7 +33,7 @@ package java.io;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public class FilterWriter extends Writer
+public abstract class FilterWriter extends Writer
 {
 
 /*************************************************************************/
