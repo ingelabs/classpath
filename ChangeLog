@@ -1,3 +1,8 @@
+2002-04-30  Patrik Reali  <reali@acm.org>
+
+	Patch 284:
+	* java/lang/String.java (concat): Fix wrong reference.
+
 2002-04-29  Tom Tromey  <tromey@redhat.com>
 
 	* java/lang/System.java (in, out, err): Use buffered streams.
@@ -40,75 +45,75 @@
 
 2002-04-25  Andrew Selkirk  <aselkirk@sympatico.ca>
 
-        * javax/swing/event/AncestorEvent.java: New file.
-        * javax/swing/event/AncestorListener.java: New file.
-        * javax/swing/event/CaretEvent.java: New file.
-        * javax/swing/event/CaretListener.java: New file.
-        * javax/swing/event/CellEditorListener.java: New file.
-        * javax/swing/event/ChangeEvent.java: New file.
-        * javax/swing/event/ChangeListener.java: New file.
-        * javax/swing/event/DocumentEvent.java: New file.
-        * javax/swing/event/DocumentListener.java: New file.
-        * javax/swing/event/EventListenerList.java: New file.
-        * javax/swing/event/HyperlinkEvent.java: New file.
-        * javax/swing/event/HyperlinkListener.java: New file.
-        * javax/swing/event/InternalFrameAdapter.java: New file.
-        * javax/swing/event/InternalFrameEvent.java: New file.
-        * javax/swing/event/InternalFrameListener.java: New file.
-        * javax/swing/event/ListDataEvent.java: New file.
-        * javax/swing/event/ListDataListener.java: New file.
-        * javax/swing/event/ListSelectionEvent.java: New file.
-        * javax/swing/event/ListSelectionListener.java: New file.
-        * javax/swing/event/MenuDragMouseEvent.java: New file.
-        * javax/swing/event/MenuDragMouseListener.java: New file.
-        * javax/swing/event/MenuEvent.java: New file.
-        * javax/swing/event/MenuKeyEvent.java: New file.
-        * javax/swing/event/MenuKeyListener.java: New file.
-        * javax/swing/event/MenuListener.java: New file.
-        * javax/swing/event/MouseInputAdapter.java: New file.
-        * javax/swing/event/MouseInputListener.java: New file.
-        * javax/swing/event/PopupMenuEvent.java: New file.
-        * javax/swing/event/PopupMenuListener.java: New file.
-        * javax/swing/event/SwingPropertyChangeSupport.java: New file.
-        * javax/swing/event/TableColumnModelEvent.java: New file.
-        * javax/swing/event/TableColumnModelListener.java: New file.
-        * javax/swing/event/TableModelEvent.java: New file.
-        * javax/swing/event/TableModelListener.java: New file.
-        * javax/swing/event/TreeExpansionEvent.java: New file.
-        * javax/swing/event/TreeExpansionListener.java: New file.
-        * javax/swing/event/TreeModelEvent.java: New file.
-        * javax/swing/event/TreeModelListener.java: New file.
-        * javax/swing/event/TreeSelectionEvent.java: New file.
-        * javax/swing/event/TreeSelectionListener.java: New file.
-        * javax/swing/event/TreeWillExpandListener.java: New file.
-        * javax/swing/event/UndoableEditEvent.java: New file.
-        * javax/swing/event/UndoableEditListener.java: New file.
-        * javax/swing/table/AbstractTableModel.java: New file.
-        * javax/swing/table/DefaultTableColumnModel.java: New file (stubbed).
-        * javax/swing/table/DefaultTableModel.java: New file.
-        * javax/swing/table/TableCellEditor.java: New file.
-        * javax/swing/table/TableCellRenderer.java: New file.
-        * javax/swing/table/TableColumn.java: New file.
-        * javax/swing/table/TableColumnModel.java: New file.
-        * javax/swing/table/TableModel.java: New file.
-        * javax/swing/tree/AbstractLayoutCache.java: New file.
-        * javax/swing/tree/DefaultMutableTreeNode.java: New file.
-        * javax/swing/tree/DefaultTreeCellEditor.java: New file (stubbed).
-        * javax/swing/tree/DefaultTreeCellRenderer.java: New file (stubbed).
-        * javax/swing/tree/DefaultTreeModel.java: New file (stubbed).
-        * javax/swing/tree/DefaultTreeSelectionModel.java: New file (stubbed).
-        * javax/swing/tree/ExpandVetoException.java: New file.
-        * javax/swing/tree/FixedHeightLayoutCache.java: New file (stubbed).
-        * javax/swing/tree/MutableTreeNode.java: New file.
-        * javax/swing/tree/RowMapper.java: New file.
-        * javax/swing/tree/TreeCellEditor.java: New file.
-        * javax/swing/tree/TreeCellRenderer.java: New file.
-        * javax/swing/tree/TreeModel.java: New file.
-        * javax/swing/tree/TreeNode.java: New file.
-        * javax/swing/tree/TreePath.java: New file.
-        * javax/swing/tree/TreeSelectionModel.java: New file.
-        * javax/swing/tree/VariableHeightLayoutCache.java: New file (stubbed).
-        * javax/swing/plaf/basic/BasicLookAndFeel.java: New file.
+	* javax/swing/event/AncestorEvent.java: New file.
+	* javax/swing/event/AncestorListener.java: New file.
+	* javax/swing/event/CaretEvent.java: New file.
+	* javax/swing/event/CaretListener.java: New file.
+	* javax/swing/event/CellEditorListener.java: New file.
+	* javax/swing/event/ChangeEvent.java: New file.
+	* javax/swing/event/ChangeListener.java: New file.
+	* javax/swing/event/DocumentEvent.java: New file.
+	* javax/swing/event/DocumentListener.java: New file.
+	* javax/swing/event/EventListenerList.java: New file.
+	* javax/swing/event/HyperlinkEvent.java: New file.
+	* javax/swing/event/HyperlinkListener.java: New file.
+	* javax/swing/event/InternalFrameAdapter.java: New file.
+	* javax/swing/event/InternalFrameEvent.java: New file.
+	* javax/swing/event/InternalFrameListener.java: New file.
+	* javax/swing/event/ListDataEvent.java: New file.
+	* javax/swing/event/ListDataListener.java: New file.
+	* javax/swing/event/ListSelectionEvent.java: New file.
+	* javax/swing/event/ListSelectionListener.java: New file.
+	* javax/swing/event/MenuDragMouseEvent.java: New file.
+	* javax/swing/event/MenuDragMouseListener.java: New file.
+	* javax/swing/event/MenuEvent.java: New file.
+	* javax/swing/event/MenuKeyEvent.java: New file.
+	* javax/swing/event/MenuKeyListener.java: New file.
+	* javax/swing/event/MenuListener.java: New file.
+	* javax/swing/event/MouseInputAdapter.java: New file.
+	* javax/swing/event/MouseInputListener.java: New file.
+	* javax/swing/event/PopupMenuEvent.java: New file.
+	* javax/swing/event/PopupMenuListener.java: New file.
+	* javax/swing/event/SwingPropertyChangeSupport.java: New file.
+	* javax/swing/event/TableColumnModelEvent.java: New file.
+	* javax/swing/event/TableColumnModelListener.java: New file.
+	* javax/swing/event/TableModelEvent.java: New file.
+	* javax/swing/event/TableModelListener.java: New file.
+	* javax/swing/event/TreeExpansionEvent.java: New file.
+	* javax/swing/event/TreeExpansionListener.java: New file.
+	* javax/swing/event/TreeModelEvent.java: New file.
+	* javax/swing/event/TreeModelListener.java: New file.
+	* javax/swing/event/TreeSelectionEvent.java: New file.
+	* javax/swing/event/TreeSelectionListener.java: New file.
+	* javax/swing/event/TreeWillExpandListener.java: New file.
+	* javax/swing/event/UndoableEditEvent.java: New file.
+	* javax/swing/event/UndoableEditListener.java: New file.
+	* javax/swing/table/AbstractTableModel.java: New file.
+	* javax/swing/table/DefaultTableColumnModel.java: New file (stubbed).
+	* javax/swing/table/DefaultTableModel.java: New file.
+	* javax/swing/table/TableCellEditor.java: New file.
+	* javax/swing/table/TableCellRenderer.java: New file.
+	* javax/swing/table/TableColumn.java: New file.
+	* javax/swing/table/TableColumnModel.java: New file.
+	* javax/swing/table/TableModel.java: New file.
+	* javax/swing/tree/AbstractLayoutCache.java: New file.
+	* javax/swing/tree/DefaultMutableTreeNode.java: New file.
+	* javax/swing/tree/DefaultTreeCellEditor.java: New file (stubbed).
+	* javax/swing/tree/DefaultTreeCellRenderer.java: New file (stubbed).
+	* javax/swing/tree/DefaultTreeModel.java: New file (stubbed).
+	* javax/swing/tree/DefaultTreeSelectionModel.java: New file (stubbed).
+	* javax/swing/tree/ExpandVetoException.java: New file.
+	* javax/swing/tree/FixedHeightLayoutCache.java: New file (stubbed).
+	* javax/swing/tree/MutableTreeNode.java: New file.
+	* javax/swing/tree/RowMapper.java: New file.
+	* javax/swing/tree/TreeCellEditor.java: New file.
+	* javax/swing/tree/TreeCellRenderer.java: New file.
+	* javax/swing/tree/TreeModel.java: New file.
+	* javax/swing/tree/TreeNode.java: New file.
+	* javax/swing/tree/TreePath.java: New file.
+	* javax/swing/tree/TreeSelectionModel.java: New file.
+	* javax/swing/tree/VariableHeightLayoutCache.java: New file (stubbed).
+	* javax/swing/plaf/basic/BasicLookAndFeel.java: New file.
 
 2002-04-24  Eric Blake  <ebb9@email.byu.edu>
 
@@ -1569,7 +1574,7 @@
 
 2002-02-19  Mark Wielaard  <mark@klomp.org>
 
-        Based on patches submitted by Wu Gansha <gansha.wu@intel.com>
+	Based on patches submitted by Wu Gansha <gansha.wu@intel.com>
 	* vm/reference/java/lang/reflect/Method.java (toString()): use
 	Class.getName() not Class.toString().
 	* vm/reference/java/lang/Class.java: final, implements Serializable

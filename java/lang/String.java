@@ -1081,7 +1081,7 @@ public final class String implements Serializable, Comparable, CharSequence
       return str;
     char[] newStr = new char[count + str.count];
     System.arraycopy(value, offset, newStr, 0, count);
-    System.arraycopy(str.value, offset, newStr, count, str.count);
+    System.arraycopy(str.value, str.offset, newStr, count, str.count);
     // Package constructor avoids an array copy.
     return new String(newStr, 0, newStr.length, true);
   }
