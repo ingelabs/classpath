@@ -341,12 +341,14 @@ public class IdentityHashMap extends AbstractMap
   }
 
   /**
-   * Return the value in this Map associated with the supplied key,
-   * or <pre>null</pre> if the key maps to nothing.  NOTE: Since the value
-   * could also be null, you must use containsKey to see if this key
-   * actually maps to something.  Unlike normal maps, this tests for the key
-   * with <code>entry == key</code> instead of
-   * <code>entry == null ? key == null : entry.equals(key)</code>.
+   * Return the value in this Map associated with the supplied key, or
+   * <code>null</code> if the key maps to nothing.
+   *
+   * <p>NOTE: Since the value could also be null, you must use
+   * containsKey to see if this key actually maps to something.
+   * Unlike normal maps, this tests for the key with <code>entry ==
+   * key</code> instead of <code>entry == null ? key == null :
+   * entry.equals(key)</code>.
    *
    * @param key the key for which to fetch an associated value
    * @return what the key maps to, if present
@@ -531,13 +533,15 @@ public class IdentityHashMap extends AbstractMap
   }
 
   /**
-   * Removes from the HashMap and returns the value which is mapped by the
-   * supplied key. If the key maps to nothing, then the HashMap remains
-   * unchanged, and <pre>null</pre> is returned. NOTE: Since the value
-   * could also be null, you must use containsKey to see if you are
-   * actually removing a mapping.  Unlike normal maps, this tests for the
-   * key with <code>entry == key</code> instead of
-   * <code>entry == null ? key == null : entry.equals(key)</code>.
+   * Removes from the HashMap and returns the value which is mapped by
+   * the supplied key. If the key maps to nothing, then the HashMap
+   * remains unchanged, and <code>null</code> is returned.
+   *
+   * NOTE: Since the value could also be null, you must use
+   * containsKey to see if you are actually removing a mapping.
+   * Unlike normal maps, this tests for the key with <code>entry ==
+   * key</code> instead of <code>entry == null ? key == null :
+   * entry.equals(key)</code>.
    *
    * @param key the key used to locate the value to remove
    * @return whatever the key mapped to, if present
@@ -735,7 +739,8 @@ public class IdentityHashMap extends AbstractMap
 
     /**
      * Removes from the backing Map the last element which was fetched
-     * with the <pre>next()</pre> method.
+     * with the <code>next()</code> method.
+     *
      * @throws ConcurrentModificationException if the Map was modified
      * @throws IllegalStateException if called when there is no last element
      */
