@@ -77,7 +77,7 @@ public class GregorianCalendar extends Calendar {
      * Constructs a new GregorianCalender representing the current
      * time, using the default time zone and the default locale.  
      */
-    protected GregorianCalendar() {
+    public GregorianCalendar() {
         this(TimeZone.getDefault(), Locale.getDefault());
     }
     /**
@@ -85,7 +85,7 @@ public class GregorianCalendar extends Calendar {
      * time, using the specified time zone and the default locale.  
      * @param zone a time zone.
      */
-    protected GregorianCalendar(TimeZone zone) {
+    public GregorianCalendar(TimeZone zone) {
         this(zone, Locale.getDefault());
     }
     /**
@@ -93,7 +93,7 @@ public class GregorianCalendar extends Calendar {
      * time, using the default time zone and the specified locale.  
      * @param locale a locale.
      */
-    protected GregorianCalendar(Locale locale) {
+    public GregorianCalendar(Locale locale) {
         this(TimeZone.getDefault(), locale);
     }
         
@@ -103,7 +103,7 @@ public class GregorianCalendar extends Calendar {
      * @param zone a time zone.  
      * @param locale a locale.  
      */
-    protected GregorianCalendar(TimeZone zone, Locale locale) {
+    public GregorianCalendar(TimeZone zone, Locale locale) {
         super(zone, locale);
         time = System.currentTimeMillis();
         isTimeSet = true;
