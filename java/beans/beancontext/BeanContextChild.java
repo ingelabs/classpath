@@ -62,6 +62,10 @@ public interface BeanContextChild {
 	 * Set the parent <code>BeanContext</code>.
 	 * <P>
 	 *
+	 * This method is called from <code>BeanContext.add()</code> and
+	 * should not be called directly.
+	 * <P>
+	 *
 	 * When this Object is being added to a new BeanContext or moved
 	 * from an old one, a non-null value will be passed in.
 	 * <P>
@@ -98,6 +102,10 @@ public interface BeanContextChild {
 	 * If you do veto the change, you must first back out any changes
 	 * you made prior to the veto.  Best not to make any such changes
 	 * prior to the veto in the first place.
+	 * <P>
+	 *
+	 * This method is called from <code>BeanContext.add()</code> and
+	 * should not be called directly.
 	 *
 	 * @param parent the new parent for the <code>BeanContextChild</code>,
 	 *        or <code>null</code> to signify removal from a tree.

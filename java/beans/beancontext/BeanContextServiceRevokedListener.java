@@ -31,9 +31,9 @@ import java.util.EventListener;
 
 public interface BeanContextServiceRevokedListener extends EventListener {
 	/**
-	 * Called by <code>BeanContextServices.revokeService()</code>.
-	 * <B>Assumption:</B> If you have a reference to such a service,
-	 * it should be discarded and may no longer function properly.
+	 * Called by <code>BeanContextServices.revokeService()</code> to indicate that a service has been revoked.
+	 * If you have a reference to such a service, it should be
+	 * discarded and may no longer function properly.
 	 * <code>getService()</code> will no longer work on the specified
 	 * service class after this event has been fired.
 	 *

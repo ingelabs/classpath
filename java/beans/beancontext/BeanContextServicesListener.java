@@ -34,5 +34,5 @@ public interface BeanContextServicesListener extends BeanContextServiceRevokedLi
 	 * @param event the service revoked event, with useful information
 	 *        about the new service.
 	 */
-	public void serviceRevoked(BeanContextServiceAvailableEvent event);
+	public void serviceAvailable(BeanContextServiceAvailableEvent event);
 }
