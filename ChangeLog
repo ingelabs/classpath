@@ -1,3 +1,9 @@
+2004-09-22  Patrik Reali  <reali@acm.org>
+
+	* doc/www.gnu.org/announce/20040913.wml: classpath 0.11 release announce
+	* doc/www.gnu.org/downloads/downloads.wml: classpath 0.11 download added
+	* doc/www.gnu.org/newsitems.txt: classpath 0.11, inetlib 1.1 
+
 2004-09-22  David Jee  <djee@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkMenuItemPeer.java
