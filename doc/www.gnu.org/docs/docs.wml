@@ -5,26 +5,23 @@
 <subject "GNU Classpath Documentation">
 
 <box>
-<boxtitle>Classpath::General Information</boxtitle>
+<boxtitle>Classpath::Legal Information</boxtitle>
 
 <boxitem>
 <blockquote>
-  <H4>Legal Notices</H4>
   <createlink url="license.html#documentation" name="Documentation Redistribution Policy"><br/>
   <createlink url="license.html" name="Copyright and License Terms"><br/>
 </blockquote>
 
 </boxitem>
 
-<!--
 <boxtitle>Classpath::API & Language Documentation</boxtitle>
 <boxitem>
 <blockquote>
-  <createlink url="api/" name="GNU Classpath API Specification"> <createlink url="api/index_noframes.html" name="(No Frames)"><br/>
+  <createlink url="http://developer.classpath.org/doc/" name="GNU Classpath API Specification"> 
 </blockquote>
 
 </boxitem>
--->
 
 <boxtitle>Classpath::Developer's Documentation</boxtitle>
 
