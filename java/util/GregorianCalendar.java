@@ -610,7 +610,7 @@ public class GregorianCalendar extends Calendar
 	calculateDay(++day, gregorian);
       }
 
-    fields[DAY_OF_WEEK_IN_MONTH] = (fields[DAY_OF_MONTH] + 12) / 7;
+    fields[DAY_OF_WEEK_IN_MONTH] = (fields[DAY_OF_MONTH] + 6) / 7;
 
     // which day of the week are we (0..6), relative to getFirstDayOfWeek
     int relativeWeekday = (7 + fields[DAY_OF_WEEK] - getFirstDayOfWeek()) % 7;

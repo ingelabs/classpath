@@ -1,5 +1,15 @@
 2003-12-29 Guilhem Lavaux <guilhem@kaffe.org>
 
+	* java/net/URLStreamHandler.java
+	(parseURL): Change a relative path into an
+	absolute if the original URL does not have any path.
+
+	* java/util/GregorianCalendar.java
+	(computeFields): Reported by Ito Kazumitsu <kaz@maczuka.gcd.org>.
+	Fixed the computation of DAY_OF_WEEK_IN_MONTH.
+
+2003-12-29 Guilhem Lavaux <guilhem@kaffe.org>
+
 	* java/io/ObjectStreamClass.java: Reindented.
 
 2003-12-29 Guilhem Lavaux <guilhem@kaffe.org>

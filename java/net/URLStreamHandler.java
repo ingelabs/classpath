@@ -186,6 +186,8 @@ public abstract class URLStreamHandler
 	// No file context available; just spec for file.
 	// Or this is an absolute path name; ignore any file context.
 	file = spec.substring(start, end);
+	if (start < end && spec.charAt(start) != '/')
+	  file = "/" + file;
 	ref = null;
       } 
     else if (start < end)
