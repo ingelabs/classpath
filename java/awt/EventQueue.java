@@ -51,6 +51,9 @@ private AWTEvent queue;
 public
 EventQueue()
 {
+  EventDispatcher ed = new EventDispatcher(this);
+  Thread t = new Thread(ed);
+  t.start();
 }
 
 /*************************************************************************/
