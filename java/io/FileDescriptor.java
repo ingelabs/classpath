@@ -54,21 +54,21 @@ public final class FileDescriptor
    * stream.  This will usually be accessed through the
    * <code>System.in</code>variable.
    */
-  public static final FileDescriptor in = null;
+  public static final FileDescriptor in = new FileDescriptor ();
 
   /**
    * A <code>FileDescriptor</code> representing the system standard output
    * stream.  This will usually be accessed through the
    * <code>System.out</code>variable.
    */
-  public static final FileDescriptor out = null;
+  public static final FileDescriptor out = new FileDescriptor ();
 
   /**
    * A <code>FileDescriptor</code> representing the system standard error
    * stream.  This will usually be accessed through the
    * <code>System.err</code>variable.
    */
-  public static final FileDescriptor err = null;
+  public static final FileDescriptor err = new FileDescriptor ();
 
   static
     {

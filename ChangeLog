@@ -1,3 +1,10 @@
+2003-04-27  Casey Marshall  <rsdio@metastatic.org>
+
+	* java/io/FileDescriptor.java (in, out, err): set to non-null
+	* native/jni/java-io/FileDescriptor.c 
+	(Java_java_io_FileDescriptor_nativeInit): set the static fields
+	appropriately and use ExceptionOccurred instead of ExceptionCheck.
+
 2003-04-27  C. Brian Jones  <cbj@gnu.org>
 
 	* doc/www.gnu.org/home.wml: updated Jikes RVM information

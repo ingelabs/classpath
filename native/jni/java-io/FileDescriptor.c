@@ -107,12 +107,11 @@ exception statement from your version. */
 JNIEXPORT void JNICALL
 Java_java_io_FileDescriptor_nativeInit(JNIEnv *env, jclass clazz)
 {
-  jmethodID init_method;
-  jfieldID field;
+  jfieldID field, filedes_field;
   jobject filedes;
 
-  init_method = (*env)->GetStaticMethodID (env, clazz, "<init>", "(J)V");
-  if (! init_method)
+  filedes_field = (*env)->GetFieldID(env, clazz, "nativeFd", "J");
+  if (! filedes_field)
     return;
 
 #define INIT_FIELD(FIELDNAME, FDVALUE)					\
@@ -120,11 +119,11 @@ Java_java_io_FileDescriptor_nativeInit(JNIEnv *env, jclass clazz)
 				    "Ljava/io/FileDescriptor;");	\
   if (! field)								\
     return;								\
-  filedes = (*env)->NewObject (env, clazz, init_method, (jlong) FDVALUE); \
+  filedes = (*env)->GetStaticObjectField (env, clazz, field);           \
   if (! filedes)							\
     return;								\
-  (*env)->SetStaticObjectField (env, clazz, field, filedes);		\
-  if ((*env)->ExceptionCheck (env))					\
+  (*env)->SetLongField (env, filedes, filedes_field, (jlong) FDVALUE);  \
+  if ((*env)->ExceptionOccurred (env))                                  \
     return;
 
   INIT_FIELD ("in", 0);
