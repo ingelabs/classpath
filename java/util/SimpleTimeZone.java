@@ -460,6 +460,18 @@ public class SimpleTimeZone extends TimeZone {
         this.rawOffset = rawOffset;
     }
 
+  /**
+   * Gets the daylight savings offset.  This is a positive offset in
+   * milliseconds with respect to standard time.  Typically this
+   * is one hour, but for some time zones this may be half an our.
+   * @return the daylight savings offset in milliseconds.
+   * @since JDK1.1.4?
+   */
+  public int getDSTSavings()
+  {
+    return dstSavings;
+  }
+
     /**
      * Returns if this time zone uses daylight savings time.
      * @return true, if we use daylight savings time, false otherwise.
