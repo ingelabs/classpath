@@ -1,0 +1,18 @@
+-- Base protocol
+
+-- Proxy support
+
+-- Caching
+
+-- If modified since support
+
+-- Connect, getInputStream(), getOutputStream, disconnect()
+
+-- Header parsing
+
+-- GET method implementation only
+
+-- Request parameter handling
+
+-- Basically everything beyond simple fetching
+
