@@ -1,5 +1,13 @@
 2003-06-24  Sascha Brawer  <brawer@dandelis.ch>
 
+	* javax/swing/plaf/IconUIResource.java: Reformatted, wrote JavaDoc.
+	(delegate): New field.
+	(IconUIResource): Store the delegate argument.
+	(paintIcon, getIconWidth, getIconHeight): Forward the message to
+	the delegate icon.
+
+2003-06-24  Sascha Brawer  <brawer@dandelis.ch>
+
 	* javax/swing/plaf/DesktopIconUI.java: Reformatted, wrote JavaDoc.
 	* javax/swing/plaf/DesktopPaneUI.java: Likewise.
 	* javax/swing/plaf/DimensionUIResource.java: Likewise.
