@@ -35,6 +35,7 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package java.net;
 
 import gnu.java.net.PlainDatagramSocketImpl;
@@ -72,12 +73,6 @@ public class DatagramSocket
    * This is the implementation object used by this socket.
    */
   DatagramSocketImpl impl;
-
-  /**
-   * The unique DatagramChannel object associated with this datagram socket,
-   * or null.
-   */
-  DatagramChannel ch;
 
   /**
    * This is the address we are "connected" to
@@ -256,7 +251,7 @@ public class DatagramSocket
   {
     if (impl == null)
       return null;
-
+    
     // FIXME: According to libgcj, checkConnect() is supposed to be called
     // before performing this operation.  Problems: 1) We don't have the
     // addr until after we do it, so we do a post check.  2). The docs I
@@ -506,7 +501,8 @@ public class DatagramSocket
       throw new IOException (
         "Socket connected to a multicast address my not receive");
 
-    if (ch != null && !ch.isBlocking ())
+    if (getChannel() != null
+        && !getChannel().isBlocking ())
       throw new IllegalBlockingModeException ();
 
     impl.receive(p);
@@ -555,7 +551,8 @@ public class DatagramSocket
     // FIXME: if this is a subclass of MulticastSocket,
     // use getTimeToLive for TTL val.
 
-    if (ch != null && !ch.isBlocking ())
+    if (getChannel() != null
+        && !getChannel().isBlocking ())
       throw new IllegalBlockingModeException ();
 
     impl.send(p);
@@ -605,7 +602,7 @@ public class DatagramSocket
    */
   public DatagramChannel getChannel()
   {
-    return ch;
+    return null;
   }
 
   /**
