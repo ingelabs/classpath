@@ -1,3 +1,7 @@
+2004-10-02  Tom Tromey  <tromey@redhat.com>
+
+	* resource/java/util/logging/.cvsignore: New file.
+
 2004-10-02  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/CharArrayWriter.java
