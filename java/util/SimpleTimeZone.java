@@ -20,6 +20,8 @@
 
 package java.util;
 
+import java.text.DateFormatSymbols;
+
 /**
  * This class represents a simple time zone offset and handles
  * daylight savings.  It can only handle one daylight savings rule, so
@@ -590,6 +592,55 @@ public class SimpleTimeZone extends TimeZone {
         Calendar cal = Calendar.getInstance(this);
         cal.setTime(date);
         return (cal.get(Calendar.DST_OFFSET) != 0);
+    }
+
+    /**
+     * This method returns a string suitable for displaying to the
+     * user with the name of this time zone.
+     *
+     * @param dst <code>true</code> to return the zone name in daylight
+     * savings time, <code>false</code> otherwise.
+     * @param style <code>LONG</code> for a long time zone name, or
+     * <code>SHORT</code> for an abbreviation.
+     * @param locale The locale to retrieve the zone name for.
+     *
+     * @return The name of this time zone.
+     */
+    public String getDisplayName(boolean dst, int style, Locale locale) {
+      DateFormatSymbols dfs;
+      try
+        {
+          dfs = new DateFormatSymbols(locale);
+        }
+      catch(MissingResourceException e)
+        {
+          return(super.getDisplayName(dst, style, locale));
+        }
+
+      // The format of the value returned is defined by us.
+      String[][] zoneinfo = dfs.getZoneStrings();
+      for (int i = 0; i < zoneinfo.length; i++)
+        {
+          if (zoneinfo[i][0].equals(getID()))
+            {
+              if (!dst)
+                {
+                  if (style == SHORT)
+                    return(zoneinfo[i][2]);
+                  else
+                    return(zoneinfo[i][1]);
+                }
+              else
+                {
+                  if (style == SHORT)
+                    return(zoneinfo[i][4]);
+                  else
+                    return(zoneinfo[i][3]);
+                }
+            }
+        }
+
+      return(super.getDisplayName(dst, style, locale));
     }
 
     /**
