@@ -14,6 +14,9 @@ Runtime interface changes:
 * String and StringBuffer now call VMSystem.arraycopy() directly and don't
   go through java.lang.System. Be careful to not initialize java.lang.System
   early in the bootstrap sequence in your VM runtime interface classes.
+* VMThread.sleep() will never be called with zero arguments (don't sleep).
+  VMThread does not have to do any extra argument checking. Some (wrong)
+  documentation about the behavior of this method has been updated.
 
 New in release 0.12 (Nov 14, 2004)
 
