@@ -43,9 +43,10 @@ Java_java_io_ObjectInputStream_currentClassLoader( JNIEnv * env,
 				      "()Ljava/lang/ClassLoader;" );
   
   if( id == NULL )
-    return;
+    return 0;
   
   (*env)->CallObjectMethod( env, loader, id );
+  return loader;
 }
 
 
