@@ -27,7 +27,8 @@ public class GtkScrollbarPeer extends GtkComponentPeer
     implements ScrollbarPeer
 {
 
-  native void gtkScrollbarNew (int orientation, int value, int min, int max,
+  native void gtkScrollbarNew (ComponentPeer parent, 
+			       int orientation, int value, int min, int max,
 			       boolean visible);
   native public void setLineIncrement (int amount);
   native public void setPageIncrement (int amount);
@@ -37,14 +38,11 @@ public class GtkScrollbarPeer extends GtkComponentPeer
   {
     super (s);
 
-    gtkScrollbarNew ((s.getOrientation()==Scrollbar.HORIZONTAL)?1:0,
+    gtkScrollbarNew (cp,
+		     (s.getOrientation()==Scrollbar.HORIZONTAL)?1:0,
 		     s.getValue(),
 		     s.getMinimum(),
 		     s.getMaximum(),
 		     s.isVisible ());
-
-    Point p=s.getLocation();
-    
-    gtkFixedPut (cp, p.x, p.y);
   }
 }

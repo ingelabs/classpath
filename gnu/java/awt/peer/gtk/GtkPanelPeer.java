@@ -26,6 +26,8 @@ public class GtkPanelPeer extends GtkContainerPeer
   implements PanelPeer
 {
 
+  native protected void gtkPanelNew (ComponentPeer parent, boolean visible);
+
   public GtkPanelPeer(Panel p, ComponentPeer parent)
   {
     super (p);
@@ -34,7 +36,8 @@ public class GtkPanelPeer extends GtkContainerPeer
     Dimension d=p.getSize();
     Point pnt=p.getLocation();
 
-    gtkFixedNew (d.width, d.height, p.isVisible ());
-    gtkFixedPut (parent, pnt.x, pnt.y);
+    gtkPanelNew (parent, p.isVisible ());
+//      gtkFixedNew (d.width, d.height, p.isVisible ());
+//      gtkFixedPut (parent, pnt.x, pnt.y);
   }
 }

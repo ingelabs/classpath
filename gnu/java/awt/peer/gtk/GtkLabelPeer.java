@@ -27,7 +27,7 @@ public class GtkLabelPeer extends GtkComponentPeer
     implements LabelPeer
 {
 
-  native void gtkLabelNew (String text, int just, boolean visible);
+  native void gtkLabelNew (ComponentPeer parent, String text, int just, boolean visible);
   native void gtkLabelSet (String label);    
   native void gtkLabelSetJustify (int just);    
 
@@ -47,10 +47,8 @@ public class GtkLabelPeer extends GtkComponentPeer
 	  break;
 	}
 
-      gtkLabelNew (l.getText(), j, l.isVisible ());
-      Point p=l.getLocation();
-      
-      gtkFixedPut (cp,p.x,p.y);
+      Point p = l.getLocation ();
+      gtkLabelNew (cp, l.getText(), j, l.isVisible ());
     }
     
     public void setText (String text) 

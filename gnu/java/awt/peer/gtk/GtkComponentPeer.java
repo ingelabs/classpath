@@ -101,11 +101,16 @@ public class GtkComponentPeer extends GtkGenericPeer
       return null;
     }
 
-  public Graphics getGraphics () 
-    {
-      throw new InternalError ("Graphics object unavailable for " +
-			       awtComponent);
-    }
+  public Graphics getGraphics ()
+  {
+    return new GdkGraphics (this);
+  }
+
+//    public Graphics getGraphics () 
+//      {
+//        throw new InternalError ("Graphics object unavailable for " +
+//  			       awtComponent);
+//      }
 
   public Point getLocationOnScreen () 
     { 
@@ -178,8 +183,9 @@ public class GtkComponentPeer extends GtkGenericPeer
       return getMinimumSize();
     }
 
-  public void paint(Graphics g)
+  public void paint (Graphics g)
     {
+      awtComponent.paint (g);
     }
 
   public Dimension preferredSize()
@@ -196,9 +202,14 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void print (Graphics g) 
     {
+      throw new RuntimeException();
     }
 
-  native public void repaint (long tm, int x, int y, int width, int height);
+  public void repaint (long tm, int x, int y, int width, int height)
+  {
+    q.postEvent (new PaintEvent (awtComponent, PaintEvent.UPDATE,
+				 new Rectangle (x, y, width, height)));
+  }
 
   native public void requestFocus ();
 

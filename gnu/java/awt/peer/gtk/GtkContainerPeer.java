@@ -28,10 +28,12 @@ public class GtkContainerPeer extends GtkComponentPeer
   implements ContainerPeer
 {
   Insets myInsets;
+  Container c;
 
   public GtkContainerPeer(Container c)
   {
     super (c);
+    this.c = c;
     myInsets = new Insets (0, 0, 0, 0);
   }
 
@@ -50,6 +52,10 @@ public class GtkContainerPeer extends GtkComponentPeer
        has validated its peers, we should cause the container widget
        to unfreeze and draw the container's children. -JB */
     gtkWidgetShowChildren();
+    System.out.println (this);
+    Graphics gc = getGraphics ();
+    c.paintComponents (gc);
+    gc.dispose ();
   }
 
   public Insets getInsets() 
@@ -71,11 +77,5 @@ public class GtkContainerPeer extends GtkComponentPeer
   public Graphics getGraphics ()
   {
     return new GdkGraphics (this);
-  }
-
-  public void repaint (long tm, int x, int y, int width, int height)
-  {
-    q.postEvent (new PaintEvent (awtComponent, PaintEvent.UPDATE,
-				 new Rectangle (x, y, width, height)));
   }
 }
