@@ -1,5 +1,11 @@
 2003-10-12  Michael Koch  <konqueror@gmx.de>
 
+	* java/sql/Array.java,
+	java/sql/Blob.java:
+	Removed redundant modifiers.
+
+2003-10-12  Michael Koch  <konqueror@gmx.de>
+
 	* java/security/Key.java,
 	java/security/PrivateKey.java,
 	java/security/PublicKey.java,
