@@ -353,6 +353,52 @@ source for gcj specific changes that the script recognizes.
 The file <code>lib/standard.omit</code> controls which files are omitted from the compilation. Add a regex with the files to be omitted and rebuild classpath.
 </faq>
 
+<faq question="How do I change classpath's web pages?">
+
+<p>To modify and upload GNU Classpath's web pages, you need write access to the CVS. First, checkout the modules "classpath" and "website".
+
+<p>The web pages are stored in doc/www.gnu.org and are written in wml (Web Meta Language, see <createlink url="http://thewml.org/">).
+
+<p>A typical page usually looks like this:
+<pre>
+\#include "include/layout.wml"
+
+&lt;subject "here goes the page title">
+
+&lt;box>
+
+&lt;boxtitle>Section 1 Title&lt;\boxtitle>
+&lt;boxitem>
+  section 1 contents
+&lt;\boxitem>
+
+....
+
+&lt;\box>
+
+</pre>
+
+<p>Invoking "make" creates the html pages in the same directory. To copy those pages to another directory, use
+<pre>
+> export CLASSPATH_WEBROOT=...destination...
+> make publish
+</pre>
+
+<p>The steps to publish the pages are:
+<ol>
+<li>Update ChangeLog
+<li>Commit your changes in module Classpath to the CVS
+<li>cd doc/www.gnu.org
+<li>make
+<li>copy the modified / new pages to the website module
+<li>commit the changes in the website module
+</ol>
+
+<p>Note that it takes up to an hour for the pages to appear on the GNU website after an upload.
+
+
+</faq>
+
 </faq-section>
 
 <faq-section name="Classpath Implementation">

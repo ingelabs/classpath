@@ -1,3 +1,7 @@
+<newsitem date="27 Jul 2004">
+AWT bug reports are now on <createlink name="GCC Bugzilla" url="http://gcc.gnu.org/bugzilla/">
+</newsitem>
+
 <newsitem date="23 Jul 2004">
 HTTP client added to inetlib
 </newsitem>
