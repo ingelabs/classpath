@@ -67,5 +67,6 @@ public abstract class AbstractSet extends AbstractCollection implements Set {
       } catch (NullPointerException e) {
       }
     }
+    return hash;
   }
 }
