@@ -1,5 +1,10 @@
 2004-12-01  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/locale/LocaleInformation_de.java:
+	Re-generated with current gnu.localegen.
+
+2004-12-01  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/locale/LocaleInformation_af_ZA.java,
 	gnu/java/locale/LocaleInformation_ar_DZ.java,
 	gnu/java/locale/LocaleInformation_ar_IN.java,
