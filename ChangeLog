@@ -1,5 +1,18 @@
 2002-03-24  Tom Tromey  <tromey@redhat.com>
 
+	* java/awt/MenuItem.java (eventMask): No longer private.
+	* java/awt/Button.java (dispatchEventImpl): Only dispatch to
+	superclass if we didn't handle event.
+	* java/awt/Checkbox.java (dispatchEventImpl): New method.
+	* java/awt/CheckboxMenuItem.java (dispatchEventImpl): New method.
+	* java/awt/Choice.java (dispatchEventImpl): New method.
+	* java/awt/List.java (dispatchEventImpl): New method.
+	* java/awt/Scrollbar.java (dispatchEventImpl): New method.
+	* java/awt/TextComponent.java (dispatchEventImpl): New method.
+	* java/awt/TextField.java (dispatchEventImpl): New method.
+
+2002-03-24  Tom Tromey  <tromey@redhat.com>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c
 	(Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_connectHooks): New
 	function.
