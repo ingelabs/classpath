@@ -645,4 +645,53 @@ public class Collections {
   public static SortedSet unmodifiableSortedSet(SortedSet s) {
     return s;
   }
+
+  // The beginnings of work on the previously unimplemented inner classes.
+  // Sun's spec will need to be checked for the precise names of these
+  // classes, for serializability's sake. However, from what I understand,
+  // serialization is broken for these classes anyway.
+
+  private class UnmodifiableCollection implements Collection, Serializable {
+  }
+
+  private class UnmodifiableList extends UnmodifiableCollection
+      implements List {
+  }
+
+  private class UnmodifiableSet extends UnmodifiableCollection implements Set {
+  }
+
+  private class UnmodifiableSortedSet extends UnmodifiableSet
+      implements SortedSet {
+  }
+
+  private class UnmodifiableMap implements Map, Serializable {
+  }
+
+  private class UnmodifiableSortedMap extends UnmodifiableMap
+      implements SortedMap {
+  }
+
+  private class SynchronizedCollection implements Collection, Serializable {
+  }
+
+  private class SynchronizedList extends SynchronizedCollection
+      implements List {
+  }
+
+  private class SynchronizedSet extends SynchronizedCollection implements Set {
+  }
+
+  private class SynchronizedSortedSet extends SynchronizedSet
+      implements SortedSet {
+  }
+
+  private class SynchronizedMap implements Map, Serializable {
+  }
+
+  private class SynchronizedSortedMap extends SynchronizedMap
+      implements SortedMap {
+  }
+
+
 }

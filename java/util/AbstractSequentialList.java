@@ -61,7 +61,6 @@ public abstract class AbstractSequentialList extends AbstractList {
     while (ci.hasNext()) {
       i.add(ci.next());
       changed = true;
-      i.next();
     }
     return changed;
   }
