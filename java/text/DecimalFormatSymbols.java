@@ -132,6 +132,12 @@ public final class DecimalFormatSymbols implements Cloneable, Serializable
   /**
    * This method initializes a new instance of
    * <code>DecimalFormatSymbols</code> for the specified locale.
+   * <strong>Note</strong>: if the locale does not have an associated
+   * <code>Currency</code> instance, the currency symbol and
+   * international currency symbol will be set to the strings "?"
+   * and "XXX" respectively.  This generally happens with language
+   * locales (those with no specified country), such as
+   * <code>Locale.ENGLISH</code>.
    *
    * @param locale The local to load symbols for.
    * @throws NullPointerException if the locale is null.
@@ -141,8 +147,8 @@ public final class DecimalFormatSymbols implements Cloneable, Serializable
     ResourceBundle res;
 
     currency = null;
-    currencySymbol = "";
-    intlCurrencySymbol = "";
+    currencySymbol = "?";
+    intlCurrencySymbol = "XXX";
     try
       {
 	res = ResourceBundle.getBundle("gnu.java.locale.LocaleInformation",
@@ -154,9 +160,7 @@ public final class DecimalFormatSymbols implements Cloneable, Serializable
       }
     try
       {
-	Currency localeCurrency;
-
-	localeCurrency = Currency.getInstance(loc);
+	Currency localeCurrency = Currency.getInstance(loc);
 	if (localeCurrency != null)
 	  {
 	    setCurrency(localeCurrency);

@@ -1,3 +1,10 @@
+2005-01-12  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/text/DecimalFormatSymbols.java
+	(DecimalFormatSymbols(java.util.Locale)): defaults
+	changed to "?" and "XXX" to match a nuance of Sun's
+	impl. along with documentation
+
 2005-01-12  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/security/x509/X509Certificate.java
