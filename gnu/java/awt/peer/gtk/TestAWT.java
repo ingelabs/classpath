@@ -1,5 +1,5 @@
 /* TestAWT.java -- Tests the AWT like testgtk
-   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -186,14 +186,10 @@ class MainWindow extends PrettyFrame implements ActionListener
       }
 
     Window w = (Window) windows.get (source);
-    System.out.println ("Handling " + w + "\n vis = " + w.isVisible());
     if (w.isVisible ())
       w.dispose ();
     else 
-      {
-	w.setVisible (true);
-	w.show();
-      }
+      w.setVisible (true);
   }
 }
 
@@ -301,7 +297,6 @@ class DialogWindow extends Dialog implements SubWindow
     toggle.addActionListener(new ActionListener () {
       public void actionPerformed (ActionEvent e) 
 	{
-	  System.out.println ("toggle: " + text.isVisible());
 	  if (text.isVisible ())
 	    text.setVisible (false);
 	  else 

@@ -136,7 +136,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public Graphics getGraphics ()
   {
-    return null;
+    throw new InternalError ();
   }
 
   public Point getLocationOnScreen () 

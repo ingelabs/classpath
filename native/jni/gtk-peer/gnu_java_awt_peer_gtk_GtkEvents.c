@@ -408,14 +408,10 @@ awt_event_handler (GdkEvent *event)
 		gdk_window_get_root_geometry (event->any.window, 
 					      &x, &y, &w, &h, &wb, &d);
 
-#if 0
 		top = event->configure.y - y;
 		left = event->configure.x - x;
 		bottom = h - event->configure.height - top;
 		right = w - event->configure.width - left;
-#else
-		top = left = bottom = right = 0;
-#endif
 
 		/* configure events are not posted to the AWT event queue,
 		   and as such, gdk/gtk will be called back before
