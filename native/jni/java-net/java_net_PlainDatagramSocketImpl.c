@@ -350,16 +350,14 @@ Java_java_net_PlainDatagramSocketImpl_sendto(JNIEnv *env, jobject this,
   assert((*env)!=NULL);
 
   netAddress = _javanet_get_netaddr(env, addr);
-
   if ((*env)->ExceptionOccurred(env))
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error: get network address"); return; }
 
   DBG("PlainDatagramSocketImpl.sendto(): have addr\n");
 
   _javanet_sendto(env, this, buf, 0, len, netAddress, port);
-
   if ((*env)->ExceptionOccurred(env))
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error: send data"); return; }
 
   DBG("PlainDatagramSocketImpl.sendto(): finished\n");
 #else /* not WITHOUT_NETWORK */
