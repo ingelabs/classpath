@@ -11,6 +11,8 @@
 
 <i>Fosdem, Saturday/Sunday 26/27 February 2005, Brussels, Belgium</i>
 <p>
+<b>UPDATE: Presentations are now linked below!</b>
+<p>
 The Fosdem organisation has generously offered the developers of
 various projects around GNU classpath the opportunity to meet face
 to face in their own developer room.
@@ -47,18 +49,21 @@ href="http://www.fosdem.org/2005/index/dev_room_classpath/schedule">http://www.f
     learn from and work together with others?
   </p>
     <p>
-    <b>14:00 - 14:50</b> <i>Jeroen Frijters</i> IKVM.NET -- Motivation and Architecture.
+    <b>14:00 - 14:50</b> <i>Jeroen Frijters</i>
+    <a href="http://www.frijters.net/fosdem2005.sxi">IKVM.NET -- Motivation and Architecture</a> (sxi)
     </p>
     <p>
-    <b>15:00 - 15:50</b> <i>Leo Simons</i> Apache Gump -- Continuous integration on steroids
+    <b>15:00 - 15:50</b> <i>Leo Simons</i>
+    <a href="http://www.apache.org/~leosimons/presentations/fosdem2005/gump@fosdem.pdf">Apache Gump -- Continuous integration on steroids</a> (pdf)
     </p>
 
     <p>
-    <b>16:00 - 16:50</b> <i>Jeffrey Morgan</i> Liberation through Binding! -- Using java-gnome to build desktop applications.
+    <b>16:00 - 16:50</b> <i>Jeffrey Morgan</i>
+    <a href="http://java-gnome.sourceforge.net/presentations/fosdem05/img0.html">Liberation through Binding! -- Using java-gnome to build desktop applications</a> (html)
     </p>
     <p>
-    <b>17:00 - 17:30</b> <i>Christian Thalinger</i> CACAO
-    -- From the fastest JIT to a JVM
+    <b>17:00 - 17:30</b> <i>Christian Thalinger</i>
+    <a href="http://www.complang.tuwien.ac.at/cacaojvm/papers/fosdem2005.ps">CACAO -- From the fastest JIT to a JVM</a> (ps)
     </p>
 <p>
 </boxitem>
@@ -71,18 +76,19 @@ href="http://www.fosdem.org/2005/index/dev_room_classpath/schedule">http://www.f
   </p>
     <p>
     <b>10:00 - 10:50</b>
-    <i>Thomas Fitzsimmons</i> Free AWT and Swing
-    -- The GUI parts of GNU Classpath.
+    <i>Thomas Fitzsimmons</i>
+    <a href="http://people.redhat.com/fitzsim/fosdem-2005/html/fosdem-2005-presentation.html">Free AWT and Swing -- The GUI parts of GNU Classpath</a> (html)
+    (<a href="http://people.redhat.com/fitzsim/fosdem-2005/fosdem-2005-presentation.sxi">sxi</a>)
     </p>
     <p>
     <b>11:00 - 11:50</b>
-    <i>Tom Tromey</i> GCJX
-    -- Writing a new GCC front end.
+    <i>Tom Tromey</i>
+    <a href="http://www.peakpeak.com/~tromey/fosdem-2005.sxi">GCJX -- Writing a new GCC front end</a> (sxi)
     </p>
     <p>
     <b>12:00 - 12:50</b>
-    <i>Dalibor Topic</i> Kaffe
-    -- Past, Present and Future.
+    <i>Dalibor Topic</i>
+    Kaffe -- Past, Present and Future.
     </p>
 <p>
 <boxitem>

@@ -1,3 +1,8 @@
+2005-03-12  Mark Wielaard  <mark@klomp.org>
+
+	* doc/www.gnu.org/events/escape_fosdem05.wml: Add links to
+	presentations.
+
 2005-03-11  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/dom/html2/DomHTMLButtonElement.java,
