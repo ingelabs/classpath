@@ -15,6 +15,11 @@ public final class Float extends Number
     public static final Class TYPE = VMClassLoader.getPrimitiveClass("float");
     
     private float value;
+
+    static
+    {
+	System.loadLibrary("javalang");
+    }
     
     public Float(float value) 
     {
