@@ -1,5 +1,5 @@
 /* BasicBorders.java
-   Copyright (C) 2002 Free Software Foundation, Inc.
+   Copyright (C) 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,9 +37,22 @@ exception statement from your version. */
 
 
 package javax.swing.plaf.basic;
+
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Insets;
+
+import java.io.Serializable;
+
+import javax.swing.AbstractButton;
+import javax.swing.JPopupMenu;
+import javax.swing.JToolBar;
+import javax.swing.border.AbstractBorder;
+import javax.swing.plaf.UIResource;
+
+
 /**
- * STUBBED
+ * STUBBED (except MarginBorder)
  */
 public class BasicBorders
 {
@@ -53,9 +66,109 @@ public class BasicBorders
     {
     }
   } // class FieldBorder
+
+
+  /**
+   * An invisible, but spacing border whose margin is determined
+   * by calling the <code>getMargin()</code> method of the enclosed
+   * component.  If the enclosed component has no such method,
+   * this border will not occupy any space.
+   *
+   * <p><img src="BasicBorders.MarginBorder-1.png" width="325"
+   * height="200" alt="[An illustration that shows how MarginBorder
+   * determines its borders]" />
+   *
+   * @author Sascha Brawer (brawer@dandelis.ch)
+   */
   public static class MarginBorder
+    extends AbstractBorder
+    implements Serializable, UIResource
   {
-  } // class MarginBorder
+    /**
+     * Determined using the <code>serialver</code> tool
+     * of Apple/Sun JDK 1.3.1 on MacOS X 10.1.5.
+     */
+    static final long serialVersionUID = -3035848353448896090L;
+    
+    
+    /**
+     * Constructs a new MarginBorder.
+     */
+    public MarginBorder()
+    {
+    }
+    
+    
+    /**
+     * Measures the width of this border.
+     *
+     * @param c the component whose border is to be measured.
+     *
+     * @return an Insets object whose <code>left</code>, <code>right</code>,
+     *         <code>top</code> and <code>bottom</code> fields indicate the
+     *         width of the border at the respective edge.
+     *
+     * @see #getBorderInsets(java.awt.Component, java.awt.Insets)
+     */
+    public Insets getBorderInsets(Component c)
+    {
+      return getBorderInsets(c, new Insets(0, 0, 0, 0));
+    }
+    
+    
+    /**
+     * Determines the insets of this border by calling the
+     * <code>getMargin()</code> method of the enclosed component.  The
+     * resulting margin will be stored into the the <code>left</code>,
+     * <code>right</code>, <code>top</code> and <code>bottom</code>
+     * fields of the passed <code>insets</code> parameter.
+     *
+     * <p>Unfortunately, <code>getMargin()</code> is not a method of
+     * {@link javax.swing.JComponent} or some other common superclass
+     * of things with margins. While reflection could be used to
+     * determine the existence of this method, this would be slow on
+     * many virtual machines. Therefore, the current implementation
+     * knows about {@link javax.swing.AbstractButton#getMargin()},
+     * {@link javax.swing.JPopupMenu#getMargin()}, and {@link
+     * javax.swing.JToolBar#getMargin()}. If <code>c</code> is an
+     * instance of a known class, the respective
+     * <code>getMargin()</code> method is called to determine the
+     * correct margin. Otherwise, a zero-width margin is returned.
+     *
+     * @param c the component whose border is to be measured.
+     *
+     * @return the same object that was passed for <code>insets</code>,
+     *         but with changed fields.
+     */
+    public Insets getBorderInsets(Component c, Insets insets)
+    {
+      Insets margin = null;
+
+      /* This is terrible object-oriented design. See the above Javadoc
+       * for an excuse.
+       */
+      if (c instanceof AbstractButton)
+        margin = ((AbstractButton) c).getMargin();
+      else if (c instanceof JPopupMenu)
+        margin = ((JPopupMenu) c).getMargin();
+      else if (c instanceof JToolBar)
+        margin = ((JToolBar) c).getMargin();
+
+      if (margin == null)
+        insets.top = insets.left = insets.bottom = insets.right = 0;
+      else
+      {
+        insets.top = margin.top;
+        insets.left = margin.left;
+        insets.bottom = margin.bottom;
+        insets.right = margin.right;
+      }
+
+      return insets;
+    }
+  }
+  
+  
   public static class MenuBarBorder
   {
     public MenuBarBorder(Color shadow, Color highlight)
