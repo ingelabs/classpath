@@ -28,7 +28,7 @@ Example assumes ORP 1.0.9, see above.  In the example, GNU Classpath sources
 are in ~/src/classpath/.
 </p>
 <UL>
-  <LI>Obtain <link url="http://sourceforge.net/projects/orp/" 
+  <LI>Obtain <createlink url="http://sourceforge.net/projects/orp/" 
        name="ORP"> from the Sourceforge project page</LI>
   <OL>
     <LI><tt>wget

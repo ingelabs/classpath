@@ -15,20 +15,38 @@
 <header title="GNU Classpath">
 <en>
 <p>
-<hr SIZE="1" NoShade>
-<a class=tabselect href="http://savannah.gnu.org/projects/classpath/">Savannah</a>&nbsp;|&nbsp;
-
-<a class=tabs href="http://www.gnu.org/software/classpath/">Homepage</a>&nbsp;|&nbsp;
-<a class=tabs href="http://savannah.gnu.org/bugs/?group_id=85">Bugs</a>&nbsp;|&nbsp;
-<a class=tabs href="http://savannah.gnu.org/support/?group_id=85">Support</a>&nbsp;|&nbsp;
-<a class=tabs href="http://savannah.gnu.org/patch/?group_id=85">Patches</a>&nbsp;|&nbsp;
-<a class=tabs href="http://savannah.gnu.org/mail/?group_id=85">Lists</a>&nbsp;|&nbsp;
-
-<a class=tabs href="http://savannah.gnu.org/pm/?group_id=85">Tasks</a>&nbsp;|&nbsp;
-<a class=tabs href="http://savannah.gnu.org/news/?group_id=85">News</a>&nbsp;|&nbsp;
-<a class=tabs href="http://savannah.gnu.org/cvs/?group_id=85">CVS</a>&nbsp;|&nbsp;
-<a class=tabs href="http://savannah.gnu.org/files/?group_id=85">Files</a>&nbsp;|&nbsp;<hr SIZE="1" NoShade>
-
+<table class="groupmenutable">
+  <tr>
+    <td width="10%"><i>Classpath:</i></td>
+    <td width="90%">
+      <a class=tabs href="http://savannah.gnu.org/projects/classpath/">Savannah</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class=tabselect href="http://www.gnu.org/software/classpath/">Homepage</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class=tabs href="http://savannah.gnu.org/bugs/?group=classpath">Bugs</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class=tabs href="http://savannah.gnu.org/support/?group=classpath">Support</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class=tabs href="http://savannah.gnu.org/patch/?group=classpath">Patches</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class=tabs href="http://savannah.gnu.org/mail/?group=classpath">Mailing Lists</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class=tabs href="http://savannah.gnu.org/pm/?group=classpath">Tasks</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class=tabs href="http://savannah.gnu.org/news/?group=classpath">News</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class=tabs href="http://savannah.gnu.org/cvs/?group=classpath">CVS</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class=tabs href="http://savannah.gnu.org/files/?group=classpath">Files</a>
+    </td>
+  </tr>
+  <tr>
+    <td width="10%">&nbsp;&nbsp;&nbsp;&nbsp;<i>Tools:</i></td>
+    <td width="90%">
+      <a class="tabs" href="http://savannah.gnu.org/projects/cp-tools/">Savannah</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class="tabs" href="http://www.gnu.org/software/cp-tools/">Homepage</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class="tabs" href="http://savannah.gnu.org/bugs/?group=cp-tools">Bugs</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class="tabs" href="http://savannah.gnu.org/support/?group=cp-tools">Support</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class="tabs" href="http://savannah.gnu.org/patch/?group=cp-tools">Patches</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class="tabs" href="http://savannah.gnu.org/mail/?group=cp-tools">Mailing Lists</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class="tabs" href="http://savannah.gnu.org/pm/?group=cp-tools">Tasks</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class="tabs" href="http://savannah.gnu.org/news/?group=cp-tools">News</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class="tabs" href="http://savannah.gnu.org/cvs/?group=cp-tools">CVS</a>&nbsp;&nbsp;|&nbsp;&nbsp;
+      <a class="tabs" href="http://savannah.gnu.org/files/?group=cp-tools">Files</a>
+    </td>
+  </tr>
+</table>
 <p>
 GNU Classpath is a set of essential libraries for supporting the Java
 language.  Our goal is to provide a free replacement for Sun's
@@ -37,7 +55,7 @@ written in the Java language.
 </p>
 
 <p>
-Classpath is licensed under the terms of the <link url="/copyleft/gpl.html"
+Classpath is licensed under the terms of the <createlink url="/copyleft/gpl.html"
 name="GNU General Public License"> with the following special exception.
 </p>
 
@@ -70,9 +88,9 @@ JVM.
 Classpath is still a work in progress.  The first public release will 
 be version 1.0.  There have been no public releases; however, pre-release 
 source code is available via GNU's anonymous 
-<link url="http://savannah.gnu.org/cvs/?group_id=85" name="CVS server">
+<createlink url="http://savannah.gnu.org/cvs/?group_id=85" name="CVS server">
 , and snapshots of the Classpath tree have been released and are
-available from <link url="ftp://alpha.gnu.org/gnu/classpath/"
+available from <createlink url="ftp://alpha.gnu.org/gnu/classpath/"
 name="ftp://alpha.gnu.org/gnu/classpath/">.  
 </p>
 
@@ -80,10 +98,10 @@ name="ftp://alpha.gnu.org/gnu/classpath/">.
 
 <H4>Documentation</H4>
 <UL>
-  <LI><link url="docs/" name="Current Documentation"></LI>
-  <LI><link url="docs/orp.html" name="Using GNU
+  <LI><createlink url="docs/" name="Current Documentation"></LI>
+  <LI><createlink url="docs/orp.html" name="Using GNU
   Classpath with ORP"></LI>
-  <LI><link url="announce/announcements.html" 
+  <LI><createlink url="announce/announcements.html" 
        name="Old News"></LI>
 </UL>
 
@@ -94,11 +112,11 @@ GNU Classpath 1.0 will be fully compatible with Java 1.1 and largely
 compatible with Java 2.  The current state of GNU Classpath can be
 obtained by looking at these resources.
   <ul>
-    <li><link url="http://savannah.gnu.org/pm/task.php?group_id=85&set=custom&advsrch=0&group_project_id=0&_assigned_to=0&_status=1&SUBMIT=Browse" name="All open tasks"></li>
-    <li>Japitool <link url="ftp://alpha.gnu.org/pub/gnu/classpath/nightly/tests/classpath-jdk11-compare.txt" name="comparison against Java, version 1.1">, updated nightly</li>
-    <li>Japitool <link url="ftp://alpha.gnu.org/pub/gnu/classpath/nightly/tests/classpath-jdk13-compare.txt" name="comparison against Java 2, version 1.3">, updated nightly</li>
-    <li><link url="ftp://alpha.gnu.org/pub/gnu/classpath/nightly/tests/kissme-mauve-report.txt" name="Mauve results"> with Kissme CVS, updated nightly</li>
-    <li>GNU Classpath and GCJ <link url="http://gcc.gnu.org/java/libgcj-classpath-compare.html" name="merge status"></li>
+    <li><createlink url="http://savannah.gnu.org/pm/task.php?group_id=85&set=custom&advsrch=0&group_project_id=0&_assigned_to=0&_status=1&SUBMIT=Browse" name="All open tasks"></li>
+    <li>Japitool <createlink url="ftp://alpha.gnu.org/pub/gnu/classpath/nightly/tests/classpath-jdk11-compare.txt" name="comparison against Java, version 1.1">, updated nightly</li>
+    <li>Japitool <createlink url="ftp://alpha.gnu.org/pub/gnu/classpath/nightly/tests/classpath-jdk13-compare.txt" name="comparison against Java 2, version 1.3">, updated nightly</li>
+    <li><createlink url="ftp://alpha.gnu.org/pub/gnu/classpath/nightly/tests/kissme-mauve-report.txt" name="Mauve results"> with Kissme CVS, updated nightly</li>
+    <li>GNU Classpath and GCJ <createlink url="http://gcc.gnu.org/java/libgcj-classpath-compare.html" name="merge status"></li>
   </ul>
 </en>
 </p>
@@ -107,14 +125,14 @@ obtained by looking at these resources.
 <en>
 <p>
 The test framework for GNU Classpath is called 
-<link url="http://sources.redhat.com/mauve/" name="Mauve">.  There 
+<createlink url="http://sources.redhat.com/mauve/" name="Mauve">.  There 
 are instructions within the Mauve website on how to download and use Mauve.
 Writing Mauve tests is the most important thing GNU Classpath developers
 could do for the project at this time.
 </p>
 <p>
 Java API compatibility testing can be performed using 
-<link url="http://rainbow.netreach.net/~sballard/japi/"
+<createlink url="http://rainbow.netreach.net/~sballard/japi/"
 name="japitools">.  Japitools already does
 full API comparisons but it doesn't have the capability to extract
 APIs from the documentation - instead, the "japize" tool uses the
@@ -125,7 +143,7 @@ API-inspection phase ("japize") from the compatibility-testing phase
 that worked on API documentation.
 </p>
 <p>
-Another method of API compatibility testing is to use <link
+Another method of API compatibility testing is to use <createlink
 url="http://majestix.ucnet.uoc.gr/~jgeorgal/pub/jdiff.sh"
 name="jdiff.sh">, at least until this functionality is merged into
 japitools.
@@ -145,19 +163,19 @@ japitools.
 <tr><td>javax.print</td><td></td></tr>
 <tr><td>javax.rmi</td><td>GNU Classpath</td></tr>
 <tr><td>javax.security</td><td></td></tr>
-<tr><td>javax.sound</td><td><link url="http://tritonus.org/"
+<tr><td>javax.sound</td><td><createlink url="http://tritonus.org/"
 name="Tritonus"></td></tr>
 <tr><td>javax.sql</td><td>GNU Classpath</td></tr>
 <tr><td>javax.swing</td><td></td></tr>
 <tr><td>javax.transaction</td><td>GNU Classpath</td></tr>
 <tr><td>javax.xml</td><td></td></tr>
-<tr><td>org.ietf.jgss</td><td><link
+<tr><td>org.ietf.jgss</td><td><createlink
 url="http://www.ietf.org/rfc/rfc2853.txt" name="IETF RFC 2853"></td></tr>
-<tr><td>org.omg</td><td><link url="http://www.omg.org"
+<tr><td>org.omg</td><td><createlink url="http://www.omg.org"
 name="OMG"></td></tr>
-<tr><td>org.w3c.dom</td><td><link url="http://www.w3.org/DOM/"
+<tr><td>org.w3c.dom</td><td><createlink url="http://www.w3.org/DOM/"
 name="W3C DOM"></td></tr>
-<tr><td>org.xml.sax</td><td><link url="http://sax.sourceforge.net" name="SAX"></td></tr>
+<tr><td>org.xml.sax</td><td><createlink url="http://sax.sourceforge.net" name="SAX"></td></tr>
 </table>
 </en>
 -->
@@ -165,7 +183,7 @@ name="W3C DOM"></td></tr>
 <H4>Virtual Machines</H4> 
 <en>
 <p>
-The primary target for GNU Classpath was originally <link
+The primary target for GNU Classpath was originally <createlink
 url="http://www.japhar.org/" name="Japhar">.  Japhar-0.07 works out-of-the-box with
 GNU Classpath-0.00.  Current Japhar versions do not work with current versions
 of GNU Classpath.
@@ -174,21 +192,21 @@ of GNU Classpath.
 <table border="1">
 <tr><th>JVM</th><th>Description</th></tr>
 <tr>
-<td><link url="http://sources.redhat.com/java/" name="GCJ"></td>
+<td><createlink url="http://sources.redhat.com/java/" name="GCJ"></td>
 <td>
 Although GNU Classpath cannot be directly compiled for use with
 GCJ at this time, a lot of work has been done to merge GCJ class
 library code and GNU Classpath class library code.  This has resulted
 in a better version of each.  The current merge status between the two
-projects is <link url="http://gcc.gnu.org/java/libgcj-classpath-compare.html"
+projects is <createlink url="http://gcc.gnu.org/java/libgcj-classpath-compare.html"
 name="located here">.
 </td>
 </tr>
 <tr>
-<td><link url="http://www.intel.com/research/mrl/orp/" name="ORP"></td>
+<td><createlink url="http://www.intel.com/research/mrl/orp/" name="ORP"></td>
 <td>
 Information about ORP
-can also be found at <link url="http://orp.sourceforge.net/"
+can also be found at <createlink url="http://orp.sourceforge.net/"
 name="http://orp.sourceforge.net/">.  We're hopeful that the next
 version of ORP after 1.0.6 will allow users to optionally use GNU
 Classpath native libraries instead of those bundled with ORP.  ORP is
@@ -198,27 +216,27 @@ mailing list archives.
 </td>
 </tr>
 <tr>
-<td><link url="http://kissme.sourceforge.net/" name="Kissme"></td>
+<td><createlink url="http://kissme.sourceforge.net/" name="Kissme"></td>
 <td>
 This VM is almost always guaranteed to work with GNU Classpath cvs
 source code.
 </td>
 </tr>
 <tr>
-<td><link url="http://www.sablevm.org/" name="SableVM"></td>
+<td><createlink url="http://www.sablevm.org/" name="SableVM"></td>
 <td>
 This VM provides a repackaged version of GNU Classpath that aims to
 be the easiest to install and use.
 </td>
 </tr>
 <tr>
-<td><link url="http://www.eecg.toronto.edu/~doylep/jupiter/" name="Jupiter"></td>
+<td><createlink url="http://www.eecg.toronto.edu/~doylep/jupiter/" name="Jupiter"></td>
 <td>
 This VM also uses a modified version of the GNU Classpath libraries.
 </td>
 </tr>
 <tr>
-<td><link url="http://aegisvm.sourceforge.net/" name="AegisVM"></td>
+<td><createlink url="http://aegisvm.sourceforge.net/" name="AegisVM"></td>
 <td>
 The Aegis VM Project is an on-going effort to develop a lightweight,
 secure virtual machine for executing Java bytecode.  The Aegis VM will
@@ -228,7 +246,7 @@ into the VM's dynamic linking process through pluggable verification
 modules.
 </td>
 </tr>
-<td><link url="http://www.e-leos.net/" name="E-LEOS"></td>
+<td><createlink url="http://www.e-leos.net/" name="E-LEOS"></td>
 <td>
 GNU Classpath is used as part of this project to create a Java operating
 system.

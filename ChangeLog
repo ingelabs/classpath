@@ -1,3 +1,22 @@
+2002-12-17  C. Brian Jones <cbj@gnu.org>
+
+	* doc/www.gnu.org/docs/license.wml: link->createlink conversion.
+	* doc/www.gnu.org/docs/orp.wml: link->createlink conversion.
+	* doc/www.gnu.org/docs/redistribution.wml: link->createlink conversion.
+	* doc/www.gnu.org/docs/docs.wml: fix link to hacking doc, 
+          link->createlink conversion.
+	* doc/www.gnu.org/announce/19990206.wml: link->createlink conversion.
+	* doc/www.gnu.org/announce/20001120.wml: link->createlink conversion.
+	* doc/www.gnu.org/announce/20010106.wml: link->createlink conversion.
+	* doc/www.gnu.org/announce/20020208.wml: link->createlink conversion.
+	* doc/www.gnu.org/announce/announcements.wml: link->createlink 
+          conversion.
+	* doc/www.gnu.org/savannah.css: new file
+	* doc/www.gnu.org/include/macros.wml: rename 'link' tag 'createlink'
+	* doc/www.gnu.org/home.wml: link to cp-tools sub-project, 
+          link->createlink conversion.
+	* doc/www.gnu.org/Makefile: copy *.css to webroot when publishing
+
 2002-12-17  Sascha Brawer  <brawer@acm.org>
 
 	* java/util/logging/LogManager.java: Fix a dependency on the order

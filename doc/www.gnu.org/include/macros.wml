@@ -6,6 +6,7 @@
 <title><get-var title> - GNU Project - Free Software Foundation (FSF)</title>
 <head>
 <link rev="made" HREF="mailto:webmasters@www.gnu.org">
+<link rel="stylesheet" type="text/css" href="/software/classpath/savannah.css">
 </head>
 <table>
 <tr>
@@ -68,7 +69,7 @@ Updated:
 <HR>
 </define-tag>
 
-<define-tag link whitespace=delete>
+<define-tag createlink whitespace=delete>
 <preserve url name>
 <set-var %attributes>
 <a href="<get-var url>"><get-var name></a>
@@ -84,7 +85,7 @@ Updated:
 <define-tag package-item whitespace=delete>
 <preserve section name>
 <set-var %attributes>
-  <li><link url="status.html#<if <get-var section>
+  <li><createlink url="status.html#<if <get-var section>
   <get-var section> <get-var name>>" name="<get-var name>">
 <restore section name>
 </define-tag>

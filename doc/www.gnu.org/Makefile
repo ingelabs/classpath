@@ -31,4 +31,5 @@ publish :
 	@sh -c "if [ ! -d $(CLASSPATH_WEBROOT) ]; then echo 'You must set CLASSPATH_WEBROOT in your environment first'; exit 1; fi"
 	$(foreach dir, $(SUBDIRS), sh -c "cd $(dir) && $(MAKE) publish";)
 	-cp -f *.html $(CLASSPATH_WEBROOT)
+	-cp -f *.css $(CLASSPATH_WEBROOT)
 

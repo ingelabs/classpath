@@ -19,10 +19,10 @@
 GNU Documentation is unique because of our attitude towards it. We 
 believe the reader should be free to copy and redistribute it, just 
 like our software. Originally, all our documentation was released under 
-a short <link url="/licenses/licenses.html#WhatIsCopyleft" name="Copyleft"> 
-license, or under the <link url="/licenses/licenses.html#GPL" 
+a short <createlink url="/licenses/licenses.html#WhatIsCopyleft" name="Copyleft"> 
+license, or under the <createlink url="/licenses/licenses.html#GPL" 
 name="GNU General Public License (GPL)"> itself; in 2001 the 
-<link url="/licenses/licenses.html#FDL" 
+<createlink url="/licenses/licenses.html#FDL" 
 name="Free Documentation License (FDL)"> was created to 
 address certain needs that were not met by licenses originally designed 
 for software.
