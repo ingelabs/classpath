@@ -1,3 +1,17 @@
+2003-03-20  John Leuner  <jewel@debian.org>
+
+	Patches from Stephen Crawley
+	* java/util/PropertyPermission.java: Fix to prevent recursive call during
+	initialization
+	* java/io/FileDescriptor.java (close) : clear nativeFD on success
+	* java/net/PlainDatagramSocketImpl.java (setTTL): remap the TTL passed
+	  as an unsigned byte to an integer in the range 0..255
+	* native/jni/java-net/javanet.c (_javanet_get_option): 
+	  implement ..._get(SOCKOPT_SO_BINDADDR) -> 'getsockname' syscall
+	* native/jni/java-net/javanet.c (_javanet_set_option):
+	  implement ..._set(SOCKOPT_SO_BINDADDR) -> Exception
+
+	
 2003-03-20  Raif S. Naffah  <raif@fl.net.au>
 
 	* java.security.Security (getAlgorithms(String): fixed a bug.

@@ -197,12 +197,12 @@ public final class FileDescriptor
   {
     if (nativeFd == -1L)
       return;
-
     try
       {
         nativeClose(nativeFd);
+	nativeFd = -1L;
       }
-    catch(IOException e)
+    catch (IOException e)
       {
         nativeFd = -1L;
         throw new IOException(e.getMessage());

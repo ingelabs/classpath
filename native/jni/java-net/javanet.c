@@ -992,7 +992,7 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
         optval = (*env)->CallIntMethod(env, val, mid);
 	if ((*env)->ExceptionOccurred(env))
 	  return;
-            
+         
         rc = setsockopt(fd, IPPROTO_IP, IP_TTL, &optval, sizeof(int));
         break;
 
@@ -1038,10 +1038,14 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
         rc = setsockopt(fd, SOL_SOCKET, SO_KEEPALIVE, (void*)&optval, 
 			sizeof(int));      
       break;
+    
+    case SOCKOPT_SO_BINDADDR:
+      JCL_ThrowException(env, SOCKET_EXCEPTION, "This option cannot be set");
+      break;
 
-      default:
-        JCL_ThrowException(env, SOCKET_EXCEPTION, "Unrecognized option");
-        return;
+    default:
+      JCL_ThrowException(env, SOCKET_EXCEPTION, "Unrecognized option");
+      return;
     }
 
   /* Check to see if above operations succeeded */
@@ -1181,6 +1185,19 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
 
          return(_javanet_create_inetaddress(env, ntohl(si.sin_addr.s_addr)));
          break;
+
+      case SOCKOPT_SO_BINDADDR:
+	memset(&si, 0, sizeof(struct sockaddr_in));
+	optlen = sizeof(struct sockaddr_in);
+	rc = getsockname(fd, (struct sockaddr *) &si, &optlen);
+	if (rc == -1)
+	  {
+	    JCL_ThrowException(env, SOCKET_EXCEPTION, strerror(errno));
+	    return(0);
+	  }
+	
+	return(_javanet_create_inetaddress(env, ntohl(si.sin_addr.s_addr)));
+	break;
 
       case SOCKOPT_SO_REUSEADDR:
         optlen = sizeof(int);

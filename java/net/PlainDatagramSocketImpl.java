@@ -191,7 +191,10 @@ public class PlainDatagramSocketImpl extends DatagramSocketImpl
    */
   protected synchronized void setTTL(byte ttl) throws IOException
   {
-    setOption(IP_TTL, new Integer(ttl));
+    if (ttl > 0) 
+      setOption(IP_TTL, new Integer(ttl));
+    else
+      setOption(IP_TTL, new Integer(ttl + 256));
   }
 
   /**
