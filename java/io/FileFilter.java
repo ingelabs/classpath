@@ -1,0 +1,51 @@
+/*************************************************************************
+/* FileFilter.java -- Filter a list of pathnames
+/*
+/* Copyright (c) 1998 Free Software Foundation, Inc.
+/* Written by Aaron M. Renn (arenn@urbanophile.com)
+/*
+/* This library is free software; you can redistribute it and/or modify
+/* it under the terms of the GNU Library General Public License as published 
+/* by the Free Software Foundation, either version 2 of the License, or
+/* (at your option) any later verion.
+/*
+/* This library is distributed in the hope that it will be useful, but
+/* WITHOUT ANY WARRANTY; without even the implied warranty of
+/* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+/* GNU Library General Public License for more details.
+/*
+/* You should have received a copy of the GNU Library General Public License
+/* along with this library; if not, write to the Free Software Foundation
+/* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
+/*************************************************************************/
+
+package java.io;
+
+/**
+  * This interface has one method which is used for filtering pathnames
+  * returned in a pathname listing.  It is currently used by the 
+  * <code>File.listFiles()</code> method.
+  *
+  * The method in this interface determines if a particular pathname should
+  * or should not be included in the pathname listing.
+  *
+  * @version 0.0
+  *
+  * @author Aaron M. Renn (arenn@urbanophile.com)
+  */
+public interface FileFilter
+{
+
+/**
+  * This method determines whether or not a given pathname should be included
+  * in a pathname listing.
+  *
+  * @param pathname The pathname to test
+  *
+  * @return <code>true</code> if the path should be included in the list, <code>false</code> otherwise.
+  */
+public abstract boolean
+accept(String pathname);
+
+} // interface FileFilter
+
