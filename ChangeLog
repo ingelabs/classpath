@@ -1,5 +1,10 @@
 2005-02-22  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEvents.c
+	(button_to_awt_mods): Return BUTTON masks, not BUTTON_DOWN masks.
+
+2005-02-22  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* gnu/java/awt/peer/gtk/GtkWindowPeer.java,
 	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
 	(getWidth): New method.
