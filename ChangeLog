@@ -21847,3 +21847,46 @@
 	* java/lang/reflect/Field.java: Changed so that it uses native
 	peers 
 
+2003-03-21  Torsten Rupp  <rupp@homer.aicas.com>
+
+	* native/target/generic/target_generic.h,
+          native/target/generic/target_generic_file.h,
+          native/target/generic/target_generic_math_float.h,
+          native/target/generic/target_generic_math_int.h,
+          native/target/generic/target_generic_misc.h
+          native/target/generic/target_generic_network.h
+          native/target/Linux/target_native.h
+          native/target/Linux/target_native_file.h
+          native/target/Linux/target_native_math_float.h
+          native/target/Linux/target_native_math_int.h
+          native/target/Linux/target_native_misc.h
+          native/target/Linux/target_native_network.h:
+	Target specific native code. This code is still not used, but please
+        have a look. aicas GmbH will add and activate this code soon as
+        possible (currently we are very busy; please be patient, we will do
+        our best!)
+
+2003-03-28  Torsten Rupp  <rupp@homer.aicas.com>
+
+	* native/target/generic/target_generic.h,
+          native/target/generic/target_generic_file.h,
+          native/target/generic/target_generic_math_float.h:
+	Fix in extern-C-declaration
+
+	* native/target/generic/target_generic_math_int.h:
+	Fixed some int64-operation macros
+
+	* native/target/generic/target_generic_network.h:
+	Added some macros for setting/getting socket options
+
+	* native/target/generic/target_generic_misc.h:
+	Added TARGET_NATIVE_FORMAT_STRING macro
+
+	* native/target/Linux/target_native.h,
+          native/target/Linux/target_native_file.h,
+          native/target/Linux/target_native_math_float.h,
+          native/target/Linux/target_native_math_int.h,
+          native/target/Linux/target_native_misc.h,
+          native/target/Linux/target_native_network.h:
+	Fix in extern-C-declaration
+
