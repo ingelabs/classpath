@@ -1,5 +1,12 @@
 2003-09-25  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/PlainDatagramSocketImpl.java:
+	Reordered imports.
+	* gnu/java/net/PlainSocketImpl.java:
+	Removed import for java.net.NetworkInterface.
+
+2003-09-25  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/SelectorImpl.java
 	(implSelect): Renamed from java_do_select.
 	(select): Made final, throws IOException,

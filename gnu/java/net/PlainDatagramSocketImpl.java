@@ -1,5 +1,5 @@
 /* PlainDatagramSocketImpl.java -- Default DatagramSocket implementation
-   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package gnu.java.net;
 
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocketImpl;
 import java.net.InetAddress;
@@ -46,7 +47,6 @@ import java.net.NetworkInterface;
 import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.SocketOptions;
-import java.io.IOException;
 import gnu.classpath.Configuration;
 
 /**
