@@ -1,5 +1,5 @@
 /*
- * Test.java -- Tests the GTK Toolkit
+ * TestAWT.java -- Tests the AWT like testgtk
  *
  * Copyright (c) 1998, 1999 Free Software Foundation, Inc.
  * Written by James E. Blair <corvus@gnu.org>
@@ -78,9 +78,9 @@ class PrettyFrame extends Frame
 
 class MainWindow extends PrettyFrame implements ActionListener 
 {
-  Button closeButton, buttonsButton, dialogButton;
+  Button closeButton, buttonsButton, dialogButton, cursorsButton;
   Frame buttonsWindow = null;
-  Dialog dialogWindow = null;
+  Dialog dialogWindow = null, cursorsWindow = null;
 
   MainWindow () 
     {
@@ -105,6 +105,10 @@ class MainWindow extends PrettyFrame implements ActionListener
       dialogButton = new Button ("dialog");
       dialogButton.addActionListener (this);
       p.add (dialogButton);
+
+      cursorsButton = new Button ("cursors");
+      cursorsButton.addActionListener (this);
+      p.add (cursorsButton);
 
       pack();
     }
@@ -140,6 +144,16 @@ class MainWindow extends PrettyFrame implements ActionListener
 	    }
 	  else 
 	    dialogWindow.dispose();
+	}
+      if (source==cursorsButton)
+	{
+	  if (cursorsWindow == null)
+	    {
+	      cursorsWindow = new CursorsWindow (this);
+	      cursorsWindow.show();
+	    }
+	  else 
+	    cursorsWindow.dispose();
 	}
     }
 }
@@ -263,9 +277,67 @@ class DialogWindow extends Dialog
     }
 }
 
+class CursorsWindow extends Dialog
+{
+  static Frame f;
+  MainWindow mainWindow;
+  Choice cursorChoice;
+
+  public CursorsWindow (MainWindow mw)
+    {
+      super (mw);
+
+      mainWindow = mw;
+
+      cursorChoice = new Choice();
+      cursorChoice.add ("Foo");
+      
+      add (cursorChoice, "North");
+
+      Panel p = new Panel();
+      add (p, "Center");
+
+      p = new Panel();
+
+      Button cb = new Button ("close");
+      cb.addMouseListener(new MouseAdapter () {
+        public void mouseClicked (MouseEvent e) {
+	  dispose();
+        }
+      });
+      p.add (cb);
+
+      add (p, "South");
+      setTitle ("Cursor");
+      pack ();
+    }
+
+  public void dispose()
+    {
+      mainWindow.dialogWindow=null;
+      super.dispose();
+    }
+}
 
 
 
 
 
+/*
 
+      Panel pan=new Panel();
+
+      Label l = new Label ("Pithy Message:");
+      l.setCursor (Cursor.getPredefinedCursor (Cursor.WAIT_CURSOR));
+      pan.add (l);
+
+      TextField tf = new TextField("Hello world!");
+      pan.add(tf);
+
+      final Canvas ch = new Canvas () { 
+	public void paint (Graphics g) {
+	  g.setColor (Color.blue);
+	  g.drawLine (xs,ys,xs+20,ys+20);
+	}
+      };
+*/
