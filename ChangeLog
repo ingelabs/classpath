@@ -1,3 +1,8 @@
+2003-03-02  Mark Wielaard  <mark@klomp.org>
+
+	* java/util/Properties.java (load): Only skip line if the first
+	character is a comment, whitespaces don't count.
+
 2003-03-02  Michael Koch  <konqueror@gmx.de>
 
 	* java/lang/Package.java: Little merge with libgcj.
@@ -60,7 +65,7 @@
 	Compile fix: Forgot to commit import.
 
 2003-03-01  Mark Wielaard  <mark@klomp.org>
- 
+
 	* java/io/ObjectInputStream.java: Reindent and remove dead and/or
 	commented out code.
 	* java/io/ObjectOutputStream.java: Likewise.
