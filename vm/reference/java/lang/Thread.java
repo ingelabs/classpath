@@ -520,4 +520,8 @@ public class Thread {
 	final native void nativeSuspend();
 	final native void nativeResume();
 	final native void nativeSetPriority(int newPriority);
+
+	public ClassLoader getContextClassLoader() {
+		return(this.getClass().getClassLoader()); // For now
+	}
 }
