@@ -1,0 +1,3 @@
+#! @SH@
+gen-classlist.sh standard
+@JAVADEPS@ --native -b "\$(JAVAC)" -d . -f classes -v > .deps
