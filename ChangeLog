@@ -1,5 +1,11 @@
 2004-08-31  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/DefaultListSelectionModel.java
+	(fireValueChanged): Renamed from fireSelectionValueChanged,
+	made protected.
+
+2004-08-31  Michael Koch  <konqueror@gmx.de>
+
 	* vm/reference/java/io/VMFile.java:
 	Reindented.
 
