@@ -70,17 +70,16 @@ public final class Security extends Object
     {
       String base = System.getProperty ("gnu.classpath.home.url");
       String vendor = System.getProperty ("gnu.classpath.vm.shortname");
-	    
+    
       // Try VM specific security file
       boolean loaded = loadProviders (base, vendor);
-	    
+    
       // Append classpath standard provider if possible
       if (!loadProviders (base, "classpath")
-          && !loaded
+	  && !loaded
 	  && providers.size() == 0)
         {
-	// No providers found
-	// and both security files failed to load properly.
+	  // No providers found and both security files failed to load properly.
 	  System.err.println
 	    ("WARNING: could not properly read security provider files:");
 	  System.err.println
@@ -91,7 +90,7 @@ public final class Security extends Object
 	    ("         Falling back to standard GNU security provider");
 	  providers.addElement (new gnu.java.security.provider.Gnu());
         }
-    }
+  }
 
   // This class can't be instantiated.
   private Security()
@@ -476,7 +475,7 @@ public final class Security extends Object
    *    provider that supplied a CertificateFactory implementation for X.509
    *    certificates.</p></li>
    *
-   *    <li><p>&lt;crypto_service>.&lt;algorithm_or_type>&lt;attribute_name>:&lt;attribute_value></p>
+   *    <li><p>&lt;crypto_service>.&lt;algorithm_or_type>&nbsp;&lt;attribute_name>:&lt;attribute_value></p>
    *    <p>The cryptographic service name must not contain any dots. There must
    *    be one or more space charaters between the the &lt;algorithm_or_type>
    *    and the &lt;attribute_name>.</p>

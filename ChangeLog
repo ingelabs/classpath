@@ -1,5 +1,10 @@
 2003-10-07  Michael Koch  <konqueror@gmx.de>
 
+	* java/security/Security.java: Merged formating with libgcj,
+	added non-breaking space in documentation.
+
+2003-10-07  Michael Koch  <konqueror@gmx.de>
+
 	* java/security/Security.java
 	(providersList): Renamed to "providers".
 	(providersInited): Removed.
