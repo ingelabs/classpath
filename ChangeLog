@@ -1,5 +1,9 @@
 2005-01-26  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/AbstractSet.java: Removed.
+
+2005-01-26  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/Window.java
 	(AccessibleWindow.getAccessibleStateSet): Fixed method name.
 	* java/awt/dnd/DnDConstants.java
