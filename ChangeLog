@@ -1,3 +1,14 @@
+2004-05-17  Michael Koch  <konqueror@gmx.de>
+
+	* vm/kaffe/.cvsignore,
+	vm/kaffe/Makefile.am,
+	vm/kaffe/java/.cvsignore,
+	vm/kaffe/java/Makefile.am,
+	vm/kaffe/kaffe/.cvsignore,
+	vm/kaffe/kaffe/Makefile.am,
+	vm/kaffe/native/.cvsignore,
+	vm/kaffe/native/Makefile.am: Removed.
+
 2004-05-16  Steven Augart  <augart@watson.ibm.com>
 	
 	* ChangeLog: Restore corrupted umlauts.  
