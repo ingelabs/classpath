@@ -1,3 +1,10 @@
+2003-07-17  Stephen Crawley  <crawley@dstc.edu.au>
+
+	* java/lang/ThreadGroup.java (removeThread): null the 'group' field
+	of the removed Thread.
+	* vm/reference/java/lang/Thread.java (setDaemon): Don't throw an
+	exception when called on an exited Thread.
+ 
 2003-07-17  Jeroen Frijters <jeroen@sumatra.nl>
 
 	* java/lang/Class.java (newInstance): Improved constructor caching.

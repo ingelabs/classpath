@@ -725,7 +725,7 @@ public class Thread implements Runnable
   /**
    * Set the daemon status of this Thread.  If this is a daemon Thread, then
    * the VM may exit even if it is still running.  This may only be called
-   * before the Thread starts running. There may be a security check,
+   * while the Thread is not running. There may be a security check,
    * <code>checkAccess</code>.
    *
    * @param daemon whether this should be a daemon thread or not
@@ -736,7 +736,7 @@ public class Thread implements Runnable
    */
   public final void setDaemon(boolean daemon)
   {
-    if (isAlive() || group == null)
+    if (isAlive())
       throw new IllegalThreadStateException();
     checkAccess();
     this.daemon = daemon;
