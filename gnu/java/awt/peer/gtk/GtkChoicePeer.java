@@ -33,40 +33,41 @@ public class GtkChoicePeer extends GtkComponentPeer
   native void gtkOptionMenuSelect (int index);
 
   public GtkChoicePeer (Choice c, ComponentPeer parent)
-    {
-      Point p = c.getLocation();
-
-      System.out.println("choicepeer: location: "+p.x+","+p.y);
-
-      int count = c.getItemCount();
-
-      String [] items=new String[count];
-      
-      for (int i=0; i<count; i++)
-	items[i]=c.getItem(i);
+  {
+    super (c);
+    Point p = c.getLocation();
+    
+    System.out.println("choicepeer: location: "+p.x+","+p.y);
+    
+    int count = c.getItemCount();
+    
+    String [] items=new String[count];
+    
+    for (int i=0; i<count; i++)
+      items[i]=c.getItem(i);
 	  
-      gtkOptionMenuNew (items);
+    gtkOptionMenuNew (items);
 
-      gtkFixedPut (parent, p.x, p.y);
-    }
+    gtkFixedPut (parent, p.x, p.y);
+  }
 
   public void add (String item, int index)
-    {
-      gtkOptionMenuAdd (item, index);
-    }
+  {
+    gtkOptionMenuAdd (item, index);
+  }
   
   public void addItem (String item, int position)
-    {
-      gtkOptionMenuAdd (item, position);
-    }
+  {
+    gtkOptionMenuAdd (item, position);
+  }
   
   public void remove (int index)
-    {
-      gtkOptionMenuRemove (index);      
-    }
+  {
+    gtkOptionMenuRemove (index);      
+  }
 
   public void select (int position)
-    {
-      gtkOptionMenuSelect (position);
-    }
+  {
+    gtkOptionMenuSelect (position);
+  }
 }

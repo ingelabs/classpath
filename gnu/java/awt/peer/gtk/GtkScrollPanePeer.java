@@ -37,6 +37,7 @@ public class GtkScrollPanePeer extends GtkContainerPeer
 
   public GtkScrollPanePeer(ScrollPane p, ComponentPeer parent)
     {
+      super (p);
       System.out.println("new scrollpanepeer");
 
       myScrollPane=p;

@@ -37,6 +37,12 @@ public class GtkComponentPeer extends GtkGenericPeer
   native void gtkFixedPut (Object parent, int x, int y);
   native void gtkFixedMove(int x, int y);
 
+  protected GtkComponentPeer (Component awtComponent)
+    {
+      super (awtComponent);
+    }
+
+  /* this method should be called from a gtk-realize hook */
   protected void syncAttrs ()
     {
       setCursor (((Component)awtWidget).getCursor ());

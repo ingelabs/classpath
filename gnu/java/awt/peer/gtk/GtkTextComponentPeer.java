@@ -35,8 +35,9 @@ public class GtkTextComponentPeer extends GtkComponentPeer
   native void gtkEditableSelectRegion (Object edit, int start, int end);
   native void gtkEditableSetEditable (Object edit, int state);
 
-  GtkTextComponentPeer()
+  GtkTextComponentPeer (TextComponent tc)
     {
+      super (tc);
       editable=this;
     }
   

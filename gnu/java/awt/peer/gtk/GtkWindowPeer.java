@@ -37,31 +37,32 @@ public class GtkWindowPeer extends GtkContainerPeer
   native void gdkWindowRaise();
   
   public GtkWindowPeer(int type, Window w)
-    {
-      System.out.println("WindowPeer int cons");
-
-      /* A bogusType indicates that we should not create a GTK window. */
-
-      if(type!=bogusType)
-	{
-	  Dimension d=w.getSize();
-	  gtkWindowNew(type,d.width,d.height);
-	}
-    }
+  {
+    super (w);
+    System.out.println("WindowPeer int cons");
+    
+    /* A bogusType indicates that we should not create a GTK window. */
+    
+    if(type!=bogusType)
+      {
+	Dimension d=w.getSize();
+	gtkWindowNew(type,d.width,d.height);
+      }
+  }
 
   public GtkWindowPeer(Window w)
-    {
-      this(popupType,w);
-      System.out.println("WindowPeer default cons");
-    }
+  {
+    this(popupType,w);
+    System.out.println("WindowPeer default cons");
+  }
   
-    public void toBack()
-    {
-      gdkWindowLower();
-    }
+  public void toBack()
+  {
+    gdkWindowLower();
+  }
 
-    public void toFront()
-    {
-      gdkWindowRaise();
-    }
+  public void toFront()
+  {
+    gdkWindowRaise();
+  }
 }

@@ -36,6 +36,7 @@ public class GtkTextAreaPeer extends GtkTextComponentPeer
 
   public GtkTextAreaPeer (TextArea ta, ComponentPeer cp)
     {
+      super (ta);
       String text = ta.getText();
       int hscroll=0;
       int vscroll=0;

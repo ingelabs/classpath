@@ -29,6 +29,7 @@ public class GtkMainThread extends GtkGenericPeer implements Runnable
   native void gtkMain();
   
   public GtkMainThread() {
+    super (null);
     synchronized (mainThreadLock) {
       if (mainThread != null)
 	throw new IllegalStateException();

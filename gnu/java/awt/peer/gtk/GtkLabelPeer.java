@@ -33,10 +33,10 @@ public class GtkLabelPeer extends GtkComponentPeer
 
   public GtkLabelPeer (Label l, ComponentPeer cp)
     {
+      super (l);
       System.out.println("labelpeer<init> called");
       int j=1;
 
-      awtWidget = l;
       switch (l.getAlignment())
 	{
 	case Label.LEFT:

@@ -34,33 +34,34 @@ public class GtkCheckboxPeer extends GtkComponentPeer
   native void gtkCheckButtonSetLabel (String label);
 
   public GtkCheckboxPeer (Checkbox c, ComponentPeer cp)
-    {
-      Point p = c.getLocation();
-
-      System.out.println("checkboxpeer: location: "+p.x+","+p.y);
-
-      CheckboxGroup group = c.getCheckboxGroup ();
-      
-      if (group == null)
-	gtkCheckButtonNew (c.getState (), c.getLabel ());
-      else
-	gtkRadioButtonNew (group, c.getState(), c.getLabel ());
-
-      gtkFixedPut (cp, p.x, p.y);
-    }
+  {
+    super (c);
+    Point p = c.getLocation();
+    
+    System.out.println("checkboxpeer: location: "+p.x+","+p.y);
+    
+    CheckboxGroup group = c.getCheckboxGroup ();
+    
+    if (group == null)
+      gtkCheckButtonNew (c.getState (), c.getLabel ());
+    else
+      gtkRadioButtonNew (group, c.getState(), c.getLabel ());
+    
+    gtkFixedPut (cp, p.x, p.y);
+  }
 
   public void setCheckboxGroup (CheckboxGroup group)
-    {
-      gtkRadioButtonSetGroup (group);
-    }
+  {
+    gtkRadioButtonSetGroup (group);
+  }
   
   public void setLabel (String label)
-    {
-      gtkCheckButtonSetLabel (label);
-    }
+  {
+    gtkCheckButtonSetLabel (label);
+  }
   
   public void setState (boolean state)
-    {
-      gtkCheckButtonSetState (state);
-    }
+  {
+    gtkCheckButtonSetState (state);
+  }
 }

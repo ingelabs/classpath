@@ -35,6 +35,7 @@ public class GtkTextFieldPeer extends GtkTextComponentPeer
 
   public GtkTextFieldPeer (TextField tf, ComponentPeer cp)
     {
+      super (tf);
       String text = tf.getText();
       
       System.out.println ("TFP: new");

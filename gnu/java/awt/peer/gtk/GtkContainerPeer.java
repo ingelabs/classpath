@@ -21,6 +21,7 @@
 
 package gnu.java.awt.peer.gtk;
 import java.awt.Insets;
+import java.awt.Container;
 import java.awt.peer.ContainerPeer;
 
 public class GtkContainerPeer extends GtkComponentPeer
@@ -28,35 +29,36 @@ public class GtkContainerPeer extends GtkComponentPeer
 {
   Insets myInsets;
 
-  public GtkContainerPeer()
-    {
-      myInsets=new Insets(0,0,0,0);
-    }
+  public GtkContainerPeer(Container c)
+  {
+    super (c);
+    myInsets = new Insets (0, 0, 0, 0);
+  }
 
   public void beginValidate() 
-    {
-	System.out.println("container beginvalidate");
-	/* We should probably put some code here to "freeze" 
-	   the native container widget.  Until that happens, we
-	   may see the layout manager moving widgets. */
-    }
+  {
+    System.out.println("container beginvalidate");
+    /* We should probably put some code here to "freeze" 
+       the native container widget.  Until that happens, we
+       may see the layout manager moving widgets. */
+  }
 
   public void endValidate() 
-    {
-	System.out.println("container endvalidate");
-	/* The way I am interpreting this is that now that the Container
-	   has validated its peers, we should cause the container widget
-	   to unfreeze and draw the container's children. -JB */
-	gtkWidgetShowChildren();
-    }
+  {
+    System.out.println("container endvalidate");
+    /* The way I am interpreting this is that now that the Container
+       has validated its peers, we should cause the container widget
+       to unfreeze and draw the container's children. -JB */
+    gtkWidgetShowChildren();
+  }
 
   public Insets getInsets() 
-    {
-      return myInsets;
-    }
+  {
+    return myInsets;
+  }
 
   public Insets insets() 
-    {
-      return getInsets();
-    }
+  {
+    return getInsets();
+  }
 }

@@ -27,15 +27,14 @@ public class GtkPanelPeer extends GtkContainerPeer
 {
 
   public GtkPanelPeer(Panel p, ComponentPeer parent)
-    {
-      System.out.println("new panelpeer: parent: "+ parent);
+  {
+    super (p);
+    System.out.println("new panelpeer: parent: "+ parent);
       
-      awtWidget = p;
-      Dimension d=p.getSize();
-      Point pnt=p.getLocation();
+    Dimension d=p.getSize();
+    Point pnt=p.getLocation();
 
-      gtkFixedNew(d.width, d.height);
-      gtkFixedPut (parent, pnt.x, pnt.y);
-      syncAttrs ();
-    }
+    gtkFixedNew(d.width, d.height);
+    gtkFixedPut (parent, pnt.x, pnt.y);
+  }
 }

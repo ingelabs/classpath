@@ -28,4 +28,9 @@ public class GtkGenericPeer
 {
   final int native_state=java.lang.System.identityHashCode(this);
   protected Object awtWidget;
+
+  protected GtkGenericPeer (Object awtWidget)
+    {
+      this.awtWidget = awtWidget;
+    }
 }

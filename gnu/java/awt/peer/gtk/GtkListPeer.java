@@ -40,6 +40,7 @@ public class GtkListPeer extends GtkComponentPeer
 
   public GtkListPeer (List l, ComponentPeer cp)
     {
+      super (l);
       String items[] = l.getItems();
       
       myGtkList = new Object();
