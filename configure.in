@@ -130,6 +130,31 @@ AC_ARG_WITH(classlib,
   [ conditional_with_classlib=false ])
 AM_CONDITIONAL(USER_SPECIFIED_CLASSLIB, test x$conditional_with_classlib = xtrue)
 
+AC_ARG_WITH(includedir,
+  [  --with-includedir=DIR   specify path to an extra include dir ],
+  [
+    AC_MSG_CHECKING(for includedir)
+    if test ${withval} != "" || test ${withval} != "yes" || test ${withval} != "no"; then
+      if test -r ${withval}; then
+        if test "$EXTRA_INCLUDES" = ""; then
+          EXTRA_INCLUDES="-I${withval}"
+        else
+          EXTRA_INCLUDES="${EXTRA_INCLUDES} -I${withval}"
+        fi
+        AC_SUBST(EXTRA_INCLUDES)
+        AC_MSG_RESULT("added ${withval}")
+      else
+        AC_MSG_RESULT("${withval} does not exist")
+      fi
+    fi
+  ],
+  [
+    if test -z "$EXTRA_INCLUDES"; then
+      EXTRA_INCLUDES=""
+      AC_SUBST(EXTRA_INCLUDES)
+    fi
+  ])
+
 dnl -----------------------------------------------------------
 
 dnl -----------------------------------------------------------
@@ -168,26 +193,41 @@ dnl isn't specified explicitly.
 dnl -----------------------------------------------------------
 dnl if no jvm yet defined, check for japhar
 if test -z "$JVM" || test "$JVM" = "no"; then
-  # forcing this definition only in developer/maintainer build modes
-  if test x$USE_DEVELOPER_MODE = xyes || test x$USE_MAINTAINER_MODE = xyes; then
     # need to have these defined if no vm selected, default to japhar
-    if test x$conditional_with_classlib != xtrue || test x$conditional_with_javah !=  xtrue; then
+    if test -z "$JVM_REFERENCE"; then
+dnl conditional_with_classlib != xtrue || test x$conditional_with_javah !=  xtrue; then
 dnl      echo classlib $conditional_with_classlib
 dnl      echo javah $conditional_with_javah
       CLASSPATH_INTERNAL_CHECK_JAPHAR
       AC_MSG_CHECKING(for defined vm)
       if test -z "$JVM" || test "$JVM" = "no"; then
-        AC_MSG_ERROR(no: try --with-japhar)
+        AC_MSG_ERROR(no: try --with-japhar or --with-kaffe)
       else
         AC_MSG_RESULT(yes)
       fi
     fi
-  fi
 fi
 
 dnl must check our conditionals from vm checks
 AM_CONDITIONAL(JAPHAR, test x$conditional_with_japhar = xtrue)
 AM_CONDITIONAL(KAFFE, test x$conditional_with_kaffe = xtrue)
+
+dnl -----------------------------------------------------------
+
+dnl -----------------------------------------------------------
+dnl Small loop to add other things to EXTRA_INCLUDES from a VM
+dnl -----------------------------------------------------------
+for i in $JAPHAR_CFLAGS $KAFFE_CFLAGS ; do
+  add_to_extra_includes=1
+  for j in $EXTRA_INCLUDES ; do
+    if test $i == $j ; then
+      add_to_extra_includes=0
+    fi
+  done
+  if test $add_to_extra_includes -eq 1; then
+    EXTRA_INCLUDES="$EXTRA_INCLUDES $i"
+  fi
+done
 
 dnl -----------------------------------------------------------
 
