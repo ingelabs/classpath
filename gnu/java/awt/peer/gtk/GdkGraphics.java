@@ -238,13 +238,48 @@ public class GdkGraphics extends Graphics
   public void drawRoundRect(int x, int y, int width, int height, 
 			    int arcWidth, int arcHeight)
   {
-    // System.out.println ("drawRoundRect called [UNIMPLEMENTED]");
+    if (arcWidth > width)
+      arcWidth = width;
+    if (arcHeight > height)
+      arcHeight = height;
+
+    int xx = x + width - arcWidth;
+    int yy = y + height - arcHeight;
+
+    drawArc (x, y, arcWidth, arcHeight, 90, 90);
+    drawArc (xx, y, arcWidth, arcHeight, 0, 90);
+    drawArc (xx, yy, arcWidth, arcHeight, 270, 90);
+    drawArc (x, yy, arcWidth, arcHeight, 180, 90);
+
+    int y1 = y + arcHeight / 2;
+    int y2 = y + height - arcHeight / 2;
+    drawLine (x, y1, x, y2);
+    drawLine (x + width, y1, x + width, y2);
+
+    int x1 = x + arcWidth / 2;
+    int x2 = x + width - arcWidth / 2;
+    drawLine (x1, y, x2, y);
+    drawLine (x1, y + height, x2, y + height);
   }
 
   public void fillRoundRect (int x, int y, int width, int height, 
 			     int arcWidth, int arcHeight)
   {
-    // System.out.println ("fillRoundRect called [UNIMPLEMENTED]");
+    if (arcWidth > width)
+      arcWidth = width;
+    if (arcHeight > height)
+      arcHeight = height;
+
+    int xx = x + width - arcWidth;
+    int yy = y + height - arcHeight;
+
+    fillArc (x, y, arcWidth, arcHeight, 90, 90);
+    fillArc (xx, y, arcWidth, arcHeight, 0, 90);
+    fillArc (xx, yy, arcWidth, arcHeight, 270, 90);
+    fillArc (x, yy, arcWidth, arcHeight, 180, 90);
+
+    fillRect (x, y + arcHeight / 2, width, height - arcHeight + 1);
+    fillRect (x + arcWidth / 2, y, width - arcWidth + 1, height);
   }
 
   public Shape getClip ()

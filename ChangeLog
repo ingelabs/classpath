@@ -1,3 +1,12 @@
+2004-07-30  Craig Black  <craig.black@aonix.com>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics.java 
+	(drawRoundRect): Implemented.
+	(fillRoundRect): Implemented.
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java 
+	(drawRoundRect): Reimplemented to match GdkGraphics.
+	(fillRoundRect): Reimplemented to match GdkGraphics.
+
 2004-07-30  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GdkGraphics.java,
