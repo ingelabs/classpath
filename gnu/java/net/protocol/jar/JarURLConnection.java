@@ -83,7 +83,9 @@ public class JarURLConnection extends java.net.JarURLConnection
 	  }
 	  fos.close();
 	  // Always verify the Manifest, open read only and delete when done.
-	  jf = new JarFile(f, true, ZipFile.OPEN_READ | ZipFile.OPEN_DELETE);
+	  // XXX ZipFile.OPEN_DELETE not yet implemented.
+	  // jf = new JarFile(f, true, ZipFile.OPEN_READ | ZipFile.OPEN_DELETE);
+	  jf = new JarFile(f, true, ZipFile.OPEN_READ);
 	}
 	cache.put(url, jf);
       }finally{

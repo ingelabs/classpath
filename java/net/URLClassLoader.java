@@ -111,10 +111,6 @@ import java.util.zip.ZipException;
  *
  * <li>The use of <code>URLStreamHandler</code>s has not been tested.</li>
  *
- * <li>Loading remotely (e.g. http) only works when the target is a jar since
- * the <code>FileURLLoader</code> currently only works on local directories.
- * </li>
- *
  * </ul>
  * </p>
  *
@@ -211,7 +207,10 @@ public class URLClassLoader extends SecureClassLoader {
      * <code>Resource</code>s loaded by this <code>URLLoader</code> or
      * <code>null</code> there is no such <code>Manifest</code>.
      */
-    abstract Manifest getManifest();
+    Manifest getManifest()
+    {
+      return null;
+    }
   }
     
   /** 
@@ -249,7 +248,10 @@ public class URLClassLoader extends SecureClassLoader {
      * Returns <code>Certificates</code> associated with this
      * resource, or null when there are none.
      */
-    abstract Certificate[] getCertificates();
+    Certificate[] getCertificates()
+    {
+      return null;
+    }
 
     /**
      * Return a <code>URL</code> that can be used to access this resource.
@@ -371,6 +373,91 @@ public class URLClassLoader extends SecureClassLoader {
   }
 
   /**
+   * Loader for remote directories.
+   */
+  final static class RemoteURLLoader extends URLLoader
+  {
+    final private String protocol;
+
+    RemoteURLLoader(URLClassLoader classloader, URL url)
+    {
+      super(classloader, url);
+      protocol = url.getProtocol();
+    }
+
+    /**
+     * Get a remote resource.
+     * Returns null if no such resource exists.
+     */
+    Resource getResource(String name)
+    {
+      try
+	{
+	  URL url = new URL(baseURL, name,
+			    classloader.getURLStreamHandler(protocol));
+	  URLConnection connection = url.openConnection();
+
+	  // Open the connection and check the stream
+	  // just to be sure it exists.
+	  int length = connection.getContentLength();
+	  InputStream stream = connection.getInputStream();
+
+	  // We can do some extra checking if it is a http request
+	  if (connection instanceof HttpURLConnection)
+	    {
+	      int response
+		= ((HttpURLConnection)connection).getResponseCode();
+	      if (response/100 != 2)
+		return null;
+	    }
+
+	  if (stream != null)
+	    return new RemoteResource(this, name, url, stream, length);
+	  else
+	    return null;
+	}
+      catch (IOException ioe)
+	{
+	  return null;
+	}
+    }
+  }
+
+  /**
+   * A resource from some remote location.
+   */
+  final static class RemoteResource extends Resource
+  {
+    final private URL url;
+    final private InputStream stream;
+    final private int length;
+
+    RemoteResource(RemoteURLLoader loader, String name, URL url,
+		 InputStream stream, int length)
+    {
+      super(loader, name);
+      this.url = url;
+      this.stream = stream;
+      this.length = length;
+    }
+
+    InputStream getInputStream() throws IOException
+    {
+      return stream;
+    }
+                        
+    public int getLength()
+    {
+      return length;
+    }
+                
+    public URL getURL()
+    {
+      return url;
+    }
+  }
+
+  /**
    * A <code>FileURLLoader</code> is a type of <code>URLLoader</code>
    * only loading from file url.
    */
@@ -394,12 +481,6 @@ public class URLClassLoader extends SecureClassLoader {
       else
 	return null;
     }
-
-    Manifest getManifest()
-    {
-      // Manifest not supported for FileURLLoader.
-      return null;
-    }
   }
 
   final static class FileResource extends Resource
@@ -422,12 +503,6 @@ public class URLClassLoader extends SecureClassLoader {
       return (int)file.length();
     }
                 
-    public Certificate[] getCertificates()
-    {
-      // Certificates not supported for FileURLLoader.
-      return null;
-    }
-    
     public URL getURL()
     {
       try
@@ -592,7 +667,10 @@ public class URLClassLoader extends SecureClassLoader {
 	    if (!file.endsWith("/")) // it's a jar url
 	      loader = new JarURLLoader(this, newUrl);
 	    else // it's a file url
-	      loader = new FileURLLoader(this, newUrl);
+	      if ("file".equals(newUrl.getProtocol()))
+		loader = new FileURLLoader(this, newUrl);
+	      else
+		loader = new RemoteURLLoader(this, newUrl);
 
 	    //cache it
 	    urlloaders.put(newUrl, loader);

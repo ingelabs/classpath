@@ -1,5 +1,20 @@
 2002-11-22  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/java/net/protocol/jar/JarURLConnection.java (get):
+	ZipFile.OPEN_DELETE not yet implemented.
+	* java/net/HttpURLConnection.java (getResponseVals): Only set
+	responseCode when not yet explicitly set by subclass.
+	* java/net/URLClassLoader.java (URLLoader.getManifest): Make default
+	return null.
+	(URLResource.getCertificates): Likewise
+	(RemoteURLLoader): New class.
+	(RemoteResource): Likewise.
+	(FileURLLoader.getManifest): No longer needed.
+	(FileResource.getCertificates): Likewise.
+	(addURL): Create either a FileURLLoader or a RemoteURLLoader.
+
+2002-11-22  Mark Wielaard  <mark@klomp.org>
+
 	* native/jni/java-net/java_net_InetAddress.c (lookupInaddrAny): Use
 	Byte not Int arrays.
 	(getHostByAddr): Likewise.

@@ -464,31 +464,36 @@ public abstract class HttpURLConnection extends URLConnection
       connect();
       
     gotResponseVals = true;
-    // Response is the first header received from the connection.
-    String respField = getHeaderField(0);
-    
-    if (respField == null || ! respField.startsWith("HTTP/"))
-      {
-	// Set to default values on failure.
-        responseCode = -1;
-	responseMessage = null;
-	return;
-      }
 
-    int firstSpc, nextSpc;
-    firstSpc = respField.indexOf(' ');
-    nextSpc = respField.indexOf(' ', firstSpc + 1);
-    responseMessage = respField.substring(nextSpc + 1);
-    String codeStr = respField.substring(firstSpc + 1, nextSpc);
-    try
+    // If responseCode not yet explicitly set by subclass
+    if (responseCode == -1)
       {
-	responseCode = Integer.parseInt(codeStr);
-      }
-    catch (NumberFormatException e)
-      {
-	// Set to default values on failure.
-        responseCode = -1;
-	responseMessage = null;
+	// Response is the first header received from the connection.
+	String respField = getHeaderField(0);
+	
+	if (respField == null || ! respField.startsWith("HTTP/"))
+	  {
+	    // Set to default values on failure.
+	    responseCode = -1;
+	    responseMessage = null;
+	    return;
+	  }
+
+	int firstSpc, nextSpc;
+	firstSpc = respField.indexOf(' ');
+	nextSpc = respField.indexOf(' ', firstSpc + 1);
+	responseMessage = respField.substring(nextSpc + 1);
+	String codeStr = respField.substring(firstSpc + 1, nextSpc);
+	try
+	  {
+	    responseCode = Integer.parseInt(codeStr);
+	  }
+	catch (NumberFormatException e)
+	  {
+	    // Set to default values on failure.
+	    responseCode = -1;
+	    responseMessage = null;
+	  }
       }
   }
 
