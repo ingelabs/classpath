@@ -179,6 +179,16 @@ public class GtkLookAndFeel extends BasicLookAndFeel
 	    new FontUIResource("Serif", Font.PLAIN, 10);
 	// insets
 	// borders
+	// colors
+	ColorUIResource controlDkShadow = (ColorUIResource)table.get("controlDkShadow");
+	ColorUIResource controlShadow = (ColorUIResource)table.get("controlShadow");
+	ColorUIResource control = (ColorUIResource)table.get("control");
+	ColorUIResource scrollbar = (ColorUIResource)table.get("scrollbar");
+//  	System.out.println((ColorUIResource)table.get("control"));
+  	ColorUIResource white = new ColorUIResource(Color.white);
+  	ColorUIResource black = new ColorUIResource(Color.black);
+	ColorUIResource blue = new ColorUIResource(Color.blue);
+
 	// icons
 	Object errorIcon = LookAndFeel.makeIcon(getClass(), "icons/error.gif");
 	// any other resources like dimensions and integer values
@@ -187,7 +197,12 @@ public class GtkLookAndFeel extends BasicLookAndFeel
 	Object[] defaults = 
 	{ 
 	    "Button.font", sansSerifPlain10,
-	    "CheckBox.font", sansSerifPlain10
+	    "CheckBox.font", sansSerifPlain10,
+  	    "RadioButton.pressed", black,
+	    "Slider.focus", blue,
+	    "Slider.foreground", control,
+  	    "Slider.highlight", white,
+  	    "Slider.shadow", black
 	};
 
 	table.putDefaults(defaults);
