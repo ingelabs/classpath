@@ -75,6 +75,7 @@ import java.security.*;
  **/
 
 public class FilePermission extends Permission implements Serializable {
+  private static final String CURRENT_DIRECTORY = System.getProperty("user.dir");
   private boolean usingPerms = false;
   private boolean readPerm = false;
   private boolean writePerm = false;
@@ -159,6 +160,9 @@ public class FilePermission extends Permission implements Serializable {
     if(!p.usingPerms)
       p.cachePerms();
     
+    String f1 = getName();
+    String f2 = p.getName();
+
     /* Compare names, taking into account if they refer to a
      * directory and one has a separator and the other does not.
      */
@@ -201,10 +205,10 @@ public class FilePermission extends Permission implements Serializable {
     String f1 = getName();
     String f2 = fp.getName();
     if(f1.charAt(0) != File.separatorChar) {
-      f1 = GET_CURRENT_DIRECTORY + f1;
+      f1 = CURRENT_DIRECTORY + f1;
     }
     if(f2.charAt(0) != File.separatorChar) {
-      f2 = GET_CURRENT_DIRECTORY + f2;
+      f2 = CURRENT_DIRECTORY + f2;
     }
     
     String sub1, sub2a, sub2b;
@@ -242,6 +246,7 @@ public class FilePermission extends Permission implements Serializable {
       } else if(!f2.substring(0,sub1.length()).equals(sub1))
 	return false;
       break;
+/* Looks redundant with default case and won't compile anyway - arenn
     case File.separatorChar:
       if(f2.charAt(f2.length()) == File.separatorChar) {
 	if(!f2.equals(f1))
@@ -251,6 +256,7 @@ public class FilePermission extends Permission implements Serializable {
 	  return false;
       }
       break;
+*/
     default:
       if(f2.charAt(f2.length()) == File.separatorChar) {
 	if(!f1.equals(f2.substring(0,f2.length()-1)))
@@ -262,9 +268,9 @@ public class FilePermission extends Permission implements Serializable {
       break;
     }
     
-    if(!usePerms)
+    if(!usingPerms)
       cachePerms();
-    if(!fp.usePerms)
+    if(!fp.usingPerms)
       fp.cachePerms();
     
     if(readPerm && !fp.readPerm)
