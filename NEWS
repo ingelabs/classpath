@@ -1,3 +1,6 @@
+New since last release
+* Split native methods in java.lang.Runtime into java.lang.VMRuntime.
+
 New in release 0.07 (2003/30/11)
 
 * Works with libtool 1.5 (and 1.4.3).

@@ -675,7 +675,7 @@ public final class System
   public static String mapLibraryName(String libname)
   {
     // XXX Fix this!!!!
-    return Runtime.nativeGetLibname("", libname);
+    return VMRuntime.nativeGetLibname("", libname);
   }
 
 } // class System

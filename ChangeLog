@@ -1,3 +1,14 @@
+2003-12-27  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/System.java (mapLibraryName): Changed to call
+	VMRuntime.nativeGetLibname.
+	* java/lang/Runtime.java: New file.
+	* vm/reference/java/lang/Runtime.java: Removed.
+	* vm/reference/java/lang/VMRuntime.java: New file.
+	* include/java_lang_VMRuntime.h: New file.
+	* include/java_lang_Runtime.h: Removed.
+
+
 2003-12-27  Michael Koch  <konqueror@gmx.de>
 
 	* javax/print/attribute/standard/Copies.java,
