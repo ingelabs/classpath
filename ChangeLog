@@ -1,5 +1,11 @@
 2003-06-18  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/InetSocketAddress.java,
+	java/net/Socket.java:
+	New versions from libgcj.
+
+2003-06-18  Michael Koch  <konqueror@gmx.de>
+
 	* java/util/Locale.java,
 	java/util/PropertyResourceBundle.java,
 	java/util/prefs/AbstractPreferences.java,
