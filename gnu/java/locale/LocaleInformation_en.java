@@ -204,7 +204,7 @@ private static final String exponential = "E";
 /**
   * This is the char used for digits in format strings
   */
-private static final String digit = "9";
+private static final String digit = "#";
 
 /**
   * This is the grouping separator symbols
@@ -214,12 +214,12 @@ private static final String groupingSeparator = ",";
 /**
   * This is the symbols for infinity
   */
-private static final String infinity = "???";
+private static final String infinity = "\u221e";
 
 /**
   * This is the symbol for the not a number value
   */
-private static final String NaN = "NaN";
+private static final String NaN = "\ufffd";
 
 /**
   * This is the minus sign symbol.
@@ -234,7 +234,7 @@ private static final String monetarySeparator = ".";
 /**
   * This is the separator between positive and negative subpatterns.
   */
-private static final String patternSeparator = "-";
+private static final String patternSeparator = ";";
 
 /**
   * This is the percent sign
@@ -244,7 +244,7 @@ private static final String percent = "%";
 /**
   * This is the per mille sign
   */
-private static final String perMill = "%";
+private static final String perMill = "\u2030";
 
 /**
   * This is the character for zero.
@@ -291,11 +291,11 @@ private static final Object[][] contents =
   { "decimalSeparator", decimalSeparator },
   { "digit", digit },
   { "exponential", exponential },
-  { "groupingSepartor", groupingSeparator },
+  { "groupingSeparator", groupingSeparator },
   { "infinity", infinity },
   { "NaN", NaN },
   { "minusSign", minusSign },
-  { "monetarySepartor", monetarySeparator },
+  { "monetarySeparator", monetarySeparator },
   { "patternSeparator", patternSeparator },
   { "percent", percent },
   { "perMill", perMill },
