@@ -9,13 +9,16 @@ AC_DEFUN([CLASSPATH_FIND_JAVAC],
   CLASSPATH_WITH_JIKES
   CLASSPATH_WITH_KJC
   CLASSPATH_WITH_GCJX
+  CLASSPATH_WITH_ECJ
 
   if test "x${user_specified_javac}" = x; then
     AM_CONDITIONAL(FOUND_GCJ, test "x${GCJ}" != x)
     AM_CONDITIONAL(FOUND_JIKES, test "x${JIKES}" != x)
+    AM_CONDITIONAL(FOUND_ECJ, test "x${ECJ}" != x)
   else
     AM_CONDITIONAL(FOUND_GCJ, test "x${user_specified_javac}" = xgcj)
     AM_CONDITIONAL(FOUND_JIKES, test "x${user_specified_javac}" = xjikes)
+    AM_CONDITIONAL(FOUND_ECJ, test "x${user_specified_javac}" = xecj)
   fi
   AM_CONDITIONAL(FOUND_KJC, test "x${user_specified_javac}" = xkjc)
   AM_CONDITIONAL(FOUND_GCJX, test "x${user_specified_javac}" = xgcjx)
@@ -403,4 +406,39 @@ AC_DEFUN([REGEN_WITH_JAY],
     JAY_FOUND=no
   ])
   AM_CONDITIONAL(REGEN_PARSERS, test "x${JAY_FOUND}" = xyes)
+])
+
+dnl -----------------------------------------------------------
+AC_DEFUN([CLASSPATH_WITH_ECJ],
+[
+  AC_ARG_WITH([ecj],
+	      [AS_HELP_STRING(--with-ecj,bytecode compilation with ecj)],
+  [
+    if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
+      CLASSPATH_CHECK_ECJ(${withval})
+    else
+      if test "x${withval}" != xno; then
+        CLASSPATH_CHECK_ECJ
+      fi
+    fi
+    user_specified_javac=ecj
+  ],
+  [ 
+    CLASSPATH_CHECK_ECJ
+  ])
+  AC_SUBST(ECJ)
+])
+
+dnl -----------------------------------------------------------
+AC_DEFUN([CLASSPATH_CHECK_ECJ],
+[
+  if test "x$1" != x; then
+    if test -f "$1"; then
+      ECJ="$1"
+    else
+      AC_PATH_PROG(ECJ, "$1")
+    fi
+  else
+    AC_PATH_PROG(ECJ, "ecj")
+  fi
 ])

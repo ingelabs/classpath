@@ -1,3 +1,14 @@
+2005-02-07  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* acinclude.m4:
+	(CLASSPATH_FIND_JAVAC): Add ECJ option.
+	(CLASSPATH_WITH_ECJ): New function.
+	(CLASSPATH_CHECK_ECJ): New function.
+	* examples/Makefile.am:
+	Allow examples to be built with ecj.
+	* lib/Makefile.am:
+	Allow Classpath to be built with ecj.
+
 2005-02-06  Mark Wielaard  <mark@klomp.org>
 
 	Reported by Timo Lindfors <timo.lindfors@iki.fi>

@@ -26,6 +26,10 @@ JAVAC = $(KJC) -classpath .:$(USER_CLASSLIB) -d . @classes
 else
 if FOUND_GCJX
 JAVAC = $(GCJX) -classpath .:$(USER_CLASSLIB) -d . @classes
+else
+if FOUND_ECJ
+JAVAC = $(ECJ) -warn:-deprecation,serial -proceedOnError -bootclasspath '' -classpath $(compile_classpath) -d . @classes
+endif # FOUND_ECJ
 endif # FOUND_GCJX
 endif # FOUND_KJC
 endif # FOUND_GCJ
