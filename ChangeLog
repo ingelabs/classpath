@@ -1,5 +1,10 @@
 2005-01-23  Sven de Marothy <sven@physto.se>
 
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java:
+	Reverted to previous version, after a mistake in the previous commit.
+
+2005-01-23  Sven de Marothy <sven@physto.se>
+
 	* java/util/Calendar.java: Invalidate ERA field on setting the YEAR.
 	* java/util/SimpleTimeZone.java: 
 	(getDaysInMonth): Reimplemented.
