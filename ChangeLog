@@ -1,3 +1,8 @@
+2002-03-25  Tom Tromey  <tromey@redhat.com>
+
+	* java/awt/Component.java (processEvent): Check ComponentEvent
+	after KeyEvent.
+
 2002-03-24  C. Brian Jones <cbj@gnu.org>
 
 	The following changes are all from patch submissions from Intel's

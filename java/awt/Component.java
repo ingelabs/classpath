@@ -1886,12 +1886,12 @@ public abstract class Component
         else
           processMouseEvent((MouseEvent) e);
       }
-    else if (e instanceof ComponentEvent)
-      processComponentEvent((ComponentEvent) e);
     else if (e instanceof KeyEvent)
       processKeyEvent((KeyEvent) e);
     else if (e instanceof InputMethodEvent)
       processInputMethodEvent((InputMethodEvent) e);
+    else if (e instanceof ComponentEvent)
+      processComponentEvent((ComponentEvent) e);
     else if (e instanceof HierarchyEvent)
       {
         if (e.id == HierarchyEvent.HIERARCHY_CHANGED)
