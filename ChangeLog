@@ -1,6 +1,12 @@
 2003-11-28  Mark Wielaard  <mark@klomp.org>
 
-	Reported by Michael Hind <hindm@us.ibm.com>
+	Reported by Archie Cobbs:
+	* java/security/DigestInputStream.java (read(byte[], int, int): Call
+	digest.update() with temp, not len as lenght.
+
+2003-11-28  Mark Wielaard  <mark@klomp.org>
+
+	Reported by Michael Hind <hindm@us.ibm.com>:
 	* doc/www.gnu.org/stories: Updated Jikes RVM blurb.
 	Fixed Joas and SableVM publication links.
 
