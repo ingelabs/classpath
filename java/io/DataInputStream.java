@@ -1,19 +1,21 @@
 /*************************************************************************
 /* DataInputStream.java -- Class for reading Java data from a stream
 /*
-/* Copyright (c) 1998 by Aaron M. Renn (arenn@urbanophile.com)
+/* Copyright (c) 1998 Free Software Foundation, Inc.
+/* Written by Aaron M. Renn (arenn@urbanophile.com)
 /*
-/* This program is free software; you can redistribute it and/or modify
+/* This library is free software; you can redistribute it and/or modify
 /* it under the terms of the GNU Library General Public License as published 
-/* by the Free Software Foundation, version 2. (see COPYING.LIB)
+/* by the Free Software Foundation, either version 2 of the License, or
+/* (at your option) any later verion.
 /*
-/* This program is distributed in the hope that it will be useful, but
+/* This library is distributed in the hope that it will be useful, but
 /* WITHOUT ANY WARRANTY; without even the implied warranty of
 /* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-/* GNU General Public License for more details.
+/* GNU Library General Public License for more details.
 /*
 /* You should have received a copy of the GNU Library General Public License
-/* along with this program; if not, write to the Free Software Foundation
+/* along with this library; if not, write to the Free Software Foundation
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
@@ -53,6 +55,170 @@ public static final String
 readUTF(DataInput in) throws IOException
 {
   return(in.readUTF());
+}
+
+/*
+ * Ok, here we have a bunch of static methods that are used to convert
+ * byte arrays to the appropriate data type.  The instance methods in 
+ * this class then read the required number of bytes into a buffer and
+ * call these methods to do the conversion.  This is done so that the
+ * actual conversion does not need to be duplicated in RandomAccessFile.
+ * That class simply calls these methods to convert buffers it reads
+ * as well.  Please see the javadoc comments for the corresponding
+ * instance method for a full description of the conversion process
+ */
+
+/*************************************************************************/
+
+static final boolean
+convertToBoolean(int b) 
+{
+  if (b == 0)
+    return(false);
+  else
+    return(true);
+}
+
+/*************************************************************************/
+
+static final byte
+convertToByte(int b)
+{
+  return((byte)b); 
+}
+
+/*************************************************************************/
+
+static final int
+convertToUnsignedByte(int b)
+{
+  return(b);
+}
+
+/*************************************************************************/
+
+static final char
+convertToChar(byte[] buf)
+{
+  char retval = (char)(((buf[0] & 0xFF) << 8) | (buf[1] & 0xFF));
+
+  return(retval);
+}
+
+/*************************************************************************/
+
+static final short
+convertToShort(byte[] buf)
+{
+  short retval = (short)(((buf[0] & 0xFF) << 8) | (buf[1] & 0xFF));
+
+  return(retval);
+}
+
+/*************************************************************************/
+
+static final int
+convertToUnsignedShort(byte[] buf)
+{
+  int retval = ((buf[0] & 0xFF) << 8) | (buf[1] & 0xFF);
+
+  return(retval);
+}
+
+/*************************************************************************/
+
+static final int
+convertToInt(byte[] buf)
+{
+  int retval = ((buf[0] & 0xFF) << 24) | ((buf[1] & 0xFF) << 16) | 
+               ((buf[2] & 0xFF) << 8) | (buf[3] & 0xFF);
+
+  return(retval);
+}
+
+/*************************************************************************/
+
+static final long
+convertToLong(byte[] buf)
+{
+  long retval = (((long)buf[0] & 0xFF) << 56) | (((long)buf[1] & 0xFF) << 48) | 
+                (((long)buf[2] & 0xFF) << 40) | (((long)buf[3] & 0xFF) << 32) | 
+                (((long)buf[4] & 0xFF) << 24) | (((long)buf[5] & 0xFF) << 16) |
+                (((long)buf[6] & 0xFF) << 8) | ((long)buf[7] & 0xFF);
+
+  return(retval);
+}
+
+/*************************************************************************/
+
+static final String
+convertFromUTF(byte[] buf) throws EOFException, UTFDataFormatException
+{
+  StringBuffer sb = new StringBuffer("");
+
+  for (int i = 0; i < buf.length; i++)
+    {
+      int byte_read = buf[i];
+
+      // Three byte encoding case
+      if ((byte_read & 0xE0) == 0xE0) // 224
+        {
+          int val = (byte_read & 0x0F) << 12;
+
+          ++i;
+          if (i == buf.length)
+            throw new EOFException("Unexpected end of stream");
+
+          byte_read = buf[i];
+
+          if ((byte_read & 0x80) != 0x80)
+            throw new UTFDataFormatException("Bad byte in input: " + byte_read);
+
+          val |= (byte_read & 0x3F) << 6;
+
+          ++i;
+          if (i == buf.length)
+            throw new EOFException("Unexpected end of stream");
+
+          byte_read = buf[i];
+
+          if ((byte_read & 0x80) != 0x80)
+            throw new UTFDataFormatException("Bad byte in input: " + byte_read);
+
+          val |= (byte_read & 0x3F);
+
+          sb.append((char)val);
+        }
+      // Two byte encoding case
+      else if ((byte_read & 0xC0) == 0xC0) // 192
+        {
+          int val = (byte_read & 0x1F) << 6;
+
+          ++i;
+          if (i == buf.length)
+            throw new EOFException("Unexpected end of stream");
+
+          byte_read = buf[i];
+
+          if ((byte_read & 0x80) != 0x80)
+            throw new UTFDataFormatException("Bad byte in input: " + byte_read);
+
+          val |= (byte_read & 0x3F);
+
+          sb.append((char)val);
+        }
+      // One byte encoding case
+      else if (byte_read < 128)
+        {
+          sb.append((char)byte_read);
+        }
+      else
+        {
+          throw new UTFDataFormatException("Bad byte in input: " + byte_read);
+        }
+    }
+
+  return(sb.toString());
 }
 
 /*************************************************************************/
@@ -103,10 +269,7 @@ readBoolean() throws EOFException, IOException
   if (byte_read == -1)
     throw new EOFException("Unexpected end of stream");
 
-  if (byte_read == 0)
-    return(false);
-  else
-    return(true);
+  return(convertToBoolean(byte_read));
 }
 
 /*************************************************************************/
@@ -133,7 +296,7 @@ readByte() throws EOFException, IOException
   if (byte_read == -1)
     throw new EOFException("Unexpected end of stream");
 
-  return((byte)byte_read); 
+  return(convertToByte(byte_read));
 }
 
 /*************************************************************************/
@@ -160,7 +323,7 @@ readUnsignedByte() throws EOFException, IOException
   if (byte_read == -1)
     throw new EOFException("Unexpected end of stream");
 
-  return(byte_read);
+  return(convertToUnsignedByte(byte_read));
 }
 
 /*************************************************************************/
@@ -195,9 +358,7 @@ readChar() throws EOFException, IOException
 
   readFully(buf);
 
-  char retval = (char)(((buf[0] & 0xFF) << 8) | (buf[1] & 0xFF));
-
-  return(retval);
+  return(convertToChar(buf));
 }
 
 /*************************************************************************/
@@ -234,9 +395,7 @@ readShort() throws EOFException, IOException
 
   readFully(buf);
 
-  short retval = (short)(((buf[0] & 0xFF) << 8) | (buf[1] & 0xFF));
-
-  return(retval);
+  return(convertToShort(buf));
 }
 
 /*************************************************************************/
@@ -271,9 +430,7 @@ readUnsignedShort() throws EOFException, IOException
 
   readFully(buf);
 
-  int retval = ((buf[0] & 0xFF) << 8) | (buf[1] & 0xFF);
-
-  return(retval);
+  return(convertToUnsignedShort(buf));
 }
 
 /*************************************************************************/
@@ -311,10 +468,7 @@ readInt() throws EOFException, IOException
 
   readFully(buf);
 
-  int retval = ((buf[0] & 0xFF) << 24) | ((buf[1] & 0xFF) << 16) | 
-               ((buf[2] & 0xFF) << 8) | (buf[3] & 0xFF);
-
-  return(retval);
+  return(convertToInt(buf));
 }
 
 /*************************************************************************/
@@ -354,12 +508,7 @@ readLong() throws EOFException, IOException
 
   readFully(buf);
 
-  long retval = (((long)buf[0] & 0xFF) << 56) | (((long)buf[1] & 0xFF) << 48) | 
-                (((long)buf[2] & 0xFF) << 40) | (((long)buf[3] & 0xFF) << 32) | 
-                (((long)buf[4] & 0xFF) << 24) | (((long)buf[5] & 0xFF) << 16) |
-                (((long)buf[6] & 0xFF) << 8) | ((long)buf[7] & 0xFF);
-
-  return(retval);
+  return(convertToLong(buf));
 }
 
 /*************************************************************************/
@@ -444,7 +593,7 @@ readDouble() throws EOFException, IOException
   *
   * @deprecated
   */
-public final String
+public synchronized final String
 readLine() throws IOException
 {
   StringBuffer sb = new StringBuffer("");
@@ -542,76 +691,16 @@ readLine() throws IOException
   *
   * @see DataOutput
   */
-public final String
+public synchronized final String
 readUTF() throws EOFException, UTFDataFormatException, IOException
 {
   StringBuffer sb = new StringBuffer("");
 
   int num_bytes = readUnsignedShort();
+  byte[] buf = new byte[num_bytes];
+  readFully(buf);
 
-  for (int i = 0; i < num_bytes; i++)
-    {
-      int byte_read = in.read();
-
-      if (byte_read == -1)
-        throw new EOFException("Unexpected end of stream");
-
-      // Three byte encoding case
-      if ((byte_read & 0xE0) == 0xE0) // 224
-        {
-          int val = (byte_read & 0x0F) << 12;
-
-          byte_read = in.read();
-          if (byte_read == -1)
-            throw new EOFException("Unexpected end of stream");
-
-          if ((byte_read & 0x80) != 0x80)
-            throw new UTFDataFormatException("Bad byte in input: " + byte_read);
-
-          val |= (byte_read & 0x3F) << 6;
-
-          byte_read = in.read();
-          if (byte_read == -1)
-            throw new EOFException("Unexpected end of stream");
-
-          if ((byte_read & 0x80) != 0x80)
-            throw new UTFDataFormatException("Bad byte in input: " + byte_read);
-
-          val |= (byte_read & 0x3F);
-
-          sb.append((char)val);
-
-          i += 2;
-        }
-      // Two byte encoding case
-      else if ((byte_read & 0xC0) == 0xC0) // 192
-        {
-          int val = (byte_read & 0x1F) << 6;
-
-          byte_read = in.read();
-          if (byte_read == -1)
-            throw new EOFException("Unexpected end of stream");
-
-          if ((byte_read & 0x80) != 0x80)
-            throw new UTFDataFormatException("Bad byte in input: " + byte_read);
-
-          val |= (byte_read & 0x3F);
-
-          sb.append((char)val);
-          
-          ++i;
-        }
-      // One byte encoding case
-      else if (byte_read < 128)
-        {
-          sb.append((char)byte_read);
-        }
-      else
-        {
-          throw new UTFDataFormatException("Bad byte in input: " + byte_read);
-        }
-    }
-  return(sb.toString()); 
+  return(convertFromUTF(buf));
 }
 
 /*************************************************************************/
@@ -649,7 +738,7 @@ readFully(byte[] buf) throws EOFException, IOException
   * @exception EOFException If end of file is reached before filling the buffer
   * @exception IOException If any other error occurs
   */
-public final void
+public synchronized final void
 readFully(byte[] buf, int offset, int len) throws EOFException, IOException
 {
   int total_read = 0;
@@ -679,12 +768,15 @@ readFully(byte[] buf, int offset, int len) throws EOFException, IOException
   * @exception IOException If an error occurs.
   */
 public final int
-skipBytes(int n) throws EOFException, IOException
+skipBytes(int n) throws IOException
 {
+  if (n <= 0)
+    return(0);
+
   long total_skipped = in.skip(n);
 
   return((int)n);
 }
 
-} // interface DataInput
+} // class DataInputStream
 

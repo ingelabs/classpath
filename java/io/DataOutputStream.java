@@ -4,17 +4,18 @@
 /* Copyright (c) 1998 Free Software Foundation, Inc.
 /* Written by Aaron M. Renn (arenn@urbanophile.com)
 /*
-/* This program is free software; you can redistribute it and/or modify
+/* This library is free software; you can redistribute it and/or modify
 /* it under the terms of the GNU Library General Public License as published 
-/* by the Free Software Foundation, version 2. (see COPYING.LIB)
+/* by the Free Software Foundation, either version 2 of the License, or
+/* (at your option) any later verion.
 /*
-/* This program is distributed in the hope that it will be useful, but
+/* This library is distributed in the hope that it will be useful, but
 /* WITHOUT ANY WARRANTY; without even the implied warranty of
 /* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-/* GNU General Public License for more details.
+/* GNU Library General Public License for more details.
 /*
-/* You should have received a copy of the GNU General Public License
-/* along with this program; if not, write to the Free Software Foundation
+/* You should have received a copy of the GNU Library General Public License
+/* along with this library; if not, write to the Free Software Foundation
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
@@ -46,6 +47,141 @@ public class DataOutputStream extends FilterOutputStream implements DataOutput
   * stream by this object instance.
   */
 protected int written;
+
+/*************************************************************************/
+
+/*
+ * Class Methods
+ */
+
+/*
+ * These converter methods are called by instance methods of this class
+ * and by instance methods of RandomAccessFile to convert data read.  For
+ * documentation on what these do, please see the corresponding instance
+ * method documentation
+ */
+
+static final int
+convertFromBoolean(boolean b)
+{
+  if (b)
+    return(1);
+  else
+    return(0);
+}
+
+/*************************************************************************/
+
+static final byte[]
+convertFromChar(int c)
+{
+  byte[] buf = new byte[2];
+
+  buf[0] = (byte)((c & 0xFF00) >> 8);
+  buf[1] = (byte)((int)c & 0x00FF);
+
+  return(buf);
+}
+
+/*************************************************************************/
+
+static final byte[]
+getConvertedStringChars(String s)
+{
+  byte[] buf = new byte[s.length() * 2];
+
+  for (int i = 0; i < s.length(); i++)
+    {
+      buf[i * 2] = (byte)(s.charAt(i) & 0xFF00);
+      buf[(i * 2) + 1] = (byte)(s.charAt(i) & 0x00FF);
+    }
+
+  return(buf);
+}
+
+/*************************************************************************/
+
+static final byte[]
+convertFromShort(int s)
+{
+  byte[] buf = new byte[2];
+
+  buf[0] = (byte)((s & 0xFF00) >> 8);
+  buf[1] = (byte)(s & 0x00FF);
+
+  return(buf);
+}
+
+/*************************************************************************/
+
+static final byte[]
+convertFromInt(int i)
+{
+  byte[] buf = new byte[4];
+
+  buf[0] = (byte)((i & 0xFF000000) >> 24);
+  buf[1] = (byte)((i & 0x00FF0000) >> 16);
+  buf[2] = (byte)((i & 0x0000FF00) >> 8);
+  buf[3] = (byte)(i & 0x000000FF);
+
+  return(buf);
+}
+
+/*************************************************************************/
+
+static final byte[]
+convertFromLong(long l)
+{
+  byte[] buf = new byte[8];
+
+  buf[0] = (byte)((l & 0xFF00000000000000L) >> 56);
+  buf[1] = (byte)((l & 0x00FF000000000000L) >> 48);
+  buf[2] = (byte)((l & 0x0000FF0000000000L) >> 40);
+  buf[3] = (byte)((l & 0x000000FF00000000L) >> 32);
+  buf[4] = (byte)((l & 0x00000000FF000000L) >> 24);
+  buf[5] = (byte)((l & 0x0000000000FF0000L) >> 16);
+  buf[6] = (byte)((l & 0x000000000000FF00L) >> 8);
+  buf[7] = (byte)(l & 0x00000000000000FFL);
+
+  return(buf);
+}
+
+/*************************************************************************/
+
+static final byte[]
+convertToUTF(String s) throws IOException
+{
+  ByteArrayOutputStream os = new ByteArrayOutputStream(s.length());
+
+  for (int i = 0; i < s.length(); i++)
+    {
+      char c = s.charAt(i);
+      if ((c <= 0x007F) && (c != 0))
+        {
+          os.write(c);
+        }
+      else if ((c <= 0x07FF) || (c == 0))
+        {
+          byte b1 = (byte)(0xC0 | (c >> 6));
+          byte b2 = (byte)(0x80 | (c & 0x3F));
+
+          os.write(b1);
+          os.write(b2);
+        }
+      else
+        {
+          byte b1 = (byte)(0xE0 | (c >> 12));
+          byte b2 = (byte)(0x80 | ((c >> 6) & 0x3F));
+          byte b3 = (byte)(0x80 | (c & 0x3F));
+
+          os.write(b1);
+          os.write(b2);
+          os.write(b3);
+        }
+    }
+
+  return(os.toByteArray());
+}
 
 /*************************************************************************/
 
@@ -98,11 +234,8 @@ size()
 public final void
 writeBoolean(boolean b) throws IOException
 {
-  if (b)
-    out.write(1);
-  else
-    out.write(0);
-
+  int bool = convertFromBoolean(b);
+  out.write(bool);
   ++written;
 }
 
@@ -164,12 +297,7 @@ writeBytes(String s) throws IOException
 public final void
 writeChar(int c) throws IOException
 {
-  byte[] buf = new byte[2];
-
-  buf[0] = (byte)((c & 0xFF00) >> 8);
-  buf[1] = (byte)((int)c & 0x00FF);
-
-  out.write(buf);
+  out.write(convertFromChar(c));
 
   written += 2;
 }
@@ -191,14 +319,7 @@ writeChars(String s) throws IOException
   if (s.length() == 0)
     return;
 
-  byte[] buf = new byte[s.length() * 2];
-
-  for (int i = 0; i < s.length(); i++)
-    {
-      buf[i * 2] = (byte)(s.charAt(i) & 0xFF00);
-      buf[(i * 2) + 1] = (byte)(s.charAt(i) & 0x00FF);
-    }
-
+  byte[] buf = getConvertedStringChars(s);
   out.write(buf);
 
   written += buf.length;
@@ -217,12 +338,7 @@ writeChars(String s) throws IOException
 public final void
 writeShort(int s) throws IOException
 {
-  byte[] buf = new byte[2];
-
-  buf[0] = (byte)((s & 0xFF00) >> 8);
-  buf[1] = (byte)(s & 0x00FF);
-
-  out.write(buf);
+  out.write(convertFromShort(s));
 
   written += 2;
 }
@@ -240,14 +356,7 @@ writeShort(int s) throws IOException
 public final void
 writeInt(int i) throws IOException
 {
-  byte[] buf = new byte[4];
-
-  buf[0] = (byte)((i & 0xFF000000) >> 24);
-  buf[1] = (byte)((i & 0x00FF0000) >> 16);
-  buf[2] = (byte)((i & 0x0000FF00) >> 8);
-  buf[3] = (byte)(i & 0x000000FF);
-
-  out.write(buf);
+  out.write(convertFromInt(i));
 
   written += 4;
 }
@@ -265,18 +374,7 @@ writeInt(int i) throws IOException
 public final void
 writeLong(long l) throws IOException
 {
-  byte[] buf = new byte[8];
-
-  buf[0] = (byte)((l & 0xFF00000000000000L) >> 56);
-  buf[1] = (byte)((l & 0x00FF000000000000L) >> 48);
-  buf[2] = (byte)((l & 0x0000FF0000000000L) >> 40);
-  buf[3] = (byte)((l & 0x000000FF00000000L) >> 32);
-  buf[4] = (byte)((l & 0x00000000FF000000L) >> 24);
-  buf[5] = (byte)((l & 0x0000000000FF0000L) >> 16);
-  buf[6] = (byte)((l & 0x000000000000FF00L) >> 8);
-  buf[7] = (byte)(l & 0x00000000000000FFL);
-
-  out.write(buf);
+  out.write(convertFromLong(l));
 
   written += 8;
 }
@@ -354,39 +452,10 @@ writeDouble(double d) throws IOException
   *
   * @exception IOException If an error occurs
   */
-public final void
+public synchronized final void
 writeUTF(String s) throws IOException
 {
-  ByteArrayOutputStream os = new ByteArrayOutputStream(s.length());
-
-  for (int i = 0; i < s.length(); i++)
-    {
-      char c = s.charAt(i);
-      if ((c <= 0x007F) && (c != 0))
-        {
-          os.write(c);
-        }
-      else if ((c <= 0x07FF) || (c == 0))
-        {
-          byte b1 = (byte)(0xC0 | (c >> 6));
-          byte b2 = (byte)(0x80 | (c & 0x3F));
-
-          os.write(b1);
-          os.write(b2);
-        }
-      else
-        {
-          byte b1 = (byte)(0xE0 | (c >> 12));
-          byte b2 = (byte)(0x80 | ((c >> 6) & 0x3F));
-          byte b3 = (byte)(0x80 | (c & 0x3F));
-
-          os.write(b1);
-          os.write(b2);
-          os.write(b3);
-        }
-    }
-
-  byte[] buf = os.toByteArray();
+  byte[] buf = convertToUTF(s);
 
   writeShort(buf.length);
   out.write(buf);
