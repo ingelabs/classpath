@@ -50,7 +50,7 @@
 	positiveSuffixRanges, negativeSuffixAttrs, positiveSuffixAttrs):
 	New fields.
 
-2004-04-11  Guilhem Lavaux <guilhem@kaffe.org>
+2004-04-28  Guilhem Lavaux <guilhem@kaffe.org>
 
 	* java/text/Format.java: Updated importations. Removed unnecessary
 	classes.
