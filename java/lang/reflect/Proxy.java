@@ -723,8 +723,8 @@ public class Proxy implements Serializable
   private static final class ProxyData
   {
     /**
-     * The package this class is in *including the trailing dot* or "" for
-     * the unnamed (aka default) package.
+     * The package this class is in <b>including the trailing dot</b>
+     * or an empty string for the unnamed (aka default) package.
      */
     String pack;
 
@@ -772,7 +772,7 @@ public class Proxy implements Serializable
     /**
      * Return the name of a package (including the trailing dot)
      * given the name of a class.
-     * Returns "" if no package.  We use this in preference to
+     * Returns an empty string if no package.  We use this in preference to
      * using Class.getPackage() to avoid problems with ClassLoaders
      * that don't set the package.
      */

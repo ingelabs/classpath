@@ -1,5 +1,9 @@
 2004-10-15  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/reflect/Proxy.java: Improved javadocs.
+
+2004-10-15  Michael Koch  <konqueror@gmx.de>
+
 	* java/lang/reflect/AccessibleObject.java
 	(checkPermission): Removed redundant final modifier.
 	(secureSetAccessible): Likewise.
