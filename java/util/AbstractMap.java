@@ -1,8 +1,30 @@
 /* AbstractMap.java -- Abstract implementation of most of Map
    Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+   This file is part of GNU Classpath.
 
+<<<<<<< AbstractMap.java
+   GNU Classpath is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
+
+   GNU Classpath is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with GNU Classpath; see the file COPYING.  If not, write to the
+   Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+   02111-1307 USA.
+
+   As a special exception, if you link this library with other files to
+   produce an executable, this library does not by itself cause the
+   resulting executable to be covered by the GNU General Public License.
+   This exception does not however invalidate any other reasons why the
+   executable file might be covered by the GNU General Public License. */
+=======
 GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
@@ -23,6 +45,7 @@ produce an executable, this library does not by itself cause the
 resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
+>>>>>>> 1.2
 
 
 // TO DO:
@@ -33,6 +56,15 @@ package java.util;
 
 public abstract class AbstractMap implements Map
 {
+  /**
+   * Remove all entries from this Map. This default implementation calls
+   * entrySet().clear().
+   *
+   * @throws UnsupportedOperationException
+   * @specnote The JCL book claims that this implementation always throws 
+   *           UnsupportedOperationException, while the online docs claim it
+   *           calls entrySet().clear(). We take the later to be correct.
+   */
   public void clear()
   {
     entrySet().clear();
@@ -41,30 +73,30 @@ public abstract class AbstractMap implements Map
   public boolean containsKey(Object key)
   {
     Object k;
-    Iterator entries = entrySet().iterator();
-
-    while (entries.hasNext())
+    Set es = entrySet();
+    Iterator entries = es.iterator();
+    int size = size();
+    for (int pos = 0; pos < size; pos++)
       {
 	k = ((Map.Entry) entries.next()).getKey();
 	if (key == null ? k == null : key.equals(k))
 	  return true;
       }
-
     return false;
   }
 
   public boolean containsValue(Object value)
   {
     Object v;
-    Iterator entries = entrySet().iterator();
-
-    while (entries.hasNext())
+    Set es = entrySet();
+    Iterator entries = es.iterator();
+    int size = size();
+    for (int pos = 0; pos < size; pos++)
       {
 	v = ((Map.Entry) entries.next()).getValue();
 	if (value == null ? v == null : value.equals(v))
 	  return true;
       }
-
     return false;
   }
 
@@ -72,43 +104,37 @@ public abstract class AbstractMap implements Map
 
   public boolean equals(Object o)
   {
-    if (this == o)
+    if (o == this)
       return true;
-
-    if (o == null || !(o instanceof Map))
+    if (!(o instanceof Map))
       return false;
 
     Map m = (Map) o;
-    if (m.size() != size())
+    Set s = m.entrySet();
+    Iterator itr = entrySet().iterator();
+    int size = size();
+
+    if (m.size() != size)
       return false;
 
-    Object key, value1, value2;
-    Map.Entry entry;
-    Iterator entries = entrySet().iterator();
-    while (entries.hasNext())
+    for (int pos = 0; pos < size; pos++)
       {
-	entry = (Map.Entry) entries.next();
-	key = entry.getKey();
-	value1 = entry.getValue();
-	value2 = m.get(key);
-
-	if (!((value1 == null && value2 == null) || value1.equals(value2)))
+	if (!s.contains(itr.next()))
 	  return false;
       }
-
     return true;
   }
 
   public Object get(Object key)
   {
-    Object k;
-    Map.Entry entry;
-    Iterator entries = entrySet().iterator();
+    Set s = entrySet();
+    Iterator entries = s.iterator();
+    int size = size();
 
-    while (entries.hasNext())
+    for (int pos = 0; pos < size; pos++)
       {
-	entry = (Map.Entry) entries.next();
-	k = entry.getKey();
+	Map.Entry entry = (Map.Entry) entries.next();
+	Object k = entry.getKey();
 	if (key == null ? k == null : key.equals(k))
 	  return entry.getValue();
       }
@@ -119,11 +145,12 @@ public abstract class AbstractMap implements Map
   public int hashCode()
   {
     int hashcode = 0;
-    Iterator entries = entrySet().iterator();
-
-    while (entries.hasNext())
-      hashcode += entries.next().hashCode();
-
+    Iterator itr = entrySet().iterator();
+    int size = size();
+    for (int pos = 0; pos < size; pos++)
+      {
+	hashcode += itr.next().hashCode();
+      }
     return hashcode;
   }
 
@@ -185,7 +212,9 @@ public abstract class AbstractMap implements Map
   {
     Map.Entry entry;
     Iterator entries = m.entrySet().iterator();
-    while (entries.hasNext())
+    int size = m.size();
+
+    for (int pos = 0; pos < size; pos++)
       {
 	entry = (Map.Entry) entries.next();
 	put(entry.getKey(), entry.getValue());
@@ -194,17 +223,16 @@ public abstract class AbstractMap implements Map
 
   public Object remove(Object key)
   {
-    Object k, value;
-    Map.Entry entry;
     Iterator entries = entrySet().iterator();
+    int size = size();
 
-    while (entries.hasNext())
+    for (int pos = 0; pos < size; pos++)
       {
-	entry = (Map.Entry) entries.next();
-	k = entry.getKey();
+	Map.Entry entry = (Map.Entry) entries.next();
+	Object k = entry.getKey();
 	if (key == null ? k == null : key.equals(k))
 	  {
-	    value = entry.getValue();
+	    Object value = entry.getValue();
 	    entries.remove();
 	    return value;
 	  }
@@ -220,20 +248,17 @@ public abstract class AbstractMap implements Map
 
   public String toString()
   {
-    StringBuffer sb = new StringBuffer("{");
-    String comma = "";
     Iterator entries = entrySet().iterator();
-
-    while (entries.hasNext())
+    int size = size();
+    String r = "{";
+    for (int pos = 0; pos < size; pos++)
       {
-	Map.Entry entry = (Map.Entry) entries.next();
-	sb.append(comma).append(entry.getKey()).append('=').append(entry.
-								   getValue
-								   ());
-	comma = ", ";
+	r += entries.next();
+	if (pos < size - 1)
+	  r += ", ";
       }
-
-    return sb.append('}').toString();
+    r += "}";
+    return r;
   }
 
   public Collection values()
