@@ -27,7 +27,7 @@ import java.net.Socket;
 import java.net.ProtocolException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.InputStreamReader;
+import java.io.DataInputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.IOException;
@@ -57,7 +57,7 @@ protected Socket socket;
 /**
   * The InputStream for this connection
   */
-protected InputStream in_stream;
+protected DataInputStream in_stream;
 
 /**
   * The OutputStream for this connection
@@ -68,11 +68,6 @@ protected OutputStream out_stream;
   * The PrintWriter for this connection (used internally)
   */
 protected PrintWriter out_writer;
-
-/**
-  * The InputStreamReader for this connection (used internally)
-  */
-protected InputStreamReader in_reader; 
 
 /*************************************************************************/
 
@@ -99,32 +94,6 @@ HttpURLConnection(URL url)
  */
 
 /**
-  * Reads a line of text from the InputStream
-  */
-private String
-readLine() throws IOException
-{
-  StringBuffer sb = new StringBuffer("");
-
-  byte[] buf = new byte[1];
-  for (;;)
-    {
-      int read = in_stream.read(buf, 0, 1);
-      if (read == -1)
-        throw new IOException("Premature end of input");
-
-      if (buf[0] == '\r')
-        continue;
-      if (buf[0] == '\n')
-        break;
-      sb.append((char)buf[0]);
-    }
-  return(sb.toString());
-}
-
-/*************************************************************************/
-
-/**
   * Connects to the remote host, sends the request, and parses the reply
   * code and header information returned
   */
@@ -138,10 +107,9 @@ connect() throws IOException
     socket = new Socket(url.getHost(), url.getPort());
 
   out_stream = socket.getOutputStream();
-  in_stream = socket.getInputStream();
+  in_stream = new DataInputStream(socket.getInputStream());
 
-  in_reader = new InputStreamReader(in_stream);
-  out_writer = new PrintWriter(new OutputStreamWriter(out_stream)); 
+  out_writer = new PrintWriter(new OutputStreamWriter(out_stream, "8859_1")); 
 
   // Send the request
   out_writer.print(getRequestMethod() + " " + getURL().getFile() + 
@@ -170,7 +138,7 @@ connect() throws IOException
   out_writer.flush();
 
   // Parse the reply
-  String line = readLine();
+  String line = in_stream.readLine();
   String saveline = line;
 
   int idx = line.indexOf(" " );
@@ -193,7 +161,7 @@ connect() throws IOException
   String key = null, value = null;
   for (;;)
     {
-      line = readLine();
+      line = in_stream.readLine();
       if (line.equals(""))
         break;
 
