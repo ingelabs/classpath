@@ -1,0 +1,3 @@
+<newsitem date="21+22 Feb. 2004">
+GNU Classpath at the <createlink name="FOSDEM'04" url="http://www.fosdem.org/2004/">: see the <createlink name="report" url="events/fosdem04.html">
+</newsitem>

@@ -43,6 +43,26 @@
 
 
 ##
+#
+# Newslines
+#
+# Use the news and newsitem to create a table with news entries
+#
+<define-tag news endtag=required>
+  <table>
+  %body
+  </table>
+</define-tag>
+
+<define-tag newsitem endtag=required>
+  <preserve date>
+  <set-var %attributes>
+  <tr><td><strong><get-var date></td><td>%body</td></tr>
+  <restore date>
+</define-tag>
+
+
+##
 # Site Layout
 #
 # Uses:
@@ -97,12 +117,15 @@
 
 <menutitle>Classpath</menutitle>
 <menuitem><createlink name="Home" url="home.html#home"></menuitem>
+<!--
 <menuitem><createlink name="Status" url="home.html#status"></menuitem>
 <menuitem><createlink name="Roadmap" url="home.html#roadmap"></menuitem>
+-->
 <menuitem><createlink name="License" url="license.html"></menuitem>
 <menuitem><createlink name="Team" url="http://savannah.gnu.org/project/memberlist.php?group_id=85"></menuitem>
 <menuitem><createlink name="Download" url="downloads/downloads.html"></menuitem>
 <menuitem><createlink name="FAQ" url="faq/faq.html"></menuitem>
+<menuitem><createlink name="Events" url="events/events.html"></menuitem>
 
 <menutitle>Success Stories</menutitle>
 <menuitem><createlink name="JVMs" url="stories.html#jvm"></menuitem>
@@ -112,19 +135,19 @@
 <menuitem><createlink name="Research" url="stories.html#research"></menuitem>
 
 <menutitle>Savannah</menutitle>
-<menuitem><createlink name="Home" url="http://savannah.gnu.org/projects/classpath/"></menuitem>
+<menuitem><createlink name="Project Home" url="http://savannah.gnu.org/projects/classpath/"></menuitem>
 <menuitem><createlink name="Bug Reports" url="http://savannah.gnu.org/bugs/?group=classpath"></menuitem>
 <!--
 <menuitem><createlink name="Support" url="http://savannah.gnu.org/support/?group=classpath"></menuitem>
--->
 <menuitem><createlink name="Patches" url="http://savannah.gnu.org/patch/?group=classpath"></menuitem>
 <menuitem><createlink name="Tasks" url="http://savannah.gnu.org/pm/?group=classpath"></menuitem>
+-->
 <menuitem><createlink name="Mailing Lists" url="http://savannah.gnu.org/mail/?group=classpath"></menuitem>
 <menuitem><createlink name="News" url="http://savannah.gnu.org/news/?group=classpath"></menuitem>
 <menuitem><createlink name="CVS" url="http://savannah.gnu.org/cvs/?group=classpath"></menuitem>
 
 <menutitle>Development</menutitle>
-<menuitem>Helping</menuitem>
+<menuitem><createlink name="Tasks" url="tasks.html"></menuitem>
 <menuitem><createlink name="Docs" url="docs/docs.html"></menuitem>
 <menuitem><createlink name="Testing" url="benchmarks.html#testing"></menuitem>
 <menuitem><createlink name="Benchmarks" url="benchmarks.html#benchmarks"></menuitem>

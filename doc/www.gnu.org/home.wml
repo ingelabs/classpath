@@ -4,14 +4,6 @@
 <subject "GNU Classpath">
 
 <box>
-<boxitem>
-<strong>Upcoming Events:</strong><br>
-<ul>
-<li>[21+22 Feb. 2004] <createlink url="http://www.fosdem.org/2004/index/dev_room_java" name="Free Java Developers Meeting"> at the upcoming <createlink url="http://www.fosdem.org" name="FOSDEM"> in Brussels.
-</ul>
-<br><br><br>
-</boxitem>
-
 <boxtitle><a name="home">Classpath::Home</a></boxtitle>
 
 <boxitem>
@@ -59,6 +51,13 @@ but most are. many of the implemented classes are already up to the
 specification (there are preliminary implementations of
 <code>java.nio</code> and <code>javax.swing</code>).
 </p>
+</boxitem>
+
+<boxtitle><a name="ShortNews">Classpath::Short News</a></boxtitle>
+<boxitem>
+<news>
+#include "newsitems.txt"
+</news>
 </boxitem>
 
 </box>

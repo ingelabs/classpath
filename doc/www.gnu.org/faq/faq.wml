@@ -181,7 +181,7 @@ service, please write to <a href="mailto:compliance-lab@fsf.org">compliance-lab@
 <p>See the <a
 href="docs/">documentation page</a>, especially the <a
 href="docs/hacking.html">GNU
-Classpath Hacker&#x2019;s Guide</a>.
+Classpath Hacker&#x2019;s Guide</a>, and pick up a <createlink name="task" url="tasks.html"> from the list!
 </faq>
 
 <faq question="Can I look as Sun's sources to get inspiration?">
@@ -209,6 +209,24 @@ maintainer of GNU Classpath, Mark Wielaard <mark@klomp.org>.
 </p>
 </faq>
 </faq-section>
+
+<faq-section name="Classpath Implementation">
+
+<faq question="Why does java.lang.Throwable delay the StackTrace array construction?">
+
+Well consider what happens in a VM.  VMThrowable.fillInStackTrace() is
+very fast -- it's just a chain of addresses.
+VMThrowable.getStackTrace() is very slow, because it has to convert
+all those addresses into StackTraceElements.  I suspect that you can
+get the trace for the whole stack in less time than it takes to create
+a single StackTraceElement.  For this reason, the vmState is stored
+and lazily converted to a StackTraceElement[]. (<i>Andrew Haley</i>)
+
+<p> A particular problem is posed by OutOfMemoryException: throwing it shouldn't require any memory (there's none anyway). Some propose that the VM should preallocate it at bootstrap, but this doesn't solve the problem. In Chris Gray's words <i>"if several threads throw OOME at the same time, the stack traces can get mixed up [...snip...] This situation is less improbable than you might think, since if one thread encounters an OOM situation, all other threads should encounter one too.  With some forms of co-operative multi-threading you may get away with it, but in the general pre-emptive case you could be living dangerously."</i></p>
+
+</faq>
+</faq-section>
+
 
 <faq-section name="Varia">
 <faq question="How to generate API Documentation with gjdoc/libxmlj?">
