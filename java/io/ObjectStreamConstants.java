@@ -32,19 +32,21 @@ interface ObjectStreamConstants
 {
   final static short STREAM_MAGIC = (short)0xaced;
   final static short STREAM_VERSION = 5;
-  final static byte TC_NULL = (byte)0x70;
-  final static byte TC_REFERENCE = (byte)0x71;
-  final static byte TC_CLASSDESC = (byte)0x72;
-  final static byte TC_OBJECT = (byte)0x73;
-  final static byte TC_STRING = (byte)0x74;
-  final static byte TC_ARRAY = (byte)0x75;
-  final static byte TC_CLASS = (byte)0x76;
-  final static byte TC_BLOCKDATA = (byte)0x77;
-  final static byte TC_ENDBLOCKDATA = (byte)0x78;
-  final static byte TC_RESET = (byte)0x79;
-  final static byte TC_BLOCKDATALONG = (byte)0x7A;
-  final static byte TC_EXCEPTION = (byte)0x7B;
-  final static byte SC_WRITE_METHOD = 0x01;
-  final static byte SC_SERIALIZABLE = 0x02;
-  final static byte SC_EXTERNALIZABLE = 0x04;
+  final static byte TC_NULL = (byte)112;
+  final static byte TC_REFERENCE = (byte)113;
+  final static byte TC_CLASSDESC = (byte)114;
+  final static byte TC_OBJECT = (byte)115;
+  final static byte TC_STRING = (byte)116;
+  final static byte TC_ARRAY = (byte)117;
+  final static byte TC_CLASS = (byte)118;
+  final static byte TC_BLOCKDATA = (byte)119;
+  final static byte TC_ENDBLOCKDATA = (byte)120;
+  final static byte TC_RESET = (byte)121;
+  final static byte TC_BLOCKDATALONG = (byte)122;
+  final static byte TC_EXCEPTION = (byte)123;
+  final static int baseWireHandle = 0x7e0000;
+  final static byte SC_WRITE_METHOD = (byte)1;
+  final static byte SC_BLOCK_DATA = (byte)1;
+  final static byte SC_SERIALIZABLE = (byte)2;
+  final static byte SC_EXTERNALIZABLE = (byte)4;
 }
