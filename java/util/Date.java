@@ -226,7 +226,7 @@ public class Date implements Cloneable, Comparable, java.io.Serializable {
 	String min = "0"+cal.get(Calendar.MINUTE);
 	String sec = "0"+cal.get(Calendar.SECOND);
 	String year = "000"+cal.get(Calendar.YEAR);
-	return weekNames[cal.get(Calendar.DAY_OF_WEEK)] + " "
+	return weekNames[cal.get(Calendar.DAY_OF_WEEK)-1] + " "
 	    + monthNames[cal.get(Calendar.MONTH)] + " "
 	    + day.substring(day.length()-2) + " "
 	    + hour.substring(hour.length()-2) + ":"
