@@ -121,25 +121,25 @@ public class Level
 
   /**
    * Create a logging level given a name, an integer value and a name
-   *  of a resource bundle for localizing the level name.  It rarely
-   *  is necessary to create custom levels, as most applications
-   *  should be well served with one of the standard levels such as
-   *  <code>Level.CONFIG</code>, <code>Level.INFO</code>, or
-   *  <code>Level.FINE</code>.
+   * of a resource bundle for localizing the level name.  It rarely
+   * is necessary to create custom levels, as most applications
+   * should be well served with one of the standard levels such as
+   * <code>Level.CONFIG</code>, <code>Level.INFO</code>, or
+   * <code>Level.FINE</code>.
    *
-   *  @param name the name of the level.
+   * @param name the name of the level.
    *
-   *  @param value the integer value of the level.  Please note
-   *       that the Java<small><sup>TM</sup></small>
-   *	   Logging API does not specify integer
-   *	   values for standard levels (such as
-   *	   Level.FINE).  Therefore, a custom
-   *	   level should pass an integer value that
-   *	   is calculated at run-time, e.g.
-   *	   <code>(Level.FINE.intValue() + Level.CONFIG.intValue())
-   *	   / 2</code> for a level between FINE and CONFIG.
+   * @param value the integer value of the level.  Please note
+   *        that the Java<small><sup>TM</sup></small>
+   *	    Logging API does not specify integer
+   *	    values for standard levels (such as
+   *	    Level.FINE).  Therefore, a custom
+   *	    level should pass an integer value that
+   *	    is calculated at run-time, e.g.
+   *	    <code>(Level.FINE.intValue() + Level.CONFIG.intValue())
+   *	    / 2</code> for a level between FINE and CONFIG.
    *
-   *  @param resourceBundleName the name of a resource bundle
+   * @param resourceBundleName the name of a resource bundle
    *       for localizing the level name, or <code>null</code>
    *       if the name does not need to be localized.
    */
@@ -151,6 +151,20 @@ public class Level
   }
 
 
+  static final long serialVersionUID = -8176160795706313070L;
+
+
+  /**
+   * Checks whether the Level has the same intValue as one of the
+   * pre-defined levels.  If so, the pre-defined level object is
+   * returned.
+   *
+   * <br/>Since the resource bundle name is not taken into
+   * consideration, it is possible to resolve Level objects that have
+   * been de-serialized by another implementation, even if the other
+   * implementation uses a different resource bundle for localizing
+   * the names of pre-defined levels.
+   */
   private Object readResolve()
   {
     for (int i = 0; i < knownLevels.length; i++)
@@ -218,7 +232,7 @@ public class Level
    */
   public final String toString()
   {
-    return getName ();
+    return getName();
   }
 
 
@@ -232,11 +246,13 @@ public class Level
 
 
   /**
-   * Returns one of the standard Levels given either its name or its integer value.
-   * Custom subclasses of Level will not be returned by this method.
+   * Returns one of the standard Levels given either its name or its
+   * integer value.  Custom subclasses of Level will not be returned
+   * by this method.
    *
-   * @throws IllegalArgumentException if <code>name</code> is neither the name
-   *   nor the integer value of one of the pre-defined standard logging levels.
+   * @throws IllegalArgumentException if <code>name</code> is neither
+   * the name nor the integer value of one of the pre-defined standard
+   * logging levels.
    *
    * @throws NullPointerException if <code>name</code> is null.
    *
@@ -266,18 +282,18 @@ public class Level
     {
     }
 
-    String msg = "Not the name of standard logging level: \"" + name + "\"";
+    String msg = "Not the name of a standard logging level: \"" + name + "\"";
     throw new IllegalArgumentException(msg);
   }
 
 
   /**
-   * Checks whether this Level's integer value is equal to that of another
-   * object.
+   * Checks whether this Level's integer value is equal to that of
+   * another object.
    *
    * @return <code>true</code> if <code>other</code> is an instance of
-   *	 <code>java.util.logging.Level</code> and has the same integer value,
-   *	 <code>false</code> otherwise.
+   *	 <code>java.util.logging.Level</code> and has the same integer
+   * value, <code>false</code> otherwise.
    */
   public boolean equals(Object other)
   {
