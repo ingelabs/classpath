@@ -51,7 +51,7 @@ package java.lang.reflect;
  **/
 public final class Array {
 	// Make this class uninstantiable.
-	private Array() {};
+	private Array() {}
 
 	/** Creates a new single-dimensioned array.  Will return null if the array is Void.
 	 ** @param componentType	the type of the array to create.
