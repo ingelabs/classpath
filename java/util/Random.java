@@ -1,5 +1,5 @@
 /* java.util.Random
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -166,7 +166,7 @@ public class Random implements java.io.Serializable
    * @param bytes The byte array that should be filled.
    * @since JDK1.1
    */
-  public void nextBytes(byte[]bytes)
+  public void nextBytes(byte[] bytes)
     /*{ require { bytes != null :: "bytes is null"; } } */
   {
     int random;
@@ -322,7 +322,7 @@ public class Random implements java.io.Serializable
    * @return the next pseudorandom double.  */
   public double nextDouble()
   {
-    return (((long) next(26) << 27) + next(27)) / (double) (1 << 53);
+    return (((long) next(26) << 27) + next(27)) / (double) (1L << 53);
   }
 
   /**
