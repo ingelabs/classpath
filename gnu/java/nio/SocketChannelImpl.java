@@ -80,7 +80,6 @@ public class SocketChannelImpl extends SocketChannel
   public SocketChannelImpl(SelectorProvider provider)		      
   {
     super(provider);
-
     fd = SocketCreate();
 	
     if (fd == -1)
@@ -138,9 +137,7 @@ public class SocketChannelImpl extends SocketChannel
 	    }
 
     local_port = err;
-	
     connected = true;
-	
     return blocking;
   }
     
@@ -157,7 +154,7 @@ public class SocketChannelImpl extends SocketChannel
   public boolean isConnectionPending()
   {
     if (blocking)
-	    return false;
+	    return true;
 
     return false;
   }
@@ -179,7 +176,6 @@ public class SocketChannelImpl extends SocketChannel
     byte[]b = new byte[len];
 	
     bytes = SocketRead(fd, b, 0, len);
-	
     dst.put(b, 0, bytes);
 
     if (bytes == 0)
@@ -190,7 +186,6 @@ public class SocketChannelImpl extends SocketChannel
 
     return bytes;
   }
-    
     
   public long read(ByteBuffer[] dsts, int offset, int length)
   {
@@ -204,7 +199,6 @@ public class SocketChannelImpl extends SocketChannel
     return bytes;
   }
      
-	
   public int write(ByteBuffer src)
   {
     int bytes = 0;
@@ -229,10 +223,12 @@ public class SocketChannelImpl extends SocketChannel
   public long write (ByteBuffer[] srcs, int offset, int length)
   {
     long bytes = 0;
+
     for (int i=offset; i<length; i++)
 	    {
         bytes += write(srcs[i]);
 	    }
+
     return bytes;
   }
 }

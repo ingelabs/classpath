@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package gnu.java.nio;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.SocketAddress;
@@ -53,10 +54,8 @@ class ServerSocketChannelImpl extends ServerSocketChannel
   boolean connected = false;
   InetSocketAddress sa;
 
-/*
-  private static native int NioSocketAccept (ServerSocketChannelImpl server, 
-                                             SocketChannelImpl s);
-*/
+//   private static native int NioSocketAccept (ServerSocketChannelImpl server, 
+//                                              SocketChannelImpl s);
 
   private static int NioSocketAccept (ServerSocketChannelImpl server, 
                                       SocketChannelImpl s)
@@ -68,6 +67,15 @@ class ServerSocketChannelImpl extends ServerSocketChannel
   {
     super (provider);
     fd = SocketChannelImpl.SocketCreate ();
+
+    try
+      {
+        sock_object = new ServerSocket ();
+      }
+    catch (IOException e)
+      {
+        System.err.println ("ServerSocket could not be created.");
+      }
   }
  
   public void finalizer()
@@ -91,7 +99,7 @@ class ServerSocketChannelImpl extends ServerSocketChannel
     fd = SocketChannelImpl.SocketCreate ();
   }
 
-  protected void implConfigureBlocking (boolean  block)
+  protected void implConfigureBlocking (boolean block)
   {
   }
 

@@ -1,3 +1,18 @@
+2002-11-18  Michael Koch <konqueror@gmx.de>
+
+	* gnu/java/nio/SelectorImpl.java
+	(select): Throww exception when selector is closed,
+	reinitialize counter before reusing it.
+	(implCloseSelector): Implemented.
+	(register): Added support for ServerSocketChannelImpl.
+	* gnu/java/nio/ServerSocketChannelImpl.java
+	(ServerSocketChannelImpl): Create server socket.
+	* gnu/java/nio/SocketChannelImpl.java: Reformated.
+	* java/net/ServerSocket.java
+	(ServerSocket): Create unbound socket.
+	* java/nio/channels/ClosedChannelException.java: Documentation added.
+	* java/nio/channels/ClosedSelectorException.java: New file.
+
 2002-11-17  C. Brian Jones <cbj@gnu.org>
 
 	* scripts/japi: new file, used nightly

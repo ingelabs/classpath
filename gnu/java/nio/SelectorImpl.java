@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package gnu.java.nio;
 
+import java.nio.channels.ClosedSelectorException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -49,6 +50,7 @@ import java.util.Set;
 
 public class SelectorImpl extends AbstractSelector
 {
+  boolean closed = false;
   Set keys, selected, canceled;
 
   public SelectorImpl (SelectorProvider provider)
@@ -65,6 +67,7 @@ public class SelectorImpl extends AbstractSelector
   {
     return select (1);
   }
+
   public int select ()
   {
     return select (Long.MAX_VALUE);
@@ -81,6 +84,11 @@ public class SelectorImpl extends AbstractSelector
 
   public int select (long timeout)
   {
+    if (closed)
+      {
+        throw new ClosedSelectorException ();
+      }
+
     if (keys == null)
 	    {
         return 0;
@@ -102,6 +110,8 @@ public class SelectorImpl extends AbstractSelector
 	    }
 
     int ret = java_do_select (read, write, except, timeout);
+
+    i = 0;
     it = keys.iterator ();
 
     while (it.hasNext ())
@@ -149,6 +159,7 @@ public class SelectorImpl extends AbstractSelector
 
   protected void implCloseSelector ()
   {
+    closed = true;
   }
     
   protected SelectionKey register (SelectableChannel ch, int ops, Object att)
@@ -173,11 +184,18 @@ public class SelectorImpl extends AbstractSelector
 	
     if (ch instanceof SocketChannelImpl)
 	    {
-        SocketChannelImpl fc = (SocketChannelImpl) ch;
-        SelectionKeyImpl impl = new SelectionKeyImpl (ch, this, fc.fd);
+        SocketChannelImpl sc = (SocketChannelImpl) ch;
+        SelectionKeyImpl impl = new SelectionKeyImpl (ch, this, sc.fd);
         add (impl);
         return impl;
 	    }
+    else if (ch instanceof ServerSocketChannelImpl)
+      {
+        ServerSocketChannelImpl ssc = (ServerSocketChannelImpl) ch;
+        SelectionKeyImpl impl = new SelectionKeyImpl (ch, this, ssc.fd);
+        add (impl);
+        return impl;
+      }
     else
 	    {
         System.err.println ("INTERNAL ERROR, no known channel type");
