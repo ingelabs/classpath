@@ -164,8 +164,8 @@ dnl CLASSPATH_WITH_JAPHAR - checks for japhar
 dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_JAPHAR],
 [
-  AC_ARG_WITH(japhar, 
-  [  --with-japhar		  configure GNU Classpath for Japhar [default=yes]],
+  AC_ARG_WITH([japhar], 
+  	      [AS_HELP_STRINH(--with-japhar,configure GNU Classpath for Japhar [default=yes])],
   [
     if test "x${withval}" = xyes || test "x${withval}" = x; then
       CLASSPATH_CHECK_JAPHAR
@@ -185,8 +185,8 @@ dnl CLASSPATH_WITH_KAFFE - checks for which java virtual machine to use
 dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_KAFFE],
 [
-  AC_ARG_WITH(kaffe, 
-  [  --with-kaffe		  configure GNU Classpath for Kaffe [default=no]],
+  AC_ARG_WITH([kaffe], 
+	      [AS_HELP_STRING(--with-kaffe,configure GNU Classpath for Kaffe [default=no])],
   [   
     if test "x${withval}" = xyes || test "x${withval}" = x; then
       CLASSPATH_CHECK_KAFFE
@@ -285,8 +285,8 @@ AC_DEFUN([CLASSPATH_FIND_JAVAC],
 dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_GCJ],
 [
-  AC_ARG_WITH(gcj,
-  [  --with-gcj              bytecode compilation with gcj ],
+  AC_ARG_WITH([gcj],
+	      [AS_HELP_STRING(--with-gcj,bytecode compilation with gcj)],
   [
     if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
       CLASSPATH_CHECK_GCJ(${withval})
@@ -342,8 +342,8 @@ AC_DEFUN([CLASSPATH_CHECK_GCJ],
 dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_JIKES],
 [
-  AC_ARG_WITH(jikes,
-  [  --with-jikes		  bytecode compilation with jikes ],
+  AC_ARG_WITH([jikes],
+	      [AS_HELP_STRING(--with-jikes,bytecode compilation with jikes)],
   [
     if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
       CLASSPATH_CHECK_JIKES(${withval})
@@ -378,8 +378,8 @@ AC_DEFUN([CLASSPATH_CHECK_JIKES],
 dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_KJC],
 [
-  AC_ARG_WITH(kjc, 
-  [  --with-kjc=<ksusu.jar>  bytecode compilation with kjc [default=no]],
+  AC_ARG_WITH([kjc], 
+  	      [AS_HELP_STRING(--with-kjc=<ksusu.jar>,bytecode compilation with kjc [default=no])],
   [
     if test "x${withval}" != xno; then
       AC_MSG_CHECKING(for kjc)
@@ -410,8 +410,8 @@ AC_DEFUN([CLASSPATH_WITH_KJC],
 dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_JAVA],
 [
-  AC_ARG_WITH(java,
-  [  --with-java		  specify path or name of a java-like program ],
+  AC_ARG_WITH([java],
+	      [AS_HELP_STRING(--with-java,specify path or name of a java-like program)],
   [
     if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
       CLASSPATH_CHECK_JAVA(${withval})
@@ -453,8 +453,8 @@ AC_DEFUN([CLASSPATH_FIND_JAVA],
 dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_JAVAH],
 [
-  AC_ARG_WITH(javah,
-  [  --with-javah		  specify path or name of a javah-like program ],
+  AC_ARG_WITH([javah],
+	      [AS_HELP_STRING(--with-javah,specify path or name of a javah-like program)],
   [
     if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
       CLASSPATH_CHECK_JAVAH(${withval})
@@ -500,8 +500,8 @@ dnl CLASSPATH_WITH_CLASSLIB - checks for user specified classpath additions
 dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_CLASSLIB],
 [
-  AC_ARG_WITH(classpath,
-  [  --with-classpath        specify path to a classes.zip like file ],
+  AC_ARG_WITH([classpath],
+	      [AS_HELP_STRING(--with-classpath,specify path to a classes.zip like file)],
   [
     if test "x${withval}" = xyes; then
       # set user classpath to CLASSPATH from env
