@@ -217,6 +217,16 @@
 	java/awt/image/LookupOp.java,
 	java/awt/image/ConvolveOp.java: New classes.
 
+2004-11-06  Andrew Haley  <aph@redhat.com>
+
+	* java/io/ObjectInputStream.java
+	(readObject): ENDBLOCKDATA is generated if the class has a write
+	method, not if it has a read method.
+
+2004-11-06  Mark Wielaard  <mark@klomp.org>
+
+	* java/util/Vector.java (readObject): Removed.
+
 2004-11-06  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/java/net/protocol/http/Connection.java (sendRequest): Fix
@@ -326,7 +336,6 @@
 	(set(int,int)): Set and use new field.
 	(set(int,int,int)): Check new field.
 
->>>>>>> 1.2751
 2004-10-29  Jerry Quinn  <jlquinn@optonline.net>
 
 	* java/awt/image/ColorConvertOp.java: New class.
