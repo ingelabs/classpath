@@ -1,4 +1,5 @@
-These examples show how the GNU Classpath library can be used.
+This directory contains example programs that show how the GNU Classpath
+library can be used.
 
 Each example has its own package under gnu.classpath.examples and has a
 class Demo which contains a main() method to run that particular example.
@@ -36,7 +37,7 @@ and/or modify it under the terms of the GNU General Public License as
 published by the Free Software Foundation; either version 2, or (at
 your option) any later version.
 
-GNU Classpath examples is distributed in the hope that it will be
+GNU Classpath examples are distributed in the hope that they will be
 useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 General Public License for more details.

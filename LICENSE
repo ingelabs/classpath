@@ -6,27 +6,77 @@ in the file COPYING.  If you do not have the source code, it is available at:
 
     http://www.gnu.org/software/classpath/
 
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library.  Thus, the terms and
-conditions of the GNU General Public License cover the whole
-combination.
+  Linking this library statically or dynamically with other modules is
+  making a combined work based on this library.  Thus, the terms and
+  conditions of the GNU General Public License cover the whole
+  combination.
  
-As a special exception, the copyright holders of this library give you
-permission to link this library with independent modules to produce an
-executable, regardless of the license terms of these independent
-modules, and to copy and distribute the resulting executable under
-terms of your choice, provided that you also meet, for each linked
-independent module, the terms and conditions of the license of that
-module.  An independent module is a module which is not derived from
-or based on this library.  If you modify this library, you may extend
-this exception to your version of the library, but you are not
-obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version.
+  As a special exception, the copyright holders of this library give you
+  permission to link this library with independent modules to produce an
+  executable, regardless of the license terms of these independent
+  modules, and to copy and distribute the resulting executable under
+  terms of your choice, provided that you also meet, for each linked
+  independent module, the terms and conditions of the license of that
+  module.  An independent module is a module which is not derived from
+  or based on this library.  If you modify this library, you may extend
+  this exception to your version of the library, but you are not
+  obligated to do so.  If you do not wish to do so, delete this
+  exception statement from your version.
 
-External libraries included with GNU Classpath may be distributed under
-different licensing terms.  Refer to the documentation for each package
-located in the external directory.
 
-Parts of the native library fdlibm in native/fdlibm are copyright of 
-Sun Microsystems, Inc. or AT&T.
+GNU Classpath also contains other (example) code distributed under other
+terms.  External libraries included with GNU Classpath may also be
+distributed under different licensing terms.
+The location and the exact terms of this other code is mentioned below.
 
+
+Directory examples.
+All example code is distributed under the GNU General Public License (GPL).
+Each example source code files carries the following notice:
+
+  GNU Classpath examples are free software; you can redistribute it
+  and/or modify it under the terms of the GNU General Public License as
+  published by the Free Software Foundation; either version 2, or (at
+  your option) any later version.
+
+  GNU Classpath examples are distributed in the hope that they will be
+  useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+  General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with GNU Classpath examples; see the file COPYING.  If not,
+  write to the Free Software Foundation, 59 Temple Place - Suite 330,
+  Boston, MA 02111-1307, USA.
+
+For more information see the README file in the examples directory.
+
+
+Directory native/fdlibm
+fdlimb contains general algorithms useful for runtimes and compilers to
+support strict double and float mathematical operations.
+
+fdlibm files carry the following notices:
+
+  Copyright (c) 1991 by AT&T.
+ 
+  Permission to use, copy, modify, and distribute this software for any
+  purpose without fee is hereby granted, provided that this entire notice
+  is included in all copies of any software which is or includes a copy
+  or modification of this software and in all copies of the supporting
+  documentation for such software.
+ 
+  THIS SOFTWARE IS BEING PROVIDED "AS IS", WITHOUT ANY EXPRESS OR IMPLIED
+  WARRANTY.  IN PARTICULAR, NEITHER THE AUTHOR NOR AT&T MAKES ANY
+  REPRESENTATION OR WARRANTY OF ANY KIND CONCERNING THE MERCHANTABILITY
+  OF THIS SOFTWARE OR ITS FITNESS FOR ANY PARTICULAR PURPOSE.
+
+  Copyright (C) 1993 by Sun Microsystems, Inc. All rights reserved.
+ 
+  Developed at SunPro, a Sun Microsystems, Inc. business.
+  Permission to use, copy, modify, and distribute this
+  software is freely granted, provided that this notice
+  is preserved.
+
+The upstream for fdlibm is libgcj (http://gcc.gnu.org/java/), they sync
+again with the 'real' upstream (http://www.netlib.org/fdlibm/readme).
