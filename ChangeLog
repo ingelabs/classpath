@@ -1,5 +1,10 @@
 2003-07-13  Jeroen Frijters <jeroen@sumatra.nl>
 
+	* javax/naming/CompoundName.java (CompoundName(String,Properties)):
+	guard against beginQuote and beginQuote2 being null
+
+2003-07-13  Jeroen Frijters <jeroen@sumatra.nl>
+
 	* java/beans/PropertyEditorManager.java (findEditor): use the thread
 	context class loader to try and find the class
 
