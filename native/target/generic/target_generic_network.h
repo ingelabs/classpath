@@ -755,7 +755,7 @@ extern "C" {
 * Name       : TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_IP_MULTICAST_IF
 * Purpose    : set socket option IP_MULTICAST_IF
 * Input      : socketDescriptor - socket descriptor
-*              address          - address
+*              address          - integer with IP address in host-format
 * Output     : result - TARGET_NATIVE_OK if no error occurred, 
 *                       TARGET_NATIVE_ERROR otherwise
 * Return     : -
@@ -909,7 +909,7 @@ extern "C" {
 
 /***********************************************************************\
 * Name       : TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_TCP_NODELAY
-* Purpose    : set socket option TCP_NODELAY
+* Purpose    : get socket option TCP_NODELAY
 * Input      : socketDescriptor - socket descriptor
 * Output     : flag   - 1 or 0
 *              result - TARGET_NATIVE_OK if no error occurred, 
@@ -942,7 +942,7 @@ extern "C" {
 
 /***********************************************************************\
 * Name       : TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_LINGER
-* Purpose    : set socket option SO_LINGER
+* Purpose    : get socket option SO_LINGER
 * Input      : socketDescriptor - socket descriptor
 * Output     : flag   - 1 or 0
 *              value  - linger value
@@ -977,7 +977,7 @@ extern "C" {
 
 /***********************************************************************\
 * Name       : TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_TIMEOUT
-* Purpose    : set socket option SO_TIMEOUT
+* Purpose    : get socket option SO_TIMEOUT
 * Input      : socketDescriptor - socket descriptor
 * Output     : flag   - 1 or 0
 *              result - TARGET_NATIVE_OK if no error occurred, 
@@ -1009,7 +1009,7 @@ extern "C" {
 
 /***********************************************************************\
 * Name       : TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_SNDBUF
-* Purpose    : set socket option SO_SNDBUF
+* Purpose    : get socket option SO_SNDBUF
 * Input      : socketDescriptor - socket descriptor
 * Output     : size   - size of send buffer
 *              result - TARGET_NATIVE_OK if no error occurred, 
@@ -1041,7 +1041,7 @@ extern "C" {
 
 /***********************************************************************\
 * Name       : TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_SO_RCDBUF
-* Purpose    : set socket option SO_RCDBUF
+* Purpose    : get socket option SO_RCDBUF
 * Input      : socketDescriptor - socket descriptor
 * Output     : size   - size of receive buffer
 *              result - TARGET_NATIVE_OK if no error occurred, 
@@ -1073,7 +1073,7 @@ extern "C" {
 
 /***********************************************************************\
 * Name       : TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_IP_TTL
-* Purpose    : set socket option IP_TTL
+* Purpose    : get socket option IP_TTL
 * Input      : socketDescriptor - socket descriptor
 * Output     : flag   - 1 or 0
 *              result - TARGET_NATIVE_OK if no error occurred, 
@@ -1106,9 +1106,9 @@ extern "C" {
 
 /***********************************************************************\
 * Name       : TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_IP_MULTICAST_IF
-* Purpose    : set socket option IP_MULTICAST_IF
+* Purpose    : get socket option IP_MULTICAST_IF
 * Input      : socketDescriptor - socket descriptor
-* Output     : address - result - 1 if no error occurred, 0 otherwise
+* Output     : address - integer with IP address in host-format
 *              result  - TARGET_NATIVE_OK if no error occurred, 
 *                        TARGET_NATIVE_ERROR otherwise
 * Return     : -
@@ -1132,6 +1132,40 @@ extern "C" {
       __socketAddress.sin_addr.s_addr = htonl(address); \
       __socketAddressLength=sizeof(__socketAddress); \
       result=(getsockopt(socketDescriptor,IPPROTO_IP,IP_MULTICAST_IF,&__socketAddress,&__socketAddressLength)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
+      if (result==TARGET_NATIVE_OK) \
+      { \
+        assert(__socketAddressLength>=sizeof(__socketAddress)); \
+        address=ntohl(__socketAddress.sin_addr.s_addr); \
+      } \
+    } while (0)
+#endif
+
+/***********************************************************************\
+* Name       : TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BIND_ADDRESS
+* Purpose    : get socket option SOCKOPT_SO_BINDADDR
+* Input      : socketDescriptor - socket descriptor
+* Output     : address - integer with IP address in host-format
+*              result  - TARGET_NATIVE_OK if no error occurred, 
+*                        TARGET_NATIVE_ERROR otherwise
+* Return     : -
+* Side-effect: unknown
+* Notes      : -
+\***********************************************************************/
+
+#ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BIND_ADDRESS
+  #include <sys/types.h>
+  #include <sys/socket.h>
+  #include <netinet/in.h>
+  #define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BIND_ADDRESS(socketDescriptor,address,result) \
+    do { \
+      struct sockaddr_in __socketAddress; \
+      socklen_t          __socketAddressLength; \
+      \
+      address=0;\
+      \
+      memset(&__socketAddress,0,sizeof(__socketAddress)); \
+      __socketAddressLength=sizeof(__socketAddress); \
+      result=(getsockname(socketDescriptor,(struct sockaddr*)&__socketAddress,&__socketAddressLength)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       if (result==TARGET_NATIVE_OK) \
       { \
         assert(__socketAddressLength>=sizeof(__socketAddress)); \
