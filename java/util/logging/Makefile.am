@@ -2,6 +2,9 @@
 
 SUBDIRS = 
 
+propertiesdir = $(libdir)
+properties_DATA = logging.properties
+
 EXTRA_DIST = \
 ConsoleHandler.java \
 ErrorManager.java \
