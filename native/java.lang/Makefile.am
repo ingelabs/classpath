@@ -1,4 +1,4 @@
-lib_LTLIBRARIES = libjavalang.la libjavalangmath.la
+pkglib_LTLIBRARIES = libjavalang.la libjavalangmath.la
 
 libjavalang_la_SOURCES = System.c Object.c Float.c \
 javalang.c javalang.h Double.c 
