@@ -50,7 +50,44 @@ import java.io.EOFException;
  * @since JDK 1.1
  */
 
-public class GZIPInputStream extends InflaterInputStream implements GZIPConstants {
+public class GZIPInputStream
+  extends InflaterInputStream
+{
+  /**
+   * The magic number found at the start of a GZIP stream.
+   */
+  public static final int GZIP_MAGIC = 0x1f8b;
+
+
+  /**
+   * The mask for bit 0 of the flag byte.
+   */
+  static final int FTEXT = 0x1;
+
+
+  /**
+   * The mask for bit 1 of the flag byte.
+   */
+  static final int FHCRC = 0x2;
+
+
+  /**
+   * The mask for bit 2 of the flag byte.
+   */
+  static final int FEXTRA = 0x4;
+
+
+  /**
+   * The mask for bit 3 of the flag byte.
+   */
+  static final int FNAME = 0x8;
+
+
+  /**
+   * The mask for bit 4 of the flag byte.
+   */
+  static final int FCOMMENT = 0x10;
+
 
   //Variables
 
