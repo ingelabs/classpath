@@ -1,5 +1,16 @@
 2004-10-29  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(gtkWidgetSetVisible): Unused. Removed.
+	(connectJObject): Likewise.
+	* gnu/java/awt/peer/gtk/GtkScrollPanePeer.java
+	(gtkScrolledWindowSetScrollPosition): Commented out.
+	* include/gnu_java_awt_peer_gtk_GtkComponentPeer.h,
+	include/gnu_java_awt_peer_gtk_GtkScrollPanePeer.h:
+	Regenerated.
+
+2004-10-29  Michael Koch  <konqueror@gmx.de>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
 	(cairoShowGlyphs) Removed.
 
