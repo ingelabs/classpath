@@ -307,5 +307,24 @@ read(byte[] buf, int offset, int len) throws IOException
   return(total_read);
 }
 
+/*************************************************************************/
+
+/**
+  * This method skips up to the requested number of bytes in the 
+  * input stream.  The actual number of bytes skipped is returned.  If the
+  * desired number of bytes to skip is negative, no bytes are skipped.
+  *
+  * @param num_byte The requested number of bytes to skip.
+  *
+  * @return The actual number of bytes skipped.
+  *
+  * @exception IOException If an error occurs.
+  */
+public long
+skip(long num_bytes) throws IOException
+{
+  return(super.skip(num_bytes));
+}
+
 } // class LineNumberInputStream
 
