@@ -1,3 +1,14 @@
+2005-03-14  Audrius Meskauskas  <audriusa@bluewin.ch>
+
+	* javax/swing/text/html/parser/Parser.java,
+	javax/swing/text/html/parser/Entity.java:
+	Inheriting from DTDConstants.
+	* javax/swing/text/html/parser/AttributeList.java
+	(getValues): Changed return type.
+	* javax/swing/text/html/parser/DocumentParser
+	(parse): Adding the callback parameter that receives
+	the parsing events.
+
 2005-03-13  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac: Set version to 0.14+cvs.
