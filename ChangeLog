@@ -1,4 +1,11 @@
 2004-04-08  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/BufferedWriter.java,
+	java/io/FilterInputStream.java,
+	java/io/ObjectInputStream.java:
+	More javadoc and coding style work.
+
+2004-04-08  Michael Koch  <konqueror@gmx.de>
 ,
 	* java/nio/channels/DatagramChannel.java,
 	java/nio/channels/FileChannel.java,
