@@ -460,7 +460,7 @@ usesLocalFiles() throws SQLException;
   *
   * @exception SQLException If an error occurs.
   */
-pubilc abstract boolean
+public abstract boolean
 usesLocalFilePerTable() throws SQLException;
 
 /*************************************************************************/
@@ -647,7 +647,7 @@ getSystemFunctions() throws SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract String
-getDateTimeFunctions throws SQLException;
+getDateTimeFunctions() throws SQLException;
 
 /*************************************************************************/
 
@@ -1022,7 +1022,7 @@ supportsIntegrityEnhancementFacility() throws SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract boolean
-supportsOuterJoins throws SQLException;
+supportsOuterJoins() throws SQLException;
 
 /*************************************************************************/
 
@@ -1035,7 +1035,7 @@ supportsOuterJoins throws SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract boolean
-supportsFullOuterJoins throws SQLException;
+supportsFullOuterJoins() throws SQLException;
 
 /*************************************************************************/
 
@@ -1048,7 +1048,7 @@ supportsFullOuterJoins throws SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract boolean
-supportsLimitedOuterJoins throws SQLException;
+supportsLimitedOuterJoins() throws SQLException;
 
 /*************************************************************************/
 
@@ -1125,7 +1125,7 @@ getCatalogSeparator() throws SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract boolean
-supportsSchemaInDataManipulation() thows SQLException;
+supportsSchemasInDataManipulation() throws SQLException;
 
 /*************************************************************************/
 
@@ -1139,7 +1139,7 @@ supportsSchemaInDataManipulation() thows SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract boolean
-supportsSchemaInProcedureCalls() thows SQLException;
+supportsSchemasInProcedureCalls() throws SQLException;
 
 /*************************************************************************/
 
@@ -1152,7 +1152,7 @@ supportsSchemaInProcedureCalls() thows SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract boolean
-supportsSchemaInTableDefinitions() thows SQLException;
+supportsSchemasInTableDefinitions() throws SQLException;
 
 /*************************************************************************/
 
@@ -1165,7 +1165,7 @@ supportsSchemaInTableDefinitions() thows SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract boolean
-supportsSchemaInIndexDefinitions() thows SQLException;
+supportsSchemasInIndexDefinitions() throws SQLException;
 
 /*************************************************************************/
 
@@ -1178,7 +1178,7 @@ supportsSchemaInIndexDefinitions() thows SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract boolean
-supportsSchemaInPrivilegeDefinitions() thows SQLException;
+supportsSchemasInPrivilegeDefinitions() throws SQLException;
 
 /*************************************************************************/
 
@@ -1192,7 +1192,7 @@ supportsSchemaInPrivilegeDefinitions() thows SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract boolean
-supportsSchemaInDataManipulation() thows SQLException;
+supportsCatalogsInDataManipulation() throws SQLException;
 
 /*************************************************************************/
 
@@ -1206,7 +1206,7 @@ supportsSchemaInDataManipulation() thows SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract boolean
-supportsSchemaInProcedureCalls() thows SQLException;
+supportsCatalogsInProcedureCalls() throws SQLException;
 
 /*************************************************************************/
 
@@ -1219,7 +1219,7 @@ supportsSchemaInProcedureCalls() thows SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract boolean
-supportsSchemaInTableDefinitions() thows SQLException;
+supportsCatalogsInTableDefinitions() throws SQLException;
 
 /*************************************************************************/
 
@@ -1232,7 +1232,7 @@ supportsSchemaInTableDefinitions() thows SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract boolean
-supportsSchemaInIndexDefinitions() thows SQLException;
+supportsCatalogsInIndexDefinitions() throws SQLException;
 
 /*************************************************************************/
 
@@ -1245,7 +1245,7 @@ supportsSchemaInIndexDefinitions() thows SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract boolean
-supportsCatalogInPrivilegeDefinitions() thows SQLException;
+supportsCatalogInPrivilegeDefinitions() throws SQLException;
 
 /*************************************************************************/
 
@@ -1510,18 +1510,6 @@ getMaxColumnsInGroupBy() throws SQLException;
 /*************************************************************************/
 
 /**
-  * This method returns the maximum number of columns in an ORDER BY statement.
-  *
-  * @return The maximum number of columns in an ORDER BY statement.
-  *
-  * @exception SQLException If an error occurs.
-  */
-public abstract int
-getMaxColumnsInOrderBy() throws SQLException;
-
-/*************************************************************************/
-
-/**
   * This method returns the maximum number of columns in an index.
   *
   * @return The maximum number of columns in an index.
@@ -1773,15 +1761,964 @@ supportsTransactionIsolationLevel(int level) throws SQLException;
 
 /*************************************************************************/
 
+/**
+  * This method tests whether or not DDL and DML statements allowed within 
+  * the same transaction.
+  *
+  * @return <code>true</code> if DDL and DML statements are allowed in the
+  * same transaction, <code>false</code> otherwise.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract boolean
+supportsDataDefinitionAndDataManipulationTransactions() throws SQLException;
 
+/*************************************************************************/
 
+/**
+  * This method tests whether or not only DML statement are allowed
+  * inside a transaction.
+  *
+  * @return <code>true</code> if only DML statements are allowed in
+  * transactions, <code>false</code> otherwise.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract boolean
+supportsDataManipulationTransactionsOnly() throws SQLException;
 
+/*************************************************************************/
 
+/**
+  * This method tests whether or not a DDL statement will cause the
+  * current transaction to be automatically committed.
+  *
+  * @return <code>true</code> if DDL causes an immediate transaction commit,
+  * <code>false</code> otherwise.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract boolean
+dataDefinitionCausesTransactionCommit() throws SQLException;
 
+/*************************************************************************/
 
+/**
+  * This method tests whether or not DDL statements are ignored in
+  * transactions.
+  *
+  * @return <code>true</code> if DDL statements are ignored in transactions,
+  * <code>false</code> otherwise.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract boolean
+dataDefinitionIgnoredInTransactions() throws SQLException;
 
+/*************************************************************************/
 
+/**
+  * This method returns a list of all the stored procedures matching the
+  * specified pattern in the given schema and catalog.  This is returned
+  * a <code>ResultSet</code> with the following columns:
+  * <p>
+  * <ol>
+  * <li>PROCEDURE_CAT - The catalog the procedure is in, which may be 
+  * <code>null</code>.
+  * <li>PROCEDURE_SCHEM - The schema the procedures is in, which may be
+  * <code>null</code>.
+  * <li>PROCEDURE_NAME - The name of the procedure.
+  * <li>Unused
+  * <li>Unused
+  * <li>Unused
+  * <li>REMARKS - A description of the procedure
+  * <li>PROCEDURE_TYPE - Indicates the return type of the procedure, which 
+  * is one of the contstants defined in this class 
+  * (<code>procedureResultUnknown</code>, <code>procedureNoResult</code>, or
+  * <code>procedureReturnsResult</code>).
+  * </ol>
+  *
+  * @param catalog The name of the catalog to return stored procedured from,
+  * or "" to return procedures from all catalogs.
+  * @param schemaPattern A schema pattern for the schemas to return stored
+  * procedures from, or "" to return procedures from all schemas.
+  * @param namePattern The pattern of procedures names to return.
+  *
+  * @returns A <code>ResultSet</code> with all the requested procedures.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getProcedures(String catalog, String schemaPattern, String namePattern)
+              throws SQLException;
 
+/*************************************************************************/
+
+/**
+  * This method returns a list of the parameter and result columns for
+  * the requested stored procedures.  This is returned in the form of a
+  * <code>ResultSet</code> with the following columns:
+  * <p>
+  * <ol>
+  * <li>PROCEDURE_CAT - The catalog the procedure is in, which may be 
+  * <code>null</code>.
+  * <li>PROCEDURE_SCHEM - The schema the procedures is in, which may be
+  * <code>null</code>.
+  * <li>PROCEDURE_NAME - The name of the procedure.
+  * <li>COLUMN_NAME - The name of the column
+  * <li>COLUMN_TYPE - The type of the column, which will be one of the
+  * contants defined in this class (<code>procedureColumnUnknown</code>,
+  * <code>procedureColumnIn</code>, <code>procedureColumnInOut</code>,
+  * <code>procedureColumnOut</code>, <code>procedureColumnReturn</code>,
+  * or <code>procedureColumnResult</code>).
+  * <li>DATA_TYPE - The SQL type of the column. This is one of the constants
+  * defined in <code>Types</code>.
+  * <li>TYPE_NAME - The string name of the data type for this column.
+  * <li>PRECISION - The precision of the column.
+  * <li>LENGTH - The length of the column in bytes
+  * <li>SCALE - The scale of the column.
+  * <li>RADIX - The radix of the column.
+  * <li>NULLABLE - Whether or not the column is NULLABLE.  This is one of
+  * the constants defined in this class (<code>procedureNoNulls</code>,
+  * <code>procedureNullable</code>, or <code>procedureNullableUnknown</code>)
+  * <li>REMARKS - A description of the column.
+  * </ol>
+  *
+  * @param catalog The name of the catalog to return stored procedured from,
+  * or "" to return procedures from all catalogs.
+  * @param schemaPattern A schema pattern for the schemas to return stored
+  * procedures from, or "" to return procedures from all schemas.
+  * @param namePattern The pattern of procedures names to return.
+  * @param columnPattern The pattern of column names to return.
+  *
+  * @returns A <code>ResultSet</code> with all the requested procedures.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getProcedureColumns(String catalog, String schemaPattern, String namePattern,
+                    String columnPattern) throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method returns a list of the requested table as a   
+  * <code>ResultSet</code> with the following columns:
+  * <p>
+  * <ol>
+  * <li>TABLE_CAT - The catalog the table is in, which may be <code>null</code>.
+  * <li>TABLE_SCHEM - The schema the table is in, which may be <code>null</code>.
+  * <li>TABLE_NAME - The name of the table.
+  * <li>TABLE_TYPE - A string describing the table type.  This will be one
+  * of the values returned by the <code>getTableTypes()</code> method.
+  * <li>REMARKS - Comments about the table.
+  * </ol>
+  * 
+  * @param catalog The name of the catalog to return tables from,
+  * or "" to return tables from all catalogs.
+  * @param schemaPattern A schema pattern for the schemas to return tables
+  * from, or "" to return tables from all schemas.
+  * @param namePattern The pattern of table names to return.
+  *
+  * @returns A <code>ResultSet</code> with all the requested tables.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getTables(String catalog, String schemaPattern, String namePattern)
+          throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method returns the list of database schemas as a 
+  * <code>ResultSet</code>, with one column - TABLE_SCHEM - that is the
+  * name of the schema.
+  *
+  * @return A <code>ResultSet</code> with all the requested schemas.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getSchemas() throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method returns the list of database catalogs as a
+  * <code>ResultSet</code> with one column - TABLE_CAT - that is the
+  * name of the catalog.
+  *
+  * @return A <code>ResultSet</code> with all the requested catalogs.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getCatalogs() throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method returns the list of database table types as a
+  * <code>ResultSet</code> with one column - TABLE_TYPE - that is the
+  * name of the table type.
+  *
+  * @return A <code>ResultSet</code> with all the requested table types.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getTableTypes() throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method returns a list of the tables columns for
+  * the requested tables.  This is returned in the form of a
+  * <code>ResultSet</code> with the following columns:
+  * <p>
+  * <ol>
+  * <li>TABLE_CAT - The catalog the table is in, which may be 
+  * <code>null</code>.
+  * <li>TABLE_SCHEM - The schema the tables is in, which may be
+  * <code>null</code>.
+  * <li>TABLE_NAME - The name of the table.
+  * <li>COLUMN_NAME - The name of the column
+  * <li>DATA_TYPE - The SQL type of the column. This is one of the constants
+  * defined in <code>Types</code>.
+  * <li>TYPE_NAME - The string name of the data type for this column.
+  * <li>COLUMN_SIZE - The size of the column.
+  * <li>Unused
+  * <li>NUM_PREC_RADIX - The radix of the column.
+  * <li>NULLABLE - Whether or not the column is NULLABLE.  This is one of
+  * the constants defined in this class (<code>tableNoNulls</code>,
+  * <code>tableNullable</code>, or <code>tableNullableUnknown</code>)
+  * <li>REMARKS - A description of the column.
+  * <li>COLUMN_DEF - The default value for the column, may be <code>null</code>.
+  * <li>SQL_DATA_TYPE - Unused
+  * <li>SQL_DATETIME_SUB - Unused
+  * <li>CHAR_OCTET_LENGTH - For character columns, the maximum number of bytes
+  * in the column.
+  * <li>ORDINAL_POSITION - The index of the column in the table.
+  * <li>IS_NULLABLE - "NO" means no, "YES" means maybe, and an empty string
+  * means unknown.
+  * </ol>
+  *
+  * @param catalog The name of the catalog to return table from,
+  * or "" to return tables from all catalogs.
+  * @param schemaPattern A schema pattern for the schemas to return 
+  * tables from, or "" to return tables from all schemas.
+  * @param namePattern The pattern of tables names to return.
+  * @param columnPattern The pattern of column names to return.
+  *
+  * @returns A <code>ResultSet</code> with all the requested tables.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getColumns(String catalog, String schemaPattern, String namePattern,
+           String columnPattern) throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method returns the access rights that have been granted to the
+  * requested columns.  This information is returned as a <code>ResultSet</code>
+  * with the following columns:
+  * <p>
+  * <ol>
+  * <li>TABLE_CAT - The catalog the table is in, which may be 
+  * <code>null</code>.
+  * <li>TABLE_SCHEM - The schema the tables is in, which may be
+  * <code>null</code>.
+  * <li>TABLE_NAME - The name of the table.
+  * <li>COLUMN_NAME - The name of the column.
+  * <li>GRANTOR - The entity that granted the access.
+  * <li>GRANTEE - The entity granted the access.
+  * <li>PRIVILEGE - The name of the privilege granted.
+  * <li>IS_GRANTABLE - "YES" if the grantee can grant the privilege to
+  * others, "NO" if not, and <code>null</code> if unknown.
+  * </ol>
+  *
+  * @param catalog The catalog to retrieve information from, or the empty string
+  * to return entities not associated with a catalog, or <code>null</code>
+  * to return information from all catalogs.
+  * @param schema The schema to retrieve information from, or the empty string
+  * to return entities not associated with a schema.
+  * @param table The table name to return information for.
+  * @param columnPattern A pattern of column names to return information for.
+  * 
+  * @return A <code>ResultSet</code> with all the requested privileges.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getColumnPrivileges(String catalog, String schema, String table,
+                    String columnPattern) throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method returns the access rights that have been granted to the
+  * requested tables.  This information is returned as a <code>ResultSet</code>
+  * with the following columns:
+  * <p>
+  * <ol>
+  * <li>TABLE_CAT - The catalog the table is in, which may be 
+  * <code>null</code>.
+  * <li>TABLE_SCHEM - The schema the tables is in, which may be
+  * <code>null</code>.
+  * <li>TABLE_NAME - The name of the table.
+  * <li>GRANTOR - The entity that granted the access.
+  * <li>GRANTEE - The entity granted the access.
+  * <li>PRIVILEGE - The name of the privilege granted.
+  * <li>IS_GRANTABLE - "YES" if the grantee can grant the privilege to
+  * others, "NO" if not, and <code>null</code> if unknown.
+  * </ol>
+  *
+  * @param catalog The catalog to retrieve information from, or the empty string
+  * to return entities not associated with a catalog, or <code>null</code>
+  * to return information from all catalogs.
+  * @param schema The schema to retrieve information from, or the empty string
+  * to return entities not associated with a schema.
+  * @param tablePattern The table name pattern of tables to return 
+  * information for.
+  * 
+  * @return A <code>ResultSet</code> with all the requested privileges.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getTablePrivileges(String catalog, String schema, String table)
+                   throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method returns the best set of columns for uniquely identifying
+  * a row.  It returns this information as a <code>ResultSet</code> with
+  * the following columns:
+  * <p>
+  * <ol>
+  * <li>SCOPE - The scope of the results returned.  This is one of the 
+  * constants defined in this class (<code>bestRowTemporary</code>,
+  * <code>bestRowTransaction</code>, or <code>bestRowSession</code).
+  * <li>COLUMN_NAME - The name of the column.
+  * <li>DATA_TYPE - The SQL type of the column. This is one of the constants
+  * defined in <code>Types</code>.
+  * <li>TYPE_NAME - The string name of the data type for this column.
+  * <li>COLUMN_SIZE - The precision of the columns
+  * <li>BUFFER_LENGTH - Unused
+  * <li>DECIMAL_DIGITS - The scale of the column.
+  * <li>PSEUDO_COLUMN - Whether or not the best row identifier is a
+  * pseudo_column.  This is one of the constants defined in this class 
+  * (<code>bestRowUnknown</code>, <code>bestRowNotPseudo</code>, or
+  * <code>bestRowPseudo</code>).
+  * </ol>
+  *
+  * @param catalog The catalog to retrieve information from, or the empty string
+  * to return entities not associated with a catalog, or <code>null</code>
+  * to return information from all catalogs.
+  * @param schema The schema to retrieve information from, or the empty string
+  * to return entities not associated with a schema.
+  * @param table The table name to return information for.
+  * @param columnPattern A pattern of column names to return information for.
+  * @param scope One of the best row id scope constants from this class.
+  * @param nullable <code>true</code> to include columns that are nullable,
+  * <code>false</code> otherwise.
+  * 
+  * @return A <code>ResultSet</code> with the best row identifier.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getBestRowIdentifier(String catalog, String schema, String table,
+                     int scope, boolean nullable) throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method returns the set of columns that are automatically updated
+  * when the row is update. It returns this information as a 
+  * <code>ResultSet</code> with the following columns:
+  * <p>
+  * <ol>
+  * <li>SCOPE - Unused
+  * <li>COLUMN_NAME - The name of the column.
+  * <li>DATA_TYPE - The SQL type of the column. This is one of the constants
+  * defined in <code>Types</code>.
+  * <li>TYPE_NAME - The string name of the data type for this column.
+  * <li>COLUMN_SIZE - The precision of the columns
+  * <li>BUFFER_LENGTH - Unused
+  * <li>DECIMAL_DIGITS - The scale of the column.
+  * <li>PSEUDO_COLUMN - Whether or not the best row identifier is a
+  * pseudo_column.  This is one of the constants defined in this class 
+  * (<code>versionRowUnknown</code>, <code>versionRowNotPseudo</code>, or
+  * <code>versionRowPseudo</code>).
+  * </ol>
+  *
+  * @param catalog The catalog to retrieve information from, or the empty string
+  * to return entities not associated with a catalog, or <code>null</code>
+  * to return information from all catalogs.
+  * @param schema The schema to retrieve information from, or the empty string
+  * to return entities not associated with a schema.
+  * @param table The table name to return information for.
+  * @param columnPattern A pattern of column names to return information for.
+  *
+  * @return A <code>ResultSet</code> with the version columns.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getVersionColumns(String catalog, String schema, String table)
+                  throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method returns a list of a table's primary key columns.  These
+  * are returned as a <code>ResultSet</code> with the following columns.
+  * <p>
+  * <ol>
+  * <li>TABLE_CAT - The catalog of the table, which may be <code>null</code>.
+  * <li>TABLE_SCHEM - The schema of the table, which may be <code>null</code>.
+  * <li>TABLE_NAME - The name of the table.
+  * <li>COLUMN_NAME - The name of the column.
+  * <li>KEY_SEQ - The sequence number of the column within the primary key.
+  * <li>PK_NAME - The name of the primary key, which may be <code>null</code>.
+  *
+  * @param catalog The catalog to retrieve information from, or the empty string
+  * to return entities not associated with a catalog, or <code>null</code>
+  * to return information from all catalogs.
+  * @param schema The schema to retrieve information from, or the empty string
+  * to return entities not associated with a schema.
+  * @param table The table name to return information for.
+  * @param columnPattern A pattern of column names to return information for.
+  *
+  * @return A <code>ResultSet</code> with the primary key columns.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getPrimaryKeys(String catalog, String schema, String table)
+               throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method returns a list of the table's foreign keys.  These are
+  * returned as a <code>ResultSet</code> with the following columns:
+  * <p>
+  * <ol>
+  * <li>PKTABLE_CAT - The catalog of the table the key was imported from.
+  * <li>PKTABLE_SCHEM - The schema of the table the key was imported from.
+  * <li>PKTABLE_NAME - The name of the table the key was imported from.
+  * <li>PKCOLUMN_NAME - The name of the column that was imported.
+  * <li>FKTABLE_CAT - The foreign key catalog name.
+  * <li>FKTABLE_SCHEM - The foreign key schema name.
+  * <li>FKTABLE_NAME - The foreign key table name.
+  * <li>FKCOLUMN_NAME - The foreign key column name.
+  * <li>KEY_SEQ - The sequence number of the column within the foreign key.
+  * <li>UPDATE_RULE - How the foreign key behaves when the primary key is
+  * updated.  This is one of the constants defined in this class 
+  * (<code>importedNoAction</code>, <code>importedKeyCascade</code>,
+  * <code>importedKeySetNull</code>, <code>importedKeySetDefault</code>, or
+  * <code>importedKeyRestrict</code>).
+  * <li>DELETE_RULE - How the foreign key behaves when the primary key is
+  * deleted.  This is one of the constants defined in this class 
+  * (<code>importedNoAction</code>, <code>importedKeyCascade</code>,
+  * <code>importedKeySetNull</code>, or <code>importedKeySetDefault</code>)
+  * <li>FK_NAME - The name of the foreign key.
+  * <li>PK_NAME - The name of the primary key.
+  * <li>DEFERRABILITY - The deferrability value.  This is one of the
+  * constants defined in this table (<code>importedKeyInitiallyDeferred</code>,
+  * <code>importedKeyInitiallyImmediate</code>, or
+  * <code>importedKeyNotDeferrable</code>).
+  *
+  * @param catalog The catalog to retrieve information from, or the empty string
+  * to return entities not associated with a catalog, or <code>null</code>
+  * to return information from all catalogs.
+  * @param schema The schema to retrieve information from, or the empty string
+  * to return entities not associated with a schema.
+  * @param table The table name to return information for.
+  *
+  * @return A <code>ResultSet</code> with the foreign key columns.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getImportedKeys(String catalog, String schema, String table)
+                throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method returns a list of the table's which use this table's
+  * primary key as a foreign key.  The information is
+  * returned as a <code>ResultSet</code> with the following columns:
+  * <p>
+  * <ol>
+  * <li>PKTABLE_CAT - The catalog of the table the key was imported from.
+  * <li>PKTABLE_SCHEM - The schema of the table the key was imported from.
+  * <li>PKTABLE_NAME - The name of the table the key was imported from.
+  * <li>PKCOLUMN_NAME - The name of the column that was imported.
+  * <li>FKTABLE_CAT - The foreign key catalog name.
+  * <li>FKTABLE_SCHEM - The foreign key schema name.
+  * <li>FKTABLE_NAME - The foreign key table name.
+  * <li>FKCOLUMN_NAME - The foreign key column name.
+  * <li>KEY_SEQ - The sequence number of the column within the foreign key.
+  * <li>UPDATE_RULE - How the foreign key behaves when the primary key is
+  * updated.  This is one of the constants defined in this class 
+  * (<code>importedNoAction</code>, <code>importedKeyCascade</code>,
+  * <code>importedKeySetNull</code>, <code>importedKeySetDefault</code>, or
+  * <code>importedKeyRestrict</code>).
+  * <li>DELETE_RULE - How the foreign key behaves when the primary key is
+  * deleted.  This is one of the constants defined in this class 
+  * (<code>importedNoAction</code>, <code>importedKeyCascade</code>,
+  * <code>importedKeySetNull</code>, or <code>importedKeySetDefault</code>)
+  * <li>FK_NAME - The name of the foreign key.
+  * <li>PK_NAME - The name of the primary key.
+  * <li>DEFERRABILITY - The deferrability value.  This is one of the
+  * constants defined in this table (<code>importedKeyInitiallyDeferred</code>,
+  * <code>importedKeyInitiallyImmediate</code>, or
+  * <code>importedKeyNotDeferrable</code>).
+  *
+  * @param catalog The catalog to retrieve information from, or the empty string
+  * to return entities not associated with a catalog, or <code>null</code>
+  * to return information from all catalogs.
+  * @param schema The schema to retrieve information from, or the empty string
+  * to return entities not associated with a schema.
+  * @param table The table name to return information for.
+  *
+  * @return A <code>ResultSet</code> with the requested information
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getExportedKeys(String catalog, String schema, String table)
+                throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method returns a description of how one table imports another
+  * table's primary key as a foreign key.  The information is
+  * returned as a <code>ResultSet</code> with the following columns:
+  * <p>
+  * <ol>
+  * <li>PKTABLE_CAT - The catalog of the table the key was imported from.
+  * <li>PKTABLE_SCHEM - The schema of the table the key was imported from.
+  * <li>PKTABLE_NAME - The name of the table the key was imported from.
+  * <li>PKCOLUMN_NAME - The name of the column that was imported.
+  * <li>FKTABLE_CAT - The foreign key catalog name.
+  * <li>FKTABLE_SCHEM - The foreign key schema name.
+  * <li>FKTABLE_NAME - The foreign key table name.
+  * <li>FKCOLUMN_NAME - The foreign key column name.
+  * <li>KEY_SEQ - The sequence number of the column within the foreign key.
+  * <li>UPDATE_RULE - How the foreign key behaves when the primary key is
+  * updated.  This is one of the constants defined in this class 
+  * (<code>importedNoAction</code>, <code>importedKeyCascade</code>,
+  * <code>importedKeySetNull</code>, <code>importedKeySetDefault</code>, or
+  * <code>importedKeyRestrict</code>).
+  * <li>DELETE_RULE - How the foreign key behaves when the primary key is
+  * deleted.  This is one of the constants defined in this class 
+  * (<code>importedNoAction</code>, <code>importedKeyCascade</code>,
+  * <code>importedKeySetNull</code>, or <code>importedKeySetDefault</code>)
+  * <li>FK_NAME - The name of the foreign key.
+  * <li>PK_NAME - The name of the primary key.
+  * <li>DEFERRABILITY - The deferrability value.  This is one of the
+  * constants defined in this table (<code>importedKeyInitiallyDeferred</code>,
+  * <code>importedKeyInitiallyImmediate</code>, or
+  * <code>importedKeyNotDeferrable</code>).
+  *
+  * @param primCatalog The catalog to retrieve information from, or the empty string
+  * to return entities not associated with a catalog, or <code>null</code>
+  * to return information from all catalogs, on the exporting side.
+  * @param primSchema The schema to retrieve information from, or the empty string
+  * to return entities not associated with a schema, on the exporting side.
+  * @param primTable The table name to return information for, on the exporting
+  * side.
+  * @param forCatalog The catalog to retrieve information from, or the empty string
+  * to return entities not associated with a catalog, or <code>null</code>
+  * to return information from all catalogs, on the importing side.
+  * @param forSchema The schema to retrieve information from, or the empty string
+  * to return entities not associated with a schema on the importing side.
+  * @param forTable The table name to return information for on the importing
+  * side.
+  *
+  * @return A <code>ResultSet</code> with the requested information
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getCrossReference(String primCatalog, String primSchema, String primTable,
+                  String forCatalog, String forSchema, String forTable)
+                  throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method returns a list of the SQL types supported by this
+  * database.  The information is returned as a <code>ResultSet</code>
+  * with the following columns:
+  * <p>
+  * <ol>
+  * <li>TYPE_NAME - The name of the data type.
+  * <li>DATA_TYPE - A data type constant from <code>Types</code> for this
+  * type.
+  * <li>PRECISION - The maximum precision of this type.
+  * <li>LITERAL_PREFIX - Prefix value used to quote a literal, which may be
+  * <code>null</code>.
+  * <li>LITERAL_SUFFIX - Suffix value used to quote a literal, which may be
+  * <code>null</code>.
+  * <li>CREATE_PARAMS - The parameters used to create the type, which may be
+  * <code>null</code>.
+  * <li>NULLABLE - Whether or not this type supports NULL values.  This will
+  * be one of the constants defined in this interface 
+  * (<code>typeNoNulls</code>, <code>typeNullable</code>, or
+  * <code>typeNullableUnknown</code>).
+  * <li>CASE_SENSITIVE - Whether or not the value is case sensitive.
+  * <li>SEARCHABLE - Whether or not "LIKE" expressions are supported in
+  * WHERE clauses for this type.  This will be one of the constants defined
+  * in this interface (<code>typePredNone</code>, <code>typePredChar</code>,
+  * <code>typePredBasic</code>, or <code>typeSearchable</code>).
+  * <li>UNSIGNED_ATTRIBUTE - Is the value of this type unsigned.
+  * <li>FIXED_PREC_SCALE - Whether or not this type can be used for money.
+  * <li>AUTO_INCREMENT - Whether or not this type supports auto-incrementing.
+  * <li>LOCAL_TYPE_NAME - A localized name for this data type.
+  * <li>MINIMUM_SCALE - The minimum scale supported by this type.
+  * <li>MAXIMUM_SCALE - The maximum scale supported by this type.
+  * <li>SQL_DATA_TYPE - Unused.
+  * <li>SQL_DATETIME_SUB - Unused.
+  * <li>NUM_PREC_RADIX - The radix of this data type.
+  * </ol>
+  * 
+  * @return A <code>ResultSet</code> with the list of available data types.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getTypeInfo() throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method returns information about a tables indices and statistics.
+  * It is returned as a <code>ResultSet</code> with the following columns:
+  * <p>
+  * <ol>
+  * <li>TABLE_CAT - The catalog of the table, which may be <code>null</code>.
+  * <li>TABLE_SCHEM - The schema of the table, which may be <code>null</code>.
+  * <li>TABLE_NAME - The name of the table.
+  * <li>NON_UNIQUE - Are index values non-unique?
+  * <li>INDEX_QUALIFIER The index catalog, which may be <code>null</code>
+  * <li>INDEX_NAME - The name of the index.
+  * <li>TYPE - The type of index, which will be one of the constants defined
+  * in this interface (<code>tableIndexStatistic</code>,
+  * <code>tableIndexClustered</code>, <code>tableIndexHashed</code>, or
+  * <code>tableIndexOther</code>).
+  * <li>ORDINAL_POSITION - The sequence number of this column in the index.
+  * This will be 0 when the index type is <code>tableIndexStatistic</code>.
+  * <li>COLUMN_NAME - The name of this column in the index.
+  * <li>ASC_OR_DESC - "A" for an ascending sort sequence, "D" for a
+  * descending sort sequence or <code>null</code> if a sort sequence is not
+  * supported.
+  * <li>CARDINALITY - The number of unique rows in the index, or the number
+  * of rows in the table if the index type is <code>tableIndexStatistic</code>.
+  * <li>PAGES - The number of pages used for the index, or the number of pages
+  * in the table if the index type is <code>tableIndexStatistic</code>.
+  * <li>FILTER_CONDITION - The filter condition for this index, which may be
+  * <code>null</code>.
+  *
+  * @param catalog The catalog to retrieve information from, or the empty string
+  * to return entities not associated with a catalog, or <code>null</code>
+  * to return information from all catalogs.
+  * @param schema The schema to retrieve information from, or the empty string
+  * to return entities not associated with a schema.
+  * @param table The table name to return information for.
+  * @param unique <code>true</code> to return only unique indexes, 
+  * <code>false</code> otherwise.
+  * @param approx <code>true</code> if data values can be approximations,
+  * <code>false</code> otherwise.
+  *
+  * @return A <code>ResultSet</code> with the requested index information
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getIndexInfo(String catalog, String schema, String table, boolean unique,
+             boolean approx) throws SQLException; 
+
+/*************************************************************************/
+
+/**
+  * This method tests whether or not the datbase supports the specified
+  * result type.
+  *
+  * @param type The desired result type, which is one of the constants
+  * defined in <code>ResultSet</code>.
+  *
+  * @return <code>true</code> if the result set type is supported,
+  * <code>false</code> otherwise.
+  *
+  * @exception SQLException If an error occurs.
+  *
+  * @see ResultSet
+  */
+public abstract boolean
+supportsResultType(int type) throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method tests whether the specified result set type and result set
+  * concurrency type are supported by the database.
+  *
+  * @param type The desired result type, which is one of the constants
+  * defined in <code>ResultSet</code>.
+  * @param concur The desired concurrency type, which is one of the constants
+  * defined in <code>ResultSet</code>.
+  *
+  * @return <code>true</code> if the result set type is supported,
+  * <code>false</code> otherwise.
+  *
+  * @exception SQLException If an error occurs.
+  *
+  * @see ResultSet
+  */
+public abstract boolean
+supportsResultSetConcurrency(int type, int concur) throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method tests whether or not the specified result set type sees its
+  * own updates.
+  *
+  * @param type The desired result type, which is one of the constants
+  * defined in <code>ResultSet</code>.
+  *
+  * @return <code>true</code> if the result set type sees its own updates,
+  * <code>false</code> otherwise.
+  *
+  * @exception SQLException If an error occurs.
+  *
+  * @see ResultSet
+  */
+public abstract boolean
+ownUpdatesAreVisible(int type) throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method tests whether or not the specified result set type sees its
+  * own deletes.
+  *
+  * @param type The desired result type, which is one of the constants
+  * defined in <code>ResultSet</code>.
+  *
+  * @return <code>true</code> if the result set type sees its own deletes,
+  * <code>false</code> otherwise.
+  *
+  * @exception SQLException If an error occurs.
+  *
+  * @see ResultSet
+  */
+public abstract boolean
+ownDeletesAreVisible(int type) throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method tests whether or not the specified result set type sees its
+  * own inserts.
+  *
+  * @param type The desired result type, which is one of the constants
+  * defined in <code>ResultSet</code>.
+  *
+  * @return <code>true</code> if the result set type sees its own inserts,
+  * <code>false</code> otherwise.
+  *
+  * @exception SQLException If an error occurs.
+  *
+  * @see ResultSet
+  */
+public abstract boolean
+ownInsertsAreVisible(int type) throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method tests whether or not the specified result set type sees 
+  * updates committed by others.
+  *
+  * @param type The desired result type, which is one of the constants
+  * defined in <code>ResultSet</code>.
+  *
+  * @return <code>true</code> if the result set type sees other updates,
+  * <code>false</code> otherwise.
+  *
+  * @exception SQLException If an error occurs.
+  *
+  * @see ResultSet
+  */
+public abstract boolean
+othersUpdatesAreVisible(int type) throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method tests whether or not the specified result set type sees 
+  * deletes committed by others.
+  *
+  * @param type The desired result type, which is one of the constants
+  * defined in <code>ResultSet</code>.
+  *
+  * @return <code>true</code> if the result set type sees other deletes,
+  * <code>false</code> otherwise.
+  *
+  * @exception SQLException If an error occurs.
+  *
+  * @see ResultSet
+  */
+public abstract boolean
+othersDeletesAreVisible(int type) throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method tests whether or not the specified result set type sees 
+  * inserts committed by others.
+  *
+  * @param type The desired result type, which is one of the constants
+  * defined in <code>ResultSet</code>.
+  *
+  * @return <code>true</code> if the result set type sees other inserts,
+  * <code>false</code> otherwise.
+  *
+  * @exception SQLException If an error occurs.
+  *
+  * @see ResultSet
+  */
+public abstract boolean
+othersInsertsAreVisible(int type) throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method tests whether or not the specified result set type can detect
+  * a visible update by calling the <code>rowUpdated</code> method.
+  *
+  * @param type The desired result type, which is one of the constants
+  * defined in <code>ResultSet</code>.
+  *
+  * @return <code>true</code> if the result set type can detect visible updates
+  * using <code>rowUpdated</code>, <code>false</code> otherwise.
+  *
+  * @exception SQLException If an error occurs.
+  *
+  * @see ResultSet
+  */
+public abstract boolean
+updatesAreDetected(int type) throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method tests whether or not the specified result set type can detect
+  * a visible delete by calling the <code>rowUpdated</code> method.
+  *
+  * @param type The desired result type, which is one of the constants
+  * defined in <code>ResultSet</code>.
+  *
+  * @return <code>true</code> if the result set type can detect visible deletes
+  * using <code>rowUpdated</code>, <code>false</code> otherwise.
+  *
+  * @exception SQLException If an error occurs.
+  *
+  * @see ResultSet
+  */
+public abstract boolean
+deletesAreDetected(int type) throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method tests whether or not the specified result set type can detect
+  * a visible insert by calling the <code>rowUpdated</code> method.
+  *
+  * @param type The desired result type, which is one of the constants
+  * defined in <code>ResultSet</code>.
+  *
+  * @return <code>true</code> if the result set type can detect visible inserts
+  * using <code>rowUpdated</code>, <code>false</code> otherwise.
+  *
+  * @exception SQLException If an error occurs.
+  *
+  * @see ResultSet
+  */
+public abstract boolean
+insertsAreDetected(int type) throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method tests whether or not the database supports batch updates.
+  *
+  * @return <code>true</code> if batch updates are supported,
+  * <code>false</code> otherwise.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract boolean
+supportsBatchUpdates() throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method returns the list of user defined data types in use.  These
+  * are returned as a <code>ResultSet</code> with the following columns:
+  * <p>
+  * <ol>
+  * <li>TYPE_CAT - The catalog name, which may be <code>null</code>.
+  * <li>TYPE_SCEHM - The schema name, which may be <code>null</code>.
+  * <li>TYPE_NAME - The user defined data type name.
+  * <li>CLASS_NAME - The Java class name this type maps to.
+  * <li>DATA_TYPE - A type identifer from <code>Types</code> for this type.
+  * This will be one of <code>JAVA_OBJECT</code>, <code>STRUCT</code>, or
+  * <code>DISTINCT</code>.
+  * <li>REMARKS - Comments about this data type.
+  * </ol>
+  *
+  * @param catalog The catalog to retrieve information from, or the empty string
+  * to return entities not associated with a catalog, or <code>null</code>
+  * to return information from all catalogs.
+  * @param schema The schema to retrieve information from, or the empty string
+  * to return entities not associated with a schema.
+  * @param typePattern The type name pattern to match.
+  * @param types The type identifer patterns (from <code>Types</code>) to
+  * match.
+  *
+  * @return A <code>ResultSet</code> with the requested type information
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+getUDTs(String catalog, String schema, String typePattern, int[] types)
+        throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method returns the <code>Connection</code> object that was used
+  * to generate the metadata in this object.
+  *
+  * @return The connection for this object.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract Connection
+getConnection() throws SQLException;
 
 } // interface DatabaseMetaData
 
