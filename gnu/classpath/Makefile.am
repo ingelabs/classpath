@@ -1,5 +1,6 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
 EXTRA_DIST = \
-Configuration.java.in
+Configuration.java.in \
+RawData.java
 

@@ -92,6 +92,8 @@ MenuElement.java \
 MenuSelectionManager.java \
 MutableComboBoxModel.java \
 OverlayLayout.java \
+Popup.java \
+PopupFactory.java \
 ProgressMonitor.java \
 ProgressMonitorInputStream.java \
 Renderer.java \

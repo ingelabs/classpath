@@ -1,5 +1,13 @@
 2003-08-10  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/classpath/Makefile.am (EXTRA_DIST): Add RawData.java.
+	* javax/swing/Makefile.am (EXTRA_DIST): Add Popup.java and
+	PopupFactory.java.
+	* vm/reference/java/lang/Makefile.am (EXTRA_DIST): Add VMDouble.java,
+	VMFloat.java and VMString.java.
+
+2003-08-10  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/java/security/x509/Makefile.am (EXTRA_DIST): Corrected spelling
 	of X500DistingushedName.java to X500DistinguishedName.java.
 	* java/nio/Makefile.am (EXTRA_DIST): Changed CharViewBuffer.java,

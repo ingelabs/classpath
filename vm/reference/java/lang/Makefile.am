@@ -7,7 +7,10 @@ Runtime.java \
 Thread.java \
 VMClass.java \
 VMClassLoader.java \
+VMDouble.java \
+VMFloat.java \
 VMObject.java \
 VMSecurityManager.java \
+VMString.java \
 VMSystem.java \
 VMThrowable.java
