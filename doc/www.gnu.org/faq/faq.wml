@@ -31,6 +31,7 @@
 	<set-var __FAQCNT=1>
 	<boxitem>%body</boxitem>
 {#FAQINDEX#:
+		<br>
 		</boxitem>
 :#FAQINDEX#}
 	<increment __SECCNT>
@@ -41,7 +42,7 @@
 <preserve question>
 <set-var %attributes>
 {#FAQINDEX#:
-	<h3><a href="faq/faq.html#faq<get-var __SECCNT>_<get-var __FAQCNT>"><get-var __SECCNT>.<get-var __FAQCNT> <get-var question></a></h3>
+	<strong><a href="faq/faq.html#faq<get-var __SECCNT>_<get-var __FAQCNT>"><get-var __SECCNT>.<get-var __FAQCNT> <get-var question></a></strong><br>
 :#FAQINDEX#}
 	<h3><a name="faq<get-var __SECCNT>_<get-var __FAQCNT>"><get-var __SECCNT>.<get-var __FAQCNT> <get-var question></a></h3>
 	%body
@@ -61,9 +62,115 @@
 <faq-section name="licensing">
 
 <faq question="Under which licence is GNU Classpath released?">
-GNU Classpath is licensed under the GPL plus a special exception. See <createlink name="license" url="../license.html">.
+GNU Classpath is licensed under the GPL plus a special exception:
+
+<blockquote>
+<p>
+<code>
+Linking this library statically or dynamically with other modules is
+making a combined work based on this library.  Thus, the terms and
+conditions of the GNU General Public License cover the whole
+combination.
+</code>
+</p>
+<p>
+<code>
+As a special exception, the copyright holders of this library give you
+permission to link this library with independent modules to produce an
+executable, regardless of the license terms of these independent
+modules, and to copy and distribute the resulting executable under
+terms of your choice, provided that you also meet, for each linked
+independent module, the terms and conditions of the license of that
+module.  An independent module is a module which is not derived from
+or based on this library.  If you modify this library, you may extend
+this exception to your version of the library, but you are not
+obligated to do so.  If you do not wish to do so, delete this
+exception statement from your version.
+</code>
+</p>
+</blockquote>
+
+</faq>
+
+<faq question="Where can I find more about the GPL?">
+Please check the FSF FAQ on the GNU GPL: <createlink name="http://www.fsf.org/licenses/gpl-faq.html" url="http://www.fsf.org/licenses/gpl-faq.html">.
 </faq>
 
 </faq-section>
 
+<faq-section name="Classpath Development">
+<faq question="Why do I have to give the copyright to the FSF?">
+Some contributors of Classpath might be annoyed if their work was being
+used under conditions that are not according to the terms of the license.
+However, enforcing the license in court (if this was ever needed) would
+be easier if the Free Software Foundation can claim to speak in the name
+of all authors. For this reason, and for others that are specific to the
+intellectual property system of the United States, GNU projects tend to
+be a bit picky about getting signatures from all contributors. Please do
+not see this as a personal offence.
+
+<p>See also <a href="http://www.gnu.org/licenses/why-assign.html">http://www.gnu.org/licenses/why-assign.html</a>.
+</p>
+
+<p>For getting the assignment form, please send an e-mail with your name (as
+it appears in your passport) and your current postal address to the
+maintainer of GNU Classpath, Mark Wielaard <mark@klomp.org>.
+</p>
+</faq>
+</faq-section>
+
+<faq-section name="Varia">
+<faq question="How to generate API Documentation with gjdoc/libxmlj?">
+
+Beware: generating the complete API Documentation non-trivial and the generation of a full tree takes more then one and half hour (on a 1.4 Ghz Athlon),
+150+ MB of memory, at least 25MB of tmp storage, and at least
+twice so much in your obj build dir.
+
+<ol>
+<br><li>install gcj 3.3.2 (or higher)<br>
+<code>
+gjdoc CVS :pserver:anoncvs@subversions.gnu.org:/cvsroot/cp-tools module gjdoc
+</code>
+<br><li>install libxmlj<br>
+<code>
+libxmlj CVS :pserver:anoncvs@subversions.gnu.org:/cvsroot/classpathx module libxmlj<br>
+make && make install
+</code>
+
+<br><li>For gjdoc add at the start of gnu/classpath/tools/gjdoc/Main.java (main):<br>
+
+<code>
+  System.setProperty("javax.xml.transform.TransformerFactory",
+            "gnu.xml.libxmlj.transform.TransformerFactoryImpl");
+</code>
+
+<br><li>There is a ant build.xml file, but you can also compile it all by hand together with the external/jaxp/source files from Classpath which can be copied in the src direcrory as follows:<br>
+
+<code>
+  find * -name \*.java | xargs gcj -O2 -g -o gjdoc \<br>
+  --main=gnu.classpath.tools.gjdoc.Main
+</code>
+
+<br><li>Create a simple gjdoc script and put it in your PATH:<br>
+
+<code>
+  #!/bin/sh<br>
+  CLASSPATH=/home/mark/src/libxmlj:/home/mark/src/gjdoc/src/resources \<br>
+  LD_LIBRARY_PATH=/usr/local/libxmlj/lib \<br>
+  /home/mark/src/gjdoc/src/gjdoc $*
+</code>
+
+<br><li>Configure classpah with --enable-gjdoc.
+<br><li>Type make and go get yourself some coffe, take a shower and do some work in the garden.
+</ol>
+
+<p>There is one catch. The above setup is completely broken for some HTML
+entities (see [bugs #4823] HTML entities such as auml and nbsp should be
+put back in the API doc). So if you have  spectacular and mysterious
+crashes then make sure that your java source files don't contain such
+entities.
+
+
+</faq>
+</faq-section>
 </box>

@@ -89,7 +89,7 @@
 </tr>
 
 <tr>
-<td class="menutable">
+<td class="menutable" valign="top">
 
 ##
 # Menu
@@ -102,6 +102,7 @@
 <menuitem><createlink name="License" url="license.html"></menuitem>
 <menuitem><createlink name="Team" url="http://savannah.gnu.org/project/memberlist.php?group_id=85"></menuitem>
 <menuitem><createlink name="Download" url="downloads/downloads.html"></menuitem>
+<menuitem><createlink name="FAQ" url="faq/faq.html"></menuitem>
 
 <menutitle>Success Stories</menutitle>
 <menuitem><createlink name="JVMs" url="stories.html#jvm"></menuitem>
