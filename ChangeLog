@@ -1,5 +1,15 @@
 2005-02-14  Mark Wielaard  <mark@klomp.org>
 
+	* java/net/URLClassLoader.java (findClass): Throw
+	ClassNotFoundExceptions including urls, plus parent using toString().
+	(thisString): New field.
+	(toString): New method.
+
+	* java/lang/ClassLoader (defaultGetSystemClassLoader): Only install
+	ExtensionClassLoader when there are actual extension URLs.
+
+2005-02-14  Mark Wielaard  <mark@klomp.org>
+
 	* native/jni/xmlj/.cvsignore: Add *.o, *.a, *.lo, *.la, .libs, .deps.
 
 2005-02-14  Sven de Marothy  <sven@physto.se>
