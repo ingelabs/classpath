@@ -63,31 +63,47 @@ public final class Security extends Object
 {
   private static final String ALG_ALIAS = "Alg.Alias.";
 
-  private static Vector providers = new Vector();
+  private static final Vector providers_lazy = new Vector();
+  private static boolean providers_lazy_set = false;
   private static Properties secprops = new Properties();
-  static
+  
+  /**
+   * Returns the Vector of security providers. This method will load
+   * the security providers when they are needed for the first time. 
+   * This allows for a faster startup.  
+   * @return vector of security providers
+   */ 
+  private static Vector providers() 
   {
-    String base = System.getProperty("gnu.classpath.home.url");
-    String vendor = System.getProperty("gnu.classpath.vm.shortname");
-    
-    // Try VM specific security file
-    boolean loaded = loadProviders(base, vendor);
-    
-    // Append classpath standard provider if possible
-    if (!loadProviders(base, "classpath") && !loaded && providers.size() == 0)
+    synchronized (providers_lazy) 
       {
-	// No providers found and both security files failed to load properly.
-	System.err.println
-	  ("WARNING: could not properly read security provider files:");
-	System.err.println
-	  ("         " + base + "/security/" + vendor + ".security");
-	System.err.println
-	  ("         " + base + "/security/" + "classpath" + ".security");
-	System.err.println
-	  ("         Falling back to standard GNU security provider");
-	providers.addElement(new gnu.java.security.provider.Gnu());
+      if (!providers_lazy_set)
+        {
+        String base = System.getProperty("gnu.classpath.home.url");
+        String vendor = System.getProperty("gnu.classpath.vm.shortname");
+
+        // Try VM specific security file
+        boolean loaded = loadProviders(base, vendor);
+    
+        // Append classpath standard provider if possible
+        if (!loadProviders(base, "classpath") && !loaded && providers_lazy.size() == 0)
+          {
+	      // No providers found and both security files failed to load properly.
+	      System.err.println
+	      ("WARNING: could not properly read security provider files:");
+          System.err.println
+          ("         " + base + "/security/" + vendor + ".security");
+          System.err.println
+          ("         " + base + "/security/" + "classpath" + ".security");
+          System.err.println
+          ("         Falling back to standard GNU security provider");
+          providers_lazy.addElement(new gnu.java.security.provider.Gnu());
+          }
+        }
       }
+      return providers_lazy; 
   }
+  
 
   // This class can't be instantiated.
   private Security ()
@@ -118,7 +134,7 @@ public final class Security extends Object
 	    Exception exception = null;
 	    try
 	      {
-		providers.addElement(Class.forName(name).newInstance());
+		providers().addElement(Class.forName(name).newInstance());
 	      }
 	    catch (ClassNotFoundException x)
 	      {
@@ -175,7 +191,7 @@ public final class Security extends Object
 
     String property = String.valueOf(propName) + "." + String.valueOf(algName);
     Provider p;
-    for (Iterator i = providers.iterator(); i.hasNext(); )
+    for (Iterator i = providers().iterator(); i.hasNext(); )
       {
         p = (Provider) i.next();
         for (Iterator j = p.keySet().iterator(); j.hasNext(); )
@@ -231,10 +247,10 @@ public final class Security extends Object
       sm.checkSecurityAccess("insertProvider." + provider.getName());
 
     position--;
-    int max = providers.size ();
+    int max = providers().size ();
     for (int i = 0; i < max; i++)
       {
-	if (((Provider) providers.elementAt(i)).getName() == provider.getName())
+	if (((Provider) providers().elementAt(i)).getName() == provider.getName())
 	  return -1;
       }
 
@@ -243,7 +259,7 @@ public final class Security extends Object
     if (position > max)
       position = max;
 
-    providers.insertElementAt(provider, position);
+    providers().insertElementAt(provider, position);
 
     return position + 1;
   }
@@ -273,7 +289,7 @@ public final class Security extends Object
    */
   public static int addProvider(Provider provider)
   {
-    return insertProviderAt (provider, providers.size () + 1);
+    return insertProviderAt (provider, providers().size () + 1);
   }
 
   /**
@@ -306,12 +322,12 @@ public final class Security extends Object
     if (sm != null)
       sm.checkSecurityAccess("removeProvider." + name);
 
-    int max = providers.size ();
+    int max = providers().size ();
     for (int i = 0; i < max; i++)
       {
-	if (((Provider) providers.elementAt(i)).getName() == name)
+	if (((Provider) providers().elementAt(i)).getName() == name)
 	  {
-	    providers.remove(i);
+	    providers().remove(i);
 	    break;
 	  }
       }
@@ -325,8 +341,8 @@ public final class Security extends Object
    */
   public static Provider[] getProviders()
   {
-    Provider array[] = new Provider[providers.size ()];
-    providers.copyInto (array);
+    Provider array[] = new Provider[providers().size ()];
+    providers().copyInto (array);
     return array;
   }
 
@@ -342,10 +358,10 @@ public final class Security extends Object
   public static Provider getProvider(String name)
   {
     Provider p;
-    int max = providers.size ();
+    int max = providers().size ();
     for (int i = 0; i < max; i++)
       {
-	p = (Provider) providers.elementAt(i);
+	p = (Provider) providers().elementAt(i);
 	if (p.getName() == name)
 	  return p;
       }
@@ -499,7 +515,7 @@ public final class Security extends Object
    */
   public static Provider[] getProviders(String filter)
   {
-    if (providers == null || providers.isEmpty())
+    if (providers() == null || providers().isEmpty())
       return null;
 
     if (filter == null || filter.length() == 0)
@@ -559,7 +575,7 @@ public final class Security extends Object
   */
   public static Provider[] getProviders(Map filter)
   {
-    if (providers == null || providers.isEmpty())
+    if (providers() == null || providers().isEmpty())
       return null;
 
     if (filter == null)
@@ -569,7 +585,7 @@ public final class Security extends Object
     if (querries == null || querries.isEmpty())
       return getProviders();
 
-    LinkedHashSet result = new LinkedHashSet(providers); // assume all
+    LinkedHashSet result = new LinkedHashSet(providers()); // assume all
     int dot, ws;
     String querry, service, algorithm, attribute, value;
     LinkedHashSet serviceProviders = new LinkedHashSet(); // preserve insertion order
