@@ -1,5 +1,9 @@
 2005-02-14  Sven de Marothy  <sven@physto.se>
 
+	* javax/swing/SpinnerDateModel.java: Implemented.
+
+2005-02-14  Sven de Marothy  <sven@physto.se>
+
         * java/util/Calendar.java 
         (clear): Dates should clear to local time.
 
