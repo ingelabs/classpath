@@ -36,11 +36,11 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-#include "jnilink.h"
+#include <stdlib.h>
 #include <string.h>
 #include <jcl.h>
 
-#include <malloc.h>
+#include "jnilink.h"
 
 #define GETCLASS(c) *(jclass*)(c)
 
