@@ -1,5 +1,11 @@
 New since last release
+
 * Split native methods in java.lang.Runtime into java.lang.VMRuntime.
+* java.awt.geom.CubicCurve2D/QuadCurve2D: Can now solve cubic and quadratic
+  equations; implementation adapted from the GNU Scientific Library.
+* Fixed Classpath bugs:
+  #6095 java.awt.geom.QuadCurve2D.solveQuadratic sometimes gives
+        wrong results
 
 New in release 0.07 (2003/30/11)
 

@@ -1,3 +1,12 @@
+2004-01-05  Sascha Brawer  <brawer@dandelis.ch>
+
+	Fix for Classpath bug #6095
+	Thanks to Brian Gough <bjg@network-theory.com>
+	* java/awt/geom/CubicCurve2D.java (solveCubic): Implemented.
+	* java/awt/geom/QuadCurve2D.java (solveQuadratic): Re-written.
+	* NEWS: Mention the new capability for solving equations.
+	* THANKYOU: Add Brian Gough.
+
 2004-01-04  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/JarURLConnection.java
