@@ -1,5 +1,5 @@
 /* java.util.ResourceBundle
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -336,9 +336,11 @@ public abstract class ResourceBundle
    * @exception MissingResourceException 
    *    if the resource bundle couldn't be found.
    */
-  public static final ResourceBundle getBundle(String baseName,
-					       Locale locale,
-					       ClassLoader classLoader)
+  // This method is synchronized so that the cache is properly
+  // handled.
+  public static final synchronized ResourceBundle getBundle(String baseName,
+							    Locale locale,
+							    ClassLoader classLoader)
     throws MissingResourceException
   {
     // This implementation searches the bundle in the reverse direction

@@ -1,5 +1,7 @@
 2001-08-31  Tom Tromey  <tromey@redhat.com>
 
+	* java/util/ResourceBundle.java (getBundle): Now synchronized.
+
 	Merge with libgcj:
 	* java/util/StringTokenizer.java (countTokens): Replaced with
 	libgcj implementation.
