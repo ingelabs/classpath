@@ -1,5 +1,10 @@
 2003-07-15  Torsten Rupp  <rupp@lisa.aicas.com>
 
+        * native/jni/java-util/java_util_TimeZone.c:
+        renamed target native macro
+
+2003-07-15  Torsten Rupp  <rupp@lisa.aicas.com>
+
         * native/target/generic/target_generic_misc.h:
         Fixed typing error
 
