@@ -120,9 +120,7 @@ static
     encoding_path = encoding_path + ":gnu.java.io";
 
   // Find the system default encoding name
-  String default_encoding = System.getProperty("file.encoding");
-  if (default_encoding == null)
-    default_encoding = "8859_1";
+  String default_encoding = System.getProperty("file.encoding","8859_1");
 
   // Load the class
   try

@@ -98,35 +98,22 @@ private static Hashtable cache;
 // Static initializer for the cache
 static
 {
-  cache_size = DEFAULT_CACHE_SIZE; 
-  cache_period = DEFAULT_CACHE_PERIOD * 60 * 1000; 
-  cache_purge_pct = DEFAULT_CACHE_PURGE_PCT;
-
   // Look for properties that override default caching behavior
-  try
-    {
-      String propval;
+  cache_size = Integer.getInteger("gnu.java.net.dns_cache_size",
+                                  DEFAULT_CACHE_SIZE).intValue();
+  cache_period = Integer.getInteger("gnu.java.net.dns_cache_period",
+                                  DEFAULT_CACHE_PERIOD * 60 * 1000).intValue();
 
-      propval = System.getProperty("gnu.java.net.dns_cache_size");
-      if (propval != null)
-        cache_size = Integer.parseInt(propval);
+  cache_purge_pct =  Integer.getInteger("gnu.java.net.dns_cache_purge_pct",
+                                        DEFAULT_CACHE_PURGE_PCT).intValue();
 
-      propval = System.getProperty("gnu.java.net.dns_cache_period");
-        cache_period = Integer.parseInt(propval) * 60 * 1000;
+  // Fallback to  defaults if necessary
+  if ((cache_purge_pct < 1) || (cache_purge_pct > 100))
+      cache_purge_pct = DEFAULT_CACHE_PURGE_PCT;
 
-      propval = System.getProperty("gnu.java.net.dns_cache_purge_pct");
-        cache_purge_pct = Integer.parseInt(propval);
-    }
-   catch (SecurityException e) { ; }
-   catch (NumberFormatException e) { ; }
-
-   // Fallback to  defaults if necessary
-   if ((cache_purge_pct < 1) || (cache_purge_pct > 100))
-     cache_purge_pct = DEFAULT_CACHE_PURGE_PCT;
-
-   // Create the cache
-   if (cache_size != 0)
-     cache = new Hashtable(cache_size);
+  // Create the cache
+  if (cache_size != 0)
+      cache = new Hashtable(cache_size);
 }      
 
 /*************************************************************************/
