@@ -1,5 +1,14 @@
 2004-09-26  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/text/JTextComponent.java
+	(dragEnabled): New field.
+	(getSelectedText): New method.
+	(getDragEnabled): Likewise.
+	(setDragEnabled): Likewise.
+	(replaceSelection): Reimplemented.
+
+2004-09-26  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JRootPane.java
 	(NONE): New static field.
 	(FRAME): Likewise.
