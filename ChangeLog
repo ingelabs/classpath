@@ -1,3 +1,10 @@
+2005-02-05  C. Brian Jones  <cbj@gnu.org>
+
+	* gnu/java/rmi/registry/: added back to classpath again, used by core library
+	* gnu/java/rmi/registry/RegistryImpl.java: ditto
+	* gnu/java/rmi/registry/RegistryImpl_Skel.java: ditto
+	* gnu/java/rmi/registry/RegistryImpl_Stub.java: ditto
+
 2005-02-06  Mark Wielaard  <mark@klomp.org>
 
 	* doc/api/Makefile.am (create_html): Remove gjdoc -public flag.
