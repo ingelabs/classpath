@@ -54,7 +54,7 @@ public class Socket
   * This is the user SocketImplFactory for this class.  If this variable is
   * null, a default factory is used.
   */
-protected static SocketImplFactory factory;
+private static SocketImplFactory factory;
 
 /*************************************************************************/
 
@@ -65,7 +65,7 @@ protected static SocketImplFactory factory;
 /**
   * The implementation object to which calls are redirected
   */
-protected SocketImpl impl;
+private SocketImpl impl;
 
 /**
   * The local address to which we are connected
@@ -253,6 +253,29 @@ Socket(String hostname, int port, boolean stream) throws IOException
 {
   this(InetAddress.getByName(hostname), port, InetAddress.getInaddrAny(), 
        0, stream);
+}
+
+/*************************************************************************/
+
+/**
+  * This method connects to the named host on the specified port and
+  * binds to the specified local address and port.
+  *
+  * @param host The name of the remote host to connect to.
+  * @param port The remote port to connect to.
+  * @param loadAddr The local address to bind to.
+  * @param localPort The local port to bind to.
+  *
+  * @exception SecurityException If the <code>SecurityManager</code>
+  * exists and does not allow a connection to the specified host/port or
+  * binding to the specified local host/port.
+  * @exception IOException If a connection error occurs.
+  */
+public
+Socket(String host, int port, InetAddress localAddr, int localPort)
+       throws IOException
+{
+  this(InetAddress.getByName(host), port, localAddr, localPort, true);
 }
 
 /*************************************************************************/
@@ -527,6 +550,84 @@ setSoTimeout(int timeout) throws SocketException
   impl.setOption(SocketOptions.SO_TIMEOUT, new Integer(timeout));
 
   return;
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns the value of the system level socket option
+  * SO_SNDBUF, which is used by the operating system to tune buffer
+  * sizes for data transfers.
+  *
+  * @return The send buffer size.
+  *
+  * @exception SocketException If an error occurs.
+  */
+public synchronized int
+getSendBufferSize() throws SocketException
+{
+  Object obj = impl.getOption(SocketOptions.SO_SNDBUF);
+
+  if (obj instanceof Integer)
+    return(((Integer)obj).intValue());
+  else
+    throw new SocketException("Unexpected type");
+}
+
+/*************************************************************************/
+
+/**
+  * This method sets the value for the system level socket option
+  * SO_SNDBUF to the specified value.  Note that valid values for this
+  * option are specific to a given operating system.
+  *
+  * @param size The new send buffer size.
+  *
+  * @exception SocketException If an error occurs.
+  */
+public synchronized void
+setSendBufferSize(int size) throws SocketException
+{
+  impl.setOption(SocketOptions.SO_SNDBUF, new Integer(size));
+}
+
+/*************************************************************************/
+
+/**
+  * This method returns the value of the system level socket option
+  * SO_RCVBUF, which is used by the operating system to tune buffer
+  * sizes for data transfers.
+  *
+  * @return The receive buffer size.
+  *
+  * @exception SocketException If an error occurs.
+  */
+public synchronized int
+getReceiveBufferSize() throws SocketException
+{
+  Object obj = impl.getOption(SocketOptions.SO_RCVBUF);
+
+  if (obj instanceof Integer)
+    return(((Integer)obj).intValue());
+  else
+    throw new SocketException("Unexpected type");
+}
+
+/*************************************************************************/
+
+/**
+  * This method sets the value for the system level socket option
+  * SO_RCVBUF to the specified value.  Note that valid values for this
+  * option are specific to a given operating system.
+  *
+  * @param size The new receive buffer size.
+  *
+  * @exception SocketException If an error occurs.
+  */
+public synchronized void
+setReceiveBufferSize(int size) throws SocketException
+{
+  impl.setOption(SocketOptions.SO_RCVBUF, new Integer(size));
 }
 
 /*************************************************************************/
