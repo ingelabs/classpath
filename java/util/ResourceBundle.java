@@ -1,5 +1,6 @@
 /* ResourceBundle -- aids in loading resource bundles
-   Copyright (C) 1998, 1999, 2001, 2002, 2003 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001, 2002, 2003, 2004
+   Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,10 +39,10 @@ exception statement from your version. */
 
 package java.util;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.Reference;
 import java.lang.ref.SoftReference;
-import java.io.InputStream;
-import java.io.IOException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
@@ -470,11 +471,9 @@ public abstract class ResourceBundle
    * @param bundle the backup (parent) bundle
    * @return the resource bundle if it was loaded, otherwise the backup
    */
-  private static final ResourceBundle tryBundle(String localizedName,
-                                                Locale locale,
-                                                ClassLoader classloader,
-                                                ResourceBundle bundle,
-                                                HashMap cache)
+  private static ResourceBundle tryBundle(String localizedName, Locale locale,
+                                          ClassLoader classloader,
+                                          ResourceBundle bundle, HashMap cache)
   {
     // First look into the cache.
     if (cache.containsKey(localizedName))
@@ -564,11 +563,10 @@ public abstract class ResourceBundle
    * @param bundle the backup (parent) bundle
    * @return the resource bundle if it was loaded, otherwise the backup
    */
-  private static final ResourceBundle tryLocalBundle(String baseName,
-						     Locale locale,
-                                                     ClassLoader classloader,
-                                                     ResourceBundle bundle,
-                                                     HashMap cache)
+  private static ResourceBundle tryLocalBundle(String baseName, Locale locale,
+                                               ClassLoader classloader,
+                                               ResourceBundle bundle,
+                                               HashMap cache)
   {
     final String language = locale.getLanguage();
     final String country = locale.getCountry();

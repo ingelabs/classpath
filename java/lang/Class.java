@@ -102,7 +102,7 @@ public final class Class implements Serializable
   /* We use an inner class, so that Class doesn't have a static initializer */
   private static final class StaticData
   {
-    final static ProtectionDomain unknownProtectionDomain;
+    static final ProtectionDomain unknownProtectionDomain;
 
     static
     {
@@ -112,7 +112,7 @@ public final class Class implements Serializable
     }
   }
 
-  transient final Object vmdata;
+  final transient Object vmdata;
 
   /** newInstance() caches the default constructor */
   private transient Constructor constructor;

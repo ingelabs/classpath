@@ -1,5 +1,25 @@
 2004-10-22  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/Class.java,
+	java/lang/StringBuffer.java,
+	java/lang/Throwable.java,
+	java/security/spec/DSAParameterSpec.java,
+	java/util/Currency.java,
+	java/util/ResourceBundle.java,
+	java/util/zip/DeflaterConstants.java,
+	java/util/zip/DeflaterEngine.java,
+	java/util/zip/DeflaterHuffman.java,
+	java/util/zip/GZIPInputStream.java,
+	java/util/zip/InflaterHuffmanTree.java,
+	java/util/zip/OutputWindow.java,
+	java/util/zip/ZipEntry.java,
+	java/util/zip/ZipFile.java,
+	java/util/zip/ZipInputStream.java,
+	java/util/zip/ZipOutputStream.java:
+	Removed redundant and reordered modifiers.
+
+2004-10-22  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JWindow.java
 	javax/swing/SpinnerModel.java
 	javax/swing/Timer.java
