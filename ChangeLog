@@ -1,5 +1,11 @@
 2004-01-18  Michael Koch  <konqueror@gmx.de>
 
+	* scripts/classpath-build,
+	scripts/classpath-daily: New files for regular classpath
+	compilation/testing.
+
+2004-01-18  Michael Koch  <konqueror@gmx.de>
+
 	* configure.in: Removed.
 	* configure.ac: New file.
 
