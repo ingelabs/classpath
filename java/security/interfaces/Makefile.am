@@ -7,6 +7,7 @@ DSAParams.java \
 DSAPrivateKey.java \
 DSAPublicKey.java \
 RSAKey.java \
+RSAMultiPrimePrivateCrtKey.java \
 RSAPrivateCrtKey.java \
 RSAPrivateKey.java \
 RSAPublicKey.java \
