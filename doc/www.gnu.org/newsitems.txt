@@ -1,3 +1,7 @@
+<newsitem date="05 Aug 2004">
+CVS generics-branch started for java 1.5 related changes. [<createlink name="more..." url="http://lists.gnu.org/archive/html/classpath/2004-08/msg00030.html">]
+</newsitem>
+
 <newsitem date="02 Aug 2004">
 Latest <createlink name="AWT" url="http://www.klomp.org/mark/classpath/awtdemo-2004-jul-25.png"> and <createlink name="SWING" url="http://www.klomp.org/mark/classpath/swingdemo-2004-jul-25.png"> screenshots by Mark.
 </newsitem>
