@@ -11,6 +11,7 @@ Customizer.java \
 DesignMode.java \
 EventSetDescriptor.java \
 ExceptionListener.java \
+Expression.java \
 FeatureDescriptor.java \
 IndexedPropertyDescriptor.java \
 IntrospectionException.java \
@@ -27,6 +28,7 @@ PropertyEditorManager.java \
 PropertyEditorSupport.java \
 PropertyVetoException.java \
 SimpleBeanInfo.java \
+Statement.java \
 TODO \
 VetoableChangeListener.java \
 VetoableChangeListenerProxy.java \
