@@ -25,7 +25,7 @@ CLASSPATH_MODULE="-module -version-info ${LIBVERSION}"
 AC_SUBST(CLASSPATH_MODULE)
 
 AC_PREREQ(2.59)
-AM_INIT_AUTOMAKE(1.7.0)
+AM_INIT_AUTOMAKE([1.9.0 gnu std-options tar-ustar])
 AC_CONFIG_HEADERS([include/config.h])
 AC_PREFIX_DEFAULT(/usr/local/classpath)
 

@@ -20,8 +20,8 @@ Suggested Software
         aclocal.m4, or config.h.in.
 
         - GNU autoconf 2.59+
-        - GNU automake 1.7+
-        - GNU libtool 1.4.2+
+        - GNU automake 1.9+
+        - GNU libtool 1.5+
 
 	When working from CVS you can run the above tools by executing
 	./autogen.sh in the source directory.

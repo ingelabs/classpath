@@ -1,3 +1,12 @@
+2004-08-29  Michael Koch  <konqueror@gmx.de>
+
+	* configure.ac: Depend on automake 1.9.
+	* INSTALL: Likewise.
+	* INSTALL: Updated to depend on automake 1.9 and libtool 1.5.
+	* autogen.sh: Likewise.
+	* configure.ac (AM_INIT_AUTOMAKE): Depend on automake 1.9, support
+	long paths in dist tarball.
+
 2004-08-28  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/TimeZone.java (defaultZone): Try a couple of ways to get
