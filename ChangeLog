@@ -1,5 +1,9 @@
 2004-10-20  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/rmi/rmic/RMIC.java: Reformatted.
+
+2004-10-20  Michael Koch  <konqueror@gmx.de>
+
 	* javax/imageio/stream/FileCacheImageInputStream.java,
 	javax/imageio/stream/FileCacheImageOutputStream.java,
 	javax/imageio/stream/FileImageInputStream.java,
