@@ -77,6 +77,8 @@ done, and most importantly submit patches!
 
 <H4>Documentation</H4>
 <UL>
+  <LI><link url="/software/classpath/doc/orp.html" name="Using GNU
+  Classpath with ORP"></LI>
   <LI><link url="/software/classpath/doc/hacking.html"
        name="GNU Classpath Hacker's Guide"></LI>
   <LI><link url="/software/classpath/doc/vmintegration.html"

@@ -1,6 +1,9 @@
 2001-11-27  C. Brian Jones <cbj@gnu.org>
 
 	* resource/orp-1.0.8.patch: new file
+	* doc/www.gnu.org/home.wml: added link to ORP doc
+	* doc/www.gnu.org/doc/orp.wml: simple directions for using 
+	ORP+Classpath
 
 2001-11-25  C. Brian Jones <cbj@gnu.org>
 	
