@@ -1,5 +1,13 @@
 2003-02-17  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/DatagramSocket.java:
+	Merged some comments with libgcj.
+	(connect): Merged with libgcj.
+	(send): Merged FIXME comment with libgcj.
+	(getLocalSocketAddress): Fixed return argument.
+
+2003-02-17  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/font/Makefile.am: Added new files:
 	java/awt/font/FontRenderContext.java
 	java/awt/font/ShapeGraphicAttribute.java

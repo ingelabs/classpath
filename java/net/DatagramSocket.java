@@ -152,7 +152,7 @@ public class DatagramSocket
    * @exception SecurityException If a security manager exists and its
    * checkListen method doesn't allow the operation.
    * @exception SocketException If an error occurs.
-   * 
+   *
    * @since 1.4
    */
   public DatagramSocket (SocketAddress address) throws SocketException
@@ -173,7 +173,7 @@ public class DatagramSocket
         impl.bind(tmp.getPort (), tmp.getAddress ());
       }
   }
-
+  
   /**
    * Closes this datagram socket.
    */
@@ -186,7 +186,7 @@ public class DatagramSocket
    * This method returns the remote address to which this socket is 
    * connected.  If this socket is not connected, then this method will
    * return <code>null</code>.
-   *
+   * 
    * @return The remote address.
    *
    * @since 1.2
@@ -200,7 +200,7 @@ public class DatagramSocket
    * This method returns the remote port to which this socket is
    * connected.  If this socket is not connected, then this method will
    * return -1.
-   *
+   * 
    * @return The remote port.
    *
    * @since 1.2
@@ -279,7 +279,7 @@ public class DatagramSocket
   public void setSoTimeout(int timeout) throws SocketException
   {
     if (timeout < 0)
-      throw new IllegalArgumentException("Timeout value is less than 0");
+      throw new IllegalArgumentException("Invalid timeout: " + timeout);
 
     impl.setOption(SocketOptions.SO_TIMEOUT, new Integer(timeout));
   }
@@ -361,7 +361,7 @@ public class DatagramSocket
    *
    * @exception SocketException If an error occurs.
    * @exception IllegalArgumentException If size is 0 or negative.
-   *  
+   * 
    * @since 1.2
    */
   public void setReceiveBufferSize(int size) throws SocketException
@@ -375,46 +375,47 @@ public class DatagramSocket
   /**
    * This method connects this socket to the specified address and port.
    * When a datagram socket is connected, it will only send or receive
-   * packate to and from the host to which it is connected.  A multicast
+   * packets to and from the host to which it is connected. A multicast
    * socket that is connected may only send and not receive packets.
-   *
-   * @param addr The address to connect this socket to.
+   * 
+   * @param address The address to connect this socket to.
    * @param port The port to connect this socket to.
    *
-   * @exception SecurityException If connections to this addr/port are not
-   * allowed.
-   * @exception IllegalArgumentException If the addr or port are invalid.
+   * @exception SocketException If an error occurs.
+   * @exception IllegalArgumentException If address or port are invalid.
+   * @exception SecurityException If the caller is not allowed to send
+   * datagrams to or receive from this address and port.
    *
    * @since 1.2
    */
-  public void connect(InetAddress addr, int port)
+  public void connect (InetAddress address, int port)
     throws SecurityException, IllegalArgumentException
   {
-    if (addr == null)
-      throw new IllegalArgumentException("Connect address is null");
+    if (address == null)
+      throw new IllegalArgumentException ("Connect address may not be null");
 
     if ((port < 1) || (port > 65535))
-      throw new IllegalArgumentException("Bad port number: " + port);
+      throw new IllegalArgumentException ("Port number is illegal: " + port);
 
     SecurityManager sm = System.getSecurityManager();
     if (sm != null)
-      sm.checkConnect(addr.getHostName(), port);
+      sm.checkConnect(address.getHostName(), port);
 
-    this.remoteAddress = addr;
+    this.remoteAddress = address;
     this.remotePort = port;
 
     /* FIXME: Shit, we can't do this even though the OS supports it since this 
        method isn't in DatagramSocketImpl. */
-    //  impl.connect(addr, port);
+    //  impl.connect(address, port);
 
     connected = true;
   } 
 
   /**
-   * This method disconnects this socket from the addr/port it was 
+   * This method disconnects this socket from the address/port it was 
    * connected to.  If the socket was not connected in the first place,
    * this method does nothing.
-   *
+   * 
    * @since 1.2
    */
   public void disconnect()
@@ -428,12 +429,12 @@ public class DatagramSocket
   /**
    * Reads a datagram packet from the socket.  Note that this method
    * will block until a packet is received from the network.  On return,
-   * the passed in <code>DatagramPacket</code> is populated with the data 
+   * the passed in <code>DatagramPacket</code> is populated with the data
    * received and all the other information about the packet.
    *
    * @param p A <code>DatagramPacket</code> for storing the data
    *
-   * @exception IOException If an error occurs
+   * @exception IOException If an error occurs.
    */
   public synchronized void receive(DatagramPacket p) throws IOException
   {
@@ -474,7 +475,8 @@ public class DatagramSocket
           }
       }
 
-    // FIXME: if this is a subclass of MulticastSocket, use getTTL for TTL val.
+    // FIXME: if this is a subclass of MulticastSocket,
+    // use getTimeToLive for TTL val.
     impl.send(p);
   }
 
@@ -597,12 +599,12 @@ public class DatagramSocket
         return null;
       }
 
-    return new InetSocketAddress (local_addr, impl.localPort);
+    return new InetSocketAddress (addr, impl.localPort);
   }
 
   /**
    * Enables/Disables SO_REUSEADDR.
-   * 
+   *
    * @param on Whether or not to have SO_REUSEADDR turned on.
    *
    * @exception SocketException If an error occurs.
@@ -742,4 +744,4 @@ public class DatagramSocket
 
     factory = fac;
   }
-} // class DatagramSocket
+}
