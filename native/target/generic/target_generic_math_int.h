@@ -58,6 +58,7 @@ extern "C" {
 #include "config.h"
 
 #include <stdlib.h>
+#include <assert.h>
 
 /****************** Conditional compilation switches *******************/
 

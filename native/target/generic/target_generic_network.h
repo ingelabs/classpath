@@ -57,6 +57,7 @@ extern "C" {
 #include "config.h"
 
 #include <stdlib.h>
+#include <assert.h>
 
 #include "target_native.h"
 

@@ -57,6 +57,7 @@ extern "C" {
 #include "config.h"
 
 #include <stdlib.h>
+#include <assert.h>
 
 #include "target_native.h"
 #include "target_native_math_int.h"
@@ -97,6 +98,9 @@ extern "C" {
   #else
     #define TARGET_NATIVE_FILE_FILEFLAG_DSYNC TARGET_NATIVE_FILE_FILEFLAG_SYNC
   #endif
+#endif
+#ifndef TARGET_NATIVE_FILE_FILEFLAG_BINARY
+  #define TARGET_NATIVE_FILE_FILEFLAG_BINARY O_BINARY
 #endif
 
 #ifndef TARGET_NATIVE_FILE_FILEPERMISSION_NORMAL
