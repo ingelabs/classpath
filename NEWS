@@ -1,12 +1,21 @@
-New in release 0.0 (5/10/98)
-* First release of a drop in replacement for Sun's java.net package
-* Inlcludes all Java 1.1 classes/methods except URLClassLoader and includes
-  many 1.2 methods/classes (and lots that are partially implemented)
-* Includes an http protocol handler and a text/plain content handler
-* Full javadoc comments for public API
-* All "behind the scenes" classes and native methods implemented.
-* Works under Linux 2.0, untested on other platforms
-* Builds/works with Japhar 0.04
+New in release 0.0 (XXXX/XX/XX)
+* First official development release of clean room class library for Java
+* Following packages included:
+	-- java.beans
+	-- java.io
+	-- java.lang
+	-- java.lang.reflect
+	-- java.math
+	-- java.net
+	-- java.security (partial and non-functioning)
+	-- java.security.acl
+	-- java.security.interfaces
+	-- java.util
+* Code is mostly Java 2 (nee JDK 1.2) compatible with some functionality
+  missing and/or untested.
+* Support for Japhar (http://www.japhar.org/) virtual machine is included.
+  Requires the current Japhar from CVS.
+* Extensive javadoc comments for public API included
 * Licensed under the GNU Library General Public License (see COPYING.LIB)
 * Does not depend on any non-free code - developed in a "clean room"
   environment.
