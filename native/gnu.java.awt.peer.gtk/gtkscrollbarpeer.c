@@ -60,7 +60,7 @@ post_adjustment_event (GtkAdjustment *adj, struct range_scrollbar *rs)
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_gtkScrollbarNew
     (JNIEnv *env, jobject obj, jobject parent_obj,
-     jint orientation, jint value, jint min, 
+     jint orientation, jint value, jint visible_amount, jint min, 
      jint max, jboolean visible)
 {
   GtkWidget *sb;
@@ -72,10 +72,10 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_gtkScrollbarNew
   parent = NSA_GET_PTR (env, parent_obj);
 
   gdk_threads_enter ();
-  adj = gtk_adjustment_new (value, min, max, 1, 10, 10);
+  adj = gtk_adjustment_new (value, min, max, 1, 10, visible_amount);
 
-  sb = (orientation) ? gtk_hscrollbar_new (GTK_ADJUSTMENT (adj)) :
-                       gtk_vscrollbar_new (GTK_ADJUSTMENT (adj));
+  sb = (orientation) ? gtk_vscrollbar_new (GTK_ADJUSTMENT (adj)) :
+                       gtk_hscrollbar_new (GTK_ADJUSTMENT (adj));
 
   set_parent (sb, GTK_CONTAINER (parent));
   gtk_widget_realize (sb);
@@ -108,7 +108,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setLineIncrement
 
   gdk_threads_enter ();
 
-  adj = GTK_RANGE(ptr)->adjustment;
+  adj = GTK_RANGE (ptr)->adjustment;
   adj->step_increment = amount;
   gtk_adjustment_changed (adj);
 
@@ -126,10 +126,8 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setPageIncrement
 
   gdk_threads_enter ();
 
-  adj = GTK_RANGE(ptr)->adjustment;
-  /* XXX: Figure out the difference between page_increment and page_size */
+  adj = GTK_RANGE (ptr)->adjustment;
   adj->page_increment = amount;
-  adj->page_size = amount;
   gtk_adjustment_changed (adj);
 
   gdk_threads_leave ();
@@ -137,7 +135,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setPageIncrement
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setValues
-    (JNIEnv *env, jobject obj, jint value, int size, int min, int max)
+    (JNIEnv *env, jobject obj, jint value, int visible, int min, int max)
 {
   void *ptr;
   GtkAdjustment *adj;
@@ -146,10 +144,11 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setValues
 
   gdk_threads_enter ();
 
-  adj = GTK_RANGE(ptr)->adjustment;
+  adj = GTK_RANGE (ptr)->adjustment;
+  adj->value = value;
+  adj->page_size = visible;
   adj->lower = min;
   adj->upper = max;
-  adj->value = value;
   gtk_adjustment_changed (adj);
 
   gdk_threads_leave ();
