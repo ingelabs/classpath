@@ -585,22 +585,23 @@ else
 @end example
 
 @item
-Don't use redundant modifiers.  Here is some sample code that shows
-redundant modifiers in comments:
+Don't use redundant modifiers or other redundant constructs.  Here is
+some sample code that shows various redundant items in comments:
 
 @example
+/*import java.lang.Integer;*/
 /*abstract*/ interface I @{
    /*public abstract*/ void m();
    /*public static final*/ int i = 1;
    /*public static*/ class Inner @{@}
 @}
-final class C @{
+final class C /*extends Object*/ @{
    /*final*/ void m() @{@}
 @}
 @end example
 
-Note that Jikes will generate warnings for these if you use
-@code{+Predundant-modifiers} on the command line.
+Note that Jikes will generate warnings for redundant modifiers if you
+use @code{+Predundant-modifiers} on the command line.
 
 @item
 Modifiers should be listed in the standard order recommended by the

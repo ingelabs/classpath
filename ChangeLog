@@ -1,5 +1,8 @@
 2004-04-02  Tom Tromey  <tromey@redhat.com>
 
+	* doc/hacking.texinfo (Source Code Style Guide): Mention `extends
+	Object' and `import java.lang.Integer' as redundant.
+
 	* java/rmi/MarshalledObject.java (MarshalledObject): Removed
 	redundant `extends'.
 	* java/security/Security.java (Security): Removed redundant
