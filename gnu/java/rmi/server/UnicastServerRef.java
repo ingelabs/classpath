@@ -225,7 +225,9 @@ public Object incomingMessageCall(UnicastConnection conn, int method, long hash)
 			 * lets us know that.
 			 */
 			try {
-				args[i] = in.readObject();
+				// need to handle primitive types
+				args[i] = ((RMIObjectInputStream)in).readValue(meth.getParameterTypes()[i]);
+				
 			}
 			catch (Exception t) {
 				t.printStackTrace();
@@ -257,3 +259,5 @@ public Object incomingMessageCall(UnicastConnection conn, int method, long hash)
 }
 
 }
+
+

@@ -1,3 +1,9 @@
+2003-07-03  Torsten Rupp  <rupp@lisa.aicas.com>
+
+        * gnu/java/rmi/server/UnicastServerRef.java:
+        Fixed getReturnMethodType
+
+
 2003-07-02  Michael Koch  <konqueror@gmx.de>
 
 	* configure.in:
