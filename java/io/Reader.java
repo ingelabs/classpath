@@ -58,7 +58,7 @@ protected Object lock;
   * This method initializes a <code>Reader</code> that will use the object
   * itself for synchronization of critical code sections.
   */
-public
+protected
 Reader()
 {
   lock = this;
@@ -73,7 +73,7 @@ Reader()
   *
   * @param lock The <code>Object</code> to use for synchronization
   */
-public
+protected
 Reader(Object lock)
 {
   this.lock = lock;
