@@ -1,3 +1,11 @@
+2003-05-21  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/File.java:
+	Reformatted.
+	* java/io/PrintStream.java:
+	Reformatted.
+	(error_occurred): Fixed typo in documentation.
+
 2003-05-20  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/FileOutputStream.java:

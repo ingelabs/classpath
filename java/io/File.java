@@ -173,19 +173,19 @@ public class File implements Serializable, Comparable
      
     // Test for existence.  This is required by the spec
     if (!exists())
-      return(false);
+      return false;
 
     if (!isDirectory())
-      return(canWriteInternal(path));
+      return canWriteInternal (path);
     else
       try
         {
-  	  File test = createTempFile("test-dir-write", null, this);
-  	  return (test != null && test.delete());
+  	  File test = createTempFile ("test-dir-write", null, this);
+  	  return (test != null && test.delete ());
         }
       catch (IOException ioe)
         {
-  	  return(false);
+  	  return false;
         }
   }
 
@@ -208,7 +208,7 @@ public class File implements Serializable, Comparable
    */
   public boolean createNewFile() throws IOException
   {
-    checkWrite (); 
+    checkWrite ();
     return createInternal (getPath ());
   }
  
@@ -255,13 +255,13 @@ public class File implements Serializable, Comparable
   {
     if (obj == null)
       return false;
-
+    
     if (!(obj instanceof File))
-      return(false);
+      return false;
 
-    File f = (File)obj;
+    File f = (File) obj;
 
-    return(f.getPath().equals(getPath()));
+    return f.getPath ().equals (getPath ());
   }
 
   /*
@@ -309,12 +309,12 @@ public class File implements Serializable, Comparable
    * name.  If the directory path name ends in the separator string, another
    * separator string will still be appended.
    *
-   * @param dirname The path to the directory the file resides in
+   * @param dirPath The path to the directory the file resides in
    * @param name The name of the file
    */
-  public File (String dirname, String name)
+  public File (String dirPath, String name)
   {
-    this(dirname==null? (File)null: new File(dirname), name);
+    this (dirPath == null ? (File) null : new File (dirPath), name);
   }
 
   /**
@@ -429,12 +429,12 @@ public class File implements Serializable, Comparable
   {
     int pos = PlatformHelper.lastIndexOfSeparator (path);
     if (pos == -1)
-      return(path);
+      return path;
 
     if (PlatformHelper.endWithSeparator (path))
-      return("");
+      return "";
 
-    return(path.substring(pos + separator.length()));
+    return path.substring (pos + separator.length ());
   }
 
   /**
@@ -446,16 +446,16 @@ public class File implements Serializable, Comparable
    */
   public String getParent ()
   {
-    if (PlatformHelper.isRootDirectory(path))
+    if (PlatformHelper.isRootDirectory (path))
       return null;
 
     String par_path = path;
 
-    int pos = PlatformHelper.lastIndexOfSeparator(par_path);
+    int pos = PlatformHelper.lastIndexOfSeparator (par_path);
     if (pos == -1)
       return null;
 
-    return(par_path.substring(0, pos));
+    return par_path.substring (0, pos);
   }
 
   /**
@@ -470,11 +470,11 @@ public class File implements Serializable, Comparable
    */
   public File getParentFile ()
   {
-    String parent = getParent();
+    String parent = getParent ();
     if (parent == null)
-      return(null);
+      return null;
 
-    return(new File(parent));
+    return new File (parent);
   }
 
   /**
@@ -756,14 +756,15 @@ public class File implements Serializable, Comparable
    */
   public File[] listFiles (FilenameFilter filter)
   {
-    String[] filelist = list(filter);
+    String[] filelist = list (filter);
+    
     if (filelist == null)
-      return(null);
+      return null;
 
-    File[] fobjlist = new File[filelist.length];
+    File[] fobjlist = new File [filelist.length];
 
     for (int i = 0; i < filelist.length; i++)
-      fobjlist[i] = new File(this, filelist[i]);
+      fobjlist [i] = new File (this, filelist [i]);
 
     return fobjlist;
   }
@@ -794,13 +795,13 @@ public class File implements Serializable, Comparable
    */
   public File[] listFiles (FileFilter filter)
   {
-    File[] fobjlist = listFiles((FilenameFilter)null);
+    File[] fobjlist = listFiles ((FilenameFilter) null);
 
     if (fobjlist == null)
-      return(null);
+      return null;
 
     if (filter == null)
-      return(fobjlist);
+      return fobjlist;
 
     int count = 0;
     for (int i = 0; i < fobjlist.length; i++)
@@ -816,7 +817,7 @@ public class File implements Serializable, Comparable
           ++count;
         }
 
-    return(final_list);
+    return final_list;
   }
 
   /**
@@ -890,7 +891,7 @@ public class File implements Serializable, Comparable
     String parent = getParent();
     if (parent == null)
       {
-        return(mkdir());
+        return mkdir();
       }
       
     File f = new File(parent);
@@ -898,10 +899,10 @@ public class File implements Serializable, Comparable
       {
         boolean rc = f.mkdirs();
         if (rc == false)
-          return(false);
+          return false;
       }
 
-    return(mkdir());
+    return mkdir ();
   }
 
   /**
@@ -946,23 +947,23 @@ public class File implements Serializable, Comparable
     // Grab the system temp directory if necessary
     if (directory == null)
       {
-        String dirname = System.getProperty("java.io.tmpdir");
+        String dirname = System.getProperty ("java.io.tmpdir");
         if (dirname == null)
-          throw new IOException("Cannot determine system temporary directory"); 
-
-        directory = new File(dirname);
-        if (!directory.exists())
-          throw new IOException("System temporary directory " + 
-                                directory.getName() + " does not exist.");
-        if (!directory.isDirectory())
-          throw new IOException("System temporary directory " + 
-                                directory.getName() + 
-                                " is not really a directory.");
+          throw new IOException ("Cannot determine system temporary directory"); 
+	
+        directory = new File (dirname);
+        if (!directory.exists ())
+          throw new IOException ("System temporary directory "
+                                 + directory.getName () + " does not exist.");
+        if (!directory.isDirectory ())
+          throw new IOException ("System temporary directory "
+                                 + directory.getName ()
+                                 + " is not really a directory.");
       }
 
     // Now process the prefix and suffix.
-    if (prefix.length() < 3)
-      throw new IllegalArgumentException("Prefix too short: " + prefix);
+    if (prefix.length () < 3)
+      throw new IllegalArgumentException ("Prefix too short: " + prefix);
 
     if (suffix == null)
       suffix = ".tmp";
@@ -971,10 +972,10 @@ public class File implements Serializable, Comparable
     File f;
     for(;;)
       {
-        String filename = prefix + System.currentTimeMillis() + suffix;
-        f = new File(directory, filename);
+        String filename = prefix + System.currentTimeMillis () + suffix;
+        f = new File (directory, filename);
 
-        if (f.exists())
+        if (f.exists ())
           continue;
         else
           break;
@@ -987,7 +988,7 @@ public class File implements Serializable, Comparable
 
     // Now create the file and return our file object
     createInternal(f.getAbsolutePath()); 
-    return(f);
+    return f;
   }
 
   /*
@@ -1216,7 +1217,7 @@ public class File implements Serializable, Comparable
    *
    * @exception SecurityException If deleting of the file is not allowed
    *
-   * @since 1.2
+   * @since 1.2 
    */
   public void deleteOnExit ()
   {

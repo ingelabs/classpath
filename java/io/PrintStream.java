@@ -64,7 +64,6 @@ package java.io;
  */
 public class PrintStream extends FilterOutputStream
 {
-
   /*
    * Ok, why is this class deprecated?  It could easily have been extended
    * to support character encodings.  In fact, PrintWriter is basically a
@@ -76,7 +75,7 @@ public class PrintStream extends FilterOutputStream
    */
 
   /**
-   * This boolean indicates whether or not an error has ever occured
+   * This boolean indicates whether or not an error has ever occurred
    * on this stream.
    */
   private boolean error_occurred = false;
@@ -108,7 +107,7 @@ public class PrintStream extends FilterOutputStream
    */
   public PrintStream (OutputStream out)
   {
-    this(out, false);
+    this (out, false);
   }
 
   /**
@@ -127,9 +126,9 @@ public class PrintStream extends FilterOutputStream
    */
   public PrintStream (OutputStream out, boolean auto_flush)
   {
-    super(out);
+    super (out);
 
-    pw = new PrintWriter(out, auto_flush);
+    pw = new PrintWriter (out, auto_flush);
     this.auto_flush = auto_flush;
   }
 
@@ -172,10 +171,7 @@ public class PrintStream extends FilterOutputStream
     if (!closed)
       pw.flush ();
 
-    if (pw.checkError () | error_occurred)
-      return true;
-    else
-      return false;
+    return error_occured | pw.checkError ();
   }
 
   /**
@@ -272,7 +268,7 @@ public class PrintStream extends FilterOutputStream
   {
     // Don't call pw directly.  Convert to String so we scan for newline
     // characters on auto-flush;
-    print(String.valueOf(obj));
+    print (String.valueOf (obj));
   }
 
   /**
@@ -286,8 +282,9 @@ public class PrintStream extends FilterOutputStream
     pw.print (str);
 
     if (auto_flush)
-      if ((str.indexOf('\r') != -1) || (str.indexOf('\n') != -1))
-        flush();
+      if ((str.indexOf ('\r') != -1)
+          || (str.indexOf ('\n') != -1))
+        flush ();
   }
 
   /**
@@ -314,13 +311,14 @@ public class PrintStream extends FilterOutputStream
    */
   public void print (char[] charArray)
   {
-    pw.print(charArray);
+    pw.print (charArray);
 
     if (auto_flush)
       for (int i = 0; i < charArray.length; i++)
-        if ((charArray[i] == '\r') || (charArray[i] == '\n'))
+        if ((charArray [i] == '\r')
+            || (charArray [i] == '\n'))
           {
-            flush();
+            flush ();
             break;
           }
   }
@@ -472,7 +470,8 @@ public class PrintStream extends FilterOutputStream
         out.write (oneByte);
 
         if (auto_flush)
-          if ((oneByte == '\n') || (oneByte == '\n'))
+          if ((oneByte == '\n')
+              || (oneByte == '\n'))
             flush ();
       }
     catch (IOException e)
@@ -497,13 +496,14 @@ public class PrintStream extends FilterOutputStream
 
     try
       {
-        out.write(buffer, offset, len);
+        out.write (buffer, offset, len);
 
         if (auto_flush)
           for (int i = offset; i < len; i++)
-            if ((buffer[i] == '\r') || (buffer[i] == '\n'))
+            if ((buffer [i] == '\r')
+                || (buffer [i] == '\n'))
               {
-                flush();
+                flush ();
                 break;
               }
       }
