@@ -1,3 +1,10 @@
+2004-09-21  Mark Wielaard  <mark@klomp.org>
+
+	Fixes bug #10447
+	* java/util/Collections.java
+	(binarySearch(List, Object, Comparator): Explicitly reverse direction
+	in list iterator.
+
 2004-09-21  Michael Koch  <konqueror@gmx.de>
 
 	* java/applet/Applet.java,
