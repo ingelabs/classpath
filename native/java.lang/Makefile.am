@@ -2,7 +2,8 @@
 if JAPHAR
 lib_LTLIBRARIES = libjaphar_javalang.la libjaphar_java_lang_Math.la
 
-libjaphar_javalang_la_SOURCES = System.c Object.c System.h Object.h
+libjaphar_javalang_la_SOURCES = System.c Object.c System.h Object.h \
+Float.c java_lang_Float.h javalang.c javalang.h $(top_srcdir)/config.h
 
 libjaphar_javalang_la_LDFLAGS = -version-info 0:0:0
 
@@ -15,7 +16,8 @@ libjaphar_java_lang_Math_la_LDFLAGS = -version-info 0:0:0
 else
 lib_LTLIBRARIES = libjavalang.la libjava_lang_Math.la
 
-libjavalang_la_SOURCES = System.c Object.c
+libjavalang_la_SOURCES = System.c Object.c Float.c java_lang_Float.h\
+javalang.c javalang.h $(top_srcdir)/config.h
 
 libjavalang_la_LDFLAGS = -version-info 0:0:0
 
@@ -29,3 +31,5 @@ endif
 if JAPHAR
 INCLUDES += @JAPHAR_CFLAGS@
 endif
+
+INCLUDES += -I$(top_srcdir)
