@@ -5,7 +5,9 @@ BorderUIResource.java \
 ButtonUI.java \
 ColorUIResource.java \
 ComponentUI.java \
+DimensionUIResource.java \
 FontUIResource.java \
+IconUIResource.java \
 InsetsUIResource.java \
 LabelUI.java \
 ListUI.java \

@@ -3,7 +3,7 @@
 if CREATE_JNI_LIBRARIES
 
 if CREATE_CNI_LIBRARIES
-sUBDIRS = fdlibm cni jni
+SUBDIRS = fdlibm cni jni
 else
 SUBDIRS = fdlibm jni 
 endif

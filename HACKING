@@ -1,4 +1,4 @@
-HACKING GNU Classpath - Last updated: Feb 09, 2002
+HACKING GNU Classpath - Last updated: May 05, 2002
 Please read the README and INSTALL files first.
 
 You only need the information in this file when working on non-released (CVS)
@@ -18,7 +18,7 @@ autoconf, automake, and libtool are required.
 For building the Java bytecode (.class files), one of these compilers
 is required.
 
-        - GNU GCJ 3.0.2+.
+        - GNU GCJ 3.1+.
         - IBM jikes 1.15b+.  Until jikes 1.16 is released, you will
           have to use CVS access and build jikes 1.15b yourself:
           cvs -d :pserver:anoncvs@www-124.ibm.com:/usr/cvs/jikes login
@@ -62,7 +62,7 @@ may include --enable-jni.
 
 By default the core classes are compiled using vm/reference JVM specific
 classes.  As a VM writer you may take these reference classes and modify
-them as you wish as long as the public interface remains the same and 
+them as you wish.  As long as the public interface remains the same 
 no modifications to other core parts of Classpath should be needed.
 
 Gnome cvs can be obtained with 

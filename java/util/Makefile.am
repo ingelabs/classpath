@@ -1,6 +1,6 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-SUBDIRS = jar prefs zip
+SUBDIRS = logging jar prefs regex zip
 
 EXTRA_DIST = \
 AbstractCollection.java \
@@ -42,6 +42,7 @@ NoSuchElementException.java \
 Observable.java \
 Observer.java \
 Properties.java \
+PropertyPermissionCollection.java \
 PropertyPermission.java \
 PropertyResourceBundle.java \
 RandomAccess.java \

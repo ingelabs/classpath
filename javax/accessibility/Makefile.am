@@ -1,6 +1,7 @@
 ## Input file for automake
 
 EXTRA_DIST = \
+package.html \
 Accessible.java \
 AccessibleAction.java \
 AccessibleBundle.java \

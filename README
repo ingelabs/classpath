@@ -1,4 +1,4 @@
-GNU Classpath README - Last updated: Feb 07, 2002
+GNU Classpath README - Last updated: May 05, 2002
 
 GNU Classpath, Essential Libraries for Java is a project to create
 a complete "clean room" implementation of the Java class libraries 
@@ -16,12 +16,13 @@ include:
 	* SableVM	(http://www.sablevm.org/)
 	* Jupiter	(http://www.eecg.toronto.edu/~doylep/jupiter/)
 	* Joas		(http://www.oberon.ethz.ch/jaos/)
+	* AegisVM	(http://aegisvm.sourceforge.net/)
 
 This is a development release only and is not ready for general
 purpose use.
 
-GNU Classpath has been tested to work out of the box with the latest ORP
-release. Instructions for building ORP with this GNU Classpath release can
+GNU Classpath has been tested NOT to work out of the box with ORP 1.0.9.
+Instructions for building ORP with this GNU Classpath release can
 be found at <http://www.gnu.org/software/classpath/doc/orp.html>.
 Most JVMs come with their own customized version of GNU Classpath.
 Please check if there is a customised version available for the JVM you

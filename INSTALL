@@ -1,4 +1,4 @@
-Installing GNU Classpath - Last updated: Feb. 09, 2002
+Installing GNU Classpath - Last updated: May. 05, 2002
 
 First, this is a development release only! Unless you are interested in
 active development and debugging, or just like running random alpha code,
@@ -9,7 +9,9 @@ list of VMs that work with GNU Classpath.
 Suggested Software
 ------------------------------------------------------------------
 	For any build environment involving native libraries, these 
-	new versions of autoconf, automake, and libtool are required.
+	new versions of autoconf, automake, and libtool are required
+        if changes are made that require rebuilding configure, Makefile.in,
+        aclocal.m4, or config.h.in.
 
         - GNU autoconf 2.52
         - GNU automake 1.5
@@ -22,12 +24,13 @@ Suggested Software
 	included in any of Sun's JDKs will not work, as it will not
 	compile java.lang.Object.
 
-        - GCJ 3.0.2+ (part of the GNU GCC package).  Note that GCC
-	  3.1 (from CVS) is currently broken, if you do want to use it
+        - GCJ 3.1+ (part of the GNU GCC package).  Note that GCC
+	  3.1 (from CVS) is currently unreleased.  If you do want to use it
           look at the status of the following bug:
 	<http://gcc.gnu.org/cgi-bin/gnatsweb.pl?cmd=view&database=gcc&pr=4715>
 	  Applying the patch in that report to gcc/jva/parse.y does
-          seem to solve/work around the problem.
+          seem to solve/work around the problem.  It may not be needed
+	  for GCJ 3.1 however.
         - IBM jikes 1.15b+.  You may have success with 1.13, but other
           versions will fail.  Until jikes 1.16 is released, you will
           have to use CVS access and build jikes 1.15b yourself:
@@ -37,7 +40,8 @@ Suggested Software
         - The kjc compiler is supported with configure but we have
           been unable to successfully compile with it.
 
-	For building the JNI native libraries, the following are required.
+	For building the JNI native libraries, the following are required
+        unless --disable-gtk-peer is used as an argument to configure.
 
         - GTK+ 1.2.x
         - libart_lgpl 2.1.0
@@ -54,6 +58,7 @@ gives a complete list.
   --enable-java           compile Java source default=yes
   --enable-jni            compile JNI source default=no
   --enable-cni            compile CNI source default=no
+  --enable-gtk-peer       compile GTK native peers default=yes
   --enable-load-library   enable to use JNI native methods default=yes
                           (disabled automatically using --enable-cni)
 
@@ -96,10 +101,9 @@ compilation of a particular class file and leave this up to the Java
 compiler instead.
 
 The --enable-maintainer-mode option to configure currently does very 
-little and shouldn't be used by ordinary develoeprs or users anyway.
+little and shouldn't be used by ordinary developers or users anyway.
 
 On Windows machines, the native libraries do not currently build, but
-the Java bytecode library will.  Unfortunately, as gcj does not yet
-compile under cygwin or mingw32, and the mingw32 version of jikes
-cannot follow symbolic links, you must use a cygwin build of jikes to
-access this limited functionality.
+the Java bytecode library will.  Gcj trunk is beginning to work under
+Cygwin.  The mingw32 version of jikes cannot follow symbolic links, you 
+must use a cygwin build of jikes to access this limited functionality.

@@ -10,7 +10,7 @@ AC_CANONICAL_TARGET
 if expr match ${target_cpu} .*86 > /dev/null; then target_cpu=x86; fi
 
 PACKAGE="classpath"
-VERSION="0.03"
+VERSION="0.04"
 LIBVERSION="0:0:0"
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
@@ -55,9 +55,22 @@ AC_ARG_ENABLE(cni,
 esac],
 [COMPILE_CNI=no])
 
+dnl -----------------------------------------------------------
+dnl GTK native peer
+dnl -----------------------------------------------------------
+AC_ARG_ENABLE(gtk-peer,
+[  --enable-gtk-peer       compile GTK native peers [default=yes]],
+[case "${enableval}" in
+  yes) COMPILE_GTK_PEER=yes ;;
+  no) COMPILE_GTK_PEER=no ;;
+  *) COMPILE_GTK_PEER=yes ;;
+esac],
+[COMPILE_GTK_PEER=yes])
+
 AM_CONDITIONAL(CREATE_JNI_HEADERS, test "x${COMPILE_JNI}" = xyes) 
 AM_CONDITIONAL(CREATE_JNI_LIBRARIES, test "x${COMPILE_JNI}" = xyes)
 AM_CONDITIONAL(CREATE_CNI_LIBRARIES, test "x${COMPILE_CNI}" = xyes)
+AM_CONDITIONAL(CREATE_GTK_PEER_LIBRARIES, test "x${COMPILE_GTK_PEER}" = xyes)
 
 AC_PROG_LN_S
 AC_PROG_INSTALL
@@ -108,12 +121,14 @@ if test "x${COMPILE_JNI}" = xyes; then
   fi
 
   dnl Check for AWT related glib/gtk/libart_lgpl
-  AM_PATH_GTK(1.2.4,,exit 1)
-  AM_PATH_GLIB(1.2.4,,exit 1,gthread)
+  if test "x${COMPILE_GTK_PEER}" = xyes; then
+    AM_PATH_GTK(1.2.4,,exit 1)
+    AM_PATH_GLIB(1.2.4,,exit 1,gthread)
+    dnl XXX Fix me when libart.m4 has the compile test fixed!
+    enable_libarttest=no
+    AM_PATH_LIBART(2.1.0,,exit 1)
+  fi
 
-  dnl XXX Fix me when libart.m4 has the compile test fixed!
-  enable_libarttest=no
-  AM_PATH_LIBART(2.1.0,,exit 1)
 fi
 
 CLASSPATH_WITH_JAVAH
@@ -310,8 +325,10 @@ java/security/spec/Makefile
 java/sql/Makefile
 java/text/Makefile
 java/util/Makefile
+java/util/logging/Makefile
 java/util/jar/Makefile
 java/util/prefs/Makefile
+java/util/regex/Makefile
 java/util/zip/Makefile
 javax/Makefile
 javax/accessibility/Makefile

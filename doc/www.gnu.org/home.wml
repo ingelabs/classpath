@@ -8,12 +8,27 @@
 <lang:new id=en short>
 <lang:star:slice:>
 
-<set-var last-modified-author="<mjw>">
+<set-var last-modified-author="<cbj>">
 
 #include <include/macros.wml>
 
 <header title="GNU Classpath">
 <en>
+<p>
+<hr SIZE="1" NoShade>
+<a class=tabselect href="http://savannah.gnu.org/projects/classpath/">Savannah</a>&nbsp;|&nbsp;
+
+<a class=tabs href="http://www.gnu.org/software/classpath/">Homepage</a>&nbsp;|&nbsp;
+<a class=tabs href="http://savannah.gnu.org/bugs/?group_id=85">Bugs</a>&nbsp;|&nbsp;
+<a class=tabs href="http://savannah.gnu.org/support/?group_id=85">Support</a>&nbsp;|&nbsp;
+<a class=tabs href="http://savannah.gnu.org/patch/?group_id=85">Patches</a>&nbsp;|&nbsp;
+<a class=tabs href="http://savannah.gnu.org/mail/?group_id=85">Lists</a>&nbsp;|&nbsp;
+
+<a class=tabs href="http://savannah.gnu.org/pm/?group_id=85">Tasks</a>&nbsp;|&nbsp;
+<a class=tabs href="http://savannah.gnu.org/news/?group_id=85">News</a>&nbsp;|&nbsp;
+<a class=tabs href="http://savannah.gnu.org/cvs/?group_id=85">CVS</a>&nbsp;|&nbsp;
+<a class=tabs href="http://savannah.gnu.org/files/?group_id=85">Files</a>&nbsp;|&nbsp;<hr SIZE="1" NoShade>
+
 <p>
 GNU Classpath is a set of essential libraries for supporting the Java
 language.  Our goal is to provide a free replacement for Sun's
@@ -46,47 +61,22 @@ exception statement from your version.
 
 <p>
 As such, it can be used to run free as well as proprietary
-applications and applets.
+applications and applets.  Using GNU Classpath as the class library 
+for a Java virtual machine (JVM) does not affect the licensing of the 
+JVM.
 </p>
 
 <p>
-Classpath is a work in progress.  There have been no public releases;
-however, pre-release source code is available via GNU's anonymous CVS
-server, and snapshots of the Classpath tree have been released and are
+Classpath is still a work in progress.  The first public release will 
+be version 1.0.  There have been no public releases; however, pre-release 
+source code is available via GNU's anonymous 
+<link url="http://savannah.gnu.org/cvs/?group_id=85" name="CVS server">
+, and snapshots of the Classpath tree have been released and are
 available from <link url="ftp://alpha.gnu.org/gnu/classpath/"
 name="ftp://alpha.gnu.org/gnu/classpath/">.  
 </p>
 
-<p>
-Directions for obtaining the source code through CVS are available 
-at <link url="http://savannah.gnu.org/cvs/?group_id=85" 
-name="http://savannah.gnu.org/cvs/?group_id=85">.  These directions are 
-for anonymous and developer access.  Information about accessing CVS 
-from behind a firewall is also available.
-</p>
-
-<p>
-Classpath has been converted to a <link url="http://savannah.gnu.org/"
-name="Savannah"> project.  Our project page is <link
-url="http://savannah.gnu.org/projects/classpath/"
-name="http://savannah.gnu.org/projects/classpath/">.  From there you
-can submit bug reports, check the latest news, find tasks yet to be
-done, and most importantly submit patches!
-</p>
-
 </en>
-
-<H4>Announcements</H4>
-<UL>
-  <LI><link url="announce/20020208.html" 
-       name="GNU Classpath Version 0.03"> (2002-02-08)</LI>
-  <LI><link url="announce/20010106.html" 
-       name="GNU Classpath Version 0.02"> (2001-01-06)</LI>
-  <LI><link url="announce/20001120.html"
-       name="GNU Classpath Version 0.01"> (2000-11-20)</LI>
-  <LI><link url="announce/19990206.html"
-       name="GNU Classpath Version 0.00"> (1999-02-06)</LI>
-</UL>
 
 <H4>Documentation</H4>
 <UL>
@@ -94,36 +84,20 @@ done, and most importantly submit patches!
   Classpath with ORP"></LI>
   <LI><link url="doc/hacking.html"
        name="GNU Classpath Hacker's Guide"></LI>
-  <LI><link url="doc/vmintegration.html"
+  <LI><link url="doc/vmintegration.html" 
        name="Virtual Machine Integration Guide"></LI>
+  <LI><link url="announce/announcements.html" 
+       name="Old News"></LI>
 </UL>
-
-<H4><en>Mailing List</en></H4>
-<en>
-<p>
-There is one general discussion list for Classpath. You may  
-<link url="http://mail.gnu.org/mailman/listinfo/classpath/" name="subscribe"> 
-to the mailing list via the web.  However, you may also 
-just send an email message with a subject of "subscribe" 
-to <link url="mailto:classpath-request@gnu.org?subject=subscribe"
-name="&lt;classpath-request@gnu.org&gt;">.  You may  
-<link url="http://mail.gnu.org/mailman/listinfo/classpath/" name="unsubscribe">
-from the mailing list via the web as well.  To send a message to the list, 
-mail it to <link url="mailto:classpath@gnu.org" name="&lt;classpath@gnu.org&gt;">. 
-An <link url="http://www.mail-archive.com/classpath%40gnu.org/" name="archive"> of 
-the list is available which dates back to the beginning of the project.  
-A new, but less comprehensive, archive of the mailing list is now located 
-on <link url="http://mail.gnu.org/mailman/listinfo/classpath/" name="mail.gnu.org">.
-</p>
-</en>
 
 <H4><en>Status</en></H4>
 <p>
 <en>
-We're aiming for GNU Classpath 1.0 to be fully compatible with Java
-1.1 and largely compatible with Java 1.2.  Detailed information on the
+GNU Classpath 1.0 will be fully compatible with Java 1.1 and largely 
+compatible with Java 2.  Detailed information on the
 current state of a package can be obtained by clicking on the
-appropriate link below.
+appropriate link below.  This information will become part of the Savannah
+Tasks information in the future and no longer appear on this page.
 </en>
 </p>
 <package-list>

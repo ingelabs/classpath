@@ -14,6 +14,7 @@ DatagramSocket.java \
 FileNameMap.java \
 HttpURLConnection.java \
 InetAddress.java \
+InetSocketAddress.java \
 JarURLConnection.java \
 MalformedURLException.java \
 MimeTypeMapper.java \
@@ -26,6 +27,7 @@ PlainSocketImpl.java \
 PortUnreachableException.java \
 ProtocolException.java \
 ServerSocket.java \
+SocketAddress.java \
 Socket.java \
 SocketException.java \
 SocketImplFactory.java \

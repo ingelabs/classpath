@@ -1,4 +1,15 @@
-New in release 0.03 (TBD)
+New in release 0.04 (2002/05/05)
+* Additional configure options to disable zip creation and installation as
+  well as disable gtk peer native compilation.
+* Addition of java.nio, java.util.logging, and javax.swing.
+* Integration of most or all of the ORP patches to date, the purpose of 
+  which are to make it possible to use JBOSS with ORP and Classpath.  This
+  is still in a testing phase however.
+* Significant changes in the reference VM interface that may require
+  support from the JVMs.
+* Lots of bugfixes.
+
+New in release 0.03 (2002/02/08)
 * More merges with libgcj have been performed including java.math which now
   provides a pure Java implementation of that package.
   Current status at <http://gcc.gnu.org/java/libgcj-classpath-compare.html>

@@ -1,4 +1,4 @@
-The Classpath TODO list as of 2001/11/03
+The Classpath TODO list as of 2002/05/05
 
 -- Modify Classpath build to support libgcj out of the box.  Ideally
    the gcj folks could simply include a stock classpath in one of their
@@ -30,58 +30,7 @@ The Classpath TODO list as of 2001/11/03
 -- Write Mauve (http://sourceware.cygnus.com/mauve/) tests for those
    classes that don't have them.
 
--------------------------------------------------------------------------
-
-Here is what needs to be done on a package by package basis for Java
-1.1 compatibility.  Note that debugging should be done by running
-Mauve tests against Classpath where possible.  If Mauve tests don't
-exist, the first step is to write them.  Note that while I say "1.1",
-the implementations of these packages should be written to the "1.2"
-standard.
-
--- java.applet: Coded and compiles cleanly.  Needs debugging.
-
--- java.awt:  Mostly done and compiles cleanly.  A few classes are
-   missing.  Needs to be debugged and integrated with Paul Fisher's
-   AWT peers.  
-
--- java.awt.datatransfer:  Coded and compiles cleanly.  Needs
-   debugging.  This task should be considered "On Hold" for now.
-
--- java.awt.event:  Coded and compiles cleanly.  Needs debugging.
-   This task should be considered "On Hold" for now.
-
--- java.awt.image: Partially implemented, could use help with identifying
-   the proper image manipulation algorithms that need to be implemented.
-
--- java.awt.peer:  Done.  Nothing needs to be done here.
-
--- java.beans:  Done.  Additional testing/debugging/real life use
-   reports would be helpful, as would efficieny improvements.
-
--- java.io:  Needs to be merged with libgcj.  See above.
-
--- java.lang:  Needs to be merged with libgcj.  See above.
-
--- java.math:  Done.
-
--- java.net:  Needs to be merged with libgcj. See above.
-
--- java.rmi:  Done.
-
--- java.security:  Debug the implementation.
-
--- java.sql: Needs debugging.
-
--- java.text:  Needs to be merged with libgcj.  See above.
-
--- java.util:  Needs to be merged with libgcj.  See above
-
--- java.util.zip:  Need to be merged with libgcj.  See above.
-
--------------------------------------------------------------------------
-
--- Write Java 1.2 packages not currently included or improve existing 
+-- Write Java 2 packages not currently included or improve existing 
    ones.
 
 -- Figure out an easy method of generating online Javadocs from our

@@ -7,7 +7,9 @@
 <head>
 <link rev="made" HREF="mailto:webmasters@www.gnu.org">
 </head>
-<h3><en>GNU Classpath</en></h3>
+<table>
+<tr>
+<td>
 <applet code="Animation.class" CODEBASE="/graphics" WIDTH="130" HEIGHT="86">
   <param name="base-name" value="drop">
   <param name="extension" value="jpg">
@@ -23,6 +25,12 @@
   </a>
   <a href="/philosophy/gif.html">no gifs due to patent problems</a>
 </applet>
+</td>
+<td>
+<h1><en>GNU Classpath</en></h1>
+</td>
+</tr>
+</table>
 <restore title>
 </define-tag>
 
@@ -46,7 +54,7 @@ Please send comments on these web pages to
 send other questions to
 <A HREF="mailto:gnu@gnu.org"><EM>gnu@gnu.org</EM></A>.
 <P>
-Copyright (C) 1999 Free Software Foundation, Inc.,
+Copyright (C) 1999-2002 Free Software Foundation, Inc.,
 59 Temple Place - Suite 330, Boston, MA  02111,  USA
 <P>
 Verbatim copying and distribution of this entire article is

@@ -13,7 +13,6 @@ DeflaterEngine.java \
 DeflaterHuffman.java \
 DeflaterOutputStream.java \
 DeflaterPending.java \
-GZIPConstants.java \
 GZIPInputStream.java \
 GZIPOutputStream.java \
 Inflater.java \

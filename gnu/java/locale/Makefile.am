@@ -140,9 +140,6 @@ LocaleInformation_zh_CN.java \
 LocaleInformation_zh_HK.java \
 LocaleInformation_zh_SG.java \
 LocaleInformation_zh_TW.java \
-block.uni \
-character.uni \
-titlecase.uni \
 iso3166-a3.properties \
 iso3166.properties \
 iso3166_de.properties \

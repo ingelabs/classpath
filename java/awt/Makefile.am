@@ -1,17 +1,21 @@
 ## Input file for automake
 
-SUBDIRS = color datatransfer event font geom im image peer print
+SUBDIRS = color datatransfer dnd event font geom im image peer print
 
 EXTRA_DIST = \
 ActiveEvent.java \
 Adjustable.java	\
+AlphaComposite.java \
+AttributeValue.java \
 AWTError.java \
 AWTEvent.java \
 AWTEventMulticaster.java \
 AWTException.java \
 AWTKeyStroke.java \
 AWTPermission.java \
+BasicStroke.java \
 BorderLayout.java \
+BufferCapabilities.java \
 Button.java \
 Canvas.java \
 CardLayout.java \
@@ -25,7 +29,10 @@ ComponentOrientation.java \
 Composite.java \
 CompositeContext.java \
 Container.java \
+ContainerOrderFocusTraversalPolicy.java \
 Cursor.java \
+DefaultFocusTraversalPolicy.java \
+DefaultKeyboardFocusManager.java \
 Dialog.java \
 Dimension.java \
 DisplayMode.java \
@@ -34,10 +41,12 @@ Event.java \
 EventQueue.java	\
 FileDialog.java	\
 FlowLayout.java	\
+FocusTraversalPolicy.java \
 Font.java \
 FontFormatException.java \
 FontMetrics.java \
 Frame.java \
+GradientPaint.java \
 Graphics2D.java \
 GraphicsConfigTemplate.java \
 GraphicsConfiguration.java \
@@ -49,8 +58,11 @@ GridLayout.java	\
 HeadlessException.java \
 IllegalComponentStateException.java \
 Image.java \
+ImageCapabilities.java \
 Insets.java \
 ItemSelectable.java \
+JobAttributes.java \
+KeyboardFocusManager.java \
 KeyEventDispatcher.java \
 KeyEventPostProcessor.java \
 Label.java \
@@ -64,6 +76,7 @@ MenuContainer.java \
 MenuItem.java \
 Menu.java \
 MenuShortcut.java \
+PageAttributes.java \
 PaintContext.java \
 Paint.java \
 Panel.java \
@@ -74,6 +87,7 @@ PrintGraphics.java \
 PrintJob.java \
 Rectangle.java \
 RenderingHints.java \
+Robot.java \
 Scrollbar.java \
 ScrollPaneAdjustable.java \
 ScrollPane.java	\
@@ -83,6 +97,7 @@ SystemColor.java \
 TextArea.java \
 TextComponent.java \
 TextField.java \
+TexturePaint.java \
 Toolkit.java \
 Transparency.java \
 Window.java
