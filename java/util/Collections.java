@@ -475,10 +475,7 @@ public class Collections {
 
       // Obtain a random position to swap with. nextIndex is used so that the
       // range of the random number includes the current position.
-     
-//        int swap = r.nextInt(i.nextIndex());    FIXME
-	// since we don't have java.util.Random implemented to 1.2 specs
-      int swap = r.nextInt();
+           int swap = r.nextInt(i.nextIndex());
 
       // Swap the swapth element of the array with the next element of the
       // list.
