@@ -157,7 +157,7 @@ Java_java_net_PlainDatagramSocketImpl_getOption(JNIEnv *env, jobject this,
  * Reads a buffer from a remote host
  */
 JNIEXPORT void JNICALL
-Java_java_net_PlainDatagramSocketImpl_receive(JNIEnv *env, jobject this, 
+Java_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this, 
                                               jobject packet)
 {
 #ifndef WITHOUT_NETWORK

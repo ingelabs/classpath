@@ -75,6 +75,16 @@ class PlainDatagramSocketImpl extends DatagramSocketImpl
    * This is the actual underlying file descriptor
    */
   protected int native_fd = -1;
+  
+  /**
+   * Lock object to serialize threads wanting to receive 
+   */
+  private final Object RECEIVE_LOCK = new Object();
+  
+  /**
+   * Lock object to serialize threads wanting to send 
+   */
+  private final Object SEND_LOCK = new Object();
 
   /**
    * Default do nothing constructor
@@ -140,8 +150,8 @@ class PlainDatagramSocketImpl extends DatagramSocketImpl
    *
    * @exception IOException If an error occurs
    */
-  private native synchronized void sendto (InetAddress addr, int port,
-                                           byte[] buf, int len)
+  private native void sendto (InetAddress addr, int port,
+                              byte[] buf, int len)
     throws IOException;
 
   /**
@@ -151,10 +161,14 @@ class PlainDatagramSocketImpl extends DatagramSocketImpl
    *
    * @exception IOException If an error occurs
    */
-  protected synchronized void send(DatagramPacket packet) throws IOException
+  protected void send(DatagramPacket packet) throws IOException
   {
-    sendto(packet.getAddress(), packet.getPort(), packet.getData(), 
-           packet.getLength());
+    synchronized(SEND_LOCK)
+      {
+      sendto(packet.getAddress(), packet.getPort(), packet.getData(), 
+             packet.getLength());
+      }
+    
   }
 
   /**
@@ -164,8 +178,23 @@ class PlainDatagramSocketImpl extends DatagramSocketImpl
    *
    * @exception IOException IOException If an error occurs
    */
-  protected native synchronized void receive(DatagramPacket packet)
-    throws IOException;
+  protected void receive(DatagramPacket packet)
+    throws IOException
+  {
+      synchronized(RECEIVE_LOCK)
+        {
+        receive0(packet);		
+        }
+  }
+
+  /**
+   * Native call to receive a UDP packet from the network
+   * 
+   * @param packet The packet to fill in with the data received
+   *
+   * @exception IOException IOException If an error occurs
+   */
+  private native void receive0(DatagramPacket packet) throws IOException;
 
   /**
    * Sets the value of an option on the socket

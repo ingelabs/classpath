@@ -1,3 +1,14 @@
+2003-09-15  Ingo Proetel  <proetel@aicas.com>
+
+	* native/jni/java-net/java_net_PlainDatagramSocketImpl.c (receive, receive0): renamed receive to receive0 
+
+	* include/java_net_PlainDatagramSocketImpl.h (receive, receive0): renamed receive to receive0 
+
+	* java/net/PlainDatagramSocketImpl.java (receive0): added
+	(receive): changed to call receive0 and serialize access on RECEIVE_LOCK
+	(send): chanded to serialize access on SEND_LOCK
+	
+
 2003-09-11  Sascha Brawer  <brawer@dandelis.ch>
 
 	* java/awt/Toolkit.java (getSystemEventQueue, getSystemEventQueueImpl):
