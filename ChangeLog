@@ -1,5 +1,14 @@
 2004-07-10  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/io/BufferedInputStream.java (count, pos, marklimit): Removed
+	unnecessary initialization. (marktarget, CHUNKSIZE): Removed.
+	(bufferSize): New field. (close): Reset state. (read()): Removed
+	unnecessary cast. (read(byte[],int,int): Try harder to read the
+	requested number of bytes. (mark,reset,refill): Fixed handling of
+	marking. (skip): Added stream closed check and removed mark handling.
+
+2004-07-10  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/io/ObjectInputStream.java (readObject): Delegate instantation
 	of Externalizable classes to ObjectStreamClass.
 	* java/io/ObjectStreamClass.java (newInstance): New method to
