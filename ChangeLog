@@ -1,3 +1,10 @@
+2004-09-20  Ilya Perminov  <iperminov@logicalsoft.com>
+
+	* gnu/java/rmi/server/UnicastServer.java
+	(incomingMessageCall): Added code to handle Errors.
+	* gnu/java/rmi/server/UnicastServerRef.java
+	(incomingMessageCall): Added code to handle Errors.
+
 2004-09-20  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/net/protocol/file/Handler.java
