@@ -77,7 +77,7 @@ Updated:
 </define-container>
 
 <defun package-item name &optional section>
-  <LI><link status.html#<if <var-exists section> <get-var section> <get-var name>> <get-var name>></LI>
+  <LI><link /software/classpath/status.html#<if <var-exists section> <get-var section> <get-var name>> <get-var name>></LI>
 </defun>
 
 <define-container package pname>
