@@ -1,7 +1,13 @@
-2004-04-20  Michael Koch  <konqueror@gmx.de>
+2004-04-20  Graydon Hoare  <graydon@redhat.com>
 
-	* java/lang/SecurityManager.java
-	(checkAWTEventQueueAccess): Implemented.
+	* java/text/AttributedString.java 
+	(addAttribute): Fix off-by-one.
+	(getIterator): Likewise.	
+	* java/text/AttributedStringIterator.java 
+	(getRunLimit): Correct logic.
+	(getRunStart): Likewise.
+	(getAttribute): Fix inequality.
+	(getAttributes): Likewise.
 
 2004-04-20  Michael Koch  <konqueror@gmx.de>
 
