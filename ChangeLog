@@ -1,3 +1,12 @@
+2001-01-07  Mark Wielaard  <mark@klomp.org>
+	* java/lang/Float.java: implements Comparable, new method compareTo()
+	* java/lang/Integer.java: Ditto
+	* java/lang/Long.java: Ditto
+	* java/lang/Short.java: Ditto
+	* java/lang/String.java: Ditto
+	(CASE_INSENSITIVE_ORDER): new field
+	(compareToIgnoreCase): new method
+
 2001-01-07  Anthony Green  <green@redhat.com>
 
 	* java/lang/StringBuffer.java: Fix comments.

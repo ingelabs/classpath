@@ -1,5 +1,5 @@
 /* java.lang.String
-   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -27,6 +27,7 @@ executable file might be covered by the GNU General Public License. */
 
 package java.lang;
 
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Locale;
 import gnu.java.io.EncodingManager;
@@ -39,7 +40,7 @@ import java.io.*;
  * @author Paul N. Fisher
  * @since JDK1.0
  */
-public final class String {
+public final class String implements Comparable {
   /**
    * Holds the references for each intern()'d String.
    * Once a String has been intern()'d it cannot be GC'd.
@@ -76,6 +77,18 @@ public final class String {
    * is considered uncached (even if 0 is the correct hash value).
    */
   private int cachedHashCode;
+
+  /**
+   * A Comparator that uses <code>String.compareToIgnoreCase(String)</code>.
+   *
+   * @since 1.2
+   */
+  public static final Comparator CASE_INSENSITIVE_ORDER
+      = new Comparator() {
+              public int compare(Object o1, Object o2) {
+                  return ((String)o1).compareToIgnoreCase((String)o2);
+              }
+          };
 
   /**
    * Creates an empty String (length 0)
@@ -519,6 +532,43 @@ Character.toLowerCase(value[i]) == Character.toLowerCase(anotherString.value[i])
 	return result;
     }
     return count-anotherString.count;
+  }
+
+  /**
+   * Behaves like <code>compareTo(java.lang.String)</code> unless the Object
+   * is not a <code>String</code>.  Then it throws a 
+   * <code>ClassCastException</code>.
+   * @exception ClassCastException if the argument is not a
+   * <code>String</code>.
+   *
+   * @since 1.2
+   */
+  public int compareTo(Object o)
+  {
+    return compareTo((String)o);
+  }
+
+  /**
+   * Compares this String and another String (case insensitive).
+   *
+   * @return returns an integer less than, equal to, or greater than
+   *   zero, if this String is found, respectively, to be less than,
+   *   to match, or be greater than the given String.
+   *
+   * @since 1.2
+   */
+  public int compareToIgnoreCase(String s)
+  {
+    int min = Math.min(count, s.count);
+    for (int i = 0; i < min; i++)
+    {
+      char c1 = Character.toLowerCase(Character.toUpperCase(value[i]));
+      char c2 = Character.toLowerCase(Character.toUpperCase(s.value[i]));
+      int result = c1 - c2;
+      if (result != 0) 
+        return result;
+    }
+    return count-s.count;
   }
 
   /**

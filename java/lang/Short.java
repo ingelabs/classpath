@@ -1,5 +1,5 @@
 /* java.lang.Short
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,7 +38,7 @@ package java.lang;
  * @author John Keiser
  * @since JDK 1.0
  */
-public final class Short extends Number {
+public final class Short extends Number implements Comparable {
 
   static final long serialVersionUID = 7515723908773894738L;
 
@@ -335,4 +335,36 @@ public final class Short extends Number {
   public double doubleValue() {
     return value;
   }
+
+    /**
+     * Compare two Shorts numerically by comparing their
+     * <code>short</code> values.
+     * @return a positive value if this <code>Short</code> is greater
+     * in value than the argument <code>Short</code>; a negative value
+     * if this <code>Short</code> is smaller in value than the argument
+     * <code>Short</code>; and <code>0</code>, zero, if this
+     * <code>Short</code> is equal in value to the argument
+     * <code>Short</code>.  
+     *
+     * @since 1.2
+     */
+    public int compareTo(Short s)
+    {
+        return (value - s.shortValue());
+    }
+    
+    /**
+     * Behaves like <code>compareTo(java.lang.Short)</code> unless the Object
+     * is not a <code>Short</code>.  Then it throws a 
+     * <code>ClassCastException</code>.
+     * @exception ClassCastException if the argument is not a
+     * <code>Short</code>.
+     *
+     * @since 1.2
+     */
+    public int compareTo(Object o)
+    {
+        return compareTo((Short)o);
+    }
+
 }

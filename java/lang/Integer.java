@@ -1,5 +1,5 @@
 /* java.lang.Integer
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,7 +38,7 @@ package java.lang;
  * @author John Keiser
  * @since JDK 1.0
  */
-public final class Integer extends Number {
+public final class Integer extends Number implements Comparable {
 
   // compatible with JDK 1.0.2+
   static final long serialVersionUID = 1360826667806852920L;
@@ -456,4 +456,36 @@ public final class Integer extends Number {
   public double doubleValue() {
     return value;
   }
+
+    /**
+     * Compare two Integers numerically by comparing their
+     * <code>int</code> values.
+     * @return a positive value if this <code>Integer</code> is greater
+     * in value than the argument <code>Integer</code>; a negative value
+     * if this <code>Integer</code> is smaller in value than the argument
+     * <code>Integer</code>; and <code>0</code>, zero, if this
+     * <code>Integer</code> is equal in value to the argument
+     * <code>Integer</code>.  
+     *
+     * @since 1.2
+     */
+    public int compareTo(Integer i)
+    {
+        return (value - i.intValue());
+    }
+    
+    /**
+     * Behaves like <code>compareTo(java.lang.Integer)</code> unless the Object
+     * is not a <code>Integer</code>.  Then it throws a 
+     * <code>ClassCastException</code>.
+     * @exception ClassCastException if the argument is not a
+     * <code>Integer</code>.
+     *
+     * @since 1.2
+     */
+    public int compareTo(Object o)
+    {
+        return compareTo((Integer)o);
+    }
+
 }

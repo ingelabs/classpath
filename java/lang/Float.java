@@ -1,5 +1,5 @@
 /* java.lang.Float
-   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,7 +37,7 @@ package java.lang;
  * @author Paul Fisher
  * @since JDK 1.0
  */
-public final class Float extends Number 
+public final class Float extends Number implements Comparable
 {
     /**
      * The minimum positive value a <code>float</code> may represent
@@ -387,4 +387,58 @@ public final class Float extends Number
      */
     public native static float parseFloat(String s)
     throws NumberFormatException, NullPointerException;
+
+    /**
+     * Returns 0 if the <code>float</code> value of the argument is 
+     * equal to the value of this <code>Float</code>.  Returns a number
+     * less than zero if the value of this <code>Float</code> is less 
+     * than the <code>Float</code> value of the argument, and returns a 
+     * number greater than zero if the value of this <code>Float</code> 
+     * is greater than the <code>float</code> value of the argument.
+     * <br>
+     * <code>Float.NaN</code> is greater than any number other than itself, 
+     * even <code>Float.POSITIVE_INFINITY</code>.
+     * <br>
+     * <code>0.0</code> is greater than <code>-0.0</code>.
+     *
+     * @param f the Float to compare to.
+     * @return  0 if the <code>Float</code>s are the same, &lt; 0 if this
+     *          <code>Float</code> is less than the <code>Float</code> in
+     *          in question, or &gt; 0 if it is greater.
+     *
+     * @since 1.2
+     */
+    public int compareTo(Float f)
+    {
+        float x = f.floatValue();
+
+        if (value == NaN)
+            return (x == NaN) ? 0 : 1;
+        if ((value == 0.0) && (x == -0.0))
+            return 1;
+        if ((value == -0.0) && (x == 0.0))
+            return -1;
+
+        return ((value - x) > 0) ? 1 : -1;
+    }
+    
+    /**
+     * Compares the specified <code>Object</code> to this <code>Float</code>
+     * if and only if the <code>Object</code> is an instanceof 
+     * <code>Float</code>.
+     * Otherwise it throws a <code>ClassCastException</code>
+     *
+     * @param o the Object to compare to.
+     * @return  0 if the <code>Float</code>s are the same, &lt; 0 if this
+     *          <code>Float</code> is less than the <code>Float</code> in
+     *          in question, or &gt; 0 if it is greater.
+     * @throws ClassCastException if the argument is not a <code>Float</code>
+     *
+     * @since 1.2
+     */
+    public int compareTo(Object o)
+    {
+        return compareTo((Float)o);
+    }
+
 }
