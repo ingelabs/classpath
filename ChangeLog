@@ -1,5 +1,10 @@
 2004-07-04  Mark Wielaard  <mark@klomp.org>
 
+	* java/lang/System.java (static): Add (fake) ASCII support to
+	defaultProperties encoding_scheme_alias.
+
+2004-07-04  Mark Wielaard  <mark@klomp.org>
+
 	* INSTALL: Make needed texinfo version (4.2+) more explicit.
 
 2004-07-04  Mark Wielaard  <mark@klomp.org>

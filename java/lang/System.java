@@ -200,6 +200,15 @@ public final class System
     defaultProperties.put("gnu.java.io.encoding_scheme_alias.UTF-8", "UTF8");
     defaultProperties.put("gnu.java.io.encoding_scheme_alias.utf-8", "UTF8");
 
+    // XXX FIXME - Cheat a little for ASCII.
+    // Remove when we get a real "ASCII En/Decoder"
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.ASCII", "8859_1");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.ascii", "8859_1");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.US-ASCII",
+			  "8859_1");
+    defaultProperties.put("gnu.java.io.encoding_scheme_alias.us-ascii",
+			  "8859_1");
+
     // XXX FIXME - Temp hack for old systems that set the wrong property
     if (defaultProperties.get("java.io.tmpdir") == null)
       defaultProperties.put("java.io.tmpdir",
