@@ -41,6 +41,7 @@ import gnu.java.security.action.GetPropertyAction;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -48,7 +49,6 @@ import java.io.FilePermission;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.StringBufferInputStream;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -74,14 +74,7 @@ public class Connection extends URLConnection
    */
   private static final String DEFAULT_PERMISSION = "read";
 
-  private static final String lineSeparator;
-  
-  static
-  {
-    GetPropertyAction getProperty = new GetPropertyAction("line.separator");
-    lineSeparator = (String) AccessController.doPrivileged(getProperty);
-
-  }
+  private static String lineSeparator;
   
   /**
    * This is a File object for this connection
@@ -137,13 +130,19 @@ public class Connection extends URLConnection
       {
 	if (doInput)
 	  {
+	    if (lineSeparator == null)
+	      {
+		GetPropertyAction getProperty = new GetPropertyAction("line.separator");
+		lineSeparator = (String) AccessController.doPrivileged(getProperty);
+	      }
+	    
 	    StringBuffer sb = new StringBuffer();
 	    String[] files = file.list();
 
 	    for (int index = 0; index < files.length; ++index)
 	       sb.append(files[index]).append(lineSeparator);
 
-	    inputStream = new StringBufferInputStream(sb.toString());
+	    inputStream = new ByteArrayInputStream(sb.toString().getBytes());
 	  }
 
 	if (doOutput)
