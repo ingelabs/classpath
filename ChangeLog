@@ -1,3 +1,16 @@
+2003-06-18  Michael Koch  <konqueror@gmx.de>
+
+	* java/util/Locale.java,
+	java/util/PropertyResourceBundle.java,
+	java/util/prefs/AbstractPreferences.java,
+	java/util/prefs/Preferences.java,
+	java/util/prefs/PreferencesFactory.java,
+	java/util/zip/ZipEntry.java,
+	java/util/zip/ZipFile.java,
+	java/util/zip/ZipInputStream.java,
+	java/util/zip/ZipOutputStream.java:
+	New versions from libgcj.
+
 2003-06-17  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/plaf/basic/BasicBorders.java
