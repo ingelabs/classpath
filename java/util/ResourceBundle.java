@@ -44,7 +44,6 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
-import gnu.classpath.Configuration;
 
 /**
  * A resource bundle contains locale-specific data. If you need localized
@@ -402,7 +401,6 @@ public abstract class ResourceBundle
     else if (cache.containsKey(name))
       {
 	Reference ref = (Reference) cache.get(name);
-	ResourceBundle result = null;
 	// If REF is null, that means that we added a `null' value to
 	// the hash map.  That means we failed to find the bundle
 	// previously, and we cached that fact.  The JDK does this, so
@@ -497,7 +495,6 @@ public abstract class ResourceBundle
     if (cache.containsKey(localizedName))
       {
 	Reference ref = (Reference) cache.get(localizedName);
-	ResourceBundle result = null;
 	// If REF is null, that means that we added a `null' value to
 	// the hash map.  That means we failed to find the bundle
 	// previously, and we cached that fact.  The JDK does this, so

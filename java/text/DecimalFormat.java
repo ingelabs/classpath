@@ -37,12 +37,10 @@ exception statement from your version. */
 
 package java.text;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Currency;
 import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-import java.io.ObjectInputStream;
-import java.io.IOException;
 
 /**
  * @author Tom Tromey <tromey@cygnus.com>

@@ -1,5 +1,20 @@
 2004-04-23  Tom Tromey  <tromey@redhat.com>
 
+	* java/text/Format.java: Cleaned up imports.
+	* java/text/DecimalFormat.java: Cleaned up imports.
+	* java/security/SecureRandom.java: Cleaned up imports.
+	(SecureRandom): Removed unused variable.
+	* java/security/UnresolvedPermission.java: Cleaned up imports.
+	* java/util/Date.java (parse): Removed unused variable.
+	* java/util/ResourceBundle.java: Cleaned up imports.
+	(getBundle): Removed unused variable.
+	(tryBundle): Likewise.
+	* java/util/regex/Pattern.java (Pattern): Removed unused constructor.
+	* java/util/zip/DeflaterHuffman.java (buildCodes): Removed unused
+	variable.
+
+2004-04-23  Tom Tromey  <tromey@redhat.com>
+
 	* javax/naming/CompoundName.java (endsWith): Look at correct
 	element of source name.
 
