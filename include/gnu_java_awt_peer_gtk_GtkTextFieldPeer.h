@@ -14,7 +14,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_create (JNIEn
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkWidgetSetBackground (JNIEnv *env, jobject, jint, jint, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkWidgetSetForeground (JNIEnv *env, jobject, jint, jint, jint);
 JNIEXPORT jint JNICALL Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryGetBorderWidth (JNIEnv *env, jobject);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkSetFont (JNIEnv *env, jobject, jstring, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkWidgetModifyFont (JNIEnv *env, jobject, jstring, jint, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_setEchoChar (JNIEnv *env, jobject, jchar);
 
 #ifdef __cplusplus

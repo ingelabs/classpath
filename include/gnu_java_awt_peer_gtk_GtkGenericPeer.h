@@ -11,6 +11,7 @@ extern "C"
 #endif
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkGenericPeer_dispose (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkGenericPeer_gtkWidgetModifyFont (JNIEnv *env, jobject, jstring, jint, jint);
 
 #ifdef __cplusplus
 }

@@ -1,5 +1,39 @@
 2004-09-23  Mark Wielaard  <mark@klomp.org>
 
+	* examples/gnu/classpath/examples/awt/Demo.java: Add help menu
+	example.
+
+	* include/gnu_java_awt_peer_gtk_GtkButtonPeer.h: Regenerate with gcjh
+	from CVS.
+	* include/gnu_java_awt_peer_gtk_GtkCheckboxPeer.h: Likewise.
+	* include/gnu_java_awt_peer_gtk_GtkComponentPeer.h: Likewise.
+	* include/gnu_java_awt_peer_gtk_GtkFramePeer.h: Likewise.
+	* include/gnu_java_awt_peer_gtk_GtkGenericPeer.h: Likewise.
+	* include/gnu_java_awt_peer_gtk_GtkLabelPeer.h: Likewise.
+	* include/gnu_java_awt_peer_gtk_GtkListPeer.h: Likewise.
+	* include/gnu_java_awt_peer_gtk_GtkMenuBarPeer.h: Likewise.
+	* include/gnu_java_awt_peer_gtk_GtkMenuItemPeer.h: Likewise.
+	* include/gnu_java_awt_peer_gtk_GtkTextAreaPeer.h: Likewise.
+	* include/gnu_java_awt_peer_gtk_GtkTextFieldPeer.h: Likewise.
+
+2004-09-23  David Jee  <djee@redhat.com>
+
+	PR AWT/17059
+	* gnu/java/awt/peer/gtk/GtkMenuBarPeer.java
+	(nativeSetHelpMenu): New native method declaration.
+	(addHelpMenu): Call nativeSetHelpMenu().
+	(addMenu): Remove.
+	* java/awt/MenuBar.java
+	(setHelpMenu): Call addNotify() on the new help menu.
+	(add): Call addNotify() on the new menu.
+	(addNotify): Set the help menu if one exists.
+	* java/awt/peer/MenuBarPeer.java
+	(addMenu): Remove.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuBarPeer.c
+	(nativeSetHelpMenu): New method.
+
+2004-09-23  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/AbstractButton.java: Whitespace cleanup.
 	* javax/swing/DefaultButtonModel.java: Likewise.
 	* javax/swing/JLabel.java: Likewise.

@@ -118,11 +118,17 @@ class Demo
         });
       menu.add(quit);
       mb.add (menu);
+
       menu = new Menu("Edit", true);
       menu.add(new MenuItem("Cut"));
       menu.add(new MenuItem("Copy"));
       menu.add(new MenuItem("Paste"));
       mb.add (menu);
+
+      Menu helpMenu = new Menu("Help");
+      helpMenu.add(new MenuItem("About"));
+      mb.add(helpMenu);
+      mb.setHelpMenu(helpMenu);
       
       setMenuBar (mb);
       

@@ -13,7 +13,7 @@ extern "C"
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_create (JNIEnv *env, jobject, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_connectJObject (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_connectSignals (JNIEnv *env, jobject);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkSetFont (JNIEnv *env, jobject, jstring, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkWidgetModifyFont (JNIEnv *env, jobject, jstring, jint, jint);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkWidgetRequestFocus (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_getSize (JNIEnv *env, jobject, jint, jint, jintArray);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkListPeer_append (JNIEnv *env, jobject, jobjectArray);

@@ -76,10 +76,5 @@ public class GtkMenuBarPeer extends GtkMenuComponentPeer
     // nativeSetHelpMenu((MenuPeer) menu.getPeer());
   }
 
-  public void addMenu (Menu menu)
-  {
-    addMenu ((MenuPeer) menu.getPeer ());
-  }
-
   native public void delMenu (int index);
 }

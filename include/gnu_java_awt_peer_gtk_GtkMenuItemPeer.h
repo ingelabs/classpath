@@ -12,6 +12,8 @@ extern "C"
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_create (JNIEnv *env, jobject, jstring);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_connectSignals (JNIEnv *env, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_gtkWidgetModifyFont (JNIEnv *env, jobject, jstring, jint, jint);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_setEnabled (JNIEnv *env, jobject, jboolean);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_setLabel (JNIEnv *env, jobject, jstring);
 
 #ifdef __cplusplus
