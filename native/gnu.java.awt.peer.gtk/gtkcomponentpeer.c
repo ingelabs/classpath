@@ -405,6 +405,24 @@ set_visible (GtkWidget *widget, jboolean visible)
     gtk_widget_hide (widget);
 }
 
+GtkLayout *
+find_gtk_layout (GtkWidget *parent)
+{
+  if (GTK_IS_WINDOW (parent))
+    {
+      GList *children = gtk_container_children 
+	                  (GTK_CONTAINER (GTK_BIN (parent)->child));
+
+      if (GTK_IS_MENU_BAR (children->data))
+	return GTK_LAYOUT (children->next->data);
+      else /* GTK_IS_LAYOUT (children->data) */
+	return GTK_LAYOUT (children->data);
+    }
+
+  return NULL;
+}
+
+
 void
 set_parent (GtkWidget *widget, GtkContainer *parent)
 {

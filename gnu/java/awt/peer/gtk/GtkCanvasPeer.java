@@ -21,4 +21,33 @@ public class GtkCanvasPeer extends GtkComponentPeer implements CanvasPeer
   {
     return new GdkGraphics (this);
   }
+
+  public void handleEvent (AWTEvent event)
+  {
+    int id = event.getID();
+      
+    switch (id)
+      {
+      case PaintEvent.PAINT:
+      case PaintEvent.UPDATE:
+	{
+	  try 
+	    {
+	      Graphics g = getGraphics ();
+		
+	      if (id == PaintEvent.PAINT)
+		awtComponent.paint (g);
+	      else
+		awtComponent.update (g);
+	      
+	      g.dispose ();
+	    } 
+	  catch (InternalError e)
+	    { 
+	      System.err.println (e);
+	    }
+	}
+	break;
+      }
+  }
 }

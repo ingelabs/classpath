@@ -26,6 +26,7 @@ import java.awt.datatransfer.*;
 import java.awt.image.*;
 import java.awt.peer.*;
 import java.util.Hashtable;
+import java.util.MissingResourceException;
 
 /* This class uses a deprecated method java.awt.peer.ComponentPeer.getPeer().
    This merits comment.  We are basically calling Sun's bluff on this one.
@@ -81,7 +82,8 @@ public class GtkToolkit extends java.awt.Toolkit
 
   public String[] getFontList () 
   {
-    return null;
+    return (new String[] { "Dialog", "DialogInput", "Monospaced", "Serif",
+			   "SansSerif" });
   }
 
   public FontMetrics getFontMetrics (Font font) 
@@ -283,7 +285,12 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected FontPeer getFontPeer (String name, int style) 
   {
-    return null;
+    try {
+      GtkFontPeer fp = new GtkFontPeer (name, style);
+      return fp;
+    } catch (MissingResourceException ex) {
+      return null;
+    }
   }
 
   protected EventQueue getSystemEventQueueImpl() 

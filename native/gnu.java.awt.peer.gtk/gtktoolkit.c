@@ -62,7 +62,7 @@ Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenResolution (JNIEnv *env,
 
   gdk_threads_enter ();
 
-  res = gdk_screen_width() / (gdk_screen_width_mm() / 25.4);
+  res = gdk_screen_width () / (gdk_screen_width_mm () / 25.4);
 
   gdk_threads_leave ();
   return res;

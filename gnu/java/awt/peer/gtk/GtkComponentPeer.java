@@ -91,7 +91,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public Graphics getGraphics ()
   {
-    return new GdkGraphics (this);
+    throw new InternalError ();
   }
 
   public Point getLocationOnScreen () 
@@ -126,31 +126,6 @@ public class GtkComponentPeer extends GtkGenericPeer
   
   public void handleEvent (AWTEvent event)
   {
-    int id = event.getID();
-      
-    switch (id)
-      {
-      case PaintEvent.PAINT:
-      case PaintEvent.UPDATE:
-	{
-	  try 
-	    {
-	      Graphics g = getGraphics ();
-		
-	      if (id == PaintEvent.PAINT)
-		awtComponent.paint (g);
-	      else
-		awtComponent.update (g);
-	      
-	      g.dispose ();
-	    } 
-	  catch (InternalError e)
-	    { 
-	      System.err.println (e);
-	    }
-	}
-	break;
-      }
   }
   
   public boolean isFocusTraversable () 
@@ -224,7 +199,7 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   native public void setEnabled (boolean b);
 
-  public void setFont (Font f) 
+  public void setFont (Font f)
   {
   }
 

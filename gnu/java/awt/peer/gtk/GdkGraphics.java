@@ -8,8 +8,12 @@ public class GdkGraphics extends Graphics
   private final int native_state = java.lang.System.identityHashCode (this);
 
   int xOrigin = 0, yOrigin = 0;
-  Color color;
+  Color color, xorColor, xorFGColor;
   GtkComponentPeer component;
+  Font font;
+  boolean paintMode;
+
+  static final int GDK_COPY = 0, GDK_XOR = 2;
 
   native int[] initState (GtkComponentPeer component);
 
@@ -18,6 +22,8 @@ public class GdkGraphics extends Graphics
     this.component = component;
     int rgb[] = initState (component);
     color = new Color (rgb[0], rgb[1], rgb[2]);
+    font = new Font ("Dialog", Font.PLAIN, 10);
+    paintMode = true;
   }
 
   native private void clearRectNative (int x, int y, int width, int height);
@@ -60,7 +66,7 @@ public class GdkGraphics extends Graphics
 
   public boolean drawImage (Image img, int x, int y, ImageObserver observer)
   {
-    return drawImage (img, x, y, component.getBackground (), observer);
+    return drawImage (img, x, y, component.getBackground(), observer);
   }
 
   public boolean drawImage (Image img, int x, int y, int width, int height, 
@@ -112,8 +118,11 @@ public class GdkGraphics extends Graphics
   {
   }
 
+  native void drawString (String str, int x, int y, String fname, int size);
   public void drawString (String str, int x, int y)
   {
+    drawString (str, x + xOrigin, y + yOrigin, 
+		((GtkFontPeer)font.getPeer ()).getXLFD (), font.getSize ());
   }
 
   public void fillArc (int x, int y, int width, int height, 
@@ -157,7 +166,7 @@ public class GdkGraphics extends Graphics
 
   public Font getFont ()
   {
-    return null;
+    return font;
   }
 
   public FontMetrics getFontMetrics (Font f)
@@ -173,23 +182,45 @@ public class GdkGraphics extends Graphics
   {
   }
 
-  private native void setColorNative (int red, int green, int blue);
+  private native void setFGColor (int red, int green, int blue);
   public void setColor (Color c)
   {
-    setColorNative (c.getRed (), c.getGreen (), c.getBlue ());
     color = new Color (c.getRGB ());
+
+    if (paintMode)
+      setFGColor (color.getRed (), color.getGreen (), color.getBlue ());
+    else
+      setXORMode (xorColor);
   }
 
   public void setFont (Font font)
   {
+    this.font = font;
   }
+
+  native void setFunction (int gdk_func);
 
   public void setPaintMode ()
   {
+    paintMode = true;
+
+    setFunction (GDK_COPY);
+    setFGColor (color.getRed (), color.getGreen (), color.getBlue ());
   }
 
-  public void setXORMode (Color c1)
+  public void setXORMode (Color c)
   {
+    paintMode = false;
+
+    xorColor = new Color (c.getRGB ());
+    xorFGColor = new Color (color.getRed   () ^ xorColor.getRed (),
+			    color.getGreen () ^ xorColor.getGreen (),
+			    color.getBlue  () ^ xorColor.getBlue ());
+
+    setFunction (GDK_XOR);
+    setFGColor (xorFGColor.getRed (), 
+		xorFGColor.getGreen (), 
+		xorFGColor.getBlue ());
   }
 
   public void translate (int x, int y)

@@ -19,7 +19,14 @@ JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState
 
   widget = GTK_WIDGET (ptr);
 
-  g->drawable = (GdkDrawable *) widget->window;
+  if (GTK_IS_WINDOW (widget))
+    {
+      g->drawable = find_gtk_layout (widget)->bin_window;
+    }
+  else
+    {
+      g->drawable = (GdkDrawable *) widget->window;
+    }
   g->cm = gtk_widget_get_colormap (widget);
   g->gc = gdk_gc_new (g->drawable);
   gdk_gc_copy (g->gc, widget->style->fg_gc[GTK_STATE_NORMAL]);
@@ -54,6 +61,31 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_dispose
 
   free (g);
 }
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawString
+  (JNIEnv *env, jobject obj, jstring str, jint x, jint y, 
+   jstring fname, jint size)
+{
+  struct graphics *g;
+  const char *cfname, *cstr;
+  gchar *xlfd;
+
+  g = (struct graphics *) NSA_GET_PTR (env, obj);
+  
+  cfname = (*env)->GetStringUTFChars (env, fname, NULL);
+  xlfd = g_strdup_printf (cfname, (size * 10));
+  (*env)->ReleaseStringUTFChars (env, fname, cfname);
+
+  cstr = (*env)->GetStringUTFChars (env, str, NULL);
+
+  gdk_threads_enter ();
+  gdk_draw_string (g->drawable, gdk_font_load (xlfd), g->gc, x, y, cstr);
+  gdk_threads_leave ();
+
+  (*env)->ReleaseStringUTFChars (env, str, cstr);
+  g_free (xlfd);
+}
+
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawLineNative
   (JNIEnv *env, jobject obj, jint x, jint y, jint x2, jint y2)
@@ -91,7 +123,19 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_clearRectNative
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_setColorNative
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_setFunction
+  (JNIEnv *env, jobject obj, jint func)
+{
+  struct graphics *g;
+  g = (struct graphics *) NSA_GET_PTR (env, obj);
+  
+  gdk_threads_enter ();
+  gdk_gc_set_function (g->gc, func);
+  gdk_threads_leave ();
+}
+
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_setFGColor
   (JNIEnv *env, jobject obj, jint red, jint green, jint blue)
 {
   GdkColor color;

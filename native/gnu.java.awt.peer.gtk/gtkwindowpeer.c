@@ -69,7 +69,7 @@ setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width,
   gtk_box_pack_end (GTK_BOX (vbox), layout, 1, 1, 0);
   gtk_container_add (GTK_CONTAINER (window), vbox);
   gtk_widget_realize (layout);
-/*    connect_awt_hook (env, obj, layout, 1, layout->window); */
+  connect_awt_hook (env, obj, layout, 1, GTK_LAYOUT(layout)->bin_window);
   gtk_widget_show (layout);
   gtk_widget_show (vbox);
 

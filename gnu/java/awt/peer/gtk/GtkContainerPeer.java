@@ -43,12 +43,12 @@ public class GtkContainerPeer extends GtkComponentPeer
 
   public void endValidate() 
   {
-    Graphics gc = getGraphics ();
-    if (gc != null)
-      {
-	c.paintComponents (gc);
-	gc.dispose ();
-      }
+//      Graphics gc = getGraphics ();
+//      if (gc != null)
+//        {
+//  	c.paintComponents (gc);
+//  	gc.dispose ();
+//        }
   }
 
   public Insets getInsets() 
@@ -70,5 +70,34 @@ public class GtkContainerPeer extends GtkComponentPeer
   public Graphics getGraphics ()
   {
     return new GdkGraphics (this);
+  }
+
+  public void handleEvent (AWTEvent event)
+  {
+    int id = event.getID();
+      
+    switch (id)
+      {
+      case PaintEvent.PAINT:
+      case PaintEvent.UPDATE:
+	{
+	  try 
+	    {
+	      Graphics g = getGraphics ();
+		
+	      if (id == PaintEvent.PAINT)
+		awtComponent.paint (g);
+	      else
+		awtComponent.update (g);
+	      
+	      g.dispose ();
+	    } 
+	  catch (InternalError e)
+	    { 
+	      System.err.println (e);
+	    }
+	}
+	break;
+      }
   }
 }
