@@ -310,7 +310,8 @@ Java_java_io_File_lastModifiedInternal(JNIEnv *env, jobject obj, jstring name)
   const char *fname;
   struct stat buf;
   int rc;
-  
+  jlong mtime;
+ 
   /* Don't use the JCL convert function because it throws an exception
      on failure */
   fname = (*env)->GetStringUTFChars(env, name, 0);
@@ -323,7 +324,10 @@ Java_java_io_File_lastModifiedInternal(JNIEnv *env, jobject obj, jstring name)
   if (rc == -1)
     return(0);
 
-  return(buf.st_mtime);
+  // milliseconds required
+  mtime = buf.st_mtime;
+  mtime = mtime * 1000;
+  return(mtime);
 }
 
 /*************************************************************************/
