@@ -97,20 +97,12 @@ public class PropertyResourceBundle extends ResourceBundle {
 
     /**
      * Called by <code>getObject</code> when a resource is needed.  This
-     * returns the resource given by the key or throws an exception.
+     * returns the resource given by the key.
      * @param key The key of the resource.
-     * @return The resource for the key.
-     * @exception MissingResourceException if the key didn't exists in the file.
-     * @XXX How can we get the className???
+     * @return The resource for the key or null if it doesn't exists.
      */
-    protected Object handleGetObject(String key) 
-        throws MissingResourceException {
-        String s = properties.getProperty(key);
-        if (s != null)
-            return s;
-        else 
-            throw new MissingResourceException("Could not find resource",
-                                               "???", key);
+    protected Object handleGetObject(String key) {
+	return properties.getProperty(key);
     }
 
     /**

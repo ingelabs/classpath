@@ -54,19 +54,15 @@ public abstract class ListResourceBundle extends ResourceBundle {
      * Override this method to provide the resource for a keys.  This gets
      * called by <code>getObject</code>.
      * @param key The key of the resource.
-     * @return The resource for the key.
-     * @exception MissingResourceException
-     *   if that particular object could not be found in this bundle.
+     * @return The resource for the key or null if it doesn't exists.
      */
-    protected Object handleGetObject(String key)
-        throws MissingResourceException {
+    protected Object handleGetObject(String key) {
         Object[][] contents = getContents();
         for (int i=0; i<contents.length; i++) {
             if (key.equals(contents[i][0]))
                 return contents[i][1];
         }
-        throw new MissingResourceException("Key not found.", 
-                                           getClass().getName(), key);
+	return null;
     }
 
     /**
