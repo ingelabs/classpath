@@ -1,3 +1,8 @@
+2005-01-03  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/JTree.java
+	(DynamicUtilTreeNode.hasChildren): Clarify javadoc.
+
 2005-01-03  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/ClasspathToolkit.java (createRobot): New method.
