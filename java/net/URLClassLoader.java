@@ -62,7 +62,6 @@ import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.zip.ZipException;
 import gnu.java.io.PlatformHelper;
-import gnu.java.net.protocol.jar.JarURLConnection;
 
 /**
  * A secure class loader that can load classes and resources from
@@ -278,7 +277,7 @@ public class URLClassLoader extends SecureClassLoader {
   final static class JarURLLoader extends URLLoader
   {
     final JarFile jarfile;   // The canonical jar file for this url
-    final String url_prefix; // url prefix for all resources in this jar url
+    final URL baseJarURL; // Base jar: url for all resources loaded from jar
 
     public JarURLLoader(URLClassLoader classloader, URL baseURL)
     {
@@ -289,16 +288,19 @@ public class URLClassLoader extends SecureClassLoader {
       sb.append("jar:");
       sb.append(baseURL.toExternalForm());
       sb.append("!/");
-      this.url_prefix = sb.toString();
-      JarFile jarfile;
+
+      URL baseJarURL = null;
+      JarFile jarfile = null;
       try
 	{
-	  jarfile = JarURLConnection.JarFileCache.get(baseURL);
+	  baseJarURL = new URL(null, sb.toString(),
+				    classloader.getURLStreamHandler("jar")) ;
+	  jarfile
+	    = ((JarURLConnection) baseJarURL.openConnection()).getJarFile();
 	}
-      catch (IOException ioe)
-	{
-	  jarfile = null;
-	}
+      catch (IOException ioe) { ioe.printStackTrace(); /* ignored */ }
+
+      this.baseJarURL = baseJarURL;
       this.jarfile = jarfile;
     }
     
@@ -317,7 +319,14 @@ public class URLClassLoader extends SecureClassLoader {
 
     Manifest getManifest()
     {
-      return (jarfile == null) ? null : jarfile.getManifest();
+      try
+	{
+	  return (jarfile == null) ? null : jarfile.getManifest();
+	}
+      catch (IOException ioe)
+	{
+	  return null;
+	}
     }
       
   }
@@ -351,11 +360,8 @@ public class URLClassLoader extends SecureClassLoader {
     {
       try
 	{
-	  StringBuffer sb = new StringBuffer(PlatformHelper.INITIAL_MAX_PATH);
-	  sb.append(((JarURLLoader)loader).url_prefix);
-	  sb.append(name);
-	  return new URL(null, sb.toString(),
-			  loader.classloader.getURLStreamHandler("jar"));
+	  return new URL(((JarURLLoader)loader).baseJarURL, name,
+			 loader.classloader.getURLStreamHandler("jar"));
 	}
       catch(MalformedURLException e)
 	{

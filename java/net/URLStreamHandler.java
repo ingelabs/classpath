@@ -1,5 +1,5 @@
 /* URLStreamHandler.java -- Abstract superclass for all protocol handlers
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,286 +39,412 @@ exception statement from your version. */
 package java.net;
 
 import java.io.IOException;
-import gnu.java.io.PlatformHelper;
-
-/**
-  * This class is the superclass of all URL protocol handlers.  The URL
-  * class loads the appropriate protocol handler to establish a connection
-  * to a (possibly) remote service (eg, "http", "ftp") and to do protocol
-  * specific parsing of URL's.  Refer to the URL class documentation for
-  * details on how that class locates and loads protocol handlers.
-  * <p>
-  * A protocol handler implementation should override the openConnection()
-  * method, and optionally override the parseURL() and toExternalForm()
-  * methods if necessary. (The default implementations will parse/write all
-  * URL's in the same form as http URL's).  A protocol  specific subclass 
-  * of URLConnection will most likely need to be created as well.
-  * <p>
-  * Note that the instance methods in this class are called as if they
-  * were static methods.  That is, a URL object to act on is passed with
-  * every call rather than the caller assuming the URL is stored in an
-  * instance variable of the "this" object.
-  * <p>
-  * The methods in this class are protected and accessible only to subclasses.
-  * URLStreamConnection objects are intended for use by the URL class only,
-  * not by other classes (unless those classes are implementing protocols).
-  *
-  * @version 0.5
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  *
-  * @see URL
-  */
-public abstract class URLStreamHandler
-{
-
-/*************************************************************************/
 
 /*
- * Constructors
+ * Written using on-line Java Platform 1.2 API Specification, as well
+ * as "The Java Class Libraries", 2nd edition (Addison-Wesley, 1998).
+ * Status:  Believed complete and correct.
  */
 
 /**
-  * Do nothing constructor for subclass
-  */
-public
-URLStreamHandler()
+ * This class is the superclass of all URL protocol handlers.  The URL
+ * class loads the appropriate protocol handler to establish a connection
+ * to a (possibly) remote service (eg, "http", "ftp") and to do protocol
+ * specific parsing of URL's.  Refer to the URL class documentation for
+ * details on how that class locates and loads protocol handlers.
+ * <p>
+ * A protocol handler implementation should override the openConnection()
+ * method, and optionally override the parseURL() and toExternalForm()
+ * methods if necessary. (The default implementations will parse/write all
+ * URL's in the same form as http URL's).  A protocol  specific subclass 
+ * of URLConnection will most likely need to be created as well.
+ * <p>
+ * Note that the instance methods in this class are called as if they
+ * were static methods.  That is, a URL object to act on is passed with
+ * every call rather than the caller assuming the URL is stored in an
+ * instance variable of the "this" object.
+ * <p>
+ * The methods in this class are protected and accessible only to subclasses.
+ * URLStreamConnection objects are intended for use by the URL class only,
+ * not by other classes (unless those classes are implementing protocols).
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Warren Levy (warrenl@cygnus.com)
+ * 
+ * @see URL
+ */
+public abstract class URLStreamHandler
 {
-  ; 
-}
+  /**
+   * Creates a URLStreamHander
+   */
+  public URLStreamHandler ()
+  {
+  }
 
-/*************************************************************************/
+  /**
+   * Returns a URLConnection for the passed in URL.  Note that this should
+   * not actually create the connection to the (possibly) remote host, but
+   * rather simply return a URLConnection object.  The connect() method of
+   * URL connection is used to establish the actual connection, possibly
+   * after the caller sets up various connection options.
+   *
+   * @param url The URL to get a connection object for
+   *
+   * @return A URLConnection object for the given URL
+   *
+   * @exception IOException If an error occurs
+   */
+  protected abstract URLConnection openConnection(URL u)
+    throws IOException;
 
-/*
- * Instance Methods
- */ 
-
-/**
-  * Returns a URLConnection for the passed in URL.  Note that this should
-  * not actually create the connection to the (possibly) remote host, but
-  * rather simply return a URLConnection object.  The connect() method of
-  * URL connection is used to establish the actual connection, possibly
-  * after the caller sets up various connection options.
-  *
-  * @param url The URL to get a connection object for
-  *
-  * @return A URLConnection object for the given URL
-  *
-  * @exception IOException If an error occurs
-  */
-protected abstract URLConnection
-openConnection(URL url) throws IOException;
-
-/*************************************************************************/
-
-/**
-  * This method parses the string passed in as a URL and set's the
-  * instance data fields in the URL object passed in to the various values
-  * parsed out of the string.  The start parameter is the position to start
-  * scanning the string.  This is usually the position after the ":" which
-  * terminates the protocol name.  The end parameter is the position to
-  * stop scanning.  This will be either the end of the String, or the
-  * position of the "#" character, which separates the "file" portion of
-  * the URL from the "anchor" portion.
-  * <p>
-  * This method assumes URL's are formatted like http protocol URL's, so 
-  * subclasses that implement protocols with URL's the follow a different 
-  * syntax should override this method.  The lone exception is that if
-  * the protocol name set in the URL is "file", this method will accept
-  * a an empty hostname (i.e., "file:///"), which is legal for that protocol
-  *
-  * @param url The URL object in which to store the results
-  * @param url_string The String-ized URL to parse
-  * @param start The position in the string to start scanning from
-  * @param end The position in the string to stop scanning
-  */
-protected void
-parseURL(URL url, String url_string, int start, int end)
-{
-  // This method does not throw an exception or return a value.  Thus our
-  // strategy when we encounter an error in parsing is to return without
-  // doing anything.
-
-  // Bunches of things should be true.  Make sure.
-  if (end < start)
-    return;
-  if ((end - start) < 2)
-    return;
-  if (start > url_string.length())
-    return;
-  if (end > url_string.length())
-    end = url_string.length(); // This should be safe
-
-  // Turn end into an offset from the end of the string instead of 
-  // the beginning
-  end = url_string.length() - end;
-
-  // Skip remains of protocol
-  url_string = url_string.substring(start);
-
-  boolean needContext = url.getFile() != null;
-
-  // Skip the leading "//"
-  if (url_string.startsWith("//"))
-    {
-      url_string = url_string.substring (2);
-      needContext = false;
-    }
-        
-  // Declare some variables
-  String host = null;
-  int port = -1;
-  String file = null;
-  String anchor = null;
-
-  if (!needContext)
-    {
-      // Process host and port
-      int slash_index = url_string.indexOf("/");
-      int colon_index = url_string.indexOf(":");
-      
-      if (slash_index > (url_string.length() - end))
-	return;
-      else if (slash_index == -1)
-	slash_index = url_string.length() - end;
-      
-      if ((colon_index == -1) || (colon_index > slash_index))
-	{
-	  host = url_string.substring(0, slash_index);
-	}
-      else
-	{
-	  host = url_string.substring(0, colon_index);
-	  
-	  String port_str = url_string.substring(colon_index + 1, slash_index);
-	  try
-	    {
-	      port = Integer.parseInt(port_str);
-	    }
-	  catch (NumberFormatException e)
-	    {
-	      return;
-	    }
-	}
-      if (slash_index < (url_string.length() - 1))
-	url_string = url_string.substring(slash_index + 1);
-      else
-	url_string = "";
-    }
-
-  // Process file and anchor 
-  if (needContext) 
-    {
-      host = url.getHost();
-      port = url.getPort();
-      if (url_string.startsWith("/")) //url string is an absolute path
-	file = url_string;
-      else
-	{
-	  file = url.getFile();
-	  int idx = file.lastIndexOf("/");  
-	  if (idx == -1) //context path is weird
-	    file = "/" + url_string; 
-	  else if (idx == (file.length() - 1))
-	    //just concatenate two parts
-	    file = file + url_string;
-	  else
-	    file = file.substring(0, idx+1) + url_string;
-	}
-    }
-  else
-    file = "/" + url_string;
-
-  if (end == 0) 
-    {
-      anchor = null;
-    } 
-  else 
-    {
-      // Only set anchor if end char is a '#'.  Otherwise assume we're
-      // just supposed to stop scanning for some reason
-      if (file.charAt(file.length() - end) == '#')
-	{
-	  int len = file.length();
-	  anchor = file.substring( len - end + 1, len);
-	  file = file.substring(0, len - end);
-	}
-      else
-        anchor = null;
-    }
+  /**
+   * This method parses the string passed in as a URL and set's the
+   * instance data fields in the URL object passed in to the various values
+   * parsed out of the string.  The start parameter is the position to start
+   * scanning the string.  This is usually the position after the ":" which
+   * terminates the protocol name.  The end parameter is the position to
+   * stop scanning.  This will be either the end of the String, or the
+   * position of the "#" character, which separates the "file" portion of
+   * the URL from the "anchor" portion.
+   * <p>
+   * This method assumes URL's are formatted like http protocol URL's, so 
+   * subclasses that implement protocols with URL's the follow a different 
+   * syntax should override this method.  The lone exception is that if
+   * the protocol name set in the URL is "file", this method will accept
+   * a an empty hostname (i.e., "file:///"), which is legal for that protocol
+   *
+   * @param url The URL object in which to store the results
+   * @param spec The String-ized URL to parse
+   * @param start The position in the string to start scanning from
+   * @param end The position in the string to stop scanning
+   */
+  protected void parseURL(URL url, String spec, int start, int end)
+  {
+    String host = url.getHost();
+    int port = url.getPort();
+    String file = url.getFile();
+    String ref = url.getRef();
     
-  file = PlatformHelper.toCanonicalForm(file, '/');
+    if (spec.regionMatches (start, "//", 0, 2))
+      {
+	int hostEnd;
+	int colon;
 
-  // Now set the values
-  setURL(url, url.getProtocol(), host, port, file, anchor); 
-}
+	start += 2;
+	int slash = spec.indexOf('/', start);
+	if (slash >= 0) 
+	  hostEnd = slash;
+        else
+	  hostEnd = end;
 
-/*************************************************************************/
+	host = spec.substring (start, hostEnd);
+	
+	// Look for optional port number.  It is valid for the non-port
+	// part of the host name to be null (e.g. a URL "http://:80").
+	// TBD: JDK 1.2 in this case sets host to null rather than "";
+	// this is undocumented and likely an unintended side effect in 1.2
+	// so we'll be simple here and stick with "". Note that
+	// "http://" or "http:///" produce a "" host in JDK 1.2.
+	if ((colon = host.indexOf(':')) >= 0)
+	  {
+	    try
+	      {
+		port = Integer.parseInt(host.substring(colon + 1));
+	      }
+	    catch (NumberFormatException e)
+	      {
+		; // Ignore invalid port values; port is already set to u's
+		  // port.
+	      }
+	    host = host.substring(0, colon);
+	  }
+	file = null;
+	start = hostEnd;
+      } 
+    else if (host == null) 
+      host = "";
 
-/**
-  * This method converts a URL object into a String.  This method creates
-  * Strings in the mold of http URL's, so protocol handlers which use URL's
-  * that have a different syntax should override this method
-  *
-  * @param url The URL object to convert
-  */
-protected String
-toExternalForm(URL url)
-{
-  String protocol = url.getProtocol();
-  String host = url.getHost();
-  int port = url.getPort();
-  String file = url.getFile();
-  String anchor = url.getRef();
+    if (file == null || file.length() == 0
+	|| (start < end && spec.charAt(start) == '/')) 
+      {
+	// No file context available; just spec for file.
+	// Or this is an absolute path name; ignore any file context.
+	file = spec.substring(start, end);
+	ref = null;
+      } 
+    else if (start < end)
+      {
+	// Context is available, but only override it if there is a new file.
+	file = file.substring(0, file.lastIndexOf('/'))
+		+ '/' + spec.substring(start, end);
+	ref = null;
+      }
 
-  StringBuffer sb = new StringBuffer(PlatformHelper.INITIAL_MAX_PATH);
+    if (ref == null)
+      {
+	// Normally there should be no '#' in the file part,
+	// but we are nice.
+	int hash = file.indexOf('#');
+	if (hash != -1)
+	  {
+	    ref = file.substring(hash + 1, file.length());
+	    file = file.substring(0, hash);
+	  }
+      }
+
+    // XXX - Classpath used to call PlatformHelper.toCanonicalForm() on
+    // the file part. It seems like overhead, but supposedly there is some
+    // benefit in windows based systems (it also lowercased the string).
+
+    setURL(url, url.getProtocol(), host, port, file, ref);
+  }
   
-  if (protocol != null){
+  private static String canonicalizeFilename(String file)
+  {
+    // XXX - GNU Classpath has an implementation that might be more appropriate
+    // for Windows based systems (gnu.java.io.PlatformHelper.toCanonicalForm)
+
+    int index;
+
+    // Replace "/./" with "/".  This probably isn't very efficient in
+    // the general case, but it's probably not bad most of the time.
+    while ((index = file.indexOf("/./")) >= 0)
+      file = file.substring(0, index) + file.substring(index + 2);
+
+    // Process "/../" correctly.  This probably isn't very efficient in
+    // the general case, but it's probably not bad most of the time.
+    while ((index = file.indexOf("/../")) >= 0)
+      {
+	// Strip of the previous directory - if it exists.
+	int previous = file.lastIndexOf('/', index - 1);
+	if (previous >= 0)
+	  file = file.substring(0, previous) + file.substring(index + 3);
+	else
+	  break;
+      }
+    return file; 
+  }
+
+  /**
+   * Compares two URLs, excluding the fragment component
+   *
+   * @param url1 The first url
+   * @param url2 The second url to compare with the first
+   * 
+   * @specnote Now protected
+   */
+  protected boolean sameFile(URL url1, URL url2)
+  {
+    if (url1 == url2)
+      return true;
+    // This comparison is very conservative.  It assumes that any
+    // field can be null.
+    if (url1 == null || url2 == null || url1.getPort() != url2.getPort())
+      return false;
+    String s1, s2;
+    s1 = url1.getProtocol();
+    s2 = url2.getProtocol();
+    if (s1 != s2 && (s1 == null || ! s1.equals(s2)))
+      return false;
+    s1 = url1.getHost();
+    s2 = url2.getHost();
+    if (s1 != s2 && (s1 == null || ! s1.equals(s2)))
+      return false;
+    s1 = canonicalizeFilename(url1.getFile());
+    s2 = canonicalizeFilename(url2.getFile());
+    if (s1 != s2 && (s1 == null || ! s1.equals(s2)))
+      return false;
+    return true;
+  }
+
+  /**
+   * This methods sets the instance variables representing the various fields
+   * of the URL to the values passed in.
+   *
+   * @param u The URL to modify
+   * @param protocol The protocol to set
+   * @param host The host name to et
+   * @param port The port number to set
+   * @param file The filename to set
+   * @param ref The reference
+   *
+   * @exception SecurityException If the protocol handler of the URL is
+   * different from this one
+   *
+   * @deprecated 1.2 Please use
+   * #setURL(URL,String,String,int,String,String,String,String);
+   */
+  protected void setURL(URL u, String protocol, String host, int port,
+			String file, String ref)
+  {
+    u.set(protocol, host, port, file, ref);
+  }
+
+  /**
+   * Sets the fields of the URL argument to the indicated values
+   *
+   * @param u The URL to modify
+   * @param protocol The protocol to set
+   * @param host The host name to set
+   * @param port The port number to set
+   * @param authority The authority to set
+   * @param userInfo The user information to set
+   * @param path The path/filename to set
+   * @param query The query part to set
+   * @param ref The reference
+   *
+   * @exception SecurityException If the protocol handler of the URL is
+   * different from this one
+   */
+  protected void setURL(URL u, String protocol, String host, int port,
+			String authority, String userInfo, String path,
+			String query, String ref)
+  {
+    u.set(protocol, host, port, authority, userInfo, path, query, ref);
+  }
+
+  /**
+   * Provides the default equals calculation. May be overidden by handlers for
+   * other protocols that have different requirements for equals(). This method
+   * requires that none of its arguments is null. This is guaranteed by the
+   * fact that it is only called by java.net.URL class.
+   *
+   * @param url1 An URL object
+   * @param url2 An URL object
+   */
+  protected boolean equals (URL url1, URL url2)
+  {
+    // This comparison is very conservative.  It assumes that any
+    // field can be null.
+    return (url1.getPort () == url2.getPort ()
+	    && ((url1.getProtocol () == null && url2.getProtocol () == null)
+		|| (url1.getProtocol () != null
+			&& url1.getProtocol ().equals (url2.getProtocol ())))
+	    && ((url1.getUserInfo () == null && url2.getUserInfo () == null)
+                || (url1.getUserInfo () != null
+			&& url1.getUserInfo ().equals(url2.getUserInfo ())))
+	    && ((url1.getAuthority () == null && url2.getAuthority () == null)
+                || (url1.getAuthority () != null
+			&& url1.getAuthority ().equals(url2.getAuthority ())))
+	    && ((url1.getHost () == null && url2.getHost () == null)
+		|| (url1.getHost () != null
+			&& url1.getHost ().equals(url2.getHost ())))
+	    && ((url1.getPath () == null && url2.getPath () == null)
+		|| (url1.getPath () != null
+			&& url1.getPath ().equals (url2.getPath ())))
+	    && ((url1.getQuery () == null && url2.getQuery () == null)
+                || (url1.getQuery () != null
+			&& url1.getQuery ().equals(url2.getQuery ())))
+	    && ((url1.getRef () == null && url2.getRef () == null)
+		|| (url1.getRef () != null
+			&& url1.getRef ().equals(url2.getRef ()))));
+  }
+
+  /**
+   * Compares the host components of two URLs.
+   *
+   * @exception UnknownHostException If an unknown host is found
+   */
+  protected boolean hostsEqual (URL url1, URL url2)
+    throws UnknownHostException
+  {
+    InetAddress addr1 = InetAddress.getByName (url1.getHost ());
+    InetAddress addr2 = InetAddress.getByName (url2.getHost ());
+
+    return addr1.equals (addr2);
+  }
+
+  /**
+   * Get the IP address of our host. An empty host field or a DNS failure will
+   * result in a null return.
+   */
+  protected InetAddress getHostAddress (URL url)
+  {
+    String hostname = url.getHost ();
+
+    if (hostname == "")
+      return null;
+    
+    try
+      {
+        return InetAddress.getByName (hostname);
+      }
+    catch (UnknownHostException e)
+      {
+	return null;
+      }
+  }
+
+  /**
+   * Returns the default port for a URL parsed by this handler. This method is
+   * meant to be overidden by handlers with default port numbers.
+   */
+  protected int getDefaultPort ()
+  {
+    return -1;
+  }
+
+  /**
+   * Provides the default hash calculation. May be overidden by handlers for
+   * other protocols that have different requirements for hashCode calculation.
+   */
+  protected int hashCode (URL url)
+  {
+    return url.getProtocol ().hashCode () +
+           ((url.getHost () == null) ? 0 : url.getHost ().hashCode ()) +
+	   url.getFile ().hashCode() +
+	   url.getPort ();
+  }
+
+  /**
+   * This method converts a URL object into a String.  This method creates
+   * Strings in the mold of http URL's, so protocol handlers which use URL's
+   * that have a different syntax should override this method
+   *
+   * @param url The URL object to convert
+   */
+  protected String toExternalForm(URL u)
+  {
+    String protocol, host, file, ref;
+    int port;
+
+    protocol = u.getProtocol();
+
+    // JDK 1.2 online doc infers that host could be null because it
+    // explicitly states that file cannot be null, but is silent on host.
+    host = u.getHost();
+    if (host == null)
+      host = "";
+
+    port = u.getPort();
+    file = u.getFile();
+    ref = u.getRef();
+
+    // Guess a reasonable size for the string buffer so we have to resize
+    // at most once.
+    int size = protocol.length() + host.length() + file.length() + 24;
+    StringBuffer sb = new StringBuffer(size);
+
     sb.append(protocol);
-    sb.append("://");
-  }
-  
-  if (host != null)
-    sb.append(host);
-    
-  if (port != -1){
     sb.append(':');
-    sb.append(port);
-  }
-  
-  if (file != null)
+
+    if (host.length() != 0)
+      sb.append("//").append(host);
+
+    // Note that this produces different results from JDK 1.2 as JDK 1.2
+    // ignores a non-default port if host is null or "".  That is inconsistent
+    // with the spec since the result of this method is spec'ed so it can be
+    // used to construct a new URL that is equivalent to the original.
+    boolean port_needed = port >= 0 && port != getDefaultPort();
+    if (port_needed)
+      sb.append(':').append(port);
+
     sb.append(file);
-  else
-    sb.append('/');
-    
-  if (anchor != null){
-    sb.append('#');
-    sb.append(anchor);
+
+    if (ref != null)
+      sb.append('#').append(ref);
+
+    return sb.toString();
   }
-  
-  return sb.toString();
-
 }
-
-/*************************************************************************/
-
-/**
-  * This methods sets the instance variables representing the various fields
-  * of the URL to the values passed in.
-  *
-  * @param url The URL in which to set the values
-  * @param protocol The protocol name
-  * @param host The host name
-  * @param port The port number
-  * @param file The file portion
-  * @param anchor The anchor portion
-  */
-protected void
-setURL(URL url, String protocol, String host, int port, String file,
-       String anchor)
-{
-  url.set(protocol, host, port, file, anchor);
-}
-
-} // class URLStreamHandler
-

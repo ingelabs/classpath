@@ -1,3 +1,19 @@
+2002-11-21  Mark Wielaard  <mark@klomp.org>
+
+	* java/util/jar/JarFile.java (getManifest): Throws IOException.
+	* java/net/URLClassLoader.java (JarURLLoader): Don't use gnu cache
+	directly, use standard JarURLConnection.getJarFile().
+	(JarURLLoader.getManifest): Catch IOException.
+	* gnu/java/net/protocol/jar/Handler.java (parseURL): Check for
+	empty file part and only use url_String from start till end.
+
+	* java/net/HttpURLConnection.java (HTTP_USE_PROXY): Add field.
+	(HTTP_INTERNAL_ERROR): Constant value should be 501.
+	* java/net/URLDecoder.java (decode): Throws Exception.
+
+	* java/net/URL.html: Merge with libgcj (partly).
+	* java/net/URLStreamHandler: Merge with libgcj.
+
 2002-11-21  Michael Koch <konqueror@gmx.de>
 
 	* java/nio/channels/AsynchronousCloseException.java,
@@ -82,7 +98,7 @@
 	gnu/java/nio/ShortBufferImpl.java;
 	Reindented.
 
-2002-11-17  Mark Wielaard <mark@klomp.org>
+2002-11-17   Mark Wielaard <mark@klomp.org>
 
 	* java/net/HttpURLConnection.java (getPermission): Take port
 	into consideration.

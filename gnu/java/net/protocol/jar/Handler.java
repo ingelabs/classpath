@@ -99,7 +99,8 @@ parseURL(URL url, String url_string, int start, int end)
     // doing anything.
     String file = url.getFile();
     
-    if (file != null){ //has context url
+    if (file != null && file != ""){ //has context url
+	url_string = url_string.substring(start, end);
         if (url_string.startsWith("/")){ //url string is an absolute path
             int idx = file.lastIndexOf("!/");
             if (idx == -1) //context path is weird
@@ -132,7 +133,7 @@ parseURL(URL url, String url_string, int start, int end)
         return;
     
     // Skip remains of protocol
-    url_string = url_string.substring(start);
+    url_string = url_string.substring(start, end);
     
     if ( !url.getProtocol().equals("jar") )
         return;

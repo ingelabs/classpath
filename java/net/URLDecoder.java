@@ -78,7 +78,7 @@ public class URLDecoder
    *
    * @return the converted String
    */
-  public static String decode(String s)
+  public static String decode(String s) throws Exception
   {
     try
       {

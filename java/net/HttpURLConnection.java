@@ -142,6 +142,11 @@ public abstract class HttpURLConnection extends URLConnection
    * a conditional GET.
    */
   public static final int HTTP_NOT_MODIFIED = 304;
+
+  /**
+   * The requested resource needs to be accessed through a proxy.
+   */
+  public static final int HTTP_USE_PROXY = 305;
   
   
   /* HTTP Client Error Response Codes */
@@ -244,7 +249,7 @@ public abstract class HttpURLConnection extends URLConnection
    * The server encountered an unexpected error (such as a CGI script crash)
    * that prevents the request from being fulfilled.
    */
-  public static final int HTTP_INTERNAL_ERROR   = 500;
+  public static final int HTTP_INTERNAL_ERROR   = 501;
 
   /**
    * The server does not support the requested functionality.  
