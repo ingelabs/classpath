@@ -137,7 +137,7 @@ public interface PathIterator
    * Advance to the next segment in the iteration. It is not specified what
    * this does if called when isDone() returns false.
    *
-   * @throws NoSuchElementException optional when isDone() is true
+   * @throws java.util.NoSuchElementException optional when isDone() is true
    */
   void next();
 
@@ -155,7 +155,7 @@ public interface PathIterator
    * @return the segment type
    * @throws NullPointerException if coords is null
    * @throws ArrayIndexOutOfBoundsException if coords is too small
-   * @throws NoSuchElementException optional when isDone() is true
+   * @throws java.util.NoSuchElementException optional when isDone() is true
    * @see #SEG_MOVETO
    * @see #SEG_LINETO
    * @see #SEG_QUADTO
@@ -178,7 +178,7 @@ public interface PathIterator
    * @return the segment type
    * @throws NullPointerException if coords is null
    * @throws ArrayIndexOutOfBoundsException if coords is too small
-   * @throws NoSuchElementException optional when isDone() is true
+   * @throws java.util.NoSuchElementException optional when isDone() is true
    * @see #SEG_MOVETO
    * @see #SEG_LINETO
    * @see #SEG_QUADTO
