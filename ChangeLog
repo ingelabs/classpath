@@ -1,5 +1,16 @@
 2003-05-23  Aaron M. Renn (arenn@urbanophile.com)
 
+	* java/net/Authenticator.java
+	Reformat, minor doc fixes
+	* java/net/ContentHandler.java
+	Reformat, minor doc fixes
+	* java/net/DatagramSocket.java
+	Minor reformatting and doc fixes
+	* java/net/DatagramSocketImpl.java
+	Minor reformatting and doc fixes
+
+2003-05-23  Aaron M. Renn (arenn@urbanophile.com)
+
 	* java/net/ContentHandlerFactory.java
 	Reformat, minor doc fixes
 	(createContentHandler): Explicitly declare public
