@@ -143,7 +143,7 @@ public class RuleBasedCollator extends Collator
     short secondary;
     short tertiary;
 
-    CollationElement(String char_seq, int primary, short secondary, short tertiary)
+    CollationElement (String char_seq, int primary, short secondary, short tertiary)
     {
       this.char_seq = char_seq;
       this.primary = primary;
@@ -175,18 +175,17 @@ public class RuleBasedCollator extends Collator
    * @exception ParseException If the rule string contains syntax errors.
    */
   public RuleBasedCollator (String rules) throws ParseException
-  {
+  { 
+    if (rules.equals (""))
+      throw new ParseException ("empty rule set", 0);
+    
     this.rules = rules;
-
-    if (rules.equals(""))
-      throw new IllegalArgumentException("Empty rule set");
-
-    Vector v = new Vector();
+    Vector vec = new Vector();
     boolean ignore_chars = true;
     int primary_seq = 0;
     short secondary_seq = 0;
     short tertiary_seq = 0;
-    StringBuffer sb = new StringBuffer("");
+    StringBuffer argument = new StringBuffer();
     int len = rules.length();
     
     for (int index = 0; index < len; ++index)
@@ -195,103 +194,105 @@ public class RuleBasedCollator extends Collator
 
 	// Just skip whitespace.
 	if (Character.isWhitespace (c))
-          continue;
+	  continue;
 
-        // Primary difference
+        // Primary difference.
         if (c == '<')
           {
             ignore_chars = false;
-            CollationElement e = new CollationElement(sb.toString(), primary_seq,
-                                                      secondary_seq,
-                                                      tertiary_seq);
+            CollationElement e = new CollationElement (argument.toString(), primary_seq,
+                                                       secondary_seq,
+                                                       tertiary_seq);
             secondary_seq = 0;
             tertiary_seq = 0;
             ++primary_seq;
 
-            v.add(e);
-            sb.setLength(0);
+            vec.add (e);
+            argument.setLength (0);
             continue;
           }
 
-        // Secondary difference
+        // Secondary difference.
         if (c == ';')
           {
             if (primary_seq == 0)
               throw new ParseException (rules, index);
 
-            CollationElement e = new CollationElement(sb.toString(), primary_seq,
-                                                      secondary_seq,
-                                                      tertiary_seq);
+            CollationElement e = new CollationElement (argument.toString(), primary_seq,
+                                                       secondary_seq,
+                                                       tertiary_seq);
             ++secondary_seq;
             tertiary_seq = 0;
 
-            v.add(e);
-            sb.setLength(0);
+            vec.add (e);
+            argument.setLength (0);
             continue;
           }
 
-        // Tertiary difference
+        // Tertiary difference.
         if (c == ',')
           {
             if (primary_seq == 0)
               throw new ParseException (rules, index);
 
-            CollationElement e = new CollationElement(sb.toString(), primary_seq,
-                                                      secondary_seq,
-                                                      tertiary_seq);
+            CollationElement e = new CollationElement (argument.toString(),
+			                               primary_seq,
+                                                       secondary_seq,
+                                                       tertiary_seq);
             ++tertiary_seq;
 
-            v.add(e);
-            sb.setLength(0);
+            vec.add (e);
+            argument.setLength (0);
             continue;
           }
 
-        // Is equal to
+        // Is equal to.
         if (c == '=')
           {
             if (primary_seq == 0)
               throw new ParseException (rules, index);
 
-            CollationElement e = new CollationElement(sb.toString(), primary_seq,
-                                                      secondary_seq,
-                                                      tertiary_seq);
-            v.add(e);
-            sb.setLength(0);
+            CollationElement e = new CollationElement (argument.toString(),
+			                               primary_seq,
+                                                       secondary_seq,
+                                                       tertiary_seq);
+            vec.add (e);
+            argument.setLength (0);
             continue;
           }
 
-        // Sort accents backwards
+        // Sort accents backwards.
         if (c == '@')
           {
-            throw new ParseException("French style accents not implemented yet", 0);
+            throw new ParseException ("French style accents not implemented yet", 0);
           }
 
-        // Reset command
+        // Reset command.
         if (c == '&')
           {
-            throw new ParseException("Reset not implemented yet", 0);
+            throw new ParseException ("Reset not implemented yet", 0);
           }
 
-        // See if we are still reading characters to skip
+        // See if we are still reading characters to skip.
         if (ignore_chars == true)
           {
-            CollationElement e = new CollationElement(c + "", 0, (short)0, 
-                                                      (short)0);
-            v.add(e);
+            CollationElement e = new CollationElement (c + "", 0, (short) 0, 
+                                                       (short) 0);
+            vec.add (e);
             continue;
           }
 
-        sb.append(c);
+        argument.append (c);
       }
 
-    if (sb.length() > 0)
+    if (argument.length() > 0)
       {
-	CollationElement e = new CollationElement (sb.toString(), primary_seq,
+	CollationElement e = new CollationElement (argument.toString(), primary_seq,
 						   secondary_seq, tertiary_seq);
-	v.add (e);
+	vec.add (e);
       }
 
-    ce_table = v.toArray();
+    ce_table = vec.toArray();
   }
 
   /**
@@ -301,7 +302,8 @@ public class RuleBasedCollator extends Collator
    */
   public Object clone()
   {
-    return super.clone();
+    RuleBasedCollator c = (RuleBasedCollator) super.clone ();
+    return c;
   }
 
   /**
@@ -318,57 +320,66 @@ public class RuleBasedCollator extends Collator
    */
   public int compare (String source, String target)
   {
-    CollationElementIterator cei1 = getCollationElementIterator (source);
-    CollationElementIterator cei2 = getCollationElementIterator (target);
+    CollationElementIterator cs = getCollationElementIterator (source);
+    CollationElementIterator ct = getCollationElementIterator (target);
 
-    for(;;)
+    while (true)
       {
-        int ord1 = cei1.next(); 
-        int ord2 = cei2.next(); 
-  
-        // Check for end of string
-        if (ord1 == CollationElementIterator.NULLORDER)
-          if (ord2 == CollationElementIterator.NULLORDER)
-            return(0);
-          else
-            return(-1);
-        else if (ord2 == CollationElementIterator.NULLORDER)
-          return(1);
+	int os = cs.next();
+	int ot = ct.next();
+
+	// Check for end of string
+	if (os == CollationElementIterator.NULLORDER
+	    && ot == CollationElementIterator.NULLORDER)
+	  {
+	    // Source and target string are equal.
+	    return 0;
+	  }
+	else if (os == CollationElementIterator.NULLORDER)
+	  {
+	    // Source string is shorter, so return "less than".
+	    return -1;
+	  }
+	else if (ot == CollationElementIterator.NULLORDER)
+	  {
+	    // Target string is shorter, so return "greater than".
+	    return 1;
+	  }
 
         // We know chars are totally equal, so skip
-        if (ord1 == ord2)
+        if (os == ot)
           continue;
 
         // Check for primary strength differences
-        int prim1 = cei1.primaryOrder(ord1); 
-        int prim2 = cei2.primaryOrder(ord2); 
+        int prim1 = cs.primaryOrder (os); 
+        int prim2 = ct.primaryOrder (ot); 
 
         if (prim1 < prim2)
-          return(-1);
+          return -1;
         else if (prim1 > prim2)
-          return(1);
+          return 1;
         else if (getStrength() == PRIMARY)
           continue;
 
         // Check for secondary strength differences
-        int sec1 = cei1.secondaryOrder(ord1);
-        int sec2 = cei2.secondaryOrder(ord2);
+        int sec1 = cs.secondaryOrder (os);
+        int sec2 = ct.secondaryOrder (ot);
 
         if (sec1 < sec2)
-          return(-1);
+          return -1;
         else if (sec1 > sec2)
-          return(1);
+          return 1;
         else if (getStrength() == SECONDARY)
           continue;
 
         // Check for tertiary differences
-        int tert1 = cei1.tertiaryOrder(ord1);
-        int tert2 = cei2.tertiaryOrder(ord1);
+        int tert1 = cs.tertiaryOrder (os);
+        int tert2 = ct.tertiaryOrder (ot);
 
         if (tert1 < tert2)
-          return(-1);
+          return -1;
         else if (tert1 > tert2)
-          return(1);
+          return 1;
       }
   }
 
@@ -384,9 +395,9 @@ public class RuleBasedCollator extends Collator
   public boolean equals (Object obj)
   {
     if (obj == this)
-      return(true);
-    else
-      return(false);
+      return true;
+
+    return false;
   }
 
   /**
@@ -401,7 +412,7 @@ public class RuleBasedCollator extends Collator
   public CollationElementIterator getCollationElementIterator (String source)
   {
     return new CollationElementIterator (source, this);
-  }  
+  }
 
   /**
    * This method returns an instance of <code>CollationElementIterator</code>
@@ -414,7 +425,7 @@ public class RuleBasedCollator extends Collator
    */
   public CollationElementIterator getCollationElementIterator (CharacterIterator source)
   {
-    StringBuffer sb = new StringBuffer("");
+    StringBuffer sb = new StringBuffer();
 
     // Right now we assume that we will read from the beginning of the string.
     for (char c = source.first(); c != CharacterIterator.DONE; c = source.next()) 
@@ -439,7 +450,7 @@ public class RuleBasedCollator extends Collator
   public CollationKey getCollationKey (String source)
   {
     CollationElementIterator cei = getCollationElementIterator (source);
-    Vector vect = new Vector(25);
+    Vector vec = new Vector (25);
 
     int ord = cei.next();
     cei.reset(); //set to start of string
@@ -449,30 +460,30 @@ public class RuleBasedCollator extends Collator
         switch (getStrength())
           {
             case PRIMARY:
-               ord = cei.primaryOrder(ord);
+               ord = cei.primaryOrder (ord);
                break;
 
             case SECONDARY:
-               ord = cei.secondaryOrder(ord);
+               ord = cei.secondaryOrder (ord);
 
             default:
                break;
           }
 
-        vect.add(new Integer(ord)); 
+        vec.add (new Integer (ord)); 
 	ord = cei.next(); //increment to next key
       }
 
-    Object[] objarr = vect.toArray();
-    byte[] key = new byte[objarr.length * 4];
+    Object[] objarr = vec.toArray();
+    byte[] key = new byte [objarr.length * 4];
 
     for (int i = 0; i < objarr.length; i++)
       {
-        int j = ((Integer)objarr[i]).intValue();
-        key [i * 4] = (byte)((j & 0xFF000000) >> 24);
-        key [i * 4 + 1] = (byte)((j & 0x00FF0000) >> 16);
-        key [i * 4 + 2] = (byte)((j & 0x0000FF00) >> 8);
-        key [i * 4 + 3] = (byte)(j & 0x000000FF);
+        int j = ((Integer) objarr [i]).intValue();
+        key [i * 4] = (byte) ((j & 0xFF000000) >> 24);
+        key [i * 4 + 1] = (byte) ((j & 0x00FF0000) >> 16);
+        key [i * 4 + 2] = (byte) ((j & 0x0000FF00) >> 8);
+        key [i * 4 + 3] = (byte) (j & 0x000000FF);
       }
 
     return new CollationKey (this, source, key);
