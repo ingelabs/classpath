@@ -77,13 +77,17 @@ data_DATA = glibj.zip
 include .deps
 #all: .deps $(CLASSES) $(STUBS) glibj.zip
 
+if DEVELOPER_BUILD
+glibj.zip: .deps $(CLASSES)
+	zip -r -D glibj.zip gnu java
+endif
+
+if MAINTAINER_BUILD
 glibj.zip: .deps $(CLASSES)
 	zip -r -D glibj.zip gnu java
 
-if MAINTAINER_BUILD
 .deps:	Makefile deps.sh gen-classlist.sh
 	./deps.sh
 endif
 
 EXTRA_DIST = glibj.zip .deps
-
