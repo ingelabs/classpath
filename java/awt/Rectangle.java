@@ -682,6 +682,19 @@ equals(Object obj)
 /*************************************************************************/
 
 /**
+  * Returns a hash value for this object.
+  *
+  * @return A hash value for this object.
+  */
+public int
+hashCode()
+{
+  return(x*y*width*height*37);
+}
+
+/*************************************************************************/
+
+/**
   * Returns a string representation of this rectangle.
   *
   * @return A string representation of this rectangle.
