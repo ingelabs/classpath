@@ -1,5 +1,9 @@
 2005-01-25  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/DefaultCellRenderer.java: Removed.
+
+2005-01-25  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/AbstractButton.java
 	(fireItemStateChanged): Made protected.
 	(fireActionPerformed): Likewise.
