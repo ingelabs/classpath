@@ -1,3 +1,7 @@
+2004-04-07  Patrik Reali  <reali@acm.org>
+
+	* doc/www.gnu.org/events/fosdem04.wml: link to group picture added
+
 2004-04-07  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c:
