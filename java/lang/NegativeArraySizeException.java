@@ -32,6 +32,8 @@ package java.lang;
  */
 public class NegativeArraySizeException extends RuntimeException
 {
+  static final long serialVersionUID = -8960118058596991861L;
+
   /**
    * Create an exception without a message.
    */

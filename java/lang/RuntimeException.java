@@ -34,6 +34,8 @@ package java.lang;
  */
 public class RuntimeException extends Exception
 {
+  static final long serialVersionUID = -7034897190745766939L;
+
   /**
    * Create an exception without a message.
    */

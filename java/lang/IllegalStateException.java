@@ -32,6 +32,8 @@ package java.lang;
  */
 public class IllegalStateException extends RuntimeException
 {
+  static final long serialVersionUID = -1848914673093119416L;
+
   /**
    * Create an exception without a message.
    */

@@ -33,6 +33,8 @@ package java.lang;
  */
 public class IllegalThreadStateException extends IllegalArgumentException
 {
+  static final long serialVersionUID = -7626246362397460174L;
+
   /**
    * Create an exception without a message.
    */

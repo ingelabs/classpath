@@ -32,6 +32,8 @@ package java.lang;
  */
 public class SecurityException extends RuntimeException
 {
+  static final long serialVersionUID = 6878364983674394167L;
+
   /**
    * Create an exception without a message.
    */

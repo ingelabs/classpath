@@ -34,6 +34,8 @@ package java.lang;
  */
 public class InterruptedException extends Exception
 {
+  static final long serialVersionUID = 6700697376100628473L;
+
   /**
    * Create an exception without a message.
    */

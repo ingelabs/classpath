@@ -32,6 +32,8 @@ package java.lang;
  */
 public class ArithmeticException extends RuntimeException
 {
+  static final long serialVersionUID = 2256477558314496007L;
+
   /**
    * Create an exception without a message.
    */

@@ -36,6 +36,8 @@ package java.lang;
  */
 public class ClassCastException extends RuntimeException
 {
+  static final long serialVersionUID = -9223365651070458532L;
+
   /**
    * Create an exception without a message.
    */

@@ -33,6 +33,8 @@ package java.lang;
  */
 public class ArrayIndexOutOfBoundsException extends IndexOutOfBoundsException
 {
+  static final long serialVersionUID = -5116101128118950844L;
+
   /**
    * Create an exception without a message.
    */
@@ -53,4 +55,6 @@ public class ArrayIndexOutOfBoundsException extends IndexOutOfBoundsException
   public ArrayIndexOutOfBoundsException(int index) {
     super(String.valueOf(index));
   }
+
+
 }

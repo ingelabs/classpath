@@ -32,6 +32,8 @@ package java.lang;
  */
 public class NullPointerException extends RuntimeException
 {
+  static final long serialVersionUID = 5162710183389028792L;
+
   /**
    * Create an exception without a message.
    */

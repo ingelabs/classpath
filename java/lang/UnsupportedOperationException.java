@@ -28,6 +28,8 @@ package java.lang;
  */
 public class UnsupportedOperationException extends RuntimeException
 {
+  static final long serialVersionUID = 0L;  /* FIXME */
+
   /**
    * Create an exception without a message.
    */

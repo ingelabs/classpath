@@ -31,6 +31,8 @@ package java.lang;
  */
 public class IllegalArgumentException extends RuntimeException
 {
+  static final long serialVersionUID = -5365630128856068164L;
+  
   /**
    * Create an exception without a message.
    */

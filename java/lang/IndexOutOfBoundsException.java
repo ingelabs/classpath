@@ -36,6 +36,8 @@ package java.lang;
  */
 public class IndexOutOfBoundsException extends RuntimeException
 {
+  static final long serialVersionUID = 234122996006267687L;
+
   /**
    * Create an exception without a message.
    */

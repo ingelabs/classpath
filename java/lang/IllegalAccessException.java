@@ -36,6 +36,8 @@ package java.lang;
  */
 public class IllegalAccessException extends Exception
 {
+  static final long serialVersionUID = 6616958222490762034L;
+
   /**
    * Create an exception without a message.
    */

@@ -20,6 +20,12 @@
 
 package java.lang;
 
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.PrintWriter;
+
 /**
  * Exceptions may be thrown by one part of a Java program and caught
  * by another in order to deal with exceptional conditions.  This 
@@ -33,6 +39,8 @@ package java.lang;
  */
 public class ClassNotFoundException extends Exception
 {
+  static final long serialVersionUID = 9176873029745254542L;
+
   private Throwable ex = null;
   
   /**
@@ -74,5 +82,75 @@ public class ClassNotFoundException extends Exception
   public Throwable getException()
     {
       return ex;
+    }
+
+  /**
+   * Print a stack trace of the exception that occurred.
+   */
+  public void printStackTrace()
+    {
+      if (ex == null)
+        {
+          super.printStackTrace();
+        }
+      else
+        {
+          ex.printStackTrace();
+        }
+    }
+
+  /**
+   * Print a stack trace of the exception that occurred to 
+   * the specified <code>PrintStream</code>.
+   */
+  public void printStackTrace(PrintStream ps)
+    {
+      if (ex == null)
+        {
+          super.printStackTrace(ps);
+        }
+      else
+        {
+          ex.printStackTrace(ps);
+        }
+    }
+
+  /**
+   * Print a stack trace of the exception that occurred to 
+   * the specified <code>PrintWriter</code>.
+   */
+  public void printStackTrace(PrintWriter pw)
+    {
+      if (ex == null)
+        {
+          super.printStackTrace(pw);
+        }
+      else
+        {
+          ex.printStackTrace(pw);
+        }
+    }
+
+  /**
+   * Serialize the object in a manner binary compatible with the JDK 1.2
+   */
+  private void writeObject(java.io.ObjectOutputStream s) 
+    throws IOException
+    {
+      ObjectOutputStream.PutField oFields;
+      oFields = s.putFields();
+      oFields.put("ex", this.ex);
+      s.writeFields(); 
+    }
+
+  /**
+   * Deserialize the object in a manner binary compatible with the JDK 1.2
+   */    
+  private void readObject(java.io.ObjectInputStream s)
+    throws IOException, ClassNotFoundException
+    {
+      ObjectInputStream.GetField oFields;
+      oFields = s.readFields();
+      ex = (Throwable)oFields.get("ex", (Throwable)null);
     }
 }

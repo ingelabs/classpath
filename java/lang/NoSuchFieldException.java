@@ -31,6 +31,8 @@ package java.lang;
  */
 public class NoSuchFieldException extends Exception
 {
+  static final long serialVersionUID = -6143714805279938260L;
+
   /**
    * Create an exception without a message.
    */

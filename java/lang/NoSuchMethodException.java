@@ -31,6 +31,8 @@ package java.lang;
  */
 public class NoSuchMethodException extends Exception
 {
+  static final long serialVersionUID = 5034388446362600923L;
+
   /**
    * Create an exception without a message.
    */

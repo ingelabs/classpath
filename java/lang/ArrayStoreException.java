@@ -31,6 +31,8 @@ package java.lang;
  */
 public class ArrayStoreException extends RuntimeException
 {
+  static final long serialVersionUID = -4522193890499838241L;
+
   /**
    * Create an exception without a message.
    */

@@ -33,6 +33,8 @@ package java.lang;
  */
 public class NumberFormatException extends IllegalArgumentException
 {
+  static final long serialVersionUID = -2848938806368998894L;
+
   /**
    * Create an exception without a message.
    */
