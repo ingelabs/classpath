@@ -1,0 +1,286 @@
+/*
+ * gtklistpeer.c -- Native implementation of GtkListPeer
+ *
+ * Copyright (c) 1998 Free Software Foundation, Inc.
+ * Written by James E. Blair <corvus@gnu.org>
+ *
+ * This library is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Library General Public License as published 
+ * by the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later verion.
+ *
+ * This library is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Library General Public License for more details.
+ *
+ * You should have received a copy of the GNU Library General Public License
+ * along with this library; if not, write to the Free Software Foundation
+ * Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
+ */
+
+#include "gtkpeer.h"
+#include "GtkListPeer.h"
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListNew
+  (JNIEnv *env, jobject obj, jobject jlist, jobjectArray items, int mode)
+{
+  GtkWidget *list, *listitem, *sw;
+  jsize count;
+  jobject item;
+  int i;
+  char *text;
+
+  count = (*env)->GetArrayLength (env, items);
+
+  (*env)->MonitorEnter (env, java_mutex);
+
+  list = gtk_list_new ();
+  sw = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), 
+				  GTK_POLICY_AUTOMATIC,
+				  GTK_POLICY_AUTOMATIC);
+  gtk_scrolled_window_add_with_viewport (GTK_SCROLLED_WINDOW (sw), list);
+
+  gtk_list_set_selection_mode (GTK_LIST (list),
+			       mode? GTK_SELECTION_MULTIPLE : 
+			       GTK_SELECTION_SINGLE);
+  
+  for (i = 0; i < count; i++) 
+    {
+      item = (*env)->GetObjectArrayElement (env, items, i);
+      text = (char *)(*env)->GetStringUTFChars (env, item, 0);
+
+      listitem = gtk_list_item_new_with_label (text);
+      gtk_widget_show (listitem);
+      gtk_container_add (GTK_CONTAINER (list), listitem);
+
+      (*env)->ReleaseStringUTFChars (env, item, text);
+    }
+
+  gdk_threads_wake();
+  (*env)->MonitorExit (env,java_mutex);
+
+  NSA_SET_PTR (env, obj, sw);
+  NSA_SET_PTR (env, jlist, list);
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListInsert
+  (JNIEnv *env, jobject obj, jobject jlist, jstring text, jint index)
+{
+  GtkList *list;
+  char *str;
+  GList *item_list;
+    
+  list = GTK_LIST (NSA_GET_PTR (env, jlist));
+  str = (char *)(*env)->GetStringUTFChars (env, text, 0);      
+
+  (*env)->MonitorEnter (env, java_mutex);
+  
+  item_list = g_list_alloc ();
+  item_list->data = gtk_list_item_new_with_label (str);
+
+  gtk_widget_show (item_list->data);
+
+  gtk_list_insert_items (GTK_LIST (list), item_list, index);
+  
+  gdk_threads_wake ();
+  (*env)->MonitorExit (env, java_mutex);
+  (*env)->ReleaseStringUTFChars (env, text, str);
+}
+
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListClearItems
+  (JNIEnv *env, jobject obj, jobject jlist, jint start, jint end)
+{
+  GtkList *list;
+    
+  list = GTK_LIST (NSA_GET_PTR (env, jlist));
+
+  (*env)->MonitorEnter (env, java_mutex);
+  
+  gtk_list_clear_items (GTK_LIST (list), start, end);
+  
+  gdk_threads_wake ();
+  (*env)->MonitorExit (env, java_mutex);
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListSelectItem
+  (JNIEnv *env, jobject obj, jobject jlist, jint index)
+{
+  GtkList *list;
+    
+  list = GTK_LIST (NSA_GET_PTR (env, jlist));
+
+  (*env)->MonitorEnter (env, java_mutex);
+  
+  gtk_list_select_item (GTK_LIST (list), index);
+  
+  gdk_threads_wake ();
+  (*env)->MonitorExit (env, java_mutex);
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListUnselectItem
+  (JNIEnv *env, jobject obj, jobject jlist, jint index)
+{
+  GtkList *list;
+    
+  list = GTK_LIST (NSA_GET_PTR (env, jlist));
+
+  (*env)->MonitorEnter (env, java_mutex);
+  
+  gtk_list_unselect_item (GTK_LIST (list), index);
+  
+  gdk_threads_wake ();
+  (*env)->MonitorExit (env, java_mutex);
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListGetSize
+  (JNIEnv *env, jobject obj, jobject jlist, jint rows, jintArray jdims)
+{
+  jint *dims;
+  GtkWidget *list;
+  GtkScrolledWindow *sw;
+  GtkRequisition myreq;
+
+  list = GTK_WIDGET (NSA_GET_PTR (env, jlist));
+  sw = GTK_SCROLLED_WINDOW (NSA_GET_PTR (env, obj));
+
+  dims = (*env)->GetIntArrayElements (env, jdims, 0);  
+  dims[0] = dims[1] = 0;
+
+  if (rows < 3)
+    rows=3;
+
+  (*env)->MonitorEnter (env, java_mutex);
+  /*
+  gtk_widget_size_request(GTK_WIDGET (GTK_SCROLLED_WINDOW(sw)->hscrollbar), 
+                                      &myreq);
+  dims[1]=myreq.height+GTK_SCROLLED_WINDOW_CLASS 
+    (GTK_OBJECT (sw)->klass)->scrollbar_spacing;
+  */
+
+  gtk_widget_size_request(GTK_WIDGET (GTK_SCROLLED_WINDOW(sw)->vscrollbar), 
+                                      &myreq);
+  dims[0]=myreq.width+GTK_SCROLLED_WINDOW_CLASS
+    (GTK_OBJECT (sw)->klass)->scrollbar_spacing;
+  
+  gtk_widget_size_request(GTK_WIDGET (list), &myreq);
+                                      
+  dims[0] += myreq.width + gdk_char_width (list->style->font, 'W');
+             
+  dims[1] += ((rows * (gdk_char_height (list->style->font, 'W')+7))
+	      + (2 * (list->style->klass->ythickness))),
+		 
+		
+  gdk_threads_wake ();
+  (*env)->MonitorExit (env, java_mutex);
+  (*env)->ReleaseIntArrayElements (env, jdims, dims, 0);
+}
+
+
+JNIEXPORT jintArray JNICALL
+Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListGetSelected
+  (JNIEnv *env, jobject obj, jobject jlist)
+{
+  GtkList *list;
+  jintArray selection;
+  jint *sel;
+  GList *child;
+  int count = 0;
+  int pos = 0;
+  int index = 0;
+
+  list = GTK_LIST (NSA_GET_PTR (env, jlist));
+
+  (*env)->MonitorEnter (env, java_mutex);
+  
+  child = list->selection;
+  while (child)
+    {
+      count++;
+      child = g_list_next (child);
+    }
+
+  selection = (*env)->NewIntArray (env, count);
+  sel = (*env)->GetIntArrayElements (env, selection, 0);  
+
+  child = list->children;
+  while (child && (pos < count))
+    {
+      if(GTK_WIDGET_STATE (child->data) == GTK_STATE_SELECTED)
+	{
+	  sel[pos]=index;
+	  pos++;
+	}
+      index++;
+      child = g_list_next (child);
+    }
+  
+  (*env)->ReleaseIntArrayElements (env, selection, sel, 0);
+
+  gdk_threads_wake ();
+  (*env)->MonitorExit (env, java_mutex);
+  return selection;
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListScrollVertical
+  (JNIEnv *env, jobject obj, jobject jlist, jint index)
+{
+  GtkList *list;
+  GtkWidget *sw;
+  GList *child;
+  int count = 0;
+  GtkAdjustment *adj;
+
+  sw = GTK_WIDGET (NSA_GET_PTR (env, obj));
+  list = GTK_LIST (NSA_GET_PTR (env, jlist));
+
+  (*env)->MonitorEnter (env, java_mutex);
+
+  child = list->children;
+  while (child)
+    {
+      count++;
+      child = g_list_next (child);
+    }
+  
+  gtk_list_scroll_vertical (GTK_LIST (list), GTK_SCROLL_JUMP, 
+			    (gfloat) ((gfloat) index / (gfloat) count));
+  
+  adj = GTK_RANGE (GTK_SCROLLED_WINDOW (sw)->vscrollbar)->adjustment;
+
+  adj->value = CLAMP (adj->lower + (adj->upper - adj->lower) * 
+		      ((gfloat) ((gfloat) index / (gfloat) count)),
+		      adj->lower, adj->upper - adj->page_size);
+  gtk_adjustment_value_changed (adj);
+
+  gdk_threads_wake ();
+  (*env)->MonitorExit (env, java_mutex);
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListSetSelectionMode
+  (JNIEnv *env, jobject obj, jobject jlist, jint mode)
+{
+  GtkList *list;
+    
+  list = GTK_LIST (NSA_GET_PTR (env, jlist));
+
+  (*env)->MonitorEnter (env, java_mutex);
+  
+  gtk_list_set_selection_mode (GTK_LIST (list),
+			       mode? GTK_SELECTION_MULTIPLE : 
+			       GTK_SELECTION_SINGLE);
+  
+  gdk_threads_wake ();
+  (*env)->MonitorExit (env, java_mutex);
+}
+
