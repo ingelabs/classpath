@@ -136,7 +136,7 @@ import java.util.Vector;
  */
 public class RuleBasedCollator extends Collator
 {
-  class CollationElement
+  final class CollationElement
   {
     String char_seq;
     int primary;
@@ -150,7 +150,7 @@ public class RuleBasedCollator extends Collator
       this.secondary = secondary;
       this.tertiary = tertiary;
     }
- 
+
   } // inner class CollationElement
 
   /**
@@ -162,7 +162,7 @@ public class RuleBasedCollator extends Collator
    * This is the table of collation element values
    */
   private Object[] ce_table;
-
+  
   /**
    * This method initializes a new instance of <code>RuleBasedCollator</code>
    * with the specified collation rules.  Note that an application normally
@@ -308,16 +308,16 @@ public class RuleBasedCollator extends Collator
    * the second.  The value depends not only on the collation rules in
    * effect, but also the strength and decomposition settings of this object.
    *
-   * @param s1 The first <code>String</code> to compare.
-   * @param s2 A second <code>String</code> to compare to the first.
+   * @param source The first <code>String</code> to compare.
+   * @param target A second <code>String</code> to compare to the first.
    *
-   * @return A negative integer if s1 &lt; s2, a positive integer
-   * if s1 &gt; s2, or 0 if s1 == s2.
+   * @return A negative integer if source &lt; target, a positive integer
+   * if source &gt; target, or 0 if source == target.
    */
-  public int compare (String s1, String s2)
+  public int compare (String source, String target)
   {
-    CollationElementIterator cei1 = getCollationElementIterator(s1);
-    CollationElementIterator cei2 = getCollationElementIterator(s2);
+    CollationElementIterator cei1 = getCollationElementIterator (source);
+    CollationElementIterator cei2 = getCollationElementIterator (target);
 
     for(;;)
       {
@@ -396,9 +396,9 @@ public class RuleBasedCollator extends Collator
    *
    * @return A <code>CollationElementIterator</code> for the specified <code>String</code>.
    */
-  public CollationElementIterator getCollationElementIterator (String str)
+  public CollationElementIterator getCollationElementIterator (String source)
   {
-    return new CollationElementIterator (this, str);
+    return new CollationElementIterator (source, this);
   }  
 
   /**
@@ -410,19 +410,17 @@ public class RuleBasedCollator extends Collator
    *
    * @return A <code>CollationElementIterator</code> for the specified <code>String</code>.
    */
-  public CollationElementIterator getCollationElementIterator(CharacterIterator ci)
+  public CollationElementIterator getCollationElementIterator (CharacterIterator source)
   {
     StringBuffer sb = new StringBuffer("");
 
     // Right now we assume that we will read from the beginning of the string.
-    char c = ci.first();
-    while (c != CharacterIterator.DONE) 
+    for (char c = source.first(); c != CharacterIterator.DONE; c = source.next()) 
       {
-        sb.append(c);
-        c = ci.next();
+        sb.append (c);
       }
 
-    return(getCollationElementIterator(sb.toString()));
+    return getCollationElementIterator (sb.toString());
   }
 
   /**
@@ -436,9 +434,9 @@ public class RuleBasedCollator extends Collator
    *
    * @return A <code>CollationKey</code> for the specified <code>String</code>.
    */
-  public CollationKey getCollationKey (String str)
+  public CollationKey getCollationKey (String source)
   {
-    CollationElementIterator cei = getCollationElementIterator(str);
+    CollationElementIterator cei = getCollationElementIterator (source);
     Vector vect = new Vector(25);
 
     int ord = cei.next();
@@ -475,7 +473,7 @@ public class RuleBasedCollator extends Collator
         key [i * 4 + 3] = (byte)(j & 0x000000FF);
       }
 
-    return(new CollationKey(this, str, key));
+    return new CollationKey (this, source, key);
   }
 
   /**
@@ -486,7 +484,7 @@ public class RuleBasedCollator extends Collator
    */
   public String getRules()
   {
-    return(rules);
+    return rules;
   }
 
   /**
@@ -496,31 +494,31 @@ public class RuleBasedCollator extends Collator
    */
   public int hashCode()
   {
-    return(System.identityHashCode(this));
+    return System.identityHashCode (this);
   }
 
   /**
    * This method calculates the collation element value for the specified
    * character(s).
    */
-  int getCollationElementValue(String str)
+  int getCollationElementValue (String source)
   {
     CollationElement e = null;
 
     // The table is sorted.  Change to a binary search later.
     for (int i = 0; i < ce_table.length; i++) 
-      if (((CollationElement)ce_table[i]).char_seq.equals(str))
+      if (((CollationElement) ce_table [i]).char_seq.equals (source))
         {
-          e = (CollationElement)ce_table[i];
+          e = (CollationElement) ce_table [i];
           break;
         }
 
     if (e == null)
-      e = new CollationElement(str, 0xFFFF, (short)0xFF, (short)0xFF);
+      e = new CollationElement (source, 0xFFFF, (short)0xFF, (short)0xFF);
 
     int retval = (e.primary << 16) + (e.secondary << 8) + e.tertiary;
 
-    return(retval);
+    return retval;
   }
 
 } // class RuleBaseCollator

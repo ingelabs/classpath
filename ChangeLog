@@ -1,5 +1,16 @@
 2003-10-15  Michael Koch  <konqueror@gmx.de>
 
+	* java/text/RuleBasedCollator.java:
+	Some reformating.
+	(CollationElement): Made final.
+	(compare): Renamed s1 to source and s2 to target.
+	(getCollationElementIterator): Renamed str to source,
+	replaced while loop with for loop.
+	(getCollationKey): Renamed str to source.
+	(getCollationElementValue): Likewise.
+
+2003-10-15  Michael Koch  <konqueror@gmx.de>
+
 	* java/text/CollationElementIterator.java
 	(CollationElementIterator): Exchange arguments, call setText.
 	(next): Reformated.
