@@ -3870,7 +3870,7 @@
 
 	--portable-native-sync implemented for GTK2:
 	
-	* gnu/native/jni/gtk-peer/gthread-jni.c: Indentation fixes.
+	* native/jni/gtk-peer/gthread-jni.c: Indentation fixes.
 	Implemented missing functions for GTK2.
 	Added error handling.
 	Renamed static functions out of the g_ namespace.
