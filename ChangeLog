@@ -1,5 +1,12 @@
 2003-08-09  Mark Wielaard  <mark@klomp.org>
 
+	Reported by David Holmes <dholmes@dltech.com.au>, fixes bug #3229.
+	* java/lang/InheritableThreadLocal.java (threadMap): Wrap inside
+	Collections.synchronizedMap.
+	* java/lang/ThreadLocal.java (valueMap): Likewise.
+
+2003-08-09  Mark Wielaard  <mark@klomp.org>
+
 	Reported by Archie Cobbs <archie@dellroad.org>
 	* vm/reference/java/lang/Thread.java (Thread): Explicitly set
 	contextClassLoader.
