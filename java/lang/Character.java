@@ -35,11 +35,19 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+/*
+ * Note: This class must not be merged with Classpath.  Gcj uses C-style
+ * arrays (see include/java-chartables.h) to store the Unicode character
+ * database, whereas Classpath uses Java objects (char[] extracted from
+ * String constants) in gnu.java.lang.CharData.  Gcj's approach is more
+ * efficient, because there is no vtable or data relocation to worry about.
+ * However, despite the difference in the database interface, the two
+ * versions share identical algorithms.
+ */
 
 package java.lang;
 
 import java.io.Serializable;
-import gnu.java.lang.CharData;
 
 /**
  * Wrapper class for the primitive char data type.  In addition, this class
@@ -62,7 +70,6 @@ import gnu.java.lang.CharData;
  * @author Paul N. Fisher
  * @author Jochen Hoenicke
  * @author Eric Blake <ebb9@email.byu.edu>
- * @see CharData
  * @since 1.0
  * @status updated to 1.4
  */
@@ -132,7 +139,7 @@ public final class Character implements Serializable, Comparable
    * is in at most one of these blocks.
    *
    * This inner class was generated automatically from
-   * <code>doc/unicode/Block-3.txt</code>, by some perl scripts.
+   * <code>libjava/gnu/gcj/convert/Blocks-3.txt</code>, by some perl scripts.
    * This Unicode definition file can be found on the
    * <a href="http://www.unicode.org">http://www.unicode.org</a> website.
    * JDK 1.4 uses Unicode version 3.0.0.
@@ -1384,95 +1391,39 @@ public final class Character implements Serializable, Comparable
   public static final byte DIRECTIONALITY_POP_DIRECTIONAL_FORMAT = 18;
 
   /**
-   * Stores unicode block offset lookup table. Exploit package visibility of
-   * String.value to avoid copying the array.
+   * Mask for grabbing the type out of the result of readChar.
    * @see #readChar(char)
-   * @see CharData#BLOCKS
-   */
-  private static final char[] blocks = CharData.BLOCKS.value;
-
-  /**
-   * Stores unicode attribute offset lookup table. Exploit package visibility
-   * of String.value to avoid copying the array.
-   * @see CharData#DATA
-   */
-  private static final char[] data = CharData.DATA.value;
-
-  /**
-   * Stores unicode numeric value attribute table. Exploit package visibility
-   * of String.value to avoid copying the array.
-   * @see CharData#NUM_VALUE
-   */
-  private static final char[] numValue = CharData.NUM_VALUE.value;
-
-  /**
-   * Stores unicode uppercase attribute table. Exploit package visibility
-   * of String.value to avoid copying the array.
-   * @see CharData#UPPER
-   */
-  private static final char[] upper = CharData.UPPER.value;
-
-  /**
-   * Stores unicode lowercase attribute table. Exploit package visibility
-   * of String.value to avoid copying the array.
-   * @see CharData#LOWER
-   */
-  private static final char[] lower = CharData.LOWER.value;
-
-  /**
-   * Stores unicode direction attribute table. Exploit package visibility
-   * of String.value to avoid copying the array.
-   * @see CharData#DIRECTION
-   */
-  // Package visible for use by String.
-  static final char[] direction = CharData.DIRECTION.value;
-
-  /**
-   * Stores unicode titlecase table. Exploit package visibility of
-   * String.value to avoid copying the array.
-   * @see CharData#TITLE
-   */
-  private static final char[] title = CharData.TITLE.value;
-
-  /**
-   * Mask for grabbing the type out of the contents of data.
-   * @see CharData#DATA
    */
   private static final int TYPE_MASK = 0x1F;
 
   /**
-   * Mask for grabbing the non-breaking space flag out of the contents of
-   * data.
-   * @see CharData#DATA
+   * Mask for grabbing the non-breaking space flag out of the result of
+   * readChar.
+   * @see #readChar(char)
    */
   private static final int NO_BREAK_MASK = 0x20;
 
   /**
-   * Mask for grabbing the mirrored directionality flag out of the contents
-   * of data.
-   * @see CharData#DATA
+   * Mask for grabbing the mirrored directionality flag out of the result
+   * of readChar.
+   * @see #readChar(char)
    */
   private static final int MIRROR_MASK = 0x40;
 
   /**
    * Grabs an attribute offset from the Unicode attribute database. The lower
    * 5 bits are the character type, the next 2 bits are flags, and the top
-   * 9 bits are the offset into the attribute tables.
+   * 9 bits are the offset into the attribute tables. Note that the top 9
+   * bits are meaningless in this context; they are useful only in the native
+   * code.
    *
    * @param ch the character to look up
    * @return the character's attribute offset and type
    * @see #TYPE_MASK
    * @see #NO_BREAK_MASK
    * @see #MIRROR_MASK
-   * @see CharData#DATA
-   * @see CharData#SHIFT
    */
-  // Package visible for use in String.
-  static char readChar(char ch)
-  {
-    // Perform 16-bit addition to find the correct entry in data.
-    return data[(char) (blocks[ch >> CharData.SHIFT] + ch)];
-  }
+  private static native char readChar(char ch);
 
   /**
    * Wraps up a character.
@@ -1525,8 +1476,9 @@ public final class Character implements Serializable, Comparable
    */
   public String toString()
   {
-    // Package constructor avoids an array copy.
-    return new String(new char[] { value }, 0, 1, true);
+    // This assumes that String.valueOf(char) can create a single-character
+    // String more efficiently than through the public API.
+    return String.valueOf(value);
   }
 
   /**
@@ -1538,8 +1490,9 @@ public final class Character implements Serializable, Comparable
    */
   public String toString(char ch)
   {
-    // Package constructor avoids an array copy.
-    return new String(new char[] { value }, 0, 1, true);
+    // This assumes that String.valueOf(char) can create a single-character
+    // String more efficiently than through the public API.
+    return String.valueOf(ch);
   }
 
   /**
@@ -1630,7 +1583,7 @@ public final class Character implements Serializable, Comparable
    */
   public static boolean isDefined(char ch)
   {
-    return getType(ch) == UNASSIGNED;
+    return getType(ch) != UNASSIGNED;
   }
 
   /**
@@ -1894,11 +1847,7 @@ public final class Character implements Serializable, Comparable
    * @see #toTitleCase(char)
    * @see #toUpperCase(char)
    */
-  public static char toLowerCase(char ch)
-  {
-    // Signedness doesn't matter, as result is cast back to char.
-    return (char) (ch + lower[readChar(ch) >> 7]);
-  }
+  public static native char toLowerCase(char ch);
 
   /**
    * Converts a Unicode character into its uppercase equivalent mapping.
@@ -1913,11 +1862,7 @@ public final class Character implements Serializable, Comparable
    * @see #toLowerCase(char)
    * @see #toTitleCase(char)
    */
-  public static char toUpperCase(char ch)
-  {
-    // Signedness doesn't matter, as result is cast back to char.
-    return (char) (ch + upper[readChar(ch) >> 7]);
-  }
+  public static native char toUpperCase(char ch);
 
   /**
    * Converts a Unicode character into its titlecase equivalent mapping.
@@ -1931,14 +1876,7 @@ public final class Character implements Serializable, Comparable
    * @see #toLowerCase(char)
    * @see #toUpperCase(char)
    */
-  public static char toTitleCase(char ch)
-  {
-    // As title is short, it doesn't hurt to exhaustively iterate over it.
-    for (int i = title.length - 2; i >= 0; i -= 2)
-      if (title[i] == ch)
-        return title[i + 1];
-    return toUpperCase(ch);
-  }
+  public static native char toTitleCase(char ch);
 
   /**
    * Converts a character into a digit of the specified radix. If the radix
@@ -1958,22 +1896,7 @@ public final class Character implements Serializable, Comparable
    * @see #isDigit(char)
    * @see #getNumericValue(char)
    */
-  public static int digit(char ch, int radix)
-  {
-    if (radix < MIN_RADIX || radix > MAX_RADIX)
-      return -1;
-    char attr = readChar(ch);
-    if (((1 << (attr & TYPE_MASK))
-         & ((1 << UPPERCASE_LETTER)
-            | (1 << LOWERCASE_LETTER)
-            | (1 << DECIMAL_DIGIT_NUMBER))) != 0)
-      {
-        // Signedness doesn't matter; 0xffff vs. -1 are both rejected.
-        int digit = numValue[attr >> 7];
-        return (digit >= 0 && digit < radix) ? digit : -1;
-      }
-    return -1;
-  }
+  public static native int digit(char ch, int radix);
 
   /**
    * Returns the Unicode numeric value property of a character. For example,
@@ -2002,11 +1925,7 @@ public final class Character implements Serializable, Comparable
    * @see #isDigit(char)
    * @since 1.1
    */
-  public static int getNumericValue(char ch)
-  {
-    // Treat numValue as signed.
-    return (short) numValue[readChar(ch) >> 7];
-  }
+  public static native int getNumericValue(char ch);
 
   /**
    * Determines if a character is a ISO-LATIN-1 space. This is only the five
@@ -2141,10 +2060,7 @@ public final class Character implements Serializable, Comparable
    * @see #FINAL_QUOTE_PUNCTUATION
    * @since 1.1
    */
-  public static int getType(char ch)
-  {
-    return readChar(ch) & TYPE_MASK;
-  }
+  public static native int getType(char ch);
 
   /**
    * Converts a digit into a character which represents that digit
@@ -2163,10 +2079,10 @@ public final class Character implements Serializable, Comparable
    */
   public static char forDigit(int digit, int radix)
   {
-    if (radix < MIN_RADIX || radix > MAX_RADIX
-        || digit < 0 || digit >= radix)
+    if (radix < MIN_RADIX || radix > MAX_RADIX ||
+        digit < 0 || digit >= radix)
       return '\0';
-    return Number.digits[digit];
+    return (char) (digit < 10 ? ('0' + digit) : ('a' - 10 + digit));
   }
 
   /**
@@ -2197,11 +2113,7 @@ public final class Character implements Serializable, Comparable
    * @see #DIRECTIONALITY_POP_DIRECTIONAL_FORMAT
    * @since 1.4
    */
-  public static byte getDirectionality(char ch)
-  {
-    // The result will correctly be signed.
-    return (byte) (direction[readChar(ch) >> 7] >> 2);
-  }
+  public static native byte getDirectionality(char ch);
 
   /**
    * Determines whether the character is mirrored according to Unicode. For
