@@ -1,5 +1,19 @@
 2004-09-26  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/UIManager.java
+	(get): New method.
+	(getBoolean): Likewise.
+	(getBorder): Likewise.
+	(getColor): Likewise.
+	(getDimension): Likewise.
+	(getFont): Likewise.
+	(getIcon): Likewise.
+	(getInsets): Likewise.
+	(getInt): Likewise.
+	(getString): Likewise.
+
+2004-09-26  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/UIDefaults.java
 	(removePropertyChangeListener): Made public.
 
