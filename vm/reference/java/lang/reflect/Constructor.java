@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package java.lang.reflect;
 
+import java.util.Arrays;
+
 /**
  * The Constructor class represents a constructor of a class. It also allows
  * dynamic creation of an object, via reflection. Invocation on Constructor
@@ -160,7 +162,14 @@ extends AccessibleObject implements Member
    */
   public boolean equals(Object o)
   {
-    return this == o;
+    if (!(o instanceof Constructor))
+      return false;
+    Constructor that = (Constructor)o; 
+    if (this.getDeclaringClass() != that.getDeclaringClass())
+      return false;
+    if (!Arrays.equals(this.getParameterTypes(), that.getParameterTypes()))
+      return false;
+    return true;
   }
 
   /**

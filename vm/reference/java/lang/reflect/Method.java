@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package java.lang.reflect;
 
+import java.util.Arrays;
+
 /**
  * The Method class represents a member method of a class. It also allows
  * dynamic invocation, via reflection. This works for both static and
@@ -144,8 +146,7 @@ extends AccessibleObject implements Member
   /**
    * Compare two objects to see if they are semantically equivalent.
    * Two Methods are semantically equivalent if they have the same declaring
-   * class, name, and parameter list.  This ignores different exception
-   * clauses or return types.
+   * class, name, parameter list, and return type.
    *
    * @param o the object to compare to
    * @return <code>true</code> if they are equal; <code>false</code> if not
@@ -172,29 +173,18 @@ extends AccessibleObject implements Member
       //
       // return this == o;
       //
-      if (o == null)
-        return false;
-
-      if (!(o instanceof Method))
-        return false;
-
-      Method m = (Method)o;
-      if(!name.equals(m.name))
-	  return false;
-
-      if(declaringClass != m.declaringClass)
-	  return false;
-
-      Class[] params1 = getParameterTypes();
-      Class[] params2 = m.getParameterTypes();
-      if(params1.length != params2.length)
-	  return false;
-
-      for(int i = 0; i < params1.length; i++)
-	  if(params1[i] != params2[i])
-	      return false;
-
-      return true;
+    if (!(o instanceof Method))
+      return false;
+    Method that = (Method)o;
+    if (this.getDeclaringClass() != that.getDeclaringClass())
+      return false;
+    if (!this.getName().equals(that.getName()))
+      return false;
+    if (this.getReturnType() != that.getReturnType())
+      return false;
+    if (!Arrays.equals(this.getParameterTypes(), that.getParameterTypes()))
+      return false;
+    return true;
   }
 
   /**

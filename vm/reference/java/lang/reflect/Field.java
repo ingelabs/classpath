@@ -135,7 +135,16 @@ extends AccessibleObject implements Member
    */
   public boolean equals(Object o)
   {
-    return this == o;
+    if (!(o instanceof Field))
+      return false;
+    Field that = (Field)o; 
+    if (this.getDeclaringClass() != that.getDeclaringClass())
+      return false;
+    if (!this.getName().equals(that.getName()))
+      return false;
+    if (this.getType() != that.getType())
+      return false;
+    return true;
   }
 
   /**
