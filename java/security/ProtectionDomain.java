@@ -77,15 +77,23 @@ private PermissionCollection perms;
 /**
   * This method initializes a new instance of <code>ProtectionDomain</code>
   * representing the specified <code>CodeSource</code> and permission set.
+  * No permissions may be added to the <code>PermissionCollection</code>
+  * and this contructor will call the <code>setReadOnly</code> method on
+  * the specified permission set.
   *
   * @param code_source The <code>CodeSource</code> for this domain
   * @param perms The permission set for this domain
+  *
+  * @see java.security.PermissionCollection#setReadOnly()
   */
 public
 ProtectionDomain(CodeSource code_source, PermissionCollection perms)
 {
   this.code_source = code_source;
   this.perms = perms;
+  if (perms != null) {
+    perms.setReadOnly();
+  }
 }
 
 /*************************************************************************/
