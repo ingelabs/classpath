@@ -1,5 +1,10 @@
 2004-04-08  Michael Koch  <konqueror@gmx.de>
 
+	* java/security/AccessController.java:
+	Fixed all @return tags.
+
+2004-04-08  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/DirectByteBufferImpl.java,
 	java/nio/MappedByteBuffer.java,
 	java/nio/MappedByteBufferImpl.java:
