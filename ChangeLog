@@ -1,5 +1,10 @@
 2002-12-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/channels/FileChannel.java
+	(force): Added throws IOException.
+
+2002-12-21  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/URI.java
 	(create): Doesnt throw URISyntaxException.
 	* java/net/URLConnection.java
