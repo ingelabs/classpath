@@ -1,4 +1,10 @@
-2004-08-08  Mark Wielaard  <mark@klomp.org>
+2004-07-09  Mark Wielaard  <mark@klomp.org>
+
+	* configure.ac: Set version to 0.10.
+	* NEWS: Add new features of 0.10.
+	* README: Mention additional GNU library packages.
+
+2004-07-09  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMainThread.c
 	(Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit): Initialize
@@ -8,7 +14,7 @@
 	(GtkMainThread): Call wait() in while loop waiting for gtkInitCalled.
 	(run): Seet gtkInitCalled.
 
-2004-08-08  Mark Wielaard  <mark@klomp.org>
+2004-07-09  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/gtk-peer/gthread-jni.c (setup_cache): Call
 	ExceptionOccurred, not ExceptionCheck, when we don't have JNI 1.2.

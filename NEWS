@@ -1,32 +1,66 @@
-New in release 0.10 (in preparation)
+New in release 0.10 (Jul 9, 2004)
 
+* java.net.URL now uses application classloader to load URLStreamHandlers
+  and reuses URLStreamHandlers when URL is reset (but protocol isn't changed).
+* java.io.File.deleteOnExit() implementation.
+* java.text multiple new features and bug fixes
+  (only 2 out of the 1000+ java.text Mauve tests now fail).
+* Better (non-black) default AWT System colors.
+* AWT lists use GTK treeviews.
+* Proper AWT focus management has been implemented.
+* Swing menus and scrollpanes are beginning to work.
+* Swing splitpanes, dialogs and internal frames were added.
+* Swing repainting / double buffering was redone.
+* Font management and Pango DPI conversion fixes.
+* A lot of AWT imaging and event bugs have been picked out.
+* More of javax.swing.text has been implemented.
+* javax.swing.Timer has been reimplemented.
+* java.security.AccessController has been implemented
+  (see runtime section).
+* The default java.lang.SecurityManager now uses AccessController.
+* New java.beans.Statement and Expression implementations.
+* Small FileChannel implementation speed improvement for traditional
+  JNI based systems.
+* Regenerated all included JNI header files with gcjh (3.5 CVS),
+  removes extra extern modifier and allows stricter compiler warning.
+* More C code cleanups (-Wmissing-declarations, -Wmissing-prototypes and
+  -Wstring-prototypes) and jni.h fixes (a few funtion prototype fixes,
+  made it compilable with C++ compilers and jni.h got renamed from jni.h.in).
+* Double.toString() and Float.toString() now work properly on 64-bit 
+  PowerPC systems.
+* PPC Darwin, arm, x86-64 and s/390 JNI C code compilation fixes.
+* Build system refactored and removed old Japhar specific support.
+* The gnu.java.awt.EmbeddedWindow class has been improved, and now
+  supports embedding AWT windows in other top-level X windows.
+  This functionality is required by gcjwebplugin.
+* gcjwebplugin, an applet viewer that can be embedded into several web
+  browsers, has been extensively tested with this release of classpath.
+  (See http://www.nongnu.org/gcjwebplugin/)
+* Runtime environments based on GNU Classpath 0.10 should be able to
+  start up Eclipse 3.0 out of the box now.
+
+Runtime interface Changes:
+
+* VMProcess.destroy() default implementation fixes.
 * Fixed the "portable native sync" code; it had been broken since
   Classpath release 0.06, when we upgraded to GTK+2.    
-  
-  Explanation: Classpath's AWT peers use GTK+.  GTK+ uses GLIB.  GLIB by
-  default uses the platform's native threading model -- pthreads in most cases.
+  Classpath's AWT peers use GTK+.  GTK+ uses GLIB.  GLIB by default uses
+  the platform's native threading model -- pthreads in most cases.
   If the Java runtime doesn't use the native threading model, then you should
   specify --portable-native-sync when configuring Classpath, so that GLIB will
   use the Java threading primitives instead.  (For a superior alternative,
   see below.)
-
 * The VM can set the system property
   gnu.classpath.awt.gtk.portable.native.sync instead of using the
-  --portable-native-sync configure-type option.  See
-  doc/vmintegration.texinfo for details.
-
+  --portable-native-sync configure-type option.
+  See doc/vmintegration.texinfo for details.
 * We intend that the next release of GNU Classpath will require the VM 
   to provide JNI 1.2.  Classpath currently uses only JNI 1.1, except for 
   one JNI 1.2 function: GetEnv(), in the JNI Invocation API. 
   If this poses problems, please raise them on the classpath mailing list.
-
-* Double.toString() and Float.toString() now work properly on 64-bit 
-  Linux/PowerPC systems.
-
 * The reference implementation of VMThread.holdsLock(Object) now has
   a default implementation written in java. For efficiency and to
   prevent spurious wakeups a real 'native' runtime version can be supplied.
-
 * There is a new java.security.VMAccessController class that runtimes need
   to implement to properly support SecurityManagers. The default
   implementation that comes with GNU Classpath makes sure that ANY attempt
@@ -37,7 +71,7 @@ New in release 0.10 (in preparation)
   and please give feedback on the GNU Classpath mailinglist whether or not
   the current AccessController framework is flexible enough.
 
-New in release 0.09 (2004/02/02)
+New in release 0.09 (May 2, 2004)
 
 * Includes updated GNU JAXP version from 2004-02-01.
 * Native C code is now -ansi -pedantic (C89) clean and (almost) -Wall clean.
