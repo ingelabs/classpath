@@ -1,5 +1,5 @@
 /* java.lang.reflect.Array - manipulate arrays by reflection
-   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -431,10 +431,11 @@ public final class Array
   {
     if (array instanceof Object[])
       {
-        // Too bad Sun won't let us throw the easier ArrayStoreException!
-        if (! array.getClass().getComponentType().isInstance(value))
-          throw new IllegalArgumentException();
-        ((Object[]) array)[index] = value;
+	// Too bad the API won't let us throw the easier ArrayStoreException!
+	if (value != null
+	    && ! array.getClass().getComponentType().isInstance(value))
+	  throw new IllegalArgumentException();
+	((Object[]) array)[index] = value;
       }
     else if (value instanceof Boolean)
       setBoolean(array, index, ((Boolean) value).booleanValue());
