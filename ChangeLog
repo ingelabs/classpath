@@ -1,5 +1,9 @@
 2004-09-19  Mark Wielaard  <mark@klomp.org>
 
+	* java/util/Collections.java (rotate): Just return when list is empty.
+
+2004-09-19  Mark Wielaard  <mark@klomp.org>
+
 	Fixes bug #10383 reported by Ilya Perminov.
 	* java/util/TreeMap.java (root): Don't initialize.
 	(TreeMap(Comparator)): Call fabricateTree(0).
