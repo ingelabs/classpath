@@ -1,3 +1,13 @@
+2004-01-07  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/undo/UndoableEditSupport.java (UndoableEditSupport):
+	Set realSource field. Improve documentation.
+	(_postEdit): Iterate over cloned listener vector.
+	
+	Fix for Classpath bug #7119.
+	* javax/swing/undo/UndoableEditSupport.java (toString): Don't emit
+	realSource.
+
 2004-01-06  Graydon Hoare  <graydon@redhat.com>
 
 	* configure.in: Add --enable-gtk-cairo check.

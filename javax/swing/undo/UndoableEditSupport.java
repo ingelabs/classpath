@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package javax.swing.undo;
 
+import java.util.Iterator;
 import java.util.Vector;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
@@ -78,6 +79,19 @@ public class UndoableEditSupport
 
 
   /**
+   * Constructs a new helper for broadcasting UndoableEditEvents.  The
+   * events will indicate the newly constructed
+   * <code>UndoableEditSupport</code> instance as their source.
+   *
+   * @see #UndoableEditSupport(java.lang.Object)
+   */
+  public UndoableEditSupport()
+  {
+    realSource = this;
+  }
+
+
+  /**
    * Constructs a new helper for broadcasting UndoableEditEvents.
    *
    * @param realSource the source of the UndoableEditEvents that will
@@ -85,21 +99,11 @@ public class UndoableEditSupport
    * <code>null</code>, the events will indicate the newly constructed
    * <code>UndoableEditSupport</code> instance as their source.
    */
-  public UndoableEditSupport()
+  public UndoableEditSupport(Object realSource)
   {
     if (realSource == null)
       realSource = this;
     this.realSource = realSource;
-  }
-
-
-  /**
-   * Constructor UndoableEditSupport
-   * @param object TODO
-   */
-  public UndoableEditSupport(Object object)
-  {
-    realSource = object;
   }
 
 
@@ -109,8 +113,11 @@ public class UndoableEditSupport
    */
   public String toString()
   {
-    return (super.toString() + " realSource: " + realSource
-	    + " updateLevel: " + updateLevel);
+    // Note that often, this.realSource == this. Therefore, dumping
+    // realSource without additional checks may lead to infinite
+    // recursion. See Classpath bug #7119.
+    return super.toString() + " updateLevel: " + updateLevel
+      + " listeners: " + listeners + " compoundEdit: " + compoundEdit;
   }
 
 
@@ -146,19 +153,36 @@ public class UndoableEditSupport
 
 
   /**
-   * _postEdit
-   * @param value0 TODO
+   * Notifies all registered listeners that an {@link
+   * UndoableEditEvent} has occured.
+   *
+   * <p><b>Lack of Thread Safety:</b> It is <em>not</em> safe to call
+   * this method from concurrent threads, unless the call is protected
+   * by a synchronization on this <code>UndoableEditSupport</code>
+   * instance.
+   *
+   * @param edit the edit action to be posted.
    */
   protected void _postEdit(UndoableEdit edit)
   {
-    UndoableEditEvent event = new UndoableEditEvent(realSource, edit);
-    int max = listeners.size();
-    for (int i = 0; i < max; ++i)
-      {
-	UndoableEditListener l
-	  = (UndoableEditListener) (listeners.elementAt(i));
-	l.undoableEditHappened(event);
-      }
+    UndoableEditEvent event;
+    Iterator iter;
+
+    // Do nothing if we have no listeners.
+    if (listeners.isEmpty())
+      return;
+
+    event = new UndoableEditEvent(realSource, edit);
+
+    // We clone the vector because this allows listeners to register
+    // or unregister listeners in their undoableEditHappened method.
+    // Otherwise, this would throw exceptions (in the case of
+    // Iterator, a java.util.ConcurrentModificationException; in the
+    // case of a direct loop over the Vector elements, some
+    // index-out-of-bounds exception).
+    iter = ((Vector) listeners.clone()).iterator();
+    while (iter.hasNext())
+      ((UndoableEditListener) iter.next()).undoableEditHappened(event);
   }
 
 
