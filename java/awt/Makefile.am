@@ -55,6 +55,7 @@ GraphicsConfiguration.java \
 GraphicsDevice.java \
 GraphicsEnvironment.java \
 GridBagConstraints.java \
+GridBagLayout.java \
 GridLayout.java	\
 HeadlessException.java \
 IllegalComponentStateException.java \

@@ -347,6 +347,8 @@ javax/swing/plaf/basic/Makefile
 javax/swing/plaf/metal/Makefile
 javax/swing/table/Makefile
 javax/swing/text/Makefile
+javax/swing/text/html/Makefile
+javax/swing/text/html/parser/Makefile
 javax/swing/tree/Makefile
 javax/swing/undo/Makefile
 native/Makefile

@@ -1,3 +1,23 @@
+2002-07-24  Mark Wielaard  <mark@klomp.org>
+
+	* java/awt/image/MemoryImageSource.java: Change constructor to take
+	int[] not byte[].
+	* java/awt/Graphics2D.java: Uncomment methods that can now be
+	compiled.
+	* java/awt/GridBagLayout.java: New stub implementation.
+	* java/awt/Makefile.am (EXTRA_DIST): Add GridBagLayout.java.
+	* java/awt/dnd/.cvsignore: New file.
+	* javax/swing/text/Makefile.am: Add SUBDIRS=html.
+	* javax/swing/text/html/HTML.java: Stub implementation.
+	* javax/swing/text/html/Makefile.am: New file.
+	* javax/swing/text/html/parser/Makefile.am: Likewise.
+	* javax/swing/text/html/parser/ParserDelegator.java: New stub
+	implementation.
+	* javax/swing/text/html/parser/package.html: New file.
+	* configure.in (AC_OUTPUT): Add javax/swing/text/html/Makefile and
+	javax/swing/text/html/parser/Makefile.
+
+
 2002-07-23  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/security/provider/MD5.java: Extends MessageDigest, not

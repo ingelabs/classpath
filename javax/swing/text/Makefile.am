@@ -1,3 +1,7 @@
+## Input file for automake to generate the Makefile.in used by configure
+
+SUBDIRS = html
+
 EXTRA_DIST = \
 AbstractDocument.java \
 AttributeSet.java \
