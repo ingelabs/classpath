@@ -114,7 +114,7 @@ public class GtkFileDialogPeer extends GtkDialogPeer implements FileDialogPeer
 
     // GtkFileChooser requires absolute filenames. If the given filename
     // is not absolute, let's construct it based on current directory.
-        currentFile = fileName;
+    currentFile = fileName;
     if (fileName.indexOf(FS) == 0)
       {
         nativeSetFile (fileName);

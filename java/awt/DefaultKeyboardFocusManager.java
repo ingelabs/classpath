@@ -197,7 +197,7 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager
               setGlobalPermanentFocusOwner (null);
           }
 
-          target.dispatchEvent (e);
+        target.dispatchEvent (e);
 
         return true;
       }
@@ -219,7 +219,7 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager
         Component focusOwner = getGlobalPermanentFocusOwner ();
 
         if (focusOwner != null)
-        processKeyEvent (focusOwner, (KeyEvent) e);
+          processKeyEvent (focusOwner, (KeyEvent) e);
 
         if (e.isConsumed ())
           return true;
@@ -258,7 +258,7 @@ public class DefaultKeyboardFocusManager extends KeyboardFocusManager
     Component focusOwner = getGlobalPermanentFocusOwner ();
 
     if (focusOwner != null)
-    focusOwner.dispatchEvent (e);
+      focusOwner.dispatchEvent (e);
 
     // Loop through all registered KeyEventPostProcessors, giving
     // each a chance to process this event.

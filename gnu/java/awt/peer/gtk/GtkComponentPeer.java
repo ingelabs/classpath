@@ -139,21 +139,21 @@ public class GtkComponentPeer extends GtkGenericPeer
     setVisibleAndEnabled ();
   }
 
-   void setParent ()
+  void setParent ()
   {
     ComponentPeer p;
     Component component = awtComponent;
     do
       {
-	component = component.getParent ();
-	p = component.getPeer ();
+        component = component.getParent ();
+        p = component.getPeer ();
       }
     while (p instanceof java.awt.peer.LightweightPeer);
-    
+
     if (p != null)
       gtkWidgetSetParent (p);
   }
-  
+
   /*
    * Set the bounds of this peer's AWT Component based on dimensions
    * returned by the native windowing system.  Most Components impose
@@ -178,7 +178,7 @@ public class GtkComponentPeer extends GtkGenericPeer
     return i.checkImage ();
   }
 
-  public Image createImage (ImageProducer producer) 
+  public Image createImage (ImageProducer producer)
   {
     return new GtkImage (producer, null);
   }
@@ -377,8 +377,8 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void requestFocus ()
   {
-    gtkWidgetRequestFocus();
-    postFocusEvent(FocusEvent.FOCUS_GAINED, false);
+    gtkWidgetRequestFocus ();
+    postFocusEvent (FocusEvent.FOCUS_GAINED, false);
   }
 
   public void reshape (int x, int y, int width, int height) 

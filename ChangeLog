@@ -1,5 +1,18 @@
 2004-07-31  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/java/awt/EmbeddedWindow.java: Reindent.
+	* gnu/java/awt/image/ImageDecoder.java: Reindent.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java: Reindent.
+	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java: Reindent.
+	* java/awt/DefaultKeyboardFocusManager.java: Reindent.
+	* java/awt/Frame.java: Reindent.
+	* javax/swing/JCheckBox.java: Reindent.
+	* javax/swing/JCheckBoxMenuItem.java: Reindent.
+	* javax/swing/UIDefaults.java: Reindent.
+	* javax/swing/UIManager.java: Reindent.
+
+2004-07-31  Mark Wielaard  <mark@klomp.org>
+
 	* java/awt/image/DirectColorModel.java: Reindent.
 	* java/awt/image/MemoryImageSource.java: Likewise.
 	* java/awt/image/RGBImageFilter.java: Likewise.
