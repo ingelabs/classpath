@@ -19,11 +19,8 @@
 // Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /////////////////////////////////////////////////////////////////////////////
 
-// TODO:
-//  toArray(Array) seems to be broken when creating a new
-//    array of the same runtime type.  Not sure exactly how to do this.
-
 package java.util;
+import java.lang.reflect.Array;
 
 /**
  * the <b>Vector</b> classes implements growable arrays of Objects.
@@ -60,6 +57,8 @@ public class Vector extends AbstractList implements List,
    * The internal array used to hold members of a Vector
    */
   protected Object[] elementData;
+
+  private static final long serialVersionUID = -2767605614048989439L;
 
   /**
    * Constructs an empty vector with an initial size of 10, and
@@ -502,8 +501,8 @@ public class Vector extends AbstractList implements List,
       //This seems like a kludge.. Is there a better way to find the
       //Runtime type of an array?
       Object[] newArray = 
-	(Object[])
-	java.lang.reflect.Array.newInstance(a[0].getClass(), elementCount);
+	(Object[]) Array.newInstance(a.getClass().getComponentType(), 
+				     elementCount);
       copyInto(newArray);
       return newArray;
     }
