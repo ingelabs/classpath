@@ -30,7 +30,7 @@ public abstract String getText();
 public abstract void setText(String text);
 public abstract void select(int start_pos, int end_pos);
 public abstract void setEditable(boolean editable);
-public abstract void getCaretPosition();
+public abstract int getCaretPosition();
 public abstract void setCaretPosition(int pos);
 
 } // interface TextComponentPeer 
