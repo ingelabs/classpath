@@ -1,3 +1,37 @@
+2004-01-27  David Jee  <djee@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
+	(handleEvent): Implemented. Handles PaintEvents.
+	(paint): Implemented. Use GTK native methods to queue updates
+        for this heavyweight peer.
+	* gnu/java/awt/peer/gtk/GtkContainerPeer.java
+	(handleEvent): Removed.
+	* include/gnu_java_awt_peer_gtk_GtkComponentPeer.h: Regenerated.
+	* java/awt/Component.java
+	(paint): Implemented. Explictly paint the heavyweight peer.
+	(update): Clear the background for heavyweight components.
+	(paintAll): No need to call peer.paint() anymore.
+	(processEvent): Don't process PaintEvents here. It's now done in
+	the peer's handleEvent().
+	(processPaintEvent): Removed.
+	* java/awt/Container.java
+	(paint): No need to call super.paint(). Visit heavyweight
+	children as well.
+	(update): Don't clear the background here.  It's done in
+	Component.update().
+	(visitChildren): Added check to not recurse into Containers.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(filter_expose_event_handler): New method.  Filter unwanted
+	expose events while painting heavyweight peers.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_addExposeFilter):
+	New method. Connect filter and block pre_event_handler.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_removeExposeFilter):
+	New method. Disconnect filter and unblock pre_event_handler.
+	(Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetQueueDrawArea):
+	New method. Invalidate and update given area.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEvents.c
+	(pre_event_handler): Add checks for unwanted expose events.
+
 2004-01-22  Graydon Hoare  <graydon@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GdkClasspathFontPeer.java: 
@@ -28,7 +62,7 @@
 
 2004-01-26  David Jee  <djee@redhat.com>
 
-	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
 	(find_bg_color_widget): For GtkButton, return its child.
 
 2004-01-26  Fernando Nasser  <fnasser@redhat.com>
