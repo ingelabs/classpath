@@ -1,3 +1,8 @@
+2005-01-11  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/URL.java (URL): Handle specs like
+	"/redir?http://domain2.com/index.html" which start with a slash.
+
 2005-01-11  Steven Augart  <augart@watson.ibm.com>
 
 	* scripts/check_jni_methods.sh: Portable to the OpenBSD
