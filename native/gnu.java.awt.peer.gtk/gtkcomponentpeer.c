@@ -117,6 +117,18 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursor
   gdk_threads_leave ();
 }
 
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setEnabled
+  (JNIEnv *env, jobject obj, jboolean enabled)
+{
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
+  
+  gdk_threads_enter ();
+  gtk_widget_set_sensitive (GTK_WIDGET (ptr), enabled);
+  gdk_threads_leave ();
+}
+
 /*
  * Show a widget
  */
