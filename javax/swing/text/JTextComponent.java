@@ -557,7 +557,7 @@ public abstract class JTextComponent extends JComponent
   
   public static final String DEFAULT_KEYMAP = "default";
   public static final String FOCUS_ACCELERATOR_KEY = "focusAcceleratorKey";
-
+  
   private static Hashtable keymaps = new Hashtable();
   private Keymap keymap;
   
@@ -932,12 +932,12 @@ public abstract class JTextComponent extends JComponent
   {
     try
       {
-       return doc.getText(getSelectionStart(), getSelectionEnd());
+	return doc.getText(getSelectionStart(), getSelectionEnd());
       }
     catch (BadLocationException e)
       {
-       // This should never happen.
-       return null;
+	// This should never happen.
+	return null;
       }
   }
 
@@ -1246,18 +1246,18 @@ public abstract class JTextComponent extends JComponent
 
     try
       {
-       int start = getSelectionStart();
-       int end = getSelectionEnd();
-       
+	int start = getSelectionStart();
+	int end = getSelectionEnd();
+	
 	// Remove selected text.
 	if (dot != mark)
-         doc.remove(start, end - start);
+	  doc.remove(start, end - start);
 
 	// Insert new text.
-       doc.insertString(start, content, null);
+	doc.insertString(start, content, null);
 
-       // Set dot to new position.
-       setCaretPosition(start + content.length());
+	// Set dot to new position.
+	setCaretPosition(start + content.length());
       }
     catch (BadLocationException e)
       {

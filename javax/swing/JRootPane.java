@@ -318,7 +318,7 @@ public class JRootPane extends JComponent
   public static final int FILE_CHOOSER_DIALOG = 6;
   public static final int QUESTION_DIALOG = 7;
   public static final int WARNING_DIALOG = 8;
-         
+	  
   /** DOCUMENT ME! */
   protected Component glassPane;
 

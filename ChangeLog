@@ -1,5 +1,22 @@
 2004-09-27  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JFrame.java,
+	javax/swing/JRadioButton.java,
+	javax/swing/JRootPane.java,
+	javax/swing/JTextField.java,
+	javax/swing/SpinnerNumberModel.java,
+	javax/swing/plaf/basic/BasicArrowButton.java,
+	javax/swing/plaf/basic/BasicScrollBarUI.java,
+	javax/swing/plaf/basic/BasicSplitPaneDivider.java,
+	javax/swing/table/DefaultTableColumnModel.java,
+	javax/swing/table/JTableHeader.java,
+	javax/swing/text/DocumentFilter.java,
+	javax/swing/text/JTextComponent.java,
+	javax/swing/text/NavigationFilter.java:
+	Whitespace cleanup.
+
+2004-09-27  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JTextArea.java
 	(getColumnWidth): New method.
 	(getLineCount): Likewise.

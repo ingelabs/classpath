@@ -158,7 +158,7 @@ public class JTextField extends JTextComponent
     setDocument(doc == null ? createDefaultModel() : doc);
 
     if (text != null)
-    setText(text);
+      setText(text);
   }
 
   /**
@@ -336,9 +336,9 @@ public class JTextField extends JTextComponent
 
     if (action != null)
       {
-       removeActionListener(action);
-       action.removePropertyChangeListener(actionPropertyChangeListener);
-       actionPropertyChangeListener = null;
+	removeActionListener(action);
+	action.removePropertyChangeListener(actionPropertyChangeListener);
+	actionPropertyChangeListener = null;
       }
     
     Action oldAction = action;
@@ -346,10 +346,10 @@ public class JTextField extends JTextComponent
 
     if (action != null)
       {
-       addActionListener(action);
-       actionPropertyChangeListener =
-         createActionPropertyChangeListener(action);
-       action.addPropertyChangeListener(actionPropertyChangeListener);
+	addActionListener(action);
+	actionPropertyChangeListener =
+	  createActionPropertyChangeListener(action);
+	action.addPropertyChangeListener(actionPropertyChangeListener);
       }
     
     firePropertyChange("horizontalAlignment", oldAction, newAction);
@@ -378,21 +378,21 @@ public class JTextField extends JTextComponent
   {
     return new PropertyChangeListener()
       {
-       public void propertyChange(PropertyChangeEvent event)
-       {
-         // Update properties "action" and "horizontalAlignment".
-         String name = event.getPropertyName();
+	public void propertyChange(PropertyChangeEvent event)
+	{
+	  // Update properties "action" and "horizontalAlignment".
+	  String name = event.getPropertyName();
 
-         if (name.equals("enabled"))
-           {
-             boolean enabled = ((Boolean) event.getNewValue()).booleanValue();
-             JTextField.this.setEnabled(enabled);
-           }
-         else if (name.equals(Action.SHORT_DESCRIPTION))
-           {
-             JTextField.this.setToolTipText((String) event.getNewValue());
-           }
-       }
+	  if (name.equals("enabled"))
+	    {
+	      boolean enabled = ((Boolean) event.getNewValue()).booleanValue();
+	      JTextField.this.setEnabled(enabled);
+	    }
+	  else if (name.equals(Action.SHORT_DESCRIPTION))
+	    {
+	      JTextField.this.setToolTipText((String) event.getNewValue());
+	    }
+	}
       };
   }
 
@@ -403,13 +403,13 @@ public class JTextField extends JTextComponent
   {
     if (action != null)
       {
-       setEnabled(action.isEnabled());
-       setToolTipText((String) action.getValue(Action.SHORT_DESCRIPTION));
+	setEnabled(action.isEnabled());
+	setToolTipText((String) action.getValue(Action.SHORT_DESCRIPTION));
       }
     else
       {
-       setEnabled(true);      
-       setToolTipText(null);
+	setEnabled(true);      
+	setToolTipText(null);
       }
   }
 
