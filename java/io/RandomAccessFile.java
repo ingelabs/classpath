@@ -322,32 +322,6 @@ public class RandomAccessFile implements DataOutput, DataInput
   }
 
   /**
-   * This method reads 8 unsigned bits into a Java <code>int</code> value 
-   * from the 
-   * stream. The value returned is in the range of 0 to 255.
-   * <p>
-   * This method can read an unsigned byte written by an object implementing 
-   * the <code>writeUnsignedByte()</code> method in the 
-   * <code>DataOutput</code> interface.
-   *
-   * @return The unsigned bytes value read as a Java <code>int</code>
-   *
-   * @exception EOFException If end of file is reached before reading the value
-   * @exception IOException If any other error occurs
-   *
-   * @see DataOutput
-   */
-  public final int readUnsignedByte () throws IOException
-  {
-    int byte_read = read ();
-  
-    if (byte_read == -1)
-      throw new EOFException ("Unexpected end of stream");
-  
-    return byte_read & 0xFF;
-  }
-  
-  /**
    * This method reads a Java <code>char</code> value from an input stream.  
    * It operates by reading two bytes from the stream and converting them to 
    * a single 16-bit Java <code>char</code>  The two bytes are stored most
@@ -380,72 +354,110 @@ public class RandomAccessFile implements DataOutput, DataInput
   }
 
   /**
-   * This method reads a signed 16-bit value into a Java in from the stream.
-   * It operates by reading two bytes from the stream and converting them to 
-   * a single 16-bit Java <code>short</code>  The two bytes are stored most
-   * significant byte first (i.e., "big endian") regardless of the native
-   * host byte ordering. 
+   * This method reads a Java double value from an input stream.  It operates
+   * by first reading a <code>logn</code> value from the stream by calling the
+   * <code>readLong()</code> method in this interface, then 
+   * converts that <code>long</code>
+   * to a <code>double</code> using the <code>longBitsToDouble</code> 
+   * method in the class <code>java.lang.Double</code>
    * <p>
-   * As an example, if <code>byte1</code> and code{byte2</code> 
-   * represent the first
-   * and second byte read from the stream respectively, they will be
-   * transformed to a <code>short</code> in the following manner:
-   * <p>
-   * <code>(short)(((byte1 & 0xFF) << 8) | (byte2 & 0xFF)</code>
-   * <p>
-   * The value returned is in the range of -32768 to 32767.
-   * <p>
-   * This method can read a <code>short</code> written by an object 
+   * This method can read a <code>double</code> written by an object 
    * implementing the
-   * <code>writeShort()</code> method in the <code>DataOutput</code> interface.
+   * <code>writeDouble()</code> method in the <code>DataOutput</code> 
+   * interface.
    *
-   * @return The <code>short</code> value read
+   * @return The <code>double</code> value read
    *
-   * @exception EOFException If end of file is reached before reading the value
+   * @exception EOFException If end of file is reached before reading 
+   * the double
    * @exception IOException If any other error occurs
    *
+   * @see java.lang.Double
    * @see DataOutput
    */
-  public final synchronized short readShort () throws IOException
+  public final double readDouble () throws IOException
   {
-    readFully (buf, 0, 2);
-    
-    return (short) ((buf[0] << 8) | (buf[1] & 0xff));
+    long val = readLong();
+  
+    return Double.longBitsToDouble(val);
   }
 
   /**
-   * This method reads 16 unsigned bits into a Java int value from the stream.
-   * It operates by reading two bytes from the stream and converting them to 
-   * a single Java <code>int</code>  The two bytes are stored most
-   * significant byte first (i.e., "big endian") regardless of the native
-   * host byte ordering. 
+   * This method reads a Java float value from an input stream.  It operates
+   * by first reading an <code>int</code> value from the stream by calling the
+   * <code>readInt()</code> method in this interface, then converts 
+   * that <code>int</code>
+   * to a <code>float</code> using the <code>intBitsToFloat</code> method in 
+   * the class <code>java.lang.Float</code>
    * <p>
-   * As an example, if <code>byte1</code> and <code>byte2</code> 
-   * represent the first
-   * and second byte read from the stream respectively, they will be
-   * transformed to an <code>int</code> in the following manner:
-   * <p>
-   * <code>(int)(((byte1 & 0xFF) << 8) + (byte2 & 0xFF))</code>
-   * <p>
-   * The value returned is in the range of 0 to 65535.
-   * <p>
-   * This method can read an unsigned short written by an object implementing
-   * the <code>writeUnsignedShort()</code> method in the 
-   * <code>DataOutput</code> interface.
+   * This method can read a <code>float</code> written by an object 
+   * implementing the
+   * <code>writeFloat()</code> method in the <code>DataOutput</code> interface.
    *
-   * @return The unsigned short value read as a Java <code>int</code>
+   * @return The <code>float</code> value read
    *
-   * @exception EOFException If end of file is reached before reading the value
+   * @exception EOFException If end of file is reached before reading the float
+   * @exception IOException If any other error occurs
+   *
+   * @see java.lang.Float
+   * @see DataOutput
+   */
+  public final float readFloat () throws IOException
+  {
+    int val = readInt();
+  
+    return Float.intBitsToFloat(val);
+  }
+
+  /**
+   * This method reads raw bytes into the passed array until the array is
+   * full.  Note that this method blocks until the data is available and
+   * throws an exception if there is not enough data left in the stream to
+   * fill the buffer
+   *
+   * @param buf The buffer into which to read the data
+   *
+   * @exception EOFException If end of file is reached before filling the 
+   * buffer
    * @exception IOException If any other error occurs
    */
-  public final synchronized int readUnsignedShort() 
+  public final void readFully (byte[] buffer) throws IOException
+  {
+    readFully (buffer, 0, buffer.length);
+  }
+
+  /**
+   * This method reads raw bytes into the passed array <code>buf</code> 
+   * starting
+   * <code>offset</code> bytes into the buffer.  The number of bytes read 
+   * will be
+   * exactly <code>len</code>  Note that this method blocks until the data is 
+   * available and throws an exception if there is not enough data left in 
+   * the stream to read <code>len</code> bytes.
+   *
+   * @param buf The buffer into which to read the data
+   * @param offset The offset into the buffer to start storing data
+   * @param len The number of bytes to read into the buffer
+   *
+   * @exception EOFException If end of file is reached before filling 
+   * the buffer
+   * @exception IOException If any other error occurs
+   */
+  public synchronized final void readFully (byte[] buffer, int offset, int len) 
     throws IOException
   {
-    readFully(buf, 0, 2);
-    
-    return (((buf[0] & 0xff) << 8) | (buf[1] & 0xff));
-  }
+    int total_read = 0;
   
+    while (total_read < len)
+      {
+        int bytes_read = read (buffer, offset + total_read, len - total_read);
+        if (bytes_read == -1)
+          throw new EOFException("Unexpected end of stream");
+  
+        total_read += bytes_read;
+      }
+  }
+
   /**
    * This method reads a Java <code>int</code> value from an input stream
    * It operates by reading four bytes from the stream and converting them to 
@@ -481,7 +493,63 @@ public class RandomAccessFile implements DataOutput, DataInput
     return (((buf[0] & 0xff) << 24) | ((buf[1] & 0xff) << 16) |
             ((buf[2] & 0xff) << 8) | (buf[3] & 0xff));
   }
+
+  /**
+   * This method reads the next line of text data from an input stream.
+   * It operates by reading bytes and converting those bytes to 
+   * <code>char</code>
+   * values by treating the byte read as the low eight bits of the 
+   * <code>char</code>
+   * and using <code>0</code> as the high eight bits.  Because of this, it does
+   * not support the full 16-bit Unicode character set.
+   * <p>
+   * The reading of bytes ends when either the end of file or a line terminator
+   * is encountered.  The bytes read are then returned as a <code>String</code>
+   * A line terminator is a byte sequence consisting of either 
+   * <code>\r</code> <code>\n</code> or <code>\r\n</code>  These 
+   * termination charaters are
+   * discarded and are not returned as part of the string.
+   * <p>
+   * This method can read data that was written by an object implementing the
+   * <code>writeLine()</code> method in <code>DataOutput</code>
+   *
+   * @return The line read as a <code>String</code>
+   *
+   * @exception IOException If an error occurs
+   *
+   * @see DataOutput
+   *
+   * @deprecated
+   */
+  public synchronized final String readLine () throws IOException
+  {
+    StringBuffer sb = new StringBuffer ("");
   
+    for (;;)
+      {
+        int byte_read = read ();
+   
+        if (byte_read == -1)
+          return sb.toString();
+  
+        char c = (char) byte_read;
+  
+        if (c == '\r')
+          {
+            byte_read = read();
+            if (((char)byte_read) != '\n')
+              seek (getFilePointer() - 1);
+  
+            return sb.toString();
+          }
+  
+        if (c == '\n')
+          return sb.toString();
+  
+        sb.append (c);
+      }
+  }
+
   /**
    * This method reads a Java long value from an input stream
    * It operates by reading eight bytes from the stream and converting them to 
@@ -526,166 +594,98 @@ public class RandomAccessFile implements DataOutput, DataInput
             ((long)(buf[6] & 0xff) <<  8) |
             ((long)(buf[7] & 0xff)));
   }
-  
+
   /**
-   * This method reads a Java float value from an input stream.  It operates
-   * by first reading an <code>int</code> value from the stream by calling the
-   * <code>readInt()</code> method in this interface, then converts 
-   * that <code>int</code>
-   * to a <code>float</code> using the <code>intBitsToFloat</code> method in 
-   * the class <code>java.lang.Float</code>
+   * This method reads a signed 16-bit value into a Java in from the stream.
+   * It operates by reading two bytes from the stream and converting them to 
+   * a single 16-bit Java <code>short</code>  The two bytes are stored most
+   * significant byte first (i.e., "big endian") regardless of the native
+   * host byte ordering. 
    * <p>
-   * This method can read a <code>float</code> written by an object 
+   * As an example, if <code>byte1</code> and code{byte2</code> 
+   * represent the first
+   * and second byte read from the stream respectively, they will be
+   * transformed to a <code>short</code> in the following manner:
+   * <p>
+   * <code>(short)(((byte1 & 0xFF) << 8) | (byte2 & 0xFF)</code>
+   * <p>
+   * The value returned is in the range of -32768 to 32767.
+   * <p>
+   * This method can read a <code>short</code> written by an object 
    * implementing the
-   * <code>writeFloat()</code> method in the <code>DataOutput</code> interface.
+   * <code>writeShort()</code> method in the <code>DataOutput</code> interface.
    *
-   * @return The <code>float</code> value read
+   * @return The <code>short</code> value read
    *
-   * @exception EOFException If end of file is reached before reading the float
+   * @exception EOFException If end of file is reached before reading the value
    * @exception IOException If any other error occurs
    *
-   * @see java.lang.Float
    * @see DataOutput
    */
-  public final float readFloat() throws IOException
+  public final synchronized short readShort () throws IOException
   {
-    int val = readInt();
+    readFully (buf, 0, 2);
+    
+    return (short) ((buf[0] << 8) | (buf[1] & 0xff));
+  }
+
+  /**
+   * This method reads 8 unsigned bits into a Java <code>int</code> value 
+   * from the 
+   * stream. The value returned is in the range of 0 to 255.
+   * <p>
+   * This method can read an unsigned byte written by an object implementing 
+   * the <code>writeUnsignedByte()</code> method in the 
+   * <code>DataOutput</code> interface.
+   *
+   * @return The unsigned bytes value read as a Java <code>int</code>
+   *
+   * @exception EOFException If end of file is reached before reading the value
+   * @exception IOException If any other error occurs
+   *
+   * @see DataOutput
+   */
+  public final int readUnsignedByte () throws IOException
+  {
+    int byte_read = read ();
   
-    return Float.intBitsToFloat(val);
+    if (byte_read == -1)
+      throw new EOFException ("Unexpected end of stream");
+  
+    return byte_read & 0xFF;
   }
 
   /**
-   * This method reads raw bytes into the passed array until the array is
-   * full.  Note that this method blocks until the data is available and
-   * throws an exception if there is not enough data left in the stream to
-   * fill the buffer
+   * This method reads 16 unsigned bits into a Java int value from the stream.
+   * It operates by reading two bytes from the stream and converting them to 
+   * a single Java <code>int</code>  The two bytes are stored most
+   * significant byte first (i.e., "big endian") regardless of the native
+   * host byte ordering. 
+   * <p>
+   * As an example, if <code>byte1</code> and <code>byte2</code> 
+   * represent the first
+   * and second byte read from the stream respectively, they will be
+   * transformed to an <code>int</code> in the following manner:
+   * <p>
+   * <code>(int)(((byte1 & 0xFF) << 8) + (byte2 & 0xFF))</code>
+   * <p>
+   * The value returned is in the range of 0 to 65535.
+   * <p>
+   * This method can read an unsigned short written by an object implementing
+   * the <code>writeUnsignedShort()</code> method in the 
+   * <code>DataOutput</code> interface.
    *
-   * @param buf The buffer into which to read the data
+   * @return The unsigned short value read as a Java <code>int</code>
    *
-   * @exception EOFException If end of file is reached before filling the 
-   * buffer
+   * @exception EOFException If end of file is reached before reading the value
    * @exception IOException If any other error occurs
    */
-  public final void readFully (byte[] buf) throws IOException
-  {
-    readFully (buf, 0, buf.length);
-  }
-
-  /**
-   * This method reads raw bytes into the passed array <code>buf</code> 
-   * starting
-   * <code>offset</code> bytes into the buffer.  The number of bytes read 
-   * will be
-   * exactly <code>len</code>  Note that this method blocks until the data is 
-   * available and throws an exception if there is not enough data left in 
-   * the stream to read <code>len</code> bytes.
-   *
-   * @param buf The buffer into which to read the data
-   * @param offset The offset into the buffer to start storing data
-   * @param len The number of bytes to read into the buffer
-   *
-   * @exception EOFException If end of file is reached before filling 
-   * the buffer
-   * @exception IOException If any other error occurs
-   */
-  public synchronized final void readFully (byte[] buf, int offset, int len) 
+  public final synchronized int readUnsignedShort () 
     throws IOException
   {
-    int total_read = 0;
-  
-    while (total_read < len)
-      {
-        int bytes_read = read(buf, offset + total_read, len - total_read);
-        if (bytes_read == -1)
-          throw new EOFException("Unexpected end of stream");
-  
-        total_read += bytes_read;
-      }
-  }
-
-  /**
-   * This method reads a Java double value from an input stream.  It operates
-   * by first reading a <code>logn</code> value from the stream by calling the
-   * <code>readLong()</code> method in this interface, then 
-   * converts that <code>long</code>
-   * to a <code>double</code> using the <code>longBitsToDouble</code> 
-   * method in the class <code>java.lang.Double</code>
-   * <p>
-   * This method can read a <code>double</code> written by an object 
-   * implementing the
-   * <code>writeDouble()</code> method in the <code>DataOutput</code> 
-   * interface.
-   *
-   * @return The <code>double</code> value read
-   *
-   * @exception EOFException If end of file is reached before reading 
-   * the double
-   * @exception IOException If any other error occurs
-   *
-   * @see java.lang.Double
-   * @see DataOutput
-   */
-  public final double readDouble() throws IOException
-  {
-    long val = readLong();
-  
-    return Double.longBitsToDouble(val);
-  }
-
-  /**
-   * This method reads the next line of text data from an input stream.
-   * It operates by reading bytes and converting those bytes to 
-   * <code>char</code>
-   * values by treating the byte read as the low eight bits of the 
-   * <code>char</code>
-   * and using <code>0</code> as the high eight bits.  Because of this, it does
-   * not support the full 16-bit Unicode character set.
-   * <p>
-   * The reading of bytes ends when either the end of file or a line terminator
-   * is encountered.  The bytes read are then returned as a <code>String</code>
-   * A line terminator is a byte sequence consisting of either 
-   * <code>\r</code> <code>\n</code> or <code>\r\n</code>  These 
-   * termination charaters are
-   * discarded and are not returned as part of the string.
-   * <p>
-   * This method can read data that was written by an object implementing the
-   * <code>writeLine()</code> method in <code>DataOutput</code>
-   *
-   * @return The line read as a <code>String</code>
-   *
-   * @exception IOException If an error occurs
-   *
-   * @see DataOutput
-   *
-   * @deprecated
-   */
-  public synchronized final String readLine() throws IOException
-  {
-    StringBuffer sb = new StringBuffer("");
-  
-    for (;;)
-      {
-        int byte_read = read();
-   
-        if (byte_read == -1)
-          return(sb.toString());
-  
-        char c = (char)byte_read;
-  
-        if (c == '\r')
-          {
-            byte_read = read();
-            if (((char)byte_read) != '\n')
-              seek(getFilePointer() - 1);
-  
-            return(sb.toString());
-          }
-  
-        if (c == '\n')
-          return(sb.toString());
-  
-        sb.append(c);
-      }
+    readFully(buf, 0, 2);
+    
+    return (((buf[0] & 0xff) << 8) | (buf[1] & 0xff));
   }
 
   /**
@@ -760,8 +760,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @see DataOutput
    */
-  public synchronized final String readUTF() 
-    throws IOException
+  public synchronized final String readUTF () throws IOException
   {
     StringBuffer sb = new StringBuffer("");
   
@@ -772,7 +771,7 @@ public class RandomAccessFile implements DataOutput, DataInput
     // FIXME: Look to migrate to new String(buf, "UTF-8") if performance ok
     return DataInputStream.convertFromUTF(buf);
   }
-  
+
   /**
    * This method sets the current file position to the specified offset 
    * from the beginning of the file.  Note that some operating systems will
@@ -783,11 +782,11 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public void seek(long pos) throws IOException
+  public void seek (long pos) throws IOException
   {
-    fd.seek(pos, fd.SET, false);
+    fd.seek (pos, FileDescriptor.SET, false);
   }
-  
+
   /**
    * This method attempts to skip and discard the specified number of bytes 
    * in the input stream.  It may actually skip fewer bytes than requested. 
@@ -800,21 +799,21 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs.
    */
-  public int skipBytes(int numBytes) throws IOException
+  public int skipBytes (int numBytes) throws IOException
   {
     if (numBytes < 0)
-      throw new IllegalArgumentException("Can't skip negative bytes: " +
-                                         numBytes);
-
+      throw new IllegalArgumentException ("Can't skip negative bytes: " +
+                                          numBytes);
+    
     if (numBytes == 0)
-      return(0);
-
-    long curPos = fd.getFilePointer();
-    long newPos = fd.seek(numBytes, fd.CUR, true);
-
-    return((int)(newPos-curPos));
+      return 0;
+    
+    long curPos = fd.getFilePointer ();
+    long newPos = fd.seek (numBytes, FileDescriptor.CUR, true);
+    
+    return (int) (newPos - curPos);
   }
-  
+
   /**
    * This method writes a single byte of data to the file. The file must
    * be open for read-write in order for this operation to succeed.
@@ -823,25 +822,25 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public void write(int b) throws IOException
+  public void write (int oneByte) throws IOException
   {
     if (readOnly)
       throw new IOException("File is open read only");
   
-    fd.write(b);
+    fd.write (oneByte);
   }
-  
+
   /**
    * This method writes all the bytes in the specified array to the file.
    * The file must be open read-write in order for this operation to succeed.
    *
    * @param buf The array of bytes to write to the file
    */
-  public void write(byte[] buf) throws IOException
+  public void write (byte[] buffer) throws IOException
   {
-    write(buf, 0, buf.length);
+    write (buffer, 0, buffer.length);
   }
-    
+
   /**
    * This method writes <code>len</code> bytes to the file from the specified
    * array starting at index <code>offset</code> into the array.
@@ -852,14 +851,14 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public void write(byte[] buf, int offset, int len) throws IOException
+  public void write (byte[] buffer, int offset, int len) throws IOException
   {
     if (readOnly)
       throw new IOException("File is open read only");
   
-    fd.write(buf, offset, len);
+    fd.write (buffer, offset, len);
   }
-  
+
   /**
    * This method writes a Java <code>boolean</code> to the underlying output 
    * stream. For a value of <code>true</code>, 1 is written to the stream.
@@ -869,11 +868,11 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public final void writeBoolean (boolean b) throws IOException
+  public final void writeBoolean (boolean val) throws IOException
   {
-    write (b ? 1 : 0);
+    write (val ? 1 : 0);
   }
-  
+
   /**
    * This method writes a Java <code>byte</code> value to the underlying
    * output stream.
@@ -883,11 +882,126 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public final void writeByte(int b) throws IOException
+  public final void writeByte (int v) throws IOException
   {
-    write (b & 0xFF);
+    write (v & 0xFF);
   }
+
+  /**
+   * This method writes a Java <code>short</code> to the stream, high byte
+   * first.  This method requires two bytes to encode the value.
+   *
+   * @param s The <code>short</code> value to write to the stream, 
+   * passed as an <code>int</code>.
+   *
+   * @exception IOException If an error occurs
+   */
+  public final synchronized void writeShort (int s) throws IOException
+  {
+    buf[0] = (byte)((s & 0xFF00) >> 8);
+    buf[1] = (byte)(s & 0x00FF);
   
+    write(buf, 0, 2);
+  }
+
+  /**
+   * This method writes a single <code>char</code> value to the stream,
+   * high byte first.
+   *
+   * @param v The <code>char</code> value to write, passed as 
+   * an <code>int</code>.
+   *
+   * @exception IOException If an error occurs
+   */
+  public final synchronized void writeChar (int v) throws IOException
+  {
+    buf[0] = (byte)((v & 0xFF00) >> 8);
+    buf[1] = (byte)((int)v & 0x00FF);
+  
+    write(buf, 0, 2);
+  }
+
+  /**
+   * This method writes a Java <code>int</code> to the stream, high bytes
+   * first.  This method requires four bytes to encode the value.
+   *
+   * @param v The <code>int</code> value to write to the stream.
+   *
+   * @exception IOException If an error occurs
+   */
+  public final synchronized void writeInt (int v) throws IOException
+  {
+    buf[0] = (byte)((v & 0xFF000000) >> 24);
+    buf[1] = (byte)((v & 0x00FF0000) >> 16);
+    buf[2] = (byte)((v & 0x0000FF00) >> 8);
+    buf[3] = (byte)(v & 0x000000FF);
+  
+    write (buf, 0, 4);
+  }
+
+  /**
+   * This method writes a Java <code>long</code> to the stream, high bytes
+   * first.  This method requires eight bytes to encode the value.
+   *
+   * @param v The <code>long</code> value to write to the stream.
+   *
+   * @exception IOException If an error occurs
+   */
+  public final synchronized void writeLong (long v) throws IOException
+  {
+    buf[0] = (byte)((v & 0xFF00000000000000L) >> 56);
+    buf[1] = (byte)((v & 0x00FF000000000000L) >> 48);
+    buf[2] = (byte)((v & 0x0000FF0000000000L) >> 40);
+    buf[3] = (byte)((v & 0x000000FF00000000L) >> 32);
+    buf[4] = (byte)((v & 0x00000000FF000000L) >> 24);
+    buf[5] = (byte)((v & 0x0000000000FF0000L) >> 16);
+    buf[6] = (byte)((v & 0x000000000000FF00L) >> 8);
+    buf[7] = (byte)(v & 0x00000000000000FFL);
+  
+    write (buf, 0, 8);
+  }
+
+  /**
+   * This method writes a Java <code>float</code> value to the stream.  This
+   * value is written by first calling the method 
+   * <code>Float.floatToIntBits</code>
+   * to retrieve an <code>int</code> representing the floating point number,
+   * then writing this <code>int</code> value to the stream exactly the same
+   * as the <code>writeInt()</code> method does.
+   *
+   * @param v The floating point number to write to the stream.
+   *
+   * @exception IOException If an error occurs
+   *
+   * @see #writeInt(int)
+   */
+  public final void writeFloat (float v) throws IOException
+  {
+    int i = Float.floatToIntBits (v);
+    writeInt (i);
+  }
+
+  /**
+   * This method writes a Java <code>double</code> value to the stream.  This
+   * value is written by first calling the method 
+   * <code>Double.doubleToLongBits</code>
+   * to retrieve an <code>long</code> representing the floating point number,
+   * then writing this <code>long</code> value to the stream exactly the same
+   * as the <code>writeLong()</code> method does.
+   *
+   * @param v The double precision floating point number to write to the 
+   * stream.
+   *
+   * @exception IOException If an error occurs
+   *
+   * @see #writeLong(long)
+   */
+  public final void writeDouble (double v) throws IOException
+  {
+    long l = Double.doubleToLongBits (v);
+    writeLong (l);
+  }
+
   /**
    * This method writes all the bytes in a <code>String</code> out to the
    * stream.  One byte is written for each character in the <code>String</code>.
@@ -913,23 +1027,6 @@ public class RandomAccessFile implements DataOutput, DataInput
   }
   
   /**
-   * This method writes a single <code>char</code> value to the stream,
-   * high byte first.
-   *
-   * @param c The <code>char</code> value to write, passed as 
-   * an <code>int</code>.
-   *
-   * @exception IOException If an error occurs
-   */
-  public final synchronized void writeChar(int c) throws IOException
-  {
-    buf[0] = (byte)((c & 0xFF00) >> 8);
-    buf[1] = (byte)((int)c & 0x00FF);
-  
-    write(buf, 0, 2);
-  }
-  
-  /**
    * This method writes all the characters in a <code>String</code> to the
    * stream.  There will be two bytes for each character value.  The high
    * byte of the character will be written first.
@@ -938,7 +1035,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public final void writeChars(String s) throws IOException
+  public final void writeChars (String s) throws IOException
   {
     int len = s.length();
     if (len == 0)
@@ -953,104 +1050,6 @@ public class RandomAccessFile implements DataOutput, DataInput
       }
   
     write(buf, 0, buf.length);
-  }
-  
-  /**
-   * This method writes a Java <code>short</code> to the stream, high byte
-   * first.  This method requires two bytes to encode the value.
-   *
-   * @param s The <code>short</code> value to write to the stream, 
-   * passed as an <code>int</code>.
-   *
-   * @exception IOException If an error occurs
-   */
-  public final synchronized void writeShort(int s) throws IOException
-  {
-    buf[0] = (byte)((s & 0xFF00) >> 8);
-    buf[1] = (byte)(s & 0x00FF);
-  
-    write(buf, 0, 2);
-  }
-  
-  /**
-   * This method writes a Java <code>int</code> to the stream, high bytes
-   * first.  This method requires four bytes to encode the value.
-   *
-   * @param i The <code>int</code> value to write to the stream.
-   *
-   * @exception IOException If an error occurs
-   */
-  public final synchronized void writeInt(int i) throws IOException
-  {
-    buf[0] = (byte)((i & 0xFF000000) >> 24);
-    buf[1] = (byte)((i & 0x00FF0000) >> 16);
-    buf[2] = (byte)((i & 0x0000FF00) >> 8);
-    buf[3] = (byte)(i & 0x000000FF);
-  
-    write(buf, 0, 4);
-  }
-  
-  /**
-   * This method writes a Java <code>long</code> to the stream, high bytes
-   * first.  This method requires eight bytes to encode the value.
-   *
-   * @param l The <code>long</code> value to write to the stream.
-   *
-   * @exception IOException If an error occurs
-   */
-  public final synchronized void writeLong(long l) throws IOException
-  {
-    buf[0] = (byte)((l & 0xFF00000000000000L) >> 56);
-    buf[1] = (byte)((l & 0x00FF000000000000L) >> 48);
-    buf[2] = (byte)((l & 0x0000FF0000000000L) >> 40);
-    buf[3] = (byte)((l & 0x000000FF00000000L) >> 32);
-    buf[4] = (byte)((l & 0x00000000FF000000L) >> 24);
-    buf[5] = (byte)((l & 0x0000000000FF0000L) >> 16);
-    buf[6] = (byte)((l & 0x000000000000FF00L) >> 8);
-    buf[7] = (byte)(l & 0x00000000000000FFL);
-  
-    write(buf, 0, 8);
-  }
-  
-  /**
-   * This method writes a Java <code>float</code> value to the stream.  This
-   * value is written by first calling the method 
-   * <code>Float.floatToIntBits</code>
-   * to retrieve an <code>int</code> representing the floating point number,
-   * then writing this <code>int</code> value to the stream exactly the same
-   * as the <code>writeInt()</code> method does.
-   *
-   * @param f The floating point number to write to the stream.
-   *
-   * @exception IOException If an error occurs
-   *
-   * @see #writeInt(int)
-   */
-  public final void writeFloat(float f) throws IOException
-  {
-    int i = Float.floatToIntBits(f);
-    writeInt(i);
-  }
-  
-  /**
-   * This method writes a Java <code>double</code> value to the stream.  This
-   * value is written by first calling the method 
-   * <code>Double.doubleToLongBits</code>
-   * to retrieve an <code>long</code> representing the floating point number,
-   * then writing this <code>long</code> value to the stream exactly the same
-   * as the <code>writeLong()</code> method does.
-   *
-   * @param d The double precision floating point number to write to the 
-   * stream.
-   *
-   * @exception IOException If an error occurs
-   *
-   * @see #writeLong(long)
-   */
-  public final void writeDouble(double d) throws IOException
-  {
-    long l = Double.doubleToLongBits(d);
-    writeLong(l);
   }
   
   /**
@@ -1082,7 +1081,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public final void writeUTF(String s) throws IOException
+  public final void writeUTF (String s) throws IOException
   {
     // FIXME:  Look to migrate to s.getBytes("UTF-8") if performance ok
     byte[] buf = DataOutputStream.convertToUTF(s);
@@ -1097,7 +1096,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    * A file channel must be created by first creating an instance of
    * Input/Output/RandomAccessFile and invoking the getChannel() method on it.
    */
-  public synchronized FileChannel getChannel() 
+  public synchronized FileChannel getChannel ()
   {
     if (ch == null)
       ch = new FileChannelImpl ((int) (fd.getNativeFd() & 0xFFFF), this);

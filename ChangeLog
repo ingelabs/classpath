@@ -1,5 +1,14 @@
 2003-03-31  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/File.java:
+	Reordered methods, reformatted code.
+	* java/io/PrintStream.java:
+	Reordered methods, reformatted code.
+	* java/io/RandomAccessFile.java:
+	Reordered methods, reformatted code.
+
+2003-03-31  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/text/ComponentView.java:
 	Merged from libgcj.
 	* javax/swing/tree/DefaultTreeCellRenderer.java:

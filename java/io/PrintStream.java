@@ -149,12 +149,12 @@ public class PrintStream extends FilterOutputStream
    *
    * @deprecated
    */
-  public PrintStream(OutputStream out, boolean autoFlush, String encoding)
+  public PrintStream (OutputStream out, boolean autoFlush, String encoding)
     throws UnsupportedEncodingException
   {
-    super(out);
+    super (out);
 
-    pw = new PrintWriter(new OutputStreamWriter(out, encoding), autoFlush);
+    pw = new PrintWriter (new OutputStreamWriter (out, encoding), autoFlush);
     this.auto_flush = autoFlush;
   }
 
@@ -167,32 +167,32 @@ public class PrintStream extends FilterOutputStream
    * @return <code>true</code> if an error has occurred, 
    * <code>false</code> otherwise
    */
-  public boolean checkError()
+  public boolean checkError ()
   {
     if (!closed)
-      pw.flush();
+      pw.flush ();
 
-    if (pw.checkError() | error_occurred)
-      return(true);
+    if (pw.checkError () | error_occurred)
+      return true;
     else
-      return(false);
+      return false;
   }
 
   /**
    * This method can be called by subclasses to indicate that an error
    * has occurred and should be reported by <code>checkError</code>.
    */
-  protected void setError()
+  protected void setError ()
   {
     error_occurred = true;
   }
-    
+
   /**
    * This method closes this stream and all underlying streams.
    */
-  public synchronized void close()
+  public synchronized void close ()
   {
-    pw.close();
+    pw.close ();
     closed = true;
   }
 
@@ -200,7 +200,7 @@ public class PrintStream extends FilterOutputStream
    * This method flushes any buffered bytes to the underlying stream and
    * then flushes that stream as well.
    */
-  public void flush()
+  public void flush ()
   {
     pw.flush();
   }
@@ -212,102 +212,53 @@ public class PrintStream extends FilterOutputStream
    *
    * @param b The <code>boolean</code> value to print
    */
-  public void print(boolean b)
+  public void print (boolean bool)
   {
-    pw.print(b);
-  }
-
-  /**
-   * This method prints a char to the stream.  The actual value printed is
-   * determined by the character encoding in use.
-   *
-   * @param c The <code>char</code> value to be printed
-   */
-  public void print(char c)
-  {
-    pw.print(c);
-
-    if (auto_flush)
-      if ((c == '\r') || (c == '\n'))
-        flush();    
+    pw.print (bool);
   }
 
   /**
    * This method prints an integer to the stream.  The value printed is
    * determined using the <code>String.valueOf()</code> method.
    *
-   * @param i The <code>int</code> value to be printed
+   * @param inum The <code>int</code> value to be printed
    */
-  public void print(int i)
+  public void print (int inum)
   {
-    pw.print(i);
+    pw.print (inum);
   }
 
   /**
    * This method prints a long to the stream.  The value printed is
    * determined using the <code>String.valueOf()</code> method.
    *
-   * @param l The <code>long</code> value to be printed
+   * @param lnum The <code>long</code> value to be printed
    */
-  public void print(long l)
+  public void print (long lnum)
   {
-    pw.print(l);
+    pw.print (lnum);
   }
 
   /**
    * This method prints a float to the stream.  The value printed is
    * determined using the <code>String.valueOf()</code> method.
    *
-   * @param f The <code>float</code> value to be printed
+   * @param fnum The <code>float</code> value to be printed
    */
-  public void print(float f)
+  public void print (float fnum)
   {
-    pw.print(f);
+    pw.print (fnum);
   }
 
   /**
    * This method prints a double to the stream.  The value printed is
    * determined using the <code>String.valueOf()</code> method.
    *
-   * @param d The <code>double</code> value to be printed
+   * @param dnum The <code>double</code> value to be printed
    */
-  public void print(double d)
+  public void print (double dnum)
   {
-    pw.print(d);
-  }
-
-  /**
-   * This method prints an array of characters to the stream.  The actual
-   * value printed depends on the system default encoding.
-   *
-   * @param s The array of characters to print.
-   */
-  public void print(char[] s)
-  {
-    pw.print(s);
-
-    if (auto_flush)
-      for (int i = 0; i < s.length; i++)
-        if ((s[i] == '\r') || (s[i] == '\n'))
-          {
-            flush();
-            break;
-          }
-  }
-
-  /**
-   * This method prints a <code>String</code> to the stream.  The actual
-   * value printed depends on the system default encoding.
-   *
-   * @param s The <code>String</code> to print.
-   */
-  public void print(String s)
-  {
-    pw.print(s);
-
-    if (auto_flush)
-      if ((s.indexOf('\r') != -1) || (s.indexOf('\n') != -1))
-        flush();
+    pw.print (dnum);
   }
 
   /**
@@ -317,7 +268,7 @@ public class PrintStream extends FilterOutputStream
    *
    * @param obj The <code>Object</code> to print.
    */
-  public void print(Object obj)
+  public void print (Object obj)
   {
     // Don't call pw directly.  Convert to String so we scan for newline
     // characters on auto-flush;
@@ -325,13 +276,63 @@ public class PrintStream extends FilterOutputStream
   }
 
   /**
+   * This method prints a <code>String</code> to the stream.  The actual
+   * value printed depends on the system default encoding.
+   *
+   * @param str The <code>String</code> to print.
+   */
+  public void print (String str)
+  {
+    pw.print (str);
+
+    if (auto_flush)
+      if ((str.indexOf('\r') != -1) || (str.indexOf('\n') != -1))
+        flush();
+  }
+
+  /**
+   * This method prints a char to the stream.  The actual value printed is
+   * determined by the character encoding in use.
+   *
+   * @param ch The <code>char</code> value to be printed
+   */
+  public void print (char ch)
+  {
+    pw.print (ch);
+
+    if (auto_flush)
+      if ((ch == '\r')
+          || (ch == '\n'))
+        flush ();    
+  }
+
+  /**
+   * This method prints an array of characters to the stream.  The actual
+   * value printed depends on the system default encoding.
+   *
+   * @param s The array of characters to print.
+   */
+  public void print (char[] charArray)
+  {
+    pw.print(charArray);
+
+    if (auto_flush)
+      for (int i = 0; i < charArray.length; i++)
+        if ((charArray[i] == '\r') || (charArray[i] == '\n'))
+          {
+            flush();
+            break;
+          }
+  }
+
+  /**
    * This method prints a line separator sequence to the stream.  The value
    * printed is determined by the system property <xmp>line.separator</xmp>
    * and is not necessarily the Unix '\n' newline character.
    */
-  public void println()
+  public void println ()
   {
-    pw.println();
+    pw.println ();
   }
 
   /**
@@ -343,22 +344,9 @@ public class PrintStream extends FilterOutputStream
    *
    * @param b The <code>boolean</code> value to print
    */
-  public void println(boolean b)
+  public void println (boolean bool)
   {
-    pw.println(b);
-  }
-
-  /**
-   * This method prints a char to the stream.  The actual value printed is
-   * determined by the character encoding in use.
-   * <p>
-   * This method prints a line termination sequence after printing the value.
-   *
-   * @param c The <code>char</code> value to be printed
-   */
-  public void println(char c)
-  {
-    pw.println(c);
+    pw.println (bool);
   }
 
   /**
@@ -367,11 +355,11 @@ public class PrintStream extends FilterOutputStream
    * <p>
    * This method prints a line termination sequence after printing the value.
    *
-   * @param i The <code>int</code> value to be printed
+   * @param inum The <code>int</code> value to be printed
    */
-  public void println(int i)
+  public void println (int inum)
   {
-    pw.println(i);
+    pw.println (inum);
   }
 
   /**
@@ -380,11 +368,11 @@ public class PrintStream extends FilterOutputStream
    * <p>
    * This method prints a line termination sequence after printing the value.
    *
-   * @param l The <code>long</code> value to be printed
+   * @param lnum The <code>long</code> value to be printed
    */
-  public void println(long l)
+  public void println (long lnum)
   {
-    pw.println(l);
+    pw.println (lnum);
   }
 
   /**
@@ -393,11 +381,11 @@ public class PrintStream extends FilterOutputStream
    * <p>
    * This method prints a line termination sequence after printing the value.
    *
-   * @param f The <code>float</code> value to be printed
+   * @param fnum The <code>float</code> value to be printed
    */
-  public void println(float f)
+  public void println (float fnum)
   {
-    pw.println(f);
+    pw.println (fnum);
   }
 
   /**
@@ -406,37 +394,11 @@ public class PrintStream extends FilterOutputStream
    * <p>
    * This method prints a line termination sequence after printing the value.
    *
-   * @param d The <code>double</code> value to be printed
+   * @param dnum The <code>double</code> value to be printed
    */
-  public void println(double d)
+  public void println (double dnum)
   {
-    pw.println(d);
-  }
-
-  /**
-   * This method prints an array of characters to the stream.  The actual
-   * value printed depends on the system default encoding.
-   * <p>
-   * This method prints a line termination sequence after printing the value.
-   *
-   * @param s The array of characters to print.
-   */
-  public void println(char[] s)
-  {
-    pw.println(s);
-  }
-
-  /**
-   * This method prints a <code>String</code> to the stream.  The actual
-   * value printed depends on the system default encoding.
-   * <p>
-   * This method prints a line termination sequence after printing the value.
-   *
-   * @param s The <code>String</code> to print.
-   */
-  public void println(String s)
-  {
-    pw.println(s);
+    pw.println (dnum);
   }
 
   /**
@@ -448,9 +410,48 @@ public class PrintStream extends FilterOutputStream
    *
    * @param obj The <code>Object</code> to print.
    */
-  public void println(Object obj)
+  public void println (Object obj)
   {
-    pw.println(obj);
+    pw.println (obj);
+  }
+
+  /**
+   * This method prints a <code>String</code> to the stream.  The actual
+   * value printed depends on the system default encoding.
+   * <p>
+   * This method prints a line termination sequence after printing the value.
+   *
+   * @param str The <code>String</code> to print.
+   */
+  public void println (String str)
+  {
+    pw.println (str);
+  }
+
+  /**
+   * This method prints a char to the stream.  The actual value printed is
+   * determined by the character encoding in use.
+   * <p>
+   * This method prints a line termination sequence after printing the value.
+   *
+   * @param ch The <code>char</code> value to be printed
+   */
+  public void println (char ch)
+  {
+    pw.println (ch);
+  }
+
+  /**
+   * This method prints an array of characters to the stream.  The actual
+   * value printed depends on the system default encoding.
+   * <p>
+   * This method prints a line termination sequence after printing the value.
+   *
+   * @param s The array of characters to print.
+   */
+  public void println (char[] charArray)
+  {
+    pw.println (charArray);
   }
 
   /**
@@ -460,31 +461,31 @@ public class PrintStream extends FilterOutputStream
    * 
    * @param b The byte to be written
    */
-  public synchronized void write(int b)
+  public synchronized void write (int oneByte)
   {
     // Sigh, we actually have to implement this method. Flush first so that
     // things get written in the right order.
-    flush();
+    flush ();
 
     try
       {
-        out.write(b);
+        out.write (oneByte);
 
         if (auto_flush)
-          if ((b == '\n') || (b == '\n'))
-            flush();
+          if ((oneByte == '\n') || (oneByte == '\n'))
+            flush ();
       }
-    catch(IOException e)
+    catch (IOException e)
       {
         error_occurred = true;
       }
   }
-   
+
   /**
-   * This method writes <code>len</code> bytes from the specified array 
+   * This method writes <code>len</code> bytes from the specified array
    * starting at index <code>offset</code> into the array.
    *
-   * @param buf The array of bytes to write
+   * @param buffer The array of bytes to write
    * @param offset The index into the array to start writing from
    * @param len The number of bytes to write
    */

@@ -75,35 +75,123 @@ public class File implements Serializable, Comparable
    * <code>file.separator</code>system property.
    */
   public static final char separatorChar = separator.charAt(0);
-
+  
   /**
    * This is the string that is used to separate the host name from the
    * path name in paths than include the host name.  It is the value of
    * the <code>path.separator</code> system property.
    */
-  public static final String pathSeparator = 
-     System.getProperty("path.separator");
-    
+  public static final String pathSeparator
+    = System.getProperty("path.separator");
+  
   /**
    * This is the first character of the string used to separate the host name
    * from the path name in paths that include a host.  The separator string
    * is taken from the <code>path.separator</code> system property.
    */
   public static final char pathSeparatorChar = pathSeparator.charAt(0);
-    
+  
   static
-    {
-      if (Configuration.INIT_LOAD_LIBRARY)
-        {
-          System.loadLibrary ("javaio");
-        }
-    }
-    
+  {
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+        System.loadLibrary ("javaio");
+      }
+  }
+  
   /**
    * This is the path to the file set when the object is created.  It
    * may be an absolute or relative path name.
    */
   private String path;
+
+  /**
+   * This method tests whether or not the current thread is allowed to
+   * to read the file pointed to by this object.  This will be true if and
+   * and only if 1) the file exists and 2) the <code>SecurityManager</code>
+   * (if any) allows access to the file via it's <code>checkRead</code>
+   * method 3) the file is readable.
+   *
+   * @return <code>true</code> if reading is allowed, 
+   * <code>false</code> otherwise
+   *
+   * @exception SecurityException If the <code>SecurityManager</code> 
+   * does not allow access to the file
+   */
+  public boolean canRead ()
+  {
+    // Test for existence. This also does the SecurityManager check
+    if (!exists())
+      return(false);
+
+    return(canReadInternal(path));
+  }
+
+  /**
+   * This method test whether or not the current thread is allowed to
+   * write to this object.  This will be true if and only if 1) The
+   * <code>SecurityManager</code> (if any) allows write access to the
+   * file and 2) The file exists and 3) The file is writable.  To determine
+   * whether or not a non-existent file can be created, check the parent
+   * directory for write access.
+   *
+   * @return <code>true</code> if writing is allowed, <code>false</code> 
+   * otherwise
+   *
+   * @exception SecurityException If the <code>SecurityManager</code> 
+   * does not allow access to the file
+   */
+  public boolean canWrite ()
+  {
+    // We still need to do a SecurityCheck since exists() only checks
+    // for read access
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null)
+      sm.checkWrite(path);
+     
+    // Test for existence.  This is required by the spec
+    if (!exists())
+      return(false);
+
+    if (!isDirectory())
+      return(canWriteInternal(path));
+    else
+      try
+        {
+  	  File test = createTempFile("test-dir-write", null, this);
+  	  return (test != null && test.delete());
+        }
+      catch (IOException ioe)
+        {
+  	  return(false);
+        }
+  }
+
+  /**
+   * This method creates a new file of zero length with the same name as
+   * the path of this <code>File</code> object if an only if that file
+   * does not already exist.
+   * <p>
+   * A <code>SecurityManager</code>checkWrite</code> check is done prior
+   * to performing this action.
+   *
+   * @return <code>true</code> if the file was created, <code>false</code> if
+   * the file alread existed.
+   *
+   * @exception IOException If an I/O error occurs
+   * @exception SecurityException If the <code>SecurityManager</code> will
+   * not allow this operation to be performed.
+   *
+   * @since 1.2
+   */
+  public boolean createNewFile() throws IOException
+  {
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null)
+      sm.checkWrite(path);
+     
+    return(createInternal(getPath()));
+  }
 
   /**
    * This method creates a temporary file in the system temporary directory. 
@@ -456,71 +544,9 @@ public class File implements Serializable, Comparable
   }
 
   /**
-   * This method tests whether or not the current thread is allowed to
-   * to read the file pointed to by this object.  This will be true if and
-   * and only if 1) the file exists and 2) the <code>SecurityManager</code>
-   * (if any) allows access to the file via it's <code>checkRead</code>
-   * method 3) the file is readable.
-   *
-   * @return <code>true</code> if reading is allowed, 
-   * <code>false</code> otherwise
-   *
-   * @exception SecurityException If the <code>SecurityManager</code> 
-   * does not allow access to the file
-   */
-  public boolean canRead() throws SecurityException
-  {
-    // Test for existence. This also does the SecurityManager check
-    if (!exists())
-      return(false);
-
-    return(canReadInternal(path));
-  }
-
-  /**
    * This native method checks file permissions for reading
    */
   private synchronized native boolean canReadInternal(String path);
-
-  /**
-   * This method test whether or not the current thread is allowed to
-   * write to this object.  This will be true if and only if 1) The
-   * <code>SecurityManager</code> (if any) allows write access to the
-   * file and 2) The file exists and 3) The file is writable.  To determine
-   * whether or not a non-existent file can be created, check the parent
-   * directory for write access.
-   *
-   * @return <code>true</code> if writing is allowed, <code>false</code> 
-   * otherwise
-   *
-   * @exception SecurityException If the <code>SecurityManager</code> 
-   * does not allow access to the file
-   */
-  public boolean canWrite() throws SecurityException
-  {
-    // We still need to do a SecurityCheck since exists() only checks
-    // for read access
-    SecurityManager sm = System.getSecurityManager();
-    if (sm != null)
-      sm.checkWrite(path);
-     
-    // Test for existence.  This is required by the spec
-    if (!exists())
-      return(false);
-
-    if (!isDirectory())
-      return(canWriteInternal(path));
-    else
-      try
-        {
-  	  File test = createTempFile("test-dir-write", null, this);
-  	  return (test != null && test.delete());
-        }
-      catch (IOException ioe)
-        {
-  	  return(false);
-        }
-  }
 
   /**
    * This native method checks file permissions for writing
@@ -741,30 +767,6 @@ public class File implements Serializable, Comparable
   private native boolean setLastModifiedInternal(String path, long time);
 
   /**
-   * This method creates a new file of zero length with the same name as
-   * the path of this <code>File</code> object if an only if that file
-   * does not already exist.
-   * <p>
-   * A <code>SecurityManager</code>checkWrite</code> check is done prior
-   * to performing this action.
-   *
-   * @return <code>true</code> if the file was created, <code>false</code> if
-   * the file alread existed.
-   *
-   * @exception IOException If an I/O error occurs
-   * @exception SecurityException If the <code>SecurityManager</code> will
-   * not allow this operation to be performed.
-   */
-  public boolean createNewFile() throws IOException, SecurityException
-  {
-    SecurityManager sm = System.getSecurityManager();
-    if (sm != null)
-      sm.checkWrite(path);
-     
-    return(createInternal(getPath()));
-  }
-
-  /**
    * This method deletes the file represented by this object.  If this file
    * is a directory, it must be empty in order for the delete to succeed.
    *
@@ -787,29 +789,6 @@ public class File implements Serializable, Comparable
    * This native method handles the actual deleting of the file
    */
   private native boolean deleteInternal(String path);
-
-  /**
-   * Calling this method requests that the file represented by this object
-   * be deleted when the virtual machine exits.  Note that this request cannot
-   * be cancelled.  Also, it will only be carried out if the virtual machine
-   * exits normally.
-   *
-   * @exception SecurityException If deleting of the file is not allowed
-   */
-  public void deleteOnExit() throws SecurityException
-  {
-    // Check the SecurityManager
-    SecurityManager sm = System.getSecurityManager();
-    if (sm != null)
-      sm.checkDelete(path);
-
-    // Sounds like we need to do some VM specific stuff here. We could delete
-    // the file in finalize() and set FinalizeOnExit to true, but delete on
-    // finalize != delete on exit and we should not be setting up system
-    // parameters without the user's knowledge.
-    // FIXME: ********IMPLEMENT ME!!!!!!***************
-    return;
-  }
 
   /**
    * This method creates a directory for the path represented by this object.
@@ -1229,6 +1208,29 @@ public class File implements Serializable, Comparable
     String url_string = "file://" + abspath;
     
     return(new URL(url_string));
+  }
+
+  /**
+   * Calling this method requests that the file represented by this object
+   * be deleted when the virtual machine exits.  Note that this request cannot
+   * be cancelled.  Also, it will only be carried out if the virtual machine
+   * exits normally.
+   *
+   * @exception SecurityException If deleting of the file is not allowed
+   */
+  public void deleteOnExit() throws SecurityException
+  {
+    // Check the SecurityManager
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null)
+      sm.checkDelete(path);
+
+    // Sounds like we need to do some VM specific stuff here. We could delete
+    // the file in finalize() and set FinalizeOnExit to true, but delete on
+    // finalize != delete on exit and we should not be setting up system
+    // parameters without the user's knowledge.
+    // FIXME: ********IMPLEMENT ME!!!!!!***************
+    return;
   }
 
 } // class File
