@@ -1,3 +1,124 @@
+2004-09-22  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* Makefile.am (gtk_c_source_files): Add
+	gnu_java_awt_peer_gtk_GtkFramePeer.c.
+	* Makefile.in: Regenerate.
+	* gnu/java/awt/peer/gtk/GdkGraphics.java (getClipBounds): Remove
+	comment.
+	* gnu/java/awt/peer/gtk/GtkButtonPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c
+	(create): Pack GtkButton in GtkEventBox.
+	(connectJObject): Remove.
+	(focus_in_cb): New function.
+	(focus_out_cb): Likewise.
+	(connectSignals): Connect focus-in-event and focus-out-event
+	signals.
+	(gtkSetFont): Rename to ...
+	(gtkWidgetModifyFont): New method.
+	(gtkWidgetRequestFocus): New method.
+	* gnu/java/awt/peer/gtk/GtkCheckboxPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxPeer.c
+	(gtkSetFont): Rename to ...
+	(gtkWidgetModifyFont): New method.
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(isInRepaint): New field.
+	(gtkSetFont): Remove method.
+	(addExposeFilter): Likewise.
+	(removeExposeFilter): Likewise.
+	(gtkWidgetQueueDrawArea): Rename to ...
+	(gtkWidgetRepaintArea): New method.
+	(beginNativeRepaint): New method.
+	(endNativeRepaint): New method.
+	(setComponentBounds): Move implementation here from
+	GtkComponentPeer.
+	(paint): Remove implementation.
+	(repaint): Wrap call to gtkWidgetRepaintArea with calls to
+	beginNativeRepaint and endNativeRepaint.
+	(setBounds): Use menu bar height in bounds calculation.
+	(postExposeEvent): Only post paint event if we're not doing a
+	native repaint.
+	(gtkWidgetSetParent): Replace gtk_layout_put with gtk_fixed_put.
+	(setNativeBounds): Replace gtk_layout_move with gtk_fixed_move.
+	(find_gtk_layout): Remove function.
+	(filter_expose_event_handler): Likewise.
+	* gnu/java/awt/peer/gtk/GtkDialogPeer.java (postExposeEvent):
+	Likewise.
+	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java
+	(setComponentBounds): Call GtkComponentPeer's
+	setComponentBounds.
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java (getMenuBarHeight):
+	New method.
+	(moveLayout): Rename to ...
+	(gtkFixedMove): New method.
+	(gtkLayoutSetVisible): Rename to ...
+	(gtkFixedSetVisible): New method.
+	(setMenuBar): Rearrange, to make the three separate cases
+	clearer.
+	(postExposeEvent): Only post paint event if we're not doing a
+	native repaint.
+	* gnu/java/awt/peer/gtk/GtkGenericPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkGenericPeer.c
+	(gtkWidgetModifyFont): New method.
+	* gnu/java/awt/peer/gtk/GtkImagePainter.java
+	(GtkImagePainter(GtkImage,GdkGraphics,int,int,int,int,Color)):
+	Call run directly, rather than spawning a new thread.
+	(GtkImagePainter(GtkImage,GdkGraphics,int,int,int,int,int,int,int,int,Color)):
+	Likewise.
+	* gnu/java/awt/peer/gtk/GtkLabelPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkLabelPeer.c (gtkSetFont):
+	Rename to ...
+	(gtkWidgetModifyFont): New method.
+	(create): Rename ebox to eventbox.
+	* gnu/java/awt/peer/gtk/GtkListPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkListPeer.c (gtkSetFont):
+	Rename to ...
+	(gtkWidgetModifyFont): New method.
+	* gnu/java/awt/peer/gtk/GtkMenuComponentPeer.java
+	(GtkMenuComponentPeer): Set the default font.
+	* gnu/java/awt/peer/gtk/GtkTextAreaPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextAreaPeer.c
+	(gtkSetFont): Rename to ...
+	(gtkWidgetModifyFont): New method.
+	* gnu/java/awt/peer/gtk/GtkTextFieldPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextFieldPeer.c: Likewise.
+	* java/awt/Component.java (locale): Initialize to default
+	locale.
+	* java/awt/Container.java (invalidateTree): Make
+	package-private.
+	(paint): Paint self first.
+	(setMenuBar): Call invalidateTree.
+	* java/awt/Panel.java (dispatchEventImpl): Remove method.
+	* java/awt/Window.java (show): Call no-parameter variant of
+	requestFocusInWindow.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c (initState):
+	Remove special case for window widget.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics2D.c
+	(grab_current_drawable): Likewise.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.c
+	(create): Replace GtkLayout with GtkFixed.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEvents.c
+	(pre_event_handler): Remove special cases for GDK_EXPOSE events.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFramePeer.c: New file.
+	Move all GtkFramePeer native method implementations here from
+	gnu_java_awt_peer_gtk_GtkWindowPeer.c.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkPanelPeer.c (create):
+	Replace GtkLayout with GtkFixed.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(find_layout): Remove function.
+	(create): Replace GtkLayout with GtkFixed.
+	(connectSignals): Remove find_layout call.
+	(toBack): Replace XFlush with gdk_flush.
+	(toFront): Replace XFlush with gdk_flush.
+	Move GtkFramePeer native method implementations to
+	gnu_java_awt_peer_gtk_GtkFramePeer.c.
+	* jni/gtk-peer/gtkpeer.h: Remove declaration of find_gtk_layout.
+
+2004-09-22  Michael Koch  <konqueror@gmx.de>
+
+	* native/jni/gtk-peer/Makefile.am:
+	Added new file gnu_java_awt_peer_gtk_GtkFramePeer.c.
+
 2004-09-21  Mark Wielaard  <mark@klomp.org>
 
 	* vm/reference/java/util/VMTimeZone.java

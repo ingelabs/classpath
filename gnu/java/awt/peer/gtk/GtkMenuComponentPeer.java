@@ -38,6 +38,8 @@ exception statement from your version. */
 
 package gnu.java.awt.peer.gtk;
 
+import java.awt.Font;
+import java.awt.MenuComponent;
 import java.awt.peer.MenuComponentPeer;
 
 public class GtkMenuComponentPeer extends GtkGenericPeer
@@ -46,7 +48,16 @@ public class GtkMenuComponentPeer extends GtkGenericPeer
   public GtkMenuComponentPeer (Object awtWidget)
   {
     super (awtWidget);
+    MenuComponent mc = ((MenuComponent) awtWidget);
+    Font f = mc.getFont ();
+    if (f == null)
+      {
+        mc.setFont (new Font ("Dialog", Font.PLAIN, 12));
+        gtkWidgetModifyFont("Dialog", Font.PLAIN, 12);
+      }
+    else
+      gtkWidgetModifyFont(f.getName(), f.getStyle(), f.getSize());
   }
-  
+
   public native void dispose();
 }

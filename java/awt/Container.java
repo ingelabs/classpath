@@ -527,7 +527,7 @@ public class Container extends Component
   /**
    * Recursively invalidates the container tree.
    */
-  private void invalidateTree()
+  void invalidateTree()
   {
     for (int i = 0; i < ncomponents; i++)
       {
@@ -704,6 +704,8 @@ public class Container extends Component
   {
     if (!isShowing())
       return;
+    // Paint self first.
+    super.paint(g);
     // Visit heavyweights as well, in case they were
     // erased when we cleared the background for this container.
     visitChildren(g, GfxPaintVisitor.INSTANCE, false);
