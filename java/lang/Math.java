@@ -156,7 +156,7 @@ public final class Math
    * @param d the number to take the absolute value of
    * @return the absolute value
    */
-  public static double abs(double dn)
+  public static double abs(double d)
   {
     return (d <= 0) ? 0 - d : d;
   }
