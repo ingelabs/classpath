@@ -27,10 +27,11 @@ Copyright (C) 1998,1999,2000,2001,2002,2003, 2004 Free Software Foundation, Inc.
 @author Paul N. Fisher
 @author John Keiser
 @author C. Brian Jones
+@author Mark J. Wielaard
 
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 1998,1999,2000,2001,2002,2003 Free Software Foundation, Inc.
+Copyright @copyright{} 1998,1999,2000,2001,2002,2003,2004 Free Software Foundation, Inc.
 @sp 2
 Permission is granted to make and distribute verbatim copies of
 this document provided the copyright notice and this permission notice
@@ -52,27 +53,37 @@ approved by the Free Software Foundation.
 @node Top, Introduction, (dir), (dir)
 @top GNU Classpath Hacker's Guide
 
-This document contains important information you'll want to know if you
-want to hack on GNU Classpath, the free implementation of the Java standard
-class libraries.
+This document contains important information you'll want to know if
+you want to hack on GNU Classpath, Essential Libraries for Java, to
+help create free core class libraries for use with virtual machines
+and compilers for the java programming language.
 @end ifinfo
 
 @menu
-* Introduction::                An introduction to the Classpath project
+* Introduction::                An introduction to the GNU Classpath project
 * Requirements::                Very important rules that must be followed
 * Volunteering::                So you want to help out
-* Project Goals::               Goals of the Classpath project
-* Programming Tools::           A list of tools you will need for hacking
-* Programming Standards::       Standards to use when writing code for Classpath
-* Programming Goals::           What to consider when writing code for Classpath
+* Project Goals::               Goals of the GNU Classpath project
+* Needed Tools and Libraries::  A list of programs and libraries you will need
+* Programming Standards::       Standards to use when writing code
+* Hacking Code::                Working on code, Working with others
+* Programming Goals::           What to consider when writing code
 * API Compatibility::           How to handle serialization and deprecated methods
-* Specification Sources::       Where to find the Java class library specs
-* Naming Conventions::          How files and directories are named in Classpath
+* Specification Sources::       Where to find class library specs
+* Naming Conventions::          How files and directories are named
 * Character Conversions::       Working on Character conversions
-* Localization::                How Classpath handles localization/internationalization
+* Localization::                How to handle localization/internationalization
 
 @detailmenu
  --- The Detailed Node Listing ---
+
+Programming Standards
+
+* Source Code Style Guide::     
+
+Working on the code, Working with others
+
+* Writing ChangeLogs::          
 
 Programming Goals
 
@@ -81,6 +92,11 @@ Programming Goals
 * Java Efficiency::             Writing Efficient Java            
 * Native Efficiency::           Writing Efficient JNI          
 * Security::                    Writing Secure Software
+
+API Compatibility
+
+* Serialization::               Serialization
+* Deprecated Methods::          Deprecated methods
 
 Localization
 
@@ -96,67 +112,80 @@ Localization
 @comment node-name, next, previous, up
 @chapter Introduction
 
-The Classpath Project is a dedicated to providing a 100% free, clean
-room implementation of the standard Java class libraries which offer
-free software developers an alternative to Sun's proprietary
-libraries.  The Classpath Project was started in the Spring of 1998 as
-an official Free Software Foundation project.  Most of the volunteers
-working on GNU Classpath do so in their spare time.  We appreciate
-everyone's efforts in the past to improve and help the project and
-look forward to future contributions by old and new members alike.
+The GNU Classpath Project is a dedicated to providing a 100% free,
+clean room implementation of the standard core class libraries for
+compilers and runtime environments for the java programming language.
+It offers free software developers an alternative core library
+implementation upon which larger java-like programming environments
+can be build.  The GNU Classpath Project was started in the Spring of
+1998 as an official Free Software Foundation project.  Most of the
+volunteers working on GNU Classpath do so in their spare time, but a
+couple of projects based on GNU Classpath have paid programmers to
+improve the core libraries.  We appreciate everyone's efforts in the
+past to improve and help the project and look forward to future
+contributions by old and new members alike.
 
 @node Requirements, Volunteering, Introduction, Top
 @comment node-name, next, previous, up
 @chapter Requirements
 
-Although Classpath is following an open development model where input
+Although GNU Classpath is following an open development model where input
 from developers is welcome, there are certain base requirements that
 need to be met by anyone who wants to contribute code to this project.
 They are mostly dictated by legal requirements and are not arbitrary
-restrictions chosen by the Classpath team.
+restrictions chosen by the GNU Classpath team.
 
 You will need to adhere to the following things if you want to donate
-code to the Classpath project:
+code to the GNU Classpath project:
 
 @itemize @bullet
 @item
-@b{Never under any circumstances refer to Sun's code while working on
-Classpath.}  It is best if you have never looked at Sun's code at all.
-To reduce temptation, it would be best if you deleted the @samp{src.zip}
-file from your JDK distribution.  If you have signed Sun's
-non-disclosure statement, then you unfortunately cannot work on
-Classpath code at all.  If you have any reason to believe that your code
-might be ``tainted'', please say something on the mailing list before
-writing anything.  If it turns out that your code was not developed in a
-clean room environment, we could be very embarrassed someday in court.
-Please don't let that happen.
+@b{Never under any circumstances refer to proprietary code while
+working on GNU Classpath.}  It is best if you have never looked at
+alternative proprietary core library code at all.  To reduce
+temptation, it would be best if you deleted the @samp{src.zip} file
+from your proprietary JDK distribution (note that recent versions of
+GNU Classpath and the compilers and environments build on it are
+mature enough to not need any proprietary implementation at all when
+working on GNU Classpath, except in exceptional cases where you need
+to test compatibility issues pointed out by users).  If you have
+signed Sun's non-disclosure statement, then you unfortunately cannot
+work on Classpath code at all.  If you have any reason to believe that
+your code might be ``tainted'', please say something on the mailing
+list before writing anything.  If it turns out that your code was not
+developed in a clean room environment, we could be very embarrassed
+someday in court.  Please don't let that happen.
 
 @item
-@b{Never decompile Sun's class libraries.}  While the wording of the
-license in Sun's Java 2 releases has changed, it is not acceptable, under
-any circumstances, for a person working on Classpath to decompile Sun's
-class libraries.  Allowing the use of decompilation in the Classpath
-project would open up a giant can of legal worms, which we wish to
-avoid.
+@b{Never decompile proprietary class library implementations.}  While
+the wording of the license in Sun's Java 2 releases has changed, it is
+not acceptable, under any circumstances, for a person working on
+GNU Classpath to decompile Sun's class libraries.  Allowing the use of
+decompilation in the GNU Classpath project would open up a giant can of
+legal worms, which we wish to avoid.
 
 @item
 Classpath is licensed under the terms of the
-@uref{http://www.fsf.org/copyleft/gpl.html,GNU General Public License},
-with a special exception included to allow linking with non-GPL licensed
-works as long as no other license would restrict such linking.  To
-preserve freedom for all users and to maintain uniform licensing of
-Classpath, we will not accept code into the main distribution that is
-not licensed under these terms.  The license can be read from any
-alpha release distributed from @uref{ftp://alpha.gnu.org/gnu/classpath/}
-or by obtaining a copy of the current CVS tree.
+@uref{http://www.fsf.org/copyleft/gpl.html,GNU General Public
+License}, with a special exception included to allow linking with
+non-GPL licensed works as long as no other license would restrict such
+linking.  To preserve freedom for all users and to maintain uniform
+licensing of Classpath, we will not accept code into the main
+distribution that is not licensed under these terms.  The exact
+wording of the license of the current version of GNU Classpath can be
+found online from the
+@uref{http://www.gnu.org/software/classpath/license.html, GNU
+Classpath license page} and is of course distributed with current
+snapshot release from @uref{ftp://ftp.gnu.org/gnu/classpath/} or by
+obtaining a copy of the current CVS tree.
 
 @item
-Classpath is GNU software and this project is being officially sponsored
+GNU Classpath is GNU software and this project is being officially sponsored
 by the @uref{http://www.fsf.org/,Free Software Foundation}.  Because of
 this, the FSF will hold copyright to all code developed as part of
-Classpath.  This will allow them to pursue copyright violators in court,
+GNU Classpath.  This will allow them to pursue copyright violators in court,
 something an individual developer may neither have the time nor
-resources to do.  Everyone contributing code to Classpath will need to
+resources to do.  Everyone contributing code to GNU Classpath will need to
 sign a copyright assignment statement.  Additionally, if you are
 employed as a programmer, your employer may need to sign a copyright
 waiver disclaiming all interest in the software.  This may sound harsh,
@@ -168,10 +197,11 @@ is legally yours to distribute.
 @comment node-name, next, previous, up
 @chapter Volunteering to Help
 
-The Classpath project needs volunteers to help us out.  People are
-needed to write unimplemented Java packages, to test Classpath on
-various platforms, and to port it to platforms that are currently
-unsupported.
+The GNU Classpath project needs volunteers to help us out.  People are
+needed to write unimplemented core packages, to test GNU Classpath on
+free software programs written in the java programming language, to
+test it on various platforms, and to port it to platforms that are
+currently unsupported.
 
 While pretty much all contributions are welcome (but see 
 @pxref{Requirements}) it is always preferable that volunteers do the
@@ -184,15 +214,16 @@ Implement a complete drop-in replacement for the particular package.
 That means implementing any ``internal'' classes.  For example, in the
 java.net package, there are non-public classes for implementing sockets.
 Without those classes, the public socket interface is useless.  But do
-not feel obligated to completely replace all of Sun's functionality at
+not feel obligated to completely implement all of the functionality at
 once.  For example, in the java.net package, there are different types
 of protocol handlers for different types of URL's.  Not all of these
 need to be written at once.
 
 @item
-Please write complete and thorough javadoc comments for every public and
-protected method and variable.  These should be superior to Sun's and
-cover everything about the item being documented.
+Please write complete and thorough API documentation comments for
+every public and protected method and variable.  These should be
+superior to Sun's and cover everything about the item being
+documented.
 
 @item
 Please write a regression test package that can be used to run tests
@@ -204,11 +235,11 @@ source code repository will require appropriate test cases in Mauve to
 ensure correctness and prevent regressions.  
 @end itemize
 
-With the exception of the AWT, writing tests and fixing bugs should be
-every developer's top priority in order to reach the elusive release
-of version 1.0.  
+Writing good documentation, tests and fixing bugs should be every
+developer's top priority in order to reach the elusive release of
+version 1.0.
 
-@node Project Goals, Programming Tools, Volunteering, Top
+@node Project Goals, Needed Tools and Libraries, Volunteering, Top
 @comment node-name, next, previous, up
 @chapter Project Goals
 
@@ -238,11 +269,19 @@ While free operating systems are the top priority, the other priorities
 can shift depending on whether or not there is a volunteer to port
 Classpath to those platforms and to test releases.
 
-Eventually we hope the Classpath will support all JVM's that provide JNI
-or CNI support.  However, the top priority is free JVM's.  A small, and
-probably incomplete list is below.
+Eventually we hope the Classpath will support all JVM's that provide
+JNI or CNI support.  However, the top priority is free JVM's.  A small
+list of Compiler/VM environments that are currently actively
+incorporating GNU Classpath is below.  A more complete overview of
+projects based on GNU classpath can be found online at
+@uref{http://www.gnu.org/software/classpath/stories.html,the GNU
+Classpath stories page}.
 
 @enumerate
+@item
+@uref{http://gcc.gnu.org/java/,GCJ}
+@item 
+@uref{http://jamvm.sourceforge.net/,jamvm}
 @item 
 @uref{http://kissme.sourceforge.net/,Kissme}
 @item
@@ -250,35 +289,52 @@ probably incomplete list is below.
 @item
 @uref{http://www.sablevm.org/,SableVM}
 @item
-@uref{http://www.intel.com/research/mrl/orp/,Intel's Open Runtime Platform}
-@item
 @uref{http://www.kaffe.org/,Kaffe}
-@item
-@uref{http://www.japhar.org/,Japhar}
-@item
-@uref{http://latte.snu.ac.kr/,LaTTe}
 @end enumerate
 
 As with OS platform support, this priority list could change if a
 volunteer comes forward to port, maintain, and test releases for a
-particular JVM.  Kaffe is now developing its own class library, so the
-priority of supporting that platform is not as high as for other free VMs.
+particular JVM.  Since gcj is part of the GNU Compiler Collective it
+is one of the most important targets.  But since it doesn't currently
+work out of the box with GNU Classpath it is currently not the easiest
+target.  When hacking on GNU Classpath the easiest is to use
+compilers and runtime environments that that work out of the box with
+it, such as the jikes compiler and the runtime environments jamvm and
+kissme.  But you can also work directly with targets like gcj and
+kaffe that have their own copy of GNU Classpath currently.  In that
+case changes have to be merged back into GNU Classpath proper though,
+which is sometimes more work.  SableVM is starting to migrate from an
+integrated GNU Classpath version to being usable with GNU Classpath
+out of the box.
 
-The initial target version for Classpath is Java 1.1.  Java 2 can be
-implemented if desired, but please do not create classes that depend on
-Java 2 features in other packages unless Classpath already contains
-those features.
 
-@node Programming Tools, Programming Standards, Project Goals, Top
+The initial target version for Classpath is the 1.1 spec.  Higher
+versions can be implemented (and have been implemented, including lots
+of 1.4 functionality) if desired, but please do not create classes
+that depend on features in those packages unless GNU Classpath already
+contains those features.  GNU Classpath has been free of any
+proprietary dependencies for a long time now and we like to keep it
+that way.  But finishing, polishing up, documenting, testing and
+debugging current functionality is of higher priority then adding new
+functionality.
+
+@node Needed Tools and Libraries, Programming Standards, Project Goals, Top
 @comment node-name, next, previous, up
-@chapter Programming Tools
+@chapter Needed Tools and Libraries
 
-If you want to hack on Classpath, you should download, install, and
-familiarize yourself with the following tools:
+If you want to hack on Classpath, you should at least download and
+install the following tools.  And try to familiarize yourself with
+them.  Although in most cases having these tools installed will be all
+you really need to know about them.  Also note that when working on
+(snapshot) releases only GCC 3.3+ (plus a free VM from the list above
+and the libraries listed below) is needed.  The other tools are only
+needed when working directly on the CVS version.
 
 @itemize @bullet
 @item
-CVS 1.11
+GCC 3.3+
+@item
+CVS 1.11+
 @item
 automake 1.7+
 @item
@@ -301,11 +357,17 @@ Here is a brief description of the purpose of those tools.
 
 @table @b
 
+@item GCC
+The GNU Compiler Collection. This contains a C compiler (gcc) for
+compiling the native C code and a compiler for the java programming
+language (gcj).  You will need at least gcj version 3.3 or higher.  If
+that version is not available for your platform you can try the
+@uref{http://www.jikes.org/, jikes compiler}.  We try to keep all code
+compilable with both gcj and jikes at all times.
+
 @item CVS  
 A version control system that maintains a centralized Internet
-repository of all code in the Classpath system.  Access to the
-repository requires an account.  Contact C. Brian Jones
-(@email{cbj@@gnu.org}) for details.
+repository of all code in the Classpath system.
 
 @item automake  
 This tool automatically creates Makefile.in files from Makefile.am
@@ -334,34 +396,165 @@ work with autoconf.
 Larry Wall's scripting language.  It is used internally by automake.
 @end table
 
-@node Programming Standards, Programming Goals, Programming Tools, Top
+
+For compiling the native AWT libraries you need to have the following
+libraries installed:
+
+@table @b
+@item GTK+ 2.2.x
+@uref{http://www.gtk.org/,GTK+} is a multi-platform toolkit for
+creating graphical user interfaces.  It is used as the basis of the
+GNU desktop project GNOME.
+
+@item libart-lgpl 2.1+
+@uref{http://www.gnome.org/start/,libart} is a GNOME library of
+functions for 2D graphics.
+
+@item gdk-pixbuf
+@uref{http://www.gnome.org/start/,gdk-pixbuf} is a GNOME library for
+representing images.
+@end table
+
+
+GNU Classpath comes with a couple of libraries included in the source
+that are not part of GNU Classpath proper, but that have been included
+to provide certain needed functionality.  All these external libraries
+should be clearly marked as such.  In general we try to use as much as
+possible the clean upstream versions of these sources.  That way
+merging in new versions will be easiest.  You should always try to get
+bug fixes to these files accepted upstream first.  Currently we
+include the following 'external' libraries.  Most of these sources are
+included in the @file{external} directory.  That directory also
+contains a @file{README} file explaining how to import newer versions.
+
+@table @b
+
+@item GNU jaxp
+Can be found in @file{external/jaxp}.  Provides javax.xml, org.w3c and
+org.xml packages.  Upstream is
+@uref{http://www.gnu.org/software/classpathx/,GNU ClasspathX}.
+
+@item fdlibm
+Can be found in @file{native/fdlibm}.  Provides native implementations
+of some of the Float and Double operations.  Upstream is
+@uref{http://gcc.gnu.org/java/,libgcj}, they sync again with the
+'real' upstream @uref{http://www.netlib.org/fdlibm/readme}.  See also
+java.lang.StrictMath.
+
+@end table
+
+
+@node Programming Standards, Hacking Code, Needed Tools and Libraries, Top
 @comment node-name, next, previous, up
 @chapter Programming Standards
 
-For C code, follow the
+For C source code, follow the
 @uref{http://www.fsf.org/prep/standards_toc.html,GNU Coding Standards}.
 The standards also specify various things like the install directory
 structure.  These should be followed if possible.
 
-For Java code, please follow the
-@uref{http://www.fsf.org/prep/standards_toc.html,GNU Coding Standards},
-with the exception of naming conventions.  Please follow
-@uref{http://java.sun.com/docs/codeconv/html/CodeConventions.doc8.html,Sun's
-naming conventions}.  There are a number of exceptions to the GNU
-Coding Standards that we make for GNU Classpath and these will be
-documented soon as well as hopefully providing developers with a code
-formatting tool that closely matches those rules.
+For Java source code, please follow the
+@uref{http://www.fsf.org/prep/standards_toc.html,GNU Coding
+Standards}, as much as possible.  There are a number of exceptions to
+the GNU Coding Standards that we make for GNU Classpath as documented
+in this guide.  We will hopefully be providing developers with a code
+formatting tool that closely matches those rules soon.
 
-For documentation comments, please follow
+For API documentation comments, please follow
 @uref{http://java.sun.com/products/jdk/javadoc/writingdoccomments.html,How
-to Write Doc Comments for Javadoc}.
+to Write Doc Comments for Javadoc}.  We would like to have a set of
+guidelines more tailored to GNU Classpath as part of this document.
+
+@menu
+* Source Code Style Guide::     
+@end menu
+
+@node Source Code Style Guide,  , Programming Standards, Programming Standards
+@comment node-name, next, previous, up
+@section Java source coding style
+
+Here is a list of some specific rules used when hacking on GNU
+Classpath java source code. We try to follow the standard
+@uref{http://www.gnu.org/prep/standards_23.html,GNU Coding Standards}
+for that. There are lots of tools that can automatically generate it
+(although most tools assume C source, not java source code) and it
+seems as good a standard as any. There are a couple of exceptions and
+specific rules when hacking on GNU Classpath java source code however.
+The following lists how code is formatted (and some other code
+conventions):
 
 
-Here is a list of some specific rules used when hacking on Classpath.
-
-@c FIXME for now there is only one, so just put it here
-@c really we need a new node, and a collected list of such rules
 @itemize
+
+@item
+If possible, generate specific imports (expand) over java.io.* type
+imports.  Order by gnu, java, javax, org.
+
+@item
+Blank line after package statement, last import statement, classes,
+interfaces, methods.
+
+@item
+Opening/closing brace for class and method is at the same level of
+indent as the declaration.  All other braces are indented and content
+between braces indented again.
+
+@item
+Since method definitions don't start in column zero anyway (since they
+are always inside a class definition), the rational for easy grepping
+for ``^method_def'' is mostly gone already. Since it is customary for
+almost everybody who writes java source code to put modifiers, return
+value and method name on the same line, we do too.
+
+@c fixme Another rational for always indenting the method definition is that itmakes it a bit easier to distinguish methods in inner and anonymousclasses from code in their enclosing context. NEED EXAMPLE.
+
+@item
+Implements and extends on separate lines, throws too.  Indent extends,
+implements, throws.  Apply deep indentation for method arguments.
+
+@c fixme Needs example.
+
+@item
+Don't add a space between a method or constructor call/definition and
+the open-bracket. This is because often the return value is an object on
+which you want to apply another method or from which you want to access
+a field.
+        
+Don't write:
+
+@example
+  getToolkit ().createWindow (this);
+@end example
+
+But write:
+@example
+  getToolkit().createWindow(this);
+@end example
+
+@item
+The GNU Coding Standard it gives examples for almost every construct
+(if, switch, do, while, etc.).  One missing is the try-catch construct
+which should be formatted as:
+
+@example
+  try
+    @{
+      //
+    @}
+  catch (...)
+    @{
+      //
+    @}
+@end example
+
+@item
+Wrap lines at 80 characters after assignments and before operators.
+Wrap always before extends, implements, throws, and labels.
+
+@item
+Don't put multiple class definitions in the same file, except for
+inner classes. File names (plus .java) and class names should be the
+same.
 
 @item
 Don't catch a @code{NullPointerException} as an alternative to simply
@@ -433,10 +626,240 @@ method's API, you should mention it in the Javadoc.
 When overriding @code{Object.equals}, remember that @code{instanceof}
 filters out @code{null}, so an explicit check is not needed.
 
+@item
+When catching an exception and rethrowing a new exception you should
+``chain'' the Throwables.  Don't just add the String representation of
+the catched exception.
+
+@example
+  try
+    @{
+      // Some code that can throw
+    @}
+  catch (IOException ioe)
+    @{
+      throw (SQLException) new SQLException("Database corrupt").setCause(ioe);
+    @}
+@end example
+
+@c fixme Describe Anonymous classes (example).
+@c fixme Descibe Naming conventions when different from GNU Coding Standards.
+@c fixme Describee API doc javadoc tags used.
+
+@end itemize
+
+Some things are the same as in the normal GNU Coding Standards:
+
+@itemize
+
+@item
+Unnecessary braces can be removed, one line after an if, for, while as
+examples.
+
+@item
+Space around operators (assignment, logical, relational, bitwise,
+mathematical, shift).
+
+@item
+Blank line before single-line comments, multi-line comments, javadoc
+comments.
+
+@item
+If more than 2 blank lines, trim to 2.
+
+@item
+Don't keep commented out code.  Just remove it or add a real comment
+describing what it used to do and why it is changed to the current
+implementation.
 @end itemize
 
 
-@node Programming Goals, API Compatibility, Programming Standards, Top
+@node Hacking Code, Programming Goals, Programming Standards, Top
+@comment node-name, next, previous, up
+@chapter Working on the code, Working with others
+
+There are a lot of people helping out with GNU Classpath.  Here are a
+couple of practical guidelines to make working together on the code
+smoother.
+
+The main thing is to always discuss what you are up to on the
+mailinglist.  Making sure that everybody knows who is working on what
+is the most important thing to make sure we cooperate most
+effectively.
+
+We maintain a
+@uref{http://www.gnu.org/software/classpath/tasks.html,Task List}
+which contains items that you might want to work on.
+
+Before starting to work on something please make sure you read this
+complete guide.  And discuss it on list to make sure your work does
+not duplicate or interferes with work someone else is already doing.
+Always make sure that you submit things that are your own work.  And
+that you have paperwork on file (as stated in the requirements
+section) with the FSF authorizing the use of your additions.
+
+Technically the GNU Classpath project is hosted on
+@uref{http://savannah.gnu.org/,Savannah} a central point for
+development, distribution and maintenance of GNU Software.  Here you
+will find the
+@uref{https://savannah.gnu.org/projects/classpath/,project page}, bug
+reports, pending patches, links to mailing lists, news items and CVS.
+
+You can find instructions on getting a CVS checkout for classpath at
+@uref{https://savannah.gnu.org/cvs/?group=classpath}.
+
+You don't have to get CVS commit write access to contribute, but it is
+sometimes more convenient to be able to add your changes directly to
+the project CVS. Please contact the GNU Classpath savannah admins to
+arrange CVS access if you would like to have it.
+
+Make sure to be subscribed to the commit-classpath mailinglist while
+you are actively hacking on Classpath.  You have to send patches (cvs
+diff -uN) to this list before committing.
+
+We really want to have a pretty open check-in policy.  But this means
+that you should be extra careful if you check something in.  If at all
+in doubt or if you think that something might need extra explaining
+since it is not completely obvious please make a little announcement
+about the change on the mailinglist.  And if you do commit something
+without discussing it first and another GNU Classpath hackers asks for
+extra explanation or suggests to revert a certain commit then please
+reply to the request by explaining why something should be so or if
+you agree to revert it.  (Just reverting immediately is OK without
+discussion, but then please don't mix it with other changes and please
+say so on list.)
+
+Patches that are already approved for libgcj or also OK for Classpath.
+(But you still have to send a patch/diff to the list.)  All other
+patches require you to think whether or not they are really OK and
+non-controversial, or if you would like some feedback first on them
+before committing.  We might get real commit rules in the future, for
+now use your own judgment, but be a bit conservative.
+
+Always contact the GNU Classpath maintainer before adding anything
+non-trivial that you didn't write yourself and that does not come from
+libgcj or from another known GNU Classpath or libgcj hacker.  If you
+have been assigned to commit changes on behalf of another project or
+a company always make sure they come from people who have signed the
+papers for the FSF and/or fall under the arrangement your company made
+with the FSF for contributions.  Mention in the ChangeLog who actually
+wrote the patch.
+
+Commits for completely unrelated changes they should be committed
+separately (especially when doing a formatting change and a logical
+change, do them in two separate commits). But do try to do a commit of
+as much things/files that are done at the same time which can
+logically be seen as part of the same change/cleanup etc.
+
+When the change fixes an important bug or adds nice new functionality
+please write a short entry for inclusion in the NEWS file.  If it
+changes the VM interface you must mention that in both the NEWS file
+and the VM Integration Guide.
+
+All the ``rules'' are really meant to make sure that GNU Classpath
+will be maintainable in the long run and to give all the projects that
+are now using GNU Classpath an accurate view of the changes we make to
+the code and to see what changed when.  If you think the requirements
+are ``unworkable'' please try it first for a couple of weeks.  If you
+still feel the same after having some more experience with the project
+please feel free to bring up suggestions for improvements on the list.
+But don't just ignore the rules!  Other hackers depend on them being
+followed to be the most productive they can be (given the above
+constraints).
+
+@menu
+* Writing ChangeLogs::          
+@end menu
+
+@node Writing ChangeLogs,  , Hacking Code, Hacking Code
+@comment node-name, next, previous, up
+@section Documenting what changed when with ChangeLog entries
+
+To keep track of who did what when we keep an explicit ChangeLog entry
+together with the code.  This mirrors the CVS commit messages and in
+general the ChangeLog entry is the same as the CVS commit message.
+This provides an easy way for people getting a (snapshot) release or
+without access to the CVS server to see what happened when.  We do not
+generate the ChangeLog file automatically from the CVS server since
+that is not reliable.
+
+A good ChangeLog entry guideline can be found in the Guile Manual at
+@uref{http://www.gnu.org/software/guile/changelogs/guile-changelogs_3.html}.
+
+Here are some example to explain what should or shouldn't be in a
+ChangeLog entry (and the corresponding commit message):
+
+@itemize
+
+@item
+The first line of a ChangeLog entry should be:
+
+@example
+[date] <two spaces> [full name] <two spaces> [email-contact]
+@end example
+
+The second line should be blank. All other lines should be indented
+with one tab.
+
+@item
+Just state what was changed.  Why something is done as it is done in
+the current code should be either stated in the code itself or be
+added to one of the documentation files (like this Hacking Guide).
+
+So don't write:
+
+@example
+        * java/awt/font/OpenType.java: Remove 'public static final'
+        from OpenType tags, reverting the change of 2003-08-11.  See
+        Classpath discussion list of 2003-08-11.
+@end example
+
+Just state:
+
+@example
+        * java/awt/font/OpenType.java: Remove 'public static final' from
+        all member fields.
+@end example
+
+In this case the reason for the change was added to this guide.
+
+@item
+Just as with the normal code style guide, don't make lines longer then
+80 characters.
+
+@item
+Just as with comments in the code. The ChangeLog entry should be a
+full sentence, starting with a captital and ending with a period.
+
+@item
+Be precise in what changed, not the effect of the change (which should
+be clear from the code/patch).  So don't write:
+
+@example
+        * java/io/ObjectOutputStream.java : Allow putFields be called more 
+        than once.
+@end example
+
+But explain what changed and in which methods it was changed:
+
+@example
+        * java/io/ObjectOutputStream.java (putFields): Don't call
+        markFieldsWritten(). Only create new PutField when
+        currentPutField is null.
+        (writeFields): Call markFieldsWritten().
+@end example
+
+@end itemize
+
+The above are all just guidelines.  We all appreciate the fact that writing
+ChangeLog entries, using a coding style that is not ``your own'' and the
+CVS, patch and diff tools do take some time to getting used to.  So don't
+feel like you have to do it perfect right away or that contributions
+aren't welcome if they aren't ``perfect''.  We all learn by doing and
+interacting with each other.
+
+
+@node Programming Goals, API Compatibility, Hacking Code, Top
 @comment node-name, next, previous, up
 @chapter Programming Goals
 
@@ -621,11 +1044,11 @@ Programming for Linux and Unix HOWTO}.
 @chapter API Compatibility
 
 @menu
-* Serialization::		Serialization
-* Deprecated Methods::		Deprecated methods
+* Serialization::               Serialization
+* Deprecated Methods::          Deprecated methods
 @end menu
 
-@node Serialization, Deprecated Methods, , API Compatibility
+@node Serialization, Deprecated Methods, API Compatibility, API Compatibility
 @comment  node-name,  next,  previous,  up
 @section Serialization
 
@@ -654,7 +1077,7 @@ information about unknown serialized formats by writing these in XML
 instead.  Japitools is also the primary means of checking API
 compatibility for GNU Classpath with Sun's Java Platform.
 
-@node Deprecated Methods, , Serialization, API Compatibility
+@node Deprecated Methods,  , Serialization, API Compatibility
 @comment  node-name,  next,  previous,  up
 @section Deprecated Methods
 

@@ -1,74 +1,13 @@
-HACKING GNU Classpath - Last updated: August 15, 2003
+HACKING GNU Classpath - Last updated: April 2, 2004
 Please read the README and INSTALL files first.
 
 You only need the information in this file when working on non-released (CVS)
 versions of GNU Classpath. Installation information for released versions
 of GNU Classpath can be found in the INSTALL file.
 
-If you want to hack on GNU Classpath it will make things easier if you
-have the following installed:
-
-For any build environment involving native libraries, these new versions of 
-autoconf, automake, and libtool are required.
-
-        - GNU autoconf 2.59
-        - GNU automake 1.7.x
-	(1.8.x also works)
-        - GNU libtool 1.4.2
-	(1.4.3 and 1.5a also work)
-
-For building the Java bytecode (.class files), one of these compilers
-is required.
-
-        - GNU GCJ 3.3+
-        - IBM jikes 1.18+
-
-For building the JNI native libraries, the following are required.
-
-        - GTK+ 2.2.x
-	- libart_lgpl 2.1.0
-	- gdk-pixbuf (Only needed if you want to compile the native library)
-
-You can get CVS (development) versions of GNU Classpath by giving cvs the
--d option with (or setting the environment variable CVSROOT to)
-:pserver:anoncvs@subversions.gnu.org:/cvsroot/classpath
-    --> First do "cvs login".  Hit <Return> when prompted for a password
-    --> Then do "cvs checkout classpath"
-    --> More detailed instructions available on the Savannah project website.
-        <http://savannah.gnu.org/projects/classpath/>
-
-If you start from the current CVS version, you will have to run the
-following from the toplevel directory.  The autoreconf script does not
-always run these as might be expected.
-
-        aclocal; autoheader; automake; autoconf
-
-For those that do not understand why these programs must be executed, here
-is a brief lesson.  
-
-	aclocal    - combines acinclude.m4 and system macros to produce 
-                     aclocal.m4
-	autoheader - generates config.h.in in the include/ directory
-	automake   - generates Makefile.in from Makefile.am for every file
-                     specified as output in configure.in
-        autoconf   - generates configure
-
-Next you run configure.  Options you'll probably want to specify
-may include --enable-jni.
-
-By default the core classes are compiled using vm/reference JVM specific
-classes.  As a VM writer you may take these reference classes and modify
-them as you wish.  As long as the public interface remains the same 
-no modifications to other core parts of Classpath should be needed.
-
-Gnome cvs can be obtained with 
-:pserver:anonymous@anoncvs.gnome.org:/cvs/gnome and a blank password.  
-The module name for gdk-pixbuf is gdk-pixbuf.
-
-There should be no compiling errors within Java source code which is
-checked in.  Code should be compiled in the build process before
-checking it in.
+Everything you ever wanted to know about hacking on GNU Classpath and
+how to obtain CVS checkouts can be found in doc/hacking.texi and/or
+on the website http://www.gnu.org/software/classpath/docs/hacking.html
 
 If you have any questions, suggestions, etc., send them to
 classpath@gnu.org.
-
