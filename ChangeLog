@@ -1,3 +1,32 @@
+2002-02-17  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/lang/Character.java (getUnicodeBlock): Delete.
+	(class UnicodeBlock): Add (generated) class, and move constants
+	from Subset into it.
+	(class Block, class CharAttr): Make nested classes of Character.
+	(Subset.equals, Subset.hashcode, Subset.toString): Add methods.
+	(getDirectionality, isMirrored, toString(char)): Add methods.
+	(DIRECTIONALITY_*, *_QUOTE_PUNCTUATION): Add constants.
+	(<clinit>, readChar): Update to new format of Unicode database.
+	Overall: optimize code, bring in line with JDK 1.4 specs.
+	* doc/unicode/UnicodeData-3.0.0.txt: Rename from
+	UnicodeData-3.0.txt, to match the filename from www.unicode.org.
+	* doc/unicode/ReadMe-3.0.0.txt: Rename from ReadMe-3.0.txt.
+	* doc/unicode/UnicodeData-3.0.0.html: Add the Unicode 3.0
+	document, copyright, and file format, from www.unicode.org.
+	* doc/unicode/Blocks-3.txt: Add the Unicode 3.0 groups (supercedes
+	BLOCKS.TXT of 2.1.2), from www.unicode.org.
+	* doc/unicode/unicode.database.format: Document changes in the
+	format of the Unicode database used by Character.
+	* doc/unicode/unicode-muncher.pl: Update the Unicode database
+	format to accomodate directionality and mirrored characters, and
+	further compress the size of the database.
+	* doc/unicode/unicode-blocks.pl: Add, to efficiently generate
+	Character.UnicodeBlock.
+	* gnu/java/locale/block.uni: Regenerate from Unicode 3.0.0.
+	* gnu/java/locale/character.uni: Regenerate from Unicode 3.0.0.
+	* gnu/java/locale/titlecase.uni: Regenerate from Unicode 3.0.0.
+	
 2002-02-16  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/lang/Character.java: Reformat and comment (no code changes).

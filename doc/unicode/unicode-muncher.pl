@@ -1,4 +1,42 @@
 #!/usr/bin/perl
+# unicode-muncher -- Script to generate Unicode data for java.lang.Character
+# Copyright (C) 1998, 2002 Free Software Foundation, Inc.
+#
+# This file is part of GNU Classpath.
+#
+# GNU Classpath is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2, or (at your option)
+# any later version.
+#
+# GNU Classpath is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with GNU Classpath; see the file COPYING.  If not, write to the
+# Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+# 02111-1307 USA.
+#
+# Linking this library statically or dynamically with other modules is
+# making a combined work based on this library.  Thus, the terms and
+# conditions of the GNU General Public License cover the whole
+# combination.
+#
+# As a special exception, the copyright holders of this library give you
+# permission to link this library with independent modules to produce an
+# executable, regardless of the license terms of these independent
+# modules, and to copy and distribute the resulting executable under
+# terms of your choice, provided that you also meet, for each linked
+# independent module, the terms and conditions of the license of that
+# module.  An independent module is a module which is not derived from
+# or based on this library.  If you modify this library, you may extend
+# this exception to your version of the library, but you are not
+# obligated to do so.  If you do not wish to do so, delete this
+# exception statement from your version.
+
+
 # This is lots of really ugly hacked up Perl code.
 # It works.  Don't touch it, or it'll break.
 # I'm far from proud of it.  If you want to fix it so it
@@ -6,54 +44,40 @@
 # See unicode.database.format for information on the files
 # this program generates.
 
-# usage: unicode-muncher.pl UnicodeData-2.1.2.txt
-
-# Code for reading BLOCKS.TXT and generating stubs for Character.Subset
-#
-#  open (BLOCKS, $ARGV[1]) || die "Can't open Unicode block file: $!\n";
-#  &read_block;
-#
-#  sub read_block {
-#      ($start, $end, $block) = split(/; /, <BLOCKS>);
-#      chop $block; chop $block;
-#      if ($start =~ /#./) {
-#  	&read_block;
-#      } else { 
-#  	$curr_block++;
-#
-#  # Generate Character.Subset information	
-#  #	$block =~ tr/a-z/A-Z/;
-#  #	$block =~ y/ ,-/_/;
-#  #	print "$block = new Subset('\\u$start', '\\u$end'),\n";
-#
-#  	$start = hex($start);
-#  	$end   = hex($end);
-#
-#      };
-#  }
+# usage: unicode-muncher.pl UnicodeData-3.0.0.txt
 
 sub write_char {
-    $S = $jnobreakspace << 5;
-    print CHAR 
-      (pack ("C", $S | $cat));
-    print CHAR (pack ("n", $jnum));
-    print CHAR (pack ("n", $jupper));
-    print CHAR (pack ("n", $jlower));
+    my $wnum = ($jnum < 65534) ? $hex - $jnum : $jnum;
+    $buf = pack ("Cn3c", ($jmirrored << 6) | ($jnobreakspace << 5) | $cat,
+                 $wnum, $jupper, $jlower, $jdir);
+    print CHAR $buf;
+    if (! defined $hash{$buf}) {
+        $hash{$buf} = $offset;
+    }
+    $offset += 8;
 }
 
 sub end_block {
+    my $joffset;
     print BLOCK (pack ("n", $start));
     print BLOCK (pack ("n", $lhex));
-    $comp = 0 if ($comp != 1);
-    print BLOCK (pack ("C", $comp));
-    print BLOCK (pack ("N", $offset));
+    $characters += $lhex - $start + 1;
+    $blocks++;
 
     # calculate next offset
-    if ($comp == 1) { 
-	$offset += 7; 
-    } else { 
-	$offset += (7 * ($lhex - $start + 1)); 
+    if ($comp == 1) {
+        $joffset = $hash{$buf};
+        if ($joffset + 8 < $offset) { # Reuse a previous attribute
+            $offset -= 8;
+            seek CHAR, $offset, SEEK_SET;
+        }
+    } else {
+        $joffset = $offset - 8 * ($lhex - $start + 1);
+        $comp = 0; # Create a string of uncompressed attributes
     }
+    die "sanity: offset out of range!\n" if ($joffset >= 32768);
+    print BLOCK (pack ("n", ($comp << 15) | $joffset));
+
     # setup next starting block
     $start = $hex;
     # default to unknown compression
@@ -63,16 +87,23 @@ sub end_block {
 open (DATA, $ARGV[0]) || die "Can't open Unicode attribute file: $!\n";
 
 open (TITLECASE, ">titlecase.uni") || die ("Can't open titlecase file: $!\n");
+binmode TITLECASE;
 open (CHAR, ">character.uni") || die ("Can't open character file: $!\n");
+binmode CHAR;
 open (BLOCK, ">block.uni") || die ("Can't open block file: $!\n");
+binmode BLOCK;
 
 $| = 1;
-print "GNU Classpath Unicode Attribute Database Generator 1.0\n";
-print "Copyright (C) 1998, Free Software Foundation, Inc.\n";
+print "GNU Classpath Unicode Attribute Database Generator 1.1\n";
+print "Copyright (C) 1998, 2002 Free Software Foundation, Inc.\n";
 print "Creating";
 
 $offset = 0;
 $hex = -1;
+$buf = "";
+$characters = 0;
+$blocks = 0;
+$ignored = 0;
 while (<DATA>) {
     $llhex = $lhex;
     $lhex = $hex;
@@ -84,45 +115,51 @@ while (<DATA>) {
 	
     # convert unicode index strings to hex
     $hex = hex($hex);
+    if ($hex > 0xffff) { # Ignore surrogates, since Java does
+        $ignored++;
+        $lhex = $llhex;
+        $hex = $lhex;
+        next;
+    }
     $upcase = hex($upcase);
     $lowcase = hex($lowcase);
     $titlecase = hex($titlecase);
 
-# read blocks - code used only when counting absolute blocks
-#    print "end of block\n" if (($lhex+1) != $hex);
-#     # read blocks until we find a valid range
-#    while ($hex > $end) {
-#	&read_block;
-#    }
-#    # $curr_block now contains the correct block
-
-# handle isIdentifierIgnorable()
-# this is according to the javadoc spec, which is broken.
-#    $jidentignore =  ($category =~ /(Cf)|(Cc)/ && 
-#		      !($unicode1n =~ /SEPARATOR|RETURN|TAB|FEED/)) ? 1 : 0;
-
     $jnobreakspace = ($category eq "Zs" && $decomp =~ /noBreak/) ? 1 : 0;
 
-    # handle getNumericValue()
+    # handle getNumericValue(). $jnum is either -1 for no value, -2 for
+    # non-positive integer value, or the offset of the value from $hex
     if ($numeric eq "") {
 	$jnum = 65535;		# does not have a numeric value
+        # Special case sequences of 'a'-'z'
+        if ($hex >= 0x0041 && $hex <= 0x005a) {
+            $jnum = 0x0037;
+        } elsif ($hex >= 0x0061 && $hex <= 0x007a) {
+            $jnum = 0x0057;
+        } elsif ($hex >= 0xff21 && $hex <= 0xff3a) {
+            $jnum = 0xff17;
+        } elsif ($hex >= 0xff41 && $hex <= 0xff5a) {
+            $jnum = 0xff37;
+        }
     } else {
 	if ($numeric =~ /^[0-9]+$/) {
-	    $jnum = $numeric;	# nonnegative integer value
-	    die "sanity: numeric out of range!\n" if ($jnum >= 65534);
-	} else { 
+	    $jnum = $hex - $numeric;	# nonnegative integer value
+	    die "sanity: numeric out of range!\n" if ($jnum >= 65534 ||
+                                                      $jnum <= -65534);
+	} else {
 	    $jnum = 65534;	# other integer value
 	}
     }
 
-    # handle uppercase mapping
-    $jupper = $upcase;
+    # handle uppercase mapping - use the offset from $hex
+    $jupper = ($upcase == 0) ? 0 : ($hex - $upcase);
 
-    # handle lowercase mapping
-    $jlower = $lowcase;
+    # handle lowercase mapping - use the offset from $hex
+    $jlower = ($lowcase == 0) ? 0 : ($hex - $lowcase);
 
     # handle titlecase mapping - go ahead and output to file
-    if ($titlecase != $upcase && $titlecase != 0 && $upcase != 0) {
+    if ($titlecase != $upcase) {
+        $titlecase = $hex if ($titlecase == 0);
 	print TITLECASE (pack ("n2", $hex, $titlecase));
     }
 
@@ -158,16 +195,46 @@ while (<DATA>) {
 	if (/Sc/) { $cat = 26; last CAT; } # symbol, currency
 	if (/Sk/) { $cat = 27; last CAT; } # symbol, modifier
 	if (/So/) { $cat = 28; last CAT; } # symbol, other
+        if (/Pi/) { $cat = 29; last CAT; } # punctuation, initial quote
+        if (/Pf/) { $cat = 30; last CAT; } # punctuation, final quote
+        $cat = 0; # unassigned
+    }
+
+    # handle mirrored characters
+    $jmirrored = ($mirrored eq "Y") ? 1 : 0;
+
+    # handle directionality
+    $_ = $bidir;
+    BIDIR: {
+	if (/^L$/) { $jdir = 0; last BIDIR; } # Left-to-Right
+	if (/^R$/) { $jdir = 1; last BIDIR; } # Right-to-Left
+	if (/^AL$/) { $jdir = 2; last BIDIR; } # Right-to-Left Arabic
+	if (/^EN$/) { $jdir = 3; last BIDIR; } # European Number
+	if (/^ES$/) { $jdir = 4; last BIDIR; } # European Numer Separator
+	if (/^ET$/) { $jdir = 5; last BIDIR; } # European Numer Terminator
+	if (/^AN$/) { $jdir = 6; last BIDIR; } # Arabic Number
+	if (/^CS$/) { $jdir = 7; last BIDIR; } # Common Number Separator
+	if (/^NSM$/) { $jdir = 8; last BIDIR; } # Non-Spacing Mark
+	if (/^BN$/) { $jdir = 9; last BIDIR; } # Boundary Neutral
+	if (/^B$/) { $jdir = 10; last BIDIR; } # Paragraph Separator
+	if (/^S$/) { $jdir = 11; last BIDIR; } # Segment Separator
+	if (/^WS$/) { $jdir = 12; last BIDIR; } # Whitespace
+	if (/^ON$/) { $jdir = 13; last BIDIR; } # Other Neutral
+	if (/^LRE$/) { $jdir = 14; last BIDIR; } # Left-to-Right Embedding
+	if (/^LRO$/) { $jdir = 15; last BIDIR; } # Left-to-Right Override
+	if (/^RLE$/) { $jdir = 16; last BIDIR; } # Right-to-Left Embedding
+	if (/^RLO$/) { $jdir = 17; last BIDIR; } # Right-to-Left Override
+	if (/^PDF$/) { $jdir = 18; last BIDIR; } # Pop Directional Format
+        $jdir = -1; # undefined
     }
 
   CHAR: {
       # starting point
-      if ($hex == 0) { 
+      if ($hex == 0) {
 	  &write_char;
 	  $comp = 2;		# compressed block state unknown until next ch
 	  $start = 0;
-	  $offset = 0;
-	  last CHAR; 
+	  last CHAR;
       }
 
       # handle mandatory blocks
@@ -185,10 +252,10 @@ while (<DATA>) {
       }
 
       # not sequential, end block.
-      if (($lhex+1) != $hex) { 
-	  &end_block; 
-	  &write_char; 
-	  last CHAR; 
+      if (($lhex+1) != $hex) {
+	  &end_block;
+	  &write_char;
+	  last CHAR;
       }
 
       # check to see if we can compress this character into the current block
@@ -196,19 +263,23 @@ while (<DATA>) {
 	  $jnum == $ljnum &&
 	  $jnobreakspace == $ljnobreakspace &&
 	  $jupper == $ljupper &&
-	  $jlower == $ljlower) {
+	  $jlower == $ljlower &&
+          $jmirrored == $ljmirrored &&
+          $jdir == $ljdir) {
 	  if ($comp == 2) { $comp = 1; } # start compressing
 	  # end uncompressed block
-	  if ($comp == 0) { 
+	  if ($comp == 0) {
 	      $tmp = $lhex;
 	      $lhex = $llhex;
+              $offset -= 8;
 	      &end_block;
 	      $start = $lhex = $tmp;
-	      $comp = 1; 
+              $offset += 8;
+	      $comp = 1;
 	  }
-      } else { 
+      } else {
   	  if ($comp == 2) { $comp = 0; };
-  	  if ($comp == 1) { &end_block; $comp = 2; }
+  	  if ($comp == 1) { &end_block; }
   	  &write_char;
       }
   }
@@ -219,9 +290,12 @@ while (<DATA>) {
     $ljnobreakspace = $jnobreakspace;
     $ljupper = $jupper;
     $ljlower = $jlower;
+    $ljmirrored = $jmirrored;
+    $ljdir = $jdir;
 }
 $lhex = $hex;			# setup final block write
 &end_block;			# write final block
+truncate CHAR, $offset + 8;     # remove final duplicate record, if it exists
 
 close(DATA);
 close(TITLECASE);
@@ -229,20 +303,6 @@ close(CHAR);
 close(BLOCK);
 
 print "ok\n";
-
-# Second step of compression -- elimate duplicate compressed blocks
-# in char.uni.  Should save about 2k; might implement later.
-#
-#  open (DATA, "<block.uni") || die ("Can't open block file: $!\n");
-#  open (CHAR, "<character.uni") || die ("Can't open char file: $!\n");
-#  $offset = 0;
-#  $comp = 0;
-#  while (read DATA, $buf, 9) {
-#      ($start, $end, $comp, $off) = unpack("nnCN", $buf);
-#      if ($comp == 1) {
-#  	seek CHAR, $off, 0;
-#  	read CHAR, $cbuf, 7;
-#  	push @$cbuf, $off;
-#  	$arrays{$cbuf} = $cbuf;
-#      }
-#  }
+print "Created " . ($offset + 8)/8 . " attributes for $characters "
+    . "Unicode characters in $blocks blocks.\n"
+    . "(Ignored $ignored surrogates.)\n";
