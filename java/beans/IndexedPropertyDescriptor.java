@@ -149,7 +149,7 @@ public class IndexedPropertyDescriptor extends PropertyDescriptor {
 	 ** @param setIndex the set index method.
 	 ** @exception IntrospectionException if the methods are not found or invalid.
 	 **/
-	public IndexedPropertyDescriptor(String name, Method getMethod, Method setMethod, Method setIndex, Method getIndex) throws IntrospectionException {
+	public IndexedPropertyDescriptor(String name, Method getMethod, Method setMethod, Method getIndex, Method setIndex) throws IntrospectionException {
 		super(name);
 		if(getMethod != null && getMethod.getParameterTypes().length > 0) {
 			throw new IntrospectionException("get method has parameters");
@@ -198,8 +198,8 @@ public class IndexedPropertyDescriptor extends PropertyDescriptor {
 		this.setMethod = setMethod;
 		this.getIndex = getIndex;
 		this.setIndex = getIndex;
-		this.propertyType = getMethod.getReturnType();
-		this.indexedPropertyType = getIndex.getReturnType();
+		this.indexedPropertyType = getIndex != null ? getIndex.getReturnType() : setIndex.getParameterTypes()[1];
+		this.propertyType = getMethod != null ? getMethod.getReturnType() : (setMethod != null ? setMethod.getParameterTypes()[0] : Array.newInstance(this.indexedPropertyType,0).getClass());
 	}
 
 	public Class getIndexedPropertyType() {
