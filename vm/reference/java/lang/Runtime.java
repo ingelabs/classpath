@@ -30,14 +30,22 @@ import java.io.*;
  ** @version 1.1.0, Aug 8 1998
  **/
 
-public class Runtime extends Object {
+public class Runtime {
 	static Runtime current = new Runtime();
 	String[] libpath;
+
+	/* Leave this private, and leave it in Runtime.
+	 * It must be private to avoid security problems.
+	 * See the note on getSecurityManager() to find
+	 * out why it needs to be in Runtime.
+	 */
+	private static SecurityManager securityManager;
 
 	private Runtime() {
 		String path = getLibraryPath();
 		int numColons = 0;
-		for(int i=0;i<path.length();i++) {
+		int pathLength = path.length();
+		for(int i=0;i<pathLength;i++) {
 			if(path.charAt(i) == ':')
 				numColons++;
 		}
@@ -119,7 +127,7 @@ public class Runtime extends Object {
 
 	/** Load a native library using the system-dependent
 	 ** filename.
-         ** @exception SecurityException if
+	 ** @exception SecurityException if
 	 **            System.getSecurityManager().checkLink(filename)
 	 **            fails.
 	 ** @exception UnsatisfiedLinkError if the library is not
@@ -130,7 +138,9 @@ public class Runtime extends Object {
 		if(sm != null) {
 			sm.checkLink(filename);
 		}
-		nativeLoad(filename);
+		if(nativeLoad(filename) == 0) {
+			throw new UnsatisfiedLinkError("Could not load library " + filename + ".");
+		}
 	}
 
 	/** Load a native library using a system-independent "short
@@ -138,7 +148,7 @@ public class Runtime extends Object {
 	 ** correct filename in a system-dependent manner (for
 	 ** example, in Windows, "mylib" will be turned into
 	 ** "mylib.dll") and then passed to load(filename).
-         ** @exception SecurityException if
+	 ** @exception SecurityException if
 	 **            System.getSecurityManager().checkLink(filename)
 	 **            fails.
 	 ** @exception UnsatisfiedLinkError if the library is not
@@ -258,7 +268,25 @@ public class Runtime extends Object {
 		return out;
 	}
 
-	native void nativeLoad(String filename);
+	/* This was moved to Runtime so that Runtime would no
+	 * longer trigger System's class initializer.  Runtime does
+	 * native library loading, and the System class initializer
+	 * requires native libraries to have been loaded.
+	 */
+    static void setSecurityManager(SecurityManager securityManager) {
+		if(securityManager != null) {
+			throw new SecurityException("Security Manager already set");
+		}
+		Runtime.securityManager = securityManager;
+	}
+
+	/* See setSecurityManager() for why this is in Runtime.
+	 */
+	static SecurityManager getSecurityManager() {
+		return Runtime.securityManager;
+	}
+
+	native int nativeLoad(String filename);
 	native String nativeGetLibname(String pathname, String libname);
 	native Process execInternal(String[] cmd, String[] env);
 	static native String getLibraryPath();

@@ -44,7 +44,6 @@ public class System {
 	/* This class is uninstantiable. */
 	private System() { }
 
-	private static SecurityManager securityManager;
 	private static Properties properties;
 
 	/** The standard InputStream.  This is assigned at
@@ -59,7 +58,7 @@ public class System {
 
 	/** The standard output PrintStream.  This is assigned at
 	 ** startup and starts its life perfectly valid.<P>
-	 ** This corresponds to the C stdout and C++ cout
+	 ** This corresponds to the C stderr and C++ cerr
 	 ** variables, which typically output to the screen,
 	 ** but may be used to pipe output to other processes
 	 ** or files.  That should all be transparent to you,
@@ -107,7 +106,7 @@ public class System {
 	 ** @return the current SecurityManager, or null.
 	 **/
 	public static SecurityManager getSecurityManager() {
-		return securityManager;
+		return Runtime.getSecurityManager();
 	}
 
 	/** Set the current SecurityManager.
@@ -119,15 +118,13 @@ public class System {
 	 ** <STRONG>Spec Note:</STRONG> Don't ask me, I didn't
 	 ** write it.  It looks pretty vulnerable; whoever gets to
 	 ** the gate first gets to set the policy.
+	 **
 	 ** @param securityManager the new SecurityManager.
 	 ** @exception SecurityException if the SecurityManger is
 	 **            already set.
 	 **/
 	public static void setSecurityManager(SecurityManager securityManager) {
-		if(securityManager != null) {
-			throw new SecurityException("Security Manager already set");
-		}
-		System.securityManager = securityManager;
+	    Runtime.setSecurityManager(securityManager);
 	}
 
 	/** Get the current time, measured in the number of
