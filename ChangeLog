@@ -1,3 +1,57 @@
+2002-11-23  Michael Koch <konqueror@gmx.de>
+
+	* gnu/java/nio/CharBufferImpl.java
+	(array_offset): Removed.
+	(endian): New member variable to store endianess of buffer.
+	(order): New method.
+	* gnu/java/nio/MappedCharFileBuffer.java
+	(endian): New member variable to store endianess of buffer.
+	(order): New method.
+	* java/nio/CharBuffer.java
+	(array_offset): New member variable.
+	(allocateDirect): Removed.
+	(wrap): Fixed
+	(Thanks to Ito Kazumitsu <ito.kazumitsu@hitachi-cable.co.jp>).
+	(wrap): Documentation added.
+	(get): Throw exception, documentation added.
+	(put): Throw exception, documentation added.
+	(put): New method.
+	(hasArray): Documentation added.
+	(array): Documentation added.
+	(arrayOffset): Implemented, documentation added.
+	(hashCode): Documentation added.
+	(subSequence): Documentation added.
+	(length): Documentation added.
+	(charAt): Reformated, documentation added.
+	(toString): Documentation added.
+	(compareTo): Documentation added.
+	(order): Made a final method to an abstract method.
+	(order): Removed.
+	(compact): Documentation added.
+	(isDirect): Documentation added.
+	(slice): Documentation added.
+	(duplicate): Documentation added.
+	(asReadOnlyBuffer): Documentation added.
+	(asShortBuffer): Removed.
+	(asCharBuffer): Removed.
+	(asIntBuffer): Removed.
+	(asLongBuffer): Removed.
+	(asDoubleBuffer): Removed.
+	(asFloatBuffer): Removed.
+	(asBuffer): Removed.
+	(getChar): Removed.
+	(putChar): Removed.
+	(getShort): Removed.
+	(putShort): Removed.
+	(getInt): Removed.
+	(putInt): Removed.
+	(getLong): Removed.
+	(putLong): Removed.
+	(getDouble): Removed.
+	(putDouble): Removed.
+	(getFloat): Removed.
+	(putFloat): Removed.
+	
 2002-11-23  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/net/protocol/jar/JarURLConnection.java (READBUFSIZE): 4K.

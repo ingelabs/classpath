@@ -39,6 +39,7 @@ package gnu.java.nio;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.CharBuffer;
 import java.nio.DoubleBuffer;
 import java.nio.FloatBuffer;
@@ -53,6 +54,7 @@ final public class MappedCharFileBuffer
   boolean ro;
   boolean direct;
   public FileChannelImpl ch;
+  private ByteOrder endian = ByteOrder.BIG_ENDIAN;
 
   public MappedCharFileBuffer(FileChannelImpl ch)
   {
@@ -72,6 +74,11 @@ final public class MappedCharFileBuffer
     this.ch = b.ch;
     address = b.address;
     limit(b.limit());
+  }
+
+  final public ByteOrder order ()
+  {
+    return endian;
   }
 
   public boolean isReadOnly()
