@@ -5,7 +5,6 @@ libjavaio_la_SOURCES = 	javaio.h \
 			java_io_File.c \
 			FileDescriptor.c \
 			java_io_ObjectInputStream.c \
-			java_io_ObjectStreamClass.c \
 			java_nio.c
 
 

@@ -189,7 +189,7 @@ Java_java_io_FileDescriptor_nativeClose(JNIEnv *env, jobject obj, jlong fd)
  * Writes a single byte to the specified file descriptor
  * Return status code, exception on error
  */
-JNIEXPORT jint JNICALL
+JNIEXPORT jlong JNICALL
 Java_java_io_FileDescriptor_nativeWriteByte(JNIEnv *env, jobject obj,
                                             jlong fd, jint b)
 {
@@ -220,10 +220,10 @@ Java_java_io_FileDescriptor_nativeWriteByte(JNIEnv *env, jobject obj,
  * Writes a byte buffer to the specified file descriptor
  * Return status code, exception on error
  */
-JNIEXPORT jint JNICALL
+JNIEXPORT jlong JNICALL
 Java_java_io_FileDescriptor_nativeWriteBuf(JNIEnv *env, jobject obj,
-                                           jlong fd, jarray buf, jint offset,
-					   jint len)
+                                           jlong fd, jbyteArray buf, 
+					   jint offset, jint len)
 {
   int native_fd;
   ssize_t rc, bytes_written = 0;

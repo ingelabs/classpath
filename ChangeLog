@@ -1,3 +1,15 @@
+2003-04-04  C. Brian Jones  <cbj@gnu.org>
+
+	* native/jni/java-io/java_io_FileDescriptor.c
+	(Java_java_io_FileDescriptor_nativeWriteBuf): return type is jlong
+	(Java_java_io_FileDescriptor_nativeWriteBuf): return type is jlong
+	* native/jni/java-io/java_io_ObjectStreamClass.c: removed
+	* native/jni/java-io/java_io_RandomAccessFile.c: removed
+	* native/jni/java-io/java_io_FileInputStream.c: removed
+	* native/jni/java-io/java_io_FileOutputStream.c: removed
+	* native/jni/java-io/Makefile.am: adjusted members of java-io library
+	
+
 2003-04-03  C. Brian Jones  <cbj@gnu.org>
 
 	* vm/reference/java/lang/VMClass.java: fix imports

@@ -5,7 +5,7 @@ SUBDIRS = reflect
 EXTRA_DIST = \
 Runtime.java \
 Thread.java \
-VMClass.java
+VMClass.java \
 VMClassLoader.java \
 VMObject.java \
 VMSecurityManager.java \
