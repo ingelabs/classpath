@@ -1,3 +1,16 @@
+2004-09-26  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/SpinnerNumberModel.java
+	(SpinnerNumberModel): Implements java.io.Serializable.
+	(serialVersionUID): New field.
+	(SpinnerNumberModel): Added missing @throws tags to javadocs.
+	(getMinimum): New method.
+	(setMinimum): Likewise.
+	(getMaximum): Likewise.
+	(setMaximum): Likewise.
+	(getStepSize): Likewise.
+	(setStepSize): Likewise.
+
 2004-09-26  Kim Ho  <kho@redhat.com>
 
 	* javax/swing/plaf/basic/BasicArrowButton.java:
