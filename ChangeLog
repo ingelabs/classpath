@@ -1,5 +1,18 @@
 2004-09-26  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/text/DocumentFilter.java
+	(FilterBypass): New inner class.
+	(insertString): New method.
+	(remove): Likewise.
+	(replace): Likewise.
+	* javax/swing/text/NavigationFilter.java
+	(FilterBypass): New inner class.
+	(NavigationFilter): New method.
+	(moveDot): Likewise.
+	(setDot): Likewise.
+
+2004-09-26  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/text/SimpleAttributeSet.java
 	(EMPTY): Made public final.
 
