@@ -1,4 +1,4 @@
-/* AccessibleResourceBundle.java -- deprecated class
+/* AccessibleTableModelChange.java -- describes change to an accessible table
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,37 +38,65 @@ exception statement from your version. */
 
 package javax.accessibility;
 
-import java.util.ListResourceBundle;
-
 /**
- * This class is deprecated. It once was used for localizing accessibility
- * strings, and was never meant for external use anyway.
+ * Describes a change to an accessible table. Accessibility software can use
+ * the implementations of this interface to update their state after a
+ * change to a table.
  *
  * @author Eric Blake <ebb9@email.byu.edu>
- * @see AccessibleBundle.toDisplayString(String, Locale)
+ * @see Accessible
+ * @see AccessibleContext
+ * @see AccessibleContext#getAccessibleTable()
+ * @see AccessibleTable
  * @since 1.2
- * @deprecated this class is no longer used
  * @status updated to 1.4
  */
-public class AccessibleResourceBundle extends ListResourceBundle
+public interface AccessibleTableModelChange
 {
-  /**
-   * Default constructor.
-   *
-   * @deprecated do not use this class
-   */
-  public AccessibleResourceBundle()
-  {
-  }
+  /** Identifies insertion of rows or columns. */
+  int INSERT = 1;
+
+  /** Identifies change to existing data. */
+  int UPDATE = 0;
+
+  /** Identifies deletion of rows or columns. */
+  int DELETE = -1;
 
   /**
-   * Returns the mapping between keys and display strings.
+   * Returns the change type.
    *
-   * @return null
-   * @deprecated do not use this class
+   * @return the type
+   * @see #INSERT
+   * @see #UPDATE
+   * @see #DELETE
    */
-  public Object[][] getContents()
-  {
-    return null;
-  }
-} // class AccessibleResourceBundle
+  int getType();
+
+  /**
+   * Returns the first row that changed.
+   *
+   * @return the 0-based index of the first row to change
+   */
+  int getFirstRow();
+
+  /**
+   * Returns the last row that changed.
+   *
+   * @return the 0-based index of the last row to change
+   */
+  int getLastRow();
+
+  /**
+   * Returns the first column that changed.
+   *
+   * @return the 0-based index of the first column to change
+   */
+  int getFirstColumn();
+
+  /**
+   * Returns the last column that changed.
+   *
+   * @return the 0-based index of the last column to change
+   */
+  int getLastColumn();
+} // interface AccessibleTableModelChange

@@ -1,6 +1,5 @@
-/* AccessibleAction.java -- Java interface for aiding in accessibly determining
-   what actions an object can perform
-   Copyright (C) 2000 Free Software Foundation, Inc.
+/* AccessibleAction.java -- aids in accessibly performing actions
+   Copyright (C) 2000, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -8,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -36,41 +35,48 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package javax.accessibility;
 
 /**
- * If an object implements this interface then it must be able to
- * perform one or more actions.  By implementing the interface it
- * is possible to discover what those actions are and perform those
- * actions.
- * <p>
- * The <code>AccessibleContext.getAccessibleAction()</code> method 
- * should return <code>null</code> if an object does not implement
- * this interface.
- * 
+ * If an object implements this interface then it must be able to perform one
+ * or more actions. Accessibility software can use the implementations of this
+ * interface to discover and perform actions on an object.
+ *
+ * <p>The <code>AccessibleContext.getAccessibleAction()</code> method should
+ * return <code>null</code> if an object does not implement this interface.
+ *
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @see Accessible
+ * @see AccessibleContext
  * @see AccessibleContext#getAccessibleAction()
+ * @since 1.2
+ * @status updated to 1.4
  */
-public interface AccessibleAction {
+public interface AccessibleAction
+{
+  /**
+   * Get the number possible actions for this object, with the zeroth
+   * representing the default action.
+   *
+   * @return the 0-based number of actions
+   */
+  int getAccessibleActionCount();
 
-    /**
-     * Perform the specified action.
-     *
-     * @param i the action to perform.  Actions are counted starting with zero.
-     * @return false if the action was not performed and true if was performed
-     */
-    public abstract boolean doAccessibleAction(int i);
+  /**
+   * Get a description for the specified action. Returns null if out of
+   * bounds.
+   *
+   * @param i the action to describe, 0-based
+   * @return description of the action
+   */
+  String getAccessibleActionDescription(int i);
 
-    /**
-     * Get the number possible actions for this object with the first
-     * representing the default action.
-     */
-    public abstract int getAccessibleActionCount();
-
-    /**
-     * Get a description for the specified action.
-     * 
-     * @param i the action to describe.  Actions are counted starting with zero.
-     * @return description of the action
-     */
-    public abstract String getAccessibleActionDescription(int i);
-}
+  /**
+   * Perform the specified action. Does nothing if out of bounds.
+   *
+   * @param i the action to perform, 0-based
+   * @return true if the action was performed
+   */
+  boolean doAccessibleAction(int i);
+} // interface AccessibleAction

@@ -1,3 +1,32 @@
+2002-03-18  Eric Blake  <ebb9@email.byu.edu>
+
+	* javax/Makefile.am (SUBDIRS): Visit accessibility subdir.
+	* javax/accessibility/Makefile.am: New file.
+	* javax/accessibility/.cvsignore: New file.
+	* javax/accessibility/Accessible.java: Update to 1.4.
+	* javax/accessibility/AccessibleAction.java: Update to 1.4.
+	* javax/accessibility/AccessibleBundle.java: Implement.
+	* javax/accessibility/AccessibleComponent.java: Update to 1.4.
+	* javax/accessibility/AccessibleContext.java: Implement.
+	* javax/accessibility/AccessibleEditableText.java: New file.
+	* javax/accessibility/AccessibleExtendedComponent.java: New file.
+	* javax/accessibility/AccessibleExtendedTable.java: New file.
+	* javax/accessibility/AccessibleHyperlink.java: Implement.
+	* javax/accessibility/AccessibleHypertext.java: Update to 1.4.
+	* javax/accessibility/AccessibleIcon.java: New file.
+	* javax/accessibility/AccessibleKeyBinding.java: New file.
+	* javax/accessibility/AccessibleRelation.java: New file.
+	* javax/accessibility/AccessibleRelationSet.java: New file.
+	* javax/accessibility/AccessibleResourceBundle.java: Implement.
+	* javax/accessibility/AccessibleRole.java: Implement.
+	* javax/accessibility/AccessibleSelection.java: Update to 1.4.
+	* javax/accessibility/AccessibleState.java: Implement.
+	* javax/accessibility/AccessibleStateSet.java: Implement.
+	* javax/accessibility/AccessibleTable.java: New file.
+	* javax/accessibility/AccessibleTableModelChange.java: New file.
+	* javax/accessibility/AccessibleText.java: Update to 1.4.
+	* javax/accessibility/AccessibleValue.java: Update to 1.4.
+
 2002-03-17  C. Brian Jones <cbj@gnu.org>
 
 	* java/net/URLStreamHandler.java (parseURL): incorporate patch from

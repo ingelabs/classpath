@@ -1,4 +1,4 @@
-/* AccessibleResourceBundle.java -- deprecated class
+/* AccessibleKeyBinding.java -- aids in using keyboard navigation
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,37 +38,41 @@ exception statement from your version. */
 
 package javax.accessibility;
 
-import java.util.ListResourceBundle;
-
 /**
- * This class is deprecated. It once was used for localizing accessibility
- * strings, and was never meant for external use anyway.
+ * Objects which have keyboard bindings for mneumonics or shortcuts should
+ * implement this interface.  Accessibility software can use the
+ * implementations of this interface to aid the user in using the key
+ * bindings.
+ *
+ * <p>The <code>AccessibleContext.getAccessibleKeyBinding()</code> method
+ * should return <code>null</code> if an object does not implement this
+ * interface.
  *
  * @author Eric Blake <ebb9@email.byu.edu>
- * @see AccessibleBundle.toDisplayString(String, Locale)
+ * @see Accessible
+ * @see AccessibleContext
+ * @see AccessibleContext#getAccessibleKeyBinding()
  * @since 1.2
- * @deprecated this class is no longer used
  * @status updated to 1.4
  */
-public class AccessibleResourceBundle extends ListResourceBundle
+public interface AccessibleKeyBinding
 {
   /**
-   * Default constructor.
+   * Returns the count of key bindings for this object.
    *
-   * @deprecated do not use this class
+   * @return the 0-based count, or -1 if there are none
    */
-  public AccessibleResourceBundle()
-  {
-  }
+  int getAccessibleKeyBindingCount();
 
   /**
-   * Returns the mapping between keys and display strings.
+   * Return the numbered key binding, which can then be cast in an
+   * implementation dependent way to the appropriate object type. For example,
+   * swing uses <code>javax.swing.KeyStroke</code>. This returns null if i
+   * is out of bounds.
    *
-   * @return null
-   * @deprecated do not use this class
+   * @param i the 0-based index of key bindings
+   * @return the key binding
+   * @see #getAccessibleKeyBindingCount()
    */
-  public Object[][] getContents()
-  {
-    return null;
-  }
-} // class AccessibleResourceBundle
+  Object getAccessibleKeyBinding(int i);
+} // interface AccessibleKeyBinding

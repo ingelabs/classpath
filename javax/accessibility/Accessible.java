@@ -1,5 +1,5 @@
-/* Accessible.java -- Primary Java accessibility interface
-   Copyright (C) 2000 Free Software Foundation, Inc.
+/* Accessible.java -- primary Java accessibility interface
+   Copyright (C) 2000, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -35,19 +35,27 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package javax.accessibility;
 
 /**
  * Implementing the Accessibility API must start with implementation
- * of this interface at a bare minimum.  This is the major interface 
+ * of this interface at a bare minimum.  This is the major interface
  * for the Accessibility API which must be implemented by all user
  * interface components.
+ *
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @since 1.2
+ * @status updated to 1.4
  */
-public interface Accessible {
-
-    /**
-     * If a component supports the Accessibility API then this 
-     * method should not return <code>null</code>.  
-     */
-    public abstract AccessibleContext getAccessibleContext();
-}
+public interface Accessible
+{
+  /**
+   * If a component supports the Accessibility API then this method should
+   * not return <code>null</code>. Only classes which must extend an accessible
+   * class, but must not itself be accessible, may return null.
+   *
+   * @return the context associated with this accessible object
+   */
+  AccessibleContext getAccessibleContext();
+} // interface Accessible

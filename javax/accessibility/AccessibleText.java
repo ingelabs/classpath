@@ -1,6 +1,5 @@
-/* AccessibleText.java -- Java interface for aiding in accessibly rendering 
-   other Java components
-   Copyright (C) 2000 Free Software Foundation, Inc.
+/* AccessibleText.java -- aids in accessibly manipulating text
+   Copyright (C) 2000, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -8,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -36,25 +35,152 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package javax.accessibility;
 
-import javax.swing.text.AttributeSet;
 import java.awt.Rectangle;
 import java.awt.Point;
+// XXX Waiting on javax.swing support.
+// import javax.swing.text.AttributeSet;
 
-public interface AccessibleText {
-    public static final int CHARACTER = 1;
-    public static final int WORD = 2;
-    public static final int SENTENCE = 3;
-    public abstract String getAfterIndex(int part, int index);
-    public abstract String getAtIndex(int part, int index);
-    public abstract String getBeforeIndex(int part, int index);
-    public abstract int getCaretPosition();
-    public abstract int getCharCount();
-    public abstract AttributeSet getCharacterAttribute(int index);
-    public abstract Rectangle getCharacterBounds(int index);
-    public abstract int getIndexAtPoint(Point point);
-    public abstract String getSelectedText();
-    public abstract int getSelectionEnd();
-    public abstract int getSelectionStart();
-}
+/**
+ * Objects which present textual information on the display should implement
+ * this interface.  Accessibility software can use the implementations of
+ * this interface to change the attributes and spacial location of the text.
+ *
+ * <p>The <code>AccessibleContext.getAccessibleText()</code> method
+ * should return <code>null</code> if an object does not implement this
+ * interface.
+ *
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @see Accessible
+ * @see AccessibleContext
+ * @see AccessibleContext#getAccessibleText()
+ * @since 1.2
+ * @status updated to 1.4, except for javax.swing support
+ */
+public interface AccessibleText
+{
+  /**
+   * Constant designating that the next selection should be a character.
+   *
+   * @see #getAtIndex(int, int)
+   * @see #getAfterIndex(int, int)
+   * @see #getBeforeIndex(int, int)
+   */
+  int CHARACTER = 1;
+
+  /**
+   * Constant designating that the next selection should be a word.
+   *
+   * @see #getAtIndex(int, int)
+   * @see #getAfterIndex(int, int)
+   * @see #getBeforeIndex(int, int)
+   */
+  int WORD = 2;
+
+  /**
+   * Constant designating that the next selection should be a sentence.
+   *
+   * @see #getAtIndex(int, int)
+   * @see #getAfterIndex(int, int)
+   * @see #getBeforeIndex(int, int)
+   */
+  int SENTENCE = 3;
+
+  /**
+   * Given a point in the coordinate system of this object, return the
+   * 0-based index of the character at that point, or -1 if there is none.
+   *
+   * @param p the point to look at
+   * @return the character index, or -1
+   */
+  int getIndexAtPoint(Point point);
+
+  /**
+   * Determines the bounding box of the indexed character. Returns an empty
+   * rectangle if the index is out of bounds.
+   *
+   * @param index the 0-based character index
+   * @return the bounding box, may be empty
+   */
+  Rectangle getCharacterBounds(int index);
+
+  /**
+   * Return the number of characters.
+   *
+   * @return the character count
+   */
+  int getCharCount();
+
+  /**
+   * Return the offset of the character. The offset matches the index of the
+   * character to the right, since the carat lies between characters.
+   *
+   * @return the 0-based caret position
+   */
+  int getCaretPosition();
+
+  /**
+   * Returns the section of text at the index, or null if the index or part
+   * is invalid.
+   *
+   * @param part {@link CHARACTER}, {@link WORD}, or {@link SENTENCE}
+   * @param index the 0-based character index
+   * @return the selection of text at that index, or null
+   */
+  String getAtIndex(int part, int index);
+
+  /**
+   * Returns the section of text after the index, or null if the index or part
+   * is invalid.
+   *
+   * @param part {@link CHARACTER}, {@link WORD}, or {@link SENTENCE}
+   * @param index the 0-based character index
+   * @return the selection of text after that index, or null
+   */
+  String getAfterIndex(int part, int index);
+
+  /**
+   * Returns the section of text before the index, or null if the index or part
+   * is invalid.
+   *
+   * @param part {@link CHARACTER}, {@link WORD}, or {@link SENTENCE}
+   * @param index the 0-based character index
+   * @return the selection of text before that index, or null
+   */
+  String getBeforeIndex(int part, int index);
+
+  /**
+   * Returns the attributes of a character at an index, or null if the index
+   * is out of bounds.
+   *
+   * @param index the 0-based character index
+   * @return the character's attributes
+   */
+  // XXX Waiting on javax.swing support.
+  //  AttributeSet getCharacterAttribute(int index);
+
+  /**
+   * Returns the start index of the selection. If there is no selection, this
+   * is the same as the caret location.
+   *
+   * @return the 0-based character index of the selection start
+   */
+  int getSelectionStart();
+
+  /**
+   * Returns the end index of the selection. If there is no selection, this
+   * is the same as the caret location.
+   *
+   * @return the 0-based character index of the selection end
+   */
+  int getSelectionEnd();
+
+  /**
+   * Returns the selected text. This may be null or "" if no text is selected.
+   *
+   * @return the selected text
+   */
+  String getSelectedText();
+} // interface AccessibleText

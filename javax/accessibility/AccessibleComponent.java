@@ -1,6 +1,5 @@
-/* AccessibleComponent.java -- Java interface for aiding in accessibly rendering 
-   other Java components
-   Copyright (C) 2000, 2001 Free Software Foundation, Inc.
+/* AccessibleComponent.java -- aids in accessibly rendering Java components
+   Copyright (C) 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -8,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -38,268 +37,285 @@ exception statement from your version. */
 
 package javax.accessibility;
 
-import java.awt.event.FocusListener;
-import java.awt.Point;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.Color;
+import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Dimension;
-import java.awt.Cursor;
+import java.awt.event.FocusListener;
 
 /**
  * Objects which are to be rendered to a screen as part of a graphical
- * user interface should implement this interface.  Accessibility 
- * software can use the implementations of this interface to determine 
+ * user interface should implement this interface.  Accessibility
+ * software can use the implementations of this interface to determine
  * and set the screen representation for an object.
- * <p>
- * The <code>AccessibleContext.getAccessibleComponent()</code> method
+ *
+ * <p>The <code>AccessibleContext.getAccessibleComponent()</code> method
  * should return <code>null</code> if an object does not implement this
  * interface.
  *
- * @see AccessibleContext#getAccessibleComponent() 
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @see Accessible
+ * @see AccessibleContext
+ * @see AccessibleContext#getAccessibleComponent()
+ * @since 1.2
+ * @status updated to 1.4
  */
-public interface AccessibleComponent {
+public interface AccessibleComponent
+{
+  /**
+   * Get the background color of this component.
+   *
+   * @return the background color of this component, or null if not supported
+   * @see #setBackground(Color)
+   */
+  Color getBackground();
 
-    /**
-     * Adds the specified listener to this component.
-     *
-     * @param listener the listener to add to this component
-     */
-    public abstract void addFocusListener(FocusListener listener);
+  /**
+   * Set the background color of this component to the specified color.
+   *
+   * @param color the color to set the background to
+   * @see #getBackground()
+   */
+  void setBackground(Color color);
 
-    /**
-     * Tests whether or not the specified point is contained within
-     * this component.  The coordinates are specified relative to this
-     * component's coordinate system.
-     *
-     * @param point the <code>Point</code> specifying the location within 
-     * this component
-     *
-     * @return <code>true</code> if the point is within this component, 
-     * <code>false</code> otherwise
-     */
-    public abstract boolean contains(Point point);
+  /**
+   * Get the foreground color of this component.
+   *
+   * @return the foreground color of this component, or null if not supported
+   * @see #setForeground(Color)
+   */
+  Color getForeground();
 
-    /**
-     * If a object exists which is a child of this parent component at
-     * the specified point which implements the Accessible interface then
-     * that object is returned.
-     *
-     * @param point the <code>Point</code> specifying the location within
-     * this component
-     *
-     * @return <code>null</code> if no <code>Accessible</code> child exists
-     * at the given point 
-     */
-    public abstract Accessible getAccessibleAt(Point point);
+  /**
+   * Set the foreground color of this component.
+   *
+   * @param color the color to set the foreground to
+   * @see #getForeground()
+   */
+  void setForeground(Color color);
 
-    /**
-     * Get the background color of this component.
-     * 
-     * @return the background color of this component if supported, 
-     * else <code>null</code>
-     */
-    public abstract Color getBackground();
+  /**
+   * Get the cursor of this component.
+   *
+   * @return the Cursor of this component, or null if not supported
+   * @see #setCursor(Cursor)
+   */
+  Cursor getCursor();
 
-    /**
-     * Get the bounds of this component relative to its parent.
-     * 
-     * @return the <code>Rectangle</code> representing the bounds of this component
-     * if it is visible on the screen, else <code>null</code>
-     */
-    public abstract Rectangle getBounds();
+  /**
+   * Set the cursor of the component.
+   *
+   * @param cursor the graphical representation of the cursor to use
+   * @see #getCursor()
+   */
+  void setCursor(Cursor cursor);
 
-    /**
-     * Get the cursor of this component.
-     * 
-     * @return the <code>Cursor</code> representing the mouse cursor if supported,
-     * else <code>null</code>
-     */
-    public abstract Cursor getCursor();
+  /**
+   * Get the font of this component
+   *
+   * @return the font of the component, or null if not supported
+   * @see setFont(Font)
+   */
+  Font getFont();
 
-    /**
-     * Get the font of this component
-     * 
-     * @return the <code>Font</code> of the component if supported, 
-     * else <code>null</code>
-     */
-    public abstract Font getFont();
+  /**
+   * Set the font of this component.
+   *
+   * @param font the font to use
+   * @see #getFont()
+   */
+  void setFont(Font font);
 
-    /**
-     * Get the <code>FontMetrics</code> of the specified font in this component.
-     *
-     * @param font the specified font
-     * @return the <code>FontMetrics</code> for the specified font if supported,
-     * else <code>null</code>
-     */
-    public abstract FontMetrics getFontMetrics(Font font);
+  /**
+   * Get the <code>FontMetrics</code> of the specified font in this component.
+   *
+   * @param font the specified font
+   * @return the metrics for the specified font, or null if not supported
+   * @see #getFont()
+   */
+  // XXX What happens if font is null?
+  FontMetrics getFontMetrics(Font font);
 
-    /**
-     * Get the foreground color of this component
-     * 
-     * @return the foreground color of this component if supported, 
-     * else <code>null</code>
-     */
-    public abstract Color getForeground();
+  /**
+   * Indicates whether or not this component is enabled. An object which is
+   * enabled also has AccessibleState.ENABLED in its StateSet.
+   *
+   * @return true if the component is enabled
+   * @see #setEnabled(boolean)
+   * @see AccessibleContext#getAccessibleStateSet()
+   * @see AccessibleState#ENABLED
+   */
+  boolean isEnabled();
 
-    /**
-     * Get the location of this component in the screen's coordinate system.
-     * The point specified is the top-left corner of this component.
-     * <p>
-     * <i>FIXME - Sun indicates this location is relative to the parent, but in the
-     * screen's coordinate space I am not sure how this is possible yet.  What
-     * makes the most sense is that this location is truly relative to the
-     * parent and the coordinates are in the parent's coordinate system.</i>
-     */
-    public abstract Point getLocation();
+  /**
+   * Set this component to an enabled or disabled state.
+   *
+   * @param b true to enable the component, else disable it
+   * @see #isEnabled()
+   */
+  void setEnabled(boolean b);
 
-    /**
-     * Get the location of this component in the screen's coordinate space.
-     * The point specified is the top-left corner of this component.
-     */
-    public abstract Point getLocationOnScreen();
+  /**
+   * Indicates whether or not this component is visible or intends to be
+   * visible although one of its ancestors may not be. An object which is
+   * visible also has AccessibleState.VISIBLE in its StateSet. Check
+   * <code>isShowing()</code> to see if the object is on screen.
+   *
+   * @return true if the component is visible
+   * @see #setVisible(boolean)
+   * @see AccessibleContext#getAccessibleStateSet()
+   * @see AccessibleState#VISIBLE
+   */
+  boolean isVisible();
 
-    /**
-     * Get the size of this component.
-     *
-     * @return the <code>Dimension</code> giving the height and width of this
-     * component, <code>null</code> if the component is not on the screen 
-     */
-    public abstract Dimension getSize();
+  /**
+   * Set the visible state of this component.
+   *
+   * @param b true to make the component visible, else hide it
+   * @see #isVisible()
+   */
+  void setVisible(boolean b);
 
-    /**
-     * Indicates whether or not this component is enabled.
-     * 
-     * @return <code>true</code> if the component is enabled, 
-     * else <code>false</code>
-     *
-     * @see AccessibleContext#getAccessibleStateSet()
-     * @see AccessibleState#ENABLED
-     */
-    public abstract boolean isEnabled();
+  /**
+   * Indicates whether or not this component is visible by checking
+   * the visibility of this component and its ancestors. The component may
+   * be hidden on screen by another component like pop-up help. An object
+   * which is showing on screen also has AccessibleState.SHOWING in its
+   * StateSet.
+   *
+   * @return true if component and ancestors are visible
+   * @see #isVisible()
+   * @see #setVisible(boolean)
+   * @see AccessibleContext#getAccessibleStateSet()
+   * @see AccessibleState#SHOWING
+   */
+  boolean isShowing();
 
-    /**
-     * Indicates whether or not this component can accept focus.
-     * 
-     * @return <code>true</code> if the component accepts focus,
-     * else <code>false</code>
-     *
-     * @see AccessibleContext#getAccessibleStateSet()
-     * @see AccessibleState#FOCUSABLE
-     * @see AccessibleState#FOCUSED
-     */
-    public abstract boolean isFocusTraversable();
+  /**
+   * Tests whether or not the specified point is contained within
+   * this component.  The coordinates are specified relative to this
+   * component's coordinate system.
+   *
+   * @param point the Point to locate
+   * @return true if the point is within this component
+   * @see #getBounds()
+   */
+  // XXX What happens if point is null?
+  boolean contains(Point point);
 
-    /**
-     * Indicates whether or not this component is visible by checking 
-     * the visibility of this component and its ancestors.  
-     * <p>
-     * The component may be hidden on screen by another component like
-     * pop-up help.
-     * 
-     * @return <code>true</code> if component and ancestors are visible, 
-     * else <code>false</code>
-     *
-     * @see AccessibleContext#getAccessibleStateSet()
-     * @see AccessibleState#SHOWING
-     */
-    public abstract boolean isShowing();
+  /**
+   * Get the location of this component in the screen's coordinate space.
+   * The point specified is the top-left corner of this component.
+   *
+   * @return the location on screen, or null if off-screen
+   * @see #getBounds()
+   * @see #getLocation()
+   */
+  Point getLocationOnScreen();
 
-    /**
-     * Indicates whether or not this component is visible or intends to be
-     * visible although one of its ancestors may not be.
-     * 
-     * @return <code>true</code> if the component is visible, 
-     * else <code>false</code>
-     *
-     * @see AccessibleContext#getAccessibleStateSet()
-     * @see AccessibleState#VISIBLE
-     */
-    public abstract boolean isVisible();
+  /**
+   * Get the location of this component in the parent's coordinate system.
+   * The point specified is the top-left corner of this component.
+   *
+   * @return the location in the parent on screen, or null if off-screen
+   * @see #getBounds()
+   * @see #getLocationOnScreen()
+   * @see #setLocation(Point)
+   */
+  Point getLocation();
 
-    /**
-     * Removes the specified listener from this component.
-     *
-     * @param listener the listener to remove
-     */
-    public abstract void removeFocusListener(FocusListener listener);
+  /**
+   * Set the location of this component relative to its parent.  The point
+   * specified represents the top-left corner of this component.
+   *
+   * @param point the top-left corner of this component relative to the parent
+   * @see #getLocation()
+   */
+  // XXX What happens if point is null?
+  void setLocation(Point point);
 
-    /**
-     * If this method is called this component will attempt to gain focus,
-     * but if it cannot accept focus nothing happens.
-     */
-    public abstract void requestFocus();
+  /**
+   * Get the bounds of this component relative to its parent - it's width,
+   * height, and relative location to its parent.
+   *
+   * @return the bounds of this component, or null if not on screen
+   * @see #contains(Point)
+   */
+  Rectangle getBounds();
 
-    /**
-     * Set the background color of this component to the specified color.
-     * 
-     * @param color the color to set the background to
-     */
-    public abstract void setBackground(Color color);
+  /**
+   * Set the bounds of this component to the specified height and width, and
+   * relative location to its parent.
+   *
+   * @param rectangle the new height, width, and relative location
+   */
+  // XXX What happens if rectangle is null?
+  void setBounds(Rectangle rectangle);
 
-    /**
-     * Set the bounds of this component to the specified height and width.
-     * 
-     * @param rectangle the object representing the height, width, and location
-     * of this component relative to its parent.
-     */
-    public abstract void setBounds(Rectangle rectangle);
+  /**
+   * Get the size of this component - it's width and height.
+   *
+   * @return the dimensions of this component, or null if not on screen
+   * @see #setSize(Dimension)
+   */
+  Dimension getSize();
 
-    /**
-     * Set the cursor of the component.
-     * 
-     * @param cursor the graphical representation of the cursor to use
-     */
-    public abstract void setCursor(Cursor cursor);
+  /**
+   * Set the size of this component to the given dimensions.
+   *
+   * @param dimension the new size of the component
+   * @see #getSize()
+   */
+  // XXX What happens if dimension is null?
+  void setSize(Dimension dimension);
 
-    /**
-     * Set this component to an enabled or disabled state.
-     *
-     * @param b if <code>true</code> enable the component, else disable it
-     * 
-     * @see #isEnabled()
-     */
-    public abstract void setEnabled(boolean b);
+  /**
+   * If a object exists at the specified point which is a child of this
+   * parent component, and it is accessible, then it is returned.
+   *
+   * @param point the location within this component's coordinate system
+   * @return the accessible child object at that point, or null
+   */
+  Accessible getAccessibleAt(Point point);
 
-    /**
-     * Set the font of this component.
-     * 
-     * @param font the font to use
-     */
-    public abstract void setFont(Font font);
+  /**
+   * Indicates whether or not this component can accept focus. An object
+   * which can accept focus also has AccessibleState.FOCUSABLE in its
+   * StateSet.
+   *
+   * @return true if the component can accept focus
+   * @see AccessibleContext#getAccessibleStateSet()
+   * @see AccessibleState#FOCUSABLE
+   * @see AccessibleState#FOCUSED
+   */
+  boolean isFocusTraversable();
 
-    /**
-     * Set the foreground color of this component.
-     *
-     * @param color the color to set the foreground to
-     */
-    public abstract void setForeground(Color color);
+  /**
+   * If this method is called this component will attempt to gain focus,
+   * but if it cannot accept focus nothing happens. On success, the StateSet
+   * will contain AccessibleState.FOCUSED
+   *
+   * @see #isFocusTraversable()
+   * @see AccessibleState#FOCUSED
+   */
+  void requestFocus();
 
-    /**
-     * Set the location of this component relative to its parent.  The point
-     * specified represents the top-left corner of this component.
-     *
-     * @param point the top-left corner of this component relative to the parent
-     */
-    public abstract void setLocation(Point point);
+  /**
+   * Adds the specified listener to this component.
+   *
+   * @param listener the listener to add to this component
+   * @see #removeFocusListener(FocusListener)
+   */
+  void addFocusListener(FocusListener listener);
 
-    /**
-     * Set the size of this component to the given dimensions.
-     *
-     * @param dimension the new size of the component
-     * 
-     * @see #getSize()
-     */
-    public abstract void setSize(Dimension dimension);
-
-    /**
-     * Set the visible state of this component.  
-     *
-     * @param b if <code>true</code> make the component visible, else make
-     * it invisible 
-     * 
-     * @see #isVisible()
-     */
-    public abstract void setVisible(boolean b);
-}
+  /**
+   * Removes the specified listener from this component.
+   *
+   * @param listener the listener to remove
+   * @see #addFocusListener(FocusListener)
+   */
+  void removeFocusListener(FocusListener listener);
+} // interface AccessibleComponent

@@ -1,4 +1,4 @@
-/* AccessibleResourceBundle.java -- deprecated class
+/* AccessibleIcon.java -- aids in accessibly rendering icons
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,37 +38,48 @@ exception statement from your version. */
 
 package javax.accessibility;
 
-import java.util.ListResourceBundle;
-
 /**
- * This class is deprecated. It once was used for localizing accessibility
- * strings, and was never meant for external use anyway.
+ * Objects which have an associated icon, such as buttons, should implement
+ * this interface.  Accessibility software can use the implementations of this
+ * interface to aid the user in navigating the links.
+ *
+ * <p>The <code>AccessibleContext.getAccessibleIcon()</code> method should
+ * return <code>null</code> if an object does not implement this interface.
  *
  * @author Eric Blake <ebb9@email.byu.edu>
- * @see AccessibleBundle.toDisplayString(String, Locale)
+ * @see Accessible
+ * @see AccessibleContext
+ * @see AccessibleContext#getAccessibleIcon()
  * @since 1.2
- * @deprecated this class is no longer used
  * @status updated to 1.4
  */
-public class AccessibleResourceBundle extends ListResourceBundle
+public interface AccessibleIcon
 {
   /**
-   * Default constructor.
+   * Returns a textual description of the icon and its purpose.
    *
-   * @deprecated do not use this class
+   * @return the description, or null if there is none
    */
-  public AccessibleResourceBundle()
-  {
-  }
+  String getAccessibleIconDescription();
 
   /**
-   * Returns the mapping between keys and display strings.
+   * Modify the textual description of the icon and its purpose.
    *
-   * @return null
-   * @deprecated do not use this class
+   * @param s the new descrption string
    */
-  public Object[][] getContents()
-  {
-    return null;
-  }
-} // class AccessibleResourceBundle
+  void setAccessibleIconDescription(String s);
+
+  /**
+   * Get the icon width.
+   *
+   * @return the width
+   */
+  int getAccessibleIconWidth();
+
+  /**
+   * Get the icon height.
+   *
+   * @return the height
+   */
+  int getAccessibleIconHeight();
+} // interface AccessibleIcon

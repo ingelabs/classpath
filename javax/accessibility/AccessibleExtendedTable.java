@@ -1,4 +1,4 @@
-/* AccessibleResourceBundle.java -- deprecated class
+/* AccessibleExtendedTable.java -- aids in extended table access
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,40 +35,47 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
 package javax.accessibility;
 
-import java.util.ListResourceBundle;
-
 /**
- * This class is deprecated. It once was used for localizing accessibility
- * strings, and was never meant for external use anyway.
+ * Objects which present 2-D tables with the extension of a flat address
+ * space should implement this interface.  Accessibility software can use the
+ * implementations of this interface to better manipulate the table.
+ *
+ * <p>The <code>AccessibleContext.getAccessibleTable()</code> method
+ * should return an instance of this interface only when it is supported.
  *
  * @author Eric Blake <ebb9@email.byu.edu>
- * @see AccessibleBundle.toDisplayString(String, Locale)
+ * @see Accessible
+ * @see AccessibleContext
+ * @see AccessibleContext#getAccessibleTable()
  * @since 1.2
- * @deprecated this class is no longer used
  * @status updated to 1.4
  */
-public class AccessibleResourceBundle extends ListResourceBundle
+public interface AccessibleExtendedTable extends AccessibleTable
 {
   /**
-   * Default constructor.
+   * Returns the row number of an index in the table.
    *
-   * @deprecated do not use this class
+   * @param index the cell index, in row-major form from (0,0)
+   * @return the row number, or -1 if out of bounds
    */
-  public AccessibleResourceBundle()
-  {
-  }
+  int getAccessibleRow(int index)
 
   /**
-   * Returns the mapping between keys and display strings.
+   * Returns the column number of an index in the table.
    *
-   * @return null
-   * @deprecated do not use this class
+   * @param index the cell index, in row-major form from (0,0)
+   * @return the column number, or -1 if out of bounds
    */
-  public Object[][] getContents()
-  {
-    return null;
-  }
-} // class AccessibleResourceBundle
+  int getAccessibleColumn(int index)
+
+  /**
+   * Returns the cell number for a row-major address from (0,0).
+   *
+   * @param r the row
+   * @param c the column
+   * @return the cell index
+   */
+   int getAccessibleIndex(int r, int c);
+} // interface AccessibleExtendedTable

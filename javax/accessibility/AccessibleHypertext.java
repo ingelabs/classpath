@@ -1,6 +1,5 @@
-/* AccessibleHypertext.java -- Java interface for aiding in accessibly rendering 
-   other Java components
-   Copyright (C) 2000 Free Software Foundation, Inc.
+/* AccessibleHypertext.java -- aids in accessibly rendering hypertext
+   Copyright (C) 2000, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -8,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -36,45 +35,50 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package javax.accessibility;
 
 /**
- * Allows an application to determine a set of hyperlinks for a 
- * document and manipulate them.
- * <p>
- * The <code>AccessibleContext.getAccessibleText()</code> method
- * should return an object which extends <code>AccessibleHypertext</code> 
- * if it supports this interface.
- *.
- * @see AccessibleContext.getAccessibleText()
+ * Objects which present hyperlinks in a document should implement this
+ * interface.  Accessibility software can use the implementations of this
+ * interface to aid the user in navigating the links.
+ *
+ * <p>The <code>AccessibleContext.getAccessibleText()</code> method
+ * should return an instance of this interface only when it is supported.
+ *
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @see Accessible
+ * @see AccessibleContext
+ * @see AccessibleText
+ * @see AccessibleContext#getAccessibleText()
+ * @since 1.2
+ * @status updated to 1.4
  */
-public interface AccessibleHypertext extends AccessibleText {
+public interface AccessibleHypertext extends AccessibleText
+{
+  /**
+   * Returns the number of links in the document, if any exist.
+   *
+   * @return the number of links, or -1
+   */
+  int getLinkCount();
 
-    /**
-     * Returns link object denoted by the number <code>i</code> in this
-     * document.
-     *
-     * @param i the ith hyperlink of the document
-     * @return link object denoted by <code>i</code>
-     */
-    public abstract AccessibleHyperlink getLink(int i);
-    
-    /**
-     * Returns the number of links in the document if any exist.  When
-     * no links exist, returns -1.
-     * 
-     * @return the number of links
-     */
-    public abstract int getLinkCount();
-    
-    /**
-     * Returns the link index for this character index into the
-     * document if a hyperlink is associated with the character
-     * specified by the given index.  When no association exists,
-     * returns -1.
-     * 
-     * @param c the character index
-     * @return the link index
-     */
-    public abstract int getLinkIndex(int c);
-}
+  /**
+   * Returns link object denoted by the number <code>i</code> in this
+   * document, or null if i is out of bounds.
+   *
+   * @param i the ith hyperlink of the document
+   * @return link object denoted by <code>i</code>
+   */
+  AccessibleHyperlink getLink(int i);
+
+  /**
+   * Returns the link index for this character index if it resides within
+   * one of the hyperlinks of the document. If no association exists at that
+   * character, or c is out of bounds, returns -1.
+   *
+   * @param c the character index
+   * @return the link index, or -1
+   */
+  int getLinkIndex(int c);
+} // interface AccessibleHypertext

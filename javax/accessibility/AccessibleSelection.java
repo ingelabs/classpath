@@ -1,6 +1,5 @@
-/* AccessibleSelection.java -- Java interface for aiding in accessibly rendering 
-   other Java components
-   Copyright (C) 2000 Free Software Foundation, Inc.
+/* AccessibleSelection.java -- aids in accessibly selecting components
+   Copyright (C) 2000, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -8,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -36,78 +35,79 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package javax.accessibility;
 
 /**
- * Proper implementation of the methods of this interface should 
- * allow an application to determine the currently selected children
- * and modify the selection set.  If an object has children which are
- * selectable then it should implement this interface.
- * <p>
- * The <code>AccessibleContext.getAccessibleSelection()</code> method
- * should return an object which extends <code>AccessibleSelection</code> 
- * if it supports this interface.  If the method returns <code>null</code>
- * the object does not support this interface.
+ * If an object implements this interface then it must be able to control
+ * the selection of its children. Accessibility software can use the
+ * implementations of this interface to change the selection set of children.
  *
- * @see AccessibleContext.getAccessibleText()
+ * <p>The <code>AccessibleContext.getAccessibleSelection()</code> method should
+ * return <code>null</code> if an object does not implement this interface.
+ *
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @see Accessible
+ * @see AccessibleContext
+ * @see AccessibleContext#getAccessibleSelection()
+ * @since 1.2
+ * @status updated to 1.4
  */
-public interface AccessibleSelection {
+public interface AccessibleSelection
+{
+  /**
+   * Returns the number of currently selected Accessible children, which may
+   * be 0 if nothing is selected.
+   *
+   * @return the number of selected children
+   */
+  int getAccessibleSelectionCount();
 
-    /**
-     * Select the specified child if it is not already 
-     * selected, placing it in the objects current selection.
-     * If the object does not support multiple selections
-     * then the specified child placed in a new selection 
-     * replacing the old selection.  If the specified
-     * child is already selected, this method does nothing.
-     *
-     * @param i zero-based index of child objects
-     */
-    public abstract void addAccessibleSelection(int i);
+  /**
+   * Returns the i-th selected child (not necessarily the overall i-th child)
+   * of this Accessible object. If i is out of bounds, null is returned.
+   *
+   * @param i zero-based index of selected child objects
+   * @return the Accessible child, or null
+   * @see #getAccessibleSelectionCount()
+   */
+  Accessible getAccessibleSelection(int i);
 
-    /**
-     * Unselect all children of this Accessible object.
-     */
-    public abstract void clearAccessibleSelection();
+  /**
+   * Determine if i-th overall child of this accessible object is selected.
+   * If i is out of bounds, false is returned.
+   *
+   * @param i zero-based index of child objects
+   * @return true if specified child exists and is selected
+   */
+  boolean isAccessibleChildSelected(int i);
 
-    /**
-     * Returns the Accessible child specified of this
-     * Accessible object.
-     *
-     * @param i zero-based index of child objects
-     * @return the Accessible child
-     */
-    public abstract Accessible getAccessibleSelection(int i);
+  /**
+   * Select the specified child if it is not already selected, placing it in
+   * the object's current selection. If the object does not support multiple
+   * selections then the new selection replaces the old. If the specified
+   * child is already selected, or is out of bounds, this method does nothing.
+   *
+   * @param i zero-based index of child objects
+   */
+  void addAccessibleSelection(int i);
 
-    /**
-     * Returns the number of currently selected Accessible 
-     * children if any, else 0.
-     * 
-     * @return the number of selected children
-     */
-    public abstract int getAccessibleSelectionCount();
+  /**
+   * Unselect the specified child of this Accessible object. If the specified
+   * child is not selected, or is out of bounds, this method does nothing.
+   *
+   * @param i the zero-based index of the child objects
+   */
+  void removeAccessibleSelection(int i);
 
-    /**
-     * Determine if the specified child of this Accessible
-     * object is selected.
-     *
-     * @param i zero-based index of child objects
-     * @return true if specified child exists and is selected, else false
-     */
-    public abstract boolean isAccessibleChildSelected(int i);
+  /**
+   * Unselect all children of this Accessible object.
+   */
+  void clearAccessibleSelection();
 
-    /**
-     * Unselect the specified child of this Accessible object
-     * if it is currently selected.
-     *
-     * @param i the zero-based index of the child objects
-     */
-    public abstract void removeAccessibleSelection(int i);
-
-    /**
-     * Select all children of this Accessible object
-     * if the object supports multiple selections.
-     */
-    public abstract void selectAllAccessibleSelection();
-}
-
+  /**
+   * Select all children of this Accessible object if the object supports
+   * multiple selections or has a single child. Otherwise this does nothing.
+   */
+  void selectAllAccessibleSelection();
+} // interface AccessibleSelection

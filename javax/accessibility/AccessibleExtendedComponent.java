@@ -1,4 +1,4 @@
-/* AccessibleResourceBundle.java -- deprecated class
+/* AccessibleExtendedComponent.java -- aids in extended component access
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,40 +35,44 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
 package javax.accessibility;
 
-import java.util.ListResourceBundle;
-
 /**
- * This class is deprecated. It once was used for localizing accessibility
- * strings, and was never meant for external use anyway.
+ * Objects which present graphical components with extensions such as key
+ * bindings or tool-tips should implement this interface.  Accessibility
+ * software can use the implementations of this interface to display the
+ * extended information of the component.
+ *
+ * <p>The <code>AccessibleContext.getAccessibleComponent()</code> method
+ * should return an instance of this interface only when it is supported.
  *
  * @author Eric Blake <ebb9@email.byu.edu>
- * @see AccessibleBundle.toDisplayString(String, Locale)
+ * @see Accessible
+ * @see AccessibleContext
+ * @see AccessibleContext#getAccessibleComponent()
  * @since 1.2
- * @deprecated this class is no longer used
  * @status updated to 1.4
  */
-public class AccessibleResourceBundle extends ListResourceBundle
+public interface AccessibleExtendedComponent extends AccessibleComponent
 {
   /**
-   * Default constructor.
+   * Returns the tool-tip text for this component.
    *
-   * @deprecated do not use this class
+   * @return the tool-tip, or null if not supported
    */
-  public AccessibleResourceBundle()
-  {
-  }
+  String getToolTipText();
 
   /**
-   * Returns the mapping between keys and display strings.
+   * Returns the title border text for this component.
    *
-   * @return null
-   * @deprecated do not use this class
+   * @return the titled border text, or null if not supported
    */
-  public Object[][] getContents()
-  {
-    return null;
-  }
-} // class AccessibleResourceBundle
+  String getTitledBorderText();
+
+  /**
+   * Returns the accessibility key bindings for this component.
+   *
+   * @return the key bindings, or null if not supported
+   */
+  AccessibilityKeyBinding getAccessibilityKeyBinding();
+} // interface AccessibleExtendedComponent
