@@ -202,7 +202,7 @@ class Test
 	  d.setModal (true);
 	  Button b = new Button ("foobar");
 	  b.addMouseListener (new MouseAdapter () {
-	      public void mousePressed (MouseEvent e) {
+	      public void mousePressed (MouseEvent me) {
 		System.out.println ("I got called");
 		d.hide ();
 

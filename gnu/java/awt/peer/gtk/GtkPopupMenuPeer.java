@@ -39,9 +39,9 @@ public class GtkPopupMenuPeer extends GtkMenuPeer
   }
 
   native void show (int x, int y, long time);
-  public void show (Event e)
+  public void show (Component origin, int x, int y)
   {
-    Point abs = ((Component)e.target).getLocationOnScreen ();
-    show (abs.x + e.x, abs.y + e.y, e.when);
+    Point abs = origin.getLocationOnScreen ();
+    show (abs.x + x, abs.y + y, 0);
   }
 }

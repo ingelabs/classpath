@@ -17,7 +17,7 @@ You should have received a copy of the GNU Library General Public License
 along with this library; if not, write to the Free Software Foundation
 Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA. */
 
-
+import java.awt.List;
 import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -324,12 +324,12 @@ class CursorsWindow extends SubFrame implements ItemListener
     { 
       public void paint (Graphics g) 
       {
-	Dimension d = getSize();
+	Dimension d = this.getSize();
 	g.setColor (Color.white);
 	g.fillRect (0, 0, d.width, d.height/2);
 	g.setColor (Color.black);
 	g.fillRect (0, d.height/2, d.width, d.height/2);
-	g.setColor (getBackground());
+	g.setColor (this.getBackground());
 	g.fillRect (d.width/3, d.height/3, d.width/3,
 		    d.height/3);
       }

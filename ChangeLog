@@ -1,5 +1,13 @@
 2001-08-11  John Leuner  <jewel@debian.org>
 
+	* gnu/java/awt/peer/gtk/Test.java (new MouseAdapter): changed event name from e to me
+	* gnu/java/awt/peer/gtk/TestAWT.java:  fixed ambiguous references to getSize()
+ 	and getBackground()
+	* gnu/java/awt/peer/gtk/GtkPopupMenuPeer.java (show): changed method to not use
+ 	AWT 1.0 Event
+
+2001-08-11  John Leuner  <jewel@debian.org>
+
 	* java/awt/font/TextHitInfo.java: added this file (no implementation)
 	* java/awt/Window.java (postEvent): commented out this 1.0 method
 	* java/awt/Toolkit.java (getMenuShortcutKeyMask): Just guessed VK_CONTROL instead
