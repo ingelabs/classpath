@@ -1,6 +1,6 @@
 /* VMClassLoader.java -- Reference implementation of native interface
    required by ClassLoader
-   Copyright (C) 1998, 2001, 2002 Free Software Foundation
+   Copyright (C) 1998, 2001, 2002, 2004 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -86,6 +86,12 @@ final class VMClassLoader
    * <strong>For backward compatibility, this just ignores the protection
    * domain; that is the wrong behavior, and you should directly implement
    * this method natively if you can.</strong>
+   *
+   * Implementations of this method are advised to consider the
+   * situation where user code modifies the byte array after it has
+   * been passed to defineClass.  This can be handled by making a
+   * private copy of the array, or arranging to only read any given
+   * byte a single time.
    *
    * @param name the name to give the class, or null if unknown
    * @param data the data representing the classfile, in classfile format
