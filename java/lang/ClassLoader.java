@@ -158,6 +158,8 @@ public abstract class ClassLoader {
 	 ** @return the URL to the resource.
 	 **/
 	public static final URL getSystemResource(String name) {
+		if (name.startsWith("/"))
+			name = name.substring(1);
 		String cp = System.getProperty("java.class.path");
 		if (cp == null)
 			return(null);
@@ -193,7 +195,10 @@ public abstract class ClassLoader {
 	 **/
 	public static final InputStream getSystemResourceAsStream(String name) {
 		try {
-			return getSystemResource(name).openStream();
+			URL url = getSystemResource(name);
+			if (url == null)
+				return(null);
+			return url.openStream();
 		} catch(IOException e) {
 			return null;
 		}
