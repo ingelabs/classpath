@@ -23,7 +23,7 @@
 
 	* java/util/jar/Attributes.java (putValue(Name,String)): Make package
 	private.
-	* java/util/Manifest.java (read_main_section): Don't require
+	* java/util/jar/Manifest.java (read_main_section): Don't require
 	Manifest-Version info, set to "0.0" when not found.
 
 2002-03-25  Eric Blake  <ebb9@email.byu.edu>
