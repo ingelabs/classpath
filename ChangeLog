@@ -1,3 +1,10 @@
+2003-09-25  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/Math.java (min): Revert to using != for NaN
+	detection.
+	(max): Likewise.
+	(round): Likewise.
+
 2003-09-25  Mark Wielaard  <mark@klomp.org>
 
 	* java/nio/Makefile.am (EXTRA_DIST): Add ByteBufferHelper.java. 

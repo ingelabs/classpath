@@ -196,7 +196,7 @@ public final class Math
   public static float min(float a, float b)
   {
     // this check for NaN, from JLS 15.21.1, saves a method call
-    if (Float.isNaN (a))
+    if (a != a)
       return a;
     // no need to check if b is NaN; < will work correctly
     // recall that -0.0 == 0.0, but [+-]0.0 - [+-]0.0 behaves special
@@ -216,7 +216,7 @@ public final class Math
   public static double min(double a, double b)
   {
     // this check for NaN, from JLS 15.21.1, saves a method call
-    if (Double.isNaN (a))
+    if (a != a)
       return a;
     // no need to check if b is NaN; < will work correctly
     // recall that -0.0 == 0.0, but [+-]0.0 - [+-]0.0 behaves special
@@ -260,7 +260,7 @@ public final class Math
   public static float max(float a, float b)
   {
     // this check for NaN, from JLS 15.21.1, saves a method call
-    if (Float.isNaN (a))
+    if (a != a)
       return a;
     // no need to check if b is NaN; > will work correctly
     // recall that -0.0 == 0.0, but [+-]0.0 - [+-]0.0 behaves special
@@ -280,7 +280,7 @@ public final class Math
   public static double max(double a, double b)
   {
     // this check for NaN, from JLS 15.21.1, saves a method call
-    if (Double.isNaN (a))
+    if (a != a)
       return a;
     // no need to check if b is NaN; > will work correctly
     // recall that -0.0 == 0.0, but [+-]0.0 - [+-]0.0 behaves special
@@ -575,7 +575,8 @@ public final class Math
    */
   public static int round(float a)
   {
-    if (Float.isNaN (a))
+    // this check for NaN, from JLS 15.21.1, saves a method call
+    if (a != a)
       return 0;
     return (int) floor(a + 0.5f);
   }
@@ -593,7 +594,8 @@ public final class Math
    */
   public static long round(double a)
   {
-    if (Double.isNaN (a))
+    // this check for NaN, from JLS 15.21.1, saves a method call
+    if (a != a)
       return 0;
     return (long) floor(a + 0.5d);
   }
