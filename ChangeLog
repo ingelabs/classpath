@@ -1,3 +1,34 @@
+2005-03-06  udrius Meskauskas  <audriusa@bluewin.ch>
+
+	* org/omg/CORBA/ULongSeqHolder.java: new file.
+	* org/omg/CORBA/UShortSeqHolder.java: new file.
+	* org/omg/CORBA/WCharSeqHolder.java: new file.
+	* org/omg/CORBA/BooleanSeqHolder.java: new file.
+	* org/omg/CORBA/CharSeqHolder.java: new file.
+	* org/omg/CORBA/DoubleSeqHolder.java: new file.
+	* org/omg/CORBA/FloatSeqHolder.java: new file.
+	* org/omg/CORBA/LongLongSeqHolder.java: new file.
+	* org/omg/CORBA/LongSeqHolder.java: new file.
+	* org/omg/CORBA/OctetSeqHolder.java: new file.
+	* org/omg/CORBA/ShortSeqHolder.java: new file.
+	* org/omg/CORBA/ULongLongSeqHolder.java: new file.
+
+2005-03-06  Audrius Meskauskas  <audriusa@bluewin.ch>
+
+	* org/omg/CORBA/IntHolder.java: new file
+	* org/omg/CORBA/LongHolder.java: new file
+	* org/omg/CORBA/ShortHolder.java: new file
+	* org/omg/CORBA/StringHolder.java: new file
+	* org/omg/CORBA/TypeCodeHolder.java: new file
+	* org/omg/CORBA/BooleanHolder.java: new file
+	* org/omg/CORBA/ByteHolder.java: new file
+	* org/omg/CORBA/CharHolder.java: new file
+	* org/omg/CORBA/DoubleHolder.java: new file
+	* org/omg/CORBA/FixedHolder.java: new file
+	* org/omg/CORBA/FloatHolder.java: new file
+	* org/omg/CORBA/primitiveTypeCode.java: new file
+	* org/omg/CORBA/primitiveArrayTypeCode.java: new file
+ 
 2005-03-06  Audrius Meskauskas  <audriusa@bluewin.ch>
 
 	* org/omg/CORBA/portable/InputStream: new file
