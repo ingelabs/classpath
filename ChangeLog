@@ -1,4 +1,9 @@
 2004-07-26  Patrik Reali  <reali@acm.org>
+	
+	* doc/www.gnu.org/home.wml doc/www.gnu.org/newsitems.txt: link to
+	mauve test results updated
+
+2004-07-26  Patrik Reali  <reali@acm.org>
 
 	* doc/www.gnu.org/newsitems.txt: AWT commit and inetlib HTTP client 
  	* doc/www.gnu.org/faq/faq.wml: add dependencies and CVS udpate to

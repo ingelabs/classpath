@@ -7,7 +7,7 @@ Latest "montly-changes" for AWT committed. This now required GTK+ 2.4.
 </newsitem>
 
 <newsitem date="18 Jul 2004">
-Roman Kennke's <createlink name="automated mauve reports" url="http://ontographics.com/classpath/report-index.html">.
+Roman Kennke's <createlink name="automated mauve reports" url="http://ontographics.com/classpath/mauve/mauvereport.cgi">.
 </newsitem>
 
 <newsitem date="13 Jul 2004">
