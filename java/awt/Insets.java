@@ -1,5 +1,5 @@
 /* Insets.java -- Information about a container border.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -103,9 +103,6 @@ Insets(int top, int left, int bottom, int right)
 public boolean
 equals(Object obj)
 {
-  if (obj == null)
-    return(false);
-
   if (!(obj instanceof Insets))
     return(false);
 
@@ -121,6 +118,12 @@ equals(Object obj)
     return(false);
 
   return(true);
+}
+
+public int
+hashCode()
+{
+  return top + bottom + left + right;
 }
 
 /*************************************************************************/
@@ -158,4 +161,3 @@ clone()
 }
 
 } // class Insets 
-

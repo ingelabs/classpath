@@ -1,5 +1,5 @@
 /* Choice.java -- Java choice button widget.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -63,7 +63,7 @@ private Vector pItems = new Vector();
 /**
   * @serial The index of the selected item in the choice box.
   */
-private int selectedIndex;
+private int selectedIndex = -1;
 
 // Listener chain
 private ItemListener item_listeners;
@@ -139,11 +139,20 @@ getItem(int index)
 public synchronized void
 add(String item)
 {
+  if (item == null)
+    throw new IllegalArgumentException ("item must be non-null");
+
   pItems.addElement(item);
 
-  ChoicePeer cp = (ChoicePeer)getPeer();
-  if (cp != null)
-    cp.add(item, getItemCount());
+  int i = pItems.size () - 1;
+  if (peer != null)
+    {
+      ChoicePeer cp = (ChoicePeer) peer;
+      cp.add (item, i);
+    }
+
+  if (i == 0)
+    select (0);
 }
 
 /*************************************************************************/
@@ -156,29 +165,36 @@ add(String item)
 public synchronized void
 addItem(String item)
 {
-  pItems.addElement(item);
-
-  ChoicePeer cp = (ChoicePeer)getPeer();
-  if (cp != null)
-    cp.addItem(item, getItemCount());
+  add(item);
 }
 
 /*************************************************************************/
 
-/**
-  * Inserts the specified item to this choice box at the specified index.
-  *
-  * @param item The item to add.
-  * @param index The index at which the item should be inserted.
-  */
+/** Inserts an item into this Choice.  Existing items are shifted
+ * upwards.  If the new item is the only item, then it is selected.
+ * If the currently selected item is shifted, then the first item is
+ * selected.  If the currently selected item is not shifted, then it
+ * remains selected.
+ *
+ * @param item The item to add.
+ * @param index The index at which the item should be inserted.
+ */
 public synchronized void
 insert(String item, int index)
 {
+  if (index > getItemCount ())
+    index = getItemCount ();
+
   pItems.insertElementAt(item, index);
 
-  ChoicePeer cp = (ChoicePeer)getPeer();
-  if (cp != null)
-    cp.addItem(item, getItemCount());
+  if (peer != null)
+    {
+      ChoicePeer cp = (ChoicePeer) peer;
+      cp.add (item, index);
+    }
+
+  if (getItemCount () == 1 || selectedIndex >= index)
+    select (0);
 }
 
 /*************************************************************************/
@@ -194,6 +210,9 @@ public synchronized void
 remove(String item)
 {
   int index = pItems.indexOf(item);
+  if (index == -1)
+    throw new IllegalArgumentException ("item \""
+					+ item + "\" not found in Choice");
   remove(index);
 }
 
@@ -211,9 +230,16 @@ remove(int index)
 {
   pItems.removeElementAt(index);
 
-  ChoicePeer cp = (ChoicePeer)getPeer();
-  if (cp != null)
-    cp.remove(index);
+  if (peer != null)
+    {
+      ChoicePeer cp = (ChoicePeer) peer;
+      cp.remove (index);
+    }
+
+  if (index == selectedIndex)
+    select (0);
+  else if (selectedIndex > index)
+    --selectedIndex;
 }
 
 /*************************************************************************/
@@ -226,24 +252,27 @@ removeAll()
 {
   int count = getItemCount();
 
-  if (count > 0)
-    for (int i = 0; i < count; i++)
-      remove(i);
-
-  pItems = new Vector();
+  for (int i = 0; i < count; i++)
+    {
+      // Always remove 0.
+      remove(0);
+    }
 }
 
 /*************************************************************************/
 
 /**
-  * Returns the currently selected item.
+  * Returns the currently selected item, or null if no item is
+  * selected.
   *
   * @return The currently selected item.
   */
 public synchronized String
 getSelectedItem()
 {
-  return((String)pItems.elementAt(selectedIndex));
+  return (selectedIndex == -1
+	  ? null
+	  : ((String)pItems.elementAt(selectedIndex)));
 }
 
 /*************************************************************************/
@@ -256,6 +285,9 @@ getSelectedItem()
 public synchronized Object[]
 getSelectedObjects()
 {
+  if (selectedIndex == -1)
+    return null;
+
   Object[] objs = new Object[1];
   objs[0] = pItems.elementAt(selectedIndex);
 
@@ -291,10 +323,11 @@ select(int index)
     throw new IllegalArgumentException("Bad index: " + index);
 
   this.selectedIndex = index;
-
-  ChoicePeer cp = (ChoicePeer)getPeer();
-  if (cp != null)
-    cp.select(index);
+  if (peer != null)
+    {
+      ChoicePeer cp = (ChoicePeer) peer;
+      cp.select (index);
+    }
 }
 
 /*************************************************************************/
@@ -310,7 +343,8 @@ public synchronized void
 select(String item)
 {
   int index = pItems.indexOf(item);
-  select(index);
+  if (index >= 0)
+    select(index);
 }
 
 /*************************************************************************/
@@ -321,8 +355,9 @@ select(String item)
 public void
 addNotify()
 {
-  if (getPeer() == null)
-    setPeer((ComponentPeer)getToolkit().createChoice(this));
+  if (peer == null)
+    peer = getToolkit ().createChoice (this);
+  super.addNotify ();
 }
 
 /*************************************************************************/
@@ -395,8 +430,7 @@ processItemEvent(ItemEvent event)
 protected String
 paramString()
 {
-  return(getClass().getName() + "(selectedIndex=" + selectedIndex + ")");
+  return ("selectedIndex=" + selectedIndex + "," + super.paramString());
 }
 
 } // class Choice 
-

@@ -1,3 +1,124 @@
+2002-01-22  Tom Tromey  <tromey@redhat.com>
+
+	* java/awt/PopupMenu.java (addNotify): New implementation from
+	libgcj.
+	* java/awt/MenuBar.java (add): Handle case where menu already has
+	a parent.
+	(deleteShortcut): Delete shortcut from all menus.
+	(remove(int)): New implementation from libgcj.
+	(setHelpMenu): Likewise.
+	* java/awt/MenuItem.java (paramString): Don't include class name
+	or brackets.  Call superclass paramString.
+	* java/awt/MenuComponent.java (toString): Call paramString.
+	(paramString): Compute string; don't call toString.
+	* java/awt/Label.java (paramString): Don't include class name
+	or brackets.  Call superclass paramString.
+	* java/awt/Checkbox.java (paramString): Don't include class name
+	or brackets.  Call superclass paramString.
+	* java/awt/Button.java (paramString): Don't include class name or
+	brackets.  Call superclass paramString.
+	* java/awt/MenuComponent.java (getTreeLock): Now protected.
+	* java/awt/Panel.java (addNotify): Call superclass addNotify.
+	* java/awt/PaintContext.java: New file from libgcj.
+	* java/awt/MenuShortcut.java (equals(Object)): New method.
+	(hashCode): Likewise.
+	(toString): Use paramString and square brackets.
+	* java/awt/MenuContainer.java (postEvent): Resurrected.
+	* java/awt/Menu.java (menuSerializedDataVersion): New field.
+	(addNotify): Use peer field directly.  Call superclass addNotify.
+	(add): New implementation from libgcj.
+	(separator): New field.
+	(addSeparator): New implementation from libgcj.
+	(insertSeparator): Likewise.
+	(removeAll): Removed redundant test.  Always remove item 0.
+	(paramString): Include tearOff, isHelpMenu, and superclass
+	paramString.
+	* java/awt/List.java (List()): Default to 4 rows.
+	(addNotify): Use `peer' directly.  Call superclass addNotify.
+	(addItem(String)): Deprecated.
+	(add(String)): Call add, not addItem.
+	(add(String,int)): Do work here.
+	(addItem(String,int)): Call add.  Deprecated.
+	(removeAll): Use `clear' on items.  Use `peer' field directly.
+	(remove(String)): Use remove, not delItem.
+	(replaceItem): Likewise.
+	(remove(int)): New implementation from libgcj.
+	(delItem(int)): Use remove.
+	(getSelectedIndex): New implementation from libgcj.
+	(getSelectedIndexes): Likewise.
+	(isIndexSelected): Remove redundant test.
+	(setMultipleMode): Use `peer' field directly.
+	(makeVisible): Likewise.
+	(paramString): New implementation from libgcj.
+	(delItems): Run loop in reverse direction.  Use `peer' field
+	directly.
+	* java/awt/Insets.java (equals): Removed redundant test.
+	(hashCode): New method.
+	* java/awt/GridBagConstraints.java: New file from libgcj.
+	* java/awt/FontMetrics.java (getMaxAdvance): Return -1.
+	(toString): Use libgcj implementation.
+	* java/awt/Font.java (ROMAN_BASELINE, CENTER_BASELINE,
+	HANGING_BASELINE): New constants.
+	(pointSize): New field.
+	(Font): Initialize pointSize.
+	(getStyle): New method.
+	(getSize2D): Likewise.
+	* java/awt/FileDialog.java (addNotify): Use `peer' field directly.
+	Call superclass addNotify.
+	(paramString): Don't include class name or brackets.  Call
+	superclass paramString.
+	(setDirectory): Use `peer' field directly.
+	(setFile): Likewise.
+	(setFilenameFilter): Likewise.
+	* java/awt/Dialog.java (Dialog(Dialog)): New constructor.
+	(Dialog(Dialog,String)): Likewise.
+	(Dialog(Dialog,String,boolean)): Likewise.
+	(addNotify): Use `peer' field directly.  Call superclass
+	addNotify.
+	(setTitle): Use `peer' field directly.
+	(setResizable): Likewise.
+	(paramString): Don't include class name
+	or brackets.  Call superclass paramString.
+	* java/awt/Cursor.java: Merged with libgcj.
+	* java/awt/Color.java (white, lightGray, gray, darkGray, black,
+	red, pink, orange, yellow, green, magenta, cyan, blue): Set alpha
+	value.
+	(value): Initialize.
+	(Color(int,boolean)): New constructor.
+	(Color(int,int,int,int)): Likewise.
+	(alphamask): New constant.
+	(getAlpha): New method.
+	(BRIGHT_STEP): New constant.
+	(brighter, darker): New implementation from libgcj.
+	(getTransparency): New method.
+	(equals): Remove redundant test.  Compare `value' fields
+	directly.
+	* java/awt/Choice.java (selectedIndex): Initialize to -1.
+	(add): Throw exception if item is null.  Use `peer' field
+	directly.  Select item if it is the first.
+	(addItem): Call add.
+	(addNotify): Use `peer' field directly.  Call superclass
+	addNotify.
+	(getSelectedItem): Handle case where selectedIndex is -1.
+	(insert): Use `peer' field directly.  Only cast if peer is
+	non-null.  Handle case where `index' is too large.  Select item if
+	it is the first one.
+	(paramString): Don't include class name or brackets.  Call
+	superclass paramString.
+	(remove(String)): Throw exception if item not found.
+	(remove(int)): Use `peer' field directly.  Update selection.
+	(removeAll): Correctly remove items.  Remove redundant check.
+	(select(String)): Throw exception if item not found.
+	(select(int)): Use `peer' field directly.  Don't cast unless peer
+	is non-null.
+	* java/awt/CheckboxMenuItem.java (addNotify): Use `peer' field
+	directly.  Call superclass addNotify.
+	(paramString): Don't include class name	or brackets.  Call
+	superclass paramString.
+	(processEvent): Call superclass processEvent.
+	(setState): Use `peer' field directly.  Don't cast unless peer is
+	non-null.
+
 2002-01-19  Mark Wielaard <mark@klomp.org>
 	
 	* native/jni/java-net/javanet.c (_javanet_get_option): make exception

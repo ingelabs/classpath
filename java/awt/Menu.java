@@ -1,5 +1,5 @@
 /* Menu.java -- A Java AWT Menu
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -69,6 +69,11 @@ private boolean isTearOff;
   * @serial Indicates whether or not this is a help menu.
   */
 private boolean isHelpMenu;
+
+// From the serialization spec.  FIXME: what should it be?
+private int menuSerializedDataVersion;
+
+static final MenuItem separator = new MenuItem("-");
 
 /*************************************************************************/
 
@@ -194,15 +199,20 @@ getItem(int index)
 public MenuItem
 add(MenuItem item)
 {
-  // FIXME: How do I remove from previous menu's?
-
   items.addElement(item);
+  if (item.parent != null)
+    {
+      item.parent.remove(item);
+    }
+  item.parent = this;
 
-  MenuPeer mp = (MenuPeer)getPeer();
-  if (mp != null)
-    mp.addItem(item);
+  if (peer != null)
+    {
+      MenuPeer mp = (MenuPeer) peer;
+      mp.addItem(item);
+    }
 
-  return(item);
+  return item;
 }
 
 /*************************************************************************/
@@ -240,6 +250,7 @@ insert(MenuItem item, int index)
   items.insertElementAt(item, index);
 
   MenuPeer mp = (MenuPeer)getPeer();
+  // FIXME: Need to add a peer method here.
 //    if (mp != null)
 //      mp.insertItem(item, index);
 }
@@ -269,10 +280,7 @@ insert(String label, int index)
 public void
 addSeparator()
 {
-  // FIXME: How do we note in the items array what this is?
-  MenuPeer mp = (MenuPeer)getPeer();
-  if (mp != null)
-    mp.addSeparator();
+  add(separator);
 }
 
 /*************************************************************************/
@@ -290,13 +298,7 @@ addSeparator()
 public void
 insertSeparator(int index)
 {
-  if (index < 0)
-    throw new IllegalArgumentException("Index is less than zero");
-
-  // FIXME: How do we note in the items array what this is?
-//    MenuPeer mp = (MenuPeer)getPeer();
-//    if (mp != null)
-//      mp.insertSeparator(index);
+  insert(separator, index);
 }
 
 /*************************************************************************/
@@ -345,9 +347,11 @@ public synchronized void
 removeAll()
 {
   int count = getItemCount();
-  if (count > 0)
-    for(int i = 0; i < count; i++)
-       remove(i);
+  for(int i = 0; i < count; i++)
+    {
+      // We must always remove item 0.
+      remove(0);
+    }
 }
 
 /*************************************************************************/
@@ -358,10 +362,9 @@ removeAll()
 public void
 addNotify()
 {
-  if (getPeer() != null)
-    return;
-
-  setPeer((MenuComponentPeer)getToolkit().createMenu(this));
+  if (peer != null)
+    peer = getToolkit().createMenu(this);
+  super.addNotify ();
 }
 
 /*************************************************************************/
@@ -385,8 +388,11 @@ removeNotify()
 public String
 paramString()
 {
-  return(getClass().getName() + "(label=" + getLabel() + ")");
+  return (",isTearOff=" + isTearOff + ",isHelpMenu=" + isHelpMenu
+	  + super.paramString());
 }
 
-} // class Menu
+// Accessibility API not yet implemented.
+// public AccessibleContext getAccessibleContext()
 
+} // class Menu

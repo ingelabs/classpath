@@ -1,5 +1,5 @@
 /* Dialog.java -- An AWT dialog box
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,6 +36,7 @@ import java.awt.peer.ComponentPeer;
   * A dialog box widget class.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Tom Tromey <tromey@redhat.com>
   */
 public class Dialog extends Window implements java.io.Serializable
 {
@@ -142,6 +143,27 @@ Dialog(Frame parent, String title, boolean modal)
   setLayout(new BorderLayout());
 }
 
+public
+Dialog (Dialog owner)
+{
+  this (owner, "", false);
+}
+
+public
+Dialog (Dialog owner, String title)
+{
+  this (owner, title, false);
+}
+
+public
+Dialog (Dialog owner, String title, boolean modal)
+{
+  super (owner);
+  this.modal = modal;
+  this.title = title;
+  setLayout (new BorderLayout ());
+}
+
 /*************************************************************************/
 
 /*
@@ -170,10 +192,11 @@ public synchronized void
 setTitle(String title)
 {
   this.title = title;
-
-  DialogPeer dp = (DialogPeer)getPeer();
-  if (dp != null)
-    dp.setTitle(title);
+  if (peer != null)
+    {
+      DialogPeer d = (DialogPeer) peer;
+      d.setTitle (title);
+    }
 }
 
 /*************************************************************************/
@@ -231,10 +254,11 @@ public synchronized void
 setResizable(boolean resizable)
 {
   this.resizable = resizable;
- 
-  DialogPeer dp = (DialogPeer)getPeer();
-  if (dp != null)
-    dp.setResizable(resizable);
+  if (peer != null)
+    {
+      DialogPeer d = (DialogPeer) peer;
+      d.setResizable (resizable);
+    }
 }
 
 /*************************************************************************/
@@ -245,8 +269,9 @@ setResizable(boolean resizable)
 public synchronized void
 addNotify()
 {
-  if (getPeer() == null)
-    setPeer((ComponentPeer)getToolkit().createDialog(this));
+  if (peer == null)
+    peer = getToolkit ().createDialog (this);
+  super.addNotify ();
 }
 
 /*************************************************************************/
@@ -270,8 +295,8 @@ show()
 protected String
 paramString()
 {
-  return(getClass().getName() + "(title+" + title + ",modal=" + modal +
-         ",resizable=" + resizable + ")");
+  return ("title+" + title + ",modal=" + modal +
+	  ",resizable=" + resizable + "," + super.paramString());
 }
 
 } // class Dialog

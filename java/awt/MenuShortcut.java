@@ -1,5 +1,5 @@
 /* MenuShortcut.java -- A class for menu accelerators
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -149,6 +149,17 @@ equals(MenuShortcut obj)
   return(true);
 }
 
+public boolean
+equals(Object obj)
+{
+  if (obj instanceof MenuShortcut)
+    {
+      MenuShortcut ms = (MenuShortcut) obj;
+      return (ms.key == key && ms.usesShift == usesShift);
+    }      
+  return false;
+}
+
 /*************************************************************************/
 
 /**
@@ -159,8 +170,14 @@ equals(MenuShortcut obj)
 public String
 toString()
 {
-  return(getClass().getName() + "(key=" + key + ",usesShift=" + usesShift +
-         ")");
+  return(getClass().getName() + "[" + paramString () + "]");
+}
+
+public int
+hashCode()
+{
+  // Arbitrary.
+  return key + (usesShift ? 23 : 57);
 }
 
 /*************************************************************************/
@@ -173,8 +190,7 @@ toString()
 protected String
 paramString()
 {
-  return(toString());
+  return "key=" + key + ",usesShift=" + usesShift;
 }
 
 } // class MenuShortcut 
-

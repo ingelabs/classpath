@@ -1,5 +1,5 @@
 /* FontMetrics.java -- Information about about a fonts display characteristics
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -214,7 +214,7 @@ getMaxDecent()
 public int
 getMaxAdvance()
 {
-  return(1);
+  return(-1);
 }
 
 /*************************************************************************/
@@ -330,7 +330,8 @@ getWidths()
 public String
 toString()
 {
-  return(getClass().getName() + "(font=" + font.getName() + ")");
+  return (this.getClass() + "[font=" + font + ",ascent=" + getAscent() 
+	  + ",descent=" + getDescent() + ",height=" + getHeight() + "]");
 }
 
 } // class FontMetrics 

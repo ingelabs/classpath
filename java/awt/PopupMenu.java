@@ -1,5 +1,5 @@
 /* PopupMenu.java -- An AWT popup menu
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -86,10 +86,9 @@ PopupMenu(String label)
 public void
 addNotify()
 {
-  if (getPeer() != null)
-    return;
-
-   setPeer((MenuComponentPeer)getToolkit().createPopupMenu(this));
+  if (peer != null)
+    peer = getToolkit ().createPopupMenu (this);
+  super.addNotify ();
 }
 
 /*************************************************************************/

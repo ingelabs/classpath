@@ -1,5 +1,5 @@
 /* Panel.java -- Simple container object.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -79,10 +79,9 @@ Panel(LayoutManager layoutManager)
 public void
 addNotify()
 {
-  if (getPeer() != null)
-    return;
-
-  setPeer((ComponentPeer)getToolkit().createPanel(this));
+  if (peer == null)
+    peer = getToolkit().createPanel(this);
+  super.addNotify();
 }
 
 } // class Panel 

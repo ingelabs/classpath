@@ -1,5 +1,4 @@
-/* MenuContainer.java -- Container for menu items.
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+/* Copyright (C) 2000, 2002  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -28,42 +27,20 @@ executable file might be covered by the GNU General Public License. */
 package java.awt;
 
 /**
-  * This interface is a container for menu components.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
-public interface MenuContainer
+ * @author Warren Levy <warrenl@cygnus.com>
+ * @date March 16, 2000.
+ */
+
+/**
+ * Written using on-line Java Platform 1.2 API Specification, as well
+ * as "The Java Class Libraries", 2nd edition (Addison-Wesley, 1998).
+ * Status:  Partially stubbed.
+ */
+
+public interface PaintContext
 {
-
-/**
-  * Returns the font in use by this container.
-  *
-  * @return The font in use by this container.
-  */
-public abstract Font
-getFont();
-
-/*************************************************************************/
-
-/**
-  * Removes the specified menu component from the menu.
-  *
-  * @param component The menu component to remove.
-  */
-public abstract void
-remove(MenuComponent component);
-
-/*************************************************************************/
-
-/**
-  * Posts and event to the listeners.  This is replaced by 
-  * <code>dispatchEvent</code>.
-  *
-  * @param event The event to dispatch.
-  *
-  * @deprecated
-  */  
-public abstract boolean
-postEvent(Event event);
-
-} // interface MenuContainer
+  public void dispose();
+  // FIXME
+  // public ColorModel getColorModel();
+  // public Raster getRaster(int x, int y, int w, int h);
+}

@@ -1,5 +1,5 @@
 /* CheckboxMenuItem.java -- A menu option with a checkbox on it.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,6 +38,7 @@ import java.awt.event.ItemListener;
   * the selected state of some option.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Tom Tromey <tromey@redhat.com>
   */
 public class CheckboxMenuItem extends MenuItem implements ItemSelectable,
                                                           java.io.Serializable
@@ -139,10 +140,11 @@ public synchronized void
 setState(boolean state)
 {
   this.state = state;
-
-  CheckboxMenuItemPeer cmip = (CheckboxMenuItemPeer)getPeer();
-  if (cmip != null)
-    cmip.setState(state);
+  if (peer != null)
+    {
+      CheckboxMenuItemPeer cp = (CheckboxMenuItemPeer) peer;
+      cp.setState (state);
+    }
 }
 
 /*************************************************************************/
@@ -174,8 +176,13 @@ getSelectedObjects()
 public synchronized void
 addNotify()
 {
-  if (getPeer() == null)
-    setPeer((MenuComponentPeer)getToolkit().createCheckboxMenuItem(this));
+  if (peer != null)
+    {
+      // This choice of toolkit seems unsatisfying, but I'm not sure
+      // what else to do.
+      peer = getToolkit().createCheckboxMenuItem(this);
+    }
+  super.addNotify ();
 }
 
 /*************************************************************************/
@@ -222,6 +229,8 @@ processEvent(AWTEvent event)
 {
   if (event instanceof ItemEvent)
     processItemEvent((ItemEvent)event);
+  else
+    super.processEvent(event);
 }
 
 /*************************************************************************/
@@ -248,7 +257,8 @@ processItemEvent(ItemEvent event)
 public String
 paramString()
 {
-  return(getClass().getName() + "(label=" + getLabel() + ",state=" + state + ")");
+  return ("label=" + getLabel() + ",state=" + state
+	  + "," + super.paramString());
 }
 
 } // class CheckboxMenuItem

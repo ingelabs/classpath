@@ -1,5 +1,5 @@
 /* FileDialog.java -- A filename selection dialog box
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,6 +38,7 @@ import java.io.FilenameFilter;
   * This class implements a file selection dialog box widget.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Tom Tromey <tromey@redhat.com>
   */
 public class FileDialog extends Dialog implements java.io.Serializable
 {
@@ -202,10 +203,11 @@ public synchronized void
 setDirectory(String dir)
 {
   this.dir = dir;
-
-  FileDialogPeer fdp = (FileDialogPeer)getPeer();
-  if (fdp != null)
-    fdp.setDirectory(dir);
+  if (peer != null)
+    {
+      FileDialogPeer f = (FileDialogPeer) peer;
+      f.setDirectory (dir);
+    }
 }
 
 /*************************************************************************/
@@ -232,10 +234,11 @@ public synchronized void
 setFile(String file)
 {
   this.file = file;
-
-  FileDialogPeer fdp = (FileDialogPeer)getPeer();
-  if (fdp != null)
-    fdp.setFile(file);
+  if (peer != null)
+    {
+      FileDialogPeer f = (FileDialogPeer) peer;
+      f.setFile (file);
+    }
 }
 
 /*************************************************************************/
@@ -262,10 +265,11 @@ public synchronized void
 setFilenameFilter(FilenameFilter filter)
 {
   this.filter = filter;
-
-  FileDialogPeer fdp = (FileDialogPeer)getPeer();
-  if (fdp != null)
-    fdp.setFilenameFilter(filter);
+  if (peer != null)
+    {
+      FileDialogPeer f = (FileDialogPeer) peer;
+      f.setFilenameFilter (filter);
+    }
 }
 
 /*************************************************************************/
@@ -276,10 +280,9 @@ setFilenameFilter(FilenameFilter filter)
 public void
 addNotify()
 {
-  if (getPeer() != null)
-    return;
-
-  setPeer((ComponentPeer)getToolkit().createFileDialog(this));
+  if (peer == null)
+    peer = getToolkit ().createFileDialog (this);
+  super.addNotify ();
 }
 
 /*************************************************************************/
@@ -292,8 +295,8 @@ addNotify()
 protected String
 paramString()
 {
-  return(getClass().getName() + "(dir=" + dir + ",file=" + file +
-         ",mode=" + mode + ")");
+  return ("dir=" + dir + ",file=" + file +
+	  ",mode=" + mode + "," + super.paramString());
 }
 
 } // class FileDialog 

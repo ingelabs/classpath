@@ -1,5 +1,5 @@
 /* Color.java -- Class representing a color in Java
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -42,67 +42,67 @@ public class Color implements java.io.Serializable
 /**
   * Constant for the color white
   */
-public static final Color white = new Color(255,255,255);
+public static final Color white = new Color(255,255,255,255);
 
 /**
   * Constant for the color light gray
   */
-public static final Color lightGray = new Color(192,192,192);
+public static final Color lightGray = new Color(192,192,192,255);
 
 /**
   * Constant for the color gray
   */
-public static final Color gray = new Color(128,128,128);
+public static final Color gray = new Color(128,128,128,255);
 
 /**
   * Constant for the color dark gray
   */
-public static final Color darkGray = new Color(64,64,64);
+public static final Color darkGray = new Color(64,64,64,255);
 
 /**
   * Constant for the color black
   */
-public static final Color black = new Color(0,0,0);
+public static final Color black = new Color(0,0,0,255);
 
 /**
   * Constant for the color red
   */
-public static final Color red = new Color(255,0,0);
+public static final Color red = new Color(255,0,0,255);
 
 /**
   * Constant for the color pink
   */
-public static final Color pink = new Color(255, 175, 175);
+public static final Color pink = new Color(255, 175, 175,255);
 
 /**
   * Constant for the color orange
   */
-public static final Color orange = new Color(255, 200, 0);
+public static final Color orange = new Color(255, 200, 0,255);
 
 /**
   * Constant for the color yellow
   */
-public static final Color yellow = new Color(255,255,0);
+public static final Color yellow = new Color(255,255,0,255);
 
 /**
   * Constant for the color green
   */
-public static final Color green = new Color(0,255,0);
+public static final Color green = new Color(0,255,0,255);
 
 /**
   * Constant for the color magenta
   */
-public static final Color magenta = new Color(255,0,255);
+public static final Color magenta = new Color(255,0,255,255);
 
 /**
   * Constant for the color cyan
   */
-public static final Color cyan = new Color(0,255,255);
+public static final Color cyan = new Color(0,255,255,255);
 
 /**
   * Constant for the color blue
   */
-public static final Color blue = new Color(0,0,255);
+public static final Color blue = new Color(0,0,255,255);
 
 // Serialization Constant
 private static final long serialVersionUID = 118526816881161077L;
@@ -111,6 +111,9 @@ private static final long serialVersionUID = 118526816881161077L;
 private static final int redmask = 255 << 16;
 private static final int greenmask = 255 << 8;
 private static final int bluemask = 255;
+private static final int alphamask = 255 << 24;
+
+private static final int BRIGHT_STEP = 0x30;
 
 /*************************************************************************/
 
@@ -121,7 +124,7 @@ private static final int bluemask = 255;
 /**
   * @serial The RGB value of the color.
   */
-private int value;
+private int value = 0xFFFFFFFF;
 
 /*************************************************************************/
 
@@ -292,6 +295,16 @@ Color(int red, int green, int blue)
   value = blue + (green << 8) + (red << 16);
 }
 
+public
+Color(int red, int green, int blue, int alpha)
+{
+  if ((red < 0) || (red > 255) || (green < 0) || (green > 255) ||
+      (blue < 0) || (blue > 255))
+    throw new IllegalArgumentException("Bad RGB values");
+
+  value = blue + (green << 8) + (red << 16) + (alpha << 24);
+}
+
 /*************************************************************************/
 
 /**
@@ -305,6 +318,14 @@ public
 Color(int value)
 {
   this.value = value;
+}
+
+public
+Color(int value, boolean hasalpha)
+{
+  this.value = value;
+  if (! hasalpha)
+    this.value |= 0xFF000000;
 }
 
 /*************************************************************************/
@@ -382,6 +403,23 @@ getBlue()
   return(blueval);
 }
 
+public int
+getAlpha()
+{
+  int alphaval = (value & alphamask);
+
+  return(alphaval);
+}
+
+public int
+getTransparency()
+{
+  if (getAlpha() == 0xFF)
+    return Transparency.OPAQUE;
+  else
+    return Transparency.TRANSLUCENT;
+}
+
 /*************************************************************************/
 
 /**
@@ -408,22 +446,10 @@ getRGB()
 public Color
 brighter()
 {
-  int red = getRed();
-  int green = getGreen();
-  int blue = getBlue();
-
-  red += 10;
-  green += 10;
-  blue += 10;
-
-  if (red > 255)
-    red = 255;
-  if (green > 255)
-    green = 255;
-  if (blue > 255)
-    blue = 255;
-
-  return(new Color(red, green, blue));
+  return new Color(Math.min(255, getRed()   + BRIGHT_STEP),
+		   Math.min(255, getGreen() + BRIGHT_STEP),
+		   Math.min(255, getBlue()  + BRIGHT_STEP),
+		   getAlpha());
 }
 
 /*************************************************************************/
@@ -438,22 +464,10 @@ brighter()
 public Color
 darker()
 {
-  int red = getRed();
-  int green = getGreen();
-  int blue = getBlue();
-
-  red -= 10;
-  green -= 10;
-  blue -= 10;
-
-  if (red < 0)
-    red = 0;
-  if (green < 0)
-    green = 0;
-  if (blue < 0)
-    blue = 0;
-
-  return(new Color(red, green, blue));
+  return new Color(Math.max(0, getRed()   - BRIGHT_STEP),
+		   Math.max(0, getGreen() - BRIGHT_STEP),
+		   Math.max(0, getBlue()  - BRIGHT_STEP),
+		   getAlpha());
 }
 
 /*************************************************************************/
@@ -483,22 +497,11 @@ hashCode()
 public boolean
 equals(Object obj)
 {
-  if (obj == null)
-    return(false);
-
   if (!(obj instanceof Color))
     return(false);
 
   Color c = (Color)obj;
-
-  if (c.getRed() != getRed())
-    return(false);
-  if (c.getGreen() != getGreen())
-    return(false);
-  if (c.getBlue() != getBlue())
-    return(false);
-
-  return(true);
+  return value == c.value;
 }
 
 /*************************************************************************/

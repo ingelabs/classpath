@@ -1,5 +1,5 @@
 /* MenuBar.java -- An AWT menu bar class
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,8 +38,10 @@ import java.util.Vector;
   * This class implements a menu bar in the AWT system.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Tom Tromey <tromey@redhat.com>
   */
-public class MenuBar extends MenuComponent implements MenuContainer, Serializable
+public class MenuBar extends MenuComponent
+  implements MenuContainer, Serializable
 {
 
 /*
@@ -104,33 +106,51 @@ getHelpMenu()
   * @param helpMenu The new help menu for this menu bar.
   */
 public synchronized void
-setHelpMenu(Menu helpMenu)
+setHelpMenu(Menu menu)
 {
-  // FIXME: Does this need to be added to the vector of items?
-  this.helpMenu = helpMenu;
+  if (helpMenu != null)
+    {
+      helpMenu.removeNotify ();
+      helpMenu.parent = null;
+    }
 
-  MenuBarPeer mbp = (MenuBarPeer)getPeer();
-  if (mbp != null)
-    mbp.addHelpMenu(helpMenu);
+  if (menu.parent != null)
+    menu.parent.remove (menu);
+  if (menu.parent != null)
+    menu.parent.remove (menu);
+  menu.parent = this;
+
+  if (peer != null)
+    {
+      MenuBarPeer mp = (MenuBarPeer) peer;
+      mp.addHelpMenu (menu);
+    }
 }
 
 /*************************************************************************/
 
-/**
-  * Adds the specified menu to this menu bar.
-  *
-  * @param menu The menu to add.
-  *
-  * @return The menu that was added.
-  */
+/** Add a menu to this MenuBar.  If the menu has already has a
+ * parent, it is first removed from its old parent before being
+ * added.
+ *
+ * @param menu The menu to add.
+ *
+ * @return The menu that was added.
+ */
 public synchronized Menu
 add(Menu menu)
 {
+  if (menu.parent != null)
+    menu.parent.remove (menu);
+
+  menu.parent = this;
   menus.addElement(menu);
 
-  MenuBarPeer mbp = (MenuBarPeer)getPeer();
-  if (mbp != null)
-    mbp.addMenu(menu);
+  if (peer != null)
+    {
+      MenuBarPeer mp = (MenuBarPeer) peer;
+      mp.addMenu (menu);
+    }
 
   return(menu);
 }
@@ -145,11 +165,16 @@ add(Menu menu)
 public synchronized void
 remove(int index)
 {
-  menus.removeElementAt(index);
+  Menu m = (Menu) menus.get (index);
+  menus.remove (index);
+  m.removeNotify ();
+  m.parent = null;
 
-  MenuBarPeer mbp = (MenuBarPeer)getPeer();
-  if (mbp != null)
-    mbp.delMenu(index);
+  if (peer != null)
+    {
+      MenuBarPeer mp = (MenuBarPeer) peer;
+      mp.delMenu (index);
+    }
 }
 
 /*************************************************************************/
@@ -295,10 +320,10 @@ getShortcutMenuItem(MenuShortcut shortcut)
 public void
 deleteShortcut(MenuShortcut shortcut)
 {
-  MenuItem mi = getShortcutMenuItem(shortcut);
-  if (mi != null)
-    mi.setShortcut(null);
+  MenuItem it;
+  // This is a slow implementation, but it probably doesn't matter.
+  while ((it = getShortcutMenuItem (shortcut)) != null)
+    it.deleteShortcut ();
 }
 
 } // class MenuBar
-

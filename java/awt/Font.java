@@ -1,5 +1,5 @@
 /* Font.java -- Font object
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -34,6 +34,7 @@ import java.util.StringTokenizer;
   * This class represents a windowing system font.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Warren Levy <warrenl@cygnus.com>
   */
 public class Font implements java.io.Serializable
 {
@@ -56,6 +57,10 @@ public static final int BOLD = 1;
   * Constant indicating an "italic" font.
   */
 public static final int ITALIC = 2;
+
+public static final int ROMAN_BASELINE = 0;
+public static final int CENTER_BASELINE = 1;
+public static final int HANGING_BASELINE = 2;
 
 // Serialization constant
 private static final long serialVersionUID = -4206021311591459213L;
@@ -81,6 +86,8 @@ protected int style;
   * The font point size.
   */
 protected int size;
+
+protected float pointSize;
 
 // The native peer for this font
 private FontPeer peer;
@@ -204,12 +211,13 @@ getFont(String propname)
   * @param style The font style.
   * @param size The font point size.
   */
-public 
+public
 Font(String name, int style, int size)
 {
   this.name = name;
   this.style = style;
   this.size = size;
+  this.pointSize = size;
 }
 
 /*************************************************************************/
@@ -240,6 +248,12 @@ public int
 getSize()
 {
   return(size);
+}
+
+public float
+getSize2D()
+{
+  return pointSize;
 }
 
 /*************************************************************************/
@@ -306,6 +320,12 @@ getFamily()
 {
   // FIXME: How do I implement this?
   return(name);
+}
+
+public int
+getStyle()
+{
+  return style;
 }
 
 /*************************************************************************/

@@ -1,5 +1,5 @@
 /* List.java -- A listbox widget
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -106,7 +106,7 @@ private ActionListener action_listeners;
 public
 List()
 {
-  this(0, false);
+  this(4, false);
 }
 
 /*************************************************************************/
@@ -261,10 +261,11 @@ public void
 setMultipleMode(boolean multipleMode)
 {
   this.multipleMode = multipleMode;
-
-  ListPeer lp = (ListPeer)getPeer();
-  if (lp != null)
-    lp.setMultipleMode(multipleMode);
+  if (peer != null)
+    {
+      ListPeer l = (ListPeer) peer;
+      l.setMultipleMode (multipleMode);
+    }
 }
 
 /*************************************************************************/
@@ -428,7 +429,7 @@ preferredSize(int rows)
 public void
 add(String item)
 {
-  addItem(item, -1);
+  add(item, -1);
 }
 
 /*************************************************************************/
@@ -437,6 +438,8 @@ add(String item)
   * This method adds the specified item to the end of the list.
   *
   * @param item The item to add to the list.
+  *
+  * @deprecated Use add() instead.
   */
 public void
 addItem(String item)
@@ -458,7 +461,16 @@ addItem(String item)
 public void
 add(String item, int index)
 {
-  addItem(item, index);
+  if ((index == -1) || (index >= items.size()))
+    items.addElement(item);
+  else
+    items.insertElementAt(item, index);
+
+  if (peer != null)
+    {
+      ListPeer l = (ListPeer) peer;
+      l.add (item, index);
+    }
 }
 
 /*************************************************************************/
@@ -471,18 +483,13 @@ add(String item, int index)
   * @param item The item to add to the list.
   * @param index The location in the list to add the item, or -1 to add
   * to the end.
+  *
+  * @deprecated Use add() instead.
   */
 public void
 addItem(String item, int index)
 {
-  if ((index == -1) || (index >= items.size()))
-    items.addElement(item);
-  else
-    items.insertElementAt(item, index);
-
-  ListPeer lp = (ListPeer)getPeer();
-  if (lp != null)
-    lp.add(item, index);
+  add(item, index);
 }
 
 /*************************************************************************/
@@ -497,7 +504,7 @@ addItem(String item, int index)
 public void
 delItem(int index) throws IllegalArgumentException
 {
-  delItems(index, index);
+  remove(index);
 }
 
 /*************************************************************************/
@@ -512,7 +519,12 @@ delItem(int index) throws IllegalArgumentException
 public void
 remove(int index) throws IllegalArgumentException
 {
-  delItems(index, index);
+  items.removeElementAt (index);
+  if (peer != null)
+    {
+      ListPeer l = (ListPeer) peer;
+      l.delItems (index, index);
+    }
 }
 
 /*************************************************************************/
@@ -539,12 +551,14 @@ delItems(int start, int end) throws IllegalArgumentException
   if (start > end)
     throw new IllegalArgumentException("Start is greater than end!");
 
-  for (int i = start; i <= end; i++)
-    items.removeElementAt(i);
-
-  ListPeer lp = (ListPeer)getPeer();
-  if (lp != null)
-    lp.delItems(start, end);
+  // We must run the loop in reverse direction.
+  for (int i = end; i >= start; --i)
+    items.removeElementAt (i);
+  if (peer != null)
+    {
+      ListPeer l = (ListPeer) peer;
+      l.delItems (start, end);
+    }
 }
 
 /*************************************************************************/
@@ -563,7 +577,7 @@ remove(String item) throws IllegalArgumentException
   if (index == -1)
     throw new IllegalArgumentException("List element to delete not found");
 
-  delItem(index);
+  remove(index);
 }
 
 /*************************************************************************/
@@ -574,11 +588,12 @@ remove(String item) throws IllegalArgumentException
 public synchronized void
 removeAll()
 {
-  items = new Vector();
-  
-  ListPeer lp = (ListPeer)getPeer();
-  if (lp != null)
-    lp.removeAll();
+  items.clear();
+  if (peer != null)
+    {
+      ListPeer l = (ListPeer) peer;
+      l.removeAll ();
+    }
 }
 
 /*************************************************************************/
@@ -607,7 +622,7 @@ clear()
 public synchronized void
 replaceItem(String item, int index) throws IllegalArgumentException
 {
-  delItem(index);
+  remove(index);
   addItem(item, index);
 }
 
@@ -622,17 +637,15 @@ replaceItem(String item, int index) throws IllegalArgumentException
 public synchronized int
 getSelectedIndex()
 {
-  ListPeer lp = (ListPeer)getPeer();
-  if (lp == null)
-    return(-1);
+  if (peer != null)
+    {
+      ListPeer l = (ListPeer) peer;
+      selected = l.getSelectedIndexes ();
+    }
 
-  int[] idxs = lp.getSelectedIndexes();
-  if (idxs == null)
-    return(-1);
-  if (idxs.length > 1)
-    return(-1);
-
-  return(idxs[0]);
+  if (selected == null || selected.length > 1)
+    return -1;
+  return selected[0];
 }
 
 /*************************************************************************/
@@ -646,11 +659,12 @@ getSelectedIndex()
 public synchronized int[]
 getSelectedIndexes()
 {
-  ListPeer lp = (ListPeer)getPeer();
-  if (lp == null)
-    return(new int[0]);
-
-  return(lp.getSelectedIndexes());
+  if (peer != null)
+    {
+      ListPeer l = (ListPeer) peer;
+      selected = l.getSelectedIndexes ();
+    }
+  return selected;
 }
 
 /*************************************************************************/
@@ -731,8 +745,6 @@ public boolean
 isIndexSelected(int index)
 {
   int[] indexes = getSelectedIndexes();
-  if (indexes.length == 0)
-    return(false);
 
   for (int i = 0; i < indexes.length; i++)
     if (indexes[i] == index)
@@ -775,10 +787,11 @@ makeVisible(int index) throws IllegalArgumentException
     throw new IllegalArgumentException("Bad list index: " + index);
 
   visibleIndex = index;
-
-  ListPeer lp = (ListPeer)getPeer();
-  if (lp != null)
-    lp.makeVisible(index);
+  if (peer != null)
+    {
+      ListPeer l = (ListPeer) peer;
+      l.makeVisible (index);
+    }
 }
 
 /*************************************************************************/
@@ -834,7 +847,9 @@ deselect(int index)
 public void
 addNotify()
 {
-  setPeer((ComponentPeer)getToolkit().createList(this));
+  if (peer != null)
+    peer = getToolkit ().createList (this);
+  super.addNotify ();
 }
 
 /*************************************************************************/
@@ -973,8 +988,7 @@ processItemEvent(ItemEvent event)
 protected String
 paramString()
 {
-  return(getClass().getName());
+  return "multiple=" + multipleMode + ",rows=" + rows + super.paramString();
 }
 
 } // class List
-
