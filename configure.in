@@ -183,43 +183,48 @@ if test x${conditional_maintainer_build} = "xtrue"; then
 fi
 AM_CONDITIONAL(DEVELOPER_BUILD, test x$conditional_developer_build = xtrue)
 
-
+dnl no longer used... cbj
 dnl java dependency creation
-AC_ARG_WITH(jdeps,
-[  --with-jdeps		  specify location of JavaDeps],
-[
-  if test ${withval} = "yes" || test ${withval} = ""; then
-    AC_PATH_PROG(JAVADEPS, jdeps, "", $PATH)
-  else
-    AC_PATH_PROG(JAVADEPS, jdeps, "", $PATH:${withval})
-  fi
-],
-[
-  if test x"$conditional_maintainer_build" = xtrue; then
-    AC_PATH_PROG(JAVADEPS, jdeps, "", $PATH)
-  fi
-])
+dnl AC_ARG_WITH(jdeps,
+dnl [  --with-jdeps		  specify location of JavaDeps],
+dnl [
+dnl   if test ${withval} = "yes" || test ${withval} = ""; then
+dnl     AC_PATH_PROG(JAVADEPS, jdeps, "", $PATH)
+dnl   else
+dnl     AC_PATH_PROG(JAVADEPS, jdeps, "", $PATH:${withval})
+dnl   fi
+dnl ],
+dnl [
+dnl   if test x"$conditional_maintainer_build" = xtrue; then
+dnl     AC_PATH_PROG(JAVADEPS, jdeps, "", $PATH)
+dnl   fi
+dnl ])
 
 dnl This is probably useless.
 AC_PATH_PROG(SH, sh)
 
-dnl According to the GNU coding guide, we shouldn't require find
-dnl however it should be okay since it is only used in maintainer 
-dnl build mode.
+dnl According to the GNU coding guide, we shouldn't require find, 
+dnl zip, and perl, however it should be okay since it is only used 
+dnl in maintainer build mode.
 AC_PATH_PROG(FIND, find)
 AC_PATH_PROG(ZIP, zip)
+AC_PATH_PROG(PERL, perl)
 
 AC_OUTPUT(Makefile
 doc/Makefile
+gnu/java/Makefile
+gnu/java/awt/Makefile
+gnu/java/awt/image/Makefile
+gnu/java/awt/peer/Makefile
+gnu/java/awt/peer/gtk/Makefile
+gnu/java/beans/editors/Makefile
+gnu/java/beans/info/Makefile
+gnu/java/beans/Makefile
 gnu/java/io/decode/Makefile
 gnu/java/io/Makefile
 gnu/java/io/encode/Makefile
 gnu/java/lang/reflect/Makefile
 gnu/java/lang/Makefile
-gnu/java/Makefile
-gnu/java/beans/editors/Makefile
-gnu/java/beans/info/Makefile
-gnu/java/beans/Makefile
 gnu/java/locale/Makefile
 gnu/java/net/content/text/Makefile
 gnu/java/net/content/Makefile
@@ -232,16 +237,24 @@ gnu/java/security/provider/Makefile
 gnu/Makefile
 gnu/tools/serialver/Makefile
 gnu/tools/Makefile
+java/Makefile
+java/awt/Makefile
+java/awt/datatransfer/Makefile
+java/awt/event/Makefile
+java/awt/peer/Makefile
+java/awt/print/Makefile
 java/beans/Makefile
+java/beans/beancontext/Makefile
 java/io/Makefile
 java/lang/reflect/Makefile
 java/lang/ref/Makefile
 java/lang/Makefile
-java/Makefile
 java/math/Makefile
 java/net/Makefile
 java/security/acl/Makefile
+java/security/cert/Makefile
 java/security/interfaces/Makefile
+java/security/spec/Makefile
 java/security/Makefile
 java/text/Makefile
 java/util/Makefile
@@ -266,11 +279,10 @@ vm/reference/java/Makefile
 vm/reference/Makefile
 vm/Makefile
 lib/gen-classlist.sh
+lib/mkdep.pl
 lib/Makefile,
-[ chmod 755 lib/deps.sh
+[ chmod 755 lib/mkdep.pl
   chmod 755 lib/gen-classlist.sh
 ])
 
-#AC_OUTPUT_COMMANDS(chmod 755 lib/deps.sh)
-#AC_OUTPUT_COMMANDS(chmod 755 lib/gen-classlist.sh)
 
