@@ -76,6 +76,39 @@ extern "C" {
 * Input      : buffer     - buffer for string
 *              bufferSize - size of buffer
 *              format     - format string (like printf)
+*              args       - optional arguments (GNU CPP only!)
+* Output     : -
+* Return     : -
+* Side-effect: unknown
+* Notes      : - this macro can only be used with a GNU gcc (CPP)
+*              - this is a "safe" macro to format string; buffer-
+*                overflows will be avoided. Direct usage of e. g.
+*                snprintf() is not permitted because it is not ANSI C
+*                (not portable!)
+*              - do not use this routine in a function without
+*                variable number of arguments (ellipses), because
+*                va_list/va_start/va_end is used!
+\***********************************************************************/
+
+#ifndef TARGET_NATIVE_FORMAT_STRING
+  #ifdef __GNUC__
+    #include <stdarg.h>
+    #define TARGET_NATIVE_FORMAT_STRING(buffer,bufferSize,format,args...) \
+      do { \
+        snprintf(buffer,bufferSize,format, ## args); \
+      } while (0)
+  #else
+    #error TARGET_NATIVE_FORMAT_STRING with variable number of arguments is only supported by GNU gcc! Use TARGET_NATIVE_FORMAT_STRING<n> instead.
+  #endif
+#endif
+
+/***********************************************************************\
+* Name       : TARGET_NATIVE_FORMAT_STRING<n>
+* Purpose    : format a string (with a fixed number of) arguments
+* Input      : buffer     - buffer for string
+*              bufferSize - size of buffer
+*              format     - format string (like printf)
+*              args       - optional arguments (GNU CPP only!)
 * Output     : -
 * Return     : -
 * Side-effect: unknown
@@ -88,9 +121,98 @@ extern "C" {
 *                va_list/va_start/va_end is used!
 \***********************************************************************/
 
-#ifndef TARGET_NATIVE_FORMAT_STRING
+#ifndef TARGET_NATIVE_FORMAT_STRING0
   #include <stdarg.h>
-  #define TARGET_NATIVE_FORMAT_STRING(buffer,bufferSize,format) \
+  #define TARGET_NATIVE_FORMAT_STRING0(buffer,bufferSize,format) \
+    do { \
+      snprintf(buffer,bufferSize,format); \
+    } while (0)
+#endif
+#ifndef TARGET_NATIVE_FORMAT_STRING1
+  #include <stdarg.h>
+  #define TARGET_NATIVE_FORMAT_STRING1(buffer,bufferSize,format,arg1) \
+    do { \
+      snprintf(buffer,bufferSize,format,arg1); \
+    } while (0)
+#endif
+#ifndef TARGET_NATIVE_FORMAT_STRING2
+  #include <stdarg.h>
+  #define TARGET_NATIVE_FORMAT_STRING2(buffer,bufferSize,format,arg1,arg2) \
+    do { \
+      snprintf(buffer,bufferSize,format,arg1,arg2); \
+    } while (0)
+#endif
+#ifndef TARGET_NATIVE_FORMAT_STRING3
+  #include <stdarg.h>
+  #define TARGET_NATIVE_FORMAT_STRING3(buffer,bufferSize,format,arg1,arg2,arg3) \
+    do { \
+      snprintf(buffer,bufferSize,format,arg1,arg2,arg3); \
+    } while (0)
+#endif
+#ifndef TARGET_NATIVE_FORMAT_STRING4
+  #include <stdarg.h>
+  #define TARGET_NATIVE_FORMAT_STRING4(buffer,bufferSize,format,arg1,arg2,arg3,arg4) \
+    do { \
+      snprintf(buffer,bufferSize,format,arg1,arg2,arg3,arg4); \
+    } while (0)
+#endif
+#ifndef TARGET_NATIVE_FORMAT_STRING5
+  #include <stdarg.h>
+  #define TARGET_NATIVE_FORMAT_STRING5(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5) \
+    do { \
+      snprintf(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5); \
+    } while (0)
+#endif
+#ifndef TARGET_NATIVE_FORMAT_STRING6
+  #include <stdarg.h>
+  #define TARGET_NATIVE_FORMAT_STRING6(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5,arg6) \
+    do { \
+      snprintf(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5,arg6); \
+    } while (0)
+#endif
+#ifndef TARGET_NATIVE_FORMAT_STRING7
+  #include <stdarg.h>
+  #define TARGET_NATIVE_FORMAT_STRING7(buffer,bufferSize,format,arg1,arg2,arg3,arg14,arg5,arg6,arg7) \
+    do { \
+      snprintf(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5,arg6,arg7); \
+    } while (0)
+#endif
+#ifndef TARGET_NATIVE_FORMAT_STRING8
+  #include <stdarg.h>
+  #define TARGET_NATIVE_FORMAT_STRING8(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8) \
+    do { \
+      snprintf(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8); \
+    } while (0)
+#endif
+#ifndef TARGET_NATIVE_FORMAT_STRING9
+  #include <stdarg.h>
+  #define TARGET_NATIVE_FORMAT_STRING9(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9) \
+    do { \
+      snprintf(buffer,bufferSize,format,arg1,arg2,arg3,arg4,arg5,arg6,arg7,arg8,arg9); \
+    } while (0)
+#endif
+
+/***********************************************************************\
+* Name       : TARGET_NATIVE_FORMAT_STRING_ELLIPSE
+* Purpose    : format a string with arguments
+* Input      : buffer     - buffer for string
+*              bufferSize - size of buffer
+*              format     - format string (like printf)
+* Output     : -
+* Return     : -
+* Side-effect: unknown
+* Notes      : - this is a "safe" macro to format string; buffer-
+*                overflows will be avoided. Direct usage of e. g.
+*                snprintf() is not permitted because it is not ANSI C
+*                (not portable!)
+*              - do not use this routine in a function without
+*                variable number of arguments (ellipses), because
+*                va_list/va_start/va_end is used!
+\***********************************************************************/
+
+#ifndef TARGET_NATIVE_FORMAT_STRING_ELLIPSE
+  #include <stdarg.h>
+  #define TARGET_NATIVE_FORMAT_STRING_ELLIPSE(buffer,bufferSize,format) \
     do { \
       va_list __arguments; \
       \
@@ -160,3 +282,4 @@ extern "C" {
 #endif /* __TARGET_GENERIC_MISC__ */
 
 /* end of file */
+

@@ -72,6 +72,27 @@ extern "C" {
 /****************************** Macros *********************************/
 
 /***********************************************************************\
+* Name       : TARGET_NATIVE_FILE_OPEN_CREATE
+* Purpose    : create a file
+* Input      : -
+* Output     : -
+* Return     : -
+* Side-effect: unknown
+* Notes      : file is created if it does not exist
+\***********************************************************************/
+
+#ifndef TARGET_NATIVE_FILE_OPEN_CREATE
+  #include <sys/types.h>
+  #include <sys/stat.h>
+  #include <fcntl.h>
+  #define TARGET_NATIVE_FILE_OPEN_CREATE(filename,filedescriptor,result) \
+    do { \
+      filedescriptor=open(filename,O_CREAT|O_EXCL|O_RDWR,0777); \
+      result=(filedescriptor>=0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
+   } while (0)
+#endif
+
+/***********************************************************************\
 * Name       : TARGET_NATIVE_FILE_OPEN_READ
 * Purpose    : open an existing file for reading
 * Input      : -
@@ -108,7 +129,7 @@ extern "C" {
   #include <fcntl.h>
   #define TARGET_NATIVE_FILE_OPEN_READWRITE(filename,filedescriptor,result) \
     do { \
-      filedescriptor=open(filename,O_CREAT|O_RDWR,0666); \
+      filedescriptor=open(filename,O_RDWR,0666); \
       result=(filedescriptor>=0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
    } while (0)
 #endif
@@ -340,7 +361,7 @@ extern "C" {
     do { \
       struct stat __statBuffer; \
       \
-      result=((lstat(filename,&__statBuffer)==0) && (S_ISREG(__statBuffer.st_mode)))?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
+      result=((stat(filename,&__statBuffer)==0) && (S_ISREG(__statBuffer.st_mode)))?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
     } while (0)
 #endif
 
@@ -362,7 +383,7 @@ extern "C" {
     do { \
       struct stat __statBuffer; \
       \
-      result=((lstat(filename,&__statBuffer)==0) && (S_ISDIR(__statBuffer.st_mode)))?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
+      result=((stat(filename,&__statBuffer)==0) && (S_ISDIR(__statBuffer.st_mode)))?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
     } while (0)
 #endif
 
@@ -477,7 +498,7 @@ extern "C" {
   #include <sys/stat.h>
   #define TARGET_NATIVE_FILE_MAKE_DIR(name,result) \
     do { \
-      result=((mkdir(name,S_IRWXU)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR); \
+      result=((mkdir(name,(S_IRWXO|S_IRWXG|S_IRWXU))==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR); \
     } while (0)
 #endif
 
@@ -595,3 +616,4 @@ extern "C" {
 #endif /* __TARGET_GENERIC_FILE__ */
 
 /* end of file */
+

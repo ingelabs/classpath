@@ -471,6 +471,8 @@ extern "C" {
     do { \
       int __value; \
       \
+      bytesAvailable=0; \
+      \
       result=(ioctl(socketDescriptor,FIONREAD,&__value)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       if (result==TARGET_NATIVE_OK) \
       { \
@@ -485,8 +487,6 @@ extern "C" {
 * Input      : socketDescriptor - socket descriptor
 *              maxLength - max. size of bfufer
 * Output     : buffer       - received data
-*              address      - from address (NOT in network byte order!)
-*              port         - from port (NOT in network byte order!)
 *              bytesReceive - length of received data
 * Return     : -
 * Side-effect: unknown
@@ -497,20 +497,47 @@ extern "C" {
   #include <sys/types.h>
   #include <sys/socket.h>
   #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_RECEIVE(socketDescriptor,buffer,maxLength,address,port,bytesReceived) \
+  #define TARGET_NATIVE_NETWORK_SOCKET_RECEIVE(socketDescriptor,buffer,maxLength,bytesReceived) \
     do { \
       struct sockaddr_in __socketAddress; \
       socklen_t          __socketAddressLength; \
       \
-      address=0; \
-      port   =0; \
+      memset(&__socketAddress,0,sizeof(__socketAddress)); \
+      __socketAddressLength=sizeof(__socketAddress); \
+      bytesReceived=recv(socketDescriptor,buffer,maxLength,0); \
+    } while (0)
+#endif
+
+/***********************************************************************\
+* Name       : TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_WITH_ADDRESS_PORT
+* Purpose    : receive data from socket
+* Input      : socketDescriptor - socket descriptor
+*              maxLength - max. size of bfufer
+* Output     : buffer       - received data
+*              address      - from address (NOT in network byte order!)
+*              port         - from port (NOT in network byte order!)
+*              bytesReceive - length of received data
+* Return     : -
+* Side-effect: unknown
+* Notes      : -
+\***********************************************************************/
+
+#ifndef TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_WITH_ADDRESS_PORT
+  #include <sys/types.h>
+  #include <sys/socket.h>
+  #include <netinet/in.h>
+  #define TARGET_NATIVE_NETWORK_SOCKET_RECEIVE_WITH_ADDRESS_PORT(socketDescriptor,buffer,maxLength,address,port,bytesReceived) \
+    do { \
+      struct sockaddr_in __socketAddress; \
+      socklen_t          __socketAddressLength; \
+      \
+      port=0; \
       \
       memset(&__socketAddress,0,sizeof(__socketAddress)); \
       __socketAddressLength=sizeof(__socketAddress); \
       bytesReceived=recvfrom(socketDescriptor,buffer,maxLength,0,(struct sockaddr*)&__socketAddress,&__socketAddressLength); \
-      if (bytesReceived>=0) \
+      if (__socketAddressLength==sizeof(__socketAddress)) \
       { \
-        assert(__socketAddressLength>=sizeof(__socketAddress)); \
         address=ntohl(__socketAddress.sin_addr.s_addr); \
         port   =ntohs(__socketAddress.sin_port); \
       } \
@@ -523,8 +550,6 @@ extern "C" {
 * Input      : socketDescriptor - socket descriptor
 *            : buffer  - data to send
 *              length  - length of data to send
-*              Address - to address (NOT in network byte order!)
-*              Port    - to port (NOT in network byte order!)
 * Output     : bytesSent - number of bytes sent, -1 otherwise
 * Side-effect: unknown
 * Notes      : -
@@ -534,22 +559,38 @@ extern "C" {
   #include <sys/types.h>
   #include <sys/socket.h>
   #include <netinet/in.h>
-  #define TARGET_NATIVE_NETWORK_SOCKET_SEND(socketDescriptor,buffer,length,address,port,bytesSent) \
+  #define TARGET_NATIVE_NETWORK_SOCKET_SEND(socketDescriptor,buffer,length,bytesSent) \
+    do { \
+      bytesSent=send(socketDescriptor,buffer,length,0); \
+    } while (0)
+#endif
+
+/***********************************************************************\
+* Name       : TARGET_NATIVE_NETWORK_SOCKET_SEND_WITH_ADDRESS_PORT
+* Purpose    : send data to socket
+* Input      : socketDescriptor - socket descriptor
+*            : buffer  - data to send
+*              length  - length of data to send
+*              Address - to address (NOT in network byte order!)
+*              Port    - to port (NOT in network byte order!)
+* Output     : bytesSent - number of bytes sent, -1 otherwise
+* Side-effect: unknown
+* Notes      : -
+\***********************************************************************/
+
+#ifndef TARGET_NATIVE_NETWORK_SOCKET_SEND_WITH_ADDRESS_PORT
+  #include <sys/types.h>
+  #include <sys/socket.h>
+  #include <netinet/in.h>
+  #define TARGET_NATIVE_NETWORK_SOCKET_SEND_WITH_ADDRESS_PORT(socketDescriptor,buffer,length,address,port,bytesSent) \
     do { \
       struct sockaddr_in __socketAddress; \
       \
-      if (address!=0) \
-      { \
-        memset(&__socketAddress,0,sizeof(__socketAddress)); \
-        __socketAddress.sin_family      = AF_INET; \
-        __socketAddress.sin_addr.s_addr = htonl(address); \
-        __socketAddress.sin_port        = htons((short)port); \
-        bytesSent=sendto(socketDescriptor,buffer,length,0,(struct sockaddr*)&__socketAddress,sizeof(__socketAddress)); \
-      } \
-      else \
-      { \
-        bytesSent=sendto(socketDescriptor,buffer,length,0,NULL,0); \
-      } \
+      memset(&__socketAddress,0,sizeof(__socketAddress)); \
+      __socketAddress.sin_family      = AF_INET; \
+      __socketAddress.sin_addr.s_addr = htonl(address); \
+      __socketAddress.sin_port        = htons((short)port); \
+      bytesSent=sendto(socketDescriptor,buffer,length,0,(struct sockaddr*)&__socketAddress,sizeof(__socketAddress)); \
     } while (0)
 #endif
 
@@ -1173,3 +1214,4 @@ extern "C" {
 #endif /* __TARGET_GENERIC_NETWORK__ */
 
 /* end of file */
+
