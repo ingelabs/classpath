@@ -1,3 +1,8 @@
+2004-02-01  Mark Wielaard  <mark@klomp.org>
+
+	* doc/hacking.texinfo (Programming Standards): Escape { and } with @
+	in examples.
+
 2004-01-31  Michael Koch  <konqueror@gmx.de>
 
 	* resource/java/security/Makefile.am: Removed comment that does not

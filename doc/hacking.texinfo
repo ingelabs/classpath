@@ -390,14 +390,14 @@ Don't use redundant modifiers.  Here is some sample code that shows
 redundant modifiers in comments:
 
 @example
-/*abstract*/ interface I {
+/*abstract*/ interface I @{
    /*public abstract*/ void m();
    /*public static final*/ int i = 1;
-   /*public static*/ class Inner {}
-}
-final class C {
-   /*final*/ void m() {}
-}
+   /*public static*/ class Inner @{@}
+@}
+final class C @{
+   /*final*/ void m() @{@}
+@}
 @end example
 
 Note that Jikes will generate warnings for these if you use
