@@ -111,6 +111,14 @@ final class VMProcess extends Process
     // Only used in run() and spawn() method from this Thread, so no locking.
     private final HashMap activeMap = new HashMap();
 
+    // We have an explicit constructor, because the default
+    // constructor will be private, which means the compiler will have
+    // to generate a second package-private constructor, which is
+    // bogus.
+    public ProcessThread ()
+    {
+    }
+
     public void run()
     {
       final LinkedList workList = VMProcess.workList;
