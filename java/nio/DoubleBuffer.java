@@ -41,12 +41,12 @@ import gnu.java.nio.DoubleBufferImpl;
 
 public abstract class DoubleBuffer extends Buffer implements Comparable
 {
-  private ByteOrder endian = ByteOrder.BIG_ENDIAN;
   protected double [] backing_buffer;
+  protected int array_offset;
 
   public static DoubleBuffer allocateDirect(int capacity)
   {
-    return new DoubleBufferImpl(capacity, 0, capacity);
+    throw new Error ("direct buffers are not implemented");
   }
 
   public static DoubleBuffer allocate(int capacity)
@@ -87,12 +87,12 @@ public abstract class DoubleBuffer extends Buffer implements Comparable
     return this;
   }
 
-  public DoubleBuffer get(double[] dst)
+  public DoubleBuffer get (double[] dst)
   {
     return get(dst, 0, dst.length);
   }
 
-  public DoubleBuffer put(DoubleBuffer src)
+  public DoubleBuffer put (DoubleBuffer src)
   {
     while (src.hasRemaining())
       put(src.get());
@@ -115,17 +115,30 @@ public abstract class DoubleBuffer extends Buffer implements Comparable
 
   public final boolean hasArray()
   {
-    return (backing_buffer != null);
+    return (backing_buffer != null
+            && !isReadOnly ());
   }
 
   public final double[] array()
   {
+    if (backing_buffer == null)
+      throw new UnsupportedOperationException ();
+
+    if (isReadOnly ())
+      throw new ReadOnlyBufferException ();
+    
     return backing_buffer;
   }
 
   public final int arrayOffset()
   {
-    return 0;
+    if (backing_buffer == null)
+      throw new UnsupportedOperationException ();
+
+    if (isReadOnly ())
+      throw new ReadOnlyBufferException ();
+    
+    return array_offset;
   }
 
   public int hashCode()
@@ -172,17 +185,7 @@ public abstract class DoubleBuffer extends Buffer implements Comparable
     return 0;
   }
 
-  public ByteOrder order()
-  {
-    return endian;
-  }
-
-  public final DoubleBuffer order(ByteOrder bo)
-  {
-    endian = bo;
-    return this;
-  }
-
+  public abstract ByteOrder order ();
   public abstract double get();
   public abstract DoubleBuffer put (double b);
   public abstract double get(int index);

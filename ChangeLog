@@ -1,3 +1,27 @@
+2003-03-11  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/nio/CharBufferImpl.java,
+	gnu/java/nio/DoubleBufferImpl.java,
+	gnu/java/nio/FloatBufferImpl.java,
+	gnu/java/nio/IntBufferImpl.java,
+	gnu/java/nio/LongBufferImpl.java,
+	gnu/java/nio/MappedDoubleFileBuffer.java,
+	gnu/java/nio/MappedFloatFileBuffer.java,
+	gnu/java/nio/MappedIntFileBuffer.java,
+	gnu/java/nio/MappedLongFileBuffer.java,
+	gnu/java/nio/MappedShortFileBuffer.java,
+	gnu/java/nio/ShortBufferImpl.java,
+	java/nio/ByteBuffer.java,
+	java/nio/ByteOrder.java,
+	java/nio/CharBuffer.java,
+	java/nio/DoubleBuffer.java,
+	java/nio/FloatBuffer.java,
+	java/nio/IntBuffer.java,
+	java/nio/LongBuffer.java,
+	java/nio/MappedByteBuffer.java,
+	java/nio/ShortBuffer.java:
+	Partly merged java.nio from libgcj.
+	
 2003-03-10  Tom Tromey  <tromey@redhat.com>
 
 	* java/security/Signer.java: Removed non-ASCII character.

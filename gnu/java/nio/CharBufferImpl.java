@@ -45,8 +45,6 @@ public final class CharBufferImpl extends CharBuffer
 {
   private boolean ro;
 
-  private ByteOrder endian = ByteOrder.BIG_ENDIAN;
-  
   public CharBufferImpl(int cap, int off, int lim)
   {
     this.backing_buffer = new char[cap];
@@ -166,8 +164,9 @@ public final class CharBufferImpl extends CharBuffer
     return this;
   }
 
+
   public final ByteOrder order()
   {
-    return endian;
+    return ByteOrder.BIG_ENDIAN;
   }
 }

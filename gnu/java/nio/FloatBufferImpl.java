@@ -38,6 +38,7 @@ exception statement from your version. */
 package gnu.java.nio;
 
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 
 public final class FloatBufferImpl extends FloatBuffer
@@ -149,5 +150,10 @@ public final class FloatBufferImpl extends FloatBuffer
   {
     backing_buffer[index] = b;
     return this;
+  }
+  
+  final public ByteOrder order ()
+  {
+    return ByteOrder.BIG_ENDIAN;
   }
 }

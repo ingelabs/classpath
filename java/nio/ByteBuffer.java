@@ -45,16 +45,16 @@ import gnu.java.nio.ByteBufferImpl;
 public abstract class ByteBuffer extends Buffer implements Comparable
 {
   private ByteOrder endian = ByteOrder.BIG_ENDIAN;
-  
-  protected byte [] backing_buffer;
+
+  int offset;
+  byte[] backing_buffer;
   
   /**
    * Allocates a new direct byte buffer.
    */ 
   public static ByteBuffer allocateDirect (int capacity)
   {
-    ByteBuffer b = new gnu.java.nio. ByteBufferImpl(capacity, 0, capacity);
-    return b;
+    throw new Error ("direct buffers are not implemented");
   }
 
   /**
@@ -75,7 +75,7 @@ public abstract class ByteBuffer extends Buffer implements Comparable
   {
     return new ByteBufferImpl (array, offset, length);
   }
- 
+
   /**
    * Wraps a byte array into a buffer.
    */
@@ -101,10 +101,10 @@ public abstract class ByteBuffer extends Buffer implements Comparable
    */
   public ByteBuffer get (byte[] dst, int offset, int length)
   {
-    if ((offset < 0) ||
-        (offset > dst.length) ||
-        (length < 0) ||
-        (length > (dst.length - offset)))
+    if ((offset < 0)
+        || (offset > dst.length)
+        || (length < 0)
+        || (length > (dst.length - offset)))
       throw new IndexOutOfBoundsException ();
 
     for (int i = offset; i < offset + length; i++)
@@ -145,9 +145,7 @@ public abstract class ByteBuffer extends Buffer implements Comparable
       throw new IllegalArgumentException ();
 
     while (src.hasRemaining ())
-      {
-        put (src.get ());
-      }
+      put (src.get ());
     
     return this;
   }
@@ -176,10 +174,8 @@ public abstract class ByteBuffer extends Buffer implements Comparable
       throw new IndexOutOfBoundsException ();
 
     for (int i = offset; i < offset + length; i++)
-      {
-        put (src [i]);
-      }
-
+      put (src [i]);
+    
     return this;
   }
 
@@ -200,9 +196,10 @@ public abstract class ByteBuffer extends Buffer implements Comparable
   /**
    * Tells whether or not this buffer is backed by an accessible byte array.
    */
-  public final boolean hasArray()
+  public final boolean hasArray ()
   {
-    return (backing_buffer != null);
+    return (backing_buffer != null
+             && !isReadOnly ());
   }
 
   /**
@@ -213,7 +210,7 @@ public abstract class ByteBuffer extends Buffer implements Comparable
    * @exception UnsupportedOperationException If this buffer is not backed
    * by an accessible array.
    */
-  public final byte[] array()
+  public final byte[] array ()
   {
     if (backing_buffer == null)
       throw new UnsupportedOperationException ();
@@ -233,7 +230,7 @@ public abstract class ByteBuffer extends Buffer implements Comparable
    * @exception UnsupportedOperationException If this buffer is not backed
    * by an accessible array.
    */
-  public final int arrayOffset()
+  public final int arrayOffset ()
   {
     if (backing_buffer == null)
       throw new UnsupportedOperationException ();
@@ -241,8 +238,7 @@ public abstract class ByteBuffer extends Buffer implements Comparable
     if (isReadOnly ())
       throw new ReadOnlyBufferException ();
 
-    // FIXME: Return correct value
-    return 0;
+    return offset;
   }
   
   /**
@@ -610,6 +606,9 @@ public abstract class ByteBuffer extends Buffer implements Comparable
    */
   public String toString ()
   {
-    return "";
+    return getClass ().getName () +
+	    "[pos=" + position () +
+	    " lim=" + limit () +
+	    " cap=" + capacity () + "]";
   }
 }
