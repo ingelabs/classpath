@@ -1,3 +1,4 @@
+^../java/awt/.*$
 ^../java/net/Authenticator.java$
 ^../java/net/JarURLConnection.java$
 ^../java/lang/RuntimePermission.java$
@@ -5,5 +6,5 @@
 ^../java/security/ProtectionDomain.java$
 ^../java/sql/.*$
 ^../java/text/.*$
-^../gnu/java/awt/peer/gtk/.*$
+^../gnu/java/awt/.*$
 ^../gnu/test/.*$
