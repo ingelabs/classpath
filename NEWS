@@ -1,3 +1,10 @@
+Runtime interface changes:
+
+* New gnu.classpath.VMSystemProperties class. This replaces the
+  system properties initialization in VMRuntime. Note that it is
+  now the VMs responsibility to set one additional property:
+  gnu.cpu.endian should be set to "big" or "little".
+
 New in release 0.12 (Nov 14, 2004)
 
 * GNU Classpath's JAR implementation now has preliminary support for

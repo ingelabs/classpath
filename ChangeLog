@@ -1,5 +1,9 @@
 2004-12-06  Jeroen Frijters  <jeroen@frijters.net>
 
+	* NEWS: Updated.
+
+2004-12-06  Jeroen Frijters  <jeroen@frijters.net>
+
 	* gnu/classpath/SystemProperties.java: New file.
 	* vm/reference/gnu/classpath/VMSystemProperties.java: New file.
 	* gnu/java/io/EncodingManager.java,
