@@ -71,7 +71,7 @@ optionLength(String opt)
   * @return <code>true</code> if the options are valid, <code>false</code>
   * otherwise.
   */
-public boolean
+public static boolean
 validOptions(String[][] opts, DocErrorReporter logger)
 {
   return(true);
