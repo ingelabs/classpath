@@ -42,7 +42,7 @@ package gnu.classpath;
  * for reflection and security purposes.
  *
  * <p>
- * This class is only available to priviledged code (i.e., code loaded
+ * This class is only available to privileged code (i.e., code loaded
  * by the bootstrap loader).
  *
  * @author John Keiser
