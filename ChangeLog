@@ -1,3 +1,8 @@
+2004-06-19  Archie Cobbs  <archie@dellroad.org>
+
+	* native/jni/java-net/gnu_java_net_PlainDatagramSocketImpl.c
+	(receive0): Don't byte-swap already-swapped remote port
+
 2004-07-17  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/DatagramSocket.java

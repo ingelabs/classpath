@@ -312,8 +312,6 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this,
   DBG("PlainDatagramSocketImpl.receive(): Stored the address\n");
 
   /* Store the port */
-  port = ntohs(((unsigned short)port));
-
   mid = (*env)->GetMethodID(env, cls, "setPort", "(I)V");
   if (mid == NULL)
     {
