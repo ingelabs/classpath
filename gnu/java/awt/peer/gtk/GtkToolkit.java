@@ -41,67 +41,67 @@ public class GtkToolkit extends java.awt.Toolkit
   static EventQueue q = new EventQueue();
   
   static 
-    {
-      System.out.println("loading library");	
-      System.loadLibrary("gtkpeer");
-    }
+  {
+    System.out.println("loading library");	
+    System.loadLibrary("gtkpeer");
+  }
 
   public GtkToolkit ()
-    {
-      main = new GtkMainThread();
-      GtkGenericPeer.enableQueue(q);
-    }
+  {
+    main = new GtkMainThread ();
+    GtkGenericPeer.enableQueue (q);
+  }
   
   native public void beep();
   native private void getScreenSizeDimensions(int[] xy);
   
   public int checkImage (Image image, int width, int height, 
 			 ImageObserver observer) 
-    {
-      return 0;
-    }
+  {
+    return 0;
+  }
 
   public Image createImage (ImageProducer producer) 
-    {
-      return null;
-    }
+  {
+    return null;
+  }
 
   public Image createImage (byte[] imagedata, int imageoffset, 
 			    int imagelength) 
-    {
-      return null;
-    }
+  {
+    return null;
+  }
 
   public ColorModel getColorModel () 
-    {
-      return null;
-    }
+  {
+    return null;
+  }
 
   public String[] getFontList () 
-    {
-      return null;
-    }
+  {
+    return null;
+  }
 
   public FontMetrics getFontMetrics (Font font) 
-    {
-      return null;
-    }
+  {
+    return null;
+  }
 
   public Image getImage (String filename) 
-    {
-      return null;
-    }
+  {
+    return null;
+  }
 
   public Image getImage (URL url) 
-    {
-      return null;
-    }
+  {
+    return null;
+  }
 
   public PrintJob getPrintJob (Frame frame, String jobtitle, 
 			       Properties props) 
-    {
-      return null;
-    }
+  {
+    return null;
+  }
 
   native public int getScreenResolution();
 
@@ -112,182 +112,181 @@ public class GtkToolkit extends java.awt.Toolkit
   }
 
   public Clipboard getSystemClipboard() 
-    {
-      return null;
-    }
+  {
+    return null;
+  }
 
   public boolean prepareImage (Image image, int width, int height, 
 			       ImageObserver observer) 
-    {
-      return false;
-    }
+  {
+    return false;
+  }
 
   native public void sync ();
 
   protected void setComponentState (Component c, GtkComponentPeer cp)
-    {
-      /* Make the Component reflect Peer defaults */
-      if (c.getForeground () == null)
-	c.setForeground (cp.getForeground ());
-      if (c.getBackground () == null)
-	c.setBackground (cp.getBackground ());
-//        if (c.getFont () == null)
-//  	c.setFont (cp.getFont ());
+  {
+    /* Make the Component reflect Peer defaults */
+    if (c.getForeground () == null)
+      c.setForeground (cp.getForeground ());
+    if (c.getBackground () == null)
+      c.setBackground (cp.getBackground ());
+    //        if (c.getFont () == null)
+    //  	c.setFont (cp.getFont ());
       
-      /* Make the Peer reflect the state of the Component */
-      cp.setCursor (c.getCursor ());
-      Dimension d = c.getSize ();
+    /* Make the Peer reflect the state of the Component */
+    cp.setCursor (c.getCursor ());
+    
+    Rectangle bounds = c.getBounds ();
+    cp.setBounds (bounds.x, bounds.y, bounds.width, bounds.width);
       
-      Point p = c.getLocation ();
-      cp.setBounds (p.x, p.y, d.width, d.height);
-      
-      cp.setVisible (c.isVisible ());
-    }
+    cp.setVisible (c.isVisible ());
+  }
 
   protected ButtonPeer createButton (Button b)
-    {
-      GtkButtonPeer bp = new GtkButtonPeer (b, b.getParent().getPeer());
-      setComponentState (b, bp);
-      return bp;
-    }
+  {
+    GtkButtonPeer bp = new GtkButtonPeer (b, b.getParent().getPeer());
+    setComponentState (b, bp);
+    return bp;
+  }
 
   protected CanvasPeer createCanvas (Canvas c) 
-    {
-      GtkCanvasPeer cp = new GtkCanvasPeer (c, c.getParent().getPeer());
-      setComponentState (c, cp);
-      return cp;
-    }
+  {
+    GtkCanvasPeer cp = new GtkCanvasPeer (c, c.getParent().getPeer());
+    setComponentState (c, cp);
+    return cp;
+  }
 
   protected CheckboxPeer createCheckbox (Checkbox cb) 
-    {
-      GtkCheckboxPeer cbp = new GtkCheckboxPeer (cb, cb.getParent().getPeer());
-      setComponentState (cb, cbp);
-      return cbp;
-    }
+  {
+    GtkCheckboxPeer cbp = new GtkCheckboxPeer (cb, cb.getParent().getPeer());
+    setComponentState (cb, cbp);
+    return cbp;
+  }
 
   protected CheckboxMenuItemPeer createCheckboxMenuItem (CheckboxMenuItem cmi)
-    {
-      return null;
-    }
+  {
+    return null;
+  }
 
   protected ChoicePeer createChoice (Choice c) 
-    {
-      GtkChoicePeer cp = new GtkChoicePeer (c, c.getParent().getPeer());
-      setComponentState (c, cp);
-      return cp;
-    }
+  {
+    GtkChoicePeer cp = new GtkChoicePeer (c, c.getParent().getPeer());
+    setComponentState (c, cp);
+    return cp;
+  }
 
   protected DialogPeer createDialog (Dialog d)
-    {
-      GtkDialogPeer dp = new GtkDialogPeer (d, d.getParent ().getPeer ());
-      setComponentState (d, dp);
-      return dp;
-    }
+  {
+    GtkDialogPeer dp = new GtkDialogPeer (d, d.getParent ().getPeer ());
+    setComponentState (d, dp);
+    return dp;
+  }
 
   protected FileDialogPeer createFileDialog (FileDialog fd)
-    {
-      GtkFileDialogPeer fdp = new GtkFileDialogPeer (fd);
-      setComponentState (fd, fdp);
-      return fdp;
-    }
+  {
+    GtkFileDialogPeer fdp = new GtkFileDialogPeer (fd);
+    setComponentState (fd, fdp);
+    return fdp;
+  }
 
   protected FramePeer createFrame (Frame f)
-    {
-      GtkFramePeer fp = new GtkFramePeer (f);
-      setComponentState (f, fp);
-      return fp;
-    }
+  {
+    GtkFramePeer fp = new GtkFramePeer (f);
+    setComponentState (f, fp);
+    return fp;
+  }
 
   protected LabelPeer createLabel (Label l) 
-    {
-      GtkLabelPeer lp = new GtkLabelPeer (l, l.getParent().getPeer());
-      setComponentState (l, lp);
-      return lp;
-    }
+  {
+    GtkLabelPeer lp = new GtkLabelPeer (l, l.getParent().getPeer());
+    setComponentState (l, lp);
+    return lp;
+  }
 
   protected ListPeer createList (List l) 
-    {
-      GtkListPeer lp = new GtkListPeer (l, l.getParent().getPeer());
-      setComponentState (l, lp);
-      return lp;
-    }
+  {
+    GtkListPeer lp = new GtkListPeer (l, l.getParent().getPeer());
+    setComponentState (l, lp);
+    return lp;
+  }
 
   protected MenuPeer createMenu (Menu m) 
-    {
-      return null;
-    }
+  {
+    return null;
+  }
 
   protected MenuBarPeer createMenuBar (MenuBar mb) 
-    {
-      return null;
-    }
+  {
+    return null;
+  }
 
   protected MenuItemPeer createMenuItem (MenuItem mi) 
-    {
-      return null;
-    }
+  {
+    return null;
+  }
 
   protected PanelPeer createPanel (Panel p) 
-    {
-      GtkPanelPeer pp = new GtkPanelPeer (p,p.getParent().getPeer());
-      setComponentState (p, pp);
-      return pp;
-    }
+  {
+    GtkPanelPeer pp = new GtkPanelPeer (p,p.getParent().getPeer());
+    setComponentState (p, pp);
+    return pp;
+  }
 
   protected PopupMenuPeer createPopupMenu (PopupMenu target) 
-    {
-      return null;
-    }
+  {
+    return null;
+  }
 
   protected ScrollPanePeer createScrollPane (ScrollPane sp) 
-    {
-      GtkScrollPanePeer spp = new GtkScrollPanePeer (sp, 
-						     sp.getParent().getPeer());
-      setComponentState (sp, spp);
-      return spp;
-    }
+  {
+    GtkScrollPanePeer spp = new GtkScrollPanePeer (sp, 
+						   sp.getParent().getPeer());
+    setComponentState (sp, spp);
+    return spp;
+  }
 
   protected ScrollbarPeer createScrollbar (Scrollbar sb) 
-    {
-      GtkScrollbarPeer sbp = new GtkScrollbarPeer (sb, 
-						   sb.getParent().getPeer());
-      setComponentState (sb, sbp);
-      return sbp;
-    }
+  {
+    GtkScrollbarPeer sbp = new GtkScrollbarPeer (sb, 
+						 sb.getParent().getPeer());
+    setComponentState (sb, sbp);
+    return sbp;
+  }
 
   protected TextAreaPeer createTextArea (TextArea ta) 
-    {
-      GtkTextAreaPeer tap = new GtkTextAreaPeer (ta, ta.getParent().getPeer());
-      setComponentState (ta, tap);
-      return tap;
-    }
+  {
+    GtkTextAreaPeer tap = new GtkTextAreaPeer (ta, ta.getParent().getPeer());
+    setComponentState (ta, tap);
+    return tap;
+  }
 
   protected TextFieldPeer createTextField (TextField tf) 
-    {
-      GtkTextFieldPeer tfp = new GtkTextFieldPeer (tf, 
-						   tf.getParent().getPeer());
-      setComponentState (tf, tfp);
-      return tfp;
-    }
+  {
+    GtkTextFieldPeer tfp = new GtkTextFieldPeer (tf, 
+						 tf.getParent().getPeer());
+    setComponentState (tf, tfp);
+    return tfp;
+  }
 
   protected WindowPeer createWindow(Window w)
-    {
-      GtkWindowPeer wp = new GtkWindowPeer (w);
-      setComponentState (w, wp);
-      return wp;
-    }
+  {
+    GtkWindowPeer wp = new GtkWindowPeer (w);
+    setComponentState (w, wp);
+    return wp;
+  }
 
   protected FontPeer getFontPeer (String name, int style) 
-    {
-      return null;
-    }
+  {
+    return null;
+  }
 
   protected EventQueue getSystemEventQueueImpl() 
-    {
-      return q;
-    }
+  {
+    return q;
+  }
 
   protected void loadSystemColors (int[] systemColors) 
-    {
-    }
+  {
+  }
 }
