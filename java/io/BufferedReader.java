@@ -526,7 +526,7 @@ readLine() throws IOException
 
   for (;;)
     {
-      String str = new String(buf, pos, count);
+      String str = new String(buf, pos, (count - pos));
       int eol_pos = str.indexOf('\r');
       if (eol_pos == -1)
         {
@@ -535,7 +535,8 @@ readLine() throws IOException
             {
               // Copy the contents of the read buffer to our method buffer
               char[] newbuf = new char[strbuf.length + (count - pos)];
-              System.arraycopy(strbuf, 0, newbuf, 0, bufpos);
+              if (bufpos > 0)
+                System.arraycopy(strbuf, 0, newbuf, 0, bufpos);
               strbuf = newbuf;
               System.arraycopy(buf, pos, strbuf, bufpos, count - pos);
               bufpos += (count - pos);
@@ -549,12 +550,14 @@ readLine() throws IOException
           else
             {
               // Copy the contents of the read buffer to our method buffer
-              char[] newbuf = new char[strbuf.length + (eol_pos - pos)];
-              System.arraycopy(strbuf, 0, newbuf, 0, bufpos);
+              char[] newbuf = new char[strbuf.length + eol_pos];
+              if (bufpos > 0)
+                System.arraycopy(strbuf, 0, newbuf, 0, bufpos);
               strbuf = newbuf;
-              System.arraycopy(buf, pos, strbuf, bufpos, eol_pos - pos);
-              bufpos += (eol_pos - pos);
-              pos = eol_pos + 1;
+
+              System.arraycopy(buf, pos, strbuf, bufpos, eol_pos);
+              bufpos += eol_pos;
+              pos += eol_pos + 1;
             }
        }
       else 
@@ -566,7 +569,6 @@ readLine() throws IOException
           System.arraycopy(buf, pos, strbuf, bufpos, eol_pos - pos);
           bufpos += (eol_pos - pos);
  
-          int nl_pos = -1;
           if (str.length() > (eol_pos + 1))
             {
               if (str.charAt(eol_pos) == '\n')
@@ -584,6 +586,7 @@ readLine() throws IOException
         }
       break;
     }
+  
   return(new String(strbuf, 0, bufpos));
   } // synchronized
 }
