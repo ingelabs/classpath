@@ -1,5 +1,11 @@
 2004-07-16  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/ByteOrder.java
+	(static): Removed. Not needed.
+	Thanks to Patrick Reali for noticing.
+
+2004-07-16  Michael Koch  <konqueror@gmx.de>
+
 	* java/util/zip/GZIPOutputStream.java:
 	Fixed javadocs.
 
