@@ -1,5 +1,5 @@
 /* SocketOptions.java -- Implements options for sockets (duh!)
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.net;
 
 /**
@@ -32,7 +31,7 @@ package java.net;
   * <code>DatagramSocketImpl</code> to implement options
   * on sockets.  
   *
-  * @version 1.2
+  * @since 1.2
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
@@ -45,51 +44,51 @@ public abstract interface SocketOptions
  * Static Variables
  */
 
-
 /**
   * Option id for the SO_LINGER value
   */
-public static final int SO_LINGER = 128;
+public static final int SO_LINGER = 0x80; // 128
 
 /**
   * Option id for the SO_TIMEOUT value
   */
-public static final int SO_TIMEOUT = 4102;
+public static final int SO_TIMEOUT = 0x1006; // 4102
 
 /**
   * Retrieve the local address to which the socket is bound.
   */
-public static final int SO_BINDADDR = 15;
+public static final int SO_BINDADDR = 0x0F; // 15
 
 /**
   * Option id for the send buffer size
   */
-public static final int SO_SNDBUF = 4;
+public static final int SO_SNDBUF = 0x1001; // 4097
 
 /**
   * Option id for the receive buffer size
   */
-public static final int SO_RCVBUF = 4098;
+public static final int SO_RCVBUF = 0x1002; // 4098
 
 /**
   * Sets the SO_REUSEADDR parameter on a socket
   */
-public static final int SO_REUSEADDR = 4097;
+public static final int SO_REUSEADDR = 0x04; // 4
 
 /**
   * Option id for the TCP_NODELAY value
   */
-public static final int TCP_NODELAY = 1;
+public static final int TCP_NODELAY = 0x01; // 1
 
 /**
-  * Option id for the IP_TTL (time to live) value.  Not public
+  * Option id for the IP_TTL (time to live) value.  Not public or
+  * standardized value.
   */
-static final int IP_TTL = 7777;
+static final int IP_TTL = 0x1E61; // 7777
 
 /**
   * Options id for the IP_MULTICAST_IF value
   */
-public static final int IP_MULTICAST_IF = 16;
+public static final int IP_MULTICAST_IF = 0x10; // 16
 
 /*************************************************************************/
 
