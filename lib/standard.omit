@@ -10,6 +10,7 @@
 ../java/awt/event/InvocationEvent.java$
 ../java/nio/.*$
 ../java/util/prefs/.*$
+../gnu/java/nio/.*$
 ../gnu/java/util/prefs/.*$
 ../gnu/classpath/tools/.*$
 ../javax/accessibility/.*$

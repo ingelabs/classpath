@@ -16,7 +16,7 @@
 
 2002-03-11  Mark Wielaard <mark@klomp.org>
 
-	* lib/standard.omit: add java.nio package.
+	* lib/standard.omit: add java.nio and gnu.java.nio packages.
 
 2002-03-10  Tom Tromey  <tromey@redhat.com>
 
