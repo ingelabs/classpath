@@ -1,5 +1,10 @@
 2004-05-06  Michael Koch  <konqueror@gmx.de>
 
+	* javax/imageio/spi/ImageReaderWriterSpi.java
+	(ImageReaderWriterSpi): Made it public.
+
+2004-05-06  Michael Koch  <konqueror@gmx.de>
+
 	* java/util/logging/Level.java:
 	Explicitly import java.io.Serializable.
 
