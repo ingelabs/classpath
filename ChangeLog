@@ -1,3 +1,11 @@
+2004-11-16  Sven de Marothy  <sven@physto.se>
+
+	* javax/swing/SwingUtilities.java:
+	(computeDifference): Implemented
+	(computeIntersection): Likewise
+	(computeUnion): Likewise
+	(isRectangleContainingRectangle): Likewise
+
 2004-11-16  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/BasicStroke.java,
