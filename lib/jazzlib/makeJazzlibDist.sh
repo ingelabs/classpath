@@ -12,7 +12,7 @@ echo "----- Edit this script to change the release number       -----"
 echo "----- Do rm -rf dist when you're finished                 -----"
 echo "----- 30 May 2002 John Leuner <jewel@debian.org>      -----"
 
-RELEASE_NUMBER=05
+RELEASE_NUMBER=06
 
 # $1 is the archive command, eg "tar czvf" or "zip" or "jar cf"
 # $2 is the archive suffix, eg ".zip" or ".tar.gz"
