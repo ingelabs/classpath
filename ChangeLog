@@ -1,5 +1,10 @@
 2004-09-25  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JApplet.java
+	(rootPaneCheckingEnabled): Renamed from checking.
+
+2004-09-25  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JTable.java
 	(getUI): Javadoc added.
 	(setUI): New method.

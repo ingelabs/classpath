@@ -53,13 +53,16 @@ public class JApplet extends Applet
   implements RootPaneContainer
 {
   private static final long serialVersionUID = 7269359214497372587L;
+  
   public static final int HIDE_ON_CLOSE = 0;
   public static final int EXIT_ON_CLOSE = 1;
   public static final int DISPOSE_ON_CLOSE = 2;
   public static final int DO_NOTHING_ON_CLOSE = 3;
+  
   private int close_action = EXIT_ON_CLOSE;
-  private boolean checking;
+
   protected JRootPane rootPane;
+  protected boolean rootPaneCheckingEnabled;
 
   public JApplet()
   {
@@ -141,7 +144,6 @@ public class JApplet extends Applet
     getRootPane().setGlassPane(glassPane);
   }
 
-  /////////////////////////////////////////////////////////////////////////////////
   protected void addImpl(Component comp, Object constraints, int index)
   {
     super.addImpl(comp, constraints, index);
@@ -228,12 +230,12 @@ public class JApplet extends Applet
 
   protected boolean isRootPaneCheckingEnabled()
   {
-    return checking;
+    return rootPaneCheckingEnabled;
   }
 
   protected void setRootPaneCheckingEnabled(boolean enabled)
   {
-    checking = enabled;
+    rootPaneCheckingEnabled = enabled;
   }
 
   public void update(Graphics g)
