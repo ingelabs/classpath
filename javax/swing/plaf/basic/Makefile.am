@@ -12,6 +12,8 @@ BasicOptionPaneUI.java \
 BasicPanelUI.java \
 BasicRadioButtonUI.java \
 BasicScrollPaneUI.java \
+BasicSplitPaneDivider.java \
+BasicSplitPaneUI.java \
 BasicTabbedPaneUI.java \
 BasicTextUI.java \
 BasicToggleButtonUI.java \
