@@ -1,5 +1,8 @@
 2001-10-14  Tom Tromey  <tromey@redhat.com>
 
+	* java/beans/Makefile.am (EXTRA_DIST): Added new file.
+	* java/beans/AppletInitializer.java: New file.
+
 	* java/net/SocketPermission.java (hostport, actions): Now
 	private.
 

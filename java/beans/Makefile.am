@@ -3,6 +3,7 @@
 SUBDIRS = beancontext
 
 EXTRA_DIST = \
+AppletInitializer.java \
 BeanDescriptor.java \
 BeanInfo.java \
 Beans.java \
