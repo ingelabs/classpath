@@ -243,7 +243,7 @@ public class X509CertPath extends CertPath
         DERValue cert = der.read();
         try
           {
-            certs.add(new X509CertificateImpl(new ByteArrayInputStream(cert.getEncoded())));
+            certs.add(new X509Certificate(new ByteArrayInputStream(cert.getEncoded())));
           }
         catch (CertificateException ce)
           {
