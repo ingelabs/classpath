@@ -48,6 +48,28 @@ Runs on top of <createlink url="http://www.go-mono.org/" name="Mono">.
 </td>
 </tr>
 <tr>
+<td><createlink url="http://sourceforge.net/projects/jamiga" name="JAmiga"></td>
+<td>
+A JRE implementation for the Amiga Platform.
+</td>
+</tr>
+<tr>
+<td><createlink url="http://jamvm.sourceforge.net/" name="JamVM"></td>
+<td>
+JamVM is a Java Virtual Machine which conforms to the JVM specification version 2 (blue book). In comparison to most other VM's (free and commercial) it is extremely small, with a stripped executable on PowerPC of only ~100K, and Intel 80K. However, unlike other small VMs (e.g. KVM) it is designed to support the full specification, and includes support for object finalisation, the Java Native Interface (JNI) and the Reflection API. 
+</td>
+</tr>
+<tr>
+<td><createlink url="http://www.oberon.ethz.ch/jaos/" name="Jaos"></td>
+<td>
+The Jaos VM is a JVM using GNU Classpath implemented on top of the
+<createlink url="http://bluebottle.ethz.ch/" name="Aos/Bluebottle"> kernel.
+This kernel offers many useful features like garbage collected memory
+management, dynamic module loading, and object-oriented model. This makes the
+implementation of a JVM particularly attractive and simple.
+</td>
+</tr>
+<tr>
 <td><createlink url="http://www.ibm.com/developerworks/oss/jikesrvm/" name="Jikes RVM"></td>
 <td>
 Jikes RVM uses GNU Classpath for all of its libraries.  Instructions for using
@@ -59,9 +81,25 @@ RVM home page.
 </td>
 </tr>
 <tr>
+<td><createlink url="http://jnode.sourceforge.net/" name="JNode"></td>
+<td>
+JNode is a <i>Java New Operating System Design Effort</i>. 
+The goal is to get an simple to use and install Java operating system for personal use. Any java application should run on it, fast &amp; secure! 
+</td>
+</tr>
+<tr>
 <td><createlink url="http://www.eecg.toronto.edu/~doylep/jupiter/" name="Jupiter"></td>
 <td>
 This VM also uses a modified version of the GNU Classpath libraries.
+</td>
+</tr>
+<tr>
+<td><createlink url="http://www.kaffe.org/" name="Kaffe"></td>
+<td>
+Kaffe OpenVM is a complete virtual machine, library framework and
+tools for programming in the java language. It has its own
+implementation of part of the core libraries, but uses large parts of
+the GNU Classpath framework.
 </td>
 </tr>
 <tr>
@@ -86,31 +124,6 @@ mailing list archives.
 <td>
 This VM provides a repackaged version of GNU Classpath that aims to
 be the easiest to install and use.
-</td>
-</tr>
-<tr>
-<td><createlink url="http://www.oberon.ethz.ch/jaos/" name="Jaos"></td>
-<td>
-The Jaos VM is a JVM using GNU Classpath implemented on top of the
-<createlink url="http://bluebottle.ethz.ch/" name="Aos/Bluebottle"> kernel.
-This kernel offers many useful features like garbage collected memory
-management, dynamic module loading, and object-oriented model. This makes the
-implementation of a JVM particularly attractive and simple.
-</td>
-</tr>
-<tr>
-<td><createlink url="http://sourceforge.net/projects/jamiga" name="JAmiga"></td>
-<td>
-A JRE implementation for the Amiga Platform.
-</td>
-</tr>
-<tr>
-<td><createlink url="http://www.kaffe.org/" name="Kaffe"></td>
-<td>
-Kaffe OpenVM is a complete virtual machine, library framework and
-tools for programming in the java language. It has its own
-implementation of part of the core libraries, but uses large parts of
-the GNU Classpath framework.
 </td>
 </tr>
 </table>
