@@ -139,6 +139,12 @@ public class Throwable extends Object implements Serializable
     st = StackTrace.copyCurrentStackTrace();
     st.pop(); // get rid of the fillInStackTrace() call
     int lastIndex = st.numFrames() - 1;
+    // This needs to be in here because exceptions in general are bad
+    // when in the exception code. :)
+    // It can be safely removed once exception code is real.
+    if(lastIndex < 0) {
+    	return this;
+    }
     StackFrame frame = st.frameAt(lastIndex);
     while (Throwable.class.isAssignableFrom(frame.getCalledClass())
 	   && frame.getCalledMethod().equals("<init>")) {
