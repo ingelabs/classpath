@@ -1,3 +1,13 @@
+New in release 0.12 (unreleased)
+
+* GNU Classpath's JAR implementation now has preliminary support for
+  signed entries, for so called "signed JAR" file support. Signed JAR
+  files are one of the key security features of the Java platform, and
+  allow code to run privileged given unforgeable proofs of identity.
+* A much improved version of X.509 certificates has been added,
+  including a robust certificate path checking algorithm. Also
+  included is an implementation of the RSA signature scheme.
+
 New in release 0.11 (Sep 13, 2004)
 
 * javax.swing.Spring and SpringLayout support.

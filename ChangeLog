@@ -1,3 +1,8 @@
+2004-11-07  Casey Marshall  <csm@gnu.org>
+
+	* NEWS: started 0.12 entry; mention signed JAR files and X.509
+	improvements.
+
 2004-11-07  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/jar/JarFile.java (EntryInputStream): Add actual
