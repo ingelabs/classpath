@@ -19,32 +19,64 @@
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
-//TODO: comments
-//      test suite
-
 package gnu.java.io;
 
+/**
+   This class is a thin wrapper around <code>Object</code> that makes
+   the methods <code>hashCode()</code> and <code>equals(Object)</code>
+   as discriminating as possible.
+*/
 public class UniqueObjectWrapper
 {
+
+  /**
+     Constructs a <code>UniqueObjectWrapper</code> that is wrapped
+     around o.
+  */
   public UniqueObjectWrapper( Object o )
   {
     object = o;
   }
 
+  /**
+     Uses <code>System.identityHashCode(Object)</code> to compute a
+     hash code for the object wrapped by this
+     <code>UniqueObjectWrapper</code>.
+
+     @see java.lang.System#identityHashCode(java.lang.Object)
+     @see java.util.Hashtable
+     @see java.lang.Object#hashCode()
+  */
   public int hashCode()
   {
     return System.identityHashCode( object );
   }
 
+  /**
+     Uses the <code>==</code> operator to test for equality between
+     the object wrapped by this <code>UniqueObjectWrapper</code> and
+     the object wrapped by the <code>UniqueObjectWrapper</code> o.
+     Returns false if o is not a <code>UniqueObjectWrapper</code>.
+
+     @see java.util.Hashtable
+     @see java.lang.Object#equals()
+  */
   public boolean equals( Object o )
   {
-    return object == ((UniqueObjectWrapper)o).object;
+    if( o instanceof UniqueObjectWrapper )
+      return object == ((UniqueObjectWrapper)o).object;
+    else
+      return false;
   }
 
   public String toString()
   {
-    return "UniqueObjectWrapper< " + object + " >";
+    return "UniqueObjectWrapper< " + object + ", " + hashCode() + " >";
   }
 
+  /**
+     The <code>Object</code> wrapped by this
+     <code>UniqueObjectWrapper</code>.
+  */
   public Object object;
 }
