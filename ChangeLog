@@ -1,4 +1,12 @@
-2004-04-22  Dalibor Topic  <robilad@kaffe.org>
+2004-04-22 Dalibor Topic <robilad@kaffe.org>
+
+	* java/util/jar/JarFile.java,
+        java/util/jar/JarInputStream.java,
+        java/util/jar/JarOutputStream.java,
+        java/util/jar/Manifest.java:
+	Cleaned up imports.
+
+2004-04-22 Dalibor Topic <robilad@kaffe.org>
 
 	* java/util/ArrayList.java,
         java/util/Calendar.java,
