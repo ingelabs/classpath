@@ -10,4 +10,3 @@
 ^../java/awt/event/InputMethodEvent.java$
 ^../java/awt/event/InputMethodListener.java$
 ^../java/awt/event/InvocationEvent.java$
-^../gnu/java/awt/image/Gdk.*$
