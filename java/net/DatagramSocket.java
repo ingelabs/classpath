@@ -167,28 +167,28 @@ public class DatagramSocket
     impl = new PlainDatagramSocketImpl();
     impl.create();
 
-    if (laddr != null)
+    if (laddr == null)
+      laddr = InetAddress.ANY_IF;
+    
+    try
       {
-        try
-          {
-            localAddr = laddr;
-            impl.bind(port, laddr);
-          }
-        catch (SocketException exception)
-          {
-            impl.close();
-            throw exception;
-          }
-        catch (RuntimeException exception)
-          {
-            impl.close();
-            throw exception;
-          }
-        catch (Error error)
-          {
-            impl.close();
-            throw error;
-          }
+        localAddr = laddr;
+        impl.bind (port, laddr);
+      }
+    catch (SocketException exception)
+      {
+        impl.close ();
+        throw exception;
+      }
+    catch (RuntimeException exception)
+      {
+        impl.close ();
+        throw exception;
+      }
+    catch (Error error)
+      {
+        impl.close ();
+        throw error;
       }
   }
 
