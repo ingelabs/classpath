@@ -38,8 +38,57 @@ exception statement from your version. */
 
 package javax.imageio;
 
+import java.awt.image.ColorModel;
+import java.awt.image.RenderedImage;
+import java.awt.image.SampleModel;
+
 public class ImageTypeSpecifier
 {
-  // FIXME: Incomplete. This class is merely present in order to allow
-  // compilation of the javax.imageio package.
+  protected ColorModel colorModel;
+  protected SampleModel sampleModel;
+
+  public ImageTypeSpecifier(ColorModel colorModel, SampleModel sampleModel)
+  {
+    if (colorModel == null)
+      throw new IllegalArgumentException("colorModel may not be null");
+
+    if (sampleModel == null)
+      throw new IllegalArgumentException("sampleModel may not be null");
+
+    if (!colorModel.isCompatibleSampleModel(sampleModel))
+      throw new IllegalArgumentException
+        ("sample Model not compatible with colorModel");
+    
+    this.colorModel = colorModel;
+    this.sampleModel = sampleModel;
+  }
+
+  public ImageTypeSpecifier(RenderedImage image)
+  {
+    if (image == null)
+      throw new IllegalArgumentException("image may not be null");
+    
+    this.colorModel = image.getColorModel();
+    this.sampleModel = image.getSampleModel();
+  }
+
+  public ColorModel getColorModel()
+  {
+    return colorModel;
+  }
+
+  public int getNumBands()
+  {
+    return sampleModel.getNumBands();
+  }
+
+  public int getNumComponents()
+  {
+    return colorModel.getNumComponents();
+  }
+
+  public SampleModel getSampleModel()
+  {
+    return sampleModel;
+  }
 }
