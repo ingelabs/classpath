@@ -135,7 +135,7 @@ public abstract class AbstractList extends AbstractCollection implements List {
       boolean removed = true;
 
       private void checkMod() {
-        if (knownMod < modCount) {
+        if (knownMod != modCount) {
           throw new ConcurrentModificationException();
         }
       }
@@ -204,7 +204,7 @@ public abstract class AbstractList extends AbstractCollection implements List {
       private int lastReturned = -1;
 
       private void checkMod() {
-        if (knownMod < modCount) {
+        if (knownMod != modCount) {
           throw new ConcurrentModificationException();
         }
       }
@@ -326,7 +326,7 @@ public abstract class AbstractList extends AbstractCollection implements List {
     // and "AbstractList.this.modCount".
     // The code uses both these two fields and *no other* to provide fail-fast
     // behaviour. For correct operation, the two fields should contain equal
-    // values. Therefore, if this.modCount < AbstractList.this.modCount, there
+    // values. Therefore, if this.modCount != AbstractList.this.modCount, there
     // has been a concurrent modification. This is all achieved purely by using
     // the modCount field, precisely according to the docs of AbstractList.
     // See the methods upMod and checkMod.
@@ -351,7 +351,7 @@ public abstract class AbstractList extends AbstractCollection implements List {
        *   concurrent modification.
        */
       private void checkMod() {
-        if (this.modCount < AbstractList.this.modCount) {
+        if (this.modCount != AbstractList.this.modCount) {
           throw new ConcurrentModificationException();
         }
       }
@@ -519,15 +519,15 @@ public abstract class AbstractList extends AbstractCollection implements List {
         return o;
       }
 
-      public void removeRange(int fromIndex, int toIndex) {
+      public void removeRange(int fromIndex2, int toIndex2) {
         checkMod();
-        checkBoundsExclusive(fromIndex);
-        checkBoundsInclusive(toIndex);
+        checkBoundsExclusive(fromIndex2);
+        checkBoundsInclusive(toIndex2);
 
-        // this call will catch the toIndex < fromIndex condition
-        AbstractList.this.removeRange(offset + fromIndex, offset + toIndex);
+        // this call will catch the toIndex2 < fromIndex2 condition
+        AbstractList.this.removeRange(offset + fromIndex2, offset + toIndex2);
         upMod();
-        size -= toIndex - fromIndex;
+        size -= toIndex2 - fromIndex2;
       }
 
       public boolean addAll(int index, Collection c) {
