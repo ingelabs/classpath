@@ -29,6 +29,12 @@ package java.lang;
 
 import gnu.classpath.Configuration;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * plus online API docs for JDK 1.2 beta from http://www.javasoft.com.
+ * Status:  Believed complete and correct.
+ */
+
 /**
  * Instances of class <code>Double</code> represent primitive
  * <code>double</code> values.
@@ -58,17 +64,17 @@ public final class Double extends Number implements Comparable
    * The value of a double representation -1.0/0.0, negative
    * infinity.  
    */
-  public static final double NEGATIVE_INFINITY = -1.0d / 0.0d;
+  public static final double NEGATIVE_INFINITY = -1.0d/0.0d;
 
   /**
    * The value of a double representing 1.0/0.0, positive infinity.
    */
-  public static final double POSITIVE_INFINITY = 1.0d / 0.0d;
+  public static final double POSITIVE_INFINITY = 1.0d/0.0d;
 
   /**
    * All IEEE 754 values of NaN have the same value in Java.
    */
-  public static final double NaN = 0.0d / 0.0d;
+  public static final double NaN = 0.0d/0.0d;
 
   /**
    * The primitive type <code>double</code> is represented by this
@@ -80,6 +86,8 @@ public final class Double extends Number implements Comparable
    * The immutable value of this Double.
    */
   private final double value;
+
+  private static final long serialVersionUID = -9172774392245257468L;
 
   /**
    * Load native routines necessary for this class.  
@@ -119,7 +127,6 @@ public final class Double extends Number implements Comparable
   {
     value = parseDouble (s);
   }
-
 
   /**
    * Convert the <code>double</code> value of this <code>Double</code>
@@ -204,24 +211,6 @@ public final class Double extends Number implements Comparable
   }
 
   /**
-   * Return the value of this <code>Double</code> when cast to a 
-   * <code>byte</code>.
-   */
-  public byte byteValue ()
-  {
-    return (byte) value;
-  }
-
-  /**
-   * Return the value of this <code>Double</code> when cast to a 
-   * <code>short</code>.
-   */
-  public short shortValue ()
-  {
-    return (short) value;
-  }
-
-  /**
    * Return the result of calling <code>new Double(java.lang.String)</code>.
    *
    * @param s the <code>String</code> to convert to a <code>Double</code>.
@@ -254,12 +243,12 @@ public final class Double extends Number implements Comparable
    * Return <code>true</code> if the <code>double</code> has the same
    * value as <code>NaN</code>, otherwise return <code>false</code>.
    *
-   * @param d the <code>double</code> to compare
+   * @param v the <code>double</code> to compare
    * @return whether the argument is <code>NaN</code>.
    */
-  public static boolean isNaN (double d)
+  public static boolean isNaN (double v)
   {
-    return (doubleToLongBits (d) == 0x7ff8000000000000L);
+    return (doubleToLongBits (v) == 0x7ff8000000000000L);
   }
 
   /**
@@ -279,12 +268,12 @@ public final class Double extends Number implements Comparable
    * equal to either <code>NEGATIVE_INFINITY</code> or 
    * <code>POSITIVE_INFINITY</code>, otherwise return <code>false</code>.
    *
-   * @param d the <code>double</code> to compare
+   * @param v the <code>double</code> to compare
    * @return whether the argument is (-/+) infinity.
    */
-  public static boolean isInfinite (double d)
+  public static boolean isInfinite (double v)
   {
-    return (d == POSITIVE_INFINITY || d == NEGATIVE_INFINITY);
+    return (v == POSITIVE_INFINITY || v == NEGATIVE_INFINITY);
   }
 
   /**
@@ -300,7 +289,7 @@ public final class Double extends Number implements Comparable
    * <br>
    * <code>0.0d</code> is greater than <code>-0.0d</code>.
    *
-   * @param o the Object to compare to.
+   * @param d the Double to compare to.
    * @return  0 if the <code>Double</code>s are the same, &lt; 0 if this
    *          <code>Double</code> is less than the <code>Double</code> in
    *          in question, or &gt; 0 if it is greater.
@@ -450,14 +439,12 @@ public final class Double extends Number implements Comparable
 
   /**
    * Parse the specified <code>String</code> as a <code>double</code>.
-   * <P>
    *
    * The number is really read as <em>n * 10<sup>exponent</sup></em>.  The
    * first number is <em>n</em>, and if there is an "<code>E</code>"
    * ("<code>e</code>" is also acceptable), then the integer after that is
    * the exponent.
    * <P>
-   *
    * Here are the possible forms the number can take:
    * <BR>
    * <TABLE BORDER=1>
@@ -484,13 +471,12 @@ public final class Double extends Number implements Comparable
    * <code>Double.POSITIVE_INFINITY</code> or
    * <code>Double.NEGATIVE_INFINITY</code>, respectively.
    * <P>
-   *
    * Note also that <code>double</code> does not have perfect precision.  Many
    * numbers cannot be precisely represented.  The number you specify
-   * will be rounded to the nearest representable value.  <code>Double.MIN_VALUE</code> is
-   * the margin of error for <code>double</code> values.
+   * will be rounded to the nearest representable value.
+   * <code>Double.MIN_VALUE</code> is the margin of error for
+   * <code>double</code> values.
    * <P>
-   *
    * If an unexpected character is found in the <code>String</code>, a
    * <code>NumberFormatException</code> will be thrown.  Spaces are not
    * allowed, and will cause the same exception.
