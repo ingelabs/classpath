@@ -98,12 +98,12 @@ public final class Integer extends Number {
   }
     
   public static Integer valueOf(String s) throws NumberFormatException {
-    return new Integer(Integer.parseInt(s));
+    return new Integer(parseInt(s));
   }
 
   public static Integer valueOf(String s, int radix) 
     throws NumberFormatException {
-    return new Integer(Integer.parseInt(s, radix));
+    return new Integer(parseInt(s, radix));
   }
 
   public static int parseInt(String s) throws NumberFormatException {
