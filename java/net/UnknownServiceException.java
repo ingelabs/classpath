@@ -1,5 +1,5 @@
 /* UnknownServiceException.java -- A service error occured
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.net;
 
 /**
@@ -32,8 +31,6 @@ package java.net;
   * TCP/IP service name specified was invalid.  Instead it indicates that
   * the MIME type returned from a URL could not be determined or that an
   * attempt was made to write to a read-only URL.
-  *
-  * @version 0.5
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
@@ -45,7 +42,8 @@ public class UnknownServiceException extends java.io.IOException
  */
 
 /**
-  * Constructs a new UnknownServiceException with no descriptive message.
+  * Initializes a new instance of <code>UnknownServiceException</code>
+  * without a descriptive error message.
   */
 public
 UnknownServiceException()
@@ -56,10 +54,10 @@ UnknownServiceException()
 /*************************************************************************/
 
 /**
-  * Constructs a new UnknownServiceException with a descriptive message (such as the
-  * text from strerror(3)) passed in as an argument
+  * Initializes a new instance of <code>UnknownServiceException</code>
+  * without a descriptive error message.
   *
-  * @param message A message describing the error that occurs
+  * @param message A message describing the error that occurred.
   */
 public
 UnknownServiceException(String message)

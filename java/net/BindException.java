@@ -1,5 +1,5 @@
 /* BindException.java -- An exception occured while binding to a socket
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -24,14 +24,11 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.net;
 
 /**
   * This exception indicates that an error occured while attempting to bind
   * socket to a particular port.
-  *
-  * @version 0.5
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
@@ -43,7 +40,8 @@ public class BindException extends SocketException
  */
 
 /**
-  * Constructs a new BindException with no descriptive message.
+  * Initializes a new instance of <code>BindException</code> without
+  * a descriptive error message.
   */
 public
 BindException()
@@ -54,10 +52,10 @@ BindException()
 /*************************************************************************/
 
 /**
-  * Constructs a new BindException with a descriptive message (such as the
-  * text from strerror(3)) passed in as an argument
+  * Initializes a new instance of <code>BindException</code> with
+  * a descriptive error message, such as the text from strerror(3).
   *
-  * @param message A message describing the error that occurs
+  * @param message A message describing the error that occurred.
   */
 public
 BindException(String message)

@@ -1,5 +1,5 @@
 /* MalformedURLException.java -- A URL was not in a valid format
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -24,14 +24,11 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.net;
 
 /**
   * This exception indicates that a URL passed to an object was not in a
   * valid format.
-  *
-  * @version 0.5
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
@@ -43,7 +40,8 @@ public class MalformedURLException extends java.io.IOException
  */
 
 /**
-  * Constructs a new MalformedURLException with no descriptive message.
+  * Initializes a new instance of <code>MalformedURLException</code> without
+  * a descriptive error message.
   */
 public
 MalformedURLException()
@@ -54,10 +52,10 @@ MalformedURLException()
 /*************************************************************************/
 
 /**
-  * Constructs a new MalformedURLException with a descriptive message 
-  * passed in as an argument.
+  * Initializes a new instance of <code>MalformedURLException</code> without
+  * a descriptive error message.
   *
-  * @param message A message describing the error that occurs
+  * @param message A message describing the error that occurred.
   */
 public
 MalformedURLException(String message)

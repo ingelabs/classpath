@@ -1,5 +1,5 @@
 /* ProtocolException.java -- A low level protocol error occured
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -24,15 +24,12 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.net;
 
 /**
   * This exception indicates that some sort of low level protocol
   * exception occured.  Look in the descriptive message (if any) for
   * details on what went wrong
-  *
-  * @version 0.5
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
@@ -44,7 +41,8 @@ public class ProtocolException extends java.io.IOException
  */
 
 /**
-  * Constructs a new ProtocolException with no descriptive message.
+  * Initializes a new instance of <code>ProtocolException</code>
+  * without a descriptive error message.
   */
 public
 ProtocolException()
@@ -55,10 +53,10 @@ ProtocolException()
 /*************************************************************************/
 
 /**
-  * Constructs a new ProtocolException with a descriptive message (such as the
-  * text from strerror(3)) passed in as an argument
+  * Initializes a new instance of <code>ProtocolException</code>
+  * with a descriptive error message.
   *
-  * @param message A message describing the error that occurs
+  * @param message A message describing the error that occurred.
   */
 public
 ProtocolException(String message)

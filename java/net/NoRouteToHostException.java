@@ -1,5 +1,5 @@
 /* NoRouteToHostException.java -- Cannot connect to a host
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -31,8 +31,6 @@ package java.net;
   * This exception indicates that there is no TCP/IP route to the requested
   * host.  This is often due to a misconfigured routing table.
   *
-  * @version 0.5
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
 public class NoRouteToHostException extends SocketException
@@ -43,7 +41,8 @@ public class NoRouteToHostException extends SocketException
  */
 
 /**
-  * Constructs a new NoRouteToHostException with no descriptive message.
+  * Initializes an instance of <code>NoRouteToHostException</code>
+  * without a descriptive error message.
   */
 public
 NoRouteToHostException()
@@ -54,10 +53,10 @@ NoRouteToHostException()
 /*************************************************************************/
 
 /**
-  * Constructs a new NoRouteToHostException with a descriptive message (such as the
-  * text from strerror(3)) passed in as an argument
+  * Initializes an instance of <code>NoRouteToHostException</code>
+  * witha descriptive error message, such as the text from strerror(3).
   *
-  * @param message A message describing the error that occurs
+  * @param message A message describing the error that occurred.
   */
 public
 NoRouteToHostException(String message)

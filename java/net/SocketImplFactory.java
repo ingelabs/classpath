@@ -1,5 +1,5 @@
 /* SocketImplFactory.java -- Interface to create a SocketImpl object
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -31,8 +31,6 @@ package java.net;
   * This interface defines one method which returns a SocketImpl object.
   * This should not be needed by ordinary applications.
   *
-  * @version 0.5
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
 public abstract interface SocketImplFactory
@@ -46,3 +44,4 @@ public abstract SocketImpl
 createSocketImpl();
 
 } // interface SocketImplFactory
+

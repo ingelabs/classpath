@@ -1,5 +1,5 @@
 /* ConnectException.java -- An exception occured while connecting to a host
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -32,8 +32,6 @@ package java.net;
   * connect to a remote host.  Often this indicates that the remote host
   * refused the connection (ie, is not listening on the target socket).
   *
-  * @version 0.5
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
 public class ConnectException extends SocketException
@@ -44,7 +42,8 @@ public class ConnectException extends SocketException
  */
 
 /**
-  * Constructs a new ConnectException with no descriptive message.
+  * Initializes a new instance of <code>ConnectException</code> without
+  * a descriptive error message.
   */
 public
 ConnectException()
@@ -55,10 +54,10 @@ ConnectException()
 /*************************************************************************/
 
 /**
-  * Constructs a new ConnectException with a descriptive message (such as the
-  * text from strerror(3)) passed in as an argument
+  * Initializes a new instance of <code>ConnectException</code> with
+  * a descriptive error message, such as the text from strerror(3).
   *
-  * @param message A message describing the error that occurs
+  * @param message A message describing the error that occurred.
   */
 public
 ConnectException(String message)

@@ -24,15 +24,12 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.net;
 
 /**
   * This exception indicates that a generic error occured related to an
   * operation on a socket.  Check the descriptive message (if any) for
   * details on the nature of this error
-  *
-  * @version 0.5
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
@@ -44,7 +41,8 @@ public class SocketException extends java.io.IOException
  */
 
 /**
-  * Constructs a new SocketException with no descriptive message.
+  * Initializes a new instance of <code>SocketException</code> without
+  * a descriptive error message.
   */
 public
 SocketException()
@@ -55,10 +53,10 @@ SocketException()
 /*************************************************************************/
 
 /**
-  * Constructs a new SocketException with a descriptive message (such as the
-  * text from strerror(3)) passed in as an argument
+  * Initializes a new instance of <code>SocketException</code> without
+  * a descriptive error message.
   *
-  * @param message A message describing the error that occurs
+  * @param message A message describing the error that occurred.
   */
 public
 SocketException(String message)
