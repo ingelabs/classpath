@@ -1,3 +1,9 @@
+2003-08-12  Sascha Brawer  <brawer@dandelis.ch>
+
+	* java/awt/font/OpenType.java: Remove 'public static final'
+	from OpenType tags, reverting the change of 2003-08-11.  See
+	Classpath discussion list of 2003-08-11.
+
 2003-08-11  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/EventQueue.java (currentEvent, lastWhen): New fields.
