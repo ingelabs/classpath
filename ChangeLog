@@ -1,5 +1,10 @@
 2002-11-07  Michael Koch <konqueror@gmx.de>
 
+	* java/nio/channels/ClosedChannelException.java:
+	Reindented.
+
+2002-11-07  Michael Koch <konqueror@gmx.de>
+
 	* java/nio/ByteOrder.java:
 	Constants must be public.
 

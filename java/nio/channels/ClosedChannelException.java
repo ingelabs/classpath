@@ -37,12 +37,14 @@ exception statement from your version. */
 
 package java.nio.channels;
 
-import java.io.*;
-
+import java.io.IOException;
 
 public class ClosedChannelException extends IOException
 {
-    public ClosedChannelException()
-    {
-    }
+  /**
+   * Creates the exception
+   */
+  public ClosedChannelException()
+  {
+  }
 }
