@@ -1,5 +1,17 @@
 2004-08-28  Mark Wielaard  <mark@klomp.org>
 
+	* java/util/TimeZone.java (defaultZone): Try a couple of ways to get
+	a TimeZoneId string and then try to convert that to a TimeZone with
+	getDefaultSystemTimeZone(String).
+	(timezones0): Changed type from Hashtable to HashMap.
+	(timezones): Create HashMap, not Hashtable.
+	(getDefaultTimeZone): New method, rewritten from CNI version.
+	(readTimeZoneFile): New method.
+	(readtzFile): Likewise.
+	(skipFully): Likewise.
+
+2004-08-28  Mark Wielaard  <mark@klomp.org>
+
 	* java/lang/System.java (getenv): Do security checks and call
 	VMSystem.getenv().
 	* vm/reference/java/lang/VMSystem.java (getenv): New static native
