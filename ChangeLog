@@ -1,3 +1,7 @@
+2004-01-08  Graydon Hoare  <graydon@redhat.com>
+
+	* javax/swing/JLayeredPane.java: Fix semantics, add javadocs.
+
 2004-01-08  Mohan Embar  <gnustuff@thisiscool.com>
 
 	* gnu/java/nio/SelectorImpl.java
