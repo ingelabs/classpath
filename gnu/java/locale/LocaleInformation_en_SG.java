@@ -40,10 +40,49 @@ exception statement from your version. */
 
 package gnu.java.locale;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 import java.util.ListResourceBundle;
 
 public class LocaleInformation_en_SG extends ListResourceBundle
 {
+  private static final String currenciesDisplayNameKeys = "USD";
+
+  private static final String currenciesDisplayNameValues = "USD";
+
+  private static final Hashtable currenciesDisplayName;
+  static
+  {
+    currenciesDisplayName = new Hashtable();
+    Enumeration keys = new StringTokenizer(currenciesDisplayNameKeys, "|");
+    Enumeration values = new StringTokenizer(currenciesDisplayNameValues, "|");
+    while (keys.hasMoreElements())
+      {
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         currenciesDisplayName.put(key, value);
+      }
+  }
+
+  private static final String currenciesSymbolKeys = "SGD";
+
+  private static final String currenciesSymbolValues = "$";
+
+  private static final Hashtable currenciesSymbol;
+  static
+  {
+    currenciesSymbol = new Hashtable();
+    Enumeration keys = new StringTokenizer(currenciesSymbolKeys, "|");
+    Enumeration values = new StringTokenizer(currenciesSymbolValues, "|");
+    while (keys.hasMoreElements())
+      {
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         currenciesSymbol.put(key, value);
+      }
+  }
+
   private static final String[][] zoneStrings =
   {
     { "SST", "Singapore Standard Time", "SST", "Singapore Standard Time",  "Pacific/Guadalcanal" },
@@ -51,6 +90,8 @@ public class LocaleInformation_en_SG extends ListResourceBundle
 
   private static final Object[][] contents =
   {
+    { "currenciesDisplayName", currenciesDisplayName },
+    { "currenciesSymbol", currenciesSymbol },
     { "shortDateFormat", "dd/MM/yyyy" },
     { "mediumDateFormat", "dd MMM yyyy" },
     { "longDateFormat", "dd MMMM yyyy" },

@@ -40,31 +40,48 @@ exception statement from your version. */
 
 package gnu.java.locale;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 import java.util.ListResourceBundle;
 
 public class LocaleInformation_mn extends ListResourceBundle
 {
-  private static final class Hashtableterritories extends java.util.Hashtable
+  private static final String territoriesKeys = "MN";
+
+  private static final String territoriesValues = "\u041c\u043e\u043d\u0433\u043e\u043b \u0443\u043b\u0441";
+
+  private static final Hashtable territories;
+  static
   {
-    public Hashtableterritories()
+    territories = new Hashtable();
+    Enumeration keys = new StringTokenizer(territoriesKeys, "|");
+    Enumeration values = new StringTokenizer(territoriesValues, "|");
+    while (keys.hasMoreElements())
       {
-        super();
-        put("MN", "\u041c\u043e\u043d\u0433\u043e\u043b \u0443\u043b\u0441");
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         territories.put(key, value);
       }
   }
 
-  private static final Object territories = new Hashtableterritories();
+  private static final String languagesKeys = "mn";
 
-  private static final class Hashtablelanguages extends java.util.Hashtable
+  private static final String languagesValues = "\u041c\u043e\u043d\u0433\u043e\u043b \u0445\u044d\u043b";
+
+  private static final Hashtable languages;
+  static
   {
-    public Hashtablelanguages()
+    languages = new Hashtable();
+    Enumeration keys = new StringTokenizer(languagesKeys, "|");
+    Enumeration values = new StringTokenizer(languagesValues, "|");
+    while (keys.hasMoreElements())
       {
-        super();
-        put("mn", "\u041c\u043e\u043d\u0433\u043e\u043b \u0445\u044d\u043b");
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         languages.put(key, value);
       }
   }
-
-  private static final Object languages = new Hashtablelanguages();
 
   private static final Object[][] contents =
   {

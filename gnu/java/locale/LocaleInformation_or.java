@@ -40,6 +40,9 @@ exception statement from your version. */
 
 package gnu.java.locale;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 import java.util.ListResourceBundle;
 
 public class LocaleInformation_or extends ListResourceBundle
@@ -82,27 +85,41 @@ public class LocaleInformation_or extends ListResourceBundle
     "\u0b36\u0b28\u0b3f\u0b2c\u0b3e\u0b30",
   };
 
-  private static final class Hashtableterritories extends java.util.Hashtable
+  private static final String territoriesKeys = "IN";
+
+  private static final String territoriesValues = "\u0b2d\u0b3e\u0b30\u0b24";
+
+  private static final Hashtable territories;
+  static
   {
-    public Hashtableterritories()
+    territories = new Hashtable();
+    Enumeration keys = new StringTokenizer(territoriesKeys, "|");
+    Enumeration values = new StringTokenizer(territoriesValues, "|");
+    while (keys.hasMoreElements())
       {
-        super();
-        put("IN", "\u0b2d\u0b3e\u0b30\u0b24");
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         territories.put(key, value);
       }
   }
 
-  private static final Object territories = new Hashtableterritories();
+  private static final String languagesKeys = "or";
 
-  private static final class Hashtablelanguages extends java.util.Hashtable
+  private static final String languagesValues = "\u0b13\u0b5c\u0b3f\u0b06";
+
+  private static final Hashtable languages;
+  static
   {
-    public Hashtablelanguages()
+    languages = new Hashtable();
+    Enumeration keys = new StringTokenizer(languagesKeys, "|");
+    Enumeration values = new StringTokenizer(languagesValues, "|");
+    while (keys.hasMoreElements())
       {
-        super();
-        put("or", "\u0b13\u0b5c\u0b3f\u0b06");
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         languages.put(key, value);
       }
   }
-
-  private static final Object languages = new Hashtablelanguages();
 
   private static final Object[][] contents =
   {

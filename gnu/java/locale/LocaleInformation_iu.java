@@ -40,6 +40,9 @@ exception statement from your version. */
 
 package gnu.java.locale;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 import java.util.ListResourceBundle;
 
 public class LocaleInformation_iu extends ListResourceBundle
@@ -98,16 +101,23 @@ public class LocaleInformation_iu extends ListResourceBundle
     "\u14c8\u1466\u14f0\u1591\u152d\u14d5\u1585\u157f",
   };
 
-  private static final class Hashtablelanguages extends java.util.Hashtable
+  private static final String languagesKeys = "iu";
+
+  private static final String languagesValues = "\u1403\u14c4\u1483\u144e\u1450\u1466 \u144e\u144e\u154b\u1405\u14ef\u1585";
+
+  private static final Hashtable languages;
+  static
   {
-    public Hashtablelanguages()
+    languages = new Hashtable();
+    Enumeration keys = new StringTokenizer(languagesKeys, "|");
+    Enumeration values = new StringTokenizer(languagesValues, "|");
+    while (keys.hasMoreElements())
       {
-        super();
-        put("iu", "\u1403\u14c4\u1483\u144e\u1450\u1466 \u144e\u144e\u154b\u1405\u14ef\u1585");
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         languages.put(key, value);
       }
   }
-
-  private static final Object languages = new Hashtablelanguages();
 
   private static final Object[][] contents =
   {

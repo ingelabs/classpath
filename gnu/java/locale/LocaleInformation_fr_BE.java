@@ -40,6 +40,9 @@ exception statement from your version. */
 
 package gnu.java.locale;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 import java.util.ListResourceBundle;
 
 public class LocaleInformation_fr_BE extends ListResourceBundle

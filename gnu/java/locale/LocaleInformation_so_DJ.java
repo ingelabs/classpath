@@ -40,13 +40,54 @@ exception statement from your version. */
 
 package gnu.java.locale;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 import java.util.ListResourceBundle;
 
 public class LocaleInformation_so_DJ extends ListResourceBundle
 {
+  private static final String currenciesDisplayNameKeys = "DJF";
+
+  private static final String currenciesDisplayNameValues = "DJF";
+
+  private static final Hashtable currenciesDisplayName;
+  static
+  {
+    currenciesDisplayName = new Hashtable();
+    Enumeration keys = new StringTokenizer(currenciesDisplayNameKeys, "|");
+    Enumeration values = new StringTokenizer(currenciesDisplayNameValues, "|");
+    while (keys.hasMoreElements())
+      {
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         currenciesDisplayName.put(key, value);
+      }
+  }
+
+  private static final String currenciesSymbolKeys = "DJF|USD";
+
+  private static final String currenciesSymbolValues = "$|US$";
+
+  private static final Hashtable currenciesSymbol;
+  static
+  {
+    currenciesSymbol = new Hashtable();
+    Enumeration keys = new StringTokenizer(currenciesSymbolKeys, "|");
+    Enumeration values = new StringTokenizer(currenciesSymbolValues, "|");
+    while (keys.hasMoreElements())
+      {
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         currenciesSymbol.put(key, value);
+      }
+  }
+
   private static final Object[][] contents =
   {
     { "currencyFormat", "\u00a4#,##0.00;-\u00a4#,##0.00" },
+    { "currenciesDisplayName", currenciesDisplayName },
+    { "currenciesSymbol", currenciesSymbol },
   };
 
   public Object[][] getContents() { return contents; }

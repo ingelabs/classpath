@@ -40,10 +40,49 @@ exception statement from your version. */
 
 package gnu.java.locale;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 import java.util.ListResourceBundle;
 
 public class LocaleInformation_uz_AF extends ListResourceBundle
 {
+  private static final String currenciesDisplayNameKeys = "AFA";
+
+  private static final String currenciesDisplayNameValues = "\u0627\u0641\u063a\u0627\u0646\u06cc";
+
+  private static final Hashtable currenciesDisplayName;
+  static
+  {
+    currenciesDisplayName = new Hashtable();
+    Enumeration keys = new StringTokenizer(currenciesDisplayNameKeys, "|");
+    Enumeration values = new StringTokenizer(currenciesDisplayNameValues, "|");
+    while (keys.hasMoreElements())
+      {
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         currenciesDisplayName.put(key, value);
+      }
+  }
+
+  private static final String currenciesSymbolKeys = "AFA";
+
+  private static final String currenciesSymbolValues = "\u0627\u0641\u063a\u0627\u0646\u06cc";
+
+  private static final Hashtable currenciesSymbol;
+  static
+  {
+    currenciesSymbol = new Hashtable();
+    Enumeration keys = new StringTokenizer(currenciesSymbolKeys, "|");
+    Enumeration values = new StringTokenizer(currenciesSymbolValues, "|");
+    while (keys.hasMoreElements())
+      {
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         currenciesSymbol.put(key, value);
+      }
+  }
+
   private static final String[] shortMonths = {
     "\u062c\u0646\u0648",
     "\u0641\u0628\u0631",
@@ -108,29 +147,41 @@ public class LocaleInformation_uz_AF extends ListResourceBundle
     { "AFT", "\u0627\u0641\u063a\u0627\u0646\u0633\u062a\u0627\u0646 \u0648\u0642\u062a\u06cc", "AFT", "\u0627\u0641\u063a\u0627\u0646\u0633\u062a\u0627\u0646 \u0648\u0642\u062a\u06cc",  "Asia/Kabul" },
   };
 
-  private static final class Hashtableterritories extends java.util.Hashtable
+  private static final String territoriesKeys = "AF";
+
+  private static final String territoriesValues = "\u0627\u0641\u063a\u0627\u0646\u0633\u062a\u0627\u0646";
+
+  private static final Hashtable territories;
+  static
   {
-    public Hashtableterritories()
+    territories = new Hashtable();
+    Enumeration keys = new StringTokenizer(territoriesKeys, "|");
+    Enumeration values = new StringTokenizer(territoriesValues, "|");
+    while (keys.hasMoreElements())
       {
-        super();
-        put("AF", "\u0627\u0641\u063a\u0627\u0646\u0633\u062a\u0627\u0646");
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         territories.put(key, value);
       }
   }
 
-  private static final Object territories = new Hashtableterritories();
+  private static final String languagesKeys = "uz|fa|ps";
 
-  private static final class Hashtablelanguages extends java.util.Hashtable
+  private static final String languagesValues = "\u0627\u06c9\u0632\u0628\u06d0\u06a9|\u062f\u0631\u06cc|\u067e\u0634\u062a\u0648";
+
+  private static final Hashtable languages;
+  static
   {
-    public Hashtablelanguages()
+    languages = new Hashtable();
+    Enumeration keys = new StringTokenizer(languagesKeys, "|");
+    Enumeration values = new StringTokenizer(languagesValues, "|");
+    while (keys.hasMoreElements())
       {
-        super();
-        put("uz", "\u0627\u06c9\u0632\u0628\u06d0\u06a9");
-        put("fa", "\u062f\u0631\u06cc");
-        put("ps", "\u067e\u0634\u062a\u0648");
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         languages.put(key, value);
       }
   }
-
-  private static final Object languages = new Hashtablelanguages();
 
   private static final Object[][] contents =
   {
@@ -141,6 +192,8 @@ public class LocaleInformation_uz_AF extends ListResourceBundle
     { "decimalSeparator", "\u066b" },
     { "groupingSeparator", "\u066c" },
     { "currencyFormat", "#,##0 \u00a4;-#,##0 \u00a4" },
+    { "currenciesDisplayName", currenciesDisplayName },
+    { "currenciesSymbol", currenciesSymbol },
     { "shortMonths", shortMonths },
     { "months", months },
     { "shortWeekdays", shortWeekdays },

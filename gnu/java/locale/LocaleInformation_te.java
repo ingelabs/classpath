@@ -40,10 +40,49 @@ exception statement from your version. */
 
 package gnu.java.locale;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 import java.util.ListResourceBundle;
 
 public class LocaleInformation_te extends ListResourceBundle
 {
+  private static final String currenciesDisplayNameKeys = "";
+
+  private static final String currenciesDisplayNameValues = "";
+
+  private static final Hashtable currenciesDisplayName;
+  static
+  {
+    currenciesDisplayName = new Hashtable();
+    Enumeration keys = new StringTokenizer(currenciesDisplayNameKeys, "|");
+    Enumeration values = new StringTokenizer(currenciesDisplayNameValues, "|");
+    while (keys.hasMoreElements())
+      {
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         currenciesDisplayName.put(key, value);
+      }
+  }
+
+  private static final String currenciesSymbolKeys = "INR";
+
+  private static final String currenciesSymbolValues = "\u0c30\u0c42.";
+
+  private static final Hashtable currenciesSymbol;
+  static
+  {
+    currenciesSymbol = new Hashtable();
+    Enumeration keys = new StringTokenizer(currenciesSymbolKeys, "|");
+    Enumeration values = new StringTokenizer(currenciesSymbolValues, "|");
+    while (keys.hasMoreElements())
+      {
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         currenciesSymbol.put(key, value);
+      }
+  }
+
   private static final String[] shortMonths = {
     "\u0c1c\u0c28\u0c35\u0c30\u0c3f",
     "\u0c2b\u0c3f\u0c2c\u0c4d\u0c30\u0c35\u0c30\u0c3f",
@@ -103,31 +142,47 @@ public class LocaleInformation_te extends ListResourceBundle
     "\u0c05\u0c2a\u0c30\u0c3e\u0c39\u0c4d\u0c28",
   };
 
-  private static final class Hashtableterritories extends java.util.Hashtable
+  private static final String territoriesKeys = "IN";
+
+  private static final String territoriesValues = "\u0c2d\u0c3e\u0c30\u0c24 \u0c26\u0c47\u0c33\u0c66";
+
+  private static final Hashtable territories;
+  static
   {
-    public Hashtableterritories()
+    territories = new Hashtable();
+    Enumeration keys = new StringTokenizer(territoriesKeys, "|");
+    Enumeration values = new StringTokenizer(territoriesValues, "|");
+    while (keys.hasMoreElements())
       {
-        super();
-        put("IN", "\u0c2d\u0c3e\u0c30\u0c24 \u0c26\u0c47\u0c33\u0c66");
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         territories.put(key, value);
       }
   }
 
-  private static final Object territories = new Hashtableterritories();
+  private static final String languagesKeys = "te";
 
-  private static final class Hashtablelanguages extends java.util.Hashtable
+  private static final String languagesValues = "\u0c24\u0c46\u0c32\u0c41\u0c17\u0c41";
+
+  private static final Hashtable languages;
+  static
   {
-    public Hashtablelanguages()
+    languages = new Hashtable();
+    Enumeration keys = new StringTokenizer(languagesKeys, "|");
+    Enumeration values = new StringTokenizer(languagesValues, "|");
+    while (keys.hasMoreElements())
       {
-        super();
-        put("te", "\u0c24\u0c46\u0c32\u0c41\u0c17\u0c41");
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         languages.put(key, value);
       }
   }
-
-  private static final Object languages = new Hashtablelanguages();
 
   private static final Object[][] contents =
   {
     { "zeroDigit", "\u0c66" },
+    { "currenciesDisplayName", currenciesDisplayName },
+    { "currenciesSymbol", currenciesSymbol },
     { "shortMonths", shortMonths },
     { "months", months },
     { "shortWeekdays", shortWeekdays },

@@ -40,38 +40,48 @@ exception statement from your version. */
 
 package gnu.java.locale;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 import java.util.ListResourceBundle;
 
 public class LocaleInformation_zh_SG_Hans extends ListResourceBundle
 {
-  private static final class Hashtableterritories extends java.util.Hashtable
+  private static final String territoriesKeys = "ID|AU|SA|MK|KR|NZ|CZ";
+
+  private static final String territoriesValues = "\u5370\u5c3c|\u6fb3\u6d32|\u6c99\u5730\u963f\u62c9\u4f2f|\u9a6c\u5176\u987f|\u5357\u97e9|\u7ebd\u897f\u5170|\u6377\u514b";
+
+  private static final Hashtable territories;
+  static
   {
-    public Hashtableterritories()
+    territories = new Hashtable();
+    Enumeration keys = new StringTokenizer(territoriesKeys, "|");
+    Enumeration values = new StringTokenizer(territoriesValues, "|");
+    while (keys.hasMoreElements())
       {
-        super();
-        put("ID", "\u5370\u5c3c");
-        put("AU", "\u6fb3\u6d32");
-        put("SA", "\u6c99\u5730\u963f\u62c9\u4f2f");
-        put("MK", "\u9a6c\u5176\u987f");
-        put("KR", "\u5357\u97e9");
-        put("NZ", "\u7ebd\u897f\u5170");
-        put("CZ", "\u6377\u514b");
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         territories.put(key, value);
       }
   }
 
-  private static final Object territories = new Hashtableterritories();
+  private static final String languagesKeys = "root|sh";
 
-  private static final class Hashtablelanguages extends java.util.Hashtable
+  private static final String languagesValues = "\u6839 \u6e90|\u585e\u5c14\u7ef4\u4e9a\u514b\u7f57\u5730\u4e9a\u6587";
+
+  private static final Hashtable languages;
+  static
   {
-    public Hashtablelanguages()
+    languages = new Hashtable();
+    Enumeration keys = new StringTokenizer(languagesKeys, "|");
+    Enumeration values = new StringTokenizer(languagesValues, "|");
+    while (keys.hasMoreElements())
       {
-        super();
-        put("root", "\u6839 \u6e90");
-        put("sh", "\u585e\u5c14\u7ef4\u4e9a\u514b\u7f57\u5730\u4e9a\u6587");
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         languages.put(key, value);
       }
   }
-
-  private static final Object languages = new Hashtablelanguages();
 
   private static final Object[][] contents =
   {

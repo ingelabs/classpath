@@ -40,10 +40,49 @@ exception statement from your version. */
 
 package gnu.java.locale;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 import java.util.ListResourceBundle;
 
 public class LocaleInformation_kl extends ListResourceBundle
 {
+  private static final String currenciesDisplayNameKeys = "DKK";
+
+  private static final String currenciesDisplayNameValues = "DKK";
+
+  private static final Hashtable currenciesDisplayName;
+  static
+  {
+    currenciesDisplayName = new Hashtable();
+    Enumeration keys = new StringTokenizer(currenciesDisplayNameKeys, "|");
+    Enumeration values = new StringTokenizer(currenciesDisplayNameValues, "|");
+    while (keys.hasMoreElements())
+      {
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         currenciesDisplayName.put(key, value);
+      }
+  }
+
+  private static final String currenciesSymbolKeys = "DKK";
+
+  private static final String currenciesSymbolValues = "kr";
+
+  private static final Hashtable currenciesSymbol;
+  static
+  {
+    currenciesSymbol = new Hashtable();
+    Enumeration keys = new StringTokenizer(currenciesSymbolKeys, "|");
+    Enumeration values = new StringTokenizer(currenciesSymbolValues, "|");
+    while (keys.hasMoreElements())
+      {
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         currenciesSymbol.put(key, value);
+      }
+  }
+
   private static final String[] shortMonths = {
     "jan",
     "feb",
@@ -98,32 +137,48 @@ public class LocaleInformation_kl extends ListResourceBundle
     "arfininngorneq",
   };
 
-  private static final class Hashtableterritories extends java.util.Hashtable
+  private static final String territoriesKeys = "GL";
+
+  private static final String territoriesValues = "Kalaallit Nunaat";
+
+  private static final Hashtable territories;
+  static
   {
-    public Hashtableterritories()
+    territories = new Hashtable();
+    Enumeration keys = new StringTokenizer(territoriesKeys, "|");
+    Enumeration values = new StringTokenizer(territoriesValues, "|");
+    while (keys.hasMoreElements())
       {
-        super();
-        put("GL", "Kalaallit Nunaat");
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         territories.put(key, value);
       }
   }
 
-  private static final Object territories = new Hashtableterritories();
+  private static final String languagesKeys = "kl";
 
-  private static final class Hashtablelanguages extends java.util.Hashtable
+  private static final String languagesValues = "kalaallisut";
+
+  private static final Hashtable languages;
+  static
   {
-    public Hashtablelanguages()
+    languages = new Hashtable();
+    Enumeration keys = new StringTokenizer(languagesKeys, "|");
+    Enumeration values = new StringTokenizer(languagesValues, "|");
+    while (keys.hasMoreElements())
       {
-        super();
-        put("kl", "kalaallisut");
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         languages.put(key, value);
       }
   }
-
-  private static final Object languages = new Hashtablelanguages();
 
   private static final Object[][] contents =
   {
     { "decimalSeparator", "," },
     { "groupingSeparator", "." },
+    { "currenciesDisplayName", currenciesDisplayName },
+    { "currenciesSymbol", currenciesSymbol },
     { "shortMonths", shortMonths },
     { "months", months },
     { "shortWeekdays", shortWeekdays },

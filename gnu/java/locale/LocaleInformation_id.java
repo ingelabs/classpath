@@ -40,10 +40,49 @@ exception statement from your version. */
 
 package gnu.java.locale;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 import java.util.ListResourceBundle;
 
 public class LocaleInformation_id extends ListResourceBundle
 {
+  private static final String currenciesDisplayNameKeys = "IDR";
+
+  private static final String currenciesDisplayNameValues = "IDR";
+
+  private static final Hashtable currenciesDisplayName;
+  static
+  {
+    currenciesDisplayName = new Hashtable();
+    Enumeration keys = new StringTokenizer(currenciesDisplayNameKeys, "|");
+    Enumeration values = new StringTokenizer(currenciesDisplayNameValues, "|");
+    while (keys.hasMoreElements())
+      {
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         currenciesDisplayName.put(key, value);
+      }
+  }
+
+  private static final String currenciesSymbolKeys = "IDR";
+
+  private static final String currenciesSymbolValues = "Rp";
+
+  private static final Hashtable currenciesSymbol;
+  static
+  {
+    currenciesSymbol = new Hashtable();
+    Enumeration keys = new StringTokenizer(currenciesSymbolKeys, "|");
+    Enumeration values = new StringTokenizer(currenciesSymbolValues, "|");
+    while (keys.hasMoreElements())
+      {
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         currenciesSymbol.put(key, value);
+      }
+  }
+
   private static final String[] shortMonths = {
     "Jan",
     "Feb",
@@ -98,493 +137,49 @@ public class LocaleInformation_id extends ListResourceBundle
     "Sabtu",
   };
 
-  private static final class Hashtableterritories extends java.util.Hashtable
+  private static final String territoriesKeys = "TK|TJ|TH|TG|GY|TD|GW|GU|GT|GS|GR|GQ|GP|SZ|SY|GN|GM|GL|SV|ST|GI|GH|SR|GF|SP|GE|SO|GD|SN|SM|GB|SL|GA|SK|SJ|SI|SH|SG|SE|SD|SC|SB|SA|FR|FO|FM|RW|FK|RU|FJ|FI|RO|RE|ET|ES|ER|EH|EG|EE|EC|DZ|QA|DO|PY|DM|PW|DK|DJ|PT|PS|PR|DE|PN|PM|PL|PK|PH|PG|PF|CZ|PE|CY|CX|CV|PA|CU|CR|CO|CN|CM|CL|CK|CI|CH|CG|CF|CD|CC|OM|CA|BZ|BY|BW|BV|BT|BS|BR|NZ|BO|BN|BM|NU|BJ|BI|BH|NR|BG|BF|NP|BE|NO|BD|BB|ZW|NL|BA|NI|NG|NF|AZ|NE|NC|AW|ZM|NA|AU|AT|AS|AR|AQ|MZ|AO|MY|AN|MX|AM|MW|AL|MV|ZA|MU|MT|AI|MS|MR|AG|MQ|AF|MP|AE|MO|AD|MN|MM|ML|MK|YU|YT|MH|MG|MD|MC|MA|YE|LY|LV|LU|LT|LS|LR|LK|LI|LC|LB|LA|KZ|KY|KW|KR|KP|KN|KM|KI|WS|KH|KG|KE|WF|JP|JO|JM|VU|VN|VI|VG|VE|VC|VA|IT|IS|IR|IQ|UZ|UY|IN|IL|US|IE|ID|UG|UA|HU|HT|HR|TZ|HN|HM|TW|TV|HK|TT|TR|TO|TN|TM";
+
+  private static final String territoriesValues = "Tokelau|Tajikistan|Thailand|Togo|Guyana|Chad|Guinea-Bissau|Guam|Guatemala|Georgia Selatan dan Kepulauan Sandwich Selatan|Yunani|Guinea Khatulistiwa|Guadeloupe|Swaziland|Syria|Guinea|Gambia|Greenland|El Salvador|Sao Tome dan Principe|Gibraltar|Ghana|Suriname|Guyana Perancis|Serbia|Georgia|Somalia|Grenada|Senegal|San Marino|Inggris Raya|Sierra Leone|Gabon|Slovakia|Svalbard dan Jan Mayen|Slovenia|Saint Helena|Singapura|Sweden|Sudan|Seychelles|Kepulauan Solomon|Arab Saudi|Perancis|Kepulauan Faroe|Mikronesia|Rwanda|Kepulauan Falkland|Rusia|Fiji|Finlandia|Romania|R\u00e9union|Ethiopia|Spanyol|Eritrea|Sahara Barat|Mesir|Estonia|Ekuador|Algeria|Qatar|Republik Dominika|Paraguay|Dominika|Palau|Denmark|Jibouti|Portugis|Otoritas Palestina|Puerto Riko|Jerman|Pitcairn|Saint Pierre dan Miquelon|Polandia|Pakistan|Filipina|Papua Nugini|Polynesia Perancis|Republik Ceko|Peru|Siprus|Pulau Christmas|Tanjung Verde|Panama|Kuba|Kosta Rika|Kolombia|Cina|Kamerun|Chili|Kepulauan Cook|Pantai Gading|Swiss|Kongo|Republik Afrika Tengah|Republik Demokratik Kongo|Kepulauan Cocos|Oman|Kanada|Belize|Belarusia|Botswana|Kepulauan Bouvet|Bhutan|Bahamas|Brazil|Selandia Baru|Bolivia|Brunei|Bermuda|Niue|Benin|Burundi|Bahrain|Nauru|Bulgaria|Burkina Faso|Nepal|Belgia|Norwegia|Bangladesh|Barbados|Zimbabwe|Netherlands|Bosnia dan Herzegovina|Nicaragua|Nigeria|Kepulauan Norfolk|Azerbaijan|Niger|Kaledonia Baru|Aruba|Zambia|Namibia|Australia|Austria|Samoa Amerika|Argentina|Antarktika|Mozambique|Angola|Malaysia|Antilles Belanda|Mexico|Armenia|Malawi|Albania|Maldives|Afrika Selatan|Mauritius|Malta|Anguilla|Montserrat|Mauritania|Antigua dan Barbuda|Martinique|Afghanistan|Kepualuan Mariana Utara|Uni Emirat Arab|Makao S.A.R. Cina|Andora|Mongolia|Myanmar|Mali|Macedonia|Yugoslavia|Mayotte|Kepulauan Marshall|Madagaskar|Moldova|Monaco|Maroko|Yaman|Libya|Latvia|Luxembourg|Lithuania|Lesotho|Liberia|Sri Lanka|Liechtenstein|Santa Lusia|Lebanon|Laos|Kazakhstan|Kepulauan Kayman|Kuwait|Korea Selatan|Korea Utara|Saint Kitts dan Nevis|Komoros|Kiribati|Samoa|Kamboja|Kyrgyzstan|Kenya|Wallis dan Futuna|Jepang|Yordania|Jamaika|Vanuatu|Vietnam|Kepulauan U.S. Virgin|Kepulauan British Virgin|Venezuela|Saint Vincent dan Grenadines|Vatikan|Itali|Islandia|Iran|Iraq|Uzbekistan|Uruguay|India|Israel|Amerika Serikat|Irlandia|Indonesia|Uganda|Ukraina|Hungaria|Haiti|Kroasia|Tanzania|Honduras|Pulau Heard dan Kepulauan McDonald|Taiwan|Tuvalu|Hong Kong S.A.R., Cina|Trinidad dan Tobago|Turkey|Tonga|Tunisia|Turkmenistan";
+
+  private static final Hashtable territories;
+  static
   {
-    public Hashtableterritories()
+    territories = new Hashtable();
+    Enumeration keys = new StringTokenizer(territoriesKeys, "|");
+    Enumeration values = new StringTokenizer(territoriesValues, "|");
+    while (keys.hasMoreElements())
       {
-        super();
-        put("TK", "Tokelau");
-        put("TJ", "Tajikistan");
-        put("TH", "Thailand");
-        put("TG", "Togo");
-        put("GY", "Guyana");
-        put("TD", "Chad");
-        put("GW", "Guinea-Bissau");
-        put("GU", "Guam");
-        put("GT", "Guatemala");
-        put("GS", "Georgia Selatan dan Kepulauan Sandwich Selatan");
-        put("GR", "Yunani");
-        put("GQ", "Guinea Khatulistiwa");
-        put("GP", "Guadeloupe");
-        put("SZ", "Swaziland");
-        put("SY", "Syria");
-        put("GN", "Guinea");
-        put("GM", "Gambia");
-        put("GL", "Greenland");
-        put("SV", "El Salvador");
-        put("ST", "Sao Tome dan Principe");
-        put("GI", "Gibraltar");
-        put("GH", "Ghana");
-        put("SR", "Suriname");
-        put("GF", "Guyana Perancis");
-        put("SP", "Serbia");
-        put("GE", "Georgia");
-        put("SO", "Somalia");
-        put("GD", "Grenada");
-        put("SN", "Senegal");
-        put("SM", "San Marino");
-        put("GB", "Inggris Raya");
-        put("SL", "Sierra Leone");
-        put("GA", "Gabon");
-        put("SK", "Slovakia");
-        put("SJ", "Svalbard dan Jan Mayen");
-        put("SI", "Slovenia");
-        put("SH", "Saint Helena");
-        put("SG", "Singapura");
-        put("SE", "Sweden");
-        put("SD", "Sudan");
-        put("SC", "Seychelles");
-        put("SB", "Kepulauan Solomon");
-        put("SA", "Arab Saudi");
-        put("FR", "Perancis");
-        put("FO", "Kepulauan Faroe");
-        put("FM", "Mikronesia");
-        put("RW", "Rwanda");
-        put("FK", "Kepulauan Falkland");
-        put("RU", "Rusia");
-        put("FJ", "Fiji");
-        put("FI", "Finlandia");
-        put("RO", "Romania");
-        put("RE", "R\u00e9union");
-        put("ET", "Ethiopia");
-        put("ES", "Spanyol");
-        put("ER", "Eritrea");
-        put("EH", "Sahara Barat");
-        put("EG", "Mesir");
-        put("EE", "Estonia");
-        put("EC", "Ekuador");
-        put("DZ", "Algeria");
-        put("QA", "Qatar");
-        put("DO", "Republik Dominika");
-        put("PY", "Paraguay");
-        put("DM", "Dominika");
-        put("PW", "Palau");
-        put("DK", "Denmark");
-        put("DJ", "Jibouti");
-        put("PT", "Portugis");
-        put("PS", "Otoritas Palestina");
-        put("PR", "Puerto Riko");
-        put("DE", "Jerman");
-        put("PN", "Pitcairn");
-        put("PM", "Saint Pierre dan Miquelon");
-        put("PL", "Polandia");
-        put("PK", "Pakistan");
-        put("PH", "Filipina");
-        put("PG", "Papua Nugini");
-        put("PF", "Polynesia Perancis");
-        put("CZ", "Republik Ceko");
-        put("PE", "Peru");
-        put("CY", "Siprus");
-        put("CX", "Pulau Christmas");
-        put("CV", "Tanjung Verde");
-        put("PA", "Panama");
-        put("CU", "Kuba");
-        put("CR", "Kosta Rika");
-        put("CO", "Kolombia");
-        put("CN", "Cina");
-        put("CM", "Kamerun");
-        put("CL", "Chili");
-        put("CK", "Kepulauan Cook");
-        put("CI", "Pantai Gading");
-        put("CH", "Swiss");
-        put("CG", "Kongo");
-        put("CF", "Republik Afrika Tengah");
-        put("CD", "Republik Demokratik Kongo");
-        put("CC", "Kepulauan Cocos");
-        put("OM", "Oman");
-        put("CA", "Kanada");
-        put("BZ", "Belize");
-        put("BY", "Belarusia");
-        put("BW", "Botswana");
-        put("BV", "Kepulauan Bouvet");
-        put("BT", "Bhutan");
-        put("BS", "Bahamas");
-        put("BR", "Brazil");
-        put("NZ", "Selandia Baru");
-        put("BO", "Bolivia");
-        put("BN", "Brunei");
-        put("BM", "Bermuda");
-        put("NU", "Niue");
-        put("BJ", "Benin");
-        put("BI", "Burundi");
-        put("BH", "Bahrain");
-        put("NR", "Nauru");
-        put("BG", "Bulgaria");
-        put("BF", "Burkina Faso");
-        put("NP", "Nepal");
-        put("BE", "Belgia");
-        put("NO", "Norwegia");
-        put("BD", "Bangladesh");
-        put("BB", "Barbados");
-        put("ZW", "Zimbabwe");
-        put("NL", "Netherlands");
-        put("BA", "Bosnia dan Herzegovina");
-        put("NI", "Nicaragua");
-        put("NG", "Nigeria");
-        put("NF", "Kepulauan Norfolk");
-        put("AZ", "Azerbaijan");
-        put("NE", "Niger");
-        put("NC", "Kaledonia Baru");
-        put("AW", "Aruba");
-        put("ZM", "Zambia");
-        put("NA", "Namibia");
-        put("AU", "Australia");
-        put("AT", "Austria");
-        put("AS", "Samoa Amerika");
-        put("AR", "Argentina");
-        put("AQ", "Antarktika");
-        put("MZ", "Mozambique");
-        put("AO", "Angola");
-        put("MY", "Malaysia");
-        put("AN", "Antilles Belanda");
-        put("MX", "Mexico");
-        put("AM", "Armenia");
-        put("MW", "Malawi");
-        put("AL", "Albania");
-        put("MV", "Maldives");
-        put("ZA", "Afrika Selatan");
-        put("MU", "Mauritius");
-        put("MT", "Malta");
-        put("AI", "Anguilla");
-        put("MS", "Montserrat");
-        put("MR", "Mauritania");
-        put("AG", "Antigua dan Barbuda");
-        put("MQ", "Martinique");
-        put("AF", "Afghanistan");
-        put("MP", "Kepualuan Mariana Utara");
-        put("AE", "Uni Emirat Arab");
-        put("MO", "Makao S.A.R. Cina");
-        put("AD", "Andora");
-        put("MN", "Mongolia");
-        put("MM", "Myanmar");
-        put("ML", "Mali");
-        put("MK", "Macedonia");
-        put("YU", "Yugoslavia");
-        put("YT", "Mayotte");
-        put("MH", "Kepulauan Marshall");
-        put("MG", "Madagaskar");
-        put("MD", "Moldova");
-        put("MC", "Monaco");
-        put("MA", "Maroko");
-        put("YE", "Yaman");
-        put("LY", "Libya");
-        put("LV", "Latvia");
-        put("LU", "Luxembourg");
-        put("LT", "Lithuania");
-        put("LS", "Lesotho");
-        put("LR", "Liberia");
-        put("LK", "Sri Lanka");
-        put("LI", "Liechtenstein");
-        put("LC", "Santa Lusia");
-        put("LB", "Lebanon");
-        put("LA", "Laos");
-        put("KZ", "Kazakhstan");
-        put("KY", "Kepulauan Kayman");
-        put("KW", "Kuwait");
-        put("KR", "Korea Selatan");
-        put("KP", "Korea Utara");
-        put("KN", "Saint Kitts dan Nevis");
-        put("KM", "Komoros");
-        put("KI", "Kiribati");
-        put("WS", "Samoa");
-        put("KH", "Kamboja");
-        put("KG", "Kyrgyzstan");
-        put("KE", "Kenya");
-        put("WF", "Wallis dan Futuna");
-        put("JP", "Jepang");
-        put("JO", "Yordania");
-        put("JM", "Jamaika");
-        put("VU", "Vanuatu");
-        put("VN", "Vietnam");
-        put("VI", "Kepulauan U.S. Virgin");
-        put("VG", "Kepulauan British Virgin");
-        put("VE", "Venezuela");
-        put("VC", "Saint Vincent dan Grenadines");
-        put("VA", "Vatikan");
-        put("IT", "Itali");
-        put("IS", "Islandia");
-        put("IR", "Iran");
-        put("IQ", "Iraq");
-        put("UZ", "Uzbekistan");
-        put("UY", "Uruguay");
-        put("IN", "India");
-        put("IL", "Israel");
-        put("US", "Amerika Serikat");
-        put("IE", "Irlandia");
-        put("ID", "Indonesia");
-        put("UG", "Uganda");
-        put("UA", "Ukraina");
-        put("HU", "Hungaria");
-        put("HT", "Haiti");
-        put("HR", "Kroasia");
-        put("TZ", "Tanzania");
-        put("HN", "Honduras");
-        put("HM", "Pulau Heard dan Kepulauan McDonald");
-        put("TW", "Taiwan");
-        put("TV", "Tuvalu");
-        put("HK", "Hong Kong S.A.R., Cina");
-        put("TT", "Trinidad dan Tobago");
-        put("TR", "Turkey");
-        put("TO", "Tonga");
-        put("TN", "Tunisia");
-        put("TM", "Turkmenistan");
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         territories.put(key, value);
       }
   }
 
-  private static final Object territories = new Hashtableterritories();
+  private static final String languagesKeys = "ast|lb|la|xh|ky|kw|kv|ku|ks|kr|ko|kn|km|kl|kk|kj|ki|kg|grc|wo|art|ka|gem|arn|afa|jv|wa|arc|cel|vo|ja|vi|ve|it|is|uz|io|ik|ii|ur|ig|kos|ie|id|ia|uk|kok|ug|hz|hy|got|hu|phi|hr|ho|ty|apa|tw|fur|goh|tt|hi|ts|tr|cop|he|tn|tl|ha|tk|ti|ace|th|tg|te|gv|ta|syr|gu|map|bug|mak|gn|sw|gl|sv|su|enm|ss|mad|sr|sq|so|gd|sn|sm|sl|ga|sk|si|sh|sg|se|fy|sd|sc|sa|cau|ang|car|fr|fo|rw|gmh|ru|fj|cai|fi|ff|ro|rn|rm|fa|peo|lez|eu|et|es|eo|en|el|qu|jrb|fro|frm|ee|mkh|dz|dv|alg|pt|ps|de|pl|da|pi|sux|jpr|cy|akk|cv|pa|cs|cr|co|mis|os|ch|or|ce|om|ca|oj|bs|br|gil|bo|ny|bn|bm|nv|bi|bh|bg|be|no|nn|nl|ba|zu|ng|az|ne|ay|nb|av|na|aus|as|ar|zh|my|am|ak|za|paa|mt|ms|mr|af|ae|mo|haw|mn|ab|ml|aa|mk|chk|mi|mh|mg|mga|yo|egy|yi|bat|lv|ath|lu|lt|ban|lo|ln|bai|li|lg";
 
-  private static final class Hashtablelanguages extends java.util.Hashtable
+  private static final String languagesValues = "Astur|Luxembourg|Latin|Xhosa|Kirghiz|Cornish|Komi|Kurdi|Kashmir|Kanuri|Korea|Kannada|Khmer|Kalaallisut|Kazakh|Kuanyama|Kikuyu|Kongo|Yunani Kuno (sd 1453)|Wolof|Buatan (Lainnya)|Georgian|Jermanik (Lainnya)|Araucan|Afro-Asiatik (Lainnya)|Jawa|Walloon|Aram|Celtic (Lainnya)|Volap\u00fck|Japanese|Vietnamese|Venda|Italian|Icelandic|Uzbek|Ido|Inupiaq|Sichuan Yi|Urdu|Igbo|Kosrae|Interlingue|Bahasa Indonesia|Interlingua|Ukrainian|Konkani|Uighur|Herero|Armenia|Gothik|Hungaria|Filipina (Lainnya)|Kroasia|Hiri Motu|Tahitian|Bahasa-bahasa Apache|Twi|Friuli|Jerman Kuno (kl.750-1050)|Tatar|Hindi|Tsonga|Turkish|Koptik|Ibrani|Tswana|Tagalog|Hausa|Turkmen|Tigrinya|Aceh|Thai|Tajik|Telugu|Manx|Tamil|Syria|Gujarati|Austronesia|Bugis|Makassar|Guarani|Swahili|Gallegan|Swedia|Sundan|Inggris, Abad Pertengahan (1100-1500)|Swati|Madura|Serbian|Albanian|Somali|Gaelik Skotlandia|Shona|Samoan|Slovenian|Irlandia|Slovak|Sinhalese|Serbo-Croatian|Sango|Northern Sami|Frisi|Sindhi|Sardinian|Sanskrit|Kaukasia (Lainnya)|Inggris Kuno (kl.450-1100)|Karib|Perancis|Faro|Kinyarwanda|Jerman, Abad Pertengahan (kl.1050-1500)|Russian|Fiji|India Amerika Tengah (Lainnnya)|Finlandia|Fulah|Romanian|Rundi|Rhaeto-Romance|Persia|Persia Kuno (kl.600-400 SM.)|Lezghia|Basque|Estonian|Spanyol|Esperanto|Inggris|Yunani|Quechua|Judeo-Arab|Perancis Kuno (842-kl.1400)|Perancis, Abad Pertengahan (kl.1400-1600)|Ewe|Mon-Khmer (Lainnya)|Dzongkha|Divehi|Bahasa Algonquia|Portugis|Pashto (Pushto)|Jerman|Polish|Denmark|Pali|Sumeria|Judeo-Persia|Welsh|Akkadien|Chuvash|Punjabi|Ceko|Cree|Korsika|Bahasa Lain-lain|Ossetic|Chamorro|Oriya|Chechen|Oromo|Catalan|Ojibwa|Bosnia|Breton|Gilbert|Tibet|Nyanja; Chichewa; Chewa|Bengal|Bambara|Navajo|Bislama|Bihari|Bulgaria|Belarusia|Norwegian|Norwegian Nynorsk|Belanda|Bashkir|Zulu|Ndonga|Azerbaijan|Nepal|Aymara|Norwegian Bokm\u00e5l|Avarik|Nauru|Bahasa-bahasa Australia|Assam|Arab|Cina|Burma|Amharik|Akan|Zhuang|Papuan (Lainnya)|Maltese|Malay|Marathi|Afrikaans|Avestan|Moldavian|Hawaii|Mongolian|Abkhaz|Malayalam|Afar|Macedonian|Chuuke|Maori|Marshall|Malagasi|Irlandia Abad Pertengahan (900-1200)|Yoruba|Mesir Kuno|Yiddish|Baltik (Lainnya)|Latvian|Bahasa-bahasa Athapaska|Luba-Katanga|Lithuania|Balin|Lao|Lingala|Bahasa-bahasa Bamileke|Limburg|Ganda";
+
+  private static final Hashtable languages;
+  static
   {
-    public Hashtablelanguages()
+    languages = new Hashtable();
+    Enumeration keys = new StringTokenizer(languagesKeys, "|");
+    Enumeration values = new StringTokenizer(languagesValues, "|");
+    while (keys.hasMoreElements())
       {
-        super();
-        put("ast", "Astur");
-        put("lb", "Luxembourg");
-        put("la", "Latin");
-        put("xh", "Xhosa");
-        put("ky", "Kirghiz");
-        put("kw", "Cornish");
-        put("kv", "Komi");
-        put("ku", "Kurdi");
-        put("ks", "Kashmir");
-        put("kr", "Kanuri");
-        put("ko", "Korea");
-        put("kn", "Kannada");
-        put("km", "Khmer");
-        put("kl", "Kalaallisut");
-        put("kk", "Kazakh");
-        put("kj", "Kuanyama");
-        put("ki", "Kikuyu");
-        put("kg", "Kongo");
-        put("grc", "Yunani Kuno (sd 1453)");
-        put("wo", "Wolof");
-        put("art", "Buatan (Lainnya)");
-        put("ka", "Georgian");
-        put("gem", "Jermanik (Lainnya)");
-        put("arn", "Araucan");
-        put("afa", "Afro-Asiatik (Lainnya)");
-        put("jv", "Jawa");
-        put("wa", "Walloon");
-        put("arc", "Aram");
-        put("cel", "Celtic (Lainnya)");
-        put("vo", "Volap\u00fck");
-        put("ja", "Japanese");
-        put("vi", "Vietnamese");
-        put("ve", "Venda");
-        put("it", "Italian");
-        put("is", "Icelandic");
-        put("uz", "Uzbek");
-        put("io", "Ido");
-        put("ik", "Inupiaq");
-        put("ii", "Sichuan Yi");
-        put("ur", "Urdu");
-        put("ig", "Igbo");
-        put("kos", "Kosrae");
-        put("ie", "Interlingue");
-        put("id", "Bahasa Indonesia");
-        put("ia", "Interlingua");
-        put("uk", "Ukrainian");
-        put("kok", "Konkani");
-        put("ug", "Uighur");
-        put("hz", "Herero");
-        put("hy", "Armenia");
-        put("got", "Gothik");
-        put("hu", "Hungaria");
-        put("phi", "Filipina (Lainnya)");
-        put("hr", "Kroasia");
-        put("ho", "Hiri Motu");
-        put("ty", "Tahitian");
-        put("apa", "Bahasa-bahasa Apache");
-        put("tw", "Twi");
-        put("fur", "Friuli");
-        put("goh", "Jerman Kuno (kl.750-1050)");
-        put("tt", "Tatar");
-        put("hi", "Hindi");
-        put("ts", "Tsonga");
-        put("tr", "Turkish");
-        put("cop", "Koptik");
-        put("he", "Ibrani");
-        put("tn", "Tswana");
-        put("tl", "Tagalog");
-        put("ha", "Hausa");
-        put("tk", "Turkmen");
-        put("ti", "Tigrinya");
-        put("ace", "Aceh");
-        put("th", "Thai");
-        put("tg", "Tajik");
-        put("te", "Telugu");
-        put("gv", "Manx");
-        put("ta", "Tamil");
-        put("syr", "Syria");
-        put("gu", "Gujarati");
-        put("map", "Austronesia");
-        put("bug", "Bugis");
-        put("mak", "Makassar");
-        put("gn", "Guarani");
-        put("sw", "Swahili");
-        put("gl", "Gallegan");
-        put("sv", "Swedia");
-        put("su", "Sundan");
-        put("enm", "Inggris, Abad Pertengahan (1100-1500)");
-        put("ss", "Swati");
-        put("mad", "Madura");
-        put("sr", "Serbian");
-        put("sq", "Albanian");
-        put("so", "Somali");
-        put("gd", "Gaelik Skotlandia");
-        put("sn", "Shona");
-        put("sm", "Samoan");
-        put("sl", "Slovenian");
-        put("ga", "Irlandia");
-        put("sk", "Slovak");
-        put("si", "Sinhalese");
-        put("sh", "Serbo-Croatian");
-        put("sg", "Sango");
-        put("se", "Northern Sami");
-        put("fy", "Frisi");
-        put("sd", "Sindhi");
-        put("sc", "Sardinian");
-        put("sa", "Sanskrit");
-        put("cau", "Kaukasia (Lainnya)");
-        put("ang", "Inggris Kuno (kl.450-1100)");
-        put("car", "Karib");
-        put("fr", "Perancis");
-        put("fo", "Faro");
-        put("rw", "Kinyarwanda");
-        put("gmh", "Jerman, Abad Pertengahan (kl.1050-1500)");
-        put("ru", "Russian");
-        put("fj", "Fiji");
-        put("cai", "India Amerika Tengah (Lainnnya)");
-        put("fi", "Finlandia");
-        put("ff", "Fulah");
-        put("ro", "Romanian");
-        put("rn", "Rundi");
-        put("rm", "Rhaeto-Romance");
-        put("fa", "Persia");
-        put("peo", "Persia Kuno (kl.600-400 SM.)");
-        put("lez", "Lezghia");
-        put("eu", "Basque");
-        put("et", "Estonian");
-        put("es", "Spanyol");
-        put("eo", "Esperanto");
-        put("en", "Inggris");
-        put("el", "Yunani");
-        put("qu", "Quechua");
-        put("jrb", "Judeo-Arab");
-        put("fro", "Perancis Kuno (842-kl.1400)");
-        put("frm", "Perancis, Abad Pertengahan (kl.1400-1600)");
-        put("ee", "Ewe");
-        put("mkh", "Mon-Khmer (Lainnya)");
-        put("dz", "Dzongkha");
-        put("dv", "Divehi");
-        put("alg", "Bahasa Algonquia");
-        put("pt", "Portugis");
-        put("ps", "Pashto (Pushto)");
-        put("de", "Jerman");
-        put("pl", "Polish");
-        put("da", "Denmark");
-        put("pi", "Pali");
-        put("sux", "Sumeria");
-        put("jpr", "Judeo-Persia");
-        put("cy", "Welsh");
-        put("akk", "Akkadien");
-        put("cv", "Chuvash");
-        put("pa", "Punjabi");
-        put("cs", "Ceko");
-        put("cr", "Cree");
-        put("co", "Korsika");
-        put("mis", "Bahasa Lain-lain");
-        put("os", "Ossetic");
-        put("ch", "Chamorro");
-        put("or", "Oriya");
-        put("ce", "Chechen");
-        put("om", "Oromo");
-        put("ca", "Catalan");
-        put("oj", "Ojibwa");
-        put("bs", "Bosnia");
-        put("br", "Breton");
-        put("gil", "Gilbert");
-        put("bo", "Tibet");
-        put("ny", "Nyanja; Chichewa; Chewa");
-        put("bn", "Bengal");
-        put("bm", "Bambara");
-        put("nv", "Navajo");
-        put("bi", "Bislama");
-        put("bh", "Bihari");
-        put("bg", "Bulgaria");
-        put("be", "Belarusia");
-        put("no", "Norwegian");
-        put("nn", "Norwegian Nynorsk");
-        put("nl", "Belanda");
-        put("ba", "Bashkir");
-        put("zu", "Zulu");
-        put("ng", "Ndonga");
-        put("az", "Azerbaijan");
-        put("ne", "Nepal");
-        put("ay", "Aymara");
-        put("nb", "Norwegian Bokm\u00e5l");
-        put("av", "Avarik");
-        put("na", "Nauru");
-        put("aus", "Bahasa-bahasa Australia");
-        put("as", "Assam");
-        put("ar", "Arab");
-        put("zh", "Cina");
-        put("my", "Burma");
-        put("am", "Amharik");
-        put("ak", "Akan");
-        put("za", "Zhuang");
-        put("paa", "Papuan (Lainnya)");
-        put("mt", "Maltese");
-        put("ms", "Malay");
-        put("mr", "Marathi");
-        put("af", "Afrikaans");
-        put("ae", "Avestan");
-        put("mo", "Moldavian");
-        put("haw", "Hawaii");
-        put("mn", "Mongolian");
-        put("ab", "Abkhaz");
-        put("ml", "Malayalam");
-        put("aa", "Afar");
-        put("mk", "Macedonian");
-        put("chk", "Chuuke");
-        put("mi", "Maori");
-        put("mh", "Marshall");
-        put("mg", "Malagasi");
-        put("mga", "Irlandia Abad Pertengahan (900-1200)");
-        put("yo", "Yoruba");
-        put("egy", "Mesir Kuno");
-        put("yi", "Yiddish");
-        put("bat", "Baltik (Lainnya)");
-        put("lv", "Latvian");
-        put("ath", "Bahasa-bahasa Athapaska");
-        put("lu", "Luba-Katanga");
-        put("lt", "Lithuania");
-        put("ban", "Balin");
-        put("lo", "Lao");
-        put("ln", "Lingala");
-        put("bai", "Bahasa-bahasa Bamileke");
-        put("li", "Limburg");
-        put("lg", "Ganda");
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         languages.put(key, value);
       }
   }
-
-  private static final Object languages = new Hashtablelanguages();
 
   private static final Object[][] contents =
   {
     { "decimalSeparator", "," },
     { "groupingSeparator", "." },
     { "currencyFormat", "\u00a4#,##0.00;-\u00a4#,##0.00" },
+    { "currenciesDisplayName", currenciesDisplayName },
+    { "currenciesSymbol", currenciesSymbol },
     { "shortMonths", shortMonths },
     { "months", months },
     { "shortWeekdays", shortWeekdays },

@@ -40,36 +40,91 @@ exception statement from your version. */
 
 package gnu.java.locale;
 
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.StringTokenizer;
 import java.util.ListResourceBundle;
 
 public class LocaleInformation_uz extends ListResourceBundle
 {
-  private static final class Hashtableterritories extends java.util.Hashtable
+  private static final String currenciesDisplayNameKeys = "UZS";
+
+  private static final String currenciesDisplayNameValues = "UZS";
+
+  private static final Hashtable currenciesDisplayName;
+  static
   {
-    public Hashtableterritories()
+    currenciesDisplayName = new Hashtable();
+    Enumeration keys = new StringTokenizer(currenciesDisplayNameKeys, "|");
+    Enumeration values = new StringTokenizer(currenciesDisplayNameValues, "|");
+    while (keys.hasMoreElements())
       {
-        super();
-        put("UZ", "\u040e\u0437\u0431\u0435\u043a\u0438\u0441\u0442\u043e\u043d");
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         currenciesDisplayName.put(key, value);
       }
   }
 
-  private static final Object territories = new Hashtableterritories();
+  private static final String currenciesSymbolKeys = "UZS";
 
-  private static final class Hashtablelanguages extends java.util.Hashtable
+  private static final String currenciesSymbolValues = "\u0441\u045e\u043c";
+
+  private static final Hashtable currenciesSymbol;
+  static
   {
-    public Hashtablelanguages()
+    currenciesSymbol = new Hashtable();
+    Enumeration keys = new StringTokenizer(currenciesSymbolKeys, "|");
+    Enumeration values = new StringTokenizer(currenciesSymbolValues, "|");
+    while (keys.hasMoreElements())
       {
-        super();
-        put("uz", "\u040e\u0437\u0431\u0435\u043a");
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         currenciesSymbol.put(key, value);
       }
   }
 
-  private static final Object languages = new Hashtablelanguages();
+  private static final String territoriesKeys = "UZ";
+
+  private static final String territoriesValues = "\u040e\u0437\u0431\u0435\u043a\u0438\u0441\u0442\u043e\u043d";
+
+  private static final Hashtable territories;
+  static
+  {
+    territories = new Hashtable();
+    Enumeration keys = new StringTokenizer(territoriesKeys, "|");
+    Enumeration values = new StringTokenizer(territoriesValues, "|");
+    while (keys.hasMoreElements())
+      {
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         territories.put(key, value);
+      }
+  }
+
+  private static final String languagesKeys = "uz";
+
+  private static final String languagesValues = "\u040e\u0437\u0431\u0435\u043a";
+
+  private static final Hashtable languages;
+  static
+  {
+    languages = new Hashtable();
+    Enumeration keys = new StringTokenizer(languagesKeys, "|");
+    Enumeration values = new StringTokenizer(languagesValues, "|");
+    while (keys.hasMoreElements())
+      {
+         String key = (String) keys.nextElement();
+         String value = (String) values.nextElement();
+         languages.put(key, value);
+      }
+  }
 
   private static final Object[][] contents =
   {
     { "decimalSeparator", "," },
     { "groupingSeparator", "\u00a0" },
+    { "currenciesDisplayName", currenciesDisplayName },
+    { "currenciesSymbol", currenciesSymbol },
     { "territories", territories },
     { "languages", languages },
   };
