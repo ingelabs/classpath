@@ -1,3 +1,7 @@
+2004-04-25  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/FileDialog.java: Import java.io.Serializable explicitetly.
+
 2004-04-25  Mark Wielaard  <mark@klomp.org>
 
 	* vm/reference/java/lang/VMClass.java: Make final and package local.
