@@ -35,8 +35,8 @@ import java.io.ObjectOutputStream;
  * TreeSet is a part of the JDK1.2 Collections API.
  *
  * @author      Jon Zeppieri
- * @version     $Revision: 1.1 $
- * @modified    $Id: TreeSet.java,v 1.1 1999-03-16 08:04:59 jaz Exp $
+ * @version     $Revision: 1.2 $
+ * @modified    $Id: TreeSet.java,v 1.2 1999-04-27 00:20:26 jaz Exp $
  */
 
 public class TreeSet extends AbstractSet
@@ -67,7 +67,7 @@ public class TreeSet extends AbstractSet
    */
   public TreeSet(Comparator oComparator)
   {
-    _oMap = new org.p2c2e.TreeMap(oComparator);
+    _oMap = new TreeMap(oComparator);
   }
 
   /** 
@@ -97,7 +97,7 @@ public class TreeSet extends AbstractSet
   {
     this(oSortedSet.comparator());
 
-    org.p2c2e.TreeMap oMap = (org.p2c2e.TreeMap) _oMap;
+    TreeMap oMap = (TreeMap) _oMap;
     int i = 0;
     Map.Entry[] arEntries = new Map.Entry[oSortedSet.size()];
     Iterator itEntries = oSortedSet.iterator();
@@ -295,7 +295,7 @@ public class TreeSet extends AbstractSet
   {
     int i;
     Map.Entry[] arEntries;
-    org.p2c2e.TreeMap oMap;
+    TreeMap oMap;
     Comparator oComparator = (Comparator) oIn.readObject();
     int iSize = oIn.readInt();
 
@@ -304,7 +304,7 @@ public class TreeSet extends AbstractSet
     for (i = 0; i < iSize; i++)
       arEntries[iSize] = new BasicMapEntry(oIn.readObject(), Boolean.TRUE);
 
-    oMap = new org.p2c2e.TreeMap(oComparator);
+    oMap = new TreeMap(oComparator);
     oMap._iSize = iSize;
     oMap.putAllLinear(arEntries);
     _oMap = oMap;
