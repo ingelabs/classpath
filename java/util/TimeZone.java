@@ -724,8 +724,7 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
        (which does not have Daylight Savings Time) the string would
        be EST5
     */
-    private static native String
-    getDefaultTimeZoneId();
+    private static native String getDefaultTimeZoneId();
 
     /**
      * Gets the time zone offset, for current date, modified in case of 
