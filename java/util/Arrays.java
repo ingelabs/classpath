@@ -36,6 +36,12 @@ public class Arrays {
   private Arrays() {
   }
 
+  private static Comparator defaultComparator = new Comparator() {
+    public int compare(Object o1, Object o2) {
+      return ((Comparable)o1).compareTo(o2);
+    }
+  };
+
   /**
    * Perform a binary search of a byte array for a key. The array must be
    * sorted (as by the sort() method) - if it is not, the behaviour of this
@@ -261,22 +267,9 @@ public class Arrays {
   }
 
   /**
-   * Compare two objects with or without a Comparator. If c is null, uses the
-   * natural ordering. Slightly slower than doing it inline if the JVM isn't
-   * clever, but worth it for removing a duplicate of the sort and search code.
-   * Note: This same code is used in Collections
-   */
-  private static int compare(Object o1, Object o2, Comparator c) {
-    if (c == null) {
-      return ((Comparable)o1).compareTo(o2);
-    } else {
-      return c.compare(o1, o2);
-    }
-  }
-
-  /**
-   * This method does the work for the Object binary search methods. If the
-   * specified comparator is null, uses the natural ordering.
+   * This method does the work for the Object binary search methods. 
+   * @exception NullPointerException if the specified comparator is null.
+   * @exception ClassCastException if the objects are not comparable by c.
    */
   private static int objectSearch(Object[] a, Object key, final Comparator c) {
     int low = 0;
@@ -284,7 +277,7 @@ public class Arrays {
     int mid = 0;
     while (low <= hi) {
       mid = (low + hi) >> 1;
-      final int d = compare(key, a[mid], c);
+      final int d = c.compare(key, a[mid]);
       if (d == 0) {
         return mid;
       } else if (d < 0) {
@@ -316,7 +309,7 @@ public class Arrays {
    * @exception NullPointerException if a null element has compareTo called
    */
   public static int binarySearch(Object[] a, Object key) {
-    return objectSearch(a, key, null);
+    return objectSearch(a, key, defaultComparator);
   }
 
   /**
@@ -339,9 +332,6 @@ public class Arrays {
    *   elements of a
    */
   public static int binarySearch(Object[] a, Object key, Comparator c) {
-    if (c == null) {
-      throw new NullPointerException();
-    }
     return objectSearch(a, key, c);
   }
 
@@ -1516,75 +1506,111 @@ public class Arrays {
   }
 
   /**
-   * The bulk of the work for the object sort routines. If c is null,
-   * uses the natural ordering.
-   * In general, the code attempts to be simple rather than fast, the idea
-   * being that a good optimising JIT will be able to optimise it better than I
-   * can, and if I try it will make it more confusing for the JIT. The
-   * exception is in declaring values "final", which I do whenever there is no
-   * need for them ever to change - this may give slight speedups.
+   * The bulk of the work for the object sort routines.  In general,
+   * the code attempts to be simple rather than fast, the idea being
+   * that a good optimising JIT will be able to optimise it better
+   * than I can, and if I try it will make it more confusing for the
+   * JIT.  
    */
-  private static void mergeSort(Object[] a, final Comparator c) {
-    final int n = a.length;
-    Object[] x = a;
-    Object[] y = new Object[n];
-    Object[] t = null; // t is used for swapping x and y
+  private static void mergeSort(Object[] a, int from, int to, Comparator c)
+  {
+    // First presort the array in chunks of length 6 with insertion sort. 
+    // mergesort would give too much overhead for this length.
+    for (int chunk = from; chunk < to; chunk += 6)
+      {
+	int end = Math.min(chunk+6, to);
+	for (int i = chunk + 1; i < end; i++)
+	  {
+	    if (c.compare(a[i-1], a[i]) > 0)
+	      {
+		// not already sorted
+		int j=i;
+		Object elem = a[j];
+		do 
+		  {
+		    a[j] = a[j-1];
+		    j--;
+		  } 
+		while (j>chunk && c.compare(a[j-1], elem) > 0);
+		a[j] = elem;
+	      }
+	  }
+      }
+    
+    int len = to - from;
+    // If length is smaller or equal 6 we are done.
+    if (len <= 6)
+      return;
+
+    Object[] src = a;
+    Object[] dest = new Object[len];
+    Object[] t = null; // t is used for swapping src and dest
+
+    // The difference of the fromIndex of the src and dest array.
+    int srcDestDiff = -from;
 
     // The merges are done in this loop
-    for (int sizenf = 1; sizenf < n; sizenf <<= 1) {
-      final int size = sizenf; // Slightly inelegant but probably speeds us up
-
-      for (int startnf = 0; startnf < n; startnf += size << 1) {
-        final int start = startnf; // see above with size and sizenf
-
-        // size2 is the size of the second sublist, which may not be the same
-        // as the first if we are at the end of the list.
-        final int size2 = n - start - size < size ? n - start - size : size;
-
-        // The second list is empty or the elements are already in order - no
-        // need to merge
-        if (size2 <= 0 ||
-            compare(x[start + size - 1], x[start + size], c) <= 0) {
-          System.arraycopy(x, start, y, start, size + size2);
-
-        // The two halves just need swapping - no need to merge
-        } else if (compare(x[start], x[start + size + size2 - 1], c) >= 0) {
-          System.arraycopy(x, start, y, start + size2, size);
-          System.arraycopy(x, start + size, y, start, size2);
-
-        } else {
-          // Declare a lot of variables to save repeating calculations.
-          // Hopefully a decent JIT will put these in registers and make this
-          // fast
-          int p1 = start;
-          int p2 = start + size;
-          int i = start;
-          int d1;
-
-	  // initial value added to placate javac
-	  int d2 = -1;
-
-          // The main merge loop; terminates as soon as either half is ended
-          // You'd think you needed to use & rather than && to make sure d2
-          // gets calculated even if d1 == 0, but in fact if this is the case,
-          // d2 hasn't changed since the last iteration.
-          while ((d1 = start + size - p1) > 0 &&
-                 (d2 = start + size + size2 - p2) > 0) {
-            y[i++] = x[(compare(x[p1], x[p2], c) <= 0) ? p1++ : p2++];
-          }
-
-          // Finish up by copying the remainder of whichever half wasn't
-          // finished.
-          System.arraycopy(x, d1 > 0 ? p1 : p2, y, i, d1 > 0 ? d1 : d2);
-        } 
+    for (int size = 6; size < len; size <<= 1) 
+      {
+	for (int start = from; start < to; start += size << 1)
+	  {
+	    // mid ist the start of the second sublist;
+	    // end the start of the next sublist (or end of array).
+	    int mid = start + size;
+	    int end = Math.min(to, mid + size);
+	    
+	    // The second list is empty or the elements are already in
+	    // order - no need to merge
+	    if (mid >= end || c.compare(src[mid - 1], src[mid]) <= 0) {
+	      System.arraycopy(src, start, 
+			       dest, start + srcDestDiff, end - start);
+	      
+	      // The two halves just need swapping - no need to merge
+	    } else if (c.compare(src[start], src[end - 1]) > 0) {
+	      System.arraycopy(src, start, 
+			       dest, end - size + srcDestDiff, size);
+	      System.arraycopy(src, mid, 
+			       dest, start + srcDestDiff, end - mid);
+	      
+	    } else {
+	      // Declare a lot of variables to save repeating
+	      // calculations.  Hopefully a decent JIT will put these
+	      // in registers and make this fast
+	      int p1 = start;
+	      int p2 = mid;
+	      int i = start + srcDestDiff;
+	      
+	      // The main merge loop; terminates as soon as either
+	      // half is ended
+	      while (p1 < mid && p2 < end)
+		{
+		  dest[i++] = 
+		    src[c.compare(src[p1], src[p2]) <= 0 ? p1++ : p2++];
+		}
+	      
+	      // Finish up by copying the remainder of whichever half
+	      // wasn't finished.
+	      if (p1 < mid)
+		System.arraycopy(src, p1, dest, i, mid - p1);
+	      else
+		System.arraycopy(src, p2, dest, i, end - p2);
+	    } 
+	  }
+	// swap src and dest ready for the next merge
+	t = src; src = dest; dest = t; 
+	from += srcDestDiff;
+	to   += srcDestDiff;
+	srcDestDiff = -srcDestDiff;
       }
-      t = x; x = y; y = t; // swap x and y ready for the next merge
-    }
 
-    // make sure the result ends up back in the right place.
-    if (x != a) {
-      System.arraycopy(x, 0, a, 0, n);
-    }
+    // make sure the result ends up back in the right place.  Note
+    // that src and dest may have been swapped above, so src 
+    // contains the sorted array.
+    if (src != a)
+      {
+	// Note that from == 0.
+	System.arraycopy(src, 0, a, srcDestDiff, to);
+      }
   }
 
   /**
@@ -1602,7 +1628,7 @@ public class Arrays {
    *   null.compareTo cannot work)
    */
   public static void sort(Object[] a) {
-    mergeSort(a, null);
+    mergeSort(a, 0, a.length, defaultComparator);
   }
 
   /**
@@ -1619,13 +1645,58 @@ public class Arrays {
    *   comparable by the Comparator provided
    */
   public static void sort(Object[] a, Comparator c) {
+    mergeSort(a, 0, a.length, c);
+  }
 
-    // Passing null to mergeSort would use the natural ordering. This is wrong
-    // by the spec and not in the reference implementation.
-    if (c == null) {
-      throw new NullPointerException();
-    }
-    mergeSort(a, c);
+  /**
+   * Sort an array of Objects according to their natural ordering. The sort is
+   * guaranteed to be stable, that is, equal elements will not be reordered.
+   * The sort algorithm is a mergesort with the merge omitted if the last
+   * element of one half comes before the first element of the other half. This
+   * algorithm gives guaranteed O(nlog(n)) time, at the expense of making a
+   * copy of the array.
+   *
+   * @param a the array to be sorted
+   * @param fromIndex the index of the first element to be sorted.
+   * @param toIndex the index of the last element to be sorted plus one.
+   * @exception ClassCastException if any two elements are not mutually
+   *   comparable by the Comparator provided
+   * @exception ArrayIndexOutOfBoundsException, if fromIndex and toIndex
+   *   are not in range.
+   * @exception IllegalArgumentException if fromIndex > toIndex
+   */
+  public static void sort(Object[] a, int fromIndex, 
+			  int toIndex) {
+    if (fromIndex > toIndex)
+      throw new IllegalArgumentException("fromIndex "+fromIndex
+					 +" > toIndex "+toIndex);
+    mergeSort(a, fromIndex, toIndex, defaultComparator);
+  }
+
+  /**
+   * Sort an array of Objects according to a Comparator. The sort is
+   * guaranteed to be stable, that is, equal elements will not be reordered.
+   * The sort algorithm is a mergesort with the merge omitted if the last
+   * element of one half comes before the first element of the other half. This
+   * algorithm gives guaranteed O(nlog(n)) time, at the expense of making a
+   * copy of the array.
+   *
+   * @param a the array to be sorted
+   * @param fromIndex the index of the first element to be sorted.
+   * @param toIndex the index of the last element to be sorted plus one.
+   * @param c a Comparator to use in sorting the array
+   * @exception ClassCastException if any two elements are not mutually
+   *   comparable by the Comparator provided
+   * @exception ArrayIndexOutOfBoundsException, if fromIndex and toIndex
+   *   are not in range.
+   * @exception IllegalArgumentException if fromIndex > toIndex
+   */
+  public static void sort(Object[] a, int fromIndex, 
+			  int toIndex, Comparator c) {
+    if (fromIndex > toIndex)
+      throw new IllegalArgumentException("fromIndex "+fromIndex
+					 +" > toIndex "+toIndex);
+    mergeSort(a, fromIndex, toIndex, c);
   }
 
   /**
@@ -1638,7 +1709,6 @@ public class Arrays {
    */
   public static List asList(final Object[] a) {
 
-    // Check for a null argument
     if (a == null) {
       throw new NullPointerException();
     }
