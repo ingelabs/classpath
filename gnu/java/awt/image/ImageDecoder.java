@@ -62,6 +62,5 @@ public abstract class ImageDecoder implements ImageProducer
   { 
   }
 
-  public abstract void produce (Vector v, FileInputStream is) 
-    throws IOException;
+  abstract void produce (Vector v, FileInputStream is) throws IOException;
 }
