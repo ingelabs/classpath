@@ -39,8 +39,11 @@ exception statement from your version. */
 package java.net;
 
 import java.io.IOException;
+import java.util.jar.Attributes;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 import java.security.cert.Certificate;
-import java.util.jar.*;
 
 /**
  * This abstract class represents a common superclass for implementations
@@ -63,6 +66,7 @@ import java.util.jar.*;
  *
  * @author Aaron M. Renn <arenn@urbanophile.com>
  * @author Kresten Krab Thorup <krab@gnu.org>
+ * @date Aug 10, 1999.
  *
  * @since 1.2
  */
@@ -86,7 +90,7 @@ public abstract class JarURLConnection extends URLConnection
   private JarFile jar_file;
 
   /**
-   * Creates a JarURLConnection from a URL objects
+   * Creates a JarURLConnection from an URL object
    *
    * @param URL url The URL object for this connection.
    *
@@ -123,10 +127,10 @@ public abstract class JarURLConnection extends URLConnection
    * //****Is this right?*****
    *
    * @return The remote URL
-   */ 
-  public URL getJarFileURL()
+   */
+  public URL getJarFileURL ()
   {
-    return(real_url);
+    return real_url;
   }
 
   /**
@@ -136,9 +140,24 @@ public abstract class JarURLConnection extends URLConnection
    *
    * @return The entry name.
    */
-  public String getEntryName()
+  public String getEntryName ()
   {
-    return(entry_name);
+    return entry_name;
+  }
+
+  /**
+   * Returns the entry in this jar file specified by the URL.  
+   * 
+   * @return The jar entry
+   *
+   * @exception IOException If an error occurs
+   */
+  public JarEntry getJarEntry () throws IOException
+  {
+    if (jar_file == null)
+      jar_file = getJarFile();
+
+    return jar_file.getJarEntry(entry_name);
   }
 
   /**
@@ -148,22 +167,7 @@ public abstract class JarURLConnection extends URLConnection
    *
    * @exception IOException If an error occurs
    */
-  public abstract JarFile getJarFile() throws IOException;
-
-  /**
-   * Returns the entry in this jar file specified by the URL.  
-   * 
-   * @return The jar entry
-   *
-   * @exception IOException If an error occurs
-   */
-  public JarEntry getJarEntry() throws IOException
-  {
-    if (jar_file == null)
-      jar_file = getJarFile();
-
-    return jar_file.getJarEntry(entry_name);
-  }
+  public abstract JarFile getJarFile () throws IOException;
 
   /**
    * Returns an array of Certificate objects for the jar file entry specified

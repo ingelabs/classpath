@@ -1,5 +1,12 @@
 2003-05-02  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/DatagramSocket.java,
+	java/net/JarURLConnection,
+	java/net/URLConnection:
+	Partly merged with libgcj.
+
+2003-05-02  Michael Koch  <konqueror@gmx.de>
+
 	* java/text/CollationKey.java:
 	Reformated and reorderd to match libgcj more.
 

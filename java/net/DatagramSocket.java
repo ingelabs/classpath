@@ -153,40 +153,23 @@ public class DatagramSocket
    */
   public DatagramSocket(int port, InetAddress laddr) throws SocketException
   {
-    this (new InetSocketAddress (laddr != null ? laddr : InetAddress.ANY_IF, port));
-  }
-
-  /**
-   * Initializes a new instance of <code>DatagramSocket</code> that binds to 
-   * the specified local port and address.
-   *
-   * @param port The local port number to bind to.
-   * @param laddr The local address to bind to.
-   *
-   * @exception SecurityException If a security manager exists and its
-   * checkListen method doesn't allow the operation.
-   * @exception SocketException If an error occurs.
-   *
-   * @since 1.4
-   */
-  public DatagramSocket (SocketAddress address) throws SocketException
-  {
-    InetSocketAddress tmp = (InetSocketAddress) address;
+    if (port < 0 || port > 65535)
+      throw new IllegalArgumentException("Invalid port: " + port);
 
     SecurityManager s = System.getSecurityManager();
     if (s != null)
-      s.checkListen(tmp.getPort ());
+      s.checkListen(port);
   
     // Why is there no factory for this?
     impl = new PlainDatagramSocketImpl();
     impl.create();
 
-    if (address != null)
+    if (laddr != null)
       {
         try
           {
-            local_addr = tmp.getAddress ();
-            impl.bind(tmp.getPort (), tmp.getAddress ());
+            local_addr = laddr;
+            impl.bind(port, laddr);
           }
         catch (SocketException exception)
           {
@@ -204,6 +187,25 @@ public class DatagramSocket
             throw error;
           }
       }
+  }
+
+  /**
+   * Initializes a new instance of <code>DatagramSocket</code> that binds to 
+   * the specified local port and address.
+   *
+   * @param port The local port number to bind to.
+   * @param laddr The local address to bind to.
+   *
+   * @exception SecurityException If a security manager exists and its
+   * checkListen method doesn't allow the operation.
+   * @exception SocketException If an error occurs.
+   *
+   * @since 1.4
+   */
+  public DatagramSocket (SocketAddress address) throws SocketException
+  {
+    this (((InetSocketAddress) address).getPort (),
+          ((InetSocketAddress) address).getAddress ());
   }
   
   /**
@@ -300,7 +302,7 @@ public class DatagramSocket
     if (timeout instanceof Integer) 
       return ((Integer)timeout).intValue();
     else
-      throw new SocketException("Internal Error");
+      return 0;
   }
 
   /**
@@ -404,6 +406,9 @@ public class DatagramSocket
    */
   public void setReceiveBufferSize(int size) throws SocketException
   {
+    if (impl == null)
+      throw new SocketException ("Cannot initialize Socket implementation");
+
     if (size < 0)
       throw new IllegalArgumentException("Buffer size is less than 0");
 
@@ -438,13 +443,17 @@ public class DatagramSocket
     if (sm != null)
       sm.checkConnect(address.getHostName(), port);
 
-    this.remoteAddress = address;
-    this.remotePort = port;
-
-    /* FIXME: Shit, we can't do this even though the OS supports it since this 
-       method isn't in DatagramSocketImpl. */
-    //  impl.connect(address, port);
-  } 
+    try
+      {
+        impl.connect (address, port);
+        remoteAddress = address;
+        remotePort = port;
+      }
+    catch (SocketException e)
+      {
+        // This means simply not connected or connect not implemented.
+      }
+  }
 
   /**
    * This method disconnects this socket from the address/port it was
@@ -455,9 +464,9 @@ public class DatagramSocket
    */
   public void disconnect()
   {
-    // FIXME: See my comments on connect()
-    this.remoteAddress = null;
-    this.remotePort = -1;
+    impl.disconnect();
+    remoteAddress = null;
+    remotePort = -1;
   }
 
   /**
