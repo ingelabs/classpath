@@ -60,13 +60,8 @@ import java.nio.channels.WritableByteChannel;
  * Instances of this class are created by invoking getChannel
  * Upon a Input/Output/RandomAccessFile object.
  */
-
 public final class FileChannelImpl extends FileChannel
 {
-  // These are WHENCE values for seek.
-//   public static final int SET = 0;
-//   public static final int CUR = 1;
-
   // These are mode values for open().
   public static final int READ   = 1;
   public static final int WRITE  = 2;
