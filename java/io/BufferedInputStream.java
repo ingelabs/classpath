@@ -27,11 +27,11 @@ package java.io;
   * mechanism.  It maintains the buffer and buffer state in instance 
   * variables that are available to subclasses.  The default buffer size
   * of 512 bytes can be overridden by the creator of the stream.
-  *
+  * <p>
   * This class also implements mark/reset functionality.  It is capable
   * of remembering any number of input bytes, to the limits of
   * system memory or the size of <code>Integer.MAX_VALUE</code>
-  *
+  * <p>
   * Please note that this class does not properly handle character
   * encodings.  Consider using the <code>BufferedReader</code> class which
   * does.
@@ -73,7 +73,7 @@ protected int count;
 
 /**
   * The index of the next character that will by read from the buffer.
-  * When @code{pos == count}, the buffer is empty.
+  * When <code>pos == count</code>, the buffer is empty.
   */
 protected int pos;
 
@@ -172,7 +172,7 @@ BufferedInputStream(InputStream in, int bufsize)
   * 11 bytes of data are read from the stream before the <code>reset()</code>
   * method is called, then the mark is invalid and the stream object
   * instance is not required to remember the mark.
-  * 
+  * <p>
   * Note that the number of bytes that can be remembered by this method
   * can be greater than the size of the internal read buffer.  It is also
   * not dependent on the subordinate stream supporting mark/reset
@@ -249,7 +249,7 @@ markSupported()
   * This method resets a stream to the point where the <code>mark()</code> method
   * was called.  Any bytes that were read after the mark point was set will
   * be re-read during subsequent reads.
-  *
+  * <p>
   * This method will throw an IOException if the number of bytes read from
   * the stream since the call to <code>mark()</code> exceeds the mark limit
   * passed when establishing the mark.
@@ -300,7 +300,7 @@ reset() throws IOException
   * This method returns the number of bytes that can be read from this
   * stream before a read can block.  A return of 0 indicates that blocking
   * might (or might not) occur on the very next read attempt.
-  *
+  * <p>
   * The number of available bytes will be the number of read ahead bytes 
   * stored in the internal buffer plus the number of available bytes in
   * the underlying stream.
@@ -321,7 +321,7 @@ available() throws IOException
   * This method skips the specified number of bytes in the stream.  It
   * returns the actual number of bytes skipped, which may be less than the
   * requested amount.
-  *
+  * <p>
   * This method first discards bytes in the buffer, then calls the
   * <code>skip</code> method on the underlying stream to skip the remaining bytes.
   *
@@ -358,7 +358,7 @@ skip(long num_bytes) throws IOException
   * This method reads an unsigned byte from the input stream and returns it
   * as an int in the range of 0-255.  This method also will return -1 if
   * the end of the stream has been reached.
-  *
+  * <p>
   * This method will block until the byte can be read.
   *
   * @return The byte read or -1 if end of stream
@@ -390,7 +390,7 @@ read() throws IOException
   * return before reading the number of bytes requested.  The actual number
   * of bytes read is returned as an int.  A -1 is returned to indicate the
   * end of the stream.
-  * 
+  * <p>
   * This method will block until some data can be read.
   *
   * @param buf The array into which the bytes read should be stored

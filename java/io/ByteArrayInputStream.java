@@ -69,7 +69,7 @@ protected int count;
   * in byte array.  This stream will read from the beginning to the end
   * of the array.  It is identical to calling an overloaded constructor
   * as <code>ByteArrayInputStream(buf, 0, buf.length)</code>.
-  *
+  * <p>
   * Note that this array is not copied.  If its contents are changed 
   * while this stream is being read, those changes will be reflected in the
   * bytes supplied to the reader.  Please use caution in changing the 
@@ -93,7 +93,7 @@ ByteArrayInputStream(byte[] buf)
   * <code>length</code> bytes can be read from the stream.  The <code>length</code> value
   * should be viewed as the array index one greater than the last position
   * in the buffer to read.
-  *
+  * <p>
   * Note that this array is not copied.  If its contents are changed 
   * while this stream is being read, those changes will be reflected in the
   * bytes supplied to the reader.  Please use caution in changing the 
@@ -151,7 +151,7 @@ markSupported()
   * position.  Note that the <code>readlimit</code> parameter in this method does
   * nothing as this stream is always capable of remembering all the bytes
   * int it.
-  *
+  * <p>
   * Note that in this class the mark position is set by default to
   * position 0 in the stream.  This is in constrast to some other stream types
   * where there is no default mark position.
@@ -238,7 +238,7 @@ read()
   * stream is encountered first.  The actual number of bytes read is 
   * returned.  If no bytes can be read because the stream is already at 
   * the end of stream position, a -1 is returned.
-  *
+  * <p>
   * This method does not block.
   *
   * @param buf The array into which the bytes read should be stored.
