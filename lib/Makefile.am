@@ -132,7 +132,13 @@ endif
 # program
 #-----------------------------------------------------------------
 if JAPHAR
+
+if USER_SPECIFIED_JAVAH
+ARG_JNI_JAVAH = -jni
+else
 ARG_JNI_JAVAH = --jni
+endif
+
 else
 ARG_JNI_JAVAH = -jni
 endif
