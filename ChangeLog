@@ -1,3 +1,7 @@
+2003-09-24  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/border/MatteBorder.java (MatteBorder(Icon)): Docfix.
+
 2003-09-24  Bryce McKinlay  <bryce@mckinlay.net.nz>
 
 	* java/lang/StringBuffer.java (substring): Don't set `shared' on small
