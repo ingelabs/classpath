@@ -265,6 +265,7 @@ native/java.net/Makefile
 native/java.util/Makefile
 native/lib/Makefile
 native/vmi/Makefile
+native/gnu.java.awt.image/Makefile
 native/gnu.java.awt.peer.gtk/Makefile
 resource/java/util/Makefile
 resource/java/Makefile
