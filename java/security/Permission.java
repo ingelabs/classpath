@@ -124,8 +124,8 @@ public void
 checkGuard(Object obj) throws SecurityException
 {
   SecurityManager sm = System.getSecurityManager();
-  if (sm != null)
-    sm.checkPermission(this);
+//  if (sm != null)
+//    sm.checkPermission(this);
 }
   
 /*************************************************************************/
