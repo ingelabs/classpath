@@ -220,14 +220,11 @@ dnl This is probably useless.
 AC_PATH_PROG(SH, sh)
 
 dnl According to the GNU coding guide, we shouldn't require find, 
-dnl zip, and perl, however it should be okay since it is only used 
-dnl in maintainer mode.
+dnl and zip, however GNU provides both so it should be okay 
 AC_PATH_PROG(FIND, find)
-AC_PATH_PROG(ZIP, zip)
-dnl AC_PATH_PROG(UNZIP, unzip)
-dnl AC_PATH_PROG(PERL, perl)
 
-AM_CONDITIONAL(HAVE_ZIP, test "x${ZIP}" != x)
+dnl Useful for disabling zip even if you have it
+CLASSPATH_WITH_ZIP
 
 AC_OUTPUT(Makefile
 com/Makefile

@@ -1,3 +1,14 @@
+2002-05-02  C. Brian Jones <cbj@gnu.org>
+
+	* configure.in: move check for ZIP to --with-zip
+	* acinclude.m4: define CLASSPATH_WITH_ZIP, allow user to specify
+	--without-zip to avoid creating or installing glibj.zip
+
+2002-05-02  Xuan Baldauf <entwicklung--classpath--gnu.org@medium.net>
+
+	* java/util/TreeMap.java (SubMap.values): return this.values instead
+	of this.keys
+
 2002-04-30  Eric Blake  <ebb9@email.byu.edu>
 
 	* configure.in: Configure the swing directories.

@@ -536,3 +536,24 @@ AC_DEFUN(CLASSPATH_WITH_INCLUDEDIR,
     fi
   ])
 ])
+
+dnl CLASSPATH_WITH_ZIP - allow user to specify without zip
+AC_DEFUN(CLASSPATH_WITH_ZIP,
+[
+  AC_ARG_WITH(zip, 
+  [  --with-zip		  create glibj.zip [default=yes]],
+  [
+    if test "x${withval}" = xyes || test "x${withval}" = x; then
+      AC_PATH_PROG(ZIP, zip)
+    elif test "x${withval}" = xno || test "x${withval}" = xfalse; then
+      ZIP=
+    else
+      ZIP="${withval}"
+    fi
+  ],
+  [ 
+    AC_PATH_PROG(ZIP, zip)
+  ])
+  AC_SUBST(ZIP)
+  AM_CONDITIONAL(HAVE_ZIP, test "x${ZIP}" != x)
+])
