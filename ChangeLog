@@ -1,3 +1,9 @@
+2005-03-21  Sven de Marothy  <sven@physto.se>
+
+	* gnu/classpath/SystemProperties.java,
+	Add missing aliases for "UnicodeBigUnmarked" and
+	UnicodeLittleUnmarked".
+	
 2005-03-21  Mark Wielaard  <mark@klomp.org>
 
 	* doc/www.gnu.org/events/escape_fosdem05.wml: Add link to kaffe
