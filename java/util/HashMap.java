@@ -52,8 +52,8 @@ import java.io.ObjectStreamField;
  * does not support "Enumeration views."
  *
  * @author         Jon Zeppieri
- * @version        $Revision: 1.2 $
- * @modified       $Id: HashMap.java,v 1.2 1998-10-31 00:44:31 jaz Exp $
+ * @version        $Revision: 1.3 $
+ * @modified       $Id: HashMap.java,v 1.3 1999-06-25 13:12:38 jochen Exp $
  */
 public class HashMap extends AbstractMap 
     implements Map, Cloneable, Serializable
@@ -82,25 +82,25 @@ public class HashMap extends AbstractMap
     /** used internally to parameterize the creation of set/collection views */
     private static final int ENTRIES = 2;
 
-    /** used for serialization -- denotes which fields are serialized */
-    private static final ObjectStreamField[] serialPersistentFields =
-    {new ObjectStreamField("loadFactor", float.class),
-     new ObjectStreamField("threshold", int.class)};
-
+    private static final long serialVersionUID = 362498820763181265L;
 
     // INSTANCE VARIABLES -------------------------------------------------
 
     /** the capacity of this HashMap:  denotes the size of the bucket array */
-    int capacity;
+    transient int capacity;
 
     /** the size of this HashMap:  denotes the number of key-value pairs */
-    private int size;
+    private transient int size;
 
-    /** the load factor of this HashMap:  used in computing the threshold */
+    /** the load factor of this HashMap:  used in computing the threshold 
+     * @serial
+     */
     float loadFactor;
 
     /* the rounded product of the capacity and the load factor; when the number of
-     * elements exceeds the threshold, the HashMap calls <pre>rehash()</pre> */
+     * elements exceeds the threshold, the HashMap calls <pre>rehash()</pre>
+     * @serial
+     */
     private int threshold;
 
     /** 
@@ -109,14 +109,14 @@ public class HashMap extends AbstractMap
      * which, in turn, are linked nodes containing a key-value mapping 
      * and a reference to the "next" Bucket in the list
      */
-    private Bucket[] buckets;
+    private transient Bucket[] buckets;
 
     /** 
      * counts the number of modifications this HashMap has undergone; used by Iterators
      * to know when to throw ConcurrentModificationExceptions (idea ripped-off from
      * Stuart Ballard's AbstractList implementation) 
      */
-    private int modCount;
+    private transient int modCount;
 
 
     // CONSTRUCTORS ---------------------------------------------------------
@@ -484,49 +484,53 @@ public class HashMap extends AbstractMap
 	    }
     }
 
-    /** Serialize this Object in a manner which is binary-compatible with the JDK */
-    private void writeObject(ObjectOutputStream s) throws IOException
+    /**
+     * Serializes this object to the given stream.
+     * @serialdata the <i>capacity</i>(int) that is the length of the
+     * bucket array, the <i>size</i>(int) of the hash map are emitted
+     * first.  They are followed by size entries, each consisting of
+     * a key (Object) and a value (Object).
+     */
+    private void writeObject(ObjectOutputStream s) 
+      throws IOException
     {
-	ObjectOutputStream.PutField oFields;
-	Iterator it = entrySet().iterator();
-	Map.Entry oEntry;
-	oFields = s.putFields();
-	oFields.put("loadFactor", loadFactor);
-	oFields.put("threshold", threshold);
-	s.writeFields();
+        // the fields
+        s.defaultWriteObject();
 
 	s.writeInt(capacity);
 	s.writeInt(size);
+	Iterator it = entrySet().iterator();
 	while (it.hasNext())
 	    {
-		oEntry = (Map.Entry) it.next();
+		Map.Entry oEntry = (Map.Entry) it.next();
 		s.writeObject(oEntry.getKey());
 		s.writeObject(oEntry.getValue());
 	    }
     }
 
-    /** Deserialize this Object in a manner which is binary-compatible with the JDK */
-    private void readObject(ObjectInputStream s) throws IOException, ClassNotFoundException
+    /**
+     * Deserializes this object from the given stream.
+     * @serialdata the <i>capacity</i>(int) that is the length of the
+     * bucket array, the <i>size</i>(int) of the hash map are emitted
+     * first.  They are followed by size entries, each consisting of
+     * a key (Object) and a value (Object).
+     */
+    private void readObject(ObjectInputStream s)
+      throws IOException, ClassNotFoundException
     {
-      int i;
-      int iLen;
-      Object oKey, oValue;
-      ObjectInputStream.GetField oFields;
-      oFields = s.readFields();
-      loadFactor = oFields.get("loadFactor", DEFAULT_LOAD_FACTOR);
-      threshold = oFields.get("threshold", 
-      			      (int) (DEFAULT_LOAD_FACTOR * (float) DEFAULT_CAPACITY));
+      // the fields
+      s.defaultReadObject();
 
       capacity = s.readInt();
-      iLen = s.readInt();
+      int iLen = s.readInt();
       size = 0;
       modCount = 0;
       buckets = new Bucket[capacity];
 
-      for (i = 0; i < iLen; i++)
+      for (int i = 0; i < iLen; i++)
 	{
-	  oKey = s.readObject();
-	  oValue = s.readObject();
+	  Object oKey = s.readObject();
+	  Object oValue = s.readObject();
 	  internalPut(oKey, oValue);
 	}
     }
@@ -543,8 +547,8 @@ public class HashMap extends AbstractMap
      * overriding a number of them.  And so I did.
      *
      * @author      Jon Zeppieri
-     * @version     $Revision: 1.2 $
-     * @modified    $Id: HashMap.java,v 1.2 1998-10-31 00:44:31 jaz Exp $
+     * @version     $Revision: 1.3 $
+     * @modified    $Id: HashMap.java,v 1.3 1999-06-25 13:12:38 jochen Exp $
      */
     private class HashMapSet extends AbstractSet
 	implements Set
@@ -643,8 +647,8 @@ public class HashMap extends AbstractMap
      * in the HashMap
      *
      * @author       Jon Zeppieri
-     * @version      $Revision: 1.2 $
-     * @modified     $Id: HashMap.java,v 1.2 1998-10-31 00:44:31 jaz Exp $
+     * @version      $Revision: 1.3 $
+     * @modified     $Id: HashMap.java,v 1.3 1999-06-25 13:12:38 jochen Exp $
      */
     private class HashMapCollection extends AbstractCollection
 	implements Collection
@@ -720,8 +724,8 @@ public class HashMap extends AbstractMap
      * as per the Javasoft spec.
      *
      * @author       Jon Zeppieri
-     * @version      $Revision: 1.2 $
-     * @modified     $Id: HashMap.java,v 1.2 1998-10-31 00:44:31 jaz Exp $
+     * @version      $Revision: 1.3 $
+     * @modified     $Id: HashMap.java,v 1.3 1999-06-25 13:12:38 jochen Exp $
      */
     class HashMapIterator implements Iterator
     {
@@ -761,7 +765,7 @@ public class HashMap extends AbstractMap
 	 */
 	private void checkMod() 
 	{
-	    if (knownMods < HashMap.this.modCount)
+	    if (knownMods != HashMap.this.modCount)
 		throw new ConcurrentModificationException();
 	}
 
@@ -824,8 +828,8 @@ public class HashMap extends AbstractMap
      * is used to represent the null key in HashMap objects
      *
      * @author     Jon Zeppieri
-     * @version    $Revision: 1.2 $
-     * @modified   $Id: HashMap.java,v 1.2 1998-10-31 00:44:31 jaz Exp $
+     * @version    $Revision: 1.3 $
+     * @modified   $Id: HashMap.java,v 1.3 1999-06-25 13:12:38 jochen Exp $
      */
     private static class Null
     {
@@ -843,8 +847,8 @@ public class HashMap extends AbstractMap
      * Simply, a key / value pair
      *
      * @author      Jon Zeppieri
-     * @version     $Revision: 1.2 $
-     * @modified    $Id: HashMap.java,v 1.2 1998-10-31 00:44:31 jaz Exp $
+     * @version     $Revision: 1.3 $
+     * @modified    $Id: HashMap.java,v 1.3 1999-06-25 13:12:38 jochen Exp $
      */
     private static class HashMapEntry extends Bucket.Node implements Map.Entry
     {
