@@ -4,6 +4,7 @@ EXTRA_DIST= \
 DatagramChannelImpl.java \
 FileLockImpl.java \
 PipeImpl.java \
+NIOConstants.java \
 NIODatagramSocket.java \
 NIOSocket.java \
 SelectionKeyImpl.java \
