@@ -1,5 +1,5 @@
 /* Runtime.java -- access to the VM process
-   Copyright (C) 1998, 2002 Free Software Foundation
+   Copyright (C) 1998, 2002, 2003 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -682,6 +682,7 @@ public class Runtime
    * @deprecated <code>InputStreamReader</code> is the preferred way to read
    *             local encodings
    * @XXX This implementation does not localize, yet.
+   * @deprecated
    */
   public InputStream getLocalizedInputStream(InputStream in)
   {
@@ -697,6 +698,7 @@ public class Runtime
    * @deprecated <code>OutputStreamWriter</code> is the preferred way to write
    *             local encodings
    * @XXX This implementation does not localize, yet.
+   * @deprecated
    */
   public OutputStream getLocalizedOutputStream(OutputStream out)
   {
