@@ -1,9 +1,13 @@
 # used by automake to generate Makefile.in
 
 EXTRA_DIST = \
+	GdkFontMetrics.java \
 	GdkGraphics.java \
+	GtkArg.java \
+	GtkArgList.java \
 	GtkButtonPeer.java \
 	GtkCanvasPeer.java \
+	GtkCheckButtonPeer.java \
 	GtkCheckboxMenuItemPeer.java \
 	GtkCheckboxPeer.java \
 	GtkChoicePeer.java \
@@ -12,6 +16,7 @@ EXTRA_DIST = \
 	GtkContainerPeer.java \
 	GtkDialogPeer.java \
 	GtkFileDialogPeer.java \
+	GtkFontPeer.java \
 	GtkFramePeer.java \
 	GtkGenericPeer.java \
 	GtkImage.java \
@@ -23,7 +28,9 @@ EXTRA_DIST = \
 	GtkMenuComponentPeer.java \
 	GtkMenuItemPeer.java \
 	GtkMenuPeer.java \
+	GtkOffScreenImage.java \
 	GtkPanelPeer.java \
+	GtkPopupMenuPeer.java \
 	GtkScrollPanePeer.java \
 	GtkScrollbarPeer.java \
 	GtkTextAreaPeer.java \
