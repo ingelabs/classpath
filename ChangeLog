@@ -1,3 +1,8 @@
+2005-03-21  Audrius Meskauskas  <audriusa@bluewin.ch>
+	
+	* gnu/xml/dom/html2/DomHTMLParser.java: New file.
+	* gnu/classpath/examples/html/Demo.java: New example.
+
 2005-03-21  Sven de Marothy  <sven@physto.se>
 
 	* gnu/classpath/SystemProperties.java,
