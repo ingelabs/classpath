@@ -1,0 +1,169 @@
+#!wml
+
+#use wml::std::page
+#use wml::std::lang
+#use wml::fmt::isolatin
+#use wml::std::case global=upper
+
+<lang:new id=en short>
+<lang:star:slice:>
+
+<set-var last-modified-author="<cbj>">
+
+#include <include/macros.wml>
+<header title="<en>GNU Classpath Status</en>">
+
+<package name="java.applet">
+  <status name="Various">
+    <en>
+    This package is done, but untested.  We still need an appletviewer.
+    </en>
+  </status>
+</package>
+
+<package name="java.awt">
+  <status name="Various">
+    <en>
+    The AWT classes we have are licensed under the LGPL although RMS
+    has demanded this be changed to the GPL.  At the same time the GCJ
+    team has written their own AWT that is available under a license
+    more like the rest of GNU Classpath and this may be available in
+    GCC 3.0.  For now these AWT issues remain unresolved and GNU
+    Classpath does not have a working AWT.
+    </en>
+  </status>
+</package>
+
+<package name="java.awt.image">
+  <status name="Various"> 
+    <en>
+    Some initial work gives support for loading of XBMs.  All the
+    image framework has been written, and if anyone is interested in
+    writing Java decoders for PNG, JPEG, GIF, TIFF, or any other image
+    format, please contact the mailing list.
+    </en>
+  </status>
+</package>
+
+<package name="java.beans">
+  <status name="Various">
+    <en>
+    1.1-complete.  1.2 support commenced; java.beans.beancontext in particular.
+    Introspection is about 1 1/2 - 2 times slower than Sun's JDK because it is
+    a bit too strict in how it figures things out.  It basically does two loops
+    where it is possible to do one.
+    </en>
+  </status>
+</package>
+
+<package name="java.io">
+  <status name="Various" component="Serialization">
+    <en>
+    Full Java 1.1 implementation complete.  Mostly complete Java 1.2
+    implementation.
+    </en>
+  </status>
+
+  <status name="Various" component="All the rest">
+    <en>
+    Full Java 1.2 implementation complete.
+    </en>
+  </status>
+</package>
+
+<package name="java.lang">
+  <status name="Various" component="VM Interface">
+    <en>
+     1.1-complete.  A little shuffling will commence now that the first
+     release is out.  Look for 1.2 support as soon as we have Security.
+     </en>
+  </status>
+
+  <status name="Various" component="All the Rest">
+    <en>
+    Mostly 1.2-complete in most non-VM-specific areas, including
+    Character and String.
+    </en>
+  </status>
+</package>
+
+<package name="java.math">
+  <status name="<rao>"> 
+    <en>
+    With the exception of <code>BigInteger (int, int, Random)</code>,
+    java.math is fully Java 1.2 compliant.  Implementation depends
+    upon <A HREF="/software/gmp/gmp.html">gmp</A>.
+    </en>
+  </status>
+</package>
+
+<package name="java.net">
+  <status name="Various">
+    <en>
+    Mostly Java 1.2 implementation complete. Missing JarURLConnection
+    and URLClassLoader. Included are protocol handlers for the "http"
+    and "file" protocol, and a "text/plain" content handler. More need
+    to be written, however. Note also that the HTTP protocol handler
+    only supports the "GET" request method.
+    </en>
+  </status>
+</package>
+
+<package name="java.rmi">
+  <status name="Various">
+    <en>
+    <link url="http://www.kaffe.org/" name="Transvirtual"> donated
+    their java.rmi package to the FSF.  
+    </en>
+  </status>
+</package>
+
+<package name="java.security">
+  <status name="Various">
+    <en>
+    All done for 1.1, but not tested and not fully integrated with the
+    rest of Classpath.
+    </en>
+  </status>
+</package>
+
+<package name="java.sql">
+  <status name="Various">
+    <en>
+    Full Java 1.2 implementation complete.
+    </en>
+  </status>
+</package>
+
+<package name="java.text">
+  <status name="Various">
+    <en>
+    Collation classes are mostly complete; however, they're untested.
+    </en>
+  </status>
+</package>
+
+<package name="java.util">
+  <status name="Various" component="Collections">
+    <en>
+    Full Java 1.2 implementation complete.
+    </en>
+  </status>
+
+  <status name="Various" component="All the rest">
+    <en>
+    Most of java.util has been implemented by various contributors.
+    It's pretty much Java 1.2 compliant.
+    </en>
+  </status>
+</package>
+
+<package name="java.util.zip">
+  <status name="Various">
+    <en>
+    Complete pure Java implementation.
+    </en>
+  </status>
+</package>
+    
+<footer>

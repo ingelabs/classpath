@@ -1,19 +1,22 @@
-MHTML_SRC	:= $(wildcard *.mhtml)
-HTML_OBJS	:= $(MHTML_SRC:.mhtml=.html)
-
-ifndef MHC
-  export MHC=mhc
+ifndef WMK
+  export WMK=wmk
 endif
 
-%.html : %.mhtml ../macros.mhtml
-	$(MHC) $< > $@
+WML_SRC = $(wildcard *.wml)
+WML_EN_OBJS = $(patsubst %.wml,%.en.html,$(WML_SRC))
 
-all : $(HTML_OBJS) index.html
+%.en.html: %.wml ../include/macros.wml
+	$(WMK) -f $<
+	-rm -f $(patsubst %.wml,%.html,$<)
 
-index.html : announcements.html
-	-rm index.html
-	ln -s announcements.html index.html
+all : $(WML_EN_OBJS) subdirs
 
 .PHONY : clean
 clean :
-	-rm *.html
+	$(foreach dir, $(SUBDIRS), sh -c "cd $(dir) && $(MAKE) clean";)
+	-rm -f *.html
+
+.PHONY : subdirs
+subdirs :
+	$(foreach dir, $(SUBDIRS), sh -c "cd $(dir) && $(MAKE)";)
+

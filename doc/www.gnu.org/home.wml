@@ -1,0 +1,186 @@
+#!wml
+
+#use wml::std::page
+#use wml::std::lang
+#use wml::fmt::isolatin
+#use wml::std::case global=upper
+
+<lang:new id=en short>
+<lang:star:slice:>
+
+<set-var last-modified-author="<cbj>">
+
+#include <include/macros.wml>
+
+<header title="GNU Classpath">
+<en>
+<p>
+GNU Classpath is a set of essential libraries for supporting the Java
+language.  Our goal is to provide a free replacement for Sun's
+proprietary class libraries so that the GNU system can run programs
+written in the Java language.
+</p>
+
+<p>
+Classpath is licensed under the terms of the <link url="/copyleft/gpl.html"
+name="GNU General Public License"> with the following special exception.
+</p>
+
+<p>
+As a special exception, if you link this library with other files to
+produce an executable, this library does not by itself cause the
+resulting executable to be covered by the GNU General Public License.
+This exception does not however invalidate any other reasons why the
+executable file might be covered by the GNU General Public License.
+</p>
+
+<p>
+As such, it can be used to run free as well as proprietary
+applications and applets.
+</p>
+
+<p>
+Classpath is a work in progress.  There have been no public releases;
+however, pre-release source code is available via GNU's anonymous CVS
+server, and snapshots of the Classpath tree have been released and are
+available from <link url="ftp://alpha.gnu.org/gnu/classpath/"
+name="ftp://alpha.gnu.org/gnu/classpath/">.  CVSROOT is
+<tt>:pserver:anoncvs@subversions.gnu.org:/cvs</tt>; Module is
+<tt>classpath</tt>.  There is no password.  If it is diffult to use
+CVS perhaps because you are behind a firewall, then you may download
+the entire CVS tree from <link
+url="http://savannah.gnu.org/cvs.backups/classpath.tar.gz"
+name="http://savannah.gnu.org/cvs.backups/classpath.tar.gz">.  This
+archive is updated nightly and can be used by setting your local
+CVSROOT environment variable and performing a checkout from the local tree.
+</p>
+</en>
+
+<H4>Announcements</H4>
+<UL>
+  <LI><link url="/software/classpath/announce/20010106.html" 
+       name="GNU Classpath Version 0.02"> (2001-01-06)</LI>
+  <LI><link url="/software/classpath/announce/20001120.html"
+       name="GNU Classpath Version 0.01"> (2000-11-20)</LI>
+  <LI><link url="/software/classpath/announce/19990206.html"
+       name="GNU Classpath Version 0.00"> (1999-02-06)</LI>
+</UL>
+
+<H4>Documentation</H4>
+<UL>
+  <LI><link url="/software/classpath/doc/hacking.html"
+       name="GNU Classpath Hacker's Guide"></LI>
+  <LI><link url="/software/classpath/doc/vmintegration.html"
+       name="Virtual Machine Integration Guide"></LI>
+  <LI><link url="/software/classpath/doc/classpath-japhar.html"
+       name="Installing Japhar and Classpath"></LI>
+</UL>
+
+<H4><en>Mailing List</en></H4>
+<en>
+<p>
+There is one general discussion list for Classpath. You may  
+<link url="http://mail.gnu.org/mailman/listinfo/classpath/" name="subscribe"> 
+to the mailing list via the web.  However, you may also 
+just send an email message with a subject of "subscribe" 
+to <link url="mailto:classpath-request@gnu.org?subject=subscribe"
+name="&lt;classpath-request@gnu.org&gt;">.  You may  
+<link url="http://mail.gnu.org/mailman/listinfo/classpath/" name="unsubscribe">
+from the mailing list via the web as well.  To send a message to the list, 
+mail it to <link url="mailto:classpath@gnu.org" name="&lt;classpath@gnu.org&gt;">. 
+An <link url="http://www.mail-archive.com/classpath%40gnu.org/" name="archive"> of 
+the list is available which dates back to the beginning of the project.  
+A new, but less comprehensive, archive of the mailing list is now located 
+on <link url="http://mail.gnu.org/mailman/listinfo/classpath/" name="mail.gnu.org">.
+</p>
+</en>
+
+<H4><en>Status</en></H4>
+<p>
+<en>
+We're aiming for GNU Classpath 1.0 to be fully compatible with Java
+1.1 and largely compatible with Java 1.2.  Detailed information on the
+current state of a package can be obtained by clicking on the
+appropriate link below.
+</en>
+</p>
+<package-list>
+  <package-item name="java.applet">
+  <package-item name="java.awt">
+  <package-item name="java.awt.datatransfer" section="java.awt">
+  <package-item name="java.awt.event" section="java.awt">
+  <package-item name="java.awt.image">
+  <package-item name="java.awt.peer" section="java.awt">
+  <package-item name="java.beans">
+  <package-item name="java.beans.beancontext" section="java.beans">
+  <package-item name="java.io">
+  <package-item name="java.lang">
+  <package-item name="java.lang.ref" section="java.lang">
+  <package-item name="java.lang.reflect" section="java.lang">
+  <package-item name="java.math">
+  <package-item name="java.net">
+  <package-item name="java.rmi">
+  <package-item name="java.rmi.dgc" section="java.rmi">
+  <package-item name="java.rmi.registry" section="java.rmi">
+  <package-item name="java.rmi.server" section="java.rmi">
+  <package-item name="java.security">
+  <package-item name="java.security.acl" section="java.security">
+  <package-item name="java.security.cert" section="java.security">
+  <package-item name="java.security.interfaces" section="java.security">
+  <package-item name="java.security.spec" section="java.security">
+  <package-item name="java.sql">
+  <package-item name="java.text">
+  <package-item name="java.util">
+  <package-item name="java.util.zip">
+</package-list>
+
+<H4>Virtual Machines</H4> 
+<en>
+<p>
+The primary target for GNU Classpath was originally <link
+url="http://www.japhar.org" name="Japhar">.  Japhar-0.07 works out-of-the-box with
+GNU Classpath-0.00.  Japhar-0.09 is required for newer releases of GNU
+Classpath.  In the past couple of years no one has been able to take
+over the maintenance of Japhar and once again Japhar does not work
+with GNU Classpath CVS.  Thankfully other VMs have taken an
+interest in GNU Classpath and those are listed below.
+</p>
+
+<p>
+First is <link url="http://sources.redhat.com/java/"
+name="GCJ">.  Although GNU Classpath cannot be compiled for use with
+GCJ at this time, a lot of work has been done to merge GCJ class
+library code and GNU Classpath class library code.  This has resulted
+in a better version of each.  The current merge status between the two
+projects is <link
+url="http://gcc.gnu.org/java/libgcj-classpath-compare.html"
+name="located here">.
+</p>
+<p>
+A second VM is <link url="http://www.intel.com/research/mrl/orp/"
+name="Intel's ORP">, or Open Runtime Platform.  Information about ORP
+can also be found at <link url="http://orp.sourceforge.net/"
+name="http://orp.sourceforge.net/">.  We're hopeful that the next
+version of ORP after 1.0.6 will allow users to optionally use GNU
+Classpath native libraries instead of those bundled with ORP.  ORP is
+the easiest VM to test GNU Classpath with including JNI native libraries
+but you must patch ORP to do so.  Information is available in the
+mailing list archives.
+</p>
+<p>
+A third VM is <link url="http://kissme.sourceforge.net/"
+name="Kissme">.  This VM includes a modified version of the GNU
+Classpath libraries.
+</p>
+<p>
+A fourth VM is <link url="http://www.sablevm.org/" name="SableVM">.
+This VM also uses a modified version of the GNU Classpath libraries.
+</p>
+<p>
+A fifth VM is <link url="http://www.eecg.toronto.edu/~doylep/jupiter/"
+name="Jupiter">.  This VM also uses a modified version of the GNU
+Classpath libraries.
+</p>
+</en>
+
+<footer>

@@ -1,29 +1,28 @@
 SUBDIRS 	:= announce doc
 
-ifndef MHC
-  export MHC=mhc
+ifndef WMK
+  export WMK=wmk
 endif
 
-MHTML_SRC	:= $(wildcard *.mhtml)
-HTML_OBJS	:= $(MHTML_SRC:.mhtml=.html) 
+WML_SRC = $(wildcard *.wml)
+WML_EN_OBJS = $(patsubst %.wml,%.en.html,$(WML_SRC))
 
 %.texinfo :
 	cp ../$(notdir $(@)) doc
 
-%.html : %.mhtml macros.mhtml
-	$(MHC) $< > $@
+%.en.html: %.wml include/macros.wml
+	$(WMK) -f $<
+	-rm -f $(patsubst %.wml,%.html,$<)
 
-all : $(HTML_OBJS) index.html subdirs
-
-index.html : classpath.html
-	ln -s classpath.html index.html
+all : $(WML_EN_OBJS) subdirs
 
 .PHONY : clean
 clean :
 	$(foreach dir, $(SUBDIRS), sh -c "cd $(dir) && $(MAKE) clean";)
-	-rm *.html
+	-rm -f *.html
 
 .PHONY : subdirs
 subdirs :
 	$(foreach dir, $(SUBDIRS), sh -c "cd $(dir) && $(MAKE)";)
+
 
