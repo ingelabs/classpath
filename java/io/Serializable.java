@@ -29,8 +29,17 @@ package java.io;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public interface Serializable
+public abstract interface Serializable
 {
+
+/*
+ * Class Variables
+ */
+
+/**
+  * This is the version id for serialization
+  */
+public static final long serialVersionUID = 1196656838076753133L;
 
 } // interface Serializable
 
