@@ -1,3 +1,9 @@
+2004-05-14  Steven Augart  <augart@watson.ibm.com>
+
+	* include/jni.h.in (_Jv_func): Removed.
+	(struct JNINativeInterface): Use `void *' for reserved slots.
+	(struct JNIInvokeInterface): Likewise.
+
 2004-05-08  Casey Marshall  <rsdio@metastatic.org>
 
 	* java/security/Signature.java

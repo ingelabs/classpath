@@ -132,12 +132,6 @@ typedef const struct JNIInvokeInterface *JavaVM;
 
 #endif /* __cplusplus */
 
-#ifdef __cplusplus
-typedef void * (*_Jv_func) (...);
-#else
-typedef void * (*_Jv_func) ();  
-#endif
-
 #define _Jv_va_list va_list
 
 #ifdef __cplusplus
@@ -202,10 +196,10 @@ typedef struct
 
 struct JNINativeInterface
 {
-  _Jv_func reserved0;                                                                /* 0 */
-  _Jv_func reserved1;                                                                /* 1 */
-  _Jv_func reserved2;                                                                /* 2 */
-  _Jv_func reserved3;                                                                /* 3 */
+  void *reserved0;					       /* 0 */
+  void *reserved1;					       /* 1 */
+  void *reserved2;					       /* 2 */
+  void *reserved3;					       /* 3 */
 
   jint     (JNICALL *GetVersion)                   (JNIEnv *);                               /* 4 */
   jclass   (JNICALL *DefineClass)                  (JNIEnv *, const char *, jobject, const jbyte *, jsize); /* 5 */
@@ -1355,9 +1349,9 @@ struct _Jv_JNIEnv
 
 struct JNIInvokeInterface
 {
-  _Jv_func reserved0;
-  _Jv_func reserved1;
-  _Jv_func reserved2;
+  void *reserved0;
+  void *reserved1;
+  void *reserved2;
 
   jint (JNICALL *DestroyJavaVM)               (JavaVM *);
   jint (JNICALL *AttachCurrentThread)         (JavaVM *, void **, void *);
