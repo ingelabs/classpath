@@ -389,6 +389,7 @@ vm/reference/Makefile
 vm/reference/java/Makefile
 vm/reference/java/lang/Makefile
 vm/reference/java/lang/reflect/Makefile
+vm/reference/java/io/Makefile
 lib/Makefile
 lib/gen-classlist.sh
 lib/gen_nio.sh,

@@ -1,4 +1,10 @@
 New in release 0.05 [ no date yet ]
+* New VM helper class java.io.VMObjectStreamClass which should provide
+  the hasClassInitializer() method. Previously ObjectStreamClass used
+  Class.getDeclaredMethod("<clinit>") but according to the spec this
+  should always throw NoSuchMethodException for class initialization methods.
+  A JNI reference implementation is provided as
+  vm/reference/java-io/java_io_VMObjectStreamClass.c
 * There have been numerous infrastructure improvements
   * Configure option --enable-gjdoc to generate javadoc-like output 
   * Gjdoc output is included with distribution, see doc/api/html/

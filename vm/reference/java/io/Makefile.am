@@ -1,3 +1,4 @@
 # used by automake to generate Makefile.in
 
-SUBDIRS = lang io
+EXTRA_DIST = \
+VMObjectStreamClass.java
