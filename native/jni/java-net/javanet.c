@@ -63,8 +63,11 @@ _javanet_set_int_field(JNIEnv *env, jobject obj, char *class, char *field,
   jfieldID fid;
 
   cls = (*env)->FindClass(env, class);
+  if (cls == NULL)
+    return;
+
   fid = (*env)->GetFieldID(env, cls, field, "I"); 
-  if (!fid)
+  if (fid == NULL)
     return;
 
   (*env)->SetIntField(env, obj, fid, val);
@@ -85,17 +88,20 @@ _javanet_get_int_field(JNIEnv *env, jobject obj, const char *field)
   jfieldID fid;
   int fd;
 
-  DBG("Entered _javanet_get_int_field\n");
+  DBG("_javanet_get_int_field(): Entered _javanet_get_int_field\n");
 
   cls = (*env)->GetObjectClass(env, obj);
+  if (cls == NULL)
+    return -1;
+
   fid = (*env)->GetFieldID(env, cls, field, "I"); 
-  if (!fid)
-    return(-1);
-  DBG("Found field id\n");
+  if (fid == NULL)
+    return -1;
+  DBG("_javanet_get_int_field(): Found field id\n");
 
   fd = (*env)->GetIntField(env, obj, fid);
 
-  return(fd);
+  return fd;
 }
 
 /*************************************************************************/
@@ -113,37 +119,41 @@ _javanet_create_localfd(JNIEnv *env, jobject this)
   jmethodID mid;
   jobject fd_obj;
 
-  DBG("Entered _javanet_create_localfd\n");
+  DBG("_javanet_create_localfd(): Entered _javanet_create_localfd\n");
 
   /* Look up the fd field */
   this_cls = (*env)->FindClass(env, "java/net/SocketImpl");
+  if (this_cls == NULL)
+    return;
+
   fid = (*env)->GetFieldID(env, this_cls, "fd", "Ljava/io/FileDescriptor;"); 
-  if (!fid)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return; }
-  DBG("Found fd variable\n");
+  if (fid == NULL)
+    return;
+
+  DBG("_javanet_create_localfd(): Found fd variable\n");
 
   /* Create a FileDescriptor */
   fd_cls = (*env)->FindClass(env, "java/io/FileDescriptor");
-  if (!fd_cls)
-    {
-      JCL_ThrowException(env, IO_EXCEPTION, "Can't load FileDescriptor class");
-      return;
-    }
-  DBG("Found FileDescriptor class\n");
+  if (fd_cls == NULL)
+    return;
+
+  DBG("_javanet_create_localfd(): Found FileDescriptor class\n");
 
   mid  = (*env)->GetMethodID(env, fd_cls, "<init>", "()V");
-  if (!mid)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return; }
-  DBG("Found FileDescriptor constructor\n");
+  if (mid == NULL)
+    return;
+
+  DBG("_javanet_create_localfd(): Found FileDescriptor constructor\n");
 
   fd_obj = (*env)->NewObject(env, fd_cls, mid);
-  if (!fd_obj)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return; }
-  DBG("Created FileDescriptor\n");
+  if (fd_obj == NULL)
+    return;
+
+  DBG("_javanet_create_localfd(): Created FileDescriptor\n");
 
   /* Now set the pointer to the new FileDescriptor */
   (*env)->SetObjectField(env, this, fid, fd_obj);
-  DBG("Set fd field\n");
+  DBG("_javanet_create_localfd(): Set fd field\n");
 
   return;
 }
@@ -161,18 +171,18 @@ _javanet_create_boolean(JNIEnv *env, jboolean val)
   jobject obj;
 
   cls = (*env)->FindClass(env, "java/lang/Boolean");
-  if (!cls)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return(0); }
+  if (cls == NULL)
+    return NULL;
 
   mid = (*env)->GetMethodID(env, cls, "<init>", "(Z)V");
-  if (!mid)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return(0); }
+  if (mid == NULL)
+    return NULL;
 
   obj = (*env)->NewObject(env, cls, mid, val);
-  if (!obj)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return(0); }
+  if (obj == NULL)
+    return NULL;
 
-  return(obj);
+  return obj;
 }
 
 /*************************************************************************/
@@ -188,18 +198,18 @@ _javanet_create_integer(JNIEnv *env, jint val)
   jobject obj;
 
   cls = (*env)->FindClass(env, "java/lang/Integer");
-  if (!cls)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return(0); }
+  if (cls == NULL)
+    return NULL;
 
   mid = (*env)->GetMethodID(env, cls, "<init>", "(I)V");
-  if (!mid)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return(0); }
+  if (mid == NULL)
+    return NULL;
 
   obj = (*env)->NewObject(env, cls, mid, val);
-  if (!obj)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return(0); }
+  if (obj == NULL)
+    return NULL;
 
-  return(obj);
+  return obj;
 }
 
 /*************************************************************************/
@@ -220,33 +230,33 @@ _javanet_create_inetaddress(JNIEnv *env, int netaddr)
   sprintf(buf, "%d.%d.%d.%d", ((netaddr & 0xFF000000) >> 24), 
           ((netaddr & 0x00FF0000) >> 16), ((netaddr &0x0000FF00) >> 8),
           (netaddr & 0x000000FF));
-  DBG("Created ip addr string\n");
+  DBG("_javanet_create_inetaddress(): Created ip addr string\n");
 
   /* Get an InetAddress object for this IP */
   ia_cls = (*env)->FindClass(env, "java/net/InetAddress");
-  if (!ia_cls)
-    {
-      JCL_ThrowException(env, IO_EXCEPTION, "Can't load InetAddress class");
-      return(0);
-    }
-  DBG("Found InetAddress class\n");
+  if (ia_cls == NULL)
+    return NULL;
+
+  DBG("_javanet_create_inetaddress(): Found InetAddress class\n");
 
   mid = (*env)->GetStaticMethodID(env, ia_cls, "getByName", 
                                   "(Ljava/lang/String;)Ljava/net/InetAddress;");
-  if (!mid)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return(0); }
-  DBG("Found getByName method\n");
+  if (mid == NULL)
+    return NULL;
+
+  DBG("_javanet_create_inetaddress(): Found getByName method\n");
 
   ip_str = (*env)->NewStringUTF(env, buf); 
-  if (!ip_str)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return(0); }
+  if (ip_str == NULL)
+    return NULL;
 
   ia = (*env)->CallStaticObjectMethod(env, ia_cls, mid, ip_str);
-  if (!ia)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return(0); }
-  DBG("Called getByName method\n");
+  if (ia == NULL)
+    return NULL;
 
-  return(ia);
+  DBG("_javanet_create_inetaddress(): Called getByName method\n");
+
+  return ia;
 }
 
 /*************************************************************************/
@@ -262,22 +272,26 @@ _javanet_set_remhost(JNIEnv *env, jobject this, int netaddr)
   jfieldID fid;
   jobject ia;
 
-  DBG("Entered _javanet_set_remhost\n");
+  DBG("_javanet_set_remhost(): Entered _javanet_set_remhost\n");
 
   /* Get an InetAddress object */
   ia = _javanet_create_inetaddress(env, netaddr);
-  if (!ia)
+  if (ia == NULL)
     return;
 
   /* Set the variable in the object */
   this_cls = (*env)->FindClass(env, "java/net/SocketImpl");
+  if (this_cls == NULL)
+    return;
+
   fid = (*env)->GetFieldID(env, this_cls, "address", "Ljava/net/InetAddress;");
-  if (!fid)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return; }
-  DBG("Found address field\n");
+  if (fid == NULL)
+    return;
+
+  DBG("_javanet_set_remhost(): Found address field\n");
 
   (*env)->SetObjectField(env, this, fid, ia);
-  DBG("Set field\n");
+  DBG("_javanet_set_remhost(): Set field\n");
 }
 
 /*************************************************************************/
@@ -294,42 +308,39 @@ _javanet_get_netaddr(JNIEnv *env, jobject addr)
   jbyte *octets;
   int netaddr, len;
 
-  DBG("Entered _javanet_get_netaddr\n");
+  DBG("_javanet_get_netaddr(): Entered _javanet_get_netaddr\n");
 
   /* Call the getAddress method on the object to retrieve the IP address */
   cls = (*env)->GetObjectClass(env, addr);
+  if (cls == NULL)
+    return 0;
+
   mid = (*env)->GetMethodID(env, cls, "getAddress", "()[B");
-  if (!mid)
-    {
-      JCL_ThrowException(env, IO_EXCEPTION, "Internal Error");
-      return(0);
-    }
-  DBG("Got getAddress method\n");
+  if (mid == NULL)
+    return 0;
+
+  DBG("_javanet_get_netaddr(): Got getAddress method\n");
 
   arr = (*env)->CallObjectMethod(env, addr, mid);
-  if (!arr)
-    {
-      JCL_ThrowException(env, IO_EXCEPTION, "Internal Error");
-      return(0);
-    }
-  DBG("Got the address\n");
+  if (arr == NULL)
+    return 0;
+
+  DBG("_javanet_get_netaddr(): Got the address\n");
 
   /* Turn the IP address into a 32 bit Internet address in network byte order */
   len = (*env)->GetArrayLength(env, arr);
   if (len != 4)
     {
       JCL_ThrowException(env, IO_EXCEPTION, "Internal Error");
-      return(0);
+      return 0;
     }
-  DBG("Length ok\n");
+  DBG("_javanet_get_netaddr(): Length ok\n");
 
   octets = (*env)->GetByteArrayElements(env, arr, 0);  
-  if (!octets)
-    {
-      JCL_ThrowException(env, IO_EXCEPTION, "Internal Error");
-      return(0);
-    }
-  DBG("Grabbed bytes\n");
+  if (octets == NULL)
+    return 0;
+
+  DBG("_javanet_get_netaddr(): Grabbed bytes\n");
 
   netaddr = (((unsigned char)octets[0]) << 24) + 
             (((unsigned char)octets[1]) << 16) +
@@ -339,9 +350,9 @@ _javanet_get_netaddr(JNIEnv *env, jobject addr)
   netaddr = htonl(netaddr);
 
   (*env)->ReleaseByteArrayElements(env, arr, octets, 0);
-  DBG("Done getting addr\n");
+  DBG("_javanet_get_netaddr(): Done getting addr\n");
 
-  return(netaddr); 
+  return netaddr; 
 }
 
 /*************************************************************************/
@@ -406,7 +417,7 @@ _javanet_connect(JNIEnv *env, jobject this, jobject addr, jint port)
   int netaddr, fd = -1, rc, addrlen;
   struct sockaddr_in si;
 
-  DBG("Entered _javanet_connect\n");
+  DBG("_javanet_connect(): Entered _javanet_connect\n");
 
   /* Pre-process input variables */
   netaddr = _javanet_get_netaddr(env, addr);
@@ -415,14 +426,17 @@ _javanet_connect(JNIEnv *env, jobject this, jobject addr, jint port)
 
   if (port == -1)
     port = 0;
-  DBG("Got network address\n");
+  DBG("_javanet_connect(): Got network address\n");
 
   /* Grab the real socket file descriptor */
   fd = _javanet_get_int_field(env, this, "native_fd");
   if (fd == -1)
-    { JCL_ThrowException(env, IO_EXCEPTION, 
-                               "Socket not yet created"); return; }
-  DBG("Got native fd\n");
+    { 
+      JCL_ThrowException(env, IO_EXCEPTION, 
+			 "Internal error: _javanet_connect(): no native file descriptor"); 
+      return; 
+    }
+  DBG("_javanet_connect(): Got native fd\n");
 
   /* Connect up */
   memset(&si, 0, sizeof(struct sockaddr_in));
@@ -433,7 +447,7 @@ _javanet_connect(JNIEnv *env, jobject this, jobject addr, jint port)
   rc = connect(fd, (struct sockaddr *) &si, sizeof(struct sockaddr_in));
   if (rc == -1)
     { JCL_ThrowException(env, IO_EXCEPTION, strerror(errno)); return; }
-  DBG("Connected successfully\n");
+  DBG("_javanet_connect(): Connected successfully\n");
 
   /* Populate instance variables */
   addrlen = sizeof(struct sockaddr_in);
@@ -447,14 +461,20 @@ _javanet_connect(JNIEnv *env, jobject this, jobject addr, jint port)
 
   _javanet_create_localfd(env, this);
   if ((*env)->ExceptionOccurred(env))
-    return;
-  DBG("Created fd\n");
+    {
+      close(fd);
+      return;
+    }
+  DBG("_javanet_connect(): Created fd\n");
 
   _javanet_set_int_field(env, this, "java/net/SocketImpl", "localport", 
                          ntohs(si.sin_port));
   if ((*env)->ExceptionOccurred(env))
-    return;
-  DBG("Set the local port\n");
+    {
+      close(fd);
+      return;
+    }
+  DBG("_javanet_connect(): Set the local port\n");
   
   addrlen = sizeof(struct sockaddr_in);
   rc = getpeername(fd, (struct sockaddr *) &si, &addrlen);
@@ -467,14 +487,20 @@ _javanet_connect(JNIEnv *env, jobject this, jobject addr, jint port)
 
   _javanet_set_remhost(env, this, ntohl(si.sin_addr.s_addr));
   if ((*env)->ExceptionOccurred(env))
-    return;
-  DBG("Set the remote host\n");
+    {
+      close(fd);
+      return;
+    }
+  DBG("_javanet_connect(): Set the remote host\n");
 
   _javanet_set_int_field(env, this, "java/net/SocketImpl", "port", 
                          ntohs(si.sin_port));
   if ((*env)->ExceptionOccurred(env))
-    return;
-  DBG("Set the remote port\n");
+    {
+      close(fd);
+      return;
+    }
+  DBG("_javanet_connect(): Set the remote port\n");
 }
 
 /*************************************************************************/
@@ -495,34 +521,41 @@ _javanet_bind(JNIEnv *env, jobject this, jobject addr, jint port, int stream)
   struct sockaddr_in si;
   int namelen;
 
-  DBG("Entering native bind()\n");
+  DBG("_javanet_bind(): Entering native bind()\n");
 
   /* Get the address to connect to */
   cls = (*env)->GetObjectClass(env, addr);
+  if (cls == NULL)
+    return;
+
   mid  = (*env)->GetMethodID(env, cls, "getAddress", "()[B");
-  if (!mid)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error") ; return; }
-  DBG("Past getAddress method id\n");
+  if (mid == NULL)
+    return;
+
+  DBG("_javanet_bind(): Past getAddress method id\n");
 
   arr = (*env)->CallObjectMethod(env, addr, mid);
-  if (!arr || (*env)->ExceptionOccurred(env))
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error") ; return; }
-  DBG("Past call object method\n");
+  if ((arr == NULL) || (*env)->ExceptionOccurred(env))
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error: _javanet_bind()"); return; }
+
+  DBG("_javanet_bind(): Past call object method\n");
 
   octets = (*env)->GetByteArrayElements(env, arr, 0);   
-  if (!octets)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error") ; return; }
-  DBG("Past grab array\n");
+  if (octets == NULL)
+    return;
+
+  DBG("_javanet_bind(): Past grab array\n");
 
   /* Get the native socket file descriptor */
   fd = _javanet_get_int_field(env, this, "native_fd");
   if (fd == -1)
     {
       (*env)->ReleaseByteArrayElements(env, arr, octets, 0);
-      JCL_ThrowException(env, IO_EXCEPTION, "Internal error");
+      JCL_ThrowException(env, IO_EXCEPTION, 
+			 "Internal error: _javanet_bind(): no native file descriptor");
       return;
     }
-  DBG("Past native_fd lookup\n");
+  DBG("_javanet_bind(): Past native_fd lookup\n");
 
   /* Bind the socket */
   memset(&si, 0, sizeof(struct sockaddr_in));
@@ -538,7 +571,7 @@ _javanet_bind(JNIEnv *env, jobject this, jobject addr, jint port, int stream)
 
   if (bind(fd, (struct sockaddr *) &si, sizeof(struct sockaddr_in)) == -1)
     { JCL_ThrowException(env, IO_EXCEPTION, strerror(errno)); return; }
-  DBG("Past bind\n");
+  DBG("_javanet_bind(): Past bind\n");
   
   /* Update instance variables, specifically the local port number */
   namelen = sizeof(struct sockaddr_in);
@@ -550,7 +583,7 @@ _javanet_bind(JNIEnv *env, jobject this, jobject addr, jint port, int stream)
   else
     _javanet_set_int_field(env, this, "java/net/DatagramSocketImpl", 
                            "localPort", ntohs(si.sin_port));
-  DBG("Past update port number\n");
+  DBG("_javanet_bind(): Past update port number\n");
 
   return;
 }
@@ -569,8 +602,11 @@ _javanet_listen(JNIEnv *env, jobject this, jint queuelen)
   /* Get the real file descriptor */
   fd = _javanet_get_int_field(env, this, "native_fd");
   if (fd == -1)
-    { JCL_ThrowException(env, IO_EXCEPTION, 
-                               "Internal Error"); return; }
+    { 
+      JCL_ThrowException(env, IO_EXCEPTION, 
+			 "Internal error: _javanet_listen(): no native file descriptor"); 
+      return; 
+    }
 
   /* Start listening */
   rc = listen(fd, queuelen);
@@ -595,7 +631,11 @@ _javanet_accept(JNIEnv *env, jobject this, jobject impl)
   /* Get the real file descriptor */
   fd = _javanet_get_int_field(env, this, "native_fd");
   if (fd == -1)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return; }
+    { 
+      JCL_ThrowException(env, IO_EXCEPTION, 
+			 "Internal error: _javanet_accept(): no native file descriptor"); 
+      return; 
+    }
 
   /* Accept the connection */
   addrlen = sizeof(struct sockaddr_in);
@@ -604,11 +644,17 @@ _javanet_accept(JNIEnv *env, jobject this, jobject impl)
   /******* Do we need to look for EINTR? */
   newfd = accept(fd, (struct sockaddr *) &si, &addrlen);
   if (newfd == -1) 
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return; }
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error: _javanet_accept(): "); return; }
 
   /* Populate instance variables */ 
   _javanet_set_int_field(env, impl, "java/net/PlainSocketImpl", "native_fd",
                          newfd);
+
+  if ((*env)->ExceptionOccurred(env))
+    {
+      close(newfd);
+      return;
+    }
 
   rc = getsockname(newfd, (struct sockaddr *) &si, &addrlen);
   if (rc == -1)
@@ -620,12 +666,18 @@ _javanet_accept(JNIEnv *env, jobject this, jobject impl)
 
   _javanet_create_localfd(env, impl);
   if ((*env)->ExceptionOccurred(env))
-    return;
+    {
+      close(newfd);
+      return;
+    }
 
   _javanet_set_int_field(env, impl, "java/net/SocketImpl", "localport", 
                          ntohs(si.sin_port));
   if ((*env)->ExceptionOccurred(env))
-    return;
+    {
+      close(newfd);
+      return;
+    }
   
   addrlen = sizeof(struct sockaddr_in);
   rc = getpeername(newfd, (struct sockaddr *) &si, &addrlen);
@@ -638,12 +690,18 @@ _javanet_accept(JNIEnv *env, jobject this, jobject impl)
 
   _javanet_set_remhost(env, impl, ntohl(si.sin_addr.s_addr));
   if ((*env)->ExceptionOccurred(env))
-    return;
+    {
+      close(newfd);
+      return;
+    }
 
   _javanet_set_int_field(env, impl, "java/net/SocketImpl", "port", 
                          ntohs(si.sin_port));
   if ((*env)->ExceptionOccurred(env))
-    return;
+    {
+      close(newfd);
+      return;
+    }
 }
 
 /*************************************************************************/
@@ -670,24 +728,29 @@ _javanet_recvfrom(JNIEnv *env, jobject this, jarray buf, int offset, int len,
   jbyte *p;
   struct sockaddr_in si;
 
-  DBG("Entered _javanet_recvfrom\n");
+  DBG("_javanet_recvfrom(): Entered _javanet_recvfrom\n");
 
   /* Get the real file descriptor */
   fd = _javanet_get_int_field(env, this, "native_fd");
   if (fd == -1)
-    { JCL_ThrowException(env, IO_EXCEPTION, "No Socket"); return 0; }
-  DBG("Got native_fd\n");
+    { 
+      JCL_ThrowException(env, IO_EXCEPTION, 
+			 "Internal error: _javanet_recvfrom(): no native file descriptor"); 
+      return 0; 
+    }
+  DBG("_javanet_recvfrom(): Got native_fd\n");
 
   /* Get a pointer to the buffer */
   p = (*env)->GetByteArrayElements(env, buf, 0);
-  if (!p)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return 0; }
-  DBG("Got buffer\n");
+  if (p == NULL)
+    return 0;
+
+  DBG("_javanet_recvfrom(): Got buffer\n");
 
   /* Read the data */
   for (;;)
     {
-      if (!addr)
+      if (addr == NULL)
         rc = recvfrom(fd, p + offset, len, 0, 0, 0);
       else
         {
@@ -740,16 +803,23 @@ _javanet_sendto(JNIEnv *env, jobject this, jarray buf, int offset, int len,
   /* Get the real file descriptor */
   fd = _javanet_get_int_field(env, this, "native_fd");
   if (fd == -1)
-    { JCL_ThrowException(env, IO_EXCEPTION, "No Socket"); return; }
+    { 
+      JCL_ThrowException(env, IO_EXCEPTION, 
+			 "Internal error: _javanet_sendto(): no native file descriptor"); 
+      return; 
+    }
 
   /* Get a pointer to the buffer */
   p = (*env)->GetByteArrayElements(env, buf, 0);
-  if (!p)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return; }
+  if (p == NULL)
+    return;
 
   /* Send the data */
-  if (!addr)
-    rc = send(fd, p + offset, len, 0);
+  if (addr == 0)
+    {
+      DBG("_javanet_sendto(): Sending....\n");
+      rc = send(fd, p + offset, len, 0);
+    }
   else
     {
       memset(&si, 0, sizeof(struct sockaddr_in));
@@ -757,7 +827,7 @@ _javanet_sendto(JNIEnv *env, jobject this, jarray buf, int offset, int len,
       si.sin_addr.s_addr = addr;
       si.sin_port = (unsigned short)port;
       
-      DBG("Sending....\n");
+      DBG("_javanet_sendto(): Sending....\n");
       rc = sendto(fd, p + offset, len, 0, (struct sockaddr *) &si, sizeof(struct sockaddr_in));
     }
 
@@ -788,10 +858,16 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
   /* Get the real file descriptor */
   fd = _javanet_get_int_field(env, this, "native_fd");
   if (fd == -1)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return; }
+    { 
+      JCL_ThrowException(env, IO_EXCEPTION, 
+			 "Internal error: _javanet_set_option(): no native file descriptor"); 
+      return; 
+    }
 
   /* We need a class object for all cases below */
   cls = (*env)->GetObjectClass(env, val); 
+  if (cls == NULL)
+    return;
 
   /* Process the option request */
   switch (option_id)
@@ -799,12 +875,14 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
       /* TCP_NODELAY case.  val is a Boolean that tells us what to do */
       case SOCKOPT_TCP_NODELAY:
         mid = (*env)->GetMethodID(env, cls, "booleanValue", "()Z");
-        if (!mid)
+        if (mid == NULL)
           { JCL_ThrowException(env, IO_EXCEPTION, 
-                                     "Internal Error"); return; }
+                                     "Internal error: _javanet_set_option()"); return; }
 
         /* Should be a 0 or a 1 */
         optval = (*env)->CallBooleanMethod(env, val, mid);
+	if ((*env)->ExceptionOccurred(env))
+	  return;
 
         rc = setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &optval, sizeof(int));
         break;
@@ -829,11 +907,14 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
               (*env)->ExceptionClear(env);
  
             mid = (*env)->GetMethodID(env, cls, "intValue", "()I");
-            if (!mid)
+            if (mid == NULL)
               { JCL_ThrowException(env, IO_EXCEPTION, 
-                                         "Internal Error"); return; }
+				   "Internal error: _javanet_set_option()"); return; }
 
             linger.l_linger = (*env)->CallIntMethod(env, val, mid);
+	    if ((*env)->ExceptionOccurred(env))
+	      return;
+	    
             linger.l_onoff = 1;
           }
         rc = setsockopt(fd, SOL_SOCKET, SO_LINGER, &linger, 
@@ -844,16 +925,18 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
       case SOCKOPT_SO_TIMEOUT:
 #ifdef SO_TIMEOUT
         mid = (*env)->GetMethodID(env, cls, "intValue", "()I");
-        if (!mid)
+        if (mid == NULL)
           { JCL_ThrowException(env, IO_EXCEPTION, 
-                                     "Internal Error"); return; }
+                                     "Internal error: _javanet_set_option()"); return; }
 
         optval = (*env)->CallIntMethod(env, val, mid);
-            
+	if ((*env)->ExceptionOccurred(env))
+	  return;
+
         rc = setsockopt(fd, SOL_SOCKET, SO_TIMEOUT, &optval, sizeof(int));
 #else
         JCL_ThrowException(env, SOCKET_EXCEPTION, 
-                                 "SO_TIMEOUT not supported on this platform");
+                                 "SO_TIMEOUT not supported by this platform");
         return;
 #endif
         break;
@@ -861,11 +944,13 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
       case SOCKOPT_SO_SNDBUF:
       case SOCKOPT_SO_RCVBUF:
         mid = (*env)->GetMethodID(env, cls, "intValue", "()I");
-        if (!mid)
+        if (mid == NULL)
           { JCL_ThrowException(env, IO_EXCEPTION, 
-                                     "Internal Error"); return; }
+                                     "Internal error: _javanet_set_option()"); return; }
 
         optval = (*env)->CallIntMethod(env, val, mid);
+	if ((*env)->ExceptionOccurred(env))
+	  return;
         
         if (option_id == SOCKOPT_SO_SNDBUF) 
           sockopt = SO_SNDBUF;
@@ -880,9 +965,11 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
         mid = (*env)->GetMethodID(env, cls, "intValue", "()I");
         if (!mid)
           { JCL_ThrowException(env, IO_EXCEPTION, 
-                                     "Internal Error"); return; }
+                                     "Internal error: _javanet_set_option()"); return; }
 
         optval = (*env)->CallIntMethod(env, val, mid);
+	if ((*env)->ExceptionOccurred(env))
+	  return;
             
         rc = setsockopt(fd, IPPROTO_IP, IP_TTL, &optval, sizeof(int));
         break;
@@ -908,7 +995,7 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
   /* Check to see if above operations succeeded */
   if (rc == -1)
     JCL_ThrowException(env, SOCKET_EXCEPTION, strerror(errno)); 
-  
+
   return;
 }
 
@@ -928,7 +1015,11 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
   /* Get the real file descriptor */
   fd = _javanet_get_int_field(env, this, "native_fd");
   if (fd == -1)
-    { JCL_ThrowException(env, SOCKET_EXCEPTION, "Internal Error"); return(0); }
+    { 
+      JCL_ThrowException(env, SOCKET_EXCEPTION, 
+			 "Internal error: _javanet_get_option(): no native file descriptor"); 
+      return(0); 
+    }
 
   /* Process the option requested */
   switch (option_id)

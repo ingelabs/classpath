@@ -29,6 +29,7 @@ executable file might be covered by the GNU General Public License. */
 
 #include <stddef.h>
 #include <jni.h>
+#include <config.h>
 
 JNIEXPORT jclass JNICALL JCL_FindClass(JNIEnv * env, char * className);
 JNIEXPORT void JNICALL JCL_ThrowException(JNIEnv * env, char * className, char * errMsg);

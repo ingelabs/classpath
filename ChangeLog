@@ -1,3 +1,20 @@
+2001-11-25  C. Brian Jones <cbj@gnu.org>
+	
+	* java/net/DatagramSocket (getLocalAddress): return local address
+	used in creating socket instead of calling a native method to retrieve
+	a value that cannot be changed (fixes Mauve regression).
+	* native/jni/classpath/jcl.h: #include <config.h> for definition 
+	of DEBUG
+	* native/jni/java-net/java_net_PlainDatagramSocketImpl.c: Added 
+	more checks for exceptions thrown from use of JNI functions to all
+	methods (fixes Mauve regression).
+	Debug messages cleaned up.
+	* native/jni/java-net/javanet.c: ditto
+	* native/jni/java-io/javaio.c: _javaio_ThrowException changed to 
+	JCL_ThrowException
+	* mauve-classpath: updated and can be used with ORP (158 of 1943 tests
+	fail)
+
 2001-11-25  Tom Tromey  <tromey@redhat.com>
 
 	* java/math/BigDecimal.java (BigDecimal(double)): Rewrote.

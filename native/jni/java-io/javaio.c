@@ -32,12 +32,13 @@ executable file might be covered by the GNU General Public License. */
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/stat.h>
+#include <malloc.h>
 
 #include <jni.h>
+#include <jcl.h>
 
 #include "javaio.h"
 
-#include <malloc.h>
 
 /*
  * Function to open a file
@@ -58,10 +59,10 @@ _javaio_open(JNIEnv *env, jstring name, int flags)
   if (fd == -1)
     {
       if (errno == ENOENT)
-        _javaio_ThrowException(env, "java/io/FileNotFoundException", 
+        JCL_ThrowException(env, "java/io/FileNotFoundException", 
                            strerror(errno));
       else
-        _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
+        JCL_ThrowException(env, "java/io/IOException", strerror(errno));
     }
 
   return(fd);
@@ -80,7 +81,7 @@ _javaio_close(JNIEnv *env, jint fd)
 
   rc = close(fd);
   if (rc == -1)
-    _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
+    JCL_ThrowException(env, "java/io/IOException", strerror(errno));
 }
 
 /*************************************************************************/
@@ -96,11 +97,11 @@ _javaio_skip_bytes(JNIEnv *env, jint fd, jlong num_bytes)
 
   cur = lseek(fd, 0, SEEK_CUR);
   if (cur == -1)
-    _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
+    JCL_ThrowException(env, "java/io/IOException", strerror(errno));
 
   new = lseek(fd, num_bytes, SEEK_CUR);
   if (new == -1)
-    _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
+    JCL_ThrowException(env, "java/io/IOException", strerror(errno));
 
   return(new - cur);
 }
@@ -120,7 +121,7 @@ _javaio_get_file_length(JNIEnv *env, jint fd)
   rc = fstat(fd, &buf);
   if (rc == -1)
     {
-      _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
+      JCL_ThrowException(env, "java/io/IOException", strerror(errno));
       return(-1);
     }
 
@@ -143,13 +144,13 @@ _javaio_read(JNIEnv *env, jobject obj, jint fd, jarray buf, jint offset,
   bufptr = (*env)->GetByteArrayElements(env, buf, JNI_FALSE);
   if (!bufptr)
     {
-      _javaio_ThrowException(env, "java/io/IOException", "Internal Error");
+      JCL_ThrowException(env, "java/io/IOException", "Internal Error");
       return(-1);
     }
 
   rc = read(fd, (bufptr + offset), len);
   if (rc == -1)
-    _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
+    JCL_ThrowException(env, "java/io/IOException", strerror(errno));
 
   (*env)->ReleaseByteArrayElements(env, buf, bufptr, 0);
 
@@ -175,13 +176,13 @@ _javaio_write(JNIEnv *env, jobject obj, jint fd, jarray buf, jint offset,
   bufptr = (*env)->GetByteArrayElements(env, buf, 0);
   if (!bufptr)
     {
-      _javaio_ThrowException(env, "java/io/IOException", "Internal Error");
+      JCL_ThrowException(env, "java/io/IOException", "Internal Error");
       return(-1);
     }
 
   rc = write(fd, (bufptr + offset), len);
   if (rc == -1)
-    _javaio_ThrowException(env, "java/io/IOException", strerror(errno));
+    JCL_ThrowException(env, "java/io/IOException", strerror(errno));
 
   (*env)->ReleaseByteArrayElements(env, buf, bufptr, 0);
 

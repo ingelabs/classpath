@@ -125,35 +125,35 @@ Java_java_net_PlainDatagramSocketImpl_receive(JNIEnv *env, jobject this,
 
   /* Get the buffer from the packet */
   cls = (*env)->GetObjectClass(env, packet);
+  if (cls == NULL)
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
+
   mid = (*env)->GetMethodID(env, cls, "getData", "()[B");
-  if (!mid)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return; }
+  if (mid == NULL)
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
 
   arr = (*env)->CallObjectMethod(env, packet, mid); 
-  if (!arr)
-    { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return; }
+  if ((arr == NULL) || (*env)->ExceptionOccurred(env))
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
 
   /* Now get the length from the packet */
   mid = (*env)->GetMethodID(env, cls, "getLength", "()I");
-  if (!mid)
-    { 
-      (*env)->ReleaseByteArrayElements(env, arr, buf, 0);
-      JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); 
-      return; 
-    }
+  if (mid == NULL)
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
+
   len = (*env)->CallIntMethod(env, packet, mid);
-  DBG("Got the length\n");
+  if ((*env)->ExceptionOccurred(env))
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
+
+  DBG("PlainDatagramSocketImpl.receive(): Got the length\n");
 
   /* Receive the packet */
   /* should we try some sort of validation on the length? */
   bytes_read = _javanet_recvfrom(env, this, arr, 0, len, &addr, &port); 
-  if (bytes_read == -1)
-    {
-      /* Taking a chance here because there is a pending exception */
-      (*env)->ReleaseByteArrayElements(env, arr, buf, 0);
-      return; 
-    }
-  DBG("Received packet\n");
+  if ((bytes_read == -1) || (*env)->ExceptionOccurred(env))
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
+
+  DBG("PlainDatagramSocketImpl.receive(): Received packet\n");
   
   /* Store the address */
   addr = ntohl(addr);
@@ -161,44 +161,58 @@ Java_java_net_PlainDatagramSocketImpl_receive(JNIEnv *env, jobject this,
           (addr & 0x00FF0000) >> 16, (addr & 0x0000FF00) >> 8, 
           (addr & 0x000000FF));
   ip_str_obj = (*env)->NewStringUTF(env, ip_str);
+  if (ip_str_obj == NULL)
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
 
   addr_cls = (*env)->FindClass(env, "java/net/InetAddress");
-  if (!addr_cls)
+  if (addr_cls == NULL)
     { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return; }
-  DBG("Found InetAddress class\n");
+  DBG("PlainDatagramSocketImpl.receive(): Found InetAddress class\n");
 
   mid = (*env)->GetStaticMethodID(env, addr_cls, "getByName",
                                  "(Ljava/lang/String;)Ljava/net/InetAddress;");
-  if (!mid)
+  if (mid == NULL)
     { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return; }
-  DBG("Found InetAddress.getByName method\n");
+  DBG("PlainDatagramSocketImpl.receive(): Found InetAddress.getByName method\n");
 
   addr_obj = (*env)->CallStaticObjectMethod(env, addr_cls, mid, ip_str_obj);
+  if ((*env)->ExceptionOccurred(env))
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
 
   mid = (*env)->GetMethodID(env, cls, "setAddress",
                             "(Ljava/net/InetAddress;)V");
-  if (!mid)
+  if (mid == NULL)
     { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return; }
+
   (*env)->CallVoidMethod(env, packet, mid, addr_obj);
-  DBG("Stored the address\n");
+  if ((*env)->ExceptionOccurred(env))
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
+  
+  DBG("PlainDatagramSocketImpl.receive(): Stored the address\n");
 
   /* Store the port */
   port = ntohs(((unsigned short)port));
 
   mid = (*env)->GetMethodID(env, cls, "setPort", "(I)V");
-  if (!mid)
+  if (mid == NULL)
     { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return; }
 
   (*env)->CallVoidMethod(env, packet, mid, port);
-  DBG("Stored the port\n");
+  if ((*env)->ExceptionOccurred(env))
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
+
+  DBG("PlainDatagramSocketImpl.receive(): Stored the port\n");
 
   /* Store back the length */
   mid = (*env)->GetMethodID(env, cls, "setLength", "(I)V");
-  if (!mid)
+  if (mid == NULL)
     { JCL_ThrowException(env, IO_EXCEPTION, "Internal Error"); return; }
   
   (*env)->CallVoidMethod(env, packet, mid, bytes_read);
-  DBG("Stored the length\n");
+  if ((*env)->ExceptionOccurred(env))
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
+
+  DBG("PlainDatagramSocketImpl.receive(): Stored the length\n");
 
   return;
 }
@@ -213,8 +227,22 @@ Java_java_net_PlainDatagramSocketImpl_sendto(JNIEnv *env, jobject this,
                                              jobject addr, jint port, jarray buf, 
                                              jint len)
 {
-  _javanet_sendto(env, this, buf, 0, len, _javanet_get_netaddr(env, addr), 
+  struct ip_mreq ipm;
+  memset(&ipm, 0, sizeof(ipm));
+  ipm.imr_multiaddr.s_addr = _javanet_get_netaddr(env, addr);
+
+  if ((*env)->ExceptionOccurred(env))
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
+
+  DBG("PlainDatagramSocketImpl.sendto(): have addr\n");
+
+  _javanet_sendto(env, this, buf, 0, len, ipm.imr_multiaddr.s_addr, 
                   htons(((unsigned short)port)));
+
+  if ((*env)->ExceptionOccurred(env))
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
+
+  DBG("PlainDatagramSocketImpl.sendto(): finished\n");
 }
 
 /*************************************************************************/
@@ -226,18 +254,28 @@ JNIEXPORT void JNICALL
 Java_java_net_PlainDatagramSocketImpl_join(JNIEnv *env, jobject this, 
                                            jobject addr)
 {
-  int rc;
+  int rc, fd;
   struct ip_mreq ipm;
 
   memset(&ipm, 0, sizeof(ipm));
   ipm.imr_multiaddr.s_addr = _javanet_get_netaddr(env, addr);
+  if ((*env)->ExceptionOccurred(env))
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
+
   ipm.imr_interface.s_addr = INADDR_ANY;
 
-  rc = setsockopt(_javanet_get_int_field(env, this, "native_fd"),
-                  IPPROTO_IP, IP_ADD_MEMBERSHIP, &ipm, sizeof(ipm));
+  fd = _javanet_get_int_field(env, this, "native_fd");
+  if ((*env)->ExceptionOccurred(env))
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
+
+  DBG("PlainDatagramSocketImpl.join(): have native fd\n");
+
+  rc = setsockopt(fd, IPPROTO_IP, IP_ADD_MEMBERSHIP, &ipm, sizeof(ipm));
 
   if (rc == -1)
     JCL_ThrowException(env, IO_EXCEPTION, strerror(errno));
+
+  DBG("PlainDatagramSocketImpl.join(): finished\n");
 }
 
 /*************************************************************************/
@@ -249,18 +287,26 @@ JNIEXPORT void JNICALL
 Java_java_net_PlainDatagramSocketImpl_leave(JNIEnv *env, jobject this, 
                                             jobject addr)
 {
-  int rc;
+  int rc, fd;
   struct ip_mreq ipm;
 
   memset(&ipm, 0, sizeof(ipm));
   ipm.imr_multiaddr.s_addr = _javanet_get_netaddr(env, addr);
+  if ((*env)->ExceptionOccurred(env))
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
+
   ipm.imr_interface.s_addr = INADDR_ANY;
 
-  rc = setsockopt(_javanet_get_int_field(env, this, "native_fd"),
-                  IPPROTO_IP, IP_DROP_MEMBERSHIP, &ipm, sizeof(ipm));
+  fd = _javanet_get_int_field(env, this, "native_fd");
+  if ((*env)->ExceptionOccurred(env))
+    { JCL_ThrowException(env, IO_EXCEPTION, "Internal error"); return; }
+
+  DBG("PlainDatagramSocketImpl.leave(): have native fd\n");
+
+  rc = setsockopt(fd, IPPROTO_IP, IP_DROP_MEMBERSHIP, &ipm, sizeof(ipm));
 
   if (rc == -1)
     JCL_ThrowException(env, IO_EXCEPTION, strerror(errno));
+
+  DBG("PlainDatagramSocketImpl.leave(): finished\n");
 }
-
-

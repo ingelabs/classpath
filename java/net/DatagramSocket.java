@@ -54,6 +54,11 @@ public class DatagramSocket
 DatagramSocketImpl impl;
 
 /**
+ * This is the local address which cannot be changed
+ */
+ private InetAddress local_addr;
+
+/**
   * This is the address we are "connected" to
   */
 private InetAddress remote_addr;
@@ -133,6 +138,7 @@ DatagramSocket(int port, InetAddress addr) throws SocketException
       if (addr == null)
          addr = InetAddress.getInaddrAny();
 
+      local_addr = addr;
       impl.localPort = port;
       impl.bind(port, addr);
 
@@ -195,16 +201,6 @@ getLocalAddress()
   if (impl == null)
     return(null);
 
-  InetAddress addr = null;
-  try
-    {
-      addr = (InetAddress)impl.getOption(SocketOptions.SO_BINDADDR);
-    }
-  catch(SocketException e)
-    {
-      return(null);
-    }
-
   // FIXME: According to libgcj, checkConnect() is supposed to be called
   // before performing this operation.  Problems: 1) We don't have the
   // addr until after we do it, so we do a post check.  2). The docs I
@@ -212,9 +208,9 @@ getLocalAddress()
   // we'll assume they mean both.
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    sm.checkConnect(addr.getHostName(), getLocalPort());
+    sm.checkConnect(local_addr.getHostName(), getLocalPort());
 
-  return(addr);
+  return(local_addr);
 }
 
 /*************************************************************************/
