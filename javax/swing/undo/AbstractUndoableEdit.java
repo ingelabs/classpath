@@ -55,12 +55,12 @@ public class AbstractUndoableEdit implements UndoableEdit, Serializable
   /**
    * String returned by getRedoPresentationName()
    */
-  protected static String RedoName = "Redo";
+  protected static final String RedoName = "Redo";
 
   /**
    * String returned by getUndoPresentationName()
    */
-  protected static String UndoName = "Undo";
+  protected static final String UndoName = "Undo";
 
 
   //-------------------------------------------------------------
