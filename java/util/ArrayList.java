@@ -2,7 +2,7 @@
 // ArrayList.java -- JDK1.2's answer to Vector; this is an array-backed
 //                   implementation of the List interface
 //
-// This is a JDK 1.2 compliant version of HashMap.java
+// This is a JDK 1.2 compliant version of ArrayList.java
 //
 // Copyright (c) 1998 by Jon A. Zeppieri (jon@eease.com),
 //                    Free Software Foundation, Inc.
@@ -32,12 +32,12 @@ import java.io.ObjectOutputStream.PutField;
 import java.io.ObjectStreamField;
 
 /**
- * An array-backed implementation of the Array interface.  ArrayList
+ * An array-backed implementation of the List interface.  ArrayList
  * performs well on simple tasks:  random access into a list, appending
  * to or removing from the end of a list, checking the size, &c.
  *
  * @author        Jon A. Zeppieri
- * @version       $Id: ArrayList.java,v 1.1 1999-03-16 15:47:39 jaz Exp $
+ * @version       $Id: ArrayList.java,v 1.2 1999-04-25 00:51:22 jaz Exp $
  * @see           java.util.AbstractList
  * @see           java.util.List
  */
