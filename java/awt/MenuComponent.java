@@ -53,7 +53,7 @@ private Font font;
 private String name;
 
 // The parent of this component
-private Container parent;
+private MenuContainer parent;
 
 // The native peer for this componet
 private MenuComponentPeer peer;
@@ -141,7 +141,7 @@ setName(String name)
   * 
   * @return The parent of this component.
   */
-public Container
+public MenuContainer
 getParent()
 {
   return(parent);
@@ -151,7 +151,7 @@ getParent()
 
 // Sets the parent of this component.
 final void
-setParent(Container parent)
+setParent(MenuContainer parent)
 {
   this.parent = parent;
 }
