@@ -1,5 +1,14 @@
 2001-05-10  Tom Tromey  <tromey@redhat.com>
 
+	* java/text/SimpleDateFormat.java (computeCenturyStart): New
+	method.
+	(defaultCenturyStart): Use it.
+	(readObject): Likewise.
+	(SimpleDateFormat): Clear the calendar.  Set the grouping on the
+	number format.
+	(parse): Copy the calendar before modifying it.  Correctly handle
+	the time zone.
+
 	* java/util/Calendar.java (clear): Set field value(s) to 0.
 
 2001-05-10  Jeff Sturm  <jsturm@one-point.com>
