@@ -196,8 +196,8 @@ public class EventSetDescriptor extends FeatureDescriptor {
 	        this.listenerMethods = listenerMethods;
 		this.addListenerMethod = addListenerMethod;
 		this.removeListenerMethod = removeListenerMethod;
-		checkMethods();
 		this.listenerType = listenerType;
+		checkMethods();
 		checkAddListenerUnicast();
 		if(this.removeListenerMethod.getExceptionTypes().length > 0) {
 			throw new IntrospectionException("Listener remove method throws exceptions.");
@@ -235,8 +235,8 @@ public class EventSetDescriptor extends FeatureDescriptor {
 
 		this.addListenerMethod = addListenerMethod;
 		this.removeListenerMethod = removeListenerMethod;
-		checkMethods();
 		this.listenerType = listenerType;
+		checkMethods();
 		checkAddListenerUnicast();
 		if(this.removeListenerMethod.getExceptionTypes().length > 0) {
 			throw new IntrospectionException("Listener remove method throws exceptions.");
@@ -315,13 +315,13 @@ public class EventSetDescriptor extends FeatureDescriptor {
 		}
 		if(!addListenerMethod.getReturnType().equals(java.lang.Void.TYPE)
                    || addListenerMethod.getParameterTypes().length != 1
-		   || listenerType.equals(addListenerMethod.getParameterTypes()[0])
+		   || !listenerType.equals(addListenerMethod.getParameterTypes()[0])
 		   || !Modifier.isPublic(addListenerMethod.getModifiers())) {
 			throw new IntrospectionException("Add Listener Method invalid.");
 		}
 		if(!removeListenerMethod.getReturnType().equals(java.lang.Void.TYPE)
                    || removeListenerMethod.getParameterTypes().length != 1
-		   || (removeListenerMethod.getParameterTypes()[0]).equals(listenerType)
+		   || !listenerType.equals(removeListenerMethod.getParameterTypes()[0])
 		   || removeListenerMethod.getExceptionTypes().length > 0
 		   || !Modifier.isPublic(removeListenerMethod.getModifiers())) {
 			throw new IntrospectionException("Remove Listener Method invalid.");

@@ -174,11 +174,10 @@ public class Introspector {
 	 ** @return the BeanInfo object representing the class.
 	 **/
 	public static BeanInfo getBeanInfo(Class beanClass, Class topClass) {
-		synchronized(beanClass) {
-
 		if(beanClass == null) {
 			return null;
 		}
+		synchronized(beanClass) {
 
 		if(topClass == null) {
 			BeanInfo cachedInfo;

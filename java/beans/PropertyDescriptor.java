@@ -142,22 +142,28 @@ public class PropertyDescriptor extends FeatureDescriptor {
 	 **/
 	public PropertyDescriptor(String name, Method getMethod, Method setMethod) throws IntrospectionException {
 		setName(name);
-		if(getMethod.getParameterTypes().length > 0) {
+		if(setMethod != null && getMethod.getParameterTypes().length > 0) {
 			throw new IntrospectionException("get method has parameters");
 		}
-		if(setMethod.getParameterTypes().length != 1) {
+		if(setMethod != null && setMethod.getParameterTypes().length != 1) {
 			throw new IntrospectionException("set method does not have exactly one parameter");
 		}
-		if(!getMethod.getReturnType().equals(setMethod.getParameterTypes()[0])) {
-			throw new IntrospectionException("set and get methods do not share the same type");
-		}
-		if(!getMethod.getDeclaringClass().isAssignableFrom(setMethod.getDeclaringClass())
-		   && !setMethod.getDeclaringClass().isAssignableFrom(getMethod.getDeclaringClass())) {
-			throw new IntrospectionException("set and get methods are not in the same class.");
+		if(getMethod != null && setMethod != null) {
+			if(!getMethod.getReturnType().equals(setMethod.getParameterTypes()[0])) {
+				throw new IntrospectionException("set and get methods do not share the same type");
+			}
+			if(!getMethod.getDeclaringClass().isAssignableFrom(setMethod.getDeclaringClass())
+			   && !setMethod.getDeclaringClass().isAssignableFrom(getMethod.getDeclaringClass())) {
+				throw new IntrospectionException("set and get methods are not in the same class.");
+			}
 		}
 		this.getMethod = getMethod;
 		this.setMethod = setMethod;
-		this.propertyType = getMethod.getReturnType();
+		if(getMethod != null) {
+			this.propertyType = getMethod.getReturnType();
+		} else {
+			this.propertyType = setMethod.getParameterTypes()[0];
+		}
 	}
 
 	/** Get the property type.
