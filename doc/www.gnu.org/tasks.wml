@@ -273,6 +273,31 @@ which is richer and not specific to Classpath.
 </task>
 </task-section>
 
+<task-section name="Security">
+
+<task
+	title="Security Audit"
+	estimation=""
+	skills=""
+	contact=""
+>We need to make a pass over the Classpath Java source, making sure
+that all required calls to the SecurityManager are in place.  At the same
+time we need to ensure that there is no way to get around
+SecurityManager by directly calling code in gnu.*.
+</task>
+
+<task
+	title="Security Testing"
+	estimation=""
+	skills=""
+	contact=""
+>We need Mauve tests for all the calls to SecurityManager.
+Additionally, enabling a security manager will probably reveal
+code in Classpath that needs to be wrapped in AccessController.doPrivileged().
+</task>
+
+</task-section>
+
 <task-section name="Related Projects">
 <task
 	title="Help GNU Crypto"
