@@ -1,3 +1,10 @@
+2005-02-01  Dalibor Topic  <robilad@kaffe.org>
+
+	* gnu/java/beans/EmptyBeanInfo.java,
+	gnu/java/beans/info/ComponentBeanInfo.java,
+ 	gnu/java/lang/SystemClassLoader.java:
+	Removed unused files.
+
 2005-02-01  Sven de Marothy  <sven@physto.se>
 	
         * java/util/GregorianCalendar.java
