@@ -227,9 +227,9 @@ convertToBytes(char[] buf) throws CharConversionException
 public byte[]
 convertToBytes(char[] buf, int offset, int len) throws CharConversionException
 {
-  byte[] bbuf = new byte[bytesInCharArray(buf)];
+  byte[] bbuf = new byte[bytesInCharArray(buf, offset, len)];
 
-  return(convertToBytes(buf, offset, len, bbuf, offset));
+  return(convertToBytes(buf, offset, len, bbuf, 0));
 }
 
 /*************************************************************************/
