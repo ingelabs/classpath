@@ -51,9 +51,11 @@ gnu/java/net/content/text/Makefile \
 compat/Makefile \
 compat/java.net/Makefile \
 java/Makefile \
+java/io/Makefile \
 java/net/Makefile \
 native/Makefile \
 native/java.net/Makefile \
 test/Makefile \
+test/java.io/Makefile \
 test/java.net/Makefile)
 
