@@ -651,7 +651,7 @@ getMenuShortcutKeyMask()
 /*************************************************************************/
 
 /**
-  * Returns the event queue for the applet.  Despite the work "System"
+  * Returns the event queue for the applet.  Despite the word "System"
   * in the name of this method, there is no guarantee that the same queue
   * is shared system wide.
   *
@@ -680,4 +680,3 @@ public abstract void
 beep();
 
 } // class Toolkit
-
