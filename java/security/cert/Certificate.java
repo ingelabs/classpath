@@ -206,13 +206,7 @@ public abstract class Certificate
 
      @return The public key
   */
-  public abstract PublicKey getPublicKey()
-    throws SignatureException,
-           InvalidKeyException,
-           NoSuchAlgorithmException,
-           CertificateException,
-           NoSuchProviderException;
-
+  public abstract PublicKey getPublicKey();
 
   // Protected methods.
   // ------------------------------------------------------------------------
