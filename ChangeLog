@@ -1,5 +1,11 @@
 2004-09-30  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/InetAddress.java: Reformatted.
+	Removed redundant parenthesis.
+	(getHostAddress): Merged with version from llibgcj.
+
+2004-09-30  Michael Koch  <konqueror@gmx.de>
+
 	* java/beans/Beans.java,
 	java/beans/EventHandler.java,
 	java/beans/EventSetDescriptor.java,
