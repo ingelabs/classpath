@@ -710,14 +710,13 @@ public class HashMap extends AbstractMap
   }
 
   /**
-   * Increases the size of the HashMap and rehashes all keys to new array
-   * indices; this is called when the addition of a new value would cause
-   * size() > threshold. Note that the existing Entry objects are reused in
-   * the new hash table.
-   * <p>
+   * Increases the size of the HashMap and rehashes all keys to new
+   * array indices; this is called when the addition of a new value
+   * would cause size() &gt; threshold. Note that the existing Entry
+   * objects are reused in the new hash table.
    *
-   * This is not specified, but the new size is twice the current size plus
-   * one; this number is not always prime, unfortunately.
+   * <p>This is not specified, but the new size is twice the current size
+   * plus one; this number is not always prime, unfortunately.
    */
   private void rehash()
   {
