@@ -38,8 +38,11 @@ exception statement from your version. */
 
 package java.io;
 
+import java.nio.channels.Channels;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+
 import gnu.java.io.EncodingManager;
-import gnu.java.io.decode.Decoder;
 
 /**
  * This class reads characters from a byte input stream.   The characters
@@ -92,7 +95,7 @@ public class InputStreamReader extends Reader
    * This is the byte-character decoder class that does the reading and
    * translation of bytes from the underlying stream.
    */
-  private Decoder in;
+  private Reader in;
 
   /**
    * This method initializes a new instance of <code>InputStreamReader</code>
@@ -129,6 +132,29 @@ public class InputStreamReader extends Reader
     this.in = EncodingManager.getDecoder(in, encoding_name);
   }
 
+  /**
+   * Creates an InputStreamReader that uses a decoder of the given
+   * charset to decode the bytes in the InputStream into
+   * characters.
+   */
+  public InputStreamReader(InputStream in, Charset charset) {
+    /* FIXME: InputStream is wrapped in Channel which is read by a
+     * Reader-implementation for channels. However to fix this we
+     * need to completely move to NIO-style character
+     * encoding/decoding.
+     */
+    this.in = Channels.newReader(Channels.newChannel(in), charset.newDecoder(), -1);
+  }
+
+  /**
+   * Creates an InputStreamReader that uses the given charset decoder
+   * to decode the bytes in the InputStream into characters.
+   */
+  public InputStreamReader(InputStream in, CharsetDecoder decoder) {
+    // FIXME: see {@link InputStreamReader(InputStream, Charset)
+    this.in = Channels.newReader(Channels.newChannel(in), decoder, -1);
+  }
+  
   /**
    * This method closes this stream, as well as the underlying 
    * <code>InputStream</code>.
