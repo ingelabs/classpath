@@ -31,10 +31,16 @@ public class GtkComponentPeer extends GtkGenericPeer
   native void gtkWidgetGetDimensions(int[] dim);
   native void gtkWidgetGetLocationOnScreen(int[] point);
   native void gtkWidgetSetUsize(int width, int height);
+  native void gtkWidgetSetCursor (int type);
 
   native void gtkFixedNew (int w, int h);
   native void gtkFixedPut (Object parent, int x, int y);
   native void gtkFixedMove(int x, int y);
+
+  protected void syncAttrs ()
+    {
+      setCursor (((Component)awtWidget).getCursor ());
+    }
     
   public int checkImage (Image image, int width, int height, 
 			 ImageObserver observer) 
@@ -182,6 +188,8 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public void setCursor (Cursor cursor) 
     {
+      System.out.println("setCursorCalled");
+      gtkWidgetSetCursor (cursor.getType ());
     }
 
   public void setEnabled (boolean b) 

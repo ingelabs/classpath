@@ -38,6 +38,7 @@ class Test
       Panel pan=new Panel();
 
       Label l = new Label ("Pithy Message:");
+      l.setCursor (Cursor.getPredefinedCursor (Cursor.WAIT_CURSOR));
       pan.add (l);
 
       TextField tf = new TextField("Hello world!");
@@ -83,6 +84,7 @@ class Test
       f.pack();
       f.show();
       sp.setScrollPosition (10,0);
+
       Toolkit t = Toolkit.getDefaultToolkit();
       /* t.beep(); */
       System.out.println("screen size: " + t.getScreenSize());

@@ -41,6 +41,7 @@ public class GtkTextFieldPeer extends GtkTextComponentPeer
 
       gtkEntryNew (text);
 
+      System.out.println ("got here");
       Point p=tf.getLocation();
       gtkFixedPut (cp,p.x,p.y);
     }

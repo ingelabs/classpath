@@ -27,4 +27,5 @@ package gnu.java.awt.peer.gtk;
 public class GtkGenericPeer
 {
   final int native_state=java.lang.System.identityHashCode(this);
+  protected Object awtWidget;
 }

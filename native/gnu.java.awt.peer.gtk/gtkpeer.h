@@ -51,4 +51,19 @@ extern struct state_table *native_state_table;
 
 #endif /* JVM_SUN */
 
+#define AWT_DEFAULT_CURSOR 0
+#define AWT_CROSSHAIR_CURSOR 1
+#define AWT_TEXT_CURSOR 2
+#define AWT_WAIT_CURSOR 3
+#define AWT_SW_RESIZE_CURSOR 4
+#define AWT_SE_RESIZE_CURSOR 5
+#define AWT_NW_RESIZE_CURSOR 6
+#define AWT_NE_RESIZE_CURSOR 7
+#define AWT_N_RESIZE_CURSOR 8
+#define AWT_S_RESIZE_CURSOR 9
+#define AWT_W_RESIZE_CURSOR 10
+#define AWT_E_RESIZE_CURSOR 11
+#define AWT_HAND_CURSOR 12
+#define AWT_MOVE_CURSOR 13
+
 #endif /* __GTKPEER_H */

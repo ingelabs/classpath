@@ -50,6 +50,74 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetShowChildren (JNIEnv *env,
   gdk_threads_leave ();
 }
 
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursor 
+  (JNIEnv *env, jobject obj, jint type) 
+{
+  void *ptr;
+  GtkWidget *widget;
+  GdkCursorType gdk_cursor_type;
+  GdkCursor *gdk_cursor;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  switch (type)
+    {
+    case AWT_CROSSHAIR_CURSOR:
+      gdk_cursor_type = GDK_CROSSHAIR;
+      break;
+    case AWT_TEXT_CURSOR:
+      gdk_cursor_type = GDK_XTERM;
+      break;
+    case AWT_WAIT_CURSOR:
+      gdk_cursor_type = GDK_WATCH;
+      break;
+    case AWT_SW_RESIZE_CURSOR:
+      gdk_cursor_type = GDK_BOTTOM_LEFT_CORNER;
+      break;
+    case AWT_SE_RESIZE_CURSOR:
+      gdk_cursor_type = GDK_BOTTOM_RIGHT_CORNER;
+      break;
+    case AWT_NW_RESIZE_CURSOR:
+      gdk_cursor_type = GDK_TOP_LEFT_CORNER;
+      break;
+    case AWT_NE_RESIZE_CURSOR:
+      gdk_cursor_type = GDK_TOP_RIGHT_CORNER;
+      break;
+    case AWT_N_RESIZE_CURSOR:
+      gdk_cursor_type = GDK_TOP_SIDE;
+      break;
+    case AWT_S_RESIZE_CURSOR:
+      gdk_cursor_type = GDK_BOTTOM_SIDE;
+      break;
+    case AWT_W_RESIZE_CURSOR:
+      gdk_cursor_type = GDK_LEFT_SIDE;
+      break;
+    case AWT_E_RESIZE_CURSOR:
+      gdk_cursor_type = GDK_RIGHT_SIDE;
+      break;
+    case AWT_HAND_CURSOR:
+      gdk_cursor_type = GDK_HAND2;
+      break;
+    case AWT_MOVE_CURSOR:
+      gdk_cursor_type = GDK_FLEUR;
+      break;
+    default:
+      gdk_cursor_type = GDK_LEFT_PTR;
+    }
+      
+  gdk_threads_enter ();
+
+  widget = GTK_WIDGET(ptr);
+
+  gtk_widget_realize (widget);
+  gdk_cursor = gdk_cursor_new (gdk_cursor_type);
+  gdk_window_set_cursor (widget->window, gdk_cursor);
+  gdk_cursor_destroy (gdk_cursor);
+
+  gdk_threads_leave ();
+}
+
 /*
  * Show a widget
  */
