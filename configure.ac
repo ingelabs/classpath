@@ -345,7 +345,6 @@ dnl -----------------------------------------------------------
 AC_CONFIG_FILES([Makefile
 doc/Makefile
 doc/api/Makefile
-external/Makefile
 gnu/classpath/Configuration.java
 include/Makefile
 native/Makefile

@@ -29,6 +29,10 @@ New in release 0.11 (not released yet)
 * javax.swing.JSpinner implemented.
 * Extensive documentation update for java.util collection classes.
 * java.awt.geom completed. Area, Arc2D, Ellipse2D and Line2D implemented.
+* GNU JAXP is no longer included with GNU Classpath. Runtime, compiler and
+  tool integrators are encouraged to directly integrate GNU JAXP.
+  This release has been tested against GNU JAXP 1.1.
+  http://www.gnu.org/software/classpathx/jaxp/jaxp.html
 
 Runtime interface Changes:
 

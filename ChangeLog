@@ -1,3 +1,13 @@
+2004-09-03  Mark Wielaard  <mark@klomp.org>
+
+	* Makefile.am (SUBDIRS): Remove external.
+	* configure.ac (AC_CONFIG_FILES): Remove external/Makefile.
+	* doc/api/Makefile.am: Don't refer to external directory
+	* lib/Makefile.am: Likewise.
+	* lib/gen-classlist.sh.in: Likewise.
+	* external/*: Removed.
+	* NEWS: Mention GNU JAXP.
+
 2004-08-31  Mark Wielaard  <mark@klomp.org>
 
 	* NEWS: Add new news.
