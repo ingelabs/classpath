@@ -242,7 +242,7 @@ public final class Double extends Number implements Comparable
      * @param d the <code>double</code> to compare
      * @return whether the argument is (-/+) infinity.
      */
-    public boolean isInfinite(double d) 
+    public static boolean isInfinite(double d) 
     {
 	return (d == POSITIVE_INFINITY || d == NEGATIVE_INFINITY);
     }
