@@ -1,5 +1,5 @@
 /* gtkwindowpeer.c -- Native implementation of GtkWindowPeer
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -41,8 +41,8 @@ exception statement from your version. */
 #include "gnu_java_awt_peer_gtk_GtkFramePeer.h"
 #include <gdk/gdkprivate.h>
 #include <gdk/gdkx.h>
-void
-setBounds (GtkWidget *, jint, jint, jint, jint);
+
+static void setBounds (GtkWidget *, jint, jint, jint, jint);
 
 /*
  * Make a new window (any type)
@@ -133,27 +133,6 @@ setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width,
   set_visible (window, visible);
 }
 
-JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setMenuBarPeer
-  (JNIEnv *env, jobject obj, jobject menubar)
-{
-  void *wptr, *mptr;
-  GtkBox *box;
-
-  if (!menubar) return;
-
-  wptr = NSA_GET_PTR (env, obj);
-  mptr = NSA_GET_PTR (env, menubar);
-
-  if (!mptr) return; /* this case should remove a menu */
-
-  gdk_threads_enter ();
-  box = GTK_BOX (GTK_BIN (wptr)->child);
-  gtk_box_pack_start (box, GTK_WIDGET (mptr), 0, 0, 0);
-  gdk_threads_leave ();
-}
-
-
 /*
  * Set a frame's title
  */
@@ -230,7 +209,7 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_toFront (JNIEnv *env,
   gdk_threads_leave ();
 }
 
-void
+static void
 setBounds (GtkWidget *widget, jint x, jint y, jint width, jint height)
 {
   gint current_x, current_y;
@@ -250,17 +229,38 @@ setBounds (GtkWidget *widget, jint x, jint y, jint width, jint height)
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setBounds
   (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)
 {
-  GtkWidget *widget;
-  GList *children;
   void *ptr;
 
   ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
 
-  widget = GTK_WIDGET (ptr);
-  setBounds (widget, x, y, width, height);
+  if (ptr)
+    {
+      GtkWidget *widget = GTK_WIDGET (ptr);
+      setBounds (widget, x, y, width, height);
+    }
 
+  gdk_threads_leave ();
+}
+
+JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkFramePeer_setMenuBarPeer
+  (JNIEnv *env, jobject obj, jobject menubar)
+{
+  void *wptr, *mptr;
+  GtkBox *box;
+
+  if (!menubar) return;
+
+  wptr = NSA_GET_PTR (env, obj);
+  mptr = NSA_GET_PTR (env, menubar);
+
+  if (!mptr) return; /* this case should remove a menu */
+
+  gdk_threads_enter ();
+  box = GTK_BOX (GTK_BIN (wptr)->child);
+  gtk_box_pack_start (box, GTK_WIDGET (mptr), 0, 0, 0);
   gdk_threads_leave ();
 }
 

@@ -82,16 +82,6 @@ public class GtkWindowPeer extends GtkContainerPeer
 
   native public void setResizable (boolean r);
 
-  native public void setMenuBarPeer (MenuBarPeer bar);
-
-  public void setMenuBar (MenuBar bar)
-  {
-    if (bar == null)
-      setMenuBarPeer (null);
-    else
-      setMenuBarPeer ((MenuBarPeer) bar.getPeer ());
-  }
-
   protected void postConfigureEvent (int x, int y, int width, int height,
 				     int top, int left, int bottom, int right)
   {

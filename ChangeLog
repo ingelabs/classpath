@@ -1,5 +1,17 @@
 2002-11-09  Tom Tromey  <tromey@redhat.com>
 
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkFramePeer_setMenuBarPeer):
+	Renamed.
+	(Java_gnu_java_awt_peer_gtk_GtkWindowPeer_setBounds): handle case
+	where widget isn't set yet.
+	(setBounds): Now static.
+	* gnu/java/awt/peer/gtk/GtkWindowPeer.java (setMenuBar,
+	setMenuBarPeer): Moved...
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java (setMenuBar,
+	setMenuBarPeer): ...here.
+	(setBounds): Don't call getMenuBarHeight.
+
 	* java/awt/ScrollPane.java (ScrollPane): Fixed indentation.
 
 	* java/awt/List.java (processEvent): Added missing `else's.

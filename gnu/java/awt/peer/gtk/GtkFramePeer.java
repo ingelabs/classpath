@@ -1,5 +1,5 @@
 /* GtkFramePeer.java -- Implements FramePeer with GTK
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package gnu.java.awt.peer.gtk;
 import java.awt.*;
-import java.awt.peer.FramePeer;
+import java.awt.peer.*;
 import java.awt.event.*;
 
 public class GtkFramePeer extends GtkWindowPeer
@@ -46,6 +46,16 @@ public class GtkFramePeer extends GtkWindowPeer
 {
   int menuBarHeight = 0;
   native int getMenuBarHeight ();
+
+  native public void setMenuBarPeer (MenuBarPeer bar);
+
+  public void setMenuBar (MenuBar bar)
+  {
+    if (bar == null)
+      setMenuBarPeer (null);
+    else
+      setMenuBarPeer ((MenuBarPeer) bar.getPeer ());
+  }
 
   public GtkFramePeer (Frame frame)
   {
@@ -82,8 +92,7 @@ public class GtkFramePeer extends GtkWindowPeer
   public void setBounds (int x, int y, int width, int height)
   {
     super.setBounds (0, 0, width - insets.left - insets.right,
-		     height - insets.top - insets.bottom 
-		     + getMenuBarHeight ());
+		     height - insets.top - insets.bottom + menuBarHeight);
   }
 
   protected void postConfigureEvent (int x, int y, int width, int height,
