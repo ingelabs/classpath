@@ -1,5 +1,27 @@
 2003-12-28  Guilhem Lavaux <guilhem@kaffe.org>
 
+	* java/io/ObjectOutputStream.java
+	(writeClassDescriptor): Externalizable class must also write their
+	hierarchy.
+	(putFields): Added some text message for an exception.
+
+	* java/io/ObjectInputStream.java
+	(readClassDescriptor): Documented. Better field checking.
+	(defaultReadObject): Readjusted messages in exceptions.
+	(currentLoader): Documented.
+	(inputGetObjectStreamClasses): Changed indentation.
+	(readFields): Documented. Changed logic to improve error reporting and
+	behaviour compared to the JDK.
+	(readFields): Fixed behaviour.
+	(getField): Documented. Fixed behaviour.
+	(callReadMethod): Invalidate read fields.
+
+	* java/io/ObjectStreamClass.java
+	(setFields): Fix to avoid a NullPointerException.
+	(getSerialPersistentFields): Documented. Improved modifier checking.
+
+2003-12-28  Guilhem Lavaux <guilhem@kaffe.org>
+
 	* java/io/LineNumberReader.java
 	(countLines): Removed.
 	(fill): New private method.
