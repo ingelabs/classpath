@@ -1,3 +1,9 @@
+2004-11-21  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/text/FieldView.java,
+	javax/swing/text/JTextComponent.java:
+	Removed debug code.
+
 2004-11-21  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/nio/DirectByteBufferImpl.java
