@@ -38,8 +38,8 @@ exception statement from your version. */
 
 package java.lang;
 
-import java.io.Serializable;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -231,7 +231,7 @@ public final class Class implements Serializable
       list.addAll(Arrays.asList(superClass.internalGetClasses()));
     return (Class[])list.toArray(new Class[list.size()]);
   }
-
+  
   /**
    * Get the ClassLoader that loaded this class.  If it was loaded by the
    * system classloader, this method will return null. If there is a security
@@ -354,7 +354,7 @@ public final class Class implements Serializable
       }
     throw new NoSuchMethodException();
   }
-  
+
   /**
    * Get all the declared member classes and interfaces in this class, but
    * not those inherited from superclasses. This returns an array of length
@@ -425,7 +425,7 @@ public final class Class implements Serializable
       }
     throw new NoSuchFieldException();
   }
- 
+
   /**
    * Get all the declared fields in this class, but not those inherited from
    * superclasses. This returns an array of length 0 if there are no fields,
@@ -479,7 +479,7 @@ public final class Class implements Serializable
       throw new NoSuchMethodException(methodName);
     return match;
   }
-  
+
   /**
    * Get all the declared methods in this class, but not those inherited from
    * superclasses. This returns an array of length 0 if there are no methods,
@@ -506,7 +506,7 @@ public final class Class implements Serializable
   {
     return vmClass.getDeclaredMethods (publicOnly);
   }
-  
+ 
   /**
    * If this is a nested or inner class, return the class that declared it.
    * If not, return null.
@@ -596,7 +596,7 @@ public final class Class implements Serializable
   }
 
   /**
-   * Get the interfaces this class <EM>directly</EM> implements, in the
+   * Get the interfaces this class <em>directly</em> implements, in the
    * order that they were declared. This returns an empty array, not null,
    * for Object, primitives, void, and classes or interfaces with no direct
    * superinterface. Array types return Cloneable and Serializable.
@@ -836,7 +836,7 @@ public final class Class implements Serializable
   {
     return vmClass.getModifiers ();
   }
-
+  
   /**
    * Get the name of this class, separated by dots for package separators.
    * Primitive types and arrays are encoded as:
@@ -915,7 +915,7 @@ public final class Class implements Serializable
       return ClassLoader.getSystemResourceAsStream(name);
     return loader.getResourceAsStream(name);
   }
-  
+
   private String resourcePath(String resourceName)
   {
     if (resourceName.length() > 0 && resourceName.charAt(0) != '/')
@@ -935,7 +935,7 @@ public final class Class implements Serializable
   {
     return signers == null ? null : (Object[]) signers.clone ();
   }
-
+  
   /**
    * Set the signers of this class.
    *
@@ -957,7 +957,7 @@ public final class Class implements Serializable
   {
     return vmClass.getSuperclass ();
   }
-
+  
   /**
    * Return whether this class is an array type.
    *
@@ -972,7 +972,7 @@ public final class Class implements Serializable
 
     return result == 1;
   }
-
+  
   /**
    * Discover whether an instance of the Class parameter would be an
    * instance of this Class as well.  Think of doing
@@ -991,7 +991,7 @@ public final class Class implements Serializable
   {
     return vmClass.isAssignableFrom (c);
   }
-
+ 
   /**
    * Discover whether an Object is an instance of this Class.  Think of it
    * as almost like <code>o instanceof (this class)</code>.
@@ -1015,7 +1015,7 @@ public final class Class implements Serializable
   {
     return vmClass.isInterface ();
   }
-
+  
   /**
    * Return whether this class is a primitive type.  A primitive type class
    * is a class representing a kind of "placeholder" for the various
@@ -1039,7 +1039,7 @@ public final class Class implements Serializable
   {
     return vmClass.isPrimitive ();
   }
-
+  
   /**
    * Get a new instance of this class by calling the no-argument constructor.
    * The class is initialized if it has not been already. A security check
@@ -1251,6 +1251,20 @@ public final class Class implements Serializable
   }
 
   /**
+   * Strip the last portion of the name (after the last dot).
+   *
+   * @param name the name to get package of
+   * @return the package name, or "" if no package
+   */
+  private static String getPackagePortion(String name)
+  {
+    int lastInd = name.lastIndexOf('.');
+    if (lastInd == -1)
+      return "";
+    return name.substring(0, lastInd);
+  }
+
+  /**
    * Perform security checks common to all of the methods that
    * get members of this Class.
    */
@@ -1264,19 +1278,5 @@ public final class Class implements Serializable
 	if (pkg != null)
 	  sm.checkPackageAccess(pkg.getName());
       }
-  }
-
-  /**
-   * Strip the last portion of the name (after the last dot).
-   *
-   * @param name the name to get package of
-   * @return the package name, or "" if no package
-   */
-  public static String getPackagePortion(String name)
-  {
-    int lastInd = name.lastIndexOf('.');
-    if (lastInd == -1)
-      return "";
-    return name.substring(0, lastInd);
   }
 }

@@ -1,6 +1,12 @@
 2004-01-25  Michael Koch  <konqueror@gmx.de>
 
 	* java/lang/Class.java
+	(getInterfaces): Change html tags to lower case.
+	(getPackagePortion): Made private, moved around.
+
+2004-01-25  Michael Koch  <konqueror@gmx.de>
+
+	* java/lang/Class.java
 	(getDeclaredMethod): Renamed argument "name" to "methodName".
 	(getField): Renamed argument "name" to "fieldName".
 	(getResource): Renamed argument "name" to "resourceName".
