@@ -359,7 +359,7 @@ getNaN()
   * @param NaN The string used to represent NaN
   */
 public void
-setNan(String NaN)
+setNaN(String NaN)
 {
   this.NaN = NaN;
 }
