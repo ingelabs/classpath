@@ -373,7 +373,7 @@ read(byte[] buf) throws IOException
 public int
 read(byte[] buf, int offset, int len) throws IOException
 {
-  int rc = readInternal(native_fd, buf, 0, buf.length);
+  int rc = readInternal(native_fd, buf, offset, len);
   if (rc == 0)
     return(-1);
   else

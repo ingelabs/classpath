@@ -1,3 +1,8 @@
+2002-02-15  Wu Gansha  <gansha.wu@intel.com>
+
+	* java/io/RandomAccessFile.java (read(byte[],int,int): fix a bug in
+	calling readInternal, use offset and len.
+
 2002-02-15  Isaac Jones  <ijones@cis.ohio-state.edu>
 
 	* java/lang/StringBuffer.java (subSequence): is new in 1.4,
