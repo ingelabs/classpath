@@ -149,7 +149,19 @@ public class GtkFramePeer extends GtkWindowPeer
     g.translate (-insets.left, -insets.top);
     return g;
   }
-  
+
+  public void setResizable (boolean resizable)
+  {
+    // Call setSize; otherwise when resizable is changed from true to
+    // false the frame will shrink to the dimensions it had before it
+    // was resizable.
+    setSize (awtComponent.getWidth() - insets.left - insets.right,
+             awtComponent.getHeight() - insets.top - insets.bottom
+             + menuBarHeight);
+    set ("allow_shrink", resizable);
+    set ("allow_grow", resizable);
+  }
+
   protected void postConfigureEvent (int x, int y, int width, int height)
   {
     int frame_x = x - insets.left;

@@ -1,3 +1,9 @@
+2004-01-27  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java (setResizable):
+	Override GtkWindowPeer's setResizable method to account for menu
+	bar height when setting the frame's size.
+
 2004-01-27  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/Container.java: Merged formating with libgcj.
