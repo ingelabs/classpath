@@ -1,3 +1,7 @@
+2003-07-31  Stepan Koltsov  <yozh@mx1.ru>
+
+	* java/util/HashMap.java (readObject): Set size.
+
 2003-07-31  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/ObjectOutputStream.java (getMethod): Make method
