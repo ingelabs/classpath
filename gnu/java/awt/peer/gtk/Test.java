@@ -23,6 +23,7 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.peer.*;
+import java.awt.datatransfer.*;
 import gnu.java.awt.image.*;
 import java.io.*;
 
@@ -160,6 +161,15 @@ class Test
       wb.addActionListener (new ActionListener () {
 	public void actionPerformed (ActionEvent e) {
 	  System.out.println ("action listener on wb called");
+	  Clipboard clip = Toolkit.getDefaultToolkit ().getSystemClipboard ();
+	  StringSelection ss = new StringSelection("123456789");
+	  clip.setContents (ss, ss);
+//  	  Transferable t = clip.getContents (this);
+//  	  try {
+//  	    System.out.println (t.getTransferData (DataFlavor.stringFlavor));
+//  	  } catch (Exception ex) {
+//  	    ex.printStackTrace ();
+//  	  }
 	  System.exit (0);
 	}
       });

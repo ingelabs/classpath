@@ -39,7 +39,8 @@ public class GtkToolkit extends java.awt.Toolkit
   GtkMainThread main;
   Hashtable containers = new Hashtable();
   static EventQueue q = new EventQueue();
-  
+  static Clipboard systemClipboard;
+
   static 
   {
     System.out.println("loading library");	
@@ -49,6 +50,7 @@ public class GtkToolkit extends java.awt.Toolkit
   public GtkToolkit ()
   {
     main = new GtkMainThread ();
+    systemClipboard = new GtkClipboard ();
     GtkGenericPeer.enableQueue (q);
   }
   
@@ -66,7 +68,7 @@ public class GtkToolkit extends java.awt.Toolkit
     return new GtkImage (producer, null);
   }
 
-  public Image createImage (byte[] imagedata, int imageoffset, 
+  public Image createImage (byte[] imagedata, int imageoffset,
 			    int imagelength) 
   {
     return null;
@@ -113,7 +115,7 @@ public class GtkToolkit extends java.awt.Toolkit
 
   public Clipboard getSystemClipboard() 
   {
-    return null;
+    return systemClipboard;
   }
 
   public boolean prepareImage (Image image, int width, int height, 
