@@ -6,6 +6,10 @@
 	
 	* java/util/EventObject.java (toString): Corrected output.
 
+	* java/lang/ThreadGroup.java (uncaughtException): Print thread name
+	with stack dump. Set had_uncaught_exception.
+	(had_uncaught_exception): New field. Refer to comment.
+
 2000-10-10  Warren Levy  <warrenl@cygnus.com>
 
 	* java/sql/Date.java (serialVersionUID): New field.
