@@ -1,3 +1,8 @@
+2002-11-17  C. Brian Jones <cbj@gnu.org>
+
+	* scripts/japi: new file, used nightly
+	* scripts/kissme-mauve: new file, used nightly
+
 2002-11-17  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/java/security/Makefile.am (EXTRA_DIST): Removed.

@@ -134,6 +134,37 @@ name="jdiff.sh">, at least until this functionality is merged into
 japitools.
 </en>
 
+<!--
+<H4>Packages</H4>
+<en>
+<table border="1">
+<th>Core Package</th><th>Provider</th>
+<tr><td>java.*</td><td>GNU Classpath</td></tr>
+<tr><td>javax.accessibility</td><td>GNU Classpath</td></tr>
+<tr><td>javax.crypto</td><td></td></tr>
+<tr><td>javax.imageio</td><td></td></tr>
+<tr><td>javax.naming</td><td>GNU Classpath</td></tr>
+<tr><td>javax.net</td><td></td></tr>
+<tr><td>javax.print</td><td></td></tr>
+<tr><td>javax.rmi</td><td>GNU Classpath</td></tr>
+<tr><td>javax.security</td><td></td></tr>
+<tr><td>javax.sound</td><td><link url="http://tritonus.org/"
+name="Tritonus"></td></tr>
+<tr><td>javax.sql</td><td>GNU Classpath</td></tr>
+<tr><td>javax.swing</td><td></td></tr>
+<tr><td>javax.transaction</td><td>GNU Classpath</td></tr>
+<tr><td>javax.xml</td><td></td></tr>
+<tr><td>org.ietf.jgss</td><td><link
+url="http://www.ietf.org/rfc/rfc2853.txt" name="IETF RFC 2853"></td></tr>
+<tr><td>org.omg</td><td><link url="http://www.omg.org"
+name="OMG"></td></tr>
+<tr><td>org.w3c.dom</td><td><link url="http://www.w3.org/DOM/"
+name="W3C DOM"></td></tr>
+<tr><td>org.xml.sax</td><td><link url="http://sax.sourceforge.net" name="SAX"></td></tr>
+</table>
+</en>
+-->
+
 <H4>Virtual Machines</H4> 
 <en>
 <p>
