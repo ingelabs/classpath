@@ -1,5 +1,20 @@
 2003-06-03  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/ScrollPane.java
+	(addImpl): Must be protected.
+	(eventTypeEnabled): Likewise.
+	* java/awt/Window.java
+	(isFocusableWindow): Must be final.
+	* java/awt/image/WritableRaster.java
+	(setRect): Reordered arguments to match SUNs version
+	and fixed our implementation.
+	* java/awt/print/PageFormat.java
+	(getImageableHeight): Fixed typo in name.
+	* java/awt/print/PrinterJob.java
+	(setCopies): Fixed argument to match SUNs version.
+
+2003-06-03  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/Button.java,
 	java/awt/Checkbox.java,
 	java/awt/CheckboxMenuItem.java,

@@ -654,7 +654,7 @@ public class Window extends Container
    *
    * @since 1.4
    */
-  public boolean isFocusableWindow ()
+  public final boolean isFocusableWindow ()
   {
     if (getFocusableWindowState () == false)
       return false;

@@ -140,10 +140,10 @@ public class WritableRaster extends Raster
 
   public void setRect(Raster srcRaster)
   {
-    setRect(srcRaster, 0, 0);
+    setRect(0, 0, srcRaster);
   }
 
-  public void setRect(Raster srcRaster, int dx, int dy) 
+  public void setRect(int dx, int dy, Raster srcRaster) 
   {
     Rectangle targetUnclipped = new Rectangle(srcRaster.getMinX()+dx,
 					      srcRaster.getMinY()+dy,
