@@ -1,5 +1,8 @@
 2001-08-31  Tom Tromey  <tromey@redhat.com>
 
+	* java/net/NetPermission.java: Re-merged with libgcj.
+	* java/net/SocketPermission.java: Likewise.
+
 	* java/lang/ThreadGroup.java: Re-merged with libgcj.
 
 	* java/io/InvalidClassException.java: Re-merged from libgcj
