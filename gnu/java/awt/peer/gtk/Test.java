@@ -79,6 +79,9 @@ class Test
       f.pack();
       f.show();
       sp.setScrollPosition (10,0);
+      Toolkit t = Toolkit.getDefaultToolkit();
+      /* t.beep(); */
+      System.out.println("screen size: " + t.getScreenSize());
       System.out.println("done");
     }
 }

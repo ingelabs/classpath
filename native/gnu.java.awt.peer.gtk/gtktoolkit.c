@@ -33,3 +33,18 @@ Java_gnu_java_awt_peer_gtk_GtkToolkit_beep (JNIEnv *env, jobject obj)
   (*env)->MonitorExit (env, java_mutex);
 }
 
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenSizeDimensions
+(JNIEnv *env, jobject obj, jintArray jdims)
+{
+  jint *dims = (*env)->GetIntArrayElements (env, jdims, 0);  
+
+  (*env)->MonitorEnter (env,java_mutex);
+
+  dims[0] = gdk_screen_width ();
+  dims[1] = gdk_screen_height ();
+
+  (*env)->MonitorExit (env,java_mutex);
+
+  (*env)->ReleaseIntArrayElements(env, jdims, dims, 0);
+}

@@ -51,6 +51,7 @@ public class GtkToolkit extends java.awt.Toolkit
     }
   
   native public void beep();
+  native private void getScreenSizeDimensions(int[] xy);
   
   public int checkImage (Image image, int width, int height, 
 			 ImageObserver observer) 
@@ -105,10 +106,11 @@ public class GtkToolkit extends java.awt.Toolkit
       return 0;
     }
 
-  public Dimension getScreenSize () 
-    {
-      return null;
-    }
+  public Dimension getScreenSize () {
+    int dim[] = new int[2];
+    getScreenSizeDimensions(dim);
+    return new Dimension(dim[0], dim[1]);
+  }
 
   public Clipboard getSystemClipboard() 
     {
