@@ -107,7 +107,10 @@ public abstract class JarURLConnection extends URLConnection
     if (bang == -1)
       throw new MalformedURLException (url + ": No `!/' in spec.");
 
+    // Extract the url for the jar itself.
     jarFileURL = new URL (str.substring (0, bang));
+
+    // Get the name of the element, if any.
     entry_name = str.length() == (bang + 1) ? "" : str.substring (bang + 2);
   }
 
@@ -194,7 +197,9 @@ public abstract class JarURLConnection extends URLConnection
    */
   public Attributes getAttributes () throws IOException
   {
-    return getJarEntry().getAttributes();
+    JarEntry entry = getJarEntry();
+    
+    return entry != null ? entry.getAttributes() : null;
   }
 
   /**
