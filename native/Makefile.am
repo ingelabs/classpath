@@ -2,7 +2,3 @@
 
 SUBDIRS = java.lang java.net java.io java.lang.reflect java.util lib vmi gnu.java.awt.peer.gtk
 
-noinst_HEADERS = config.h config.h.in
-
-EXTRA_DIST = config.h.in
-
