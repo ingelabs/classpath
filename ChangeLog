@@ -14,6 +14,7 @@
 	(BorderUIResource.EmptyBorderUIResource): Add Javadoc.
 	(BorderUIResource.EtchedBorderUIResource): Add Javadoc.
 	(BorderUIResource.LineBorderUIResource): Add Javadoc.
+	(BorderUIResource.MatteBorderUIResource): Add Javadoc.
 
 	(BorderUIResource.LineBorderUIResource): Add comment for noting
 	that there is no constructor which would take a value for
@@ -21,8 +22,10 @@
 	of the enhancement request that was filed with Sun.
 	
 	(BorderUIResource.EmptyBorderUIResource.EmptyBorderUIResource(int,
-	int, int, int)): Call inherited constructor without allocating
-	a new Insets object.
+	int, int, int), BorderUIResource.MatteBorderUIResource
+	.MatteBorderUIResource(int, int, int, int, Color), BorderUIResource
+	.MatteBorderUIResource.MatteBorderUIResource(int, int, int, int, Icon):
+	Call inherited constructor without allocating a new Insets object.
 
 	* javax/swing/border/CompoundBorder.java
 	(CompoundBorder(Border, Border)): Fix typos in API documentation.
