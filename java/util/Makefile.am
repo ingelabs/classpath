@@ -1,5 +1,7 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
+SUBDIRS = jar zip
+
 EXTRA_DIST = \
 ChangeLog \
 AbstractCollection.java \
@@ -45,5 +47,7 @@ SortedSet.java \
 Stack.java \
 StringTokenizer.java \
 TimeZone.java \
+Timer.java \
+TimerTask.java \
 Vector.java \
 WeakHashMap.java

@@ -32,6 +32,7 @@ IllegalStateException.java \
 IllegalThreadStateException.java \
 IncompatibleClassChangeError.java \
 IndexOutOfBoundsException.java \
+InheritableThreadLocal.java \
 InstantiationError.java \
 InstantiationException.java \
 Integer.java \
@@ -51,6 +52,7 @@ Number.java \
 NumberFormatException.java \
 Object.java \
 OutOfMemoryError.java \
+Package.java \
 Process.java \
 Runnable.java \
 RuntimeException.java \
@@ -65,6 +67,7 @@ StringIndexOutOfBoundsException.java \
 System.java \
 ThreadDeath.java \
 ThreadGroup.java \
+ThreadLocal.java \
 Throwable.java \
 UnknownError.java \
 UnsatisfiedLinkError.java \
