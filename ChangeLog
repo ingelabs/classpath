@@ -1,5 +1,22 @@
 2004-12-19  Michael Koch  <konqueror@gmx.de>
 
+	* resource/Makfile.am: Don't call make for subdirs.
+	* resource/gnu/.cvsignore,
+	resource/gnu/java/.cvsignore,
+	resource/gnu/java/awt/.cvsignore,
+	resource/gnu/java/awt/peer/.cvsignore,
+	resource/gnu/java/awt/peer/gtk/.cvsignore,
+	resource/gnu/regexp/.cvsignore,
+	resource/java/.cvsignore,
+	resource/java/security/.cvsignore,
+	resource/java/util/.cvsignore,
+	resource/java/util/logging/.cvsignore,
+	resource/org/.cvsignore,
+	resource/org/ietf/.cvsignore,
+	resource/org/ietf/jgss/.cvsignore: Removed.
+
+2004-12-19  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/locale/iso3166-a3.properties,
 	gnu/java/locale/iso3166_de.properties,
 	gnu/java/locale/iso3166.properties,
