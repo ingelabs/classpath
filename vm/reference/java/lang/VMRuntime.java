@@ -216,6 +216,7 @@ final class VMRuntime
      * <dt>os.arch              <dd>Operating System Architecture
      * <dt>os.version           <dd>Operating System Version
      * <dt>file.separator       <dd>File separator ("/" on Unix)
+     * <dt>file.encoding        <dd>Standard encoding for text (Default 8859_1)
      * <dt>path.separator       <dd>Path separator (":" on Unix)
      * <dt>line.separator       <dd>Line separator ("\n" on Unix)
      * <dt>user.name            <dd>User account name

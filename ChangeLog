@@ -1,3 +1,10 @@
+2004-07-08  Mark Wielaard  <mark@klomp.org>
+
+	* java/lang/System.java (static): Set file.encoding to 8859_1 when
+	not set yet.
+	* vm/reference/java/lang/VMRuntime.java (insertSystemProperties):
+	Document file.encoding property.
+
 2004-07-08  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	* java/io/File.java

@@ -209,6 +209,10 @@ public final class System
     defaultProperties.put("gnu.java.io.encoding_scheme_alias.us-ascii",
 			  "8859_1");
 
+    // 8859_1 is a safe default encoding to use when not explicitly set
+    if (defaultProperties.get("file.encoding") == null)
+      defaultProperties.put("file.encoding", "8859_1");
+
     // XXX FIXME - Temp hack for old systems that set the wrong property
     if (defaultProperties.get("java.io.tmpdir") == null)
       defaultProperties.put("java.io.tmpdir",
