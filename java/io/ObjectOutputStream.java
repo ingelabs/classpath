@@ -825,8 +825,8 @@ public class ObjectOutputStream extends OutputStream
 
 
   /**
-     @see java.io.DataOutputStream#writeUTF (java.lang.String)
-  */
+   * @see java.io.DataOutputStream#writeUTF (java.lang.String)
+   */
   public void writeUTF (String data) throws IOException
   {
     dataOutput.writeUTF (data);

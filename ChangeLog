@@ -1,5 +1,11 @@
 2003-03-23  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/ObjectOutputStream.java,
+	java/io/RandomAccessFile.java:
+	Reformated.
+
+2003-03-23  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/FileInputStream.java:
 	Reformated.
 	* java/io/ObjectOutputStream.java:
