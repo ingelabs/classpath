@@ -147,8 +147,8 @@ import gnu.java.lang.*;
  **
  ** <STRONG>Methods:</STRONG><P>
  ** 
- ** Any public methods which were not used for Properties
- ** or Events are used as Methods.
+ ** Any public methods (including those which were used
+ ** for Properties or Events) are used as Methods.
  **
  ** @author John Keiser
  ** @version 1.1.0, 29 Jul 1998
@@ -168,7 +168,14 @@ public class Introspector {
 	 ** @return the BeanInfo object representing the class.
 	 **/
 	public static BeanInfo getBeanInfo(Class beanClass) throws IntrospectionException {
-		return getBeanInfo(beanClass,null);
+		BeanInfo cachedInfo;
+		cachedInfo = (BeanInfo)beanInfoCache.get(beanClass);
+		if(cachedInfo != null) {
+			return cachedInfo;
+		}
+		cachedInfo = getBeanInfo(beanClass,null);
+		beanInfoCache.put(beanClass,cachedInfo);
+		return cachedInfo;
 	}
 
 	/** Get the BeanInfo for class <CODE>beanClass</CODE>,
@@ -180,87 +187,62 @@ public class Introspector {
 	 ** @param stopClass the class to stop at.
 	 ** @return the BeanInfo object representing the class.
 	 **/
-	public static BeanInfo getBeanInfo(Class beanClass, Class topClass) throws IntrospectionException {
+	public static BeanInfo getBeanInfo(Class beanClass, Class stopClass) throws IntrospectionException {
 		if(beanClass == null) {
 			return null;
 		}
 		synchronized(beanClass) {
 
-		if(topClass == null) {
-			BeanInfo cachedInfo;
-			cachedInfo = (BeanInfo)beanInfoCache.get(beanClass);
-			if(cachedInfo != null) {
-				return cachedInfo;
-			}
-		}
-
-		boolean findBeanDescriptor;
-		boolean findProperties;
-		boolean findEvents;
-		boolean findMethods;
-		boolean findExtraInfo;
-
-		BeanInfo explicitInfo = findExplicitBeanInfo(beanClass);
-		if(explicitInfo != null) {
-			findBeanDescriptor = (explicitInfo.getBeanDescriptor() == null);
-			findProperties = (explicitInfo.getPropertyDescriptors() == null);
-			findEvents = (explicitInfo.getEventSetDescriptors() == null);
-			findMethods = (explicitInfo.getMethodDescriptors() == null);
-			findExtraInfo = (explicitInfo.getAdditionalBeanInfo() == null);
-		} else {
-			findBeanDescriptor = true;
-			findProperties = true;
-			findEvents = true;
-			findMethods = true;
-			findExtraInfo = true;
-		}
-
-		BeanInfo parentInfo;
-		if((!findProperties && !findEvents && !findMethods) || beanClass.equals(topClass) || !findExtraInfo) {
-			parentInfo = null;
-		} else {
-			parentInfo = getBeanInfo(beanClass.getSuperclass(),topClass);
-			if(!findProperties || !findEvents || !findMethods) {
-				parentInfo = copyBeanInfo(parentInfo);
-			}
-		}
+		ExplicitInfo explicit = new ExplicitInfo(beanClass,stopClass);
 
 		IntrospectionIncubator ii = new IntrospectionIncubator();
-		ii.addMethods(beanClass.getDeclaredMethods());
-		BeanInfoEmbryo currentInfo = ii.getBeanInfoEmbryo();
-		
-		if(!findBeanDescriptor) {
-			currentInfo.setBeanDescriptor(explicitInfo.getBeanDescriptor());
-		} else {
-			currentInfo.setBeanDescriptor(new BeanDescriptor(beanClass, null));
-		}
+		ii.setPropertyStopClass(explicit.propertyStopClass);
+		ii.setEventStopClass(explicit.eventStopClass);
+		ii.setMethodStopClass(explicit.methodStopClass);
+		ii.addMethods(beanClass.getMethods());
 
-		if(!findExtraInfo) {
-			currentInfo.setAdditionalBeanInfo(explicitInfo.getAdditionalBeanInfo());
-		} else {
-			if(parentInfo != null) {
-				currentInfo.setParentBeanInfo(parentInfo);
+		BeanInfoEmbryo currentInfo = ii.getBeanInfoEmbryo();
+		PropertyDescriptor[] p = explicit.explicitPropertyDescriptors;
+		if(p!=null) {
+			for(int i=0;i<p.length;i++) {
+				if(!currentInfo.hasProperty(p[i])) {
+					currentInfo.addProperty(p[i]);
+				}
+			}
+			if(explicit.defaultProperty != -1) {
+				currentInfo.setDefaultPropertyName(p[explicit.defaultProperty].getName());
+			}
+		}
+		EventSetDescriptor[] e = explicit.explicitEventSetDescriptors;
+		if(e!=null) {
+			for(int i=0;i<e.length;i++) {
+				if(!currentInfo.hasEvent(e[i])) {
+					currentInfo.addEvent(e[i]);
+				}
+			}
+			if(explicit.defaultEvent != -1) {
+				currentInfo.setDefaultEventName(e[explicit.defaultEvent].getName());
+			}
+		}
+		MethodDescriptor[] m = explicit.explicitMethodDescriptors;
+		if(m!=null) {
+			for(int i=0;i<m.length;i++) {
+				if(!currentInfo.hasMethod(m[i])) {
+					currentInfo.addMethod(m[i]);
+				}
 			}
 		}
 
-		if(!findProperties) {
-			currentInfo.setProperties(explicitInfo.getPropertyDescriptors());
+		if(explicit.explicitBeanDescriptor != null) {
+			currentInfo.setBeanDescriptor(new BeanDescriptor(beanClass,explicit.explicitBeanDescriptor.getCustomizerClass()));
+		} else {
+			currentInfo.setBeanDescriptor(new BeanDescriptor(beanClass,null));
 		}
 
-		if(!findEvents) {
-			currentInfo.setEvents(explicitInfo.getEventSetDescriptors());
-		}
+		currentInfo.setAdditionalBeanInfo(explicit.explicitBeanInfo);
+		currentInfo.setIcons(explicit.im);
 
-		if(!findMethods) {
-			currentInfo.setMethods(explicitInfo.getMethodDescriptors());
-		}
-
-		BeanInfo retval = currentInfo.getBeanInfo();
-		if(topClass == null) {
-			beanInfoCache.put(beanClass,retval);
-		}
-		return retval;
-
+		return currentInfo.getBeanInfo();
 		} // end synchronized(beanClass)
 	}
 
@@ -323,20 +305,111 @@ public class Introspector {
 		                            b.getEventSetDescriptors(),b.getDefaultEventIndex(),
 		                            b.getMethodDescriptors(),icons);
 	}
+}
+
+class ExplicitInfo {
+	BeanDescriptor explicitBeanDescriptor;
+	BeanInfo[] explicitBeanInfo;
+
+	PropertyDescriptor[] explicitPropertyDescriptors;
+	EventSetDescriptor[] explicitEventSetDescriptors;
+	MethodDescriptor[] explicitMethodDescriptors;
+
+	int defaultProperty;
+	int defaultEvent;
+
+	java.awt.Image[] im = new java.awt.Image[4];
+
+	Class propertyStopClass;
+	Class eventStopClass;
+	Class methodStopClass;
+
+	ExplicitInfo(Class beanClass, Class stopClass) {
+		while(beanClass != null && !beanClass.equals(stopClass)) {
+			BeanInfo explicit = findExplicitBeanInfo(beanClass);
+			if(explicit != null) {
+				if(explicitBeanDescriptor == null) {
+					explicitBeanDescriptor = explicit.getBeanDescriptor();
+				}
+				if(explicitBeanInfo == null) {
+					explicitBeanInfo = explicit.getAdditionalBeanInfo();
+				}
+				if(explicitPropertyDescriptors == null) {
+					if(explicit.getPropertyDescriptors() != null) {
+						explicitPropertyDescriptors = explicit.getPropertyDescriptors();
+						defaultProperty = explicit.getDefaultPropertyIndex();
+						propertyStopClass = beanClass;
+					}
+				}
+				if(explicitEventSetDescriptors == null) {
+					if(explicit.getEventSetDescriptors() != null) {
+						explicitEventSetDescriptors = explicit.getEventSetDescriptors();
+						defaultEvent = explicit.getDefaultEventIndex();
+						eventStopClass = beanClass;
+					}
+				}
+				if(explicitMethodDescriptors == null) {
+					if(explicit.getMethodDescriptors() != null) {
+						explicitMethodDescriptors = explicit.getMethodDescriptors();
+						methodStopClass = beanClass;
+					}
+				}
+				if(im[0] == null
+				   && im[1] == null
+				   && im[2] == null
+				   && im[3] == null) {
+					im[0] = explicit.getIcon(0);
+					im[1] = explicit.getIcon(1);
+					im[2] = explicit.getIcon(2);
+					im[3] = explicit.getIcon(3);
+				}
+			}
+			beanClass = beanClass.getSuperclass();
+		}
+		if(propertyStopClass == null) {
+			propertyStopClass = stopClass;
+		}
+		if(eventStopClass == null) {
+			eventStopClass = stopClass;
+		}
+		if(methodStopClass == null) {
+			methodStopClass = stopClass;
+		}
+	}
+
+	static Hashtable explicitBeanInfos = new Hashtable();
+	static Vector emptyBeanInfos = new Vector();
 
 	static BeanInfo findExplicitBeanInfo(Class beanClass) {
+		BeanInfo retval = (BeanInfo)explicitBeanInfos.get(beanClass);
+		if(retval != null) {
+			return retval;
+		} else if(emptyBeanInfos.indexOf(beanClass) != -1) {
+			return null;
+		} else {
+			retval = reallyFindExplicitBeanInfo(beanClass);
+			if(retval != null) {
+				explicitBeanInfos.put(beanClass,retval);
+			} else {
+				emptyBeanInfos.addElement(beanClass);
+			}
+			return retval;
+		}
+	}
+
+	static BeanInfo reallyFindExplicitBeanInfo(Class beanClass) {
 		try {
 		try {
 			return (BeanInfo)Class.forName(beanClass.getName()+"BeanInfo").newInstance();
 		} catch(ClassNotFoundException E) {
 		}
 		String newName = ClassHelper.getTruncatedClassName(beanClass) + "BeanInfo";
-		for(int i=0;i<beanInfoSearchPath.length;i++) {
+		for(int i=0;i<Introspector.beanInfoSearchPath.length;i++) {
 			try {
-				if(beanInfoSearchPath[i].equals("")) {
+				if(Introspector.beanInfoSearchPath[i].equals("")) {
 					return (BeanInfo)Class.forName(newName).newInstance();
 				} else {
-					return (BeanInfo)Class.forName(beanInfoSearchPath[i] + "." + newName).newInstance();
+					return (BeanInfo)Class.forName(Introspector.beanInfoSearchPath[i] + "." + newName).newInstance();
 				}
 			} catch(ClassNotFoundException E) {
 			}
@@ -347,5 +420,3 @@ public class Introspector {
 		return null;
 	}
 }
-
-

@@ -142,7 +142,7 @@ public class PropertyDescriptor extends FeatureDescriptor {
 	 **/
 	public PropertyDescriptor(String name, Method getMethod, Method setMethod) throws IntrospectionException {
 		setName(name);
-		if(setMethod != null && getMethod.getParameterTypes().length > 0) {
+		if(getMethod != null && getMethod.getParameterTypes().length > 0) {
 			throw new IntrospectionException("get method has parameters");
 		}
 		if(setMethod != null && setMethod.getParameterTypes().length != 1) {
