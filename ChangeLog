@@ -1,3 +1,15 @@
+2002-06-13  Tom Tromey  <tromey@redhat.com>
+
+	Fix for Mauve regressions:
+	* java/lang/Long.java (toString): Don't assume decimal output when
+	argument is MIN_VALUE.
+	(toUnsignedString): Don't use Integer.toUnsignedString when NUM is
+	negative.
+	(parseLong): Correctly handle all overflow cases.
+	* java/lang/Integer.java (toString): Don't assume decimal output
+	when argument is MIN_VALUE.
+	(parseInt): Correctly handle all overflow cases.
+
 2002-06-03  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/zip/ZipEntry.java (clone): Copy `extra' field.

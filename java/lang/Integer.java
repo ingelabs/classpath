@@ -138,7 +138,10 @@ public final class Integer extends Number implements Comparable
 
         // When the value is MIN_VALUE, it overflows when made positive
         if (num < 0)
-          return "" + MIN_VALUE;
+	  {
+	    buffer[--i] = digits[(int) (-(num + radix) % radix)];
+	    num = -(num / radix);
+	  }
       }
 
     do
@@ -580,13 +583,22 @@ public final class Integer extends Number implements Comparable
       }
     if (index == len)
       throw new NumberFormatException();
+
+    int max = MAX_VALUE / radix;
+    // We can't directly write `max = (MAX_VALUE + 1) / radix'.
+    // So instead we fake it.
+    if (isNeg && MAX_VALUE % radix == radix - 1)
+      ++max;
+
     int val = 0;
     while (index < len)
       {
+	if (val < 0 || val > max)
+	  throw new NumberFormatException();
+
         ch = Character.digit(str.charAt(index++), radix);
         val = val * radix + ch;
-        if (ch < 0 || (val < 0 && (index < len || ! isNeg
-                                   || val != MIN_VALUE)))
+        if (ch < 0 || (val < 0 && (! isNeg || val != MIN_VALUE)))
           throw new NumberFormatException();
       }
     return isNeg ? -val : val;

@@ -142,7 +142,10 @@ public final class Long extends Number implements Comparable
 
         // When the value is MIN_VALUE, it overflows when made positive
         if (num < 0)
-          return "" + MIN_VALUE;
+	  {
+	    buffer[--i] = digits[(int) (-(num + radix) % radix)];
+	    num = -(num / radix);
+	  }
       }
 
     do
@@ -516,8 +519,10 @@ public final class Long extends Number implements Comparable
    */
   private static String toUnsignedString(long num, int exp)
   {
-    // Use the Integer toString for efficiency if possible.
-    if ((int) num == num)
+    // Use the Integer toUnsignedString for efficiency if possible.
+    // If NUM<0 then this particular optimization doesn't work
+    // properly.
+    if (num >= 0 && (int) num == num)
       return Integer.toUnsignedString((int) num, exp);
 
     // Use an array large enough for a binary number.
@@ -586,13 +591,22 @@ public final class Long extends Number implements Comparable
       }
     if (index == len)
       throw new NumberFormatException();
+
+    long max = MAX_VALUE / radix;
+    // We can't directly write `max = (MAX_VALUE + 1) / radix'.
+    // So instead we fake it.
+    if (isNeg && MAX_VALUE % radix == radix - 1)
+      ++max;
+
     long val = 0;
     while (index < len)
       {
+	if (val < 0 || val > max)
+	  throw new NumberFormatException();
+
         ch = Character.digit(str.charAt(index++), radix);
         val = val * radix + ch;
-        if (ch < 0 || (val < 0 && (index < len || ! isNeg
-                                   || val != MIN_VALUE)))
+        if (ch < 0 || (val < 0 && (! isNeg || val != MIN_VALUE)))
           throw new NumberFormatException();
       }
     return isNeg ? -val : val;
