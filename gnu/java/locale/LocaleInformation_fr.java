@@ -855,6 +855,17 @@ public class LocaleInformation_fr extends ListResourceBundle
 
   private static final Object languages = new Hashtablelanguages();
 
+  private static final class Hashtablevariants extends java.util.Hashtable
+  {
+    public Hashtablevariants()
+      {
+        super();
+        put("REVISED", "R\u00e9vis\u00e9");
+      }
+  }
+
+  private static final Object variants = new Hashtablevariants();
+
   private static final Object[][] contents =
   {
     { "decimalSeparator", "," },
@@ -873,6 +884,7 @@ public class LocaleInformation_fr extends ListResourceBundle
     { "zoneStrings", zoneStrings },
     { "territories", territories },
     { "languages", languages },
+    { "variants", variants },
   };
 
   public Object[][] getContents() { return contents; }

@@ -657,6 +657,17 @@ public class LocaleInformation_zh_Hant extends ListResourceBundle
 
   private static final Object languages = new Hashtablelanguages();
 
+  private static final class Hashtablevariants extends java.util.Hashtable
+  {
+    public Hashtablevariants()
+      {
+        super();
+        put("REVISED", "\u5df2\u4fee\u8a02");
+      }
+  }
+
+  private static final Object variants = new Hashtablevariants();
+
   private static final Object[][] contents =
   {
     { "shortDateFormat", "yyyy/M/d" },
@@ -670,6 +681,7 @@ public class LocaleInformation_zh_Hant extends ListResourceBundle
     { "zoneStrings", zoneStrings },
     { "territories", territories },
     { "languages", languages },
+    { "variants", variants },
   };
 
   public Object[][] getContents() { return contents; }

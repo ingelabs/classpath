@@ -936,6 +936,29 @@ public class LocaleInformation_en extends ListResourceBundle
 
   private static final Object languages = new Hashtablelanguages();
 
+  private static final class Hashtablevariants extends java.util.Hashtable
+  {
+    public Hashtablevariants()
+      {
+        super();
+        put("REVISED", "Revised Orthography");
+        put("lojban", "Lojban");
+        put("POSIX", "Computer");
+        put("gaulish", "Gaulish");
+        put("rozaj", "Resian");
+        put("nedis", "Natisone dialect");
+        put("boont", "Boontling");
+        put("1996", "German orthography of 1996");
+        put("guoyu", "Mandarin or Standard Chinese");
+        put("hakka", "Hakka");
+        put("xiang", "Xiang or Hunanese");
+        put("1901", "Traditional German orthography");
+        put("scouse", "Scouse");
+      }
+  }
+
+  private static final Object variants = new Hashtablevariants();
+
   private static final Object[][] contents =
   {
     { "collation_rules", collation_rules },
@@ -972,6 +995,7 @@ public class LocaleInformation_en extends ListResourceBundle
     { "percentFormat", "#,##0%" },
     { "territories", territories },
     { "languages", languages },
+    { "variants", variants },
   };
 
   public Object[][] getContents() { return contents; }

@@ -854,6 +854,17 @@ public class LocaleInformation_ko extends ListResourceBundle
 
   private static final Object languages = new Hashtablelanguages();
 
+  private static final class Hashtablevariants extends java.util.Hashtable
+  {
+    public Hashtablevariants()
+      {
+        super();
+        put("REVISED", "\uac1c\uc815");
+      }
+  }
+
+  private static final Object variants = new Hashtablevariants();
+
   private static final Object[][] contents =
   {
     { "localPatternChars", "GanjkHmsSEDFwWxhKzAeugXZ" },
@@ -874,6 +885,7 @@ public class LocaleInformation_ko extends ListResourceBundle
     { "zoneStrings", zoneStrings },
     { "territories", territories },
     { "languages", languages },
+    { "variants", variants },
   };
 
   public Object[][] getContents() { return contents; }

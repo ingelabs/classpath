@@ -1,5 +1,23 @@
 2004-12-30  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/locale/LocaleInformation_de.java,
+	gnu/java/locale/LocaleInformation_en.java,
+	gnu/java/locale/LocaleInformation_es.java,
+	gnu/java/locale/LocaleInformation_fr.java,
+	gnu/java/locale/LocaleInformation_it.java,
+	gnu/java/locale/LocaleInformation_ja.java,
+	gnu/java/locale/LocaleInformation_ko.java,
+	gnu/java/locale/LocaleInformation_nb.java,
+	gnu/java/locale/LocaleInformation_nl.java,
+	gnu/java/locale/LocaleInformation_pt.java,
+	gnu/java/locale/LocaleInformation_sv.java,
+	gnu/java/locale/LocaleInformation_zh.java,
+	gnu/java/locale/LocaleInformation_zh_Hant.java:
+	Regenerated with newer gnu.lcoalegen to include localized variant
+	names.
+
+2004-12-30  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/awt/peer/gtk/GtkToolkit.java:
 	Explicitely import used classes.
 	(getLocalGraphicsEnvironment): Simplify.

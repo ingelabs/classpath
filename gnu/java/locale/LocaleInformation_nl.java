@@ -842,6 +842,17 @@ public class LocaleInformation_nl extends ListResourceBundle
 
   private static final Object languages = new Hashtablelanguages();
 
+  private static final class Hashtablevariants extends java.util.Hashtable
+  {
+    public Hashtablevariants()
+      {
+        super();
+        put("REVISED", "Gewijzigd");
+      }
+  }
+
+  private static final Object variants = new Hashtablevariants();
+
   private static final Object[][] contents =
   {
     { "collation_rules", collation_rules },
@@ -864,6 +875,7 @@ public class LocaleInformation_nl extends ListResourceBundle
     { "zoneStrings", zoneStrings },
     { "territories", territories },
     { "languages", languages },
+    { "variants", variants },
   };
 
   public Object[][] getContents() { return contents; }
