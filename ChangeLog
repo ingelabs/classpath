@@ -1,5 +1,14 @@
 2004-09-28  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/URLConnection.java:
+	Reformatted.
+	(getContent): Make sure we are connected. Moved code to get content
+	handler to getContentHandler() method for easier merging with libgcj's
+	version.
+	(getContentHandler): New method.
+
+2004-09-28  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/URLClassLoader.java:
 	Reformated.
 	(addURLImpl): Partly merged with libgcj's version.
