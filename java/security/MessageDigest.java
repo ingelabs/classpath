@@ -1,20 +1,29 @@
 /* MessageDigest.java --- The message digest interface.
-   
-  Copyright (c) 1999 by Free Software Foundation, Inc.
-  Written by Mark Benvenuto <ivymccough@worldnet.att.net>
+   Copyright (C) 1999 Free Software Foundation, Inc.
 
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU Library General Public License as published 
-  by the Free Software Foundation, version 2. (see COPYING.LIB)
+This file is part of GNU Classpath.
 
-  This program is distributed in the hope that it will be useful, but
-  WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+GNU Classpath is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
+ 
+GNU Classpath is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software Foundation
-  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307 USA. */
+You should have received a copy of the GNU General Public License
+along with GNU Classpath; see the file COPYING.  If not, write to the
+Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+02111-1307 USA.
+
+As a special exception, if you link this library with other files to
+produce an executable, this library does not by itself cause the
+resulting executable to be covered by the GNU General Public License.
+This exception does not however invalidate any other reasons why the
+executable file might be covered by the GNU General Public License. */
+
 
 package java.security;
 
@@ -52,11 +61,11 @@ public abstract class MessageDigest extends MessageDigestSpi
     Provider[] p = Security.getProviders ();
 
     for (int i = 0; i < p.length; i++)
-    {
-      String classname = p[i].getProperty ("MessageDigest." + algorithm);
-      if (classname != null)
-	return getInstance (classname, algorithm, p[i]);
-    }
+      {
+	String classname = p[i].getProperty ("MessageDigest." + algorithm);
+	if (classname != null)
+	  return getInstance (classname, algorithm, p[i]);
+      }
 
     throw new NoSuchAlgorithmException (algorithm);
   }
@@ -97,25 +106,25 @@ public abstract class MessageDigest extends MessageDigestSpi
       throw new NoSuchAlgorithmException (algorithm);
 
     try
-    {
-      MessageDigest m = (MessageDigest)Class.forName (classname).newInstance();
-      m.algorithm = algorithm;
-      m.provider = provider;
-      return m;		
-    }
+      {
+	MessageDigest m = (MessageDigest)Class.forName (classname).newInstance();
+	m.algorithm = algorithm;
+	m.provider = provider;
+	return m;		
+      }
     catch (ClassNotFoundException cnfe)
-    {
-      throw new NoSuchAlgorithmException (algorithm + ": Class not found.");
-    }
+      {
+	throw new NoSuchAlgorithmException (algorithm + ": Class not found.");
+      }
     catch (InstantiationException ie)
-    {
-      throw new NoSuchAlgorithmException (algorithm
-					  + ": Class instantiation failed.");
-    }
+      {
+	throw new NoSuchAlgorithmException (algorithm
+					    + ": Class instantiation failed.");
+      }
     catch (IllegalAccessException iae)
-    {
-      throw new NoSuchAlgorithmException (algorithm + ": Illegal Access");
-    }
+      {
+	throw new NoSuchAlgorithmException (algorithm + ": Illegal Access");
+      }
   }
   
   
@@ -291,14 +300,14 @@ public abstract class MessageDigest extends MessageDigestSpi
     StringBuffer buf = new StringBuffer ();
     int len = digest.length;
     for (int i = 0; i < len; ++ i)
-    {
-      byte b = digest[i];
-      byte high = (byte)((b & 0xff) >>> 4);
-      byte low = (byte)(b & 0xf);
+      {
+	byte b = digest[i];
+	byte high = (byte)((b & 0xff) >>> 4);
+	byte low = (byte)(b & 0xf);
 
-      buf.append (high > 9 ? ('a' - 10) + high : '0' + high);
-      buf.append (low > 9 ? ('a' - 10) + low : '0' + low);
-    }
+	buf.append (high > 9 ? ('a' - 10) + high : '0' + high);
+	buf.append (low > 9 ? ('a' - 10) + low : '0' + low);
+      }
 
     return buf.toString ();
   }
