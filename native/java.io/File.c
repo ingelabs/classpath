@@ -152,7 +152,7 @@ Java_java_io_File_setReadOnlyInternal(JNIEnv *env, jobject obj, jstring name)
     }
 
   newmode = buf.st_mode;
-  newmode = newmode ^ (S_IWRITE|S_IWGRP|S_IWOTH);
+  newmode = newmode & (~(S_IWRITE|S_IWGRP|S_IWOTH));
 
   rc = chmod(fname, newmode);
   (*env)->ReleaseStringUTFChars(env, name, fname);
