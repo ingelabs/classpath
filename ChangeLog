@@ -1,5 +1,7 @@
 2004-09-28  Tom Tromey  <tromey@redhat.com>
 
+	* javax/crypto/MacSpi.java: Fixed typo.
+
 	* java/lang/System.java (getenv): Added @specnote.
 
 2004-09-28  Jerry Quinn  <jlquinn@optonline.net>
