@@ -1,3 +1,5 @@
+#include <config.h>
+
 #ifndef __FDLIBM__
 #define __FDLIBM__
 

@@ -154,7 +154,7 @@ JNIEXPORT void JNICALL Java_java_math_BigInteger_initFromTwosCompByteArray
     }
 
   /* make sure we write out the array len in big endian format */
-#if __BYTEORDER == __LITTE_ENDIAN
+#ifndef WORDS_BIGENDIAN
   array_len_to_write = SWAPU32 ((unsigned)array_len);
 #else
   array_len_to_write = array_len;
@@ -195,7 +195,7 @@ JNIEXPORT void JNICALL Java_java_math_BigInteger_initFromSignedMagnitudeByteArra
   array_len_to_write = (sign < 0) ? -array_len : array_len;
   
   /* make sure we write out the array len in big endian format */
-#if __BYTEORDER == __LITTE_ENDIAN
+#ifndef WORDS_BIGENDIAN
   array_len_to_write = SWAPU32 ((unsigned)array_len_to_write);
 #endif
 

@@ -38,6 +38,8 @@ AC_HEADER_TIME
 AC_STRUCT_TM
 AC_STRUCT_TIMEZONE
 
+AC_C_BIGENDIAN
+
 dnl guile checks - shouldn't need now that mauve exists
 dnl GUILE_FLAGS
 
