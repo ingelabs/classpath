@@ -1,5 +1,16 @@
 2003-07-16  Torsten Rupp  <rupp@lisa.aicas.com>
 
+        * java/io/class-dependencies.conf:
+        java/lang/class-dependencies.conf:
+        java/math/class-dependencies.conf:
+        java/net/class-dependencies.conf:
+        java/nio/class-dependencies.conf:
+        java/text/class-dependencies.conf:
+        java/util/class-dependencies.conf:
+        Class dependencies file
+
+2003-07-16  Torsten Rupp  <rupp@lisa.aicas.com>
+
         * native/target/generic/target_generic_file.h:
         Fixed typing error
 
