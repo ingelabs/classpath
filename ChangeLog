@@ -1,5 +1,12 @@
 2004-07-15  Michael Koch  <konqueror@gmx.de>
 
+	* java/util/zip/OutputWindow.java:
+	Fixed javadocs all over.
+	(WINDOW_SIZE): Made static.
+	(WINDOW_MASK): Made static.
+
+2004-07-15  Michael Koch  <konqueror@gmx.de>
+
 	* java/security/Security.java: Fixed javadocs all over.
 
 2004-07-15  Michael Koch  <konqueror@gmx.de>
