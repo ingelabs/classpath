@@ -1,4 +1,7 @@
 2001-01-06  Brian Jones  <cbj@gnu.org>
+	* mauve-classpath: Mauve testing file can be used with Japhar.
+
+2001-01-06  Brian Jones  <cbj@gnu.org>
 	* Release classpath-0.02
 	* doc/www.gnu.org/announce/20010106.mhtml: New file.
 	* resource/japhar-0.09.patch.1: patch for Japhar 0.09 for 
