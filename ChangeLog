@@ -1,5 +1,9 @@
 2002-02-10  Mark Wielaard <mark@klomp.org>
 
+	* doc/www.gnu.org/home.wml: Fix 2001->2002 typo
+
+2002-02-10  Mark Wielaard <mark@klomp.org>
+
 	* doc/www.gnu.org/doc/orp.wml: Revert CLASSPATH setting. No zip file
 	in this release.
 
