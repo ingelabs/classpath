@@ -285,6 +285,8 @@ read() throws IOException
   byte[] buf = new byte[1];
 
   int bytes_read = readInternal(native_fd, buf, 0, buf.length);
+  if (bytes_read == 0)
+    return(-1);
   if (bytes_read == -1)
     return(-1);
 
@@ -345,6 +347,8 @@ read(byte[] buf, int offset, int len) throws IOException
     return(0);
 
   int bytes_read = readInternal(native_fd, buf, offset, len);
+  if (bytes_read == 0)
+    return(-1);
   if (bytes_read == -1)
     return(-1);
 
