@@ -1,3 +1,8 @@
+2003-07-08  Torsten Rupp  <rupp@lisa.aicas.com>
+
+        * native/target/generic/target_generic_file.h:
+        More fixed for native layer: open with sync/dsync, 64bit-clean
+
 2003-07-07  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkTextComponentPeer.java
