@@ -6,7 +6,7 @@ dnl -----------------------------------------------------------
 dnl define([AC_CACHE_LOAD], )dnl
 dnl define([AC_CACHE_SAVE], )dnl
 
-AC_INIT([GNU Classpath],[0.13+cvs],[classpath@gnu.org],[classpath])
+AC_INIT([GNU Classpath],[0.14],[classpath@gnu.org],[classpath])
 AC_CONFIG_SRCDIR(java/lang/System.java)
 
 AC_CANONICAL_TARGET

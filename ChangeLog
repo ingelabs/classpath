@@ -1,3 +1,8 @@
+2005-02-25  Mark Wielaard  <mark@klomp.org>
+
+	* NEWS: Add 0.14 release date.
+	* configure.ac: Set version to 0.14.
+
 2005-02-25  Sven de Marothy  <sven@physto.se>
 
 	* java/net/InetAddress.java
