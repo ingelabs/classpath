@@ -55,6 +55,7 @@ gnu/tools/Makefile \
 gnu/tools/serialver/Makefile \
 java/Makefile \
 java/io/Makefile \
+java/lang/reflect/Makefile \
 java/net/Makefile \
 native/Makefile \
 native/java.io/Makefile \
