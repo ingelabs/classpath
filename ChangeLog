@@ -1,3 +1,10 @@
+2002-02-19  Eric Blake  <ebb9@email.byu.edu>
+
+	* scripts/unicode-blocks.pl: Move from doc/unicode/.
+	* scripts/unicode-muncher.pl: Ditto.
+	* gnu/java/lang/CharData.java: Regenerate.
+	* java/lang/Character.java (UnicodeBlock): Regenerate.
+
 2002-02-19  Mark Wielaard  <mark@klomp.org>
 
         Based on patches submitted by Wu Gansha <gansha.wu@intel.com>
