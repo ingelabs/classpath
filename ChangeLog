@@ -1,3 +1,8 @@
+2003-07-01  Sascha Brawer  <brawer@dandelis.ch>
+
+	* javax/swing/plaf/basic/BasicBorders.java (SplitPaneBorder):
+	For a bug report filed with Sun, replace the review ID by its bug ID.
+
 2003-06-30  Gary Benson  <gbenson@redhat.com>
 
 	* javax/naming/spi/NamingManager.java (getURLContext): Use
