@@ -1,5 +1,8 @@
 2003-02-16  Tom Tromey  <tromey@redhat.com>
 
+	* javax/swing/undo/AbstractUndoableEdit.java (toString):
+	Implemented.
+
 	* javax/swing/undo/StateEdit.java: Implemented.
 
 	* javax/swing/undo/StateEdit.java: Reindented.

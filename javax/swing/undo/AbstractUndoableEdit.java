@@ -201,8 +201,9 @@ public class AbstractUndoableEdit implements UndoableEdit, Serializable
    */
   public String toString()
   {
-    return null; // TODO
-  } // toString()
+    return (super.toString() + " hasBeenDone: " + hasBeenDone
+	    + " alive: " + alive);
+  }
 
   /**
    * undo
