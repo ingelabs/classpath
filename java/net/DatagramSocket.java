@@ -94,9 +94,23 @@ public class DatagramSocket
   private int remotePort = -1;
 
   /**
-   * Is this a "connected" datagram socket?
+   * Indicates when the socket is closed.
    */
-  private boolean connected = false;
+  private boolean closed = false;
+
+  /**
+   * Creates a DatagramSocket from a specified DatagramSocketImpl instance
+   *
+   * @param impl The DatagramSocketImpl the socket will be created from
+   * 
+   * @since 1.4
+   */
+  protected DatagramSocket (DatagramSocketImpl impl)
+  {
+    this.impl = impl;
+    this.remoteAddress = null;
+    this.remotePort = -1;
+  }
 
   /**
    * Initializes a new instance of <code>DatagramSocket</code> that binds to 
@@ -179,7 +193,13 @@ public class DatagramSocket
    */
   public void close()
   {
-    impl.close();
+    if (!closed)
+      {
+        impl.close();
+        remoteAddress = null;
+        remotePort = -1;
+        closed = true;
+      }
   }
 
   /**
@@ -388,8 +408,7 @@ public class DatagramSocket
    *
    * @since 1.2
    */
-  public void connect (InetAddress address, int port)
-    throws SecurityException, IllegalArgumentException
+  public void connect(InetAddress address, int port)
   {
     if (address == null)
       throw new IllegalArgumentException ("Connect address may not be null");
@@ -412,7 +431,7 @@ public class DatagramSocket
   } 
 
   /**
-   * This method disconnects this socket from the address/port it was 
+   * This method disconnects this socket from the address/port it was
    * connected to.  If the socket was not connected in the first place,
    * this method does nothing.
    * 
@@ -435,9 +454,28 @@ public class DatagramSocket
    * @param p A <code>DatagramPacket</code> for storing the data
    *
    * @exception IOException If an error occurs.
+   * @exception SocketTimeoutException If setSoTimeout was previously called
+   * and the timeout has expired.
+   * @exception PortUnreachableException If the socket is connected to a
+   * currently unreachable destination. Note, there is no guarantee that the
+   * exception will be thrown.
+   * @exception IllegalBlockingModeException If this socket has an associated
+   * channel, and the channel is in non-blocking mode.
+   * @exception SecurityException If a security manager exists and its
+   * checkAccept ethod doesn't allow the receive.
    */
   public synchronized void receive(DatagramPacket p) throws IOException
   {
+    if (impl == null)
+      throw new IOException ("Cannot initialize Socket implementation");
+
+    if (remoteAddress != null && remoteAddress.isMulticastAddress ())
+      throw new IOException (
+        "Socket connected to a multicast address my not receive");
+
+    if (ch != null && !ch.isBlocking ())
+      throw new IllegalBlockingModeException ();
+
     impl.receive(p);
 
     SecurityManager s = System.getSecurityManager();
@@ -462,21 +500,31 @@ public class DatagramSocket
    */
   public void send(DatagramPacket p) throws IOException
   {
-    if (!connected)
+    // JDK1.2: Don't do security checks if socket is connected; see jdk1.2 api.
+    SecurityManager s = System.getSecurityManager();
+    if (s != null && !isConnected ())
       {
-        SecurityManager s = System.getSecurityManager();
-        if (s != null)
-          {
-             InetAddress addr = p.getAddress();
-             if (addr.isMulticastAddress())
-               s.checkMulticast(addr);
-             else
-               s.checkConnect(addr.getHostAddress(), p.getPort());
-          }
+        InetAddress addr = p.getAddress();
+        if (addr.isMulticastAddress())
+          s.checkMulticast(addr);
+        else
+          s.checkConnect(addr.getHostAddress(), p.getPort());
       }
 
+    if (isConnected ())
+      {
+        if (p.getAddress () != null && (remoteAddress != p.getAddress () ||
+                                        remotePort != p.getPort ()))
+          throw new IllegalArgumentException (
+            "DatagramPacket address does not match remote address" );
+      }
+	    
     // FIXME: if this is a subclass of MulticastSocket,
     // use getTimeToLive for TTL val.
+
+    if (ch != null && !ch.isBlocking ())
+      throw new IllegalBlockingModeException ();
+
     impl.send(p);
   }
 
@@ -505,6 +553,16 @@ public class DatagramSocket
       s.checkListen(tmp.getPort ());
 
     impl.bind (tmp.getPort (), tmp.getAddress ());
+  }
+
+  /**
+   * Checks if the datagram socket is closed.
+   *
+   * @since 1.4
+   */
+  public boolean isClosed()
+  {
+    return closed;
   }
 
   /**

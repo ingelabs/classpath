@@ -1,5 +1,17 @@
 2003-03-02  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/DatagramSocket.java
+	(connected): Removed.
+	(closed): New member variable.
+	(DatagramSocket): New constructor.
+	(close): Reset member variables on close.
+	(connect): Dont declare to throw exceptions.
+	(receive): Added exception checks and documentation.
+	(send): Merge implementation from libgcj.
+	(isClosed): New method.
+
+2003-03-02  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/HttpURLConnection.java
 	(HTTP_SERVER_ERROR): Deprecated.
 	* java/net/MulticastSocket.java
