@@ -64,13 +64,23 @@ the parent class.
 
 For example:
 
-import gnu.test.*
+import gnu.test.*;
 public class TestContainer {
   public static class test1 implements Test {
-     // test1
+     String getName() {
+       return "test1";
+     }
+     Result test() {
+       // test1 ...
+     }
   }
   public static class test2 implements Test {
-     // test2
+    String getName() {
+      return "test2";
+    }
+    Result test() {
+      // test2 ...
+    }
   }
 }
 
