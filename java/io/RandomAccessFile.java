@@ -921,9 +921,12 @@ skipBytes(int n) throws EOFException, IOException
   if (n <= 0)
     return(0);
 
-  long total_skipped = skipInternal(native_fd, n);
+  long file_length = this.length();
+  long file_position = this.getFilePointer();
+  int skip_length = (int) Math.min(n, file_length - file_position);
+  long total_skipped = skipInternal(native_fd, skip_length);
 
-  return((int)n);
+  return((int)total_skipped);
 }
 
 /*************************************************************************/
