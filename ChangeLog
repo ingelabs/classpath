@@ -1,5 +1,12 @@
 2004-05-02  Mark Wielaard  <mark@klomp.org>
 
+	Reverting bad commit from 2004-04-29
+	* javax/swing/JComponent.java (reshape): Call super.reshape().
+	* javax/swing/ViewportLayout.java (layoutContainer): Call
+	parent.countComponents().
+
+2004-05-02  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/java/nio/channels/FileChannelImpl.java (finalize): New method.
 
 2004-05-01  Mark Wielaard  <mark@klomp.org>

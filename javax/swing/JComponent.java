@@ -943,7 +943,7 @@ public abstract class JComponent extends Container implements Serializable
 	public void reshape(int x, int y, int w, int h)
 	{
 		///      Moves and resizes this component.
-		setBounds(x,y,w,h);
+		super.reshape(x,y,w,h);
 	}
 
 	public void revalidate()
