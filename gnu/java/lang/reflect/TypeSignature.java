@@ -134,17 +134,19 @@ public class TypeSignature
     if( type_code.charAt( 0 ) == 'L' )
     {
       return Class.forName(
-	type_code.substring( 1, type_code.length() - 2 ).replace( '/', '.' ));
+	type_code.substring( 1, type_code.length() - 1 ).replace( '/', '.' ));
     }
     if( type_code.charAt( 0 ) == '[' )
     {
       int last_bracket = type_code.lastIndexOf( '[' );
-      String array_part = type_code.substring( 0, last_bracket + 1 );
-      String component_part = 
-	getClassForEncoding( type_code.substring( last_bracket + 1 )
-			     ).getName();
+      String brackets = type_code.substring( 0, last_bracket + 1 );
+      String component = type_code.substring( last_bracket + 1 );
       
-      return Class.forName( array_part + component_part );
+      if( component.charAt( 0 ) == 'L' )
+	component =
+	  component.substring( 1, component.length() - 1 ).replace('/', '.');
+
+      return Class.forName( brackets + component );
     }
     else
       throw new ClassNotFoundException( "Type code cannot be parsed as a valid class name" );
