@@ -1,5 +1,10 @@
 2004-12-14  Michael Koch  <konqueror@gmx.de>
 
+	* java/text/NumberFormat.java (getIntegerInstance):
+	Make sure that doubles get formatted as integers.
+
+2004-12-14  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JTree.java
 	(collapsePath): New method.
 	(collapseRow): Likewise.
