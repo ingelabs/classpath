@@ -1,3 +1,85 @@
+2002-05-28  Andrew Selkirk  <aselkirk@sympatico.ca>
+
+	* javax/swing/AbstractAction.java: Updated.
+	* javax/swing/AbstractButton.java: Updated.
+	* javax/swing/AbstractCellEditor.java: New file.
+	* javax/swing/CellRendererPane.java: New file.
+	* javax/swing/ComponentInputMap.java: Updated.
+	* javax/swing/DebugGraphics.java: New file.
+	* javax/swing/DefaultCellEditor.java: New file.
+	* javax/swing/DefaultComboBoxModel.java: New file.
+	* javax/swing/DefaultDesktopManager.java: New file.
+	* javax/swing/DefaultFocusManager.java: New file.
+	* javax/swing/DefaultListCellRenderer.java: New file.
+	* javax/swing/DefaultSingleSelectionModel.java: New file.
+	* javax/swing/FocusManager.java: New file.
+	* javax/swing/JCheckBoxMenuItem.java: New file.
+	* javax/swing/JColorChooser.java: New file.
+	* javax/swing/JComboBox.java: New file.
+	* javax/swing/JComponent.java: Updated.
+	* javax/swing/JDesktopPane.java: New file.
+	* javax/swing/JFileChooser.java: New file.
+	* javax/swing/JMenu.java: New file.
+	* javax/swing/JMenuItem.java: New file.
+	* javax/swing/JPasswordField.java: New file.
+	* javax/swing/JPopupMenu.java: New file.
+	* javax/swing/JProgressBar.java: New file.
+	* javax/swing/JRadioButtonMenuItem.java: New file.
+	* javax/swing/JSeparator.java: New file.
+	* javax/swing/JSlider.java: New file.
+	* javax/swing/JSplitPane.java: New file.
+	* javax/swing/JTextField.java: Updated.
+	* javax/swing/JTextPane.java: New file.
+	* javax/swing/JToolBar.java: New file.
+	* javax/swing/Makefile.am: Updated.
+	* javax/swing/OverlayLayout.java: New file.
+	* javax/swing/ProgressMonitor.java: New file.
+	* javax/swing/ProgressMonitorInputStream.java: New file.
+	* javax/swing/RepaintManager.java: New file.
+	* javax/swing/ScrollPaneLayout.java: New file.
+	* javax/swing/ToolTipManager.java: New file.
+	* javax/swing/ViewportLayout.java: New file.
+	* javax/swing/colorchooser/AbstractColorChooserPanel.java: New file.
+	* javax/swing/colorchooser/ColorChooserComponentFactory.java: New file.
+	* javax/swing/colorchooser/ColorSelectionModel.java: New file.
+	* javax/swing/colorchooser/DefaultColorSelectionModel.java: New file.
+	* javax/swing/colorchooser/Makefile.am: New file.
+	* javax/swing/colorchooser/package.html: New file.
+	* javax/swing/filechooser/FileFilter.java: New file.
+	* javax/swing/filechooser/FileSystemView.java: New file.
+	* javax/swing/filechooser/FileView.java: New file.
+	* javax/swing/filechooser/Makefile.am: New file.
+	* javax/swing/filechooser/package.html: New file.
+	* javax/swing/plaf/ActionMapUIResource.java: New file.
+	* javax/swing/plaf/ColorChooserUI.java: New file.
+	* javax/swing/plaf/ComboBoxUI.java: New file.
+	* javax/swing/plaf/ComponentInputMapUIResource.java: New file.
+	* javax/swing/plaf/DesktopIconUI.java: New file.
+	* javax/swing/plaf/DesktopPaneUI.java: New file.
+	* javax/swing/plaf/FileChooserUI.java: New file.
+	* javax/swing/plaf/InputMapUIResource.java: New file.
+	* javax/swing/plaf/InternalFrameUI.java: New file.
+	* javax/swing/plaf/Makefile.am: Updated.
+	* javax/swing/plaf/MenuBarUI.java: New file.
+	* javax/swing/plaf/MenuItemUI.java: New file.
+	* javax/swing/plaf/PopupMenuUI.java: New file.
+	* javax/swing/plaf/ProgressBarUI.java: New file.
+	* javax/swing/plaf/RootPaneUI.java: New file.
+	* javax/swing/plaf/ScrollBarUI.java: New file.
+	* javax/swing/plaf/ScrollPaneUI.java: Updated.
+	* javax/swing/plaf/SeparatorUI.java: New file.
+	* javax/swing/plaf/SliderUI.java: New file.
+	* javax/swing/plaf/SplitPaneUI.java: New file.
+	* javax/swing/plaf/TableHeaderUI.java: New file.
+	* javax/swing/plaf/TableUI.java: New file.
+	* javax/swing/plaf/ToolBarUI.java: New file.
+	* javax/swing/plaf/ToolTipUI.java: New file.
+	* javax/swing/text/JTextComponent.java: Updated.
+	* javax/swing/text/MutableAttributeSet.java: New file.
+	* javax/swing/text/StyledDocument.java: New file.
+	* javax/swing/text/StyledEditorKit.java: New file.
+	* javax/swing/text/TextAction.java: New file.
+
 2002-05-26  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/TimerTask.java:  Fix javadoc code example.
