@@ -796,7 +796,7 @@ public final class String implements Serializable, Comparable, CharSequence
     while (--len >= 0)
       {
         char c1 = value[toffset++];
-        char c2 = value[ooffset++];
+        char c2 = other.value[ooffset++];
         // Note that checking c1 != c2 is redundant when ignoreCase is true,
         // but it avoids method calls.
         if (c1 != c2
