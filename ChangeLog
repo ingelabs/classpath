@@ -1,3 +1,10 @@
+2003-10-24  Julian Dolby  <dolby@us.ibm.com>
+
+	* javax/naming/InitialContext.java (lookup(Name)): When a
+	CannotProceedException is thrown use the ContinuationContext.
+	(lookup(String)): Likewise.
+	(close): Clear myProps and defaultInitCtx.
+
 2003-10-24  Ito Kazumitsu <kaz@maczuka.gcd.org>
 
 	* java/text/DecimalFormat.java
