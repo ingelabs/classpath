@@ -474,7 +474,7 @@ writeUTF(String s) throws IOException
   * @exception IOException If an error occurs.
   */
 public void
-write(byte b) throws IOException
+write(int b) throws IOException
 {
   out.write(b);
 }
