@@ -36,6 +36,11 @@ package java.io;
 public class RandomAccessFile implements DataOutput, DataInput
 {
 
+static
+{
+  System.loadLibrary("javaio");
+}
+
 /*************************************************************************/
 
 /*
@@ -115,17 +120,10 @@ RandomAccessFile(File file, String mode) throws IllegalArgumentException,
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
     {
-//      try
-//        {
-          if (mode.equals("r"))
-            sm.checkRead(file.getPath());
-          else if (mode.equals("rw"))
-            sm.checkWrite(file.getPath());
-//        }
-//      catch(AccessControlException e)
-//        {
-//          throw new SecurityException(e.getMessage());
-//        }
+      if (mode.equals("r"))
+        sm.checkRead(file.getPath());
+      else if (mode.equals("rw"))
+        sm.checkWrite(file.getPath());
     }
 
   if (mode.equals("r"))

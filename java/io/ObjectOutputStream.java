@@ -1080,9 +1080,9 @@ public class ObjectOutputStream extends OutputStream
   static
   {
     //DEBUG
-    System.out.println( "Using ObjectOutputStream" );
+    //System.out.println( "Using ObjectOutputStream" );
     //eDEBUG
 
-    System.loadLibrary( "java_io_ObjectOutputStream" );
+    System.loadLibrary( "javaio" );
   }
 }

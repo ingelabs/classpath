@@ -73,6 +73,11 @@ public static final String pathSeparator = System.getProperty("path.separator");
   */
 public static final char pathSeparatorChar = pathSeparator.charAt(0);
 
+static
+{
+  System.loadLibrary("javaio");
+}
+
 /*************************************************************************/
 
 /*

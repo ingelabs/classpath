@@ -1351,10 +1351,10 @@ public class ObjectInputStream extends InputStream
   static
   {
     //DEBUG
-    System.out.println( "Using ObjectInputStream" );
+    //System.out.println( "Using ObjectInputStream" );
     //eDEBUG
 
-    System.loadLibrary( "java_io_ObjectInputStream" );
+    System.loadLibrary( "javaio" );
   }
 
 

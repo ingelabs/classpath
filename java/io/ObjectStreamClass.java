@@ -557,9 +557,9 @@ public class ObjectStreamClass implements Serializable
 
   static
   {
-    System.out.println( "Using ObjectStreamClass" ); // DEBUG
+    //System.out.println( "Using ObjectStreamClass" ); // DEBUG
 
-    System.loadLibrary( "java_io_ObjectStreamClass" );
+    System.loadLibrary( "javaio" );
 
     ourClassLookupTable = new Hashtable();
     ourNullOutputStream = new NullOutputStream();
