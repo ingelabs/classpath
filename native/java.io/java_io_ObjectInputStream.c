@@ -22,14 +22,24 @@
 //      comments
 
 #include <jcl.h>
-
 #include "java_io_ObjectInputStream.h"
 
-#ifndef NDEBUG
-#  define DEBUG( msg ) printf( msg ); 
-#else
-#  define DEBUG( msg )
-#endif
+JNIEXPORT jobject JNICALL
+Java_java_io_ObjectInputStream_currentClassLoader( JNIEnv * env,
+						   jclass clazz,
+						   jobject loader )
+{
+  jmethodID id = (*env)->GetMethodID( env,
+				      (*env)->GetObjectClass( env, loader ),
+				      "currentClassLoader",
+				      "()Ljava/lang/ClassLoader;" );
+  
+  if( id == NULL )
+    return;
+  
+  (*env)->CallObjectMethod( env, loader, id );
+}
+
 
 JNIEXPORT jobject JNICALL
 Java_java_io_ObjectInputStream_allocateObject( JNIEnv * env,
@@ -40,18 +50,18 @@ Java_java_io_ObjectInputStream_allocateObject( JNIEnv * env,
 }
 
 
-JNIEXPORT void JNICALL
+JNIEXPORT void JNICALL 
 Java_java_io_ObjectInputStream_callConstructor( JNIEnv * env,
-						jobject self,
-						jobject obj,
-						jclass clazz )
+						jclass clazz,
+						jclass constr_class,
+						jobject obj )
 {
-  jmethodID id = (*env)->GetMethodID( env, clazz, "<init>", "()V" );
-  
+  jmethodID id = (*env)->GetMethodID( env, constr_class,
+				      "<init>", "()V" );
   if( id == NULL )
     return;
   
-  (*env)->CallNonvirtualVoidMethod( env, obj, clazz, id );
+  (*env)->CallNonvirtualVoidMethod( env, obj, constr_class, id );
 }
 
 

@@ -9,6 +9,14 @@ extern "C" {
 #endif
 /*
  * Class:     java_io_ObjectInputStream
+ * Method:    currentClassLoader
+ * Signature: (Ljava/lang/SecurityManager;)Ljava/lang/ClassLoader;
+ */
+JNIEXPORT jobject JNICALL Java_java_io_ObjectInputStream_currentClassLoader
+  (JNIEnv *, jclass, jobject);
+
+/*
+ * Class:     java_io_ObjectInputStream
  * Method:    callReadMethod
  * Signature: (Ljava/lang/Object;Ljava/lang/Class;)V
  */
@@ -26,10 +34,10 @@ JNIEXPORT jobject JNICALL Java_java_io_ObjectInputStream_allocateObject
 /*
  * Class:     java_io_ObjectInputStream
  * Method:    callConstructor
- * Signature: (Ljava/lang/Object;Ljava/lang/Class;)V
+ * Signature: (Ljava/lang/Class;Ljava/lang/Object;)V
  */
 JNIEXPORT void JNICALL Java_java_io_ObjectInputStream_callConstructor
-  (JNIEnv *, jobject, jobject, jclass);
+  (JNIEnv *, jobject, jclass, jobject);
 
 /*
  * Class:     java_io_ObjectInputStream
