@@ -1,5 +1,15 @@
 2003-10-12  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/File.java
+	(caseSensitive): New class varibale indicatinc case sensitivity.
+	Currently set to true statically to support only case sensitive file
+	systems.
+	(equals): Support case sensitivity (in general).
+	(getParentFile): Simplified.
+	(hashCode): Support case sensitivity (in general).
+
+2003-10-12  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/Buffer.java
 	(hasRemaining): Made implementation more clear.
 	* java/nio/MappedByteBuffer.java

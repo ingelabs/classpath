@@ -90,6 +90,9 @@ public class File implements Serializable, Comparable
    * is taken from the <code>path.separator</code> system property.
    */
   public static final char pathSeparatorChar = pathSeparator.charAt(0);
+
+  // FIXME: We support only caseSensitive filesystems currently.
+  static boolean caseSensitive = true;
   
   static
   {
@@ -263,12 +266,15 @@ public class File implements Serializable, Comparable
     if (obj == null)
       return false;
     
-    if (!(obj instanceof File))
+    if (! (obj instanceof File))
       return false;
+    
+    File other = (File) obj;
 
-    File f = (File) obj;
-
-    return f.getPath ().equals (getPath ());
+    if (caseSensitive)
+      return path.equals (other.path);
+    else
+      return path.equalsIgnoreCase (other.path);
   }
 
   /*
@@ -346,7 +352,7 @@ public class File implements Serializable, Comparable
         directory = new File(dirname);
       }
 
-    String dirpath = directory.getPath();
+    String dirpath = directory.path;
     if (PlatformHelper.isRootDirectory(dirpath))
       path = dirpath + name;
     else
@@ -477,11 +483,8 @@ public class File implements Serializable, Comparable
    */
   public File getParentFile ()
   {
-    String parent = getParent ();
-    if (parent == null)
-      return null;
-
-    return new File (parent);
+    String parent = getParent();
+    return parent != null ? new File (parent) : null;
   }
 
   /**
@@ -504,7 +507,10 @@ public class File implements Serializable, Comparable
    */
   public int hashCode ()
   {
-    return getPath().hashCode() ^ 1234321;
+    if (caseSensitive)
+      return path.hashCode() ^ 1234321;
+    else
+      return path.toLowerCase().hashCode() ^ 1234321;
   }
 
   /**
