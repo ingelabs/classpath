@@ -1,3 +1,14 @@
+2002-02-15  Isaac Jones  <ijones@cis.ohio-state.edu>
+
+	* java/lang/StringBuffer.java (subSequence): is new in 1.4,
+	though it was already implemented in classpath.  I added the
+	"@since 1.4" tag to make it compatable with the 1.4. I
+	altered the exception thrown to be IndexOutOfBoundsException to
+	make the documentation compatable with the 1.4.
+	* java/lang/StringBuffer.java (indexOf, lastIndexOf): I copied the
+	javadoc in the classpath String class.  The functions call through
+	to those functions, so they behave exactly the same.
+
 2002-02-15  Mark Wielaard <mark@klomp.org>
 
 	Thanks to Patrick Doyle

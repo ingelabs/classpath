@@ -1,5 +1,5 @@
 /* StringBuffer.java -- Growable strings
-   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -41,6 +41,7 @@ import java.io.Serializable;
 /* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
  * Updated using online JDK 1.2 docs.
  * Believed complete and correct to JDK 1.2.
+ * 1.4 compatibility August 22, 2001 - Isaac Jones
  * Merged with Classpath.
  */
 
@@ -150,6 +151,21 @@ public final class StringBuffer implements Serializable, CharSequence
   public StringBuffer append (double dnum)
   {
     return append (String.valueOf(dnum));
+  }
+    
+  /** Append the <code>StringBuffer</code> value of the argument to this
+   * <code>StringBuffer</code>.
+   *  Uses <code>StringBuffer.toString()</code> to convert to
+   *  <code>String</code>.
+   *
+   *  @param stringBuffer the <code>StringBuffer</code> to convert and append.
+   *  @return this <code>StringBuffer</code>.
+   *  @see java.lang.StringBuffer.toString()
+   *  @since 1.4
+   */
+  public StringBuffer append (StringBuffer stringBuffer)
+  {
+    return append (stringBuffer.toString());
   }
 
   /** Append the <code>String</code> value of the argument to this <code>StringBuffer</code>.
@@ -691,14 +707,15 @@ public final class StringBuffer implements Serializable, CharSequence
    * 
    * @return new String which is a substring of this StringBuffer
    *
-   * @exception StringIndexOutOfBoundsException 
+   * @exception IndexOutOfBoundsException 
    *   if (beginIndex < 0 || endIndex > this.length() || beginIndex > endIndex)
+   *
+   * @since 1.4
    */
   public CharSequence subSequence (int beginIndex, int endIndex) 
   {
     return substring(beginIndex, endIndex);
   }
-
 
   /** Convert this <code>StringBuffer</code> to a <code>String</code>.
    *  @return the characters in this StringBuffer
@@ -708,6 +725,78 @@ public final class StringBuffer implements Serializable, CharSequence
     // Note: in libgcj this causes the StringBuffer to be shared.  In
     // Classpath it does not.
     return new String (this);
+  }
+
+  /** Finds the first instance of a String in this StringBuffer.
+   *
+   *  @param str String to find
+   * 
+   *  @return location (base 0) of the String, or -1 if not found
+   *
+   *  @exception NullPointerException if `str' is null
+   * 
+   *  @since 1.4
+   */
+  public int indexOf (String string)
+  {
+    return this.toString().indexOf(string, 0);
+    //save a call in String.java by passing second argument
+  }
+  
+  /** Finds the first instance of a String in this StringBuffer,
+   *  starting at a given index.  If starting index is less than 0,
+   *  the search starts at the beginning of this String.  If the
+   *  starting index is greater than the length of this String, -1 is
+   *  returned.
+   *
+   *  @param str String to find
+   *  @param fromIndex index to start the search
+   *
+   *  @return location (base 0) of the String, or -1 if not found
+   *
+   *  @exception NullPointerException if `str' is null
+   *
+   *  @since 1.4
+   */
+  public int indexOf (String string,
+		      int fromIndex)
+  {
+    return this.toString().indexOf(string, fromIndex);
+  }
+
+  /** Finds the last instance of a String in this StringBuffer.
+   *
+   *  @param str String to find
+   * 
+   *  @return location (base 0) of the String, or -1 if not found
+   *
+   *  @exception NullPointerException if `str' is null
+   *
+   *  @since 1.4
+   */
+  public int lastIndexOf(String str) throws NullPointerException
+  {
+    return this.toString().lastIndexOf(str, count-str.count);
+  }
+
+  /** Finds the last instance of a String in this StringBuffer,
+   *  starting at a given index.  If starting index is greater than the
+   *  maximum valid index, then the search begins at the end of this
+   *  String.  If the starting index is less than zero, -1 is returned.
+   *
+   *  @param str String to find
+   *  @param fromIndex index to start the search
+   *
+   *  @return location (base 0) of the String, or -1 if not found
+   *
+   *  @exception NullPointerException if `str' is null
+   * 
+   *  @since 1.4
+   */
+  public int lastIndexOf(String str, int fromIndex)
+    throws NullPointerException
+  {
+    return this.toString().lastIndexOf(str, fromIndex);
   }
 
   // Index of next available character.  Note that this has
