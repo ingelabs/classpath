@@ -60,7 +60,7 @@ protected Writer out;
   *
   * @param out The <code>Writer</code> to write to
   */
-public
+protected
 FilterWriter(Writer out)
 {
   this.out = out;
