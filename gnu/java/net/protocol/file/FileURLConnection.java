@@ -38,12 +38,18 @@
 */
 package gnu.java.net.protocol.file;
 
+import java.util.AbstractSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.NoSuchElementException;
+import java.io.*;
 
 /**
   * This subclass of java.net.URLConnection models a URLConnection via
   * the "file" protocol.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Nic Ferrier (nferrier@tapsellferrier.co.uk)
   */
 public class FileURLConnection extends java.net.URLConnection
 {
@@ -62,8 +68,6 @@ public class FileURLConnection extends java.net.URLConnection
    * OutputStream if we are writing to the file
    */
   private java.io.FileOutputStream out_stream;
-
-
   
   /**
    * Calls superclass constructor to initialize.
@@ -127,5 +131,134 @@ public class FileURLConnection extends java.net.URLConnection
     return (out_stream);
   }
 
+  /** Get the last modified time of the resource.
+   *
+   * @return the time since epoch that the resource was modified.
+   */
+  public long getLastModified ()
+  {
+    try
+      {
+	if (! connected)
+	  connect();
+	return file.lastModified();
+      }
+    catch (IOException e)
+      {
+	return -1;
+      }
+  }
+
+  /** Get the length of content.
+   *
+   * @return the length of the content.
+   */
+  public int getContentLength ()
+  {
+    try
+      {
+	if (! connected)
+	  connect();
+	return (int) file.length();
+      }
+    catch (IOException e)
+      {
+	return -1;
+      }
+  }
+
+
+  // These are GNU only implementation methods.
+
+  /** Does the resource pointed to actually exist?
+   */
+  public final boolean exists ()
+  {
+    if (file == null)
+      return false;
+    return file.exists();
+  }
+
+  /** Is the resource pointed to a directory?
+   */
+  public final boolean isDirectory ()
+  {
+    return file.isDirectory();
+  }
+  
+  /** Get a listing of the directory, if it is a directory.
+   *
+   * @return a set which can supply an iteration of the
+   * contents of the directory.
+   * @throws IllegalStateException if this is not pointing
+   * to a directory.
+   */
+  public Set getListing ()
+  {
+    if (! file.isDirectory())
+      throw new IllegalStateException("this is not a directory");
+    final File[] directoryList = file.listFiles();
+    return new AbstractSet()
+      {
+	File[] dirList = directoryList;
+
+	public int size ()
+	{
+	  return dirList.length;
+	}
+
+	public Iterator iterator ()
+	{
+	  return new Iterator()
+	    {
+	      int index = 0;
+
+	      public boolean hasNext ()
+	      {
+		return index < dirList.length;
+	      }
+
+	      public Object next ()
+	      {
+		try
+		  {
+		    String value = dirList[index++].getName();
+		    return value;
+		  }
+		catch (ArrayIndexOutOfBoundsException e)
+		  {
+		    throw new NoSuchElementException("no more content");
+		  }
+	      }
+
+	      public void remove ()
+	      {
+		try
+		  {
+		    File[] newDirList = new File[dirList.length - 1];
+		    int realIndex = index - 1;
+		    if (realIndex < 1)
+		      {
+			System.arraycopy(dirList, 1, newDirList, 0, dirList.length - 1);
+			index--;
+		      }
+		    else
+		      {
+			System.arraycopy(dirList, 0, newDirList, 0, realIndex);
+			if (index < dirList.length - 1)
+			  System.arraycopy(dirList, index,
+					   newDirList, realIndex, dirList.length - realIndex);
+		      }
+		    dirList = newDirList;
+		  }
+		catch (ArrayIndexOutOfBoundsException e)
+		  {
+		    throw new NoSuchElementException("no more content");
+		  }
+	      }
+	    };
+	}
+      };
+  }
 } // class FileURLConnection
 

@@ -168,19 +168,23 @@ with GNU Classpath CVS.  Thankfully other VMs have taken an
 interest in GNU Classpath and those are listed below.
 </p>
 
-<p>
-First is <link url="http://sources.redhat.com/java/"
-name="GCJ">.  Although GNU Classpath cannot be compiled for use with
+<table border="1">
+<tr><th>JVM</th><th>Description</th></tr>
+<tr>
+<td><link url="http://sources.redhat.com/java/" name="GCJ"></td>
+<td>
+Although GNU Classpath cannot be compiled for use with
 GCJ at this time, a lot of work has been done to merge GCJ class
 library code and GNU Classpath class library code.  This has resulted
 in a better version of each.  The current merge status between the two
-projects is <link
-url="http://gcc.gnu.org/java/libgcj-classpath-compare.html"
+projects is <link url="http://gcc.gnu.org/java/libgcj-classpath-compare.html"
 name="located here">.
-</p>
-<p>
-A second VM is <link url="http://www.intel.com/research/mrl/orp/"
-name="Intel's ORP">, or Open Runtime Platform.  Information about ORP
+</td>
+</tr>
+<tr>
+<td><link url="http://www.intel.com/research/mrl/orp/" name="ORP"></td>
+<td>
+Information about ORP
 can also be found at <link url="http://orp.sourceforge.net/"
 name="http://orp.sourceforge.net/">.  We're hopeful that the next
 version of ORP after 1.0.6 will allow users to optionally use GNU
@@ -188,21 +192,37 @@ Classpath native libraries instead of those bundled with ORP.  ORP is
 the easiest VM to test GNU Classpath with including JNI native libraries
 but you must patch ORP to do so.  Information is available in the
 mailing list archives.
-</p>
-<p>
-A third VM is <link url="http://kissme.sourceforge.net/"
-name="Kissme">.  This VM includes a modified version of the GNU
-Classpath libraries.
-</p>
-<p>
-A fourth VM is <link url="http://www.sablevm.org/" name="SableVM">.
+</td>
+</tr>
+<tr>
+<td><link url="http://kissme.sourceforge.net/" name="Kissme"></td>
+<td>
+This VM includes a modified version of the GNU Classpath libraries.
+</td>
+</tr>
+<tr>
+<td><link url="http://www.sablevm.org/" name="SableVM"></td>
+<td>
 This VM also uses a modified version of the GNU Classpath libraries.
-</p>
-<p>
-A fifth VM is <link url="http://www.eecg.toronto.edu/~doylep/jupiter/"
-name="Jupiter">.  This VM also uses a modified version of the GNU
-Classpath libraries.
-</p>
+</td>
+</tr>
+<tr>
+<td><link url="http://www.eecg.toronto.edu/~doylep/jupiter/" name="Jupiter"></td>
+<td>
+This VM also uses a modified version of the GNU Classpath libraries.
+</td>
+</tr>
+<tr>
+<td><link url="http://aegisvm.sourceforge.net/" name="AegisVM"></td>
+<td>
+The Aegis VM Project is an on-going effort to develop a lightweight,
+secure virtual machine for executing Java bytecode.  The Aegis VM will
+eventually feature a modular bytecode verification architecture that
+allows user-defined static verification procedures to be integrated
+into the VM's dynamic linking process through pluggable verification
+modules.
+</td>
+</tr>
+</table>
 </en>
-
 <footer>

@@ -48,7 +48,7 @@ import java.util.Date;
  *
  * @author Jochen Hoenicke 
  */
-public class ZipEntry implements Cloneable
+public class ZipEntry implements ZipConstants, Cloneable
 {
   private static int KNOWN_SIZE   = 1;
   private static int KNOWN_CSIZE  = 2;
