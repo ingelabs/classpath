@@ -248,7 +248,7 @@ public class Object {
 	 ** @param ms the number of milliseconds to wait (1,000
 	 **        milliseconds = 1 second).
 	 ** @param ns the number of nanoseconds to wait over and
-	 **        above ms (1,000,000 nanoseconds = 1 second).
+	 **        above ms (1,000,000,000 nanoseconds = 1 second).
 	 ** @exception IllegalMonitorStateException if this Thread
 	 **            does not own a lock on this Object.
 	 ** @exception InterruptedException if some other Thread
