@@ -1,3 +1,13 @@
+2003-04-07  Aaron M. Renn (arenn@urbanophile.com)
+
+	* java/io/DataInput.java
+	* java/io/DataOutput.java
+	Fix minor javadoc typos
+	* java/io/DataInputStream.java
+	Update javadocs to match DataInput
+	* java/io/DataOutputStream.java
+	Update javadocs to match DataOutput
+
 2003-04-07  Jeroen Frijters  <jeroen@sumatra.nl>
 
 	* java/lang/Class.java
