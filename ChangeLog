@@ -1,5 +1,14 @@
 2004-10-25  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/font/TextAttribute.java,
+	javax/swing/JComponent.java,
+	javax/swing/JInternalFrame.java,
+	javax/swing/table/TableColumn.java,
+	javax/swing/text/StyleConstants.java:
+	Replaced "new Boolean(boolean)" with "Boolean.valueOf(boolean)".
+
+2004-10-25  Michael Koch  <konqueror@gmx.de>
+
 	* javax/security/auth/spi/package.html: New file.
 
 2004-10-25  Michael Koch  <konqueror@gmx.de>
