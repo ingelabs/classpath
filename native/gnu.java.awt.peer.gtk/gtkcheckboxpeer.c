@@ -80,7 +80,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkRadioButtonNew
   set_visible (button, visible);
 
   if (checked)
-    gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (button), TRUE);
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
   
   gdk_threads_leave ();
   (*env)->ReleaseStringUTFChars (env, label, str);
@@ -108,7 +108,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonNew
   /* All checkboxes get a label, even if it is blank. */  
   button=gtk_check_button_new_with_label (str);
   if (checked)
-    gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (button), TRUE);
+    gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (button), TRUE);
   
   set_parent (button, GTK_CONTAINER (parent));
   gtk_widget_realize (button);
@@ -132,7 +132,7 @@ Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkCheckButtonSetState
   ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  gtk_toggle_button_set_state (GTK_TOGGLE_BUTTON (ptr),
+  gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (ptr),
 			       (checked) ? TRUE : FALSE);
   gdk_threads_leave ();
 }
