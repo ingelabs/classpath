@@ -1,3 +1,7 @@
+2001-06-25  Takashi Okamoto <toraneko@kun.ne.jp>
+	* gnu/java/io/encode/EncoderUTF8.java (convertToBytes): create 
+        valid UTF8 encoding.
+
 2001-06-25  Brian Jones <cbj@gnu.org>
 
 	* native/jni/mprec.h: new file from gcj

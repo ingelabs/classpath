@@ -99,23 +99,23 @@ convertToBytes(char[] buf, int buf_offset, int len, byte[] bbuf,
 {
   for (int i = buf_offset; i < len; i++)
     {
-      if (buf[i] <= 0x007F)
+      if (buf[i] >= 0x0000 && buf[i] <= 0x007F)
         {
           bbuf[bbuf_offset] = (byte)(buf[i] & 0xFF);
           ++bbuf_offset;
         }
       else if (buf[i] <= 0x07FF)
         {
-          bbuf[bbuf_offset] = (byte)(0xC0 | (buf[i] >> 6));
+          bbuf[bbuf_offset] = (byte)(0xC0 | ((buf[i] >> 6) & 0x3F));
           ++bbuf_offset;
           bbuf[bbuf_offset] = (byte)(0x80 | (buf[i] & 0x3F));
           ++bbuf_offset;
         }
       else 
         {
-          bbuf[bbuf_offset] = (byte)(0xE0 | (buf[i] >> 12));
+          bbuf[bbuf_offset] = (byte)(0xE0 | ((buf[i] >> 12) & 0x0F));
           ++bbuf_offset;
-          bbuf[bbuf_offset] = (byte)(0xC0 | (buf[i] >> 6));
+          bbuf[bbuf_offset] = (byte)(0x80 | ((buf[i] >> 6) & 0x3F));
           ++bbuf_offset;
           bbuf[bbuf_offset] = (byte)(0x80 | (buf[i] & 0x3F));
           ++bbuf_offset;
