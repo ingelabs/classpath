@@ -1,5 +1,10 @@
 2004-11-16  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/locale/LocaleInformation_de.java: Reformatted. Replaced
+	some definitions with their generated counterparts.
+
+2004-11-16  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/locale/LocaleInformation_de.java: Removed some comments to
 	make it easier to merge this with the new generated classes.
 
