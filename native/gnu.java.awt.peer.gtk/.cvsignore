@@ -6,3 +6,6 @@
 .deps
 Makefile
 Makefile.in
+*.d
+Gtk*.h
+Gdk*.h
