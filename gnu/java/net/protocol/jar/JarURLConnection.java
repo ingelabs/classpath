@@ -1,5 +1,5 @@
 /* gnu.java.net.protocol.jar.JarURLConnection - jar url connection for java.net
-   Copyright (C) 2002 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,20 +38,25 @@ exception statement from your version. */
 
 package gnu.java.net.protocol.jar;
 
-import java.io.*;
-import java.net.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Hashtable;
-import java.util.jar.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.zip.ZipFile;
 
 /**
-  * This subclass of java.net.JarURLConnection models a URLConnection via
-  * the "jar" protocol.
-  *
-  */
+ * This subclass of java.net.JarURLConnection models a URLConnection via
+ * the "jar" protocol.
+ *
+ */
 public class JarURLConnection extends java.net.JarURLConnection
 {
-
   private JarFile jar_file;
   private JarEntry jar_entry;
   private URL jar_url;
@@ -62,90 +67,109 @@ public class JarURLConnection extends java.net.JarURLConnection
     private static final int READBUFSIZE = 4*1024;
     private static boolean is_trying = false;
     
-    public static synchronized JarFile get(URL url) throws IOException{
-      JarFile jf = (JarFile)cache.get(url);
-      if(jf != null)return jf; 
-      if(is_trying)return null;
-      try{
-	is_trying = true;
-	if("file".equals(url.getProtocol())){
-	  File f = new File(url.getFile());
-	  jf = new JarFile(f, true, ZipFile.OPEN_READ);
-	}else{
-	  URLConnection urlconn = url.openConnection();
-	  InputStream is = urlconn.getInputStream();
-	  byte[] buf = new byte[READBUFSIZE];
-	  File f;
-	  FileOutputStream fos = new FileOutputStream(f = File.createTempFile("cache", "jar")); 
-	  int len = 0;
-	  while((len = is.read(buf)) != -1){
-	    fos.write(buf, 0, len);
-	  }
-	  fos.close();
-	  // Always verify the Manifest, open read only and delete when done.
-	  // XXX ZipFile.OPEN_DELETE not yet implemented.
-	  // jf = new JarFile(f, true, ZipFile.OPEN_READ | ZipFile.OPEN_DELETE);
-	  jf = new JarFile(f, true, ZipFile.OPEN_READ);
-	}
-	cache.put(url, jf);
-      }finally{
-	is_trying = false;
-      }
+    public static synchronized JarFile get (URL url) throws IOException
+    {
+      JarFile jf = (JarFile) cache.get (url);
+
+      if (jf != null)
+        return jf;
+      
+      if (is_trying)
+        return null;
+      
+      try
+        {
+          is_trying = true;
+
+          if ("file".equals (url.getProtocol()))
+            {
+              File f = new File (url.getFile());
+              jf = new JarFile (f, true, ZipFile.OPEN_READ);
+            }
+          else
+            {
+              URLConnection urlconn = url.openConnection();
+              InputStream is = urlconn.getInputStream();
+              byte[] buf = new byte [READBUFSIZE];
+              File f = File.createTempFile ("cache", "jar");
+              FileOutputStream fos = new FileOutputStream (f); 
+              int len = 0;
+              
+              while ((len = is.read (buf)) != -1)
+                {
+                  fos.write (buf, 0, len);
+                }
+              
+              fos.close();
+              // Always verify the Manifest, open read only and delete when done.
+              // XXX ZipFile.OPEN_DELETE not yet implemented.
+              // jf = new JarFile (f, true, ZipFile.OPEN_READ | ZipFile.OPEN_DELETE);
+              jf = new JarFile (f, true, ZipFile.OPEN_READ);
+            }
+          
+          cache.put (url, jf);
+        }
+      finally
+        {
+          is_trying = false;
+        }
+      
       return jf;
     }
-    
   }
   
-  public 
-    JarURLConnection(URL url) throws MalformedURLException, IOException
+  public JarURLConnection (URL url) throws MalformedURLException, IOException
   {
-    super(url);
+    super (url);
     jar_url = getJarFileURL();
   }
   
-  public void 
-    connect() throws IOException
+  public void connect() throws IOException
   {
-    if(connected)return;
+    if (connected)
+      return;
     
-    jar_file = JarFileCache.get(jar_url);
+    jar_file = JarFileCache.get (jar_url);
     String entry_name = getEntryName();
-    if(entry_name != null && !entry_name.equals("")){
-      jar_entry = (JarEntry)jar_file.getEntry(entry_name);
-      //wgs
-      if(jar_entry == null)
-	throw new IOException("No entry for " + entry_name + " exists.");
-    }
+    
+    if (entry_name != null
+        && !entry_name.equals (""))
+      {
+        jar_entry = (JarEntry) jar_file.getEntry (entry_name);
+
+        //wgs
+        if(jar_entry == null)
+          throw new IOException ("No entry for " + entry_name + " exists.");
+      }
     
     connected = true;
   }
   
-  public JarFile 
-    getJarFile() throws IOException
+  public JarFile getJarFile() throws IOException
   {
-    if(!connected)
+    if (!connected)
       connect();
+    
     return jar_file;
   }
   
-  public InputStream
-    getInputStream() throws IOException
+  public InputStream getInputStream() throws IOException
   {
-    if(!connected)
+    if (!connected)
       connect();
-    if(jar_entry == null)
-      throw new IOException(jar_url + " couldn't be found.");
-    return jar_file.getInputStream(jar_entry);
     
+    if (jar_entry == null)
+      throw new IOException (jar_url + " couldn't be found.");
+    
+    return jar_file.getInputStream (jar_entry);
   }
   
-public int
-getContentLength()
-{
-  if(!connected)
-    return -1;
+  public int getContentLength()
+  {
+    if (!connected)
+      return -1;
 
-  return (int)jar_entry.getSize();
-}
+    return (int) jar_entry.getSize();
+  }
+  
 } // class JarURLConnection
-

@@ -1,6 +1,6 @@
 /*
   FileURLConnection.java -- URLConnection class for "file" protocol
-  Copyright (C) 1998 Free Software Foundation, Inc.
+  Copyright (C) 1998, 2003 Free Software Foundation, Inc.
 
   This file is part of GNU Classpath.
 
@@ -38,64 +38,68 @@
 */
 package gnu.java.net.protocol.file;
 
+import java.net.URL;
+import java.net.URLConnection;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.NoSuchElementException;
-import java.io.*;
 
 /**
-  * This subclass of java.net.URLConnection models a URLConnection via
-  * the "file" protocol.
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  * @author Nic Ferrier (nferrier@tapsellferrier.co.uk)
-  */
-public class FileURLConnection extends java.net.URLConnection
+ * This subclass of java.net.URLConnection models a URLConnection via
+ * the "file" protocol.
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Nic Ferrier (nferrier@tapsellferrier.co.uk)
+ */
+public class FileURLConnection extends URLConnection
 {
-
   /**
    * This is a File object for this connection
    */
-  private java.io.File file;
+  private File file;
 
   /**
    * InputStream if we are reading from the file
    */
-  private java.io.FileInputStream in_stream;
+  private FileInputStream in_stream;
 
   /**
    * OutputStream if we are writing to the file
    */
-  private java.io.FileOutputStream out_stream;
+  private FileOutputStream out_stream;
   
   /**
    * Calls superclass constructor to initialize.
    */
-  protected FileURLConnection(java.net.URL url)
+  protected FileURLConnection (URL url)
   {
-    super(url);
+    super (url);
     
     /* Set up some variables */
     doOutput = false;
   }
   
-  /*************************************************************************/
-  
-  /*
-   * Instance Methods
-   */
-  
   /**
    * "Connects" to the file by opening it.
    */
-  public void connect() throws java.io.IOException
+  public void connect() throws IOException
   {
     if (connected)
       return;
-    file = new java.io.File(getURL().getFile());
+    
+    file = new File (getURL().getFile());
+    
     if (!file.exists())
-      throw new java.io.FileNotFoundException(file.getPath());
+      throw new FileNotFoundException (file.getPath());
+    
     connected = true;
   }
   
@@ -106,13 +110,14 @@ public class FileURLConnection extends java.net.URLConnection
    *
    * @exception IOException If an error occurs
    */
-  public java.io.InputStream getInputStream ()
-    throws java.io.IOException
+  public InputStream getInputStream()
+    throws IOException
   {
     if (!connected)
       connect();
-    in_stream = new java.io.FileInputStream(file);
-    return (in_stream);
+    
+    in_stream = new FileInputStream (file);
+    return in_stream;
   }
 
   /**
@@ -122,25 +127,27 @@ public class FileURLConnection extends java.net.URLConnection
    *
    * @exception IOException If an error occurs.
    */
-  public java.io.OutputStream getOutputStream ()
-    throws java.io.IOException
+  public OutputStream getOutputStream()
+    throws IOException
   {
     if (!connected)
       connect();
-    out_stream = new java.io.FileOutputStream(file);
-    return (out_stream);
+    
+    out_stream = new FileOutputStream (file);
+    return out_stream;
   }
 
   /** Get the last modified time of the resource.
    *
    * @return the time since epoch that the resource was modified.
    */
-  public long getLastModified ()
+  public long getLastModified()
   {
     try
       {
-	if (! connected)
+	if (!connected)
 	  connect();
+        
 	return file.lastModified();
       }
     catch (IOException e)
@@ -153,12 +160,13 @@ public class FileURLConnection extends java.net.URLConnection
    *
    * @return the length of the content.
    */
-  public int getContentLength ()
+  public int getContentLength()
   {
     try
       {
-	if (! connected)
+	if (!connected)
 	  connect();
+        
 	return (int) file.length();
       }
     catch (IOException e)
@@ -167,21 +175,22 @@ public class FileURLConnection extends java.net.URLConnection
       }
   }
 
-
   // These are GNU only implementation methods.
 
   /** Does the resource pointed to actually exist?
    */
-  public final boolean exists ()
+  public final boolean exists()
   {
     if (file == null)
       return false;
+
     return file.exists();
   }
 
-  /** Is the resource pointed to a directory?
+  /**
+   * Is the resource pointed to a directory?
    */
-  public final boolean isDirectory ()
+  public final boolean isDirectory()
   {
     return file.isDirectory();
   }
@@ -190,64 +199,70 @@ public class FileURLConnection extends java.net.URLConnection
    *
    * @return a set which can supply an iteration of the
    * contents of the directory.
+   *
    * @throws IllegalStateException if this is not pointing
    * to a directory.
    */
-  public Set getListing ()
+  public Set getListing()
   {
-    if (! file.isDirectory())
-      throw new IllegalStateException("this is not a directory");
+    if (!file.isDirectory())
+      throw new IllegalStateException ("this is not a directory");
+    
     final File[] directoryList = file.listFiles();
     return new AbstractSet()
       {
 	File[] dirList = directoryList;
 
-	public int size ()
+	public int size()
 	{
 	  return dirList.length;
 	}
 
-	public Iterator iterator ()
+	public Iterator iterator()
 	{
 	  return new Iterator()
 	    {
 	      int index = 0;
 
-	      public boolean hasNext ()
+	      public boolean hasNext()
 	      {
 		return index < dirList.length;
 	      }
 
-	      public Object next ()
+	      public Object next()
 	      {
 		try
 		  {
-		    String value = dirList[index++].getName();
+		    String value = dirList [index++].getName();
 		    return value;
 		  }
 		catch (ArrayIndexOutOfBoundsException e)
 		  {
-		    throw new NoSuchElementException("no more content");
+		    throw new NoSuchElementException ("no more content");
 		  }
 	      }
 
-	      public void remove ()
+	      public void remove()
 	      {
 		try
 		  {
-		    File[] newDirList = new File[dirList.length - 1];
+		    File[] newDirList = new File [dirList.length - 1];
 		    int realIndex = index - 1;
+                    
 		    if (realIndex < 1)
 		      {
-			System.arraycopy(dirList, 1, newDirList, 0, dirList.length - 1);
+			System.arraycopy (dirList, 1, newDirList, 0,
+                                          dirList.length - 1);
 			index--;
 		      }
 		    else
 		      {
-			System.arraycopy(dirList, 0, newDirList, 0, realIndex);
+			System.arraycopy (dirList, 0, newDirList, 0, realIndex);
+                        
 			if (index < dirList.length - 1)
-			  System.arraycopy(dirList, index,
-					   newDirList, realIndex, dirList.length - realIndex);
+			  System.arraycopy (dirList, index,
+					    newDirList, realIndex,
+                                            dirList.length - realIndex);
 		      }
 		    dirList = newDirList;
 		  }
@@ -260,5 +275,5 @@ public class FileURLConnection extends java.net.URLConnection
 	}
       };
   }
+  
 } // class FileURLConnection
-

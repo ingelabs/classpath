@@ -1,5 +1,12 @@
 2003-10-18  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/protocol/file/FileURLConnection.java,
+	gnu/java/net/protocol/http/HttpURLConnection.java,
+	gnu/java/net/protocol/jar/JarURLConnection.java:
+	Reformated.
+
+2003-10-18  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/net/protocol/file/Handler.java,
 	gnu/java/net/protocol/http/Handler.java,
 	gnu/java/net/protocol/jar/Handler.java:
