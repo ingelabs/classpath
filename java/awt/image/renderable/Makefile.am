@@ -5,4 +5,5 @@ RenderableImage.java \
 RenderableImageOp.java \
 RenderableImageProducer.java \
 RenderContext.java \
-RenderedImageFactory.java
+RenderedImageFactory.java \
+package.html

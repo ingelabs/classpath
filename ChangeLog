@@ -13,6 +13,11 @@
 
 2002-05-07  Mark Wielaard  <mark@klomp.org>
 
+	* java/awt/image/renderable/package.html: New stub package file.
+	* java/awt/image/renderable/Makefile.am (EXTRA_DIST): Add package.html
+
+2002-05-07  Mark Wielaard  <mark@klomp.org>
+
 	* javax/accessibility/AccessibleContext.java: Fix javadoc to fully
 	qualify java.awt.IllegalComponentStateException.
 
