@@ -1,5 +1,23 @@
 2004-02-27  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/DatagramChannelImpl.java
+	(send): Check if target address is resolved.
+	* gnu/java/nio/FileLockImpl.java
+	(finalize): Made protected.
+	* java/nio/channels/FileChannel.java
+	(MapMode.READ_ONLY): Made final.
+	(MapMode.READ_WRITE): Made final.
+	(MapMode.PRIVATE): Made final.
+	* java/nio/channels/SocketChannel.java
+	(open): Simplified code.
+	* java/nio/channels/spi/AbstractSelectableChannel.java
+	(registered): Unused, removed.
+	(keyFor): Check channel is open, only locate key
+	and not add a new one.
+	(register): Don't delete attachments.
+
+2004-02-27  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/net/protocol/jar/Handler.java
 	(): Removed unneeded check for file != null. java.net.URL.getFile()
 	returns an empty string but never null.
