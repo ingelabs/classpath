@@ -601,16 +601,14 @@ toString()
   *
   * @return The local hostname.
   */
-private static native String
-getLocalHostName();
+private static native String getLocalHostName();
 
 /*************************************************************************/
 
 /**
   * Returns the value of the special address INADDR_ANY
   */
-private static native int[]
-lookupInaddrAny() throws UnknownHostException;
+private static native int[] lookupInaddrAny() throws UnknownHostException;
 
 /*************************************************************************/
 
@@ -624,8 +622,7 @@ lookupInaddrAny() throws UnknownHostException;
   *
   * @exception UnknownHostException If the reverse lookup fails
   */
-private static native String
-getHostByAddr(int[] ip) throws UnknownHostException;
+private static native String getHostByAddr(int[] ip) throws UnknownHostException;
 
 /*************************************************************************/
 
@@ -633,8 +630,7 @@ getHostByAddr(int[] ip) throws UnknownHostException;
   * Returns a list of all IP addresses for a given hostname.  Will throw
   * an UnknownHostException if the hostname cannot be resolved.
   */
-private static native int[][]
-getHostByName(String hostname) throws UnknownHostException;
+private static native int[][] getHostByName(String hostname) throws UnknownHostException;
 
 } // class InetAddress
 

@@ -84,16 +84,14 @@ PlainDatagramSocketImpl()
   *
   * @exception SocketException If an error occurs
   */
-protected native synchronized void
-create() throws SocketException;
+protected native synchronized void create() throws SocketException;
 
 /*************************************************************************/
 
 /**
   * Closes the socket
   */
-protected native synchronized void
-close();
+protected native synchronized void close();
 
 /*************************************************************************/
 
@@ -105,8 +103,7 @@ close();
   *
   * @exception SocketException If an error occurs
   */
-protected native synchronized void
-bind(int port, InetAddress addr) throws SocketException;
+protected native synchronized void bind(int port, InetAddress addr) throws SocketException;
 
 /*************************************************************************/
 
@@ -136,8 +133,7 @@ send(DatagramPacket packet) throws IOException
   *
   * @exception IOException If an error occurs
   */
-private native synchronized void
-sendto(InetAddress addr, int port, byte[] buf, int len) throws IOException;
+private native synchronized void sendto(InetAddress addr, int port, byte[] buf, int len) throws IOException;
 
 /*************************************************************************/
 
@@ -159,8 +155,7 @@ peek(InetAddress addr) throws IOException
   *
   * @exception IOException IOException If an error occurs
   */
-protected native synchronized void
-receive(DatagramPacket packet) throws IOException;
+protected native synchronized void receive(DatagramPacket packet) throws IOException;
 
 /*************************************************************************/
 
@@ -171,8 +166,7 @@ receive(DatagramPacket packet) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected native synchronized void
-join(InetAddress addr) throws IOException;
+protected native synchronized void join(InetAddress addr) throws IOException;
 
 /*************************************************************************/
 
@@ -183,8 +177,7 @@ join(InetAddress addr) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected native synchronized void
-leave(InetAddress addr) throws IOException;
+protected native synchronized void leave(InetAddress addr) throws IOException;
 
 /*************************************************************************/
 
@@ -267,8 +260,7 @@ setTimeToLive(int ttl) throws IOException
   *
   * @exception SocketException If an error occurs
   */
-public native synchronized Object
-getOption(int option_id) throws SocketException;
+public native synchronized Object getOption(int option_id) throws SocketException;
 
 /*************************************************************************/
 
@@ -280,8 +272,7 @@ getOption(int option_id) throws SocketException;
   *
   * @exception SocketException If an error occurs
   */
-public native synchronized void
-setOption(int option_id, Object val) throws SocketException;
+public native synchronized void setOption(int option_id, Object val) throws SocketException;
 
 } // class PlainDatagramSocketImpl
 
