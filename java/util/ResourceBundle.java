@@ -105,6 +105,18 @@ public abstract class ResourceBundle
    */
   private Locale locale;
 
+  private static Class resourceBundleClass;
+  private static Class securityClass;
+
+  static {
+      try {
+	  resourceBundleClass = Class.forName("java.util.ResourceBundle");
+	  securityClass = Class.forName("java.util.ResourceBundle$Security");
+      } catch (ClassNotFoundException e) {
+
+      }
+  }
+      
   /**
    * We override SecurityManager in order to access getClassContext().
    */
@@ -124,9 +136,11 @@ public abstract class ResourceBundle
     ClassLoader getCallingClassLoader()
     {
       Class[] stack = getClassContext();
-      for (int i = 0; i < stack.length; i++)
-        if (stack[i] != Security.class && stack[i] != ResourceBundle.class)
+      for (int i = 0; i < stack.length; i++) {
+        if (stack[i] != securityClass && stack[i] != resourceBundleClass)
           return stack[i].getClassLoader();
+      }
+
       return null;
     }
   }
@@ -221,8 +235,8 @@ public abstract class ResourceBundle
       catch (MissingResourceException ex)
         {
         }
-    throw new MissingResourceException("Key not found",
-                                       getClass().getName(), key);
+ 
+    throw new MissingResourceException("Key not found", getClass().getName(), key);
   }
 
   /**
@@ -509,6 +523,7 @@ public abstract class ResourceBundle
     catch (Exception ex)
       {
         // ignore them all
+	foundBundle = null;
       }
     if (foundBundle == null)
       {

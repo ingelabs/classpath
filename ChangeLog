@@ -1,3 +1,14 @@
+2003-01-05  C. Brian Jones  <cbj@gnu.org>
+
+	* THANKYOU: fixed Weldon's email reference
+
+2003-01-05  Julian Dolby  <dolby@us.ibm.com>
+	* java/util/ResourceBundle.java (tryBundle): If an exception
+	occurs, do not try to use the bundle.
+	* (static): initialize static reference to loaded ResourceBundle and
+	ResourceBundle$Security
+	* (getCallingClassLoader): Use new static references
+
 2003-01-03  Mark Wielaard  <mark@klomp.org>
 
 	Merge with libgcj.
