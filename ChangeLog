@@ -1,3 +1,10 @@
+2002-02-09  Mark Wielaard <mark@klomp.org>
+
+	Thanks to Takashi Okamoto
+	* java/util/Arrays.java (ArrayList.indexOf()): this.equals().
+	* java/util/Arrays.java (ArrayList.lastIndexOf()): Likewise.
+	* java/util/WeakHashMap.java (WeakEntry.getEntry()): this.get().
+
 2002-02-07  Mark Wielaard <mark@klomp.org>
 
 	* gnu/java/io/encode/Encoder8859_1.java (static): explicitly mention
