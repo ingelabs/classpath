@@ -1,3 +1,10 @@
+2003-05-18  Michael Koch  <konqueror@gmx.de>
+
+	* java/nio/channels/FileLock.java:
+	New version from libgcj.
+	* java/nio/charset/Charset.java:
+	Likewise.
+
 2003-05-15  Michael Koch  <konqueror@gmx.de>
 
 	* java/text/CollationElementIterator.java:
