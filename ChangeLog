@@ -1,5 +1,12 @@
 2003-07-31  Torsten Rupp  <rupp@lisa.aicas.com>
 
+	* java/lang/SecurityManager.java:
+	checkPackageList(): replace access of String.count with
+        String.length() to make it compatible with other
+        implementations of class String
+
+2003-07-31  Torsten Rupp  <rupp@lisa.aicas.com>
+
 	* java/io/File.java:
 	createTempFile(): use long names on system where file
         separator is not '\', otherwise limit filenames to
