@@ -13,8 +13,13 @@ New in release 0.11 (not released yet)
 * Improved java.awt.image.BufferedImage support.
 * AWT 1.0 event model support.
 * GNU Classpath now comes with some example programs (see examples/README).
+
+Runtime interface Changes:
+
 * java.lang.Compiler now uses the new java.lang.VMCompiler; there is
   a reference implementation that most VMs can use.
+* java.lang.VMSystem has a new getenv(String) method and a reference C/JNI
+  implementation that should work on most Posix like systems.
 
 New in release 0.10 (Jul 9, 2004)
 

@@ -1,5 +1,5 @@
 /* System.c -- native code for java.lang.System
-   Copyright (C) 1998, 1999, 2000, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2002, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -142,4 +142,21 @@ Java_java_lang_VMSystem_isWordsBigEndian (JNIEnv *env, jclass clazz)
 
   u.l = 1;
   return (u.c[sizeof (long) - 1] == 1);
+}
+
+JNIEXPORT jstring JNICALL
+Java_java_lang_VMSystem_getenv (JNIEnv *env, jclass klass, jstring jname)
+{
+  const char *cname;
+  const char *envname;
+
+  cname = JCL_jstring_to_cstring(env, jname);
+  if (cname == NULL)
+    return NULL;
+
+  envname = getenv(cname);
+  if (envname == NULL)
+    return NULL;
+
+  return (*env)->NewStringUTF(env, envname);
 }

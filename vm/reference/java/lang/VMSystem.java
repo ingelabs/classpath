@@ -1,5 +1,5 @@
 /* VMSystem.java -- helper for java.lang.system
-   Copyright (C) 1998, 2002 Free Software Foundation
+   Copyright (C) 1998, 2002, 2004 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -172,4 +172,13 @@ final class VMSystem
 	return new PrintStream(new BufferedOutputStream(new FileOutputStream(FileDescriptor.err)), true);
     }
 
+  /**
+   * Gets the value of an environment variable.
+   * Always returning null is a valid (but not very useful) implementation.
+   *
+   * @param name The name of the environment variable (will not be null).
+   * @return The string value of the variable or null when the
+   *         environment variable is not defined.
+   */
+  static native String getenv(String name);
 }

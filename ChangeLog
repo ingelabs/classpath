@@ -1,3 +1,14 @@
+2004-08-28  Mark Wielaard  <mark@klomp.org>
+
+	* java/lang/System.java (getenv): Do security checks and call
+	VMSystem.getenv().
+	* vm/reference/java/lang/VMSystem.java (getenv): New static native
+	method.
+	* native/jni/java-lang/java_lang_VMSystem.c (getenv): New function.
+	* include/java_lang_VMSystem.h: Regenerated.
+	* NEWS: Mention new VMSystem.getenv() method and reference
+	implementation in Runtime Interface section.
+
 2004-08-27  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/Arrays.java
