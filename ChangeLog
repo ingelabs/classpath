@@ -1,5 +1,10 @@
 2004-12-17  Mark Wielaard  <mark@klomp.org>
 
+	* INSTALL: We need jikes 1.19 or higher now.
+	* lib/Makefile.am: Add +Pno-shadow to JIKES compilation.
+
+2004-12-17  Mark Wielaard  <mark@klomp.org>
+
 	* scripts/.cvsignore: New file.
 
 2004-12-17  Michael Koch  <konqueror@gmx.de>

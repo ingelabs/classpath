@@ -23,7 +23,7 @@ JAVAC = $(GCJ) --bootclasspath '' --classpath $(top_srcdir):$(top_srcdir)/vm/ref
 && $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(top_srcdir):$(top_srcdir)/vm/reference:.:$(USER_CLASSLIB) -C -d . @classes.standardx
 else
 if FOUND_JIKES
-JAVAC = $(JIKES) +F -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(top_srcdir):$(top_srcdir)/vm/reference:.:$(USER_CLASSLIB) -d . @classes
+JAVAC = $(JIKES) +Pno-shadow +F -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(top_srcdir):$(top_srcdir)/vm/reference:.:$(USER_CLASSLIB) -d . @classes
 else
 if FOUND_KJC
 JAVAC = $(KJC) -classpath .:$(USER_CLASSLIB) -d . @classes

@@ -32,7 +32,7 @@ Suggested Software
 	configure; the present default is gcj.
 
         - GCJ 3.3+ (part of the GNU GCC package).
-        - IBM jikes 1.18+.  
+        - IBM jikes 1.19+.  
         - The kjc compiler is supported with configure but we have
           been unable to successfully compile with it.
 
