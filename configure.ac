@@ -121,7 +121,7 @@ if test "x${COMPILE_JNI}" = xyes; then
   AC_CHECK_SIZEOF(void *)
 
   dnl Checking for endianess.
-  AC_C_BIGENDIAN_CROSS
+  AC_C_BIGENDIAN
   
   dnl We check for sys/filio.h because Solaris 2.5 defines FIONREAD there.
   dnl On that system, sys/ioctl.h will not include sys/filio.h unless
