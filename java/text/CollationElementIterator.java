@@ -117,7 +117,7 @@ public final class CollationElementIterator
     RuleBasedCollator.CollationElement e =
       (RuleBasedCollator.CollationElement) text_decomposition[index++];
     
-    textIndex += e.char_seq.length();
+    textIndex += e.key.length();
 
     return e;
   }
@@ -131,7 +131,7 @@ public final class CollationElementIterator
     RuleBasedCollator.CollationElement e =
       (RuleBasedCollator.CollationElement) text_decomposition[index];
 
-    textIndex -= e.char_seq.length();
+    textIndex -= e.key.length();
     
     return e;
   }
@@ -278,7 +278,7 @@ public final class CollationElementIterator
 	if (prefix.expansion != null)
 	  {
 	    work_text = prefix.expansion
-	      + work_text.substring (idx+prefix.char_seq.length());
+	      + work_text.substring (idx+prefix.key.length());
 	    idx = 0;
 	    v.add (prefix);
 	  }
@@ -286,7 +286,7 @@ public final class CollationElementIterator
 	  {
 	    if (!prefix.ignore)
 	      v.add (prefix);
-	    idx += prefix.char_seq.length();
+	    idx += prefix.key.length();
 	  }
       }
     
@@ -351,7 +351,7 @@ public final class CollationElementIterator
       {
 	RuleBasedCollator.CollationElement e =
 	  (RuleBasedCollator.CollationElement) text_decomposition[i];
-	int idx = textIndex + e.char_seq.length();
+	int idx = textIndex + e.key.length();
 	
 	if (idx > offset)
 	  break;
