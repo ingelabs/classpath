@@ -111,8 +111,8 @@ public class BitSet implements Cloneable, Serializable
     int i;
     for (i = 0; i < max; ++i)
       bits[i] &= bs.bits[i];
-    while (++i < bits.length)
-      bits[i] = 0;
+    while (i < bits.length)
+      bits[i++] = 0;
   }
 
   /**
@@ -128,7 +128,7 @@ public class BitSet implements Cloneable, Serializable
   public void andNot(BitSet bs)
   {
     int i = Math.min(bits.length, bs.bits.length);
-    while (--i > 0)
+    while (--i >= 0)
       bits[i] &= ~bs.bits[i];
   }
 
@@ -590,7 +590,6 @@ public class BitSet implements Cloneable, Serializable
    */
   public void set(int index, boolean value)
   {
-    // Too bad you can't use ?: with void statements!
     if (value)
       set(index);
     else
@@ -638,7 +637,6 @@ public class BitSet implements Cloneable, Serializable
    */
   public void set(int from, int to, boolean value)
   {
-    // Too bad you can't use ?: with void statements!
     if (value)
       set(from, to);
     else
@@ -702,7 +700,7 @@ public class BitSet implements Cloneable, Serializable
   public void xor(BitSet bs)
   {
     ensure(bs.bits.length - 1);
-    for (int i = bs.bits.length - 1; i > 0; i--)
+    for (int i = bs.bits.length - 1; i >= 0; i--)
       bits[i] ^= bs.bits[i];
   }
 
