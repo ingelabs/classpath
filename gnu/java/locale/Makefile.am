@@ -2,7 +2,9 @@
 
 EXTRA_DIST = \
 LocaleInformation.java \
+LocaleInformation_de.java \
 LocaleInformation_en.java \
+LocaleInformation_nl.java \
 block.uni \
 character.uni \
 titlecase.uni \

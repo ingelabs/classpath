@@ -1,8 +1,8 @@
-/*************************************************************************
-/* LocaleInformation_en.java -- US English locale data
+/* LocaleInformation_nl.java -- Dutch locale data
 /*
-/* Copyright (c) 1998 Free Software Foundation, Inc.
-/* Written by Aaron M. Renn (arenn@urbanophile.com)
+/* Copyright (c) 1999 Free Software Foundation, Inc.
+/* Written by Mark Wielaard (mark@klomp.org) based on the English locale
+/* data in LocalInformation_en.java written by Aaron M. Renn.
 /*
 /* This library is free software; you can redistribute it and/or modify
 /* it under the terms of the GNU Library General Public License as published 
@@ -26,10 +26,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
-  * This class contains locale data for the US English locale
+  * This class contains locale data for the Dutch locale
   */
 
-public class LocaleInformation_en extends ListResourceBundle
+public class LocaleInformation_nl extends ListResourceBundle
 {
 
 /*
@@ -40,13 +40,15 @@ public class LocaleInformation_en extends ListResourceBundle
   * This is the set of collation rules used by java.text.RuleBasedCollator 
   * to sort strings properly.  See the documentation of that class for the 
   * proper format.
+  * <p>
+  * This is the same rule as used in the English locale.
   */
 private static final String collation_rules = 
   "-<0,1<2<3<4<5<6<7<8<9A,a<b,B<c,C<d,D<e,E<f,F<g,G<h,H<i,I<j,J<j,K" +
   "<l,L<m,M<n,N<o,O<p,P<q,Q<r,R<s,S<t,T<u,U<v,V<w,W<x,X<y,Y,z<Z";
 
 /*
- * For the followings lists, strings that are subsets of other break strigns
+ * For the followings lists, strings that are subsets of other break strings
  * must be listed first.  For example, if "\r" and "\r\n" are sequences,
  * the "\r" must be first or it will never be used.
  */
@@ -54,17 +56,23 @@ private static final String collation_rules =
 /**
   * This is the list of word separator characters used by 
   * java.text.BreakIterator 
+  * <p>
+  * This is the same list as used in the English local
   */
 private static final String[] word_breaks = { " ", "\t", "\r\n", "\n" }; 
 
 /**
   * This is the list of sentence break sequences used by 
   * java.text.BreakIterator
+  * <p>
+  * This is the same list as used in the English local
   */
 private static final String[] sentence_breaks = { ". " };
 
 /**
   * This is the list of potential line break locations.
+  * <p>
+  * This is the same list as used in the English local
   */
 private static final String[] line_breaks = { "\t", "-", "\r\n", 
   "\n", ".  ", ". ", ".",  "?  ", "? ", "?",  "!  ", "! ", "!", ", ", " " };
@@ -72,75 +80,74 @@ private static final String[] line_breaks = { "\t", "-", "\r\n",
 /**
   * This is the list of months, fully spelled out
   */
-private static final String[] months = { "January", "February", "March", 
-  "April", "May", "June", "July", "August", "September", "October",
-  "November", "December", null };
+private static final String[] months = { "januari", "februari", "maart", 
+  "april", "mei", "juni", "juli", "augustus", "september", "october",
+  "november", "december", null };
 
 /**
   * This is the list of abbreviated month names
   */
-private static final String[] shortMonths = { "Jan", "Feb", "Mar", "Apr", "May",
-  "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", null };
+private static final String[] shortMonths = { "jan", "feb", "mrt", "apr", "may",
+  "jun", "jul", "aug", "sep", "oct", "nov", "dec", null };
 
 /**
   * This is the list of weekdays, fully spelled out
   */
-private static final String[] weekdays = { null, "Sunday", "Monday", "Tuesday",
-  "Wednesday", "Thursday", "Friday", "Saturday" };
+private static final String[] weekdays = { null, "zondag", "maandag", "dinsdag",
+  "woensdag", "donderdag", "vrijdag", "zaterdag" };
 
 /**
   * This is the list of abbreviated weekdays
   */
-private static final String[] shortWeekdays = { null, "Sun", "Mon", "Tue", "Wed",
-  "Thu", "Fri", "Sat" };
+private static final String[] shortWeekdays = { null, "zo", "ma", "di", "wo",
+  "do", "vr", "za" };
 
 /**
   * This is the list of AM/PM strings
+  * <p>
+  * Is there a real equivalent in Dutch? "Voormiddag"/"Namiddag"?
+  * Just using the Latin names for now.
   */
 private static final String[] ampms = { "AM", "PM" };
 
 /**
   * This is the list of era identifiers
+  * <p>
+  * Is there a real equivalent in Dutch? "voor Christus"/"na Christus"?
+  * Just use the Latin/English names for now.
   */
 private static final String[] eras = { "BC", "AD" };
 
 /**
   * This is the list of timezone strings.  The JDK appears to include a
   * city name as the sixth element.
+  * XXX - TODO - FIXME - Which timezones should be included here and how are
+  * they called?
   */
 private static final String[][] zoneStrings =
 {
-  { "EST6EDT", "Eastern Standard Time", "EST", "Eastern Daylight Time", "EDT",
-    "New York" },
-  { "EST6", "Eastern Standard Time", "EST", "Eastern Standard Time", "EST",
-    "Indianapolis" },
-  { "CST6CDT", "Central Standard Time", "CST", "Central Daylight Time", "CDT",
-    "Chicago" },
-  { "MST6MDT", "Mountain Standard Time", "MST", "Mountain Daylight Time", 
-    "MDT", "Denver" },
-  { "MST6", "Mountain Standard Time", "MST", "Mountain Standard Time", "MST",
-    "Phoenix" },
-  { "PST6PDT", "Pacific Standard Time", "PDT", "Pacific Daylight Time", "PDT",
-    "San Francisco" },
-  { "AST6ADT", "Alaska Standard Time", "AST", "Alaska Daylight Time", "ADT",
-    "Anchorage" },
-  { "HST6HDT", "Hawaii Standard Time", "HST", "Hawaii Daylight Time", "HDT",
-    "Honolulu" },
   // European time zones.  The city names are a little bit random.
-  { "WET", "Western European Time", "WET", "Western European Savings Time", "WEST", "London" },
-  { "CET", "Central European Time", "CET", "Central European Savings Time", "CEST", "Berlin" },
-  { "EET", "Eastern European Time", "EET", "Eastern European Savings Time", "EEST", "Istanbul" },
+  { "WET", "West Europese Tijd", "WET", "West Europese Zomertijd", "WEST", "London" },
+  { "CET", "Centraal Europese Tijd", "CET", "Centraal Europese Zomertijd", "CEST", "Amsterdam" },
+  { "EET", "Oost Europese Tijd", "EET", "Oost Europese Zomertijd", "EEST", "Istanbul" },
 };
 
 /**
   * This is the list of pattern characters for formatting dates
+  * <p>
+  * This is the same as the English locale uses: era (G), year (y), month (M),
+  * month (d), hour from 1-12 (h), hour 0-23 (H), minute (m), second (s),
+  * millisecond (S), date of week (E), date of year (D),
+  * day of week in month (F), week in year (w), week in month (W), am/pm (a),
+  * hour from 1-24 (k), hour from 0-11 (K), time zone (z).
+  * Why would you use others?
   */
 private static final String localPatternChars = "GyMdhHmsSEDFwWakKz"; // Not a mistake!
 
 /**
   * This is the DateFormat.SHORT date format
   */
-private static final String shortDateFormat = "M/d/yy";
+private static final String shortDateFormat = "dd-MM-yy";
 
 /**
   * This is the DateFormat.MEDIUM format
@@ -150,57 +157,57 @@ private static final String mediumDateFormat = "dd-MMM-yy";
 /**
   * This is the DateFormat.LONG format
   */
-private static final String longDateFormat = "MMMM d, yyyy";
+private static final String longDateFormat = "dd MMMM yyyy";
 
 /**
   * This is the DateFormat.FULL format
   */
-private static final String fullDateFormat = "EEEE, MMMM d, yyyy";
+private static final String fullDateFormat = "EEEE dd MMMM yyyy";
 
 /**
   * This is the DateFormat.DEFAULT format
   */
-private static final String defaultDateFormat = "dd-MMM-yy";
+private static final String defaultDateFormat = mediumDateFormat;
 
 /**
-  * This is the DateFormat.SHORT format
+  * This is the TimeFormat.SHORT format
   */
-private static final String shortTimeFormat = "h:mm a";
+private static final String shortTimeFormat = "HH:mm";
 
 /**
-  * This is the DateFormat.MEDIUM format
+  * This is the TimeFormat.MEDIUM format
   */
-private static final String mediumTimeFormat = "h:mm:ss a";
+private static final String mediumTimeFormat = "HH:mm:ss";
 
 /**
-  * This is the DateFormat.LONG format
+  * This is the TimeFormat.LONG format
   */
-private static final String longTimeFormat = "h:mm:ss a z";
+private static final String longTimeFormat = "HH:mm:ss";
 
 /**
-  * This is the DateFormat.FULL format
+  * This is the TimeFormat.FULL format
   */
-private static final String fullTimeFormat = "h:mm:ss 'o''clock' a z";
+private static final String fullTimeFormat = "HH:mm:ss z";
 
 /**
-  * This is the DateFormat.DEFAULT format
+  * This is the TimeFormat.DEFAULT format
   */
-private static final String defaultTimeFormat = "h:mm:ss a";
+private static final String defaultTimeFormat = shortTimeFormat;
 
 /**
   * This is the currency symbol
   */
-private static final String currencySymbol = "$";
+private static final String currencySymbol = "fl";
 
 /**
   * This is the international currency symbol. 
   */
-private static final String intlCurrencySymbol = "US$";
+private static final String intlCurrencySymbol = "NLG";
 
 /**
   * This is the decimal point.
   */
-private static final String decimalSeparator = ".";
+private static final String decimalSeparator = ",";
 
 /**
   * This is the exponential symbol
@@ -235,7 +242,7 @@ private static final String minusSign = "-";
 /**
   * This is the decimal separator in monetary values.
   */
-private static final String monetarySeparator = ".";
+private static final String monetarySeparator = ",";
 
 /**
   * This is the separator between positive and negative subpatterns.
@@ -268,7 +275,8 @@ private static final String calendarClass = "java.util.GregorianCalendar";
  * This is used by Calendar.
  * @see Calendar#getFirstDayOfWeek()
  */
-private static final Integer firstDayOfWeek = new Integer(Calendar.SUNDAY);
+private static final Integer firstDayOfWeek = new Integer(Calendar.MONDAY);
+
 /**
  * This is used by Calendar.
  * @see Calendar#getMinimalDaysInFirstWeek()
@@ -280,6 +288,8 @@ private static final Integer minimalDaysInFirstWeek = new Integer(1);
    * The default for most catholic
    * countries is midnight (UTC) on October 5, 1582 (Julian),
    * or October 15, 1582 (Gregorian).
+   * <p>
+   * XXX - I guess the default is also true for the Netherlands. But is it?
    * @see GregorianCalendar#getGregorianCutOver
    */
   /* If you change this date be aware, that this formular does only 

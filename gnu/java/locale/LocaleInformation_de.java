@@ -165,12 +165,12 @@ private static final String monetarySeparator = ",";
 
 /**
  * This is used by Calendar.
- * @see Calendar.getFirstDayInWeek
+ * @see Calendar#getFirstDayOfWeek
  */
-private static final Integer firstDayInWeek = new Integer(Calendar.MONDAY);
+private static final Integer firstDayOfWeek = new Integer(Calendar.MONDAY);
 /**
  * This is used by Calendar.
- * @see Calendar.getMinimalDaysInFirstWeek
+ * @see Calendar#getMinimalDaysInFirstWeek
  */
 private static final Integer minimalDaysInFirstWeek = new Integer(4);
 
@@ -208,7 +208,7 @@ private static final Object[][] contents =
   { "decimalSeparator", decimalSeparator },
   { "monetarySeparator", monetarySeparator },
   // For Calendar/GregorianCalendar
-  { "firstDayInWeek", firstDayInWeek },
+  { "firstDayOfWeek", firstDayOfWeek },
   { "minimalDaysInFirstWeek", minimalDaysInFirstWeek },
 };
 
