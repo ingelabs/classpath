@@ -1,3 +1,10 @@
+2004-04-22  Michael Koch  <konqueror@gmx.de>
+
+	* java/nio/DirectByteBufferImpl.java
+	(shiftDown): Overwrite shiftDown method from ByteBuffer.
+	* java/nio/MappedByteBufferImpl.java
+	(compact): Use optimized shiftDown() method.
+
 2004-04-22  Jerry Quinn  <jlquinn@optonline.net>
 
 	* java/awt/Font.java (deriveFont): Implement missing variants.
