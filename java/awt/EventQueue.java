@@ -231,10 +231,11 @@ public class EventQueue
   public static void invokeAndWait(Runnable runnable)
     throws InterruptedException, InvocationTargetException
   {
+    if (isDispatchThread ())
+      throw new Error("Can't call invokeAndWait from event dispatch thread");
+
     EventQueue eq = Toolkit.getDefaultToolkit().getSystemEventQueue(); 
     Thread current = Thread.currentThread();
-    if (current == eq.dispatchThread)
-      throw new Error("Can't call invokeAndWait from event dispatch thread");
 
     InvocationEvent ie = 
       new InvocationEvent(eq, runnable, current, true);
@@ -293,8 +294,18 @@ public class EventQueue
   public static AWTEvent getCurrentEvent()
   {
     EventQueue eq = Toolkit.getDefaultToolkit().getSystemEventQueue(); 
-    if (Thread.currentThread() != eq.dispatchThread)
-      return null;
+    Thread ct = Thread.currentThread();
+    
+    /* Find out if this thread is the dispatch thread for any of the
+       EventQueues in the chain */ 
+    while (ct != eq.dispatchThread)
+      {
+        // Try next EventQueue, if any
+        if (eq.next == null)
+           return null;  // Not an event dispatch thread
+        eq = eq.next;
+      }
+
     return eq.currentEvent;
   }
 
@@ -348,32 +359,34 @@ public class EventQueue
     if (prev == null)
       throw new EmptyStackException();
 
-    // Don't synchronize both this and prev at the same time, or deadlock could
-    // occur.
+    /* The order is important here, we must get the prev lock first,
+       or deadlock could occur as callers usually get here following
+       prev's next pointer, and thus obtain prev's lock before trying
+       to get this lock. */
     synchronized (prev)
       {
         prev.next = next;
         if (next != null)
           next.prev = prev;
-      }
 
-    synchronized (this)
-      {
-        int i = next_out;
-        while (i != next_in)
+        synchronized (this)
           {
-            prev.postEvent(queue[i]);
-            next_out = i;
-            if (++i == queue.length)
-              i = 0;
-          }
-	// Empty the queue so it can be reused
-	next_in = 0;
-	next_out = 0;
+            int i = next_out;
+            while (i != next_in)
+              {
+                prev.postEvent(queue[i]);
+                next_out = i;
+                if (++i == queue.length)
+                  i = 0;
+              }
+	    // Empty the queue so it can be reused
+	    next_in = 0;
+	    next_out = 0;
 
-        // Tell our EventDispatchThread that it can end execution
-        dispatchThread.interrupt ();
-	dispatchThread = null;
+            // Tell our EventDispatchThread that it can end execution
+            dispatchThread.interrupt ();
+	    dispatchThread = null;
+          }
       }
   }
 

@@ -1,5 +1,15 @@
 2004-01-26  Fernando Nasser  <fnasser@redhat.com>
 
+	* java/awt/EventQueue.java (invokeAndWait): Use list-aware
+	isDispatchThread method to replace wrong test condition.
+	(pop): Prevent racing condition to add events to the queue out of order
+	by acquiring locks in the proper order and not by releasing one before
+	acquiring the other.
+	(getCurrentEvent): Consider that system events may be handled by any
+	queue in the stack.
+
+2004-01-26  Fernando Nasser  <fnasser@redhat.com>
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEvents.c
 	(pre_event_handler): Discard GDK_ENTER_NOTIFY related to ungrabs.
 
