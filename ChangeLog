@@ -1,3 +1,7 @@
+2002-02-15  Mark Wielaard <mark@klomp.org>
+
+	* THANKYOU: Add Isaac Jones and Patrick Doyle
+
 2002-02-15  Wu Gansha  <gansha.wu@intel.com>
 
 	* gnu/java/net/protocol/file/FileURLConnection.java (connect): check
