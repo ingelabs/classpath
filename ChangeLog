@@ -1,3 +1,14 @@
+2003-09-16  Graydon Hoare  <graydon@redhat.com>
+
+	* java/awt/BufferedImage.java (setData): Support non-component
+	sample models.
+	(getData): Same.
+
+2003-09-10  Graydon Hoare  <graydon@redhat.com>
+
+	* java/awt/geom/AffineTransform.java(transform): Fix airthmetic bugs.
+	* java/awt/geom/Arc2D.java: Approximate arc segments with cubics.
+
 2003-09-15  Ingo Proetel  <proetel@aicas.com>
 
 	* native/jni/java-net/java_net_PlainDatagramSocketImpl.c (receive, receive0): renamed receive to receive0 
