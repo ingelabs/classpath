@@ -1,3 +1,9 @@
+2004-12-27  Michael Koch  <konqueror@gmx.de>
+
+	* javax/imageio/metadata/IIOInvalidTreeException.java:
+	Use org.w3c.dom.Node instead of java.lang.Object.
+	(serialVersionUID): New field.
+
 2004-12-26  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/locale/LocaleInformation_de_AT.java: Reformatted.
