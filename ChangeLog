@@ -1,3 +1,14 @@
+2004-12-07  Michael Koch  <konqueror@gmx.de>
+
+	* javax/imageio/stream/FileCacheImageInputStream.java,
+	javax/imageio/stream/FileCacheImageOutputStream.java,
+	javax/imageio/stream/FileImageInputStream.java,
+	javax/imageio/stream/ImageInputStreamImpl.java,
+	javax/imageio/stream/ImageOutputStreamImpl.java,
+	javax/imageio/stream/MemoryCacheImageInputStream.java,
+	javax/imageio/stream/MemoryCacheImageOutputStream.java:
+	Added all missing methods in javax.imageio.stream.
+
 2004-12-07  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/io/BufferedInputStream.java
