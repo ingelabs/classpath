@@ -320,6 +320,16 @@ javax/accessibility/Makefile
 javax/naming/Makefile
 javax/naming/directory/Makefile
 javax/naming/spi/Makefile
+javax/swing/Makefile
+javax/swing/border/Makefile
+javax/swing/event/Makefile
+javax/swing/plaf/Makefile
+javax/swing/plaf/basic/Makefile
+javax/swing/plaf/metal/Makefile
+javax/swing/table/Makefile
+javax/swing/text/Makefile
+javax/swing/tree/Makefile
+javax/swing/undo/Makefile
 native/Makefile
 native/fdlibm/Makefile
 native/cni/Makefile

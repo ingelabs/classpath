@@ -1,3 +1,7 @@
+2002-04-30  Eric Blake  <ebb9@email.byu.edu>
+
+	* configure.in: Configure the swing directories.
+
 2002-04-30  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/BufferedReader.java (fill): Handle case where markPos
@@ -219,7 +223,6 @@
 2002-04-30  Eric Blake  <ebb9@email.byu.edu>
 
 	* AUTHORS: Add Andrew Selkirk.
-	* configure.in: Configure the swing directories.
 	* lib/standard.omit: Made sure swing at least compiles (although
 	it is non-functional).
 	* javax/Makefile.am: Visit swing.
