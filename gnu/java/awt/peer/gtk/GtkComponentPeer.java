@@ -33,7 +33,6 @@ public class GtkComponentPeer extends GtkGenericPeer
   native int[] gtkWidgetGetForeground ();
   native int[] gtkWidgetGetBackground ();
   native void gtkWidgetSetVisible (boolean b);
-  native void gtkWidgetShowChildren();
   native void gtkWidgetGetDimensions(int[] dim);
   native void gtkWidgetGetLocationOnScreen(int[] point);
 //    native void gtkWidgetSetUsize(int width, int height);
