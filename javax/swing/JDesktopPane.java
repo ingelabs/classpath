@@ -40,8 +40,6 @@ package javax.swing;
 
 import java.awt.Component;
 import java.beans.PropertyVetoException;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 
 import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;

@@ -45,11 +45,9 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 
-import javax.accessibility.Accessible;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.ViewportUI;
-
 
 /**
  *  

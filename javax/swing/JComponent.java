@@ -35,6 +35,7 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+
 package javax.swing;
 
 import java.awt.AWTEvent;
@@ -68,7 +69,7 @@ import java.io.Serializable;
 import java.util.EventListener;
 import java.util.Hashtable;
 import java.util.Locale;
-import java.util.Vector;
+
 import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
 import javax.accessibility.AccessibleRole;
@@ -78,7 +79,6 @@ import javax.swing.event.AncestorListener;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.SwingPropertyChangeSupport;
 import javax.swing.plaf.ComponentUI;
-
 
 /**
  * Every component in swing inherits from this class (JLabel, JButton, etc).

@@ -44,6 +44,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Rectangle;
+
 import javax.swing.JComponent;
 import javax.swing.JToolTip;
 import javax.swing.SwingConstants;
@@ -53,7 +54,6 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.ToolTipUI;
-
 
 /**
  * This is the Basic Look and Feel UI class for JToolTip.
