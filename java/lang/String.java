@@ -24,7 +24,7 @@ public final class String {
    * Characters which make up the String.
    * Package access is granted for use by StringBuffer.
    */
-  char[] str;
+  char[] value;
 
   /**
    * Holds the number of characters in str[].  This number is generally
@@ -32,7 +32,7 @@ public final class String {
    * with this String, then len will be equal to StringBuffer.length().
    * Package access is granted for use by StringBuffer.
    */
-  int len;
+  int count;
 
   /**
    * Holds the starting position for characters in str[].  Since
@@ -55,22 +55,22 @@ public final class String {
    * Creates an empty String (length 0)
    */
   public String() {
-    str = new char[0];
+    value = new char[0];
   }
 
   /**
    * Copies the contents of a String to a new String.
    * Since Strings are immutable, only a shallow copy is performed.
    *
-   * @param value String to copy
+   * @param str String to copy
    *
    * @exception NullPointerException if `value' is null
    */
-  public String(String value) throws NullPointerException {
+  public String(String str) throws NullPointerException {
     // since Strings are immutable, there's no reason to
     //  make a deep copy of `value'
-    str = value.str;
-    len = value.len;
+    value = str.value;
+    count = str.count;
   }
 
   /**
@@ -81,9 +81,10 @@ public final class String {
    *
    * @exception NullPointerException if `value' is null
    */
-  public String(StringBuffer value) throws NullPointerException {
-    value.getChars(0, value.length(), str, 0);
-    len = str.length;
+  public String(StringBuffer buf) throws NullPointerException {
+    count = buf.length();
+    value = new char[count];
+    buf.getChars(0, buf.length(), value, 0);
   }
   
   /**
@@ -95,9 +96,9 @@ public final class String {
    * @exception NullPointerException if `data' is null
    */
   public String(char[] data) throws NullPointerException {
-    len = data.length;
-    str = new char[len];
-    System.arraycopy(data, 0, str, 0, data.length);
+    count = data.length;
+    value = new char[count];
+    System.arraycopy(data, 0, value, 0, data.length);
   }
 
   /**
@@ -117,36 +118,36 @@ public final class String {
        throws NullPointerException, IndexOutOfBoundsException {
     if (offset < 0 || count < 0 || offset+count > data.length)
       throw new StringIndexOutOfBoundsException();
-    len = count-offset;
-    str = new char[len];
-    System.arraycopy(data, offset, str, 0, count);
+    this.count = count;
+    value = new char[count];
+    System.arraycopy(data, offset, value, 0, count);
   }
 
   public String(byte[] data) throws NullPointerException {
     try {
-      str = EncodingManager.getDecoder().convertToChars(data);
+      value = EncodingManager.getDecoder().convertToChars(data);
     } catch (CharConversionException cce) {
       try {
-	str = EncodingManager.getDecoder("8859_1").convertToChars(data);
+	value = EncodingManager.getDecoder("8859_1").convertToChars(data);
       } catch (IOException ioe) {
 	throw new Error(ioe.toString());
       }
     }
-    len = str.length;
+    count = value.length;
   }
 
   public String(byte[] data, String encoding) 
     throws NullPointerException, UnsupportedEncodingException {
     try {
-      str = EncodingManager.getDecoder(encoding).convertToChars(data);
+      value = EncodingManager.getDecoder(encoding).convertToChars(data);
     } catch (CharConversionException cce) {
       try {
-	str = EncodingManager.getDecoder("8859_1").convertToChars(data);
+	value = EncodingManager.getDecoder("8859_1").convertToChars(data);
       } catch (IOException ioe) {
 	throw new Error(ioe.toString());
       }
     }
-    len = str.length;
+    count = value.length;
   }
 
   public String(byte[] data, int offset, int count, String encoding)
@@ -155,17 +156,17 @@ public final class String {
     if (offset < 0 || count < 0 || offset+count > data.length)
       throw new StringIndexOutOfBoundsException();
     try {
-      str = EncodingManager.getDecoder(encoding).convertToChars(data, offset,
+      value = EncodingManager.getDecoder(encoding).convertToChars(data, offset,
 								count);
     } catch (CharConversionException cce) {
       try {
-	str = EncodingManager.getDecoder("8859_1").convertToChars(data, offset,
+	value = EncodingManager.getDecoder("8859_1").convertToChars(data, offset,
 								  count);
       } catch (IOException ioe) {
 	throw new Error(ioe.toString());
       }
     }
-    len = str.length;
+    this.count = value.length;
   }
 
   public String(byte[] data, int offset, int count)
@@ -173,16 +174,16 @@ public final class String {
     if (offset < 0 || count < 0 || offset+count > data.length)
       throw new StringIndexOutOfBoundsException();
     try {
-      str = EncodingManager.getDecoder().convertToChars(data, offset, count);
+      value = EncodingManager.getDecoder().convertToChars(data, offset, count);
     } catch (CharConversionException cce) {
       try {
-	str = EncodingManager.getDecoder("8859_1").convertToChars(data, offset,
+	value = EncodingManager.getDecoder("8859_1").convertToChars(data, offset,
 								  count);
       } catch (IOException ioe) {
 	throw new Error(ioe.toString());
       }
     }
-    len = str.length;
+    this.count = value.length;
   }
 
   /**
@@ -202,10 +203,10 @@ public final class String {
    * @deprecated Use constructors with byte to char decoders.
    */
   public String(byte[] ascii, int hibyte) throws NullPointerException {
-    len = ascii.length;
-    str = new char[len];
-    for (int i = 0; i < len; i++)
-      str[i] = (char) (((hibyte & 0xff) << 8) | (ascii[i] & 0xff));
+    count = ascii.length;
+    value = new char[count];
+    for (int i = 0; i < count; i++)
+      value[i] = (char) (((hibyte & 0xff) << 8) | (ascii[i] & 0xff));
   }
 
   /**
@@ -233,10 +234,10 @@ public final class String {
        throws NullPointerException, IndexOutOfBoundsException {
     if (offset < 0 || count < 0 || offset+count > ascii.length)
       throw new StringIndexOutOfBoundsException();
-    len = count-offset;
-    str = new char[len];
+    this.count = count-offset;
+    value = new char[count];
     for (int i = 0; i < count; i++)
-      str[i] = (char) (((hibyte & 0xff) << 8) | (ascii[i+offset] & 0xff));
+      value[i] = (char) (((hibyte & 0xff) << 8) | (ascii[i+offset] & 0xff));
   }
 
   /**
@@ -248,8 +249,8 @@ public final class String {
    * capacity of the StringBuffer)
    */
   String(char[] data, int length) {
-    str = data;
-    len = length;
+    value = data;
+    count = length;
   }
 
   /**
@@ -266,12 +267,12 @@ public final class String {
    * same character sequence as this String, else false
    */
   public boolean equals(Object anObject) {
+    if (anObject == null) return false;
     if (!(anObject instanceof String)) return false;
     String str2 = (String) anObject;
-    if (len != str2.len) return false;
-    char str2ch[] = new char[str2.len];
-    for (int i = 0; i < len; i++)
-      if (str[i] != str2ch[i]) return false;
+    if (count != str2.count) return false;
+    for (int i = 0; i < count; i++)
+      if (value[i] != str2.value[i]) return false;
     return true;
   }
 
@@ -286,8 +287,8 @@ public final class String {
     /* compute the hash code using a local variable such that we're
        reentrant */
     int hashCode = 0;
-    for (int i = 0; i < len; i++)
-      hashCode = hashCode * 31 + str[i];
+    for (int i = 0; i < count; i++)
+      hashCode = hashCode * 31 + value[i];
 
     cachedHashCode = hashCode;
     return hashCode;
@@ -299,7 +300,7 @@ public final class String {
    * @return the length of this String.
    */
   public int length() {
-    return len;
+    return count;
   }
 
   /**
@@ -314,9 +315,9 @@ public final class String {
    *   if (index < 0 || index >= this.length())
    */
   public char charAt(int index) throws IndexOutOfBoundsException {
-    if (index < 0 || index >= len) 
+    if (index < 0 || index >= count) 
       throw new StringIndexOutOfBoundsException(index);
-    return str[index];
+    return value[index];
   }
 
   /**
@@ -336,11 +337,11 @@ public final class String {
    */
   public void getChars(int srcBegin, int srcEnd, char dst[], int dstBegin)
        throws NullPointerException, IndexOutOfBoundsException {
-    if (srcBegin < 0 || srcBegin > srcEnd || srcEnd > len || 
+    if (srcBegin < 0 || srcBegin > srcEnd || srcEnd > count || 
 	dstBegin < 0 || dstBegin+(srcEnd-srcBegin) > dst.length)
       throw new StringIndexOutOfBoundsException();
     for (int i = srcBegin; i < srcEnd; i++)
-      dst[dstBegin + i - srcBegin] = str[i];
+      dst[dstBegin + i - srcBegin] = value[i];
   }
 
   /**
@@ -362,11 +363,11 @@ public final class String {
    */
   public void getBytes(int srcBegin, int srcEnd, byte dst[], int dstBegin)
        throws NullPointerException, IndexOutOfBoundsException {
-    if (srcBegin < 0 || srcBegin > srcEnd || srcEnd > len || 
+    if (srcBegin < 0 || srcBegin > srcEnd || srcEnd > count || 
 	dstBegin < 0 || dstBegin+(srcEnd-srcBegin) > dst.length)
       throw new StringIndexOutOfBoundsException();
     for (int i = srcBegin; i < srcEnd; i++)
-      dst[dstBegin + i - srcBegin] = (byte) str[i];
+      dst[dstBegin + i - srcBegin] = (byte) value[i];
   }
 
   /**
@@ -382,7 +383,7 @@ public final class String {
    */
   public byte[] getBytes(String enc) throws UnsupportedEncodingException {
     try {
-      return EncodingManager.getEncoder(enc).convertToBytes(str, offset, len);
+      return EncodingManager.getEncoder(enc).convertToBytes(value, offset, count);
     } catch (CharConversionException e) {
       return null;
     }
@@ -397,7 +398,7 @@ public final class String {
    */
   public byte[] getBytes() {
     try {
-      return EncodingManager.getEncoder().convertToBytes(str, offset, len);
+      return EncodingManager.getEncoder().convertToBytes(value, offset, count);
     } catch (CharConversionException e) {
       return null;
     }
@@ -410,8 +411,10 @@ public final class String {
    *   this String.
    */
   public char[] toCharArray() {
-    char[] copy = new char[len];
-    System.arraycopy(str, 0, copy, 0, len);
+    char[] copy = new char[count];
+    if (value.length != count)
+      System.err.println("value.length=" + value.length + " count=" + count);
+    System.arraycopy(value, 0, copy, 0, count);
     return copy;
   }
 
@@ -424,12 +427,12 @@ public final class String {
    *   character sequence, ignoring case, else false.
    */
   public boolean equalsIgnoreCase(String anotherString) {
-    if (anotherString == null || len != anotherString.len)
+    if (anotherString == null || count != anotherString.count)
       return false;
-    for (int i = 0; i < len; i++)
-      if (str[i] == anotherString.str[i] ||
-Character.toUpperCase(str[i]) == Character.toUpperCase(anotherString.str[i]) ||
-Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
+    for (int i = 0; i < count; i++)
+      if (value[i] == anotherString.value[i] ||
+Character.toUpperCase(value[i]) == Character.toUpperCase(anotherString.value[i]) ||
+Character.toLowerCase(value[i]) == Character.toLowerCase(anotherString.value[i]))
 	continue;
       else
 	return false;
@@ -444,13 +447,13 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    *   to match, or be greater than `anotherString'.
    */
   public int compareTo(String anotherString) throws NullPointerException {
-    int min = Math.min(len, anotherString.len);
+    int min = Math.min(count, anotherString.count);
     for (int i = 0; i < min; i++) {
-      int result = str[i]-anotherString.str[i];
+      int result = value[i]-anotherString.value[i];
       if (result != 0) 
 	return result;
     }
-    return len-anotherString.len;
+    return count-anotherString.count;
   }
 
   /**
@@ -491,21 +494,21 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
   public boolean regionMatches(boolean ignoreCase, int toffset, String other,
 			       int ooffset, int len)
        throws NullPointerException {
-    if (toffset < 0 || ooffset < 0 || toffset+len > len || 
-	ooffset+len > other.len)
+    if (toffset < 0 || ooffset < 0 || toffset+len > count || 
+	ooffset+len > other.count)
       return false;
     for (int i = 0; i < len; i++)
       if (ignoreCase)
-	if (str[toffset+i] == other.str[ooffset+i] ||
-            Character.toLowerCase(str[toffset+i]) ==
-	    Character.toLowerCase(other.str[ooffset+i]) ||
-	    Character.toUpperCase(str[toffset+i]) ==
-	    Character.toUpperCase(other.str[ooffset+i]))
+	if (value[toffset+i] == other.value[ooffset+i] ||
+            Character.toLowerCase(value[toffset+i]) ==
+	    Character.toLowerCase(other.value[ooffset+i]) ||
+	    Character.toUpperCase(value[toffset+i]) ==
+	    Character.toUpperCase(other.value[ooffset+i]))
 	  continue;
 	else
 	  return false;
       else
-	if (str[toffset+i] != other.str[ooffset+i])
+	if (value[toffset+i] != other.value[ooffset+i])
 	  return false;
     return true;
   }
@@ -522,8 +525,8 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    * @exception NullPointerException if `prefix' is null
    */
   public boolean startsWith(String prefix) throws NullPointerException {
-    return (prefix.len == 0) ? true : 
-      regionMatches(0, prefix, 0, prefix.len);
+    return (prefix.count == 0) ? true : 
+      regionMatches(0, prefix, 0, prefix.count);
   }
   
   /**
@@ -541,9 +544,9 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    */
   public boolean startsWith(String prefix, int toffset) 
        throws NullPointerException {
-    if (toffset < 0 || toffset > len) return false;
-    return (prefix.len == 0) ? true :
-      regionMatches(toffset, prefix, 0, prefix.len);
+    if (toffset < 0 || toffset > count) return false;
+    return (prefix.count == 0) ? true :
+      regionMatches(toffset, prefix, 0, prefix.count);
   }
   
   /**
@@ -558,8 +561,8 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    * @exception NullPointerException if `suffix' is null
    */
   public boolean endsWith(String suffix) throws NullPointerException {
-    return (suffix.len == 0) ? true : 
-      regionMatches(len-suffix.len, suffix, 0, suffix.len);
+    return (suffix.count == 0) ? true : 
+      regionMatches(count-suffix.count, suffix, 0, suffix.count);
   }
   
   /**
@@ -586,8 +589,8 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    */
   public int indexOf(int ch, int fromIndex) {
     if (fromIndex < 0) fromIndex = 0;
-    for (int i = fromIndex; i < len; i++)
-      if (str[i] == ch)
+    for (int i = fromIndex; i < count; i++)
+      if (value[i] == ch)
 	return i;
     return -1;
   }
@@ -620,8 +623,8 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    */
   public int indexOf(String str, int fromIndex) throws NullPointerException {
     if (fromIndex < 0) fromIndex = 0;
-    for (int i = fromIndex; i < len; i++)
-      if (regionMatches(i, str, 0, str.len))
+    for (int i = fromIndex; i < count; i++)
+      if (regionMatches(i, str, 0, str.count))
 	return i;
     return -1;
   }
@@ -634,7 +637,7 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    * @return location (base 0) of the character, or -1 if not found
    */
   public int lastIndexOf(int ch) {
-    return lastIndexOf(ch, len-1);
+    return lastIndexOf(ch, count-1);
   }
 
   /**
@@ -649,10 +652,10 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    * @return location (base 0) of the character, or -1 if not found
    */
   public int lastIndexOf(int ch, int fromIndex) {
-    if (fromIndex >= len)
-      fromIndex = len-1;
+    if (fromIndex >= count)
+      fromIndex = count-1;
     for (int i = fromIndex; i >= 0; i--)
-      if (str[i] == ch)
+      if (value[i] == ch)
 	return i;
     return -1;
   }
@@ -667,7 +670,7 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    * @exception NullPointerException if `str' is null
    */
   public int lastIndexOf(String str) throws NullPointerException {
-    return lastIndexOf(str, len-1);
+    return lastIndexOf(str, count-1);
   }
 
   /**
@@ -685,10 +688,10 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    */
   public int lastIndexOf(String str, int fromIndex)
     throws NullPointerException {
-    if (fromIndex > len)
-      fromIndex = len;
+    if (fromIndex > count)
+      fromIndex = count;
     for (int i = fromIndex; i >= 0; i--)
-      if (regionMatches(i, str, 0, str.len))
+      if (regionMatches(i, str, 0, str.count))
 	return i;
     return -1;
   }
@@ -705,7 +708,7 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    *   if (beginIndex < 0 || beginIndex > this.length())
    */
   public String substring(int beginIndex) throws IndexOutOfBoundsException {
-    return substring(beginIndex, len);
+    return substring(beginIndex, count);
   }
     
   /**
@@ -723,10 +726,10 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    */
   public String substring(int beginIndex, int endIndex) 
        throws IndexOutOfBoundsException {
-    if (beginIndex < 0 || endIndex > len || beginIndex > endIndex)
+    if (beginIndex < 0 || endIndex > count || beginIndex > endIndex)
       throw new StringIndexOutOfBoundsException();
     char[] newStr = new char[endIndex-beginIndex];
-    System.arraycopy(str, beginIndex, newStr, 0, endIndex-beginIndex);
+    System.arraycopy(value, beginIndex, newStr, 0, endIndex-beginIndex);
     return new String(newStr);
   }
 
@@ -740,10 +743,10 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    * @exception NullPointerException if `str' is null
    */
   public String concat(String str) throws NullPointerException {
-    if (str.len == 0) return this;
-    char[] newStr = new char[len + str.len];
-    System.arraycopy(this.str, 0, newStr, 0, len);
-    System.arraycopy(str.str, 0, newStr, len, str.len);
+    if (str.count == 0) return this;
+    char[] newStr = new char[count + str.count];
+    System.arraycopy(this.value, 0, newStr, 0, count);
+    System.arraycopy(str.value, 0, newStr, count, str.count);
     return new String(newStr);
   }
 
@@ -758,15 +761,15 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    */
   public String replace(char oldChar, char newChar) {
     int index = 0;
-    for (; index < len; index++)
-      if (str[index] == oldChar)
+    for (; index < count; index++)
+      if (value[index] == oldChar)
 	break;
-    if (index == len) return this;
-    char[] newStr = new char[len];
-    System.arraycopy(str, 0, newStr, 0, len);
-    for (int i = index; i < len; i++)
-      if (str[i] == oldChar)
-	str[i] = newChar;
+    if (index == count) return this;
+    char[] newStr = new char[count];
+    System.arraycopy(value, 0, newStr, 0, count);
+    for (int i = index; i < count; i++)
+      if (value[i] == oldChar)
+	value[i] = newChar;
     return new String(newStr);
   }
 
@@ -777,11 +780,17 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    *   or `this' if no characters where lowercased
    */
   public String toLowerCase() {
-    char[] newStr = new char[len];
-    for (int i = 0; i < len; i++)
-      newStr[i] = Character.toLowerCase(str[i]);
-    for (int i = 0; i < len; i++)
-      if (str[i] != newStr[i])
+    char[] newStr = new char[count];
+    for (int i = 0; i < count; i++)
+      // Temporary Change until Character is fully operational
+      //newStr[i] = Character.toLowerCase(value[i]);
+      if ((value[i] >= 'A') && (value[i] <= 'Z'))
+        newStr[i] = (char)(value[i] + 'A');
+      else
+        newStr[i] = value[i];
+      // End of temporary change
+    for (int i = 0; i < count; i++)
+      if (value[i] != newStr[i])
 	return new String(newStr);
     return this;
   }
@@ -804,11 +813,11 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    * @return new uppercased String, or `this' if no characters were uppercased
    */
   public String toUpperCase() {
-    char[] newStr = new char[len];
-    for (int i = 0; i < len; i++)
-      newStr[i] = Character.toUpperCase(str[i]);
-    for (int i = 0; i < len; i++)
-      if (str[i] != newStr[i])
+    char[] newStr = new char[count];
+    for (int i = 0; i < count; i++)
+      newStr[i] = Character.toUpperCase(value[i]);
+    for (int i = 0; i < count; i++)
+      if (value[i] != newStr[i])
 	return new String(newStr);
     return this;
   }
@@ -834,15 +843,15 @@ Character.toLowerCase(str[i]) == Character.toLowerCase(anotherString.str[i]))
    *   and index this.length()-1.
    */
   public String trim() {
-    if (len == 0 || (str[0] > '\u0020' && str[len-1] > '\u0020'))
+    if (count == 0 || (value[0] > '\u0020' && value[count-1] > '\u0020'))
       return this;
     int begin = 0;
-    for (; begin < len; begin++)
-      if (str[begin] > '\u0020')
+    for (; begin < count; begin++)
+      if (value[begin] > '\u0020')
 	break;
-    int end = len-1;
+    int end = count-1;
     for (; end >= 0; end--)
-      if (str[end] > '\u0020')
+      if (value[end] > '\u0020')
 	break;
     return substring(begin, end);
   }
