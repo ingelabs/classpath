@@ -1,3 +1,9 @@
+2004-09-24  Andrew Haley  <aph@redhat.com>
+
+	* java/io/ObjectOutputStream.java
+	(readObject): Save and restore this.currentObject and
+	this.currentObjectStreamClass around calls to callReadMethod().
+
 2004-09-24  David Daney  <ddaney@avtrex.com>
 
 	* java/net/URL.java (URL): Copy userInfo from context.
@@ -926,55 +932,55 @@
 
 2004-09-04  Graydon Hoare  <graydon@redhat.com>
 
-        * javax/swing/JColorChooser.java:
-        Make a couple inner classes static, for jikes.
+	* javax/swing/JColorChooser.java:
+	Make a couple inner classes static, for jikes.
 
 2004-09-04  Kim Ho  <kho@redhat.com>
 
-        * java/awt/Color.java: Fix documentation.
-        (RGBtoHSB): Use floats for conversions.
-        * javax/swing/ButtonGroup.java: Run Jalopy.
-        (setSelected): Reimplement.
-        * javax/swing/DefaultButtonModel.java: Run Jalopy.
-        (changeState): Let ButtonGroup know that the button 
-        is changing state.
-        * javax/swing/JColorChooser.java: Implement.
-        * javax/swing/JLabel.java: Run Jalopy.
-        * javax/swing/JSpinner.java: Run Jalopy.
-        (setValue): New method.
-        * javax/swing/JTabbedPane.java: Run Jalopy.
-        (removeTabAt): Call correct remove method.
-        * javax/swing/SpinnerNumberModel.java: Run Jalopy.
-        (getPreviousValue): Compare minimum value.
-        * javax/swing/Timer.java: Run Jalopy.
-        (run): Comment out println.
-        * javax/swing/ToolTipManager.java:
-        (mouseMoved): Get new tooltip text for location.
-        * javax/swing/colorchooser/AbstractColorChooserPanel.java:
-        Jalopy and Javadoc.
-        * javax/swing/colorchooser/ColorChooserComponentFactory.java:
-        Implement.
-        * javax/swing/colorchooser/DefaultColorSelectionModel.java:
-        Run Jalopy.
-        (setSelectedColor): Fire ChangeEvent.
-        * javax/swing/colorchooser/DefaultHSBChooserPanel.java:
-        New file. Implement.
-        * javax/swing/colorchooser/DefaultPreviewPanel.java:
-        Ditto.
-        * javax/swing/colorchooser/DefaultRGBChooserPanel.java:
-        Ditto.
-        * javax/swing/colorchooser/DefaultSwatchChooserPanel.java:
-        Ditto.
-        * javax/swing/plaf/basic/BasicArrowButton.java:
-        (getArrow): Fix size of upward pointing button.
-        * javax/swing/plaf/basic/BasicColorChooserUI.java:
-        Implement.
-        * javax/swing/plaf/basic/BasicSliderUI.java:
-        (getWidthOfWidestLabel): Use preferred dimensions.
-        (getHeightOfTallestLabel): Ditto.
-        * javax/swing/plaf/basic/BasicSpinnerUI.java:
-        Run Jalopy.
-        (mousePressed): Disable changes to spinner if it is not enabled.
+	* java/awt/Color.java: Fix documentation.
+	(RGBtoHSB): Use floats for conversions.
+	* javax/swing/ButtonGroup.java: Run Jalopy.
+	(setSelected): Reimplement.
+	* javax/swing/DefaultButtonModel.java: Run Jalopy.
+	(changeState): Let ButtonGroup know that the button 
+	is changing state.
+	* javax/swing/JColorChooser.java: Implement.
+	* javax/swing/JLabel.java: Run Jalopy.
+	* javax/swing/JSpinner.java: Run Jalopy.
+	(setValue): New method.
+	* javax/swing/JTabbedPane.java: Run Jalopy.
+	(removeTabAt): Call correct remove method.
+	* javax/swing/SpinnerNumberModel.java: Run Jalopy.
+	(getPreviousValue): Compare minimum value.
+	* javax/swing/Timer.java: Run Jalopy.
+	(run): Comment out println.
+	* javax/swing/ToolTipManager.java:
+	(mouseMoved): Get new tooltip text for location.
+	* javax/swing/colorchooser/AbstractColorChooserPanel.java:
+	Jalopy and Javadoc.
+	* javax/swing/colorchooser/ColorChooserComponentFactory.java:
+	Implement.
+	* javax/swing/colorchooser/DefaultColorSelectionModel.java:
+	Run Jalopy.
+	(setSelectedColor): Fire ChangeEvent.
+	* javax/swing/colorchooser/DefaultHSBChooserPanel.java:
+	New file. Implement.
+	* javax/swing/colorchooser/DefaultPreviewPanel.java:
+	Ditto.
+	* javax/swing/colorchooser/DefaultRGBChooserPanel.java:
+	Ditto.
+	* javax/swing/colorchooser/DefaultSwatchChooserPanel.java:
+	Ditto.
+	* javax/swing/plaf/basic/BasicArrowButton.java:
+	(getArrow): Fix size of upward pointing button.
+	* javax/swing/plaf/basic/BasicColorChooserUI.java:
+	Implement.
+	* javax/swing/plaf/basic/BasicSliderUI.java:
+	(getWidthOfWidestLabel): Use preferred dimensions.
+	(getHeightOfTallestLabel): Ditto.
+	* javax/swing/plaf/basic/BasicSpinnerUI.java:
+	Run Jalopy.
+	(mousePressed): Disable changes to spinner if it is not enabled.
 
 2004-09-04  Tom Tromey  <tromey@redhat.com>
 
@@ -1904,7 +1910,7 @@
 	(throw): Replace bzero with memset.
 
 2004-08-09  Andreas Tobler  <a.tobler@schweiz.ch>
-            Thomas Fitzsimmons  <fitzsim@redhat.com>
+	    Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkPixbufDecoder.c: Move
 	NSA_PB macros to gtkpeer.h.  Include gtkpeer.h.
@@ -1936,7 +1942,7 @@
 	(setMultiClickThreshhold): Likewise.
 
 2004-08-09  Craig Black  <craig.black@aonix.com>
- 
+
 	* gnu/java/awt/peer/gtk/GdkGraphics.java 
 	(drawImage): Add support for scaling pixmaps.
 	* include/gnu_java_awt_peer_gtk_GdkGraphics.h,
@@ -2821,7 +2827,7 @@
 2004-07-26  Patrik Reali  <reali@acm.org>
 
 	* doc/www.gnu.org/newsitems.txt: AWT commit and inetlib HTTP client 
- 	* doc/www.gnu.org/faq/faq.wml: add dependencies and CVS udpate to
+	* doc/www.gnu.org/faq/faq.wml: add dependencies and CVS udpate to
 	the installation (3.4) section
 
 2004-07-25 Patrik Reali  <reali@acm.org>
@@ -3413,25 +3419,25 @@
 2004-07-21  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/JCheckBox.java: Reformated.
-        (JCheckBox): Fixed all constructors.
-        (isBorderPaintedFlat): New method.
-        (setBorderPaintedFlat): New method.
+	(JCheckBox): Fixed all constructors.
+	(isBorderPaintedFlat): New method.
+	(setBorderPaintedFlat): New method.
 	* javax/swing/JEditorPane.java
-        (createEditorKitForContentType): Made public.
-        (scrollToReference): Likewise.
+	(createEditorKitForContentType): Made public.
+	(scrollToReference): Likewise.
 	* javax/swing/JTextArea.java
-        (setLineWrap): Fire property change.
+	(setLineWrap): Fire property change.
 	* javax/swing/JToggleButton.java
-        (JToggleButton): New constructor.
-        (JToggleButton): Simplified.
+	(JToggleButton): New constructor.
+	(JToggleButton): Simplified.
 	* javax/swing/text/AttributeSet.java
-        (FontAttribute): Renamed from FontCharacterAttribute.
+	(FontAttribute): Renamed from FontCharacterAttribute.
 	* javax/swing/text/JTextComponent.java
-        (KeyBinBinding): Added javadoc.
-        (JTextComponent): Likewise.
-        (getAccessibleContext): Fixed javadoc.
+	(KeyBinBinding): Added javadoc.
+	(JTextComponent): Likewise.
+	(getAccessibleContext): Fixed javadoc.
 	* javax/swing/text/View.java
-        (View): Added javadoc.
+	(View): Added javadoc.
 	* javax/swing/text/TabableView.java: New file.
 	* Makefile.am: Added javax/swing/text/TabableView.java.
 	* Makefile.in: Regenerated.
@@ -4434,18 +4440,18 @@
 	* java/beans/Makefile.am (EXTRA_DIST): Add new files.
 
 2004-07-03  Mark Wielaard  <mark@klomp.org>
-            Anthony Green  <green@redhat.com>
+	    Anthony Green  <green@redhat.com>
 
 	* java/net/URL.java (getFile): Clarify return value doc.
 	(getPath): Return null if file is empty - not
 	empty String.
 
 2004-07-03  Mark Wielaard  <mark@klomp.org>
-            Anthony Green  <green@redhat.com>
+	    Anthony Green  <green@redhat.com>
 
 	* java/net/URL.java (set): Convert protocol to lower case before
 	doing anything.
-        Only change the protocol handler if it's different.
+	Only change the protocol handler if it's different.
 
 2004-07-03  Anthony Green  <green@redhat.com>
 
@@ -5726,7 +5732,7 @@
 	native/jni/classpath/native_state.h,
 	native/jni/classpath/primlib.c, native/jni/classpath/primlib.h:
 	Reformatted according to GNU Coding standards.
- 
+
 2004-06-21  Steven Augart  <augart@watson.ibm.com>
 
 	* gnu/java/awt/peer/gtk/Makefile.am (EXTRA_DIST): Fixed
@@ -5758,42 +5764,42 @@
 
 2003-06-15  Dalibor Topic  <robilad@kaffe.org>
 
-        * java/nio/Buffer.java,
-        java/nio/ByteBuffer.java,
-        java/nio/ByteBufferHelper.java,
-        java/nio/ByteBufferImpl.java,
-        java/nio/CharBuffer.java,
-        java/nio/CharBufferImpl.java,
-        java/nio/CharViewBufferImpl.java,
-        java/nio/DirectByteBufferImpl.java,
-        java/nio/DoubleBuffer.java,
-        java/nio/DoubleBufferImpl.java,
-        java/nio/DoubleViewBufferImpl.java,
-        java/nio/FloatBuffer.java,
-        java/nio/FloatBufferImpl.java,
-        java/nio/FloatViewBufferImpl.java,
-        java/nio/IntBuffer.java,
-        java/nio/IntBufferImpl.java,
-        java/nio/IntViewBufferImpl.java,
-        java/nio/LongBuffer.java,
-        java/nio/LongBufferImpl.java,
-        java/nio/LongViewBufferImpl.java,
-        java/nio/MappedByteBufferImpl.java,
-        java/nio/ShortBuffer.java,
-        java/nio/ShortBufferImpl.java,
-        java/nio/ShortViewBufferImpl.java:
-        Fixed javadocs all over. Improved input error
-        checking.
+	* java/nio/Buffer.java,
+	java/nio/ByteBuffer.java,
+	java/nio/ByteBufferHelper.java,
+	java/nio/ByteBufferImpl.java,
+	java/nio/CharBuffer.java,
+	java/nio/CharBufferImpl.java,
+	java/nio/CharViewBufferImpl.java,
+	java/nio/DirectByteBufferImpl.java,
+	java/nio/DoubleBuffer.java,
+	java/nio/DoubleBufferImpl.java,
+	java/nio/DoubleViewBufferImpl.java,
+	java/nio/FloatBuffer.java,
+	java/nio/FloatBufferImpl.java,
+	java/nio/FloatViewBufferImpl.java,
+	java/nio/IntBuffer.java,
+	java/nio/IntBufferImpl.java,
+	java/nio/IntViewBufferImpl.java,
+	java/nio/LongBuffer.java,
+	java/nio/LongBufferImpl.java,
+	java/nio/LongViewBufferImpl.java,
+	java/nio/MappedByteBufferImpl.java,
+	java/nio/ShortBuffer.java,
+	java/nio/ShortBufferImpl.java,
+	java/nio/ShortViewBufferImpl.java:
+	Fixed javadocs all over. Improved input error
+	checking.
 
-        * java/nio/Buffer.java
-        (checkForUnderflow, checkForOverflow, checkIndex,
-        checkIfReadOnly, checkArraySize): New helper methods
-        for error checking.
+	* java/nio/Buffer.java
+	(checkForUnderflow, checkForOverflow, checkIndex,
+	checkIfReadOnly, checkArraySize): New helper methods
+	for error checking.
 
-        * java/nio/ByteBufferHelper.java
-        (checkRemainingForRead, checkRemainingForWrite,
-        checkAvailableForRead, checkAvailableForWrite): Removed
-        no longer needed methods.
+	* java/nio/ByteBufferHelper.java
+	(checkRemainingForRead, checkRemainingForWrite,
+	checkAvailableForRead, checkAvailableForWrite): Removed
+	no longer needed methods.
 
 2004-06-15  Bryce McKinlay  <mckinlay@redhat.com>
 
@@ -5874,7 +5880,7 @@
 2004-06-09  Steven Augart  <augart@watson.ibm.com>
 
 	* configure.ac: Add SIZEOF_VOID_P to include/config.h.
-        Quote '.*86'.
+	Quote '.*86'.
 
 2004-06-07  Archie Cobbs  <archie@dellroad.org>
 
@@ -5884,7 +5890,7 @@
 2004-06-07  Steven Augart  <augart@watson.ibm.com>
 
 	* native/jni/gtk-peer/gthread-jni.c (c-font-lock-extra-types): 
-	  Added jfieldID, jmethodID.
+	Added jfieldID, jmethodID.
 	* include/jni.h (c-font-lock-extra-types): Added.
 
 2004-06-06  Steven Augart  <augart@watson.ibm.com>
@@ -5943,7 +5949,7 @@
 2004-06-04  Steven Augart  <augart@watson.ibm.com>
 
 	* resource/gnu/regexp/MessagesBundle.properties, 
-	  resource/gnu/regexp/MessagesBundle_fr.properties:
+	resource/gnu/regexp/MessagesBundle_fr.properties:
 	Corrected apostrophes.
 	Replaced "expected" with "unexpected".
 	
@@ -7036,7 +7042,7 @@
 	WALL_TIME, STANDARD_TIME, UTC_TIME): New members.
 	(SimpleTimeZone): Tweak docs.  Add new variation.
 	(setStartRule,setEndRule): Add new variations.  Use
-        startTimeMode and endTimeMode.
+	startTimeMode and endTimeMode.
 
 2004-05-07  Jerry Quinn  <jlquinn@optonline.net>
 
@@ -7056,7 +7062,7 @@
 
 09-20-03 Guilhem Lavaux <guilhem@kaffe.org>
 
-	 * java/io/File.java:
+	* java/io/File.java:
 	(File(File,String)): fixed the behaviour according to JDK 1.4.1.
 	dirPath should not be initialized to the full path if directory
 	is null, but to "/" if directory.getPath() is "" and the full path
@@ -7766,7 +7772,7 @@
 2004-04-28  Ingo Proetel  <proetel@aicas.com>
 
 	* java/awt/image/ColorModel.java (getRGBdefault): Default ColorModel has
-        32 bit pixels not 8 bit pixels.
+	32 bit pixels not 8 bit pixels.
 	(isCompatibleRaster): Added javadoc comment.
 
 2004-04-28  Ingo Proetel  <proetel@aicas.com>
@@ -8302,7 +8308,7 @@
 	(URL): Set authority to the right value.
 	(getContent, openStream): Made final as in the Java spec.
 	(setURL): Fixed authority and file initialization.
-        
+
 	* java/net/URLStreamHandler.java
 	(parseURL): Take care of the query tag. Build authority.
 	(toExternalForm): Fixed URL building using authority.
@@ -8500,14 +8506,14 @@
 	* javax/swing/JCheckBoxMenuItem.java:
 	Mostly Implemented. Work in progress.
 	* javax/swing/JRadioButtonMenuItem.java:
- 	Reimplement constructors to use JToggleButtonModel.
+	Reimplement constructors to use JToggleButtonModel.
 	* javax/swing/plaf/basic/BasicIconFactory.java:
 	(getCheckBoxMenuItemIcon): return check box
 	icon.
 	* javax/swing/plaf/basic/BasicMenuItemUI.java:
 	paint menu item selected only when it is armed and 
 	pressed. 
- 
+
 2004-04-17  David Jee  <djee@redhat.com>
 
 	* gnu/java/awt/peer/gtk/GtkMenuItemPeer.java
@@ -8808,7 +8814,7 @@
 
 2004-04-16  Guilhem Lavaux <guilhem@kaffe.org>
 
-        Reported by Nektarios Papadopoulos <npapadop@inaccessnetworks.com>
+	Reported by Nektarios Papadopoulos <npapadop@inaccessnetworks.com>
 	* java/io/FileOutputStream.java
 	(FileOutputStream) Reorganized constructors. Constructors now
 	check whether the given path is directory.
@@ -9509,7 +9515,7 @@
 	* doc/www.gnu.org/README: some custom tags documented
 	* doc/www.gnu.org/newsitems.txt: planet classpath added
 	* doc/www.gnu.org/faq/faq.wml doc/www.gnu.org/include/layout.wml 
-        doc/www.gnu.org/include/macros.wml: faq entry on installing classpath
+	doc/www.gnu.org/include/macros.wml: faq entry on installing classpath
 	and mauve, custom tags for commented code
 
 2004-04-02  Tom Tromey  <tromey@redhat.com>
@@ -9648,8 +9654,8 @@
 
 2004-03-21  Ito Kazumitsu <kaz@maczuka.gcd.org>
 
-        * libraries/javalib/java/net/ServerSocket.java
-        (accept): Close the socket when error occured.
+	* libraries/javalib/java/net/ServerSocket.java
+	(accept): Close the socket when error occured.
 
 2004-03-21  Norbert Frese  <postfach@nfrese.net>
 
@@ -9977,7 +9983,7 @@
 	(setFont): Call new native method gtkSetFont.
 	* gnu/java/awt/peer/gtk/GtkContainerPeer.java
 	(setFont): For all child components who do not their fonts set,
-        set their peers' fonts with this container's font.
+	set their peers' fonts with this container's font.
 	* gnu/java/awt/peer/gtk/GtkLabelPeer.java:
 	Move all native method declarations to the top for readability.
 	(gtkSetFont): New native method declaration.
@@ -10402,7 +10408,7 @@
 	Likewise.
 
 2004-03-12  Thomas Fitzsimmons  <fitzsim@redhat.com>
- 
+
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
 	(connectJObject): Replace printf calls with g_assert statements.
 	Move property-notify-event signal connection to ...
@@ -10913,7 +10919,7 @@
 2004-02-10  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	* java/io/ObjectInputStream.java (readClassDescriptor): Avoid the
-        overflow of fieldmapping.
+	overflow of fieldmapping.
 
 2004-02-06  Mohan Embar  <gnustuff@thisiscool.com>
 
@@ -11484,7 +11490,7 @@
 	* gnu/java/awt/peer/gtk/GtkComponentPeer.java
 	(handleEvent): Implemented. Handles PaintEvents.
 	(paint): Implemented. Use GTK native methods to queue updates
-        for this heavyweight peer.
+	for this heavyweight peer.
 	* gnu/java/awt/peer/gtk/GtkContainerPeer.java
 	(handleEvent): Removed.
 	* include/gnu_java_awt_peer_gtk_GtkComponentPeer.h: Regenerated.
@@ -11585,10 +11591,10 @@
 	visible so that dialog can be reused.
 
 2004-01-26  Fernando Nasser  <fnasser@redhat.com>
- 
+
 	* gnu/java/awt/peer/gtk/TestAWT.java (DialogWindow): Add WindowAdapter
 	to handle Window "Closing" events.
- 
+
 2004-01-26  Fernando Nasser  <fnasser@redhat.com>
 
 	* gnu/java/awt/peer/gtk/TestAWT.java: Fix test program so that it does
@@ -11797,7 +11803,7 @@
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java:
 	(doPolygon): set fill rule of polygon to
 	WIND_EVEN_ODD by default.
-                                                                                
+
 2004-01-16  Michael Koch  <konqueror@gmx.de>
 
 	* acinclude.m4: Fixed quotation to get rid of warnings with
@@ -11899,7 +11905,7 @@
 	Compile fixes.
 
 2004-01-12  Arnaud Vandyck  <arnaud.vandyck@ulg.ac.be>
-            Michael Koch  <konqueror@gmx.de>
+	    Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/table/DefaultTableCellRenderer.java
 	(DefaultTableCellRenderer): Added javadoc for the class and for
@@ -13013,7 +13019,7 @@
 	(FileInputStream(File)): Check whether the argument is a directory.
 
 2003-12-26  Guilhem Lavaux  <guilhem@kaffe.org>
-            Mark Wielaard  <mark@klomp.org>
+	    Mark Wielaard  <mark@klomp.org>
 
 	* java/io/BufferedReader.java (BufferedReader): Throw
 	IllegalArgumentException when size <= 0.
@@ -13024,7 +13030,7 @@
 	(skip): Throw IllegalArgumentException when count is negative.
 
 2003-12-25  Guilhem Lavaux  <guilhem@kaffe.org>
-            Mark Wielaard  <mark@klomp.org>
+	    Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/rmi/server/UnicastConnectionManager.java
 	(startScavenger): Set the client connection manager to daemon
@@ -13537,22 +13543,22 @@
 
 2003-11-28  Dalibor Topic  <robilad@kaffe.org>
 
-        Reported by: Jim Pick <jim@kaffe.org>
+	Reported by: Jim Pick <jim@kaffe.org>
 
-        * libraries/javalib/java/util/Hashtable.java
-        (internalcontainsValue): New method.
-        (contains) Delegate to internalContainsValue.
+	* libraries/javalib/java/util/Hashtable.java
+	(internalcontainsValue): New method.
+	(contains) Delegate to internalContainsValue.
 
-        Reported by: Mark Wielaard  <mark@klomp.org>
+	Reported by: Mark Wielaard  <mark@klomp.org>
 
-        * libraries/javalib/java/util/Hashtable.java
-        (contains): Improved comment.
+	* libraries/javalib/java/util/Hashtable.java
+	(contains): Improved comment.
 
-        Reported by: Jeroen Frijters  <jeroen@frijters.net>
+	Reported by: Jeroen Frijters  <jeroen@frijters.net>
 
-        * libraries/javalib/java/util/Hashtable.java
-        (containsValue): Delegate to contains(Object) to make sure older
-        code overwriting it continues to work.
+	* libraries/javalib/java/util/Hashtable.java
+	(containsValue): Delegate to contains(Object) to make sure older
+	code overwriting it continues to work.
 
 2003-11-27  Michael Koch  <konqueror@gmx.de>
 
@@ -13615,7 +13621,7 @@
 
 2003-11-26  Tom Fitzsimmons  <fitzsim@redhat.com>
 
-        * java/awt/GridBagLayout.java (getLayoutDimensions): Return array of
+	* java/awt/GridBagLayout.java (getLayoutDimensions): Return array of
 	two zero-length int arrays when layoutInfo is null.
 	(getLayoutWeights): Return array of two zero-length double arrays when
 	layoutInfo is null.
@@ -13775,9 +13781,9 @@
 
 	* java/lang/Thread.java (start): Throw IllegalThreadStateException
 	instead of IllegalStateException.
-        * vm/reference/java/lang/Runtime.java (exit): Moved shutdown hook
-        processing to new method.
-        (runShutdownHooks): New method.
+	* vm/reference/java/lang/Runtime.java (exit): Moved shutdown hook
+	processing to new method.
+	(runShutdownHooks): New method.
 
 2003-11-21  Mark Wielaard  <mark@klomp.org>
 
@@ -14192,8 +14198,8 @@
 
 2003-10-23  Sascha Brawer  <brawer@dandelis.ch>
 
-        * java/awt/geom/CubicCurve2D.java (contains): Docfix for URL of embedded drawing.
-        * java/awt/geom/QuadCurve2D.java: Likewise.
+	* java/awt/geom/CubicCurve2D.java (contains): Docfix for URL of embedded drawing.
+	* java/awt/geom/QuadCurve2D.java: Likewise.
 
 2003-10-23  Sascha Brawer  <brawer@dandelis.ch>
 
@@ -14277,8 +14283,8 @@
 2003-10-21  Sascha Brawer  <brawer@dandelis.ch>
 
 	Fix for bug #2944, reported by David Holmes <dholmes@dltech.com.au>
-        * java/util/logging/ErrorManager.java (everUsed): Made volatile.
-        (error): Synchronize on instance, not class.
+	* java/util/logging/ErrorManager.java (everUsed): Made volatile.
+	(error): Synchronize on instance, not class.
 
 2003-10-20  Mark Wielaard  <mark@klomp.org>
 
@@ -15751,8 +15757,8 @@
 
 2003-09-07  Dalibor Topic  <robilad@kaffe.org>
 
-       * java/awt/BasicStroke.java (BasicStroke): Fixed illegal argument
-       checking to follow 1.4.2 spec.
+	* java/awt/BasicStroke.java (BasicStroke): Fixed illegal argument
+	checking to follow 1.4.2 spec.
 
 2003-08-25  Scott Gilbertson  <scottg@mantatest.com>
 
@@ -15781,14 +15787,14 @@
 	* gnu/java/rmi/rmic/Compile_kjc.java: New file.
 	* gnu/java/rmi/rmic/Compile_jikes.java: Likewise.
 	* gnu/java/rmi/rmic/RMICException.java: Likewise.
- 
+
 	* gnu/java/rmi/rmic/Compiler.java (getDestination): New method.
- 
+
 	* gnu/java/rmi/rmic/CompilerProcess.java: Import java.io.InputStream.
 	(computeTypicalArguments): New method.
 	(compile): Print compiler output to System.out. Collect compiler
 	error output and use it in exception message.
- 
+
 	* gnu/java/rmi/rmic/RMIC.java: Import java.util.Set.
 	(destination): Initialize to null.
 	(run): Replace file separator with '.' when processing class.
@@ -15859,7 +15865,7 @@
 	implementation.
 
 2003-08-22  Scott Gilbertson  <scottg@mantatest.com>
-            Thomas Fitzsimmons  <fitzsim@redhat.com>
+	    Thomas Fitzsimmons  <fitzsim@redhat.com>
 
 	* gnu/java/awt/GLightweightPeer.java: Remove file.
 	* gnu/java/awt/Makefile.am (EXTRA_DIST): Remove
@@ -15909,7 +15915,7 @@
 
 	* native/jni/java-nio/java_nio_FileChannelImpl.c:
 	Fixed return value of Java_java_nio_channels_FileChannelImpl_size(),
-        Java_java_nio_channels_FileChannelImpl_implPosition__()
+	Java_java_nio_channels_FileChannelImpl_implPosition__()
 
 2003-08-19  Torsten Rupp  <rupp@lisa.aicas.com>
 
@@ -16067,7 +16073,7 @@
 2003-08-12  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/net/URLClassLoader: (findClass): close InputStream after
-        we're done with it
+	we're done with it
 
 2003-08-12  Ingo Proetel  <proetel@aicas.com>
 
@@ -16317,15 +16323,15 @@
 
 	* java/lang/SecurityManager.java:
 	checkPackageList(): replace access of String.count with
-        String.length() to make it compatible with other
-        implementations of class String
+	String.length() to make it compatible with other
+	implementations of class String
 
 2003-07-31  Torsten Rupp  <rupp@lisa.aicas.com>
 
 	* java/io/File.java:
 	createTempFile(): use long names on system where file
-        separator is not '\', otherwise limit filenames to
-        8+3-convention
+	separator is not '\', otherwise limit filenames to
+	8+3-convention
 
 2003-07-30  Tom Tromey  <tromey@redhat.com>
 
@@ -16348,16 +16354,16 @@
 
 	* include/java_nio_FileChannelImpl.h:
 	copied from gnu_java_nio_FileChannelImpl.h, renamed
-        Java_gnu_java_nio_channels_* -> Java_java_nio_channels*
-        to match new implementation of FileChannelImpl.java,
-        added some missing native functions
+	Java_gnu_java_nio_channels_* -> Java_java_nio_channels*
+	to match new implementation of FileChannelImpl.java,
+	added some missing native functions
 
 2003-07-30  Torsten Rupp  <rupp@lisa.aicas.com>
 
 	* native/jni/java-nio/java_nio_FileChannelImpl.c:
 	rename Java_gnu_java_nio_channels_* -> Java_java_nio_channels*
-        to match new implementation of FileChannelImpl.java, added some
-        missing native functions
+	to match new implementation of FileChannelImpl.java, added some
+	missing native functions
 
 2003-07-30  Torsten Rupp  <rupp@lisa.aicas.com>
 
@@ -16368,7 +16374,7 @@
 
 	* java/net/PlainSocketImpl.java:
 	implemented connect(SocketAddress address, int timeout)
-        (preliminary implementation; timeout still not supported)
+	(preliminary implementation; timeout still not supported)
 
 2003-07-29  Tom Tromey  <tromey@redhat.com>
 
@@ -16415,7 +16421,7 @@
 
 	* native/jni/java-net/java_net_PlainDatagramSocketImpl.c:
 	improved some exception messages in Java_java_net_PlainDatagramSocketImpl_receive,
-        Java_java_net_PlainDatagramSocketImpl_sendto
+	Java_java_net_PlainDatagramSocketImpl_sendto
 
 2003-07-28  Sascha Brawer  <brawer@dandelis.ch>
 
@@ -16483,7 +16489,7 @@
 
 	* native/target/generic/target_generic_file.h:
 	Fixed include of utime.h, sys/utime.h: rename HAVE_UTIME -> 
-        HAVE_UTIME_H, HAVE_SYS_UTIME -> HAVE_SYS_UTIME_H
+	HAVE_UTIME_H, HAVE_SYS_UTIME -> HAVE_SYS_UTIME_H
 
 2003-07-23  Torsten Rupp  <rupp@lisa.aicas.com>
 
@@ -16494,39 +16500,39 @@
 
 	* native/jni/java-io/java_io_File.c:
 	Replaced JNI_JLONG_CONST* -> TARGET_NATIVE_MATH_INT_*, because
-        JNI_JLONG_CONST* should be removed from jni.h
+	JNI_JLONG_CONST* should be removed from jni.h
 
 2003-07-23  Torsten Rupp  <rupp@lisa.aicas.com>
 
 	* native/jni/java-io/java_io_File.c:
 	Replaced JNI_JLONG_CONST* -> TARGET_NATIVE_MATH_INT_*, because
-        JNI_JLONG_CONST* should be removed from jni.h
+	JNI_JLONG_CONST* should be removed from jni.h
 
 2003-07-23  Torsten Rupp  <rupp@lisa.aicas.com>
 
 	* native/jni/java-io/FileDescriptor.c:
 	Replaced JNI_JLONG_CONST* -> TARGET_NATIVE_MATH_INT_*, because
-        JNI_JLONG_CONST* should be removed from jni.h
-        removed HAVE_FTRUNCATE, HAVE_FSYNC, HAVE_SELECT (now set in
-        configure)
+	JNI_JLONG_CONST* should be removed from jni.h
+	removed HAVE_FTRUNCATE, HAVE_FSYNC, HAVE_SELECT (now set in
+	configure)
 
 2003-07-23  Torsten Rupp  <rupp@lisa.aicas.com>
 
 	* native/jni/java-nio/java_nio.c:
 	Replaced JNI_JLONG_CONST_0 -> TARGET_NATIVE_MATH_INT_INT64_CONST_0,
-        because JNI_JLONG_CONST* should be removed from jni.h
+	because JNI_JLONG_CONST* should be removed from jni.h
 
 2003-07-23  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/jni/java-net/javanet.c:
-        Enable option SO_BROADCAST for datagram sockets
+	* native/jni/java-net/javanet.c:
+	Enable option SO_BROADCAST for datagram sockets
 
 2003-07-23  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/target/generic/target_generic_file.h:
-        added TARGET_NATIVE_FILE_FILEPERMISSION_READONLY, improved
-        TARGET_NATIVE_FILE_VALID_FILE_DESCRIPTOR: now use fcntl()
-        or fstat()
+	* native/target/generic/target_generic_file.h:
+	added TARGET_NATIVE_FILE_FILEPERMISSION_READONLY, improved
+	TARGET_NATIVE_FILE_VALID_FILE_DESCRIPTOR: now use fcntl()
+	or fstat()
 
 2003-07-22  Tom Tromey  <tromey@redhat.com>
 
@@ -16542,16 +16548,16 @@
 
 2003-07-22  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/target/generic/target_generic_network.h:
-        removed double defined macros, added
-        TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_BROADCAST(),
-        TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BROADCAST()
+	* native/target/generic/target_generic_network.h:
+	removed double defined macros, added
+	TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_BROADCAST(),
+	TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_BROADCAST()
 
 2003-07-22  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/target/generic/target_generic_math_float.h:
-        added macro TARGET_NATIVE_MATH_FLOAT_FLOAT_FINITE(),
-        TARGET_NATIVE_MATH_FLOAT_DOUBLE_FINITE()
+	* native/target/generic/target_generic_math_float.h:
+	added macro TARGET_NATIVE_MATH_FLOAT_FLOAT_FINITE(),
+	TARGET_NATIVE_MATH_FLOAT_DOUBLE_FINITE()
 
 2003-07-21  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
@@ -16576,12 +16582,12 @@
 
 2003-07-19  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * java/io/File.java:
-        canWrite(): set prefix for temporary file to "tmp" to make methode
-        usable on systems with DOS-style filesystems (8+3-limitation)
-        createTempFile(): limit length of filename from temporary file to
-        8-length(prefix) to make methode usuable on systems with DOS-style
-        filesystems (8+3-limitation)
+	* java/io/File.java:
+	canWrite(): set prefix for temporary file to "tmp" to make methode
+	usable on systems with DOS-style filesystems (8+3-limitation)
+	createTempFile(): limit length of filename from temporary file to
+	8-length(prefix) to make methode usuable on systems with DOS-style
+	filesystems (8+3-limitation)
 
 2003-07-18  Graydon Hoare  <graydon@redhat.com>
 
@@ -16627,7 +16633,7 @@
 	of the removed Thread.
 	* vm/reference/java/lang/Thread.java (setDaemon): Don't throw an
 	exception when called on an exited Thread.
- 
+
 2003-07-17  Jeroen Frijters <jeroen@sumatra.nl>
 
 	* java/lang/Class.java (newInstance): Improved constructor caching.
@@ -16639,29 +16645,29 @@
 
 2003-07-16  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/target/generic/target_generic_file.h:
-        Some fixes for target native layer (reported by Stephen Crawley)
+	* native/target/generic/target_generic_file.h:
+	Some fixes for target native layer (reported by Stephen Crawley)
 
 2003-07-16  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * configure.in:
-        Some fixes for target native layer (reported by Stephen Crawley)
+	* configure.in:
+	Some fixes for target native layer (reported by Stephen Crawley)
 
 2003-07-16  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * java/io/class-dependencies.conf:
-        java/lang/class-dependencies.conf:
-        java/math/class-dependencies.conf:
-        java/net/class-dependencies.conf:
-        java/nio/class-dependencies.conf:
-        java/text/class-dependencies.conf:
-        java/util/class-dependencies.conf:
-        Class dependencies file
+	* java/io/class-dependencies.conf:
+	java/lang/class-dependencies.conf:
+	java/math/class-dependencies.conf:
+	java/net/class-dependencies.conf:
+	java/nio/class-dependencies.conf:
+	java/text/class-dependencies.conf:
+	java/util/class-dependencies.conf:
+	Class dependencies file
 
 2003-07-16  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/target/generic/target_generic_file.h:
-        Fixed typing error
+	* native/target/generic/target_generic_file.h:
+	Fixed typing error
 
 2003-07-16  David Grove  <groved@us.ibm.com
 
@@ -16692,8 +16698,8 @@
 
 2003-07-16  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/jni/classpath/jcl.c:
-        Fixed wrong include
+	* native/jni/classpath/jcl.c:
+	Fixed wrong include
 
 2003-07-16  Mark Wielaard  <mark@klomp.org>
 
@@ -16702,20 +16708,20 @@
 
 2003-07-16  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/jni/classpath/jnilink.c:
-        Removed include malloc.h, added stdlib.h
+	* native/jni/classpath/jnilink.c:
+	Removed include malloc.h, added stdlib.h
 
 2003-07-16  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/jni/classpath/jcl.h,
-        native/jni/classpath/jcl.c:
-        Fixed some prototypes
+	* native/jni/classpath/jcl.h,
+	native/jni/classpath/jcl.c:
+	Fixed some prototypes
 
 2003-07-16  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/jni/java-io/FileDescriptor.c:
-        Renamed some internal constants to avoid conflicts with existing
-        constants in some OS (e. g. vxWorks)
+	* native/jni/java-io/FileDescriptor.c:
+	Renamed some internal constants to avoid conflicts with existing
+	constants in some OS (e. g. vxWorks)
 
 2003-07-15  David Grove  <groved@us.ibm.com
 
@@ -16726,37 +16732,37 @@
 
 2003-07-15  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/jni/java-net/java_net_InetAddress.c,
-        native/jni/java-net/java_net_NetworkInterface.c,
-        native/jni/java-net/java_net_PlainDatagramSocketImpl.c,
-        native/jni/java-net/java_net_PlainSocketImpl.c,
-        native/jni/java-net/javanet.c:
-        Added target native layer macros for native OS functions
+	* native/jni/java-net/java_net_InetAddress.c,
+	native/jni/java-net/java_net_NetworkInterface.c,
+	native/jni/java-net/java_net_PlainDatagramSocketImpl.c,
+	native/jni/java-net/java_net_PlainSocketImpl.c,
+	native/jni/java-net/javanet.c:
+	Added target native layer macros for native OS functions
 
 2003-07-15  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/target/generic/target_generic_network.h:
-        Added macro for BIND_ADDRESS
+	* native/target/generic/target_generic_network.h:
+	Added macro for BIND_ADDRESS
 
 2003-07-15  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/jni/java-util/java_util_TimeZone.c:
-        renamed target native macro
+	* native/jni/java-util/java_util_TimeZone.c:
+	renamed target native macro
 
 2003-07-15  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/target/generic/target_generic_misc.h:
-        Fixed typing error
+	* native/target/generic/target_generic_misc.h:
+	Fixed typing error
 
 2003-07-15  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/target/generic/target_generic_misc.h:
-        Clean-up some target macro names
+	* native/target/generic/target_generic_misc.h:
+	Clean-up some target macro names
 
 2003-07-15  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/jni/java-util/java_util_TimeZone.c:
-        Replace natve OS functions by target native layer macros
+	* native/jni/java-util/java_util_TimeZone.c:
+	Replace natve OS functions by target native layer macros
 
 2003-07-14  Michael Koch  <konqueror@gmx.de>
 
@@ -16824,18 +16830,18 @@
 
 2003-07-10  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * classpath/native/target/generic/target_generic_network.h:
-        Adding missing #include <assert.h>
+	* classpath/native/target/generic/target_generic_network.h:
+	Adding missing #include <assert.h>
 
 2003-07-09  Mark Wielaard  <mark@klomp.org>
- 
+
 	* java/io/ObjectOutputStream.java (writeObject): break after
 	calling writeClassDescriptor().
 
 2003-07-09  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * classpath/include/jni.h.in:
-        Fixed missing JNI_JLONG_CONST* definitions (preliminary fix)
+	* classpath/include/jni.h.in:
+	Fixed missing JNI_JLONG_CONST* definitions (preliminary fix)
 
 2003-07-09  Michael Koch  <konqueror@gmx.de>
 
@@ -16875,16 +16881,16 @@
 
 2003-07-09  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        *  native/jni/java-io/FileDescriptor.c,
-        native/jni/java-io/java_io_File.c,
-        native/jni/java-io/java_io_ObjectInputStream.c,
-        native/jni/java-io/javaio.c:
-        Implemented target native layer macros for all native OS functions
+	*  native/jni/java-io/FileDescriptor.c,
+	native/jni/java-io/java_io_File.c,
+	native/jni/java-io/java_io_ObjectInputStream.c,
+	native/jni/java-io/javaio.c:
+	Implemented target native layer macros for all native OS functions
 
 2003-07-08  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/target/generic/target_generic_file.h:
-        More fixed for native layer: open with sync/dsync, 64bit-clean
+	* native/target/generic/target_generic_file.h:
+	More fixed for native layer: open with sync/dsync, 64bit-clean
 
 2003-07-07  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
@@ -16911,14 +16917,14 @@
 
 	* native/tar2003-07-09  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * /cvsroot/classpath/classpath/native/jni/java-io/FileDescriptor.c:
-        Implemented target native layer macros for all native OS functions
-get/Linux/target_native.h,
-        native/target/Linux/target_native_file.h,
-        native/target/Linux/target_native_math_float.h,
-        native/target/Linux/target_native_math_int.h,
-        native/target/Linux/target_native_misc.h,
-        native/target/Linux/target_native_network.h:
+	* /cvsroot/classpath/classpath/native/jni/java-io/FileDescriptor.c:
+	Implemented target native layer macros for all native OS functions
+	* native/target/Linux/target_native.h,
+	native/target/Linux/target_native_file.h,
+	native/target/Linux/target_native_math_float.h,
+	native/target/Linux/target_native_math_int.h,
+	native/target/Linux/target_native_misc.h,
+	native/target/Linux/target_native_network.h:
 	Small fixes for target native layer
 
 	* native/target/Linux/target_native_io.h:
@@ -16927,11 +16933,11 @@ get/Linux/target_native.h,
 2003-07-07  Torsten Rupp  <rupp@lisa.aicas.com>
 
 	* native/target/generic/target_generic.h,
-        native/target/generic/target_generic_file.h,
-        native/target/generic/target_generic_math_float.h,
-        native/target/generic/target_generic_math_int.h,
-        native/target/generic/target_generic_misc.h,
-        native/target/generic/target_generic_network.h:
+	native/target/generic/target_generic_file.h,
+	native/target/generic/target_generic_math_float.h,
+	native/target/generic/target_generic_math_int.h,
+	native/target/generic/target_generic_misc.h,
+	native/target/generic/target_generic_network.h:
 	Small fixes for target native layer
 
 	* native/target/generic/target_generic_io.h:
@@ -16939,13 +16945,13 @@ get/Linux/target_native.h,
 
 2003-07-03  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * native/jni/java-nio/java_nio_FileChannelImpl.c:
-        Fixed header Java_gnu_java_nio_FileChannelImpl_implPosition__
+	* native/jni/java-nio/java_nio_FileChannelImpl.c:
+	Fixed header Java_gnu_java_nio_FileChannelImpl_implPosition__
 
 2003-07-03  Torsten Rupp  <rupp@lisa.aicas.com>
 
-        * gnu/java/rmi/server/UnicastServerRef.java:
-        Fixed getReturnMethodType
+	* gnu/java/rmi/server/UnicastServerRef.java:
+	Fixed getReturnMethodType
 
 
 2003-07-02  Michael Koch  <konqueror@gmx.de>
@@ -17163,7 +17169,7 @@ get/Linux/target_native.h,
 	Fixed values of all serialVersionUIDs.
 
 2003-06-26  Stephen Crawley  <crawley@dstc.edu.au>
- 
+
 	* java/test/RuleBasedCollator.java
 	(RuleBasedCollator): Fix bugs in building the collator data structures
 	that resulted in the wrong keys being associated collated characters.
@@ -17208,7 +17214,7 @@ get/Linux/target_native.h,
 	
 2003-06-26  Sascha Brawer  <brawer@dandelis.ch>
 	
-        * javax/swing/plaf/TextUI.java: Made imports specific, reformatted,
+	* javax/swing/plaf/TextUI.java: Made imports specific, reformatted,
 	wrote JavaDoc.
 	(modelToView): Declare to throw javax.swing.text.BadLocationException.
 	(getToolTipText): New method.
@@ -17426,12 +17432,12 @@ get/Linux/target_native.h,
 
 2003-06-23  Torsten Rupp  <rupp@aicas.com>
 
-        * configure.in:
-        added includes 'Linux' and 'generic' as extra-include paths.
-        This change is temporary and have to be replaced by more
-        elaborated code to be able to select the target system for
-        which Classpath is compiled. Currently only 'Linux' is
-        supported; other targets will be added when available.
+	* configure.in:
+	added includes 'Linux' and 'generic' as extra-include paths.
+	This change is temporary and have to be replaced by more
+	elaborated code to be able to select the target system for
+	which Classpath is compiled. Currently only 'Linux' is
+	supported; other targets will be added when available.
 
 2003-06-23  John Leuner  <jewel@debian.org>
 
@@ -17605,10 +17611,10 @@ get/Linux/target_native.h,
 	* javax/swing/plaf/basic/BasicBorders.java (MenuBarBorder): Re-written.
 	(getMenuBarBorder): New method.
 
-        * javax/swing/plaf/basic/doc-files/
-        BasicBorders.SplitPaneBorder-1.png,
-        BasicBorders.SplitPaneBorder-2.png,
-        BasicBorders.SplitPaneDividerBorder-1.png: New image.
+	* javax/swing/plaf/basic/doc-files/
+	BasicBorders.SplitPaneBorder-1.png,
+	BasicBorders.SplitPaneBorder-2.png,
+	BasicBorders.SplitPaneDividerBorder-1.png: New image.
 
 2003-06-20  Michael Koch  <konqueror@gmx.de>
 
@@ -18005,14 +18011,14 @@ get/Linux/target_native.h,
 
 2003-06-11  Torsten Rupp  <rupp@aicas.com>
 
-        * native/jni/java-io/java_io_File.c:
-        replace lstat() -> stat() in isDirectory/isFile to be able to follow symbolic links
+	* native/jni/java-io/java_io_File.c:
+	replace lstat() -> stat() in isDirectory/isFile to be able to follow symbolic links
 
 
 2003-06-11  Torsten Rupp  <rupp@aicas.com>
 
-        * native/jni/java-net/javanet.c:
-        replace recvfrom() -> recv() in case of stream sockets
+	* native/jni/java-net/javanet.c:
+	replace recvfrom() -> recv() in case of stream sockets
 
 2003-06-11  Sascha Brawer  <brawer@dandelis.ch>
 
@@ -19053,18 +19059,18 @@ get/Linux/target_native.h,
 
 2003-04-30  Torsten Rupp  <rupp@homer.aicas.com>
 
-        * /cvsroot/classpath/classpath/java/net/Socket.java:
-        Added try-catch-blocks to
+	* /cvsroot/classpath/classpath/java/net/Socket.java:
+	Added try-catch-blocks to
 
-         * Socket.java: socket()
-         * ServerSocket.java: socket()
-         * DatagramSocket.java: socket()
+	* Socket.java: socket()
+	* ServerSocket.java: socket()
+	* DatagramSocket.java: socket()
 
-        with clean-up of file-descriptors in case bind(), connect() or listen()
-        fail. This fix will avoid loss of file-descriptors in the case create()
-        is executed successfully, but bind/connect/listen fail with an exception.
-        Then close() was not called and the file-descriptor allcoated by create()
-        was not returned to the OS.
+	with clean-up of file-descriptors in case bind(), connect() or listen()
+	fail. This fix will avoid loss of file-descriptors in the case create()
+	is executed successfully, but bind/connect/listen fail with an exception.
+	Then close() was not called and the file-descriptor allcoated by create()
+	was not returned to the OS.
 
 2003-04-30  Michael Koch  <konqueror@gmx.de>
 
@@ -19137,10 +19143,10 @@ get/Linux/target_native.h,
 2003-04-29  Casey Marshall  <rsdio@metastatic.org>
 
 	* java/security/cert/CertPathValidator.java:
-	  (getIntstance) renamed to proper name.
-	  (getInstance) renamed from getIntstance.
+	(getIntstance) renamed to proper name.
+	(getInstance) renamed from getIntstance.
 	* java/security/cert/X509CRL.java:
-	  (getIssuerX500Principal) new method (1.4 compatibility).
+	(getIssuerX500Principal) new method (1.4 compatibility).
 
 2003-04-29  Michael Koch  <konqueror@gmx.de>
 
@@ -19282,50 +19288,50 @@ get/Linux/target_native.h,
 2003-04-25  Stephen Crawley  <crawley@dstc.edu.au>
 
 	* java/io/FileDescriptor.java : do dummy initialisation of
-          the in/out/err statics before calling nativeInit, not after
+	the in/out/err statics before calling nativeInit, not after
 	* native/jni/java-io/FileDescriptor.c (nativeInit) : correct
-          the method signature for the FileDescriptor constructor used
-          to create the in/out/err FileDescriptor objects
+	the method signature for the FileDescriptor constructor used
+	 to create the in/out/err FileDescriptor objects
 
 2003-04-23  Casey Marshall  <rsdio@metastatic.org>
 
 	Removed files:
 	* java/security/Engine.java: moved to gnu/java/security/Engine.java.
 	* gnu/java/security/provider/DERReader.java: obsoleted by
-	  gnu/java/security/der/DERReader.java.
+	gnu/java/security/der/DERReader.java.
 	* gnu/java/security/provider/DERWriter.java: obsoleted by
-	  gnu/java/security/der/DERWriter.java.
+	gnu/java/security/der/DERWriter.java.
 
 	Added files:
 	* gnu/java/io/Base64InputStream.java: input stream for decoding
-	  Base-64.
+	Base-64.
 	* gnu/java/io/ASN1ParsingException.java: used to signal
-	  high-level errors in DER encoded data.
+	high-level errors in DER encoded data.
 	* gnu/java/security/OID.java: object identifier class.
 	* gnu/java/security/der/BitString.java: ASN.1 BIT STRING type.
 	* gnu/java/security/der/DER.java: DER constants.
 	* gnu/java/security/der/DERReader.java: DER parser.
 	* gnu/java/security/der/DERValue.java: A single value read or
-	  written to a DER stream.
+	written to a DER stream.
 	* gnu/java/security/der/DERWriter.java: DER encoder.
 	* gnu/java/security/Engine.java: from java/security/Engine.java.
-	  (Changes from java/security/Engine.java follow)
-	  * Class and getInstance method made public.
-	  * getInstance now throws java.lang.reflect.InvocationTargetException.
-	  * Added additional getInstance method that takes an array of
-	    parameters to be passed to the constructor.
+	(Changes from java/security/Engine.java follow)
+	- Class and getInstance method made public.
+	- getInstance now throws java.lang.reflect.InvocationTargetException.
+	- Added additional getInstance method that takes an array of
+	parameters to be passed to the constructor.
 	* gnu/java/security/provider/DSAKeyFactory.java: translator for
-	  DSA keys.
+	DSA keys.
 	* gnu/java/security/provider/X509CertificateFactory.java: X.509
-	  certificate factory class.
+	certificate factory class.
 	* gnu/java/security/x509/X500DistinguishedName.java: ASN.1 Name
-	  construct implementation.
+	construct implementation.
 	* gnu/java/security/x509/X509Certificate.java: X.509
-	  certificate class.
+	certificate class.
 	* gnu/java/security/x509/X509CRL.java: X.509 certificate
-	  revocation list.
+	revocation list.
 	* gnu/java/security/x509/X509CRLEntry.java: X.509 certificate
-	  revocation list entry.
+	revocation list entry.
 	* java/security/cert/CRLSelector.java: JDK 1.4 support.
 	* java/security/cert/CertPathBuilder.java: JDK 1.4 support.
 	* java/security/cert/CertPathBuilderResult.java: JDK 1.4 support.
@@ -19339,7 +19345,7 @@ get/Linux/target_native.h,
 	* java/security/cert/CertStoreParameters.java: JDK 1.4 support.
 	* java/security/cert/CertStoreSpi.java: JDK 1.4 support.
 	* java/security/cert/CollectionCertStoreParameters.java: JDK 1.4
-	  support.
+	support.
 	* java/security/cert/LDAPCertStoreParameters.java: JDK 1.4 support.
 	* java/security/cert/PKIXBuilderParameters.java: JDK 1.4 support.
 	* java/security/cert/PKIXCertPathBuilderResult.java: JDK 1.4 support.
@@ -19353,57 +19359,57 @@ get/Linux/target_native.h,
 
 	Modified files:
 	* gnu/java/security/der/DEREncodingException.java: extend
-	  java.io.IOException instead of Exception.
+	java.io.IOException instead of Exception.
 	* gnu/java/security/provider/DSAParameters.java: use new DER
-	  parser.
-	  (engineInit(AlgorithmParameterSpec)) variable assignment
-	  bugfix.
+	parser.
+	(engineInit(AlgorithmParameterSpec)) variable assignment
+	bugfix.
 	* gnu/java/security/provider/DSASignature.java:
-	  (engineVerify()) use new DER parser.
+	(engineVerify()) use new DER parser.
 	* gnu/java/security/provider/DSAPrivateKey.java: added
-	  toString() method.
+	toString() method.
 	* gnu/java/security/provider/DSAPrivateKey.java:
-	  (<init>) variable assignment bug fix.
-	  Added toString() method.
+	(<init>) variable assignment bug fix.
+	Added toString() method.
 	* gnu/java/security/provider/Gnu.java: added new key factory and
-	  certificate factory entries.
+	certificate factory entries.
 	* java/security/AlgorithmParameterGenerator.java:
-	  (getInstance) accomodate changes to Engine class.
+	(getInstance) accomodate changes to Engine class.
 	* java/security/AlgorithmParameters.java:
-	  (getInstance) accomodate changes to Engine class.
+	(getInstance) accomodate changes to Engine class.
 	* java/security/KeyFactory.java:
-	  (getInstance) accomodate changes to Engine class.
+	(getInstance) accomodate changes to Engine class.
 	* java/security/KeyPairGenerator.java:
-	  (getInstance) accomodate changes to Engine class.
+	(getInstance) accomodate changes to Engine class.
 	* java/security/KeyStore.java:
-	  (getInstance) accomodate changes to Engine class.
+	(getInstance) accomodate changes to Engine class.
 	* java/security/MessageDigest.java:
-	  (getInstance) accomodate changes to Engine class.
+	(getInstance) accomodate changes to Engine class.
 	* java/security/SecureRandom.java:
-	  (getInstance) accomodate changes to Engine class.
+	(getInstance) accomodate changes to Engine class.
 	* java/security/Signature.java:
-	  (getInstance) accomodate changes to Engine class.
+	(getInstance) accomodate changes to Engine class.
 	* java/security/cert/Certificate.java: Added writeReplace() method. 
 	* java/security/cert/CertificateFactory.java: (JDK 1.4 compatibility)
-	  (getInstance(String)) and modified to use generic getInstance
-	  method.
-	  (getInstance(String, String)) likewise.
-	  getInstance(String, Provider) method added.
-	  getInstance(String, String, Provider) method removed.
-	  generateCertPath(InputStream) method added.
-	  generateCertPath(InputStream, String) method added.
-	  generateCertPath(List) method added.
-	  getCertPathEncodings() method added.
+	(getInstance(String)) and modified to use generic getInstance
+	method.
+	(getInstance(String, String)) likewise.
+	getInstance(String, Provider) method added.
+	getInstance(String, String, Provider) method removed.
+	generateCertPath(InputStream) method added.
+	generateCertPath(InputStream, String) method added.
+	generateCertPath(List) method added.
+	getCertPathEncodings() method added.
 	* java/security/cert/CertificateFactorySpi.java: (1.4 compatibility)
-	  engineGenerateCertPath(InputStream) method added.
-	  engineGenerateCertPath(InputStream, String) method added.
-	  engineGenerateCertPath(List) method added.
-	  engineGetCertPathEncodings() method added.
+	engineGenerateCertPath(InputStream) method added.
+	engineGenerateCertPath(InputStream, String) method added.
+	engineGenerateCertPath(List) method added.
+	engineGetCertPathEncodings() method added.
 
 2003-04-23  Torsten Rupp  <rupp@homer.aicas.com>
 
-        * /cvsroot/classpath/classpath/java/net/InetAddress.java:
-        Fixed parsing of IP numbers in getByName if sub-numbers are >127
+	* /cvsroot/classpath/classpath/java/net/InetAddress.java:
+	Fixed parsing of IP numbers in getByName if sub-numbers are >127
 
 2003-04-21  Tom Tromey  <tromey@redhat.com>
 
@@ -19756,8 +19762,8 @@ get/Linux/target_native.h,
 2003-03-28  Torsten Rupp  <rupp@homer.aicas.com>
 
 	* native/target/generic/target_generic.h,
-          native/target/generic/target_generic_file.h,
-          native/target/generic/target_generic_math_float.h:
+	native/target/generic/target_generic_file.h,
+	native/target/generic/target_generic_math_float.h:
 	Fix in extern-C-declaration
 
 	* native/target/generic/target_generic_math_int.h:
@@ -19770,11 +19776,11 @@ get/Linux/target_native.h,
 	Added TARGET_NATIVE_FORMAT_STRING macro
 
 	* native/target/Linux/target_native.h,
-          native/target/Linux/target_native_file.h,
-          native/target/Linux/target_native_math_float.h,
-          native/target/Linux/target_native_math_int.h,
-          native/target/Linux/target_native_misc.h,
-          native/target/Linux/target_native_network.h:
+	native/target/Linux/target_native_file.h,
+	native/target/Linux/target_native_math_float.h,
+	native/target/Linux/target_native_math_int.h,
+	native/target/Linux/target_native_misc.h,
+	native/target/Linux/target_native_network.h:
 	Fix in extern-C-declaration
 
 2003-03-28  Michael Koch  <konqueror@gmx.de>
@@ -20090,21 +20096,21 @@ get/Linux/target_native.h,
 2003-03-21  Torsten Rupp  <rupp@homer.aicas.com>
 
 	* native/target/generic/target_generic.h,
-          native/target/generic/target_generic_file.h,
-          native/target/generic/target_generic_math_float.h,
-          native/target/generic/target_generic_math_int.h,
-          native/target/generic/target_generic_misc.h
-          native/target/generic/target_generic_network.h
-          native/target/Linux/target_native.h
-          native/target/Linux/target_native_file.h
-          native/target/Linux/target_native_math_float.h
-          native/target/Linux/target_native_math_int.h
-          native/target/Linux/target_native_misc.h
-          native/target/Linux/target_native_network.h:
+	native/target/generic/target_generic_file.h,
+	native/target/generic/target_generic_math_float.h,
+	native/target/generic/target_generic_math_int.h,
+	native/target/generic/target_generic_misc.h
+	native/target/generic/target_generic_network.h
+	native/target/Linux/target_native.h
+	native/target/Linux/target_native_file.h
+	native/target/Linux/target_native_math_float.h
+	native/target/Linux/target_native_math_int.h
+	native/target/Linux/target_native_misc.h
+	native/target/Linux/target_native_network.h:
 	Target specific native code. This code is still not used, but please
-        have a look. aicas GmbH will add and activate this code soon as
-        possible (currently we are very busy; please be patient, we will do
-        our best!)
+	have a look. aicas GmbH will add and activate this code soon as
+	possible (currently we are very busy; please be patient, we will do
+	our best!)
 
 2003-03-20  John Leuner  <jewel@debian.org>
 
@@ -20113,11 +20119,11 @@ get/Linux/target_native.h,
 	initialization
 	* java/io/FileDescriptor.java (close) : clear nativeFD on success
 	* java/net/PlainDatagramSocketImpl.java (setTTL): remap the TTL passed
-	  as an unsigned byte to an integer in the range 0..255
+	as an unsigned byte to an integer in the range 0..255
 	* native/jni/java-net/javanet.c (_javanet_get_option): 
-	  implement ..._get(SOCKOPT_SO_BINDADDR) -> 'getsockname' syscall
+	implement ..._get(SOCKOPT_SO_BINDADDR) -> 'getsockname' syscall
 	* native/jni/java-net/javanet.c (_javanet_set_option):
-	  implement ..._set(SOCKOPT_SO_BINDADDR) -> Exception
+	implement ..._set(SOCKOPT_SO_BINDADDR) -> Exception
 
 	
 2003-03-20  Raif S. Naffah  <raif@fl.net.au>
@@ -21155,7 +21161,7 @@ get/Linux/target_native.h,
 	* gnu/java/awt/peer/gtk/GtkTextComponentPeer.java
 	(getIndexAtPoint): added method
 	(getCharacterBounds): ditto
-        (filterEvents): ditto
+	(filterEvents): ditto
 	* doc/www.gnu.org/Makefile: fix wml invocation
 	* doc/www.gnu.org/home.wml: fix link to japitools, link to providers
 	of core packages not yet part of Classpath
@@ -21436,9 +21442,9 @@ get/Linux/target_native.h,
 2003-02-16  C. Brian Jones  <cbj@gnu.org>
 
 	* NEWS: updated                                                         
-        * configure.in: updated VERSION to 0.05                                 
-        * doc/api/Makefile.am: updated for gjdoc 0.4.1
-        * doc/api/xslt: directory removed; no longer needed      
+	* configure.in: updated VERSION to 0.05                                 
+	* doc/api/Makefile.am: updated for gjdoc 0.4.1
+	* doc/api/xslt: directory removed; no longer needed      
 
 2003-02-15  Julian Dolby  <dolby@us.ibm.com>
 
@@ -21457,17 +21463,17 @@ get/Linux/target_native.h,
 	(releaseLock): new method
 	(g_mutex_new_jni_impl): uses allocatePlainObject instead
 	(g_mutex_lock_jni_impl): uses takeLock instead
-        (g_mutex_unlock_jni_impl): uses releaseLock instead
+	(g_mutex_unlock_jni_impl): uses releaseLock instead
 	(g_mutex_free_jni_impl): uses freePlainObject instead
-        (g_private_new_jni_impl): implemented
+	(g_private_new_jni_impl): implemented
 	(g_private_get_jni_impl): implemented
 	(g_private_set_jni_impl): implemented
 	(g_cond_new_jni_impl): implemented; uses allocatePlainObject
-        (g_cond_signal_jni_impl): implemented
+	(g_cond_signal_jni_impl): implemented
 	(g_cond_broadcast_jni_impl): implemented
-        (g_cond_wait_jni_impl): implemented
-        (g_cond_timed_wait_jni_impl): implemented
-        (g_cond_free_jni_impl): implemented; uses freePlainObject
+	(g_cond_wait_jni_impl): implemented
+	(g_cond_timed_wait_jni_impl): implemented
+	(g_cond_free_jni_impl): implemented; uses freePlainObject
 	* native/jni/gtk-peer/gthread-jni.h: extern JavaVM *gdk_vm
 
 2003-02-15  C. Brian Jones  <cbj@gnu.org>
@@ -21573,7 +21579,7 @@ get/Linux/target_native.h,
 	(setProperties): Likewise.
 
 2003-02-14  Michael Koch  <konqueror@gmx.de>
- 
+
 	* java/util/prefs/NodeChangeEvent.java
 	(serialVersionUID): New member variable (Merge back from libgcj).
 	* java/util/prefs/PreferenceChangeEvent.java
@@ -21583,7 +21589,7 @@ get/Linux/target_native.h,
 	libgcj).
 
 2003-02-13  Michael Koch  <konqueror@gmx.de>
- 
+
 	* java/awt/Label.java
 	(Label): Don't implement Serializable directly.
 	(addNotify): Fixed typo in documentation.
@@ -21614,7 +21620,7 @@ get/Linux/target_native.h,
 	* java/security/SecureRandom.java (next): Avoid bias in results.
 
 2003-02-13  Michael Koch  <konqueror@gmx.de>
- 
+
 	* java/awt/GridBagConstraints.java
 	(FIRST_LINE_ENT, FIRST_LINE_START, LAST_LINE_END, LAST_LINE_START,
 	LINE_END, LINE_START, PAGE_END, PAGE_START): New constants.
@@ -21627,7 +21633,7 @@ get/Linux/target_native.h,
 	(getFontPeer): Added @deprecated.
 	(getColorModel): Added exception documentation.
 	(getProperty): Fixed documentation.
- 
+
 2003-02-12  Jeroen Frijters  <jeroen@sumatra.nl>
 
 	* java/io/File.java (File(String)): Only remove tail separators while
@@ -21844,7 +21850,7 @@ get/Linux/target_native.h,
 	* java/text/CollationElementIterator.java (secondaryOrder): return 
 	value is supposed to be a short instead of an int; merged with gcj
 	(tertiaryOrder): ditto
-        (primaryOrder): merged with gcj
+	(primaryOrder): merged with gcj
 
 2003-01-25  Stephen Crawley  <crawley@dstc.edu.au>
 
@@ -21856,7 +21862,7 @@ get/Linux/target_native.h,
 2003-01-25  C. Brian Jones  <cbj@gnu.org>
 
 	* NEWS: note jni.h updates and patches
-        * include/jni.h.in (AttachCurrentThreadAsDaemon): new function
+	* include/jni.h.in (AttachCurrentThreadAsDaemon): new function
 
 2003-01-25  Stephen Crawley  <crawley@dstc.edu.au>
 
@@ -21864,8 +21870,8 @@ get/Linux/target_native.h,
 	(NewDirectByteBuffer): new function
 	(GetDirectBufferAddress): new function
 	(GetDirectBufferCapacity): new function
-        (_JNI_VM_INTERNAL_TYPES_DEFINED): if defined, do not use default
-        declarations for jobject, jfieldID, and jmethodID
+	(_JNI_VM_INTERNAL_TYPES_DEFINED): if defined, do not use default
+	declarations for jobject, jfieldID, and jmethodID
 
 2003-01-24  Mark Wielaard  <mark@klomp.org>
 
@@ -22718,17 +22724,17 @@ get/Linux/target_native.h,
 	* doc/www.gnu.org/docs/orp.wml: link->createlink conversion.
 	* doc/www.gnu.org/docs/redistribution.wml: link->createlink conversion.
 	* doc/www.gnu.org/docs/docs.wml: fix link to hacking doc, 
-          link->createlink conversion.
+	link->createlink conversion.
 	* doc/www.gnu.org/announce/19990206.wml: link->createlink conversion.
 	* doc/www.gnu.org/announce/20001120.wml: link->createlink conversion.
 	* doc/www.gnu.org/announce/20010106.wml: link->createlink conversion.
 	* doc/www.gnu.org/announce/20020208.wml: link->createlink conversion.
 	* doc/www.gnu.org/announce/announcements.wml: link->createlink 
-          conversion.
+	conversion.
 	* doc/www.gnu.org/savannah.css: new file
 	* doc/www.gnu.org/include/macros.wml: rename 'link' tag 'createlink'
 	* doc/www.gnu.org/home.wml: link to cp-tools sub-project, 
-          link->createlink conversion.
+	link->createlink conversion.
 	* doc/www.gnu.org/Makefile: copy *.css to webroot when publishing
 
 2002-12-17  Sascha Brawer  <brawer@acm.org>
@@ -22786,7 +22792,7 @@ get/Linux/target_native.h,
 	(findLoadedClass): Likewise.
 
 2002-12-10  Mark Wielaard  <mark@klomp.org>
-            Tom Tromey  <tromey@redhat.com>
+	    Tom Tromey  <tromey@redhat.com>
 
 	* java/net/URLClassLoader.java (getCanonicalFileURL): New method.
 	(JarURLLoader): Use it.
@@ -23354,9 +23360,9 @@ get/Linux/target_native.h,
 
 2002-11-18  Jesse Rosenstock <jmr@ugcs.caltech.edu>
 
-        * java/nio/charset/CoderResult.java (Cache.get): Fix a bug
-        that was causing CoderResults to be cached, not WeakReferences
-        to CoderResults.
+	* java/nio/charset/CoderResult.java (Cache.get): Fix a bug
+	that was causing CoderResults to be cached, not WeakReferences
+	to CoderResults.
 
 2002-11-18  Joerg Brunsmann  <joerg_brunsmann@yahoo.de>
 
@@ -23641,7 +23647,7 @@ get/Linux/target_native.h,
 	gnu/java/nio/ShortBufferImpl.java,
 	gnu/java/nio/SocketChannelImpl.java:
 	Dont use capacity(cap).
-        * java/nio/InvalidMarkException.java: New file.
+	* java/nio/InvalidMarkException.java: New file.
 	* java/nio/Makefile.am: Added InvalidMarkException.java.
 
 2002-11-13  Michael Koch <konqueror@gmx.de>
@@ -24570,13 +24576,13 @@ get/Linux/target_native.h,
 	* gnu/java/io/PlatformHelper.java (INITIAL_MAX_PATH): new constant.
 	(toCanonicalForm): Use new constant to optimize StringBuffer usage.
 	Return lowercase path when isWindows == true.
-        * gnu/java/lang/SystemClassLoader.java (classpath): New static field.
+	* gnu/java/lang/SystemClassLoader.java (classpath): New static field.
 	(pathinfos): Likewise.
 	(getSystemResource): Refactored, cache partial result for each path
 	item in classpath.
 	* gnu/java/net/protocol/file/Handler.java (toExternalForm): New
 	method implementation specific to file protocol.
-        * gnu/java/net/protocol/http/HttpURLConnection.java
+	* gnu/java/net/protocol/http/HttpURLConnection.java
 	(buffered_out_stream): New field.
 	(connect): Don't set in_stream, wrap out_stream BufferedOutputStream.
 	Move sending request and receiveing reesponce to new methods.
@@ -24884,15 +24890,15 @@ get/Linux/target_native.h,
 	* java/awt/dnd/DropTargetListener.java: New file.
 	* java/awt/dnd/MouseDragGestureRecognizer.java: New file.
 	* java/awt/dnd/peer/DropTargetContextPeer.java: New file.
-        * java/awt/dnd/Makefile.am: Adding all the new files.
+	* java/awt/dnd/Makefile.am: Adding all the new files.
 
 2002-09-26  Eric Blake  <ebb9@email.byu.edu>
 
-        * java/applet/AppletContext.java (setStream): Fix signature typo.
-        * javax/accessibility/AccessibleEditableText.java (cut, delete):
-        Ditto.
-        * javax/accessibility/AccessibleHyperlink.java
-        (getAccessibleActionAnchor, getAccessibleActionObject): Ditto.
+	* java/applet/AppletContext.java (setStream): Fix signature typo.
+	* javax/accessibility/AccessibleEditableText.java (cut, delete):
+	Ditto.
+	* javax/accessibility/AccessibleHyperlink.java
+	(getAccessibleActionAnchor, getAccessibleActionObject): Ditto.
 
 2002-09-26  Michael Koch  <konqueror@gmx.de>
 
@@ -25009,7 +25015,7 @@ get/Linux/target_native.h,
 	* java/net/DatagramPacket.java: updated to JDK 1.4 API
 	new methods are:
 	DatagramPacket(byte[] buf, int offset, int length, SocketAddress
-	  address),
+	address),
 	DatagramPacket(byte[] buf, int length, SocketAddress address),
 	void setSocketAddress(SocketAddress address)
 	public SocketAddress getSocketAddress()
@@ -25030,7 +25036,7 @@ get/Linux/target_native.h,
 2002-08-28  Michael Koch <konqueror@gmx.de>
 
 	* java/net/Authenticator.java: added some documentation.
-       
+
 2002-08-27  Michael Koch <konqueror@gmx.de>
 
 	* java/net/BindException.java,
@@ -25430,7 +25436,7 @@ get/Linux/target_native.h,
 	(deflateSlow): Likewise.
 
 2002-07-02  Tom Tromey  <tromey@redhat.com>
-            David Hovemeyer  <daveho@cs.umd.edu>
+	    David Hovemeyer  <daveho@cs.umd.edu>
 
 	* java/text/ChoiceFormat.java
 	(format(double,StringBuffer,FieldPosition)): Fix fencepost error
@@ -26027,9 +26033,9 @@ get/Linux/target_native.h,
 2002-04-30  Etienne M. Gagnon <etienne.gagnon@uqam.ca>
 
 	* native/jni/java-io/Makefile.am: Re-added java_nio.c into JNI
-        build.
+	build.
 	* native/jni/java-io/java_nio.c: Solved compile time problems under
-        gcc 2.95.x and added missing Copyright statement.
+	gcc 2.95.x and added missing Copyright statement.
 
 2002-04-30  Eric Blake  <ebb9@email.byu.edu>
 
@@ -27351,7 +27357,7 @@ get/Linux/target_native.h,
 2002-03-12  Ronald Veldema <rveldema@cs.vu.nl>
 
 	* Removes dependencies on manta; javax.swing, 
-	  gnu.java.nio and java.nio now compile with jikes;
+	gnu.java.nio and java.nio now compile with jikes;
 
 2002-03-11  C. Brian Jones <cbj@gnu.org>
 
@@ -30378,7 +30384,7 @@ get/Linux/target_native.h,
 	renamed CLASSPATH_CHECK_JAPHAR to CLASSPATH_WITH_JAPHAR
 	renamed CLASSPATH_CHECK_KAFFE to CLASSPATH_WITH_KAFFE
 	added CLASSPATH_FIND_JAVAC and supporting functions re-arranged,
-	  support for gcj added
+	support for gcj added
 	added CLASSPATH_FIND_JAVA and supporting functions
 	added CLASSPATH_WITH_JAVAH and supporting functions
 	added CLASSPATH_WITH_CLASSLIB
@@ -30389,17 +30395,17 @@ get/Linux/target_native.h,
 	added --enable-jni (not built by default)
 	added --enable-cni (not built by default, currently not implemented)
 	added automake conditional CREATE_JNI_HEADERS, if true then build 
-	  JNI headers
+	JNI headers
 	added automake conditional CREATE_JNI_LIBRARIES, if true then build 
-	  JNI native libraries
+	JNI native libraries
 	added automake conditional CREATE_CNI_LIBRARIES, if true then build
-	  CNI native libraries, currently not implemented
+	CNI native libraries, currently not implemented
 	moved checks related to building JNI libraries so they are avoided
-	  when not building JNI libraries
+	when not building JNI libraries
 	added AC_CYGWIN and AC_MINGW32 tests when building JNI libraries
 	removed JVM specific checks
 	moved --with-java, --with-javah, --with-classlib, --with-includedir
-	  macros to acinclude.m4
+	macros to acinclude.m4
 	removed --enable-developer-mode
 	added macro call to link jni_md.h
 	added jni.h to OUTPUT to place it in ${top_builddir}/include easily
@@ -31516,9 +31522,9 @@ get/Linux/target_native.h,
 	* java/awt/ActiveEvent.java: added this file (new interface)
 	* gnu/java/awt/peer/gtk/Test.java (new MouseAdapter): changed event name from e to me
 	* gnu/java/awt/peer/gtk/TestAWT.java:  fixed ambiguous references to getSize()
- 	and getBackground()
+	and getBackground()
 	* gnu/java/awt/peer/gtk/GtkPopupMenuPeer.java (show): changed method to not use
- 	AWT 1.0 Event
+	AWT 1.0 Event
 
 2001-08-11  John Leuner  <jewel@debian.org>
 
@@ -32488,15 +32494,15 @@ get/Linux/target_native.h,
 	* Release classpath-0.02
 	* doc/www.gnu.org/announce/20010106.mhtml: New file.
 	* resource/japhar-0.09.patch.1: patch for Japhar 0.09 for 
-	  GNU Classpath 0.02 release.
+	GNU Classpath 0.02 release.
 	* NEWS: Added 0.02 release information.
 	* configure.in: Update release number, add additional Makefile output
-	  files.
+	files.
 	* doc/Makefile.am: New target 'docs' can be used to generate
-	  formal postscript documentation.
+	formal postscript documentation.
 	* doc/texinfo.tex: Updated to tetex 1.0.7 release.
 	* doc/www.gnu.org/classpath.mhtml: Notice of license change and
-	  other small enhancements.
+	other small enhancements.
 	* gnu/java/beans/Makefile.am: Removed ChangeLog from EXTRA_DIST
 	* gnu/java/beans/editors/Makefile.am: Ditto.
 	* gnu/java/beans/info/Makefile.am: Ditto.
@@ -32512,7 +32518,7 @@ get/Linux/target_native.h,
 	* java/util/Makefile.am: Ditto.
 	* resource/Makefile.am: Add japhar-0.09.patch.1 to EXTRA_DIST
 	* resource/java/security/Makefile.am: Rules to install security
-	  policy in $(libdir)/security.
+	policy in $(libdir)/security.
 
 2001-01-06  Anthony Green  <green@redhat.com>
 
