@@ -1,3 +1,8 @@
+2003-05-03  John Leuner  <jewel@debian.org>
+
+	* native/jni/java-net/java_net_PlainDatagramSocketImpl.c (Java_java_net_PlainDatagramSocketImpl_receive): 
+	added check for null packet argument
+
 2003-05-02  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/URI.java

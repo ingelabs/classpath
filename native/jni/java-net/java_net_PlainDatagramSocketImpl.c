@@ -134,6 +134,9 @@ Java_java_net_PlainDatagramSocketImpl_receive(JNIEnv *env, jobject this,
   char ip_str[16];
   jobject ip_str_obj, addr_obj;
 
+  if(packet == NULL)
+    { JCL_ThrowException(env, "java/lang/NullPointerException", "Null datagram packet"); return; }
+
   /* Get the buffer from the packet */
   cls = (*env)->GetObjectClass(env, packet);
   if (cls == NULL)
