@@ -47,7 +47,6 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Vector;
 
-
 import gnu.java.io.ObjectIdentityWrapper;
 import gnu.java.lang.reflect.TypeSignature;
 import java.lang.reflect.Field;
@@ -99,10 +98,11 @@ public class ObjectInputStream extends InputStream
     this.blockDataInput = new DataInputStream (this);
     this.realInputStream = new DataInputStream (in);
     this.nextOID = baseWireHandle;
-    this.objectLookupTable = new Hashtable ();
-    this.validators = new Vector ();
+    this.objectLookupTable = new Hashtable();
+    this.validators = new Vector();
+    this.classLookupTable = new Hashtable();
     setBlockDataMode (true);
-    readStreamHeader ();
+    readStreamHeader();
   }
 
 
@@ -203,7 +203,7 @@ public class ObjectInputStream extends InputStream
 	      Class cl = resolveProxyClass(intfs);
 	      setBlockDataMode(oldmode);
 	      
-	      ObjectStreamClass osc = ObjectStreamClass.lookup(cl);
+	      ObjectStreamClass osc = lookupClass (cl);
 	      assignNewHandle (osc);
 	      
 	      if (!is_consumed)
@@ -332,7 +332,7 @@ public class ObjectInputStream extends InputStream
 	      int handle = assignNewHandle (obj);
 	      this.currentObject = obj;
 	      ObjectStreamClass[] hierarchy =
-		ObjectStreamClass.getObjectStreamClasses (clazz);
+		inputGetObjectStreamClasses (clazz);
 	      
 	      for (int i=0; i < hierarchy.length; i++)
 		{
@@ -455,8 +455,10 @@ public class ObjectInputStream extends InputStream
 	  new ObjectStreamField (field_name, class_name);
       }
 	      
+    Class clazz = resolveClass (osc);
     boolean oldmode = setBlockDataMode (true);
-    osc.setClass (resolveClass (osc));
+    osc.setClass (clazz, lookupClass (clazz.getSuperclass()));
+    classLookupTable.put (clazz, osc);
     setBlockDataMode (oldmode);
 	      
     return osc;
@@ -550,16 +552,78 @@ public class ObjectInputStream extends InputStream
   protected Class resolveClass (ObjectStreamClass osc)
     throws ClassNotFoundException, IOException
   {
+    return Class.forName (osc.getName(), true, currentLoader()); 
+  }
+  
+  private ClassLoader currentLoader ()
+  {
     SecurityManager sm = System.getSecurityManager ();
     if (sm == null)
       sm = new SecurityManager () {};
+ 
+    return currentClassLoader (sm);
+  }
 
-    ClassLoader cl = currentClassLoader (sm);
-
-    if (cl == null)
-      return Class.forName (osc.getName ());
+  /**
+   * Lookup a class stored in the local hashtable. If it is not
+   * use the global lookup function in ObjectStreamClass to build
+   * the ObjectStreamClass. This method is requested according to
+   * the behaviour detected in the JDK by Kaffe's team.
+   *
+   * @param clazz Class to lookup in the hash table or for which
+   * we must build a descriptor. 
+   * @return A valid instance of ObjectStreamClass corresponding
+   * to the specified class.
+   */
+  private ObjectStreamClass lookupClass (Class clazz)
+  {
+    ObjectStreamClass oclazz;
+    
+    oclazz = (ObjectStreamClass) classLookupTable.get(clazz);
+    if (oclazz == null)
+      return ObjectStreamClass.lookup (clazz);
     else
-      return cl.loadClass (osc.getName ());
+      return oclazz;
+  }
+
+  /**
+   * Reconstruct class hierarchy the same way
+   * {@link java.io.ObjectStreamClass.getObjectStreamClasses(java.lang.Class)} does
+   * but using lookupClass instead of ObjectStreamClass.lookup. This
+   * dup is necessary localize the lookup table. Hopefully some future rewritings will
+   * be able to prevent this.
+   *
+   * @param clazz This is the class for which we want the hierarchy.
+   *
+   * @return An array of valid {@link java.io.ObjectStreamClass} instances which
+   * represent the class hierarchy for clazz.
+   */
+  private ObjectStreamClass[] inputGetObjectStreamClasses (Class clazz)
+  {
+    ObjectStreamClass osc = lookupClass (clazz);
+
+    ObjectStreamClass[] ret_val;
+
+    if (osc == null)
+      return new ObjectStreamClass[0];
+    else
+    {
+      Vector oscs = new Vector ();
+
+      while (osc != null)
+      {
+	oscs.addElement (osc);
+	osc = osc.getSuper ();
+      }
+
+      int count = oscs.size ();
+      ObjectStreamClass[] sorted_oscs = new ObjectStreamClass[ count ];
+
+      for (int i = count - 1; i >= 0; i--)
+	sorted_oscs[ count - i - 1 ] = (ObjectStreamClass)oscs.elementAt (i);
+
+      return sorted_oscs;
+    }
   }
 
   /**
@@ -1148,7 +1212,12 @@ public class ObjectInputStream extends InputStream
     throw new IOException ("Subclass of ObjectInputStream must implement readObjectOverride");
   }
 
-  // assigns the next availible handle to OBJ
+  /**
+   * Assigns the next available handle to <code>obj</code>.
+   *
+   * @param obj The object for which we want a new handle.
+   * @return A valid handle for the specified object.
+   */
   private int assignNewHandle (Object obj)
   {
     this.objectLookupTable.put (new Integer (this.nextOID),
@@ -1300,7 +1369,7 @@ public class ObjectInputStream extends InputStream
   {
     ObjectStreamField[] stream_fields = stream_osc.fields;
     ObjectStreamField[] real_fields =
-      ObjectStreamClass.lookup (stream_osc.forClass ()).fields;
+      lookupClass (stream_osc.forClass ()).fields;
 
     boolean default_initialize, set_value;
     String field_name = null;
@@ -1493,14 +1562,20 @@ public class ObjectInputStream extends InputStream
       }
   }
 
-  // this native method is used to get access to the protected method
-  // of the same name in SecurityManger
+  /**
+   * This native method is used to get access to the protected method
+   * of the same name in SecurityManger.
+   *
+   * @param sm SecurityManager instance which should be called.
+   * @return The current class loader in the calling stack.
+   */
   private static native ClassLoader currentClassLoader (SecurityManager sm);
 
   private static Field getField (Class klass, String name)
     throws java.lang.NoSuchFieldException
   {
     final Field f = klass.getDeclaredField(name);
+    
     AccessController.doPrivileged(new PrivilegedAction()
       {
 	public Object run()
@@ -1565,125 +1640,260 @@ public class ObjectInputStream extends InputStream
 
   private native void callConstructor (Class clazz, Object obj);
 
+  /**
+   * This method writes a "boolean" value <code>val</code> in the specified field
+   * of the instance <code>obj</code> of the type <code>klass</code>.
+   *
+   * @param obj Instance to setup.
+   * @param klass Class type of the specified instance.
+   * @param field_name Name of the field in the specified class type.
+   * @param val The boolean value to write into the field.
+   * @throws InvalidClassException if the specified field has not the required type.
+   * @throws IOException if there is no field of that name in the specified class.
+   */
   private void setBooleanField (Object obj, Class klass, String field_name,
-				boolean val)
+				boolean val) throws IOException, InvalidClassException
   {
     try
       {
 	Field f = getField (klass, field_name);
 	f.setBoolean (obj, val);
       }
+    catch (IllegalArgumentException _)
+      {
+	throw new InvalidClassException("incompatible field type for " + klass.getName() + "." + field_name);
+      }
     catch (Exception _)
       {
       }    
   }
 
+  /**
+   * This method writes a "byte" value <code>val</code> in the specified field
+   * of the instance <code>obj</code> of the type <code>klass</code>.
+   *
+   * @param obj Instance to setup.
+   * @param klass Class type of the specified instance.
+   * @param field_name Name of the field in the specified class type.
+   * @param val The byte value to write into the field.
+   * @throws InvalidClassException if the specified field has not the required type.
+   * @throws IOException if there is no field of that name in the specified class.
+   */
   private void setByteField (Object obj, Class klass, String field_name,
-			     byte val)
+			     byte val) throws IOException, InvalidClassException
   {
     try
       {
 	Field f = getField (klass, field_name);
 	f.setByte (obj, val);
       }
+    catch (IllegalArgumentException _)
+      {
+	throw new InvalidClassException("incompatible field type for " + klass.getName() + "." + field_name);
+      }
     catch (Exception _)
       {
       }    
   }
 
+  /**
+   * This method writes a "character" value <code>val</code> in the specified field
+   * of the instance <code>obj</code> of the type <code>klass</code>.
+   *
+   * @param obj Instance to setup.
+   * @param klass Class type of the specified instance.
+   * @param field_name Name of the field in the specified class type.
+   * @param val The character value to write into the field.
+   * @throws InvalidClassException if the specified field has not the required type.
+   * @throws IOException if there is no field of that name in the specified class.
+   */
   private void setCharField (Object obj, Class klass, String field_name,
-			     char val)
+			     char val) throws IOException, InvalidClassException
   {
     try
       {
 	Field f = getField (klass, field_name);
 	f.setChar (obj, val);
       }
+    catch (IllegalArgumentException _)
+      {
+	throw new InvalidClassException("incompatible field type for " + klass.getName() + "." + field_name);
+      }
     catch (Exception _)
       {
       }    
   }
 
+  /**
+   * This method writes a "double" value <code>val</code> in the specified field
+   * of the instance <code>obj</code> of the type <code>klass</code>.
+   *
+   * @param obj Instance to setup.
+   * @param klass Class type of the specified instance.
+   * @param field_name Name of the field in the specified class type.
+   * @param val The double value to write into the field.
+   * @throws InvalidClassException if the specified field has not the required type.
+   * @throws IOException if there is no field of that name in the specified class.
+   */
   private void setDoubleField (Object obj, Class klass, String field_name,
-			       double val)
+			       double val) throws IOException, InvalidClassException
   {
     try
       {
 	Field f = getField (klass, field_name);
 	f.setDouble (obj, val);
       }
+    catch (IllegalArgumentException _)
+      {
+	throw new InvalidClassException("incompatible field type for " + klass.getName() + "." + field_name);
+      }
     catch (Exception _)
       {
       }    
   }
 
+  /**
+   * This method writes a "float" value <code>val</code> in the specified field
+   * of the instance <code>obj</code> of the type <code>klass</code>.
+   *
+   * @param obj Instance to setup.
+   * @param klass Class type of the specified instance.
+   * @param field_name Name of the field in the specified class type.
+   * @param val The float value to write into the field.
+   * @throws InvalidClassException if the specified field has not the required type.
+   * @throws IOException if there is no field of that name in the specified class.
+   */
   private void setFloatField (Object obj, Class klass, String field_name,
-			      float val)
+			      float val) throws IOException, InvalidClassException
   {
     try
       {
 	Field f = getField (klass, field_name);
 	f.setFloat (obj, val);
       }
+    catch (IllegalArgumentException _)
+      {
+	throw new InvalidClassException("incompatible field type for " + klass.getName() + "." + field_name);
+      }
     catch (Exception _)
       {
       }    
   }
 
+  /**
+   * This method writes an "integer" value <code>val</code> in the specified field
+   * of the instance <code>obj</code> of the type <code>klass</code>.
+   *
+   * @param obj Instance to setup.
+   * @param klass Class type of the specified instance.
+   * @param field_name Name of the field in the specified class type.
+   * @param val The integer value to write into the field.
+   * @throws InvalidClassException if the specified field has not the required type.
+   * @throws IOException if there is no field of that name in the specified class.
+   */
   private void setIntField (Object obj, Class klass, String field_name,
-			    int val)
+			    int val) throws IOException, InvalidClassException
   {
     try
       {
 	Field f = getField (klass, field_name);
 	f.setInt (obj, val);
       }
+    catch (IllegalArgumentException _)
+      {
+	throw new InvalidClassException("incompatible field type for " + klass.getName() + "." + field_name);
+      }
     catch (Exception _)
       {
       }    
   }
 
-
+  /**
+   * This method writes the long value <code>val</code> in the specified field
+   * of the instance <code>obj</code> of the type <code>klass</code>.
+   *
+   * @param obj Instance to setup.
+   * @param klass Class type of the specified instance.
+   * @param field_name Name of the field in the specified class type.
+   * @param val The long value to write into the field.
+   * @throws InvalidClassException if the specified field has not the required type.
+   * @throws IOException if there is no field of that name in the specified class.
+   */
   private void setLongField (Object obj, Class klass, String field_name,
-			     long val)
+			     long val) throws IOException, InvalidClassException
   {
     try
       {
 	Field f = getField (klass, field_name);
 	f.setLong (obj, val);
       }
+    catch (IllegalArgumentException _)
+      {
+	throw new InvalidClassException("incompatible field type for " + klass.getName() + "." + field_name);
+      }
     catch (Exception _)
       {
       }    
   }
 
-
+  /**
+   * This method writes a "short" value <code>val</code> in the specified field
+   * of the instance <code>obj</code> of the type <code>klass</code>.
+   *
+   * @param obj Instance to setup.
+   * @param klass Class type of the specified instance.
+   * @param field_name Name of the field in the specified class type.
+   * @param val The short value to write into the field.
+   * @throws InvalidClassException if the specified field has not the required type.
+   * @throws IOException if there is no field of that name in the specified class.
+   */
   private void setShortField (Object obj, Class klass, String field_name,
-			      short val)
+			      short val) throws IOException, InvalidClassException
   {
     try
       {
 	Field f = getField (klass, field_name);
 	f.setShort (obj, val);
       }
+    catch (IllegalArgumentException _)
+      {
+	throw new InvalidClassException("incompatible field type for " + klass.getName() + "." + field_name);
+      }
     catch (Exception _)
       {
       }    
   }
 
-
+  /**
+   * This method writes an "object" value <code>val</code> in the specified field
+   * of the instance <code>obj</code> of the type <code>klass</code>.
+   *
+   * @param obj Instance to setup.
+   * @param klass Class type of the specified instance.
+   * @param field_name Name of the field in the specified class type.
+   * @param val The "object" value to write into the field.
+   * @throws InvalidClassException if the specified field has not the required type.
+   * @throws IOException if there is no field of that name in the specified class.
+   */
   private void setObjectField (Object obj, Class klass, String field_name,
-			       String type_code, Object val)
+			       String type_code, Object val) throws IOException, InvalidClassException
   {
     try
       {
-	Field f = getField (klass, field_name);
-	// FIXME: We should check the type_code here
-	f.set (obj, val);
+ 	Field f = getField (klass, field_name);
+	ObjectStreamField of = new ObjectStreamField(field_name, f.getType());
+	
+	if (of.getTypeString() == null ||
+	    !of.getTypeString().equals(type_code))
+          throw new InvalidClassException("incompatible field type for " + klass.getName() + "." + field_name);
+ 	f.set (obj, val);
+      }
+    catch (InvalidClassException e)
+      {
+	throw e;
       }
     catch (Exception _)
-      {
-      }    
+      {}
   }
 
   private static final int BUFFER_SIZE = 1024;
@@ -1705,6 +1915,7 @@ public class ObjectInputStream extends InputStream
   private boolean isDeserializing;
   private boolean fieldsAlreadyRead;
   private Vector validators;
+  private Hashtable classLookupTable;
 
   private static boolean dump;
 
