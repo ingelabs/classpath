@@ -171,7 +171,7 @@ public class PrintStream extends FilterOutputStream
     if (!closed)
       pw.flush ();
 
-    return error_occured | pw.checkError ();
+    return error_occurred | pw.checkError ();
   }
 
   /**
