@@ -97,6 +97,9 @@ AC_ARG_ENABLE([gtk-cairo],
               esac],
               [GTK_CAIRO_ENABLED=false])
 AC_SUBST(GTK_CAIRO_ENABLED)
+if test "x${GTK_CAIRO_ENABLED}" = xtrue; then
+  AC_DEFINE(GTK_CAIRO, 1, [defined if cairo support was built in])
+fi
 AM_CONDITIONAL(GTK_CAIRO, test "x${GTK_CAIRO_ENABLED}" = xtrue)
 
 dnl -----------------------------------------------------------
