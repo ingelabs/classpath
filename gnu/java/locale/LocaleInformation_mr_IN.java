@@ -57,11 +57,8 @@ public class LocaleInformation_mr_IN extends ListResourceBundle
   static final String[] months = { "\u091C\u093E\u0928\u0947\u0935\u093E\u0930\u0940", "\u092B\u0947\u092C\u0943\u0935\u093E\u0930\u0940", "\u092E\u093E\u0930\u094D\u091A", "\u090F\u092A\u094D\u0930\u093F\u0932", "\u092E\u0947", "\u091C\u0942\u0928", "\u091C\u0941\u0932\u0948", "\u0913\u0917\u0938\u094D\u091F", "\u0938\u0947\u092A\u094D\u091F\u0947\u0902\u092C\u0930", "\u0913\u0915\u094D\u091F\u094B\u092C\u0930", "\u0928\u094B\u0935\u094D\u0939\u0947\u0902\u092C\u0930", "\u0921\u093F\u0938\u0947\u0902\u092C\u0930", null };
 
   static final String[] ampms = { "\u092E.\u092A\u0942.", "\u092E.\u0928\u0902." };
-
-  static final String shortDateFormat = "EEEE dd MMM yyyy";
   static final String currencySymbol = "\u0930\u0941";
   static final String intlCurrencySymbol = "INR";
-  static final String currencyFormat = "$ #,##0.00;-$ #,##0.00";
 
   private static final Object[][] contents =
   {
@@ -70,14 +67,21 @@ public class LocaleInformation_mr_IN extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
+    { "percentFormat", "##,##,##0%" },
+    { "currencyFormat", "\u00a4 ##,##,##0.00;-\u00a4 ##,##,##0.00" },
+    { "shortDateFormat", "d-M-yy" },
+    { "mediumDateFormat", "dd-MM-yyyy" },
+    { "longDateFormat", "d MMMM yyyy" },
+    { "fullDateFormat", "EEEE d MMMM yyyy" },
+    { "shortTimeFormat", "h:mm a" },
+    { "mediumTimeFormat", "h:mm:ss a" },
+    { "longTimeFormat", "h:mm:ss a z" },
+    { "fullTimeFormat", "h:mm:ss a z" }
   };
 
   public Object[][] getContents() { return contents; }

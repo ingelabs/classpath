@@ -58,11 +58,6 @@ public class LocaleInformation_pt_BR extends ListResourceBundle
 
   static final String[] ampms = { "", "" };
 
-  static final String shortDateFormat = "dd-MM-yyyy";
-  static final String currencySymbol = "R$";
-  static final String intlCurrencySymbol = "BRL";
-  static final String currencyFormat = "#,###,##0.00 $;-#,###,##0.00 $";
-
   private static final Object[][] contents =
   {
     { "weekdays", weekdays },
@@ -70,7 +65,6 @@ public class LocaleInformation_pt_BR extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },
@@ -78,6 +72,7 @@ public class LocaleInformation_pt_BR extends ListResourceBundle
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "shortDateFormat", "dd/MM/yy" },
   };
 
   public Object[][] getContents() { return contents; }

@@ -61,7 +61,6 @@ public class LocaleInformation_be_BY extends ListResourceBundle
   static final String shortDateFormat = "dd.MM.yyyy";
   static final String currencySymbol = "\u0440\u0443\u0431";
   static final String intlCurrencySymbol = "BYB";
-  static final String currencyFormat = "#,###,##0.00 $;-#,###,##0.00 $";
 
   private static final Object[][] contents =
   {
@@ -73,11 +72,11 @@ public class LocaleInformation_be_BY extends ListResourceBundle
     { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "currencyFormat", "\u00a4#,##0;-\u00a4#,##0" }
   };
 
   public Object[][] getContents() { return contents; }

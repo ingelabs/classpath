@@ -47,7 +47,6 @@ public class LocaleInformation_te_IN extends ListResourceBundle
   static final String decimalSeparator = ".";
   static final String groupingSeparator = ",";
   static final String numberFormat = "#,###,#0.###";
-  static final String percentFormat = "#,###,#0%";
   static final String[] weekdays = { null, "\u0C06\u0C26\u0C3F\u0C35\u0C3E\u0C30\u0C02", "\u0C38\u0C4B\u0C2E\u0C35\u0C3E\u0C30\u0C02", "\u0C2E\u0C02\u0C17\u0C33\u0C35\u0C3E\u0C30\u0C02", "\u0C2C\u0C41\u0C27\u0C35\u0C3E\u0C30\u0C02", "\u0C17\u0C41\u0C30\u0C41\u0C35\u0C3E\u0C30\u0C02", "\u0C36\u0C41\u0C15\u0C4D\u0C30\u0C35\u0C3E\u0C30\u0C02", "\u0C36\u0C28\u0C3F\u0C35\u0C3E\u0C30\u0C02" };
 
   static final String[] shortWeekdays = { null, "\u0C06\u0C26\u0C3F", "\u0C38\u0C4B\u0C2E", "\u0C2E\u0C02\u0C17\u0C33", "\u0C2C\u0C41\u0C27", "\u0C17\u0C41\u0C30\u0C41", "\u0C36\u0C41\u0C15\u0C4D\u0C30", "\u0C36\u0C28\u0C3F" };
@@ -58,10 +57,8 @@ public class LocaleInformation_te_IN extends ListResourceBundle
 
   static final String[] ampms = { "\u0C2A\u0C42\u0C30\u0C4D\u0C35\u0C3E\u0C39\u0C4D\u0C28", "\u0C05\u0C2A\u0C30\u0C3E\u0C39\u0C4D\u0C28" };
 
-  static final String shortDateFormat = "EEEE dd MMM yyyy";
   static final String currencySymbol = "\u0930\u0942";
   static final String intlCurrencySymbol = "INR";
-  static final String currencyFormat = "$ #,###,#0.00;-$ #,###,#0.00";
 
   private static final Object[][] contents =
   {
@@ -70,14 +67,22 @@ public class LocaleInformation_te_IN extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "percentFormat", "##,##,##0%" },
+    { "currencyFormat", "\u00a4 ##,##,##0.00;-\u00a4 ##,##,##0.00" },
+    { "shortDateFormat", "dd-MM-yy" },
+    { "mediumDateFormat", "dd-MM-yyyy" },
+    { "longDateFormat", "d MMMM yyyy" },
+    { "fullDateFormat", "EEEE d MMMM yyyy" },
+    { "shortTimeFormat", "h:mm a" },
+    { "mediumTimeFormat", "h:mm:ss a" },
+    { "longTimeFormat", "h:mm:ss a z" },
+    { "fullTimeFormat", "h:mm:ss a z" }
   };
 
   public Object[][] getContents() { return contents; }

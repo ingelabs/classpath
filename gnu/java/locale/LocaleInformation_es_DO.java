@@ -70,7 +70,6 @@ public class LocaleInformation_es_DO extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },
@@ -78,6 +77,12 @@ public class LocaleInformation_es_DO extends ListResourceBundle
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "shortDateFormat", "dd/MM/yy" },
+    { "mediumDateFormat", "dd/MM/yyyy" },
+    { "shortTimeFormat", "hh:mm a" },
+    { "mediumTimeFormat", "hh:mm:ss a" },
+    { "longTimeFormat", "hh:mm:ss a z" },
+    { "fullTimeFormat", "hh:mm:ss a z" }
   };
 
   public Object[][] getContents() { return contents; }

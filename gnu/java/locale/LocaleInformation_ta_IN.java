@@ -58,10 +58,8 @@ public class LocaleInformation_ta_IN extends ListResourceBundle
 
   static final String[] ampms = { "\u0B95\u0BBE\u0BB2\u0BC8", "\u0BAE\u0BBE\u0BB2\u0BC8" };
 
-  static final String shortDateFormat = "EEEE dd MMMM yyyy";
   static final String currencySymbol = "\u20A8";
   static final String intlCurrencySymbol = "INR";
-  static final String currencyFormat = "$ #,##,##0.00;-$ #,##,##0.00";
 
   private static final Object[][] contents =
   {
@@ -70,14 +68,21 @@ public class LocaleInformation_ta_IN extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
+    { "percentFormat", "##,##,##0%" },
+    { "currencyFormat", "\u00a4 ##,##,##0.00;-\u00a4 ##,##,##0.00" },
+    { "shortDateFormat", "d-M-yy" },
+    { "mediumDateFormat", "dd-MM-yyyy" },
+    { "longDateFormat", "d MMMM yyyy" },
+    { "fullDateFormat", "EEEE d MMMM yyyy" },
+    { "shortTimeFormat", "h:mm a" },
+    { "mediumTimeFormat", "h:mm:ss a" },
+    { "longTimeFormat", "h:mm:ss a z" },
+    { "fullTimeFormat", "h:mm:ss a z" }
   };
 
   public Object[][] getContents() { return contents; }

@@ -61,7 +61,6 @@ public class LocaleInformation_ar_LY extends ListResourceBundle
   static final String shortDateFormat = "dd MMM, yyyy";
   static final String currencySymbol = "\u062F.\u0644.";
   static final String intlCurrencySymbol = "LYD";
-  static final String currencyFormat = "$ #,##0.000;$ #,##0.000-";
 
   private static final Object[][] contents =
   {
@@ -73,11 +72,11 @@ public class LocaleInformation_ar_LY extends ListResourceBundle
     { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "currencyFormat", "\u00a4 #,##0.000;\u00a4 #,##0.000-" }
   };
 
   public Object[][] getContents() { return contents; }

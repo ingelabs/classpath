@@ -57,11 +57,8 @@ public class LocaleInformation_kl_GL extends ListResourceBundle
   static final String[] months = { "januari", "februari", "martsi", "aprili", "maji", "juni", "juli", "augustusi", "septemberi", "oktoberi", "novemberi", "decemberi", null };
 
   static final String[] ampms = { "", "" };
-
-  static final String shortDateFormat = "dd MMM yyyy";
   static final String currencySymbol = LocaleInformation_da_DK.currencySymbol;
   static final String intlCurrencySymbol = LocaleInformation_da_DK.intlCurrencySymbol;
-  static final String currencyFormat = LocaleInformation_da_DK.currencyFormat;
 
   private static final Object[][] contents =
   {
@@ -70,14 +67,21 @@ public class LocaleInformation_kl_GL extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "currencyFormat", "\u00a4#,##0.00;\u00a4 -#,##0.00" },
+    { "shortDateFormat", "dd/MM/yy" },
+    { "mediumDateFormat", "MMM dd,yy" },
+    { "longDateFormat", "dd MMMM yyyy" },
+    { "fullDateFormat", "EEEE dd MMMM yyyy" },
+    { "shortTimeFormat", "h:mm a" },
+    { "mediumTimeFormat", "h:mm:ss a" },
+    { "longTimeFormat", "h:mm:ss a" },
+    { "fullTimeFormat", "h:mm:ss a" }
   };
 
   public Object[][] getContents() { return contents; }

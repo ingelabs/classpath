@@ -47,7 +47,6 @@ public class LocaleInformation_hi_IN extends ListResourceBundle
   static final String decimalSeparator = ".";
   static final String groupingSeparator = ",";
   static final String numberFormat = "#,##0.###";
-  static final String percentFormat = "#,##0%";
   static final String[] weekdays = { null, "\u0930\u0935\u093F\u0935\u093E\u0930 ", "\u0938\u094B\u092E\u0935\u093E\u0930 ", "\u092E\u0902\u0917\u0932\u0935\u093E\u0930 ", "\u092C\u0941\u0927\u0935\u093E\u0930 ", "\u0917\u0941\u0930\u0941\u0935\u093E\u0930 ", "\u0936\u0941\u0915\u094D\u0930\u0935\u093E\u0930 ", "\u0936\u0928\u093F\u0935\u093E\u0930 " };
 
   static final String[] shortWeekdays = { null, "\u0930\u0935\u093F ", "\u0938\u094B\u092E ", "\u092E\u0902\u0917\u0932 ", "\u092C\u0941\u0927 ", "\u0917\u0941\u0930\u0941 ", "\u0936\u0941\u0915\u094D\u0930 ", "\u0936\u0928\u093F " };
@@ -58,10 +57,8 @@ public class LocaleInformation_hi_IN extends ListResourceBundle
 
   static final String[] ampms = { "\u092A\u0942\u0930\u094D\u0935\u093E\u0939\u094D\u0928", "\u0905\u092A\u0930\u093E\u0939\u094D\u0928" };
 
-  static final String shortDateFormat = "EEEE dd MMM yyyy";
   static final String currencySymbol = "\u0930\u0942";
   static final String intlCurrencySymbol = "INR";
-  static final String currencyFormat = "$ #,##0.00;-$ #,##0.00";
 
   private static final Object[][] contents =
   {
@@ -70,14 +67,21 @@ public class LocaleInformation_hi_IN extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
+    { "percentFormat", "##,##,##0%" },
+    { "currencyFormat", "\u00a4 ##,##,##0.00;-\u00a4 ##,##,##0.00" },
+    { "shortDateFormat", "d-M-yy" },
+    { "mediumDateFormat", "dd-MM-yyyy" },
+    { "longDateFormat", "d MMMM yyyy" },
+    { "fullDateFormat", "EEEE d MMMM yyyy" },
+    { "shortTimeFormat", "h:mm a" },
+    { "mediumTimeFormat", "h:mm:ss a" },
+    { "longTimeFormat", "h:mm:ss a z" },
+    { "fullTimeFormat", "h:mm:ss a z" }
   };
 
   public Object[][] getContents() { return contents; }

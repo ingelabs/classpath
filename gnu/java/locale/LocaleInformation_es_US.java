@@ -57,8 +57,6 @@ public class LocaleInformation_es_US extends ListResourceBundle
   static final String[] months = { "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre", null };
 
   static final String[] ampms = { "", "" };
-
-  static final String shortDateFormat = "dd/MM/yy";
   static final String currencySymbol = "$";
   static final String intlCurrencySymbol = "USD";
   static final String currencyFormat = "$#,###,##0.00;-$#,###,##0.00";
@@ -70,7 +68,6 @@ public class LocaleInformation_es_US extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },
@@ -78,6 +75,12 @@ public class LocaleInformation_es_US extends ListResourceBundle
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "shortDateFormat", "M/d/yy" },
+    { "mediumDateFormat", "MMM d, yyyy" },
+    { "shortTimeFormat", "h:mm a" },
+    { "mediumTimeFormat", "h:mm:ss a" },
+    { "longTimeFormat", "h:mm:ss a z" },
+    { "fullTimeFormat", "h:mm:ss a z" }
   };
 
   public Object[][] getContents() { return contents; }

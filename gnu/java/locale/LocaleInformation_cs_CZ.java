@@ -61,7 +61,6 @@ public class LocaleInformation_cs_CZ extends ListResourceBundle
   static final String shortDateFormat = "dd.MM.yyyy";
   static final String currencySymbol = "K\u010D";
   static final String intlCurrencySymbol = "CZK";
-  static final String currencyFormat = "#,###,##0.00 $;-#,###,##0.00 $";
 
   private static final Object[][] contents =
   {
@@ -73,11 +72,11 @@ public class LocaleInformation_cs_CZ extends ListResourceBundle
     { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" }
   };
 
   public Object[][] getContents() { return contents; }

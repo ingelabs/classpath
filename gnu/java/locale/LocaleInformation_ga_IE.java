@@ -57,11 +57,8 @@ public class LocaleInformation_ga_IE extends ListResourceBundle
   static final String[] months = { "Ean\u00E1ir", "Feabhra", "M\u00E1rta", "Aibre\u00E1n", "M\u00ED na Bealtaine", "Meith", "I\u00FAil", "L\u00FAnasa", "Me\u00E1n F\u00F3mhair", "Deireadh F\u00F3mhair", "M\u00ED na Samhna", "M\u00ED na Nollag", null };
 
   static final String[] ampms = { "", "" };
-
-  static final String shortDateFormat = "dd.MM.yy";
   static final String currencySymbol = "\u00A3";
   static final String intlCurrencySymbol = "IEP";
-  static final String currencyFormat = "$#,###,##0.00;-$#,###,##0.00";
 
   private static final Object[][] contents =
   {
@@ -70,14 +67,17 @@ public class LocaleInformation_ga_IE extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "currencyFormat", "\u00a4#,##0.00;-\u00a4#,##0.00" },
+    { "shortDateFormat", "dd/MM/yyyy" },
+    { "mediumDateFormat", "d MMM yyyy" },
+    { "longDateFormat", "d MMMM yyyy" },
+    { "fullDateFormat", "EEEE d MMMM yyyy" }
   };
 
   public Object[][] getContents() { return contents; }

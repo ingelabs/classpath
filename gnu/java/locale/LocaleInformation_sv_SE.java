@@ -47,7 +47,6 @@ public class LocaleInformation_sv_SE extends ListResourceBundle
   static final String decimalSeparator = ",";
   static final String groupingSeparator = " ";
   static final String numberFormat = "#,###,##0.###";
-  static final String percentFormat = "#,###,##0%";
   static final String[] weekdays = { null, "s\u00F6ndag", "m\u00E5ndag", "tisdag", "onsdag", "torsdag", "fredag", "l\u00F6rdag" };
 
   static final String[] shortWeekdays = { null, "s\u00F6n", "m\u00E5n", "tis", "ons", "tor", "fre", "l\u00F6r" };
@@ -57,11 +56,8 @@ public class LocaleInformation_sv_SE extends ListResourceBundle
   static final String[] months = { "januari", "februari", "mars", "april", "maj", "juni", "juli", "augusti", "september", "oktober", "november", "december", null };
 
   static final String[] ampms = { "", "" };
-
-  static final String shortDateFormat = "yyyy-MM-dd";
   static final String currencySymbol = "kr";
   static final String intlCurrencySymbol = "SEK";
-  static final String currencyFormat = "#,###,##0.00 $;-#,###,##0.00 $";
 
   private static final Object[][] contents =
   {
@@ -70,14 +66,14 @@ public class LocaleInformation_sv_SE extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
+    { "percentFormat", "#,##0 %" },
+    { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" }
   };
 
   public Object[][] getContents() { return contents; }

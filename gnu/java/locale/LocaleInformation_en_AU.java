@@ -58,7 +58,6 @@ public class LocaleInformation_en_AU extends ListResourceBundle
 
   static final String[] ampms = { "", "" };
 
-  static final String shortDateFormat = "dd/MM/yy";
   static final String currencySymbol = "$";
   static final String intlCurrencySymbol = "AUD";
   static final String currencyFormat = "$#,###,##0.00;-$#,###,##0.00";
@@ -70,7 +69,6 @@ public class LocaleInformation_en_AU extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },
@@ -78,6 +76,11 @@ public class LocaleInformation_en_AU extends ListResourceBundle
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "shortDateFormat", "d/MM/yy" },
+    { "mediumDateFormat", "dd/MM/yyyy" },
+    { "longDateFormat", "d MMMM yyyy" },
+    { "fullDateFormat", "EEEE, d MMMM yyyy" },
+    { "longTimeFormat", "h:mm:ss a" }
   };
 
   public Object[][] getContents() { return contents; }

@@ -78,6 +78,7 @@ public class LocaleInformation_ar_MA extends ListResourceBundle
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "zeroDigit", "0" }
   };
 
   public Object[][] getContents() { return contents; }

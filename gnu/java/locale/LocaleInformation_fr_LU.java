@@ -45,7 +45,6 @@ import java.util.ListResourceBundle;
 public class LocaleInformation_fr_LU extends ListResourceBundle
 {
   static final String decimalSeparator = ",";
-  static final String groupingSeparator = "";
   static final String numberFormat = "#.###";
   static final String percentFormat = "#%";
   static final String[] weekdays = { null, "dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi" };
@@ -75,9 +74,9 @@ public class LocaleInformation_fr_LU extends ListResourceBundle
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
-    { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "groupingSeparator", "." }
   };
 
   public Object[][] getContents() { return contents; }

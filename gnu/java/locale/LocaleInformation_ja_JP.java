@@ -57,11 +57,9 @@ public class LocaleInformation_ja_JP extends ListResourceBundle
   static final String[] months = { "1\u6708", "2\u6708", "3\u6708", "4\u6708", "5\u6708", "6\u6708", "7\u6708", "8\u6708", "9\u6708", "10\u6708", "11\u6708", "12\u6708", null };
 
   static final String[] ampms = { "\u5348\u524D", "\u5348\u5F8C" };
-
   static final String shortDateFormat = "yyyyMMdd";
   static final String currencySymbol = "\uFFE5";
   static final String intlCurrencySymbol = "JPY";
-  static final String currencyFormat = "$#,##0.;$-#,##0.";
 
   private static final Object[][] contents =
   {
@@ -73,11 +71,11 @@ public class LocaleInformation_ja_JP extends ListResourceBundle
     { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "currencyFormat", "\u00a4#,##0;-\u00a4#,##0" }
   };
 
   public Object[][] getContents() { return contents; }

@@ -49,14 +49,12 @@ public class LocaleInformation_de_DE extends ListResourceBundle
   static final String numberFormat = "#,###,##0.###";
   static final String percentFormat = "#,###,##0%";
   static final String[] ampms = { "", "" };
-  static final String shortDateFormat = "dd.MM.yyyy";
   static final String currencySymbol = "DM";
   static final String intlCurrencySymbol = "DEM";
 
   private static final Object[][] contents =
   {
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "decimalSeparator", decimalSeparator },

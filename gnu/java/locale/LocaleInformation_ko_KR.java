@@ -57,11 +57,8 @@ public class LocaleInformation_ko_KR extends ListResourceBundle
   static final String[] months = { "\uC77C\uC6D4", "\uC774\uC6D4", "\uC0BC\uC6D4", "\uC0AC\uC6D4", "\uC624\uC6D4", "\uC720\uC6D4", "\uCE60\uC6D4", "\uD314\uC6D4", "\uAD6C\uC6D4", "\uC2DC\uC6D4", "\uC2ED\uC77C\uC6D4", "\uC2ED\uC774\uC6D4", null };
 
   static final String[] ampms = { "\uC624\uC804", "\uC624\uD6C4" };
-
-  static final String shortDateFormat = "yyyy MM dd";
   static final String currencySymbol = "\uFFE6";
   static final String intlCurrencySymbol = "KRW";
-  static final String currencyFormat = "$#,###,##0.;$-#,###,##0.";
 
   private static final Object[][] contents =
   {
@@ -70,14 +67,18 @@ public class LocaleInformation_ko_KR extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "currencyFormat", "\u00a4#,##0.00;-\u00a4#,##0.00" },
+    { "shortDateFormat", "yy. MM. dd" },
+    { "mediumDateFormat", "yyyy. MM. dd" },
+    { "longDateFormat", "yyyy'\ub144' M'\uc6d4' d'\uc77c'" },
+    { "shortTimeFormat", "a h:mm" },
+    { "mediumTimeFormat", "a h:mm:ss" }
   };
 
   public Object[][] getContents() { return contents; }

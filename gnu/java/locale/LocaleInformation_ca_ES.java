@@ -61,7 +61,6 @@ public class LocaleInformation_ca_ES extends ListResourceBundle
   static final String shortDateFormat = "dd/MM/yy";
   static final String currencySymbol = "Pts";
   static final String intlCurrencySymbol = "ESP";
-  static final String currencyFormat = "$ #,###,#0.;-$ #,###,#0.";
 
   private static final Object[][] contents =
   {
@@ -73,11 +72,11 @@ public class LocaleInformation_ca_ES extends ListResourceBundle
     { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" }
   };
 
   public Object[][] getContents() { return contents; }

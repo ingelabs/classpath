@@ -44,10 +44,6 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_en_US extends ListResourceBundle
 {
-  static final String decimalSeparator = ".";
-  static final String groupingSeparator = ",";
-  static final String numberFormat = "#,###,##0.###";
-  static final String percentFormat = "#,###,##0%";
   static final String[] ampms = { "AM", "PM" };
   static final String currencySymbol = "$";
   static final String intlCurrencySymbol = "USD";
@@ -57,10 +53,6 @@ public class LocaleInformation_en_US extends ListResourceBundle
     { "ampms", ampms },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "decimalSeparator", decimalSeparator },
-    { "groupingSeparator", groupingSeparator },
-    { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
     { "currencyFormat", "\u00a4#,##0.00;(\u00a4#,##0.00)" }
   };
 

@@ -57,11 +57,8 @@ public class LocaleInformation_kw_GB extends ListResourceBundle
   static final String[] months = { "Mys Genver", "Mys Whevrel", "Mys Merth", "Mys Ebrel", "Mys Me", "Mys Evan", "Mys Gortheren", "Mye Est", "Mys Gwyngala", "Mys Hedra", "Mys Du", "Mys Kevardhu", null };
 
   static final String[] ampms = { "", "" };
-
-  static final String shortDateFormat = "dd/MM/yy";
   static final String currencySymbol = "\u00A3";
   static final String intlCurrencySymbol = "GBP";
-  static final String currencyFormat = "$#,###,##0.00;-$#,###,##0.00";
 
   private static final Object[][] contents =
   {
@@ -70,14 +67,18 @@ public class LocaleInformation_kw_GB extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "currencyFormat", "\u00a4#,##0.00;-\u00a4#,##0.00" },
+    { "shortDateFormat", "dd/MM/yyyy" },
+    { "mediumDateFormat", "d MMM yyyy" },
+    { "longDateFormat", "d MMMM yyyy" },
+    { "fullDateFormat", "EEEE d MMMM yyyy" },
+    { "longTimeFormat", "HH:mm:ss" }
   };
 
   public Object[][] getContents() { return contents; }

@@ -78,6 +78,7 @@ public class LocaleInformation_it_IT extends ListResourceBundle
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "longTimeFormat", "H:mm:ss z" }
   };
 
   public Object[][] getContents() { return contents; }

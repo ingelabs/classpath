@@ -57,11 +57,9 @@ public class LocaleInformation_et_EE extends ListResourceBundle
   static final String[] months = { "jaanuar", "veebruar", "m\u00E4rts", "aprill", "mai", "juuni", "juuli", "august", "september", "oktoober", "november", "detsember", null };
 
   static final String[] ampms = { "", "" };
-
   static final String shortDateFormat = "dd.MM.yyyy";
   static final String currencySymbol = "kr";
   static final String intlCurrencySymbol = "EEK";
-  static final String currencyFormat = "$ #,###,##0.00;-$ #,###,##0.00";
 
   private static final Object[][] contents =
   {
@@ -73,11 +71,11 @@ public class LocaleInformation_et_EE extends ListResourceBundle
     { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" }
   };
 
   public Object[][] getContents() { return contents; }

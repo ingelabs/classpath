@@ -57,8 +57,6 @@ public class LocaleInformation_id_ID extends ListResourceBundle
   static final String[] months = { "Januari", "Pebruari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember", null };
 
   static final String[] ampms = { "", "" };
-
-  static final String shortDateFormat = "dd/MM/yy";
   static final String currencySymbol = "Rp";
   static final String intlCurrencySymbol = "IDR";
   static final String currencyFormat = "$#,###,##0.00;-$#,###,##0.00";
@@ -70,7 +68,6 @@ public class LocaleInformation_id_ID extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },
@@ -78,6 +75,14 @@ public class LocaleInformation_id_ID extends ListResourceBundle
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "shortDateFormat", "dd/MM/yy" },
+    { "mediumDateFormat", "dd MMM yy" },
+    { "longDateFormat", "dd MMMM yyyy" },
+    { "fullDateFormat", "EEEE dd MMMM yyyy" },
+    { "shortTimeFormat", "H:mm" },
+    { "mediumTimeFormat", "H:mm:ss" },
+    { "longTimeFormat", "H:mm:ss" },
+    { "fullTimeFormat", "H:mm:ss" }
   };
 
   public Object[][] getContents() { return contents; }

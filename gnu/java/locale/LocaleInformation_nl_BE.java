@@ -57,11 +57,8 @@ public class LocaleInformation_nl_BE extends ListResourceBundle
   static final String[] months = { "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december", null };
 
   static final String[] ampms = { "", "" };
-
-  static final String shortDateFormat = "dd-MM-yy";
   static final String currencySymbol = LocaleInformation_fr_BE.currencySymbol;
   static final String intlCurrencySymbol = LocaleInformation_fr_BE.intlCurrencySymbol;
-  static final String currencyFormat = LocaleInformation_fr_BE.currencyFormat;
 
   private static final Object[][] contents =
   {
@@ -70,14 +67,19 @@ public class LocaleInformation_nl_BE extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
+    { "shortDateFormat", "d/MM/yy" },
+    { "mediumDateFormat", "d-MMM-yy" },
+    { "shortTimeFormat", "HH:mm" },
+    { "mediumTimeFormat", "HH:mm:ss" },
+    { "longTimeFormat", "HH:mm:ss z" },
+    { "fullTimeFormat", "HH.mm' u. 'z" }
   };
 
   public Object[][] getContents() { return contents; }

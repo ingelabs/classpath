@@ -57,11 +57,8 @@ public class LocaleInformation_eu_ES extends ListResourceBundle
   static final String[] months = { "urtarrila", "otsaila", "martxoa", "apirila", "maiatza", "ekaina", "uztaila", "abuztua", "iraila", "urria", "azaroa", "abendua", null };
 
   static final String[] ampms = { "", "" };
-
-  static final String shortDateFormat = "yy-MM-dd";
   static final String currencySymbol = "Pts";
   static final String intlCurrencySymbol = "ESP";
-  static final String currencyFormat = "$ #,###,##0.;-$ #,###,##0.";
 
   private static final Object[][] contents =
   {
@@ -70,14 +67,17 @@ public class LocaleInformation_eu_ES extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
+    { "shortDateFormat", "yy'-'MM'-'dd" },
+    { "mediumDateFormat", "yy'-'MMM'-'dd" },
+    { "longDateFormat", "EEE, yyyy'eko' MMM'ren' dd'a'" },
+    { "fullDateFormat", "EEEE, yyyy'eko' MMMM'ren' dd'a'" }
   };
 
   public Object[][] getContents() { return contents; }

@@ -57,11 +57,8 @@ public class LocaleInformation_tr_TR extends ListResourceBundle
   static final String[] months = { "Ocak", "\u015Eubat", "Mart", "Nisan", "May\u0131s", "Haziran", "Temmuz", "A\u011Fustos", "Eyl\u00FCl", "Ekim", "Kas\u0131m", "Aral\u0131k", null };
 
   static final String[] ampms = { "\u00D6\u00D6", "\u00D6S" };
-
-  static final String shortDateFormat = "dd-MM-yyyy";
   static final String currencySymbol = "TL";
   static final String intlCurrencySymbol = "TRL";
-  static final String currencyFormat = "#,##0.00 $;-#,##0.00 $";
 
   private static final Object[][] contents =
   {
@@ -70,14 +67,13 @@ public class LocaleInformation_tr_TR extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "decimalSeparator", decimalSeparator },
     { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" }
   };
 
   public Object[][] getContents() { return contents; }

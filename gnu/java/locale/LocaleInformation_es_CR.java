@@ -44,8 +44,6 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_es_CR extends ListResourceBundle
 {
-  static final String decimalSeparator = ".";
-  static final String groupingSeparator = "";
   static final String numberFormat = "#.###";
   static final String percentFormat = "#%";
   static final String[] weekdays = { null, "domingo", "lunes", "martes", "mi\u00E9rcoles", "jueves", "viernes", "s\u00E1bado" };
@@ -57,8 +55,6 @@ public class LocaleInformation_es_CR extends ListResourceBundle
   static final String[] months = { "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre", null };
 
   static final String[] ampms = { "", "" };
-
-  static final String shortDateFormat = "dd/MM/yy";
   static final String currencySymbol = "C";
   static final String intlCurrencySymbol = "CRC";
   static final String currencyFormat = "$ #,###,##0.00;-$ #,###,##0.00";
@@ -70,14 +66,19 @@ public class LocaleInformation_es_CR extends ListResourceBundle
     { "shortMonths", shortMonths },
     { "months", months },
     { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },
-    { "decimalSeparator", decimalSeparator },
-    { "groupingSeparator", groupingSeparator },
     { "numberFormat", numberFormat },
     { "percentFormat", percentFormat },
+    { "decimalSeparator", "," },
+    { "groupingSeparator", "." },
+    { "shortDateFormat", "dd/MM/yy" },
+    { "mediumDateFormat", "dd/MM/yyyy" },
+    { "shortTimeFormat", "hh:mm a" },
+    { "mediumTimeFormat", "hh:mm:ss a" },
+    { "longTimeFormat", "hh:mm:ss a z" },
+    { "fullTimeFormat", "hh:mm:ss a z" }
   };
 
   public Object[][] getContents() { return contents; }
