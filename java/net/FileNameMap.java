@@ -29,7 +29,7 @@ package java.net;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public interface FileNameMap
+public abstract interface FileNameMap
 {
 /**
   * This method is passed a filename and is responsible for determining
