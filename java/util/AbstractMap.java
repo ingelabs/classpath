@@ -23,19 +23,19 @@
 package java.util;
 
 public abstract class AbstractMap implements Map {
-  public void clear();
-  public boolean containsKey(Object key);
-  public boolean containsValue(Object value);
+  public void clear() {}
+  public boolean containsKey(Object key) {}
+  public boolean containsValue(Object value) {}
   public abstract Set entries();
-  public boolean equals(Object o);
-  public Object get(Object key);
-  public int hashCode();
-  public boolean isEmpty();
-  public Set keySet();
-  public Object put(Object key, Object value);
-  public void putAll(Map m);
-  public Object remove(Object key);
-  public int size();
-  public String toString();
-  public Collection values();
+  public boolean equals(Object o) {}
+  public Object get(Object key) {}
+  public int hashCode() {}
+  public boolean isEmpty() {}
+  public Set keySet() {}
+  public Object put(Object key, Object value) {}
+  public void putAll(Map m) {}
+  public Object remove(Object key) {}
+  public int size() {}
+  public String toString() {}
+  public Collection values() {}
 }
