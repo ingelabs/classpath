@@ -40,4 +40,16 @@ public final class Boolean implements Serializable
     String val = System.getProperty(name);
     return (val != null && val.equalsIgnoreCase("true"));
   }
+
+  /**
+   * Returns "true" if the value of this object is <code>true</code> and
+   * returns "false" if the value of this object is <code>false</code>.
+   */
+  public String toString()
+    {
+      if (value) 
+	return "true";
+      return "false";
+    }
+
 }
