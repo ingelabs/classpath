@@ -28,7 +28,11 @@ if test "$new" = "true"; then
 fi
 
 # Split in multiple parts for gcj
-grep -v /javax/ classes | grep -v /awt/ | grep -v /beans/ > classes.standard
+grep -v /javax/ classes | grep -v /awt/ \
+                        | grep -v /beans/ \
+                        | grep -v /locale/ > classes.standard
 grep /awt/ classes > classes.awt
 grep /beans/ classes >> classes.awt
+grep /locale/ classes | grep _[j-z][a-z].java > classes.locale1
+grep /locale/ classes | grep -v _[j-z][a-z].java > classes.locale2
 grep /javax/ classes > classes.standardx

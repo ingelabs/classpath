@@ -7,6 +7,8 @@ javax
 kaffe
 classes
 classes.awt
+classes.locale1
+classes.locale2
 classes.standard
 classes.standardx
 glibj.zip

@@ -1,5 +1,16 @@
 2004-12-23  Mark Wielaard  <mark@klomp.org>
 
+	* lib/Makefile.am (compile_classpath): New variable.
+	Use when compiling with either jikes or gcj.
+	(LocaleData.java): New rules.
+	(genclasses): Depend on new rule.
+	(CLEANFILES): Add LocaleData.java, classes.locale1 and classes.locale2.
+	(dist-hook): Remove generated LocaleData.java file.
+	* lib/gen-classlist.sh.in: Add extra split files for locales.
+	* lib/.cvsignore: Add classes.locale1 and classes.locale2.
+
+2004-12-23  Mark Wielaard  <mark@klomp.org>
+
 	* include/java_lang_Double.h: Regenerated.
 
 2004-12-23  Michael Koch  <konqueror@gmx.de>

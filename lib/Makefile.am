@@ -16,14 +16,18 @@ FIND = @FIND@
 propertydirs :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java org -type d ! -name CVS -print)
 propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java org -name \*\.properties -print)
 
+compile_classpath = $(top_srcdir):$(top_srcdir)/vm/reference:.:$(USER_CLASSLIB)
+
 # handling source to bytecode compiler programs like gcj, jikes  and kjc
 if FOUND_GCJ
-JAVAC = $(GCJ) --bootclasspath '' --classpath $(top_srcdir):$(top_srcdir)/vm/reference:.:$(USER_CLASSLIB) -C -d . @classes.standard \
-&& $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(top_srcdir):$(top_srcdir)/vm/reference:.:$(USER_CLASSLIB) -C -d . @classes.awt \
-&& $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(top_srcdir):$(top_srcdir)/vm/reference:.:$(USER_CLASSLIB) -C -d . @classes.standardx
+JAVAC = $(GCJ) --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.standard \
+&& $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.awt \
+&& $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.locale1 \
+&& $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.locale2 \
+&& $(GCJ) -Wno-deprecated --bootclasspath '' --classpath $(compile_classpath) -C -d . @classes.standardx
 else
 if FOUND_JIKES
-JAVAC = $(JIKES) +Pno-shadow +F -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(top_srcdir):$(top_srcdir)/vm/reference:.:$(USER_CLASSLIB) -d . @classes
+JAVAC = $(JIKES) +Pno-shadow +F -bootclasspath '' -extdirs '' -sourcepath '' --classpath $(compile_classpath) -d . @classes
 else
 if FOUND_KJC
 JAVAC = $(KJC) -classpath .:$(USER_CLASSLIB) -d . @classes
@@ -78,9 +82,11 @@ resources:
 
 classes: genclasses
 
-genclasses: gen-classlist.sh standard.omit
-	mkdir -p java/util
-	$(top_srcdir)/scripts/generate-locale-list.sh > java/util/LocaleData.java
+$(top_builddir)/java/util/LocaleData.java: $(top_srcdir)/scripts/generate-locale-list.sh 
+	mkdir -p $(top_builddir)/java/util
+	$(top_srcdir)/scripts/generate-locale-list.sh > $(top_builddir)/java/util/LocaleData.java
+
+genclasses: gen-classlist.sh standard.omit $(top_builddir)/java/util/LocaleData.java
 	top_builddir=$(top_builddir) $(SHELL) ./gen-classlist.sh standard
 
 $(JAVA_DEPEND): genclasses
@@ -91,7 +97,9 @@ compile-classes: classes $(JAVA_SRCS) Makefile
 
 EXTRA_DIST = standard.omit mkcollections.pl.in
 CLEANFILES = compile-classes resources classes \
-	classes.standard classes.awt classes.standardx glibj.zip classes.1 \
+	classes.standard classes.awt classes.standardx \
+	classes.locale1 classes.locale2 glibj.zip classes.1 \
+	$(top_builddir)/java/util/LocaleData.java \
 	$(JAVA_DEPEND)
 
 clean-local:
@@ -108,6 +116,7 @@ dist-hook:
 	$(FIND) $(top_distdir)/gnu $(top_distdir)/java $(top_distdir)/javax $(top_distdir)/org $(top_distdir)/vm -name .cvsignore -print | xargs rm -f
 	$(FIND) $(top_distdir)/gnu $(top_distdir)/java $(top_distdir)/javax $(top_distdir)/org $(top_distdir)/vm -name class-dependencies.conf -print | xargs rm -f
 	rm -f $(top_distdir)/gnu/classpath/Configuration.java
+	rm -f $(top_distdir)/java/util/LocaleData.java
 # Omit files listed in standard.omit.
 	( cd $(top_distdir)/lib ; cat $(top_builddir)/lib/standard.omit | sed -e 's/\$$//' | sed -e 's/\/\.\*//' | xargs rm -fr )
 
