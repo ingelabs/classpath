@@ -1,3 +1,42 @@
+2003-05-15  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/RandomAccessFile.java
+	(out): New member variable.
+	(in): Likewise.
+	(buf): Removed.
+	(RandomAccessFile): Handle mode "rwd".
+	(read): Use in stream.
+	(readBoolean): Likewise.
+	(readByte): Likewise.
+	(readDouble): Likewise.
+	(readFloat): Likewise.
+	(readUnsignedByte): Likewise.
+	(write): Likewise.
+	(writeBoolean): Likewise.
+	(writeByte): Likewise.
+	(writeFloat): Likewise.
+	(writeDouble): Likewise.
+	(writeBytes): Likewise.
+	(writeChars): Likewise.
+	(writeUTF): Likewise.
+	(readChar): Use in stream, no need for being synchronized now.
+	(readFully): Likewise.
+	(readInt): Likewise.
+	(readLine): Likewise.
+	(readLong): Likewise.
+	(readShort): Likewise.
+	(readUnsignedShort): Likewise.
+	(readUTF): Likewise.
+	(writeShort): Likewise.
+	(writeChar): Likewise.
+	(writeInt): Likewise.
+	(writeLong): Likewise.
+	* java/io/FileDescriptor.java
+	(DSYNC): New constant.
+	* native/jni/java-io/FileDescriptor.c
+	(DSYNC): New constant.
+	(open): Handle new DSYNC constant.
+
 2003-05-10  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/RandomAccessFile.java

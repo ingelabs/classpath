@@ -62,11 +62,11 @@ public class RandomAccessFile implements DataOutput, DataInput
 
   // The underlying file.
   private FileDescriptor fd;
+  // The corresponding input and output streams.
+  private DataOutputStream out;
+  private DataInputStream in;
   
   private FileChannel ch; /* cached associated file-channel */
-  
-  // Used for DataOutput methods writing values to the underlying file
-  private byte[] buf = new byte[8];
   
   /**
    * This method initializes a new instance of <code>RandomAccessFile</code>
@@ -122,11 +122,15 @@ public class RandomAccessFile implements DataOutput, DataInput
       fdmode = FileDescriptor.READ;
     else if (mode.equals("rw"))
       fdmode = FileDescriptor.READ | FileDescriptor.WRITE;
-    else if (mode.equals("rws") || mode.equals("rwd"))
+    else if (mode.equals("rws"))
       {
-	// FIXME: for now we treat rws and rwd and synonyms.
 	fdmode = (FileDescriptor.READ | FileDescriptor.WRITE
 		  | FileDescriptor.SYNC);
+      }
+    else if (mode.equals("rwd"))
+      {
+	fdmode = (FileDescriptor.READ | FileDescriptor.WRITE
+		  | FileDescriptor.DSYNC);
       }
     else
       throw new IllegalArgumentException ("invalid mode: " + mode);
@@ -142,6 +146,8 @@ public class RandomAccessFile implements DataOutput, DataInput
       }
 
     fd = new FileDescriptor (fileName, fdmode);
+    out = new DataOutputStream (new FileOutputStream (fd));
+    in = new DataInputStream (new FileInputStream (fd));
   }
 
   /**
@@ -225,7 +231,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public int read () throws IOException
   {
-    return fd.read();
+    return in.read();
   }
 
   /**
@@ -258,7 +264,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public int read (byte[] buffer, int offset, int len) throws IOException
   {
-    return fd.read (buffer, offset, len);
+    return in.read (buffer, offset, len);
   }
 
   /**
@@ -280,12 +286,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public final boolean readBoolean () throws IOException
   {
-    int byte_read = read();
-  
-    if (byte_read == -1)
-      throw new EOFException("Unexpected end of stream");
-  
-    return byte_read != 0;
+    return in.readBoolean ();
   }
 
   /**
@@ -305,12 +306,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public final byte readByte () throws IOException
   {
-    int byte_read = read ();
-  
-    if (byte_read == -1)
-      throw new EOFException ("Unexpected end of stream");
-  
-    return (byte) byte_read;
+    return in.readByte ();
   }
 
   /**
@@ -338,11 +334,9 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @see DataOutput
    */
-  public final synchronized char readChar () throws IOException
+  public final char readChar () throws IOException
   {
-    readFully (buf, 0, 2);
-  
-    return (char) ((buf[0] << 8) | (buf[1] & 0xff));
+    return in.readChar();
   }
 
   /**
@@ -369,9 +363,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public final double readDouble () throws IOException
   {
-    long val = readLong();
-  
-    return Double.longBitsToDouble(val);
+    return in.readDouble ();
   }
 
   /**
@@ -396,9 +388,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public final float readFloat () throws IOException
   {
-    int val = readInt();
-  
-    return Float.intBitsToFloat(val);
+    return in.readFloat();
   }
 
   /**
@@ -415,7 +405,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public final void readFully (byte[] buffer) throws IOException
   {
-    readFully (buffer, 0, buffer.length);
+    in.readFully(buffer);
   }
 
   /**
@@ -435,19 +425,10 @@ public class RandomAccessFile implements DataOutput, DataInput
    * the buffer
    * @exception IOException If any other error occurs
    */
-  public synchronized final void readFully (byte[] buffer, int offset, int len) 
+  public final void readFully (byte[] buffer, int offset, int count)
     throws IOException
   {
-    int total_read = 0;
-  
-    while (total_read < len)
-      {
-        int bytes_read = read (buffer, offset + total_read, len - total_read);
-        if (bytes_read == -1)
-          throw new EOFException("Unexpected end of stream");
-  
-        total_read += bytes_read;
-      }
+    in.readFully (buffer, offset, count);
   }
 
   /**
@@ -478,12 +459,9 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @see DataOutput
    */
-  public final synchronized int readInt() throws IOException
+  public final int readInt () throws IOException
   {
-    readFully(buf, 0, 4);
-  
-    return (((buf[0] & 0xff) << 24) | ((buf[1] & 0xff) << 16) |
-            ((buf[2] & 0xff) << 8) | (buf[3] & 0xff));
+    return in.readInt();
   }
 
   /**
@@ -513,33 +491,9 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @deprecated
    */
-  public synchronized final String readLine () throws IOException
+  public final String readLine () throws IOException
   {
-    StringBuffer sb = new StringBuffer ("");
-  
-    for (;;)
-      {
-        int byte_read = read ();
-   
-        if (byte_read == -1)
-          return sb.toString();
-  
-        char c = (char) byte_read;
-  
-        if (c == '\r')
-          {
-            byte_read = read();
-            if (((char)byte_read) != '\n')
-              seek (getFilePointer() - 1);
-  
-            return sb.toString();
-          }
-  
-        if (c == '\n')
-          return sb.toString();
-  
-        sb.append (c);
-      }
+    return in.readLine ();
   }
 
   /**
@@ -573,18 +527,9 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @see DataOutput
    */
-  public final synchronized long readLong() throws IOException
+  public final long readLong () throws IOException
   {
-    readFully(buf, 0, 8);
-  
-    return (((long)(buf[0] & 0xff) << 56) |
-            ((long)(buf[1] & 0xff) << 48) |
-            ((long)(buf[2] & 0xff) << 40) |
-            ((long)(buf[3] & 0xff) << 32) |
-            ((long)(buf[4] & 0xff) << 24) |
-            ((long)(buf[5] & 0xff) << 16) |
-            ((long)(buf[6] & 0xff) <<  8) |
-            ((long)(buf[7] & 0xff)));
+    return in.readLong();
   }
 
   /**
@@ -614,11 +559,9 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @see DataOutput
    */
-  public final synchronized short readShort () throws IOException
+  public final short readShort () throws IOException
   {
-    readFully (buf, 0, 2);
-    
-    return (short) ((buf[0] << 8) | (buf[1] & 0xff));
+    return in.readShort();
   }
 
   /**
@@ -639,12 +582,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public final int readUnsignedByte () throws IOException
   {
-    int byte_read = read ();
-  
-    if (byte_read == -1)
-      throw new EOFException ("Unexpected end of stream");
-  
-    return byte_read & 0xFF;
+    return in.readUnsignedByte();
   }
 
   /**
@@ -672,12 +610,9 @@ public class RandomAccessFile implements DataOutput, DataInput
    * @exception EOFException If end of file is reached before reading the value
    * @exception IOException If any other error occurs
    */
-  public final synchronized int readUnsignedShort () 
-    throws IOException
+  public final int readUnsignedShort () throws IOException
   {
-    readFully(buf, 0, 2);
-    
-    return (((buf[0] & 0xff) << 8) | (buf[1] & 0xff));
+    return in.readUnsignedShort();
   }
 
   /**
@@ -752,16 +687,9 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @see DataOutput
    */
-  public synchronized final String readUTF () throws IOException
+  public final String readUTF () throws IOException
   {
-    StringBuffer sb = new StringBuffer("");
-  
-    int num_bytes = readUnsignedShort();
-    byte[] buf = new byte[num_bytes];
-    readFully(buf);
-  
-    // FIXME: Look to migrate to new String(buf, "UTF-8") if performance ok
-    return DataInputStream.convertFromUTF(buf);
+    return in.readUTF();
   }
 
   /**
@@ -816,7 +744,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public void write (int oneByte) throws IOException
   {
-    fd.write (oneByte);
+    out.write(oneByte);
   }
 
   /**
@@ -827,7 +755,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public void write (byte[] buffer) throws IOException
   {
-    write (buffer, 0, buffer.length);
+    out.write(buffer);
   }
 
   /**
@@ -842,7 +770,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public void write (byte[] buffer, int offset, int len) throws IOException
   {
-    fd.write (buffer, offset, len);
+    out.write (buffer, offset, len);
   }
 
   /**
@@ -856,7 +784,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public final void writeBoolean (boolean val) throws IOException
   {
-    write (val ? 1 : 0);
+    out.writeBoolean(val);
   }
 
   /**
@@ -870,7 +798,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public final void writeByte (int v) throws IOException
   {
-    write (v & 0xFF);
+    out.writeByte(v);
   }
 
   /**
@@ -882,12 +810,9 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public final synchronized void writeShort (int s) throws IOException
+  public final void writeShort (int v) throws IOException
   {
-    buf[0] = (byte)((s & 0xFF00) >> 8);
-    buf[1] = (byte)(s & 0x00FF);
-  
-    write(buf, 0, 2);
+    out.writeShort(v);
   }
 
   /**
@@ -899,12 +824,9 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public final synchronized void writeChar (int v) throws IOException
+  public final void writeChar (int v) throws IOException
   {
-    buf[0] = (byte)((v & 0xFF00) >> 8);
-    buf[1] = (byte)((int)v & 0x00FF);
-  
-    write(buf, 0, 2);
+    out.writeChar(v);
   }
 
   /**
@@ -915,14 +837,9 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public final synchronized void writeInt (int v) throws IOException
+  public final void writeInt (int v) throws IOException
   {
-    buf[0] = (byte)((v & 0xFF000000) >> 24);
-    buf[1] = (byte)((v & 0x00FF0000) >> 16);
-    buf[2] = (byte)((v & 0x0000FF00) >> 8);
-    buf[3] = (byte)(v & 0x000000FF);
-  
-    write (buf, 0, 4);
+    out.writeInt(v);
   }
 
   /**
@@ -933,18 +850,9 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public final synchronized void writeLong (long v) throws IOException
+  public final void writeLong (long v) throws IOException
   {
-    buf[0] = (byte)((v & 0xFF00000000000000L) >> 56);
-    buf[1] = (byte)((v & 0x00FF000000000000L) >> 48);
-    buf[2] = (byte)((v & 0x0000FF0000000000L) >> 40);
-    buf[3] = (byte)((v & 0x000000FF00000000L) >> 32);
-    buf[4] = (byte)((v & 0x00000000FF000000L) >> 24);
-    buf[5] = (byte)((v & 0x0000000000FF0000L) >> 16);
-    buf[6] = (byte)((v & 0x000000000000FF00L) >> 8);
-    buf[7] = (byte)(v & 0x00000000000000FFL);
-  
-    write (buf, 0, 8);
+    out.writeLong(v);
   }
 
   /**
@@ -963,8 +871,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public final void writeFloat (float v) throws IOException
   {
-    int i = Float.floatToIntBits (v);
-    writeInt (i);
+    out.writeFloat(v);
   }
 
   /**
@@ -984,8 +891,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public final void writeDouble (double v) throws IOException
   {
-    long l = Double.doubleToLongBits (v);
-    writeLong (l);
+    out.writeDouble(v);
   }
 
   /**
@@ -999,17 +905,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public final void writeBytes (String s) throws IOException
   {
-    int len = s.length();
-
-    if (len == 0)
-      return;
-  
-    byte[] buf = new byte[len];
-  
-    for (int i = 0; i < len; i++)
-      buf[i] = (byte)(s.charAt(i) & 0xFF);
-  
-    write(buf);
+    out.writeBytes(s);
   }
   
   /**
@@ -1023,19 +919,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public final void writeChars (String s) throws IOException
   {
-    int len = s.length();
-    if (len == 0)
-      return;
-  
-    byte[] buf = new byte[len * 2];
-  
-    for (int i = 0; i < len; i++)
-      {
-        buf[i * 2] = (byte)((s.charAt(i) & 0xFF00) >> 8);
-        buf[(i * 2) + 1] = (byte)(s.charAt(i) & 0x00FF);
-      }
-  
-    write(buf, 0, buf.length);
+    out.writeChars(s);
   }
   
   /**
@@ -1069,11 +953,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public final void writeUTF (String s) throws IOException
   {
-    // FIXME:  Look to migrate to s.getBytes("UTF-8") if performance ok
-    byte[] buf = DataOutputStream.convertToUTF(s);
-  
-    writeShort(buf.length);
-    write(buf);
+    out.writeUTF(s);
   }
   
   /**

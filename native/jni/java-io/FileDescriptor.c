@@ -99,6 +99,7 @@ exception statement from your version. */
 #define APPEND 4
 #define EXCL 8
 #define SYNC 16
+#define DSYNC 32
 
 
 /*************************************************************************/
@@ -181,6 +182,15 @@ Java_java_io_FileDescriptor_nativeOpen(JNIEnv *env, jobject obj, jstring name,
 
   if ((jflags & SYNC))
     flags |= O_SYNC;
+
+#ifdef O_DSYNC
+  if ((jflags & DSYNC))
+    flags |= O_DSYNC;
+#else
+  // If O_DSYNC doesnt exist use O_SYNC instead.
+  if ((jflags & DSYNC))
+    flags |= O_SYNC;
+#endif
 
   rc = open (cname, flags, mode);
 

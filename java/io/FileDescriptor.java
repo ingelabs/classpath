@@ -92,6 +92,7 @@ public final class FileDescriptor
   // EXCL is used only when making a temp file.
   static final int EXCL   = 8;
   static final int SYNC   = 16;
+  static final int DSYNC  = 32;
 
   /**
    * This is the actual native file descriptor value
