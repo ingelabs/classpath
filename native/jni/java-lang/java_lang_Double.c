@@ -172,7 +172,7 @@ JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
   if (sign)
     *d++ = '-';
 
-  if (value >= 1e-3 && value < 1e7 || value == 0)
+  if ((value >= 1e-3 && value < 1e7) || (value == 0))
     {
       if (decpt <= 0)
 	*d++ = '0';
@@ -255,13 +255,11 @@ JNIEXPORT jdouble JNICALL Java_java_lang_Double_parseDouble
   char *buf, *endptr;
   jdouble val = 0.0;
 
-/*
   if (str == NULL)
     {
       JCL_ThrowException (env, "java/lang/NullPointerException", "null");
       return val;
     }
-*/
 
   buf = (char *) (*env)->GetStringUTFChars(env, str, &isCopy);
   if (buf == NULL)

@@ -1,3 +1,11 @@
+2002-10-10  Stephen Crawley  <crawley@dstc.edu.au>
+
+	* java/lang/Double.java (valueOf): Return new Double(parseDouble(s)).
+	* native/jni/java-lang/java_lang_Double.c
+	(Java_java_lang_Double_toString): Add extra brackets in if expression.
+	(Java_java_lang_Double_parseDouble): Throw NullPointerException when
+	str == NULL.
+
 2002-10-10  Anthony Green  <green@redhat.com>
 
 	* java/lang/reflect/Proxy.java: Fix checking for duplicate
