@@ -1,9 +1,13 @@
 SUBDIRS = charset
 
 EXTRA_DIST= \
+ChannelInputStream.java \
+ChannelOutputStream.java \
 DatagramChannelImpl.java \
 DatagramChannelSelectionKey.java \
 FileLockImpl.java \
+InputStreamChannel.java \
+OutputStreamChannel.java \
 PipeImpl.java \
 NIOConstants.java \
 NIODatagramSocket.java \
