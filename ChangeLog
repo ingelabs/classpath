@@ -1,5 +1,11 @@
 2003-06-24  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/SocketImpl.java,
+	java/net/URLStreamHandler.java:
+	New versions from libgcj.
+
+2003-06-24  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/Buffer.java:
 	New version from libgcj.
 
