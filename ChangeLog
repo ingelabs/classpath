@@ -1,5 +1,12 @@
 2004-04-08  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/DirectByteBufferImpl.java,
+	java/nio/MappedByteBuffer.java,
+	java/nio/MappedByteBufferImpl.java:
+	Forgot to commit this during the big NIO commit.
+
+2004-04-08  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/BufferedWriter.java,
 	java/io/FilterInputStream.java,
 	java/io/ObjectInputStream.java:
