@@ -100,7 +100,8 @@ awt_event_handler (GdkEvent *event)
        || event->type == GDK_BUTTON_RELEASE
        || event->type == GDK_ENTER_NOTIFY
        || event->type == GDK_LEAVE_NOTIFY
-       || event->type == GDK_CONFIGURE)
+       || event->type == GDK_CONFIGURE
+       || event->type == GDK_EXPOSE)
       && gdk_property_get (event->any.window,
 			   gdk_atom_intern ("_GNU_GTKAWT_ADDR", FALSE),
 			   gdk_atom_intern ("CARDINAL", FALSE),
@@ -204,12 +205,6 @@ awt_event_handler (GdkEvent *event)
 		gdk_window_get_root_origin (widget->window, &x, &y);
 
 		gdk_threads_leave ();
-/*  		(*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr,  */
-/*  					    postConfigureEventID, */
-/*  					    (jint)event->configure.x-x, */
-/*  					    (jint)event->configure.y-y, */
-/*  					    (jint)event->configure.width, */
-/*  					    (jint)event->configure.height); */
 		(*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr, 
 					    postConfigureEventID,
 					    (jint)x,
@@ -217,6 +212,24 @@ awt_event_handler (GdkEvent *event)
 					    (jint)event->configure.width,
 					    (jint)event->configure.height);
 		gdk_threads_enter ();
+	      }
+	  }
+	  break;
+	case GDK_EXPOSE:
+	  {
+	    GtkWidget *widget;
+
+	    gdk_window_get_user_data (event->any.window, (void **) &widget);
+	    if (!widget) break;
+
+	    if (GTK_IS_DRAWING_AREA (widget))
+	      {
+		(*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr,
+					    postExposeEventID,
+					    (jint)event->expose.area.x,
+					    (jint)event->expose.area.y,
+					    (jint)event->expose.area.width,
+					    (jint)event->expose.area.height);
 	      }
 	  }
 	  break;

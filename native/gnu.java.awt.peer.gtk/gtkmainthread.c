@@ -30,6 +30,7 @@
 jmethodID postActionEventID;
 jmethodID postMouseEventID;
 jmethodID postConfigureEventID;
+jmethodID postExposeEventID;
 jmethodID syncAttrsID;
 JNIEnv *gdk_env;
 
@@ -45,7 +46,7 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
   char **argv;
   char *homedir, *rcpath = NULL;
 /*    jclass gtkgenericpeer; */
-  jclass gtkcomponentpeer, gtkwindowpeer;
+  jclass gtkcomponentpeer, gtkwindowpeer, gtkcanvaspeer;
 
   printf ("init\n");
 
@@ -87,6 +88,8 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 				     "gnu/java/awt/peer/gtk/GtkComponentPeer");
   gtkwindowpeer = (*env)->FindClass (env,
 				     "gnu/java/awt/peer/gtk/GtkWindowPeer");
+  gtkcanvaspeer = (*env)->FindClass (env,
+				     "gnu/java/awt/peer/gtk/GtkCanvasPeer");
 /*    postActionEventID = (*env)->GetMethodID (env, gtkgenericpeer,  */
 /*  					   "postActionEvent",  */
 /*  					   "(Ljava/lang/String;I)V"); */
@@ -94,6 +97,8 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 					  "postMouseEvent", "(IJIIIIZ)V");
   postConfigureEventID = (*env)->GetMethodID (env, gtkwindowpeer, 
 					  "postConfigureEvent", "(IIII)V");
+  postExposeEventID = (*env)->GetMethodID (env, gtkcanvaspeer, 
+					  "postExposeEvent", "(IIII)V");
   syncAttrsID = (*env)->GetMethodID (env, gtkcomponentpeer,
 				     "syncAttrs", "()V");
 
