@@ -1,3 +1,9 @@
+2004-10-13  Michael Koch  <konqueror@gmx.de>
+
+	* java/math/BigDecimal.java, java/math/BigInteger.java:
+	Reorganized import statements, removed redundant and reorganized
+	modifiers.
+
 2004-10-12  Michael Koch  <konqueror@gmx.de>
 
 	* java/util/zip/GZIPInputStream.java
