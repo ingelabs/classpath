@@ -1,3 +1,8 @@
+2002-04-03  Mark Wielaard  <mark@klomp.org>
+
+	* java/lang/reflect/Modifier.java (toString(int,StringBuffer)): Fix
+	ordering.
+
 2002-04-02  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/IdentityHashMap.java (put, IdentityHashMap, hash),
