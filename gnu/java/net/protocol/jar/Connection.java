@@ -1,5 +1,5 @@
-/* gnu.java.net.protocol.jar.JarURLConnection - jar url connection for java.net
-   Copyright (C) 2002, 2003 Free Software Foundation, Inc.
+/* Connection - jar url connection for java.net
+   Copyright (C) 1999, 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -55,6 +55,7 @@ import java.util.zip.ZipFile;
  * This subclass of java.net.JarURLConnection models a URLConnection via
  * the "jar" protocol.
  *
+ * @author Kresten Krab Thorup <krab@gnu.org>
  */
 public class Connection extends JarURLConnection
 {
@@ -119,10 +120,10 @@ public class Connection extends JarURLConnection
     }
   }
   
-  public Connection (URL url) throws MalformedURLException, IOException
+  protected Connection (URL url)
+    throws MalformedURLException
   {
     super (url);
-    jar_url = getJarFileURL();
   }
   
   public void connect() throws IOException
@@ -130,6 +131,7 @@ public class Connection extends JarURLConnection
     if (connected)
       return;
     
+    jar_url = getJarFileURL();
     jar_file = JarFileCache.get (jar_url);
     String entry_name = getEntryName();
     
@@ -138,7 +140,6 @@ public class Connection extends JarURLConnection
       {
         jar_entry = (JarEntry) jar_file.getEntry (entry_name);
 
-        //wgs
         if(jar_entry == null)
           throw new IOException ("No entry for " + entry_name + " exists.");
       }
@@ -173,4 +174,4 @@ public class Connection extends JarURLConnection
     return (int) jar_entry.getSize();
   }
   
-} // class JarURLConnection
+} // class Connection

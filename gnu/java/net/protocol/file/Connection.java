@@ -45,6 +45,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.AbstractSet;
@@ -80,7 +81,7 @@ public class Connection extends URLConnection
   /**
    * Calls superclass constructor to initialize.
    */
-  protected Connection (URL url)
+  public Connection (URL url)
   {
     super (url);
     
@@ -122,6 +123,9 @@ public class Connection extends URLConnection
   public InputStream getInputStream()
     throws IOException
   {
+    if (!doInput)
+      throw new ProtocolException ("Can't open InputStream if doInput is false");
+    
     if (!connected)
       connect();
     
@@ -138,6 +142,9 @@ public class Connection extends URLConnection
   public OutputStream getOutputStream()
     throws IOException
   {
+    if (!doOutput)
+      throw new ProtocolException ("Can't open OutputStream if doOutput is false");
+
     if (!connected)
       connect();
     

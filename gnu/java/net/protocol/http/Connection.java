@@ -69,7 +69,7 @@ import gnu.java.net.HeaderFieldHelper;
  * @author Aaron M. Renn <arenn@urbanophile.com>
  * @author Warren Levy <warrenl@cygnus.com>
  */
-public class Connection extends HttpURLConnection
+public final class Connection extends HttpURLConnection
 {
   /**
    * The socket we are connected to
@@ -124,17 +124,46 @@ public class Connection extends HttpURLConnection
       socket = new Socket(url.getHost(), 80);
     else
       socket = new Socket(url.getHost(), url.getPort());
+    
+    if (doInput)
+      inputStream
+        = new DataInputStream (new BufferedInputStream (socket.getInputStream()));
 
-    outputStream = new BufferedOutputStream(socket.getOutputStream());
-    outputWriter = new PrintWriter(new OutputStreamWriter(outputStream, "8859_1")); 
+    if (doOutput)
+      outputStream = new BufferedOutputStream (socket.getOutputStream());
 
+    bufferedOutputStream = new ByteArrayOutputStream (256); //default is too small
+    outputWriter = new PrintWriter (new OutputStreamWriter (outputStream, "8859_1")); 
     connected = true;
+
+    sendRequest();
+    receiveReply();
+  }
+
+  /**
+   * Disconnects from the remote server.
+   */
+  public void disconnect()
+  {
+    if (socket != null)
+      {
+	try
+	  {
+	    socket.close();
+	  }
+	catch (IOException e)
+	  {
+	    // Ignore errors in closing socket.
+	  }
+	
+	socket = null;
+      }
   }
 
   /**
    * Write HTTP request header and content to outputWriter.
    */
-  void SendRequest() throws IOException
+  void sendRequest() throws IOException
   {
     // Send request including any request properties that were set.
     outputWriter.print (getRequestMethod() + " " + url.getFile()
@@ -167,6 +196,9 @@ public class Connection extends HttpURLConnection
         setRequestProperty ("Content-type", "application/x-www-form-urlencoded");
       }
 
+    // Set correct content length.
+    setRequestProperty ("Content-length", String.valueOf (bufferedOutputStream.size()));
+
     // Write all req_props name-value pairs to the output writer.
     Iterator itr = getRequestProperties().entrySet().iterator();
 
@@ -176,30 +208,19 @@ public class Connection extends HttpURLConnection
         outputWriter.print (e.getKey() + ": " + e.getValue() + "\r\n");
       }
 
-    // Write Content-type and length
-    if (bufferedOutputStream != null)
-      {
-        outputWriter.print ("Content-type: application/x-www-form-urlencoded\r\n");
-        outputWriter.print ("Content-length: "
-                            + String.valueOf (bufferedOutputStream.size()) + "\r\n");
-      }
-
     // One more CR-LF indicates end of header.
     outputWriter.print ("\r\n");
     outputWriter.flush();
 
     // Write content
-    if (bufferedOutputStream != null)
-      {
-        bufferedOutputStream.writeTo (outputStream);
-        outputStream.flush();
-      }
+    bufferedOutputStream.writeTo (outputStream);
+    outputStream.flush();
   }
 
   /**
    * Read HTTP reply from inputStream.
    */
-  void ReceiveReply() throws IOException
+  void receiveReply() throws IOException
   {
     // Parse the reply
     String line = inputStream.readLine();
@@ -227,7 +248,7 @@ public class Connection extends HttpURLConnection
     // Now read the header lines
     String key = null, value = null;
     
-    for (;;)
+    while (true)
       {
         line = inputStream.readLine();
         
@@ -287,21 +308,6 @@ public class Connection extends HttpURLConnection
     if (key != null)
       {
         headers.addHeaderField (key, value);
-      }
-  }
-
-  /**
-   * Disconnects from the remote server
-   */
-  public void disconnect()
-  {
-    try
-      {
-        if (socket != null)
-          socket.close();
-      }
-    catch (IOException e)
-      {
       }
   }
 
@@ -382,12 +388,6 @@ public class Connection extends HttpURLConnection
     if (!connected)
       connect();
 
-    inputStream
-      = new DataInputStream (new BufferedInputStream (socket.getInputStream()));
-  
-    SendRequest();
-    ReceiveReply();
-
     return inputStream;
   }
 
@@ -403,9 +403,6 @@ public class Connection extends HttpURLConnection
     if (!connected)
       connect();
   
-    if(bufferedOutputStream == null)
-      bufferedOutputStream = new ByteArrayOutputStream (256); //default is too small
-    
     return bufferedOutputStream;
   }
 

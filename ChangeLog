@@ -1,5 +1,23 @@
 2003-10-20  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/protocol/file/Connection.java
+	(inputStream): Made it a BufferedInputStream.
+	(outputStream): Made it a BufferedOutputStream.
+	(connect): Initialize inputStream and outputStream correctly.
+	* gnu/java/net/protocol/http/Connection.java
+	(proxyHost): New class variable.
+	(proxyPort): Likewise.
+	(proxyInUse): Likewise.
+	(static): New method to initialize proxy variables.
+	(connect): connect to proxy if proxy is used.
+	(sendRequest): Fixed handling of "Host" request property.
+	(usingProxy): Return true if proxy is used.
+	* gnu/java/net/protocol/jar/Connection.java
+	(Connection): Removed IOException from throws clause. Moved
+	initialization if jar_url to connect().
+
+2003-10-20  Michael Koch  <konqueror@gmx.de>
+
 	* java/text/RuleBasedCollator.java: Some more reformating.
 
 2003-10-20  Michael Koch  <konqueror@gmx.de>
