@@ -1,4 +1,4 @@
-/* DomHTMLButtonElement.java -- 
+/* DomHTMLFormElement.java -- 
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,51 +37,45 @@ exception statement from your version. */
 
 package gnu.xml.dom.html2;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.html2.HTMLButtonElement;
+import org.w3c.dom.html2.HTMLCollection;
 import org.w3c.dom.html2.HTMLFormElement;
 
 /**
- * An HTML 'BUTTON' element node.
+ * An HTML 'FORM' element node.
  *
  * @author <a href='mailto:dog@gnu.org'>Chris Burdess</a>
  */
-public class DomHTMLButtonElement
+public class DomHTMLFormElement
   extends DomHTMLElement
-  implements HTMLButtonElement
+  implements HTMLFormElement
 {
 
-  protected DomHTMLButtonElement(DomHTMLDocument owner, String namespaceURI,
-                                 String name)
+  protected DomHTMLFormElement(DomHTMLDocument owner, String namespaceURI,
+                               String name)
   {
     super(owner, namespaceURI, name);
   }
 
-  public HTMLFormElement getForm()
+  public HTMLCollection getElements()
   {
-    return (HTMLFormElement) getParentElement("form");
+    DomHTMLCollection ret =
+      new DomHTMLCollection((DomHTMLDocument) getOwnerDocument(), this);
+    ret.addNodeName("input");
+    ret.addNodeName("button");
+    ret.addNodeName("select");
+    ret.addNodeName("textarea");
+    ret.addNodeName("isindex");
+    ret.addNodeName("label");
+    ret.addNodeName("option");
+    ret.evaluate();
+    return ret;
   }
 
-  public String getAccessKey()
+  public int getLength()
   {
-    return getHTMLAttribute("accesskey");
+    return getElements().getLength();
   }
 
-  public void setAccessKey(String accessKey)
-  {
-    setHTMLAttribute("accesskey", accessKey);
-  }
-  
-  public boolean getDisabled()
-  {
-    return getBooleanHTMLAttribute("disabled");
-  }
-
-  public void setDisabled(boolean disabled)
-  {
-    setBooleanHTMLAttribute("disabled", disabled);
-  }
-  
   public String getName()
   {
     return getHTMLAttribute("name");
@@ -92,29 +86,64 @@ public class DomHTMLButtonElement
     setHTMLAttribute("name", name);
   }
   
-  public int getTabIndex()
+  public String getAcceptCharset()
   {
-    return getIntHTMLAttribute("tabindex");
+    return getHTMLAttribute("accept-charset");
   }
 
-  public void setTabIndex(int tabIndex)
+  public void setAcceptCharset(String acceptCharset)
   {
-    setIntHTMLAttribute("tabindex", tabIndex);
-  }
-
-  public String getType()
-  {
-    return getHTMLAttribute("type");
+    setHTMLAttribute("accept-charset", acceptCharset);
   }
   
-  public String getValue()
+  public String getAction()
   {
-    return getHTMLAttribute("value");
+    return getHTMLAttribute("action");
   }
 
-  public void setValue(String value)
+  public void setAction(String action)
   {
-    setHTMLAttribute("value", value);
+    setHTMLAttribute("action", action);
+  }
+  
+  public String getEnctype()
+  {
+    return getHTMLAttribute("enctype");
+  }
+
+  public void setEnctype(String enctype)
+  {
+    setHTMLAttribute("enctype", enctype);
+  }
+  
+  public String getMethod()
+  {
+    return getHTMLAttribute("method");
+  }
+
+  public void setMethod(String method)
+  {
+    setHTMLAttribute("method", method);
+  }
+  
+  public String getTarget()
+  {
+    return getHTMLAttribute("target");
+  }
+
+  public void setTarget(String target)
+  {
+    setHTMLAttribute("target", target);
+  }
+
+  public void submit()
+  {
+    // TODO
+  }
+
+  public void reset()
+  {
+    // TODO
   }
   
 }

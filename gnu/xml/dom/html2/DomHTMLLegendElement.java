@@ -1,4 +1,4 @@
-/* DomHTMLButtonElement.java -- 
+/* DomHTMLLegendElement.java -- 
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,21 +37,20 @@ exception statement from your version. */
 
 package gnu.xml.dom.html2;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.html2.HTMLButtonElement;
 import org.w3c.dom.html2.HTMLFormElement;
+import org.w3c.dom.html2.HTMLLegendElement;
 
 /**
- * An HTML 'BUTTON' element node.
+ * An HTML 'LEGEND' element node.
  *
  * @author <a href='mailto:dog@gnu.org'>Chris Burdess</a>
  */
-public class DomHTMLButtonElement
+public class DomHTMLLegendElement
   extends DomHTMLElement
-  implements HTMLButtonElement
+  implements HTMLLegendElement
 {
 
-  protected DomHTMLButtonElement(DomHTMLDocument owner, String namespaceURI,
+  protected DomHTMLLegendElement(DomHTMLDocument owner, String namespaceURI,
                                  String name)
   {
     super(owner, namespaceURI, name);
@@ -72,49 +71,14 @@ public class DomHTMLButtonElement
     setHTMLAttribute("accesskey", accessKey);
   }
   
-  public boolean getDisabled()
+  public String getAlign()
   {
-    return getBooleanHTMLAttribute("disabled");
+    return getHTMLAttribute("align");
   }
 
-  public void setDisabled(boolean disabled)
+  public void setAlign(String align)
   {
-    setBooleanHTMLAttribute("disabled", disabled);
-  }
-  
-  public String getName()
-  {
-    return getHTMLAttribute("name");
-  }
-
-  public void setName(String name)
-  {
-    setHTMLAttribute("name", name);
-  }
-  
-  public int getTabIndex()
-  {
-    return getIntHTMLAttribute("tabindex");
-  }
-
-  public void setTabIndex(int tabIndex)
-  {
-    setIntHTMLAttribute("tabindex", tabIndex);
-  }
-
-  public String getType()
-  {
-    return getHTMLAttribute("type");
-  }
-  
-  public String getValue()
-  {
-    return getHTMLAttribute("value");
-  }
-
-  public void setValue(String value)
-  {
-    setHTMLAttribute("value", value);
+    setHTMLAttribute("align", align);
   }
   
 }

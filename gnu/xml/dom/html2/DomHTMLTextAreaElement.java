@@ -1,4 +1,4 @@
-/* DomHTMLButtonElement.java -- 
+/* DomHTMLTextAreaElement.java -- 
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,31 +37,43 @@ exception statement from your version. */
 
 package gnu.xml.dom.html2;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.html2.HTMLButtonElement;
 import org.w3c.dom.html2.HTMLFormElement;
+import org.w3c.dom.html2.HTMLTextAreaElement;
 
 /**
- * An HTML 'BUTTON' element node.
+ * An HTML 'TEXTAREA' element node.
  *
  * @author <a href='mailto:dog@gnu.org'>Chris Burdess</a>
  */
-public class DomHTMLButtonElement
+public class DomHTMLTextAreaElement
   extends DomHTMLElement
-  implements HTMLButtonElement
+  implements HTMLTextAreaElement
 {
 
-  protected DomHTMLButtonElement(DomHTMLDocument owner, String namespaceURI,
-                                 String name)
+  protected String value;
+
+  protected DomHTMLTextAreaElement(DomHTMLDocument owner,
+                                   String namespaceURI,
+                                   String name)
   {
     super(owner, namespaceURI, name);
+  }
+
+  public String getDefaultValue()
+  {
+    return getHTMLAttribute("value");
+  }
+
+  public void setDefaultValue(String defaultValue)
+  {
+    setHTMLAttribute("value", defaultValue);
   }
 
   public HTMLFormElement getForm()
   {
     return (HTMLFormElement) getParentElement("form");
   }
-
+  
   public String getAccessKey()
   {
     return getHTMLAttribute("accesskey");
@@ -70,6 +82,16 @@ public class DomHTMLButtonElement
   public void setAccessKey(String accessKey)
   {
     setHTMLAttribute("accesskey", accessKey);
+  }
+  
+  public int getCols()
+  {
+    return getIntHTMLAttribute("cols");
+  }
+
+  public void setCols(int cols)
+  {
+    setIntHTMLAttribute("cols", cols);
   }
   
   public boolean getDisabled()
@@ -92,6 +114,26 @@ public class DomHTMLButtonElement
     setHTMLAttribute("name", name);
   }
   
+  public boolean getReadOnly()
+  {
+    return getBooleanHTMLAttribute("readOnly");
+  }
+
+  public void setReadOnly(boolean readOnly)
+  {
+    setBooleanHTMLAttribute("readonly", readOnly);
+  }
+  
+  public int getRows()
+  {
+    return getIntHTMLAttribute("rows");
+  }
+
+  public void setRows(int rows)
+  {
+    setIntHTMLAttribute("rows", rows);
+  }
+  
   public int getTabIndex()
   {
     return getIntHTMLAttribute("tabindex");
@@ -101,20 +143,39 @@ public class DomHTMLButtonElement
   {
     setIntHTMLAttribute("tabindex", tabIndex);
   }
-
+  
   public String getType()
   {
-    return getHTMLAttribute("type");
+    return "textarea";
   }
-  
+
   public String getValue()
   {
-    return getHTMLAttribute("value");
+    if (value == null)
+      {
+        value = getDefaultValue();
+      }
+    return value;
   }
 
   public void setValue(String value)
   {
-    setHTMLAttribute("value", value);
+    this.value = value;
+  }
+
+  public void blur()
+  {
+    // TODO
+  }
+
+  public void focus()
+  {
+    // TODO
+  }
+  
+  public void select()
+  {
+    // TODO
   }
   
 }

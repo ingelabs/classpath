@@ -101,7 +101,7 @@ public abstract class DomHTMLElement
   protected boolean getBooleanHTMLAttribute(String name)
   {
     String value = getHTMLAttribute(name);
-    return "true".equals(value);
+    return value != null;
   }
 
   /**
@@ -119,15 +119,25 @@ public abstract class DomHTMLElement
         String attrName = attr.getLocalName();
         if (attrName.equalsIgnoreCase(name))
           {
-            attr.setNodeValue(value);
+            if (value != null)
+              {
+                attr.setNodeValue(value);
+              }
+            else
+              {
+                attrs.removeNamedItem(attr.getNodeName());
+              }
             return;
           }
       }
-    // Create a new attribute
-    DomHTMLDocument doc = (DomHTMLDocument) getOwnerDocument();
-    // XXX namespace URI for attribute?
-    attr = doc.createAttribute(name);
-    attr.setNodeValue(value);
+    if (value != null)
+      {
+        // Create a new attribute
+        DomHTMLDocument doc = (DomHTMLDocument) getOwnerDocument();
+        // XXX namespace URI for attribute?
+        attr = doc.createAttribute(name);
+        attr.setNodeValue(value);
+      }
   }
 
   protected void setIntHTMLAttribute(String name, int value)
@@ -137,7 +147,23 @@ public abstract class DomHTMLElement
 
   protected void setBooleanHTMLAttribute(String name, boolean value)
   {
-    setHTMLAttribute(name, value ? "true" : "false");
+    setHTMLAttribute(name, value ? name : null);
+  }
+
+  /**
+   * Returns the first parent element with the specified name.
+   */
+  protected Node getParentElement(String name)
+  {
+    for (Node parent = getParentNode(); parent != null;
+         parent = parent.getParentNode())
+      {
+        if (name.equalsIgnoreCase(parent.getLocalName()))
+          {
+            return parent;
+          }
+      }
+    return null;
   }
 
   public String getId()

@@ -82,6 +82,57 @@ public class DomHTMLDocument
     map.put("body", DomHTMLBodyElement.class);
     map.put("br", DomHTMLBRElement.class);
     map.put("button", DomHTMLButtonElement.class);
+    map.put("dir", DomHTMLDirectoryElement.class);
+    map.put("div", DomHTMLDivElement.class);
+    map.put("dlist", DomHTMLDListElement.class);
+    map.put("fieldset", DomHTMLFieldSetElement.class);
+    map.put("font", DomHTMLFontElement.class);
+    map.put("form", DomHTMLFormElement.class);
+    map.put("frame", DomHTMLFrameElement.class);
+    map.put("frameset", DomHTMLFrameSetElement.class);
+    map.put("head", DomHTMLHeadElement.class);
+    map.put("h1", DomHTMLHeadingElement.class);
+    map.put("h2", DomHTMLHeadingElement.class);
+    map.put("h3", DomHTMLHeadingElement.class);
+    map.put("h4", DomHTMLHeadingElement.class);
+    map.put("h5", DomHTMLHeadingElement.class);
+    map.put("h6", DomHTMLHeadingElement.class);
+    map.put("html", DomHTMLHtmlElement.class);
+    map.put("iframe", DomHTMLIFrameElement.class);
+    map.put("img", DomHTMLImageElement.class);
+    map.put("input", DomHTMLInputElement.class);
+    map.put("isindex", DomHTMLIsIndexElement.class);
+    map.put("label", DomHTMLLabelElement.class);
+    map.put("legend", DomHTMLLegendElement.class);
+    map.put("li", DomHTMLLIElement.class);
+    map.put("link", DomHTMLLinkElement.class);
+    map.put("map", DomHTMLMapElement.class);
+    map.put("menu", DomHTMLMenuElement.class);
+    map.put("meta", DomHTMLMetaElement.class);
+    map.put("ins", DomHTMLModElement.class);
+    map.put("del", DomHTMLModElement.class);
+    map.put("object", DomHTMLObjectElement.class);
+    map.put("ol", DomHTMLOListElement.class);
+    map.put("optgroup", DomHTMLOptGroupElement.class);
+    map.put("option", DomHTMLOptionElement.class);
+    map.put("p", DomHTMLParagraphElement.class);
+    map.put("param", DomHTMLParamElement.class);
+    map.put("pre", DomHTMLPreElement.class);
+    map.put("q", DomHTMLQuoteElement.class);
+    map.put("blockquote", DomHTMLQuoteElement.class);
+    map.put("script", DomHTMLScriptElement.class);
+    map.put("select", DomHTMLSelectElement.class);
+    map.put("style", DomHTMLStyleElement.class);
+    map.put("caption", DomHTMLTableCaptionElement.class);
+    map.put("th", DomHTMLTableCellElement.class);
+    map.put("td", DomHTMLTableCellElement.class);
+    map.put("col", DomHTMLTableColElement.class);
+    map.put("colgroup", DomHTMLTableColElement.class);
+    map.put("table", DomHTMLTableElement.class);
+    map.put("tr", DomHTMLTableRowElement.class);
+    map.put("thead", DomHTMLTableSectionElement.class);
+    map.put("tfoot", DomHTMLTableSectionElement.class);
+    map.put("tbody", DomHTMLTableSectionElement.class);
     // TODO others
     ELEMENT_CLASSES = Collections.unmodifiableMap(map);
   }
@@ -202,39 +253,44 @@ public class DomHTMLDocument
 
   public HTMLCollection getImages()
   {
-    DomHTMLCollection ret = new DomHTMLCollection(this);
+    DomHTMLCollection ret = new DomHTMLCollection(this, this);
     ret.addNodeName("img");
+    ret.evaluate();
     return ret;
   }
 
   public HTMLCollection getApplets()
   {
-    DomHTMLCollection ret = new DomHTMLCollection(this);
+    DomHTMLCollection ret = new DomHTMLCollection(this, this);
     ret.addNodeName("object");
     ret.addNodeName("applet");
+    ret.evaluate();
     return ret;
   }
 
   public HTMLCollection getLinks()
   {
-    DomHTMLCollection ret = new DomHTMLCollection(this);
+    DomHTMLCollection ret = new DomHTMLCollection(this, this);
     ret.addNodeName("area");
     ret.addNodeName("a");
+    ret.evaluate();
     return ret;
   }
 
   public HTMLCollection getForms()
   {
-    DomHTMLCollection ret = new DomHTMLCollection(this);
+    DomHTMLCollection ret = new DomHTMLCollection(this, this);
     ret.addNodeName("form");
+    ret.evaluate();
     return ret;
   }
 
   public HTMLCollection getAnchors()
   {
-    DomHTMLCollection ret = new DomHTMLCollection(this);
+    DomHTMLCollection ret = new DomHTMLCollection(this, this);
     ret.addNodeName("a");
     ret.addAttributeName("name");
+    ret.evaluate();
     return ret;
   }
 
@@ -271,8 +327,9 @@ public class DomHTMLDocument
 
   public NodeList getElementsByName(String name)
   {
-    DomHTMLCollection ret = new DomHTMLCollection(this);
+    DomHTMLCollection ret = new DomHTMLCollection(this, this);
     ret.addNodeName(name);
+    ret.evaluate();
     return ret;
     // TODO xhtml: return only form controls (?)
   }

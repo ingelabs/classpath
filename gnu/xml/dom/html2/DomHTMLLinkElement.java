@@ -1,4 +1,4 @@
-/* DomHTMLButtonElement.java -- 
+/* DomHTMLLinkElement.java -- 
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,41 +37,24 @@ exception statement from your version. */
 
 package gnu.xml.dom.html2;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.html2.HTMLButtonElement;
-import org.w3c.dom.html2.HTMLFormElement;
+import org.w3c.dom.html2.HTMLLinkElement;
 
 /**
- * An HTML 'BUTTON' element node.
+ * An HTML 'LINK' element node.
  *
  * @author <a href='mailto:dog@gnu.org'>Chris Burdess</a>
  */
-public class DomHTMLButtonElement
+public class DomHTMLLinkElement
   extends DomHTMLElement
-  implements HTMLButtonElement
+  implements HTMLLinkElement
 {
 
-  protected DomHTMLButtonElement(DomHTMLDocument owner, String namespaceURI,
-                                 String name)
+  protected DomHTMLLinkElement(DomHTMLDocument owner, String namespaceURI,
+                               String name)
   {
     super(owner, namespaceURI, name);
   }
 
-  public HTMLFormElement getForm()
-  {
-    return (HTMLFormElement) getParentElement("form");
-  }
-
-  public String getAccessKey()
-  {
-    return getHTMLAttribute("accesskey");
-  }
-
-  public void setAccessKey(String accessKey)
-  {
-    setHTMLAttribute("accesskey", accessKey);
-  }
-  
   public boolean getDisabled()
   {
     return getBooleanHTMLAttribute("disabled");
@@ -82,39 +65,84 @@ public class DomHTMLButtonElement
     setBooleanHTMLAttribute("disabled", disabled);
   }
   
-  public String getName()
+  public String getCharset()
   {
-    return getHTMLAttribute("name");
+    return getHTMLAttribute("charset");
   }
 
-  public void setName(String name)
+  public void setCharset(String charset)
   {
-    setHTMLAttribute("name", name);
+    setHTMLAttribute("charset", charset);
   }
   
-  public int getTabIndex()
+  public String getHref()
   {
-    return getIntHTMLAttribute("tabindex");
+    return getHTMLAttribute("href");
   }
 
-  public void setTabIndex(int tabIndex)
+  public void setHref(String href)
   {
-    setIntHTMLAttribute("tabindex", tabIndex);
+    setHTMLAttribute("href", href);
+  }
+  
+  public String getHreflang()
+  {
+    return getHTMLAttribute("hreflang");
   }
 
+  public void setHreflang(String hreflang)
+  {
+    setHTMLAttribute("hreflang", hreflang);
+  }
+  
+  public String getMedia()
+  {
+    return getHTMLAttribute("media");
+  }
+
+  public void setMedia(String media)
+  {
+    setHTMLAttribute("media", media);
+  }
+  
+  public String getRel()
+  {
+    return getHTMLAttribute("rel");
+  }
+
+  public void setRel(String rel)
+  {
+    setHTMLAttribute("rel", rel);
+  }
+  
+  public String getRev()
+  {
+    return getHTMLAttribute("rev");
+  }
+
+  public void setRev(String rev)
+  {
+    setHTMLAttribute("rev", rev);
+  }
+  
+  public String getTarget()
+  {
+    return getHTMLAttribute("target");
+  }
+
+  public void setTarget(String target)
+  {
+    setHTMLAttribute("target", target);
+  }
+  
   public String getType()
   {
     return getHTMLAttribute("type");
   }
-  
-  public String getValue()
-  {
-    return getHTMLAttribute("value");
-  }
 
-  public void setValue(String value)
+  public void setType(String type)
   {
-    setHTMLAttribute("value", value);
+    setHTMLAttribute("type", type);
   }
   
 }

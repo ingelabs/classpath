@@ -1,4 +1,4 @@
-/* DomHTMLButtonElement.java -- 
+/* DomHTMLTableRowElement.java -- 
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,84 +37,108 @@ exception statement from your version. */
 
 package gnu.xml.dom.html2;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.html2.HTMLButtonElement;
-import org.w3c.dom.html2.HTMLFormElement;
+import org.w3c.dom.html2.HTMLCollection;
+import org.w3c.dom.html2.HTMLElement;
+import org.w3c.dom.html2.HTMLTableRowElement;
 
 /**
- * An HTML 'BUTTON' element node.
+ * An HTML 'TR' element node.
  *
  * @author <a href='mailto:dog@gnu.org'>Chris Burdess</a>
  */
-public class DomHTMLButtonElement
+public class DomHTMLTableRowElement
   extends DomHTMLElement
-  implements HTMLButtonElement
+  implements HTMLTableRowElement
 {
 
-  protected DomHTMLButtonElement(DomHTMLDocument owner, String namespaceURI,
-                                 String name)
+  protected DomHTMLTableRowElement(DomHTMLDocument owner,
+                                   String namespaceURI,
+                                   String name)
   {
     super(owner, namespaceURI, name);
   }
 
-  public HTMLFormElement getForm()
+  public int getRowIndex()
   {
-    return (HTMLFormElement) getParentElement("form");
+    // TODO
+    return -1;
   }
 
-  public String getAccessKey()
+  public int getSectionRowIndex()
   {
-    return getHTMLAttribute("accesskey");
+    // TODO
+    return -1;
   }
 
-  public void setAccessKey(String accessKey)
+  public HTMLCollection getCells()
   {
-    setHTMLAttribute("accesskey", accessKey);
+    DomHTMLCollection ret =
+      new DomHTMLCollection((DomHTMLDocument) getOwnerDocument(), this);
+    ret.addNodeName("th");
+    ret.addNodeName("td");
+    ret.evaluate();
+    return ret;
+  }
+
+  public String getAlign()
+  {
+    return getHTMLAttribute("align");
+  }
+
+  public void setAlign(String align)
+  {
+    setHTMLAttribute("align", align);
   }
   
-  public boolean getDisabled()
+  public String getBgColor()
   {
-    return getBooleanHTMLAttribute("disabled");
+    return getHTMLAttribute("bgcolor");
   }
 
-  public void setDisabled(boolean disabled)
+  public void setBgColor(String bgColor)
   {
-    setBooleanHTMLAttribute("disabled", disabled);
+    setHTMLAttribute("bgcolor", bgColor);
   }
   
-  public String getName()
+  public String getCh()
   {
-    return getHTMLAttribute("name");
+    return getHTMLAttribute("char");
   }
 
-  public void setName(String name)
+  public void setCh(String ch)
   {
-    setHTMLAttribute("name", name);
+    setHTMLAttribute("char", ch);
   }
   
-  public int getTabIndex()
+  public String getChOff()
   {
-    return getIntHTMLAttribute("tabindex");
+    return getHTMLAttribute("charoff");
   }
 
-  public void setTabIndex(int tabIndex)
+  public void setChOff(String chOff)
   {
-    setIntHTMLAttribute("tabindex", tabIndex);
-  }
-
-  public String getType()
-  {
-    return getHTMLAttribute("type");
+    setHTMLAttribute("charoff", chOff);
   }
   
-  public String getValue()
+  public String getVAlign()
   {
-    return getHTMLAttribute("value");
+    return getHTMLAttribute("valign");
   }
 
-  public void setValue(String value)
+  public void setVAlign(String vAlign)
   {
-    setHTMLAttribute("value", value);
+    setHTMLAttribute("valign", vAlign);
+  }
+
+  public HTMLElement insertCell(int index)
+  {
+    // TODO
+    return null;
+  }
+
+  public void deleteCell(int index)
+  {
+    // TODO
   }
   
 }

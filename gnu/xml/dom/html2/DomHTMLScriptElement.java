@@ -1,4 +1,4 @@
-/* DomHTMLButtonElement.java -- 
+/* DomHTMLScriptElement.java -- 
    Copyright (C) 2005 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,84 +37,92 @@ exception statement from your version. */
 
 package gnu.xml.dom.html2;
 
-import org.w3c.dom.Node;
-import org.w3c.dom.html2.HTMLButtonElement;
-import org.w3c.dom.html2.HTMLFormElement;
+import org.w3c.dom.html2.HTMLScriptElement;
 
 /**
- * An HTML 'BUTTON' element node.
+ * An HTML 'SCRIPT' element node.
  *
  * @author <a href='mailto:dog@gnu.org'>Chris Burdess</a>
  */
-public class DomHTMLButtonElement
+public class DomHTMLScriptElement
   extends DomHTMLElement
-  implements HTMLButtonElement
+  implements HTMLScriptElement
 {
 
-  protected DomHTMLButtonElement(DomHTMLDocument owner, String namespaceURI,
+  protected DomHTMLScriptElement(DomHTMLDocument owner, String namespaceURI,
                                  String name)
   {
     super(owner, namespaceURI, name);
   }
 
-  public HTMLFormElement getForm()
+  public String getText()
   {
-    return (HTMLFormElement) getParentElement("form");
+    return getTextContent();
   }
 
-  public String getAccessKey()
+  public void setText(String text)
   {
-    return getHTMLAttribute("accesskey");
+    setTextContent(text);
   }
 
-  public void setAccessKey(String accessKey)
+  public String getHtmlFor()
   {
-    setHTMLAttribute("accesskey", accessKey);
-  }
-  
-  public boolean getDisabled()
-  {
-    return getBooleanHTMLAttribute("disabled");
+    return getHTMLAttribute("for");
   }
 
-  public void setDisabled(boolean disabled)
+  public void setHtmlFor(String htmlFor)
   {
-    setBooleanHTMLAttribute("disabled", disabled);
-  }
-  
-  public String getName()
-  {
-    return getHTMLAttribute("name");
+    setHTMLAttribute("for", htmlFor);
   }
 
-  public void setName(String name)
+  public String getEvent()
   {
-    setHTMLAttribute("name", name);
-  }
-  
-  public int getTabIndex()
-  {
-    return getIntHTMLAttribute("tabindex");
+    return getHTMLAttribute("event");
   }
 
-  public void setTabIndex(int tabIndex)
+  public void setEvent(String event)
   {
-    setIntHTMLAttribute("tabindex", tabIndex);
+    setHTMLAttribute("event", event);
+  }
+
+  public String getCharset()
+  {
+    return getHTMLAttribute("charset");
+  }
+
+  public void setCharset(String charset)
+  {
+    setHTMLAttribute("charset", charset);
+  }
+
+  public boolean getDefer()
+  {
+    return getBooleanHTMLAttribute("defer");
+  }
+
+  public void setDefer(boolean defer)
+  {
+    setBooleanHTMLAttribute("defer", defer);
+  }
+
+  public String getSrc()
+  {
+    return getHTMLAttribute("src");
+  }
+
+  public void setSrc(String src)
+  {
+    setHTMLAttribute("src", src);
   }
 
   public String getType()
   {
     return getHTMLAttribute("type");
   }
-  
-  public String getValue()
-  {
-    return getHTMLAttribute("value");
-  }
 
-  public void setValue(String value)
+  public void setType(String type)
   {
-    setHTMLAttribute("value", value);
+    setHTMLAttribute("type", type);
   }
   
 }
