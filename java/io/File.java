@@ -40,6 +40,8 @@ exception statement from your version. */
 package java.io;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 import gnu.java.io.PlatformHelper;
@@ -766,6 +768,28 @@ public class File implements Serializable, Comparable
   }
 
   /**
+   * @return A <code>URI</code> for this object.
+   */
+  public URI toURI()
+  {
+    String abspath = getAbsolutePath();
+
+    if (isDirectory())
+      abspath = abspath + separator;
+        
+    try
+      {
+	return new URI("file", "", abspath.replace(separatorChar, '/'));
+      }
+    catch (URISyntaxException use)
+      {
+        // Can't happen.
+        throw (InternalError) new InternalError("Unconvertible file: "
+						+ this).initCause(use);
+      }
+  }
+
+  /**
    * This method returns a <code>URL</code> with the <code>file:</code>
    * protocol that represents this file.  The exact form of this URL is
    * system dependent.
@@ -778,14 +802,10 @@ public class File implements Serializable, Comparable
   public URL toURL() throws MalformedURLException
   {
     String abspath = getAbsolutePath();
-    
-    try
-      {
-        if (new File(abspath).isDirectory())
-  	  abspath = abspath + separator;
-      }
-    catch(Exception _) { }
-        
+
+    if (isDirectory())
+      abspath = abspath + separator;
+
     return new URL("file", "", abspath.replace(separatorChar, '/'));
   }
 

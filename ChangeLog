@@ -1,3 +1,9 @@
+2004-04-30  Tom Tromey  <tromey@redhat.com>
+	    Mark Wielaard  <mark@klomp.org>
+
+	* java/io/File.java (toURI): New method.
+	(toURL): Use isDirectory() directly.
+
 2004-04-30  Ingo Proetel  <proetel@aicas.com>
 
 	* java/util/zip/InflaterInputStream.java (skip): Copied implementation
