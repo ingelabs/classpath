@@ -1,5 +1,5 @@
 /* EventListenerList.java --
-   Copyright (C) 2002 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,206 +37,197 @@ exception statement from your version. */
 
 package javax.swing.event;
 
-// Imports
 import java.io.Serializable;
 import java.util.EventListener;
+
 
 /**
  * EventListenerList
  * @author Andrew Selkirk
  */
-public class EventListenerList extends Object implements Serializable
+public class EventListenerList
+  extends Object
+  implements Serializable
 {
   static final long serialVersionUID = -5677132037850737084L;
 
-	//-------------------------------------------------------------
-	// Variables --------------------------------------------------
-	//-------------------------------------------------------------
-	
-	/**
-	 * Listener list
-	 */
-	protected	Object[]	listenerList	= null;
+  /**
+   * Listener list
+   */
+  protected Object[] listenerList = null;
+
+  
+  /**
+   * EventListenerList constructor
+   */
+  public EventListenerList()
+  {
+    listenerList = new Object[0];
+  }
 
 
-	//-------------------------------------------------------------
-	// Initialization ---------------------------------------------
-	//-------------------------------------------------------------
-	
-	/**
-	 * EventListenerList constructor
-	 */
-	public EventListenerList() {
-		listenerList = new Object[0];
-	} // EventListenerList()
+  /**
+   * Add Listener
+   * @param t Class type
+   * @param listener Listener to add
+   */
+  public void add(Class t, EventListener listener)
+  {
+    Object[] list;
+    int index;
+    Class checkClass;
+    EventListener checkListener;
 
-	
-	//-------------------------------------------------------------
-	// Methods ----------------------------------------------------
-	//-------------------------------------------------------------
+    // Create New list in anticipation that listener is not present
+    list = new Object[listenerList.length + 2];
 
-	/**
-	 * Add Listener
-	 * @param t Class type
-	 * @param listener Listener to add
-	 */
-	public void add(Class t, EventListener listener) {
+    // Search through list looking for listener
+    for (index = 0; index < listenerList.length; index += 2)
+      {
+        checkClass = (Class) listenerList[index];
+        checkListener = (EventListener) listenerList[index + 1];
+        if (checkClass.equals(t) == true &&
+            checkListener.equals(listener) == true)
+          return;
+      }
 
-		// Variables
-		Object[]		list;
-		int				index;
-		Class			checkClass;
-		EventListener	checkListener;
+    // Add Listener
+    list[listenerList.length] = t;
+    list[listenerList.length + 1] = listener;
 
-		// Create New list in anticipation that listener is not present
-		list = new Object[listenerList.length + 2];
-
-		// Search through list looking for listener
-		for (index = 0; index < listenerList.length; index += 2) {
-			checkClass = (Class) listenerList[index];
-			checkListener = (EventListener) listenerList[index + 1];
-			if (checkClass.equals(t) == true &&
-				checkListener.equals(listener) == true) {
-				return;
-			} // if
-		} // for
-
-		// Add Listener
-		list[listenerList.length] = t;
-		list[listenerList.length + 1] = listener;
-
-		// Replace Listener List
-		listenerList = list;
-
-	} // add()
-
-	/**
-	 * Get the total number of listeners
-	 * @return Count of listeners
-	 */
-	public int getListenerCount() {
-		return (int) listenerList.length / 2;
-	} // getListenerCount
-
-	/**
-	 * Get the number of listeners of a particular type
-	 * @param t Class type to count
-	 * @returns Count of the specified listeners
-	 */
-	public int getListenerCount(Class t) {
-
-		// Variables
-		int		index;
-		int		count;
-		String	name;
-
-		// Loop through entire list
-		count = 0;
-		name  = t.getName();
-		for (index = 0; index < listenerList.length; index += 2) {
-			if (((Class) listenerList[index]).getName().equals(name) == true) {
-				count += 1;
-			}
-		} // for: index
-
-		// Return Count
-		return count;
-
-	} // getListenerCount()
-
-	/**
-	 * Get a list of listenerType/listener pairs
-	 * @returns Listener list
-	 */
-	public Object[] getListenerList() {
-		return listenerList;
-	} // getListenerList()
-
-	/**
-	 * Get list of listeners of a particular type
-	 * @param c Class type
-	 * @returns List of listeners of the specified type
-	 */
-	public EventListener[] getListeners(Class c) {
-
-		// Variables
-		int					count;
-		EventListener[]		list;
-		String				name;
-		int					index;
-
-		// Get count of listeners
-		count = getListenerCount(c);
-
-		// Create Event Listener list
-		list = new EventListener[count];
-
-		// Construct List
-		count = 0;
-		name  = c.getName();
-		for (index = 0; index < listenerList.length; index += 2) {
-			if (((Class) listenerList[index]).getName().equals(name) == true) {
-				list[count] = (EventListener) listenerList[index];
-				count += 1;
-			} // if
-		} // for: index
-
-		// Return List
-		return list;
-
-	} // getListeners()
-
-	/**
-	 * Remove a listener
-	 * @param t Class type
-	 * @param listener Listener to be removed
-	 */
-	public void remove(Class t, EventListener listener) {
-
-		// Variables
-		Object[]		list;
-		int				index;
-		Class			checkClass;
-		EventListener	checkListener;
-		int				pointer;
-		boolean			found;
-
-		// Create New list in anticipation that listener is not present
-		if (listenerList.length == 0) {
-			return;
-		} // if
-		list = new Object[listenerList.length - 2];
-
-		// Search through list looking for listener
-		pointer = 0;
-		found = false;
-		for (index = 0; index < listenerList.length - 2; index += 2) {
-			checkClass = (Class) listenerList[index];
-			checkListener = (EventListener) listenerList[index + 1];
-			if (checkClass.equals(t) == false ||
-				checkListener.equals(listener) == false) {
-				list[pointer] = checkClass;
-				list[pointer + 1] = checkListener;
-				pointer += 2;
-			} else {
-				found = true;
-			} // if
-		} // for
-
-		// Replace Listener List
-		if (found == true) {
-			listenerList = list;
-		} // if
-
-	} // remove()
-
-	/**
-	 * Get a string representation
-	 * @returns String representation
-	 */
-	public String toString() {
-		return null; // TODO
-	} // toString()
+    // Replace Listener List
+    listenerList = list;
+  }
 
 
-} // EventListenerList
+  /**
+   * Gets the total number of listeners.
+   * @return Count of listeners
+   */
+  public int getListenerCount()
+  {
+    return (int) listenerList.length / 2;
+  }
+
+
+  /**
+   * Get the number of listeners of a particular type
+   * @param t Class type to count
+   * @returns Count of the specified listeners
+   */
+  public int getListenerCount(Class t)
+  {
+    int index;
+    int count;
+    String name;
+
+    // Loop through entire list
+    count = 0;
+    name  = t.getName();
+    for (index = 0; index < listenerList.length; index += 2)
+      {
+        if (((Class) listenerList[index]).getName().equals(name) == true)
+          count += 1;
+      }
+
+    return count;
+  }
+
+
+  /**
+   * Get a list of listenerType/listener pairs
+   * @returns Listener list
+   */
+  public Object[] getListenerList()
+  {
+    return listenerList;
+  }
+
+
+  /**
+   * Get list of listeners of a particular type
+   * @param c Class type
+   * @returns List of listeners of the specified type
+   */
+  public EventListener[] getListeners(Class c)
+  {
+    int count;
+    EventListener[] list;
+    String name;
+    int index;
+
+    // Get count of listeners
+    count = getListenerCount(c);
+
+    // Create Event Listener list
+    list = new EventListener[count];
+
+    // Construct List
+    count = 0;
+    name  = c.getName();
+    for (index = 0; index < listenerList.length; index += 2)
+      {
+        if (((Class) listenerList[index]).getName().equals(name))
+          {
+            list[count] = (EventListener) listenerList[index];
+            count += 1;
+          }
+      }
+
+    return list;
+  }
+
+
+  /**
+   * Remove a listener
+   * @param t Class type
+   * @param listener Listener to be removed
+   */
+  public void remove(Class t, EventListener listener)
+  {
+    Object[] list;
+    int index;
+    Class checkClass;
+    EventListener checkListener;
+    int pointer;
+    boolean found;
+
+    // Create New list in anticipation that listener is not present
+    if (listenerList.length == 0)
+      return;
+
+    list = new Object[listenerList.length - 2];
+
+    // Search through list looking for listener
+    pointer = 0;
+    found = false;
+    for (index = 0; index < listenerList.length - 2; index += 2)
+      {
+        checkClass = (Class) listenerList[index];
+        checkListener = (EventListener) listenerList[index + 1];
+        if (checkClass.equals(t) == false ||
+            checkListener.equals(listener) == false)
+          {
+            list[pointer] = checkClass;
+            list[pointer + 1] = checkListener;
+            pointer += 2;
+          }
+        else
+          found = true;
+      }
+
+    // Replace Listener List
+    if (found == true)
+      listenerList = list;
+  }
+
+
+  /**
+   * Get a string representation
+   * @returns String representation
+   */
+  public String toString()
+  {
+    return null; // TODO
+  }
+}
