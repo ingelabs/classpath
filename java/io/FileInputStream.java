@@ -147,17 +147,7 @@ FileInputStream(FileDescriptor fd) throws SecurityException
 
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
-    {
-//      try
-//        {
-          //sm.checkRead(fd);
-          throw new SecurityException("ffo");
-//        }
-//      catch (AccessControlException e)
-//        {
-//          throw new SecurityException(e.getMessage());
-//        }
-    }
+    sm.checkRead(fd);
 
   native_fd = fd.getNativeFD();
 }
