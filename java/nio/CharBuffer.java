@@ -43,6 +43,7 @@ import gnu.java.nio.CharBufferImpl;
  * @since 1.4
  */
 public abstract class CharBuffer extends Buffer
+  implements Comparable, CharSequence
 {
   private ByteOrder endian = ByteOrder.BIG_ENDIAN;
 
@@ -154,6 +155,35 @@ public abstract class CharBuffer extends Buffer
     
     return false;
   }
+
+  public abstract CharSequence subSequence (int start, int end);
+
+  public final int length ()
+  {
+    return limit ();
+  }
+
+  public final char charAt (int i)
+  {
+    if (hasArray ())
+      {
+	return backing_buffer[i];
+      }
+
+    // FIXME: there must be a more elegant way of doing this.
+    return toString ().charAt (i);
+  }
+
+  public String toString()
+  {
+    if (hasArray ())
+      {
+	return new String (backing_buffer);
+      }
+
+    // FIXME: Implement this.
+    return "";
+  }
  
   public int compareTo(Object obj)
   {
@@ -191,9 +221,9 @@ public abstract class CharBuffer extends Buffer
   }
   
   public abstract char get();
-  public abstract java.nio. CharBuffer put(char b);
+  public abstract CharBuffer put(char b);
   public abstract char get(int index);
-  public abstract java.nio. CharBuffer put(int index, char b);
+  public abstract CharBuffer put(int index, char b);
   public abstract CharBuffer compact();
   public abstract boolean isDirect();
   public abstract CharBuffer slice();

@@ -36,15 +36,24 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 package gnu.java.nio;
-import java.nio.*;
+
 import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.DoubleBuffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
+import java.nio.LongBuffer;
+import java.nio.ShortBuffer;
+
 final public class MappedCharFileBuffer
- extends CharBuffer
+  extends CharBuffer
 {
   public long address;
   boolean ro;
   boolean direct;
   public FileChannelImpl ch;
+
   public MappedCharFileBuffer(FileChannelImpl ch)
   {
     this.ch = ch;
@@ -56,6 +65,7 @@ final public class MappedCharFileBuffer
       System.err.println("failed to get size of file-channel's file");
     }
   }
+
   public MappedCharFileBuffer(MappedCharFileBuffer b)
   {
     this.ro = b.ro;
@@ -63,55 +73,72 @@ final public class MappedCharFileBuffer
     address = b.address;
     limit(b.limit());
   }
+
   public boolean isReadOnly()
   {
     return ro;
   }
-final public char get()
+  
+  final public char get()
   {
     char a = MappedByteFileBuffer.nio_read_Char_file_channel(ch, position(), limit(), address);
     position(position() + 2);
     return a;
   }
-final public CharBuffer put(char b)
+
+  final public CharBuffer put(char b)
   {
     MappedByteFileBuffer.nio_write_Char_file_channel(ch, position(), limit(), b, address);
     position(position() + 2);
     return this;
   }
-final public char get(int index)
+
+  final public char get(int index)
   {
     char a = MappedByteFileBuffer.nio_read_Char_file_channel(ch, index, limit(), address);
     return a;
   }
-final public CharBuffer put(int index, char b)
+
+  final public CharBuffer put(int index, char b)
   {
     MappedByteFileBuffer.nio_write_Char_file_channel(ch, index, limit(), b, address);
     return this;
   }
-final public CharBuffer compact()
+
+  final public CharBuffer compact()
   {
     return this;
   }
-final public boolean isDirect()
+
+  final public boolean isDirect()
   {
     return direct;
   }
-final public CharBuffer slice()
+
+  final public CharSequence subSequence (int start, int end)
+  {
+    // FIXME
+    return null;
+  }
+
+  final public CharBuffer slice()
   {
     MappedCharFileBuffer A = new MappedCharFileBuffer(this);
     return A;
   }
-public CharBuffer duplicate()
+
+  public CharBuffer duplicate()
   {
     return new MappedCharFileBuffer(this);
   }
-public CharBuffer asReadOnlyBuffer()
+
+  public CharBuffer asReadOnlyBuffer()
   {
     MappedCharFileBuffer b = new MappedCharFileBuffer(this);
     b.ro = true;
     return b;
   }
+
   final public ByteBuffer asByteBuffer() { ByteBuffer res = new MappedByteFileBuffer(ch); res.limit((limit()*2)/1); return res; } final public byte getByte() { byte a = MappedByteFileBuffer.nio_read_Byte_file_channel(ch, position(), limit(), address); position(position() + 2); return a; } final public CharBuffer putByte(byte value) { MappedByteFileBuffer.nio_write_Byte_file_channel(ch, position(), limit(), value, address); position(position() + 2); return this; } final public byte getByte(int index) { byte a = MappedByteFileBuffer.nio_read_Byte_file_channel(ch, index, limit(), address); return a; } final public CharBuffer putByte(int index, byte value) { MappedByteFileBuffer.nio_write_Byte_file_channel(ch, index, limit(), value, address); return this; };
   final public CharBuffer asCharBuffer() { CharBuffer res = new MappedCharFileBuffer(ch); res.limit((limit()*2)/2); return res; } final public char getChar() { char a = MappedByteFileBuffer.nio_read_Char_file_channel(ch, position(), limit(), address); position(position() + 2); return a; } final public CharBuffer putChar(char value) { MappedByteFileBuffer.nio_write_Char_file_channel(ch, position(), limit(), value, address); position(position() + 2); return this; } final public char getChar(int index) { char a = MappedByteFileBuffer.nio_read_Char_file_channel(ch, index, limit(), address); return a; } final public CharBuffer putChar(int index, char value) { MappedByteFileBuffer.nio_write_Char_file_channel(ch, index, limit(), value, address); return this; };
   final public ShortBuffer asShortBuffer() { ShortBuffer res = new MappedShortFileBuffer(ch); res.limit((limit()*2)/2); return res; } final public short getShort() { short a = MappedByteFileBuffer.nio_read_Short_file_channel(ch, position(), limit(), address); position(position() + 2); return a; } final public CharBuffer putShort(short value) { MappedByteFileBuffer.nio_write_Short_file_channel(ch, position(), limit(), value, address); position(position() + 2); return this; } final public short getShort(int index) { short a = MappedByteFileBuffer.nio_read_Short_file_channel(ch, index, limit(), address); return a; } final public CharBuffer putShort(int index, short value) { MappedByteFileBuffer.nio_write_Short_file_channel(ch, index, limit(), value, address); return this; };

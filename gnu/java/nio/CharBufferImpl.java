@@ -87,6 +87,7 @@ public final class CharBufferImpl extends CharBuffer
   private static native char[] nio_cast(int[]copy);
   private static native char[] nio_cast(float[]copy);
   private static native char[] nio_cast(double[]copy);
+
   CharBufferImpl(byte[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native byte nio_get_Byte(CharBufferImpl b, int index, int limit); private static native void nio_put_Byte(CharBufferImpl b, int index, int limit, byte value); public ByteBuffer asByteBuffer() { ByteBufferImpl res = new ByteBufferImpl(backing_buffer); res.limit((limit()*1)/2); return res; }
   CharBufferImpl(char[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native char nio_get_Char(CharBufferImpl b, int index, int limit); private static native void nio_put_Char(CharBufferImpl b, int index, int limit, char value); public CharBuffer asCharBuffer() { CharBufferImpl res = new CharBufferImpl(backing_buffer); res.limit((limit()*2)/2); return res; }
   CharBufferImpl(short[] copy) { this.backing_buffer = copy != null ? nio_cast(copy) : null; } private static native short nio_get_Short(CharBufferImpl b, int index, int limit); private static native void nio_put_Short(CharBufferImpl b, int index, int limit, short value); public ShortBuffer asShortBuffer() { ShortBufferImpl res = new ShortBufferImpl(backing_buffer); res.limit((limit()*2)/2); return res; }
@@ -127,6 +128,12 @@ public final class CharBufferImpl extends CharBuffer
   public boolean isDirect()
   {
     return backing_buffer != null;
+  }
+
+  final public CharSequence subSequence (int start, int end)
+  {
+    // FIXME
+    return null;
   }
   
   final public char get()

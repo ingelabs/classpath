@@ -1,5 +1,19 @@
 2002-11-22  Michael Koch <konqueror@gmx.de>
 
+	* gnu/java/nio/CharBufferImpl.java
+	(subSequence): New stubbed method.
+	* gnu/java/nio/MappedCharFileBuffer.java:
+	Reindented.
+	(subSequence): New stubbed method.
+	* java/nio/CharBuffer.java
+	(CharBuffer): Implements Comparable and CharSequence.
+	(lenght): New method.
+	(charAt): New method.
+	(toString): New method.
+	(put): Removed unneeded "java.nio." prefix.
+
+2002-11-22  Michael Koch <konqueror@gmx.de>
+
 	* java/nio/channels/Channels.java:
 	Reindented, documentation added.
 	(newInputStream): Documentation added.
