@@ -641,7 +641,7 @@ same serial #, because their .class files differ. However, once you
 have a .class file, its serial # is unique, and the computation will
 give the same result no matter what platform you execute on.
 
-Serialzation compatibility can be tested using tools provided with
+Serialization compatibility can be tested using tools provided with
 @uref{http://www.kaffe.org/~stuart/japi/,Japitools}.  These
 tools can test binary serialization compatibility and also provide
 information about unknown serialized formats by writing these in XML
