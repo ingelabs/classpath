@@ -28,9 +28,18 @@ public class GdkGraphics extends Graphics
 
   public native void clearRect (int x, int y, int width, int height);
 
+  native void clipRect (int x1, int y1, int width1, int height1,
+			int x2, int y2, int width2, int height2);
+
   public void clipRect (int x, int y, int width, int height)
   {
-    System.out.println ("clipRect");
+    clipRect (clip.x, clip.y, clip.width, clip.height,
+	      x, y, width, height);
+
+    clip.x = x;
+    clip.y = y;
+    clip.width = width;
+    clip.height = height;
   }
 
   public void copyArea (int x, int y, int width, int height, int dx, int dy)

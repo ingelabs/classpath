@@ -348,3 +348,32 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_setClipRectangle
   gdk_gc_set_clip_rectangle (g->gc, &rectangle);
   gdk_threads_leave ();
 }
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_clipRect
+  (JNIEnv *env, jobject obj, jint x1, jint y1, jint width1, jint height1, 
+   jint x2, jint y2, jint width2, jint height2)
+{
+  struct graphics *g;
+  GdkRectangle cur_clip, req_clip, new_clip;
+
+  g = (struct graphics *) NSA_GET_PTR (env, obj);
+
+  cur_clip.x = x1;
+  cur_clip.y = y1;
+  cur_clip.width = width1;
+  cur_clip.height = height1;
+  
+  req_clip.x = x2;
+  req_clip.y = y2;
+  req_clip.width = width2;
+  req_clip.height = height2;
+
+  gdk_rectangle_intersect (&cur_clip, &req_clip, &new_clip);
+  
+  new_clip.x += g->x_offset;
+  new_clip.y += g->y_offset;
+
+  gdk_threads_enter ();
+  gdk_gc_set_clip_rectangle (g->gc, &new_clip);
+  gdk_threads_leave ();
+}
