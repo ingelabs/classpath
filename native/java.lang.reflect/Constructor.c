@@ -9,7 +9,6 @@
 #include "reflect.h"
 #include <jcl.h>
 #include <native_state.h>
-#include <jnilink.h>
 #include <vmi.h>
 #include <primlib.h>
 
@@ -24,7 +23,6 @@ GetTheMethodID(JNIEnv * env, jobject thisObj, jclass declarer,
 static jmethodID
 GetTheMethodID(JNIEnv * env, jobject thisObj, jclass declarer,
 				jstring name, jobjectArray targetArgTypes) {
-	linkPtr l;
 	char * signature;
 	jmethodID m;
 
@@ -32,31 +30,31 @@ GetTheMethodID(JNIEnv * env, jobject thisObj, jclass declarer,
 		return NULL;
 	}
 
-	l = (linkPtr)get_state(env, thisObj, table);
+	m = (jmethodID)get_state(env, thisObj, table);
 
-	if(l == NULL) {
+	if(m == NULL) {
 		signature = JCL_malloc(env, sizeof(char) * MAX_SIGNATURE_SIZE);
 		if(signature == NULL) {
+			JCL_MonitorExit(env, thisObj);
 			return NULL;
 		}
 
 		if(REFLECT_GetConstructorSignature(env, signature, targetArgTypes) == -1) {
+			JCL_free(env, signature);
+			JCL_MonitorExit(env, thisObj);
 			return NULL;
 		}
-		if(LINK_LinkConstructor(env, &l, declarer, signature) == NULL) {
-			return NULL;
-		}
+		m = (*env)->GetMethodID(env, declarer, "<init>", signature);
 
-		free(signature);
+		JCL_free(env, signature);
 
-		set_state(env, thisObj, table, l);
+		set_state(env, thisObj, table, m);
 	}
 
 	if(JCL_MonitorExit(env, thisObj) != 0) {
 		return NULL;
 	}
 
-	m = LINK_ResolveMethod(env, l);
 	return m;
 }
 

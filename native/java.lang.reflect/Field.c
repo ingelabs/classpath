@@ -3,16 +3,14 @@
 #include <primlib.h>
 #include <native_state.h>
 #include <jcl.h>
-#include <jnilink.h>
 #include <vmi.h>
 
 #include <malloc.h>
 static struct state_table* table;
 
-static jfieldID GetTheStaticFieldID(JNIEnv * env, jobject thisObj,
-									jstring name, jclass declarer, jclass type);
-static jfieldID GetTheInstanceFieldID(JNIEnv * env, jobject thisObj,
-									  jstring name, jclass declarer, jclass type);
+static jfieldID GetTheFieldID(JNIEnv * env, jobject thisObj,
+									jstring name, jclass declarer, jclass type, int isStatic);
+
 static void DoInitialChecking(JNIEnv * env, jobject invokeObj,
 								  jclass declaringClass, jint modifiers);
 
@@ -34,9 +32,7 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_initNativeState
  */
 JNIEXPORT void JNICALL Java_java_lang_reflect_Field_finalizeNative
 (JNIEnv * env, jobject thisObj) {
-	linkPtr l;
-	l = (linkPtr) remove_state_slot (env, thisObj, table);
-	LINK_UnlinkField(env, l);
+	remove_state_slot (env, thisObj, table);
 }
 
 /*
@@ -52,7 +48,7 @@ JNIEXPORT jobject JNICALL Java_java_lang_reflect_Field_getNative
 		return NULL;
 
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_BOOLEAN))) {
 			return PRIMLIB_WrapBoolean(env, (*env)->GetStaticBooleanField(env, declaringClass, f));
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_BYTE))) {
@@ -73,7 +69,7 @@ JNIEXPORT jobject JNICALL Java_java_lang_reflect_Field_getNative
 			return (*env)->GetStaticObjectField(env, declaringClass, f);
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_BOOLEAN))) {
 			return PRIMLIB_WrapBoolean(env, (*env)->GetBooleanField(env, getObj, f));
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_BYTE))) {
@@ -108,7 +104,7 @@ JNIEXPORT jboolean JNICALL Java_java_lang_reflect_Field_getBooleanNative
 	if((*env)->ExceptionOccurred(env))
 		return JNI_FALSE;
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,TRUE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_BOOLEAN))) {
 			return (*env)->GetStaticBooleanField(env, declaringClass, f);
 		} else {
@@ -116,7 +112,7 @@ JNIEXPORT jboolean JNICALL Java_java_lang_reflect_Field_getBooleanNative
 			return JNI_FALSE;
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_BOOLEAN))) {
 			return (*env)->GetBooleanField(env, getObj, f);
 		} else {
@@ -139,7 +135,7 @@ JNIEXPORT jbyte JNICALL Java_java_lang_reflect_Field_getByteNative
 		return 0;
 
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,TRUE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_BYTE))) {
 			return (*env)->GetStaticByteField(env, declaringClass, f);
 		} else {
@@ -147,7 +143,7 @@ JNIEXPORT jbyte JNICALL Java_java_lang_reflect_Field_getByteNative
 			return 0;
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_BYTE))) {
 			return (*env)->GetByteField(env, getObj, f);
 		} else {
@@ -170,7 +166,7 @@ JNIEXPORT jchar JNICALL Java_java_lang_reflect_Field_getCharNative
 		return 0;
 
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,TRUE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_CHAR))) {
 			return (*env)->GetStaticCharField(env, declaringClass, f);
 		} else {
@@ -178,11 +174,11 @@ JNIEXPORT jchar JNICALL Java_java_lang_reflect_Field_getCharNative
 			return 0;
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_CHAR))) {
 			return (*env)->GetCharField(env, getObj, f);
 		} else {
-			JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Tried to access non-byte field as char.");
+			JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Tried to access non-char field as char.");
 			return 0;
 		}
 	}
@@ -201,7 +197,7 @@ JNIEXPORT jshort JNICALL Java_java_lang_reflect_Field_getShortNative
 		return 0;
 
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,TRUE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_SHORT))) {
 			return (*env)->GetStaticShortField(env, declaringClass, f);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_BYTE))) {
@@ -211,7 +207,7 @@ JNIEXPORT jshort JNICALL Java_java_lang_reflect_Field_getShortNative
 			return 0;
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_SHORT))) {
 			return (*env)->GetShortField(env, declaringClass, f);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_BYTE))) {
@@ -236,7 +232,7 @@ JNIEXPORT jint JNICALL Java_java_lang_reflect_Field_getIntNative
 		return 0;
 
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,TRUE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_INT))) {
 			return (*env)->GetStaticIntField(env, declaringClass, f);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_CHAR))) {
@@ -250,7 +246,7 @@ JNIEXPORT jint JNICALL Java_java_lang_reflect_Field_getIntNative
 			return 0;
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_INT))) {
 			return (*env)->GetIntField(env, declaringClass, f);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_CHAR))) {
@@ -279,7 +275,7 @@ JNIEXPORT jlong JNICALL Java_java_lang_reflect_Field_getLongNative
 		return 0;
 
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,TRUE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_LONG))) {
 			return (*env)->GetStaticLongField(env, declaringClass, f);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_INT))) {
@@ -295,7 +291,7 @@ JNIEXPORT jlong JNICALL Java_java_lang_reflect_Field_getLongNative
 			return 0;
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_LONG))) {
 			return (*env)->GetLongField(env, declaringClass, f);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_INT))) {
@@ -326,7 +322,7 @@ JNIEXPORT jfloat JNICALL Java_java_lang_reflect_Field_getFloatNative
 		return 0;
 
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,TRUE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_FLOAT))) {
 			return (*env)->GetStaticFloatField(env, declaringClass, f);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_LONG))) {
@@ -344,7 +340,7 @@ JNIEXPORT jfloat JNICALL Java_java_lang_reflect_Field_getFloatNative
 			return 0;
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_FLOAT))) {
 			return (*env)->GetFloatField(env, declaringClass, f);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_LONG))) {
@@ -377,7 +373,7 @@ JNIEXPORT jdouble JNICALL Java_java_lang_reflect_Field_getDoubleNative
 		return 0;
 
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,TRUE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_DOUBLE))) {
 			return (*env)->GetStaticDoubleField(env, declaringClass, f);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_FLOAT))) {
@@ -397,7 +393,7 @@ JNIEXPORT jdouble JNICALL Java_java_lang_reflect_Field_getDoubleNative
 			return 0;
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_DOUBLE))) {
 			return (*env)->GetDoubleField(env, declaringClass, f);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_FLOAT))) {
@@ -432,7 +428,7 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_setNative
 		return;
 
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,TRUE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeWrapClass(env, PRIMLIB_BOOLEAN))) {
 			(*env)->SetStaticBooleanField(env, declaringClass, f, PRIMLIB_UnwrapBoolean(env, val));
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeWrapClass(env, PRIMLIB_BYTE))) {
@@ -453,7 +449,7 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_setNative
 			(*env)->SetStaticObjectField(env, declaringClass, f, val);
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeWrapClass(env, PRIMLIB_BOOLEAN))) {
 			(*env)->SetBooleanField(env, setObj, f, PRIMLIB_UnwrapBoolean(env, val));
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeWrapClass(env, PRIMLIB_BYTE))) {
@@ -489,14 +485,14 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_setBooleanNative
 		return;
 
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,TRUE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_BOOLEAN))) {
 			(*env)->SetStaticBooleanField(env, declaringClass, f, val);
 		} else {
 			JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Tried to access non-boolean field as a boolean.");
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_BOOLEAN))) {
 			(*env)->SetBooleanField(env, setObj, f, val);
 		} else {
@@ -518,7 +514,7 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_setByteNative
 		return;
 
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,TRUE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_DOUBLE))) {
 			(*env)->SetStaticDoubleField(env, declaringClass, f, val);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_FLOAT))) {
@@ -535,7 +531,7 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_setByteNative
 			JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Cannot convert byte to field type.");
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_DOUBLE))) {
 			(*env)->SetDoubleField(env, setObj, f, val);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_FLOAT))) {
@@ -569,7 +565,7 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_setCharNative
 		return;
 
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,TRUE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_DOUBLE))) {
 			(*env)->SetStaticDoubleField(env, declaringClass, f, val);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_FLOAT))) {
@@ -584,7 +580,7 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_setCharNative
 			JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Cannot convert char to field type.");
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_DOUBLE))) {
 			(*env)->SetDoubleField(env, setObj, f, val);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_FLOAT))) {
@@ -614,7 +610,7 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_setShortNative
 		return;
 
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,TRUE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_DOUBLE))) {
 			(*env)->SetStaticDoubleField(env, declaringClass, f, val);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_FLOAT))) {
@@ -629,7 +625,7 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_setShortNative
 			JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Cannot convert short to field type.");
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_DOUBLE))) {
 			(*env)->SetDoubleField(env, setObj, f, val);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_FLOAT))) {
@@ -659,7 +655,7 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_setIntNative
 		return;
 
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,TRUE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_DOUBLE))) {
 			(*env)->SetStaticDoubleField(env, declaringClass, f, val);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_FLOAT))) {
@@ -672,7 +668,7 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_setIntNative
 			JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Cannot convert int to field type.");
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_DOUBLE))) {
 			(*env)->SetDoubleField(env, setObj, f, val);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_FLOAT))) {
@@ -700,7 +696,7 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_setLongNative
 		return;
 
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,TRUE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_DOUBLE))) {
 			(*env)->SetStaticDoubleField(env, declaringClass, f, (jdouble)val);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_FLOAT))) {
@@ -711,7 +707,7 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_setLongNative
 			JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Cannot convert long to field type.");
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_DOUBLE))) {
 			(*env)->SetDoubleField(env, setObj, f, (jdouble)val);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_FLOAT))) {
@@ -737,7 +733,7 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_setFloatNative
 		return;
 
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,TRUE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_DOUBLE))) {
 			(*env)->SetStaticDoubleField(env, declaringClass, f, val);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_FLOAT))) {
@@ -746,7 +742,7 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_setFloatNative
 			JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Cannot convert float to field type.");
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_DOUBLE))) {
 			(*env)->SetDoubleField(env, setObj, f, val);
 		} else if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_FLOAT))) {
@@ -770,14 +766,14 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_setDoubleNative
 		return;
 
 	if(modifiers & VMI_MOD_STATIC) {
-		f = GetTheStaticFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,TRUE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_DOUBLE))) {
 			(*env)->SetStaticDoubleField(env, declaringClass, f, val);
 		} else {
 			JCL_ThrowException(env, "java/lang/IllegalArgumentException", "Cannot convert double to field type.");
 		}
 	} else {
-		f = GetTheInstanceFieldID(env,thisObj,fieldName,declaringClass,type);
+		f = GetTheFieldID(env,thisObj,fieldName,declaringClass,type,FALSE);
 		if((*env)->IsAssignableFrom(env, type, PRIMLIB_GetNativeTypeClass(env, PRIMLIB_DOUBLE))) {
 			(*env)->SetDoubleField(env, setObj, f, val);
 		} else {
@@ -789,89 +785,55 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Field_setDoubleNative
 
 
 
-static jfieldID GetTheStaticFieldID(JNIEnv * env, jobject thisObj, jstring name, jclass declarer, jclass type) {
-	linkPtr l;
+static jfieldID GetTheFieldID(JNIEnv * env, jobject thisObj, jstring name, jclass declarer, jclass type, int isStatic) {
 	char * nameUTF;
 	char * signature;
+	jfieldID f;
 
 	if(JCL_MonitorEnter(env, thisObj) != 0) {
 		return NULL;
 	}
 
-	l = (linkPtr)get_state(env, thisObj, table);
+	f = (jfieldID)get_state(env, thisObj, table);
 
-	if(l == NULL) {
+	if(f == NULL) {
 		nameUTF = JCL_jstring_to_cstring(env, name);
 		if(nameUTF == NULL) {
+			JCL_MonitorExit(env, thisObj);
 			return NULL;
 		}
 
 		signature = JCL_malloc(env, sizeof(char) * MAX_SIGNATURE_SIZE);
 		if(signature == NULL) {
+			JCL_free_cstring(env, name, nameUTF);
+			JCL_MonitorExit(env, thisObj);
 			return NULL;
 		}
 
 		if(REFLECT_GetFieldSignature(env, signature, type) == -1) {
+			JCL_free_cstring(env, name, nameUTF);
+			JCL_free(env,signature);
+			JCL_MonitorExit(env, thisObj);
 			JCL_ThrowException(env, "java/lang/NullPointerException", "Null class in argTypes[]");
 			return NULL;
 		}
-		if(LINK_LinkStaticField(env, &l, declarer, nameUTF, signature) == NULL)
-			return NULL;
+		if(isStatic) {
+			f = (*env)->GetStaticFieldID(env, declarer, nameUTF, signature);
+		} else {
+			f = (*env)->GetFieldID(env, declarer, nameUTF, signature);
+		}
 
 		JCL_free_cstring(env, name, nameUTF);
-		free(signature);
+		JCL_free(env,signature);
 
-		set_state(env, thisObj, table, l);
+		set_state(env, thisObj, table, f);
 	}
 
 	if(JCL_MonitorExit(env, thisObj) != 0) {
 		return NULL;
 	}
 
-	return LINK_ResolveStaticField(env, l);
-}
-
-static jfieldID GetTheInstanceFieldID(JNIEnv * env, jobject thisObj,
-									  jstring name, jclass declarer, jclass type) {
-	linkPtr l;
-	char * nameUTF;
-	char * signature;
-
-	if(JCL_MonitorEnter(env, thisObj) != 0) {
-		return NULL;
-	}
-
-	l = (linkPtr)get_state(env, thisObj, table);
-
-	if(l == NULL) {
-		nameUTF = JCL_jstring_to_cstring(env, name);
-		if(nameUTF == NULL) {
-			return NULL;
-		}
-
-		signature = JCL_malloc(env, sizeof(char) * MAX_SIGNATURE_SIZE);
-		if(signature == NULL) {
-			return NULL;
-		}
-
-		if(REFLECT_GetFieldSignature(env, signature, type) == -1) {
-			JCL_ThrowException(env, "java/lang/NullPointerException", "Null class in argTypes[]");
-			return NULL;
-		}
-		if(LINK_LinkField(env, &l, declarer, nameUTF, signature) == NULL)
-			return NULL;
-
-		JCL_free_cstring(env, name, nameUTF);
-		free(signature);
-
-		set_state(env, thisObj, table, l);
-	}
-
-	if(JCL_MonitorExit(env, thisObj) != 0) {
-		return NULL;
-	}
-
-	return LINK_ResolveField(env, l);
+	return f;
 }
 
 static void DoInitialChecking(JNIEnv * env, jobject invokeObj,

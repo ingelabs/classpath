@@ -11,7 +11,6 @@
 #include <vmi.h>
 #include <primlib.h>
 #include <native_state.h>
-#include <jnilink.h>
 
 #include <malloc.h>
 
@@ -22,11 +21,8 @@ static struct state_table *table;
 static jvalue * DoInitialCheckingAndConverting(JNIEnv * env, jobject invokeObj, jobjectArray args,
 											   jclass declaringClass, jobjectArray targetArgTypes,
 											   jint modifiers, jint argLength);
-static jmethodID GetTheStaticMethodID(JNIEnv * env, jobject thisObj, jclass declarer, jstring name,
-									  jobjectArray targetArgTypes, jclass retType);
-static jmethodID GetTheInstanceMethodID(JNIEnv * env, jobject thisObj, jobject theObj,
-										jclass declarer, jstring name, jobjectArray targetArgTypes,
-										jclass retType);
+static jmethodID GetTheMethodID(JNIEnv * env, jobject thisObj, jclass declarer, jstring name,
+									  jobjectArray targetArgTypes, jclass retType, int isStatic);
 
 /*
 Invoking the method:
@@ -144,8 +140,9 @@ static jvalue * DoInitialCheckingAndConverting(JNIEnv * env, jobject invokeObj, 
 	return retval;
 }
 
-static jmethodID GetTheStaticMethodID(JNIEnv * env, jobject thisObj, jclass declarer, jstring name, jobjectArray targetArgTypes, jclass retType) {
-	linkPtr l;
+
+
+static jmethodID GetTheMethodID(JNIEnv * env, jobject thisObj, jclass declarer, jstring name, jobjectArray targetArgTypes, jclass retType, int isStatic) {
 	char * nameUTF;
 	char * signature;
 	jmethodID m;
@@ -154,81 +151,45 @@ static jmethodID GetTheStaticMethodID(JNIEnv * env, jobject thisObj, jclass decl
 		return NULL;
 	}
 
-	l = (linkPtr)get_state(env, thisObj, table);
+	m = (jmethodID)get_state(env, thisObj, table);
 
-	if(l == NULL) {
+	if(m == NULL) {
 		nameUTF = JCL_jstring_to_cstring(env, name);
 		if(nameUTF == NULL) {
+			JCL_MonitorExit(env,thisObj);
 			return NULL;
 		}
 
 		signature = JCL_malloc(env, sizeof(char) * MAX_SIGNATURE_SIZE);
 		if(signature == NULL) {
+			JCL_free_cstring(env, name, nameUTF);
+			JCL_MonitorExit(env,thisObj);
 			return NULL;
 		}
 
 		if(REFLECT_GetMethodSignature(env, signature, targetArgTypes, retType) == -1) {
+			JCL_free(env, signature);
+			JCL_free_cstring(env, name, nameUTF);
+			JCL_MonitorExit(env,thisObj);
 			JCL_ThrowException(env, "java/lang/NullPointerException", "Null class in argTypes[]");
 			return NULL;
 		}
-		if(LINK_LinkStaticMethod(env, &l, declarer, nameUTF, signature) == NULL)
-			return NULL;
+		if(isStatic) {
+			m = (*env)->GetStaticMethodID(env, declarer, nameUTF, signature);
+		} else {
+			m = (*env)->GetMethodID(env, declarer, nameUTF, signature);
+		}
 
 		JCL_free_cstring(env, name, nameUTF);
-		free(signature);
+		JCL_free(env,signature);
 
-		set_state(env, thisObj, table, l);
+		set_state(env, thisObj, table, m);
 	}
 
 	if(JCL_MonitorExit(env, thisObj) != 0) {
 		return NULL;
 	}
 
-	m = LINK_ResolveStaticMethod(env, l);
-	return m;
-}
-
-static jmethodID GetTheInstanceMethodID(JNIEnv * env, jobject thisObj, jobject theObj, jclass declarer, jstring name, jobjectArray targetArgTypes, jclass retType) {
-	linkPtr l;
-	char * nameUTF;
-	char * signature;
-	jmethodID m;
-
-	if(JCL_MonitorEnter(env, thisObj) != 0) {
-		return NULL;
-	}
-
-	l = (linkPtr)get_state(env, thisObj, table);
-
-	if(l == NULL) {
-		nameUTF = JCL_jstring_to_cstring(env, name);
-		if(nameUTF == NULL) {
-			return NULL;
-		}
-
-		signature = JCL_malloc(env, sizeof(char) * MAX_SIGNATURE_SIZE);
-		if(signature == NULL) {
-			return NULL;
-		}
-
-		if(REFLECT_GetMethodSignature(env, signature, targetArgTypes, retType) == -1) {
-			JCL_ThrowException(env, "java/lang/NullPointerException", "Null class in argTypes[]");
-			return NULL;
-		}
-		if(LINK_LinkMethod(env, &l, declarer, nameUTF, signature) == NULL)
-			return NULL;
-
-		JCL_free_cstring(env, name, nameUTF);
-		free(signature);
-
-		set_state(env, thisObj, table, l);
-	}
-
-	if(JCL_MonitorExit(env, thisObj) != 0) {
-		return NULL;
-	}
-
-	m = LINK_ResolveMethod(env, l);
 	return m;
 }
 
@@ -258,9 +219,7 @@ JNIEXPORT void JNICALL Java_java_lang_reflect_Method_initNativeState (JNIEnv * e
  * Signature: (I)V
  */
 JNIEXPORT void JNICALL Java_java_lang_reflect_Method_finalizeNative(JNIEnv *env, jobject obj) {
-	linkPtr l;
-	l = (linkPtr) remove_state_slot (env, obj, table);
-	LINK_UnlinkMethod(env, l);
+	remove_state_slot (env, obj, table);
 }
 
 
@@ -298,7 +257,7 @@ JNIEXPORT jobject JNICALL Java_java_lang_reflect_Method_invokeNative
 	type = PRIMLIB_GetReflectiveType(env, returnType);
 
 	if(modifiers & VMI_MOD_STATIC) {
-		m = GetTheStaticMethodID(env, thisObj, declarer, name, parameterTypes, returnType);
+		m = GetTheMethodID(env, thisObj, declarer, name, parameterTypes, returnType,TRUE);
 		JCL_RETHROW_EXCEPTION(env);
 		switch(type) {
 			case PRIMLIB_BOOLEAN:
@@ -343,7 +302,7 @@ JNIEXPORT jobject JNICALL Java_java_lang_reflect_Method_invokeNative
 				return NULL;
 		}
 	} else {
-		m = GetTheInstanceMethodID(env, thisObj, invokeObj, declarer, name, parameterTypes, returnType);
+		m = GetTheMethodID(env, thisObj, declarer, name, parameterTypes, returnType,FALSE);
 		JCL_RETHROW_EXCEPTION(env);
 		switch(type) {
 			case PRIMLIB_BOOLEAN:
