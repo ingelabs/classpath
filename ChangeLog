@@ -1,5 +1,7 @@
 2004-08-06  Tom Tromey  <tromey@redhat.com>
 
+	* java/net/DatagramSocket.java: Fixed typo.
+
 	* java/awt/image/Kernel.java (clone): Use super.clone().
 
 2004-08-04  Patrik Reali  <reali@acm.org>
