@@ -27,10 +27,12 @@ AC_DEFUN(CLASSPATH_INTERNAL_CHECK_JAPHAR,
     exit 1
   fi
   AC_MSG_CHECKING(for Japhar)
-  JAPHAR_CFLAGS="`$JAPHAR_CONFIG --cflags`"
-  JAPHAR_JNI_LIBS="`$JAPHAR_CONFIG --jni-libs`"
+  JAPHAR_CFLAGS="`$JAPHAR_CONFIG compile`"
+  JAPHAR_LIBS="`$JAPHAR_CONFIG link`"
+  JVM="yes"
   AC_SUBST(JAPHAR_CFLAGS)
-  AC_SUBST(JAPHAR_JNI_LIBS)
+  AC_SUBST(JAPHAR_LIBS)
+  AC_SUBST(JVM)
   AM_CONDITIONAL(JAPHAR, test x = x)
   AC_MSG_RESULT(yes)
 ])
@@ -39,6 +41,8 @@ dnl CLASSPATH_INTERNAL_CHECK_KAFFE
 AC_DEFUN(CLASSPATH_INTERNAL_CHECK_KAFFE,
 [
   AC_MSG_CHECKING(for Kaffe)
+  JVM="no"
+  AC_SUBST(JVM)
   AC_MSG_ERROR(Help GNU Classpath support Kaffe!)
 ])
 
@@ -46,7 +50,7 @@ dnl CLASSPATH_CHECK_JAPHAR - checks for japhar
 AC_DEFUN(CLASSPATH_CHECK_JAPHAR,
 [
   AC_ARG_WITH(japhar, 
-  [  --with-japhar		  configure GNU Classpath for Japhar],
+  [  --with-japhar		  configure GNU Classpath for Japhar [default=yes]],
   [
     if test ${withval} = "yes" || test ${withval} = ""; then
       CLASSPATH_INTERNAL_CHECK_JAPHAR
@@ -58,7 +62,7 @@ dnl CLASSPATH_CHECK_KAFFE - checks for which java virtual machine to use
 AC_DEFUN(CLASSPATH_CHECK_KAFFE,
 [
   AC_ARG_WITH(kaffe, 
-  [  --with-kaffe		  configure GNU Classpath for Kaffe],
+  [  --with-kaffe		  configure GNU Classpath for Kaffe [default=no]],
   [   
     if test ${withval} = "yes" || test ${withval} = ""; then
       CLASSPATH_INTERNAL_CHECK_KAFFE
