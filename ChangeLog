@@ -1,4 +1,19 @@
-2002-12-29  Michael Koch  <konqueror@gmx.de>
+2002-12-20  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/nio/CharBufferImpl.java
+	gnu/java/nio/DoubleBufferImpl.java
+	gnu/java/nio/FileChannelImpl.java
+	gnu/java/nio/FloatBufferImpl.java
+	gnu/java/nio/IntBufferImpl.java
+	gnu/java/nio/LongBufferImpl.java
+	gnu/java/nio/ShortBufferImpl.java:
+	(nio_cast): Removed.
+	(*BufferImpl): Removed.
+	(nio_get_*): Removed.
+	(get_put_*): Removed.
+	(as*Buffer): Removed.
+
+2002-12-20  Michael Koch  <konqueror@gmx.de>
 
 	* java/nio/ByteBuffer.java:
 	Implements Comparable.
