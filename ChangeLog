@@ -1,3 +1,12 @@
+2003-06-11  Stephen Crawley  <crawley@dstc.edu.au>
+
+	* java/text/DateFormat.java (equals): The JDK behaviour is not to
+	include the Calendar object in the equality predicate.
+	* java/text/DateFormat.java (hashCode): Ditto.
+	* java/text/SimpleDateFormat.java (equals): The JDK behaviour is
+	not to include the century start Date in the equality  predicate.
+	* java/text/SimpleDateFormat.java (hashCode): New method.
+
 2003-06-11  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/PrintStream.java: Not deprecated.
