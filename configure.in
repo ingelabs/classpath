@@ -199,9 +199,6 @@ AC_PATH_PROG(ZIP, zip)
 
 AC_OUTPUT(Makefile
 doc/Makefile
-gnu/java/awt/peer/gtk/Makefile
-gnu/java/awt/peer/Makefile
-gnu/java/awt/Makefile
 gnu/java/io/decode/Makefile
 gnu/java/io/Makefile
 gnu/java/io/encode/Makefile
