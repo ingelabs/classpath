@@ -1,3 +1,8 @@
+2005-02-24  Audrius Meskauskas  <audriusa@bluewin.ch>
+   
+    * javax.swing.timer.java (Waker.run): firing the first action
+	event.
+
 2005-02-24  Chris Burdess  <dog@gnu.org>
 
 	* BASE64.java: Truncate encoded byte array.
