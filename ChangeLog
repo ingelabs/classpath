@@ -1,5 +1,9 @@
 2003-04-04  C. Brian Jones  <cbj@gnu.org>
 
+	* THANKYOU: added Archie Cobbs
+	
+2003-04-04  C. Brian Jones  <cbj@gnu.org>
+
 	* native/jni/java-io/java_io_FileDescriptor.c
 	(Java_java_io_FileDescriptor_nativeWriteBuf): return type is jlong
 	(Java_java_io_FileDescriptor_nativeWriteBuf): return type is jlong
