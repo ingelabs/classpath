@@ -1,3 +1,13 @@
+2004-06-15  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/SwingConstants.java
+	(NEXT): New constant.
+	(PREVIOUS): Likewise.
+	* javax/swing/UIManager.java
+	(LookAndFeel): Made public.
+	(LookAndFeel.getName): Likewise.
+	(LookAndFeel.getClassName): Likewise.
+
 2004-06-15  Jerry Quinn  <jlquinn@optonline.net>
 
 	* java/util/GregorianCalendar.java (computeTime):  Skip buggy formulae
