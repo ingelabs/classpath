@@ -1,3 +1,8 @@
+2003-10-20  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/net/protocol/http/Connection.java:
+	Reformated. Renamed some variables to match libgcj's version.
+
 2003-10-20  Sascha Brawer  <brawer@dandelis.ch>
 
 	* java/awt/geom/GeneralPath.java (getCurrentPoint): Return last

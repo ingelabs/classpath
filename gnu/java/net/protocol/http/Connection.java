@@ -1,5 +1,5 @@
 /* HttpURLConnection.java -- URLConnection class for HTTP protocol
-   Copyright (C) 1998, 2002, 2003 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -60,7 +60,14 @@ import gnu.java.net.HeaderFieldHelper;
  * This subclass of java.net.URLConnection models a URLConnection via
  * the HTTP protocol.
  *
- * @author Aaron M. Renn (arenn@urbanophile.com)
+ * Status: Minimal subset of functionality.  Proxies only partially
+ * handled; Redirects not yet handled.  FileNameMap handling needs to
+ * be considered.  useCaches, ifModifiedSince, and
+ * allowUserInteraction need consideration as well as doInput and
+ * doOutput.
+ * 
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @author Warren Levy <warrenl@cygnus.com>
  */
 public class Connection extends HttpURLConnection
 {
@@ -70,25 +77,25 @@ public class Connection extends HttpURLConnection
   private Socket socket;
 
   /**
-   * The InputStream for this connection
+   * The InputStream for this connection.
    */
-  private DataInputStream in_stream;
+  private DataInputStream inputStream;
 
   /**
    * The OutputStream for this connection
    */
-  private OutputStream out_stream;
+  private OutputStream outputStream;
 
   /**
-   * buffered_out_stream is a buffer to contain content of the HTTP request,
-   * and will be written to out_stream all at once
+   * bufferedOutputStream is a buffer to contain content of the HTTP request,
+   * and will be written to outputStream all at once
    */
-  private ByteArrayOutputStream buffered_out_stream;
+  private ByteArrayOutputStream bufferedOutputStream;
 
   /**
    * The PrintWriter for this connection (used internally)
    */
-  private PrintWriter out_writer;
+  private PrintWriter outputWriter;
 
   /**
    * This is the object that holds the header field information
@@ -118,24 +125,25 @@ public class Connection extends HttpURLConnection
     else
       socket = new Socket(url.getHost(), url.getPort());
 
-    out_stream = new BufferedOutputStream(socket.getOutputStream());
-    out_writer = new PrintWriter(new OutputStreamWriter(out_stream, "8859_1")); 
+    outputStream = new BufferedOutputStream(socket.getOutputStream());
+    outputWriter = new PrintWriter(new OutputStreamWriter(outputStream, "8859_1")); 
 
     connected = true;
   }
 
   /**
-   * write HTTP request header and content to out_writer
+   * Write HTTP request header and content to outputWriter.
    */
   void SendRequest() throws IOException
   {
-    // Send the request
-    out_writer.print(getRequestMethod() + " " + getURL().getFile()
-                     + " HTTP/1.1\r\n");
+    // Send request including any request properties that were set.
+    outputWriter.print (getRequestMethod() + " " + url.getFile()
+                        + " HTTP/1.1\r\n");
 
+    // Set additional HTTP headers.
     if (getRequestProperty ("host") == null)
       {
-        setRequestProperty ("Host", getURL().getHost());
+        setRequestProperty ("Host", url.getHost());
       }
     
     if (getRequestProperty ("Connection") == null)
@@ -159,48 +167,48 @@ public class Connection extends HttpURLConnection
         setRequestProperty ("Content-type", "application/x-www-form-urlencoded");
       }
 
-    // Write all req_props name-value pairs to the output writer
+    // Write all req_props name-value pairs to the output writer.
     Iterator itr = getRequestProperties().entrySet().iterator();
 
     while (itr.hasNext())
       {
         Map.Entry e = (Map.Entry) itr.next();
-        out_writer.print (e.getKey() + ": " + e.getValue() + "\r\n");
+        outputWriter.print (e.getKey() + ": " + e.getValue() + "\r\n");
       }
 
     // Write Content-type and length
-    if (buffered_out_stream != null)
+    if (bufferedOutputStream != null)
       {
-        out_writer.print ("Content-type: application/x-www-form-urlencoded\r\n");
-        out_writer.print ("Content-length: "
-                          + String.valueOf (buffered_out_stream.size()) + "\r\n");
+        outputWriter.print ("Content-type: application/x-www-form-urlencoded\r\n");
+        outputWriter.print ("Content-length: "
+                            + String.valueOf (bufferedOutputStream.size()) + "\r\n");
       }
 
-    // One more CR-LF indicates end of header
-    out_writer.print ("\r\n");
-    out_writer.flush();
+    // One more CR-LF indicates end of header.
+    outputWriter.print ("\r\n");
+    outputWriter.flush();
 
     // Write content
-    if (buffered_out_stream != null)
+    if (bufferedOutputStream != null)
       {
-        buffered_out_stream.writeTo (out_stream);
-        out_stream.flush();
+        bufferedOutputStream.writeTo (outputStream);
+        outputStream.flush();
       }
   }
 
   /**
-   * Read HTTP reply from in_stream
+   * Read HTTP reply from inputStream.
    */
   void ReceiveReply() throws IOException
   {
     // Parse the reply
-    String line = in_stream.readLine();
+    String line = inputStream.readLine();
     String saveline = line;
     int idx = line.indexOf (" ");
     
     if ((idx == -1)
         || (line.length() < (idx + 6)))
-      throw new IOException("Server reply was unparseable: " + saveline);
+      throw new IOException ("Server reply was unparseable: " + saveline);
 
     line = line.substring (idx + 1);
     String code = line.substring (0, 3);
@@ -221,7 +229,7 @@ public class Connection extends HttpURLConnection
     
     for (;;)
       {
-        line = in_stream.readLine();
+        line = inputStream.readLine();
         
         if (line.equals(""))
           break;
@@ -317,7 +325,7 @@ public class Connection extends HttpURLConnection
       throw new ProtocolException ("Unsupported or unknown request method " +
                                    method);
   }
-
+  
   /**
    * Return a boolean indicating whether or not this connection is
    * going through a proxy
@@ -368,19 +376,19 @@ public class Connection extends HttpURLConnection
    */
   public InputStream getInputStream() throws IOException
   {
-    if(in_stream != null)
-      return in_stream;
+    if(inputStream != null)
+      return inputStream;
 
     if (!connected)
       connect();
 
-    in_stream
+    inputStream
       = new DataInputStream (new BufferedInputStream (socket.getInputStream()));
   
     SendRequest();
     ReceiveReply();
 
-    return in_stream;
+    return inputStream;
   }
 
   public OutputStream getOutputStream() throws IOException
@@ -395,10 +403,11 @@ public class Connection extends HttpURLConnection
     if (!connected)
       connect();
   
-    if(buffered_out_stream == null)
-      buffered_out_stream = new ByteArrayOutputStream (256); //default is too small
+    if(bufferedOutputStream == null)
+      bufferedOutputStream = new ByteArrayOutputStream (256); //default is too small
     
-    return buffered_out_stream;
+    return bufferedOutputStream;
   }
 
-} // class HttpURLConnection
+} // class Connection
+
