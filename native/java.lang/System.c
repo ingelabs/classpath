@@ -1,4 +1,4 @@
-#include "System.h"
+#include "java_lang_System.h"
 #include <sys/time.h>
 
 /*

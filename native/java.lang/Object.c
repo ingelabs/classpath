@@ -1,4 +1,4 @@
-#include "Object.h"
+#include "java_lang_Object.h"
 
 /*
  * Class:     java_lang_Object
