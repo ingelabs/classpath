@@ -75,7 +75,7 @@ protected static char[] lookup_table;
   * This is the second generation lookup table that is loaded when the
   * class is loaded and is where the encoding actually takes place.
   */
-private static char[] encoding_table;
+private static byte[] encoding_table; /* changed this from char[] to byte[] */
 
 /*************************************************************************/
 
@@ -91,14 +91,24 @@ private static char[] encoding_table;
 protected static void
 loadTable()
 {
-  encoding_table = new char[65535];
+  /* determine required size of encoding_table: */
+  int max = 0; 
+  for (int i = 0; i < lookup_table.length; i++)
+    {
+      int c = lookup_table[i]; 
+      max = (c > max) ? c : max;
+    }
+
+  encoding_table = new byte[max+1];
 
   for (int i = 0; i < lookup_table.length; i++)
     {
-      encoding_table[lookup_table[i]] = (char)i;
-      if (lookup_table[i] == 0x0000)
-        encoding_table[lookup_table[i]] = (char)0xFF00;
-   }
+      int c = lookup_table[i]; 
+      if (c != 0) 
+	{
+	  encoding_table[c] = (byte)i;
+	}
+    }
 }
 
 /*************************************************************************/
@@ -141,25 +151,30 @@ convertToBytes(char[] buf, int buf_offset, int len, byte[] bbuf,
 {
   for (int i = 0; i < len; i++)
     {
+      // get char to convert
+      int c = buf[buf_offset + i];
+      
+      // lookup byte encodeing
+      int b = (c < encoding_table.length) ? encoding_table[c] : 0;
+
       // Check for bad character
-      if ((encoding_table[buf[buf_offset + i]] & 0xFF) == 0x00)
+      if (b == 0x00)
         {
-          if (encoding_table[buf[buf_offset + i]] == 0xFF00)
+          if (c == 0)
             {
               bbuf[bbuf_offset + i] = 0;
             }
           else
             {
               if (bad_char_set)
-                bbuf[bbuf_offset + i] = (byte)(encoding_table[bad_char] & 0xFF);
+                bbuf[bbuf_offset + i] = encoding_table[bad_char];
               else
                 throw new CharConversionException("Encountered unencodable character: " + buf[buf_offset + i]);
             }
         }
       else
         {
-          bbuf[bbuf_offset + i] = 
-             (byte)(encoding_table[buf[buf_offset + i]] & 0xFF);
+          bbuf[bbuf_offset + i] = (byte) b;
         }
     }
 

@@ -1,5 +1,10 @@
 2003-08-12  Ingo Proetel  <proetel@aicas.com>
 
+	* gnu/java/io/encode/EncoderEightBitLookup.java: conserve memory 
+	* gnu/java/io/decode/DecoderEightBitLookup.java: override ready()-method 
+
+2003-08-12  Ingo Proetel  <proetel@aicas.com>
+
 	* java/util/logging/SimpleFormatter.java:print souceClassName and sourceMethodName
 
 2003-08-12  Ingo Proetel  <proetel@aicas.com>

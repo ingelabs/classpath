@@ -132,5 +132,20 @@ read(char[] cbuf, int offset, int len) throws IOException
   return(bytes_read); 
 }
 
+/**
+  * Checks if bytes are available in the underlying inputstream. If this 
+  * is true at least one character can be read without blocking. 
+  * 
+  * @return <code>true</code> iff there are > 0 bytes available for
+  * the underlying InputStream.
+  *
+  * @exception IOException If an error occurs
+  */
+public boolean
+ready() throws IOException
+{
+  return (in.available() > 0);
+}
+
 } // class DecoderEightBitLookup
 
