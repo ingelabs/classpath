@@ -45,7 +45,7 @@ import java.util.EventListener;
 import java.util.Vector;
 import javax.swing.event.EventListenerList;
 
-public class Timer
+public class Timer implements Serializable
 {
   int ticks;
   static boolean verbose;

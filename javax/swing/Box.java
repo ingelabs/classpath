@@ -45,7 +45,7 @@ import javax.accessibility.Accessible;
  *
  * @author Ronald Veldema (rveldema@cs.vu.nl)
  */
-public class Box extends JComponent
+public class Box extends JComponent implements Accessible
 {
     Box(int a)
     {

@@ -47,7 +47,8 @@ import java.awt.event.KeyEvent;
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public abstract class FocusManager {
+public abstract class FocusManager extends DefaultKeyboardFocusManager
+{
 
 	//-------------------------------------------------------------
 	// Classes ----------------------------------------------------

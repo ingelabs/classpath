@@ -41,7 +41,7 @@ package javax.swing;
 import java.awt.Component;
 import javax.accessibility.Accessible;
 
-public class JLayeredPane extends JComponent
+public class JLayeredPane extends JComponent implements Accessible
 {
     JLayeredPane()
     {

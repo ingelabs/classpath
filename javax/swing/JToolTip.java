@@ -41,7 +41,7 @@ package javax.swing;
 import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
 
-public class JToolTip extends JComponent
+public class JToolTip extends JComponent implements Accessible
 {
     String text;
 

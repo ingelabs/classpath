@@ -69,7 +69,7 @@ import javax.swing.text.AttributeSet;
  * @author Ronald Veldema (rveldema@cs.vu.nl)
  */
 public abstract class AbstractButton extends JComponent
-			implements ItemSelectable, SwingConstants
+  implements ItemSelectable, SwingConstants
 {
 	Icon default_icon, pressed_button, disabled_button,
 	selected_button, disabled_selected_button, current_icon;

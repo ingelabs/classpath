@@ -42,7 +42,7 @@ import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
 import javax.swing.plaf.ButtonUI;
 
-public class JToggleButton extends AbstractButton
+public class JToggleButton extends AbstractButton implements Accessible
 {
     public JToggleButton()
     {

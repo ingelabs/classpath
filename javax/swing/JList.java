@@ -49,7 +49,7 @@ import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.ListUI;
 
-public class JList extends JComponent implements Scrollable
+public class JList extends JComponent implements Accessible, Scrollable
 {
     Color select_back, select_fore;
     ListCellRenderer render;

@@ -1,6 +1,30 @@
 2003-06-08  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/AbstractButton.java,
+	javax/swing/Box.java,
+	javax/swing/DefaultListSelectionModel.java,
+	javax/swing/FocusManager.java,
+	javax/swing/JCheckBoxMenuItem.java,
+	javax/swing/JComboBox.java,
+	javax/swing/JDesktopPane.java,
+	javax/swing/JLabel.java,
+	javax/swing/JLayeredPane.java,
+	javax/swing/JList.java,
+	javax/swing/JPanel.java,
+	javax/swing/JPopupMenu.java,
+	javax/swing/JProgressBar.java,
+	javax/swing/JRadioButtonMenuItem.java,
+	javax/swing/JSeparator.java,
+	javax/swing/JTabbedPane.java,
+	javax/swing/JToggleButton.java,
+	javax/swing/JToolBar.java,
+	javax/swing/JToolTip.java,
+	javax/swing/Timer.java:
+	Fixed extends and implements.
+
+2003-06-08  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/AbstractButton.java,
 	javax/swing/AbstractCellEditor.java,
 	javax/swing/BorderFactory.java,
 	javax/swing/Box.java,

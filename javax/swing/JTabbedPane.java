@@ -46,7 +46,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.plaf.TabbedPaneUI;
 
-public class JTabbedPane extends JComponent
+public class JTabbedPane extends JComponent implements Accessible, SwingConstants
 {
     class Tab
     {

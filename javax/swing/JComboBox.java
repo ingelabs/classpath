@@ -52,8 +52,9 @@ import javax.swing.plaf.*;
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public class JComboBox extends JComponent implements ItemSelectable, 
-		ListDataListener, ActionListener, Accessible {
+public class JComboBox extends JComponent
+  implements ItemSelectable, ListDataListener, ActionListener, Accessible
+{
 
 	//-------------------------------------------------------------
 	// Classes ----------------------------------------------------

@@ -44,7 +44,7 @@ import javax.accessibility.Accessible;
 import javax.accessibility.AccessibleContext;
 import javax.swing.plaf.LabelUI;
 
-public class JLabel extends JComponent implements SwingConstants
+public class JLabel extends JComponent implements Accessible, SwingConstants
 {
     String text;
     Icon icon;

@@ -44,7 +44,7 @@ import java.util.Vector;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.ListSelectionListener;
 
-public class DefaultListSelectionModel implements ListSelectionModel
+public class DefaultListSelectionModel implements Cloneable, ListSelectionModel, Serializable
 {
     int mode = SINGLE_SELECTION;
 

@@ -49,7 +49,7 @@ import javax.accessibility.AccessibleContext;
  *
  * @author Ronald Veldema (rveldema@cs.vu.nl)
  */
-public class JPanel extends JComponent
+public class JPanel extends JComponent implements Accessible
 {
     public JPanel()
     {
