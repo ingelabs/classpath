@@ -1,10 +1,11 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-SUBDIRS = border event plaf table text tree undo
+SUBDIRS = border colorchooser event filechooser plaf table text tree undo
 
 EXTRA_DIST = \
 AbstractAction.java \
 AbstractButton.java \
+AbstractCellEditor.java \
 AbstractListModel.java \
 AbstractSet.java \
 Action.java \
@@ -16,15 +17,24 @@ BoxLayout.java \
 ButtonGroup.java \
 ButtonModel.java \
 CellEditor.java \
+CellRendererPane.java \
 ComboBoxEditor.java \
 ComboBoxModel.java \
 ComponentInputMap.java \
+DebugGraphics.java \
 DefaultBoundedRangeModel.java \
 DefaultButtonModel.java \
+DefaultCellEditor.java \
 DefaultCellRenderer.java \
+DefaultComboBoxModel.java \
+DefaultDesktopManager.java \
+DefaultFocusManager.java \
+DefaultListCellRenderer.java \
 DefaultListModel.java \
 DefaultListSelectionModel.java \
-DesktopManager \
+DefaultSingleSelectionModel.java \
+DesktopManager.java \
+FocusManager.java \
 GrayFilter.java \
 Icon.java \
 ImageIcon.java \
@@ -33,25 +43,41 @@ InputVerifier.java \
 JApplet.java \
 JButton.java \
 JCheckBox.java \
+JCheckBoxMenuItem.java \
+JColorChooser.java \
+JComboBox.java \
 JComponent.java \
+JDesktopPane.java \
 JDialog.java \
 JEditorPane.java \
+JFileChooser.java \
 JFrame.java \
 JInternalFrame.java \
 JLabel.java \
 JLayeredPane.java \
 JList.java \
+JMenu.java \
 JMenuBar.java \
+JMenuItem.java \
 JOptionPane.java \
 JPanel.java \
+JPasswordField.java \
+JPopupMenu.java \
+JProgressBar.java \
 JRadioButton.java \
+JRadioButtonMenuItem.java \
 JRootPane.java \
 JScrollBar.java \
 JScrollPane.java \
+JSeparator.java \
+JSlider.java \
+JSplitPane.java \
 JTabbedPane.java \
 JTable.java \
 JTextField.java \
+JTextPane.java \
 JToggleButton.java \
+JToolBar.java \
 JToolTip.java \
 JTree.java \
 JViewport.java \
@@ -64,10 +90,15 @@ LookAndFeel.java \
 MenuElement.java \
 MenuSelectionManager.java \
 MutableComboBoxModel.java \
+OverlayLayout.java \
+ProgressMonitor.java \
+ProgressMonitorInputStream.java \
 Renderer.java \
+RepaintManager.java \
 RootPaneContainer.java \
 Scrollable.java \
 ScrollPaneConstants.java \
+ScrollPaneLayout.java \
 SizeRequirements.java \
 SizeSequence.java \
 SingleSelectionModel.java \
@@ -75,8 +106,10 @@ SwingConstants.java \
 SwingUtilities.java \
 Timer.java \
 ToggleButtonModel.java \
+ToolTipManager.java \
 UIDefaults.java \
 UIManager.java \
 UnsupportedLookAndFeelException.java \
+ViewportLayout.java \
 package.html
 

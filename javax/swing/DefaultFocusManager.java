@@ -1,4 +1,4 @@
-/* ComponentInputMap.java --
+/* DefaultFocusManager.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,21 +37,26 @@ exception statement from your version. */
 
 package javax.swing;
 
+// Imports
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+
 /**
- * ComponentInputMap
+ * DefaultFocusManager
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public class ComponentInputMap extends InputMap {
+public class DefaultFocusManager extends FocusManager {
 
 	//-------------------------------------------------------------
 	// Variables --------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * component
+	 * historyStack
 	 */
-	private JComponent component;
+	private Stack historyStack;
 
 
 	//-------------------------------------------------------------
@@ -59,12 +64,11 @@ public class ComponentInputMap extends InputMap {
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor ComponentInputMap
-	 * @param value0 TODO
+	 * Constructor DefaultFocusManager
 	 */
-	public ComponentInputMap(JComponent value0) {
+	public DefaultFocusManager() {
 		// TODO
-	} // ComponentInputMap()
+	} // DefaultFocusManager()
 
 
 	//-------------------------------------------------------------
@@ -72,44 +76,80 @@ public class ComponentInputMap extends InputMap {
 	//-------------------------------------------------------------
 
 	/**
-	 * put
-	 * @param keystroke TODO
-	 * @param value TODO
+	 * processKeyEvent
+	 * @param component TODO
+	 * @param event TODO
 	 */
-	public void put(KeyStroke keystroke, Object value) {
+	public void processKeyEvent(Component component, KeyEvent event) {
 		// TODO
-	} // put()
+	} // processKeyEvent()
 
 	/**
-	 * clear
+	 * focusNextComponent
+	 * @param component TODO
 	 */
-	public void clear() {
+	public void focusNextComponent(Component component) {
 		// TODO
-	} // clear()
+	} // focusNextComponent()
 
 	/**
-	 * remove
-	 * @param keystroke TODO
+	 * focusPreviousComponent
+	 * @param component TODO
 	 */
-	public void remove(KeyStroke keystroke) {
+	public void focusPreviousComponent(Component component) {
 		// TODO
-	} // remove()
+	} // focusPreviousComponent()
 
 	/**
-	 * setParent
-	 * @param parent TODO
+	 * getFirstComponent
+	 * @param container TODO
+	 * @returns Component
 	 */
-	public void setParent(InputMap parent) {
-		// TODO
-	} // setParent()
-
-	/**
-	 * getComponent
-	 * @returns JComponent
-	 */
-	public JComponent getComponent() {
+	public Component getFirstComponent(Container container) {
 		return null; // TODO
-	} // getComponent()
+	} // getFirstComponent()
+
+	/**
+	 * getLastComponent
+	 * @param container TODO
+	 * @returns Component
+	 */
+	public Component getLastComponent(Container container) {
+		return null; // TODO
+	} // getLastComponent()
+
+	/**
+	 * getComponentBefore
+	 * @param container TODO
+	 * @param component TODO
+	 * @returns Component
+	 */
+	public Component getComponentBefore(Container container,
+			Component component) {
+		return null; // TODO
+	} // getComponentBefore()
+
+	/**
+	 * getComponentAfter
+	 * @param container TODO
+	 * @param component TODO
+	 * @returns Component
+	 */
+	public Component getComponentAfter(Container container, 
+			Component component) {
+		return null; // TODO
+	} // getComponentAfter()
+
+	/**
+	 * compareTabOrder
+	 * @param component1 TODO
+	 * @param component2 TODO
+	 * @returns boolean
+	 */
+	public boolean compareTabOrder(Component component1,
+			Component component2) {
+		return false; // TODO
+	} // compareTabOrder()
 
 
-} // ComponentInputMap
+} // DefaultFocusManager

@@ -42,6 +42,8 @@ import java.awt.event.*;
 
 import javax.swing.event.*;
 import javax.swing.plaf.*;
+import javax.swing.text.*;
+import javax.accessibility.*;
 
 import java.util.*;
 import java.beans.*;
@@ -70,6 +72,255 @@ public abstract class AbstractButton extends JComponent
 
 
 	public static final String FOCUS_PAINTED_CHANGED_PROPERTY = "focusPainted";
+
+	/**
+	 * AccessibleAbstractButton
+	 */
+	protected abstract class AccessibleAbstractButton 
+		extends AccessibleJComponent 
+		implements AccessibleAction, AccessibleValue, AccessibleText {
+
+		//-------------------------------------------------------------
+		// Initialization ---------------------------------------------
+		//-------------------------------------------------------------
+
+		/**
+		 * Constructor AccessibleAbstractButton
+		 * @param component TODO
+		 */
+		protected AccessibleAbstractButton(AbstractButton component) {
+			super(component);
+			// TODO
+		} // AccessibleAbstractButton()
+
+
+		//-------------------------------------------------------------
+		// Methods ----------------------------------------------------
+		//-------------------------------------------------------------
+
+		/**
+		 * getAccessibleStateSet
+		 * @returns AccessibleStateSet
+		 */
+		public AccessibleStateSet getAccessibleStateSet() {
+			return null; // TODO
+		} // getAccessibleStateSet()
+
+		/**
+		 * getAccessibleName
+		 * @returns String
+		 */
+		public String getAccessibleName() {
+			return null; // TODO
+		} // getAccessibleName()
+
+		/**
+		 * getAccessibleIcon
+		 * @returns AccessibleIcon[]
+		 */
+		public AccessibleIcon[] getAccessibleIcon() {
+			return null; // TODO
+		} // getAccessibleIcon()
+
+		/**
+		 * getAccessibleRelationSet
+		 * @returns AccessibleRelationSet
+		 */
+		public AccessibleRelationSet getAccessibleRelationSet() {
+			return null; // TODO
+		} // getAccessibleRelationSet()
+
+		/**
+		 * getAccessibleAction
+		 * @returns AccessibleAction
+		 */
+		public AccessibleAction getAccessibleAction() {
+			return null; // TODO
+		} // getAccessibleAction()
+
+		/**
+		 * getAccessibleValue
+		 * @returns AccessibleValue
+		 */
+		public AccessibleValue getAccessibleValue() {
+			return null; // TODO
+		} // getAccessibleValue()
+
+		/**
+		 * getAccessibleActionCount
+		 * @returns int
+		 */
+		public int getAccessibleActionCount() {
+			return 0; // TODO
+		} // getAccessibleActionCount()
+
+		/**
+		 * getAccessibleActionDescription
+		 * @param value0 TODO
+		 * @returns String
+		 */
+		public String getAccessibleActionDescription(int value0) {
+			return null; // TODO
+		} // getAccessibleActionDescription()
+
+		/**
+		 * doAccessibleAction
+		 * @param value0 TODO
+		 * @returns boolean
+		 */
+		public boolean doAccessibleAction(int value0) {
+			return false; // TODO
+		} // doAccessibleAction()
+
+		/**
+		 * getCurrentAccessibleValue
+		 * @returns Number
+		 */
+		public Number getCurrentAccessibleValue() {
+			return null; // TODO
+		} // getCurrentAccessibleValue()
+
+		/**
+		 * setCurrentAccessibleValue
+		 * @param value0 TODO
+		 * @returns boolean
+		 */
+		public boolean setCurrentAccessibleValue(Number value0) {
+			return false; // TODO
+		} // setCurrentAccessibleValue()
+
+		/**
+		 * getMinimumAccessibleValue
+		 * @returns Number
+		 */
+		public Number getMinimumAccessibleValue() {
+			return null; // TODO
+		} // getMinimumAccessibleValue()
+
+		/**
+		 * getMaximumAccessibleValue
+		 * @returns Number
+		 */
+		public Number getMaximumAccessibleValue() {
+			return null; // TODO
+		} // getMaximumAccessibleValue()
+
+		/**
+		 * getAccessibleText
+		 * @returns AccessibleText
+		 */
+		public AccessibleText getAccessibleText() {
+			return null; // TODO
+		} // getAccessibleText()
+
+		/**
+		 * getIndexAtPoint
+		 * @param value0 TODO
+		 * @returns int
+		 */
+		public int getIndexAtPoint(Point value0) {
+			return 0; // TODO
+		} // getIndexAtPoint()
+
+		/**
+		 * getCharacterBounds
+		 * @param value0 TODO
+		 * @returns Rectangle
+		 */
+		public Rectangle getCharacterBounds(int value0) {
+			return null; // TODO
+		} // getCharacterBounds()
+
+		/**
+		 * getCharCount
+		 * @returns int
+		 */
+		public int getCharCount() {
+			return 0; // TODO
+		} // getCharCount()
+
+		/**
+		 * getCaretPosition
+		 * @returns int
+		 */
+		public int getCaretPosition() {
+			return 0; // TODO
+		} // getCaretPosition()
+
+		/**
+		 * getAtIndex
+		 * @param value0 TODO
+		 * @param value1 TODO
+		 * @returns String
+		 */
+		public String getAtIndex(int value0, int value1) {
+			return null; // TODO
+		} // getAtIndex()
+
+		/**
+		 * getAfterIndex
+		 * @param value0 TODO
+		 * @param value1 TODO
+		 * @returns String
+		 */
+		public String getAfterIndex(int value0, int value1) {
+			return null; // TODO
+		} // getAfterIndex()
+
+		/**
+		 * getBeforeIndex
+		 * @param value0 TODO
+		 * @param value1 TODO
+		 * @returns String
+		 */
+		public String getBeforeIndex(int value0, int value1) {
+			return null; // TODO
+		} // getBeforeIndex()
+
+		/**
+		 * getCharacterAttribute
+		 * @param value0 TODO
+		 * @returns AttributeSet
+		 */
+		public AttributeSet getCharacterAttribute(int value0) {
+			return null; // TODO
+		} // getCharacterAttribute()
+
+		/**
+		 * getSelectionStart
+		 * @returns int
+		 */
+		public int getSelectionStart() {
+			return 0; // TODO
+		} // getSelectionStart()
+
+		/**
+		 * getSelectionEnd
+		 * @returns int
+		 */
+		public int getSelectionEnd() {
+			return 0; // TODO
+		} // getSelectionEnd()
+
+		/**
+		 * getSelectedText
+		 * @returns String
+		 */
+		public String getSelectedText() {
+			return null; // TODO
+		} // getSelectedText()
+
+		/**
+		 * getTextRectangle
+		 * @returns Rectangle
+		 */
+		private Rectangle getTextRectangle() {
+			return null; // TODO
+		} // getTextRectangle()
+
+
+	} // AccessibleAbstractButton
+
 
 	static private class JFocusListener implements FocusListener
 	{

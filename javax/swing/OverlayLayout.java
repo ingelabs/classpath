@@ -1,4 +1,4 @@
-/* ComponentInputMap.java --
+/* OverlayLayout.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,21 +37,45 @@ exception statement from your version. */
 
 package javax.swing;
 
+// Imports
+import java.awt.*;
+import java.io.*;
+
 /**
- * ComponentInputMap
+ * OverlayLayout
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public class ComponentInputMap extends InputMap {
+public class OverlayLayout implements LayoutManager2, Serializable {
 
 	//-------------------------------------------------------------
 	// Variables --------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * component
+	 * target
 	 */
-	private JComponent component;
+	private Container target;
+
+	/**
+	 * xChildren
+	 */
+	private SizeRequirements[] xChildren;
+
+	/**
+	 * yChildren
+	 */
+	private SizeRequirements[] yChildren;
+
+	/**
+	 * xTotal
+	 */
+	private SizeRequirements xTotal;
+
+	/**
+	 * yTotal
+	 */
+	private SizeRequirements yTotal;
 
 
 	//-------------------------------------------------------------
@@ -59,12 +83,12 @@ public class ComponentInputMap extends InputMap {
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor ComponentInputMap
-	 * @param value0 TODO
+	 * Constructor OverlayLayout
+	 * @param target TODO
 	 */
-	public ComponentInputMap(JComponent value0) {
+	public OverlayLayout(Container target) {
 		// TODO
-	} // ComponentInputMap()
+	} // OverlayLayout()
 
 
 	//-------------------------------------------------------------
@@ -72,44 +96,91 @@ public class ComponentInputMap extends InputMap {
 	//-------------------------------------------------------------
 
 	/**
-	 * put
-	 * @param keystroke TODO
-	 * @param value TODO
+	 * invalidateLayout
+	 * @param target TODO
 	 */
-	public void put(KeyStroke keystroke, Object value) {
+	public void invalidateLayout(Container target) {
 		// TODO
-	} // put()
+	} // invalidateLayout()
 
 	/**
-	 * clear
+	 * addLayoutComponent
+	 * @param string TODO
+	 * @param component TODO
 	 */
-	public void clear() {
+	public void addLayoutComponent(String string, Component component) {
 		// TODO
-	} // clear()
+	} // addLayoutComponent()
 
 	/**
-	 * remove
-	 * @param keystroke TODO
+	 * addLayoutComponent
+	 * @param component TODO
+	 * @param constraints TODO
 	 */
-	public void remove(KeyStroke keystroke) {
+	public void addLayoutComponent(Component component, Object constraints) {
 		// TODO
-	} // remove()
+	} // addLayoutComponent()
 
 	/**
-	 * setParent
-	 * @param parent TODO
+	 * removeLayoutComponent
+	 * @param component TODO
 	 */
-	public void setParent(InputMap parent) {
+	public void removeLayoutComponent(Component component) {
 		// TODO
-	} // setParent()
+	} // removeLayoutComponent()
 
 	/**
-	 * getComponent
-	 * @returns JComponent
+	 * preferredLayoutSize
+	 * @param target TODO
+	 * @returns Dimension
 	 */
-	public JComponent getComponent() {
+	public Dimension preferredLayoutSize(Container target) {
 		return null; // TODO
-	} // getComponent()
+	} // preferredLayoutSize()
+
+	/**
+	 * minimumLayoutSize
+	 * @param target TODO
+	 * @returns Dimension
+	 */
+	public Dimension minimumLayoutSize(Container target) {
+		return null; // TODO
+	} // minimumLayoutSize()
+
+	/**
+	 * maximumLayoutSize
+	 * @param target TODO
+	 * @returns Dimension
+	 */
+	public Dimension maximumLayoutSize(Container target) {
+		return null; // TODO
+	} // maximumLayoutSize()
+
+	/**
+	 * getLayoutAlignmentX
+	 * @param target TODO
+	 * @returns float
+	 */
+	public float getLayoutAlignmentX(Container target) {
+		return (float) 0.0; // TODO
+	} // getLayoutAlignmentX()
+
+	/**
+	 * getLayoutAlignmentY
+	 * @param target TODO
+	 * @returns float
+	 */
+	public float getLayoutAlignmentY(Container target) {
+		return (float) 0.0; // TODO
+	} // getLayoutAlignmentY()
+
+	/**
+	 * layoutContainer
+	 * @param target TODO
+	 */
+	public void layoutContainer(Container target) {
+		// TODO
+	} // layoutContainer()
 
 
-} // ComponentInputMap
+} // OverlayLayout

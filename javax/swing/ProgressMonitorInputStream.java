@@ -1,4 +1,4 @@
-/* ComponentInputMap.java --
+/* ProgressMonitorInputStream.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,21 +37,35 @@ exception statement from your version. */
 
 package javax.swing;
 
+// Imports
+import java.awt.*;
+import java.io.*;
+
 /**
- * ComponentInputMap
+ * ProgressMonitorInputStream
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public class ComponentInputMap extends InputMap {
+public class ProgressMonitorInputStream extends FilterInputStream {
 
 	//-------------------------------------------------------------
 	// Variables --------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * component
+	 * monitor
 	 */
-	private JComponent component;
+	private ProgressMonitor monitor;
+
+	/**
+	 * nread
+	 */
+	private int nread;
+
+	/**
+	 * size
+	 */
+	private int size;
 
 
 	//-------------------------------------------------------------
@@ -59,12 +73,16 @@ public class ComponentInputMap extends InputMap {
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor ComponentInputMap
-	 * @param value0 TODO
+	 * Constructor ProgressMonitorInputStream
+	 * @param component TODO
+	 * @param message TODO
+	 * @param stream TODO
 	 */
-	public ComponentInputMap(JComponent value0) {
+	public ProgressMonitorInputStream(Component component, Object message,
+			InputStream stream) {
+		super(stream);
 		// TODO
-	} // ComponentInputMap()
+	} // ProgressMonitorInputStream()
 
 
 	//-------------------------------------------------------------
@@ -72,44 +90,69 @@ public class ComponentInputMap extends InputMap {
 	//-------------------------------------------------------------
 
 	/**
-	 * put
-	 * @param keystroke TODO
-	 * @param value TODO
+	 * reset
+	 * @exception IOException TODO
 	 */
-	public void put(KeyStroke keystroke, Object value) {
+	public synchronized void reset() throws IOException {
 		// TODO
-	} // put()
+	} // reset()
 
 	/**
-	 * clear
+	 * read
+	 * @exception IOException TODO
+	 * @returns int
 	 */
-	public void clear() {
-		// TODO
-	} // clear()
+	public int read() throws IOException {
+		return 0; // TODO
+	} // read()
 
 	/**
-	 * remove
-	 * @param keystroke TODO
+	 * read
+	 * @param data TODO
+	 * @exception IOException TODO
+	 * @returns int
 	 */
-	public void remove(KeyStroke keystroke) {
-		// TODO
-	} // remove()
+	public int read(byte[] data) throws IOException {
+		return 0; // TODO
+	} // read()
 
 	/**
-	 * setParent
-	 * @param parent TODO
+	 * read
+	 * @param data TODO
+	 * @param offset TODO
+	 * @param length TODO
+	 * @exception IOException TODO
+	 * @returns int
 	 */
-	public void setParent(InputMap parent) {
-		// TODO
-	} // setParent()
+	public int read(byte[] data, int offset, int length) throws IOException {
+		return 0; // TODO
+	} // read()
 
 	/**
-	 * getComponent
-	 * @returns JComponent
+	 * skip
+	 * @param length TODO
+	 * @exception IOException TODO
+	 * @returns long
 	 */
-	public JComponent getComponent() {
+	public long skip(long length) throws IOException {
+		return 0; // TODO
+	} // skip()
+
+	/**
+	 * close
+	 * @exception IOException TODO
+	 */
+	public void close() throws IOException {
+		// TODO
+	} // close()
+
+	/**
+	 * getProgressMonitor
+	 * @returns ProgressMonitor
+	 */
+	public ProgressMonitor getProgressMonitor() {
 		return null; // TODO
-	} // getComponent()
+	} // getProgressMonitor()
 
 
-} // ComponentInputMap
+} // ProgressMonitorInputStream

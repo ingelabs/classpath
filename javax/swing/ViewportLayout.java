@@ -1,4 +1,4 @@
-/* JTextField.java -- 
+/* ViewportLayout.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,70 +37,75 @@ exception statement from your version. */
 
 package javax.swing;
 
-import java.awt.event.*;
-import java.util.*;
+// Imports
+import java.awt.*;
+import java.io.*;
 
-import javax.accessibility.*;
+/**
+ * ViewportLayout
+ * @author	Andrew Selkirk
+ * @version	1.0
+ */
+public class ViewportLayout implements LayoutManager, Serializable {
 
-public class JTextField extends JEditorPane
-{
+	//-------------------------------------------------------------
+	// Initialization ---------------------------------------------
+	//-------------------------------------------------------------
 
 	/**
-	 * AccessibleJTextField
+	 * Constructor ViewportLayout
 	 */
-	protected class AccessibleJTextField extends AccessibleJTextComponent {
-
-		//-------------------------------------------------------------
-		// Initialization ---------------------------------------------
-		//-------------------------------------------------------------
-
-		/**
-		 * Constructor AccessibleJTextField
-		 * @param component TODO
-		 */
-		protected AccessibleJTextField(JTextField component) {
-			super(component);
-			// TODO
-		} // AccessibleJTextField()
+	public ViewportLayout() {
+		// TODO
+	} // ViewportLayout()
 
 
-		//-------------------------------------------------------------
-		// Methods ----------------------------------------------------
-		//-------------------------------------------------------------
+	//-------------------------------------------------------------
+	// Methods ----------------------------------------------------
+	//-------------------------------------------------------------
 
-		/**
-		 * getAccessibleStateSet
-		 * @returns AccessibleStateSet
-		 */
-		public AccessibleStateSet getAccessibleStateSet() {
-			return null; // TODO
-		} // getAccessibleStateSet()
+	/**
+	 * addLayoutComponent
+	 * @param name TODO
+	 * @param c TODO
+	 */
+	public void addLayoutComponent(String name, Component c) {
+		// TODO
+	} // addLayoutComponent()
+
+	/**
+	 * removeLayoutComponent
+	 * @param c TODO
+	 */
+	public void removeLayoutComponent(Component c) {
+		// TODO
+	} // removeLayoutComponent()
+
+	/**
+	 * preferredLayoutSize
+	 * @param parent TODO
+	 * @returns Dimension
+	 */
+	public Dimension preferredLayoutSize(Container parent) {
+		return null; // TODO
+	} // preferredLayoutSize()
+
+	/**
+	 * minimumLayoutSize
+	 * @param parent TODO
+	 * @returns Dimension
+	 */
+	public Dimension minimumLayoutSize(Container parent) {
+		return null; // TODO
+	} // minimumLayoutSize()
+
+	/**
+	 * layoutContainer
+	 * @param parent TODO
+	 */
+	public void layoutContainer(Container parent) {
+		// TODO
+	} // layoutContainer()
 
 
-	} // AccessibleJTextField
-
-
-    Vector actions = new Vector();
-
-  public JTextField()
-  {
-  }
-
-    public JTextField(int a)
-    {
-    }
-
-    public void addActionListener(ActionListener l)
-    {
-	actions.addElement(l);
-    }
-
-    public void removeActionListener(ActionListener l)
-    {
-	actions.removeElement(l);
-    }
-
-    public void selectAll()
-    {
-    }
-}
+} // ViewportLayout

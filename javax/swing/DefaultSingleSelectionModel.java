@@ -1,4 +1,4 @@
-/* ComponentInputMap.java --
+/* DefaultSingleSelectionModel.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,21 +37,37 @@ exception statement from your version. */
 
 package javax.swing;
 
+// Imports
+import java.io.*;
+import java.util.*;
+import javax.swing.event.*;
+
 /**
- * ComponentInputMap
+ * DefaultSingleSelectionModel
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public class ComponentInputMap extends InputMap {
+public class DefaultSingleSelectionModel implements 
+		SingleSelectionModel, Serializable {
 
 	//-------------------------------------------------------------
 	// Variables --------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * component
+	 * changeEvent
 	 */
-	private JComponent component;
+	protected transient ChangeEvent changeEvent = new ChangeEvent(this);
+
+	/**
+	 * listenerList
+	 */
+	protected EventListenerList listenerList= new EventListenerList();
+
+	/**
+	 * index
+	 */
+	private int index = -1;
 
 
 	//-------------------------------------------------------------
@@ -59,12 +75,11 @@ public class ComponentInputMap extends InputMap {
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor ComponentInputMap
-	 * @param value0 TODO
+	 * Constructor DefaultSingleSelectionModel
 	 */
-	public ComponentInputMap(JComponent value0) {
+	public DefaultSingleSelectionModel() {
 		// TODO
-	} // ComponentInputMap()
+	} // DefaultSingleSelectionModel()
 
 
 	//-------------------------------------------------------------
@@ -72,44 +87,93 @@ public class ComponentInputMap extends InputMap {
 	//-------------------------------------------------------------
 
 	/**
-	 * put
-	 * @param keystroke TODO
-	 * @param value TODO
+	 * getSelectedIndex
+	 * @returns int
 	 */
-	public void put(KeyStroke keystroke, Object value) {
-		// TODO
-	} // put()
+	public int getSelectedIndex() {
+		return index;
+	} // getSelectedIndex()
 
 	/**
-	 * clear
+	 * setSelectedIndex
+	 * @param index TODO
 	 */
-	public void clear() {
-		// TODO
-	} // clear()
+	public void setSelectedIndex(int index) {
+
+		// Set Data
+		this.index = index;
+
+		// Notify Listeners
+		fireStateChanged();
+
+	} // setSelectedIndex()
 
 	/**
-	 * remove
-	 * @param keystroke TODO
+	 * clearSelection
 	 */
-	public void remove(KeyStroke keystroke) {
-		// TODO
-	} // remove()
+	public void clearSelection() {
+
+		// Set Data
+		index = -1;
+
+		// Notify Listeners
+		fireStateChanged();
+
+	} // clearSelection()
 
 	/**
-	 * setParent
-	 * @param parent TODO
+	 * isSelected
+	 * @returns boolean
 	 */
-	public void setParent(InputMap parent) {
-		// TODO
-	} // setParent()
+	public boolean isSelected() {
+		return (index == -1);
+	} // isSelected()
 
 	/**
-	 * getComponent
-	 * @returns JComponent
+	 * addChangeListener
+	 * @param listener TODO
 	 */
-	public JComponent getComponent() {
-		return null; // TODO
-	} // getComponent()
+	public void addChangeListener(ChangeListener listener) {
+		listenerList.add(ChangeListener.class, listener);
+	} // addChangeListener()
+
+	/**
+	 * removeChangeListener
+	 * @param listener TODO
+	 */
+	public void removeChangeListener(ChangeListener listener) {
+		listenerList.remove(ChangeListener.class, listener);
+	} // removeChangeListener()
+
+	/**
+	 * fireStateChanged
+	 */
+	protected void fireStateChanged() {
+
+		// Variables
+		ChangeListener	listener;
+		EventListener[]	listeners;
+		int				index;
+
+		// Get Listeners
+		listeners = listenerList.getListeners(ChangeListener.class);
+
+		// Process Listeners
+		for (index = 0; index < listeners.length; index++) {
+			listener = (ChangeListener) listeners[index];
+			listener.stateChanged(changeEvent);
+		} // for
+
+	} // fireStateChanged()
+
+	/**
+	 * getListeners
+	 * @param listenerClass TODO
+	 * @returns EventListener[]
+	 */
+	public EventListener[] getListeners(Class listenerClass) {
+		return listenerList.getListeners(listenerClass);
+	} // getListeners()
 
 
-} // ComponentInputMap
+} // DefaultSingleSelectionModel

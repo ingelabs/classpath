@@ -1,4 +1,4 @@
-/* AbstractAction.java -- 
+/* AbstractAction.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,9 +37,179 @@ exception statement from your version. */
 
 package javax.swing;
 
+// Imports
+import java.awt.event.*;
+import java.beans.*;
+import java.io.*;
+import javax.swing.event.*;
+import java.util.*;
 
-public abstract 
-class AbstractAction implements Action, Cloneable, java.io.Serializable
-{
-  
-}
+/**
+ * AbstractAction
+ * @author	Andrew Selkirk
+ * @version	1.0
+ */
+public abstract class AbstractAction implements Action, Cloneable, Serializable {
+
+	//-------------------------------------------------------------
+	// Variables --------------------------------------------------
+	//-------------------------------------------------------------
+
+	/**
+	 * enabled
+	 */
+	protected boolean enabled = true;
+
+	/**
+	 * changeSupport
+	 */
+	protected SwingPropertyChangeSupport changeSupport =
+				new SwingPropertyChangeSupport(this);
+
+	/**
+	 * store
+	 */
+	private transient HashMap store = new HashMap();
+
+
+	//-------------------------------------------------------------
+	// Initialization ---------------------------------------------
+	//-------------------------------------------------------------
+
+	/**
+	 * Constructor AbstractAction
+	 */
+	public AbstractAction() {
+		this(""); // TODO: default name
+	} // AbstractAction()
+
+	/**
+	 * Constructor AbstractAction
+	 * @param name TODO
+	 */
+	public AbstractAction(String name) {
+		this(name, null); // TODO: default icon??
+	} // AbstractAction()
+
+	/**
+	 * Constructor AbstractAction
+	 * @param name TODO
+	 * @param icon TODO
+	 */
+	public AbstractAction(String name, Icon icon) {
+		putValue(NAME, name);
+		putValue(SMALL_ICON, icon);
+	} // AbstractAction()
+
+
+	//-------------------------------------------------------------
+	// Methods ----------------------------------------------------
+	//-------------------------------------------------------------
+
+	/**
+	 * readObject
+	 * @param stream TODO
+	 * @exception ClassNotFoundException TODO
+	 * @exception IOException TODO
+	 */
+	private void readObject(ObjectInputStream stream) 
+			throws ClassNotFoundException, IOException {
+		// TODO
+	} // readObject()
+
+	/**
+	 * writeObject
+	 * @param stream TODO
+	 * @exception IOException TODO
+	 */
+	private void writeObject(ObjectOutputStream stream) throws IOException {
+		// TODO
+	} // writeObject()
+
+	/**
+	 * clone
+	 * @exception CloneNotSupportedException TODO
+	 * @returns Object
+	 */
+	protected Object clone() throws CloneNotSupportedException {
+		// What to do??
+		return null;
+	} // clone()
+
+	/**
+	 * getValue
+	 * @param key TODO
+	 * @returns Object
+	 */
+	public Object getValue(String key) {
+		return store.get(key);
+	} // getValue()
+
+	/**
+	 * putValue
+	 * @param key TODO
+	 * @param value TODO
+	 */
+	public void putValue(String key, Object value) {
+		store.put(key, value);
+	} // putValue()
+
+	/**
+	 * isEnabled
+	 * @returns boolean
+	 */
+	public boolean isEnabled() {
+		return enabled;
+	} // isEnabled()
+
+	/**
+	 * setEnabled
+	 * @param enabled TODO
+	 */
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	} // setEnabled()
+
+	/**
+	 * getKeys
+	 * @returns Object[]
+	 */
+	public Object[] getKeys() {
+		return store.keySet().toArray();
+	} // getKeys()
+
+	/**
+	 * firePropertyChange
+	 * @param propertyName TODO
+	 * @param oldValue TODO
+	 * @param newValue TODO
+	 */
+	protected void firePropertyChange(String propertyName,
+			Object oldValue, Object newValue) {
+		changeSupport.firePropertyChange(propertyName, oldValue, newValue);
+	} // firePropertyChange()
+
+	/**
+	 * addPropertyChangeListener
+	 * @param listener TODO
+	 */
+	public synchronized void addPropertyChangeListener(PropertyChangeListener listener) {
+		changeSupport.addPropertyChangeListener(listener);
+	} // addPropertyChangeListener()
+
+	/**
+	 * removePropertyChangeListener
+	 * @param listener TODO
+	 */
+	public synchronized void removePropertyChangeListener(PropertyChangeListener listener) {
+		changeSupport.removePropertyChangeListener(listener);
+	} // removePropertyChangeListener()
+
+	/**
+	 * actionPerformed
+	 * @param event TODO
+	 */
+	public abstract void actionPerformed(ActionEvent event);
+
+
+} // AbstractAction

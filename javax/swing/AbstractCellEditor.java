@@ -1,4 +1,4 @@
-/* ComponentInputMap.java --
+/* AbstractCellEditor.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,21 +37,31 @@ exception statement from your version. */
 
 package javax.swing;
 
+// Imports
+import java.io.*;
+import java.util.*;
+import javax.swing.event.*;
+
 /**
- * ComponentInputMap
+ * AbstractCellEditor
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public class ComponentInputMap extends InputMap {
+public abstract class AbstractCellEditor implements CellEditor, Serializable {
 
 	//-------------------------------------------------------------
 	// Variables --------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * component
+	 * listenerList
 	 */
-	private JComponent component;
+	protected EventListenerList listenerList;
+
+	/**
+	 * changeEvent
+	 */
+	protected transient ChangeEvent changeEvent;
 
 
 	//-------------------------------------------------------------
@@ -59,12 +69,11 @@ public class ComponentInputMap extends InputMap {
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor ComponentInputMap
-	 * @param value0 TODO
+	 * Constructor AbstractCellEditor
 	 */
-	public ComponentInputMap(JComponent value0) {
+	public AbstractCellEditor() {
 		// TODO
-	} // ComponentInputMap()
+	} // AbstractCellEditor()
 
 
 	//-------------------------------------------------------------
@@ -72,44 +81,73 @@ public class ComponentInputMap extends InputMap {
 	//-------------------------------------------------------------
 
 	/**
-	 * put
-	 * @param keystroke TODO
-	 * @param value TODO
+	 * isCellEditable
+	 * @param event TODO
+	 * @returns boolean
 	 */
-	public void put(KeyStroke keystroke, Object value) {
-		// TODO
-	} // put()
+	public boolean isCellEditable(EventObject event) {
+		return false; // TODO
+	} // isCellEditable()
 
 	/**
-	 * clear
+	 * shouldSelectCell
+	 * @param event TODO
+	 * @returns boolean
 	 */
-	public void clear() {
-		// TODO
-	} // clear()
+	public boolean shouldSelectCell(EventObject event) {
+		return false; // TODO
+	} // shouldSelectCell()
 
 	/**
-	 * remove
-	 * @param keystroke TODO
+	 * stopCellEditing
+	 * @returns boolean
 	 */
-	public void remove(KeyStroke keystroke) {
-		// TODO
-	} // remove()
+	public boolean stopCellEditing() {
+		return false; // TODO
+	} // stopCellEditing()
 
 	/**
-	 * setParent
-	 * @param parent TODO
+	 * cancelCellEditing
 	 */
-	public void setParent(InputMap parent) {
+	public void cancelCellEditing() {
 		// TODO
-	} // setParent()
+	} // cancelCellEditing()
 
 	/**
-	 * getComponent
-	 * @returns JComponent
+	 * addCellEditorListener
+	 * @param listener TODO
 	 */
-	public JComponent getComponent() {
-		return null; // TODO
-	} // getComponent()
+	public void addCellEditorListener(CellEditorListener listener) {
+		// TODO
+	} // addCellEditorListener()
+
+	/**
+	 * removeCellEditorListener
+	 * @param listener TODO
+	 */
+	public void removeCellEditorListener(CellEditorListener listener) {
+		// TODO
+	} // removeCellEditorListener()
+
+	/**
+	 * fireEditingStopped
+	 */
+	protected void fireEditingStopped() {
+		// TODO
+	} // fireEditingStopped()
+
+	/**
+	 * fireEditingCanceled
+	 */
+	protected void fireEditingCanceled() {
+		// TODO
+	} // fireEditingCanceled()
+
+	/**
+	 * getCellEditorValue
+	 * @returns Object
+	 */
+	public abstract Object getCellEditorValue();
 
 
-} // ComponentInputMap
+} // AbstractCellEditor

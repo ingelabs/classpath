@@ -49,10 +49,7 @@ import javax.swing.plaf.*;
 import java.util.*;
 import java.beans.*;
 
-import javax.accessibility.AccessibleContext;
-import javax.accessibility.AccessibleRole;
-import javax.accessibility.AccessibleState;
-import javax.accessibility.AccessibleStateSet;
+import javax.accessibility.*;
 
 /**
  * Every component in swing inherits from this class (JLabel, JButton, etc).
@@ -64,6 +61,11 @@ import javax.accessibility.AccessibleStateSet;
  */
 public abstract class JComponent extends Container implements Serializable
 {
+        /**
+         * accessibleContext
+         */
+        protected AccessibleContext accessibleContext;
+
 	Dimension pref,min,max;
 	Border border;
 	JToolTip tooltip;
@@ -75,6 +77,220 @@ public abstract class JComponent extends Container implements Serializable
 	Vector veto_list;
 	Vector change_list;
 	Hashtable prop_hash;
+
+	/**
+	 * AccessibleJComponent
+	 */
+	public abstract class AccessibleJComponent 
+		extends AccessibleAWTContainer {
+
+		//-------------------------------------------------------------
+		// Classes ----------------------------------------------------
+		//-------------------------------------------------------------
+
+		/**
+		 * AccessibleFocusHandler
+		 */
+		protected class AccessibleFocusHandler implements FocusListener {
+
+			//-------------------------------------------------------------
+			// Variables --------------------------------------------------
+			//-------------------------------------------------------------
+
+
+			//-------------------------------------------------------------
+			// Initialization ---------------------------------------------
+			//-------------------------------------------------------------
+
+			/**
+			 * Constructor AccessibleFocusHandler
+			 * @param component TODO
+			 */
+			protected AccessibleFocusHandler(AccessibleJComponent component) {
+				// TODO
+			} // AccessibleFocusHandler()
+
+
+			//-------------------------------------------------------------
+			// Methods ----------------------------------------------------
+			//-------------------------------------------------------------
+
+			/**
+			 * focusGained
+			 * @param event TODO
+			 */
+			public void focusGained(FocusEvent event) {
+				// TODO
+			} // focusGained()
+
+			/**
+			 * focusLost
+			 * @param event TODO
+			 */
+			public void focusLost(FocusEvent valevent) {
+				// TODO
+			} // focusLost()
+
+
+		} // AccessibleFocusHandler
+
+		/**
+		 * AccessibleContainerHandler
+		 */
+		protected class AccessibleContainerHandler implements ContainerListener {
+
+			//-------------------------------------------------------------
+			// Variables --------------------------------------------------
+			//-------------------------------------------------------------
+
+
+			//-------------------------------------------------------------
+			// Initialization ---------------------------------------------
+			//-------------------------------------------------------------
+
+			/**
+			 * Constructor AccessibleContainerHandler
+			 * @param component TODO
+			 */
+			protected AccessibleContainerHandler(AccessibleJComponent component) {
+				// TODO
+			} // AccessibleContainerHandler()
+
+
+			//-------------------------------------------------------------
+			// Methods ----------------------------------------------------
+			//-------------------------------------------------------------
+
+			/**
+			 * componentAdded
+			 * @param event TODO
+			 */
+			public void componentAdded(ContainerEvent event) {
+				// TODO
+			} // componentAdded()
+
+			/**
+			 * componentRemoved
+			 * @param event TODO
+			 */
+			public void componentRemoved(ContainerEvent valevent) {
+				// TODO
+			} // componentRemoved()
+
+
+		} // AccessibleContainerHandler
+
+
+		//-------------------------------------------------------------
+		// Variables --------------------------------------------------
+		//-------------------------------------------------------------
+
+		/**
+		 * accessibleContainerHandler
+		 */
+		protected ContainerListener accessibleContainerHandler;
+
+		/**
+		 * accessibleFocusHandler
+		 */
+		protected FocusListener accessibleFocusHandler;
+
+
+		//-------------------------------------------------------------
+		// Initialization ---------------------------------------------
+		//-------------------------------------------------------------
+
+		/**
+		 * Constructor AccessibleJComponent
+		 * @param component TODO
+		 */
+		protected AccessibleJComponent(JComponent component) {
+//			super((Container)component);
+			// TODO
+		} // AccessibleJComponent()
+
+
+		//-------------------------------------------------------------
+		// Methods ----------------------------------------------------
+		//-------------------------------------------------------------
+
+		/**
+		 * addPropertyChangeListener
+		 * @param listener TODO
+		 */
+		public void addPropertyChangeListener(PropertyChangeListener listener) {
+			// TODO
+		} // addPropertyChangeListener()
+
+		/**
+		 * removePropertyChangeListener
+		 * @param listener TODO
+		 */
+		public void removePropertyChangeListener(PropertyChangeListener listener) {
+			// TODO
+		} // removePropertyChangeListener()
+
+		/**
+		 * getAccessibleChildrenCount
+		 * @returns int
+		 */
+		public int getAccessibleChildrenCount() {
+			return 0; // TODO
+		} // getAccessibleChildrenCount()
+
+		/**
+		 * getAccessibleChild
+		 * @param value0 TODO
+		 * @returns Accessible
+		 */
+		public Accessible getAccessibleChild(int value0) {
+			return null; // TODO
+		} // getAccessibleChild()
+
+		/**
+		 * getAccessibleStateSet
+		 * @returns AccessibleStateSet
+		 */
+		public AccessibleStateSet getAccessibleStateSet() {
+			return null; // TODO
+		} // getAccessibleStateSet()
+
+		/**
+		 * getAccessibleName
+		 * @returns String
+		 */
+		public String getAccessibleName() {
+			return null; // TODO
+		} // getAccessibleName()
+
+		/**
+		 * getAccessibleDescription
+		 * @returns String
+		 */
+		public String getAccessibleDescription() {
+			return null; // TODO
+		} // getAccessibleDescription()
+
+		/**
+		 * getAccessibleRole
+		 * @returns AccessibleRole
+		 */
+		public AccessibleRole getAccessibleRole() {
+			return null; // TODO
+		} // getAccessibleRole()
+
+		/**
+		 * getBorderTitle
+		 * @param value0 TODO
+		 * @returns String
+		 */
+		protected String getBorderTitle(Border value0) {
+			return null; // TODO
+		} // getBorderTitle()
+
+
+	} // AccessibleJComponent
+
 
         public JComponent()
 	{

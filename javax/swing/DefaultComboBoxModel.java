@@ -1,4 +1,4 @@
-/* ComponentInputMap.java --
+/* DefaultComboBoxModel.java --
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,21 +37,31 @@ exception statement from your version. */
 
 package javax.swing;
 
+// Imports
+import java.io.*;
+import java.util.*;
+
 /**
- * ComponentInputMap
+ * DefaultComboBoxModel
  * @author	Andrew Selkirk
  * @version	1.0
  */
-public class ComponentInputMap extends InputMap {
+public class DefaultComboBoxModel extends AbstractListModel 
+		implements MutableComboBoxModel, Serializable {
 
 	//-------------------------------------------------------------
 	// Variables --------------------------------------------------
 	//-------------------------------------------------------------
 
 	/**
-	 * component
+	 * list
 	 */
-	private JComponent component;
+	private Vector list;
+
+	/**
+	 * selectedItem
+	 */
+	private Object selectedItem;
 
 
 	//-------------------------------------------------------------
@@ -59,12 +69,27 @@ public class ComponentInputMap extends InputMap {
 	//-------------------------------------------------------------
 
 	/**
-	 * Constructor ComponentInputMap
-	 * @param value0 TODO
+	 * Constructor DefaultComboBoxModel
 	 */
-	public ComponentInputMap(JComponent value0) {
+	public DefaultComboBoxModel() {
 		// TODO
-	} // ComponentInputMap()
+	} // DefaultComboBoxModel()
+
+	/**
+	 * Constructor DefaultComboBoxModel
+	 * @param items TODO
+	 */
+	public DefaultComboBoxModel(Object[] items) {
+		// TODO
+	} // DefaultComboBoxModel()
+
+	/**
+	 * Constructor DefaultComboBoxModel
+	 * @param vector TODO
+	 */
+	public DefaultComboBoxModel(Vector vector) {
+		// TODO
+	} // DefaultComboBoxModel()
 
 
 	//-------------------------------------------------------------
@@ -72,44 +97,86 @@ public class ComponentInputMap extends InputMap {
 	//-------------------------------------------------------------
 
 	/**
-	 * put
-	 * @param keystroke TODO
-	 * @param value TODO
+	 * addElement
+	 * @param object TODO
 	 */
-	public void put(KeyStroke keystroke, Object value) {
+	public void addElement(Object object) {
 		// TODO
-	} // put()
+	} // addElement()
 
 	/**
-	 * clear
+	 * removeElementAt
+	 * @param index TODO
 	 */
-	public void clear() {
+	public void removeElementAt(int index) {
 		// TODO
-	} // clear()
+	} // removeElementAt()
 
 	/**
-	 * remove
-	 * @param keystroke TODO
+	 * insertElementAt
+	 * @param object TODO
+	 * @param index TODO
 	 */
-	public void remove(KeyStroke keystroke) {
+	public void insertElementAt(Object object, int index) {
 		// TODO
-	} // remove()
+	} // insertElementAt()
 
 	/**
-	 * setParent
-	 * @param parent TODO
+	 * removeElement
+	 * @param object TODO
 	 */
-	public void setParent(InputMap parent) {
+	public void removeElement(Object object) {
 		// TODO
-	} // setParent()
+	} // removeElement()
 
 	/**
-	 * getComponent
-	 * @returns JComponent
+	 * removeAllElements
 	 */
-	public JComponent getComponent() {
+	public void removeAllElements() {
+		// TODO
+	} // removeAllElements()
+
+	/**
+	 * getSize
+	 * @returns int
+	 */
+	public int getSize() {
+		return 0; // TODO
+	} // getSize()
+
+	/**
+	 * setSelectedItem
+	 * @param object TODO
+	 */
+	public void setSelectedItem(Object object) {
+		// TODO
+	} // setSelectedItem()
+
+	/**
+	 * getSelectedItem
+	 * @returns Object
+	 */
+	public Object getSelectedItem() {
 		return null; // TODO
-	} // getComponent()
+	} // getSelectedItem()
+
+	/**
+	 * getElementAt
+	 * @param index TODO
+	 * @returns Object
+	 */
+	public Object getElementAt(int index) {
+		return null; // TODO
+	} // getElementAt()
+
+	/**
+	 * getIndexOf
+	 * @param object TODO
+	 * @returns int
+	 */
+	public int getIndexOf(Object object) {
+		return 0; // TODO
+	} // getIndexOf()
 
 
-} // ComponentInputMap
+} // DefaultComboBoxModel
