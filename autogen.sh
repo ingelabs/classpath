@@ -38,7 +38,7 @@ echo "libtoolize ..."
 ${LIBTOOLIZE} --force --copy
 
 echo "aclocal ..."
-${ACLOCAL}
+${ACLOCAL} -I .
 
 echo "autoheader ..."
 ${AUTOHEADER} --force
