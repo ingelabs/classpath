@@ -1,5 +1,21 @@
 2004-09-26  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JRootPane.java
+	(NONE): New static field.
+	(FRAME): Likewise.
+	(PLAIN_DIALOG): Likewise.
+	(INFORMATION_DIALOG): Likewise.
+	(ERROR_DIALOG): Likewise.
+	(COLOR_CHOOSER_DIALOG): Likewise.
+	(FILE_CHOOSER_DIALOG): Likewise.
+	(QUESTION_DIALOG): Likewise.
+	(WARNING_DIALOG): Likewise.
+	(defaultButton): New field.
+	(getDefaultButton): New method.
+	(setDefaultButton): Likewise.
+
+2004-09-26  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/text/DefaultHighlighter.java
 	(drawsLayeredHighlights): New field.
 	(getDrawsLayeredHighlights): New method.
