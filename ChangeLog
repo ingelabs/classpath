@@ -1,3 +1,7 @@
+2002-04-29  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/System.java (in, out, err): Use buffered streams.
+
 2002-04-28  C. Brian Jones <cbj@gnu.org>
 
 	* native/jni/java-io/Makefile.am: remove java_nio.c from compilation
