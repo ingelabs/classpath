@@ -1,3 +1,108 @@
+2002-10-30  Sascha Brawer  <brawer@acm.org>
+
+	* java/util/logging/Level.java (isStandardLevel): New package-private
+	method, used by java.util.logging.XMLFormatter.
+
+2002-10-30  Sascha Brawer  <brawer@acm.org>
+
+	* java/util/logging/LogManager.java (addLogger): Adding a named
+	logger now throws a SecurityException unless the caller has been
+	granted a LoggingPermission("control").
+	(reset): Likewise.
+	(reset): Clear LogManager properties.
+	(getProperty): Add Javadoc.
+
+2002-10-30  Sascha Brawer  <brawer@acm.org>
+
+	* java/util/logging/Logger.java (anonymous): Add private flag to
+	indicate whether security checks are performed. The previous
+	implementation checked for name == null, but Sun J2SE 1.4 seems to
+	enforce security for any logger unless it is created by
+	getAnonymousLogger(), even if its name is null.
+	
+	(threshold, recalcThreshold, SEVERE_THRESHOLD, WARNING_THRESHOLD,
+	INFO_THRESHOLD, CONFIG_THRESHOLD, FINE_THRESHOLD, FINER_THRESHOLD,
+	FINEST_THRESHOLD, entering, exiting, throwing, severe, warning,
+	info, config, fine, finer, finest): Remove threshold caching, use
+	isLoggable(Level) instead.
+
+	(global, name, resourceBundleName, info, removeHandler): Improve
+	Javadoc.
+
+	(getLogger): Throw an exception if a newly created logger cannot
+	be registered. Improve Javadoc.
+
+	(getLogger): If a logger has been registered under the same name,
+	but without a resource bundle, return the existing logger after
+	associating it with the specified bundle. The previous
+	implementation would have thrown an exception; the current behaves
+	like Sun J2SE1.4.
+
+	(log): If the LogRecord's logger name is null, set it to the name
+	of this logger.
+
+	(log): Avoid that some other thread is changing the logger
+	hierarchy while we are traversing it. Previous code had a race
+	condition.
+
+	(log): Invoke only the filter of the logger whose log method is
+	called, not for any of its parents.  Parent loggers publish
+	everything, without considering either their level threshold or
+	their filter.  This is weird, but seems to be the behavior of the
+	Sun J2SE 1.4 reference implementation.
+
+	(addHandler, removeHandler, setParent): Throw NullPointerException
+	for null arguments.
+
+2002-10-30  Sascha Brawer  <brawer@acm.org>
+
+	* java/util/logging/SimpleFormatter.java (format): Generate output
+	similar to the Sun J2SE 1.4 reference implementation. Improve Javadoc.
+
+2002-10-30  Sascha Brawer  <brawer@acm.org>
+
+	* java/util/logging/StreamHandler.java (setEncoding, publish):
+	Clarify Javadoc. Add comments to explain interaction with the
+	inherited implementation.
+
+	(close): Report ErrorManager.CLOSE_FAILURE instead of
+	FLUSH_FAILURE if a closed stream is closed again.
+
+	(close): Emit head and tail strings even if no record has ever
+	been published to the stream.  The previous implementation caused
+	XML log files to be empty, which is different to the behavior of
+	Sun J2SE 1.4.
+
+2002-10-30  Sascha Brawer  <brawer@acm.org>
+
+	* java/util/logging/XMLFormatter.java (lineSep): Add comment
+	explaining rationale for different different to Sun J2SE 1.4.
+
+	(iso8601): Add comment explaining why we cannot use a singleton
+	instance.
+
+	(appendTag): Use XML esacpe sequences for '&', '<', '>' and
+	any non-ASCII characters.
+
+	(isStandardLevel): Moved to java.util.logging.Level.
+
+	(format): Try to match the output of Sun J2SE 1.4 implementation,
+	even where this is in violation of the their own API specification.
+	See the source for details.
+
+	(getHead): Explain why SYSTEM is a relative URL.
+
+2002-10-30  Sascha Brawer  <brawer@acm.org>
+
+	* java/util/logging/ConsoleHandler.java: Specify correct
+	LogManager configuration properties in Javadoc; implementation was ok.
+	* java/util/logging/FileHandler.java (replaceFileNameEscapes):
+	Fix Javadoc typo.
+	(pattern): Likewise.
+	* java/util/logging/Formatter.java (getHead, getTail): Better Javadoc.
+	* java/util/logging/Handler.java: Re-indent Javadoc.
+	* java/util/logging/LogRecord.java (setLevel): Re-indent Javadoc.
+
 2002-10-28  Mark Wielaard  <mark@klomp.org>
 
 	* native/jni/java-io/javaio.c (_javaio_read): Return 0, if len == 0.
