@@ -1,3 +1,7 @@
+2002-11-10  C. Brian Jones <cbj@gnu.org>
+
+	* doc/www.gnu.org/home.wml: link to jdk11 comparison, mauve results
+
 2002-11-10  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/GridLayout.java (layoutContainer): Use tree lock.
