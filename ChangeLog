@@ -1,3 +1,9 @@
+2002-02-18  Eric Blake  <ebb9@email.byu.edu>
+
+	* doc/unicode/unicode-muncher.pl: Based on Artur's comments,
+	credit Jochen Hoenicke, not Artur, as original author.
+	* gnu/java/lang/CharData.java: Regenerate.	
+
 2002-02-18  Mark Wielaard  <mark@klomp.org>
 
 	* configure.in: Reenable ZIP.

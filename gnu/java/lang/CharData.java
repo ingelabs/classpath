@@ -57,7 +57,7 @@ package gnu.java.lang;
  * <code>TITLE</code> exceptions (most characters just have the same
  * title case as upper case).
  *
- * @author doc/unicode/unicode-muncher.pl (written by Artur Biesiadowski,
+ * @author doc/unicode/unicode-muncher.pl (written by Jochen Hoenicke,
  *         Eric Blake)
  * @see Character
  */
