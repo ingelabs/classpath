@@ -1,3 +1,15 @@
+2003-06-25  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/event/AncestorEvent.java,
+	javax/swing/event/HyperlinkEvent.java,
+	javax/swing/event/InternalFrameEvent.java,
+	javax/swing/event/ListDataEvent.java,
+	javax/swing/event/TableModelEvent.java:
+	Compile fixes.
+	* javax/swing/plaf/basic/BasicListUI.java,
+	javax/swing/plaf/basic/BasicOptionPaneUI.java:
+	Added missing methods to make it compile.
+
 2003-06-24  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/event/AncestorEvent.java
