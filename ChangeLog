@@ -1,5 +1,18 @@
 2003-07-07  Torsten Rupp  <rupp@lisa.aicas.com>
 
+	* native/target/Linux/target_native.h,
+        native/target/Linux/target_native_file.h,
+        native/target/Linux/target_native_math_float.h,
+        native/target/Linux/target_native_math_int.h,
+        native/target/Linux/target_native_misc.h,
+        native/target/Linux/target_native_network.h:
+	Small fixes for target native layer
+
+	* native/target/Linux/target_native_io.h:
+	Target native layer I/O functions for Linux
+
+2003-07-07  Torsten Rupp  <rupp@lisa.aicas.com>
+
 	* native/target/generic/target_generic.h,
         native/target/generic/target_generic_file.h,
         native/target/generic/target_generic_math_float.h,
