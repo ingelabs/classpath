@@ -40,6 +40,7 @@ package java.security;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -130,8 +131,11 @@ public final class SignedObject implements Serializable
 {
   static final long serialVersionUID = 720502720485447167L;
 
+  /** @serial */
   private byte[] content;
+  /** @serial */
   private byte[] signature;
+  /** @serial */
   private String thealgorithm;
 
   /**
@@ -156,6 +160,7 @@ public final class SignedObject implements Serializable
     ObjectOutputStream p = new ObjectOutputStream(ostream);
     p.writeObject(object);
     p.flush();
+    p.close();
 
     content = ostream.toByteArray();
 
@@ -174,18 +179,24 @@ public final class SignedObject implements Serializable
    */
   public Object getObject() throws IOException, ClassNotFoundException
   {
-    ByteArrayInputStream istream = new ByteArrayInputStream(content);
-    return new ObjectInputStream(istream).readObject();
+    ByteArrayInputStream bais = new ByteArrayInputStream(content);
+    ObjectInput oi = new ObjectInputStream(bais);
+    Object obj = oi.readObject();
+    oi.close();
+    bais.close();
+
+    return obj;
   }
 
   /**
    * Retrieves the signature on the signed object, in the form of a byte array.
    *
-   * @return the signature.
+   * @return a copy of the signature.
    */
   public byte[] getSignature()
   {
-    return signature;
+    return (byte[]) signature.clone();
+
   }
 
   /**
@@ -218,8 +229,12 @@ public final class SignedObject implements Serializable
     return verificationEngine.verify(signature);
   }
 
-  //     readObject is called to restore the state of the SignedObject from a
-  //     stream.
-  //private void readObject(ObjectInputStream s)
-  //                 throws IOException, ClassNotFoundException
+  /** Called to restore the state of the SignedObject from a stream. */
+  private void readObject(ObjectInputStream s)
+    throws IOException, ClassNotFoundException
+  {
+    s.defaultReadObject();
+    content = (byte[]) content.clone();
+    signature = (byte[]) signature.clone();
+  }
 }
