@@ -1,5 +1,13 @@
 2003-10-15  Michael Koch  <konqueror@gmx.de>
 
+	* java/text/RuleBasedCollator.java
+	(RuleBasedCollator): Renamed i to index and save rules.length() to
+	temporary variable.
+	(getCollationElementIterator): Fixed documentation.
+	(getCollationKey): Fixed documentation.
+
+2003-10-15  Michael Koch  <konqueror@gmx.de>
+
 	* java/text/RuleBasedCollator.java:
 	Some reformating.
 	(CollationElement): Made final.

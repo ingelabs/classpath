@@ -187,12 +187,14 @@ public class RuleBasedCollator extends Collator
     short secondary_seq = 0;
     short tertiary_seq = 0;
     StringBuffer sb = new StringBuffer("");
-    for (int i = 0; i < rules.length(); i++)
+    int len = rules.length();
+    
+    for (int index = 0; index < len(); index++)
       {
-        char c = rules.charAt(i);
+        char c = rules.charAt (index);
 
-        // Check if it is a whitespace character
-        if (((c >= 0x09) && (c <= 0x0D)) || (c == 0x20))
+	// Just skip whitespace.
+	if (Character.isWhitespace (c))
           continue;
 
         // Primary difference
@@ -215,7 +217,7 @@ public class RuleBasedCollator extends Collator
         if (c == ';')
           {
             if (primary_seq == 0)
-              throw new ParseException(rules, i);
+              throw new ParseException (rules, index);
 
             CollationElement e = new CollationElement(sb.toString(), primary_seq,
                                                       secondary_seq,
@@ -232,7 +234,7 @@ public class RuleBasedCollator extends Collator
         if (c == ',')
           {
             if (primary_seq == 0)
-              throw new ParseException(rules, i);
+              throw new ParseException (rules, index);
 
             CollationElement e = new CollationElement(sb.toString(), primary_seq,
                                                       secondary_seq,
@@ -248,7 +250,7 @@ public class RuleBasedCollator extends Collator
         if (c == '=')
           {
             if (primary_seq == 0)
-              throw new ParseException(rules, i);
+              throw new ParseException (rules, index);
 
             CollationElement e = new CollationElement(sb.toString(), primary_seq,
                                                       secondary_seq,
@@ -392,7 +394,7 @@ public class RuleBasedCollator extends Collator
    * for the specified <code>String</code> under the collation rules for this
    * object.
    *
-   * @param str The <code>String</code> to return the <code>CollationElementIterator</code> instance for.
+   * @param source The <code>String</code> to return the <code>CollationElementIterator</code> instance for.
    *
    * @return A <code>CollationElementIterator</code> for the specified <code>String</code>.
    */
@@ -406,7 +408,7 @@ public class RuleBasedCollator extends Collator
    * for the <code>String</code> represented by the specified
    * <code>CharacterIterator</code>.
    *
-   * @param ci The <code>CharacterIterator</code> with the desired <code>String</code>.
+   * @param source The <code>CharacterIterator</code> with the desired <code>String</code>.
    *
    * @return A <code>CollationElementIterator</code> for the specified <code>String</code>.
    */
@@ -430,7 +432,7 @@ public class RuleBasedCollator extends Collator
    * provide speed benefits if multiple comparisons are performed, such
    * as during a sort.
    *
-   * @param str The <code>String</code> to create a <code>CollationKey</code> for.
+   * @param source The <code>String</code> to create a <code>CollationKey</code> for.
    *
    * @return A <code>CollationKey</code> for the specified <code>String</code>.
    */
