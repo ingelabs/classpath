@@ -19,6 +19,8 @@
  */
 
 package java.beans;
+import java.util.Hashtable;
+import java.util.Vector;
 
 /**
  ** VetoableChangeSupport makes it easy to fire vetoable
@@ -27,11 +29,12 @@ package java.beans;
  **
  ** @author John Keiser
  ** @since JDK1.1
- ** @version 1.1.0, 29 Jul 1998
+ ** @version 1.2.0, 15 Mar 1998
  **/
 
 public class VetoableChangeSupport implements java.io.Serializable {
-	java.util.Vector listeners = new java.util.Vector();
+	Hashtable propertyListeners = new Hashtable();
+	Vector listeners = new Vector();
 	Object bean;
 
 	/** Create VetoableChangeSupport to work with a specific
@@ -43,38 +46,113 @@ public class VetoableChangeSupport implements java.io.Serializable {
 	}
 
 	/** Adds a VetoableChangeListener to the list of listeners.
+	 ** All property change events will be sent to this listener.
+	 ** <P>
+	 **
+	 ** The listener add is not unique: that is, <em>n</em> adds with
+	 ** the same listener will result in <em>n</em> events being sent
+	 ** to that listener for every property change.
+	 ** <P>
+	 **
+	 ** Adding a null listener will cause undefined behavior.
+	 **
 	 ** @param l the listener to add.
 	 **/
-	public synchronized void addVetoableChangeListener(VetoableChangeListener l) {
+	public void addVetoableChangeListener(VetoableChangeListener l) {
 		listeners.addElement(l);
 	}
 
+	/** Adds a VetoableChangeListener listening on the specified property.
+	 ** Events will be sent to the listener for that particular property.
+	 ** <P>
+	 **
+	 ** The listener add is not unique; that is, <em>n</em> adds on a
+	 ** particular property for a particular listener will result in
+	 ** <em>n</em> events being sent to that listener when that
+	 ** property is changed.
+	 ** <P>
+	 **
+	 ** The effect is cumulative, too; if you are registered to listen
+	 ** to receive events on all property changes, and then you
+	 ** register on a particular property, you will receive change
+	 ** events for that property twice.
+	 ** <P>
+	 **
+	 ** Adding a null listener will cause undefined behavior.
+	 **
+	 ** @param propertyName the name of the property to listen on.
+	 ** @param l the listener to add.
+	 **/
+	public void addVetoableChangeListener(String propertyName, VetoableChangeListener l) {
+		synchronized(propertyListeners) {
+			Vector v = (Vector)propertyListeners.get(propertyName);
+			try {
+				v.addElement(l);
+			} catch(NullPointerException e) {
+				/* If v is not found, create a new vector. */
+				v = new Vector();
+				v.addElement(l);
+				propertyListeners.put(propertyName, v);
+			}
+		}
+	}
+
 	/** Removes a VetoableChangeListener from the list of listeners.
+	 ** If any specific properties are being listened on, they must
+	 ** be deregistered by themselves; this will only remove the
+	 ** general listener to all properties.
+	 ** <P>
+	 **
+	 ** If <code>add()</code> has been called multiple times for a
+	 ** particular listener, <code>remove()</code> will have to be
+	 ** called the same number of times to deregister it.
+	 **
 	 ** @param l the listener to remove.
 	 **/
-	public synchronized void removeVetoableChangeListener(VetoableChangeListener l) {
+	public void removeVetoableChangeListener(VetoableChangeListener l) {
 		listeners.removeElement(l);
 	}
 
-	/** Fire a VetoableChangeEvent containing the old and new
-	 ** values of the property to all the listeners.  If any
-	 ** listener objects, a reversion event will be sent to
+	/** Removes a VetoableChangeListener from listening to a specific property.
+	 ** <P>
+	 **
+	 ** If <code>add()</code> has been called multiple times for a
+	 ** particular listener on a property, <code>remove()</code> will
+	 ** have to be called the same number of times to deregister it.
+	 **
+	 ** @param propertyName the property to stop listening on.
+	 ** @param l the listener to remove.
+	 **/
+	public void removePropertyChangeListener(String propertyName, VetoableChangeListener l) {
+		synchronized(propertyListeners) {
+			Vector v = (Vector)propertyListeners.get(propertyName);
+			try {
+				v.removeElement(l);
+				if(v.size() == 0) {
+					propertyListeners.remove(propertyName);
+				}
+			} catch(NullPointerException e) {
+				/* if v is not found, do nothing. */
+			}
+		}
+	}
+
+
+	/** Fire a VetoableChangeEvent to all the listeners.
+	 ** If any listener objects, a reversion event will be sent to
 	 ** those listeners who received the initial event.
 	 **
-	 ** @param propertyName the name of the property that
-	 ** changed.
-	 ** @param oldVal the old value.
-	 ** @param newVal the new value.
+	 ** @param proposedChange the event to send.
+	 ** @exception PropertyVetoException if the change is vetoed.
 	 **/
-	public synchronized void fireVetoableChange(String propertyName, Object oldVal, Object newVal) throws PropertyVetoException {
-		PropertyChangeEvent proposedChange = new PropertyChangeEvent(bean,propertyName,oldVal,newVal);
+	public void fireVetoableChange(PropertyChangeEvent proposedChange) throws PropertyVetoException {
 		int currentListener=0;
 		try {
 			for(;currentListener<listeners.size();currentListener++) {
 				((VetoableChangeListener)listeners.elementAt(currentListener)).vetoableChange(proposedChange);
 			}
 		} catch(PropertyVetoException e) {
-			PropertyChangeEvent reversion = new PropertyChangeEvent(bean,propertyName,newVal,oldVal);
+			PropertyChangeEvent reversion = new PropertyChangeEvent(proposedChange.getSource(),proposedChange.getPropertyName(),proposedChange.getNewValue(),proposedChange.getOldValue());
 			for(int sendAgain=0;sendAgain<currentListener;sendAgain++) {
 				try {
 					((VetoableChangeListener)listeners.elementAt(sendAgain)).vetoableChange(reversion);
@@ -83,5 +161,85 @@ public class VetoableChangeSupport implements java.io.Serializable {
 			}
 			throw e;
 		}
+
+		Vector moreListeners = (Vector)propertyListeners.get(proposedChange.getPropertyName());
+		if(moreListeners != null) {
+			try {
+				for(currentListener = 0; currentListener < moreListeners.size(); currentListener++) {
+					((VetoableChangeListener)moreListeners.elementAt(currentListener)).vetoableChange(proposedChange);
+				}
+			} catch(PropertyVetoException e) {
+				PropertyChangeEvent reversion = new PropertyChangeEvent(proposedChange.getSource(),proposedChange.getPropertyName(),proposedChange.getNewValue(),proposedChange.getOldValue());
+				for(int sendAgain=0;sendAgain<listeners.size();sendAgain++) {
+					try {
+						((VetoableChangeListener)listeners.elementAt(currentListener)).vetoableChange(proposedChange);
+					} catch(PropertyVetoException e2) {		
+					}
+				}
+
+				for(int sendAgain=0;sendAgain<currentListener;sendAgain++) {
+					try {
+						((VetoableChangeListener)moreListeners.elementAt(sendAgain)).vetoableChange(reversion);
+					} catch(PropertyVetoException e2) {
+					}
+				}
+				throw e;
+			}
+		}
+	}
+
+	/** Fire a VetoableChangeEvent containing the old and new values of the property to all the listeners.
+	 ** If any listener objects, a reversion event will be sent to
+	 ** those listeners who received the initial event.
+	 **
+	 ** @param propertyName the name of the property that
+	 ** changed.
+	 ** @param oldVal the old value.
+	 ** @param newVal the new value.
+	 ** @exception PropertyVetoException if the change is vetoed.
+	 **/
+	public void fireVetoableChange(String propertyName, Object oldVal, Object newVal) throws PropertyVetoException {
+		fireVetoableChange(new PropertyChangeEvent(bean,propertyName,oldVal,newVal));
+	}
+
+	/** Fire a VetoableChangeEvent containing the old and new values of the property to all the listeners.
+	 ** If any listener objects, a reversion event will be sent to
+	 ** those listeners who received the initial event.
+	 **
+	 ** @param propertyName the name of the property that
+	 ** changed.
+	 ** @param oldVal the old value.
+	 ** @param newVal the new value.
+	 ** @exception PropertyVetoException if the change is vetoed.
+	 **/
+	public void fireVetoableChange(String propertyName, boolean oldVal, boolean newVal) throws PropertyVetoException {
+		fireVetoableChange(new PropertyChangeEvent(bean,propertyName,new Boolean(oldVal),new Boolean(newVal)));
+	}
+
+	/** Fire a VetoableChangeEvent containing the old and new values of the property to all the listeners.
+	 ** If any listener objects, a reversion event will be sent to
+	 ** those listeners who received the initial event.
+	 **
+	 ** @param propertyName the name of the property that
+	 ** changed.
+	 ** @param oldVal the old value.
+	 ** @param newVal the new value.
+	 ** @exception PropertyVetoException if the change is vetoed.
+	 **/
+	public void fireVetoableChange(String propertyName, int oldVal, int newVal) throws PropertyVetoException {
+		fireVetoableChange(new PropertyChangeEvent(bean,propertyName,new Integer(oldVal),new Integer(newVal)));
+	}
+
+
+	/** Tell whether the specified property is being listened on or not.
+	 ** This will only return <code>true</code> if there are listeners
+	 ** on all properties or if there is a listener specifically on this
+	 ** property.
+	 **
+	 ** @param propertyName the property that may be listened on
+	 ** @return whether the property is being listened on
+	 **/
+	public boolean hasListeners(String propertyName) {
+		return listeners.size() > 0  || propertyListeners.get(propertyName) != null;
 	}
 }
