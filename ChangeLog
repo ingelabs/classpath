@@ -1,3 +1,14 @@
+2004-11-23  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/nio/NIOServerSocket.java
+	(getPlainSocketImpl): Implemented in java with reflection.
+	* include/gnu_java_nio_NIOServerSocket.h,
+	native/jni/java-nio/gnu_java_nio_NIOServerSocket.c: Removed.
+	* include/Makefile.am:
+	Don't generate include/gnu_java_nio_NIOServerSocket.h.
+	* native/jni/java-nio/Makefile.am:
+	Don't build native/jni/java-nio/gnu_java_nio_NIOServerSocket.c.
+
 2004-11-22  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/nio/SocketChannelImpl.java

@@ -45,7 +45,6 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkWindowPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.h \
 $(top_srcdir)/include/gnu_java_net_PlainDatagramSocketImpl.h \
 $(top_srcdir)/include/gnu_java_net_PlainSocketImpl.h \
-$(top_srcdir)/include/gnu_java_nio_NIOServerSocket.h \
 $(top_srcdir)/include/gnu_java_nio_VMPipe.h \
 $(top_srcdir)/include/gnu_java_nio_VMSelector.h \
 $(top_srcdir)/include/gnu_java_nio_channels_FileChannelImpl.h \
@@ -151,8 +150,6 @@ $(top_srcdir)/include/gnu_java_net_PlainDatagramSocketImpl.h: $(top_srcdir)/gnu/
 	$(JAVAH) -o $@ gnu.java.net.PlainDatagramSocketImpl
 $(top_srcdir)/include/gnu_java_net_PlainSocketImpl.h: $(top_srcdir)/gnu/java/net/PlainSocketImpl.java
 	$(JAVAH) -o $@ gnu.java.net.PlainSocketImpl
-$(top_srcdir)/include/gnu_java_nio_NIOServerSocket.h: $(top_srcdir)/gnu/java/nio/NIOServerSocket.java
-	$(JAVAH) -o $@ gnu.java.nio.NIOServerSocket
 $(top_srcdir)/include/gnu_java_nio_VMPipe.h: $(top_srcdir)/vm/reference/gnu/java/nio/VMPipe.java
 	$(JAVAH) -o $@ gnu.java.nio.VMPipe
 $(top_srcdir)/include/gnu_java_nio_VMSelector.h: $(top_srcdir)/vm/reference/gnu/java/nio/VMSelector.java
