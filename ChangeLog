@@ -9,7 +9,16 @@
 	getRaisedBevelBorderUIResource, getBlackLineBorderUIResource):
 	Create shared borders on demand.
 	(BorderUIResource.BevelBorderUIResource): Add Javadoc.
+	(BorderUIResource.CompundBorderUIResource): Add Javadoc.
+	(BorderUIResource.EmptyBorderUIResource): Add Javadoc.
 
+	(BorderUIResource.EmptyBorderUIResource.EmptyBorderUIResource(int,
+	int, int, int)): Call inherited constructor without allocating
+	a new Insets object.
+
+	* javax/swing/border/CompoundBorder.java
+	(CompoundBorder(Border, Border)): Fix typos in API documentation.
+	
 	* javax/swing/plaf/.cvsignore: Add *.class.
 
 2003-06-16  Sascha Brawer  <brawer@dandelis.ch>
