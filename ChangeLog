@@ -1,5 +1,14 @@
 2004-04-12  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/DirectByteBufferImpl.java
+	(shiftDown): Made static and give address of memory block as argument.
+	* native/jni/java-nio/java_nio_DirectByteBufferImpl.c:
+	Replaced "class" with "clazz".
+	(shiftDown): Changed to new method signature.
+	* include/java_nio_DirectByteBufferImpl.h: Regenerated.
+
+2004-04-12  Michael Koch  <konqueror@gmx.de>
+
 	* include/java_io_FileDescriptor.h: Removed.
 	* include/Makefile.am: Dont regenerate java_io_FileDescriptor.h.
 

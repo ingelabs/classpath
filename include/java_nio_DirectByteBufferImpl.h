@@ -15,7 +15,7 @@ extern JNIEXPORT void JNICALL Java_java_nio_DirectByteBufferImpl_freeImpl (JNIEn
 extern JNIEXPORT jbyte JNICALL Java_java_nio_DirectByteBufferImpl_getImpl__Lgnu_classpath_RawData_2I (JNIEnv *env, jclass, jobject, jint);
 extern JNIEXPORT void JNICALL Java_java_nio_DirectByteBufferImpl_putImpl (JNIEnv *env, jclass, jobject, jint, jbyte);
 extern JNIEXPORT void JNICALL Java_java_nio_DirectByteBufferImpl_getImpl__Lgnu_classpath_RawData_2I_3BII (JNIEnv *env, jclass, jobject, jint, jbyteArray, jint, jint);
-extern JNIEXPORT void JNICALL Java_java_nio_DirectByteBufferImpl_shiftDown (JNIEnv *env, jobject, jint, jint, jint);
+extern JNIEXPORT void JNICALL Java_java_nio_DirectByteBufferImpl_shiftDown (JNIEnv *env, jclass, jobject, jint, jint, jint);
 extern JNIEXPORT jobject JNICALL Java_java_nio_DirectByteBufferImpl_adjustAddress (JNIEnv *env, jclass, jobject, jint);
 
 #ifdef __cplusplus
