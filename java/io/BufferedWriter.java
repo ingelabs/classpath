@@ -154,18 +154,19 @@ close() throws IOException
 
 /*************************************************************************/
 
-/**
+/*
   * This method runs when the object is garbage collected.  It is 
   * responsible for ensuring that all buffered chars are written and
   * for closing the underlying stream.
   *
   * @exception IOException If an error occurs (ignored by the Java runtime)
-  */
+  *
 protected void
 finalize() throws IOException
 {
   close();
 }
+*/
 
 /*************************************************************************/
 
@@ -265,6 +266,30 @@ write(char[] buf, int offset, int len) throws IOException
     }
 
   } // synchronized
+}
+
+/*************************************************************************/
+
+/**
+  * This method writes <code>len</code> chars from the <code>String</code>
+  * <code>str</code> starting at position <code>offset</code> in the string. 
+  * These chars will be written to the internal buffer.  However, if this
+  * write operation fills the buffer, the buffer will be flushed to the
+  * underlying output stream.
+  *
+  * @param str The <code>String</code> to write.
+  * @param offset The index into the string to start writing from.
+  * @param len The number of chars to write.
+  *
+  * @exception IOException If an error occurs
+  */
+public void
+write(String str, int offset, int len) throws IOException
+{
+  char[] buf = new char[len];
+  str.getChars(offset, len - offset, buf, 0);
+
+  write(buf, 0, buf.length);
 }
 
 } // class BufferedWriter 
