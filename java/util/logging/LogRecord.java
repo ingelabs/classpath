@@ -164,8 +164,13 @@ public class LogRecord
   }
 
 
+  /**
+   * Determined with the serialver tool of the Sun J2SE 1.4.
+   */
+  static final long serialVersionUID = 744274793776429013L;
+
   private void readObject(java.io.ObjectInputStream in)
-      throws java.io.IOException, java.lang.ClassNotFoundException
+    throws java.io.IOException, java.lang.ClassNotFoundException
   {
     in.defaultReadObject();
 
