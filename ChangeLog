@@ -1,5 +1,12 @@
 2003-12-27  Guilhem Lavaux <guilhem@kaffe.org>
 
+	* gnu/java/net/protocol/http/Connection.java
+	(receiveReply): Add the null header containing the reply of the server.
+	(getHeaderField, getHeaderFieldKey): Check whether the connection has
+	already been established.
+
+2003-12-27  Guilhem Lavaux <guilhem@kaffe.org>
+
 	* java/io/CharArrayReader.java (read): It should throw
 	IndexOutOfBoundsException and not ArrayIndexOutOfBoundsException (see
 	mauve).

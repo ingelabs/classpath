@@ -255,6 +255,8 @@ public final class Connection extends HttpURLConnection
         || (line.length() < (idx + 6)))
       throw new IOException ("Server reply was unparseable: " + saveline);
 
+    headers.addHeaderField (null, line);
+
     line = line.substring (idx + 1);
     String code = line.substring (0, 3);
     
@@ -420,6 +422,16 @@ public final class Connection extends HttpURLConnection
    */
   public String getHeaderField(int n)
   {
+    if (!connected)
+      try
+	{
+	  connect();
+	}
+      catch (IOException e)
+	{
+	  return null;
+	}
+
     return headers.getHeaderFieldValueByIndex (n);
   }
 
@@ -434,6 +446,16 @@ public final class Connection extends HttpURLConnection
    */
   public String getHeaderFieldKey(int n)
   {
+    if (!connected)
+      try
+	{
+	  connect();
+	}
+      catch (IOException e)
+	{
+	  return null;
+	}
+
     return headers.getHeaderFieldKeyByIndex (n);
   }
 }
