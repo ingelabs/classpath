@@ -1,5 +1,14 @@
 2002-03-28  Eric Blake  <ebb9@email.byu.edu>
 
+	* test/.cvsignore: New file.
+	* test/gnu.java.lang.reflect/.cvsignore: New file.
+	* test/java.io/.cvsignore: New file.
+	* test/java.lang.reflect/.cvsignore: New file.
+	* test/java.net/.cvsignore: New file.
+	* test/java.util/.cvsignore: New file.
+
+2002-03-28  Eric Blake  <ebb9@email.byu.edu>
+
 	* configure.in: Add java/awt/im, java/awt/im/spi.
 	* java/awt/Makefile.am (SUBDIRS): Add java/awt/im.
 	* java/awt/im/.cvsignore: New file.
