@@ -1,4 +1,8 @@
 2004-04-08  Michael Koch  <konqueror@gmx.de>
+
+	* resource/gnu/regexp/.cvsignore: New file.
+
+2004-04-08  Michael Koch  <konqueror@gmx.de>
 ,
 	* java/nio/Buffer.java,
 	java/nio/ByteBufferImpl.java,
