@@ -1,5 +1,11 @@
 2001-10-17  Tom Tromey  <tromey@redhat.com>
 
+	* java/security/Security.java (loadProviders): Added `vendor'
+	argument.
+	Load both `classpath' and `java.vm.name' providers.
+
+2001-10-17  Tom Tromey  <tromey@redhat.com>
+
 	* gnu/java/security/provider/SHA1PRNG.java (engineNextBytes):
 	Rewrote.
 	* java/security/SecureRandom.java (setSeed(long)): Don't set seed
