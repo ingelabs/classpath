@@ -238,9 +238,9 @@
 	* Makefile.am: Build examples subdir conditionally.
 
 2004-11-15  Craig Black  <craig.black@aonix.com>
- 
+
 	* gnu/java/beans/BeanInfoEmbryo.java: Use TreeMap for proper sorting.
- 
+
 2004-11-15  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/lang/StackTraceElement.java: Made final.
@@ -331,7 +331,7 @@
 	
 2004-11-12  Sven de Marothy  <sven@physto.se>
 
-        * java/awt/Polygon.java (contains): Reimplemented.
+	* java/awt/Polygon.java (contains): Reimplemented.
 
 2004-11-11  Mark Wielaard  <mark@klomp.org>
 
@@ -460,10 +460,10 @@
 	
 2004-11-11  Mark Wielaard  <mark@klomp.org>
 
-       * lib/gen-classlist.sh.in: Split in classes list in standard, awt
-       and standardx lists.
-       * lib/Makefile.am (FOUND_GCJ): Split compilation in three parts.
-       (CLEANFILES): Add classes.standard, classes.awt and classes.standardx.
+	* lib/gen-classlist.sh.in: Split in classes list in standard, awt
+	and standardx lists.
+	* lib/Makefile.am (FOUND_GCJ): Split compilation in three parts.
+	(CLEANFILES): Add classes.standard, classes.awt and classes.standardx.
 
 2004-11-11  Michael Koch  <konqueror@gmx.de>
 
@@ -742,10 +742,10 @@
 	(Encoder): Likewise.
 
 2004-11-06  Robert Schuster  <theBohemian@gmx.net>
- 
- 	Fixes bug #10908
- 	* gnu/java/beans/IntrospectionIncubator.java:
- 	(addMethod): static methods are discarded now, too.
+
+	Fixes bug #10908
+	* gnu/java/beans/IntrospectionIncubator.java:
+	(addMethod): static methods are discarded now, too.
 
 2004-11-06  Sven de Marothy  <sven@physto.se>
 
@@ -797,8 +797,8 @@
 
 2004-11-05  Noa Resare  <noa@resare.com>
 
-        * java/net/Socket.java(getPort): Return 0 instead of -1 on
-        unconnected sockets.
+	* java/net/Socket.java(getPort): Return 0 instead of -1 on
+	unconnected sockets.
 
 2004-11-05  Sven de Marothy <sven@physto.se>
 	
@@ -820,7 +820,7 @@
 
 2004-11-04  Torsten Rupp  <rupp@aicas.com>
 
-        * native/jni/java-net/gnu_java_net_PlainSocketImpl.c: Added missing
+	* native/jni/java-net/gnu_java_net_PlainSocketImpl.c: Added missing
 	return values for WITHOUT_NETWORK code path.
 
 2004-11-03  Tom Tromey  <tromey@redhat.com>
@@ -851,7 +851,7 @@
 
 2004-11-01  Andrew John Hughes <gnu_andrew@member.fsf.org>
 
-	* java/util/GregorianCalendar.java
+	* java/util/GregorianCalendar.java:
 	Added/amended documentation.
 	
 2004-11-01  Jeroen Frijters  <jeroen@frijters.net>
@@ -1047,36 +1047,36 @@
 
 2004-10-26  Andreas Tobler  <a.tobler@schweiz.ch>
 
- 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextAreaPeer.c
- 	(Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_create): Use the
- 	GTK_TEXT_VIEW macro.
- 
- 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEvents.c
- 	(connect_awt_hook_cb): Mark unused variable unused.
- 
- 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkClipboard.c
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextAreaPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_create): Use the
+	GTK_TEXT_VIEW macro.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEvents.c
+	(connect_awt_hook_cb): Mark unused variable unused.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkClipboard.c
 	(selection_get): Do the cast right.
- 
- 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkChoicePeer.c
- 	(Java_gnu_java_awt_peer_gtk_GtkChoicePeer_create): According to
- 	the gtk API gtk_combo_box_new_text actually returns a GtkWidget.
- 	Remove unused var menu.
- 	(selection_changed): Remove unused value.
- 
- 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c
- 	(Java_gnu_java_awt_peer_gtk_GtkButtonPeer_setNativeBounds): Fix pointer
- 	warning with using an intermediate variable.
- 
- 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkPixbufDecoder.c
- 	(area_updated): Fix unused var warning for BE archs.
- 
- 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c
- 	(Java_gnu_java_awt_peer_gtk_GdkGraphics_connectSignals): Remove unused
- 	var.
- 	(realize_cb): Mark unused variable unused.
- 
- 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGlyphVector.c
- 	(seek_glyphstring_idx): Fix a C90 warning.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkChoicePeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkChoicePeer_create): According to
+	the gtk API gtk_combo_box_new_text actually returns a GtkWidget.
+	Remove unused var menu.
+	(selection_changed): Remove unused value.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkButtonPeer_setNativeBounds): Fix pointer
+	warning with using an intermediate variable.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkPixbufDecoder.c
+	(area_updated): Fix unused var warning for BE archs.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c
+	(Java_gnu_java_awt_peer_gtk_GdkGraphics_connectSignals): Remove unused
+	var.
+	(realize_cb): Mark unused variable unused.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGlyphVector.c
+	(seek_glyphstring_idx): Fix a C90 warning.
 
 2004-10-26  Andreas Tobler  <a.tobler@schweiz.ch>
 
@@ -1840,7 +1840,7 @@
 
 2004-10-20  Andrew John Hughes <gnu_andrew@member.fsf.org>
 
-	* java/util/Currency.java
+	* java/util/Currency.java:
 	Documented variables and methods more fully.
 	Caches the currency instances, so that a request
 	for a locale, l, only ever returns the same
@@ -1849,11 +1849,11 @@
 	
 2004-10-20  Andrew John Hughes <gnu_andrew@member.fsf.org>
 
-	* java/util/Collections.java
+	* java/util/Collections.java:
 	Added documentation.
-	* java/util/SortedMap.java
+	* java/util/SortedMap.java:
 	Clarified some method examples.
-	* java/util/SortedSet.java
+	* java/util/SortedSet.java:
 	Clarified some method examples.
 	
 2004-10-20  Michael Koch  <konqueror@gmx.de>
@@ -2469,10 +2469,10 @@
 
 2004-10-10  Sven de Marothy  <sven@physto.se>
 
-        * native/jni/java-lang/java_lang_Double.c
-        (parseDouble): Add handling of NaN/Infinity (bug #10491)
-        * java/nio/ByteBufferHelper.java
-        (putDouble): Use Double.toRawLongBits instead (bug #9106)
+	* native/jni/java-lang/java_lang_Double.c
+	(parseDouble): Add handling of NaN/Infinity (bug #10491)
+	* java/nio/ByteBufferHelper.java
+	(putDouble): Use Double.toRawLongBits instead (bug #9106)
 
 2004-10-10  Andreas Tobler  <a.tobler@schweiz.ch>
 
