@@ -1,3 +1,14 @@
+2004-03-31  Michael Koch  <konqueror@gmx.de>
+
+	* include/gnu_java_nio_ByteBufferImpl.h,
+	include/gnu_java_nio_CharBufferImpl.h,
+	include/gnu_java_nio_DoubleBufferImpl.h,
+	include/gnu_java_nio_FloatBufferImpl.h,
+	include/gnu_java_nio_IntBufferImpl.h,
+	include/gnu_java_nio_LongBufferImpl.h,
+	include/gnu_java_nio_ShortBufferImpl.h:
+	Removed, unused.
+
 2004-03-29  Steven Augart  <steve+freejava@augart.com>
 
 	* doc/vmintegration.texinfo; Added dir entry.
