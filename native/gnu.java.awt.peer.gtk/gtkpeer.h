@@ -97,6 +97,10 @@ extern struct state_table *native_state_table;
 #define AWT_ADJUSTMENT_BLOCK_INCREMENT 4
 #define AWT_ADJUSTMENT_TRACK 5
 
+#define AWT_LABEL_LEFT 0
+#define AWT_LABEL_CENTER 1
+#define AWT_LABEL_RIGHT 2
+     
 #define AWT_KEY_TYPED    400
 #define AWT_KEY_PRESSED  401
 #define AWT_KEY_RELEASED 402

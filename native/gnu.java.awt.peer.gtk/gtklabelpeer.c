@@ -24,20 +24,24 @@
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelNew
-(JNIEnv *env, jobject obj, jobject parent_obj, jstring text, jint just, jboolean visible)
+  (JNIEnv *env, jobject obj, jobject parent_obj,
+   jstring text, jint just, jboolean visible)
 {
   GtkWidget *label, *box;
   const char *str;
   void *parent;
-  GtkJustification j = GTK_JUSTIFY_CENTER;
+  gfloat j;
  
   switch (just)
     {
-    case 0:
-      j = GTK_JUSTIFY_LEFT;
+    case AWT_LABEL_LEFT:
+      j = 0.0;
       break;
-    case 2:
-      j = GTK_JUSTIFY_RIGHT;
+    case AWT_LABEL_CENTER:
+      j = 0.5;
+      break;
+    case AWT_LABEL_RIGHT:
+      j = 1.0;
       break;
     }
  
@@ -50,7 +54,7 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelNew
 
   label = gtk_label_new (str);
   gtk_container_add (GTK_CONTAINER (box), label);
-  gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_LEFT);
+  gtk_misc_set_alignment (GTK_MISC (label), j, 0.5);
   gtk_widget_show (label);
 
   set_parent (box, GTK_CONTAINER (parent));
@@ -67,8 +71,8 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelNew
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelSet
-(JNIEnv *env, jobject obj, jstring text)
+Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setText
+  (JNIEnv *env, jobject obj, jstring text)
 {
   void *ptr;
   const char *str;
@@ -88,29 +92,32 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelSet
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelSetJustify
-(JNIEnv *env, jobject obj, jint just)
+Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setAlignment
+  (JNIEnv *env, jobject obj, jint just)
 {
   void *ptr;
   GtkLabel *label;
-  GtkJustification j = GTK_JUSTIFY_CENTER;
+  gfloat j;
 
   switch (just)
     {
-    case 0:
-      j = GTK_JUSTIFY_LEFT;
+    case AWT_LABEL_LEFT:
+      j = 0.0;
       break;
-    case 2:
-      j = GTK_JUSTIFY_RIGHT;
+    case AWT_LABEL_CENTER:
+      j = 0.5;
+      break;
+    case AWT_LABEL_RIGHT:
+      j = 1.0;
       break;
     }
-
+  
   ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
 
   label = GTK_LABEL (GTK_BIN (ptr)->child);
-  gtk_label_set_justify (label, GTK_JUSTIFY_LEFT);
+  gtk_misc_set_alignment (GTK_MISC (label), j, 0.5);
 
   gdk_threads_leave ();
 }

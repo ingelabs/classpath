@@ -27,48 +27,16 @@ public class GtkLabelPeer extends GtkComponentPeer
     implements LabelPeer
 {
 
-  native void gtkLabelNew (ComponentPeer parent, String text, int just, boolean visible);
-  native void gtkLabelSet (String label);    
-  native void gtkLabelSetJustify (int just);    
+  native void gtkLabelNew (ComponentPeer parent, 
+			   String text, int just, boolean visible);
 
   public GtkLabelPeer (Label l, ComponentPeer cp)
-    {
-      super (l);
-      System.out.println("labelpeer<init> called");
-      int j=1;
-
-      switch (l.getAlignment())
-	{
-	case Label.LEFT:
-	  j=0;
-	  break;
-	case Label.RIGHT:
-	  j=2;
-	  break;
-	}
-
-      Point p = l.getLocation ();
-      gtkLabelNew (cp, l.getText(), j, l.isVisible ());
-    }
+  {
+    super (l);
+    System.out.println("labelpeer<init> called");
+    gtkLabelNew (cp, l.getText(), l.getAlignment (), l.isVisible ());
+  }
     
-    public void setText (String text) 
-    {
-      gtkLabelSet(text);
-    }    
-
-    public void setAlignment (int alignment) 
-    {
-      int j=1;
-
-      switch (alignment)
-	{
-	case Label.LEFT:
-	  j=0;
-	  break;
-	case Label.RIGHT:
-	  j=2;
-	  break;
-	}
-      gtkLabelSetJustify(j);
-    }    
+  native public void setText (String text);
+  native public void setAlignment (int alignment);
 }
