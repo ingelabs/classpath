@@ -1,3 +1,9 @@
+2002-10-25  Mark Wielaard  <mark@klomp.org>
+
+	* java/net/URLDecoder.java (decode): Initialize Stringbuffer size to
+	length of String.
+	* java/net/URLEncoder.java (encode): Likewise.
+
 2002-10-25  Wu Gansha <gansha.wu@intel.com>:
 
 	* vm/reference/java/lang/reflect/Constructor.java (toString): Use 128

@@ -99,11 +99,11 @@ public class URLEncoder
   public static String encode(String s, String encoding)
     throws UnsupportedEncodingException
   {
-    StringBuffer result = new StringBuffer();
     int length = s.length();
     int start = 0;
     int i = 0;
 
+    StringBuffer result = new StringBuffer(length);
     while (true)
     {
       while ( i < length && isSafe(s.charAt(i)) )
