@@ -425,16 +425,41 @@ public final class Float extends Number implements Comparable
      */
     public int compareTo(Float f)
     {
-        float x = f.floatValue();
-
-        if (value == NaN)
-            return (x == NaN) ? 0 : 1;
-        if ((value == 0.0) && (x == -0.0))
-            return 1;
-        if ((value == -0.0) && (x == 0.0))
+        return compare(value, f.value);
+    }
+    
+   /**
+    * Returns 0 if the first argument is equal to the second argument.
+    * Returns a number less than zero if the first argument is less than the
+    * second argument, and returns a number greater than zero if the first
+    * argument is greater than the second argument.
+    * <br>
+    * <code>Float.NaN</code> is greater than any number other than itself, 
+    * even <code>Float.POSITIVE_INFINITY</code>.
+    * <br>
+    * <code>0.0</code> is greater than <code>-0.0</code>.
+    *
+    * @param x the first float to compare.
+    * @param y the second float to compare.
+    * @return  0 if the arguments are the same, &lt; 0 if the
+    *          first argument is less than the second argument in
+    *          in question, or &gt; 0 if it is greater.
+    * @since 1.4
+    */
+    public static int compare(float x, float y)
+    {
+        if (isNaN (x))
+            return isNaN (y) ? 0 : 1;
+        if (isNaN (y))
             return -1;
+        if ((x == 0.0) && (y == -0.0))
+            return 1;
+        if ((x == -0.0) && (y == 0.0))
+            return -1;
+        if (x == y)
+            return 0;
 
-        return ((value - x) > 0) ? 1 : -1;
+        return (x > y) ? 1 : -1;
     }
     
     /**

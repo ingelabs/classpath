@@ -1,5 +1,5 @@
 /* Double.java -- object wrapper for double primitive
-   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -305,20 +305,43 @@ public final class Double extends Number implements Comparable
    */
   public int compareTo(Double d)
   {
-    double x = d.doubleValue();
-
-    if (isNaN (value))
-      return isNaN(x) ? 0 : 1;
-    if ((value == 0.0d) && (x == -0.0d))
-      return 1;
-    if ((value == -0.0d) && (x == 0.0d))
-      return -1;
-    if (value == x)
-      return 0;
-
-    return (value > x) ? 1 : -1;
+    return compare(value, d.value);
   }
     
+  /**
+   * Returns 0 if the first argument is equal to the second argument.
+   * Returns a number less than zero if the first argument is less than the
+   * second argument, and returns a number greater than zero if the first
+   * argument is greater than the second argument.
+   * <br>
+   * <code>Double.NaN</code> is greater than any number other than itself, 
+   * even <code>Double.POSITIVE_INFINITY</code>.
+   * <br>
+   * <code>0.0d</code> is greater than <code>-0.0d</code>.
+   *
+   * @param x the first double to compare.
+   * @param y the second double to compare.
+   * @return  0 if the arguments are the same, &lt; 0 if the
+   *          first argument is less than the second argument in
+   *          in question, or &gt; 0 if it is greater.
+   * @since 1.4
+   */
+  public static int compare(double x, double y)
+  {
+    if (isNaN (x))
+      return isNaN(y) ? 0 : 1;
+    if (isNaN (y))
+      return -1;
+    if ((x == 0.0d) && (y == -0.0d))
+      return 1;
+    if ((x == -0.0d) && (y == 0.0d))
+      return -1;
+    if (x == y)
+      return 0;
+
+    return (x > y) ? 1 : -1;
+  }
+
   /**
    * Compares the specified <code>Object</code> to this <code>Double</code>
    * if and only if the <code>Object</code> is an instanceof 

@@ -1,4 +1,13 @@
 2001-07-10  Mark Wielaard <mark@klomp.org>
+	* java/lang/Boolean.java (valueOf boolean): new 1.4 method
+	(toString boolean): idem
+	(valueOf String): return one of the predefined Boolean instances
+	* java/lang/Double.java (compare double double): new 1.4 method
+	(compareTo Double): call new method
+	* java/lang/Float.java (compare float float): new 1.4 method
+	(compareTo Float): call new method
+
+2001-07-10  Mark Wielaard <mark@klomp.org>
 	* java/io/File.java (String,String constructor): compile fix
 
 2001-07-05  Julian Scheid <julian.scheid@sektor37.de>

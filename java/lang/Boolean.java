@@ -1,5 +1,5 @@
 /* Boolean.java -- object wrapper for boolean
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -42,13 +42,17 @@ public final class Boolean implements Serializable
     
     /**
      * This field is a <code>Boolean</code> object representing the
-     * primitive value <code>true</code>.
+     * primitive value <code>true</code>. This instance is returned
+     * by the static <code>valueOf()</code> methods if they return
+     * a <code>Boolean</code> representing <code>true</code>.
      */
     public static final Boolean TRUE  = new Boolean(true);
     
     /**
      * This field is a <code>Boolean</code> object representing the 
-     * primitive value <code>false</code>.
+     * primitive value <code>false</code>. This instance is returned
+     * by the static <code>valueOf()</code> methods if they return
+     * a <code>Boolean</code> representing <code>false</code>.
      */
      public static final Boolean FALSE = new Boolean(false);
 
@@ -62,7 +66,9 @@ public final class Boolean implements Serializable
     
     /**
      * Create a <code>Boolean</code> object representing the value of the 
-     * argument <code>value</code>
+     * argument <code>value</code>. In general the use of the static
+     * method <code>valueof(boolean)</code> is more efficient since it will
+     * not create a new object.
      *
      * @param value the primitive value of this <code>Boolean</code>
      */    
@@ -74,7 +80,9 @@ public final class Boolean implements Serializable
      * Creates a <code>Boolean</code> object representing the primitive 
      * <code>true</code> if and only if <code>s</code> matches 
      * the string "true" ignoring case, otherwise the object will represent 
-     * the primitive <code>false</code>.
+     * the primitive <code>false</code>. In general the use of the static
+     * method <code>valueof(String)</code> is more efficient since it will
+     * not create a new object.
      *
      * @param s the <code>String</code> representation of <code>true</code>
      *   or false
@@ -92,11 +100,23 @@ public final class Boolean implements Serializable
     }
 
     /**
-     * Calls <code>Boolean(String)</code> to create the new object.
-     * @see #Boolean(java.lang.String)
+     * Returns the Boolean <code>TRUE</code> if the given boolean is
+     * <code>true</code>, otherwise it will return the Boolean
+     * <code>FALSE</code>.
+     *
+     * @since 1.4
+     */
+    public static Boolean valueOf(boolean b) {
+    	return b ? TRUE : FALSE;
+    }
+
+    /**
+     * Returns the Boolean <code>TRUE</code> if and only if the given
+     * String is equal, ignoring case, to the the String "true", otherwise
+     * it will return the Boolean <code>FALSE</code>.
      */
     public static Boolean valueOf(String s) {
-	return new Boolean(s);
+    	return "true".equalsIgnoreCase(s) ? TRUE : FALSE;
     }
 
     /**
@@ -132,6 +152,17 @@ public final class Boolean implements Serializable
 	return (val != null && val.equalsIgnoreCase("true"));
     }
     
+    /**
+     * Returns "true" if the value of the give boolean is <code>true</code> and
+     * returns "false" if the value of the given boolean is <code>false</code>.
+     *
+     * @since 1.4
+     */
+    public static String toString(boolean b)
+    {
+	return b ? "true" : "false";
+    }
+
     /**
      * Returns "true" if the value of this object is <code>true</code> and
      * returns "false" if the value of this object is <code>false</code>.
