@@ -142,6 +142,16 @@ public final class String {
     System.arraycopy(data, offset, value, 0, count);
   }
 
+  /**
+   * Creates a new String using the byte array.
+   *
+   * Uses the default encoding for the system to decode the byte array, or if
+   * that doesn't work, uses 8859_1.
+   *
+   * @param data byte array to copy
+   *
+   * @exception NullPointerException if `data' is null
+   */
   public String(byte[] data) throws NullPointerException {
     try {
       value = EncodingManager.getDecoder().convertToChars(data);
@@ -155,6 +165,18 @@ public final class String {
     count = value.length;
   }
 
+  /**
+   * Creates a new String using the byte array.
+   *
+   * Uses the specified encoding type to decode the byte array, or if
+   * that doesn't work, uses 8859_1.
+   *
+   * @param data byte array to copy
+   * @param encoding the name of the encoding to use
+   * @exception NullPointerException if `data' is null.
+   * @exception UnsupportedEncodingException if the specified encoding is not
+   *            found.
+   */
   public String(byte[] data, String encoding) 
     throws NullPointerException, UnsupportedEncodingException {
     try {
@@ -169,6 +191,23 @@ public final class String {
     count = value.length;
   }
 
+  /**
+   * Creates a new String using the portion of the byte array starting at the
+   * offset and ending at offset+count.
+   *
+   * Uses the specified encoding type to decode the byte array, or if
+   * that doesn't work, uses 8859_1.
+   *
+   * @param data byte array to copy
+   * @param offset the offset to start at
+   * @param count the number of characters in the array to use
+   * @param encoding the name of the encoding to use
+   * @exception NullPointerException if `data' is null.
+   * @exception IndexOutOfBoundsException if the specified offset or count is
+   *            incorrect.
+   * @exception UnsupportedEncodingException if the specified encoding is not
+   *            found.
+   */
   public String(byte[] data, int offset, int count, String encoding)
     throws NullPointerException, IndexOutOfBoundsException, 
     UnsupportedEncodingException {
