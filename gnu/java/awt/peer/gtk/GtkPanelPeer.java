@@ -32,6 +32,5 @@ public class GtkPanelPeer extends GtkContainerPeer
   {
     super (p);
     gtkPanelNew (parent);
-    syncAttributes ();
   }
 }

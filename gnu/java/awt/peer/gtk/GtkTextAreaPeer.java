@@ -58,7 +58,6 @@ public class GtkTextAreaPeer extends GtkTextComponentPeer
     editable = new Object();
 
     gtkTextNew (cp, editable, text, hscroll, vscroll);
-    syncAttributes ();
   }
 
   public Dimension getMinimumSize (int rows, int cols)

@@ -45,7 +45,6 @@ public class GtkScrollbarPeer extends GtkComponentPeer
 		     s.getVisibleAmount(),
 		     s.getMinimum(),
 		     s.getMaximum());
-    syncAttributes ();
   }
 
   protected void postAdjustmentEvent (int type, int value)

@@ -15,7 +15,6 @@ public class GtkCanvasPeer extends GtkComponentPeer implements CanvasPeer
     gtkCanvasNew (cp, d.width, d.height);
 
     Point p = c.getLocation ();
-    syncAttributes ();
   }
 
   public Graphics getGraphics ()

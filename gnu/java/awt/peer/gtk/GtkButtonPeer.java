@@ -35,7 +35,6 @@ public class GtkButtonPeer extends GtkComponentPeer
   {
     super (b);
     gtkButtonNewWithLabel (cp, b.getLabel());
-    syncAttributes ();
   }
     
   public void setLabel (String label) 

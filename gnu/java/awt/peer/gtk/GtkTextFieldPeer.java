@@ -39,7 +39,6 @@ public class GtkTextFieldPeer extends GtkTextComponentPeer
     String text = tf.getText();
       
     gtkEntryNew (cp, text);
-    syncAttributes ();
   }
 
   public Dimension getMinimumSize (int cols)

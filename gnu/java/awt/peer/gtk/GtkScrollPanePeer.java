@@ -57,7 +57,6 @@ public class GtkScrollPanePeer extends GtkContainerPeer
     int dims[]=new int[2];
 
     gtkScrolledWindowNew(parent, mypolicy, pdim.width, pdim.height, dims);
-    syncAttributes ();
 
     sbWidth=dims[0];
     sbHeight=dims[1];

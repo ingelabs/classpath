@@ -45,8 +45,6 @@ public class GtkCheckboxPeer extends GtkComponentPeer
       gtkCheckButtonNew (cp, c.getState (), c.getLabel ());
     else
       gtkRadioButtonNew (cp, group, c.getState(), c.getLabel ());
-    
-    syncAttributes ();
   }
 
   public void setCheckboxGroup (CheckboxGroup group)

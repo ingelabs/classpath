@@ -45,7 +45,6 @@ public class GtkChoicePeer extends GtkComponentPeer
       items[i] = c.getItem(i);
 	  
     gtkOptionMenuNew (parent, items);
-    syncAttributes ();
   }
 
   public void add (String item, int index)

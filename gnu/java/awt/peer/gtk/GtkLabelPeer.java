@@ -33,7 +33,6 @@ public class GtkLabelPeer extends GtkComponentPeer
   {
     super (l);
     gtkLabelNew (cp, l.getText (), l.getAlignment ());
-    syncAttributes ();
   }
     
   native public void setText (String text);

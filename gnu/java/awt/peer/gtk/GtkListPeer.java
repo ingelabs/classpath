@@ -47,7 +47,6 @@ public class GtkListPeer extends GtkComponentPeer
     myGtkList = new Object();
 
     gtkListNew (cp, myGtkList, items, l.isMultipleMode());
-    syncAttributes ();
   }
   
   public void add (String item, int index)

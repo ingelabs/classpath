@@ -49,19 +49,6 @@ public class GtkComponentPeer extends GtkGenericPeer
     this.awtComponent = awtComponent;
   }
 
-  /* This method should be called from Peer constructors
-     to synchronize mundane attributes. */
-  protected void syncAttributes ()
-  {
-    setCursor (awtComponent.getCursor ());
-    Dimension d = awtComponent.getSize ();
-    
-    Point p = awtComponent.getLocation ();
-    setBounds (p.x, p.y, d.width, d.height);
-    
-    setVisible (awtComponent.isVisible ());
-  }
-    
   public int checkImage (Image image, int width, int height, 
 			 ImageObserver observer) 
   {

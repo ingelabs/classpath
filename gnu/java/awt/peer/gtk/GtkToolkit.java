@@ -126,12 +126,22 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected void setComponentState (Component c, GtkComponentPeer cp)
     {
+      /* Make the Component reflect Peer defaults */
       if (c.getForeground () == null)
 	c.setForeground (cp.getForeground ());
       if (c.getBackground () == null)
 	c.setBackground (cp.getBackground ());
 //        if (c.getFont () == null)
 //  	c.setFont (cp.getFont ());
+      
+      /* Make the Peer reflect the state of the Component */
+      cp.setCursor (c.getCursor ());
+      Dimension d = c.getSize ();
+      
+      Point p = c.getLocation ();
+      cp.setBounds (p.x, p.y, d.width, d.height);
+      
+      cp.setVisible (c.isVisible ());
     }
 
   protected ButtonPeer createButton (Button b)
