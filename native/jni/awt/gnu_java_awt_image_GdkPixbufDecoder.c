@@ -63,7 +63,7 @@ area_prepared (GdkPixbufLoader *loader, struct loader_vector *lv)
 {
   ArtPixBuf *pixbuf;
 
-  pixbuf = gdk_pixbuf_loader_get_pixbuf (loader)->art_pixbuf;
+  //  pixbuf = GDK_PIXBUF_LOADER(gdk_pixbuf_loader_get_pixbuf (loader))->art_pixbuf;
 
   printf ("AREA PREPARED\n");
 
@@ -91,7 +91,7 @@ area_updated (GdkPixbufLoader *loader,
 
   printf ("AREA UPDATED\n");
 
-  pixbuf = gdk_pixbuf_loader_get_pixbuf (loader)->art_pixbuf;
+  /*  pixbuf = gdk_pixbuf_loader_get_pixbuf (loader)->art_pixbuf;
 
   g_return_if_fail (pixbuf->format == ART_PIX_RGB);
   g_return_if_fail (pixbuf->bits_per_sample == 8);
@@ -108,7 +108,7 @@ area_updated (GdkPixbufLoader *loader,
 	      (y * pixbuf->rowstride + (x << 2)),
 	      height * pixbuf->rowstride);
     }
-  else /* add in alpha data */
+  else // add in alpha data 
     {
       int i;
       art_u8 *src, *dest;
@@ -118,13 +118,13 @@ area_updated (GdkPixbufLoader *loader,
       
       for (i = 0; i < num_pixels; i++)
 	{
-	  *dest++ = *src++;	/* red */
-	  *dest++ = *src++;	/* green */
-	  *dest++ = *src++;	/* blue */
-	  *dest++ = 0xff;	/* alpha */
+	  *dest++ = *src++;	//red
+	  *dest++ = *src++;	// green 
+	  *dest++ = *src++;	// blue 
+	  *dest++ = 0xff;	// alpha 
 	}
     }
-  
+  */
   gdk_threads_leave ();
 
 #ifndef WORDS_BIGENDIAN

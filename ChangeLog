@@ -1,3 +1,8 @@
+2001-09-22  John Leuner  <jleuner@debian.org>
+
+	* native/jni/awt/gnu_java_awt_image_GdkPixbufDecoder.c: Removed call to
+	get_pixbuf to allow code to compile
+
 2001-09-21  C. Brian Jones <cbj@gnu.org>
 	* gnu/Makefile.am: removed tools from SUBDIRS
 	* gnu/java/awt/image/GdkPixbufDecoder.java: wrapped loadLibrary
