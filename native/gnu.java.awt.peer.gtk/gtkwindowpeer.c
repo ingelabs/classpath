@@ -30,7 +30,7 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env, 
   jobject obj, jint type, jint width, jint height, jboolean visible)
 {
-  GtkWidget *window, *fixed;
+  GtkWidget *window;
 
   gdk_threads_enter ();
   switch (type)
@@ -38,13 +38,25 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env,
     case 1:
       window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
       break;
-    case 2:
-      window = gtk_window_new (GTK_WINDOW_DIALOG);
-      break;
     case 3:
       window = gtk_window_new (GTK_WINDOW_POPUP);
       break;
     }
+
+  setup_window (env, obj, window, width, height, visible);
+
+  gdk_threads_leave ();
+
+  NSA_SET_PTR (env, obj, window);
+}
+
+
+void
+setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width, 
+	      jint height, jboolean visible)
+{
+  GtkWidget *fixed;
+
   gtk_window_set_policy (GTK_WINDOW (window), 1, 1, 1);
   gtk_widget_set_usize (window, width, height);
   
@@ -58,17 +70,9 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env,
   connect_awt_hook (env, obj, window, 1, window->window);
   set_visible (window, visible);
 
-  /* Every window needs a fixed widget to support absolute positioning. */
+  gtk_widget_set_usize (window, width, height);
 
-  printf("c: requisition: %i x %i allocation:%i x %i\n",
-	 GTK_WIDGET(window)->requisition.width,
-	 GTK_WIDGET(window)->requisition.height,
-	 GTK_WIDGET(window)->allocation.width,
-	 GTK_WIDGET(window)->allocation.height);
-
-  gdk_threads_leave ();
-
-  NSA_SET_PTR (env, obj, window);
+  gtk_container_add (GTK_CONTAINER (window), fix);
 }
 
 
