@@ -155,6 +155,25 @@ close() throws IOException
 /*************************************************************************/
 
 /**
+  * This methods writes a single byte of data to the pipe.  This call may
+  * block if the pipe is full.
+  *
+  * @param c The <code>char</code> to write, passed as an <code>int</code>.
+  *
+  * @exception IOException If an error occurs.
+  */
+public void
+write(int c) throws IOException
+{
+  char[] buf = new char[1];
+  buf[0] = (char)c;
+
+  write(buf, 0, buf.length);
+} 
+
+/*************************************************************************/
+
+/**
   * This method writes <code>len</code> chars of data from the char array
   * <code>buf</code> starting at index <code>offset</code> in the array
   * to the stream.  Note that this method will block if the  
