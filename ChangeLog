@@ -1,3 +1,24 @@
+2002-03-29  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/security/AllPermission.java: Update to 1.4.
+	* java/security/BasicPermission.java: Ditto.
+	* java/security/Certificate.java: Ditto.
+	* java/security/CodeSource.java: Ditto.
+	* java/security/DomainCombiner.java: Ditto.
+	* java/security/Guard.java: Ditto.
+	* java/security/GuardedObject.java: Ditto.
+	* java/security/Key.java: Ditto.
+	* java/security/Permission.java: Ditto.
+	* java/security/PermissionCollection.java: Ditto.
+	* java/security/Permissions.java: Ditto.
+	* java/security/Principal.java: Ditto.
+	* java/security/PrivateKey.java: Ditto.
+	* java/security/PrivilegedAction.java: Ditto.
+	* java/security/PrivilegedExceptionAction.java: Ditto.
+	* java/security/PublicKey.java: Ditto.
+	* java/security/SecurityPermission.java: Ditto.
+	* java/security/UnresolvedPermission.java: Ditto.
+
 2002-03-28  Eric Blake  <ebb9@email.byu.edu>
 
 	* test/.cvsignore: New file.
