@@ -152,7 +152,7 @@ When you are creating an array class, you should set the ClassLoader of
 the array class to the ClassLoader of its component type.  Whenever you
 add a class to a ClassLoader, you need to notify the ClassLoader and
 add the new Class to its internal cache of classes.  To do this, call
-ClassLoader.addVMCreatedClass(Class).  @em{Note: this is written in
+ClassLoader.addVMCreatedClass(Class).  @emph{Note: this is written in
 anticipation of 1.2 support and does not apply just yet.}
 
 @item primordial class loader
@@ -166,7 +166,7 @@ simply call this method @emph{after} the initial class loading has been
 done.  No harm will come, as long as you follow the guidelines in the
 @pxref{Initialization} section.
 
-@em{Note: this is written in anticipation of 1.2 support and does not
+@emph{Note: this is written in anticipation of 1.2 support and does not
 apply just yet.}
 
 @item throwing exceptions
