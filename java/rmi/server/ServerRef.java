@@ -1,5 +1,5 @@
-/*
-  Copyright (c) 1996, 1997, 1998, 1999 Free Software Foundation, Inc.
+/* ServerRef.java --
+   Copyright (c) 1996, 1997, 1998, 1999, 2004  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -44,7 +44,7 @@ import java.rmi.server.ServerNotActiveException;
 
 public interface ServerRef extends RemoteRef
 {
-  long serialVersionUID = 0;
+  long serialVersionUID = -4557750989390278438L;
 
   RemoteStub exportObject(Remote obj, Object data) throws RemoteException;
 
