@@ -1,3 +1,10 @@
+2002-11-15  Eric Blake  <ebb9@email.byu.edu>
+
+	* gnu/java/nio/FileChannelImpl.java (write, read): Add missing
+	stub methods.
+	* java/net/MulticastSocket.java: Add missing import.
+	* java/nio/channels/FileChannel.java: Add missing import.
+
 2002-11-14  Tom Tromey  <tromey@redhat.com>
 
 	* native/jni/classpath/native_state.c (add_node): Set `c_state'

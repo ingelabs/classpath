@@ -1,5 +1,5 @@
 /* MulticastSocket.java -- Class for using multicast sockets
-   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,6 +38,7 @@ exception statement from your version. */
 package java.net;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 /**
  * Written using on-line Java Platform 1.2 API Specification, as well

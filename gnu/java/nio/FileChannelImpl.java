@@ -48,7 +48,7 @@ import java.nio.channels.*;
  * Upon a Input/Output/RandomAccessFile object.
  */
 
-public class FileChannelImpl  extends FileChannel
+public class FileChannelImpl extends FileChannel
 {
     public long address;
     public int length;
@@ -207,5 +207,14 @@ public class FileChannelImpl  extends FileChannel
     static native void nio_msync(int fd, 
 				 long address,
 				 int length);
-}
 
+  public long write(ByteBuffer[] srcs) throws IOException {
+    throw new Error("not implemented");
+  }
+  public long read(ByteBuffer[] srcs, int offset, int length) throws IOException {
+    throw new Error("not implemented");
+  }
+  public long read(ByteBuffer[] srcs) throws IOException {
+    throw new Error("not implemented");
+  }
+}

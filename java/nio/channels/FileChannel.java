@@ -39,6 +39,7 @@ package java.nio.channels;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.MappedByteBuffer;
 import java.nio.channels.spi.AbstractInterruptibleChannel;
 
 public abstract class FileChannel extends AbstractInterruptibleChannel
