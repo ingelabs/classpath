@@ -1,3 +1,17 @@
+2004-04-29  Michael Koch  <konqueror@gmx.de>
+
+	* native/jni/java-io/java_io_VMObjectStreamClass.c
+	(getFieldReference): Use char* for strings, not jbyte*.
+	* native/jni/java-lang/java_lang_VMProcess.c
+	(copy_string): Likewise.
+	* native/jni/java-lang/java_lang_VMSystem.c:
+	Include jcl.h for JCL_FindClass definition.
+	* native/jni/java-nio/gnu_java_nio_NIOServerSocket.c
+	(getPlainSocketImpl): Return NULL.
+	* native/jni/java-nio/java_nio_DirectByteBufferImpl.c
+	(getImpl): Don't return anything.
+	(adjustAddress): Return NULL.
+
 2004-04-28  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/ObjectStreamField.java: Cleaned up imports.

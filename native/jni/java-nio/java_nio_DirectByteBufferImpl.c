@@ -77,7 +77,6 @@ Java_java_nio_DirectByteBufferImpl_getImpl__Lgnu_classpath_RawData_2I_3BII
   (JNIEnv *env, jclass clazz, jobject address, jint index, jbyteArray dst_buffer, jint dst_offset, jint dst_len)
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.getImpl(): not implemented");
-  return 0;
 }
 
 JNIEXPORT void JNICALL
@@ -90,4 +89,5 @@ JNIEXPORT jobject JNICALL
 Java_java_nio_DirectByteBufferImpl_adjustAddress (JNIEnv *env, jclass class, jobject address, jint offset)
 {
   JCL_ThrowException (env, IO_EXCEPTION, "java.nio.DirectByteBufferImpl.adjustAddress(): not implemented");
+  return NULL;
 }

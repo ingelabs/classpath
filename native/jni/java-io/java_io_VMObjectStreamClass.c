@@ -111,8 +111,8 @@ static jfieldID getFieldReference(JNIEnv *env, jobject field,
   jclass declaringClass;
   jclass typeClass;
   jfieldID fid;
-  const jbyte *field_name;
-  const jbyte *type_name;
+  const char *field_name;
+  const char *type_name;
   size_t type_len;
   jmethodID mid;
   jstring name;

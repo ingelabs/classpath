@@ -49,4 +49,5 @@ JNIEXPORT jobject JNICALL
 Java_gnu_java_nio_NIOServerSocket_getPlainSocketImpl (JNIEnv *env, jclass class)
 {
   JCL_ThrowException (env, IO_EXCEPTION, "gnu.java.nio.NIOServerSocket.getPlainSocketImpl(): not implemented");
+  return NULL;
 }

@@ -36,6 +36,9 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 #include "java_lang_VMSystem.h"
+
+#include <jcl.h>
+
 #include <sys/time.h>
 #include <stdlib.h>
 

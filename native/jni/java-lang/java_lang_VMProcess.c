@@ -65,7 +65,7 @@ static char *
 copy_string(JNIEnv *env, jobject string)
 {
   char errbuf[64];
-  const jbyte *utf;
+  const char *utf;
   jclass clazz;
   char *copy;
 
