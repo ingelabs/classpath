@@ -27,11 +27,10 @@ class Test
 {
   public static void main(String args[])
     {
-      
       Properties prop=System.getProperties ();
       prop.put ("awt.toolkit","gnu.java.awt.peer.gtk.GtkToolkit");
       System.setProperties (prop);
-
+      
       Frame f=new Frame();
       
       f.setSize(200,200);
@@ -43,6 +42,7 @@ class Test
 
       Button nb2=new Button();
       nb2.setLabel("Hello World two!");
+
 
       pan.add(nb);
       pan.add(nb2);
@@ -60,9 +60,17 @@ class Test
       sp.add(p);
       f.add(sp,"South");
 
-      Button eb=new Button();
-      eb.setLabel("Hello World east!");
-      f.add(eb,"East");
+      Panel east_panel = new Panel();
+      east_panel.setLayout(new GridLayout (0,1));
+
+      CheckboxGroup group = new CheckboxGroup();
+
+      Checkbox cb=new Checkbox("one", group, true);
+      east_panel.add(cb);
+      cb=new Checkbox("two", group, false);
+      east_panel.add(cb);
+
+      f.add(east_panel,"East");
 
       Button wb=new Button();
       wb.setLabel("Hello World west!");

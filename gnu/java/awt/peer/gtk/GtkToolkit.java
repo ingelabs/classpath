@@ -139,7 +139,7 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected CheckboxPeer createCheckbox (Checkbox cb) 
     {
-      return null;
+      return (new GtkCheckboxPeer (cb, cb.getParent().getPeer()));
     }
 
   protected CheckboxMenuItemPeer createCheckboxMenuItem (CheckboxMenuItem cmi)
