@@ -1,5 +1,13 @@
 2003-03-15  Aaron M. Renn <arenn@urbanophile.com>
 
+	* java/io/RandomAccessFile - Fix 1.4 compatibility problems
+	(RandomAccessFile(File, String)) - Delete implementation, call
+	RandomAccessFile(String, String), throw FileNotFound instead of IOExcep
+	(RandomAccessFile(String, String) - Add implementation copied from
+	other constructor, make throw FileNotFound instead of IOException
+
+2003-03-15  Aaron M. Renn <arenn@urbanophile.com>
+
 	* java/io/FileDescriptor - Make native signatures match Java, misc fixs
 	(FileDescriptor(long)): Change parm from int
 	(close): Synchronize, ensure consistency via try/catch loop

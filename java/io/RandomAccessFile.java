@@ -77,32 +77,6 @@ public class RandomAccessFile implements DataOutput, DataInput
   
   /**
     * This method initializes a new instance of <code>RandomAccessFile</code>
-    * to read from the specified file name with the specified access mode.
-    * The access mode is either "r" for read only access or "rw" for read
-    * write access.
-    * <p>
-    * Note that a <code>SecurityManager</code> check is made prior to
-    * opening the file to determine whether or not this file is allowed to
-    * be read or written.
-    *
-    * @param name The name of the file to read and/or write
-    * @param mode "r" for read only or "rw" for read-write access to the file
-    *
-    * @exception IllegalArgumentException If <code>mode</code> has an 
-    * illegal value
-    * @exception SecurityException If the requested access to the file 
-    * is not allowed
-    * @exception IOException If any other error occurs
-    */
-  public RandomAccessFile(String name, String mode) throws IOException
-  {
-    this(new File(name), mode);
-  }
-  
-  /*************************************************************************/
-  
-  /**
-    * This method initializes a new instance of <code>RandomAccessFile</code>
     * to read from the specified <code>File</code> object with the specified 
     * access mode.   The access mode is either "r" for read only access or "rw" 
     * for read-write access.
@@ -120,11 +94,35 @@ public class RandomAccessFile implements DataOutput, DataInput
     * is not allowed
     * @exception IOException If any other error occurs
     */
-  public RandomAccessFile(File file, String mode) 
-     throws IllegalArgumentException, SecurityException, IOException
+  public RandomAccessFile(File file, String mode) throws FileNotFoundException
   {
-    String name = file.getPath();
-
+    this(file.getPath(), mode);
+  }
+  
+  /*************************************************************************/
+  
+  /**
+    * This method initializes a new instance of <code>RandomAccessFile</code>
+    * to read from the specified file name with the specified access mode.
+    * The access mode is either "r" for read only access or "rw" for read
+    * write access.
+    * <p>
+    * Note that a <code>SecurityManager</code> check is made prior to
+    * opening the file to determine whether or not this file is allowed to
+    * be read or written.
+    *
+    * @param name The name of the file to read and/or write
+    * @param mode "r" for read only or "rw" for read-write access to the file
+    *
+    * @exception IllegalArgumentException If <code>mode</code> has an 
+    * illegal value
+    * @exception SecurityException If the requested access to the file 
+    * is not allowed
+    * @exception FileNotFoundException If any other error occurs
+    */
+  public RandomAccessFile(String name, String mode) 
+     throws IllegalArgumentException, SecurityException, FileNotFoundException
+  {
     // Check the mode
     if (!mode.equals("r") && !mode.equals("rw") && !mode.equals("rws") &&
         !mode.equals("rwd"))
@@ -143,7 +141,14 @@ public class RandomAccessFile implements DataOutput, DataInput
       readOnly = true;
   
     fd = new FileDescriptor();
-    fd.open(name, mode);
+    try
+      {
+        fd.open(name, mode);
+      }
+    catch(IOException e)
+      {
+        throw new FileNotFoundException(e.getMessage()); 
+      }
   }
   
   /*************************************************************************/
