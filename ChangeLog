@@ -1,5 +1,10 @@
 2004-12-24  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/DefaultListSelectionModel.java
+	(leadAnchorNotificationEnabled): Made protected.
+
+2004-12-24  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/InternalFrameFocusTraversalPolicy.java: New file.
 
 2004-12-24  Michael Koch  <konqueror@gmx.de>
