@@ -187,8 +187,7 @@ public class SecurityManager
    */
   protected ClassLoader currentClassLoader()
   {
-    Class c = currentLoadedClass();
-    return c != null ? c.getClassLoader() : null;
+    return VMSecurityManager.currentClassLoader();
   }
 
   /**
@@ -1023,8 +1022,9 @@ public class SecurityManager
              index != -1; index = list.indexOf(packageName, index + 1))
           {
             // Exploit package visibility for speed.
-            if (index + packageName.length() == list.length()
-                || list.charAt(index + packageName.length()) == ',')
+	    int packageNameCount = packageName.length();
+            if (index + packageNameCount == list.length()
+                || list.charAt(index + packageNameCount) == ',')
               {
                 checkPermission(p);
                 return;
@@ -1043,4 +1043,3 @@ class SecurityContext {
 		this.classes = classes;
 	}
 }
-
