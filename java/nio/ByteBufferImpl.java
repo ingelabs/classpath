@@ -36,16 +36,7 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.java.nio;
-
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.DoubleBuffer;
-import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
-import java.nio.LongBuffer;
-import java.nio.ReadOnlyBufferException;
-import java.nio.ShortBuffer;
+package java.nio;
 
 /**
  * This is a Heap memory implementation
@@ -54,12 +45,12 @@ public final class ByteBufferImpl extends ByteBuffer
 {
   private boolean readOnly;
 
-  public ByteBufferImpl (int capacity)
+  ByteBufferImpl (int capacity)
   {
     this (new byte [capacity], 0, capacity, capacity, 0, -1, false);
   }
   
-  public ByteBufferImpl (byte[] buffer, int offset, int capacity, int limit, int position, int mark, boolean readOnly)
+  ByteBufferImpl (byte[] buffer, int offset, int capacity, int limit, int position, int mark, boolean readOnly)
   {
     super (buffer, offset, capacity, limit, position, mark);
     this.readOnly = readOnly;
@@ -67,32 +58,32 @@ public final class ByteBufferImpl extends ByteBuffer
   
   public CharBuffer asCharBuffer ()
   {
-    throw new Error ("Not implemented");
+    return new CharViewBufferImpl (this, position (), remaining(), remaining (), 0, -1, isReadOnly ());
   }
 
   public ShortBuffer asShortBuffer ()
   {
-    throw new Error ("Not implemented");
+    return new ShortViewBufferImpl (this, position (), remaining(), remaining (), 0, -1, isReadOnly ());
   }
 
   public IntBuffer asIntBuffer ()
   {
-    throw new Error ("Not implemented");
+    return new IntViewBufferImpl (this, position (), remaining(), remaining (), 0, -1, isReadOnly ());
   }
 
   public LongBuffer asLongBuffer ()
   {
-    throw new Error ("Not implemented");
+    return new LongViewBufferImpl (this, position (), remaining(), remaining (), 0, -1, isReadOnly ());
   }
 
   public FloatBuffer asFloatBuffer ()
   {
-    throw new Error ("Not implemented");
+    return new FloatViewBufferImpl (this, position (), remaining(), remaining (), 0, -1, isReadOnly ());
   }
 
   public DoubleBuffer asDoubleBuffer ()
   {
-    throw new Error ("Not implemented");
+    return new DoubleViewBufferImpl (this, position (), remaining(), remaining (), 0, -1, isReadOnly ());
   }
 
   public boolean isReadOnly ()

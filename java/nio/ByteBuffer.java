@@ -35,9 +35,8 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package java.nio;
 
-import gnu.java.nio.ByteBufferImpl;
+package java.nio;
 
 /**
  * @since 1.4
@@ -47,16 +46,16 @@ public abstract class ByteBuffer extends Buffer
 {
   private ByteOrder endian = ByteOrder.BIG_ENDIAN;
 
-  protected int array_offset;
-  protected byte[] backing_buffer;
-  
+  int array_offset;
+  byte[] backing_buffer;
+
   protected ByteBuffer (int capacity, int limit, int position, int mark)
   {
     super (capacity, limit, position, mark);
     array_offset = 0;
   }
 
-  protected ByteBuffer (byte[] buffer, int offset, int capacity, int limit, int position, int mark)
+  ByteBuffer (byte[] buffer, int offset, int capacity, int limit, int position, int mark)
   {
     super (capacity, limit, position, mark);
     this.backing_buffer = buffer;

@@ -36,12 +36,7 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package gnu.java.nio;
-
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.DoubleBuffer;
-import java.nio.ReadOnlyBufferException;
+package java.nio;
 
 /**
  * This is a Heap memory implementation
@@ -50,12 +45,12 @@ public final class DoubleBufferImpl extends DoubleBuffer
 {
   private boolean readOnly;
 
-  public DoubleBufferImpl (int capacity)
+  DoubleBufferImpl (int capacity)
   {
     this (new double [capacity], 0, capacity, capacity, 0, -1, false);
   }
   
-  public DoubleBufferImpl (double[] buffer, int offset, int capacity, int limit, int position, int mark, boolean readOnly)
+  DoubleBufferImpl (double[] buffer, int offset, int capacity, int limit, int position, int mark, boolean readOnly)
   {
     super (buffer, offset, capacity, limit, position, mark);
     this.readOnly = readOnly;

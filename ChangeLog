@@ -1,3 +1,36 @@
+2003-05-20  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/nio/ByteBufferImpl.java,
+	gnu/java/nio/CharBufferImpl.java,
+	gnu/java/nio/DoubleBufferImpl.java,
+	gnu/java/nio/FloatBufferImpl.java,
+	gnu/java/nio/IntBufferImpl.java,
+	gnu/java/nio/LongBufferImpl.java,
+	gnu/java/nio/ShortBufferImpl.java:
+	Moved to java/nio.
+	* gnu/java/nio/SocketChannelImpl.java
+	(write): Dont use ByteBufferImpl directly.
+	* gnu/java/nio/Makefile.am:
+	(EXTRA_DIST): Removed moved files.
+	* java/nio/ByteBuffer.java,
+	java/nio/CharBuffer.java,
+	java/nio/DoubleBuffer.java,
+	java/nio/FloatBuffer.java,
+	java/nio/IntBuffer.java,
+	java/nio/LongBuffer.java,
+	java/nio/ShortBuffer.java:
+	Dont import anything.
+	* java/nio/ByteBufferImpl.java,
+	java/nio/CharBufferImpl.java,
+	java/nio/DoubleBufferImpl.java,
+	java/nio/FloatBufferImpl.java,
+	java/nio/IntBufferImpl.java,
+	java/nio/LongBufferImpl.java,
+	java/nio/ShortBufferImpl.java:
+	Moved from gnu/java/nio.
+	* java/nio/Makefile.am
+	(EXTRA_DIST): Added moved files.
+
 2003-05-19  Michael Koch  <konqueror@gmx.de>
 
 	* java/nio/ByteBuffer.java

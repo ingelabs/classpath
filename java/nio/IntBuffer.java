@@ -35,9 +35,8 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package java.nio;
 
-import gnu.java.nio.IntBufferImpl;
+package java.nio;
 
 /**
  * @since 1.4
@@ -45,8 +44,8 @@ import gnu.java.nio.IntBufferImpl;
 public abstract class IntBuffer extends Buffer
   implements Comparable
 {
-  protected int array_offset;
-  protected int [] backing_buffer;
+  int array_offset;
+  int[] backing_buffer;
 
   protected IntBuffer (int capacity, int limit, int position, int mark)
   {
@@ -54,7 +53,7 @@ public abstract class IntBuffer extends Buffer
     array_offset = 0;
   }
 
-  protected IntBuffer (int[] buffer, int offset, int capacity, int limit, int position, int mark)
+  IntBuffer (int[] buffer, int offset, int capacity, int limit, int position, int mark)
   {
     super (capacity, limit, position, mark);
     this.backing_buffer = buffer;

@@ -35,9 +35,8 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-package java.nio;
 
-import gnu.java.nio.CharBufferImpl;
+package java.nio;
 
 /**
  * @since 1.4
@@ -45,8 +44,8 @@ import gnu.java.nio.CharBufferImpl;
 public abstract class CharBuffer extends Buffer
   implements Comparable, CharSequence
 {
-  protected int array_offset = 0;
-  protected char [] backing_buffer;
+  int array_offset;
+  char[] backing_buffer;
 
   protected CharBuffer (int capacity, int limit, int position, int mark)
   {
@@ -54,7 +53,7 @@ public abstract class CharBuffer extends Buffer
     array_offset = 0;
   }
 
-  protected CharBuffer (char[] buffer, int offset, int capacity, int limit, int position, int mark)
+  CharBuffer (char[] buffer, int offset, int capacity, int limit, int position, int mark)
   {
     super (capacity, limit, position, mark);
     this.backing_buffer = buffer;
