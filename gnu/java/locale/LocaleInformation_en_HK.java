@@ -59,7 +59,6 @@ public class LocaleInformation_en_HK extends ListResourceBundle
   static final String[] ampms = { "AM", "PM" };
 
   static final String shortDateFormat = "EEEE, MMMM dd, yyyy";
-  static final String defaultTimeFormat = "ahh:m:s z";
   static final String currencySymbol = "HK$";
   static final String intlCurrencySymbol = "HKD";
   static final String currencyFormat = "$#,##0.00;($#,##0.00)";
@@ -72,7 +71,6 @@ public class LocaleInformation_en_HK extends ListResourceBundle
     { "months", months },
     { "ampms", ampms },
     { "shortDateFormat", shortDateFormat },
-    { "defaultTimeFormat", defaultTimeFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },

@@ -59,7 +59,6 @@ public class LocaleInformation_zh_TW extends ListResourceBundle
   static final String[] ampms = { "\u4E0A\u5348", "\u4E0B\u5348" };
 
   static final String shortDateFormat = "yyyyMMdd";
-  static final String defaultTimeFormat = "a hhms";
   static final String currencySymbol = "NT$";
   static final String intlCurrencySymbol = "TWD";
   static final String currencyFormat = "$#,##0.00;-$#,##0.00";
@@ -72,7 +71,6 @@ public class LocaleInformation_zh_TW extends ListResourceBundle
     { "months", months },
     { "ampms", ampms },
     { "shortDateFormat", shortDateFormat },
-    { "defaultTimeFormat", defaultTimeFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },

@@ -59,7 +59,6 @@ public class LocaleInformation_en_ZW extends ListResourceBundle
   static final String[] ampms = LocaleInformation_en_ZA.ampms;
 
   static final String shortDateFormat = LocaleInformation_en_ZA.shortDateFormat;
-  static final String defaultTimeFormat = LocaleInformation_en_ZA.defaultTimeFormat;
   static final String currencySymbol = "Z$";
   static final String intlCurrencySymbol = "ZWD";
   static final String currencyFormat = "$#,###,##0.00;-$#,###,##0.00";
@@ -72,7 +71,6 @@ public class LocaleInformation_en_ZW extends ListResourceBundle
     { "months", months },
     { "ampms", ampms },
     { "shortDateFormat", shortDateFormat },
-    { "defaultTimeFormat", defaultTimeFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },

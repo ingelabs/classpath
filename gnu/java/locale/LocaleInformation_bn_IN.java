@@ -59,7 +59,6 @@ public class LocaleInformation_bn_IN extends ListResourceBundle
   static final String[] ampms = { "\u09AA\u09C2\u09B0\u09CD\u09AC\u09BE\u09B9\u09CD\u09A3", "\u0985\u09AA\u09B0\u09BE\u09B9\u09CD\u09A3" };
 
   static final String shortDateFormat = "EEEE dd MMM yyyy";
-  static final String defaultTimeFormat = "hh:m:s a z";
   static final String currencySymbol = "\u099F\u09BE\u0995\u09BE";
   static final String intlCurrencySymbol = "INR";
   static final String currencyFormat = "$ #,###,#0.00;-$ #,###,#0.00";
@@ -72,7 +71,6 @@ public class LocaleInformation_bn_IN extends ListResourceBundle
     { "months", months },
     { "ampms", ampms },
     { "shortDateFormat", shortDateFormat },
-    { "defaultTimeFormat", defaultTimeFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },

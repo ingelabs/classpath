@@ -111,7 +111,6 @@ public class LocaleInformation_nl extends ListResourceBundle
 
   private static final String[][] zoneStrings =
   {
-    // European time zones.  The city names are a little bit random.
     { "WET", "West Europese Tijd", "WET", "West Europese Zomertijd", "WEST", "London" },
     { "CET", "Centraal Europese Tijd", "CET", "Centraal Europese Zomertijd", "CEST", "Amsterdam" },
     { "EET", "Oost Europese Tijd", "EET", "Oost Europese Zomertijd", "EEST", "Istanbul" },
@@ -366,51 +365,18 @@ public class LocaleInformation_nl extends ListResourceBundle
   }
 
   private static final Object territories = new Hashtableterritories();
-
   private static final String localPatternChars = "GyMdhHmsSEDFwWakKz"; // Not a mistake!
-
-  private static final String shortDateFormat = "dd-MM-yy";
-
-  private static final String mediumDateFormat = "dd-MMM-yy";
-
-  private static final String longDateFormat = "dd MMMM yyyy";
-
-  private static final String fullDateFormat = "EEEE dd MMMM yyyy";
-
-  private static final String defaultDateFormat = mediumDateFormat;
-
-  private static final String shortTimeFormat = "HH:mm";
-
-  private static final String mediumTimeFormat = "HH:mm:ss";
-
-  private static final String longTimeFormat = "HH:mm:ss";
-
-  private static final String fullTimeFormat = "HH:mm:ss z";
-
-  private static final String defaultTimeFormat = shortTimeFormat;
-
   private static final String currencySymbol = "fl";
-
   private static final String intlCurrencySymbol = "NLG";
-
   private static final String exponential = "E";
-
   private static final String digit = "#";
-
   private static final String infinity = "\u221e";
-
   private static final String NaN = "\ufffd";
-
   private static final String minusSign = "-";
-
   private static final String monetarySeparator = ",";
-
   private static final String patternSeparator = ";";
-
   private static final String percent = "%";
-
   private static final String perMill = "\u2030";
-
   private static final String zeroDigit = "0";
 
   private static final Object[][] contents =
@@ -418,16 +384,6 @@ public class LocaleInformation_nl extends ListResourceBundle
     { "collation_rules", collation_rules },
     { "ampms", ampms },
     { "localPatternChars", localPatternChars },
-    { "shortDateFormat", shortDateFormat },
-    { "mediumDateFormat", mediumDateFormat },
-    { "longDateFormat", longDateFormat },
-    { "fullDateFormat", fullDateFormat },
-    { "defaultDateFormat", defaultDateFormat },
-    { "shortTimeFormat", shortTimeFormat },
-    { "mediumTimeFormat", mediumTimeFormat },
-    { "longTimeFormat", longTimeFormat },
-    { "fullTimeFormat", fullTimeFormat },
-    { "defaultTimeFormat", defaultTimeFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "digit", digit },
@@ -447,6 +403,14 @@ public class LocaleInformation_nl extends ListResourceBundle
     { "shortWeekdays", shortWeekdays },
     { "weekdays", weekdays },
     { "eras", eras },
+    { "shortDateFormat", "d-M-yy" },
+    { "mediumDateFormat", "d-MMM-yyyy" },
+    { "longDateFormat", "d MMMM yyyy" },
+    { "fullDateFormat", "EEEE d MMMM yyyy" },
+    { "shortTimeFormat", "H:mm" },
+    { "mediumTimeFormat", "H:mm:ss" },
+    { "longTimeFormat", "H:mm:ss z" },
+    { "fullTimeFormat", "H:mm:ss' uur' z" },
     { "zoneStrings", zoneStrings },
     { "territories", territories }
   };

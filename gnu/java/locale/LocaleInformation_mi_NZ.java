@@ -59,7 +59,6 @@ public class LocaleInformation_mi_NZ extends ListResourceBundle
   static final String[] ampms = { "", "" };
 
   static final String shortDateFormat = "dd/MM/yy";
-  static final String defaultTimeFormat = "";
   static final String currencySymbol = LocaleInformation_en_NZ.currencySymbol;
   static final String intlCurrencySymbol = LocaleInformation_en_NZ.intlCurrencySymbol;
   static final String currencyFormat = LocaleInformation_en_NZ.currencyFormat;
@@ -72,7 +71,6 @@ public class LocaleInformation_mi_NZ extends ListResourceBundle
     { "months", months },
     { "ampms", ampms },
     { "shortDateFormat", shortDateFormat },
-    { "defaultTimeFormat", defaultTimeFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },

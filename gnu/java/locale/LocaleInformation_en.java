@@ -44,40 +44,70 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_en extends ListResourceBundle
 {
-  // FIXME: this is nowhere near complete.
-  // In particular we must mark accents as ignorable,
-  // and probably other things as well.
   private static final String collation_rules = 
   "<0<1<2<3<4<5<6<7<8<9<A,a<b,B<c,C<d,D<e,E<f,F<g,G<h,H<i,I<j,J<k,K" +
   "<l,L<m,M<n,N<o,O<p,P<q,Q<r,R<s,S<t,T<u,U<v,V<w,W<x,X<y,Y<z,Z";
 
-  private static final String[] months =
-  {
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December", null
+  private static final String[] shortMonths = {
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+    null,
   };
 
-  private static final String[] shortMonths =
-  {
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec", null
+  private static final String[] months = {
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+    null,
   };
 
-  private static final String[] weekdays =
-  {
-    null, "Sunday", "Monday", "Tuesday", "Wednesday",
-    "Thursday", "Friday", "Saturday"
+  private static final String[] shortWeekdays = {
+    null,
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat",
   };
 
-  private static final String[] shortWeekdays =
-  {
-    null, "Sun", "Mon", "Tue", "Wed",
-    "Thu", "Fri", "Sat"
+  private static final String[] weekdays = {
+    null,
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
   };
 
   private static final String[] ampms = { "AM", "PM" };
 
-  private static final String[] eras = { "BC", "AD" };
+  private static final String[] eras = {
+    "BC",
+    "AD"
+  };
 
   private static final String[][] zoneStrings =
   {
@@ -111,33 +141,276 @@ public class LocaleInformation_en extends ListResourceBundle
       /**/   "Alaska Daylight Time", "AKDT", "Anchorage" }
   };
 
-  /*************************************************************************/
+  private static final class Hashtableterritories extends java.util.Hashtable
+  {
+    public Hashtableterritories()
+      {
+        super();
+        put("TL", "Timor-Leste");
+        put("TK", "Tokelau");
+        put("TJ", "Tajikistan");
+        put("TH", "Thailand");
+        put("TG", "Togo");
+        put("TF", "French Southern Territories");
+        put("GY", "Guyana");
+        put("TD", "Chad");
+        put("TC", "Turks and Caicos Islands");
+        put("GW", "Guinea-Bissau");
+        put("GU", "Guam");
+        put("GT", "Guatemala");
+        put("GS", "South Georgia and the South Sandwich Islands");
+        put("GR", "Greece");
+        put("GQ", "Equatorial Guinea");
+        put("GP", "Guadeloupe");
+        put("SZ", "Swaziland");
+        put("SY", "Syria");
+        put("GN", "Guinea");
+        put("GM", "Gambia");
+        put("GL", "Greenland");
+        put("SV", "El Salvador");
+        put("ST", "Sao Tome and Principe");
+        put("GI", "Gibraltar");
+        put("GH", "Ghana");
+        put("SR", "Suriname");
+        put("GF", "French Guiana");
+        put("SP", "Serbia");
+        put("GE", "Georgia");
+        put("SO", "Somalia");
+        put("GD", "Grenada");
+        put("SN", "Senegal");
+        put("SM", "San Marino");
+        put("GB", "United Kingdom");
+        put("SL", "Sierra Leone");
+        put("GA", "Gabon");
+        put("SK", "Slovakia");
+        put("SJ", "Svalbard and Jan Mayen");
+        put("SI", "Slovenia");
+        put("SH", "Saint Helena");
+        put("SG", "Singapore");
+        put("SE", "Sweden");
+        put("SD", "Sudan");
+        put("SC", "Seychelles");
+        put("SB", "Solomon Islands");
+        put("SA", "Saudi Arabia");
+        put("FR", "France");
+        put("FO", "Faroe Islands");
+        put("FM", "Micronesia");
+        put("RW", "Rwanda");
+        put("FK", "Falkland Islands");
+        put("RU", "Russia");
+        put("FJ", "Fiji");
+        put("FI", "Finland");
+        put("RO", "Romania");
+        put("RE", "R\u00e9union");
+        put("ET", "Ethiopia");
+        put("ES", "Spain");
+        put("ER", "Eritrea");
+        put("EH", "Western Sahara");
+        put("EG", "Egypt");
+        put("EE", "Estonia");
+        put("EC", "Ecuador");
+        put("DZ", "Algeria");
+        put("QA", "Qatar");
+        put("DO", "Dominican Republic");
+        put("PY", "Paraguay");
+        put("DM", "Dominica");
+        put("PW", "Palau");
+        put("DK", "Denmark");
+        put("DJ", "Djibouti");
+        put("PT", "Portugal");
+        put("PS", "Palestinian Territory");
+        put("PR", "Puerto Rico");
+        put("DE", "Germany");
+        put("PN", "Pitcairn");
+        put("PM", "Saint Pierre and Miquelon");
+        put("PL", "Poland");
+        put("PK", "Pakistan");
+        put("PH", "Philippines");
+        put("PG", "Papua New Guinea");
+        put("PF", "French Polynesia");
+        put("CZ", "Czech Republic");
+        put("PE", "Peru");
+        put("CY", "Cyprus");
+        put("CX", "Christmas Island");
+        put("CV", "Cape Verde");
+        put("PA", "Panama");
+        put("CU", "Cuba");
+        put("CR", "Costa Rica");
+        put("CO", "Colombia");
+        put("CN", "China");
+        put("CM", "Cameroon");
+        put("CL", "Chile");
+        put("CK", "Cook Islands");
+        put("CI", "C\u00f4te d\u2019Ivoire");
+        put("CH", "Switzerland");
+        put("CG", "Congo");
+        put("CF", "Central African Republic");
+        put("CD", "Democratic Republic of the Congo");
+        put("CC", "Cocos (Keeling) Islands");
+        put("OM", "Oman");
+        put("CA", "Canada");
+        put("BZ", "Belize");
+        put("BY", "Belarus");
+        put("BW", "Botswana");
+        put("BV", "Bouvet Island");
+        put("BT", "Bhutan");
+        put("BS", "Bahamas");
+        put("BR", "Brazil");
+        put("NZ", "New Zealand");
+        put("BO", "Bolivia");
+        put("BN", "Brunei");
+        put("BM", "Bermuda");
+        put("NU", "Niue");
+        put("BJ", "Benin");
+        put("BI", "Burundi");
+        put("BH", "Bahrain");
+        put("NR", "Nauru");
+        put("BG", "Bulgaria");
+        put("BF", "Burkina Faso");
+        put("NP", "Nepal");
+        put("BE", "Belgium");
+        put("NO", "Norway");
+        put("BD", "Bangladesh");
+        put("BB", "Barbados");
+        put("ZW", "Zimbabwe");
+        put("NL", "Netherlands");
+        put("BA", "Bosnia and Herzegovina");
+        put("NI", "Nicaragua");
+        put("NG", "Nigeria");
+        put("NF", "Norfolk Island");
+        put("AZ", "Azerbaijan");
+        put("NE", "Niger");
+        put("NC", "New Caledonia");
+        put("AW", "Aruba");
+        put("ZM", "Zambia");
+        put("NA", "Namibia");
+        put("AU", "Australia");
+        put("AT", "Austria");
+        put("AS", "American Samoa");
+        put("AR", "Argentina");
+        put("AQ", "Antarctica");
+        put("MZ", "Mozambique");
+        put("AO", "Angola");
+        put("MY", "Malaysia");
+        put("AN", "Netherlands Antilles");
+        put("MX", "Mexico");
+        put("AM", "Armenia");
+        put("MW", "Malawi");
+        put("AL", "Albania");
+        put("MV", "Maldives");
+        put("ZA", "South Africa");
+        put("MU", "Mauritius");
+        put("MT", "Malta");
+        put("AI", "Anguilla");
+        put("MS", "Montserrat");
+        put("MR", "Mauritania");
+        put("AG", "Antigua and Barbuda");
+        put("MQ", "Martinique");
+        put("AF", "Afghanistan");
+        put("MP", "Northern Mariana Islands");
+        put("AE", "United Arab Emirates");
+        put("MO", "Macao S.A.R., China");
+        put("AD", "Andorra");
+        put("MN", "Mongolia");
+        put("MM", "Myanmar");
+        put("ML", "Mali");
+        put("MK", "Macedonia");
+        put("YU", "Serbia and Montenegro");
+        put("YT", "Mayotte");
+        put("MH", "Marshall Islands");
+        put("MG", "Madagascar");
+        put("MD", "Moldova");
+        put("MC", "Monaco");
+        put("MA", "Morocco");
+        put("YE", "Yemen");
+        put("LY", "Libya");
+        put("LV", "Latvia");
+        put("LU", "Luxembourg");
+        put("LT", "Lithuania");
+        put("LS", "Lesotho");
+        put("LR", "Liberia");
+        put("LK", "Sri Lanka");
+        put("LI", "Liechtenstein");
+        put("LC", "Saint Lucia");
+        put("LB", "Lebanon");
+        put("LA", "Laos");
+        put("KZ", "Kazakhstan");
+        put("KY", "Cayman Islands");
+        put("KW", "Kuwait");
+        put("KR", "South Korea");
+        put("KP", "North Korea");
+        put("KN", "Saint Kitts and Nevis");
+        put("KM", "Comoros");
+        put("KI", "Kiribati");
+        put("WS", "Samoa");
+        put("KH", "Cambodia");
+        put("KG", "Kyrgyzstan");
+        put("KE", "Kenya");
+        put("WF", "Wallis and Futuna");
+        put("JP", "Japan");
+        put("JO", "Jordan");
+        put("JM", "Jamaica");
+        put("VU", "Vanuatu");
+        put("VN", "Vietnam");
+        put("VI", "U.S. Virgin Islands");
+        put("VG", "British Virgin Islands");
+        put("VE", "Venezuela");
+        put("VC", "Saint Vincent and the Grenadines");
+        put("VA", "Vatican");
+        put("IT", "Italy");
+        put("IS", "Iceland");
+        put("IR", "Iran");
+        put("IQ", "Iraq");
+        put("UZ", "Uzbekistan");
+        put("IO", "British Indian Ocean Territory");
+        put("UY", "Uruguay");
+        put("IN", "India");
+        put("IL", "Israel");
+        put("US", "United States");
+        put("IE", "Ireland");
+        put("ID", "Indonesia");
+        put("UM", "United States Minor Outlying Islands");
+        put("UG", "Uganda");
+        put("UA", "Ukraine");
+        put("HU", "Hungary");
+        put("HT", "Haiti");
+        put("HR", "Croatia");
+        put("TZ", "Tanzania");
+        put("HN", "Honduras");
+        put("HM", "Heard Island and McDonald Islands");
+        put("TW", "Taiwan");
+        put("TV", "Tuvalu");
+        put("HK", "Hong Kong S.A.R., China");
+        put("TT", "Trinidad and Tobago");
+        put("TR", "Turkey");
+        put("TO", "Tonga");
+        put("TN", "Tunisia");
+        put("TM", "Turkmenistan");
+      }
+  }
 
+  private static final Object territories = new Hashtableterritories();
 
   private static final Object[][] contents =
   {
     { "collation_rules", collation_rules },
-
-    { "months", months },
+    { "currencyFormat", "\u00a4#,##0.00;-\u00a4#,##0.00" },
     { "shortMonths", shortMonths },
-    { "weekdays", weekdays },
+    { "months", months },
     { "shortWeekdays", shortWeekdays },
+    { "weekdays", weekdays },
     { "ampms", ampms },
     { "eras", eras },
+    { "shortDateFormat", "M/d/yy" },
+    { "mediumDateFormat", "MMM d, yyyy" },
     { "localPatternChars", "GyMdkHmsSEDFwWahKz" },
-    { "zoneStrings", zoneStrings },
-
-    { "shortDateFormat", "M/d/yy" },         // Java's Y2K bug.
-    { "mediumDateFormat", "d-MMM-yy" },
     { "longDateFormat", "MMMM d, yyyy" },
-    { "fullDateFormat", "EEEE MMMM d, yyyy G" },
-    { "defaultDateFormat", "d-MMMM-yy" },
+    { "fullDateFormat", "EEEE, MMMM d, yyyy" },
     { "shortTimeFormat", "h:mm a" },
     { "mediumTimeFormat", "h:mm:ss a" },
     { "longTimeFormat", "h:mm:ss a z" },
-    { "fullTimeFormat", "h:mm:ss;S 'o''clock' a z" },
-    { "defaultTimeFormat", "h:mm:ss a" },
-
+    { "fullTimeFormat", "h:mm:ss a z" },
+    { "zoneStrings", zoneStrings },
     { "decimalSeparator", "." },
     { "digit", "#" },
     { "exponential", "E" },
@@ -150,10 +423,9 @@ public class LocaleInformation_en extends ListResourceBundle
     { "percent", "%" },
     { "perMill", "\u2030" },
     { "zeroDigit", "0" },
-
-    // For NumberFormat.
     { "numberFormat", "#,##0.###" },
     { "percentFormat", "#,##0%" },
+    { "territories", territories }
   };
 
   public Object[][] getContents() { return contents; }

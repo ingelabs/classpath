@@ -59,7 +59,6 @@ public class LocaleInformation_ka_GE extends ListResourceBundle
   static final String[] ampms = { "", "" };
 
   static final String shortDateFormat = "MM/dd/yyyy";
-  static final String defaultTimeFormat = "";
   static final String currencySymbol = "\u10DA";
   static final String intlCurrencySymbol = "GEL";
   static final String currencyFormat = "$#,###,##0.00;-$#,###,##0.00";
@@ -72,7 +71,6 @@ public class LocaleInformation_ka_GE extends ListResourceBundle
     { "months", months },
     { "ampms", ampms },
     { "shortDateFormat", shortDateFormat },
-    { "defaultTimeFormat", defaultTimeFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },

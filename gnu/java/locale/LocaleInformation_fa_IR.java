@@ -59,7 +59,6 @@ public class LocaleInformation_fa_IR extends ListResourceBundle
   static final String[] ampms = { "\u0635\u0628\u062D", "\u0639\u0635\u0631" };
 
   static final String shortDateFormat = "yyyy/MM/dd";
-  static final String defaultTimeFormat = "hh:m:s a";
   static final String currencySymbol = "\u0631\u06CC\u0627\u0644";
   static final String intlCurrencySymbol = "IRR";
   static final String currencyFormat = "#,##0. $;-#,##0. $";
@@ -72,7 +71,6 @@ public class LocaleInformation_fa_IR extends ListResourceBundle
     { "months", months },
     { "ampms", ampms },
     { "shortDateFormat", shortDateFormat },
-    { "defaultTimeFormat", defaultTimeFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },

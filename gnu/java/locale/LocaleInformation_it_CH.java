@@ -59,7 +59,6 @@ public class LocaleInformation_it_CH extends ListResourceBundle
   static final String[] ampms = { "", "" };
 
   static final String shortDateFormat = "dd. MM. yy";
-  static final String defaultTimeFormat = "";
   static final String currencySymbol = LocaleInformation_de_CH.currencySymbol;
   static final String intlCurrencySymbol = LocaleInformation_de_CH.intlCurrencySymbol;
   static final String currencyFormat = LocaleInformation_de_CH.currencyFormat;
@@ -72,7 +71,6 @@ public class LocaleInformation_it_CH extends ListResourceBundle
     { "months", months },
     { "ampms", ampms },
     { "shortDateFormat", shortDateFormat },
-    { "defaultTimeFormat", defaultTimeFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },

@@ -59,7 +59,6 @@ public class LocaleInformation_tl_PH extends ListResourceBundle
   static final String[] ampms = { "AM", "PM" };
 
   static final String shortDateFormat = "MM/dd/yy";
-  static final String defaultTimeFormat = "hh:m:s a";
   static final String currencySymbol = "PhP";
   static final String intlCurrencySymbol = "PHP";
   static final String currencyFormat = "$#,###,##0.00;-$ #,###,##0.00";
@@ -72,7 +71,6 @@ public class LocaleInformation_tl_PH extends ListResourceBundle
     { "months", months },
     { "ampms", ampms },
     { "shortDateFormat", shortDateFormat },
-    { "defaultTimeFormat", defaultTimeFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },

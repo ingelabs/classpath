@@ -50,7 +50,6 @@ public class LocaleInformation_de_DE extends ListResourceBundle
   static final String percentFormat = "#,###,##0%";
   static final String[] ampms = { "", "" };
   static final String shortDateFormat = "dd.MM.yyyy";
-  static final String defaultTimeFormat = "";
   static final String currencySymbol = "DM";
   static final String intlCurrencySymbol = "DEM";
 
@@ -58,7 +57,6 @@ public class LocaleInformation_de_DE extends ListResourceBundle
   {
     { "ampms", ampms },
     { "shortDateFormat", shortDateFormat },
-    { "defaultTimeFormat", defaultTimeFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "decimalSeparator", decimalSeparator },

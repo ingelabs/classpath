@@ -59,7 +59,6 @@ public class LocaleInformation_vi_VN extends ListResourceBundle
   static final String[] ampms = { "", "" };
 
   static final String shortDateFormat = "EEEE dd MMM yyyy";
-  static final String defaultTimeFormat = "";
   static final String currencySymbol = "\u20AB";
   static final String intlCurrencySymbol = "VND";
   static final String currencyFormat = "#,##0.0000$;-$#,##0.0000";
@@ -72,7 +71,6 @@ public class LocaleInformation_vi_VN extends ListResourceBundle
     { "months", months },
     { "ampms", ampms },
     { "shortDateFormat", shortDateFormat },
-    { "defaultTimeFormat", defaultTimeFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },

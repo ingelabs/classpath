@@ -59,7 +59,6 @@ public class LocaleInformation_ko_KR extends ListResourceBundle
   static final String[] ampms = { "\uC624\uC804", "\uC624\uD6C4" };
 
   static final String shortDateFormat = "yyyy MM dd";
-  static final String defaultTimeFormat = "a hh m s";
   static final String currencySymbol = "\uFFE6";
   static final String intlCurrencySymbol = "KRW";
   static final String currencyFormat = "$#,###,##0.;$-#,###,##0.";
@@ -72,7 +71,6 @@ public class LocaleInformation_ko_KR extends ListResourceBundle
     { "months", months },
     { "ampms", ampms },
     { "shortDateFormat", shortDateFormat },
-    { "defaultTimeFormat", defaultTimeFormat },
     { "currencySymbol", currencySymbol },
     { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", currencyFormat },
