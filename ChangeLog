@@ -1,5 +1,11 @@
 2003-10-06  Michael Koch  <konqueror@gmx.de>
 
+	* java/rmi/server/RMIClassLoader.java: Reformated to match libgcj's
+	version more.
+	(defaultAnnotation): Added comment.
+
+2003-10-06  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/ServerSocket.java
 	(ServerSocket): New package-private constructor used by java.nio.
 

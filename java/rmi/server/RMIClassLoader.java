@@ -35,6 +35,7 @@ or based on this library.  If you modify this library, you may extend
 this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
+
 package java.rmi.server;
 
 import java.net.MalformedURLException;
@@ -152,6 +153,9 @@ public class RMIClassLoader
 
   private static Map cacheLoaders; //map annotations to loaders
   private static Map cacheAnnotations; //map loaders to annotations
+
+  //defaultAnnotation is got from system property
+  // "java.rmi.server.defaultAnnotation"
   private static String defaultAnnotation;
 
   //URL object for defaultAnnotation
@@ -169,14 +173,14 @@ public class RMIClassLoader
     defaultAnnotation = System.getProperty ("java.rmi.server.defaultAnnotation");
 
     try
-    {
-      if (defaultAnnotation != null)
-        defaultCodebase = new URL (defaultAnnotation);
-    }
+      {
+        if (defaultAnnotation != null)
+          defaultCodebase = new URL (defaultAnnotation);
+      }
     catch (Exception _)
-    {
-      defaultCodebase = null;
-    }
+      {
+        defaultCodebase = null;
+      }
 
     if (defaultCodebase != null)
       {
@@ -203,14 +207,14 @@ public class RMIClassLoader
     ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
     //try context class loader first
-    try
-    {
-      return loader.loadClass (name);
-    }
+    try 
+      {
+        return loader.loadClass (name);
+      }
     catch (ClassNotFoundException e)
-    {
-      // class not found in the local classpath
-    }
+      {
+        // class not found in the local classpath
+      }
 
     if (codebases.length() == 0) //==""
       {
@@ -267,7 +271,7 @@ public class RMIClassLoader
            
     return loader;
   }
-
+ 
   /**
    * Returns a string representation of the network location where a remote
    * endpoint can get the class-definition of the given class.
@@ -280,9 +284,9 @@ public class RMIClassLoader
   public static String getClassAnnotation (Class cl)
   {
     ClassLoader loader = cl.getClassLoader();
-
-    if ((loader == null)
-        || (loader == ClassLoader.getSystemClassLoader()))
+    
+    if (loader == null
+        || loader == ClassLoader.getSystemClassLoader())
       {
         return System.getProperty ("java.rmi.server.codebase");
       }
@@ -295,18 +299,14 @@ public class RMIClassLoader
     String s = (String) cacheAnnotations.get (loader);
 
     if (s != null)
-      {
-        return s;
-      }
+      return s;
 
     if (loader instanceof URLClassLoader)
       {
         URL[] urls = ((URLClassLoader) loader).getURLs();
 
         if (urls.length == 0)
-          {
-            return null;
-          }
+          return null;
 
         StringBuffer annotation = new StringBuffer (64 * urls.length);
 
