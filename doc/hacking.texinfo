@@ -67,6 +67,15 @@ This document is definitely a work in progress.
 * Specification Sources::       Where to find the Java class library specs
 * Naming Conventions::          How files and directories are named in Classpath
 * Character Conversions::       Working on Character conversions
+* Localization::                How Classpath handles localization/internationalization
+
+ -- Detailed Node Listing --
+
+Localization
+
+* String Collation::            Sorting strings in different locales
+* Break Iteration::             Breaking up text into words, sentences, and lines
+* Date Formatting and Parsing:: Locale specific date handling
 
 @end menu
 
@@ -690,7 +699,7 @@ java.util.InetAddress would go in native/java.net/InetAddress.c.
 reside in files of any name.
 @end itemize
 
-@node Character Conversions,  , Naming Conventions, Top
+@node Character Conversions, Localization, Naming Conventions, Top
 @comment node-name, next, previous, up
 @chapter Character Conversions
 
@@ -789,6 +798,184 @@ how to write such a translator.
 
 Many more translators are needed.  All major character encodings should
 eventually be supported.
+
+@node Localization,  , Character Conversions, Top
+@comment node-name, next, previous, up
+@chapter Localization
+
+There are many parts of the Java standard runtime library that must
+be customized to the particular locale the program is being run in.
+These include the parsing and display of dates, times, and numbers;
+sorting words alphabetically; breaking sentences into words, etc.
+In general, Classpath uses general classes for performing these tasks,
+and customizes their behavior with configuration data specific to a
+given locale.
+
+@menu
+* String Collation::            Sorting strings in different locales
+* Break Iteration::             Breaking up text into words, sentences, and lines
+* Date Formatting and Parsing:: Locale specific date handling
+@end menu
+
+In Classpath, all locale specific data is stored in a 
+@code{ListResourceBundle} class in the package @code{gnu/java/locale}.
+The basename of the bundle is @code{LocaleInformation}.  See the
+documentation for the @code{java.util.ResourceBundle} class for details
+on how the specific locale classes should be named.
+
+@code{ListResourceBundle}'s are used instead of 
+@code{PropertyResourceBundle}'s because data more complex than simple
+strings need to be provided to configure certain Classpath components.
+Because @code{ListResourceBundle} allows an arbitrary Java object to
+be associated with a given configuration option, it provides the
+needed flexibility to accomodate Classpath's needs.
+
+Each Java library component that can be localized requires that certain
+configuration options be specified in the resource bundle for it.  It is
+important that each and every option be supplied for a specific 
+component or a critical runtime error will most likely result.
+
+As a standard, each option should be assigned a name that is a string.
+If the value is stored in a class or instance variable, then the option
+should name should have the name name as the variable.  Also, the value
+associated with each option should be a Java object with the same name
+as the option name (unless a simple scalar value is used).  Here is an
+example:
+
+A class loads a value for the @code{format_string} variable from the
+resource bundle in the specified locale.  Here is the code in the
+library class:
+
+@example
+  ListResourceBundle lrb = 
+    ListResourceBundle.getBundle("gnu/java/locale/LocaleInformation", locale);
+  String format_string = lrb.getString("format_string");
+@end example
+
+In the actual resource bundle class, here is how the configuration option
+gets defined:
+
+@example
+/**
+  * This is the format string used for displaying values
+  */
+private static final String format_string = "%s %d %i";
+
+private static final Object[][] contents =
+@{
+  @{ "format_string", format_string @}
+@};
+@end example
+
+Note that each variable should be @code{private}, @code{final}, and
+@code{static}.  Each variable should also have a description of what it
+does as a documentation comment.  The @code{getContents()} method returns
+the @code{contents} array.
+
+There are many functional areas of the standard class library that are
+configured using this mechanism.  A given locale does not need to support
+each functional area.  But if a functional area is supported, then all
+of the specified entries for that area must be supplied.  In order to
+determine which functional areas are supported, there is a special key
+that is queried by the affected class or classes.  If this key exists, 
+and has a value that is a @code{Boolean} object wrappering the
+@code{true} value, then full support is assumed.  Otherwise it is
+assumed that no support exists for this functional area.  Every class
+using resources for configuration must use this scheme and define a special
+scheme that indicates the functional area is supported.  Simply checking
+for the resource bundle's existence is not sufficient to ensure that a
+given functional area is supported.
+
+The following sections define the functional areas that use resources
+for locale specific configuration in GNU Classpath.  Please refer to the 
+documentation for the classes mentioned for details on how these values 
+are used.  You may also wish to look at the source file for 
+@code{gnu/java/locale/LocaleInformation_en} as an example.
+
+@node String Collation, Break Iteration, Localization, Localization
+@comment node-name, next, previous, up
+@section String Collation
+
+Collation involves the sorting of strings.  The Java class library provides
+a public class called @code{java.text.RuleBasedCollator} that performs
+sorting based on a set of sorting rules.
+
+@itemize @bullet
+@item RuleBasedCollator - A @code{Boolean} wrappering @code{true} to indicate
+that this functional area is supported.
+@item collation_rules - The rules the specify how string collation is to
+be performed.
+@end itemize
+
+Note that some languages might be too complex for @code{RuleBasedCollator}
+to handle.  In this case an entirely new class might need to be written in
+lieu of defining this rule string.
+
+@node Break Iteration, Date Formatting and Parsing, String Collation, Localization
+@comment node-name, next, previous, up
+@section Break Iteration
+
+The class @code{java.text.BreakIterator} breaks text into words, sentences,
+and lines.  It is configured with the following resource bundle entries:
+
+@itemize @bullet
+@item BreakIterator - A @code{Boolean} wrappering @code{true} to indicate
+that this functional area is supported.
+@item word_breaks - A @code{String} array of word break character sequences.
+@item sentence_breaks - A @code{String} array of sentence break character
+sequences.
+@item line_breaks - A @code{String} array of line break character sequences.
+@end itemize
+
+@node Date Formatting and Parsing,  , Break Iteration, Localization
+@comment node-name, next, previous, up
+@section Date Formatting and Parsing
+
+Date formatting and parsing is handled by the 
+@code{java.text.SimpleDateFormat} class in most locales.  This class is
+configured by attaching an instance of the @code{java.text.DateFormatSymbols}
+class.  That class simply reads properties from our locale specific
+resource bundle.  The following items are requiered (refer to the 
+documentation of the @code{java.text.DateFormatSymbols} class for details
+io what the actual values should be):
+
+@itemize @bullet
+@item DateFormatSymbols - A @code{Boolean} wrappering @code{true} to indicate
+that this functional area is supported.
+@item months - A @code{String} array of month names.
+@item shortMonths - A @code{String} array of abbreviated month names.
+@item weekdays - A @code{String} array of weekday names.
+@item shortWeekdays - A @code{String} array of abbreviated weekday names.
+@item ampms - A @code{String} array containing AM/PM names.
+@item eras - A @code{String} array containing era (ie, BC/AD) names.
+@item zoneStrings - An array of information about valid timezones for this 
+locale.
+@item localPatternChars - A @code{String} defining date/time pattern symbols.
+@item shortDateFormat - The format string for dates used by 
+@code{DateFormat.SHORT}
+@item mediumDateFormat - The format string for dates used by 
+@code{DateFormat.MEDIUM}
+@item longDateFormat - The format string for dates used by 
+@code{DateFormat.LONG}
+@item fullDateFormat - The format string for dates used by 
+@code{DateFormat.FULL}
+@item defaultDateFormat - The format string for dates used by 
+@code{DateFormat.DEFAULT}
+@item shortDateFormat - The format string for times used by 
+@code{DateFormat.SHORT}
+@item mediumDateFormat - The format string for times used by 
+@code{DateFormat.MEDIUM}
+@item longDateFormat - The format string for times used by 
+@code{DateFormat.LONG}
+@item fullDateFormat - The format string for times used by 
+@code{DateFormat.FULL}
+@item defaultDateFormat - The format string for times used by 
+@code{DateFormat.DEFAULT}
+@end itemize
+
+Note that it may not be possible to use this mechanism for all locales.
+In those cases a special purpose class may need to be written to handle 
+date/time processing.
 
 @bye
 

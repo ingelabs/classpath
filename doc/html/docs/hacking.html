@@ -1,7 +1,7 @@
 <HTML>
 <HEAD>
 <!-- This HTML file has been created by texi2html 1.52
-     from hacking.texinfo on 3 January 1999 -->
+     from hacking.texinfo on 10 January 1999 -->
 
 <TITLE>GNU Classpath Hacker's Guide</TITLE>
 </HEAD>
@@ -14,20 +14,26 @@
 <P><HR><P>
 <H1>Table of Contents</H1>
 <UL>
-<LI><A NAME="TOC1" HREF="hacking.html#SEC1">Introduction</A>
-<LI><A NAME="TOC2" HREF="hacking.html#SEC2">Requirements</A>
-<LI><A NAME="TOC3" HREF="hacking.html#SEC3">Volunteering to Help</A>
-<LI><A NAME="TOC4" HREF="hacking.html#SEC4">Project Goals</A>
-<LI><A NAME="TOC5" HREF="hacking.html#SEC5">Programming Tools</A>
-<LI><A NAME="TOC6" HREF="hacking.html#SEC6">Programming Standards</A>
-<LI><A NAME="TOC7" HREF="hacking.html#SEC7">Programming Goals</A>
-<LI><A NAME="TOC8" HREF="hacking.html#SEC8">Portability</A>
-<LI><A NAME="TOC9" HREF="hacking.html#SEC9">Robustness</A>
-<LI><A NAME="TOC10" HREF="hacking.html#SEC10">Java Efficiency</A>
-<LI><A NAME="TOC11" HREF="hacking.html#SEC11">Native Efficiency</A>
-<LI><A NAME="TOC12" HREF="hacking.html#SEC12">Specification Sources</A>
-<LI><A NAME="TOC13" HREF="hacking.html#SEC13">Directory and File Naming Conventions</A>
-<LI><A NAME="TOC14" HREF="hacking.html#SEC14">Character Conversions</A>
+<LI><A NAME="TOC1" HREF="#SEC1">Introduction</A>
+<LI><A NAME="TOC2" HREF="#SEC2">Requirements</A>
+<LI><A NAME="TOC3" HREF="#SEC3">Volunteering to Help</A>
+<LI><A NAME="TOC4" HREF="#SEC4">Project Goals</A>
+<LI><A NAME="TOC5" HREF="#SEC5">Programming Tools</A>
+<LI><A NAME="TOC6" HREF="#SEC6">Programming Standards</A>
+<LI><A NAME="TOC7" HREF="#SEC7">Programming Goals</A>
+<LI><A NAME="TOC8" HREF="#SEC8">Portability</A>
+<LI><A NAME="TOC9" HREF="#SEC9">Robustness</A>
+<LI><A NAME="TOC10" HREF="#SEC10">Java Efficiency</A>
+<LI><A NAME="TOC11" HREF="#SEC11">Native Efficiency</A>
+<LI><A NAME="TOC12" HREF="#SEC12">Specification Sources</A>
+<LI><A NAME="TOC13" HREF="#SEC13">Directory and File Naming Conventions</A>
+<LI><A NAME="TOC14" HREF="#SEC14">Character Conversions</A>
+<LI><A NAME="TOC15" HREF="#SEC15">Localization</A>
+<UL>
+<LI><A NAME="TOC16" HREF="#SEC16">String Collation</A>
+<LI><A NAME="TOC17" HREF="#SEC17">Break Iteration</A>
+<LI><A NAME="TOC18" HREF="#SEC18">Date Formatting and Parsing</A>
+</UL>
 </UL>
 <P><HR><P>
 
@@ -56,7 +62,7 @@ approved by the Free Software Foundation.
 
 
 
-<H1><A NAME="SEC1" HREF="hacking.html#TOC1">Introduction</A></H1>
+<H1><A NAME="SEC1" HREF="#TOC1">Introduction</A></H1>
 
 <P>
 The Classpath Project is a dedicated to providing a 100% free, clean
@@ -77,7 +83,7 @@ working towards a common goal.
 </P>
 
 
-<H1><A NAME="SEC2" HREF="hacking.html#TOC2">Requirements</A></H1>
+<H1><A NAME="SEC2" HREF="#TOC2">Requirements</A></H1>
 
 <P>
 Although Classpath is following an open development model where input
@@ -141,7 +147,7 @@ is legally yours to distribute.
 
 
 
-<H1><A NAME="SEC3" HREF="hacking.html#TOC3">Volunteering to Help</A></H1>
+<H1><A NAME="SEC3" HREF="#TOC3">Volunteering to Help</A></H1>
 
 <P>
 The Classpath project needs volunteers to help us out.  People are
@@ -152,7 +158,7 @@ unsupported.
 </P>
 <P>
 While pretty much all contributions are welcome (but see 
-see section <A HREF="hacking.html#SEC2">Requirements</A>) it is always preferable that volunteers do the
+see section <A HREF="#SEC2">Requirements</A>) it is always preferable that volunteers do the
 whole job when volunteering for a task.  So when you volunteer to write
 a Java package, please be willing to do the following:
 
@@ -190,7 +196,7 @@ than going back at the end and adding them.
 </P>
 
 
-<H1><A NAME="SEC4" HREF="hacking.html#TOC4">Project Goals</A></H1>
+<H1><A NAME="SEC4" HREF="#TOC4">Project Goals</A></H1>
 
 <P>
 The goal of the Classpath project is to produce a
@@ -266,7 +272,7 @@ implemented if desired, but please do not create classes that depend on
 </P>
 
 
-<H1><A NAME="SEC5" HREF="hacking.html#TOC5">Programming Tools</A></H1>
+<H1><A NAME="SEC5" HREF="#TOC5">Programming Tools</A></H1>
 
 <P>
 If you want to hack on Classpath, you should download, install, and
@@ -365,7 +371,7 @@ and java.math.BigDecimal.
 
 
 
-<H1><A NAME="SEC6" HREF="hacking.html#TOC6">Programming Standards</A></H1>
+<H1><A NAME="SEC6" HREF="#TOC6">Programming Standards</A></H1>
 
 <P>
 For C code, follow the
@@ -390,7 +396,7 @@ to Write Doc Comments for Javadoc</A>.
 </P>
 
 
-<H1><A NAME="SEC7" HREF="hacking.html#TOC7">Programming Goals</A></H1>
+<H1><A NAME="SEC7" HREF="#TOC7">Programming Goals</A></H1>
 
 <P>
 When you write code for Classpath, write with three things in mind, and
@@ -407,7 +413,7 @@ following chapters will give some hints on how to do this.
 </P>
 
 
-<H1><A NAME="SEC8" HREF="hacking.html#TOC8">Portability</A></H1>
+<H1><A NAME="SEC8" HREF="#TOC8">Portability</A></H1>
 
 <P>
 The ultimate portability goal would be to create:
@@ -493,7 +499,7 @@ off we are.
 </P>
 
 
-<H1><A NAME="SEC9" HREF="hacking.html#TOC9">Robustness</A></H1>
+<H1><A NAME="SEC9" HREF="#TOC9">Robustness</A></H1>
 
 <P>
 Native code is very easy to make non-robust.  (That's one reason Java is
@@ -534,7 +540,7 @@ exceptions and return values and throw appropriate exceptions.
 </P>
 
 
-<H1><A NAME="SEC10" HREF="hacking.html#TOC10">Java Efficiency</A></H1>
+<H1><A NAME="SEC10" HREF="#TOC10">Java Efficiency</A></H1>
 
 <P>
 For methods which explicitly throw a NullPointerException when an
@@ -571,7 +577,7 @@ how small, is important.
 </P>
 
 
-<H1><A NAME="SEC11" HREF="hacking.html#TOC11">Native Efficiency</A></H1>
+<H1><A NAME="SEC11" HREF="#TOC11">Native Efficiency</A></H1>
 
 <P>
 You might think that using native methods all over the place would give
@@ -635,7 +641,7 @@ built from scratch.
 </P>
 
 
-<H1><A NAME="SEC12" HREF="hacking.html#TOC12">Specification Sources</A></H1>
+<H1><A NAME="SEC12" HREF="#TOC12">Specification Sources</A></H1>
 
 <P>
 There are a number of specification sources to use when working on
@@ -705,7 +711,7 @@ in general.
 
 
 
-<H1><A NAME="SEC13" HREF="hacking.html#TOC13">Directory and File Naming Conventions</A></H1>
+<H1><A NAME="SEC13" HREF="#TOC13">Directory and File Naming Conventions</A></H1>
 
 <P>
 The Classpath directory structure is laid out in the following manner:
@@ -843,7 +849,7 @@ reside in files of any name.
 
 
 
-<H1><A NAME="SEC14" HREF="hacking.html#TOC14">Character Conversions</A></H1>
+<H1><A NAME="SEC14" HREF="#TOC14">Character Conversions</A></H1>
 
 <P>
 Java uses the Unicode character encoding system internally.  This is a
@@ -961,8 +967,241 @@ Many more translators are needed.  All major character encodings should
 eventually be supported.
 
 </P>
+
+
+<H1><A NAME="SEC15" HREF="#TOC15">Localization</A></H1>
+
+<P>
+There are many parts of the Java standard runtime library that must
+be customized to the particular locale the program is being run in.
+These include the parsing and display of dates, times, and numbers;
+sorting words alphabetically; breaking sentences into words, etc.
+In general, Classpath uses general classes for performing these tasks,
+and customizes their behavior with configuration data specific to a
+given locale.
+
+</P>
+
+<P>
+In Classpath, all locale specific data is stored in a 
+<CODE>ListResourceBundle</CODE> class in the package <CODE>gnu/java/locale</CODE>.
+The basename of the bundle is <CODE>LocaleInformation</CODE>.  See the
+documentation for the <CODE>java.util.ResourceBundle</CODE> class for details
+on how the specific locale classes should be named.
+
+</P>
+<P>
+<CODE>ListResourceBundle</CODE>'s are used instead of 
+<CODE>PropertyResourceBundle</CODE>'s because data more complex than simple
+strings need to be provided to configure certain Classpath components.
+Because <CODE>ListResourceBundle</CODE> allows an arbitrary Java object to
+be associated with a given configuration option, it provides the
+needed flexibility to accomodate Classpath's needs.
+
+</P>
+<P>
+Each Java library component that can be localized requires that certain
+configuration options be specified in the resource bundle for it.  It is
+important that each and every option be supplied for a specific 
+component or a critical runtime error will most likely result.
+
+</P>
+<P>
+As a standard, each option should be assigned a name that is a string.
+If the value is stored in a class or instance variable, then the option
+should name should have the name name as the variable.  Also, the value
+associated with each option should be a Java object with the same name
+as the option name (unless a simple scalar value is used).  Here is an
+example:
+
+</P>
+<P>
+A class loads a value for the <CODE>format_string</CODE> variable from the
+resource bundle in the specified locale.  Here is the code in the
+library class:
+
+</P>
+
+<PRE>
+  ListResourceBundle lrb = 
+    ListResourceBundle.getBundle("gnu/java/locale/LocaleInformation", locale);
+  String format_string = lrb.getString("format_string");
+</PRE>
+
+<P>
+In the actual resource bundle class, here is how the configuration option
+gets defined:
+
+</P>
+
+<PRE>
+/**
+  * This is the format string used for displaying values
+  */
+private static final String format_string = "%s %d %i";
+
+private static final Object[][] contents =
+{
+  { "format_string", format_string }
+};
+</PRE>
+
+<P>
+Note that each variable should be <CODE>private</CODE>, <CODE>final</CODE>, and
+<CODE>static</CODE>.  Each variable should also have a description of what it
+does as a documentation comment.  The <CODE>getContents()</CODE> method returns
+the <CODE>contents</CODE> array.
+
+</P>
+<P>
+There are many functional areas of the standard class library that are
+configured using this mechanism.  A given locale does not need to support
+each functional area.  But if a functional area is supported, then all
+of the specified entries for that area must be supplied.  In order to
+determine which functional areas are supported, there is a special key
+that is queried by the affected class or classes.  If this key exists, 
+and has a value that is a <CODE>Boolean</CODE> object wrappering the
+<CODE>true</CODE> value, then full support is assumed.  Otherwise it is
+assumed that no support exists for this functional area.  Every class
+using resources for configuration must use this scheme and define a special
+scheme that indicates the functional area is supported.  Simply checking
+for the resource bundle's existence is not sufficient to ensure that a
+given functional area is supported.
+
+</P>
+<P>
+The following sections define the functional areas that use resources
+for locale specific configuration in GNU Classpath.  Please refer to the 
+documentation for the classes mentioned for details on how these values 
+are used.  You may also wish to look at the source file for 
+<CODE>gnu/java/locale/LocaleInformation_en</CODE> as an example.
+
+</P>
+
+
+<H2><A NAME="SEC16" HREF="#TOC16">String Collation</A></H2>
+
+<P>
+Collation involves the sorting of strings.  The Java class library provides
+a public class called <CODE>java.text.RuleBasedCollator</CODE> that performs
+sorting based on a set of sorting rules.
+
+</P>
+
+<UL>
+<LI>RuleBasedCollator - A <CODE>Boolean</CODE> wrappering <CODE>true</CODE> to indicate
+
+that this functional area is supported.
+<LI>collation_rules - The rules the specify how string collation is to
+
+be performed.
+</UL>
+
+<P>
+Note that some languages might be too complex for <CODE>RuleBasedCollator</CODE>
+to handle.  In this case an entirely new class might need to be written in
+lieu of defining this rule string.
+
+</P>
+
+
+<H2><A NAME="SEC17" HREF="#TOC17">Break Iteration</A></H2>
+
+<P>
+The class <CODE>java.text.BreakIterator</CODE> breaks text into words, sentences,
+and lines.  It is configured with the following resource bundle entries:
+
+</P>
+
+<UL>
+<LI>BreakIterator - A <CODE>Boolean</CODE> wrappering <CODE>true</CODE> to indicate
+
+that this functional area is supported.
+<LI>word_breaks - A <CODE>String</CODE> array of word break character sequences.
+
+<LI>sentence_breaks - A <CODE>String</CODE> array of sentence break character
+
+sequences.
+<LI>line_breaks - A <CODE>String</CODE> array of line break character sequences.
+
+</UL>
+
+
+
+<H2><A NAME="SEC18" HREF="#TOC18">Date Formatting and Parsing</A></H2>
+
+<P>
+Date formatting and parsing is handled by the 
+<CODE>java.text.SimpleDateFormat</CODE> class in most locales.  This class is
+configured by attaching an instance of the <CODE>java.text.DateFormatSymbols</CODE>
+class.  That class simply reads properties from our locale specific
+resource bundle.  The following items are requiered (refer to the 
+documentation of the <CODE>java.text.DateFormatSymbols</CODE> class for details
+io what the actual values should be):
+
+</P>
+
+<UL>
+<LI>DateFormatSymbols - A <CODE>Boolean</CODE> wrappering <CODE>true</CODE> to indicate
+
+that this functional area is supported.
+<LI>months - A <CODE>String</CODE> array of month names.
+
+<LI>shortMonths - A <CODE>String</CODE> array of abbreviated month names.
+
+<LI>weekdays - A <CODE>String</CODE> array of weekday names.
+
+<LI>shortWeekdays - A <CODE>String</CODE> array of abbreviated weekday names.
+
+<LI>ampms - A <CODE>String</CODE> array containing AM/PM names.
+
+<LI>eras - A <CODE>String</CODE> array containing era (ie, BC/AD) names.
+
+<LI>zoneStrings - An array of information about valid timezones for this
+
+locale.
+<LI>localPatternChars - A <CODE>String</CODE> defining date/time pattern symbols.
+
+<LI>shortDateFormat - The format string for dates used by
+
+<CODE>DateFormat.SHORT</CODE>
+<LI>mediumDateFormat - The format string for dates used by
+
+<CODE>DateFormat.MEDIUM</CODE>
+<LI>longDateFormat - The format string for dates used by
+
+<CODE>DateFormat.LONG</CODE>
+<LI>fullDateFormat - The format string for dates used by
+
+<CODE>DateFormat.FULL</CODE>
+<LI>defaultDateFormat - The format string for dates used by
+
+<CODE>DateFormat.DEFAULT</CODE>
+<LI>shortDateFormat - The format string for times used by
+
+<CODE>DateFormat.SHORT</CODE>
+<LI>mediumDateFormat - The format string for times used by
+
+<CODE>DateFormat.MEDIUM</CODE>
+<LI>longDateFormat - The format string for times used by
+
+<CODE>DateFormat.LONG</CODE>
+<LI>fullDateFormat - The format string for times used by
+
+<CODE>DateFormat.FULL</CODE>
+<LI>defaultDateFormat - The format string for times used by
+
+<CODE>DateFormat.DEFAULT</CODE>
+</UL>
+
+<P>
+Note that it may not be possible to use this mechanism for all locales.
+In those cases a special purpose class may need to be written to handle 
+date/time processing.
+
+</P>
 <P><HR><P>
-This document was generated on 3 January 1999 using the
+This document was generated on 10 January 1999 using the
 <A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>
 translator version 1.52.</P>
 </BODY>
