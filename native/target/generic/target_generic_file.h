@@ -64,12 +64,78 @@ extern "C" {
 /****************** Conditional compilation switches *******************/
 
 /***************************** Constants *******************************/
+#ifndef TARGET_NATIVE_FILE_FILEFLAG_NONE
+  #define TARGET_NATIVE_FILE_FILEFLAG_NONE 0
+#endif
+#ifndef TARGET_NATIVE_FILE_FILEFLAG_CREATE
+  #define TARGET_NATIVE_FILE_FILEFLAG_CREATE O_CREAT
+#endif
+#ifndef TARGET_NATIVE_FILE_FILEFLAG_CREATE_FORCE
+  #define TARGET_NATIVE_FILE_FILEFLAG_CREATE_FORCE (O_CREAT|O_EXCL)
+#endif
+#ifndef TARGET_NATIVE_FILE_FILEFLAG_READ
+  #define TARGET_NATIVE_FILE_FILEFLAG_READ O_RDONLY
+#endif
+#ifndef TARGET_NATIVE_FILE_FILEFLAG_WRITE
+  #define TARGET_NATIVE_FILE_FILEFLAG_WRITE O_WRONLY
+#endif
+#ifndef TARGET_NATIVE_FILE_FILEFLAG_READWRITE
+  #define TARGET_NATIVE_FILE_FILEFLAG_READWRITE O_RDWR
+#endif
+#ifndef TARGET_NATIVE_FILE_FILEFLAG_TRUNCATE
+  #define TARGET_NATIVE_FILE_FILEFLAG_TRUNCATE O_TRUNC
+#endif
+#ifndef TARGET_NATIVE_FILE_FILEFLAG_APPEND
+  #define TARGET_NATIVE_FILE_FILEFLAG_APPEND O_APPEND
+#endif
+#ifndef TARGET_NATIVE_FILE_FILEFLAG_SYNC
+  #define TARGET_NATIVE_FILE_FILEFLAG_SYNC O_SYNC
+#endif
+#ifndef TARGET_NATIVE_FILE_FILEFLAG_DSYNC
+  #ifdef O_DSYNC
+    #define TARGET_NATIVE_FILE_FILEFLAG_DSYNC 0
+  #else
+    #define TARGET_NATIVE_FILE_FILEFLAG_DSYNC TARGET_NATIVE_FILE_FILEFLAG_SYNC
+  #endif
+#endif
+
+#ifndef TARGET_NATIVE_FILE_FILEPERMISSION_NORMAL
+  #define TARGET_NATIVE_FILE_FILEPERMISSION_NORMAL (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH)
+#endif
+
+#ifndef TARGET_NATIVE_FILE_FILEPERMISSION_PRIVATE 
+  #define TARGET_NATIVE_FILE_FILEPERMISSION_PRIVATE (S_IRUSR | S_IWUSR)
+#endif
 
 /***************************** Datatypes *******************************/
 
 /***************************** Variables *******************************/
 
 /****************************** Macros *********************************/
+
+/***********************************************************************\
+* Name       : TARGET_NATIVE_FILE_OPEN
+* Purpose    : open a file
+* Input      : -
+* Output     : -
+* Return     : -
+* Side-effect: unknown
+* Notes      : file is created if it does not exist
+\***********************************************************************/
+
+#ifndef TARGET_NATIVE_FILE_OPEN
+  #include <sys/types.h>
+  #include <sys/stat.h>
+  #include <fcntl.h>
+  #define TARGET_NATIVE_FILE_OPEN(filename,filedescriptor,flags,permissions,result) \
+    do { \
+      filedescriptor=open(filename, \
+                          flags, \
+                          permissions \
+                          ); \
+      result=(filedescriptor>=0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
+   } while (0)
+#endif
 
 /***********************************************************************\
 * Name       : TARGET_NATIVE_FILE_OPEN_CREATE
@@ -82,14 +148,13 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_OPEN_CREATE
-  #include <sys/types.h>
-  #include <sys/stat.h>
-  #include <fcntl.h>
   #define TARGET_NATIVE_FILE_OPEN_CREATE(filename,filedescriptor,result) \
-    do { \
-      filedescriptor=open(filename,O_CREAT|O_EXCL|O_RDWR,0777); \
-      result=(filedescriptor>=0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
-   } while (0)
+    TARGET_NATIVE_FILE_OPEN(filename,\
+                            filedescriptor,\
+                            TARGET_NATIVE_FILE_FILEFLAG_CREATE_FORCE, \
+                            TARGET_NATIVE_FILE_FILEPERMISSION_NORMAL, \
+                            result \
+                           )
 #endif
 
 /***********************************************************************\
@@ -103,14 +168,33 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_OPEN_READ
-  #include <sys/types.h>
-  #include <sys/stat.h>
-  #include <fcntl.h>
   #define TARGET_NATIVE_FILE_OPEN_READ(filename,filedescriptor,result) \
-    do { \
-      filedescriptor=open(filename,O_RDONLY); \
-      result=(filedescriptor>=0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
-   } while (0)
+    TARGET_NATIVE_FILE_OPEN(filename, \
+                            filedescriptor,\
+                            TARGET_NATIVE_FILE_FILEFLAG_READ, \
+                            TARGET_NATIVE_FILE_FILEPERMISSION_NORMAL, \
+                            result \
+                           )
+#endif
+
+/***********************************************************************\
+* Name       : TARGET_NATIVE_FILE_OPEN_WRITE
+* Purpose    : open an existing file for writing
+* Input      : -
+* Output     : -
+* Return     : -
+* Side-effect: unknown
+* Notes      : -
+\***********************************************************************/
+
+#ifndef TARGET_NATIVE_FILE_OPEN_WRITE
+  #define TARGET_NATIVE_FILE_OPEN_WRITE(filename,filedescriptor,result) \
+    TARGET_NATIVE_FILE_OPEN(filename, \
+                            filedescriptor, \
+                            TARGET_NATIVE_FILE_FILEFLAG_WRITE, \
+                            TARGET_NATIVE_FILE_FILEPERMISSION_NORMAL, \
+                            result \
+                           )
 #endif
 
 /***********************************************************************\
@@ -124,14 +208,33 @@ extern "C" {
 \***********************************************************************/
 
 #ifndef TARGET_NATIVE_FILE_OPEN_READWRITE
-  #include <sys/types.h>
-  #include <sys/stat.h>
-  #include <fcntl.h>
   #define TARGET_NATIVE_FILE_OPEN_READWRITE(filename,filedescriptor,result) \
-    do { \
-      filedescriptor=open(filename,O_RDWR,0666); \
-      result=(filedescriptor>=0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
-   } while (0)
+    TARGET_NATIVE_FILE_OPEN(filename, \
+                            filedescriptor, \
+                            TARGET_NATIVE_FILE_FILEFLAG_READWRITE, \
+                            TARGET_NATIVE_FILE_FILEPERMISSION_NORMAL, \
+                            result \
+                           )
+#endif
+
+/***********************************************************************\
+* Name       : TARGET_NATIVE_FILE_OPEN_READWRITE
+* Purpose    : create/open a file for append
+* Input      : -
+* Output     : -
+* Return     : -
+* Side-effect: unknown
+* Notes      : file is created if it does not exist
+\***********************************************************************/
+
+#ifndef TARGET_NATIVE_FILE_OPEN_APPEND
+  #define TARGET_NATIVE_FILE_OPEN_APPEND(filename,filedescriptor,result) \
+    TARGET_NATIVE_FILE_OPEN_APPEND(filename, \
+                                   filedescriptor, \
+                                   TARGET_NATIVE_FILE_FILEFLAG_CREATE_FORCE|TARGET_NATIVE_FILE_FILEFLAG_APPEND, \
+                                   TARGET_NATIVE_FILE_FILEPERMISSION_NORMAL, \
+                                   result \
+                                  )
 #endif
 
 /***********************************************************************\
@@ -266,6 +369,92 @@ extern "C" {
       result=(fstat(filedescriptor,&__statBuffer)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
       length=TARGET_NATIVE_MATH_INT_INT32_TO_INT64(__statBuffer.st_size); \
     } while (0)
+#endif
+
+/***********************************************************************\
+* Name       : TARGET_NATIVE_FILE_AVAILABLE
+* Purpose    : get available bytes for read
+* Input      : -
+* Output     : -
+* Return     : -
+* Side-effect: unknown
+* Notes      : -
+\***********************************************************************/
+
+#ifndef TARGET_NATIVE_FILE_AVAILABLE
+  #if   defined(FIONREAD)
+    #include <sys/ioctl.h>
+    #ifdef HAVE_SYS_IOCTL_H
+      #define BSD_COMP /* Get FIONREAD on Solaris2 */
+      #include <sys/ioctl.h>
+    #endif
+    #ifdef HAVE_SYS_FILIO_H /* Get FIONREAD on Solaris 2.5 */
+      #include <sys/filio.h>
+    #endif
+    #define TARGET_NATIVE_FILE_AVAILABLE(filedescriptor,length,result) \
+      do { \
+        ssize_t __n; \
+        \
+        result=(ioctl(filedescriptor,FIONREAD,(char*)&n)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
+        length=TARGET_NATIVE_MATH_INT_INT32_TO_INT64(n); \
+      } while (0)
+  #elif defined(HAVE_FSTAT)
+    #include <sys/types.h>
+    #include <sys/stat.h>
+    #include <unistd.h>
+    #define TARGET_NATIVE_FILE_AVAILABLE(filedescriptor,length,result) \
+      do { \
+        struct stat __statBuffer; \
+        off_t       __n; \
+        \
+        length=0; \
+        \
+        if ((fstat(filedescriptor,&__statBuffer)==0) && S_ISREG(__statBuffer.st_mode)) \
+        { \
+          __n=(lseek(filedescriptor,0,SEEK_CUR)); \
+          if (__n!=-1) \
+          { \
+            length=TARGET_NATIVE_MATH_INT_INT32_TO_INT64(__statBuffer.st_size-__n); \
+            result=TARGET_NATIVE_OK; \
+          } \
+          else \
+          { \
+            result=TARGET_NATIVE_ERROR; \
+          } \
+        } \
+        else \
+        { \
+          result=TARGET_NATIVE_ERROR; \
+        } \
+      } while (0)
+  #elif defined(HAVE_SELECT)
+    #include <string.h>
+    #include <sys/select.h>
+    #define TARGET_NATIVE_FILE_AVAILABLE(filedescriptor,length,result) \
+      do { \
+        fd_set         __filedescriptset; \
+        struct timeval __timeval; \
+        \
+        length=0; \
+        \
+        FD_ZERO(&__filedescriptset); \
+        FD_SET(filedescriptor,&__filedescriptset); \
+        memset(&__timeval,0,sizeof(__timeval)); \
+        switch (select(filedescriptor+1,&__filedescriptset,NULL,NULL,&__timeval)==0) \
+        { \
+          case -1: result=TARGET_NATIVE_ERROR; break; \
+          case  0: length=JNI_JLONG_CONST_0; result=TARGET_NATIVE_OK; break; \
+          default: length=JNI_JLONG_CONST_1; result=TARGET_NATIVE_OK; break; \
+        } \
+      } while (0)
+  #else
+    #define TARGET_NATIVE_FILE_AVAILABLE(filedescriptor,length,result) \
+      do { \
+        errno=TARGET_NATIVE_ERROR_OPERATION_NOT_PERMITTED; \
+        length=0; \
+        result=TARGET_NATIVE_ERROR; \
+      } while (0)
+  #endif
 #endif
 
 /***********************************************************************\
