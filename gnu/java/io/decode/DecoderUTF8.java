@@ -38,8 +38,8 @@ exception statement from your version. */
 
 package gnu.java.io.decode;
 
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
   * This class implements character decoding in the UCS Transformation

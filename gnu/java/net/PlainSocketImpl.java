@@ -39,8 +39,10 @@ exception statement from your version. */
 
 package gnu.java.net;
 
-import java.io.InputStream;
+import gnu.classpath.Configuration;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -48,7 +50,6 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.SocketImpl;
 import java.net.SocketOptions;
-import gnu.classpath.Configuration;
 
 /**
  * Written using on-line Java Platform 1.2 API Specification, as well
@@ -62,9 +63,9 @@ import gnu.classpath.Configuration;
  * combination of Java and native routines to implement standard BSD
  * style sockets of family AF_INET and types SOCK_STREAM and SOCK_DGRAM
  *
- * @author Per Bothner <bothner@cygnus.com>
- * @author Nic Ferrier <nferrier@tapsellferrier.co.uk>
- * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @author Per Bothner (bothner@cygnus.com)
+ * @author Nic Ferrier (nferrier@tapsellferrier.co.uk)
+ * @author Aaron M. Renn (arenn@urbanophile.com)
  */
 public final class PlainSocketImpl extends SocketImpl
 {
@@ -379,7 +380,7 @@ public final class PlainSocketImpl extends SocketImpl
    * This class contains an implementation of <code>InputStream</code> for 
    * sockets.  It in an internal only class used by <code>PlainSocketImpl</code>.
    *
-   * @author Nic Ferrier <nferrier@tapsellferrier.co.uk>
+   * @author Nic Ferrier (nferrier@tapsellferrier.co.uk)
    */
   final class SocketInputStream
     extends InputStream
@@ -449,7 +450,7 @@ public final class PlainSocketImpl extends SocketImpl
    * <code>getOutputStream method</code>.  It expects only to  be used in that
    * context.
    *
-   * @author Nic Ferrier  <nferrier@tapsellferrier.co.uk>
+   * @author Nic Ferrier (nferrier@tapsellferrier.co.uk)
    */
   final class SocketOutputStream
     extends OutputStream

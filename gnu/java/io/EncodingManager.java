@@ -42,10 +42,10 @@ import gnu.classpath.SystemProperties;
 import gnu.java.io.decode.Decoder;
 import gnu.java.io.encode.Encoder;
 
-import java.lang.reflect.Constructor;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 

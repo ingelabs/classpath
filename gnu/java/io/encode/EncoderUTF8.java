@@ -38,8 +38,8 @@ exception statement from your version. */
 
 package gnu.java.io.encode;
 
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 /**
   * This class implements an encoder for the UCS Transformation Format 8
