@@ -1,3 +1,7 @@
+2002-09-09  John Leuner  <jewel@debian.org>
+
+	* native/fdlibm/ieeefp.h: added check for S390 arch
+
 2002-09-02  Mark Wielaard  <mark@klomp.org>
 
 	* lib/Makefile.am: Use --bootclasspath for gcj.
