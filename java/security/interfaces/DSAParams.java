@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,49 +24,38 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security.interfaces;
 
 import java.math.BigInteger;
 
 /**
-  * This interface allows the Digital Signature Algorithm (DSA) parameters
-  * to be queried.
-  *
-  * @version 0.0
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This interface allows the Digital Signature Algorithm (DSA) parameters
+ * to be queried.
+ *
+ * @version 0.0
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ */
 public interface DSAParams
 {
+  /**
+   * Returns the base, or 'g' value
+   *
+   * @return The DSA base value
+   */
+  public abstract BigInteger getG();
 
-/**
-  * Returns the base, or 'g' value
-  *
-  * @return The DSA base value
-  */
-public abstract BigInteger
-getG();
+  /**
+   * Returns the prime, or 'p' value
+   *
+   * @return The DSA prime value
+   */
+  public abstract BigInteger getP();
 
-/*************************************************************************/
-
-/**
-  * Returns the prime, or 'p' value
-  *
-  * @return The DSA prime value
-  */
-public abstract BigInteger
-getP();
-
-/*************************************************************************/
-
-/**
-  * Returns the subprime, or 'q' value
-  *
-  * @return The DSA subprime value
-  */
-public abstract BigInteger
-getQ();
-
-} // interface DSAParams
-
+  /**
+   * Returns the subprime, or 'q' value
+   *
+   * @return The DSA subprime value
+   */
+  public abstract BigInteger getQ();
+}

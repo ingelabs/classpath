@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,32 +24,31 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 import java.io.InputStream;
 import java.io.IOException;
-import java.io.OutputStream; 
+import java.io.OutputStream;
 import java.security.cert.CertificateException;
 import java.util.Date;
-import java.util.Enumeration ;
+import java.util.Enumeration;
 
 /**
    KeyStoreSpi is the Service Provider Interface (SPI) for the 
    KeyStore class. This is the interface for providers to 
    supply to implement a keystore for a particular keystore 
    type.
-   
+
    @since JDK 1.2
    @author Mark Benvenuto
-*/
+ */
 public abstract class KeyStoreSpi
 {
-
   /**
      Constructs a new KeyStoreSpi
-  */
+   */
   public KeyStoreSpi()
-  {}
+  {
+  }
 
   /**
      Returns the key associated with given alias using the 
@@ -57,17 +56,16 @@ public abstract class KeyStoreSpi
 
      @param alias an alias for the key to get
      @param password password to access key with
-	
+
      @return the requested key, or null otherwise
 
      @throws NoSuchAlgorithmException if there is no algorithm
      for recovering the key
      @throws UnrecoverableKeyException key cannot be reocovered
      (wrong password).
-  */
-  public abstract Key engineGetKey(String alias, char[] password)
-    throws NoSuchAlgorithmException,
-    UnrecoverableKeyException;
+   */
+  public abstract Key engineGetKey(String alias, char[]password)
+    throws NoSuchAlgorithmException, UnrecoverableKeyException;
 
   /**
      Gets a Certificate chain for the specified alias.
@@ -79,8 +77,9 @@ public abstract class KeyStoreSpi
      null if the alias does not exist or there is no
      certificate chain for the alias ( the alias refers
      to a trusted certificate entry or there is no entry).
-  */
-  public abstract java.security.cert.Certificate[] engineGetCertificateChain(String alias);
+   */
+  public abstract java.security.cert.
+    Certificate[] engineGetCertificateChain(String alias);
 
 
   /**
@@ -94,16 +93,17 @@ public abstract class KeyStoreSpi
 
      @return a Certificate or null if the alias does not exist 
      or there is no certificate for the alias
-  */
-  public abstract java.security.cert.Certificate engineGetCertificate(String alias);
+   */
+  public abstract java.security.cert.
+    Certificate engineGetCertificate(String alias);
 
   /**
      Gets entry creation date for the specified alias.
 
      @param alias the alias name
-	
+
      @returns the entry creation date or null
-  */
+   */
   public abstract Date engineGetCreationDate(String alias);
 
   /**
@@ -119,9 +119,12 @@ public abstract class KeyStoreSpi
      public key
 
      @throws KeyStoreException if it fails
-  */
-  public abstract void engineSetKeyEntry(String alias, Key key, char[] password, java.security.cert.Certificate[] chain)
-    throws KeyStoreException;
+   */
+  public abstract void engineSetKeyEntry(String alias, Key key,
+					 char[]password,
+					 java.security.cert.
+					 Certificate[]chain) throws
+    KeyStoreException;
 
   /**
      Assign the key to the alias in the keystore. It will overwrite
@@ -135,9 +138,11 @@ public abstract class KeyStoreSpi
      public key
 
      @throws KeyStoreException if it fails
-  */
-  public abstract void engineSetKeyEntry(String alias, byte[] key, java.security.cert.Certificate[] chain)
-    throws KeyStoreException;
+   */
+  public abstract void engineSetKeyEntry(String alias, byte[]key,
+					 java.security.cert.
+					 Certificate[]chain) throws
+    KeyStoreException;
 
 
   /**
@@ -148,9 +153,11 @@ public abstract class KeyStoreSpi
      @param cert the certificate to add
 
      @throws KeyStoreException if it fails
-  */
-  public abstract void engineSetCertificateEntry(String alias, java.security.cert.Certificate cert)
-    throws KeyStoreException;
+   */
+  public abstract void engineSetCertificateEntry(String alias,
+						 java.security.cert.
+						 Certificate cert) throws
+    KeyStoreException;
 
   /**
      Deletes the entry for the specified entry.
@@ -158,7 +165,7 @@ public abstract class KeyStoreSpi
      @param alias the alias name
 
      @throws KeyStoreException if it fails
-  */
+   */
   public abstract void engineDeleteEntry(String alias)
     throws KeyStoreException;
 
@@ -166,7 +173,7 @@ public abstract class KeyStoreSpi
      Generates a list of all the aliases in the keystore.
 
      @return an Enumeration of the aliases
-  */
+   */
   public abstract Enumeration engineAliases();
 
   /**
@@ -175,14 +182,14 @@ public abstract class KeyStoreSpi
      @param alias the alias name
 
      @return true if it contains the alias, false otherwise
-  */
+   */
   public abstract boolean engineContainsAlias(String alias);
 
   /**
      Returns the number of entries in the keystore.
 
      @returns the number of keystore entries.
-  */
+   */
   public abstract int engineSize();
 
   /**
@@ -192,7 +199,7 @@ public abstract class KeyStoreSpi
      @param alias the alias name
 
      @return true if it is a key entry, false otherwise
-  */
+   */
   public abstract boolean engineIsKeyEntry(String alias);
 
   /**
@@ -202,7 +209,7 @@ public abstract class KeyStoreSpi
      @param alias the alias name
 
      @return true if it is a certificate entry, false otherwise
-  */
+   */
   public abstract boolean engineIsCertificateEntry(String alias);
 
   /**
@@ -216,8 +223,9 @@ public abstract class KeyStoreSpi
 
      @return alias of first matching certificate, null if it 
      does not exist.
-  */
-  public abstract String engineGetCertificateAlias(java.security.cert.Certificate cert);
+   */
+  public abstract String engineGetCertificateAlias(java.security.cert.
+						   Certificate cert);
 
   /**
      Stores the keystore in the specified output stream and it
@@ -231,8 +239,8 @@ public abstract class KeyStoreSpi
      used cannot be found.
      @throws CertificateException if any certificates could not be
      stored in the output stream.
-  */
-  public abstract void engineStore(OutputStream stream, char[] password)
+   */
+  public abstract void engineStore(OutputStream stream, char[]password)
     throws IOException, NoSuchAlgorithmException, CertificateException;
 
 
@@ -248,7 +256,7 @@ public abstract class KeyStoreSpi
      used cannot be found.
      @throws CertificateException if any certificates could not be
      stored in the output stream.
-  */
-  public abstract void engineLoad(InputStream stream, char[] password)
+   */
+  public abstract void engineLoad(InputStream stream, char[]password)
     throws IOException, NoSuchAlgorithmException, CertificateException;
 }

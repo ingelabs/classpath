@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,44 +24,42 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 import java.io.InputStream;
 import java.io.IOException;
-import java.io.OutputStream; 
+import java.io.OutputStream;
 import java.security.cert.CertificateException;
 import java.util.Date;
-import java.util.Enumeration ;
+import java.util.Enumeration;
 
 /**
    Keystore represents an in-memory collection of keys and 
    certificates. There are two types of entries:
 
    * Key Entry
-   
+
    This type of keystore entry store sensitive crytographic key
    information in a protected format.Typically this is a secret 
    key or a private key with a certificate chain.
-   
-   
+
+
    * Trusted Ceritificate Entry
-   
+
    This type of keystore entry contains a single public key 
    certificate belonging to annother entity. It is called trusted
    because the keystore owner trusts that the certificates
    belongs to the subject (owner) of the certificate.
-   
+
    The keystore contains an "alias" string for each entry. 
-   
+
    The structure and persistentence of the key store is not 
    specified. Any method could be used to protect sensitive 
    (private or secret) keys. Smart cards or integrated 
    cryptographic engines could be used or the keystore could 
    be simply stored in a file. 
-*/
+ */
 public class KeyStore
 {
-
   private KeyStoreSpi keyStoreSpi;
   private Provider provider;
   private String type;
@@ -72,7 +70,7 @@ public class KeyStore
      @param keyStoreSpi A KeyStore engine to use
      @param provider A provider to use
      @param type The type of KeyStore
-  */
+   */
   protected KeyStore(KeyStoreSpi keyStoreSpi, Provider provider, String type)
   {
     this.keyStoreSpi = keyStoreSpi;
@@ -81,70 +79,76 @@ public class KeyStore
   }
 
   /** 
-      Gets an instance of the KeyStore class representing
-      the specified keystore. If the type is not 
-      found then, it throws CertificateException.
+     Gets an instance of the KeyStore class representing
+     the specified keystore. If the type is not 
+     found then, it throws CertificateException.
 
-      @param type the type of certificate to choose
+     @param type the type of certificate to choose
 
-      @return a KeyStore repesenting the desired type
+     @return a KeyStore repesenting the desired type
 
-      @throws KeyStoreException if the type of keystore is not implemented by providers
-  */
-  public static KeyStore getInstance(String type)
-    throws KeyStoreException
+     @throws KeyStoreException if the type of keystore is not implemented by providers
+   */
+  public static KeyStore getInstance(String type) throws KeyStoreException
   {
-    Provider[] p = Security.getProviders ();
+    Provider[] p = Security.getProviders();
 
     for (int i = 0; i < p.length; i++)
       {
-	String classname = p[i].getProperty ("KeyStore." + type);
+	String classname = p[i].getProperty("KeyStore." + type);
 	if (classname != null)
-	  return getInstance (classname, type, p[i]);
+	  return getInstance(classname, type, p[i]);
       }
 
     throw new KeyStoreException(type);
   }
 
   /** 
-      Gets an instance of the KeyStore class representing
-      the specified key store from the specified provider. 
-      If the type is not found then, it throws CertificateException. 
-      If the provider is not found, then it throws 
-      NoSuchProviderException.
+     Gets an instance of the KeyStore class representing
+     the specified key store from the specified provider. 
+     If the type is not found then, it throws CertificateException. 
+     If the provider is not found, then it throws 
+     NoSuchProviderException.
 
-      @param type the type of certificate to choose
+     @param type the type of certificate to choose
 
-      @return a KeyStore repesenting the desired type
+     @return a KeyStore repesenting the desired type
 
-      @throws KeyStoreException if the type of keystore is not implemented by providers
-      @throws NoSuchProviderException if the provider is not found
-  */
+     @throws KeyStoreException if the type of keystore is not implemented by providers
+     @throws NoSuchProviderException if the provider is not found
+   */
   public static KeyStore getInstance(String type, String provider)
     throws KeyStoreException, NoSuchProviderException
   {
     Provider p = Security.getProvider(provider);
-    if( p == null)
+    if (p == null)
       throw new NoSuchProviderException();
 
-    return getInstance (p.getProperty ("KeyStore." + type),
-			type, p);
+    return getInstance(p.getProperty("KeyStore." + type), type, p);
   }
 
-  private static KeyStore getInstance (String classname,
-				       String type,
-				       Provider provider)
+  private static KeyStore getInstance(String classname,
+				      String type,
+				      Provider provider)
     throws KeyStoreException
   {
-    try {
-      return new KeyStore( (KeyStoreSpi)Class.forName( classname ).newInstance(), provider, type );
-    } catch( ClassNotFoundException cnfe) {
-      throw new KeyStoreException("Class not found");
-    } catch( InstantiationException ie) {
-      throw new KeyStoreException("Class instantiation failed");
-    } catch( IllegalAccessException iae) {
-      throw new KeyStoreException("Illegal Access");
-    }
+    try
+      {
+	return new KeyStore((KeyStoreSpi) Class.forName(classname).
+			    newInstance(), provider, type);
+      }
+    catch (ClassNotFoundException cnfe)
+      {
+	throw new KeyStoreException("Class not found");
+      }
+    catch (InstantiationException ie)
+      {
+	throw new KeyStoreException("Class instantiation failed");
+      }
+    catch (IllegalAccessException iae)
+      {
+	throw new KeyStoreException("Illegal Access");
+      }
   }
 
 
@@ -152,7 +156,7 @@ public class KeyStore
      Gets the provider that the class is from.
 
      @return the provider of this class
-  */
+   */
   public final Provider getProvider()
   {
     return provider;
@@ -162,7 +166,7 @@ public class KeyStore
      Returns the type of the KeyStore supported
 
      @return A string with the type of KeyStore
-  */
+   */
   public final String getType()
   {
     return type;
@@ -174,18 +178,19 @@ public class KeyStore
 
      @param alias an alias for the key to get
      @param password password to access key with
-	
+
      @return the requested key, or null otherwise
 
      @throws NoSuchAlgorithmException if there is no algorithm
      for recovering the key
      @throws UnrecoverableKeyException key cannot be reocovered
      (wrong password).
-  */
-  public final Key getKey(String alias, char[] password)
-    throws KeyStoreException, NoSuchAlgorithmException, UnrecoverableKeyException
+   */
+  public final Key getKey(String alias, char[]password)
+    throws KeyStoreException, NoSuchAlgorithmException,
+    UnrecoverableKeyException
   {
-    return keyStoreSpi.engineGetKey( alias, password);
+    return keyStoreSpi.engineGetKey(alias, password);
   }
 
   /**
@@ -198,11 +203,11 @@ public class KeyStore
      null if the alias does not exist or there is no
      certificate chain for the alias ( the alias refers
      to a trusted certificate entry or there is no entry).
-  */
-  public final java.security.cert.Certificate[] getCertificateChain(String alias)
-    throws KeyStoreException
+   */
+  public final java.security.cert.
+    Certificate[] getCertificateChain(String alias) throws KeyStoreException
   {
-    return keyStoreSpi.engineGetCertificateChain( alias );
+    return keyStoreSpi.engineGetCertificateChain(alias);
   }
 
   /**
@@ -216,24 +221,23 @@ public class KeyStore
 
      @return a Certificate or null if the alias does not exist 
      or there is no certificate for the alias
-  */
+   */
   public final java.security.cert.Certificate getCertificate(String alias)
     throws KeyStoreException
   {
-    return keyStoreSpi.engineGetCertificate( alias );
+    return keyStoreSpi.engineGetCertificate(alias);
   }
 
   /**
      Gets entry creation date for the specified alias.
 
      @param alias the alias name
-	
+
      @returns the entry creation date or null
-  */
-  public final Date getCreationDate(String alias)
-    throws KeyStoreException
+   */
+  public final Date getCreationDate(String alias) throws KeyStoreException
   {
-    return keyStoreSpi.engineGetCreationDate( alias );
+    return keyStoreSpi.engineGetCreationDate(alias);
   }
 
   /**
@@ -249,11 +253,12 @@ public class KeyStore
      public key
 
      @throws KeyStoreException if it fails
-  */
-  public final void setKeyEntry(String alias, Key key, char[] password, java.security.cert.Certificate[] chain)
-    throws KeyStoreException
+   */
+  public final void setKeyEntry(String alias, Key key, char[]password,
+				java.security.cert.
+				Certificate[]chain) throws KeyStoreException
   {
-    keyStoreSpi.engineSetKeyEntry( alias, key, password, chain );
+    keyStoreSpi.engineSetKeyEntry(alias, key, password, chain);
   }
 
   /**
@@ -268,11 +273,12 @@ public class KeyStore
      public key
 
      @throws KeyStoreException if it fails
-  */
-  public final void setKeyEntry(String alias, byte[] key, java.security.cert.Certificate[] chain)
-    throws KeyStoreException
+   */
+  public final void setKeyEntry(String alias, byte[]key,
+				java.security.cert.
+				Certificate[]chain) throws KeyStoreException
   {
-    keyStoreSpi.engineSetKeyEntry( alias, key, chain);
+    keyStoreSpi.engineSetKeyEntry(alias, key, chain);
   }
 
   /**
@@ -283,9 +289,11 @@ public class KeyStore
      @param cert the certificate to add
 
      @throws KeyStoreException if it fails
-  */
-  public final void setCertificateEntry(String alias, java.security.cert.Certificate cert)
-    throws KeyStoreException
+   */
+  public final void setCertificateEntry(String alias,
+					java.security.cert.
+					Certificate cert) throws
+    KeyStoreException
   {
     keyStoreSpi.engineSetCertificateEntry(alias, cert);
   }
@@ -296,20 +304,18 @@ public class KeyStore
      @param alias the alias name
 
      @throws KeyStoreException if it fails
-  */
-  public final void deleteEntry(String alias)
-    throws KeyStoreException
+   */
+  public final void deleteEntry(String alias) throws KeyStoreException
   {
-    keyStoreSpi.engineDeleteEntry( alias );
+    keyStoreSpi.engineDeleteEntry(alias);
   }
 
   /**
      Generates a list of all the aliases in the keystore.
 
      @return an Enumeration of the aliases
-  */
-  public final Enumeration aliases()
-    throws KeyStoreException
+   */
+  public final Enumeration aliases() throws KeyStoreException
   {
     return keyStoreSpi.engineAliases();
   }
@@ -320,20 +326,18 @@ public class KeyStore
      @param alias the alias name
 
      @return true if it contains the alias, false otherwise
-  */
-  public final boolean containsAlias(String alias)
-    throws KeyStoreException
+   */
+  public final boolean containsAlias(String alias) throws KeyStoreException
   {
-    return keyStoreSpi.engineContainsAlias( alias );
+    return keyStoreSpi.engineContainsAlias(alias);
   }
 
   /**
      Returns the number of entries in the keystore.
 
      @returns the number of keystore entries.
-  */
-  public final int size()
-    throws KeyStoreException
+   */
+  public final int size() throws KeyStoreException
   {
     return keyStoreSpi.engineSize();
   }
@@ -345,11 +349,10 @@ public class KeyStore
      @param alias the alias name
 
      @return true if it is a key entry, false otherwise
-  */
-  public final boolean isKeyEntry(String alias)
-    throws KeyStoreException
+   */
+  public final boolean isKeyEntry(String alias) throws KeyStoreException
   {
-    return keyStoreSpi.engineIsKeyEntry( alias );
+    return keyStoreSpi.engineIsKeyEntry(alias);
   }
 
 
@@ -360,11 +363,11 @@ public class KeyStore
      @param alias the alias name
 
      @return true if it is a certificate entry, false otherwise
-  */
+   */
   public final boolean isCertificateEntry(String alias)
     throws KeyStoreException
   {
-    return keyStoreSpi.engineIsCertificateEntry( alias );
+    return keyStoreSpi.engineIsCertificateEntry(alias);
   }
 
   /**
@@ -378,11 +381,11 @@ public class KeyStore
 
      @return alias of first matching certificate, null if it 
      does not exist.
-  */
+   */
   public final String getCertificateAlias(java.security.cert.Certificate cert)
     throws KeyStoreException
   {
-    return keyStoreSpi.engineGetCertificateAlias( cert );
+    return keyStoreSpi.engineGetCertificateAlias(cert);
   }
 
   /**
@@ -397,11 +400,12 @@ public class KeyStore
      used cannot be found.
      @throws CertificateException if any certificates could not be
      stored in the output stream.
-  */
-  public final void store(OutputStream stream, char[] password)
-    throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException
+   */
+  public final void store(OutputStream stream, char[]password)
+    throws KeyStoreException, IOException, NoSuchAlgorithmException,
+    CertificateException
   {
-    keyStoreSpi.engineStore( stream, password);
+    keyStoreSpi.engineStore(stream, password);
   }
 
   /**
@@ -416,26 +420,26 @@ public class KeyStore
      used cannot be found.
      @throws CertificateException if any certificates could not be
      stored in the output stream.
-  */
-  public final void load(InputStream stream, char[] password)
+   */
+  public final void load(InputStream stream, char[]password)
     throws IOException, NoSuchAlgorithmException, CertificateException
   {
-    keyStoreSpi.engineLoad( stream, password);
+    keyStoreSpi.engineLoad(stream, password);
   }
 
   /**
      Returns the default KeyStore type. This method looks up the
      type in <JAVA_HOME>/lib/security/java.security with the 
      property "keystore.type" or if that fails then "jks" .
-  */
+   */
   public static final String getDefaultType()
   {
     String tmp;
     //Security reads every property in java.security so it 
     //will return this property if it exists. 
-    tmp = Security.getProperty( "keystore.type" );
+    tmp = Security.getProperty("keystore.type");
 
-    if( tmp == null)
+    if (tmp == null)
       tmp = "jks";
 
     return tmp;

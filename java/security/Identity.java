@@ -1,13 +1,13 @@
 /* Identity.java --- Identity Class
    Copyright (C) 1999 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+   This file is part of GNU Classpath.
 
 GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 import java.io.Serializable;
 import java.util.Vector;
@@ -33,25 +32,25 @@ import java.util.Vector;
    The Identity class is used to repsent people and companies that 
    can be authenticated using public key encryption. The identities
    can also be abstract objects such as smart cards.
-   
+
    Identity object store a name and public key for each identity.
    The names cannot be changed and the identities can be scoped.
    Each identity (name and public key) within a scope is unique 
    to that scope.
-   
+
    Each identity has a set of ceritificates which all specify the 
    same public key but not necessarily the same name.
-   
+
    The Identity class can be subclassed to allow additional 
    information to be attached to it.
-   
+
    @since JDK 1.1
-   
+
    @deprecated Use java.security.KeyStore, the java.security.cert 
    package, and java.security.Principal. 
-   
-   @author Mark Benvenuto	
-*/
+
+   @author Mark Benvenuto       
+ */
 public abstract class Identity implements Principal, Serializable
 {
   private String name;
@@ -62,9 +61,10 @@ public abstract class Identity implements Principal, Serializable
 
   /**
      Creates a new instance of Identity from Serialized Data
-  */
+   */
   protected Identity()
-  {}
+  {
+  }
 
   /**
      Creates a new instance of Identity with the specified name 
@@ -75,7 +75,7 @@ public abstract class Identity implements Principal, Serializable
 
      @throws KeyManagementException if the identity is already 
      present
-  */
+   */
   public Identity(String name, IdentityScope scope)
     throws KeyManagementException
   {
@@ -88,7 +88,7 @@ public abstract class Identity implements Principal, Serializable
      and no scope.
 
      @param name the name to use
-  */
+   */
   public Identity(String name)
   {
     this.name = name;
@@ -99,7 +99,7 @@ public abstract class Identity implements Principal, Serializable
      Gets the name for this Identity.
 
      @return the name
-  */
+   */
   public final String getName()
   {
     return name;
@@ -109,7 +109,7 @@ public abstract class Identity implements Principal, Serializable
      Gets the scope for this Identity.
 
      @return the scope
-  */
+   */
   public final IdentityScope getScope()
   {
     return scope;
@@ -119,7 +119,7 @@ public abstract class Identity implements Principal, Serializable
      Gets the public key for this identity.
 
      @return the public key
-  */
+   */
   public PublicKey getPublicKey()
   {
     return publicKey;
@@ -138,13 +138,12 @@ public abstract class Identity implements Principal, Serializable
      another identity in the current scope.
      @throws SecurityException - if the security manager denies 
      access to "setIdentityPublicKey"
-  */
-  public void setPublicKey(PublicKey key)
-    throws KeyManagementException
+   */
+  public void setPublicKey(PublicKey key) throws KeyManagementException
   {
     SecurityManager sm = System.getSecurityManager();
-    if(sm != null)
-      sm.checkSecurityAccess( "setIdentityPublicKey" );
+    if (sm != null)
+      sm.checkSecurityAccess("setIdentityPublicKey");
 
     this.publicKey = key;
   }
@@ -159,12 +158,12 @@ public abstract class Identity implements Principal, Serializable
 
      @throws SecurityException - if the security manager denies 
      access to "setIdentityInfo"
-  */
+   */
   public void setInfo(String info)
   {
     SecurityManager sm = System.getSecurityManager();
-    if(sm != null)
-      sm.checkSecurityAccess( "setIdentityInfo" );
+    if (sm != null)
+      sm.checkSecurityAccess("setIdentityInfo");
 
     this.info = info;
   }
@@ -173,7 +172,7 @@ public abstract class Identity implements Principal, Serializable
      Gets the general information string.
 
      @return the string
-  */
+   */
   public String getInfo()
   {
     return info;
@@ -193,21 +192,23 @@ public abstract class Identity implements Principal, Serializable
      or the public key conflicts
      @throws SecurityException - if the security manager denies 
      access to "addIdentityCertificate"
-  */
+   */
   public void addCertificate(java.security.Certificate certificate)
     throws KeyManagementException
   {
     SecurityManager sm = System.getSecurityManager();
-    if(sm != null)
-      sm.checkSecurityAccess( "addIdentityCertificate" );
+    if (sm != null)
+      sm.checkSecurityAccess("addIdentityCertificate");
 
     //Check public key of this certificate against the first one 
     //in the vector
-    if( certificates.size() > 0 ) {
-      if( ((Certificate)certificates.firstElement()).getPublicKey() != publicKey )
-	throw new KeyManagementException("Public key does not match");
-    }
-    certificates.addElement( certificate );
+    if (certificates.size() > 0)
+      {
+	if (((Certificate) certificates.firstElement()).getPublicKey() !=
+	    publicKey)
+	  throw new KeyManagementException("Public key does not match");
+      }
+    certificates.addElement(certificate);
   }
 
   /**
@@ -222,31 +223,31 @@ public abstract class Identity implements Principal, Serializable
      @throws KeyManagementException if the certificate is invalid
      @throws SecurityException - if the security manager denies 
      access to "removeIdentityCertificate"
-  */
+   */
   public void removeCertificate(Certificate certificate)
     throws KeyManagementException
   {
     SecurityManager sm = System.getSecurityManager();
-    if(sm != null)
-      sm.checkSecurityAccess( "removeIdentityCertificate" );
+    if (sm != null)
+      sm.checkSecurityAccess("removeIdentityCertificate");
 
-    if( certificates.contains( certificate ) == false )
+    if (certificates.contains(certificate) == false)
       throw new KeyManagementException("Certificate not found");
 
-    certificates.removeElement( certificate );
+    certificates.removeElement(certificate);
   }
 
   /**
      Returns an array of certificates for this identity.
 
      @returns array of certificates
-  */
+   */
   public Certificate[] certificates()
   {
-    Certificate certs[] = new Certificate[ certificates.size() ];
+    Certificate certs[] = new Certificate[certificates.size()];
     int max = certificates.size();
-    for( int i = 0; i < max; i++)
-      certs[i] = (Certificate)certificates.elementAt( i );
+    for (int i = 0; i < max; i++)
+      certs[i] = (Certificate) certificates.elementAt(i);
     return certs;
   }
 
@@ -257,18 +258,20 @@ public abstract class Identity implements Principal, Serializable
      If these tests fail, identityEquals is called.
 
      @return true if they are equal, false otherwise
-  */
+   */
   public final boolean equals(Object identity)
   {
-    if( identity instanceof Identity ) {
-      if( identity == this ) return true;
+    if (identity instanceof Identity)
+      {
+	if (identity == this)
+	  return true;
 
-      if( ( ((Identity)identity).getName() == this.name ) &&
-	  ( ((Identity)identity).getScope() == this.scope ) )
-	return true;
+	if ((((Identity) identity).getName() == this.name) &&
+	    (((Identity) identity).getScope() == this.scope))
+	  return true;
 
-      return identityEquals( (Identity)identity );
-    }
+	return identityEquals((Identity) identity);
+      }
     return false;
   }
 
@@ -278,11 +281,11 @@ public abstract class Identity implements Principal, Serializable
      behavior is to return true if the public key and names match.
 
      @return true if they are equal, false otherwise
-  */
+   */
   protected boolean identityEquals(Identity identity)
   {
-    return (( identity.getName() == this.name ) &&
-	    ( identity.getPublicKey() == this.publicKey) );
+    return ((identity.getName() == this.name) &&
+	    (identity.getPublicKey() == this.publicKey));
   }
 
   /**
@@ -295,15 +298,15 @@ public abstract class Identity implements Principal, Serializable
 
      @throws SecurityException - if the security manager denies 
      access to "printIdentity"
-  */
+   */
   public String toString()
   {
     SecurityManager sm = System.getSecurityManager();
-    if(sm != null)
-      sm.checkSecurityAccess( "printIdentity" );
+    if (sm != null)
+      sm.checkSecurityAccess("printIdentity");
 
     /* TODO: Insert proper format here */
-    return (name + ":@" + scope + " Public Key: " + publicKey );
+    return (name + ":@" + scope + " Public Key: " + publicKey);
   }
 
   /**
@@ -319,34 +322,41 @@ public abstract class Identity implements Principal, Serializable
 
      @throws SecurityException - if the security manager denies 
      access to "printIdentity"
-  */
+   */
   public String toString(boolean detailed)
   {
     SecurityManager sm = System.getSecurityManager();
-    if(sm != null)
-      sm.checkSecurityAccess( "printIdentity" );
-	
-    if( detailed ) {
-      /* TODO: Insert proper detailed format here */
-      return (name + ":@" + scope + " Public Key: " + publicKey );
-    } else {
-      /* TODO: Insert proper format here */
-      return (name + ":@" + scope + " Public Key: " + publicKey );
-    }
+    if (sm != null)
+      sm.checkSecurityAccess("printIdentity");
+
+    if (detailed)
+      {
+	/* TODO: Insert proper detailed format here */
+	return (name + ":@" + scope + " Public Key: " + publicKey);
+      }
+    else
+      {
+	/* TODO: Insert proper format here */
+	return (name + ":@" + scope + " Public Key: " + publicKey);
+      }
   }
 
   /**
      Gets the hashcode for this Identity.
 
      @returns the hashcode
-  */
+   */
   public int hashCode()
   {
     int ret = name.hashCode();
-    if( publicKey != null) ret|= publicKey.hashCode();
-    if( scope != null) ret|= scope.hashCode();
-    if( info != null) ret|= info.hashCode();
-    if( certificates != null) ret|= certificates.hashCode();
+    if (publicKey != null)
+      ret |= publicKey.hashCode();
+    if (scope != null)
+      ret |= scope.hashCode();
+    if (info != null)
+      ret |= info.hashCode();
+    if (certificates != null)
+      ret |= certificates.hashCode();
 
     return ret;
   }

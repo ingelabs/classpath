@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -36,37 +35,37 @@ import java.io.Serializable;
 /**
    SignedObject is used for storing rutime objects whose integrity
    cannot be compromised without being detected.
-   
+
    SignedObject contains a Serializable object which is yet to be 
    signed and its signature.
-   
+
    The signed copy is a "deep copy" (in serialized form) of the 
    original object. Any changes to the original will not affect 
    the original.
-   
+
    Several things to note are that, first there is no need to 
    initialize the signature engine as this class will handle that 
    automatically. Second, verification will only succeed if the
    public key corresponds to the private key used to generate 
    the SignedObject.
-   
+
    For fexibility, the signature engine can be specified in the 
    constructor or the verify method. The programmer who writes 
    code that verifies the SignedObject has not changed should be 
    aware of the Signature engine they use. A malicious Signature 
    may choose to always return true on verification and 
    bypass the secrity check.
-   
+
    The GNU provider provides the NIST standard DSA which uses DSA 
    and SHA-1. It can be specified by SHA/DSA, SHA-1/DSA or its 
    OID. If the RSA signature algorithm is provided then
    it could be MD2/RSA. MD5/RSA, or SHA-1/RSA. The algorithm must
    be specified because there is no default.
-   
+
    @author Mark Benvenuto <ivymccough@worldnet.att.net>
-   
+
    @since JDK 1.2
-*/
+ */
 public final class SignedObject implements Serializable
 {
   private byte[] content;
@@ -84,9 +83,10 @@ public final class SignedObject implements Serializable
      @throws IOException serialization error occured
      @throws InvalidKeyException invalid key
      @throws SignatureException signing error
-  */
-  public SignedObject(Serializable object, PrivateKey signingKey, Signature signingEngine)
-    throws IOException, InvalidKeyException, SignatureException
+   */
+  public SignedObject(Serializable object, PrivateKey signingKey,
+		      Signature signingEngine) throws IOException,
+    InvalidKeyException, SignatureException
   {
     thealgorithm = signingEngine.getAlgorithm();
 
@@ -97,8 +97,8 @@ public final class SignedObject implements Serializable
 
     content = ostream.toByteArray();
 
-    signingEngine.initSign( signingKey );
-    signingEngine.update( content );
+    signingEngine.initSign(signingKey);
+    signingEngine.update(content);
     signature = signingEngine.sign();
   }
 
@@ -110,20 +110,19 @@ public final class SignedObject implements Serializable
 
      @throws IOException de-serialization error occured
      @throws ClassNotFoundException de-serialization error occured
-  */
-  public Object getObject()
-    throws IOException, ClassNotFoundException
+   */
+  public Object getObject() throws IOException, ClassNotFoundException
   {
-    ByteArrayInputStream istream = new ByteArrayInputStream( content );
+    ByteArrayInputStream istream = new ByteArrayInputStream(content);
 
-    return new ObjectInputStream( istream ).readObject();
+    return new ObjectInputStream(istream).readObject();
   }
 
   /**
      Returns the signature of the encapsulated object.
 
      @return a byte array containing the signature
-  */
+   */
   public byte[] getSignature()
   {
     return signature;
@@ -133,7 +132,7 @@ public final class SignedObject implements Serializable
      Returns the name of the signature algorithm.
 
      @return the name of the signature algorithm.
-  */
+   */
   public String getAlgorithm()
   {
     return thealgorithm;
@@ -150,13 +149,14 @@ public final class SignedObject implements Serializable
 
      @throws InvalidKeyException invalid key
      @throws SignatureException signature verification failed
-  */
-  public boolean verify(PublicKey verificationKey, Signature verificationEngine)
-    throws InvalidKeyException, SignatureException
+   */
+  public boolean verify(PublicKey verificationKey,
+			Signature verificationEngine) throws
+    InvalidKeyException, SignatureException
   {
-    verificationEngine.initVerify( verificationKey );
-    verificationEngine.update( content );
-    return verificationEngine.verify( signature );
+    verificationEngine.initVerify(verificationKey);
+    verificationEngine.update(content);
+    return verificationEngine.verify(signature);
   }
 
   //     readObject is called to restore the state of the SignedObject from a

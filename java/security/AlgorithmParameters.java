@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -34,13 +34,12 @@ import java.io.IOException;
    AlgorithmParameters is the Algorithm Parameters class which 
    provides an interface through which to modify parameters for 
    classes. This class is used to manage the algorithm parameters.
-   
+
    @since JDK 1.2
    @author Mark Benvenuto
-*/
+ */
 public class AlgorithmParameters
 {
-
   private AlgorithmParametersSpi paramSpi;
   private Provider provider;
   private String algorithm;
@@ -51,8 +50,9 @@ public class AlgorithmParameters
      @param paramSpi A parameters engine to use
      @param provider A provider to use
      @param algorithm The algorithm 
-  */
-  protected AlgorithmParameters(AlgorithmParametersSpi paramSpi, Provider provider, String algorithm)
+   */
+  protected AlgorithmParameters(AlgorithmParametersSpi paramSpi,
+				Provider provider, String algorithm)
   {
     this.paramSpi = paramSpi;
     this.provider = provider;
@@ -63,88 +63,101 @@ public class AlgorithmParameters
      Returns the name of the algorithm used
 
      @return A string with the name of the algorithm
-  */
+   */
   public final String getAlgorithm()
   {
     return algorithm;
   }
 
   /** 
-      Gets an instance of the AlgorithmParameters class representing
-      the specified algorithm parameters. If the algorithm is not 
-      found then, it throws NoSuchAlgorithmException.
+     Gets an instance of the AlgorithmParameters class representing
+     the specified algorithm parameters. If the algorithm is not 
+     found then, it throws NoSuchAlgorithmException.
 
-      The returned AlgorithmParameters must still be intialized with
-      init().
+     The returned AlgorithmParameters must still be intialized with
+     init().
 
-      @param algorithm the name of algorithm to choose
-      @return a AlgorithmParameters repesenting the desired algorithm
+     @param algorithm the name of algorithm to choose
+     @return a AlgorithmParameters repesenting the desired algorithm
 
-      @throws NoSuchAlgorithmException if the algorithm is not implemented by providers
-  */
-  public static AlgorithmParameters getInstance(String algorithm) throws NoSuchAlgorithmException
+     @throws NoSuchAlgorithmException if the algorithm is not implemented by providers
+   */
+  public static AlgorithmParameters getInstance(String algorithm) throws
+    NoSuchAlgorithmException
   {
-    Provider[] p = Security.getProviders ();
+    Provider[] p = Security.getProviders();
 
     for (int i = 0; i < p.length; i++)
       {
-	String classname = p[i].getProperty ("AlgorithmParameters." + algorithm);
+	String classname =
+	  p[i].getProperty("AlgorithmParameters." + algorithm);
 	if (classname != null)
-	  return getInstance (classname, algorithm, p[i]);
+	  return getInstance(classname, algorithm, p[i]);
       }
 
-    throw new NoSuchAlgorithmException (algorithm);
+    throw new NoSuchAlgorithmException(algorithm);
   }
 
   /** 
-      Gets an instance of the AlgorithmParameters class representing
-      the specified algorithm parameters from the specified provider. 
-      If the algorithm is not found then, it throws 
-      NoSuchAlgorithmException. If the provider is not found, then 
-      it throws NoSuchProviderException.
+     Gets an instance of the AlgorithmParameters class representing
+     the specified algorithm parameters from the specified provider. 
+     If the algorithm is not found then, it throws 
+     NoSuchAlgorithmException. If the provider is not found, then 
+     it throws NoSuchProviderException.
 
-      The returned AlgorithmParameters must still be intialized with
-      init().
+     The returned AlgorithmParameters must still be intialized with
+     init().
 
-      @param algorithm the name of algorithm to choose
-      @param provider the name of the provider to find the algorithm in
-      @return a AlgorithmParameters repesenting the desired algorithm
+     @param algorithm the name of algorithm to choose
+     @param provider the name of the provider to find the algorithm in
+     @return a AlgorithmParameters repesenting the desired algorithm
 
-      @throws NoSuchAlgorithmException if the algorithm is not implemented by the provider
-      @throws NoSuchProviderException if the provider is not found
-  */
-  public static AlgorithmParameters getInstance(String algorithm, String provider) throws NoSuchAlgorithmException, NoSuchProviderException
+     @throws NoSuchAlgorithmException if the algorithm is not implemented by the provider
+     @throws NoSuchProviderException if the provider is not found
+   */
+  public static AlgorithmParameters getInstance(String algorithm,
+						String provider) throws
+    NoSuchAlgorithmException, NoSuchProviderException
   {
     Provider p = Security.getProvider(provider);
-    if( p == null)
+    if (p == null)
       throw new NoSuchProviderException();
 
-    return getInstance (p.getProperty ("AlgorithmParameters." + algorithm),
-			algorithm, p);
+    return getInstance(p.getProperty("AlgorithmParameters." + algorithm),
+		       algorithm, p);
   }
 
-  private static AlgorithmParameters getInstance (String classname,
-						  String algorithm,
-						  Provider provider)
+  private static AlgorithmParameters getInstance(String classname,
+						 String algorithm,
+						 Provider provider)
     throws NoSuchAlgorithmException
   {
 
-    try {
-      return new AlgorithmParameters( (AlgorithmParametersSpi)Class.forName( classname ).newInstance(), provider, algorithm );
-    } catch( ClassNotFoundException cnfe) {
-      throw new NoSuchAlgorithmException("Class not found");
-    } catch( InstantiationException ie) {
-      throw new NoSuchAlgorithmException("Class instantiation failed");
-    } catch( IllegalAccessException iae) {
-      throw new NoSuchAlgorithmException("Illegal Access");
-    }
+    try
+      {
+	return new AlgorithmParameters((AlgorithmParametersSpi) Class.
+				       forName(classname).newInstance(),
+				       provider, algorithm);
+      }
+    catch (ClassNotFoundException cnfe)
+      {
+	throw new NoSuchAlgorithmException("Class not found");
+      }
+    catch (InstantiationException ie)
+      {
+	throw new NoSuchAlgorithmException("Class instantiation failed");
+      }
+    catch (IllegalAccessException iae)
+      {
+	throw new NoSuchAlgorithmException("Illegal Access");
+      }
   }
 
   /**
      Gets the provider that the class is from.
 
      @return the provider of this class
-  */
+   */
   public final Provider getProvider()
   {
     return provider;
@@ -157,10 +170,11 @@ public class AlgorithmParameters
      @param paramSpec A AlgorithmParameterSpec to initialize with
 
      @throws InvalidParameterSpecException For an inapporiate ParameterSpec class
-  */
-  public final void init(AlgorithmParameterSpec paramSpec) throws InvalidParameterSpecException
+   */
+  public final void init(AlgorithmParameterSpec paramSpec) throws
+    InvalidParameterSpecException
   {
-    paramSpi.engineInit( paramSpec );
+    paramSpi.engineInit(paramSpec);
   }
 
   /**
@@ -171,12 +185,12 @@ public class AlgorithmParameters
      IOException.
 
      @param params Parameters to initialize with
-	
+
      @throws IOException Decoding Error
-  */
-  public final void init(byte[] params) throws IOException
+   */
+  public final void init(byte[]params) throws IOException
   {
-    paramSpi.engineInit( params);
+    paramSpi.engineInit(params);
   }
 
   /**
@@ -189,12 +203,12 @@ public class AlgorithmParameters
 
      @param params Parameters to initialize with
      @param format Name of decoding format to use
-	
+
      @throws IOException Decoding Error
-  */
-  public final void init(byte[] params, String format) throws IOException
+   */
+  public final void init(byte[]params, String format) throws IOException
   {
-    paramSpi.engineInit( params, format );
+    paramSpi.engineInit(params, format);
   }
 
   /**
@@ -205,12 +219,13 @@ public class AlgorithmParameters
      @param paramSpec Class to return AlgorithmParameters in
 
      @return the parameter specification
-	
+
      @throws InvalidParameterSpecException if the paramSpec is an invalid parameter class
-  */
-  public final AlgorithmParameterSpec getParameterSpec(Class paramSpec) throws InvalidParameterSpecException
+   */
+  public final AlgorithmParameterSpec getParameterSpec(Class paramSpec) throws
+    InvalidParameterSpecException
   {
-    return paramSpi.engineGetParameterSpec( paramSpec );
+    return paramSpi.engineGetParameterSpec(paramSpec);
   }
 
   /**
@@ -219,7 +234,7 @@ public class AlgorithmParameters
      for the specified type.
 
      @return byte array representing the parameters
-  */
+   */
   public final byte[] getEncoded() throws IOException
   {
     return paramSpi.engineGetEncoded();
@@ -232,17 +247,17 @@ public class AlgorithmParameters
      if it exists for the specified type.
 
      @return byte array representing the parameters
-  */
+   */
   public final byte[] getEncoded(String format) throws IOException
   {
-    return paramSpi.engineGetEncoded( format );
+    return paramSpi.engineGetEncoded(format);
   }
 
   /**
      Returns a string representation of the encoding format
 
      @return a string containing the string representation
-  */
+   */
   public final String toString()
   {
     return paramSpi.engineToString();

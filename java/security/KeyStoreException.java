@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,43 +24,34 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 
 /**
-  * Indicates a problem with the key store.
-  *
-  * @version 0.0
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * Indicates a problem with the key store.
+ *
+ * @version 0.0
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ */
 public class KeyStoreException extends GeneralSecurityException
 {
+  /**
+   * This method initializes a new <code>KeyStoreException</code> with no
+   * detailed error message.
+   */
+  public KeyStoreException()
+  {
+    super();
+  }
 
-/**
-  * This method initializes a new <code>KeyStoreException</code> with no
-  * detailed error message.
-  */
-public
-KeyStoreException()
-{
-  super();
+  /**
+   * This method initializes a new <code>KeyStoreException</code> with a
+   * detailed error message.
+   *
+   * @param msg The descriptive error message.
+   */
+  public KeyStoreException(String msg)
+  {
+    super(msg);
+  }
 }
-
-/*************************************************************************/
-
-/**
-  * This method initializes a new <code>KeyStoreException</code> with a
-  * detailed error message.
-  *
-  * @param msg The descriptive error message.
-  */
-public
-KeyStoreException(String msg)
-{
-  super(msg);
-}
-
-
-} // class KeyStoreException
-

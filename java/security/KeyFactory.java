@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 import java.security.spec.KeySpec;
 import java.security.spec.InvalidKeySpecException;
@@ -33,21 +32,20 @@ import java.security.spec.InvalidKeySpecException;
    Key factories are used to convert keys (opaque cryptographic 
    keys of type Key) into key specifications (transparent 
    representations of the underlying key material).
-   
+
    Key factories are bi-directional. They allow a key class 
    to be converted into a key specification (key material) and
    back again.
-   
+
    For example DSA public keys can be specified as 
    DSAPublicKeySpec or X509EncodedKeySpec. The key factory
    translate these key specifications. 
-   
+
    @since JDK 1.2
    @author Mark Benvenuto
-*/
+ */
 public class KeyFactory
 {
-
   private KeyFactorySpi keyFacSpi;
   private Provider provider;
   private String algorithm;
@@ -58,8 +56,9 @@ public class KeyFactory
      @param keyFacSpi Key Factory SPI to use
      @param provider the provider of the Key Factory SPI
      @param algorithm the name of the key algorithm for this key factory
-  */
-  protected KeyFactory(KeyFactorySpi keyFacSpi, Provider provider, String algorithm)
+   */
+  protected KeyFactory(KeyFactorySpi keyFacSpi, Provider provider,
+		       String algorithm)
   {
     this.keyFacSpi = keyFacSpi;
     this.provider = provider;
@@ -67,77 +66,85 @@ public class KeyFactory
   }
 
   /** 
-      Gets an instance of the KeyFactory class representing
-      the specified key factory. If the algorithm is not 
-      found then, it throws NoSuchAlgorithmException.
+     Gets an instance of the KeyFactory class representing
+     the specified key factory. If the algorithm is not 
+     found then, it throws NoSuchAlgorithmException.
 
-      @param algorithm the name of algorithm to choose
-      @return a KeyFactory repesenting the desired algorithm
+     @param algorithm the name of algorithm to choose
+     @return a KeyFactory repesenting the desired algorithm
 
-      @throws NoSuchAlgorithmException if the algorithm is not implemented by providers
-  */
+     @throws NoSuchAlgorithmException if the algorithm is not implemented by providers
+   */
   public static KeyFactory getInstance(String algorithm)
     throws NoSuchAlgorithmException
   {
-    Provider[] p = Security.getProviders ();
+    Provider[] p = Security.getProviders();
 
     for (int i = 0; i < p.length; i++)
       {
-	String classname = p[i].getProperty ("KeyFactory." + algorithm);
+	String classname = p[i].getProperty("KeyFactory." + algorithm);
 	if (classname != null)
-	  return getInstance (classname, algorithm, p[i]);
+	  return getInstance(classname, algorithm, p[i]);
       }
 
-    throw new NoSuchAlgorithmException (algorithm);
+    throw new NoSuchAlgorithmException(algorithm);
   }
 
   /** 
-      Gets an instance of the KeyFactory class representing
-      the specified key factory from the specified provider. 
-      If the algorithm is not found then, it throws 
-      NoSuchAlgorithmException. If the provider is not found, then 
-      it throws NoSuchProviderException.
+     Gets an instance of the KeyFactory class representing
+     the specified key factory from the specified provider. 
+     If the algorithm is not found then, it throws 
+     NoSuchAlgorithmException. If the provider is not found, then 
+     it throws NoSuchProviderException.
 
-      @param algorithm the name of algorithm to choose
-      @param provider the name of the provider to find the algorithm in
-      @return a KeyFactory repesenting the desired algorithm
+     @param algorithm the name of algorithm to choose
+     @param provider the name of the provider to find the algorithm in
+     @return a KeyFactory repesenting the desired algorithm
 
-      @throws NoSuchAlgorithmException if the algorithm is not implemented by the provider
-      @throws NoSuchProviderException if the provider is not found
-  */
+     @throws NoSuchAlgorithmException if the algorithm is not implemented by the provider
+     @throws NoSuchProviderException if the provider is not found
+   */
   public static KeyFactory getInstance(String algorithm, String provider)
     throws NoSuchAlgorithmException, NoSuchProviderException
   {
     Provider p = Security.getProvider(provider);
-    if( p == null)
+    if (p == null)
       throw new NoSuchProviderException();
 
-    return getInstance (p.getProperty ("KeyFactory." + algorithm),
-			algorithm, p);
+    return getInstance(p.getProperty("KeyFactory." + algorithm),
+		       algorithm, p);
   }
 
-  private static KeyFactory getInstance (String classname,
-					 String algorithm,
-					 Provider provider)
+  private static KeyFactory getInstance(String classname,
+					String algorithm,
+					Provider provider)
     throws NoSuchAlgorithmException
   {
 
-    try {
-      return new KeyFactory( (KeyFactorySpi)Class.forName( classname ).newInstance(), provider, algorithm );
-    } catch( ClassNotFoundException cnfe) {
-      throw new NoSuchAlgorithmException("Class not found");
-    } catch( InstantiationException ie) {
-      throw new NoSuchAlgorithmException("Class instantiation failed");
-    } catch( IllegalAccessException iae) {
-      throw new NoSuchAlgorithmException("Illegal Access");
-    }
+    try
+      {
+	return new KeyFactory((KeyFactorySpi) Class.forName(classname).
+			      newInstance(), provider, algorithm);
+      }
+    catch (ClassNotFoundException cnfe)
+      {
+	throw new NoSuchAlgorithmException("Class not found");
+      }
+    catch (InstantiationException ie)
+      {
+	throw new NoSuchAlgorithmException("Class instantiation failed");
+      }
+    catch (IllegalAccessException iae)
+      {
+	throw new NoSuchAlgorithmException("Illegal Access");
+      }
   }
 
   /**
      Gets the provider that the class is from.
 
      @return the provider of this class
-  */
+   */
   public final Provider getProvider()
   {
     return provider;
@@ -147,7 +154,7 @@ public class KeyFactory
      Returns the name of the algorithm used
 
      @return A string with the name of the algorithm
-  */
+   */
   public final String getAlgorithm()
   {
     return algorithm;
@@ -162,10 +169,11 @@ public class KeyFactory
 
      @throws InvalidKeySpecException invalid key specification for
      this key factory to produce a public key
-  */
-  public final PublicKey generatePublic(KeySpec keySpec) throws InvalidKeySpecException
+   */
+  public final PublicKey generatePublic(KeySpec keySpec) throws
+    InvalidKeySpecException
   {
-    return 	keyFacSpi.engineGeneratePublic( keySpec );
+    return keyFacSpi.engineGeneratePublic(keySpec);
   }
 
   /**
@@ -177,10 +185,11 @@ public class KeyFactory
 
      @throws InvalidKeySpecException invalid key specification for
      this key factory to produce a private key
-  */
-  public final PrivateKey generatePrivate(KeySpec keySpec) throws InvalidKeySpecException
+   */
+  public final PrivateKey generatePrivate(KeySpec keySpec) throws
+    InvalidKeySpecException
   {
-    return keyFacSpi.engineGeneratePrivate( keySpec );
+    return keyFacSpi.engineGeneratePrivate(keySpec);
   }
 
   /**
@@ -198,11 +207,11 @@ public class KeyFactory
      @throws InvalidKeySpecException the requested key specification
      is inappropriate for this key or the key is 
      unrecognized.
-  */
+   */
   public final KeySpec getKeySpec(Key key, Class keySpec)
     throws InvalidKeySpecException
   {
-    return keyFacSpi.engineGetKeySpec( key, keySpec );
+    return keyFacSpi.engineGetKeySpec(key, keySpec);
   }
 
   /**
@@ -215,10 +224,9 @@ public class KeyFactory
 
      @throws InvalidKeySpecException if the key cannot be 
      processed by this key factory
-  */
+   */
   public final Key translateKey(Key key) throws InvalidKeyException
   {
-    return keyFacSpi.engineTranslateKey( key );
+    return keyFacSpi.engineTranslateKey(key);
   }
-
 }

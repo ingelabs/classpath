@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 
 /**
@@ -40,18 +39,19 @@ package java.security;
 
    The implementation of a Cloneable interface is left to up to 
    the programmer of a subclass.
-	
-   @version 0.0
-  
-   @author Mark Benvenuto <ivymccough@worldnet.att.net>
-*/
 
+   @version 0.0
+
+   @author Mark Benvenuto <ivymccough@worldnet.att.net>
+ */
 public abstract class MessageDigestSpi
 {
   /**
      Default constructor of the MessageDigestSpi class
-  */
-  public MessageDigestSpi () {}
+   */
+  public MessageDigestSpi()
+  {
+  }
 
   /**
      Returns the length of the digest.  It may be overridden by the
@@ -60,10 +60,10 @@ public abstract class MessageDigestSpi
      message digest classes.
 
      @return Length of Digest in Bytes
-     
+
      @since 1.2
-  */
-  protected int engineGetDigestLength ()
+   */
+  protected int engineGetDigestLength()
   {
     return 0;
   }
@@ -72,8 +72,8 @@ public abstract class MessageDigestSpi
      Updates the digest with the specified byte.
 
      @param input the byte to update digest with
-  */
-  protected abstract void engineUpdate (byte input);
+   */
+  protected abstract void engineUpdate(byte input);
 
 
   /**
@@ -83,8 +83,8 @@ public abstract class MessageDigestSpi
      @param input the byte array to update digest with
      @param offset the offset of the byte to start with
      @param len the number of the bytes to update with
-  */
-  protected abstract void engineUpdate (byte[] input, int offset, int len);
+   */
+  protected abstract void engineUpdate(byte[]input, int offset, int len);
 
   /**
      Computes the final digest of the stored bytes and returns
@@ -92,7 +92,7 @@ public abstract class MessageDigestSpi
      should reset sensitive data after performing the digest.
 
      @return An array of bytes containing the digest
-  */
+   */
   protected abstract byte[] engineDigest();
 
   /**
@@ -108,26 +108,26 @@ public abstract class MessageDigestSpi
      @return Returns the length of the buffer
 
      @since 1.2
-  */
-  protected int engineDigest (byte[] buf, int offset, int len)
+   */
+  protected int engineDigest(byte[]buf, int offset, int len)
     throws DigestException
   {
-    if ( engineGetDigestLength () > len)
-      throw new DigestException ("Buffer is too small.");
+    if (engineGetDigestLength() > len)
+      throw new DigestException("Buffer is too small.");
 
-    byte tmp[] = engineDigest ();
+    byte tmp[] = engineDigest();
     if (tmp.length > len)
-      throw new DigestException ("Buffer is too small");
+      throw new DigestException("Buffer is too small");
 
-    System.arraycopy (tmp, 0, buf, offset, tmp.length);
+    System.arraycopy(tmp, 0, buf, offset, tmp.length);
     return tmp.length;
   }
 
   /**
      Resets the digest engine. Reinitializes internal variables 
      and clears sensitive data.
-  */
-  protected abstract void engineReset ();
+   */
+  protected abstract void engineReset();
 
   /**
      Returns a clone of this class.
@@ -136,13 +136,12 @@ public abstract class MessageDigestSpi
      CloneNotSupportedException.  The MessageDigestSpi provider
      implementation has to overload this class in order to be
      cloneable.
-  */
-  public Object clone () throws CloneNotSupportedException
+   */
+  public Object clone() throws CloneNotSupportedException
   {
     if (this instanceof Cloneable)
-      return super.clone ();
+      return super.clone();
     else
-      throw new CloneNotSupportedException ();
+      throw new CloneNotSupportedException();
   }
-
 }

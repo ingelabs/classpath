@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,48 +24,40 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 
 /**
-  * This class is the common superclass of all security exceptions.  All
-  * exceptions in java.security extend this class with the exception (no
-  * pun intended) of <code>AccessControlException</code> and 
-  * <code>CertificateException</code> which extend <code>SecurityException</code>
-  * and <code>ProviderException</code> which extens <code>RuntimeException</code>.
-  * and <code>InvalidParamterException</code> which extends
-  * <code>IllegalArgumentException</code>.
-  *
-  * @version 0.0
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This class is the common superclass of all security exceptions.  All
+ * exceptions in java.security extend this class with the exception (no
+ * pun intended) of <code>AccessControlException</code> and 
+ * <code>CertificateException</code> which extend <code>SecurityException</code>
+ * and <code>ProviderException</code> which extens <code>RuntimeException</code>.
+ * and <code>InvalidParamterException</code> which extends
+ * <code>IllegalArgumentException</code>.
+ *
+ * @version 0.0
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ */
 public class GeneralSecurityException extends Exception
 {
+  /**
+   * This method initializes a new instance of <code>GeneralSecurityException</code> 
+   * with no descriptive error message.
+   */
+  public GeneralSecurityException()
+  {
+    super();
+  }
 
-/**
-  * This method initializes a new instance of <code>GeneralSecurityException</code> 
-  * with no descriptive error message.
-  */
-public
-GeneralSecurityException()
-{
-  super();
+  /**
+   * This method initializes a new instance of <code>GeneralSecurityException</code>
+   * with a descriptive error message.
+   *
+   * @param msg The descriptive error message.
+   */
+  public GeneralSecurityException(String msg)
+  {
+    super(msg);
+  }
 }
-
-/*************************************************************************/
-
-/**
-  * This method initializes a new instance of <code>GeneralSecurityException</code>
-  * with a descriptive error message.
-  *
-  * @param msg The descriptive error message.
-  */
-public
-GeneralSecurityException(String msg)
-{
-  super(msg);
-}
-
-} // class GeneralSecurityException
-

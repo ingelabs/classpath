@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 
 public abstract class MessageDigest extends MessageDigestSpi
@@ -38,114 +37,116 @@ public abstract class MessageDigest extends MessageDigestSpi
      algorithm.
 
      @param algorithm the name of digest algorithm to choose
-  */
-  protected MessageDigest (String algorithm)
+   */
+  protected MessageDigest(String algorithm)
   {
     this.algorithm = algorithm;
     provider = null;
   }
 
   /** 
-      Gets an instance of the MessageDigest class representing
-      the specified digest. If the algorithm is not found then, 
-      it throws NoSuchAlgorithmException.
+     Gets an instance of the MessageDigest class representing
+     the specified digest. If the algorithm is not found then, 
+     it throws NoSuchAlgorithmException.
 
-      @param algorithm the name of digest algorithm to choose
-      @return a MessageDigest representing the desired algorithm
+     @param algorithm the name of digest algorithm to choose
+     @return a MessageDigest representing the desired algorithm
 
-      @exception NoSuchAlgorithmException if the algorithm is not implemented by providers
-  */
-  public static MessageDigest getInstance (String algorithm)
+     @exception NoSuchAlgorithmException if the algorithm is not implemented by providers
+   */
+  public static MessageDigest getInstance(String algorithm)
     throws NoSuchAlgorithmException
   {
-    Provider[] p = Security.getProviders ();
+    Provider[] p = Security.getProviders();
+    String name = "MessageDigest." + algorithm;
 
     for (int i = 0; i < p.length; i++)
       {
-	String classname = p[i].getProperty ("MessageDigest." + algorithm);
+	String classname = p[i].getProperty(name);
 	if (classname != null)
-	  return getInstance (classname, algorithm, p[i]);
+	  return getInstance(classname, algorithm, p[i]);
       }
 
-    throw new NoSuchAlgorithmException (algorithm);
+    throw new NoSuchAlgorithmException(algorithm);
   }
 
   /** 
-      Gets an instance of the MessageDigest class representing
-      the specified digest from the specified provider. If the 
-      algorithm is not found then, it throws NoSuchAlgorithmException.
-      If the provider is not found, then it throws
-      NoSuchProviderException.
+     Gets an instance of the MessageDigest class representing
+     the specified digest from the specified provider. If the 
+     algorithm is not found then, it throws NoSuchAlgorithmException.
+     If the provider is not found, then it throws
+     NoSuchProviderException.
 
-      @param algorithm the name of digest algorithm to choose
-      @param provider the name of the provider to find the algorithm in
-      @return a MessageDigest representing the desired algorithm
+     @param algorithm the name of digest algorithm to choose
+     @param provider the name of the provider to find the algorithm in
+     @return a MessageDigest representing the desired algorithm
 
-      @exception NoSuchAlgorithmException if the algorithm is not implemented by the provider
-      @exception NoSuchProviderException if the provider is not found
-  */
+     @exception NoSuchAlgorithmException if the algorithm is not implemented by the provider
+     @exception NoSuchProviderException if the provider is not found
+   */
 
-  public static MessageDigest getInstance (String algorithm, String provider)
+  public static MessageDigest getInstance(String algorithm, String provider)
     throws NoSuchAlgorithmException, NoSuchProviderException
   {
-    Provider p = Security.getProvider (provider);
+    Provider p = Security.getProvider(provider);
 
     if (p == null)
-      throw new NoSuchProviderException (provider);
+      throw new NoSuchProviderException(provider);
 
-    return getInstance (p.getProperty ("MessageDigest." + algorithm),
-			algorithm, p);
+    return getInstance(p.getProperty("MessageDigest." + algorithm),
+		       algorithm, p);
   }
 
-  private static MessageDigest getInstance (String classname,
-					    String algorithm,
-					    Provider provider)
+  private static MessageDigest getInstance(String classname,
+					   String algorithm,
+					   Provider provider)
     throws NoSuchAlgorithmException
   {
     if (classname == null)
-      throw new NoSuchAlgorithmException (algorithm);
+      throw new NoSuchAlgorithmException(algorithm);
 
     try
       {
-	MessageDigest m = (MessageDigest)Class.forName (classname).newInstance();
+	MessageDigest m =
+	  (MessageDigest) Class.forName(classname).newInstance();
 	m.algorithm = algorithm;
 	m.provider = provider;
-	return m;		
+	return m;
       }
     catch (ClassNotFoundException cnfe)
       {
-	throw new NoSuchAlgorithmException (algorithm + ": Class not found.");
+	throw new NoSuchAlgorithmException(algorithm + ": Class not found.");
       }
     catch (InstantiationException ie)
       {
-	throw new NoSuchAlgorithmException (algorithm
-					    + ": Class instantiation failed.");
+	throw new NoSuchAlgorithmException(algorithm
+					   + ": Class instantiation failed.");
       }
     catch (IllegalAccessException iae)
       {
-	throw new NoSuchAlgorithmException (algorithm + ": Illegal Access");
+	throw new NoSuchAlgorithmException(algorithm + ": Illegal Access");
       }
   }
-  
-  
+
+
   /**
      Gets the provider that the MessageDigest is from.
-     
+
      @return the provider the this MessageDigest
-  */
-  public final Provider getProvider ()
+   */
+  public final Provider getProvider()
   {
     return provider;
   }
 
   /**
      Updates the digest with the byte.
-     
+
      @param input byte to update the digest with
-  */
-  public void update (byte input)
+   */
+  public void update(byte input)
   {
-    engineUpdate (input);
+    engineUpdate(input);
   }
 
   /**
@@ -155,30 +156,30 @@ public abstract class MessageDigest extends MessageDigestSpi
      @param input bytes to update the digest with
      @param offset the offset to start at
      @param len length of the data to update with
-  */
-  public void update (byte[] input, int offset, int len)
+   */
+  public void update(byte[]input, int offset, int len)
   {
-    engineUpdate (input, 0, input.length);
+    engineUpdate(input, 0, input.length);
   }
 
   /**
      Updates the digest with the bytes from the array.
 
      @param input bytes to update the digest with
-  */
-  public void update (byte[] input)
+   */
+  public void update(byte[]input)
   {
-    engineUpdate (input, 0, input.length);
+    engineUpdate(input, 0, input.length);
   }
 
   /**
      Computes the digest of the stored data.
 
      @return a byte array representing the message digest
-  */
-  public byte[] digest ()
+   */
+  public byte[] digest()
   {
-    return lastDigest = engineDigest ();
+    return lastDigest = engineDigest();
   }
 
   /**
@@ -189,10 +190,10 @@ public abstract class MessageDigest extends MessageDigestSpi
      @param offset An offset to start storing the digest at
      @param len The length of the buffer
      @return Returns the length of the buffer
-  */
-  public int digest(byte[] buf, int offset, int len) throws DigestException
+   */
+  public int digest(byte[]buf, int offset, int len) throws DigestException
   {
-    return engineDigest( buf, offset, len);
+    return engineDigest(buf, offset, len);
   }
 
   /**
@@ -202,37 +203,37 @@ public abstract class MessageDigest extends MessageDigestSpi
 
      @param buf An array of bytes to perform final update with
      @return a byte array representing the message digest
-  */ 
-  public byte[] digest (byte[] input)
+   */
+  public byte[] digest(byte[]input)
   {
-    update (input);
-    return digest ();
+    update(input);
+    return digest();
   }
 
   /**
      Returns a representation of the MessageDigest as a String.
 
      @return a string representing the message digest
-  */
+   */
   public String toString()
   {
-    return (getClass ()).getName ()
-      + " Message Digest <" + digestToString () + ">";
+    return (getClass()).getName()
+      + " Message Digest <" + digestToString() + ">";
   }
 
   /**
      Does a simple byte comparison of the two digests.
-     
+
      @param digesta first digest to compare
      @param digestb second digest to compare
      @return true if they are equal, false otherwise
-  */
-  public static boolean isEqual (byte[] digesta, byte[] digestb)
+   */
+  public static boolean isEqual(byte[]digesta, byte[]digestb)
   {
     if (digesta.length != digestb.length)
       return false;
 
-    for (int i = digesta.length - 1; i >= 0; -- i)
+    for (int i = digesta.length - 1; i >= 0; --i)
       if (digesta[i] != digestb[i])
 	return false;
 
@@ -242,19 +243,19 @@ public abstract class MessageDigest extends MessageDigestSpi
 
   /**
      Resets the message digest.
-  */
+   */
   public void reset()
   {
     engineReset();
   }
 
   /** 
-      Gets the name of the algorithm currently used.
-      The names of algorithms are usually SHA-1 or MD5.
+     Gets the name of the algorithm currently used.
+     The names of algorithms are usually SHA-1 or MD5.
 
-      @return name of algorithm.
-  */
-  public final String getAlgorithm ()
+     @return name of algorithm.
+   */
+  public final String getAlgorithm()
   {
     return algorithm;
   }
@@ -265,10 +266,10 @@ public abstract class MessageDigest extends MessageDigestSpi
      does not implement this function.
 
      @return length of the message digest
-  */	
-  public final int getDigestLength ()
+   */
+  public final int getDigestLength()
   {
-    return engineGetDigestLength ();
+    return engineGetDigestLength();
   }
 
   /**
@@ -277,39 +278,39 @@ public abstract class MessageDigest extends MessageDigestSpi
      The cloning of this class depends on whether the subclass
      MessageDigestSpi implements Cloneable which contains the
      actual implementation of the appropriate algorithm.
-     
+
      @return clone of this class
-     
+
      @exception CloneNotSupportedException this class does not support cloning
-  */
-  public Object clone () throws CloneNotSupportedException
+   */
+  public Object clone() throws CloneNotSupportedException
   {
     if (this instanceof Cloneable)
-      return super.clone ();
+      return super.clone();
     else
-      throw new CloneNotSupportedException ();
+      throw new CloneNotSupportedException();
   }
 
-  private String digestToString ()
+  private String digestToString()
   {
     byte[] digest = lastDigest;
 
     if (digest == null)
       return "incomplete";
 
-    StringBuffer buf = new StringBuffer ();
+    StringBuffer buf = new StringBuffer();
     int len = digest.length;
-    for (int i = 0; i < len; ++ i)
+    for (int i = 0; i < len; ++i)
       {
 	byte b = digest[i];
-	byte high = (byte)((b & 0xff) >>> 4);
-	byte low = (byte)(b & 0xf);
+	byte high = (byte) ((b & 0xff) >>> 4);
+	byte low = (byte) (b & 0xf);
 
-	buf.append (high > 9 ? ('a' - 10) + high : '0' + high);
-	buf.append (low > 9 ? ('a' - 10) + low : '0' + low);
+	buf.append(high > 9 ? ('a' - 10) + high : '0' + high);
+	buf.append(low > 9 ? ('a' - 10) + low : '0' + low);
       }
 
-    return buf.toString ();
+    return buf.toString();
   }
 
 }

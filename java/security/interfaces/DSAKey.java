@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,27 +24,22 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security.interfaces;
 
 /**
-  * This interface is implemented by a class to return the parameters
-  * of a Digital Signature Algorithm (DSA) public or private key.
-  *
-  * @version 0.0
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This interface is implemented by a class to return the parameters
+ * of a Digital Signature Algorithm (DSA) public or private key.
+ *
+ * @version 0.0
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ */
 public interface DSAKey
 {
-
-/**
-  * This method returns non-secret parameters of the DSA key
-  *
-  * @return The DSA parameters
-  */
-public abstract DSAParams
-getParams();
-
-} // interface DSAKey
-
+  /**
+   * This method returns non-secret parameters of the DSA key
+   *
+   * @return The DSA parameters
+   */
+  public abstract DSAParams getParams();
+}

@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,30 +24,26 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security.acl;
 
 /**
-  * This exception is thrown whenever an operation is attempted that requires
-  * the caller to be the owner of the access control list (ACL) when the caller
-  * is in fact not the owner of the ACL.
-  *
-  * @version 0.0
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This exception is thrown whenever an operation is attempted that requires
+ * the caller to be the owner of the access control list (ACL) when the caller
+ * is in fact not the owner of the ACL.
+ *
+ * @version 0.0
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ */
 public class NotOwnerException extends java.lang.Exception
 {
 
-/**
-  * Initializes a new instance of <code>NotOwnerException</code> that does
-  * not have a descriptive message.
-  */
-public
-NotOwnerException()
-{
-  super();
+  /**
+   * Initializes a new instance of <code>NotOwnerException</code> that does
+   * not have a descriptive message.
+   */
+  public NotOwnerException()
+  {
+    super();
+  }
 }
-
-} // class NotOwnerException 
-

@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 
 /**
@@ -38,17 +37,17 @@ package java.security;
 
    @since JDK 1.3
    @author Mark Benvenuto 
-*/
+ */
 public interface DomainCombiner
 {
-    /**
-       Combines the current ProtectionDomains of the Thread with new
-       ProtectionDomains.
+  /**
+     Combines the current ProtectionDomains of the Thread with new
+     ProtectionDomains.
 
-       @param currentDomains - the ProtectionDomains for the current thread.
-       @param assignedDomains - ProtectionsDomains to add
-       @returns a new array of all the ProtectionDomains 
-    */
-  public ProtectionDomain[] combine(ProtectionDomain[] currentDomains,
-				    ProtectionDomain[] assignedDomains);
+     @param currentDomains - the ProtectionDomains for the current thread.
+     @param assignedDomains - ProtectionsDomains to add
+     @returns a new array of all the ProtectionDomains 
+   */
+  public ProtectionDomain[] combine(ProtectionDomain[]currentDomains,
+				    ProtectionDomain[]assignedDomains);
 }

@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 import java.security.spec.AlgorithmParameterSpec;
 
@@ -33,22 +32,21 @@ import java.security.spec.AlgorithmParameterSpec;
    for the Signature class. The signature class provides an 
    interface to a digital signature algorithm. Digital signatures
    are used for authentication and integrity of data.
-   
+
    @author Mark Benvenuto <ivymccough@worldnet.att.net>
-   
+
    @since JDK 1.2
-*/
+ */
 public abstract class SignatureSpi
 {
-
   /**
      Source of randomness
-  */
+   */
   protected SecureRandom appRandom;
 
   /**
      Creates a new instance of SignatureSpi.
-  */
+   */
   public SignatureSpi()
   {
     appRandom = null;
@@ -61,7 +59,7 @@ public abstract class SignatureSpi
      @param publicKey the public key to verify with
 
      @throws InvalidKeyException invalid key
-  */
+   */
   protected abstract void engineInitVerify(PublicKey publicKey)
     throws InvalidKeyException;
 
@@ -72,7 +70,7 @@ public abstract class SignatureSpi
      @param privateKey the private key to sign with
 
      @throws InvalidKeyException invalid key
-  */
+   */
   protected abstract void engineInitSign(PrivateKey privateKey)
     throws InvalidKeyException;
 
@@ -88,12 +86,12 @@ public abstract class SignatureSpi
      @throws InvalidKeyException invalid key
 
      @since JDK 1.2
-  */
+   */
   protected void engineInitSign(PrivateKey privateKey, SecureRandom random)
     throws InvalidKeyException
   {
     appRandom = random;
-    engineInitSign( privateKey );
+    engineInitSign(privateKey);
   }
 
   /**
@@ -103,9 +101,8 @@ public abstract class SignatureSpi
      @param b byte to update with
 
      @throws SignatureException Engine not properly initialized
-  */
-  protected abstract void engineUpdate(byte b)
-    throws SignatureException;
+   */
+  protected abstract void engineUpdate(byte b) throws SignatureException;
 
   /**
      Updates the data to be signed or verified with the specified 
@@ -116,7 +113,7 @@ public abstract class SignatureSpi
      @param len the length of the bytes to use in the array
 
      @throws SignatureException engine not properly initialized
-  */
+   */
   protected abstract void engineUpdate(byte[] b, int off, int len)
     throws SignatureException;
 
@@ -128,7 +125,7 @@ public abstract class SignatureSpi
      @return the signature
 
      @throws SignatureException engine not properly initialized
-  */
+   */
   protected abstract byte[] engineSign() throws SignatureException;
 
   /**
@@ -153,18 +150,18 @@ public abstract class SignatureSpi
      @return number of bytes in outbuf
 
      @throws SignatureException engine not properly initialized
-	
+
      @since JDK 1.2
-  */
+   */
   protected int engineSign(byte[] outbuf, int offset, int len)
     throws SignatureException
   {
     byte tmp[] = engineSign();
 
-    if( tmp.length > len )
+    if (tmp.length > len)
       throw new SignatureException("Invalid Length");
 
-    System.arraycopy( outbuf, offset, tmp, 0, tmp.length );
+    System.arraycopy(outbuf, offset, tmp, 0, tmp.length);
 
     return tmp.length;
   }
@@ -178,7 +175,7 @@ public abstract class SignatureSpi
 
      @throws SignatureException engine not properly initialized
      or wrong signature
-  */
+   */
   protected abstract boolean engineVerify(byte[] sigBytes)
     throws SignatureException;
 
@@ -193,7 +190,7 @@ public abstract class SignatureSpi
      etc.
 
      @deprecated use the other setParameter
-  */
+   */
   protected abstract void engineSetParameter(String param, Object value)
     throws InvalidParameterException;
 
@@ -210,7 +207,7 @@ public abstract class SignatureSpi
      @throws InvalidParameterException invalid parameter, parameter 
      already set and cannot set again, a security exception, 
      etc.
-  */
+   */
   protected void engineSetParameter(AlgorithmParameterSpec params)
     throws InvalidAlgorithmParameterException
   {
@@ -227,7 +224,7 @@ public abstract class SignatureSpi
      @throws InvalidParameterException invalid parameter
 
      @deprecated use the other getParameter
-  */
+   */
   protected abstract Object engineGetParameter(String param)
     throws InvalidParameterException;
 
@@ -238,11 +235,9 @@ public abstract class SignatureSpi
 
      @throws CloneNotSupportedException if the implementation does 
      not support cloning
-  */
-  public Object clone()
-    throws CloneNotSupportedException
+   */
+  public Object clone() throws CloneNotSupportedException
   {
     throw new CloneNotSupportedException();
   }
 }
-

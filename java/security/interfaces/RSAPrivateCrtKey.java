@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,79 +24,59 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security.interfaces;
 
 import java.math.BigInteger;
 
 /**
-  * This interface provides access to information about an RSA private
-  * key in Chinese Remainder Theorem (CRT) format.
-  *
-  * @version 0.0
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This interface provides access to information about an RSA private
+ * key in Chinese Remainder Theorem (CRT) format.
+ *
+ * @version 0.0
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ */
 public interface RSAPrivateCrtKey extends RSAPrivateKey
 {
+  /**
+   * Returns the public exponent for this key
+   *
+   * @return The public exponent for this key
+   */
+  public abstract BigInteger getPublicExponent();
 
-/**
-  * Returns the public exponent for this key
-  *
-  * @return The public exponent for this key
-  */
-public abstract BigInteger
-getPublicExponent();
+  /**
+   * Returns the primeP value
+   *
+   * @return The primeP value
+   */
+  public abstract BigInteger getPrimeP();
 
-/*************************************************************************/
+  /**
+   * Returns the primeQ value
+   *
+   * @return The primeQ value
+   */
+  public abstract BigInteger getPrimeQ();
 
-/**
-  * Returns the primeP value
-  *
-  * @return The primeP value
-  */
-public abstract BigInteger
-getPrimeP();
+  /**
+   * Returns the primeExponentP
+   *
+   * @return The primeExponentP
+   */
+  public abstract BigInteger getPrimeExponentP();
 
-/*************************************************************************/
+  /**
+   * Returns the primeExponentQ
+   *
+   * @return The primeExponentQ
+   */
+  public abstract BigInteger getPrimeExponentQ();
 
-/**
-  * Returns the primeQ value
-  *
-  * @return The primeQ value
-  */
-public abstract BigInteger
-getPrimeQ();
-
-/*************************************************************************/
-
-/**
-  * Returns the primeExponentP
-  *
-  * @return The primeExponentP
-  */
-public abstract BigInteger
-getPrimeExponentP();
-
-/*************************************************************************/
-
-/**
-  * Returns the primeExponentQ
-  *
-  * @return The primeExponentQ
-  */
-public abstract BigInteger
-getPrimeExponentQ();
-
-/*************************************************************************/
-
-/**
-  * Returns the CRT coefficient
-  *
-  * @return The CRT coefficient
-  */
-public abstract BigInteger
-getCrtCoefficient();
-
-} // interface RSAPrivateCrtKey
-
+  /**
+   * Returns the CRT coefficient
+   *
+   * @return The CRT coefficient
+   */
+  public abstract BigInteger getCrtCoefficient();
+}

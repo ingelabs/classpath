@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,24 +24,22 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 import java.security.spec.AlgorithmParameterSpec;
 
 /**
    KeyPairGenerator is the class used to generate key pairs
    for a security algorithm.
-   
+
    The KeyPairGenerator is created with the getInstance()
    methods. The class is used to generate public and private
    keys for an algorithm and associate it with 
    algorithm parameters.
-   
+
    @author Mark Benvenuto
-*/
+ */
 public abstract class KeyPairGenerator extends KeyPairGeneratorSpi
 {
-
   private Provider provider;
   private String algorithm;
 
@@ -49,7 +47,7 @@ public abstract class KeyPairGenerator extends KeyPairGeneratorSpi
      Constructs a new KeyPairGenerator
 
      @param algorithm the algorithm to use
-  */
+   */
   protected KeyPairGenerator(String algorithm)
   {
     this.algorithm = algorithm;
@@ -60,91 +58,103 @@ public abstract class KeyPairGenerator extends KeyPairGeneratorSpi
      Returns the name of the algorithm used
 
      @return A string with the name of the algorithm
-  */
+   */
   public String getAlgorithm()
   {
     return algorithm;
   }
 
   /** 
-      Gets an instance of the KeyPairGenerator class 
-      which generates key pairs for the specified algorithm. 
-      If the algorithm is not found then, it throws NoSuchAlgorithmException.
+     Gets an instance of the KeyPairGenerator class 
+     which generates key pairs for the specified algorithm. 
+     If the algorithm is not found then, it throws NoSuchAlgorithmException.
 
-      @param algorithm the name of algorithm to choose
-      @return a AlgorithmParameterGenerator repesenting the desired algorithm
+     @param algorithm the name of algorithm to choose
+     @return a AlgorithmParameterGenerator repesenting the desired algorithm
 
-      @throws NoSuchAlgorithmException if the algorithm is not implemented by providers
-  */
-  public static KeyPairGenerator getInstance(String algorithm) throws NoSuchAlgorithmException
+     @throws NoSuchAlgorithmException if the algorithm is not implemented by providers
+   */
+  public static KeyPairGenerator getInstance(String algorithm) throws
+    NoSuchAlgorithmException
   {
-    Provider[] p = Security.getProviders ();
+    Provider[] p = Security.getProviders();
 
+    String name = "KeyPairGenerator." + algorithm;
     for (int i = 0; i < p.length; i++)
       {
-	String classname = p[i].getProperty ("KeyPairGenerator." + algorithm);
+	String classname = p[i].getProperty(name);
 	if (classname != null)
-	  return getInstance (classname, algorithm, p[i]);
+	  return getInstance(classname, algorithm, p[i]);
       }
 
-    throw new NoSuchAlgorithmException (algorithm);
-
+    throw new NoSuchAlgorithmException(algorithm);
   }
 
   /** 
-      Gets an instance of the KeyPairGenerator class 
-      which generates key pairs for the specified algorithm. 
-      If the algorithm is not found then, it throws NoSuchAlgorithmException.
+     Gets an instance of the KeyPairGenerator class 
+     which generates key pairs for the specified algorithm. 
+     If the algorithm is not found then, it throws NoSuchAlgorithmException.
 
-      @param algorithm the name of algorithm to choose
-      @param provider the name of the provider to find the algorithm in
-      @return a AlgorithmParameterGenerator repesenting the desired algorithm
+     @param algorithm the name of algorithm to choose
+     @param provider the name of the provider to find the algorithm in
+     @return a AlgorithmParameterGenerator repesenting the desired algorithm
 
-      @throws NoSuchAlgorithmException if the algorithm is not implemented by the provider
-      @throws NoSuchProviderException if the provider is not found
-  */
-  public static KeyPairGenerator getInstance(String algorithm, String provider) throws NoSuchAlgorithmException, NoSuchProviderException
+     @throws NoSuchAlgorithmException if the algorithm is not implemented by the provider
+     @throws NoSuchProviderException if the provider is not found
+   */
+  public static KeyPairGenerator getInstance(String algorithm, String provider)
+    throws NoSuchAlgorithmException, NoSuchProviderException
   {
     Provider p = Security.getProvider(provider);
-    if( p == null)
+    if (p == null)
       throw new NoSuchProviderException();
 
-    return getInstance (p.getProperty ("KeyPairGenerator." + algorithm),
-			algorithm, p);
+    return getInstance(p.getProperty("KeyPairGenerator." + algorithm),
+		       algorithm, p);
   }
 
-  private static KeyPairGenerator getInstance (String classname,
-					       String algorithm,
-					       Provider provider)
+  private static KeyPairGenerator getInstance(String classname,
+					      String algorithm,
+					      Provider provider)
     throws NoSuchAlgorithmException
   {
-    try {
-      Object o = Class.forName( classname ).newInstance();
-      KeyPairGenerator kpg;
-      if( o instanceof KeyPairGeneratorSpi )
-	kpg = (KeyPairGenerator)(new DummyKeyPairGenerator( (KeyPairGeneratorSpi)o , algorithm ));
-      else
-	{
-	  kpg = (KeyPairGenerator)o;
-	  kpg.algorithm = algorithm;
-	}
+    try
+      {
+	Object o = Class.forName(classname).newInstance();
+	KeyPairGenerator kpg;
+	if (o instanceof KeyPairGeneratorSpi)
+	  kpg =
+	    (KeyPairGenerator) (new
+				DummyKeyPairGenerator((KeyPairGeneratorSpi) o,
+						      algorithm));
+	else
+	  {
+	    kpg = (KeyPairGenerator) o;
+	    kpg.algorithm = algorithm;
+	  }
 
-      kpg.provider = provider;
-      return kpg;		
-    } catch( ClassNotFoundException cnfe) {
-      throw new NoSuchAlgorithmException("Class not found");
-    } catch( InstantiationException ie) {
-      throw new NoSuchAlgorithmException("Class instantiation failed");
-    } catch( IllegalAccessException iae) {
-      throw new NoSuchAlgorithmException("Illegal Access");
-    }
+	kpg.provider = provider;
+	return kpg;
+      }
+    catch (ClassNotFoundException cnfe)
+      {
+	throw new NoSuchAlgorithmException("Class not found");
+      }
+    catch (InstantiationException ie)
+      {
+	throw new NoSuchAlgorithmException("Class instantiation failed");
+      }
+    catch (IllegalAccessException iae)
+      {
+	throw new NoSuchAlgorithmException("Illegal Access");
+      }
   }
 
   /**
      Gets the provider that the class is from.
 
      @return the provider of this class
-  */
+   */
   public final Provider getProvider()
   {
     return provider;
@@ -156,10 +166,10 @@ public abstract class KeyPairGenerator extends KeyPairGeneratorSpi
      provided.)
 
      @param keysize Size of key to generate
-  */
+   */
   public void initialize(int keysize)
   {
-    initialize( keysize, new SecureRandom() );
+    initialize(keysize, new SecureRandom());
   }
 
   /**
@@ -170,10 +180,10 @@ public abstract class KeyPairGenerator extends KeyPairGeneratorSpi
      @param random SecureRandom to use
 
      @since JDK 1.2
-  */
+   */
   public void initialize(int keysize, SecureRandom random)
   {
-    initialize( keysize, random );
+    initialize(keysize, random);
   }
 
   /**
@@ -185,10 +195,11 @@ public abstract class KeyPairGenerator extends KeyPairGeneratorSpi
      @param params AlgorithmParameterSpec to initialize with
 
      @since JDK 1.2
-  */
-  public void initialize(AlgorithmParameterSpec params) throws InvalidAlgorithmParameterException
+   */
+  public void initialize(AlgorithmParameterSpec params)
+    throws InvalidAlgorithmParameterException
   {
-    initialize( params, new SecureRandom() );
+    initialize(params, new SecureRandom());
   }
 
   /**
@@ -199,10 +210,11 @@ public abstract class KeyPairGenerator extends KeyPairGeneratorSpi
      @param random SecureRandom to use
 
      @since JDK 1.2
-  */
-  public void initialize(AlgorithmParameterSpec params, SecureRandom random) throws InvalidAlgorithmParameterException
+   */
+  public void initialize(AlgorithmParameterSpec params, SecureRandom random)
+    throws InvalidAlgorithmParameterException
   {
-    super.initialize( params, random );
+    super.initialize(params, random);
   }
 
   /**
@@ -213,16 +225,19 @@ public abstract class KeyPairGenerator extends KeyPairGeneratorSpi
      Same as generateKeyPair();
 
      @return a key pair
-  */
+   */
   public final KeyPair genKeyPair()
   {
-    try {
-      return getInstance("DSA", "GNU").generateKeyPair();
-    } catch( Exception e ) {
-      System.err.println("genKeyPair failed: " + e );
-      e.printStackTrace();
-      return null;
-    }
+    try
+      {
+	return getInstance("DSA", "GNU").generateKeyPair();
+      }
+    catch (Exception e)
+      {
+	System.err.println("genKeyPair failed: " + e);
+	e.printStackTrace();
+	return null;
+      }
   }
 
   /**
@@ -233,10 +248,9 @@ public abstract class KeyPairGenerator extends KeyPairGeneratorSpi
      Same as genKeyPair();
 
      @return a key pair
-  */
+   */
   public KeyPair generateKeyPair()
   {
-    return generateKeyPair();
+    return genKeyPair();
   }
-
 }

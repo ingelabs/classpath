@@ -1,13 +1,13 @@
 /* IdentityScope.java --- IdentityScope Class
    Copyright (C) 1999 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+   This file is part of GNU Classpath.
 
 GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 import java.util.Enumeration;
 
@@ -32,28 +31,28 @@ import java.util.Enumeration;
    IdentityScope represents a scope of an identity. IdentityScope 
    is also an Identity and can have a name and scope along with 
    the other qualitites identities posses.
-   
+
    An IdentityScope contains other Identity objects. All Identity 
    objects are manipulated in the scope the same way. The scope 
    is suppose to apply different scope to different type of 
    Identities.
-   
+
    No identity within the same scope can have the same public key.
-   
+
    @since JDK 1.1
-   
+
    @deprecated Use java.security.KeyStore, the java.security.cert 
    package, and java.security.Principal. 
-   
-   @author Mark Benvenuto	
-*/
+
+   @author Mark Benvenuto       
+ */
 public abstract class IdentityScope extends Identity
 {
   private static IdentityScope systemScope = null;
 
   /**
      Creates a new instance of IdentityScope from Serialized Data
-  */
+   */
   protected IdentityScope()
   {
     super();
@@ -64,10 +63,10 @@ public abstract class IdentityScope extends Identity
      and no scope.
 
      @param name the name to use
-  */
+   */
   public IdentityScope(String name)
   {
-    super( name );
+    super(name);
   }
 
   /**
@@ -79,19 +78,19 @@ public abstract class IdentityScope extends Identity
 
      @throws KeyManagementException if the identity scope is already 
      present
-  */
+   */
   public IdentityScope(String name, IdentityScope scope)
     throws KeyManagementException
   {
-    super( name, scope );
+    super(name, scope);
   }
 
   /**
      Gets the system's Scope.
-  */
+   */
   public static IdentityScope getSystemScope()
   {
-    if( systemScope == null )
+    if (systemScope == null)
       {
 	//Load it
 	//systemScope;
@@ -109,12 +108,12 @@ public abstract class IdentityScope extends Identity
 
      @throws SecurityException - if the security manager denies 
      access to "setSystemScope"
-  */
+   */
   protected static void setSystemScope(IdentityScope scope)
   {
     SecurityManager sm = System.getSecurityManager();
-    if(sm != null)
-      sm.checkSecurityAccess( "setSystemScope" );
+    if (sm != null)
+      sm.checkSecurityAccess("setSystemScope");
 
     systemScope = scope;
   }
@@ -123,7 +122,7 @@ public abstract class IdentityScope extends Identity
      Gets the number of entries within this IdentityScope.
 
      @returns the number of entries
-  */
+   */
   public abstract int size();
 
   /**
@@ -134,7 +133,7 @@ public abstract class IdentityScope extends Identity
 
      @returns an identity representing the name or null if it 
      cannot be found
-  */
+   */
   public abstract Identity getIdentity(String name);
 
   /**
@@ -145,10 +144,10 @@ public abstract class IdentityScope extends Identity
 
      @returns an identity representing the principal or null if it 
      cannot be found
-  */
+   */
   public Identity getIdentity(Principal principal)
   {
-    return getIdentity( principal.getName() );
+    return getIdentity(principal.getName());
   }
 
   /**
@@ -159,7 +158,7 @@ public abstract class IdentityScope extends Identity
 
      @returns an identity representing the public key or null if it 
      cannot be found
-  */
+   */
   public abstract Identity getIdentity(PublicKey key);
 
   /**
@@ -170,7 +169,7 @@ public abstract class IdentityScope extends Identity
      @throws KeyManagementException if it is an invalid identity,
      an identity with the same key exists, or another error
      occurs.
-  */
+   */
   public abstract void addIdentity(Identity identity)
     throws KeyManagementException;
 
@@ -181,7 +180,7 @@ public abstract class IdentityScope extends Identity
 
      @throws KeyManagementException if it is a missing identity, 
      or another error occurs.
-  */
+   */
   public abstract void removeIdentity(Identity identity)
     throws KeyManagementException;
 
@@ -189,7 +188,7 @@ public abstract class IdentityScope extends Identity
      Returns an Enumeration of identities.
 
      @returns an enumeration of the identities.
-  */
+   */
   public abstract Enumeration identities();
 
   /**
@@ -197,10 +196,10 @@ public abstract class IdentityScope extends Identity
      It includes the name, the scope name, and number of identities.
 
      @returns a string representing this IdentityScope.
-  */
+   */
   public String toString()
   {
-    return ( super.getName() + " " + super.getScope().getName() 
-	     + " " + size() );
+    return (super.getName() + " " + super.getScope().getName()
+	    + " " + size());
   }
 }

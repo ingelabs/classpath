@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 //import java.security.MessageDigest;
 import java.io.InputStream;
@@ -35,20 +34,19 @@ import java.io.IOException;
    DigestInputStream is a class that ties an InputStream with a 
    MessageDigest. The Message Digest is used by the class to 
    update it self as bytes are read from the InputStream.
-   
+
    The updating to the digest depends on the on flag which is set
    to true by default to tell the class to update the data
    in the message digest.
-   
+
    @version 0.0
    @author Mark Benvenuto <ivymccough@worldnet.att.net>
-*/
+ */
 public class DigestInputStream extends FilterInputStream
 {
-
   /**
      The message digest for the DigestInputStream 
-  */
+   */
   protected MessageDigest digest;
 
   //Manages the on flag
@@ -61,7 +59,7 @@ public class DigestInputStream extends FilterInputStream
 
      @param stream An InputStream to associate this stream with
      @param digest A MessageDigest to hash the stream with
-  */
+   */
   public DigestInputStream(InputStream stream, MessageDigest digest)
   {
     super(stream);
@@ -73,7 +71,7 @@ public class DigestInputStream extends FilterInputStream
      Returns the MessageDigest associated with this DigestInputStream 
 
      @return The MessageDigest used to hash this stream
-  */
+   */
   public MessageDigest getMessageDigest()
   {
     return digest;
@@ -81,54 +79,54 @@ public class DigestInputStream extends FilterInputStream
 
   /**
      Sets the current MessageDigest to current parameter
-	
+
      @param digest A MessageDigest to associate with this stream
-  */
+   */
   public void setMessageDigest(MessageDigest digest)
   {
     this.digest = digest;
   }
 
   /** 
-      Reads a byte from the input stream and updates the digest.
-      This method reads the underlying input stream and if the 
-      on flag is true then updates the message digest.
+     Reads a byte from the input stream and updates the digest.
+     This method reads the underlying input stream and if the 
+     on flag is true then updates the message digest.
 
-      @return Returns a byte from the input stream, -1 is returned to indicate that 
-      the end of stream was reached before this read call
+     @return Returns a byte from the input stream, -1 is returned to indicate that 
+     the end of stream was reached before this read call
 
-      @throws IOException if an IO error occurs in the underlying input stream,
-      this error is thrown
-  */
+     @throws IOException if an IO error occurs in the underlying input stream,
+     this error is thrown
+   */
   public int read() throws IOException
   {
     int temp = in.read();
 
-    if( state == true && temp != -1)
-      digest.update((byte)temp);
+    if (state == true && temp != -1)
+      digest.update((byte) temp);
 
     return temp;
   }
 
   /** 
-      Reads bytes from the input stream and updates the digest.
-      This method reads the underlying input stream and if the 
-      on flag is true then updates the message digest.
+     Reads bytes from the input stream and updates the digest.
+     This method reads the underlying input stream and if the 
+     on flag is true then updates the message digest.
 
-      @param b a byte array to store the data from the input stream
-      @param off an offset to start at in the array
-      @param len length of data to read
-      @return Returns count of bytes read, -1 is returned to indicate that 
-      the end of stream was reached before this read call
+     @param b a byte array to store the data from the input stream
+     @param off an offset to start at in the array
+     @param len length of data to read
+     @return Returns count of bytes read, -1 is returned to indicate that 
+     the end of stream was reached before this read call
 
-      @throws IOException if an IO error occurs in the underlying input stream,
-      this error is thrown
-  */
-  public int read(byte[] b, int off, int len) throws IOException
+     @throws IOException if an IO error occurs in the underlying input stream,
+     this error is thrown
+   */
+  public int read(byte[]b, int off, int len) throws IOException
   {
     int temp = in.read(b, off, len);
 
-    if( state == true && temp != -1)
+    if (state == true && temp != -1)
       digest.update(b, off, len);
 
     return temp;
@@ -139,7 +137,7 @@ public class DigestInputStream extends FilterInputStream
      digest in the write() methods. The default is on;
 
      @param on True means it digests stream, false means it does not
-  */
+   */
   public void on(boolean on)
   {
     state = on;
@@ -149,7 +147,7 @@ public class DigestInputStream extends FilterInputStream
      Converts the input stream and underlying message digest to a string.
 
      @return A string representing the input stream and message digest.
-  */
+   */
   public String toString()
   {
     return "[Digest Input Stream] " + digest.toString();

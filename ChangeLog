@@ -7,6 +7,10 @@
 	* java/util/Hashtable.java (toString): Fix a recently introduced 
 	typo/bug.
 	(readObject): Remove dead code.
+	
+	* gnu/java/security/provider/DefaultPolicy.java: New file, from libgcj.
+	* java/security: Merge from libgcj. These are mostly formatting fixes, 
+	with a few fixes and enhancements.
 
 2001-09-24  John Leuner  <jewel@debian.org>
 

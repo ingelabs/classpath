@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 
 /**
@@ -33,85 +32,50 @@ package java.security;
    they are retrieved by the system policy handler.
 
    @since JDK 1.2
-   
+
    @author Mark Benvenuto
-*/
+ */
 public class SecureClassLoader extends ClassLoader
 {
-
-  private ClassLoader parent;
-
-  /**
-     Creates a new SecureClassLoader specifying the parent to make
-     calls back to.
-
-     If there is a security manager it first calls,
-     checkCreateClassLoader to ensure creation of the class loader 
-     is allowed.
-
-     @param ClassLoader parent class loader
-
-     @throws SecurityException if security manager exists and denies
-     access.
-  */
   protected SecureClassLoader(ClassLoader parent)
   {
-    SecurityManager sm = System.getSecurityManager();
-    if(sm != null)
-      sm.checkCreateClassLoader();
-    this.parent = parent;
+    super(parent);
+    // FIXME: What else?
   }
 
-  /**
-     Creates a new SecureClassLoader using the default parent to make
-     calls back to.
-
-     If there is a security manager it first calls,
-     checkCreateClassLoader to ensure creation of the class loader 
-     is allowed.
-
-     @throws SecurityException if security manager exists and denies
-     access.
-  */
   protected SecureClassLoader()
   {
-    SecurityManager sm = System.getSecurityManager();
-    if(sm != null)
-      sm.checkCreateClassLoader();
-    this.parent = getClass().getClassLoader();
-    /* FIXME - Use this code when Classloader is JDK 1.2 compatible
-       this.parent = ClassLoader.getSystemClassLoader();
-    */
+    // FIXME: What do we need to do here?
   }
 
   /** 
-      Creates a class using an array of bytes and a 
-      CodeSource.
+     Creates a class using an array of bytes and a 
+     CodeSource.
 
-      @param name the name to give the class.  null if unknown.
-      @param b the data representing the classfile, in classfile format.
-      @param off the offset into the data where the classfile starts.
-      @param len the length of the classfile data in the array.
-      @param cs the CodeSource for the class
+     @param name the name to give the class.  null if unknown.
+     @param b the data representing the classfile, in classfile format.
+     @param off the offset into the data where the classfile starts.
+     @param len the length of the classfile data in the array.
+     @param cs the CodeSource for the class
 
-      @return the class that was defined and optional CodeSource.
+     @return the class that was defined and optional CodeSource.
 
-      @exception ClassFormatError if the byte array is not in proper classfile format.
-  */
-  protected final Class defineClass(String name, byte[] b, int off, int len, CodeSource cs)
+     @exception ClassFormatError if the byte array is not in proper classfile format.
+   */
+  protected final Class defineClass(String name, byte[] b, int off, int len,
+				    CodeSource cs)
   {
-    ProtectionDomain protectionDomain = new ProtectionDomain( cs, getPermissions( cs ) );
-    try {
-      /*
-	FIXME after 1.2 support is added to Classloader
-	Class c = parent.defineClass(name, b, off, len, protectionDomain);
-	return c;
-      */
-      System.err.println("SecureClassLoader is broken because it is waiting got ClassLoader to be JDK 1.2 compatible");
-      return null;
-    } catch( ClassFormatError cfe )	{
-      return null;
-    }
+    // FIXME: Need to cache ProtectionDomains according to 1.3 docs.
+    ProtectionDomain protectionDomain =
+      new ProtectionDomain(cs, getPermissions(cs));
+    try
+      {
+	return super.defineClass(name, b, off, len, protectionDomain);
+      }
+    catch (ClassFormatError cfe)
+      {
+	return null;
+      }
   }
 
   /**
@@ -122,31 +86,11 @@ public class SecureClassLoader extends ClassLoader
      This method is called by defineClass that takes a CodeSource
      arguement to build a proper ProtectionDomain for the class
      being defined.
-	
-  */
+
+   */
   protected PermissionCollection getPermissions(CodeSource cs)
   {
     Policy policy = Policy.getPolicy();
-    return policy.getPermissions( cs );
+    return policy.getPermissions(cs);
   }
-
-  /**
-     FIXME 
-     JDK 1.1 hack to make this work
-     loadClass is not abstract in JDK 1.2
-  */
-
-  protected Class loadClass(String name,
-			    boolean resolve)
-    throws ClassNotFoundException
-  {
-    Class c = findLoadedClass(name);
-    if( c != null )
-      parent.loadClass(name);
-    /*if( c!= null ) <-- JDK 1.2 only
-      findClass( name );*/
-    resolveClass( c );
-    return c;
-  }
-
 }

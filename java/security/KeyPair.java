@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 import java.io.Serializable;
 
@@ -33,12 +32,11 @@ import java.io.Serializable;
    If properly initialized, this class should be treated like the
    private key since it contains it and take approriate security
    measures.
-   
+
    @author Mark Benvenuto
-*/
+ */
 public final class KeyPair implements Serializable
 {
-
   private PublicKey publicKey;
   private PrivateKey privateKey;
 
@@ -47,7 +45,7 @@ public final class KeyPair implements Serializable
 
      @param publicKey Public Key to store
      @param privateKey Private Key to store
-  */
+   */
   public KeyPair(PublicKey publicKey, PrivateKey privateKey)
   {
     this.publicKey = publicKey;
@@ -58,7 +56,7 @@ public final class KeyPair implements Serializable
      Returns the public key stored in the KeyPair
 
      @return The public key
-  */
+   */
   public PublicKey getPublic()
   {
     return publicKey;
@@ -68,10 +66,9 @@ public final class KeyPair implements Serializable
      Returns the private key stored in the KeyPair
 
      @return The private key
-  */
+   */
   public PrivateKey getPrivate()
   {
     return privateKey;
   }
-
 }

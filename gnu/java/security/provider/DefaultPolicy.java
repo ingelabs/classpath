@@ -1,5 +1,5 @@
-/* NoSuchProviderException.java -- What it says
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* DefaultPolicy.java 
+   Copyright (C) 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
-
+ 
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,35 +24,32 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-package java.security;
+package gnu.java.security.provider;
 
-/**
- * This exception is thrown when the requested security provider is
- * not available.
- *
- * @version 0.0
- *
- * @author Aaron M. Renn (arenn@urbanophile.com)
- */
-public class NoSuchProviderException extends GeneralSecurityException
+import java.security.*;
+
+/** 
+  * This is just a stub policy implementation which grants all permissions
+  * to any code source. FIXME: This should be replaced with a real
+  * implementation that reads the policy configuration from a file, like
+  * $JAVA_HOME/jre/lib/security/java.security.
+  */
+public class DefaultPolicy extends Policy
 {
-  /**
-   * This method initializes a new instance of <code>NoSuchProviderException</code>
-   * with no descriptive error message.
-   */
-  public NoSuchProviderException()
+  static Permissions allPermissions = new Permissions();
+  
+  static
   {
-    super();
+    allPermissions.add(new AllPermission());
   }
 
-  /**
-   * This method initializes a new instance of <code>NoSuchProviderException</code>
-   * with a descriptive error message.
-   *
-   * @param msg The descriptive error message.
-   */
-  public NoSuchProviderException(String msg)
+  public PermissionCollection getPermissions(CodeSource codesource)
   {
-    super(msg);
+    return allPermissions;
+  }
+  
+  public void refresh()
+  {
+    // Nothing.
   }
 }

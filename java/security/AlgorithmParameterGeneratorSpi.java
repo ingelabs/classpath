@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 import java.security.spec.AlgorithmParameterSpec;
 
@@ -33,18 +32,19 @@ import java.security.spec.AlgorithmParameterSpec;
    Interface for the AlgorithmParameterGenerator class. 
    This class is used to generate the algorithm parameters
    for a specific algorithm.
-   
+
    @since JDK 1.2
    @author Mark Benvenuto
-*/
+ */
 public abstract class AlgorithmParameterGeneratorSpi
 {
 
   /**
      Constructs a new AlgorithmParameterGeneratorSpi
-  */
+   */
   public AlgorithmParameterGeneratorSpi()
-  {}
+  {
+  }
 
   /**
      Initializes the parameter generator with the specified size
@@ -52,7 +52,7 @@ public abstract class AlgorithmParameterGeneratorSpi
 
      @param size the size( in number of bits) 
      @param random the SecureRandom class to use for randomness
-  */
+   */
   protected abstract void engineInit(int size, SecureRandom random);
 
   /**
@@ -67,15 +67,17 @@ public abstract class AlgorithmParameterGeneratorSpi
      @param random the SecureRandom class to use for randomness
 
      @throws InvalidAlgorithmParameterException genParamSpec is invalid
-  */
-  protected abstract void engineInit(AlgorithmParameterSpec genParamSpec, SecureRandom random) throws InvalidAlgorithmParameterException;
+   */
+  protected abstract void engineInit(AlgorithmParameterSpec genParamSpec,
+				     SecureRandom random) throws
+    InvalidAlgorithmParameterException;
 
 
   /**
      Generate a new set of AlgorithmParameters.
 
      @returns a new set of algorithm parameters
-  */
+   */
   protected abstract AlgorithmParameters engineGenerateParameters();
 
 }

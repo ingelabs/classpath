@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,31 +24,26 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 
 /**
-  * This interface specifes a single <code>run</code> method that 
-  * executes a privileged operation.  This method is called by 
-  * <code>AccessController.doPrivileged()</code> after that method
-  * activiates the required privileges.
-  *
-  * @version 0.0
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * This interface specifes a single <code>run</code> method that 
+ * executes a privileged operation.  This method is called by 
+ * <code>AccessController.doPrivileged()</code> after that method
+ * activiates the required privileges.
+ *
+ * @version 0.0
+ *
+ * @author Aaron M. Renn (arenn@urbanophile.com)
+ */
 public interface PrivilegedAction
 {
-
-/**
-  * This method performs an operation that requires higher privileges to
-  * perform.  It is called when a section of code invokes
-  * <code>AccessController.doPrivileged()</code>.
-  *
-  * @return obj An implementation dependent return value
-  */
-public abstract Object
-run();
-
-} // interface PrivilegedAction
-
+  /**
+   * This method performs an operation that requires higher privileges to
+   * perform.  It is called when a section of code invokes
+   * <code>AccessController.doPrivileged()</code>.
+   *
+   * @return obj An implementation dependent return value
+   */
+  public abstract Object run();
+}

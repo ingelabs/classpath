@@ -1,5 +1,5 @@
 /* Security.java --- Java base security class implmentation
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,7 +24,6 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,69 +37,75 @@ import java.util.Properties;
 /**
    Security class that loads the Providers and provides an 
    interface to security properties.
-   
+
    @author Mark Benvenuto <ivymccough@worldnet.att.net>
-*/
+ */
 
 public final class Security extends Object
 {
-
-  private static Vector providers;
-  private static int providerCount;
+  private static Vector providers = new Vector();
+  private static int providerCount = 0;
   private static Properties secprops;
 
-  static //Security()
+  static
   {
-    //System.out.println("Creating Security...");
-    loadProviders(); 
+    loadProviders();
   }
 
   private static void loadProviders()
   {
-    String secfilestr = System.getProperty("java.home") + 
-      System.getProperty("file.separator") +
-      "lib" +
-      System.getProperty("file.separator") +
-      "security" +
-      System.getProperty("file.separator") +
+    String separator = System.getProperty("file.separator");
+    String secfilestr = System.getProperty("java.home") +
+      separator + "lib" + separator + "security" + separator +
       "classpath.security";
 
     providerCount = 0;
-    try {
-      File secFile = new File( secfilestr );
-      FileInputStream fin = new FileInputStream( secFile );
-      secprops = new Properties();
-      secprops.load(fin);
+    try
+      {
+	File secFile = new File(secfilestr);
+	FileInputStream fin = new FileInputStream(secFile);
+	secprops = new Properties();
+	secprops.load(fin);
 
-      int i = 1; 
-      String tmp;
-      StringBuffer pname = new StringBuffer("security.provider.");
+	int i = 1;
+	String name;
+	StringBuffer pname = new StringBuffer("security.provider.");
 
-      providers = new Vector(1,1);
-      //System.out.println("Loading stuff");
-      while( (tmp = secprops.getProperty( pname.append(i).toString() )) != null ) {
-	//System.out.println(tmp);
-	try {
-	  providers.addElement( Class.forName( tmp ).newInstance() );
-	  providerCount++;
-	  i++;
-	} catch( ClassNotFoundException cnfe) {
-	  cnfe.printStackTrace();
-	} catch( InstantiationException ie) {
-	  ie.printStackTrace();
-	} catch( IllegalAccessException iae) {
-	  iae.printStackTrace();
-	}
+	while ((name = secprops.getProperty(pname.append(i).toString())) !=
+	       null)
+	  {
+	    Exception exception = null;
+	    try
+	      {
+		providers.addElement(Class.forName(name).newInstance());
+		providerCount++;
+		i++;
+	      }
+	    catch (ClassNotFoundException x)
+	      {
+	        exception = x;
+	      }
+	    catch (InstantiationException x)
+	      {
+	        exception = x;
+	      }
+	    catch (IllegalAccessException x)
+	      {
+	        exception = x;
+	      }
+	    if (exception != null)
+	      System.err.println ("Error loading security provider " + name
+	                          + ": " + exception);
+	  }
       }
-
-    } catch (FileNotFoundException fnfe) { 
-      System.out.println("java.security not found: " + fnfe);
-      fnfe.printStackTrace();
-    } catch (IOException ioe) {
-      System.out.println("IOException with java.security: " + ioe);
-      ioe.printStackTrace();
-    }
-
+    catch (FileNotFoundException ignored)
+      {
+        // Actually we probibly shouldn't ignore these, once the security
+	// properties file is actually installed somewhere.
+      }
+    catch (IOException ignored)
+      {
+      }
   }
 
   /**
@@ -116,7 +121,7 @@ public final class Security extends Object
      @param propName name of property to check
 
      @return a string containing the value of the property
-  */
+   */
   public static String getAlgorithmProperty(String algName, String propName)
   {
     /* TODO: Figure out what this actually does */
@@ -139,21 +144,23 @@ public final class Security extends Object
 
      @throws SecurityException - if the security manager denies access to add a 
      new provider
-  */	
+   */
   public static int insertProviderAt(Provider provider, int position)
   {
     SecurityManager sm = System.getSecurityManager();
-    if(sm != null)
-      sm.checkSecurityAccess( "insertProvider." + provider.getName() );
+    if (sm != null)
+      sm.checkSecurityAccess("insertProvider." + provider.getName());
 
-    for(int i = 0; i < providerCount; i++) {
-      if( ((Provider)providers.elementAt( i )).getName() == provider.getName())
-	return -1;
-    }
+    for (int i = 0; i < providerCount; i++)
+      {
+	if (((Provider) providers.elementAt(i)).getName() ==
+	    provider.getName())
+	  return -1;
+      }
 
-    if( position < 0 )
-      position = 0;
-    if( position > providerCount)
+    if (position < 0)
+        position = 0;
+    if (position > providerCount)
       position = providerCount;
 
     providers.insertElementAt(provider, position);
@@ -178,18 +185,20 @@ public final class Security extends Object
 
      @throws SecurityException - if the security manager denies access to add a 
      new provider
-  */	
+   */
   public static int addProvider(Provider provider)
   {
     SecurityManager sm = System.getSecurityManager();
 
-    if(sm != null)
-      sm.checkSecurityAccess( "insertProvider." + provider.getName() );
+    if (sm != null)
+      sm.checkSecurityAccess("insertProvider." + provider.getName());
 
-    for(int i = 0; i < providerCount; i++) {
-      if( ((Provider)providers.elementAt( i )).getName() == provider.getName())
-	return -1;
-    }
+    for (int i = 0; i < providerCount; i++)
+      {
+	if (((Provider) providers.elementAt(i)).getName() ==
+	    provider.getName())
+	  return -1;
+      }
 
     providers.addElement(provider);
     providerCount++;
@@ -210,24 +219,26 @@ public final class Security extends Object
 
      @throws SecurityException - if the security manager denies access to remove a 
      new provider
-  */	
+   */
   public static void removeProvider(String name)
   {
     SecurityManager sm = System.getSecurityManager();
-    if(sm != null)
-      sm.checkSecurityAccess( "removeProvider." + name );
+    if (sm != null)
+      sm.checkSecurityAccess("removeProvider." + name);
 
     Provider p = null;
-    for(int i = 0; i < providerCount; i++) {
-      if( ((Provider)providers.elementAt( i )).getName() == name) {
-	p = (Provider)providers.elementAt( i );
-	break;
+    for (int i = 0; i < providerCount; i++)
+      {
+	if (((Provider) providers.elementAt(i)).getName() == name)
+	  {
+	    p = (Provider) providers.elementAt(i);
+	    break;
+	  }
       }
-    }
 
-    if( p != null)
-      if( providers.removeElement( p ) )
-	providerCount--;
+    if (p != null)
+      if (providers.removeElement(p))
+	  providerCount--;
 
   }
 
@@ -236,12 +247,12 @@ public final class Security extends Object
      of the providers.
 
      @return an array of installed providers
-  */
+   */
   public static Provider[] getProviders()
   {
     Provider array[] = new Provider[providerCount];
-    for(int i = 0; i < providerCount; i++)
-      array[i] = (Provider)providers.elementAt( i );
+    for (int i = 0; i < providerCount; i++)
+      array[i] = (Provider) providers.elementAt(i);
     return array;
   }
 
@@ -252,15 +263,16 @@ public final class Security extends Object
      @param name name of the requested provider
 
      @return requested provider
-  */
+   */
   public static Provider getProvider(String name)
   {
     Provider p = null;
-    for(int i = 0; i < providerCount; i++) {
-      p = (Provider)providers.elementAt( i );
-      if(p.getName() == name)
-	break;
-    }
+    for (int i = 0; i < providerCount; i++)
+      {
+	p = (Provider) providers.elementAt(i);
+	if (p.getName() == name)
+	  break;
+      }
     return p;
   }
 
@@ -272,16 +284,16 @@ public final class Security extends Object
 
      @param key property to get
 
-     @return value of the property	
+     @return value of the property      
 
      @throws SecurityException - if the security manager denies access to 
      getting a property
-  */
+   */
   public static String getProperty(String key)
   {
     SecurityManager sm = System.getSecurityManager();
-    if(sm != null)
-      sm.checkSecurityAccess( "getProperty." + key  );
+    if (sm != null)
+      sm.checkSecurityAccess("getProperty." + key);
 
     return secprops.getProperty(key);
   }
@@ -298,13 +310,13 @@ public final class Security extends Object
 
      @throws SecurityException - if the security manager denies access to 
      setting a property
-  */
+   */
   public static void setProperty(String key, String datnum)
   {
     SecurityManager sm = System.getSecurityManager();
-    if(sm != null)
-      sm.checkSecurityAccess( "setProperty." + key );
+    if (sm != null)
+      sm.checkSecurityAccess("setProperty." + key);
 
-    secprops.put(key,datnum);
+    secprops.put(key, datnum);
   }
 }

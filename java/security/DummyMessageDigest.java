@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -34,29 +34,29 @@ final class DummyMessageDigest extends MessageDigest
 {
   private MessageDigestSpi mdSpi = null;
 
-  public DummyMessageDigest (MessageDigestSpi mdSpi, String algorithm)
+  public DummyMessageDigest(MessageDigestSpi mdSpi, String algorithm)
   {
-    super (algorithm);
+    super(algorithm);
     this.mdSpi = mdSpi;
   }
 
-  protected void engineUpdate (byte input)
+  protected void engineUpdate(byte input)
   {
-    mdSpi.engineUpdate (input);
-  }
-  
-  protected void engineUpdate (byte[] input, int offset, int len)
-  {
-    mdSpi.engineUpdate (input, offset, len);
-  }
-  
-  protected byte[] engineDigest()
-  {
-    return mdSpi.engineDigest ();
+    mdSpi.engineUpdate(input);
   }
 
-  protected void engineReset ()
+  protected void engineUpdate(byte[]input, int offset, int len)
   {
-    mdSpi.engineReset ();
+    mdSpi.engineUpdate(input, offset, len);
+  }
+
+  protected byte[] engineDigest()
+  {
+    return mdSpi.engineDigest();
+  }
+
+  protected void engineReset()
+  {
+    mdSpi.engineReset();
   }
 }

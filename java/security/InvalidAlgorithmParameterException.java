@@ -1,5 +1,5 @@
-/* InvalidAlgorithmParameterException.java -- What it says
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* InvalidAlgorithmParameterException.java
+   Copyright (C) 2000  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +7,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -24,45 +24,28 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.security;
 
 /**
-  * This exception is throw when an invalid parameter is specified for
-  * a particular security algorithm.
-  *
-  * @version 0.0
-  *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
-  */
+ * @author Warren Levy <warrenl@cygnus.com>
+ * @date February 2, 2000.
+ */
+
+/**
+ * Written using on-line Java Platform 1.2 API Specification.
+ * Status:  Believed complete and correct.
+ */
+
+// JDK1.2
 public class InvalidAlgorithmParameterException extends GeneralSecurityException
 {
+  public InvalidAlgorithmParameterException()
+  {
+    super();
+  }
 
-/**
-  * This method initializes a new instance of 
-  * <code>InvalidAlgorithmParameterException</code> with no descriptive
-  * error message.
-  */
-public
-InvalidAlgorithmParameterException()
-{
-  super();
+  public InvalidAlgorithmParameterException(String msg)
+  {
+    super(msg);
+  }
 }
-
-/*************************************************************************/
-
-/**
-  * This method initializes a new instance of 
-  * <code>InvalidAlgorithmParameterException</code> with a descriptive
-  * error message.
-  *
-  * @param msg The descriptive error message
-  */
-public 
-InvalidAlgorithmParameterException(String msg)
-{
-  super(msg);
-}
-
-} // class InvalidAlgorithmParameterException
-
