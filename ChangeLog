@@ -1,3 +1,8 @@
+2001-12-07  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/ThreadGroup.java (uncaughtException): Print message to
+	System.err.  Required by spec.
+
 2001-11-27  C. Brian Jones <cbj@gnu.org>
 
 	* resource/orp-1.0.8.patch: new file
