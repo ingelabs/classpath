@@ -1,3 +1,17 @@
+2002-04-08  Sascha Brawer  <brawer@acm.org>
+
+	* java/util/zip/GZIPConstants.java: Remove file because the API
+	specification does not mention it.
+	* java/util/zip/GZIPInputStream.java (GZIP_MAGIC): Moved from
+	interface GZIPConstants.
+	* java/util/zip/GZIPInputStream.java (FTEXT, FHCRC,
+	FEXTRA, FNAME, FCOMMENT): Moved from interface GZIPConstants.
+	Change accessibility to package-only -- these members are not
+	mentioned by the API specification.
+	* java/util/zip/GZIPOutputStream.java
+	(GZIPOutputStream(OutputStream,int)): Take GZIP_MAGIC from
+	GZIPInputStream instead of GZIPConstants.
+
 2002-04-07  Mark Wielaard <mark@klomp.org>
 
 	* java/util/AbstractMap.java (putAll): Use entrySet size.
