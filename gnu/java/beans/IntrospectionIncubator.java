@@ -201,7 +201,7 @@ public class IntrospectionIncubator {
 						constrained = ArrayHelper.contains(m2[SET].getExceptionTypes(),java.beans.PropertyVetoException.class);
 					}
 					p = new IndexedPropertyDescriptor(Introspector.decapitalize(k.getName()),
-				                                          m[GET],m[SET],
+				                                          m2[GET],m2[SET],
 				                                          m[GET_I],m[SET_I]);
 				}
 				p.setConstrained(constrained);
