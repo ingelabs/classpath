@@ -1,110 +1,6 @@
 dnl Used by aclocal to generate configure
 
 dnl -----------------------------------------------------------
-dnl CLASSPATH_CHECK_KAFFE
-dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_CHECK_KAFFE],
-[
-  AC_PATH_PROG(KAFFE_CONFIG, kaffe-config, "", $PATH:/usr/local/kaffe/bin:/usr/kaffe/bin)
-  if test "x${KAFFE_CONFIG}" = x; then
-    echo "configure: cannot find kaffe-config: is Kaffe installed?" 1>&2
-    exit 1
-  fi
-  AC_MSG_CHECKING(for Kaffe)
-
-  KAFFE_PREFIX="`$KAFFE_CONFIG --prefix`"
-  KAFFE_CFLAGS="`$KAFFE_CONFIG compile`"
-  KAFFE_LIBS="`$KAFFE_CONFIG link`"
-  JVM="yes"
-  JVM_REFERENCE="kaffe"
-  AC_SUBST(KAFFE_PREFIX)
-  AC_SUBST(KAFFE_CFLAGS)
-  AC_SUBST(KAFFE_LIBS)
-  AC_SUBST(JVM)
-  AC_SUBST(JVM_REFERENCE)
-
-  conditional_with_kaffe=true
-  AC_MSG_RESULT(yes)
-
-  dnl define WITH_KAFFE for native compilation
-  AC_DEFINE(WITH_KAFFE)
-
-  dnl Reset prefix so that we install into the Kaffe directory
-  prefix=$KAFFE_PREFIX
-  AC_SUBST(prefix)
-
-  dnl programs we probably need somewhere
-  _t_bindir=`$KAFFE_CONFIG info bindir`
-  _t_datadir=`$KAFFE_CONFIG info datadir`
-  AC_PATH_PROG(KAFFE_JABBA, kaffe, "", $_t_bindir:$PATH)
-
-  AC_MSG_CHECKING(for kjc)
-  if test -e $_t_datadir/kaffe/kjc.jar; then
-    KJC_CLASSPATH=$_t_datadir/kaffe/kjc.jar
-    AC_SUBST(KJC_CLASSPATH)
-    conditional_with_kjc=true
-    AC_MSG_RESULT(${withval})
-  elif test -e $_t_datadir/kjc.jar; then
-    KJC_CLASSPATH=$_t_datadir/kjc.jar
-    AC_SUBST(KJC_CLASSPATH)
-    conditional_with_kjc=true
-    AC_MSG_RESULT(${withval})
-  else
-    conditional_with_kjc=false
-    AC_MSG_RESULT(no)
-  fi
-  
-  AC_PATH_PROG(KAFFE_JAVAH, kaffeh, "", $_t_bindir:$PATH)
-
-  AC_MSG_CHECKING(for Kaffe classes)
-  KAFFE_CLASSLIB=""
-  if test -e $_t_datadir/glibj.jar; then
-    KAFFE_CLASSLIB=$_t_datadir/glibj.jar
-  elif test -e $_t_datadir/kaffe/glibj.jar; then
-    KAFFE_CLASSLIB=$_t_datadir/kaffe/glibj.jar
-  elif test -e $_t_datadir/Klasses.jar; then
-    KAFFE_CLASSLIB=$_t_datadir/Klasses.jar
-  elif test -e $_t_datadir/kaffe/Klasses.jar; then
-    KAFFE_CLASSLIB=$_t_datadir/kaffe/Klasses.jar
-  else
-    AC_MSG_RESULT(no)
-  fi
-  AC_MSG_RESULT(yes)
-  if test -e $_t_datadir/rmi.jar; then
-    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$_t_datadir/rmi.jar
-  fi
-  if test -e $_t_datadir/kaffe/rmi.jar; then
-    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$_t_datadir/kaffe/rmi.jar
-  fi
-  if test -e $_t_datadir/tools.jar; then
-    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$_t_datadir/tools.jar
-  fi
-  if test -e $_t_datadir/kaffe/tools.jar; then
-    KAFFE_CLASSLIB=$KAFFE_CLASSLIB:$_t_datadir/kaffe/tools.jar
-  fi
-
-  AC_SUBST(KAFFE_CLASSLIB)
-])
-
-dnl -----------------------------------------------------------
-dnl CLASSPATH_WITH_KAFFE - checks for which java virtual machine to use
-dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_WITH_KAFFE],
-[
-  AC_ARG_WITH([kaffe], 
-	      [AS_HELP_STRING(--with-kaffe,configure GNU Classpath for Kaffe [default=no])],
-  [   
-    if test "x${withval}" = xyes || test "x${withval}" = x; then
-      CLASSPATH_CHECK_KAFFE
-    fi
-  ],
-  [ conditional_with_kaffe=false
-    KAFFE_CFLAGS=""
-    AC_SUBST(KAFFE_CFLAGS)
-  ])
-])
-
-dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_FIND_JAVAC],
 [
   user_specified_javac=
@@ -247,75 +143,36 @@ dnl -----------------------------------------------------------
 AC_DEFUN([CLASSPATH_WITH_KJC],
 [
   AC_ARG_WITH([kjc], 
-  	      [AS_HELP_STRING(--with-kjc=<ksusu.jar>,bytecode compilation with kjc [default=no])],
+  	      [AS_HELP_STRING(--with-kjc,bytecode compilation with kjc)],
   [
-    if test "x${withval}" != xno; then
-      AC_MSG_CHECKING(for kjc)
-      if test "x${withval}" = x || test "x${withval}" = xyes; then
-        AC_MSG_ERROR(specify the location of ksusu.jar or kjc CLASSPATH)
+    if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
+      CLASSPATH_CHECK_KJC(${withval})
+    else
+      if test "x${withval}" != xno; then
+        CLASSPATH_CHECK_KJC
       fi
-      KJC_CLASSPATH=${withval}
-      AC_SUBST(KJC_CLASSPATH)
-      conditional_with_kjc=true
-      AC_MSG_RESULT(${withval})
     fi
     user_specified_javac=kjc
   ],
   [ 
-    conditional_with_kjc=false
+    CLASSPATH_CHECK_KJC
   ])
-
-
-  AM_CONDITIONAL(USER_SPECIFIED_KJC, test "x${conditional_with_kjc}" = xtrue)
-  if test "x${conditional_with_kjc}" = xtrue && test "x${USER_JABBA}" = x; then
-    if test "x${USER_JABBA}" = x; then
-      echo "configure: cannot find java, try --with-java" 1>&2
-      exit 1
-    fi
-  fi
+  AM_CONDITIONAL(USER_SPECIFIED_KJC, test "x${KJC}" != x)
+  AC_SUBST(KJC)
 ])
 
 dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_WITH_JAVA],
-[
-  AC_ARG_WITH([java],
-	      [AS_HELP_STRING(--with-java,specify path or name of a java-like program)],
-  [
-    if test "x${withval}" != x && test "x${withval}" != xyes && test "x${withval}" != xno; then
-      CLASSPATH_CHECK_JAVA(${withval})
-    else
-      if test "x${withval}" != xno; then
-        CLASSPATH_CHECK_JAVA
-      fi
-    fi
-  ],
-  [ 
-    CLASSPATH_CHECK_JAVA
-  ])
-  AM_CONDITIONAL(USER_SPECIFIED_JABBA, test "x${USER_JABBA}" != x)
-  AC_SUBST(USER_JABBA)
-])
-
-dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_CHECK_JAVA],
+AC_DEFUN([CLASSPATH_CHECK_KJC],
 [
   if test "x$1" != x; then
     if test -f "$1"; then
-      USER_JABBA="$1"
+      KJC="$1"
     else
-      AC_PATH_PROG(USER_JABBA, "$1")
+      AC_PATH_PROG(KJC, "$1")
     fi
   else
-    AC_PATH_PROG(USER_JABBA, "java")
+    AC_PATH_PROG(KJC, "kJC")
   fi
-])
-
-dnl -----------------------------------------------------------
-AC_DEFUN([CLASSPATH_FIND_JAVA],
-[
-  dnl Place additional bytecode interpreter checks here
-
-  CLASSPATH_WITH_JAVA
 ])
 
 dnl -----------------------------------------------------------

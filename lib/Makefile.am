@@ -5,8 +5,6 @@ JAVA_DEPEND = java.dep
 ## this file and restart the make process again
 sinclude $(JAVA_DEPEND)
 
-KJC_CLASSPATH=@KJC_CLASSPATH@
-
 USER_CLASSLIB = @USER_CLASSLIB@
 
 GCJ = @GCJ@
@@ -18,12 +16,7 @@ propertydirs :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java -type d !
 propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java -name \*\.properties)
 
 #-----------------------------------------------------------------
-# defining a javac program written in java
-#-----------------------------------------------------------------
-KJC_MAIN = at.dms.kjc.Main
-
-#-----------------------------------------------------------------
-# defining how to designate classpath for a vm and a javac type 
+# defining how to designate classpath for a vm and a javac type
 # program
 #-----------------------------------------------------------------
 ARG_CLASSPATH_VM = -classpath
@@ -44,7 +37,7 @@ if FOUND_GCJ
 JAVAC = $(GCJ) --bootclasspath '' $(ARG_CLASSPATH_JAVAC) $(top_srcdir):$(top_srcdir)/external/jaxp/source:$(top_builddir)/vm/current:.:$(USER_CLASSLIB) -C -d . @classes
 else
 if FOUND_KJC
-JAVAC = $(USER_JABBA) $(ARG_CLASSPATH_VM) $(KJC_CLASSPATH):$(USER_CLASSLIB) $(KJC_MAIN) $(ARG_CLASSPATH_JAVAC) .:$(USER_CLASSLIB) -d . @classes
+JAVAC = $(KJC) $(ARG_CLASSPATH_JAVAC) .:$(USER_CLASSLIB) -d . @classes
 endif # FOUND_KJC
 endif # FOUND_GCJ
 endif # FOUND_JIKES
