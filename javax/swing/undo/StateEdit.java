@@ -1,4 +1,4 @@
-/* AbstractTableModel.java --
+/* StateEdit.java --
    Copyright (C) 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -83,21 +83,21 @@ public class StateEdit extends AbstractUndoableEdit
 
   /**
    * Constructor StateEdit
-   * @param value0 TODO
+   * @param obj Object to edit
    */
-  public StateEdit(StateEditable value0)
+  public StateEdit(StateEditable obj)
   {
-    // TODO
+    init(obj, null);
   }
 
   /**
    * Constructor StateEdit
-   * @param value0 TODO
-   * @param value1 TODO
+   * @param obj Object to edit
+   * @param name Presentation name
    */
-  public StateEdit(StateEditable value0, String value1)
+  public StateEdit(StateEditable obj, String name)
   {
-    // TODO
+    init(obj, name);
   }
 
 
@@ -106,46 +106,52 @@ public class StateEdit extends AbstractUndoableEdit
   //-------------------------------------------------------------
 
   /**
-   * init
-   * @param value0 TODO
-   * @param value1 TODO
+   * Initialize this object.
+   * @param obj Object to edit
+   * @param name Presentation name
    */
-  protected void init(StateEditable value0, String value1)
+  protected void init(StateEditable obj, String name)
   {
-    // TODO
+    object = obj;
+    undoRedoName = name;
+    preState = new Hashtable();
+    postState = new Hashtable();
+    obj.storeState(preState);
   }
 
   /**
-   * end
+   * Indicate that all edits are finished, and update this object
+   * with final state.
    */
   public void end()
   {
-    // TODO
+    object.storeState(postState);
+    removeRedundantState();
   }
 
   /**
-   * undo
+   * Undo this edit by applying the initial state to the edited object.
    */
   public void undo()
   {
-    // TODO
+    object.restoreState(preState);
   }
 
   /**
-   * redo
+   * Undo this edit by applying the final state to the edited object.
    */
   public void redo()
   {
-    // TODO
+    object.restoreState(postState);
   }
 
   /**
-   * getPresentationName
-   * @returns String
+   * Return the presentation name of this object.
+   * @returns The name, or null if not set
    */
   public String getPresentationName()
   {
-    return null; // TODO
+    return undoRedoName;
   }
 
   /**
@@ -153,6 +159,18 @@ public class StateEdit extends AbstractUndoableEdit
    */
   protected void removeRedundantState()
   {
-    // TODO
+    Iterator i = preState.keySet().iterator();
+    while (i.hasNext())
+      {
+	Object key = i.next();
+	if (postState.containsKey(key))
+	  {
+	    if (preState.get(key).equals(postState.get(key)))
+	      {
+		i.remove();
+		postState.remove(key);
+	      }
+	  }
+      }
   }
 }
