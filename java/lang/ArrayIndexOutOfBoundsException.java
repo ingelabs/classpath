@@ -25,6 +25,9 @@ public class ArrayIndexOutOfBoundsException extends IndexOutOfBoundsException
     super(s);
   }
 
+  /**
+   * Create an exception indicating the illegal index.
+   */
   public ArrayIndexOutOfBoundsException(int index) {
     super(String.valueOf(index));
   }
