@@ -37,6 +37,9 @@ AC_CHECK_FUNCS(gethostname socket strerror)
 dnl guile checks
 GUILE_FLAGS
 
+dnl Initialize maintainer mode
+dnl AM_MAINTAINER_MODE
+
 dnl threads packages (stolen from Japhar)
 threads=no
 
@@ -109,25 +112,92 @@ fi
 #  AC_MSG_ERROR(please specify the location of Sun's JDK with --with-sun-jdk=/path/to/jdk)
 #fi
 
+dnl need JAPHAR_CFLAGS JAPHAR_LDFLAGS JAPHAR_BIN JAPHAR_SHARE defined
 AC_ARG_WITH(japhar,
 [  --with-japhar           Specify the path to the Japhar installation directory],
 [
-  AC_MSG_CHECKING("for japhar includes")
-  if test -f ${withval}/include/japhar/jni.h; then
-    AC_MSG_RESULT(using JNI headers in ${withval}/include/japhar)
-    JAPHAR_CFLAGS="-I${withval}/include/japhar -I${withval}/include/japhar/private"
-#   AC_PREFIX_PROGRAM(japhar)   this sets the prefix to the program's dir
-    AC_SUBST(JAPHAR_CFLAGS)
+  if test ${withval} = "" || test ${withval} = "yes" || test ${withval} = "no"; then
+    AC_MSG_CHECKING("for japhar includes")
+    if test -f /usr/local/japhar/include/japhar/jni.h; then
+      JAPHAR_CFLAGS="-I/usr/local/japhar/include/japhar -I/usr/local/japhar/include/japhar/private"
+    elif test -f /usr/local/include/japhar/jni.h; then
+      JAPHAR_CLFAGS="-I/usr/local/include/japhar -I/usr/local/include/japhar/private"
+    elif test -f /usr/japhar/include/japhar/jni.h; then
+      JAPHAR_CFLAGS="-I/usr/japhar/include/japhar -I/usr/japhar/include/japhar/private"
+    elif test -f /usr/include/japhar/jni.h; then
+      JAPHAR_CFLAGS="-I/usr/include/japhar -I/usr/include/japhar/private"
+    fi
+    if test -n "$JAPHAR_CFLAGS"; then
+      AC_SUBST(JAPHAR_CFLAGS)
+      AC_MSG_RESULT("using JNI headers in $JAPHAR_CFLAGS")
+    else
+      AC_MSG_ERROR(could not find include directory with jni.h.  Try using --with-japhar)    
+    fi
+    AC_MSG_CHECKING("for japhar libs")
+    if test -f /usr/local/japhar/lib/libjni.so; then 
+      JAPHAR_LDFLAGS="-L/usr/local/japhar/lib"
+    elif test -f /usr/local/lib/libjni.so; then
+      JAPHAR_LDFLAGS="-L/usr/local/lib"
+    elif test -f /usr/japhar/lib/libjni.so; then
+      JAPHAR_LDFLAGS="-L/usr/japhar/lib"
+    elif test -f /usr/lib/libjni.so; then
+      JAPHAR_LDFLAGS="-L/usr/lib"
+    fi
+    if test -n "$JAPHAR_LDFLAGS"; then
+      AC_SUBST(JAPHAR_LDFLAGS)
+      AC_MSG_RESULT("using vm libs from $JAPHAR_LDFLAGS")
+    else
+      AC_MSG_ERROR(could not find libjni.so.  Try using --with-japhar)
+    fi
+    AC_MSG_CHECKING("for japhar bin")
+    if test -f /usr/local/japhar/bin/japhar; then 
+      JAPHAR_BIN="/usr/local/japhar/bin"
+      JAPHAR_SHARE="/usr/local/japhar/share"
+    elif test -f /usr/local/bin/japhar; then
+      JAPHAR_BIN="/usr/local/bin"
+      JAPHAR_SHARE="/usr/local/share"
+    elif test -f /usr/japhar/bin/japhar; then
+      JAPHAR_BIN="/usr/japhar/bin"
+      JAPHAR_SHARE="/usr/japhar/share"
+    elif test -f /usr/bin/japhar; then
+      JAPHAR_BIN="/usr/bin"
+      JAPHAR_SHARE="/usr/share"
+    fi
+    if test -n "$JAPHAR_BIN"; then
+      AC_SUBST(JAPHAR_BIN)
+      AC_SUBST(JAPHAR_SHARE)
+      AC_MSG_RESULT("using $JAPHAR_BIN")
+    else
+      AC_MSG_ERROR(could not Japhar bin.  Try using --with-japhar)
+    fi
   else
-    AC_MSG_ERROR(could not find ${withval}/include/japhar/jni.h. Use --with-japhar)
-  fi
-  AC_MSG_CHECKING("for japhar libs")
-  if test -f ${withval}/lib/libjni.so; then
-    JAPHAR_LDFLAGS="-L${withval}/lib"
-    AC_MSG_RESULT("using vm libs from $VMLIB")
-    AC_SUBST(JAPHAR_LDFLAGS)
-  else
-    AC_MSG_ERROR(could not find libjni.so.  Try using --with-japhar)
+    AC_MSG_CHECKING("for japhar includes")
+    if test -f ${withval}/include/japhar/jni.h; then
+      AC_MSG_RESULT(using JNI headers in ${withval}/include/japhar)
+      JAPHAR_CFLAGS="-I${withval}/include/japhar -I${withval}/include/japhar/private"
+  #   AC_PREFIX_PROGRAM(japhar)   this sets the prefix to the program's dir
+      AC_SUBST(JAPHAR_CFLAGS)
+    else
+      AC_MSG_ERROR(could not find ${withval}/include/japhar/jni.h. Use --with-japhar)
+    fi
+    AC_MSG_CHECKING("for japhar libs")
+    if test -f ${withval}/lib/libjni.so; then
+      JAPHAR_LDFLAGS="-L${withval}/lib"
+      AC_MSG_RESULT("using libs from $JAPHAR_LDFLAGS")
+      AC_SUBST(JAPHAR_LDFLAGS)
+    else
+      AC_MSG_ERROR(could not find libjni.so.  Try using --with-japhar)
+    fi
+    AC_MSG_CHECKING("for japhar bin")
+    if test -f ${withval}/bin/japhar; then
+      JAPHAR_BIN="${withval}/bin"
+      JAPHAR_SHARE="${withval}/share"
+      AC_MSG_RESULT("using $JAPHAR_BIN")
+      AC_SUBST(JAPHAR_BIN)
+      AC_SUBST(JAPHAR_SHARE)
+    else
+      AC_MSG_ERROR(could not Japhar bin.  Try using --with-japhar)
+    fi
   fi
 ],
 [
@@ -163,10 +233,31 @@ AC_ARG_WITH(japhar,
   else
     AC_MSG_ERROR(could not find libjni.so.  Try using --with-japhar)
   fi
+  AC_MSG_CHECKING("for japhar bin")
+  if test -f /usr/local/japhar/bin/japhar; then 
+    JAPHAR_BIN="/usr/local/japhar/bin"
+    JAPHAR_SHARE="/usr/local/japhar/share"
+  elif test -f /usr/local/bin/japhar; then
+    JAPHAR_BIN="/usr/local/bin"
+    JAPHAR_SHARE="/usr/local/share"
+  elif test -f /usr/japhar/bin/japhar; then
+    JAPHAR_BIN="/usr/japhar/bin"
+    JAPHAR_SHARE="/usr/japhar/share"
+  elif test -f /usr/bin/japhar; then
+    JAPHAR_BIN="/usr/bin"
+    JAPHAR_SHARE="/usr/share"
+  fi
+  if test -n "$JAPHAR_BIN"; then
+    AC_SUBST(JAPHAR_BIN)
+    AC_SUBST(JAPHAR_SHARE)
+    AC_MSG_RESULT("using $JAPHAR_BIN")
+  else
+    AC_MSG_ERROR(could not Japhar bin.  Try using --with-japhar)
+  fi
 ])
 
-AC_SUBST(JAPHAR_CFLAGS)
-AC_SUBST(JAPHAR_LDFLAGS)
+dnl AC_SUBST(JAPHAR_CFLAGS)
+dnl AC_SUBST(JAPHAR_LDFLAGS)
 
 dnl for historic reasons of the moment...
 VMINCLUDE=$JAPHAR_CFLAGS
@@ -184,8 +275,8 @@ fi
 
 # This is the path to the chosen VM's include directory where jni.h
 # and others can be found
-AC_SUBST(VMINCLUDE)
-AC_SUBST(VMLIB)
+dnl AC_SUBST(VMINCLUDE)
+dnl AC_SUBST(VMLIB)
 
 dnl AC_ARG_WITH(japhar, Install as class library for Japhar, 
 dnl             AC_PREFIX_PROGRAM(japhar))
@@ -250,6 +341,18 @@ AC_ARG_WITH(javac,
   ])
 
 AC_SUBST(JAVAC)
+
+dnl Since most people won't have JavaDeps or Kiev to compute dependencies
+dnl on the Java source files.
+AC_ARG_ENABLE(maintainer-build,
+[  --enable-maintainer-build	Turn on java dependency computation],
+[case "${enableval}" in 
+  yes) maintainer_debug=true ;;
+  no)  maintainer_debug=false ;;
+  *) AC_MSG_ERROR(bad value ${enableval} for --enable-maintainer-build) ;;
+esac],
+[maintainer_debug=false])
+AM_CONDITIONAL(MAINTAINER_BUILD, test x$maintainer_debug = xtrue)
 
 AC_OUTPUT(compat/java.net/Makefile
 compat/Makefile
