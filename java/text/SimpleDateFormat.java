@@ -28,6 +28,7 @@ import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.SimpleTimeZone;
 import java.util.Vector;
 
 // Note that readObject still needs to be written for this class.
@@ -420,25 +421,36 @@ public class SimpleDateFormat extends DateFormat
     int l1 = dateStr.length()-index;
     int l2;
 
-    for (int i=0; i<values.length; i++) {
+    for (int i=0; i < values.length; i++) {
       if (values[i] == null)
         continue;
 
       l2 = values[i].length();
-      if ((l1 <= l2) && (dateStr.substring(index,index+l2).equals(values[i])))
+      //System.err.println(values[i] + " " + dateStr.substring(index,index+l2));
+      if ((l1 >= l2) && (dateStr.substring(index,index+l2).equals(values[i])))
 	return i;
     }
     return -1;
   }
 
-  // IN PROGRESS
-  public Date parse(String dateStr, ParsePosition pos) {
+  public Date parseLenient(String dateStr, ParsePosition pos)
+  {
+    return(null); // FIXME: Implement this
+  }
+
+  /*
+   * Note that this method doesn't properly protect against
+   * StringIndexOutOfBoundsException.  FIXME
+   */
+  public Date parseStrict(String dateStr, ParsePosition pos)
+  {
     // start looking at position pos.index
     Enumeration e = tokens.elements();
     Calendar theCalendar = (Calendar) calendar.clone();
     theCalendar.clear();
     theCalendar.setTime(new Date(0));
-    int value;
+    int value, index;
+    String buf;
     while (pos.getIndex() < dateStr.length()) {
       Object o = e.nextElement();
       if (o instanceof FieldSizePair) {
@@ -453,41 +465,192 @@ public class SimpleDateFormat extends DateFormat
 	  pos.setIndex(pos.getIndex() + formatData.eras[value].length());
 	  theCalendar.set(Calendar.ERA,value);
 	  break;
-	  /*
 	case YEAR_FIELD:
-	  temp = String.valueOf(theCalendar.get(Calendar.YEAR));
+          String y;
 	  if (p.size < 4)
-	    buffer.append(temp.substring(temp.length()-2));
-	  else
-	    buffer.append(temp);
+            y = dateStr.substring(pos.getIndex(), pos.getIndex() + 2);
+          else
+            y = dateStr.substring(pos.getIndex(), pos.getIndex() + 4);
+            
+          int year;
+          try
+            {
+              year = Integer.parseInt(y);
+            }
+          catch(NumberFormatException nfe)
+            {
+              pos.setErrorIndex(pos.getIndex());
+              return(null);
+            }
+
+	  if (p.size < 4)
+            year += get2DigitYearStart().getYear();
+
+          theCalendar.set(Calendar.YEAR, year);
+	  if (p.size < 4)
+            pos.setIndex(pos.getIndex()+2);
+          else
+            pos.setIndex(pos.getIndex()+4);
 	  break;
 	case MONTH_FIELD:
-	  if (p.size < 3)
-	    withLeadingZeros(theCalendar.get(Calendar.MONTH),p.size,buffer);
-	  else if (p.size < 4)
-	    buffer.append(formatData.shortMonths[theCalendar.get(Calendar.MONTH)]);
-	  else
-	    buffer.append(formatData.months[theCalendar.get(Calendar.MONTH)]);
-	  break;
+          index = pos.getIndex();
+          buf = null;
+	  if (p.size == 1)
+            {
+              char c = dateStr.charAt(index+1);
+              if ((dateStr.charAt(index) == '1') && 
+                   Character.isDigit(dateStr.charAt(index+1)))
+                buf = dateStr.substring(index, index+2);
+              else
+                buf = dateStr.substring(index, index+1);
+              pos.setIndex(index + buf.length());
+            }
+          else if (p.size == 2)
+            {
+              buf = dateStr.substring(index, index+2);
+              pos.setIndex(index+2);
+            }
+          else
+            {
+	      value = indexInArray(dateStr,pos.getIndex(),
+                 (p.size == 3) ? formatData.shortMonths : formatData.months);
+	      if (value == -1) 
+                {
+	          pos.setErrorIndex(pos.getIndex());
+	          return(null);
+	        }
+              if (p.size == 3)
+                pos.setIndex(index + formatData.shortMonths[value].length());
+              else
+                pos.setIndex(index + formatData.months[value].length());
+              theCalendar.set(Calendar.MONTH, value);
+              break;
+            }
+          try
+            {
+              value = Integer.parseInt(buf);
+            }
+          catch(NumberFormatException nfe)
+            {
+              pos.setIndex(index);
+              pos.setErrorIndex(index);
+              return(null);
+            } 
+          theCalendar.set(Calendar.MONTH, value);
+          break;
 	case DATE_FIELD:
-	  withLeadingZeros(theCalendar.get(Calendar.DATE),p.size,buffer);
+          index = pos.getIndex();
+          buf = null;
+	  if (p.size == 1)
+            {
+              char c = dateStr.charAt(index+1);
+              if ((dateStr.charAt(index) == '1') && 
+                   Character.isDigit(dateStr.charAt(index+1)))
+                buf = dateStr.substring(index, index+2);
+              else
+                buf = dateStr.substring(index, index+1);
+              pos.setIndex(index + buf.length());
+            }
+          else
+            {
+              buf = dateStr.substring(index, index+2);
+              pos.setIndex(index+2);
+            }
+          try
+            {
+              value = Integer.parseInt(buf);
+            }
+          catch(NumberFormatException nfe)
+            {
+              pos.setIndex(index);
+              pos.setErrorIndex(index);
+              return(null);
+            } 
+          theCalendar.set(Calendar.DATE, value);
 	  break;
 	case HOUR_OF_DAY1_FIELD:
-	  withLeadingZeros(theCalendar.get(Calendar.HOUR_OF_DAY)+1,p.size,buffer);
-	  break;
 	case HOUR_OF_DAY0_FIELD:
-	  withLeadingZeros(theCalendar.get(Calendar.HOUR_OF_DAY),p.size,buffer);
+          index = pos.getIndex();
+          buf = dateStr.substring(index, index+2);
+          try
+            {
+              value = Integer.parseInt(buf);
+            }
+          catch(NumberFormatException nfe)
+            {
+              return(null);
+            }
+          if (p.field == HOUR_OF_DAY0_FIELD)
+            theCalendar.set(Calendar.HOUR_OF_DAY, value);
+          else
+            theCalendar.set(Calendar.HOUR_OF_DAY, value-1);
+          pos.setIndex(index+2);
 	  break;
 	case MINUTE_FIELD:
-	  withLeadingZeros(theCalendar.get(Calendar.MINUTE),p.size,buffer);
+          index = pos.getIndex();
+          buf = null;
+	  if (p.size == 1)
+            {
+              char c = dateStr.charAt(index+1);
+              if ((dateStr.charAt(index) == '1') && 
+                   Character.isDigit(dateStr.charAt(index+1)))
+                buf = dateStr.substring(index, index+2);
+              else
+                buf = dateStr.substring(index, index+1);
+              pos.setIndex(index + buf.length());
+            }
+          else
+            {
+              buf = dateStr.substring(index, index+2);
+              pos.setIndex(index+2);
+            }
+          try
+            {
+              value = Integer.parseInt(buf);
+            }
+          catch(NumberFormatException nfe)
+            {
+              pos.setIndex(index);
+              pos.setErrorIndex(index);
+              return(null);
+            } 
+          theCalendar.set(Calendar.MINUTE, value);
 	  break;
 	case SECOND_FIELD:
-	  withLeadingZeros(theCalendar.get(Calendar.SECOND),p.size,buffer);
+          index = pos.getIndex();
+          buf = null;
+	  if (p.size == 1)
+            {
+              char c = dateStr.charAt(index+1);
+              if ((dateStr.charAt(index) == '1') && 
+                   Character.isDigit(dateStr.charAt(index+1)))
+                buf = dateStr.substring(index, index+2);
+              else
+                buf = dateStr.substring(index, index+1);
+              pos.setIndex(index + buf.length());
+            }
+          else
+            {
+              buf = dateStr.substring(index, index+2);
+              pos.setIndex(index+2);
+            }
+          try
+            {
+              value = Integer.parseInt(buf);
+            }
+          catch(NumberFormatException nfe)
+            {
+              pos.setIndex(index);
+              pos.setErrorIndex(index);
+              return(null);
+            } 
+          theCalendar.set(Calendar.SECOND, value);
 	  break;
+/*
 	case MILLISECOND_FIELD:
 	  withLeadingZeros(theCalendar.get(Calendar.MILLISECOND),p.size,buffer);
 	  break;
-	  */
+*/
 	case DAY_OF_WEEK_FIELD:
 	  value = indexInArray(dateStr,pos.getIndex(),(p.size < 4) ? formatData.shortWeekdays : formatData.weekdays);
 	  if (value == -1) {
@@ -527,19 +690,48 @@ public class SimpleDateFormat extends DateFormat
 	  pos.setIndex(pos.getIndex() + formatData.ampms[value].length());
 	  theCalendar.set(Calendar.AM_PM,value);
 	  break;
-	  /*
 	case HOUR1_FIELD:
-	  withLeadingZeros(theCalendar.get(Calendar.HOUR)+1,p.size,buffer);
-	  break;
 	case HOUR0_FIELD:
-	  withLeadingZeros(theCalendar.get(Calendar.HOUR),p.size,buffer);
+          index = pos.getIndex();
+          buf = null;
+	  if (p.size == 1)
+            {
+              char c = dateStr.charAt(index+1);
+              if ((dateStr.charAt(index) == '1') && 
+                   Character.isDigit(dateStr.charAt(index+1)))
+                buf = dateStr.substring(index, index+2);
+              else
+                buf = dateStr.substring(index, index+1);
+              pos.setIndex(index + buf.length());
+            }
+          else
+            {
+              buf = dateStr.substring(index, index+2);
+              pos.setIndex(index+2);
+            }
+          try
+            {
+              value = Integer.parseInt(buf);
+            }
+          catch(NumberFormatException nfe)
+            {
+              pos.setIndex(index);
+              pos.setErrorIndex(index);
+              return(null);
+            } 
+          if (p.field == HOUR1_FIELD)
+            theCalendar.set(Calendar.HOUR, value);
+          if (p.field == HOUR0_FIELD)
+            theCalendar.set(Calendar.HOUR, value+1);
 	  break;
+	  /*
 	case TIMEZONE_FIELD:
 	  // TODO
 	  break;
 	  */
 	default:
-	  throw new IllegalArgumentException("Illegal pattern character");
+	  throw new IllegalArgumentException("Illegal pattern character: " +
+             p.field);
 	} // end switch
       } else if (o instanceof String) {
 	String ostr = (String) o;
@@ -560,6 +752,23 @@ public class SimpleDateFormat extends DateFormat
       }
     }
     return theCalendar.getTime();
+  }
+
+  /**
+   * This method parses the specified string into a date.
+   * 
+   * @param dateStr The date string to parse.
+   * @param pos The input and output parse position
+   *
+   * @return The parsed date, or <code>null</code> if the string cannot be
+   * parsed.
+   */
+  public Date parse(String dateStr, ParsePosition pos) {
+    if (isLenient())
+       return(parseLenient(dateStr, pos));
+    else
+       return(parseStrict(dateStr, pos));
+
   }
 }
 
