@@ -53,22 +53,22 @@ public static final int SO_TIMEOUT = 4102;
 /**
   * Retrieve the local address to which the socket is bound.
   */
-public static final int SO_BINDADDR = XXX;
+public static final int SO_BINDADDR = 15;
 
 /**
   * Option id for the send buffer size
   */
-public static final int SO_SNDBUF = XXX;
+public static final int SO_SNDBUF = 4;
 
 /**
   * Option id for the receive buffer size
   */
-public static final int SO_RCVBUF = XXX;
+public static final int SO_RCVBUF = 4098;
 
 /**
   * Sets the SO_REUSEADDR parameter on a socket
   */
-public static final int SO_REUSEADDR = XXX;
+public static final int SO_REUSEADDR = 4097;
 
 /**
   * Option id for the TCP_NODELAY value
@@ -83,7 +83,7 @@ static final int IP_TTL = 7777;
 /**
   * Options id for the IP_MULTICAST_IF value
   */
-public static final int IP_MULTICAST_IF = 7778;
+public static final int IP_MULTICAST_IF = 16;
 
 /*************************************************************************/
 
@@ -103,7 +103,7 @@ public static final int IP_MULTICAST_IF = 7778;
   *
   * @exception SocketException If an error occurs
   */
-abstract void
+public abstract void
 setOption(int option_id, Object val) throws SocketException;
 
 /*************************************************************************/
@@ -121,7 +121,7 @@ setOption(int option_id, Object val) throws SocketException;
   *
   * @exception SocketException If an error occurs
   */
-abstract Object
+public abstract Object
 getOption(int option_id) throws SocketException;
 
 } // interface SocketOptions
