@@ -1,3 +1,11 @@
+New in release 0.09
+
+VM Interface changes:
+
+* GNU Classpath now assumes that JNI calls SetXField can modify final
+fields. This was previously used silently for System.in/out/err and should
+be considered as a feature now. 
+
 New in release 0.08 (2004/12/03)
 
 * java.util.regexp implementation through gnu.regexp wrappers.

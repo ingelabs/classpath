@@ -38,7 +38,7 @@ exception statement from your version. */
 
 package java.io;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 
 final class VMObjectStreamClass
 {
@@ -47,4 +47,114 @@ final class VMObjectStreamClass
     * (a.k.a. <clinit>).
     */
   static native boolean hasClassInitializer (Class clazz);
+
+  /**
+   * Sets the value of the specified field. This method handles "double".
+   * Warning ! The types are not truely checked here and final values may be
+   * assigned.
+   *
+   * @param field Field to set the value.
+   * @param obj Instance which will have its field set.
+   * @param val Value to put in the field.
+   */
+  static native void setDoubleNative(Field field, Object obj, double val)
+    throws InternalError;
+
+  /**
+   * Sets the value of the specified field. This method handles "float".
+   * Warning ! The types are not truely checked here and final values may be
+   * assigned.
+   *
+   * @param field Field to set the value.
+   * @param obj Instance which will have its field set.
+   * @param val Value to put in the field.
+   */
+  static native void setFloatNative(Field field, Object obj, float val)
+    throws InternalError;
+
+  /**
+   * Sets the value of the specified field. This method handles "long".
+   * Warning ! The types are not truely checked here and final values may be
+   * assigned.
+   *
+   * @param field Field to set the value.
+   * @param obj Instance which will have its field set.
+   * @param val Value to put in the field.
+   */
+  static native void setLongNative(Field field, Object obj, long val)
+    throws InternalError;
+  
+  /**
+   * Sets the value of the specified field. This method handles "int".
+   * Warning ! The types are not truely checked here and final values may be
+   * assigned.
+   *
+   * @param field Field to set the value.
+   * @param obj Instance which will have its field set.
+   * @param val Value to put in the field.
+   */
+  static native void setIntNative(Field field, Object obj, int val) 
+    throws InternalError;
+  
+  /**
+   * Sets the value of the specified field. This method handles "short".
+   * Warning ! The types are not truely checked here and final values may be
+   * assigned.
+   *
+   * @param field Field to set the value.
+   * @param obj Instance which will have its field set.
+   * @param val Value to put in the field.
+   */
+  static native void setShortNative(Field field, Object obj, short val) 
+    throws InternalError;
+
+  /**
+   * Sets the value of the specified field. This method handles "char".
+   * Warning ! The types are not truely checked here and final values may be
+   * assigned.
+   *
+   * @param field Field to set the value.
+   * @param obj Instance which will have its field set.
+   * @param val Value to put in the field.
+   */
+  static native void setCharNative(Field field, Object obj, char val) 
+    throws InternalError;
+
+  /**
+   * Sets the value of the specified field. This method handles "byte".
+   * Warning ! The types are not truely checked here and final values may be
+   * assigned.
+   *
+   * @param field Field to set the value.
+   * @param obj Instance which will have its field set.
+   * @param val Value to put in the field.
+   */
+  static native void setByteNative(Field field, Object obj, byte val) 
+    throws InternalError;
+
+  /**
+   * Sets the value of the specified field. This method handles "boolean".
+   * Warning ! The types are not truely checked here and final values may be
+   * assigned.
+   *
+   * @param field Field to set the value.
+   * @param obj Instance which will have its field set.
+   * @param val Value to put in the field.
+   */
+  static native void setBooleanNative(Field field, Object obj, boolean val) 
+    throws InternalError;
+
+  /**
+   * Sets the value of the specified field. This method handles "object".
+   * Warning ! The types are not truely checked here and final values may be
+   * assigned.
+   *
+   * @param field Field to set the value.
+   * @param obj Instance which will have its field set.
+   * @param val Value to put in the field.
+   */
+  static native void setObjectNative(Field field, Object obj, Object val) 
+    throws InternalError;
+  
 }
+

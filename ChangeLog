@@ -1,3 +1,25 @@
+2004-04-06  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* java/io/ObjectStreamField.java
+	(setBooleanField, setCharField, setByteField, setShortField,
+	setIntField, setLongField, setFloatField, setDoubleField,
+	setObjectField): Use native methods directly to be able to set
+	final fields.
+
+	* vm/reference/java/io/VMObjectStreamClass.java
+	(setBooleanNative, setCharNative, setByteNative, setShortNative,
+	setIntNative, setLongNative, setFloatNative, setDoubleNative,
+	setObjectNative): New methods for serialization to be able to
+	set final fields.
+
+	* native/jni/java-io/java_io_VMObjectStreamClass.c:
+	Implemented new native methods of java.io.VMObjectStreamClass
+	accordingly.
+
+	* include/java_io_VMObjectStreamClass.h: Regenerated.
+
+	* NEWS: Added a warning clause about the VM Interface change.
+
 2004-04-07  Patrik Reali  <reali@acm.org>
 
 	* doc/www.gnu.org/events/fosdem04.wml: link to group picture added

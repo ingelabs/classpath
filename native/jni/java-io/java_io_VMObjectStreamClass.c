@@ -59,3 +59,238 @@ Java_java_io_VMObjectStreamClass_hasClassInitializer( JNIEnv * env,
     }
   return JNI_TRUE;
 }
+
+static void throwInternalError(JNIEnv *env)
+{
+  jclass internalErrorClass;
+  jthrowable previousException, newException;
+  jmethodID initException, getMessageID, initCauseID;
+  jstring message;
+
+  internalErrorClass = (*env)->FindClass(env, "java/lang/InternalError");
+  previousException = (*env)->ExceptionOccurred(env);
+
+  if (previousException == NULL)
+    {
+      (*env)->ThrowNew(env, internalErrorClass, "Unknown error raised by the VM");
+      return;
+    }
+  
+  initException = (*env)->GetMethodID
+    (env, internalErrorClass, "<init>", "(Ljava/lang/String;)V");
+  getMessageID = (*env)->GetMethodID
+    (env, (*env)->GetObjectClass(env, previousException),
+     "getMessage", "()Ljava/lang/String;");
+  initCauseID = (*env)->GetMethodID
+    (env, internalErrorClass, "initCause", "(Ljava/lang/Throwable;)V");
+
+  message = (*env)->CallObjectMethod(env, previousException,
+				     getMessageID);
+
+  newException = (*env)->NewObject(env, internalErrorClass, initException,
+				   message);
+  (*env)->CallVoidMethod(env, newException, initCauseID,
+			 previousException);
+
+  (*env)->ExceptionClear(env);
+  (*env)->Throw(env, newException);
+}
+
+static jfieldID getFieldReference(JNIEnv *env, jobject field, 
+				  jobject object, const char *type)
+{
+  jclass fieldClass;
+  jclass objectClass;
+  jfieldID fid;
+  const jbyte *field_name;
+  jmethodID mid;
+  jstring name;
+
+  fieldClass = (*env)->GetObjectClass(env, field);
+
+  mid = (*env)->GetMethodID(env, fieldClass, "getName", "()Ljava/lang/String;");
+  if (mid == NULL || (*env)->ExceptionOccurred(env) != NULL)
+    {
+      throwInternalError(env);
+      return NULL;
+    }
+
+  name = (*env)->CallObjectMethod(env, field, mid);
+  field_name = (*env)->GetStringUTFChars(env, name, NULL);
+  
+  objectClass = (*env)->GetObjectClass(env, object);
+  fid = (*env)->GetFieldID(env, objectClass, field_name, type);
+  if (fid == NULL)
+    {
+      throwInternalError(env);
+      return NULL;
+    }
+  (*env)->ReleaseStringUTFChars(env, name, field_name);
+  
+  return fid;
+}
+
+/*
+ * Class:     java_io_VMObjectOutputStream
+ * Method:    setBooleanNative
+ * Signature: (Ljava/lang/reflect/Field;Ljava/lang/Object;Z)V
+ */
+JNIEXPORT void JNICALL
+Java_java_io_VMObjectStreamClass_setBooleanNative( JNIEnv * env,
+						   jclass vmosklass,
+						   jobject field,
+						   jobject object,
+						   jboolean value )
+{
+  jfieldID fid = getFieldReference (env, field, object, "Z");
+
+  if (fid != NULL)
+    (*env)->SetBooleanField(env, object, fid, value);
+}
+
+/*
+ * Class:     java_io_VMObjectOutputStream
+ * Method:    setCharNative
+ * Signature: (Ljava/lang/reflect/Field;Ljava/lang/Object;C)V
+ */
+JNIEXPORT void JNICALL
+Java_java_io_VMObjectStreamClass_setCharNative( JNIEnv * env,
+						jclass vmosklass,
+						jobject field,
+						jobject object,
+						jchar value )
+{
+  jfieldID fid = getFieldReference (env, field, object, "C");
+
+  if (fid != NULL)
+    (*env)->SetCharField(env, object, fid, value);
+}
+
+/*
+ * Class:     java_io_VMObjectOutputStream
+ * Method:    setByteNative
+ * Signature: (Ljava/lang/reflect/Field;Ljava/lang/Object;B)V
+ */
+JNIEXPORT void JNICALL
+Java_java_io_VMObjectStreamClass_setByteNative( JNIEnv * env,
+						jclass vmosklass,
+						jobject field,
+						jobject object,
+						jbyte value )
+{
+  jfieldID fid = getFieldReference (env, field, object, "B");
+
+  if (fid != NULL)
+    (*env)->SetByteField(env, object, fid, value);
+}
+
+
+/*
+ * Class:     java_io_VMObjectOutputStream
+ * Method:    setShortNative
+ * Signature: (Ljava/lang/reflect/Field;Ljava/lang/Object;S)V
+ */
+JNIEXPORT void JNICALL
+Java_java_io_VMObjectStreamClass_setShortNative( JNIEnv * env,
+						 jclass vmosklass,
+						 jobject field,
+						 jobject object,
+						 jshort value )
+{
+  jfieldID fid = getFieldReference (env, field, object, "S");
+
+  if (fid != NULL)
+    (*env)->SetShortField(env, object, fid, value);
+}
+
+/*
+ * Class:     java_io_VMObjectOutputStream
+ * Method:    setIntNative
+ * Signature: (Ljava/lang/reflect/Field;Ljava/lang/Object;I)V
+ */
+JNIEXPORT void JNICALL
+Java_java_io_VMObjectStreamClass_setIntNative( JNIEnv * env,
+					       jclass vmosklass,
+					       jobject field,
+					       jobject object,
+					       jint value )
+{
+  jfieldID fid = getFieldReference (env, field, object, "I");
+
+  if (fid != NULL)
+    (*env)->SetIntField(env, object, fid, value);
+}
+
+
+/*
+ * Class:     java_io_VMObjectOutputStream
+ * Method:    setLongNative
+ * Signature: (Ljava/lang/reflect/Field;Ljava/lang/Object;J)V
+ */
+JNIEXPORT void JNICALL
+Java_java_io_VMObjectStreamClass_setLongNative( JNIEnv * env,
+					       jclass vmosklass,
+					       jobject field,
+					       jobject object,
+					       jlong value )
+{
+  jfieldID fid = getFieldReference (env, field, object, "J");
+
+  if (fid != NULL)
+    (*env)->SetLongField(env, object, fid, value);
+}
+
+
+/*
+ * Class:     java_io_VMObjectOutputStream
+ * Method:    setFloatNative
+ * Signature: (Ljava/lang/reflect/Field;Ljava/lang/Object;F)V
+ */
+JNIEXPORT void JNICALL
+Java_java_io_VMObjectStreamClass_setFloatNative( JNIEnv * env,
+						 jclass vmosklass,
+						 jobject field,
+						 jobject object,
+						 jfloat value )
+{
+  jfieldID fid = getFieldReference (env, field, object, "F");
+
+  if (fid != NULL)
+    (*env)->SetFloatField(env, object, fid, value);
+}
+
+/*
+ * Class:     java_io_VMObjectOutputStream
+ * Method:    setDoubleNative
+ * Signature: (Ljava/lang/reflect/Field;Ljava/lang/Object;D)V
+ */
+JNIEXPORT void JNICALL
+Java_java_io_VMObjectStreamClass_setDoubleNative( JNIEnv * env,
+						 jclass vmosklass,
+						 jobject field,
+						 jobject object,
+						 jdouble value )
+{
+  jfieldID fid = getFieldReference (env, field, object, "D");
+
+  if (fid != NULL)
+    (*env)->SetDoubleField(env, object, fid, value);
+}
+
+/*
+ * Class:     java_io_VMObjectOutputStream
+ * Method:    setObjectNative
+ * Signature: (Ljava/lang/reflect/Field;Ljava/lang/Object;Ljava/lang/Object;)V
+ */
+JNIEXPORT void JNICALL
+Java_java_io_VMObjectStreamClass_setObjectNative( JNIEnv * env,
+						 jclass vmosklass,
+						 jobject field,
+						 jobject object,
+						 jobject value )
+{
+  jfieldID fid = getFieldReference (env, field, object, NULL);
+
+  if (fid != NULL)
+    (*env)->SetObjectField(env, object, fid, value);
+}
