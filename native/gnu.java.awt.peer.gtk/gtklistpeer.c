@@ -24,10 +24,12 @@
 static void
 connect_selectable_hook (JNIEnv *env, jobject peer_obj, GtkCList *list);
 
+#define CLIST_FROM_SW(obj) (GTK_CLIST(GTK_SCROLLED_WINDOW (obj)->container.child))
+
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListNew
+Java_gnu_java_awt_peer_gtk_GtkListPeer_create
   (JNIEnv *env, jobject obj, jobject parent_obj,
-   jobject jlist, jobjectArray items, jboolean mode)
+   jobjectArray items, jboolean mode)
 {
   GtkWidget *list, *sw, *parent;
   jsize count, i;
@@ -54,8 +56,8 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListNew
   connect_awt_hook (env, obj, list, 1, list->window);
 
   gtk_clist_set_selection_mode (GTK_CLIST (list),
-			       mode ? GTK_SELECTION_MULTIPLE : 
-			              GTK_SELECTION_SINGLE);
+				mode ? GTK_SELECTION_MULTIPLE : 
+				       GTK_SELECTION_SINGLE);
   
   for (i = 0; i < count; i++) 
     {
@@ -73,21 +75,20 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListNew
   gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, sw);
-  NSA_SET_PTR (env, jlist, list);
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListInsert
-  (JNIEnv *env, jobject obj, jobject jlist, jstring text, jint index)
+Java_gnu_java_awt_peer_gtk_GtkListPeer_add
+  (JNIEnv *env, jobject obj, jstring text, jint index)
 {
   void *ptr;
   const char *str;
     
-  ptr = NSA_GET_PTR (env, jlist);
+  ptr = NSA_GET_PTR (env, obj);
   str = (*env)->GetStringUTFChars (env, text, NULL);
 
   gdk_threads_enter ();
-  gtk_clist_insert (GTK_CLIST (ptr), index, (char **)&str);
+  gtk_clist_insert (CLIST_FROM_SW (ptr), index, (char **)&str);
   gdk_threads_leave ();
 
   (*env)->ReleaseStringUTFChars (env, text, str);
@@ -95,17 +96,20 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListInsert
 
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListClearItems
-  (JNIEnv *env, jobject obj, jobject jlist, jint start, jint end)
+Java_gnu_java_awt_peer_gtk_GtkListPeer_delItems
+  (JNIEnv *env, jobject obj, jint start, jint end)
 {
   void *ptr;
   GtkCList *list;
   jint i;
     
-  ptr = NSA_GET_PTR (env, jlist);
+  ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  list = GTK_CLIST (ptr);
+  list = CLIST_FROM_SW (ptr);
+
+  if (end == -1)		/* special case for removing all rows */
+    end = list->rows;
 
   gtk_clist_freeze (list);
   for (i = start; i < end; i++)
@@ -116,35 +120,35 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListClearItems
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListSelectItem
-  (JNIEnv *env, jobject obj, jobject jlist, jint index)
+Java_gnu_java_awt_peer_gtk_GtkListPeer_select
+  (JNIEnv *env, jobject obj, jint index)
 {
   void *ptr;
     
-  ptr = NSA_GET_PTR (env, jlist);
+  ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  gtk_clist_select_row (GTK_CLIST (ptr), index, 0);
+  gtk_clist_select_row (CLIST_FROM_SW (ptr), index, 0);
   gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListUnselectItem
-  (JNIEnv *env, jobject obj, jobject jlist, jint index)
+Java_gnu_java_awt_peer_gtk_GtkListPeer_deselect
+  (JNIEnv *env, jobject obj, jint index)
 {
   void *ptr;
 
-  ptr = NSA_GET_PTR (env, jlist);
+  ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  gtk_clist_unselect_row (GTK_CLIST (ptr), index, 0);
+  gtk_clist_unselect_row (CLIST_FROM_SW (ptr), index, 0);
   gdk_threads_leave ();
 }
 
 /* FIXME: magic mojo (that doesn't seem to do anything) */
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListGetSize
-  (JNIEnv *env, jobject obj, jobject jlist, jint rows, jintArray jdims)
+Java_gnu_java_awt_peer_gtk_GtkListPeer_getSize
+  (JNIEnv *env, jobject obj, jint rows, jintArray jdims)
 {
   void *ptr;
   jint *dims;
@@ -158,11 +162,11 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListGetSize
   if (rows < 3)
     rows = 3;
 
-  ptr = NSA_GET_PTR (env, jlist);
+  ptr = NSA_GET_PTR (env, obj);
   gdk_threads_enter ();
 
-  list = GTK_WIDGET (ptr);
-  sw = GTK_SCROLLED_WINDOW (NSA_GET_PTR (env, obj));
+  list = GTK_WIDGET (CLIST_FROM_SW (ptr));
+  sw = GTK_SCROLLED_WINDOW (ptr);
 
   /*
   gtk_widget_size_request(GTK_WIDGET (GTK_SCROLLED_WINDOW(sw)->hscrollbar), 
@@ -199,8 +203,8 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListGetSize
 
 
 JNIEXPORT jintArray JNICALL
-Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListGetSelected
-  (JNIEnv *env, jobject obj, jobject jlist)
+Java_gnu_java_awt_peer_gtk_GtkListPeer_getSelectedIndexes
+  (JNIEnv *env, jobject obj)
 {
   void *ptr;
   GtkCList *list;
@@ -209,17 +213,10 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListGetSelected
   GList *child;
   jint count, i;
 
-  ptr = NSA_GET_PTR (env, jlist);
+  ptr = NSA_GET_PTR (env, obj);
   gdk_threads_enter ();
 
-  list = GTK_CLIST (ptr);
-
-  if (!list->selection)
-    {
-      gdk_threads_leave ();
-      return NULL;
-    }
-
+  list = CLIST_FROM_SW (ptr);
   count = g_list_length (list->selection);
 
   selection = (*env)->NewIntArray (env, count);
@@ -238,28 +235,28 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListGetSelected
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListScrollVertical
-  (JNIEnv *env, jobject obj, jobject jlist, jint index)
+Java_gnu_java_awt_peer_gtk_GtkListPeer_makeVisible
+  (JNIEnv *env, jobject obj, jint index)
 {
   void *ptr;
 
-  ptr = NSA_GET_PTR (env, jlist);
+  ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  gtk_clist_moveto (GTK_CLIST (ptr), index, 0, 0.5, 0.5);
+  gtk_clist_moveto (CLIST_FROM_SW (ptr), index, 0, 0.5, 0.5);
   gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkListPeer_gtkListSetSelectionMode
-  (JNIEnv *env, jobject obj, jobject jlist, jboolean mode)
+Java_gnu_java_awt_peer_gtk_GtkListPeer_setMultipleMode
+  (JNIEnv *env, jobject obj, jboolean mode)
 {
   void *ptr;
     
-  ptr = NSA_GET_PTR (env, jlist);
+  ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  gtk_clist_set_selection_mode (GTK_CLIST (ptr),
+  gtk_clist_set_selection_mode (CLIST_FROM_SW (ptr),
 				mode ? GTK_SELECTION_MULTIPLE : 
 				       GTK_SELECTION_SINGLE);
   gdk_threads_leave ();
