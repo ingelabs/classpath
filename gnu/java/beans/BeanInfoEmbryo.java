@@ -43,7 +43,7 @@ public class BeanInfoEmbryo {
 	Vector additionalBeanInfo = new Vector();
 	Hashtable properties = new Hashtable();
 	Hashtable events = new Hashtable();
-	Hashtable methods = new Hashtable();
+	Vector methods = new Vector();
 
 	BeanInfo[] AadditionalBeanInfo;
 	PropertyDescriptor[] Aproperties;
@@ -78,12 +78,7 @@ public class BeanInfoEmbryo {
 		}
 		if(methods != null) {
 			Amethods = new MethodDescriptor[methods.size()];
-			int i = 0;
-			Enumeration enum = methods.elements();
-			while(enum.hasMoreElements()) {
-				Amethods[i] = (MethodDescriptor)enum.nextElement();
-				i++;
-			}
+			methods.copyInto(Amethods);
 		}
 		return new ExplicitBeanInfo(beanDescriptor,AadditionalBeanInfo,Aproperties,-1,Aevents,-1,Amethods,null);
 	}
@@ -130,11 +125,8 @@ public class BeanInfoEmbryo {
 		Aevents = e;
 	}
 
-	public boolean hasMethod(String name) {
-		return methods.get(name) != null;
-	}
 	public void addMethod(MethodDescriptor m) {
-		methods.put(m.getName(),m);
+		methods.addElement(m);
 	}
 	public void setMethods(MethodDescriptor[] m) {
 		methods = null;
