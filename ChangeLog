@@ -1,3 +1,8 @@
+2003-11-25  Mark Wielaard  <mark@klomp.org>
+
+	Thanks to Sascha Brawer
+	* NEWS: Update new features, vm-interface changes and bug fixes.
+
 2003-11-25  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	* java/util/GregorianCalendar.java (getLinearTime): Avoid counting

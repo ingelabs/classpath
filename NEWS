@@ -1,6 +1,23 @@
 New in release 0.07 (not-yet-released)
 
 * java.awt gtk+ peers now depend on gtk+ 2.2.x.
+* java.awt.geom.CubicCurve2D, java.awt.geom.QuadCurve2D:
+  Subdivision and flatness calculation implemented.
+* java.awt.geom.FlatteningPathIterator: Working implementation.
+* gnu.java.awt.BitwiseXORComposite helper class.
+* Improved documentation.
+* Fixed various bugs in java.awt, java.awt.font, java.awt.geom, java.awt.image,
+  javax.swing.undo, (possibly many others).
+* Fixed Classpath bugs:
+  #2944 Incorrect synchronization in java.util.logging.ErrorManager
+  #6075 java.awt.geom.GeneralPath.getCurrentPoint returns wrong results
+  #6076 java.awt.geom.GeneralPath constructor sometimes hangs
+  #6089 java.awt.geom.GeneralPath.getPathIterator does not work
+
+VM Interface changes:
+
+* Thread has been split in a VM-independent Thread class and a VM-dependent
+  VMThread class.
 
 New in release 0.06 (2003/22/08)
 
