@@ -17,7 +17,7 @@
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
-// TODO: comments and test suite
+// TODO: test suite
 
 package java.io;
 
@@ -27,19 +27,87 @@ import java.util.Hashtable;
 import gnu.java.io.ObjectIdentityWrapper;
 import gnu.java.lang.reflect.TypeSignature;
 
+/** 
+   An <code>ObjectOutputStream</code> can be used to write objects
+   as well as primitive data in a platform-independent manner to an
+   <code>OutputStream</code>.
+
+   The data produced by an <code>ObjectOutputStream</code> can be read
+   and reconstituted by an <code>ObjectInputStream</code>.
+
+   <code>writeObject(Object)</code> is used to write Objects, the
+   <code>write&lt;type&gt;</code> methods are used to write primitive
+   data (as in <code>DataOutputStream</code>). Strings can be written
+   as objects or as primitive data.
+
+   Not all objects can be written out using an
+   <code>ObjectOutputStream</code>.  Only those objects that are an
+   instance of <code>java.io.Serializable</code> can be written.
+
+   Using default serialization, information about the class of an
+   object is written, all of the non-transient, non-static fields of
+   the object are written, if any of these fields are objects, the are
+   written out in the same manner.
+
+   An object is only written out the first time it is encountered.  If
+   the object is encountered later, a reference to it is written to
+   the underlying stream.  Thus writing circular object graphs
+   does not present a problem, nor are relationships between objects
+   in a graph lost.
+
+   Example usage:
+     <pre>
+     Hashtable map = new Hashtable();
+     map.put( "one", new Integer( 1 ) );
+     map.put( "two", new Integer( 2 ) );
+
+     ObjectOutputStream oos =
+     new ObjectOutputStream( new FileOutputStream( "numbers" ) );
+     oos.writeObject( map );
+     oos.close();
+
+     ObjectInputStream ois =
+     new ObjectInputStream( new FileInputStream( "numbers" ) );
+     Hashtable newmap = (Hashtable)ois.readObject();
+     
+     System.out.println( newmap );
+     </pre>
+
+   The default serialization can be overriden in two ways.
+
+   By defining a method <code>private void
+   writeObject(ObjectStreamClass)</code>, a class can dictate exactly
+   how information about itself is written.
+   <code>defaultWriteObject()</code> may be called from this method to
+   build use augment the custom serialization.  This method is not
+   responsible for dealing with fields of super-classes or subclasses.
+
+   By implementing <code>java.io.Externalizable</code>.  This gives
+   the class complete control over the way it is written to the
+   stream.  If this approach is used the burden of writing superclass
+   and subclass data is transfered to the class implementing
+   <code>java.io.Externalizable</code>.
+
+   @see java.io.DataOutputStream
+   @see java.io.Externalizable
+   @see java.io.ObjectInputStream
+   @see java.io.Serializable
+   @see TODO: java serialization spec
+*/
 public class ObjectOutputStream extends OutputStream
   implements ObjectOutput, ObjectStreamConstants
 {
-  static
-  {
-    //DEBUG
-    System.out.println( "Using ObjectOutputStream" );
-    //eDEBUG
+  /**
+     Creates a new <code>ObjectOutputStream</code> that will do all of
+     its writing onto <code>out</code>.  This method also initializes
+     the stream by writing the header information (stream magic number
+     and stream version).
 
-    System.loadLibrary( "java_io_ObjectOutputStream" );
-  }
+     @exception IOException Writing stream header to underlying
+     stream cannot be completed.
 
-
+     @see writeStreamHeader()
+  */
   public ObjectOutputStream( OutputStream out ) throws IOException
   {
     myRealOutput = new DataOutputStream( out );
@@ -55,6 +123,25 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
+  /**
+     Writes a representation of <code>obj</code> to the underlying
+     output stream by writing out information about its class, then
+     writing out each of the objects non-transient, non-static
+     fields.  If any of these fields are other objects,
+     the are written out in the same manner.
+
+     This method can be overriden by a class by implementing
+     <code>private void writeObject(ObjectOutputStream)</code>.
+
+     If an exception is thrown from this method, the stream is left in
+     an undefined state.
+
+     @exception NotSerializableException An attempt was made to
+     serialize an <code>Object</code> that is not serializable.
+
+     @exception IOException Exception from underlying
+     <code>OutputStream</code>.
+  */
   public final void writeObject( Object obj ) throws IOException
   {
     boolean was_serializing = myIsSerializing;
@@ -222,6 +309,22 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
+  /** 
+     Writes the current objects non-transient, non-static fields from
+     the current class to the underlying output stream.
+
+     This method is intended to be called from within a object's
+     <code>private void writeObject(ObjectOutputStream)</code>
+     method.
+
+     @exception NotActiveException This method was called from a
+     context other than from the current object's and current class's
+     <code>private void writeObject(ObjectOutputStream)</code>
+     method.
+
+     @exception IOException Exception from underlying
+     <code>OutputStream</code>.
+  */
   public final void defaultWriteObject()
     throws IOException, NotActiveException
   {
@@ -234,6 +337,18 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
+  /**
+     Resets stream to state equivalent to the state just after it was
+     constructed.
+
+     Causes all objects previously written to the stream to be
+     forgotten.  A notification of this reset is also written to the
+     underlying stream.
+
+     @exception IOException Exception from underlying
+     <code>OutputStream</code> or reset called while serialization is
+     in progress.
+  */
   public void reset() throws IOException
   {
     reset( false );
@@ -250,16 +365,49 @@ public class ObjectOutputStream extends OutputStream
   }
   
 
+  /** 
+     An empty hook that allows subclasses to write extra information
+     about classes to the stream.  This method is called the first
+     time each class is seen, and after all of the standard
+     information about the class has been written.
+
+     @exception IOException Exception from underlying
+     <code>OutputStream</code>.
+
+     @see java.io.ObjectInputStream#resolveClass(java.lang.Class)
+  */
   protected void annotateClass( Class cl ) throws IOException
   {}
 
 
+  /**
+     Allows subclasses to replace objects that are written to the
+     stream with other objects to be written in their place.  This
+     method is called the first time each object is encountered
+     (modulo reseting of the stream).
+
+     This method must be enabled before it will be called in the
+     serialization process.
+
+     @exception IOException Exception from underlying
+     <code>OutputStream</code>.
+
+     @see enableReplaceObject(boolean)
+  */
   protected Object replaceObject( Object obj ) throws IOException
   {
     return obj;
   }
 
+  
+  /**
+     If <code>enable</code> is <code>true</code> and this object is
+     trusted, then <code>replaceObject(Object)</code> will be called
+     in subsequent calls to <code>writeObject(Object)</code>.
+     Otherwise, <code>replaceObject(Object)</code> will not be called.
 
+     @exception SecurityException This class is not trusted.
+  */
   protected final boolean enableReplaceObject( boolean enable )
     throws SecurityException
   {
@@ -273,6 +421,13 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
+  /**
+     Writes stream magic and stream version information to the
+     underlying stream.
+
+     @exception IOException Exception from underlying
+     <code>OutputStream</code>.     
+  */
   protected void writeStreamHeader() throws IOException
   {
     myRealOutput.writeShort( STREAM_MAGIC );
@@ -280,6 +435,9 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
+  /**
+     @see java.io.DataOutputStream#write(int)
+  */
   public void write( int data ) throws IOException
   {
     if( myWriteDataAsBlocks )
@@ -294,12 +452,18 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
+  /**
+     @see java.io.DataOutputStream#write(byte[])
+  */
   public void write( byte b[] ) throws IOException
   {
     write( b, 0, b.length );
   }
 
 
+  /**
+     @see java.io.DataOutputStream#write(byte[],int,int)
+  */
   public void write( byte b[], int off, int len ) throws IOException
   {
     if( myWriteDataAsBlocks )
@@ -324,6 +488,9 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
+  /**
+     @see java.io.DataOutputStream#flush()
+  */
   public void flush() throws IOException
   {
     drain();
@@ -331,6 +498,13 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
+  /**
+     Causes the block-data buffer to be written to the underlying
+     stream, but does not flush underlying stream.
+
+     @exception IOException Exception from underlying
+     <code>OutputStream</code>.
+  */
   protected void drain() throws IOException
   {
     if( myBlockDataCount == 0 )
@@ -342,6 +516,9 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
+  /**
+     @see java.io.DataOutputStream#close()
+  */
   public void close() throws IOException
   {
     drain();
@@ -349,72 +526,107 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
+  /**
+     @see java.io.DataOutputStream#writeBoolean(boolean)
+  */
   public void writeBoolean( boolean data ) throws IOException
   {
     myDataOutput.writeBoolean( data );
   }
 
 
+  /**
+     @see java.io.DataOutputStream#writeByte(int)
+  */
   public void writeByte( int data ) throws IOException
   {
     myDataOutput.writeByte( data );
   }
 
 
+  /**
+     @see java.io.DataOutputStream#writeShort(int)
+  */
   public void writeShort( int data ) throws IOException
   {
     myDataOutput.writeShort( data );
   }
 
 
+  /**
+     @see java.io.DataOutputStream#writeChar(int)
+  */
   public void writeChar( int data ) throws IOException
   {
     myDataOutput.writeChar( data );
   }
 
 
+  /**
+     @see java.io.DataOutputStream#writeInt(int)
+  */
   public void writeInt( int data ) throws IOException
   {
     myDataOutput.writeInt( data );
   }
 
 
+  /**
+     @see java.io.DataOutputStream#writeLong(long)
+  */
   public void writeLong( long data ) throws IOException
   {
     myDataOutput.writeLong( data );
   }
 
 
+  /**
+     @see java.io.DataOutputStream#writeFloat(float)
+  */
   public void writeFloat( float data ) throws IOException
   {
     myDataOutput.writeFloat( data );
   }
 
 
+  /**
+     @see java.io.DataOutputStream#writeDouble(double)
+  */
   public void writeDouble( double data ) throws IOException
   {
     myDataOutput.writeDouble( data );
   }
 
 
+  /**
+     @see java.io.DataOutputStream#writeBytes(java.lang.String)
+  */
   public void writeBytes( String data ) throws IOException
   {
     myDataOutput.writeBytes( data );
   }
 
 
+  /**
+     @see java.io.DataOutputStream#writeChars(java.lang.String)
+  */
   public void writeChars( String data ) throws IOException
   {
     myDataOutput.writeChars( data );
   }
 
 
+  /**
+     @see java.io.DataOutputStream#writeUTF(java.lang.String)
+  */
   public void writeUTF( String data ) throws IOException
   {
     myDataOutput.writeUTF( data );
   }
 
 
+  // write out the block-data buffer, picking the correct header
+  // depending on the size of the buffer
   private void writeBlockDataHeader( int size ) throws IOException
   {
     if( size < 256 )
@@ -430,12 +642,15 @@ public class ObjectOutputStream extends OutputStream
   }  
 
 
+  // lookup the handle for OBJ, return null if OBJ doesn't have a
+  // handle yet
   private Integer findHandle( Object obj )
   {
     return (Integer)myOIDLookupTable.get( new ObjectIdentityWrapper( obj ) );
   }
 
-
+  
+  // assigns the next availible handle to OBJ
   private int assignNewHandle( Object obj )
   {
     myOIDLookupTable.put( new ObjectIdentityWrapper( obj ),
@@ -444,6 +659,7 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
+  // resets mapping from objects to handles
   private void clearHandles()
   {
     myNextOID = FIRST_OID;
@@ -451,6 +667,7 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
+  // write out array size followed by each element of the array
   private void writeArraySizeAndElements( Object array, Class clazz )
     throws IOException
   {
@@ -531,6 +748,10 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
+  // returns an array of ObjectStreamClasses that represent the super
+  // classes of CLAZZ and CLAZZ itself in order from most super to
+  // CLAZZ.  ObjectStreamClass[0] is the highest superclass of CLAZZ
+  // that is serializable.
   private ObjectStreamClass[] getObjectStreamClasses( Class clazz )
   {
     ObjectStreamClass osc = ObjectStreamClass.lookup( clazz );
@@ -553,6 +774,9 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
+  // writes out FIELDS of OBJECT.  If CALL_WRITE_METHOD is true, use
+  // object's writeObject(ObjectOutputStream), otherwise use default
+  // serialization.  FIELDS are already in canonical order.
   private void writeFields( Object obj, Field[] fields, boolean call_write_method )
     throws IOException
   {
@@ -594,6 +818,7 @@ public class ObjectOutputStream extends OutputStream
   }
 
 
+  // Toggles writing primitive data to block-data buffer.
   private void setBlockDataMode( boolean on )
   {
     myWriteDataAsBlocks = on;
@@ -634,4 +859,14 @@ public class ObjectOutputStream extends OutputStream
   private boolean myIsSerializing;
   private int myNextOID;
   private Hashtable myOIDLookupTable;
+
+
+  static
+  {
+    //DEBUG
+    System.out.println( "Using ObjectOutputStream" );
+    //eDEBUG
+
+    System.loadLibrary( "java_io_ObjectOutputStream" );
+  }
 }
