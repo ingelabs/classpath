@@ -191,7 +191,6 @@ public class DeflaterOutputStream extends FilterOutputStream
    */
   public void write(byte[] buf, int off, int len) throws IOException
   {
-    //    System.err.println("DOS with off " + off + " and len " + len);
     def.setInput(buf, off, len);
     deflate();
   }

@@ -87,7 +87,6 @@ public class GZIPInputStream
    */
   protected CRC32 crc; 
 
-
   /**
    * Indicates whether or not the end of the stream has been reached.
    */  
@@ -319,7 +318,6 @@ public class GZIPInputStream
     readGZIPHeader = true;
     //System.err.println("Read GZIP header");
   }
-
 
   private void readFooter() throws IOException
   {

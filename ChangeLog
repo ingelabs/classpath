@@ -1,5 +1,16 @@
 2004-04-12  Michael Koch  <konqueror@gmx.de>
 
+	* java/util/zip/DeflaterOutputStream.java
+	(write): Removed debug code.
+	* java/util/zip/GZIPInputStream.java: Jalopied.
+	* java/util/zip/GZIPOutputStream.java: Jalopied
+	(write): Update CRC sum after actually writing data.
+	* java/util/zip/InflaterInputStream.java: Jalopied.
+	(InflaterInputStream): Check arguments before setting fields.
+	(markSupported): Removed.
+
+2004-04-12  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/InetAddress.java,
 	java/net/SocketPermission.java:
 	Jalopied.
