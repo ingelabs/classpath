@@ -1,5 +1,12 @@
 2000-04-21  Tom Tromey  <tromey@cygnus.com>
 
+	* PipedOutputStream.java (write(int)): Use `receive', not
+	`write'.
+	(write(byte[],int,int): Likewise.
+	* PipedInputStream.java (receive(byte[],int,int)): Renamed from
+	`write'.
+	(receive(int)): Rewrote.
+
 	* PipedInputStream.java (try_not_to_block): Removed.
 	(read): Can return fewer than LEN bytes as long as at least one
 	byte was read.
