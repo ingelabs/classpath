@@ -22,6 +22,8 @@
 package java.awt;
 
 import java.awt.peer.PanelPeer;
+import java.awt.peer.ContainerPeer;
+import java.awt.peer.ComponentPeer;
 
 /**
   * A panel is a simple container class. 
@@ -74,7 +76,7 @@ addNotify()
   if (getPeer() != null)
     return;
 
-  setPeer(getToolkit().createPanel(this));
+  setPeer((ComponentPeer)getToolkit().createPanel(this));
 }
 
 } // class Panel 

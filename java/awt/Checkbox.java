@@ -22,6 +22,7 @@
 package java.awt;
 
 import java.awt.peer.CheckboxPeer;
+import java.awt.peer.ComponentPeer;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.Serializable;
@@ -282,7 +283,7 @@ addNotify()
   if (getPeer() != null)
     return;
 
-  setPeer(getToolkit().createCheckbox(this));
+  setPeer((ComponentPeer)getToolkit().createCheckbox(this));
 }
 
 /*************************************************************************/

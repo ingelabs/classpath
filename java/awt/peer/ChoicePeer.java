@@ -21,7 +21,7 @@
 
 package java.awt.peer;
 
-public interface ChoicePeer implements ComponentPeer
+public interface ChoicePeer extends ComponentPeer
 {
 
 public abstract void add(String item, int index);

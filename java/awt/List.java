@@ -27,6 +27,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.peer.ListPeer;
+import java.awt.peer.ComponentPeer;
 import java.util.Vector;
 
 /**
@@ -827,7 +828,7 @@ deselect(int index)
 public void
 addNotify()
 {
-  setPeer(getToolkit().createList(this));
+  setPeer((ComponentPeer)getToolkit().createList(this));
 }
 
 /*************************************************************************/

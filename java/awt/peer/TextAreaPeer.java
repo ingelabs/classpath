@@ -23,7 +23,7 @@ package java.awt.peer;
 
 import java.awt.Dimension;
 
-public interface TextAreaPeer implements TextComponentPeer
+public interface TextAreaPeer extends TextComponentPeer
 {
 
 public abstract void insert(String text, int pos);

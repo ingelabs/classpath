@@ -21,7 +21,7 @@
 
 package java.awt.peer;
 
-public interface PanelPeer implements ContainerPeer
+public interface PanelPeer extends ContainerPeer
 {
 
 } // interface PanelPeer

@@ -22,6 +22,8 @@
 package java.awt;
 
 import java.awt.peer.MenuBarPeer;
+import java.awt.peer.MenuComponentPeer;
+
 import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -214,7 +216,7 @@ public void
 addNotify()
 {
   if (getPeer() == null)
-    setPeer(getToolkit().createMenuBar(this));
+    setPeer((MenuComponentPeer)getToolkit().createMenuBar(this));
 }
 
 /*************************************************************************/

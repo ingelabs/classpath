@@ -22,6 +22,7 @@
 package java.awt;
 
 import java.awt.peer.LabelPeer;
+import java.awt.peer.ComponentPeer;
 
 /**
   * This component is used for displaying simple text strings that cannot
@@ -197,7 +198,7 @@ setText(String text)
 public void
 addNotify()
 {
-  setPeer(getToolkit().createLabel(this));
+  setPeer((ComponentPeer)getToolkit().createLabel(this));
 }
 
 /*************************************************************************/

@@ -21,7 +21,7 @@
 
 package java.awt.peer;
 
-public interface CheckboxPeer implements ComponentPeer
+public interface CheckboxPeer extends ComponentPeer
 {
 
 public abstract void setCheckboxGroup(java.awt.CheckboxGroup group);

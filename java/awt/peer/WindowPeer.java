@@ -21,7 +21,7 @@
 
 package java.awt.peer;
 
-public interface WindowPeer implements ContainerPeer
+public interface WindowPeer extends ContainerPeer
 {
 
 public abstract void toBack();

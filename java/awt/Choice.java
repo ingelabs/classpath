@@ -22,6 +22,7 @@
 package java.awt;
 
 import java.awt.peer.ChoicePeer;
+import java.awt.peer.ComponentPeer;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.io.Serializable;
@@ -315,7 +316,7 @@ public void
 addNotify()
 {
   if (getPeer() == null)
-    setPeer(getToolkit().createChoice(this));
+    setPeer((ComponentPeer)getToolkit().createChoice(this));
 }
 
 /*************************************************************************/

@@ -22,6 +22,8 @@
 package java.awt;
 
 import java.awt.peer.TextAreaPeer;
+import java.awt.peer.TextComponentPeer;
+import java.awt.peer.ComponentPeer;
 
 /**
   * This implements a multi-line text entry widget.
@@ -402,7 +404,7 @@ addNotify()
   if (getPeer() != null)
     return;
 
-  setPeer(getToolkit().createTextArea(this));
+  setPeer((ComponentPeer)getToolkit().createTextArea(this));
 }
 
 /*************************************************************************/

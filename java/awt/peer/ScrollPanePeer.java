@@ -23,7 +23,7 @@ package java.awt.peer;
 
 import java.awt.Adjustable;
 
-public interface ScrollPanePeer implements ContainerPeer
+public interface ScrollPanePeer extends ContainerPeer
 {
 
 public abstract int getHScrollbarHeight();

@@ -21,7 +21,7 @@
 
 package java.awt.peer;
 
-public interface ButtonPeer implements ComponentPeer
+public interface ButtonPeer extends ComponentPeer
 {
 
 public abstract void setLabel(String label);

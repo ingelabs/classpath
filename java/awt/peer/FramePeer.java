@@ -24,7 +24,7 @@ package java.awt.peer;
 import java.awt.Image;
 import java.awt.MenuBar;
 
-public interface FramePeer implements WindowPeer
+public interface FramePeer extends WindowPeer
 {
 
 public abstract void setIconImage(Image image);

@@ -21,6 +21,9 @@
 
 package java.awt;
 
+import java.awt.peer.CanvasPeer;
+import java.awt.peer.ComponentPeer;
+
 /**
   * This class implements an AWT canvas widget.
   *
@@ -65,7 +68,7 @@ addNotify()
   if (getPeer() != null)
     return;
 
-  setPeer(getToolkit().createCanvas(this));
+  setPeer((ComponentPeer)getToolkit().createCanvas(this));
 }
 
 /*************************************************************************/

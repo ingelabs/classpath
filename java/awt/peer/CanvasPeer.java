@@ -21,7 +21,7 @@
 
 package java.awt.peer;
 
-public interface CanvasPeer implements ComponentPeer
+public interface CanvasPeer extends ComponentPeer
 {
 
 } // interface CanvasPeer 

@@ -21,7 +21,7 @@
 
 package java.awt.peer;
 
-public interface DialogPeer implements WindowPeer
+public interface DialogPeer extends WindowPeer
 {
 
 public abstract void setResizable(boolean resizeable);

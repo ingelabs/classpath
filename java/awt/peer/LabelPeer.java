@@ -21,7 +21,7 @@
 
 package java.awt.peer;
 
-public interface LabelPeer implements ComponentPeer
+public interface LabelPeer extends ComponentPeer
 {
 
 public abstract void setAlignment(int alignment);

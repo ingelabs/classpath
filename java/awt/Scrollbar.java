@@ -22,6 +22,8 @@
 package java.awt;
 
 import java.awt.peer.ScrollbarPeer;
+import java.awt.peer.ComponentPeer;
+
 import java.awt.event.AdjustmentListener;
 import java.awt.event.AdjustmentEvent;
 
@@ -571,7 +573,7 @@ addNotify()
   if (getPeer() != null)
     return;
 
-  setPeer(getToolkit().createScrollbar(this));
+  setPeer((ComponentPeer)getToolkit().createScrollbar(this));
 }
 
 /*************************************************************************/

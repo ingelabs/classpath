@@ -23,7 +23,7 @@ package java.awt.peer;
 
 import java.io.FilenameFilter;
 
-public interface FileDialogPeer implements DialogPeer
+public interface FileDialogPeer extends DialogPeer
 {
 
 public abstract void setFile(String file);

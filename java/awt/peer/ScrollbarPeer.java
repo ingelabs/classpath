@@ -21,7 +21,7 @@
 
 package java.awt.peer;
 
-public interface ScrollbarPeer implements ComponentPeer
+public interface ScrollbarPeer extends ComponentPeer
 {
 
 public abstract void setLineIncrement(int inc);

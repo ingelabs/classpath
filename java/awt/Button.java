@@ -24,6 +24,7 @@ package java.awt;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.peer.ButtonPeer;
+import java.awt.peer.ComponentPeer;
 
 /**
   * This class provides a button widget for the AWT. 
@@ -191,7 +192,7 @@ addNotify()
   if (bp != null)
     return;
 
-  setPeer(getToolkit().createButton(this));
+  setPeer((ComponentPeer)getToolkit().createButton(this));
 }
 
 /*************************************************************************/

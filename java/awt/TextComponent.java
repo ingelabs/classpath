@@ -24,6 +24,7 @@ package java.awt;
 import java.awt.event.TextEvent;
 import java.awt.event.TextListener;
 import java.awt.peer.TextComponentPeer;
+import java.awt.peer.ComponentPeer;
 
 /**
   * This class provides common functionality for widgets than 

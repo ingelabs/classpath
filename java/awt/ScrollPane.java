@@ -22,6 +22,8 @@
 package java.awt;
 
 import java.awt.peer.ScrollPanePeer;
+import java.awt.peer.ContainerPeer;
+import java.awt.peer.ComponentPeer;
 
 /**
   * This widget provides a scrollable region that allows a single 
@@ -314,7 +316,7 @@ addNotify()
   if (getPeer() == null)
     return;
 
-  setPeer(getToolkit().createScrollPane(this));
+  setPeer((ComponentPeer)getToolkit().createScrollPane(this));
 
   if (hAdjustable != null)
     hAdjustable.addNotify();

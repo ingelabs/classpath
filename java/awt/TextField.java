@@ -24,6 +24,8 @@ package java.awt;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.peer.TextFieldPeer;
+import java.awt.peer.TextComponentPeer;
+import java.awt.peer.ComponentPeer;
 
 /**
   * This class implements a single line text entry field widget
@@ -363,7 +365,7 @@ addNotify()
   if (getPeer() != null)
     return;
 
-  setPeer(getToolkit().createTextField(this));
+  setPeer((ComponentPeer)getToolkit().createTextField(this));
 }
 
 /*************************************************************************/

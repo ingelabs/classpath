@@ -21,7 +21,7 @@
 
 package java.awt.peer;
 
-public interface MenuItemPeer implements MenuComponentPeer
+public interface MenuItemPeer extends MenuComponentPeer
 {
 
 public abstract void disable();

@@ -23,7 +23,7 @@ package java.awt.peer;
 
 import java.awt.Insets;
 
-public interface ContainerPeer implements ComponentPeer
+public interface ContainerPeer extends ComponentPeer
 {
 
 public abstract Insets insets();
