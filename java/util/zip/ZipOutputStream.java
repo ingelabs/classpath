@@ -202,7 +202,7 @@ public class ZipOutputStream extends DeflaterOutputStream implements ZipConstant
     entry.setMethod(method);
     curMethod = method;
     /* Write the local file header */
-    writeLeInt(L_HDR_SIG);
+    writeLeInt(LOCSIG);
     writeLeShort(method == STORED
 		 ? ZIP_STORED_VERSION : ZIP_DEFLATED_VERSION);
     writeLeShort(flags);
@@ -231,7 +231,7 @@ public class ZipOutputStream extends DeflaterOutputStream implements ZipConstant
     out.write(name);
     out.write(extra);
 
-    offset += L_SIZE + name.length + extra.length;
+    offset += LOCHDR + name.length + extra.length;
 
     /* Activate the entry. */
 
@@ -282,11 +282,11 @@ public class ZipOutputStream extends DeflaterOutputStream implements ZipConstant
     /* Now write the data descriptor entry if needed. */
     if (curMethod == DEFLATED && (curEntry.flags & 8) != 0)
       {
-	writeLeInt(D_HDR_SIG);
+	writeLeInt(EXTSIG);
 	writeLeInt((int)curEntry.getCrc());
 	writeLeInt((int)curEntry.getCompressedSize());
 	writeLeInt((int)curEntry.getSize());
-	offset += D_SIZE;
+	offset += EXTHDR;
       }
 
     entries.addElement(curEntry);
@@ -339,7 +339,7 @@ public class ZipOutputStream extends DeflaterOutputStream implements ZipConstant
 	ZipEntry entry = (ZipEntry) enum.nextElement();
 	
 	int method = entry.getMethod();
-	writeLeInt(C_HDR_SIG);
+	writeLeInt(CENSIG);
 	writeLeShort(method == STORED
 		     ? ZIP_STORED_VERSION : ZIP_DEFLATED_VERSION);
 	writeLeShort(method == STORED
@@ -375,10 +375,10 @@ public class ZipOutputStream extends DeflaterOutputStream implements ZipConstant
 	out.write(extra);
 	out.write(comment);
 	numEntries++;
-	sizeEntries += C_SIZE + name.length + extra.length + comment.length;
+	sizeEntries += CENHDR + name.length + extra.length + comment.length;
       }
 
-    writeLeInt(EC_HDR_SIG);
+    writeLeInt(ENDSIG);
     writeLeShort(0); /* disk number */
     writeLeShort(0); /* disk with start of central dir */
     writeLeShort(numEntries);

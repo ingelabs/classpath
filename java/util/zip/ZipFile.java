@@ -143,17 +143,24 @@ public class ZipFile implements ZipConstants
    */
   private void readEntries() throws ZipException, IOException
   {
-    long fileLen = raf.length();
-    raf.seek(fileLen - EC_SIZE);
-    if (readLeInt() != EC_HDR_SIG)
-      throw new ZipException("Missing End of Central Directory");
-    if (raf.skipBytes(EC_TOTAL_ENTRIES_CENTRAL_DIR - EC_NUMBER_THIS_DISK)
-	!= EC_TOTAL_ENTRIES_CENTRAL_DIR - EC_NUMBER_THIS_DISK)
+    /* Search for the End Of Central Directory.  When a zip comment is 
+     * present the directory may start earlier.
+     * FIXME: This searches the whole file in a very slow manner if the
+     * file isn't a zip file.
+     */
+    long pos = raf.length() - ENDHDR;
+    do
+      {
+	if (pos < 0)
+	  throw new ZipException
+	    ("central directory not found, probably not a zip file");
+	raf.seek(pos--);
+      }
+    while (readLeInt() != ENDSIG);
+    if (raf.skipBytes(ENDTOT - ENDNRD) != ENDTOT - ENDNRD)
       throw new EOFException();
     int count = readLeShort();
-    if (raf.skipBytes(EC_OFFSET_START_CENTRAL_DIRECTORY
-                      - EC_SIZE_CENTRAL_DIRECTORY)
-        != EC_OFFSET_START_CENTRAL_DIRECTORY - EC_SIZE_CENTRAL_DIRECTORY)
+    if (raf.skipBytes(ENDOFF - ENDSIZ) != ENDOFF - ENDSIZ)
       throw new EOFException();
     int centralOffset = readLeInt();
 
@@ -161,10 +168,9 @@ public class ZipFile implements ZipConstants
     raf.seek(centralOffset);
     for (int i = 0; i < count; i++)
       {
-	if (readLeInt() != C_HDR_SIG)
+	if (readLeInt() != CENSIG)
 	  throw new ZipException("Wrong Central Directory signature");
-	if (raf.skipBytes(C_COMPRESSION_METHOD - C_VERSION_MADE_BY)
-	    != C_COMPRESSION_METHOD - C_VERSION_MADE_BY)
+	if (raf.skipBytes(CENHOW - CENVEM) != CENHOW - CENVEM)
 	  throw new EOFException();
 	int method = readLeShort();
 	int dostime = readLeInt();
@@ -174,8 +180,7 @@ public class ZipFile implements ZipConstants
 	int nameLen = readLeShort();
 	int extraLen = readLeShort();
 	int commentLen = readLeShort();
-	if (raf.skipBytes(C_RELATIVE_OFFSET_LOCAL_HEADER - C_DISK_NUMBER_START)
-	    != C_RELATIVE_OFFSET_LOCAL_HEADER - C_DISK_NUMBER_START)
+	if (raf.skipBytes(CENOFF - CENDSK) != CENOFF - CENDSK)
 	  throw new EOFException();
 	int offset = readLeInt();
 
@@ -267,27 +272,25 @@ public class ZipFile implements ZipConstants
     synchronized (raf)
       {
 	raf.seek(entry.offset);
-	if (readLeInt() != L_HDR_SIG)
+	if (readLeInt() != LOCSIG)
 	  throw new ZipException("Wrong Local header signature");
 
 	/* skip version and flags */
-	if (raf.skipBytes(L_COMPRESSION_METHOD - L_VERSION_NEEDED_TO_EXTRACT)
-	    != L_COMPRESSION_METHOD - L_VERSION_NEEDED_TO_EXTRACT)
+	if (raf.skipBytes(LOCHOW - LOCVER) != LOCHOW - LOCVER)
 	  throw new EOFException();
 
 	if (entry.getMethod() != readLeShort())
 	  throw new ZipException("Compression method mismatch");
 
 	/* Skip time, crc, size and csize */
-	if (raf.skipBytes(L_FILENAME_LENGTH - L_LAST_MOD_FILE_TIME)
-	    != L_FILENAME_LENGTH - L_LAST_MOD_FILE_TIME)
+	if (raf.skipBytes(LOCNAM - LOCTIM) != LOCNAM - LOCTIM)
 	  throw new EOFException();
 
 	if (entry.getName().length() != readLeShort())
 	  throw new ZipException("file name length mismatch");
 
 	int extraLen = entry.getName().length() + readLeShort();
-	return entry.offset + L_SIZE + extraLen;
+	return entry.offset + LOCHDR + extraLen;
       }
   }
 

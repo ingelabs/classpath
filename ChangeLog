@@ -1,3 +1,17 @@
+2001-10-18  Jochen Hoenicke  <jochen@gnu.org>
+
+	* java/util/zip/ZipFile.java (readEntries): Search for the End Of
+	Central Directory.  When a zip comment is present the directory
+	may start earlier.  Patch suggested by Jörg Prante
+	<joergprante@gmx.de>.
+
+	* java/util/zip/ZipConstants.java: Renamed constants to their SUN
+	name, which is are now mentioned in the documentation of the sub
+	classes of ZipConstants.  Changed all usages.
+
+	* java/util/zip/ZipEntry.java (STORED): New constant.
+	(DEFLATED): Likewise.
+
 2001-10-17  Tom Tromey  <tromey@redhat.com>
 
 	* java/security/Security.java (loadProviders): Added `vendor'
@@ -87,7 +101,7 @@
 	* gnu/java/rmi/rmic/CompilerProcess.java: New file.
 	* gnu/java/rmi/rmic/Compiler.java: New file.
 
-2001-10-01  Jochen Hoenicke  <jochen@gnu.org>
+2001-10-12  Jochen Hoenicke  <jochen@gnu.org>
 
 	* java/util/zip/DeflaterEngine.java (deflate): Fixed a bug
 	in the logic which lead to ArrayIndexOutOfBoundsException.

@@ -60,6 +60,16 @@ public class ZipEntry implements Cloneable
   int flags;              /* used by ZipOutputStream */
   int offset;             /* used by ZipFile and ZipOutputStream */
 
+
+  /**
+   * Compression method.  This method doesn't compress at all.
+   */
+  public final static int STORED      =  0;
+  /**
+   * Compression method.  This method uses the Deflater.
+   */
+  public final static int DEFLATED    =  8;
+
   /**
    * Creates a zip entry with the given name.
    * @param name the name. May include directory components separated
