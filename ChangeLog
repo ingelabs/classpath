@@ -1,5 +1,14 @@
 2004-12-30  Michael Koch  <konqueror@gmx.de>
 
+	* java/text/DateFormat.java
+	(getAvailableLocales): Implemented.
+	* java/util/Locale.java
+	(availableLocales): Fix modifier order.
+	(localeMap): Likewise.
+	(getAvailableLocales): Likewise.
+
+2004-12-30  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/locale/LocaleInformation_aa.java,
 	gnu/java/locale/LocaleInformation_af.java,
 	gnu/java/locale/LocaleInformation_am.java,
