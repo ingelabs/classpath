@@ -31,6 +31,14 @@ Java_gnu_java_awt_peer_gtk_GtkToolkit_beep (JNIEnv *env, jobject obj)
 }
 
 JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkToolkit_sync (JNIEnv *env, jobject obj)
+{
+  gdk_threads_enter ();
+  gdk_flush ();
+  gdk_threads_leave ();
+}
+
+JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenSizeDimensions
 (JNIEnv *env, jobject obj, jintArray jdims)
 {

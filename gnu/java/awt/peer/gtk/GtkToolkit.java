@@ -122,9 +122,7 @@ public class GtkToolkit extends java.awt.Toolkit
       return false;
     }
 
-  public void sync() 
-    {
-    }
+  native public void sync ();
 
   protected void setComponentState (Component c, GtkComponentPeer cp)
     {
