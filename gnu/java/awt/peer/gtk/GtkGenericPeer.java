@@ -28,17 +28,24 @@ import java.awt.event.*;
 
 public class GtkGenericPeer
 {
-  final int native_state=java.lang.System.identityHashCode(this);
+  final int native_state = java.lang.System.identityHashCode(this);
   protected Object awtWidget;
   protected static EventQueue q = null;
 
   protected GtkGenericPeer (Object awtWidget)
-    {
-      this.awtWidget = awtWidget;
-    }
+  {
+    this.awtWidget = awtWidget;
+  }
 
-  public static void enableQueue(EventQueue sq) {
+  public static void enableQueue (EventQueue sq) 
+  {
     if (q == null)
       q = sq;
+  }
+
+  protected void postActionEvent (String command, int mods) 
+  {
+    q.postEvent (new ActionEvent (awtWidget, ActionEvent.ACTION_PERFORMED, 
+				  command, mods));
   }
 }

@@ -123,26 +123,9 @@ class Test
 
       Button wb=new Button();
       wb.setLabel("Destroy Frame on Click");
-
-      wb.addMouseListener(new MouseAdapter() {
-	public void mousePressed(MouseEvent e) {
-	  System.out.println("mouse pressed wb");
-	  System.out.println("shift = " + e.isShiftDown());
-	  System.out.println("meta = " + e.isMetaDown());
-	  System.out.println("alt = " + e.isAltDown());
-	  System.out.println("ctrl = " + e.isControlDown());
-	  System.out.println("x = " + e.getX());
-	  System.out.println("y = " + e.getY());
-	  System.out.println("clickcount = " + e.getClickCount());
-	  System.out.println("when = " + e.getWhen());
-	  System.out.println();
-	}
-	public void mouseReleased(MouseEvent e) {
-	  System.out.println("mouse released wb");
-	}
-	public void mouseClicked(MouseEvent e) {
-	  System.out.println("mouse clicked wb");
-	  f.dispose ();
+      wb.addActionListener (new ActionListener () {
+	public void actionPerformed (ActionEvent e) {
+	  System.out.println ("action listener on wb called");
 	  System.exit (0);
 	}
       });

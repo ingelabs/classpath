@@ -21,12 +21,12 @@
 
 package gnu.java.awt.peer.gtk;
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.peer.*;
 
 public class GtkButtonPeer extends GtkComponentPeer
     implements ButtonPeer
 {
-
   native void gtkButtonNewWithLabel (String label);
   native void gtkButtonLabelSet (String label);    
 
@@ -44,5 +44,19 @@ public class GtkButtonPeer extends GtkComponentPeer
   {
     System.out.println ("java setlabel");
     gtkButtonLabelSet (label);
-  }    
+  }
+
+  public void handleEvent (AWTEvent e)
+  {
+    if (e instanceof MouseEvent)
+      {
+	MouseEvent me = (MouseEvent) e;
+	if (!me.isConsumed()
+	    && e.getID() == MouseEvent.MOUSE_CLICKED)
+	  postActionEvent (((Button)awtComponent).getActionCommand (), 
+			   me.getModifiers ());
+      }
+
+    super.handleEvent (e);
+  }
 }
