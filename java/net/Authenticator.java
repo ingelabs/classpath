@@ -21,9 +21,6 @@
 
 package java.net;
 
-import java.security.AccessController;
-import java.security.AccessControlException;
-
 /**
   * Sometimes a network operation (such as hitting a password protected
   * web site) will require authentication information in the form of a
@@ -37,7 +34,7 @@ import java.security.AccessControlException;
   * method of this class is called to set up that instance as the object
   * to use on subsequent calls to obtain authorization.
   *
-  * @version 0.5
+  * @version 1.2
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
@@ -93,21 +90,22 @@ private String scheme;
  */
 
 /**
-  * This method sets the default Authenticator object (an instance of a
-  * subclass of Authenticator) to use when prompting the user for
+  * This method sets the default <code>Authenticator</code> object (an instance of a
+  * subclass of <code>Authenticator</code>) to use when prompting the user for
   * information.  Note that this method checks to see if the caller is
-  * allowed to set this value (the "Authenticator.setDefault" permission
-  * and throws an AccessControlException if it is not.
+  * allowed to set this value (the "setDefaultAuthenticator" permission)
+  * and throws a <code>SecurityException</code> if it is not.
   *
-  * @param def_auth The new default Authenticator object to use
+  * @param def_auth The new default <code>Authenticator</code> object to use
   *
-  * @exception AccessControlException If the caller does not have permission to perform this operation
+  * @exception SecurityException If the caller does not have permission to perform this operation
   */ 
 public static void
-setDefault(Authenticator def_auth) throws AccessControlException
+setDefault(Authenticator def_auth)
 {
-  AccessController.checkPermission(new 
-    NetPermission("Authenticator.setDefault"));
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    sm.checkPermission(new NetPermission("setDefaultAuthenticator"));
 
   default_authenticator = def_auth;
 } 
@@ -117,7 +115,7 @@ setDefault(Authenticator def_auth) throws AccessControlException
 /**
   * This method is called whenever a username and password for a given
   * network operation is required.  First, a security check is made to see
-  * if the caller has the "Authenticator.requestPasswordAuthentication"
+  * if the caller has the "requestPasswordAuthentication"
   * permission.  If not, the method thows an exception.  If there is no
   * default Authenticator object, the method then returns null.  Otherwise,
   * the default authenticators's instance variables are initialized and
@@ -132,15 +130,15 @@ setDefault(Authenticator def_auth) throws AccessControlException
   * 
   * @return A PasswordAuthentication object with the user's authentication info
   *
-  * @exception AccessControlException If the caller does not have permission to perform this operation
+  * @exception SecurityException If the caller does not have permission to perform this operation
   */ 
 public static PasswordAuthentication
 requestPasswordAuthentication(InetAddress addr, int port, String protocol,
                               String prompt, String scheme) 
-                              throws AccessControlException
 {
-  AccessController.checkPermission(new
-    NetPermission("Authenticator.requestPasswordAuthentication"));
+  SecurityManager sm = System.getSecurityManager();
+  if (sm != null)
+    sm.checkPermission(new NetPermission("requestPasswordAuthentication"));
 
   if (default_authenticator == null)
     return(null);
