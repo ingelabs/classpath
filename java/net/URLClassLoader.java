@@ -311,6 +311,9 @@ public class URLClassLoader extends SecureClassLoader
       if (jarfile == null)
 	return null;
 
+      if (name.startsWith("/"))
+        name = name.substring(1);
+
       JarEntry je = jarfile.getJarEntry(name);
       if(je != null)
 	return new JarURLResource(this, name, je);
