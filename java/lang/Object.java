@@ -126,7 +126,7 @@ public class Object {
 	 ** @exception CloneNotSupportedException
 	 ** @return a copy of the Object.
 	 **/
-	public Object clone() throws CloneNotSupportedException {
+	protected Object clone() throws CloneNotSupportedException {
 		if(this instanceof Cloneable) {
 			return VMObject.clone(this);
 		} else {
@@ -138,7 +138,7 @@ public class Object {
 	 ** @return the class of this Object.
 	 ** @see java.lang.Class
 	 **/
-	public native Class getClass();
+	public final native Class getClass();
 
 	/** Wakes up one of the threads that is waiting on this
 	 ** Object's monitor.  Only the owner of a lock on the
