@@ -1,5 +1,6 @@
 ../java/net/Authenticator.java$
 ../java/net/JarURLConnection.java$
+../java/net/URLClassLoader.java$
 ../java/lang/RuntimePermission.java$
 ../java/text/MessageFormat.java$
 ../gnu/test/.*$
@@ -18,3 +19,5 @@
 ../java/util/jar/JarFile.java$
 ../java/util/jar/JarInputStream.java$
 ../java/util/jar/JarOutputStream.java$
+../java/util/prefs/.*$
+../gnu/java/util/prefs/.*$
