@@ -1,5 +1,5 @@
 /* DataInputStream.java -- FilteredInputStream that implements DataInput
-   Copyright (C) 1998, 1999, 2000, 2001  Free Software Foundation
+   Copyright (C) 1998, 1999, 2000, 2001, 2003  Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -49,8 +49,6 @@ package java.io;
  * Java data types from a stream.
  *
  * @see DataInput
- *
- * @version 0.0
  *
  * @author Warren Levy <warrenl@cygnus.com>
  * @author Aaron M. Renn (arenn@urbanophile.com)
@@ -134,7 +132,11 @@ public class DataInputStream extends FilterInputStream implements DataInput
    */
   public final boolean readBoolean() throws IOException
   {
-    return convertToBoolean(in.read());
+    int b = in.read();
+    if (b < 0)
+      throw new EOFException();
+    else
+      return(b != 0);
   }
 
   /**
@@ -154,7 +156,10 @@ public class DataInputStream extends FilterInputStream implements DataInput
    */
   public final byte readByte() throws IOException
   {
-    return convertToByte(in.read());
+    int i = in.read();
+    if (i < 0)
+      throw new EOFException();
+    return (byte) i;
   }
 
   /**
@@ -182,10 +187,10 @@ public class DataInputStream extends FilterInputStream implements DataInput
    *
    * @see DataOutput
    */
-  public final char readChar() throws IOException
+  public synchronized final char readChar() throws IOException
   {
     readFully (buf, 0, 2);
-    return convertToChar(buf);
+    return (char) ((buf[0] << 8) | (buf[1] & 0xff));
   }
 
   /**
@@ -310,10 +315,11 @@ public class DataInputStream extends FilterInputStream implements DataInput
    *
    * @see DataOutput
    */
-  public final int readInt() throws IOException
+  public synchronized final int readInt() throws IOException
   {
     readFully (buf, 0, 4);
-    return convertToInt(buf);
+    return (((buf[0] & 0xff) << 24) | ((buf[1] & 0xff) << 16) |
+            ((buf[2] & 0xff) << 8) | (buf[3] & 0xff));
   }
 
   /**
@@ -458,10 +464,17 @@ public class DataInputStream extends FilterInputStream implements DataInput
    *
    * @see DataOutput
    */
-  public final long readLong() throws IOException
+  public synchronized final long readLong() throws IOException
   {
     readFully (buf, 0, 8);
-    return convertToLong(buf);
+    return (((long)(buf[0] & 0xff) << 56) |
+            ((long)(buf[1] & 0xff) << 48) |
+            ((long)(buf[2] & 0xff) << 40) |
+            ((long)(buf[3] & 0xff) << 32) |
+            ((long)(buf[4] & 0xff) << 24) |
+            ((long)(buf[5] & 0xff) << 16) |
+            ((long)(buf[6] & 0xff) <<  8) |
+            ((long)(buf[7] & 0xff)));
   }
 
   /**
@@ -491,10 +504,10 @@ public class DataInputStream extends FilterInputStream implements DataInput
    *
    * @see DataOutput
    */
-  public final short readShort() throws IOException
+  public synchronized final short readShort() throws IOException
   {
     readFully (buf, 0, 2);
-    return convertToShort(buf);
+    return (short) ((buf[0] << 8) | (buf[1] & 0xff));
   }
 
   /**
@@ -515,7 +528,10 @@ public class DataInputStream extends FilterInputStream implements DataInput
    */
   public final int readUnsignedByte() throws IOException
   {
-    return convertToUnsignedByte(in.read());
+    int i = in.read();
+    if (i < 0)
+      throw new EOFException();
+    return (i & 0xFF);
   }
 
   /**
@@ -543,10 +559,10 @@ public class DataInputStream extends FilterInputStream implements DataInput
    * @exception EOFException If end of file is reached before reading the value
    * @exception IOException If any other error occurs
    */
-  public final int readUnsignedShort() throws IOException
+  public final synchronized int readUnsignedShort() throws IOException
   {
     readFully (buf, 0, 2);
-    return convertToUnsignedShort(buf);
+    return (((buf[0] & 0xff) << 8) | (buf[1] & 0xff));
   }
 
   /**
@@ -598,7 +614,8 @@ public class DataInputStream extends FilterInputStream implements DataInput
    * character encoding, then they would be converted to a Java
    * <code>char</code> like so:
    * <p>
-   * <code>(char)(((byte1 & 0x0F) << 12) | ((byte2 & 0x3F) << 6) | (byte3 & 0x3F))</code>
+   * <code>(char)(((byte1 & 0x0F) << 12) | ((byte2 & 0x3F) << 6) | 
+   * (byte3 & 0x3F))</code>
    * <p>
    * Note that all characters are encoded in the method that requires
    * the fewest number of bytes with the exception of the character
@@ -621,7 +638,20 @@ public class DataInputStream extends FilterInputStream implements DataInput
    */
   public final String readUTF() throws IOException
   {
-    return readUTF(this);
+    int UTFlen = readUnsignedShort();
+    byte[] buf = new byte[UTFlen];
+
+    // This blocks until the entire string is available rather than
+    // doing partial processing on the bytes that are available and then
+    // blocking.  An advantage of the latter is that Exceptions
+    // could be thrown earlier.  The former is a bit cleaner.
+    readFully(buf, 0, UTFlen);
+
+    // FIXME: This should probably be replaced with something like
+    // new String(buf, "UTF-8"), however that might take a performance
+    // due to time looking up encoders.  But having a private UTF
+    // converter may not be the way to go either.
+    return (convertFromUTF(buf));
   }
 
   /**
@@ -677,60 +707,10 @@ public class DataInputStream extends FilterInputStream implements DataInput
     return n;
   }
   
-  static boolean convertToBoolean(int b) throws EOFException
-  {
-    if (b < 0)
-      throw new EOFException();    
-    return (b != 0);
-  }
-
-  static byte convertToByte(int i) throws EOFException
-  {
-    if (i < 0)
-      throw new EOFException();
-    return (byte) i;
-  }
-
-  static int convertToUnsignedByte(int i) throws EOFException
-  {
-    if (i < 0)
-      throw new EOFException();
-    return (i & 0xFF);
-  }
-
-  static char convertToChar(byte[] buf)
-  {
-    return (char) ((buf[0] << 8) | (buf[1] & 0xff));  
-  }  
-
-  static short convertToShort(byte[] buf)
-  {
-    return (short) ((buf[0] << 8) | (buf[1] & 0xff));  
-  }  
-
-  static int convertToUnsignedShort(byte[] buf)
-  {
-    return (((buf[0] & 0xff) << 8) | (buf[1] & 0xff));  
-  }
-
-  static int convertToInt(byte[] buf)
-  {
-    return (((buf[0] & 0xff) << 24) | ((buf[1] & 0xff) << 16) |
-	    ((buf[2] & 0xff) << 8) | (buf[3] & 0xff));  
-  }
-
-  static long convertToLong(byte[] buf)
-  {
-    return (((long)(buf[0] & 0xff) << 56) |
-	    ((long)(buf[1] & 0xff) << 48) |
-	    ((long)(buf[2] & 0xff) << 40) |
-	    ((long)(buf[3] & 0xff) << 32) |
-	    ((long)(buf[4] & 0xff) << 24) |
-	    ((long)(buf[5] & 0xff) << 16) |
-	    ((long)(buf[6] & 0xff) <<  8) |
-	    ((long)(buf[7] & 0xff)));  
-  }
-
+  // FIXME: This method should be re-thought.  I suspect we have multiple
+  // UTF-8 decoders floating around.  We should use the standard charset
+  // converters, maybe and adding a direct call into one of the new
+  // NIO converters for a super-fast UTF8 decode.
   static String convertFromUTF(byte[] buf) 
     throws EOFException, UTFDataFormatException
   {
