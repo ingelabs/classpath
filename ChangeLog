@@ -1,5 +1,16 @@
 2003-12-26  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/DatagramPacket.java
+	(length): Made package-private to make it accessible via CNI.
+	(maxlen): New field.
+	(DatagramPacket): Cleaned up.
+	(setSocketAddress): Add message to exception.
+	(setData): Call other setData().
+	(setData): Call setLength().
+	(setLength): Initialize maxlen too.
+
+2003-12-26  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/DatagramSocket.java
 	(close): Directly return if socket is closed.
 	* java/net/ServerSocket.java bind():
