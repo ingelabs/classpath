@@ -41,7 +41,6 @@ package java.net;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.StringTokenizer;
-
 import gnu.classpath.Configuration;
 
 /**
@@ -54,9 +53,8 @@ import gnu.classpath.Configuration;
  * gethostbyname(), and gethostbyaddr().  It resolves Internet DNS names
  * into their corresponding numeric addresses and vice versa.
  *
- * @version 0.5
- *
- * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @author Per Bothner
  */
 public class InetAddress implements Serializable
 {

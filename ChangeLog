@@ -1,5 +1,12 @@
 2003-05-02  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/InetAddress.java:
+	Merged class documentation with libgcj.
+	* java/net/URL.java:
+	Reformatted and reordered to match libgcj.
+
+2003-05-02  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/DatagramSocket.java
 	(DatagramSocket): Reformatted.
 	* java/net/ServerSocket.java

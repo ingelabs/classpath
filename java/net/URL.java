@@ -112,7 +112,7 @@ import java.util.StringTokenizer;
   * done, then the above information is superseded and the behavior of this
   * class in loading protocol handlers is dependent on that factory.
   *
-  * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Aaron M. Renn <arenn@urbanophile.com>
   * @author Warren Levy <warrenl@cygnus.com>
   *
   * @see URLStreamHandler
@@ -176,107 +176,38 @@ public final class URL implements Serializable
 
   private static final long serialVersionUID = -7627629688361524110L;
 
-/**
-  * This a table where we cache protocol handlers to avoid the overhead
-  * of looking them up each time.
-  */
-private static Hashtable ph_cache = new Hashtable();
+  /**
+   * This a table where we cache protocol handlers to avoid the overhead
+   * of looking them up each time.
+   */
+  private static Hashtable ph_cache = new Hashtable();
 
-/**
-  * Whether or not to cache protocol handlers.
-  */
-private static boolean cache_handlers;
+  /**
+   * Whether or not to cache protocol handlers.
+   */
+  private static boolean cache_handlers;
 
-/**
-  * The search path of packages to search for protocol handlers in.
-  */
-private static String ph_search_path;
+  /**
+   * The search path of packages to search for protocol handlers in.
+   */
+  private static String ph_search_path;
 
-static
-{
-  String s = System.getProperty("gnu.java.net.nocache_protocol_handlers");
-  if (s == null)
-    cache_handlers = true;
-  else
-    cache_handlers = false;
-
-  ph_search_path = System.getProperty("java.protocol.handler.pkgs");
-
-  // Tack our default package on at the ends
-  if (ph_search_path != null)
-    ph_search_path = ph_search_path + "|" + "gnu.java.net.protocol";
-  else
-    ph_search_path = "gnu.java.net.protocol";
-}
-
-/**
-  * This internal method is used in two different constructors to load
-  * a protocol handler for this URL.
-  *
-  * @param The protocol to load a handler for
-  *
-  * @return A URLStreamHandler for this protocol, or null when not found.
-  */
-private static synchronized URLStreamHandler
-getURLStreamHandler(String protocol)
-{
-  URLStreamHandler ph;
-
-  // First, see if a protocol handler is in our cache
-  if (cache_handlers)
+  static
     {
-      Class cls = (Class)ph_cache.get(protocol);
-      if (cls != null)
-        {
-          try
-            {
-              ph = (URLStreamHandler)cls.newInstance();
-              return(ph);
-            }
-          catch (Exception e) { ; }
-        }
+      String s = System.getProperty("gnu.java.net.nocache_protocol_handlers");
+      if (s == null)
+        cache_handlers = true;
+      else
+        cache_handlers = false;
+
+      ph_search_path = System.getProperty("java.protocol.handler.pkgs");
+
+      // Tack our default package on at the ends
+      if (ph_search_path != null)
+        ph_search_path = ph_search_path + "|" + "gnu.java.net.protocol";
+      else
+        ph_search_path = "gnu.java.net.protocol";
     }
-
-  // Next check the factory and use that if set
-  if (factory != null)
-    {
-      ph = factory.createURLStreamHandler(protocol);
-      if (ph != null)
-	{
-	  if (cache_handlers)
-	    ph_cache.put(protocol, ph.getClass());
-
-	  return(ph);
-	}
-    }
-
-  // Finally loop through our search path looking for a match
-  StringTokenizer st = new StringTokenizer(ph_search_path, "|");
-  while (st.hasMoreTokens())
-    {
-      String clsname = st.nextToken() + "." + protocol + ".Handler";
-         
-      try
-        {
-          Class cls = Class.forName(clsname); 
-          Object obj = cls.newInstance();
-          if (!(obj instanceof URLStreamHandler))
-            continue;
-          else
-            ph = (URLStreamHandler)obj;
-
-          if (cache_handlers)
-            ph_cache.put(protocol, cls);
-
-          return(ph);
-        }
-      catch (Exception e) { ; }
-    }
-
-  // Still here, which is bad
-  return null;
-}
-
 
   /**
    * Constructs a URL and loads a protocol handler for the values passed as
@@ -667,7 +598,7 @@ getURLStreamHandler(String protocol)
    * Returns the query of the URL. This is the part of the file before the
    * '?'.
    *
-   * @ return the query part of the file, or null when there is no query part.
+   * @return the query part of the file, or null when there is no query part.
    */
   public String getQuery ()
   {
@@ -832,6 +763,74 @@ getURLStreamHandler(String protocol)
   {
     // Identical to toExternalForm().
     return handler.toExternalForm(this);
+  }
+
+  /**
+   * This internal method is used in two different constructors to load
+   * a protocol handler for this URL.
+   *
+   * @param The protocol to load a handler for
+   *
+   * @return A URLStreamHandler for this protocol, or null when not found.
+   */
+  private static synchronized URLStreamHandler
+    getURLStreamHandler (String protocol)
+  {
+    URLStreamHandler ph;
+
+    // First, see if a protocol handler is in our cache
+    if (cache_handlers)
+      {
+        Class cls = (Class)ph_cache.get(protocol);
+        if (cls != null)
+          {
+            try
+              {
+                ph = (URLStreamHandler)cls.newInstance();
+                return(ph);
+              }
+            catch (Exception e) { ; }
+          }
+      }
+
+    // Next check the factory and use that if set
+    if (factory != null)
+      {
+        ph = factory.createURLStreamHandler(protocol);
+        if (ph != null)
+          {
+            if (cache_handlers)
+	      ph_cache.put(protocol, ph.getClass());
+
+            return(ph);
+	  }
+      }
+
+    // Finally loop through our search path looking for a match
+    StringTokenizer st = new StringTokenizer(ph_search_path, "|");
+    while (st.hasMoreTokens())
+      {
+        String clsname = st.nextToken() + "." + protocol + ".Handler";
+         
+        try
+          {
+            Class cls = Class.forName(clsname); 
+            Object obj = cls.newInstance();
+            if (!(obj instanceof URLStreamHandler))
+              continue;
+            else
+              ph = (URLStreamHandler)obj;
+
+            if (cache_handlers)
+              ph_cache.put(protocol, cls);
+
+            return(ph);
+          }
+        catch (Exception e) { ; }
+      }
+
+    // Still here, which is bad
+    return null;
   }
 
   private void readObject(ObjectInputStream ois)
