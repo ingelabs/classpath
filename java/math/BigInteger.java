@@ -1,18 +1,112 @@
+import java.util.Random;
+
 package java.math;
 
-public class BigInteger {
+public class BigInteger implements Comparable {
   final int native_state = System.identityHashCode(this);
+
+  public static final BigInteger ZERO;
+  public static final BigInteger ONE;
 
   static {
     System.loadLibrary("bigint");
     initNativeState();
+
+    ZERO = new BigInteger();
+    ONE = new BigInteger(1L);
   }
 
   public BigInteger(String val) {
-    initFromString(val);
+    this(val, 10);
   }
 
-  BigInteger() { }
+  public BigInteger(String val, int radix) {
+    if (!initFromString(forEachDigit(val, radix), radix))
+      throw new NumberFormatException(val);
+  }
+
+  /**
+   * Canonicalizes each char digit in str, keeping a leading minus
+   * sign if it exists. 
+   */
+  static String forEachDigit(String str, int radix) {
+    char buf[] = new char[str.length()];
+    int i = 0;
+    if (str.charAt(0) == '-')
+      buf[i++] = '-';
+
+    while (i < buf.length)
+      if ((buf[i++] = 
+           Character.forDigit(Character.digit(str.charAt(i), radix), radix))
+	  == \u0000)
+	throw new NumberFormatException(str " not valid in radix " + radix);
+
+    return new String(buf);
+  }
+
+  public BigInteger(int bitLength, int certainty, Random rnd) {
+    throw new ArithmeticException("unimplemented");
+  }
+
+  public BigInteger(int numBits, Random rnd) {
+    this(1, getRandomMagnitude(numBits, rnd));
+  }
+
+  private static byte[] getRandomMagnitude(int numBits, Random rnd) {
+    int array_size = numBits / 8;
+    int extra_bits = numBits % 8;
+    if (extra_bits != 0)
+      array_size++;
+
+    byte[] data = new byte[array_size];
+    rnd.nextBytes(data);
+    if (extra_bits != 0)
+      data[0] &= (1 << extra_bits) - 1; // mask off any extra bits
+
+    return data;
+  }
+
+  public BigInteger(byte[] val) {
+    if (val.length == 0)
+      throw new NumberFormatException("val.length is 0");
+    initFromTwosCompByteArray(val);
+  }
+
+  public BigInteger(int signum, byte[] magnitude) {
+    switch (signum) {
+    case 0:
+      for (int i = 0; i < magnitude.length; i++)
+	if (magnitude[i] != 0)
+	  throw new NumberFormatException("magnitude["+i+"] is non zero");
+      initZero();
+      break;
+    case 1:
+    case -1:
+      if (magnitude.length == 0)
+	initZero();
+      else
+	initFromSignedMagnitudeByteArray(signum, magnitude);
+      break;
+    default:
+      throw new NumberFormatException("invalid signum");
+    }	
+  }
+
+  private BigInteger(long l) {
+    initFromLong(l);
+  }
+
+  private BigInteger() { 
+    initZero();
+  }
+
+  static public BigInteger valueOf(long l) {
+    if (l == 0)
+      return ZERO;
+    if (l == 1)
+      return ONE;
+    return new BigInteger(l);
+  }
 
   native public BigInteger abs();
   native public BigInteger add(BigInteger val);
@@ -34,12 +128,12 @@ public class BigInteger {
 
   native public BigInteger pow(int exponent) 
     throws ArithmeticException;
-  native public BigInteger modPow(BigInteger exponent, // DOES NOT WORK
+  native public BigInteger modPow(BigInteger exponent,
 				  BigInteger m) 
     throws ArithmeticException;
   native public BigInteger mod(BigInteger m)
     throws ArithmeticException;
-  native public BigInteger modInverse(BigInteger m) // DOES NOT WORK
+  native public BigInteger modInverse(BigInteger m) 
     throws ArithmeticException;
 
   // bitwise operations
@@ -62,28 +156,104 @@ public class BigInteger {
 
   native public BigInteger negate();
   native public int compareTo(BigInteger val);
+  public int compareTo(Object o) throws ClassCastException {
+    return compareTo((BigInteger)o);
+  }
   native public int signum();
 
   public boolean equals(Object o) {
     return (o instanceof BigInteger && nativeEquals((BigInteger)o));
   }
-    
+
+  public BigInteger min(BigInteger val) {
+    switch (compareTo(val)) {
+    case -1:
+    case 0:
+      return this;
+    default:
+      return val;
+    }
+  }
+
+  public BigInteger max(BigInteger val) {
+    switch (compareTo(val)) {
+    case -1:
+    case 0:
+      return val;
+    default:
+      return this;
+    }
+  }
+
+  public native int hashCode();
+
   static native void initNativeState();
-  native void initFromString(String val);
+  native boolean initFromString(String val, int radix);
+  native void initFromLong(long l);
+  native void initFromSignedMagnitudeByteArray(int signum, byte[] magnitude);
+  native void initFromTwosCompByteArray(byte[] array);
+  native void initZero();
+
   public native void print();
   native boolean nativeEquals(BigInteger val);
 
+  public native long longValue();
+  public int intValue() {
+    return (int)longValue();
+  }
+  
+  public native double doubleValue();
+  public float floatValue() {
+    return (float)doubleValue();
+  }
+
+  public native String toString(int radix);
+    
+  public String toString() {
+    return toString(10);
+  }
+
+  public native byte[] toByteArray();
+
+  protected void finalize() throws Throwable {
+    nativeFinalize();
+    super.finalize();
+  }
+
+  native void nativeFinalize();
+
   static public void main(String args[]) {
-    BigInteger i = new BigInteger("11");
-    BigInteger i2 = new BigInteger ("-8");
+    BigInteger i = new BigInteger(-549755813888L);
+    BigInteger i2 = new BigInteger ("5");
     BigInteger i3 = new BigInteger ("7");
-    //    i.print();
-    System.out.println(i.isProbablePrime(50));
+    byte[] foo = new byte[2];
+    foo[0] = 0;
+    foo[1] = 0;
+//      BigInteger i4 = new BigInteger(-1, foo);
+//      System.out.println(i4);
+    //    BigInteger i5 = new BigInteger(20, new Random(5));
+
+    BigInteger i4 = new BigInteger(-300L);
+    System.out.println (i4);
+    byte[] bar = i4.toByteArray();
+    for (int z = 0; z < bar.length; z++)
+      System.out.println(z + ": " + bar[z]);
+
+    BigInteger i5 = new BigInteger(bar);
+    System.out.println (i5);
+
+    //    System.out.println(i5);
+    //    i.modPow(i2, i3).print();
+    //    System.out.println(i.toString());
+
+    //    i3 = i.modInverse(i2);
+    //    i3.print();
+    //    System.out.println(i.isProbablePrime(50));
 
     java.math.BigInteger bi = new java.math.BigInteger("11");
     java.math.BigInteger bi2 = new java.math.BigInteger("-8");
     java.math.BigInteger bi3 = new java.math.BigInteger("7");
-    System.out.println(bi.isProbablePrime(50));
+//    System.out.println(bi.isProbablePrime(50));
 
 
 //      BigInteger i = new BigInteger("3");
