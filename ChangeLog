@@ -1,5 +1,10 @@
 2004-09-22  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java:
+	(gtkFixedMove): Remove method.
+
+2004-09-22  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* Makefile.am (gtk_c_source_files): Add
 	gnu_java_awt_peer_gtk_GtkFramePeer.c.
 	* Makefile.in: Regenerate.

@@ -66,7 +66,6 @@ public class GtkFramePeer extends GtkWindowPeer
 
   native void setMenuBarPeer (MenuBarPeer bar);
   native void removeMenuBarPeer ();
-  native void gtkFixedMove (int offset);
   native void gtkFixedSetVisible (boolean visible);
 
   public void setMenuBar (MenuBar bar)
