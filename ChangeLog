@@ -1,5 +1,12 @@
 2003-06-08  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/PrintStream.java:
+	Merged copright year from libgcj.
+	* java/security/Security.java:
+	New version from libgcj.
+
+2003-06-08  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/DatagramSocket.java
 	(localAddr): Removed.
 	(bind): Dont initialize localAddr.
