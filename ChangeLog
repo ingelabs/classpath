@@ -1,3 +1,10 @@
+2004-04-16  Guilhem Lavaux <guilhem@kaffe.org>
+
+        Reported by Nektarios Papadopoulos <npapadop@inaccessnetworks.com>
+	* java/io/FileOutputStream.java
+	(FileOutputStream) Reorganized constructors. Constructors now
+	check whether the given path is directory.
+
 2004-04-15  Mark Wielaard  <mark@klomp.org>
 
 	* javax/awt/JFrame.java: Implement WindowConstants. Remove final
