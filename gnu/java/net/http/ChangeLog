@@ -1,3 +1,10 @@
+Tue Jun  9 19:29:57 1998  arenn's Development Account  <devel@larissa.foo.com>
+
+	* HttpURLConnection.java: Use PushbackInputStream layer on top
+	of plain SocketInputStream to minimize single byte reads during
+	header processing. This adds overhead while fetching body so
+	may need to be rethought.
+
 Sat May 16 15:13:44 1998  arenn's Development Account  <devel@larissa.foo.com>
 
 	* HttpURLConnection.java: Switched package to gnu.*
