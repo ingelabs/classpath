@@ -1,3 +1,16 @@
+2003-12-30  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/URLConnection.java
+	(req_props): Removed.
+	(getHeaderField): Do nothing here. Implementation has to be in
+	subclass.
+	(setRequestProperty): Likewise.
+	(addRequestProperty): Likewise.
+	(getRequestProperty): Likewise.
+	(getRequestProperties): Likewise.
+	(setDefaultRequestProperty): Likewise.
+	(getDefaultRequestProperty): Likewise.
+
 2003-12-29 Guilhem Lavaux <guilhem@kaffe.org>
 
 	* java/text/RuleBasedCollator.java,
