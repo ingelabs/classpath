@@ -18,8 +18,8 @@
  * Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
  *************************************************************************/
 
-//TODO: check exceptions
-//      comments
+/*  TODO: check exceptions */
+/*        comments */
 
 #include <jni.h>
 #include "javaio.h"
