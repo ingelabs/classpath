@@ -22,6 +22,22 @@
 #include "gtkpeer.h"
 #include "gnu_java_awt_peer_gtk_GtkComponentPeer.h"
 
+#define GTK_OBJECT_SETV(ptr, arg)                \
+  gdk_threads_enter ();                          \
+  {                                              \
+    GtkArgInfo *info = NULL;                     \
+    char *error;                                 \
+                                                 \
+    error = gtk_object_arg_get_info (GTK_OBJECT_TYPE (ptr), arg.name, &info); \
+    if (error)                                   \
+      {                                          \
+	/* assume the argument is destined for the container's only child */ \
+	ptr = gtk_container_children (GTK_CONTAINER (ptr))->data;            \
+      }                                          \
+    gtk_object_setv (GTK_OBJECT (ptr), 1, &arg); \
+  }                                              \
+  gdk_threads_leave ();                          \
+
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursor 
   (JNIEnv *env, jobject obj, jint type) 
@@ -113,20 +129,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_requestFocus
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setEnabled
-  (JNIEnv *env, jobject obj, jboolean enabled)
-{
-  void *ptr;
-
-  ptr = NSA_GET_PTR (env, obj);
-  
-  gdk_threads_enter ();
-  gtk_widget_set_sensitive (GTK_WIDGET (ptr), enabled);
-  gdk_threads_leave ();
-}
 
 /*
- * Show a widget
+ * Show a widget (NO LONGER USED)
  */
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setVisible
@@ -216,7 +221,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkFixedNew (JNIEnv *env,
   gdk_threads_enter ();
   layout = gtk_layout_new (NULL, NULL);
   gtk_widget_realize (layout);
-  connect_awt_hook (env, obj, layout, 1, GTK_LAYOUT (layout)->bin_window);
+  connect_awt_hook (env, obj, 1, GTK_LAYOUT (layout)->bin_window);
   set_visible (layout, visible);
   gdk_threads_leave ();
 
@@ -473,4 +478,151 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_modalHasGrab
   gdk_threads_leave ();
 
   return retval;
+}
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *env, jobject obj, jstring jname, jstring jvalue)
+{
+  const char *name;
+  const char *value;
+  void *ptr;
+  GtkArg arg;
+
+  ptr = NSA_GET_PTR (env, obj);
+  name = (*env)->GetStringUTFChars (env, jname, NULL);
+  value = (*env)->GetStringUTFChars (env, jvalue, NULL);
+
+  arg.type = GTK_TYPE_STRING;
+  arg.name = (char *) name;
+  GTK_VALUE_STRING (arg) = (char *) value;
+
+  GTK_OBJECT_SETV (ptr, arg);  
+
+  (*env)->ReleaseStringUTFChars (env, jname, name);
+  (*env)->ReleaseStringUTFChars (env, jvalue, value);
+}
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Z
+  (JNIEnv *env, jobject obj, jstring jname, jboolean value)
+{
+  const char *name;
+  void *ptr;
+  GtkArg arg;
+
+  ptr = NSA_GET_PTR (env, obj);
+  name = (*env)->GetStringUTFChars (env, jname, NULL);
+
+  arg.type = GTK_TYPE_BOOL;
+  arg.name = (char *) name;
+  GTK_VALUE_BOOL (arg) = value;
+
+  GTK_OBJECT_SETV (ptr, arg);  
+
+  (*env)->ReleaseStringUTFChars (env, jname, name);
+}
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2I
+  (JNIEnv *env, jobject obj, jstring jname, jint value)
+{
+  const char *name;
+  void *ptr;
+  GtkArg arg;
+
+  ptr = NSA_GET_PTR (env, obj);
+  name = (*env)->GetStringUTFChars (env, jname, NULL);
+
+  arg.type = GTK_TYPE_INT;
+  arg.name = (char *) name;
+  GTK_VALUE_INT (arg) = value;
+  
+  GTK_OBJECT_SETV (ptr, arg);  
+
+  (*env)->ReleaseStringUTFChars (env, jname, name);
+}
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2F
+  (JNIEnv *env, jobject obj, jstring jname, jfloat value)
+{
+  const char *name;
+  void *ptr;
+  GtkArg arg;
+
+  ptr = NSA_GET_PTR (env, obj);
+  name = (*env)->GetStringUTFChars (env, jname, NULL);
+
+  arg.type = GTK_TYPE_FLOAT;
+  arg.name = (char *) name;
+  GTK_VALUE_FLOAT (arg) = value;
+  
+  GTK_OBJECT_SETV (ptr, arg);  
+
+  (*env)->ReleaseStringUTFChars (env, jname, name);
+}
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_Object_2
+  (JNIEnv *env, jobject obj1, jstring jname, jobject obj2)
+{
+  const char *name;
+  void *ptr1, *ptr2;
+  GtkArg arg;
+
+  ptr1 = NSA_GET_PTR (env, obj1);
+  ptr2 = NSA_GET_PTR (env, obj2);
+  
+  name = (*env)->GetStringUTFChars (env, jname, NULL);
+
+  /* special case to catch where we need to set the parent */
+  if (!strcmp (name, "parent"))
+    {
+      gdk_threads_enter ();
+      set_parent (GTK_WIDGET (ptr1), GTK_CONTAINER (ptr2));
+      gdk_threads_leave ();
+
+      (*env)->ReleaseStringUTFChars (env, jname, name);
+      return;
+    }
+
+  arg.type = GTK_TYPE_OBJECT;
+  arg.name = (char *) name;
+  GTK_VALUE_OBJECT (arg) = GTK_OBJECT (ptr2);
+  
+  GTK_OBJECT_SETV (ptr1, arg);  
+
+  (*env)->ReleaseStringUTFChars (env, jname, name);
+}
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_create
+  (JNIEnv *env, jobject obj, jstring jtypename)
+{
+  const char *typename;
+  gpointer widget;
+
+  typename = (*env)->GetStringUTFChars (env, jtypename, NULL);
+
+  gdk_threads_enter ();
+  gtk_button_get_type ();
+  printf ("typename: %s\n", typename);
+  printf ("%i\n", gtk_type_from_name (typename));
+  widget = gtk_object_newv (gtk_type_from_name (typename),
+			    0, NULL);
+/*    widget = gtk_type_new (gtk_type_from_name (typename)); */
+  gdk_threads_leave ();
+
+  (*env)->ReleaseStringUTFChars (env, jtypename, typename);
+  NSA_SET_PTR (env, obj, widget);
+}
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectHooks
+  (JNIEnv *env, jobject obj)
+{
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+  gtk_widget_realize (GTK_WIDGET (ptr));
+  connect_awt_hook (env, obj, 1, GTK_WIDGET (ptr)->window);
+  gdk_threads_leave ();
 }

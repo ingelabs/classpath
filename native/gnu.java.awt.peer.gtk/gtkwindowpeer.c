@@ -31,6 +31,47 @@ setBounds (GtkWidget *, jint, jint, jint, jint);
  */
 
 JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkWindowPeer_create 
+  (JNIEnv *env, jobject obj, jint type)
+{
+  gpointer window;
+  GtkWidget *vbox, *layout;
+
+  gdk_threads_enter ();
+  window = gtk_window_new (type);
+
+  vbox = gtk_vbox_new (0, 0);
+  layout = gtk_layout_new (NULL, NULL);
+  gtk_box_pack_end (GTK_BOX (vbox), layout, 1, 1, 0);
+  gtk_container_add (GTK_CONTAINER (window), vbox);
+
+  gtk_widget_show (layout);
+  gtk_widget_show (vbox);
+
+  gdk_threads_leave ();
+
+  NSA_SET_PTR (env, obj, window);
+}
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkWindowPeer_connectHooks
+  (JNIEnv *env, jobject obj)
+{
+  void *ptr;
+  GtkWidget *layout;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+  layout = GTK_WIDGET (gtk_container_children (GTK_CONTAINER (GTK_BIN (ptr)->child))->data);
+  gtk_widget_realize (layout);
+  connect_awt_hook (env, obj, 1, GTK_LAYOUT (layout)->bin_window);
+  
+  gtk_widget_realize (GTK_WIDGET (ptr));
+  connect_awt_hook (env, obj, 1, GTK_WIDGET (ptr)->window);
+  gdk_threads_leave ();
+}
+
+JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env, 
   jobject obj, jint type, jint width, jint height, jboolean visible)
 {
@@ -53,7 +94,6 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env,
   gdk_threads_leave ();
 }
 
-
 void
 setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width, 
 	      jint height, jboolean visible)
@@ -69,14 +109,14 @@ setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width,
   gtk_box_pack_end (GTK_BOX (vbox), layout, 1, 1, 0);
   gtk_container_add (GTK_CONTAINER (window), vbox);
   gtk_widget_realize (layout);
-  connect_awt_hook (env, obj, layout, 1, GTK_LAYOUT(layout)->bin_window);
+  connect_awt_hook (env, obj, 1, GTK_LAYOUT(layout)->bin_window);
   gtk_widget_show (layout);
   gtk_widget_show (vbox);
 
   gtk_widget_realize (window);
 /*    setBounds (window, x, y, width, height); */
 
-  connect_awt_hook (env, obj, window, 1, window->window);
+  connect_awt_hook (env, obj, 1, window->window);
   set_visible (window, visible);
 }
 

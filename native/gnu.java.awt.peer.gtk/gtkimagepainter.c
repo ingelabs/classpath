@@ -1,5 +1,7 @@
 #include "gtkpeer.h"
-#include "gnu_java_awt_peer_gtk_GtkImagePainter.h"
+#include "GtkImagePainter.h"
+#include <libart_lgpl/art_misc.h>
+#include <libart_lgpl/art_rgb_affine.h>
 
 #define SWAPU32(w) \
   (((w) << 24) | (((w) & 0xff00) << 8) | (((w) >> 8) & 0xff00) | ((w) >> 24))
@@ -7,7 +9,7 @@
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImagePainter_drawPixels
 (JNIEnv *env, jobject obj, jobject gc_obj, jint bg_red, jint bg_green, 
  jint bg_blue, jint x, jint y, jint width, jint height, jintArray jpixels, 
- jint offset, jint scansize)
+ jint offset, jint scansize, jdoubleArray jaffine)
 {
   struct graphics *g;
   jint *pixels, *elems;
@@ -69,6 +71,42 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImagePainter_drawPixels
 	}
     }
 
+  if (jaffine)
+    {
+      jdouble *affine;
+      ArtAlphaGamma *alphagamma = NULL;
+      art_u8 *dst;
+      int new_width, new_height;
+      int i;
+      
+      affine = (*env)->GetDoubleArrayElements (env, jaffine, NULL);
+
+      new_width = abs (width * affine[0]);
+      new_height = abs (height * affine[3]);
+
+      dst = (art_u8 *) malloc (sizeof (art_u8) * 3 * (new_width * new_height));
+      
+      art_rgb_affine (dst, 
+		      0, 0,
+		      new_width, new_height,
+		      new_width * 3,
+		      (art_u8 *) packed + offset * 3,
+		      width, height,
+		      scansize * 3,
+		      affine,
+		      ART_FILTER_NEAREST,
+		      alphagamma);
+
+      (*env)->ReleaseDoubleArrayElements (env, jaffine, affine, JNI_ABORT);
+      
+      free (packed);
+      packed = (guchar *) dst;
+
+      width = scansize = new_width;
+      height = new_height;
+      offset = 0;
+    }
+
   gdk_threads_enter ();
 
   gdk_draw_rgb_image (g->drawable,
@@ -76,7 +114,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImagePainter_drawPixels
 		      x + g->x_offset, 
 		      y + g->y_offset, 
 		      width, height, GDK_RGB_DITHER_NORMAL,
-		      packed + offset, scansize * 3);
+		      packed + offset * 3, scansize * 3);
 
   gdk_threads_leave ();
 

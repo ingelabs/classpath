@@ -78,7 +78,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_gtkScrollbarNew
 
   set_parent (sb, GTK_CONTAINER (parent));
   gtk_widget_realize (sb);
-  connect_awt_hook (env, obj, sb, 4, 
+  connect_awt_hook (env, obj, 4, 
 		    GTK_RANGE (sb)->trough,
 		    GTK_RANGE (sb)->slider,
 		    GTK_RANGE (sb)->step_forw,

@@ -23,102 +23,18 @@
 #include "gnu_java_awt_peer_gtk_GtkLabelPeer.h"
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelNew
-  (JNIEnv *env, jobject obj, jobject parent_obj, jstring text, jint just)
+Java_gnu_java_awt_peer_gtk_GtkLabelPeer_create
+  (JNIEnv *env, jobject obj)
 {
-  GtkWidget *label, *box;
-  const char *str;
-  void *parent;
-  gfloat j;
- 
-  switch (just)
-    {
-    case AWT_LABEL_LEFT:
-      j = 0.0;
-      break;
-    case AWT_LABEL_CENTER:
-      j = 0.5;
-      break;
-    case AWT_LABEL_RIGHT:
-      j = 1.0;
-      break;
-    }
- 
-  parent = NSA_GET_PTR (env, parent_obj);
-  str = (*env)->GetStringUTFChars (env, text, NULL);
+  GtkWidget *label;
+  GtkContainer *ebox;
 
   gdk_threads_enter ();
-
-  box = gtk_event_box_new ();
-
-  label = gtk_label_new (str);
-  gtk_container_add (GTK_CONTAINER (box), label);
-  gtk_misc_set_alignment (GTK_MISC (label), j, 0.5);
-
-  set_parent (box, GTK_CONTAINER (parent));
-
-  gtk_widget_realize (label);
-  gtk_widget_realize (box);
+  ebox = GTK_CONTAINER (gtk_type_new (gtk_event_box_get_type ()));
+  label = GTK_WIDGET (gtk_type_new (gtk_label_get_type ()));
+  gtk_container_add (ebox, label);
   gtk_widget_show (label);
-
-  connect_awt_hook (env, obj, box, 1, box->window);
-
   gdk_threads_leave ();
 
-  (*env)->ReleaseStringUTFChars (env, text, str);
-
-  NSA_SET_PTR (env, obj, box);
+  NSA_SET_PTR (env, obj, ebox);
 }
-
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setText
-  (JNIEnv *env, jobject obj, jstring text)
-{
-  void *ptr;
-  const char *str;
-  GtkLabel *label;
-
-  ptr = NSA_GET_PTR (env, obj);
-  str = (*env)->GetStringUTFChars (env, text, NULL);
-
-  gdk_threads_enter ();
-
-  label = GTK_LABEL (GTK_BIN (ptr)->child);
-  gtk_label_set (label, str);
-
-  gdk_threads_leave ();
-
-  (*env)->ReleaseStringUTFChars (env, text, str);
-}
-
-JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkLabelPeer_setAlignment
-  (JNIEnv *env, jobject obj, jint just)
-{
-  void *ptr;
-  GtkLabel *label;
-  gfloat j;
-
-  switch (just)
-    {
-    case AWT_LABEL_LEFT:
-      j = 0.0;
-      break;
-    case AWT_LABEL_CENTER:
-      j = 0.5;
-      break;
-    case AWT_LABEL_RIGHT:
-      j = 1.0;
-      break;
-    }
-  
-  ptr = NSA_GET_PTR (env, obj);
-
-  gdk_threads_enter ();
-
-  label = GTK_LABEL (GTK_BIN (ptr)->child);
-  gtk_misc_set_alignment (GTK_MISC (label), j, 0.5);
-
-  gdk_threads_leave ();
-}
-

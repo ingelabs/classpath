@@ -24,6 +24,36 @@
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_create
+  (JNIEnv *env, jobject obj)
+{
+  gpointer widget;
+
+  gdk_threads_enter ();
+  widget = gtk_type_new (gtk_entry_get_type ());
+  gdk_threads_leave ();
+
+  NSA_SET_PTR (env, obj, widget);
+}
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_connectHooks
+  (JNIEnv *env, jobject obj)
+{
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+  gtk_widget_realize (GTK_WIDGET (ptr));
+  connect_awt_hook (env, obj, 2, 
+		    GTK_WIDGET (ptr)->window, 
+		    GTK_ENTRY (ptr)->text_area);
+  gdk_threads_leave ();
+}
+
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_old_create
   (JNIEnv *env, jobject obj, jobject parent_obj, jstring text)
 {
   GtkWidget *entry;
@@ -41,7 +71,7 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_create
   set_parent (entry, GTK_CONTAINER (parent));
 
   gtk_widget_realize (entry);
-  connect_awt_hook (env, obj, entry, 2, 
+  connect_awt_hook (env, obj, 2, 
 		    entry->window, GTK_ENTRY (entry)->text_area);
 
   NSA_SET_PTR (env, obj, entry);

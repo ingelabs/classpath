@@ -23,9 +23,38 @@
 #include "gnu_java_awt_peer_gtk_GtkTextAreaPeer.h"
 
 #define TEXT_FROM_SW(obj) (GTK_TEXT(GTK_SCROLLED_WINDOW (obj)->container.child))
-
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_create
+  (JNIEnv *env, jobject obj, jint scroll)
+{
+  GtkWidget *text, *sw;
+
+  gdk_threads_enter ();
+  text = gtk_text_new (NULL, NULL);
+  gtk_widget_show (text);
+
+  sw = gtk_scrolled_window_new (NULL, NULL);
+  gtk_container_add (GTK_CONTAINER (sw), text);
+
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), 
+
+     /* horizontal scrollbar */
+     (scroll == AWT_TEXTAREA_SCROLLBARS_BOTH
+      || scroll == AWT_TEXTAREA_SCROLLBARS_HORIZONTAL_ONLY) ? 
+       GTK_POLICY_ALWAYS : GTK_POLICY_NEVER,
+
+     /* vertical scrollbar */
+     (scroll == AWT_TEXTAREA_SCROLLBARS_BOTH
+      || scroll == AWT_TEXTAREA_SCROLLBARS_VERTICAL_ONLY) ? 
+       GTK_POLICY_ALWAYS : GTK_POLICY_NEVER);
+  gdk_threads_leave ();
+
+  NSA_SET_PTR (env, obj, sw);
+}
+
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_old_create
   (JNIEnv *env, jobject obj, jobject parent_obj, 
    jstring contents, jint scroll)
 {

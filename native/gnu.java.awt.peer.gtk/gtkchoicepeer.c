@@ -26,28 +26,55 @@ static void connect_choice_item_selectable_hook (JNIEnv *env,
 						 jobject peer_obj, 
 						 GtkItem *item, 
 						 jobject item_obj);
-
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuNew (JNIEnv *env, 
-    jobject obj, jobject parent_obj, jobjectArray items)
+Java_gnu_java_awt_peer_gtk_GtkChoicePeer_create 
+  (JNIEnv *env, jobject obj)
 {
-  GtkWidget *menu, *optionmenu, *parent;
-  GtkWidget *menuitem;
-  jsize count;
-  int i;
-
-  parent = NSA_GET_PTR (env, parent_obj);
-  count = (*env)->GetArrayLength (env, items);
+  GtkWidget *menu;
+  GtkOptionMenu *option_menu;
+  GtkRequisition child_requisition;
 
   gdk_threads_enter ();
-
-  menu = gtk_menu_new();
+  option_menu = GTK_OPTION_MENU (gtk_option_menu_new ());
+  menu = gtk_menu_new ();
   gtk_widget_show (menu);
+
+  gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
+
+  gtk_widget_size_request (gtk_menu_item_new_with_label (""), 
+			   &child_requisition);
+  option_menu->width = child_requisition.width;
+  option_menu->height = child_requisition.height;
+
+  gdk_threads_leave ();
+
+  NSA_SET_PTR (env, obj, option_menu);
+}
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkChoicePeer_append 
+  (JNIEnv *env, jobject obj, jobjectArray items)
+{
+  gpointer ptr;
+  GtkMenu *menu;
+  jsize count, i;
+  int need_set_history = 0;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+  menu = GTK_MENU (gtk_option_menu_get_menu (GTK_OPTION_MENU (ptr)));
+
+  if (!gtk_container_children (GTK_CONTAINER (menu)))
+      need_set_history = 1;
+
+  count = (*env)->GetArrayLength (env, items);
 
   for (i = 0; i < count; i++) 
     {
       jobject item;
       const char *label;
+      GtkWidget *menuitem;
 
       item = (*env)->GetObjectArrayElement (env, items, i);
       label = (*env)->GetStringUTFChars (env, item, NULL);
@@ -56,87 +83,75 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuNew (JNIEnv *env,
 
       (*env)->ReleaseStringUTFChars (env, item, label);
 
-      gtk_menu_append (GTK_MENU (menu), menuitem);
+      gtk_menu_append (menu, menuitem);
       gtk_widget_show (menuitem);
 
       connect_choice_item_selectable_hook (env, obj, 
 					   GTK_ITEM (menuitem), item);
     }
-
-  optionmenu = gtk_option_menu_new ();
-
-  gtk_option_menu_set_menu (GTK_OPTION_MENU (optionmenu), menu);
-
-  set_parent (optionmenu, GTK_CONTAINER (parent));
-  gtk_widget_realize (optionmenu);
-  connect_awt_hook (env, obj, optionmenu, 1, optionmenu->window);
+  
+  if (need_set_history)
+    gtk_option_menu_set_history (GTK_OPTION_MENU (ptr), 0);
 
   gdk_threads_leave ();
-
-  NSA_SET_PTR (env, obj, optionmenu);
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuAdd (JNIEnv *env, 
-    jobject obj, jstring item, jint index)
+Java_gnu_java_awt_peer_gtk_GtkChoicePeer_add 
+  (JNIEnv *env, jobject obj, jstring item, jint index)
 {
   void *ptr;
   const char *label;
   GtkWidget *menu, *menuitem;
+  int need_set_history = 0;
 
   ptr = NSA_GET_PTR (env, obj);
   
-  printf("add\n");
-
   label = (*env)->GetStringUTFChars (env, item, 0);      
+
   gdk_threads_enter ();
-  
   menu = gtk_option_menu_get_menu (GTK_OPTION_MENU (ptr));
+
+  if (!gtk_container_children (GTK_CONTAINER (menu)))
+      need_set_history = 1;
 
   menuitem = gtk_menu_item_new_with_label (label);
   gtk_menu_insert (GTK_MENU (menu), menuitem, index);
   gtk_widget_show (menuitem);
-
   connect_choice_item_selectable_hook (env, obj, GTK_ITEM (menuitem), item);
 
+  if (need_set_history)
+    gtk_option_menu_set_history (GTK_OPTION_MENU (ptr), 0);
+
   gdk_threads_leave ();
+
   (*env)->ReleaseStringUTFChars (env, item, label);
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuRemove (JNIEnv *env, 
-    jobject obj, jint index)
+Java_gnu_java_awt_peer_gtk_GtkChoicePeer_remove 
+  (JNIEnv *env, jobject obj, jint index)
 {
   void *ptr;
-  GtkMenuShell *menu_shell;
-  GList *tmp_list, *tmp;
+  GtkContainer *menu;
+  GList *children;
 
   ptr = NSA_GET_PTR (env, obj);
-  
-  printf("remove\n");
 
   gdk_threads_enter ();
-
-  menu_shell = GTK_MENU_SHELL (gtk_option_menu_get_menu (GTK_OPTION_MENU 
-							 (ptr)));
-
-  tmp_list=gtk_container_children (GTK_CONTAINER(menu_shell));
-  tmp=g_list_nth (tmp_list, index);
-  gtk_container_remove (GTK_CONTAINER (menu_shell), GTK_WIDGET 
-			(tmp->data));
-
+  menu = GTK_CONTAINER (gtk_option_menu_get_menu (GTK_OPTION_MENU (ptr)));
+  children = gtk_container_children (menu);
+  gtk_container_remove (menu, GTK_WIDGET (g_list_nth (children, index)->data));
   gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkChoicePeer_gtkOptionMenuSelect (JNIEnv *env, 
-    jobject obj, jint index)
+Java_gnu_java_awt_peer_gtk_GtkChoicePeer_select 
+  (JNIEnv *env, jobject obj, jint index)
 {
   void *ptr;
 
-  ptr=NSA_GET_PTR (env, obj);
-  
-  printf("set\n");
+  ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
   gtk_option_menu_set_history (GTK_OPTION_MENU (ptr), index);

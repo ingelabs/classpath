@@ -79,7 +79,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_setLabel
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_setEnabled
   (JNIEnv *env, jobject obj, jboolean enabled)
 {
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setEnabled (env, obj, enabled);
+/*    Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setEnabled (env, obj, enabled); */
 }
 
 static void

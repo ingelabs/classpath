@@ -83,7 +83,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowNew
 }
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetScrollPosition
+Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_setScrollPosition
   (JNIEnv *env, jobject obj, jint x, jint y)
 {
   GtkAdjustment *hadj, *vadj;
@@ -93,13 +93,14 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetScrollPosition
   ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
+
   sw = GTK_SCROLLED_WINDOW(ptr);
 
-  hadj = gtk_scrolled_window_get_hadjustment(sw);
-  vadj = gtk_scrolled_window_get_vadjustment(sw);
+  hadj = gtk_scrolled_window_get_hadjustment (sw);
+  vadj = gtk_scrolled_window_get_vadjustment (sw);
 
-  gtk_adjustment_set_value (hadj, (float)x);
-  gtk_adjustment_set_value (vadj, (float)y);
+  gtk_adjustment_set_value (hadj, (float) x);
+  gtk_adjustment_set_value (vadj, (float) y);
 
   gdk_threads_leave ();
 }

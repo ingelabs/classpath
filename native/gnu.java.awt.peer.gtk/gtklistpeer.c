@@ -28,6 +28,71 @@ connect_selectable_hook (JNIEnv *env, jobject peer_obj, GtkCList *list);
 
 JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkListPeer_create
+  (JNIEnv *env, jobject obj)
+{
+  GtkWidget *list, *sw;
+
+  gdk_threads_enter ();
+  list = gtk_clist_new (1);
+  gtk_widget_show (list);
+  sw = gtk_scrolled_window_new (NULL, NULL);
+  gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw), 
+				  GTK_POLICY_AUTOMATIC,
+				  GTK_POLICY_AUTOMATIC);
+  gtk_container_add (GTK_CONTAINER (sw), list);
+  gdk_threads_leave ();
+
+  NSA_SET_PTR (env, obj, sw);
+}
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkListPeer_connectHooks
+  (JNIEnv *env, jobject obj)
+{
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+  gtk_widget_realize (GTK_WIDGET (ptr));
+  connect_selectable_hook (env, obj, CLIST_FROM_SW (ptr));
+  connect_awt_hook (env, obj, 1, GTK_WIDGET (ptr)->window);
+  gdk_threads_leave ();
+}
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkListPeer_append 
+  (JNIEnv *env, jobject obj, jobjectArray items)
+{
+  void *ptr;
+  GtkCList *list;
+  jint count, i;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  count = (*env)->GetArrayLength (env, items);
+
+  gdk_threads_enter ();
+  list = CLIST_FROM_SW (ptr);
+  for (i = 0; i < count; i++) 
+    {
+      const char *text;
+      jobject item;
+
+      item = (*env)->GetObjectArrayElement (env, items, i);
+
+      text = (*env)->GetStringUTFChars (env, item, NULL);
+      gtk_clist_append (list, (char **)&text);
+      (*env)->ReleaseStringUTFChars (env, item, text);
+    }
+
+  gtk_clist_columns_autosize (list);
+  gdk_threads_leave ();
+}
+
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkListPeer_old_create
   (JNIEnv *env, jobject obj, jobject parent_obj,
    jobjectArray items, jboolean mode)
 {
@@ -53,7 +118,7 @@ Java_gnu_java_awt_peer_gtk_GtkListPeer_create
   gtk_container_add (GTK_CONTAINER (sw), list);
 
   connect_selectable_hook (env, obj, GTK_CLIST (list));
-  connect_awt_hook (env, obj, list, 1, list->window);
+  connect_awt_hook (env, obj, 1, list->window);
 
   gtk_clist_set_selection_mode (GTK_CLIST (list),
 				mode ? GTK_SELECTION_MULTIPLE : 

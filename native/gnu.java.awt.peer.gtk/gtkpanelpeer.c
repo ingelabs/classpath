@@ -22,6 +22,33 @@
 #include "gtkpeer.h"
 #include "gnu_java_awt_peer_gtk_GtkPanelPeer.h"
 
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkPanelPeer_create
+  (JNIEnv *env, jobject obj)
+{
+  gpointer widget;
+
+  gdk_threads_enter ();
+  widget = gtk_layout_new (NULL, NULL);
+  gdk_threads_leave ();
+
+  NSA_SET_PTR (env, obj, widget);
+}  
+
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkPanelPeer_connectHooks
+  (JNIEnv *env, jobject obj)
+{
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+  gtk_widget_realize (GTK_WIDGET (ptr));
+  connect_awt_hook (env, obj, 1, GTK_LAYOUT (ptr)->bin_window);
+  gdk_threads_leave ();
+}
+
 /*
  * Make a new panel.
  */
@@ -40,7 +67,7 @@ Java_gnu_java_awt_peer_gtk_GtkPanelPeer_gtkPanelNew
   set_parent (layout, GTK_CONTAINER (parent));
 
   gtk_widget_realize (layout);
-  connect_awt_hook (env, obj, layout, 1, GTK_LAYOUT (layout)->bin_window);
+  connect_awt_hook (env, obj, 1, GTK_LAYOUT (layout)->bin_window);
   set_visible (layout, 1);
 
   NSA_SET_PTR (env, obj, layout);

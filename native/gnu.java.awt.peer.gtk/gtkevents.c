@@ -518,8 +518,7 @@ attach_jobject (GdkWindow *window, jobject *obj)
 }
 
 void
-connect_awt_hook (JNIEnv *env, jobject peer_obj, GtkWidget *widget,
-		  int nwindows, ...)
+connect_awt_hook (JNIEnv *env, jobject peer_obj, int nwindows, ...)
 {
   int i;
   va_list ap;
