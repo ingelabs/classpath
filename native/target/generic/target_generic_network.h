@@ -44,7 +44,7 @@ Systems    : all
 #define __TARGET_GENERIC_NETWORK__
 
 #ifdef __cplusplus
-extern "C"
+extern "C" {
 #endif
 
 /* check if target_native_network.h included */
@@ -738,7 +738,7 @@ extern "C"
 
 /***********************************************************************\
 * Name       : TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_REUSE_ADDRESS
-* Purpose    : set socket option IP_MULTICAST_IF
+* Purpose    : set socket option REUSE_ADDRESS
 * Input      : socketDescriptor - socket descriptor
 *              flag             - 1 or 0
 * Output     : result - TARGET_NATIVE_OK if no error occurred, 
@@ -837,6 +837,31 @@ extern "C"
       __request.imr_multiaddr.s_addr=htonl(address); \
       __request.imr_interface.s_addr=INADDR_ANY; \
       result=(setsockopt(socketDescriptor,IPPROTO_IP,IP_DROP_MEMBERSHIP,&__request,sizeof(__request))==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
+    } while (0)
+#endif
+
+/***********************************************************************\
+* Name       : TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_KEEP_ALIVE
+* Purpose    : set socket option KEEP_ALIVE
+* Input      : socketDescriptor - socket descriptor
+*              flag             - 1 or 0
+* Output     : result - TARGET_NATIVE_OK if no error occurred, 
+*                       TARGET_NATIVE_ERROR otherwise
+* Return     : -
+* Side-effect: unknown
+* Notes      : -
+\***********************************************************************/
+
+#ifndef TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_KEEP_ALIVE
+  #include <sys/types.h>
+  #include <sys/socket.h>
+  #include <netinet/in.h>
+  #define TARGET_NATIVE_NETWORK_SOCKET_SET_OPTION_KEEP_ALIVE(socketDescriptor,flag,result) \
+    do { \
+      int __value; \
+      \
+      __value=flag; \
+      result=(setsockopt(socketDescriptor,SOL_SOCKET,SO_KEEPALIVE,&__value,sizeof(__value))==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
     } while (0)
 #endif
 
@@ -1069,6 +1094,72 @@ extern "C"
       { \
         assert(__socketAddressLength>=sizeof(__socketAddress)); \
         address=ntohl(__socketAddress.sin_addr.s_addr); \
+      } \
+    } while (0)
+#endif
+
+/***********************************************************************\
+* Name       : TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_REUSE_ADDRESS
+* Purpose    : get socket option REUSE_ADDRESS
+* Input      : socketDescriptor - socket descriptor
+* Output     : flag   - 1 or 0
+*              result - TARGET_NATIVE_OK if no error occurred, 
+*                       TARGET_NATIVE_ERROR otherwise
+* Return     : -
+* Side-effect: unknown
+* Notes      : -
+\***********************************************************************/
+
+#ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_REUSE_ADDRESS
+  #include <sys/types.h>
+  #include <sys/socket.h>
+  #include <netinet/in.h>
+  #define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_REUSE_ADDRESS(socketDescriptor,flag,result) \
+    do { \
+      int       __value; \
+      socklen_t __len; \
+      \
+      flag=0; \
+      \
+      __len=sizeof(__value); \
+      result=(getsockopt(socketDescriptor,SOL_SOCKET,SO_REUSEADDR,&__value,&__len)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
+      if (result==TARGET_NATIVE_OK) \
+      { \
+        assert(__len>=sizeof(__value)); \
+        flag=__value; \
+      } \
+    } while (0)
+#endif
+
+/***********************************************************************\
+* Name       : TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_KEEP_ALIVE
+* Purpose    : get socket option KEEP_ALIVE
+* Input      : socketDescriptor - socket descriptor
+* Output     : flag   - 1 or 0
+*              result - TARGET_NATIVE_OK if no error occurred, 
+*                       TARGET_NATIVE_ERROR otherwise
+* Return     : -
+* Side-effect: unknown
+* Notes      : -
+\***********************************************************************/
+
+#ifndef TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_KEEP_ALIVE
+  #include <sys/types.h>
+  #include <sys/socket.h>
+  #include <netinet/in.h>
+  #define TARGET_NATIVE_NETWORK_SOCKET_GET_OPTION_KEEP_ALIVE(socketDescriptor,flag,result) \
+    do { \
+      int       __value; \
+      socklen_t __len; \
+      \
+      flag=0; \
+      \
+      __len=sizeof(__value); \
+      result=(getsockopt(socketDescriptor,SOL_SOCKET,SO_KEEPALIVE,&__value,&__len)==0)?TARGET_NATIVE_OK:TARGET_NATIVE_ERROR; \
+      if (result==TARGET_NATIVE_OK) \
+      { \
+        assert(__len>=sizeof(__value)); \
+        flag=__value; \
       } \
     } while (0)
 #endif
