@@ -29,7 +29,8 @@ import java.lang.reflect.Method;
    type-signatures of <code>Class</code>s or <code>Member</code>s.
    More specific methods are also provided for computing the
    type-signature of <code>Constructor</code>s and
-   <code>Method</code>s.
+   <code>Method</code>s.  Methods are also provided to go in the
+   reverse direction.
 */
 public class TypeSignature
 {
@@ -103,6 +104,53 @@ public class TypeSignature
   }
 
   
+  /**
+     This function is the inverse of <code>getEncodingOfClass</code>.
+
+     @see getEncodingOfClass
+
+     @exception ClassNotFoundException If class encoded as type_code
+     cannot be located.
+  */
+  public static Class getClassForEncoding( String type_code )
+    throws ClassNotFoundException
+  {
+    if( type_code.equals( "B" ) )
+      return Byte.TYPE;
+    if( type_code.equals( "C" ) )
+      return Character.TYPE;
+    if( type_code.equals( "D" ) )
+      return Double.TYPE;
+    if( type_code.equals( "F" ) )
+      return Float.TYPE;
+    if( type_code.equals( "I" ) )
+      return Integer.TYPE;
+    if( type_code.equals( "J" ) )
+      return Long.TYPE;
+    if( type_code.equals( "S" ) )
+      return Short.TYPE;
+    if( type_code.equals( "Z" ) )
+      return Boolean.TYPE;
+    if( type_code.charAt( 0 ) == 'L' )
+    {
+      return Class.forName(
+	type_code.substring( 1, type_code.length() - 2 ).replace( '/', '.' ));
+    }
+    if( type_code.charAt( 0 ) == '[' )
+    {
+      int last_bracket = type_code.lastIndexOf( '[' );
+      String array_part = type_code.substring( 0, last_bracket + 1 );
+      String component_part = 
+	getClassForEncoding( type_code.substring( last_bracket + 1 )
+			     ).getName();
+      
+      return Class.forName( array_part + component_part );
+    }
+    else
+      throw new ClassNotFoundException( "Type code cannot be parsed as a valid class name" );
+  }
+  
+
   /**
      Returns a <code>String</code> representing the type-encoding of
      M.  The type-encoding of a method is:
