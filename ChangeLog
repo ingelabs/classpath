@@ -1,3 +1,6 @@
+2001-01-23  Mark Wielaard <mark@klomp.org>
+	* java/security/AccessController.java: new file (stub implementation)
+
 2001-01-23  Brian Jones <cbj@gnu.org>
 	* configure.in: generate Makefiles for proper native directories
 	* native/Makefile.am: modify SUBDIRS to build from jni directory
