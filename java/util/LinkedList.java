@@ -102,7 +102,7 @@ public class LinkedList extends AbstractSequentialList implements Serializable{
 
   private final Backing back = new Backing() {
     public void checkMod(int known) {
-      if (known < modCount) {
+      if (known != modCount) {
 	throw new ConcurrentModificationException();
       }
     }
@@ -452,7 +452,7 @@ public class LinkedList extends AbstractSequentialList implements Serializable{
 
     private final Backing back = new Backing() {
       public void checkMod(int known) {
-	if (known < modCount) {
+	if (known != modCount) {
 	  throw new ConcurrentModificationException();
 	}
       }
