@@ -1,5 +1,11 @@
 2004-05-28  Michael Koch  <konqueror@gmx.de>
 
+	* configure.ac: Removed include/jni.h from output files.
+	* include/jni.h: New file.
+	* include/jni.h.in: Removed.
+
+2004-05-28  Michael Koch  <konqueror@gmx.de>
+
 	* java/security/Security.java
 	(insertProviderAt): Use equals() instead of ==.
 	(removeProvicer): Likewise.

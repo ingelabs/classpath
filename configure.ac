@@ -333,7 +333,6 @@ gnu/javax/rmi/Makefile
 gnu/javax/rmi/CORBA/Makefile
 gnu/regexp/Makefile
 include/Makefile
-include/jni.h
 java/Makefile
 java/applet/Makefile
 java/awt/Makefile
