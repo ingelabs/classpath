@@ -1,5 +1,12 @@
 2004-10-24  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/tree/DefaultTreeCellEditor.java,
+	javax/swing/tree/DefaultTreeModel.java,
+	javax/swing/tree/DefaultTreeSelectionModel.java:
+	Jalopied.
+
+2004-10-24  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/tree/DefaultTreeCellEditor.java
 	(EditorContainer.EditorContainer): Fixed arguments.
 	(EditorContainer.EditorContainer): New method.

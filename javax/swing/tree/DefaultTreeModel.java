@@ -52,263 +52,275 @@ import javax.swing.event.TreeModelListener;
  * DefaultTreeModel
  * @author Andrew Selkirk
  */
-public class DefaultTreeModel implements Serializable, TreeModel
+public class DefaultTreeModel
+  implements Serializable, TreeModel
 {
   static final long serialVersionUID = -2621068368932566998L;
 
-	//-------------------------------------------------------------
-	// Variables --------------------------------------------------
-	//-------------------------------------------------------------
+  /**
+   * root
+   */
+  protected TreeNode root = null;
 
-	/**
-	 * root
-	 */
-	protected TreeNode root = null;
+  /**
+   * listenerList
+   */
+  protected EventListenerList listenerList = new EventListenerList();
 
-	/**
-	 * listenerList
-	 */
-	protected EventListenerList listenerList = new EventListenerList();
+  /**
+   * asksAllowsChildren
+   */
+  protected boolean asksAllowsChildren;
 
-	/**
-	 * asksAllowsChildren
-	 */
-	protected boolean asksAllowsChildren;
+  /**
+   * Constructor DefaultTreeModel
+   * @param value0 TODO
+   */
+  public DefaultTreeModel(TreeNode root)
+  {
+    setRoot(root);
+  }
 
+  /**
+   * Constructor DefaultTreeModel
+   * @param value0 TODO
+   * @param value1 TODO
+   */
+  public DefaultTreeModel(TreeNode root, boolean asksAllowsChildren)
+  {
+    setRoot(root);
+    this.asksAllowsChildren = asksAllowsChildren;
+  }
 
-	//-------------------------------------------------------------
-	// Initialization ---------------------------------------------
-	//-------------------------------------------------------------
+  /**
+   * writeObject
+   * @param value0 TODO
+   * @exception IOException TODO
+   */
+  private void writeObject(ObjectOutputStream value0) throws IOException
+  {
+    // TODO
+  }
 
-	/**
-	 * Constructor DefaultTreeModel
-	 * @param value0 TODO
-	 */
-	public DefaultTreeModel(TreeNode root) {
-		setRoot(root);
-	} // DefaultTreeModel()
+  /**
+   * readObject
+   * @param value0 TODO
+   * @exception IOException TODO
+   * @exception ClassNotFoundException TODO
+   */
+  private void readObject(ObjectInputStream value0)
+    throws IOException, ClassNotFoundException
+  {
+    // TODO
+  }
 
-	/**
-	 * Constructor DefaultTreeModel
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 */
-	public DefaultTreeModel(TreeNode root, boolean asksAllowsChildren) {
-		setRoot(root);
-		this.asksAllowsChildren = asksAllowsChildren;
-	} // DefaultTreeModel()
+  /**
+   * asksAllowsChildren
+   * @return boolean
+   */
+  public boolean asksAllowsChildren()
+  {
+    return asksAllowsChildren;
+  }
 
+  /**
+   * setAsksAllowsChildren
+   * @param value0 TODO
+   */
+  public void setAsksAllowsChildren(boolean value)
+  {
+    asksAllowsChildren = value; // TODO
+  }
 
-	//-------------------------------------------------------------
-	// Methods ----------------------------------------------------
-	//-------------------------------------------------------------
+  /**
+   * setRoot
+   * @param value0 TODO
+   */
+  public void setRoot(TreeNode root)
+  {
+    // Sanity Check
+    if (root == null)
+      {
+	throw new IllegalArgumentException("null root");
+      }
+    // Set new root
+    this.root = root;
 
-	/**
-	 * writeObject
-	 * @param value0 TODO
-	 * @exception IOException TODO
-	 */
-	private void writeObject(ObjectOutputStream value0) throws IOException {
-		// TODO
-	} // writeObject()
+    // TODO
+  }
 
-	/**
-	 * readObject
-	 * @param value0 TODO
-	 * @exception IOException TODO
-	 * @exception ClassNotFoundException TODO
-	 */
-	private void readObject(ObjectInputStream value0) throws IOException, ClassNotFoundException {
-		// TODO
-	} // readObject()
+  /**
+   * getRoot
+   * @return Object
+   */
+  public Object getRoot()
+  {
+    return root;
+  }
 
-	/**
-	 * asksAllowsChildren
-	 * @returns boolean
-	 */
-	public boolean asksAllowsChildren() {
-		return asksAllowsChildren;
-	} // asksAllowsChildren()
+  /**
+   * getIndexOfChild
+   * @param value0 TODO
+   * @param value1 TODO
+   * @return int
+   */
+  public int getIndexOfChild(Object parent, Object child)
+  {
+    return 0; // TODO
+  }
 
-	/**
-	 * setAsksAllowsChildren
-	 * @param value0 TODO
-	 */
-	public void setAsksAllowsChildren(boolean value) {
-		asksAllowsChildren = value; // TODO
-	} // setAsksAllowsChildren()
+  /**
+   * getChild
+   * @param value0 TODO
+   * @param value1 TODO
+   * @return Object
+   */
+  public Object getChild(Object value0, int value1)
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * setRoot
-	 * @param value0 TODO
-	 */
-	public void setRoot(TreeNode root) {
+  /**
+   * getChildCount
+   * @param value0 TODO
+   * @return int
+   */
+  public int getChildCount(Object value0)
+  {
+    return 0; // TODO
+  }
 
-		// Sanity Check
-		if (root == null) {
-			throw new IllegalArgumentException("null root");
-		} // if
+  /**
+   * isLeaf
+   * @param value0 TODO
+   * @return boolean
+   */
+  public boolean isLeaf(Object value0)
+  {
+    return false; // TODO
+  }
 
-		// Set new root
-		this.root = root;
+  /**
+   * reload
+   */
+  public void reload()
+  {
+    // TODO
+  }
 
-		// TODO
-	} // setRoot()
+  /**
+   * reload
+   * @param value0 TODO
+   */
+  public void reload(TreeNode value0)
+  {
+    // TODO
+  }
 
-	/**
-	 * getRoot
-	 * @returns Object
-	 */
-	public Object getRoot() {
-		return root;
-	} // getRoot()
+  /**
+   * valueForPathChanged
+   * @param value0 TODO
+   * @param value1 TODO
+   */
+  public void valueForPathChanged(TreePath value0, Object value1)
+  {
+    // TODO
+  }
 
-	/**
-	 * getIndexOfChild
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 * @returns int
-	 */
-	public int getIndexOfChild(Object parent, Object child) {
-		return 0; // TODO
-	} // getIndexOfChild()
+  /**
+   * insertNodeInto
+   * @param value0 TODO
+   * @param value1 TODO
+   * @param value2 TODO
+   */
+  public void insertNodeInto(MutableTreeNode value0, MutableTreeNode value1,
+                             int value2)
+  {
+    // TODO
+  }
 
-	/**
-	 * getChild
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 * @returns Object
-	 */
-	public Object getChild(Object value0, int value1) {
-		return null; // TODO
-	} // getChild()
+  /**
+   * removeNodeFromParent
+   * @param value0 TODO
+   */
+  public void removeNodeFromParent(MutableTreeNode value0)
+  {
+    // TODO
+  }
 
-	/**
-	 * getChildCount
-	 * @param value0 TODO
-	 * @returns int
-	 */
-	public int getChildCount(Object value0) {
-		return 0; // TODO
-	} // getChildCount()
+  /**
+   * nodeChanged
+   * @param value0 TODO
+   */
+  public void nodeChanged(TreeNode value0)
+  {
+    // TODO
+  }
 
-	/**
-	 * isLeaf
-	 * @param value0 TODO
-	 * @returns boolean
-	 */
-	public boolean isLeaf(Object value0) {
-		return false; // TODO
-	} // isLeaf()
+  /**
+   * nodesWereInserted
+   * @param value0 TODO
+   * @param value1 TODO
+   */
+  public void nodesWereInserted(TreeNode value0, int[] value1)
+  {
+    // TODO
+  }
 
-	/**
-	 * reload
-	 */
-	public void reload() {
-		// TODO
-	} // reload()
+  /**
+   * nodesWereRemoved
+   * @param value0 TODO
+   * @param value1 TODO
+   * @param value2 TODO
+   */
+  public void nodesWereRemoved(TreeNode value0, int[] value1, Object[] value2)
+  {
+    // TODO
+  }
 
-	/**
-	 * reload
-	 * @param value0 TODO
-	 */
-	public void reload(TreeNode value0) {
-		// TODO
-	} // reload()
+  /**
+   * nodesChanged
+   * @param value0 TODO
+   * @param value1 TODO
+   */
+  public void nodesChanged(TreeNode value0, int[] value1)
+  {
+    // TODO
+  }
 
-	/**
-	 * valueForPathChanged
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 */
-	public void valueForPathChanged(TreePath value0, Object value1) {
-		// TODO
-	} // valueForPathChanged()
+  /**
+   * nodeStructureChanged
+   * @param value0 TODO
+   */
+  public void nodeStructureChanged(TreeNode value0)
+  {
+    // TODO
+  }
 
-	/**
-	 * insertNodeInto
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 * @param value2 TODO
-	 */
-	public void insertNodeInto(MutableTreeNode value0, MutableTreeNode value1, int value2) {
-		// TODO
-	} // insertNodeInto()
+  /**
+   * getPathToRoot
+   * @param value0 TODO
+   * @return TreeNode[]
+   */
+  public TreeNode[] getPathToRoot(TreeNode value0)
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * removeNodeFromParent
-	 * @param value0 TODO
-	 */
-	public void removeNodeFromParent(MutableTreeNode value0) {
-		// TODO
-	} // removeNodeFromParent()
-
-	/**
-	 * nodeChanged
-	 * @param value0 TODO
-	 */
-	public void nodeChanged(TreeNode value0) {
-		// TODO
-	} // nodeChanged()
-
-	/**
-	 * nodesWereInserted
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 */
-	public void nodesWereInserted(TreeNode value0, int[] value1) {
-		// TODO
-	} // nodesWereInserted()
-
-	/**
-	 * nodesWereRemoved
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 * @param value2 TODO
-	 */
-	public void nodesWereRemoved(TreeNode value0, int[] value1, Object[] value2) {
-		// TODO
-	} // nodesWereRemoved()
-
-	/**
-	 * nodesChanged
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 */
-	public void nodesChanged(TreeNode value0, int[] value1) {
-		// TODO
-	} // nodesChanged()
-
-	/**
-	 * nodeStructureChanged
-	 * @param value0 TODO
-	 */
-	public void nodeStructureChanged(TreeNode value0) {
-		// TODO
-	} // nodeStructureChanged()
-
-	/**
-	 * getPathToRoot
-	 * @param value0 TODO
-	 * @returns TreeNode[]
-	 */
-	public TreeNode[] getPathToRoot(TreeNode value0) {
-		return null; // TODO
-	} // getPathToRoot()
-
-	/**
-	 * getPathToRoot
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 * @returns TreeNode[]
-	 */
-	protected TreeNode[] getPathToRoot(TreeNode value0, int value1) {
-		return null; // TODO
-	} // getPathToRoot()
+  /**
+   * getPathToRoot
+   * @param value0 TODO
+   * @param value1 TODO
+   * @return TreeNode[]
+   */
+  protected TreeNode[] getPathToRoot(TreeNode value0, int value1)
+  {
+    return null; // TODO
+  }
 
   /**
    * Registers a listere to the model.
-   * 
+   *
    * @param listener the listener to add
    */
   public void addTreeModelListener(TreeModelListener listener)
@@ -318,7 +330,7 @@ public class DefaultTreeModel implements Serializable, TreeModel
 
   /**
    * Removes a listener from the model.
-   * 
+   *
    * @param listener the listener to remove
    */
   public void removeTreeModelListener(TreeModelListener listener)
@@ -340,15 +352,17 @@ public class DefaultTreeModel implements Serializable, TreeModel
 
   /**
    * fireTreeNodesChanged
-   * 
+   *
    * @param source the node being changed
    * @param path the path to the root node
    * @param childIndices the indices of the changed elements
    * @param children the changed elements
    */
-  protected void fireTreeNodesChanged(Object source, Object[] path, int[] childIndices, Object[] children)
+  protected void fireTreeNodesChanged(Object source, Object[] path,
+                                      int[] childIndices, Object[] children)
   {
-    TreeModelEvent event = new TreeModelEvent(source, path, childIndices, children);
+    TreeModelEvent event =
+      new TreeModelEvent(source, path, childIndices, children);
     TreeModelListener[] listeners = getTreeModelListeners();
 
     for (int i = listeners.length - 1; i >= 0; --i)
@@ -357,15 +371,17 @@ public class DefaultTreeModel implements Serializable, TreeModel
 
   /**
    * fireTreeNodesInserted
-   * 
+   *
    * @param source the node where new nodes got inserted
    * @param path the path to the root node
    * @param childIndices the indices of the new elements
    * @param children the new elements
    */
-  protected void fireTreeNodesInserted(Object source, Object[] path, int[] childIndices, Object[] children)
+  protected void fireTreeNodesInserted(Object source, Object[] path,
+                                       int[] childIndices, Object[] children)
   {
-    TreeModelEvent event = new TreeModelEvent(source, path, childIndices, children);
+    TreeModelEvent event =
+      new TreeModelEvent(source, path, childIndices, children);
     TreeModelListener[] listeners = getTreeModelListeners();
 
     for (int i = listeners.length - 1; i >= 0; --i)
@@ -374,15 +390,17 @@ public class DefaultTreeModel implements Serializable, TreeModel
 
   /**
    * fireTreeNodesRemoved
-   * 
+   *
    * @param source the node where nodes got removed-
    * @param path the path to the root node
    * @param childIndices the indices of the removed elements
    * @param children the removed elements
    */
-  protected void fireTreeNodesRemoved(Object source, Object[] path, int[] childIndices, Object[] children)
+  protected void fireTreeNodesRemoved(Object source, Object[] path,
+                                      int[] childIndices, Object[] children)
   {
-    TreeModelEvent event = new TreeModelEvent(source, path, childIndices, children);
+    TreeModelEvent event =
+      new TreeModelEvent(source, path, childIndices, children);
     TreeModelListener[] listeners = getTreeModelListeners();
 
     for (int i = listeners.length - 1; i >= 0; --i)
@@ -391,15 +409,17 @@ public class DefaultTreeModel implements Serializable, TreeModel
 
   /**
    * fireTreeStructureChanged
-   * 
+   *
    * @param source the node where the model has changed
    * @param path the path to the root node
    * @param childIndices the indices of the affected elements
    * @param children the affected elements
    */
-  protected void fireTreeStructureChanged(Object source, Object[] path, int[] childIndices, Object[] children)
+  protected void fireTreeStructureChanged(Object source, Object[] path,
+                                          int[] childIndices, Object[] children)
   {
-    TreeModelEvent event = new TreeModelEvent(source, path, childIndices, children);
+    TreeModelEvent event =
+      new TreeModelEvent(source, path, childIndices, children);
     TreeModelListener[] listeners = getTreeModelListeners();
 
     for (int i = listeners.length - 1; i >= 0; --i)
@@ -408,9 +428,9 @@ public class DefaultTreeModel implements Serializable, TreeModel
 
   /**
    * Returns the registered listeners of a given type.
-   * 
+   *
    * @param listenerType the listener type to return
-   * 
+   *
    * @return an array of listeners
    *
    * @since 1.3
@@ -419,6 +439,4 @@ public class DefaultTreeModel implements Serializable, TreeModel
   {
     return listenerList.getListeners(listenerType);
   }
-
-
-} // DefaultTreeModel
+}

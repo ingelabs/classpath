@@ -35,7 +35,6 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
 package javax.swing.tree;
 
 import java.beans.PropertyChangeListener;
@@ -45,12 +44,12 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.EventListener;
 import java.util.Vector;
-
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.event.EventListenerList;
 import javax.swing.event.SwingPropertyChangeSupport;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+
 
 /**
  * DefaultTreeSelectionModel
@@ -61,244 +60,252 @@ public class DefaultTreeSelectionModel
 {
   static final long serialVersionUID = 3288129636638950196L;
 
-	//-------------------------------------------------------------
-	// Variables --------------------------------------------------
-	//-------------------------------------------------------------
+  /**
+   * SELECTION_MODE_PROPERTY
+   */
+  public static final String SELECTION_MODE_PROPERTY = "selectionMode";
 
-	/**
-	 * SELECTION_MODE_PROPERTY
-	 */
-	public static final String SELECTION_MODE_PROPERTY = "selectionMode";
+  /**
+   * changeSupport
+   */
+  protected SwingPropertyChangeSupport changeSupport;
 
-	/**
-	 * changeSupport
-	 */
-	protected SwingPropertyChangeSupport changeSupport;
+  /**
+   * selection
+   */
+  protected TreePath[] selection;
 
-	/**
-	 * selection
-	 */
-	protected TreePath[] selection;
+  /**
+   * listenerList
+   */
+  protected EventListenerList listenerList;
 
-	/**
-	 * listenerList
-	 */
-	protected EventListenerList listenerList;
+  /**
+   * rowMapper
+   */
+  protected transient RowMapper rowMapper;
 
-	/**
-	 * rowMapper
-	 */
-	protected transient RowMapper rowMapper;
+  /**
+   * listSelectionModel
+   */
+  protected DefaultListSelectionModel listSelectionModel;
 
-	/**
-	 * listSelectionModel
-	 */
-	protected DefaultListSelectionModel listSelectionModel;
+  /**
+   * selectionMode
+   */
+  protected int selectionMode;
 
-	/**
-	 * selectionMode
-	 */
-	protected int selectionMode;
+  /**
+   * leadPath
+   */
+  protected TreePath leadPath;
 
-	/**
-	 * leadPath
-	 */
-	protected TreePath leadPath;
+  /**
+   * leadIndex
+   */
+  protected int leadIndex;
 
-	/**
-	 * leadIndex
-	 */
-	protected int leadIndex;
+  /**
+   * leadRow
+   */
+  protected int leadRow;
 
-	/**
-	 * leadRow
-	 */
-	protected int leadRow;
+  /**
+   * Constructor DefaultTreeSelectionModel
+   */
+  public DefaultTreeSelectionModel()
+  {
+    // TODO
+  }
 
+  /**
+   * clone
+   * @exception CloneNotSupportedException TODO
+   * @return Object
+   */
+  public Object clone() throws CloneNotSupportedException
+  {
+    return null; // TODO
+  }
 
-	//-------------------------------------------------------------
-	// Initialization ---------------------------------------------
-	//-------------------------------------------------------------
+  /**
+   * toString
+   * @return String
+   */
+  public String toString()
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * Constructor DefaultTreeSelectionModel
-	 */
-	public DefaultTreeSelectionModel() {
-		// TODO
-	} // DefaultTreeSelectionModel()
+  /**
+   * writeObject
+   * @param value0 TODO
+   * @exception IOException TODO
+   */
+  private void writeObject(ObjectOutputStream value0) throws IOException
+  {
+    // TODO
+  }
 
+  /**
+   * readObject
+   * @param value0 TODO
+   * @exception IOException TODO
+   * @exception ClassNotFoundException TODO
+   */
+  private void readObject(ObjectInputStream value0)
+    throws IOException, ClassNotFoundException
+  {
+    // TODO
+  }
 
-	//-------------------------------------------------------------
-	// Methods ----------------------------------------------------
-	//-------------------------------------------------------------
+  /**
+   * setRowMapper
+   * @param value0 TODO
+   */
+  public void setRowMapper(RowMapper value0)
+  {
+    // TODO
+  }
 
-	/**
-	 * clone
-	 * @exception CloneNotSupportedException TODO
-	 * @returns Object
-	 */
-	public Object clone() throws CloneNotSupportedException {
-		return null; // TODO
-	} // clone()
+  /**
+   * getRowMapper
+   * @return RowMapper
+   */
+  public RowMapper getRowMapper()
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * toString
-	 * @returns String
-	 */
-	public String toString() {
-		return null; // TODO
-	} // toString()
+  /**
+   * setSelectionMode
+   * @param value0 TODO
+   */
+  public void setSelectionMode(int value0)
+  {
+    // TODO
+  }
 
-	/**
-	 * writeObject
-	 * @param value0 TODO
-	 * @exception IOException TODO
-	 */
-	private void writeObject(ObjectOutputStream value0) throws IOException {
-		// TODO
-	} // writeObject()
+  /**
+   * getSelectionMode
+   * @return int
+   */
+  public int getSelectionMode()
+  {
+    return 0; // TODO
+  }
 
-	/**
-	 * readObject
-	 * @param value0 TODO
-	 * @exception IOException TODO
-	 * @exception ClassNotFoundException TODO
-	 */
-	private void readObject(ObjectInputStream value0) throws IOException, ClassNotFoundException {
-		// TODO
-	} // readObject()
+  /**
+   * setSelectionPath
+   * @param value0 TODO
+   */
+  public void setSelectionPath(TreePath value0)
+  {
+    // TODO
+  }
 
-	/**
-	 * setRowMapper
-	 * @param value0 TODO
-	 */
-	public void setRowMapper(RowMapper value0) {
-		// TODO
-	} // setRowMapper()
+  /**
+   * setSelectionPaths
+   * @param value0 TODO
+   */
+  public void setSelectionPaths(TreePath[] value0)
+  {
+    // TODO
+  }
 
-	/**
-	 * getRowMapper
-	 * @returns RowMapper
-	 */
-	public RowMapper getRowMapper() {
-		return null; // TODO
-	} // getRowMapper()
+  /**
+   * addSelectionPath
+   * @param value0 TODO
+   */
+  public void addSelectionPath(TreePath value0)
+  {
+    // TODO
+  }
 
-	/**
-	 * setSelectionMode
-	 * @param value0 TODO
-	 */
-	public void setSelectionMode(int value0) {
-		// TODO
-	} // setSelectionMode()
+  /**
+   * addSelectionPaths
+   * @param value0 TODO
+   */
+  public void addSelectionPaths(TreePath[] value0)
+  {
+    // TODO
+  }
 
-	/**
-	 * getSelectionMode
-	 * @returns int
-	 */
-	public int getSelectionMode() {
-		return 0; // TODO
-	} // getSelectionMode()
+  /**
+   * removeSelectionPath
+   * @param value0 TODO
+   */
+  public void removeSelectionPath(TreePath value0)
+  {
+    // TODO
+  }
 
-	/**
-	 * setSelectionPath
-	 * @param value0 TODO
-	 */
-	public void setSelectionPath(TreePath value0) {
-		// TODO
-	} // setSelectionPath()
+  /**
+   * removeSelectionPaths
+   * @param value0 TODO
+   */
+  public void removeSelectionPaths(TreePath[] value0)
+  {
+    // TODO
+  }
 
-	/**
-	 * setSelectionPaths
-	 * @param value0 TODO
-	 */
-	public void setSelectionPaths(TreePath[] value0) {
-		// TODO
-	} // setSelectionPaths()
+  /**
+   * getSelectionPath
+   * @return TreePath
+   */
+  public TreePath getSelectionPath()
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * addSelectionPath
-	 * @param value0 TODO
-	 */
-	public void addSelectionPath(TreePath value0) {
-		// TODO
-	} // addSelectionPath()
+  /**
+   * getSelectionPaths
+   * @return TreePath[]
+   */
+  public TreePath[] getSelectionPaths()
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * addSelectionPaths
-	 * @param value0 TODO
-	 */
-	public void addSelectionPaths(TreePath[] value0) {
-		// TODO
-	} // addSelectionPaths()
+  /**
+   * getSelectionCount
+   * @return int
+   */
+  public int getSelectionCount()
+  {
+    return 0; // TODO
+  }
 
-	/**
-	 * removeSelectionPath
-	 * @param value0 TODO
-	 */
-	public void removeSelectionPath(TreePath value0) {
-		// TODO
-	} // removeSelectionPath()
+  /**
+   * isPathSelected
+   * @param value0 TODO
+   * @return boolean
+   */
+  public boolean isPathSelected(TreePath value0)
+  {
+    return false; // TODO
+  }
 
-	/**
-	 * removeSelectionPaths
-	 * @param value0 TODO
-	 */
-	public void removeSelectionPaths(TreePath[] value0) {
-		// TODO
-	} // removeSelectionPaths()
+  /**
+   * isSelectionEmpty
+   * @return boolean
+   */
+  public boolean isSelectionEmpty()
+  {
+    return false; // TODO
+  }
 
-	/**
-	 * getSelectionPath
-	 * @returns TreePath
-	 */
-	public TreePath getSelectionPath() {
-		return null; // TODO
-	} // getSelectionPath()
-
-	/**
-	 * getSelectionPaths
-	 * @returns TreePath[]
-	 */
-	public TreePath[] getSelectionPaths() {
-		return null; // TODO
-	} // getSelectionPaths()
-
-	/**
-	 * getSelectionCount
-	 * @returns int
-	 */
-	public int getSelectionCount() {
-		return 0; // TODO
-	} // getSelectionCount()
-
-	/**
-	 * isPathSelected
-	 * @param value0 TODO
-	 * @returns boolean
-	 */
-	public boolean isPathSelected(TreePath value0) {
-		return false; // TODO
-	} // isPathSelected()
-
-	/**
-	 * isSelectionEmpty
-	 * @returns boolean
-	 */
-	public boolean isSelectionEmpty() {
-		return false; // TODO
-	} // isSelectionEmpty()
-
-	/**
-	 * clearSelection
-	 */
-	public void clearSelection() {
-		// TODO
-	} // clearSelection()
+  /**
+   * clearSelection
+   */
+  public void clearSelection()
+  {
+    // TODO
+  }
 
   /**
    * Adds a <code>TreeSelectionListener</code> object to this model.
-   * 
+   *
    * @param listener the listener to add
    */
   public void addTreeSelectionListener(TreeSelectionListener listener)
@@ -308,7 +315,7 @@ public class DefaultTreeSelectionModel
 
   /**
    * Removes a <code>TreeSelectionListener</code> object from this model.
-   * 
+   *
    * @param listener the listener to remove
    */
   public void removeTreeSelectionListener(TreeSelectionListener listener)
@@ -318,20 +325,19 @@ public class DefaultTreeSelectionModel
 
   /**
    * Returns all <code>TreeSelectionListener</code> added to this model.
-   * 
+   *
    * @return an array of listeners
    *
    * @since 1.4
    */
   public TreeSelectionListener[] getTreeSelectionListeners()
   {
-    return (TreeSelectionListener[])
-	      listenerList.getListeners(TreeSelectionListener.class);
+    return (TreeSelectionListener[]) listenerList.getListeners(TreeSelectionListener.class);
   }
 
   /**
    * fireValueChanged
-   * 
+   *
    * @param event the event to fire.
    */
   protected void fireValueChanged(TreeSelectionEvent event)
@@ -344,9 +350,9 @@ public class DefaultTreeSelectionModel
 
   /**
    * Returns all added listeners of a special type.
-   * 
+   *
    * @param listenerType the listener type
-   * 
+   *
    * @return an array of listeners
    *
    * @since 1.3
@@ -356,65 +362,72 @@ public class DefaultTreeSelectionModel
     return listenerList.getListeners(listenerType);
   }
 
-	/**
-	 * getSelectionRows
-	 * @returns int[]
-	 */
-	public int[] getSelectionRows() {
-		return null; // TODO
-	} // getSelectionRows()
+  /**
+   * getSelectionRows
+   * @return int[]
+   */
+  public int[] getSelectionRows()
+  {
+    return null; // TODO
+  }
 
-	/**
-	 * getMinSelectionRow
-	 * @returns int
-	 */
-	public int getMinSelectionRow() {
-		return 0; // TODO
-	} // getMinSelectionRow()
+  /**
+   * getMinSelectionRow
+   * @return int
+   */
+  public int getMinSelectionRow()
+  {
+    return 0; // TODO
+  }
 
-	/**
-	 * getMaxSelectionRow
-	 * @returns int
-	 */
-	public int getMaxSelectionRow() {
-		return 0; // TODO
-	} // getMaxSelectionRow()
+  /**
+   * getMaxSelectionRow
+   * @return int
+   */
+  public int getMaxSelectionRow()
+  {
+    return 0; // TODO
+  }
 
-	/**
-	 * isRowSelected
-	 * @param value0 TODO
-	 * @returns boolean
-	 */
-	public boolean isRowSelected(int value0) {
-		return false; // TODO
-	} // isRowSelected()
+  /**
+   * isRowSelected
+   * @param value0 TODO
+   * @return boolean
+   */
+  public boolean isRowSelected(int value0)
+  {
+    return false; // TODO
+  }
 
-	/**
-	 * resetRowSelection
-	 */
-	public void resetRowSelection() {
-		// TODO
-	} // resetRowSelection()
+  /**
+   * resetRowSelection
+   */
+  public void resetRowSelection()
+  {
+    // TODO
+  }
 
-	/**
-	 * getLeadSelectionRow
-	 * @returns int
-	 */
-	public int getLeadSelectionRow() {
-		return 0; // TODO
-	} // getLeadSelectionRow()
+  /**
+   * getLeadSelectionRow
+   * @return int
+   */
+  public int getLeadSelectionRow()
+  {
+    return 0; // TODO
+  }
 
-	/**
-	 * getLeadSelectionPath
-	 * @returns TreePath
-	 */
-	public TreePath getLeadSelectionPath() {
-		return null; // TODO
-	} // getLeadSelectionPath()
+  /**
+   * getLeadSelectionPath
+   * @return TreePath
+   */
+  public TreePath getLeadSelectionPath()
+  {
+    return null; // TODO
+  }
 
   /**
    * Adds a <code>PropertyChangeListener</code> object to this model.
-   * 
+   *
    * @param listener the listener to add.
    */
   public void addPropertyChangeListener(PropertyChangeListener listener)
@@ -424,7 +437,7 @@ public class DefaultTreeSelectionModel
 
   /**
    * Removes a <code>PropertyChangeListener</code> object from this model.
-   * 
+   *
    * @param listener the listener to remove.
    */
   public void removePropertyChangeListener(PropertyChangeListener listener)
@@ -436,7 +449,7 @@ public class DefaultTreeSelectionModel
    * Returns all added <code>PropertyChangeListener</code> objects.
    *
    * @return an array of listeners.
-   * 
+   *
    * @since 1.4
    */
   public PropertyChangeListener[] getPropertyChangeListeners()
@@ -444,62 +457,67 @@ public class DefaultTreeSelectionModel
     return changeSupport.getPropertyChangeListeners();
   }
 
-	/**
-	 * insureRowContinuity
-	 */
-	protected void insureRowContinuity() {
-		// TODO
-	} // insureRowContinuity()
+  /**
+   * insureRowContinuity
+   */
+  protected void insureRowContinuity()
+  {
+    // TODO
+  }
 
-	/**
-	 * arePathsContiguous
-	 * @param value0 TODO
-	 * @returns boolean
-	 */
-	protected boolean arePathsContiguous(TreePath[] value0) {
-		return false; // TODO
-	} // arePathsContiguous()
+  /**
+   * arePathsContiguous
+   * @param value0 TODO
+   * @return boolean
+   */
+  protected boolean arePathsContiguous(TreePath[] value0)
+  {
+    return false; // TODO
+  }
 
-	/**
-	 * canPathsBeAdded
-	 * @param value0 TODO
-	 * @returns boolean
-	 */
-	protected boolean canPathsBeAdded(TreePath[] value0) {
-		return false; // TODO
-	} // canPathsBeAdded()
+  /**
+   * canPathsBeAdded
+   * @param value0 TODO
+   * @return boolean
+   */
+  protected boolean canPathsBeAdded(TreePath[] value0)
+  {
+    return false; // TODO
+  }
 
-	/**
-	 * canPathsBeRemoved
-	 * @param value0 TODO
-	 * @returns boolean
-	 */
-	protected boolean canPathsBeRemoved(TreePath[] value0) {
-		return false; // TODO
-	} // canPathsBeRemoved()
+  /**
+   * canPathsBeRemoved
+   * @param value0 TODO
+   * @return boolean
+   */
+  protected boolean canPathsBeRemoved(TreePath[] value0)
+  {
+    return false; // TODO
+  }
 
-	/**
-	 * notifyPathChange
-	 * @param value0 TODO
-	 * @param value1 TODO
-	 */
-	protected void notifyPathChange(Vector value0, TreePath value1) {
-		// TODO
-	} // notifyPathChange()
+  /**
+   * notifyPathChange
+   * @param value0 TODO
+   * @param value1 TODO
+   */
+  protected void notifyPathChange(Vector value0, TreePath value1)
+  {
+    // TODO
+  }
 
-	/**
-	 * updateLeadIndex
-	 */
-	protected void updateLeadIndex() {
-		// TODO
-	} // updateLeadIndex()
+  /**
+   * updateLeadIndex
+   */
+  protected void updateLeadIndex()
+  {
+    // TODO
+  }
 
-	/**
-	 * insureUniqueness
-	 */
-	protected void insureUniqueness() {
-		// TODO
-	} // insureUniqueness()
-
-
-} // DefaultTreeSelectionModel
+  /**
+   * insureUniqueness
+   */
+  protected void insureUniqueness()
+  {
+    // TODO
+  }
+}
