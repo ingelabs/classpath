@@ -1,3 +1,7 @@
+2001-08-17  John Leuner  <jewel@debian.org>
+
+	* vm/reference/java/lang/Runtime.java (setSecurityManager): Fixed reference to wrong 'securityManager'
+
 2001-08-15  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/IdentityHashMap.java: New file.

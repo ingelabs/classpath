@@ -281,7 +281,7 @@ public class Runtime {
 	 * requires native libraries to have been loaded.
 	 */
     static void setSecurityManager(SecurityManager securityManager) {
-		if(securityManager != null) {
+		if(Runtime.securityManager != null) {
 			throw new SecurityException("Security Manager already set");
 		}
 		Runtime.securityManager = securityManager;
