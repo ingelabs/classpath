@@ -50,7 +50,8 @@ import gnu.java.nio.FileChannelImpl;
  * This classes allows a stream of data to be written to a disk file or
  * any open <code>FileDescriptor</code>.
  *
- * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @author Tom Tromey <tromey@cygnus.com>
  */
 public class FileOutputStream extends OutputStream
 {
@@ -77,25 +78,25 @@ public class FileOutputStream extends OutputStream
    * @exception SecurityException If write access to the file is not allowed
    * @exception FileNotFoundException If a non-security error occurs
    */
-  public FileOutputStream (String name, boolean append) 
+  public FileOutputStream (String path, boolean append)
     throws SecurityException, FileNotFoundException
   {
-    SecurityManager sm = System.getSecurityManager();
-    if (sm != null)
-      sm.checkWrite(name);
+    SecurityManager s = System.getSecurityManager();
+    if (s != null)
+      s.checkWrite(path);
 
     fd = new FileDescriptor();
 
     try 
       {
         if (append)
-          fd.open(name, "a");
+          fd.open(path, "a");
         else
-          fd.open(name, "w");
+          fd.open(path, "w");
       }
     catch(IOException e)
       {
-        throw new FileNotFoundException(name + ": " + e.getMessage());
+        throw new FileNotFoundException(path + ": " + e.getMessage());
       }
   }
 
@@ -114,10 +115,10 @@ public class FileOutputStream extends OutputStream
    * @exception SecurityException If write access to the file is not allowed
    * @exception FileNotFoundException If a non-security error occurs
    */
-  public
-  FileOutputStream(String name) throws SecurityException, FileNotFoundException
+  public FileOutputStream (String path)
+    throws SecurityException, FileNotFoundException
   {
-    this (name, false);
+    this (path, false);
   }
 
   /**
@@ -184,18 +185,25 @@ public class FileOutputStream extends OutputStream
    *
    * @exception SecurityException If write access to the file is not allowed
    */
-  public FileOutputStream (FileDescriptor fd) throws SecurityException
+  public FileOutputStream (FileDescriptor fdObj)
+    throws SecurityException
   {
     // Hmm, no other exception but this one to throw, but if the descriptor
     // isn't valid, we surely don't have "permission" to write to it.
-    if (!fd.valid())
+    if (!fdObj.valid())
       throw new SecurityException("Invalid FileDescriptor");
 
-    SecurityManager sm = System.getSecurityManager();
-    if (sm != null)
-      sm.checkWrite(fd);
+    SecurityManager s = System.getSecurityManager();
+    if (s != null)
+      s.checkWrite(fdObj);
 
-    this.fd = fd;
+    fd = fdObj;
+  }
+
+  protected void finalize () throws IOException
+  {
+    // We don't actually need this, but we include it because it is
+    // mentioned in the JCL.
   }
 
   /**
@@ -233,7 +241,8 @@ public class FileOutputStream extends OutputStream
    *
    * @exception IOException If an error occurs
    */
-  public void write(byte[] buf) throws IOException
+  public void write (byte[] buf)
+    throws IOException
   {
     write (buf, 0, buf.length);
   }
@@ -248,8 +257,14 @@ public class FileOutputStream extends OutputStream
    *
    * @exception IOException If an error occurs
    */
-  public void write(byte[] buf, int offset, int len) throws IOException
+  public void write (byte[] buf, int offset, int len)
+    throws IOException
   {
+    if (offset < 0
+        || len < 0
+        || offset + len > buf.length)
+      throw new ArrayIndexOutOfBoundsException ();
+    
     fd.write (buf, offset, len);
   }
 

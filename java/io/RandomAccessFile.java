@@ -38,9 +38,13 @@ exception statement from your version. */
 
 package java.io;
 
-import gnu.classpath.Configuration;
 import java.nio.channels.FileChannel;
 import gnu.java.nio.FileChannelImpl;
+
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * Status: Believe complete and correct to 1.1.
+ */
 
 /**
  * This class allows reading and writing of files at random locations.
@@ -50,7 +54,8 @@ import gnu.java.nio.FileChannelImpl;
  * <code>DataInput</code> and <code>DataOutput</code> interfaces to allow
  * the reading and writing of Java primitives.
  *
- * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @author Tom Tromey <tromey@cygnus.com>
  */
 public class RandomAccessFile implements DataOutput, DataInput
 {
@@ -87,7 +92,8 @@ public class RandomAccessFile implements DataOutput, DataInput
    * is not allowed
    * @exception IOException If any other error occurs
    */
-  public RandomAccessFile (File file, String mode) throws FileNotFoundException
+  public RandomAccessFile (File file, String mode)
+    throws FileNotFoundException
   {
     this (file.getPath(), mode);
   }
@@ -112,7 +118,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    * @exception FileNotFoundException If any other error occurs
    */
   public RandomAccessFile(String name, String mode) 
-     throws IllegalArgumentException, SecurityException, FileNotFoundException
+   throws FileNotFoundException
   {
     // Check the mode
     if (!mode.equals("r") && !mode.equals("rw") && !mode.equals("rws") &&
@@ -120,12 +126,13 @@ public class RandomAccessFile implements DataOutput, DataInput
       throw new IllegalArgumentException("Bad mode value: " + mode);
   
     // The obligatory SecurityManager stuff
-    SecurityManager sm = System.getSecurityManager();
-    if (sm != null)
+    SecurityManager s = System.getSecurityManager();
+    if (s != null)
       {
-        sm.checkRead(name);
+        s.checkRead(name);
+
         if (!mode.equals("r"))
-          sm.checkWrite(name);
+          s.checkWrite(name);
       }
   
     if (mode.equals("r"))
@@ -166,6 +173,7 @@ public class RandomAccessFile implements DataOutput, DataInput
   {
     if (! fd.valid())
       throw new IOException ();
+
     return fd;
   }
 
@@ -239,9 +247,10 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public int read(byte[] buf) throws IOException
+  public int read (byte[] buf)
+    throws IOException
   {
-    return(read(buf, 0, buf.length));
+    return read (buf, 0, buf.length);
   }
 
   /**
@@ -256,9 +265,10 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public int read(byte[] buf, int offset, int len) throws IOException
+  public int read (byte[] buf, int offset, int len)
+    throws IOException
   {
-    return(fd.read(buf,offset, len));
+    return fd.read (buf,offset, len);
   }
 
   /**
@@ -278,14 +288,14 @@ public class RandomAccessFile implements DataOutput, DataInput
    * boolean
    * @exception IOException If any other error occurs
    */
-  public final boolean readBoolean() throws EOFException, IOException
+  public final boolean readBoolean () throws IOException
   {
     int byte_read = read();
   
     if (byte_read == -1)
       throw new EOFException("Unexpected end of stream");
   
-    return(byte_read != 0);
+    return byte_read != 0;
   }
 
   /**
@@ -303,14 +313,14 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @see DataOutput
    */
-  public final byte readByte() throws EOFException, IOException
+  public final byte readByte () throws IOException
   {
-    int byte_read = read();
+    int byte_read = read ();
   
     if (byte_read == -1)
-      throw new EOFException("Unexpected end of stream");
+      throw new EOFException ("Unexpected end of stream");
   
-    return (byte)byte_read;
+    return (byte) byte_read;
   }
 
   /**
@@ -329,14 +339,14 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @see DataOutput
    */
-  public final int readUnsignedByte() throws EOFException, IOException
+  public final int readUnsignedByte () throws IOException
   {
-    int byte_read = read();
+    int byte_read = read ();
   
     if (byte_read == -1)
-      throw new EOFException("Unexpected end of stream");
+      throw new EOFException ("Unexpected end of stream");
   
-    return(byte_read & 0xFF);
+    return byte_read & 0xFF;
   }
   
   /**
@@ -364,9 +374,9 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @see DataOutput
    */
-  public final synchronized char readChar() throws EOFException, IOException
+  public final synchronized char readChar () throws IOException
   {
-    readFully(buf, 0, 2);
+    readFully (buf, 0, 2);
   
     return (char) ((buf[0] << 8) | (buf[1] & 0xff));
   }
@@ -398,9 +408,10 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @see DataOutput
    */
-  public final synchronized short readShort() throws EOFException, IOException
+  public final synchronized short readShort () throws IOException
   {
-    readFully(buf, 0, 2);
+    readFully (buf, 0, 2);
+    
     return (short) ((buf[0] << 8) | (buf[1] & 0xff));
   }
 
@@ -430,9 +441,10 @@ public class RandomAccessFile implements DataOutput, DataInput
    * @exception IOException If any other error occurs
    */
   public final synchronized int readUnsignedShort() 
-    throws EOFException, IOException
+    throws IOException
   {
     readFully(buf, 0, 2);
+    
     return (((buf[0] & 0xff) << 8) | (buf[1] & 0xff));
   }
   
@@ -464,7 +476,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @see DataOutput
    */
-  public final synchronized int readInt() throws EOFException, IOException
+  public final synchronized int readInt() throws IOException
   {
     readFully(buf, 0, 4);
   
@@ -503,7 +515,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @see DataOutput
    */
-  public final synchronized long readLong() throws EOFException, IOException
+  public final synchronized long readLong() throws IOException
   {
     readFully(buf, 0, 8);
   
@@ -537,11 +549,11 @@ public class RandomAccessFile implements DataOutput, DataInput
    * @see java.lang.Float
    * @see DataOutput
    */
-  public final float readFloat() throws EOFException, IOException
+  public final float readFloat() throws IOException
   {
     int val = readInt();
   
-    return(Float.intBitsToFloat(val));
+    return Float.intBitsToFloat(val);
   }
 
   /**
@@ -556,9 +568,9 @@ public class RandomAccessFile implements DataOutput, DataInput
    * buffer
    * @exception IOException If any other error occurs
    */
-  public final void readFully(byte[] buf) throws EOFException, IOException
+  public final void readFully (byte[] buf) throws IOException
   {
-    readFully(buf, 0, buf.length);
+    readFully (buf, 0, buf.length);
   }
 
   /**
@@ -578,8 +590,8 @@ public class RandomAccessFile implements DataOutput, DataInput
    * the buffer
    * @exception IOException If any other error occurs
    */
-  public synchronized final void readFully(byte[] buf, int offset, int len) 
-    throws EOFException, IOException
+  public synchronized final void readFully (byte[] buf, int offset, int len) 
+    throws IOException
   {
     int total_read = 0;
   
@@ -615,11 +627,11 @@ public class RandomAccessFile implements DataOutput, DataInput
    * @see java.lang.Double
    * @see DataOutput
    */
-  public final double readDouble() throws EOFException, IOException
+  public final double readDouble() throws IOException
   {
     long val = readLong();
   
-    return(Double.longBitsToDouble(val));
+    return Double.longBitsToDouble(val);
   }
 
   /**
@@ -751,7 +763,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    * @see DataOutput
    */
   public synchronized final String readUTF() 
-    throws EOFException, UTFDataFormatException, IOException
+    throws IOException
   {
     StringBuffer sb = new StringBuffer("");
   
@@ -760,7 +772,7 @@ public class RandomAccessFile implements DataOutput, DataInput
     readFully(buf);
   
     // FIXME: Look to migrate to new String(buf, "UTF-8") if performance ok
-    return(DataInputStream.convertFromUTF(buf));
+    return DataInputStream.convertFromUTF(buf);
   }
   
   /**
@@ -790,7 +802,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs.
    */
-  public int skipBytes(int numBytes) throws EOFException, IOException
+  public int skipBytes(int numBytes) throws IOException
   {
     if (numBytes < 0)
       throw new IllegalArgumentException("Can't skip negative bytes: " +
@@ -859,12 +871,9 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public final void writeBoolean(boolean b) throws IOException
+  public final void writeBoolean (boolean b) throws IOException
   {
-    if (b)
-      write(1);
-    else
-      write(0);
+    write (b ? 1 : 0);
   }
   
   /**
@@ -878,7 +887,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    */
   public final void writeByte(int b) throws IOException
   {
-    write(b & 0xFF);
+    write (b & 0xFF);
   }
   
   /**
@@ -890,7 +899,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public final void writeBytes(String s) throws IOException
+  public final void writeBytes (String s) throws IOException
   {
     int len = s.length();
 

@@ -1,3 +1,16 @@
+2003-03-28  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/File.java:
+	Merged authors with libgcj, reformatted.
+	* java/io/FileOutputStream.java:
+	Merged authors with libgcj, reformatted.
+	(FileOutputStream): Partly merged with libgcj.
+	(finalize): New dummy method to make API complete.
+	(write): Added argument check from libgcj.
+	* java/io/RandomAccessFile.java:
+	Merged authors with libgcj, reformatted.
+	(read*): Throws only IOException.
+
 2003-03-26  C. Brian Jones  <cbj@gnu.org>
 
 	* configure.in: VERSION changed to 0.05+cvs
