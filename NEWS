@@ -1,4 +1,8 @@
 New in release 0.05 [ no date yet ]
+* Include file jni.h has been updated to the 1.4 specification.
+* VM specific internal types for jobject, jfieldID, and jmethodID are
+  supported in jni.h.  More details can be found by reading the comment
+  in include/jni.h.in.  By default the old definitions are used instead.
 * New VM helper class java.io.VMObjectStreamClass which should provide
   the hasClassInitializer() method. Previously ObjectStreamClass used
   Class.getDeclaredMethod("<clinit>") but according to the spec this

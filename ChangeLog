@@ -1,3 +1,17 @@
+2003-01-25  C. Brian Jones  <cbj@gnu.org>
+
+	* NEWS: note jni.h updates and patches
+        * include/jni.h.in (AttachCurrentThreadAsDaemon): new function
+
+2003-01-25  Stephen Crawley  <crawley@dstc.edu.au>
+
+	* include/jni.h.in (JNI_VERSION_1_4): new define
+	(NewDirectByteBuffer): new function
+	(GetDirectBufferAddress): new function
+	(GetDirectBufferCapacity): new function
+        (_JNI_VM_INTERNAL_TYPES_DEFINED): if defined, do not use default
+        declarations for jobject, jfieldID, and jmethodID
+
 2003-01-24  Mark Wielaard  <mark@klomp.org>
 
 	* java/io/ObjectOutputStream.java (writeObject): Rethrow fatal

@@ -91,6 +91,25 @@ typedef struct _Jv_JNIEnv JNIEnv;
 typedef struct _Jv_JavaVM JavaVM;
 
 #else /* __cplusplus */
+
+/* 
+ * Before jni.h is #included within a typical JVM, the source code should 
+ * #define _JNI_VM_INTERNAL_TYPES_DEFINED and provide the real declarations
+ * for 'jobject', 'jfieldID', 'jMethodID' and other implementation types.
+ * If _JNI_VM_INTERNAL_TYPES_DEFINED is not defined, the following 
+ * declares the old versions of the types.
+ */
+#ifndef _JNI_VM_INTERNAL_TYPES_DEFINED
+/*
+typedef void *jobject;
+typedef void *jfieldID;
+typedef void *jmethodID;
+*/
+struct _jfieldID;
+struct _jmethodID;
+typedef struct _jfieldID *jfieldID;
+typedef struct _jmethodID *jmethodID;
+#endif 
   
 typedef void *jobject;
 typedef jobject jclass;
@@ -138,11 +157,6 @@ typedef union jvalue
   jdouble  d;
   jobject  l;
 } jvalue;
-
-struct _jfieldID;   /* FIXME: VM specific */
-struct _jmethodID;  /* FIXME: VM specific */
-typedef struct _jfieldID *jfieldID;
-typedef struct _jmethodID *jmethodID;
       
 /* Used for jboolean type  */
 #define JNI_TRUE  1
@@ -158,6 +172,7 @@ typedef jobject jweak;
 /* Version numbers.  */
 #define JNI_VERSION_1_1 0x00010001 /* JNI version 1.1 */
 #define JNI_VERSION_1_2 0x00010002 /* JNI version 1.2 */
+#define JNI_VERSION_1_4 0x00010004 /* JNI version 1.4 */
     
 /* Error codes */
 #define JNI_OK            0
@@ -435,6 +450,7 @@ struct JNINativeInterface
   jint     (JNICALL *MonitorExit)                  (JNIEnv *, jobject);                                 /* 218 */
   jint     (JNICALL *GetJavaVM)                    (JNIEnv *, JavaVM **);                               /* 219 */
 
+  /* ---- JNI 1.2 functions ---- */
   void	   (JNICALL *GetStringRegion)	           (JNIEnv *, jstring, jsize, jsize, jchar *);          /* 220 */
   void     (JNICALL *GetStringUTFRegion)	   (JNIEnv *, jstring, jsize, jsize, char *);           /* 221 */
 
@@ -448,6 +464,12 @@ struct JNINativeInterface
   void   (JNICALL *DeleteWeakGlobalRef)            (JNIEnv *, jweak);                                   /* 227 */
 
   jboolean	(JNICALL *ExceptionCheck)	   (JNIEnv *);                                          /* 228 */
+
+  /* ---- JNI 1.4 functions ---- */
+  jobject       (JNICALL *NewDirectByteBuffer)     (JNIEnv *, void *, jlong);                           /* 229 */
+  void *        (JNICALL *GetDirectBufferAddress)  (JNIEnv *, jobject);                                 /* 230 */
+  long          (JNICALL *GetDirectBufferCapacity) (JNIEnv *, jobject);                                 /* 231 */
+
 };
 
 #ifdef __cplusplus
@@ -1314,6 +1336,16 @@ struct _Jv_JNIEnv
 
   jboolean ExceptionCheck ()
   { return p->ExceptionCheck (this); }
+
+  jobject NewDirectByteBuffer (void * val1, jlong val2)
+  { return p->NewDirectByteBuffer (this, val1, val2); }
+
+  void * GetDirectBufferAddress (jobject val1)
+  { return p->GetDirectBufferAddress (this, val1); }
+
+  long GetDirectBufferCapacity (jobject val1)
+  { return p->GetDirectBufferCapacity (this, val1); }
+
 };
 #endif /* __cplusplus */
 
@@ -1327,10 +1359,12 @@ struct JNIInvokeInterface
   _Jv_func reserved1;
   _Jv_func reserved2;
 
-  jint (JNICALL *DestroyJavaVM)         (JavaVM *);
-  jint (JNICALL *AttachCurrentThread)   (JavaVM *, void **, void *);
-  jint (JNICALL *DetachCurrentThread)   (JavaVM *);
-  jint (JNICALL *GetEnv)                (JavaVM *, void **, jint);
+  jint (JNICALL *DestroyJavaVM)               (JavaVM *);
+  jint (JNICALL *AttachCurrentThread)         (JavaVM *, void **, void *);
+  jint (JNICALL *DetachCurrentThread)         (JavaVM *);
+  jint (JNICALL *GetEnv)                      (JavaVM *, void **, jint);
+  jint (JNICALL *AttachCurrentThreadAsDaemon) (JavaVM *, void **, void *);
+
 };
 
 #ifdef __cplusplus
@@ -1350,6 +1384,9 @@ struct _Jv_JavaVM
 
   jint GetEnv (void **penv, jint version)
   { return functions->GetEnv (this, penv, version); }
+
+  jint AttachCurrentThreadAsDaemon (void **penv, void *args)
+  { return functions->AttachCurrentThreadAsDaemon (this, penv, args); }
 };
 #endif /* __cplusplus */
 
