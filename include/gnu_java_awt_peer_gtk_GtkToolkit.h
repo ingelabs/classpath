@@ -18,7 +18,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkToolkit_sync (JNIEnv *env, 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkToolkit_loadSystemColors (JNIEnv *env, jobject, jintArray);
 JNIEXPORT jboolean JNICALL Java_gnu_java_awt_peer_gtk_GtkToolkit_nativeQueueEmpty (JNIEnv *env, jobject);
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkToolkit_wakeNativeQueue (JNIEnv *env, jobject);
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkToolkit_iterateNativeQueue (JNIEnv *env, jobject, jobject);
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkToolkit_iterateNativeQueue (JNIEnv *env, jobject, jobject, jboolean);
 
 #ifdef __cplusplus
 }

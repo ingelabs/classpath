@@ -1,3 +1,21 @@
+2005-01-18  Graydon Hoare  <graydon@redhat.com>
+
+	* gnu/java/awt/ClasspathToolkit.java: Likewise.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java: Likewise.
+	* java/awt/EventQueue.java (getNextEvent):
+	Adjust event loop to switch to native mode after 100ms.
+	* javax/swing/Timer.java (drainEvents): Reuse Runnable.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkGenericPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkGenericPeer_dispose):
+	Wake up event thread.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkToolkit.c
+	(Java_gnu_java_awt_peer_gtk_GtkToolkit_iterateNativeQueue):
+	Adjust event loop to switch to java mode after 100ms.
+
+2005-01-18  Michael Koch  <konqueror@gmx.de>
+
+	* include/gnu_java_awt_peer_gtk_GtkToolkit.h: Regenerated.
+
 2005-01-17  Tom Tromey  <tromey@redhat.com>
 
 	* java/text/MessageFormat.java (scanString): Changed how quoting
