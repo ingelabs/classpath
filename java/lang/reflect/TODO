@@ -1,5 +1,4 @@
 TODO for java.lang.reflect Java side
 
-- Write CLI ToReflected*, FromReflected* methods
-- Test Field, Method, Constructor, InvocationTargetException
-- See native TODO.
+- more tests!
+- Java 2 support (waiting on java.lang Java 2 support)

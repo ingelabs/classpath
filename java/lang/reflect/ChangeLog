@@ -1,3 +1,12 @@
+Feb. 5 15:13:33 MDT 1999 - John Keiser (jkeiser@iname.com)
+
+We're about to release, so it's time for a new note.  Most of the classes in
+here have been moved to the VM Interface.  Only a few VM-independent ones
+remain.
+
+Java 2 support still needs coding, but that has to wait for java.lang.Class,
+which in turn really should wait until Java 2 security is implemented.
+
 Aug 9 12:01:22 MDT 1998 - John Keiser (jkeiser@iname.com)
 
 There is no way Sun can support our Reflection.  We can't implement Class,
