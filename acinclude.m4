@@ -255,15 +255,13 @@ AC_DEFUN(CLASSPATH_FIND_JAVAC,
   CLASSPATH_WITH_JIKES
   CLASSPATH_WITH_KJC
 
-  case "$user_specified_javac" in
-    gcj) AM_CONDITIONAL(FOUND_GCJ, test x = x) ;;
-    jikes) AM_CONDITIONAL(FOUND_JIKES, test x = x) ;;
-    kjc) AM_CONDITIONAL(FOUND_KJC, test x = x) ;;
-  esac
-
   if test "$user_specified_javac" = ""; then
     AM_CONDITIONAL(FOUND_GCJ, test "$GCJ" != "")
     AM_CONDITIONAL(FOUND_JIKES, test "$JIKES" != "")
+  else
+    AM_CONDITIONAL(FOUND_GCJ, test "$user_specified_javac" = "gcj")
+    AM_CONDITIONAL(FOUND_JIKES, test "$user_specified_javac" = "jikes")
+    AM_CONDITIONAL(FOUND_KJC, test "$user_specified_javac" = "kjc")
   fi
 
   if test "$GCJ" = "" && test "$JIKES" = "" && test "$user_specified_javac" != "kjc"; then

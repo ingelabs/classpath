@@ -1,3 +1,7 @@
+2002-01-14  Mark Wielaard  <mark@klomp.org>
+
+	* acinclude.m4: Fix $user_specified_javac detection
+
 2002-01-13  Mark Wielaard  <mark@klomp.org>
 
 	compat/java.net/PlainSocketImpl.java,
