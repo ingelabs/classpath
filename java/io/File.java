@@ -1,5 +1,5 @@
 /* File.java -- Class representing a file on disk
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -1133,8 +1133,6 @@ renameTo(File dest) throws SecurityException
 
   // Call our native rename method
   boolean rc = renameToInternal(path, dest.getPath());
-  if (rc)
-    path = dest.getPath();
 
   return(rc);
 }
@@ -1228,25 +1226,22 @@ list(FilenameFilter filter)
     return(files);
   
   // Apply the filter
-/*
   int count = 0;
-  boolean b[] = new boolean[files.length];
   for (int i = 0; i < files.length; i++)
-    if (filter.accept(this, files[i]))
-      {
-        b[i] = true;
-        ++count;
-      }
+    {
+      if (filter.accept(this, files[i]))
+	++count;
+      else
+	files[i] = null;
+    }
 
   String[] retfiles = new String[count];
   count = 0;
   for (int i = 0; i < files.length; i++)
-    if (b[i])
+    if (files[i] != null)
       retfiles[count++] = files[i];
 
   return(retfiles);
-*/
-  return(files); //BNooooo
 }
 
 /*************************************************************************/

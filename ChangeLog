@@ -1,3 +1,8 @@
+2001-07-30  Tom Tromey  <tromey@redhat.com>
+
+	* java/io/File.java (renameTo): Don't change `path'.  From Gansha Wu.
+	(list): Apply the filter.
+
 2001-07-30  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 
 	* java/util/GregorianCalendar.java (GregorianCalendar): Call
