@@ -1,5 +1,5 @@
 /* Thread -- an independent thread of executable code
-   Copyright (C) 1998, 2001, 2002 Free Software Foundation
+   Copyright (C) 1998, 2001, 2002, 2003 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -688,16 +688,19 @@ public class Thread implements Runnable
     Thread current = currentThread();
     if (ms == 0 && ns == 0)
       while (isAlive())
-        current.sleep(1);
+        current.sleep(10);
     else
       {
-        while (--ms >= 0)
+	long startTime = System.currentTimeMillis();
+	long currentTime = startTime;
+	do
           {
             if (! isAlive())
               return;
-            current.sleep(1);
+	    current.sleep(10);
+	    currentTime = System.currentTimeMillis();
           }
-        current.sleep(0, ns);
+        while (Math.abs(startTime - currentTime) < ms);
       }
   }
 
