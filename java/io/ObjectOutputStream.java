@@ -104,7 +104,7 @@ public class ObjectOutputStream extends OutputStream
      stream cannot be completed.
 
      @see writeStreamHeader()
-  */
+  */ 
   public ObjectOutputStream( OutputStream out ) throws IOException
   {
     myRealOutput = new DataOutputStream( out );
@@ -148,9 +148,9 @@ public class ObjectOutputStream extends OutputStream
       writeObjectOverride( obj );
       return;
     }
-
+    
     boolean was_serializing = myIsSerializing;
-
+    
     if( ! was_serializing )
       setBlockDataMode( false );
 
@@ -791,7 +791,8 @@ public class ObjectOutputStream extends OutputStream
       throws IOException, IllegalArgumentException;
     public abstract void write( ObjectOutput out ) throws IOException;
   }
-  
+
+
   public PutField putFields() throws IOException
   {
     if( true )
@@ -853,7 +854,14 @@ public class ObjectOutputStream extends OutputStream
       private Object[] objs;
     };
   }
+
   
+  public void writeFields() throws IOException
+  {
+    // XXX implement
+    throw new RuntimeException( "Persistant fields API not yet fully implemented!" );
+  }
+    
 
   // write out the block-data buffer, picking the correct header
   // depending on the size of the buffer
