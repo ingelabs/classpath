@@ -1,3 +1,7 @@
+2000-11-17  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* java/util/Locale.java: Fix reformatting screw-up.
+
 2000-11-16  Warren Levy  <warrenl@cygnus.com>
 
 	* java/beans/PropertyChangeSupport.java (propertyListeners): Made
