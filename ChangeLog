@@ -1,3 +1,10 @@
+2004-04-22  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.c:
+	(create(long)): Take long parameter, not int.  Cast gtk_plug_new
+	argument to GdkNativeWindow.
+	(construct): New method.
+
 2004-04-22  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/lang/Class.java: Changed all calls to VMClass to static calls.

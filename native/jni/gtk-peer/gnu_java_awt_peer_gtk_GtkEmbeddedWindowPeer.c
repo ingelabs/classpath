@@ -1,5 +1,6 @@
-/* GtkEmbeddedWindowPeer.c -
-   Copyright (C) 2004 Free Software Foundation, Inc.
+/* gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.c -- Native
+   implementation of GtkEmbeddedWindowPeer
+   Copyright (C) 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -7,7 +8,7 @@ GNU Classpath is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
 the Free Software Foundation; either version 2, or (at your option)
 any later version.
- 
+
 GNU Classpath is distributed in the hope that it will be useful, but
 WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
@@ -35,24 +36,51 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-#include <config.h>
-#include <errno.h>
 
-#include <jni.h>
-#include <jcl.h>
-
+#include "gtkpeer.h"
 #include "gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.h"
 
-#define AWT_EXCEPTION "java/awt/AWTException"
-
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer_create__J (JNIEnv *env, jobject obj, jlong socket_id)
+Java_gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer_create
+  (JNIEnv *env, jobject obj, jlong socket_id)
 {
-  JCL_ThrowException (env, AWT_EXCEPTION, "gnu.java.awt.peer.gtk.GtkEmbbeddedWindowPeer.create(): not implemented");
+  GtkWidget *window;
+  GtkWidget *vbox, *layout;
+
+  /* Create global reference and save it for future use */
+  NSA_SET_GLOBAL_REF (env, obj);
+
+  gdk_threads_enter ();
+
+  window = gtk_plug_new ((GdkNativeWindow) socket_id);
+
+  vbox = gtk_vbox_new (0, 0);
+  layout = gtk_layout_new (NULL, NULL);
+  gtk_box_pack_end (GTK_BOX (vbox), layout, 1, 1, 0);
+  gtk_container_add (GTK_CONTAINER (window), vbox);
+
+  gtk_widget_show (layout);
+  gtk_widget_show (vbox);
+
+  gdk_threads_leave ();
+
+  NSA_SET_PTR (env, obj, window);
 }
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer_construct (JNIEnv *env, jobject obj, jlong socket_id)
+Java_gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer_construct
+  (JNIEnv *env, jobject obj, jlong socket_id)
 {
-  JCL_ThrowException (env, AWT_EXCEPTION, "gnu.java.awt.peer.gtk.GtkEmbbeddedWindowPeer.construct(): not implemented");
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+
+  if (GTK_WIDGET_REALIZED (GTK_WIDGET (ptr)))
+    g_printerr ("ERROR: GtkPlug is already realized\n");
+
+  gtk_plug_construct (GTK_PLUG (ptr), (GdkNativeWindow) socket_id);
+
+  gdk_threads_leave ();
 }
