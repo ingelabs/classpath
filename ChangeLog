@@ -1,3 +1,9 @@
+2001-09-14  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
+
+	* java/util/Hashtable.java (Enumerator): Ensure that if 
+	hasMoreElements() returns true, nextElement() will always return
+	something even if the table has been modified.
+
 2001-09-10  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/Properties.java (load): Correctly read \u sequences.
