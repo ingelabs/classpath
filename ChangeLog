@@ -1,5 +1,9 @@
 2004-12-07  Mark Wielaard  <mark@klomp.org>
 
+	* java/text/MessageFormat.java (scanFormat): Chain thrown exception.
+
+2004-12-07  Mark Wielaard  <mark@klomp.org>
+
 	* java/util/zip/ZipEntry.java (KNOWN_EXTRA): New static field.
 	(setExtra): Don't parse bytes.
 	(parseExtra): New private method.
