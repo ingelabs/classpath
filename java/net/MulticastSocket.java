@@ -161,6 +161,20 @@ public class MulticastSocket extends DatagramSocket
   }
 
   /**
+   * Sets the interface to use for sending multicast packets.
+   *
+   * @param addr The new interface to use.
+   *
+   * @exception SocketException If an error occurs.
+   *
+   * @since 1.4
+   */
+  public void setInterface(InetAddress inf) throws SocketException
+  {
+    impl.setOption(SocketOptions.IP_MULTICAST_IF, inf);
+  }
+
+  /**
    * Sets the local network interface used to send multicast messages
    *
    * @param netIF The local network interface used to send multicast messages
@@ -213,17 +227,43 @@ public class MulticastSocket extends DatagramSocket
   }
 
   /**
-   * Sets the interface to use for multicast packets.
+   * Disable/Enable local loopback of multicast packets.  The option is used by
+   * the platform's networking code as a hint for setting whether multicast
+   * data will be looped back to the local socket. 
    *
-   * @param addr The new interface to use
+   * Because this option is a hint, applications that want to verify what
+   * loopback mode is set to should call #getLoopbackMode
+   *
+   * @param disable True to disable loopback mode
    *
    * @exception SocketException If an error occurs
    *
    * @since 1.4
    */
-  public void setInterface(InetAddress inf) throws SocketException
+  public void setLoopbackMode(boolean disable) throws SocketException
   {
-    impl.setOption(SocketOptions.IP_MULTICAST_IF, inf);
+    if (impl == null)
+      throw new SocketException (
+		      "MulticastSocket: Cant access socket implementation");
+
+    impl.setOption (SocketOptions.IP_MULTICAST_LOOP, new Boolean (disable));
+  }
+
+  /**
+   * Checks if local loopback mode is enabled or not
+   *
+   * @exception SocketException If an error occurs
+   *
+   * @since 1.4
+   */
+  public boolean getLoopbackMode() throws SocketException
+  {
+    Object obj = impl.getOption (SocketOptions.IP_MULTICAST_LOOP);
+
+    if (obj instanceof Boolean)
+      return ((Boolean) obj).booleanValue ();
+    else
+      throw new SocketException ("Unexpected type");
   }
 
   /**

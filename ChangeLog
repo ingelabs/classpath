@@ -1,3 +1,21 @@
+2002-12-19  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/DatagramSocket.java
+	(ch): New member variable to store associated datagram channel.
+	(DatagramSocket): Added/fixed documentation.
+	(close): Fixed documentation.
+	(getPort): Fixed documentation.
+	(getLocalAddress): Fixed documentation.
+	(getLocalPort): Fixed documentation.
+	(getSoTimeout): Fixed documentation, remove unneeded parenthesis.
+	(setSendBufferSize): Added exception documentation.
+	(setReceiveBufferSize): Added exception documentation.
+	(send): Added/fixed documentation.
+	* java/net/MulticastSocket.java
+	(setInterface): Moved around, fixed documentation.
+	(setLoopbackMode): New method.
+	(getLoopbackMode): New method.
+	
 2002-12-18  John Leuner  <jewel@debian.org>
 
 	* java/lang/System.java: delegated native calls to VMSystem
