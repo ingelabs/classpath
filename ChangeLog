@@ -1,3 +1,8 @@
+2001-04-25  Tom Tromey  <tromey@redhat.com>
+
+	* native/java.lang/Float.c (Java_java_lang_Float_toString): Fixed
+	first argument to sprintf.
+
 2001-04-20  Warren Levy  <warrenl@redhat.com>
 
 	* java/text/SimpleDateFormat.java

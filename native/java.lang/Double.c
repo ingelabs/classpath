@@ -1,5 +1,5 @@
 /* Double.c - java.lang.Double native functions
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -69,7 +69,7 @@ JNIEXPORT jstring JNICALL Java_java_lang_Double_toString
   char buf[1024];
   jstring retval;
 
-  sprintf((char*)&buf, "%G", d);
+  sprintf(buf, "%.17G", d);
   retval = (*env)->NewStringUTF(env, buf);
   return retval;
 }

@@ -1,5 +1,5 @@
 /* java.math.BigInteger -- Arbitary precision integers
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -61,8 +61,8 @@ public class BigInteger implements Comparable {
     if (str.charAt(0) == '-')
       buf[i++] = '-';
 
-    while (i < buf.length)
-      if ((buf[i++] = 
+    for ( ; i < buf.length; i++)
+      if ((buf[i] = 
            Character.forDigit(Character.digit(str.charAt(i), radix), radix))
 	  == '\u0000')
 	throw new NumberFormatException(str + " not valid in radix " + radix);
