@@ -223,7 +223,6 @@ public class BeanContextServicesSupport
   }
 
   public Object getService (BeanContextChild child, Object requestor, Class serviceClass, Object serviceSelector, BeanContextServiceRevokedListener bcsrl)
-    throws TooManyListenersException
   {
     throw new Error ("Not implemented");
   }

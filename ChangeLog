@@ -1,3 +1,10 @@
+2003-03-14  Michael Koch  <konqueror@gmx.de>
+
+	* java/beans/beancontext/BeanContextServicesSupport.java
+	(getService): Compile fix.
+	* java/beans/beancontext/BeanContextServicesSupport.java:
+	Forgot to add sooner.
+
 2003-03-14  Jeroen Frijters  <jeroen@sumatra.nl>
 
 	* java/io/ObjectInputStream.java (readObject): Cleaned up the class
