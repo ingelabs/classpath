@@ -39,6 +39,9 @@ exception statement from your version. */
 #include <jni.h>
 #include <jcl.h>
 
+#include <stdlib.h>
+#include <string.h>
+
 #include "java_io_VMObjectStreamClass.h"
 
 /*
@@ -68,6 +71,10 @@ static void throwInternalError(JNIEnv *env)
   jstring message;
 
   internalErrorClass = (*env)->FindClass(env, "java/lang/InternalError");
+  /** Just give up if this also fails. */
+  if (internalErrorClass == NULL)
+    return;
+
   previousException = (*env)->ExceptionOccurred(env);
 
   if (previousException == NULL)
@@ -97,14 +104,20 @@ static void throwInternalError(JNIEnv *env)
 }
 
 static jfieldID getFieldReference(JNIEnv *env, jobject field, 
-				  jobject object, const char *type)
+				  jobject object, char *type)
 {
+  jclass classClass;
   jclass fieldClass;
-  jclass objectClass;
+  jclass declaringClass;
+  jclass typeClass;
   jfieldID fid;
   const jbyte *field_name;
+  const jbyte *type_name;
+  size_t type_len;
   jmethodID mid;
   jstring name;
+  jstring tname;
+  int i;
 
   fieldClass = (*env)->GetObjectClass(env, field);
 
@@ -117,15 +130,79 @@ static jfieldID getFieldReference(JNIEnv *env, jobject field,
 
   name = (*env)->CallObjectMethod(env, field, mid);
   field_name = (*env)->GetStringUTFChars(env, name, NULL);
-  
-  objectClass = (*env)->GetObjectClass(env, object);
-  fid = (*env)->GetFieldID(env, objectClass, field_name, type);
+ 
+  mid = (*env)->GetMethodID(env, fieldClass,
+			    "getDeclaringClass",
+			    "()Ljava/lang/Class;");
+  if (mid == NULL || (*env)->ExceptionOccurred(env) != NULL)
+    {
+      throwInternalError(env);
+      return NULL;
+    }
+
+  declaringClass = (*env)->CallObjectMethod(env, field, mid);
+
+  /* Do we need to find out the exact type descriptor of the field? */
+  if (type == NULL)
+    {
+      mid = (*env)->GetMethodID(env, fieldClass,
+				"getType",
+				"()Ljava/lang/Class;");
+
+      if (mid == NULL || (*env)->ExceptionOccurred(env) != NULL)
+	{
+	  throwInternalError(env);
+	  return NULL;
+	}
+
+      typeClass = (*env)->CallObjectMethod(env, field, mid);
+      classClass = (*env)->FindClass(env, "java/lang/Class");
+
+      mid = (*env)->GetMethodID(env, classClass,
+				"getName",
+				"()Ljava/lang/String;");
+
+      if (mid == NULL || (*env)->ExceptionOccurred(env) != NULL)
+	{
+	  throwInternalError(env);
+	  return NULL;
+	}
+
+      tname = (*env)->CallObjectMethod(env, typeClass, mid);
+      type_name = (*env)->GetStringUTFChars(env, tname, NULL);
+
+      /*
+       * The actual field type descriptor starts with 'L', ends with ';'
+       * and has '/' instead of '.'.
+       */
+      type_len = strlen((char *) type_name);
+      type = (char *) malloc(type_len + 3);
+      type[0] = 'L';
+      type[type_len + 1] = ';';
+      type[type_len + 2] = '\0';
+
+      for (i = 0; i < type_len; i++)
+	if (type_name[i] == '.')
+	  type[i + 1] = '/';
+        else
+	  type[i + 1] = type_name[i];
+
+      (*env)->ReleaseStringUTFChars(env, tname, type_name);
+    }
+  else
+    type_len = -1;
+
+  fid = (*env)->GetFieldID(env, declaringClass, field_name, (const char *)type);
   if (fid == NULL)
     {
       throwInternalError(env);
       return NULL;
     }
   (*env)->ReleaseStringUTFChars(env, name, field_name);
+
+  /* Did we create the type ourselves? */
+  if (type_len != -1)
+    free(type);
   
   return fid;
 }

@@ -1,5 +1,12 @@
 2004-04-11  Mark Wielaard  <mark@klomp.org>
 
+	* native/jni/java-io/java_io_VMObjectStreamClass.c
+	(throwInternalError): Just return when everything fails.
+	(getFieldReference): Get field declaring class, not object class.
+	Calculate field type descriptor if not yet given.
+
+2004-04-11  Mark Wielaard  <mark@klomp.org>
+
 	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
 	(Java_gnu_java_nio_channels_FileChannelImpl_size): Implemented.
 
