@@ -1077,7 +1077,8 @@ Character.toLowerCase(value[i]) == Character.toLowerCase(anotherString.value[i])
    * @return Integer.toString(i)
    */
   public static String valueOf(int i) {
-    return Integer.toString(i);
+    // See Integer to understand why we call the two-arg variant.
+    return Integer.toString(i, 10);
   }
 
   /**

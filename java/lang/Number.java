@@ -1,5 +1,5 @@
 /* java.lang.Number
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,6 +38,7 @@ import java.io.Serializable;
  **
  ** @author Paul Fisher
  ** @author John Keiser
+ ** @author Warren Levy
  ** @since JDK1.0
  **/
 public abstract class Number implements Serializable
@@ -45,14 +46,16 @@ public abstract class Number implements Serializable
   /** Return the value of this <code>Number</code> as a <code>byte</code>.
    ** @return the value of this <code>Number</code> as a <code>byte</code>.
    **/
-  public byte byteValue() {
+  public byte byteValue()
+  {
     return (byte) intValue();
   }
 
   /** Return the value of this <code>Number</code> as a <code>short</code>.
    ** @return the value of this <code>Number</code> as a <code>short</code>.
    **/
-  public short shortValue() {
+  public short shortValue()
+  {
     return (short) intValue();
   }
 
@@ -75,5 +78,6 @@ public abstract class Number implements Serializable
    ** @return the value of this <code>Number</code> as a <code>float</code>.
    **/
   public abstract double doubleValue();
-}
 
+  private static final long serialVersionUID = -8742448824652078965L;
+}

@@ -1,3 +1,38 @@
+2001-07-23  Tom Tromey  <tromey@redhat.com>
+
+	* java/lang/Short.java: Reindented.
+	(digits): Removed.
+	(toString): From libgcj.
+	(toString(short,int)): Removed.
+	(parseStrict(short,int,boolean)): Removed.
+	(parseStrict(String,int)): From libgcj.
+	(decode): Likewise.
+	* java/lang/Number.java: Indentation fixes.
+	(serialVersionUID): Define.
+	* java/lang/Byte.java: Reindented.
+	(digits): Removed.
+	(toString): From libgcj.
+	(toStringStatic): Removed.
+	(parseByte(String,int,boolean)): Removed.
+	(paresByte(String,int)): From libgcj.
+	(decode): Likewise.
+	* java/lang/Long.java: Reindented.
+	(toUnsignedString): From libgcj.
+	(toString): Likewise.
+	(parseLong): Likewise.
+	(compareTo): Likewise
+	(decode): Likewise.  Now public.
+	* java/lang/String.java (valueOf): Use two-arg toString.
+	* java/lang/Integer.java: Reindented; merged with libgcj.
+	(digits): Removed.
+	(serialVersionUID): Now private.
+	(MIN_VALUE, MAX_VALUE): Updated docs.
+	(decode): From libgcj.
+	(parseInt): Likewise.
+	(toUnsignedString): Likewise.
+	(toString): Likewise.
+	(compareTo): Likewise.
+
 2001-07-17  Mark Wielaard  <mark@klomp.org>
 	    Eric Blake  <ebb9@email.byu.edu>
 
