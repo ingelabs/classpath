@@ -1,4 +1,4 @@
-<set-var last-modified-author="rao">
+<set-var last-modified-author="corvus">
 
 <include macros.mhtml>
 <header "GNU Classpath">
@@ -36,19 +36,16 @@ is <tt>classpath</tt>.  There is no password.
 
 <H4>Mailing List</H4>
 <plain-text>
-There is one general discussion list for Classpath. To subscribe, send
+There is one general discussion list for Classpath.  To subscribe, send
 a message with a subject of "subscribe" to <link
 mailto:classpath-request@gnu.org?subject=subscribe
 &lt;classpath-request@gnu.org&gt;>.  To unsubscribe, send a message to
 the same address with a subject of "unsubscribe" to <link
 mailto:classpath-request@gnu.org?subject=unsubscribe
 &lt;classpath-request@gnu.org&gt;>.  To send a message to the list,
-mail it to <link mailto:classpath@gnu.org &lt;classpath@gnu.org&gt;>
-<comment>
-A temporary archive of the list is available at <link
-http://lyta.nortel.net/~classpath/archive/archive/
-http://lyta.nortel.net/~classpath/archive/archive/>.
-</comment>
+mail it to <link mailto:classpath@gnu.org &lt;classpath@gnu.org&gt;>. 
+An <link http://www.mail-archive.com/classpath%40gnu.org/ archive> of 
+the list is available.
 </plain-text>
 
 <H4>Status</H4>
