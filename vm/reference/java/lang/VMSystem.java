@@ -20,6 +20,8 @@
 
 package java.lang;
 
+import java.util.Properties;
+
 /**
  ** VMSystem is a package-private helper class for System that the
  ** VM must implement.

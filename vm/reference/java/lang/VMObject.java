@@ -33,7 +33,7 @@ package java.lang;
  ** @version 1.1.0, Aug 6 1998
  **/
 
-class Object {
+class VMObject {
 	/** This method may be called to create a new copy of the
 	 ** Object.  However, there are *no* requirements at all
 	 ** placed on this method, just suggestions.  The ==,

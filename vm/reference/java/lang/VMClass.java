@@ -20,6 +20,8 @@
 
 package java.lang;
 
+import java.lang.reflect.*;
+
 /**
  ** This is a package-private helper class for Class.
  **
@@ -201,7 +203,7 @@ class VMClass {
 	 ** @exception NoSuchMethodException if the method does
 	 **            not exist.
 	 **/
-	static Method getMethod(Class c, String name, Class[] args) throws NoSuchMethodException SecurityException {
+	static Method getMethod(Class c, String name, Class[] args) throws NoSuchMethodException {
 		throw new UnsupportedOperationException();
 	}
 
