@@ -50,7 +50,7 @@ public class IntrospectionIncubator {
 	/* Paving the way for automatic Introspection */
 	public void addMethod(Method method) {
 		if(Modifier.isPublic(method.getModifiers()) && !Modifier.isStatic(method.getModifiers())) {
-			String name = gnu.java.lang.ClassHelper.getTruncatedName(method.getName());
+			String name = ClassHelper.getTruncatedName(method.getName());
 			Class retType = method.getReturnType();
 			Class[] params = method.getParameterTypes();
 			boolean isVoid = retType.equals(java.lang.Void.TYPE);
