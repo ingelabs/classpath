@@ -1,3 +1,11 @@
+2005-01-02  Mark Wielaard  <mark@klomp.org>
+
+	* acinclude.m4 (REGEN_WITH_JAY): New macro.
+	* configure.ac: Call REGEN_WITH_JAY.
+	* lib/Makefile.am (gen-xpath-parser): New rule, depends on
+	REGEN_PARSER being defined.
+	(genclasses): Depend on gen-xpath-parser.
+
 2005-01-02  Archie Cobbs  <archie@dellroad.org>
 
 	* vm/reference/java/lang/VMThread.java (sleep()): revert behavior

@@ -371,3 +371,33 @@ AC_DEFUN([CLASSPATH_ENABLE_GJDOC],
   AM_CONDITIONAL(CREATE_API_DOCS, test "x${ENABLE_GJDOC}" = xyes)
 ])
 
+dnl -----------------------------------------------------------
+dnl Enable regeneration of parsers using jay
+dnl http://www.informatik.uni-osnabrueck.de/alumni/bernd/jay/
+dnl -----------------------------------------------------------
+AC_DEFUN([REGEN_WITH_JAY],
+[
+  AC_ARG_WITH([jay],
+              [AS_HELP_STRING(--with-jay,Regenerate the parsers with jay must be given the path to the jay executable)],
+  [
+    if test -d "${withval}"; then
+      JAY_DIR_PATH="${withval}"
+      AC_PATH_PROG(JAY, jay, "no", ${JAY_DIR_PATH})
+      if test "x${JAY}" = xno; then
+        AC_MSG_ERROR("jay executable not found");
+      fi
+    else
+      JAY_DIR_PATH=$(dirname "${withval}")
+      JAY="${withval}"
+      AC_SUBST(JAY)
+    fi
+    JAY_SKELETON="${JAY_DIR_PATH}/skeleton"
+    AC_CHECK_FILE(${JAY_SKELETON}, AC_SUBST(JAY_SKELETON),
+	AC_MSG_ERROR("Expected skeleton file in $(dirname ${withval})"))
+    JAY_FOUND=yes
+  ],
+  [
+    JAY_FOUND=no
+  ])
+  AM_CONDITIONAL(REGEN_PARSERS, test "x${JAY_FOUND}" = xyes)
+])

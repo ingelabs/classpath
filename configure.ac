@@ -361,6 +361,11 @@ dnl -----------------------------------------------------------
 CLASSPATH_ENABLE_GJDOC
 
 dnl -----------------------------------------------------------
+dnl Whether to use jay to regenerate parsers.
+dnl -----------------------------------------------------------
+REGEN_WITH_JAY
+
+dnl -----------------------------------------------------------
 dnl This sets the build-time default, which can now be overridden 
 dnl by setting the system property gnu.classpath.awt.gtk.portable.native.sync
 dnl to "true" or "false".

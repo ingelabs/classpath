@@ -83,8 +83,23 @@ $(top_builddir)/java/util/LocaleData.java: $(top_srcdir)/scripts/generate-locale
 	mkdir -p $(top_builddir)/java/util
 	$(top_srcdir)/scripts/generate-locale-list.sh > $(top_builddir)/java/util/LocaleData.java
 
-genclasses: gen-classlist.sh standard.omit $(top_builddir)/java/util/LocaleData.java
+genclasses: gen-classlist.sh standard.omit $(top_builddir)/java/util/LocaleData.java gen-xpath-parser
 	top_builddir=$(top_builddir) $(SHELL) ./gen-classlist.sh standard
+
+# Only rebuild parsers when explicitly asked to.
+if REGEN_PARSERS
+
+gen-xpath-parser: $(top_srcdir)/gnu/xml/xpath/XPathParser.java
+
+$(top_srcdir)/gnu/xml/xpath/XPathParser.java: $(top_srcdir)/gnu/xml/xpath/XPathParser.y
+	( cd $(top_srcdir)/gnu/xml/xpath; \
+	  $(JAY) XPathParser.y < $(JAY_SKELETON) > XPathParser.java )
+else
+
+gen-xpath-parser:
+	true
+
+endif # REGEN_PARSER
 
 $(JAVA_DEPEND): genclasses
 
