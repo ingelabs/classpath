@@ -1,3 +1,16 @@
+2003-11-22  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* java/text/NumberFormat.java
+	(NumberFormat.Field): New implemented class to match Java 1.4. 
+	(getIntegerInstance): Two new Java 1.4 methods.o
+
+	* java/text/DecimalFormatSymbols.java (locale): New field.
+	(DecimalFormatSymbols (Locale)): Set locale.
+	(serialVersionOnStream): Upgraded to number 2.
+	(readObject): Assign locale if it wasn't by the serializer.
+
+	* java/text/FormatCharacterIterator.java: Fixed some typos.
+
 2003-11-18  Graydon Hoare  <graydon@redhat.com>
 
 	* javax/swing/JLayeredPane.java: Implement.
