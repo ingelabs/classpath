@@ -64,6 +64,7 @@ the parent class.
 
 For example:
 
+import gnu.test.*
 public class TestContainer {
   public static class test1 implements Test {
      // test1
