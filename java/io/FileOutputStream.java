@@ -84,11 +84,9 @@ public class FileOutputStream extends OutputStream
     SecurityManager s = System.getSecurityManager();
     if (s != null)
       s.checkWrite(path);
-
-    int flags = FileDescriptor.WRITE;
-    if (append)
-      flags |= FileDescriptor.APPEND;
-    fd = new FileDescriptor(path, flags);
+    fd = new FileDescriptor (path, (append
+				    ? FileDescriptor.APPEND
+				    : FileDescriptor.WRITE));
   }
 
   /**
