@@ -170,10 +170,14 @@ import gnu.java.lang.*;
  *
  * @author John Keiser
  * @since JDK1.1
- * @version 1.1.0, 29 Jul 1998
  * @see java.beans.BeanInfo
  */
 public class Introspector {
+  
+  public static final int USE_ALL_BEANINFO = 1;
+  public static final int IGNORE_IMMEDIATE_BEANINFO = 2;
+  public static final int IGNORE_ALL_BEANINFO = 3;
+
   static String[] beanInfoSearchPath = {"gnu.java.beans.info"};
   static Hashtable beanInfoCache = new Hashtable();
   
