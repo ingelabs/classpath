@@ -116,7 +116,7 @@ LineNumberReader(Reader in)
 public
 LineNumberReader(Reader in, int size)
 {
-  super(new PushbackReader(in), size);
+  super(in, size);
 }
 
 /*************************************************************************/
@@ -241,7 +241,7 @@ read() throws IOException
       int extra_char_read = super.read();
 
       if ((extra_char_read != '\n') && (extra_char_read != -1))
-        ((PushbackReader)in).unread(extra_char_read);
+        pos--;
 
       char_read = '\n';
       ++line_number;

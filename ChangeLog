@@ -1,3 +1,11 @@
+2002-12-13  Casey Marshall  <rsdio@metastatic.org>
+
+	* java/security/Security.java (loadProviders): Increment i only once.
+
+2002-12-12  Archie Cobbs <archie@dellroad.org>
+
+	* java/io/LineNumberReader.java: Don't use PushbackReader.
+
 2002-12-12  C. Brian Jones  <cbj@gnu.org>
 	* doc/www.gnu.org/doc: moved to doc/www.gnu.org/docs
 	* doc/www.gnu.org/docs: new directory
