@@ -1,3 +1,19 @@
+2004-01-27  Kim Ho  <kho@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java
+	(gtkWidgetGetDimensions): Remove.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(gtkWidgetGetDimensions): Remove.
+	
+	* gnu/java/awt/peer/gtk/GtkComponentPeer.java (GtkComponentPeer): If
+	it is a FileDialog and has dimensions of 0 by 0, then the initial
+	size is set to size request plus insets.
+	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java
+	(gtkWidgetGetDimensions): Override method.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
+	(gtkWidgetGetDimensions): Override method. Returns size request plus
+	insets.
+
 2004-01-27  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java: Merged copyright year.
