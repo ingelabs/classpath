@@ -1,5 +1,10 @@
 2004-09-20  Tom Tromey  <tromey@redhat.com>
 
+	* .settings/org.eclipse.core.resources.prefs: New file.
+	* .classpath: Updated.
+
+2004-09-20  Tom Tromey  <tromey@redhat.com>
+
 	* scripts/jalopy-gnu.xml: New file.
 
 2004-09-20  Michael Koch  <konqueror@gmx.de>
@@ -6527,9 +6532,9 @@
 	* ChangeLog: Restore corrupted umlauts.  
 	
 	Some time between 2004-04-07 and 2004-05-01, somebody used
-	an editing tool on ChangeLog that converted Bernd Mösli's surname
-	to Mvsli, and similarly corrupted the names of Jörg Prante and
-	H. Väisänen.  It looks as if the editing tool read in latin1
+	an editing tool on ChangeLog that converted Bernd Mï¿½sli's surname
+	to Mvsli, and similarly corrupted the names of Jï¿½rg Prante and
+	H. Vï¿½isï¿½nen.  It looks as if the editing tool read in latin1
 	characters, then masked them with 0x7F and wrote them out again.
 	
 	* ChangeLog: Explicitly set coding system to latin-1.
@@ -15993,7 +15998,7 @@
 	* java/sql/Timestamp.java
 	(valueOf): Fixed confusion of java.sql.Date and java.util.Date
 
-2003-07-24  H. Väisänen  <hvaisane@joyx.joensuu.fi>
+2003-07-24  H. Vï¿½isï¿½nen  <hvaisane@joyx.joensuu.fi>
 
 	* java/text/SimpleDateFormat.java (format) [YEAR_FIELD]: Zero pad
 	unless field size is 2.
@@ -30313,7 +30318,7 @@ get/Linux/target_native.h,
 
 	* java/util/zip/ZipFile.java (readEntries): Search for the End Of
 	Central Directory.  When a zip comment is present the directory
-	may start earlier.  Patch suggested by Jörg Prante
+	may start earlier.  Patch suggested by Jï¿½rg Prante
 	<joergprante@gmx.de>.
 
 	* java/util/zip/ZipConstants.java: Renamed constants to their SUN
@@ -30518,7 +30523,7 @@ get/Linux/target_native.h,
 
 	* java/util/zip/ZipFile.java: Return -1 in 
 	PartialInputStream.read(byte[],int,int) when end of stream reached.
-	Reported by Bernd Mösli <bmoesli@esmertec.com>.
+	Reported by Bernd Mï¿½sli <bmoesli@esmertec.com>.
 
 2001-10-01  Mark Wielaard  <mark@klomp.org>
 
