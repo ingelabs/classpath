@@ -136,12 +136,33 @@ dnl on the Java source files.
 AC_ARG_ENABLE(maintainer-build,
 [  --enable-maintainer-build	java dependency computation [default=no]],
 [case "${enableval}" in 
-  yes) maintainer_debug=true ;;
+  yes) 
+    maintainer_debug=true
+    ;;
   no)  maintainer_debug=false ;;
   *) AC_MSG_ERROR(bad value ${enableval} for --enable-maintainer-build) ;;
 esac],
 [maintainer_debug=false])
 AM_CONDITIONAL(MAINTAINER_BUILD, test x$maintainer_debug = xtrue)
+
+dnl java dependency creation
+AC_ARG_WITH(jdeps,
+[  --with-jdeps		  specify location of JavaDeps],
+[
+  if test ${withval} = "yes" || test ${withval} = ""; then
+    AC_PATH_PROG(JAVADEPS, jdeps, "", $PATH)
+  else
+    AC_PATH_PROG(JAVADEPS, jdeps, "", $PATH:${withval})
+  fi
+],
+[
+  if test x"$maintainer_debug" = xtrue; then
+    AC_PATH_PROG(JAVADEPS, jdeps, "", $PATH)
+  fi
+])
+
+AC_PATH_PROG(SH, sh)
+AC_PATH_PROG(FIND, find)
 
 AC_OUTPUT(compat/java.net/Makefile
 compat/Makefile
@@ -180,4 +201,9 @@ test/gnu.java.lang.reflect/Makefile
 test/java.lang.reflect/Makefile
 test/java.net/Makefile
 test/java.util/Makefile
+lib/deps.sh
+lib/gen-classlist.sh
 lib/Makefile)
+
+
+
