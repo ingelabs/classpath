@@ -730,7 +730,7 @@ public class Rectangle extends Rectangle2D implements Shape, Serializable
   /**
    * Tests this rectangle for equality against the specified object.  This
    * will be true if an only if the specified object is an instance of
-   * Rectangle2D with the same coordinates and dimentions.
+   * Rectangle2D with the same coordinates and dimensions.
    *
    * @param obj the object to test against for equality
    * @return true if the specified object is equal to this one

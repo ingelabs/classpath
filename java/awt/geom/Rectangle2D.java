@@ -498,6 +498,46 @@ public abstract class Rectangle2D extends RectangularShape
   }
 
   /**
+   * Return the hashcode for this rectangle. The formula is not documented, but
+   * appears to be the same as:
+   * <pre>
+   * long l = Double.doubleToLongBits(getX())
+   *   + 37 * Double.doubleToLongBits(getY())
+   *   + 43 * Double.doubleToLongBits(getWidth())
+   *   + 47 * Double.doubleToLongBits(getHeight());
+   * return (int) ((l >> 32) ^ l);
+   * </pre>
+   *
+   * @return the hashcode
+   */
+  public int hashCode()
+  {
+    // Talk about a fun time reverse engineering this one!
+    long l = Double.doubleToLongBits(getX())
+      + 37 * Double.doubleToLongBits(getY())
+      + 43 * Double.doubleToLongBits(getWidth())
+      + 47 * Double.doubleToLongBits(getHeight());
+    return (int) ((l >> 32) ^ l);
+  }
+
+  /**
+   * Tests this rectangle for equality against the specified object.  This
+   * will be true if an only if the specified object is an instance of
+   * Rectangle2D with the same coordinates and dimensions.
+   *
+   * @param obj the object to test against for equality
+   * @return true if the specified object is equal to this one
+   */
+  public boolean equals(Object obj)
+  {
+    if (! (obj instanceof Rectangle2D))
+      return false;
+    Rectangle2D r = (Rectangle2D) obj;
+    return r.getX() == getX() && r.getY() == getY()
+      && r.getWidth() == getWidth() && r.getHeight() == getHeight();
+  }
+
+  /**
    * This class defines a rectangle in <code>double</code> precision.
    *
    * @author Eric Blake <ebb9@email.byu.edu>

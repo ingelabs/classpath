@@ -1,5 +1,11 @@
 2002-03-21  Eric Blake  <ebb9@email.byu.edu>
 
+	* java/awt/Rectangle.java: Spelling typo.
+	* java/awt/geom/Rectangle2D.java (hashCode, equals): Missed these
+	in last commit.
+
+2002-03-21  Eric Blake  <ebb9@email.byu.edu>
+
 	* java/awt/Dimension.java: Update to 1.4.
 	* java/awt/Point.java: Update to 1.4.
 	* java/awt/Polygon.java (Polygon): Don't share array.
