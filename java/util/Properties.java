@@ -1,5 +1,5 @@
 /* java.util.Properties
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -330,16 +330,29 @@ public class Properties extends Hashtable {
         return defaultValue;
     }
 
+    private final void addHashEntries (Hashtable base) {
+        if (defaults != null)
+	    defaults.addHashEntries(base);
+	Enumeration keys = keys ();
+	while (keys.hasMoreElements())
+	    base.put(keys.nextElement(), base);
+    }
+
     /**
      * Returns an enumeration of all keys in this property list, including
      * the keys in the default property list.
      */
-    public Enumeration propertyNames() {
-        return (defaults == null) ? keys() 
-            : new DoubleEnumeration(keys(), defaults.propertyNames());
+    public Enumeration propertyNames () {
+        // We make a new Hashtable that holds all the keys.  Then we
+        // return an enumeration for this hash.  We do this because we
+        // don't want modifications to be reflected in the enumeration
+        // (per JCL), and because there doesn't seem to be a
+        // particularly better way to ensure that duplicates are
+        // ignored.
+        Hashtable t = new Hashtable ();
+	addHashEntries (t);
+	return t.keys();
     }
-
-
 
     /**
      * Formats a key/value pair for output in a properties file.
@@ -380,7 +393,7 @@ public class Properties extends Hashtable {
                 result.append("\\:");
                 break;
 	    case ' ':
-		result.append(head ? "\\ ": " ");
+	        result.append("\\ ");
 		break;
             default:
                 if (c < 32 || c > '~') {

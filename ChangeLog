@@ -1,3 +1,10 @@
+2000-10-07  Tom Tromey  <tromey@cygnus.com>
+
+	* java/util/Properties.java (addHashEntries): New method from
+	libgcj.
+	(propertyNames): Use libgcj implementation.
+	(formatForOutput): Always quote spaces in key.
+
 2000-10-05  Warren Levy  <warrenl@cygnus.com>
 
 	* java/security/Key.java (serialVersionUID): New value.
