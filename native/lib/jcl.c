@@ -70,8 +70,8 @@ JNIEXPORT jint JNICALL JCL_MonitorExit(JNIEnv * env, jobject o) {
 }
 
 JNIEXPORT jclass JNICALL JCL_FindClass(JNIEnv * env, char * className) {
-	jint retval = (*env)->FindClass(env,className);
-	if(retval != 0) {
+	jclass retval = (*env)->FindClass(env,className);
+	if(retval != NULL) {
 		JCL_ThrowException(env, "java/lang/ClassNotFoundException", className);
 	}
 	return retval;
