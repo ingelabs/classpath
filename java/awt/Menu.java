@@ -22,6 +22,8 @@
 package java.awt;
 
 import java.awt.peer.MenuPeer;
+import java.awt.peer.MenuItemPeer;
+import java.awt.peer.MenuComponentPeer;
 import java.io.Serializable;
 import java.util.Vector;
 import java.util.Enumeration;
@@ -349,7 +351,7 @@ addNotify()
   if (getPeer() != null)
     return;
 
-  setPeer(getToolkit().createMenu(this));
+  setPeer((MenuComponentPeer)getToolkit().createMenu(this));
 }
 
 /*************************************************************************/

@@ -237,7 +237,7 @@ public synchronized void
 addNotify()
 {
   if (getPeer() == null)
-    setPeer(getToolkit().createDialog(this));
+    setPeer((ComponentPeer)getToolkit().createDialog(this));
 }
 
 /*************************************************************************/

@@ -22,6 +22,7 @@
 package java.awt;
 
 import java.awt.peer.MenuItemPeer;
+import java.awt.peer.MenuComponentPeer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -340,7 +341,7 @@ addNotify()
   if (getPeer() != null)
     return;
 
-  setPeer(getToolkit().createMenuItem(this));
+  setPeer((MenuComponentPeer)getToolkit().createMenuItem(this));
 }
 
 /*************************************************************************/

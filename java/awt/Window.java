@@ -24,6 +24,8 @@ package java.awt;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.peer.WindowPeer;
+import java.awt.peer.ContainerPeer;
+import java.awt.peer.ComponentPeer;
 import java.util.Locale;
 
 /**
@@ -340,7 +342,7 @@ pack()
 public void
 addNotify()
 {
-  setPeer(getToolkit().createWindow(this));
+  setPeer((ComponentPeer)getToolkit().createWindow(this));
 }
 
 /*************************************************************************/

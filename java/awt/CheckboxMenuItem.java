@@ -167,7 +167,7 @@ public synchronized void
 addNotify()
 {
   if (getPeer() == null)
-    setPeer(getToolkit().createCheckboxMenuItem(this));
+    setPeer((MenuComponentPeer)getToolkit().createCheckboxMenuItem(this));
 }
 
 /*************************************************************************/

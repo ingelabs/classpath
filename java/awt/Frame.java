@@ -22,6 +22,9 @@
 package java.awt;
 
 import java.awt.peer.FramePeer;
+import java.awt.peer.WindowPeer;
+import java.awt.peer.ContainerPeer;
+import java.awt.peer.ComponentPeer;
 import java.io.Serializable;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -373,7 +376,7 @@ remove(MenuComponent menu)
 public void
 addNotify()
 {
-  setPeer(getToolkit().createFrame(this));
+  setPeer((ComponentPeer)getToolkit().createFrame(this));
 }
 
 /*************************************************************************/
