@@ -1,5 +1,19 @@
 2003-10-12  Michael Koch  <konqueror@gmx.de>
 
+	* javax/print/attribute/Attribute.java,
+	javax/print/attribute/AttributeSet.java,
+	javax/print/attribute/PrintRequestAttributeSet.java,
+	javax/transaction/Status.java,
+	javax/transaction/Synchronization.java,
+	javax/transaction/Transaction.java,
+	javax/transaction/TransactionManager.java,
+	javax/transaction/UserTransaction.java,
+	javax/transaction/xa/XAResource.java,
+	javax/transaction/xa/Xid.java:
+	Removed redundant modifiers.
+
+2003-10-12  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/event/AncestorListener.java,
 	javax/swing/event/CaretListener.java,
 	javax/swing/event/CellEditorListener.java,
