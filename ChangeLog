@@ -1,6 +1,12 @@
 2003-12-27  Guilhem Lavaux <guilhem@kaffe.org>
 
-	* java/io/BufferedReader (readLine): Make readLine() really block
+	* java/io/CharArrayReader.java (read): It should throw
+	IndexOutOfBoundsException and not ArrayIndexOutOfBoundsException (see
+	mauve).
+	
+2003-12-27  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* java/io/BufferedReader.java (readLine): Make readLine() really block
 	until either EOF is reached or a true error happens.
 
 2003-12-27  Michael Koch  <konqueror@gmx.de>
