@@ -1,3 +1,9 @@
+2004-01-16 Olga Rodimina <rodimina@redhat.com>
+
+	* gnu/java/awt/peer/gtk/GdkGraphics2D.java:
+	(doPolygon): set fill rule of polygon to
+	WIND_EVEN_ODD by default.
+                                                                                
 2004-01-16  Michael Koch  <konqueror@gmx.de>
 
 	* acinclude.m4: Fixed quotation to get rid of warnings with
