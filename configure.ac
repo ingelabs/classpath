@@ -432,7 +432,6 @@ native/fdlibm/Makefile
 native/cni/Makefile
 native/jni/Makefile
 native/jni/classpath/Makefile
-native/jni/java-awt/Makefile
 native/jni/java-io/Makefile
 native/jni/java-lang/Makefile
 native/jni/java-net/Makefile

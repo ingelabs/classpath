@@ -1,3 +1,19 @@
+2004-07-17  Michael Koch  <konqueror@gmx.de>
+
+	* configure.ac
+	(AC_CONFIG_FILES): Removed native/jni/java-awt/Makefile.
+	* gnu/java/awt/EmbeddedWindow.java
+	(static): Removed.
+	(addNotify): Set peer via reflection.
+	(setWindowPeer): Removed.
+	* native/jni/Makefile.am
+	(SUBDIRS): Removed java-awt.
+	(DIST_SUBDIRS): Likewise.
+	* native/jni/java-awt/.cvsignore,
+	native/jni/java-awt/Makefile.am,
+	native/jni/java-awt/gnu_java_awt_EmbeddedWindow.c:
+	Removed.
+
 2004-07-16  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/net/URL.java (URL(String,String,int,String,URLStreamHandler):
