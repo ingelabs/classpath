@@ -1,3 +1,8 @@
+2001-01-08  Mark Wielaard  <mark@klomp.org>
+
+	* java/lang/System.java (insertGNUProperties): Add standard character
+	encoding aliases.
+
 2001-12-21  Tom Tromey  <tromey@redhat.com>
 
 	* java/io/ObjectInputStream.java (enableResolveObject): Use

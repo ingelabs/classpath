@@ -376,6 +376,60 @@ public class System
   {
     properties.put ("gnu.cpu.endian",
 		    (isWordsBigEndian ())? "big" : "little");
+
+    // Common encoding aliases. See gnu.java.io.EncodingManager.
+    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-1", "8859_1");
+    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-2", "8859_2");
+    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-3", "8859_3");
+    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-4", "8859_4");
+    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-5", "8859_5");
+    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-6", "8859_6");
+    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-7", "8859_7");
+    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-8", "8859_8");
+    properties.put ("gnu.java.io.encoding_scheme_alias.ISO-8859-9", "8859_9");
+
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-1", "8859_1");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-2", "8859_2");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-3", "8859_3");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-4", "8859_4");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-5", "8859_5");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-6", "8859_6");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-7", "8859_7");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-8", "8859_8");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-8859-9", "8859_9");
+
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_1", "8859_1");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_2", "8859_2");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_3", "8859_3");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_4", "8859_4");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_5", "8859_5");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_6", "8859_6");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_7", "8859_7");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_8", "8859_8");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso8859_9", "8859_9");
+
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-1", "8859_1");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-2", "8859_2");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-3", "8859_3");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-4", "8859_4");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-5", "8859_5");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-6", "8859_6");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-7", "8859_7");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-8", "8859_8");
+    properties.put ("gnu.java.io.encoding_scheme_alias.iso-latin-9", "8859_9");
+
+    properties.put ("gnu.java.io.encoding_scheme_alias.latin1", "8859_1");
+    properties.put ("gnu.java.io.encoding_scheme_alias.latin2", "8859_2");
+    properties.put ("gnu.java.io.encoding_scheme_alias.latin3", "8859_3");
+    properties.put ("gnu.java.io.encoding_scheme_alias.latin4", "8859_4");
+    properties.put ("gnu.java.io.encoding_scheme_alias.latin5", "8859_5");
+    properties.put ("gnu.java.io.encoding_scheme_alias.latin6", "8859_6");
+    properties.put ("gnu.java.io.encoding_scheme_alias.latin7", "8859_7");
+    properties.put ("gnu.java.io.encoding_scheme_alias.latin8", "8859_8");
+    properties.put ("gnu.java.io.encoding_scheme_alias.latin9", "8859_9");
+
+    properties.put ("gnu.java.io.encoding_scheme_alias.UTF-8", "UTF8");
+    properties.put ("gnu.java.io.encoding_scheme_alias.utf-8", "UTF8");
   }
 
   static native boolean isWordsBigEndian ();
