@@ -1,3 +1,9 @@
+2004-04-21  Dalibor Topic  <robilad@kaffe.org>
+
+	* java/util/regex/Matcher.java,
+	java/util/regex/Pattern.java:
+	Cleaned up imports.
+
 2004-04-21  Michael Koch  <konqueror@gmx.de>
 
 	* native/jni/java-net/javanet.h
