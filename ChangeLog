@@ -1,5 +1,9 @@
 2005-01-09  Mark Wielaard  <mark@klomp.org>
 
+	* configure.ac: Update version to 0.13+cvs.
+
+2005-01-09  Mark Wielaard  <mark@klomp.org>
+
 	* acinclude.m4 (CLASSPATH_WITH_GJDOC): Renamed from
 	CLASSPATH_ENABLE_GJDOC. Can now take argument to use as gjdoc program.
 	Doesn't depend on xml tools.
