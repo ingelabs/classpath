@@ -174,6 +174,9 @@ public class Locale implements java.io.Serializable, Cloneable {
      * Convert old iso639 codes to the new ones.
      */
     private String convertLanguage(String language) {
+        if (language.equals(""))
+          return(language.intern());
+
 	int index = "iw,in,ji".indexOf(language);
 	if (index != -1)
 	    return "he,id,yi".substring(index, index+2).intern();
