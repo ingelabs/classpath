@@ -1,6 +1,7 @@
 #include "reflect.h"
 #include <primlib.h>
 #include <string.h>
+#include <jvmdi.h>
 #include <vmi.h>
 #include <jcl.h>
 
@@ -22,21 +23,21 @@ JNIEXPORT jboolean JNICALL REFLECT_HasLinkLevelAccessToMember(JNIEnv * env, jcla
 	int comparison = UNRELATED;
 	int accessorLen;
 	int accesseeLen;
-	vmiError vmiErr;
+	jvmdiError jvmdiErr;
 
-	vmiErr = VMI_GetClassModifiers(env, accessee, &classMods);
-	if(vmiErr != VMI_ERROR_NONE) {
-		VMI_ThrowAppropriateException(env, vmiErr);
+	jvmdiErr = JVMDI_GetClassModifiers(env, accessee, &classMods);
+	if(jvmdiErr != JVMDI_ERROR_NONE) {
+		VMI_ThrowAppropriateException(env, jvmdiErr);
 		return JNI_FALSE;
 	}
-	vmiErr = VMI_GetClassName(env, accessor, &accessorNameUTF);
-	if(vmiErr != VMI_ERROR_NONE) {
-		VMI_ThrowAppropriateException(env, vmiErr);
+	jvmdiErr = JVMDI_GetClassName(env, accessor, &accessorNameUTF);
+	if(jvmdiErr != JVMDI_ERROR_NONE) {
+		VMI_ThrowAppropriateException(env, jvmdiErr);
 		return JNI_FALSE;
 	}
-	vmiErr = VMI_GetClassName(env, accessee, &accesseeNameUTF);
-	if(vmiErr != VMI_ERROR_NONE) {
-		VMI_ThrowAppropriateException(env, vmiErr);
+	jvmdiErr = JVMDI_GetClassName(env, accessee, &accesseeNameUTF);
+	if(jvmdiErr != JVMDI_ERROR_NONE) {
+		VMI_ThrowAppropriateException(env, jvmdiErr);
 		return JNI_FALSE;
 	}
 
@@ -162,7 +163,7 @@ JNIEXPORT jint JNICALL REFLECT_GetFieldSignature(JNIEnv * env, char * signatureB
 	jstring classNameUTF;
 	char * className;
 	jint reflectType;
-	vmiError vmiErr;
+	jvmdiError jvmdiErr;
 
 	reflectType = PRIMLIB_GetReflectiveType(env, fieldType);
 
@@ -196,9 +197,9 @@ JNIEXPORT jint JNICALL REFLECT_GetFieldSignature(JNIEnv * env, char * signatureB
 		return 1;
 	case PRIMLIB_OBJECT:
 		signatureBuf[0] = 'L';
-		vmiErr = VMI_GetClassName(env, fieldType, &classNameUTF);
-		if(vmiErr != VMI_ERROR_NONE) {
-			VMI_ThrowAppropriateException(env, vmiErr);
+		jvmdiErr = JVMDI_GetClassName(env, fieldType, &classNameUTF);
+		if(jvmdiErr != JVMDI_ERROR_NONE) {
+			VMI_ThrowAppropriateException(env, jvmdiErr);
 			return -1;
 		}
 
