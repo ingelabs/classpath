@@ -227,7 +227,7 @@ Java_java_net_PlainDatagramSocketImpl_join(JNIEnv *env, jobject this,
   ipm.imr_interface.s_addr = INADDR_ANY;
 
   rc = setsockopt(_javanet_get_int_field(env, this, "native_fd"),
-                  SOL_IP, IP_ADD_MEMBERSHIP, &ipm, sizeof(ipm));
+                  IPPROTO_IP, IP_ADD_MEMBERSHIP, &ipm, sizeof(ipm));
 
   if (rc == -1)
     _javanet_throw_exception(env, IO_EXCEPTION, strerror(errno));
@@ -250,7 +250,7 @@ Java_java_net_PlainDatagramSocketImpl_leave(JNIEnv *env, jobject this,
   ipm.imr_interface.s_addr = INADDR_ANY;
 
   rc = setsockopt(_javanet_get_int_field(env, this, "native_fd"),
-                  SOL_IP, IP_DROP_MEMBERSHIP, &ipm, sizeof(ipm));
+                  IPPROTO_IP, IP_DROP_MEMBERSHIP, &ipm, sizeof(ipm));
 
   if (rc == -1)
     _javanet_throw_exception(env, IO_EXCEPTION, strerror(errno));

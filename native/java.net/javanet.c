@@ -434,14 +434,14 @@ _javanet_connect(JNIEnv *env, jobject this, jobject addr, jint port)
   si.sin_addr.s_addr = netaddr;
   si.sin_port = htons(((short)port));
 
-  rc = connect(fd, &si, sizeof(struct sockaddr_in));
+  rc = connect(fd, (struct sockaddr *) &si, sizeof(struct sockaddr_in));
   if (rc == -1)
     { _javanet_throw_exception(env, IO_EXCEPTION, strerror(errno)); return; }
   DBG("Connected successfully\n");
 
   /* Populate instance variables */
   addrlen = sizeof(struct sockaddr_in);
-  rc = getsockname(fd, &si, &addrlen);
+  rc = getsockname(fd, (struct sockaddr *) &si, &addrlen);
   if (rc == -1)
     {
       close(fd);
@@ -461,7 +461,7 @@ _javanet_connect(JNIEnv *env, jobject this, jobject addr, jint port)
   DBG("Set the local port\n");
   
   addrlen = sizeof(struct sockaddr_in);
-  rc = getpeername(fd, &si, &addrlen);
+  rc = getpeername(fd, (struct sockaddr *) &si, &addrlen);
   if (rc == -1)
     {
       close(fd);
@@ -540,13 +540,13 @@ _javanet_bind(JNIEnv *env, jobject this, jobject addr, jint port, int stream)
 
   (*env)->ReleaseByteArrayElements(env, arr, octets, 0);
 
-  if (bind(fd, &si, sizeof(struct sockaddr_in)) == -1)
+  if (bind(fd, (struct sockaddr *) &si, sizeof(struct sockaddr_in)) == -1)
     { _javanet_throw_exception(env, IO_EXCEPTION, strerror(errno)); return; }
   DBG("Past bind\n");
   
   /* Update instance variables, specifically the local port number */
   namelen = sizeof(struct sockaddr_in);
-  getsockname(fd, &si, &namelen);
+  getsockname(fd, (struct sockaddr *) &si, &namelen);
 
   if (stream)
     _javanet_set_int_field(env, this, "java/net/SocketImpl", 
@@ -606,7 +606,7 @@ _javanet_accept(JNIEnv *env, jobject this, jobject impl)
   memset(&si, 0, addrlen);
 
   /******* Do we need to look for EINTR? */
-  newfd = accept(fd, &si, &addrlen);
+  newfd = accept(fd, (struct sockaddr *) &si, &addrlen);
   if (newfd == -1) 
     { _javanet_throw_exception(env, IO_EXCEPTION, "Internal Error"); return; }
 
@@ -614,7 +614,7 @@ _javanet_accept(JNIEnv *env, jobject this, jobject impl)
   _javanet_set_int_field(env, impl, "java/net/PlainSocketImpl", "native_fd",
                          newfd);
 
-  rc = getsockname(newfd, &si, &addrlen);
+  rc = getsockname(newfd, (struct sockaddr *) &si, &addrlen);
   if (rc == -1)
     {
       close(newfd);
@@ -632,7 +632,7 @@ _javanet_accept(JNIEnv *env, jobject this, jobject impl)
     return;
   
   addrlen = sizeof(struct sockaddr_in);
-  rc = getpeername(newfd, &si, &addrlen);
+  rc = getpeername(newfd, (struct sockaddr *) &si, &addrlen);
   if (rc == -1)
     {
       close(newfd);
@@ -697,7 +697,7 @@ _javanet_recvfrom(JNIEnv *env, jobject this, jarray buf, int offset, int len,
         {
           memset(&si, 0, sizeof(struct sockaddr_in));
           si_len = sizeof(struct sockaddr_in);
-          rc = recvfrom(fd, p + offset, len, 0, &si, &si_len);
+          rc = recvfrom(fd, p + offset, len, 0, (struct sockaddr *) &si, &si_len);
         }
 
       if ((rc == -1) && (errno == EINTR))
@@ -762,7 +762,7 @@ _javanet_sendto(JNIEnv *env, jobject this, jarray buf, int offset, int len,
       si.sin_port = (unsigned short)port;
       
       DBG("Sending....\n");
-      rc = sendto(fd, p + offset, len, 0, &si, sizeof(struct sockaddr_in));
+      rc = sendto(fd, p + offset, len, 0, (struct sockaddr *) &si, sizeof(struct sockaddr_in));
     }
 
   (*env)->ReleaseByteArrayElements(env, buf, p, 0);
@@ -810,7 +810,7 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
         /* Should be a 0 or a 1 */
         optval = (*env)->CallBooleanMethod(env, val, mid);
 
-        rc = setsockopt(fd, SOL_TCP, TCP_NODELAY, &optval, sizeof(int));
+        rc = setsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &optval, sizeof(int));
         break;
 
       /* SO_LINGER case.  If val is a boolean, then it will always be set
@@ -866,7 +866,7 @@ _javanet_set_option(JNIEnv *env, jobject this, jint option_id, jobject val)
 
         optval = (*env)->CallIntMethod(env, val, mid);
             
-        rc = setsockopt(fd, SOL_IP, IP_TTL, &optval, sizeof(int));
+        rc = setsockopt(fd, IPPROTO_IP, IP_TTL, &optval, sizeof(int));
         break;
 
       /* Multicast Interface case - val is InetAddress object */
@@ -918,7 +918,7 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
       /* TCP_NODELAY case.  Return a Boolean indicating on or off */
       case SOCKOPT_TCP_NODELAY:
         optlen = sizeof(optval);
-        rc = getsockopt(fd, SOL_TCP, TCP_NODELAY, &optval, &optlen);
+        rc = getsockopt(fd, IPPROTO_TCP, TCP_NODELAY, &optval, &optlen);
         if (rc == -1)
           {
             _javanet_throw_exception(env, SOCKET_EXCEPTION, strerror(errno)); 
@@ -977,7 +977,7 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
       case SOCKOPT_IP_TTL:
         optlen = sizeof(int);
 
-        rc = getsockopt(fd, SOL_IP, IP_TTL, &optval, &optlen);
+        rc = getsockopt(fd, IPPROTO_IP, IP_TTL, &optval, &optlen);
         if (rc == -1)
           {
             _javanet_throw_exception(env, SOCKET_EXCEPTION, strerror(errno)); 
@@ -992,7 +992,7 @@ _javanet_get_option(JNIEnv *env, jobject this, jint option_id)
          memset(&si, 0, sizeof(struct sockaddr_in));
          optlen = sizeof(struct sockaddr_in);
 
-         rc = getsockopt(fd, SOL_IP, IP_MULTICAST_IF, &si, &optlen);
+         rc = getsockopt(fd, IPPROTO_IP, IP_MULTICAST_IF, &si, &optlen);
          if (rc == -1)
            {
              _javanet_throw_exception(env, SOCKET_EXCEPTION, strerror(errno));
