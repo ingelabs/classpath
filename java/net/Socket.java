@@ -38,6 +38,7 @@ exception statement from your version. */
 package java.net;
 
 import java.io.*;
+import java.nio.channels.*;
 
 /* Written using on-line Java Platform 1.2 API Specification.
  * Status:  I believe all methods are implemented.
@@ -666,5 +667,28 @@ public class Socket
       sm.checkSetFactory();
 
     factory = fac;
+  }
+
+  public void shutdownInput() throws IOException
+  {
+    impl.shutdownInput();
+  }
+
+  public void shutdownOutput() throws IOException
+  {
+    impl.shutdownOutput();
+  }
+
+  SocketChannel ch; // this field must have been set if created by SocketChannel
+
+  /**
+   * Returns the socket channel associated with 
+   * this socket.
+   * 
+   * It returns null if no associated socket exists.
+   */
+  public SocketChannel getChannel() 
+  {
+    return ch;
   }
 }
