@@ -1,5 +1,15 @@
 2004-02-27  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/URLConnection.java
+	(dateFormat1, dateformat2, dateformat3): New fields.
+	(dateformats_initialized): New field for lazy initialization of date
+	format fields.
+	(getHeaderFieldDate): Rewritten to use DateFormat.parse() instead of
+	the deprecated Date(String) constructor. This implementation
+	(initializeDateFormats): New method,
+
+2004-02-27  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/awt/ComponentDataBlitOp.java
 	(INSTANCE): Made final.
 	* gnu/java/awt/image/ImageDecoder.java:
