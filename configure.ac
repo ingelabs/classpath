@@ -424,6 +424,7 @@ native/target/Linux/Makefile
 native/target/generic/Makefile
 resource/Makefile
 scripts/Makefile
+scripts/classpath.spec
 lib/Makefile
 lib/gen-classlist.sh
 examples/Makefile])

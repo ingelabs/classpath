@@ -1,3 +1,8 @@
+2005-03-22  Archie Cobbs  <archie@dellroad.org>
+
+	* configure.ac: Generate scripts/classpath.spec.
+	* scripts/classpath.spec.in: New file.
+
 2005-03-21  Audrius Meskauskas  <audriusa@bluewin.ch>
 	
 	* gnu/xml/dom/html2/DomHTMLParser.java: New file.
