@@ -87,9 +87,10 @@ public class FileURLConnection extends java.net.URLConnection
    */
   public void connect() throws java.io.IOException
   {
-    if(connected)return;
+    if (connected)
+      return;
     file = new java.io.File(getURL().getFile());
-    if(!file.exists())
+    if (!file.exists())
       throw new java.io.FileNotFoundException(file.getPath());
     connected = true;
   }
@@ -107,7 +108,7 @@ public class FileURLConnection extends java.net.URLConnection
     if (!connected)
       connect();
     in_stream = new java.io.FileInputStream(file);
-    return(in_stream);
+    return (in_stream);
   }
 
   /**
@@ -123,7 +124,7 @@ public class FileURLConnection extends java.net.URLConnection
     if (!connected)
       connect();
     out_stream = new java.io.FileOutputStream(file);
-    return(out_stream);
+    return (out_stream);
   }
 
 } // class FileURLConnection

@@ -1,3 +1,10 @@
+2002-04-04  Nic Ferrier  <nferrier@tapsellferrier.co.uk>
+
+	* gnu/java/net/protocol/file/FileURLConnection.java (connect):
+	Style change.
+	(getInputStream): ditto.
+	(getOutputStream): ditto.
+
 2002-04-04  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 
 	* java/util/Arrays.java (qsort): Fix off-by-one errors and use of
