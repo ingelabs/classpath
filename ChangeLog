@@ -1,3 +1,10 @@
+2002-03-28  Stephen Crawley  <crawley@dstc.edu.au>
+
+	Patch 204:
+	* vm/reference/java/lang/Runtime.java (exit): Check shutdownHooks
+	for null.
+	(Runtime): Improve library path parsing.
+
 2002-03-26  Sascha Brawer  <brawer@acm.org>
 
 	* java/util/logging/Level.java (SEVERE, WARNING, INFO, CONFIG,

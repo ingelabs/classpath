@@ -142,11 +142,17 @@ public class Runtime
     // Using defaultProperties directly avoids a security check, as well
     // as bootstrap issues (since System is not initialized yet).
     String path = defaultProperties.getProperty("java.library.path", ".");
-    String separator = defaultProperties.getProperty("path.separator", "/");
-    StringTokenizer t = new StringTokenizer(path, separator);
+    String pathSep = defaultProperties.getProperty("path.separator", ":");
+    String fileSep = defaultProperties.getProperty("file.separator", "/");
+    StringTokenizer t = new StringTokenizer(path, pathSep);
     libpath = new String[t.countTokens()];
     for (int i = 0; i < libpath.length; i++)
-      libpath[i] = t.nextToken();
+      {
+        String prefix = t.nextToken();
+        if (! prefix.endsWith(fileSep))
+          prefix += fileSep;
+        libpath[i] = prefix;
+      }
   }
 
   /**
@@ -195,51 +201,57 @@ public class Runtime
           {
             first = true;
             exitSequence = Thread.currentThread();
-            Iterator i = shutdownHooks.iterator();
-            while (i.hasNext()) // Start all shutdown hooks.
-              try
-                {
-                  ((Thread) i.next()).start();
-                }
-              catch (IllegalThreadStateException e)
-                {
-                  i.remove();
-                }
+            if (shutdownHooks != null)
+              {
+                Iterator i = shutdownHooks.iterator();
+                while (i.hasNext()) // Start all shutdown hooks.
+                  try
+                    {
+                      ((Thread) i.next()).start();
+                    }
+                  catch (IllegalThreadStateException e)
+                    {
+                      i.remove();
+                    }
+              }
           }
       }
     if (first)
       {
-        // Check progress of all shutdown hooks. As a hook completes, remove
-        // it from the set. If a hook calls exit, it removes itself from the
-        // set, then waits indefinitely on the exitSequence thread. Once
-        // the set is empty, set it to null to signal all finalizer threads
-        // that halt may be called.
-        while (! shutdownHooks.isEmpty())
+        if (shutdownHooks != null)
           {
-            Thread[] hooks;
-            synchronized (libpath)
+            // Check progress of all shutdown hooks. As a hook completes,
+            // remove it from the set. If a hook calls exit, it removes
+            // itself from the set, then waits indefinitely on the
+            // exitSequence thread. Once the set is empty, set it to null to
+            // signal all finalizer threads that halt may be called.
+            while (! shutdownHooks.isEmpty())
               {
-                hooks = new Thread[shutdownHooks.size()];
-                shutdownHooks.toArray(hooks);
-              }
-            for (int i = hooks.length; --i >= 0; )
-              if (! hooks[i].isAlive())
+                Thread[] hooks;
                 synchronized (libpath)
                   {
-                    shutdownHooks.remove(hooks[i]);
+                    hooks = new Thread[shutdownHooks.size()];
+                    shutdownHooks.toArray(hooks);
                   }
-            try
-              {
-                exitSequence.sleep(1); // Give other threads a chance.
+                for (int i = hooks.length; --i >= 0; )
+                  if (! hooks[i].isAlive())
+                    synchronized (libpath)
+                      {
+                        shutdownHooks.remove(hooks[i]);
+                      }
+                try
+                  {
+                    exitSequence.sleep(1); // Give other threads a chance.
+                  }
+                catch (InterruptedException e)
+                  {
+                    // Ignore, the next loop just starts sooner.
+                  }
               }
-            catch (InterruptedException e)
+            synchronized (libpath)
               {
-                // Ignore, the next loop just starts sooner.
+                shutdownHooks = null;
               }
-          }
-        synchronized (libpath)
-          {
-            shutdownHooks = null;
           }
         // XXX Right now, it is the VM that knows whether runFinalizersOnExit
         // is true; so the VM must look at exitSequence to decide whether
