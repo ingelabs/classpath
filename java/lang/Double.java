@@ -87,17 +87,28 @@ public final class Double extends Number implements Comparable
     
     /**
      * Create a <code>Double</code> from the specified <code>String</code>.
+     *
+     * This method calls <code>Double.parseDouble()</code>.
+     *
+     * @exception NumberFormatException when the <code>String</code> cannot
+     *            be parsed into a <code>Float</code>.
+     * @exception NullPointerException when the argument is <code>null</code>.
      * @param s the <code>String</code> to convert
+     * @see #parseDouble(java.lang.String)
      */
-    public Double(String s) throws NullPointerException, 
-    NumberFormatException 
+    public Double(String s) throws NumberFormatException 
     {
 	value = parseDouble(s);
     }
 
+    
     /**
      * Convert the <code>double</code> value of this <code>Double</code>
-     * to a <code>String</code>
+     * to a <code>String</code>.  This method calls
+     * <code>Double.toString(double)</code> to do its dirty work.
+     *
+     * @return the <code>String</code> representation of this <code>Double</code>.
+     * @see #toString(double)
      */
     public String toString() 
     {
@@ -180,9 +191,11 @@ public final class Double extends Number implements Comparable
      * <code>null</code>.
      * @exception NumberFormatException thrown if <code>String</code> cannot
      * be parsed as a <code>double</code>.
+     * @see #Double(java.lang.String)
+     * @see #parseDouble(java.lang.String)
      */
     public static Double valueOf(String s)
-	throws NullPointerException, NumberFormatException 
+	throws NumberFormatException 
     {
 	return new Double(s);
     }
@@ -284,6 +297,45 @@ public final class Double extends Number implements Comparable
 
     /**
      * Convert the <code>double</code> to a <code>String</code>.
+     *
+     * Floating-point string representation is fairly complex: here is a
+     * rundown of the possible values.  "<CODE>[-]</CODE>" indicates that a
+     * negative sign will be printed if the value (or exponent) is negative.
+     * "<CODE>&lt;number&gt;</CODE>" means a string of digits (0-9).
+     * "<CODE>&lt;digit&gt;</CODE>" means a single digit (0-9).
+     *
+     * <TABLE>
+     * <TR><TH>Value of Float</TH><TH>String Representation</TH></TR>
+     * <TR>
+     *     <TD>[+-] 0</TD>
+     *     <TD>[<CODE>-</CODE>]<CODE>0.0</CODE></TD>
+     * </TR>
+     * <TR>
+     *     <TD>Between [+-] 10<SUP>-3</SUP> and 10<SUP>7</SUP></TD>
+     *     <TD><CODE>[-]number.number</CODE></TD>
+     * </TR>
+     * <TR>
+     *     <TD>Other numeric value</TD>
+     *     <TD><CODE>[-]&lt;digit&gt;.&lt;number&gt;E[-]&lt;number&gt;</CODE></TD>
+     * </TR>
+     * <TR>
+     *     <TD>[+-] infinity</TD>
+     *     <TD><CODE>[-]Infinity</CODE></TD>
+     * </TR>
+     * <TR>
+     *     <TD>NaN</TD>
+     *     <TD><CODE>NaN</CODE></TD>
+     * </TR>
+     * </TABLE>
+     *
+     * Yes, negative zero <EM>is</EM> a possible value.  Note that there is
+     * <EM>always</EM> a <CODE>.</CODE> and at least one digit printed after
+     * it: even if the number is 3, it will be printed as <CODE>3.0</CODE>.
+     * After the ".", all digits will be printed except trailing zeros.  No
+     * truncation or rounding is done by this function.
+     *
+     * @XXX specify where we are not in accord with the spec.
+     *
      * @param d the <code>double</code> to convert
      * @return the <code>String</code> representing the <code>double</code>.
      */
@@ -311,10 +363,59 @@ public final class Double extends Number implements Comparable
 
     /**
      * Parse the specified <code>String</code> as a <code>double</code>.
-     * 
+     * <P>
+     * The number is really read as <em>n * 10<sup>exponent</sup></em>.  The
+     * first number is <em>n</em>, and if there is an "<code>E</code>"
+     * ("<code>e</code>" is also acceptable), then the integer after that is
+     * the exponent.
+     *
+     * Here are the possible forms the number can take:
+     *
+     * <TABLE>
+     *     <TR><TH>Form</TH><TH>Examples</TH></TR>
+     *     <TR><TD><CODE>[+-]&lt;number&gt;[.]</CODE></TD><TD>345., -10, 12</TD></TR>
+     *     <TR><TD><CODE>[+-]&lt;number&gt;.&lt;number&gt;</CODE></TD><TD>40.2, 80.00, -12.30</TD></TR>
+     *     <TR><TD><CODE>[+-]&lt;number&gt;[.]E[+-]&lt;number&gt;</CODE></TD><TD>80E12, -12e+7, 4.E-123</TD></TR>
+     *     <TR><TD><CODE>[+-]&lt;number&gt;.&lt;number&gt;E[+-]&lt;number&gt;</CODE></TD><TD>6.02e-22, -40.2E+6, 12.3e9</TD></TR>
+     * </TABLE>
+     *
+     * "<code>[+-]</code>" means either a plus or minus sign may go there, or
+     * neither, in which case + is assumed.
+     *
+     * "<code>[.]</code>" means a dot may be placed here, but is optional.
+     *
+     * "<code>&lt;number&gt;</code>" means a string of digits (0-9), basically
+     * an integer.  "<code>&lt;number&gt;.&lt;number&gt;</code>" is basically
+     * a real number, a floating-point value.
+     *
+     * Remember that a <code>double</code> has a limited range.  If the
+     * number you specify is greater than <code>Double.MAX_VALUE</code> or less
+     * than <code>-Double.MAX_VALUE</code>, it will be set at
+     * <code>Double.POSITIVE_INFINITY</code> or
+     * <code>Double.NEGATIVE_INFINITY</code>, respectively.
+     *
+     * Note also that <code>double</code> does not have perfect precision.  Many
+     * numbers cannot be precisely represented.  The number you specify
+     * will be rounded to the nearest representable value.  <code>Double.MIN_VALUE</code> is
+     * the margin of error for <code>double</code> values.
+     *
+     * If an unexpected character is found in the <code>String</code>, a
+     * <code>NumberFormatException</code> will be thrown.
+     *
+     * @XXX put a note in about where and whether spaces are accepted in the
+     *      input.
+     * @XXX specify where/how we are not in accord with the spec.
+     *
      * @param str the <code>String</code> to convert
      * @return the value of the <code>String</code> as a <code>double</code>.
+     * @exception NumberFormatException when the string cannot be parsed to a
+     *            <code>double</code>.
+     * @exception NullPointerException when the string is null.
      * @since JDK 1.2
+     * @see #MIN_VALUE
+     * @see #MAX_VALUE
+     * @see #POSITIVE_INFINITY
+     * @see #NEGATIVE_INFINITY
      */
     public native static double parseDouble(String str) 
     throws NumberFormatException;
