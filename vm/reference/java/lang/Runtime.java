@@ -30,7 +30,7 @@ import java.io.*;
  ** @version 1.1.0, Aug 8 1998
  **/
 
-public final class Runtime {
+public class Runtime extends Object {
 	static Runtime current = new Runtime();
 	String[] libpath;
 
