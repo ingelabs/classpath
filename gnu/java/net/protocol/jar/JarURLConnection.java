@@ -42,6 +42,7 @@ import java.io.*;
 import java.net.*;
 import java.util.Hashtable;
 import java.util.jar.*;
+import java.util.zip.ZipFile;
 
 /**
   * This subclass of java.net.JarURLConnection models a URLConnection via
@@ -68,7 +69,8 @@ public class JarURLConnection extends java.net.JarURLConnection
       try{
 	is_trying = true;
 	if("file".equals(url.getProtocol())){
-	  jf = new JarFile(url.getFile());
+	  File f = new File(url.getFile());
+	  jf = new JarFile(f, true, ZipFile.OPEN_READ);
 	}else{
 	  URLConnection urlconn = url.openConnection();
 	  InputStream is = urlconn.getInputStream();
@@ -80,7 +82,8 @@ public class JarURLConnection extends java.net.JarURLConnection
 	    fos.write(buf);
 	  }
 	  fos.close();
-	  jf = new JarFile(f);
+	  // Always verify the Manifest, open read only and delete when done.
+	  jf = new JarFile(f, true, ZipFile.OPEN_READ | ZipFile.OPEN_DELETE);
 	}
 	cache.put(url, jf);
       }finally{

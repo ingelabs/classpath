@@ -1,3 +1,9 @@
+2002-10-25  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/net/protocol/jar/JarURLConnection.java (JarFileCache.get):
+	Always verify the Manifest, open read only and delete when done if
+	appropriate.
+
 2002-10-25  Wu Gansha <gansha.wu@intel.com>:
 
 	* java/io/DataInputStream.java (convertFromUTF): Give StringBuffer an
