@@ -25,9 +25,6 @@ import java.io.OutputStream;
 import java.io.CharConversionException;
 import java.io.IOException;
 
-// Hi. This class is slow to fire up on the first use due to the
-// 64K array I allocate.  Somebody should fix this to be more efficient.
-
 /**
   * Numerous character encodings utilize only eight bits.  These can
   * be easily and efficiently be converted to characters using lookup tables.
@@ -128,13 +125,19 @@ convertToBytes(char[] buf, int buf_offset, int len, byte[] bbuf,
   for (int i = 0; i < len; i++)
     {
       // Check for bad character
-      if (((encoding_table[buf[buf_offset + i]] & 0xFF) == 0x00) &&
-         (encoding_table[buf[buf_offset + i]] != 0xFF00))
+      if ((encoding_table[buf[buf_offset + i]] & 0xFF) == 0x00)
         {
-          if (bad_char_set)
-            bbuf[bbuf_offset + i] = (byte)(encoding_table[bad_char] & 0xFF);
+          if (encoding_table[buf[buf_offset + i]] == 0xFF00)
+            {
+              bbuf[bbuf_offset + i] = 0;
+            }
           else
-            throw new CharConversionException("Encountered unencodable character: " + buf[buf_offset + i]);
+            {
+              if (bad_char_set)
+                bbuf[bbuf_offset + i] = (byte)(encoding_table[bad_char] & 0xFF);
+              else
+                throw new CharConversionException("Encountered unencodable character: " + buf[buf_offset + i]);
+            }
         }
       else
         {
