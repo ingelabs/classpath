@@ -1,3 +1,116 @@
+2003-04-23  Casey Marshall  <rsdio@metastatic.org>
+
+	Removed files:
+	* java/security/Engine.java: moved to gnu/java/security/Engine.java.
+	* gnu/java/security/provider/DERReader.java: obsoleted by
+	  gnu/java/security/der/DERReader.java.
+	* gnu/java/security/provider/DERWriter.java: obsoleted by
+	  gnu/java/security/der/DERWriter.java.
+
+	Added files:
+	* gnu/java/io/Base64InputStream.java: input stream for decoding
+	  Base-64.
+	* gnu/java/io/ASN1ParsingException.java: used to signal
+	  high-level errors in DER encoded data.
+	* gnu/java/security/OID.java: object identifier class.
+	* gnu/java/security/der/BitString.java: ASN.1 BIT STRING type.
+	* gnu/java/security/der/DER.java: DER constants.
+	* gnu/java/security/der/DERReader.java: DER parser.
+	* gnu/java/security/der/DERValue.java: A single value read or
+	  written to a DER stream.
+	* gnu/java/security/der/DERWriter.java: DER encoder.
+	* gnu/java/security/Engine.java: from java/security/Engine.java.
+	  (Changes from java/security/Engine.java follow)
+	  * Class and getInstance method made public.
+	  * getInstance now throws java.lang.reflect.InvocationTargetException.
+	  * Added additional getInstance method that takes an array of
+	    parameters to be passed to the constructor.
+	* gnu/java/security/provider/DSAKeyFactory.java: translator for
+	  DSA keys.
+	* gnu/java/security/provider/X509CertificateFactory.java: X.509
+	  certificate factory class.
+	* gnu/java/security/x509/X500DistinguishedName.java: ASN.1 Name
+	  construct implementation.
+	* gnu/java/security/x509/X509Certificate.java: X.509
+	  certificate class.
+	* gnu/java/security/x509/X509CRL.java: X.509 certificate
+	  revocation list.
+	* gnu/java/security/x509/X509CRLEntry.java: X.509 certificate
+	  revocation list entry.
+	* java/security/cert/CRLSelector.java: JDK 1.4 support.
+	* java/security/cert/CertPathBuilder.java: JDK 1.4 support.
+	* java/security/cert/CertPathBuilderResult.java: JDK 1.4 support.
+	* java/security/cert/CertPathBuilderSpi.java: JDK 1.4 support.
+	* java/security/cert/CertPathParameters.java: JDK 1.4 support.
+	* java/security/cert/CertPathValidator.java: JDK 1.4 support.
+	* java/security/cert/CertPathValidatorResult.java: JDK 1.4 support.
+	* java/security/cert/CertPathValidatorSpi.java: JDK 1.4 support.
+	* java/security/cert/CertSelector.java: JDK 1.4 support.
+	* java/security/cert/CertStore.java: JDK 1.4 support.
+	* java/security/cert/CertStoreParameters.java: JDK 1.4 support.
+	* java/security/cert/CertStoreSpi.java: JDK 1.4 support.
+	* java/security/cert/CollectionCertStoreParameters.java: JDK 1.4
+	  support.
+	* java/security/cert/LDAPCertStoreParameters.java: JDK 1.4 support.
+	* java/security/cert/PKIXBuilderParameters.java: JDK 1.4 support.
+	* java/security/cert/PKIXCertPathBuilderResult.java: JDK 1.4 support.
+	* java/security/cert/PKIXCertPathChecker.java: JDK 1.4 support.
+	* java/security/cert/PKIXCertPathValidatorResult.java: JDK 1.4 support.
+	* java/security/cert/PKIXParameters.java: JDK 1.4 support.
+	* java/security/cert/PolicyNode.java: JDK 1.4 support.
+	* java/security/cert/PolicyQualifierInfo.java: JDK 1.4 support.
+	* java/security/cert/TrustAnchor.java: JDK 1.4 support.
+	* javax/security/auth/x500/X500Principal.java: JDK 1.4 support.
+
+	Modified files:
+	* gnu/java/security/der/DEREncodingException.java: extend
+	  java.io.IOException instead of Exception.
+	* gnu/java/security/provider/DSAParameters.java: use new DER
+	  parser.
+	  (engineInit(AlgorithmParameterSpec)) variable assignment
+	  bugfix.
+	* gnu/java/security/provider/DSASignature.java:
+	  (engineVerify()) use new DER parser.
+	* gnu/java/security/provider/DSAPrivateKey.java: added
+	  toString() method.
+	* gnu/java/security/provider/DSAPrivateKey.java:
+	  (<init>) variable assignment bug fix.
+	  Added toString() method.
+	* gnu/java/security/provider/Gnu.java: added new key factory and
+	  certificate factory entries.
+	* java/security/AlgorithmParameterGenerator.java:
+	  (getInstance) accomodate changes to Engine class.
+	* java/security/AlgorithmParameters.java:
+	  (getInstance) accomodate changes to Engine class.
+	* java/security/KeyFactory.java:
+	  (getInstance) accomodate changes to Engine class.
+	* java/security/KeyPairGenerator.java:
+	  (getInstance) accomodate changes to Engine class.
+	* java/security/KeyStore.java:
+	  (getInstance) accomodate changes to Engine class.
+	* java/security/MessageDigest.java:
+	  (getInstance) accomodate changes to Engine class.
+	* java/security/SecureRandom.java:
+	  (getInstance) accomodate changes to Engine class.
+	* java/security/Signature.java:
+	  (getInstance) accomodate changes to Engine class.
+	* java/security/cert/Certificate.java: Added writeReplace() method. 
+	* java/security/cert/CertificateFactory.java: (JDK 1.4 compatibility)
+	  (getInstance(String)) and modified to use generic getInstance
+	  method.
+	  (getInstance(String, String)) likewise.
+	  getInstance(String, Provider) method added.
+	  getInstance(String, String, Provider) method removed.
+	  generateCertPath(InputStream) method added.
+	  generateCertPath(InputStream, String) method added.
+	  generateCertPath(List) method added.
+	  getCertPathEncodings() method added.
+	* java/security/cert/CertificateFactorySpi.java: (1.4 compatibility)
+	  engineGenerateCertPath(InputStream) method added.
+	  engineGenerateCertPath(InputStream, String) method added.
+	  engineGenerateCertPath(List) method added.
+	  engineGetCertPathEncodings() method added.
+
 2003-04-23  Torsten Rupp  <rupp@homer.aicas.com>
 
         * /cvsroot/classpath/classpath/java/net/InetAddress.java:
