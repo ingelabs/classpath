@@ -1,4 +1,4 @@
-/* CharacterCodingException.java -- 
+/* CoderMalfunctionError.java -- 
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,17 +37,16 @@ exception statement from your version. */
 
 package java.nio.charset;
 
-import java.io.IOException;
-
 /**
  * @since 1.4
  */
-class CharacterCodingException extends IOException
+class CoderMalfunctionError extends Error
 {
   /**
-   * Creates the exception
+   * Creates the error
    */
-  public CharacterCodingException()
+  public CoderMalfunctionError(Exception cause)
   {
+    super (cause);
   }
 }

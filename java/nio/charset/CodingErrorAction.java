@@ -40,4 +40,15 @@ package java.nio.charset;
 
 class CodingErrorAction
 {
+  public static final CodingErrorAction IGNORE;
+  public static final CodingErrorAction REPLACE;
+  public static final CodingErrorAction REPORT;
+
+  /**
+   * FIXME
+   */
+  public String toString ()
+  {
+    return "";
+  }
 }

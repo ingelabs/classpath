@@ -1,4 +1,4 @@
-/* CharacterCodingException.java -- 
+/* MalformedInputException.java -- 
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,17 +37,35 @@ exception statement from your version. */
 
 package java.nio.charset;
 
-import java.io.IOException;
-
 /**
  * @since 1.4
  */
-class CharacterCodingException extends IOException
+class MalformedInputException extends CharacterCodingException
 {
+  private int inputLength;
+  
   /**
    * Creates the exception
    */
-  public CharacterCodingException()
+  public MalformedInputException (int inputLength)
   {
+    super ();
+    this.inputLength = inputLength;
+  }
+
+  /**
+   * Retrieves the illegal charset name
+   */
+  public int getInputLength ()
+  {
+    return inputLength;
+  }
+
+  /**
+   * Returns the detail message string of this throwable
+   */
+  public String getMessage ()
+  {
+    return "";
   }
 }

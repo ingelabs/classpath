@@ -1,4 +1,4 @@
-/* CharacterCodingException.java -- 
+/* UnsupportedCharsetException.java -- 
    Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -37,17 +37,27 @@ exception statement from your version. */
 
 package java.nio.charset;
 
-import java.io.IOException;
-
 /**
  * @since 1.4
  */
-class CharacterCodingException extends IOException
+class UnsupportedCharsetException extends IllegalArgumentException
 {
+  private String charsetName;
+  
   /**
    * Creates the exception
    */
-  public CharacterCodingException()
+  public UnsupportedCharsetException (String charsetName)
   {
+    super ();
+    this.charsetName = charsetName;
+  }
+
+  /**
+   * Retrieves the illegal charset name
+   */
+  public String getCharsetName ()
+  {
+    return charsetName;
   }
 }

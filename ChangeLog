@@ -1,5 +1,21 @@
 2002-11-07  Michael Koch <konqueror@gmx.de>
 
+	* java/nio/charset/CoderMalfunctionError.java,
+	java/nio/charset/IllegalCharsetNameException.java,
+	java/nio/charset/MalformedInputException.java,
+	java/nio/charset/UnmappableCharacterException.java,
+	java/nio/charset/UnsupportedCharsetException.java:
+	New files.
+	* java/nio/charset/CharacterCodingException.java:
+	Removed unneeded constructor, reindented file.
+	* java/nio/charset/CodingErrorAction.java:
+	Added missing constants.
+	(toString): Added dummy implementation.
+	* java/nio/charset/Makefile.am:
+	Added missing files.
+
+2002-11-07  Michael Koch <konqueror@gmx.de>
+
 	* java/net/Inet4Address.java: New file, not used yet.
 	* java/net/Inet6Address.java: New file, not used yet.
 	* java/net/InetSocketAddress.java: Reindented.
