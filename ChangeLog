@@ -1,6 +1,11 @@
 2003-07-15  Torsten Rupp  <rupp@lisa.aicas.com>
 
         * native/target/generic/target_generic_misc.h:
+        Fixed typing error
+
+2003-07-15  Torsten Rupp  <rupp@lisa.aicas.com>
+
+        * native/target/generic/target_generic_misc.h:
         Clean-up some target macro names
 
 2003-07-15  Torsten Rupp  <rupp@lisa.aicas.com>
