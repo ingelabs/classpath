@@ -7,6 +7,7 @@ libgtkpeer_la_SOURCES = \
 			gnu_java_awt_peer_gtk_GtkFileDialogPeer.c \
 			gnu_java_awt_peer_gtk_GtkButtonPeer.c \
 			gnu_java_awt_peer_gtk_GtkCanvasPeer.c \
+			gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer.c \
 			gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer.c \
 			gnu_java_awt_peer_gtk_GtkCheckboxPeer.c \
 			gnu_java_awt_peer_gtk_GtkChoicePeer.c \
@@ -14,6 +15,7 @@ libgtkpeer_la_SOURCES = \
 			gnu_java_awt_peer_gtk_GtkComponentPeer.c \
 			gnu_java_awt_peer_gtk_GtkEvents.c \
 			gnu_java_awt_peer_gtk_GtkEmbeddedWindowPeer.c \
+			gnu_java_awt_peer_gtk_GtkGenericPeer.c	\
 			gnu_java_awt_peer_gtk_GtkImagePainter.c \
 			gnu_java_awt_peer_gtk_GtkLabelPeer.c \
 			gnu_java_awt_peer_gtk_GtkListPeer.c	\
