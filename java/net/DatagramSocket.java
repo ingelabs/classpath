@@ -249,29 +249,28 @@ public class DatagramSocket
    */
   public InetAddress getLocalAddress()
   {
-    if (impl == null)
+    if (impl == null
+	|| closed)
       return null;
     
-    // FIXME: According to libgcj, checkConnect() is supposed to be called
-    // before performing this operation.  Problems: 1) We don't have the
-    // addr until after we do it, so we do a post check.  2). The docs I
-    // see don't require this in the Socket case, only DatagramSocket, but
-    // we'll assume they mean both.
-
     InetAddress localAddr;
     
     try
       {
 	localAddr = (InetAddress) impl.getOption (SocketOptions.SO_BINDADDR);
+
+	SecurityManager s = System.getSecurityManager();
+	if (s != null)
+	  s.checkConnect (localAddr.getHostName(), -1);
+      }
+    catch (SecurityException e)
+      {
+	localAddr = InetAddress.ANY_IF;
       }
     catch (SocketException e)
       {
         return null;
       }
-    
-    SecurityManager sm = System.getSecurityManager();
-    if (sm != null)
-      sm.checkConnect(localAddr.getHostName(), getLocalPort());
 
     return localAddr;
   }

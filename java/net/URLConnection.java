@@ -508,7 +508,9 @@ public abstract class URLConnection
    */
   public InputStream getInputStream() throws IOException
   {
-    return(null);
+    // Subclasses for specific protocols override this.
+    throw new UnknownServiceException("Protocol " + url.getProtocol() +
+			" does not support input.");
   }
 
   /**
@@ -522,7 +524,9 @@ public abstract class URLConnection
    */
   public OutputStream getOutputStream() throws IOException
   {
-    return(null);
+    // Subclasses for specific protocols override this.
+    throw new UnknownServiceException("Protocol " + url.getProtocol() +
+			" does not support output.");
   }
 
   /**
@@ -732,7 +736,7 @@ public abstract class URLConnection
    * @param value The value of the property
    * 
    * @see URLConnection#getRequestProperty(String key)
-   * @see URLConnection#setRequestProperty(String key, String value)
+   * @see URLConnection#addRequestProperty(String key, String value)
    * 
    * @since 1.4
    */
