@@ -198,30 +198,53 @@ public abstract class KeyPairGenerator extends KeyPairGeneratorSpi
     return getInstance(algorithm, p);
   }
 
-  private static KeyPairGenerator getInstance(String algorithm, Provider p)
+  /**
+   * Generates a <code>KeyPairGenerator</code> object implementing the specified
+   * algorithm, as supplied from the specified provider, if such an algorithm is
+   * available from the provider. Note: the provider doesn't have to be
+   * registered.
+   *
+   * @param algorithm the standard string name of the algorithm. See Appendix A
+   * in the Java Cryptography Architecture API Specification &amp; Reference for
+   * information about standard algorithm names.
+   * @param provider the provider.
+   * @return the new <code>KeyPairGenerator</code> object.
+   * @throws NoSuchAlgorithmException if the <code>algorithm</code> is not
+   * available from the <code>provider</code>.
+   * @throws IllegalArgumentException if the <code>provider</code> is
+   * <code>null</code>.
+   * @since 1.4
+   * @see Provider
+   */
+  public static KeyPairGenerator getInstance(String algorithm, Provider provider)
     throws NoSuchAlgorithmException
   {
+    if (provider == null)
+      throw new IllegalArgumentException();
+
     // try the name as is
-    String className = p.getProperty("KeyPairGenerator." + algorithm);
+    String className = provider.getProperty("KeyPairGenerator." + algorithm);
     if (className == null) // try all uppercase
       {
         String upper = algorithm.toUpperCase();
-        className = p.getProperty("KeyPairGenerator." + upper);
+        className = provider.getProperty("KeyPairGenerator." + upper);
         if (className == null) // try if it's an alias
           {
-            String alias = p.getProperty("Alg.Alias.KeyPairGenerator." + algorithm);
+            String alias = provider.getProperty(
+                "Alg.Alias.KeyPairGenerator." + algorithm);
             if (alias == null) // try all-uppercase alias name
               {
-                alias = p.getProperty("Alg.Alias.KeyPairGenerator." + upper);
+                alias = provider.getProperty(
+                    "Alg.Alias.KeyPairGenerator." + upper);
                 if (alias == null) // spit the dummy
                   throw new NoSuchAlgorithmException(algorithm);
               }
-            className = p.getProperty("KeyPairGenerator." + alias);
+            className = provider.getProperty("KeyPairGenerator." + alias);
             if (className == null)
               throw new NoSuchAlgorithmException(algorithm);
           }
       }
-    return getInstance(className, algorithm, p);
+    return getInstance(className, algorithm, provider);
   }
 
   private static KeyPairGenerator getInstance(String classname,

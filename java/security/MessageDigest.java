@@ -165,30 +165,52 @@ public abstract class MessageDigest extends MessageDigestSpi
     return getInstance(algorithm, p);
   }
 
-  private static MessageDigest getInstance(String algorithm, Provider p)
+  /**
+   * Generates a <code>MessageDigest</code> object implementing the specified
+   * algorithm, as supplied from the specified provider, if such an algorithm
+   * is available from the provider. Note: the provider doesn't have to be
+   * registered.
+   *
+   * @param algorithm the name of the algorithm requested. See Appendix A in
+   * the Java Cryptography Architecture API Specification &amp; Reference for
+   * information about standard algorithm names.
+   * @param provider the provider.
+   * @return a Message Digest object implementing the specified algorithm.
+   * @throws NoSuchAlgorithmException if the <code>algorithm</code> is not
+   * available in the package supplied by the requested <code>provider</code>.
+   * @throws IllegalArgumentException if the <code>provider</code> is
+   * <code>null</code>.
+   * @since 1.4
+   * @see Provider
+   */
+  public static MessageDigest getInstance(String algorithm, Provider provider)
     throws NoSuchAlgorithmException
   {
+    if (provider == null)
+      throw new IllegalArgumentException();
+
     // try the name as is
-    String className = p.getProperty("MessageDigest." + algorithm);
+    String className = provider.getProperty("MessageDigest." + algorithm);
     if (className == null) // try all uppercase
       {
         String upper = algorithm.toUpperCase();
-        className = p.getProperty("MessageDigest." + upper);
+        className = provider.getProperty("MessageDigest." + upper);
         if (className == null) // try if it's an alias
           {
-            String alias = p.getProperty("Alg.Alias.MessageDigest." +algorithm);
+            String alias = provider.getProperty(
+                "Alg.Alias.MessageDigest." +algorithm);
             if (alias == null) // try all-uppercase alias name
               {
-                alias = p.getProperty("Alg.Alias.MessageDigest." +upper);
+                alias = provider.getProperty("Alg.Alias.MessageDigest." +upper);
                 if (alias == null) // spit the dummy
                   throw new NoSuchAlgorithmException(algorithm);
               }
-            className = p.getProperty("MessageDigest." + alias);
+            className = provider.getProperty("MessageDigest." + alias);
             if (className == null)
               throw new NoSuchAlgorithmException(algorithm);
           }
       }
-    return getInstance(className, algorithm, p);
+    return getInstance(className, algorithm, provider);
   }
 
   private static MessageDigest getInstance(String classname,
