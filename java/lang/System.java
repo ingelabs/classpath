@@ -39,14 +39,6 @@ public class System {
 	private static SecurityManager securityManager;
 	private static Properties properties;
 
-	static {
-		properties = new Properties();
-		VMSystem.insertSystemProperties(properties);
-		in = new FileInputStream(FileDescriptor.in);
-		out = new PrintStream(new FileOutputStream(FileDescriptor.out));
-		err = new PrintStream(new FileOutputStream(FileDescriptor.err));
-	}
-
 	/** The standard InputStream.  This is assigned at
 	 ** startup and starts its life perfectly valid.<P>
 	 ** This corresponds to the C stdin and C++ cin
@@ -76,6 +68,14 @@ public class System {
 	 ** however.
 	 **/
 	public static final PrintStream err;
+
+	static {
+		properties = new Properties();
+		VMSystem.insertSystemProperties(properties);
+		in = new FileInputStream(FileDescriptor.in);
+		out = new PrintStream(new FileOutputStream(FileDescriptor.out));
+		err = new PrintStream(new FileOutputStream(FileDescriptor.err));
+	}
 
 	/** Set in to a new InputStream.
 	 ** @param in the new InputStream.
