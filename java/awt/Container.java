@@ -1262,9 +1262,9 @@ public class Container extends Component
     if (dispatcher != null 
         && dispatcher.handleEvent (e))
       return;
-      
+
     if ((e.id <= ContainerEvent.CONTAINER_LAST
-         && e.id >= ContainerEvent.CONTAINER_FIRST)
+             && e.id >= ContainerEvent.CONTAINER_FIRST)
         && (containerListener != null
             || (eventMask & AWTEvent.CONTAINER_EVENT_MASK) != 0))
       processEvent(e);
@@ -1332,7 +1332,7 @@ public class Container extends Component
           {
             component[i].addNotify();
             if (component[i].isLightweight ())
-              {
+	      {
 
                 // If we're not lightweight, and we just got a lightweight
                 // child, we need a lightweight dispatcher to feed it events.
@@ -1344,10 +1344,10 @@ public class Container extends Component
                   }	
 	  
 
-                enableEvents(component[i].eventMask);
-                if (peer != null && !isLightweight ())
-                  enableEvents (AWTEvent.PAINT_EVENT_MASK);
-              }
+		enableEvents(component[i].eventMask);
+		if (peer != null && !isLightweight ())
+		  enableEvents (AWTEvent.PAINT_EVENT_MASK);
+	      }
           }
       }
   }
@@ -1533,7 +1533,7 @@ class LightweightDispatcher implements Serializable
   private Component focus;
   private Cursor nativeCursor;
   private long eventMask;
-
+  
   private transient Component mouseEventTarget;
   
   LightweightDispatcher(Container c)
@@ -1553,7 +1553,7 @@ class LightweightDispatcher implements Serializable
   void mouseExit (MouseEvent me, int x, int y)
   {
   }
-    
+
   void acquireComponentForMouseEvent (MouseEvent me)
   {
     int x = me.getX ();
@@ -1581,7 +1581,7 @@ class LightweightDispatcher implements Serializable
 
     if (mouseEventTarget != null
         && mouseEventTarget != candidate)
-      {		
+      {
         int nx = x - mouseEventTarget.getX ();
         int ny = y - mouseEventTarget.getY ();
         MouseEvent exited = new MouseEvent (mouseEventTarget, 
@@ -1602,7 +1602,7 @@ class LightweightDispatcher implements Serializable
         if (candidate.isLightweight() 
             && candidate != nativeContainer
             && candidate != mouseEventTarget)
-          {
+	  {
 			
             mouseEventTarget = candidate;
 			
@@ -1622,12 +1622,12 @@ class LightweightDispatcher implements Serializable
           }
       }
   }
-    
+
   boolean handleEvent (AWTEvent e)
   {
     if ((eventMask & e.getID ()) == 0)
       return false;
-      
+
     if (e instanceof MouseEvent)
       {
         MouseEvent me = (MouseEvent) e;
