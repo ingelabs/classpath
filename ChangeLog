@@ -1,3 +1,7 @@
+2003-09-25  Sascha Brawer  <brawer@dandelis.ch>
+
+	* java/awt/image/BufferedImage.java (toString): Implement.
+
 2003-09-25  Michael Koch  <konqueror@gmx.de>
 
 	* include/java_lang_reflect_Array.h: Regenerated.
