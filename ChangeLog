@@ -1,3 +1,7 @@
+2004-12-30  Paul Jenner  <psj.home@ntlworld.com>
+
+	* javax/swing/ImageIcon.java (setImage): Implemented.
+
 2004-12-30  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/locale/LocaleInformation_as.java,
