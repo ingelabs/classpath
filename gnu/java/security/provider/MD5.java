@@ -1,18 +1,29 @@
 /* MD5.java -- Class implementing the MD5 algorithm as specified in RFC1321.
-   Copyright (c) 1999 by Free Software Foundation, Inc.
+   Copyright (C) 1999 Free Software Foundation, Inc.
 
-  This program is free software; you can redistribute it and/or modify
-  it under the terms of the GNU Library General Public License as published 
-  by the Free Software Foundation, version 2. (see COPYING.LIB)
+This file is part of GNU Classpath.
 
-  This program is distributed in the hope that it will be useful, but
-  WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
+GNU Classpath is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
+ 
+GNU Classpath is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
 
-  You should have received a copy of the GNU General Public License
-  along with this program; if not, write to the Free Software Foundation
-  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307 USA. */
+You should have received a copy of the GNU General Public License
+along with GNU Classpath; see the file COPYING.  If not, write to the
+Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+02111-1307 USA.
+
+As a special exception, if you link this library with other files to
+produce an executable, this library does not by itself cause the
+resulting executable to be covered by the GNU General Public License.
+This exception does not however invalidate any other reasons why the
+executable file might be covered by the GNU General Public License. */
+
 
 package gnu.java.security.provider;
 import java.security.MessageDigestSpi;
@@ -118,13 +129,13 @@ public class MD5 extends MessageDigestSpi implements Cloneable
     C = SWAP(C);
     D = SWAP(D);
     byte[] result = new byte[] {(byte)(A >>> 24), (byte)(A >>> 16),
-		    (byte)(A >>> 8), (byte)A,
-		    (byte)(B >>> 24), (byte)(B >>> 16),
-		    (byte)(B >>> 8), (byte)B,
-		    (byte)(C >>> 24), (byte)(C >>> 16),
-		    (byte)(C >>> 8), (byte)C,
-		    (byte)(D >>> 24), (byte)(D >>> 16),
-		    (byte)(D >>> 8), (byte)D};
+				(byte)(A >>> 8), (byte)A,
+				(byte)(B >>> 24), (byte)(B >>> 16),
+				(byte)(B >>> 8), (byte)B,
+				(byte)(C >>> 24), (byte)(C >>> 16),
+				(byte)(C >>> 8), (byte)C,
+				(byte)(D >>> 24), (byte)(D >>> 16),
+				(byte)(D >>> 8), (byte)D};
     
     engineReset ();
     return result;
@@ -137,59 +148,59 @@ public class MD5 extends MessageDigestSpi implements Cloneable
 
   private int G( int X, int Y, int Z)
   {
-	  return ((X & Z) | (Y & ~Z));
+    return ((X & Z) | (Y & ~Z));
   }
 
   private int H( int X, int Y, int Z)
   {
-	  return (X ^ Y ^ Z);
+    return (X ^ Y ^ Z);
   }
 
   private int I( int X, int Y, int Z)
   {
-	  return (Y ^ (X | ~Z));
+    return (Y ^ (X | ~Z));
   }
 
   private int rotateLeft( int i, int count)
   {
-	  //Taken from FIPS 180-1
-	  return ( (i << count) | (i >>> (32 - count)) ) ;
+    //Taken from FIPS 180-1
+    return ( (i << count) | (i >>> (32 - count)) ) ;
   }
 
   /* Round 1. */
   private int FF( int a, int b, int c, int d, int k, int s, int i)
   {
-       /* Let [abcd k s i] denote the operation */
-       a += F(b,c,d) + k + i;
-       return b + rotateLeft(a, s); 
+    /* Let [abcd k s i] denote the operation */
+    a += F(b,c,d) + k + i;
+    return b + rotateLeft(a, s); 
   } 
   /* Round 2. */
   private int GG( int a, int b, int c, int d, int k, int s, int i)
   {
-       /* Let [abcd k s i] denote the operation */
-       a += G(b,c,d) + k + i;
-       return b + rotateLeft(a, s);
+    /* Let [abcd k s i] denote the operation */
+    a += G(b,c,d) + k + i;
+    return b + rotateLeft(a, s);
   } 
   /* Round 3. */
   private int HH( int a, int b, int c, int d, int k, int s, int i)
   {
-       /* Let [abcd k s t] denote the operation */
-       a += H(b,c,d) + k + i;
-       return b + rotateLeft(a, s);
+    /* Let [abcd k s t] denote the operation */
+    a += H(b,c,d) + k + i;
+    return b + rotateLeft(a, s);
   } 
 
   /* Round 4. */
   private int II( int a, int b, int c, int d, int k, int s, int i)
   {
-       /* Let [abcd k s t] denote the operation */
-       a += I(b,c,d) + k + i;
-       return b + rotateLeft(a, s);
+    /* Let [abcd k s t] denote the operation */
+    a += I(b,c,d) + k + i;
+    return b + rotateLeft(a, s);
   } 
 
   private int SWAP(int n)
   {
-      //Copied from md5.c in FSF Gnu Privacy Guard 0.9.2
-      return (( (0xff & n) << 24) | ((n & 0xff00) << 8) | ((n >>> 8) & 0xff00) | (n >>> 24));
+    //Copied from md5.c in FSF Gnu Privacy Guard 0.9.2
+    return (( (0xff & n) << 24) | ((n & 0xff00) << 8) | ((n >>> 8) & 0xff00) | (n >>> 24));
   }
 
   private void munch()
@@ -199,7 +210,7 @@ public class MD5 extends MessageDigestSpi implements Cloneable
 
     /* Copy block i into X. */
     for(j = 0; j < 16; j++)
-     X[j] = SWAP(W[j]);
+      X[j] = SWAP(W[j]);
 
     /* Save A as AA, B as BB, C as CC, and D as DD. */
     AA = A;
@@ -208,10 +219,10 @@ public class MD5 extends MessageDigestSpi implements Cloneable
     DD = D;
 
     /* The hex constants are from md5.c 
-        in FSF Gnu Privacy Guard 0.9.2 */
+       in FSF Gnu Privacy Guard 0.9.2 */
     /* Round 1. */
     /* Let [abcd k s i] denote the operation
-      a = b + ((a + F(b,c,d) + X[k] + T[i]) <<< s). */
+       a = b + ((a + F(b,c,d) + X[k] + T[i]) <<< s). */
     /* Do the following 16 operations. */
     A = FF(A,B,C,D,  X[0],  7,  0xd76aa478);
     D = FF(D,A,B,C,  X[1], 12,  0xe8c7b756);
@@ -305,12 +316,12 @@ public class MD5 extends MessageDigestSpi implements Cloneable
     C = II(C,D,A,B,  X[2], 15, 0x2ad7d2bb);
     B = II(B,C,D,A,  X[9], 21, 0xeb86d391);
 
-     /* Then perform the following additions. (That is increment each
-        of the four registers by the value it had before this block
-        was started.) */
-     A = A + AA;
-     B = B + BB;
-     C = C + CC;
-     D = D + DD;
+    /* Then perform the following additions. (That is increment each
+       of the four registers by the value it had before this block
+       was started.) */
+    A = A + AA;
+    B = B + BB;
+    C = C + CC;
+    D = D + DD;
   }
 }

@@ -1,3 +1,29 @@
+/* DSASignature.java
+   Copyright (C) 1999 Free Software Foundation, Inc.
+
+This file is part of GNU Classpath.
+
+GNU Classpath is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
+ 
+GNU Classpath is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with GNU Classpath; see the file COPYING.  If not, write to the
+Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+02111-1307 USA.
+
+As a special exception, if you link this library with other files to
+produce an executable, this library does not by itself cause the
+resulting executable to be covered by the GNU General Public License.
+This exception does not however invalidate any other reasons why the
+executable file might be covered by the GNU General Public License. */
+
 package gnu.java.security.provider;
 
 import java.math.BigInteger;
@@ -20,192 +46,191 @@ import gnu.java.security.der.DEREncodingException;
 
 public class DSASignature extends SignatureSpi
 {
-private DSAPublicKey publicKey;
-private DSAPrivateKey privateKey;
-private MessageDigest digest = null;
+  private DSAPublicKey publicKey;
+  private DSAPrivateKey privateKey;
+  private MessageDigest digest = null;
 
-public DSASignature()
-{}
+  public DSASignature()
+  {}
 
-private void init()
-{
-	if( digest == null ) {
-		try {
-			digest = MessageDigest.getInstance( "SHA1", "GNU" );
-		} catch ( NoSuchAlgorithmException nsae ) {
-			digest = null;
-		} catch ( NoSuchProviderException nspe ) {
-			digest = null;
-		}
-	}
-	digest.reset();
-}
+  private void init()
+  {
+    if( digest == null ) {
+      try {
+	digest = MessageDigest.getInstance( "SHA1", "GNU" );
+      } catch ( NoSuchAlgorithmException nsae ) {
+	digest = null;
+      } catch ( NoSuchProviderException nspe ) {
+	digest = null;
+      }
+    }
+    digest.reset();
+  }
 
-public void engineInitVerify(PublicKey publicKey)
-                                  throws InvalidKeyException
-{
-	if( publicKey instanceof DSAPublicKey )
-		this.publicKey = (DSAPublicKey)publicKey;
-	else
-		throw new InvalidKeyException();
-	init();
-}
+  public void engineInitVerify(PublicKey publicKey)
+    throws InvalidKeyException
+  {
+    if( publicKey instanceof DSAPublicKey )
+      this.publicKey = (DSAPublicKey)publicKey;
+    else
+      throw new InvalidKeyException();
+    init();
+  }
 
-public void engineInitSign(PrivateKey privateKey)
-                                throws InvalidKeyException
-{
-	if( privateKey instanceof DSAPrivateKey )
-		this.privateKey = (DSAPrivateKey)privateKey;
-	else
-		throw new InvalidKeyException();
+  public void engineInitSign(PrivateKey privateKey)
+    throws InvalidKeyException
+  {
+    if( privateKey instanceof DSAPrivateKey )
+      this.privateKey = (DSAPrivateKey)privateKey;
+    else
+      throw new InvalidKeyException();
 
-	init();
-}
+    init();
+  }
 
-public void engineInitSign(PrivateKey privateKey, 
-			SecureRandom random)
-                       throws InvalidKeyException
-{
-	if( privateKey instanceof DSAPrivateKey )
-		this.privateKey = (DSAPrivateKey)privateKey;
-	else
-		throw new InvalidKeyException();
+  public void engineInitSign(PrivateKey privateKey, 
+			     SecureRandom random)
+    throws InvalidKeyException
+  {
+    if( privateKey instanceof DSAPrivateKey )
+      this.privateKey = (DSAPrivateKey)privateKey;
+    else
+      throw new InvalidKeyException();
 
-	appRandom = random;
-	init();
-}
+    appRandom = random;
+    init();
+  }
 
-public void engineUpdate(byte b)
-                              throws SignatureException
-{
-	if( digest == null )
-		throw new SignatureException();		
+  public void engineUpdate(byte b)
+    throws SignatureException
+  {
+    if( digest == null )
+      throw new SignatureException();		
 
-	digest.update( b );
-}
+    digest.update( b );
+  }
 
-public void engineUpdate(byte[] b, int off, int len)
-                              throws SignatureException
-{
-	if( digest == null )
-		throw new SignatureException();		
+  public void engineUpdate(byte[] b, int off, int len)
+    throws SignatureException
+  {
+    if( digest == null )
+      throw new SignatureException();		
 
-	digest.update( b, off, len );
-}
+    digest.update( b, off, len );
+  }
 
-public byte[] engineSign()
-                              throws SignatureException
-{
-	if( digest == null )
-		throw new SignatureException();		
-	if( privateKey == null)
-		throw new SignatureException();		
+  public byte[] engineSign()
+    throws SignatureException
+  {
+    if( digest == null )
+      throw new SignatureException();		
+    if( privateKey == null)
+      throw new SignatureException();		
 
-	try {
+    try {
 
-		BigInteger g = privateKey.getParams().getG();
-		BigInteger p = privateKey.getParams().getP();
-		BigInteger q = privateKey.getParams().getQ();
+      BigInteger g = privateKey.getParams().getG();
+      BigInteger p = privateKey.getParams().getP();
+      BigInteger q = privateKey.getParams().getQ();
 
-		BigInteger x = privateKey.getX();
+      BigInteger x = privateKey.getX();
 
-		BigInteger k = new BigInteger( 159, (Random)appRandom );
+      BigInteger k = new BigInteger( 159, (Random)appRandom );
 
-		BigInteger r = g.modPow(k, p);
-		r = r.mod(q);
+      BigInteger r = g.modPow(k, p);
+      r = r.mod(q);
 
-		byte bytes[] = digest.digest();
-		BigInteger sha = new BigInteger(1, bytes);
+      byte bytes[] = digest.digest();
+      BigInteger sha = new BigInteger(1, bytes);
 
-		BigInteger s = sha.add( x.multiply( r ) );
-		s = s.multiply( k.modInverse(q) ).mod( q );
+      BigInteger s = sha.add( x.multiply( r ) );
+      s = s.multiply( k.modInverse(q) ).mod( q );
 
-		DERWriter writer = new DERWriter();
-		return writer.joinarrays( writer.writeBigInteger( r ),  writer.writeBigInteger( s ) );
+      DERWriter writer = new DERWriter();
+      return writer.joinarrays( writer.writeBigInteger( r ),  writer.writeBigInteger( s ) );
 
-	} catch ( ArithmeticException ae ) {
-		throw new SignatureException();
-	}
-}
+    } catch ( ArithmeticException ae ) {
+      throw new SignatureException();
+    }
+  }
 
-public int engineSign(byte[] outbuf, int offset, int len)
-                  throws SignatureException
-{
-	byte tmp[] = engineSign();
-	if( tmp.length > len )
-		throw new SignatureException();
-	System.arraycopy( tmp, 0, outbuf, offset, tmp.length );
-	return tmp.length;
-}
+  public int engineSign(byte[] outbuf, int offset, int len)
+    throws SignatureException
+  {
+    byte tmp[] = engineSign();
+    if( tmp.length > len )
+      throw new SignatureException();
+    System.arraycopy( tmp, 0, outbuf, offset, tmp.length );
+    return tmp.length;
+  }
 
-public boolean engineVerify(byte[] sigBytes)
-                                 throws SignatureException
-{
-	//Decode sigBytes from ASN.1 DER encoding
-	try {
-		DERReader reader = new DERReader( sigBytes );
-		BigInteger r = reader.getBigInteger();
-		BigInteger s = reader.getBigInteger();
+  public boolean engineVerify(byte[] sigBytes)
+    throws SignatureException
+  {
+    //Decode sigBytes from ASN.1 DER encoding
+    try {
+      DERReader reader = new DERReader( sigBytes );
+      BigInteger r = reader.getBigInteger();
+      BigInteger s = reader.getBigInteger();
 
-		BigInteger g = publicKey.getParams().getG();
-		BigInteger p = publicKey.getParams().getP();
-		BigInteger q = publicKey.getParams().getQ();
+      BigInteger g = publicKey.getParams().getG();
+      BigInteger p = publicKey.getParams().getP();
+      BigInteger q = publicKey.getParams().getQ();
 
-		BigInteger y = publicKey.getY();
+      BigInteger y = publicKey.getY();
 
-		BigInteger w = s.modInverse( q );
+      BigInteger w = s.modInverse( q );
 
-		byte bytes[] = digest.digest();
-		BigInteger sha = new BigInteger(1, bytes);
+      byte bytes[] = digest.digest();
+      BigInteger sha = new BigInteger(1, bytes);
 
-		BigInteger u1 = w.multiply( sha ).mod( q );
+      BigInteger u1 = w.multiply( sha ).mod( q );
 
-		BigInteger u2 = r.multiply( w ).mod( q );
+      BigInteger u2 = r.multiply( w ).mod( q );
 
-		//This should test the compiler :)
-		BigInteger v = g.modPow( u1, p ).multiply( y.modPow( u2, p ) ).mod( p ).mod( q );
+      //This should test the compiler :)
+      BigInteger v = g.modPow( u1, p ).multiply( y.modPow( u2, p ) ).mod( p ).mod( q );
 
-		if( v.equals( r ) )
-			return true;
-		else
-			return false;
-	} catch ( DEREncodingException deree ) {
-		throw new SignatureException();
-	}
-}
+      if( v.equals( r ) )
+	return true;
+      else
+	return false;
+    } catch ( DEREncodingException deree ) {
+      throw new SignatureException();
+    }
+  }
 
-public void engineSetParameter(String param,
-                                           Object value)
-                                    throws InvalidParameterException
-{
-	throw new InvalidParameterException();
-}
+  public void engineSetParameter(String param,
+				 Object value)
+    throws InvalidParameterException
+  {
+    throw new InvalidParameterException();
+  }
 
-public void engineSetParameter(AlgorithmParameterSpec params)
-                           throws InvalidAlgorithmParameterException
-{
-	throw new InvalidParameterException();
+  public void engineSetParameter(AlgorithmParameterSpec params)
+    throws InvalidAlgorithmParameterException
+  {
+    throw new InvalidParameterException();
 
-}
+  }
 
-public Object engineGetParameter(String param)
-                                      throws InvalidParameterException
-{
-	throw new InvalidParameterException();
-}
+  public Object engineGetParameter(String param)
+    throws InvalidParameterException
+  {
+    throw new InvalidParameterException();
+  }
 
-public Object clone()
-             //throws CloneNotSupportedException
-{
-	return new DSASignature( this );
-}
+  public Object clone()
+    //throws CloneNotSupportedException
+  {
+    return new DSASignature( this );
+  }
 
-private DSASignature( DSASignature copy )
-{
-	this();
-	this.publicKey = copy.publicKey;
-	this.privateKey = copy.privateKey;
-	this.digest = copy.digest;
-}
-
+  private DSASignature( DSASignature copy )
+  {
+    this();
+    this.publicKey = copy.publicKey;
+    this.privateKey = copy.privateKey;
+    this.digest = copy.digest;
+  }
 }
