@@ -1,5 +1,5 @@
 /* ClassLoader.java -- responsible for loading classes into the VM
-   Copyright (C) 1998, 1999, 2001, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2001, 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -138,6 +138,15 @@ public abstract class ClassLoader
   private final ClassLoader parent;
 
   /**
+   * This is true if this classloader was successfully initialized.
+   * This flag is needed to avoid a class loader attack: even if the
+   * security manager rejects an attempt to create a class loader, the
+   * malicious class could have a finalize method which proceeds to
+   * define classes.
+   */
+  private final boolean initialized;
+
+  /**
    * System/Application classloader: defaults to an instance of
    * gnu.java.lang.SystemClassLoader, unless the first invocation of
    * getSystemClassLoader loads another class loader because of the
@@ -232,6 +241,7 @@ public abstract class ClassLoader
     if (sm != null)
       sm.checkCreateClassLoader();
     this.parent = parent;
+    this.initialized = true;
   }
 
   /**
@@ -416,6 +426,8 @@ public abstract class ClassLoader
   {
     if (domain == null)
       domain = defaultProtectionDomain;
+    if (! initialized)
+      throw new SecurityException("attempt to define class from uninitialized class loader");
     Class retval = VMClassLoader.defineClass(this, name, data,
                                              offset, len, domain);
     loadedClasses.put(retval.getName(), retval);
