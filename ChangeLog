@@ -1,3 +1,8 @@
+2005-03-18  Mark Wielaard  <mark@klomp.org>
+
+	* doc/www/downloads/downloads.wml: Add 0.14.
+	* doc/www/announce/20050226.wml: New file.
+
 2005-03-18  Sven de Marothy  <sven@physto.se>
 
 	* java/util/zip/GZIPInputStream.java:
