@@ -19,6 +19,7 @@ Copyright (C) 1998 Free Software Foundation, Inc.
 
 @title{GNU $classpath Hacker's Guide}
 @author{Aaron M. Renn}
+@author{Paul N. Fisher}
 @author{John Keiser}
 @page
 @vskip 0pt plus 1filll
