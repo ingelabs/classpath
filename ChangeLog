@@ -1,3 +1,10 @@
+2005-01-26  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/Window.java
+	(AccessibleWindow.getAccessibleStateSet): Fixed method name.
+	* java/awt/dnd/DnDConstants.java
+	(DnDConstants): New private constructor.
+
 2005-01-25  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	* java/text/SimpleDateFormat.java:
