@@ -45,7 +45,7 @@ exception statement from your version. */
  * Signature: (Ljava/io/InputStream;)V
  */
 JNIEXPORT void JNICALL
-Java_java_lang_VMSystem_setIn0 (JNIEnv * env, jclass thisClass, jobject in)
+Java_java_lang_VMSystem_setIn (JNIEnv * env, jclass thisClass, jobject in)
 {
   jfieldID inField = (*env)->GetStaticFieldID(env, thisClass, "in",
                                               "Ljava/io/InputStream;");
@@ -58,7 +58,7 @@ Java_java_lang_VMSystem_setIn0 (JNIEnv * env, jclass thisClass, jobject in)
  * Signature: (Ljava/io/PrintStream;)V
  */
 JNIEXPORT void JNICALL
-Java_java_lang_VMSystem_setOut0 (JNIEnv * env, jclass thisClass, jobject out)
+Java_java_lang_VMSystem_setOut (JNIEnv * env, jclass thisClass, jobject out)
 {
   jfieldID outField = (*env)->GetStaticFieldID(env, thisClass, "out",
                                                "Ljava/io/PrintStream;");
@@ -71,7 +71,7 @@ Java_java_lang_VMSystem_setOut0 (JNIEnv * env, jclass thisClass, jobject out)
  * Signature: (Ljava/io/PrintStream;)V
  */
 JNIEXPORT void JNICALL
-Java_java_lang_VMSystem_setErr0 (JNIEnv * env, jclass thisClass, jobject err)
+Java_java_lang_VMSystem_setErr (JNIEnv * env, jclass thisClass, jobject err)
 {
   jfieldID errField = (*env)->GetStaticFieldID(env, thisClass, "err",
                                                "Ljava/io/PrintStream;");
