@@ -742,11 +742,6 @@ java_lang_Object.h: ./java/lang/Object.class
 
 ./java/io/CharArrayReader.class: ./java/io/Reader.class ./java/io/IOException.class ./java/lang/System.class 
 
-./java/io/FilePermission.class: ../java/io/FilePermission.java 
-	$(JAVAC) ../java/io/FilePermission.java 
-
-./java/io/FilePermission.class: ./java/io/Serializable.class ./java/lang/String.class ./java/lang/Object.class ./java/io/File.class 
-
 java_io_FileOutputStream.h: ./java/io/FileOutputStream.class 
 	$(JAVAHEADER) java.io.FileOutputStream
 
@@ -1709,7 +1704,6 @@ CLASSES = \
 	./java/io/StringBufferInputStream.class\
 	./java/io/StringReader.class\
 	./java/io/StringWriter.class\
-	./java/io/FilePermission.class\
 	./java/io/FileFilter.class\
 	./java/lang/NegativeArraySizeException.class\
 	./java/lang/Number.class\
