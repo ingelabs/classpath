@@ -1,3 +1,9 @@
+2005-01-27  Graydon Hoare  <graydon@redhat.com>
+
+	* java/awt/dnd/DropTarget.java
+	(addDropTargetListener): Despite documentation, do not throw.
+	* javax/swing/JComponent.java: Set a default DropTarget.
+
 2005-01-27  Michael Koch  <konqueror@gmx.de>
 
 	* java/util/zip/ZipFile.java
