@@ -10,6 +10,9 @@
 	(addFirstEntry): Rearrange to match addLastEntry.
 	(add): Do not increment size before inserting the new entry.
 
+	* java/util/AbstractCollection.java (addAll): Use size of the
+	correct collection for loop bound.
+
 2001-11-18  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 
 	* java/util/AbstractSet.java (removeAll): Fix scoping thinko.

@@ -129,7 +129,7 @@ public abstract class AbstractCollection implements Collection
   {
     Iterator itr = c.iterator();
     boolean modified = false;
-    int pos = size();
+    int pos = c.size();
     while (--pos >= 0)
       modified |= add(itr.next());
     return modified;
