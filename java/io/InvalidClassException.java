@@ -74,7 +74,7 @@ InvalidClassException(String message)
   * @param classname The number of bytes tranferred before the interruption
   * @param message The descriptive error message
   */
-InvalidClassException(String message, int bytesTransferred)
+InvalidClassException(String classname, String message)
 {
   super(message);
   this.classname = classname;
