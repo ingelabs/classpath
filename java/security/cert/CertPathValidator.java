@@ -161,8 +161,8 @@ public class CertPathValidator {
    * @throws NoSuchProviderException If no provider named
    * <i>provider</i> is installed.
    */
-  public static CertPathValidator getIntstance(String algorithm,
-                                               String provider)
+  public static CertPathValidator getInstance(String algorithm,
+                                              String provider)
     throws NoSuchAlgorithmException, NoSuchProviderException
   {
     Provider p = Security.getProvider(provider);

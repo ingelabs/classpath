@@ -1,3 +1,11 @@
+2003-04-29  Casey Marshall  <rsdio@metastatic.org>
+
+	* java/security/cert/CertPathValidator.java:
+	  (getIntstance) renamed to proper name.
+	  (getInstance) renamed from getIntstance.
+	* java/security/cert/X509CRL.java:
+	  (getIssuerX500Principal) new method (1.4 compatibility).
+
 2003-04-29  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/JTable.java
