@@ -1,5 +1,12 @@
 2004-07-28  Tom Tromey  <tromey@redhat.com>
 
+	* gnu/java/awt/peer/GLightweightPeer.java,
+	gnu/java/awt/peer/gtk/GdkGraphics2D.java,
+	gnu/java/awt/peer/gtk/GtkComponentPeer.java,
+	gnu/javax/rmi/CORBA/StubDelegateImpl.java,
+	javax/swing/JScrollPane.java: Removed
+	redundant imports.
+
 	* configure.ac: Correct text for --disable-gtk-peer option.
 
 2004-07-28  Bryce McKinlay  <mckinlay@redhat.com>

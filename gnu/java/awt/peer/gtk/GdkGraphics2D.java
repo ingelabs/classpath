@@ -1,5 +1,5 @@
 /* GdkGraphics2D.java
-   Copyright (C) 2003 Free Software Foundation, Inc.
+   Copyright (C) 2003, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -48,7 +48,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import java.text.AttributedCharacterIterator;
-import java.util.Map;
 import java.util.Stack;
 import java.lang.Integer;
 import gnu.java.awt.ClasspathToolkit;
