@@ -48,7 +48,7 @@ Runs on top of <createlink url="http://www.go-mono.org/" name="Mono">.
 </td>
 </tr>
 <tr>
-<td><createlink url="http://www-124.ibm.com/developerworks/oss/jikesrvm/" name="Jikes RVM"></td>
+<td><createlink url="http://www.ibm.com/developerworks/oss/jikesrvm/" name="Jikes RVM"></td>
 <td>
 Jikes RVM uses GNU Classpath for all of its libraries.  Instructions for using
 Classpath are provided in the Jikes RVM user's guide as of the Jikes RVM

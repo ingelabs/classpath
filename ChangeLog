@@ -1,3 +1,9 @@
+2003-11-29  Mark Wielaard  <mark@klomp.org>
+
+	* doc/hacking.texi: Clearify jikesrvm link (www, not www-124).
+	* doc/www.gnu.org/stories.wml: Likewise.
+	* doc/www.gnu.org/home.wml: Update Open Tasks savannah link.
+
 2003-11-28  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/net/PlainDatagramSocketImpl.java

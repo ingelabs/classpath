@@ -240,7 +240,7 @@ probably incomplete list is below.
 @item 
 @uref{http://kissme.sourceforge.net/,Kissme}
 @item
-@uref{http://www-124.ibm.com/developerworks/oss/jikesrvm/,Jikes RVM}
+@uref{http://www.ibm.com/developerworks/oss/jikesrvm/,Jikes RVM}
 @item
 @uref{http://www.sablevm.org/,SableVM}
 @item
