@@ -96,7 +96,7 @@ public final class Double extends Number implements Comparable
      * @param s the <code>String</code> to convert
      * @see #parseDouble(java.lang.String)
      */
-    public Double(String s) throws NumberFormatException 
+    public Double(String s) throws NumberFormatException, NullPointerException 
     {
 	value = parseDouble(s);
     }
@@ -195,7 +195,7 @@ public final class Double extends Number implements Comparable
      * @see #parseDouble(java.lang.String)
      */
     public static Double valueOf(String s)
-	throws NumberFormatException 
+	throws NumberFormatException, NullPointerException
     {
 	return new Double(s);
     }
@@ -297,12 +297,14 @@ public final class Double extends Number implements Comparable
 
     /**
      * Convert the <code>double</code> to a <code>String</code>.
-     *
+     * <P>
+     * 
      * Floating-point string representation is fairly complex: here is a
      * rundown of the possible values.  "<CODE>[-]</CODE>" indicates that a
      * negative sign will be printed if the value (or exponent) is negative.
      * "<CODE>&lt;number&gt;</CODE>" means a string of digits (0-9).
      * "<CODE>&lt;digit&gt;</CODE>" means a single digit (0-9).
+     * <P>
      *
      * <TABLE>
      * <TR><TH>Value of Float</TH><TH>String Representation</TH></TR>
@@ -334,6 +336,7 @@ public final class Double extends Number implements Comparable
      * After the ".", all digits will be printed except trailing zeros.  No
      * truncation or rounding is done by this function.
      *
+     *
      * @XXX specify where we are not in accord with the spec.
      *
      * @param d the <code>double</code> to convert
@@ -364,13 +367,15 @@ public final class Double extends Number implements Comparable
     /**
      * Parse the specified <code>String</code> as a <code>double</code>.
      * <P>
+     *
      * The number is really read as <em>n * 10<sup>exponent</sup></em>.  The
      * first number is <em>n</em>, and if there is an "<code>E</code>"
      * ("<code>e</code>" is also acceptable), then the integer after that is
      * the exponent.
+     * <P>
      *
      * Here are the possible forms the number can take:
-     *
+     * <BR>
      * <TABLE>
      *     <TR><TH>Form</TH><TH>Examples</TH></TR>
      *     <TR><TD><CODE>[+-]&lt;number&gt;[.]</CODE></TD><TD>345., -10, 12</TD></TR>
@@ -381,29 +386,31 @@ public final class Double extends Number implements Comparable
      *
      * "<code>[+-]</code>" means either a plus or minus sign may go there, or
      * neither, in which case + is assumed.
-     *
+     * <BR>
      * "<code>[.]</code>" means a dot may be placed here, but is optional.
-     *
+     * <BR>
      * "<code>&lt;number&gt;</code>" means a string of digits (0-9), basically
      * an integer.  "<code>&lt;number&gt;.&lt;number&gt;</code>" is basically
      * a real number, a floating-point value.
+     * <P>
      *
      * Remember that a <code>double</code> has a limited range.  If the
      * number you specify is greater than <code>Double.MAX_VALUE</code> or less
      * than <code>-Double.MAX_VALUE</code>, it will be set at
      * <code>Double.POSITIVE_INFINITY</code> or
      * <code>Double.NEGATIVE_INFINITY</code>, respectively.
+     * <P>
      *
      * Note also that <code>double</code> does not have perfect precision.  Many
      * numbers cannot be precisely represented.  The number you specify
      * will be rounded to the nearest representable value.  <code>Double.MIN_VALUE</code> is
      * the margin of error for <code>double</code> values.
+     * <P>
      *
      * If an unexpected character is found in the <code>String</code>, a
-     * <code>NumberFormatException</code> will be thrown.
+     * <code>NumberFormatException</code> will be thrown.  Spaces are not
+     * allowed, and will cause the same exception.
      *
-     * @XXX put a note in about where and whether spaces are accepted in the
-     *      input.
      * @XXX specify where/how we are not in accord with the spec.
      *
      * @param str the <code>String</code> to convert
@@ -418,5 +425,5 @@ public final class Double extends Number implements Comparable
      * @see #NEGATIVE_INFINITY
      */
     public native static double parseDouble(String str) 
-    throws NumberFormatException;
+    throws NumberFormatException, NullPointerException;
 }

@@ -58,11 +58,7 @@ public final class Float extends Number
      * All IEEE 754 values of NaN have the same value in Java.
      */
     public static final float NaN = 0.0f/0.0f;
-    
-    public static final int WIDEFP_SIGNIFICAND_BITS = 24;
-    public static final int WIDEFP_MIN_EXPONENT = -126;
-    public static final int WIDEFP_MAX_EXPONENT = 127;
-    
+
     /**
      * The primitive type <code>float</code> is represented by this 
      * <code>Class</code> object.
@@ -109,7 +105,7 @@ public final class Float extends Number
      * @param s the <code>String</code> to convert
      * @see #parseFloat(java.lang.String)
      */
-    public Float(String s) throws NumberFormatException 
+    public Float(String s) throws NumberFormatException, NullPointerException
     {
 	value = parseFloat(s);
     }
@@ -189,12 +185,14 @@ public final class Float extends Number
     
     /**
      * Convert the <code>float</code> to a <code>String</code>.
+     * <P>
      *
      * Floating-point string representation is fairly complex: here is a
      * rundown of the possible values.  "<CODE>[-]</CODE>" indicates that a
      * negative sign will be printed if the value (or exponent) is negative.
      * "<CODE>&lt;number&gt;</CODE>" means a string of digits (0-9).
      * "<CODE>&lt;digit&gt;</CODE>" means a single digit (0-9).
+     * <P>
      *
      * <TABLE>
      * <TR><TH>Value of Float</TH><TH>String Representation</TH></TR>
@@ -248,7 +246,7 @@ public final class Float extends Number
      * @see #parseFloat(java.lang.String)
      */
     public static Float valueOf(String s)
-	throws NumberFormatException 
+	throws NumberFormatException, NullPointerException
     {
 	return new Float(s);
     }
@@ -322,14 +320,16 @@ public final class Float extends Number
 
     /**
      * Parse the specified <code>String</code> as a <code>float</code>.
-     * 
+     * <P>
+     *
      * The number is really read as <em>n * 10<sup>exponent</sup></em>.  The
      * first number is <em>n</em>, and if there is an "<code>E</code>"
      * ("<code>e</code>" is also acceptable), then the integer after that is
      * the exponent.
+     * <P>
      *
      * Here are the possible forms the number can take:
-     *
+     * <BR>
      * <TABLE>
      *     <TR><TH>Form</TH><TH>Examples</TH></TR>
      *     <TR><TD><CODE>[+-]&lt;number&gt;[.]</CODE></TD><TD>345., -10, 12</TD></TR>
@@ -340,29 +340,30 @@ public final class Float extends Number
      *
      * "<code>[+-]</code>" means either a plus or minus sign may go there, or
      * neither, in which case + is assumed.
-     *
+     * <BR>
      * "<code>[.]</code>" means a dot may be placed here, but is optional.
-     *
+     * <BR>
      * "<code>&lt;number&gt;</code>" means a string of digits (0-9), basically
      * an integer.  "<code>&lt;number&gt;.&lt;number&gt;</code>" is basically
      * a real number, a floating-point value.
+     * <P>
      *
      * Remember that a <code>float</code> has a limited range.  If the
      * number you specify is greater than <code>Float.MAX_VALUE</code> or less
      * than <code>-Float.MAX_VALUE</code>, it will be set at
      * <code>Float.POSITIVE_INFINITY</code> or
      * <code>Float.NEGATIVE_INFINITY</code>, respectively.
+     * <P>
      *
      * Note also that <code>float</code> does not have perfect precision.  Many
      * numbers cannot be precisely represented.  The number you specify
      * will be rounded to the nearest representable value.  <code>Float.MIN_VALUE</code> is
      * the margin of error for <code>float</code> values.
+     * <P>
      *
      * If an unexpected character is found in the <code>String</code>, a
-     * <code>NumberFormatException</code> will be thrown.
-     *
-     * @XXX put a note in about where and whether spaces are accepted in the
-     *      input.
+     * <code>NumberFormatException</code> will be thrown.  Spaces are not
+     * allowed and will cause this exception to be thrown.
      *
      * @XXX specify where/how we are not in accord with the spec.
      *
@@ -378,5 +379,5 @@ public final class Float extends Number
      * @see #NEGATIVE_INFINITY
      */
     public native static float parseFloat(String s)
-    throws NumberFormatException;
+    throws NumberFormatException, NullPointerException;
 }
