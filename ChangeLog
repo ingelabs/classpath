@@ -1,3 +1,8 @@
+2002-02-09  Mark Wielaard <mark@klomp.org>
+
+	* doc/www.gnu.org/announce/20020208.wml: Make "Who should use this
+	software?" less pessimistic.
+
 2002-02-09  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/net/DatagramSocketImpl.java (setOption, getOption): Work

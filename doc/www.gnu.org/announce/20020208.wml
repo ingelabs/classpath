@@ -132,10 +132,11 @@ the differences between the core classes as small as possible.
 </p>
 <p>
 <en>
-This is a development release only.  You should only install it if you
-are interested in Classpath development or reporting bugs.  We appreciate
-both.  You might also be interested if you enjoy installing random alpha
-software.
+Although it is already capable of supporting many Java applications,
+this is a development release.  As such, there are still many unfinished
+components, and some problems are to be expected.  You should install it
+if you are interested in Classpath development or reporting bugs.  We
+appreciate both.
 </en>
 </p>
 <p>
