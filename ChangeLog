@@ -1,5 +1,25 @@
 2004-09-26  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JTextField.java
+	(scrollOffset): new field.
+	(getScrollOffset): New method.
+	(setScrollOffset): Likewise.
+	(getColumnWidth): Likewise.
+	(action): New field.
+	(actionCommand): Likewise.
+	(actionPropertyChangeListener): Likewise.
+	(setHorizontalAlignment): Abort soon if new value == old value. Fire
+	event before repainting.
+	(postActionEvent): New method.
+	(getAction): Likewise.
+	(setAction): Likewise.
+	(getActionCommand): Likewise.
+	(setActionCommand): Likewise.
+	(createActionPropertyChangeListener): Likewise.
+	(configurePropertiesFromAction): Likewise.
+
+2004-09-26  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/text/JTextComponent.java
 	(dragEnabled): New field.
 	(getSelectedText): New method.
