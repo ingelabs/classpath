@@ -504,7 +504,7 @@ public class SecurityManager {
 	 ** @exception SecurityException if the operation is not
 	 **            permitted.
 	 **/
-	public void checkMulticast(InetAddress addr, int ttl) {
+	public void checkMulticast(InetAddress addr, byte ttl) {
 		throw new SecurityException("Cannot read or write multicast.");
 	}
 
