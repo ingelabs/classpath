@@ -1,3 +1,14 @@
+2004-03-12  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/GtkFontPeer.java: Use fallback when
+	MissingResourceException is thrown.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextAreaPeer.c
+	(Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_getVScrollbarWidth):
+	Don't access ws when it is null.
+	(Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_getHScrollbarHeight):
+	Likewise.
+
 2004-03-12  Thomas Fitzsimmons  <fitzsim@redhat.com>
  
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c
