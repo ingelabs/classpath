@@ -7,7 +7,7 @@ libjavaio_la_SOURCES = 	javaio.h \
 			java_io_ObjectInputStream.c \
 			java_io_VMObjectStreamClass.c
 
-libjavaio_la_LDFLAGS = -module -version-info @LIBVERSION@ 
+libjavaio_la_LDFLAGS = @CLASSPATH_MODULE@ 
 
 libjavaio_la_LIBADD = $(top_builddir)/native/jni/classpath/jcl.lo
 INCLUDES = -I. @EXTRA_INCLUDES@ \

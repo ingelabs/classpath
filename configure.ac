@@ -21,6 +21,8 @@ dnl We will not track/change lib version until we reach version 1.0
 dnl at which time we'll have to be more anal about such things
 dnl -----------------------------------------------------------
 AC_SUBST(LIBVERSION, "0:0:0")
+CLASSPATH_MODULE="-module -version-info ${LIBVERSION}"
+AC_SUBST(CLASSPATH_MODULE)
 
 AC_PREREQ(2.59)
 AM_INIT_AUTOMAKE(1.7.0)

@@ -36,7 +36,7 @@ libgtkpeer_la_SOURCES = \
 			gtkpeer.h 
 
 libgtkpeer_la_LIBADD = $(top_builddir)/native/jni/classpath/native_state.lo
-libgtkpeer_la_LDFLAGS = -module -version-info @LIBVERSION@ @GTK_LIBS@
+libgtkpeer_la_LDFLAGS = @CLASSPATH_MODULE@ @GTK_LIBS@
 
 INCLUDES = -I. @EXTRA_INCLUDES@ \
 	   @GTK_CFLAGS@ \

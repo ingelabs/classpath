@@ -7,7 +7,7 @@ libjavanio_la_SOURCES = gnu_java_nio_NIOServerSocket.c \
 			java_nio_DirectByteBufferImpl.c \
 			java_nio_FileLockImpl.c
 
-libjavanio_la_LDFLAGS = -module -version-info @LIBVERSION@
+libjavanio_la_LDFLAGS = @CLASSPATH_MODULE@
 libjavanio_la_LIBADD = $(top_builddir)/native/jni/classpath/jcl.lo
 
 INCLUDES = -I. @EXTRA_INCLUDES@ \

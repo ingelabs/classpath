@@ -45,7 +45,7 @@ libfdlibm_la_SOURCES =  \
 			w_remainder.c \
 			w_sqrt.c 
 
-libfdlibm_la_LDFLAGS = -module -version-info @LIBVERSION@ 
+libfdlibm_la_LDFLAGS = @CLASSPATH_MODULE@ 
 
 # We just want the standard flags for fdlibm since it is an upstream lib
 # and our normal -ansi -pedantic -Wall -Werror breaks this lib.

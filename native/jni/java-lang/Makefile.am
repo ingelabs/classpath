@@ -11,8 +11,8 @@ libjavalangreflect_la_SOURCES = java_lang_reflect_Array.c
 
 libjavalang_la_LIBADD = $(wildcard $(top_builddir)/native/fdlibm/*.lo) \
 			$(top_builddir)/native/jni/classpath/jcl.lo
-libjavalang_la_LDFLAGS = -module -version-info @LIBVERSION@
-libjavalangreflect_la_LDFLAGS = -module -version-info @LIBVERSION@
+libjavalang_la_LDFLAGS = @CLASSPATH_MODULE@
+libjavalangreflect_la_LDFLAGS = @CLASSPATH_MODULE@
 
 INCLUDES = -I. @EXTRA_INCLUDES@ \
 	   -I$(top_srcdir)/native/jni/classpath \
