@@ -1,3 +1,8 @@
+2005-02-20  Sven de Marothy <sven@physto.se>
+
+	* java/text/SimpleDateFormat.java,
+	(parse): Set DST_OFFSET to the correct value.
+
 2005-02-20  Rutger Ovidius  <ovidr@users.sourceforge.net>
 
 	* gnu/java/security/provider/Gnu.java (Gnu): Add SHA-160 alias.
