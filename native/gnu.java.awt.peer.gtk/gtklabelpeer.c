@@ -67,8 +67,8 @@ Java_gnu_java_awt_peer_gtk_GtkLabelPeer_gtkLabelSet
   const char *str;
   GtkLabel *label;
 
-  str = (*env)->GetStringUTFChars (env, text, NULL);
   ptr = NSA_GET_PTR (env, obj);
+  str = (*env)->GetStringUTFChars (env, text, NULL);
 
   gdk_threads_enter ();
 
