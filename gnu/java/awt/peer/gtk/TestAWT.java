@@ -252,8 +252,8 @@ class ButtonsWindow extends PrettyFrame
 	{
 	  final int i2=((i+1)==9)?0:(i+1);
 
-	  b[i].addMouseListener(new MouseAdapter () {
-	    public void mouseClicked (MouseEvent e) {
+	  b[i].addActionListener(new ActionListener () {
+	    public void actionPerformed (ActionEvent e) {
 	      if (b[i2].isVisible())
 		b[i2].setVisible(false);
 	      else 
@@ -265,8 +265,8 @@ class ButtonsWindow extends PrettyFrame
       add (p, "North");
 
       Button cb = new Button ("close");
-      cb.addMouseListener(new MouseAdapter () {
-        public void mouseClicked (MouseEvent e) {
+      cb.addActionListener(new ActionListener () {
+        public void actionPerformed (ActionEvent e) {
 	  dispose();
         }
       });
@@ -307,8 +307,8 @@ class DialogWindow extends Dialog
       Panel p = new PrettyPanel();
 
       Button cb = new Button ("OK");
-      cb.addMouseListener(new MouseAdapter () {
-        public void mouseClicked (MouseEvent e) {
+      cb.addActionListener(new ActionListener () {
+        public void actionPerformed (ActionEvent e) {
 	  dispose();
         }
       });
@@ -320,8 +320,8 @@ class DialogWindow extends Dialog
       Button toggle = new Button ("Toggle");
       p.add (toggle);
 
-      toggle.addMouseListener(new MouseAdapter () {
-	public void mouseClicked (MouseEvent e) {
+      toggle.addActionListener(new ActionListener () {
+	public void actionPerformed (ActionEvent e) {
 	  if (text.isVisible())
 	    text.setVisible(false);
 	  else 
@@ -395,8 +395,8 @@ class CursorsWindow extends PrettyFrame implements ItemListener
       add (cursorCanvas, "Center");
 
       Button cb = new Button ("Close");
-      cb.addMouseListener(new MouseAdapter () {
-        public void mouseClicked (MouseEvent e) {
+      cb.addActionListener(new ActionListener () {
+        public void actionPerformed (ActionEvent e) {
 	  dispose();
         }
       });
@@ -456,8 +456,8 @@ class TextFieldWindow extends PrettyFrame implements ItemListener
       add (p, "Center");
 
       Button cb = new Button ("Close");
-      cb.addMouseListener(new MouseAdapter () {
-        public void mouseClicked (MouseEvent e) {
+      cb.addActionListener(new ActionListener () {
+        public void actionPerformed (ActionEvent e) {
 	  dispose();
         }
       });
@@ -534,8 +534,8 @@ class LabelWindow extends PrettyFrame
       add (p, "Center");
 
       Button cb = new Button ("Close");
-      cb.addMouseListener(new MouseAdapter () {
-        public void mouseClicked (MouseEvent e) {
+      cb.addActionListener(new ActionListener () {
+        public void actionPerformed (ActionEvent e) {
 	  dispose();
         }
       });
@@ -578,8 +578,8 @@ RadioWindow extends PrettyFrame
       add (p, "Center");
 
       Button cb = new Button ("Close");
-      cb.addMouseListener(new MouseAdapter () {
-        public void mouseClicked (MouseEvent e) {
+      cb.addActionListener(new ActionListener () {
+        public void actionPerformed (ActionEvent e) {
 	  dispose();
         }
       });
