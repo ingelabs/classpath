@@ -1,3 +1,13 @@
+2004-12-27  Michael Koch  <konqueror@gmx.de>
+
+	* javax/imageio/IIOParam.java
+	(setSourceBands): New method.
+	(setSourceSubsampling): Likewise.
+	* javax/imageio/ImageReadParam.java
+	(setDestination): Likewise.
+	(setDestinationBands): Likewise.
+	(setSourceProgressivePasses): Likewise.
+
 2004-12-27  Jeroen Frijters  <jeroen@frijters.net>
 
 	* NEWS: Added entry about class change.
