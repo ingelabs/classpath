@@ -1,5 +1,14 @@
 2004-12-30  Michael Koch  <konqueror@gmx.de>
 
+	* javax/imageio/metadata/IIOInvalidTreeException.java
+	(IIOInvalidTreeException): Reformatted.
+	* javax/imageio/spi/IIORegistry.java
+	(static): Register ImageReaderSpi.class and ImageWriterSpi.class.
+	* javax/imageio/stream/MemoryCacheImageInputStream.java:
+	Reworked import statements.
+
+2004-12-30  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/locale/LocaleInformation_de.java,
 	gnu/java/locale/LocaleInformation_en.java,
 	gnu/java/locale/LocaleInformation_es.java,
