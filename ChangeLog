@@ -1,5 +1,18 @@
 2004-10-17  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/lang/ClassLoader.java
+	(getExtClassLoaderUrls): New method.
+	(getSystemClassLoaderUrls): New method.
+	(defaultGetSystemClassLoader): New method.
+	(getSystemProperty): New method.
+	* vm/reference/java/lang/VMClassLoader.java
+	(getResource): Changed to provide default implementation.
+	(getResources): Likewise.
+	(getSystemClassLoader): Removed broken default implementation
+	and changed to call ClassLoader.defaultGetSystemClassLoader.
+
+2004-10-17  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/util/Calendar.java
 	(setTimeInMillis): Added call to clear, removed computeFields call.
 	* java/util/Date.java

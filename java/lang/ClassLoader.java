@@ -43,7 +43,10 @@ import gnu.java.util.EmptyEnumeration;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.File;
+import java.lang.reflect.Constructor;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.security.CodeSource;
 import java.security.PermissionCollection;
 import java.security.Policy;
@@ -51,6 +54,8 @@ import java.security.ProtectionDomain;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.ArrayList;
 
 /**
  * The ClassLoader is a way of customizing the way Java gets its classes
@@ -949,5 +954,102 @@ public abstract class ClassLoader
 	loader = loader.parent;
       }
     return false;
+  }
+
+  private static URL[] getExtClassLoaderUrls()
+  {
+    String classpath = getSystemProperty("java.ext.dirs", "");
+    StringTokenizer tok = new StringTokenizer(classpath, File.pathSeparator);
+    ArrayList list = new ArrayList();
+    while (tok.hasMoreTokens())
+      {
+	try
+	  {
+	    File f = new File(tok.nextToken());
+	    File[] files = f.listFiles();
+	    for (int i = 0; i < files.length; i++)
+	      {
+		list.add(files[i].toURL());
+	      }
+	  }
+	catch(Exception x)
+	  {
+	  }
+      }
+    URL[] urls = new URL[list.size()];
+    list.toArray(urls);
+    return urls;
+  }
+
+  private static URL[] getSystemClassLoaderUrls()
+  {
+    String classpath = getSystemProperty("java.class.path", ".");
+    StringTokenizer tok = new StringTokenizer(classpath, File.pathSeparator);
+    ArrayList list = new ArrayList();
+    while (tok.hasMoreTokens())
+      {
+	try
+	  {
+	    list.add(new File(tok.nextToken()).toURL());
+	  }
+	catch(java.net.MalformedURLException x)
+	  {
+	  }
+      }
+    URL[] urls = new URL[list.size()];
+    list.toArray(urls);
+    return urls;
+  }
+
+  static ClassLoader defaultGetSystemClassLoader()
+  {
+    ClassLoader extClassLoader =
+	new URLClassLoader(getExtClassLoaderUrls(), null);
+    ClassLoader systemClassLoader =
+	new URLClassLoader(getSystemClassLoaderUrls(), extClassLoader)
+	{
+	    protected synchronized Class loadClass(String name,
+		boolean resolve)
+		throws ClassNotFoundException
+	    {
+		SecurityManager sm = Runtime.securityManager;
+		if (sm != null)
+		{
+		    int lastDot = name.lastIndexOf('.');
+		    if (lastDot != -1)
+			sm.checkPackageAccess(name.substring(0, lastDot));
+		}
+		return super.loadClass(name, resolve);
+	    }
+	};
+    String loader = getSystemProperty("java.system.class.loader", null);
+    if (loader == null)
+      {
+	return systemClassLoader;
+      }
+    try
+      {
+	Constructor c = Class.forName(loader, false, systemClassLoader)
+	    .getConstructor(new Class[] { ClassLoader.class });
+	return (ClassLoader)c.newInstance(new Object[] { systemClassLoader });
+      }
+    catch (Exception e)
+      {
+	System.err.println("Requested system classloader " + loader + " failed.");
+	throw (Error)
+	    new Error("Requested system classloader " + loader + " failed.")
+		.initCause(e);
+      }
+  }
+
+  static String getSystemProperty(String name, String defaultValue)
+  {
+    // access properties directly to bypass security
+    String val = System.properties.getProperty(name);
+    if (val == null)
+      {
+	val = defaultValue;
+      }
+    return val;
   }
 }
