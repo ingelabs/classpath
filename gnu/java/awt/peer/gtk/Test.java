@@ -210,8 +210,12 @@ class Test
       wb.setLabel("Destroy Frame on Click");
       wb.addActionListener (new ActionListener () {
 	public void actionPerformed (ActionEvent e) {
-	  System.out.println (((ScrollPanePeer)sp.getPeer ()).getHScrollbarHeight ());
-	  System.out.println (((ScrollPanePeer)sp.getPeer ()).getVScrollbarWidth ());
+	  ScrollPanePeer peer = (ScrollPanePeer)sp.getPeer ();
+	  if (peer != null)
+	    {
+	      System.out.println (peer.getHScrollbarHeight ());
+	      System.out.println (peer.getVScrollbarWidth ());
+	    }
 
 	  l.setText ("Hello World!");
 	  System.out.println ("PREFERED: " + p.getPreferredSize ());

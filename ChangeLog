@@ -1,5 +1,13 @@
 2002-11-07  Mark Wielaard  <mark@klomp.org>
 
+	* java/awt/ScrollPane.java (ScrollPane): Conditions should all be true.
+	* gnu/java/awt/peer/gtk/GtkFontPeer.java (bundle): Possibly null.
+	(GtkFontPeer): Fall back to some default for Xname if bundle == 0.
+	* gnu/java/awt/peer/gtk/Test.java (paint): Check for null
+	ScrollPanePeer.
+
+2002-11-07  Mark Wielaard  <mark@klomp.org>
+
 	* java/io/ObjectStreamConstants: New value TC_MAX = TC_PROXYCLASSDESC.
 
 2002-11-07  Eric Blake  <ebb9@email.byu.edu>

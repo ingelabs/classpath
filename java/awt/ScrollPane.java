@@ -134,8 +134,8 @@ ScrollPane(int scrollbarDisplayPolicy)
 {
   this.scrollbarDisplayPolicy = scrollbarDisplayPolicy;
 
-  if ((scrollbarDisplayPolicy != SCROLLBARS_ALWAYS) ||
-      (scrollbarDisplayPolicy != SCROLLBARS_AS_NEEDED) ||
+  if ((scrollbarDisplayPolicy != SCROLLBARS_ALWAYS) &&
+      (scrollbarDisplayPolicy != SCROLLBARS_AS_NEEDED) &&
       (scrollbarDisplayPolicy != SCROLLBARS_NEVER))
     throw new IllegalArgumentException("Bad scrollbarDisplayPolicy: " +
                                        scrollbarDisplayPolicy);

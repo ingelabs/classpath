@@ -43,14 +43,28 @@ import java.util.ResourceBundle;
 
 public class GtkFontPeer implements FontPeer
 {
-  static ResourceBundle 
-    bundle = ResourceBundle.getBundle ("gnu.java.awt.peer.gtk.font");
+  private static ResourceBundle bundle;
+  
+  static
+  {
+    try
+      {
+	bundle = ResourceBundle.getBundle ("gnu.java.awt.peer.gtk.font");
+      }
+    catch (Throwable ignored)
+      {
+	bundle = null;
+      }
+  }
 
-  String Xname;
+  final private String Xname;
 
   public GtkFontPeer (String name, int style)
   {
-    Xname = bundle.getString (name.toLowerCase () + "." + style);
+    if (bundle != null)
+      Xname = bundle.getString (name.toLowerCase () + "." + style);
+    else
+      Xname = "-*-*-medium-r-normal-*-12-*-*-*-c-*-*-*";
   }
 
   public String getXLFD ()
