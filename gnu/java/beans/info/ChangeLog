@@ -1,3 +1,0 @@
-Sun Aug  9 10:55:04 MDT 1998 - John Keiser (jkeiser@iname.com)
-
-Initial revision.  Implemented ComponentBeanInfo for compatibility with Sun (also because it makes sense).  Fully tested.

@@ -1,9 +1,0 @@
-2000-04-17  Andrew Haley  <aph@cygnus.com>
-
-	* TypeSignature.java (getClassForEncoding): Don't remove
-	punctuation from the classname of an array element.
-
-1998-07-06  Geoff Berry  <gcb@cs.duke.edu>
-
-	* (TypeSignature.java) Added documentation.
-
