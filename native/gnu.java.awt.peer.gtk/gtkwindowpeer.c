@@ -32,26 +32,26 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env, jobject obj,
   GtkWidget *window, *fix;
 
   gdk_threads_enter ();
-  switch(type)
+  switch (type)
     {
     case 1:
-      window=gtk_window_new (GTK_WINDOW_TOPLEVEL);
+      window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
       break;
     case 2:
-      window=gtk_window_new (GTK_WINDOW_DIALOG);
+      window = gtk_window_new (GTK_WINDOW_DIALOG);
       break;
     case 3:
-      window=gtk_window_new (GTK_WINDOW_POPUP);
+      window = gtk_window_new (GTK_WINDOW_POPUP);
       break;
     }
   connect_awt_hook (env, obj, window, 1, &window->window);
 
   /* Every window needs a fixed widget to support absolute positioning. */
 
-  fix=gtk_fixed_new();
+  fix = gtk_fixed_new();
   connect_awt_hook (env, obj, fix, 1, &fix->window);
   
-  gtk_widget_set_usize(window,width,height);
+  gtk_widget_set_usize (window, width, height);
   
   printf("c: requisition: %i x %i allocation:%i x %i\n",
 	 GTK_WIDGET(window)->requisition.width,
@@ -59,7 +59,7 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowNew (JNIEnv *env, jobject obj,
 	 GTK_WIDGET(window)->allocation.width,
 	 GTK_WIDGET(window)->allocation.height);
   
-  gtk_container_add(GTK_CONTAINER(window),fix);
+  gtk_container_add (GTK_CONTAINER (window), fix);
 
   gdk_threads_leave ();
 
@@ -76,14 +76,14 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowSetTitle (JNIEnv *env,
   jobject obj, jstring title)
 {
   void *ptr;
-  char *str;
+  const char *str;
 
   ptr = NSA_GET_PTR (env, obj);
   
-  str=(char *)(*env)->GetStringUTFChars (env, title, 0);      
+  str = (*env)->GetStringUTFChars (env, title, NULL);
   
   gdk_threads_enter ();
-  gtk_window_set_title (GTK_WINDOW (ptr),str);
+  gtk_window_set_title (GTK_WINDOW (ptr), str);
   gdk_threads_leave ();
   
   (*env)->ReleaseStringUTFChars (env, title, str);
@@ -102,7 +102,7 @@ Java_gnu_java_awt_peer_gtk_GtkWindowPeer_gtkWindowSetPolicy (JNIEnv *env,
   ptr = NSA_GET_PTR (env, obj);
   
   gdk_threads_enter ();
-  gtk_window_set_policy (GTK_WINDOW (ptr),shrink,grow,autos);
+  gtk_window_set_policy (GTK_WINDOW (ptr), shrink, grow, autos);
   gdk_threads_leave ();
 }
 
