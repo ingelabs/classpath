@@ -1,5 +1,20 @@
 2004-04-08  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/ContentHandler.java,
+	java/net/ContentHandlerFactory.java,
+	java/net/Inet4Address.java,
+	java/net/Inet6Address.java,
+	java/net/JarURLConnection.java,
+	java/net/MimeTypeMapper.java,
+	java/net/URI.java,
+	java/net/URL.java,
+	java/net/URLClassLoader.java,
+	java/net/URLConnection.java,
+	java/net/URLStreamHandler.java:
+	Reworked javadocs and coding style.
+
+2004-04-08  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/Authenticator.java,
 	java/net/BindException.java,
 	java/net/ConnectException.java,
