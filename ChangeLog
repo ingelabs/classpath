@@ -1,3 +1,9 @@
+2004-09-30  Tom Tromey  <tromey@redhat.com>
+
+	* javax/swing/plaf/basic/BasicOptionPaneUI.java (MessageIcon):
+	Renamed from 'messageIcon'.
+	(errorIcon, infoIcon, warningIcon, questionIcon): Updated.
+
 2004-09-28  Tom Tromey  <tromey@redhat.com>
 
 	* java/text/MessageFormat.java (Field): Constructor now
