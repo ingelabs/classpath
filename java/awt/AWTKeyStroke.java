@@ -150,11 +150,12 @@ public class AWTKeyStroke implements Serializable
   private char keyChar;
 
   /**
-   * The virtual key code, or VK_UNDEFINED for key typed.
+   * The virtual key code, or VK_UNDEFINED for key typed. Package visible for
+   * use by Component.
    *
    * @serial the keyCode
    */
-  private int keyCode;
+  int keyCode;
 
   /**
    * The modifiers in effect. To match Sun, this stores the old style masks

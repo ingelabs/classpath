@@ -250,9 +250,6 @@ public abstract class Rectangle2D extends RectangularShape
   /**
    * Tests if this rectangle contains the given one. In other words, test if
    * this rectangle contains all points in the given one.
-  /**
-   * Tests if the given rectangle intersects this one. In other words, test if
-   * the two rectangles share at least one internal point.
    *
    * @param x the x coordinate of the other rectangle
    * @param y the y coordinate of the other rectangle

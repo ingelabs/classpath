@@ -1,5 +1,46 @@
 2002-05-05  Eric Blake  <ebb9@email.byu.edu>
 
+	* java/applet/Applet.java (getAccessibleState): Update.
+	* java/awt/AWTEvent.java (INPUT_ENABLED_EVENT_MASK): New flag.
+	* java/awt/AWTKeyStroke.java (keyCode): Make more visible.
+	* java/awt/AlphaComposite.java: New file (needs documentation).
+	* java/awt/AttributeValue.java: New file.
+	* java/awt/BasicStroke.java: New file (needs docs).
+	* java/awt/BufferCapabilities.java: New file (needs docs).
+	* java/awt/Button.java (getActionListeners, getListeners): Use new
+	features of AWTEventMulticater.
+	* java/awt/Component.java: Partial update to 1.4.
+	* java/awt/ComponentOrientation.java: Update to 1.4.
+	* java/awt/Container.java (getContainerListeners, getListeners):
+	Use new features of AWTEventMulticaster.
+	* java/awt/ContainerOrderFocusTraversalPolicy.java: New
+	file (stubbed, needs docs).
+	* java/awt/DefaultFocusTraversalPolicy.java: New file (stubbed).
+	* java/awt/DefaultKeyboardFocusManager.java: New file (stubbed).
+	* java/awt/FocusTraversalPolicy.java: New file (needs docs).
+	* java/awt/GradientPaint.java: New file (stubbed).
+	* java/awt/GraphicsConfiguration.java: Update to 1.4.
+	* java/awt/ImageCapabilities.java: New file (stubbed).
+	* java/awt/Insets.java: Update to 1.4.
+	* java/awt/JobAttributes.java: New file (needs docs).
+	* java/awt/KeyboardFocusManager.java: New file (partially
+	stubbed).
+	* java/awt/Makefile.am (EXTRA_DIST): Account for new files.
+	* java/awt/MenuItem.java (getActionListeners, getListeners): Use
+	new features of AWTEventMulticaster.
+	* java/awt/PageAttributes.java: New file (needs docs).
+	* java/awt/PaintContext.java (paint): Remove redundant keyword.
+	* java/awt/PrintJob.java: Update to 1.4.
+	* java/awt/RenderingHints.java: Partial update to 1.4 (needs docs).
+	* java/awt/Robot.java: New file (stubbed).
+	* java/awt/TexturePaint.java: New file (stubbed).
+	* java/awt/Window.java (getWindowListeners, getListeners): Use new
+	features of AWTEventMulticaster.
+	* java/awt/geom/Arc2D.java: Implement and document.
+	* java/awt/geom/Rectangle2D.java: Fix doc typo.
+
+2002-05-05  Eric Blake  <ebb9@email.byu.edu>
+
 	* configure.in: Add java/awt/image/renderable.
 	* java/awt/image/BufferStrategy.java: New file (needs docs).
 	* java/awt/image/BufferedImageOp.java: Ditto.

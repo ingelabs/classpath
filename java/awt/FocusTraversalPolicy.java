@@ -1,5 +1,5 @@
-/* PrintJob.java -- A print job class
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+/* FocusTraversalPolicy.java -- 
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,64 +39,28 @@ exception statement from your version. */
 package java.awt;
 
 /**
- * This abstract class represents a print job.
- *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @see Toolkit#getPrintJob(Frame, String, Properties)
- * @since 1.0
- * @status updated to 1.4
+ * STUB CLASS ONLY
  */
-public abstract class PrintJob
+public abstract class FocusTraversalPolicy
 {
-  /**
-   * Create a new PrintJob.
-   */
-  public PrintJob()
+  public FocusTraversalPolicy()
   {
   }
 
-  /**
-   * Returns a graphics context suitable for rendering the next page. The
-   * return must also implement {@link PrintGraphics}.
-   *
-   * @return a graphics context for printing the next page
-   */
-  public abstract Graphics getGraphics();
+  public abstract Component getComponentAfter(Container root,
+                                              Component current);
 
-  /**
-   * Returns the dimension of the page in pixels.  The resolution will be
-   * chosen to be similar to the on screen image.
-   *
-   * @return the page dimensions
-   */
-  public abstract Dimension getPageDimension();
+  public abstract Component getComponentBefore(Container root,
+                                               Component current);
 
-  /**
-   * Returns the resolution of the page in pixels per inch. Note that this is
-   * not necessarily the printer's resolution.
-   *
-   * @return the resolution of the page in pixels per inch
-   */
-  public abstract int getPageResolution();
+  public abstract Component getFirstComponent(Container root);
 
-  /**
-   * Tests whether or not the last page will be printed first.
-   *
-   * @return true if the last page prints first
-   */
-  public abstract boolean lastPageFirst();
+  public abstract Component getLastComponent(Container root);
 
-  /**
-   * Informs the print job that printing is complete or should be aborted.
-   */
-  public abstract void end();
+  public abstract Component getDefaultComponent(Container root);
 
-  /**
-   * This method explicitly ends the print job in the event the job
-   * becomes un-referenced without the application having done so.
-   */
-  public void finalize()
+  public Component getInitialComponent(Window window)
   {
-    end();
+    return getDefaultComponent(window);
   }
-} // class PrintJob
+} // class FocusTraversalPolicy

@@ -491,16 +491,16 @@ public class Applet extends Panel
 
     /**
      * Get the state set of this accessible object. In addition to the default
-     * states of a Component, the applet is also active.
+     * states of a Component, the applet can also be active.
      *
      * @return the role of the object
      * @see AccessibleState
      */
     public AccessibleStateSet getAccessibleStateSet()
     {
-      // XXX Make sure that this is correct.
       AccessibleStateSet s = super.getAccessibleStateSet();
-      s.add(AccessibleState.ACTIVE);
+      if (isActive())
+        s.add(AccessibleState.ACTIVE);
       return s;
     }
   } // class AccessibleApplet

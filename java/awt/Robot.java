@@ -1,5 +1,5 @@
-/* PrintJob.java -- A print job class
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+/* Robot.java -- 
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,65 +38,75 @@ exception statement from your version. */
 
 package java.awt;
 
-/**
- * This abstract class represents a print job.
- *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @see Toolkit#getPrintJob(Frame, String, Properties)
- * @since 1.0
- * @status updated to 1.4
- */
-public abstract class PrintJob
+import java.awt.image.BufferedImage;
+
+/** STUB CLASS ONLY */
+public class Robot
 {
-  /**
-   * Create a new PrintJob.
-   */
-  public PrintJob()
+  private boolean waitForIdle;
+  private int autoDelay;
+  public Robot() throws AWTException
+  {
+    throw new Error("not implemented");
+  }
+  public Robot(GraphicsDevice screen) throws AWTException
+  {
+    this();
+  }
+  public void mouseMove(int x, int y)
   {
   }
-
-  /**
-   * Returns a graphics context suitable for rendering the next page. The
-   * return must also implement {@link PrintGraphics}.
-   *
-   * @return a graphics context for printing the next page
-   */
-  public abstract Graphics getGraphics();
-
-  /**
-   * Returns the dimension of the page in pixels.  The resolution will be
-   * chosen to be similar to the on screen image.
-   *
-   * @return the page dimensions
-   */
-  public abstract Dimension getPageDimension();
-
-  /**
-   * Returns the resolution of the page in pixels per inch. Note that this is
-   * not necessarily the printer's resolution.
-   *
-   * @return the resolution of the page in pixels per inch
-   */
-  public abstract int getPageResolution();
-
-  /**
-   * Tests whether or not the last page will be printed first.
-   *
-   * @return true if the last page prints first
-   */
-  public abstract boolean lastPageFirst();
-
-  /**
-   * Informs the print job that printing is complete or should be aborted.
-   */
-  public abstract void end();
-
-  /**
-   * This method explicitly ends the print job in the event the job
-   * becomes un-referenced without the application having done so.
-   */
-  public void finalize()
+  public void mousePress(int buttons)
   {
-    end();
   }
-} // class PrintJob
+  public void mouseRelease(int buttons)
+  {
+  }
+  public void mouseWheel(int wheelAmt)
+  {
+  }
+  public void keyPress(int keycode)
+  {
+  }
+  public void keyRelease(int keycode)
+  {
+  }
+  public Color getPixelColor(int x, int y)
+  {
+    return null;
+  }
+  public BufferedImage createScreenCapture(Rectangle screen)
+  {
+    return null;
+  }
+  public boolean isAutoWaitForIdle()
+  {
+    return waitForIdle;
+  }
+  public void setAutoWaitForIdle(boolean value)
+  {
+    waitForIdle = value;
+  }
+  public int getAutoDelay()
+  {
+    return autoDelay;
+  }
+  public void setAutoDelay(int ms)
+  {
+    if (ms < 0 || ms > 60000)
+      throw new IllegalArgumentException();
+    autoDelay = ms;
+  }
+  public void delay(int ms)
+  {
+    if (ms < 0 || ms > 60000)
+      throw new IllegalArgumentException();
+  }
+  public void waitForIdle()
+  {
+  }
+  public String toString()
+  {
+    return "unimplemented";
+  }
+} // class Robot

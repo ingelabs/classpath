@@ -328,12 +328,19 @@ public class Window extends Container
     windowListener = AWTEventMulticaster.remove (windowListener, listener);
   }
 
+  public synchronized WindowListener[] getWindowListeners()
+  {
+    return (WindowListener[])
+      AWTEventMulticaster.getListeners(windowListener,
+                                       WindowListener.class);
+  }
+
   /** @since 1.3 */
   public EventListener[] getListeners(Class listenerType)
   {
     if (listenerType == WindowListener.class)
-      return getListenersImpl(listenerType, windowListener);
-    else return super.getListeners(listenerType);
+      return getWindowListeners();
+    return super.getListeners(listenerType);
   }
 
   void dispatchEventImpl(AWTEvent e)

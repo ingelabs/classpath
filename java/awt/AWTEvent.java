@@ -129,6 +129,11 @@ public abstract class AWTEvent extends EventObject
   public static final long INPUT_METHOD_EVENT_MASK = 0x00800;
 
   /**
+   * Mask if input methods are enabled. Package visible only.
+   */
+  static final long INPUT_ENABLED_EVENT_MASK = 0x01000;
+
+  /**
    * Mask for paint events.
    * @since 1.3
    */

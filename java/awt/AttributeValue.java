@@ -1,5 +1,5 @@
-/* PrintJob.java -- A print job class
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+/* AttributeValue.java -- parent of type-safe enums of attributes
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,64 +39,60 @@ exception statement from your version. */
 package java.awt;
 
 /**
- * This abstract class represents a print job.
+ * This class is undocumented by Sun, but it is the parent of several other
+ * classes, all of which are type-safe enumerations. This takes care of
+ * <code>equals</code>, <code>toString</code>, and <code>hashCode</code>, so
+ * that you don't have to (although hashCode is commonly overridden).
  *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @see Toolkit#getPrintJob(Frame, String, Properties)
- * @since 1.0
- * @status updated to 1.4
+ * @author Eric Blake <ebb9@email.byu.edu>
  */
-public abstract class PrintJob
+class AttributeValue
 {
+  /** The value of the enumeration. Package visible for speed. */
+  final int value;
+
+  /** The list of enumeration names for the given subclass. */
+  private final String[] names;
+
   /**
-   * Create a new PrintJob.
+   * Construct a type-safe enumeration element. For example,<br>
+   * <pre>
+   * class Foo extends AttributeValue
+   * {
+   *   private static final String[] names = { "one", "two" }
+   *   public static final Foo ONE = new Foo(0);
+   *   public static final Foo TWO = new Foo(1);
+   *   private Foo(int value) { super(value, names); }
+   * }
+   * </pre>
+   *
+   * @param value the position of this enumeration element, consecutive from 0
+   * @param names the constant list of enumeration names for the subclass
    */
-  public PrintJob()
+  AttributeValue(int value, String[] names)
   {
+    this.value = value;
+    this.names = names;
   }
 
   /**
-   * Returns a graphics context suitable for rendering the next page. The
-   * return must also implement {@link PrintGraphics}.
+   * Returns the hashcode of this element. This is the index of the element
+   * in the enumeration. Note that equals defaults to the == relation.
    *
-   * @return a graphics context for printing the next page
+   * @return the hashcode
    */
-  public abstract Graphics getGraphics();
-
-  /**
-   * Returns the dimension of the page in pixels.  The resolution will be
-   * chosen to be similar to the on screen image.
-   *
-   * @return the page dimensions
-   */
-  public abstract Dimension getPageDimension();
-
-  /**
-   * Returns the resolution of the page in pixels per inch. Note that this is
-   * not necessarily the printer's resolution.
-   *
-   * @return the resolution of the page in pixels per inch
-   */
-  public abstract int getPageResolution();
-
-  /**
-   * Tests whether or not the last page will be printed first.
-   *
-   * @return true if the last page prints first
-   */
-  public abstract boolean lastPageFirst();
-
-  /**
-   * Informs the print job that printing is complete or should be aborted.
-   */
-  public abstract void end();
-
-  /**
-   * This method explicitly ends the print job in the event the job
-   * becomes un-referenced without the application having done so.
-   */
-  public void finalize()
+  public int hashCode()
   {
-    end();
+    return value;
   }
-} // class PrintJob
+
+  /**
+   * Returns the name of this enumeration element.
+   *
+   * @return the element name
+   */
+  public String toString()
+  {
+    return names[value];
+  }
+} // class AttributeValue

@@ -52,7 +52,7 @@ public interface PaintContext
   /**
    * Release the resources allocated for the paint.
    */
-  public void dispose();
+  void dispose();
 
   /**
    * Return the color model of this context. It may be different from the

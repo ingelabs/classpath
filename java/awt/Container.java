@@ -759,12 +759,19 @@ public class Container extends Component
     containerListener = AWTEventMulticaster.remove(containerListener, l);
   }
 
+  public synchronized ContainerListener[] getContainerListeners()
+  {
+    return (ContainerListener[])
+      AWTEventMulticaster.getListeners(containerListener,
+                                       ContainerListener.class);
+  }
+
   /** @since 1.3 */
   public EventListener[] getListeners(Class listenerType)
   {
     if (listenerType == ContainerListener.class)
-      return getListenersImpl(listenerType, containerListener);
-    else return super.getListeners(listenerType);
+      return getContainerListeners();
+    return super.getListeners(listenerType);
   }
 
   /**
@@ -1119,13 +1126,15 @@ public class Container extends Component
      *
      * @serial the handler for property changes
      */
-    protected ContainerListener accessibleContainerHandler;
+    protected ContainerListener accessibleContainerHandler
+      = new AccessibleContainerHandler();
 
     /**
      * The default constructor.
      */
     protected AccessibleAWTContainer()
     {
+      Container.this.addContainerListener(accessibleContainerHandler);
     }
 
     /**
@@ -1136,8 +1145,12 @@ public class Container extends Component
      */
     public int getAccessibleChildrenCount()
     {
-      // XXX
-      throw new Error("not implemented");
+      int count = 0;
+      int i = component == null ? 0 : component.length;
+      while (--i >= 0)
+        if (component[i] instanceof Accessible)
+          count++;
+      return count;
     }
 
     /**
@@ -1148,8 +1161,15 @@ public class Container extends Component
      */
     public Accessible getAccessibleChild(int i)
     {
-      // XXX
-      throw new Error("not implemented");
+      if (component == null)
+        return null;
+      int index = -1;
+      while (i >= 0 && ++index < component.length)
+        if (component[index] instanceof Accessible)
+          i--;
+      if (i < 0)
+        return (Accessible) component[index];
+      return null;
     }
 
     /**
@@ -1158,11 +1178,13 @@ public class Container extends Component
      *
      * @param p the point to look at
      * @return an accessible object at that point, or null
+     * @throws NullPointerException if p is null
      */
     public Accessible getAccessibleAt(Point p)
     {
-      // XXX
-      throw new Error("not implemented");
+      Component c = getComponentAt(p.x, p.y);
+      return c != Container.this && c instanceof Accessible ? (Accessible) c
+        : null;
     }
 
     /**
@@ -1189,8 +1211,8 @@ public class Container extends Component
        */
       public void componentAdded(ContainerEvent e)
       {
-        // XXX
-        throw new Error("not implemented");
+        AccessibleAWTContainer.this.firePropertyChange
+          (ACCESSIBLE_CHILD_PROPERTY, null, e.getChild());
       }
 
       /**
@@ -1201,8 +1223,8 @@ public class Container extends Component
        */
       public void componentRemoved(ContainerEvent e)
       {
-        // XXX
-        throw new Error("not implemented");
+        AccessibleAWTContainer.this.firePropertyChange
+          (ACCESSIBLE_CHILD_PROPERTY, e.getChild(), null);
       }
     } // class AccessibleContainerHandler
   } // class AccessibleAWTPanel
