@@ -1,4 +1,12 @@
-2004-08-27  Sven de Marothy <sven@physto.se>
+2004-08-27  David Gilbert  <david.gilbert@object-refinery.com>
+
+	* java/awt/RenderingHints.java: Documented.
+	(RenderingHints): Accept null init Map.
+	(putAll): Preprocess map to generate appropriate exceptions.
+	(remove): Cast object to Key and remove from hintMap.
+
+2004-08-27  Sven de Marothy  <sven@physto.se>
+
 	* java/awt/geom/Area.java
 	Implemented.
 
