@@ -47,13 +47,13 @@ public final class Field implements Member {
 	private Class type;
 
 	/* Native State Stuff */
-	final int native_state = System.identityHashCode(this);
+	private final int native_state = System.identityHashCode(this);
 	static {
 		initNativeState();
 	}
 	
 	/** This is only for JCL to call. **/
-	Field(Class declaringClass, int modifiers, String name, Class type) {
+	public Field(Class declaringClass, int modifiers, String name, Class type) {
 		this.declaringClass = declaringClass;
 		this.modifiers = modifiers;
 		this.name = name;
@@ -143,9 +143,11 @@ public final class Field implements Member {
 	 **					(i.e. it is not public).
 	 ** @exception IllegalArgumentException	if this field is not a field of <code>o</code>.
 	 **/
-	public native Object get(Object o)
+	public Object get(Object o)
 		throws IllegalAccessException,
-		       IllegalArgumentException;
+		       IllegalArgumentException {
+		return getNative(o,name,declaringClass,type,modifiers);
+	}
 
 	/** Get the value of this boolean Field.
 	 ** If the field is static, <code>o</code> will be ignored.
@@ -155,9 +157,11 @@ public final class Field implements Member {
 	 **					(i.e. it is not public).
 	 ** @exception IllegalArgumentException	if this is not a boolean field of <code>o</code>.
 	 **/
-	public native boolean getBoolean(Object o)
+	public boolean getBoolean(Object o)
 		throws IllegalAccessException,
-		       IllegalArgumentException;
+		       IllegalArgumentException {
+		return getBooleanNative(o,name,declaringClass,type,modifiers);
+	}
 
 	/** Get the value of this byte Field.
 	 ** If the field is static, <code>o</code> will be ignored.
@@ -167,9 +171,11 @@ public final class Field implements Member {
 	 **					(i.e. it is not public).
 	 ** @exception IllegalArgumentException	if this is not a byte field of <code>o</code>.
 	 **/
-	public native byte getByte(Object o)
+	public byte getByte(Object o)
 		throws IllegalAccessException,
-		       IllegalArgumentException;
+		       IllegalArgumentException {
+		return getByteNative(o,name,declaringClass,type,modifiers);
+	}
 
 	/** Get the value of this Field as a short.
 	 ** If the field is static, <code>o</code> will be ignored.
@@ -181,9 +187,11 @@ public final class Field implements Member {
 	 **					a field of <code>o</code> but cannot be converted
 	 **					via a widening conversion to a short.
 	 **/
-	public native short getShort(Object o)
+	public short getShort(Object o)
 		throws IllegalAccessException,
-		       IllegalArgumentException;
+		       IllegalArgumentException {
+		return getShortNative(o,name,declaringClass,type,modifiers);
+	}
 
 	/** Get the value of this Field as a char.
 	 ** If the field is static, <code>o</code> will be ignored.
@@ -195,9 +203,11 @@ public final class Field implements Member {
 	 **					a field of <code>o</code> but cannot be converted
 	 **					via a widening conversion to a char.
 	 **/
-	public native char getChar(Object o)
+	public char getChar(Object o)
 		throws IllegalAccessException,
-		       IllegalArgumentException;
+		       IllegalArgumentException {
+		return getCharNative(o,name,declaringClass,type,modifiers);
+	}
 
 	/** Get the value of this Field as an int.
 	 ** If the field is static, <code>o</code> will be ignored.
@@ -209,9 +219,11 @@ public final class Field implements Member {
 	 **					a field of <code>o</code> but cannot be converted
 	 **					via a widening conversion to an int.
 	 **/
-	public native int getInt(Object o)
+	public int getInt(Object o)
 		throws IllegalAccessException,
-		       IllegalArgumentException;
+		       IllegalArgumentException {
+		return getIntNative(o,name,declaringClass,type,modifiers);
+	}
 
 	/** Get the value of this Field as a long.
 	 ** If the field is static, <code>o</code> will be ignored.
@@ -223,9 +235,11 @@ public final class Field implements Member {
 	 **					a field of <code>o</code> but cannot be converted
 	 **					via a widening conversion to a long.
 	 **/
-	public native long getLong(Object o)
+	public long getLong(Object o)
 		throws IllegalAccessException,
-		       IllegalArgumentException;
+		       IllegalArgumentException {
+		return getShortNative(o,name,declaringClass,type,modifiers);
+	}
 
 	/** Get the value of this Field as a float.
 	 ** If the field is static, <code>o</code> will be ignored.
@@ -237,9 +251,12 @@ public final class Field implements Member {
 	 **					a field of <code>o</code> but cannot be converted
 	 **					via a widening conversion to a float.
 	 **/
-	public native float getFloat(Object o)
+	public float getFloat(Object o)
 		throws IllegalAccessException,
-		       IllegalArgumentException;
+		       IllegalArgumentException {
+		return getShortNative(o,name,declaringClass,type,modifiers);
+
+	}
 
 	/** Get the value of this Field as a double.
 	 ** If the field is static, <code>o</code> will be ignored.
@@ -251,9 +268,11 @@ public final class Field implements Member {
 	 **					a field of <code>o</code> but cannot be converted
 	 **					via a widening conversion to a double.
 	 **/
-	public native double getDouble(Object o)
+	public double getDouble(Object o)
 		throws IllegalAccessException,
-		       IllegalArgumentException;
+		       IllegalArgumentException {
+		return getShortNative(o,name,declaringClass,type,modifiers);
+	}
 
 	/** Set this Field.  If it is a primitive field, the value passed must be wrapped in
 	 ** the appropriate wrapped type (boolean = java.lang.Boolean)
@@ -266,9 +285,11 @@ public final class Field implements Member {
 	 **					widening conversion to the underlying type of
 	 **					the Field.
 	 **/
-	public native void set(Object o, Object value)
+	public void set(Object o, Object value)
 		throws IllegalAccessException,
-		        IllegalArgumentException;
+		        IllegalArgumentException {
+		setNative(o,value,name,declaringClass,type,modifiers);
+	}
 
 	/** Set this boolean Field.
 	 ** If the field is static, <code>o</code> will be ignored.
@@ -278,9 +299,11 @@ public final class Field implements Member {
 	 **					(i.e. it is not public).
 	 ** @exception IllegalArgumentException	if this field is not a primitive boolean field.
 	 **/
-	public native void setBoolean(Object o, boolean value)
+	public void setBoolean(Object o, boolean value)
 		throws IllegalAccessException,
-		        IllegalArgumentException;
+		        IllegalArgumentException {
+		setBooleanNative(o,value,name,declaringClass,type,modifiers);
+	}
 
 	/** Set this byte Field.
 	 ** If the field is static, <code>o</code> will be ignored.
@@ -291,9 +314,11 @@ public final class Field implements Member {
 	 ** @exception IllegalArgumentException	if a byte cannot be converted via a widening
 	 **					conversion to the type of this field.
 	 **/
-	public native void setByte(Object o, byte value)
+	public void setByte(Object o, byte value)
 		throws IllegalAccessException,
-		        IllegalArgumentException;
+		        IllegalArgumentException {
+		setByteNative(o,value,name,declaringClass,type,modifiers);
+	}
 
 	/** Set this short Field.
 	 ** If the field is static, <code>o</code> will be ignored.
@@ -304,9 +329,11 @@ public final class Field implements Member {
 	 ** @exception IllegalArgumentException	if a byte cannot be converted via a widening
 	 **					conversion to the type of this field.
 	 **/
-	public native void setShort(Object o, short value)
+	public void setShort(Object o, short value)
 		throws IllegalAccessException,
-		        IllegalArgumentException;
+		        IllegalArgumentException {
+		setShortNative(o,value,name,declaringClass,type,modifiers);
+	}
 
 	/** Set this char Field.
 	 ** If the field is static, <code>o</code> will be ignored.
@@ -317,9 +344,11 @@ public final class Field implements Member {
 	 ** @exception IllegalArgumentException	if a char cannot be converted via a widening
 	 **					conversion to the type of this field.
 	 **/
-	public native void setChar(Object o, char value)
+	public void setChar(Object o, char value)
 		throws IllegalAccessException,
-		        IllegalArgumentException;
+		        IllegalArgumentException {
+		setCharNative(o,value,name,declaringClass,type,modifiers);
+	}
 
 	/** Set this int Field.
 	 ** If the field is static, <code>o</code> will be ignored.
@@ -330,9 +359,11 @@ public final class Field implements Member {
 	 ** @exception IllegalArgumentException	if an int cannot be converted via a widening
 	 **					conversion to the type of this field.
 	 **/
-	public native void setInt(Object o, int value)
+	public void setInt(Object o, int value)
 		throws IllegalAccessException,
-		        IllegalArgumentException;
+		        IllegalArgumentException {
+		setIntNative(o,value,name,declaringClass,type,modifiers);
+	}
 
 	/** Set this long Field.
 	 ** If the field is static, <code>o</code> will be ignored.
@@ -343,9 +374,11 @@ public final class Field implements Member {
 	 ** @exception IllegalArgumentException	if a long cannot be converted via a widening
 	 **					conversion to the type of this field.
 	 **/
-	public native void setLong(Object o, long value)
+	public void setLong(Object o, long value)
 		throws IllegalAccessException,
-		        IllegalArgumentException;
+		        IllegalArgumentException {
+		setLongNative(o,value,name,declaringClass,type,modifiers);
+	}
 
 	/** Set this float Field.
 	 ** If the field is static, <code>o</code> will be ignored.
@@ -356,9 +389,11 @@ public final class Field implements Member {
 	 ** @exception IllegalArgumentException	if a float cannot be converted via a widening
 	 **					conversion to the type of this field.
 	 **/
-	public native void setFloat(Object o, float value)
+	public void setFloat(Object o, float value)
 		throws IllegalAccessException,
-		        IllegalArgumentException;
+		        IllegalArgumentException {
+		setFloatNative(o,value,name,declaringClass,type,modifiers);
+	}
 
 	/** Set this double Field.
 	 ** If the field is static, <code>o</code> will be ignored.
@@ -368,9 +403,15 @@ public final class Field implements Member {
 	 **					(i.e. it is not public).
 	 ** @exception IllegalArgumentException	if this field is not a primitive double field.
 	 **/
-	public native void setDouble(Object o, double value)
+	public void setDouble(Object o, double value)
 		throws IllegalAccessException,
-		        IllegalArgumentException;
+		        IllegalArgumentException {
+		setDoubleNative(o,value,name,declaringClass,type,modifiers);
+	}
+
+	protected void finalize() {
+		finalizeNative();
+	}
 
 	/*
 	 * STATIC NATIVE HELPERS
@@ -381,5 +422,25 @@ public final class Field implements Member {
 	/*
 	 * NATIVE HELPERS
 	 */
-	protected native void finalize();
+	private native void finalizeNative();
+
+	private native Object getNative(Object o,String name,Class declaringClass,Class type, int modifiers);
+	private native boolean getBooleanNative(Object o,String name,Class declaringClass,Class type, int modifiers);
+	private native byte getByteNative(Object o,String name,Class declaringClass,Class type, int modifiers);
+	private native char getCharNative(Object o,String name,Class declaringClass,Class type, int modifiers);
+	private native short getShortNative(Object o,String name,Class declaringClass,Class type, int modifiers);
+	private native int getIntNative(Object o,String name,Class declaringClass,Class type, int modifiers);
+	private native long getLongNative(Object o,String name,Class declaringClass,Class type, int modifiers);
+	private native float getFloatNative(Object o,String name,Class declaringClass,Class type, int modifiers);
+	private native double getDoubleNative(Object o,String name,Class declaringClass,Class type, int modifiers);
+
+	private native void setNative(Object o,Object val,String name,Class declaringClass,Class type, int modifiers);
+	private native void setBooleanNative(Object o,boolean val,String name,Class declaringClass,Class type, int modifiers);
+	private native void setByteNative(Object o,byte val,String name,Class declaringClass,Class type, int modifiers);
+	private native void setCharNative(Object o,char val,String name,Class declaringClass,Class type, int modifiers);
+	private native void setShortNative(Object o,short val,String name,Class declaringClass,Class type, int modifiers);
+	private native void setIntNative(Object o,int val,String name,Class declaringClass,Class type, int modifiers);
+	private native void setLongNative(Object o,long val,String name,Class declaringClass,Class type, int modifiers);
+	private native void setFloatNative(Object o,float val,String name,Class declaringClass,Class type, int modifiers);
+	private native void setDoubleNative(Object o,double val,String name,Class declaringClass,Class type, int modifiers);
 }
