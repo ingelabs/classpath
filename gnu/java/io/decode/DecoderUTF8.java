@@ -54,6 +54,7 @@ import java.io.IOException;
   */
 public class DecoderUTF8 extends Decoder
 {
+private static final char REPLACEMENT_CHARACTER = '\uFFFD';
 
 /*************************************************************************/
 
@@ -77,43 +78,48 @@ DecoderUTF8(InputStream in)
   * Counts the number of characters in a given byte array
   */
 public int
-charsInByteArray(byte[] buf, int offset, int len) throws CharConversionException
+charsInByteArray(byte[] buf, int offset, int len)
 {
-  int num_chars = 0;
+    int more = 0;
+    int num_chars = 0;
 
-  // Scan the buffer with minimal validation checks
-  for (int i = offset; i < offset + len; i++)
-    {
-      // Three byte encoding case.
-      if ((buf[i] & 0xE0) == 0xE0) // 224
-        {
-          i += 2;
-          if (i >= buf.length)
-            throw new CharConversionException("Incomplete input");
+    for (int i = offset; i < offset + len; i++)
+      {
+        byte b = buf[i];
 
-          ++num_chars;
-        }
-      // Two byte encoding case
-      else if ((buf[i] & 0xC0) == 0xC0) // 192
-        {
-          ++i;
-          if (i >= buf.length)
-            throw new CharConversionException("Incomplete input");
+        if ((b & 0x80) == 0)
+          {
+            if (more != 0)
+                num_chars++; // ?
+            more = 0;
+            num_chars++;
+          }
+        else if ((b & 0xC0) == 0x80)
+          {
+            if (more == 0)
+                num_chars++; // ?
+            else
+              {
+                more--;
+                if (more == 0)
+                    num_chars++;
+              }
+          }
+        else
+          {
+            if (more != 0)
+                num_chars++; // ?
 
-          ++num_chars;
-        }
-      // One byte encoding case
-      else if (buf[i] < 0x80) // 128
-        {
-          ++num_chars;
-        }
-      else
-        {
-          throw new CharConversionException("Bad input encountered: " + buf[i]);
-        }
-    }
+            if ((b & 0xF0) == 0xE0)
+                more = 2;
+            else if ((b & 0xE0) == 0xC0)
+                more = 1;
+            else
+                num_chars++; // ?
+          }
+      }
 
-  return(num_chars);
+    return num_chars;
 }
 
 /*************************************************************************/
@@ -123,59 +129,56 @@ charsInByteArray(byte[] buf, int offset, int len) throws CharConversionException
   */
 public char[]
 convertToChars(byte[] buf, int buf_offset, int len, char cbuf[],
-               int cbuf_offset) throws CharConversionException
+               int cbuf_offset)
 {
-  int val;
+    int more = 0;
+    int val = 0;
 
-  // Scan the buffer with full validation checks
-  for (int i = buf_offset; i < buf_offset + len; i++)
-    {
-      // Three byte encoding case.
-      if ((buf[i] & 0xE0) == 0xE0) // 224
-        {
-          if ((i + 2) >= buf.length)
-            throw new CharConversionException("Incomplete input");
+    for (int i = buf_offset; i < buf_offset + len; i++)
+      {
+        byte b = buf[i];
 
-          val = (buf[i] & 0x0F) << 12;
-          ++i;
+        if ((b & 0x80) == 0)
+          {
+            if (more != 0)
+                cbuf[cbuf_offset++] = REPLACEMENT_CHARACTER;
+            more = 0;
+            cbuf[cbuf_offset++] = (char)b;
+          }
+        else if ((b & 0xC0) == 0x80)
+          {
+            if (more == 0)
+                cbuf[cbuf_offset++] = REPLACEMENT_CHARACTER;
+            else
+              {
+                val <<= 6;
+                val |= b & 0x3F;
+                more--;
+                if (more == 0)
+                    cbuf[cbuf_offset++] = (char)val;
+              }
+          }
+        else
+          {
+            if (more != 0)
+                cbuf[cbuf_offset++] = REPLACEMENT_CHARACTER;
 
-          if ((buf[i] & 0x80) != 0x80)
-            throw new CharConversionException("Bad input byte: " + buf[i]);
-          val |= (buf[i] & 0x3F) << 6; 
-          ++i;
+            if ((b & 0xF0) == 0xE0)
+              {
+                val = b & 0x0F;
+                more = 2;
+              }
+            else if ((b & 0xE0) == 0xC0)
+              {
+                val = b & 0x1F;
+                more = 1;
+              }
+            else
+                cbuf[cbuf_offset++] = REPLACEMENT_CHARACTER;
+          }
+      }
 
-          if ((buf[i] & 0x80) != 0x80)
-            throw new CharConversionException("Bad input byte: " + buf[i]);
-          val |= (buf[i] & 0x3F);
-        }
-      // Two byte encoding case
-      else if ((buf[i] & 0xC0) == 0xC0) // 192
-        {
-          if ((i + 1) >= buf.length)
-            throw new CharConversionException("Incomplete input");
-
-          val = (buf[i] & 0x1F) << 6;
-          ++i;
-
-          if ((buf[i] & 0x80) != 0x80)
-            throw new CharConversionException("Bad input byte: " + buf[i]);
-          val |= (buf[i] & 0x3F);
-        }
-      // One byte encoding case
-      else if (buf[i] < 0x80) // 128
-        {
-          val = buf[i];
-        }
-      else
-        {
-          throw new CharConversionException("Bad input encountered: " + buf[i]);
-        }
-
-      cbuf[cbuf_offset] = (char)val;
-      ++cbuf_offset;
-    }
-
-  return(cbuf);
+    return cbuf;
 }
 
 /*************************************************************************/
@@ -186,73 +189,68 @@ convertToChars(byte[] buf, int buf_offset, int len, char cbuf[],
 public int
 read(char[] cbuf, int offset, int len) throws IOException
 {
-  int val;
+    int start_offset = offset;
+    int more = 0;
+    int val = 0;
 
-  // Note that this method of reading a single byte at a time is 
-  // inefficient and should probably be replaced
+    while (offset < start_offset + len)
+      {
+        int b = in.read();
+        if (b == -1)
+          {
+            if (more != 0)
+                cbuf[offset++] = REPLACEMENT_CHARACTER;
+            return offset - start_offset;
+          }
 
-  for (int i = offset; i < offset + len; i++)
-    {
-      // Read a byte
-      int b = in.read();
-      if (b == -1)
-        if (i == offset)
-          return(-1);
+        if ((b & 0x80) == 0)
+          {
+            if (more != 0)
+                cbuf[offset++] = REPLACEMENT_CHARACTER;
+            more = 0;
+            cbuf[offset++] = (char)b;
+          }
+        else if ((b & 0xC0) == 0x80)
+          {
+            if (more == 0)
+                cbuf[offset++] = REPLACEMENT_CHARACTER;
+            else
+              {
+                val <<= 6;
+                val |= b & 0x3F;
+                more--;
+                if (more == 0)
+                    cbuf[offset++] = (char)val;
+              }
+          }
         else
-          return(i - offset);
+          {
+            if (more != 0)
+                cbuf[offset++] = REPLACEMENT_CHARACTER;
 
-      // Three byte encoding case.
-      if ((b & 0xE0) == 0xE0) // 224
-        {
-          val = (b & 0x0F) << 12;
- 
-          if ((b = in.read()) == -1)
-            throw new CharConversionException("Pre-mature end of input"); 
+            if ((b & 0xF0) == 0xE0)
+              {
+                val = b & 0x0F;
+                more = 2;
+              }
+            else if ((b & 0xE0) == 0xC0)
+              {
+                val = b & 0x1F;
+                more = 1;
+              }
+            else
+                cbuf[offset++] = REPLACEMENT_CHARACTER;
+          }
+        
+        // if no more bytes available, terminate loop early, instead of
+        // blocking in in.read().
+        // Do not test this in the for condition: it must call in.read() at
+        // least once (and thus block if "in" is empty).
+        if (more == 0 && in.available() <= 0)
+            break;
+      }
 
-          if ((b & 0x80) != 0x80)
-            throw new CharConversionException("Bad input byte: " + b);
-          val |= (b & 0x3F) << 6; 
-
-          if ((b = in.read()) == -1)
-            throw new CharConversionException("Pre-mature end of input"); 
-
-          if ((b & 0x80) != 0x80)
-            throw new CharConversionException("Bad input byte: " + b);
-          val |= (b & 0x3F);
-        }
-      // Two byte encoding case
-      else if ((b & 0xC0) == 0xC0) // 192
-        {
-          val = (b & 0x1F) << 6;
-
-          if ((b = in.read()) == -1)
-            throw new CharConversionException("Pre-mature end of input"); 
-
-          if ((b & 0x80) != 0x80)
-            throw new CharConversionException("Bad input byte: " + b);
-          val |= (b & 0x3F);
-        }
-      // One byte encoding case
-      else if (b < 0x80) // 128
-        {
-          val = b;
-        }
-      else
-        {
-          throw new CharConversionException("Bad input encountered: " + b);
-        }
-
-      cbuf[i] = (char)val;
-
-      // if no more bytes available, terminate loop early, instead of
-      // blocking in in.read().
-      // Do not test this in the for condition: it must call in.read() at
-      // least once (and thus block if "in" is empty).
-      if (in.available() <= 0)
-      	return (1 + i - offset);
-    }
-
-  return(len);
+    return offset - start_offset;
 }
 
 } // class DecoderUTF8

@@ -42,7 +42,6 @@ package java.lang;
 import gnu.java.io.EncodingManager;
 import gnu.java.lang.CharData;
 
-import java.io.CharConversionException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.util.Comparator;
@@ -319,16 +318,9 @@ public final class String implements Serializable, Comparable, CharSequence
   {
     if (offset < 0 || count < 0 || offset + count > data.length)
       throw new StringIndexOutOfBoundsException();
-    try
-      {
-        // XXX Consider using java.nio here.
-        value = EncodingManager.getDecoder(encoding)
-          .convertToChars(data, offset, count);
-      }
-    catch (CharConversionException cce)
-      {
-        throw new Error(cce);
-      }
+    // XXX Consider using java.nio here.
+    value = EncodingManager.getDecoder(encoding)
+        .convertToChars(data, offset, count);
     this.offset = 0;
     this.count = value.length;
   }
@@ -378,16 +370,9 @@ public final class String implements Serializable, Comparable, CharSequence
   {
     if (offset < 0 || count < 0 || offset + count > data.length)
       throw new StringIndexOutOfBoundsException();
-    try
-      {
-        // XXX Consider using java.nio here.
-        value = EncodingManager.getDecoder()
-          .convertToChars(data, offset, count);
-      }
-    catch (CharConversionException cce)
-      {
-        throw new Error(cce);
-      }
+    // XXX Consider using java.nio here.
+    value = EncodingManager.getDecoder()
+        .convertToChars(data, offset, count);
     this.offset = 0;
     this.count = value.length;
   }
@@ -548,51 +533,37 @@ public final class String implements Serializable, Comparable, CharSequence
    * specified encoding method, so the result may be longer or shorter than
    * the String. For more encoding control, use
    * {@link java.nio.charset.CharsetEncoder}, and for valid character sets,
-   * see {@link java.nio.charset.Charset}. The behavior is not specified if
-   * the encoder encounters a problem; this implementation returns null.
+   * see {@link java.nio.charset.Charset}. Unsupported characters get
+   * replaced by an encoding specific byte.
    *
    * @param enc encoding name
-   * @return the resulting byte array, or null on a problem
+   * @return the resulting byte array
    * @throws NullPointerException if enc is null
    * @throws UnsupportedEncodingException if encoding is not supported
    * @since 1.1
    */
   public byte[] getBytes(String enc) throws UnsupportedEncodingException
   {
-    try
-      {
-        // XXX Consider using java.nio here.
-        return EncodingManager.getEncoder(enc)
-          .convertToBytes(value, offset, count);
-      }
-    catch (CharConversionException e)
-      {
-        return null;
-      }
+    // XXX Consider using java.nio here.
+    return EncodingManager.getEncoder(enc)
+        .convertToBytes(value, offset, count);
   }
 
   /**
    * Converts the Unicode characters in this String to a byte array. Uses the
    * encoding of the platform's default charset, so the result may be longer
    * or shorter than the String. For more encoding control, use
-   * {@link java.nio.charset.CharsetEncoder}.  The behavior is not specified if
-   * the encoder encounters a problem; this implementation returns null.
+   * {@link java.nio.charset.CharsetEncoder}. Unsupported characters get
+   * replaced by an encoding specific byte.
    *
    * @return the resulting byte array, or null on a problem
    * @since 1.1
    */
   public byte[] getBytes()
   {
-    try
-      {
-        // XXX Consider using java.nio here.
-        return EncodingManager.getEncoder()
-          .convertToBytes(value, offset, count);
-      }
-    catch (CharConversionException e)
-      {
-        return null;
-      }
+    // XXX Consider using java.nio here.
+    return EncodingManager.getEncoder()
+        .convertToBytes(value, offset, count);
   }
 
   /**

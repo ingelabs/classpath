@@ -39,7 +39,6 @@ exception statement from your version. */
 package gnu.java.io.encode;
 
 import java.io.OutputStream;
-import java.io.CharConversionException;
 import java.io.IOException;
 
 /**
@@ -56,13 +55,13 @@ import java.io.IOException;
   */
 public abstract class EncoderEightBitLookup extends Encoder
 {
-
 /*************************************************************************/
 
 /*
  * Class Variables
  */
  
+private static final byte BAD_CHARACTER = (byte)'?';
 
 /**
   * This is the second generation lookup table that is loaded when the
@@ -142,7 +141,7 @@ bytesInCharArray(char[] buf, int offset, int len)
   */
 public byte[]
 convertToBytes(char[] buf, int buf_offset, int len, byte[] bbuf, 
-               int bbuf_offset) throws CharConversionException
+               int bbuf_offset)
 {
   for (int i = 0; i < len; i++)
     {
@@ -161,10 +160,7 @@ convertToBytes(char[] buf, int buf_offset, int len, byte[] bbuf,
             }
           else
             {
-              if (bad_char_set)
-                bbuf[bbuf_offset + i] = encoding_table[bad_char];
-              else
-                throw new CharConversionException("Encountered unencodable character: " + buf[buf_offset + i]);
+              bbuf[bbuf_offset + i] = BAD_CHARACTER;
             }
         }
       else

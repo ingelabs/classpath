@@ -1,3 +1,27 @@
+2004-11-17  Jeroen Frijters  <jeroen@frijters.net>
+
+	* gnu/java/io/decode/Decoder.java: Removed throws
+	CharConversionException from the various methods.
+	* gnu/java/io/decode/DecoderUTF8.java
+	(REPLACEMENT_CHARACTER): New field.
+	(charsInByteArray, convertToChars, read): Removed throws
+	CharConversionException and reimplemented algorithm to replace
+	illegal UTF-8 sequences with REPLACEMENT_CHARACTER instead of
+	throwing an exception.
+	* gnu/java/io/encode/Encoder.java
+	(bad_char, bad_char_set, setBadCharValue): Removed.
+	(bytesInCharArray, convertToBytes): Removed throws
+	CharConversionException.
+	* gnu/java/io/encode/EncoderEightBitLookup.java
+	(BAD_CHARACTER): New field.
+	(convertToBytes): Changed to always replace invalid characters with
+	BAD_CHARACTER instead of throwing an exception if bad_char hadn't
+	been set.
+	* java/io/OutputStreamWriter.java
+	(OutputStreamWriter): Removed call to Encoder.setBadCharValue().
+	* java/lang/String.java: Removed try/catch block around
+	Encoder/Decoder calls that no longer throw CharConversionException.
+
 2004-11-17  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/print/PrinterJob.java: Reformatted.
