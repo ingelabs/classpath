@@ -151,42 +151,46 @@ public class IndexedPropertyDescriptor extends PropertyDescriptor {
 	 **/
 	public IndexedPropertyDescriptor(String name, Method getMethod, Method setMethod, Method setIndex, Method getIndex) throws IntrospectionException {
 		super(name);
-		if(getMethod.getParameterTypes().length > 0) {
+		if(getMethod != null && getMethod.getParameterTypes().length > 0) {
 			throw new IntrospectionException("get method has parameters");
 		}
-		if(setMethod.getParameterTypes().length != 1) {
+		if(getMethod != null && setMethod.getParameterTypes().length != 1) {
 			throw new IntrospectionException("set method does not have exactly one parameter");
 		}
-		if(!getMethod.getReturnType().equals(setMethod.getParameterTypes()[0])) {
-			throw new IntrospectionException("set and get methods do not share the same type");
-		}
-		if(!getMethod.getDeclaringClass().isAssignableFrom(setMethod.getDeclaringClass())
-		   && !setMethod.getDeclaringClass().isAssignableFrom(getMethod.getDeclaringClass())) {
-			throw new IntrospectionException("set and get methods are not in the same class.");
+		if(getMethod != null && setMethod != null) {
+			if(!getMethod.getReturnType().equals(setMethod.getParameterTypes()[0])) {
+				throw new IntrospectionException("set and get methods do not share the same type");
+			}
+			if(!getMethod.getDeclaringClass().isAssignableFrom(setMethod.getDeclaringClass())
+			   && !setMethod.getDeclaringClass().isAssignableFrom(getMethod.getDeclaringClass())) {
+				throw new IntrospectionException("set and get methods are not in the same class.");
+			}
 		}
 
-		if(getIndex.getParameterTypes().length != 1
-		   || !(getIndex.getParameterTypes()[0]).equals(java.lang.Integer.TYPE)) {
+		if(getIndex != null && (getIndex.getParameterTypes().length != 1
+		   || !(getIndex.getParameterTypes()[0]).equals(java.lang.Integer.TYPE))) {
 			throw new IntrospectionException("get index method has wrong parameters");
 		}
-		if(setIndex.getParameterTypes().length != 2
-		   || !(setIndex.getParameterTypes()[0]).equals(java.lang.Integer.TYPE)) {
+		if(setIndex != null && (setIndex.getParameterTypes().length != 2
+		   || !(setIndex.getParameterTypes()[0]).equals(java.lang.Integer.TYPE))) {
 			throw new IntrospectionException("set index method has wrong parameters");
 		}
-		if(!getIndex.getReturnType().equals(setIndex.getParameterTypes()[1])) {
-			throw new IntrospectionException("set index methods do not share the same type");
-		}
-		if(!getIndex.getDeclaringClass().isAssignableFrom(setIndex.getDeclaringClass())
-		   && !setIndex.getDeclaringClass().isAssignableFrom(getIndex.getDeclaringClass())) {
-			throw new IntrospectionException("get and set index methods are not in the same class.");
+		if(getIndex != null && setIndex != null) {
+			if(!getIndex.getReturnType().equals(setIndex.getParameterTypes()[1])) {
+				throw new IntrospectionException("set index methods do not share the same type");
+			}
+			if(!getIndex.getDeclaringClass().isAssignableFrom(setIndex.getDeclaringClass())
+			   && !setIndex.getDeclaringClass().isAssignableFrom(getIndex.getDeclaringClass())) {
+				throw new IntrospectionException("get and set index methods are not in the same class.");
+			}
 		}
 
-		if(!getIndex.getDeclaringClass().isAssignableFrom(getMethod.getDeclaringClass())
+		if(getIndex != null && getMethod != null && !getIndex.getDeclaringClass().isAssignableFrom(getMethod.getDeclaringClass())
 		   && !getMethod.getDeclaringClass().isAssignableFrom(getIndex.getDeclaringClass())) {
 			throw new IntrospectionException("methods are not in the same class.");
 		}
 
-		if(!Array.newInstance(getIndex.getReturnType(),0).getClass().equals(getMethod.getReturnType())) {
+		if(getIndex != null && getMethod != null && !Array.newInstance(getIndex.getReturnType(),0).getClass().equals(getMethod.getReturnType())) {
 			throw new IntrospectionException("array methods do not match index methods.");
 		}
 
