@@ -1,5 +1,10 @@
 2004-09-23  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/DebugGraphics.java:
+	Re-formatted. Fixed some javadocs.
+
+2004-09-23  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/AbstractButton.java:
 	Little re-formatting.
 	(changeEvent): Made protected.
