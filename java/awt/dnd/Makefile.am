@@ -2,13 +2,23 @@
 SUBDIRS = peer
 
 EXTRA_DIST = \
+Autoscroll.java \
 DnDConstants.java \
 DragGestureEvent.java \
 DragGestureListener.java \
 DragGestureRecognizer.java \
 DragSource.java \
+DragSourceDropEvent.java \
 DragSourceListener.java \
 DragSourceMotionListener.java \
 DropTarget.java \
+DropTargetAdapter.java \
+DropTargetContext.java \
+DropTargetDragEvent.java \
+DropTargetDropEvent.java \
+DropTargetEvent.java \
+DropTargetListener.java \
 InvalidDnDOperationException.java \
+MouseDragGestureRecognizer.java \
+peer/DropTargetContextPeer.java \
 package.html
