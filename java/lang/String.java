@@ -299,7 +299,7 @@ public final class String {
        throws NullPointerException, IndexOutOfBoundsException {
     if (offset < 0 || count < 0 || offset+count > ascii.length)
       throw new StringIndexOutOfBoundsException();
-    this.count = count-offset;
+    this.count = count;
     value = new char[count];
     for (int i = 0; i < count; i++)
       value[i] = (char) (((hibyte & 0xff) << 8) | (ascii[i+offset] & 0xff));

@@ -1,3 +1,8 @@
+2000-07-28  Weldon Washburn <weldon.washburn@intel.com>
+
+	* java/lang/String.java (String(byte[],int,int,int)): Properly
+	initialize `this.count'.
+
 2000-07-27  Warren Levy  <warrenl@cygnus.com>
 
 	* gnu/java/security/provider/SHA.java (munch): Reset buffer to 0 so
@@ -45,6 +50,18 @@
 	(execute): New method.
 	(executeQuery): New method.
 	(executeUpdate): New method.
+
+2000-06-28  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* java/lang/ThreadGroup.java: Added synchronized flag to many
+	methods.
+	(destroyed_flag): Removed.
+	(isDestroyed, removeGroup, removeThread): Test for parent == null.
+	(activeCount): Added spec note.
+	
+2000-06-20  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* java/lang/ThreadGroup.java: Merged with libgcj's ThreadGroup.
 
 2000-06-18  Mark Wielaard <mark@klomp.org>
 
