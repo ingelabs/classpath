@@ -309,7 +309,7 @@ close() throws IOException
   *
   * @exception IOException If an error occurs
   */
-public synchronized native void
+private synchronized native void
 closeInternal(int native_fd) throws IOException;
 
 /*************************************************************************/
@@ -320,7 +320,7 @@ closeInternal(int native_fd) throws IOException;
   *
   * @exception IOException If an error occurs (ignored by the Java runtime)
   */
-public void
+protected void
 finalize() throws IOException
 {
   close();
