@@ -40,7 +40,7 @@ exception statement from your version. */
 #include "gnu_java_awt_peer_gtk_GtkCheckboxPeer.h"
 #include "gnu_java_awt_peer_gtk_GtkComponentPeer.h"
 
-static void item_toggled (GtkToggleButton * item, jobject peer);
+static void item_toggled (GtkToggleButton *item, jobject peer);
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer_dispose
   (JNIEnv *env, jobject obj)
@@ -77,7 +77,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkCheckboxGroupPeer_remove
 }
 
 JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeCreate
+Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeCreate
   (JNIEnv *env, jobject obj, jobject group, jboolean state)
 {
   GtkWidget *button;
@@ -108,7 +108,7 @@ JNIEXPORT void JNICALL
 }
 
 JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_connectSignals
+Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_connectSignals
   (JNIEnv *env, jobject obj)
 {
   void *ptr = NSA_GET_PTR (env, obj);
@@ -118,7 +118,7 @@ JNIEXPORT void JNICALL
   gdk_threads_enter ();
 
   g_signal_connect (G_OBJECT (ptr), "toggled",
-		    GTK_SIGNAL_FUNC (item_toggled), *gref);
+		      GTK_SIGNAL_FUNC (item_toggled), *gref);
 
   gdk_threads_leave ();
 
@@ -126,8 +126,8 @@ JNIEXPORT void JNICALL
   Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectSignals (env, obj);
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeSetCheckboxGroup
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_nativeSetCheckboxGroup
   (JNIEnv *env, jobject obj, jobject group)
 {
   GtkRadioButton *button;
@@ -148,7 +148,7 @@ JNIEXPORT void JNICALL
     gtk_radio_button_set_group (button, NULL);
   else
     gtk_radio_button_set_group (button,
-				gtk_radio_button_group
+				gtk_radio_button_group 
 				(GTK_RADIO_BUTTON (native_group)));
 
   gdk_threads_leave ();
@@ -165,7 +165,7 @@ JNIEXPORT void JNICALL
 }
 
 JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkSetFont
+Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkSetFont
   (JNIEnv *env, jobject obj, jstring name, jint style, jint size)
 {
   const char *font_name;
@@ -177,14 +177,14 @@ JNIEXPORT void JNICALL
   ptr = NSA_GET_PTR (env, obj);
 
   button = GTK_WIDGET (ptr);
-  label = gtk_bin_get_child (GTK_BIN (button));
+  label = gtk_bin_get_child (GTK_BIN(button));
 
   if (!label)
-    return;
+      return;
 
   font_name = (*env)->GetStringUTFChars (env, name, NULL);
 
-  gdk_threads_enter ();
+  gdk_threads_enter();
 
   font_desc = pango_font_description_from_string (font_name);
   pango_font_description_set_size (font_desc, size * PANGO_SCALE);
@@ -194,18 +194,18 @@ JNIEXPORT void JNICALL
 
   if (style & AWT_STYLE_ITALIC)
     pango_font_description_set_style (font_desc, PANGO_STYLE_OBLIQUE);
-
-  gtk_widget_modify_font (GTK_WIDGET (label), font_desc);
-
+  
+  gtk_widget_modify_font (GTK_WIDGET(label), font_desc);
+  
   pango_font_description_free (font_desc);
-
-  gdk_threads_leave ();
-
+  
+  gdk_threads_leave();
+  
   (*env)->ReleaseStringUTFChars (env, name, font_name);
 }
 
 JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkSetLabel
+Java_gnu_java_awt_peer_gtk_GtkCheckboxPeer_gtkSetLabel
   (JNIEnv *env, jobject obj, jstring label)
 {
   const char *str;
@@ -214,7 +214,7 @@ JNIEXPORT void JNICALL
 
   ptr = NSA_GET_PTR (env, obj);
 
-  label_widget = gtk_bin_get_child (GTK_BIN (ptr));
+  label_widget = gtk_bin_get_child (GTK_BIN(ptr));
 
   str = (*env)->GetStringUTFChars (env, label, 0);
 
@@ -228,7 +228,7 @@ JNIEXPORT void JNICALL
 }
 
 static void
-item_toggled (GtkToggleButton * item, jobject peer)
+item_toggled (GtkToggleButton *item, jobject peer)
 {
   //g_print ("toggled\n");
   (*gdk_env)->CallVoidMethod (gdk_env, peer,

@@ -40,10 +40,10 @@ exception statement from your version. */
 #include "gnu_java_awt_peer_gtk_GtkTextAreaPeer.h"
 
 #define TEXT_FROM_SW(obj) (GTK_TEXT_VIEW(GTK_SCROLLED_WINDOW (obj)->container.child))
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_create
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_create
   (JNIEnv *env, jobject obj,
-   jint textview_width, jint textview_height, jint scroll)
+   jint textview_width, jint textview_height,  jint scroll)
 {
   GtkWidget *text, *sw;
 
@@ -60,30 +60,27 @@ JNIEXPORT void JNICALL
   gtk_container_add (GTK_CONTAINER (sw), text);
 
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
-				  /* horizontal scrollbar */
-				  (scroll == AWT_TEXTAREA_SCROLLBARS_BOTH
-				   || scroll ==
-				   AWT_TEXTAREA_SCROLLBARS_HORIZONTAL_ONLY) ?
-				  GTK_POLICY_ALWAYS : GTK_POLICY_NEVER,
-				  /* vertical scrollbar */
-				  (scroll == AWT_TEXTAREA_SCROLLBARS_BOTH
-				   || scroll ==
-				   AWT_TEXTAREA_SCROLLBARS_VERTICAL_ONLY) ?
-				  GTK_POLICY_ALWAYS : GTK_POLICY_NEVER);
+     /* horizontal scrollbar */
+     (scroll == AWT_TEXTAREA_SCROLLBARS_BOTH
+      || scroll == AWT_TEXTAREA_SCROLLBARS_HORIZONTAL_ONLY) ? 
+       GTK_POLICY_ALWAYS : GTK_POLICY_NEVER,
+     /* vertical scrollbar */
+     (scroll == AWT_TEXTAREA_SCROLLBARS_BOTH
+      || scroll == AWT_TEXTAREA_SCROLLBARS_VERTICAL_ONLY) ? 
+       GTK_POLICY_ALWAYS : GTK_POLICY_NEVER);
 
   gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (text),
 			       (scroll == AWT_TEXTAREA_SCROLLBARS_BOTH
-				|| scroll ==
-				AWT_TEXTAREA_SCROLLBARS_HORIZONTAL_ONLY) ?
-			       GTK_WRAP_NONE : GTK_WRAP_WORD);
+				|| scroll == AWT_TEXTAREA_SCROLLBARS_HORIZONTAL_ONLY)
+			       ? GTK_WRAP_NONE : GTK_WRAP_WORD);
 
   gdk_threads_leave ();
 
   NSA_SET_PTR (env, obj, sw);
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_insert
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_insert
   (JNIEnv *env, jobject obj, jstring contents, jint position)
 {
   GtkTextBuffer *buf;
@@ -91,11 +88,11 @@ JNIEXPORT void JNICALL
   GtkWidget *text;
   void *ptr;
   const char *str;
-  int pos = position;
+  int pos=position;
 
   ptr = NSA_GET_PTR (env, obj);
   str = (*env)->GetStringUTFChars (env, contents, NULL);
-
+  
   gdk_threads_enter ();
 
   text = GTK_WIDGET (TEXT_FROM_SW (ptr));
@@ -109,8 +106,8 @@ JNIEXPORT void JNICALL
   (*env)->ReleaseStringUTFChars (env, contents, str);
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_replaceRange
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_replaceRange
   (JNIEnv *env, jobject obj, jstring contents, jint start, jint end)
 {
   GtkWidget *text;
@@ -123,9 +120,9 @@ JNIEXPORT void JNICALL
 
   ptr = NSA_GET_PTR (env, obj);
   str = (*env)->GetStringUTFChars (env, contents, NULL);
-
+  
   gdk_threads_enter ();
-
+  
   text = GTK_WIDGET (TEXT_FROM_SW (ptr));
 
   buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (text));
@@ -135,14 +132,14 @@ JNIEXPORT void JNICALL
   gtk_text_buffer_delete (buf, &startIter, &endIter);
 
   gtk_text_buffer_get_iter_at_offset (buf, &iter, mystart);
-  gtk_text_buffer_insert (buf, &iter, str, strlen (str));
+  gtk_text_buffer_insert(buf, &iter, str, strlen (str));
 
   gdk_threads_leave ();
   (*env)->ReleaseStringUTFChars (env, contents, str);
 }
 
 JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkSetFont
+Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_gtkSetFont
   (JNIEnv *env, jobject obj, jstring name, jint style, jint size)
 {
   const char *font_name;
@@ -156,7 +153,7 @@ JNIEXPORT void JNICALL
 
   font_name = (*env)->GetStringUTFChars (env, name, NULL);
 
-  gdk_threads_enter ();
+  gdk_threads_enter();
 
   font_desc = pango_font_description_from_string (font_name);
   pango_font_description_set_size (font_desc, size * PANGO_SCALE);
@@ -167,17 +164,17 @@ JNIEXPORT void JNICALL
   if (style & AWT_STYLE_ITALIC)
     pango_font_description_set_style (font_desc, PANGO_STYLE_OBLIQUE);
 
-  gtk_widget_modify_font (GTK_WIDGET (text), font_desc);
+  gtk_widget_modify_font (GTK_WIDGET(text), font_desc);
 
   pango_font_description_free (font_desc);
 
-  gdk_threads_leave ();
+  gdk_threads_leave();
 
   (*env)->ReleaseStringUTFChars (env, name, font_name);
 }
 
 JNIEXPORT jint JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_getHScrollbarHeight
+Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_getHScrollbarHeight
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
@@ -194,8 +191,7 @@ JNIEXPORT jint JNICALL
   if (sw)
     {
       gtk_widget_size_request (sw->hscrollbar, &requisition);
-      gtk_widget_style_get (GTK_WIDGET (sw), "scrollbar_spacing", &spacing,
-			    NULL);
+      gtk_widget_style_get (GTK_WIDGET (sw), "scrollbar_spacing", &spacing, NULL);
       height = requisition.height + spacing;
     }
 
@@ -204,8 +200,8 @@ JNIEXPORT jint JNICALL
   return height;
 }
 
-JNIEXPORT jint JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_getVScrollbarWidth
+JNIEXPORT jint JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkTextAreaPeer_getVScrollbarWidth
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
@@ -222,8 +218,7 @@ JNIEXPORT jint JNICALL
   if (sw)
     {
       gtk_widget_size_request (sw->vscrollbar, &requisition);
-      gtk_widget_style_get (GTK_WIDGET (sw), "scrollbar_spacing", &spacing,
-			    NULL);
+      gtk_widget_style_get (GTK_WIDGET (sw), "scrollbar_spacing", &spacing, NULL);
       width = requisition.width + spacing;
     }
 

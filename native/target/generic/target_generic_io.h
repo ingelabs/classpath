@@ -45,7 +45,7 @@ Systems    : all
 
 /* check if target_native_io.h included */
 #ifndef __TARGET_NATIVE_IO__
-#error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
+  #error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
 #endif
 
 /****************************** Includes *******************************/
@@ -71,13 +71,12 @@ Systems    : all
 
 #ifdef __cplusplus
 extern "C"
-{
 #endif
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif				/* __TARGET_GENERIC_IO__ */
+#endif /* __TARGET_GENERIC_IO__ */
 
 /* end of file */

@@ -78,6 +78,13 @@ import gnu.classpath.Configuration;
  */
 public final class Array
 {
+  static
+  {
+    if (Configuration.INIT_LOAD_LIBRARY)
+      {
+        System.loadLibrary("javalangreflect");
+      }
+  }
 
   /**
    * This class is uninstantiable.

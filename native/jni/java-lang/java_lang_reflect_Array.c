@@ -50,9 +50,8 @@ exception statement from your version. */
  * Signature: (Ljava/lang/Object;)I
  */
 JNIEXPORT jint JNICALL Java_java_lang_reflect_Array_getLength
-  (JNIEnv *env, jclass thisClass, jobject arr)
-{
-  return (*env)->GetArrayLength (env, arr);
+  (JNIEnv * env, jclass thisClass, jobject arr) {
+	return (*env)->GetArrayLength(env, arr);
 }
 
 /*
@@ -61,7 +60,6 @@ JNIEXPORT jint JNICALL Java_java_lang_reflect_Array_getLength
  * Signature: (Ljava/lang/Class;I)Ljava/lang/Object;
  */
 JNIEXPORT jobject JNICALL Java_java_lang_reflect_Array_createObjectArray
-  (JNIEnv *env, jclass thisClass, jclass arrayType, jint arrayLength)
-{
-  return (jobject) (*env)->NewObjectArray (env, arrayLength, arrayType, NULL);
+  (JNIEnv * env, jclass thisClass, jclass arrayType, jint arrayLength) {
+	return (jobject)(*env)->NewObjectArray(env,arrayLength,arrayType,NULL);
 }

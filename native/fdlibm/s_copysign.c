@@ -66,19 +66,17 @@ Definition (Issue 2).
 #ifndef _DOUBLE_IS_32BITS
 
 #ifdef __STDC__
-double
-copysign (double x, double y)
+	double copysign(double x, double y)
 #else
-double
-copysign (x, y)
-     double x, y;
+	double copysign(x,y)
+	double x,y;
 #endif
 {
-  uint32_t hx, hy;
-  GET_HIGH_WORD (hx, x);
-  GET_HIGH_WORD (hy, y);
-  SET_HIGH_WORD (x, (hx & 0x7fffffff) | (hy & 0x80000000));
-  return x;
+	uint32_t hx,hy;
+	GET_HIGH_WORD(hx,x);
+	GET_HIGH_WORD(hy,y);
+	SET_HIGH_WORD(x,(hx&0x7fffffff)|(hy&0x80000000));
+        return x;
 }
 
 #endif /* _DOUBLE_IS_32BITS */

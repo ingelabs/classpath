@@ -62,7 +62,6 @@ package java.lang.reflect;
  *
  * @author John Keiser
  * @author Eric Blake <ebb9@email.byu.edu>
- * @author David Belanger <dbelan2@cs.mcgill.ca>
  * @see Member
  * @see Class
  * @see Class#getField(String)
@@ -75,22 +74,9 @@ package java.lang.reflect;
 public final class Field
 extends AccessibleObject implements Member
 {
-  private int slot;
-
-  private String name;
   private Class declaringClass;
-  private Class type;
-
- 
-
-
-  byte[] vmData;
-  private  Field(byte[] vmData)
-  {
-    this.vmData = vmData;
-  }
-
-
+  private String name;
+  private int slot;
 
   /**
    * This class is uninstantiable except natively.
@@ -109,14 +95,8 @@ extends AccessibleObject implements Member
    */
   public Class getDeclaringClass()
   {
-    if (declaringClass == null)
-    {
-      declaringClass = nativeGetDeclaringClass(vmData);
-    }
     return declaringClass;
   }
-  public static native Class nativeGetDeclaringClass(byte[] vmData);
-
 
   /**
    * Gets the name of this field.
@@ -124,14 +104,8 @@ extends AccessibleObject implements Member
    */
   public String getName()
   {
-    if (name == null)
-    {
-      name = nativeGetName(vmData);
-    }
     return name;
   }
-  public static native String nativeGetName(byte[] vmData);
-
 
   /**
    * Gets the modifiers this field uses.  Use the <code>Modifier</code>
@@ -142,31 +116,18 @@ extends AccessibleObject implements Member
    * @return an integer representing the modifiers to this Member
    * @see Modifier
    */
-  public int getModifiers() {
-    return nativeGetModifiers(vmData);    
-  }
-  private native int nativeGetModifiers(byte[] vmData);
+  public native int getModifiers();
 
   /**
    * Gets the type of this field.
    * @return the type of this field
    */
-  public Class getType()
-  {
-    if (type == null)
-    {
-      type = nativeGetType(vmData);
-    }
-    return type;
-  }
-  public static native Class nativeGetType(byte[] vmData);
-
- 
+  public native Class getType();
 
   /**
    * Compare two objects to see if they are semantically equivalent.
    * Two Fields are semantically equivalent if they have the same declaring
-   * class, name, and type. Since you can't create a Field except through
+   * class, name, and type. Since you can't creat a Field except through
    * the VM, this is just the == relation.
    *
    * @param o the object to compare to
@@ -215,16 +176,6 @@ extends AccessibleObject implements Member
     sb.append(getName());
     return sb.toString();
   }
-
-
-  // DB:
-  //
-  // ****** TODO: Add checks to the get.../set... methods.
-  //
-  // All checks are done on the Java side for simplicity.
-  //
-
-
  
   /**
    * Get the value of this Field.  If it is primitive, it will be wrapped
@@ -266,89 +217,8 @@ extends AccessibleObject implements Member
    * @see #getFloat(Object)
    * @see #getDouble(Object)
    */
-  public Object get(Object o)
-    throws IllegalAccessException
-  {
-
-    // Checks are delegated to the getTYPE methods
-
-    Class type;
-    type = getType();
-    if (type == Boolean.TYPE) {
-      return getBoolean(o) ? Boolean.TRUE : Boolean.FALSE;
-    } else if (type == Byte.TYPE) {
-      return new Byte(getByte(o));
-    } else if (type == Short.TYPE) {
-      return new Short(getShort(o));
-    } else if (type == Character.TYPE) {
-      return new Character(getChar(o));
-    } else if (type == Integer.TYPE) {
-      return new Integer(getInt(o));
-    } else if (type == Long.TYPE) {
-      return new Long(getLong(o));
-    } else if (type == Float.TYPE) {
-      return new Float(getFloat(o));
-    } else if (type == Double.TYPE) {
-      return new Double(getDouble(o));
-    } else {
-      // for this one, we do the checks here
-
-      checkField(type, o, null);
-      
-      return nativeGetReference(vmData, o);
-
-    }
-  }
-  private native Object nativeGetReference(byte[] vmData, Object o)
+  public native Object get(Object o)
     throws IllegalAccessException;
-
-  // Performs some checks fields access getTYPE() methods.
-  private void checkField(Object o, Class acceptType) {
-    checkField(getType(), o, new Class[] { acceptType } );
-  }
-  private void checkField(Object o, Class[] acceptTypes) {
-    checkField(getType(), o, acceptTypes);
-  }
-  
-  //
-  // If acceptTypes is null, the any field type is good.
-  //
-  private void checkField(Class type, Object o, Class[] acceptTypes) {
-    if (!Modifier.isStatic(getModifiers())) {
-      // instance field checks
-      if (o == null) {
-	throw new NullPointerException();
-      }
-
-      if (!(getDeclaringClass().isInstance(o))) {
-	throw new IllegalArgumentException();
-      }
-    }
-
-
-    // access check
-  
-    // *** TODO ***
-
-
-
-
-    // Acceptable field types
-    // Ex: getBoolean can only be perform on a field of type boolean
-    if (acceptTypes != null) {
-      boolean ok = false;  // assume not okay
-      for (int i = 0; i < acceptTypes.length; i++) {
-	if (type == acceptTypes[i]) {
-	  ok = true;
-	  break;
-	}
-      }
-      if (!ok) {
-	throw new IllegalArgumentException();
-      }
-    }
-  }
-
 
   /**
    * Get the value of this boolean Field. If the field is static,
@@ -367,15 +237,8 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  public boolean getBoolean(Object o)
-    throws IllegalAccessException
-  {
-    checkField(o, Boolean.TYPE);
-    return nativeGetBoolean(vmData, o);
-  }
-  private native boolean nativeGetBoolean(byte[] vmData, Object o)
+  public native boolean getBoolean(Object o)
     throws IllegalAccessException;
-  
 
   /**
    * Get the value of this byte Field. If the field is static,
@@ -394,16 +257,8 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  public byte getByte(Object o)
-    throws IllegalAccessException
-  {
-    checkField(o, Byte.TYPE);
-    return nativeGetByte(vmData, o);
-  }
-
-  private native byte nativeGetByte(byte[] vmData, Object o)
+  public native byte getByte(Object o)
     throws IllegalAccessException;
-
 
   /**
    * Get the value of this Field as a char. If the field is static,
@@ -420,14 +275,7 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  public char getChar(Object o)
-    throws IllegalAccessException
-  {
-    checkField(o, Character.TYPE);
-    return nativeGetChar(vmData, o);
-  }
-
-  private native char nativeGetChar(byte[] vmData, Object o)
+  public native char getChar(Object o)
     throws IllegalAccessException;
 
   /**
@@ -447,12 +295,7 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  public short getShort(Object o)
-    throws IllegalAccessException {
-    checkField(o, new Class[] { Byte.TYPE, Short.TYPE });
-    return nativeGetShort(vmData, o);
-  }
-  private native short nativeGetShort(byte[] vmData, Object o)
+  public native short getShort(Object o)
     throws IllegalAccessException;
 
   /**
@@ -472,14 +315,7 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  public int getInt(Object o)
-    throws IllegalAccessException
-  {
-    checkField(o, new Class[] { Byte.TYPE, Short.TYPE,
-			      Character.TYPE, Integer.TYPE } );
-    return nativeGetInt(vmData, o);
-  }
-  private native int nativeGetInt(byte[] vmData, Object o)
+  public native int getInt(Object o)
     throws IllegalAccessException;
 
   /**
@@ -499,15 +335,7 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  public long getLong(Object o)
-    throws IllegalAccessException
-  {
-    checkField(o, new Class[] { Byte.TYPE, Short.TYPE, Character.TYPE,
-			      Integer.TYPE, Long.TYPE });
-    return nativeGetLong(vmData, o);
-  }
-
-  private native long nativeGetLong(byte[] vmData, Object o)
+  public native long getLong(Object o)
     throws IllegalAccessException;
 
   /**
@@ -527,14 +355,7 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  public float getFloat(Object o)
-    throws IllegalAccessException
-  {
-    checkField(o, new Class[] { Byte.TYPE, Short.TYPE, Character.TYPE,
-			      Integer.TYPE, Long.TYPE, Float.TYPE });
-    return nativeGetFloat(vmData, o);	     
-  }
-  public native float nativeGetFloat(byte[] vmData, Object o)
+  public native float getFloat(Object o)
     throws IllegalAccessException;
 
   /**
@@ -555,15 +376,7 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #get(Object)
    */
-  public double getDouble(Object o)
-    throws IllegalAccessException
-  {
-    checkField(o, new Class[] { Byte.TYPE, Short.TYPE, Character.TYPE,
-				Integer.TYPE, Long.TYPE, Float.TYPE,
-				Double.TYPE });
-    return nativeGetDouble(vmData, o);
-  }
-  private native double nativeGetDouble(byte[] vmData, Object o)
+  public native double getDouble(Object o)
     throws IllegalAccessException;
 
   /**
@@ -611,62 +424,8 @@ extends AccessibleObject implements Member
    * @see #setFloat(Object, float)
    * @see #setDouble(Object, double)
    */
-  public void set(Object o, Object value)
-    throws IllegalAccessException
-  {
-
-    // Checks are delegated to the setTYPE methods
-
-    Class type;
-
-    type = getType();
-
-    if (type.isPrimitive()) {
-      // this is a primitive field, unwrap
-
-      if (value instanceof Boolean) {
-	setBoolean(o, ((Boolean) value).booleanValue());
-      } else if (value instanceof Byte) {
-	setByte(o, ((Byte) value).byteValue());
-      } else if (value instanceof Short) {
-	setShort(o, ((Short) value).shortValue());
-      } else if (value instanceof Character) {
-	setChar(o, ((Character) value).charValue());
-      } else if (value instanceof Integer) {
-	setInt(o, ((Integer) value).intValue());
-      } else if (value instanceof Long) {
-	setLong(o, ((Long) value).longValue());
-      } else if (value instanceof Float) {
-	setFloat(o, ((Float) value).floatValue());
-      } else if (value instanceof Double) {
-	setDouble(o, ((Double) value).doubleValue());
-      } else {
-	// unable to unwrap
-	throw new IllegalArgumentException();
-      }
-
-    } else {
-      // reference type
-
-      checkField(type, o, null);
-      
-      // cannot store reference A into field of type B if A is
-      // not instance of B
-      if (!type.isInstance(value)) {
-	throw new IllegalArgumentException();
-      }
-
-      nativeSetReference(vmData, o, value);
-
-    }
-
-  }
-
-  private native void nativeSetReference(byte[] vmData,
-					 Object o,
-					 Object value)
+  public native void set(Object o, Object value)
     throws IllegalAccessException;
-
 
   /**
    * Set this boolean Field. If the field is static, <code>o</code> will be
@@ -685,16 +444,8 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  public void setBoolean(Object o, boolean value)
-    throws IllegalAccessException
-  {
-    checkField(o, Boolean.TYPE);
-    nativeSetBoolean(vmData, o, value);
-  }
-
-  private native void nativeSetBoolean(byte[] vmData, Object o, boolean value)
+  public native void setBoolean(Object o, boolean value)
     throws IllegalAccessException;
-
 
   /**
    * Set this byte Field. If the field is static, <code>o</code> will be
@@ -713,15 +464,7 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  public void setByte(Object o, byte value)
-    throws IllegalAccessException
-  {
-    checkField(o, new Class[] { Byte.TYPE, Short.TYPE, Integer.TYPE,
-				Long.TYPE, Float.TYPE, Double.TYPE });
-    nativeSetByte(vmData, o, value);
-  }
-
-  private native void nativeSetByte(byte[] vmData, Object o, byte value)
+  public native void setByte(Object o, byte value)
     throws IllegalAccessException;
 
   /**
@@ -741,17 +484,8 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  public void setChar(Object o, char value)
-    throws IllegalAccessException
-  {
-    checkField(o, new Class[] { Character.TYPE, Integer.TYPE, Long.TYPE,
-				Float.TYPE, Double.TYPE } );
-    nativeSetChar(vmData, o, value);
-  }
-
-  private native void nativeSetChar(byte[] vmData, Object o, char value)
+  public native void setChar(Object o, char value)
     throws IllegalAccessException;
-
 
   /**
    * Set this short Field. If the field is static, <code>o</code> will be
@@ -770,15 +504,7 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  public void setShort(Object o, short value)
-    throws IllegalAccessException
-  {
-    checkField(o, new Class[] { Short.TYPE, Integer.TYPE, Long.TYPE,
-				Float.TYPE, Double.TYPE });
-    nativeSetShort(vmData, o, value);
-  }
-
-  private native void nativeSetShort(byte[] vmData, Object o, short value)
+  public native void setShort(Object o, short value)
     throws IllegalAccessException;
 
   /**
@@ -798,17 +524,8 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  public void setInt(Object o, int value)
-    throws IllegalAccessException
-  {
-    checkField(o, new Class[] { Integer.TYPE, Long.TYPE, Float.TYPE,
-				Double.TYPE });
-    nativeSetInt(vmData, o, value);
-  }
-
-  private native void nativeSetInt(byte[] vmData, Object o, int value)
+  public native void setInt(Object o, int value)
     throws IllegalAccessException;
-
 
   /**
    * Set this long Field. If the field is static, <code>o</code> will be
@@ -827,15 +544,8 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  public void setLong(Object o, long value)
-    throws IllegalAccessException {
-    checkField(o, new Class[] { Long.TYPE, Float.TYPE, Double.TYPE });
-    nativeSetLong(vmData, o, value);
-  }
-
-  private native void nativeSetLong(byte[] vmData, Object o, long value)
+  public native void setLong(Object o, long value)
     throws IllegalAccessException;
-
 
   /**
    * Set this float Field. If the field is static, <code>o</code> will be
@@ -854,17 +564,8 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  public void setFloat(Object o, float value)
-    throws IllegalAccessException
-  {
-    // DB: why float or long, why not double also?
-    checkField(o, new Class[] { Float.TYPE, Long.TYPE });
-    nativeSetFloat(vmData, o, value);
-  }
-
-  private native void nativeSetFloat(byte[] vmData, Object o, float value)
+  public native void setFloat(Object o, float value)
     throws IllegalAccessException;
-  
 
   /**
    * Set this double Field. If the field is static, <code>o</code> will be
@@ -883,14 +584,6 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    * @see #set(Object, Object)
    */
-  public void setDouble(Object o, double value)
-    throws IllegalAccessException
-  {
-    checkField(o, Double.TYPE);
-    nativeSetDouble(vmData, o, value);
-  }
-
-  private native void nativeSetDouble(byte[] vmData, Object o, double value)
+  public native void setDouble(Object o, double value)
     throws IllegalAccessException;
-
 }

@@ -40,12 +40,12 @@ exception statement from your version. */
 #include "gnu_java_awt_peer_gtk_GtkComponentPeer.h"
 #include "gnu_java_awt_peer_gtk_GtkScrollbarPeer.h"
 
-static void post_change_event (GtkRange * range, jobject peer);
+static void post_change_event (GtkRange *range, jobject peer);
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_create
-  (JNIEnv *env, jobject obj, jint orientation, jint value,
-   jint min, jint max, jint step_incr, jint page_incr, jint visible_amount)
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_create
+(JNIEnv *env, jobject obj, jint orientation, jint value, 
+ jint min, jint max, jint step_incr, jint page_incr, jint visible_amount)
 {
   GtkWidget *scrollbar;
   GtkObject *adj;
@@ -54,15 +54,16 @@ JNIEXPORT void JNICALL
   NSA_SET_GLOBAL_REF (env, obj);
 
   gdk_threads_enter ();
-
+  
   adj = gtk_adjustment_new ((gdouble) value,
-			    (gdouble) min,
-			    (gdouble) max,
+                            (gdouble) min,
+                            (gdouble) max,
 			    (gdouble) step_incr,
-			    (gdouble) page_incr, (gdouble) visible_amount);
+                            (gdouble) page_incr,
+			    (gdouble) visible_amount);
 
   scrollbar = (orientation) ? gtk_vscrollbar_new (GTK_ADJUSTMENT (adj)) :
-    gtk_hscrollbar_new (GTK_ADJUSTMENT (adj));
+                       gtk_hscrollbar_new (GTK_ADJUSTMENT (adj));
 
   GTK_RANGE (scrollbar)->round_digits = 0;
   /* These calls seem redundant but they are not.  They clamp values
@@ -77,7 +78,7 @@ JNIEXPORT void JNICALL
 }
 
 JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_connectJObject
+Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_connectJObject
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
@@ -94,7 +95,7 @@ JNIEXPORT void JNICALL
 }
 
 JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_connectSignals
+Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_connectSignals
   (JNIEnv *env, jobject obj)
 {
   void *ptr = NSA_GET_PTR (env, obj);
@@ -104,7 +105,7 @@ JNIEXPORT void JNICALL
   gdk_threads_enter ();
 
   g_signal_connect (G_OBJECT (ptr), "value-changed",
-		    G_CALLBACK (post_change_event), *gref);
+                    G_CALLBACK (post_change_event), *gref);
 
   gdk_threads_leave ();
 
@@ -113,9 +114,9 @@ JNIEXPORT void JNICALL
 }
 
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setLineIncrement
-  (JNIEnv *env, jobject obj, jint amount)
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setLineIncrement
+    (JNIEnv *env, jobject obj, jint amount)
 {
   void *ptr;
   GtkAdjustment *adj;
@@ -131,9 +132,9 @@ JNIEXPORT void JNICALL
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setPageIncrement
-  (JNIEnv *env, jobject obj, jint amount)
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setPageIncrement
+    (JNIEnv *env, jobject obj, jint amount)
 {
   void *ptr;
   GtkAdjustment *adj;
@@ -149,9 +150,9 @@ JNIEXPORT void JNICALL
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setValues
-  (JNIEnv *env, jobject obj, jint value, jint visible, jint min, jint max)
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_setValues
+    (JNIEnv *env, jobject obj, jint value, jint visible, jint min, jint max)
 {
   void *ptr;
   GtkAdjustment *adj;
@@ -172,10 +173,10 @@ JNIEXPORT void JNICALL
 }
 
 static void
-post_change_event (GtkRange * range, jobject peer)
+post_change_event (GtkRange *range, jobject peer)
 {
   GtkAdjustment *adj;
   adj = gtk_range_get_adjustment (range);
   (*gdk_env)->CallVoidMethod (gdk_env, peer, postAdjustmentEventID,
-			      AWT_ADJUSTMENT_TRACK, (jint) adj->value);
+                              AWT_ADJUSTMENT_TRACK, (jint) adj->value);
 }

@@ -39,13 +39,14 @@ exception statement from your version. */
 #include "gtkpeer.h"
 #include "gnu_java_awt_peer_gtk_GtkChoicePeer.h"
 
-static void connect_choice_item_selectable_hook (JNIEnv *env,
-						 jobject peer_obj,
-						 GtkItem * menuitem,
+static void connect_choice_item_selectable_hook (JNIEnv *env, 
+						 jobject peer_obj, 
+						 GtkItem *menuitem, 
 						 const char *label);
 
-JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkChoicePeer_create (JNIEnv *env, jobject obj)
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkChoicePeer_create 
+  (JNIEnv *env, jobject obj)
 {
   GtkWidget *menu;
   GtkOptionMenu *option_menu;
@@ -55,14 +56,14 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_create (JNIEnv *env, jobject obj)
   NSA_SET_GLOBAL_REF (env, obj);
 
   gdk_threads_enter ();
-
+  
   option_menu = GTK_OPTION_MENU (gtk_option_menu_new ());
   menu = gtk_menu_new ();
   gtk_widget_show (menu);
 
   gtk_option_menu_set_menu (GTK_OPTION_MENU (option_menu), menu);
 
-  gtk_widget_size_request (gtk_menu_item_new_with_label (""),
+  gtk_widget_size_request (gtk_menu_item_new_with_label (""), 
 			   &child_requisition);
   option_menu->width = child_requisition.width;
   option_menu->height = child_requisition.height;
@@ -72,8 +73,8 @@ Java_gnu_java_awt_peer_gtk_GtkChoicePeer_create (JNIEnv *env, jobject obj)
   NSA_SET_PTR (env, obj, option_menu);
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkChoicePeer_append
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkChoicePeer_append 
   (JNIEnv *env, jobject obj, jobjectArray items)
 {
   gpointer ptr;
@@ -89,11 +90,11 @@ JNIEXPORT void JNICALL
 
   /* Are we adding the first element? */
   if (gtk_option_menu_get_history (GTK_OPTION_MENU (ptr)) < 0)
-    need_set_history = 1;
+      need_set_history = 1;
 
   count = (*env)->GetArrayLength (env, items);
 
-  for (i = 0; i < count; i++)
+  for (i = 0; i < count; i++) 
     {
       jobject item;
       const char *label;
@@ -106,21 +107,21 @@ JNIEXPORT void JNICALL
       gtk_menu_append (menu, menuitem);
       gtk_widget_show (menuitem);
 
-      connect_choice_item_selectable_hook (env, obj,
+      connect_choice_item_selectable_hook (env, obj, 
 					   GTK_ITEM (menuitem), label);
 
       (*env)->ReleaseStringUTFChars (env, item, label);
     }
 
-  /* If we just added the first element select it. */
+  /* If we just added the first element select it. */  
   if (need_set_history)
     gtk_option_menu_set_history (GTK_OPTION_MENU (ptr), 0);
 
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkChoicePeer_nativeAdd
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkChoicePeer_nativeAdd 
   (JNIEnv *env, jobject obj, jstring item, jint index)
 {
   void *ptr;
@@ -130,17 +131,17 @@ JNIEXPORT void JNICALL
   int need_set_history = 0;
 
   ptr = NSA_GET_PTR (env, obj);
-
-  label = (*env)->GetStringUTFChars (env, item, 0);
+  
+  label = (*env)->GetStringUTFChars (env, item, 0);      
 
   gdk_threads_enter ();
-
+  
   current = gtk_option_menu_get_history (GTK_OPTION_MENU (ptr));
 
   /* Are we adding the first element or below or at the currently
      selected one? */
   if ((current < 0) || (current >= index))
-    need_set_history = 1;
+      need_set_history = 1;
 
   menu = gtk_option_menu_get_menu (GTK_OPTION_MENU (ptr));
   menuitem = gtk_menu_item_new_with_label (label);
@@ -151,7 +152,7 @@ JNIEXPORT void JNICALL
 
   /* If we just added the first element select it.
      If we added at of below the currently selected position make
-     the first item the selected one. */
+     the first item the selected one. */  
   if (need_set_history)
     gtk_option_menu_set_history (GTK_OPTION_MENU (ptr), 0);
 
@@ -160,8 +161,8 @@ JNIEXPORT void JNICALL
   (*env)->ReleaseStringUTFChars (env, item, label);
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkChoicePeer_nativeRemove
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkChoicePeer_nativeRemove 
   (JNIEnv *env, jobject obj, jint index)
 {
   void *ptr;
@@ -195,7 +196,7 @@ JNIEXPORT void JNICALL
 
       /* Are we removing the currently selected element? */
       if (gtk_option_menu_get_history (GTK_OPTION_MENU (ptr)) == index)
-	need_set_history = 1;
+        need_set_history = 1;
     }
 
   for (i = from; i >= to; i--)
@@ -206,15 +207,15 @@ JNIEXPORT void JNICALL
     }
 
   /* If we just removed the currently selected element and there are
-     still elements left in the list, make the first item the selected one. */
+     still elements left in the list, make the first item the selected one. */  
   if (need_set_history && gtk_container_children (menu))
     gtk_option_menu_set_history (GTK_OPTION_MENU (ptr), 0);
 
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkChoicePeer_select
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkChoicePeer_select 
   (JNIEnv *env, jobject obj, jint index)
 {
   void *ptr;
@@ -226,8 +227,8 @@ JNIEXPORT void JNICALL
   gdk_threads_leave ();
 }
 
-JNIEXPORT jint JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkChoicePeer_getHistory
+JNIEXPORT jint JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkChoicePeer_getHistory 
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
@@ -245,7 +246,7 @@ JNIEXPORT jint JNICALL
 }
 
 static void
-item_activate (GtkItem * item __attribute__ ((unused)),
+item_activate (GtkItem *item __attribute__((unused)),
 	       struct item_event_hook_info *ie)
 {
   jstring label;
@@ -254,12 +255,14 @@ item_activate (GtkItem * item __attribute__ ((unused)),
   label = (*gdk_env)->NewStringUTF (gdk_env, ie->label);
   (*gdk_env)->CallVoidMethod (gdk_env, ie->peer_obj,
 			      choicePostItemEventID,
-			      label, (jint) AWT_ITEM_SELECTED);
+			      label,
+			      (jint) AWT_ITEM_SELECTED);
   gdk_threads_enter ();
 }
 
 static void
-item_removed (gpointer data, GClosure gc __attribute__ ((unused)))
+item_removed (gpointer data, 
+	      GClosure gc __attribute__((unused)))
 {
   struct item_event_hook_info *ie = data;
 
@@ -268,14 +271,15 @@ item_removed (gpointer data, GClosure gc __attribute__ ((unused)))
 }
 
 static void
-connect_choice_item_selectable_hook (JNIEnv *env,
-				     jobject peer_obj,
-				     GtkItem * menuitem, const char *label)
+connect_choice_item_selectable_hook (JNIEnv *env, 
+				     jobject peer_obj, 
+				     GtkItem *menuitem, 
+				     const char *label)
 {
   struct item_event_hook_info *ie;
   jobject *peer_objGlobPtr;
 
-  ie = (struct item_event_hook_info *)
+  ie = (struct item_event_hook_info *) 
     malloc (sizeof (struct item_event_hook_info));
 
   peer_objGlobPtr = NSA_GET_GLOBAL_REF (env, peer_obj);
@@ -284,7 +288,7 @@ connect_choice_item_selectable_hook (JNIEnv *env,
   ie->peer_obj = *peer_objGlobPtr;
   ie->label = strdup (label);
 
-  g_signal_connect_data (G_OBJECT (menuitem), "activate",
-			 GTK_SIGNAL_FUNC (item_activate), ie,
-			 (GClosureNotify) item_removed, 0);
+  g_signal_connect_data (G_OBJECT (menuitem), "activate", 
+		      GTK_SIGNAL_FUNC (item_activate), ie,
+		      (GClosureNotify) item_removed, 0);
 }

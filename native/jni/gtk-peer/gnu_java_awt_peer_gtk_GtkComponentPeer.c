@@ -40,8 +40,8 @@ exception statement from your version. */
 #include "gnu_java_awt_peer_gtk_GtkComponentPeer.h"
 #include <gtk/gtkprivate.h>
 
-static GtkWidget *find_fg_color_widget (GtkWidget * widget);
-static GtkWidget *find_bg_color_widget (GtkWidget * widget);
+static GtkWidget *find_fg_color_widget (GtkWidget *widget);
+static GtkWidget *find_bg_color_widget (GtkWidget *widget);
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkGenericPeer_dispose
   (JNIEnv *env, jobject obj)
@@ -53,7 +53,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkGenericPeer_dispose
   ptr = NSA_DEL_PTR (env, obj);
 
   gdk_threads_enter ();
-
+  
   /* For now the native state for any object must be a widget.
      However, a subclass could override dispose() if required.  */
   gtk_widget_destroy (GTK_WIDGET (ptr));
@@ -61,9 +61,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkGenericPeer_dispose
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursor
-  (JNIEnv *env, jobject obj, jint type)
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursor 
+  (JNIEnv *env, jobject obj, jint type) 
 {
   void *ptr;
   GtkWidget *widget;
@@ -116,10 +116,10 @@ JNIEXPORT void JNICALL
     default:
       gdk_cursor_type = GDK_LEFT_PTR;
     }
-
+      
   gdk_threads_enter ();
 
-  widget = GTK_WIDGET (ptr);
+  widget = GTK_WIDGET(ptr);
 
   gdk_cursor = gdk_cursor_new (gdk_cursor_type);
   gdk_window_set_cursor (widget->window, gdk_cursor);
@@ -128,14 +128,13 @@ JNIEXPORT void JNICALL
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_requestFocus (JNIEnv *env,
-							  jobject obj)
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_requestFocus
+  (JNIEnv *env, jobject obj)
 {
   void *ptr;
 
   ptr = NSA_GET_PTR (env, obj);
-
+  
   gdk_threads_enter ();
   gtk_widget_grab_focus (GTK_WIDGET (ptr));
   gdk_threads_leave ();
@@ -144,9 +143,9 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_requestFocus (JNIEnv *env,
 /*
  * Find the origin of a widget's window.
  */
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetLocationOnScreen
-  (JNIEnv *env, jobject obj, jintArray jpoint)
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetLocationOnScreen
+  (JNIEnv * env, jobject obj, jintArray jpoint)
 {
   void *ptr;
   jint *point;
@@ -156,24 +155,24 @@ JNIEXPORT void JNICALL
 
   gdk_threads_enter ();
 
-  gdk_window_get_origin (GTK_WIDGET (ptr)->window, point, point + 1);
+  gdk_window_get_origin (GTK_WIDGET (ptr)->window, point, point+1);
 
   if (!GTK_IS_CONTAINER (ptr))
     {
-      *point += GTK_WIDGET (ptr)->allocation.x;
-      *(point + 1) += GTK_WIDGET (ptr)->allocation.y;
+      *point += GTK_WIDGET(ptr)->allocation.x;
+      *(point+1) += GTK_WIDGET(ptr)->allocation.y;
     }
 
   gdk_threads_leave ();
 
-  (*env)->ReleaseIntArrayElements (env, jpoint, point, 0);
+  (*env)->ReleaseIntArrayElements(env, jpoint, point, 0);
 }
 
 /*
  * Find this widget's current size.
  */
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetDimensions
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetDimensions
   (JNIEnv *env, jobject obj, jintArray jdims)
 {
   void *ptr;
@@ -182,7 +181,7 @@ JNIEXPORT void JNICALL
 
   ptr = NSA_GET_PTR (env, obj);
 
-  dims = (*env)->GetIntArrayElements (env, jdims, 0);
+  dims = (*env)->GetIntArrayElements (env, jdims, 0);  
   dims[0] = dims[1] = 0;
 
   gdk_threads_enter ();
@@ -200,8 +199,8 @@ JNIEXPORT void JNICALL
 /*
  * Find this widget's preferred size.
  */
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetPreferredDimensions
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetPreferredDimensions
   (JNIEnv *env, jobject obj, jintArray jdims)
 {
   void *ptr;
@@ -211,7 +210,7 @@ JNIEXPORT void JNICALL
 
   ptr = NSA_GET_PTR (env, obj);
 
-  dims = (*env)->GetIntArrayElements (env, jdims, 0);
+  dims = (*env)->GetIntArrayElements (env, jdims, 0);  
   dims[0] = dims[1] = 0;
 
   gdk_threads_enter ();
@@ -235,26 +234,21 @@ JNIEXPORT void JNICALL
   (*env)->ReleaseIntArrayElements (env, jdims, dims, 0);
 }
 
-JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetUsize (JNIEnv *env,
-							       jobject obj,
-							       jint w, jint h)
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetUsize (JNIEnv *env, 
+    jobject obj, jint w, jint h)
 {
   void *ptr;
 
   ptr = NSA_GET_PTR (env, obj);
-
+  
   gdk_threads_enter ();
   gtk_widget_set_usize (GTK_WIDGET (ptr), w, h);
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setNativeBounds (JNIEnv *env,
-							     jobject obj,
-							     jint x, jint y,
-							     jint width,
-							     jint height)
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setNativeBounds
+  (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)
 {
   GtkWidget *widget;
   void *ptr;
@@ -277,8 +271,8 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_setNativeBounds (JNIEnv *env,
   gdk_threads_leave ();
 }
 
-JNIEXPORT jintArray JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetBackground
+JNIEXPORT jintArray JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetBackground
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
@@ -295,16 +289,16 @@ JNIEXPORT jintArray JNICALL
   array = (*env)->NewIntArray (env, 3);
   rgb = (*env)->GetIntArrayElements (env, array, NULL);
   /* convert color data from 16 bit values down to 8 bit values */
-  rgb[0] = bg.red >> 8;
+  rgb[0] = bg.red   >> 8;
   rgb[1] = bg.green >> 8;
-  rgb[2] = bg.blue >> 8;
+  rgb[2] = bg.blue  >> 8;
   (*env)->ReleaseIntArrayElements (env, array, rgb, 0);
 
   return array;
 }
 
-JNIEXPORT jintArray JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetForeground
+JNIEXPORT jintArray JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetForeground
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
@@ -321,16 +315,16 @@ JNIEXPORT jintArray JNICALL
   array = (*env)->NewIntArray (env, 3);
   rgb = (*env)->GetIntArrayElements (env, array, NULL);
   /* convert color data from 16 bit values down to 8 bit values */
-  rgb[0] = fg.red >> 8;
+  rgb[0] = fg.red   >> 8;
   rgb[1] = fg.green >> 8;
-  rgb[2] = fg.blue >> 8;
+  rgb[2] = fg.blue  >> 8;
   (*env)->ReleaseIntArrayElements (env, array, rgb, 0);
 
   return array;
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetBackground
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetBackground
   (JNIEnv *env, jobject obj, jint red, jint green, jint blue)
 {
   GdkColor normal_color;
@@ -361,8 +355,8 @@ JNIEXPORT void JNICALL
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetForeground
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetForeground
   (JNIEnv *env, jobject obj, jint red, jint green, jint blue)
 {
   GdkColor color;
@@ -387,7 +381,7 @@ JNIEXPORT void JNICALL
 }
 
 JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkSetFont
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkSetFont
   (JNIEnv *env, jobject obj, jstring name, jint style, jint size)
 {
   const char *font_name;
@@ -398,7 +392,7 @@ JNIEXPORT void JNICALL
 
   font_name = (*env)->GetStringUTFChars (env, name, NULL);
 
-  gdk_threads_enter ();
+  gdk_threads_enter();
 
   font_desc = pango_font_description_from_string (font_name);
   pango_font_description_set_size (font_desc, size * PANGO_SCALE);
@@ -409,17 +403,17 @@ JNIEXPORT void JNICALL
   if (style & AWT_STYLE_ITALIC)
     pango_font_description_set_style (font_desc, PANGO_STYLE_OBLIQUE);
 
-  gtk_widget_modify_font (GTK_WIDGET (ptr), font_desc);
+  gtk_widget_modify_font (GTK_WIDGET(ptr), font_desc);
 
   pango_font_description_free (font_desc);
 
-  gdk_threads_leave ();
+  gdk_threads_leave();
 
   (*env)->ReleaseStringUTFChars (env, name, font_name);
 }
 
 void
-set_visible (GtkWidget * widget, jboolean visible)
+set_visible (GtkWidget *widget, jboolean visible)
 {
   if (visible)
     gtk_widget_show (widget);
@@ -428,16 +422,16 @@ set_visible (GtkWidget * widget, jboolean visible)
 }
 
 GtkLayout *
-find_gtk_layout (GtkWidget * parent)
+find_gtk_layout (GtkWidget *parent)
 {
   if (GTK_IS_WINDOW (parent))
     {
-      GList *children = gtk_container_children
-	(GTK_CONTAINER (GTK_BIN (parent)->child));
+      GList *children = gtk_container_children 
+	                  (GTK_CONTAINER (GTK_BIN (parent)->child));
 
       if (GTK_IS_MENU_BAR (children->data))
 	return GTK_LAYOUT (children->next->data);
-      else			/* GTK_IS_LAYOUT (children->data) */
+      else /* GTK_IS_LAYOUT (children->data) */
 	return GTK_LAYOUT (children->data);
     }
 
@@ -447,48 +441,49 @@ find_gtk_layout (GtkWidget * parent)
 #define WIDGET_CLASS(w)  GTK_WIDGET_CLASS (GTK_OBJECT (w)->klass)
 
 void
-set_parent (GtkWidget * widget, GtkContainer * parent)
+set_parent (GtkWidget *widget, GtkContainer *parent)
 {
   if (GTK_IS_WINDOW (parent))
     {
-      GList *children = gtk_container_children
-	(GTK_CONTAINER (GTK_BIN (parent)->child));
+      GList *children = gtk_container_children 
+	                  (GTK_CONTAINER (GTK_BIN (parent)->child));
 
       if (GTK_IS_MENU_BAR (children->data))
 	gtk_layout_put (GTK_LAYOUT (children->next->data), widget, 0, 0);
-      else			/* GTK_IS_LAYOUT (children->data) */
+      else /* GTK_IS_LAYOUT (children->data) */
 	gtk_layout_put (GTK_LAYOUT (children->data), widget, 0, 0);
     }
-  else if (GTK_IS_SCROLLED_WINDOW (parent))
-    {
+  else
+    if (GTK_IS_SCROLLED_WINDOW (parent))
+      {
 /*  	if (WIDGET_CLASS (widget)->set_scroll_adjustments_signal) */
 /*  	  gtk_container_add (GTK_CONTAINER (parent), widget); */
 /*  	else */
 /*  	  { */
-      gtk_scrolled_window_add_with_viewport
-	(GTK_SCROLLED_WINDOW (parent), widget);
-      gtk_viewport_set_shadow_type (GTK_VIEWPORT (widget->parent),
-				    GTK_SHADOW_NONE);
+	    gtk_scrolled_window_add_with_viewport 
+	      (GTK_SCROLLED_WINDOW (parent), widget);
+	    gtk_viewport_set_shadow_type (GTK_VIEWPORT (widget->parent), 
+					  GTK_SHADOW_NONE);
 /*  	  } */
 
-    }
+      }
 /*        gtk_layout_put  */
 /*  	(GTK_LAYOUT (GTK_BIN (parent)->child), widget, 0, 0); */
 
 /*      if (GTK_IS_SCROLLED_WINDOW (parent)) */
 /*        gtk_layout_put  */
 /*  	(GTK_LAYOUT (GTK_BIN (GTK_BIN (parent)->child)->child), widget, 0, 0); */
-  else
-    gtk_layout_put (GTK_LAYOUT (parent), widget, 0, 0);
+    else
+      gtk_layout_put (GTK_LAYOUT (parent), widget, 0, 0);
 }
 
-JNIEXPORT jboolean JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_isEnabled
+JNIEXPORT jboolean JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_isEnabled 
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
   jboolean ret_val;
-
+  
   ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
@@ -498,10 +493,9 @@ JNIEXPORT jboolean JNICALL
   return ret_val;
 }
 
-JNIEXPORT jboolean JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_modalHasGrab
-  (JNIEnv *env __attribute__ ((unused)), jclass clazz
-   __attribute__ ((unused)))
+JNIEXPORT jboolean JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_modalHasGrab
+  (JNIEnv *env __attribute__((unused)), jclass clazz __attribute__((unused)))
 {
   GtkWidget *widget;
   jboolean retval;
@@ -514,8 +508,8 @@ JNIEXPORT jboolean JNICALL
   return retval;
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_String_2
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_String_2
   (JNIEnv *env, jobject obj, jstring jname, jstring jvalue)
 {
   const char *name;
@@ -526,16 +520,15 @@ JNIEXPORT void JNICALL
   name = (*env)->GetStringUTFChars (env, jname, NULL);
   value = (*env)->GetStringUTFChars (env, jvalue, NULL);
 
-  gdk_threads_enter ();
-  g_object_set (ptr, name, value, NULL);
-  gdk_threads_leave ();
+  gdk_threads_enter();
+  g_object_set(ptr, name, value, NULL);
+  gdk_threads_leave();
 
   (*env)->ReleaseStringUTFChars (env, jname, name);
   (*env)->ReleaseStringUTFChars (env, jvalue, value);
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Z
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Z
   (JNIEnv *env, jobject obj, jstring jname, jboolean value)
 {
   const char *name;
@@ -545,15 +538,14 @@ JNIEXPORT void JNICALL
 
   name = (*env)->GetStringUTFChars (env, jname, NULL);
 
-  gdk_threads_enter ();
-  g_object_set (ptr, name, value, NULL);
-  gdk_threads_leave ();
+  gdk_threads_enter();
+  g_object_set(ptr, name, value, NULL);
+  gdk_threads_leave();
 
   (*env)->ReleaseStringUTFChars (env, jname, name);
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2I
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2I
   (JNIEnv *env, jobject obj, jstring jname, jint value)
 {
   const char *name;
@@ -562,15 +554,14 @@ JNIEXPORT void JNICALL
   ptr = NSA_GET_PTR (env, obj);
   name = (*env)->GetStringUTFChars (env, jname, NULL);
 
-  gdk_threads_enter ();
-  g_object_set (ptr, name, value, NULL);
-  gdk_threads_leave ();
+  gdk_threads_enter();                          
+  g_object_set(ptr, name, value, NULL);
+  gdk_threads_leave();
 
   (*env)->ReleaseStringUTFChars (env, jname, name);
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2F
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2F
   (JNIEnv *env, jobject obj, jstring jname, jfloat value)
 {
   const char *name;
@@ -579,15 +570,15 @@ JNIEXPORT void JNICALL
   ptr = NSA_GET_PTR (env, obj);
   name = (*env)->GetStringUTFChars (env, jname, NULL);
 
-  gdk_threads_enter ();
-  g_object_set (ptr, name, value, NULL);
-  gdk_threads_leave ();
+  gdk_threads_enter();                          
+  g_object_set(ptr, name, value, NULL);
+  gdk_threads_leave();
 
   (*env)->ReleaseStringUTFChars (env, jname, name);
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_Object_2
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_set__Ljava_lang_String_2Ljava_lang_Object_2
   (JNIEnv *env, jobject obj1, jstring jname, jobject obj2)
 {
   const char *name;
@@ -595,7 +586,7 @@ JNIEXPORT void JNICALL
 
   ptr1 = NSA_GET_PTR (env, obj1);
   ptr2 = NSA_GET_PTR (env, obj2);
-
+  
   name = (*env)->GetStringUTFChars (env, jname, NULL);
 
   /* special case to catch where we need to set the parent */
@@ -609,38 +600,36 @@ JNIEXPORT void JNICALL
       return;
     }
 
-  gdk_threads_enter ();
-  g_object_set (ptr1, name, ptr2, NULL);
-  gdk_threads_leave ();
+  gdk_threads_enter();                          
+  g_object_set(ptr1, name, ptr2, NULL);
+  gdk_threads_leave();
 
   (*env)->ReleaseStringUTFChars (env, jname, name);
 }
 
 gboolean
-filter_expose_event_handler (GtkWidget * widget, GdkEvent * event,
-			     jobject peer)
+filter_expose_event_handler (GtkWidget *widget, GdkEvent *event, jobject peer)
 {
   // Prevent the default event handler from getting this signal if applicable
   // FIXME: I came up with these filters by looking for patterns in the unwanted
   //        expose events that are fed back to us from gtk/X. Perhaps there is
   //        a way to prevent them from occuring in the first place.
-  if (event->type == GDK_EXPOSE && (!GTK_IS_LAYOUT (widget)
-				    || event->any.window != widget->window))
+  if (event->type == GDK_EXPOSE && (!GTK_IS_LAYOUT(widget)
+                                    || event->any.window != widget->window))
     {
-      g_signal_stop_emission_by_name (GTK_OBJECT (widget), "event");
+      g_signal_stop_emission_by_name(GTK_OBJECT(widget), "event");
       return FALSE;
     }
   else
     {
       // There may be non-expose events that are triggered while we're
       // painting a heavyweight peer.
-      return pre_event_handler (widget, event, peer);
+      return pre_event_handler(widget, event, peer);
     }
 }
 
-JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_addExposeFilter (JNIEnv *env,
-							     jobject obj)
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_addExposeFilter
+  (JNIEnv *env, jobject obj)
 {
   GtkObject *filterobj;
   GtkWidget *vbox, *layout;
@@ -654,38 +643,37 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_addExposeFilter (JNIEnv *env,
 
   // GtkFramePeer is built as a GtkLayout inside a GtkVBox inside a GtkWindow.
   // Events go to the GtkLayout layer, so we filter them there.
-  if (GTK_IS_WINDOW (ptr))
+  if (GTK_IS_WINDOW(ptr))
     {
-      children = gtk_container_get_children (GTK_CONTAINER (ptr));
+      children = gtk_container_get_children(GTK_CONTAINER(ptr));
       vbox = children->data;
-      g_assert (GTK_IS_VBOX (vbox));
+      g_assert (GTK_IS_VBOX(vbox));
 
-      children = gtk_container_get_children (GTK_CONTAINER (vbox));
+      children = gtk_container_get_children(GTK_CONTAINER(vbox));
       do
-	{
-	  layout = children->data;
-	  children = children->next;
-	}
+      {
+        layout = children->data;
+        children = children->next;
+      }
       while (!GTK_IS_LAYOUT (layout) && children != NULL);
-      g_assert (GTK_IS_LAYOUT (layout));
+      g_assert (GTK_IS_LAYOUT(layout));
 
-      filterobj = GTK_OBJECT (layout);
+      filterobj = GTK_OBJECT(layout);
     }
   else
     {
-      filterobj = GTK_OBJECT (ptr);
+      filterobj = GTK_OBJECT(ptr);
     }
 
   g_signal_handlers_block_by_func (filterobj, *pre_event_handler, *gref);
-  g_signal_connect (filterobj, "event",
-		    G_CALLBACK (filter_expose_event_handler), *gref);
+  g_signal_connect( filterobj, "event",
+                    G_CALLBACK(filter_expose_event_handler), *gref);
 
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_removeExposeFilter (JNIEnv *env,
-								jobject obj)
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_removeExposeFilter
+  (JNIEnv *env, jobject obj)
 {
   GtkObject *filterobj;
   GtkWidget *vbox, *layout;
@@ -699,68 +687,58 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_removeExposeFilter (JNIEnv *env,
 
   // GtkFramePeer is built as a GtkLayout inside a GtkVBox inside a GtkWindow.
   // Events go to the GtkLayout layer, so we filter them there.
-  if (GTK_IS_WINDOW (ptr))
+  if (GTK_IS_WINDOW(ptr))
     {
-      children = gtk_container_get_children (GTK_CONTAINER (ptr));
+      children = gtk_container_get_children(GTK_CONTAINER(ptr));
       vbox = children->data;
-      g_assert (GTK_IS_VBOX (vbox));
+      g_assert (GTK_IS_VBOX(vbox));
 
-      children = gtk_container_get_children (GTK_CONTAINER (vbox));
+      children = gtk_container_get_children(GTK_CONTAINER(vbox));
       do
-	{
-	  layout = children->data;
-	  children = children->next;
-	}
+      {
+        layout = children->data;
+        children = children->next;
+      }
       while (!GTK_IS_LAYOUT (layout) && children != NULL);
-      g_assert (GTK_IS_LAYOUT (layout));
+      g_assert (GTK_IS_LAYOUT(layout));
 
-      filterobj = GTK_OBJECT (layout);
+      filterobj = GTK_OBJECT(layout);
     }
   else
     {
-      filterobj = GTK_OBJECT (ptr);
+      filterobj = GTK_OBJECT(ptr);
     }
 
   g_signal_handlers_disconnect_by_func (filterobj,
-					*filter_expose_event_handler, *gref);
+                                        *filter_expose_event_handler, *gref);
   g_signal_handlers_unblock_by_func (filterobj, *pre_event_handler, *gref);
 
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetQueueDrawArea (JNIEnv
-								    *env,
-								    jobject
-								    obj,
-								    jint x,
-								    jint y,
-								    jint
-								    width,
-								    jint
-								    height)
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetQueueDrawArea
+  (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)
 {
   GdkRectangle rect;
   void *ptr;
 
   ptr = NSA_GET_PTR (env, obj);
 
-  rect.x = x + GTK_WIDGET (ptr)->allocation.x;
-  rect.y = y + GTK_WIDGET (ptr)->allocation.y;
+  rect.x = x + GTK_WIDGET(ptr)->allocation.x;
+  rect.y = y + GTK_WIDGET(ptr)->allocation.y;
   rect.width = width;
   rect.height = height;
 
   gdk_threads_enter ();
 
   gdk_window_invalidate_rect (GTK_WIDGET (ptr)->window, &rect, 0);
-  gdk_window_process_all_updates ();
+  gdk_window_process_all_updates();
 
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectJObject (JNIEnv *env,
-							    jobject obj)
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectJObject
+  (JNIEnv *env, jobject obj)
 {
   void *ptr;
 
@@ -775,9 +753,8 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectJObject (JNIEnv *env,
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectSignals (JNIEnv *env,
-							    jobject obj)
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectSignals
+  (JNIEnv *env, jobject obj)
 {
   void *ptr = NSA_GET_PTR (env, obj);
   jobject *gref = NSA_GET_GLOBAL_REF (env, obj);
@@ -786,7 +763,7 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectSignals (JNIEnv *env,
   gdk_threads_enter ();
 
   gtk_widget_realize (GTK_WIDGET (ptr));
-
+  
   /* FIXME: We could check here if this is a scrolled window with a
      single child that does not have an associated jobject.  This
      means that it is one of our wrapped widgets like List or TextArea
@@ -795,19 +772,19 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectSignals (JNIEnv *env,
 
   /* Connect EVENT signal, which happens _before_ any specific signal. */
 
-  g_signal_connect (GTK_OBJECT (ptr), "event",
-		    G_CALLBACK (pre_event_handler), *gref);
+  g_signal_connect (GTK_OBJECT (ptr), "event", 
+                    G_CALLBACK (pre_event_handler), *gref);
 
   gdk_threads_leave ();
 }
 
 static GtkWidget *
-find_fg_color_widget (GtkWidget * widget)
+find_fg_color_widget (GtkWidget *widget)
 {
   GtkWidget *fg_color_widget;
 
   if (GTK_IS_EVENT_BOX (widget) || GTK_IS_BUTTON (widget))
-    fg_color_widget = gtk_bin_get_child (GTK_BIN (widget));
+    fg_color_widget = gtk_bin_get_child (GTK_BIN(widget));
   else
     fg_color_widget = widget;
 
@@ -815,19 +792,19 @@ find_fg_color_widget (GtkWidget * widget)
 }
 
 static GtkWidget *
-find_bg_color_widget (GtkWidget * widget)
+find_bg_color_widget (GtkWidget *widget)
 {
   GtkWidget *bg_color_widget;
 
   if (GTK_IS_WINDOW (widget))
     {
       GtkWidget *vbox;
-      GList *children;
+      GList* children;
 
-      children = gtk_container_get_children (GTK_CONTAINER (widget));
+      children = gtk_container_get_children(GTK_CONTAINER(widget));
       vbox = children->data;
 
-      children = gtk_container_get_children (GTK_CONTAINER (vbox));
+      children = gtk_container_get_children(GTK_CONTAINER(vbox));
       bg_color_widget = children->data;
     }
   else
@@ -835,3 +812,4 @@ find_bg_color_widget (GtkWidget * widget)
 
   return bg_color_widget;
 }
+

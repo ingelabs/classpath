@@ -113,7 +113,7 @@ state_to_awt_mods_with_button_states (guint state)
    no modifiers.  GDK's key events behave in the exact opposite way,
    so this translation code is needed. */
 jint
-keyevent_state_to_awt_mods (GdkEvent * event)
+keyevent_state_to_awt_mods (GdkEvent *event)
 {
   jint result = 0;
   guint state;
@@ -123,53 +123,55 @@ keyevent_state_to_awt_mods (GdkEvent * event)
       state = event->key.state;
 
       if (event->key.keyval == GDK_Shift_L
-	  || event->key.keyval == GDK_Shift_R)
-	result |= AWT_SHIFT_MASK;
+          || event->key.keyval == GDK_Shift_R)
+        result |= AWT_SHIFT_MASK;
       else
-	{
-	  if (state & GDK_SHIFT_MASK)
-	    result |= AWT_SHIFT_MASK;
-	}
+        {
+          if (state & GDK_SHIFT_MASK)
+            result |= AWT_SHIFT_MASK;
+        }
 
       if (event->key.keyval == GDK_Control_L
-	  || event->key.keyval == GDK_Control_R)
-	result |= AWT_CTRL_MASK;
+          || event->key.keyval == GDK_Control_R)
+        result |= AWT_CTRL_MASK;
       else
-	{
-	  if (state & GDK_CONTROL_MASK)
-	    result |= AWT_CTRL_MASK;
-	}
+        {
+          if (state & GDK_CONTROL_MASK)
+            result |= AWT_CTRL_MASK;
+        }
 
-      if (event->key.keyval == GDK_Alt_L || event->key.keyval == GDK_Alt_R)
-	result |= AWT_ALT_MASK;
+      if (event->key.keyval == GDK_Alt_L
+          || event->key.keyval == GDK_Alt_R)
+        result |= AWT_ALT_MASK;
       else
-	{
-	  if (state & GDK_MOD1_MASK)
-	    result |= AWT_ALT_MASK;
-	}
+        {
+          if (state & GDK_MOD1_MASK)
+            result |= AWT_ALT_MASK;
+        }
     }
   else if (event->type == GDK_KEY_RELEASE)
     {
       state = event->key.state;
 
       if (event->key.keyval != GDK_Shift_L
-	  && event->key.keyval != GDK_Shift_R)
-	{
-	  if (state & GDK_SHIFT_MASK)
-	    result |= AWT_SHIFT_MASK;
-	}
+          && event->key.keyval != GDK_Shift_R)
+        {
+          if (state & GDK_SHIFT_MASK)
+            result |= AWT_SHIFT_MASK;
+        }
       if (event->key.keyval != GDK_Control_L
-	  && event->key.keyval != GDK_Control_R)
-	{
-	  if (state & GDK_CONTROL_MASK)
-	    result |= AWT_CTRL_MASK;
-	}
+          && event->key.keyval != GDK_Control_R)
+        {
+          if (state & GDK_CONTROL_MASK)
+            result |= AWT_CTRL_MASK;
+        }
 
-      if (event->key.keyval != GDK_Alt_L && event->key.keyval != GDK_Alt_R)
-	{
-	  if (state & GDK_MOD1_MASK)
-	    result |= AWT_ALT_MASK;
-	}
+      if (event->key.keyval != GDK_Alt_L
+          && event->key.keyval != GDK_Alt_R)
+        {
+          if (state & GDK_MOD1_MASK)
+            result |= AWT_ALT_MASK;
+        }
     }
 
   return result;
@@ -179,18 +181,20 @@ keyevent_state_to_awt_mods (GdkEvent * event)
    first keyval corresponds roughly to Java's notion of a virtual
    key.  Returns the uppercase version of the first keyval. */
 static guint
-get_first_keyval_from_keymap (GdkEvent * event)
+get_first_keyval_from_keymap (GdkEvent *event)
 {
   guint keyval;
   guint *keyvals;
   gint n_entries;
 
   if (!gdk_keymap_get_entries_for_keycode (NULL,
-					   event->key.hardware_keycode,
-					   NULL, &keyvals, &n_entries))
+                                           event->key.hardware_keycode,
+                                           NULL,
+                                           &keyvals,
+                                           &n_entries))
     {
       g_warning ("No keyval found for hardware keycode %d\n",
-		 event->key.hardware_keycode);
+                 event->key.hardware_keycode);
       /* Try to recover by using the keyval in the event structure. */
       keyvals = &(event->key.keyval);
     }
@@ -203,8 +207,8 @@ get_first_keyval_from_keymap (GdkEvent * event)
 #ifdef __GNUC__
 __inline
 #endif
-  static jint
-keysym_to_awt_keycode (GdkEvent * event)
+static jint
+keysym_to_awt_keycode (GdkEvent *event)
 {
   guint ukeyval;
   guint state;
@@ -254,37 +258,37 @@ keysym_to_awt_keycode (GdkEvent * event)
       /* For keys on the numeric keypad, the JVM produces one of two
          virtual keys, depending on the num lock state. */
       if (state & GDK_MOD2_MASK)
-	return VK_NUMPAD9;
+        return VK_NUMPAD9;
       else
-	return VK_PAGE_UP;
+        return VK_PAGE_UP;
     case GDK_Page_Up:
       return VK_PAGE_UP;
     case GDK_KP_Page_Down:
       if (state & GDK_MOD2_MASK)
-	return VK_NUMPAD3;
+        return VK_NUMPAD3;
       else
-	return VK_PAGE_DOWN;
+        return VK_PAGE_DOWN;
     case GDK_Page_Down:
       return VK_PAGE_DOWN;
     case GDK_KP_End:
       if (state & GDK_MOD2_MASK)
-	return VK_NUMPAD1;
+        return VK_NUMPAD1;
       else
-	return VK_END;
+        return VK_END;
     case GDK_End:
       return VK_END;
     case GDK_KP_Home:
       if (state & GDK_MOD2_MASK)
-	return VK_NUMPAD7;
+        return VK_NUMPAD7;
       else
-	return VK_HOME;
+        return VK_HOME;
     case GDK_Home:
       return VK_HOME;
     case GDK_KP_Begin:
       if (state & GDK_MOD2_MASK)
-	return VK_NUMPAD5;
+        return VK_NUMPAD5;
       else
-	return VK_UNDEFINED;
+        return VK_UNDEFINED;
     case GDK_Left:
       return VK_LEFT;
     case GDK_Up:
@@ -302,49 +306,49 @@ keysym_to_awt_keycode (GdkEvent * event)
     case GDK_slash:
       return VK_SLASH;
       /*
-         return VK_0;
-         return VK_1;
-         return VK_2;
-         return VK_3;
-         return VK_4;
-         return VK_5;
-         return VK_6;
-         return VK_7;
-         return VK_8;
-         return VK_9;
-       */
+      return VK_0;
+      return VK_1;
+      return VK_2;
+      return VK_3;
+      return VK_4;
+      return VK_5;
+      return VK_6;
+      return VK_7;
+      return VK_8;
+      return VK_9;
+      */
     case GDK_semicolon:
       return VK_SEMICOLON;
     case GDK_equal:
       return VK_EQUALS;
       /*
-         return VK_A;
-         return VK_B;
-         return VK_C;
-         return VK_D;
-         return VK_E;
-         return VK_F;
-         return VK_G;
-         return VK_H;
-         return VK_I;
-         return VK_J;
-         return VK_K;
-         return VK_L;
-         return VK_M;
-         return VK_N;
-         return VK_O;
-         return VK_P;
-         return VK_Q;
-         return VK_R;
-         return VK_S;
-         return VK_T;
-         return VK_U;
-         return VK_V;
-         return VK_W;
-         return VK_X;
-         return VK_Y;
-         return VK_Z;
-       */
+      return VK_A;
+      return VK_B;
+      return VK_C;
+      return VK_D;
+      return VK_E;
+      return VK_F;
+      return VK_G;
+      return VK_H;
+      return VK_I;
+      return VK_J;
+      return VK_K;
+      return VK_L;
+      return VK_M;
+      return VK_N;
+      return VK_O;
+      return VK_P;
+      return VK_Q;
+      return VK_R;
+      return VK_S;
+      return VK_T;
+      return VK_U;
+      return VK_V;
+      return VK_W;
+      return VK_X;
+      return VK_Y;
+      return VK_Z;
+      */
     case GDK_bracketleft:
       return VK_OPEN_BRACKET;
     case GDK_backslash:
@@ -376,8 +380,8 @@ keysym_to_awt_keycode (GdkEvent * event)
     case GDK_KP_Add:
       return VK_ADD;
       /*
-         return VK_SEPARATER;
-       */
+      return VK_SEPARATER;
+      */
     case GDK_KP_Separator:
       return VK_SEPARATOR;
     case GDK_KP_Subtract:
@@ -388,9 +392,9 @@ keysym_to_awt_keycode (GdkEvent * event)
       return VK_DIVIDE;
     case GDK_KP_Delete:
       if (state & GDK_MOD2_MASK)
-	return VK_DECIMAL;
+        return VK_DECIMAL;
       else
-	return VK_DELETE;
+        return VK_DELETE;
     case GDK_Delete:
       return VK_DELETE;
     case GDK_Num_Lock:
@@ -449,9 +453,9 @@ keysym_to_awt_keycode (GdkEvent * event)
       return VK_PRINTSCREEN;
     case GDK_KP_Insert:
       if (state & GDK_MOD2_MASK)
-	return VK_NUMPAD0;
+        return VK_NUMPAD0;
       else
-	return VK_INSERT;
+        return VK_INSERT;
     case GDK_Insert:
       return VK_INSERT;
     case GDK_Help:
@@ -465,24 +469,24 @@ keysym_to_awt_keycode (GdkEvent * event)
       return VK_QUOTE;
     case GDK_KP_Up:
       if (state & GDK_MOD2_MASK)
-	return VK_NUMPAD8;
+        return VK_NUMPAD8;
       else
-	return VK_KP_UP;
+        return VK_KP_UP;
     case GDK_KP_Down:
       if (state & GDK_MOD2_MASK)
-	return VK_NUMPAD2;
+        return VK_NUMPAD2;
       else
-	return VK_KP_DOWN;
+        return VK_KP_DOWN;
     case GDK_KP_Left:
       if (state & GDK_MOD2_MASK)
-	return VK_NUMPAD4;
+        return VK_NUMPAD4;
       else
-	return VK_KP_LEFT;
+        return VK_KP_LEFT;
     case GDK_KP_Right:
       if (state & GDK_MOD2_MASK)
-	return VK_NUMPAD6;
+        return VK_NUMPAD6;
       else
-	return VK_KP_RIGHT;
+        return VK_KP_RIGHT;
     case GDK_dead_grave:
       return VK_DEAD_GRAVE;
     case GDK_dead_acute:
@@ -554,62 +558,62 @@ keysym_to_awt_keycode (GdkEvent * event)
     case GDK_underscore:
       return VK_UNDERSCORE;
       /*
-         return VK_FINAL;
-         return VK_CONVERT;
-         return VK_NONCONVERT;
-         return VK_ACCEPT;
-       */
+      return VK_FINAL;
+      return VK_CONVERT;
+      return VK_NONCONVERT;
+      return VK_ACCEPT;
+      */
     case GDK_Mode_switch:
       return VK_MODECHANGE;
       /*
-         return VK_KANA;
-       */
+      return VK_KANA;
+      */
     case GDK_Kanji:
       return VK_KANJI;
       /*
-         return VK_ALPHANUMERIC;
-       */
+      return VK_ALPHANUMERIC;
+      */
     case GDK_Katakana:
       return VK_KATAKANA;
     case GDK_Hiragana:
       return VK_HIRAGANA;
       /*
-         return VK_FULL_WIDTH;
-         return VK_HALF_WIDTH;
-         return VK_ROMAN_CHARACTERS;
-         return VK_ALL_CANDIDATES;
-       */
+      return VK_FULL_WIDTH;
+      return VK_HALF_WIDTH;
+      return VK_ROMAN_CHARACTERS;
+      return VK_ALL_CANDIDATES;
+      */
     case GDK_PreviousCandidate:
       return VK_PREVIOUS_CANDIDATE;
     case GDK_Codeinput:
       return VK_CODE_INPUT;
       /*
-         return VK_JAPANESE_KATAKANA;
-         return VK_JAPANESE_HIRAGANA;
-         return VK_JAPANESE_ROMAN;
-       */
+      return VK_JAPANESE_KATAKANA;
+      return VK_JAPANESE_HIRAGANA;
+      return VK_JAPANESE_ROMAN;
+      */
     case GDK_Kana_Lock:
       return VK_KANA_LOCK;
       /*
-         return VK_INPUT_METHOD_ON_OFF;
-         return VK_CUT;
-         return VK_COPY;
-         return VK_PASTE;
-         return VK_UNDO;
-         return VK_AGAIN;
-         return VK_FIND;
-         return VK_PROPS;
-         return VK_STOP;
-         return VK_COMPOSE;
-         return VK_ALT_GRAPH;
-       */
+      return VK_INPUT_METHOD_ON_OFF;
+      return VK_CUT;
+      return VK_COPY;
+      return VK_PASTE;
+      return VK_UNDO;
+      return VK_AGAIN;
+      return VK_FIND;
+      return VK_PROPS;
+      return VK_STOP;
+      return VK_COMPOSE;
+      return VK_ALT_GRAPH;
+      */
     default:
       return VK_UNDEFINED;
     }
 }
 
 static jint
-keysym_to_awt_keylocation (GdkEvent * event)
+keysym_to_awt_keylocation (GdkEvent *event)
 {
   guint ukeyval;
 
@@ -775,30 +779,30 @@ keysym_to_awt_keylocation (GdkEvent * event)
 }
 
 static jchar
-keyevent_to_awt_keychar (GdkEvent * event)
+keyevent_to_awt_keychar (GdkEvent *event)
 {
   if (event->key.length > 0)
     {
       /* Translate GDK carriage return to Java linefeed. */
       if (event->key.string[0] == 13)
-	return VK_ENTER;
+        return VK_ENTER;
       else
-	return event->key.string[0];
+        return event->key.string[0];
     }
   else
     {
       switch (event->key.keyval)
-	{
-	case GDK_BackSpace:
-	  return VK_BACK_SPACE;
-	case GDK_Tab:
-	  return VK_TAB;
-	case GDK_Delete:
-	case GDK_KP_Delete:
-	  return VK_DELETE;
-	default:
-	  return AWT_KEY_CHAR_UNDEFINED;
-	}
+        {
+        case GDK_BackSpace:
+          return VK_BACK_SPACE;
+        case GDK_Tab:
+          return VK_TAB;
+        case GDK_Delete:
+        case GDK_KP_Delete:
+          return VK_DELETE;
+        default:
+          return AWT_KEY_CHAR_UNDEFINED;
+        }
     }
 }
 
@@ -807,26 +811,28 @@ keyevent_to_awt_keychar (GdkEvent * event)
    GtkIMContext "commit" signals, but that do trigger Java KEY_TYPED
    events. */
 static int
-generates_key_typed_event (GdkEvent * event, GtkWidget * source)
+generates_key_typed_event (GdkEvent *event, GtkWidget *source)
 {
   guint keyval;
 
-  if (!GTK_IS_ENTRY (source) && !GTK_IS_TEXT_VIEW (source))
+  if (!GTK_IS_ENTRY (source)
+      && !GTK_IS_TEXT_VIEW (source))
     return event->key.length ? 1 : 0;
 
   keyval = event->key.keyval;
 
   return (keyval == GDK_Escape
-	  || keyval == GDK_BackSpace
-	  || keyval == GDK_Delete
-	  || keyval == GDK_KP_Delete
-	  || keyval == GDK_Return
-	  || keyval == GDK_KP_Enter
-	  || (keyval == GDK_Tab && GTK_IS_TEXT_VIEW (source))) ? 1 : 0;
+          || keyval == GDK_BackSpace
+          || keyval == GDK_Delete
+          || keyval == GDK_KP_Delete
+          || keyval == GDK_Return
+          || keyval == GDK_KP_Enter
+          || (keyval == GDK_Tab
+              && GTK_IS_TEXT_VIEW(source))) ? 1 : 0;
 }
 
 void
-awt_event_handler (GdkEvent * event)
+awt_event_handler (GdkEvent *event)
 {
   /* keep synthetic AWT events from being processed recursively */
   if (event->type & SYNTHETIC_EVENT_MASK && event->type != GDK_NOTHING)
@@ -838,7 +844,7 @@ awt_event_handler (GdkEvent * event)
 }
 
 gboolean
-pre_event_handler (GtkWidget * widget, GdkEvent * event, jobject peer)
+pre_event_handler (GtkWidget *widget, GdkEvent *event, jobject peer)
 {
   GtkWidget *event_widget;
   static guint32 button_click_time = 0;
@@ -849,30 +855,30 @@ pre_event_handler (GtkWidget * widget, GdkEvent * event, jobject peer)
 
   /* If it is not a focus change event, the widget must be realized already.
      If not, ignore the event (Gtk+ will do the same). */
-  if (!(event->type == GDK_FOCUS_CHANGE || GTK_WIDGET_REALIZED (widget)))
+  if (!(event->type == GDK_FOCUS_CHANGE || GTK_WIDGET_REALIZED(widget)))
     return FALSE;
-
+    
   /* Do not handle propagated events.  AWT has its own propagation rules */
   gdk_window_get_user_data (event->any.window, (void **) &event_widget);
   if (event_widget != widget)
     return FALSE;
 
-  /* We only care about input events */
+  /* We only care about input events */    
   if (!(event->type == GDK_BUTTON_PRESS
-	|| event->type == GDK_BUTTON_RELEASE
-	|| event->type == GDK_ENTER_NOTIFY
-	|| event->type == GDK_LEAVE_NOTIFY
-	|| event->type == GDK_CONFIGURE
-	|| event->type == GDK_EXPOSE
-	|| event->type == GDK_KEY_PRESS
-	|| event->type == GDK_KEY_RELEASE
-	|| event->type == GDK_FOCUS_CHANGE
-	|| event->type == GDK_MOTION_NOTIFY))
+       || event->type == GDK_BUTTON_RELEASE
+       || event->type == GDK_ENTER_NOTIFY
+       || event->type == GDK_LEAVE_NOTIFY
+       || event->type == GDK_CONFIGURE
+       || event->type == GDK_EXPOSE
+       || event->type == GDK_KEY_PRESS
+       || event->type == GDK_KEY_RELEASE
+       || event->type == GDK_FOCUS_CHANGE
+       || event->type == GDK_MOTION_NOTIFY))
     {
       return FALSE;
     }
   /* g_print("event %u widget %s peer %p\n",
-     event->type, gtk_widget_get_name (widget), peer); */
+            event->type, gtk_widget_get_name (widget), peer); */
 
   /* If it has no jobject associated we can send no AWT event */
   if (!peer)
@@ -891,7 +897,7 @@ pre_event_handler (GtkWidget * widget, GdkEvent * event, jobject peer)
 	click_count++;
       else
 	click_count = 1;
-
+      
       button_click_time = event->button.time;
       button_window = event->button.window;
       button_number = event->button.button;
@@ -901,16 +907,16 @@ pre_event_handler (GtkWidget * widget, GdkEvent * event, jobject peer)
     {
     case GDK_BUTTON_PRESS:
       (*gdk_env)->CallVoidMethod (gdk_env, peer,
-				  postMouseEventID,
-				  AWT_MOUSE_PRESSED,
-				  (jlong) event->button.time,
+                                  postMouseEventID,
+				  AWT_MOUSE_PRESSED, 
+				  (jlong)event->button.time,
 				  state_to_awt_mods (event->button.state) |
-				  button_to_awt_mods (event->button.button),
-				  (jint) event->button.x,
-				  (jint) event->button.y,
-				  click_count,
+				  button_to_awt_mods (event->button.button), 
+				  (jint)event->button.x,
+				  (jint)event->button.y, 
+				  click_count, 
 				  (event->button.button == 3) ? JNI_TRUE :
-				  JNI_FALSE);
+				                                JNI_FALSE);
       hasBeenDragged = FALSE;
       break;
     case GDK_BUTTON_RELEASE:
@@ -919,72 +925,78 @@ pre_event_handler (GtkWidget * widget, GdkEvent * event, jobject peer)
 
 	(*gdk_env)->CallVoidMethod (gdk_env, peer,
 				    postMouseEventID,
-				    AWT_MOUSE_RELEASED,
-				    (jlong) event->button.time,
+				    AWT_MOUSE_RELEASED, 
+				    (jlong)event->button.time,
 				    state_to_awt_mods (event->button.state) |
-				    button_to_awt_mods (event->button.button),
-				    (jint) event->button.x,
-				    (jint) event->button.y,
-				    click_count, JNI_FALSE);
+				    button_to_awt_mods (event->button.button), 
+				    (jint)event->button.x,
+				    (jint)event->button.y, 
+				    click_count,
+				    JNI_FALSE);
 
 	// Generate an AWT click event only if the release occured in the
 	// window it was pressed in, and the mouse has not been dragged since
 	// the last time it was pressed.
 	gdk_window_get_size (event->any.window, &width, &height);
-	if (!hasBeenDragged
+	if (! hasBeenDragged
 	    && event->button.x >= 0
-	    && event->button.y >= 0
-	    && event->button.x <= width && event->button.y <= height)
-	  {
+            && event->button.y >= 0
+	    && event->button.x <= width 
+	    && event->button.y <= height)
+          {
 	    (*gdk_env)->CallVoidMethod (gdk_env, peer,
-					postMouseEventID,
-					AWT_MOUSE_CLICKED,
-					(jlong) event->button.time,
-					state_to_awt_mods (event->button.
-							   state) |
-					button_to_awt_mods (event->button.
-							    button),
-					(jint) event->button.x,
-					(jint) event->button.y, click_count,
-					JNI_FALSE);
-	  }
+				        postMouseEventID,
+				        AWT_MOUSE_CLICKED, 
+				        (jlong)event->button.time,
+				        state_to_awt_mods (event->button.state) |
+				        button_to_awt_mods (event->button.button), 
+				        (jint)event->button.x,
+				        (jint)event->button.y, 
+				        click_count,
+				        JNI_FALSE);
+          }
       }
       break;
     case GDK_MOTION_NOTIFY:
       if (event->motion.state & (GDK_BUTTON1_MASK
 				 | GDK_BUTTON2_MASK
 				 | GDK_BUTTON3_MASK
-				 | GDK_BUTTON4_MASK | GDK_BUTTON5_MASK))
+				 | GDK_BUTTON4_MASK
+				 | GDK_BUTTON5_MASK))
 	{
 	  (*gdk_env)->CallVoidMethod (gdk_env, peer,
-				      postMouseEventID,
+			              postMouseEventID,
 				      AWT_MOUSE_DRAGGED,
-				      (jlong) event->motion.time,
-				      state_to_awt_mods_with_button_states
-				      (event->motion.state),
-				      (jint) event->motion.x,
-				      (jint) event->motion.y, 0, JNI_FALSE);
+				      (jlong)event->motion.time,
+				      state_to_awt_mods_with_button_states (event->motion.state),
+				      (jint)event->motion.x,
+				      (jint)event->motion.y,
+				      0,
+				      JNI_FALSE);
 	  hasBeenDragged = TRUE;
 	}
       else
-	(*gdk_env)->CallVoidMethod (gdk_env, peer, postMouseEventID,
+        (*gdk_env)->CallVoidMethod (gdk_env, peer, postMouseEventID,
 				    AWT_MOUSE_MOVED,
-				    (jlong) event->motion.time,
+				    (jlong)event->motion.time,
 				    state_to_awt_mods (event->motion.state),
-				    (jint) event->motion.x,
-				    (jint) event->motion.y, 0, JNI_FALSE);
+				    (jint)event->motion.x,
+				    (jint)event->motion.y,
+				    0,
+				    JNI_FALSE);
       break;
     case GDK_ENTER_NOTIFY:
       /* We are not interested in enter events that are due to
          grab/ungrab and not to actually crossing boundaries */
       if (event->crossing.mode == GDK_CROSSING_NORMAL)
-	(*gdk_env)->CallVoidMethod (gdk_env, peer, postMouseEventID,
-				    AWT_MOUSE_ENTERED,
-				    (jlong) event->crossing.time,
-				    state_to_awt_mods_with_button_states
-				    (event->crossing.state),
-				    (jint) event->crossing.x,
-				    (jint) event->crossing.y, 0, JNI_FALSE);
+        (*gdk_env)->CallVoidMethod (gdk_env, peer, postMouseEventID,
+				    AWT_MOUSE_ENTERED, 
+				    (jlong)event->crossing.time,
+				    state_to_awt_mods_with_button_states (event->crossing.state), 
+				    (jint)event->crossing.x,
+				    (jint)event->crossing.y, 
+				    0,
+				    JNI_FALSE);
       break;
     case GDK_LEAVE_NOTIFY:
       /* We are not interested in leave events that are due to
@@ -992,19 +1004,20 @@ pre_event_handler (GtkWidget * widget, GdkEvent * event, jobject peer)
       if (event->crossing.mode == GDK_CROSSING_NORMAL)
 	(*gdk_env)->CallVoidMethod (gdk_env, peer,
 				    postMouseEventID,
-				    AWT_MOUSE_EXITED,
-				    (jlong) event->crossing.time,
-				    state_to_awt_mods_with_button_states
-				    (event->crossing.state),
-				    (jint) event->crossing.x,
-				    (jint) event->crossing.y, 0, JNI_FALSE);
+				    AWT_MOUSE_EXITED, 
+				    (jlong)event->crossing.time,
+				    state_to_awt_mods_with_button_states (event->crossing.state),
+				    (jint)event->crossing.x,
+				    (jint)event->crossing.y, 
+				    0,
+				    JNI_FALSE);
       break;
     case GDK_CONFIGURE:
       {
 	/* GtkWidget *widget;
 
-	   gdk_window_get_user_data (event->any.window, (void **) &widget); */
-
+	gdk_window_get_user_data (event->any.window, (void **) &widget); */
+	    
 	if (widget && GTK_WIDGET_TOPLEVEL (widget))
 	  {
 	    /* Configure events are not posted to the AWT event
@@ -1013,7 +1026,7 @@ pre_event_handler (GtkWidget * widget, GdkEvent * event, jobject peer)
 	       returns. */
 	    gdk_threads_leave ();
 
-	    (*gdk_env)->CallVoidMethod (gdk_env, peer,
+ 	    (*gdk_env)->CallVoidMethod (gdk_env, peer,
 					postConfigureEventID,
 					(jint) event->configure.x,
 					(jint) event->configure.y,
@@ -1025,136 +1038,136 @@ pre_event_handler (GtkWidget * widget, GdkEvent * event, jobject peer)
       break;
     case GDK_EXPOSE:
       {
-	// This filters out unwanted feedback expose events from gtk/X
-	// when we explictly invalidate and update heavyweight components,
-	// thus avoiding an infinite loop.
-	// FIXME: I'm not quite sure why we're getting these expose events. 
-	//        Maybe there is a way to avoid them?
-	if ((event->any.window == widget->window && event->any.send_event)
-	    || GTK_IS_LAYOUT (widget))
-	  {
+        // This filters out unwanted feedback expose events from gtk/X
+        // when we explictly invalidate and update heavyweight components,
+        // thus avoiding an infinite loop.
+        // FIXME: I'm not quite sure why we're getting these expose events. 
+        //        Maybe there is a way to avoid them?
+        if((event->any.window == widget->window && event->any.send_event)
+           || GTK_IS_LAYOUT(widget))
+          {
 	    (*gdk_env)->CallVoidMethod (gdk_env, peer,
-					postExposeEventID,
-					(jint) event->expose.area.x,
-					(jint) event->expose.area.y,
-					(jint) event->expose.area.width,
-					(jint) event->expose.area.height);
-	  }
+				        postExposeEventID,
+				        (jint)event->expose.area.x,
+				        (jint)event->expose.area.y,
+				        (jint)event->expose.area.width,
+				        (jint)event->expose.area.height);
+          }
       }
       break;
     case GDK_FOCUS_CHANGE:
       (*gdk_env)->CallVoidMethod (gdk_env, peer,
 				  postFocusEventID,
-				  (jint) (event->focus_change.in) ?
+				  (jint) (event->focus_change.in) ? 
 				  AWT_FOCUS_GAINED : AWT_FOCUS_LOST,
 				  JNI_FALSE);
       break;
     case GDK_KEY_PRESS:
     case GDK_KEY_RELEASE:
       {
-	GdkWindow *obj_window;
-	jobject *focus_obj_ptr = NULL;
+        GdkWindow *obj_window;
+        jobject *focus_obj_ptr = NULL;
 	int generates_key_typed = 0;
 
-	/* A widget with a grab will get key events */
+        /* A widget with a grab will get key events */
 	if (!GTK_IS_WINDOW (widget))
 	  focus_obj_ptr = &peer;
 	else
 	  {
-	    GtkWindow *window;
+            GtkWindow *window;
 
-	    /* Check if we have an enabled focused widget in this window.
+            /* Check if we have an enabled focused widget in this window.
 	       If not don't handle the event. */
 	    window = GTK_WINDOW (widget);
 	    if (!window->focus_widget
-		|| !GTK_WIDGET_IS_SENSITIVE (window->focus_widget)
-		|| !window->focus_widget->window)
+	        || !GTK_WIDGET_IS_SENSITIVE (window->focus_widget)
+	        || !window->focus_widget->window)
 	      return FALSE;
-
-	    /* TextArea peers are attached to the scrolled window
-	       that contains the GtkTextView, not to the text view
-	       itself.  Same for List. */
-	    if (GTK_IS_TEXT_VIEW (window->focus_widget)
-		|| GTK_IS_CLIST (window->focus_widget))
-	      {
-		obj_window =
-		  gtk_widget_get_parent (window->focus_widget)->window;
-	      }
-	    else if (GTK_IS_BUTTON (window->focus_widget))
+	
+            /* TextArea peers are attached to the scrolled window
+               that contains the GtkTextView, not to the text view
+               itself.  Same for List. */
+            if (GTK_IS_TEXT_VIEW (window->focus_widget)
+                || GTK_IS_CLIST (window->focus_widget))
+              {
+                obj_window = gtk_widget_get_parent (window->focus_widget)->window;
+              }
+            else if (GTK_IS_BUTTON (window->focus_widget))
 	      /* GtkButton events go to the "event_window" and this is what
 	         we registered when the button was created. */
-	      obj_window = GTK_BUTTON (window->focus_widget)->event_window;
-	    else
-	      obj_window = window->focus_widget->window;
+              obj_window = GTK_BUTTON (window->focus_widget)->event_window;
+            else
+              obj_window = window->focus_widget->window;
 
-	    gdk_property_get (obj_window,
-			      gdk_atom_intern ("_GNU_GTKAWT_ADDR", FALSE),
-			      gdk_atom_intern ("CARDINAL", FALSE),
-			      0,
-			      sizeof (jobject),
-			      FALSE,
-			      NULL, NULL, NULL, (guchar **) & focus_obj_ptr);
+            gdk_property_get (obj_window,
+                              gdk_atom_intern ("_GNU_GTKAWT_ADDR", FALSE),
+                              gdk_atom_intern ("CARDINAL", FALSE),
+                              0,
+                              sizeof (jobject),
+                              FALSE,
+                              NULL,
+                              NULL,
+                              NULL,
+                              (guchar **)&focus_obj_ptr);
 
-	    /* If the window has no jobject attached we can't send anything */
+            /* If the window has no jobject attached we can't send anything */
 	    if (!focus_obj_ptr)
 	      return FALSE;
-
+	      
 	    /* Should we generate an AWT_KEY_TYPED event? */
-	    generates_key_typed =
-	      generates_key_typed_event (event, window->focus_widget);
-	  }
+	    generates_key_typed = generates_key_typed_event (event, window->focus_widget);
+	  }	
 
-	if (event->type == GDK_KEY_PRESS)
+	if (event->type == GDK_KEY_PRESS)	
 	  {
-	    (*gdk_env)->CallVoidMethod (gdk_env, *focus_obj_ptr,
-					postKeyEventID,
-					(jint) AWT_KEY_PRESSED,
-					(jlong) event->key.time,
-					keyevent_state_to_awt_mods (event),
-					keysym_to_awt_keycode (event),
-					keyevent_to_awt_keychar (event),
-					keysym_to_awt_keylocation (event));
+            (*gdk_env)->CallVoidMethod (gdk_env, *focus_obj_ptr,
+				        postKeyEventID,
+				        (jint) AWT_KEY_PRESSED,
+				        (jlong) event->key.time,
+                                        keyevent_state_to_awt_mods (event),
+                                        keysym_to_awt_keycode (event),
+                                        keyevent_to_awt_keychar (event),
+                                        keysym_to_awt_keylocation (event));
 
-	    if (generates_key_typed)
-	      {
-		(*gdk_env)->CallVoidMethod (gdk_env, *focus_obj_ptr,
-					    postKeyEventID,
-					    (jint) AWT_KEY_TYPED,
-					    (jlong) event->key.time,
-					    state_to_awt_mods (event->key.
-							       state),
-					    VK_UNDEFINED,
-					    keyevent_to_awt_keychar (event),
-					    AWT_KEY_LOCATION_UNKNOWN);
-	      }
-	  }
-	else			/* GDK_KEY_RELEASE */
-	  {
+            if (generates_key_typed)
+              {
+                (*gdk_env)->CallVoidMethod (gdk_env, *focus_obj_ptr,
+                                            postKeyEventID,
+                                            (jint) AWT_KEY_TYPED,
+                                            (jlong) event->key.time,
+                                            state_to_awt_mods (event->key.state),
+                                            VK_UNDEFINED,
+                                            keyevent_to_awt_keychar (event),
+                                            AWT_KEY_LOCATION_UNKNOWN);
+              }
+          }
+	else /* GDK_KEY_RELEASE */
+          {
 	    (*gdk_env)->CallVoidMethod (gdk_env, *focus_obj_ptr,
-					postKeyEventID,
-					(jint) AWT_KEY_RELEASED,
-					(jlong) event->key.time,
-					keyevent_state_to_awt_mods (event),
-					keysym_to_awt_keycode (event),
-					keyevent_to_awt_keychar (event),
-					keysym_to_awt_keylocation (event));
+				        postKeyEventID,
+				        (jint) AWT_KEY_RELEASED,
+				        (jlong) event->key.time,
+			                keyevent_state_to_awt_mods (event),
+			                keysym_to_awt_keycode (event),
+                                        keyevent_to_awt_keychar (event),
+                                        keysym_to_awt_keylocation (event));
 	  }
       }
       break;
     default:
       break;
     }
-
+  
   return FALSE;
 }
 
 static void
-attach_jobject (GdkWindow * window, jobject *obj)
+attach_jobject (GdkWindow *window, jobject *obj)
 {
   GdkAtom addr_atom = gdk_atom_intern ("_GNU_GTKAWT_ADDR", FALSE);
   GdkAtom type_atom = gdk_atom_intern ("CARDINAL", FALSE);
 
-  gdk_window_set_events (window,
+  gdk_window_set_events (window, 
 			 gdk_window_get_events (window)
 			 | GDK_POINTER_MOTION_MASK
 			 | GDK_BUTTON_MOTION_MASK
@@ -1165,7 +1178,8 @@ attach_jobject (GdkWindow * window, jobject *obj)
 			 | GDK_ENTER_NOTIFY_MASK
 			 | GDK_LEAVE_NOTIFY_MASK
 			 | GDK_STRUCTURE_MASK
-			 | GDK_KEY_PRESS_MASK | GDK_FOCUS_CHANGE_MASK);
+			 | GDK_KEY_PRESS_MASK
+			 | GDK_FOCUS_CHANGE_MASK);
 
   //  g_print("storing obj %p property on window %p\n", obj, window);
   gdk_property_change (window,
@@ -1173,7 +1187,8 @@ attach_jobject (GdkWindow * window, jobject *obj)
 		       type_atom,
 		       8,
 		       GDK_PROP_MODE_REPLACE,
-		       (guchar *) obj, sizeof (jobject));
+		       (guchar *)obj,
+		       sizeof (jobject));
 }
 
 void
@@ -1189,12 +1204,13 @@ connect_awt_hook (JNIEnv *env, jobject peer_obj, int nwindows, ...)
 
   va_start (ap, nwindows);
   {
-    int i;
-    for (i = 0; i < nwindows; i++)
-      {
-	GdkWindow *attach = (va_arg (ap, GdkWindow *));
-	attach_jobject (attach, obj);
-      }
+  int i;
+  for (i = 0; i < nwindows; i++)
+    {
+      GdkWindow* attach = (va_arg (ap, GdkWindow *));
+      attach_jobject(attach, obj);
+    }
   }
   va_end (ap);
 }
+

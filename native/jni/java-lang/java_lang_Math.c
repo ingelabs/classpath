@@ -40,93 +40,78 @@ exception statement from your version. */
 #include <java_lang_Math.h>
 #include <fdlibm.h>
 
-JNIEXPORT jdouble JNICALL
-Java_java_lang_Math_sin (JNIEnv *env, jclass cls, jdouble x)
+JNIEXPORT jdouble JNICALL Java_java_lang_Math_sin (JNIEnv *env, jclass cls, jdouble x)
 {
   return sin (x);
 }
 
-JNIEXPORT jdouble JNICALL
-Java_java_lang_Math_cos (JNIEnv *env, jclass cls, jdouble x)
+JNIEXPORT jdouble JNICALL Java_java_lang_Math_cos (JNIEnv *env, jclass cls, jdouble x)
 {
   return cos (x);
 }
 
-JNIEXPORT jdouble JNICALL
-Java_java_lang_Math_tan (JNIEnv *env, jclass cls, jdouble x)
+JNIEXPORT jdouble JNICALL Java_java_lang_Math_tan (JNIEnv *env, jclass cls, jdouble x)
 {
   return tan (x);
 }
 
-JNIEXPORT jdouble JNICALL
-Java_java_lang_Math_asin (JNIEnv *env, jclass cls, jdouble x)
+JNIEXPORT jdouble JNICALL Java_java_lang_Math_asin (JNIEnv *env, jclass cls, jdouble x)
 {
   return asin (x);
 }
 
-JNIEXPORT jdouble JNICALL
-Java_java_lang_Math_acos (JNIEnv *env, jclass cls, jdouble x)
+JNIEXPORT jdouble JNICALL Java_java_lang_Math_acos (JNIEnv *env, jclass cls, jdouble x)
 {
   return acos (x);
 }
 
-JNIEXPORT jdouble JNICALL
-Java_java_lang_Math_atan (JNIEnv *env, jclass cls, jdouble x)
+JNIEXPORT jdouble JNICALL Java_java_lang_Math_atan (JNIEnv *env, jclass cls, jdouble x)
 {
   return atan (x);
 }
 
-JNIEXPORT jdouble JNICALL
-Java_java_lang_Math_atan2 (JNIEnv *env, jclass cls, jdouble y, jdouble x)
+JNIEXPORT jdouble JNICALL Java_java_lang_Math_atan2 (JNIEnv *env, jclass cls, jdouble y, jdouble x)
 {
   return atan2 (y, x);
 }
 
-JNIEXPORT jdouble JNICALL
-Java_java_lang_Math_exp (JNIEnv *env, jclass cls, jdouble x)
+JNIEXPORT jdouble JNICALL Java_java_lang_Math_exp (JNIEnv *env, jclass cls, jdouble x)
 {
   return exp (x);
 }
 
-JNIEXPORT jdouble JNICALL
-Java_java_lang_Math_log (JNIEnv *env, jclass cls, jdouble x)
+JNIEXPORT jdouble JNICALL Java_java_lang_Math_log (JNIEnv *env, jclass cls, jdouble x)
 {
   return log (x);
 }
 
-JNIEXPORT jdouble JNICALL
-Java_java_lang_Math_sqrt (JNIEnv *env, jclass cls, jdouble x)
+JNIEXPORT jdouble JNICALL Java_java_lang_Math_sqrt (JNIEnv *env, jclass cls, jdouble x)
 {
   return sqrt (x);
 }
 
-JNIEXPORT jdouble JNICALL
-Java_java_lang_Math_pow (JNIEnv *env, jclass cls, jdouble x, jdouble y)
+JNIEXPORT jdouble JNICALL Java_java_lang_Math_pow (JNIEnv *env, jclass cls, jdouble x, jdouble y)
 {
   return pow (x, y);
 }
 
-JNIEXPORT jdouble JNICALL
-Java_java_lang_Math_IEEEremainder (JNIEnv *env, jclass cls, jdouble x,
-				   jdouble y)
+JNIEXPORT jdouble JNICALL Java_java_lang_Math_IEEEremainder (JNIEnv *env, jclass cls, jdouble x, jdouble y)
 {
   return remainder (x, y);
 }
 
-JNIEXPORT jdouble JNICALL
-Java_java_lang_Math_ceil (JNIEnv *env, jclass cls, jdouble x)
+JNIEXPORT jdouble JNICALL Java_java_lang_Math_ceil (JNIEnv *env, jclass cls, jdouble x)
 {
   return ceil (x);
 }
 
-JNIEXPORT jdouble JNICALL
-Java_java_lang_Math_floor (JNIEnv *env, jclass cls, jdouble x)
+JNIEXPORT jdouble JNICALL Java_java_lang_Math_floor (JNIEnv *env, jclass cls, jdouble x)
 {
   return floor (x);
 }
 
-JNIEXPORT jdouble JNICALL
-Java_java_lang_Math_rint (JNIEnv *env, jclass cls, jdouble x)
+JNIEXPORT jdouble JNICALL Java_java_lang_Math_rint (JNIEnv *env, jclass cls, jdouble x)
 {
   return rint (x);
 }
+

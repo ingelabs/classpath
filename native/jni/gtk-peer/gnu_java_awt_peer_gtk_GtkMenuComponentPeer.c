@@ -47,10 +47,10 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuComponentPeer_dispose
      is removed from the Frame. So we avoid the widget
      destruction in GtkGenericPeer dispose() by overriding
      it here. */
-
+     
   /* However, references to the Java objects still exist in the
      state tables, so we still have to remove those. */
-
+     
   NSA_DEL_GLOBAL_REF (env, obj);
-  NSA_DEL_PTR (env, obj);
+  NSA_DEL_PTR (env, obj);  
 }

@@ -45,9 +45,11 @@ struct pos
   gint y;
 };
 
-void
-menu_pos (GtkMenu * menu __attribute__ ((unused)),
-	  gint * x, gint * y, gboolean * push_in, gpointer user_data)
+void 
+menu_pos (GtkMenu *menu __attribute__((unused)),
+	  gint *x, gint *y,
+	  gboolean *push_in,
+	  gpointer user_data)
 {
   struct pos *p = (struct pos *) user_data;
 
@@ -67,17 +69,17 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkPopupMenuPeer_show
   p = g_malloc (sizeof (struct pos));
   p->x = x;
   p->y = y;
-
+  
   gdk_threads_enter ();
-  gtk_menu_popup (GTK_MENU (GTK_MENU_ITEM (ptr)->submenu),
+  gtk_menu_popup (GTK_MENU (GTK_MENU_ITEM (ptr)->submenu), 
 		  NULL, NULL, menu_pos, p, 3, time);
   gdk_threads_leave ();
 
   g_free (p);
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkPopupMenuPeer_setupAccelGroup
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkPopupMenuPeer_setupAccelGroup
   (JNIEnv *env, jobject obj, jobject parent)
 {
   void *ptr1, *ptr2;

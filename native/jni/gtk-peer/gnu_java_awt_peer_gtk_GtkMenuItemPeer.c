@@ -40,8 +40,8 @@ exception statement from your version. */
 #include "gnu_java_awt_peer_gtk_GtkMenuItemPeer.h"
 #include "gnu_java_awt_peer_gtk_GtkComponentPeer.h"
 
-static void item_activate (GtkMenuItem * item __attribute__ ((unused)),
-			   jobject *peer_obj);
+static void item_activate (GtkMenuItem *item __attribute__((unused)),
+                           jobject *peer_obj);
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_create
   (JNIEnv *env, jobject obj, jstring label)
@@ -57,15 +57,15 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_create
   str = (*env)->GetStringUTFChars (env, label, NULL);
 
   gdk_threads_enter ();
-
-  if (strcmp (str, "-") == 0)	/* "-" signals that we need a separator */
+  
+  if (strcmp (str, "-") == 0) /* "-" signals that we need a separator */
     widget = gtk_menu_item_new ();
   else
     widget = gtk_menu_item_new_with_label (str);
 
   /* Connect activate hook */
-  g_signal_connect (G_OBJECT (widget), "activate",
-		    GTK_SIGNAL_FUNC (item_activate), *gref);
+  g_signal_connect (G_OBJECT (widget), "activate", 
+		      GTK_SIGNAL_FUNC (item_activate), *gref);
 
   gtk_widget_show (widget);
 
@@ -88,7 +88,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_setLabel
 
   gdk_threads_enter ();
 
-  if (strcmp (str, "-") == 0)	/* "-" signals that we need a separator */
+  if (strcmp (str, "-") == 0) /* "-" signals that we need a separator */
     gtk_container_remove (GTK_CONTAINER (ptr), GTK_BIN (ptr)->child);
   else
     {
@@ -104,7 +104,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_setLabel
 }
 
 static void
-item_activate (GtkMenuItem * item __attribute__ ((unused)), jobject *peer_obj)
+item_activate (GtkMenuItem *item __attribute__((unused)), jobject *peer_obj)
 {
-  (*gdk_env)->CallVoidMethod (gdk_env, *peer_obj, postMenuActionEventID);
+  (*gdk_env)->CallVoidMethod (gdk_env, *peer_obj,
+			      postMenuActionEventID);
 }
+

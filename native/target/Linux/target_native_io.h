@@ -62,8 +62,7 @@ Systems    : all
 /***************************** Functions *******************************/
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 #ifdef __cplusplus
@@ -74,6 +73,6 @@ extern "C"
    another position!) */
 #include "target_generic_io.h"
 
-#endif				/* __TARGET_NATIVE_MISC__ */
+#endif /* __TARGET_NATIVE_MISC__ */
 
 /* end of file */

@@ -55,17 +55,17 @@ struct state_node
   struct state_node *next;
 };
 
-struct state_table *init_state_table_with_size (JNIEnv *, jclass, jint);
-struct state_table *init_state_table (JNIEnv *, jclass);
+struct state_table * init_state_table_with_size (JNIEnv *, jclass, jint);
+struct state_table * init_state_table (JNIEnv *, jclass);
 
 /* lowlevel api */
 void set_state_oid (JNIEnv *, jobject, struct state_table *, jint, void *);
-void *get_state_oid (JNIEnv *, jobject, struct state_table *, jint);
-void *remove_state_oid (JNIEnv *, jobject, struct state_table *, jint);
+void * get_state_oid (JNIEnv *, jobject, struct state_table *, jint);
+void * remove_state_oid (JNIEnv *, jobject, struct state_table *, jint);
 
 /* highlevel api */
 int set_state (JNIEnv *, jobject, struct state_table *, void *);
-void *get_state (JNIEnv *, jobject, struct state_table *);
-void *remove_state_slot (JNIEnv *, jobject, struct state_table *);
+void * get_state (JNIEnv *, jobject, struct state_table *);
+void * remove_state_slot (JNIEnv *, jobject, struct state_table *);
 
 #endif

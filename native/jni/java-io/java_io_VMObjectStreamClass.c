@@ -47,14 +47,14 @@ exception statement from your version. */
  * Signature: (Ljava/lang/Class;)Z
  */
 JNIEXPORT jboolean JNICALL
-Java_java_io_VMObjectStreamClass_hasClassInitializer (JNIEnv *env,
-						      jclass vmosklass,
-						      jclass klass)
+Java_java_io_VMObjectStreamClass_hasClassInitializer( JNIEnv * env,
+						 jclass vmosklass,
+						 jclass klass )
 {
-  jmethodID mid = (*env)->GetStaticMethodID (env, klass, "<clinit>", "()V");
+  jmethodID mid = (*env)->GetStaticMethodID(env, klass, "<clinit>", "()V");
   if (mid == NULL)
     {
-      (*env)->ExceptionClear (env);
+      (*env)->ExceptionClear(env);
       return JNI_FALSE;
     }
   return JNI_TRUE;

@@ -135,7 +135,7 @@ typedef const struct JNIInvokeInterface *JavaVM;
 #ifdef __cplusplus
 typedef void * (*_Jv_func) (...);
 #else
-typedef void * (*_Jv_func) ();
+typedef void * (*_Jv_func) ();  
 #endif
 
 #define _Jv_va_list va_list
@@ -145,8 +145,7 @@ extern "C"
 {
 #endif /* __cplusplus */
 
-typedef union _jvalue_union jvalue;
-union _jvalue_union
+typedef union jvalue
 {
   jboolean z;
   jbyte    b;
@@ -157,8 +156,8 @@ union _jvalue_union
   jfloat   f;
   jdouble  d;
   jobject  l;
-};
-
+} jvalue;
+      
 /* Used for jboolean type  */
 #define JNI_TRUE  1
 #define JNI_FALSE 0
@@ -168,7 +167,7 @@ union _jvalue_union
 #define JNI_ABORT  2
 
 /* FIXME: Could be wrong */
-typedef jobject jweak;
+typedef jobject jweak;  
 
 /* Version numbers.  */
 #define JNI_VERSION_1_1 0x00010001 /* JNI version 1.1 */
@@ -194,13 +193,12 @@ JNIEXPORT jint JNICALL JNI_GetCreatedJavaVMs(JavaVM **, jsize, jsize *);
 
 
 /* This structure is used when registering native methods.  */
-typedef struct _JNINativeMethod_struct JNINativeMethod;
-struct _JNINativeMethod_struct
+typedef struct
 {
   char *name;
   char *signature;
   void *fnPtr;
-};
+} JNINativeMethod;
 
 struct JNINativeInterface
 {
@@ -1392,24 +1390,21 @@ struct _Jv_JavaVM
 };
 #endif /* __cplusplus */
 
-typedef struct _JavaVMAttachArgs_struct JavaVMAttachArgs;
-struct _JavaVMAttachArgs_struct
+typedef struct JavaVMAttachArgs
 {
   jint version;			/* Must be JNI_VERSION_1_2.  */
   char *name;			/* The name of the thread (or NULL).  */
   jobject group;		/* Global ref of a ThreadGroup object
 				   (or NULL).  */
-};
+} JavaVMAttachArgs;
 
-typedef struct _JavaVMOption_struct JavaVMOption;
-struct _JavaVMOption_struct
+typedef struct JavaVMOption
 {
   char *optionString;
   void *extraInfo;
-};
+} JavaVMOption;
 
-typedef struct _JavaVMInitArgs_struct JavaVMInitArgs;
-struct _JavaVMInitArgs_struct
+typedef struct JavaVMInitArgs
 {
   /* Must be JNI_VERSION_1_2.  */
   jint version;
@@ -1422,6 +1417,6 @@ struct _JavaVMInitArgs_struct
 
   /* Whether we should ignore unrecognized options.  */
   jboolean ignoreUnrecognized;
-};
+} JavaVMInitArgs;
 
 #endif /* __CLASSPATH_JNI_H__ */

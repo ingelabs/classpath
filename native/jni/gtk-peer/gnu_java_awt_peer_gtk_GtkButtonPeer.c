@@ -41,7 +41,8 @@ exception statement from your version. */
 #include "gnu_java_awt_peer_gtk_GtkButtonPeer.h"
 
 JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GtkButtonPeer_create (JNIEnv *env, jobject obj)
+Java_gnu_java_awt_peer_gtk_GtkButtonPeer_create
+  (JNIEnv *env, jobject obj)
 {
   GtkWidget *button;
 
@@ -49,8 +50,8 @@ Java_gnu_java_awt_peer_gtk_GtkButtonPeer_create (JNIEnv *env, jobject obj)
   NSA_SET_GLOBAL_REF (env, obj);
 
   gdk_threads_enter ();
-
-  button = gtk_button_new ();
+  
+  button = gtk_button_new();
   gtk_widget_show (button);
 
   gdk_threads_leave ();
@@ -59,7 +60,7 @@ Java_gnu_java_awt_peer_gtk_GtkButtonPeer_create (JNIEnv *env, jobject obj)
 }
 
 JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkButtonPeer_connectJObject
+Java_gnu_java_awt_peer_gtk_GtkButtonPeer_connectJObject
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
@@ -70,13 +71,13 @@ JNIEXPORT void JNICALL
 
   gtk_widget_realize (GTK_WIDGET (ptr));
 
-  connect_awt_hook (env, obj, 1, GTK_BUTTON (ptr)->event_window);
+  connect_awt_hook (env, obj, 1, GTK_BUTTON(ptr)->event_window);
 
   gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkButtonPeer_connectSignals
+Java_gnu_java_awt_peer_gtk_GtkButtonPeer_connectSignals
   (JNIEnv *env, jobject obj)
 {
   /* FIXME: Do we need to connect any signals here? Otherwise just do not
@@ -86,8 +87,8 @@ JNIEXPORT void JNICALL
   Java_gnu_java_awt_peer_gtk_GtkComponentPeer_connectSignals (env, obj);
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkSetLabel
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkSetLabel
   (JNIEnv *env, jobject obj, jstring jtext)
 {
   const char *text;
@@ -95,18 +96,18 @@ JNIEXPORT void JNICALL
   void *ptr;
 
   ptr = NSA_GET_PTR (env, obj);
-  label = gtk_bin_get_child (GTK_BIN (ptr));
+  label = gtk_bin_get_child (GTK_BIN(ptr));
   text = (*env)->GetStringUTFChars (env, jtext, NULL);
 
   gdk_threads_enter ();
-  gtk_label_set_text (GTK_LABEL (label), text);
+  gtk_label_set_text (GTK_LABEL(label), text);
   gdk_threads_leave ();
 
   (*env)->ReleaseStringUTFChars (env, jtext, text);
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkSetFont
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkSetFont
   (JNIEnv *env, jobject obj, jstring name, jint style, jint size)
 {
   const char *font_name;
@@ -118,14 +119,14 @@ JNIEXPORT void JNICALL
   ptr = NSA_GET_PTR (env, obj);
 
   button = GTK_WIDGET (ptr);
-  label = gtk_bin_get_child (GTK_BIN (button));
-
+  label = gtk_bin_get_child (GTK_BIN(button));
+  
   if (!label)
-    return;
+      return;
 
   font_name = (*env)->GetStringUTFChars (env, name, NULL);
 
-  gdk_threads_enter ();
+  gdk_threads_enter();
 
   font_desc = pango_font_description_from_string (font_name);
   pango_font_description_set_size (font_desc, size * PANGO_SCALE);
@@ -136,17 +137,17 @@ JNIEXPORT void JNICALL
   if (style & AWT_STYLE_ITALIC)
     pango_font_description_set_style (font_desc, PANGO_STYLE_OBLIQUE);
 
-  gtk_widget_modify_font (GTK_WIDGET (label), font_desc);
+  gtk_widget_modify_font (GTK_WIDGET(label), font_desc);
 
   pango_font_description_free (font_desc);
 
-  gdk_threads_leave ();
+  gdk_threads_leave();
 
   (*env)->ReleaseStringUTFChars (env, name, font_name);
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkWidgetSetForeground
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkButtonPeer_gtkWidgetSetForeground
   (JNIEnv *env, jobject obj, jint red, jint green, jint blue)
 {
   GdkColor color;
@@ -161,10 +162,10 @@ JNIEXPORT void JNICALL
 
   gdk_threads_enter ();
 
-  label = gtk_bin_get_child (GTK_BIN (ptr));
+  label = gtk_bin_get_child (GTK_BIN(ptr));
 
   if (!label)
-    return;
+      return;
 
   gtk_widget_modify_fg (label, GTK_STATE_NORMAL, &color);
   gtk_widget_modify_fg (label, GTK_STATE_ACTIVE, &color);

@@ -42,8 +42,9 @@ exception statement from your version. */
 
 #define GDK_STABLE_IS_PIXMAP(d) (GDK_IS_PIXMAP(d))
 
-GdkPoint *translate_points (JNIEnv *env, jintArray xpoints, jintArray ypoints,
-			    jint npoints, jint x_offset, jint y_offset);
+GdkPoint *
+translate_points (JNIEnv *env, jintArray xpoints, jintArray ypoints, 
+		  jint npoints, jint x_offset, jint y_offset);
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_copyState
   (JNIEnv *env, jobject obj, jobject old)
@@ -62,7 +63,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_copyState
 
   if (GDK_STABLE_IS_PIXMAP (g->drawable))
     gdk_pixmap_ref (g->drawable);
-  else				/* GDK_IS_WINDOW (g->drawable) */
+  else /* GDK_IS_WINDOW (g->drawable) */
     gdk_window_ref (g->drawable);
 
   gdk_colormap_ref (g->cm);
@@ -81,7 +82,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState__II
   g->x_offset = g->y_offset = 0;
 
   gdk_threads_enter ();
-  g->drawable = (GdkDrawable *) gdk_pixmap_new (NULL, width, height,
+  g->drawable = (GdkDrawable *) gdk_pixmap_new (NULL, width, height, 
 						gdk_rgb_get_visual ()->depth);
   g->cm = gdk_rgb_get_cmap ();
   gdk_colormap_ref (g->cm);
@@ -93,8 +94,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState__II
 
 /* copy the native state of the peer (GtkWidget *) to the native state
    of the graphics object */
-JNIEXPORT jintArray JNICALL
-  Java_gnu_java_awt_peer_gtk_GdkGraphics_initState__Lgnu_java_awt_peer_gtk_GtkComponentPeer_2
+JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState__Lgnu_java_awt_peer_gtk_GtkComponentPeer_2
   (JNIEnv *env, jobject obj, jobject peer)
 {
   struct graphics *g = (struct graphics *) malloc (sizeof (struct graphics));
@@ -152,9 +152,8 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_dispose
 
   g = (struct graphics *) NSA_DEL_PTR (env, obj);
 
-  if (!g)
-    return;			/* dispose has been called more than once */
-
+  if (!g) return;		/* dispose has been called more than once */
+  
   gdk_threads_enter ();
   XFlush (GDK_DISPLAY ());
 
@@ -162,7 +161,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_dispose
 
   if (GDK_STABLE_IS_PIXMAP (g->drawable))
     gdk_pixmap_unref (g->drawable);
-  else				/* GDK_IS_WINDOW (g->drawable) */
+  else /* GDK_IS_WINDOW (g->drawable) */
     gdk_window_unref (g->drawable);
 
   gdk_colormap_unref (g->cm);
@@ -188,7 +187,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_translateNative
 }
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawString
-  (JNIEnv *env, jobject obj, jstring str, jint x, jint y,
+  (JNIEnv *env, jobject obj, jstring str, jint x, jint y, 
    jstring fname, jint style, jint size)
 {
   struct graphics *g;
@@ -216,7 +215,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawString
   if (style & AWT_STYLE_ITALIC)
     pango_font_description_set_style (font_desc, PANGO_STYLE_OBLIQUE);
 
-  context = gdk_pango_context_get ();
+  context = gdk_pango_context_get();
   pango_context_set_font_description (context, font_desc);
 
   layout = pango_layout_new (context);
@@ -226,9 +225,8 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawString
 
   baseline_y = pango_layout_iter_get_baseline (iter);
 
-  gdk_draw_layout (g->drawable, g->gc,
-		   x + g->x_offset,
-		   y + g->y_offset - (baseline_y / PANGO_SCALE), layout);
+  gdk_draw_layout (g->drawable, g->gc, 
+  		   x + g->x_offset, y + g->y_offset - (baseline_y / PANGO_SCALE), layout);
 
   pango_font_description_free (font_desc);
   pango_layout_iter_free (iter);
@@ -247,8 +245,8 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawLine
   g = (struct graphics *) NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  gdk_draw_line (g->drawable, g->gc,
-		 x + g->x_offset, y + g->y_offset,
+  gdk_draw_line (g->drawable, g->gc, 
+		 x + g->x_offset, y + g->y_offset, 
 		 x2 + g->x_offset, y2 + g->y_offset);
   gdk_threads_leave ();
 }
@@ -261,7 +259,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_fillRect
   g = (struct graphics *) NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  gdk_draw_rectangle (g->drawable, g->gc, TRUE,
+  gdk_draw_rectangle (g->drawable, g->gc, TRUE, 
 		      x + g->x_offset, y + g->y_offset, width, height);
   gdk_threads_leave ();
 }
@@ -274,13 +272,13 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawRect
   g = (struct graphics *) NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  gdk_draw_rectangle (g->drawable, g->gc, FALSE,
+  gdk_draw_rectangle (g->drawable, g->gc, FALSE, 
 		      x + g->x_offset, y + g->y_offset, width, height);
   gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_copyArea
-  (JNIEnv *env, jobject obj, jint x, jint y,
+  (JNIEnv *env, jobject obj, jint x, jint y, 
    jint width, jint height, jint dx, jint dy)
 {
   struct graphics *g;
@@ -288,16 +286,17 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_copyArea
   g = (struct graphics *) NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  gdk_window_copy_area ((GdkWindow *) g->drawable,
+  gdk_window_copy_area ((GdkWindow *)g->drawable,
 			g->gc,
 			x + g->x_offset + dx, y + g->y_offset + dy,
-			(GdkWindow *) g->drawable,
-			x + g->x_offset, y + g->y_offset, width, height);
+			(GdkWindow *)g->drawable,
+			x + g->x_offset, y + g->y_offset,
+			width, height);
   gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_copyPixmap
-  (JNIEnv *env, jobject obj, jobject offscreen,
+  (JNIEnv *env, jobject obj, jobject offscreen, 
    jint x, jint y, jint width, jint height)
 {
   struct graphics *g1, *g2;
@@ -306,14 +305,15 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_copyPixmap
   g2 = (struct graphics *) NSA_GET_PTR (env, offscreen);
 
   gdk_threads_enter ();
-  gdk_window_copy_area ((GdkWindow *) g1->drawable,
+  gdk_window_copy_area ((GdkWindow *)g1->drawable,
 			g1->gc,
 			x + g1->x_offset, y + g1->y_offset,
-			(GdkWindow *) g2->drawable,
-			0 + g2->x_offset, 0 + g2->y_offset, width, height);
+			(GdkWindow *)g2->drawable,
+			0 + g2->x_offset, 0 + g2->y_offset, 
+			width, height);
   gdk_threads_leave ();
 }
-
+  
 
 
 
@@ -329,14 +329,14 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_clearRect
   gdk_threads_enter ();
   if (GDK_IS_WINDOW (g->drawable))
     {
-      gdk_window_clear_area ((GdkWindow *) g->drawable,
+      gdk_window_clear_area ((GdkWindow *)g->drawable, 
 			     x + g->x_offset, y + g->y_offset, width, height);
     }
   else
     {
       gdk_gc_get_values (g->gc, &saved);
       gdk_gc_set_foreground (g->gc, &(saved.background));
-      gdk_draw_rectangle (g->drawable, g->gc, TRUE,
+      gdk_draw_rectangle (g->drawable, g->gc, TRUE, 
 			  x + g->x_offset, y + g->y_offset, width, height);
       gdk_gc_set_foreground (g->gc, &(saved.foreground));
     }
@@ -348,7 +348,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_setFunction
 {
   struct graphics *g;
   g = (struct graphics *) NSA_GET_PTR (env, obj);
-
+  
   gdk_threads_enter ();
   gdk_gc_set_function (g->gc, func);
   gdk_threads_leave ();
@@ -366,7 +366,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_setFGColor
   color.blue = blue << 8;
 
   g = (struct graphics *) NSA_GET_PTR (env, obj);
-
+  
   gdk_threads_enter ();
   gdk_color_alloc (g->cm, &color);
   gdk_gc_set_foreground (g->gc, &color);
@@ -374,7 +374,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_setFGColor
 }
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawArc
-  (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height,
+  (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height, 
    jint angle1, jint angle2)
 {
   struct graphics *g;
@@ -382,14 +382,14 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawArc
   g = (struct graphics *) NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  gdk_draw_arc (g->drawable, g->gc, FALSE,
-		x + g->x_offset, y + g->y_offset,
+  gdk_draw_arc (g->drawable, g->gc, FALSE, 
+		x + g->x_offset, y + g->y_offset, 
 		width, height, angle1 << 6, angle2 << 6);
   gdk_threads_leave ();
-}
+}  
 
 GdkPoint *
-translate_points (JNIEnv *env, jintArray xpoints, jintArray ypoints,
+translate_points (JNIEnv *env, jintArray xpoints, jintArray ypoints, 
 		  jint npoints, jint x_offset, jint y_offset)
 {
   GdkPoint *points;
@@ -399,7 +399,7 @@ translate_points (JNIEnv *env, jintArray xpoints, jintArray ypoints,
   /* allocate one more point than necessary, in case we need to tack
      on an extra due to the semantics of Java polygons. */
   points = g_malloc (sizeof (GdkPoint) * (npoints + 1));
-
+  
   x = (*env)->GetIntArrayElements (env, xpoints, NULL);
   y = (*env)->GetIntArrayElements (env, ypoints, NULL);
 
@@ -416,7 +416,7 @@ translate_points (JNIEnv *env, jintArray xpoints, jintArray ypoints,
 }
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawPolyline
-  (JNIEnv *env, jobject obj, jintArray xpoints, jintArray ypoints,
+  (JNIEnv *env, jobject obj, jintArray xpoints, jintArray ypoints, 
    jint npoints)
 {
   struct graphics *g;
@@ -434,7 +434,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawPolyline
 }
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawPolygon
-  (JNIEnv *env, jobject obj, jintArray xpoints, jintArray ypoints,
+  (JNIEnv *env, jobject obj, jintArray xpoints, jintArray ypoints, 
    jint npoints)
 {
   struct graphics *g;
@@ -446,8 +446,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawPolygon
 
   /* make sure the polygon is closed, per Java semantics.
      if it's not, we close it. */
-  if (points[0].x != points[npoints - 1].x
-      || points[0].y != points[npoints - 1].y)
+  if (points[0].x != points[npoints-1].x || points[0].y != points[npoints-1].y)
     points[npoints++] = points[0];
 
   gdk_threads_enter ();
@@ -458,7 +457,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawPolygon
 }
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_fillPolygon
-  (JNIEnv *env, jobject obj, jintArray xpoints, jintArray ypoints,
+  (JNIEnv *env, jobject obj, jintArray xpoints, jintArray ypoints, 
    jint npoints)
 {
   struct graphics *g;
@@ -475,7 +474,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_fillPolygon
 }
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_fillArc
-  (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height,
+  (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height, 
    jint angle1, jint angle2)
 {
   struct graphics *g;
@@ -483,11 +482,11 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_fillArc
   g = (struct graphics *) NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  gdk_draw_arc (g->drawable, g->gc, TRUE,
-		x + g->x_offset, y + g->y_offset,
+  gdk_draw_arc (g->drawable, g->gc, TRUE, 
+		x + g->x_offset, y + g->y_offset, 
 		width, height, angle1 << 6, angle2 << 6);
   gdk_threads_leave ();
-}
+}  
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawOval
   (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)
@@ -497,10 +496,11 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawOval
   g = (struct graphics *) NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  gdk_draw_arc (g->drawable, g->gc, FALSE,
-		x + g->x_offset, y + g->y_offset, width, height, 0, 23040);
+  gdk_draw_arc (g->drawable, g->gc, FALSE, 
+		x + g->x_offset, y + g->y_offset, 
+		width, height, 0, 23040);
   gdk_threads_leave ();
-}
+}  
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_fillOval
   (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)
@@ -510,10 +510,11 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_fillOval
   g = (struct graphics *) NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  gdk_draw_arc (g->drawable, g->gc, TRUE,
-		x + g->x_offset, y + g->y_offset, width, height, 0, 23040);
+  gdk_draw_arc (g->drawable, g->gc, TRUE, 
+		x + g->x_offset, y + g->y_offset, 
+		width, height, 0, 23040);
   gdk_threads_leave ();
-}
+}  
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_setClipRectangle
   (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)

@@ -41,8 +41,8 @@ exception statement from your version. */
 #include "gthread-jni.h"
 
 #ifdef JVM_SUN
-struct state_table *native_state_table;
-struct state_table *native_global_ref_table;
+  struct state_table *native_state_table;
+  struct state_table *native_global_ref_table;
 #endif
 
 jmethodID setBoundsCallbackID;
@@ -74,15 +74,15 @@ GtkWindowGroup *global_gtk_window_group;
  * gtk calls.
  */
 
-JNIEXPORT void JNICALL
+JNIEXPORT void JNICALL 
 Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 {
   int argc = 1;
   char **argv;
   char *homedir, *rcpath = NULL;
 /*    jclass gtkgenericpeer; */
-  jclass gtkcomponentpeer, gtkchoicepeer, gtkwindowpeer, gtkscrollbarpeer,
-    gtklistpeer, gtkmenuitempeer, gtktextcomponentpeer, window;
+  jclass gtkcomponentpeer, gtkchoicepeer, gtkwindowpeer, gtkscrollbarpeer, gtklistpeer,
+    gtkmenuitempeer, gtktextcomponentpeer, window;
 
   NSA_INIT (env, clazz);
 
@@ -96,15 +96,15 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
   /* until we have JDK 1.2 JNI, assume we have a VM with threads that 
      match what GLIB was compiled for */
 #ifdef PORTABLE_NATIVE_SYNC
-  (*env)->GetJavaVM (env, &gdk_vm);
-  g_thread_init (&g_thread_jni_functions);
-  printf ("called gthread init\n");
+  (*env)->GetJavaVM( env, &gdk_vm );
+  g_thread_init ( &g_thread_jni_functions );
+  printf("called gthread init\n");
 #else
-  g_thread_init (NULL);
+  g_thread_init ( NULL );
 #endif
 
   /* From GDK 2.0 onwards we have to explicitly call gdk_threads_init */
-  gdk_threads_init ();
+  gdk_threads_init();
 
   gtk_init (&argc, &argv);
 
@@ -117,14 +117,14 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
   atexit (gdk_threads_enter);
 
   gdk_env = env;
-  gdk_event_handler_set ((GdkEventFunc) awt_event_handler, NULL, NULL);
+  gdk_event_handler_set ((GdkEventFunc)awt_event_handler, NULL, NULL);
 
   if ((homedir = getenv ("HOME")))
     {
       rcpath = (char *) malloc (strlen (homedir) + strlen (RC_FILE) + 2);
       sprintf (rcpath, "%s/%s", homedir, RC_FILE);
     }
-
+  
   gtk_rc_parse ((rcpath) ? rcpath : RC_FILE);
 
   if (rcpath)
@@ -139,18 +139,18 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
   window = (*env)->FindClass (env, "java/awt/Window");
 
   gtkcomponentpeer = (*env)->FindClass (env,
-					"gnu/java/awt/peer/gtk/GtkComponentPeer");
+				     "gnu/java/awt/peer/gtk/GtkComponentPeer");
   gtkchoicepeer = (*env)->FindClass (env,
 				     "gnu/java/awt/peer/gtk/GtkChoicePeer");
   gtkwindowpeer = (*env)->FindClass (env,
 				     "gnu/java/awt/peer/gtk/GtkWindowPeer");
-  gtkscrollbarpeer = (*env)->FindClass (env,
-					"gnu/java/awt/peer/gtk/GtkScrollbarPeer");
+  gtkscrollbarpeer = (*env)->FindClass (env, 
+				     "gnu/java/awt/peer/gtk/GtkScrollbarPeer");
   gtklistpeer = (*env)->FindClass (env, "gnu/java/awt/peer/gtk/GtkListPeer");
   gtkmenuitempeer = (*env)->FindClass (env,
-				       "gnu/java/awt/peer/gtk/GtkMenuItemPeer");
+                                     "gnu/java/awt/peer/gtk/GtkMenuItemPeer");
   gtktextcomponentpeer = (*env)->FindClass (env,
-					    "gnu/java/awt/peer/gtk/GtkTextComponentPeer");
+                                     "gnu/java/awt/peer/gtk/GtkTextComponentPeer");
 /*    gdkColor = (*env)->FindClass (env, */
 /*  				"gnu/java/awt/peer/gtk/GdkColor"); */
 /*    gdkColorID = (*env)->GetMethodID (env, gdkColor, "<init>", "(III)V"); */
@@ -159,46 +159,49 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 /*  					   "(Ljava/lang/String;I)V"); */
 
   setBoundsCallbackID = (*env)->GetMethodID (env, window,
-					     "setBoundsCallback", "(IIII)V");
+					     "setBoundsCallback",
+					     "(IIII)V");
 
   postMenuActionEventID = (*env)->GetMethodID (env, gtkmenuitempeer,
-					       "postMenuActionEvent", "()V");
-  postMouseEventID = (*env)->GetMethodID (env, gtkcomponentpeer,
+					       "postMenuActionEvent",
+					       "()V");
+  postMouseEventID = (*env)->GetMethodID (env, gtkcomponentpeer, 
 					  "postMouseEvent", "(IJIIIIZ)V");
-  postConfigureEventID = (*env)->GetMethodID (env, gtkwindowpeer,
-					      "postConfigureEvent",
-					      "(IIII)V");
-  postWindowEventID =
-    (*env)->GetMethodID (env, gtkwindowpeer, "postWindowEvent",
-			 "(ILjava/awt/Window;I)V");
-  postExposeEventID =
-    (*env)->GetMethodID (env, gtkcomponentpeer, "postExposeEvent", "(IIII)V");
-  postKeyEventID =
-    (*env)->GetMethodID (env, gtkcomponentpeer, "postKeyEvent", "(IJIICI)V");
-  postFocusEventID =
-    (*env)->GetMethodID (env, gtkcomponentpeer, "postFocusEvent", "(IZ)V");
-  postAdjustmentEventID =
-    (*env)->GetMethodID (env, gtkscrollbarpeer, "postAdjustmentEvent",
-			 "(II)V");
-  postItemEventID =
-    (*env)->GetMethodID (env, gtkcomponentpeer, "postItemEvent",
-			 "(Ljava/lang/Object;I)V");
-  choicePostItemEventID =
-    (*env)->GetMethodID (env, gtkchoicepeer, "choicePostItemEvent",
-			 "(Ljava/lang/String;I)V");
-  postListItemEventID =
-    (*env)->GetMethodID (env, gtklistpeer, "postItemEvent", "(II)V");
-  postTextEventID =
-    (*env)->GetMethodID (env, gtktextcomponentpeer, "postTextEvent", "()V");
+  postConfigureEventID = (*env)->GetMethodID (env, gtkwindowpeer, 
+					      "postConfigureEvent", "(IIII)V");
+  postWindowEventID = (*env)->GetMethodID (env, gtkwindowpeer,
+					   "postWindowEvent",
+					   "(ILjava/awt/Window;I)V");
+  postExposeEventID = (*env)->GetMethodID (env, gtkcomponentpeer, 
+					  "postExposeEvent", "(IIII)V");
+  postKeyEventID = (*env)->GetMethodID (env, gtkcomponentpeer,
+					"postKeyEvent", "(IJIICI)V");
+  postFocusEventID = (*env)->GetMethodID (env, gtkcomponentpeer,
+					  "postFocusEvent", "(IZ)V");
+  postAdjustmentEventID = (*env)->GetMethodID (env, gtkscrollbarpeer,
+					       "postAdjustmentEvent", 
+					       "(II)V");
+  postItemEventID = (*env)->GetMethodID (env, gtkcomponentpeer,
+					 "postItemEvent", 
+					 "(Ljava/lang/Object;I)V");
+  choicePostItemEventID = (*env)->GetMethodID (env, gtkchoicepeer,
+					 "choicePostItemEvent", 
+					 "(Ljava/lang/String;I)V");
+  postListItemEventID = (*env)->GetMethodID (env, gtklistpeer,
+					     "postItemEvent",
+					     "(II)V");
+  postTextEventID = (*env)->GetMethodID (env, gtktextcomponentpeer,
+					     "postTextEvent",
+					     "()V");
   global_gtk_window_group = gtk_window_group_new ();
 }
 
 /*
  * Run gtk_main and block.
- */
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkMain
-  (JNIEnv *env __attribute__ ((unused)), jobject obj __attribute__ ((unused)))
+ */ 
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkMain
+  (JNIEnv *env __attribute__((unused)), jobject obj __attribute__((unused)))
 {
   gdk_threads_enter ();
   gtk_main ();

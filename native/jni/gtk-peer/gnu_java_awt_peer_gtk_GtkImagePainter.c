@@ -44,10 +44,10 @@ exception statement from your version. */
   (((w) << 24) | (((w) & 0xff00) << 8) | (((w) >> 8) & 0xff00) | ((w) >> 24))
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImagePainter_drawPixels
-  (JNIEnv *env, jobject obj __attribute__ ((unused)), jobject gc_obj,
-   jint bg_red, jint bg_green, jint bg_blue, jint x, jint y, jint width,
-   jint height, jintArray jpixels, jint offset, jint scansize,
-   jdoubleArray jaffine)
+(JNIEnv *env, jobject obj __attribute__((unused)), jobject gc_obj,
+ jint bg_red, jint bg_green, jint bg_blue, jint x, jint y, jint width,
+ jint height, jintArray jpixels, jint offset, jint scansize,
+ jdoubleArray jaffine)
 {
   struct graphics *g;
   jint *pixels, *elems;
@@ -60,17 +60,17 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImagePainter_drawPixels
 
   elems = (*env)->GetIntArrayElements (env, jpixels, NULL);
   num_pixels = (*env)->GetArrayLength (env, jpixels);
-
+ 
   /* get a copy of the pixel data so we can modify it */
   pixels = malloc (sizeof (jint) * num_pixels);
   memcpy (pixels, elems, sizeof (jint) * num_pixels);
-
+ 
   (*env)->ReleaseIntArrayElements (env, jpixels, elems, 0);
 
 #ifndef WORDS_BIGENDIAN
   /* convert pixels from 0xBBGGRRAA to 0xAARRGGBB */
   for (i = 0; i < num_pixels; i++)
-    pixels[i] = SWAPU32 ((unsigned) pixels[i]);
+    pixels[i] = SWAPU32 ((unsigned)pixels[i]);
 #endif
 
   packed = (guchar *) malloc (sizeof (guchar) * 3 * num_pixels);
@@ -85,7 +85,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImagePainter_drawPixels
 
       switch (ialpha)
 	{
-	case 0:		/* full transparency */
+	case 0:			/* full transparency */
 	  *c_rgb++ = bg_red;
 	  *c_rgb++ = bg_green;
 	  *c_rgb++ = bg_blue;
@@ -100,7 +100,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImagePainter_drawPixels
 	  {
 	    jfloat alpha = ialpha / 255.0;
 	    jfloat comp_alpha = 1.0 - alpha;
-
+	    
 	    *c_rgb++ = *j_rgba++ * alpha + bg_red * comp_alpha;
 	    *c_rgb++ = *j_rgba++ * alpha + bg_green * comp_alpha;
 	    *c_rgb++ = *j_rgba++ * alpha + bg_blue * comp_alpha;
@@ -121,19 +121,21 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImagePainter_drawPixels
       new_width = abs (width * affine[0]);
       new_height = abs (height * affine[3]);
 
-      dst =
-	(art_u8 *) malloc (sizeof (art_u8) * 3 * (new_width * new_height));
-
-      art_rgb_affine (dst,
+      dst = (art_u8 *) malloc (sizeof (art_u8) * 3 * (new_width * new_height));
+      
+      art_rgb_affine (dst, 
 		      0, 0,
 		      new_width, new_height,
 		      new_width * 3,
 		      (art_u8 *) packed + offset * 3,
 		      width, height,
-		      scansize * 3, affine, ART_FILTER_NEAREST, alphagamma);
+		      scansize * 3,
+		      affine,
+		      ART_FILTER_NEAREST,
+		      alphagamma);
 
       (*env)->ReleaseDoubleArrayElements (env, jaffine, affine, JNI_ABORT);
-
+      
       free (packed);
       packed = (guchar *) dst;
 
@@ -146,13 +148,13 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkImagePainter_drawPixels
 
   gdk_draw_rgb_image (g->drawable,
 		      g->gc,
-		      x + g->x_offset,
-		      y + g->y_offset,
+		      x + g->x_offset, 
+		      y + g->y_offset, 
 		      width, height, GDK_RGB_DITHER_NORMAL,
 		      packed + offset * 3, scansize * 3);
 
   gdk_threads_leave ();
 
-  free (pixels);
+  free (pixels); 
   free (packed);
 }

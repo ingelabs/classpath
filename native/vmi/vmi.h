@@ -40,12 +40,10 @@ exception statement from your version. */
 
 #include <jni.h>
 
-typedef void *jframeID;
-typedef void *jthread;
+typedef void * jframeID;
+typedef void * jthread;
 
-typedef enum _vmiError_enum vmiError;
-enum _vmiError_enum
-{
+typedef enum {
   VMI_ERROR_NONE,
   VMI_ERROR_NULL_POINTER,
   VMI_ERROR_OUT_OF_MEMORY,
@@ -61,7 +59,7 @@ enum _vmiError_enum
   VMI_ERROR_NO_MORE_FRAMES,
   VMI_ERROR_INVALID_THREAD,
   VMI_ERROR_THREAD_NOT_SUSPENDED
-};
+} vmiError;
 
 
 #define VMI_MOD_PUBLIC       0x0001
@@ -77,17 +75,18 @@ enum _vmiError_enum
 #define VMI_MOD_ABSTRACT     0x0400
 
 JNIEXPORT vmiError JNICALL
-VMI_GetFrameClass (JNIEnv *env, jframeID frame, jobject *obj);
+VMI_GetFrameClass(JNIEnv *env, jframeID frame, jobject *obj);
 
 JNIEXPORT vmiError JNICALL
-VMI_GetFrameObject (JNIEnv *env, jframeID frame, jobject *obj);
-
-JNIEXPORT vmiError JNICALL VMI_GetThisFrame (JNIEnv *env, jframeID *frame);
+VMI_GetFrameObject(JNIEnv *env, jframeID frame, jobject *obj);
 
 JNIEXPORT vmiError JNICALL
-VMI_GetThisThreadObject (JNIEnv *env, jthread *thread);
+VMI_GetThisFrame(JNIEnv *env, jframeID *frame);
+
+JNIEXPORT vmiError JNICALL
+VMI_GetThisThreadObject(JNIEnv *env, jthread *thread);
 
 JNIEXPORT void JNICALL
-VMI_ThrowAppropriateException (JNIEnv *env, vmiError err);
+VMI_ThrowAppropriateException(JNIEnv *env, vmiError err);
 
 #endif

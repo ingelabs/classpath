@@ -39,8 +39,8 @@ exception statement from your version. */
 #include "gtkpeer.h"
 #include "gnu_java_awt_peer_gtk_GtkScrollPanePeer.h"
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_create
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_create 
   (JNIEnv *env, jobject obj, int width, int height)
 {
   GtkWidget *sw;
@@ -49,7 +49,7 @@ JNIEXPORT void JNICALL
   NSA_SET_GLOBAL_REF (env, obj);
 
   gdk_threads_enter ();
-
+  
   sw = gtk_scrolled_window_new (NULL, NULL);
 
   gtk_widget_set_size_request (sw, width, height);
@@ -59,8 +59,8 @@ JNIEXPORT void JNICALL
   NSA_SET_PTR (env, obj, sw);
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_setScrollPosition
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_setScrollPosition
   (JNIEnv *env, jobject obj, jint x, jint y)
 {
   GtkAdjustment *hadj, *vadj;
@@ -80,8 +80,8 @@ JNIEXPORT void JNICALL
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetHScrollIncrement
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetHScrollIncrement
   (JNIEnv *env, jobject obj, jint u)
 {
   GtkAdjustment *hadj;
@@ -91,7 +91,7 @@ JNIEXPORT void JNICALL
   ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  sw = GTK_SCROLLED_WINDOW (ptr);
+  sw = GTK_SCROLLED_WINDOW(ptr);
 
   hadj = gtk_scrolled_window_get_hadjustment (sw);
   hadj->step_increment = u;
@@ -99,8 +99,8 @@ JNIEXPORT void JNICALL
   gdk_threads_leave ();
 }
 
-JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetVScrollIncrement
+JNIEXPORT void JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetVScrollIncrement
   (JNIEnv *env, jobject obj, jint u)
 {
   GtkAdjustment *vadj;
@@ -110,7 +110,7 @@ JNIEXPORT void JNICALL
   ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  sw = GTK_SCROLLED_WINDOW (ptr);
+  sw = GTK_SCROLLED_WINDOW(ptr);
 
   vadj = gtk_scrolled_window_get_hadjustment (sw);
   vadj->step_increment = u;
@@ -118,8 +118,8 @@ JNIEXPORT void JNICALL
   gdk_threads_leave ();
 }
 
-JNIEXPORT jint JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getHScrollbarHeight
+JNIEXPORT jint JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getHScrollbarHeight
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
@@ -142,8 +142,8 @@ JNIEXPORT jint JNICALL
   return height;
 }
 
-JNIEXPORT jint JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getVScrollbarWidth
+JNIEXPORT jint JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_getVScrollbarWidth
   (JNIEnv *env, jobject obj)
 {
   void *ptr;
@@ -167,7 +167,7 @@ JNIEXPORT jint JNICALL
 }
 
 JNIEXPORT void JNICALL
-  Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_setPolicy
+Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_setPolicy
   (JNIEnv *env, jobject obj, jint policy)
 {
   void *ptr;

@@ -76,21 +76,9 @@ import java.util.Arrays;
 public final class Method
 extends AccessibleObject implements Member
 {
+  Class declaringClass;
+  String name;
   int slot;
-
-  byte[] vmData;
-  private  Method(byte[] vmData)
-  {
-    this.vmData = vmData;
-  }
-
-  private String name;
-  private Class declaringClass;
-  private Class returnType;
-  private Class[] parameterTypes;
-  private Class[] exceptionTypes;
-
-
 
   /**
    * This class is uninstantiable.
@@ -109,14 +97,8 @@ extends AccessibleObject implements Member
    */
   public Class getDeclaringClass()
   {
-    if (declaringClass == null)
-    {
-      declaringClass = nativeGetDeclaringClass(vmData);
-    }
     return declaringClass;
   }
-  private static native Class nativeGetDeclaringClass(byte[] vmData);
-
 
   /**
    * Gets the name of this method.
@@ -124,14 +106,8 @@ extends AccessibleObject implements Member
    */
   public String getName()
   {
-    if (name == null)
-    {
-      name = nativeGetName(vmData);
-    }
     return name;
   }
-  public static native String nativeGetName(byte[] vmData);
-
 
   /**
    * Gets the modifiers this method uses.  Use the <code>Modifier</code>
@@ -142,26 +118,13 @@ extends AccessibleObject implements Member
    * @return an integer representing the modifiers to this Member
    * @see Modifier
    */
-  public int getModifiers()
-  {
-    /* DB: Modified prototype of native method. */
-    return nativeGetModifiers(vmData);
-  }
-  private static native int nativeGetModifiers(byte[] vmData);
+  public native int getModifiers();
 
   /**
    * Gets the return type of this method.
    * @return the type of this method
    */
-  public Class getReturnType()
-  {
-
-    if (returnType == null)
-    {
-      returnType = ReflectUtil.getReturnType(nativeGetDescriptor(vmData));
-    }
-    return returnType;
-  }
+  public native Class getReturnType();
 
   /**
    * Get the parameter list for this method, in declaration order. If the
@@ -169,16 +132,7 @@ extends AccessibleObject implements Member
    *
    * @return a list of the types of the method's parameters
    */
-  public Class[] getParameterTypes()
-  {
-    if (parameterTypes == null)
-    {
-      parameterTypes =
-        ReflectUtil.getParameterTypes(nativeGetDescriptor(vmData));
-    }
-    return parameterTypes;
-  }
-
+  public native Class[] getParameterTypes();
 
   /**
    * Get the exception types this method says it throws, in no particular
@@ -187,16 +141,7 @@ extends AccessibleObject implements Member
    *
    * @return a list of the types in the method's throws clause
    */
-  public Class[] getExceptionTypes()
-  {
-    if (exceptionTypes == null)
-    {
-      exceptionTypes = nativeGetExceptionTypes(vmData);
-    }
-    return exceptionTypes;
-  }
-  public static native Class[] nativeGetExceptionTypes(byte[] vmData);
-
+  public native Class[] getExceptionTypes();
 
   /**
    * Compare two objects to see if they are semantically equivalent.
@@ -330,375 +275,16 @@ extends AccessibleObject implements Member
    *         class initialization, which then failed
    */
   public Object invoke(Object o, Object[] args)
-  throws IllegalAccessException, InvocationTargetException
+    throws IllegalAccessException, InvocationTargetException
   {
-    /* The following code is more of a hack, than real
-     * implementation, as it lacks checking and widening. To be
-     * fixed...*/
-
-    if (args == null) {
-      args = new Object[0];
-    } else {
-      /*
-       * If args actual type is not Object[], allocate an Object[]
-       * and copy the args to that array.
-       *
-       * If this is not done, an ArrayStoreException may result
-       * in the following code.
-       *
-       * ex: Boolean[] passed.
-       *
-       *     boolean[] wrapper = new boolean[1];
-       *     wrapper[0] = ((Boolean) args[i]).booleanValue();
-       * --> args[i] = wrapper;
-       *
-       * ArrayStoreException since boolean[] is not assignable to
-       * type Boolean.
-       *
-       */
-      if (args.getClass() != Object[].class) {
-	Object[] newArgs;
-	newArgs = new Object[args.length];
-	for (int i = 0; i < args.length; i++) {
-	  newArgs[i] = args[i];
-	}
-	// ugly, changing param value
-	args = newArgs;
-      }
-
-    }
-
-    char[] paramTypes = getParamTypes();
-    int count = paramTypes.length;
-
-    for (int i = 0; i < count; i++)
-    {
-      /* In the future, we should handle primitive type widening. */
-      switch (paramTypes[i])
-      {
-      case 'Z':
-        {
-          /* using a wrapper array is simpler for the VM. */
-          boolean[] wrapper = new boolean[1];
-          wrapper[0] = ((Boolean) args[i]).booleanValue();
-          args[i] = wrapper;
-        }
-        break;
-
-      case 'B':
-        {
-          byte[] wrapper = new byte[1];
-          wrapper[0] = ((Byte) args[i]).byteValue();
-          args[i] = wrapper;
-        }
-        break;
-
-      case 'S':
-        {
-          short[] wrapper = new short[1];
-          wrapper[0] = ((Short) args[i]).shortValue();
-          args[i] = wrapper;
-        }
-        break;
-
-      case 'C':
-        {
-          char[] wrapper = new char[1];
-          wrapper[0] = ((Character) args[i]).charValue();
-          args[i] = wrapper;
-        }
-        break;
-
-      case 'I':
-        {
-          int[] wrapper = new int[1];
-          wrapper[0] = ((Integer) args[i]).intValue();
-          args[i] = wrapper;
-        }
-        break;
-
-      case 'J':
-        {
-          long[] wrapper = new long[1];
-          wrapper[0] = ((Long) args[i]).longValue();
-          args[i] = wrapper;
-        }
-        break;
-
-      case 'F':
-        {
-          float[] wrapper = new float[1];
-          wrapper[0] = ((Float) args[i]).floatValue();
-          args[i] = wrapper;
-        }
-        break;
-
-      case 'D':
-        {
-          double[] wrapper = new double[1];
-          wrapper[0] = ((Double) args[i]).doubleValue();
-          args[i] = wrapper;
-        }
-        break;
-
-      case 'L':
-        {
-          /* should be checking type */
-        }
-        break;
-
-      default:
-        throw new InternalError();
-      }
-    }
-
-    Object result;
-
-    switch (resultType)
-    {
-    case 'Z':
-      {
-        boolean[] wrapper = new boolean[1];
-        result = wrapper;
-      }
-      break;
-
-    case 'B':
-      {
-        byte[] wrapper = new byte[1];
-        result = wrapper;
-      }
-      break;
-
-    case 'S':
-      {
-        short[] wrapper = new short[1];
-        result = wrapper;
-      }
-      break;
-
-    case 'C':
-      {
-        char[] wrapper = new char[1];
-        result = wrapper;
-      }
-      break;
-
-    case 'I':
-      {
-        int[] wrapper = new int[1];
-        result = wrapper;
-      }
-      break;
-
-    case 'J':
-      {
-        long[] wrapper = new long[1];
-        result = wrapper;
-      }
-      break;
-
-    case 'F':
-      {
-        float[] wrapper = new float[1];
-        result = wrapper;
-      }
-      break;
-
-    case 'D':
-      {
-        double[] wrapper = new double[1];
-        result = wrapper;
-      }
-      break;
-
-    case 'L':
-      {
-        Object[] wrapper = new Object[1];
-        result = wrapper;
-      }
-      break;
-
-    case 'V':
-      {
-        result = null;
-      }
-      break;
-
-    default:
-      throw new InternalError();
-    }
-
-    // invoke the thing.
-    invokeNative(vmData, paramTypes, resultType, o, args, result);
-
-    // unwrap and rewrap the result appropriately
-    switch (resultType)
-    {
-    case 'Z':
-      {
-        boolean[] wrapper = (boolean[]) result;
-        return new Boolean(wrapper[0]);
-      }
-
-    case 'B':
-      {
-        byte[] wrapper = (byte[]) result;
-        return new Byte(wrapper[0]);
-      }
-
-    case 'S':
-      {
-        short[] wrapper = (short[]) result;
-        return new Short(wrapper[0]);
-      }
-
-    case 'C':
-      {
-        char[] wrapper = (char[]) result;
-        return new Character(wrapper[0]);
-      }
-
-    case 'I':
-      {
-        int[] wrapper = (int[]) result;
-        return new Integer(wrapper[0]);
-      }
-
-    case 'J':
-      {
-        long[] wrapper = (long[]) result;
-        return new Long(wrapper[0]);
-      }
-
-    case 'F':
-      {
-        float[] wrapper = (float[]) result;
-        return new Float(wrapper[0]);
-      }
-
-    case 'D':
-      {
-        double[] wrapper = (double[]) result;
-        return new Double(wrapper[0]);
-      }
-
-    case 'L':
-      {
-        Object[] wrapper = (Object[]) result;
-        return wrapper[0];
-      }
-
-    case 'V':
-      {
-        return null;
-      }
-
-    default:
-      throw new InternalError();
-    }
+    return invokeNative(o, args, declaringClass, slot);
   }
 
-  private static native void invokeNative(byte[] vmData, char[] paramTypes, char resultType, Object o, Object[] args, Object result)
-  throws IllegalAccessException, InvocationTargetException;
+  /*
+   * NATIVE HELPERS
+   */
 
-  private static native String nativeGetDescriptor(byte[] vmData);
-
-  private char[] paramTypes;
-  private char resultType;
-
-  private char[] getParamTypes()
-  {
-    if(paramTypes == null)
-    {
-      char[] array = nativeGetDescriptor(vmData).toCharArray();
-      int count = 0;
-      int i = 0;
-      char c;
-
-      while ((c = array[++i]) != ')')
-      {
-        switch (c)
-        {
-        case 'Z':
-        case 'B':
-        case 'S':
-        case 'C':
-        case 'I':
-        case 'J':
-        case 'F':
-        case 'D':
-          {
-            array[count++] = c;
-          }
-          break;
-
-        case 'L':
-          {
-            array[count++] = 'L';
-
-            /* skip to next ';' */
-            while (array[++i] != ';')
-              ;
-          }
-          break;
-
-        case '[':
-          {
-            array[count++] = 'L';
-
-            /* skip all '[' */
-            while (array[++i] == '[')
-              ;
-
-            if (array[i] == 'L')
-            {
-              /* skip to next ';' */
-              while (array[++i] != ';')
-                ;
-            }
-          }
-          break;
-
-        default:
-          throw new InternalError();
-        }
-      }
-
-      switch (c = array[++i])
-      {
-      case 'Z':
-      case 'B':
-      case 'S':
-      case 'C':
-      case 'I':
-      case 'J':
-      case 'F':
-      case 'D':
-      case 'L':
-      case 'V':
-        {
-          resultType = c;
-        }
-        break;
-
-      case '[':
-        {
-          resultType = 'L';
-        }
-        break;
-
-      default:
-        throw new InternalError();
-      }
-
-      char[] types = new char[count];
-      System.arraycopy(array, 0, types, 0, count);
-      paramTypes = types;
-    }
-
-    return paramTypes;
-  }
-
-
+  private native Object invokeNative(Object o, Object[] args,
+                                     Class declaringClass, int slot)
+    throws IllegalAccessException, InvocationTargetException;
 }

@@ -20,32 +20,28 @@
 #include "fdlibm.h"
 
 #ifdef __STDC__
-float
-fabsf (float x)
+	float fabsf(float x)
 #else
-float
-fabsf (x)
-     float x;
+	float fabsf(x)
+	float x;
 #endif
 {
-  uint32_t ix;
-  GET_FLOAT_WORD (ix, x);
-  SET_FLOAT_WORD (x, ix & 0x7fffffff);
-  return x;
+	uint32_t ix;
+	GET_FLOAT_WORD(ix,x);
+	SET_FLOAT_WORD(x,ix&0x7fffffff);
+        return x;
 }
 
 #ifdef _DOUBLE_IS_32BITS
 
 #ifdef __STDC__
-double
-fabs (double x)
+	double fabs(double x)
 #else
-double
-fabs (x)
-     double x;
+	double fabs(x)
+	double x;
 #endif
 {
-  return (double) fabsf ((float) x);
+	return (double) fabsf((float) x);
 }
 
 #endif /* defined(_DOUBLE_IS_32BITS) */

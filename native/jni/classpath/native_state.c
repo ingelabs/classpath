@@ -61,7 +61,7 @@ init_state_table_with_size (JNIEnv *env, jclass clazz, jint size)
   table->head = (struct state_node **) calloc (sizeof (struct state_node *),
 					       table->size);
   table->hash = hash;
-  table->clazz = clazz_g;
+  table->clazz = clazz_g; 
 
   return table;
 }
@@ -97,7 +97,7 @@ remove_node (struct state_node **head, jint obj_id)
 
   return NULL;
 }
-
+	    
 static void *
 get_node (struct state_node **head, jint obj_id)
 {
@@ -119,7 +119,7 @@ get_node (struct state_node **head, jint obj_id)
 	  /* Return the match.  */
 	  return node->c_state;
 	}
-
+  
       back_ptr = node;
       node = node->next;
     }
@@ -127,7 +127,7 @@ get_node (struct state_node **head, jint obj_id)
   return NULL;
 }
 
-static void
+static void 
 add_node (struct state_node **head, jint obj_id, void *state)
 {
   struct state_node *node = *head;
@@ -137,7 +137,7 @@ add_node (struct state_node **head, jint obj_id, void *state)
 
   if (node != NULL)
     {
-      while (node->next != NULL && obj_id != node->key)
+      while (node->next != NULL && obj_id != node->key) 
 	{
 	  back_ptr = node;
 	  node = node->next;
@@ -164,12 +164,12 @@ add_node (struct state_node **head, jint obj_id, void *state)
   *head = new_node;
 }
 
-void
-set_state_oid (JNIEnv *env, jobject lock, struct state_table *table,
+void 
+set_state_oid (JNIEnv *env, jobject lock, struct state_table *table, 
 	       jint obj_id, void *state)
 {
   jint hash;
-
+  
   hash = obj_id % table->size;
 
   (*env)->MonitorEnter (env, lock);
@@ -183,7 +183,7 @@ get_state_oid (JNIEnv *env, jobject lock, struct state_table *table,
 {
   jint hash;
   void *return_value;
-
+  
   hash = obj_id % table->size;
 
   (*env)->MonitorEnter (env, lock);
@@ -199,7 +199,7 @@ remove_state_oid (JNIEnv *env, jobject lock, struct state_table *table,
 {
   jint hash;
   void *return_value;
-
+  
   hash = obj_id % table->size;
 
   (*env)->MonitorEnter (env, lock);

@@ -82,42 +82,36 @@ MATHREF
 #ifndef _DOUBLE_IS_32BITS
 
 #ifdef __STDC__
-double
-acos (double x)			/* wrapper acos */
+	double acos(double x)		/* wrapper acos */
 #else
-double
-acos (x)			/* wrapper acos */
-     double x;
+	double acos(x)			/* wrapper acos */
+	double x;
 #endif
 {
 #ifdef _IEEE_LIBM
-  return __ieee754_acos (x);
+	return __ieee754_acos(x);
 #else
-  double z;
-  struct exception exc;
-  z = __ieee754_acos (x);
-  if (_LIB_VERSION == _IEEE_ || isnan (x))
-    return z;
-  if (fabs (x) > 1.0)
-    {
-      /* acos(|x|>1) */
-      exc.type = DOMAIN;
-      exc.name = "acos";
-      exc.err = 0;
-      exc.arg1 = exc.arg2 = x;
-      exc.retval = 0.0;
-      if (_LIB_VERSION == _POSIX_)
-	errno = EDOM;
-      else if (!matherr (&exc))
-	{
-	  errno = EDOM;
-	}
-      if (exc.err != 0)
-	errno = exc.err;
-      return exc.retval;
-    }
-  else
-    return z;
+	double z;
+       	struct exception exc;
+       	z = __ieee754_acos(x);
+	if(_LIB_VERSION == _IEEE_ || isnan(x)) return z;
+	if(fabs(x)>1.0) { 
+	    /* acos(|x|>1) */
+	    exc.type = DOMAIN;
+	    exc.name = "acos";
+	    exc.err = 0;
+	    exc.arg1 = exc.arg2 = x;
+	    exc.retval = 0.0;
+	    if (_LIB_VERSION == _POSIX_)
+	       errno = EDOM;
+	    else if (!matherr(&exc)) {
+	       errno = EDOM;
+            }
+            if (exc.err != 0)
+	       errno = exc.err;
+	    return exc.retval; 
+	} else
+	    return z;
 #endif
 }
 

@@ -45,19 +45,20 @@ exception statement from your version. */
  * Signature: (Ljava/io/InputStream;)V
  */
 JNIEXPORT void JNICALL
-Java_java_lang_VMSystem_setIn (JNIEnv *env, jclass thisClass, jobject obj)
+Java_java_lang_VMSystem_setIn (JNIEnv * env, jclass thisClass, jobject obj)
 {
   jclass cls;
   jfieldID field;
 
-  cls = JCL_FindClass (env, "java/lang/System");
+  cls = JCL_FindClass(env, "java/lang/System");
   if (!cls)
     return;
 
-  field = (*env)->GetStaticFieldID (env, cls, "in", "Ljava/io/InputStream;");
+  field = (*env)->GetStaticFieldID(env, cls, "in",
+				   "Ljava/io/InputStream;");
   if (!field)
     return;
-  (*env)->SetStaticObjectField (env, cls, field, obj);
+  (*env)->SetStaticObjectField(env, cls, field, obj);
 }
 
 /*
@@ -66,19 +67,20 @@ Java_java_lang_VMSystem_setIn (JNIEnv *env, jclass thisClass, jobject obj)
  * Signature: (Ljava/io/PrintStream;)V
  */
 JNIEXPORT void JNICALL
-Java_java_lang_VMSystem_setOut (JNIEnv *env, jclass thisClass, jobject obj)
+Java_java_lang_VMSystem_setOut (JNIEnv * env, jclass thisClass, jobject obj)
 {
   jclass cls;
   jfieldID field;
 
-  cls = JCL_FindClass (env, "java/lang/System");
+  cls = JCL_FindClass(env, "java/lang/System");
   if (!cls)
     return;
 
-  field = (*env)->GetStaticFieldID (env, cls, "out", "Ljava/io/PrintStream;");
+  field = (*env)->GetStaticFieldID(env, cls, "out",
+				   "Ljava/io/PrintStream;");
   if (!field)
     return;
-  (*env)->SetStaticObjectField (env, cls, field, obj);
+  (*env)->SetStaticObjectField(env, cls, field, obj);
 }
 
 /*
@@ -87,19 +89,20 @@ Java_java_lang_VMSystem_setOut (JNIEnv *env, jclass thisClass, jobject obj)
  * Signature: (Ljava/io/PrintStream;)V
  */
 JNIEXPORT void JNICALL
-Java_java_lang_VMSystem_setErr (JNIEnv *env, jclass thisClass, jobject obj)
+Java_java_lang_VMSystem_setErr (JNIEnv * env, jclass thisClass, jobject obj)
 {
   jclass cls;
   jfieldID field;
 
-  cls = JCL_FindClass (env, "java/lang/System");
+  cls = JCL_FindClass(env, "java/lang/System");
   if (!cls)
     return;
 
-  field = (*env)->GetStaticFieldID (env, cls, "err", "Ljava/io/PrintStream;");
+  field = (*env)->GetStaticFieldID(env, cls, "err",
+				   "Ljava/io/PrintStream;");
   if (!field)
     return;
-  (*env)->SetStaticObjectField (env, cls, field, obj);
+  (*env)->SetStaticObjectField(env, cls, field, obj);
 }
 
 /*
@@ -108,23 +111,23 @@ Java_java_lang_VMSystem_setErr (JNIEnv *env, jclass thisClass, jobject obj)
  * Signature: ()J
  */
 JNIEXPORT jlong JNICALL
-Java_java_lang_VMSystem_currentTimeMillis (JNIEnv *env, jclass thisClass)
+Java_java_lang_VMSystem_currentTimeMillis (JNIEnv * env, jclass thisClass)
 {
   /* Note: this implementation copied directly from Japhar's, by Chris Toshok. */
   jlong result;
   struct timeval tp;
 
-  if (gettimeofday (&tp, NULL) == -1)
-    (*env)->FatalError (env, "gettimeofday call failed.");
+  if (gettimeofday(&tp, NULL) == -1)
+    (*env)->FatalError(env, "gettimeofday call failed.");
 
-  result = (jlong) tp.tv_sec;
+  result = (jlong)tp.tv_sec;
   result *= 1000;
   result += (tp.tv_usec / 1000);
 
   return result;
 }
 
-JNIEXPORT jboolean JNICALL
+JNIEXPORT jboolean JNICALL 
 Java_java_lang_VMSystem_isWordsBigEndian (JNIEnv *env, jclass clazz)
 {
   /* Are we little or big endian?  From Harbison&Steele.  */

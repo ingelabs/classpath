@@ -62,7 +62,8 @@ jmethodID areaPreparedID;
 jmethodID areaUpdatedID;
 
 static void
-area_prepared (GdkPixbufLoader * loader, jobject *decoder)
+area_prepared (GdkPixbufLoader *loader, 
+	       jobject *decoder)
 {
   jint width, height;
 
@@ -70,61 +71,68 @@ area_prepared (GdkPixbufLoader * loader, jobject *decoder)
   if (pixbuf == NULL)
     return;
 
-  width = gdk_pixbuf_get_width (pixbuf);
-  height = gdk_pixbuf_get_height (pixbuf), gdk_threads_leave ();
+  width = gdk_pixbuf_get_width (pixbuf); 
+  height = gdk_pixbuf_get_height (pixbuf), 
+
+  gdk_threads_leave ();
 
   g_assert (decoder != NULL);
 
   (*gdk_env)->CallVoidMethod (gdk_env,
-			      *decoder, areaPreparedID, width, height);
+			      *decoder,
+			      areaPreparedID,
+			      width, height);
 
   gdk_threads_enter ();
 }
 
 static void
-area_updated (GdkPixbufLoader * loader,
-	      gint x, gint y, gint width, gint height, jobject *decoder)
+area_updated (GdkPixbufLoader *loader, 
+	      gint x, gint y, 
+	      gint width, gint height,
+	      jobject *decoder)
 {
   jint stride_bytes, stride_pixels, n_channels, n_pixels;
   int i, px;
-  jintArray jpixels;
+  jintArray jpixels;  
   jint *java_pixels;
   guchar *gdk_pixels;
 
   GdkPixbuf *pixbuf_no_alpha = NULL;
   GdkPixbuf *pixbuf = NULL;
-
+  
   pixbuf_no_alpha = gdk_pixbuf_loader_get_pixbuf (loader);
   if (pixbuf_no_alpha == NULL)
     return;
 
-  pixbuf = gdk_pixbuf_add_alpha (pixbuf_no_alpha, FALSE, 0, 0, 0);
+  pixbuf = gdk_pixbuf_add_alpha(pixbuf_no_alpha, FALSE, 0, 0, 0);
   g_assert (gdk_pixbuf_get_has_alpha (pixbuf));
-
+  
   stride_bytes = gdk_pixbuf_get_rowstride (pixbuf);
   n_channels = gdk_pixbuf_get_n_channels (pixbuf);
-  stride_pixels = stride_bytes / n_channels;
+  stride_pixels =  stride_bytes / n_channels;
   n_pixels = height * stride_pixels;
   gdk_pixels = gdk_pixbuf_get_pixels (pixbuf);
 
   jpixels = (*gdk_env)->NewIntArray (gdk_env, n_pixels);
   java_pixels = (*gdk_env)->GetIntArrayElements (gdk_env, jpixels, NULL);
 
-  memcpy (java_pixels,
-	  gdk_pixels + (y * stride_bytes), (height * stride_bytes));
+  memcpy (java_pixels, 
+	  gdk_pixels + (y * stride_bytes), 
+	  (height * stride_bytes));
 
   for (i = 0; i < n_pixels; ++i)
     {
       px = java_pixels[i];
 
       /* move alpha around (GdkPixbufLoader results are AGBR not GBRA, in
-         the lsb sense) */
+	 the lsb sense) */
       /* px = ((px >> 24) & 0xff) | ((px << 8) & 0xffffff00); */
 
       /* it appears to require a full byte swap, now, not just a shift to
-         the A channel. why did this change? don't know. */
-      px = ((px >> 8) & 0x00ff00ff) | ((px << 8) & 0xff00ff00);
-      px = ((px >> 16) & 0x0000ffff) | ((px << 16) & 0xffff0000);
+	 the A channel. why did this change? don't know. */
+      px = ((px >>  8) & 0x00ff00ff) | ((px <<  8) & 0xff00ff00); 
+      px = ((px >> 16) & 0x0000ffff) | ((px << 16) & 0xffff0000); 
 
       java_pixels[i] = px;
     }
@@ -134,20 +142,21 @@ area_updated (GdkPixbufLoader * loader,
   gdk_threads_leave ();
 
   (*gdk_env)->ReleaseIntArrayElements (gdk_env, jpixels, java_pixels, 0);
-  (*gdk_env)->CallVoidMethod (gdk_env,
-			      *decoder,
+  (*gdk_env)->CallVoidMethod (gdk_env, 
+			      *decoder, 
 			      areaUpdatedID,
 			      (jint) x, (jint) y,
 			      (jint) width, (jint) height,
-			      jpixels, stride_pixels);
+			      jpixels,
+			      stride_pixels);
   gdk_threads_enter ();
 }
 
 static void
-closed (GdkPixbufLoader * loader __attribute__ ((unused)), jobject *decoder)
+closed (GdkPixbufLoader *loader __attribute__((unused)), jobject *decoder)
 {
   gdk_threads_leave ();
-  (*gdk_env)->DeleteGlobalRef (gdk_env, *decoder);
+  (*gdk_env)->DeleteGlobalRef (gdk_env, *decoder); 
   free (decoder);
   gdk_threads_enter ();
 }
@@ -166,25 +175,25 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_initState
 
   gdk_threads_enter ();
   loader = gdk_pixbuf_loader_new ();
-  g_assert (loader != NULL);
-  g_signal_connect (loader, "area-prepared", G_CALLBACK (area_prepared),
-		    decoder);
-  g_signal_connect (loader, "area-updated", G_CALLBACK (area_updated),
-		    decoder);
+  g_assert (loader != NULL);  
+  g_signal_connect (loader, "area-prepared", G_CALLBACK (area_prepared), decoder);  
+  g_signal_connect (loader, "area-updated", G_CALLBACK (area_updated), decoder);
   g_signal_connect (loader, "closed", G_CALLBACK (closed), decoder);
   gdk_threads_leave ();
 
   NSA_SET_PB_PTR (env, obj, loader);
 }
 
-JNIEXPORT void JNICALL
-Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_initStaticState (JNIEnv *env,
-							     jclass clazz)
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_initStaticState 
+  (JNIEnv *env, jclass clazz)
 {
-  areaPreparedID = (*env)->GetMethodID (env, clazz, "areaPrepared", "(II)V");
+  areaPreparedID = (*env)->GetMethodID (env, clazz, 
+				        "areaPrepared", 
+					"(II)V");
 
   areaUpdatedID = (*env)->GetMethodID (env, clazz,
-				       "areaUpdated", "(IIII[II)V");
+				       "areaUpdated",
+				       "(IIII[II)V");
   NSA_PB_INIT (env, clazz);
 }
 
@@ -194,14 +203,14 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_finish
 {
   GdkPixbufLoader *loader = NULL;
 
-  loader = (GdkPixbufLoader *) NSA_DEL_PB_PTR (env, obj);
+  loader = (GdkPixbufLoader *)NSA_DEL_PB_PTR (env, obj);
   if (loader == NULL)
     return;
 
   gdk_threads_enter ();
   gdk_pixbuf_loader_close (loader, NULL);
   g_object_unref (loader);
-  gdk_threads_leave ();
+  gdk_threads_leave (); 
 }
 
 
@@ -216,7 +225,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkPixbufDecoder_pumpBytes
 
   bytes = (*gdk_env)->GetByteArrayElements (gdk_env, jarr, NULL);
   g_assert (bytes != NULL);
-  loader = (GdkPixbufLoader *) NSA_GET_PB_PTR (env, obj);
+  loader = (GdkPixbufLoader *)NSA_GET_PB_PTR (env, obj);
   g_assert (loader != NULL);
 
   gdk_threads_enter ();

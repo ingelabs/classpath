@@ -37,7 +37,7 @@ exception statement from your version. */
 
 
 #ifndef _JAVANET_LOADED
-#define _JAVANET_LOADED
+#define _JAVANET_LOADED 
 
 #include <jni.h>
 
@@ -87,20 +87,20 @@ exception statement from your version. */
  * Function Prototypes
  */
 
-extern int _javanet_get_int_field (JNIEnv *, jobject, const char *);
-extern int _javanet_get_netaddr (JNIEnv *, jobject);
-extern void _javanet_create (JNIEnv *, jobject, jboolean);
-extern void _javanet_close (JNIEnv *, jobject, int);
-extern void _javanet_connect (JNIEnv *, jobject, jobject, jint);
-extern void _javanet_bind (JNIEnv *, jobject, jobject, jint, int);
-extern void _javanet_listen (JNIEnv *, jobject, jint);
-extern void _javanet_accept (JNIEnv *, jobject, jobject);
-extern int _javanet_recvfrom (JNIEnv *, jobject, jarray, int, int, int *,
-			      int *);
-extern void _javanet_sendto (JNIEnv *, jobject, jarray, int, int, int, int);
-extern jobject _javanet_get_option (JNIEnv *, jobject, jint);
-extern void _javanet_set_option (JNIEnv *, jobject, jint, jobject);
+extern int _javanet_get_int_field(JNIEnv *, jobject, const char *);
+extern int _javanet_get_netaddr(JNIEnv *, jobject);
+extern void _javanet_create(JNIEnv *, jobject, jboolean);
+extern void _javanet_close(JNIEnv *, jobject, int);
+extern void _javanet_connect(JNIEnv *, jobject, jobject, jint);
+extern void _javanet_bind(JNIEnv *, jobject, jobject, jint, int);
+extern void _javanet_listen(JNIEnv *, jobject, jint);
+extern void _javanet_accept(JNIEnv *, jobject, jobject);
+extern int _javanet_recvfrom(JNIEnv *, jobject, jarray, int, int, int *, int *);
+extern void _javanet_sendto(JNIEnv *, jobject, jarray, int, int, int, int);
+extern jobject _javanet_get_option(JNIEnv *, jobject, jint);
+extern void _javanet_set_option(JNIEnv *, jobject, jint, jobject);
 
 /*************************************************************************/
 
 #endif /* not _JAVANET_H_LOADED */
+

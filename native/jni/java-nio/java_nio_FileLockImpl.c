@@ -48,6 +48,6 @@ exception statement from your version. */
 JNIEXPORT void JNICALL
 Java_gnu_java_nio_FileLockImpl_releaseImpl (JNIEnv *env, jclass class)
 {
-  JCL_ThrowException (env, IO_EXCEPTION,
-		      "java.nio.FileChannelImpl.(): not implemented");
+  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.(): not implemented");
 }
+
