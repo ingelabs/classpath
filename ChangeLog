@@ -1,5 +1,14 @@
 2002-07-14  Mark Wielaard  <mark@klomp.org>
 
+	* javax/transaction/InvalidTransactionException.java,
+	javax/transaction/TransactionRequiredException.java,
+	javax/transaction/TransactionRolledbackException.java,
+	javax/transaction/xa/XAException.java,
+	javax/transaction/xa/XAResource.java,
+	javax/transaction/xa/Xid.java: New files from libgcj.
+
+2002-07-14  Mark Wielaard  <mark@klomp.org>
+
 	* gnu/java/security/provider/DefaultPolicy.java: Remove commented out
 	code.
 	* gnu/java/security/provider/SHA.java: Likewise.
