@@ -86,17 +86,11 @@ import gnu.java.io.decode.Decoder;
   */
 public class InputStreamReader extends Reader
 {
-  /*
-   * Instance Variables
-   */
-
    /* 
     * This is the byte-character decoder class that does the reading and
     * translation of bytes from the underlying stream.
     */
   private Decoder in;
-
-  /*************************************************************************/
 
   /**
     * This method initializes a new instance of <code>InputStreamReader</code>
@@ -110,8 +104,6 @@ public class InputStreamReader extends Reader
       throw new NullPointerException();
     this.in = EncodingManager.getDecoder(in);
   }
-
-  /*************************************************************************/
 
   /**
     * This method initializes a new instance of <code>InputStreamReader</code>
@@ -133,12 +125,6 @@ public class InputStreamReader extends Reader
     this.in = EncodingManager.getDecoder(in, encoding_name);
   }
 
-  /*************************************************************************/
-
-  /*
-   * Instance Methods
-   */
-
   /**
     * This method returns the name of the encoding that is currently in use
     * by this object.  If the stream has been closed, this method is allowed
@@ -151,8 +137,6 @@ public class InputStreamReader extends Reader
     return(in.getSchemeName());
   }
 
-  /*************************************************************************/
-
   /**
     * This method closes this stream, as well as the underlying 
     * <code>InputStream</code>.
@@ -163,8 +147,6 @@ public class InputStreamReader extends Reader
   {
     in.close();
   }
-
-  /*************************************************************************/
 
   /**
     * This method checks to see if the stream is read to be read.  It
@@ -182,8 +164,6 @@ public class InputStreamReader extends Reader
     return(in.ready());
   }
 
-  /*************************************************************************/
-
   /**
     * This method reads a single character of data from the stream.
     *
@@ -195,8 +175,6 @@ public class InputStreamReader extends Reader
   {
     return(in.read());
   }
-
-  /*************************************************************************/
 
   /**
     * This method reads up to <code>len</code> characters from the stream into

@@ -1,5 +1,31 @@
 2003-03-23  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/BufferedOutputStream.java,
+	java/io/BufferedReader.java,
+	java/io/DataInput.java,
+	java/io/DataOutput.java,
+	java/io/Externalizable.java,
+	java/io/File.java,
+	java/io/FileDescriptor.java,
+	java/io/FileFilter.java,
+	java/io/FileInputStream.java,
+	java/io/FileOutputStream.java,
+	java/io/FileWriter.java,
+	java/io/FilenameFilter.java,
+	java/io/FilterInputStream.java,
+	java/io/FilterOutputStream.java,
+	java/io/FilterReader.java,
+	java/io/FilterWriter.java,
+	java/io/InputStreamReader.java,
+	java/io/ObjectInput.java,
+	java/io/ObjectOutput.java,
+	java/io/OutputStreamWriter.java,
+	java/io/PrintStream.java,
+	java/io/SerializablePermission.java,
+	java/io/Writer.java:
+	Reformated.
+2003-03-23  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/ByteArrayOutputStream.java
 	(size): Fixed @see tag.
 	* java/io/CharArrayWriter.java
