@@ -76,6 +76,17 @@ private int native_fd;
 /*************************************************************************/
 
 /*
+ * Class Methods
+ */
+private static FileDescriptor
+getFileDescriptor(int native_fd)
+{
+  return(new FileDescriptor(native_fd));
+}
+
+/*************************************************************************/
+
+/*
  * Constructors
  */
 
