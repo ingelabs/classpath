@@ -1,5 +1,5 @@
 /* java.util.SimpleTimeZone
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -175,6 +175,19 @@ public class SimpleTimeZone extends TimeZone
   private int endTime;
 
   /**
+   * This variable points to a deprecated array from JDK 1.1.  It is
+   * ignored in JDK 1.2 but streamed out for compatibility with JDK 1.1.
+   * The array contains the lengths of the months in the year and is
+   * assigned from a private static final field to avoid allocating
+   * the array for every instance of the object.
+   * Note that static final fields are not serialized.
+   * @serial
+   */
+  private byte[] monthLength = monthArr;
+  private static final byte[] monthArr =
+    {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+  /**
    * The version of the serialized data on the stream.
    * <dl>
    * <dt>0 or not present on stream</dt>
@@ -197,7 +210,7 @@ public class SimpleTimeZone extends TimeZone
    */
   private int serialVersionOnStream = 1;
 
-  private static final long serialVersionUID = 7602171685614668699L;
+  private static final long serialVersionUID = -403250971215465050L;
 
   /**
    * Create a <code>SimpleTimeZone</code> with the given time offset
@@ -371,6 +384,8 @@ public class SimpleTimeZone extends TimeZone
   {
     this.startMode = checkRule(month, day, dayOfWeek);
     this.startMonth = month;
+    // FIXME: XXX: JDK 1.2 allows negative values and has 2 new variations
+    // of this method.
     this.startDay = Math.abs(day);
     this.startDayOfWeek = Math.abs(dayOfWeek);
     this.startTime = time;
@@ -394,6 +409,8 @@ public class SimpleTimeZone extends TimeZone
   {
     this.endMode = checkRule(month, day, dayOfWeek);
     this.endMonth = month;
+    // FIXME: XXX: JDK 1.2 allows negative values and has 2 new variations
+    // of this method.
     this.endDay = Math.abs(day);
     this.endDayOfWeek = Math.abs(dayOfWeek);
     this.endTime = time;

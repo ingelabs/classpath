@@ -1,3 +1,25 @@
+2000-10-26  Warren Levy  <warrenl@cygnus.com>
+
+	* java/math/BigDecimal.java (intVal): Renamed from 'num' for
+	serialization compatibility.
+	(scale): Made private.
+	(serialVersionUID): New field.
+	(main): Removed.
+	* java/util/Calendar.java (bundleName): Use '.' separators instead
+	of '/' in fully qualified class name.
+	(getInstance): Made synchronized per doc.
+	(getAvailableLocales): Made synchronized per doc.
+	(getTimeInMillis): Made not a final method.
+	(setTimeInMillis): Made protected rather than public final and
+	recompute fields, per doc.
+	(clear): Set areFieldsSet to false per spec and don't recompute fields.
+	(isSet): Only return isSet[field] per spec.
+	(complete): Check areFieldsSet before calling computeFields.
+	(toString): Removed superfluous comma field.  Added areFieldsSet and
+	print out "?" if time and/or fields[] values are invalid.
+	* java/util/SimpleTimeZone.java (monthLength): New field.
+	(serialVersionUID): New field.
+
 2000-10-26  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	* java/util/*.java: Fix indentation on copyright notices.

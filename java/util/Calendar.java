@@ -1,5 +1,5 @@
 /* java.util.Calendar
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -353,7 +353,7 @@ public abstract class Calendar implements Serializable, Cloneable
   /**
    * The name of the resource bundle.
    */
-  private static final String bundleName = "gnu/java/locale/Calendar";
+  private static final String bundleName = "gnu.java.locale.Calendar";
 
   /**
    * Constructs a new Calender with the default time zone and the default
@@ -386,7 +386,7 @@ public abstract class Calendar implements Serializable, Cloneable
    * Creates a calendar representing the actual time, using the default
    * time zone and locale.
    */
-  public static Calendar getInstance()
+  public static synchronized Calendar getInstance()
   {
     return getInstance(TimeZone.getDefault(), Locale.getDefault());
   }
@@ -396,7 +396,7 @@ public abstract class Calendar implements Serializable, Cloneable
    * time zone and the default locale.
    * @param zone a time zone.
    */
-  public static Calendar getInstance(TimeZone zone)
+  public static synchronized Calendar getInstance(TimeZone zone)
   {
     return getInstance(zone, Locale.getDefault());
   }
@@ -406,7 +406,7 @@ public abstract class Calendar implements Serializable, Cloneable
    * time zone and the given locale.
    * @param locale a locale.
    */
-  public static Calendar getInstance(Locale locale)
+  public static synchronized Calendar getInstance(Locale locale)
   {
     return getInstance(TimeZone.getDefault(), locale);
   }
@@ -417,7 +417,7 @@ public abstract class Calendar implements Serializable, Cloneable
    * @param zone a time zone.
    * @param locale a locale.
    */
-  public static Calendar getInstance(TimeZone zone, Locale locale)
+  public static synchronized Calendar getInstance(TimeZone zone, Locale locale)
   {
     String calendarClassName = null;
     ResourceBundle rb = ResourceBundle.getBundle(bundleName, locale);
@@ -449,7 +449,7 @@ public abstract class Calendar implements Serializable, Cloneable
    * @exception MissingResourceException if locale data couldn't be found.
    * @return the set of locales.
    */
-  public static Locale[] getAvailableLocales()
+  public static synchronized Locale[] getAvailableLocales()
   {
     ResourceBundle rb = ResourceBundle.getBundle(bundleName,
 						 new Locale("", ""));
@@ -495,7 +495,7 @@ public abstract class Calendar implements Serializable, Cloneable
    * Returns the time represented by this Calendar.
    * @return the time in milliseconds since the epoch.
    */
-  protected final long getTimeInMillis()
+  protected long getTimeInMillis()
   {
     if (!isTimeSet)
       computeTime();
@@ -507,11 +507,11 @@ public abstract class Calendar implements Serializable, Cloneable
    * are invalidated by this method.
    * @param time the time in milliseconds since the epoch
    */
-  public final void setTimeInMillis(long time)
+  protected void setTimeInMillis(long time)
   {
     this.time = time;
     isTimeSet = true;
-    areFieldsSet = false;
+    computeFields();
   }
 
   /**
@@ -608,8 +608,8 @@ public abstract class Calendar implements Serializable, Cloneable
    */
   public final void clear()
   {
-    areFieldsSet = true;
     isTimeSet = false;
+    areFieldsSet = false;
     for (int i = 0; i < FIELD_COUNT; i++)
       isSet[i] = false;
   }
@@ -620,9 +620,8 @@ public abstract class Calendar implements Serializable, Cloneable
    */
   public final void clear(int field)
   {
-    if (!areFieldsSet)
-      computeFields();
     isTimeSet = false;
+    areFieldsSet = false;
     isSet[field] = false;
   }
 
@@ -632,8 +631,6 @@ public abstract class Calendar implements Serializable, Cloneable
    */
   public final boolean isSet(int field)
   {
-    if (!areFieldsSet)
-      return false;
     return isSet[field];
   }
 
@@ -645,7 +642,8 @@ public abstract class Calendar implements Serializable, Cloneable
   {
     if (!isTimeSet)
       computeTime();
-    computeFields();
+    if (!areFieldsSet)
+      computeFields();
   }
 
   /**
@@ -867,6 +865,7 @@ public abstract class Calendar implements Serializable, Cloneable
    * @return the actual minimum value.
    * @since jdk1.2
    */
+  // FIXME: XXX: Not abstract in JDK 1.2.
   public abstract int getActualMinimum(int field);
 
   /**
@@ -876,6 +875,7 @@ public abstract class Calendar implements Serializable, Cloneable
    * @return the actual maximum value.  
    * @since jdk1.2
    */
+  // FIXME: XXX: Not abstract in JDK 1.2.
   public abstract int getActualMaximum(int field);
 
   /**
@@ -915,21 +915,23 @@ public abstract class Calendar implements Serializable, Cloneable
   public String toString()
   {
     StringBuffer sb = new StringBuffer();
-    String comma = "";
     sb.append(getClass().getName()).append('[');
-    sb.append("zone=" + zone);
+    sb.append("time=");
     if (isTimeSet)
-      {
-	sb.append(",time=" + time);
-      }
+      sb.append(time);
+    else
+      sb.append("?");
+    sb.append(",zone=" + zone);
+    sb.append(",areFieldsSet=" + areFieldsSet);
     if (areFieldsSet)
       {
 	for (int i = 0; i < FIELD_COUNT; i++)
 	  {
+	    sb.append(fieldNames[i]);
 	    if (isSet[i])
-	      {
-		sb.append(fieldNames[i]).append(fields[i]);
-	      }
+	      sb.append(fields[i]);
+	    else
+	      sb.append("?");
 	  }
       }
     sb.append(",lenient=").append(lenient);
