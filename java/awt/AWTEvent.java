@@ -111,6 +111,9 @@ protected int id;
   */
 protected boolean consumed;
 
+// Used by EventQueue
+AWTEvent next;
+
 /*************************************************************************/
 
 /*
