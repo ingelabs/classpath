@@ -1,0 +1,98 @@
+<set-var last-modified-author="shalom">
+
+<include macros.mhtml>
+<header "Installing Japhar and Classpath From Scratch">
+<plain-text>
+GNU Classpath and Japhar have traditionally been a little beasty to install
+if you don't know exactly what you're doing.  Here is a little guide here
+that can help set you on your way.
+</plain-text>
+
+<H2>Installing Necessary Software</H2>
+
+<P>
+<STRONG><U>Miscellany</U></STRONG><BR>
+You will need:<BR>
+<CODE>GNU autoconf 2.13</CODE><BR>
+<CODE>GNU libtool 1.3.3</CODE><BR>
+<CODE>GNU automake 1.4</CODE><BR>
+You can ascertain their versions by typing "&lt;program&gt; --version".<BR>
+You most likely will not have libtool installed.<BR>
+<link http://www.rpmfind.net "RPMs at rpmfind.net">
+</P>
+
+<P>
+<STRONG><U>Graphics Libs</U></STRONG><BR>
+<CODE>GLIB 1.2.x</CODE><BR>
+<CODE>GTK+ 1.2.x</CODE><BR>
+<CODE>libart_lgpl 2.1.0</CODE><BR>
+<link http://www.rpmfind.net "RPMs at rpmfind.net"><BR>
+To determine what version you have on a Red Hat system, you can type
+<CODE>rpm -q gtk+</CODE> and <CODE>rpm -q glib</CODE>.  libart comes
+with these packages.
+</P>
+
+<P>
+<STRONG><U>JDK (anything with javah in it)</U></STRONG><BR>
+<link http://www.blackdown.org/java-linux/mirrors.html "tar files"><BR>
+<link http://www.rpmfind.net/linux/RPM/falsehope/home/tengel/jdk/jdk-1.1.7_v3-1_glibc_x86.i386.html "RPM of 1.1.7v3"><BR>
+<STRONG>Environment:</STRONG><BR>
+Add the Java bin directory to <CODE>PATH</CODE>, the lib directory to
+<CODE>LD_LIBRARY_PATH</CODE>, and the classes to <CODE>CLASSPATH</CODE>.
+</P>
+
+<P>
+<STRONG><U>Jikes</U></STRONG><BR>
+<link http://oss.software.ibm.com/developerworks/opensource/jikes/project/download/ "RPMs and tar files"><BR>
+Jikes 1.11 has a problem with Classpath's build process.  You need to apply <link jikes-1.11.patch "this patch"> to the source to make it work.<BR>
+To apply this patch, place it <I>above</I> the jikes directory and type <CODE>patch -p0 < jikes-1.11.patch</CODE><BR>
+<STRONG>Environment:</STRONG><BR>
+<CODE>PATH</CODE> and <CODE>LD_LIBRARY_PATH</CODE>.
+</P>
+
+<P>
+<STRONG><U>NSPR</U></STRONG><BR>
+You need to get this from mozilla CVS.  To do this, do the following sequence of commands:<BR>
+<CODE>export CVSROOT=:pserver:anonymous@cvs-mirror.mozilla.org:/cvsroot</CODE><BR>
+<CODE>cvs login</CODE><BR>
+Password: <CODE>anonymous</CODE><BR>
+<CODE>cvs co mozilla/nsprpub</CODE><BR>
+Go into mozilla/nsprpub.  Then:<BR>
+<CODE>make NSDISTMODE=copy DIST=/usr/local/nspr</CODE> (or whatever directory you like)<BR>
+<STRONG>Environment:</STRONG><BR>
+<CODE>LD_LIBRARY_PATH=...:/usr/local/nspr/lib</CODE>
+</P>
+
+<P>
+<STRONG><U>Japhar</U></STRONG><BR>
+Once again, build from CVS.<BR>
+<CODE>export CVSROOT=:pserver:anoncvs@anoncvs.hungry.com:/cvsroot</CODE><BR>
+<CODE>cvs login</CODE><BR>
+Password: <CODE>anoncvs</CODE><BR>
+<CODE>cvs co japhar</CODE><BR>
+<CODE>cd japhar</CODE><BR>
+<CODE>aclocal; autoheader; autoconf; automake</CODE><BR>
+<CODE>./configure --prefix=/usr/local/japhar --with-nspr=/usr/local/nspr --enable-debugging --enable-logging</CODE> (modified for directories you like)<BR>
+<CODE>make</CODE><BR>
+<CODE>make install</CODE><BR>
+<STRONG>Environment:</STRONG><BR>
+Wait until after Classpath is built to do this.<BR>
+<CODE>PATH=...:/usr/local/japhar/bin</CODE>, <CODE>LD_LIBRARY_PATH=...:/usr/local/japhar/lib</CODE>
+</P>
+
+<P>
+<STRONG><U>Classpath</U></STRONG><BR>
+Finally, build from CVS.<BR>
+<CODE>export CVSROOT=:pserver:anoncvs@subversions.gnu.org:/cvs</CODE>
+<CODE>cvs login</CODE><BR>
+Password: (just hit return, there is no password)<BR>
+<CODE>cvs co classpath</CODE><BR>
+<CODE>aclocal; autoheader; autoconf; automake</CODE><BR>
+<CODE>./configure --with-jikes --with-javah=/usr/local/jdk1.1.7/bin/javah --with-classlib=/usr/local/jdk1.1.7/lib/classes.zip --with-japhar</CODE> (modified appropriately for your directories)<BR>
+<CODE>make</CODE><BR>
+<CODE>make install</CODE><BR>
+<STRONG>Environment:</STRONG><BR>
+<CODE>LD_LIBRARY_PATH=...:/usr/local/japhar/lib/classpath</CODE>, <CODE>CLASSPATH=.:/usr/local/japhar/share</CODE>
+</P>
+
+<footer>

@@ -32,6 +32,8 @@ is <tt>classpath</tt>.  There is no password.
        "GNU Classpath Hacker's Guide"></LI>
   <LI><link /software/classpath/doc/vmintegration.html
        "Virtual Machine Integration Guide"></LI>
+  <LI><link /software/classpath/doc/classpath-japhar.html
+       "Installing Japhar and Classpath"></LI>
 </UL>
 
 <H4>Mailing List</H4>
