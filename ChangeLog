@@ -1,3 +1,15 @@
+2000-05-30  Mark Wielaard <mark@klomp.org>
+
+	* java/lang/ThreadLocal.java: new 1.2 class
+	* java/lang/InheritableThreadLocal.java: new 1.2 class
+	* vm/reference/java/lang/Thread.java: added example to use ThreadLocals
+	* java/lang/Package.java: new 1.2 class (but no support in ClassLoader yet)
+	* java/util/Timer.java: new 1.3 class
+	* java/util/TimerTask.java: new 1.3 class
+	* java/net/JarURLConnection.java: getCertificates returns a Certificate[]
+	* java/security/ProtectionDomain.java: constructor should make the
+	PermissionCollection read only
+
 2000-05-15  Bryce McKinlay  <bryce@albatross.co.nz>
 
 	* java/lang/String.java (trim): Optimize `end' loop. Don't lose the 
