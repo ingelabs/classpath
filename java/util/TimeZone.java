@@ -49,6 +49,37 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
      */
     private static TimeZone defaultZone;
 
+    /**
+     * Aliases for timezones.  The format is "alias name", "canonical name"
+     */
+    private static final String[][] zone_aliases =
+    {
+      /* Common US Abbreviations */
+      { "EST", "EST5EDT" },
+      { "EST5EWT", "EST5EDT" },
+      { "CST", "CST6CDT" },
+      { "CST6CWT", "CST6CDT" },
+      { "MST", "MST7MDT" },
+      { "MST7MWT", "MST7MDT" },
+      { "PST", "PST8PDT" },
+      /* Major US Cities */
+      { "New York", "EST5EDT" },
+      { "Indianapolis", "EST5" },
+      { "Chicago", "CST6CDT" },
+      { "Denver", "MST7MDT" },
+      { "Phoenix", "MST7" },
+      { "San Francisco", "PST8PDT" },
+      /* Newfangled Style */
+      { "America/Chicago", "CST6CDT" },
+      { "America/Denver", "MST7MDT" },
+      { "America/Detroit", "EST5EDT" },
+      { "America/Indianapolis", "EST5" },
+      { "America/Indiana/Indianapolis", "EST5" },
+      { "America/Los_Angelese", "PST8PDT" },
+      { "America/New_York", "EST5EDT" },
+      { "America/Phoenix", "MST7" }
+    };
+
     private final static TimeZone[] timezones = 
     {
         new SimpleTimeZone(-1000*3600, "CVT"),
@@ -76,6 +107,9 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
         new SimpleTimeZone(-5000*3600, "EST5EDT" ,
                            Calendar.APRIL    ,  1, Calendar.SUNDAY, 2000*3600,
                            Calendar.OCTOBER  , -1, Calendar.SUNDAY, 2000*3600),
+        new SimpleTimeZone(-6000*3600, "CST" ,
+                           Calendar.APRIL    ,  1, Calendar.SUNDAY, 2000*3600,
+                           Calendar.OCTOBER  , -1, Calendar.SUNDAY, 2000*3600),
         new SimpleTimeZone(-6000*3600, "CST6CDT" ,
                            Calendar.APRIL    ,  1, Calendar.SUNDAY, 2000*3600,
                            Calendar.OCTOBER  , -1, Calendar.SUNDAY, 2000*3600),
@@ -92,6 +126,32 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
                            Calendar.MARCH    , -1, Calendar.SUNDAY, 2000*3600,
                            Calendar.OCTOBER  , -1, Calendar.SUNDAY, 2000*3600),
     };
+
+    /* Look up default timezone */
+    static
+    {
+      System.loadLibrary("javautil");
+
+      String tzid = getDefaultTimeZoneId();
+      if (tzid == null)
+        tzid = "GMT";
+
+      defaultZone = getTimeZone(tzid);
+      if (defaultZone == null)
+        defaultZone = getTimeZone("GMT");
+    }
+
+    /* This method returns us a time zone id string which is in the
+       form <standard zone name><GMT offset><daylight time zone name>.
+       The GMT offset is in seconds, except where it is evenly divisible
+       by 3600, then it is in hours.  If the zone does not observe
+       daylight time, then the daylight zone name is omitted.  Examples:
+       in Chicago, the timezone would be CST6CDT.  In Indianapolis 
+       (which does not have Daylight Savings Time) the string would
+       be EST6
+    */
+    private static native String
+    getDefaultTimeZoneId();
 
     /**
      * Gets the time zone offset, for current date, modified in case of 
@@ -151,11 +211,65 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
      * @return The time zone for the identifier or null, if no such time
      * zone exists.
      */
-    public static TimeZone getTimeZone(String ID) {
+    public static TimeZone getTimeZone(String ID) 
+    {
+        // First check aliases
+        for (int i = 0; i < zone_aliases.length; i++)
+          if (zone_aliases[i][0].equals(ID))
+            {
+              ID = zone_aliases[i][1];
+              break;
+            } 
+
+        // Now look for the timezone in our table
         for (int i=0; i<timezones.length; i++)
             if (timezones[i].getID().equals(ID))
                 return timezones[i];
-        return null;
+
+        // See if the ID is really a GMT offset form.
+        if (ID.startsWith("GMT"))
+          {
+            int offset_direction = 0;
+
+            if (ID.charAt(4) == '-')
+              offset_direction = -1; 
+            else if (ID.charAt(4) == '+')
+              offset_direction = 1;
+
+            if (offset_direction != 0)
+              {
+                String offset_time_str = ID.substring(5);
+                if (offset_time_str.indexOf(":") != -1)
+                  {
+                    int idx = offset_time_str.indexOf(":");
+                    String hour_str = offset_time_str.substring(0, idx);
+                    String min_str = offset_time_str.substring(idx + 1);
+
+                    try
+                      {
+                        int hour = Integer.parseInt(hour_str);
+                        int min = Integer.parseInt(min_str);
+                        return(new SimpleTimeZone(((hour * 60 * 60 * 1000) +
+                                (min * 60 * 1000))*offset_direction, ID));
+                      }
+                    catch(NumberFormatException e) { ; }
+                  }
+                else
+                  {
+                    try
+                      {
+                        int offset_time = Integer.parseInt(offset_time_str);
+                        return(new SimpleTimeZone(
+                            (offset_time * 60 * 60 * 1000) * offset_direction,
+                            ID));
+                      }
+                    catch(NumberFormatException e) { ; }
+                  }
+              }
+          }
+
+        // Finally, return GMT per spec
+        return getTimeZone("GMT");
     }
 
     /**
@@ -199,12 +313,6 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable {
      * @see setDefault
      */
     public static TimeZone getDefault() {
-        if (defaultZone == null) {
-            String zone = System.getProperty("user.timezone", "UTC");
-            defaultZone = getTimeZone(zone);
-            if (defaultZone == null)
-                defaultZone = getTimeZone("UTC");
-        }
         return defaultZone;
     }
 
