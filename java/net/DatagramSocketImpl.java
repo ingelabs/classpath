@@ -183,7 +183,7 @@ leave(InetAddress addr) throws IOException;
   *
   * @return ******* Wish I knew ************
   *
-  * @exception If an error occurs
+  * @exception IOException If an error occurs
   */
 protected abstract int
 peek(InetAddress addr) throws IOException;

@@ -369,7 +369,7 @@ setRequestMethod(String method) throws ProtocolException
 /**
   * The request method currently in use for this connection.
   *
-  * @exception The request method
+  * @return The request method
   */
 public String
 getRequestMethod()

@@ -37,7 +37,7 @@ import java.security.*;
   * per virtual machine.  If a subsequent attempt is made to set the
   * factory, a SocketException will be thrown.
   *
-  * @version 
+  * @version 0.0
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
