@@ -1,3 +1,8 @@
+2004-04-11  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
+	(Java_gnu_java_nio_channels_FileChannelImpl_size): Implemented.
+
 2004-04-11  Jeroen Frijters  <jeroen@frijters.net>
 
 	* gnu/java/nio/channels/FileChannelImpl.java:

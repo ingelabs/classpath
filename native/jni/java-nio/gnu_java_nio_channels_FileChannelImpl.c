@@ -266,8 +266,21 @@ Java_gnu_java_nio_channels_FileChannelImpl_available (JNIEnv *env, jobject obj)
 JNIEXPORT jlong JNICALL
 Java_gnu_java_nio_channels_FileChannelImpl_size (JNIEnv *env, jobject obj)
 {
-  JCL_ThrowException (env, IO_EXCEPTION, "java.nio.FileChannelImpl.size(): not implemented");
-  return TARGET_NATIVE_MATH_INT_INT64_CONST_0;
+  int   native_fd;
+  jlong file_size;
+  int   result;
+
+  native_fd = get_native_fd(env, obj);
+
+  TARGET_NATIVE_FILE_SIZE(native_fd, file_size, result);
+  if (result != TARGET_NATIVE_OK)
+    {
+      JCL_ThrowException(env, IO_EXCEPTION,
+			 TARGET_NATIVE_LAST_ERROR_STRING());
+      return TARGET_NATIVE_MATH_INT_INT64_CONST_MINUS_1;
+    }
+
+  return file_size;
 }
 /*************************************************************************/
 /*
