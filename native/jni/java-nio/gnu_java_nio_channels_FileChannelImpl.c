@@ -479,7 +479,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_implTruncate (JNIEnv *env, jobject ob
       JCL_ThrowException(env, "java/lang/UnsupportedOperationException",
         "not implemented - can't shorten files on this platform");
       */
-      JCL_ThrowException(env, IOException,
+      JCL_ThrowException(env, IO_EXCEPTION,
                          "Unable to shorten file length");
 #endif /* HAVE_FTRUNCATE */
     }

@@ -1,5 +1,18 @@
 2004-04-29  Michael Koch  <konqueror@gmx.de>
 
+	* include/java_nio_MappedByteBufferImpl.h:
+	New file.
+	* include/Makefile.am:
+	Generate java_nio_MappedByteBufferImpl.h.
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
+	(implTruncate): Fixed typo.
+	* native/jni/java-nio/java_nio_MappedByteBufferImpl.c:
+	New file.
+	* native/jni/java-nio/Makefile.am:
+	Compile java_nio_MappedByteBufferImpl.c.
+
+2004-04-29  Michael Koch  <konqueror@gmx.de>
+
 	* javax/print/PrintServiceLookup.java: New file.
 	* javax/print/Makefile.am (EXTRA_DIST):
 	Added PrintServiceLookup.java.

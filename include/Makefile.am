@@ -56,6 +56,7 @@ $(top_srcdir)/include/java_lang_reflect_Array.h \
 $(top_srcdir)/include/java_net_InetAddress.h \
 $(top_srcdir)/include/java_net_NetworkInterface.h \
 $(top_srcdir)/include/java_nio_DirectByteBufferImpl.h \
+$(top_srcdir)/include/java_nio_MappedByteBufferImpl.h \
 $(top_srcdir)/include/java_util_TimeZone.h
 
 if CREATE_JNI_HEADERS
@@ -166,6 +167,8 @@ $(top_srcdir)/include/java_net_NetworkInterface.h: $(top_srcdir)/java/net/Networ
 	$(JAVAH) -o $@ java.net.NetworkInterface
 $(top_srcdir)/include/java_nio_DirectByteBufferImpl.h: $(top_srcdir)/java/nio/DirectByteBufferImpl.java
 	$(JAVAH) -o $@ java.nio.DirectByteBufferImpl
+$(top_srcdir)/include/java_nio_MappedByteBufferImpl.h: $(top_srcdir)/java/nio/MappedByteBufferImpl.java
+	$(JAVAH) -o $@ java.nio.MappedByteBufferImpl
 $(top_srcdir)/include/gnu_java_nio_channels_FileChannelImpl.h: $(top_srcdir)/gnu/java/nio/channels/FileChannelImpl.java
 	$(JAVAH) -o $@ gnu.java.nio.channels.FileChannelImpl
 $(top_srcdir)/include/java_util_TimeZone.h: $(top_srcdir)/java/util/TimeZone.java
