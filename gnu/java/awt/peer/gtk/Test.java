@@ -55,7 +55,8 @@ class Test
 
       Canvas ch = new Canvas () { 
 	public void paint (Graphics g) {
-	  g.drawLine(5,5,20,20);
+	  g.setColor (Color.blue);
+	  g.drawLine (5,5,20,20);
 	}
       };
       ch.setSize(50, 50);
@@ -141,7 +142,11 @@ class Test
 
       f.add(east_panel,"East");
 
-      Button wb=new Button();
+      Button wb=new Button() {
+        public void paint (Graphics g) {
+          System.out.println ("button paint called");
+	}
+      };
       wb.setLabel("Destroy Frame on Click");
       wb.addActionListener (new ActionListener () {
 	public void actionPerformed (ActionEvent e) {
@@ -172,7 +177,6 @@ class Test
       
       f.pack();
       f.show();
-      ch.getGraphics().drawLine(5,5,20,20);
 
       sp.setScrollPosition (10,0);
 
@@ -187,6 +191,7 @@ class Test
 
       System.out.println ("background of canvas: " + ch.getBackground ());
       System.out.println ("foreground of canvas: " + ch.getForeground ());
+
       System.out.println("done");
     }
 }

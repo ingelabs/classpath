@@ -19,24 +19,8 @@ public class GtkCanvasPeer extends GtkComponentPeer implements CanvasPeer
     gtkFixedPut (cp, p.x, p.y);
   }
 
-  protected void postExposeEvent (int x, int y, int width, int height)
+  public Graphics getGraphics ()
   {
-    q.postEvent (new PaintEvent (awtComponent, PaintEvent.UPDATE,
-				 new Rectangle (x, y, width, height)));
-  }
-
-  public void handleEvent (AWTEvent e)
-  {
-    int id = e.getID();
-
-    switch (id)
-    {
-    case PaintEvent.PAINT:
-      awtComponent.paint (getGraphics ());
-      break;
-    case PaintEvent.UPDATE:
-      awtComponent.update (getGraphics ());
-      break;
-    }
+    return new GdkGraphics (this);
   }
 }

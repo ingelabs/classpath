@@ -29,7 +29,6 @@ public class GtkComponentPeer extends GtkGenericPeer
   implements ComponentPeer
 {
   Component awtComponent;
-  GdkGraphics gc = null;
 
   native int[] gtkWidgetGetForeground ();
   native int[] gtkWidgetGetBackground ();
@@ -104,12 +103,8 @@ public class GtkComponentPeer extends GtkGenericPeer
 
   public Graphics getGraphics () 
     {
-      System.out.println("componentpeer: getgraphics");
-
-      if (gc == null)
-	gc = new GdkGraphics (this);
-
-      return gc;
+      throw new InternalError ("Graphics object unavailable for " +
+			       awtComponent);
     }
 
   public Point getLocationOnScreen () 
@@ -143,15 +138,33 @@ public class GtkComponentPeer extends GtkGenericPeer
       return Toolkit.getDefaultToolkit();
     }
   
-  public boolean handleEvent (Event e)
+  public void handleEvent (AWTEvent event)
     {
-      System.out.println("componentpeer: handleevent");
-      return false;
-    }
-  
-  public void handleEvent (AWTEvent e)
-    {
-//        System.out.println("componentpeer: handleawtevent");
+      int id = event.getID();
+      
+      switch (id)
+	{
+	case PaintEvent.PAINT:
+	case PaintEvent.UPDATE:
+	  {
+	    try 
+	      {
+		Graphics g = getGraphics ();
+		
+		if (id == PaintEvent.PAINT)
+		  awtComponent.paint (g);
+		else
+		  awtComponent.update (g);
+	      
+		g.dispose ();
+	      } 
+	    catch (InternalError e)
+	      { 
+		System.err.println (e);
+	      }
+	  }
+	  break;
+	}
     }
   
   public boolean isFocusTraversable () 
@@ -239,6 +252,10 @@ public class GtkComponentPeer extends GtkGenericPeer
     {
       setVisible (true);
     }
+
+  protected void postExposeEvent (int x, int y, int width, int height)
+  {
+    q.postEvent (new PaintEvent (awtComponent, PaintEvent.PAINT,
+				 new Rectangle (x, y, width, height)));
+  }
 }
-
-

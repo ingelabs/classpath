@@ -8,17 +8,20 @@ public class GdkGraphics extends Graphics
   private final int native_state = java.lang.System.identityHashCode (this);
 
   int xOrigin = 0, yOrigin = 0;
+  Color color;
 
-  native void initState (GtkComponentPeer component);
+  native int[] initState (GtkComponentPeer component);
 
   GdkGraphics (GtkComponentPeer component)
   {
-    super ();
-    initState (component);
+    int rgb[] = initState (component);
+    color = new Color (rgb[0], rgb[1], rgb[2]);
   }
 
+  native private void clearRectNative (int x, int y, int width, int height);
   public void clearRect (int x, int y, int width, int height)
   {
+    clearRectNative (x + xOrigin, y + yOrigin, width, height);
   }
 
   public void clipRect (int x, int y, int width, int height)
@@ -34,13 +37,15 @@ public class GdkGraphics extends Graphics
     return null;
   }
 
-  public void dispose ()
-  {
-  }
+  native public void dispose ();
 
-  public void drawArc(int x, int y, int width, int height, 
-		      int startAngle, int arcAngle)
+  native private void drawArcNative (int x, int y, int width, int height, 
+				     int startAngle, int arcAngle);
+  public void drawArc (int x, int y, int width, int height, 
+		       int startAngle, int arcAngle)
   {
+    drawArcNative (x + xOrigin, y + yOrigin, width, height, 
+		   startAngle, arcAngle);
   }
 
   public boolean drawImage (Image img, int x, int y, 
@@ -123,8 +128,7 @@ public class GdkGraphics extends Graphics
   private native void fillRectNative (int x, int y, int width, int height);
   public void fillRect (int x, int y, int width, int height)
   {
-    System.out.println ("got called to fill");
-//      fillRectNative (x + xOrigin, y + yOrigin, width, height);
+    fillRectNative (x + xOrigin, y + yOrigin, width, height);
   }
 
   public void fillRoundRect (int x, int y, int width, int height, 
@@ -134,7 +138,7 @@ public class GdkGraphics extends Graphics
 
   public Shape getClip ()
   {
-    return null;
+    return getClipBounds ();
   }
 
   public Rectangle getClipBounds ()
@@ -144,7 +148,7 @@ public class GdkGraphics extends Graphics
 
   public Color getColor ()
   {
-    return null;
+    return color;
   }
 
   public Font getFont ()
@@ -165,8 +169,11 @@ public class GdkGraphics extends Graphics
   {
   }
 
+  private native void setColorNative (int red, int green, int blue);
   public void setColor (Color c)
   {
+    setColorNative (c.getRed (), c.getGreen (), c.getBlue ());
+    color = new Color (c.getRGB ());
   }
 
   public void setFont (Font font)
@@ -183,11 +190,7 @@ public class GdkGraphics extends Graphics
 
   public void translate (int x, int y)
   {
-    xOrigin = x;
-    yOrigin = y;
+    xOrigin += x;
+    yOrigin += y;
   }
 }
-
-
-
-  

@@ -20,6 +20,7 @@
  */
 
 package gnu.java.awt.peer.gtk;
+import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Container;
 import java.awt.peer.ContainerPeer;
@@ -66,5 +67,10 @@ public class GtkContainerPeer extends GtkComponentPeer
   {
     super.setBounds (x, y, width, height);
     awtComponent.validate ();
+  }
+
+  public Graphics getGraphics ()
+  {
+    return new GdkGraphics (this);
   }
 }

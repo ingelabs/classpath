@@ -38,7 +38,6 @@ public class GtkButtonPeer extends GtkComponentPeer
     System.out.println ("buttonpeer: location: "+p.x+","+p.y);
     
     gtkFixedPut (cp, p.x, p.y);
-    System.out.println ("COLOR!!!: " + b.getBackground());
   }
     
   public void setLabel (String label) 
@@ -49,11 +48,10 @@ public class GtkButtonPeer extends GtkComponentPeer
 
   public void handleEvent (AWTEvent e)
   {
-    if (e instanceof MouseEvent)
+    if (e.getID () == MouseEvent.MOUSE_CLICKED)
       {
 	MouseEvent me = (MouseEvent) e;
 	if (!me.isConsumed()
-	    && me.getID() == MouseEvent.MOUSE_CLICKED
 	    && (me.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
 	  postActionEvent (((Button)awtComponent).getActionCommand (), 
 			   me.getModifiers ());
