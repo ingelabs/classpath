@@ -11,10 +11,10 @@
 </package>
 
 <package java.awt>
-  <status "<corvus>, <rao>">
-    Work has yet to begin on the AWT classes.  We're busy working away
-    on a GTK+ peer implementation, and once that's been completed we'll
-    start work on the AWT classes.
+  <status "<corvus>, <rao>, <arenn>">
+    The AWT classes have been almost completely written by Aaron while 
+    Paul is finishing up the GTK+ peer implementation.  Integration between
+    the two will definitely begin once the peers are done.
   </status>
 </package>
 
