@@ -1,3 +1,16 @@
+2004-12-06  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/DefaultListCellRenderer.java
+	(serialVersionUID): Made private.
+	(getListCellRendererComponent): Set horizontal alignment.
+	* javax/swing/JLabel.java
+	(setVerticalAlignment): Re-implemented.
+	(setHorizontalAlignment): Do nothing if old value = new value.
+	* javax/swing/JList.java
+	(setCellRenderer): Likewise.
+	(setModel): Re-implemented.
+	(setSelectionModel): Likewise.
+
 2004-12-06  David Gilbert <david.gilbert@object-refinery.com>
 
 	* java/awt/Component.java,
