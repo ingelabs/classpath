@@ -1,10 +1,11 @@
 2004-07-23  Craig Black  <craig.black@aonix.com>
 
-	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuPeer.c,
-	include/gnu_java_awt_peer_gtk_GtkMenuPeer.h
-	(addTearOff): Add tear-off menu support.
-	* gnu/java/awt/peer/gtk/GtkMenuPeer.java
-	(init): Add tear-off menu support.
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuPeer.c
+	(addTearOff_: New function.
+	include/gnu_java_awt_peer_gtk_GtkMenuPeer.h: Regenerated.
+	* gnu/java/awt/peer/gtk/GtkMenuPeer.java (addTearOff):
+	New native method.
+	(init): Call addTearOff() when menu.isTearOff().
 
 2004-07-23  Mark Wielaard  <mark@klomp.org>
 
