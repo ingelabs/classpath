@@ -25,10 +25,13 @@ Verbatim copying and distribution of this entire article is
 permitted in any medium, provided this notice is preserved.<P>
 Updated:
 </en>
+$Date: 2004-04-05 21:13:14 $ $Author: patrik_reali $
+<!--
 <preserve info>
 <set-var info=<get-file-properties <__file__>>>
 <date <get-var info[2]>> <get-var last-modified-author>
 <restore info>
+-->
 <HR>
 </define-tag>
 

@@ -1,3 +1,7 @@
+<newsitem date="26 Mar. 2004">
+<createlink name="Planet Classpath" url="http://classpath.wildebeest.org/planet/"> launched; it aggregates the blogs of most Classpath's developers
+</nextitem>
+
 <newsitem date="13 Mar. 2004">
 <createlink name="GNU Classpath 0.08 released" url="announce/20040313.html">
 </nextitem>

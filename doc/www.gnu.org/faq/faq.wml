@@ -230,6 +230,62 @@ it appears in your passport) and your current postal address to the
 maintainer of GNU Classpath, Mark Wielaard <mark@klomp.org>.
 </p>
 </faq>
+
+<faq question="How do I install GNU Classpath?">
+<p>Follow these steps to install GNU Classpath. Please note that you need this only if you want to work directly with it; usually JVMs contain a pre-packaged version of GNU Classpath.
+
+<commented-code>
+<code-line code="<createlink url="ftp://ftp.gnu.org/gnu/classpath/">">
+  Download the current release
+</code-line>
+<code-line code="tar zxf classpath-<i>version</i>.tar.gz">
+  unpack
+</code-line>
+<code-line code="cd classpath-<i>version</i>" />
+<code-line code="more INSTALL">
+  make sure you have all pre-requirements
+</code-line>
+<code-line code="./configure">
+  configure the distribution; use <code>--help</code> to get the list of options: you will usually need <code>--prefix=<i>dest/dir/for/classpath</i>; use <code>--disable-gtk-peer</code> if you don't use gtk+/gnome.
+</code-line>
+
+<code-line code="make; make install" />
+</commented-code>
+
+
+</faq>
+
+<faq question="How do I install Mauve?">
+
+<commented-code>
+<code-line code="export CVSROOT=:pserver:anoncvs@bogus.example.com:/cvs/mauve" />
+<code-line code="cvs login">password is anoncvs</code-line>
+<code-line code="cvs checkout mauve" />
+<code-line code="cd mauve" />
+<code-line code="./configure">
+The main thing this does is creating the gnu/testlet/config.java. You could also do this by hand from the config.java.in file
+</code-line>
+<code-line code="vi batch_runner">
+Edit the script 'batch_runner' to set the variable COMPILER correctly
+  (there are a couple of example settings)
+</code-line>
+<code-line code="vi runner">
+Edit script 'runner' to set the variable RUNTIME correctly
+  (there are a couple of example settings)
+</code-line>
+<code-line code="./batch_run">
+run ./batch_run and look at the results. You can also run individual tests with<br>
+<code>- echo gnu.testlet.java.lang.String.getBytes | jamvm 
+gnu.testlet.SimpleTestHarness</code><br>
+(Option flags are -verbose and -debug)
+
+</code-line>
+
+</commented-code>
+
+
+</faq>
+
 </faq-section>
 
 <faq-section name="Classpath Implementation">

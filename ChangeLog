@@ -1,3 +1,11 @@
+2004-04-05  Patrik Reali  <reali@acm.org>
+
+	* doc/www.gnu.org/README: some custom tags documented
+	* doc/www.gnu.org/newsitems.txt: planet classpath added
+	* doc/www.gnu.org/faq/faq.wml doc/www.gnu.org/include/layout.wml 
+        doc/www.gnu.org/include/macros.wml: faq entry on installing classpath
+	and mauve, custom tags for commented code
+
 2004-04-02  Tom Tromey  <tromey@redhat.com>
 
 	* doc/hacking.texinfo (Source Code Style Guide): Mention `extends

@@ -36,11 +36,27 @@
 <preserve name>
 <preserve url>
 <set-var %attributes>
+<ifeq <get-var name> "" <set-var name="<get-var url>">>
 <a href="<get-var url>"><get-var name></a>
 <restore url>
 <restore name>
 </define-tag>
 
+<define-tag commented-code endtag=required>
+  <ul>
+  <table cellspacing="0" cellpadding="4">
+  %body
+  </table>
+  </ul>
+</define-tag>
+
+<define-tag code-line endtag=required>
+  <preserve code>
+  <set-var %attributes>
+  <tr><td valign="top"><code><get-var code></code></td><td style="padding-left: 20px;">%body</td></tr>
+  <tr bgcolor="#999999"><td colspan="2"></td></tr>
+  <restore code>
+</define-tag>
 
 ##
 #
