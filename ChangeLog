@@ -1,3 +1,10 @@
+2003-07-23  Torsten Rupp  <rupp@lisa.aicas.com>
+
+        * native/target/generic/target_generic_file.h:
+        added TARGET_NATIVE_FILE_FILEPERMISSION_READONLY, improved
+        TARGET_NATIVE_FILE_VALID_FILE_DESCRIPTOR: now use fcntl()
+        or fstat()
+
 2003-07-22  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/Window.java (getWarningString): Just return the
