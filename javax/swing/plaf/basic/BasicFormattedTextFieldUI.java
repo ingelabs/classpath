@@ -1,5 +1,5 @@
-/* FieldView.java -- 
-   Copyright (C) 2004 Free Software Foundation, Inc.
+/* BasicFormattedTextFieldUI.java
+   Copyright (C) 2004  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,68 +36,27 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package javax.swing.text;
+package javax.swing.plaf.basic;
 
-import java.awt.Component;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Shape;
+import javax.swing.JComponent;
+import javax.swing.plaf.ComponentUI;
 
-
-public class FieldView extends PlainView
+/**
+ * @since 1.4
+ */
+public class BasicFormattedTextFieldUI extends BasicTextFieldUI
 {
-  public FieldView(Element elem)
+  public BasicFormattedTextFieldUI()
   {
-    super(elem);
   }
 
-  protected FontMetrics getFontMetrics()
+  public static ComponentUI createUI(JComponent c)
   {
-    Component container = getContainer();
-    return container.getFontMetrics(container.getFont());
+    return new BasicFormattedTextFieldUI();
   }
 
-  public float getPreferredSpan(int axis)
+  protected String getPropertyPrefix()
   {
-    if (axis != X_AXIS && axis != Y_AXIS)
-      throw new IllegalArgumentException();
-
-    FontMetrics fm = getFontMetrics();
-
-    if (axis == Y_AXIS)
-      return fm.getHeight();
-
-    String text;
-    Element elem = getElement();
-
-    try
-      {
-	text = elem.getDocument().getText(elem.getStartOffset(),
-					  elem.getEndOffset());
-      }
-    catch (BadLocationException e)
-      {
-	// This should never happen.
-	text = "";
-	System.out.println("Michael: FieldView.getPreferredSpan: Error");
-      }
-    
-    return fm.stringWidth(text);
-  }
-
-  public int getResizeWeight(int axis)
-  {
-    return axis = axis == X_AXIS ? 1 : 0;
-  }
-  
-  public Shape modelToView(int pos, Shape a, Position.Bias bias)
-    throws BadLocationException
-  {
-    return super.modelToView(pos, a, bias);
-  }
-  
-  public void paint(Graphics g, Shape s)
-  {
-    super.paint(g, s);
+    return "FormattedTextField";
   }
 }

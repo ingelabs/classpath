@@ -1,5 +1,381 @@
 2004-09-04  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JTextArea.java
+	(lineWrap): Renamed from "wrapping".
+	(wrapStyleWord): NEw field.
+	(getLineWrap): Re-edited javadoc comment.
+	(setLineWrap): Likewise.
+	(getWrapStyleWord): New method.
+	(setWrapStyleWord): Likewise.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/plaf/basic/BasicTextAreaUI.java
+	(create): New method.
+	* javax/swing/text/DefaultHighlighter.java
+	(DefaultHighlightPainter.debugRect): Removed.
+	* javax/swing/text/StyleContext.java
+	(DEFAULT_STYLE): New field.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(initComponentDefaults): Add keybindings for selection.backward and
+	selection-forward for text components.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(paintSafely): Paint highlight only when something is actually
+	selected.
+	* javax/swing/text/DefaultCaret.java
+	(handleHighlight): New method.
+	(setSelectionVisible): Don't do anything when nothing changes.
+	Handle highlight.
+	(moveDot): Reimplemented. Handle highlight.
+	(setDot): Set mark too. Handle highlight.
+	(getSelectionPainter): New method.
+	* javax/swing/text/DefaultEditorKit.java
+	(defaultActions): Added new actions for text selection.
+	* javax/swing/text/DefaultHighlighter.java
+	(DefaultHighlightPainter): New inner class.
+	(DefaultPainter): New field.
+	(paint): Implemented.
+	* javax/swing/text/PlainView.java
+	(paint): Don't draw background here again.
+	* javax/swing/text/Utilities.java
+	(getTabbedTextWidth): Use width of ' ' instead of 'm' for tabsize.
+	(drawTabbedText): Likewise.
+
+2004-09-04  Graydon Hoare  <graydon@redhat.com>
+
+	* java/awt/Component.java
+	(isFocusTraversable): Predicate on isLightweight()
+	(setFocusable): Set isFocusTraversableOverridden.
+	(requestFocus): Predicate peer dispatch on !isLightweight()
+	(requestFocusInWindow): Likewise.
+	(dispatchEventImpl): Coordinate with KeyboardFocusManager.
+	* java/awt/Container.java
+	(dispatchEventImpl): Predicate on event mask.
+	(LightweightDispatcher): Remove focus machinery.
+	* java/awt/DefaultFocusTraversalPolicy.java
+	(accept): Expand predicate to include isFocusable().
+	* java/awt/DefaultKeyboardFocusManager.java:
+	Globally change c.dispatchEvent(e) to redispatchEvent(c,e)
+	* java/awt/KeyboardFocusManager.java
+	(redispatchEvent): Synchronize on event to prevent feedback.
+	* javax/swing/AbstractButton.java
+	(ButtonFocusListener): Remove class.
+	(init): Set focusPainted, focusable.
+	* javax/swing/ActionMap.java (get): Check parent for null.
+	* javax/swing/InputMap.java (get): Likewise.
+	* javax/swing/JComponent.java
+	(inputMap_whenFocused): New InputMap.
+	(inputMap_whenAncestorOfFocused): Likewise.
+	(inputMap_whenInFocusedWindow): Likewise.
+	(getActionForKeyStroke): Rewrite.
+	(getConditionForKeystroke): Likewise.
+	(ActionListenerProxy): New private class.
+	(setInputMap): Implement.
+	(getInputMap): Likewise.
+	(setActionMap): Likewise.
+	(getActionMap): Likewise.
+	(processComponentKeyEvent): New empty method.
+	(processKeyEvent): Implement.
+	(processKeyBinding): Likewise.
+	(resetKeyboardActions): Rewrite.
+	* javax/swing/KeyStroke.java: Rewrite.
+	* javax/swing/SwingUtilities.java
+	(notifyAction): Implement.
+	(replaceUIActionMap): Likewise.
+	(replaceUIInputMap): Likewise.
+	* javax/swing/plaf/basic/BasicButtonListener.java
+	(focusGained): Implement.
+	(focusLost): Repaint if focusPainted().
+	(installKeyboardActions): Install pressed / released actions.
+	(uninstallKeyboardActions): Implement.
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(focusColor): New field.
+	(installDefaults): Load focus color, install input map.
+	(installKeyboardActions): Implement.
+	(uninstallKeyboardActions): Likewise.
+	(paintFocus): Rewrite.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(Button.focus): New default, midPurple.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(kit): Make static.
+	(installUI): Get doc from kit, load defaults.
+	(getKeymapName): Implement.
+	(createKeymap): Likewise.
+	(installKeyboardActions): Likewise.
+	(getInputMap): Likewise.
+	(getActionMap): Likewise.
+	(createActionMap): Likewise.
+	* javax/swing/text/AbstractDocument.java
+	(getStartPosition): Implement.
+	(getEndPosition): Likewise.
+	* javax/swing/text/DefaultEditorKit.java
+	(CopyAction): New class.
+	(CutAction): Likewise.
+	(DefaultKeyTypedAction): Likewise.
+	(InsertBreakAction): Likewise.
+	(InsertContentAction): Likewise.
+	(InsertTabAction): Likewise.
+	(PasteAction): Likewise.
+	(defaultActions): New static table.
+	(createCaret): Implement.
+	(getActions): Likewise.
+	* javax/swing/text/JTextComponent.java
+	(KeymapWrapper): New private class.
+	(KeymapActionMap): Likewise.
+	(DefaultKeymap): New class.
+	(keymaps): New static table.
+	(keymap): New field.
+	(getKeymap): Implement.
+	(removeKeymap): Likewise.
+	(addKeymap): Likewise.
+	(setKeymap): Likewise.
+	(loadKeymap): Likewise.
+	(getActions): Likewise.
+	(margin): New field.
+	(JTextComponent): Build and install default keymap.
+	* javax/swing/text/TextAction.java
+	(textAction): Call super properly.
+	(getTextComponent): Implement.
+	* javax/swing/text/Utilities.java
+	(drawTabbedText): Adjust position by ascent.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(RottView.modelToView): New method.
+	(UpdateHandler): Renamed from EventHandler.
+	(updateHandler): Renamed from eventHandler.
+	(modelToView): Implemented.
+	* javax/swing/text/AbstractDocument.java
+	(BranchElement.getElement): Return null for non-existing indeces.
+	(BranchElement.getElementIndex): Return 0 in some corner cases.
+	* javax/swing/text/FieldView.java
+	(modelToView): New method.
+	* javax/swing/text/PlainView.java
+	(modelToView): Made public.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/text/AbstractDocument.java
+	(createBranchElement): Use new constructor of BranchElement.
+	(createLeafElement): Renamed arguments.
+	(getRootElements): Implemented.
+	(BranchElement.start): Removed.
+	(BranchElement.end): Likewise.
+	(BranchElement.BranchElement): Fixed arguments.
+	(BranchElement.getEndOffset): Reimplemented.
+	(BranchElement.getStartOffset): Likewis.
+	* javax/swing/text/DefaultCaret.java
+	(paint): Draw simple vertical line as caret instead of a rectangle.
+	* javax/swing/text/JTextComponent.java
+	(setText): Use doc directly.
+	* javax/swing/text/PlainView.java
+	(nextTabStop): Implemented.
+	* javax/swing/text/Utilities.java
+	(drawTabbedText): nextTabStop() returns an absolute x position.
+	(getTabbedTextWidth): Likewise.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/text/PlainView.java
+	(selectedColor): New field.
+	(unselectedColor): Likewise.
+	(font): Likewise.
+	(updateMetrics): New method.
+	(lineToRect): Likewise.
+	(modelToView): Likewise.
+	(drawSelectedText): Use color from JTextComponent ad draw with
+	Utilities class.
+	(drawUnselectedText): Likewise.
+	(paint): Initialize helper fields.
+	* javax/swing/text/View.java
+	(getChildAllocation): New method.
+	(getViewIndex): Likewise.
+	(getToolTipText): Likewise.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/text/Utilities.java
+	(drawTabbedText): Reimplemented.
+	(getTabbedTextWidth): Likewise.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(installDefaults): Install caret and highlighter.
+	(modelToView): Use Bias.Forward when calling sibling.
+	* javax/swing/text/AbstractDocument.java
+	(ElementEdit): Implements DocumentEvent.ElementChange.
+	(ElementEdit.ElementEdit): New method.
+	(ElementEdit.getChildrenAdded): Likewise.
+	(ElementEdit.getChildrenRemoved): Likewise.
+	(ElementEdit.getElement): Likewise.
+	(ElementEdit.getIndex): Likewise.
+	* javax/swing/text/DefaultCaret.java
+	(color): Removed.
+	(textComponent): Renamed from parent, made private.
+	(selectionVisible): Renamed from vis_sel, made private.
+	(blinkRate): Renamed from blink, made private.
+	(magicCaretPosition): Renamed from magic, made private.
+	(visible): Renamed from vis, made private.
+	(dot): Made private.
+	(mark): Likewise.
+	(deinstall): Remove as MouseMotionListener.
+	(install): Initialize textComponent first. Add as 
+	MouseMotionListener.
+	(paint): Reimplemented.
+	* javax/swing/text/JTextComponent.java
+	(setCaret): Deinstall old caret, install new one and fire property
+	change after setting property.
+	(setHighlighter): Deinstall old highlighter, install new one and fire
+	property change after setting property.
+	(setCaretColor): Fire property change after setting property.
+	(setDisabledTextColor): Likewise.
+	(setSelectedTextColor): Likewise.
+	(setSelectionColor): Likewise.
+	(modelToView): New method.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/text/AbstractDocument.java
+	(getText): Simplified.
+	* javax/swing/text/Segment.java
+	(current): New field.
+	(current): Reimplemented.
+	(first): Likewise.
+	(getIndex): Likewise.
+	(last): Likewise.
+	(next): Likewise.
+	(previous): Likewise.
+	(setIndex): Likewise.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/plaf/basic/BasicButtonUI.java
+	(defaultTextIconGap): Made protected.
+	(defaultTextShiftOffset): Likewise.
+	(textShiftOffset): New field.
+	(clearTextShiftOffset): New method.
+	(getTextShiftOffset): Likewise.
+	(setTextShiftOffset): Likewise.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(installUI): Add eventHandler as property listener.
+	(uninstallUI): remove eventHandler as propert listener.
+	(installDefaults): Added comment.
+	(installListeners): Likewise.
+	(installKeyboardActions): Likewise.
+	(uninstallDefaults): Likewise.
+	(uninstallListeners): Likewise.
+	(uninstallKeyboardActions): Likewise.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/text/AbstractDocument.java:
+	Fixed some typos in comments.
+	(insertString): Reimplemented.
+	(remove): Likewise.
+	(replace): New method.
+	(children): Dont use fully qualified class name.
+	(DefaultDocumentEvent.offset): Renamed from off.
+	(DefaultDocumentEvent.length): Renamed from len.
+	(DefaultDocumentEvent.type): New field.
+	(DefaultDocumentEvent.DefaultDocumentEvent): New constructor.
+	(DefaultDocumentEvent.getType): Implemented.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(RootView.textComponent): Removed.
+	(RootView.RootView): Don't initialize textComponent.
+	(RootView.getViewFactory): New method.
+	(EventHandler): New inner class.
+	(rootView): Initialize at instance creation.
+	(eventHandler): New field.
+	(installUI): Don't create view hierarchy directly,
+	call modelChanged() instead.
+	(modelChanged): New method.
+	* javax/swing/text/JTextComponent.java
+	(setDocument): Fire property change event.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(RootView.paint): Removed debug output.
+	(paintSafely): Draw highlighter before text.
+	(paintBackground): Use background color of text component.
+	* javax/swing/plaf/basic/BasicToggleButtonUI.java:
+	Reformatted.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/plaf/basic/BasicToolBarUI.java
+	(BasicToolBarUI): Fixed arguments for constructor.
+	(createUI): Fixed creation of object.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/text/TabSet.java
+	(TabSet): Implements java.io.Serializable.
+	* javax/swing/text/TabStop.java
+	(TabStop): Implements java.io.Serializable.
+	(TabStop): Made public.
+
+2004-09-04  Graydon Hoare  <graydon@redhat.com>
+
+	* javax/swing/text/SimpleAttributeSet.java: New file.
+	* javax/swing/text/StyleConstants.java: New file.
+	* javax/swing/text/StyleContext.java: New file.
+	* javax/swing/text/TabSet.java: New file.
+	* javax/swing/text/TabStop.java: New file.
+	* javax/swing/text/AbstactDocument.java:
+	(AbstractElement): Implement attribute support.
+	* javax/swing/text/AttributeSet.java
+	(NameAttribute): New static field.
+	(ResolveAttribute): New static field.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/JComponent.java
+	(setUI): Fire PropertyChange.
+	* javax/swing/JLabel.java
+	(text): Renamed from labelText.
+	(horizontalAlignment): New default vlaue.
+	(icon): Renamed from activeIcon.
+	(displayedMnemonic): Renamed from mnemonicKey, added default value.
+	(displayedMnemonicIndex): Renamed from underlineChar.
+	(setDisplayedMnemonic): Reimplemented.
+	* javax/swing/JRadioButton.java
+	(JRadioButton): New constructors.
+	* javax/swing/JTextField.java
+	(JTextField): Throw exception if colums < 0, initialitialz
+	this.columns directly and initialize document with text 
+	conditionally.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/plaf/basic/BasicFormattedTextFieldUI.java,
+	javax/swing/plaf/basic/BasicPasswordFieldUI.java,
+	javax/swing/plaf/basic/BasicTextAreaUI.java: New files.
+	* javax/swing/text/FieldView.java
+	(paint): Just call super method for now.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/TransferHandler.java,
+	javax/swing/plaf/basic/ComboPopup.java: New files
+
+2004-09-04  Roman Kennke  <roman@ontographics.com>
+
+	* javax/swing/text/Utilities.java: New file.
+
+2004-09-04  Michael Koch  <konqueror@gmx.de>
+
 	* examples/gnu/classpath/examples/swing/Demo.java:
 	Added demo for JTextField.
 

@@ -1,4 +1,4 @@
-/* FieldView.java -- 
+/* TabSet.java --
    Copyright (C) 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,69 +35,68 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
 package javax.swing.text;
 
-import java.awt.Component;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Shape;
+import java.io.Serializable;
 
-
-public class FieldView extends PlainView
+public class TabSet implements Serializable
 {
-  public FieldView(Element elem)
+  TabStop[] tabs;
+
+  public TabSet(TabStop[] t) 
   {
-    super(elem);
+    tabs = t;
+  }
+ 
+  public TabStop getTab(int i) 
+  {
+    return tabs[i];
   }
 
-  protected FontMetrics getFontMetrics()
+  public TabStop getTabAfter(float location) 
   {
-    Component container = getContainer();
-    return container.getFontMetrics(container.getFont());
+    int idx = getTabIndexAfter(location);
+    if (idx == -1)
+      return null;
+    else
+      return tabs[idx];        
   }
 
-  public float getPreferredSpan(int axis)
+  public int getTabCount() 
   {
-    if (axis != X_AXIS && axis != Y_AXIS)
-      throw new IllegalArgumentException();
+    return tabs.length;
+  }
 
-    FontMetrics fm = getFontMetrics();
+  public int getTabIndex(TabStop tab) 
+  {
+    for (int i = 0; i < tabs.length; ++i)
+      if (tabs[i] == tab)
+        return i;
+    return -1;
+  }
 
-    if (axis == Y_AXIS)
-      return fm.getHeight();
-
-    String text;
-    Element elem = getElement();
-
-    try
+  public int getTabIndexAfter(float location) 
+  {
+    int idx = -1;
+    for (int i = 0; i < tabs.length; ++i)
       {
-	text = elem.getDocument().getText(elem.getStartOffset(),
-					  elem.getEndOffset());
+        if (location < tabs[i].getPosition())
+          idx = i;
       }
-    catch (BadLocationException e)
-      {
-	// This should never happen.
-	text = "";
-	System.out.println("Michael: FieldView.getPreferredSpan: Error");
-      }
-    
-    return fm.stringWidth(text);
+    return idx;
   }
 
-  public int getResizeWeight(int axis)
+  public String toString()
   {
-    return axis = axis == X_AXIS ? 1 : 0;
-  }
-  
-  public Shape modelToView(int pos, Shape a, Position.Bias bias)
-    throws BadLocationException
-  {
-    return super.modelToView(pos, a, bias);
-  }
-  
-  public void paint(Graphics g, Shape s)
-  {
-    super.paint(g, s);
+    StringBuffer sb = new StringBuffer();
+    sb.append("[");
+    for (int i = 0; i < tabs.length; ++i)
+      {
+        if (i != 0)
+          sb.append(" - ");
+        sb.append(tabs[i].toString());
+      }
+    sb.append("]");
+    return sb.toString();
   }
 }

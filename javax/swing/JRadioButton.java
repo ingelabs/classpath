@@ -48,6 +48,7 @@ public class JRadioButton extends JToggleButton
     {
 	this(null, null);
     }
+    
     public JRadioButton(Action a)
     {
 	this();
@@ -59,10 +60,20 @@ public class JRadioButton extends JToggleButton
 	this(null, icon);
     }    
   
+  public JRadioButton(Icon icon, boolean selected)
+  { 
+    this(null, icon, selected);
+  }    
+  
     public JRadioButton(String text)
     {
 	this(text, null);
     }
+      
+  public JRadioButton(String text, boolean selected)
+  {
+    this(text, null, selected);
+  }
       
     public JRadioButton(String text, Icon icon)
     {
@@ -71,6 +82,9 @@ public class JRadioButton extends JToggleButton
         contentAreaFilled = false;
     }
 
+  public JRadioButton(String text, Icon icon, boolean selected)
+  {
+  }
     
     public AccessibleContext getAccessibleContext()
     {

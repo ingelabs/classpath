@@ -1,4 +1,4 @@
-/* FieldView.java -- 
+/* TransferHandler.java --
    Copyright (C) 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -35,69 +35,21 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+package javax.swing;
 
-package javax.swing.text;
+import java.io.Serializable;
 
-import java.awt.Component;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Shape;
-
-
-public class FieldView extends PlainView
+public class TransferHandler implements Serializable
 {
-  public FieldView(Element elem)
+  private static final long serialVersionUID = -7908749299918704233L;
+
+  public static final int NONE = 0;
+  public static final int COPY = 1;
+  public static final int MOVE = 2;
+  public static final int COPY_OR_MOVE = 3;
+
+  protected TransferHandler()
   {
-    super(elem);
-  }
-
-  protected FontMetrics getFontMetrics()
-  {
-    Component container = getContainer();
-    return container.getFontMetrics(container.getFont());
-  }
-
-  public float getPreferredSpan(int axis)
-  {
-    if (axis != X_AXIS && axis != Y_AXIS)
-      throw new IllegalArgumentException();
-
-    FontMetrics fm = getFontMetrics();
-
-    if (axis == Y_AXIS)
-      return fm.getHeight();
-
-    String text;
-    Element elem = getElement();
-
-    try
-      {
-	text = elem.getDocument().getText(elem.getStartOffset(),
-					  elem.getEndOffset());
-      }
-    catch (BadLocationException e)
-      {
-	// This should never happen.
-	text = "";
-	System.out.println("Michael: FieldView.getPreferredSpan: Error");
-      }
-    
-    return fm.stringWidth(text);
-  }
-
-  public int getResizeWeight(int axis)
-  {
-    return axis = axis == X_AXIS ? 1 : 0;
-  }
-  
-  public Shape modelToView(int pos, Shape a, Position.Bias bias)
-    throws BadLocationException
-  {
-    return super.modelToView(pos, a, bias);
-  }
-  
-  public void paint(Graphics g, Shape s)
-  {
-    super.paint(g, s);
+    // Do nothing here.
   }
 }
