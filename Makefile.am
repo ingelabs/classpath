@@ -2,5 +2,7 @@
 
 SUBDIRS = lib native doc resource gnu java vm
 
+native: lib
+
 EXTRA_DIST = BUGS THANKYOU
 
