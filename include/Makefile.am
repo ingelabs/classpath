@@ -42,7 +42,6 @@ $(top_srcdir)/include/gnu_java_nio_NIOServerSocket.h \
 $(top_srcdir)/include/gnu_java_nio_PipeImpl.h \
 $(top_srcdir)/include/gnu_java_nio_SelectorImpl.h \
 $(top_srcdir)/include/gnu_java_nio_channels_FileChannelImpl.h \
-$(top_srcdir)/include/java_io_FileDescriptor.h \
 $(top_srcdir)/include/java_io_File.h \
 $(top_srcdir)/include/java_io_ObjectInputStream.h \
 $(top_srcdir)/include/java_io_VMObjectStreamClass.h \
@@ -139,8 +138,6 @@ $(top_srcdir)/include/gnu_java_nio_PipeImpl.h: $(top_srcdir)/gnu/java/nio/PipeIm
 	$(JAVAH) -o $@ gnu.java.nio.PipeImpl
 $(top_srcdir)/include/gnu_java_nio_SelectorImpl.h: $(top_srcdir)/gnu/java/nio/SelectorImpl.java
 	$(JAVAH) -o $@ gnu.java.nio.SelectorImpl
-$(top_srcdir)/include/java_io_FileDescriptor.h: $(top_srcdir)/java/io/FileDescriptor.java
-	$(JAVAH) -o $@ java.io.FileDescriptor
 $(top_srcdir)/include/java_io_File.h: $(top_srcdir)/java/io/File.java
 	$(JAVAH) -o $@ java.io.File
 $(top_srcdir)/include/java_io_ObjectInputStream.h: $(top_srcdir)/java/io/ObjectInputStream.java

@@ -1,5 +1,10 @@
 2004-04-12  Michael Koch  <konqueror@gmx.de>
 
+	* include/java_io_FileDescriptor.h: Removed.
+	* include/Makefile.am: Dont regenerate java_io_FileDescriptor.h.
+
+2004-04-12  Michael Koch  <konqueror@gmx.de>
+
 	* java/util/zip/DeflaterOutputStream.java
 	(write): Removed debug code.
 	* java/util/zip/GZIPInputStream.java: Jalopied.
