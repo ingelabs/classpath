@@ -1,9 +1,5 @@
 pkglib_LTLIBRARIES = libgtkpeer.la
 
-# For now we include generated .h files. When javah versions have less bugs
-# we can add rules to just generate them during the build.
-EXTRA_DIST = gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.h
-
 libgtkpeer_la_SOURCES = \
 			gnu_java_awt_peer_gtk_GdkFontMetrics.c \
 			gnu_java_awt_peer_gtk_GdkGraphics.c \

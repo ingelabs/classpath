@@ -1,3 +1,8 @@
+2004-08-01  Michael Koch  <konqueror@gmx.de>
+
+	* native/jni/gtk-peer/Makefile.am
+	(EXTRA_DIST): Removed.
+
 2004-07-31  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/table/DefaultTableColumnModel.java
