@@ -10,7 +10,7 @@ extern "C"
 {
 #endif
 
-extern jobject Java_java_lang_reflect_Array_createObjectArray (JNIEnv *env, jclass, jclass, jint);
+extern JNIEXPORT jobject JNICALL Java_java_lang_reflect_Array_createObjectArray (JNIEnv *env, jclass, jclass, jint);
 
 #ifdef __cplusplus
 }
