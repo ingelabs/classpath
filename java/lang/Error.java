@@ -21,7 +21,7 @@ package java.lang;
 
 /**
  * Applications should not try to catch errors since they indicate 
- * abnormal conditions.  An abnormal condition is something which should
+ * abnormal conditions.  An abnormal condition is something which should not
  * occur.  A few errors, like <code>ThreadDeath</code> error do normally
  * occur, but most applications should not catch it.  
  * <p>
