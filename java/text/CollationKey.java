@@ -148,7 +148,7 @@ public final class CollationKey implements Comparable
 
     CollationKey ck = (CollationKey) obj;
 
-    if (!ck.collator.equals (collator))
+    if (ck.collator != collator)
       return false;
 
     if (!ck.getSourceString ().equals (getSourceString ()))
