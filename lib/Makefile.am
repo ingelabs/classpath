@@ -84,9 +84,9 @@ HEADERS_DEPEND = headers.dep
 CLASSES_DEPEND = classes.dep
 JAVA_DEPEND = java.dep
 
-#data_DATA = glibj.zip
+#pkgdata_DATA = glibj.zip
 install-data-local :
-	unzip -d $(datadir) glibj.zip
+	unzip -d $(pkgdatadir) glibj.zip
 
 include $(JAVA_DEPEND)
 include $(HEADERS_DEPEND)
