@@ -1,4 +1,12 @@
 2005-03-08  Audrius Meskauskas  <audriusa@bluewin.ch>
+
+	* org/omg/CORBA/NamedValue.java,
+	org/omg/CORBA/ARG_IN.java,
+	org/omg/CORBA/ARG_OUT.java,
+	org/omg/CORBA/ARG_INOUT.java:
+	New files.
+
+2005-03-08  Audrius Meskauskas  <audriusa@bluewin.ch>
 	* org/omg/CORBA/.java: New file.
 
 2005-03-08 David Gilbert <david.gilbert@object-refinery.com>
