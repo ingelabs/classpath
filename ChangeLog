@@ -1,5 +1,17 @@
 2004-04-29  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/java/awt/BitwiseXORComposite.java
+	(compose(Raster, Raster, WritableRaster)): Removed unused variable
+	transferType.
+	* gnu/java/awt/peer/gtk/GtkTextAreaPeer.java (minimumSize): Removed
+	unused variables hScrollbarHeight and vScrollbarWidth.
+	(preferredSize): Likewise.
+	* gnu/java/security/provider/DSAParameters.java (engineToString):
+	Removed unused call to System.getProperty("line.seperator");
+	* java/security/Security.java (loadProviders): Return result.
+
+2004-04-29  Mark Wielaard  <mark@klomp.org>
+
 	Reported by f.haeglsperger@gmx.de [patch #2485]
 	* java/util/HashMap.java (rehash): Add entry at start of bucket.
 
