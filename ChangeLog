@@ -1,12 +1,21 @@
-2004-11-06  Andrew Haley  <aph@redhat.com>
+2004-11-06  Jerry Quinn  <jlquinn@optonline.net>
 
-	* java/io/ObjectInputStream.java
-	(readObject): ENDBLOCKDATA is generated if the class has a write
-	method, not if it has a read method.
-
-2004-11-06  Mark Wielaard  <mark@klomp.org>
-
-	* java/util/Vector.java (readObject): Removed.
+	* java/awt/image/AffineTransformOp.java (filter): Implement
+	filtering and bilinear interpolation for Rasters.
+	 Add TYPE_BICUBIC.
+	* java/awt/image/IndexColorModel.java (IndexColorModel): Actually
+	use the provided colormap.  Throw documented exceptions.  Document
+	exceptions.
+	* java/awt/image/ComponentSampleModel.java (getDataElements,
+	setDataElements): Implement SHORT, FLOAT, and INT transfer types.
+	* java/awt/image/Raster.java (createBandedRaster): Implement.
+	* java/awt/image/SampleModel.java (createSubsetSampleModel): Add
+	javadocs.
+	* java/awt/image/RescaleOp.java,
+	java/awt/image/ColorConvertOp.java: Fix loop bounds.
+	* java/awt/image/BandCombineOp.java,
+	java/awt/image/LookupOp.java,
+	java/awt/image/ConvolveOp.java: New classes.
 
 2004-11-06  Tom Tromey  <tromey@redhat.com>
 
