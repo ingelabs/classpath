@@ -473,10 +473,10 @@ _javanet_create(JNIEnv *env, jobject this, jboolean stream)
     }
     
   if (stream)
-    _javanet_set_int_field(env, this, "java/net/PlainSocketImpl", 
+    _javanet_set_int_field(env, this, "gnu/java/net/PlainSocketImpl", 
                            "native_fd", fd);
   else
-    _javanet_set_int_field(env, this, "java/net/PlainDatagramSocketImpl", 
+    _javanet_set_int_field(env, this, "gnu/java/net/PlainDatagramSocketImpl", 
                            "native_fd", fd);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
@@ -505,10 +505,10 @@ _javanet_close(JNIEnv *env, jobject this, int stream)
   TARGET_NATIVE_NETWORK_SOCKET_CLOSE(fd,result);
 
   if (stream)
-    _javanet_set_int_field(env, this, "java/net/PlainSocketImpl",
+    _javanet_set_int_field(env, this, "gnu/java/net/PlainSocketImpl",
                            "native_fd", -1);
   else
-    _javanet_set_int_field(env, this, "java/net/PlainDatagramSocketImpl",
+    _javanet_set_int_field(env, this, "gnu/java/net/PlainDatagramSocketImpl",
                            "native_fd", -1);
 #else /* not WITHOUT_NETWORK */
 #endif /* not WITHOUT_NETWORK */
@@ -798,7 +798,7 @@ _javanet_accept(JNIEnv *env, jobject this, jobject impl)
     }
 
   /* Populate instance variables */ 
-  _javanet_set_int_field(env, impl, "java/net/PlainSocketImpl", "native_fd",
+  _javanet_set_int_field(env, impl, "gnu/java/net/PlainSocketImpl", "native_fd",
                          newfd);
 
   if ((*env)->ExceptionOccurred(env))
