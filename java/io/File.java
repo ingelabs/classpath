@@ -331,8 +331,8 @@ File(String name)
   if (path == null)
     throw new NullPointerException("File name is null");
 
-  if (!PlatformHelper.isRootDirectory(path))
-    while (PlatformHelper.endWithSeparator(path))
+  while (!PlatformHelper.isRootDirectory(path)
+	 && PlatformHelper.endWithSeparator(path))
       path = PlatformHelper.removeTailSeparator(path);
 }
 

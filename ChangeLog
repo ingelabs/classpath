@@ -1,3 +1,8 @@
+2003-02-12  Jeroen Frijters  <jeroen@sumatra.nl>
+
+	* java/io/File.java (File(String)): Only remove tail separators while
+	path isn't the root directory.
+
 2003-02-11  Tom Tromey  <tromey@redhat.com>
 
 	* java/util/zip/ZipInputStream.java (read): Fixed indentation.
