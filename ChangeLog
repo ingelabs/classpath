@@ -1,3 +1,13 @@
+2005-04-06   Audrius Meskauskas  <audriusa@bluewin.ch>
+
+	* org/omg/CORBA/CTX_RESTRICT_SCOPE.java,
+	org/omg/CORBA/ExceptionList.java,
+	org/omg/CORBA/NVList.java,
+	PrincipalHolder.java: New classes.
+	* org/omg/CORBA/Context.java: Completing
+	part, dependent from classes above,
+	org/omg/CORBA/MARSHAL.java: accessibility fixes.
+
 2005-04-05  Roman Kennke  <roman@kennke.org>
 
 	* gnu/java/awt/peer/gtk/GdkScreenGraphicsDevice.java
