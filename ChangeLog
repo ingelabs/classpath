@@ -1,6 +1,15 @@
 2003-09-21  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/JarURLConnection.java
+	(real_url): Renamed to jarFileURL.
+	(jarFileURL): Renamed from jarFileURL (to match libgcj).
+	(JarURLConnection): Renamed real_url to jarFileURL, made exception
+	descriptions more descriptive and move "jar" protocol test around.
+	(getJarFileURL): Return jarFileURL.
+
+2003-09-21  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/JarURLConnection.java
 	(JarURLConnection): Store result of url_string.index ("!/") in a local
 	variable instead of computing it 4 times.
 

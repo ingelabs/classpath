@@ -76,7 +76,7 @@ public abstract class JarURLConnection extends URLConnection
    * This is the actual URL that points the remote jar file.  This is parsed
    * out of the jar URL by the constructor.
    */
-  private URL real_url;
+  private URL jarFileURL;
 
   /**
    * This is the jar file "entry name" or portion after the "!/" in the
@@ -103,18 +103,18 @@ public abstract class JarURLConnection extends URLConnection
   {
     super(url);
 
+    if (!url.getProtocol().equals ("jar"))
+      throw new MalformedURLException (url + ": Not jar protocol.");
+
     // Now, strip off the "jar:" and everything from the "!/" to the end
     // to get the "real" URL inside
     String url_string = url.toExternalForm();
 
-    if (!url_string.startsWith("jar:"))
-      throw new MalformedURLException(url_string);
-
     int bang = url_string.indexOf ("!/");
     if (bang == -1)
-      throw new MalformedURLException(url_string);
+      throw new MalformedURLException (url + ": No `!/' in spec.");
 
-    real_url = new URL (url_string.substring (4, bang));
+    jarFileURL = new URL (url_string.substring (4, bang));
     if (url_string.length() == (bang + 1))
       entry_name = "";
     else
@@ -129,7 +129,7 @@ public abstract class JarURLConnection extends URLConnection
    */
   public URL getJarFileURL ()
   {
-    return real_url;
+    return jarFileURL;
   }
 
   /**
