@@ -1,6 +1,5 @@
-/* Cloneable.java -- Interface for implementing a method to override 
-   Object.clone()comparaing objects to obtain an ordering
-   Copyright (C) 1998 Free Software Foundation, Inc.
+/* Cloneable.java -- Interface for marking objects cloneable by Object.clone()
+   Copyright (C) 1998, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -30,15 +29,41 @@ package java.lang;
 
 /**
  * This interface should be implemented by classes wishing to
- * support or override Object.clone().  Cloning an object generally
- * results in a deep copy of that object.  If Object.clone() is called
- * on an object which does not implement the Cloneable interface,
- * a CloneNotSupportedException will be thrown.
+ * support of override <code>Object.clone()</code>.  The default
+ * behaviour of <code>clone()</code> performs a shallow copy, but
+ * subclasses often change this to perform a deep copy.  Therefore,
+ * it is a good idea to document how deep your clone will go.
+ * If <code>clone()</code> is called on an object which does not
+ * implement this interface, a <code>CloneNotSupportedException</code>
+ * will be thrown.
+ * <p>
  *
- * @since JDK1.0
+ * This interface is simply a tagging interface; it carries no
+ * requirements on methods to implement.  However, it is typical for
+ * a Cloneable class to implement at least <code>equals</code>,
+ * <code>hashCode</code>, and <code>clone</code>, sometimes
+ * increasing the accessibility of clone to be public. The typical
+ * implementation of <code>clone</code> invokes <code>super.clone()</code>
+ * rather than a constructor, but this is not a requirement.
+ * <p>
+ *
+ * If an object that implement Cloneable should not be cloned,
+ * simply override the <code>clone</code> method to throw a
+ * <code>CloneNotSupportedException</code>.
+ * <p>
+ *
+ * All array types implement Cloneable, and have a public
+ * <code>clone</code> method that will never fail with a
+ * <code>CloneNotSupportedException</code>.
+ *
+ * @since 1.0
  * @author Paul Fisher
+ * @author Eric Blake <ebb9@email.byu.edu>
  *
- * @see java.lang.Object#clone
- * @see java.lang.CloneNotSupportedException
+ * @see Object#clone()
+ * @see CloneNotSupportedException
  */
-public interface Cloneable { }
+public interface Cloneable
+{
+  // Tagging interface only.
+}
