@@ -2,6 +2,12 @@
 
 	* java/util/Timer.java: move all waiting logic into the queue as suggested
 	by Jochen Hoenicke to prevent race conditions
+	* java/lang/Makefile.am: add Package.java, ThreadLocal.java and
+	InheritableThreadLocal.java
+	* java/util/Makefile.am: add Timer.java, TimerTask.java and jar, zip dirs
+	* java/jar/Attributes.java: new 1.2 class
+	* java/jar/JarException.java: new 1.2 class
+	* java/jar/Manifest.java: new 1.2 class
 
 2000-05-30  Mark Wielaard <mark@klomp.org>
 
