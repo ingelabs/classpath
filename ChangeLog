@@ -248,6 +248,8 @@
 	* gnu/java/net/protocol/http/HTTPURLConnection.java:
 	HTTPURLConnection now returns Lists as getHeaderFields() values.
 
+2004-12-02  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/io/ObjectOutputStream.java
 	(writeObject, callWriteMethod): Replaced reflection with accessing
 	cached info in ObjectStreamClass.
