@@ -4,7 +4,7 @@ import java.util.Hashtable;
 
 /**
  * Strings represent an immutable set of characters.
- * Compliant with JLS 20.12 and not JDK 1.1.
+ * Compliant with JLS 20.12 and not JDK 1.1.x.
  *
  * @author Paul N. Fisher
  */
