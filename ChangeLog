@@ -1,3 +1,11 @@
+2001-11-23  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
+
+	* java/util/AbstractCollection.java (containsAll): Use size of the
+	correct collection for loop bound.
+	* java/util/AbstractList.java (iterator.next): Increment pos after
+	calling get on backing list.
+	(listIterator.next): Likewise.
+
 2001-11-18  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 
 	* java/util/AbstractSet.java (removeAll): Fix scoping thinko.

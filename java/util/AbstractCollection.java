@@ -49,6 +49,7 @@ import java.lang.reflect.Array;
  * Unfortunately, there is no way to enforce this in Java.
  *
  * @author Original author unknown
+ * @author Bryce McKinlay
  * @author Eric Blake <ebb9@email.byu.edu>
  * @see Collection
  * @see AbstractSet
@@ -193,7 +194,7 @@ public abstract class AbstractCollection implements Collection
   public boolean containsAll(Collection c)
   {
     Iterator itr = c.iterator();
-    int pos = size();
+    int pos = c.size();
     while (--pos >= 0)
       if (!contains(itr.next()))
         return false;

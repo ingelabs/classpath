@@ -47,6 +47,7 @@ package java.util;
  * synchronized.
  *
  * @author Original author unknown
+ * @author Bryce McKinlay
  * @author Eric Blake <ebb9@email.byu.edu>
  * @see Collection
  * @see List
@@ -311,8 +312,8 @@ public abstract class AbstractList extends AbstractCollection implements List
         checkMod();
         if (pos == size)
           throw new NoSuchElementException();
-        last = pos++;
-        return get(pos);
+        last = pos;
+        return get(pos++);
       }
 
       public void remove()
@@ -414,8 +415,8 @@ public abstract class AbstractList extends AbstractCollection implements List
         checkMod();
         if (position == size)
           throw new NoSuchElementException();
-        lastReturned = position++;
-        return get(lastReturned);
+        lastReturned = position;
+        return get(position++);
       }
 
       public Object previous()
