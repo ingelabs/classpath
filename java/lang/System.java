@@ -84,6 +84,21 @@ public final class System
     defaultProperties.put("gnu.classpath.version",
 		    Configuration.CLASSPATH_VERSION);
 
+    // Set base URL if not already set.
+    if (defaultProperties.get("gnu.classpath.home.url") == null)
+      defaultProperties.put("gnu.classpath.home.url",
+			    "file://" + Configuration.CLASSPATH_HOME + "/lib");
+
+    // Set short name if not already set.
+    if (defaultProperties.get("gnu.classpath.vm.shortname") == null)
+      {
+	String value = defaultProperties.getProperty("java.vm.name");
+	int index = value.lastIndexOf(' ');
+	if (index != -1)
+	  value = value.substring(index + 1);
+	defaultProperties.put("gnu.classpath.vm.shortname", value);
+      }
+
     defaultProperties.put("gnu.cpu.endian",
                           VMSystem.isWordsBigEndian() ? "big" : "little");
 
@@ -435,6 +450,10 @@ public final class System
    * <dl>
    * <dl> gnu.classpath.home <dd> Path to the classpath libraries.
    * <dl> gnu.classpath.version <dd> Version of the classpath libraries.
+   * <dl> gnu.classpath.vm.shortname <dd> Succinct version of the VM name;
+   *      used for finding property files in file system
+   * <dl> gnu.classpath.home.url <dd> Base URL; used for finding
+   *      property files in file system
    * <dt> gnu.cpu.endian      <dd>big or little
    * <dt> gnu.java.io.encoding_scheme_alias.ISO-8859-?   <dd>8859_?
    * <dt> gnu.java.io.encoding_scheme_alias.iso-8859-?   <dd>8859_?
