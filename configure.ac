@@ -347,6 +347,9 @@ resource/gnu/regexp/Makefile
 resource/java/Makefile
 resource/java/util/Makefile
 resource/java/security/Makefile
+resource/org/Makefile
+resource/org/ietf/Makefile
+resource/org/ietf/jgss/Makefile
 lib/Makefile
 lib/gen-classlist.sh
 examples/Makefile])

@@ -1,3 +1,175 @@
+2004-07-XX  Casey Marshall <csm@gnu.org>
+
+	The Big Crypto Merge of 2004.
+
+	* configure.ac: generate jgss resource Makefiles.
+
+	* lib/Makefile.am: updated for jgss resources.
+
+	* lib/gen-classlist.sh.in: updated for classes in org/.
+
+	* javax/security/auth/x500/X500Principal.java: replaced with GNU
+	Crypto's version.
+
+	* resource/org/Makefile.am,
+	* resource/org/ietf/Makefile.am,
+	* resource/org/ietf/jgss/Makefile.am:
+	new files.
+
+	Files imported from GNU Crypto.
+	* javax/crypto/BadPaddingException.java
+	* javax/crypto/Cipher.java
+	* javax/crypto/CipherInputStream.java
+	* javax/crypto/CipherOutputStream.java
+	* javax/crypto/CipherSpi.java
+	* javax/crypto/EncryptedPrivateKeyInfo.java
+	* javax/crypto/ExemptionMechanism.java
+	* javax/crypto/ExemptionMechanismException.java
+	* javax/crypto/ExemptionMechanismSpi.java
+	* javax/crypto/IllegalBlockSizeException.java
+	* javax/crypto/KeyAgreement.java
+	* javax/crypto/KeyAgreementSpi.java
+	* javax/crypto/KeyGenerator.java
+	* javax/crypto/KeyGeneratorSpi.java
+	* javax/crypto/Mac.java
+	* javax/crypto/MacSpi.java
+	* javax/crypto/Makefile.am
+	* javax/crypto/NoSuchPaddingException.java
+	* javax/crypto/NullCipher.java
+	* javax/crypto/NullCipherImpl.java
+	* javax/crypto/SealedObject.java
+	* javax/crypto/SecretKey.java
+	* javax/crypto/SecretKeyFactory.java
+	* javax/crypto/SecretKeyFactorySpi.java
+	* javax/crypto/ShortBufferException.java
+	* javax/crypto/interfaces/DHKey.java
+	* javax/crypto/interfaces/DHPrivateKey.java
+	* javax/crypto/interfaces/DHPublicKey.java
+	* javax/crypto/interfaces/PBEKey.java
+	* javax/crypto/spec/DESKeySpec.java
+	* javax/crypto/spec/DESedeKeySpec.java
+	* javax/crypto/spec/DHGenParameterSpec.java
+	* javax/crypto/spec/DHParameterSpec.java
+	* javax/crypto/spec/DHPrivateKeySpec.java
+	* javax/crypto/spec/DHPublicKeySpec.java
+	* javax/crypto/spec/IvParameterSpec.java
+	* javax/crypto/spec/PBEKeySpec.java
+	* javax/crypto/spec/PBEParameterSpec.java
+	* javax/crypto/spec/RC2ParameterSpec.java
+	* javax/crypto/spec/RC5ParameterSpec.java
+	* javax/crypto/spec/SecretKeySpec.java
+	* javax/security/auth/AuthPermission.java
+	* javax/security/auth/DestroyFailedException.java
+	* javax/security/auth/Destroyable.java
+	* javax/security/auth/Policy.java
+	* javax/security/auth/PrivateCredentialPermission.java
+	* javax/security/auth/RefreshFailedException.java
+	* javax/security/auth/Refreshable.java
+	* javax/security/auth/Subject.java
+	* javax/security/auth/SubjectDomainCombiner.java
+	* javax/security/auth/callback/Callback.java
+	* javax/security/auth/callback/CallbackHandler.java
+	* javax/security/auth/callback/ChoiceCallback.java
+	* javax/security/auth/callback/ConfirmationCallback.java
+	* javax/security/auth/callback/LanguageCallback.java
+	* javax/security/auth/callback/NameCallback.java
+	* javax/security/auth/callback/PasswordCallback.java
+	* javax/security/auth/callback/TextInputCallback.java
+	* javax/security/auth/callback/TextOutputCallback.java
+	* javax/security/auth/callback/UnsupportedCallbackException.java
+	* javax/security/auth/login/AccountExpiredException.java
+	* javax/security/auth/login/AppConfigurationEntry.java
+	* javax/security/auth/login/Configuration.java
+	* javax/security/auth/login/CredentialExpiredException.java
+	* javax/security/auth/login/FailedLoginException.java
+	* javax/security/auth/login/LoginContext.java
+	* javax/security/auth/login/LoginException.java
+	* javax/security/auth/login/NullConfiguration.java
+	* javax/security/auth/x500/X500PrivateCredential.java
+	* javax/security/sasl/AuthenticationException.java
+	* javax/security/sasl/AuthorizeCallback.java
+	* javax/security/sasl/RealmCallback.java
+	* javax/security/sasl/RealmChoiceCallback.java
+	* javax/security/sasl/Sasl.java
+	* javax/security/sasl/SaslClient.java
+	* javax/security/sasl/SaslClientFactory.java
+	* javax/security/sasl/SaslException.java
+	* javax/security/sasl/SaslServer.java
+	* javax/security/sasl/SaslServerFactory.java
+	* org/ietf/jgss/ChannelBinding.java
+	* org/ietf/jgss/GSSContext.java
+	* org/ietf/jgss/GSSCredential.java
+	* org/ietf/jgss/GSSException.java
+	* org/ietf/jgss/GSSManager.java
+	* org/ietf/jgss/GSSName.java
+	* org/ietf/jgss/MessageProp.java
+	* org/ietf/jgss/Oid.java
+	* resources/org/ietf/jgss/MessagesBundle.properties
+
+	Files imported from Jessie <http://www.nongnu.org/jessie/>
+	* javax/net/ServerSocketFactory.java
+	* javax/net/SocketFactory.java
+	* javax/net/VanillaServerSocketFactory.java
+	* javax/net/VanillaSocketFactory.java
+	* javax/net/ssl/HandshakeCompletedEvent.java
+	* javax/net/ssl/HandshakeCompletedListener.java
+	* javax/net/ssl/HostnameVerifier.java
+	* javax/net/ssl/HttpsURLConnection.java
+	* javax/net/ssl/KeyManager.java
+	* javax/net/ssl/KeyManagerFactory.java
+	* javax/net/ssl/KeyManagerFactorySpi.java
+	* javax/net/ssl/ManagerFactoryParameters.java
+	* javax/net/ssl/SSLContext.java
+	* javax/net/ssl/SSLContextSpi.java
+	* javax/net/ssl/SSLException.java
+	* javax/net/ssl/SSLHandshakeException.java
+	* javax/net/ssl/SSLKeyException.java
+	* javax/net/ssl/SSLPeerUnverifiedException.java
+	* javax/net/ssl/SSLPermission.java
+	* javax/net/ssl/SSLProtocolException.java
+	* javax/net/ssl/SSLServerSocket.java
+	* javax/net/ssl/SSLServerSocketFactory.java
+	* javax/net/ssl/SSLSession.java
+	* javax/net/ssl/SSLSessionBindingEvent.java
+	* javax/net/ssl/SSLSessionBindingListener.java
+	* javax/net/ssl/SSLSessionContext.java
+	* javax/net/ssl/SSLSocket.java
+	* javax/net/ssl/SSLSocketFactory.java
+	* javax/net/ssl/TrivialHostnameVerifier.java
+	* javax/net/ssl/TrustManager.java
+	* javax/net/ssl/TrustManagerFactory.java
+	* javax/net/ssl/TrustManagerFactorySpi.java
+	* javax/net/ssl/X509KeyManager.java
+	* javax/net/ssl/X509TrustManager.java
+	* javax/security/cert/Certificate.java
+	* javax/security/cert/CertificateEncodingException.java
+	* javax/security/cert/CertificateException.java
+	* javax/security/cert/CertificateExpiredException.java
+	* javax/security/cert/CertificateNotYetValidException.java
+	* javax/security/cert/CertificateParsingException.java
+	* javax/security/cert/X509CertBridge.java
+	* javax/security/cert/X509Certificate.java
+
+2004-08-14  Casey Marshall <csm@gnu.org>
+
+	Author e-mail updated for all files.
+	* gnu/java/security/OID.java (equals): test if the aurgment is an
+	instance of OID.
+	(compareTo): use `equals'.
+	* gnu/java/security/der/BitString.java (equals): test if the
+	argument is an instance of BitString.
+	* gnu/java/security/der/DERReader.java: Removed NIO imports.  Made
+	class final. Made fields private.
+	(<init>): new constructor.
+	(skip): new method.
+	(makeString): made static; don't use NIO.
+	(fromIso88591, fromUtf16Be, fromUtf8): new methods.
+	* gnu/java/security/der/DERWriter.java: fixed imports.
+	(writeString): don't use NIO.
+	(toIso88591, toUtf16Be, toUtf8): new methods.
+	* gnu/java/security/der/DERValue.java: formatting changes only.
+	* gnu/java/security/der/DER.java: likewise.
+
 2004-08-14  Mark Wielaard  <mark@klomp.org>
 
 	* configure.ac: Add --enable-gtk-cairo checking (cairo, pangoft2).
