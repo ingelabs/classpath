@@ -169,8 +169,7 @@ private static Constructor findDecoderConstructor(String encoding)
     throws UnsupportedEncodingException
 {
   // First check for an aliased encoding name
-  encoding = SystemProperties.getProperty("gnu.java.io.encoding_scheme_alias." + 
-                                    encoding, encoding);
+  encoding = resolveAlias(encoding);
 
   StringTokenizer st = new StringTokenizer(encoding_path, ":");
 
@@ -190,6 +189,16 @@ private static Constructor findDecoderConstructor(String encoding)
        
 /*************************************************************************/
 
+private static String resolveAlias(String encoding)
+{
+  String prefix = "gnu.java.io.encoding_scheme_alias.";
+  // Aliases should preferably be defined in lowercase so that they
+  // can be matched case-insensitively, but for compatibility we will
+  // first look for an exact match.
+  return SystemProperties.getProperty(prefix + encoding,
+    SystemProperties.getProperty(prefix + encoding.toLowerCase(), encoding));
+}
+
 /**
   * This method loads an <code>Encoder</code> class for the given
   * encoding name.
@@ -200,8 +209,7 @@ private static Constructor findEncoderConstructor(String encoding)
     throws UnsupportedEncodingException
 {
   // First check for an aliased encoding name
-  encoding = SystemProperties.getProperty("gnu.java.io.encoding_scheme_alias." + 
-                                    encoding, encoding);
+  encoding = resolveAlias(encoding);
 
   StringTokenizer st = new StringTokenizer(encoding_path, ":");
 

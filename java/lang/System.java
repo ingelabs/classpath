@@ -297,12 +297,10 @@ public final class System
    * <dt>gnu.classpath.home.url</dt>     <dd> Base URL; used for finding
    *     property files in file system</dd>
    * <dt>gnu.cpu.endian</dt>             <dd>big or little</dd>
-   * <dt>gnu.java.io.encoding_scheme_alias.ISO-8859-?</dt>   <dd>8859_?</dd>
    * <dt>gnu.java.io.encoding_scheme_alias.iso-8859-?</dt>   <dd>8859_?</dd>
    * <dt>gnu.java.io.encoding_scheme_alias.iso8859_?</dt>    <dd>8859_?</dd>
    * <dt>gnu.java.io.encoding_scheme_alias.iso-latin-_?</dt> <dd>8859_?</dd>
    * <dt>gnu.java.io.encoding_scheme_alias.latin?</dt>       <dd>8859_?</dd>
-   * <dt>gnu.java.io.encoding_scheme_alias.UTF-8</dt>        <dd>UTF8</dd>
    * <dt>gnu.java.io.encoding_scheme_alias.utf-8</dt>        <dd>UTF8</dd>
    * </dl>
    *

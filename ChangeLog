@@ -1,3 +1,14 @@
+2005-03-29  Jeroen Frijters  <jeroen@frijters.net>
+
+	* gnu/classpath/SystemProperties.java (static): Converted encoding
+	aliases	to lower case and removed redudant aliases.
+	* gnu/java/io/EncodingManager.java
+	(findEncoderConstructor, findDecoderConstructor): Call new method
+	resolveAlias().
+	(resolveAlias): New method.
+	* java/lang/System.java (getProperties): Removed uppercase aliases
+	from comments.
+
 2005-03-28  Tom Tromey  <tromey@redhat.com>
 
 	* java/net/URL.java (DEFAULT_SEARCH_PATH): Added
