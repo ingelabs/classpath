@@ -226,7 +226,6 @@ public class GregorianCalendar extends Calendar
    * @return the days since the epoch, may be negative.  */
   private long getLinearTime(int year, int dayOfYear, int millis)
   {
-
     // The 13 is the number of days, that were omitted in the Gregorian
     // Calender until the epoch.
     // We shift right by 2 instead of dividing by 4, to get correct
@@ -243,7 +242,13 @@ public class GregorianCalendar extends Calendar
 	// Okay, here we rely on the fact that the gregorian
 	// calendar was introduced in the AD era.  This doesn't work
 	// with negative years.
-	time += ((year / 400) - (year / 100) + 2) * (24 * 60 * 60 * 1000L);
+	//
+	// The additional leap year factor accounts for the fact that
+	// a leap day is not seen on Jan 1 of the leap year.
+	int gregOffset = (year / 400) - (year / 100) + 2;
+	if (isLeapYear (year, true) && dayOfYear < 31 + 29)
+	  --gregOffset;
+	time += gregOffset * (24 * 60 * 60 * 1000L);
       }
     return time;
   }
@@ -467,7 +472,13 @@ public class GregorianCalendar extends Calendar
 	// Okay, here we rely on the fact that the gregorian
 	// calendar was introduced in the AD era.  This doesn't work
 	// with negative years.
-	julianDay += ((year / 400) - (year / 100) + 2);
+	//
+	// The additional leap year factor accounts for the fact that
+	// a leap day is not seen on Jan 1 of the leap year.
+	int gregOffset = (year / 400) - (year / 100) + 2;
+	if (isLeapYear (year, true) && dayOfYear < 31 + 29)
+	  --gregOffset;
+	julianDay += gregOffset;
       }
     return julianDay;
   }
@@ -767,7 +778,7 @@ public class GregorianCalendar extends Calendar
     roll(field, up ? 1 : -1);
   }
 
-  public void cleanUpAfterRoll(int field, int delta)
+  private void cleanUpAfterRoll(int field, int delta)
   {
     switch (field)
       {
