@@ -37,6 +37,7 @@ exception statement from your version. */
 
 package java.nio.charset;
 
+import java.lang.ref.WeakReference;
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
 import java.util.HashMap;
@@ -47,16 +48,16 @@ import java.util.HashMap;
  */
 public class CoderResult
 { 
-  public static final CoderResult OVERFLOW
-    = new CoderResult (TYPE_OVERFLOW, 0);
-  public static final CoderResult UNDERFLOW
-    = new CoderResult (TYPE_UNDERFLOW, 0);
-  
   private static final int TYPE_MALFORMED  = 0;
   private static final int TYPE_OVERFLOW   = 1;
   private static final int TYPE_UNDERFLOW  = 2;
   private static final int TYPE_UNMAPPABLE = 3;
 
+  public static final CoderResult OVERFLOW
+    = new CoderResult (TYPE_OVERFLOW, 0);
+  public static final CoderResult UNDERFLOW
+    = new CoderResult (TYPE_UNDERFLOW, 0);
+  
   private static final String[] names
     = { "MALFORMED", "OVERFLOW", "UNDERFLOW", "UNMAPPABLE" };
 

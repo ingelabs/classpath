@@ -1,3 +1,11 @@
+2002-11-08  Mark Wielaard  <mark@klomp.org>
+
+	* java/nio/charset/Charset.java: Add necessary imports (gcj doesn't
+	care about them, but jikes does).
+	* java/nio/charset/CoderResult.java: Likewise and move declaration of
+	OVERFLOW and UNDERFLOW after the declaration of the corresponding
+	TYPE_ fields they use (again gcj doesn't care but jikes does).
+
 2002-11-08  Jesse Rosenstock <jmr@fulcrummicro.com>
 
 	* java/nio/charset/CharacterCodingException.java:
