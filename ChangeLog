@@ -1,5 +1,14 @@
 2003-12-26  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/DatagramSocket.java
+	(close): Directly return if socket is closed.
+	* java/net/ServerSocket.java bind():
+	If InetSocketAddress.getAddress() returns "null" use "0.0.0.0" as
+	address to bind to.
+	(close): Directly return if socket is closed.
+
+2003-12-26  Michael Koch  <konqueror@gmx.de>
+
 	* java/util/TimeZone.java (getOffset): New method.
 
 2003-12-26  Michael Koch  <konqueror@gmx.de>
