@@ -1,5 +1,11 @@
 2004-01-26  Fernando Nasser  <fnasser@redhat.com>
 
+	* java/awt/Dialog.java (show): Enable blocking for all modal dialogs
+	and run secondary dispatch thread to process event queue while this
+	thread is blocked.
+
+2004-01-26  Fernando Nasser  <fnasser@redhat.com>
+
 	* gnu/java/awt/peer/gtk/GtkFileDialogPeer.java (nativeSetFile):
 	New name for the former setFile native method.
 	(setFile): New method.
