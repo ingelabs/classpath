@@ -38,8 +38,10 @@ exception statement from your version. */
 
 package gnu.java.awt.peer.gtk;
 
+import java.awt.Font;
 import java.awt.Menu;
 import java.awt.MenuBar;
+import java.awt.MenuComponent;
 import java.awt.peer.MenuBarPeer;
 import java.awt.peer.MenuPeer;
 
@@ -53,7 +55,15 @@ public class GtkMenuBarPeer extends GtkMenuComponentPeer
   public GtkMenuBarPeer (MenuBar target)
   {
     super (target);
-    create ();
+  }
+
+  void setFont ()
+  {
+    MenuComponent mc = (MenuComponent) awtWidget;
+    Font f = mc.getFont ();
+
+    if (f == null)
+      mc.setFont (new Font ("Dialog", Font.PLAIN, 12));
   }
 
   /* In Gnome, help menus are no longer right flushed. */

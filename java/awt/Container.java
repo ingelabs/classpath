@@ -572,8 +572,8 @@ public class Container extends Component
       }
 
     /* children will call invalidate() when they are layed out. It
-       is therefore imporant that valid is not set to true
-       before after the children has been layed out. */
+       is therefore important that valid is not set to true
+       until after the children have been layed out. */
     valid = true;
 
     if (cPeer != null)

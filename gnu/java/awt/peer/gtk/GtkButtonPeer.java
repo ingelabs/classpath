@@ -54,7 +54,7 @@ public class GtkButtonPeer extends GtkComponentPeer
 
   public native void connectSignals ();
 
-  native void gtkWidgetSetFont (String name, int style, int size);
+  native void gtkWidgetModifyFont (String name, int style, int size);
   native void gtkSetLabel (String label);
   native void gtkWidgetSetForeground (int red, int green, int blue);
   native void gtkActivate ();

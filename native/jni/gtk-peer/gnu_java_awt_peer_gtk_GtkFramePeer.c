@@ -113,6 +113,28 @@ Java_gnu_java_awt_peer_gtk_GtkFramePeer_getMenuBarHeight
 }
 
 JNIEXPORT void JNICALL
+Java_gnu_java_awt_peer_gtk_GtkFramePeer_setMenuBarWidth
+  (JNIEnv *env, jobject obj __attribute__((unused)), jobject menubar, jint width)
+{
+  GtkWidget *ptr;
+  GtkRequisition natural_req;
+
+  ptr = NSA_GET_PTR (env, menubar);
+
+  gdk_threads_enter ();
+
+  /* Get the menubar's natural size request. */
+  gtk_widget_set_size_request (GTK_WIDGET (ptr), -1, -1);
+  gtk_widget_size_request (GTK_WIDGET (ptr), &natural_req);
+
+  /* Set the menubar's size request to width by natural_req.height. */
+  gtk_widget_set_size_request (GTK_WIDGET (ptr),
+                               width, natural_req.height);
+
+  gdk_threads_leave ();
+}
+
+JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkFramePeer_gtkFixedSetVisible
   (JNIEnv *env, jobject obj, jboolean visible)
 {

@@ -58,15 +58,15 @@ public class GtkFramePeer extends GtkWindowPeer
   private int menuBarHeight;
   private MenuBarPeer menuBar;
   native int getMenuBarHeight (MenuBarPeer bar);
+  native void setMenuBarWidth (MenuBarPeer bar, int width);
+  native void setMenuBarPeer (MenuBarPeer bar);
+  native void removeMenuBarPeer ();
+  native void gtkFixedSetVisible (boolean visible);
 
   int getMenuBarHeight ()
   {
     return menuBar == null ? 0 : getMenuBarHeight (menuBar);
   }
-
-  native void setMenuBarPeer (MenuBarPeer bar);
-  native void removeMenuBarPeer ();
-  native void gtkFixedSetVisible (boolean visible);
 
   public void setMenuBar (MenuBar bar)
   {
@@ -112,6 +112,9 @@ public class GtkFramePeer extends GtkWindowPeer
 
   public void setBounds (int x, int y, int width, int height)
   {
+    if (menuBar != null)
+      setMenuBarWidth (menuBar, width - insets.left - insets.right);
+
     nativeSetBounds (x, y,
 		     width - insets.left - insets.right,
 		     height - insets.top - insets.bottom
@@ -216,15 +219,19 @@ public class GtkFramePeer extends GtkWindowPeer
         || frame_width != awtComponent.getWidth()
         || frame_height != awtComponent.getHeight())
       {
+        if (frame_width != awtComponent.getWidth() && menuBar != null)
+          setMenuBarWidth (menuBar, width);
+
         setBoundsCallback ((Window) awtComponent,
                            frame_x,
                            frame_y,
                            frame_width,
                            frame_height);
       }
+
     awtComponent.validate();
   }
-  
+
   protected void postMouseEvent(int id, long when, int mods, int x, int y, 
 				int clickCount, boolean popupTrigger)
   {

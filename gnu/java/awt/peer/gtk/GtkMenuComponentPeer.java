@@ -45,18 +45,20 @@ import java.awt.peer.MenuComponentPeer;
 public class GtkMenuComponentPeer extends GtkGenericPeer
   implements MenuComponentPeer
 {
+  void create ()
+  {
+    throw new RuntimeException ();
+  }
+
+  void setFont ()
+  {
+  }
+
   public GtkMenuComponentPeer (Object awtWidget)
   {
     super (awtWidget);
-    MenuComponent mc = ((MenuComponent) awtWidget);
-    Font f = mc.getFont ();
-    if (f == null)
-      {
-        mc.setFont (new Font ("Dialog", Font.PLAIN, 12));
-        gtkWidgetModifyFont("Dialog", Font.PLAIN, 12);
-      }
-    else
-      gtkWidgetModifyFont(f.getName(), f.getStyle(), f.getSize());
+    create ();
+    setFont ();
   }
 
   public native void dispose();

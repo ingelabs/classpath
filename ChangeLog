@@ -1,5 +1,39 @@
 2004-09-22  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GtkButtonPeer.java (gtkWidgetSetFont):
+	Rename ...
+	(gtkWidgetModifyFont): New method.
+	* gnu/java/awt/peer/gtk/GtkFramePeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkFramePeer.c
+	(setMenuBarWidth): New method.
+	(setBounds): Set the menu bar width.
+	(postConfigureEvent): Set the menu bar width if the window's
+	width has changed.
+	* gnu/java/awt/peer/gtk/GtkMenuBarPeer.java (GtkMenuBarPeer):
+	Don't call create.
+	(setFont): New method.
+	* gnu/java/awt/peer/gtk/GtkMenuComponentPeer.java (create): New
+	method.
+	(setFont): Likewise.
+	(GtkMenuComponentPeer): Call create and setFont.
+	* gnu/java/awt/peer/gtk/GtkMenuItemPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMenuItemPeer.c
+	(connectSignals): Make package private.
+	(gtkWidgetModifyFont): New method.
+	(create): Likewise.
+	(GtkMenuItemPeer): Don't call create.
+	(setFont): New method.
+	* java/awt/CheckboxMenuItem.java (addNotify): Fix peer == null
+	condition.
+	* java/awt/Container.java (validateTree): Fix comment typos.
+	* java/awt/MenuComponent.java (getFont): Return parent's font if
+	our font is null.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkCheckboxMenuItemPeer.c
+	(create): Remove call to deprecated
+	gtk_check_menu_item_set_show_toggle function.
+
+2004-09-22  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* gnu/java/awt/peer/gtk/GtkFramePeer.java:
 	(gtkFixedMove): Remove method.
 
