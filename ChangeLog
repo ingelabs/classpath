@@ -1,3 +1,8 @@
+2004-01-12  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/table/DefaultTableCellRenderer.java:
+	Compile fixes.
+
 2004-01-12  Arnaud Vandyck  <arnaud.vandyck@ulg.ac.be>
             Michael Koch  <konqueror@gmx.de>
 

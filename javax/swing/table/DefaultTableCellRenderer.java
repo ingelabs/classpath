@@ -45,7 +45,6 @@ import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.UIResource;
 
 /**
  * Class to display every cells.
@@ -58,7 +57,7 @@ public class DefaultTableCellRenderer extends JLabel
   protected static Border noFocusBorder;
 
   public static class UIResource extends DefaultTableCellRenderer
-    implements UIResource
+    implements javax.swing.plaf.UIResource
   {
     public UIResource()
     {
@@ -100,7 +99,7 @@ public class DefaultTableCellRenderer extends JLabel
    * <p>Replaces the current UI object with the  latest version from
    * the UIManager.</p>
    */
-  pulic void updateUI()
+  public void updateUI()
   {
     super.updateUI();
   }
