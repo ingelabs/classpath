@@ -1,4 +1,9 @@
 2000-12-10  Brian Jones  <cbj@gnu.org>
+	* configure.in : commented out code to assume Japhar if not 
+	otherwise specified.  Compiling without Japhar is almost 
+	easy now.
+
+2000-12-10  Brian Jones  <cbj@gnu.org>
 	* configure.in : fixed a small syntax error
 
 2000-12-10  Brian Jones  <cbj@gnu.org>

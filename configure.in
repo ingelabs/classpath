@@ -220,21 +220,21 @@ dnl This takes care of autodetecting our preferred VM when one
 dnl isn't specified explicitly.
 dnl -----------------------------------------------------------
 dnl if no jvm yet defined, check for japhar
-if test -z "$JVM" || test "$JVM" = "no"; then
-    # need to have these defined if no vm selected, default to japhar
-    if test -z "$JVM_REFERENCE"; then
-dnl conditional_with_classlib != xtrue || test x$conditional_with_javah !=  xtrue; then
-dnl      echo classlib $conditional_with_classlib
-dnl      echo javah $conditional_with_javah
-      CLASSPATH_INTERNAL_CHECK_JAPHAR
-      AC_MSG_CHECKING(for defined vm)
-      if test -z "$JVM" || test "$JVM" = "no"; then
-        AC_MSG_ERROR(no: try --with-japhar or --with-kaffe)
-      else
-        AC_MSG_RESULT(yes)
-      fi
-    fi
-fi
+dnl if test -z "$JVM" || test "$JVM" = "no"; then
+dnl     # need to have these defined if no vm selected, default to japhar
+dnl     if test -z "$JVM_REFERENCE"; then
+dnl X dnl conditional_with_classlib != xtrue || test x$conditional_with_javah !=  xtrue; then
+dnl X dnl      echo classlib $conditional_with_classlib
+dnl X dnl      echo javah $conditional_with_javah
+dnl       CLASSPATH_INTERNAL_CHECK_JAPHAR
+dnl       AC_MSG_CHECKING(for defined vm)
+dnl       if test -z "$JVM" || test "$JVM" = "no"; then
+dnl         AC_MSG_ERROR(no: try --with-japhar or --with-kaffe)
+dnl       else
+dnl         AC_MSG_RESULT(yes)
+dnl       fi
+dnl     fi
+dnl fi
 
 dnl must check our conditionals from vm checks
 AM_CONDITIONAL(JAPHAR, test x$conditional_with_japhar = xtrue)
@@ -263,6 +263,9 @@ done
 dnl -----------------------------------------------------------
 
 dnl Create a link to the VM specific files we're compiling with
+if test x"$JVM_REFERENCE" = x; then
+  JVM_REFERENCE=reference
+fi
 AC_LINK_FILES(vm/$JVM_REFERENCE, vm/current)
 
 dnl avoiding automake complaints
