@@ -391,7 +391,8 @@ public class Arrays
         // If they're the same length, test each element
         if (a1.length == a2.length)
           {
-            for (int i = 0; i < a1.length; i++)
+            int i = a1.length;
+            while (--i >= 0)
               if (a1[i] != a2[i])
                 return false;
             return true;
@@ -425,7 +426,8 @@ public class Arrays
         // If they're the same length, test each element
         if (a1.length == a2.length)
           {
-            for (int i = 0; i < a1.length; i++)
+            int i = a1.length;
+            while (--i >= 0)
               if (a1[i] != a2[i])
                 return false;
             return true;
@@ -451,16 +453,15 @@ public class Arrays
     // Quick test which saves comparing elements of the same array, and also
     // catches the case that both are null.
     if (a1 == a2)
-      {
-        return true;
-      }
+      return true;
 
     try
       {
         // If they're the same length, test each element
         if (a1.length == a2.length)
           {
-            for (int i = 0; i < a1.length; i++)
+            int i = a1.length;
+            while (--i >= 0)
               if (a1[i] != a2[i])
                 return false;
             return true;
@@ -493,7 +494,8 @@ public class Arrays
         // If they're the same length, test each element
         if (a1.length == a2.length)
           {
-            for (int i = 0; i < a1.length; i++)
+            int i = a1.length;
+            while (--i >= 0)
               if (a1[i] != a2[i])
                 return false;
             return true;
@@ -526,7 +528,8 @@ public class Arrays
         // If they're the same length, test each element
         if (a1.length == a2.length)
           {
-            for (int i = 0; i < a1.length; i++)
+            int i = a1.length;
+            while (--i >= 0)
               if (a1[i] != a2[i])
                 return false;
             return true;
@@ -559,7 +562,8 @@ public class Arrays
         // If they're the same length, test each element
         if (a1.length == a2.length)
           {
-            for (int i = 0; i < a1.length; i++)
+            int i = a1.length;
+            while (--i >= 0)
               if (a1[i] != a2[i])
                 return false;
             return true;
@@ -593,7 +597,8 @@ public class Arrays
         // If they're the same length, test each element
         if (a1.length == a2.length)
           {
-            for (int i = a1.length - 1; i >= 0; i--)
+            int i = a1.length;
+            while (--i >= 0)
               if (Float.compare(a1[i], a2[i]) != 0)
                 return false;
             return true;
@@ -627,7 +632,8 @@ public class Arrays
         // If they're the same length, test each element
         if (a1.length == a2.length)
           {
-            for (int i = a1.length - 1; i >= 0; i--)
+            int i = a1.length;
+            while (--i >= 0)
               if (Double.compare(a1[i], a2[i]) != 0)
                 return false;
             return true;
@@ -661,7 +667,8 @@ public class Arrays
         // If they're the same length, test each element
         if (a1.length == a2.length)
           {
-            for (int i = 0; i < a1.length; i++)
+            int i = a1.length;
+            while (--i >= 0)
               if (! AbstractCollection.equals(a1[i], a2[i]))
                 return false;
             return true;
@@ -2406,10 +2413,7 @@ public class Arrays
 
     public boolean contains(Object o)
     {
-      for (int i = a.length - 1; i >= 0; i--)
-        if (equals(o, a[i]))
-          return true;
-      return false;
+      return lastIndexOf(o) >= 0;
     }
 
     public int indexOf(Object o)
@@ -2423,7 +2427,8 @@ public class Arrays
 
     public int lastIndexOf(Object o)
     {
-      for (int i = a.length - 1; i >= 0; i--)
+      int i = a.length;
+      while (--i >= 0)
         if (equals(o, a[i]))
           return i;
       return -1;

@@ -703,6 +703,7 @@ public class LinkedList extends AbstractSequentialList
    */
   private void writeObject(ObjectOutputStream s) throws IOException
   {
+    s.defaultWriteObject();
     s.writeInt(size);
     Entry e = first;
     while (e != null)
@@ -724,6 +725,7 @@ public class LinkedList extends AbstractSequentialList
   private void readObject(ObjectInputStream s)
     throws IOException, ClassNotFoundException
   {
+    s.defaultReadObject();
     int i = s.readInt();
     while (--i >= 0)
       addLastEntry(new Entry(s.readObject()));

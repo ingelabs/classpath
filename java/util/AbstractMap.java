@@ -209,8 +209,7 @@ public abstract class AbstractMap implements Map
     while (--pos >= 0)
       {
         Map.Entry entry = (Map.Entry) entries.next();
-        Object k = entry.getKey();
-        if (equals(key, k))
+        if (equals(key, entry.getKey()))
           return entry.getValue();
       }
     return null;
@@ -372,8 +371,7 @@ public abstract class AbstractMap implements Map
     while (--pos >= 0)
       {
         Map.Entry entry = (Map.Entry) entries.next();
-        Object k = entry.getKey();
-        if (equals(key, k))
+        if (equals(key, entry.getKey()))
           {
             // Must get the value before we remove it from iterator.
             Object r = entry.getValue();
@@ -460,7 +458,7 @@ public abstract class AbstractMap implements Map
         {
           return new Iterator()
           {
-            Iterator map_iterator = entrySet().iterator();
+            private final Iterator map_iterator = entrySet().iterator();
 
             public boolean hasNext()
             {

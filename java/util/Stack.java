@@ -138,10 +138,10 @@ public class Stack extends Vector
    */
   public synchronized int search(Object o)
   {
-    for (int i = elementCount - 1; i >=0; --i)
-      if (elementData[i].equals(o))
+    int i = elementCount;
+    while (--i >= 0)
+      if (equals(o, elementData[i]))
         return elementCount - i;
-
     return -1;
   }
 }

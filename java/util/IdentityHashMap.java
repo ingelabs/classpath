@@ -501,8 +501,8 @@ public class IdentityHashMap extends AbstractMap
       }
 
     // At this point, we add a new mapping.
-    size++;
     modCount++;
+    size++;
     table[h] = key;
     table[h + 1] = value;
     return null;
@@ -538,8 +538,8 @@ public class IdentityHashMap extends AbstractMap
     int h = hash(key);
     if (table[h] == key)
       {
-        size--;
         modCount++;
+        size--;
         Object r = table[h + 1];
         table[h] = tombstone;
         table[h + 1] = tombstone;
@@ -600,10 +600,10 @@ public class IdentityHashMap extends AbstractMap
           for (int i = table.length - 1; i > 0; i -= 2)
             if (table[i] == o)
               {
+                modCount++;
                 table[i - 1] = tombstone;
                 table[i] = tombstone;
                 size--;
-                modCount++;
                 return true;
               }
           return false;
@@ -736,11 +736,11 @@ public class IdentityHashMap extends AbstractMap
         throw new ConcurrentModificationException();
       if (loc == table.length || table[loc] == tombstone)
         throw new IllegalStateException();
-      size--;
       modCount++;
-      knownMod++;
+      size--;
       table[loc] = tombstone;
       table[loc + 1] = tombstone;
+      knownMod++;
     }
   } // class IdentityIterator
 
@@ -882,6 +882,8 @@ public class IdentityHashMap extends AbstractMap
   private void readObject(ObjectInputStream s)
     throws IOException, ClassNotFoundException
   {
+    s.defaultReadObject();
+
     int num = s.readInt();
     table = new Object[2 * Math.max(num * 2, DEFAULT_CAPACITY)];
     // Read key/value pairs.
@@ -901,6 +903,7 @@ public class IdentityHashMap extends AbstractMap
   private void writeObject(ObjectOutputStream s)
     throws IOException
   {
+    s.defaultWriteObject();
     s.writeInt(size);
     for (int i = table.length - 2; i >= 0; i -= 2)
       {

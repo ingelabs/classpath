@@ -609,8 +609,8 @@ public abstract class AbstractList extends AbstractCollection implements List
  */
 class SubList extends AbstractList
 {
-  private AbstractList backingList;
-  private int offset;
+  private final AbstractList backingList;
+  private final int offset;
   private int size;
 
   /**
@@ -623,7 +623,7 @@ class SubList extends AbstractList
   SubList(AbstractList backing, int fromIndex, int toIndex)
   {
     backingList = backing;
-    modCount = backingList.modCount;
+    modCount = backing.modCount;
     offset = fromIndex;
     size = toIndex - fromIndex;
   }
@@ -811,8 +811,8 @@ class SubList extends AbstractList
 
     return new ListIterator()
     {
-      ListIterator i = backingList.listIterator(index + offset);
-      int position = index;
+      private final ListIterator i = backingList.listIterator(index + offset);
+      private int position = index;
 
       public boolean hasNext()
       {

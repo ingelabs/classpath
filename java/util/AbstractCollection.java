@@ -260,6 +260,26 @@ public abstract class AbstractCollection implements Collection
    */
   public boolean removeAll(Collection c)
   {
+    return removeAllInternal(c);
+  }
+
+  /**
+   * Remove from this collection all its elements that are contained in a given
+   * collection (optional operation). This implementation iterates over this
+   * collection, and for each element tests if it is contained in the given
+   * collection. If so, it is removed by the Iterator's remove method (thus
+   * this method will fail with an UnsupportedOperationException if the
+   * Iterator's remove method does). This method is necessary for ArrayList,
+   * which cannot publicly override removeAll but can optimize this call.
+   *
+   * @param c the collection to remove the elements of
+   * @return true if the remove operation caused the Collection to change
+   * @throws UnsupportedOperationException if this collection's Iterator
+   *         does not support the remove method
+   * @see Iterator#remove()
+   */
+  boolean removeAllInternal(Collection c)
+  {
     Iterator itr = iterator();
     boolean modified = false;
     int pos = size();
@@ -287,6 +307,27 @@ public abstract class AbstractCollection implements Collection
    * @see Iterator#remove()
    */
   public boolean retainAll(Collection c)
+  {
+    return retainAllInternal(c);
+  }
+
+  /**
+   * Remove from this collection all its elements that are not contained in a
+   * given collection (optional operation). This implementation iterates over
+   * this collection, and for each element tests if it is contained in the
+   * given collection. If not, it is removed by the Iterator's remove method
+   * (thus this method will fail with an UnsupportedOperationException if
+   * the Iterator's remove method does). This method is necessary for
+   * ArrayList, which cannot publicly override retainAll but can optimize
+   * this call.
+   *
+   * @param c the collection to retain the elements of
+   * @return true if the remove operation caused the Collection to change
+   * @throws UnsupportedOperationException if this collection's Iterator
+   *         does not support the remove method
+   * @see Iterator#remove()
+   */
+  boolean retainAllInternal(Collection c)
   {
     Iterator itr = iterator();
     boolean modified = false;

@@ -32,6 +32,7 @@ Hashtable.java \
 IdentityHashMap.java \
 Iterator.java \
 LinkedHashMap.java \
+LinkedHashSet.java \
 LinkedList.java \
 List.java \
 ListIterator.java \
@@ -46,6 +47,7 @@ Properties.java \
 PropertyPermission.java \
 PropertyResourceBundle.java \
 Random.java \
+RandomAccess.java \
 ResourceBundle.java \
 Set.java \
 SimpleTimeZone.java \

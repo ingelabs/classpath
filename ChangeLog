@@ -1,3 +1,67 @@
+2001-10-25  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/AbstractCollection.java (removeAllInternal),
+	(retainAllInternal): Add hooks for use by ArrayList.
+	* java/util/AbstractList.java: Minor code updates. Fix some
+	scoping.
+	* java/util/AbstractMap.java: ditto
+	* java/util/ArrayList.java (readObject, writeObject): ditto
+	(removeAllInternal, retainAllInternal): Optimize.
+	* java/util/Arrays.java: ditto
+	* java/util/Collections.java: ditto. Change order of parameters
+	to equals(Object, Object) to match specs.
+	* java/util/Dictionary.java: Improve javadoc.
+	(Dictionary): Add explicit constructor.
+	* java/util/HashMap.java: Improve javadoc. Rearrange methods to
+	follow order in JDK. Cleanups related to recent code migration to
+	AbstractMap. Fix some scoping.
+	(entrySet): Cache the result.
+	(modCount): Ensure that this is updated correctly.
+	* java/util/HashSet.java: Improve javadoc. Fix some scoping.
+	(init): Add hooks for LinkedHashSet.
+	(map): Use "" instead of Boolean.TRUE in backing map. Use
+	package-private API where possible for less overhead.
+	(readObject, writeObject): Fix serialization.
+	* java/util/Hashtable.java: Improve javadoc. Fix some scoping.
+	(entrySet, keySet, values): Cache the result.
+	(modCount): Ensure that this is updated correctly.
+	(contains, remove): Fix NullPointer checking to match specs.
+	(class Enumeration): Make more like HashIterator.
+	* java/util/IdentityHashMap.java: Minor code updates.
+	(modCount): Ensure that this is updated correctly.
+	(readObject, writeObject): Fix serialization.
+	* java/util/LinkedHashMap.java: Minor code updates. Cleanups
+	related to recent code migration to AbstractMap.
+	* java/util/LinkedHashSet.java: New file.
+	* java/util/LinkedList.java:
+	(readObject, writeObject): Fix serialization.
+	* java/util/Makefile.am: List recently added files.
+	* java/util/Stack.java: Minor code updates.
+	* java/util/TreeMap.java: Improve javadoc. Overhaul the class to
+	be more efficient. Fix some scoping. Rearrange the methods.
+	(nil): Ensure that this can be thread-safe, and make it a static
+	final. Initialize it to be more useful as a sentinal node.
+	(Node): Specify color in constructor.
+	(deleteFixup, insertFixup): Improve comments and algorithm.
+	(fabricateTree): Redesign with less overhead.
+	(lowestGreaterThan): Add parameter first to make SubMap easier.
+	(removeNode): Patch hole where nil was being modified. Choose
+	predecessor instead of successor so in-place swap works.
+	(class VerifyResult, verifyTree, verifySub, verifyError): Remove
+	this dead code after verifying the class works.
+	(class SubMap): Rewrite several algorithms to avoid problems with
+	comparing nil.
+	* java/util/TreeSet.java: Improve javadoc. Fix some scoping.
+	(clone): Fix ClassCastException when cloning subSet().
+	(readObject, writeObject): Fix serialization.
+	* java/util/WeakHashMap.java: Improve javadoc. Fix some scoping.
+	(NULL_KEY): Make it compare as null, for ease elsewhere.
+	(Class WeakEntry): Rename from Entry, to avoid shadowing
+	Map.Entry. Add missing toString.
+	(modCount): Ensure that this is updated correctly.
+	(clear, containsValue, keySet, putAll, values, WeakHashMap(Map)):
+	Add missing methods and constructor.
+
 2001-10-24  Tom Tromey  <tromey@redhat.com>
 
 	* java/sql/Types.java (Types): New constructor.

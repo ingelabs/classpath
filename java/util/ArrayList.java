@@ -473,6 +473,61 @@ public class ArrayList extends AbstractList
   }
 
   /**
+   * Remove from this list all elements contained in the given collection.
+   * This is not public, due to Sun's API, but this performs in linear
+   * time while the default behavior of AbstractList would be quadratic.
+   *
+   * @param c the collection to filter out
+   * @return true if this list changed
+   * @throws NullPointerException if c is null
+   */
+  boolean removeAllInternal(Collection c)
+  {
+    int i;
+    int j;
+    for (i = 0; i < size; i++)
+      if (c.contains(data[i]))
+        break;
+    if (i == size)
+      return false;
+
+    modCount++;
+    for (j = i++; i < size; i++)
+      if (! c.contains(data[i]))
+        data[j++] = data[i];
+    size -= i - j;
+    return true;
+  }
+
+  /**
+   * Retain in this vector only the elements contained in the given collection.
+   * This is not public, due to Sun's API, but this performs in linear
+   * time while the default behavior of AbstractList would be quadratic.
+   *
+   * @param c the collection to filter by
+   * @return true if this vector changed
+   * @throws NullPointerException if c is null
+   * @since 1.2
+   */
+  boolean retainAllInternal(Collection c)
+  {
+    int i;
+    int j;
+    for (i = 0; i < size; i++)
+      if (! c.contains(data[i]))
+        break;
+    if (i == size)
+      return false;
+
+    modCount++;
+    for (j = i++; i < size; i++)
+      if (c.contains(data[i]))
+        data[j++] = data[i];
+    size -= i - j;
+    return true;
+  }
+
+  /**
    * Serializes this object to the given stream.
    *
    * @param out the stream to write to
@@ -480,17 +535,15 @@ public class ArrayList extends AbstractList
    * @serialData the size field (int), the length of the backing array
    *             (int), followed by its elements (Objects) in proper order.
    */
-  private void writeObject(ObjectOutputStream out) throws IOException
+  private void writeObject(ObjectOutputStream s) throws IOException
   {
-    int len = data.length;
-
     // The 'size' field.
-    out.defaultWriteObject();
-
+    s.defaultWriteObject();
     // We serialize unused list entries to preserve capacity.
-    out.writeInt(len);
+    int len = data.length;
+    s.writeInt(len);
     for (int i = 0; i < len; i++)
-      out.writeObject(data[i]);
+      s.writeObject(data[i]);
   }
 
   /**
@@ -502,16 +555,14 @@ public class ArrayList extends AbstractList
    * @serialData the size field (int), the length of the backing array
    *             (int), followed by its elements (Objects) in proper order.
    */
-  private void readObject(ObjectInputStream in)
+  private void readObject(ObjectInputStream s)
     throws IOException, ClassNotFoundException
   {
     // the `size' field.
-    in.defaultReadObject();
-
-    int capacity = in.readInt();
+    s.defaultReadObject();
+    int capacity = s.readInt();
     data = new Object[capacity];
-
     for (int i = 0; i < capacity; i++)
-      data[i] = in.readObject();
+      data[i] = s.readObject();
   }
 }

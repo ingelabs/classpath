@@ -716,7 +716,7 @@ public class Collections
 
   /**
    * Returns an array list holding the elements visited by a given
-   * Enumeration. This method exists for interoperatbility between legacy
+   * Enumeration. This method exists for interoperability between legacy
    * APIs and the new Collection API.
    *
    * @param e the enumeration to put in a list
@@ -906,7 +906,7 @@ public class Collections
      */
     public boolean contains(Object o)
     {
-      return n > 0 && equals(element, o);
+      return n > 0 && equals(o, element);
     }
 
     /**
@@ -914,7 +914,7 @@ public class Collections
      */
     public int indexOf(Object o)
     {
-      return n > 0 && equals(element, o) ? 0 : -1;
+      return (n > 0 && equals(o, element)) ? 0 : -1;
     }
 
     /**
@@ -922,7 +922,7 @@ public class Collections
      */
     public int lastIndexOf(Object o)
     {
-      return equals(element, o) ? n - 1 : -1;
+      return equals(o, element) ? n - 1 : -1;
     }
 
     /**
@@ -1322,7 +1322,7 @@ public class Collections
      */
     public boolean contains(Object o)
     {
-      return equals(element, o);
+      return equals(o, element);
     }
 
     /**
@@ -1432,7 +1432,7 @@ public class Collections
      */
     public boolean contains(Object o)
     {
-      return equals(element, o);
+      return equals(o, element);
     }
 
     /**
@@ -1461,7 +1461,7 @@ public class Collections
      */
     public int indexOf(Object o)
     {
-      return equals(element, o) ? 0 : -1;
+      return equals(o, element) ? 0 : -1;
     }
 
     /**
@@ -1469,7 +1469,7 @@ public class Collections
      */
     public int lastIndexOf(Object o)
     {
-      return equals(element, o) ? 0 : -1;
+      return equals(o, element) ? 0 : -1;
     }
 
     /**
