@@ -1,3 +1,11 @@
+2001-04-15  Mark Wielaard  <mark@klomp.org>
+
+	* javax/accessibility/AccessibleText.java (getAfterIndex, getAtIndex,
+	getBeforeIndex, getCharacterAttribute, getCharacterBounds,
+	getIndexAtPoint): Added missing identifiers.
+	* javax/accessibility/AccessibleValue.java
+	(setCurrentAccessibleValue): idem
+
 2001-04-15  Ian D. Stewart  <idstewart@softhome.net>
 
 	* javax/accessibility/AccessibleComponent.java (getAccessibleAt): Added
