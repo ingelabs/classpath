@@ -153,8 +153,8 @@ getSelectedObjects()
   if (state == false)
     return(null);
 
-  Object[] obj = new Object[0];
-  obj[1] = getLabel();
+  Object[] obj = new Object[1];
+  obj[0] = getLabel();
 
   return(obj);
 }
