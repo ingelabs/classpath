@@ -57,8 +57,8 @@ public class GridBagLayout
   protected GridBagLayoutInfo layoutInfo;
   protected GridBagConstraints defaultConstraints = new GridBagConstraints();
 
-  public double[] columnWeights;
-  public int[] columnWidths;
+  public double[] colWeights;
+  public int[] colWidths;
   public double[] rowWeights;
   public int[] rowHeights;
 
@@ -67,9 +67,40 @@ public class GridBagLayout
     // Do nothing here.
   }
 
+  /**
+   * Helper method to calc the sum of all elements in an int array.
+   */
+  private int sumIntArray (int[] array)
+  {
+    int result = 0;
+
+    for (int i = 0; i < array.length; i++)
+       result += array [i];
+
+    return result;
+  }
+
+  /**
+   * Helper method to calc the sum of all elements in an double array.
+   */
+  private double sumDoubleArray (double[] array)
+  {
+    double result = 0;
+
+    for (int i = 0; i < array.length; i++)
+       result += array [i];
+
+    return result;
+  }
+
   public void addLayoutComponent (String name, Component component)
   {
     // do nothing here.
+  }
+
+  public void removeLayoutComponent (Component component)
+  {
+    // do nothing here
   }
 
   public void addLayoutComponent (Component component, Object constraints)
@@ -78,11 +109,6 @@ public class GridBagLayout
       throw new IllegalArgumentException();
 
     setConstraints (component, (GridBagConstraints) constraints);
-  }
-
-  public void removeLayoutComponent (Component component)
-  {
-    // do nothing here
   }
 
   public Dimension preferredLayoutSize (Container parent)
@@ -126,32 +152,6 @@ public class GridBagLayout
   public void invalidateLayout (Container target)
   {
     this.layoutInfo = null;
-  }
-
-  /**
-   * @since 1.4
-   */
-  protected void adjustForGravity (GridBagConstraints gbc, Rectangle rect)
-  {
-    throw new Error ("Not implemented");
-  }
-
-  protected void AdjustForGravity (GridBagConstraints gbc, Rectangle rect)
-  {
-    adjustForGravity (gbc, rect);
-  }
-
-  /**
-   * @since 1.4
-   */
-  protected void arrangeGrid (Container parent)
-  {
-    throw new Error ("Not implemented");
-  }
-
-  protected void ArrangeGrid (Container parent)
-  {
-    arrangeGrid (parent);
   }
 
   public void setConstraints (Component component,
@@ -256,19 +256,35 @@ public class GridBagLayout
   }
 
   /**
-   * @since 1.4
+   * Obsolete.
    */
-  protected GridBagLayoutInfo getLayoutInfo (Container parent, int sizeflag)
+  protected void AdjustForGravity (GridBagConstraints gbc, Rectangle rect)
   {
-    if (sizeflag != MINSIZE && sizeflag != PREFERREDSIZE)
-      throw new IllegalArgumentException();
-
-    throw new Error ("Not implemented");
+    adjustForGravity (gbc, rect);
   }
 
+  /**
+   * Obsolete.
+   */
+  protected void ArrangeGrid (Container parent)
+  {
+    arrangeGrid (parent);
+  }
+
+  /**
+   * Obsolete.
+   */
   protected GridBagLayoutInfo GetLayoutInfo (Container parent, int sizeflag)
   {
     return getLayoutInfo (parent, sizeflag);
+  }
+
+  /**
+   * Obsolete.
+   */
+  protected Dimension GetMinSize (Container parent, GridBagLayoutInfo info)
+  {
+    return getMinSize (parent, info);
   }
 
   /**
@@ -279,24 +295,93 @@ public class GridBagLayout
     if (parent == null || info == null)
       return new Dimension (0, 0);
 
-    int width = 0;
-    int height = 0;
-
-    for (int i = 0; i < info.cols; i++)
-      width += info.colWidths [i];
-
-    for (int i = 0; i < info.rows; i++)
-      height += info.rowHeights [i];
-  
     Insets insets = parent.getInsets();
-    width += insets.left + insets.right;
-    height += insets.top + insets.bottom;
-
+    int width = sumIntArray (info.colWidths) + insets.left + insets.right;
+    int height = sumIntArray (info.rowHeights) + insets.top + insets.bottom;
     return new Dimension (width, height);
   }
 
-  protected Dimension GetMinSize (Container parent, GridBagLayoutInfo info)
+  private void calcCellSizes (int[] sizes, double[] weights)
   {
-    return getMinSize (parent, info);
+    int diff = sumIntArray (sizes);
+    
+    if (diff == 0)
+      return;
+    
+    double weight = sumDoubleArray (weights);
+
+    for (int i = 0; i < sizes.length; i++)
+      {
+	sizes [i] += (int) (((double) diff) * weights [i] / weight );
+
+	if (sizes [i] < 0)
+	  sizes [i] = 0;
+      }
+  }
+
+  private void dumpLayoutInfo (GridBagLayoutInfo info)
+  {
+    System.out.println ("GridBagLayoutInfo:");
+    System.out.println ("cols: " + info.cols + ", rows: " + info.rows);
+    System.out.println ("colWiths: " + info.colWidths);
+    System.out.println ("rowHeights: " + info.rowHeights);
+    System.out.println ("colWeights: " + info.colWeights);
+    System.out.println ("rowWeights: " + info.rowWeights);
+  }
+  
+  /**
+   * @since 1.4
+   */
+  protected void arrangeGrid (Container parent)
+  {
+    Insets insets = parent.getInsets();
+    Component[] components = parent.getComponents();
+
+    if (components.length == 0
+	&& (colWidths == null || colWidths.length == 0)
+	&& (rowHeights == null || rowHeights.length == 0))
+      return;
+
+    GridBagLayoutInfo info = getLayoutInfo (parent, PREFERREDSIZE);
+    if (info.cols == 0 && info.rows == 0)
+      return;
+    layoutInfo = info;
+
+    // DEBUG
+    dumpLayoutInfo (layoutInfo);
+    
+    calcCellSizes (layoutInfo.colWidths, layoutInfo.colWeights);
+    calcCellSizes (layoutInfo.rowHeights, layoutInfo.rowWeights);
+    
+    // DEBUG
+    dumpLayoutInfo (layoutInfo);
+    
+    throw new Error ("Not implemented");
+  }
+
+  /**
+   * @since 1.4
+   */
+  protected GridBagLayoutInfo getLayoutInfo (Container parent, int sizeflag)
+  {
+    if (sizeflag != MINSIZE && sizeflag != PREFERREDSIZE)
+      throw new IllegalArgumentException();
+
+    GridBagLayoutInfo info = new GridBagLayoutInfo (MAXGRIDSIZE, MAXGRIDSIZE);
+    Dimension dimension = sizeflag == MINSIZE ? parent.getMinimumSize()
+					      : parent.getPreferredSize();
+    
+    // FIXME
+
+    return info;
+  }
+
+  /**
+   * @since 1.4
+   */
+  protected void adjustForGravity (GridBagConstraints gbc, Rectangle rect)
+  {
+    // FIXME
+    throw new Error ("Not implemented");
   }
 }

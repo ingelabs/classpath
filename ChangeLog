@@ -1,3 +1,9 @@
+2003-06-29  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/GridBagLayout.java:
+	Yippie, 90% are done. Now are comming the 10% work which take 90% of
+	time.
+
 2003-06-28  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/GridBagLayout.java,
