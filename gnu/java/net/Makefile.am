@@ -5,5 +5,5 @@ SUBDIRS = content protocol
 EXTRA_DIST = \
 HeaderFieldHelper.java \
 PlainDatagramSocketImpl.java \
-PlainSocketImpl.java
-
+PlainSocketImpl.java \
+URLParseError.java
