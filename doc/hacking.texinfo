@@ -385,6 +385,24 @@ else
   return foo.doit();
 @end example
 
+@item
+Don't use redundant modifiers.  For instance, all members of an
+interface are implicitly @code{public}, so there is no need to
+explicitly declare them as @code{public}.
+
+@item
+Because the output of different compilers differs, we have
+standardized on explicitly specifying @code{serialVersionUID} in
+@code{Serializable} classes in Classpath.  This field should be
+declared as @code{private static final}.
+@c fixme index
+@c fixme link to the discussion
+
+@item
+Don't declare unchecked exceptions in the @code{throws} clause of a
+method.  However, if throwing an unchecked exception is part of the
+method's API, you should mention it in the Javadoc.
+
 @end itemize
 
 
