@@ -301,7 +301,7 @@ public class JarFile extends ZipFile
    * Returns the manifest for this JarFile or null when the JarFile does not
    * contain a manifest file.
    */
-  public Manifest getManifest()
+  public Manifest getManifest() throws IOException
   {
     return manifest;
   }
