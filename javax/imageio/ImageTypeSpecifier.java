@@ -1,4 +1,4 @@
-/* ImageTranscoder.java -- Image metadata transcoder.
+/* ImageTypeSpecifier.java --
    Copyright (C) 2004  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
@@ -38,17 +38,8 @@ exception statement from your version. */
 
 package javax.imageio;
 
-import javax.imageio.metadata.IIOMetadata;
-
-/**
- * @author Michael Koch (konqueror@gmx.de)
- */
-public interface ImageTranscoder
+public class ImageTypeSpecifier
 {
-  IIOMetadata convertImageMetadata(IIOMetadata inData,
-		                   ImageTypeSpecifier imageType,
-				   ImageWriteParam param);
-
-  IIOMetadata convertStreamMetadata(IIOMetadata inData,
-				    ImageWriteParam param);
+  // FIXME: Incomplete. This class is merely present in order to allow
+  // compilation of the javax.imageio package.
 }

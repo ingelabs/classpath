@@ -1,5 +1,16 @@
 2004-10-04  Michael Koch  <konqueror@gmx.de>
 
+	* javax/imageio/IIOParam.java,
+	javax/imageio/IIOParamControll.er.java
+	javax/imageio/ImageTypeSpecifie.r.java
+	javax/imageio/ImageWriteParam.ja.va
+	javax/imageio/metadata/IIOMetadata.java:
+	New files.
+	* javax/imageio/ImageTranscoder.java:
+	Implemented.
+
+2004-10-04  Michael Koch  <konqueror@gmx.de>
+
 	* javax/imageio/spi/ImageInputStreamSpi.java,
 	javax/imageio/spi/ImageOutputStreamSpi.java:
 	Reworked import startments.
