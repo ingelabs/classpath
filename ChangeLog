@@ -1,5 +1,10 @@
 2002-03-24  Tom Tromey  <tromey@redhat.com>
 
+	* java/awt/TextComponent.java (TextComponent): Editable by
+	default.
+
+2002-03-24  Tom Tromey  <tromey@redhat.com>
+
 	* java/awt/MenuItem.java (eventMask): No longer private.
 	* java/awt/Button.java (dispatchEventImpl): Only dispatch to
 	superclass if we didn't handle event.
