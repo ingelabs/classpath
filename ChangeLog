@@ -1,3 +1,11 @@
+2005-02-10  Graydon Hoare  <graydon@redhat.com>
+
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkEvents.c,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkTextComponentPeer.c,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkWindowPeer.c:
+	Release GDK lock during upcalls.
+
 2005-02-10  Michael Koch  <konqueror@gmx.de>
 
 	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkImagePainter.c:
@@ -179,17 +187,17 @@
 
 2005-02-03  Dalibor Topic  <robilad@kaffe.org>
 
-        * libraries/javalib/gnu/regexp/RE.java,
-        libraries/javalib/java/io/ObjectInputStream.java,
-        libraries/javalib/java/io/ObjectStreamClass.java,
-        libraries/javalib/java/lang/SecurityManager.java,
-        libraries/javalib/java/security/AllPermission.java,
+	* libraries/javalib/gnu/regexp/RE.java,
+	libraries/javalib/java/io/ObjectInputStream.java,
+	libraries/javalib/java/io/ObjectStreamClass.java,
+	libraries/javalib/java/lang/SecurityManager.java,
+	libraries/javalib/java/security/AllPermission.java,
 	libraries/javalib/java/security/BasicPermission.java,
-        libraries/javalib/java/security/Permissions.java,
-        libraries/javalib/java/text/MessageFormat.java,
-        libraries/javalib/java/util/AbstractList.java:
-        Made 'inner' classes real public static inner classes,
-        and made them final where possible, or removed them 
+	libraries/javalib/java/security/Permissions.java,
+	libraries/javalib/java/text/MessageFormat.java,
+	libraries/javalib/java/util/AbstractList.java:
+	Made 'inner' classes real public static inner classes,
+	and made them final where possible, or removed them 
 	where unused. 
 
 2005-02-03  Michael Koch  <konqueror@gmx.de>
@@ -207,7 +215,7 @@
 
 	* java/util/Calendar.java 
 	(set) Invalidate all fields on first call to set().
-	
+
 2005-02-02  Mark Wielaard  <mark@klomp.org>
 
 	* vm/reference/java/lang/VMClassLoader.java: Remove SystemClassLoader
@@ -238,34 +246,34 @@
 
 2005-02-02  Robert Schuster  <thebohemian@gmx.net>
 
-        * gnu/java/beans/decoder/GrowableArrayContext.java: Fixed
-        assignment behavior by using java.lang.reflect.Array.set()
-        directly.
+	* gnu/java/beans/decoder/GrowableArrayContext.java: Fixed
+	assignment behavior by using java.lang.reflect.Array.set()
+	directly.
 
 2005-02-01  Dalibor Topic  <robilad@kaffe.org>
 
 	* gnu/java/beans/EmptyBeanInfo.java,
 	gnu/java/beans/info/ComponentBeanInfo.java,
- 	gnu/java/lang/SystemClassLoader.java:
+	gnu/java/lang/SystemClassLoader.java:
 	Removed unused files.
 
 2005-02-01  Sven de Marothy  <sven@physto.se>
 	
 	* java/util/GregorianCalendar.java
-        (computeTime): Fixed handling of time zones.
+	(computeTime): Fixed handling of time zones.
 
 2005-02-01  Sven de Marothy  <sven@physto.se>
 	
 	* java/util/Calendar.java
-        (clear): Set values to Epoch instead of zero.
-        (set): Set isSet to the relevant field pattern instead of just the
+	(clear): Set values to Epoch instead of zero.
+	(set): Set isSet to the relevant field pattern instead of just the
 	field.
-        * java/util/GregorianCalendar.java
-        (getBundle): Removed.
-        (getDayOfYear): Removed.
-        (getFirstDayOfMonth): New private method.
-        (nonLeniencyCheck): New private method.
-        (computeTime): Correct handling of insufficient data.
+	* java/util/GregorianCalendar.java
+	(getBundle): Removed.
+	(getDayOfYear): Removed.
+	(getFirstDayOfMonth): New private method.
+	(nonLeniencyCheck): New private method.
+	(computeTime): Correct handling of insufficient data.
 
 2005-02-01  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
