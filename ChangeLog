@@ -1,5 +1,9 @@
 2004-01-07  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/ServerSocket.java (isBound): Fixed documentation.
+
+2004-01-07  Michael Koch  <konqueror@gmx.de>
+
 	* javax/print/attribute/standard/DateTimeAtCompleted.java,
 	javax/print/attribute/standard/DateTimeAtCreation.java,
 	javax/print/attribute/standard/DateTimeAtProcessing.java,
