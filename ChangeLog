@@ -1,3 +1,9 @@
+2005-02-26  Roman Kennke  <roman@ontographics.com>
+
+	* javax/swing/plaf/basic/BasicListUI
+	(updateLayoutState,paint): make BasicListUI aware of the
+	width of the rendered JList
+
 2005-02-25  Mark Wielaard  <mark@klomp.org>
 
 	* NEWS: Add 0.14 release date.
