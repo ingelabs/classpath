@@ -276,6 +276,7 @@ java/net/Makefile
 java/util/Makefile
 native/Makefile
 native/java.io/Makefile
+native/java.lang/Makefile
 native/java.lang.reflect/Makefile
 native/java.net/Makefile
 native/lib/Makefile
