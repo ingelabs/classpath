@@ -67,6 +67,7 @@ awt_event_handler (GdkEvent *event)
   static GdkWindow *button_window = NULL;
   static guint button_number = -1;
   static jint click_count = 1;
+  static int grab_counter = 0;
 
   /* keep synthetic AWT events from being processed recursively */
   if (event->type & SYNTHETIC_EVENT_MASK && event->type != GDK_NOTHING)
@@ -121,6 +122,50 @@ awt_event_handler (GdkEvent *event)
 				      (jint)event->button.x,
 				      (jint)event->button.y, 
 				      click_count, JNI_FALSE);
+	  grab_counter++;
+	  gdk_pointer_grab (event->any.window,
+			    FALSE,
+			    GDK_POINTER_MOTION_MASK |
+			    GDK_BUTTON_MOTION_MASK |
+			    GDK_BUTTON_PRESS_MASK |
+			    GDK_BUTTON_RELEASE_MASK |
+			    GDK_ENTER_NOTIFY_MASK |
+			    GDK_LEAVE_NOTIFY_MASK,
+			    NULL,
+			    NULL,
+			    event->button.time);
+	  break;
+	case GDK_BUTTON_RELEASE:
+	  {
+	    int width, height;
+
+	    /* only ungrab if no other buttons are pressed down */
+	    if (--grab_counter == 0)
+	      gdk_pointer_ungrab (event->button.time);
+
+	    (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr, postMouseEventID,
+					AWT_MOUSE_RELEASED, 
+					(jlong)event->button.time,
+				    state_to_awt_mods (event->button.state) |
+				    button_to_awt_mods (event->button.button), 
+					(jint)event->button.x,
+					(jint)event->button.y, 
+					click_count, JNI_FALSE);
+
+	    /* check to see if the release occured in the window it was pressed
+	       in, and if so, generate an AWT click event */
+	    gdk_window_get_size (event->any.window, &width, &height);
+	    if (event->button.x <= width && event->button.y <= height)
+	      (*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr, postMouseEventID,
+					  AWT_MOUSE_CLICKED, 
+					  (jlong)event->button.time,
+				   state_to_awt_mods (event->button.state) |
+				  button_to_awt_mods (event->button.button), 
+					  (jint)event->button.x,
+					  (jint)event->button.y, 
+					  click_count, JNI_FALSE);
+	    
+	  }
 	  break;
 	default:
 	}
