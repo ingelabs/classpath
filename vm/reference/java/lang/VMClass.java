@@ -266,5 +266,18 @@ class VMClass {
 	static Field[] getDeclaredFields(Class c) {
 		throw new UnsupportedOperationException();
 	}
-}
 
+	/** Get a class for Integer.TYPE, Byte.TYPE, etc.
+	 ** using the name of the primitive type.  This will
+	 ** only be called once for each time a native class
+	 ** like java.lang.Integer is initialized.<P>
+	 ** <B>Note:</B> if there are multiple classloaders,
+	 ** this method could be called more than once for a
+	 ** given type.
+	 ** @param name the name of the type, i.e. "int", "byte",
+	 **             etc.
+	 **/
+	static Class getPrimitiveClass(String name) {
+		throw new UnsupportedOperationException();
+	}
+}
