@@ -1,5 +1,5 @@
 /* DatagramSocketImpl.java -- Abstract class for UDP socket implementations
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,8 +35,6 @@ import java.io.IOException;
   * actual implementation class would implement these methods, probably
   * via redirecting them to native code.
   *
-  * @version 0.5
-  *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
 public abstract class DatagramSocketImpl implements SocketOptions
@@ -49,8 +47,7 @@ public abstract class DatagramSocketImpl implements SocketOptions
  */
 
 /**
-  * The FileDescriptor object for this object.  *** I would really like to know
-  * how to create one of these. ******
+  * The FileDescriptor object for this object. 
   */
 protected FileDescriptor fd;
 
@@ -66,12 +63,11 @@ protected int localPort;
  */
 
 /**
-  * Do nothing constructor
+  * Default, no-argument constructor for subclasses to call.
   */
 public
 DatagramSocketImpl()
 {
-  ;
 }
 
 /*************************************************************************/
@@ -135,7 +131,7 @@ getLocalPort()
 
 /**
   * This method returns the current Time to Live (TTL) setting on this
-  * socket.  <b>Use <code>getTimeToLive</code></b> instead.
+  * socket.  <b>Use <code>getTimeToLive()</code></b> instead.
   *
   * @exception IOException If an error occurs
   * @deprecated
