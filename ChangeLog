@@ -1,3 +1,8 @@
+2001-09-07  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/lang/String.java (CASE_INSENSITIVE_ORDER): implements
+	Serializable
+
 2001-09-07  C. Brian Jones <cbj@gnu.org>
         * native/cni: added for CNI native files
         * native/common: added for common JNI/CNI files
