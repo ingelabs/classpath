@@ -41,7 +41,7 @@ approved by the Free Software Foundation.
 @end titlepage
 
 @ifinfo
-@node Top, Introduction, , (dir)
+@node Top, Introduction, (dir), (dir)
 @top GNU Classpath Hacker's Guide
 
 This file contains important information you will need to know if you
@@ -52,13 +52,12 @@ This document is incomplete, as we are still in alpha with the interface.
 
 @end ifinfo
 
-@menu 
-* Introduction::            An introduction to the Classpath project
-* Initialization::          Initializing the classes
-* Classpath Hooks::         Hooks from Classpath to the VM
-* VM Hooks::                Hooks from the underlying VM to Classpath
-* JNI Hooks::               Hooks from the JNI to Classpath
-* JVMDI Hooks::             Hooks from the JVMDI to Classpath
+@menu
+* Introduction::                An introduction to the Classpath project
+* Initialization::              Initializing the classes
+* Classpath Hooks::             Hooks from Classpath to the VM
+* VM Hooks::                    Hooks from the underlying VM to Classpath
+
 @end menu
 
 @node Introduction, Initialization, Top, Top
@@ -129,7 +128,7 @@ Call this method from Thread when a Thread is stopped or destroyed.
 @end itemize
 
 
-@node VM Hooks, JNI Hooks, Classpath Hooks, Top
+@node VM Hooks,  , Classpath Hooks, Top
 @comment node-name, next, previous, up
 @chapter VM Hooks
 
