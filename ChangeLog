@@ -1,3 +1,24 @@
+2002-05-05  Eric Blake  <ebb9@email.byu.edu>
+
+	* configure.in: Add java/awt/image/renderable.
+	* java/awt/image/BufferStrategy.java: New file (needs docs).
+	* java/awt/image/BufferedImageOp.java: Ditto.
+	* java/awt/image/RenderedImage.java: Ditto.
+	* java/awt/image/TileObserver.java: Ditto.
+	* java/awt/image/VolatileImage.java: Ditto.
+	* java/awt/image/WritableRenderedImage.java: Ditto.
+	* java/awt/image/renderable/ContextualRenderedImageFactory.java:
+	Ditto.
+	* java/awt/image/renderable/ParameterBlock.java: Ditto.
+	* java/awt/image/renderable/RenderContext.java: Ditto.
+	* java/awt/image/renderable/RenderableImage.java: Ditto.
+	* java/awt/image/renderable/RenderableImageOp.java: Ditto.
+	* java/awt/image/renderable/RenderableImageProducer.java: Ditto.
+	* java/awt/image/renderable/RenderedImageFactory.java: Ditto.
+	* java/awt/image/Makefile.am: Account for new files.
+	* java/awt/image/renderable/.cvsignore: New file.
+	* java/awt/image/renderable/Makefile.am: New file.
+
 2002-05-04  C. Brian Jones <cbj@gnu.org>
 
 	* doc/www.gnu.org/home.wml: include information on AegisVM, use a

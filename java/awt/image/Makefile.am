@@ -1,6 +1,10 @@
+SUBDIRS = renderable
+
 EXTRA_DIST = \
 AreaAveragingScaleFilter.java \
 BufferedImage.java \
+BufferedImageOp.java \
+BufferStrategy.java \
 ColorModel.java	\
 ComponentColorModel.java \
 ComponentSampleModel.java \
@@ -24,7 +28,11 @@ RGBImageFilter.java \
 Raster.java \
 RasterFormatException.java \
 RasterOp.java \
+RenderedImage.java \
 ReplicateScaleFilter.java \
 SampleModel.java \
 SinglePixelPackedSampleModel.java \
-WritableRaster.java
+TileObserver.java \
+VolatileImage.java \
+WritableRaster.java \
+WritableRenderedImage.java

@@ -282,6 +282,7 @@ java/awt/geom/Makefile
 java/awt/im/Makefile
 java/awt/im/spi/Makefile
 java/awt/image/Makefile
+java/awt/image/renderable/Makefile
 java/awt/peer/Makefile
 java/awt/print/Makefile
 java/beans/Makefile
