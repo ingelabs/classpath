@@ -103,21 +103,6 @@ public abstract class ResourceBundle
    * <code>getBundle</code>.
    */
   private Locale locale;
-
-  private static Class resourceBundleClass;
-  private static Class securityClass;
-
-  static
-  {
-    try
-      {
-	resourceBundleClass = Class.forName("java.util.ResourceBundle");
-	securityClass = Class.forName("java.util.ResourceBundle$Security");
-      }
-    catch (ClassNotFoundException e)
-      {
-      }
-  }
       
   /**
    * We override SecurityManager in order to access getClassContext().
@@ -140,7 +125,7 @@ public abstract class ResourceBundle
       Class[] stack = getClassContext();
       for (int i = 0; i < stack.length; i++)
 	{
-	  if (stack[i] != securityClass && stack[i] != resourceBundleClass)
+	  if (stack[i] != Security.class && stack[i] != ResourceBundle.class)
 	    return stack[i].getClassLoader();
 	}
 

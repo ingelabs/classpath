@@ -1,3 +1,8 @@
+2004-06-07  Archie Cobbs  <archie@dellroad.org>
+
+	* gnu/java/io/EncodingManager.java, java/util/ResourceBundle.java:
+	Replace ``Class.forName("Foo")'' with ``Foo.class''.
+
 2004-06-07  Steven Augart  <augart@watson.ibm.com>
 
 	* native/jni/gtk-peer/gthread-jni.c (c-font-lock-extra-types): 

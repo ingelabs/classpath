@@ -205,7 +205,7 @@ findDecoderConstructor(String encoding, boolean cache)
           Class cls = Class.forName(classname);
 
           Class[] params = new Class[1];
-          params[0] = Class.forName("java.io.InputStream");
+          params[0] = InputStream.class;
 
           Constructor cons = cls.getConstructor(params);
 
@@ -248,7 +248,7 @@ findEncoderConstructor(String encoding, boolean cache)
           Class cls = Class.forName(classname);
 
           Class[] params = new Class[1];
-          params[0] = Class.forName("java.io.OutputStream");
+          params[0] = OutputStream.class;
 
           Constructor cons = cls.getConstructor(params);
 
