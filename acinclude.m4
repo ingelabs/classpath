@@ -360,8 +360,8 @@ AC_DEFUN([CLASSPATH_WITH_GJDOC],
 	       elif test "x${withval}" = xyes -o "x{withval}" = x; then
 	         WITH_GJDOC=yes;
 	         AC_PATH_PROG(GJDOC, gjdoc, "no")
-		 if test "x${JAY}" = xno; then
-		   AC_MSG_ERROR("jay executable not found");
+		 if test "x${GJDOC}" = xno; then
+		   AC_MSG_ERROR("gjdoc executable not found");
 		 fi
 	       else
 	         WITH_GJDOC=yes
