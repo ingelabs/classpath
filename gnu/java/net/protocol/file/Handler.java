@@ -1,5 +1,5 @@
 /* Handler.java -- "file" protocol handler for java.net
-   Copyright (C) 1998, 2002, 2003 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -40,8 +40,8 @@ package gnu.java.net.protocol.file;
 import gnu.java.io.PlatformHelper;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLStreamHandler;
 import java.net.URLConnection;
+import java.net.URLStreamHandler;
 
 /**
  * This is the protocol handler for the "file" protocol.
@@ -50,6 +50,7 @@ import java.net.URLConnection;
  * this package).  All other methods are inherited
  *
  * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Warren Levy <warrenl@cygnus.com>
  */
 public class Handler extends URLStreamHandler
 {
@@ -64,7 +65,9 @@ public class Handler extends URLStreamHandler
    * This method returs a new FileURLConnection for the specified URL
    *
    * @param url The URL to return a connection for
+   *
    * @return The URLConnection
+   *
    * @exception IOException If an error occurs
    */
   protected URLConnection openConnection (URL url)
@@ -278,7 +281,6 @@ public class Handler extends URLStreamHandler
    *
    * @param url The URL object whose external form will be returned 
    */
-
   protected String toExternalForm (URL url)
   { 
     StringBuffer sb = new StringBuffer (PlatformHelper.INITIAL_MAX_PATH);

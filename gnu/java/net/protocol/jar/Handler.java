@@ -1,5 +1,5 @@
 /* gnu.java.net.protocol.jar.Handler - jar protocol handler for java.net
-   Copyright (C) 2002, 2003 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,12 +38,14 @@ exception statement from your version. */
 
 package gnu.java.net.protocol.jar;
 
-import gnu.java.io.PlatformHelper;
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLStreamHandler;
 import java.net.URLConnection;
+import java.net.URLStreamHandler;
 
+/**
+ * @author Kresten Krab Thorup <krab@gnu.org>
+ */
 public class Handler extends URLStreamHandler
 {
   /**

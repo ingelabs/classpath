@@ -1,5 +1,12 @@
 2003-10-20  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/protocol/jar/Handler.java,
+	gnu/java/net/protocol/http/Handler.java,
+	gnu/java/net/protocol/file/Handler.java:
+	Some reformating, edited ChangeLog and authors to merge with libgcj.
+
+2003-10-20  Michael Koch  <konqueror@gmx.de>
+
 	* java/text/RuleBasedCollator.java:
 	Renamed some variables, some reformating.
 	(RuleBasedCollator): Throw ParseException instead of

@@ -1,5 +1,5 @@
 /* Handler.java -- HTTP protocol handler for java.net
-   Copyright (c) 1998, 2003 Free Software Foundation, Inc.
+   Copyright (c) 1998, 1999, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,8 +39,8 @@ package gnu.java.net.protocol.http;
 
 import java.io.IOException;
 import java.net.URL;
-import java.net.URLStreamHandler;
 import java.net.URLConnection;
+import java.net.URLStreamHandler;
 
 /**
  * This is the protocol handler for the HTTP protocol.  It implements
@@ -49,6 +49,8 @@ import java.net.URLConnection;
  * methods are inherited
  *
  * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Warren Levy
+ * @author Anthony Green <green@redhat.com>
  */
 public class Handler extends URLStreamHandler
 {
