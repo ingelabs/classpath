@@ -1,3 +1,8 @@
+2004-04-01  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/text/DecimalFormat.java (scanFix): Removed suffix check
+	for percent and permill check.
+
 2004-03-31  Michael Koch  <konqueror@gmx.de>
 
 	* include/gnu_java_nio_ByteBufferImpl.h,
@@ -14,7 +19,7 @@
 	* doc/vmintegration.texinfo; Added dir entry.
 	* doc/hacking.texinfo: Likewise.
 
-2004-03-28  Jeroen Frijters <jeroen@frijters.net>
+2004-03-28  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/io/OutputStreamWriter.java
 	(OutputStreamWriter): Added call to set bad character value for the
