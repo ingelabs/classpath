@@ -1,8 +1,8 @@
 EXTRA_DIST = \
 BasicBorders.java \
+BasicButtonListener.java \
 BasicButtonUI.java \
 BasicCheckBoxUI.java \
-BasicDefaults.java \
 BasicGraphicsUtils.java \
 BasicIconFactory.java \
 BasicLabelUI.java \
@@ -11,6 +11,7 @@ BasicLookAndFeel.java \
 BasicOptionPaneUI.java \
 BasicPanelUI.java \
 BasicRadioButtonUI.java \
+BasicRootPaneUI.java \
 BasicScrollPaneUI.java \
 BasicSplitPaneDivider.java \
 BasicSplitPaneUI.java \

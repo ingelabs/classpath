@@ -109,7 +109,6 @@ SpinnerModel.java \
 SwingConstants.java \
 SwingUtilities.java \
 Timer.java \
-ToggleButtonModel.java \
 ToolTipManager.java \
 UIDefaults.java \
 UIManager.java \

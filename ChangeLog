@@ -1,5 +1,12 @@
 2004-02-14  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/Makefile.am (EXTRA_DIST): Remove ToggleButtonModel.java.
+	* javax/swing/plaf/basic/Makefile.am (EXTRA_DIST): Remove
+	BasicDefaults.java. Add BasicButtonListener.java and
+	BasicRootPaneUI.java.
+
+2004-02-14  Mark Wielaard  <mark@klomp.org>
+
 	* javax/swing/AbstractButton.java (getSelectedIcon): Make public
 	(getRolloverSelectedIcon): Likewise.
 
