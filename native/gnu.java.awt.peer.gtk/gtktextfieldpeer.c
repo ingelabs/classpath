@@ -27,9 +27,9 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryNew
   (JNIEnv *env, jobject obj, jstring text)
 {
   GtkWidget *entry;
-  char *str;
+  const char *str;
 
-  str=(char *)(*env)->GetStringUTFChars (env, text, 0);      
+  str = (*env)->GetStringUTFChars (env, text, NULL);
 
   gdk_threads_enter ();
 
@@ -38,9 +38,9 @@ Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryNew
 
   gdk_threads_leave ();
 
-  NSA_SET_PTR (env, obj, entry);
-
   (*env)->ReleaseStringUTFChars (env, text, str);
+
+  NSA_SET_PTR (env, obj, entry);
 }
 
 
@@ -48,14 +48,16 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryGetSize
   (JNIEnv *env, jobject obj, jint cols, jintArray jdims)
 {
+  void *ptr;
   jint *dims;
   GtkRequisition myreq;
   GtkEntry *entry;
   
+  ptr = NSA_GET_PTR (env, obj);
   dims = (*env)->GetIntArrayElements (env, jdims, 0);  
   
   gdk_threads_enter ();
-  entry = GTK_ENTRY (NSA_GET_PTR (env, obj));
+  entry = GTK_ENTRY (ptr);
   
   gtk_widget_size_request (GTK_WIDGET(entry), &myreq);
   
@@ -75,10 +77,14 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntrySetEchoChar
   (JNIEnv *env, jobject obj, jchar c)
 {
+  void *ptr;
   GtkEntry *entry;
 
+  ptr = NSA_GET_PTR (env, obj);
+
   gdk_threads_enter ();
-  entry = GTK_ENTRY (NSA_GET_PTR (env, obj));
+
+  entry = GTK_ENTRY (ptr);
     
   if (c!=0)
     {
@@ -95,14 +101,16 @@ JNIEXPORT jstring JNICALL
 Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntryGetText
   (JNIEnv *env, jobject obj)
 {
+  void *ptr;
   GtkEntry *entry;
   gchar *text;
   jstring jtext;
 
-  
+  ptr = NSA_GET_PTR (env, obj);
+
   gdk_threads_enter ();
   
-  entry = GTK_ENTRY (NSA_GET_PTR (env, obj));
+  entry = GTK_ENTRY (ptr);
   text = gtk_entry_get_text (entry);
   jtext = (*env)->NewStringUTF (env, text);
 
@@ -115,14 +123,16 @@ JNIEXPORT void JNICALL
 Java_gnu_java_awt_peer_gtk_GtkTextFieldPeer_gtkEntrySetText
   (JNIEnv *env, jobject obj, jstring text)
 {
+  void *ptr;
   GtkEntry *entry;
-  char *str;
+  const char *str;
 
-  str=(char *)(*env)->GetStringUTFChars (env, text, 0);      
-
+  ptr = NSA_GET_PTR (env, obj);
+  str = (*env)->GetStringUTFChars (env, text, NULL);
+  
   gdk_threads_enter ();
   
-  entry = GTK_ENTRY (NSA_GET_PTR (env, obj));
+  entry = GTK_ENTRY (ptr);
   gtk_entry_set_text (entry, str);
   
   gdk_threads_leave ();

@@ -47,7 +47,7 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowNew
 
   gdk_threads_enter ();
 
-  sw=gtk_scrolled_window_new(NULL,NULL);
+  sw = gtk_scrolled_window_new (NULL, NULL);
 
   gtk_widget_set_usize (sw, width, height);
   gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
@@ -72,9 +72,9 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowNew
   
   gdk_threads_leave ();
 
-  NSA_SET_PTR (env, obj, sw);
-  
   (*env)->ReleaseIntArrayElements(env, jdims, dims, 0);
+
+  NSA_SET_PTR (env, obj, sw);
 }
 
 JNIEXPORT void JNICALL 
@@ -88,10 +88,10 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetScrollPosition
   ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  sw=GTK_SCROLLED_WINDOW(ptr);
+  sw = GTK_SCROLLED_WINDOW(ptr);
 
-  hadj=gtk_scrolled_window_get_hadjustment(sw);
-  vadj=gtk_scrolled_window_get_vadjustment(sw);
+  hadj = gtk_scrolled_window_get_hadjustment(sw);
+  vadj = gtk_scrolled_window_get_vadjustment(sw);
 
   gtk_adjustment_set_value (hadj, (float)x);
   gtk_adjustment_set_value (vadj, (float)y);
@@ -110,10 +110,10 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetHScrollIncremen
   ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  sw=GTK_SCROLLED_WINDOW(ptr);
+  sw = GTK_SCROLLED_WINDOW(ptr);
 
-  hadj=gtk_scrolled_window_get_hadjustment(sw);
-  hadj->step_increment=u;
+  hadj = gtk_scrolled_window_get_hadjustment (sw);
+  hadj->step_increment = u;
 
   gdk_threads_leave ();
 }
@@ -129,10 +129,10 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetVScrollIncremen
   ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  sw=GTK_SCROLLED_WINDOW(ptr);
+  sw = GTK_SCROLLED_WINDOW(ptr);
 
-  vadj=gtk_scrolled_window_get_hadjustment(sw);
-  vadj->step_increment=u;
+  vadj = gtk_scrolled_window_get_hadjustment (sw);
+  vadj->step_increment = u;
 
   gdk_threads_leave ();
 }
@@ -149,19 +149,19 @@ Java_gnu_java_awt_peer_gtk_GtkScrollPanePeer_gtkScrolledWindowSetSize
   ptr = NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
-  sw=GTK_SCROLLED_WINDOW(ptr);
+  sw = GTK_SCROLLED_WINDOW(ptr);
 
-  child=gtk_container_children (GTK_CONTAINER 
-				(GTK_BIN(sw)->child));
+  child = gtk_container_children (GTK_CONTAINER 
+				  (GTK_BIN(sw)->child));
       
   while (child && !GTK_IS_FIXED(child->data))
-    child=g_list_next(child);
+    child = g_list_next (child);
   
-  fix=GTK_WIDGET(child->data);
+  fix = GTK_WIDGET(child->data);
   
-  g_list_free(child);
+  g_list_free (child);
 
-  gtk_widget_set_usize(fix,w,h);
+  gtk_widget_set_usize (fix, w, h);
 
   gdk_threads_leave ();
 }
