@@ -754,7 +754,7 @@ public class Proxy implements Serializable
     /**
      * For unique id's
      */
-    private static int count = 0;
+    private static int count;
 
     /**
      * The id of this proxy class

@@ -1,3 +1,44 @@
+2004-10-11  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/awt/EventDispatchThread.java
+	(dispatchThreadNum): Removed initializer.
+	(EventDispatchThread): Pre-increment dispatchThreadNum.
+	* java/awt/Button.java
+	(next_button_number): Removed useless initializer.
+	* java/awt/Frame.java
+	(next_frame_number): Likewise.
+	* java/awt/Scrollbar.java
+	(next_scrollbar_number): Likewise.
+	* java/awt/TextArea.java
+	(next_text_number): Likewise.
+	* java/io/ObjectInputStream.java
+	(dump): Likewise.
+	* java/lang/reflect/Proxy.java
+	(count): Likewise.
+	* java/security/IdentityScope.java
+	(systemScope): Likewise.
+	* java/security/Policy.java
+	(currentPolicy): Likewise.
+	* java/util/Timer.java
+	(nr): Likewise.
+	* java/util/logging/LogRecord.java
+	(lastSeqNum): Likewise.
+	* javax/naming/spi/NamingManager.java
+	(icfb, ofb): Likewise.
+	* javax/swing/JDialog.java
+	(decorated): Likewise.
+	* javax/swing/JFrame.java
+	(defaultLookAndFeelDecorated): Likewise.
+	* javax/swing/plaf/basic/BasicToolBarUI.java
+	(offset, regular): Made final.
+	* javax/swing/plaf/basic/BasicScrollBarUI.java
+	(DECREASE_HIGHLIGHT, INCREASE_HIGHLIGHT, NO_HIGHLIGHT,
+	POSITIVE_SCROLL, NEGATIVE_SCROLL): Made final.	
+	* java/util/zip/ZipEntry.java
+	(KNOWN_SIZE, KNOWN_CSIZE, KNOWN_CRC, KNOWN_TIME): Made final.
+	* java/net/HttpURLConnection.java
+	(valid_methods): Made final.	
+
 2004-10-11  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/DataInputStream.java

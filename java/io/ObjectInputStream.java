@@ -1850,7 +1850,7 @@ public class ObjectInputStream extends InputStream
   private Hashtable classLookupTable;
   private GetField prereadFields;
 
-  private static boolean dump = false && Configuration.DEBUG;
+  private static boolean dump;
 
   // The nesting depth for debugging output
   private int depth = 0;
