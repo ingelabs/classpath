@@ -1,3 +1,8 @@
+2005-03-26  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
+        * java/text/DecimalFormat.java (parse):
+        Check whether the positive suffix matches the pattern.
+
 2005-03-26  Chris Burdess  <dog@gnu.org>
 
 	* gnu/xml/dom/DomNode.java (notifyNode): grow listener array as
