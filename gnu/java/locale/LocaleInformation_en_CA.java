@@ -44,15 +44,8 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_en_CA extends ListResourceBundle
 {
-  static final String[] ampms = { "AM", "PM" };
-  static final String currencySymbol = "$";
-  static final String intlCurrencySymbol = "CAD";
-
   private static final Object[][] contents =
   {
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", "\u00a4#,##0.00;(\u00a4#,##0.00)" },
     { "shortDateFormat", "dd/MM/yy" },
     { "mediumDateFormat", "d-MMM-yy" },

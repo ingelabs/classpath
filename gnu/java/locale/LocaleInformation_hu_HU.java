@@ -44,35 +44,8 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_hu_HU extends ListResourceBundle
 {
-  static final String decimalSeparator = ",";
-  static final String groupingSeparator = "";
-  static final String numberFormat = "#.###";
-  static final String percentFormat = "#%";
-  static final String[] weekdays = { null, "VAS\u00C1RNAP", "H\u00C9TF\u0150", "KEDD", "SZERDA", "CS\u00DCT\u00D6RT\u00D6K", "P\u00C9NTEK", "SZOMBAT" };
-
-  static final String[] shortWeekdays = { null, "V", "H", "K", "SZE", "CS", "P", "SZO" };
-
-  static final String[] shortMonths = { "JAN", "FEB", "M\u00C1R", "\u00C1PR", "M\u00C1J", "J\u00DAN", "J\u00DAL", "AUG", "SZE", "OKT", "NOV", "DEC", null };
-
-  static final String[] months = { "JANU\u00C1R", "FEBRU\u00C1R", "M\u00C1RCIUS", "\u00C1PRILIS", "M\u00C1JUS", "J\u00DANIUS", "J\u00DALIUS", "AUGUSZTUS", "SZEPTEMBER", "OKT\u00D3BER", "NOVEMBER", "DECEMBER", null };
-
-  static final String[] ampms = { "", "" };
-  static final String currencySymbol = "FT";
-  static final String intlCurrencySymbol = "HUF";
-
   private static final Object[][] contents =
   {
-    { "weekdays", weekdays },
-    { "shortWeekdays", shortWeekdays },
-    { "shortMonths", shortMonths },
-    { "months", months },
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
-    { "decimalSeparator", decimalSeparator },
-    { "groupingSeparator", groupingSeparator },
-    { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
     { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
   };
 

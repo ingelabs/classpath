@@ -44,35 +44,8 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_pl_PL extends ListResourceBundle
 {
-  static final String decimalSeparator = ",";
-  static final String groupingSeparator = "";
-  static final String numberFormat = "#.###";
-  static final String percentFormat = "#%";
-  static final String[] weekdays = { null, "niedziela", "poniedzia\u0142ek", "wtorek", "\u015Broda", "czwartek", "pi\u0105tek", "sobota" };
-
-  static final String[] shortWeekdays = { null, "nie", "pon", "wto", "\u015Bro", "czw", "pi\u0105", "sob" };
-
-  static final String[] shortMonths = { "sty", "lut", "mar", "kwi", "maj", "cze", "lip", "sie", "wrz", "pa\u017A", "lis", "gru", null };
-
-  static final String[] months = { "stycze\u0144", "luty", "marzec", "kwiecie\u0144", "maj", "czerwiec", "lipiec", "sierpie\u0144", "wrzesie\u0144", "pa\u017Adziernik", "listopad", "grudzie\u0144", null };
-
-  static final String[] ampms = { "", "" };
-  static final String currencySymbol = "Z\u0142";
-  static final String intlCurrencySymbol = "PLZ";
-
   private static final Object[][] contents =
   {
-    { "weekdays", weekdays },
-    { "shortWeekdays", shortWeekdays },
-    { "shortMonths", shortMonths },
-    { "months", months },
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
-    { "decimalSeparator", decimalSeparator },
-    { "groupingSeparator", groupingSeparator },
-    { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
     { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
   };
 

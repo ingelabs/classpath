@@ -369,20 +369,6 @@ public class LocaleInformation_de extends ListResourceBundle
   }
 
   private static final Object territories = new Hashtableterritories();
-  
-  private static final String shortTimeFormat = "H:mm";
-
-  private static final String mediumTimeFormat = "H:mm:ss";
-
-  private static final String longTimeFormat = "H:mm:ss z";
-
-  private static final String currencySymbol = "DM";
-
-  private static final String intlCurrencySymbol = "DEM";
-
-  private static final String decimalSeparator = ",";
-
-  private static final String monetarySeparator = ",";
 
   private static final Object[][] contents =
   {
@@ -401,11 +387,6 @@ public class LocaleInformation_de extends ListResourceBundle
     { "fullDateFormat", "EEEE, d. MMMM yyyy" },
     { "fullTimeFormat", "H:mm' Uhr 'z" },
     { "zoneStrings", zoneStrings },
-    { "shortTimeFormat", shortTimeFormat },
-    { "mediumTimeFormat", mediumTimeFormat },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
-    { "monetarySeparator", monetarySeparator },
     { "territories", territories },
   };
 

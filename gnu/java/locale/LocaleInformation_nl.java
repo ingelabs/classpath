@@ -102,8 +102,6 @@ public class LocaleInformation_nl extends ListResourceBundle
     "zaterdag",
   };
 
-  private static final String[] ampms = { "AM", "PM" };
-
   private static final String[] eras = {
     "v. Chr.",
     "n. Chr.",
@@ -366,36 +364,11 @@ public class LocaleInformation_nl extends ListResourceBundle
 
   private static final Object territories = new Hashtableterritories();
   private static final String localPatternChars = "GyMdhHmsSEDFwWakKz"; // Not a mistake!
-  private static final String currencySymbol = "fl";
-  private static final String intlCurrencySymbol = "NLG";
-  private static final String exponential = "E";
-  private static final String digit = "#";
-  private static final String infinity = "\u221e";
-  private static final String NaN = "\ufffd";
-  private static final String minusSign = "-";
-  private static final String monetarySeparator = ",";
-  private static final String patternSeparator = ";";
-  private static final String percent = "%";
-  private static final String perMill = "\u2030";
-  private static final String zeroDigit = "0";
 
   private static final Object[][] contents =
   {
     { "collation_rules", collation_rules },
-    { "ampms", ampms },
     { "localPatternChars", localPatternChars },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
-    { "digit", digit },
-    { "exponential", exponential },
-    { "infinity", infinity },
-    { "NaN", NaN },
-    { "minusSign", minusSign },
-    { "monetarySeparator", monetarySeparator },
-    { "patternSeparator", patternSeparator },
-    { "percent", percent },
-    { "perMill", perMill },
-    { "zeroDigit", zeroDigit },
     { "decimalSeparator", "," },
     { "groupingSeparator", "." },
     { "shortMonths", shortMonths },

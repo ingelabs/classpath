@@ -44,20 +44,6 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_it_CH extends ListResourceBundle
 {
-  static final String numberFormat = "#,###,##0.###";
-  static final String percentFormat = "#,###,##0%";
-  static final String[] weekdays = { null, "domenica", "luned\u00EC", "marted\u00EC", "mercoled\u00EC", "gioved\u00EC", "venerd\u00EC", "sabato" };
-
-  static final String[] shortWeekdays = { null, "dom", "lun", "mar", "mer", "gio", "ven", "sab" };
-
-  static final String[] shortMonths = { "gen", "feb", "mar", "apr", "mag", "giu", "lug", "ago", "set", "ott", "nov", "dic", null };
-
-  static final String[] months = { "gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio", "agosto", "settembre", "ottobre", "novembre", "dicembre", null };
-
-  static final String[] ampms = { "", "" };
-  static final String currencySymbol = LocaleInformation_de_CH.currencySymbol;
-  static final String intlCurrencySymbol = LocaleInformation_de_CH.intlCurrencySymbol;
-
   private static final Object[][] contents =
   {
     { "decimalSeparator", "." },
@@ -68,15 +54,6 @@ public class LocaleInformation_it_CH extends ListResourceBundle
     { "longDateFormat", "d MMMM yyyy" },
     { "fullDateFormat", "EEEE, d MMMM yyyy" },
     { "fullTimeFormat", "HH.mm:ss' h' z" },
-    { "weekdays", weekdays },
-    { "shortWeekdays", shortWeekdays },
-    { "shortMonths", shortMonths },
-    { "months", months },
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
-    { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
   };
 
   public Object[][] getContents() { return contents; }

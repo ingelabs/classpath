@@ -44,34 +44,8 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_es_BO extends ListResourceBundle
 {
-  static final String numberFormat = "#.###";
-  static final String percentFormat = "#%";
-  static final String[] weekdays = { null, "domingo", "lunes", "martes", "mi\u00E9rcoles", "jueves", "viernes", "s\u00E1bado" };
-
-  static final String[] shortWeekdays = { null, "dom", "lun", "mar", "mi\u00E9", "jue", "vie", "s\u00E1b" };
-
-  static final String[] shortMonths = { "ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic", null };
-
-  static final String[] months = { "enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre", null };
-
-  static final String[] ampms = { "", "" };
-
-  static final String currencySymbol = "$b";
-  static final String intlCurrencySymbol = "BOB";
-  static final String currencyFormat = "$ #,###,##0.00;-$ #,###,##0.00";
-
   private static final Object[][] contents =
   {
-    { "weekdays", weekdays },
-    { "shortWeekdays", shortWeekdays },
-    { "shortMonths", shortMonths },
-    { "months", months },
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
-    { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
     { "decimalSeparator", "," },
     { "groupingSeparator", "." },
     { "shortDateFormat", "dd/MM/yy" },

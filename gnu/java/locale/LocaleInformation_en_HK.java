@@ -44,15 +44,8 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_en_HK extends ListResourceBundle
 {
-  static final String[] ampms = { "AM", "PM" };
-  static final String currencySymbol = "HK$";
-  static final String intlCurrencySymbol = "HKD";
-
   private static final Object[][] contents =
   {
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", "\u00a4#,##0.00;(\u00a4#,##0.00)" },
     { "shortDateFormat", "dd/MM/yyyy" },
     { "mediumDateFormat", "d MMM yyyy" },

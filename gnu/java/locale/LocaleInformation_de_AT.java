@@ -48,20 +48,10 @@ public class LocaleInformation_de_AT extends ListResourceBundle
 
   static final String[] months = { "J\u00E4nner", "Feber", "M\u00E4rz", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember", null };
 
-  static final String[] ampms = { "", "" };
-
-  static final String currencySymbol = "S";
-  static final String intlCurrencySymbol = "ATS";
-  static final String currencyFormat = "$ #,###,##0.00;-$ #,###,##0.00";
-
   private static final Object[][] contents =
   {
     { "shortMonths", shortMonths },
     { "months", months },
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "longDateFormat", "dd. MMMM yyyy" },
     { "fullDateFormat", "EEEE, dd. MMMM yyyy" },
     { "fullTimeFormat", "HH:mm' Uhr 'z" },

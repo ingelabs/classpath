@@ -59,11 +59,6 @@ public class LocaleInformation_ar_JO extends ListResourceBundle
     "\u0643\u0627\u0646\u0648\u0646 \u0627\u0644\u0623\u0648\u0644",
     null,
   };
-  static final String decimalSeparator = ".";
-  static final String groupingSeparator = ",";
-  static final String numberFormat = "#,##0.###";
-  static final String percentFormat = "#,##0%";
-  static final String[] weekdays = { null, "\u0627\u0644\u0623\u062D\u062F", "\u0627\u0644\u0627\u062B\u0646\u064A\u0646", "\u0627\u0644\u062B\u0644\u0627\u062B\u0627\u0621", "\u0627\u0644\u0623\u0631\u0628\u0639\u0627\u0621", "\u0627\u0644\u062E\u0645\u064A\u0633", "\u0627\u0644\u062C\u0645\u0639\u0629", "\u0627\u0644\u0633\u0628\u062A" };
 
   private static final String[] months = {
     "\u0643\u0627\u0646\u0648\u0646 \u0627\u0644\u062b\u0627\u0646\u064a",
@@ -92,25 +87,11 @@ public class LocaleInformation_ar_JO extends ListResourceBundle
     "\u0627\u0644\u0633\u0628\u062a",
   };
 
-  static final String[] ampms = { "\u0635", "\u0645" };
-  static final String shortDateFormat = "dd MMM, yyyy";
-  static final String currencySymbol = "\u062F.\u0623.";
-  static final String intlCurrencySymbol = "JOD";
-
   private static final Object[][] contents =
   {
-    { "weekdays", weekdays },
     { "currencyFormat", "\u00a4 #,##0.000;\u00a4 #,##0.000-" },
     { "shortMonths", shortMonths },
     { "months", months },
-    { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
-    { "decimalSeparator", decimalSeparator },
-    { "groupingSeparator", groupingSeparator },
-    { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
     { "shortWeekdays", shortWeekdays },
   };
 

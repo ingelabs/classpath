@@ -44,13 +44,8 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_fr_BE extends ListResourceBundle
 {
-  static final String currencySymbol = "FB";
-  static final String intlCurrencySymbol = "BEF";
-
   private static final Object[][] contents =
   {
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
     { "groupingSeparator", "." },
     { "shortDateFormat", "d/MM/yy" },
     { "mediumDateFormat", "dd-MMM-yy" },

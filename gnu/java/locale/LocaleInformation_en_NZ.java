@@ -44,15 +44,8 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_en_NZ extends ListResourceBundle
 {
-  static final String[] ampms = { "", "" };
-  static final String currencySymbol = "$";
-  static final String intlCurrencySymbol = "NZD";
-
   private static final Object[][] contents =
   {
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
     { "shortDateFormat", "d/MM/yy" },
     { "mediumDateFormat", "d/MM/yyyy" },
     { "longDateFormat", "d MMMM yyyy" },

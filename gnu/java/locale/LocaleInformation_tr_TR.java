@@ -44,13 +44,8 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_tr_TR extends ListResourceBundle
 {
-  static final String currencySymbol = "TL";
-  static final String intlCurrencySymbol = "TRL";
-
   private static final Object[][] contents =
   {
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
   };
 

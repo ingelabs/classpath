@@ -44,32 +44,8 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_cy_GB extends ListResourceBundle
 {
-  static final String[] weekdays = { null, "Sul", "Llun", "Mawrth", "Mercher", "Iau", "Gwener", "Sadwrn" };
-
-  static final String[] shortWeekdays = { null, "Sul", "Llu", "Maw", "Mer", "Iau", "Gwe", "Sad" };
-
-  static final String[] shortMonths = { "Ion", "Chw", "Maw", "Ebr", "Mai", "Meh", "Gor", "Aws", "Med", "Hyd", "Tach", "Rha", null };
-
-  static final String[] months = { "Ionawr", "Chwefror", "Mawrth", "Ebrill", "Mai", "Mehefin", "Gorffennaf", "Awst", "Medi", "Hydref", "Tachwedd", "Rhagfyr", null };
-
-  static final String[] ampms = { "", "" };
-
-  static final String currencySymbol = "\u00A3";
-  static final String intlCurrencySymbol = "GBP";
-
   private static final Object[][] contents =
   {
-    { "weekdays", weekdays },
-    { "shortWeekdays", shortWeekdays },
-    { "shortMonths", shortMonths },
-    { "months", months },
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
-    { "decimalSeparator", "." },
-    { "groupingSeparator", "," },
-    { "percentFormat", "#,##0%" },
-    { "numberFormat", "#,##0.###" },
     { "currencyFormat", "\u00a4#,##0.00;-\u00a4#,##0.00" },
     { "shortDateFormat", "dd/MM/yyyy" },
     { "mediumDateFormat", "d MMM yyyy" },

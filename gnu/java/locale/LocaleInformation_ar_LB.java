@@ -44,12 +44,6 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_ar_LB extends ListResourceBundle
 {
-  static final String decimalSeparator = ".";
-  static final String groupingSeparator = ",";
-  static final String numberFormat = "#,##0.###";
-  static final String percentFormat = "#,##0%";
-  static final String[] weekdays = { null, "\u0627\u0644\u0623\u062D\u062F", "\u0627\u0644\u0627\u062B\u0646\u064A\u0646", "\u0627\u0644\u062B\u0644\u0627\u062B\u0627\u0621", "\u0627\u0644\u0623\u0631\u0628\u0639\u0627\u0621", "\u0627\u0644\u062E\u0645\u064A\u0633", "\u0627\u0644\u062C\u0645\u0639\u0629", "\u0627\u0644\u0633\u0628\u062A" };
-
   private static final String[] shortMonths = {
     "\u0643\u0627\u0646\u0648\u0646 \u0627\u0644\u062b\u0627\u0646\u064a",
     "\u0634\u0628\u0627\u0637",
@@ -66,7 +60,6 @@ public class LocaleInformation_ar_LB extends ListResourceBundle
     null,
   };
 
-  static final String[] ampms = { "\u0635", "\u0645" };
   private static final String[] months = {
     "\u0643\u0627\u0646\u0648\u0646 \u0627\u0644\u062b\u0627\u0646\u064a",
     "\u0634\u0628\u0627\u0637",
@@ -83,10 +76,6 @@ public class LocaleInformation_ar_LB extends ListResourceBundle
     null,
   };
 
-  static final String shortDateFormat = "dd MMM, yyyy";
-  static final String currencySymbol = "\u0644.\u0644.";
-  static final String intlCurrencySymbol = "LBP";
-  static final String currencyFormat = "$ #,##0.000;$ #,##0.000-";
   private static final String[] shortWeekdays = {
     null,
     "\u0627\u0644\u0623\u062d\u062f",
@@ -100,18 +89,8 @@ public class LocaleInformation_ar_LB extends ListResourceBundle
 
   private static final Object[][] contents =
   {
-    { "weekdays", weekdays },
     { "shortMonths", shortMonths },
     { "months", months },
-    { "ampms", ampms },
-    { "shortDateFormat", shortDateFormat },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
-    { "decimalSeparator", decimalSeparator },
-    { "groupingSeparator", groupingSeparator },
-    { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
     { "shortWeekdays", shortWeekdays },
   };
 

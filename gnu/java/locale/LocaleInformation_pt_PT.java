@@ -44,24 +44,6 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_pt_PT extends ListResourceBundle
 {
-  static final String decimalSeparator = ",";
-  static final String groupingSeparator = "";
-  static final String numberFormat = "#.###";
-  static final String percentFormat = "#%";
-  static final String[] weekdays = { null, "Domingo", "Segunda", "Ter\u00E7a", "Quarta", "Quinta", "Sexta", "S\u00E1bado" };
-
-  static final String[] shortWeekdays = { null, "Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "S\u00E1b" };
-
-  static final String[] shortMonths = { "Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez", null };
-
-  static final String[] months = { "Janeiro", "Fevereiro", "Mar\u00E7o", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro", null };
-
-  static final String[] ampms = { "", "" };
-  
-  static final String shortDateFormat = "dd-MM-yyyy";
-  static final String currencySymbol = "Esc";
-  static final String intlCurrencySymbol = "PTE";
-  
   private static final class Hashtableterritories extends java.util.Hashtable
   {
     public Hashtableterritories()
@@ -133,17 +115,6 @@ public class LocaleInformation_pt_PT extends ListResourceBundle
 
   private static final Object[][] contents =
   {
-    { "weekdays", weekdays },
-    { "shortWeekdays", shortWeekdays },
-    { "shortMonths", shortMonths },
-    { "months", months },
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
-    { "decimalSeparator", decimalSeparator },
-    { "groupingSeparator", groupingSeparator },
-    { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
     { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
     { "shortDateFormat", "yy/MM/dd" },
     { "mediumDateFormat", "yyyy/MM/dd" },

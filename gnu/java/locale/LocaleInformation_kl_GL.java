@@ -44,25 +44,8 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_kl_GL extends ListResourceBundle
 {
-  static final String[] weekdays = { null, "sabaat", "ataasinngorneq", "marlunngorneq", "pingasunngorneq", "sisamanngorneq", "tallimanngorneq", "arfininngorneq" };
-  static final String[] shortWeekdays = { null, "sab", "ata", "mar", "pin", "sis", "tal", "arf" };
-  static final String[] shortMonths = { "jan", "feb", "mar", "apr", "maj", "jun", "jul", "aug", "sep", "okt", "nov", "dec", null };
-  static final String[] months = { "januari", "februari", "martsi", "aprili", "maji", "juni", "juli", "augustusi", "septemberi", "oktoberi", "novemberi", "decemberi", null };
-  static final String[] ampms = { "", "" };
-  static final String currencySymbol = "kr";
-  static final String intlCurrencySymbol = "DKK";
-
   private static final Object[][] contents =
   {
-    { "weekdays", weekdays },
-    { "shortWeekdays", shortWeekdays },
-    { "shortMonths", shortMonths },
-    { "months", months },
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
-    { "decimalSeparator", "," },
-    { "groupingSeparator", "." },
     { "currencyFormat", "\u00a4#,##0.00;\u00a4 -#,##0.00" },
     { "shortDateFormat", "dd/MM/yy" },
     { "mediumDateFormat", "MMM dd,yy" },

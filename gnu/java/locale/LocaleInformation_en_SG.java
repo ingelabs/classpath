@@ -49,11 +49,6 @@ public class LocaleInformation_en_SG extends ListResourceBundle
     { "Pacific/Guadalcanal", "Singapore Standard Time", "SST", "Singapore Standard Time", "SST" },
   };
 
-  static final String[] ampms = { "AM", "PM" };
-  static final String currencySymbol = "$";
-  static final String intlCurrencySymbol = "SGD";
-  static final String currencyFormat = "$#,##0.00;($#,##0.00)";
-
   private static final Object[][] contents =
   {
     { "shortDateFormat", "dd/MM/yyyy" },
@@ -64,10 +59,6 @@ public class LocaleInformation_en_SG extends ListResourceBundle
     { "mediumTimeFormat", "h:mm:ss a" },
     { "longTimeFormat", "h:mm:ss a z" },
     { "fullTimeFormat", "h:mm:ss a z" },
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "zoneStrings", zoneStrings },
   };
 

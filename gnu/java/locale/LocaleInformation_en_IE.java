@@ -53,17 +53,10 @@ public class LocaleInformation_en_IE extends ListResourceBundle
   {
     { "Europe/Dublin", "Greenwich Mean Time", "GMT", "Irish Summer Time", "IST" },
   };
-  
-  static final String currencySymbol = "\u00A3";
-  static final String intlCurrencySymbol = "IEP";
-  static final String currencyFormat = "$#,###,##0.00;-$#,###,##0.00";
 
   private static final Object[][] contents =
   {
     { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "shortDateFormat", "dd/MM/yyyy" },
     { "mediumDateFormat", "d MMM yyyy" },
     { "longDateFormat", "d MMMM yyyy" },

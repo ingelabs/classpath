@@ -48,9 +48,6 @@ public class LocaleInformation_de_BE extends ListResourceBundle
 
   static final String[] shortMonths = { "Jan", "Feb", "M\u00E4r", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez", null };
 
-  static final String currencySymbol = "Fr";
-  static final String intlCurrencySymbol = "BEF";
-
   private static final Object[][] contents =
   {
     { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
@@ -61,8 +58,6 @@ public class LocaleInformation_de_BE extends ListResourceBundle
     { "longDateFormat", "d MMMM yyyy" },
     { "fullDateFormat", "EEEE d MMMM yyyy" },
     { "fullTimeFormat", "HH 'h' mm 'min' ss 's' z" },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
   };
 
   public Object[][] getContents() { return contents; }

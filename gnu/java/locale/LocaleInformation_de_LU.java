@@ -44,15 +44,8 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_de_LU extends ListResourceBundle
 {
-  static final String[] ampms = { "", "" };
-  static final String currencySymbol = "FLUX";
-  static final String intlCurrencySymbol = "LUF";
-
   private static final Object[][] contents =
   {
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
   };
 

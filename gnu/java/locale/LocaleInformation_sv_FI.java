@@ -44,13 +44,8 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_sv_FI extends ListResourceBundle
 {
-  static final String currencySymbol = "mk";
-  static final String intlCurrencySymbol = "FIM";
-
   private static final Object[][] contents =
   {
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
   };
 

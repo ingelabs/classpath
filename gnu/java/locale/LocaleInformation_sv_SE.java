@@ -44,13 +44,8 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_sv_SE extends ListResourceBundle
 {
-  static final String currencySymbol = "kr";
-  static final String intlCurrencySymbol = "SEK";
-
   private static final Object[][] contents =
   {
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
     { "percentFormat", "#,##0 %" },
     { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
   };

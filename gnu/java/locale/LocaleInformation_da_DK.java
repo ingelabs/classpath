@@ -44,15 +44,8 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_da_DK extends ListResourceBundle
 {
-  static final String[] ampms = { "", "" };
-  static final String currencySymbol = "kr";
-  static final String intlCurrencySymbol = "DKK";
-
   private static final Object[][] contents =
   {
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", "\u00a4 #,##0.00;\u00a4 -#,##0.00" },
   };
 

@@ -44,23 +44,8 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_nl_NL extends ListResourceBundle
 {
-  static final String decimalSeparator = ",";
-  static final String groupingSeparator = "";
-  static final String numberFormat = "#.###";
-  static final String percentFormat = "#%";
-  static final String[] ampms = { "", "" };
-  static final String currencySymbol = "fl";
-  static final String intlCurrencySymbol = "NLG";
-
   private static final Object[][] contents =
   {
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
-    { "decimalSeparator", decimalSeparator },
-    { "groupingSeparator", groupingSeparator },
-    { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
     { "currencyFormat", "\u00a4 #,##0.00;\u00a4 #,##0.00-" },
   };
 

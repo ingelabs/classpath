@@ -44,35 +44,8 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_sk_SK extends ListResourceBundle
 {
-  static final String decimalSeparator = ",";
-  static final String groupingSeparator = "\u00A0";
-  static final String numberFormat = "#,###,##0.###";
-  static final String percentFormat = "#,###,##0%";
-  static final String[] weekdays = { null, "Nede\u013Ea", "Pondelok", "Utorok", "Streda", "\u0160tvrtok", "Piatok", "Sobota" };
-
-  static final String[] shortWeekdays = { null, "Ne", "Po", "Ut", "St", "\u0160t", "Pi", "So" };
-
-  static final String[] shortMonths = { "jan", "feb", "mar", "apr", "m\u00E1j", "j\u00FAn", "j\u00FAl", "aug", "sep", "okt", "nov", "dec", null };
-
-  static final String[] months = { "janu\u00E1r", "febru\u00E1r", "marec", "apr\u00EDl", "m\u00E1j", "j\u00FAn", "j\u00FAl", "august", "september", "okt\u00F3ber", "november", "december", null };
-
-  static final String[] ampms = { "", "" };
-  static final String currencySymbol = "Sk";
-  static final String intlCurrencySymbol = "SKK";
-
   private static final Object[][] contents =
   {
-    { "weekdays", weekdays },
-    { "shortWeekdays", shortWeekdays },
-    { "shortMonths", shortMonths },
-    { "months", months },
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
-    { "decimalSeparator", decimalSeparator },
-    { "groupingSeparator", groupingSeparator },
-    { "numberFormat", numberFormat },
-    { "percentFormat", percentFormat },
     { "currencyFormat", "#,##0.00 \u00a4;-#,##0.00 \u00a4" },
   };
 

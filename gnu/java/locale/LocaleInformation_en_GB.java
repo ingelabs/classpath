@@ -44,12 +44,6 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_en_GB extends ListResourceBundle
 {
-  static final String[] ampms = { "", "" };
-  static final String shortDateFormat = "dd/MM/yy";
-  static final String currencySymbol = "\u00a3";
-  static final String intlCurrencySymbol = "GBP";
-  static final String currencyFormat = "\u00a3#,###,##0.00;-\u00a3#,###,##0.00";
-  
   private static final String[][] zoneStrings =
   {
     { "Europe/London", "Greenwich Mean Time", "GMT", "", "" },
@@ -65,10 +59,6 @@ public class LocaleInformation_en_GB extends ListResourceBundle
     { "mediumTimeFormat", "HH:mm:ss" },
     { "longTimeFormat", "HH:mm:ss z" },
     { "fullTimeFormat", "HH:mm:ss z" },
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
-    { "currencyFormat", currencyFormat },
     { "zoneStrings", zoneStrings },
   };
 

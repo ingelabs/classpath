@@ -44,25 +44,8 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_fo_FO extends ListResourceBundle
 {
-  static final String[] weekdays = { null, "sunnudagur", "m\u00E1nadagur", "t\u00FDsdagur", "mikudagur", "h\u00F3sdagur", "fr\u00EDggjadagur", "leygardagur" };
-  static final String[] shortWeekdays = { null, "sun", "m\u00E1n", "t\u00FDs", "mik", "h\u00F3s", "fr\u00ED", "ley" };
-  static final String[] shortMonths = { "jan", "feb", "mar", "apr", "mai", "jun", "jul", "aug", "sep", "okt", "nov", "des", null };
-  static final String[] months = { "januar", "februar", "mars", "apr\u00EDl", "mai", "juni", "juli", "august", "september", "oktober", "november", "desember", null };
-  static final String[] ampms = { "", "" };
-  static final String currencySymbol = "kr";
-  static final String intlCurrencySymbol = "DKK";
-  
   private static final Object[][] contents =
   {
-    { "decimalSeparator", "," },
-    { "groupingSeparator", "." },
-    { "weekdays", weekdays },
-    { "shortWeekdays", shortWeekdays },
-    { "shortMonths", shortMonths },
-    { "months", months },
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", "\u00a4#,##0.00;\u00a4 -#,##0.00" },
   };
 

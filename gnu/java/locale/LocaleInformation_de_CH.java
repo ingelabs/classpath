@@ -44,10 +44,6 @@ import java.util.ListResourceBundle;
 
 public class LocaleInformation_de_CH extends ListResourceBundle
 {
-  static final String[] ampms = { "", "" };
-  static final String currencySymbol = "Fr.";
-  static final String intlCurrencySymbol = "CHF";
-  
   private static final class Hashtableterritories extends java.util.Hashtable
   {
     public Hashtableterritories()
@@ -73,9 +69,6 @@ public class LocaleInformation_de_CH extends ListResourceBundle
   {
     { "decimalSeparator", "." },
     { "groupingSeparator", "'" },
-    { "ampms", ampms },
-    { "currencySymbol", currencySymbol },
-    { "intlCurrencySymbol", intlCurrencySymbol },
     { "currencyFormat", "\u00a4 #,##0.00;\u00a4-#,##0.00" },
     { "territories", territories },
   };
