@@ -42,6 +42,9 @@ import javax.print.attribute.DateTimeSyntax;
 import javax.print.attribute.PrintJobAttribute;
 import javax.print.attribute.PrintRequestAttribute;
 
+/**
+ * @author Michael Koch (konqueror@gmx.de)
+ */
 public final class JobHoldUntil extends DateTimeSyntax
   implements PrintJobAttribute, PrintRequestAttribute
 {

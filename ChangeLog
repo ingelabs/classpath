@@ -1,5 +1,29 @@
 2004-05-05  Michael Koch  <konqueror@gmx.de>
 
+	* javax/print/attribute/standard/DateTimeAtCompleted.java,
+	javax/print/attribute/standard/DateTimeAtCreation.java,
+	javax/print/attribute/standard/DateTimeAtProcessing.java,
+	javax/print/attribute/standard/DocumentName.java,
+	javax/print/attribute/standard/JobHoldUntil.java,
+	javax/print/attribute/standard/JobImpressionsCompleted.java,
+	javax/print/attribute/standard/JobMessageFromOperator.java,
+	javax/print/attribute/standard/JobName.java,
+	javax/print/attribute/standard/JobOriginatingUserName.java,
+	javax/print/attribute/standard/JobPriority.java,
+	javax/print/attribute/standard/JobPrioritySupported.java,
+	javax/print/attribute/standard/NumberOfInterveningJobs.java,
+	javax/print/attribute/standard/OutputDeviceAssigned.java,
+	javax/print/attribute/standard/PrinterInfo.java,
+	javax/print/attribute/standard/PrinterLocation.java,
+	javax/print/attribute/standard/PrinterMakeAndModel.java,
+	javax/print/attribute/standard/PrinterMessageFromOperator.java,
+	javax/print/attribute/standard/PrinterName.java,
+	javax/print/attribute/standard/QueuedJobCount.java,
+	javax/print/attribute/standard/RequestingUserName.java:
+	Fixed javadocs all over.
+
+2004-05-05  Michael Koch  <konqueror@gmx.de>
+
 	* javax/print/DocFlavor.java,
 	javax/print/attribute/standard/ColorSupported.java,
 	javax/print/attribute/standard/Compression.java,

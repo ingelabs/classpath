@@ -42,6 +42,10 @@ import javax.print.attribute.PrintJobAttribute;
 import javax.print.attribute.PrintRequestAttribute;
 import javax.print.attribute.TextSyntax;
 
+
+/**
+ * @author Michael Koch (konqueror@gmx.de)
+ */
 public final class JobName extends TextSyntax
   implements PrintJobAttribute, PrintRequestAttribute
 {

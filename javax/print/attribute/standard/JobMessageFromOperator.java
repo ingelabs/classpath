@@ -41,6 +41,10 @@ import java.util.Locale;
 import javax.print.attribute.PrintJobAttribute;
 import javax.print.attribute.TextSyntax;
 
+
+/**
+ * @author Michael Koch (konqueror@gmx.de)
+ */
 public final class JobMessageFromOperator extends TextSyntax
   implements PrintJobAttribute
 {

@@ -1,5 +1,5 @@
 /* JobPriority.java -- 
-   Copyright (C) 2003 Free Software Foundation, Inc.
+   Copyright (C) 2003, 2004  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -41,6 +41,10 @@ import javax.print.attribute.IntegerSyntax;
 import javax.print.attribute.PrintJobAttribute;
 import javax.print.attribute.PrintRequestAttribute;
 
+
+/**
+ * @author Michael Koch (konqueror@gmx.de)
+ */
 public final class JobPriority extends IntegerSyntax
   implements PrintJobAttribute, PrintRequestAttribute
 {

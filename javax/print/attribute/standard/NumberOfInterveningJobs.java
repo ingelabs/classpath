@@ -1,5 +1,5 @@
 /* NumberOfInterveningJobs.java -- 
-   Copyright (C) 2003 Free Software Foundation, Inc.
+   Copyright (C) 2003, 2004  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -49,7 +49,7 @@ public final class NumberOfInterveningJobs extends IntegerSyntax
   private static final long serialVersionUID = 2568141124844982746L;
   
   /**
-   * Creates a <code>QueuedJobCount</code> object.
+   * Creates a <code>NumberOfInterveningJobs</code> object.
    *
    * @param value the number of intervening jobs
    *
