@@ -1,5 +1,68 @@
 2004-09-26  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JTree.java
+	(ANCHOR_SELECTION_PATH_PROPERTY): New static field.
+	(CELL_EDITOR_PROPERTY): Likewise.
+	(CELL_RENDERER_PROPERTY): Likewise.
+	(EDITABLE_PROPERTY): Likewise.
+	(EXPANDS_SELECTED_PATHS_PROPERTY): Likewise.
+	(INVOKES_STOP_CELL_EDITING_PROPERTY): Likewise.
+	(LARGE_MODEL_PROPERTY): Likewise.
+	(LEAD_SELECTION_PATH_PROPERTY): Likewise.
+	(ROOT_VISIBLE_PROPERTY): Likewise.
+	(ROW_HEIGHT_PROPERTY): Likewise.
+	(SCROLLS_ON_EXPAND_PROPERTY): Likewise.
+	(SELECTION_MODEL_PROPERTY): Likewise.
+	(SHOWS_ROOT_HANDLES_PROPERTY): Likewise.
+	(TOGGLE_CLICK_COUNT_PROPERTY): Likewise.
+	(TREE_MODEL_PROPERTY): Likewise.
+	(VISIBLE_ROW_COUNT_PROPERTY): Likewise.
+	(cellEditor): New field.
+	(invokesStopCellEditing): Likewise.
+	(largeModel): Likewise.
+	(rowHeight): Likewise.
+	(scrollsOnExpand): Likewise.
+	(selectionModel): Likewise.
+	(toggleClickCount): Likewise.
+	(visibleRowCount): Likewise.
+	(setShowsRootHandles): Fixed typo in method name.
+	(getCellEditor): New method.
+	(setCellEditor): Likewise.
+	(getSelectionModel): Likewise.
+	(setSelectionModel): Likewise.
+	(getVisibleRowCount): Likewise.
+	(setVisibleRowCount): Likewise.
+	(isLargeModel): Likewise.
+	(setLargeModel): Likewise.
+	(getRowHeight): Likewise.
+	(setRowHeight): Likewise.
+	(getInvokesStopCellEditing): Likewise.
+	(setInvokesStopCellEditing): Likewise.
+	(getToggleClickCount): Likewise.
+	(setToggleClickCount): Likewise.
+	(getScrollsOnExpand): Likewise.
+	(setScrollsOnExpand): Likewise.
+	* javax/swing/table/DefaultTableColumnModel.java
+	(addColumnModelListener): Fixed javadoc.
+	(removeColumnModelListener): Implemented. Fixed javadoc.
+	(getColumnModelListeners): New method.
+	* javax/swing/table/JTableHeader.java
+	(columnModel): Made protected.
+	(draggedColumn): Likewise.
+	(draggedDistance): Likewise.
+	(reorderingAllowed): Likewise.
+	(resizingAllowed): Likewise.
+	(resizingColumn): Likewise.
+	(table): Likewise.
+	(updateTableInRealTime): Likewise.
+	(createDefaultColumnModel): Renamed from
+	createDefaultTableColumnModel.
+	(setDefaultRenderer): New method.
+	* javax/swing/table/TableColumn.java
+	(getPropertyChangeListeners): New method.
+
+2004-09-26  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JPasswordField.java:
 	Reformated. Implemented construtors.
 	* javax/swing/plaf/basic/BasicPasswordFieldUI.java
