@@ -1,4 +1,4 @@
-/* ParameterTag.java -- Documentation tag for method parameters
+/* ParamTag.java -- Documentation tag for method parameters
    Copyright (C) 1999 Free Software Foundation, Inc.
 
 This file is part of the com.sun.javadoc implementation of GNU Classpath.

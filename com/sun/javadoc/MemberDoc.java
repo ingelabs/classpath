@@ -1,4 +1,4 @@
-/* Member.java -- Common ops for documenting fields, methods, and constructors
+/* MemberDoc.java -- Common ops for documenting fields, methods, and constructors
    Copyright (C) 1999 Free Software Foundation, Inc.
 
 This file is part of the com.sun.javadoc implementation of GNU Classpath.
