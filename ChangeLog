@@ -1,5 +1,8 @@
 2002-01-16  Tom Tromey  <tromey@redhat.com>
 
+	* java/awt/Dimension.java: Merged with libgcj.
+	* java/awt/Point.java: Updated copyright.
+
 	* java/awt/Point.java: Merged with libgcj.
 
 	* java/util/IdentityHashMap.java (IdentityHashMap): Removed
