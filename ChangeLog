@@ -1,5 +1,11 @@
 2004-11-16  Michael Koch  <konqueror@gmx.de>
 
+	* configure.ac: Added scripts/Makefile to output files.
+	* Makefile.am (SUBDIRS): Add scripts
+	* scripts/Makefile.am: New file.
+
+2004-11-16  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/awt/peer/gtk/GdkFontPeer.java
 	(buildString): Optimise String building.
 

@@ -387,6 +387,7 @@ resource/java/security/Makefile
 resource/org/Makefile
 resource/org/ietf/Makefile
 resource/org/ietf/jgss/Makefile
+scripts/Makefile
 lib/Makefile
 lib/gen-classlist.sh
 examples/Makefile])
