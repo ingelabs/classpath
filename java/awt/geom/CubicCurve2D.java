@@ -652,11 +652,11 @@ public abstract class CubicCurve2D
    * Determines whether a position lies inside the area that is bounded
    * by the curve and the straight line connecting its end points.
    *
-   * <p><img src="CubicCurve2D-5.png" width="350" height="180"
+   * <p><img src="doc-files/CubicCurve2D-5.png" width="350" height="180"
    * alt="A drawing of the area spanned by the curve" />
    *
    * <p>The above drawing illustrates in which area points are
-   * considered &#x2013;contained&#x2014; in a CubicCurve2D.
+   * considered &#x201c;contained&#x201d; in a CubicCurve2D.
    */
   public boolean contains(double x, double y)
   {
@@ -669,11 +669,11 @@ public abstract class CubicCurve2D
    * Determines whether a point lies inside the area that is bounded
    * by the curve and the straight line connecting its end points.
    *
-   * <p><img src="CubicCurve2D-5.png" width="350" height="180"
+   * <p><img src="doc-files/CubicCurve2D-5.png" width="350" height="180"
    * alt="A drawing of the area spanned by the curve" />
    *
    * <p>The above drawing illustrates in which area points are
-   * considered &#x2013;contained&#x2014; in a CubicCurve2D.
+   * considered &#x201c;contained&#x201d; in a CubicCurve2D.
    */
   public boolean contains(Point2D p)
   {

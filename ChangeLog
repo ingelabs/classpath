@@ -1,5 +1,10 @@
 2003-10-23  Sascha Brawer  <brawer@dandelis.ch>
 
+        * java/awt/geom/CubicCurve2D.java (contains): Docfix for URL of embedded drawing.
+        * java/awt/geom/QuadCurve2D.java: Likewise.
+
+2003-10-23  Sascha Brawer  <brawer@dandelis.ch>
+
 	* java/awt/geom/CubicCurve2D.java: Added documentation.
 	* java/awt/geom/QuadCurve2D.java: Likewise.
 
