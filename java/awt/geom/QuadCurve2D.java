@@ -1,5 +1,5 @@
 /* QuadCurve2D.java -- represents a parameterized quadratic curve in 2-D space
-   Copyright (C) 2002 Free Software Foundation
+   Copyright (C) 2002, 2003 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -89,35 +89,36 @@ public abstract class QuadCurve2D implements Shape, Cloneable
   public static double getFlatnessSq(double x1, double y1, double cx,
                                      double cy, double x2, double y2)
   {
-    // XXX Implement.
-    throw new Error("not implemented");
+    return Line2D.ptSegDistSq(x1, y1, x2, y2, cx, cy);
   }
   public static double getFlatness(double x1, double y1, double cx, double cy,
                                    double x2, double y2)
   {
-    return Math.sqrt(getFlatnessSq(x1, y1, cx, cy, x2, y2));
+    return Line2D.ptSegDist(x1, y1, x2, y2, cx, cy);
   }
   public static double getFlatnessSq(double[] coords, int offset)
   {
-    return getFlatnessSq(coords[offset++], coords[offset++],
-                         coords[offset++], coords[offset++],
-                         coords[offset++], coords[offset++]);
+    return Line2D.ptSegDistSq(coords[offset], coords[offset + 1],
+                              coords[offset + 4], coords[offset + 5],
+                              coords[offset + 2], coords[offset + 3]);
   }
   public static double getFlatness(double[] coords, int offset)
   {
-    return Math.sqrt(getFlatnessSq(coords[offset++], coords[offset++],
-                                   coords[offset++], coords[offset++],
-                                   coords[offset++], coords[offset++]));
+    return Line2D.ptSegDist(coords[offset], coords[offset + 1],
+                            coords[offset + 4], coords[offset + 5],
+                            coords[offset + 2], coords[offset + 3]);
   }
   public double getFlatnessSq()
   {
-    return getFlatnessSq(getX1(), getY1(), getCtrlX(), getCtrlY(),
-                         getX2(), getY2());
+    return Line2D.ptSegDistSq(getX1(), getY1(),
+                              getX2(), getY2(),
+                              getCtrlX(), getCtrlY());
   }
   public double getFlatness()
   {
-    return Math.sqrt(getFlatnessSq(getX1(), getY1(), getCtrlX(), getCtrlY(),
-                                   getX2(), getY2()));
+    return Line2D.ptSegDist(getX1(), getY1(),
+                            getX2(), getY2(),
+                            getCtrlX(), getCtrlY());
   }
 
   public void subdivide(QuadCurve2D l, QuadCurve2D r)

@@ -1,5 +1,9 @@
 2003-10-21  Sascha Brawer  <brawer@dandelis.ch>
 
+	* java/awt/geom/QuadCurve2D.java (getFlatness, getFlatnessSq): Implement.
+
+2003-10-21  Sascha Brawer  <brawer@dandelis.ch>
+
 	Fix for Classpath bug #6076.
 	* java/awt/geom/GeneralPath.java (append): Re-written.
 
