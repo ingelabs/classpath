@@ -22,6 +22,7 @@
 package gnu.java.awt.peer.gtk;
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.event.KeyEvent;
 import java.awt.peer.*;
 
 public class GtkButtonPeer extends GtkComponentPeer
@@ -50,10 +51,18 @@ public class GtkButtonPeer extends GtkComponentPeer
 	&& !modalHasGrab ())
       {
 	MouseEvent me = (MouseEvent) e;
-	if (!me.isConsumed()
-	    && (me.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
+	if (!me.isConsumed ()
+	    && (me.getModifiers () & MouseEvent.BUTTON1_MASK) != 0)
 	  postActionEvent (((Button)awtComponent).getActionCommand (), 
 			   me.getModifiers ());
+      }
+
+    if (e.getID () == KeyEvent.KEY_PRESSED)
+      {
+	KeyEvent ke = (KeyEvent) e;
+	if (!ke.isConsumed () && ke.getKeyCode () == KeyEvent.VK_SPACE)
+	  postActionEvent (((Button)awtComponent).getActionCommand (),
+			   ke.getModifiers ());
       }
 
     super.handleEvent (e);

@@ -387,11 +387,32 @@ awt_event_handler (GdkEvent *event)
 	case GDK_KEY_PRESS:
 	  {
 	    GtkWidget *widget;
+	    GtkWindow *window;
 
 	    gdk_window_get_user_data (event->any.window, (void **) &widget);
-	    
-	    if (widget && GTK_WIDGET_HAS_FOCUS (widget))
+
+	    window = GTK_WINDOW (gtk_widget_get_ancestor (widget, 
+							  GTK_TYPE_WINDOW));
+	    if (window
+		&& GTK_WIDGET_IS_SENSITIVE (window) 
+		&& window->focus_widget
+		&& GTK_WIDGET_IS_SENSITIVE (window->focus_widget)
+		&& window->focus_widget->window)
 	      {
+		gtk_widget_activate (window->focus_widget);
+		gdk_property_get (window->focus_widget->window,
+				  gdk_atom_intern ("_GNU_GTKAWT_ADDR", FALSE),
+				  gdk_atom_intern ("CARDINAL", FALSE),
+				  0,
+				  sizeof (jobject),
+				  FALSE,
+				  NULL,
+				  NULL,
+				  NULL,
+				  (guchar **)&obj_ptr);
+		
+		/*  	    if (grab  && GTK_WIDGET_HAS_DEFAULT (widget) ) */
+		/*  	      { */
 		(*gdk_env)->CallVoidMethod (gdk_env, *obj_ptr,
 					    postKeyEventID,
 					    (jint) AWT_KEY_PRESSED,
