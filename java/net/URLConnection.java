@@ -32,7 +32,6 @@ import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Locale;
-import java.util.Vector;
 
 /**
   * This class models a connection that retrieves the information pointed
@@ -151,22 +150,6 @@ protected long ifModifiedSince;
   * This is the URL associated with this connection
   */
 protected URL url;
-
-/**
-  * This is the list of header tag or key fields.  Use a Vector instead of
-  * a Hastable because we need to reference by index.  Use the "standard"
-  * Java naming in the hope that it is compatible with Sun's implementation
-  * Use Vector for JDK 1.1.5 compat.
-  */
-protected Vector headerKeys = new Vector(10);
-
-/**
-  * This is the list of header value fields.  Use a Vector instead of
-  * a Hastable because we need to reference by index.  Use the "standard"
-  * Java naming in the hope that it is compatible with Sun's implementation
-  * Use Vector for JDK 1.1.5 compat.
-  */
-protected Vector headerValues = new Vector(10);
 
 /**
   * The list of request properties for this connection
@@ -735,15 +718,7 @@ getLastModified()
 public String
 getHeaderFieldKey(int index)
 {
-  String key = null;
-
-  try
-    {
-      key = (String)headerKeys.elementAt(index);
-    }
-  catch (ArrayIndexOutOfBoundsException e) { ; }
-
-  return(key);
+  return(null);
 }     
 
 /*************************************************************************/
@@ -761,15 +736,7 @@ getHeaderFieldKey(int index)
 public String
 getHeaderField(int index)
 {
-  String value = null;
-
-  try
-    {
-      value = (String)headerValues.elementAt(index);
-    }
-  catch (ArrayIndexOutOfBoundsException e) { ; }
-
-  return(value);
+  return(null);
 }     
 
 /*************************************************************************/
@@ -791,7 +758,7 @@ getHeaderField(String name)
       if (key == null)
         return(null);
 
-      if (key.equals(name.toLowerCase()))
+      if (key.toLowerCase().equals(name.toLowerCase()))
         return(getHeaderField(i));
     }
 }
