@@ -1,3 +1,8 @@
+2005-01-14  Sven de Marothy <sven@physto.se>
+
+	* java/util/GregorianCalendar.java
+	(GregorianCalendar): Update fields in the constructor
+
 2005-01-14  Arnaud Vandyck  <avdyk@gnu.org>
 
 	* javax/swing/text/StringContent.java: New file.
