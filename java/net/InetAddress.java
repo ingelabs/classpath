@@ -149,7 +149,7 @@ public class InetAddress implements Serializable
         {
 	  // Hmmm, make one up and hope that it works.
 	  byte[] zeros = { 0, 0, 0, 0 };
-	  ANY_IF = new InetAddress(zeros);
+	  ANY_IF = new Inet4Address(zeros);
         }
     }
 
@@ -191,32 +191,7 @@ public class InetAddress implements Serializable
 
   /**
    * Initializes this object's addr instance variable from the passed in
-   * int array.  Note that this constructor is protected and is called
-   * only by static methods in this class.
-   *
-   * @param ipaddr The IP number of this address as an array of bytes
-   */
-  InetAddress(byte[] address)
-  {
-    this (address, null, null);
-  }
-
-  /**
-   * Initializes this object's addr instance variable from the passed in
-   * int array.  Note that this constructor is protected and is called
-   * only by static methods in this class.
-   *
-   * @param ipaddr The IP number of this address as an array of bytes
-   * @param hostname The hostname of this IP address.
-   */
-  InetAddress(byte[] address, String hostname)
-  {
-    this(address, hostname, null);
-  }
-
-  /**
-   * Initializes this object's addr instance variable from the passed in
-   * int array.  Note that this constructor is protected and is called
+   * byte array.  Note that this constructor is protected and is called
    * only by static methods in this class.
    *
    * @param ipaddr The IP number of this address as an array of bytes
@@ -636,7 +611,7 @@ public class InetAddress implements Serializable
     // Assume that the host string is an IP address
     byte[] address = aton(hostname);
     if (address != null)
-      return new InetAddress(address);
+      return new Inet4Address(address);
 
     // Try to resolve the host by DNS
     InetAddress[] addresses = getAllByName(hostname);
@@ -697,7 +672,7 @@ public class InetAddress implements Serializable
 	// canonical names of these ip's when the user asks for the hostname
 	// But do specify the host alias so if the IP returned won't
 	// reverse lookup we don't throw an exception.
-	addresses[i] = new InetAddress(iplist[i], null, hostname);
+	addresses[i] = new Inet4Address(iplist[i], null, hostname);
       }
 
     addToCache(hostname, addresses);
@@ -777,10 +752,10 @@ public class InetAddress implements Serializable
     if (inaddr_any == null)
       {
 	byte[] tmp = lookupInaddrAny();
-	inaddr_any = new InetAddress(tmp);
+	inaddr_any = new Inet4Address(tmp);
       }
 
-    return (inaddr_any);
+    return inaddr_any;
   }
 
   /**

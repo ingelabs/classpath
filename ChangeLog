@@ -1,5 +1,19 @@
 2004-04-29  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/InetAddress.java
+	(static): ANY_IF should be an instance of Inet4Address.
+	(InetAddress): Remove unused constructors.
+	(getByName): Create instance of Inet4Address for IPv4 addresses.
+	(getAllByName): Likewise.
+	(getInaddrAny): Likewise.
+	* java/net/Inet4Address.java
+	(Inet4Address): New constructor which takes hostname_alias. route all
+	other construtors through this one.
+	* java/net/Inet6Address.java
+	(Inet6Address): Call correct super constructor.
+
+2004-04-29  Michael Koch  <konqueror@gmx.de>
+
 	* java/nio/ByteBuffer.java,
 	java/nio/CharBuffer.java,
 	java/nio/DoubleBuffer.java,

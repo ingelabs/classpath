@@ -62,7 +62,19 @@ public final class Inet4Address extends InetAddress
    */
   private Object writeReplace() throws ObjectStreamException
   {
-    return new InetAddress(addr, hostName);
+    return new InetAddress(addr, hostName, null);
+  }
+  
+  /**
+   * Initializes this object's addr instance variable from the passed in
+   * byte array. Note that this constructor is package-private and is called
+   * only by static methods in InetAddress.
+   * 
+   * @param addr
+   */
+  Inet4Address(byte[] addr)
+  {
+    this(addr, null, null);
   }
 
   /**
@@ -73,9 +85,24 @@ public final class Inet4Address extends InetAddress
    */
   Inet4Address(byte[] addr, String host)
   {
-    super(addr, host);
+    this(addr, host, null);
   }
 
+  /**
+   * Initializes this object's addr instance variable from the passed in
+   * byte array.  Note that this constructor is protected and is called
+   * only by static methods in this class.
+   *
+   * @param addr The IP number of this address as an array of bytes
+   * @param hostname The hostname of this IP address.
+   * @param hostname_alias A backup hostname to use if hostname is null to
+   * prevent reverse lookup failures
+   */
+  Inet4Address(byte[] addr, String hostname, String hostname_alias)
+  {
+    super(addr, hostname, hostname_alias);
+  }
+  
   /**
    * Checks if the address is a multicast address
    *

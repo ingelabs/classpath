@@ -67,7 +67,7 @@ public final class Inet6Address extends InetAddress
    */
   Inet6Address(byte[] addr, String host)
   {
-    super(addr, host);
+    super(addr, host, null);
     this.ipaddress = addr;
   }
 
