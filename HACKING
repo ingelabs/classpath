@@ -4,7 +4,6 @@ have the following installed:
         - GNU autoconf 2.13
         - GNU automake 1.4
         - GNU libtool 1.3.3
-        - Kaffe 1.0.5+
         - GTK+ 1.2.x
         - IBM jikes 1.0.9+
 	- libart_lgpl 2.1.0
@@ -15,20 +14,33 @@ following from the toplevel directory.
         aclocal; autoheader; automake; autoconf
 
 Next you run configure.  Options you'll probably want to specify
-include --with-jikes, --with-javah={path to kaffeh}/kaffeh,
---with-classlib={path to Klasses.jar}/Klasses.jar and 
---with-japhar={prefix to Japhar}.  For native compilation you need 
-jni.h from the JDK or Japhar in your include path.  This is done 
-automatically for you if you specify --with-japhar.
+include --with-jikes, --with-javah={path to jdk}/javah,
+--with-classlib={path to classes.jar}/classes.jar and
+--with-japhar={prefix to Japhar}.  For native compilation you need
+jni.h from the JDK or Japhar in your include path.  This is done
+automatically for you if you specify --with-japhar.  Otherwise you
+could probably copy it to classpath/include and it will work.  Kaffeh
+appears to have a small bug which keeps us from using it to generate
+valid header files.
 
-Eventually jikes should contain a patch for placing .u (dependency
-files) where -d would also place class files.  This will be used in 
-'make dist'.
+Jikes 1.11 should contain a code for placing .u (dependency files)
+where -d would also place class files.  This will be used in the
+distributions of classpath to make compilation with javac, etc.
+easier/possible.
+
+There should be no compiling errors within Java source code which is
+checked in.  Code should be compiled in the build process before
+checking it in.
+
 
 The following is a rough list of tasks which need to be completed:
 
         * Port to new platforms.  Most of us develop on GNU/Linux so
           our platform support may not be up to par.
+
+	* We no longer are able to cross-compile Classpath because
+	  we are using configure to determine the endian-ness of
+	  the platform.
 
         * java.awt.image needs to be stubbed out.
 
@@ -37,13 +49,13 @@ The following is a rough list of tasks which need to be completed:
         * java.math needs some work.  This includes one missing 
 	  function and setting up BigInteger.c in the native compile.
 
-	* java.security needs some work.  SecureClassLoader needs work
-	  but it relies on some 1.2 ClassLoader stuff which isn't 
-	  implemented at the moment.
-
         * GNU Classpath needs to work with Kaffe.  There is
           documentation on the efforts made to originally make
           Classpath work with Japhar in docs/ and on the web-site.
+
+	* GNU Classpath should not depend on Japhar or Kaffe for 
+	  jni.h.  It should be possible to generate a proper jni.h
+	  from configure for instance.
 
         * Update the web-site
 
@@ -52,16 +64,10 @@ The following is a rough list of tasks which need to be completed:
           gnu.java.awt.peer.gtk.
 
         * Fix the build so that distributions won't have the same high
-          requires as CVS.  Shouldn't be much left to do this.  Some
+          requirements as CVS.  Shouldn't be much left to do this.  Some
 	  more work can be done to make builds from CVS easier.
 
         * Create configure, etc. for the swing project.
-
-        * There are compiling errors located in lib/errors.txt (you
-          have to try compiling first).
-
-        * native compilation for the gtk peers is failing and needs to
-          be fixed.
 
 If you have any questions, suggestions, etc., send them to
 <classpath@gnu.org>.
