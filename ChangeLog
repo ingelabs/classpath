@@ -1,5 +1,14 @@
 2004-12-24  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JRootPane.java
+	(windowDecorationStyle): New field.
+	(setMenuBar): New method.
+	(getMenuBar): Likewise.
+	(getWindowDecorationStyle): Likewise.
+	(setWindowDecorationStyle): Likewise.
+
+2004-12-24  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/DefaultListSelectionModel.java
 	(leadAnchorNotificationEnabled): Made protected.
 
