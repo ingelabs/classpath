@@ -209,7 +209,7 @@ public final class System
       defaultProperties.put("java.io.tmpdir",
                             defaultProperties.get("java.tmpdir"));
   }
-    
+
   /**
    * Stores the current system properties. This can be modified by
    * {@link #setProperties(Properties)}, but will never be null, because
@@ -667,7 +667,8 @@ public final class System
 
   /**
    * Convert a library name to its platform-specific variant.
-   *   * @param libname the library name, as used in <code>loadLibrary</code>
+   *
+   * @param libname the library name, as used in <code>loadLibrary</code>
    * @return the platform-specific mangling of the name
    * @since 1.2
    */

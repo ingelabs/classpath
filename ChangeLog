@@ -1,5 +1,12 @@
 2003-05-22  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/StringBuffer.java:
+	Merged copyright from libgcj.
+	* java/lang/System.java
+	(mapLibraryName): Fixed documentation.
+
+2003-05-22  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/Checkbox.java
 	(getItemListeners): New method.
 	* java/awt/Dialog.java
