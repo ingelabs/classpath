@@ -6,6 +6,7 @@ CharBufferImpl.java \
 DatagramChannelImpl.java \
 DoubleBufferImpl.java \
 FileChannelImpl.java \
+FileLockImpl.java \
 FloatBufferImpl.java \
 IntBufferImpl.java \
 LongBufferImpl.java \
