@@ -939,9 +939,9 @@ public class File implements Serializable, Comparable
    *
    * @since 1.2
    */
-  public static synchronized File createTempFile (String prefix, String suffix,
-                                                  File directory)
-    throws IllegalArgumentException, SecurityException, IOException
+  public static File createTempFile (String prefix, String suffix,
+				     File directory)
+    throws IOException
   {
     // Grab the system temp directory if necessary
     if (directory == null)
@@ -1089,14 +1089,14 @@ public class File implements Serializable, Comparable
    *
    * @since 1.2
    */
-  public int compareTo (File file)
+  public int compareTo (File other)
   {
     String p1, p2;
     
     try
       {  
-        p1 = getCanonicalPath();
-        p2 = file.getCanonicalPath();
+        p1 = getCanonicalPath ();
+        p2 = other.getCanonicalPath ();
       }
     catch(IOException e)
       {
@@ -1104,8 +1104,7 @@ public class File implements Serializable, Comparable
         // Even if we don't call the method, we must replicate the functionality
         // which per the spec can fail.  What happens in that situation?
         // I just assume the files are equal!
-        // 
-        return(0);
+        return 0;
       }
 
     return p1.compareTo (p2);
@@ -1132,7 +1131,7 @@ public class File implements Serializable, Comparable
    *
    * @since 1.2
    */
-  public int compareTo (Object obj) throws ClassCastException
+  public int compareTo (Object obj)
   {
     return compareTo ((File) obj);
   }
@@ -1209,13 +1208,15 @@ public class File implements Serializable, Comparable
       s.checkRead (path);
   }
 
-  /**
+  /** 
    * Calling this method requests that the file represented by this object
    * be deleted when the virtual machine exits.  Note that this request cannot
    * be cancelled.  Also, it will only be carried out if the virtual machine
    * exits normally.
    *
    * @exception SecurityException If deleting of the file is not allowed
+   *
+   * @since 1.2
    */
   public void deleteOnExit ()
   {

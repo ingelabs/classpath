@@ -1,5 +1,13 @@
 2003-05-10  Michael Koch  <konqueror@gmx.de>
 
+	* java/io/File.java
+	(createTempFile): Only throws IOException.
+	(compareTo): Renamed argument to match libgcj, doesnt throws
+	ClassCastException.
+	(deleteOnExit): Added @since tag.
+
+2003-05-10  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/FileChannelImpl.java:
 	New version from libgcj. Normal file operations should now work with
 	FileChannels.
