@@ -39,7 +39,7 @@
  * Method to create an empty file
  */
 
-JNIEXPORT void JNICALL
+JNIEXPORT jint JNICALL
 Java_java_io_File_createInternal(JNIEnv *env, jclass clazz, jstring name)
 {
   const char *fname;
@@ -49,12 +49,16 @@ Java_java_io_File_createInternal(JNIEnv *env, jclass clazz, jstring name)
   if (!fname)
     return;
 
-  fd = open(fname, O_CREAT|O_RDWR, 0777);
+  fd = open(fname, O_CREAT|O_EXCL|O_RDWR, 0777);
   if (fd == -1)
-    JCL_ThrowException(env, "java/io/IOException", strerror(errno));
+    {
+      if (errno != EEXIST)
+        JCL_ThrowException(env, "java/io/IOException", strerror(errno));
+      return(0);
+    }
 
   close(fd);
-  return;
+  return(1);
 }
 
 /*************************************************************************/
