@@ -1,3 +1,8 @@
+2003-11-17  Graydon Hoare  <graydon@redhat.com>
+
+	* gnu/classpath/Configuration.java.in (default_awt_peer_toolkit):
+	Change GTK -> Gtk.
+
 2003-11-17  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/undo/StateEdit.java (getPresentationName): Docfix.
