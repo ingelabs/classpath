@@ -1,3 +1,9 @@
+2002-10-05  Mark Wielaard  <mark@klomp.org>
+
+	* java/lang/Makefile.am (EXTRA_DIST): Add Throwable.java
+	* vm/reference/java/lang/Makefile.am (EXTRA_DIST): Remove
+	Throwable.java, add VMThrowable.java.
+
 2002-10-04  C. Brian Jones <cbj@gnu.org>
 
 	* .cvsignore: ignore all automt4e*.cache files

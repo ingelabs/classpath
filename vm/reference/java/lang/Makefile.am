@@ -6,8 +6,8 @@ EXTRA_DIST = \
 Class.java \
 Runtime.java \
 Thread.java \
-Throwable.java \
 VMClassLoader.java \
 VMObject.java \
 VMSecurityManager.java \
-VMSystem.java
+VMSystem.java \
+VMThrowable.java
