@@ -33,7 +33,7 @@ public class BeanContextServiceRevokedEvent extends BeanContextEvent {
 	 * The <code>Class</code> representing the service which is now
 	 * available.
 	 */
-	protected class serviceClass;
+	protected Class serviceClass;
 	private boolean revokeNow;
 
 	/**
@@ -46,8 +46,8 @@ public class BeanContextServiceRevokedEvent extends BeanContextEvent {
 	 *        classes or just a suggestion.
 	 */
 	public BeanContextServiceRevokedEvent(BeanContextServices services, Class serviceClass, boolean revokeNow) {
-		super(serviceClass);
-		this.services = services;
+		super(services);
+		this.serviceClass = serviceClass;
 		this.revokeNow = revokeNow;
 	}
 

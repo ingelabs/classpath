@@ -22,6 +22,7 @@ package java.beans.beancontext;
 
 import java.util.Collection;
 import java.util.Arrays;
+import java.util.Iterator;
 
 /**
  * Event fired when children are added to or removed from a <code>BeanContext</code>.

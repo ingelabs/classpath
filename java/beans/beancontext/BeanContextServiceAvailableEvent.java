@@ -20,6 +20,8 @@
 
 package java.beans.beancontext;
 
+import java.util.Iterator;
+
 /**
  * Event fired when new services become available through a <code>BeanContextServices</code>.
  *
@@ -33,7 +35,7 @@ public class BeanContextServiceAvailableEvent extends BeanContextEvent {
 	 * The <code>Class</code> representing the service which is now
 	 * available.
 	 */
-	protected class serviceClass;
+	protected Class serviceClass;
 
 	/**
 	 * Create a new service available event.
@@ -43,8 +45,8 @@ public class BeanContextServiceAvailableEvent extends BeanContextEvent {
 	 * @param serviceClass the service class that is now available.
 	 */
 	public BeanContextServiceAvailableEvent(BeanContextServices services, Class serviceClass) {
-		super(serviceClass);
-		this.services = services;
+		super(services);
+		this.serviceClass = serviceClass;
 	}
 
 	/**
