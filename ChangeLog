@@ -1,3 +1,12 @@
+2003-11-28  Michael Koch  <konqueror@gmx.de>
+
+	* gnu/java/net/PlainDatagramSocketImpl.java
+	(sendTo): Added offset argument.
+	* include/gnu_java_net_PlainDatagramSocketImpl.h: Regenerated.
+	* native/jni/java-net/gnu_java_net_PlainDatagramSocketImpl.c
+	(receive0): Use completely available space in buffer array.
+	(sendTo): Use offset.
+
 2003-11-28  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
 	* java/text/SimpleDateFormat.java (compileFormat):

@@ -169,12 +169,13 @@ public final class PlainDatagramSocketImpl extends DatagramSocketImpl
    * @param addr The address to send to
    * @param port The port to send to 
    * @param buf The buffer to send
+   * @param offset The offset of the data in the buffer to send
    * @param len The length of the data to send
    *
    * @exception IOException If an error occurs
    */
   private native void sendto (InetAddress addr, int port,
-                              byte[] buf, int len)
+                              byte[] buf, int offset, int len)
     throws IOException;
 
   /**
@@ -189,7 +190,7 @@ public final class PlainDatagramSocketImpl extends DatagramSocketImpl
     synchronized(SEND_LOCK)
       {
       sendto(packet.getAddress(), packet.getPort(), packet.getData(), 
-             packet.getLength());
+             packet.getOffset(), packet.getLength());
       }
     
   }

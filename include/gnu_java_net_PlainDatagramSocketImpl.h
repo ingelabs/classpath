@@ -12,7 +12,7 @@ extern "C"
 
 extern JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_bind (JNIEnv *env, jobject, jint, jobject);
 extern JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_create (JNIEnv *env, jobject);
-extern JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_sendto (JNIEnv *env, jobject, jobject, jint, jbyteArray, jint);
+extern JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_sendto (JNIEnv *env, jobject, jobject, jint, jbyteArray, jint, jint);
 extern JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_receive0 (JNIEnv *env, jobject, jobject);
 extern JNIEXPORT void JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_setOption (JNIEnv *env, jobject, jint, jobject);
 extern JNIEXPORT jobject JNICALL Java_gnu_java_net_PlainDatagramSocketImpl_getOption (JNIEnv *env, jobject, jint);

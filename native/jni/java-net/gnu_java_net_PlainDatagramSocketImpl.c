@@ -161,7 +161,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this,
                                               jobject packet)
 {
 #ifndef WITHOUT_NETWORK
-  unsigned int  addr, port, len, bytes_read;
+  unsigned int  addr, port, maxlen, offset, bytes_read;
   jclass        cls, addr_cls;
   jmethodID     mid;
   jarray        arr;
@@ -174,7 +174,8 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this,
 
   addr       = 0;
   port       = 0;
-  len        = 0;
+  maxlen     = 0;
+  offset     = 0;
   bytes_read = 0;
 
   if(packet == NULL)
@@ -205,26 +206,29 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this,
       return;
     }
 
-  /* Now get the length from the packet */
-  mid = (*env)->GetMethodID(env, cls, "getLength", "()I");
+  /* Now get the offset from the packet */
+  mid  = (*env)->GetMethodID(env, cls, "getOffset", "()I");
   if (mid == NULL)
     {
-      JCL_ThrowException(env, IO_EXCEPTION, "Internal error: getLength");
+      JCL_ThrowException(env, IO_EXCEPTION, "Internal error: getOffset");
       return;
     }
 
-  len = (*env)->CallIntMethod(env, packet, mid);
+  offset = (*env)->CallIntMethod(env, packet, mid);
   if ((*env)->ExceptionOccurred(env))
     {
-      JCL_ThrowException(env, IO_EXCEPTION, "Internal error: call getLength");
+      JCL_ThrowException(env, IO_EXCEPTION, "Internal error: call getOffset");
       return;
     }
 
-  DBG("PlainDatagramSocketImpl.receive(): Got the length\n");
+  DBG("PlainDatagramSocketImpl.receive(): Got the offset\n");
+
+  /* Now get the maximal available length from the packet */
+  maxlen = (*env)->GetArrayLength(env,arr) - offset;
 
   /* Receive the packet */
   /* should we try some sort of validation on the length? */
-  bytes_read = _javanet_recvfrom(env, this, arr, 0, len, &addr, &port); 
+  bytes_read = _javanet_recvfrom(env, this, arr, offset, maxlen, &addr, &port); 
   if ((bytes_read == -1) || (*env)->ExceptionOccurred(env))
     {
       JCL_ThrowException(env, IO_EXCEPTION, "Internal error: receive");
@@ -341,7 +345,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_receive0(JNIEnv *env, jobject this,
 JNIEXPORT void JNICALL
 Java_gnu_java_net_PlainDatagramSocketImpl_sendto(JNIEnv *env, jobject this, 
                                              jobject addr, jint port, jarray buf, 
-                                             jint len)
+                                             jint offset, jint len)
 {
 #ifndef WITHOUT_NETWORK
   jint netAddress;
@@ -355,7 +359,7 @@ Java_gnu_java_net_PlainDatagramSocketImpl_sendto(JNIEnv *env, jobject this,
 
   DBG("PlainDatagramSocketImpl.sendto(): have addr\n");
 
-  _javanet_sendto(env, this, buf, 0, len, netAddress, port);
+  _javanet_sendto(env, this, buf, offset, len, netAddress, port);
   if ((*env)->ExceptionOccurred(env))
     { JCL_ThrowException(env, IO_EXCEPTION, "Internal error: send data"); return; }
 
