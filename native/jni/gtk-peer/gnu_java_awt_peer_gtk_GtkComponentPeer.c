@@ -110,6 +110,18 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetSetCursor
   gdk_threads_leave ();
 }
 
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkComponentPeer_requestFocus__
+  (JNIEnv *env, jobject obj)
+{
+  void *ptr;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+  /* XXX gtk_widget_grab_focus (GTK_WIDGET (ptr)); */
+  gdk_threads_leave ();
+}
+
 /*
  * Find the origin of a widget's window.
  */

@@ -1,3 +1,8 @@
+2004-05-20  Mark Wielaard  <mark@klomp.org>
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkComponentPeer.c
+	(requestFocus): Re-add function.
+                                                                                            
 2004-05-20  Guilhem Lavaux <guilhem@kaffe.org>
                                                                                             
 	* java/text/CollationElementIterator.java
