@@ -39,6 +39,7 @@ package java.security;
 
 import java.security.spec.KeySpec;
 import java.security.spec.InvalidKeySpecException;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * <p>Key factories are used to convert keys (opaque cryptographic keys of type
@@ -122,11 +123,11 @@ public class KeyFactory
   {
     Provider[] p = Security.getProviders();
     for (int i = 0; i < p.length; i++)
-      {
-	String classname = p[i].getProperty("KeyFactory." + algorithm);
-	if (classname != null)
-	  return getInstance(classname, algorithm, p[i]);
-      }
+      try
+        {
+          getInstance(algorithm, p[i]);
+        }
+      catch (NoSuchAlgorithmException ignored) {}
 
     throw new NoSuchAlgorithmException(algorithm);
   }
@@ -153,7 +154,54 @@ public class KeyFactory
     if (p == null)
       throw new NoSuchProviderException();
 
-    return getInstance(p.getProperty("KeyFactory." + algorithm), algorithm, p);
+    return getInstance(algorithm, p);
+  }
+
+  /**
+   * Generates a <code>KeyFactory</code> object for the specified algorithm from
+   * the specified provider. Note: the <code>provider</code> doesn't have to be
+   * registered.
+   *
+   * @param algorithm the name of the requested key algorithm. See Appendix A
+   * in the Java Cryptography Architecture API Specification &amp; Reference for
+   * information about standard algorithm names.
+   * @param provider the provider.
+   * @return a <code>KeyFactory</code> object for the specified algorithm.
+   * @throws NoSuchAlgorithmException if the algorithm is not available from
+   * the specified provider.
+   * @throws IllegalArgumentException if the <code>provider</code> is
+   * <code>null</code>.
+   * @since 1.4
+   * @see Provider
+   */
+  public static KeyFactory getInstance(String algorithm, Provider provider)
+    throws NoSuchAlgorithmException
+  {
+    if (provider == null)
+      throw new IllegalArgumentException();
+
+    // try the name as is
+    String className = provider.getProperty("KeyFactory." + algorithm);
+    if (className == null) // try all uppercase
+      {
+        String upper = algorithm.toUpperCase();
+        className = provider.getProperty("KeyFactory." + upper);
+        if (className == null) // try if it's an alias
+          {
+            String alias =
+                provider.getProperty("Alg.Alias.KeyFactory." + algorithm);
+            if (alias == null) // try all-uppercase alias name
+              {
+                alias = provider.getProperty("Alg.Alias.KeyFactory." + upper);
+                if (alias == null) // spit the dummy
+                  throw new NoSuchAlgorithmException(algorithm);
+              }
+            className = provider.getProperty("KeyFactory." + alias);
+            if (className == null)
+              throw new NoSuchAlgorithmException(algorithm);
+          }
+      }
+    return getInstance(className, algorithm, provider);
   }
 
   private static KeyFactory getInstance(String classname, String algorithm,

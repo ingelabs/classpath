@@ -130,11 +130,11 @@ public class AlgorithmParameterGenerator
   {
     Provider[] p = Security.getProviders();
     for (int i = 0; i < p.length; i++)
-      {
-	String classname = p[i].getProperty("AlgorithmParameterGenerator." + algorithm);
-	if (classname != null)
-	  return getInstance(classname, algorithm, p[i]);
-      }
+      try
+        {
+          getInstance(algorithm, p[i]);
+        }
+      catch (NoSuchAlgorithmException ignored) {}
 
     throw new NoSuchAlgorithmException(algorithm);
   }
@@ -163,7 +163,56 @@ public class AlgorithmParameterGenerator
     if (p == null)
       throw new NoSuchProviderException();
 
-    return getInstance(p.getProperty("AlgorithmParameterGenerator." + algorithm), algorithm, p);
+    return getInstance(algorithm, p);
+  }
+
+  /**
+   * Generates an AlgorithmParameterGenerator object for the requested
+   * algorithm, as supplied from the specified provider, if such a parameter
+   * generator is available from the provider. Note: the <code>provider</code>
+   * doesn't have to be registered.
+   *
+   * @param algorithm the string name of the algorithm.
+   * @param provider the provider.
+   * @return the new AlgorithmParameterGenerator object.
+   * @throws NoSuchAlgorithmException if the algorithm is not available from
+   * the provider.
+   * @throws IllegalArgumentException if the provider is null.
+   * @since 1.4
+   * @see Provider
+   */
+  public static AlgorithmParameterGenerator getInstance(String algorithm,
+                                                        Provider provider)
+    throws NoSuchAlgorithmException
+  {
+    if (provider == null)
+      throw new IllegalArgumentException();
+
+    // try the name as is
+    String className = provider.getProperty(
+        "AlgorithmParameterGenerator." + algorithm);
+    if (className == null) // try all uppercase
+      {
+        String upper = algorithm.toUpperCase();
+        className = provider.getProperty("AlgorithmParameterGenerator." + upper);
+        if (className == null) // try if it's an alias
+          {
+            String alias = provider.getProperty(
+                "Alg.Alias.AlgorithmParameterGenerator." + algorithm);
+            if (alias == null) // try all-uppercase alias name
+              {
+                alias = provider.getProperty(
+                    "Alg.Alias.AlgorithmParameterGenerator." + upper);
+                if (alias == null) // spit the dummy
+                  throw new NoSuchAlgorithmException(algorithm);
+              }
+            className = provider.getProperty(
+                "AlgorithmParameterGenerator." + alias);
+            if (className == null)
+              throw new NoSuchAlgorithmException(algorithm);
+          }
+      }
+    return getInstance(className, algorithm, provider);
   }
 
   private static AlgorithmParameterGenerator getInstance(String classname,
