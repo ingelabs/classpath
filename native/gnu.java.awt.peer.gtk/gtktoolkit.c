@@ -39,12 +39,27 @@ Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenSizeDimensions
 {
   jint *dims = (*env)->GetIntArrayElements (env, jdims, 0);  
 
-  (*env)->MonitorEnter (env,java_mutex);
+  (*env)->MonitorEnter (env, java_mutex);
 
   dims[0] = gdk_screen_width ();
   dims[1] = gdk_screen_height ();
 
-  (*env)->MonitorExit (env,java_mutex);
+  (*env)->MonitorExit (env, java_mutex);
 
   (*env)->ReleaseIntArrayElements(env, jdims, dims, 0);
 }
+
+JNIEXPORT jint JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkToolkit_getScreenResolution (JNIEnv *env, 
+							   jobject obj)
+{
+  int res;
+
+  (*env)->MonitorEnter (env, java_mutex);
+
+  res = gdk_screen_width() / (gdk_screen_width_mm() / 25.4);
+
+  (*env)->MonitorExit (env, java_mutex);
+  return res;
+}
+

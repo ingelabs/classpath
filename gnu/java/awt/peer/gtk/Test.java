@@ -82,6 +82,7 @@ class Test
       Toolkit t = Toolkit.getDefaultToolkit();
       /* t.beep(); */
       System.out.println("screen size: " + t.getScreenSize());
+      System.out.println("resolution : " + t.getScreenResolution());
       System.out.println("done");
     }
 }

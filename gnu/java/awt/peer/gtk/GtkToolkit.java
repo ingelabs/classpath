@@ -101,10 +101,7 @@ public class GtkToolkit extends java.awt.Toolkit
       return null;
     }
 
-  public int getScreenResolution() 
-    {
-      return 0;
-    }
+  native public int getScreenResolution();
 
   public Dimension getScreenSize () {
     int dim[] = new int[2];
