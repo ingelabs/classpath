@@ -1,5 +1,17 @@
 2003-06-23  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/Font.java:
+	Reordered imports.
+	* java/awt/Window.java:
+	Fixed documentation.
+	(Window): No need to case BorderLayout to LayoutManager.
+	* java/awt/datatransfer/StringSelection.java
+	(supported_flavors): Added DataFlavor.stringFlavor.
+	* java/awt/image/ColorModel.java
+	(getTransferType): New method.
+
+2003-06-23  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/PlainSocketImpl.java
 	(in): New member variable.
 	(out): Likewise.
