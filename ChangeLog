@@ -1,3 +1,7 @@
+2003-09-22  Michael Koch  <konqueror@gmx.de>
+
+	* external/.cvsignore: New file, ignore Makefile and Makefile.in.
+
 2003-09-21  Ralph Loader  <suckfish@ihug.co.nz>
 
 	PR java/12350:
