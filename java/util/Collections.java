@@ -2005,11 +2005,12 @@ public class Collections
   /**
    * The implementation of {@link #synchronizedList(List)} for sequential
    * lists. This class name is required for compatibility with Sun's JDK
-   * serializability.
+   * serializability. Package visible, so that lists such as Vector.subList()
+   * can specify which object to synchronize on.
    *
    * @author Eric Blake <ebb9@email.byu.edu>
    */
-  private static class SynchronizedList extends SynchronizedCollection
+  static class SynchronizedList extends SynchronizedCollection
     implements List
   {
     /**

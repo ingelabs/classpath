@@ -1,3 +1,33 @@
+2001-10-21  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/AbstractList.java:
+	(modCount): Make sure it is updated in all needed places.
+	* java/util/ArrayList.java: Improve javadoc. Implements
+	RandomAccess. Add serialVersionUID. Reorder methods.
+	(modCount): Make sure it is updated in all needed places.
+	(rangeExclusive, rangeInclusive): Add common methods for bounds
+	check.
+	(isEmpty): Add missing method.
+	* java/util/Collections.java: (class SynchronizedList): Make
+	package visible.
+	* java/util/ConcurrentModificationException.java: Improve
+	javadoc.
+	* java/util/EmptyStackException.java: Improve javadoc.
+	* java/util/LinkedList.java: Improve javadoc.
+	(modCount): Make sure it is updated in all needed places.
+	(rangeExclusive, rangeInclusive): Add common methods for bounds
+	check.
+	* java/util/NoSuchElementException.java: Improve javadoc.
+	* java/util/Stack.java: Improve javadoc. Fix synchronization
+	issues.
+	(modCount): Make sure it is updated in all needed places.
+	* java/util/Vector.java: Improve javadoc. Fix synchronization
+	issues. Implements RandomAccess. Reorder methods.
+	(modCount): Make sure it is updated in all needed places.
+	(setSize): Fix according to specifications: this does not dictate
+	the backing array size.
+	(removeAll, retainAll): Faster implementations.
+
 2001-10-20  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/lang/reflect/AccessibleObject.java: Improve javadoc.

@@ -73,7 +73,7 @@ public abstract class AbstractList extends AbstractCollection implements List
    * <code>add(int, Object)</code> and <code>remove(int)</code> methods.
    * Otherwise, this field may be ignored.
    */
-  protected int modCount = 0;
+  protected int modCount;
 
   /**
    * The main constructor, for use by subclasses.
@@ -209,7 +209,7 @@ public abstract class AbstractList extends AbstractCollection implements List
   {
     if (o == this)
       return true;
-    if (!(o instanceof List))
+    if (! (o instanceof List))
       return false;
     int size = size();
     if (size != ((List) o).size())
@@ -323,8 +323,8 @@ public abstract class AbstractList extends AbstractCollection implements List
         AbstractList.this.remove(last);
         pos--;
         size--;
-        knownMod = modCount;
         last = -1;
+        knownMod = modCount;
       }
     };
   }
@@ -446,9 +446,9 @@ public abstract class AbstractList extends AbstractCollection implements List
           throw new IllegalStateException();
         AbstractList.this.remove(lastReturned);
         size--;
-        knownMod = modCount;
         position = lastReturned;
         lastReturned = -1;
+        knownMod = modCount;
       }
 
       public void set(Object o)
@@ -721,8 +721,8 @@ class SubList extends AbstractList
     checkMod();
     checkBoundsInclusive(index);
     backingList.add(index + offset, o);
-    modCount = backingList.modCount;
     size++;
+    modCount = backingList.modCount;
   }
 
   /**
@@ -736,8 +736,8 @@ class SubList extends AbstractList
     checkMod();
     checkBoundsExclusive(index);
     Object o = backingList.remove(index + offset);
-    modCount = backingList.modCount;
     size--;
+    modCount = backingList.modCount;
     return o;
   }
 
@@ -754,8 +754,8 @@ class SubList extends AbstractList
     checkMod();
 
     backingList.removeRange(offset + fromIndex, offset + toIndex);
-    modCount = backingList.modCount;
     size -= toIndex - fromIndex;
+    modCount = backingList.modCount;
   }
 
   /**
@@ -771,8 +771,8 @@ class SubList extends AbstractList
     checkBoundsInclusive(index);
     int csize = c.size();
     boolean result = backingList.addAll(offset + index, c);
-    modCount = backingList.modCount;
     size += csize;
+    modCount = backingList.modCount;
     return result;
   }
 
@@ -855,9 +855,9 @@ class SubList extends AbstractList
       public void remove()
       {
         i.remove();
-        modCount = backingList.modCount;
         size--;
         position = nextIndex();
+        modCount = backingList.modCount;
       }
 
       public void set(Object o)
@@ -868,9 +868,9 @@ class SubList extends AbstractList
       public void add(Object o)
       {
         i.add(o);
-        modCount = backingList.modCount;
         size++;
         position++;
+        modCount = backingList.modCount;
       }
 
       // Here is the reason why the various modCount fields are mostly
