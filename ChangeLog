@@ -1,3 +1,41 @@
+2003-07-02  Michael Koch  <konqueror@gmx.de>
+
+	* javax/swing/AbstractButton.java:
+	Reformatted. Three usages of non existing ButtonModel methods removed.
+	* javax/swing/ButtonModel.java
+	(fireItemStateChanged, fireStateChanged, fireActionPerformed):
+	Removed.
+	* javax/swing/SwingUtilities.java:
+	Reformatted.
+	* javax/swing/UIManager.java:
+	Reformatted.
+	* javax/swing/colorchooser/DefaultColorSelectionModel.java
+	(DefaultColorSelectionModel): Implemented.
+	(setSelectedColor): Likewise.
+	(getSelectedColor): Likewise.
+	(addChangeListener): Likewise.
+	(removeChangeListener): Likewise.
+	(fireStateChange): Likewise.
+	* javax/swing/event/AncestorEvent.java
+	(ANCESTOR_ADDED): Fixed value.
+	(ANCESTOR_MOVED): Likewise.
+	* javax/swing/event/InternalFrameEvent.java
+	(INTERNAL_FRAME_ICONIFIED): Fixed value.
+	(INTERNAL_FRAME_OPENED): Likewise.
+	* javax/swing/plaf/basic/BasicLabelUI.java:
+	Reformatted.
+	(BasicLabelUI): Implements PropertyChangeListener.
+	(propertyChange): New method.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java
+	(serialVersionUID): Fixed value.
+	* javax/swing/plaf/basic/BasicTabbedPaneUI.java
+	(BasicTabbedPaneUI): Implements SwingConstants.
+	* javax/swing/plaf/basic/BasicTextUI.java
+	(BasicTextUI): Implements ViewFactory.
+	(create): New method.
+	* javax/swing/plaf/metal/MetalLookAndFeel.java
+	(MetalLookAndFeel): Extends BasicLookAndFeel instead of LookAndFeel.
+
 2003-07-01  Michael Koch  <konqueror@gmx.de>
 
 	* java/awt/Container.java
