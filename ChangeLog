@@ -1,3 +1,7 @@
+2004-01-23  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/FileDescriptor.java: Reformated.
+
 2004-01-22  Michael Koch  <konqueror@gmx.de>
 
 	* java/util/logging/logging.properties: New file.
