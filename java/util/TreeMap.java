@@ -53,8 +53,8 @@ import java.io.IOException;
  * always allowed.
  *
  * @author           Jon Zeppieri
- * @version          $Revision: 1.4 $
- * @modified         $Id: TreeMap.java,v 1.4 2000-03-03 11:24:12 jochen Exp $
+ * @version          $Revision: 1.5 $
+ * @modified         $Id: TreeMap.java,v 1.5 2000-03-09 16:10:39 jochen Exp $
  */ 
 public class TreeMap extends AbstractMap 
   implements SortedMap, Cloneable, Serializable
@@ -189,7 +189,7 @@ public class TreeMap extends AbstractMap
 
   public boolean containsValue(Object oValue)
   {
-    RBNode oNode = _oRoot;
+    RBNode oNode = treeMin(_oRoot);
     Object oCurrentValue;
 
     while (oNode != NIL)
@@ -743,6 +743,46 @@ public class TreeMap extends AbstractMap
     oTree._oRoot._iColor = BLACK;
     return oResult;
   }
+
+  /* Method for dumping the whole tree -- comment in if you need it
+  private void dumpTree() {
+    Vector lastLevel = new Vector();
+    lastLevel.addElement(_oRoot);
+    while (!lastLevel.isEmpty()) {
+      Vector nextLevel = new Vector();
+      for (int i=0; i< lastLevel.size();i++) {
+	RBNode node = (RBNode) lastLevel.elementAt(i);
+	if (node != NIL)
+	  {
+	    System.err.print("[");
+	    if (node._oLeft._iColor == RED)
+	      {
+		System.err.print(node._oLeft.getKey()+"<-");
+		nextLevel.addElement(node._oLeft._oLeft);
+		nextLevel.addElement(node._oLeft._oRight);
+	      }
+	    else
+	      nextLevel.addElement(node._oLeft);
+	    if (node._iColor == RED)
+	      System.err.print("???RED:");
+	    System.err.print(node.getKey());
+	    if (node._oRight._iColor == RED)
+	      {
+		System.err.print("->"+node._oRight.getKey());
+		nextLevel.addElement(node._oRight._oLeft);
+		nextLevel.addElement(node._oRight._oRight);
+	      }
+	    else
+	      nextLevel.addElement(node._oRight);
+	    System.err.print("] ");
+	  }
+	else
+	  System.err.print("NIL ");
+      }
+      System.err.println();
+      lastLevel = nextLevel;
+    }
+  }*/
   
   private static final RBNode rbDelete(TreeMap oTree, RBNode oNode)
   {
@@ -754,9 +794,6 @@ public class TreeMap extends AbstractMap
     oSplice = (((oNode._oLeft == NIL) || (oNode._oRight == NIL))
                ? oNode : treeSuccessor(oNode));
     oChild = (oSplice._oLeft != NIL) ? oSplice._oLeft : oSplice._oRight;
-
-    if (oChild != NIL)
-      oChild._oParent = oSplice._oParent;
 
     if (oSplice._oParent == NIL)
       oTree._oRoot = oChild;
@@ -772,88 +809,110 @@ public class TreeMap extends AbstractMap
       oNode.value = oSplice.value;
     }
 
-    /* FIXME: I think we may need a fixup even if oChild is NIL;
-     * rbDeleteFixup won't work in that case, though.
+    /* We only need the FIXUP if oChild is NIL!  
+     * Otherwise oChild is the only child of oSplice, so it must
+     * be a red node (the tree without red nodes is fully balanced)
+     * We can simply mark oChild as black and all is well.
      */
-    if (oChild != NIL && oSplice._iColor == BLACK)
-      rbDeleteFixup(oTree, oChild);
-
+    if (oChild != NIL)
+      {
+	oChild._oParent = oSplice._oParent;
+	oChild._iColor = BLACK;
+      }
+    else if (oSplice._iColor == BLACK)
+      {
+	/* oChild is NIL */
+	rbDeleteFixup(oTree, oSplice._oParent);
+      }
     return oResult;
   }
 
-  private static final void rbDeleteFixup(TreeMap oTree, RBNode oNode)
+  private static final void rbDeleteFixup(TreeMap oTree, RBNode oParent)
   {
+    RBNode oNode = NIL;
     RBNode oSibling;
 
-    while ((oNode != oTree._oRoot) && (oNode._iColor == BLACK))
-    {
-      if (oNode == oNode._oParent._oLeft)
+    while (oParent != NIL)
       {
-        oSibling = oNode._oParent._oRight;
-        if (oSibling._iColor == RED)
-        {
-          oSibling._iColor = BLACK;
-          oNode._oParent._iColor = RED;
-          leftRotate(oTree, oNode._oParent);
-          oSibling = oNode._oParent._oRight;
-        }
-        if ((oSibling._oLeft._iColor == BLACK) && 
-            (oSibling._oRight._iColor == BLACK))
-        {
-          oSibling._iColor = RED;
-          oNode = oNode._oParent;
-        }
-        else
-        {
-          if (oSibling._oRight._iColor == BLACK)
-          {
-            oSibling._oLeft._iColor = BLACK;
-            oSibling._iColor = RED;
-            rightRotate(oTree, oSibling);
-            oSibling = oNode._oParent._oRight;
-          }
-          oSibling._iColor = oNode._oParent._iColor;
-          oNode._oParent._iColor = BLACK;
-          oSibling._oRight._iColor = BLACK;
-          leftRotate(oTree, oNode._oParent);
-          oNode = oTree._oRoot;
-        }
-      }
-      else
-      {
-        oSibling = oNode._oParent._oLeft;
-        if (oSibling._iColor == RED)
-        {
-          oSibling._iColor = BLACK;
-          oNode._oParent._iColor = RED;
-          rightRotate(oTree, oNode._oParent);
-          oSibling = oNode._oParent._oLeft;
-        }
-        if ((oSibling._oRight._iColor == BLACK) && 
-            (oSibling._oLeft._iColor == BLACK))
-        {
-          oSibling._iColor = RED;
-          oNode = oNode._oParent;
-        }
-        else
-        {
-          if (oSibling._oLeft._iColor == BLACK)
-          {
-            oSibling._oRight._iColor = BLACK;
-            oSibling._iColor = RED;
-            leftRotate(oTree, oSibling);
-            oSibling = oNode._oParent._oLeft;
-          }
-          oSibling._iColor = oNode._oParent._iColor;
-          oNode._oParent._iColor = BLACK;
-          oSibling._oLeft._iColor = BLACK;
-          rightRotate(oTree, oNode._oParent);
-          oNode = oTree._oRoot;
-        }
-      }
-    }
+	/* Invariant of this loop: oNode is a black node (or NIL)
+	 * oParent is its parent and the tree on the oNode side is
+	 * one black node too small.
+	 */
+	if (oNode == oParent._oLeft)
+	  {
+	    oSibling = oParent._oRight;
+	    if (oSibling._iColor == RED)
+	      {
+		oSibling._iColor = BLACK;
+		oParent._iColor = RED;
+		leftRotate(oTree, oParent);
+		oSibling = oParent._oRight;
+	      }
+	    if (oSibling._oLeft._iColor == BLACK && 
+		oSibling._oRight._iColor == BLACK)
+	      {
+		oSibling._iColor = RED;
+		oNode = oParent;
+		oParent = oParent._oParent;
+	      }
+	    else
+	      {
+		if (oSibling._oLeft._iColor == RED)
+		  {
+		    oSibling._oLeft._iColor = BLACK;
+		    oSibling._iColor = RED;
+		    rightRotate(oTree, oSibling);
+		    oSibling = oParent._oRight;
+		  }
+		oSibling._iColor = oParent._iColor;
+		oParent._iColor = BLACK;
+		oSibling._oRight._iColor = BLACK;
+		leftRotate(oTree, oParent);
+		/* Fixup completed */
+		return;
+	      }
+	  }
+	else
+	  {
+	    oSibling = oParent._oLeft;
+	    if (oSibling._iColor == RED)
+	      {
+		oSibling._iColor = BLACK;
+		oParent._iColor = RED;
+		rightRotate(oTree, oParent);
+		oSibling = oParent._oLeft;
+	      }
+	    if (oSibling._oRight._iColor == BLACK && 
+		oSibling._oLeft._iColor == BLACK)
+	      {
+		oSibling._iColor = RED;
+		oNode = oParent;
+		oParent = oParent._oParent;
+	      }
+	    else
+	      {
+		if (oSibling._oRight._iColor == RED)
+		  {
+		    oSibling._oRight._iColor = BLACK;
+		    oSibling._iColor = RED;
+		    leftRotate(oTree, oSibling);
+		    oSibling = oParent._oLeft;
+		  }
+		oSibling._iColor = oParent._iColor;
+		oParent._iColor = BLACK;
+		oSibling._oLeft._iColor = BLACK;
+		rightRotate(oTree, oParent);
+		/* Fixup completed */
+		return;
+	      }
+	  }
 
-    oNode._iColor = BLACK;
+	if (oNode._iColor == RED)
+	  {
+	    oNode._iColor = BLACK;
+	    return;
+	  }
+      }
   }
 
   private static class RBNode extends BasicMapEntry implements Map.Entry, Cloneable
