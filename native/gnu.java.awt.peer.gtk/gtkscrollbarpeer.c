@@ -95,7 +95,8 @@ Java_gnu_java_awt_peer_gtk_GtkScrollbarPeer_connectHooks
   rs->range = GTK_RANGE (ptr);
   rs->scrollbar = (jobject *) malloc (sizeof (jobject));
   *(rs->scrollbar) = (*env)->NewGlobalRef (env, obj);
-  gtk_signal_connect (GTK_OBJECT (ptr), "value_changed", 
+  gtk_signal_connect (GTK_OBJECT (GTK_RANGE (ptr)->adjustment), 
+		      "value_changed", 
 		      GTK_SIGNAL_FUNC (post_adjustment_event), rs);
 
   connect_awt_hook (env, obj, 4, 
