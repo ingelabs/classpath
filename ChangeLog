@@ -1,5 +1,13 @@
 2002-11-13  Michael Koch <konqueror@gmx.de>
 
+	* java/nio/ByteBuffer.java: Reindented.
+	* java/nio/channels/DatagramChannel.java:
+	Added "import java.nio.channels.spi.SelectorProvider;"
+	* java/nio/channels/spi/AbstractSelectableChannel.java:
+	Added some missing imports.
+
+2002-11-13  Michael Koch <konqueror@gmx.de>
+
 	* java/nio/Buffer.java
 	Correctly initialize mark.
 	(capacity): Removed.
