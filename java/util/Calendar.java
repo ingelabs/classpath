@@ -599,26 +599,44 @@ public abstract class Calendar implements Serializable, Cloneable {
      * @return true, if the given object is a calendar, that represents
      * the same time (but doesn't neccessary have the same fields).
      */
-    public abstract boolean equals(Object o);
-    // Why can't we just compare getTimeInMillis()?
+    public boolean equals(Object o) {
+	return (o instanceof Calendar)
+	    && getTimeInMillis() == ((Calendar) o).getTimeInMillis();
+    }
+
+    /**
+     * Returns a hash code for this calendar.
+     * @return a hash code, which fullfits the general contract of 
+     * <code>hashCode()</code>
+     */
+    public int hashCode() {
+	long time = getTimeInMillis();
+	return (int) ((time & 0xffffffffL) ^ (time >> 32));
+    }
 
     /**
      * Compares the given calender with this.  
      * @param o the object to that we should compare.
      * @return true, if the given object is a calendar, and this calendar
      * represents a smaller time than the calender o.
+     * @exception ClassCastException if o is not an calendar.
+     * @since JDK1.2 you don't need to override this method
      */
-    public abstract boolean before(Object o);
-    // Why can't we just compare getTimeInMillis()?
+    public boolean before(Object o) {
+	return getTimeInMillis() < ((Calendar) o).getTimeInMillis();
+    }
     
     /**
      * Compares the given calender with this.  
      * @param o the object to that we should compare.
      * @return true, if the given object is a calendar, and this calendar
      * represents a bigger time than the calender o.
+     * @exception ClassCastException if o is not an calendar.
+     * @since JDK1.2 you don't need to override this method
      */
-    public abstract boolean after(Object o);
-    // Why can't we just compare getTimeInMillis()?
+    public boolean after(Object o) {
+	return getTimeInMillis() > ((Calendar) o).getTimeInMillis();
+    }
     
     /**
      * Adds the specified amount of time to the given time field.  The
@@ -642,6 +660,30 @@ public abstract class Calendar implements Serializable, Cloneable {
      * @param up the direction, true for up, false for down.
      */
     public abstract void roll(int field, boolean up);
+
+    /**
+     * Rolls up or down the specified time field by the given amount.
+     * A negative amount rolls down.  The default implementation is
+     * call <code>roll(int, boolean)</code> for the specified amount.
+     *
+     * Subclasses should override this method to do more intuitiv things.
+     *
+     * @param field the time field. One of the time field constants.
+     * @param amount the amount to roll by, positive for rolling up,
+     * negative for rolling down.  
+     * @since JDK1.2
+     */
+    public void roll(int field, int amount) {
+	while (amount > 0) { 
+	    roll(field, true);
+	    amount--;
+	}
+	while (amount < 0) { 
+	    roll(field, false);
+	    amount++;
+	}
+    }
+    
 
     /**
      * Sets the time zone to the specified value.
