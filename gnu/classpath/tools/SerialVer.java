@@ -17,7 +17,7 @@
 /* Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307 USA
 /*************************************************************************/
 
-package gnu.tools.serialver;
+package gnu.classpath.tools;
 
 import java.io.ObjectStreamClass;
 
@@ -27,13 +27,13 @@ import java.io.ObjectStreamClass;
    version unique identitfier for each class will be printed in a
    manner suitable for cuting and pasting into a Java source file.
 */
-public class Main
+public class SerialVer
 {
   public static void main( String[] args )
   {
     if( args.length == 0 )
     {
-      System.out.println( "Usage: serialver classname(s)" );
+      System.out.println( "Usage: serialver [CLASS]..." );
       return;
     }
 

@@ -316,6 +316,7 @@ doc/Makefile
 gnu/Makefile
 gnu/classpath/Makefile
 gnu/classpath/Configuration.java
+gnu/classpath/tools/Makefile
 gnu/java/Makefile
 gnu/java/awt/Makefile
 gnu/java/awt/image/Makefile
@@ -348,8 +349,6 @@ gnu/java/security/util/Makefile
 gnu/java/text/Makefile
 gnu/java/util/Makefile
 gnu/java/util/prefs/Makefile
-gnu/tools/Makefile
-gnu/tools/serialver/Makefile
 java/Makefile
 java/applet/Makefile
 java/awt/Makefile

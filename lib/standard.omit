@@ -21,3 +21,4 @@
 ../java/util/jar/JarOutputStream.java$
 ../java/util/prefs/.*$
 ../gnu/java/util/prefs/.*$
+../gnu/classpath/tools/.*$

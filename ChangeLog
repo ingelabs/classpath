@@ -1,3 +1,20 @@
+2001-09-16  C. Brian Jones  <cbj@gnu.org>
+        * gnu/tools/serialver/Main.java: moved to 
+        gnu/classpath/tools/SerialVer.java
+        * gnu/tools/: removed because it is empty
+        * gnu/classpath/Makefile.am: added tools to SUBDIRS
+        * gnu/classpath/tools/Makefile.am: new file
+        * gnu/classpath/tools/.cvsignore: new file
+        * configure.in: update Makefile output
+        * lib/standard.omit: avoid compiling gnu/classpath/tools because it
+        depends on gnu.bytecode 
+        * gnu/classpath/tools/Util.java: new file
+        * gnu/classpath/tools/Javap.java: new file
+        * gnu/classpath/tools/JavapMain.java: new file
+        * gnu/classpath/tools/JavahMain.java: new file
+        * gnu/classpath/tools/tester.j: new file, helps test tools
+        * gnu/classpath/tools/README: new file
+
 2001-09-15  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/Hashtable.java (contains): check for null
