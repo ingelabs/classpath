@@ -35,33 +35,63 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
-
 package java.nio.channels.spi;
 
-import java.nio.channels.*;
+import gnu.java.nio.SelectorProviderImpl;
+import java.nio.channels.DatagramChannel;
+import java.nio.channels.Pipe;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 
-
+/**
+ * @author Michael Koch
+ * @since 1.4
+ */
 public abstract class SelectorProvider
 {
-    protected SelectorProvider()
-    {
-    }
+  /**
+   * Initializes the selector provider.
+   */
+  protected SelectorProvider ()
+  {
+  }
+  
+  /**
+   * Opens a datagram channel.
+   */
+  public abstract DatagramChannel openDatagramChannel ();
+  
+  /**
+   * Opens a pipe.
+   */
+  public abstract Pipe openPipe ();
+  
+  /**
+   * Opens a selector.
+   */
+  public abstract AbstractSelector openSelector ();
+  
+  /**
+   * Opens a server socket channel.
+   */
+  public abstract ServerSocketChannel openServerSocketChannel ();
+  
+  /**
+   * Opens a socket channel.
+   */
+  public abstract SocketChannel openSocketChannel ();
     
-    public abstract  DatagramChannel openDatagramChannel();
-    public abstract  Pipe openPipe();
-    public abstract  AbstractSelector openSelector();
-    public abstract  ServerSocketChannel openServerSocketChannel();
-    public abstract  SocketChannel openSocketChannel();
+  static SelectorProvider pr;
     
+  /**
+   * Returns the system-wide default selector provider for this invocation
+   * of the Java virtual machine.
+   */
+  public static SelectorProvider provider ()
+  {
+    if (pr == null)
+      pr = new SelectorProviderImpl ();
     
-    static SelectorProvider pr;
-    
-    public static SelectorProvider provider()
-    {
-	if (pr == null)
-	    {
-		pr = new gnu.java.nio.SelectorProviderImpl();
-	    }
-	return pr;
-    }
+    return pr;
+  }
 }

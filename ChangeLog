@@ -1,5 +1,59 @@
 2002-11-13  Michael Koch <konqueror@gmx.de>
 
+	* java/nio/Buffer.java
+	Correctly initialize mark.
+	(capacity): Removed.
+	(capacity): Documentation added.
+	(clear): Set mark to -1, documentation added.
+	(flip): Set mark to -1, documentation added.
+	(hasRemaining): Documentation added.
+	(isReadOnly): Documentation added.
+	(limit): Throw exception, set mark to -1, documentation added.
+	(mark): Documentation added.
+	(postion): Throw exception, set mark to -1, documentation added.
+	(remaining): Documentation added.
+	(reset): Throw exception, documentation added.
+	(rewind): Set mark to -1, documentation added.
+	* java/nio/channels/DatagramChannel.java
+	(DatagramChannel): Documentation added.
+	(open): Documentation added.
+	(read): Documentation added.
+	(write): Documentation added.
+	(connect): Documentation added.
+	(disconnect): Documentation added.
+	(isConnected): Documentation added.
+	(receive): Documentation added.
+	(send): Documentation added.
+	(socket): Documentation added.
+	(validOps): Documentation added.
+	* java/nio/channels/ServerSocketChannel.java
+	(ServerSocketChannel): Documentation added.
+	(accept): Documentation added.
+	(socket): Documentation added.
+	(open): Documentation added.
+	(validOps): Documentation added.
+	* java/nio/channels/SocketChannel.java
+	(SocketChannel): Documentation added.
+	(open): Documentation added.
+	(read): Documentation added.
+	(write): Documentation added.
+	(validOps): Documentation added.
+	(connect): Documentation added.
+	(finishConnect): Documentation added.
+	(isConnected): Documentation added.
+	(isConnectionPending): Documentation added.
+	(socket): Documentation added.
+	* java/nio/channels/spi/SelectorProvider.java
+	(SelectorProvider): Documentation added.
+	(openDatagramChannel): Documentation added.
+	(openPipe): Documentation added.
+	(openSelector): Documentation added.
+	(openServerSocketChannel): Documentation added.
+	(openSocketChannel): Documentation added.
+	(provider): Documentation added.
+
+2002-11-13  Michael Koch <konqueror@gmx.de>
+
 	* gnu/java/nio/SocketChannelImpl.java
 	(validOps): Removed.
 	* gnu/java/nio/ByteBufferImpl.java,

@@ -37,30 +37,51 @@ exception statement from your version. */
 
 package java.nio.channels;
 
-import java.nio.channels.spi.*;
-import java.net.*;
-import java.nio.*;
-import java.io.*;
+import java.nio.channels.spi.AbstractSelectableChannel;
+import java.nio.channels.spi.SelectorProvider;
+import java.nio.ByteOrder;
+import java.nio.ByteBuffer;
+import java.io.IOException;
+import java.net.ServerSocket;
 
+/**
+ * @author Michael Koch
+ * @since 1.4
+ */
 public abstract class ServerSocketChannel
-    extends AbstractSelectableChannel
+  extends AbstractSelectableChannel
 {
-    protected ServerSocketChannel(SelectorProvider provider)
-    {
-      super (provider);
-    }
- 
-
-    public abstract  SocketChannel accept();
-    public abstract  ServerSocket socket();
+  /**
+   * Initializes this channel.
+   */
+  public ServerSocketChannel (SelectorProvider provider)
+  {
+    super (provider);
+  }
+  
+  /**
+   *  Accepts a connection made to this channel's socket.
+   */
+  public abstract SocketChannel accept ();
+  
+  /**
+   * Retrieves the channels socket.
+   */
+  public abstract ServerSocket socket ();
     
-    public static ServerSocketChannel open() throws IOException
-    {
-	return SelectorProvider.provider().openServerSocketChannel();
-    }
+  /**
+   * Opens a server socker channel.
+   */
+  public static ServerSocketChannel open () throws IOException
+  {
+    return SelectorProvider.provider ().openServerSocketChannel ();
+  }
 
-    public int validOps()
-    {
-	return SelectionKey.OP_ACCEPT;
-    } 
+  /**
+   * Retrieves the valid operations for this channel.
+   */
+  public final int validOps ()
+  {
+    return SelectionKey.OP_ACCEPT;
+  } 
 }

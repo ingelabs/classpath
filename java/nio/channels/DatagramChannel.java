@@ -43,50 +43,110 @@ import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.spi.AbstractSelectableChannel;
 
+/**
+ * @since 1.4
+ */
 public abstract class DatagramChannel
   extends AbstractSelectableChannel
   implements ByteChannel, ScatteringByteChannel, GatheringByteChannel
 {
+  /**
+   * Initializes the channel.
+   */
   protected DatagramChannel (SelectorProvider provider)
   {
     super (provider);
   }
- 
+
+  /**
+   * Opens a datagram channel.
+   */
   public static DatagramChannel open () throws IOException
   {
     return SelectorProvider.provider ().openDatagramChannel ();
   }
-    
-  public final long read (ByteBuffer[] dsts)
+  
+  /**
+   * Reads data from this channel.
+   */
+  public final long read (ByteBuffer[] dsts) throws IOException
   {
     long b = 0;
-    for (int i=0;i<dsts.length;i++)
-      b += read(dsts[i]);
+    
+    for (int i = 0; i < dsts.length; i++)
+      b += read (dsts[i]);
+    
     return b;
   }
-    
+  
+  /**
+   * Writes data to this channel.
+   */
   public final long write (ByteBuffer[] srcs)
   {
     long b = 0;
-    for (int i=0;i<srcs.length;i++)
-      b += write(srcs[i]);
+    
+    for (int i = 0;i < srcs.length; i++)
+      b += write (srcs[i]);
+    
     return b;
   }
     
+  /**
+   * Connects this channel's socket.
+   */
   public abstract DatagramChannel connect (SocketAddress remote);
+
+  /**
+   * Disonnects this channel's socket.
+   */
   public abstract DatagramChannel disconnect ();
+
+  /**
+   * Tells whether or not this channel's socket is connected.
+   */
   public abstract boolean isConnected ();
+  
+  /**
+   * Reads data from this channel.
+   */
   public abstract int read (ByteBuffer dst);
+  
+  /**
+   * Reads data from this channel.
+   */
   public abstract long read (ByteBuffer[] dsts, int offset, int length);
+ 
+  /**
+   * Receives a datagram via this channel.
+   */
   public abstract SocketAddress receive (ByteBuffer dst);
+ 
+  /**
+   * Sends a datagram via this channel.
+   */
   public abstract int send (ByteBuffer src, SocketAddress target);
+ 
+  /**
+   * Retrieves the channel's socket.
+   */
   public abstract DatagramSocket socket ();
+  
+  /**
+   * Writes data to this channel.
+   */
   public abstract int write (ByteBuffer src);
+  
+  /**
+   * Writes data to this channel.
+   */
   public abstract long write (ByteBuffer[] srcs, int offset, int length);
 
-  public final int validOps()
+  /**
+   * Retrieves the valid operations for this channel.
+   */
+  public final int validOps ()
   {
     return SelectionKey.OP_READ | SelectionKey.OP_WRITE;
   }    
-    
 }
