@@ -188,46 +188,48 @@ public class EventListenerList
 
 
   /**
-   * Remove a listener
-   * @param t Class type
-   * @param listener Listener to be removed
+   * Removes a listener of a specific type.
+   *
+   * @param t the type of the listener.
+   *
+   * @param listener the listener to remove, which must be an instance
+   * of <code>t</code>, or of a subclass of <code>t</code>.
+   *
+   * @throws IllegalArgumentException if <code>listener</code> is not
+   * an instance of <code>t</code> (or a subclass thereof).
+   *
+   * @throws Exception if <code>t</code> is <code>null</code>.
    */
   public void remove(Class t, EventListener listener)
   {
-    Object[] list;
-    int index;
-    Class checkClass;
-    EventListener checkListener;
-    int pointer;
-    boolean found;
+    Object[] oldList, newList;
+    int oldLength;
 
-    // Create New list in anticipation that listener is not present
-    if (listenerList.length == 0)
+    if (listener == null)
       return;
 
-    list = new Object[listenerList.length - 2];
+    if (!t.isInstance(listener))
+      throw new IllegalArgumentException();
 
-    // Search through list looking for listener
-    pointer = 0;
-    found = false;
-    for (index = 0; index < listenerList.length - 2; index += 2)
-      {
-        checkClass = (Class) listenerList[index];
-        checkListener = (EventListener) listenerList[index + 1];
-        if (checkClass.equals(t) == false ||
-            checkListener.equals(listener) == false)
-          {
-            list[pointer] = checkClass;
-            list[pointer + 1] = checkListener;
-            pointer += 2;
-          }
-        else
-          found = true;
-      }
-
-    // Replace Listener List
-    if (found == true)
-      listenerList = list;
+    oldList = listenerList;
+    oldLength = oldList.length;
+    for (int i = 0; i < oldLength; i += 2)
+      if (oldList[i] == t && oldList[i + 1] == listener)
+        {
+          if (oldLength == 2)
+            newList = NO_LISTENERS;
+          else
+            {
+              newList = new Object[oldLength - 2];
+              if (i > 0)
+                System.arraycopy(oldList, 0, newList, 0, i);
+              if (i < oldLength - 2)
+                System.arraycopy(oldList, i + 2, newList, i,
+                                 oldLength - 2 - i);
+            }
+          listenerList = newList;
+          return;
+        }
   }
 
 
