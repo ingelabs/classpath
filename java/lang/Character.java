@@ -23,7 +23,7 @@ import gnu.java.lang.ClassLoaderHelper;
  *
  * @author Paul N. Fisher
  */
-public final class Character implements Serializable, Comparable
+public final class Character implements Serializable/*, Comparable */
 {
   /**
    * Constants for character blocks.
@@ -411,7 +411,7 @@ public final class Character implements Serializable, Comparable
    * The maximum value the char data type can hold.
    * This value is U+FFFF.
    */
-    public static final char MAX_VALUE = '\uFFFF';
+  public static final char MAX_VALUE = '\uFFFF';
 
   /**
    * Smallest value allowed for radix arguments in Java.
@@ -428,7 +428,7 @@ public final class Character implements Serializable, Comparable
   /**
    * Class object representing the primitive char data type.
    */
-  public static final Class TYPE = VMClassLoader.getPrimitiveClass("char");
+//    public static final Class TYPE = VMClassLoader.getPrimitiveClass("char");
 
   /**
    * Cn = Other, Not Assigned (Normative)
@@ -550,6 +550,8 @@ public final class Character implements Serializable, Comparable
   static char tcs[][];		// titlecase.uni
   static byte[] unicodeData; // character.uni
 
+  static CharAttr cachedCharAttr;
+
   // open up the Unicode attribute database and read the index into memory
   static {
     File cFile = ClassLoaderHelper.getSystemResourceAsFile(
@@ -594,28 +596,37 @@ public final class Character implements Serializable, Comparable
     } catch (IOException e) {
       throw new Error("Unable to open Unicode character attribute file: " + e);
     }
+
+    cachedCharAttr = new CharAttr((char)0, false, CONTROL, 65535, 
+				  (char)0, (char)0);
   }
 
   /**
    * Grabs a character out of the Unicode attribute database.
    */
   private static CharAttr readChar(char ch) {
+    CharAttr cached = cachedCharAttr;
+    if (cached.ch == ch)
+      return cached;
+
     int i = getBlock(ch);
-    if (i == -1) return null;
+    if (i == -1) return new CharAttr(ch, false, UNASSIGNED, 65535, ch, ch);
     Block b = blocks[i];
     int offset = (b.compressed) ? b.offset : (b.offset + (ch-b.start)*7);
-	int byte7 = unicodeData[offset] & 0xFF;
-	boolean noBreakSpace = ((byte7 >> 5 & 0x1) == 1);
-	int category = byte7 & 0x1F;
-        int numericalDecimalValue = (((unicodeData[offset+1] & 0xFF) << 8) + 
-                                (unicodeData[offset+2] & 0xFF));
-        char uppercase = (char)(((unicodeData[offset+3] & 0xFF) << 8) + 
-                                (unicodeData[offset+4] & 0xFF));
-        char lowercase = (char)(((unicodeData[offset+5] & 0xFF) << 8) + 
-                                (unicodeData[offset+6] & 0xFF));
-	
-	return new CharAttr(ch, noBreakSpace, category, numericalDecimalValue,
-			    uppercase, lowercase);
+    int byte7 = unicodeData[offset] & 0xFF;
+    boolean noBreakSpace = ((byte7 >> 5 & 0x1) == 1);
+    int category = byte7 & 0x1F;
+    int numericalDecimalValue = (((unicodeData[offset+1] & 0xFF) << 8) + 
+				 (unicodeData[offset+2] & 0xFF));
+    char uppercase = (char)(((unicodeData[offset+3] & 0xFF) << 8) + 
+			    (unicodeData[offset+4] & 0xFF));
+    char lowercase = (char)(((unicodeData[offset+5] & 0xFF) << 8) + 
+			    (unicodeData[offset+6] & 0xFF));
+
+    CharAttr ca = new CharAttr(ch, noBreakSpace, category, 
+			       numericalDecimalValue, uppercase, lowercase);
+    cachedCharAttr = ca;
+    return ca;
   }
 
   /**
