@@ -222,7 +222,7 @@ public class Date implements Cloneable, Comparable, java.io.Serializable {
 	Calendar cal = Calendar.getInstance();
 	cal.setTimeInMillis(time);
 	String day = "0"+cal.get(Calendar.DATE);
-	String hour = "0"+cal.get(Calendar.HOUR);
+	String hour = "0"+cal.get(Calendar.HOUR_OF_DAY);
 	String min = "0"+cal.get(Calendar.MINUTE);
 	String sec = "0"+cal.get(Calendar.SECOND);
 	String year = "000"+cal.get(Calendar.YEAR);
