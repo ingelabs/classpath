@@ -1,5 +1,11 @@
 2004-07-10  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/lang/reflect/Proxy.java (getPackage, ClassFactory): Fixed
+	handling of default package. (generate): Removed confused comments
+	and code about making Method and Field accessible.
+
+2004-07-10  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/net/DatagramPacket.java (setAddress): Removed check for
 	null address.
 
