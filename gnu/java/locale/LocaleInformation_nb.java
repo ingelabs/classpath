@@ -105,7 +105,7 @@ public class LocaleInformation_nb extends ListResourceBundle
 
   private static final String[][] zoneStrings =
   {
-    { "Europe/Bucharest", "Eastern European Standard Time", "EET", "Eastern European Daylight Time", "EEST" },
+    { "EET", "Eastern European Standard Time", "EEST", "Eastern European Daylight Time",  "Europe/Bucharest" },
   };
 
   private static final class Hashtableterritories extends java.util.Hashtable

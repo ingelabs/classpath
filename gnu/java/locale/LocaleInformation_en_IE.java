@@ -51,7 +51,7 @@ public class LocaleInformation_en_IE extends ListResourceBundle
 
   private static final String[][] zoneStrings =
   {
-    { "Europe/Dublin", "Greenwich Mean Time", "GMT", "Irish Summer Time", "IST" },
+    { "GMT", "Greenwich Mean Time", "IST", "Irish Summer Time",  "Europe/Dublin" },
   };
 
   private static final Object[][] contents =

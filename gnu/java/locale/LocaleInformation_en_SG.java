@@ -46,7 +46,7 @@ public class LocaleInformation_en_SG extends ListResourceBundle
 {
   private static final String[][] zoneStrings =
   {
-    { "Pacific/Guadalcanal", "Singapore Standard Time", "SST", "Singapore Standard Time", "SST" },
+    { "SST", "Singapore Standard Time", "SST", "Singapore Standard Time",  "Pacific/Guadalcanal" },
   };
 
   private static final Object[][] contents =

@@ -115,9 +115,7 @@ public class LocaleInformation_de extends ListResourceBundle
 
   private static final String[][] zoneStrings =
   {
-    { "WET", "Westeurop\u00e4ische Zeit", "WEZ", "Westeurop\u00e4ische Sommerzeit", "WESZ", "London" },
-    { "CET", "Mitteleurop\u00e4ische Zeit", "MEZ", "Mitteleurop\u00e4ische Sommerzeit", "MESZ", "Berlin" },
-    { "EET", "Osteurop\u00e4ische Zeit", "OEZ", "Mitteleurop\u00e4ische Sommerzeit", "OESZ", "Istanbul" },
+    { "MEZ", "Mitteleurop\u00e4ische Zeit", "MESZ", "Mitteleurop\u00e4ische Sommerzeit",  "Europe/Berlin" },
   };
 
   private static final class Hashtableterritories extends java.util.Hashtable

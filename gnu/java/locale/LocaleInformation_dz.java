@@ -105,7 +105,7 @@ public class LocaleInformation_dz extends ListResourceBundle
 
   private static final String[][] zoneStrings =
   {
-    { "Asia/Thimphu", "Bhutan Standard Time", "BST", "Bhutan Standard Time", "BST" },
+    { "BST", "Bhutan Standard Time", "BST", "Bhutan Standard Time",  "Asia/Thimphu" },
   };
 
   private static final class Hashtableterritories extends java.util.Hashtable

@@ -105,7 +105,7 @@ public class LocaleInformation_as extends ListResourceBundle
 
   private static final String[][] zoneStrings =
   {
-    { "Asia/Calcutta", "\u09ad\u09be\u09f0\u09a4\u09c0\u09df \u09b8\u09ae\u09df", "\u09ad\u09be. \u09b8.", "\u09ad\u09be\u09f0\u09a4\u09c0\u09df \u09b8\u09ae\u09df", "\u09ad\u09be. \u09b8." },
+    { "\u09ad\u09be. \u09b8.", "\u09ad\u09be\u09f0\u09a4\u09c0\u09df \u09b8\u09ae\u09df", "\u09ad\u09be. \u09b8.", "\u09ad\u09be\u09f0\u09a4\u09c0\u09df \u09b8\u09ae\u09df",  "Asia/Calcutta" },
   };
 
   private static final class Hashtableterritories extends java.util.Hashtable

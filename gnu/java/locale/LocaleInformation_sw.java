@@ -105,7 +105,7 @@ public class LocaleInformation_sw extends ListResourceBundle
 
   private static final String[][] zoneStrings =
   {
-    { "Africa/Nairobi", "Saa za Africa Mashariki", "EAT", "Saa za Africa Mashariki", "EAT" },
+    { "EAT", "Saa za Africa Mashariki", "EAT", "Saa za Africa Mashariki",  "Africa/Nairobi" },
   };
 
   private static final class Hashtableterritories extends java.util.Hashtable

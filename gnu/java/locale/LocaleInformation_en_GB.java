@@ -46,7 +46,7 @@ public class LocaleInformation_en_GB extends ListResourceBundle
 {
   private static final String[][] zoneStrings =
   {
-    { "Europe/London", "Greenwich Mean Time", "GMT", "", "" },
+    { "GMT", "Greenwich Mean Time", "", "",  "Europe/London" },
   };
 
   private static final Object[][] contents =

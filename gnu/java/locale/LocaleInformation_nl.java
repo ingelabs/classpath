@@ -109,9 +109,23 @@ public class LocaleInformation_nl extends ListResourceBundle
 
   private static final String[][] zoneStrings =
   {
-    { "WET", "West Europese Tijd", "WET", "West Europese Zomertijd", "WEST", "London" },
-    { "CET", "Centraal Europese Tijd", "CET", "Centraal Europese Zomertijd", "CEST", "Amsterdam" },
-    { "EET", "Oost Europese Tijd", "EET", "Oost Europese Zomertijd", "EEST", "Istanbul" },
+    { "PST", "Pacific-standaardtijd", "PDT", "Pacific-zomertijd",  "America/Los_Angeles" },
+    { "GMT", "Greenwich Mean Time", "GMT", "Greenwich Mean Time",  "Africa/Casablanca" },
+    { "EST", "Eastern-standaardtijd", "EDT", "Eastern-zomertijd",  "America/New_York" },
+    { "AST", "Alaska-standaardtijd", "ADT", "Alaska-zomertijd",  "America/Anchorage" },
+    { "GMT", "Greenwich Mean Time", "GMT", "Greenwich Mean Time",  "Etc/GMT" },
+    { "CTT", "Chinese standaardtijd", "CDT", "Chinese standaardtijd",  "Asia/Shanghai" },
+    { "AST", "Atlantic-standaardtijd", "ADT", "Atlantic-zomertijd",  "America/Halifax" },
+    { "CET", "Midden-Europese standaardtijd", "CEST", "Midden-Europese zomertijd",  "Europe/Paris" },
+    { "MST", "Mountain-standaardtijd", "MDT", "Mountain-zomertijd",  "America/Denver" },
+    { "IST", "Isra\u00eblische standaardtijd", "IDT", "Isra\u00eblische zomertijd",  "Asia/Jerusalem" },
+    { "HST", "Hawa\u00ef-standaardtijd", "HST", "Hawa\u00ef-standaardtijd",  "Pacific/Honolulu" },
+    { "CNT", "Newfoundland-standaardtijd", "CDT", "Newfoundland-zomertijd",  "America/St_Johns" },
+    { "EST", "Eastern-standaardtijd", "EST", "Eastern-standaardtijd",  "America/Indianapolis" },
+    { "CST", "Central-standaardtijd", "CDT", "Central-zomertijd",  "America/Chicago" },
+    { "EET", "Oost-Europese standaardtijd", "EEST", "Oost-Europese zomertijd",  "Europe/Bucharest" },
+    { "JST", "Japanse standaardtijd", "JST", "Japanse standaardtijd",  "Asia/Tokyo" },
+    { "MST", "Mountain-standaardtijd", "MST", "Mountain-standaardtijd",  "America/Phoenix" },
   };
 
   private static final class Hashtableterritories extends java.util.Hashtable

@@ -78,7 +78,7 @@ public class LocaleInformation_fa_AF extends ListResourceBundle
 
   private static final String[][] zoneStrings =
   {
-    { "Asia/Kabul", "\u0648\u0642\u062a \u0627\u0641\u063a\u0627\u0646\u0633\u062a\u0627\u0646", "AFT", "\u0648\u0642\u062a \u0627\u0641\u063a\u0627\u0646\u0633\u062a\u0627\u0646", "AFT" },
+    { "AFT", "\u0648\u0642\u062a \u0627\u0641\u063a\u0627\u0646\u0633\u062a\u0627\u0646", "AFT", "\u0648\u0642\u062a \u0627\u0641\u063a\u0627\u0646\u0633\u062a\u0627\u0646",  "Asia/Kabul" },
   };
 
   private static final class Hashtableterritories extends java.util.Hashtable

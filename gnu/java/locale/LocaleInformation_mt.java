@@ -105,7 +105,7 @@ public class LocaleInformation_mt extends ListResourceBundle
 
   private static final String[][] zoneStrings =
   {
-    { "Europe/Malta", "\u0126in \u010aentrali Ewropew", "CET", "\u0126in \u010aentrali Ewropew tas-Sajf", "CEST" },
+    { "CET", "\u0126in \u010aentrali Ewropew", "CEST", "\u0126in \u010aentrali Ewropew tas-Sajf",  "Europe/Malta" },
   };
 
   private static final class Hashtableterritories extends java.util.Hashtable

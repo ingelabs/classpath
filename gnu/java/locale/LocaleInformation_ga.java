@@ -110,10 +110,10 @@ public class LocaleInformation_ga extends ListResourceBundle
 
   private static final String[][] zoneStrings =
   {
-    { "Etc/GMT", "Me\u00e1n-Am Greenwich", "MAG", "Me\u00e1n-Am Greenwich", "MAG" },
-    { "Europe/Dublin", "Me\u00e1n-Am Greenwich", "MAG", "Am Samhraidh na h\u00c9ireann", "AS\u00c9" },
-    { "Europe/Belfast", "Me\u00e1n-Am Greenwich", "MAG", "Am Samhraidh na Breataine", "ASB" },
-    { "Europe/London", "Me\u00e1n-Am Greenwich", "MAG", "Am Samhraidh na Breataine", "ASB" },
+    { "MAG", "Me\u00e1n-Am Greenwich", "MAG", "Me\u00e1n-Am Greenwich",  "Etc/GMT" },
+    { "MAG", "Me\u00e1n-Am Greenwich", "AS\u00c9", "Am Samhraidh na h\u00c9ireann",  "Europe/Dublin" },
+    { "MAG", "Me\u00e1n-Am Greenwich", "ASB", "Am Samhraidh na Breataine",  "Europe/Belfast" },
+    { "MAG", "Me\u00e1n-Am Greenwich", "ASB", "Am Samhraidh na Breataine",  "Europe/London" },
   };
 
   private static final class Hashtableterritories extends java.util.Hashtable
