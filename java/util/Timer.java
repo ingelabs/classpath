@@ -65,9 +65,13 @@ public class Timer {
         /** Default size of this queue */
         private final int DEFAULT_SIZE = 32;
 
+        /** Wheter to return null when there is nothing in the queue */
+        private boolean nullOnEmpty;
+
         /**
          * The heap containing all the scheduled TimerTasks
          * sorted by the TimerTask.scheduled field.
+         * Null when the stop() method has been called.
          */
         private TimerTask heap[];
 
@@ -84,6 +88,7 @@ public class Timer {
         public TaskQueue() {
             heap = new TimerTask[DEFAULT_SIZE];
             elements = 0;
+            nullOnEmpty = false;
         }
 
         /**
@@ -120,6 +125,13 @@ public class Timer {
          * in the heap.
          */
         public synchronized void enqueue(TimerTask task) {
+ 
+           // Check if it is legal to add another element
+            if (heap == null) {
+                throw new IllegalStateException
+                    ("cannot enqueue when stop() has been called on queue");
+            }
+
             heap[0] = task; // sentinel
             add(task); // put the new task at the end
             // Now push the task up in the heap until it has reached its place
@@ -133,7 +145,7 @@ public class Timer {
             // This is the correct place for the new task
             heap[child] = task;
             heap[0] = null; // clear sentinel
-            // Maybe somebody is waiting for a new element
+            // Maybe sched() is waiting for a new element
             this.notify();
         }
 
@@ -141,7 +153,7 @@ public class Timer {
          * Returns the top element of the queue.
          * Can return null when no task is in the queue.
          */
-        public synchronized TimerTask top() {
+        private TimerTask top() {
             if (elements == 0) {
                 return null;
             } else {
@@ -155,69 +167,94 @@ public class Timer {
          * Can return null when there is nothing in the queue.
          */
         public synchronized TimerTask serve() {
-            // get the task
-            TimerTask task = top();
+            // The task to return
+            TimerTask task = null;
+            
+            while (task == null) {
+                // Get the next task
+                task = top();
+                
+                // return null when asked to stop
+                // or if asked to return null when the queue is empty
+                if ((heap == null) || (task == null && nullOnEmpty)) {
+                    return null;
+                }
+                
+                // Do we have a task?
+                if (task != null) {
+                    // The time to wait until the task should be served
+                    long time = task.scheduled-System.currentTimeMillis();
+                    if (time > 0) {
+                        // This task should not yet be served
+                        // So wait until this task is ready
+                        // or something else happens to the queue
+                        task = null; // set to null to make sure we call top()
+                        try {
+                            this.wait(time);
+                        } catch (InterruptedException _) {}
+                    }
+                } else {
+                    // wait until a task is added
+                    // or something else happens to the queue
+                    try {
+                        this.wait();
+                    } catch (InterruptedException _) {}
+                }
+            }
             
             // reconstruct the heap
-            if (task != null) { // queue not empty
-                TimerTask lastTask = heap[elements];
-                remove();
+            TimerTask lastTask = heap[elements];
+            remove();
             
-                // Drop lastTask at the beginning and move it down the heap
-                int parent = 1;
-                int child = 2;
-                heap[1] = lastTask;
-                while(child <= elements) {
-                    if (child < elements) {
-                        if (heap[child].scheduled > heap[child+1].scheduled) {
-                            child++;
-                        }
+            // drop lastTask at the beginning and move it down the heap
+            int parent = 1;
+            int child = 2;
+            heap[1] = lastTask;
+            while(child <= elements) {
+                if (child < elements) {
+                    if (heap[child].scheduled > heap[child+1].scheduled) {
+                        child++;
                     }
-
-                    if (lastTask.scheduled <= heap[child].scheduled)
-                        break; // found the correct place (the parent) - done
-
-                    heap[parent] = heap[child];
-                    parent = child;
-                    child = parent*2;
                 }
-                // This is the correct place for the lastTask
-                heap[parent] = lastTask;
+                
+                if (lastTask.scheduled <= heap[child].scheduled)
+                    break; // found the correct place (the parent) - done
+                
+                heap[parent] = heap[child];
+                parent = child;
+                child = parent*2;
             }
 
-            return task; // return top element (the task)
+            // this is the correct new place for the lastTask
+            heap[parent] = lastTask;
+
+            // return the task
+            return task;
         }
 
+    
         /**
-         * Called to notify the scheduler that something important has happend.
+         * When nullOnEmpty is true the serve() method will return null when
+         * there are no tasks in the queue, otherwise it will wait until
+         * a new element is added to the queue. It is used to indicate to
+         * the scheduler that no new tasks will ever be added to the queue.
          */
-        public synchronized void interrupt() {
+        public synchronized void setNullOnEmpty(boolean nullOnEmpty) {
+            this.nullOnEmpty = nullOnEmpty;
             this.notify();
         }
 
         /**
-         * Called when the scheduler has nothing to do.
-         * Calls this.wait() and returns when interrupt() is called on the
-         * queue to notify the scheduler that something important happend.
+         * When this method is called the current and all future calls to
+         * serve() will return null. It is used to indicate to the Scheduler
+         * that it should stop executing since no more tasks will come.
          */
-        public synchronized void sleep() {
-            try {
-                this.wait();
-            } catch(InterruptedException ie) {}
+        public synchronized void stop() {
+            this.heap = null;
+            this.notify();
         }
-
-        /**
-         * Called by the scheduler when it has to wait before the next task
-         * should execute. Calls this.wait(millis), but can return before that
-         * when interrupt() is called on the queue to notify the scheduler that
-         * something important has happend.
-         */
-        public synchronized void sleep(long millis) {
-            try {
-                this.wait(millis);
-            } catch(InterruptedException ie) {}
-        }
-    }
+        
+    } // TaskQueue
 
     /**
      * The scheduler that executes all the tasks on a particular TaskQueue,
@@ -230,93 +267,48 @@ public class Timer {
         // The priority queue containing all the TimerTasks.
         private TaskQueue queue;
 
-        // The run method checks this
-        private boolean stop;
-
-        // Set when the parent Timer is finalized
-        private boolean timerFinalized;
-        
         /**
          * Creates a new Scheduler that will schedule the tasks on the
          * given TaskQueue.
          */
         public Scheduler(TaskQueue queue) {
-            stop = false;
-            timerFinalized = false;
             this.queue = queue;
         }
 
-        /**
-         * Cancels this Scheduler.
-         * This does not stop the current task from executing.
-         */
-        public void cancel() {
-            stop = true;
-            queue.interrupt();
-        }
-
-        /**
-         * Tells this Scheduler that the Timer was finalized and that it
-         * should clean up the Thread when it has nothing better to do
-         * (since there will be no way to add any more tasks to this scheduler)
-         * but that it should keep scheduling all the tasks that are currently
-         * in the queue.
-         */
-        public void timerFinalized() {
-            timerFinalized = true;
-            queue.interrupt();
-        }
-
         public void run() {
-            while(!stop) {
-                // Look at the top of the queue
-                TimerTask task = queue.top();
-                if (task != null) {
-                    // Calculate the time until this task has to be executed
-                    long time = task.scheduled-System.currentTimeMillis();
-                    if (time <= 0 || task.scheduled < 0) {
-                        // pull the task from the queue and run it
-                        // (note that this could be a different task)
-                        task = queue.serve();
-                        if (task.scheduled >= 0) {
-                            task.lastExecutionTime = task.scheduled;
-                            if (task.period < 0) {
-                                // Last time this task is executed
-                                task.scheduled = -1;
-                            }
-                            try {
-                                task.run();
-                            } catch (Throwable t) {/* ignore all errors */}
-                        }
-                        // Calculate next time and possibly re-enqueue
-                        if (task.scheduled >= 0) {
-                            if (task.fixed) {
-                                task.scheduled += task.period;
-                            } else {
-                                task.scheduled = task.period +
-                                    System.currentTimeMillis();
-                            }
-                            queue.enqueue(task);
-                        }
-                    } else {
-                        // Wait time on queue (or until interrupted).
-                        queue.sleep(time);
+            TimerTask task;
+            while((task = queue.serve()) != null) {
+                // If this task has not been canceled
+                if (task.scheduled >= 0) {
+
+                    // Mark execution time
+                    task.lastExecutionTime = task.scheduled;
+
+                    // Repeatable task?
+                    if (task.period < 0) {
+                        // Last time this task is executed
+                        task.scheduled = -1;
                     }
-                } else {
-                    // Nothing on the queue
-                    if (timerFinalized) {
-                        // parent Timer was finalized so no more new tasks
-                        // and we have nothing to do
-                        // bye bye
-                        stop = true;
+
+                    // Run the task
+                    try {
+                        task.run();
+                    } catch (Throwable t) {/* ignore all errors */}
+                }
+
+                // Calculate next time and possibly re-enqueue
+                if (task.scheduled >= 0) {
+                    if (task.fixed) {
+                        task.scheduled += task.period;
                     } else {
-                        // wait until something happens with the queue
-                        queue.sleep();
+                        task.scheduled = task.period +
+                            System.currentTimeMillis();
                     }
+                    queue.enqueue(task);
                 }
             }
         }
-    }
+    } // Scheduler
 
     // Number of Timers created.
     // Used for creating nice Thread names.
@@ -383,7 +375,7 @@ public class Timer {
      */
     public void cancel() {
         canceled = true;
-        scheduler.cancel();
+        queue.stop();
     }
 
     /**
@@ -528,6 +520,6 @@ public class Timer {
      * so there will be no more new tasks scheduled.
      */
     protected void finalize() {
-        scheduler.timerFinalized();
+        queue.setNullOnEmpty(true);
     }
 }
