@@ -1,5 +1,14 @@
 2004-10-28  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/font/TextAttribute.java
+	(RUN_DIRECTION_LTR): Initialie with static value instead of
+	calculating it.
+	(RUN_DIRECTION_RTL): Likewise.
+	(STRIKETHROUGH_ON): Likewise.
+	(SWAP_COLORS_ON): Likewise.
+
+2004-10-28  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/awt/peer/gtk/GdkGraphics2D.java
 	(releasePeerGraphicsResource): Fixed typo in method name.
 	* gnu/java/awt/peer/gtk/GdkFontPeer.java
