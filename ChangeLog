@@ -1,5 +1,10 @@
 2005-01-28  Michael Koch  <konqueror@gmx.de>
 
+	* java/util/jar/Attributes.java
+	(CREATED_BY, JAVA_BEAN, MAGIC): Removed.
+
+2005-01-28  Michael Koch  <konqueror@gmx.de>
+
 	* java/awt/image/ReplicateScaleFilter.java
 	(replicatePixels): Made private.
 	* javax/swing/colorchooser/DefaultRGBChooserPanel.java
