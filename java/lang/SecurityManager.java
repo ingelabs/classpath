@@ -508,6 +508,17 @@ public class SecurityManager {
 		throw new SecurityException("Cannot read or write multicast.");
 	}
 
+        /**
+         ** Check if the current thread is allowed to perform an
+         ** operation that requires the specified <code>Permission</code>.
+         **
+         ** @param perm The <code>Permission</code> required.
+         ** @exception SecurityException If the operation is not allowed.
+         **/
+         public void checkPermission(java.security.Permission perm) {
+		throw new SecurityException("Operation not allowed");
+	}
+
 	/** Check if the current thread is allowed to read or
 	 ** write all the system properties at once.<P>
 	 **
