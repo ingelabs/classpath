@@ -12,6 +12,7 @@
 	(getAccessibleContext()): implemented
 	(updateUI()): style cleanup
 	* javax/swing/JRadioButton.java
+	Added missing documentation.
 	(AccessibleJRadioButton): new inner class
 	(AccessibleJRadioButton()): new constructor
 	(getAccessibleRole()): new method
