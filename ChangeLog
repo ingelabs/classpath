@@ -1,5 +1,10 @@
 2004-04-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/channels/spi/AbstractSelectableChannel.java
+	(register): Check ops for validity.
+
+2004-04-21  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/Socket.java
 	(impl): Made package-private.
 	* java/net/ServerSocket.java
