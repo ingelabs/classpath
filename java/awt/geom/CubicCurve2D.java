@@ -709,90 +709,13 @@ public abstract class CubicCurve2D implements Shape, Cloneable
     // The Java implementation is very similar to the GSL code, but
     // not a strict one-to-one copy. For example, GSL would sort the
     // result.
+    
     double a;
-
-    // Adapted from poly/solve_cubic.c in the GNU Scientific Library
-    // (GSL), revision 1.7 of 2003-07-26. For the original source, see
-    // http://www.gnu.org/software/gsl/
-    //
-    // Brian Gough, the author of that code, has granted the
-    // permission to use it in GNU Classpath under the GNU Classpath
-    // license, and has assigned the copyright to the Free Software
-    // Foundation.
-    //
-    // The Java implementation is very similar to the GSL code, but
-    // not a strict one-to-one copy. For example, GSL would sort the
-    // result.
     double b;
-
-    // Adapted from poly/solve_cubic.c in the GNU Scientific Library
-    // (GSL), revision 1.7 of 2003-07-26. For the original source, see
-    // http://www.gnu.org/software/gsl/
-    //
-    // Brian Gough, the author of that code, has granted the
-    // permission to use it in GNU Classpath under the GNU Classpath
-    // license, and has assigned the copyright to the Free Software
-    // Foundation.
-    //
-    // The Java implementation is very similar to the GSL code, but
-    // not a strict one-to-one copy. For example, GSL would sort the
-    // result.
     double c;
-
-    // Adapted from poly/solve_cubic.c in the GNU Scientific Library
-    // (GSL), revision 1.7 of 2003-07-26. For the original source, see
-    // http://www.gnu.org/software/gsl/
-    //
-    // Brian Gough, the author of that code, has granted the
-    // permission to use it in GNU Classpath under the GNU Classpath
-    // license, and has assigned the copyright to the Free Software
-    // Foundation.
-    //
-    // The Java implementation is very similar to the GSL code, but
-    // not a strict one-to-one copy. For example, GSL would sort the
-    // result.
     double q;
-
-    // Adapted from poly/solve_cubic.c in the GNU Scientific Library
-    // (GSL), revision 1.7 of 2003-07-26. For the original source, see
-    // http://www.gnu.org/software/gsl/
-    //
-    // Brian Gough, the author of that code, has granted the
-    // permission to use it in GNU Classpath under the GNU Classpath
-    // license, and has assigned the copyright to the Free Software
-    // Foundation.
-    //
-    // The Java implementation is very similar to the GSL code, but
-    // not a strict one-to-one copy. For example, GSL would sort the
-    // result.
     double r;
-
-    // Adapted from poly/solve_cubic.c in the GNU Scientific Library
-    // (GSL), revision 1.7 of 2003-07-26. For the original source, see
-    // http://www.gnu.org/software/gsl/
-    //
-    // Brian Gough, the author of that code, has granted the
-    // permission to use it in GNU Classpath under the GNU Classpath
-    // license, and has assigned the copyright to the Free Software
-    // Foundation.
-    //
-    // The Java implementation is very similar to the GSL code, but
-    // not a strict one-to-one copy. For example, GSL would sort the
-    // result.
     double Q;
-
-    // Adapted from poly/solve_cubic.c in the GNU Scientific Library
-    // (GSL), revision 1.7 of 2003-07-26. For the original source, see
-    // http://www.gnu.org/software/gsl/
-    //
-    // Brian Gough, the author of that code, has granted the
-    // permission to use it in GNU Classpath under the GNU Classpath
-    // license, and has assigned the copyright to the Free Software
-    // Foundation.
-    //
-    // The Java implementation is very similar to the GSL code, but
-    // not a strict one-to-one copy. For example, GSL would sort the
-    // result.
     double R;
     double c3;
     double Q3;
