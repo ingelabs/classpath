@@ -1,5 +1,13 @@
 2001-10-19  Mark Wielaard  <mark@klomp.org>
 
+	* java/lang/Double.java: More libgcj merging
+	(isNaN): return v != v
+	* java/lang/Float.java: Ditto
+	(equals (Object)): use floatToIntBits()
+	(isNaN): return v != v
+
+2001-10-19  Mark Wielaard  <mark@klomp.org>
+
 	* configure.in (AC_OUTPUT): removed gnu/classpath/tools/Makefile,
 	added javax/naming/Makefile, javax/naming/directory/Makefile and
 	javax/naming/spi/Makefile

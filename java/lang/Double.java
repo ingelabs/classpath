@@ -146,6 +146,14 @@ public final class Double extends Number implements Comparable
    * <code>instanceof</code> <code>Double</code>, and represents
    * the same primitive <code>double</code> value return 
    * <code>true</code>.  Otherwise <code>false</code> is returned.
+   * <p>
+   * Note that there are two differences between <code>==</code> and
+   * <code>equals()</code>. <code>0.0d == -0.0d</code> returns <code>true</code>
+   * but <code>new Double(0.0d).equals(new Double(-0.0d))</code> returns
+   * <code>false</code>. And <code>Double.NaN == Double.NaN</code> returns
+   * <code>false</code>, but
+   * <code>new Double(Double.NaN).equals(new Double(Double.NaN))</code> returns
+   * <code>true</code>.
    *
    * @param obj the object to compare to
    * @return whether the objects are semantically equal.
@@ -248,7 +256,9 @@ public final class Double extends Number implements Comparable
    */
   public static boolean isNaN (double v)
   {
-    return (doubleToLongBits (v) == 0x7ff8000000000000L);
+    // This works since NaN != NaN is the only reflexive inequality
+    // comparison which returns true.
+    return v != v;
   }
 
   /**
@@ -324,14 +334,14 @@ public final class Double extends Number implements Comparable
       return isNaN (y) ? 0 : 1;
     if (isNaN (y))
       return -1;
-    if ((x == 0.0d) && (y == -0.0d))
+    if (x == 0.0d && y == -0.0d)
       return 1;
-    if ((x == -0.0d) && (y == 0.0d))
+    if (x == -0.0d && y == 0.0d)
       return -1;
     if (x == y)
       return 0;
 
-    return (x > y) ? 1 : -1;
+    return x > y ? 1 : -1;
   }
 
   /**
