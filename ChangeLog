@@ -1,3 +1,14 @@
+2001-03-19  Mark Wielaard  <mark@klomp.org>
+
+	* java/lang/ExceptionInInitializerError.java: print classname for target
+	exception
+	* java/lang/reflect/InvocationTargetException.java: idem
+
+2001-03-19  Mark Wielaard  <mark@klomp.org>
+
+	* java/net/URLClassLoader.java: new 1.2 class
+	* lib/standard.omit: add URLClassLoader.java
+
 2001-03-11  Mark Wielaard  <mark@klomp.org>
 
 	* java/io/CharConversionException.java: merged with libgcj

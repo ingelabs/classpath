@@ -66,7 +66,7 @@ public class InvocationTargetException extends Exception
    */
   public InvocationTargetException(Throwable targetException) 
     {
-      super();
+      super(targetException.toString());
       target = targetException;
     }
   
@@ -98,7 +98,10 @@ public class InvocationTargetException extends Exception
       if (target == null)
 	super.printStackTrace();
       else
+      {
+	System.err.print(this.getClass() + ": ");
 	target.printStackTrace();
+      }
     }
 
   public void printStackTrace(PrintStream ps)
@@ -106,7 +109,10 @@ public class InvocationTargetException extends Exception
       if (target == null)
 	super.printStackTrace(ps);
       else
+      {
+	ps.print(this.getClass() + ": ");
 	target.printStackTrace(ps);
+      }
     }
 
   public void printStackTrace(PrintWriter pw)
@@ -114,6 +120,9 @@ public class InvocationTargetException extends Exception
       if (target == null)
 	super.printStackTrace(pw);
       else
+      {
+	pw.print(this.getClass() + ": ");
 	target.printStackTrace(pw);
+      }
     }
 }
