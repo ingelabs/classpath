@@ -8,7 +8,7 @@ public final class Boolean implements Serializable
 
   public static final Boolean TRUE  = new Boolean(true);
   public static final Boolean FALSE = new Boolean(false);
-  public static final Class TYPE = null; /* XXX */
+  public static final Class TYPE = VMClass.getPrimitiveClass("boolean");
 
   private boolean value;
     

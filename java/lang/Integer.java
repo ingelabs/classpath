@@ -7,7 +7,7 @@ public final class Integer extends Number {
 
   public static final int MIN_VALUE = 0x80000000;
   public static final int MAX_VALUE = 0x7fffffff;
-  public static final Class TYPE = null; /* XXX */
+  public static final Class TYPE = VMClass.getPrimitiveClass("int");
 
   private int value;
     

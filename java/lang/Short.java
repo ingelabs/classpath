@@ -6,7 +6,7 @@ public final class Short extends Number {
 
   public static final short MIN_VALUE = -32678;
   public static final short MAX_VALUE =  32767;
-  public static final Class TYPE = null; /* XXX */
+  public static final Class TYPE = VMClass.getPrimitiveClass("short");
 
   private short value;
 
