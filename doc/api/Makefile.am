@@ -40,7 +40,8 @@ uninstall-local:
           fi; \
         done
 
-html: create_xml create_catalog create_html
+#html: create_xml create_catalog create_html
+html: create_html
 
 core := $(shell cd $(top_srcdir) && $(FIND) java javax -type d ! -regex .*CVS | tr '/' '.' )
 jaxp := $(shell cd $(top_srcdir)/external/jaxp/source && $(FIND) gnu javax org -type d ! -regex .*CVS | tr '/' '.')
@@ -49,41 +50,45 @@ packages = $(core) $(jaxp)
 date := $(shell $(DATE))
 
 clean:
-	-rm -rf xml
+#	-rm -rf xml
 	-rm -rf html
-	-rm -f gjdoccatalog.xml
-	-rm -f gjdoc_rawcomment.cache
+#	-rm -f gjdoccatalog.xml
+#	-rm -f gjdoc_rawcomment.cache
 
-create_xml:
-	-$(MKDIR) xml > /dev/null 2>&1
-	$(GJDOC) -sourcepath \
-		"$(top_srcdir):$(top_srcdir)/external/jaxp/source:$(top_srcdir)/vm/reference" \
-		-doclet gnu.classpath.tools.doclets.xmldoclet.Driver \
-		-d xml $(packages) 
-	-touch create_xml
+#create_xml:
+#	-$(MKDIR) xml > /dev/null 2>&1
+#	$(GJDOC) -sourcepath \
+#		"$(top_srcdir):$(top_srcdir)/external/jaxp/source:$(top_srcdir)/vm/reference" \
+#		-doclet gnu.classpath.tools.doclets.xmldoclet.Driver \
+#		-d xml $(packages) 
+#	-touch create_xml
 
-create_catalog:
-	$(XMLCATALOG) --noout --create \
-		--add "public" \
-		"-//GNU//DTD Gjdoc XML V0.1.1//EN" \
-		http://www.gnu.org/software/cp-tools/dtd/gjdoc.dtd \
-		--add "rewriteSystem" \
-		http://www.gnu.org/software/cp-tools/dtd/ \
-		file:///usr/local/share/gjdoc/dtd/ \
-		gjdoccatalog.xml 
-	-touch create_catalog
+#create_catalog:
+#	$(XMLCATALOG) --noout --create \
+#		--add "public" \
+#		"-//GNU//DTD Gjdoc XML V0.1.1//EN" \
+#		http://www.gnu.org/software/cp-tools/dtd/gjdoc.dtd \
+#		--add "rewriteSystem" \
+#		http://www.gnu.org/software/cp-tools/dtd/ \
+#		file:///usr/local/share/gjdoc/dtd/ \
+#		gjdoccatalog.xml 
+#	-touch create_catalog
 
 create_html:
-	-$(MKDIR) html > /dev/null 2>&1
-	-$(CP) -Ru $(srcdir)/xslt/common html
-	$(XSLTPROC) \
-		--novalid \
-		--param verbose "1" \
-		--param now "'$(date)'" \
-		--param copyrightfile "'$(srcdir)/classpath-copyright.xml'" \
-		--param windowtitle "'GNU Classpath CVS'" \
-		--param targetdir "'html'" \
-		"$(srcdir)/xslt/gjdocxml2html.xsl" \
-		"xml/index.xml"
+#	-$(MKDIR) html > /dev/null 2>&1
+	$(GJDOC) -sourcepath \
+	"$(top_srcdir):$(top_srcdir)/vm/reference:$(top_srcdir)/external/jaxp/source" \
+	-d html $(packages)
+
+#	-$(CP) -Ru $(srcdir)/xslt/common html
+#	$(XSLTPROC) \
+#		--novalid \
+#		--param verbose "1" \
+#		--param now "'$(date)'" \
+#		--param copyrightfile "'$(srcdir)/classpath-copyright.xml'" \
+#		--param windowtitle "'GNU Classpath CVS'" \
+#		--param targetdir "'html'" \
+#		"$(srcdir)/xslt/gjdocxml2html.xsl" \
+#		"xml/index.xml"
 	-touch create_html
 

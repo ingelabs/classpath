@@ -1,4 +1,15 @@
-New in release 0.05 [ no date yet ]
+New in release 0.05 (2003/02/15)
+* Supports free Java VMs Jikes RVM and Kissme out of the box, perhaps others.
+* Supports GNU Crypto 1.1 as the official provider of cryptographic primitives
+  and tools for GNU Classpath, available separately from 
+  http://www.gnu.org/software/classpathx/crypto/crypto.html. 
+* Supports GNU Classpath Tools sub-project of GNU Classpath, official provider
+  of standard tools such as gjdoc, a javadoc replacement, and others.  Future
+  releases of GNU Classpath will begin to include these tools, available
+  separately from http://www.gnu.org/software/cp-tools/.
+* Java primitives can be used to support AWT native threading, see 
+  the --enable-portable-native-sync configure option which may become the
+  default in a future release.
 * Include file jni.h has been updated to the 1.4 specification.
 * VM specific internal types for jobject, jfieldID, and jmethodID are
   supported in jni.h.  More details can be found by reading the comment
