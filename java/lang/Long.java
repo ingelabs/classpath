@@ -52,7 +52,7 @@ public final class Long extends Number {
      * The primitive type <code>long</code> is represented by this 
      * <code>Class</code> object.
      */
-  public static final Class TYPE = VMClassLoader.getPrimitiveClass("long");
+  public static final Class TYPE = Class.getPrimitiveClass("long");
 
   private long value;
     

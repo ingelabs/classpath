@@ -50,7 +50,7 @@ public final class Short extends Number {
      * The primitive type <code>short</code> is represented by this 
      * <code>Class</code> object.
      */
-  public static final Class TYPE = VMClassLoader.getPrimitiveClass("short");
+  public static final Class TYPE = Class.getPrimitiveClass("short");
 
   private short value;
 

@@ -53,7 +53,7 @@ public final class Integer extends Number {
      * The primitive type <code>int</code> is represented by this 
      * <code>Class</code> object.
      */
-  public static final Class TYPE = VMClassLoader.getPrimitiveClass("int");
+  public static final Class TYPE = Class.getPrimitiveClass("int");
 
   private int value;
     

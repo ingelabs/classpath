@@ -48,7 +48,7 @@ public final class Boolean implements Serializable
      * The primitive type <code>boolean</code> is represented by this 
      * <code>Class</code> object.
      */
-    public static final Class TYPE = VMClassLoader.getPrimitiveClass("boolean");
+    public static final Class TYPE = Class.getPrimitiveClass("boolean");
     
     private boolean value;
     

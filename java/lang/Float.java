@@ -63,7 +63,7 @@ public final class Float extends Number
      * The primitive type <code>float</code> is represented by this 
      * <code>Class</code> object.
      */
-    public static final Class TYPE = VMClassLoader.getPrimitiveClass("float");
+    public static final Class TYPE = Class.getPrimitiveClass("float");
 
     private float value;
 

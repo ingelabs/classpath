@@ -21,36 +21,33 @@
 package java.lang;
 
 /**
- ** java.lang.VMClassLoader is a package-private helper for VMs to implement
- ** on behalf of java.lang.ClassLoader.
- **
- ** @author John Keiser
- ** @version 1.1.0, Sep 22 1998
- ** @since CP1.1
- **/
+ * java.lang.VMClassLoader is a package-private helper for VMs to implement
+ * on behalf of java.lang.ClassLoader.
+ *
+ * @author John Keiser
+ * @version 1.1.0, Sep 22 1998
+ * @since CP1.1
+ */
 
 class VMClassLoader {
-	/** Helper to define a class using a string of bytes.
-	 ** @param name the name to give the class.  null if unknown.
-	 ** @param data the data representing the classfile, in classfile format.
-	 ** @param offset the offset into the data where the classfile starts.
-	 ** @param len the length of the classfile data in the array.
-	 ** @return the class that was defined.
-	 ** @exception ClassFormatError if the byte array is not in proper classfile format.
-	 **/
-	final static native Class defineClass(ClassLoader cl, String name, byte[] data, int offset, int len) throws ClassFormatError;
 
-	/** Helper to resolve all references to other classes from this class.
-	 ** @param c the class to resolve.
-	 **/
-	final static native void resolveClass(Class c);
-
-	/** Helper for java.lang.Integer, Byte, etc. to get the TYPE class
-	 ** at initialization time.  If there are multiple classloaders, this
-	 ** method may be called once per ClassLoader per type.
-	 ** @param type name of the primitive type; i.e. "int", "byte", "long",
-	 **             etc.
-	 ** @return a "bogus" class representing the primitive type.
-	 **/
-	final static native Class getPrimitiveClass(String type);
+    /** 
+     * Helper to define a class using a string of bytes.
+     * 
+     * @param name the name to give the class.  null if unknown.
+     * @param data the data representing the classfile, in classfile format.
+     * @param offset the offset into the data where the classfile starts.
+     * @param len the length of the classfile data in the array.
+     * @return the class that was defined.
+     * @exception ClassFormatError if the byte array is not in proper classfile format.
+     */
+    final static native Class defineClass(ClassLoader cl, String name, 
+	     byte[] data, int offset, int len) throws ClassFormatError;
+    
+    /** 
+     * Helper to resolve all references to other classes from this class.
+     * @param c the class to resolve.
+     */
+    final static native void resolveClass(Class c);
+    
 }

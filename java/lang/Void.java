@@ -35,6 +35,6 @@ public final class Void {
      * The return type <code>void</code> is represented by this 
      * <code>Class</code> object.
      */
-  public static final Class TYPE = VMClassLoader.getPrimitiveClass("void");
+  public static final Class TYPE = Class.getPrimitiveClass("void");
   private Void() { }
 }

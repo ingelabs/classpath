@@ -48,7 +48,7 @@ public final class Byte extends Number implements Comparable
      * The primitive type <code>byte</code> is represented by this 
      * <code>Class</code> object.
      */
-    public static final Class TYPE = VMClassLoader.getPrimitiveClass("byte");
+    public static final Class TYPE = Class.getPrimitiveClass("byte");
     
     private byte value;
     
