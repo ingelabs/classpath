@@ -109,9 +109,9 @@ else
 if USER_SPECIFIED_JIKES
 
 if USER_SPECIFIED_CLASSLIB
-JAVAC = @JIKES@ -nowarn +CSO +F $(ARG_CLASSPATH_JAVAC) ..:../vm/current:.:@USER_CLASSLIB@ -d . @classes
+JAVAC = @JIKES@ -nowarn +CSO +M +F $(ARG_CLASSPATH_JAVAC) ..:../vm/current:.:@USER_CLASSLIB@ -d . @classes
 else
-JAVAC = @JIKES@ -nowarn +CSO +F $(ARG_CLASSPATH_JAVAC) ..:../vm/current:. -d . @classes
+JAVAC = @JIKES@ -nowarn +CSO +M +F $(ARG_CLASSPATH_JAVAC) ..:../vm/current:. -d . @classes
 endif
 
 else
@@ -187,14 +187,14 @@ install-data-local :
 	if ! [ -e $(pkgdatadir) ]; then mkdir -p $(pkgdatadir); fi
 	unzip -d $(pkgdatadir) glibj.zip
 
-all: $(HEADERS_DEPEND) glibj.zip $(MAKEFILE_DEPEND) $(HEADERS)
+all: $(HEADERS_DEPEND) glibj.zip $(HEADERS)
 #jar-classes
 
 # this makes headers always generate after making glibj.zip
 # $(HEADERS) : glibj.zip 
 
 #.PHONY: jar-classes
-glibj.zip: classes compile-classes
+glibj.zip: classes compile-classes $(MAKEFILE_DEPEND)
 	if ! [ -e gnu ]; then mkdir gnu; fi
 	if ! [ -e gnu/java ]; then mkdir gnu/java; fi
 	if ! [ -e gnu/java/locale ]; then mkdir gnu/java/locale; fi
@@ -215,8 +215,9 @@ compile-classes: classes $(JAVA_DEPEND) $(JAVA_SRCS) Makefile
 	$(JAVAC)
 	touch compile-classes
 
-$(MAKEFILE_DEPEND): classes $(HEADERS_DEPEND) $(CLASSES_DEPEND)
+$(MAKEFILE_DEPEND): compile-classes
 	$(SHELL) -c "cd $(top_srcdir)/lib && ./mkdep.pl -d"
+	$(SHELL) -c "cd $(top_srcdir)/lib && find -regex ".*\.u$" -exec rm \{\} \;
 
 $(HEADERS_DEPEND): classes
 	if ! [ -e $(top_srcdir)/include ]; then -mkdir $(top_srcdir)/include; fi	
