@@ -1,3 +1,16 @@
+2004-05-30  Guilhem Lavaux <guilhem@kaffe.org>
+
+	* java/text/RuleBasedCollator.java
+	(CollationElement.CollationElement): Removed unused constructor.
+	New argument for the other one.
+	(subParseString): Mark the element as ignorable but do not erase
+	them from the database.
+	(compare): Take into account the ignore field for ignorable
+	elements.
+	(buildCollationVector): Use the ignore field now.
+	* java/text/CollationElementIterator.java
+	(setText): Keep ignorable characters.
+
 2004-05-28  Michael Koch  <konqueror@gmx.de>
 
 	* java/io/RandomAccessFile.java
