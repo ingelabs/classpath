@@ -87,22 +87,26 @@ sub writeNativeFile
 
 	# print rules to make .h files
 	# y/x.h : z/x.class
+	# y/x.h : ../z/x.java
 	#     javah -jni z.x
 	#     mv y_x.h $(top_srcdir)/include
 
 	# j = y/x.h
 	# k = z/x.class
+	# k = ../z/x.java
 	# l = z.x
 	foreach $i (0 .. $#natives-1)
 	{
 	    $j = $natives[$i];
 	    $j =~ s/^\.\.\///;          # remove ../
 	    $j =~ s/^vm\/reference\///; # remove vm/reference/
-	    $k = $l = $j;
+#	    $k = $l = $j;
+	    $l = $j;
 	    $j =~ s/\//_/g;             # replace / with _
 	    $j =~ s/\.java$/\.h/;       # replace .java with .h
 
-	    $k =~ s/\.java$/\.class/;   # replace .java with .class
+            $k = $natives[$i];          # the original .java file
+#	    $k =~ s/\.java$/\.class/;   # replace .java with .class
 
 	    $l =~ s/\.java$//;          # remove .class
 	    $l =~ s/\//\./g;            # replace / with .
@@ -114,11 +118,13 @@ sub writeNativeFile
 	$j = $natives[$#natives];
 	$j =~ s/^\.\.\///;          # remove ../
 	$j =~ s/^vm\/reference\///; # remove vm/reference/
-	$k = $l = $j;
+#	$k = $l = $j;
+	$l = $j;
 	$j =~ s/\//_/g;             # replace / with _
 	$j =~ s/\.java/\.h/;        # replace .java with .h
 
-	$k =~ s/\.java$/\.class/;   # replace .java with .class
+        $k = $natives[$i];          # the original .java file
+#	$k =~ s/\.java$/\.class/;   # replace .java with .class
 
 	$l =~ s/\.java$//;          # remove .class
 	$l =~ s/\//\./g;            # replace / with .

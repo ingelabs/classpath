@@ -94,8 +94,8 @@ include $(HEADERS_DEPEND)
 all: glibj.zip $(MAKEFILE_DEPEND) $(HEADERS_DEPEND) $(HEADERS)
 #jar-classes
 
-$(HEADERS) : glibj.zip 
-#jar-classes
+# this makes headers always generate after making glibj.zip
+# $(HEADERS) : glibj.zip 
 
 #.PHONY: jar-classes
 glibj.zip: classes compile-classes
