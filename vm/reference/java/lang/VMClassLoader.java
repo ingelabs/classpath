@@ -42,14 +42,16 @@ package java.lang;
 import gnu.classpath.SystemProperties;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.ProtectionDomain;
 import java.util.Enumeration;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.zip.ZipFile;
 
 /**
  * java.lang.VMClassLoader is a package-private helper for VMs to implement
@@ -164,16 +166,55 @@ final class VMClassLoader
     Vector v = new Vector();
     while (st.hasMoreTokens())
       {
-	File file = new File(st.nextToken(), name);
-	if (!file.exists())
-	  continue;
-	try
+	File file = new File(st.nextToken());
+	if (file.isDirectory())
 	  {
-	    v.add(new URL("file://" + file.getAbsolutePath()));
+	    try
+	      {
+		v.add(new URL("file://"
+		  + new File(file, name).getAbsolutePath()));
+	      }
+	    catch (MalformedURLException e)
+	      {
+		throw new Error(e);
+	      }
 	  }
-	catch (MalformedURLException e)
+	else if (file.isFile())
 	  {
-	    throw new Error(e);
+	    ZipFile zip;
+	    try
+	      {
+		zip = new ZipFile(file);
+	      }
+	    catch (IOException e)
+	      {
+		continue;
+	      }
+	    String zname = name.startsWith("/") ? name.substring(1) : name;
+	    try
+	      {
+		if (zip.getEntry(zname) == null)
+		    continue;
+	      }
+	    finally
+	      {
+		try
+		  {
+		    zip.close();
+		  }
+		catch (IOException e)
+		  {
+		  }
+	      }
+	    try
+	      {
+		v.add(new URL("jar:file://"
+		  + file.getAbsolutePath() + "!/" + zname));
+	      }
+	    catch (MalformedURLException e)
+	      {
+		throw new Error(e);
+	      }
 	  }
       }
     return v.elements();

@@ -1,3 +1,8 @@
+2005-03-17  Archie Cobbs  <archie@dellroad.org>
+
+	* vm/reference/java/lang/VMClassLoader.java: handle ZIP files
+	on the boot loader class path in getResources()
+
 2005-03-19  Audrius Meskauskas  <audriusa@bluewin.ch>
 
 	* org/omg/CORBA/AnySeqHolder.java,
