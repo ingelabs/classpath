@@ -1,7 +1,7 @@
 /* KeyPairGenerator.java --- Key Pair Generator Class
    
   Copyright (c) 1999 by Free Software Foundation, Inc.
-  Written by Mark Benvenuto <ivymccough@worldnet.att.net>
+  Written by Mark Benvenuto <mcb@gnu.org>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU Library General Public License as published 
@@ -201,9 +201,31 @@ public void initialize(AlgorithmParameterSpec params, SecureRandom random) throw
 	Unless intialized, algorithm defaults will be used. It 
 	creates a unique key pair each time.
 
+	Same as generateKeyPair();
+
 	@return a key pair
 */
 public final KeyPair genKeyPair()
+{
+    try {
+	return getInstance("DSA", "GNU").generateKeyPair();
+    } catch( Exception e ) {
+	System.err.println("genKeyPair failed: " + e );
+	e.printStackTrace();
+	return null;
+    }
+}
+
+/**
+	Generates a KeyPair according the rules for the algorithm.
+	Unless intialized, algorithm defaults will be used. It 
+	creates a unique key pair each time.
+
+	Same as genKeyPair();
+
+	@return a key pair
+*/
+public KeyPair generateKeyPair()
 {
 	return generateKeyPair();
 }

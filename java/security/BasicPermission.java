@@ -3,6 +3,7 @@
 /*
 /* Copyright (c) 1998 Free Software Foundation, Inc.
 /* Written by Aaron M. Renn (arenn@urbanophile.com)
+/* Modified by Mark Benvenuto (mcb@gnu.org) Nov. 15, 1999 for JDK 1.3 compliance
 /*
 /* This library is free software; you can redistribute it and/or modify
 /* it under the terms of the GNU Library General Public License as published 
@@ -41,7 +42,7 @@ import java.util.Enumeration;
   * This class ignores the action list.  Subclasses can choose to implement
   * actions on top of this class if desired.
   *
-  * @version 0.0
+  * @version 0.1
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
@@ -62,9 +63,10 @@ public abstract class BasicPermission extends Permission implements Serializable
   * @param name The name of this permission.
   *
   * @exception IllegalArgumentException If the name contains an invalid wildcard character
+  * @exception NullPointerException If the name is null
   */
 public 
-BasicPermission(String name) throws IllegalArgumentException
+BasicPermission(String name) throws IllegalArgumentException, NullPointerException
 {
   super(name);
 
@@ -90,9 +92,10 @@ BasicPermission(String name) throws IllegalArgumentException
   * @param actions The list of actions for this permission - ignored in this class.
   *
   * @exception IllegalArgumentException If the name contains an invalid wildcard character
+  * @exception NullPointerException If the name is null
   */
 public
-BasicPermission(String name, String actions) throws IllegalArgumentException
+BasicPermission(String name, String actions) throws IllegalArgumentException, NullPointerException
 {
   // ignore actions
   this(name);

@@ -201,6 +201,31 @@ public final void initVerify(PublicKey publicKey)
 	engineInitVerify( publicKey );
 }
 
+    /**
+       Verify Signature with a certificate. This is a FIPS 140-1 compatible method
+       since it verifies a signature with a certificate.
+
+       If the certificate is an X.509 certificate, has a KeyUsage parameter and
+       the parameter indicates this key is not to be used for signing then an 
+       error is returned.
+
+       @param certificate a certificate containing a public key to verify with
+     */
+public final void initVerify(java.security.cert.Certificate certificate)
+                      throws InvalidKeyException
+{
+    state = VERIFY;
+    if( certificate.getType().equals("X509") ) 
+	{
+	    java.security.cert.X509Certificate cert = (java.security.cert.X509Certificate)certificate;
+
+	    boolean[] array = cert.getKeyUsage();
+	    if( array != null && array[0] == false )
+		throw new InvalidKeyException("KeyUsage of this Certificate indicates it cannot be used for digital signing");
+	}
+    this.initVerify( certificate.getPublicKey() );
+}
+
 /**
 	Initializes this class with the private key for 
 	signing purposes.

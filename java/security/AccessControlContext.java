@@ -1,7 +1,7 @@
 /* AccessControlContext.java --- Access Control Context Class
    
   Copyright (c) 1999 by Free Software Foundation, Inc.
-  Written by Mark Benvenuto <ivymccough@worldnet.att.net>
+  Written by Mark Benvenuto <mcb@gnu.org>
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU Library General Public License as published 
@@ -36,13 +36,14 @@ package java.security;
 public final class AccessControlContext
 {
 private ProtectionDomain protectionDomain[];
+private DomainCombiner combiner;
 
 /**
 	Construct a new AccessControlContext with the specified
 	ProtectionDomains. <code>context</code> must not be 
 	null and duplicates will be removed.
 
-	@param context The ProtectDomwains to use
+	@param context The ProtectionDomains to use
 */
 public AccessControlContext(ProtectionDomain[] context)
 {
@@ -70,10 +71,35 @@ public AccessControlContext(ProtectionDomain[] context)
 }
 
 /**
+	Construct a new AccessControlContext with the specified
+	ProtectionDomains and DomainCombiner
+
+	@param context The ProtectionDomains to use
+
+	@since JDK 1.3
+*/
+public AccessControlContext(AccessControlContext acc,
+                            DomainCombiner combiner)
+    {
+	this( acc.protectionDomain );
+	this.combiner = combiner;
+    }
+
+    /**
+       Returns the Domain Combiner associated with the AccessControlContext
+      
+       @returns the DomainCombiner
+    */
+    public DomainCombiner getDomainCombiner()
+    {
+	return combiner;
+    }
+
+/**
 	Determines whether or not the specific permission is granted
 	depending on the context it is within. 
 
-	@param perm A permission to check
+	@param perm a permission to check
 
 	@throws AccessControlException if the permssion is not permitted
 */

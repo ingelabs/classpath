@@ -3,6 +3,7 @@
 /*
 /* Copyright (c) 1998 Free Software Foundation, Inc.
 /* Written by Aaron M. Renn (arenn@urbanophile.com)
+/* Modified by Mark Benvenuto (mcb@gnu.org) Nov. 15, 1999 for JDK 1.3 compliance
 /*
 /* This library is free software; you can redistribute it and/or modify
 /* it under the terms of the GNU Library General Public License as published 
@@ -27,20 +28,12 @@ import java.math.BigInteger;
 /**
   * This interface provides access to information about an RSA private key.
   *
-  * @version 0.0
+  * @version 0.1
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public interface RSAPrivateKey extends PrivateKey
+public interface RSAPrivateKey extends PrivateKey, RSAKey
 {
-
-/**
-  * Returns the modulus of the private key
-  *
-  * @return The modulus of the private key
-  */
-public abstract BigInteger
-getModulus();
 
 /*************************************************************************/
 

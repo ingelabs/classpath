@@ -22,6 +22,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchProviderException;
 import java.security.SignatureException;
+import java.io.ObjectInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ObjectStreamException;
 
 /**
 	The Certificate class is an abstract class used to manage 
@@ -178,5 +181,48 @@ public abstract String toString();
 	@return The public key
 */
 public abstract PublicKey getPublicKey();
+
+
+/* INNER CLASS */
+/**
+   Certificate.CertificateRep is an inner class used to provide an alternate
+   storage mechanism for serialized Certificates.
+ */
+protected static class CertificateRep implements java.io.Serializable
+{
+    private String type;
+    private byte[] data;
+
+    /**
+       Create an alternate Certificate class to store a serialized Certificate
+
+       @param type the name of certificate type
+       @param data the certificate data
+     */
+    protected CertificateRep(String type,
+					 byte[] data)
+    {
+	this.type = type;
+	this.data = data;
+    }
+
+    /**
+       Return the stored Certificate
+
+       @return the stored certificate
+
+       @throws ObjectStreamException if certificate cannot be resolved
+     */
+    protected Object readResolve()
+	throws ObjectStreamException
+    {
+	try {
+	    return new ObjectInputStream( new ByteArrayInputStream( data ) ).readObject();
+	} catch ( Exception e ) {
+	    e.printStackTrace();
+	    throw new RuntimeException ( e.toString() );
+	}
+    }
+}
 
 }
