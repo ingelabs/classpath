@@ -1,5 +1,11 @@
 2003-09-21  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/DatagramSocket.java
+	(DatagramSocket): Implemented socket implementaion initialization
+	with respect to "impl.prefix" property. This is a merge from libgcj.
+
+2003-09-21  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/NIODatagramSocket.java,
 	gnu/java/nio/NIOSocket.java: New files,
 	merged from libgcj.

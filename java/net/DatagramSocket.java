@@ -153,8 +153,21 @@ public class DatagramSocket
     if (s != null)
       s.checkListen(port);
 
-    // Why is there no factory for this?
-    impl = new PlainDatagramSocketImpl();
+    String propVal = System.getProperty("impl.prefix");
+    if (propVal == null || propVal.equals(""))
+      impl = new PlainDatagramSocketImpl();
+    else
+      try
+	{
+          impl = (DatagramSocketImpl) Class.forName
+            ("java.net." + propVal + "DatagramSocketImpl").newInstance();
+	}
+      catch (Exception e)
+	{
+	  System.err.println("Could not instantiate class: java.net." +
+	    propVal + "DatagramSocketImpl");
+	  impl = new PlainDatagramSocketImpl();
+	}
     impl.create();
 
     if (laddr == null)
