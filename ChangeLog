@@ -1,16 +1,21 @@
 2002-04-28  C. Brian Jones <cbj@gnu.org>
 
+	* native/jni/java-io/Makefile.am: remove java_nio.c from compilation
+
+2002-04-28  C. Brian Jones <cbj@gnu.org>
+
 	* vm/reference/java/lang/Runtime.java (nativeLoad): comment fix, 
 	@return 0 on failure, nonzero on success: this matches current VM
 	implementations using Classpath
 
 2002-04-28  C. Brian Jones <cbj@gnu.org>
 
-* lib/standard.omit: disable javax.swing
+	* lib/standard.omit: disable javax.swing
 
 2002-04-28  C. Brian Jones <cbj@gnu.org>
 
-* acinclude.m4(CLASSPATH_CHECK_GCJ): check gcj version; 3.1 or higher or warn
+	* acinclude.m4(CLASSPATH_CHECK_GCJ): check gcj version; 3.1 or 
+	higher or warn
 
 2002-04-27  Tom Tromey  <tromey@redhat.com>
 
