@@ -1,6 +1,6 @@
 /* VMClassLoader.java -- Reference implementation of native interface
    required by ClassLoader
-   Copyright (C) 1998, 2001, 2002, 2004 Free Software Foundation
+   Copyright (C) 1998, 2001, 2002, 2004, 2005 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -40,7 +40,6 @@ exception statement from your version. */
 package java.lang;
 
 import gnu.classpath.SystemProperties;
-import gnu.java.lang.SystemClassLoader;
 import gnu.java.util.EmptyEnumeration;
 
 import java.io.File;

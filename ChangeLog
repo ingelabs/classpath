@@ -1,3 +1,8 @@
+2005-02-02  Mark Wielaard  <mark@klomp.org>
+
+	* vm/reference/java/lang/VMClassLoader.java: Remove SystemClassLoader
+	import statement.
+
 2005-02-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/text/SimpleDateFormat.java
