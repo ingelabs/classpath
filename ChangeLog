@@ -1,5 +1,14 @@
 2004-04-30  Mark Wielaard  <mark@klomp.org>
 
+	Reported by Nikolay Fiykov [bugs #8611]
+	* java/lang/Runtime.java (loadLib): New private method.
+	(load): Call loadLib.
+	(loadLibrary): Call loadLib.
+
+	* java/lang/Runtime.java (runShutdownHooks): Use Thread.yield().
+
+2004-04-30  Mark Wielaard  <mark@klomp.org>
+
 	* README: Update end user dev environments and hackers runtime lists.
 	* INSTALL: Update needed library versions, add texinfo version
 	requirement, mention website/hacker guide.

@@ -1,5 +1,5 @@
 /* Runtime.java -- access to the VM process
-   Copyright (C) 1998, 2002, 2003 Free Software Foundation
+   Copyright (C) 1998, 2002, 2003, 2004 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -287,14 +287,8 @@ public class Runtime
                       {
                         shutdownHooks.remove(hooks[i]);
                       }
-                try
-                  {
-                    exitSequence.sleep(1); // Give other threads a chance.
-                  }
-                catch (InterruptedException e)
-                  {
-                    // Ignore, the next loop just starts sooner.
-                  }
+
+                    Thread.yield(); // Give other threads a chance.
               }
             synchronized (libpath)
               {
@@ -670,11 +664,20 @@ public class Runtime
    */
   public void load(String filename)
   {
+    if (loadLib(filename) == 0)
+      throw new UnsatisfiedLinkError("Could not load library " + filename);
+  }
+
+  // Private version of load(String) that doesn't throw Exception on
+  // load error, but it does do security checks (which can throw
+  // SecurityExceptions). Convenience method for early bootstrap
+  // process.
+  private int loadLib(String filename)
+  {
     SecurityManager sm = securityManager; // Be thread-safe!
     if (sm != null)
       sm.checkLink(filename);
-    if (VMRuntime.nativeLoad(filename) == 0)
-      throw new UnsatisfiedLinkError("Could not load library " + filename);
+    return VMRuntime.nativeLoad(filename);
   }
 
   /**
@@ -706,21 +709,18 @@ public class Runtime
         filename = cl.findLibrary(libname);
         if (filename != null)
           {
-            load(filename);
-            return;
+	    // Use loadLib so no UnsatisfiedLinkError are thrown.
+            if (loadLib(filename) != 0)
+	      return;
           }
       }
+
     filename = System.mapLibraryName(libname);
     for (int i = 0; i < libpath.length; i++)
-      try
-        {
-          load(libpath[i] + filename);
-          return;
-        }
-      catch (UnsatisfiedLinkError e)
-        {
-          // Try next path element.
-        }
+      // Use loadLib so no UnsatisfiedLinkError are thrown.
+      if (loadLib(libpath[i] + filename) != 0)
+	return;
+
     throw new UnsatisfiedLinkError("Could not find library " + libname + ".");
   }
 
