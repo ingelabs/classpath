@@ -1,7 +1,18 @@
 import java.beans.*;
 
-public class DescriptorTest {
+public class DescriptorTest implements Runnable {
 	public static void main(String[] args) {
+		new DescriptorTest().run();
+	}
+
+	interface TestClass {
+		public String[] getTest();
+		public void setTest(String[] test);
+		public String getTest(int i);
+		public void setTest(int i, String name);
+	}
+
+	public void run() {
 		try {
 			new PropertyDescriptor("class",java.lang.Object.class);
 			System.out.println("PASSED: Property Object.class");
