@@ -1,3 +1,10 @@
+2004-11-26  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/io/File.java
+	(canWrite): Moved directory write test to VMFile.
+	* vm/reference/java/io/VMFile.java
+	(canWriteDirectory): New method.
+
 2004-11-25  Sven de Marothy  <sven@physto.se>
 
 	* java/awt/image/MultiPixelPackedSampleModel.java
