@@ -1,3 +1,7 @@
+2003-02-20  Mark Wielaard  <mark@klomp.org>
+
+	* java/util/zip/ZipFile.java (finalize): New method.
+
 2003-02-18  Hans Boehm  <Hans.Boehm@hp.com>
 
 	* gnu/java/awt/peer/gtk/GtkButtonPeer.java,
