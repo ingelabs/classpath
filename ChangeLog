@@ -1,3 +1,8 @@
+2004-06-21  Steven Augart  <augart@watson.ibm.com>
+
+	* native/jni/classpath/jcl.h, native/jni/classpath/jcl.c
+	(JCL_free_cstring): "cstr" argument back to const.
+
 2004-06-21  Steven Augart <augart@watson.ibm.com>
 
 	* native/jni/classpath/jcl.c, native/jni/classpath/jcl.h
