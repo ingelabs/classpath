@@ -1,5 +1,10 @@
 2005-03-26  Jeroen Frijters  <jeroen@frijters.net>
 
+	* javax/imageio/spi/IIORegistry.java (IIORegistry):
+	Don't assume that awt Toolkit is always ClasspathToolkit.
+
+2005-03-26  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/awt/image/PixelGrabber.java (setPixels(int,int,int,int,
 	ColorModel,byte[],int,int): Fixed byte to int conversion.
 
