@@ -1,5 +1,11 @@
 2002-04-30  Mark Wielaard  <mark@klomp.org>
 
+	* javax/swing/Action.java: Interface is always abstract, add copyright
+	notice.
+	* javax/swing/ButtonModel.java: Likewise.
+
+2002-04-30  Mark Wielaard  <mark@klomp.org>
+
 	* java/util/prefs/BackingStoreException.java (readObject): Throws
 	NotSerializableException.
 	(writeObject): Likewise.
