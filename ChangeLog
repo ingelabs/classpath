@@ -1,5 +1,12 @@
 2002-11-07  Michael Koch <konqueror@gmx.de>
 
+	* java/awt/DisplayMode.java
+	(equals): Fixed implementation.
+	* java/awt/Toolkit.java: Fixed typo.
+	* jva/awt/peer/ContainerPeer.java: Reindented.
+
+2002-11-07  Michael Koch <konqueror@gmx.de>
+
 	* java/nio/charset/CoderMalfunctionError.java,
 	java/nio/charset/IllegalCharsetNameException.java,
 	java/nio/charset/MalformedInputException.java,
