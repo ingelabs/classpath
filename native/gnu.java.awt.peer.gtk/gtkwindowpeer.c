@@ -57,8 +57,8 @@ setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width,
 {
   GtkWidget *fixed;
 
-  gtk_window_set_policy (GTK_WINDOW (window), 1, 1, 1);
-  gtk_widget_set_usize (window, width, height);
+  //  gtk_window_set_policy (GTK_WINDOW (window), 1, 1, 1);
+  //  gtk_widget_set_usize (window, width, height);
   
   fixed = gtk_fixed_new ();
   gtk_container_add (GTK_CONTAINER (window), fixed);
@@ -68,9 +68,9 @@ setup_window (JNIEnv *env, jobject obj, GtkWidget *window, jint width,
 
   gtk_widget_realize (window);
   connect_awt_hook (env, obj, window, 1, window->window);
-  set_visible (window, visible);
+  //  set_visible (window, visible);
 
-  gtk_widget_set_usize (window, width, height);
+  //  gtk_widget_set_usize (window, width, height);
 
 }
 
