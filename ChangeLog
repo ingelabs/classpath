@@ -1,5 +1,16 @@
 2002-11-07  Michael Koch <konqueror@gmx.de>
 
+	* java/net/DatagramSocketImpl.java:
+	Partly merged with libgcj.
+	* java/net/MulticastSocket.java:
+	Partly merged with libgcj.
+	* java/net/ServerSocket.java:
+	Partly merged with libgcj.
+	* java/net/Socket.java:
+	Partly merged with libgcj.
+	
+2002-11-07  Michael Koch <konqueror@gmx.de>
+
 	* java/net/DatagramSocketImpl.java: Added documentation.
 	* java/net/Inet4Address.java: Made final again.
 	* java/net/MulticastSocket.java: Reindented.

@@ -73,6 +73,8 @@ public class MulticastSocket extends DatagramSocket
    * Create a MulticastSocket that this not bound to any address
    *
    * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager exists and its
+   * checkListen method doesn't allow the operation
    */
   public MulticastSocket() throws IOException
   {
@@ -82,9 +84,11 @@ public class MulticastSocket extends DatagramSocket
   /**
    * Create a multicast socket bound to the specified port
    *
-   * @param The port to bind to
+   * @param port The port to bind to
    *
    * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager exists and its
+   * checkListen method doesn't allow the operation
    */
   public MulticastSocket(int port) throws IOException
   {
@@ -100,7 +104,6 @@ public class MulticastSocket extends DatagramSocket
    */
   public InetAddress getInterface() throws SocketException
   {
-    // FIXME: Is it possible that an InetAddress wasn't returned from getOption?
     return (InetAddress) impl.getOption(SocketOptions.IP_MULTICAST_IF);
   }
 
@@ -113,7 +116,9 @@ public class MulticastSocket extends DatagramSocket
    *
    * @exception IOException If an error occurs
    *
-   * @deprecated Replaced by getTimeToLive() in Java 1.2
+   * @deprecated 1.2 Replaced by getTimeToLive()
+   *
+   * @see Multicastsocket:getTimeToLive
    */
   public byte getTTL() throws IOException
   {
@@ -131,19 +136,21 @@ public class MulticastSocket extends DatagramSocket
    *
    * @exception IOException If an error occurs
    *
-   * @since Java 1.2
+   * @since 1.2
    */
   public int getTimeToLive() throws IOException
   {
     return impl.getTimeToLive();
   }
 
- /**
+  /**
    * Sets the interface to use for multicast packets.
    *
    * @param addr The new interface to use
    *
    * @exception SocketException If an error occurs
+   *
+   * @since 1.4
    */
   public void setInterface(InetAddress inf) throws SocketException
   {
@@ -158,7 +165,9 @@ public class MulticastSocket extends DatagramSocket
    *
    * @exception IOException If an error occurs
    *
-   * @deprecated Replaced by <code>setTimeToLive</code> in Java 1.2
+   * @deprecated 1.2 Replaced by <code>setTimeToLive</code>
+   *
+   * @see MulticastSocket:setTimeToLive
    */
   public void setTTL(byte ttl) throws IOException
   {
@@ -176,7 +185,7 @@ public class MulticastSocket extends DatagramSocket
    *
    * @exception IOException If an error occurs
    * 
-   * @since Java 1.2
+   * @since 1.2
    */
   public void setTimeToLive(int ttl) throws IOException
   {
@@ -192,6 +201,8 @@ public class MulticastSocket extends DatagramSocket
    * @param addr The address of the group to join
    * 
    * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager exists and its
+   * checkMulticast method doesn't allow the operation
    */
   public void joinGroup(InetAddress mcastaddr) throws IOException
   {
@@ -211,6 +222,8 @@ public class MulticastSocket extends DatagramSocket
    * @param addr The address of the group to leave
    *
    * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager exists and its
+   * checkMulticast method doesn't allow the operation
    */
   public void leaveGroup(InetAddress mcastaddr) throws IOException
   {
@@ -233,6 +246,8 @@ public class MulticastSocket extends DatagramSocket
    * @param ttl The TTL for this packet
    *
    * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager exists and its
+   * checkConnect or checkMulticast method doesn't allow the operation
    */
   public synchronized void send(DatagramPacket p, byte ttl) throws IOException
   {

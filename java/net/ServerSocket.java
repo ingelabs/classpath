@@ -77,6 +77,12 @@ public class ServerSocket
   private SocketImpl impl;
 
   /**
+   * ServerSocketChannel of this ServerSocket. This channel only exists
+   * when the socket is created by ServerSocketChannel.open().
+   */
+  private ServerSocketChannel ch;
+
+  /**
    * Constructor that simply sets the implementation.
    * 
    * @exception IOException If an error occurs
@@ -118,9 +124,11 @@ public class ServerSocket
    * @param backlog The length of the pending connection queue
    *
    * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager exists and its
+   * checkListen method doesn't allow the operation
    */
   public ServerSocket (int port, int backlog)
-    throws java.io.IOException
+    throws IOException
   {
     this(port, backlog, null);
   }
@@ -137,11 +145,13 @@ public class ServerSocket
    * @param bindAddr The address to bind to, or null to bind to all addresses
    *
    * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager exists and its
+   * checkListen method doesn't allow the operation
    *
    * @since 1.1
    */
   public ServerSocket (int port, int backlog, InetAddress bindAddr)
-    throws java.io.IOException
+    throws IOException
   {
     this();
     if (impl == null)
@@ -166,7 +176,14 @@ public class ServerSocket
    */
   public InetAddress getInetAddress()
   {
-    return impl.getInetAddress();
+    try
+      {
+        return (InetAddress) impl.getOption (SocketOptions.SO_BINDADDR);
+      }
+    catch (SocketException e)
+      {
+        return null;
+      }
   }
 
   /**
@@ -180,13 +197,34 @@ public class ServerSocket
   }
 
   /**
+   * Returns the local socket address
+   *
+   * @since 1.4
+   */
+  public SocketAddress getLocalSocketAddress()
+  {
+    InetAddress addr = getInetAddress();
+
+    if (addr != null)
+      return new InetSocketAddress (getInetAddress(), getLocalPort());
+
+    return null;
+  }
+
+  /**
    * Accepts a new connection and returns a connected <code>Socket</code> 
    * instance representing that connection.  This method will block until a 
    * connection is available.
    *
    * @exception IOException If an error occurs
+   * @exception SecurityException If a security manager exists and its
+   * checkListen method doesn't allow the operation
+   * @exception IllegalBlockingModeException If this socket has an associated
+   * channel, and the channel is in non-blocking mode
+   * @exception SocketTimeoutException If a timeout was previously set with
+   * setSoTimeout and the timeout has been reached
    */
-  public Socket accept ()  throws IOException
+  public Socket accept () throws IOException
   {
     Socket s = new Socket();
     implAccept (s);
@@ -202,11 +240,17 @@ public class ServerSocket
    * @param socket The socket that is used for the accepted connection
    *
    * @exception IOException If an error occurs
+   * @exception IllegalBlockingModeException If this socket has an associated
+   * channel, and the channel is in non-blocking mode
    *
    * @since 1.1
    */
-  protected final void implAccept (Socket s)  throws IOException
+  protected final void implAccept (Socket s)
+    throws IOException
   {
+    if (ch != null && !ch.isBlocking())
+      throw new IllegalBlockingModeException();
+	    
     impl.accept(s.impl);
   }
 
@@ -221,6 +265,39 @@ public class ServerSocket
   }
 
   /**
+   * Returns the unique ServerSocketChannel object
+   * associated with this socket, if any.
+   *
+   * The socket only has a ServerSocketChannel if its created
+   * by ServerSocketChannel.open.
+   * 
+   * @since 1.4
+   */
+  public ServerSocketChannel getChannel()
+  {
+    return ch;
+  }
+
+  /**
+   * Returns true then the socket is bound, otherwise false
+   * 
+   * @since 1.4
+   */
+  public boolean isBound()
+  {
+    try
+      {
+        Object bindaddr = impl.getOption (SocketOptions.SO_BINDADDR);
+      }
+    catch (SocketException e)
+      {
+	return false;
+      }
+    
+    return true;
+  }
+
+  /**
    * Sets the value of SO_TIMEOUT.  A value of 0 implies that SO_TIMEOUT is
    * disabled (ie, operations never time out).  This is the number of 
    * milliseconds a socket operation can block before an
@@ -228,7 +305,7 @@ public class ServerSocket
    *
    * @param timeout The new SO_TIMEOUT value
    *
-   * @exception IOException If an error occurs
+   * @exception SocketException If an error occurs
    *
    * @since 1.1
    */
@@ -263,13 +340,99 @@ public class ServerSocket
   }
 
   /**
+   * Enables/Disables the SO_REUSEADDR option
+   * 
+   * @exception SocketException If an error occurs
+   * 
+   * @since 1.4
+   */
+  public void setReuseAddress (boolean on)
+    throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException ("Cannot initialize Socket implementation");
+
+    impl.setOption (SocketOptions.SO_REUSEADDR, new Boolean (on));
+  }
+
+  /**
+   * Checks if the SO_REUSEADDR option is enabled
+   * 
+   * @exception SocketException If an error occurs
+   * 
+   * @since 1.4
+   */
+  public boolean getReuseAddress()
+    throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException ("Cannot initialize Socket implementation");
+
+    Object reuseaddr = impl.getOption (SocketOptions.SO_REUSEADDR);
+
+    if (!(reuseaddr instanceof Boolean))
+      throw new SocketException ("Internal Error");
+    
+    return ((Boolean) reuseaddr).booleanValue ();
+  }
+
+  /**
+   * This method sets the value for the system level socket option
+   * SO_RCVBUF to the specified value.  Note that valid values for this
+   * option are specific to a given operating system.
+   * 
+   * @param size The new receive buffer size.
+   * 
+   * @exception SocketException If an error occurs or Socket is not connected
+   * @exception IllegalArgumentException If size is 0 or negative
+   *
+   * @since 1.4
+   */
+  public void setReceiveBufferSize (int size)
+    throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException ("Not connected");
+
+    if (size <= 0)
+      throw new IllegalArgumentException ("SO_RCVBUF value must be > 0");
+
+    impl.setOption (SocketOptions.SO_RCVBUF, new Integer (size));
+  }
+
+  /**
+   * This method returns the value of the system level socket option
+   * SO_RCVBUF, which is used by the operating system to tune buffer
+   * sizes for data transfers.
+   * 
+   * @return The receive buffer size.
+   *             
+   * @exception SocketException If an error occurs or Socket is not connected
+   * 
+   * @since 1.4
+   */
+  public int getReceiveBufferSize ()
+    throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException ("Not connected");
+
+    Object buf = impl.getOption (SocketOptions.SO_RCVBUF);
+
+    if (!(buf instanceof Integer))
+      throw new SocketException ("Internal Error: Unexpected type");
+    
+    return ((Integer) buf).intValue ();
+  }
+
+  /**
    * Returns the value of this socket as a <code>String</code>. 
    *
    * @return This socket represented as a <code>String</code>.
    */
   public String toString ()
   {
-    return "ServerSocket " + impl.toString();
+    return "ServerSocket" + impl.toString();
   }
 
   // Class methods

@@ -142,6 +142,31 @@ public abstract class DatagramSocketImpl implements SocketOptions
   protected abstract void receive(DatagramPacket p) throws IOException;
 
   /**
+   * Connects the socket to a host specified by address and port.
+   *
+   * @param address The InetAddress of the host to connect to
+   * @param port The port number of the host to connect to
+   *
+   * @exception SocketException If an error occurs
+   *
+   * @since 1.4
+   */
+  protected void connect (InetAddress address, int port) throws SocketException
+  {
+    // This method has to be overwritten by real implementations
+  }
+
+  /**
+   * Disconnects the socket.
+   * 
+   * @since 1.4
+   */
+  protected void disconnect ()
+  {
+    // This method has to be overwritten by real implementations
+  }
+
+  /**
    * Sets the Time to Live (TTL) setting on this socket to the specified
    * value. <b>Use <code>setTimeToLive(int)</code></b> instead.
    *
@@ -230,9 +255,9 @@ public abstract class DatagramSocketImpl implements SocketOptions
     throws SocketException;
 
   /**
-   * Returns the current setting of the specified option.  The 
-   * <code>Object</code> returned will be an <code>Integer</code> for options 
-   * that have integer values.  For options that are set to on or off, a 
+   * Returns the current setting of the specified option.  The
+   * <code>Object</code> returned will be an <code>Integer</code> for options
+   * that have integer values.  For options that are set to on or off, a
    * <code>Boolean</code> will be returned.   The <code>option_id</code>
    * is one of the defined constants in the superinterface.
    *

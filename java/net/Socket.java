@@ -362,6 +362,36 @@ public class Socket
   }
 
   /**
+   * If the socket is already bound this returns the local SocketAddress,
+   * otherwise null
+   *
+   * @since 1.4
+   */
+  public SocketAddress getLocalSocketAddress()
+  {
+    InetAddress addr = getLocalAddress ();
+
+    if (addr == null)
+      return null;
+    
+    return new InetSocketAddress (addr, impl.getLocalPort());
+  }
+
+  /**
+   * If the socket is already connected this returns the remote SocketAddress,
+   * otherwise null
+   *
+   * @since 1.4
+   */
+  public SocketAddress getRemoteSocketAddress()
+  {
+    if (!isConnected ())
+      return null;
+
+    return new InetSocketAddress (impl.getInetAddress (), impl.getPort ());
+  }
+
+  /**
    * Returns an InputStream for reading from this socket.
    *
    * @return The InputStream object
@@ -491,6 +521,43 @@ public class Socket
       return -1;
   }
 
+  /**
+   * Enables/disables the SO_OOBINLINE option
+   * 
+   * @param on True if SO_OOBLINE should be enabled 
+   * 
+   * @exception SocketException If an error occurs
+   * 
+   * @since 1.4
+   */
+  public void setOOBInline (boolean on) throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException("Not connected");
+
+    impl.setOption(SocketOptions.SO_OOBINLINE, new Boolean(on));
+  }
+
+  /**
+   * Returns the current setting of the SO_OOBINLINE option for this socket
+   * 
+   * @exception SocketException If an error occurs
+   * 
+   * @since 1.4
+   */
+  public boolean getOOBInline () throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException("Not connected");
+
+    Object buf = impl.getOption(SocketOptions.SO_OOBINLINE);
+
+    if (buf instanceof Boolean)
+      return(((Boolean)buf).booleanValue());
+    else
+      throw new SocketException("Internal Error: Unexpected type");
+  }
+  
   /**
    * Sets the value of the SO_TIMEOUT option on the socket.  If this value
    * is set, and an read/write is performed that does not complete within
@@ -639,6 +706,47 @@ public class Socket
   }
 
   /**
+   * This method sets the value for the socket level socket option
+   * SO_KEEPALIVE.
+   *
+   * @param on True if SO_KEEPALIVE should be enabled
+   *
+   * @exception SocketException If an error occurs or Socket is not connected
+   *
+   * @since Java 1.3
+   */
+  public void setKeepAlive (boolean on) throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException("Not connected");
+
+    impl.setOption(SocketOptions.SO_KEEPALIVE, new Boolean(on));
+  }
+
+  /**
+   * This method returns the value of the socket level socket option
+   * SO_KEEPALIVE.
+   *
+   * @return The setting
+   *
+   * @exception SocketException If an error occurs or Socket is not connected
+   *
+   * @since Java 1.3
+   */
+  public boolean getKeepAlive () throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException("Not connected");
+
+    Object buf = impl.getOption(SocketOptions.SO_KEEPALIVE);
+
+    if (buf instanceof Boolean)
+      return(((Boolean)buf).booleanValue());
+    else
+      throw new SocketException("Internal Error: Unexpected type");
+  }
+
+  /**
    * Closes the socket.
    *
    * @exception IOException If an error occurs
@@ -717,5 +825,101 @@ public class Socket
   public SocketChannel getChannel()
   {
     return ch;
+  }
+
+  /**
+   * Checks if the SO_REUSEADDR option is enabled
+   *
+   * @exception SocketException If an error occurs
+   *
+   * @since 1.4
+   */
+  public boolean getReuseAddress () throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException ("Cannot initialize Socket implementation");
+
+    Object reuseaddr = impl.getOption (SocketOptions.SO_REUSEADDR);
+
+    if (!(reuseaddr instanceof Boolean))
+      throw new SocketException ("Internal Error");
+
+    return ((Boolean) reuseaddr).booleanValue ();
+  }
+
+  /**
+   * Enables/Disables the SO_REUSEADDR option
+   *
+   * @exception SocketException If an error occurs
+   *
+   * @since 1.4
+   */
+  public void setReuseAddress (boolean on) throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException ("Cannot initialize Socket implementation");
+
+    impl.setOption (SocketOptions.SO_REUSEADDR, new Boolean (on));
+  }
+
+  /**
+   * Returns the current traffic class
+   *
+   * @exception SocketException If an error occurs
+   *
+   * @see Socket:setTrafficClass
+   *
+   * @since 1.4
+   */
+  public int getTrafficClass () throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException ("Cannot initialize Socket implementation");
+
+    Object obj = impl.getOption(SocketOptions.IP_TOS);
+
+    if (obj instanceof Integer)
+      return ((Integer) obj).intValue ();
+    else
+      throw new SocketException ("Unexpected type");
+  }
+
+  /**
+   * Sets the traffic class value
+   *
+   * @param tc The traffic class
+   *
+   * @exception SocketException If an error occurs
+   * @exception IllegalArgumentException If tc value is illegal
+   *
+   * @see Socket:getTrafficClass
+   *
+   * @since 1.4
+   */
+  public void setTrafficClass (int tc) throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException ("Cannot initialize Socket implementation");
+
+    if (tc < 0 || tc > 255)
+      throw new IllegalArgumentException();
+
+    impl.setOption (SocketOptions.IP_TOS, new Integer (tc));
+  }
+
+  /**
+   * Checks if the socket is connected
+   */
+  public boolean isConnected ()
+  {
+    return impl.getInetAddress () != null;
+  }
+
+  /**
+   * Checks if the socket is already bound.
+   */
+  public boolean isBound ()
+  {
+    return getLocalAddress () != null;
   }
 }
