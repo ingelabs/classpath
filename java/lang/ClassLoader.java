@@ -981,19 +981,39 @@ public abstract class ClassLoader
     return urls;
   }
 
+  private static void addFileURL(ArrayList list, String file)
+  {
+    try
+      {
+	list.add(new File(file).toURL());
+      }
+    catch(java.net.MalformedURLException x)
+      {
+      }
+  }
+
   private static URL[] getSystemClassLoaderUrls()
   {
     String classpath = getSystemProperty("java.class.path", ".");
-    StringTokenizer tok = new StringTokenizer(classpath, File.pathSeparator);
+    StringTokenizer tok = new StringTokenizer(classpath, File.pathSeparator, true);
     ArrayList list = new ArrayList();
     while (tok.hasMoreTokens())
       {
-	try
+	String s = tok.nextToken();
+	if (s.equals(File.pathSeparator))
+	    addFileURL(list, ".");
+	else
 	  {
-	    list.add(new File(tok.nextToken()).toURL());
-	  }
-	catch(java.net.MalformedURLException x)
-	  {
+	    addFileURL(list, s);
+	    if (tok.hasMoreTokens())
+	      {
+		// Skip the separator.
+		tok.nextToken();
+		// If the classpath ended with a separator,
+		// append the current directory.
+		if (!tok.hasMoreTokens())
+		    addFileURL(list, ".");
+	      }
 	  }
       }
     URL[] urls = new URL[list.size()];

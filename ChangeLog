@@ -1,3 +1,10 @@
+2004-11-01  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/lang/ClassLoader.java:
+	(addFileURL): New method.
+	(getSystemClassLoaderUrls): Fixed to treat lone separators as
+	current directory.
+
 2004-10-31  Robert Schuster <thebohemian@gmx.net>
 
 	Fixes documentation and indentation
