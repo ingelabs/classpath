@@ -30,7 +30,7 @@ package java.net;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public interface ContentHandlerFactory
+public abstract interface ContentHandlerFactory
 {
 /**
   * This method is passed a MIME type as a string and is responsible for
