@@ -1,3 +1,11 @@
+2003-12-31  Fernando Nasser  <fnasser@redhat.com>
+
+	* java/awt/Choice.java
+	(add): Generate ItemEvent for the first item added.
+	(insert): Generate ItemEvent if insertion caused selection to change.
+	(remove): Generate ItemEvent if removal cause selection to change.
+	(removeAll): Change algorithm to prevent generation of ItemEvents.
+
 2003-12-31 Guilhem Lavaux <guilhem@kaffe.org>
 
 	* java/io/ObjectOutputStream.java
