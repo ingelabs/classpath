@@ -1,3 +1,8 @@
+2002-05-07  Mark Wielaard  <mark@klomp.org>
+
+	* javax/accessibility/AccessibleContext.java: Fix javadoc to fully
+	qualify java.awt.IllegalComponentStateException.
+
 2002-05-07  Etienne M. Gagnon  <etienne.gagnon@uqam.ca>
 
 	* native/jni/java-io/java_nio.c: Fixed file title in copyright notice.

@@ -419,7 +419,8 @@ public abstract class AccessibleContext
    * Gets the component locale, deferring to the parent if one is not declared.
    *
    * @return the locale
-   * @throws IllegalComponentStateException if there is no locale or parent
+   * @throws java.awt.IllegalComponentStateException if there is no locale
+   *         or parent
    */
   public abstract Locale getLocale();
 
