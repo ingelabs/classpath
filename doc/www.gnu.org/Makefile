@@ -5,7 +5,10 @@ endif
 %.html : %.mhtml macros.mhtml
 	$(MHC) $< > $@
 
-all : classpath.html status.html doc
+all : classpath.html status.html index.html doc
+
+index.html : classpath.html
+	ln -s classpath.html index.html
 
 .PHONY : clean
 clean :
