@@ -1,3 +1,11 @@
+2005-03-04  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* org/omg/CORBA/Bounds.java: New file.
+	* org/omg/CORBA/TypeCode.java: Commented
+	out Any to fix build.
+	From Audrius Meskauskas:
+	* org/omg/CORBA/BAD_OPERATION.java: New file.
+	
 2005-03-02  Audrius Meskauskas  <audriusa@bluewin.ch>
 
         * org/omg/CORBA/TypeCode.java: new file 

@@ -183,9 +183,10 @@ public abstract class TypeCode
    * @throws org.omg.CORBA.TypeCodePackage.Bounds if the index is out of
    * valid bounds.
    */
+  /* Disabled due to build breakage -- Andrew John Hughes -- 04/03/2005
   public abstract Any member_label(int index)
                             throws BadKind, Bounds;
-
+  */
   /**
    * Retrieves the simple name of the member identified by the given index.
    *
