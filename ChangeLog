@@ -1,3 +1,26 @@
+2004-09-22  Olga Rodimina  <rodimina@redhat.com>
+
+	* javax/swing/plaf/basic/BasicComboBoxUI.java:
+	(paintCurrentValue): Pass correct parameters to 
+	getListCellRendererComponent().
+	(ListDataHandler.intervalRemoved): Implemented. 
+	(PropertyChangeHandler.propertyChange): Handle changes in
+	MODEL_CHANGED_PROPERTY of the JComboBox
+	* javax/swing/plaf/basic/BasicComboPopup.java:
+	(BasicComboPopup): Moved code that configures popup to 
+	configurePopup() and call it instead. 
+	(firePopupMenuWillBecomeVisible): Implemented.
+	(firePopupMenuWillBecomeInvisible): Likewise.
+	(firePopupMenuCanceled): Likewise.
+	(configureList): Set list's visibleRowCount same as 
+	comboBox's visibleRowCount.
+	(configurePopup): Implemented.
+	(getPopupHeightForRowCount): Get item's from JComboBox's model and 
+	not from model of the JList.
+	(ListMouseMotionHandler.mouseMoved): Implemented.
+	(PropertyChangeHandler.propertyChange): Handles change in the
+	JComboBox's model.
+
 2004-09-22  Kim Ho  <kho@redhat.com>
 
 	* javax/swing/colorchooser/DefaultHSBChooserPanel.java:
