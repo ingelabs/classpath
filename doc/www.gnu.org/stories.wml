@@ -50,12 +50,12 @@ Runs on top of <createlink url="http://www.go-mono.org/" name="Mono">.
 <tr>
 <td><createlink url="http://www-124.ibm.com/developerworks/oss/jikesrvm/" name="Jikes RVM"></td>
 <td>
-Jikes RVM now uses GNU Classpath for all of its libraries.   Also, 
-instructions for using Classpath are provided in the Jikes RVM user's 
-guide as of the Jikes RVM 4/7/03 release (2.2.1). Nightly regression
-tests are run against Classpath 0.05 and the 
-Classpath CVS head.   The results are posted on the jikesrvm-regression 
-mailing list, which is archived and available on the Jikes RVM home page.
+Jikes RVM uses GNU Classpath for all of its libraries.  Instructions for using
+Classpath are provided in the Jikes RVM user's guide as of the Jikes RVM
+release 2.2.1 (4/7/03). Nightly regression tests are run against the latest
+Classpath release and the Classpath CVS head. The results are posted on the
+jikesrvm-regression mailing list, which is archived and available on the Jikes
+RVM home page.
 </td>
 </tr>
 <tr>
@@ -189,7 +189,7 @@ analyze, and change the code for one's purposes.</p>
 <p>
 The initial development of SableVM was done as part of the Ph.D. research project of Etienne Gagnon. Continuing development of SableVM project involves the <createlink name="Sable Research Group" url="http://www.sable.mcgill.ca/"> of McGill University, a new research group of the <createlink name="computer science department of UQAM" url="http://www.info.uqam.ca/"> , and other generous <createlink name="Free software contributors" url="http://sourceforge.net/project/memberlist.php?group_id=5523">.
 
-<p>[<createlink name="Publications" url="hhttp://www.oberon.ethz.ch/jaos/docs/index.html">]
+<p>[<createlink name="Publications" url="http://www.sablevm.org/docs.html">]
 </entry>
 
 <entry name="Jaos">
@@ -197,7 +197,7 @@ The initial development of SableVM was done as part of the Ph.D. research projec
 
 <p>Jaos was developed as part of Patrik Reali's Ph.D research project at the <createlink name="Programming Languages and Run-Time Systems Research Group" url="http://www.cs.inf.ethz.ch/gutknecht/"> at <createlink name="ETH Zurich" url="http://www.ethz.ch">.
 
-<p>[<createlink name="Publications" url="http://www.intel.com/research/mrl/library/java-pubs.htm">]
+<p>[<createlink name="Publications" url="http://www.oberon.ethz.ch/jaos/docs/index.html">]
 </entry>
 
 </table>

@@ -1,5 +1,11 @@
 2003-11-28  Mark Wielaard  <mark@klomp.org>
 
+	Reported by Michael Hind <hindm@us.ibm.com>
+	* doc/www.gnu.org/stories: Updated Jikes RVM blurb.
+	Fixed Joas and SableVM publication links.
+
+2003-11-28  Mark Wielaard  <mark@klomp.org>
+
 	* NEWS: Update with new 0.07 items.
 
 2003-11-28  Dalibor Topic  <robilad@kaffe.org>
