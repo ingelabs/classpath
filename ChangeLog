@@ -1,5 +1,9 @@
 2003-10-08  Tom Tromey  <tromey@redhat.com>
 
+	* java/lang/StrictMath.java (toDegrees): Multiply before
+	dividing.
+	(toRadians): Likewise.
+
 	* java/lang/reflect/Proxy.java (generate): Removed comment about
 	security hole.
 
