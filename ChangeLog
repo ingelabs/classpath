@@ -2,7 +2,9 @@
 
 	* javax/swing/plaf/ListUI.java: Re-written.
 	* javax/swing/plaf/LabelUI.java: Made abstract.
-	
+	* javax/swing/plaf/MenuBarUI.java: Reformatted, wrote JavaDoc.
+	* javax/swing/plaf/MenuItemUI.java: Likewise.
+
 2003-06-24  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/plaf/InputMapUIResource.java: Reformatted, wrote JavaDoc.
