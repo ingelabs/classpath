@@ -1,3 +1,13 @@
+2002-02-24  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/lang/Byte.java: Reformat, improve Javadoc.
+	* java/lang/Double.java: Ditto.
+	* java/lang/Float.java: Ditto.
+	* java/lang/Integer.java: Ditto.
+	* java/lang/Long.java: Ditto.
+	* java/lang/Number.java: Ditto.
+	* java/lang/Short.java: Ditto.
+
 2002-02-23  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/awt/AWTError.java: Update to 1.4.
