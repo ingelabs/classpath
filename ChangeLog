@@ -1,3 +1,18 @@
+2004-09-21  Michael Koch  <konqueror@gmx.de>
+
+	* javax/crypto/package.html,
+	javax/crypto/interfaces/package.html,
+	javax/crypto/spec/package.html,
+	javax/net/package.html,
+	javax/net/ssl/package.html,
+	javax/security/package.html,
+	javax/security/auth/package.html,
+	javax/security/auth/callback/package.html,
+	javax/security/auth/login/package.html,
+	javax/security/cert/package.html,
+	javax/security/sasl/package.html:
+	New files for package documentation.
+
 2004-09-20  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/Socket.java
