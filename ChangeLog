@@ -1,3 +1,8 @@
+2003-03-02  Michael Koch  <konqueror@gmx.de>
+
+	* java/awt/dnd/DropTargetContext.java:
+	Compile fix: Forgot to commit import.
+
 2003-03-01  Mark Wielaard  <mark@klomp.org>
  
 	* java/io/ObjectInputStream.java: Reindent and remove dead and/or
