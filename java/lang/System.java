@@ -70,6 +70,12 @@ public final class System
    */
   static
   {
+    // Note that this loadLibrary() takes precedence over the one in Object,
+    // since Object.<clinit> is waiting for System.<clinit> to complete
+    // first; but loading a library twice is harmless.
+    if (Configuration.INIT_LOAD_LIBRARY)
+      loadLibrary("javalang");
+
     Properties defaultProperties = Runtime.defaultProperties;
     defaultProperties.put("gnu.cpu.endian",
                           isWordsBigEndian() ? "big" : "little");

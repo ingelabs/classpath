@@ -1,3 +1,10 @@
+2002-03-25  Eric Blake  <ebb9@email.byu.edu>
+	    Fred Gray  <fegray@npl.uiuc.edu>
+
+	* java/lang/Object.java (<clinit>): More bootstrap documentation.
+	* java/lang/System.java (<clinit>): Load native methods sooner.
+	* java/util/Hashtable.java (hash): Avoid native methods.
+
 2002-03-25  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/java/rmi/registry/RegistryImpl.java (main): Recognize --help

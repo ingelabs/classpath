@@ -821,7 +821,10 @@ public class Hashtable extends Dictionary
    */
   private int hash(Object key)
   {
-    return Math.abs(key.hashCode() % buckets.length);
+    // Note: Inline Math.abs here, for less method overhead, and to avoid
+    // a bootstrap dependency, since Math relies on native methods.
+    int hash = key.hashCode() % buckets.length;
+    return hash < 0 ? -hash : hash;
   }
 
   /**

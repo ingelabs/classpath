@@ -64,6 +64,12 @@ public class Object
   // WARNING: Object is a CORE class in the bootstrap cycle. See the comments
   // in vm/reference/java/lang/Runtime for implications of this fact.
 
+  /**
+   * Load in all native methods in the java.lang package. Note that this
+   * call is actually a no-op, since it triggers the class initialization
+   * of System, which loads the same library; but it is necessary to start
+   * the System class initialization for the bootstrap sequence to work.
+   */
   static
   {
     if (Configuration.INIT_LOAD_LIBRARY)
