@@ -46,10 +46,11 @@ public class GtkToolkit extends java.awt.Toolkit
 
   static 
   {
-    if (Configuration.INIT_LOAD_LIBRARY)
-      {
+      /*    if (Configuration.INIT_LOAD_LIBRARY)
+	    {*/
+	  System.out.println("loading gtkpeer");
 	System.loadLibrary("gtkpeer");
-      }
+	//      }
   }
 
   public GtkToolkit ()
@@ -210,7 +211,9 @@ public class GtkToolkit extends java.awt.Toolkit
 
   protected LabelPeer createLabel (Label label) 
   {
-    return new GtkLabelPeer (label);
+    LabelPeer lp =  new GtkLabelPeer (label);
+    System.out.println("Returning " + lp);
+    return lp;
   }
 
   protected ListPeer createList (List list)

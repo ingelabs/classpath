@@ -82,6 +82,7 @@ Window(Frame parent)
     {
       parent.ownedWindows.addElement(this);
     }
+  is_notified = true;
 }
 
 /*************************************************************************/

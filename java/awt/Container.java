@@ -50,7 +50,7 @@ public abstract class Container extends Component
 private Vector components = new Vector();
 
 // Determines whether or not the peer has been created for this container
-private boolean is_notified;
+boolean is_notified;
 
 // The list of container listeners for this object
 private ContainerListener container_listeners;
@@ -200,7 +200,10 @@ addImpl(Component component, Object constraints, int index)
 
   // Create peer if necessary
   if (is_notified)
-    component.addNotify();
+      {
+	  System.out.println("Calling addNotify on " + component);
+	  component.addNotify();
+      }
 
   // Add to layout manager if it exists.
   if (layout_manager != null)

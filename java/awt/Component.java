@@ -111,7 +111,7 @@ private String name;
 private Container parent;
 
 // The native peer for this componet
-private ComponentPeer peer;
+ComponentPeer peer;
 
 // Indicates whether or not this component is valid.
 private boolean valid;
@@ -302,7 +302,12 @@ public void
 setBounds(int x, int y, int width, int height)
 {
   bounding_rectangle = new Rectangle(x, y, width, height);
-  getPeer().setBounds(x, y, width, height);
+  if(getPeer() == null)
+      {
+	  System.out.println("The peer object is null in " + this);
+      }
+  else
+      getPeer().setBounds(x, y, width, height);
 }
 
 /*************************************************************************/
