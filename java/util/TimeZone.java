@@ -1,5 +1,5 @@
 /* java.util.TimeZone
-   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -760,8 +760,6 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable
       }
     String tzid = System.getProperty("user.timezone");
 
-    // XXX: Remove call to getDefaultTimeZoneId after java.lang.System
-    // is merged with libgcj.
     if (tzid == null)
       tzid = getDefaultTimeZoneId();
 
@@ -780,8 +778,6 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable
      (which does not have Daylight Savings Time) the string would
      be EST5
    */
-  // XXX: Remove getDefaultTimeZoneId after java.lang.System
-  // is merged with libgcj.
   private static native String getDefaultTimeZoneId();
 
   /**
@@ -970,6 +966,7 @@ public abstract class TimeZone implements java.io.Serializable, Cloneable
    * @return The time zone for the identifier or GMT, if no such time
    * zone exists.
    */
+  // FIXME: XXX: JCL indicates this and other methods are synchronized.
   public static TimeZone getTimeZone(String ID)
   {
     // First check timezones hash
