@@ -2262,7 +2262,7 @@ public abstract class Component
    * This method simply calls handleEvent and returns the result.
    *
    * @param e the event to handle
-   * @return the result of handling <code>e</code>
+   * @return true if the event was handled, false otherwise
    * @deprecated use {@link #dispatchEvent(AWTEvent)} instead
    */
   public boolean postEvent(Event e)
@@ -3205,135 +3205,145 @@ public abstract class Component
   }
 
   /**
-   * AWT 1.0 mouse event handler.
+   * AWT 1.0 MOUSE_DOWN event handler.  This method is meant to be
+   * overridden by components providing their own MOUSE_DOWN handler.
+   * The default implementation simply returns false.
    *
    * @param evt the event to handle
    * @param x the x coordinate, ignored
    * @param y the y coordinate, ignored
-   * @return false: since the method was deprecated, the return has no meaning
+   * @return false
    * @deprecated use {@link #processMouseEvent(MouseEvent)} instead
    */
   public boolean mouseDown(Event evt, int x, int y)
   {
-    // XXX Add backward compatibility handling.
     return false;
   }
 
   /**
-   * AWT 1.0 mouse event.
+   * AWT 1.0 MOUSE_DRAG event handler.  This method is meant to be
+   * overridden by components providing their own MOUSE_DRAG handler.
+   * The default implementation simply returns false.
    *
    * @param evt the event to handle
    * @param x the x coordinate, ignored
    * @param y the y coordinate, ignored
-   * @return false: since the method was deprecated, the return has no meaning
+   * @return false
    * @deprecated use {@link #processMouseMotionEvent(MouseEvent)} instead
    */
   public boolean mouseDrag(Event evt, int x, int y)
   {
-    // XXX Add backward compatibility handling.
     return false;
   }
 
   /**
-   * AWT 1.0 mouse event.
+   * AWT 1.0 MOUSE_UP event handler.  This method is meant to be
+   * overridden by components providing their own MOUSE_UP handler.
+   * The default implementation simply returns false.
    *
    * @param evt the event to handle
    * @param x the x coordinate, ignored
    * @param y the y coordinate, ignored
-   * @return false: since the method was deprecated, the return has no meaning
+   * @return false
    * @deprecated use {@link #processMouseEvent(MouseEvent)} instead
    */
   public boolean mouseUp(Event evt, int x, int y)
   {
-    // XXX Add backward compatibility handling.
     return false;
   }
 
   /**
-   * AWT 1.0 mouse event.
+   * AWT 1.0 MOUSE_MOVE event handler.  This method is meant to be
+   * overridden by components providing their own MOUSE_MOVE handler.
+   * The default implementation simply returns false.
    *
    * @param evt the event to handle
    * @param x the x coordinate, ignored
    * @param y the y coordinate, ignored
-   * @return false: since the method was deprecated, the return has no meaning
+   * @return false
    * @deprecated use {@link #processMouseMotionEvent(MouseEvent)} instead
    */
   public boolean mouseMove(Event evt, int x, int y)
   {
-    // XXX Add backward compatibility handling.
     return false;
   }
 
   /**
-   * AWT 1.0 mouse event.
+   * AWT 1.0 MOUSE_ENTER event handler.  This method is meant to be
+   * overridden by components providing their own MOUSE_ENTER handler.
+   * The default implementation simply returns false.
    *
    * @param evt the event to handle
    * @param x the x coordinate, ignored
    * @param y the y coordinate, ignored
-   * @return false: since the method was deprecated, the return has no meaning
+   * @return false
    * @deprecated use {@link #processMouseEvent(MouseEvent)} instead
    */
   public boolean mouseEnter(Event evt, int x, int y)
   {
-    // XXX Add backward compatibility handling.
     return false;
   }
 
   /**
-   * AWT 1.0 mouse event.
+   * AWT 1.0 MOUSE_EXIT event handler.  This method is meant to be
+   * overridden by components providing their own MOUSE_EXIT handler.
+   * The default implementation simply returns false.
    *
    * @param evt the event to handle
    * @param x the x coordinate, ignored
    * @param y the y coordinate, ignored
-   * @return false: since the method was deprecated, the return has no meaning
+   * @return false
    * @deprecated use {@link #processMouseEvent(MouseEvent)} instead
    */
   public boolean mouseExit(Event evt, int x, int y)
   {
-    // XXX Add backward compatibility handling.
     return false;
   }
 
   /**
-   * AWT 1.0 key press event.
+   * AWT 1.0 KEY_PRESS and KEY_ACTION event handler.  This method is
+   * meant to be overridden by components providing their own key
+   * press handler.  The default implementation simply returns false.
    *
    * @param evt the event to handle
    * @param key the key pressed, ignored
-   * @return false: since the method was deprecated, the return has no meaning
+   * @return false
    * @deprecated use {@link #processKeyEvent(KeyEvent)} instead
    */
   public boolean keyDown(Event evt, int key)
   {
-    // XXX Add backward compatibility handling.
     return false;
   }
 
   /**
-   * AWT 1.0 key press event.
+   * AWT 1.0 KEY_RELEASE and KEY_ACTION_RELEASE event handler.  This
+   * method is meant to be overridden by components providing their
+   * own key release handler.  The default implementation simply
+   * returns false.
    *
    * @param evt the event to handle
    * @param key the key pressed, ignored
-   * @return false: since the method was deprecated, the return has no meaning
+   * @return false
    * @deprecated use {@link #processKeyEvent(KeyEvent)} instead
    */
   public boolean keyUp(Event evt, int key)
   {
-    // XXX Add backward compatibility handling.
     return false;
   }
 
   /**
-   * AWT 1.0 action event processor.
+   * AWT 1.0 ACTION_EVENT event handler.  This method is meant to be
+   * overridden by components providing their own action event
+   * handler.  The default implementation simply returns false.
    *
    * @param evt the event to handle
    * @param what the object acted on, ignored
-   * @return false: since the method was deprecated, the return has no meaning
+   * @return false
    * @deprecated in classes which support actions, use
    *             <code>processActionEvent(ActionEvent)</code> instead
    */
   public boolean action(Event evt, Object what)
   {
-    // XXX Add backward compatibility handling.
     return false;
   }
 
@@ -3377,30 +3387,32 @@ public abstract class Component
   }
 
   /**
-   * AWT 1.0 focus event.
+   * AWT 1.0 GOT_FOCUS event handler.  This method is meant to be
+   * overridden by components providing their own GOT_FOCUS handler.
+   * The default implementation simply returns false.
    *
    * @param evt the event to handle
    * @param what the Object focused, ignored
-   * @return false: since the method was deprecated, the return has no meaning
+   * @return false
    * @deprecated use {@link #processFocusEvent(FocusEvent)} instead
    */
   public boolean gotFocus(Event evt, Object what)
   {
-    // XXX Add backward compatibility handling.
     return false;
   }
 
   /**
-   * AWT 1.0 focus event.
+   * AWT 1.0 LOST_FOCUS event handler.  This method is meant to be
+   * overridden by components providing their own LOST_FOCUS handler.
+   * The default implementation simply returns false.
    *
    * @param evt the event to handle
    * @param what the Object focused, ignored
-   * @return false: since the method was deprecated, the return has no meaning
+   * @return false
    * @deprecated use {@link #processFocusEvent(FocusEvent)} instead
    */
   public boolean lostFocus(Event evt, Object what)
   {
-    // XXX Add backward compatibility handling.
     return false;
   }
 

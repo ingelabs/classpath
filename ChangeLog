@@ -1,3 +1,8 @@
+2004-07-31  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* java/awt/Component.java: Document AWT 1.0 event handler
+	methods.
+
 2004-07-31  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/EmbeddedWindow.java: Reindent.
