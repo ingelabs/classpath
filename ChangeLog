@@ -1,3 +1,17 @@
+2004-10-11  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/DataInputStream.java
+	(readUTF): Reorder modifiers.
+	* java/io/DataOutputStream.java
+	(writeUTF): Likewise.
+	* java/io/ObjectInputStream.java
+	(GetField): Likewise.
+	* java/io/ObjectOutputStream.java
+	(PutField): Likewise.
+	(BUFFER_SIZE): Likewise.
+	* java/io/InputStreamReader.java:
+	Merged file header.
+
 2004-10-10  Sven de Marothy  <sven@physto.se>
 
         * native/jni/java-lang/java_lang_Double.c
