@@ -5,9 +5,12 @@
 
 2004-12-31  Archie Cobbs  <archie@dellroad.org>
 
-	* NEWS, java/lang/Thread.java, vm/reference/java/lang/VMThread.java:
-	treat Thread.sleep(0) like Thread.yield() for JDK compatibility,
-	and add a non-native implementation of VMThread.sleep().
+	* NEWS: Add documentation about reference implementation.
+	* java/lang/Thread.java (sleep(long,int)): Only do argument
+	checking and push implementation to VMThread.sleep().
+	* vm/reference/java/lang/VMThread.java (join): Prevent ms overflow.
+	(sleep): Provide default implementation using Object.wait() and
+	Thread.yield().
 
 2004-12-31  Michael Koch  <konqueror@gmx.de>
 
