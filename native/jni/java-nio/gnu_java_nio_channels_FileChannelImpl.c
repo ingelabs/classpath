@@ -209,7 +209,7 @@ Java_gnu_java_nio_channels_FileChannelImpl_open (JNIEnv *env,
 #endif
 
   TARGET_NATIVE_FILE_OPEN(filename,native_fd,flags,permissions,result);
-  (*env)->ReleaseStringUTFChars(env, name, filename);
+  JCL_free_cstring(env, name, filename);
 
   if (result != TARGET_NATIVE_OK)
     {

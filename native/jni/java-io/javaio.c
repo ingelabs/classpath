@@ -82,6 +82,7 @@ _javaio_open_read(JNIEnv *env, jstring name)
                            TARGET_NATIVE_LAST_ERROR_STRING());
     }
 
+  JCL_free_cstring(env, name, filename); 
   return(fd);
 #else /* not WITHOUT_FILESYSTEM */
   return(-1);
@@ -118,6 +119,7 @@ _javaio_open_readwrite(JNIEnv *env, jstring name)
                            TARGET_NATIVE_LAST_ERROR_STRING());
     }
 
+  JCL_free_cstring(env, name, filename); 
   return(fd);
 #else /* not WITHOUT_FILESYSTEM */
   return(-1);

@@ -1,5 +1,18 @@
 2005-01-09  Mark Wielaard  <mark@klomp.org>
 
+	* native/jni/java-io/java_io_VMFile.c
+	(Java_java_io_VMFile_create): Call JCL_free_cstring() when done with
+	string.
+	* native/jni/java-io/javaio.c
+	(_javaio_open_read): Likewise.
+	(_javaio_open_readwrite): Likewise.
+	* native/jni/java-lang/java_lang_VMSystem.c
+	(Java_java_lang_VMSystem_getenv): Likewise.
+	* native/jni/java-nio/gnu_java_nio_channels_FileChannelImpl.c
+	(Java_gnu_java_nio_channels_FileChannelImpl_open): Likewise.
+
+2005-01-09  Mark Wielaard  <mark@klomp.org>
+
 	* configure.ac: Update version to 0.13+cvs.
 
 2005-01-09  Mark Wielaard  <mark@klomp.org>

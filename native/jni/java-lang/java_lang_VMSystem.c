@@ -154,5 +154,6 @@ Java_java_lang_VMSystem_getenv (JNIEnv *env,
   if (envname == NULL)
     return NULL;
 
+  JCL_free_cstring(env, jname, cname);
   return (*env)->NewStringUTF(env, envname);
 }

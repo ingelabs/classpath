@@ -88,10 +88,12 @@ Java_java_io_VMFile_create(JNIEnv *env,
         JCL_ThrowException(env,
                            "java/io/IOException",
                            TARGET_NATIVE_LAST_ERROR_STRING());
+      JCL_free_cstring(env, name, filename);
       return(0);
     }
   TARGET_NATIVE_FILE_CLOSE(fd,result);
 
+  JCL_free_cstring(env, name, filename);
   return(1);
 #else /* not WITHOUT_FILESYSTEM */
   return(0);
