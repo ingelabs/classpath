@@ -1,6 +1,6 @@
 /*
  * java.lang.Thread: part of the Java Class Libraries project.
- * Copyright (C) 1998 Free Software Foundation
+ * Copyright (C) 1998, 2001 Free Software Foundation
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Library General Public
@@ -50,7 +50,7 @@ package java.lang;
  ** @since JDK1.0
  **/
 
-public class Thread {
+public class Thread implements Runnable {
 	ThreadGroup group;
 	Runnable toRun;
 	String name;
