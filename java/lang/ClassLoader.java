@@ -61,12 +61,11 @@ public abstract class ClassLoader {
 		}
 	}
 
-	/** Load a class using this ClassLoader.  Does not resolve it.
+	/** Load a class using this ClassLoader, resolving it as well.
 	 ** @param name the name of the class relative to this ClassLoader.
 	 ** @exception ClassNotFoundException if the class cannot be found to
 	 **            be loaded.
 	 ** @return the loaded class.
-	 ** @XXX should this resolve the class or not?  I assume so ...
 	 **/
 	public Class loadClass(String name) throws ClassNotFoundException {
 		return loadClass(name,true);
