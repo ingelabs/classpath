@@ -63,7 +63,7 @@ public final class Double extends Number implements Comparable
      * The primitive type <code>double</code> is represented by this
      * <code>Class</code> object.
      */
-    public static final Class TYPE = Class.getPrimitiveClass("double");
+    public static final Class TYPE = VMClassLoader.getPrimitiveClass("double");
     
     private double value;
     

@@ -48,6 +48,16 @@ class VMClassLoader {
      * Helper to resolve all references to other classes from this class.
      * @param c the class to resolve.
      */
-    final static native void resolveClass(Class c);
-    
+    final native void resolveClass(Class c);
+
+    /** 
+     * Helper for java.lang.Integer, Byte, etc. to get the TYPE class
+     * at initialization time.  If there are multiple classloaders, this
+     * method may be called once per ClassLoader per type.
+     *
+     * @param type name of the primitive type; i.e. "int", "byte", etc.
+     * @return a "bogus" class representing the primitive type.
+     */
+    final static native Class getPrimitiveClass(String type);
+
 }

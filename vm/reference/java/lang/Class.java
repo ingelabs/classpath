@@ -441,14 +441,5 @@ public class Class {
      */
     public native Field[] getDeclaredFields() throws SecurityException;
 
-    /** 
-     * Helper for java.lang.Integer, Byte, etc. to get the TYPE class
-     * at initialization time.  If there are multiple classloaders, this
-     * method may be called once per ClassLoader per type.
-     *
-     * @param type name of the primitive type; i.e. "int", "byte", etc.
-     * @return a "bogus" class representing the primitive type.
-     */
-    final static native Class getPrimitiveClass(String type);
 }
 
