@@ -65,6 +65,8 @@ JNIEnv *gdk_env;
 
 GtkWindowGroup *global_gtk_window_group;
 
+static void init_glib_threads(JNIEnv *, jint);
+
 double dpi_conversion_factor;
 
 static void init_dpi_conversion_factor ();
@@ -74,10 +76,17 @@ static void dpi_changed_cb (GtkSettings  *settings,
 /*
  * Call gtk_init.  It is very important that this happen before any other
  * gtk calls.
+ *
+ * The portableNativeSync argument may have the values:
+ *   1 if the Java property gnu.classpath.awt.gtk.portable.native.sync
+ *     is set to "true".  
+ *   0 if it is set to "false"
+ *  -1 if unset.
  */
 
 JNIEXPORT void JNICALL 
-Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
+Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz,
+                                                  jint portableNativeSync)
 {
   int argc = 1;
   char **argv;
@@ -101,16 +110,7 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 #endif
   argv[1] = NULL;
 
-  /* until we have JDK 1.2 JNI, assume we have a VM with threads that 
-     match what GLIB was compiled for */
-#ifdef PORTABLE_NATIVE_SYNC
-  (*env)->GetJavaVM( env, &the_vm );
-  g_thread_init ( &portable_native_sync_jni_functions );
-  /* Debugging progress message; uncomment if needed: */
-  /*   printf("called gthread init\n"); */
-#else
-  g_thread_init ( NULL );
-#endif
+  init_glib_threads(env, portableNativeSync);
 
   /* From GDK 2.0 onwards we have to explicitly call gdk_threads_init */
   gdk_threads_init();
@@ -205,6 +205,37 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz)
 
   init_dpi_conversion_factor ();
 }
+
+
+/** Initialize GLIB's threads properly, based on the value of the
+    gnu.classpath.awt.gtk.portable.native.sync Java system property.  If
+    that's unset, use the PORTABLE_NATIVE_SYNC config.h macro.  (TODO: 
+    In some release following 0.10, that config.h macro will go away.)
+    */ 
+static void 
+init_glib_threads(JNIEnv *env, jint portableNativeSync)
+{
+  if (portableNativeSync < 0)
+    {
+#ifdef PORTABLE_NATIVE_SYNC /* Default value, if not set by the Java system
+                               property */ 
+      portableNativeSync = 1;
+#else
+      portableNativeSync = 0;
+#endif
+    }
+  
+  (*env)->GetJavaVM( env, &the_vm );
+  if (portableNativeSync)
+    g_thread_init ( &portable_native_sync_jni_functions );
+  else
+    g_thread_init ( NULL );
+
+  /* Debugging progress message; uncomment if needed: */
+  /*   printf("called gthread init\n"); */
+}
+
+
 
 /*
  * Run gtk_main and block.

@@ -1,13 +1,19 @@
 New in release 0.10 (in preparation)
 
-* Fixed the code enabled by the --portable-native-sync configure option; it 
-  had been broken since Classpath release 0.06, when we upgraded to GTK+2.  
+* Fixed the "portable native sync" code; it had been broken since
+  Classpath release 0.06, when we upgraded to GTK+2.    
   
   Explanation: Classpath's AWT peers use GTK+.  GTK+ uses GLIB.  GLIB by
   default uses the platform's native threading model -- pthreads in most cases.
   If the Java runtime doesn't use the native threading model, then you should
   specify --portable-native-sync when configuring Classpath, so that GLIB will
-  use the Java threading primitives instead.
+  use the Java threading primitives instead.  (For a superior alternative,
+  see below.)
+
+* The VM can set the system property
+  gnu.classpath.awt.gtk.portable.native.sync instead of using the
+  --portable-native-sync configure-type option.  See
+  doc/vmintegration.texinfo for details.
 
 * We intend that the next release of GNU Classpath will require the VM 
   to provide JNI 1.2.  Classpath currently uses only JNI 1.1, except for 

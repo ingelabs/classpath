@@ -310,7 +310,7 @@ Classpath places a few requirements on the VM that uses it.
 
 Classpath currently uses only JNI 1.1, except for one JNI 1.2 function
 in the JNI Invocation API: GetEnv().  And GetEnv() is only used in the
---portable-native-sync code, so it's only actually used by Jikes RVM
+``portable native sync'' code, so it's only actually used by Jikes RVM
 and Kaffe.  
 
 A future direction will probably be to require that all VMs provide
@@ -321,12 +321,42 @@ mailing list.
 @comment  node-name,  next,  previous,  up
 @section VM Threading Model
 
-Classpath's AWT peers use GTK+.  GTK+ uses GLIB.  GLIB by default uses
-the platform's native threading model -- pthreads in most cases.
+Classpath's AWT peers use GTK+.  GTK+ uses GLIB.  Normally, Classpath
+will initialize GLIB's @dfn{gthreads} to use
+the platform's native threading model@footnote{The native threading
+model is pthreads on Linux and AIX, the two platforms Classpath
+currently runs on.}
 
 If the Java runtime doesn't use the native threading model, then you
-should specify --portable-native-sync when configuring Classpath, so
-that GLIB will use the Java threading primitives instead.
+will want Classpath to tell GLIB to use the Java threading primitives
+instead.  Otherwise, GLIB would use the native threading model to
+perform operations such as creating thread-local data, and that just
+doesn't work on systems (such as Kaffe in some configurations, and
+such as Jikes RVM) that use @i{m}:@i{n} threading.
+
+Historically, enabling the Java threading primitives had been done at
+build time, by configuring classpath with the
+@option{--portable-native-sync} option.  This had bad consequences,
+though -- it meant that the prebuild GNU Classpath package distributed
+with Debian GNU/Linux would not be usable with VMs that could
+otherwise have used it.  Instead, we encourage
+the use of the Java system property
+@code{gnu.classpath.awt.gtk.portable.native.sync}.  A VM that wants
+GLIB to use the Java threading primitives should modify
+@code{VMRuntime.insertSystemProperties()} to include code like the
+following:
+
+@example
+static void insertSystemProperties(Properties @var{p}) 
+@end example
+...
+@example
+@var{p}.put("gnu.classpath.awt.gtk.portable.native.sync", "true");
+@end example
+
+So, the configure option
+@option{--portable-native-sync} is deprecated, and should go away in a
+subsequent release of GNU Classpath.
 
 @bye
 

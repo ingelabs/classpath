@@ -274,11 +274,15 @@ dnl -----------------------------------------------------------
 CLASSPATH_ENABLE_GJDOC
 
 dnl -----------------------------------------------------------
+dnl This sets the build-time default, which can now be overridden 
+dnl by setting the system property gnu.classpath.awt.gtk.portable.native.sync
+dnl to "true" or "false".
+dnl -----------------------------------------------------------
 AC_ARG_ENABLE([portable-native-sync],
               [AS_HELP_STRING(--enable-portable-native-sync,synchronize VM threads portably)],
               [case "${enableval}" in 
                 yes) 
-                     AC_DEFINE(PORTABLE_NATIVE_SYNC, 1, [Define to 1 if you want to synchronize VM threads portably])
+                     AC_DEFINE(PORTABLE_NATIVE_SYNC, 1, [Define if you want to synchronize VM threads portably by default; undef otherwise])
                      ;;
                 no)  ;;
                 *)   

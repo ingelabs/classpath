@@ -1,3 +1,24 @@
+2004-07-07  Steven Augart  <augart@watson.ibm.com>
+
+	* gnu/java/awt/peer/gtk/GtkMainThread.java (run): Pass the value of 
+	the gnu.classpath.awt.gtk.portable.native.sync system property to C.
+
+	* configure.ac: Correct description of PORTABLE_NATIVE_SYNC
+	config.h definition.
+
+	* native/jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMainThread.c,
+	include/gnu_java_awt_peer_gtk_GtkMainThread.h
+	(Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit): New argument,
+	portableNativeSync.  Delegate PORTABLE_NATIVE_SYNC work to
+	init_glib_threads. 
+	(init_glib_threads): New function.
+
+	* doc/vmintegration.texinfo (VM Threading Model): Explain the
+	gnu.classpath.awt.gtk.portable.native.sync system property. 
+
+	* NEWS: Mention the gnu.classpath.awt.gtk.portable.native.sync
+	new system property.
+	
 2004-07-06  Patrik Reali  <reali@acm.org>
 
 	* doc/www.gnu.org/newsitems.txt: mail about emacs with GNU Classpath
