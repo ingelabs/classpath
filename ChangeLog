@@ -1,5 +1,9 @@
 2003-08-22  Mark Wielaard  <mark@klomp.org>
 
+	* configure.in (VERSION): Set to 0.06+cvs.
+
+2003-08-22  Mark Wielaard  <mark@klomp.org>
+
 	* configure.in (VERSION): Set to 0.06.
 
 2003-08-20  Tom Tromey  <tromey@redhat.com>

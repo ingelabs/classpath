@@ -10,7 +10,7 @@ AC_CANONICAL_TARGET
 if expr match ${target_cpu} .*86 > /dev/null; then target_cpu=x86; fi
 
 PACKAGE="classpath"
-VERSION="0.06"
+VERSION="0.06+cvs"
 dnl We will not track/change lib version until we reach version 1.0
 dnl at which time we'll have to be more anal about such things
 LIBVERSION="0:0:0"
