@@ -1,5 +1,10 @@
 2002-07-14  Mark Wielaard  <mark@klomp.org>
 
+	* java/io/StreamTokenizer.java (pushBack): Update documentation.
+	(whitespaceChars): call resetChar().
+
+2002-07-14  Mark Wielaard  <mark@klomp.org>
+
 	* javax/transaction/InvalidTransactionException.java,
 	javax/transaction/TransactionRequiredException.java,
 	javax/transaction/TransactionRolledbackException.java,
