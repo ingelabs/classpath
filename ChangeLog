@@ -1,3 +1,17 @@
+2003-09-25  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* java/awt/Dialog.java: Initialize resizable to true and change
+	comments accordingly.  Initialize visible to false in
+	constructors.
+	* java/awt/Frame.java (dispose): Remove method.
+	* java/awt/Window.java (ownedWindows): New field.
+	(Window(Window,GraphicsConfiguration)): Add a weak reference to
+	owner's ownedWindows vector.
+	(finalize): Remove method.
+	(hide): Hide owned windows.
+	(dispose): Dispose of owned windows.
+	(getOwnedWindows): Implement.
+
 2003-09-25  Michael Koch  <konqueror@gmx.de>
 
 	* gnu/java/net/PlainDatagramSocketImpl.java:
