@@ -1,3 +1,15 @@
+2002-11-06  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/AbstractMap.java (values().contains): Add missing
+	method.
+	* java/util/HashMap.java (HashEntry.access): New method.
+	(put): Call it.
+	(getEntry): Optimize.
+	(readObject): Fix deserialization of LinkedHashMap.
+	* java/util/LinkedHashMap.java (head): replace root and tail for
+	more efficient and more compliant implementation.
+	(LinkedHashEntry.access): Implement.
+
 2002-11-04  R. A. Rivas Diaz  <rivasdiaz@yahoo.com>
 
 	* gnu/java/security/provider/SHA.java (engineGetDigestLength):
