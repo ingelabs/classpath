@@ -21,7 +21,9 @@ package java.io;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.Vector;
 
 import gnu.java.io.ObjectIdentityWrapper;
 import gnu.java.lang.reflect.TypeSignature;
@@ -100,15 +102,16 @@ public class ObjectInputStream extends InputStream
   public ObjectInputStream( InputStream in )
     throws IOException, StreamCorruptedException
   {
-    myResolveEnabled = false;
-    myIsDeserializing = false;
-    myBlockDataPosition = 0;
-    myBlockDataBytes = 0;
-    myBlockData = new byte[ BUFFER_SIZE ];
-    myBlockDataInput = new DataInputStream( this );
-    myRealInputStream = new DataInputStream( in );
-    myNextOID = baseWireHandle;
-    myObjectLookupTable = new Hashtable();
+    this.resolveEnabled = false;
+    this.isDeserializing = false;
+    this.blockDataPosition = 0;
+    this.blockDataBytes = 0;
+    this.blockData = new byte[ BUFFER_SIZE ];
+    this.blockDataInput = new DataInputStream( this );
+    this.realInputStream = new DataInputStream( in );
+    this.nextOID = baseWireHandle;
+    this.objectLookupTable = new Hashtable();
+    this.validators = new Vector();
     setBlockDataMode( true );
     readStreamHeader();
   }
@@ -131,7 +134,7 @@ public class ObjectInputStream extends InputStream
   */
   public final Object readObject() throws ClassNotFoundException, IOException
   {
-    if( myUseSubclassMethod )
+    if( this.useSubclassMethod )
       return readObjectOverride();
     
     boolean was_deserializing;    
@@ -146,20 +149,20 @@ public class ObjectInputStream extends InputStream
       first_time = false;
       //eDEBUG
       
-      was_deserializing = myIsDeserializing;
+      was_deserializing = this.isDeserializing;
 
       if( ! was_deserializing )
 	setBlockDataMode( false );
 
-      myIsDeserializing = true;
+      this.isDeserializing = true;
 
       DEBUG( "MARKER " );
-      byte marker = myRealInputStream.readByte();
+      byte marker = this.realInputStream.readByte();
 
       if( marker == TC_BLOCKDATA || marker == TC_BLOCKDATALONG )
       {
 	readNextBlock( marker );
-	throw new BlockDataException( myBlockDataBytes );
+	throw new BlockDataException( this.blockDataBytes );
       }
     
       if( marker == TC_NULL )
@@ -171,9 +174,9 @@ public class ObjectInputStream extends InputStream
       if( marker == TC_REFERENCE )
       {
 	DEBUG( "REFERENCE " );
-	Integer oid = new Integer( myRealInputStream.readInt() );
+	Integer oid = new Integer( this.realInputStream.readInt() );
 	ret_val = ((ObjectIdentityWrapper)
-		   myObjectLookupTable.get(oid)).object;
+		   this.objectLookupTable.get(oid)).object;
 	break;
       }
     
@@ -189,13 +192,13 @@ public class ObjectInputStream extends InputStream
       if( marker == TC_CLASSDESC )
       {
 	DEBUG( "CLASSDESC NAME " );
-	String name = myRealInputStream.readUTF();
+	String name = this.realInputStream.readUTF();
 	DEBUG( "UID " );
-	long uid = myRealInputStream.readLong();
+	long uid = this.realInputStream.readLong();
 	DEBUG( "FLAGS " );
-	byte flags = myRealInputStream.readByte();
+	byte flags = this.realInputStream.readByte();
 	DEBUG( "FIELD COUNT " );
-	short field_count = myRealInputStream.readShort();
+	short field_count = this.realInputStream.readShort();
 	OSCField[] fields = new OSCField[ field_count ];
 
 	ObjectStreamClass osc = new ObjectStreamClass( name, uid,
@@ -205,9 +208,9 @@ public class ObjectInputStream extends InputStream
 	for( int i=0; i < field_count; i++ )
 	{
 	  DEBUG( "TYPE CODE " );
-	  char type_code = (char)myRealInputStream.readByte();
+	  char type_code = (char)this.realInputStream.readByte();
 	  DEBUG( "FIELD NAME " );
-	  String field_name = myRealInputStream.readUTF();
+	  String field_name = this.realInputStream.readUTF();
 	  String class_name;
 
 	  if( type_code == 'L' || type_code == '[' )
@@ -225,7 +228,7 @@ public class ObjectInputStream extends InputStream
 	setBlockDataMode( false );
       
 	DEBUG( "ENDBLOCKDATA " );
-	if( myRealInputStream.readByte() != TC_ENDBLOCKDATA )
+	if( this.realInputStream.readByte() != TC_ENDBLOCKDATA )
 	  throw new IOException( "Data annotated to class was not consumed." );
       
 	osc.setSuperclass( (ObjectStreamClass)readObject() );
@@ -236,7 +239,7 @@ public class ObjectInputStream extends InputStream
       if( marker == TC_STRING )
       {
 	DEBUG( "STRING " );
-	String s = myRealInputStream.readUTF();
+	String s = this.realInputStream.readUTF();
 	ret_val = processResoultion( s, assignNewHandle( s ) );
 	break;
       }
@@ -246,7 +249,7 @@ public class ObjectInputStream extends InputStream
 	ObjectStreamClass osc = (ObjectStreamClass)readObject();
 	Class componenetType = osc.forClass().getComponentType();
 	DEBUG( "ARRAY LENGTH " );
-	int length = myRealInputStream.readInt();
+	int length = this.realInputStream.readInt();
 	Object array = Array.newInstance( componenetType, length );
 	int handle = assignNewHandle( array );
 	readArrayElements( array, componenetType );
@@ -320,7 +323,7 @@ public class ObjectInputStream extends InputStream
 					    " could not be created" );
 
 	int handle = assignNewHandle( obj );
-	myCurrentObject = obj;
+	this.currentObject = obj;
 	ObjectStreamClass[] hierarchy =
 	  ObjectStreamClass.getObjectStreamClasses( clazz );
 
@@ -330,16 +333,16 @@ public class ObjectInputStream extends InputStream
 	boolean has_read;
 	for( int i=0; i < hierarchy.length; i++ )
 	{
-	  myCurrentObjectStreamClass = hierarchy[i];
+	  this.currentObjectStreamClass = hierarchy[i];
 
 	  DEBUGln( "Reading fields of "
-		   + myCurrentObjectStreamClass.getName() );
+		   + this.currentObjectStreamClass.getName() );
 
 	  has_read = true;
 	
 	  try
 	  {
-	    myCurrentObjectStreamClass.forClass().
+	    this.currentObjectStreamClass.forClass().
 	      getDeclaredMethod( ourReadObjectName, ourReadObjectParams );
 	  }
 	  catch( NoSuchMethodException e )
@@ -347,19 +350,19 @@ public class ObjectInputStream extends InputStream
 	    has_read = false;
 	  }
 
-	  readFields( obj, myCurrentObjectStreamClass.getFields(),
-		      has_read, myCurrentObjectStreamClass );
+	  readFields( obj, this.currentObjectStreamClass.getFields(),
+		      has_read, this.currentObjectStreamClass );
 
 	  if( has_read )
 	  {
 	    DEBUG( "ENDBLOCKDATA? " );
-	    if( myRealInputStream.readByte() != TC_ENDBLOCKDATA )
+	    if( this.realInputStream.readByte() != TC_ENDBLOCKDATA )
 	      throw new IOException( "No end of block data seen for class with readObject(ObjectInputStream) method." );
 	  }
 	}
 
-	myCurrentObject = null;
-	myCurrentObjectStreamClass = null;
+	this.currentObject = null;
+	this.currentObjectStreamClass = null;
 	ret_val = processResoultion( obj, handle );
 	break;
       }
@@ -381,11 +384,16 @@ public class ObjectInputStream extends InputStream
       throw new IOException( "Unknown marker on stream" );
     }
     
-    myIsDeserializing = was_deserializing;
+    this.isDeserializing = was_deserializing;
 
     if( ! was_deserializing )
+    {
       setBlockDataMode( true );
 
+      if( validators.size() > 0 )
+	invokeValidators();
+    }
+    
     return ret_val;
   }
   
@@ -412,18 +420,16 @@ public class ObjectInputStream extends InputStream
   public final void defaultReadObject()
     throws ClassNotFoundException, IOException, NotActiveException
   {
-    if( myCurrentObject == null || myCurrentObjectStreamClass == null )
+    if( this.currentObject == null || this.currentObjectStreamClass == null )
       throw new NotActiveException( "defaultReadObject called by non-active class and/or object" );
 
-    readFields( myCurrentObject,
-		myCurrentObjectStreamClass.getFields(),
-		false, myCurrentObjectStreamClass );
+    readFields( this.currentObject,
+		this.currentObjectStreamClass.getFields(),
+		false, this.currentObjectStreamClass );
   }
 
 
   /**
-     @XXX Currently just does checks, does not remember validators
-
      Registers a <code>ObjectInputValidation</code> to be carried out
      on the object graph currently being deserialized before it is
      returned to the original caller of <code>readObject()</code>.
@@ -444,15 +450,15 @@ public class ObjectInputStream extends InputStream
   public void registerValidation( ObjectInputValidation validator,
 				  int priority )
     throws InvalidObjectException, NotActiveException
-  
   {
-    if( myCurrentObject == null || myCurrentObjectStreamClass == null )
+    if( this.currentObject == null || this.currentObjectStreamClass == null )
       throw new NotActiveException( "registerValidation called by non-active class and/or object" );
     
     if( validator == null )
       throw new InvalidObjectException( "attempt to add a null ObjectInputValidation object" );
     
-    
+    this.validators.addElement( new ValidatorAndPriority( validator,
+							  priority ) );
   }
   
 
@@ -511,8 +517,8 @@ public class ObjectInputStream extends InputStream
       if( getClass().getClassLoader() != null )
 	throw new SecurityException( "Untrusted ObjectInputStream subclass attempted to enable object resolution" );
 
-    boolean old_val = myResolveEnabled;
-    myResolveEnabled = enable;
+    boolean old_val = this.resolveEnabled;
+    this.resolveEnabled = enable;
     return old_val;
   }
 
@@ -530,134 +536,134 @@ public class ObjectInputStream extends InputStream
     throws IOException, StreamCorruptedException
   {
     DEBUG( "STREAM MAGIC " );
-    if( myRealInputStream.readShort() != STREAM_MAGIC )
+    if( this.realInputStream.readShort() != STREAM_MAGIC )
       throw new StreamCorruptedException( "Invalid stream magic number" );
     
     DEBUG( "STREAM VERSION " );
-    if( myRealInputStream.readShort() != STREAM_VERSION )
+    if( this.realInputStream.readShort() != STREAM_VERSION )
       throw new StreamCorruptedException( "Invalid stream version number" );
   }
 
 
   public int read() throws IOException
   {
-    if( myReadDataFromBlock )
+    if( this.readDataFromBlock )
     {
-      if( myBlockDataPosition >= myBlockDataBytes )
+      if( this.blockDataPosition >= this.blockDataBytes )
 	readNextBlock();
-      return myBlockData[ myBlockDataPosition++ ];
+      return this.blockData[ this.blockDataPosition++ ];
     }
     else
-      return myRealInputStream.read();
+      return this.realInputStream.read();
   }
 
   public int read( byte data[], int offset, int length ) throws IOException
   {
-    if( myReadDataFromBlock )
+    if( this.readDataFromBlock )
     {
-      if( myBlockDataPosition + length >= myBlockDataBytes )
+      if( this.blockDataPosition + length >= this.blockDataBytes )
 	readNextBlock();
 
-      System.arraycopy( myBlockData, myBlockDataPosition,
+      System.arraycopy( this.blockData, this.blockDataPosition,
 			data, offset, length );
       return length;
     }
     else
-      return myRealInputStream.read( data, offset, length );
+      return this.realInputStream.read( data, offset, length );
   }
 
   public int available() throws IOException
   {
-    if( myReadDataFromBlock )
+    if( this.readDataFromBlock )
     {
-      if( myBlockDataPosition >= myBlockDataBytes )
+      if( this.blockDataPosition >= this.blockDataBytes )
 	readNextBlock();
       
-      return myBlockDataBytes - myBlockDataPosition;
+      return this.blockDataBytes - this.blockDataPosition;
     }
     else
-      return myRealInputStream.available();
+      return this.realInputStream.available();
   }
 
   public void close() throws IOException
   {
-    myRealInputStream.close();
+    this.realInputStream.close();
   }
 
   public boolean readBoolean() throws IOException
   {
-    return myDataInputStream.readBoolean();
+    return this.dataInputStream.readBoolean();
   }
 
   public byte readByte() throws IOException
   {
-    return myDataInputStream.readByte();
+    return this.dataInputStream.readByte();
   }
 
   public int readUnsignedByte() throws IOException
   {
-    return myDataInputStream.readUnsignedByte();
+    return this.dataInputStream.readUnsignedByte();
   }
   
   public short readShort() throws IOException
   {
-    return myDataInputStream.readShort();
+    return this.dataInputStream.readShort();
   }
 
   public int readUnsignedShort() throws IOException
   {
-    return myDataInputStream.readUnsignedShort();
+    return this.dataInputStream.readUnsignedShort();
   }
 
   public char readChar() throws IOException
   {
-    return myDataInputStream.readChar();
+    return this.dataInputStream.readChar();
   }
 
   public int readInt() throws IOException
   {
-    return myDataInputStream.readInt();
+    return this.dataInputStream.readInt();
   }
 
   public long readLong() throws IOException
   {
-    return myDataInputStream.readLong();
+    return this.dataInputStream.readLong();
   }
 
   public float readFloat() throws IOException
   {
-    return myDataInputStream.readFloat();
+    return this.dataInputStream.readFloat();
   }
 
   public double readDouble() throws IOException
   {
-    return myDataInputStream.readDouble();
+    return this.dataInputStream.readDouble();
   }
 
   public void readFully( byte data[] ) throws IOException
   {
-    myDataInputStream.readFully( data );
+    this.dataInputStream.readFully( data );
   }
 
   public void readFully( byte data[], int offset, int size )
     throws IOException
   {
-    myDataInputStream.readFully( data, offset, size );
+    this.dataInputStream.readFully( data, offset, size );
   }
 
   public int skipBytes( int len ) throws IOException
   {
-    return myDataInputStream.skipBytes( len );
+    return this.dataInputStream.skipBytes( len );
   }
 
   public String readLine() throws IOException
   {
-    return myDataInputStream.readLine();
+    return this.dataInputStream.readLine();
   }
 
   public String readUTF() throws IOException
   {
-    return myDataInputStream.readUTF();
+    return this.dataInputStream.readUTF();
   }
 
 
@@ -676,7 +682,7 @@ public class ObjectInputStream extends InputStream
     throws IOException, StreamCorruptedException
   {
     //XXX: security check
-    myUseSubclassMethod = true;
+    this.useSubclassMethod = true;
   }
 
 
@@ -699,17 +705,17 @@ public class ObjectInputStream extends InputStream
   // assigns the next availible handle to OBJ
   private int assignNewHandle( Object obj )
   {
-    myObjectLookupTable.put( new Integer( myNextOID ),
+    this.objectLookupTable.put( new Integer( this.nextOID ),
 			     new ObjectIdentityWrapper( obj ) );
 
     try
     {
-      DEBUG( "Assigning handle " + myNextOID );
+      DEBUG( "Assigning handle " + this.nextOID );
       DEBUGln( " to " + obj );
     }
     catch( Throwable t ) {}
 
-    return myNextOID++;
+    return this.nextOID++;
   }
 
 
@@ -719,10 +725,10 @@ public class ObjectInputStream extends InputStream
     if( obj instanceof Resolvable )
       obj = ((Resolvable)obj).readResolve();
     
-    if( myResolveEnabled )
+    if( this.resolveEnabled )
       obj = resolveObject( obj );
     
-    myObjectLookupTable.put( new Integer( handle ),
+    this.objectLookupTable.put( new Integer( handle ),
 			     new ObjectIdentityWrapper( obj ) );
 
     return obj;
@@ -731,15 +737,15 @@ public class ObjectInputStream extends InputStream
 
   private void clearHandles()
   {
-    myObjectLookupTable.clear();
-    myNextOID = baseWireHandle;
+    this.objectLookupTable.clear();
+    this.nextOID = baseWireHandle;
   }
   
 
   private void readNextBlock() throws IOException
   {
     DEBUG( "MARKER " );
-    readNextBlock( myRealInputStream.readByte() );
+    readNextBlock( this.realInputStream.readByte() );
   }
 
 
@@ -748,23 +754,23 @@ public class ObjectInputStream extends InputStream
     if( marker == TC_BLOCKDATA )
     {
       DEBUG( "BLOCK DATA SIZE " );
-      myBlockDataBytes = myRealInputStream.readUnsignedByte();
+      this.blockDataBytes = this.realInputStream.readUnsignedByte();
     }
     else if( marker == TC_BLOCKDATALONG )
     {
       DEBUG( "BLOCK DATA LONG SIZE " );
-      myBlockDataBytes = myRealInputStream.readInt();
+      this.blockDataBytes = this.realInputStream.readInt();
     }
     else
     {
       throw new EOFException( "Attempt to read primitive data, but no data block is active." );
     }
 
-    if( myBlockData.length < myBlockDataBytes )
-      myBlockData = new byte[ myBlockDataBytes ];
+    if( this.blockData.length < this.blockDataBytes )
+      this.blockData = new byte[ this.blockDataBytes ];
 	
-    myRealInputStream.readFully( myBlockData, 0, myBlockDataBytes );
-    myBlockDataPosition = 0;
+    this.realInputStream.readFully( this.blockData, 0, this.blockDataBytes );
+    this.blockDataPosition = 0;
   }
 
 
@@ -777,56 +783,56 @@ public class ObjectInputStream extends InputStream
       {
 	boolean[] cast_array = (boolean[])array;
 	for( int i=0; i < cast_array.length; i++ )
-	  cast_array[i] = myRealInputStream.readBoolean();
+	  cast_array[i] = this.realInputStream.readBoolean();
 	return;
       }
       if( clazz == Byte.TYPE )
       {
 	byte[] cast_array = (byte[])array;
 	for( int i=0; i < cast_array.length; i++ )
-	  cast_array[i] = myRealInputStream.readByte();
+	  cast_array[i] = this.realInputStream.readByte();
 	return;
       }
       if( clazz == Character.TYPE )
       {
 	char[] cast_array = (char[])array;
 	for( int i=0; i < cast_array.length; i++ )
-	  cast_array[i] = myRealInputStream.readChar();
+	  cast_array[i] = this.realInputStream.readChar();
 	return;
       }
       if( clazz == Double.TYPE )
       {
 	double[] cast_array = (double[])array;
 	for( int i=0; i < cast_array.length; i++ )
-	  cast_array[i] = myRealInputStream.readDouble();
+	  cast_array[i] = this.realInputStream.readDouble();
 	return;
       }
       if( clazz == Float.TYPE )
       {
 	float[] cast_array = (float[])array;
 	for( int i=0; i < cast_array.length; i++ )
-	  cast_array[i] = myRealInputStream.readFloat();
+	  cast_array[i] = this.realInputStream.readFloat();
 	return;
       }
       if( clazz == Integer.TYPE )
       {
 	int[] cast_array = (int[])array;
 	for( int i=0; i < cast_array.length; i++ )
-	  cast_array[i] = myRealInputStream.readInt();
+	  cast_array[i] = this.realInputStream.readInt();
 	return;
       }
       if( clazz == Long.TYPE )
       {
 	long[] cast_array = (long[])array;
 	for( int i=0; i < cast_array.length; i++ )
-	  cast_array[i] = myRealInputStream.readLong();
+	  cast_array[i] = this.realInputStream.readLong();
 	return;
       }
       if( clazz == Short.TYPE )
       {
 	short[] cast_array = (short[])array;
 	for( int i=0; i < cast_array.length; i++ )
-	  cast_array[i] = myRealInputStream.readShort();
+	  cast_array[i] = this.realInputStream.readShort();
 	return;
       }
     }
@@ -843,7 +849,6 @@ public class ObjectInputStream extends InputStream
 			   boolean call_read_method, ObjectStreamClass osc )
     throws ClassNotFoundException, IOException
   {
-    //XXX: handle different class versions
     if( call_read_method )
     {
       setBlockDataMode( true );
@@ -852,6 +857,7 @@ public class ObjectInputStream extends InputStream
       return;
     }
 
+    //XXX: handle different class versions
     String field_name;
     Class type;
     for( int i=0; i < fields.length; i++ )
@@ -860,21 +866,21 @@ public class ObjectInputStream extends InputStream
       type = fields[i].getType();
 
       if( type == Boolean.TYPE )
-	setBooleanField( obj, field_name, myRealInputStream.readBoolean() );
+	setBooleanField( obj, field_name, this.realInputStream.readBoolean());
       else if( type == Byte.TYPE )
-	setByteField( obj, field_name, myRealInputStream.readByte() );
+	setByteField( obj, field_name, this.realInputStream.readByte() );
       else if( type == Character.TYPE )
-	setCharField( obj, field_name, myRealInputStream.readChar() );
+	setCharField( obj, field_name, this.realInputStream.readChar() );
       else if( type == Double.TYPE )
-	setDoubleField( obj, field_name, myRealInputStream.readDouble() );
+	setDoubleField( obj, field_name, this.realInputStream.readDouble() );
       else if( type == Float.TYPE )
-	setFloatField( obj, field_name, myRealInputStream.readFloat() );
+	setFloatField( obj, field_name, this.realInputStream.readFloat() );
       else if( type == Integer.TYPE )
-	setIntField( obj, field_name, myRealInputStream.readInt() );
+	setIntField( obj, field_name, this.realInputStream.readInt() );
       else if( type == Long.TYPE )
-	setLongField( obj, field_name, myRealInputStream.readLong() );
+	setLongField( obj, field_name, this.realInputStream.readLong() );
       else if( type == Short.TYPE )
-	setShortField( obj, field_name, myRealInputStream.readShort() );
+	setShortField( obj, field_name, this.realInputStream.readShort() );
       else
 	setObjectField( obj, field_name,
 			TypeSignature.getEncodingOfClass(type),
@@ -888,15 +894,17 @@ public class ObjectInputStream extends InputStream
   {
     DEBUGln( "Setting block data mode to " + on );
 
-    myReadDataFromBlock = on;
+    this.readDataFromBlock = on;
 
     if( on )
-      myDataInputStream = myBlockDataInput;
+      this.dataInputStream = this.blockDataInput;
     else
-      myDataInputStream = myRealInputStream;
+      this.dataInputStream = this.realInputStream;
   }
 
-
+  
+  // returns a new instance of REAL_CLASS that has been constructed
+  // only to th level of CONSTRUCTOR_CLASS (a super class of REAL_CLASS)
   private Object newObject( Class real_class, Class constructor_class )
   {
     try
@@ -912,6 +920,26 @@ public class ObjectInputStream extends InputStream
     catch( InstantiationException e )
     {
       return null;
+    }
+  }
+  
+
+  // runs all registered ObjectInputValidations in prioritized order
+  // on OBJ
+  private void invokeValidators() throws InvalidObjectException
+  {
+    Object[] validators = new Object[ this.validators.size() ];
+    this.validators.copyInto( validators );
+    Arrays.sort( validators );
+    
+    try
+    {
+      for( int i=0; i < validators.length; i++ )
+	((ObjectInputValidation)validators[i]).validateObject();
+    }
+    finally
+    {
+      this.validators.removeAllElements();
     }
   }
   
@@ -944,20 +972,21 @@ public class ObjectInputStream extends InputStream
   private static final String ourReadObjectName = "readObject";
   private static final Class[] ourReadObjectParams = { ObjectInputStream.class };
   
-  private DataInputStream myRealInputStream;
-  private DataInputStream myDataInputStream;
-  private DataInputStream myBlockDataInput;
-  private int myBlockDataPosition;
-  private int myBlockDataBytes;
-  private byte[] myBlockData;
-  private boolean myUseSubclassMethod;
-  private int myNextOID;
-  private boolean myResolveEnabled;
-  private Hashtable myObjectLookupTable;
-  private Object myCurrentObject;
-  private ObjectStreamClass myCurrentObjectStreamClass;
-  private boolean myReadDataFromBlock;
-  private boolean myIsDeserializing;
+  private DataInputStream realInputStream;
+  private DataInputStream dataInputStream;
+  private DataInputStream blockDataInput;
+  private int blockDataPosition;
+  private int blockDataBytes;
+  private byte[] blockData;
+  private boolean useSubclassMethod;
+  private int nextOID;
+  private boolean resolveEnabled;
+  private Hashtable objectLookupTable;
+  private Object currentObject;
+  private ObjectStreamClass currentObjectStreamClass;
+  private boolean readDataFromBlock;
+  private boolean isDeserializing;
+  private Vector validators;
 
   static
   {
@@ -983,25 +1012,21 @@ public class ObjectInputStream extends InputStream
 }
 
 
+// used to keep a prioritized list of object validators
+class ValidatorAndPriority implements Comparable
+{
+  int priority;
+  ObjectInputValidation validator;
 
-// XXX: add this when Comparable is supported
-//       alternatively check to see if there is a priority queue in
-//       1.2 java.util
+  ValidatorAndPriority( ObjectInputValidation validator, int priority )
+  {
+    this.priority = priority;
+    this.validator = validator;
+  }
 
-// class ValidatorAndPriority imlements Comparable
-// {
-//   int priority;
-//   ObjectInputValidation validator;
-
-//   ValidatorAndPriority( int priority, ObjectInputValidation validator )
-//   {
-//     this.priority = priority;
-//     this.validator = validator;
-//   }
-
-//   public int compareTo( Object o )
-//   {
-//     ValidatorAndPriority vap = (ValidatorAndPriority)o;
-//     return this.priority - vap.priority;
-//   }
-// }
+  public int compareTo( Object o )
+  {
+    ValidatorAndPriority vap = (ValidatorAndPriority)o;
+    return this.priority - vap.priority;
+  }
+}
