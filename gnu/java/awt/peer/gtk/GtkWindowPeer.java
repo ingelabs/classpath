@@ -100,9 +100,5 @@ public class GtkWindowPeer extends GtkContainerPeer
     awtComponent.validate ();
   }
   
-  public void setVisible (boolean b)
-  {
-    System.out.println ("setVisible called: " + b);
-    super.setVisible (b);
-  }
+  native public void setVisible (boolean b);
 }
