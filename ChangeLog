@@ -2,7 +2,7 @@
 	* THANKYOU: added Fred Gray
 
 2001-11-4   Fred Gray <fegray@npl.uiuc.edu>
-	* java/util/ResourceBundle.java: add static modified to class Security
+	* java/util/ResourceBundle.java: add static modifier to class Security
 
 2001-11-04  C. Brian Jones <cbj@gnu.org>
 	* native/jni/awt: renamed native/jni/gtk-peer
