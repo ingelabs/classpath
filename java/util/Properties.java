@@ -269,6 +269,7 @@ public class Properties extends Hashtable {
             writer.println("#"+header);
         writer.println("#"+new Date().toString());
         list(writer);
+	writer.flush();
     }
     
     /**
