@@ -1,3 +1,7 @@
+2003-08-12  Ingo Proetel  <proetel@aicas.com>
+
+	* java/io/ObjectOutputStream.java : allow putFields be called more than once 
+
 2003-08-12  Sascha Brawer  <brawer@dandelis.ch>
 
 	* java/awt/font/OpenType.java: Remove 'public static final'
