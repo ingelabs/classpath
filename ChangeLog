@@ -1,5 +1,13 @@
 2003-12-27  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/channels/spi/AbstractSelector.java:
+	Added import for java.nio.channels.ClosedSelectorException.
+	(close): Added synchronized to method declaration.
+	(cancelledKeys): Throw ClosedSelectorException if is closed.
+	(cancelKey): Synchronize on cancelled key set before key.
+
+2003-12-27  Michael Koch  <konqueror@gmx.de>
+
 	* java/util/SimpleTimeZone.java
 	(setStartRule): Reformated documentation.
 	(setEndRule): Reworked documentation.
