@@ -221,8 +221,7 @@ createTempFile(String prefix, String suffix, File directory)
 /**
   * This method is used to create a temporary file
   */
-private static native boolean
-createInternal(String name) throws IOException;
+private static native boolean createInternal(String name) throws IOException;
 
 /*************************************************************************/
 
@@ -560,8 +559,7 @@ canRead() throws SecurityException
 /**
   * This native method checks file permissions for reading
   */
-private synchronized native boolean
-canReadInternal(String path);
+private synchronized native boolean canReadInternal(String path);
 
 /*************************************************************************/
 
@@ -607,8 +605,7 @@ canWrite() throws SecurityException
 /**
   * This native method checks file permissions for writing
   */
-private synchronized native boolean
-canWriteInternal(String path);
+private synchronized native boolean canWriteInternal(String path);
 
 /*************************************************************************/
 
@@ -654,8 +651,7 @@ setReadOnly() throws SecurityException
 /*
  * This native method sets the permissions to make the file read only.
  */
-private native boolean
-setReadOnlyInternal(String path);
+private native boolean setReadOnlyInternal(String path);
 
 /*************************************************************************/
 
@@ -692,8 +688,7 @@ exists() throws SecurityException
 /**
   * This native method does the actual checking of file existence.
   */
-private native boolean
-existsInternal(String path);
+private native boolean existsInternal(String path);
 
 /*************************************************************************/
 
@@ -732,8 +727,7 @@ public boolean isFile() throws SecurityException
   * is a plain file or not.  It also handles the existence check to
   * eliminate the overhead of a call to exists()
   */
-private native boolean
-isFileInternal(String path);
+private native boolean isFileInternal(String path);
 
 /*************************************************************************/
 
@@ -772,8 +766,7 @@ public boolean isDirectory() throws SecurityException
   * directory or not.  It also handle the existence check to eliminate
   * the overhead of a call to exists()
   */
-private native boolean
-isDirectoryInternal(String path);
+private native boolean isDirectoryInternal(String path);
 
 /*************************************************************************/
 
@@ -831,8 +824,7 @@ length() throws SecurityException
   * This native method actually determines the length of the file and
   * handles the existence check
   */
-private native long
-lengthInternal(String path);
+private native long lengthInternal(String path);
 
 /*************************************************************************/
 
@@ -876,8 +868,7 @@ lastModified() throws SecurityException
   * modification time.  It also does the existence check to avoid the
   * overhead of a call to exists()
   */
-private native long
-lastModifiedInternal(String path);
+private native long lastModifiedInternal(String path);
 
 /*************************************************************************/
 
@@ -923,8 +914,7 @@ setLastModified(long time) throws IllegalArgumentException, SecurityException
 /*
  * This method does the actual setting of the modification time.
  */
-private native boolean
-setLastModifiedInternal(String path, long time);
+private native boolean setLastModifiedInternal(String path, long time);
 
 /*************************************************************************/
 
@@ -997,8 +987,7 @@ delete() throws SecurityException
 /**
   * This native method handles the actual deleting of the file
   */
-private native boolean
-deleteInternal(String path);
+private native boolean deleteInternal(String path);
 
 /*************************************************************************/
 
@@ -1075,8 +1064,7 @@ mkdir() throws SecurityException
 /**
   * This native method actually creates the directory
   */
-private native boolean
-mkdirInternal(String path);
+private native boolean mkdirInternal(String path);
 
 /*************************************************************************/
 
@@ -1261,8 +1249,7 @@ list(FilenameFilter filter)
   * This native function actually produces the list of file in this
   * directory
   */
-private native String[]
-listInternal(String dirname);
+private native String[] listInternal(String dirname);
 
 /*************************************************************************/
 

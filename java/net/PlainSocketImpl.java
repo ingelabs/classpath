@@ -88,8 +88,7 @@ PlainSocketImpl()
   *
   * @param impl The SocketImpl object to accept this connection.
   */
-protected native synchronized void
-accept(SocketImpl impl) throws IOException;
+protected native synchronized void accept(SocketImpl impl) throws IOException;
 
 /*************************************************************************/
 
@@ -118,8 +117,7 @@ available() throws IOException
   *
   * @exception IOException If an error occurs
   */
-protected native synchronized void
-bind(InetAddress addr, int port) throws IOException;
+protected native synchronized void bind(InetAddress addr, int port) throws IOException;
 
 /*************************************************************************/
 
@@ -132,8 +130,7 @@ bind(InetAddress addr, int port) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected native synchronized void
-close() throws IOException;
+protected native synchronized void close() throws IOException;
 
 /*************************************************************************/
 
@@ -145,8 +142,7 @@ close() throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected native synchronized void 
-connect(InetAddress addr, int port) throws IOException;
+protected native synchronized void connect(InetAddress addr, int port) throws IOException;
 
 /*************************************************************************/
 
@@ -175,8 +171,7 @@ connect(String hostname, int port) throws IOException
   *
   * @param stream true for a stream socket, false for a datagram socket
   */
-protected native synchronized void 
-create(boolean stream) throws IOException;
+protected native synchronized void create(boolean stream) throws IOException;
 
 /*************************************************************************/
 
@@ -190,8 +185,7 @@ create(boolean stream) throws IOException;
   * 
   * @exception IOException If an error occurs
   */
-protected native synchronized void
-listen(int queuelen) throws IOException;
+protected native synchronized void listen(int queuelen) throws IOException;
 
 /*************************************************************************/
 
@@ -204,8 +198,7 @@ listen(int queuelen) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected native synchronized int
-read(byte[] buf, int offset, int len) throws IOException;
+protected native synchronized int read(byte[] buf, int offset, int len) throws IOException;
 
 /*************************************************************************/
 
@@ -216,8 +209,7 @@ read(byte[] buf, int offset, int len) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected native synchronized void
-write(byte[] buf, int offset, int len) throws IOException;
+protected native synchronized void write(byte[] buf, int offset, int len) throws IOException;
 
 /*************************************************************************/
 
@@ -232,8 +224,7 @@ write(byte[] buf, int offset, int len) throws IOException;
   *
   * @exception SocketException If an error occurs
   */
-public native synchronized void
-setOption(int option_id, Object val) throws SocketException;
+public native synchronized void setOption(int option_id, Object val) throws SocketException;
 
 /*************************************************************************/
 
@@ -248,8 +239,7 @@ setOption(int option_id, Object val) throws SocketException;
   *
   * @exception SocketException If an error occurs
   */
-public native synchronized Object
-getOption(int option_id) throws SocketException;
+public native synchronized Object getOption(int option_id) throws SocketException;
 
 /*************************************************************************/
 
