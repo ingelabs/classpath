@@ -45,7 +45,10 @@ public final class StringBuffer implements java.io.Serializable {
     //  capacity, just return
     if (minimumCapacity <= 0 || str.length >= minimumCapacity) return;
 
-    int newSize = Math.max(minimumCapacity, str.length * 2 + 2);
+    // Commented out until Math comes back
+    // int newSize = Math.max(minimumCapacity, str.length * 2 + 2);
+    int currentCapacity = str.length * 2 + 2;
+    int newSize = minimumCapacity > currentCapacity ? minimumCapacity : currentCapacity;
     char newArray[] = new char[newSize];
     System.arraycopy(str, 0, newArray, 0, len);
     str = newArray;
@@ -104,7 +107,7 @@ public final class StringBuffer implements java.io.Serializable {
     if (sharing) makeCopy();
     // access the internals of java.lang.String, and copy them
     // change arg1 to str.str and last arg to str.str.length
-    System.arraycopy(str.toCharArray(), 0, this.str, len-1, str.length());
+    System.arraycopy(str.toCharArray(), 0, this.str, len, str.length());
     len += str.length();
     return this;
   }
