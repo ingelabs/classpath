@@ -1,5 +1,13 @@
 2004-10-11  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/lang/SecurityManager.java
+	(checkPackageList): Use AccessController.doPrivileged to get
+	security property.
+	* java/security/Security.java
+	(static): Use AccessController.doPrivileged to get system property.
+
+2004-10-11  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/awt/EventDispatchThread.java
 	(dispatchThreadNum): Removed initializer.
 	(EventDispatchThread): Pre-increment dispatchThreadNum.
