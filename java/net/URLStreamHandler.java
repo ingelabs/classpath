@@ -141,6 +141,22 @@ parseURL(URL url, String url_string, int start, int end)
   // the beginning
   end = url_string.length() - end;
 
+  if(url_string.startsWith("file:"))
+      {
+	  String file;
+	  url_string = url_string.substring(5);
+	  if(url_string.startsWith("//"))
+	      {
+		  file = url_string.substring(2);
+	      }
+	  else
+	      {
+		  file = url_string;
+	      }
+	  setURL(url, url.getProtocol(),null,0, file, null);
+	  return;
+      }
+
   // Skip remains of protocol
   url_string = url_string.substring(start);
   if (!url_string.startsWith("//"))
