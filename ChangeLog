@@ -1,3 +1,8 @@
+2003-08-19  Torsten Rupp  <rupp@lisa.aicas.com>
+
+	* native/jni/java-io/java_io_File.c:
+	Fixed return value of 0 in Java_java_io_File_lastModifiedInternal()
+
 2003-08-18  Mark Wielaard  <mark@klomp.org>
 
 	* Makefile.am (DISTCHECK_CONFIGURE_FLAGS): Disable --enable-gjdoc.
