@@ -220,7 +220,7 @@ dnl -----------------------------------------------------------
 for i in $JAPHAR_CFLAGS $KAFFE_CFLAGS ; do
   add_to_extra_includes=1
   for j in $EXTRA_INCLUDES ; do
-    if test $i == $j ; then
+    if test $i = $j ; then
       add_to_extra_includes=0
     fi
   done
