@@ -1,3 +1,8 @@
+2004-10-01  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/DataInputStream.java
+	(readFully): Throw IndexOutOfBoundsException if len is negative.
+
 2004-10-01  David Gilbert  <david.gilbert@object-refinery.com>
 
 	* java/awt/geom/AffineTransform.java:
