@@ -104,7 +104,7 @@ sub parseDay($$$) {
     } elsif ($day =~ /^last([A-Z][a-z][a-z])$/) {
 	my $weekday = ( parseWeekday($1) + $dayoffset + 7 ) % 7;
 	if ($dayoffset) {
-	    my $day = $daysInMonths[$month] + $dayoffset;
+	    my $day = $daysInMonths[$month - 1] + $dayoffset;
 	    warn "Can only approximate $day with dayoffset in $file" 
 		if ($month == 2);
 	    return "$day, -$weekdayjavanames[$weekday]";
