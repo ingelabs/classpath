@@ -69,7 +69,7 @@ ContentHandler()
   *
   * @exception IOException If an error occurs
   */
-public abstract synchronized Object
+public abstract Object
 getContent(URLConnection urlcon) throws IOException;
 
 } // class ContentHandler

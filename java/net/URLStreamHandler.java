@@ -88,7 +88,7 @@ URLStreamHandler()
   *
   * @exception IOException If an error occurs
   */
-protected abstract synchronized URLConnection
+protected abstract URLConnection
 openConnection(URL url) throws IOException;
 
 /*************************************************************************/

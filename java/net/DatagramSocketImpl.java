@@ -82,7 +82,7 @@ DatagramSocketImpl()
   *
   * @exception SocketException If an error occurs
   */
-protected abstract synchronized void
+protected abstract void
 bind(int port, InetAddress addr) throws SocketException;
 
 /*************************************************************************/
@@ -90,7 +90,7 @@ bind(int port, InetAddress addr) throws SocketException;
 /**
   * This methods closes the socket
   */
-protected abstract synchronized void
+protected abstract void
 close();
 
 /*************************************************************************/
@@ -100,7 +100,7 @@ close();
   *
   * @exception SocketException If an error occurs
   */
-protected abstract synchronized void
+protected abstract void
 create() throws SocketException;
 
 /*************************************************************************/
@@ -133,7 +133,7 @@ getLocalPort()
   *
   * @exception IOException If an error occurs
   */
-protected abstract synchronized byte
+protected abstract byte
 getTTL() throws IOException;
 
 /*************************************************************************/
@@ -146,7 +146,7 @@ getTTL() throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected abstract synchronized void
+protected abstract void
 setTTL(byte ttl) throws IOException;
 
 /*************************************************************************/
@@ -158,7 +158,7 @@ setTTL(byte ttl) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected abstract synchronized void
+protected abstract void
 join(InetAddress addr) throws IOException;
 
 /*************************************************************************/
@@ -170,7 +170,7 @@ join(InetAddress addr) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected abstract synchronized void
+protected abstract void
 leave(InetAddress addr) throws IOException;
 
 /*************************************************************************/
@@ -185,7 +185,7 @@ leave(InetAddress addr) throws IOException;
   *
   * @exception If an error occurs
   */
-protected abstract synchronized int
+protected abstract int
 peek(InetAddress addr) throws IOException;
 
 /*************************************************************************/
@@ -199,7 +199,7 @@ peek(InetAddress addr) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected abstract synchronized void
+protected abstract void
 receive(DatagramPacket packet) throws IOException;
 
 /*************************************************************************/
@@ -212,7 +212,7 @@ receive(DatagramPacket packet) throws IOException;
   *
   * @exception IOException If an error occurs
   */
-protected abstract synchronized void
+protected abstract void
 send(DatagramPacket packet) throws IOException;
 
 } // class DatagramSocketImpl 
