@@ -3,4 +3,3 @@
 SUBDIRS = java gnu native compat test
 
 EXTRA_DIST = BUGS
-

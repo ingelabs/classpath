@@ -135,56 +135,84 @@ done<<>>dnl>>)
 changequote([,]))])
 
 
-# serial 24 AM_PROG_LIBTOOL
+# serial 18 AM_PROG_LIBTOOL
 AC_DEFUN(AM_PROG_LIBTOOL,
-[AC_REQUIRE([AM_ENABLE_SHARED])dnl
-AC_REQUIRE([AM_ENABLE_STATIC])dnl
-AC_REQUIRE([AC_CANONICAL_HOST])dnl
-AC_REQUIRE([AC_PROG_RANLIB])dnl
-AC_REQUIRE([AC_PROG_CC])dnl
-AC_REQUIRE([AM_PROG_LD])dnl
-AC_REQUIRE([AM_PROG_NM])dnl
-AC_REQUIRE([AC_PROG_LN_S])dnl
-dnl
+[AC_REQUIRE([AC_CANONICAL_HOST])
+AC_REQUIRE([AC_PROG_RANLIB])
+AC_REQUIRE([AC_PROG_CC])
+AC_REQUIRE([AM_PROG_LD])
+AC_REQUIRE([AM_PROG_NM])
+AC_REQUIRE([AC_PROG_LN_S])
+
 # Always use our own libtool.
 LIBTOOL='$(SHELL) $(top_builddir)/libtool'
-AC_SUBST(LIBTOOL)dnl
+AC_SUBST(LIBTOOL)
 
-# Check for any special flags to pass to ltconfig.
-libtool_flags=
-test "$enable_shared" = no && libtool_flags="$libtool_flags --disable-shared"
-test "$enable_static" = no && libtool_flags="$libtool_flags --disable-static"
+dnl Allow the --disable-shared flag to stop us from building shared libs.
+AC_ARG_ENABLE(shared,
+[  --enable-shared         build shared libraries [default=yes]],
+[if test "$enableval" = no; then
+  libtool_enable_shared=no
+else
+  libtool_enable_shared=yes
+fi])
+test -n "$libtool_enable_shared" && enable_shared="$libtool_enable_shared"
+libtool_shared=
+test "$enable_shared" = no && libtool_shared=" --disable-shared"
+
+dnl Allow the --disable-static flag to stop us from building static libs.
+AC_ARG_ENABLE(static,
+[  --enable-static         build static libraries [default=yes]],
+[if test "$enableval" = no; then
+  libtool_enable_static=no
+else
+  libtool_enable_static=yes
+fi])
+test -n "$libtool_enable_static" && enable_static="$libtool_enable_static"
+libtool_static=
+test "$enable_static" = no && libtool_static=" --disable-static"
+
+libtool_flags="$libtool_shared$libtool_static"
 test "$silent" = yes && libtool_flags="$libtool_flags --silent"
 test "$ac_cv_prog_gcc" = yes && libtool_flags="$libtool_flags --with-gcc"
 test "$ac_cv_prog_gnu_ld" = yes && libtool_flags="$libtool_flags --with-gnu-ld"
 
 # Some flags need to be propagated to the compiler or linker for good
 # libtool support.
-case "$host" in
+[case "$host" in
 *-*-irix6*)
-  # Find out which ABI we are using.
-  echo '[#]line __oline__ "configure"' > conftest.$ac_ext
-  if AC_TRY_EVAL(ac_compile); then
-    case "`/usr/bin/file conftest.o`" in
-    *32-bit*)
-      LD="${LD-ld} -32"
+  ac_save_CFLAGS="$CFLAGS"
+  flag_passed=no
+  for f in -32 -64 -n32 ABI -cckr -mips1 -mips2 -mips3 -mips4; do
+    case "$f" in
+    ABI)
+      test -n "$SGI_ABI" && flag_passed=yes
+      if test "$flag_passed" = no && test "$ac_cv_prog_gcc" = yes; then
+	# Choose the ABI flag according to GCC's specs.
+	if $CC -dumpspecs 2>&1 | sed '/^\*link:$/,/^$/!d' | egrep -e '[ 	]-32' >/dev/null; then
+	  LD="${LD-ld} -32"
+	else
+	  LD="${LD-ld} -n32"
+	fi
+      fi
       ;;
-    *N32*)
-      LD="${LD-ld} -n32"
-      ;;
-    *64-bit*)
-      LD="${LD-ld} -64"
+
+    *)
+      if echo " $CC $CFLAGS " | egrep -e "[ 	]$f[	 ]" > /dev/null; then
+	flag_passed=yes
+	LD="${LD-ld} $f"
+      fi
       ;;
     esac
-  fi
-  rm -rf conftest*
+  done
+  CFLAGS="$ac_save_CFLAGS"
   ;;
 
 *-*-sco3.2v5*)
   # On SCO OpenServer 5, we need -belf to get full-featured binaries.
   CFLAGS="$CFLAGS -belf"
   ;;
-esac
+esac]
 
 # Actually configure libtool.  ac_aux_dir is where install-sh is found.
 CC="$CC" CFLAGS="$CFLAGS" CPPFLAGS="$CPPFLAGS" \
@@ -193,77 +221,6 @@ ${CONFIG_SHELL-/bin/sh} $ac_aux_dir/ltconfig \
 $libtool_flags --no-verify $ac_aux_dir/ltmain.sh $host \
 || AC_MSG_ERROR([libtool configure failed])
 ])
-
-# AM_ENABLE_SHARED - implement the --enable-shared flag
-# Usage: AM_ENABLE_SHARED[(DEFAULT)]
-#   Where DEFAULT is either `yes' or `no'.  If omitted, it defaults to
-#   `yes'.
-AC_DEFUN(AM_ENABLE_SHARED,
-[define([AM_ENABLE_SHARED_DEFAULT], ifelse($1, no, no, yes))dnl
-AC_ARG_ENABLE(shared,
-changequote(<<, >>)dnl
-<<  --enable-shared         build shared libraries [default=>>AM_ENABLE_SHARED_DEFAULT]
-changequote([, ])dnl
-[  --enable-shared=PKGS    only build shared libraries if the current package
-                          appears as an element in the PKGS list],
-[p=${PACKAGE-default}
-case "$enableval" in
-yes) enable_shared=yes ;;
-no) enable_shared=no ;;
-*)
-  enable_shared=no
-  # Look at the argument we got.  We use all the common list separators.
-  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:,"
-  for pkg in $enableval; do
-    if test "X$pkg" = "X$p"; then
-      enable_shared=yes
-    fi
-  done
-  IFS="$ac_save_ifs"
-  ;;
-esac],
-enable_shared=AM_ENABLE_SHARED_DEFAULT)dnl
-])
-
-# AM_DISABLE_SHARED - set the default shared flag to --disable-shared
-AC_DEFUN(AM_DISABLE_SHARED,
-[AM_ENABLE_SHARED(no)])
-
-# AM_DISABLE_STATIC - set the default static flag to --disable-static
-AC_DEFUN(AM_DISABLE_STATIC,
-[AM_ENABLE_STATIC(no)])
-
-# AM_ENABLE_STATIC - implement the --enable-static flag
-# Usage: AM_ENABLE_STATIC[(DEFAULT)]
-#   Where DEFAULT is either `yes' or `no'.  If omitted, it defaults to
-#   `yes'.
-AC_DEFUN(AM_ENABLE_STATIC,
-[define([AM_ENABLE_STATIC_DEFAULT], ifelse($1, no, no, yes))dnl
-AC_ARG_ENABLE(static,
-changequote(<<, >>)dnl
-<<  --enable-static         build static libraries [default=>>AM_ENABLE_STATIC_DEFAULT]
-changequote([, ])dnl
-[  --enable-static=PKGS    only build shared libraries if the current package
-                          appears as an element in the PKGS list],
-[p=${PACKAGE-default}
-case "$enableval" in
-yes) enable_static=yes ;;
-no) enable_static=no ;;
-*)
-  enable_static=no
-  # Look at the argument we got.  We use all the common list separators.
-  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:,"
-  for pkg in $enableval; do
-    if test "X$pkg" = "X$p"; then
-      enable_static=yes
-    fi
-  done
-  IFS="$ac_save_ifs"
-  ;;
-esac],
-enable_static=AM_ENABLE_STATIC_DEFAULT)dnl
-])
-
 
 # AM_PROG_LD - find the path to the GNU or non-GNU linker
 AC_DEFUN(AM_PROG_LD,
@@ -278,7 +235,7 @@ if test "$ac_cv_prog_gcc" = yes; then
   ac_prog=`($CC -print-prog-name=ld) 2>&5`
   case "$ac_prog" in
   # Accept absolute paths.
-  /* | [A-Za-z]:\\*)
+  /*)
     test -z "$LD" && LD="$ac_prog"
     ;;
   "")
@@ -342,20 +299,20 @@ AC_DEFUN(AM_PROG_NM,
 [AC_MSG_CHECKING([for BSD-compatible nm])
 AC_CACHE_VAL(ac_cv_path_NM,
 [case "$NM" in
-/* | [A-Za-z]:\\*)
+/*)
   ac_cv_path_NM="$NM" # Let the user override the test with a path.
   ;;
 *)
   IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
   for ac_dir in /usr/ucb /usr/ccs/bin $PATH /bin; do
-    test -z "$ac_dir" && ac_dir=.
+    test -z "$ac_dir" && dir=.
     if test -f $ac_dir/nm; then
       # Check to see if the nm accepts a BSD-compat flag.
-      # Adding the `sed 1q' prevents false positives on HP-UX, which says:
+      # Adding the `sed 1!d' prevents false positives on HP-UX, which says:
       #   nm: unknown option "B" ignored
-      if ($ac_dir/nm -B /dev/null 2>&1 | sed '1q'; exit 0) | egrep /dev/null >/dev/null; then
+      if ($ac_dir/nm -B /dev/null 2>&1 | sed '1!d'; exit 0) | egrep /dev/null >/dev/null; then
         ac_cv_path_NM="$ac_dir/nm -B"
-      elif ($ac_dir/nm -p /dev/null 2>&1 | sed '1q'; exit 0) | egrep /dev/null >/dev/null; then
+      elif ($ac_dir/nm -p /dev/null 2>&1 | sed '1!d'; exit 0) | egrep /dev/null >/dev/null; then
         ac_cv_path_NM="$ac_dir/nm -p"
       else
         ac_cv_path_NM="$ac_dir/nm"

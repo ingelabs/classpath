@@ -9,7 +9,6 @@ AC_PREFIX_DEFAULT(/usr/local/japhar)
 AC_CANONICAL_HOST
 
 dnl Initialize libtool
-AM_DISABLE_STATIC
 AM_PROG_LIBTOOL
 
 dnl Checks for programs.
@@ -20,7 +19,6 @@ AC_PROG_CPP
 AC_PROG_INSTALL
 AC_PROG_LN_S
 AC_PROG_MAKE_SET
-AC_PROG_RANLIB
 AC_HEADER_STDC
 AC_CHECK_HEADERS(unistd.h)
 AC_C_CONST
@@ -42,18 +40,22 @@ then
 fi
 
 AC_OUTPUT(Makefile \
-gnu/Makefile \
-gnu/java/Makefile \
-gnu/java/net/Makefile \
-gnu/java/net/http/Makefile \
-gnu/java/net/content/Makefile \
-gnu/java/net/content/text/Makefile \
 compat/Makefile \
 compat/java.net/Makefile \
+gnu/Makefile \
+gnu/java/Makefile \
+gnu/java/io/Makefile \
+gnu/java/lang/Makefile \
+gnu/java/lang/reflect/Makefile \
+gnu/java/net/Makefile \
+gnu/java/net/content/Makefile \
+gnu/java/net/content/text/Makefile \
+gnu/java/net/http/Makefile \
 java/Makefile \
 java/io/Makefile \
 java/net/Makefile \
 native/Makefile \
+native/java.io/Makefile \
 native/java.net/Makefile \
 test/Makefile \
 test/java.io/Makefile \
