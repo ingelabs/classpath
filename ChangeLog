@@ -1,5 +1,12 @@
 2004-10-15  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/InetAddress.java
+	(InetAddress): Don't initialize address field. Its only used during
+	serialization.
+	(toString): Simplified.
+
+2004-10-15  Michael Koch  <konqueror@gmx.de>
+
 	* java/rmi/MarshalledObject.java,
 	java/rmi/Naming.java,
 	java/rmi/RMISecurityManager.java,
