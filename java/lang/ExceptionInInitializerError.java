@@ -146,6 +146,6 @@ public class ExceptionInInitializerError extends LinkageError
     {
       ObjectInputStream.GetField oFields;
       oFields = s.readFields();
-      this.t = oFields.get("exception", (Throwable)null);
+      this.t = (Throwable)oFields.get("exception", (Throwable)null);
     }
 }

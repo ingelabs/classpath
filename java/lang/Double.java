@@ -63,7 +63,7 @@ public final class Double extends Number
   }
 
   public static boolean isNaN(double d) {
-    return (doubleToLongBits(value) == 0x7ff8000000000000L);
+    return (doubleToLongBits(d) == 0x7ff8000000000000L);
   }
 
   public boolean isInifinite() {
