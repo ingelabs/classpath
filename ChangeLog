@@ -1,3 +1,9 @@
+2004-04-29  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* java/applet/Applet.java (preferredSize): Call parent's
+	preferredSize if the applet stub is null.
+	(minimumSize): Likewise for parent's minimumSize.
+
 2004-04-29  Michael Koch  <konqueror@gmx.de>
 
 	* include/gnu_java_net_PlainSocketImpl.h
