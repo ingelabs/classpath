@@ -1,3 +1,9 @@
+2004-09-27  Per Bothner  <per@bothner.com>
+
+	* java/util/Collections.java (sort):  Copy from array in forwards
+	order, rather than reverse order which may be much less
+	efficient.
+
 2004-09-27  Bryce McKinlay  <mckinlay@redhat.com>
 
 	* java.util.Calendar.java (cache): New private static field. Cached
