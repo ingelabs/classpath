@@ -1,3 +1,7 @@
+2005-03-02  Michael Koch  <konqueror@gmx.de>
+
+	* doc/api/Makefile.am: Remove gjdoc_rawcomment.cache if neccesary.
+
 2005-02-28  Roman Kennke  <roman@ontographics.com>
 
 	* examples/gnu/classpath/examples/swing/Demo.java

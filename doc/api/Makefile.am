@@ -30,7 +30,7 @@ uninstall-local:
 html: create_html
 
 clean:
-	-rm -rf html create_html
+	-rm -rf html create_html gjdoc_rawcomment.cache
 
 create_html:
 	-$(MKDIR) html > /dev/null 2>&1
