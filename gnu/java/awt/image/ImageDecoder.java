@@ -4,14 +4,22 @@ import java.awt.*;
 import java.awt.image.*;
 import java.util.*;
 import java.io.*;
+import java.net.URL;
 
 public abstract class ImageDecoder implements ImageProducer 
 {
-  Vector consumers;
+  Vector consumers = new Vector ();
+  String filename;
+  URL url;
 
-  public ImageDecoder ()
+  public ImageDecoder (String filename)
   {
-    consumers = new Vector ();
+    this.filename = filename;
+  }
+
+  public ImageDecoder (URL url)
+  {
+    this.url = url;
   }
 
   public void addConsumer (ImageConsumer ic) 
@@ -35,7 +43,10 @@ public abstract class ImageDecoder implements ImageProducer
     Vector list = (Vector) consumers.clone ();
     try 
       {
-	produce (list);
+	FileInputStream is = (url == null) ? new FileInputStream (filename) :
+	                                  (FileInputStream) url.openStream();
+						  
+	produce (list, is);
       } 
     catch (IOException e)
       {
@@ -51,5 +62,6 @@ public abstract class ImageDecoder implements ImageProducer
   { 
   }
 
-  public abstract void produce (Vector v) throws IOException;
+  public abstract void produce (Vector v, FileInputStream is) 
+    throws IOException;
 }

@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.*;
 import java.util.*;
 import java.io.*;
+import java.net.URL;
 
 public class XBMDecoder extends ImageDecoder
 {
@@ -14,13 +15,19 @@ public class XBMDecoder extends ImageDecoder
   static final int masktable[] = { 0x01, 0x02, 0x04, 0x08, 
 				   0x10, 0x20, 0x40, 0x80 };
 
-  public XBMDecoder (InputStream is)
+  public XBMDecoder (String filename)
   {
-    reader = new BufferedReader (new InputStreamReader (is));
+    super (filename);
   }
 
-  public void produce (Vector v) throws IOException
+  public XBMDecoder (URL url)
   {
+    super (url);
+  }
+
+  public void produce (Vector v, FileInputStream is) throws IOException
+  {
+    reader = new BufferedReader (new InputStreamReader (is));
     int width = -1, height = -1;
 
     for (int i = 0; i < 2; i++)
