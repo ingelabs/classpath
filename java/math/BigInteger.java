@@ -65,7 +65,7 @@ public class BigInteger {
   native public int signum();
 
   public boolean equals(Object o) {
-    if (!(o instanceof BigInteger)) return false;
+    if (o == null || (!(o instanceof BigInteger))) return false;
     BigInteger integ = (BigInteger) o;
     if (this == integ) return true;
     return nativeEquals(integ);
