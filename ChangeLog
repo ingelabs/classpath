@@ -1,3 +1,13 @@
+2002-01-16  Tom Tromey  <tromey@redhat.com>
+
+	* java/awt/Label.java (Label(String,int)): Use setAlignment and
+	setText.
+	(setAlignment): Throw exception if alignment is invalid.  Only
+	cast peer if it is not null.
+	(setText): Only cast peer if it is not null.
+	(addNotify): Only create peer if it doesn't already exist.  Call
+	superclass addNotify.
+
 2002-01-15  Tom Tromey  <tromey@redhat.com>
 
 	* java/awt/Makefile.am (EXTRA_DIST): Added new file.

@@ -1,5 +1,5 @@
 /* Label.java -- Java label widget
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -35,6 +35,7 @@ import java.awt.peer.ComponentPeer;
   * be edited.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
+  * @author Tom Tromey <tromey@cygnus.com>
   */
 public class Label extends Component implements java.io.Serializable
 {
@@ -122,8 +123,8 @@ Label(String text)
 public
 Label(String text, int alignment)
 {
-  this.text = text;
-  this.alignment = alignment;
+  setAlignment (alignment);
+  setText (text);
 }
 
 /*************************************************************************/
@@ -157,11 +158,14 @@ getAlignment()
 public synchronized void
 setAlignment(int alignment)
 {
+  if (alignment != CENTER && alignment != LEFT && alignment != RIGHT)
+    throw new IllegalArgumentException ("invalid alignment: " + alignment);
   this.alignment = alignment;
-
-  LabelPeer lp = (LabelPeer)getPeer();
-  if (lp != null)
-    lp.setAlignment(alignment);
+  if (peer != null)
+    {
+      LabelPeer lp = (LabelPeer) peer;
+      lp.setAlignment (alignment);
+    }
 }
 
 /*************************************************************************/
@@ -189,9 +193,11 @@ setText(String text)
 {
   this.text = text;
 
-  LabelPeer lp = (LabelPeer)getPeer();
-  if (lp != null)
-    lp.setText(text);
+  if (peer != null)
+    {
+      LabelPeer lp = (LabelPeer) peer;
+      lp.setText (text);
+    }
 }
 
 /*************************************************************************/
@@ -204,7 +210,9 @@ setText(String text)
 public void
 addNotify()
 {
-  setPeer((ComponentPeer)getToolkit().createLabel(this));
+  if (peer == null)
+    peer = getToolkit ().createLabel (this);
+  super.addNotify ();
 }
 
 /*************************************************************************/
