@@ -42,7 +42,7 @@ approved by the Free Software Foundation.
 @end titlepage
 
 @ifinfo
-@node Top, Introduction, , (dir)
+@node Top, Introduction, (dir), (dir)
 @top GNU Classpath Hacker's Guide
 
 This document contains important information you'll want to know if you
@@ -52,21 +52,22 @@ class libraries.
 This document is definitely a work in progress.
 @end ifinfo
 
-@menu 
-* Introduction::            An introduction to the Classpath project
-* Requirements::            Very important rules that must be followed
-* Project Goals::           Goals of the Classpath project
-* Volunteering::            So you want to help out
-* Programming Tools::       A list of tools you will need for hacking
-* Programming Standards::   Standards to use when writing code for Classpath
-* Programming Goals::       What to consider when writing code for Classpath
-* Portability::             How to ensure your code is portable
-* Robustness::              How to make native code robust
-* Java Efficiency::         Tips for making Java code faster
-* Native Efficiency::       Tips for making native Java code faster
-* Specification Sources::   Where to find the Java class library specs
-* Naming Conventions::      How files and directories are named in Classpath
-* Character Encodings::     How byte to char conversions work in Classpath
+@menu
+* Introduction::                An introduction to the Classpath project
+* Requirements::                Very important rules that must be followed
+* Volunteering::                So you want to help out
+* Project Goals::               Goals of the Classpath project
+* Programming Tools::           A list of tools you will need for hacking
+* Programming Standards::       Standards to use when writing code for Classpath
+* Programming Goals::           What to consider when writing code for Classpath
+* Portability::                 How to ensure your code is portable
+* Robustness::                  How to make native code robust
+* Java Efficiency::             Tips for making Java code faster
+* Native Efficiency::           Tips for making native Java code faster
+* Specification Sources::       Where to find the Java class library specs
+* Naming Conventions::          How files and directories are named in Classpath
+* Character Conversions::       Working on Character conversions
+
 @end menu
 
 @node Introduction, Requirements, Top, Top
@@ -689,7 +690,7 @@ java.util.InetAddress would go in native/java.net/InetAddress.c.
 reside in files of any name.
 @end itemize
 
-@node Character Conversions, , Naming Conventions, Top
+@node Character Conversions,  , Naming Conventions, Top
 @comment node-name, next, previous, up
 @chapter Character Conversions
 
