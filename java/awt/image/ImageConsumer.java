@@ -1,4 +1,6 @@
 /*******************************************************************
+ * ImageConsumer.java -- Java interface for image consumption
+ *
  * Copyright (c) 1999 Free Software Foundation, Inc.
  * Written by C. Brian Jones <cbj@gnu.org>
  *
@@ -25,7 +27,7 @@ import java.util.Hashtable;
  * An object implementing the <code>ImageProducer</code> interface can
  * use objects implementing this interface to deliver the image data.
  * 
- * @author C. Brian Jones <cbj@gnu.org>
+ * @author C. Brian Jones (cbj@gnu.org)
  */
 public interface ImageConsumer
 {
