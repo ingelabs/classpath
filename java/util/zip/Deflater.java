@@ -1,5 +1,5 @@
-/* java.util.zip.Deflater
-   Copyright (C) 2001 Free Software Foundation, Inc.
+/* Deflater.java - Compress a data stream
+   Copyright (C) 1999, 2000, 2001, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -37,16 +37,16 @@ exception statement from your version. */
 
 package java.util.zip;
 
-/** 
+/**
  * This is the Deflater class.  The deflater class compresses input
  * with the deflate algorithm described in RFC 1951.  It has several
  * compression levels and three different strategies described below.
- *
+ * 
  * This class is <i>not</i> thread safe.  This is inherent in the API, due
  * to the split of deflate and setInput.
- *
+ * 
  * @author Jochen Hoenicke
- * @date Jan 5, 2000 
+ * @author Tom Tromey
  */
 public class Deflater
 {

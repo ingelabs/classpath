@@ -1,5 +1,5 @@
-/* java.util.zip.DeflaterOutputStream
-   Copyright (C) 2001 Free Software Foundation, Inc.
+/* DeflaterOutputStream.java - Output filter for compressing.
+   Copyright (C) 1999, 2000, 2001, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
