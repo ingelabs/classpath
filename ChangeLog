@@ -1,5 +1,11 @@
 2003-07-23  Torsten Rupp  <rupp@lisa.aicas.com>
 
+	* native/jni/java-nio/java_nio.c:
+	Replaced JNI_JLONG_CONST_0 -> TARGET_NATIVE_MATH_INT_INT64_CONST_0,
+        because JNI_JLONG_CONST* should be removed from jni.h
+
+2003-07-23  Torsten Rupp  <rupp@lisa.aicas.com>
+
         * native/jni/java-net/javanet.c:
         Enable option SO_BROADCAST for datagram sockets
 
