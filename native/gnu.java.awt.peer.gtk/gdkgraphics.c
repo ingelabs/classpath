@@ -33,7 +33,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_initState
   NSA_SET_PTR (env, obj, g);
 }
 
-JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawLine
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawLineNative
   (JNIEnv *env, jobject obj, jint x, jint y, jint x2, jint y2)
 {
   struct graphics *g;
@@ -42,6 +42,18 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawLine
 
   gdk_threads_enter ();
   gdk_draw_line (g->drawable, g->gc, x, y, x2, y2);
+  gdk_threads_leave ();
+}
+
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_fillRectNative
+  (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)
+{
+  struct graphics *g;
+
+  g = (struct graphics *) NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+  gdk_draw_rectangle (g->drawable, g->gc, TRUE, x, y, width, height);
   gdk_threads_leave ();
 }
 

@@ -419,3 +419,57 @@ set_visible (GtkWidget *widget, jboolean visible)
 /*        gtk_widget_realize (widget); */
 }
 
+JNIEXPORT jintArray JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetBackground
+  (JNIEnv *env, jobject obj)
+{
+  void *ptr;
+  jintArray array;
+  int *rgb;
+  GdkColor bg;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+  bg = GTK_WIDGET (ptr)->style->bg[GTK_STATE_NORMAL];
+  gdk_threads_leave ();
+
+  array = (*env)->NewIntArray (env, 3);
+  rgb = (*env)->GetIntArrayElements (env, array, NULL);
+  /* convert color data from 16 bit values down to 8 bit values */
+  rgb[0] = bg.red   * 0xFF / 0xFFFF;
+  rgb[1] = bg.green * 0xFF / 0xFFFF;
+  rgb[2] = bg.blue  * 0xFF / 0xFFFF;
+  (*env)->ReleaseIntArrayElements (env, array, rgb, 0);
+
+  return array;
+}
+
+JNIEXPORT jintArray JNICALL 
+Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetForeground
+  (JNIEnv *env, jobject obj)
+{
+  void *ptr;
+  jintArray array;
+  int *rgb;
+  GdkColor fg;
+
+  ptr = NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+  fg = GTK_WIDGET (ptr)->style->fg[GTK_STATE_NORMAL];
+  gdk_threads_leave ();
+
+  array = (*env)->NewIntArray (env, 3);
+  rgb = (*env)->GetIntArrayElements (env, array, NULL);
+  /* convert color data from 16 bit values down to 8 bit values */
+  rgb[0] = fg.red   * 0xFF / 0xFFFF;
+  rgb[1] = fg.green * 0xFF / 0xFFFF;
+  rgb[2] = fg.blue  * 0xFF / 0xFFFF;
+  (*env)->ReleaseIntArrayElements (env, array, rgb, 0);
+
+  return array;
+}
+  
+  
+  
