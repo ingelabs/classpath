@@ -1,5 +1,14 @@
 2004-06-04  Steven Augart  <augart@watson.ibm.com>
 
+	* resource/gnu/regexp/MessagesBundle.properties, 
+	  resource/gnu/regexp/MessagesBundle_fr.properties:
+	Corrected apostrophes.
+	Replaced "expected" with "unexpected".
+	
+	* resource/gnu/regexp/MessagesBundle_it.properties: New file.
+	
+2004-06-04  Steven Augart  <augart@watson.ibm.com>
+
 	* doc/hacking.texinfo: Formatting fixes.  
 	(Utility Classes) New TeXinfo node.
 
