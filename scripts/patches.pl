@@ -152,6 +152,13 @@ sub movePatches
 	    system("mv $upload_dir/$patch.README $public_dir/$patch.README");
 	    system("chown $user.$group $public_dir/*");
 	    system("chmod $mode_file $public_dir/*");
+            open(MAIL, "|mail -s \"Classpath: $patch uploaded\" core\@classpath.org") || die "could not open mail\n";
+            print MAIL "GNU Classpath FTP Maintenance\n";
+	    print MAIL "\n";
+            print MAIL "Added Files:\n";
+            print MAIL "ftp://ftp.classpath.org/pub/patches/$patch.gz\n";
+            print MAIL "ftp://ftp.classpath.org/pub/patches/$patch.README\n\n";
+            close(MAIL);
 	}
     }
 }
