@@ -23,10 +23,10 @@ Copyright (C) 1998 Aaron M. Renn
 @vskip 0pt plus 1filll
 Copyright @copyright{} 1998 Aaron M. Renn
 
-@sp2
-Permission is granted to make and distribute verbatim copies of this
-document provided the copyright notice and this permission notice are
-preserved on all copies
+@sp2 
+Permission is granted to make and distribute verbatim copies of
+this document provided the copyright notice and this permission notice
+are preserved on all copies.
 
 Permission is granted to copy and distribute modified versions of this
 document under the conditions for verbatim copying, provided that the
