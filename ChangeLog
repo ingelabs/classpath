@@ -1,5 +1,33 @@
 2004-10-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
 
+	* gnu/java/awt/peer/gtk/GtkButtonPeer.java,
+	jni/gtk-peer/gnu_java_awt_peer_gtk_GtkButtonPeer.c
+	(gtkWidgetSetBackground): New method.
+	(block_expose_events_cb): New function.
+	(connectSignals): Block the AWT's expose event processing on
+	button press and release.
+	(gtkSetLabel): Set text on proper widget.
+	(gtkWidgetModifyFont): Modify font on proper widget.
+	(gtkWidgetSetBackground): Set normal, active and prelight
+	colours.
+	(gtkWidgetSetForeground): Set forground colour of proper widget.
+	(gtkActivate): Activate the correct widget.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c (clearRect):
+	Only clear rectangle if the backing component is not an event
+	box.
+	* jni/gtk-peer/gnu_java_awt_peer_gtk_GtkMainThread.c
+	(beginNativeRepaintID): New variable.
+	(endNativeRepaintID): Likewise.
+	(gtkInit): Initialize new fields with method IDs.
+	* jni/gtk-peer/gtkpeer.h (beginNativeRepaintID): Declare extern.
+	(endNativeRepaintID): Likewise.
+
+2004-10-09  Michael Koch  <konqueror@gmx.de>
+
+	* include/gnu_java_awt_peer_gtk_GtkButtonPeer.h: Regenerated.
+
+2004-10-09  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
 	* javax/swing/JList.java (init): Revert accidental commit.
 	* gnu/java/awt/peer/gtk/GdkGraphics.java,
 	jni/gtk-peer/gnu_java_awt_peer_gtk_GdkGraphics.c (GdkGraphics):

@@ -450,6 +450,9 @@ extern jmethodID postListItemEventID;
 extern jmethodID postTextEventID;
 extern jmethodID postWindowEventID;
 
+extern jmethodID beginNativeRepaintID;
+extern jmethodID endNativeRepaintID;
+
 extern jmethodID initComponentGraphicsID;
 extern jmethodID initComponentGraphics2DID;
 extern jmethodID setCursorID;

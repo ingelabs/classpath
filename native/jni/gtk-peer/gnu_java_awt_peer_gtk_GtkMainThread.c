@@ -61,6 +61,9 @@ jmethodID postListItemEventID;
 jmethodID postTextEventID;
 jmethodID postWindowEventID;
 
+jmethodID beginNativeRepaintID;
+jmethodID endNativeRepaintID;
+
 jmethodID initComponentGraphicsID;
 jmethodID initComponentGraphics2DID;
 jmethodID setCursorID;
@@ -95,7 +98,6 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz,
   int argc = 1;
   char **argv;
   char *homedir, *rcpath = NULL;
-/*    jclass gtkgenericpeer; */
   jclass gtkcomponentpeer, gtkchoicepeer, gtkwindowpeer, gtkscrollbarpeer, gtklistpeer,
     gtkmenuitempeer, gtktextcomponentpeer, window, gdkgraphics, gdkgraphics2d;
 
@@ -145,8 +147,6 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz,
   g_free (argv);
 
   /* setup cached IDs for posting GTK events to Java */
-/*    gtkgenericpeer = (*env)->FindClass (env,  */
-/*  				      "gnu/java/awt/peer/gtk/GtkGenericPeer"); */
 
   window = (*env)->FindClass (env, "java/awt/Window");
 
@@ -167,13 +167,6 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz,
                                    "gnu/java/awt/peer/gtk/GdkGraphics");
   gdkgraphics2d = (*env)->FindClass (env,
                                      "gnu/java/awt/peer/gtk/GdkGraphics2D");
-/*    gdkColor = (*env)->FindClass (env, */
-/*  				"gnu/java/awt/peer/gtk/GdkColor"); */
-/*    gdkColorID = (*env)->GetMethodID (env, gdkColor, "<init>", "(III)V"); */
-/*    postActionEventID = (*env)->GetMethodID (env, gtkgenericpeer,  */
-/*  					   "postActionEvent",  */
-/*  					   "(Ljava/lang/String;I)V"); */
-
   setBoundsCallbackID = (*env)->GetMethodID (env, window,
 					     "setBoundsCallback",
 					     "(IIII)V");
@@ -185,6 +178,12 @@ Java_gnu_java_awt_peer_gtk_GtkMainThread_gtkInit (JNIEnv *env, jclass clazz,
                                           "postMouseEvent", "(IJIIIIZ)V");
   setCursorID = (*env)->GetMethodID (env, gtkcomponentpeer,
                                      "setCursor", "()V");
+  beginNativeRepaintID = (*env)->GetMethodID (env, gtkcomponentpeer, 
+                                              "beginNativeRepaint", "()V");
+
+  endNativeRepaintID = (*env)->GetMethodID (env, gtkcomponentpeer, 
+                                            "endNativeRepaint", "()V");
+
   postConfigureEventID = (*env)->GetMethodID (env, gtkwindowpeer, 
 					      "postConfigureEvent", "(IIII)V");
   postWindowEventID = (*env)->GetMethodID (env, gtkwindowpeer,

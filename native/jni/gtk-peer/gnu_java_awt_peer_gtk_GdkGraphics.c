@@ -419,14 +419,18 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_clearRect
 {
   struct graphics *g;
   GdkGCValues saved;
+  GtkWidget *widget;
 
   g = (struct graphics *) NSA_GET_PTR (env, obj);
 
   gdk_threads_enter ();
   if (GDK_IS_WINDOW (g->drawable))
     {
-      gdk_window_clear_area ((GdkWindow *) g->drawable,
-                             x + g->x_offset, y + g->y_offset, width, height);
+      gdk_window_get_user_data (GDK_WINDOW (g->drawable), (void **) &widget);
+      if (widget == NULL || !GTK_IS_EVENT_BOX (widget))
+        gdk_window_clear_area ((GdkWindow *) g->drawable,
+                               x + g->x_offset, y + g->y_offset,
+                               width, height);
     }
   else
     {
@@ -436,7 +440,6 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_clearRect
 			  x + g->x_offset, y + g->y_offset, width, height);
       gdk_gc_set_foreground (g->gc, &(saved.foreground));
     }
-  /* gdk_flush (); */
   gdk_threads_leave ();
 }
 
