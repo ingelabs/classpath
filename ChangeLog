@@ -1,5 +1,10 @@
 2002-11-23  Mark Wielaard  <mark@klomp.org>
 
+	* gnu/java/net/protocol/jar/JarURLConnection.java (READBUFSIZE): 4K.
+	(get): Only write out as much bytes as we actaully read in.
+
+2002-11-23  Mark Wielaard  <mark@klomp.org>
+
 	* javax/naming/AuthenticationException.java: Import file from libgcj.
 	* javax/naming/AuthenticationNotSupportedException.java: Likewise.
 	* javax/naming/Binding.java: Likewise.

@@ -59,7 +59,7 @@ public class JarURLConnection extends java.net.JarURLConnection
   public static class JarFileCache
   {
     private static Hashtable cache = new Hashtable();
-    private static final int READBUFSIZE = 1024;
+    private static final int READBUFSIZE = 4*1024;
     private static boolean is_trying = false;
     
     public static synchronized JarFile get(URL url) throws IOException{
@@ -79,7 +79,7 @@ public class JarURLConnection extends java.net.JarURLConnection
 	  FileOutputStream fos = new FileOutputStream(f = File.createTempFile("cache", "jar")); 
 	  int len = 0;
 	  while((len = is.read(buf)) != -1){
-	    fos.write(buf);
+	    fos.write(buf, 0, len);
 	  }
 	  fos.close();
 	  // Always verify the Manifest, open read only and delete when done.
