@@ -1,5 +1,5 @@
 /* Graphics.java -- Abstract Java drawing class
-   Copyright (C) 1999, 2000, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000, 2002, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -417,7 +417,7 @@ draw3DRect(int x, int y, int width, int height, boolean raised)
   drawLine(x1, y2, x1, y1);
   setColor(br);
   drawLine(x2, y1, x2, y2);
-  drawLine(x2, y1, x1, y2);
+  drawLine(x2, y2, x1, y2);
   setColor(color);
 }
 
