@@ -39,6 +39,7 @@ package java.net;
 
 import java.io.IOException;
 import java.nio.channels.DatagramChannel;
+import java.nio.channels.IllegalBlockingModeException;
 
 /**
  * Written using on-line Java Platform 1.2 API Specification, as well
@@ -60,6 +61,12 @@ import java.nio.channels.DatagramChannel;
 
 public class DatagramSocket
 {
+  /**
+   * This is the user DatagramSocketImplFactory for this class.  If this
+   * variable is null, a default factory is used.
+   */
+  static DatagramSocketImplFactory factory;
+	  
   /**
    * This is the implementation object used by this socket.
    */
@@ -464,5 +471,268 @@ public class DatagramSocket
     impl.send(p);
   }
 
-} // class DatagramSocket
+  /**
+   * Binds the socket to the given socket address.
+   *
+   * @param address The socket address to bind to.
+   *
+   * @exception SocketException If an error occurs.
+   * @exception SecurityException If a security manager exists and
+   * its checkListen method doesn't allow the operation.
+   * @exception IllegalArgumentException If address type is not supported.
+   *
+   * @since 1.4
+   */
+  public void bind (SocketAddress address)
+    throws SocketException
+  {
+    if (! (address instanceof InetSocketAddress))
+      throw new IllegalArgumentException ();
 
+    InetSocketAddress tmp = (InetSocketAddress) address;
+
+    SecurityManager s = System.getSecurityManager ();
+    if (s != null)
+      s.checkListen(tmp.getPort ());
+
+    impl.bind (tmp.getPort (), tmp.getAddress ());
+  }
+
+  /**
+   * Returns the datagram channel assoziated with this datagram socket.
+   * 
+   * @since 1.4
+   */
+  public DatagramChannel getChannel()
+  {
+    return ch;
+  }
+
+  /**
+   * Connects the datagram socket to a specified socket address.
+   *
+   * @param address The socket address to connect to.
+   *
+   * @exception SocketException If an error occurs.
+   * @exception IllegalArgumentException If address type is not supported.
+   *
+   * @since 1.4
+   */
+  public void connect (SocketAddress address) throws SocketException
+  {
+    if ( !(address instanceof InetSocketAddress) )
+      throw new IllegalArgumentException (
+		      "SocketAddress is not InetSocketAddress");
+
+    InetSocketAddress tmp = (InetSocketAddress) address;
+    connect( tmp.getAddress(), tmp.getPort());
+  }
+  
+  /**
+   * Returns the binding state of the socket.
+   * 
+   * @since 1.4
+   */
+  public boolean isBound()
+  {
+    try
+      {
+        Object bindaddr = impl.getOption (SocketOptions.SO_BINDADDR);
+      }
+    catch (SocketException e)
+      {
+        return false;
+      }
+
+    return true;
+  }
+
+  /**
+   * Returns the connection state of the socket.
+   * 
+   * @since 1.4
+   */
+  public boolean isConnected()
+  {
+    return remote_addr != null;
+  }
+
+  /**
+   * Returns the SocketAddress of the host this socket is conneted to
+   * or null if this socket is not connected.
+   * 
+   * @since 1.4
+   */
+  public SocketAddress getRemoteSocketAddress()
+  {
+    if (!isConnected ())
+      return null;
+
+    return new InetSocketAddress (remote_addr, remote_port);
+  }
+
+  /**
+   * Returns the local SocketAddress this socket is bound to
+   * or null if it is not bound.
+   * 
+   * @since 1.4
+   */
+  public SocketAddress getLocalSocketAddress()
+  {
+    InetAddress addr;
+    
+    try
+      {
+        addr = (InetAddress) impl.getOption (SocketOptions.SO_BINDADDR);
+      }
+    catch (SocketException e)
+      {
+        return null;
+      }
+
+    return new InetSocketAddress (local_addr, impl.localPort);
+  }
+
+  /**
+   * Enables/Disables SO_REUSEADDR.
+   * 
+   * @param on Whether or not to have SO_REUSEADDR turned on.
+   *
+   * @exception SocketException If an error occurs.
+   *
+   * @since 1.4
+   */
+  public void setReuseAddress(boolean on) throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException ("Cannot initialize Socket implementation");
+
+    impl.setOption (SocketOptions.SO_REUSEADDR, new Boolean (on));
+  }
+
+  /**
+   * Checks if SO_REUSEADDR is enabled.
+   *
+   * @exception SocketException If an error occurs.
+   * 
+   * @since 1.4
+   */
+  public boolean getReuseAddress() throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException ("Cannot initialize Socket implementation");
+
+    Object obj = impl.getOption (SocketOptions.SO_REUSEADDR);
+  
+    if (obj instanceof Boolean)
+      return(((Boolean) obj).booleanValue ());
+    else 
+      throw new SocketException ("Unexpected type");
+  }
+
+  /**
+   * Enables/Disables SO_BROADCAST
+   * 
+   * @param on Whether or not to have SO_BROADCAST turned on
+   *
+   * @exception SocketException If an error occurs
+   *
+   * @since 1.4
+   */
+  public void setBroadcast(boolean on) throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException ("Cannot initialize Socket implementation");
+
+    impl.setOption (SocketOptions.SO_BROADCAST, new Boolean (on));
+  }
+
+  /**
+   * Checks if SO_BROADCAST is enabled
+   * 
+   * @exception SocketException If an error occurs
+   * 
+   * @since 1.4
+   */
+  public boolean getBroadcast() throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException ("Cannot initialize Socket implementation");
+
+    Object obj = impl.getOption (SocketOptions.SO_BROADCAST);
+  
+    if (obj instanceof Boolean)
+      return ((Boolean) obj).booleanValue ();
+    else 
+      throw new SocketException ("Unexpected type");
+  }
+
+  /**
+   * Sets the traffic class value
+   *
+   * @param tc The traffic class
+   *
+   * @exception SocketException If an error occurs
+   * @exception IllegalArgumentException If tc value is illegal
+   *
+   * @see DatagramSocket:getTrafficClass
+   * 
+   * @since 1.4
+   */
+  public void setTrafficClass(int tc)
+    throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException ("Cannot initialize Socket implementation");
+
+    if (tc < 0 || tc > 255)
+      throw new IllegalArgumentException();
+
+    impl.setOption (SocketOptions.IP_TOS, new Integer (tc));
+  }
+  
+  /**
+   * Returns the current traffic class
+   * 
+   * @see DatagramSocket:setTrafficClass
+   *
+   * @exception SocketException If an error occurs
+   * 
+   * @since 1.4
+   */
+  public int getTrafficClass() throws SocketException
+  {
+    if (impl == null)
+      throw new SocketException( "Cannot initialize Socket implementation");
+
+    Object obj = impl.getOption(SocketOptions.IP_TOS);
+
+    if (obj instanceof Integer)
+      return ((Integer) obj).intValue ();
+    else
+      throw new SocketException ("Unexpected type");
+  }
+  
+  /**
+   * Sets the datagram socket implementation factory for the application
+   *
+   * @param fac The factory to set
+   *
+   * @exception IOException If an error occurs
+   * @exception SocketException If the factory is already defined
+   * @exception SecurityException If a security manager exists and its
+   * checkSetFactory method doesn't allow the operation
+   */
+  public static void setDatagramSocketImplFactory
+    (DatagramSocketImplFactory fac) throws IOException
+  {
+    if (factory != null)
+      throw new SocketException ("DatagramSocketImplFactory already defined");
+
+    SecurityManager sm = System.getSecurityManager();
+    if (sm != null)
+      sm.checkSetFactory();
+
+    factory = fac;
+  }
+} // class DatagramSocket

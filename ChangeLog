@@ -1,6 +1,30 @@
 2002-12-19  Michael Koch  <konqueror@gmx.de>
 
 	* java/net/DatagramSocket.java
+	(factory): New member to store default DatagramSocketFactory object.
+	(bind): New method.
+	(getChannel): New method.
+	(connect): New method.
+	(isBound): New method.
+	(isConnected): New method.
+	(getRemoteSocketAddress): New method.
+	(getLocalSocketAddress): New method.
+	(setReuseAddress): New method.
+	(getReuseAddress): New method.
+	(setBroadcast): New method.
+	(getBroadcast): New method.
+	(setTrafficClass): New method.
+	(getTrafficClass): New method.
+	(setDatagramSocketImplFactory): New method.
+	* java/net/HttpURLConnection.java
+	(HTTP_INTERNAL_ERROR): Code number is 500, not 501.
+	* java/net/ServerSocket.java
+	(bind): Simply call sister method instead of implementing
+	it a second time.
+	
+2002-12-19  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/DatagramSocket.java
 	(ch): New member variable to store associated datagram channel.
 	(DatagramSocket): Added/fixed documentation.
 	(close): Fixed documentation.

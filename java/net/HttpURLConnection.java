@@ -249,7 +249,7 @@ public abstract class HttpURLConnection extends URLConnection
    * The server encountered an unexpected error (such as a CGI script crash)
    * that prevents the request from being fulfilled.
    */
-  public static final int HTTP_INTERNAL_ERROR   = 501;
+  public static final int HTTP_INTERNAL_ERROR   = 500;
 
   /**
    * The server does not support the requested functionality.  
