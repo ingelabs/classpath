@@ -129,12 +129,38 @@ getLocalPort()
 
 /**
   * This method returns the current Time to Live (TTL) setting on this
+  * socket.  <b>Use <code>getTimeToLive</code></b> instead.
+  *
+  * @exception IOException If an error occurs
+  * @deprecated
+  */
+protected abstract byte
+getTTL() throws IOException;
+
+/*************************************************************************/
+
+/**
+  * Sets the Time to Live (TTL) setting on this socket to the specified
+  * value. <b>Use <code>setTimeToLive(int)</code><b> instead.
+  *
+  * @param ttl The new Time to Live value
+  *
+  * @exception IOException If an error occurs
+  * @deprecated
+  */
+protected abstract void
+setTTL(byte ttl) throws IOException;
+
+/*************************************************************************/
+
+/**
+  * This method returns the current Time to Live (TTL) setting on this
   * socket.
   *
   * @exception IOException If an error occurs
   */
 protected abstract byte
-getTTL() throws IOException;
+getTimeToLive() throws IOException;
 
 /*************************************************************************/
 
@@ -147,7 +173,7 @@ getTTL() throws IOException;
   * @exception IOException If an error occurs
   */
 protected abstract void
-setTTL(byte ttl) throws IOException;
+setTimeToLive(byte ttl) throws IOException;
 
 /*************************************************************************/
 
