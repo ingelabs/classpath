@@ -37,64 +37,74 @@ exception statement from your version. */
 
 package gnu.java.nio;
 
-import java.io.*;
-import java.nio.channels.spi.*;
-import java.nio.channels.*;
-import java.net.*;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.SocketAddress;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.nio.channels.spi.SelectorProvider;
 
 class ServerSocketChannelImpl extends ServerSocketChannel
 {
-    ServerSocket sock_object;
-    int fd;
-    int local_port;
-    boolean blocking = true;
-    boolean connected = false;
-    InetSocketAddress sa;
+  ServerSocket sock_object;
+  int fd;
+  int local_port;
+  boolean blocking = true;
+  boolean connected = false;
+  InetSocketAddress sa;
 
-    private static native int NioSocketAccept(ServerSocketChannelImpl server, 
-					      SocketChannelImpl s);
+/*
+  private static native int NioSocketAccept (ServerSocketChannelImpl server, 
+                                             SocketChannelImpl s);
+*/
 
-    protected ServerSocketChannelImpl(SelectorProvider provider)
-    {
-	super(provider);
-	fd = SocketChannelImpl.SocketCreate();
-    }
+  private static int NioSocketAccept (ServerSocketChannelImpl server, 
+                                      SocketChannelImpl s)
+  {
+    return 0;
+  }
+
+  protected ServerSocketChannelImpl (SelectorProvider provider)
+  {
+    super (provider);
+    fd = SocketChannelImpl.SocketCreate ();
+  }
  
-    public void finalizer()
-    {
-	if (connected)
+  public void finalizer()
+  {
+    if (connected)
 	    {
-		try {
-		    close();
-		} catch (Exception e) {
-		}
+        try
+          {
+            close();
+          }
+        catch (Exception e)
+          {
+          }
 	    }
-    }
+  }
 
-    protected void implCloseSelectableChannel()
-    {
-	connected = false;
-	SocketChannelImpl.SocketClose(fd);
-	fd = SocketChannelImpl.SocketCreate();
-    }
+  protected void implCloseSelectableChannel ()
+  {
+    connected = false;
+    SocketChannelImpl.SocketClose (fd);
+    fd = SocketChannelImpl.SocketCreate ();
+  }
 
-    protected void implConfigureBlocking(boolean  block)
-    {
-    }
+  protected void implConfigureBlocking (boolean  block)
+  {
+  }
 
-    public SocketChannel accept()
-    {
-	SocketChannelImpl result = new SocketChannelImpl(provider());
-	    
-	result.sa = new InetSocketAddress(0);
-	
-	int res = NioSocketAccept(this, result);
-	
-	return result;
-    }
+  public SocketChannel accept ()
+  {
+    SocketChannelImpl result = new SocketChannelImpl (provider ());
+    result.sa = new InetSocketAddress (0);
+    int res = NioSocketAccept (this, result);
+    return result;
+  }
 
-    public ServerSocket socket()
-    {
-	return null;
-    }
+  public ServerSocket socket ()
+  {
+    return sock_object;
+  }
 }

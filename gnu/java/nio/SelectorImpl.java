@@ -37,153 +37,152 @@ exception statement from your version. */
 
 package gnu.java.nio;
 
-import java.util.*;
-import java.nio.channels.*;
-import java.nio.channels.spi.*;
-
+import java.nio.channels.SelectableChannel;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.spi.AbstractSelectableChannel;
+import java.nio.channels.spi.AbstractSelector;
+import java.nio.channels.spi.SelectorProvider;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 public class SelectorImpl extends AbstractSelector
 {
-    Set keys, selected, canceled;
+  Set keys, selected, canceled;
 
-    public SelectorImpl(SelectorProvider provider)
-    {
-	super(provider);
-    }
+  public SelectorImpl (SelectorProvider provider)
+  {
+    super (provider);
+  }
 
-    public Set keys()
-    {
-	return keys;
-    }
+  public Set keys ()
+  {
+    return keys;
+  }
     
-    public int selectNow()    { return select(1);                }
-    public int select()       { return select(Long.MAX_VALUE);   }
+  public int selectNow ()
+  {
+    return select (1);
+  }
+  public int select ()
+  {
+    return select (Long.MAX_VALUE);
+  }
 
-    private static native int java_do_select(int []read,
-					     int []write,
-					     int []except,
-					     long timeout);
+//   private static native int java_do_select(int[] read, int[] write,
+//                                            int[] except, long timeout);
 
-    public int select(long  timeout)
-    {
-	if (keys == null)
+  private static int java_do_select (int[] read, int[] write,
+                                     int[] except, long timeout)
+  {
+    return 0;
+  }
+
+  public int select (long timeout)
+  {
+    if (keys == null)
 	    {
-		return 0;
+        return 0;
 	    }
 
-	int [] read   = new int[keys.size()];
-	int [] write  = new int[keys.size()];
-	int [] except = new int[keys.size()];
-	int i = 0;
+    int[] read = new int[keys.size ()];
+    int[] write = new int[keys.size ()];
+    int[] except = new int[keys.size ()];
+    int i = 0;
+    Iterator it = keys.iterator ();
 
-	Iterator it = keys.iterator();
-	while (it.hasNext())
+    while (it.hasNext ())
 	    {
-		SelectionKeyImpl k = (SelectionKeyImpl) it.next();
-
-		read[i]   = k.fd;
-		write[i]  = k.fd;
-		except[i] = k.fd;
-
-		i++;
+        SelectionKeyImpl k = (SelectionKeyImpl) it.next ();
+        read[i] = k.fd;
+        write[i] = k.fd;
+        except[i] = k.fd;
+        i++;
 	    }
 
-	int ret = java_do_select(read,
-				 write,
-				 except,
-				 timeout);
-	it = keys.iterator();
-	while (it.hasNext())
+    int ret = java_do_select (read, write, except, timeout);
+    it = keys.iterator ();
+
+    while (it.hasNext ())
 	    {
-		SelectionKeyImpl k = (SelectionKeyImpl) it.next();
+        SelectionKeyImpl k = (SelectionKeyImpl) it.next ();
 
-		if (read[i]   != -1 ||
-		    write[i]  != -1 ||
-		    except[i] != -1)
-		    {
-			add_selected(k);
-		    }
+        if (read[i] != -1 ||
+            write[i] != -1 ||
+            except[i] != -1)
+          {
+            add_selected (k);
+          }
 
-		i++;
+        i++;
 	    }
-	return ret;
-    }
+
+    return ret;
+  }
     
+  public Set selectedKeys ()
+  {
+    return selected;
+  }
+
+  public Selector wakeup ()
+  {
+    return null;
+  }
+
+  public void add (SelectionKeyImpl k)
+  {
+    if (keys == null)
+	    keys = new HashSet ();
+
+    keys.add (k);
+  }
+
+  void add_selected (SelectionKeyImpl k)
+  {
+    if (selected == null)
+	    selected = new HashSet ();
+
+    selected.add(k);
+  }
+
+  protected void implCloseSelector ()
+  {
+  }
     
-    public Set selectedKeys()    {	return selected;    }
+  protected SelectionKey register (SelectableChannel ch, int ops, Object att)
+  {
+    return register ((AbstractSelectableChannel) ch, ops, att);
+  }
 
-    public Selector wakeup()
-    {
-	return null;
-    }
-
-    public void add(SelectionKeyImpl k)
-    {
-	if (keys == null)
-	    keys = new HashSet();
-
-	keys.add(k);
-    }
-
-    void add_selected(SelectionKeyImpl k)
-    {
-	if (selected == null)
-	    selected = new HashSet();
-
-	selected.add(k);
-    }
-
-    protected  void implCloseSelector()
-    {
-    }
-    
-    protected  SelectionKey register(SelectableChannel  ch, 
-				     int  ops, 
-				     Object  att)
-    {
-	return register((AbstractSelectableChannel) ch,
-			ops, 
-			att);
-    }
-
-    protected  SelectionKey register(AbstractSelectableChannel  ch, 
-				     int  ops, 
-				     Object  att)
-    {
-	/*
+  protected SelectionKey register (AbstractSelectableChannel ch, int ops,
+                                   Object att)
+  {
+    /*
 	  // filechannel is not selectable ?
-	if (ch instanceof gnu.java.nio.FileChannelImpl)
-	    {
-		FileChannelImpl fc = (FileChannelImpl) ch;
-
-		SelectionKeyImpl impl = new SelectionKeyImpl(ch,
-							     this,
-							     fc.fd);
-
-		keys.add(impl);
-
-		return impl;
-	    }
-	else
-	*/
+    if (ch instanceof FileChannelImpl)
+      {
+        FileChannelImpl fc = (FileChannelImpl) ch;
+        SelectionKeyImpl impl = new SelectionKeyImpl (ch, this, fc.fd);
+        keys.add (impl);
+        return impl;
+      }
+    else
+    */
 	
-	if (ch instanceof gnu.java.nio.SocketChannelImpl)
+    if (ch instanceof SocketChannelImpl)
 	    {
-		SocketChannelImpl fc = (SocketChannelImpl) ch;
-
-		SelectionKeyImpl impl = new SelectionKeyImpl(ch,
-							     this,
-							     fc.fd);
-		add(impl);
-
-		return impl;
+        SocketChannelImpl fc = (SocketChannelImpl) ch;
+        SelectionKeyImpl impl = new SelectionKeyImpl (ch, this, fc.fd);
+        add (impl);
+        return impl;
 	    }
-	else
+    else
 	    {
-		System.err.println("INTERNAL ERROR, no known channel type");
+        System.err.println ("INTERNAL ERROR, no known channel type");
 	    }
 
-	return null;
-    }
-
+    return null;
+  }
 }

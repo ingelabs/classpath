@@ -1,5 +1,17 @@
 2002-11-16  Michael Koch <konqueror@gmx.de>
 
+	* gnu/java/nio/DatagramChannelImpl.java,
+	gnu/java/nio/FileChannelImpl.java,
+	gnu/java/nio/PipeImpl.java,
+	gnu/java/nio/SelectionKeyImpl.java,
+	gnu/java/nio/SelectorImpl.java,
+	gnu/java/nio/SelectorProviderImpl.java,
+	gnu/java/nio/ServerSocketChannelImpl.java,
+	gnu/java/nio/SocketChannelImpl.java:
+	Reindented.
+	
+2002-11-16  Michael Koch <konqueror@gmx.de>
+
 	* gnu/java/nio/FileChannelImpl.java
 	(map): Last argument must be of type long,
 	made it a dummy method for now.

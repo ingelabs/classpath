@@ -37,49 +37,47 @@ exception statement from your version. */
 
 package gnu.java.nio;
 
-import java.nio.channels.*;
-import java.nio.channels.spi.*;
+import java.nio.channels.SelectableChannel;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.spi.AbstractSelectionKey;
 
-public class SelectionKeyImpl extends  AbstractSelectionKey
+public class SelectionKeyImpl extends AbstractSelectionKey
 {
-    int fd, ops;
-    SelectorImpl impl;
-    SelectableChannel ch;
+  int fd, ops;
+  SelectorImpl impl;
+  SelectableChannel ch;
 
-    public SelectionKeyImpl(SelectableChannel ch,
-			    SelectorImpl impl,
-			    int fd)
-    {
-	this.ch   = ch;
-	this.impl = impl;
-	this.fd   = fd;
-    }
+  public SelectionKeyImpl(SelectableChannel ch, SelectorImpl impl, int fd)
+  {
+    this.ch  = ch;
+    this.impl = impl;
+    this.fd  = fd;
+  }
 
+  public SelectableChannel channel ()
+  {
+    return ch;
+  }
 
-    public SelectableChannel channel()
-    {
-	return ch;
-    }
+  public int readyOps ()
+  {
+    return 0;
+  }
 
+  public int interestOps ()
+  {
+    return ops;    
+  }
 
-    public int readyOps()
-    {
-	return 0;
-    }
-
-    public int interestOps()
-    {
-	return ops;    
-    }
-
-    public SelectionKey interestOps(int  ops)
-    {
-	this.ops = ops;
-	return this;
-    }
+  public SelectionKey interestOps (int ops)
+  {
+    this.ops = ops;
+    return this;
+  }
     
-    public Selector selector()
-    {
-	return impl;
-    }
+  public Selector selector ()
+  {
+    return impl;
+  }
 }

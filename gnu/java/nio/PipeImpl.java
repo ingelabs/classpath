@@ -37,22 +37,21 @@ exception statement from your version. */
 
 package gnu.java.nio;
 
-import java.nio.channels.*;
+import java.nio.channels.Pipe;
 
 class PipeImpl extends Pipe
 {
-    public PipeImpl()
-    {
-    }
-
+  public PipeImpl()
+  {
+  }
     
-    public java.nio.channels.Pipe.SinkChannel sink()
-    {
-	return null;
-    }
+  public Pipe.SinkChannel sink()
+  {
+    return null;
+  }
 
-    public java.nio.channels.Pipe.SourceChannel source()
-    {
-	return null;
-    }
+  public Pipe.SourceChannel source()
+  {
+    return null;
+  }
 }

@@ -37,38 +37,41 @@ exception statement from your version. */
 
 package gnu.java.nio;
 
-import java.nio.channels.spi.*;
-import java.nio.channels.*;
-
+import java.nio.channels.DatagramChannel;
+import java.nio.channels.Pipe;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+import java.nio.channels.spi.SelectorProvider;
+import java.nio.channels.spi.AbstractSelector;
 
 public class SelectorProviderImpl extends SelectorProvider
 {
-    public SelectorProviderImpl()
-    {
-    }
+  public SelectorProviderImpl ()
+  {
+  }
 
-    public DatagramChannel openDatagramChannel()
-    {
-	return new DatagramChannelImpl(this);
-    }
+  public DatagramChannel openDatagramChannel ()
+  {
+    return new DatagramChannelImpl (this);
+  }
 
-    public Pipe openPipe()
-    {
-	return new PipeImpl();
-    }
+  public Pipe openPipe ()
+  {
+    return new PipeImpl ();
+  }
     
-    public AbstractSelector openSelector()
-    {
-	return new SelectorImpl(this);
-    }
+  public AbstractSelector openSelector ()
+  {
+    return new SelectorImpl (this);
+  }
 
-    public ServerSocketChannel openServerSocketChannel()
-    {
-	return new ServerSocketChannelImpl(this);
-    }
+  public ServerSocketChannel openServerSocketChannel ()
+  {
+    return new ServerSocketChannelImpl (this);
+  }
 
-    public SocketChannel openSocketChannel()
-    {
-	return new SocketChannelImpl(this);
-    }	      
+  public SocketChannel openSocketChannel ()
+  {
+    return new SocketChannelImpl (this);
+  }
 }
