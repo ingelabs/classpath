@@ -1,3 +1,15 @@
+2002-02-22  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/PropertyPermission.java (setActions): Optimize the
+	action parsing.
+	(PropertyPermission): Throw IllegalArgumentException on null.
+	(hashCode): Add.
+	(newPermissionCollection): Use PropertyPermissionCollection.
+	* java/util/PropertyPermissionCollection.java: New class, to match
+	up with Sun's serialization.
+	* java/util/StringTokenizer.java (len): Add a field, to reduce the
+	number of method calls being made.
+
 2002-02-21  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/util/PropertyPermission.java: Improve Javadoc.

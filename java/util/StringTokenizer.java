@@ -68,7 +68,12 @@ public class StringTokenizer implements Enumeration
   /**
    * The string that should be split into tokens.
    */
-  private String str;
+  private final String str;
+
+  /**
+   * The length of the string.
+   */
+  private final int len;
 
   /**
    * The string containing the delimiter characters.
@@ -78,7 +83,7 @@ public class StringTokenizer implements Enumeration
   /**
    * Tells, if we should return the delimiters.
    */
-  private boolean retDelims;
+  private final boolean retDelims;
 
   /**
    * Creates a new StringTokenizer for the string <code>str</code>,
@@ -122,8 +127,10 @@ public class StringTokenizer implements Enumeration
    */
   public StringTokenizer(String str, String delim, boolean returnDelims)
   {
+    len = str.length();
     this.str = str;
-    this.delim = delim;
+    // The toString() hack causes the NullPointerException.
+    this.delim = delim.toString();
     this.retDelims = returnDelims;
     this.pos = 0;
   }
@@ -137,10 +144,10 @@ public class StringTokenizer implements Enumeration
   {
     if (! retDelims)
       {
-        while (pos < str.length() && delim.indexOf(str.charAt(pos)) > -1)
+        while (pos < len && delim.indexOf(str.charAt(pos)) >= 0)
           pos++;
       }
-    return pos < str.length();
+    return pos < len;
   }
 
   /**
@@ -152,6 +159,7 @@ public class StringTokenizer implements Enumeration
    * @param delim a string containing the new delimiter characters
    * @return the next token with respect to the new delimiter characters
    * @throws NoSuchElementException if there are no more tokens
+   * @throws NullPointerException if delim is null
    */
   public String nextToken(String delim) throws NoSuchElementException
   {
@@ -167,17 +175,16 @@ public class StringTokenizer implements Enumeration
    */
   public String nextToken() throws NoSuchElementException
   {
-    if (pos < str.length() && delim.indexOf(str.charAt(pos)) > -1)
+    if (pos < len && delim.indexOf(str.charAt(pos)) >= 0)
       {
         if (retDelims)
           return str.substring(pos, ++pos);
-
-        while (++pos < str.length() && delim.indexOf(str.charAt(pos)) > -1);
+        while (++pos < len && delim.indexOf(str.charAt(pos)) >= 0);
       }
-    if (pos < str.length())
+    if (pos < len)
       {
         int start = pos;
-        while (++pos < str.length() && delim.indexOf(str.charAt(pos)) == -1);
+        while (++pos < len && delim.indexOf(str.charAt(pos)) < 0);
 
         return str.substring(start, pos);
       }
@@ -226,9 +233,9 @@ public class StringTokenizer implements Enumeration
     // Note for efficiency, we count up the delimiters rather than check
     // retDelims every time we encounter one.  That way, we can
     // just do the conditional once at the end of the method
-    while (tmpPos < str.length())
+    while (tmpPos < len)
       {
-        if (delim.indexOf(str.charAt(tmpPos++)) > -1)
+        if (delim.indexOf(str.charAt(tmpPos++)) >= 0)
           {
             if (tokenFound)
               {
@@ -236,16 +243,14 @@ public class StringTokenizer implements Enumeration
                 count++;
                 tokenFound = false;
               }
-
             delimiterCount++; // Increment for this delimiter
           }
         else
           {
             tokenFound = true;
-
             // Get to the end of the token
-            while (tmpPos < str.length()
-                   && delim.indexOf(str.charAt(tmpPos)) == -1)
+            while (tmpPos < len
+                   && delim.indexOf(str.charAt(tmpPos)) < 0)
               ++tmpPos;
           }
       }

@@ -94,7 +94,8 @@ public final class PropertyPermission extends BasicPermission
   private static final int WRITE = 2;
 
   /** The set of actions permitted. */
-  private transient int actions;
+  // Package visible for use by PropertyPermissionCollection.
+  transient int actions;
 
   /**
    * The String forms of the actions permitted.
@@ -106,16 +107,19 @@ public final class PropertyPermission extends BasicPermission
 
   /**
    * Constructs a PropertyPermission with the specified property.  Possible
-   * actions are read and write.
+   * actions are read and write, comma-separated and case-insensitive.
    *
    * @param name the name of the property
    * @param actions the action string
    * @throws IllegalArgumentException if name string contains an
    *         illegal wildcard or actions string contains an illegal action
+   *         (this includes a null actions string)
    */
   public PropertyPermission(String name, String actions)
   {
     super(name);
+    if (actions == null)
+      throw new IllegalArgumentException();
     setActions(actions.toLowerCase());
   }
 
@@ -123,24 +127,20 @@ public final class PropertyPermission extends BasicPermission
    * Parse the action string and convert actions from external to internal
    * form.  This will set the internal actions field.
    *
-   * @param actions the action string
+   * @param str the action string
    * @throws IllegalArgumentException if actions string contains an
    *         illegal action
    */
-  private void setActions(String actions)
+  private void setActions(String str)
   {
-    this.actions = 0;
-    StringTokenizer actionTokenizer = new StringTokenizer(actions, ",");
-    while (actionTokenizer.hasMoreElements())
-      {
-        String anAction = actionTokenizer.nextToken();
-        if ("read".equals(anAction))
-          this.actions |= READ;
-        else if ("write".equals(anAction))
-          this.actions |= WRITE;
-        else
-          throw new IllegalArgumentException("illegal action " + anAction);
-      }
+    if ("read".equals(str))
+      actions = READ;
+    else if ("write".equals(str))
+      actions = WRITE;
+    else if ("read,write".equals(str) || "write,read".equals(str))
+      actions = READ | WRITE;
+    else
+      throw new IllegalArgumentException("illegal action " + str);
   }
 
   /**
@@ -196,10 +196,7 @@ public final class PropertyPermission extends BasicPermission
       return false;
 
     // BasicPermission checks for name.
-    return (!super.implies(p))
-      return false;
-
-    return true;
+    return super.implies(p);
   }
 
   /**
@@ -223,16 +220,18 @@ public final class PropertyPermission extends BasicPermission
    * <code>getName().hashCode()</code>.
    *
    * @return the hash code
-   * @XXX Add this method.
    */
-
+  public int hashCode()
+  {
+    return super.hashCode();
+  }
 
   /**
    * Returns the action string.  Note that this may differ from the string
    * given at the constructor:  The actions are converted to lowercase and
    * may be reordered.
    *
-   * @return one of "", "read", "write", or "read,write"
+   * @return one of "read", "write", or "read,write"
    */
   public String getActions()
   {
@@ -244,64 +243,9 @@ public final class PropertyPermission extends BasicPermission
    * PropertyPermission objects.
    *
    * @return a new empty PermissionCollection
-   * @XXX JDK uses a default class, java.util.PropertyPermissionCollection,
-   *  instead of an anonymous class.
    */
   public PermissionCollection newPermissionCollection()
   {
-    return new PermissionCollection()
-    {
-      Hashtable permissions = new Hashtable();
-      int allActions = 0;
-
-      public void add(Permission permission)
-      {
-        if (isReadOnly())
-          throw new IllegalStateException("readonly");
-
-        // also check that permission is of correct type.
-        PropertyPermission pp = (PropertyPermission) permission;
-        String name = pp.getName();
-        if (name.equals("*"))
-          allActions |= pp.actions;
-        permissions.put(name, pp);
-      }
-
-      public boolean implies(Permission permission)
-      {
-        if (!(permission instanceof PropertyPermission))
-          return false;
-
-        PropertyPermission toImply = (PropertyPermission) permission;
-        if ((toImply.actions & ~allActions) == 0)
-          return true;
-
-        String name = toImply.getName();
-        if (name.equals("*"))
-          return false;
-
-        int prefixLength = name.length();
-        if (name.endsWith("*"))
-          prefixLength -= 2;
-
-        while (true)
-          {
-            PropertyPermission forName =
-              (PropertyPermission) permissions.get(name);
-            if (forName != null && (toImply.actions & ~forName.actions) == 0)
-              return true;
-
-            prefixLength = name.lastIndexOf('.', prefixLength);
-            if (prefixLength < 0)
-              return false;
-            name = name.substring(0, prefixLength + 1) + '*';
-          }
-      }
-
-      public Enumeration elements()
-      {
-        return permissions.elements();
-      }
-    };
+    return new PropertyPermissionCollection();
   }
 }
