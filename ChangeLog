@@ -1,5 +1,11 @@
 2003-10-20  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/net/protocol/file/Connection.java:
+	Reformated, renamed some in_stream to inputStream in out_stream to
+	outputStream.
+
+2003-10-20  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/net/PlainDatagramSocketImpl.java
 	(native_fd): Made package-private.
 	(finalize): New method.

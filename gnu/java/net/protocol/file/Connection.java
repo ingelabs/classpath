@@ -1,6 +1,6 @@
 /*
   FileURLConnection.java -- URLConnection class for "file" protocol
-  Copyright (C) 1998, 2003 Free Software Foundation, Inc.
+  Copyright (C) 1998, 1999, 2003 Free Software Foundation, Inc.
 
   This file is part of GNU Classpath.
 
@@ -38,8 +38,6 @@
 */
 package gnu.java.net.protocol.file;
 
-import java.net.URL;
-import java.net.URLConnection;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -47,6 +45,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.AbstractSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -56,8 +56,9 @@ import java.util.NoSuchElementException;
  * This subclass of java.net.URLConnection models a URLConnection via
  * the "file" protocol.
  *
- * @author Aaron M. Renn (arenn@urbanophile.com)
- * @author Nic Ferrier (nferrier@tapsellferrier.co.uk)
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @author Nic Ferrier <nferrier@tapsellferrier.co.uk>
+ * @author Warren Levy <warrenl@cygnus.com>
  */
 public class Connection extends URLConnection
 {
@@ -69,12 +70,12 @@ public class Connection extends URLConnection
   /**
    * InputStream if we are reading from the file
    */
-  private FileInputStream in_stream;
+  private FileInputStream inputStream;
 
   /**
    * OutputStream if we are writing to the file
    */
-  private FileOutputStream out_stream;
+  private FileOutputStream outputStream;
   
   /**
    * Calls superclass constructor to initialize.
@@ -92,13 +93,21 @@ public class Connection extends URLConnection
    */
   public void connect() throws IOException
   {
+    // Call is ignored if already connected.
     if (connected)
       return;
     
+    // If not connected, then file needs to be openned.
     file = new File (getURL().getFile());
-    
+
     if (!file.exists())
       throw new FileNotFoundException (file.getPath());
+
+    if (doInput)
+      inputStream = new FileInputStream (file);
+    
+    if (doOutput)
+      outputStream = new FileOutputStream (file);
     
     connected = true;
   }
@@ -116,8 +125,7 @@ public class Connection extends URLConnection
     if (!connected)
       connect();
     
-    in_stream = new FileInputStream (file);
-    return in_stream;
+    return inputStream;
   }
 
   /**
@@ -133,11 +141,11 @@ public class Connection extends URLConnection
     if (!connected)
       connect();
     
-    out_stream = new FileOutputStream (file);
-    return out_stream;
+    return outputStream;
   }
 
-  /** Get the last modified time of the resource.
+  /**
+   * Get the last modified time of the resource.
    *
    * @return the time since epoch that the resource was modified.
    */
@@ -156,7 +164,8 @@ public class Connection extends URLConnection
       }
   }
 
-  /** Get the length of content.
+  /**
+   * Get the length of content.
    *
    * @return the length of the content.
    */
@@ -175,9 +184,9 @@ public class Connection extends URLConnection
       }
   }
 
-  // These are GNU only implementation methods.
 
-  /** Does the resource pointed to actually exist?
+  /**
+   * Does the resource pointed to actually exist?
    */
   public final boolean exists()
   {
@@ -195,7 +204,8 @@ public class Connection extends URLConnection
     return file.isDirectory();
   }
   
-  /** Get a listing of the directory, if it is a directory.
+  /**
+   * Get a listing of the directory, if it is a directory.
    *
    * @return a set which can supply an iteration of the
    * contents of the directory.
