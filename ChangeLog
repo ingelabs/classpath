@@ -1,5 +1,9 @@
 2004-10-22  Michael Koch  <konqueror@gmx.de>
 
+	* scripts/checkstyle-config.xml: Uncomment checks for modifiers.
+
+2004-10-22  Michael Koch  <konqueror@gmx.de>
+
 	* java/lang/Class.java,
 	java/lang/StringBuffer.java,
 	java/lang/Throwable.java,

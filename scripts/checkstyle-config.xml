@@ -56,10 +56,8 @@ mailing list first and probably documented in the hacking guide.
     -->
 
     <!-- modifier checks -->
-    <!--
     <module name="ModifierOrder"/>
     <module name="RedundantModifier"/>
-    -->
     
     <!-- block checks -->
     <!--
