@@ -91,14 +91,14 @@ public class SystemClassLoader extends ClassLoader
   }
     
   /**
-   * Get the URL to a resource.
+   * Find the URL to a resource. Called by ClassLoader.getResource().
    *
    * @param name the name of the resource
    * @return the URL to the resource
    */
-  public URL getResource(String name)
+  protected URL findResource(String name)
   {
-    return systemGetResource(name);
+    return systemFindResource(name);
   }
 
   /**
@@ -107,7 +107,7 @@ public class SystemClassLoader extends ClassLoader
    * @param name the name of the resource
    * @return the URL to the resource
    */
-  public static URL systemGetResource(String name)
+  private static URL systemFindResource(String name)
   {
     if (name.charAt(0) == '/')
       name = name.substring(1);
@@ -253,6 +253,6 @@ public class SystemClassLoader extends ClassLoader
     
     return result;
     
-  } //End of systemGetResource
+  } //End of systemFindResource
   
 }

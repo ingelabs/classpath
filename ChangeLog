@@ -1,3 +1,20 @@
+2002-12-03  Jeroen Frijters  <jeroen@sumatra.nl>
+
+	* gnu/java/lang/SystemClassLoader.java (getResource): Renamed to
+	findResource and made protected.
+	(findResource): New protected method renamed from getResource.
+	(systemGetResource): Renamed to systemFindResource and made private.
+	(systemFindResource): New private methods renamed from
+	systemGetResource.
+
+	* THANKYOU: Added Jeroen.
+
+2002-12-03  Raif Naffah  <raif@fl.net.au>
+
+	* java/security/spec/DSAParameterSpec.java (getP): Return p, not q.
+	* java/security/spec/DSAPrivateKeySpec.java (getP): Likewise.
+	* java/security/spec/DSAPublicKeySpec.java (getP): Likewise.
+
 2002-12-01  Julian Dolby  <dolby@us.ibm.com>
 
 	* java/text/CollationElementIterator.java (next): 
