@@ -1,5 +1,9 @@
 2004-07-12  Mark Wielaard  <mark@klomp.org>
 
+	* configure.ac: Set version to 0.10+cvs.
+
+2004-07-12  Mark Wielaard  <mark@klomp.org>
+
 	* doc/www.gnu.org/newsitems.txt: Link to html file, not wml file.
 
 2004-07-12  Mark Wielaard  <mark@klomp.org>
