@@ -63,8 +63,8 @@ public final class Security extends Object
 {
   private static final String ALG_ALIAS = "Alg.Alias.";
 
-  private static final Vector providers_lazy = new Vector();
-  private static boolean providers_lazy_set = false;
+  private static final Vector providersList = new Vector();
+  private static boolean providersInited = false;
   private static Properties secprops = new Properties();
   
   /**
@@ -75,33 +75,39 @@ public final class Security extends Object
    */ 
   private static Vector providers() 
   {
-    synchronized (providers_lazy) 
+    synchronized (providersList) 
       {
-      if (!providers_lazy_set)
-        {
-        String base = System.getProperty("gnu.classpath.home.url");
-        String vendor = System.getProperty("gnu.classpath.vm.shortname");
-
-        // Try VM specific security file
-        boolean loaded = loadProviders(base, vendor);
-    
-        // Append classpath standard provider if possible
-        if (!loadProviders(base, "classpath") && !loaded && providers_lazy.size() == 0)
-          {
-	      // No providers found and both security files failed to load properly.
-	      System.err.println
-	      ("WARNING: could not properly read security provider files:");
-          System.err.println
-          ("         " + base + "/security/" + vendor + ".security");
-          System.err.println
-          ("         " + base + "/security/" + "classpath" + ".security");
-          System.err.println
-          ("         Falling back to standard GNU security provider");
-          providers_lazy.addElement(new gnu.java.security.provider.Gnu());
-          }
-        }
+	if (!providersInited)
+	  {
+	    providersInited = true;
+	    String base = System.getProperty("gnu.classpath.home.url");
+	    String vendor = System.getProperty("gnu.classpath.vm.shortname");
+	    
+	    // Try VM specific security file
+	    boolean loaded = loadProviders(base, vendor);
+	    
+	    // Append classpath standard provider if possible
+	    if (!loadProviders(base, "classpath")
+		&& !loaded && providersList.size() == 0)
+	      {
+		// No providers found
+		// and both security files failed to load properly.
+		System.err.println
+		  ("WARNING: "
+		   + "could not properly read security provider files:");
+		System.err.println
+		  ("         "
+		   + base + "/security/" + vendor + ".security");
+		System.err.println
+		  ("         "
+		   + base + "/security/" + "classpath" + ".security");
+		System.err.println
+		  ("         Falling back to standard GNU security provider");
+		providersList.addElement(new gnu.java.security.provider.Gnu());
+	      }
+	  }
       }
-      return providers_lazy; 
+    return providersList; 
   }
   
 

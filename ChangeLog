@@ -1,3 +1,11 @@
+2003-08-14  Stephen Crawley  <crawley@dstc.edu.au>
+
+	* java/security/Security.java (providers_lazy): Renamed.
+	(providersList): Renamed providers_lazy field.
+	(providers_lazy_set): Renamed
+	(providersInited): Renamed providers_lazy_set field.
+	(providers): Set providersInited to true. Reindent.
+
 2003-08-12  Graydon Hoare  <graydon@redhat.com>
 
 	* java/awt/Font.java: 
