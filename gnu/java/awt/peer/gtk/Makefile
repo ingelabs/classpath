@@ -21,7 +21,7 @@ jniclass = GtkButtonPeer     GtkFileDialogPeer GtkComponentPeer \
 	   GtkChoicePeer     GtkTextComponentPeer \
 	   GtkTextFieldPeer  GtkTextAreaPeer   GtkLabelPeer \
 	   GtkListPeer       GtkScrollbarPeer GdkGraphics GtkCanvasPeer \
-	   GtkPanelPeer 
+	   GtkPanelPeer      GtkDialogPeer
 jnideps := $(foreach class,$(jniclass),$(package)_$(strip $(class)).h)
 
 all: Test headers
