@@ -98,15 +98,17 @@ public final class String implements Serializable, Comparable, CharSequence
    * @see #toUpperCase(char)
    * @see CharData#UPPER_EXPAND
    */
-  private static final char[] upperExpand = CharData.UPPER_EXPAND.value;
+  private static final char[] upperExpand
+	= Character.zeroBasedStringValue(CharData.UPPER_EXPAND);
 
   /**
    * Stores unicode multi-character uppercase special casing table.
    * @see #upperCaseExpansion(char)
    * @see CharData#UPPER_SPECIAL
    */
-  private static final char[] upperSpecial = CharData.UPPER_SPECIAL.value;
-
+  private static final char[] upperSpecial
+	  = Character.zeroBasedStringValue(CharData.UPPER_SPECIAL);
+  
   /**
    * Characters which make up the String.
    * Package access is granted for use by StringBuffer.

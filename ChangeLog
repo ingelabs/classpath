@@ -1,3 +1,17 @@
+2002-08-13  Mark Wielaard <mark@klomp.org>
+
+	* java/lang/Character.java (zeroBasedStringValue): New method.
+	(blocks): Use zeroBasedStringValue().
+	(data): Likewise.
+	(numValue): Likewise.
+	(upper): Likewise.
+	(lower): Likewise.
+	(direction): Likewise.
+	(title): Likewise.
+	* java/lang/String.java (upperExpand): Use zeroBasedStringValue() from
+	Character.
+	(upperSpecial): Likewise.
+
 2002-08-11  Etienne M. Gagnon <etienne.gagnon@uqam.ca>
 
 	* gnu/java/locale/LocaleInformation_af_ZA.java,
