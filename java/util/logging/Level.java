@@ -308,5 +308,29 @@ public class Level
   {
     return value;
   }  
+
+
+  /**
+   * Determines whether or not this Level is one of the standard
+   * levels specified in the Logging API.
+   *
+   * <p>This method is package-private because it is not part
+   * of the logging API specification.  However, an XMLFormatter
+   * is supposed to emit the numeric value for a custom log
+   * level, but the name for a pre-defined level. It seems
+   * cleaner to put this method to Level than to write some
+   * procedural code for XMLFormatter.
+   *
+   * @return <code>true</code> if this Level is a standard level,
+   *         <code>false</code> otherwise.
+   */
+  final boolean isStandardLevel()
+  {
+    for (int i = 0; i < knownLevels.length; i++)
+      if (knownLevels[i] == this)
+	return true;
+
+    return false;
+  }
 }
 
