@@ -1,5 +1,10 @@
 2003-07-23  Torsten Rupp  <rupp@lisa.aicas.com>
 
+	* gnu/java/io/class-dependencies.conf:
+	Added missing class-dependency file
+
+2003-07-23  Torsten Rupp  <rupp@lisa.aicas.com>
+
 	* native/jni/java-io/java_io_File.c:
 	Replaced JNI_JLONG_CONST* -> TARGET_NATIVE_MATH_INT_*, because
         JNI_JLONG_CONST* should be removed from jni.h
