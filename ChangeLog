@@ -1,5 +1,11 @@
 2004-05-19  Michael Koch  <konqueror@gmx.de>
 
+	* acinclude.m4: Removed all Japhar specific stuff. Japhar is dead
+	since a long time. This also includes the macro
+	CLASSPATH_CHECK_THREADS.
+
+2004-05-19  Michael Koch  <konqueror@gmx.de>
+
 	* configure.ac: Use AC_CONFIG_COMMANDS instead of obsoleted
 	AC_OUTPUT_COMMANDS.
 
