@@ -1,3 +1,11 @@
+2000-09-08  Warren Levy  <warrenl@cygnus.com>
+
+	* java/beans/PropertyChangeEvent.java (serialVersionUID): Added.
+	* java/beans/PropertyVetoException.java (serialVersionUID): Added.
+	* java/io/ObjectOutputStream.java (writeObject): Initialized
+	fieldsAlreadyWritten before recursion rather than after.
+	* java/io/ObjectStreamClass.java (serialVersionUID): Added.
+
 2000-08-23  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/Collections.java (EMPTY_MAP) (singletonList(Object)
