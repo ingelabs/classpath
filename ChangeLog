@@ -1,5 +1,11 @@
 2003-10-22  Sascha Brawer  <brawer@dandelis.ch>
 
+	* java/awt/geom/CubicCurve2D.java (getFlatnessSq): Implement.
+	(subdivide(CubicCurve2D, CubicCurve2D)): Avoid useless object allocation.
+	(subdivide(double[],int,double[],int,double[],int)): Implement.
+
+2003-10-22  Sascha Brawer  <brawer@dandelis.ch>
+
 	* java/awt/geom/doc-files/CubicCurve2D-1.png,
 	java/awt/geom/doc-files/CubicCurve2D-2.png,
 	java/awt/geom/doc-files/CubicCurve2D-3.png: New illustrations.

@@ -1,5 +1,5 @@
 /* CubicCurve2D.java -- represents a parameterized cubic curve in 2-D space
-   Copyright (C) 2002 Free Software Foundation
+   Copyright (C) 2002, 2003 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -95,8 +95,8 @@ public abstract class CubicCurve2D implements Shape, Cloneable
                                      double cy1, double cx2, double cy2,
                                      double x2, double y2)
   {
-    // XXX Implement.
-    throw new Error("not implemented");
+    return Math.max(Line2D.ptSegDistSq(x1, y1, x2, y2, cx1, cy1),
+                    Line2D.ptSegDistSq(x1, y1, x2, y2, cx2, cy2));
   }
   public static double getFlatness(double x1, double y1, double cx1,
                                    double cy1, double cx2, double cy2,
@@ -130,19 +130,17 @@ public abstract class CubicCurve2D implements Shape, Cloneable
                                    getX2(), getY2()));
   }
 
-  public void subdivide(CubicCurve2D l, CubicCurve2D r)
+  public void subdivide(CubicCurve2D left, CubicCurve2D right)
   {
-    if (l == null)
-      l = new CubicCurve2D.Double();
-    if (r == null)
-      r = new CubicCurve2D.Double();
     // Use empty slots at end to share single array.
     double[] d = new double[] { getX1(), getY1(), getCtrlX1(), getCtrlY1(),
                                 getCtrlX2(), getCtrlY2(), getX2(), getY2(),
                                 0, 0, 0, 0, 0, 0 };
     subdivide(d, 0, d, 0, d, 6);
-    l.setCurve(d, 0);
-    r.setCurve(d, 6);
+    if (left != null)
+      left.setCurve(d, 0);
+    if (right != null)
+      right.setCurve(d, 6);
   }
   public static void subdivide(CubicCurve2D src,
                                CubicCurve2D l, CubicCurve2D r)
@@ -153,8 +151,60 @@ public abstract class CubicCurve2D implements Shape, Cloneable
                                double[] left, int leftOff,
                                double[] right, int rightOff)
   {
-    // XXX Implement.
-    throw new Error("not implemented");
+    // To understand this code, please have a look at the image
+    // "CubicCurve2D-3.png" in the sub-directory "doc-files".
+    double src_C1_x, src_C1_y, src_C2_x, src_C2_y;
+    double left_P1_x, left_P1_y;
+    double left_C1_x, left_C1_y, left_C2_x, left_C2_y;
+    double right_C1_x, right_C1_y, right_C2_x, right_C2_y;
+    double right_P2_x, right_P2_y;
+    double Mid_x, Mid_y; // Mid = left.P2 = right.P1
+
+    left_P1_x = src[srcOff];
+    left_P1_y = src[srcOff + 1];
+    src_C1_x = src[srcOff + 2];
+    src_C1_y = src[srcOff + 3];
+    src_C2_x = src[srcOff + 4];
+    src_C2_y = src[srcOff + 5];
+    right_P2_x = src[srcOff + 6];
+    right_P2_y = src[srcOff + 7];
+
+    left_C1_x = (left_P1_x + src_C1_x) / 2;
+    left_C1_y = (left_P1_y + src_C1_y) / 2;
+    right_C2_x = (right_P2_x + src_C2_x) / 2;
+    right_C2_y = (right_P2_y + src_C2_y) / 2;
+    Mid_x = (src_C1_x + src_C2_x) / 2;
+    Mid_y = (src_C1_y + src_C2_y) / 2;
+    left_C2_x = (left_C1_x + Mid_x) / 2;
+    left_C2_y = (left_C1_y + Mid_y) / 2;
+    right_C1_x = (Mid_x + right_C2_x) / 2;
+    right_C1_y = (Mid_y + right_C2_y) / 2;
+    Mid_x = (left_C2_x + right_C1_x) / 2;
+    Mid_y = (left_C2_y + right_C1_y) / 2;
+
+    if (left != null)
+    {
+      left[leftOff] = left_P1_x;
+      left[leftOff + 1] = left_P1_y;
+      left[leftOff + 2] = left_C1_x;
+      left[leftOff + 3] = left_C1_y;
+      left[leftOff + 4] = left_C2_x;
+      left[leftOff + 5] = left_C2_y;
+      left[leftOff + 6] = Mid_x;
+      left[leftOff + 7] = Mid_y;
+    }
+
+    if (right != null)
+    {
+      right[rightOff] = Mid_x;
+      right[rightOff + 1] = Mid_y;
+      right[rightOff + 2] = right_C1_x;
+      right[rightOff + 3] = right_C1_y;
+      right[rightOff + 4] = right_C2_x;
+      right[rightOff + 5] = right_C2_y;
+      right[rightOff + 6] = right_P2_x;
+      right[rightOff + 7] = right_P2_y;
+    }
   }
   public static int solveCubic(double[] eqn)
   {
@@ -162,10 +212,19 @@ public abstract class CubicCurve2D implements Shape, Cloneable
   }
   public static int solveCubic(double[] eqn, double[] res)
   {
-    if (eqn[3] == 0)
+    double a, b, c, q, r, Q, R;
+    
+    double c3 = eqn[3];
+    if (c3 == 0)
       return QuadCurve2D.solveQuadratic(eqn, res);
-    // XXX Implement.
-    throw new Error("not implemented");
+
+    // Divide the equation by the cubic coefficient.
+    c = eqn[0] / c3;
+    b = eqn[1] / c3;
+    a = eqn[2] / c3;
+
+    // We now need to solve x^3 + ax^2 + bx + c = 0.
+    throw new Error("not implemented"); // FIXME
   }
 
   public boolean contains(double x, double y)
