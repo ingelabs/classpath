@@ -3,6 +3,13 @@
 	* javax/swing/plaf/BorderUIResource.java (LineBorderUIResource):
 	Note URL of enhancement request filed with Sun.
 
+	* javax/swing/plaf/basic/doc-files/BasicBorders.SplitPaneBorder-1.png,
+	javax/swing/plaf/basic/doc-files/BasicBorders.SplitPaneBorder-2.png,
+	javax/swing/plaf/basic/doc-files/
+	BasicBorders.SplitPaneDividerBorder-1.png: Indicate the pixels
+	drawn by SplitPaneDividerBorder on the edges that are not adjacent
+	to the JSplitPane contents.
+
 2003-06-20  Sascha Brawer  <brawer@dandelis.ch>
 
 	* AUTHORS (Sascha Brawer): Changed e-mail address.
