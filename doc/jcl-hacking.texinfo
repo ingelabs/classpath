@@ -56,8 +56,13 @@ This document is definitely a work in progress.
 * Requirements::            Very important rules that must be followed
 * Project Goals::           Goals of the JCL project
 * Volunteering::            So you want to help out
-* Programming Tools::       A list of tools you will neededed for hacking
+* Programming Tools::       A list of tools you will need for hacking
 * Programming Standards::   Standards to use when writing code for JCL
+* Programming Goals::       What to consider when writing code for JCL
+* Portability::             How to ensure your code is portable
+* Robustness::              How to make native code robust
+* Java Efficiency::         Tips for making Java code faster
+* Native Efficiency::       Tips for making native Java code faster
 * Specification Sources::   Where to find the Java class library specs
 * Naming Conventions::      How files and directories are named in JCL
 @end menu
@@ -144,7 +149,7 @@ write unimplemented Java packages, to test JCL on various platforms, and to
 port it to platforms that are currently unsupported.
 
 While pretty much all contributions are welcome (but see 
-@pxref{Requirements}) it is always preferrable that volunteers do the
+@pxref{Requirements}) it is always preferable that volunteers do the
 whole job when volunteering for a task.  So when you volunteer to write
 a Java package, please be willing to do the following:
 
@@ -155,7 +160,7 @@ means implementing any ``internal'' classes.  For example, in the java.net
 package, there are non-public classes for implementing sockets.  Without
 those classes, the public socket interface is useless.  But do not feel
 obligated to completely replace all of Sun's functionality at once.  For
-example, in the java.net package, there are differnt types of protocol
+example, in the java.net package, there are different types of protocol
 handlers for different types of URL's.  Not all of these need to be
 written at once.
 
@@ -166,7 +171,7 @@ everything about the item being documented.
 
 @item
 Please write a regression test package that can be used to run tests of
-your package's funcationality.
+your package's functionality.
 @end itemize
 
 Nobody likes to write documentation and test cases, but they are vital to
@@ -264,7 +269,7 @@ Here is a brief description of the purpose of those tools.
 @item CVS  
 A version control system that maintains a centralized Internet
 repository of all code in the JCL system.  Access to the repository
-requies an account.  Contact Paul Fisher (@email{rao@@gnu.org}) for
+requires an account.  Contact Paul Fisher (@email{rao@@gnu.org}) for
 details.
 
 @item dejagnu  
@@ -295,7 +300,7 @@ m4 programs are broken and so GNU m4 is required for autoconf to work.
 Larry Wall's scripting language.  It is used internally by automake.
 
 @item MP
-Required for java.lang.Float, java.lang.Double, java.math.BigInter, and
+Required for java.lang.Float, java.lang.Double, java.math.BigInteger, and
 java.math.BigDecimal.
 
 @end table
@@ -312,7 +317,7 @@ install directory structure.  These should be followed if possible.
 For Java code, please follow the
 @uref{http://java.sun.com/docs/codeconv/html/CodeConventionsTOC.doc.html,Sun programming standards}.
 As an exception, do not feel obligated to following their bracket and
-indendation style if you consider it wrong.
+indentation style if you consider it wrong.
 
 @node Programming Goals, Portability, Programming Standards, Top
 @comment node-name, next, previous, up
@@ -327,7 +332,7 @@ Of course, as a programmer you would probably like to find sneaky ways to
 get around the issue so that your code can be all three ... the following
 chapters will give some hints on how to do this.
 
-@node Portability, Java Efficiency, Programming Goals, Top
+@node Portability, Robustness, Programming Goals, Top
 @comment node-name, next, previous, up
 @chapter Portability
 
@@ -375,7 +380,7 @@ VM-specific yourself, and talk to the VM using the VMI.  If you need a
 VM-specific function that is not supported by JNI or JVMDI, write a new VMI
 function!
 
-Note that the preferred method is not to use the JVMDI or VMI at @em{all},
+Note that the preferred method is not to use the JVMDI or VMI at @emph{all},
 but to use only JNI.  If you can write it without the VMI, your code will be
 quicker to port to new VMs.
 
@@ -383,7 +388,7 @@ There is another issue, however, and that is the efficiency issue.  Some
 things can be done using JNI only, but they are a ton slower than they would
 be if you used the VMI or talked directly to the VM.
 
-In these cases, the preferred method in JCL is to create a @em{library}.
+In these cases, the preferred method in JCL is to create a @emph{library}.
 Hide the implementation of the functions from the caller.  If the library
 can be written using only JNI, no matter how inefficient, you should write a
 version of it for that.  Portability, remember, is the ultimate goal, and
@@ -403,7 +408,7 @@ forget to check that malloc() return for an error.  Don't make that mistake.
 return value and throw an exception if necessary.)
 
 Always check the return values of JNI functions, or call @code{ExceptionOccurred}
-to check whether an error occurred.  You must do this after @em{every} JNI call.
+to check whether an error occurred.  You must do this after @emph{every} JNI call.
 JNI does not work well when an exception has been raised, and can have unpredictable
 behavior.
 
@@ -455,8 +460,8 @@ small, is important.
 
 You might think that using native methods all over the place would give
 our implementation of Java speed, speed, blinding speed.  You'd be thinking
-wrong.  Would you believe me if I told you that an @em{interpreted} Java method
-is typically about three and a half times @em{faster} than the equivalent
+wrong.  Would you believe me if I told you that an @emph{interpreted} Java method
+is typically about three and a half times @emph{faster} than the equivalent
 native method?  This is true even for a totally blank method.
 
 Bottom line: JNI is overhead incarnate.  In Sun's implementation, even
@@ -476,7 +481,7 @@ that does the job of both, it will usually be better to write the single
 native method.  You can even call the other two native methods directly from
 your native code and not incur the overhead of a method call from Java to C.
 
-Cache methodIDs and fieldIDs wherever you can.  String lookups are expenseive.
+Cache methodIDs and fieldIDs wherever you can.  String lookups are expensive.
 The best way to do this is to use the native/lib/jnilink.h library.  It will
 ensure that jmethodIDs are always valid, even if the class is unloaded at
 some point.  In 1.1, jnilink simply caches a NewGlobalRef() to the method's
@@ -639,7 +644,7 @@ example, test scripts for java.util.zip should go in test/java.util.zip
 This directory contains misc scripts designed not to
 test an implementation, but to determine various things about Sun's
 reference implementation that are needed in order to write a compatible
-pakcage.  Each package has its own directory which is the ``flattened''
+package.  Each package has its own directory which is the ``flattened''
 package name.  For example, compatibility scripts for java.util.zip
 go in compat/java.util.zip
 @end table
