@@ -32,7 +32,7 @@ package java.awt.image;
  *
  * @author C. Brian Jones (cbj@gnu.org) 
  */
-public synchronized class ReplicateScaleFilter extends ReplicateSaleFilter
+public class AreaAveragingScaleFilter extends ReplicateScaleFilter
 {
     /**
      * Construct an instance of <code>AreaAveragingScaleFilter</code> which

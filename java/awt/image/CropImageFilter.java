@@ -29,7 +29,7 @@ import java.util.Hashtable;
  *
  * @author C. Brian Jones (cbj@gnu.org) 
  */
-public synchronized class CropImageFilter extends ImageFilter
+public class CropImageFilter extends ImageFilter
 {
     int x;
     int y;

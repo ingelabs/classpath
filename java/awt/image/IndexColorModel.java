@@ -28,7 +28,7 @@ package java.awt.image;
  */
 public class IndexColorModel extends ColorModel
 {
-    private map_size;
+    private int map_size;
     private boolean opaque;
     private int trans = -1;
 
@@ -66,7 +66,7 @@ public class IndexColorModel extends ColorModel
      */
     public IndexColorModel(int bits, int size, byte[] reds, byte[] greens,
 			   byte[] blues, int trans) {
-	this(bits, size, reds, greends, blues, (byte[])null);
+	this(bits, size, reds, greens, blues, (byte[])null);
 	this.trans = trans;
     }
 
@@ -87,7 +87,7 @@ public class IndexColorModel extends ColorModel
 			   byte[] blues, byte[] alphas) {
 	super(bits);
 	map_size = size;
-	(alphas == null) ? opaque = true : opaque = false;
+	opaque = (alphas == null);
 
 	rgb = new int[size];
 	if (alphas == null) {
@@ -103,7 +103,7 @@ public class IndexColorModel extends ColorModel
 		rgb[i] = ((alphas[i] & 0xff) << 24 | 
 		         ((reds[i] & 0xff) << 16) |
 		         ((greens[i] & 0xff) << 8) |
-		          (blues[i] & 0xff);
+		          (blues[i] & 0xff));
 	    }
 	}
     }
@@ -121,7 +121,7 @@ public class IndexColorModel extends ColorModel
      * @param hasAlpha <code>cmap</code> has alpha values
      */
     public IndexColorModel(int bits, int size, byte[] cmap, int start, 
-			   boolean hashAlpha) {
+			   boolean hasAlpha) {
 	this(bits, size, cmap, start, hasAlpha, -1);
     }
 
@@ -139,10 +139,10 @@ public class IndexColorModel extends ColorModel
      * @param trans the index of the transparent color
      */
     public IndexColorModel(int bits, int size, byte[] cmap, int start, 
-			   boolean hashAlpha, int trans) {
+			   boolean hasAlpha, int trans) {
 	super(bits);
 	map_size = size;
-        (hasAlpha) ? opaque = false : opaque = true;
+        opaque = !hasAlpha;
 	this.trans = trans;
     }
 
@@ -159,71 +159,76 @@ public class IndexColorModel extends ColorModel
 
     /**
      * <br>
-     * FIXME - needs to be implemented
      */
     public final void getReds(byte[] r) {
-
+	getComponents( r, 2 );
     }
 
     /**
      * <br>
-     * FIXME - needs to be implemented
      */
     public final void getGreens(byte[] g) {
-
+	getComponents( g, 1 );
     }
 
     /**
      * <br>
-     * FIXME - needs to be implemented
      */
     public final void getBlues(byte[] b) {
-
+	getComponents( b, 0 );
     }
 
     /**
      * <br>
-     * FIXME - needs to be implemented
      */
     public final void getAlphas(byte[] a) {
-
+	getComponents( a, 3 );
     }
+
+    private void getComponents( byte[] c, int ci )
+    {
+	int i, max = ( map_size < c.length ) ? map_size : c.length;
+	for( i = 0; i < max; i++ )
+	    c[i] = (byte)(( generateMask( ci )  & rgb[i]) >> ( ci * pixel_bits) );
+    } 
 
     /**
      * Get the red component of the given pixel.
      * <br>
-     * FIXME - needs to be implemented
-     * & some number of 1s... have to build
-     * that up somehow... Paul forgets...
      */
     public final int getRed(int pixel) {
+	if( pixel < map_size ) 
+	    return  (int)(( generateMask( 2 )  & rgb[pixel]) >> (2 * pixel_bits ) );
 	return 0;
     }
 
     /**
      * Get the green component of the given pixel.
      * <br>
-     * FIXME - needs to be implemented
      */
     public final int getGreen(int pixel) {
+	if( pixel < map_size ) 
+	    return (int)(( generateMask( 1 )  & rgb[pixel]) >> (1 * pixel_bits ) );
 	return 0;
     }
 
     /**
      * Get the blue component of the given pixel.
      * <br>
-     * FIXME - needs to be implemented
      */
     public final int getBlue(int pixel) {
+	if( pixel < map_size ) 
+	    return  (int)( generateMask( 0 )  & rgb[pixel]);
 	return 0;
     }
 
     /**
      * Get the alpha component of the given pixel.
      * <br>
-     * FIXME - needs to be implemented
      */
     public final int getAlpha(int pixel) {
+	if( pixel < map_size ) 
+	    return  (int)(( generateMask( 3 )  & rgb[pixel]) >> (3 * pixel_bits ) );
 	return 0;
     }
 
@@ -231,12 +236,19 @@ public class IndexColorModel extends ColorModel
      * Get the RGB color value of the given pixel using the default
      * RGB color model. 
      * <br>
-     * FIXME - needs to be implemented
      *
      * @param pixel a pixel value
      */
     public final int getRGB(int pixel) {
+	if( pixel < map_size ) 
+	    return rgb[pixel];
 	return 0;
+    }
+    
+    //pixel_bits is number of bits to be in generated mask
+    private int generateMask( int offset )
+    {
+	return (  ( ( 2 << pixel_bits ) - 1 ) << ( pixel_bits * offset ) );
     }
 
 }

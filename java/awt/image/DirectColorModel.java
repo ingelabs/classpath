@@ -23,7 +23,7 @@ package java.awt.image;
 
 /**
  *
- * @author C. Brian Jones (cbj@gnu.org) 
+ * @author C. Brian Jones (cbj@gnu.org), Mark Benvenuto (mcb54@columbia.edu )
  */
 public class DirectColorModel extends ColorModel
 {
@@ -89,49 +89,52 @@ public class DirectColorModel extends ColorModel
     /**
      * Get the red component of the given pixel.
      * <br>
-     * FIXME - needs to be implemented.
      */
     public final int getRed(int pixel) {
-	return 0;
+	return (red_mask & pixel );
     }
 
     /**
      * Get the green component of the given pixel.
      * <br>
-     * FIXME - needs to be implemented.
      */
     public final int getGreen(int pixel) {
-	return 0;
+	return (green_mask & pixel );
     }
 
     /**
      * Get the blue component of the given pixel.
      * <br>
-     * FIXME - needs to be implemented.
      */
     public final int getBlue(int pixel) {
-	return 0;
+	return (blue_mask & pixel );
     }
 
     /**
      * Get the alpha component of the given pixel.
      * <br>
-     * FIXME - needs to be implemented.
      */
     public final int getAlpha(int pixel) {
-	return 0;
+	return (alpha_mask & pixel );
     }
 
     /**
      * Get the RGB color value of the given pixel using the default
      * RGB color model. 
      * <br>
-     * FIXME - needs to be implemented.
+     * FIXME - sun's documentation is parse - unsure ?
      *
      * @param pixel a pixel value
      */
     public final int getRGB(int pixel) {
-	return 0;
+	return makeColor( getAlpha(pixel), getRed( pixel ), getGreen( pixel ), getBlue( pixel ) );
+    }   
+
+    private int makeColor( int a, int r, int g, int b )
+    {
+	return (int)( 0xff000000 & (a << 24) | 0xff0000 & (r << 16) | 0xff00 & (b << 8) | 0xff & g ); 
     }
+
+
 }
 

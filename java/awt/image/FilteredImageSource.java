@@ -22,12 +22,14 @@
 
 package java.awt.image;
 
+import java.util.Hashtable;
+
 /**
  *
  * @see ImageConsumer
  * @author C. Brian Jones (cbj@gnu.org) 
  */
-public interface FilteredImageSource implements ImageProducer
+public class FilteredImageSource implements ImageProducer
 {
     ImageProducer ip;
     ImageFilter filter;
@@ -52,7 +54,7 @@ public interface FilteredImageSource implements ImageProducer
 
 	ImageFilter f = filter.getFilterInstance(ic);
 	consumers.put(ic, f);
-	producer.addConsumer(f);
+	ip.addConsumer(f);
     }
 
     /**
@@ -62,7 +64,7 @@ public interface FilteredImageSource implements ImageProducer
     public synchronized boolean isConsumer(ImageConsumer ic) {
 	ImageFilter f = (ImageFilter)consumers.get(ic);
 	if (f != null)
-	    return producer.isConsumer(f);
+	    return ip.isConsumer(f);
 	return false;
     }
 
@@ -73,7 +75,7 @@ public interface FilteredImageSource implements ImageProducer
     public synchronized void removeConsumer(ImageConsumer ic) {
 	ImageFilter f = (ImageFilter)consumers.remove(ic);
 	if (f != null)
-	    producer.removeConsumer(f);
+	    ip.removeConsumer(f);
     }
 
     /**
@@ -83,12 +85,15 @@ public interface FilteredImageSource implements ImageProducer
      * registered consumers.  
      */
     public void startProduction(ImageConsumer ic) {
+	ImageFilter f;
 	if (!(consumers.containsKey(ic))) {
-	    ImageFilter f = filter.getFilterInstance(ic);
+	    f = filter.getFilterInstance(ic);
 	    consumers.put(ic, f);
-	    producer.addConsumer(f);
+	    ip.addConsumer(f);
+	} else { 
+	    f = (ImageFilter)consumers.get( ic );
 	}
-	producer.startProduction(f);
+	ip.startProduction(f);
     }
 
     /**
@@ -98,7 +103,7 @@ public interface FilteredImageSource implements ImageProducer
      */
     public void requestTopDownLeftRightResend(ImageConsumer ic) {
 	ImageFilter f = (ImageFilter)consumers.get(ic);
-	producer.requestTopDownLeftRightResend(f);
+	ip.requestTopDownLeftRightResend(f);
     }
 }
 

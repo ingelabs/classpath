@@ -33,7 +33,7 @@ import java.util.Hashtable;
  *
  * @author C. Brian Jones (cbj@gnu.org) 
  */
-public synchronized class ReplicateScaleFilter extends ImageFilter
+public class ReplicateScaleFilter extends ImageFilter
 {
     public ReplicateScaleFilter(int width, int height) {
 	destHeight = height;

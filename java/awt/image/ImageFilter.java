@@ -21,6 +21,8 @@
 
 package java.awt.image;
 
+import java.util.Hashtable;
+
 /**
  * The <code>ImageFilter</code> class is a base class which can be
  * extended to provide different types of filters for an image.  By
@@ -28,7 +30,7 @@ package java.awt.image;
  *
  * @author C. Brian Jones (cbj@gnu.org) 
  */
-public synchronized class ImageFilter implements ImageConsumer, Cloneable
+public class ImageFilter implements ImageConsumer, Cloneable
 {
     /**
      * The consumer this filter is filtering an image data stream for.
@@ -80,8 +82,15 @@ public synchronized class ImageFilter implements ImageConsumer, Cloneable
 	    throw new IllegalArgumentException("null argument for ImageFilter.getFilterInstance(ImageConsumer)");
 
 	consumer = ic;
-	ImageFilter f = (ImageFilter)clone();
-	consumer = null;
+	try { 
+	    ImageFilter f = (ImageFilter)clone();
+	    consumer = null;
+	    return f;
+	} catch ( CloneNotSupportedException cnse ) {
+	    cnse.printStackTrace();
+	    consumer = null;
+	    return null;
+	}
     }
 
     /**
