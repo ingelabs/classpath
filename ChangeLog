@@ -8,6 +8,7 @@
 	(getEtchedBorderUIResource, getLoweredBevelBorderUIResource,
 	getRaisedBevelBorderUIResource, getBlackLineBorderUIResource):
 	Create shared borders on demand.
+	(BorderUIResource.BevelBorderUIResource): Add Javadoc.
 
 	* javax/swing/plaf/.cvsignore: Add *.class.
 
