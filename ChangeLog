@@ -1,3 +1,7 @@
+2004-10-07  Jerry Quinn  <jlquinn@optonline.net>
+
+	* java/awt/image/BufferedImageFilter.java: Implement.
+
 2004-10-06  Patrik Reali  <reali@acm.org>
 
 	* doc/www.gnu.org/README: a few custom tag documented
