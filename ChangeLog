@@ -1,3 +1,12 @@
+2003-07-12  Jeroen Frijters <jeroen@sumatra.nl>
+
+	* java/awt/image/MemoryImageSource.java
+	(MemoryImageSource(int,int,ColorModel, byte[],int,int,Hashtable props)):
+	Changed array copy length to max * height.
+	(MemoryImageSource(int,int,ColorModel, int[],int,int,Hashtable props)):
+	Changed array copy length to max * height
+	(sendPicture): Call setDimensions on the consumer.
+
 2003-07-11  Matt Kraai  <kraii@alumni.cmu.edu>
 
 	* java/awt/im/InputContext.java: Remove a redundant
