@@ -737,19 +737,33 @@ Java_gnu_java_awt_peer_gtk_GtkComponentPeer_gtkWidgetGetPreferredDimensions
 
   gdk_threads_enter ();
 
-  /* Save the widget's current size request. */
-  gtk_widget_size_request (GTK_WIDGET (ptr), &current_req);
+  /* Widgets that extend GtkWindow such as GtkFileChooserDialog may have
+     a default size.  These values seem more useful then the natural
+     requisition values, particularly for GtkFileChooserDialog. */
+  if (GTK_IS_WINDOW (ptr))
+    {
+      gint width, height;
+      gtk_window_get_default_size (GTK_WINDOW (ptr), &width, &height);
 
-  /* Get the widget's "natural" size request. */
-  gtk_widget_set_size_request (GTK_WIDGET (ptr), -1, -1);
-  gtk_widget_size_request (GTK_WIDGET (ptr), &natural_req);
+      dims[0] = width;
+      dims[1] = height;
+    }
+  else
+    {
+      /* Save the widget's current size request. */
+      gtk_widget_size_request (GTK_WIDGET (ptr), &current_req);
 
-  /* Reset the widget's size request. */
-  gtk_widget_set_size_request (GTK_WIDGET (ptr),
-			       current_req.width, current_req.height);
+      /* Get the widget's "natural" size request. */
+      gtk_widget_set_size_request (GTK_WIDGET (ptr), -1, -1);
+      gtk_widget_size_request (GTK_WIDGET (ptr), &natural_req);
 
-  dims[0] = natural_req.width;
-  dims[1] = natural_req.height;
+      /* Reset the widget's size request. */
+      gtk_widget_set_size_request (GTK_WIDGET (ptr),
+			           current_req.width, current_req.height);
+
+      dims[0] = natural_req.width;
+      dims[1] = natural_req.height;
+    }
 
   gdk_threads_leave ();
 
