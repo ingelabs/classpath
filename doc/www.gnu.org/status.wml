@@ -88,7 +88,7 @@
 </package>
 
 <package name="java.math">
-  <status name="<rao>"> 
+  <status name="Various"> 
     <en>
     With the exception of <code>BigInteger (int, int, Random)</code>,
     java.math is fully Java 1.2 compliant.  Implementation depends

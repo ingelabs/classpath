@@ -99,6 +99,7 @@ Updated:
     <group <en><b>Component</b></en>:&nbsp;<get-var component><br>>>
   %body
 </p>
+</blockquote>
 <restore name component>
 </define-tag>
 

@@ -81,8 +81,6 @@ done, and most importantly submit patches!
        name="GNU Classpath Hacker's Guide"></LI>
   <LI><link url="/software/classpath/doc/vmintegration.html"
        name="Virtual Machine Integration Guide"></LI>
-  <LI><link url="/software/classpath/doc/classpath-japhar.html"
-       name="Installing Japhar and Classpath"></LI>
 </UL>
 
 <H4><en>Mailing List</en></H4>
