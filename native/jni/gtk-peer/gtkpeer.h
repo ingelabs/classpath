@@ -1,5 +1,5 @@
 /* gtkpeer.h -- Some global variables and #defines
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2004 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -107,7 +107,7 @@ extern struct state_table *native_pixbufdecoder_state_table;
 
 #endif /* JVM_SUN */
 
-#define SWAPU32(w)                                                     \
+#define SWAPU32(w)							\
   (((w) << 24) | (((w) & 0xff00) << 8) | (((w) >> 8) & 0xff00) | ((w) >> 24))
 
 struct graphics

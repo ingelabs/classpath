@@ -326,7 +326,7 @@ public class GdkGraphics extends Graphics
   {
     drawString(getFontPeer(), str, x, y);
   }
-
+  
 
   public void drawString (AttributedCharacterIterator ci, int x, int y)
   {
@@ -446,7 +446,7 @@ public class GdkGraphics extends Graphics
 		  color.getGreen () ^ xorColor.getGreen (),
 		  color.getBlue  () ^ xorColor.getBlue ());
   }
-
+  
   public void setFont (Font font)
   {
     this.font = font;

@@ -576,12 +576,12 @@ public class GtkToolkit extends gnu.java.awt.ClasspathToolkit
         ClasspathFontPeer newPeer = new GdkFontPeer (name, attrs);
         fontCache.put (keyMap, newPeer);
         return newPeer;
-          }
-          }
-        
+      }
+  }
+
   public ClasspathTextLayoutPeer getClasspathTextLayoutPeer (AttributedString str, 
                                                              FontRenderContext frc)
-          {
+  {
     return new GdkTextLayout(str, frc);
   }
 

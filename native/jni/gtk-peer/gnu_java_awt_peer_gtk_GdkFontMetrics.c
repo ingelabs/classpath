@@ -48,7 +48,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkFontMetrics_getPeerFontMetr
   jdouble *native_metrics = NULL;
   PangoFontMetrics *pango_metrics;
 
-  gdk_threads_enter ();
+  gdk_threads_enter();
 
   pfont = (struct peerfont *) NSA_GET_FONT_PTR (env, java_font);
   g_assert (pfont != NULL);
@@ -66,12 +66,12 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkFontMetrics_getPeerFontMetr
     native_metrics[FONT_METRICS_DESCENT] = - native_metrics[FONT_METRICS_DESCENT];
   native_metrics[FONT_METRICS_MAX_DESCENT] = native_metrics[FONT_METRICS_DESCENT];
   native_metrics[FONT_METRICS_MAX_ADVANCE] = PANGO_PIXELS (pango_font_metrics_get_approximate_char_width (pango_metrics));
-
+	 
   (*env)->ReleaseDoubleArrayElements (env, java_metrics, native_metrics, 0);
 
   pango_font_metrics_unref (pango_metrics);
 
-  gdk_threads_leave ();
+  gdk_threads_leave();
 }
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkFontMetrics_getPeerTextMetrics
@@ -82,7 +82,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkFontMetrics_getPeerTextMetr
   jdouble *native_metrics = NULL;  
   PangoRectangle log;
 
-  gdk_threads_enter ();
+  gdk_threads_enter();
 
   pfont = (struct peerfont *)NSA_GET_FONT_PTR (env, java_font);
   g_assert (pfont != NULL);
@@ -105,9 +105,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkFontMetrics_getPeerTextMetr
   native_metrics[TEXT_METRICS_HEIGHT] = PANGO_PIXELS(log.height);
   native_metrics[TEXT_METRICS_X_ADVANCE] = PANGO_PIXELS(log.x + log.width);
   native_metrics[TEXT_METRICS_Y_ADVANCE] = PANGO_PIXELS(log.y + log.height);
-
+	 
   (*env)->ReleaseDoubleArrayElements (env, java_metrics, native_metrics, 0);
 
-  gdk_threads_leave ();
+  gdk_threads_leave();
 }
 

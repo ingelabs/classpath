@@ -464,6 +464,7 @@ public class GdkGraphics2D extends Graphics2D
     
   private final void updateImagePixels (int[] pixels)
   {
+
     // This function can only be used if 
     // this graphics object is used to draw into 
     // buffered image 
@@ -495,10 +496,11 @@ public class GdkGraphics2D extends Graphics2D
       }
   }
 
+
   private final boolean drawImage(Image img, 
-                            AffineTransform xform,
-                            Color bgcolor,			    
-                            ImageObserver obs)
+                                  AffineTransform xform,
+                                  Color bgcolor,			    
+                                  ImageObserver obs)
   {
     if (img instanceof GtkOffScreenImage &&
         img.getGraphics () instanceof GdkGraphics2D &&            
@@ -518,6 +520,7 @@ public class GdkGraphics2D extends Graphics2D
       }
     else
       {
+      
         // In this case, xform is an AffineTransform that transforms bounding
         // box of the specified image from image space to user space. However
         // when we pass this transform to cairo, cairo will use this transform
@@ -530,17 +533,17 @@ public class GdkGraphics2D extends Graphics2D
 
         try
           {             
-	      invertedXform = xform.createInverse();
+            invertedXform = xform.createInverse();
              if (img instanceof BufferedImage)
                {
                    // draw an image which has actually been loaded 
                    // into memory fully
                    
-		     BufferedImage b = (BufferedImage) img;
-                   return drawRaster (b.getColorModel (), 
-                                      b.getData (), 
-                                      invertedXform,
-                                      bgcolor);
+                 BufferedImage b = (BufferedImage) img;
+                 return drawRaster (b.getColorModel (), 
+                                    b.getData (), 
+                                    invertedXform,
+                                    bgcolor);
                }
              else
                {
@@ -572,7 +575,7 @@ public class GdkGraphics2D extends Graphics2D
       }
 
     cairoNewPath ();
-
+    
     if (s instanceof Rectangle2D)
       {
         Rectangle2D r = (Rectangle2D)s;
@@ -845,23 +848,23 @@ public class GdkGraphics2D extends Graphics2D
       return clip.getBounds ();
   }
 
-    protected Rectangle2D getClipInDevSpace ()
-    {
-	Rectangle2D uclip = clip.getBounds2D ();
-	if (transform == null)
-	    return uclip;
-	else
-	    {
-		Point2D pos = transform.transform (new Point2D.Double(uclip.getX (), 
-								      uclip.getY ()), 
-						   (Point2D)null);		
-		Point2D extent = transform.deltaTransform (new Point2D.Double(uclip.getWidth (), 
-									      uclip.getHeight ()), 
-							   (Point2D)null);
-		return new Rectangle2D.Double (pos.getX (), pos.getY (),
-					       extent.getX (), extent.getY ());	      
-	    }
-    }
+  protected Rectangle2D getClipInDevSpace ()
+  {
+    Rectangle2D uclip = clip.getBounds2D ();
+    if (transform == null)
+      return uclip;
+    else
+      {
+        Point2D pos = transform.transform (new Point2D.Double(uclip.getX (), 
+                                                              uclip.getY ()), 
+                                           (Point2D)null);		
+        Point2D extent = transform.deltaTransform (new Point2D.Double(uclip.getWidth (), 
+                                                                      uclip.getHeight ()), 
+                                                   (Point2D)null);
+        return new Rectangle2D.Double (pos.getX (), pos.getY (),
+                                       extent.getX (), extent.getY ());	      
+      }
+  }
 
   public void setClip (int x, int y, int width, int height)
   {
@@ -952,7 +955,7 @@ public class GdkGraphics2D extends Graphics2D
   }
 
   private final void doPolygon(int[] xPoints, int[] yPoints, int nPoints, 
-                         boolean close, boolean fill)
+                               boolean close, boolean fill)
   {    
     if (nPoints < 1)
       return;
@@ -1008,8 +1011,8 @@ public class GdkGraphics2D extends Graphics2D
   }
 
   private final boolean drawRaster (ColorModel cm, Raster r, 
-                              AffineTransform imageToUser, 
-                              Color bgcolor)
+                                    AffineTransform imageToUser, 
+                                    Color bgcolor)
   {
     if (r == null)
       return false;
@@ -1170,7 +1173,7 @@ public class GdkGraphics2D extends Graphics2D
         else if (hintValue.equals(RenderingHints.VALUE_ALPHA_INTERPOLATION_DEFAULT))
            cairoSurfaceSetFilter(4);
       
-      } 
+      }
 
     shiftDrawCalls = hints.containsValue (RenderingHints.VALUE_STROKE_NORMALIZE)
       || hints.containsValue (RenderingHints.VALUE_STROKE_DEFAULT);
@@ -1489,9 +1492,9 @@ public class GdkGraphics2D extends Graphics2D
     else
       font = 
         ((ClasspathToolkit)(Toolkit.getDefaultToolkit ()))
-        .getFont (f.getName(), f.getAttributes ());
+        .getFont (f.getName(), f.getAttributes ());    
   }
-
+  
   public String toString()
   {
     return  getClass ().getName () +

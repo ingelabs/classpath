@@ -1,5 +1,5 @@
 /* GdkFontMetrics.java
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2002, 2004  Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,15 +38,15 @@ exception statement from your version. */
 
 package gnu.java.awt.peer.gtk;
 
-import java.awt.*;
-import java.awt.font.*;
-import java.awt.geom.*;
-
 import gnu.java.awt.ClasspathToolkit;
+
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Toolkit;
 
 public class GdkFontMetrics extends FontMetrics
 {
-
+  
   private int[] font_metrics;
   GdkFontPeer peer;
 
@@ -67,7 +67,7 @@ public class GdkFontMetrics extends FontMetrics
   static native void getPeerTextMetrics(GdkFontPeer peer, String str, double [] metrics);
 
   public GdkFontMetrics (Font font)
-  {
+  {    
     super (font.getPeer() instanceof GdkFontPeer 
            ? font 
            : ((ClasspathToolkit)(Toolkit.getDefaultToolkit ()))
@@ -86,7 +86,7 @@ public class GdkFontMetrics extends FontMetrics
     for (int i = 0; i < 5; ++i)
       font_metrics[i] = (int) hires[i];
   }
-
+  
   public int stringWidth (String str)
   {
     double [] hires = new double[6];

@@ -791,7 +791,7 @@ JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_getImagePix
                                 width, height);
  								      				      
   native_pixels= gdk_pixbuf_get_pixels (buf);
-  
+
 #ifndef WORDS_BIGENDIAN
   /* convert pixels from 0xBBGGRRAA to 0xAARRGGBB */
   for (i=0; i<width * height; i++)
@@ -799,6 +799,7 @@ JNIEXPORT jintArray JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_getImagePix
       native_pixels[i] = SWAPU32 ((unsigned)native_pixels[i]);
     }
 #endif
+
    java_pixels = (*env) -> NewIntArray (env, width * height);   
    
    (*env)->SetIntArrayRegion(env, java_pixels, 
@@ -1096,13 +1097,13 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoDrawString
   g_assert(font != NULL);
   g_assert(str != NULL);
 
-  gdk_threads_enter();
+  gdk_threads_enter ();
   if (peer_is_disposed(env, obj)) { gdk_threads_leave(); return; }
 
   gr = (struct graphics2d *) NSA_GET_G2D_PTR (env, obj);
-  g_assert (gr != NULL);
+  g_assert(gr != NULL);
 
-  pfont = (struct peerfont *)NSA_GET_FONT_PTR (env, font);
+  pfont = (struct peerfont *) NSA_GET_FONT_PTR (env, font);
   g_assert (pfont != NULL);
 
   cstr = (*env)->GetStringUTFChars (env, str, NULL);
@@ -1246,9 +1247,9 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoDrawGdkText
     g_free (glyphs);
 
   cairo_translate (gr->cr, -x, -y);
-
+  
   pango_layout_iter_free (i);
-  gdk_threads_leave();
+  gdk_threads_leave ();
 }
 
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoShowGlyphs
@@ -1401,7 +1402,7 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics2D_cairoSetAlpha
 
   gr = (struct graphics2d *) NSA_GET_G2D_PTR (env, obj);
   g_assert (gr != NULL);
-  if (gr->debug) printf ("cairo_set_alpha %f\n", a);
+  if (gr->debug) printf ("cairo_set_alpha %f\n", a);  
   cairo_set_alpha (gr->cr, a);
   gdk_threads_leave();
 }
