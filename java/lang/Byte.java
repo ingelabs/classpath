@@ -203,8 +203,9 @@ public final class Byte extends Number {
    * is not a <code>Byte</code>.  Then it throws a 
    * <code>ClassCastException</code>.
    * @throw ClassCastException if the argument is not a <code>Byte</code>.
+   */
   public int compareTo(Object o)
     {
-      return (int)(value - (Byte)o.byteValue());
+      return compareTo((Byte)o);
     }
 }
