@@ -131,11 +131,51 @@ public class Thread implements Runnable
   private static int numAnonymousThreadsCreated = 0;
 
   /**
-   * Allocate a new Thread object, as if by
-   * <code>Thread(null, null, <i>fake name</i>)</code>, where the fake name
-   * is "Thread-" + <i>unique integer</i>.
+   * Allocates a new <code>Thread</code> object. This constructor has
+   * the same effect as <code>Thread(null, null,</code>
+   * <i>gname</i><code>)</code>, where <b><i>gname</i></b> is
+   * a newly generated name. Automatically generated names are of the
+   * form <code>"Thread-"+</code><i>n</i>, where <i>n</i> is an integer.
+   * <p>
+   * Threads created this way must have overridden their
+   * <code>run()</code> method to actually do anything.  An example
+   * illustrating this method being used follows:
+   * <p><blockquote><pre>
+   *     import java.lang.*;
    *
-   * @see #Thread(ThreadGroup, Runnable, String)
+   *     class plain01 implements Runnable {
+   *         String name;
+   *         plain01() {
+   *             name = null;
+   *         }
+   *         plain01(String s) {
+   *             name = s;
+   *         }
+   *         public void run() {
+   *             if (name == null)
+   *                 System.out.println("A new thread created");
+   *             else
+   *                 System.out.println("A new thread with name " + name +
+   *                                    " created");
+   *         }
+   *     }
+   *     class threadtest01 {
+   *         public static void main(String args[] ) {
+   *             int failed = 0 ;
+   *
+   *             <b>Thread t1 = new Thread();</b>
+   *             if (t1 != null)
+   *                 System.out.println("new Thread() succeed");
+   *             else {
+   *                 System.out.println("new Thread() failed");
+   *                 failed++;
+   *             }
+   *         }
+   *     }
+   * </pre></blockquote>
+   *
+   * @see     java.lang.Thread#Thread(java.lang.ThreadGroup,
+   *          java.lang.Runnable, java.lang.String)
    */
   public Thread()
   {
@@ -694,8 +734,10 @@ public class Thread implements Runnable
   public final synchronized void setName(String name)
   {
     checkAccess();
-    // Use toString hack to detect null.
-    name = name.toString();
+    // The Class Libraries book says ``threadName cannot be null''.  I
+    // take this to mean NullPointerException.
+    if (name == null)
+      throw new NullPointerException();
     VMThread t = vmThread;
     if (t != null)
 	t.setName(name);
@@ -899,18 +941,15 @@ public class Thread implements Runnable
   }
 
   /**
-   * Return a human-readable String representing this Thread. The format of
-   * the string is:<br>
-   * <code>"Thread[" + getName() + ',' + getPriority() + ','
-   *  + (getThreadGroup() == null ? "" : getThreadGroup().getName())
-   + ']'</code>.
+   * Returns a string representation of this thread, including the
+   * thread's name, priority, and thread group.
    *
    * @return a human-readable String representing this Thread
    */
   public String toString()
   {
-    return ("Thread[" + name + "," + priority + "," + 
-	    (group == null ? "" : group.getName()) + "]");
+    return ("Thread[" + name + "," + priority + ","
+	    + (group == null ? "" : group.getName()) + "]");
   }
 
   /**

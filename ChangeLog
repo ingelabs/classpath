@@ -1,5 +1,12 @@
 2004-02-04  Michael Koch  <konqueror@gmx.de>
 
+	* java/lang/Thread.java
+	(Thread): Merged extensive javadoc from libgcj.
+	(setName): Do explicit null pointer check.
+	(toString): Reformated. Simplified javadoc.
+
+2004-02-04  Michael Koch  <konqueror@gmx.de>
+
 	* configure.ac: No need to call AC_PROG_MAKE_SET explicitely.
 	Define conditiional for building glibj.zip. Simplified GTK checks.
 	* lib/Makefile.am: Build glibj.zip conditionally.
