@@ -1,5 +1,16 @@
 2004-12-07  Mark Wielaard  <mark@klomp.org>
 
+	* LICENSE: Add text about org.ietf.jgss documentation.
+	* org/ietf/jgss/ChannelBinding.java: Merge top two comment blocks.
+	* org/ietf/jgss/GSSCredential.java: Likewise.
+	* org/ietf/jgss/GSSException.java: Likewise.
+	* org/ietf/jgss/GSSManager.java: Likewise.
+	* org/ietf/jgss/GSSName.java: Likewise.
+	* org/ietf/jgss/MessageProp.java: Likewise.
+	* org/ietf/jgss/Oid.java: Likewise.
+
+2004-12-07  Mark Wielaard  <mark@klomp.org>
+
 	* java/io/FileDescriptor.java (sync): Add real exception to
 	SyncFailedException.
 
