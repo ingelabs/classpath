@@ -942,7 +942,7 @@ public class ObjectInputStream extends InputStream
      de serialization mechanism provided by
      <code>ObjectInputStream</code>.  To make this method be used for
      writing objects, subclasses must invoke the 0-argument
-     constructor on this class from there constructor.
+     constructor on this class from their constructor.
 
      @see ObjectInputStream ()
   */
@@ -1385,13 +1385,13 @@ public class ObjectInputStream extends InputStream
   private void dumpElement (String msg)
   {
     if (dump)
-      Systm.out.print (msg);
+      System.out.print (msg);
   }
 
   private void dumpElementln (String msg)
   {
     if (dump)
-      Systm.out.println (msg);
+      System.out.println (msg);
   }
 
   static
