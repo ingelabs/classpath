@@ -1,5 +1,11 @@
 2003-08-17  Mark Wielaard  <mark@klomp.org>
 
+	* Makefile.am (core): Don't include doc-files in the package list.
+	(create_html): Add classpath-copyright.xml as -bottomnote.
+	* doc/api/classpath-copyright.xml: Updated year.
+
+2003-08-17  Mark Wielaard  <mark@klomp.org>
+
 	* Makefile.am (SUBDIRS): Add external.
 	* configure.in (AC_OUTPUT): Add external/Makefile.
 	* external/README: Add how to update Makefile.am jaxp_FILES entry.
