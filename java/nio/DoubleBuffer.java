@@ -1,5 +1,5 @@
 /* DoubleBuffer.java -- 
-   Copyright (C) 2002 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,7 +39,11 @@ package java.nio;
 
 import gnu.java.nio.DoubleBufferImpl;
 
-public abstract class DoubleBuffer extends Buffer implements Comparable
+/**
+ * @since 1.4
+ */
+public abstract class DoubleBuffer extends Buffer
+  implements Comparable
 {
   protected double [] backing_buffer;
   protected int array_offset;
@@ -72,9 +76,13 @@ public abstract class DoubleBuffer extends Buffer implements Comparable
     return wrap(buffer, 0, len);
   }
 
-  final public static DoubleBuffer wrap(double[] array)
+  /**
+   * Wraps a <code>double</code> array into a <code>DoubleBuffer</code>
+   * object.
+   */
+  final public static DoubleBuffer wrap (double[] array)
   {
-    return wrap(array, 0, array.length);
+    return wrap (array, 0, array.length);
   }
 
   protected DoubleBuffer (int capacity, int limit, int position, int mark)
@@ -82,21 +90,56 @@ public abstract class DoubleBuffer extends Buffer implements Comparable
     super (capacity, limit, position, mark);
   }
   
+  /**
+   * This method transfers <code>doubles<code> from this buffer into the given
+   * destination array.
+   *
+   * @param dst The destination array
+   * @param offset The offset within the array of the first <code>double</code>
+   * to be written; must be non-negative and no larger than dst.length.
+   * @param length The maximum number of bytes to be written to the given array;
+   * must be non-negative and no larger than dst.length - offset.
+   *
+   * @exception BufferUnderflowException If there are fewer than length
+   * <code>doubles</code> remaining in this buffer.
+   * @exception IndexOutOfBoundsException If the preconditions on the offset
+   * and length parameters do not hold.
+   */
   public DoubleBuffer get (double[] dst, int offset, int length)
   {
     for (int i = offset; i < offset + length; i++)
       {
-        dst[i] = get();
+        dst [i] = get ();
       }
 
     return this;
   }
 
+  /**
+   * This method transfers <code>doubles<code> from this buffer into the given
+   * destination array.
+   *
+   * @param dst The byte array to write into.
+   *
+   * @exception BufferUnderflowException If there are fewer than dst.length
+   * <code>doubles</code> remaining in this buffer.
+   */
   public DoubleBuffer get (double[] dst)
   {
-    return get(dst, 0, dst.length);
+    return get (dst, 0, dst.length);
   }
 
+  /**
+   * Writes the content of the the <code>DoubleBUFFER</code> src
+   * into the buffer.
+   *
+   * @param src The source data.
+   *
+   * @exception BufferOverflowException If there is insufficient space in this
+   * buffer for the remaining <code>doubles<code> in the source buffer.
+   * @exception IllegalArgumentException If the source buffer is this buffer.
+   * @exception ReadOnlyBufferException If this buffer is read-only.
+   */
   public DoubleBuffer put (DoubleBuffer src)
   {
     while (src.hasRemaining())
@@ -105,26 +148,63 @@ public abstract class DoubleBuffer extends Buffer implements Comparable
     return this;
   }
 
+  /**
+   * Writes the content of the the <code>double array</code> src
+   * into the buffer.
+   *
+   * @param src The array to copy into the buffer.
+   * @param offset The offset within the array of the first byte to be read;
+   * must be non-negative and no larger than src.length.
+   * @param length The number of bytes to be read from the given array;
+   * must be non-negative and no larger than src.length - offset.
+   * 
+   * @exception BufferOverflowException If there is insufficient space in this
+   * buffer for the remaining <code>doubles<code> in the source array.
+   * @exception IndexOutOfBoundsException If the preconditions on the offset
+   * and length parameters do not hold
+   * @exception ReadOnlyBufferException If this buffer is read-only.
+   */
   public DoubleBuffer put (double[] src, int offset, int length)
   {
     for (int i = offset; i < offset + length; i++)
-      put(src[i]);
+      put (src [i]);
 
     return this;
   }
 
-  public final DoubleBuffer put(double[] src)
+  /**
+   * Writes the content of the the <code>double array</code> src
+   * into the buffer.
+   *
+   * @param src The array to copy into the buffer.
+   * 
+   * @exception BufferOverflowException If there is insufficient space in this
+   * buffer for the remaining <code>doubles<code> in the source array.
+   * @exception ReadOnlyBufferException If this buffer is read-only.
+   */
+  public final DoubleBuffer put (double[] src)
   {
-    return put(src, 0, src.length);
+    return put (src, 0, src.length);
   }
 
-  public final boolean hasArray()
+  /**
+   * Tells whether ot not this buffer is backed by an accessible
+   * <code>double</code> array.
+   */
+  public final boolean hasArray ()
   {
     return (backing_buffer != null
             && !isReadOnly ());
   }
 
-  public final double[] array()
+  /**
+   * Returns the <code>double</code> array that backs this buffer.
+   *
+   * @exception ReadOnlyBufferException If this buffer is read-only.
+   * @exception UnsupportedOperationException If this buffer is not backed
+   * by an accessible array.
+   */
+  public final double[] array ()
   {
     if (backing_buffer == null)
       throw new UnsupportedOperationException ();
@@ -135,7 +215,14 @@ public abstract class DoubleBuffer extends Buffer implements Comparable
     return backing_buffer;
   }
 
-  public final int arrayOffset()
+  /**
+   * Returns the offset within this buffer's backing array of the first element.
+   *
+   * @exception ReadOnlyBufferException If this buffer is read-only.
+   * @exception UnsupportedOperationException If this buffer is not backed
+   * by an accessible array.
+   */
+  public final int arrayOffset ()
   {
     if (backing_buffer == null)
       throw new UnsupportedOperationException ();
@@ -146,41 +233,55 @@ public abstract class DoubleBuffer extends Buffer implements Comparable
     return array_offset;
   }
 
-  public int hashCode()
+  /**
+   * Calculates a hash code for this buffer.
+   */
+  public int hashCode ()
   {
-    return super.hashCode();
+    // FIXME: Check what SUN calculates here.
+    return super.hashCode ();
   }
 
-  public boolean equals(Object obj)
+  /**
+   * Checks if this buffer is equal to obj.
+   */
+  public boolean equals (Object obj)
   {
     if (obj instanceof DoubleBuffer)
       {
-        return compareTo(obj) == 0;
+        return compareTo (obj) == 0;
       }
 
     return false;
   }
 
-  public int compareTo(Object ob)
+  /**
+   * Compares two <code>DoubleBuffer</code> objects.
+   *
+   * @exception ClassCastException If obj is not an object derived from
+   * <code>DoubleBuffer</code>.
+   */
+  public int compareTo (Object obj)
   {
-    DoubleBuffer a = (DoubleBuffer) ob;
+    DoubleBuffer a = (DoubleBuffer) obj;
 
-    if (a.remaining() != remaining())
+    if (a.remaining () != remaining ())
       return 1;
 
-    if (! hasArray() ||
-        ! a.hasArray())
+    if (! hasArray () ||
+        ! a.hasArray ())
       {
         return 1;
       }
 
-    int r = remaining();
+    int r = remaining ();
     int i1 = position ();
     int i2 = a.position ();
 
-    for (int i=0;i<r;i++)
+    for (int i = 0; i < r; i++)
       {
-        int t = (int) (get(i1)- a.get(i2));
+        int t = (int) (get (i1) - a.get (i2));
+
         if (t != 0)
           {
             return (int) t;
@@ -190,14 +291,74 @@ public abstract class DoubleBuffer extends Buffer implements Comparable
     return 0;
   }
 
+  /**
+   * Returns the byte order of this buffer.
+   */
   public abstract ByteOrder order ();
-  public abstract double get();
+
+  /**
+   * Reads the <code>double</code> at this buffer's current position,
+   * and then increments the position.
+   *
+   * @exception BufferUnderflowException If there are no remaining
+   * <code>doubles</code> in this buffer.
+   */
+  public abstract double get ();
+
+  /**
+   * Writes the <code>double</code> at this buffer's current position,
+   * and then increments the position.
+   *
+   * @exception BufferOverflowException If there no remaining 
+   * <code>doubles</code> in this buffer.
+   * @exception ReadOnlyBufferException If this buffer is read-only.
+   */
   public abstract DoubleBuffer put (double b);
-  public abstract double get(int index);
-  public abstract DoubleBuffer put(int index, double b);
-  public abstract DoubleBuffer compact();
-  public abstract boolean isDirect();
-  public abstract DoubleBuffer slice();
-  public abstract DoubleBuffer duplicate();
-  public abstract DoubleBuffer asReadOnlyBuffer();
+
+  /**
+   * Absolute get method.
+   *
+   * @exception IndexOutOfBoundsException If index is negative or not smaller
+   * than the buffer's limit.
+   */
+  public abstract double get (int index);
+  
+  /**
+   * Absolute put method.
+   *
+   * @exception IndexOutOfBoundsException If index is negative or not smaller
+   * than the buffer's limit.
+   * @exception ReadOnlyBufferException If this buffer is read-only.
+   */
+  public abstract DoubleBuffer put (int index, double b);
+
+  /**
+   * Compacts this buffer.
+   * 
+   * @exception ReadOnlyBufferException If this buffer is read-only.
+   */
+  public abstract DoubleBuffer compact ();
+
+  /**
+   * Tells wether or not this buffer is direct.
+   */
+  public abstract boolean isDirect ();
+
+  /**
+   * Creates a new <code>DoubleBuffer</code> whose content is a shared
+   * subsequence of this buffer's content.
+   */
+  public abstract DoubleBuffer slice ();
+
+  /**
+   * Creates a new <code>DoubleBuffer</code> that shares this buffer's
+   * content.
+   */
+  public abstract DoubleBuffer duplicate ();
+
+  /**
+   * Creates a new read-only <code>DoubleBuffer</code> that shares this
+   * buffer's content.
+   */
+  public abstract DoubleBuffer asReadOnlyBuffer ();
 }

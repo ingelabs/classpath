@@ -1,5 +1,5 @@
 /* ShortBuffer.java -- 
-   Copyright (C) 2002 Free Software Foundation, Inc.
+   Copyright (C) 2002, 2003 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -39,7 +39,11 @@ package java.nio;
 
 import gnu.java.nio.ShortBufferImpl;
 
-public abstract class ShortBuffer extends Buffer implements Comparable
+/**
+ * @since 1.4
+ */
+public abstract class ShortBuffer extends Buffer
+  implements Comparable
 {
   protected short [] backing_buffer;
   protected int array_offset;
@@ -72,9 +76,13 @@ public abstract class ShortBuffer extends Buffer implements Comparable
     return wrap(buffer, 0, len);
   }
 
-  final public static ShortBuffer wrap(short[] array)
+  /**
+   * Wraps a <code>short</code> array into a <code>ShortBuffer</code>
+   * object.
+   */
+  final public static ShortBuffer wrap (short[] array)
   {
-    return wrap(array, 0, array.length);
+    return wrap (array, 0, array.length);
   }
 
   protected ShortBuffer (int capacity, int limit, int position, int mark)
@@ -83,21 +91,56 @@ public abstract class ShortBuffer extends Buffer implements Comparable
     array_offset = 0;
   }
   
+  /**
+   * This method transfers <code>shorts<code> from this buffer into the given
+   * destination array.
+   *
+   * @param dst The destination array
+   * @param offset The offset within the array of the first <code>short</code>
+   * to be written; must be non-negative and no larger than dst.length.
+   * @param length The maximum number of bytes to be written to the given array;
+   * must be non-negative and no larger than dst.length - offset.
+   *
+   * @exception BufferUnderflowException If there are fewer than length
+   * <code>shorts</code> remaining in this buffer.
+   * @exception IndexOutOfBoundsException If the preconditions on the offset
+   * and length parameters do not hold.
+   */
   public ShortBuffer get (short[] dst, int offset, int length)
   {
     for (int i = offset; i < offset + length; i++)
       {
-        dst[i] = get();
+        dst [i] = get ();
       }
 
     return this;
   }
 
+  /**
+   * This method transfers <code>shorts<code> from this buffer into the given
+   * destination array.
+   *
+   * @param dst The byte array to write into.
+   *
+   * @exception BufferUnderflowException If there are fewer than dst.length
+   * <code>shorts</code> remaining in this buffer.
+   */
   public ShortBuffer get (short[] dst)
   {
-    return get(dst, 0, dst.length);
+    return get (dst, 0, dst.length);
   }
 
+  /**
+   * Writes the content of the the <code>ShortBUFFER</code> src
+   * into the buffer.
+   *
+   * @param src The source data.
+   *
+   * @exception BufferOverflowException If there is insufficient space in this
+   * buffer for the remaining <code>shorts<code> in the source buffer.
+   * @exception IllegalArgumentException If the source buffer is this buffer.
+   * @exception ReadOnlyBufferException If this buffer is read-only.
+   */
   public ShortBuffer put (ShortBuffer src)
   {
     while (src.hasRemaining())
@@ -106,26 +149,63 @@ public abstract class ShortBuffer extends Buffer implements Comparable
     return this;
   }
 
+  /**
+   * Writes the content of the the <code>short array</code> src
+   * into the buffer.
+   *
+   * @param src The array to copy into the buffer.
+   * @param offset The offset within the array of the first byte to be read;
+   * must be non-negative and no larger than src.length.
+   * @param length The number of bytes to be read from the given array;
+   * must be non-negative and no larger than src.length - offset.
+   * 
+   * @exception BufferOverflowException If there is insufficient space in this
+   * buffer for the remaining <code>shorts<code> in the source array.
+   * @exception IndexOutOfBoundsException If the preconditions on the offset
+   * and length parameters do not hold
+   * @exception ReadOnlyBufferException If this buffer is read-only.
+   */
   public ShortBuffer put (short[] src, int offset, int length)
   {
     for (int i = offset; i < offset + length; i++)
-      put(src[i]);
+      put (src [i]);
 
     return this;
   }
 
-  public final ShortBuffer put(short[] src)
+  /**
+   * Writes the content of the the <code>short array</code> src
+   * into the buffer.
+   *
+   * @param src The array to copy into the buffer.
+   * 
+   * @exception BufferOverflowException If there is insufficient space in this
+   * buffer for the remaining <code>shorts<code> in the source array.
+   * @exception ReadOnlyBufferException If this buffer is read-only.
+   */
+  public final ShortBuffer put (short[] src)
   {
-    return put(src, 0, src.length);
+    return put (src, 0, src.length);
   }
 
-  public final boolean hasArray()
+  /**
+   * Tells whether ot not this buffer is backed by an accessible
+   * <code>short</code> array.
+   */
+  public final boolean hasArray ()
   {
     return (backing_buffer != null
             && !isReadOnly ());
   }
 
-  public final short[] array()
+  /**
+   * Returns the <code>short</code> array that backs this buffer.
+   *
+   * @exception ReadOnlyBufferException If this buffer is read-only.
+   * @exception UnsupportedOperationException If this buffer is not backed
+   * by an accessible array.
+   */
+  public final short[] array ()
   {
     if (backing_buffer == null)
       throw new UnsupportedOperationException ();
@@ -136,7 +216,14 @@ public abstract class ShortBuffer extends Buffer implements Comparable
     return backing_buffer;
   }
 
-  public final int arrayOffset()
+  /**
+   * Returns the offset within this buffer's backing array of the first element.
+   *
+   * @exception ReadOnlyBufferException If this buffer is read-only.
+   * @exception UnsupportedOperationException If this buffer is not backed
+   * by an accessible array.
+   */
+  public final int arrayOffset ()
   {
     if (backing_buffer == null)
       throw new UnsupportedOperationException ();
@@ -147,41 +234,54 @@ public abstract class ShortBuffer extends Buffer implements Comparable
     return array_offset;
   }
 
-  public int hashCode()
+  /**
+   * Calculates a hash code for this buffer.
+   */
+  public int hashCode ()
   {
-    return super.hashCode();
+    // FIXME: Check what SUN calculates here.
+    return super.hashCode ();
   }
 
-  public boolean equals(Object obj)
+  /**
+   * Checks if this buffer is equal to obj.
+   */
+  public boolean equals (Object obj)
   {
     if (obj instanceof ShortBuffer)
       {
-        return compareTo(obj) == 0;
+        return compareTo (obj) == 0;
       }
 
     return false;
   }
 
-  public int compareTo(Object ob)
+  /**
+   * Compares two <code>ShortBuffer</code> objects.
+   *
+   * @exception ClassCastException If obj is not an object derived from
+   * <code>ShortBuffer</code>.
+   */
+  public int compareTo (Object obj)
   {
-    ShortBuffer a = (ShortBuffer) ob;
+    ShortBuffer a = (ShortBuffer) obj;
 
-    if (a.remaining() != remaining())
+    if (a.remaining () != remaining ())
       return 1;
 
-    if (! hasArray() ||
-        ! a.hasArray())
+    if (! hasArray () ||
+        ! a.hasArray ())
       {
         return 1;
       }
 
-    int r = remaining();
+    int r = remaining ();
     int i1 = position ();
     int i2 = a.position ();
 
-    for (int i=0;i<r;i++)
+    for (int i = 0; i < r; i++)
       {
-        int t = (int) (get(i1)- a.get(i2));
+        int t = (int) (get (i1) - a.get (i2));
 
         if (t != 0)
           {
@@ -192,6 +292,9 @@ public abstract class ShortBuffer extends Buffer implements Comparable
     return 0;
   }
 
+  /**
+   * Returns the byte order of this buffer.
+   */
   public abstract ByteOrder order ();
   public abstract short get();
   public abstract java.nio. ShortBuffer put(short b);

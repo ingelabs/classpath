@@ -1,5 +1,16 @@
 2003-05-18  Michael Koch  <konqueror@gmx.de>
 
+	* java/nio/ByteBuffer.java: Merged documentation all over from libgcj,
+	reformatted code, no functional changes.
+	* java/nio/CharBuffer.java: Likewise.
+	* java/nio/DoubleBuffer.java: Likewise.
+	* java/nio/FloatBuffer.java: Likewise.
+	* java/nio/IntBuffer.java: Likewise.
+	* java/nio/LongBuffer.java: Likewise.
+	* java/nio/ShortBuffer.java: Likewise.
+
+2003-05-18  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/NetworkInterface.java:
 	New version from libgcj.
 
