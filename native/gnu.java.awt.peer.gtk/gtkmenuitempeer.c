@@ -30,7 +30,12 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GtkMenuItemPeer_create
   str = (*env)->GetStringUTFChars (env, label, NULL);
 
   gdk_threads_enter ();
-  widget = gtk_menu_item_new_with_label (str);
+
+  if (strcmp (str, "-") == 0) /* "-" signals that we need a separator */
+    widget = gtk_menu_item_new ();
+  else
+    widget = gtk_menu_item_new_with_label (str);
+
   gtk_widget_show (widget);
   gdk_threads_leave ();
 
