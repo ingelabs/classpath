@@ -1,5 +1,11 @@
 2004-07-08  Ito Kazumitsu  <kaz@maczuka.gcd.org>
 
+	* java/io/File.java
+	(toURI): Use new URI(scheme, userInfo, host, port, path,
+	query, fragment).
+
+2004-07-08  Ito Kazumitsu  <kaz@maczuka.gcd.org>
+
 	* java/text/MessageFormat.java
 	(formatInternal): Append "{n}" if argument n is unavailable.
 	(format(Object, StringBuffer, FieldPosition)): This
