@@ -1,5 +1,12 @@
 2004-10-12  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/lang/SecurityManager.java
+	(checkPackageAccess, checkPackageDefinition): Pass complete
+	restriction.
+	(checkPackageList): Simplified and corrected the code.
+
+2004-10-12  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/util/Date.java
 	(Date(int,int,int), Date(int,int,int,int,int)): Delegate to other
 	constructor.
