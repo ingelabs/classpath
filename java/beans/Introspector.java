@@ -158,7 +158,6 @@ import gnu.java.lang.*;
 public class Introspector {
 	static String[] beanInfoSearchPath = {"gnu.java.beans.info", "sun.beans.infos"};
 	static Hashtable beanInfoCache = new Hashtable();
-	static BeanInfo theSimpleBeanInfo = new SimpleBeanInfo();
 
 	/** Get the BeanInfo for class <CODE>beanClass</CODE>,
 	 ** first by looking for explicit information, next by
@@ -169,6 +168,7 @@ public class Introspector {
 	 **/
 	public static BeanInfo getBeanInfo(Class beanClass) throws IntrospectionException {
 		BeanInfo cachedInfo;
+		synchronized(beanClass) {
 		cachedInfo = (BeanInfo)beanInfoCache.get(beanClass);
 		if(cachedInfo != null) {
 			return cachedInfo;
@@ -176,6 +176,7 @@ public class Introspector {
 		cachedInfo = getBeanInfo(beanClass,null);
 		beanInfoCache.put(beanClass,cachedInfo);
 		return cachedInfo;
+		}
 	}
 
 	/** Get the BeanInfo for class <CODE>beanClass</CODE>,
@@ -188,11 +189,6 @@ public class Introspector {
 	 ** @return the BeanInfo object representing the class.
 	 **/
 	public static BeanInfo getBeanInfo(Class beanClass, Class stopClass) throws IntrospectionException {
-		if(beanClass == null) {
-			return null;
-		}
-		synchronized(beanClass) {
-
 		ExplicitInfo explicit = new ExplicitInfo(beanClass,stopClass);
 
 		IntrospectionIncubator ii = new IntrospectionIncubator();
@@ -243,7 +239,6 @@ public class Introspector {
 		currentInfo.setIcons(explicit.im);
 
 		return currentInfo.getBeanInfo();
-		} // end synchronized(beanClass)
 	}
 
 	/** Get the search path for BeanInfo classes.
