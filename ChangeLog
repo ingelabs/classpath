@@ -1,5 +1,22 @@
 2003-06-08  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/Frame.java
+	(setMaximizedBounds): Implemented.
+	* java/awt/Graphics.java
+	(drawRoundRect): Removed. This was never in the official JDK API.
+	(drawChars): Likewise.
+	(drawString): Removed commented drawString.
+	* java/awt/Menu.java
+	(cound): Removed. This was never in the official JDK API.
+	* javax/swing/AbstractAction.java:
+	Reformatted.
+	(actionPerformed): Removed. This was never in the official JDK API.
+	* javax/swing/AbstractListModel.java
+	(getElementAt): Removed. This was never in the official JDK API.
+	(getSize): Likewise.
+
+2003-06-08  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/PrintStream.java:
 	Merged copright year from libgcj.
 	* java/security/Security.java:
