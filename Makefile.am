@@ -6,3 +6,6 @@ native: lib
 
 EXTRA_DIST = BUGS THANKYOU
 
+dist-hook:
+	cp -R $(top_srcdir)/include $(top_distdir)
+
