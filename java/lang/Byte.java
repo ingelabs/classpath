@@ -203,7 +203,7 @@ public final class Byte extends Number implements Comparable
    * Behaves like <code>compareTo(java.lang.Byte)</code> unless the Object
    * is not a <code>Byte</code>.  Then it throws a 
    * <code>ClassCastException</code>.
-   * @throw ClassCastException if the argument is not a <code>Byte</code>.
+   * @exception ClassCastException if the argument is not a <code>Byte</code>.
    */
   public int compareTo(Object o)
     {
