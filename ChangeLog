@@ -1,5 +1,9 @@
 2004-12-13  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JPasswordField.java: Updated javadocs.
+
+2004-12-13  Michael Koch  <konqueror@gmx.de>
+
 	* include/gnu_java_awt_peer_gtk_GtkWindowPeer.h:
 	Regenerated.
 
