@@ -1,3 +1,10 @@
+2005-03-19  Audrius Meskauskas  <audriusa@bluewin.ch>
+
+	* org/omg/CORBA/AnySeqHolder.java,
+	org/omg/CORBA/AnySeqHelper.java,
+	org/omg/CORBA/CompletionStatusHelper.java:
+	New files.
+
 2005-03-18  Mark Wielaard  <mark@klomp.org>
 
 	* doc/www/downloads/downloads.wml: Add 0.14.
