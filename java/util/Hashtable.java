@@ -829,7 +829,8 @@ public class Hashtable extends Dictionary
    * @return the matching entry, if found, or null
    * @see #entrySet()
    */
-  private HashEntry getEntry(Object o)
+  // Package visible, for use in nested classes.
+  HashEntry getEntry(Object o)
   {
     if (! (o instanceof Map.Entry))
       return null;

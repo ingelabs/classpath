@@ -1,3 +1,13 @@
+2002-05-06  Eric Blake  <ebb9@email.byu.edu>
+
+	* Makefile.am (SUBDIRS): Alphabetize.
+	* java/util/AbstractList.java (SubList): Increase member
+	visibility for fewer accessor methods.
+	* java/util/Hashmap.java (getEntry): Ditto.
+	* java/util/Hashtable.java (getEntry): Ditto.
+	* java/util/LinkedList.java (getEntry, removeEntry): Ditto.
+	* java/util/WeakHashMap.java (buckets, internalRemove): Ditto.
+
 2002-05-06  Mark Wielaard <mark@klomp.org>
 
 	* java/util/regex/PatternSyntaxException.java: package java.util.regex,
@@ -139,33 +149,34 @@
 
 2002-05-05  C. Brian Jones <cbj@gnu.org>
 
-        * doc/www.gnu.org/home.wml: Announcements section removed; we use
-        the News section of Savannah instead.  Old announcements linked
-        under documentation.
-        Status information will be transitioning to Savannah Tasks system.
-        Clarified affect of Classpath license upon JVM license.
-        Added project menu bar from Savannah to top of web page.
-        Removed mailing list information on this page, it is more detailed
-        on the Lists link at the top of the page.
-        Last modified author update
-        * doc/www.gnu.org/announce/announcements.wml: last modified author
-        * doc/www.gnu.org/include/macros.wml (header): Moved title to
-        the right of droplet and enlarged text.
-        Updated copyright date.
-        * BUGS: update URL for submitting bugs
-        * HACKING: update date; clarify via punctuation modification of
-        vm/reference classes.
-        * configure.in: added --enable-gtk-peer from Carlos Cavanna
-	Updated version to 0.04; configure java/util/logging, java/util/regex
-        * native/Makefile.am: SUBDIRS typo fixed
-        * native/jni/Makefile.am: SUBDIRS conditionally defined based on
-        --enable-gtk-peer
-        * INSTALL: update with mention of --enable-gtk-peer, typo fixed
-        * NEWS: updated for 0.04 release
-        * README: updated with AegisVM, note failure to run with ORP 1.0.9
-        * TODO: removed duplicate information on where packages currently
-        stand, too hard to keep up to date in multiple places.
-        * THANKYOU: add Carlos Cavanna
+	* doc/www.gnu.org/home.wml: Announcements section removed; we use
+	the News section of Savannah instead.  Old announcements linked
+	under documentation.
+	Status information will be transitioning to Savannah Tasks system.
+	Clarified affect of Classpath license upon JVM license.
+	Added project menu bar from Savannah to top of web page.
+	Removed mailing list information on this page, it is more detailed
+	on the Lists link at the top of the page.
+	Last modified author update
+	* doc/www.gnu.org/announce/announcements.wml: last modified author
+	* doc/www.gnu.org/include/macros.wml (header): Moved title to
+	the right of droplet and enlarged text.
+	Updated copyright date.
+	* BUGS: update URL for submitting bugs
+	* HACKING: update date; clarify via punctuation modification of
+	vm/reference classes.
+	* configure.in: added --enable-gtk-peer from Carlos Cavanna
+	Updated version to 0.04; configure java/util/logging,
+	java/util/regex
+	* native/Makefile.am: SUBDIRS typo fixed
+	* native/jni/Makefile.am: SUBDIRS conditionally defined based on
+	--enable-gtk-peer
+	* INSTALL: update with mention of --enable-gtk-peer, typo fixed
+	* NEWS: updated for 0.04 release
+	* README: updated with AegisVM, note failure to run with ORP 1.0.9
+	* TODO: removed duplicate information on where packages currently
+	stand, too hard to keep up to date in multiple places.
+	* THANKYOU: add Carlos Cavanna
 	* java/util/logging/Makefile.am: new file
 	* java/util/regex/Makefile.am: new file
 	* java/util/regex/.cvsignore: new file

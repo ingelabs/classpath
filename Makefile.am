@@ -1,6 +1,7 @@
 ## Input file for automake to generate the Makefile.in used by configure
 
-SUBDIRS = lib native doc resource com gnu java vm javax
+# lib first, to compile .class files before native code
+SUBDIRS = lib com doc gnu java javax native resource vm
 
 native: lib
 

@@ -1,5 +1,5 @@
 /* AbstractList.java -- Abstract implementation of most of List
-   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -613,19 +613,21 @@ while (i.hasNext())
 
 /**
  * This class follows the implementation requirements set forth in
- * {@link AbstractList#subList(int, int)}. Some compilers have problems
- * with AbstractList.this.modCount if this class is nested in AbstractList,
- * even though the JLS defines that to be legal, so we make it a top-level
- * class.
+ * {@link AbstractList#subList(int, int)}. It matches Sun's implementation
+ * by using a non-public top-level class in the same package.
  *
  * @author Original author unknown
  * @author Eric Blake <ebb9@email.byu.edu>
  */
 class SubList extends AbstractList
 {
-  private final AbstractList backingList;
-  private final int offset;
-  private int size;
+  // Package visible, for use by iterator.
+  /** The original list. */
+  final AbstractList backingList;
+  /** The index of the first element of the sublist. */
+  final int offset;
+  /** The size of the sublist. */
+  int size;
 
   /**
    * Construct the sublist.
@@ -649,8 +651,8 @@ class SubList extends AbstractList
    * @throws ConcurrentModificationException if the backing list has been
    *         modified externally to this sublist
    */
-  // This will get inlined, since it is private.
-  private void checkMod()
+  // This can be inlined. Package visible, for use by iterator.
+  void checkMod()
   {
     if (modCount != backingList.modCount)
       throw new ConcurrentModificationException();

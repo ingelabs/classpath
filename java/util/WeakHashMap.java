@@ -506,9 +506,10 @@ public class WeakHashMap extends AbstractMap implements Map
   private final WeakEntrySet theEntrySet;
 
   /**
-   * The hash buckets.  These are linked lists.
+   * The hash buckets.  These are linked lists. Package visible for use in
+   * nested classes.
    */
-  private WeakBucket[] buckets;
+  WeakBucket[] buckets;
 
   /**
    * Creates a new weak hash map with default load factor and default
@@ -679,10 +680,12 @@ public class WeakHashMap extends AbstractMap implements Map
 
   /**
    * Removes a bucket from this hash map, if it wasn't removed before
-   * (e.g. one time through rehashing and one time through reference queue)
+   * (e.g. one time through rehashing and one time through reference queue).
+   * Package visible for use in nested classes.
+   *
    * @param bucket the bucket to remove.
    */
-  private void internalRemove(WeakBucket bucket)
+  void internalRemove(WeakBucket bucket)
   {
     int slot = bucket.slot;
     if (slot == -1)
