@@ -1,6 +1,10 @@
+2002-09-10  C. Scott Ananian <cananian@lesser-magoo.lcs.mit.edu>
+
+	* vm/reference/java/lang/Thread.java: Fix comment threat -> thread.
+
 2002-09-10  Mark Wielaard  <mark@klomp.org>
 
-	* vm/reference//java/lang/VMObject.java (getClass): Removed.
+	* vm/reference/java/lang/VMObject.java (getClass): Removed.
 
 2002-09-10  Mark Wielaard  <mark@klomp.org>
 

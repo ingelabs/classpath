@@ -286,7 +286,7 @@ public class Thread implements Runnable
    * Yield to another thread. The Thread will not lose any locks it holds
    * during this time. There are no guarantees which thread will be
    * next to run, and it could even be this one, but most VMs will choose
-   * the highest priority threat that has been waiting longest.
+   * the highest priority thread that has been waiting longest.
    */
   public static native void yield();
 
@@ -294,7 +294,7 @@ public class Thread implements Runnable
    * Suspend the current Thread's execution for the specified amount of
    * time. The Thread will not lose any locks it has during this time. There
    * are no guarantees which thread will be next to run, but most VMs will
-   * choose the highest priority threat that has been waiting longest.
+   * choose the highest priority thread that has been waiting longest.
    *
    * @param ms the number of milliseconds to sleep, or 0 for forever
    * @throws InterruptedException if the Thread is interrupted; it's
@@ -311,7 +311,7 @@ public class Thread implements Runnable
    * Suspend the current Thread's execution for the specified amount of
    * time. The Thread will not lose any locks it has during this time. There
    * are no guarantees which thread will be next to run, but most VMs will
-   * choose the highest priority threat that has been waiting longest.
+   * choose the highest priority thread that has been waiting longest.
    *
    * <p>Note that 1,000,000 nanoseconds == 1 millisecond, but most VMs do
    * not offer that fine a grain of timing resolution. Besides, there is
