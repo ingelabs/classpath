@@ -1,3 +1,21 @@
+2004-09-06  Jeroen Frijters  <jeroen@frijters.net>
+
+	* gnu/java/io/EncodingManager.java
+	(decoder_cons): Removed.
+	(encoder_cons): Removed.
+	(getSystemProperty): New method. Replaced all direct calls to
+	System.getProperty with calls to this new helper that goes
+	via AccessController.doPrivileged.
+	(findDecoderConstructor): Removed unused caching support.
+	(findEncoderConstructor): Removed unused caching support.
+	(getDecoder(String,boolean)): Removed unused method.
+	(getDecoder(InputStream)): Added exception chaining.
+	(getDecoder(InputStream,String,boolean)): Removed unused method.
+	(getEncoder(String,boolean)): Removed unused method.
+	(getEncoder(OutputStream)): Added exception chaining.
+	(getEncoder(OutputStream,String,boolean)): Removed unused method.
+	(getEncoder(OutputStream,String)): Added exception chaining.
+
 2004-09-05  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* javax/swing/AbstractButton.java
