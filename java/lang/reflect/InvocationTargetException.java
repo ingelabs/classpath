@@ -30,45 +30,62 @@ package java.lang.reflect;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 
-/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
- * "The Java Language Specification", ISBN 0-201-63451-1
- * Status:  Believed complete and correct.
- */
-
 /**
  * InvocationTargetException is sort of a way to "wrap" whatever exception 
- * comes up when a method or constructor is called via Reflection.
+ * comes up when a method or constructor is called via Reflection. As of
+ * JDK 1.4, it was retrofitted to match the exception chaining of all other
+ * exceptions, but <code>getTargetException()</code> still works.
  *
  * @author John Keiser
- * @version 1.1.0, 31 May 1998
  * @author Tom Tromey <tromey@cygnus.com>
- * @date December 12, 1998
- *
+ * @author Eric Blake <ebb9@email.byu.edu>
  * @see Method#invoke(Object,Object[])
  * @see Constructor#newInstance(Object[])
+ * @since 1.1
+ * @status stuck at 1.3; awaiting exception chaining in Throwable
  */
 
-public class InvocationTargetException extends Exception 
+public class InvocationTargetException
+  extends Exception 
 {
-  static final long serialVersionUID = 4085088731926701167L;
+  /**
+   * Compatible with JDK 1.1.
+   */
+  private static final long serialVersionUID = 4085088731926701167L;
 
-  private Throwable target = null;
-  
+  /**
+   * The chained exception. This field is only around for serial compatibility.
+   * @serial the chained exception
+   */
+  private final Throwable target;
+
+  /**
+   * Construct an exception with null as the cause.
+   */
   protected InvocationTargetException() 
-    {
-      super();
-    }
+  {
+    // XXX Use this implementation when Throwable is ready.
+    // this(null);
+
+    super();
+    target = null;
+  }
   
   /**
    * Create an <code>InvocationTargetException</code> using another 
    * exception.
+   *
    * @param targetException the exception to wrap
    */
   public InvocationTargetException(Throwable targetException) 
-    {
-      super(targetException.toString());
-      target = targetException;
-    }
+  {
+    // XXX Use this implementation when Throwable is ready.
+    // super(targetException);
+    // target = targetException;
+
+    super(targetException.toString());
+    target = targetException;
+  }
   
   /** 
    * Create an <code>InvocationTargetException</code> using another 
@@ -78,51 +95,34 @@ public class InvocationTargetException extends Exception
    * @param err an extra reason for the exception-throwing
    */
   public InvocationTargetException(Throwable targetException, String err) 
-    {
-      super(err);
-      target = targetException;
-    }
-  
+  {
+    // XXX Use this implementation when Throwable is ready.
+    // super(err, targetException);
+    // target = targetException;
+
+    super(err);
+    target = targetException;
+  }
+
   /**
    * Get the wrapped (targeted) exception.
-   * 
+   *
    * @return the targeted exception.
+   * @see #getCause()
    */
   public Throwable getTargetException() 
-    {
-      return target;
-    }
+  {
+    return target;
+  }
 
-  public void printStackTrace()
-    {
-      if (target == null)
-	super.printStackTrace();
-      else
-      {
-	System.err.print(this.getClass() + ": ");
-	target.printStackTrace();
-      }
-    }
-
-  public void printStackTrace(PrintStream ps)
-    {
-      if (target == null)
-	super.printStackTrace(ps);
-      else
-      {
-	ps.print(this.getClass() + ": ");
-	target.printStackTrace(ps);
-      }
-    }
-
-  public void printStackTrace(PrintWriter pw)
-    {
-      if (target == null)
-	super.printStackTrace(pw);
-      else
-      {
-	pw.print(this.getClass() + ": ");
-	target.printStackTrace(pw);
-      }
-    }
+  /**
+   * Returns the cause of this exception (which may be null).
+   *
+   * @return the cause.
+   * @since 1.4
+   */
+  public Throwable getCause()
+  {
+    return target;
+  }
 }

@@ -1,3 +1,32 @@
+2001-10-20  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/lang/reflect/AccessibleObject.java: Improve javadoc.
+	(secureSetAccessible): Add method to perform check for
+	Class Constructors and AccessibleObject accessors.
+	* java/lang/reflect/Array.java: Reindent and comment, add
+	necessary exception checking throughout.
+	(newInstance): Check for Object[] first, not last.
+	(getLength): Implement in Java, rather than native.
+	(objectClass): Remove dead code.
+	(createMultiArray): Rename from createDimensionedArray.
+	* java/lang/reflect/InvocationHandler.java: New file.
+	* java/lang/reflect/InvocationTargetException.java: Reindent and
+	comment.
+	(printStackTrace): Remove, in anticipation of 1.4 compatibility.
+	(getCause): Add, in anticipation of 1.4 compatibility.
+	(serialVersionUID): Make private.
+	* java/lang/reflect/Makefile.am: Update for new files.
+	* java/lang/reflect/Member.java: Reindent and comment.
+	* java/lang/reflect/Modifier.java: Improve javadoc.
+	(toString(int, StringBuffer)): Strip final space only if the
+	buffer was modified.
+	* java/lang/reflect/Proxy.java: New file.
+	* java/lang/reflect/ReflectPermission.java: Improve javadoc.
+	(serialVersionUID): Add missing field.
+	* java/lang/reflect/UndeclaredThrowableException.java: New file.
+	* gnu/classpath/Configuration.java.in: Add options for use by
+	java.lang.reflect.Proxy.
+
 2001-10-19  Eric Blake  <ebb9@email.byu.edu>
 
 	* vm/reference/java/lang/reflect/Field.java: Reindent and comment,

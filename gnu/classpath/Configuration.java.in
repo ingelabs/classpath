@@ -1,5 +1,5 @@
 /* gnu.classpath.Configuration
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -52,4 +52,31 @@ public interface Configuration
    * not require additional shared libraries to be loaded.
    */
   boolean INIT_LOAD_LIBRARY = @INIT_LOAD_LIBRARY@;
+
+  /**
+   * Set to true if the VM provides a native method to implement
+   * Proxy.getProxyClass completely, including argument verification.
+   * If this is true, HAVE_NATIVE_GET_PROXY_DATA and
+   * HAVE_NATIVE_GENERATE_PROXY_CLASS should be false.
+   * @see java.util.reflect.Proxy
+   */
+  boolean HAVE_NATIVE_GET_PROXY_CLASS = false;
+
+  /**
+   * Set to true if the VM provides a native method to implement
+   * the first part of Proxy.getProxyClass: generation of the array
+   * of methods to convert, and verification of the arguments.
+   * If this is true, HAVE_NATIVE_GET_PROXY_CLASS should be false.
+   * @see java.util.reflect.Proxy
+   */
+  boolean HAVE_NATIVE_GET_PROXY_DATA = false;
+
+  /**
+   * Set to true if the VM provides a native method to implement
+   * the second part of Proxy.getProxyClass: conversion of an array of
+   * methods into an actual proxy class.
+   * If this is true, HAVE_NATIVE_GET_PROXY_CLASS should be false.
+   * @see java.util.reflect.Proxy
+   */
+  boolean HAVE_NATIVE_GENERATE_PROXY_CLASS = false;
 }
