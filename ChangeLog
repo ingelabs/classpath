@@ -1,4 +1,10 @@
-2003-11-21  Jeroen Frijters <jeroen@frijters.net>
+2003-11-21  Mark Wielaard  <mark@klomp.org>
+
+	* gnu/java/awt/peer/gtk/Makefile.am (EXTRA_DIST): Add
+	GdkClasspathFontPeerMetrics.java.
+
+2003-11-21  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/lang/Thread.java (start): Throw IllegalThreadStateException
 	instead of IllegalStateException.
         * vm/reference/java/lang/Runtime.java (exit): Moved shutdown hook

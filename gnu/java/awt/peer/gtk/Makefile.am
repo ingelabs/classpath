@@ -2,6 +2,7 @@
 
 EXTRA_DIST = \
 	GdkClasspathFontPeer.java \
+	GdkClasspathFontPeerMetrics.java \
 	GdkFontMetrics.java \
 	GdkGlyphVector.java \
 	GdkGraphics.java \
