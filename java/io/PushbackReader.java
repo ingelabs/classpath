@@ -114,6 +114,35 @@ PushbackReader(Reader in, int bufsize)
  */
 
 /**
+  * This method closes the stream and frees any associated resources.
+  *
+  * @exception IOException If an error occurs.
+  */
+public void
+close() throws IOException
+{
+  super.close();
+}
+
+/*************************************************************************/
+
+/**
+  * This method throws an exception when called since this class does
+  * not support mark/reset.
+  *
+  * @param read_limit Not used.
+  *
+  * @exception IOException Always thrown to indicate mark/reset not supported.
+  */
+public void
+mark(int read_limit) throws IOException
+{
+  throw new IOException("Mark not supported in this class");
+}
+
+/*************************************************************************/
+
+/**
   * This method returns <code>false</code> to indicate that it does not support
   * mark/reset functionality.
   *
