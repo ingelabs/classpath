@@ -37,6 +37,7 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkTextComponentPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkTextFieldPeer.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkToolkit.h \
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkWindowPeer.h \
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.h \
 $(top_srcdir)/include/gnu_java_net_PlainDatagramSocketImpl.h \
 $(top_srcdir)/include/gnu_java_net_PlainSocketImpl.h \
 $(top_srcdir)/include/gnu_java_nio_NIOServerSocket.h \
@@ -127,6 +128,8 @@ $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkTextFieldPeer.h: $(top_srcdir)/gn
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkTextFieldPeer
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkToolkit.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkToolkit.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkToolkit
+$(top_srcdir)/include/gnu_java_awt_peer_gtk_GThreadNativeMethodRunner.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GThreadNativeMethodRunner.java
+	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GThreadNativeMethodRunner
 $(top_srcdir)/include/gnu_java_awt_peer_gtk_GtkWindowPeer.h: $(top_srcdir)/gnu/java/awt/peer/gtk/GtkWindowPeer.java
 	$(JAVAH) -o $@ gnu.java.awt.peer.gtk.GtkWindowPeer
 $(top_srcdir)/include/gnu_java_net_PlainDatagramSocketImpl.h: $(top_srcdir)/gnu/java/net/PlainDatagramSocketImpl.java
