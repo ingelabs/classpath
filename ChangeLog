@@ -1,5 +1,9 @@
 2003-10-20  Michael Koch  <konqueror@gmx.de>
 
+	* gnu/java/nio/SelectorImpl.java: Reformated.
+
+2003-10-20  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/SocketChannelImpl.java
 	(connected): Removed. Use socket.isConnected() instead.
 
