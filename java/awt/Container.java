@@ -1863,8 +1863,9 @@ class LightweightDispatcher implements Serializable
       {
         candidate =
           SwingUtilities.getDeepestComponentAt(parent, p.x, p.y);
-        if (candidate == null)
+        if (candidate == null || (candidate.eventMask & me.getID()) == 0)
         {
+          candidate = null;
           p = SwingUtilities.convertPoint(parent, p.x, p.y, parent.parent);
           parent = parent.parent;
         }

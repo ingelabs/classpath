@@ -1,3 +1,24 @@
+2004-07-31  Kim Ho  <kho@redhat.com>
+
+	* java/awt/Container.java:
+	(acquireComponentForMouseEvent): Respect
+	the event mask when looking for candidate.
+	* javax/swing/JComponent.java:
+	Remove toolTip field.
+	(createToolTip): Create a tooltip on demand.
+	(setToolTipText): Register with the ToolTipManager.
+	(getToolTipText(MouseEvent)): Return getToolTipText().
+	* javax/swing/JToolTip.java: Implement.
+	* javax/swing/Timer.java: Jalopy.
+	(restart): Call stop, then start.
+	(stop): Interrupt the timer rather than wait for
+	the timer to come to a stop naturally.
+	* javax/swing/ToolTipManager.java: Implement.
+	* javax/swing/plaf/basic/BasicLookAndFeel.java:
+	Change ToolTip.background color.
+	* javax/swing/plaf/basic/BasicToolTipUI.java:
+	Implement.
+
 2004-07-31  Mark Wielaard  <mark@klomp.org>
 
 	* include/Makefile.am: Add rules to generate
