@@ -1,5 +1,5 @@
 /* SocketInputStream.java -- An InputStream for Sockets
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -31,10 +31,8 @@ import java.io.InputStream;
 import java.io.IOException;
 
 /**
-  * This class contains an implementation of InputStream for sockets.  It
-  * in an internal only class used by PlainSocketImpl.
-  *
-  * @version 0.5
+  * This class contains an implementation of <code>InputStream</code> for 
+  * sockets.  It in an internal only class used by <code>PlainSocketImpl</code>.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
@@ -50,7 +48,7 @@ class SocketInputStream extends InputStream
 /**
   * The PlainSocketImpl object this stream is associated with
   */
-protected PlainSocketImpl impl;
+private PlainSocketImpl impl;
 
 /*************************************************************************/
 
@@ -106,7 +104,6 @@ markSupported()
 public void
 mark(int readlimit)
 {
-  ;
 }
 
 /*************************************************************************/

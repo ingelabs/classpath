@@ -1,5 +1,5 @@
 /* SocketOutputStream.java -- OutputStream for PlainSocketImpl
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998,2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -24,18 +24,16 @@ resulting executable to be covered by the GNU General Public License.
 This exception does not however invalidate any other reasons why the
 executable file might be covered by the GNU General Public License. */
 
-
 package java.net;
 
 import java.io.OutputStream;
 import java.io.IOException;
 
 /**
-  * This class is used internally by PlainSocketImpl to be the OutputStream
-  * subclass returned by its getOutputStream method.  It expects only to
-  * be used in that context.
-  *
-  * @version 0.5
+  * This class is used internally by <code>PlainSocketImpl</code> to be the 
+  * <code>OutputStream</code> subclass returned by its 
+  * <code>getOutputStream method</code>.  It expects only to  be used in that 
+  * context.
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
@@ -51,7 +49,7 @@ class SocketOutputStream extends OutputStream
 /**
   * The PlainSocketImpl object this stream is associated with
   */
-protected PlainSocketImpl impl;
+private PlainSocketImpl impl;
 
 /*************************************************************************/
 
