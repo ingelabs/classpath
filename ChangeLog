@@ -1,3 +1,13 @@
+2004-04-18  Mark Wielaard  <mark@klomp.org>
+
+	* java/io/File.java (canWrite): Only do checkWrite() security
+	check, use internal methods for actual actions.
+	(createTempFile): Don't do security checks for temp files that
+	won't be created.
+	(setReadOnly): Do checkWrite() security check before trying to
+	do anything else.
+	(renameTo): Add checkWrite() security check for destination file.
+
 2004-04-18  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/JLayeredPane.java

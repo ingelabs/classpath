@@ -173,22 +173,21 @@ public class File implements Serializable, Comparable
    */
   public boolean canWrite()
   {
-    // We still need to do a SecurityCheck since exists() only checks
-    // for read access
+    // First do a SecurityCheck before doing anything else.
     checkWrite();
      
     // Test for existence.  This is required by the spec
-    if (!exists())
+    if (!existsInternal(path))
       return false;
 
-    if (!isDirectory())
+    if (!isDirectoryInternal(path))
       return canWriteInternal(path);
     else
       try
         {
           /* If the separator is '\' a DOS-style-filesystem is assumed
              and a short name is used, otherwise use a long name.
-             WARNGIN: some implementation of DOS-style-filesystems also
+             WARNING: some implementation of DOS-style-filesystems also
              accept '/' as separator. In that case the following code
              will fail.
           */
@@ -961,10 +960,10 @@ public class File implements Serializable, Comparable
           throw new IOException("Cannot determine system temporary directory"); 
 	
         directory = new File(dirname);
-        if (!directory.exists())
+        if (!directory.existsInternal(directory.path))
           throw new IOException("System temporary directory "
                                 + directory.getName() + " does not exist.");
-        if (!directory.isDirectory())
+        if (!directory.isDirectoryInternal(directory.path))
           throw new IOException("System temporary directory "
                                 + directory.getName()
                                 + " is not really a directory.");
@@ -994,7 +993,7 @@ public class File implements Serializable, Comparable
             String filename = prefix + System.currentTimeMillis() + suffix;
             file = new File(directory, filename);
           }
-        while (file.exists());
+        while (file.existsInternal(file.path));
       }
     else
       {
@@ -1011,7 +1010,7 @@ public class File implements Serializable, Comparable
             String filename = prefix + java.lang.Integer.toHexString(n) + suffix;
             file = new File(directory, filename);
           }
-        while (file.exists());
+        while (file.existsInternal(file.path));
       }
 
     // Verify that we are allowed to create this file
@@ -1020,6 +1019,7 @@ public class File implements Serializable, Comparable
       sm.checkWrite(file.getAbsolutePath());
 
     // Now create the file and return our file object
+    // XXX - FIXME race condition.
     createInternal(file.getAbsolutePath()); 
     return file;
   }
@@ -1045,13 +1045,13 @@ public class File implements Serializable, Comparable
    */
   public boolean setReadOnly()
   {
+    // Do a security check before trying to do anything else.
+    checkWrite();
+
     // Test for existence.
-    if (!exists())
+    if (!existsInternal(path))
       return false;
 
-    // We still need to do a SecurityCheck since exists() only checks
-    // for read access
-    checkWrite();
     return setReadOnlyInternal(path);
   }
 
@@ -1192,6 +1192,7 @@ public class File implements Serializable, Comparable
   public synchronized boolean renameTo(File dest)
   {
     checkWrite();
+    dest.checkWrite();
     // Call our native rename method
     return renameToInternal(path, dest.path);
   }
