@@ -1,5 +1,10 @@
 2005-03-07  Jeroen Frijters  <jeroen@frijters.net>
 
+	* java/io/DataInputStream.java (ignoreInitialNewline): Removed
+	(readLine): Changed newline handling.
+
+2005-03-07  Jeroen Frijters  <jeroen@frijters.net>
+
 	* java/net/URI.java (AUTHORITY_REGEXP): Corrected regexp.
 	(AUTHORITY_USERINFO_GROUP,AUTHORITY_HOST_GROUP,AUTHORITY_PORT_GROUP):
 	Adjusted to match new regexp.
