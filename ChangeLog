@@ -1,5 +1,9 @@
 2005-01-21  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/DebugGraphics.java: Mostly implemented.
+
+2005-01-21  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/SwingUtilities.java
 	(findFocusOwner): New method.
 
