@@ -1,5 +1,10 @@
 2002-02-15  Wu Gansha  <gansha.wu@intel.com>
 
+	* gnu/java/net/protocol/file/FileURLConnection.java (connect): check
+	and set connected field.
+
+2002-02-15  Wu Gansha  <gansha.wu@intel.com>
+
 	* java/lang/ClassLoader.java
 	(defineClass(String,byte[],int,int, ProtectionDomain)): removed an
 	infinite recursive call.

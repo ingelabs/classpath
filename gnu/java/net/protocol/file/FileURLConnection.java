@@ -85,7 +85,6 @@ FileURLConnection(java.net.URL url)
 }
 
 /*************************************************************************/
-
 /*
  * Instance Methods
  */
@@ -96,7 +95,11 @@ FileURLConnection(java.net.URL url)
 public void
 connect() throws java.io.IOException
 {
-  file = new java.io.File(getURL().getFile());
+  if (!connected)
+  {
+    file = new java.io.File(getURL().getFile());
+    connected = true;
+  }
 }
 
 /*************************************************************************/
