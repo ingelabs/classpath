@@ -1,0 +1,9 @@
+All html files are automagically generated from meta-html source
+files every night.
+
+If you wish to generate/view the HTML files locally, you'll need to
+have metahtml and texi2html installed.  To make the HTML files, just
+type "make".
+
+Questions, comments, or gripes about this setup can be sent to
+rao@gnu.org.
