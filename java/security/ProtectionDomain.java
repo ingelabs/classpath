@@ -210,7 +210,7 @@ public class ProtectionDomain
   {
     if (staticBinding)
       return (perms == null ? false : perms.implies(permission));
-    // else dynamically bound.  do we have it?
+    // Else dynamically bound.  Do we have it?
     // NOTE: this will force loading of Policy.currentPolicy
     return Policy.getCurrentPolicy().implies(this, permission);
   }

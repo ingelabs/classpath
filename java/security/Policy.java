@@ -200,9 +200,9 @@ public abstract class Policy
   }
 
   /**
-   * Tests if <code>currentPolicy</code> is not <code>null</code>, thus allowing
-   * clients to not force loading of any policy provider. Â needed by {@link
-   * ProtectionDomain}.
+   * Tests if <code>currentPolicy</code> is not <code>null</code>,
+   * thus allowing clients to not force loading of any policy
+   * provider; needed by {@link ProtectionDomain}.
    */
   static boolean isLoaded()
   {

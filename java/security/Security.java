@@ -379,22 +379,22 @@ public final class Security extends Object
     secprops.put(key, datnum);
   }
 
- /**
-  * Returns a Set of Strings containing the names of all available algorithms
-  * or types for the specified Java cryptographic service (e.g., Signature,
-  * MessageDigest, Cipher, Mac, KeyStore). Returns an empty Set if there is no
-  * provider that supports the specified service. For a complete list of Java
-  * cryptographic services, please see the Java Cryptography Architecture API
-  * Specification & Reference. Note: the returned set is immutable.
-  *
-  * @param serviceName the name of the Java cryptographic service (e.g.,
-  * Signature, MessageDigest, Cipher, Mac, KeyStore). Note: this parameter is
-  * case-insensitive.
-  * @return a Set of Strings containing the names of all available algorithms
-  * or types for the specified Java cryptographic service or an empty set if
-  * no provider supports the specified service.
-  * @since 1.4
-  */
+  /**
+   * Returns a Set of Strings containing the names of all available algorithms
+   * or types for the specified Java cryptographic service (e.g., Signature,
+   * MessageDigest, Cipher, Mac, KeyStore). Returns an empty Set if there is no
+   * provider that supports the specified service. For a complete list of Java
+   * cryptographic services, please see the Java Cryptography Architecture API
+   * Specification & Reference. Note: the returned set is immutable.
+   *
+   * @param serviceName the name of the Java cryptographic service (e.g.,
+   * Signature, MessageDigest, Cipher, Mac, KeyStore). Note: this parameter is
+   * case-insensitive.
+   * @return a Set of Strings containing the names of all available algorithms
+   * or types for the specified Java cryptographic service or an empty set if
+   * no provider supports the specified service.
+   * @since 1.4
+   */
   public static Set getAlgorithms(String serviceName)
   {
     HashSet result = new HashSet();
