@@ -1,3 +1,19 @@
+<newsitem date="12 Apr 2004">
+SableVM 1.1.3 released (<createlink url="http://mail.gnu.org/archive/html/classpath/2004-04/msg00228.html" name="announcement">).
+</newsitem>
+
+<newsitem date="12 Apr 2004">
+JC 1.1 released (<createlink url="http://mail.gnu.org/archive/html/classpath/2004-04/msg00226.html" name="announcement">); upgraded to GNU Classpath 0.08.
+</newsitem>
+
+<newsitem date="12 Apr 2004">
+Jikes RVM 2.3.2 released (<createlink url="http://mail.gnu.org/archive/html/classpath/2004-04/msg00225.html" name="announcement">); upgraded to GNU Classpath 0.08 and completely built with free tools!
+</newsitem>
+
+<newsitem date="8 Apr 2004">
+The big NIO patch: java.io file operations now rely on java.nio.channels
+</newsitem>
+
 <newsitem date="29 Mar 2004">
 JamVM-1.1.2 released (<createlink name="announcement" url="http://mail.gnu.org/archive/html/classpath/2004-03/msg00267.html">) 
 </newsitem>
