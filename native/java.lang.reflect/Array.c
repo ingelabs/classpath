@@ -4,7 +4,7 @@
  * Version: 1.1.0
  * Date: 2 Jun 1998
  */
-#include "Array.h"
+#include "java_lang_reflect_Array.h"
 
 /*
  * Class:     java_lang_reflect_Array

@@ -5,7 +5,7 @@
  * Date: 2 Jun 1998
  */
 
-#include "Constructor.h"
+#include "java_lang_reflect_Constructor.h"
 #include "reflect.h"
 #include <jcl.h>
 #include <native_state.h>

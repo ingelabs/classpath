@@ -5,7 +5,7 @@
  * Date: 2 Jun 1998
  */
 
-#include "Method.h"
+#include "java_lang_reflect_Method.h"
 #include "reflect.h"
 #include <jcl.h>
 #include <vmi.h>
