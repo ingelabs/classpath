@@ -20,6 +20,8 @@
 
 package java.beans;
 
+import gnu.java.lang.ClassHelper;
+
 /**
  ** PropertyEditorManager is used to find property editors
  ** for various types (not necessarily Beans).<P>
@@ -100,7 +102,7 @@ public class PropertyEditorManager {
 		} catch(ClassNotFoundException E) {
 		}
 
-		String appendName = "." + gnu.java.lang.ClassHelper.getTruncatedClassName(editedClass) + "Editor";
+		String appendName = "." + ClassHelper.getTruncatedClassName(editedClass) + "Editor";
 		synchronized(editorSearchPath) {
 			for(int i=0;i<editorSearchPath.length;i++) {
 				try {

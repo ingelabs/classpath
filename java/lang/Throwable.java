@@ -26,7 +26,7 @@ public class Throwable extends Object implements Serializable {
 	 ** @param message the message to associate with the Throwable.
 	 **/
 	public Throwable(String message) {
-		st = copyCurrentStackTrace();
+		st = StackTrace.copyCurrentStackTrace();
 		st.pop(); // Remove the Throwable <init> from the trace
 		this.message = message;
 	}
@@ -54,7 +54,7 @@ public class Throwable extends Object implements Serializable {
 	 ** @XXX find out what exactly this should look like.
 	 **/
 	public String toString() {
-		return getClass().getName() + message != null ? ": " + message : "");
+		return getClass().getName() + message != null ? ": " + message : "";
 	}
 
 	/** Print a stack trace to the standard error stream.
@@ -69,7 +69,7 @@ public class Throwable extends Object implements Serializable {
 	public void printStackTrace(PrintStream s) {
 		for(int i=st.numFrames()-1;i>=0;i++) {
 			StackFrame f = st.frameAt(i);
-			s.println("in " + f.getMethod().getName() + " at " + f.getSourceFilename() + ":" + f.getSourceLineNumber());
+			s.println("in " + f.getCalledMethod().getName() + " at " + f.getSourceFilename() + ":" + f.getSourceLineNumber());
 		}
 	}
 
@@ -79,7 +79,7 @@ public class Throwable extends Object implements Serializable {
 	public void printStackTrace(PrintWriter w) {
 		for(int i=st.numFrames()-1;i>=0;i++) {
 			StackFrame f = st.frameAt(i);
-			w.println("in " + f.getMethod().getName() + " at " + f.getSourceFilename() + ":" + f.getSourceLineNumber());
+			w.println("in " + f.getCalledMethod().getName() + " at " + f.getSourceFilename() + ":" + f.getSourceLineNumber());
 		}
 	}
 
@@ -91,7 +91,7 @@ public class Throwable extends Object implements Serializable {
 	public Throwable fillInStackTrace() {
 		st = StackTrace.copyCurrentStackTrace();
 		st.pop(); // get rid of the fillInStackTrace() call
-		return st;
+		return this;
 	}
 
 }

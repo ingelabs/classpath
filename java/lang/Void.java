@@ -1,6 +1,6 @@
 package java.lang;
 
 public final class Void {
-  public static final Class TYPE = VMClassLoader.getPrimitiveType("void");
+  public static final Class TYPE = VMClassLoader.getPrimitiveClass("void");
   private Void() { }
 }
