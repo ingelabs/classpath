@@ -1,5 +1,5 @@
 /* Arrays.java -- Utility class with methods to operate on arrays
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -1074,6 +1074,11 @@ public class Arrays
     qsort(a, 0, a.length);
   }
 
+  public static void sort(byte[] a, int fromIndex, int toIndex)
+  {
+    qsort(a, fromIndex, toIndex);
+  }
+
   private static short cmp(byte i, byte j)
   {
     return (short) (i - j);
@@ -1185,6 +1190,11 @@ public class Arrays
   public static void sort(char[]a)
   {
     qsort(a, 0, a.length);
+  }
+
+  public static void sort(char[] a, int fromIndex, int toIndex)
+  {
+    qsort(a, fromIndex, toIndex);
   }
 
   private static int cmp(char i, char j)
@@ -1301,6 +1311,11 @@ public class Arrays
     qsort(a, 0, a.length);
   }
 
+  public static void sort(double[] a, int fromIndex, int toIndex)
+  {
+    qsort(a, fromIndex, toIndex);
+  }
+
   private static double cmp(double i, double j)
   {
     return i - j;
@@ -1413,6 +1428,11 @@ public class Arrays
   public static void sort(float[]a)
   {
     qsort(a, 0, a.length);
+  }
+
+  public static void sort(float[] a, int fromIndex, int toIndex)
+  {
+    qsort(a, fromIndex, toIndex);
   }
 
   private static float cmp(float i, float j)
@@ -1528,6 +1548,11 @@ public class Arrays
     qsort(a, 0, a.length);
   }
 
+  public static void sort(int[] a, int fromIndex, int toIndex)
+  {
+    qsort(a, fromIndex, toIndex);
+  }
+
   private static long cmp(int i, int j)
   {
     return (long) i - (long) j;
@@ -1641,6 +1666,11 @@ public class Arrays
     qsort(a, 0, a.length);
   }
 
+  public static void sort(long[] a, int fromIndex, int toIndex)
+  {
+    qsort(a, fromIndex, toIndex);
+  }
+
   // The "cmp" method has been removed from here and replaced with direct
   // compares in situ, to avoid problems with overflow if the difference
   // between two numbers is bigger than a long will hold.
@@ -1752,6 +1782,11 @@ public class Arrays
   public static void sort(short[]a)
   {
     qsort(a, 0, a.length);
+  }
+
+  public static void sort(short[] a, int fromIndex, int toIndex)
+  {
+    qsort(a, fromIndex, toIndex);
   }
 
   private static int cmp(short i, short j)

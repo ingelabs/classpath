@@ -1,5 +1,14 @@
 2000-11-16  Tom Tromey  <tromey@cygnus.com>
 
+	Fixes for Java 2 compatibility:
+	* java/util/Arrays.java (sort(byte[],int,int)): New method.
+	(sort(char[],int,int)): Likewise.
+	(sort(double[],int,int)): Likewise.
+	(sort(float[],int,int)): Likewise.
+	(sort(int[],int,int)): Likewise.
+	(sort(long[],int,int)): Likewise.
+	(sort(short[],int,int)): Likewise.
+
 	Merged with libgcj:
 	* java/io/PushbackReader.java (PushbackReader): Throw correct
 	exception if buffer size not positive.
