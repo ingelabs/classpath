@@ -1,17 +1,12 @@
 package java.lang;
 
-<<<<<<< Throwable.java
 import java.io.Serializable;
 import java.io.PrintWriter;
 import java.io.PrintStream;
 import gnu.vm.stack.StackTrace;
 import gnu.vm.stack.StackFrame;
-=======
-import java.io.*;
->>>>>>> 1.2
 
 /**
-<<<<<<< Throwable.java
  ** Throwable is the superclass of all exceptions that can be raised.
  **
  ** @version 1.1.0, Oct 5 1998
@@ -98,53 +93,5 @@ public class Throwable extends Object implements Serializable {
 		st.pop(); // get rid of the fillInStackTrace() call
 		return st;
 	}
-=======
- * 
- *
- * @author Brian Jones
- */
-public class Throwable extends Object implements Serializable 
-{
-  private String message = null;
 
-  public Throwable() { }
-
-  public Throwable(String s)
-    {
-      message = s;
-    }
-
-  public String getMessage()
-    {
-      return (message);
-    }
-
-  public String getLocalizedMessage()
-    {
-      return (getMessage());
-    }
-
-  public String toString()
-    {
-      return "";
-    }
-
-  public void printStackTrace()
-    {
-      // need some VM hooks here
-    }
-
-  public void printStackTrace(PrintStream s)
-    {
-
-    }
-
-  public void printStackTrace(PrintWriter s)
-    {
-
-    }
-
-  public native Throwable fillInStackTrace();
-
->>>>>>> 1.2
 }
