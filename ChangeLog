@@ -1,3 +1,8 @@
+2004-12-07  Jeroen Frijters  <jeroen@frijters.net>
+
+	* java/beans/PropertyDescriptor.java
+	(PropertyDescriptor,setReadMethod): Set propertyType.
+
 2004-12-07  Michael Koch  <konqueror@gmx.de>
 
 	* javax/imageio/stream/FileCacheImageInputStream.java,
