@@ -4,7 +4,7 @@ SUBDIRS = lib native doc resource com gnu java vm javax
 
 native: lib
 
-EXTRA_DIST = BUGS THANKYOU
+EXTRA_DIST = HACKING BUGS THANKYOU
 
 dist-hook:
 	cp -R $(top_srcdir)/include $(top_distdir)
