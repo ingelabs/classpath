@@ -42,10 +42,8 @@ public class GdkGraphics extends Graphics
     clip.height = height;
   }
 
-  public void copyArea (int x, int y, int width, int height, int dx, int dy)
-  {
-    System.out.println ("copy area");
-  }
+  native public void copyArea (int x, int y, int width, int height, 
+			       int dx, int dy);
 
   public Graphics create ()
   {

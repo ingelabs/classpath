@@ -145,6 +145,24 @@ JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_drawRect
   gdk_threads_leave ();
 }
 
+JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_copyArea
+  (JNIEnv *env, jobject obj, jint x, jint y, 
+   jint width, jint height, jint dx, jint dy)
+{
+  struct graphics *g;
+
+  g = (struct graphics *) NSA_GET_PTR (env, obj);
+
+  gdk_threads_enter ();
+  gdk_window_copy_area ((GdkWindow *)g->drawable,
+			g->gc,
+			x + g->x_offset, y + g->y_offset,
+			(GdkWindow *)g->drawable,
+			x + g->x_offset + dx, y + g->y_offset + dy,
+			width, height);
+  gdk_threads_leave ();
+}
+
 JNIEXPORT void JNICALL Java_gnu_java_awt_peer_gtk_GdkGraphics_clearRect
   (JNIEnv *env, jobject obj, jint x, jint y, jint width, jint height)
 {
