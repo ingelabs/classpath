@@ -1,6 +1,6 @@
 /* HashMap.java -- a class providing a basic hashtable data structure,
    mapping Object --> Object
-   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -44,11 +44,11 @@ import java.io.ObjectOutputStream;
  * It uses a hash-bucket approach; that is, hash
  * collisions are handled by linking the new node off of the
  * pre-existing node (or list of nodes).  In this manner, techniques 
- * such as linear probing (which can casue primary clustering) and 
+ * such as linear probing (which can cause primary clustering) and 
  * rehashing (which does not fit very well with Java's method of 
  * precomputing hash codes) are avoided.  
  *
- * Under ideal circumstances (no collisions, HashMap offers O(1) 
+ * Under ideal circumstances (no collisions), HashMap offers O(1) 
  * performance on most operations (<pre>containsValue()</pre> is,
  * of course, O(n)).  In the worst case (all keys map to the same 
  * hash code -- very unlikely), most operations are O(n).
@@ -60,6 +60,7 @@ import java.io.ObjectOutputStream;
  * @author         Jon Zeppieri
  * @author         Jochen Hoenicke
  * @author	   Bryce McKinlay
+ * @author         Eric Blake <ebb9@email.byu.edu>
  */
 public class HashMap extends AbstractMap
   implements Map, Cloneable, Serializable
@@ -67,7 +68,7 @@ public class HashMap extends AbstractMap
   /** Default number of buckets. This is the value the JDK 1.3 uses. Some 
     * early documentation specified this value as 101. That is incorrect. */
   private static final int DEFAULT_CAPACITY = 11;  
-  /** The defaulty load factor; this is explicitly specified by the spec. */
+  /** The default load factor; this is explicitly specified by the spec. */
   private static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
   private static final long serialVersionUID = 362498820763181265L;
@@ -110,6 +111,14 @@ public class HashMap extends AbstractMap
     {
       super(key, value);
     }
+
+    Entry copy()
+    {
+      Entry e = new Entry(key, value);
+      if (next != null)
+        e.next = next.copy();
+      return e;
+    }
   }
 
   /**
@@ -132,9 +141,7 @@ public class HashMap extends AbstractMap
    */
   public HashMap(Map m)
   {
-    int size = Math.max(m.size() * 2, DEFAULT_CAPACITY);
-    buckets = new Entry[size];
-    threshold = (int) (size * loadFactor);
+    this(Math.max(m.size() * 2, DEFAULT_CAPACITY));
     putAll(m);
   }
 
@@ -343,10 +350,7 @@ public class HashMap extends AbstractMap
   public void clear()
   {
     modCount++;
-    for (int i=0; i < buckets.length; i++)
-      {
-        buckets[i] = null;
-      }
+    buckets = new Entry[buckets.length];
     size = 0;
   }
 
@@ -369,22 +373,8 @@ public class HashMap extends AbstractMap
     for (int i=0; i < buckets.length; i++)
       {
         Entry e = buckets[i];
-	Entry last = null;
-	
-	while (e != null)
-	  {
-	    if (last == null)
-	      {
-		copy.buckets[i] = new Entry(e.key, e.value);
-		last = copy.buckets[i];
-              }
-	    else		
-              {
-	        last.next = new Entry(e.key, e.value);
-		last = last.next;
-	      }
-	    e = e.next;
-	  }
+        if (e != null)
+          copy.buckets[i] = e.copy();
       }
     return copy;
   }
@@ -644,7 +634,7 @@ public class HashMap extends AbstractMap
     // entries. It is null if next() needs to find a new bucket.
     Entry next;
 
-    /* construct a new HashtableIterator with the supllied type: 
+    /* construct a new HashtableIterator with the supplied type: 
        KEYS, VALUES, or ENTRIES */
     HashIterator(int type)
     {

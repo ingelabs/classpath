@@ -1,6 +1,6 @@
 /* Hashtable.java -- a class providing a basic hashtable data structure,
    mapping Object --> Object
-   Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2000, 2001 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -64,6 +64,7 @@ import java.io.ObjectOutputStream;
  * @author      Jon Zeppieri
  * @author	Warren Levy
  * @author      Bryce McKinlay
+ * @author      Eric Blake <ebb9@email.byu.edu>
  */
 public class Hashtable extends Dictionary 
   implements Map, Cloneable, Serializable
@@ -71,7 +72,7 @@ public class Hashtable extends Dictionary
   /** Default number of buckets. This is the value the JDK 1.3 uses. Some 
     * early documentation specified this value as 101. That is incorrect. */
   private static final int DEFAULT_CAPACITY = 11;  
-  /** The defaulty load factor; this is explicitly specified by the spec. */
+  /** The default load factor; this is explicitly specified by the spec. */
   private static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
   private static final long serialVersionUID = 1421746759512286392L;
@@ -122,6 +123,14 @@ public class Hashtable extends Dictionary
         throw new NullPointerException();
       return super.setValue(newVal);
     }
+
+    Entry copy()
+    {
+      Entry e = new Entry(key, value);
+      if (next != null)
+        e.next = next.copy();
+      return e;
+    }
   }
 
   /**
@@ -144,9 +153,7 @@ public class Hashtable extends Dictionary
    */
   public Hashtable(Map m)
   {
-    int size = Math.max(m.size() * 2, DEFAULT_CAPACITY);
-    buckets = new Entry[size];
-    threshold = (int) (size * loadFactor);
+    this(Math.max(m.size() * 2, DEFAULT_CAPACITY));
     putAll(m);
   }
 
@@ -223,6 +230,10 @@ public class Hashtable extends Dictionary
    */
   public synchronized boolean contains(Object value)
   {
+    // if Hashtable is empty, this method doesn't dereference 
+    // `value' anywhere, so check for it explicitly.
+    if (value == null)
+      throw new NullPointerException();
     for (int i = 0; i < buckets.length; i++)
       {
 	Entry e = buckets[i];
@@ -389,10 +400,7 @@ public class Hashtable extends Dictionary
   public synchronized void clear()
   {
     modCount++;
-    for (int i=0; i < buckets.length; i++)
-      {
-        buckets[i] = null;
-      }
+    buckets = new Entry[buckets.length];
     size = 0;
   }
 
@@ -415,22 +423,8 @@ public class Hashtable extends Dictionary
     for (int i=0; i < buckets.length; i++)
       {
         Entry e = buckets[i];
-	Entry last = null;
-	
-	while (e != null)
-	  {
-	    if (last == null)
-	      {
-		copy.buckets[i] = new Entry(e.key, e.value);
-		last = copy.buckets[i];
-              }
-	    else		
-              {
-	        last.next = new Entry(e.key, e.value);
-		last = last.next;
-	      }
-	    e = e.next;
-	  }
+        if (e != null)
+          copy.buckets[i] = e.copy();
       }
     return copy;
   }

@@ -1,3 +1,13 @@
+2001-09-15  Eric Blake  <ebb9@email.byu.edu>
+
+	* java/util/Hashtable.java (contains): check for null
+	(Hashtable(Map)): more efficient
+	(clear): more efficient
+	(clone): more efficient, by adding Entry.copy
+	* java/util/HashMap.java (clear): more efficient
+	(HashMap(Map)): more efficient
+	(clone): more efficient, by adding Entry.copy
+
 2001-09-15  Bryce McKinlay  <bryce@waitaki.otago.ac.nz>
 
 	* java/io/File.java (File(String, String)): Correct error in
