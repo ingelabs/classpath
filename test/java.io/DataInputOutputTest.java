@@ -1,11 +1,13 @@
 /*************************************************************************
 /* DataInputOutputTest.java -- Tests Data{Input,Output}Stream's
 /*
-/* Copyright (c) 1998 by Aaron M. Renn (arenn@urbanophile.com)
+/* Copyright (c) 1998 Free Software Foundation, Inc.
+/* Written by Aaron M. Renn (arenn@urbanophile.com)
 /*
 /* This program is free software; you can redistribute it and/or modify
 /* it under the terms of the GNU General Public License as published 
-/* by the Free Software Foundation, version 2. (see COPYING)
+/* by the Free Software Foundation, either version 2 of the License, or
+/* (at your option) any later version.
 /*
 /* This program is distributed in the hope that it will be useful, but
 /* WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -24,47 +26,14 @@ import java.io.*;
 public class DataInputOutputTest
 {
 
-public static void 
-main(String[] argv)
+public static void
+runReadTest(String filename, int seq, String testname)
 {
-  System.out.println("Started test of DataInputStream and DataOutputStream");
-
   try
     {
-      System.out.println("Test 1: DataOutputStream write test");
+      System.out.println("Test " + seq + ": " + testname);
 
-      FileOutputStream fos = new FileOutputStream("dataoutput.out");
-      DataOutputStream dos = new DataOutputStream(fos);
-
-      dos.writeBoolean(true);
-      dos.writeBoolean(false);
-      dos.writeByte((byte)8);
-      dos.writeByte((byte)-122);
-      dos.writeChar((char)'a');
-      dos.writeChar((char)'\uE2D2');
-      dos.writeShort((short)32000);
-      dos.writeInt((int)8675309);
-      dos.writeLong((long)696969696969);
-      dos.writeFloat((float)3.1415);
-      dos.writeDouble((double)999999999.999);
-      dos.writeUTF("Testing code is such a boring activity but it must be done");
-      dos.writeUTF("a-->\u01FF\uA000\u6666\u0200RRR");
-      dos.close();
-
-      // We'll find out if this was really right later, but conditionally
-      // report success for now
-      System.out.println("PASSED: DataOutputStream write test");
-    }
-  catch(IOException e)
-    {
-      System.out.println("FAILED: DataOutputStream write test: " + e);
-    }
-
-  try
-    {
-      System.out.println("Test 2: DataInputStream read test");
-
-      FileInputStream fis = new FileInputStream("dataoutput-jdk.out");
+      FileInputStream fis = new FileInputStream(filename);
       DataInputStream dis = new DataInputStream(fis); 
 
       boolean passed = true;
@@ -149,14 +118,55 @@ main(String[] argv)
         }
     
       if (passed)
-        System.out.println("PASSED: DataInputStream read test");
+        System.out.println("PASSED: " + testname + " read test");
       else
-        System.out.println("FAILED: DataInputStream read test");
+        System.out.println("FAILED: " + testname + " read test");
     }
   catch (IOException e)
     {
-      System.out.println("FAILED: DataInputStream read test: " + e);
+      System.out.println("FAILED: " + testname + " read test: " + e);
     }
+
+}
+
+public static void 
+main(String[] argv)
+{
+  System.out.println("Started test of DataInputStream and DataOutputStream");
+
+  try
+    {
+      System.out.println("Test 1: DataOutputStream write test");
+
+      FileOutputStream fos = new FileOutputStream("dataoutput.out");
+      DataOutputStream dos = new DataOutputStream(fos);
+
+      dos.writeBoolean(true);
+      dos.writeBoolean(false);
+      dos.writeByte((byte)8);
+      dos.writeByte((byte)-122);
+      dos.writeChar((char)'a');
+      dos.writeChar((char)'\uE2D2');
+      dos.writeShort((short)32000);
+      dos.writeInt((int)8675309);
+      dos.writeLong((long)696969696969);
+      dos.writeFloat((float)3.1415);
+      dos.writeDouble((double)999999999.999);
+      dos.writeUTF("Testing code is such a boring activity but it must be done");
+      dos.writeUTF("a-->\u01FF\uA000\u6666\u0200RRR");
+      dos.close();
+
+      // We'll find out if this was really right later, but conditionally
+      // report success for now
+      System.out.println("PASSED: DataOutputStream write test");
+    }
+  catch(IOException e)
+    {
+      System.out.println("FAILED: DataOutputStream write test: " + e);
+    }
+
+  runReadTest("dataoutput.out", 2, "Read of JCL written data file");
+  runReadTest("dataoutput-jdk.out", 3, "Read of JDK written data file");
 
 } // main
 
