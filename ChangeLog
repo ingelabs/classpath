@@ -1,5 +1,10 @@
 2003-02-02  C. Brian Jones  <cbj@gnu.org>
 
+	* doc/www.gnu.org/home.wml: add Jikes RVM to list of JVMs; update
+	ORP information.
+
+2003-02-02  C. Brian Jones  <cbj@gnu.org>
+
 	* configure.in: updated VERSION to 0.05-beta1
 	* doc/hacking.texinfo: updated with new sections, modifications
 

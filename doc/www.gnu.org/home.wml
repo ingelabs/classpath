@@ -203,23 +203,18 @@ name="located here">.
 </td>
 </tr>
 <tr>
-<td><createlink url="http://www.intel.com/research/mrl/orp/" name="ORP"></td>
+<td><createlink url="http://kissme.sourceforge.net/" name="Kissme"></td>
 <td>
-Information about ORP
-can also be found at <createlink url="http://orp.sourceforge.net/"
-name="http://orp.sourceforge.net/">.  We're hopeful that the next
-version of ORP after 1.0.6 will allow users to optionally use GNU
-Classpath native libraries instead of those bundled with ORP.  ORP is
-the easiest VM to test GNU Classpath with including JNI native libraries
-but you must patch ORP to do so.  Information is available in the
-mailing list archives.
+This VM is almost always guaranteed to work with GNU Classpath CVS 
+source code.
 </td>
 </tr>
 <tr>
-<td><createlink url="http://kissme.sourceforge.net/" name="Kissme"></td>
+<td><createlink url="http://www-124.ibm.com/developerworks/oss/jikesrvm/" name="Jikes RVM"></td>
 <td>
-This VM is almost always guaranteed to work with GNU Classpath cvs
-source code.
+This VM now uses GNU Classpath for most of the core libraries. 
+Instructions for using this JVM with GNU Classpath CVS have been posted
+to the mailing list.
 </td>
 </tr>
 <tr>
@@ -227,6 +222,16 @@ source code.
 <td>
 This VM provides a repackaged version of GNU Classpath that aims to
 be the easiest to install and use.
+</td>
+</tr>
+<tr>
+<td><createlink url="http://www.intel.com/research/mrl/orp/" name="ORP"></td>
+<td>
+Information about ORP
+can also be found at <createlink url="http://orp.sourceforge.net/"
+name="http://orp.sourceforge.net/">.  ORP 1.10 does not work with 
+current GNU Classpath libraries.  Information is available in the
+mailing list archives.
 </td>
 </tr>
 <tr>
