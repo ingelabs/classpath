@@ -1,3 +1,8 @@
+2003-05-23  Aaron M. Renn (arenn@urbanophile.com)
+
+	* java/io/PushbackInputStream.java
+	Minor doc fixes
+
 2003-05-22  Michael Koch  <konqueror@gmx.de>
 
 	* java/lang/String.java:
