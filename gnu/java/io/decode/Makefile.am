@@ -1,7 +1,6 @@
 # automake uses this file to create Makefile.in
 
 EXTRA_DIST = \
-ChangeLog \
 Decoder.java \
 Decoder8859_1.java \
 Decoder8859_2.java \

@@ -1,4 +1,9 @@
 New in release 0.01 (2000/11/20)
+* Support for printing exceptions with Japhar 0.09 + patch included in
+  resource/japhar-0.09.patch.1.
+* Typos, assorted bugfixes.
+
+New in release 0.01 (2000/11/20)
 * More packages are included now, though many remain untested.
 * Support for Japhar 0.09 included.
 

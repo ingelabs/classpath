@@ -2,7 +2,6 @@
 
 EXTRA_DIST = \
 Array.java \
-ChangeLog \
 InvocationTargetException.java \
 Member.java \
 Modifier.java \

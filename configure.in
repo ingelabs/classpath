@@ -5,7 +5,7 @@ AC_INIT(native/java.net/javanet.c)
 AC_CANONICAL_HOST
 
 PACKAGE="classpath"
-VERSION="0.01"
+VERSION="0.02"
 LIBVERSION="0:0:0"
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
@@ -355,6 +355,7 @@ native/vmi/Makefile
 resource/Makefile
 resource/java/Makefile
 resource/java/util/Makefile
+resource/java/security/Makefile
 vm/Makefile
 vm/kaffe/Makefile
 vm/kaffe/java/Makefile

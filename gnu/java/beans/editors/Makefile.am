@@ -2,7 +2,6 @@
 
 EXTRA_DIST = \
 TODO \
-ChangeLog \
 ColorEditor.java \
 FontEditor.java \
 NativeBooleanEditor.java \

@@ -3,7 +3,6 @@
 SUBDIRS = decode encode
 
 EXTRA_DIST = \
-ChangeLog \
 ClassLoaderObjectInputStream.java \
 EncodingManager.java \
 NullOutputStream.java \

@@ -1,7 +1,6 @@
 # this file used by automake to generate Makefile.in
 
 EXTRA_DIST = \
-ChangeLog \
 Encoder.java \
 Encoder8859_1.java \
 Encoder8859_2.java \

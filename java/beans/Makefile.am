@@ -22,7 +22,6 @@ PropertyDescriptor.java \
 PropertyEditor.java \
 PropertyEditorManager.java \
 PropertyEditorSupport.java \
-ChangeLog \
 Customizer.java \
 PropertyVetoException.java \
 SimpleBeanInfo.java \

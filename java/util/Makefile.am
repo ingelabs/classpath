@@ -3,7 +3,6 @@
 SUBDIRS = jar zip
 
 EXTRA_DIST = \
-ChangeLog \
 AbstractCollection.java \
 AbstractList.java \
 AbstractMap.java \

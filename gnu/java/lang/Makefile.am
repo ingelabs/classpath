@@ -3,7 +3,6 @@
 SUBDIRS = reflect
 
 EXTRA_DIST = \
-ChangeLog \
 ArrayHelper.java \
 ClassHelper.java \
 ClassLoaderHelper.java \

@@ -1,3 +1,43 @@
+2001-01-06  Brian Jones  <cbj@gnu.org>
+	* Release classpath-0.02
+	* doc/www.gnu.org/announce/20010106.mhtml: New file.
+	* resource/japhar-0.09.patch.1: patch for Japhar 0.09 for 
+	  GNU Classpath 0.02 release.
+	* NEWS: Added 0.02 release information.
+	* configure.in: Update release number, add additional Makefile output
+	  files.
+	* doc/Makefile.am: New target 'docs' can be used to generate
+	  formal postscript documentation.
+	* doc/texinfo.tex: Updated to tetex 1.0.7 release.
+	* doc/www.gnu.org/classpath.mhtml: Notice of license change and
+	  other small enhancements.
+	* gnu/java/beans/Makefile.am: Removed ChangeLog from EXTRA_DIST
+	* gnu/java/beans/editors/Makefile.am: Ditto.
+	* gnu/java/beans/info/Makefile.am: Ditto.
+	* gnu/java/io/Makefile.am: Ditto
+	* gnu/java/io/decode/Makefile.am: Ditto.
+	* gnu/java/io/encode/Makefile.am: Ditto.
+	* gnu/java/lang/Makefile.am: Ditto.
+	* gnu/java/lang/reflect/Makefile.am: Ditto.
+	* gnu/java/net/content/text/Makefile.am: Ditto.
+	* java/beans/Makefile.am: Ditto.
+	* java/lang/reflect/Makefile.am: Ditto.
+	* java/net/Makefile.am: Ditto.
+	* java/util/Makefile.am: Ditto.
+	* resource/Makefile.am: Add japhar-0.09.patch.1 to EXTRA_DIST
+	* resource/java/security/Makefile.am: Rules to install security
+	  policy in $(libdir)/security.
+
+2001-01-06  Anthony Green  <green@redhat.com>
+
+        * java/beans/PropertyDescriptor.java: Fix comment.
+        * java/io/PushbackReader.java: Fix comment.
+        * java/io/ObjectStreamClass.java: Fix comment.
+        * java/io/DataInputStream.java: Fix comment.
+        * java/io/PipedInputStream.java: Fix comments.
+        * java/io/PipedReader.java: Fix comments.
+        * java/sql/DatabaseMetaData.java: Fix comments.
+
 2000-12-17  Brian Jones  <cbj@gnu.org>
 
 	* doc/hacking.texinfo: Updated slightly.

@@ -8,23 +8,35 @@ language.  Our goal is to provide a free replacement for Sun's
 proprietary class libraries so that the GNU system can run programs
 written in the Java language.
 
-Classpath is licensed under the terms of the <link /copyleft/lgpl.html
-"GNU Library General Public License">.  As such, it can be used to run
-free as well as proprietary applications and applets.
+Classpath is licensed under the terms of the <link /copyleft/gpl.html
+"GNU General Public License"> with the following special exception.
+
+As a special exception, if you link this library with other files to
+produce an executable, this library does not by itself cause the
+resulting executable to be covered by the GNU General Public License.
+This exception does not however invalidate any other reasons why the
+executable file might be covered by the GNU General Public License.
+
+As such, it can be used to run free as well as proprietary
+applications and applets.
 
 Classpath is a work in progress.  There have been no public releases;
 however, pre-release source code is available via GNU's anonymous CVS
-server, and snapshots of the Classpath tree have been released.  
-CVSROOT is <tt>:pserver:anoncvs@subversions.gnu.org:/cvs</tt>; Module
-is <tt>classpath</tt>.  There is no password.
+server, and snapshots of the Classpath tree have been released and are
+available from <link ftp://alpha.gnu.org/gnu/classpath/
+ftp://alpha.gnu.org/gnu/classpath/>.  CVSROOT is
+<tt>:pserver:anoncvs@subversions.gnu.org:/cvs</tt>; Module is
+<tt>classpath</tt>.  There is no password.
 </plain-text>
 
 <H4>Announcements</H4>
 <UL>
-  <LI><link /software/classpath/announce/19990206.html 
-       "GNU Classpath Version 0.00"> (1999-02-06)</LI>
+  <LI><link /software/classpath/announce/200101-06.html 
+       "GNU Classpath Version 0.02"> (2001-01-06)</LI>
   <LI><link /software/classpath/announce/20001120.html 
        "GNU Classpath Version 0.01"> (2000-11-20)</LI>
+  <LI><link /software/classpath/announce/19990206.html 
+       "GNU Classpath Version 0.00"> (1999-02-06)</LI>
 </UL>
 
 <H4>Documentation</H4>
@@ -91,15 +103,25 @@ appropriate link below.
   <package-item java.util.zip>
 </package-list>
 
-<H4>Virtual Machines</H4>
-<plain-text>
-The primary target for GNU Classpath is <link http://www.japhar.org
-Japhar>.  Japhar-0.07 works out-of-the-box with GNU Classpath.
+<H4>Virtual Machines</H4> 
+<plain-text> 
+
+The primary target for GNU Classpath was originally <link
+http://www.japhar.org Japhar>.  Japhar-0.07 works out-of-the-box with
+GNU Classpath-0.00.  Japhar-0.09 is required for newer releases of GNU
+Classpath.  There are however four other target VMs we'd like to work
+with out-of-the-box.  Those are <link http://sources.redhat.com/java/
+GCJ>, <link http://www.sablevm.org/ SableVM>, <link
+http://www.kaffe.org Kaffe>, and <link
+http://www.intel.com/research/mrl/orp/ Intel's ORP>.
 
 Porting Classpath to <link http://www.transvirtual.com/kaffe.html
 Kaffe> should be rather trivial, but no one has started work on it.
 If you're interested in doing this work, please send us an email to
-<link mailto:classpath@gnu.org &lt;classpath@gnu.org&gt;>.
+<link mailto:classpath@gnu.org &lt;classpath@gnu.org&gt;>.  SableVM
+and ORP both already use some form of GNU Classpath for their class
+libraries.
+
 </plain-text>
 
 <footer>
