@@ -1,5 +1,5 @@
-/* Transferable.java -- Data transfer source
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+/* DragSourceMotionListener.java -- tracks motion in the drag source
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,46 +36,29 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package java.awt.datatransfer;
+package java.awt.dnd;
 
-import java.io.IOException;
+import java.util.EventListener;
 
 /**
- * This interface is implemented by classes that can transfer data.
+ * This is a listener for mouse motion in the drag source before the drop
+ * event occurs. You can also use a <code>DragSourceAdapter</code> to filter
+ * the events you are interested in.
  *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @since 1.1
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @see DragSourceDragEvent
+ * @see DragSource
+ * @see DragSourceListener
+ * @see DragSourceAdapter
+ * @since 1.4
  * @status updated to 1.4
  */
-public interface Transferable
+public interface DragSourceMotionListener extends EventListener
 {
   /**
-   * This method returns a list of available data flavors for the data being
-   * transferred.  The array returned will be sorted from most preferred
-   * flavor at the beginning to least preferred at the end.
+   * Called whenever the mouse is moved during a drag-and-drop operation.
    *
-   * @return adA list of data flavors for this data
+   * @param e the event
    */
-  public abstract DataFlavor[] getTransferDataFlavors();
-
-  /**
-   * Tests whether or not this data can be delivered in the specified data
-   * flavor.
-   *
-   * @param flavor the data flavor to test
-   * @return true if the data flavor is supported
-   */
-  public abstract boolean isDataFlavorSupported(DataFlavor flavor);
-
-  /**
-   * Returns the data in the specified <code>DataFlavor</code>.
-   *
-   * @param flavor the data flavor to return
-   * @return the data in the appropriate flavor
-   * @throws UnsupportedFlavorException if the flavor is not supported
-   * @throws IOException if the data is not available
-   * @see DataFlavor#getRepresentationClass
-   */
-  public abstract Object getTransferData(DataFlavor flavor)
-    throws UnsupportedFlavorException, IOException;
-} // interface Transferable
+  void dragMouseMoved(DragSourceDragEvent e);
+} // interface DragSourceMotionListener

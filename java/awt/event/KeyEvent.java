@@ -41,6 +41,7 @@ package java.awt.event;
 import java.awt.Component;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import gnu.java.awt.EventModifier;
 
 /**
  * This event is generated when a key is pressed or released. There are two
@@ -1204,7 +1205,7 @@ public class KeyEvent extends InputEvent
    */
   public void setModifiers(int modifiers)
   {
-    this.modifiers = extend(modifiers);
+    this.modifiers = EventModifier.extend(modifiers);
   }
 
   /**
@@ -1544,7 +1545,8 @@ public class KeyEvent extends InputEvent
    */
   public static String getKeyModifiersText(int modifiers)
   {
-    return getModifiersExText(extend(modifiers & OLD_MASK));
+    return getModifiersExText(EventModifier.extend(modifiers
+                                                   & EventModifier.OLD_MASK));
   }
 
   /**
@@ -1726,6 +1728,6 @@ public class KeyEvent extends InputEvent
     throws IOException, ClassNotFoundException
   {
     s.defaultReadObject();
-    modifiers = extend(modifiers);
+    modifiers = EventModifier.extend(modifiers);
   }
 } // class KeyEvent

@@ -37,14 +37,19 @@ exception statement from your version. */
 
 
 package gnu.java.awt.peer.gtk;
+
 import java.awt.*;
-import java.net.*;
-import java.util.Hashtable;
-import java.util.Properties;
-import java.util.MissingResourceException;
 import java.awt.datatransfer.*;
+import java.awt.dnd.DragGestureEvent;
+import java.awt.dnd.peer.DragSourceContextPeer;
+import java.awt.im.InputMethodHighlight;
 import java.awt.image.*;
 import java.awt.peer.*;
+import java.net.*;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.Properties;
 import gnu.java.awt.image.*;
 import gnu.classpath.Configuration;
 
@@ -314,4 +319,14 @@ public class GtkToolkit extends java.awt.Toolkit
   protected void loadSystemColors (int[] systemColors) 
   {
   }
-}
+
+  public DragSourceContextPeer createDragSourceContextPeer(DragGestureEvent e)
+  {
+    throw new Error("not implemented");
+  }
+
+  public Map mapInputMethodHighlight(InputMethodHighlight highlight)
+  {
+    throw new Error("not implemented");
+  }
+} // class GtkToolkit

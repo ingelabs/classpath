@@ -1,5 +1,5 @@
-/* Transferable.java -- Data transfer source
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+/* CharsetProvider.java -- charset service provider interface
+   Copyright (C) 2002 Free Software Foundation
 
 This file is part of GNU Classpath.
 
@@ -35,47 +35,54 @@ this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
+package java.nio.charset.spi;
 
-package java.awt.datatransfer;
-
-import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.Iterator;
 
 /**
- * This interface is implemented by classes that can transfer data.
+ * This class allows an implementor to provide additional character sets. The
+ * subclass must have a nullary constructor, and be attached to charset
+ * implementation classes. These extensions are loaded via the context class
+ * loader. To provide the charset extension, all files named
+ * <code>META-INF/services/java.nio.charset.spi.CharsetProvider</code> are
+ * read from the classpath. Each one should be a UTF-8 encoded list of
+ * fully-qualified names of concrete subclasses of this class; whitespace is
+ * ignored, and '#' starts comments. Duplicates are ignored. The
+ * implementations must be accessible to the classloader that requests them.
  *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @since 1.1
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @see Charset
+ * @since 1.4
  * @status updated to 1.4
  */
-public interface Transferable
+public abstract class CharsetProvider
 {
   /**
-   * This method returns a list of available data flavors for the data being
-   * transferred.  The array returned will be sorted from most preferred
-   * flavor at the beginning to least preferred at the end.
+   * Initialize a new charset provider. This performs a security check on
+   * RuntimePermission("charsetProvider").
    *
-   * @return adA list of data flavors for this data
+   * @throws SecurityException if building a new set is not allowed
    */
-  public abstract DataFlavor[] getTransferDataFlavors();
+  protected CharsetProvider()
+  {
+    SecurityManager s = System.getSecurityManager();
+    if (s != null)
+      s.checkPermission(new RuntimePermission("charsetProvider"));
+  }
 
   /**
-   * Tests whether or not this data can be delivered in the specified data
-   * flavor.
+   * Returns an iterator over the charsets defined by this provider.
    *
-   * @param flavor the data flavor to test
-   * @return true if the data flavor is supported
+   * @return the iterator
+   * @see Charset#availableCharsets()
    */
-  public abstract boolean isDataFlavorSupported(DataFlavor flavor);
+  public abstract Iterator charsets();
 
   /**
-   * Returns the data in the specified <code>DataFlavor</code>.
+   * Returns the named charset, by canonical name or alias.
    *
-   * @param flavor the data flavor to return
-   * @return the data in the appropriate flavor
-   * @throws UnsupportedFlavorException if the flavor is not supported
-   * @throws IOException if the data is not available
-   * @see DataFlavor#getRepresentationClass
+   * @return the charset, or null if not supported
    */
-  public abstract Object getTransferData(DataFlavor flavor)
-    throws UnsupportedFlavorException, IOException;
-} // interface Transferable
+  public abstract Charset charsetForName(String name);
+} // class CharsetProvider

@@ -1,5 +1,6 @@
-/* Transferable.java -- Data transfer source
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<!-- package.html - describes classes in java.awt.dnd.peer package.
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -33,49 +34,13 @@ module.  An independent module is a module which is not derived from
 or based on this library.  If you modify this library, you may extend
 this exception to your version of the library, but you are not
 obligated to do so.  If you do not wish to do so, delete this
-exception statement from your version. */
+exception statement from your version. -->
 
+<html>
+<head><title>GNU Classpath - java.awt.dnd.peer</title></head>
 
-package java.awt.datatransfer;
+<body>
+<p>Interfaces for using native interface components.</p>
 
-import java.io.IOException;
-
-/**
- * This interface is implemented by classes that can transfer data.
- *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @since 1.1
- * @status updated to 1.4
- */
-public interface Transferable
-{
-  /**
-   * This method returns a list of available data flavors for the data being
-   * transferred.  The array returned will be sorted from most preferred
-   * flavor at the beginning to least preferred at the end.
-   *
-   * @return adA list of data flavors for this data
-   */
-  public abstract DataFlavor[] getTransferDataFlavors();
-
-  /**
-   * Tests whether or not this data can be delivered in the specified data
-   * flavor.
-   *
-   * @param flavor the data flavor to test
-   * @return true if the data flavor is supported
-   */
-  public abstract boolean isDataFlavorSupported(DataFlavor flavor);
-
-  /**
-   * Returns the data in the specified <code>DataFlavor</code>.
-   *
-   * @param flavor the data flavor to return
-   * @return the data in the appropriate flavor
-   * @throws UnsupportedFlavorException if the flavor is not supported
-   * @throws IOException if the data is not available
-   * @see DataFlavor#getRepresentationClass
-   */
-  public abstract Object getTransferData(DataFlavor flavor)
-    throws UnsupportedFlavorException, IOException;
-} // interface Transferable
+</body>
+</html>

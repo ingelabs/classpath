@@ -1,5 +1,5 @@
-/* Transferable.java -- Data transfer source
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+/* InvalidDnDOperationException.java -- thrown when drag-and-drop fails
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,46 +36,38 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package java.awt.datatransfer;
-
-import java.io.IOException;
+package java.awt.dnd;
 
 /**
- * This interface is implemented by classes that can transfer data.
+ * Thrown when a method in the java.awt.dnd package is unable to perform a
+ * requested operation, usually because the underlying DnD system is in the
+ * wrong state.
  *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @since 1.1
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @since 1.2
  * @status updated to 1.4
  */
-public interface Transferable
+public class InvalidDnDOperationException extends IllegalStateException
 {
   /**
-   * This method returns a list of available data flavors for the data being
-   * transferred.  The array returned will be sorted from most preferred
-   * flavor at the beginning to least preferred at the end.
-   *
-   * @return adA list of data flavors for this data
+   * Compatible with JDK 1.2+.
    */
-  public abstract DataFlavor[] getTransferDataFlavors();
+  private static final long serialVersionUID = -6062568741193956678L;
 
   /**
-   * Tests whether or not this data can be delivered in the specified data
-   * flavor.
-   *
-   * @param flavor the data flavor to test
-   * @return true if the data flavor is supported
+   * Create an exception without a message.
    */
-  public abstract boolean isDataFlavorSupported(DataFlavor flavor);
+  public InvalidDnDOperationException()
+  {
+  }
 
   /**
-   * Returns the data in the specified <code>DataFlavor</code>.
+   * Create an exception with a message.
    *
-   * @param flavor the data flavor to return
-   * @return the data in the appropriate flavor
-   * @throws UnsupportedFlavorException if the flavor is not supported
-   * @throws IOException if the data is not available
-   * @see DataFlavor#getRepresentationClass
+   * @param s the message
    */
-  public abstract Object getTransferData(DataFlavor flavor)
-    throws UnsupportedFlavorException, IOException;
-} // interface Transferable
+  public InvalidDnDOperationException(String s)
+  {
+    super(s);
+  }
+} // class InvalidDnDOperationException

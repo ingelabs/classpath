@@ -3,6 +3,7 @@ Clipboard.java \
 ClipboardOwner.java \
 DataFlavor.java \
 FlavorMap.java \
+FlavorTable.java \
 MimeTypeParseException.java \
 StringSelection.java \
 SystemFlavorMap.java \

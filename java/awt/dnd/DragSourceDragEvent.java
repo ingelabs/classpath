@@ -1,5 +1,5 @@
-/* Transferable.java -- Data transfer source
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+/* DragSourceDragEvent.java --
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,46 +36,60 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package java.awt.datatransfer;
+package java.awt.dnd;
 
-import java.io.IOException;
+import gnu.java.awt.EventModifier;
 
 /**
- * This interface is implemented by classes that can transfer data.
- *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @since 1.1
- * @status updated to 1.4
+ * STUBBED
  */
-public interface Transferable
+public class DragSourceDragEvent extends DragSourceEvent
 {
-  /**
-   * This method returns a list of available data flavors for the data being
-   * transferred.  The array returned will be sorted from most preferred
-   * flavor at the beginning to least preferred at the end.
-   *
-   * @return adA list of data flavors for this data
-   */
-  public abstract DataFlavor[] getTransferDataFlavors();
+  private final int dropAction;
+  private final int targetActions;
+  private final int gestureModifiers;
 
-  /**
-   * Tests whether or not this data can be delivered in the specified data
-   * flavor.
-   *
-   * @param flavor the data flavor to test
-   * @return true if the data flavor is supported
-   */
-  public abstract boolean isDataFlavorSupported(DataFlavor flavor);
+  public DragSourceDragEvent(DragSourceContext context, int dropAction,
+                             int actions, int modifiers)
+  {
+    super(context);
+    this.dropAction = dropAction;
+    targetActions = actions;
+    gestureModifiers = EventModifier.extend(modifiers);
+  }
 
-  /**
-   * Returns the data in the specified <code>DataFlavor</code>.
-   *
-   * @param flavor the data flavor to return
-   * @return the data in the appropriate flavor
-   * @throws UnsupportedFlavorException if the flavor is not supported
-   * @throws IOException if the data is not available
-   * @see DataFlavor#getRepresentationClass
-   */
-  public abstract Object getTransferData(DataFlavor flavor)
-    throws UnsupportedFlavorException, IOException;
-} // interface Transferable
+  public DragSourceDragEvent(DragSourceContext context, int dropAction,
+                             int actions, int modifiers, int x, int y)
+  {
+    super(context, x, y);
+    this.dropAction = dropAction;
+    targetActions = actions;
+    gestureModifiers = EventModifier.extend(modifiers);
+  }
+
+  public int getTargetActions()
+  {
+    return targetActions;
+  }
+
+  public int getGestureModifiers()
+  {
+    return EventModifier.revert(gestureModifiers);
+  }
+
+  public int getGestureModifiersEx()
+  {
+    return gestureModifiers;
+  }
+
+  public int getUserAction()
+  {
+    return dropAction;
+  }
+
+  public int getDropAction()
+  {
+    return dropAction & targetActions
+      & ((DragSourceContext) source).getSourceActions();
+  }
+} // class DragSourceDragEvent

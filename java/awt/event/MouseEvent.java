@@ -42,6 +42,7 @@ import java.awt.Component;
 import java.awt.Point;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import gnu.java.awt.EventModifier;
 
 /**
  * This event is generated for a mouse event. There are three main categories
@@ -216,7 +217,7 @@ public class MouseEvent extends InputEvent
     this.button = button;
     if (button < NOBUTTON || button > BUTTON3)
       throw new IllegalArgumentException();
-    if ((modifiers & OLD_MASK) != 0)
+    if ((modifiers & EventModifier.OLD_MASK) != 0)
       {
         if ((modifiers & BUTTON1_MASK) != 0)
           button = BUTTON1;
@@ -342,12 +343,12 @@ public class MouseEvent extends InputEvent
    */
   public static String getMouseModifiersText(int modifiers)
   {
-    modifiers &= OLD_MASK;
+    modifiers &= EventModifier.OLD_MASK;
     if ((modifiers & BUTTON2_MASK) != 0)
       modifiers |= BUTTON2_DOWN_MASK;
     if ((modifiers & BUTTON3_MASK) != 0)
       modifiers |= BUTTON3_DOWN_MASK;
-    return getModifiersExText(extend(modifiers));
+    return getModifiersExText(EventModifier.extend(modifiers));
   }
 
   /**
@@ -390,7 +391,7 @@ public class MouseEvent extends InputEvent
         s.append("unknown type,(");
       }
     s.append(x).append(',').append(y).append("),button=").append(button);
-    if ((modifiers & NEW_MASK) != 0)
+    if ((modifiers & EventModifier.NEW_MASK) != 0)
       {
         int mod = modifiers;
         if ((mod & (ALT_DOWN_MASK | BUTTON2_DOWN_MASK)) != 0)
@@ -416,7 +417,7 @@ public class MouseEvent extends InputEvent
     throws IOException, ClassNotFoundException
   {
     s.defaultReadObject();
-    if ((modifiers & OLD_MASK) != 0)
+    if ((modifiers & EventModifier.OLD_MASK) != 0)
       {
         if ((modifiers & BUTTON1_MASK) != 0)
           button = BUTTON1;
@@ -424,7 +425,7 @@ public class MouseEvent extends InputEvent
           button = BUTTON2;
         else if ((modifiers & BUTTON3_MASK) != 0)
           button = BUTTON3;
-        modifiers = extend(modifiers);
+        modifiers = EventModifier.extend(modifiers);
       }
   }
 } // class MouseEvent

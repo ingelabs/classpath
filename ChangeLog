@@ -1,3 +1,43 @@
+2002-05-08  Eric Blake  <ebb9@email.byu.edu>
+
+	* configure.in: Add java/awt/dnd/peer, java/nio/charset/spi.
+	* gnu/java/awt/EventModifier.java: New file (split from
+	java.awt.event.InputEvent).
+	* gnu/java/awt/Makefile.am: Add EventModifier.
+	* gnu/java/awt/peer/gtk/GtkToolkit.java: Add missing methods.
+	* java/nio/charset/Makefile.am (SUBDIRS): Visit spi.
+	* java/nio/charset/spi/.cvsignore: New file.
+	* java/nio/charset/spi/Makefile.am: New file.
+	* java/nio/charset/spi/package.html: New file.
+	* java/nio/charset/spi/CharsetProvider.java: New file.
+	* java/awt/Toolkit.java: Add missing methods, some formatting.
+	* java/awt/Window.java: Formatting.
+	* java/awt/datatransfer/FlavorTable.java: New file.
+	* java/awt/datatransfer/Makefile.am: Add FlavorTable.
+	* java/awt/datatransfer/Transferable.java: Update to 1.4.
+	* java/awt/dnd/DnDConstants.java: New file.
+	* java/awt/dnd/DragGestureEvent.java: New file.
+	* java/awt/dnd/DragGestureListener.java: New file.
+	* java/awt/dnd/DragGestureRecognizer.java: New file.
+	* java/awt/dnd/DragSource.java: New file.
+	* java/awt/dnd/DragSourceAdapter.java: New file.
+	* java/awt/dnd/DragSourceContext.java: New file.
+	* java/awt/dnd/DragSourceDragEvent.java: New file.
+	* java/awt/dnd/DragSourceEvent.java: New file.
+	* java/awt/dnd/DragSourceListener.java: New file.
+	* java/awt/dnd/DragSourceMotionListener.java: New file.
+	* java/awt/dnd/InvalidDnDOperationException.java: New file.
+	* java/awt/dnd/Makefile.am: Update for new files.
+	* java/awt/dnd/peer/.cvsignore: New file.
+	* java/awt/dnd/peer/DragSourceContextPeer.java: New file.
+	* java/awt/dnd/peer/Makefile.am: New file.
+	* java/awt/dnd/peer/package.html: New file.
+	* java/awt/event/InputEvent.java: Update modifier handling to use
+	gnu.java.awt.EventModifier.
+	* java/awt/event/KeyEvent.java: Ditto.
+	* java/awt/event/MouseEvent.java: Ditto.
+	* java/util/Makefile.am (SUBDIRS): Alphabetize.
+
 2002-05-07  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/awt/Color.java: Tweak to work with SystemColor.

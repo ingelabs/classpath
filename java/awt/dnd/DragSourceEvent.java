@@ -1,5 +1,5 @@
-/* Transferable.java -- Data transfer source
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+/* DragSourceEvent.java --
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,46 +36,50 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package java.awt.datatransfer;
+package java.awt.dnd;
 
-import java.io.IOException;
+import java.awt.Point;
+import java.util.EventObject;
 
-/**
- * This interface is implemented by classes that can transfer data.
- *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @since 1.1
- * @status updated to 1.4
- */
-public interface Transferable
+public class DragSourceEvent extends EventObject
 {
-  /**
-   * This method returns a list of available data flavors for the data being
-   * transferred.  The array returned will be sorted from most preferred
-   * flavor at the beginning to least preferred at the end.
-   *
-   * @return adA list of data flavors for this data
-   */
-  public abstract DataFlavor[] getTransferDataFlavors();
+  private final boolean locationSpecified;
+  private final int x;
+  private final int y;
 
-  /**
-   * Tests whether or not this data can be delivered in the specified data
-   * flavor.
-   *
-   * @param flavor the data flavor to test
-   * @return true if the data flavor is supported
-   */
-  public abstract boolean isDataFlavorSupported(DataFlavor flavor);
+  public DragSourceEvent(DragSourceContext context)
+  {
+    super(context);
+    locationSpecified = false;
+    x = 0;
+    y = 0;
+  }
 
-  /**
-   * Returns the data in the specified <code>DataFlavor</code>.
-   *
-   * @param flavor the data flavor to return
-   * @return the data in the appropriate flavor
-   * @throws UnsupportedFlavorException if the flavor is not supported
-   * @throws IOException if the data is not available
-   * @see DataFlavor#getRepresentationClass
-   */
-  public abstract Object getTransferData(DataFlavor flavor)
-    throws UnsupportedFlavorException, IOException;
-} // interface Transferable
+  public DragSourceEvent(DragSourceContext context, int x, int y)
+  {
+    super(context);
+    locationSpecified = true;
+    this.x = x;
+    this.y = y;
+  }
+
+  public DragSourceContext getDragSourceContext()
+  {
+    return (DragSourceContext) source;
+  }
+
+  public Point getLocation()
+  {
+    return locationSpecified ? new Point(x, y) : null;
+  }
+
+  public int getX()
+  {
+    return x;
+  }
+
+  public int getY()
+  {
+    return y;
+  }
+} // class DragSourceEvent

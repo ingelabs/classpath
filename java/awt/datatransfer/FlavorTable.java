@@ -1,5 +1,5 @@
-/* Transferable.java -- Data transfer source
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+/* FlavorTable.java -- A relaxed mapping between flavors
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -38,44 +38,36 @@ exception statement from your version. */
 
 package java.awt.datatransfer;
 
-import java.io.IOException;
+import java.util.List;
 
 /**
- * This interface is implemented by classes that can transfer data.
+ * A FlavorMap which no longer requires a 1-to-1 mapping between flavors. Any
+ * native can map to multiple flavors, and any flavor can map to multiple
+ * natives; although the mappings are usually symmetric.
  *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @since 1.1
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @since 1.4
  * @status updated to 1.4
  */
-public interface Transferable
+public interface FlavorTable extends FlavorMap
 {
   /**
-   * This method returns a list of available data flavors for the data being
-   * transferred.  The array returned will be sorted from most preferred
-   * flavor at the beginning to least preferred at the end.
+   * Returns a list of String natives corresponding to the given flavor. The
+   * list should be sorted from best to worst. The list must be modifiable
+   * without affecting this table.
    *
-   * @return adA list of data flavors for this data
+   * @param flavor the flavor to look up, or null to return all natives
+   * @return the sorted list of natives
    */
-  public abstract DataFlavor[] getTransferDataFlavors();
+  List getNativesForFlavor(DataFlavor flavor);
 
   /**
-   * Tests whether or not this data can be delivered in the specified data
-   * flavor.
+   * Returns a list of flavors corresponding to the given String native. The
+   * list should be sorted from best to worst. The list must be modifiable
+   * without affecting this table.
    *
-   * @param flavor the data flavor to test
-   * @return true if the data flavor is supported
+   * @param native the native to look up, or null to return all flavors
+   * @return the sorted list of flavors
    */
-  public abstract boolean isDataFlavorSupported(DataFlavor flavor);
-
-  /**
-   * Returns the data in the specified <code>DataFlavor</code>.
-   *
-   * @param flavor the data flavor to return
-   * @return the data in the appropriate flavor
-   * @throws UnsupportedFlavorException if the flavor is not supported
-   * @throws IOException if the data is not available
-   * @see DataFlavor#getRepresentationClass
-   */
-  public abstract Object getTransferData(DataFlavor flavor)
-    throws UnsupportedFlavorException, IOException;
-} // interface Transferable
+  List getFlavorsForNative(String name);
+} // interface FlavorTable

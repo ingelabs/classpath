@@ -1,3 +1,5 @@
+SUBDIRS = spi
+
 EXTRA_DIST= \
 CharacterCodingException.java \
 CharsetDecoder.java \

@@ -39,6 +39,7 @@ exception statement from your version. */
 package java.awt.event;
 
 import java.awt.Component;
+import gnu.java.awt.EventModifier;
 
 /**
  * This is the common superclass for all component input classes. These are
@@ -182,15 +183,9 @@ public abstract class InputEvent extends ComponentEvent
    */
   public static final int ALT_GRAPH_DOWN_MASK = 0x2000;
 
-  /** The mask for old events, package visible for use in subclasses. */
-  static final int OLD_MASK = 0x3f;
-
-  /** The mask for new events, package visible for use in subclasses. */
-  static final int NEW_MASK = 0x3fc0;
-
   /** The mask to convert new to old, package visible for use in subclasses. */
   static final int CONVERT_MASK
-    = NEW_MASK & ~(BUTTON2_DOWN_MASK | BUTTON3_DOWN_MASK);
+    = EventModifier.NEW_MASK & ~(BUTTON2_DOWN_MASK | BUTTON3_DOWN_MASK);
 
   /**
    * The timestamp when this event occurred.
@@ -226,7 +221,7 @@ public abstract class InputEvent extends ComponentEvent
   {
     super(source, id);
     this.when = when;
-    this.modifiers = extend(modifiers);
+    this.modifiers = EventModifier.extend(modifiers);
   }
 
   /**
@@ -304,20 +299,7 @@ public abstract class InputEvent extends ComponentEvent
    */
   public int getModifiers()
   {
-    int mod = modifiers;
-    if ((mod & SHIFT_DOWN_MASK) != 0)
-      mod |= SHIFT_MASK;
-    if ((mod & CTRL_DOWN_MASK) != 0)
-      mod |= CTRL_MASK;
-    if ((mod & META_DOWN_MASK) != 0)
-      mod |= META_MASK;
-    if ((mod & ALT_DOWN_MASK) != 0)
-      mod |= ALT_MASK;
-    if ((mod & ALT_GRAPH_DOWN_MASK) != 0)
-      mod |= ALT_GRAPH_MASK;
-    if ((mod & BUTTON1_DOWN_MASK) != 0)
-      mod |= BUTTON1_MASK;
-    return mod & OLD_MASK;
+    return EventModifier.revert(modifiers);
   }
 
   /**
@@ -372,7 +354,7 @@ public abstract class InputEvent extends ComponentEvent
    */
   public static String getModifiersExText(int modifiers)
   {
-    modifiers &= NEW_MASK;
+    modifiers &= EventModifier.NEW_MASK;
     if (modifiers == 0)
       return "";
     StringBuffer s = new StringBuffer();
@@ -393,32 +375,5 @@ public abstract class InputEvent extends ComponentEvent
     if ((modifiers & BUTTON3_DOWN_MASK) != 0)
       s.append("Button3+");
     return s.substring(0, s.length() - 1);
-  }
-
-  /**
-   * Converts the old style modifiers (0x3f) to the new style (0xffffffc0).
-   * Package visible for use by subclasses.
-   *
-   * @param mod the modifiers to convert
-   * @return the adjusted modifiers
-   */
-  static int extend(int mod)
-  {
-    // Favor what we hope will be the common case.
-    if ((mod & OLD_MASK) == 0)
-      return mod;
-    if ((mod & SHIFT_MASK) != 0)
-      mod |= SHIFT_DOWN_MASK;
-    if ((mod & CTRL_MASK) != 0)
-      mod |= CTRL_DOWN_MASK;
-    if ((mod & META_MASK) != 0)
-      mod |= META_DOWN_MASK;
-    if ((mod & ALT_MASK) != 0)
-      mod |= ALT_DOWN_MASK;
-    if ((mod & BUTTON1_MASK) != 0)
-      mod |= BUTTON1_DOWN_MASK;
-    if ((mod & ALT_GRAPH_MASK) != 0)
-      mod |= ALT_GRAPH_DOWN_MASK;
-    return mod & ~OLD_MASK;
   }
 } // class InputEvent

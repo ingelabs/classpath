@@ -1,5 +1,5 @@
-/* Transferable.java -- Data transfer source
-   Copyright (C) 1999, 2002 Free Software Foundation, Inc.
+/* DnDConstants.java -- constants for drag-and-drop operations
+   Copyright (C) 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -36,46 +36,37 @@ obligated to do so.  If you do not wish to do so, delete this
 exception statement from your version. */
 
 
-package java.awt.datatransfer;
-
-import java.io.IOException;
+package java.awt.dnd;
 
 /**
- * This interface is implemented by classes that can transfer data.
+ * This class contains various constants used in drag-and-drop operations.
+ * Why it is not an interface is beyond me.
  *
- * @author Aaron M. Renn <arenn@urbanophile.com>
- * @since 1.1
+ * @author Eric Blake <ebb9@email.byu.edu>
+ * @since 1.2
  * @status updated to 1.4
  */
-public interface Transferable
+public final class DnDConstants
 {
-  /**
-   * This method returns a list of available data flavors for the data being
-   * transferred.  The array returned will be sorted from most preferred
-   * flavor at the beginning to least preferred at the end.
-   *
-   * @return adA list of data flavors for this data
-   */
-  public abstract DataFlavor[] getTransferDataFlavors();
+  /** No action takes place. */
+  public static final int ACTION_NONE = 0;
+
+  /** The copy action. */
+  public static final int ACTION_COPY = 1;
+
+  /** The move action. */
+  public static final int ACTION_MOVE = 2;
+
+  /** Either a copy or a move. */
+  public static final int ACTION_COPY_OR_MOVE = 3;
 
   /**
-   * Tests whether or not this data can be delivered in the specified data
-   * flavor.
-   *
-   * @param flavor the data flavor to test
-   * @return true if the data flavor is supported
+   * A link action. This does not copy or move, but creates a reference back
+   * to the original. However, since platforms differ on how a reference should
+   * behave, this action is not recommended for common use.
    */
-  public abstract boolean isDataFlavorSupported(DataFlavor flavor);
+  public static final int ACTION_LINK = 1073741824;
 
-  /**
-   * Returns the data in the specified <code>DataFlavor</code>.
-   *
-   * @param flavor the data flavor to return
-   * @return the data in the appropriate flavor
-   * @throws UnsupportedFlavorException if the flavor is not supported
-   * @throws IOException if the data is not available
-   * @see DataFlavor#getRepresentationClass
-   */
-  public abstract Object getTransferData(DataFlavor flavor)
-    throws UnsupportedFlavorException, IOException;
-} // interface Transferable
+  /** A synonym for {@link #ACTION_LINK}. */
+  public static final int ACTION_REFERENCE = ACTION_LINK;
+} // class DnDConstants

@@ -291,6 +291,7 @@ java/awt/Makefile
 java/awt/color/Makefile
 java/awt/datatransfer/Makefile
 java/awt/dnd/Makefile
+java/awt/dnd/peer/Makefile
 java/awt/event/Makefile
 java/awt/font/Makefile
 java/awt/geom/Makefile
@@ -312,6 +313,7 @@ java/nio/Makefile
 java/nio/channels/Makefile
 java/nio/channels/spi/Makefile
 java/nio/charset/Makefile
+java/nio/charset/spi/Makefile
 java/rmi/Makefile
 java/rmi/activation/Makefile
 java/rmi/dgc/Makefile
