@@ -191,17 +191,17 @@ Classpath is targeted to support the following operating systems:
 
 @enumerate
 @item
-Free operating systems.  This includes GNU/Linux, @{Free,Net,Open@}BSD, and
-GNU/Hurd.
+Free operating systems.  This includes GNU/Linux, GNU/Hurd, and the free
+BSDs.
 
 @item
 Other Unix like operating systems
 
 @item
-Platforms which currently have no Java support at all such as the Amiga.
+Platforms which currently have no Java support at all.
 
 @item 
-Other platform such as MS-Windows.
+Other platforms such as MS-Windows.
 @end enumerate
 
 While free operating systems are the top priority, the other priorities 
