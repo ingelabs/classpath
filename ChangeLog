@@ -1,7 +1,14 @@
 2002-03-20  Sascha Brawer  <brawer@acm.org>
 
-	* java/awt/Font.java: Add 1.3 and 1.4 constants.
-
+	* java/awt/Font.java: Add 1.3 and 1.4 constant values.
+	* java/io/PipedInputStream.java (PIPE_SIZE): Adjust constant
+	value to match Sun J2SE 1.4 Javadoc.
+	* vm/reference/java/lang/Thread.java (MIN_PRIORITY, MAX_PRIORITY,
+	NORM_PRIORITY): Match values given by Sun J2SE 1.4 Javadoc.
+	* java/rmi/server/LogStream.java (BRIEF, VERBOSE): Match values
+	given by Sun J2SE 1.4 Javadoc.
+	* java/sql/Types.java: Mark 1.2 constant fields with @since.
+	
 2002-03-19  Eric Blake  <ebb9@email.byu.edu>
 
 	* java/awt/Makefile.am (EXTRA_DIST): Add new files.
