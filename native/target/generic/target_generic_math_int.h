@@ -45,10 +45,10 @@ Systems    : all
 #define __TARGET_GENERIC_MATH_INT__
 
 #ifdef __cplusplus
-extern "C"
+extern "C" {
 #endif
 
-/* check if target_native_network.h included */
+/* check if target_native_math_int.h included */
 #ifndef __TARGET_NATIVE_MATH_INT__
   #error Do NOT INCLUDE generic target files! Include the corresponding native target files instead!
 #endif
@@ -219,28 +219,28 @@ extern "C"
   #define TARGET_NATIVE_MATH_INT_INT64_TO_DOUBLE(v)  ((jdouble)(v))
 #endif
 
-/* combine/split low/high <-> int64 values */
-#ifndef TARGET_NATIVE_MATH_INT_INT_LOW_HIGH_TO_INT64
-  #define TARGET_NATIVE_MATH_INT_INT_LOW_HIGH_TO_INT64(low,high,v) \
+/* combine/split int32 low/high values <-> int64 values */
+#ifndef TARGET_NATIVE_MATH_INT_INT32_LOW_HIGH_TO_INT64
+  #define TARGET_NATIVE_MATH_INT_INT32_LOW_HIGH_TO_INT64(low,high,v) \
     do { \
-      (v)=((((jlong)(high)) << 32) | (((jlong)(low)) <<  0)); \
+      (v)=((((jlong)(high)) << 32) | ((((jlong)(low)) <<  0) & 0x00000000ffffFFFFLL)); \
     } while (0)
 #endif
-#ifndef TARGET_NATIVE_MATH_INT_UINT_LOW_HIGH_TO_UINT64
-  #define TARGET_NATIVE_MATH_INT_UINT_LOW_HIGH_TO_UINT64(low,high,v) \
+#ifndef TARGET_NATIVE_MATH_INT_UINT32_LOW_HIGH_TO_UINT64
+  #define TARGET_NATIVE_MATH_INT_UINT32_LOW_HIGH_TO_UINT64(low,high,v) \
     do { \
-      (v)=((((jlong)(high)) << 32) | (((jlong)(low)) <<  0)); \
+      (v)=((((jlong)(high)) << 32) | ((((jlong)(low)) <<  0) & 0x00000000ffffFFFFLL)); \
     } while (0)
 #endif
-#ifndef TARGET_NATIVE_MATH_INT_INT64_TO_INT_LOW_HIGH
-  #define TARGET_NATIVE_MATH_INT_INT64_TO_INT_LOW_HIGH(v,low,high) \
+#ifndef TARGET_NATIVE_MATH_INT_INT64_TO_INT32_LOW_HIGH
+  #define TARGET_NATIVE_MATH_INT_INT64_TO_INT32_LOW_HIGH(v,low,high) \
     do { \
       (high)=((v) & 0xFFFFffff00000000L) >> 32; \
       (low) =((v) & 0x00000000FFFFffffL) >>  0; \
     } while (0)
 #endif
-#ifndef TARGET_NATIVE_MATH_INT_UINT64_TO_UINT_LOW_HIGH
-  #define TARGET_NATIVE_MATH_INT_UINT64_TO_UINT_LOW_HIGH(v,low,high) \
+#ifndef TARGET_NATIVE_MATH_INT_UINT64_TO_UINT32_LOW_HIGH
+  #define TARGET_NATIVE_MATH_INT_UINT64_TO_UINT32_LOW_HIGH(v,low,high) \
     do { \
       (high)=((v) & 0xFFFFffff00000000L) >> 32; \
       (low) =((v) & 0x00000000FFFFffffL) >>  0; \
