@@ -1,5 +1,5 @@
 /* CollationElementIterator.java -- Walks through collation elements
-   Copyright (C) 1998, 1999 Free Software Foundation, Inc.
+   Copyright (C) 1998, 1999, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -280,7 +280,7 @@ public int
 next()
 {
   ++pos;
-  if (pos == str.length())
+  if (pos >= str.length())
     return(NULLORDER);
 
   String s = str.charAt(pos) + "";
