@@ -58,7 +58,7 @@ public interface Configuration
    * Proxy.getProxyClass completely, including argument verification.
    * If this is true, HAVE_NATIVE_GET_PROXY_DATA and
    * HAVE_NATIVE_GENERATE_PROXY_CLASS should be false.
-   * @see java.util.reflect.Proxy
+   * @see java.lang.reflect.Proxy
    */
   boolean HAVE_NATIVE_GET_PROXY_CLASS = false;
 
@@ -67,7 +67,7 @@ public interface Configuration
    * the first part of Proxy.getProxyClass: generation of the array
    * of methods to convert, and verification of the arguments.
    * If this is true, HAVE_NATIVE_GET_PROXY_CLASS should be false.
-   * @see java.util.reflect.Proxy
+   * @see java.lang.reflect.Proxy
    */
   boolean HAVE_NATIVE_GET_PROXY_DATA = false;
 
@@ -76,7 +76,7 @@ public interface Configuration
    * the second part of Proxy.getProxyClass: conversion of an array of
    * methods into an actual proxy class.
    * If this is true, HAVE_NATIVE_GET_PROXY_CLASS should be false.
-   * @see java.util.reflect.Proxy
+   * @see java.lang.reflect.Proxy
    */
   boolean HAVE_NATIVE_GENERATE_PROXY_CLASS = false;
 }
