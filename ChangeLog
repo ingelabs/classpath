@@ -1,3 +1,18 @@
+2005-02-02  Andrew John Hughes  <gnu_andrew@member.fsf.org>
+
+	* java/text/SimpleDateFormat.java
+	Lots of documentation updates.
+	(readObject(java.io.ObjectInputStream)): Wraps
+	IllegalArgumentException as specified.
+	(compileFormat(String)): Uses standardChars
+	rather than the local pattern characters.
+	Throws IllegalArgumentException rather than
+	storing a -1 field.
+	(toString()): Extended to include all variables
+	in a better format.
+	(translateLocalizedPattern(String, String, String)):
+	Renamed to better define the use of this method.
+
 2005-02-02  Dalibor Topic  <robilad@kaffe.org>
 
 	* gnu/java/net/GetSystemPropertyAction.java:
@@ -21,12 +36,12 @@
 
 2005-02-01  Sven de Marothy  <sven@physto.se>
 	
-        * java/util/GregorianCalendar.java
+	* java/util/GregorianCalendar.java
         (computeTime): Fixed handling of time zones.
 
 2005-02-01  Sven de Marothy  <sven@physto.se>
 	
-        * java/util/Calendar.java
+	* java/util/Calendar.java
         (clear): Set values to Epoch instead of zero.
         (set): Set isSet to the relevant field pattern instead of just the
 	field.
