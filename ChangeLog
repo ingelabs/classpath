@@ -1,3 +1,8 @@
+2004-03-25  Archie Cobbs  <archie@dellroad.org>
+
+	* configure.ac: Use the more portable ``:'' expr(1)
+	keyword instead of ``match''.
+
 2004-03-25  Mark Wielaard  <mark@klomp.org>
 
 	* gnu/java/awt/peer/gtk/GtkFontPeer.java: Use fallback when

@@ -8,7 +8,9 @@ AC_INIT([GNU Classpath],[0.08+cvs],[classpath@gnu.org],[classpath])
 AC_CONFIG_SRCDIR(java/lang/System.java)
 
 AC_CANONICAL_TARGET
-if expr match ${target_cpu} .*86 > /dev/null; then target_cpu=x86; fi
+
+dnl Fold all IA-32 CPU architectures into "x86"
+if expr ${target_cpu} : .*86 > /dev/null; then target_cpu=x86; fi
 
 dnl We will not track/change lib version until we reach version 1.0
 dnl at which time we'll have to be more anal about such things
