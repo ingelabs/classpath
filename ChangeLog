@@ -1,3 +1,8 @@
+2005-02-22  Thomas Fitzsimmons  <fitzsim@redhat.com>
+
+	* java/awt/Robot.java (waitForIdle): Call invokeAndWait on an
+	empty Runnable.
+
 2005-02-21  Bryce McKinlay  <mckinlay@redhat.com>
 
 	* java/io/ObjectInputStream.java (readClassDescriptor): Cache result
