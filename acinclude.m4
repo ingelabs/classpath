@@ -135,6 +135,23 @@ AC_DEFUN([CLASSPATH_CHECK_JIKES],
   else
     AC_PATH_PROG(JIKES, "jikes")
   fi
+  if test "x$JIKES" != "x"; then
+    dnl Require at least version 1.19
+    AC_MSG_CHECKING(jikes version)
+    JIKES_VERSION=`$JIKES --version | awk '/^Jikes Compiler/' | cut -d ' ' -f 5`
+    JIKES_VERSION_MAJOR=`echo "$JIKES_VERSION" | cut -d '.' -f 1`
+    JIKES_VERSION_MINOR=`echo "$JIKES_VERSION" | cut -d '.' -f 2`
+    if expr "$JIKES_VERSION_MAJOR" == 1 > /dev/null; then
+      if expr "$JIKES_VERSION_MINOR" \< 19 > /dev/null; then
+        JIKES=""
+      fi
+    fi
+    if test "x$JIKES" != "x"; then
+      AC_MSG_RESULT($JIKES_VERSION)
+    else
+      AC_MSG_WARN($JIKES_VERSION: jikes 1.19 or higher required)
+    fi
+  fi
 ])
 
 dnl -----------------------------------------------------------

@@ -1,3 +1,7 @@
+2004-12-21  Chris Burdess  <dog@gnu.org>
+
+	* acinclude.m4: Check version of Jikes.
+
 2004-12-21  Michael Koch  <konqueror@gmx.de>
 
 	* javax/swing/text/DefaultStyledDocument.java:
