@@ -38,6 +38,7 @@
 
 package org.omg.CORBA;
 
+import org.omg.CORBA.portable.IDLEntity;
 import org.omg.CORBA.TypeCodePackage.BadKind;
 
 /**
@@ -190,7 +191,8 @@ public abstract class TypeCode
    * valid bounds.
    */
   public abstract Any member_label(int index)
-                            throws BadKind, Bounds;
+    throws BadKind, 
+	   org.omg.CORBA.TypeCodePackage.Bounds;
 
   /**
    * Retrieves the simple name of the member identified by the given index.
@@ -205,7 +207,8 @@ public abstract class TypeCode
    * valid bounds.
    */
   public abstract String member_name(int index)
-                              throws BadKind, Bounds;
+    throws BadKind, 
+	   org.omg.CORBA.TypeCodePackage.Bounds;
 
   /**
    * Retrieves the member type of the member identified by the given index.
@@ -220,7 +223,8 @@ public abstract class TypeCode
    * valid bounds.
    */
   public abstract TypeCode member_type(int index)
-                                throws BadKind, Bounds;
+    throws BadKind,
+	   org.omg.CORBA.TypeCodePackage.Bounds;
 
   /**
    * Returns the visibility scope of the member at the given index.
@@ -237,7 +241,9 @@ public abstract class TypeCode
    * valid bounds.
    */
   public abstract short member_visibility(int index)
-                                   throws BadKind, Bounds;
+    throws BadKind,
+	   org.omg.CORBA.TypeCodePackage.Bounds;
+
 
   /**
    * Retrieves the simple name identifying this TypeCode object

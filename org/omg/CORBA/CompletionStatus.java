@@ -40,13 +40,15 @@ package org.omg.CORBA;
 
 import java.io.Serializable;
 
+import org.omg.CORBA.portable.IDLEntity;
+
 /**
  * Defines the method completion status, usually for the time moment,
  * when the exception has been thrown.
  * @author Audrius Meskauskas (AudriusA@Bioinformatics.org)
  */
 public class CompletionStatus
-  implements Serializable
+  implements Serializable, IDLEntity
 {
   /**
    * Use serialVersionUID for interoperability.

@@ -153,7 +153,7 @@ class primitiveTypeCode
 
   public Any member_label(int index)
                    throws org.omg.CORBA.TypeCodePackage.BadKind, 
-                          org.omg.CORBA.Bounds
+                          org.omg.CORBA.TypeCodePackage.Bounds
   {
     throw new BadKind();
   }
@@ -166,14 +166,14 @@ class primitiveTypeCode
 
   public TypeCode member_type(int index)
                        throws org.omg.CORBA.TypeCodePackage.BadKind, 
-                              org.omg.CORBA.Bounds
+                              org.omg.CORBA.TypeCodePackage.Bounds
   {
     throw new BadKind();
   }
 
   public short member_visibility(int index)
                           throws org.omg.CORBA.TypeCodePackage.BadKind, 
-                                 org.omg.CORBA.Bounds
+                                 org.omg.CORBA.TypeCodePackage.Bounds
   {
     throw new BadKind();
   }
