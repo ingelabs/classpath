@@ -1,3 +1,8 @@
+2004-06-21  Steven Augart  <augart@watson.ibm.com>
+
+	* gnu/java/awt/peer/gtk/Makefile.am (EXTRA_DIST): Fixed
+	alphabetization.
+
 2004-06-21  David Grove <groved@us.ibm.com> 
 	    Steven Augart <augart@watson.ibm.com>
 

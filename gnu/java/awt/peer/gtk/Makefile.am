@@ -9,6 +9,8 @@ EXTRA_DIST = \
 	GdkGraphics2D.java \
 	GdkGraphicsEnvironment.java \
 	GdkPixbufDecoder.java \
+	GThreadNativeMethodRunner.java \
+	GThreadMutex.java \
 	GtkArg.java \
 	GtkArgList.java \
 	GtkButtonPeer.java \
@@ -44,6 +46,4 @@ EXTRA_DIST = \
 	GtkTextComponentPeer.java \
 	GtkTextFieldPeer.java \
 	GtkToolkit.java \
-	GtkWindowPeer.java \
-	GThreadNativeMethodRunner.java \
-	GThreadMutex.java
+	GtkWindowPeer.java
