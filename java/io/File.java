@@ -43,6 +43,11 @@ import java.net.URL;
 import gnu.classpath.Configuration;
 import gnu.java.io.PlatformHelper;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * Status:  Complete to version 1.3.
+ */
+
 /**
  * This class represents a file or directory on a local disk.  It provides
  * facilities for dealing with a variety of systems that use various
@@ -54,7 +59,7 @@ import gnu.java.io.PlatformHelper;
  */
 public class File implements Serializable, Comparable
 {
-  static final long serialVersionUID = 301077366599181567L;
+  private static final long serialVersionUID = 301077366599181567L;
 
   /**
    * This is the path separator string for the current host. This field

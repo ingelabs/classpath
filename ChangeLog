@@ -1,3 +1,17 @@
+2003-03-28  Michael Koch  <konqueror@gmx.de>
+
+	* java/io/File.java:
+	Merged comment from libgcj.
+	(serialVersionUID): Made it private.
+	* java/io/ObjectOutputStream.java
+	(PutField.write): Documentation reformatted.
+	* java/io/PrintStream.java:
+	Merged comment from libgcj.
+	(PrintStream): Reformatted.
+	* java/io/RandomAccessFile.java
+	(RandomAccessFile): Merged with libgcj.
+	(read): Likewise.
+
 2003-03-28  Torsten Rupp  <rupp@homer.aicas.com>
 
 	* native/target/generic/target_generic.h,

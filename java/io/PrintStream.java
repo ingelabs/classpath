@@ -38,6 +38,11 @@ exception statement from your version. */
 
 package java.io;
 
+/* Written using "Java Class Libraries", 2nd edition, ISBN 0-201-31002-3
+ * "The Java Language Specification", ISBN 0-201-63451-1
+ * Status:  Believed complete and correct to 1.3
+ */
+
 /**
  * This class prints Java primitive values and object to a stream as
  * text.  None of the methods in this class throw an exception.  However,
@@ -54,7 +59,8 @@ package java.io;
  *
  * @deprecated
  *
- * @author Aaron M. Renn (arenn@urbanophile.com)
+ * @author Aaron M. Renn <arenn@urbanophile.com>
+ * @author Tom Tromey <tromey@cygnus.com>
  */
 public class PrintStream extends FilterOutputStream
 {
@@ -100,7 +106,7 @@ public class PrintStream extends FilterOutputStream
    *
    * @deprecated
    */
-  public PrintStream(OutputStream out)
+  public PrintStream (OutputStream out)
   {
     this(out, false);
   }
@@ -119,7 +125,7 @@ public class PrintStream extends FilterOutputStream
    *
    * @deprecated
    */
-  public PrintStream(OutputStream out, boolean auto_flush)
+  public PrintStream (OutputStream out, boolean auto_flush)
   {
     super(out);
 

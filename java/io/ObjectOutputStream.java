@@ -850,7 +850,10 @@ public class ObjectOutputStream extends OutputStream
     public abstract void put (String name, long value);
     public abstract void put (String name, short value);
     public abstract void put (String name, Object value);
-    /** @deprecated */
+
+    /**
+     * @deprecated
+     */
     public abstract void write (ObjectOutput out) throws IOException;
   }
 

@@ -108,7 +108,7 @@ public class RandomAccessFile implements DataOutput, DataInput
    * opening the file to determine whether or not this file is allowed to
    * be read or written.
    *
-   * @param name The name of the file to read and/or write
+   * @param fileName The name of the file to read and/or write
    * @param mode "r" for read only or "rw" for read-write access to the file
    *
    * @exception IllegalArgumentException If <code>mode</code> has an 
@@ -117,8 +117,8 @@ public class RandomAccessFile implements DataOutput, DataInput
    * is not allowed
    * @exception FileNotFoundException If any other error occurs
    */
-  public RandomAccessFile(String name, String mode) 
-   throws FileNotFoundException
+  public RandomAccessFile (String fileName, String mode)
+    throws FileNotFoundException
   {
     // Check the mode
     if (!mode.equals("r") && !mode.equals("rw") && !mode.equals("rws") &&
@@ -129,10 +129,10 @@ public class RandomAccessFile implements DataOutput, DataInput
     SecurityManager s = System.getSecurityManager();
     if (s != null)
       {
-        s.checkRead(name);
+        s.checkRead(fileName);
 
         if (!mode.equals("r"))
-          s.checkWrite(name);
+          s.checkWrite(fileName);
       }
   
     if (mode.equals("r"))
@@ -141,7 +141,7 @@ public class RandomAccessFile implements DataOutput, DataInput
     fd = new FileDescriptor();
     try
       {
-        fd.open(name, mode);
+        fd.open(fileName, mode);
       }
     catch(IOException e)
       {
@@ -247,15 +247,14 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public int read (byte[] buf)
-    throws IOException
+  public int read (byte[] buffer) throws IOException
   {
-    return read (buf, 0, buf.length);
+    return read (buffer, 0, buffer.length);
   }
 
   /**
-   * This methods reads up to <code>len</code> bytes from the file into the s
-   * pecified array starting at position <code>offset</code> into the array.
+   * This methods reads up to <code>len</code> bytes from the file into the
+   * specified array starting at position <code>offset</code> into the array.
    *
    * @param buf The array to read the bytes into
    * @param offset The index into the array to start storing bytes
@@ -265,10 +264,9 @@ public class RandomAccessFile implements DataOutput, DataInput
    *
    * @exception IOException If an error occurs
    */
-  public int read (byte[] buf, int offset, int len)
-    throws IOException
+  public int read (byte[] buffer, int offset, int len) throws IOException
   {
-    return fd.read (buf,offset, len);
+    return fd.read (buffer, offset, len);
   }
 
   /**
