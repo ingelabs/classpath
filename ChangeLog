@@ -1,3 +1,23 @@
+2005-01-07  Archie Cobbs  <archie@dellroad.org>
+
+	* NEWS: Document changes.
+	* java/lang/Class.java (newInstance(), getClassLoader(),
+	forName(String), forName(String, boolean, ClassLoader)):
+	Use new VMStackWalker methods.
+	* java/lang/ClassLoader.java (getParent(), getSystemClassLoader()):
+	Likewise.
+	* java/lang/Package.java (getPackages()): Likewise.
+	* java/lang/SecurityManager.java (getClassContext()): Likewise.
+	* java/util/ResourceBundle.java (getBundle()): Likewise.
+	* java/lang/Runtime.java (load(), loadLibrary()): Load the native
+	library using the calling class' class loader.
+	* java/lang/System.java (load(), loadLibrary()): Likewise.
+	(currentClassLoader()): implement via currentLoadedClass().
+	* vm/reference/gnu/classpath/VMStackWalker.java: New class.
+	* vm/reference/java/lang/VMRuntime.java (nativeLoad()):
+	Add a ClassLoader parameter.
+	* vm/reference/java/lang/VMSecurityManager.java: Removed.
+
 2005-01-07  Andrew John Hughes  <gnu_andrew@member.fsf.org>
 
 	* java/util/SimpleTimeZone.java:

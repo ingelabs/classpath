@@ -1,3 +1,11 @@
+New in release 0.14
+
+* VMSecurityManager has been replaced by gnu.classpath.VMStackWalker.
+  currentClassLoader() is no longer needed, and there are also two new
+  methods with non-native implementations. VM implementors are encouraged
+  to provide more efficient versions.
+* VMRuntime.nativeLoad() now takes an additional ClassLoader parameter.
+
 New in release 0.13 (Jan 6, 2005)
 
 * The http url protocol handler has been replaced with a full HTTP/1.1
