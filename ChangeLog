@@ -1,5 +1,13 @@
 2003-07-23  Torsten Rupp  <rupp@lisa.aicas.com>
 
+	* native/jni/java-io/FileDescriptor.c:
+	Replaced JNI_JLONG_CONST* -> TARGET_NATIVE_MATH_INT_*, because
+        JNI_JLONG_CONST* should be removed from jni.h
+        removed HAVE_FTRUNCATE, HAVE_FSYNC, HAVE_SELECT (now set in
+        configure)
+
+2003-07-23  Torsten Rupp  <rupp@lisa.aicas.com>
+
 	* native/jni/java-nio/java_nio.c:
 	Replaced JNI_JLONG_CONST_0 -> TARGET_NATIVE_MATH_INT_INT64_CONST_0,
         because JNI_JLONG_CONST* should be removed from jni.h
