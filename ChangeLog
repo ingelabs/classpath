@@ -1,5 +1,17 @@
 2004-09-27  Michael Koch  <konqueror@gmx.de>
 
+	* javax/swing/JTextArea.java
+	(getColumnWidth): New method.
+	(getLineCount): Likewise.
+	(getLineStartOffset): Likewise.
+	(getLineEndOffset): Likewise.
+	(getLineOfOffset): Likewise.
+	(getRowHeight): Likewise.
+	(replaceRange): Likewise.
+	(insert): Reformatted.
+
+2004-09-27  Michael Koch  <konqueror@gmx.de>
+
 	* javax/swing/JSpinner.java:
 	Some Re-formatting.
 	(spinner): New field.
