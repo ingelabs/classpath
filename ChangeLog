@@ -1,3 +1,8 @@
+2005-03-17  Chris Burdess  <dog@gnu.org>
+
+	* gnu/xml/dom/html2/DomHTMLDocument.java: Fixed element creation and
+	check for HTML/XHTML namespace.
+
 2005-03-16  Tom Tromey  <tromey@redhat.com>
 
 	* gnu/java/lang/MainThread.java (MainThread): Load main class
