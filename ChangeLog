@@ -1,5 +1,9 @@
 2004-01-18  Michael Koch  <konqueror@gmx.de>
 
+	* configure.in: Fix AC_CONFIG_FILES usage and use AC_OUTPUT_COMMANDS.
+
+2004-01-18  Michael Koch  <konqueror@gmx.de>
+
 	* HACKING: Updated autoconf and automake prerequisite descriptions.
 	* acinclude.m4 (CLASSPATH_ENABLE_GJDOC): Use AS_HELP_STRING,
 	fix quotation.
