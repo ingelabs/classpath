@@ -33,9 +33,9 @@ public class GtkMainThread extends GtkGenericPeer implements Runnable
     synchronized (mainThreadLock) {
       if (mainThread != null)
 	throw new IllegalStateException();
+      mainThread = new Thread(this, "GtkMain");
     }
-    
-    mainThread = new Thread(this, "GtkMain");
+
     synchronized (this) {
       mainThread.start();
       try {
