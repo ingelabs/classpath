@@ -1,5 +1,15 @@
 2004-10-20  Michael Koch  <konqueror@gmx.de>
 
+	* javax/imageio/stream/FileCacheImageInputStream.java,
+	javax/imageio/stream/FileCacheImageOutputStream.java,
+	javax/imageio/stream/FileImageInputStream.java,
+	javax/imageio/stream/FileImageOutputStream.java,
+	javax/imageio/stream/MemoryCacheImageInputStream.java,
+	javax/imageio/stream/MemoryCacheImageOutputStream.java:
+	New files.
+
+2004-10-20  Michael Koch  <konqueror@gmx.de>
+
 	* java/io/File.java:
 	Fixed @author tag to be HTML compatible.
 	* java/sql/Timestamp.java,
