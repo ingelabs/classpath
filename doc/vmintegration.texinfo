@@ -12,8 +12,14 @@ This file contains important information you will need to know if you
 are going to write an interface between GNU Classpath and a Virtual
 Machine.
 
-Copyright (C) 1998-2002 Free Software Foundation, Inc.
+Copyright (C) 1998-2002, 2004 Free Software Foundation, Inc.
 
+@ifnotplaintext
+@dircategory GNU Libraries
+@direntry
+* VM Integration: (vmintegration).   GNU Classpath VM Integration Guide
+@end direntry
+@end ifnotplaintext
 @end ifinfo
 
 @titlepage
