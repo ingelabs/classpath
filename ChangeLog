@@ -1,9 +1,19 @@
 2004-10-04  Michael Koch  <konqueror@gmx.de>
 
+	* javax/imageio/IIOImage.java,
+	javax/imageio/ImageReadParam.java,
+	javax/imageio/metadata/IIOMetadataController.java,
+	javax/imageio/metadata/IIOMetadataFormat.java:
+	New files.
+	* javax/imageio/stream/ImageOutputStream.java:
+	Implemented.
+
+2004-10-04  Michael Koch  <konqueror@gmx.de>
+
 	* javax/imageio/IIOParam.java,
-	javax/imageio/IIOParamControll.er.java
-	javax/imageio/ImageTypeSpecifie.r.java
-	javax/imageio/ImageWriteParam.ja.va
+	javax/imageio/IIOParamController.java,
+	javax/imageio/ImageTypeSpecifier.java,
+	javax/imageio/ImageWriteParam.java,
 	javax/imageio/metadata/IIOMetadata.java:
 	New files.
 	* javax/imageio/ImageTranscoder.java:
