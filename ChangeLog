@@ -1,3 +1,26 @@
+2000-06-29  Warren Levy  <warrenl@cygnus.com>
+
+	* java/math/BigDecimal.java (add): Reimplemented.
+	(subtract): Corrected method name from 'substract'.  Reimplemented.
+	* java/sql/Connection.java (TRANSACTION_SERIALIZABLE): Corrected
+	spelling to match JDK spec.
+	* java/sql/DatabaseMetaData.java (getIdentifierQuoteString):
+	Corrected method name from 'getIdentiferQuoteString'.
+	(getTimeDateFunctions): Corrected name to match the spec.
+	(supportsCatalogsInPrivilegeDefinitions): Ditto.
+	(getMaxUserNameLength): Ditto.
+	(getTables): Added String types[] parameter to match the spec.
+	* java/sql/Driver.java (getMajorVersion): Corrected method name.
+	* java/sql/PreparedStatement.java: Class extends Statement.
+	(setBigDecimal): New method.
+	(setAsciiStream): Added int length parameter.
+	(setUnicodeStream): Ditto.
+	(setBinaryStream): Ditto.
+	(setCharacterStream): Ditto.
+	(execute): New method.
+	(executeQuery): New method.
+	(executeUpdate): New method.
+
 2000-06-18  Mark Wielaard <mark@klomp.org>
 
 	* vm/reference/java/lang/Thread.java: yield() is static

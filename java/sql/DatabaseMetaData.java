@@ -1,5 +1,5 @@
 /* DatabaseMetaData.java -- Information about the database itself.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -592,7 +592,7 @@ storesMixedCaseQuotedIdentifiers() throws SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract String
-getIdentiferQuoteString() throws SQLException;
+getIdentifierQuoteString() throws SQLException;
 
 /*************************************************************************/
 
@@ -646,14 +646,14 @@ getSystemFunctions() throws SQLException;
 /*************************************************************************/
 
 /**
-  * This method returns comma separated list of date/time functions.
+  * This method returns comma separated list of time/date functions.
   * 
-  * @return The list of date/time functions.
+  * @return The list of time/date functions.
   *
   * @exception SQLException If an error occurs.
   */
 public abstract String
-getDateTimeFunctions() throws SQLException;
+getTimeDateFunctions() throws SQLException;
 
 /*************************************************************************/
 
@@ -1251,7 +1251,7 @@ supportsCatalogsInIndexDefinitions() throws SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract boolean
-supportsCatalogInPrivilegeDefinitions() throws SQLException;
+supportsCatalogsInPrivilegeDefinitions() throws SQLException;
 
 /*************************************************************************/
 
@@ -1719,7 +1719,7 @@ getMaxTablesInSelect() throws SQLException;
   * @exception SQLException If an error occurs.
   */
 public abstract int
-getMaxTableUserLength() throws SQLException;
+getMaxUserNameLength() throws SQLException;
 
 /*************************************************************************/
 
@@ -1925,14 +1925,15 @@ getProcedureColumns(String catalog, String schemaPattern, String namePattern,
   * @param schemaPattern A schema pattern for the schemas to return tables
   * from, or "" to return tables from all schemas.
   * @param namePattern The pattern of table names to return.
+  * @param types The list of table types to include; null returns all types.
   *
   * @returns A <code>ResultSet</code> with all the requested tables.
   *
   * @exception SQLException If an error occurs.
   */
 public abstract ResultSet
-getTables(String catalog, String schemaPattern, String namePattern)
-          throws SQLException;
+getTables(String catalog, String schemaPattern, String namePattern,
+	  String types[]) throws SQLException;
 
 /*************************************************************************/
 

@@ -1,5 +1,5 @@
 /* Connection.java -- Manage a database connection.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -74,7 +74,7 @@ public static final int TRANSACTION_REPEATABLE_READ = 4;
   * transactions will not affect the result set returned during subsequent
   * executions of the same WHERE clause in this transaction.
   */
-public static final int TRANSACTION_SERIALIZEABLE = 8;
+public static final int TRANSACTION_SERIALIZABLE = 8;
 
 /*************************************************************************/
 

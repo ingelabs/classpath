@@ -1,5 +1,5 @@
 /* java.math.BigDecimal -- Arbitrary precision decimals.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -96,13 +96,22 @@ public class BigDecimal extends Number implements Comparable {
 
   public BigDecimal add (BigDecimal val) 
   {
-    return new BigDecimal (num.add (val.num), Math.max (scale, val.scale));
+    // For addition, need to line up decimals.  Note that the movePointRight
+    // method cannot be used for this as it might return a BigDecimal with
+    // scale == 0 instead of the scale we need.
+    BigInteger op1 = num;
+    BigInteger op2 = val.num;
+    if (scale < val.scale)
+      op1 = op1.multiply (BigInteger.valueOf (10).pow (val.scale - scale));
+    else if (scale > val.scale)
+      op2 = op2.multiply (BigInteger.valueOf (10).pow (scale - val.scale));
+
+    return new BigDecimal (op1.add (op2), Math.max (scale, val.scale));
   }
 
-  public BigDecimal substract (BigDecimal val) 
+  public BigDecimal subtract (BigDecimal val) 
   {
-    return new BigDecimal (num.subtract (val.num), 
-			   Math.max (scale, val.scale));
+    return this.add(val.negate());
   }
 
   public BigDecimal multiply (BigDecimal val) 

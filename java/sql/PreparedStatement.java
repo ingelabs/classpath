@@ -1,5 +1,5 @@
 /* PreparedStatement.java -- Interface for pre-compiled statements.
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -40,7 +40,7 @@ import java.util.Calendar;
   *
   * @author Aaron M. Renn (arenn@urbanophile.com)
   */
-public abstract interface PreparedStatement
+public abstract interface PreparedStatement extends Statement
 {
 
 /**
@@ -200,6 +200,20 @@ setBytes(int index, byte[] value) throws SQLException;
 
 /**
   * This method sets the specified parameter from the given Java
+  * <code>java.math.BigDecimal</code> value.
+  *
+  * @param index The index of the parameter value to set.
+  * @param value The value of the parameter.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract void
+setBigDecimal(int index, java.math.BigDecimal value) throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method sets the specified parameter from the given Java
   * <code>java.sql.Date</code> value.
   *
   * @param index The index of the parameter value to set.
@@ -292,12 +306,12 @@ setTimestamp(int index, java.sql.Timestamp value, Calendar calendar)
   *
   * @param index The index of the parameter value to set.
   * @param value The value of the parameter.
-  * @param calendar The <code>Calendar</code> to use for timezone and locale.
+  * @param length The number of bytes in the stream.
   *
   * @exception SQLException If an error occurs.
   */
 public abstract void
-setAsciiStream(int index, InputStream value) throws SQLException;
+setAsciiStream(int index, InputStream value, int length) throws SQLException;
 
 /*************************************************************************/
 
@@ -307,11 +321,12 @@ setAsciiStream(int index, InputStream value) throws SQLException;
   *
   * @param index The index of the parameter value to set.
   * @param value The value of the parameter.
+  * @param length The number of bytes in the stream.
   *
   * @exception SQLException If an error occurs.
   */
 public abstract void
-setUnicodeStream(int index, InputStream value) throws SQLException;
+setUnicodeStream(int index, InputStream value, int length) throws SQLException;
 
 /*************************************************************************/
 
@@ -321,11 +336,12 @@ setUnicodeStream(int index, InputStream value) throws SQLException;
   *
   * @param index The index of the parameter value to set.
   * @param value The value of the parameter.
+  * @param length The number of bytes in the stream.
   *
   * @exception SQLException If an error occurs.
   */
 public abstract void
-setBinaryStream(int index, InputStream value) throws SQLException;
+setBinaryStream(int index, InputStream value, int length) throws SQLException;
 
 /*************************************************************************/
 
@@ -335,11 +351,12 @@ setBinaryStream(int index, InputStream value) throws SQLException;
   *
   * @param index The index of the parameter value to set.
   * @param value The value of the parameter.
+  * @param length The number of bytes in the stream.
   *
   * @exception SQLException If an error occurs.
   */
 public abstract void
-setCharacterStream(int index, Reader value) throws SQLException;
+setCharacterStream(int index, Reader value, int length) throws SQLException;
 
 /*************************************************************************/
 
@@ -473,6 +490,47 @@ clearParameters() throws SQLException;
   */
 public abstract ResultSetMetaData
 getMetaData() throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method executes a prepared SQL query.
+  * Some prepared statements return multiple results; the execute method
+  * handles these complex statements as well as the simpler form of
+  * statements handled by executeQuery and executeUpdate.
+  *
+  * @return The result of the SQL statement.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract boolean
+execute() throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method executes a prepared SQL query and returns its ResultSet.
+  *
+  * @return The ResultSet of the SQL statement.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract ResultSet
+executeQuery() throws SQLException;
+
+/*************************************************************************/
+
+/**
+  * This method executes an SQL INSERT, UPDATE or DELETE statement.  SQL
+  * statements that return nothing such as SQL DDL statements can be executed.
+  *
+  * @return The result is either the row count for INSERT, UPDATE or DELETE
+  * statements; or 0 for SQL statements that return nothing.
+  *
+  * @exception SQLException If an error occurs.
+  */
+public abstract int
+executeUpdate() throws SQLException;
 
 } // interface PreparedStatement
 

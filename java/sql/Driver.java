@@ -1,5 +1,5 @@
 /* Driver.java -- A JDBC driver
-   Copyright (C) 1999 Free Software Foundation, Inc.
+   Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -52,7 +52,7 @@ public abstract interface Driver
   * @return The major version number of the driver.
   */
 public abstract int
-getMajorVersionNumber();
+getMajorVersion();
 
 /*************************************************************************/
 
