@@ -1,5 +1,9 @@
 2003-03-11  Michael Koch  <konqueror@gmx.de>
 
+	* java/net/InetAddress.java: Reformated, no code changes.
+
+2003-03-11  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/nio/FileLockImpl.java: New file.
 	* gnu/java/nio/Makefile.am
 	(EXTRA_DIST): Added FileLockImpl.java.
