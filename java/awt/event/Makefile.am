@@ -1,0 +1,36 @@
+EXTRA_DIST = \
+AWTEventListener.java \
+ActionEvent.java \
+ActionListener.java \
+AdjustmentEvent.java \
+AdjustmentListener.java \
+ComponentAdapter.java \
+ComponentEvent.java \
+ComponentListener.java \
+ContainerAdapter.java \
+ContainerEvent.java \
+ContainerListener.java \
+FocusAdapter.java \
+FocusEvent.java \
+FocusListener.java \
+InputEvent.java \
+InputMethodEvent.java \
+InputMethodListener.java \
+InvocationEvent.java \
+ItemEvent.java \
+ItemListener.java \
+KeyAdapter.java \
+KeyEvent.java \
+KeyListener.java \
+MouseAdapter.java \
+MouseEvent.java \
+MouseListener.java \
+MouseMotionAdapter.java \
+MouseMotionListener.java \
+PaintEvent.java \
+TextEvent.java \
+TextListener.java \
+WindowAdapter.java \
+WindowEvent.java \
+WindowListener.java 
+
