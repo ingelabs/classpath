@@ -1,5 +1,7 @@
 2001-07-30  Tom Tromey  <tromey@redhat.com>
 
+	* java/util/Date.java (getDay): Fix return value.
+
 	* java/lang/Integer.java (toString(int,int)): Handle case where
 	radix is out of range.
 
