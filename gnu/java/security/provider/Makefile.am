@@ -2,8 +2,7 @@
 
 EXTRA_DIST = \
 	DefaultPolicy.java \
-	DERReader.java \
-	DERWriter.java \
+	DSAKeyFactory.java \
 	DSAKeyPairGenerator.java \
 	DSAParameterGenerator.java \
 	DSAParameters.java \
@@ -13,4 +12,5 @@ EXTRA_DIST = \
 	Gnu.java \
 	MD5.java \
 	SHA1PRNG.java \
-	SHA.java
+	SHA.java \
+	X509CertificateFactory.java
