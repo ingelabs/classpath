@@ -11,7 +11,7 @@
 This file contains important information you will need to know if you
 are going to hack on the GNU Classpath project code.
 
-Copyright (C) 1998 Free Software Foundation, Inc.
+Copyright (C) 1998, 1999 Free Software Foundation, Inc.
 
 @end ifinfo
 
@@ -23,7 +23,7 @@ Copyright (C) 1998 Free Software Foundation, Inc.
 
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{} 1998 Free Software Foundation, Inc.
+Copyright @copyright{} 1998, 1999 Free Software Foundation, Inc.
 @sp 2
 Permission is granted to make and distribute verbatim copies of
 this document provided the copyright notice and this permission notice
@@ -66,6 +66,7 @@ This document is definitely a work in progress.
 * Native Efficiency::       Tips for making native Java code faster
 * Specification Sources::   Where to find the Java class library specs
 * Naming Conventions::      How files and directories are named in Classpath
+* Character Encodings::     How byte to char conversions work in Classpath
 @end menu
 
 @node Introduction, Requirements, Top, Top
@@ -566,7 +567,7 @@ papers are more canonical than the JavaDoc documentation.  This is true
 in general.
 
 
-@node Naming Conventions, , Specification Sources, Top
+@node Naming Conventions, Character Conversions, Specification Sources, Top
 @comment node-name, next, previous, up
 @chapter Directory and File Naming Conventions
 
@@ -687,6 +688,106 @@ java.util.InetAddress would go in native/java.net/InetAddress.c.
 ``Internal'' native functions called from the main native method can
 reside in files of any name.
 @end itemize
+
+@node Character Conversions, , Naming Conventions, Top
+@comment node-name, next, previous, up
+@chapter Character Conversions
+
+Java uses the Unicode character encoding system internally.  This is a
+sixteen bit (two byte) collection of characters encompassing most of the
+world's written languages.  However, Java programs must often deal with
+outside interfaces that are byte (eight bit) oriented.  For example, a
+Unix file, a stream of data from a network socket, etc.  Beginning with
+Java 1.1, the @code{Reader} and @code{Writer} classes provide functionality
+for dealing with character oriented streams.  The classes 
+@code{InputStreamReader} and @code{OutputStreamWriter} bridge the gap
+between byte streams and character streams by converting bytes to 
+Unicode characters and vice versa.
+
+In Classpath, @code{InputStreamReader} and @code{OutputStreamWriter}
+rely on an internal class called @code{gnu.java.io.EncodingManager} to load
+translaters that perform the actual conversion.  There are two types of
+converters, encoders and decoders.  Encoders are subclasses of
+@code{gnu.java.io.encoder.Encoder}.  This type of converter takes a Java
+(Unicode) character stream or buffer and converts it to bytes using
+a specified encoding scheme.  Decoders are a subclass of 
+@code{gnu.java.io.decoder.Decoder}.  This type of converter takes a 
+byte stream or buffer and converts it to Unicode characters.  The
+@code{Encoder} and @code{Decoder} classes are subclasses of
+@code{Writer} and @code{Reader} respectively, and so can be used in
+contexts that require character streams, but the Classpath implementation
+currently does not make use of them in this fashion.
+
+The @code{EncodingManager} class searches for requested encoders and
+decoders by name.  Since encoders and decoders are separate in Classpath,
+it is possible to have a decoder without an encoder for a particular 
+encoding scheme, or vice versa.  @code{EncodingManager} searches the
+package path specified by the @code{file.encoding.pkg} property.  The
+name of the encoder or decoder is appended to the search path to
+produce the required class name.  Note that @code{EncodingManager} knows
+about the default system encoding scheme, which it retrieves from the
+system property @code{file.encoding}, and it will return the proper
+translator for the default encoding if no scheme is specified.  Also, the 
+Classpath standard translator library, which is the @code{gnu.java.io} package, 
+is automatically appended to the end of the path.
+
+For efficiency, @code{EncodingManager} maintains a cache of translators
+that it has loaded.  This eliminates the need to search for a commonly
+used translator each time it is requested.
+
+Finally, @code{EncodingManager} supports aliasing of encoding scheme names.
+For example, the ISO Latin-1 encoding scheme can be referred to as
+''8859_1'' or ''ISO-8859-1''.  @code{EncodingManager} searches for 
+aliases by looking for the existence of a system property called
+@code{gnu.java.io.encoding_scheme_alias.<encoding name>}.  If such a
+property exists.  The value of that property is assumed to be the
+canonical name of the encoding scheme, and a translator with that name is 
+looked up instead of one with the original name.
+
+Here is an example of how @code{EncodingManager} works.  A class requests
+a decoder for the ''UTF-8'' encoding scheme by calling
+@code{EncodingManager.getDecoder("UTF-8")}.  First, an alias is searched
+for by looking for the system property 
+@code{gnu.java.io.encoding_scheme_alias.UTF-8}.  In our example, this
+property exists and has the value ''UTF8''.  That is the actual
+decoder that will be searched for.  Next, @code{EncodingManager} looks
+in its cache for this translator.  Assuming it does not find it, it
+searches the translator path, which is this example consists only of
+the default @code{gnu.java.io}.  The ''decoder'' package name is 
+appended since we are looking for a decoder.  (''encoder'' would be 
+used if we were looking for an encoder).  Then name name of the translator
+is appended.  So @code{EncodingManager} attempts to load a translator
+class called @code{gnu.java.io.decoder.UTF8}.  If that class is found,
+an instance of it is returned.  If it is not found, a
+@code{UnsupportedEncodingException}.
+
+To write a new translator, it is only necessary to subclass 
+@code{Encoder} and/or @code{Decoder}.  Only a handful of abstract
+methods need to be implemented.  In general, no methods need to be
+overridden.  The needed methods calculate the number of bytes/chars
+that the translation will generate, convert buffers to/from bytes,
+and read/write a requested number of characters to/from a stream.
+
+Many common encoding schemes use only eight bits to encode characters.
+Writing a translator for these encodings is very easy.  There are 
+abstract translator classes @code{gnu.java.io.decode.DecoderEightBitLookup}
+and @code{gnu.java.io.encode.EncoderEightBitLookup}.  These classes
+implement all of the necessary methods.  All that is necessary to
+create a lookup table array that maps bytes to Unicode characters and
+set the class variable @code{lookup_table} equal to it in a static
+initializer.  Also, a single constructor that takes an appropriate
+stream as an argument must be supplied.  These translators are
+exceptionally easy to create and there are several of them supplied
+in the Classpath distribution.
+
+Writing multi-byte or variable-byte encodings is more difficult, but
+often not especially challenging.  The Classpath distribution ships with
+translators for the UTF8 encoding scheme which uses from one to three
+bytes to encode Unicode characters.  This can serve as an example of
+how to write such a translator.
+
+Many more translators are needed.  All major character encodings should
+eventually be supported.
 
 @bye
 
