@@ -1,3 +1,8 @@
+2003-07-18  Mark Wielaard  <mark@klomp.org>
+
+	* java/util/zip/InflaterInputStream.java (InflaterInputStream): Check
+	for null InputStream and Inflater.
+
 2003-07-18  Jerry Quinn  <jlquinn@optonline.net>
 	    Mark Wielaard  <mark@klomp.org>
 

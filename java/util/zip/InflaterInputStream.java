@@ -114,6 +114,11 @@ public class InflaterInputStream extends FilterInputStream
     if (size <= 0)
       throw new IllegalArgumentException("size <= 0");
     buf = new byte[size]; //Create the buffer
+
+    if (in == null)
+      throw new NullPointerException("InputStream null");
+    if (inf == null)
+      throw new NullPointerException("Inflater null");
   }
 
   /**
