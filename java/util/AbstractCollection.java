@@ -1,28 +1,28 @@
 /* AbstractCollection.java -- Abstract implementation of most of Collection
    Copyright (C) 1998 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+   This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
- 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+   GNU Classpath is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
+   GNU Classpath is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
 
-As a special exception, if you link this library with other files to
-produce an executable, this library does not by itself cause the
-resulting executable to be covered by the GNU General Public License.
-This exception does not however invalidate any other reasons why the
-executable file might be covered by the GNU General Public License. */
+   You should have received a copy of the GNU General Public License
+   along with GNU Classpath; see the file COPYING.  If not, write to the
+   Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+   02111-1307 USA.
+
+   As a special exception, if you link this library with other files to
+   produce an executable, this library does not by itself cause the
+   resulting executable to be covered by the GNU General Public License.
+   This exception does not however invalidate any other reasons why the
+   executable file might be covered by the GNU General Public License. */
 
 
 package java.util;
@@ -43,8 +43,8 @@ import java.lang.reflect.Array;
  * precise implementation used by AbstractCollection is documented, so that
  * subclasses can tell which methods could be implemented more efficiently.
  */
-public abstract class AbstractCollection implements Collection {
-
+public abstract class AbstractCollection implements Collection
+{
   /**
    * Return an Iterator over this collection. The iterator must provide the
    * hasNext and next methods and should in addition provide remove if the
@@ -67,7 +67,8 @@ public abstract class AbstractCollection implements Collection {
    * @exception UnsupportedOperationException if the add operation is not
    *   supported on this collection
    */
-  public boolean add(Object o) {
+  public boolean add(Object o)
+  {
     throw new java.lang.UnsupportedOperationException();
   }
 
@@ -82,12 +83,14 @@ public abstract class AbstractCollection implements Collection {
    * @exception UnsupportedOperationException if the add operation is not
    *   supported on this collection
    */
-  public boolean addAll(Collection c) {
+  public boolean addAll(Collection c)
+  {
     Iterator i = c.iterator();
     boolean modified = false;
-    while (i.hasNext()) {
-      modified |= add(i.next());
-    }
+    while (i.hasNext())
+      {
+	modified |= add(i.next());
+      }
     return modified;
   }
 
@@ -101,12 +104,14 @@ public abstract class AbstractCollection implements Collection {
    * @exception UnsupportedOperationException if the Iterator returned by
    *   iterator does not provide an implementation of remove
    */
-  public void clear() {
+  public void clear()
+  {
     Iterator i = iterator();
-    while (i.hasNext()) {
-      i.next();
-      i.remove();
-    }
+    while (i.hasNext())
+      {
+	i.next();
+	i.remove();
+      }
   }
 
   /**
@@ -120,25 +125,33 @@ public abstract class AbstractCollection implements Collection {
    * @param o the object to remove from this collection
    * @return true if this collection contains an object equal to o
    */
-  public boolean contains(Object o) {
+  public boolean contains(Object o)
+  {
     Iterator i = iterator();
 
     // This looks crazily inefficient, but it takes the test o==null outside
     // the loop, saving time, and also saves needing to store the result of
     // i.next() each time.
-    if (o == null) {
-      while (i.hasNext()) {
-        if (i.next() == null) {
-          return true;
-        }
+    if (o == null)
+      {
+	while (i.hasNext())
+	  {
+	    if (i.next() == null)
+	      {
+		return true;
+	      }
+	  }
       }
-    } else {
-      while (i.hasNext()) {
-        if (o.equals(i.next())) {
-          return true;
-        }
+    else
+      {
+	while (i.hasNext())
+	  {
+	    if (o.equals(i.next()))
+	      {
+		return true;
+	      }
+	  }
       }
-    }
     return false;
   }
 
@@ -152,13 +165,16 @@ public abstract class AbstractCollection implements Collection {
    * @return true if this collection contains all the elements in the given
    *   collection
    */
-  public boolean containsAll(Collection c) {
+  public boolean containsAll(Collection c)
+  {
     Iterator i = c.iterator();
-    while (i.hasNext()) {
-      if (!contains(i.next())) {
-        return false;
+    while (i.hasNext())
+      {
+	if (!contains(i.next()))
+	  {
+	    return false;
+	  }
       }
-    }
     return true;
   }
 
@@ -168,7 +184,8 @@ public abstract class AbstractCollection implements Collection {
    *
    * @return true if this collection is empty.
    */
-  public boolean isEmpty() {
+  public boolean isEmpty()
+  {
     return size() == 0;
   }
 
@@ -189,27 +206,35 @@ public abstract class AbstractCollection implements Collection {
    * @exception UnsupportedOperationException if this collection's Iterator
    *   does not support the remove method
    */
-  public boolean remove(Object o) {
+  public boolean remove(Object o)
+  {
     Iterator i = iterator();
 
     // This looks crazily inefficient, but it takes the test o==null outside
     // the loop, saving time, and also saves needing to store the result of
     // i.next() each time.
-    if (o == null) {
-      while (i.hasNext()) {
-        if (i.next() == null) {
-          i.remove();
-	  return true;
-        }
+    if (o == null)
+      {
+	while (i.hasNext())
+	  {
+	    if (i.next() == null)
+	      {
+		i.remove();
+		return true;
+	      }
+	  }
       }
-    } else {
-      while (i.hasNext()) {
-        if (o.equals(i.next())) {
-          i.remove();
-          return true;
-        }
+    else
+      {
+	while (i.hasNext())
+	  {
+	    if (o.equals(i.next()))
+	      {
+		i.remove();
+		return true;
+	      }
+	  }
       }
-    }
     return false;
   }
 
@@ -226,15 +251,18 @@ public abstract class AbstractCollection implements Collection {
    * @exception UnsupportedOperationException if this collection's Iterator
    *   does not support the remove method
    */
-  public boolean removeAll(Collection c) {
+  public boolean removeAll(Collection c)
+  {
     Iterator i = iterator();
     boolean changed = false;
-    while (i.hasNext()) {
-      if (c.contains(i.next())) {
-        i.remove();
-        changed = true;
+    while (i.hasNext())
+      {
+	if (c.contains(i.next()))
+	  {
+	    i.remove();
+	    changed = true;
+	  }
       }
-    }
     return changed;
   }
 
@@ -251,15 +279,18 @@ public abstract class AbstractCollection implements Collection {
    * @exception UnsupportedOperationException if this collection's Iterator
    *   does not support the remove method
    */
-  public boolean retainAll(Collection c) {
+  public boolean retainAll(Collection c)
+  {
     Iterator i = iterator();
     boolean changed = false;
-    while (i.hasNext()) {
-      if (!c.contains(i.next())) {
-        i.remove();
-        changed = true;
+    while (i.hasNext())
+      {
+	if (!c.contains(i.next()))
+	  {
+	    i.remove();
+	    changed = true;
+	  }
       }
-    }
     return changed;
   }
 
@@ -271,12 +302,14 @@ public abstract class AbstractCollection implements Collection {
    *
    * @return an array containing the elements of this collection
    */
-  public Object[] toArray() {
+  public Object[] toArray()
+  {
     Object[] a = new Object[size()];
     Iterator i = iterator();
-    for (int pos = 0; pos < a.length; pos++) {
-      a[pos] = i.next();
-    }
+    for (int pos = 0; pos < a.length; pos++)
+      {
+	a[pos] = i.next();
+      }
     return a;
   }
 
@@ -298,18 +331,22 @@ public abstract class AbstractCollection implements Collection {
    * @exception ClassCastException if the type of the array precludes holding
    *   one of the elements of the Collection
    */
-  public Object[] toArray(Object[] a) {
+  public Object[] toArray(Object[]a)
+  {
     final int n = size();
-    if (a.length < n) {
-      a = (Object[])Array.newInstance(a.getClass().getComponentType(), n);
-    }
+    if (a.length < n)
+      {
+	a = (Object[])Array.newInstance(a.getClass().getComponentType(), n);
+      }
     Iterator i = iterator();
-    for (int pos = 0; pos < n; pos++) {
-      a[pos] = i.next();
-    }
-    if (a.length > n) {
-      a[n] = null;
-    }
+    for (int pos = 0; pos < n; pos++)
+      {
+	a[pos] = i.next();
+      }
+    if (a.length > n)
+      {
+	a[n] = null;
+      }
     return a;
   }
 
@@ -322,17 +359,20 @@ public abstract class AbstractCollection implements Collection {
    *
    * @return a String representation of the Collection
    */
-  public String toString() {
+  public String toString()
+  {
     StringBuffer s = new StringBuffer();
     s.append('[');
     Iterator i = iterator();
     boolean more = i.hasNext();
-    while(more) {
-      s.append(i.next());
-      if (more = i.hasNext()) {
-        s.append(", ");
+    while (more)
+      {
+	s.append(i.next());
+	if (more = i.hasNext())
+	  {
+	    s.append(", ");
+	  }
       }
-    }
     s.append(']');
     return s.toString();
   }

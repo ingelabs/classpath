@@ -1,28 +1,28 @@
 /* java.util.PropertyPermission
    Copyright (C) 1999 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+   This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
- 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+   GNU Classpath is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
+   GNU Classpath is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
 
-As a special exception, if you link this library with other files to
-produce an executable, this library does not by itself cause the
-resulting executable to be covered by the GNU General Public License.
-This exception does not however invalidate any other reasons why the
-executable file might be covered by the GNU General Public License. */
+   You should have received a copy of the GNU General Public License
+   along with GNU Classpath; see the file COPYING.  If not, write to the
+   Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+   02111-1307 USA.
+
+   As a special exception, if you link this library with other files to
+   produce an executable, this library does not by itself cause the
+   resulting executable to be covered by the GNU General Public License.
+   This exception does not however invalidate any other reasons why the
+   executable file might be covered by the GNU General Public License. */
 
 
 package java.util;
@@ -61,21 +61,17 @@ public final class PropertyPermission extends BasicPermission
    * @serialField action String
    *   The action string.
    */
-  private static final ObjectStreamField[] serialPersistentFields =
-  {
+  private static final ObjectStreamField[] serialPersistentFields = {
     new ObjectStreamField("action", String.class)
   };
 
   private static final long serialVersionUID = 885438825399942851L;
 
-  private static final int READ  = 1;
+  private static final int READ = 1;
   private static final int WRITE = 2;
   private transient int actions;
 
-  private static String actionStrings[] = 
-  { 
-    "", "read", "write", "read,write" 
-  };
+  private static String actionStrings[] = {"", "read", "write", "read,write"};
 
   /**
    * Constructs a PropertyPermission witha he specified property.  Possible
@@ -109,7 +105,7 @@ public final class PropertyPermission extends BasicPermission
 	else if ("write".equals(anAction))
 	  this.actions |= WRITE;
 	else
-	  throw new IllegalArgumentException("illegal action "+anAction);
+	  throw new IllegalArgumentException("illegal action " + anAction);
       }
   }
 
@@ -127,7 +123,7 @@ public final class PropertyPermission extends BasicPermission
   {
     if (!(p instanceof PropertyPermission))
       return false;
-    
+
     // We have to check the actions.
     PropertyPermission pp = (PropertyPermission) p;
     if ((pp.actions & ~actions) != 0)
@@ -154,7 +150,7 @@ public final class PropertyPermission extends BasicPermission
    * Reads an object from the stream. This converts the external to the
    * internal representation.
    */
-  private void readObject(ObjectInputStream s) 
+  private void readObject(ObjectInputStream s)
     throws IOException, ClassNotFoundException
   {
     ObjectInputStream.GetField fields = s.readFields();
@@ -165,8 +161,7 @@ public final class PropertyPermission extends BasicPermission
    * Writes an object to the stream. This converts the internal to the
    * external representation.
    */
-  private void writeObject(ObjectOutputStream s) 
-    throws IOException
+  private void writeObject(ObjectOutputStream s) throws IOException
   {
     ObjectOutputStream.PutField fields = s.putFields();
     fields.put("actions", getActions());
@@ -178,61 +173,61 @@ public final class PropertyPermission extends BasicPermission
    * PropertyPermission objects.
    * @return a new empty PermissionCollection.  
    */
-  public PermissionCollection newPermissionCollection() 
+  public PermissionCollection newPermissionCollection()
   {
-    return new PermissionCollection() 
+    return new PermissionCollection()
+    {
+      Hashtable permissions = new Hashtable();
+      int allActions = 0;
+
+      public void add(Permission permission)
       {
-	Hashtable permissions = new Hashtable();
-	int allActions = 0;
-	
-	public void add(Permission permission) 
-	  {
-	    if (isReadOnly())
-	      throw new IllegalStateException("readonly");
+	if (isReadOnly())
+	  throw new IllegalStateException("readonly");
 
-	    // also check that permission is of correct type.
-	    PropertyPermission pp = (PropertyPermission) permission;
-	    String name = pp.getName();
-	    if (name.equals("*"))
-	      allActions |= pp.actions;
-	    permissions.put(name, pp);
-	  }
-	
-	public boolean implies(Permission permission)
-	  {
-	    if (!(permission instanceof PropertyPermission))
-	      return false;
+	// also check that permission is of correct type.
+	PropertyPermission pp = (PropertyPermission) permission;
+	String name = pp.getName();
+	if (name.equals("*"))
+	  allActions |= pp.actions;
+	permissions.put(name, pp);
+      }
 
-	    PropertyPermission toImply = (PropertyPermission) permission;
-	    if ((toImply.actions & ~allActions) == 0)
+      public boolean implies(Permission permission)
+      {
+	if (!(permission instanceof PropertyPermission))
+	  return false;
+
+	PropertyPermission toImply = (PropertyPermission) permission;
+	if ((toImply.actions & ~allActions) == 0)
+	  return true;
+
+	String name = toImply.getName();
+	if (name.equals("*"))
+	  return false;
+
+	int prefixLength = name.length();
+	if (name.endsWith("*"))
+	  prefixLength -= 2;
+
+	while (true)
+	  {
+	    PropertyPermission forName =
+	      (PropertyPermission) permissions.get(name);
+	    if (forName != null && (toImply.actions & ~forName.actions) == 0)
 	      return true;
 
-	    String name = toImply.getName();
-	    if (name.equals("*"))
+	    prefixLength = name.lastIndexOf('.', prefixLength);
+	    if (prefixLength < 0)
 	      return false;
-
-	    int prefixLength = name.length();
-	    if (name.endsWith("*"))
-	      prefixLength -= 2;
-
-	    while (true) {
-	      PropertyPermission forName = 
-		(PropertyPermission) permissions.get(name);
-	      if (forName != null
-		  && (toImply.actions & ~forName.actions) == 0)
-		return true;
-
-	      prefixLength = name.lastIndexOf('.', prefixLength);
-	      if (prefixLength < 0)
-		return false;
-	      name = name.substring(0, prefixLength + 1) + '*';
-	    }
+	    name = name.substring(0, prefixLength + 1) + '*';
 	  }
-	
-	public Enumeration elements()
-	  {
-	    return permissions.elements();
-	  }
-      };
+      }
+
+      public Enumeration elements()
+      {
+	return permissions.elements();
+      }
+    };
   }
 }

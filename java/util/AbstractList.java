@@ -1,28 +1,28 @@
 /* AbstractList.java -- Abstract implementation of most of List
    Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+   This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
- 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+   GNU Classpath is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
+   GNU Classpath is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
 
-As a special exception, if you link this library with other files to
-produce an executable, this library does not by itself cause the
-resulting executable to be covered by the GNU General Public License.
-This exception does not however invalidate any other reasons why the
-executable file might be covered by the GNU General Public License. */
+   You should have received a copy of the GNU General Public License
+   along with GNU Classpath; see the file COPYING.  If not, write to the
+   Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+   02111-1307 USA.
+
+   As a special exception, if you link this library with other files to
+   produce an executable, this library does not by itself cause the
+   resulting executable to be covered by the GNU General Public License.
+   This exception does not however invalidate any other reasons why the
+   executable file might be covered by the GNU General Public License. */
 
 
 // TO DO:
@@ -44,8 +44,8 @@ package java.util;
  * AbstractList is documented, so that subclasses can tell which methods could
  * be implemented more efficiently.
  */
-public abstract class AbstractList extends AbstractCollection implements List {
-
+public abstract class AbstractList extends AbstractCollection implements List
+{
   /**
    * A count of the number of structural modifications that have been made to
    * the list (that is, insertions and removals).
@@ -54,238 +54,313 @@ public abstract class AbstractList extends AbstractCollection implements List {
 
   public abstract Object get(int index);
 
-  public void add(int index, Object o) {
+  public void add(int index, Object o)
+  {
     throw new UnsupportedOperationException();
   }
 
-  public boolean add(Object o) {
+  public boolean add(Object o)
+  {
     add(size(), o);
     return true;
   }
 
-  public boolean addAll(int index, Collection c) {
+  public boolean addAll(int index, Collection c)
+  {
     Iterator i = c.iterator();
-    if (i.hasNext()) {
-      do {
-        add(index++, i.next());
-      } while (i.hasNext());
-      return true;
-    } else {
-      return false;
-    }
+    if (i.hasNext())
+      {
+	do
+	  {
+	    add(index++, i.next());
+	  }
+	while (i.hasNext());
+	return true;
+      }
+    else
+      {
+	return false;
+      }
   }
 
-  public void clear() {
+  public void clear()
+  {
     removeRange(0, size());
   }
 
-  public boolean equals(Object o) {
-    if (o == this) {
-      return true;
-    } else if (!(o instanceof List)) {
-      return false;
-    } else {
-      Iterator i1 = iterator();
-      Iterator i2 = ((List)o).iterator();
-      while (i1.hasNext()) {
-        if (!i2.hasNext()) {
-          return false;
-        } else {
-          Object e = i1.next();
-          if (e == null ? i2.next() != null : !e.equals(i2.next())) {
-            return false;
-          }
-        }
+  public boolean equals(Object o)
+  {
+    if (o == this)
+      {
+	return true;
       }
-      if (i2.hasNext()) {
-        return false;
-      } else {
-        return true;
+    else if (!(o instanceof List))
+      {
+	return false;
       }
-    }
+    else
+      {
+	Iterator i1 = iterator();
+	Iterator i2 = ((List) o).iterator();
+	while (i1.hasNext())
+	  {
+	    if (!i2.hasNext())
+	      {
+		return false;
+	      }
+	    else
+	      {
+		Object e = i1.next();
+		if (e == null ? i2.next() != null : !e.equals(i2.next()))
+		  {
+		    return false;
+		  }
+	      }
+	  }
+	if (i2.hasNext())
+	  {
+	    return false;
+	  }
+	else
+	  {
+	    return true;
+	  }
+      }
   }
 
-  public int hashCode() {
+  public int hashCode()
+  {
     int hashCode = 1;
     Iterator i = iterator();
-    while (i.hasNext()) {
-      Object obj = i.next();
-      hashCode = 31 * hashCode + (obj == null ? 0 : obj.hashCode());
-    }
+    while (i.hasNext())
+      {
+	Object obj = i.next();
+	hashCode = 31 * hashCode + (obj == null ? 0 : obj.hashCode());
+      }
     return hashCode;
   }
 
-  public int indexOf(Object o) {
+  public int indexOf(Object o)
+  {
     int index = 0;
     ListIterator i = listIterator();
-    if (o == null) {
-      while (i.hasNext()) {
-        if (i.next() == null) {
-          return index;
-        }
-        index++;
+    if (o == null)
+      {
+	while (i.hasNext())
+	  {
+	    if (i.next() == null)
+	      {
+		return index;
+	      }
+	    index++;
+	  }
       }
-    } else {
-      while (i.hasNext()) {
-        if (o.equals(i.next())) {
-          return index;
-        }
-        index++;
+    else
+      {
+	while (i.hasNext())
+	  {
+	    if (o.equals(i.next()))
+	      {
+		return index;
+	      }
+	    index++;
+	  }
       }
-    }
     return -1;
   }
 
-  public Iterator iterator() {
-    return new Iterator() {
+  public Iterator iterator()
+  {
+    return new Iterator()
+    {
       private int knownMod = modCount;
       private int position = 0;
       boolean removed = true;
 
-      private void checkMod() {
-        if (knownMod != modCount) {
-          throw new ConcurrentModificationException();
-        }
+      private void checkMod()
+      {
+	if (knownMod != modCount)
+	  {
+	    throw new ConcurrentModificationException();
+	  }
       }
 
-      public boolean hasNext() {
-        checkMod();
-        return position < size();
+      public boolean hasNext()
+      {
+	checkMod();
+	return position < size();
       }
 
-      public Object next() {
-        checkMod();
-        removed = false;
-        try {
-          return get(position++);
-        } catch (IndexOutOfBoundsException e) {
-          throw new NoSuchElementException();
-        }
+      public Object next()
+      {
+	checkMod();
+	removed = false;
+	try
+	  {
+	    return get(position++);
+	  }
+	catch (IndexOutOfBoundsException e)
+	  {
+	    throw new NoSuchElementException();
+	  }
       }
 
-      public void remove() {
-        checkMod();
-        if (removed) {
-          throw new IllegalStateException();
-        }
-        AbstractList.this.remove(--position);
-        knownMod = modCount;
-        removed = true;
+      public void remove()
+      {
+	checkMod();
+	if (removed)
+	  {
+	    throw new IllegalStateException();
+	  }
+	AbstractList.this.remove(--position);
+	knownMod = modCount;
+	removed = true;
       }
     };
   }
 
-  public int lastIndexOf(Object o) {
+  public int lastIndexOf(Object o)
+  {
     int index = size();
     ListIterator i = listIterator(index);
-    if (o == null) {
-      while (i.hasPrevious()) {
-        index--;
-        if (i.previous() == null) {
-          return index;
-        }
+    if (o == null)
+      {
+	while (i.hasPrevious())
+	  {
+	    index--;
+	    if (i.previous() == null)
+	      {
+		return index;
+	      }
+	  }
       }
-    } else {
-      while (i.hasPrevious()) {
-        index--;
-        if (o.equals(i.previous())) {
-          return index;
-        }
+    else
+      {
+	while (i.hasPrevious())
+	  {
+	    index--;
+	    if (o.equals(i.previous()))
+	      {
+		return index;
+	      }
+	  }
       }
-    }
     return -1;
   }
 
-  public ListIterator listIterator() {
+  public ListIterator listIterator()
+  {
     return listIterator(0);
   }
 
-  public ListIterator listIterator(final int index) {
+  public ListIterator listIterator(final int index)
+  {
+    if (index < 0 || index > size())
+      {
+	throw new IndexOutOfBoundsException();
+      }
 
-    if (index < 0 || index > size()) {
-      throw new IndexOutOfBoundsException();
-    }
-
-    return new ListIterator() {
+    return new ListIterator()
+    {
       private int knownMod = modCount;
       private int position = index;
       private int lastReturned = -1;
 
-      private void checkMod() {
-        if (knownMod != modCount) {
-          throw new ConcurrentModificationException();
-        }
+      private void checkMod()
+      {
+	if (knownMod != modCount)
+	  {
+	    throw new ConcurrentModificationException();
+	  }
       }
 
-      public boolean hasNext() {
-        checkMod();
-        return position < size();
+      public boolean hasNext()
+      {
+	checkMod();
+	return position < size();
       }
 
-      public boolean hasPrevious() {
-        checkMod();
-        return position > 0;
+      public boolean hasPrevious()
+      {
+	checkMod();
+	return position > 0;
       }
 
-      public Object next() {
-        checkMod();
-        if (hasNext()) {
-          lastReturned = position++;
-          return get(lastReturned);
-        } else {
-          throw new NoSuchElementException();
-        }
+      public Object next()
+      {
+	checkMod();
+	if (hasNext())
+	  {
+	    lastReturned = position++;
+	    return get(lastReturned);
+	  }
+	else
+	  {
+	    throw new NoSuchElementException();
+	  }
       }
 
-      public Object previous() {
-        checkMod();
-        if (hasPrevious()) {
-          lastReturned = --position;
-          return get(lastReturned);
-        } else {
-          throw new NoSuchElementException();
-        }
+      public Object previous()
+      {
+	checkMod();
+	if (hasPrevious())
+	  {
+	    lastReturned = --position;
+	    return get(lastReturned);
+	  }
+	else
+	  {
+	    throw new NoSuchElementException();
+	  }
       }
 
-      public int nextIndex() {
-        checkMod();
-        return position;
+      public int nextIndex()
+      {
+	checkMod();
+	return position;
       }
 
-      public int previousIndex() {
-        checkMod();
-        return position - 1;
+      public int previousIndex()
+      {
+	checkMod();
+	return position - 1;
       }
 
-      public void remove() {
-        checkMod();
-        if (lastReturned < 0) {
-          throw new IllegalStateException();
-        }
-        AbstractList.this.remove(lastReturned);
-        knownMod = modCount;
-        position = lastReturned;
-        lastReturned = -1;
+      public void remove()
+      {
+	checkMod();
+	if (lastReturned < 0)
+	  {
+	    throw new IllegalStateException();
+	  }
+	AbstractList.this.remove(lastReturned);
+	knownMod = modCount;
+	position = lastReturned;
+	lastReturned = -1;
       }
 
-      public void set(Object o) {
-        checkMod();
-        if (lastReturned < 0) {
-          throw new IllegalStateException();
-        }
-        AbstractList.this.set(lastReturned, o);
+      public void set(Object o)
+      {
+	checkMod();
+	if (lastReturned < 0)
+	  {
+	    throw new IllegalStateException();
+	  }
+	AbstractList.this.set(lastReturned, o);
       }
 
-      public void add(Object o) {
-        checkMod();
-        AbstractList.this.add(position++, o);
-        lastReturned = -1;
-        knownMod = modCount;
+      public void add(Object o)
+      {
+	checkMod();
+	AbstractList.this.add(position++, o);
+	lastReturned = -1;
+	knownMod = modCount;
       }
     };
   }
 
-  public Object remove(int index) {
+  public Object remove(int index)
+  {
     throw new UnsupportedOperationException();
   }
 
@@ -308,25 +383,34 @@ public abstract class AbstractList extends AbstractCollection implements List {
    * @exception IndexOutOfBoundsException if fromIndex > toIndex || fromIndex <
    *   0 || toIndex > size().
    */
-  protected void removeRange(int fromIndex, int toIndex) {
-    if (fromIndex > toIndex) {
-      throw new IllegalArgumentException();
-    } else if (fromIndex < 0 || toIndex > size()) {
-      throw new IndexOutOfBoundsException();
-    } else {
-      ListIterator i = listIterator(fromIndex);
-      for (int index = fromIndex; index < toIndex; index++) {
-        i.next();
-        i.remove();
+  protected void removeRange(int fromIndex, int toIndex)
+  {
+    if (fromIndex > toIndex)
+      {
+	throw new IllegalArgumentException();
       }
-    }
+    else if (fromIndex < 0 || toIndex > size())
+      {
+	throw new IndexOutOfBoundsException();
+      }
+    else
+      {
+	ListIterator i = listIterator(fromIndex);
+	for (int index = fromIndex; index < toIndex; index++)
+	  {
+	    i.next();
+	    i.remove();
+	  }
+      }
   }
 
-  public Object set(int index, Object o) {
+  public Object set(int index, Object o)
+  {
     throw new UnsupportedOperationException();
   }
 
-  public List subList(final int fromIndex, final int toIndex) {
+  public List subList(final int fromIndex, final int toIndex)
+  {
     if (fromIndex > toIndex)
       throw new IllegalArgumentException();
     if (fromIndex < 0 || toIndex > size())
@@ -334,13 +418,14 @@ public abstract class AbstractList extends AbstractCollection implements List {
     return new SubList(this, fromIndex, toIndex);
   }
 
-  static class SubList extends AbstractList {
-
+  static class SubList extends AbstractList
+  {
     private AbstractList backingList;
     private int offset;
     private int size;
 
-    public SubList(AbstractList backing, int fromIndex, int toIndex) {
+    public SubList(AbstractList backing, int fromIndex, int toIndex)
+    {
       backingList = backing;
       upMod();
       offset = fromIndex;
@@ -365,22 +450,25 @@ public abstract class AbstractList extends AbstractCollection implements List {
      * @exception ConcurrentModificationException if there has been a
      *   concurrent modification.
      */
-    private void checkMod() {
-      if (this.modCount != backingList.modCount) {
-	throw new ConcurrentModificationException();
-      }
+    private void checkMod()
+    {
+      if (this.modCount != backingList.modCount)
+	{
+	  throw new ConcurrentModificationException();
+	}
     }
-    
+
     /**
      * This method is called after every method that causes a structural
      * modification to the backing list. It updates the local modCount field
      * to match that of the backing list.
      * Note that since this method is private, it will be inlined.
      */
-    private void upMod() {
+    private void upMod()
+    {
       this.modCount = backingList.modCount;
     }
-    
+
     /**
      * This method checks that a value is between 0 and size (inclusive). If
      * it is not, an exception is thrown.
@@ -388,12 +476,14 @@ public abstract class AbstractList extends AbstractCollection implements List {
      *
      * @exception IndexOutOfBoundsException if the value is out of range.
      */
-    private void checkBoundsInclusive(int index) {
-      if (index < 0 || index > size) {
-	throw new IndexOutOfBoundsException();
-      }
+    private void checkBoundsInclusive(int index)
+    {
+      if (index < 0 || index > size)
+	{
+	  throw new IndexOutOfBoundsException();
+	}
     }
-    
+
     /**
      * This method checks that a value is between 0 (inclusive) and size
      * (exclusive). If it is not, an exception is thrown.
@@ -401,80 +491,100 @@ public abstract class AbstractList extends AbstractCollection implements List {
      *
      * @exception IndexOutOfBoundsException if the value is out of range.
      */
-    private void checkBoundsExclusive(int index) {
-      if (index < 0 || index >= size) {
-	throw new IndexOutOfBoundsException();
-      }
+    private void checkBoundsExclusive(int index)
+    {
+      if (index < 0 || index >= size)
+	{
+	  throw new IndexOutOfBoundsException();
+	}
     }
-    
-    public int size() {
+
+    public int size()
+    {
       checkMod();
       return size;
     }
-    
-    public Iterator iterator() {
+
+    public Iterator iterator()
+    {
       return listIterator();
     }
-    
-    public ListIterator listIterator(final int index) {
-      
+
+    public ListIterator listIterator(final int index)
+    {
       checkMod();
       checkBoundsInclusive(index);
-      
-      return new ListIterator() {
+
+      return new ListIterator()
+      {
 	ListIterator i = backingList.listIterator(index + offset);
 	int position = index;
-	
-	public boolean hasNext() {
+
+	public boolean hasNext()
+	{
 	  checkMod();
 	  return position < size;
 	}
-	
-	public boolean hasPrevious() {
+
+	public boolean hasPrevious()
+	{
 	  checkMod();
 	  return position > 0;
 	}
-	
-	public Object next() {
-	  if (position < size) {
-	    Object o = i.next();
-	    position++;
-	    return o;
-	  } else {
-	    throw new NoSuchElementException();
-	  }
+
+	public Object next()
+	{
+	  if (position < size)
+	    {
+	      Object o = i.next();
+	      position++;
+	      return o;
+	    }
+	  else
+	    {
+	      throw new NoSuchElementException();
+	    }
 	}
-	
-	public Object previous() {
-	  if (position > 0) {
-	    Object o = i.previous();
-	    position--;
-	    return o;
-	  } else {
-	    throw new NoSuchElementException();
-	  }
+
+	public Object previous()
+	{
+	  if (position > 0)
+	    {
+	      Object o = i.previous();
+	      position--;
+	      return o;
+	    }
+	  else
+	    {
+	      throw new NoSuchElementException();
+	    }
 	}
-	
-	public int nextIndex() {
+
+	public int nextIndex()
+	{
 	  return offset + i.nextIndex();
 	}
-	
-	public int previousIndex() {
+
+	public int previousIndex()
+	{
 	  return offset + i.previousIndex();
 	}
 
-	public void remove() {
+	public void remove()
+	{
 	  i.remove();
 	  upMod();
 	  size--;
 	  position = nextIndex();
 	}
-	
-	public void set(Object o) {
+
+	public void set(Object o)
+	{
 	  i.set(o);
 	}
-	
-	public void add(Object o) {
+
+	public void add(Object o)
+	{
 	  i.add(o);
 	  upMod();
 	  size++;
@@ -503,29 +613,33 @@ public abstract class AbstractList extends AbstractCollection implements List {
       };
     }
 
-    public Object set(int index, Object o) {
+    public Object set(int index, Object o)
+    {
       checkMod();
       checkBoundsExclusive(index);
       o = backingList.set(index + offset, o);
       upMod();
       return o;
     }
-    
-    public Object get(int index) {
+
+    public Object get(int index)
+    {
       checkMod();
       checkBoundsExclusive(index);
       return backingList.get(index + offset);
     }
 
-    public void add(int index, Object o) {
+    public void add(int index, Object o)
+    {
       checkMod();
       checkBoundsInclusive(index);
       backingList.add(index + offset, o);
       upMod();
       size++;
     }
-    
-    public Object remove(int index) {
+
+    public Object remove(int index)
+    {
       checkMod();
       checkBoundsExclusive(index);
       Object o = backingList.remove(index + offset);
@@ -534,18 +648,20 @@ public abstract class AbstractList extends AbstractCollection implements List {
       return o;
     }
 
-    public void removeRange(int fromIndex, int toIndex) {
+    public void removeRange(int fromIndex, int toIndex)
+    {
       checkMod();
       checkBoundsExclusive(fromIndex);
       checkBoundsInclusive(toIndex);
-      
+
       // this call will catch the toIndex < fromIndex condition
       backingList.removeRange(offset + fromIndex, offset + toIndex);
       upMod();
       size -= toIndex - fromIndex;
     }
-    
-    public boolean addAll(int index, Collection c) {
+
+    public boolean addAll(int index, Collection c)
+    {
       checkMod();
       checkBoundsInclusive(index);
       int s = backingList.size();

@@ -1,3 +1,9 @@
+2000-10-24  Bryce McKinlay  <bryce@albatross.co.nz>
+
+	* java/util/*.java: Reformat all to unofficial standard coding style. 
+	No changes of substance.
+	* java/util/jar/*.java: Ditto.
+
 2000-10-10  Warren Levy  <warrenl@cygnus.com>
 
 	* java/sql/Date.java (serialVersionUID): New field.

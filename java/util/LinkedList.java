@@ -1,28 +1,28 @@
 /* LinkedList.java -- Linked list implementation of the List interface
    Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+   This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
- 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+   GNU Classpath is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
+   GNU Classpath is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
 
-As a special exception, if you link this library with other files to
-produce an executable, this library does not by itself cause the
-resulting executable to be covered by the GNU General Public License.
-This exception does not however invalidate any other reasons why the
-executable file might be covered by the GNU General Public License. */
+   You should have received a copy of the GNU General Public License
+   along with GNU Classpath; see the file COPYING.  If not, write to the
+   Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+   02111-1307 USA.
+
+   As a special exception, if you link this library with other files to
+   produce an executable, this library does not by itself cause the
+   resulting executable to be covered by the GNU General Public License.
+   This exception does not however invalidate any other reasons why the
+   executable file might be covered by the GNU General Public License. */
 
 
 package java.util;
@@ -39,7 +39,7 @@ import java.io.IOException;
 /**
  * Linked list implementation of the List interface.
  */
-public class LinkedList extends AbstractSequentialList 
+public class LinkedList extends AbstractSequentialList
   implements Serializable, Cloneable
 {
   static final long serialVersionUID = 876323262645176354L;
@@ -59,7 +59,8 @@ public class LinkedList extends AbstractSequentialList
   /**
    * Class to represent an entry in the list. Holds a single element.
    */
-  private static class Entry {
+  private static class Entry
+  {
 
     /**
      * The list element.
@@ -81,7 +82,8 @@ public class LinkedList extends AbstractSequentialList
     /**
      * Create an entry with given data and linkage.
      */
-    Entry(Object d, Entry n, Entry p) {
+    Entry(Object d, Entry n, Entry p)
+    {
       data = d;
       next = n;
       previous = p;
@@ -91,40 +93,49 @@ public class LinkedList extends AbstractSequentialList
      * Create an entry with no data and linking to itself, for use as the ends
      * field of the list.
      */
-    Entry() {
+    Entry()
+    {
       next = previous = this;
     }
 
     /**
      * Remove this entry.
      */
-    Object remove() {
+    Object remove()
+    {
       previous.next = next;
       next.previous = previous;
       return data;
     }
   }
 
-  private static interface Backing {
+  private static interface Backing
+  {
     void checkMod(int known);
     void upMod();
     void incSize(int by);
     void decSize(int by);
   }
 
-  private final Backing back = new Backing() {
-    public void checkMod(int known) {
-      if (known != modCount) {
-	throw new ConcurrentModificationException();
-      }
+  private final Backing back = new Backing()
+  {
+    public void checkMod(int known)
+    {
+      if (known != modCount)
+	{
+	  throw new ConcurrentModificationException();
+	}
     }
-    public void upMod() {
+    public void upMod()
+    {
       modCount++;
     }
-    public void incSize(int by) {
+    public void incSize(int by)
+    {
       size += by;
     }
-    public void decSize(int by) {
+    public void decSize(int by)
+    {
       size -= by;
     }
   };
@@ -134,7 +145,8 @@ public class LinkedList extends AbstractSequentialList
    * entries it is between.  This enables it to be used identically
    * for both the list itself and a sublist of the list.
    */
-  private static class Iter implements ListIterator {
+  private static class Iter implements ListIterator
+  {
 
     /**
      * The index of the element that will be returned by next().
@@ -175,7 +187,8 @@ public class LinkedList extends AbstractSequentialList
      * @param index the index to begin iteration.
      * @exception IndexOutOfBoundsException if index < 0 || index > size.
      */
-    Iter(Backing backing, Entry n, int index, int s, int modCount) {
+    Iter(Backing backing, Entry n, int index, int s, int modCount)
+    {
       b = backing;
       pos = index;
       size = s;
@@ -184,58 +197,73 @@ public class LinkedList extends AbstractSequentialList
       knownMod = modCount;
     }
 
-    public int nextIndex() {
+    public int nextIndex()
+    {
       b.checkMod(knownMod);
       return pos;
     }
 
-    public int previousIndex() {
+    public int previousIndex()
+    {
       b.checkMod(knownMod);
       return pos - 1;
     }
 
-    public boolean hasNext() {
+    public boolean hasNext()
+    {
       b.checkMod(knownMod);
       return pos < size;
     }
 
-    public boolean hasPrevious() {
+    public boolean hasPrevious()
+    {
       b.checkMod(knownMod);
       return pos > 0;
     }
 
-    public Object next() {
+    public Object next()
+    {
       b.checkMod(knownMod);
-      if (pos >= size) {
-	throw new NoSuchElementException();
-      } else {
-	pos++;
-	recent = previous = next;
-	next = recent.next;
-	return recent.data;
-      }
+      if (pos >= size)
+	{
+	  throw new NoSuchElementException();
+	}
+      else
+	{
+	  pos++;
+	  recent = previous = next;
+	  next = recent.next;
+	  return recent.data;
+	}
     }
 
-    public Object previous() {
+    public Object previous()
+    {
       b.checkMod(knownMod);
-      if (pos <= 0) {
-	throw new NoSuchElementException();
-      } else {
-	pos--;
-	recent = next = previous;
-	previous = recent.previous;
-	return recent.data;
-      }
+      if (pos <= 0)
+	{
+	  throw new NoSuchElementException();
+	}
+      else
+	{
+	  pos--;
+	  recent = next = previous;
+	  previous = recent.previous;
+	  return recent.data;
+	}
     }
 
-    public void remove() {
+    public void remove()
+    {
       b.checkMod(knownMod);
-      if (recent == null) {
-	throw new IllegalStateException();
-      }
+      if (recent == null)
+	{
+	  throw new IllegalStateException();
+	}
 
       // Adjust the position to before the removed element
-      if (recent == previous) pos--;
+      if (recent == previous)
+	  pos--;
 
       // Could use recent.remove() but this way is quicker, and also correctly
       // fixes next and previous.
@@ -248,7 +276,8 @@ public class LinkedList extends AbstractSequentialList
       recent = null;
     }
 
-    public void add(Object o) {
+    public void add(Object o)
+    {
       b.checkMod(knownMod);
       previous.next = next.previous = new Entry(o, next, previous);
 
@@ -264,11 +293,13 @@ public class LinkedList extends AbstractSequentialList
       recent = null;
     }
 
-    public void set(Object o) {
+    public void set(Object o)
+    {
       b.checkMod(knownMod);
-      if (recent == null) {
-	throw new IllegalStateException();
-      }
+      if (recent == null)
+	{
+	  throw new IllegalStateException();
+	}
       recent.data = o;
     }
   }
@@ -291,28 +322,35 @@ public class LinkedList extends AbstractSequentialList
    * @param head the entry before the first element of the list (usually ends).
    * @param tail the entry after the last element of the list (usually ends).
    */
-  static Entry getEntry(int n, int size, Entry head, Entry tail) {
+  static Entry getEntry(int n, int size, Entry head, Entry tail)
+  {
 
     // n less than size/2, iterate from start
-    if (n < size >> 1) {
-      while (n-- >= 0) {
-	head = head.next;
-      }
-      return head;
+    if (n < size >> 1)
+      {
+	while (n-- >= 0)
+	  {
+	    head = head.next;
+	  }
+	return head;
 
-    // n greater than size/2, iterate from end
-    } else {
-      while (++n <= size) {
-	tail = tail.previous;
+	// n greater than size/2, iterate from end
       }
-      return tail;
-    }
+    else
+      {
+	while (++n <= size)
+	  {
+	    tail = tail.previous;
+	  }
+	return tail;
+      }
   }
 
   /**
    * Create an empty linked list.
    */
-  public LinkedList() {
+  public LinkedList()
+  {
     super();
   }
 
@@ -322,7 +360,8 @@ public class LinkedList extends AbstractSequentialList
    *
    * @param c the collection to populate this list from.
    */
-  public LinkedList(Collection c) {
+  public LinkedList(Collection c)
+  {
     super();
     // Note: addAll could be made slightly faster, but not enough so to justify
     // re-implementing it from scratch. It is just a matter of a relatively
@@ -330,45 +369,55 @@ public class LinkedList extends AbstractSequentialList
     addAll(c);
   }
 
-  public Object getFirst() {
-    if (size == 0) {
-      throw new NoSuchElementException();
-    }
+  public Object getFirst()
+  {
+    if (size == 0)
+      {
+	throw new NoSuchElementException();
+      }
     return ends.next.data;
   }
 
-  public Object getLast() {
-    if (size == 0) {
-      throw new NoSuchElementException();
-    }
+  public Object getLast()
+  {
+    if (size == 0)
+      {
+	throw new NoSuchElementException();
+      }
     return ends.previous.data;
   }
 
-  public Object removeFirst() {
-    if (size == 0) {
-      throw new NoSuchElementException();
-    }
+  public Object removeFirst()
+  {
+    if (size == 0)
+      {
+	throw new NoSuchElementException();
+      }
     size--;
     modCount++;
     return ends.next.remove();
   }
 
-  public Object removeLast() {
-    if (size == 0) {
-      throw new NoSuchElementException();
-    }
+  public Object removeLast()
+  {
+    if (size == 0)
+      {
+	throw new NoSuchElementException();
+      }
     size--;
     modCount++;
     return ends.previous.remove();
   }
 
-  public void addFirst(Object o) {
+  public void addFirst(Object o)
+  {
     ends.next.previous = ends.next = new Entry(o, ends.next, ends);
     size++;
     modCount++;
   }
 
-  public void addLast(Object o) {
+  public void addLast(Object o)
+  {
     ends.previous.next = ends.previous = new Entry(o, ends, ends.previous);
     size++;
     modCount++;
@@ -379,7 +428,8 @@ public class LinkedList extends AbstractSequentialList
    *
    * @returns the number of elements currently in this list.
    */
-  public int size() {
+  public int size()
+  {
     return size;
   }
 
@@ -395,14 +445,16 @@ public class LinkedList extends AbstractSequentialList
   // implement clear() on subLists. However, in this case clear on subLists
   // works anyway, so this implementation is included just for completeness
   // and because subclasses might try to use it.
-  protected void removeRange(int fromIndex, int toIndex) {
+  protected void removeRange(int fromIndex, int toIndex)
+  {
     subList(fromIndex, toIndex).clear();
   }
 
   /**
    * Clear the list.
    */
-  public void clear() {
+  public void clear()
+  {
     ends.next = ends.previous = ends;
     modCount++;
     size = 0;
@@ -417,14 +469,15 @@ public class LinkedList extends AbstractSequentialList
    *   next(), or size() to be initially positioned at the end of the list.
    * @exception IndexOutOfBoundsException if index < 0 || index > size().
    */
-  public ListIterator listIterator(int index) {
-
+  public ListIterator listIterator(int index)
+  {
     // Check bounds
-    if (index < 0 || index > size) {
-      throw new IndexOutOfBoundsException();
-    }
+    if (index < 0 || index > size)
+      {
+	throw new IndexOutOfBoundsException();
+      }
 
-    return new Iter(back, getEntry(index, size, ends, ends), 
+    return new Iter(back, getEntry(index, size, ends, ends),
 		    index, size, modCount);
   }
 
@@ -444,12 +497,13 @@ public class LinkedList extends AbstractSequentialList
    * @exception IndexOutOfBoundsException if fromIndex < 0 || toIndex > size()
    *   || fromIndex > toIndex.
    */
-  public List subList(int fromIndex, int toIndex) {
-
+  public List subList(int fromIndex, int toIndex)
+  {
     // Check bounds
-    if (fromIndex > toIndex || fromIndex < 0 || toIndex > size) {
-      throw new IndexOutOfBoundsException();
-    }
+    if (fromIndex > toIndex || fromIndex < 0 || toIndex > size)
+      {
+	throw new IndexOutOfBoundsException();
+      }
 
     return new SubLinkedList(back, modCount,
 			     getEntry(fromIndex - 1, size, ends, ends),
@@ -457,31 +511,38 @@ public class LinkedList extends AbstractSequentialList
 			     toIndex - fromIndex);
   }
 
-  private static class SubLinkedList extends AbstractSequentialList {
-
-    Entry head; // entry before the beginning
-    Entry tail; // entry after the end
+  private static class SubLinkedList extends AbstractSequentialList
+  {
+    Entry head;			// entry before the beginning
+    Entry tail;			// entry after the end
     int size;
     private final Backing b;
 
-    private final Backing back = new Backing() {
-      public void checkMod(int known) {
-	if (known != modCount) {
-	  throw new ConcurrentModificationException();
-	}
+    private final Backing back = new Backing()
+    {
+      public void checkMod(int known)
+      {
+	if (known != modCount)
+	  {
+	    throw new ConcurrentModificationException();
+	  }
       }
-      public void upMod() {
+      public void upMod()
+      {
 	modCount++;
       }
-      public void incSize(int by) {
+      public void incSize(int by)
+      {
 	size += by;
       }
-      public void decSize(int by) {
+      public void decSize(int by)
+      {
 	size -= by;
       }
     };
 
-    SubLinkedList(Backing backing, int knownMod, Entry h, Entry t, int s) {
+    SubLinkedList(Backing backing, int knownMod, Entry h, Entry t, int s)
+    {
       this.modCount = knownMod;
       b = backing;
       head = h;
@@ -489,24 +550,28 @@ public class LinkedList extends AbstractSequentialList
       size = s;
     }
 
-    public int size() {
+    public int size()
+    {
       b.checkMod(this.modCount);
       return size;
     }
 
-    public ListIterator listIterator(int index) {
+    public ListIterator listIterator(int index)
+    {
       b.checkMod(this.modCount);
 
       // Check bounds
-      if (index < 0 || index > size) {
-	throw new IndexOutOfBoundsException();
-      }
+      if (index < 0 || index > size)
+	{
+	  throw new IndexOutOfBoundsException();
+	}
 
-      return new Iter(back, getEntry(index, size, head, tail), 
+      return new Iter(back, getEntry(index, size, head, tail),
 		      index, size, modCount);
     }
 
-    public void clear() {
+    public void clear()
+    {
       b.checkMod(this.modCount);
       head.next = tail;
       tail.previous = head;
@@ -518,13 +583,15 @@ public class LinkedList extends AbstractSequentialList
 
     // No removeRange because this class cannot be publically subclassed.
 
-    public List subList(int fromIndex, int toIndex) {
+    public List subList(int fromIndex, int toIndex)
+    {
       b.checkMod(this.modCount);
 
       // Check bounds
-      if (fromIndex > toIndex || fromIndex < 0 || toIndex > size) {
-	throw new IndexOutOfBoundsException();
-      }
+      if (fromIndex > toIndex || fromIndex < 0 || toIndex > size)
+	{
+	  throw new IndexOutOfBoundsException();
+	}
 
       return new SubLinkedList(back, this.modCount,
 			       getEntry(fromIndex - 1, size, head, tail),
@@ -538,7 +605,7 @@ public class LinkedList extends AbstractSequentialList
    * @return an object of the same class as this object, containing the
    * same elements in the same order.
    */
-  public Object clone() 
+  public Object clone()
   {
     LinkedList copy;
     try
@@ -560,11 +627,10 @@ public class LinkedList extends AbstractSequentialList
    * @serialdata the size of the list (int), followed by all the elements
    * (Object) in proper order.
    */
-  private void writeObject(ObjectOutputStream s)
-    throws IOException
+  private void writeObject(ObjectOutputStream s) throws IOException
   {
     s.writeInt(size);
-    for (Iterator i = iterator(); i.hasNext(); )
+    for (Iterator i = iterator(); i.hasNext();)
       s.writeObject(i.next());
   }
 
@@ -578,7 +644,7 @@ public class LinkedList extends AbstractSequentialList
   {
     int serialSize = s.readInt();
     ends = new Entry();
-    for (int i=0; i< serialSize; i++)
+    for (int i = 0; i < serialSize; i++)
       addLast(s.readObject());
   }
 }

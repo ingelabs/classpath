@@ -1,28 +1,28 @@
 /* TreeSet.java -- a class providing a TreeMap-backet SortedSet
    Copyright (C) 1999, 2000 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+   This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
- 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+   GNU Classpath is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
+   GNU Classpath is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
 
-As a special exception, if you link this library with other files to
-produce an executable, this library does not by itself cause the
-resulting executable to be covered by the GNU General Public License.
-This exception does not however invalidate any other reasons why the
-executable file might be covered by the GNU General Public License. */
+   You should have received a copy of the GNU General Public License
+   along with GNU Classpath; see the file COPYING.  If not, write to the
+   Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+   02111-1307 USA.
+
+   As a special exception, if you link this library with other files to
+   produce an executable, this library does not by itself cause the
+   resulting executable to be covered by the GNU General Public License.
+   This exception does not however invalidate any other reasons why the
+   executable file might be covered by the GNU General Public License. */
 
 
 package java.util;
@@ -44,8 +44,8 @@ import java.io.ObjectOutputStream;
  * TreeSet is a part of the JDK1.2 Collections API.
  *
  * @author      Jon Zeppieri
- * @version     $Revision: 1.5 $
- * @modified    $Id: TreeSet.java,v 1.5 2000-03-15 21:59:22 rao Exp $
+ * @version     $Revision: 1.6 $
+ * @modified    $Id: TreeSet.java,v 1.6 2000-10-24 10:07:49 bryce Exp $
  */
 
 public class TreeSet extends AbstractSet
@@ -108,7 +108,7 @@ public class TreeSet extends AbstractSet
     TreeMap oMap = new TreeMap(oSortedSet.comparator());
     _oMap = oMap;
     int i = 0;
-    Map.Entry[] arEntries = new Map.Entry[oSortedSet.size()];
+    Map.Entry[]arEntries = new Map.Entry[oSortedSet.size()];
     Iterator itEntries = oSortedSet.iterator();
 
     while (itEntries.hasNext())
@@ -134,16 +134,16 @@ public class TreeSet extends AbstractSet
   public boolean add(Object oObject)
   {
     if (_oMap.containsKey(oObject))
-    {
-      return false;
-    }
+      {
+	return false;
+      }
     else
-    {
-      internalAdd(_oMap, oObject);
-      return true;
-    }
+      {
+	internalAdd(_oMap, oObject);
+	return true;
+      }
   }
-  
+
   /**
    * Adds all of the elements in the supplied Collection to this TreeSet.
    *
@@ -177,14 +177,14 @@ public class TreeSet extends AbstractSet
     TreeSet oClone;
 
     try
-    {
-      oClone = (TreeSet) super.clone();
-      oClone._oMap = new TreeMap(_oMap);
-    }
-    catch(CloneNotSupportedException e)
-    {
-      throw new InternalError(e.toString());
-    }
+      {
+	oClone = (TreeSet) super.clone();
+	oClone._oMap = new TreeMap(_oMap);
+      }
+    catch (CloneNotSupportedException e)
+      {
+	throw new InternalError(e.toString());
+      }
     return oClone;
   }
 
@@ -299,11 +299,11 @@ public class TreeSet extends AbstractSet
       oOut.writeObject(itElements.next());
   }
 
-  private void readObject(ObjectInputStream oIn) 
+  private void readObject(ObjectInputStream oIn)
     throws IOException, ClassNotFoundException
   {
     int i;
-    Map.Entry[] arEntries;
+    Map.Entry[]arEntries;
     TreeMap oMap;
     Comparator oComparator = (Comparator) oIn.readObject();
     int iSize = oIn.readInt();

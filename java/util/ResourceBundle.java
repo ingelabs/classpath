@@ -1,28 +1,28 @@
 /* java.util.ResourceBundle
    Copyright (C) 1998, 1999 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+   This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
- 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+   GNU Classpath is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
+   GNU Classpath is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
 
-As a special exception, if you link this library with other files to
-produce an executable, this library does not by itself cause the
-resulting executable to be covered by the GNU General Public License.
-This exception does not however invalidate any other reasons why the
-executable file might be covered by the GNU General Public License. */
+   You should have received a copy of the GNU General Public License
+   along with GNU Classpath; see the file COPYING.  If not, write to the
+   Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+   02111-1307 USA.
+
+   As a special exception, if you link this library with other files to
+   produce an executable, this library does not by itself cause the
+   resulting executable to be covered by the GNU General Public License.
+   This exception does not however invalidate any other reasons why the
+   executable file might be covered by the GNU General Public License. */
 
 
 package java.util;
@@ -71,28 +71,29 @@ import java.lang.ref.SoftReference;
  * @see Locale
  * @see PropertyResourceBundle
  * @author Jochen Hoenicke */
-public abstract class ResourceBundle {
+public abstract class ResourceBundle
+{
   /**
    * The parent bundle.  This is consulted when you call getObject
    * and there is no such resource in the current bundle.  This
    * field may be null.  
    */
   protected ResourceBundle parent;
-  
+
   /**
    * The locale of this resource bundle.  You can read this with
    * <code>getLocale</code> and it is automatically set in
    * <code>getBundle</code>.  
    */
   private Locale locale;
-  
+
   /**
    * The constructor.  It does nothing special.
    */
   public ResourceBundle()
   {
   }
-  
+
   /**
    * Get a String from this resource bundle.  Since most localized
    * Objects are Strings, this method provides a convenient way to get
@@ -106,7 +107,7 @@ public abstract class ResourceBundle {
   {
     return (String) getObject(key);
   }
-  
+
   /**
    * Get an array of Strings from this resource bundle.  This method
    * provides a convenient way to get it without casting.
@@ -115,8 +116,8 @@ public abstract class ResourceBundle {
    *   if that particular object could not be found in this bundle nor
    *   the parent bundle.
    */
-  public final String[] getStringArray(String key) 
-       throws MissingResourceException 
+  public final String[] getStringArray(String key)
+    throws MissingResourceException
   {
     return (String[]) getObject(key);
   }
@@ -128,24 +129,24 @@ public abstract class ResourceBundle {
    *   if that particular object could not be found in this bundle nor
    *   the parent bundle.
    */
-  public final Object getObject(String key) 
-       throws MissingResourceException
+  public final Object getObject(String key) throws MissingResourceException
   {
-    
-    for (ResourceBundle bundle = this; 
-	 bundle != null; bundle = bundle.parent)
+    for (ResourceBundle bundle = this; bundle != null; bundle = bundle.parent)
       {
-	try {
-	  Object o = bundle.handleGetObject(key);
-	  if (o != null)
-	    return o;
-	} catch (MissingResourceException ex) {
-	}
+	try
+	  {
+	    Object o = bundle.handleGetObject(key);
+	    if (o != null)
+	      return o;
+	  }
+	catch (MissingResourceException ex)
+	  {
+	  }
       }
     throw new MissingResourceException
       ("Key not found", getClass().getName(), key);
   }
-  
+
   /**
    * This method returns an array with the classes of the calling
    * methods.  The zeroth entry is the class that called this method
@@ -159,7 +160,7 @@ public abstract class ResourceBundle {
    * @return an array containing the classes for the callers.  
    */
   private static native Class[] getClassContext();
-  
+
   /**
    * Get the appropriate ResourceBundle for the default locale.  
    * @param baseName the name of the ResourceBundle.  This should be
@@ -168,13 +169,13 @@ public abstract class ResourceBundle {
    * @return the desired resource bundle
    * @exception MissingResourceException 
    *    if the resource bundle couldn't be found.  */
-  public static final ResourceBundle getBundle(String baseName) 
-       throws MissingResourceException
+  public static final ResourceBundle getBundle(String baseName)
+    throws MissingResourceException
   {
-    return getBundle(baseName, Locale.getDefault(), 
+    return getBundle(baseName, Locale.getDefault(),
 		     getClassContext()[1].getClassLoader());
   }
-  
+
   /**
    * Get the appropriate ResourceBundle for the given locale.  
    * @param baseName the name of the ResourceBundle.  This should be
@@ -185,14 +186,13 @@ public abstract class ResourceBundle {
    * @exception MissingResourceException 
    *    if the resource bundle couldn't be found.
    */
-  public static final ResourceBundle getBundle(String baseName, 
-					       Locale locale) 
-       throws MissingResourceException
+  public static final ResourceBundle getBundle(String baseName,
+					       Locale locale)
+    throws MissingResourceException
   {
-    return getBundle(baseName, locale, 
-		     getClassContext()[1].getClassLoader());
+    return getBundle(baseName, locale, getClassContext()[1].getClassLoader());
   }
-  
+
   /**
    * The resource bundle cache.  This is a two-level hash map: The key
    * is the class loader, the value is a new HashMap.  The key of this
@@ -209,7 +209,7 @@ public abstract class ResourceBundle {
    * @return the resource bundle if that could be loaded, otherwise 
    * <code>bundle</code>.
    */
-  private static final ResourceBundle tryBundle(String localizedName, 
+  private static final ResourceBundle tryBundle(String localizedName,
 						Locale locale,
 						ClassLoader classloader,
 						ResourceBundle bundle,
@@ -228,27 +228,28 @@ public abstract class ResourceBundle {
 	    return rb;
 	}
     }
-    
+
     try
       {
-	java.io.InputStream is; 
+	java.io.InputStream is;
 	if (classloader == null)
 	  is = ClassLoader.getSystemResourceAsStream
-	    (localizedName.replace('.','/') + ".properties");
+	    (localizedName.replace('.', '/') + ".properties");
 	else
 	  is = classloader.getResourceAsStream
-	    (localizedName.replace('.','/') + ".properties");
-	if (is != null) {
-	  ResourceBundle rb = new PropertyResourceBundle(is);
-	  rb.parent = bundle;
-	  rb.locale = locale;
-	  bundle = rb;
-	}
+	    (localizedName.replace('.', '/') + ".properties");
+	if (is != null)
+	  {
+	    ResourceBundle rb = new PropertyResourceBundle(is);
+	    rb.parent = bundle;
+	    rb.locale = locale;
+	    bundle = rb;
+	  }
       }
     catch (java.io.IOException ex)
       {
       }
-    
+
     try
       {
 	Class rbClass;
@@ -260,10 +261,14 @@ public abstract class ResourceBundle {
 	rb.parent = bundle;
 	rb.locale = locale;
 	bundle = rb;
-      } 
-    catch (ClassNotFoundException ex) { } 
-    catch (IllegalAccessException ex) { } 
-    catch (InstantiationException ex) 
+      }
+    catch (ClassNotFoundException ex)
+      {
+      }
+    catch (IllegalAccessException ex)
+      {
+      }
+    catch (InstantiationException ex)
       {
 	// ignore them all
 	// XXX should we also ignore ClassCastException?
@@ -272,7 +277,7 @@ public abstract class ResourceBundle {
     // Put the bundle in the cache
     if (bundle != null)
       cache.put(localizedName, new SoftReference(bundle));
-    
+
     return bundle;
   }
 
@@ -287,31 +292,31 @@ public abstract class ResourceBundle {
    * @return the resource bundle if that could be loaded, otherwise 
    * <code>bundle</code>.
    */
-  private static final ResourceBundle tryLocalBundle(String baseName, 
+  private static final ResourceBundle tryLocalBundle(String baseName,
 						     Locale locale,
 						     ClassLoader classloader,
 						     ResourceBundle bundle,
-						     HashMap cache) 
+						     HashMap cache)
   {
-    if (locale.getLanguage().length() > 0) 
+    if (locale.getLanguage().length() > 0)
       {
 	String name = baseName + "_" + locale.getLanguage();
-	
+
 	if (locale.getCountry().length() != 0)
 	  {
-	    bundle = tryBundle(name, 
-			       new Locale(locale.getLanguage(),""), 
+	    bundle = tryBundle(name,
+			       new Locale(locale.getLanguage(), ""),
 			       classloader, bundle, cache);
 
 	    name += "_" + locale.getCountry();
-	    
+
 	    if (locale.getVariant().length() != 0)
 	      {
-		bundle = tryBundle(name, 
+		bundle = tryBundle(name,
 				   new Locale(locale.getLanguage(),
-					      locale.getCountry()), 
+					      locale.getCountry()),
 				   classloader, bundle, cache);
-		
+
 		name += "_" + locale.getVariant();
 	      }
 	  }
@@ -319,7 +324,7 @@ public abstract class ResourceBundle {
       }
     return bundle;
   }
-  
+
   /**
    * Get the appropriate ResourceBundle for the given locale.  
    * @param baseName the name of the ResourceBundle.  This should be
@@ -331,16 +336,16 @@ public abstract class ResourceBundle {
    * @exception MissingResourceException 
    *    if the resource bundle couldn't be found.
    */
-  public static final ResourceBundle getBundle(String baseName, 
+  public static final ResourceBundle getBundle(String baseName,
 					       Locale locale,
-					       ClassLoader classLoader) 
-       throws MissingResourceException
+					       ClassLoader classLoader)
+    throws MissingResourceException
   {
     // This implementation searches the bundle in the reverse direction
     // and builds the parent chain on the fly.
-    
+
     HashMap cache = (HashMap) resourceBundleCache.get(classLoader);
-    if (cache == null) 
+    if (cache == null)
       {
 	cache = new HashMap();
 	resourceBundleCache.put(classLoader, cache);
@@ -359,24 +364,24 @@ public abstract class ResourceBundle {
 	      return rb;
 	  }
       }
-    
-    ResourceBundle baseBundle = tryBundle(baseName, new Locale("",""),
+
+    ResourceBundle baseBundle = tryBundle(baseName, new Locale("", ""),
 					  classLoader, null, cache);
     if (baseBundle == null)
       // JDK says, that if one provides a bundle base_en_UK, one
       // must also provide the bundles base_en and base.
       // This implies that if there is no bundle for base, there
       // is no bundle at all.
-      throw new MissingResourceException
-	("Bundle not found", baseName, "");
+      throw new MissingResourceException("Bundle not found", baseName, "");
 
     // Now use the default locale.
-    ResourceBundle bundle = tryLocalBundle(baseName, locale, 
+    ResourceBundle bundle = tryLocalBundle(baseName, locale,
 					   classLoader, baseBundle, cache);
-    if (bundle == baseBundle && !locale.equals(Locale.getDefault())) {
-      bundle = tryLocalBundle(baseName, Locale.getDefault(), 
-			      classLoader, baseBundle, cache);
-    }
+    if (bundle == baseBundle && !locale.equals(Locale.getDefault()))
+      {
+	bundle = tryLocalBundle(baseName, Locale.getDefault(),
+				classLoader, baseBundle, cache);
+      }
     return bundle;
   }
 
@@ -400,7 +405,7 @@ public abstract class ResourceBundle {
     // Shall we ignore the old parent?
     this.parent = parent;
   }
-  
+
   /**
    * Override this method to provide the resource for a keys.  This gets
    * called by <code>getObject</code>.  If you don't have a resource
@@ -414,7 +419,7 @@ public abstract class ResourceBundle {
    *   you shouldn't throw this.
    */
   protected abstract Object handleGetObject(String key)
-       throws MissingResourceException;
+    throws MissingResourceException;
 
   /**
    * This method should return all keys for which a resource exists.

@@ -2,28 +2,28 @@
    implementation of the List interface
    Copyright (C) 1998, 1999, 2000 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+   This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
- 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+   GNU Classpath is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
+   GNU Classpath is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
 
-As a special exception, if you link this library with other files to
-produce an executable, this library does not by itself cause the
-resulting executable to be covered by the GNU General Public License.
-This exception does not however invalidate any other reasons why the
-executable file might be covered by the GNU General Public License. */
+   You should have received a copy of the GNU General Public License
+   along with GNU Classpath; see the file COPYING.  If not, write to the
+   Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+   02111-1307 USA.
+
+   As a special exception, if you link this library with other files to
+   produce an executable, this library does not by itself cause the
+   resulting executable to be covered by the GNU General Public License.
+   This exception does not however invalidate any other reasons why the
+   executable file might be covered by the GNU General Public License. */
 
 
 package java.util;
@@ -43,11 +43,11 @@ import java.io.ObjectStreamField;
  * to or removing from the end of a list, checking the size, &c.
  *
  * @author        Jon A. Zeppieri
- * @version       $Id: ArrayList.java,v 1.4 2000-03-15 21:59:06 rao Exp $
+ * @version       $Id: ArrayList.java,v 1.5 2000-10-24 10:07:48 bryce Exp $
  * @see           java.util.AbstractList
  * @see           java.util.List
  */
-public class ArrayList extends AbstractList 
+public class ArrayList extends AbstractList
   implements List, Cloneable, Serializable
 {
   /** the default capacity for new ArrayLists */
@@ -57,11 +57,11 @@ public class ArrayList extends AbstractList
   int _iSize;
 
   /** where the data is stored */
-  Object[] _arData;
+  Object[]_arData;
 
   /** used for serialization -- denotes which fields are serialized */
   private static final ObjectStreamField[] serialPersistentFields =
-  {new ObjectStreamField("size", int.class)};
+    { new ObjectStreamField("size", int.class) };
 
   /** 
    * Construct a new ArrayList with the supplied initial capacity. 
@@ -108,11 +108,11 @@ public class ArrayList extends AbstractList
     int iCapacity = _arData.length;
 
     if (iMinCapacity > iCapacity)
-    {
-      arNewData = new Object[Math.max((iCapacity * 2), iMinCapacity)];
-      System.arraycopy(_arData, 0, arNewData, 0, iCapacity);
-      _arData = arNewData;
-    }
+      {
+	arNewData = new Object[Math.max((iCapacity * 2), iMinCapacity)];
+	System.arraycopy(_arData, 0, arNewData, 0, iCapacity);
+	_arData = arNewData;
+      }
   }
 
   /**
@@ -138,8 +138,8 @@ public class ArrayList extends AbstractList
   {
     if (iIndex >= _iSize)
       throw new IndexOutOfBoundsException("ArrayList size=" +
-                                          String.valueOf(_iSize) + "; " +
-                                          "index=" + String.valueOf(iIndex));
+					  String.valueOf(_iSize) + "; " +
+					  "index=" + String.valueOf(iIndex));
     return _arData[iIndex];
   }
 
@@ -164,15 +164,15 @@ public class ArrayList extends AbstractList
 
     if (iIndex >= _iSize)
       throw new IndexOutOfBoundsException("ArrayList size=" +
-                                          String.valueOf(_iSize) + "; " +
-                                          "index=" + String.valueOf(iIndex));
+					  String.valueOf(_iSize) + "; " +
+					  "index=" + String.valueOf(iIndex));
 
     oResult = _arData[iIndex];
 
     if (iIndex != --_iSize)
-      System.arraycopy(_arData, (iIndex + 1), _arData, iIndex, 
-                       (_iSize - iIndex));
-  
+      System.arraycopy(_arData, (iIndex + 1), _arData, iIndex,
+		       (_iSize - iIndex));
+
     modCount++;
     _arData[_iSize] = null;
 
@@ -192,32 +192,32 @@ public class ArrayList extends AbstractList
     int i;
 
     if ((iFromIndex >= _iSize) || (iToIndex >= _iSize))
-    {
-      throw new IndexOutOfBoundsException("ArrayList size=" +
-                                          String.valueOf(_iSize) + "; " +
-                                          "indices=" + 
-                                          String.valueOf(iFromIndex) + "," +
-                                          String.valueOf(iToIndex));
-    }
+      {
+	throw new IndexOutOfBoundsException("ArrayList size=" +
+					    String.valueOf(_iSize) + "; " +
+					    "indices=" +
+					    String.valueOf(iFromIndex) + "," +
+					    String.valueOf(iToIndex));
+      }
     else if (iFromIndex > iToIndex)
-    {
-      throw new IllegalArgumentException("fromIndex(" + 
-                                         String.valueOf(iFromIndex) + 
-                                         ") > toIndex(" +
-                                         String.valueOf(iToIndex) + ")");
-    }
+      {
+	throw new IllegalArgumentException("fromIndex(" +
+					   String.valueOf(iFromIndex) +
+					   ") > toIndex(" +
+					   String.valueOf(iToIndex) + ")");
+      }
     else if (iFromIndex != iToIndex)
-    {
-      iReduction = iToIndex - iFromIndex;
-      System.arraycopy(_arData, (iFromIndex + iReduction), _arData,
-                       iFromIndex, (_iSize - iFromIndex - iReduction));
-      modCount++;
+      {
+	iReduction = iToIndex - iFromIndex;
+	System.arraycopy(_arData, (iFromIndex + iReduction), _arData,
+			 iFromIndex, (_iSize - iFromIndex - iReduction));
+	modCount++;
 
-      for (i = (iFromIndex + iReduction); i < _iSize; i++)
-        _arData[i] = null;
+	for (i = (iFromIndex + iReduction); i < _iSize; i++)
+	  _arData[i] = null;
 
-      _iSize -= iReduction;
-    }
+	_iSize -= iReduction;
+      }
   }
 
   /**
@@ -231,12 +231,12 @@ public class ArrayList extends AbstractList
   {
     if (iIndex > _iSize)
       throw new IndexOutOfBoundsException("ArrayList size=" +
-                                          String.valueOf(_iSize) + "; " +
-                                          "index=" + String.valueOf(iIndex));
+					  String.valueOf(_iSize) + "; " +
+					  "index=" + String.valueOf(iIndex));
 
     ensureCapacity(_iSize + 1);
-    System.arraycopy(_arData, iIndex, _arData, 
-                      (iIndex + 1), (_iSize - iIndex));
+    System.arraycopy(_arData, iIndex, _arData,
+		     (iIndex + 1), (_iSize - iIndex));
     _arData[iIndex] = oElement;
     _iSize++;
     modCount++;
@@ -254,17 +254,17 @@ public class ArrayList extends AbstractList
     int iLen = oCollection.size();
 
     if (iLen > 0)
-    {
-      ensureCapacity(_iSize + iLen);
-      modCount++;
+      {
+	ensureCapacity(_iSize + iLen);
+	modCount++;
 
-      itElements = oCollection.iterator();
+	itElements = oCollection.iterator();
 
-      while (itElements.hasNext())
-        _arData[_iSize++] = itElements.next();
+	while (itElements.hasNext())
+	  _arData[_iSize++] = itElements.next();
 
-      return true;
-    }
+	return true;
+      }
     return false;
   }
 
@@ -283,26 +283,26 @@ public class ArrayList extends AbstractList
 
     if (iIndex > _iSize)
       throw new IndexOutOfBoundsException("ArrayList size=" +
-                                          String.valueOf(_iSize) + "; " +
-                                          "index=" + String.valueOf(iIndex));
+					  String.valueOf(_iSize) + "; " +
+					  "index=" + String.valueOf(iIndex));
 
     iLen = oCollection.size();
 
     if (iLen > 0)
-    {
-      ensureCapacity(_iSize + iLen);
+      {
+	ensureCapacity(_iSize + iLen);
 
-      System.arraycopy(_arData, iIndex, _arData, 
-                       (iIndex + iLen), (_iSize - iIndex));
-      modCount++;
-      _iSize += iLen;
+	System.arraycopy(_arData, iIndex, _arData,
+			 (iIndex + iLen), (_iSize - iIndex));
+	modCount++;
+	_iSize += iLen;
 
-      itElements = oCollection.iterator();
-      while (itElements.hasNext())
-        _arData[iIndex++] = itElements.next();
+	itElements = oCollection.iterator();
+	while (itElements.hasNext())
+	  _arData[iIndex++] = itElements.next();
 
-      return true;
-   }
+	return true;
+      }
     return false;
   }
 
@@ -314,15 +314,15 @@ public class ArrayList extends AbstractList
     ArrayList oClone;
 
     try
-    {
-      oClone = (ArrayList) super.clone();
-      oClone._arData = _arData;
-      oClone._iSize = _iSize;
-    }
-    catch(CloneNotSupportedException e)
-    {
-      oClone = null;
-    }
+      {
+	oClone = (ArrayList) super.clone();
+	oClone._arData = _arData;
+	oClone._iSize = _iSize;
+      }
+    catch (CloneNotSupportedException e)
+      {
+	oClone = null;
+      }
     return oClone;
   }
 
@@ -349,10 +349,10 @@ public class ArrayList extends AbstractList
     int i;
 
     for (i = 0; i < _iSize; i++)
-    {
-      if (doesEqual(oElement, _arData[i]))
-        return i;
-    }
+      {
+	if (doesEqual(oElement, _arData[i]))
+	  return i;
+      }
     return -1;
   }
 
@@ -368,10 +368,10 @@ public class ArrayList extends AbstractList
     int i;
 
     for (i = _iSize - 1; i >= 0; i--)
-    {
-      if (doesEqual(oElement, _arData[i]))
-        return i;
-    }
+      {
+	if (doesEqual(oElement, _arData[i]))
+	  return i;
+      }
     return -1;
   }
 
@@ -383,13 +383,13 @@ public class ArrayList extends AbstractList
     int i;
 
     if (_iSize > 0)
-    {
-      modCount++;
-      _iSize = 0;
+      {
+	modCount++;
+	_iSize = 0;
 
-      for (i = 0; i < _iSize; i++)
-        _arData[i] = null;
-    }      
+	for (i = 0; i < _iSize; i++)
+	  _arData[i] = null;
+      }
   }
 
   /**
@@ -406,8 +406,8 @@ public class ArrayList extends AbstractList
 
     if (iIndex >= _iSize)
       throw new IndexOutOfBoundsException("ArrayList size=" +
-                                          String.valueOf(_iSize) + "; " +
-                                          "index=" + String.valueOf(iIndex));
+					  String.valueOf(_iSize) + "; " +
+					  "index=" + String.valueOf(iIndex));
     oResult = _arData[iIndex];
     // SEH: no structural change, so don't update modCount
     _arData[iIndex] = oElement;
@@ -435,10 +435,10 @@ public class ArrayList extends AbstractList
    *
    * @param      arObjects      the passed-in Array
    */
-  public Object[] toArray(Object[] arObjects)
+  public Object[] toArray(Object[]arObjects)
   {
     Object[] arReturn = (arObjects.length >= _iSize)
-      ? arObjects 
+      ? arObjects
       : (Object[])
       Array.newInstance(arObjects.getClass().getComponentType(), _iSize);
 
@@ -462,8 +462,7 @@ public class ArrayList extends AbstractList
     _arData = arNewData;
   }
 
-  private void writeObject(ObjectOutputStream oOut)
-    throws IOException
+  private void writeObject(ObjectOutputStream oOut) throws IOException
   {
     int i;
 

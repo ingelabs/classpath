@@ -1,28 +1,28 @@
 /* java.util.PropertyResourceBundle
    Copyright (C) 1998, 1999 Free Software Foundation, Inc.
 
-This file is part of GNU Classpath.
+   This file is part of GNU Classpath.
 
-GNU Classpath is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2, or (at your option)
-any later version.
- 
-GNU Classpath is distributed in the hope that it will be useful, but
-WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-General Public License for more details.
+   GNU Classpath is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2, or (at your option)
+   any later version.
 
-You should have received a copy of the GNU General Public License
-along with GNU Classpath; see the file COPYING.  If not, write to the
-Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
-02111-1307 USA.
+   GNU Classpath is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
 
-As a special exception, if you link this library with other files to
-produce an executable, this library does not by itself cause the
-resulting executable to be covered by the GNU General Public License.
-This exception does not however invalidate any other reasons why the
-executable file might be covered by the GNU General Public License. */
+   You should have received a copy of the GNU General Public License
+   along with GNU Classpath; see the file COPYING.  If not, write to the
+   Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
+   02111-1307 USA.
+
+   As a special exception, if you link this library with other files to
+   produce an executable, this library does not by itself cause the
+   resulting executable to be covered by the GNU General Public License.
+   This exception does not however invalidate any other reasons why the
+   executable file might be covered by the GNU General Public License. */
 
 
 package java.util;
@@ -88,40 +88,44 @@ package java.util;
  * @see ListResourceBundle
  * @see Properties#load()
  * @author Jochen Hoenicke */
-public class PropertyResourceBundle extends ResourceBundle {
+public class PropertyResourceBundle extends ResourceBundle
+{
+  Properties properties;
 
-    Properties properties;
+  /**
+   * Creates a new property resource bundle.
+   * @param stream An input stream, where the resources are read from.
+   */
+  public PropertyResourceBundle(java.io.InputStream stream)
+    throws java.io.IOException
+  {
+    properties = new Properties();
+    properties.load(stream);
+  }
 
-    /**
-     * Creates a new property resource bundle.
-     * @param stream An input stream, where the resources are read from.
-     */
-    public PropertyResourceBundle(java.io.InputStream stream) 
-        throws java.io.IOException {
-        properties = new Properties();
-        properties.load(stream);
-    }
+  /**
+   * Called by <code>getObject</code> when a resource is needed.  This
+   * returns the resource given by the key.
+   * @param key The key of the resource.
+   * @return The resource for the key or null if it doesn't exists.
+   */
+  protected Object handleGetObject(String key)
+  {
+    return properties.getProperty(key);
+  }
 
-    /**
-     * Called by <code>getObject</code> when a resource is needed.  This
-     * returns the resource given by the key.
-     * @param key The key of the resource.
-     * @return The resource for the key or null if it doesn't exists.
-     */
-    protected Object handleGetObject(String key) {
-	return properties.getProperty(key);
-    }
-
-    /**
-     * This method should return all keys for which a resource exists.
-     * @return An enumeration of the keys.
-     */
-    public Enumeration getKeys() {
-        // We must also return the keys of our parent.
-        if (parent != null) {
-            return new DoubleEnumeration(properties.propertyNames(), 
-                                         parent.getKeys());
-        }
-        return properties.propertyNames();
-    }
+  /**
+   * This method should return all keys for which a resource exists.
+   * @return An enumeration of the keys.
+   */
+  public Enumeration getKeys()
+  {
+    // We must also return the keys of our parent.
+    if (parent != null)
+      {
+	return new DoubleEnumeration(properties.propertyNames(),
+				     parent.getKeys());
+      }
+    return properties.propertyNames();
+  }
 }
