@@ -38,6 +38,7 @@ exception statement from your version. */
 
 package java.net;
 
+import gnu.classpath.Configuration;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -45,7 +46,6 @@ import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.StringTokenizer;
-import gnu.classpath.Configuration;
 
 /**
  * This class models an Internet address.  It does not have a public
@@ -302,6 +302,37 @@ public class InetAddress implements Serializable
   }
 
   /**
+   * Utility routine to check if InetAddress is a site local address
+   * 
+   * @since 1.4
+   */
+  public boolean isSiteLocalAddress()
+  {
+    // This is the IPv4 implementation.
+    // Any class derived from InetAddress should override this.
+
+    // 10.0.0.0/8
+    if (addr [0] == 0x0a)
+      return true;
+
+    // XXX: Suns JDK 1.4.1 (on Linux) seems to have a bug here:
+    // it says 172.16.0.0 - 172.255.255.255 are site local addresses
+
+    // 172.16.0.0/12
+    if (addr [0] == 0xac
+        && (addr [1] & 0xf0) == 0x01)
+      return true;
+
+    // 192.168.0.0/16
+    if (addr [0] == 0xc0
+        && addr [1] == 0xa8)
+      return true;
+
+    // XXX: Do we need to check more addresses here ?
+    return false;
+  }
+
+  /**
    * Utility routine to check if InetAddress is a global multicast address
    * 
    * @since 1.4
@@ -327,6 +358,24 @@ public class InetAddress implements Serializable
 
     // XXX: This seems to not exist with IPv4 addresses
     return false;
+  }
+
+  /**
+   * Utility reoutine to check if InetAddress is a link local multicast address
+   * 
+   * @since 1.4
+   */
+  public boolean isMCLinkLocal()
+  {
+    // This is the IPv4 implementation.
+    // Any class derived from InetAddress should override this.
+    
+    if (!isMulticastAddress())
+      return false;
+
+    return (addr [0] == 0xE0
+	    && addr [1] == 0x00
+	    && addr [2] == 0x00);
   }
 
   /**
@@ -490,7 +539,7 @@ public class InetAddress implements Serializable
       host = hostname_alias;
     else
       host = address;
-
+    
     return host + "/" + address;
   }
 
@@ -509,13 +558,7 @@ public class InetAddress implements Serializable
   public static InetAddress getByAddress (byte[] addr)
     throws UnknownHostException
   {
-    if (addr.length != 4 && addr.length != 16)
-      throw new UnknownHostException ("IP address has illegal length");
-
-    if (addr.length == 4)
-      return new Inet4Address (addr, null);
-
-    return new Inet6Address (addr, null);
+    return getByAddress (null, addr);
   }
 
   /**
@@ -601,7 +644,7 @@ public class InetAddress implements Serializable
           }
       }
    
-    // Wasn't an IP, so try the lookup
+    // Try to resolve the host by DNS
     InetAddress[] addresses = getAllByName (hostname);
     return addresses [0];
   }
@@ -626,6 +669,10 @@ public class InetAddress implements Serializable
   public static InetAddress[] getAllByName (String hostname)
     throws UnknownHostException
   {
+    SecurityManager s = System.getSecurityManager();
+    if (s != null)
+      s.checkConnect (hostname, -1);
+   
     // Default to current host if necessary
     if (hostname == null)
       {
@@ -744,20 +791,6 @@ public class InetAddress implements Serializable
   }
 
   /**
-   * Returns an InetAddress object representing the address of the current
-   * host.
-   *
-   * @return The local host's address
-   *
-   * @exception UnknownHostException If an error occurs
-   */
-  public static InetAddress getLocalHost () throws UnknownHostException
-  {
-    String hostname = getLocalHostName ();
-    return getByName (hostname);
-  }
-
-  /**
    * This native method looks up the hostname of the local machine
    * we are on.  If the actual hostname cannot be determined, then the
    * value "localhost" we be used.  This native method wrappers the
@@ -765,7 +798,22 @@ public class InetAddress implements Serializable
    *
    * @return The local hostname.
    */
-  private static native String getLocalHostName ();
+  private static native String getLocalHostName();
+
+  /**
+   * Returns an InetAddress object representing the address of the current
+   * host.
+   *
+   * @return The local host's address
+   *
+   * @exception UnknownHostException If no IP address for the host could
+   * be found
+   */
+  public static InetAddress getLocalHost () throws UnknownHostException
+  {
+    String hostname = getLocalHostName ();
+    return getByName (hostname);
+  }
 
   /**
    * Returns the value of the special address INADDR_ANY
@@ -792,6 +840,9 @@ public class InetAddress implements Serializable
   private static native byte[][] getHostByName (String hostname)
     throws UnknownHostException;
 
+  /*
+   * Needed for serialization.
+   */
   private void readResolve() throws ObjectStreamException
   {
     // FIXME: implement this

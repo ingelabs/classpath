@@ -1,3 +1,14 @@
+2003-10-02  Michael Koch  <konqueror@gmx.de>
+
+	* java/net/InetAddress.java
+	(isSiteLocalAddress): New method.
+	(isMCLinkLocal): New method.
+	(getByAddress): Call getByAddress alternative instead of implementing
+	it again.
+	(getAllByName): Added security manager check.
+	(getLocalHost): Fixed documentation.
+	(readResolve): Added documentation.
+
 2003-10-02  Guilhem Lavaux  <guilhem@kaffe.org>
 
 	* java/net/InetSocketAddress.java
