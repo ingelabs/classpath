@@ -8,6 +8,7 @@ config.sub
 config.h.in
 config.h
 libtool
+ltmain.sh
 Makefile
 Makefile.in
 stamp-h

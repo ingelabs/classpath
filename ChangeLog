@@ -1,3 +1,9 @@
+2004-04-10  Michael Koch  <konqueror@gmx.de>
+
+	* .cvsignore: Ignore ltmain.sh.
+	* gnu/java/nio/channels/.cvsignore,
+	gnu/regexp/.cvsignore: New files.
+
 2004-04-10  Guilhem Lavaux <guilhem@kaffe.org>
 
 	* java/text/FieldPosition.java
