@@ -70,7 +70,7 @@ The JCL Project is a dedicated to providing a 100% free, clean room
 implementation of the standard Java class libraries.  Because there is
 currently no free implementation of the Java environment, no free
 operating system can ship with Java included.  Parts of a free Java
-implementation hava already been written, including free Java virtual
+implementation have already been written, including free Java virtual
 machines (JVM's) such as @uref{http://www.kaffe.org/,Kaffe} and
 @uref{http://www.hungry.com/products/japhar/,Japhar}, and Java compilers
 such as @uref{http://www.cs.berkeley.edu/~engberg/guavac/,Guavac}.
@@ -98,7 +98,7 @@ code to the JCL project:
 @itemize @bullet
 @item
 @b{Never under any circumstances refer to Sun's code while working on
-JCL}.  It is best if you have never looked at Sun's code at all.  To
+JCL.}  It is best if you have never looked at Sun's code at all.  To
 reduce temptation, it would be best if you deleted the @samp{src.zip}
 file from your JDK distribution.  If you have signed Sun's
 non-disclosure statement, then you unfortunately cannot work on JCL code
@@ -107,6 +107,13 @@ at all.  If you have any reason to believe that your code might be
 anything.  If it turns out that your code was not developed in a clean
 room environment, we could be very embarrassed someday in court.  Please
 don't let that happen.
+
+@item
+@b{Never decompile Sun's class libraries.}  While the wording of the
+license in Sun's JDK version 1.2 has changed, it not acceptable, under
+any circumstances, for a person working on JCL to decompile Sun's class
+libraries.  Allowing the use of decompilation in the JCL project would
+open up a giant can of legal worms, which we wish to avoid.
 
 @item
 JCL is licensed under the terms of the
