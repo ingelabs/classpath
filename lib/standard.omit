@@ -15,4 +15,6 @@
 ^../java/awt/event/InputMethodListener.java$
 ^../java/awt/event/InvocationEvent.java$
 ^../java/util/jar/JarEntry.java$
+^../java/util/jar/JarFile.java$
+^../java/util/jar/JarInputStream.java$
 ^../java/util/jar/JarOutputStream.java$

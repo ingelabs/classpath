@@ -2,6 +2,8 @@
 
 EXTRA_DIST = \
 Attributes.java \
+JarFile.java \
+JarInputStream.java \
 JarEntry.java \
 JarException.java \
 JarOutputStream.java \
