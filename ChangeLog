@@ -1,5 +1,9 @@
 2005-01-08  Michael Koch  <konqueror@gmx.de>
 
+	* resource/Makefile.am: Install classpath.security file.
+
+2005-01-08  Michael Koch  <konqueror@gmx.de>
+
 	* resource/java/util/iso639_fr.properties,
 	resource/java/util/iso3166.properties,
 	resource/java/util/iso3166_de.properties,
