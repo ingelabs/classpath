@@ -1,3 +1,9 @@
+2003-01-25  Stephen Crawley  <crawley@dstc.edu.au>
+
+	* java/math/BigDecimal.java (BigDecimal): enhance parsing of exponents
+	(toString): do not return Strings starting with . and - erroneously.
+	Improves Mauve results to 12 of 600 instead of 16 of 338 on DiagBigDecimal.
+
 2003-01-25  C. Brian Jones  <cbj@gnu.org>
 
 	* NEWS: note jni.h updates and patches
