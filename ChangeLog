@@ -1,5 +1,13 @@
 2003-07-30  Torsten Rupp  <rupp@lisa.aicas.com>
 
+	* include/java_nio_FileChannelImpl.h:
+	copied from gnu_java_nio_FileChannelImpl.h, renamed
+        Java_gnu_java_nio_channels_* -> Java_java_nio_channels*
+        to match new implementation of FileChannelImpl.java,
+        added some missing native functions
+
+2003-07-30  Torsten Rupp  <rupp@lisa.aicas.com>
+
 	* native/jni/java-nio/java_nio_FileChannelImpl.c:
 	rename Java_gnu_java_nio_channels_* -> Java_java_nio_channels*
         to match new implementation of FileChannelImpl.java, added some
