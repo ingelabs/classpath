@@ -1,5 +1,10 @@
 2003-06-28  Michael Koch  <konqueror@gmx.de>
 
+	* java/awt/Window.java
+	(Window): Implements javax.accessibility.Accessible.
+
+2003-06-28  Michael Koch  <konqueror@gmx.de>
+
 	* java/net/URL.java,
 	java/net/URLStreamHandler.java:
 	Renamd variable "handler" to "ph" to match libgcj more.
