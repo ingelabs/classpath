@@ -13,7 +13,7 @@ are going to hack on the JCL project code.
 
 Copyright (C) 1998 Aaron M. Renn
 
-@end finfo
+@end ifinfo
 
 @titlepage
 
@@ -41,7 +41,7 @@ approved by the Free Software Foundation.
 @end titlepage
 
 @ifinfo
-@node Top, Introduction, (dir), (dir)
+@node Top, Introduction, , (dir)
 @top JCL Hacker's Guide
 
 This document contains important information you'll want to know if you
@@ -52,14 +52,14 @@ This document is definitely a work in progress.
 @end ifinfo
 
 @menu 
-* Introduction::			An introduction to the JCL project
-* Requirements::			Very important rules that must be followed
-* Goals::				Goals of the JCL project
-* Volunteering::			So you want to help out
-* Programming Tools::			A list of tools you will need to hack on the JCL code
-* Programming Standards::		The programming standards the project is following
-* Specification Sources::		Where to find the Java class library specs
-* Directory and File Naming Convensions:: How files and directories are named in JCL
+* Introduction::                        An introduction to the JCL project
+* Requirements::                        Very important rules that must be followed
+* Project Goals::                       Goals of the JCL project
+* Volunteering::                        So you want to help out
+* Programming Tools::                   A list of tools you will need to hack on the JCL code
+* Programming Standards::               The programming standards the project is following
+* Specification Sources::               Where to find the Java class library specs
+* Directory and File Naming Conventions:: How files and directories are named in JCL
 @end menu
 
 @node Introduction, Requirements, Top, Top
@@ -82,7 +82,7 @@ be distributed.
 Yes, we know that JCL also stands for Job Control Language.  Think of it
 as a joke.  Or better yet, think up a better name.
 
-@node Requirements, Goals, Introduction, Top
+@node Requirements, Volunteering, Introduction, Top
 @comment node-name, next, previous, up
 @chapter Requirements
 
@@ -127,7 +127,7 @@ the software.  This may sound harsh, but unfortunately, it is the only
 way to ensure that the code you write is legally yours to distribute.
 @end itemize
 
-@node Volunteering, Goals, Requirements, Top
+@node Volunteering, Project Goals, Requirements, Top
 @comment node-name, next, previous, up
 @chapter Volunteering to Help
 
@@ -165,7 +165,7 @@ Nobody likes to write documentation and test cases, but they are vital to
 a complete and robust product.  Writing them as you go is much easier than
 going back at the end and adding them.
 
-@node Goals, Programming Tools, Volunteering, Top
+@node Project Goals, Programming Tools, Volunteering, Top
 @comment node-name, next, previous, up
 @chapter Project Goals
 
@@ -217,7 +217,7 @@ The initial target version for JCL is Java 1.1.  Java 1.2 can be
 implemented if desired, but please do not create classes that depend
 on 1.2 features in other packages.
 
-@node Programming Tools, Programming Standards, Goals, Top
+@node Programming Tools, Programming Standards, Project Goals, Top
 @comment node-name, next, previous, up
 @chapter Programming Tools
 
@@ -256,7 +256,8 @@ Here is a brief description of the purpose of those tools.
 @item CVS  
 A version control system that maintains a centralized Internet
 repository of all code in the JCL system.  Access to the repository
-requies an account.  Contact Paul Fisher (@email{rao@gnu.org}) for details.
+requies an account.  Contact Paul Fisher (@email{rao@@gnu.org}) for
+details.
 
 @item dejagnu  
 A package for automating regression test suites for programs.  Your 
