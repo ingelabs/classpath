@@ -1,3 +1,8 @@
+2004-12-07  Michael Koch  <konqueror@gmx.de>
+
+	* javax/imageio/stream/FileImageOutputStream.java:
+	Implemented.
+
 2004-12-07  Jeroen Frijters  <jeroen@frijters.net>
 
 	* java/util/Timer.java
