@@ -1,5 +1,11 @@
 2004-01-06  Sascha Brawer  <brawer@dandelis.ch>
 
+	Fix for Classpath bug #7104.
+	* javax/swing/event/EventListenerList.java (add): Re-written.
+	* NEWS: Mention fixed bug.
+
+2004-01-06  Sascha Brawer  <brawer@dandelis.ch>
+
 	* javax/swing/event/EventListenerList.java (NO_LISTENERS): New
 	singleton field.
 	(listenerList): Declare as transient; document.

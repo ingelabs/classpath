@@ -81,36 +81,37 @@ public class EventListenerList
 
 
   /**
-   * Add Listener
-   * @param t Class type
-   * @param listener Listener to add
+   * Registers a listener of a specific type.
+   *
+   * @param t the type of the listener.
+   *
+   * @param listener the listener to add, which must be an instance of
+   * <code>t</code>, or of a subclass of <code>t</code>.
+   *
+   * @throws IllegalArgumentException if <code>listener</code> is not
+   * an instance of <code>t</code> (or a subclass thereof).
+   *
+   * @throws Exception if <code>t</code> is <code>null</code>.
    */
   public void add(Class t, EventListener listener)
   {
-    Object[] list;
-    int index;
-    Class checkClass;
-    EventListener checkListener;
+    int oldLength;
+    Object[] newList;
 
-    // Create New list in anticipation that listener is not present
-    list = new Object[listenerList.length + 2];
+    if (listener == null)
+      return;
 
-    // Search through list looking for listener
-    for (index = 0; index < listenerList.length; index += 2)
-      {
-        checkClass = (Class) listenerList[index];
-        checkListener = (EventListener) listenerList[index + 1];
-        if (checkClass.equals(t) == true &&
-            checkListener.equals(listener) == true)
-          return;
-      }
+    if (!t.isInstance(listener))
+      throw new IllegalArgumentException();
 
-    // Add Listener
-    list[listenerList.length] = t;
-    list[listenerList.length + 1] = listener;
+    oldLength = listenerList.length;
+    newList = new Object[oldLength + 2];
+    if (oldLength > 0)
+      System.arraycopy(listenerList, 0, newList, 0, oldLength);
 
-    // Replace Listener List
-    listenerList = list;
+    newList[oldLength] = t;
+    newList[oldLength + 1] = listener;
+    listenerList = newList;
   }
 
 
