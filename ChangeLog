@@ -3,6 +3,10 @@
 	* javax/swing/plaf/basic/doc-files/BasicBorders.FieldBorder.png:
 	New image.
 
+	* javax/swing/text/JTextComponent.java (getMargin): Added stub
+	implementation to allow compilation of
+	javax.swing.plaf.basic.BasicBorders.FieldBorder.
+
 2003-06-22  Sascha Brawer  <brawer@dandelis.ch>
 
 	* javax/swing/plaf/basic/Makefile.am: Added BasicSplitPaneDivider.java,
