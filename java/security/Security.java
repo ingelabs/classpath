@@ -42,7 +42,15 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.security.Provider;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.Vector;
 
 /**
@@ -53,6 +61,8 @@ import java.util.Vector;
  */
 public final class Security extends Object
 {
+  private static final String ALG_ALIAS = "Alg.Alias.";
+
   private static Vector providers = new Vector();
   private static Properties secprops;
   static
@@ -137,7 +147,21 @@ public final class Security extends Object
    */
   public static String getAlgorithmProperty(String algName, String propName)
   {
-    /* TODO: Figure out what this actually does */
+    if (algName == null || propName == null)
+      return null;
+
+    String property = String.valueOf(propName) + "." + String.valueOf(algName);
+    Provider p;
+    for (Iterator i = providers.iterator(); i.hasNext(); )
+      {
+        p = (Provider) i.next();
+        for (Iterator j = p.keySet().iterator(); j.hasNext(); )
+          {
+            String key = (String) j.next();
+            if (key.equalsIgnoreCase(property))
+              return p.getProperty(key);
+          }
+      }
     return null;
   }
 
@@ -330,7 +354,6 @@ public final class Security extends Object
     return secprops.getProperty(key);
   }
 
-
   /**
    * <p>Sets a security property value.</p>
    *
@@ -354,5 +377,321 @@ public final class Security extends Object
       sm.checkSecurityAccess("setProperty." + key);
 
     secprops.put(key, datnum);
+  }
+
+ /**
+  * Returns a Set of Strings containing the names of all available algorithms
+  * or types for the specified Java cryptographic service (e.g., Signature,
+  * MessageDigest, Cipher, Mac, KeyStore). Returns an empty Set if there is no
+  * provider that supports the specified service. For a complete list of Java
+  * cryptographic services, please see the Java Cryptography Architecture API
+  * Specification & Reference. Note: the returned set is immutable.
+  *
+  * @param serviceName the name of the Java cryptographic service (e.g.,
+  * Signature, MessageDigest, Cipher, Mac, KeyStore). Note: this parameter is
+  * case-insensitive.
+  * @return a Set of Strings containing the names of all available algorithms
+  * or types for the specified Java cryptographic service or an empty set if
+  * no provider supports the specified service.
+  * @since 1.4
+  */
+  public static Set getAlgorithms(String serviceName)
+  {
+    HashSet result = new HashSet();
+    if (serviceName == null || serviceName.length() == 0)
+      return result;
+
+    serviceName = serviceName.trim();
+    if (serviceName.length() == 0)
+      return result;
+
+    serviceName = serviceName.toUpperCase()+".";
+    Provider[] providers = getProviders();
+    for (int i = 0; i < providers.length; i++)
+      for (Enumeration e = providers[i].propertyNames(); e.hasMoreElements(); )
+        {
+          String service = ((String) e.nextElement()).trim();
+          if (service.toUpperCase().startsWith(serviceName))
+            result.add(service.substring(serviceName.length()));
+        }
+    return Collections.unmodifiableSet(result);
+  }
+
+  /**
+  * <p>Returns an array containing all installed providers that satisfy the
+  * specified selection criterion, or <code>null</code> if no such providers
+  * have been installed. The returned providers are ordered according to their
+  * preference order.</p>
+  *
+  * <p>A cryptographic service is always associated with a particular
+  * algorithm or type. For example, a digital signature service is always
+  * associated with a particular algorithm (e.g., <i>DSA</i>), and a
+  * CertificateFactory service is always associated with a particular
+  * certificate type (e.g., <i>X.509</i>).</p>
+  *
+  * <p>The selection criterion must be specified in one of the following two
+  * formats:</p>
+  *
+  * <ul>
+  *    <li><p>&lt;crypto_service>.&lt;algorithm_or_type></p>
+  *    <p>The cryptographic service name must not contain any dots.</p>
+  *    <p>A provider satisfies the specified selection criterion iff the
+  *    provider implements the specified algorithm or type for the specified
+  *    cryptographic service.</p>
+  *    <p>For example, "CertificateFactory.X.509" would be satisfied by any
+  *    provider that supplied a CertificateFactory implementation for X.509
+  *    certificates.</p></li>
+  *
+  *    <li><p>&lt;crypto_service>.&lt;algorithm_or_type>&nbsp;&lt;attribute_name>:&lt;attribute_value></p>
+  *    <p>The cryptographic service name must not contain any dots. There must
+  *    be one or more space charaters between the the &lt;algorithm_or_type>
+  *    and the &lt;attribute_name>.</p>
+  *    <p>A provider satisfies this selection criterion iff the provider
+  *    implements the specified algorithm or type for the specified
+  *    cryptographic service and its implementation meets the constraint
+  *    expressed by the specified attribute name/value pair.</p>
+  *    <p>For example, "Signature.SHA1withDSA KeySize:1024" would be satisfied
+  *    by any provider that implemented the SHA1withDSA signature algorithm
+  *    with a keysize of 1024 (or larger).</p></li>
+  * </ul>
+  *
+  * <p>See Appendix A in the Java Cryptogaphy Architecture API Specification
+  * &amp; Reference for information about standard cryptographic service names,
+  * standard algorithm names and standard attribute names.</p>
+  *
+  * @param filter the criterion for selecting providers. The filter is case-
+  * insensitive.
+  * @return all the installed providers that satisfy the selection criterion,
+  * or null if no such providers have been installed.
+  * @throws InvalidParameterException if the filter is not in the required
+  * format.
+  * @see #getProviders(Map)
+  */
+  public static Provider[] getProviders(String filter)
+  {
+    if (providers == null || providers.isEmpty())
+      return null;
+
+    if (filter == null || filter.length() == 0)
+      return getProviders();
+
+    HashMap map = new HashMap(1);
+    int i = filter.indexOf(':');
+    if (i == -1) // <service>.<algorithm>
+      map.put(filter, "");
+    else // <service>.<algorithm> <attribute>:<value>
+      map.put(filter.substring(0, i), filter.substring(i+1));
+
+    return getProviders(map);
+  }
+
+ /**
+  * <p>Returns an array containing all installed providers that satisfy the
+  * specified selection criteria, or <code>null</code> if no such providers
+  * have been installed. The returned providers are ordered according to their
+  * preference order.</p>
+  *
+  * <p>The selection criteria are represented by a map. Each map entry
+  * represents a selection criterion. A provider is selected iff it satisfies
+  * all selection criteria. The key for any entry in such a map must be in one
+  * of the following two formats:</p>
+  *
+  * <ul>
+  *    <li><p>&lt;crypto_service>.&lt;algorithm_or_type></p>
+  *    <p>The cryptographic service name must not contain any dots.</p>
+  *    <p>The value associated with the key must be an empty string.</p>
+  *    <p>A provider satisfies this selection criterion iff the provider
+  *    implements the specified algorithm or type for the specified
+  *    cryptographic service.</p></li>
+  *
+  *    <li><p>&lt;crypto_service>.&lt;algorithm_or_type> &lt;attribute_name></p>
+  *    <p>The cryptographic service name must not contain any dots. There must
+  *    be one or more space charaters between the &lt;algorithm_or_type> and
+  *    the &lt;attribute_name>.</p>
+  *    <p>The value associated with the key must be a non-empty string. A
+  *    provider satisfies this selection criterion iff the provider implements
+  *    the specified algorithm or type for the specified cryptographic service
+  *    and its implementation meets the constraint expressed by the specified
+  *    attribute name/value pair.</p></li>
+  * </ul>
+  *
+  * <p>See Appendix A in the Java Cryptogaphy Architecture API Specification
+  * &amp; Reference for information about standard cryptographic service names,
+  * standard algorithm names and standard attribute names.</p>
+  *
+  * @param filter the criteria for selecting providers. The filter is case-
+  * insensitive.
+  * @return all the installed providers that satisfy the selection criteria,
+  * or <code>null</code> if no such providers have been installed.
+  * @throws InvalidParameterException if the filter is not in the required
+  * format.
+  * @see #getProviders(String)
+  */
+  public static Provider[] getProviders(Map filter)
+  {
+    if (providers == null || providers.isEmpty())
+      return null;
+
+    if (filter == null)
+      return getProviders();
+
+    Set querries = filter.keySet();
+    if (querries == null || querries.isEmpty())
+      return getProviders();
+
+    LinkedHashSet result = new LinkedHashSet(providers); // assume all
+    int dot, ws;
+    String querry, service, algorithm, attribute, value;
+    LinkedHashSet serviceProviders = new LinkedHashSet(); // preserve insertion order
+    for (Iterator i = querries.iterator(); i.hasNext(); )
+      {
+        querry = (String) i.next();
+        if (querry == null) // all providers
+          continue;
+
+        querry = querry.trim();
+        if (querry.length() == 0) // all providers
+          continue;
+
+        dot = querry.indexOf('.');
+        if (dot == -1) // syntax error
+          throw new InvalidParameterException(
+              "missing dot in '" + String.valueOf(querry)+"'");
+
+        value = (String) filter.get(querry);
+        // deconstruct querry into [service, algorithm, attribute]
+        if (value == null || value.trim().length() == 0) // <service>.<algorithm>
+          {
+            value = null;
+            attribute = null;
+            service = querry.substring(0, dot).trim();
+            algorithm = querry.substring(dot+1).trim();
+          }
+        else // <service>.<algorithm> <attribute>
+          {
+            ws = querry.indexOf(' ');
+            if (ws == -1)
+              throw new InvalidParameterException(
+                  "value (" + String.valueOf(value) +
+                  ") is not empty, but querry (" + String.valueOf(querry) +
+                  ") is missing at least one space character");
+            value = value.trim();
+            attribute = querry.substring(ws+1).trim();
+            // was the dot in the attribute?
+            if (attribute.indexOf('.') != -1)
+              throw new InvalidParameterException(
+                  "attribute_name (" + String.valueOf(attribute) +
+                  ") in querry (" + String.valueOf(querry) + ") contains a dot");
+
+            querry = querry.substring(0, ws).trim();
+            service = querry.substring(0, dot).trim();
+            algorithm = querry.substring(dot+1).trim();
+          }
+
+        // service and algorithm must not be empty
+        if (service.length() == 0)
+          throw new InvalidParameterException(
+              "<crypto_service> in querry (" + String.valueOf(querry) +
+              ") is empty");
+
+        if (algorithm.length() == 0)
+          throw new InvalidParameterException(
+              "<algorithm_or_type> in querry (" + String.valueOf(querry) +
+              ") is empty");
+
+        selectProviders(service, algorithm, attribute, value, result, serviceProviders);
+        result.retainAll(serviceProviders); // eval next retaining found providers
+        if (result.isEmpty()) // no point continuing
+          break;
+      }
+
+    if (result.isEmpty())
+      return null;
+
+    return (Provider[]) result.toArray(new Provider[0]);
+  }
+
+  private static void selectProviders(String svc, String algo, String attr,
+                                      String val, LinkedHashSet providerSet,
+                                      LinkedHashSet result)
+  {
+    result.clear(); // ensure we start with an empty result set
+    for (Iterator i = providerSet.iterator(); i.hasNext(); )
+      {
+        Provider p = (Provider) i.next();
+        if (provides(p, svc, algo, attr, val))
+          result.add(p);
+      }
+  }
+
+  private static boolean provides(Provider p, String svc, String algo,
+                                  String attr, String val)
+  {
+    Iterator it;
+    String serviceDotAlgorithm = null;
+    String key = null;
+    String realVal;
+    boolean found = false;
+    // if <svc>.<algo> <attr> is in the set then so is <svc>.<algo>
+    // but it may be stored under an alias <algo>. resolve
+    outer: for (int r = 0; r < 3; r++) // guard against circularity
+      {
+        serviceDotAlgorithm = (svc+"."+String.valueOf(algo)).trim();
+        inner: for (it = p.keySet().iterator(); it.hasNext(); )
+          {
+            key = (String) it.next();
+            if (key.equalsIgnoreCase(serviceDotAlgorithm)) // eureka
+              {
+                found = true;
+                break outer;
+              }
+            // it may be there but as an alias
+            if (key.equalsIgnoreCase(ALG_ALIAS + serviceDotAlgorithm))
+              {
+                algo = p.getProperty(key);
+                continue outer;
+              }
+            // else continue inner
+          }
+      }
+
+    if (!found)
+      return false;
+
+    // found a candidate for the querry.  do we have an attr to match?
+    if (val == null) // <service>.<algorithm> querry
+      return true;
+
+    // <service>.<algorithm> <attribute>; find the key entry that match
+    String realAttr;
+    int limit = serviceDotAlgorithm.length() + 1;
+    for (it = p.keySet().iterator(); it.hasNext(); )
+      {
+        key = (String) it.next();
+        if (key.length() <= limit)
+          continue;
+
+        if (key.substring(0, limit).equalsIgnoreCase(serviceDotAlgorithm+" "))
+          {
+            realAttr = key.substring(limit).trim();
+            if (! realAttr.equalsIgnoreCase(attr))
+              continue;
+
+            // eveything matches so far.  do the value
+            realVal = p.getProperty(key);
+            if (realVal == null)
+              return false;
+
+            realVal = realVal.trim();
+            // is it a string value?
+            if (val.equalsIgnoreCase(realVal))
+              return true;
+
+            // assume value is a number. cehck for greater-than-or-equal
+            return (new Integer(val).intValue() >= new Integer(realVal).intValue());
+          }
+      }
+
+    return false;
   }
 }
