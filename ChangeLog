@@ -1,5 +1,10 @@
 2003-08-16  Mark Wielaard  <mark@klomp.org>
 
+	* NEWS: Fix java.swing.border -> javax.swing.border and nativee ->
+	native.
+
+2003-08-16  Mark Wielaard  <mark@klomp.org>
+
 	Reported by Patrik Reali
 	* gnu/java/io/decode/DecoderUTF8.java (charsInByteArray): Take offset
 	into account.

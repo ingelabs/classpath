@@ -2,9 +2,9 @@ New in release 0.06 (not-yet-released)
 
 * Update java.awt peers to GTK+2.
 * java.awt.GridBagLayout implementation.
-* New JNI nativee target code layer. See native/target/readme.txt.
-* java.swing.border implementation.
+* javax.swing.border implementation.
 * java.security and java.security.cert updated to 1.4 spec.
+* New JNI native target code layer. See native/target/readme.txt.
 * --enable-regen-headers configure flag for automatic jni .h file generation.
 * Removed workaround for gcj 3.2 and lower, gcj 3.3+ or jikes 1.18+ is now
   needed for compiling.
