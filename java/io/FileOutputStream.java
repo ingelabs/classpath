@@ -97,10 +97,10 @@ private int native_fd = -1;
   * @param name The name of the file this stream should write to
   *
   * @exception SecurityException If write access to the file is not allowed
-  * @exception IOException If a non-security error occurs
+  * @exception FileNotFoundException If a non-security error occurs
   */
 public
-FileOutputStream(String name) throws SecurityException, IOException
+FileOutputStream(String name) throws SecurityException, FileNotFoundException
 {
   this(name, false);
 }
@@ -121,10 +121,10 @@ FileOutputStream(String name) throws SecurityException, IOException
   * @param file The <code>File</code> object this stream should write to
   *
   * @exception SecurityException If write access to the file is not allowed
-  * @exception IOException If a non-security error occurs
+  * @exception FileNotFoundException If a non-security error occurs
   */
 public
-FileOutputStream(File file) throws SecurityException, IOException
+FileOutputStream(File file) throws SecurityException, FileNotFoundException
 {
   this(file.getPath(), false);
 }
@@ -144,14 +144,15 @@ FileOutputStream(File file) throws SecurityException, IOException
   * thrown if writing is not allowed. 
   *
   * @param name The name of the file this stream should write to
-  * @param append <code>true</code> to append bytes to the end of the file, or <code>false</code> to write bytes to the beginning
+  * @param append <code>true</code> to append bytes to the end of the file,
+  * or <code>false</code> to write bytes to the beginning
   *
   * @exception SecurityException If write access to the file is not allowed
-  * @exception IOException If a non-security error occurs
+  * @exception FileNotFoundException If a non-security error occurs
   */
 public
 FileOutputStream(String name, boolean append) throws SecurityException, 
-                                                     IOException
+                                                     FileNotFoundException
 {
   SecurityManager sm = System.getSecurityManager();
   if (sm != null)
@@ -304,14 +305,15 @@ writeInternal(int native_fd, byte[] buf, int offset, int len) throws IOException
   * beginning.
   *
   * @param name The name of the file to open
-  * @param append  <code>true</code> to write starting at the end of the file, <code>false</code> to start writing at the beginning
+  * @param append  <code>true</code> to write starting at the end of the file,
+  * <code>false</code> to start writing at the beginning
   *
   * @return A native file descriptor for this file
   *
-  * @exception IOException If an error occurs
+  * @exception FileNotFoundException If an error occurs
   */
 private synchronized native int
-open(String name, boolean append) throws IOException;
+open(String name, boolean append) throws FileNotFoundException;
 
 /*************************************************************************/
 

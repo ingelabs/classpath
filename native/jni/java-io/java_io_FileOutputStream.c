@@ -1,5 +1,5 @@
 /* FileOutputStream.c - Native methods for java.io.FileOutputStream class
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -70,7 +70,8 @@ Java_java_io_FileOutputStream_open(JNIEnv *env, jobject obj, jstring name,
       int rc = lseek(fd, 0, SEEK_END);
       if (rc == -1)
         {
-          JCL_ThrowException(env, "java/io/IOException", strerror(errno));
+          JCL_ThrowException(env, "java/io/FileNotFoundException",
+			     strerror(errno));
           close(fd);
           return(-1);
         }

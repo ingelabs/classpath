@@ -1,5 +1,5 @@
 /* javaio.c - Common java.io native functions
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -88,9 +88,11 @@ _javaio_open(JNIEnv *env, jstring name, int flags)
 void
 _javaio_close(JNIEnv *env, jint fd)
 {
-  int rc;
+  int rc = 0;
 
-  rc = close(fd);
+  if (fd != -1)
+    rc = close(fd);
+
   if (rc == -1)
     JCL_ThrowException(env, "java/io/IOException", strerror(errno));
 }

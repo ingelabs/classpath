@@ -281,12 +281,17 @@ File(File directory, String name)
     {
       String dirname = System.getProperty("user.dir");
       if (dirname == null)
-        throw new IllegalArgumentException("Cannot determine default user directory");
+        throw new IllegalArgumentException
+		("Cannot determine default user directory");
 
       directory = new File(dirname);
     }
 
-  path = directory.getPath() + separator + name;
+  String dirpath = directory.getPath();
+  if (PlatformHelper.isRootDirectory(dirpath))
+    path = dirpath + name;
+  else
+    path = dirpath + separator + name;
 }
 
 /*************************************************************************/
@@ -304,17 +309,9 @@ File(File directory, String name)
 public
 File(String dirname, String name)
 {
-  this (name); //set path field & check null
-  if (!isAbsolute ())
-    {
-      if (dirname != null)
-	{
-	  if (PlatformHelper.endWithSeparator (dirname))
-	    path = dirname + name;
-	  else
-	    path = dirname + separator + name;
-	}
-    }
+    this(
+      dirname==null? (File)null: new File(dirname),
+      name);
 }
 
 /*************************************************************************/
@@ -333,6 +330,10 @@ File(String name)
   // Per the spec
   if (path == null)
     throw new NullPointerException("File name is null");
+
+  if (!PlatformHelper.isRootDirectory(path))
+    while (PlatformHelper.endWithSeparator(path))
+      path = PlatformHelper.removeTailSeparator(path);
 }
 
 /*************************************************************************/
@@ -470,8 +471,9 @@ getParent()
   if (PlatformHelper.isRootDirectory(path))
     return null;
 
-  String par_path = PlatformHelper.removeTailSeparator(path);
-  int pos = PlatformHelper.lastIndexOfSeparator(path);
+  String par_path = path;
+
+  int pos = PlatformHelper.lastIndexOfSeparator(par_path);
   if (pos == -1)
     return null;
 
@@ -573,7 +575,18 @@ canWrite() throws SecurityException
   if (!exists())
     return(false);
 
-  return(canWriteInternal(path));
+  if (!isDirectory())
+    return(canWriteInternal(path));
+  else
+    try
+      {
+	File test = createTempFile("test-dir-write", null, this);
+	return (test != null && test.delete());
+      }
+    catch (IOException ioe)
+      {
+	return(false);
+      }
 }
 
 /*************************************************************************/
@@ -1064,10 +1077,14 @@ list(FilenameFilter filter)
 
   // Get the list of files
   String list_path = PlatformHelper.removeTailSeparator(path);
+  File dir = new File(list_path);
 
+  if (! dir.exists() || ! dir.isDirectory() ) return null;
+  
   String files[] = listInternal(list_path);
+  
   if (files == null)
-    return(null);
+    return new String[0];
   if (filter == null)
     return(files);
   

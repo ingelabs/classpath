@@ -1,5 +1,5 @@
 /* FileInputStream.java -- An input stream that reads from disk files.
-   Copyright (C) 1998 Free Software Foundation, Inc.
+   Copyright (C) 1998, 2002 Free Software Foundation, Inc.
 
 This file is part of GNU Classpath.
 
@@ -395,7 +395,7 @@ readInternal(int native_fd,  byte[] buf, int offset, int len) throws IOException
   *
   * @param name The name of the file to open
   *
-  * @exception IOException If an error occurs
+  * @exception FileNotFoundException If an error occurs
   */
 private native int
 open(String name) throws FileNotFoundException;

@@ -1,3 +1,22 @@
+2002-11-29  Mark Wielaard  <mark@klomp.org>
+
+	Merge patches from Julian Dolby <dolby@us.ibm.com>
+	* java/io/File.java (File(File, String)): Only add separator when
+	dirpath is not a root dir.
+	(File(String, String)): Call this(File, String).
+	(File(String)): Remove all trailing separators when not root dir.
+	(canWrite): Return null when no separator is found in path.
+	If a directory then check that we can create and delete temp file.
+	(list): Return null when file not exists or is not a dir.
+	Return empty array when listInternal returns null.
+	* java/io/FileInputStream.java(open): Throws FileNotFoundException.
+	* java/io/FileOutputStream.java (FileOutputStream): Likewise.
+	(open): Likewise.
+	* native/jni/java-io/java_io_FileOutputStream.c (open): Likewise.
+	* native/jni/java-io/javaio.c (_javaio_close): Check that fd != -1.
+
+	* THANKYOU: Add Julian Dolby.
+
 2002-11-25  Mark Wielaard  <mark@klomp.org>
 
 	* java/util/jar/JarFile.java (manifest): Not final.
