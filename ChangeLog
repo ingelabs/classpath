@@ -1,5 +1,19 @@
 2004-12-19  Michael Koch  <konqueror@gmx.de>
 
+	* java/util/Locale.java: Make sure all locales get only created once.
+	(availableLocales): New static field.
+	(localeMap): Likewise.
+	(getLocale): New private static method.
+	(getAvailableLocales): Re-implemented.
+	(getISOCountries): Fixed typo in javadoc.
+	(getDisplayLanguage): Load iso639.properties from correct package.
+	(getDisplayCountry): Load iso3166.properties from correct package.
+	* scripts/generate-locale-list.sh: New script.
+	* lib/Makefile.am: Call scripts/generate-locale-list.sh to generate
+	java/util/LocaleData.java.
+
+2004-12-19  Michael Koch  <konqueror@gmx.de>
+
 	* gnu/java/locale/LocaleInformation_aa.java,
 	gnu/java/locale/LocaleInformation_aa_DJ.java,
 	gnu/java/locale/LocaleInformation_aa_ER.java,

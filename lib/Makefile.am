@@ -79,6 +79,7 @@ resources:
 classes: genclasses
 
 genclasses: gen-classlist.sh standard.omit
+	$(top_srcdir)/scripts/generate-locale-list.sh > $(top_srcdir)/java/util/LocaleData.java
 	top_builddir=$(top_builddir) $(SHELL) ./gen-classlist.sh standard
 
 $(JAVA_DEPEND): genclasses
