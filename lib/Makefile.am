@@ -17,6 +17,10 @@ JIKES = @JIKES@
 USER_JABBA = @USER_JABBA@
 USER_JAVAH = @USER_JAVAH@
 
+
+propertydirs :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java -type d ! -regex .*CVS)
+propertyfiles :=  $(shell cd $(top_srcdir)/resource && $(FIND) gnu java -name \*\.properties)
+
 #-----------------------------------------------------------------
 # defining a javac program written in java
 #-----------------------------------------------------------------
@@ -105,7 +109,12 @@ resources:
 	if ! [ -e gnu ]; then mkdir gnu; fi
 	if ! [ -e gnu/java ]; then mkdir gnu/java; fi
 	if ! [ -e gnu/java/locale ]; then mkdir gnu/java/locale; fi
-	cp $(top_srcdir)/gnu/java/locale/*.properties gnu/java/locale/
+	@list='$(propertydirs)'; for p in $$list; do \
+	  if ! [ -e $$p ]; then mkdir $$p; fi; \
+	done
+	@list='$(propertyfiles)'; for p in $$list; do \
+	  cp $(top_srcdir)/resource/$$p $$p; \
+	done
 	touch resources
 
 classes: genclasses
