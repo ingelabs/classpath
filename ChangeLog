@@ -1,5 +1,7 @@
 2001-08-31  Tom Tromey  <tromey@redhat.com>
 
+	* java/lang/ThreadGroup.java: Re-merged with libgcj.
+
 	* java/io/InvalidClassException.java: Re-merged from libgcj
 	(indentation cleanup).
 
