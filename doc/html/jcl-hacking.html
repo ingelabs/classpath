@@ -1,12 +1,15 @@
 <HTML>
 <HEAD>
 <!-- This HTML file has been created by texi2html 1.52
-     from jcl-hacking.texinfo on 14 July 1998 -->
+     from jcl-hacking.texinfo on 10 August 1998 -->
 
-<TITLE>GNU $classpath Hacker's Guide</TITLE>
+<TITLE>GNU Classpath Hacker's Guide</TITLE>
 </HEAD>
 <BODY BGCOLOR="#FFFFFF">
-<H1>GNU $classpath Hacker's Guide</H1>
+<H1>GNU Classpath Hacker's Guide</H1>
+<ADDRESS>Aaron M. Renn</ADDRESS>
+<ADDRESS>Paul N. Fisher</ADDRESS>
+<ADDRESS>John Keiser</ADDRESS>
 <P>
 <P><HR><P>
 <H1>Table of Contents</H1>
@@ -28,14 +31,8 @@
 <P><HR><P>
 
 <P>
-@title{GNU $classpath Hacker's Guide}
-@author{Aaron M. Renn}
-@author{John Keiser}
 Copyright (C) 1998 Free Software Foundation, Inc.
-
-</P>
 <P>
-@sp2 
 Permission is granted to make and distribute verbatim copies of
 this document provided the copyright notice and this permission notice
 are preserved on all copies.
@@ -61,20 +58,20 @@ approved by the Free Software Foundation.
 <H1><A NAME="SEC1" HREF="jcl-hacking.html#TOC1">Introduction</A></H1>
 
 <P>
-The $classpath Project is a dedicated to providing a 100% free, clean room
-implementation of the standard Java class libraries.  Because there is
-currently no free implementation of the Java environment, no free
+The Classpath Project is a dedicated to providing a 100% free, clean
+room implementation of the standard Java class libraries.  Because there
+is currently no free implementation of the Java environment, no free
 operating system can ship with Java included.  Parts of a free Java
 implementation have already been written, including free Java virtual
 machines (JVM's) such as <A HREF="http://www.kaffe.org/">Kaffe</A> and
 <A HREF="http://www.hungry.com/products/japhar/">Japhar</A>, and Java compilers
 such as <A HREF="http://www.cs.berkeley.edu/~engberg/guavac/">Guavac</A>.
 However, there is currently no free replacement for Sun's proprietary
-libraries.  This $classpath project aims to correct this problem by supplying a
-free class library implementation that will allow a 100% free Java
-platform to be distributed.  Note that Kaffe now ships with a partial
-class library that is also free, so there is more than one group working
-towards a common goal.
+libraries.  This Classpath project aims to correct this problem by
+supplying a free class library implementation that will allow a 100%
+free Java platform to be distributed.  Note that Kaffe now ships with a
+partial class library that is also free, so there is more than one group
+working towards a common goal.
 
 </P>
 
@@ -82,16 +79,16 @@ towards a common goal.
 <H1><A NAME="SEC2" HREF="jcl-hacking.html#TOC2">Requirements</A></H1>
 
 <P>
-Although $classpath is following an open development model where input from
-developers is welcome, there are certain base requirements that need to
-be met by anyone who wants to contribute code to this project.  They are
-mostly unfortunately dictated by legal requirements and are not
-arbitrary restrictions chosen by the $classpath team.
+Although Classpath is following an open development model where input
+from developers is welcome, there are certain base requirements that
+need to be met by anyone who wants to contribute code to this project.
+They are mostly unfortunately dictated by legal requirements and are not
+arbitrary restrictions chosen by the Classpath team.
 
 </P>
 <P>
 You will need to adhere to the following things if you want to donate
-code to the $classpath project:
+code to the Classpath project:
 
 </P>
 
@@ -99,44 +96,46 @@ code to the $classpath project:
 <LI>
 
 <B>Never under any circumstances refer to Sun's code while working on
-$classpath.</B>  It is best if you have never looked at Sun's code at all.  To
-reduce temptation, it would be best if you deleted the <SAMP>`src.zip'</SAMP>
+Classpath.</B>  It is best if you have never looked at Sun's code at all.
+To reduce temptation, it would be best if you deleted the <SAMP>`src.zip'</SAMP>
 file from your JDK distribution.  If you have signed Sun's
-non-disclosure statement, then you unfortunately cannot work on $classpath code
-at all.  If you have any reason to believe that your code might be
-"tainted", please say something on the mailing list before writing
-anything.  If it turns out that your code was not developed in a clean
-room environment, we could be very embarrassed someday in court.  Please
-don't let that happen.
+non-disclosure statement, then you unfortunately cannot work on
+Classpath code at all.  If you have any reason to believe that your code
+might be "tainted", please say something on the mailing list before
+writing anything.  If it turns out that your code was not developed in a
+clean room environment, we could be very embarrassed someday in court.
+Please don't let that happen.
 
 <LI>
 
 <B>Never decompile Sun's class libraries.</B>  While the wording of the
 license in Sun's JDK version 1.2 has changed, it not acceptable, under
-any circumstances, for a person working on $classpath to decompile Sun's class
-libraries.  Allowing the use of decompilation in the $classpath project would
-open up a giant can of legal worms, which we wish to avoid.
+any circumstances, for a person working on Classpath to decompile Sun's
+class libraries.  Allowing the use of decompilation in the Classpath
+project would open up a giant can of legal worms, which we wish to
+avoid.
 
 <LI>
 
-$classpath is licensed under the terms of the
+Classpath is licensed under the terms of the
 <A HREF="http://www.fsf.org/copyleft/lgpl.html">GNU Library General Public
 License</A>.  To preserve freedom for all users and to maintain uniform
-licensing of $classpath, we will not accept code into the main distribution
-that is not licensed under these terms.
+licensing of Classpath, we will not accept code into the main
+distribution that is not licensed under these terms.
 
 <LI>
 
-$classpath is GNU software and this project is being officially sponsored by
-the <A HREF="http://www.fsf.org/">Free Software Foundation</A>.  Because of this,
-the FSF will hold copyright to all code developed as part of $classpath.  This
-will allow them to pursue copyright violators in court, something an
-individual developer may neither have the time nor resources to do.
-Everyone contributing code to $classpath will need to sign a copyright assignment
-statement.  Additionally, if you are employed as a programmer, your
-employer may need to sign a copyright waiver disclaiming all interest in
-the software.  This may sound harsh, but unfortunately, it is the only
-way to ensure that the code you write is legally yours to distribute.
+Classpath is GNU software and this project is being officially sponsored
+by the <A HREF="http://www.fsf.org/">Free Software Foundation</A>.  Because of
+this, the FSF will hold copyright to all code developed as part of
+Classpath.  This will allow them to pursue copyright violators in court,
+something an individual developer may neither have the time nor
+resources to do.  Everyone contributing code to Classpath will need to
+sign a copyright assignment statement.  Additionally, if you are
+employed as a programmer, your employer may need to sign a copyright
+waiver disclaiming all interest in the software.  This may sound harsh,
+but unfortunately, it is the only way to ensure that the code you write
+is legally yours to distribute.
 </UL>
 
 
@@ -144,9 +143,10 @@ way to ensure that the code you write is legally yours to distribute.
 <H1><A NAME="SEC3" HREF="jcl-hacking.html#TOC3">Volunteering to Help</A></H1>
 
 <P>
-The $classpath project needs volunteers to help us out.  People are needed to
-write unimplemented Java packages, to test $classpath on various platforms, and to
-port it to platforms that are currently unsupported.
+The Classpath project needs volunteers to help us out.  People are
+needed to write unimplemented Java packages, to test Classpath on
+various platforms, and to port it to platforms that are currently
+unsupported.
 
 </P>
 <P>
@@ -160,20 +160,20 @@ a Java package, please be willing to do the following:
 <UL>
 <LI>
 
-Implement a complete drop-in replacement for the particular package.  That
-means implementing any "internal" classes.  For example, in the java.net
-package, there are non-public classes for implementing sockets.  Without
-those classes, the public socket interface is useless.  But do not feel
-obligated to completely replace all of Sun's functionality at once.  For
-example, in the java.net package, there are different types of protocol
-handlers for different types of URL's.  Not all of these need to be
-written at once.
+Implement a complete drop-in replacement for the particular package.
+That means implementing any "internal" classes.  For example, in the
+java.net package, there are non-public classes for implementing sockets.
+Without those classes, the public socket interface is useless.  But do
+not feel obligated to completely replace all of Sun's functionality at
+once.  For example, in the java.net package, there are different types
+of protocol handlers for different types of URL's.  Not all of these
+need to be written at once.
 
 <LI>
 
 Please write complete and thorough javadoc comments for every public and
-protected method and variable.  These should be superior to Sun's and cover 
-everything about the item being documented.
+protected method and variable.  These should be superior to Sun's and
+cover everything about the item being documented.
 
 <LI>
 
@@ -182,9 +182,9 @@ your package's functionality.
 </UL>
 
 <P>
-Nobody likes to write documentation and test cases, but they are vital to
-a complete and robust product.  Writing them as you go is much easier than
-going back at the end and adding them.
+Nobody likes to write documentation and test cases, but they are vital
+to a complete and robust product.  Writing them as you go is much easier
+than going back at the end and adding them.
 
 </P>
 
@@ -192,44 +192,44 @@ going back at the end and adding them.
 <H1><A NAME="SEC4" HREF="jcl-hacking.html#TOC4">Project Goals</A></H1>
 
 <P>
-The goal of the $classpath project is to produce a  
-<A HREF="http://www.fsf.org/philosophy/free-sw.html">free</A> implementation
-of the standard class library for Java.  However, there are other more
+The goal of the Classpath project is to produce a
+<A HREF="http://www.fsf.org/philosophy/free-sw.html">free</A> implementation of
+the standard class library for Java.  However, there are other more
 specific goals as to which platforms should be supported.
 
 </P>
 <P>
-$classpath is targeted to support the following operating systems:
+Classpath is targeted to support the following operating systems:
 
 </P>
 
 <OL>
 <LI>
 
-Free operating systems.  This includes GNU/Linux, {Free,Net,Open}BSD, and
-GNU/Hurd.
+Free operating systems.  This includes GNU/Linux, GNU/Hurd, and the free
+BSDs.
 
 <LI>
 
-Other Unix like operating systems
+Other Unix like operating systems.
 
 <LI>
 
-Platforms which currently have no Java support at all such as the Amiga.
+Platforms which currently have no Java support at all.
 
 <LI>
 
-Other platform such as MS-Windows.
+Other platforms such as MS-Windows.
 </OL>
 
 <P>
-While free operating systems are the top priority, the other priorities 
-can shift depending on whether or not there is a volunteer to port $classpath
-to those platforms and to test releases.
+While free operating systems are the top priority, the other priorities
+can shift depending on whether or not there is a volunteer to port
+Classpath to those platforms and to test releases.
 
 </P>
 <P>
-Eventually we hope the $classpath will support all JVM's that provide JNI
+Eventually we hope the Classpath will support all JVM's that provide JNI
 support.  However, the top priority is free JVM's.  The JVM support
 priority list is:
 
@@ -251,16 +251,16 @@ Other JNI Compliant JVM's.
 </OL>
 
 <P>
-As with OS platform support, this priority list could change if a volunteer
-comes forward to port, maintain, and test releases for a particular JVM.
-Kaffe is now developing its own class library, so the priority of supporting
-that platform is not nearly as high as for Japhar.
+As with OS platform support, this priority list could change if a
+volunteer comes forward to port, maintain, and test releases for a
+particular JVM.  Kaffe is now developing its own class library, so the
+priority of supporting that platform is not as high as for Japhar.
 
 </P>
 <P>
-The initial target version for $classpath is Java 1.1.  Java 1.2 can be 
-implemented if desired, but please do not create classes that depend
-on 1.2 features in other packages.
+The initial target version for Classpath is Java 1.1.  Java 1.2 can be
+implemented if desired, but please do not create classes that depend on
+1.2 features in other packages.
 
 </P>
 
@@ -268,8 +268,8 @@ on 1.2 features in other packages.
 <H1><A NAME="SEC5" HREF="jcl-hacking.html#TOC5">Programming Tools</A></H1>
 
 <P>
-If you want to hack on $classpath, you should download, install,
-and familiarize yourself with the following tools:
+If you want to hack on Classpath, you should download, install, and
+familiarize yourself with the following tools:
 
 </P>
 
@@ -303,9 +303,9 @@ GNU MP 2.0.2
 <P>
 All of these tools are available from
 <A HREF="ftp://prep.ai.mit.edu/pub/gnu/">prep.ai.mit.edu</A> via anonymous ftp.
-With the exception of perl, they are fully documented with
-texinfo manuals.  Texinfo can be browsed with the Emacs editor, or with
-the text editor of your choice.
+With the exception of perl, they are fully documented with texinfo
+manuals.  Texinfo can be browsed with the Emacs editor, or with the text
+editor of your choice.
 
 </P>
 <P>
@@ -317,38 +317,39 @@ Here is a brief description of the purpose of those tools.
 <DT><B>CVS</B>
 <DD>
 A version control system that maintains a centralized Internet
-repository of all code in the $classpath system.  Access to the repository
-requires an account.  Contact Paul Fisher (<A HREF="mailto:rao@gnu.org">rao@gnu.org</A>) for
-details.
+repository of all code in the Classpath system.  Access to the
+repository requires an account.  Contact Paul Fisher
+(<A HREF="mailto:rao@gnu.org">rao@gnu.org</A>) for details.
 
 <DT><B>dejagnu</B>
 <DD>
-A package for automating regression test suites for programs.  Your 
+A package for automating regression test suites for programs.  Your
 regression test package should work with this.
 
 <DT><B>automake</B>
 <DD>
-This tool automatically creates Makefile.in files from
-Makefile.am files.  The Makefile.in is turned into a Makefile by autoconf.
-Why use this?  Because it automatically generates every makefile target
-you would ever want (clean, install, dist, etc) in full compliance with
-the GNU coding standards.  It also simplifies Makefile creation in a
-ton of different ways I can't describe here.  Read the docs for more info.
+This tool automatically creates Makefile.in files from Makefile.am
+files.  The Makefile.in is turned into a Makefile by autoconf.  Why use
+this?  Because it automatically generates every makefile target you
+would ever want (clean, install, dist, etc) in full compliance with the
+GNU coding standards.  It also simplifies Makefile creation in a ton of
+different ways I can't describe here.  Read the docs for more info.
 
 <DT><B>autoconf</B>
 <DD>
-Automatically configures a package for the platform on
-which it is being built and generates the Makefile for that platform.
+Automatically configures a package for the platform on which it is being
+built and generates the Makefile for that platform.
 
 <DT><B>libtool</B>
 <DD>
-Handles all of the zillions of hairy platform specific 
-options needed to build shared libraries.
+Handles all of the zillions of hairy platform specific options needed to
+build shared libraries.
 
 <DT><B>m4</B>
 <DD>
-The free GNU replacement for the standard Unix macro processor.  Proprietary
-m4 programs are broken and so GNU m4 is required for autoconf to work.
+The free GNU replacement for the standard Unix macro processor.
+Proprietary m4 programs are broken and so GNU m4 is required for
+autoconf to work.
 
 <DT><B>perl</B>
 <DD>
@@ -356,8 +357,8 @@ Larry Wall's scripting language.  It is used internally by automake.
 
 <DT><B>MP</B>
 <DD>
-Required for java.lang.Float, java.lang.Double, java.math.BigInteger, and
-java.math.BigDecimal.
+Required for java.lang.Float, java.lang.Double, java.math.BigInteger,
+and java.math.BigDecimal.
 
 </DL>
 
@@ -366,17 +367,24 @@ java.math.BigDecimal.
 <H1><A NAME="SEC6" HREF="jcl-hacking.html#TOC6">Programming Standards</A></H1>
 
 <P>
-For C code, follow the 
-<A HREF="http://www.fsf.org/prep/standards_toc.html">GNU Coding Standards</A>.  
-The standards also specify various things like the
-install directory structure.  These should be followed if possible.
+For C code, follow the
+<A HREF="http://www.fsf.org/prep/standards_toc.html">GNU Coding Standards</A>.
+The standards also specify various things like the install directory
+structure.  These should be followed if possible.
 
 </P>
 <P>
 For Java code, please follow the
-<A HREF="http://java.sun.com/docs/codeconv/html/CodeConventionsTOC.doc.html">Sun programming standards</A>.
-As an exception, do not feel obligated to following their bracket and
-indentation style if you consider it wrong as I do.
+<A HREF="http://java.sun.com/docs/codeconv/html/CodeConventionsTOC.doc.html">Sun
+programming standards</A>.  As an exception, do not feel obligated to
+following their bracket and indentation style if you consider it to be
+wrong.
+
+</P>
+<P>
+For documentation comments, please follow
+<A HREF="http://java.sun.com/products/jdk/javadoc/writingdoccomments.html">How
+to Write Doc Comments for Javadoc</A>.
 
 </P>
 
@@ -384,16 +392,16 @@ indentation style if you consider it wrong as I do.
 <H1><A NAME="SEC7" HREF="jcl-hacking.html#TOC7">Programming Goals</A></H1>
 
 <P>
-When you write code for $classpath, write with three things in mind, and in the
-following order: portability, robustness, and efficiency.
+When you write code for Classpath, write with three things in mind, and
+in the following order: portability, robustness, and efficiency.
 
 </P>
 <P>
 If efficiency breaks portability or robustness, then don't do it the
-efficient way.  If robustness breaks portability, then bye-bye robust code.
-Of course, as a programmer you would probably like to find sneaky ways to
-get around the issue so that your code can be all three ... the following
-chapters will give some hints on how to do this.
+efficient way.  If robustness breaks portability, then bye-bye robust
+code.  Of course, as a programmer you would probably like to find sneaky
+ways to get around the issue so that your code can be all three ... the
+following chapters will give some hints on how to do this.
 
 </P>
 
@@ -426,8 +434,8 @@ java.* hierarchy.
 
 </P>
 <P>
-The native libraries we use in $classpath are JNI, JVMDI, and VMI.  JNI you
-should be familiar with; introduced in Java 1.1, it is the basis for
+The native libraries we use in Classpath are JNI, JVMDI, and VMI.  JNI
+you should be familiar with; introduced in Java 1.1, it is the basis for
 our native code.  JVMDI is a 1.2 concoction, and thus we can only
 support it on 1.1 VMs that we have source access to (i.e. Japhar and
 Kaffe).  VMI is our own invention entirely; it is where we push the
@@ -435,8 +443,8 @@ VM-specific functionality that JNI and JVMDI do not support.
 
 </P>
 <P>
-However, using JVMDI and VMI in 1.1 breaks the "ideal goal" for the project.
-With these two in the mix, $classpath's portability becomes:
+However, using JVMDI and VMI in 1.1 breaks the "ideal goal" for the
+project.  With these two in the mix, Classpath's portability becomes:
 
 </P>
 
@@ -446,83 +454,83 @@ With these two in the mix, $classpath's portability becomes:
 a JVMDI and VMI lib per VM per platform;
 <LI>
 
-a binary set for each platform that works across all VM/platform
-combos supporting the JVMDI/VMI;
+a binary set for each platform that works across all VM/platform combos
+supporting the JVMDI/VMI;
 <LI>
 
-a single classfile set that works across all VM / platform combos
-that support both of the above.
+a single classfile set that works across all VM / platform combos that
+support both of the above.
 </OL>
 
 <P>
 When writing, therefore, you should always keep shy of anything
 VM-specific yourself, and talk to the VM using the VMI.  If you need a
-VM-specific function that is not supported by JNI or JVMDI, write a new VMI
-function!
+VM-specific function that is not supported by JNI or JVMDI, write a new
+VMI function!
 
 </P>
 <P>
-Note that the preferred method is not to use the JVMDI or VMI at <EM>all</EM>,
-but to use only JNI.  If you can write it without the VMI, your code will be
-quicker to port to new VMs.
+Note that the preferred method is not to use the JVMDI or VMI at
+<EM>all</EM>, but to use only JNI.  If you can write it without the VMI,
+your code will be quicker to port to new VMs.
 
 </P>
 <P>
 There is another issue, however, and that is the efficiency issue.  Some
-things can be done using JNI only, but they are a ton slower than they would
-be if you used the VMI or talked directly to the VM.
+things can be done using JNI only, but they are a ton slower than they
+would be if you used the VMI or talked directly to the VM.
 
 </P>
 <P>
-In these cases, the preferred method in $classpath is to create a <EM>library</EM>.
-Hide the implementation of the functions from the caller.  If the library
-can be written using only JNI, no matter how inefficient, you should write a
-version of it for that.  Portability, remember, is the ultimate goal, and
-the closer we are to it, the better off we are.
+In these cases, the preferred method in Classpath is to create a
+<EM>library</EM>.  Hide the implementation of the functions from the
+caller.  If the library can be written using only JNI, no matter how
+inefficient, you should write a version of it for that.  Portability,
+remember, is the ultimate goal, and the closer we are to it, the better
+off we are.
 
 </P>
-
 
 
 <H1><A NAME="SEC9" HREF="jcl-hacking.html#TOC9">Robustness</A></H1>
 
 <P>
-Native code is very easy to make non-robust.  (That's one reason Java is so
-much better!)  Here are a few hints to make your native code more robust.
+Native code is very easy to make non-robust.  (That's one reason Java is
+so much better!)  Here are a few hints to make your native code more
+robust.
 
 </P>
 <P>
-Always check return values for standard functions.  It's sometimes easy to
-forget to check that malloc() return for an error.  Don't make that mistake.
-(In fact, use JCL_malloc() in the jcl library instead--it will check the
-return value and throw an exception if necessary.)
+Always check return values for standard functions.  It's sometimes easy
+to forget to check that malloc() return for an error.  Don't make that
+mistake.  (In fact, use JCL_malloc() in the jcl library instead--it will
+check the return value and throw an exception if necessary.)
 
 </P>
 <P>
-Always check the return values of JNI functions, or call <CODE>ExceptionOccurred</CODE>
-to check whether an error occurred.  You must do this after <EM>every</EM> JNI call.
-JNI does not work well when an exception has been raised, and can have unpredictable
-behavior.
+Always check the return values of JNI functions, or call
+<CODE>ExceptionOccurred</CODE> to check whether an error occurred.  You must
+do this after <EM>every</EM> JNI call.  JNI does not work well when an
+exception has been raised, and can have unpredictable behavior.
 
 </P>
 <P>
-Throw exceptions using JCL_ThrowException.  This guarantees that if something is
-seriously wrong, the exception text will at least get out somewhere (even if it is
-stderr).
+Throw exceptions using JCL_ThrowException.  This guarantees that if
+something is seriously wrong, the exception text will at least get out
+somewhere (even if it is stderr).
 
 </P>
 <P>
-Check for null values of jclasses before you send them to JNI functions.  JNI
-does not behave nicely when you pass a null class to it: it terminates Java with
-a "JNI Panic."
+Check for null values of jclasses before you send them to JNI functions.
+JNI does not behave nicely when you pass a null class to it: it
+terminates Java with a "JNI Panic."
 
 </P>
 <P>
-In general, try to use functions in native/lib/jcl.h.  They check exceptions and
-return values and throw appropriate exceptions.
+In general, try to use functions in native/lib/jcl.h.  They check
+exceptions and return values and throw appropriate exceptions.
 
 </P>
-
 
 
 <H1><A NAME="SEC10" HREF="jcl-hacking.html#TOC10">Java Efficiency</A></H1>
@@ -555,22 +563,22 @@ int strlen(String foo) throws NullPointerException {
 
 <P>
 Explicitly comparing foo to null is unnecessary, as the virtual machine
-will throw a NullPointerException when length() is invoked.  $classpath is
-designed to be as fast as possible -- every optimization, no matter how
-small, is important.
+will throw a NullPointerException when length() is invoked.  Classpath
+is designed to be as fast as possible -- every optimization, no matter
+how small, is important.
 
 </P>
-
 
 
 <H1><A NAME="SEC11" HREF="jcl-hacking.html#TOC11">Native Efficiency</A></H1>
 
 <P>
 You might think that using native methods all over the place would give
-our implementation of Java speed, speed, blinding speed.  You'd be thinking
-wrong.  Would you believe me if I told you that an <EM>interpreted</EM> Java method
-is typically about three and a half times <EM>faster</EM> than the equivalent
-native method?  This is true even for a totally blank method.
+our implementation of Java speed, speed, blinding speed.  You'd be
+thinking wrong.  Would you believe me if I told you that an
+<EM>interpreted</EM> Java method is typically about three and a half times
+<EM>faster</EM> than the equivalent native method?  This is true even for
+a totally blank method.
 
 </P>
 <P>
@@ -580,9 +588,10 @@ the JNI functions you use once you get into Java are slow.
 </P>
 <P>
 A final problem is efficiency of native code when it comes to things
-like method calls, fields, finding classes, etc.  Generally you should cache
-things like that in static C variables if you're going to use them over and
-over again.  GetMethodID(), GetFieldID(), and FindClass() are *slow*.
+like method calls, fields, finding classes, etc.  Generally you should
+cache things like that in static C variables if you're going to use them
+over and over again.  GetMethodID(), GetFieldID(), and FindClass() are
+*slow*.
 
 </P>
 <P>
@@ -590,48 +599,49 @@ Here are a few tips on writing native code efficiently:
 
 </P>
 <P>
-Make as few native method calls as possible.  Note that this is not the same
-thing as doing less in native method calls; it just means that, if given the
-choice between calling two native methods and writing a single native method
-that does the job of both, it will usually be better to write the single
-native method.  You can even call the other two native methods directly from
-your native code and not incur the overhead of a method call from Java to C.
+Make as few native method calls as possible.  Note that this is not the
+same thing as doing less in native method calls; it just means that, if
+given the choice between calling two native methods and writing a single
+native method that does the job of both, it will usually be better to
+write the single native method.  You can even call the other two native
+methods directly from your native code and not incur the overhead of a
+method call from Java to C.
 
 </P>
 <P>
-Cache methodIDs and fieldIDs wherever you can.  String lookups are expensive.
-The best way to do this is to use the native/lib/jnilink.h library.  It will
-ensure that jmethodIDs are always valid, even if the class is unloaded at
-some point.  In 1.1, jnilink simply caches a NewGlobalRef() to the method's
-underlying class; however, when 1.2 comes along, it will use a weak reference
-to allow the class to be unloaded and then re-resolve the jmethodID the next
-time it is used.
+Cache methodIDs and fieldIDs wherever you can.  String lookups are
+expensive.  The best way to do this is to use the native/lib/jnilink.h
+library.  It will ensure that jmethodIDs are always valid, even if the
+class is unloaded at some point.  In 1.1, jnilink simply caches a
+NewGlobalRef() to the method's underlying class; however, when 1.2 comes
+along, it will use a weak reference to allow the class to be unloaded
+and then re-resolve the jmethodID the next time it is used.
 
 </P>
 <P>
-Cache classes that you need to access often.  jnilink will help with this as
-well.  The issue here is the same as the methodID and fieldID issue--how to
-make certain the class reference remains valid.
+Cache classes that you need to access often.  jnilink will help with
+this as well.  The issue here is the same as the methodID and fieldID
+issue--how to make certain the class reference remains valid.
 
 </P>
 <P>
 If you need to associate native C data with your class, use Paul
-Fisher's native_state library (NSA).  It will allow you to get and set state
-fairly efficiently.  Note that there is no built-in mechanism to associate C
-data with instances of a class.  This is a library Paul built from scratch.
+Fisher's native_state library (NSA).  It will allow you to get and set
+state fairly efficiently.  Note that there is no built-in mechanism to
+associate C data with instances of a class.  This is a library Paul
+built from scratch.
 
 </P>
-
 
 
 <H1><A NAME="SEC12" HREF="jcl-hacking.html#TOC12">Specification Sources</A></H1>
 
 <P>
-There are a number of specification sources to use when working on $classpath.
-In general, the only place you'll find your classes specified is in the
-JavaDoc documentation or possibly in the corresponding white paper.  In
-the case of java.lang, java.io and java.util, you should look at the
-Java Language Specification.
+There are a number of specification sources to use when working on
+Classpath.  In general, the only place you'll find your classes
+specified is in the JavaDoc documentation or possibly in the
+corresponding white paper.  In the case of java.lang, java.io and
+java.util, you should look at the Java Language Specification.
 
 </P>
 <P>
@@ -645,7 +655,8 @@ Here, however, is a list of specs, in order of canonicality:
 <A HREF="http://java.sun.com/docs/books/jls/clarify.html">Clarifications and Amendments to the JLS - 1.1</A>
 <LI>
 
-<A HREF="http://java.sun.com/docs/books/jls/html/1.1Update.html">JLS Updates - 1.1</A>
+<A HREF="http://java.sun.com/docs/books/jls/html/1.1Update.html">JLS Updates
+- 1.1</A>
 <LI>
 
 <A HREF="http://java.sun.com/docs/books/jls/html/index.html">The 1.0 JLS</A>
@@ -675,20 +686,19 @@ it was not specified accurately in 1.1, then use the spec
 for 1.2)
 <LI>
 
-<A HREF="http://developer.java.sun.com/developer/bugParade/index.html">The Bug Parade</A>:
-I have obtained a ton of useful information about how things
-do work and how they *should* work from the Bug Parade just
-by searching for related bugs.  The submitters are very
-careful about their use of the spec.  And if something is
-unspecified, usually you can find a request for specification
-or a response indicating how Sun thinks it should be
-specified here.
+<A HREF="http://developer.java.sun.com/developer/bugParade/index.html">The
+Bug Parade</A>: I have obtained a ton of useful information about how
+things do work and how they *should* work from the Bug Parade just by
+searching for related bugs.  The submitters are very careful about their
+use of the spec.  And if something is unspecified, usually you can find
+a request for specification or a response indicating how Sun thinks it
+should be specified here.
 </OL>
 
 <P>
-You'll notice that in this document, white papers and
-specification papers are more canonical than the JavaDoc
-documentation.  This is true in general.
+You'll notice that in this document, white papers and specification
+papers are more canonical than the JavaDoc documentation.  This is true
+in general.
 
 </P>
 
@@ -697,7 +707,7 @@ documentation.  This is true in general.
 <H1><A NAME="SEC13" HREF="jcl-hacking.html#TOC13">Directory and File Naming Conventions</A></H1>
 
 <P>
-The $classpath directory structure is laid out in the following manner:
+The Classpath directory structure is laid out in the following manner:
 
 </P>
 
@@ -757,45 +767,46 @@ Here is a brief description of the toplevel directories and their contents.
 
 <DT><B>java</B>
 <DD>
-Contains the source code to the Java packages that make up 
-the core class library.  Because this is the public interface to Java,
-it is important that the public classes, interfaces, methods, and variables
+Contains the source code to the Java packages that make up the core
+class library.  Because this is the public interface to Java, it is
+important that the public classes, interfaces, methods, and variables
 are exactly the same as specified in Sun's documentation.  The directory
-structure is laid out just like the java package names.  For example, the
-class java.util.zip would be in the directory java/util/zip.
+structure is laid out just like the java package names.  For example,
+the class java.util.zip would be in the directory java/util/zip.
 
 <DT><B>gnu/java</B>
 <DD>
-Internal classes (roughly analogous to Sun's sun.* classes)
-should go under the gnu/java directory.  Classes related to a particular
-public Java package should go in a directory named like that package.  For
+Internal classes (roughly analogous to Sun's sun.* classes) should go
+under the gnu/java directory.  Classes related to a particular public
+Java package should go in a directory named like that package.  For
 example, classes related to java.util.zip should go under a directory
-gnu/java/util/zip.  Sub-packages under the main package name are allowed.
-For classes spanning multiple public Java packages, pick an appropriate
-name and see what everybody else thinks.
+gnu/java/util/zip.  Sub-packages under the main package name are
+allowed.  For classes spanning multiple public Java packages, pick an
+appropriate name and see what everybody else thinks.
 
 <DT><B>native</B>
 <DD>
-This directory holds native code needed by the public
-Java packages.  Each package has its own subdirectory, which is the
-"flattened" name of the package.  For example, native method implementations
-for java.util.zip should go in native/java.util.zip.
+This directory holds native code needed by the public Java packages.
+Each package has its own subdirectory, which is the "flattened" name
+of the package.  For example, native method implementations for
+java.util.zip should go in native/java.util.zip.
 
 <DT><B>test</B>
 <DD>
-This directory contains test packages written for DejaGnu used
-to test releases of $classpath.  The test scripts for a given package go in the
-subdirectory that is the same as the "flattened" name of the package.  For
-example, test scripts for java.util.zip should go in test/java.util.zip
+This directory contains test packages written for DejaGnu used to test
+releases of Classpath.  The test scripts for a given package go in the
+subdirectory that is the same as the "flattened" name of the package.
+For example, test scripts for java.util.zip should go in
+test/java.util.zip
 
 <DT><B>compat</B>
 <DD>
-This directory contains misc scripts designed not to
-test an implementation, but to determine various things about Sun's
-reference implementation that are needed in order to write a compatible
-package.  Each package has its own directory which is the "flattened"
-package name.  For example, compatibility scripts for java.util.zip
-go in compat/java.util.zip
+This directory contains misc scripts designed not to test an
+implementation, but to determine various things about Sun's reference
+implementation that are needed in order to write a compatible package.
+Each package has its own directory which is the "flattened" package
+name.  For example, compatibility scripts for java.util.zip go in
+compat/java.util.zip
 </DL>
 
 <P>
@@ -830,7 +841,7 @@ reside in files of any name.
 </UL>
 
 <P><HR><P>
-This document was generated on 14 July 1998 using the
+This document was generated on 10 August 1998 using the
 <A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>
 translator version 1.52.</P>
 </BODY>
