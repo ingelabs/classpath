@@ -50,9 +50,7 @@ public class GtkToolkit extends java.awt.Toolkit
       main=new GtkMainThread();
     }
   
-  public void beep () 
-    {
-    }
+  native public void beep();
   
   public int checkImage (Image image, int width, int height, 
 			 ImageObserver observer) 
