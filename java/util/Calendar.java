@@ -363,6 +363,14 @@ public abstract class Calendar implements Serializable, Cloneable
   private TimeZone zone;
 
   /**
+   * This is the default calendar class, that is returned on
+   * java.util.Calendar.getInstance().
+   * XXX - this isn't localized anywhere, is it?
+   * @see java.util.Calendar#getInstance()
+   */
+  private static final String calendarClassName = "java.util.GregorianCalendar";
+
+  /**
    * Specifies if the date/time interpretation should be lenient.
    * If the flag is set, a date such as "February 30, 1996" will be
    * treated as the 29th day after the February 1.  If this flag
@@ -416,7 +424,7 @@ public abstract class Calendar implements Serializable, Cloneable
   /**
    * The name of the resource bundle. Used only by getBundle()
    */
-  private static final String bundleName = "gnu.java.locale.Calendar";
+  private static final String bundleName = "gnu.java.locale.LocaleInformation";
 
   /**
    * get resource bundle:
@@ -448,12 +456,27 @@ public abstract class Calendar implements Serializable, Cloneable
   {
     this.zone = zone;
     lenient = true;
+    String[] days = { "", "sun", "mon", "tue", "wed", "thu", "fri", "sat" };
 
     ResourceBundle rb = getBundle(locale);
+    String min = (String) rb.getObject("minNumberOfDaysInFirstWeek");
+    String first = (String) rb.getObject("firstDayOfWeek");
+    try
+      {
+	if (min != null)
+	  minimalDaysInFirstWeek = Integer.parseInt(min);
+      }
+    catch (NumberFormatException ex)
+      {
+	minimalDaysInFirstWeek = 1;
+      }
 
-    firstDayOfWeek = ((Integer) rb.getObject("firstDayOfWeek")).intValue();
-    minimalDaysInFirstWeek = ((Integer) rb.getObject("minimalDaysInFirstWeek"))
-                             .intValue();
+    firstDayOfWeek = 1;
+    if (first != null)
+      for (int i = 0; i < 8; i++)
+	if (days[i].equals(first))
+	  firstDayOfWeek = i;
+
     clear();
   }
 
@@ -513,15 +536,9 @@ public abstract class Calendar implements Serializable, Cloneable
       {
 	if (calendarClass == null)
 	  {
-	    ResourceBundle rb = getBundle(locale);
-	    String calendarClassName = rb.getString("calendarClass");
-
-	    if (calendarClassName != null)
-	      {
-		calendarClass = Class.forName(calendarClassName);
-		if (Calendar.class.isAssignableFrom(calendarClass))
-		  cache.put(locale, calendarClass);
-	      }
+	    calendarClass = Class.forName(calendarClassName);
+	    if (Calendar.class.isAssignableFrom(calendarClass))
+	      cache.put(locale, calendarClass);
 	  }
 
 	// GregorianCalendar is by far the most common case. Optimize by 

@@ -145,24 +145,24 @@ public class GregorianCalendar extends Calendar
 
   /**
    * The point at which the Gregorian calendar rules were used.
-   * This is locale dependent; the default for most catholic
-   * countries is midnight (UTC) on October 5, 1582 (Julian),
+   * This may be changed by using setGregorianChange;
+   * The default is midnight (UTC) on October 5, 1582 (Julian),
    * or October 15, 1582 (Gregorian).
    *
    * @serial the changeover point from the Julian calendar
    *         system to the Gregorian.
    */
-  private long gregorianCutover;
+  private long gregorianCutover = (new Date((24 * 60 * 60 * 1000L) * (((1582 * (365 * 4
+                                            + 1)) / 4
+                                            + (java.util.Calendar.OCTOBER * (31
+                                            + 30 + 31 + 30 + 31) - 9) / 5 + 5)
+                                            - ((1970 * (365 * 4 + 1)) / 4 + 1
+                                            - 13)))).getTime();
 
   /**
    * For compatability with Sun's JDK.
    */
   static final long serialVersionUID = -8125100834729963327L;
-
-  /**
-   * The name of the resource bundle. Used only by getBundle()
-   */
-  private static final String bundleName = "gnu.java.locale.Calendar";
 
   /**
    * Days in the epoch. Relative Jan 1, year '0' which is not a leap year.
@@ -236,10 +236,6 @@ public class GregorianCalendar extends Calendar
   private GregorianCalendar(TimeZone zone, Locale locale, boolean unused)
   {
     super(zone, locale);
-    ResourceBundle rb = ResourceBundle.getBundle(bundleName, locale,
-                                                 ClassLoader
-                                                 .getSystemClassLoader());
-    gregorianCutover = ((Date) rb.getObject("gregorianCutOver")).getTime();
   }
 
   /**
@@ -925,9 +921,7 @@ public class GregorianCalendar extends Calendar
 	  }
 	int maxDay = getActualMaximum(DAY_OF_MONTH);
 	if (fields[DAY_OF_MONTH] > maxDay)
-	  {
-	    fields[DAY_OF_MONTH] = maxDay;
-	  }
+	  fields[DAY_OF_MONTH] = maxDay;
 	set(YEAR, fields[YEAR]);
 	set(MONTH, fields[MONTH]);
 	break;
